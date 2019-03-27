@@ -1,7 +1,7 @@
 From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Subject: [PATCH V1 25/26] spi: expand mode and mode_bits support
-Date: Tue, 26 Mar 2019 22:56:46 -0700
-Message-ID: <1553666207-11414-25-git-send-email-skomatineni@nvidia.com>
+Subject: [PATCH V1 26/26] spi: tegra114: add support for LSBYTE_FIRST
+Date: Tue, 26 Mar 2019 22:56:47 -0700
+Message-ID: <1553666207-11414-26-git-send-email-skomatineni@nvidia.com>
 References: <1553666207-11414-1-git-send-email-skomatineni@nvidia.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -17,52 +17,42 @@ In-Reply-To: <1553666207-11414-1-git-send-email-skomatineni@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-mode and mode_bits is declared as u16 and all bits are used.
+Some SPI devices expects SPI transfers to be in Least significant byte
+first order and some devices expect Most significant byte first order.
 
-This patch changes mode and mode_bits to be u32 to allow for more mode
-configurations.
-
-Some SPI Master controllers support configuring Least significant byte
-first or Most significant byte first order for transfers. Also some SPI
-slave devices expect bytes to be in Least significant first order and
-some devices expect Most significant first order.
-
-This patch creates SPI_LSBYTE_FIRST mode for this purpose.
+This patch adds SPI_LSBYTE_FIRST to supported mode list and implements
+configuration accordingly.
 
 Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
 ---
- include/linux/spi/spi.h | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi-tegra114.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index a0975cf76cf6..0032aa47dea0 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -143,7 +143,7 @@ struct spi_device {
- 	u32			max_speed_hz;
- 	u8			chip_select;
- 	u8			bits_per_word;
--	u16			mode;
-+	u32			mode;
- #define	SPI_CPHA	0x01			/* clock phase */
- #define	SPI_CPOL	0x02			/* clock polarity */
- #define	SPI_MODE_0	(0|0)			/* (original MicroWire) */
-@@ -164,6 +164,7 @@ struct spi_device {
- #define	SPI_TX_OCTAL	0x2000			/* transmit with 8 wires */
- #define	SPI_RX_OCTAL	0x4000			/* receive with 8 wires */
- #define	SPI_3WIRE_HIZ	0x8000			/* high impedance turnaround */
-+#define SPI_LSBYTE_FIRST	0x10000		/* per-word bytes-on-wire */
- 	int			irq;
- 	void			*controller_state;
- 	void			*controller_data;
-@@ -439,7 +440,7 @@ struct spi_controller {
- 	u16			dma_alignment;
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index e1669ab3b0fe..a2e809af96da 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -827,6 +827,11 @@ static u32 tegra_spi_setup_transfer_one(struct spi_device *spi,
+ 		else
+ 			command1 &= ~SPI_LSBIT_FE;
  
- 	/* spi_device.mode flags understood by this controller driver */
--	u16			mode_bits;
-+	u32			mode_bits;
++		if (spi->mode & SPI_LSBYTE_FIRST)
++			command1 |= SPI_LSBYTE_FE;
++		else
++			command1 &= ~SPI_LSBYTE_FE;
++
+ 		if (spi->mode & SPI_3WIRE)
+ 			command1 |= SPI_BIDIROE;
+ 		else
+@@ -1393,7 +1398,8 @@ static int tegra_spi_probe(struct platform_device *pdev)
  
- 	/* bitmask of supported bits_per_word for transfers */
- 	u32			bits_per_word_mask;
+ 	/* the spi->mode bits understood by this driver: */
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST |
+-			    SPI_TX_DUAL | SPI_RX_DUAL | SPI_3WIRE;
++			    SPI_TX_DUAL | SPI_RX_DUAL | SPI_3WIRE |
++			    SPI_LSBYTE_FIRST;
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
+ 	master->setup = tegra_spi_setup;
+ 	master->cleanup = tegra_spi_cleanup;
 -- 
 2.7.4

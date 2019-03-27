@@ -1,66 +1,45 @@
 From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Subject: RE: [PATCH] spi: tegra20-slink: change chip select action order
-Date: Tue, 26 Mar 2019 19:11:23 +0000
-Message-ID: <BYAPR12MB3398F38A7F38A0448016FC5CC25F0@BYAPR12MB3398.namprd12.prod.outlook.com>
-References: <20190326143050.26232-1-gaireg@gaireg.de>
- <20190326144437.GA21654@ulmo>
+Subject: [PATCH V1 02/26] spi: tegra114: clear packed bit for unpacked mode
+Date: Tue, 26 Mar 2019 22:56:23 -0700
+Message-ID: <1553666207-11414-2-git-send-email-skomatineni@nvidia.com>
+References: <1553666207-11414-1-git-send-email-skomatineni@nvidia.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Laxman Dewangan <ldewangan@nvidia.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Thierry Reding <thierry.reding@gmail.com>,
-        =?utf-8?B?UmFuZG9scGggTWFhw59lbg==?= <gaireg@gaireg.de>
+Content-Type: text/plain
+Cc: <ldewangan@nvidia.com>, <linux-tegra@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+To: <thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
+        <talho@nvidia.com>, <skomatineni@nvidia.com>, <broonie@kernel.org>,
+        <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+        <kyarlagadda@nvidia.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190326144437.GA21654@ulmo>
-Content-Language: en-US
+In-Reply-To: <1553666207-11414-1-git-send-email-skomatineni@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-PiBPbiBUdWUsIE1hciAyNiwgMjAxOSBhdCAwMzozMDo1MFBNICswMTAwLCBSYW5kb2xwaCBNYWHD
-n2VuIHdyb3RlOg0KPiA+IFRvIHRyYW5zZmVyIHZpYSBTUEkgdGhlIHRlZ3JhMjAtc2xpbmsgZHJp
-dmVyIGZpcnN0IHNldHMgdGhlIGNvbW1hbmQgDQo+ID4gcmVnaXN0ZXIsIHdoaWNoIGNvbnRhaW5z
-IHRoZSBjaGlwIHNlbGVjdCB2YWx1ZSwgYW5kIGFmdGVyIHRoYXQgdGhlDQo+ID4gY29tbWFuZDIg
-cmVnaXN0ZXIsIHdoaWNoIGNvbnRhaW5zIHRoZSBjaGlwIHNlbGVjdCBsaW5lLiBUaGlzIGxlYWRz
-IHRvIA0KPiA+IGEgc21hbGwgc3Bpa2UgaW4gdGhlIGNoaXAgc2VsY3QgMCBsaW5lIGJldHdlZW4g
-dGhlIHNldCBvZiB0aGUgdmFsdWUgDQo+ID4gYW5kIHRoZSBzZWxlY3Rpb24gb2YgdGhlIGNoaXAg
-c2VsZWN0IGxpbmUuDQo+ID4gDQo+ID4gVGhpcyBjb21taXQgY2hhbmdlcyB0aGUgb3JkZXIgb2Yg
-dGhlIHJlZ2lzdGVyIHdyaXRlcyBzbyB0aGF0IGZpcnN0IHRoZSANCj4gPiBjaGlwIHNlbGVjdCBs
-aW5lIGlzIGNob3NlbiBhbmQgdGhlbiB0aGUgdmFsdWUgaXMgc2V0LCByZW1vdmluZyB0aGUgDQo+
-ID4gc3Bpa2UuDQo+ID4gDQo+ID4gU2lnbmVkLW9mZi1ieTogUmFuZG9scGggTWFhw59lbiA8Z2Fp
-cmVnQGdhaXJlZy5kZT4NCg0KVmVyeSBtaW5vciB0eXBvIGluIHRoZSBjb21tZW50IGJlbG93Og0K
-DQpGaXggbG9va3MgZ29vZCBhcyBjaGlwIHNlbGVjdCBuZWVkIHRvIGJlIHNlbGVjdGVkIHByaW9y
-IHRvIGFzc2VydGluZyBkdXJpbmcNCnN0YXJ0IG9mIHRyYW5zZmVyLg0KDQpSZXZpZXdlZC1ieTog
-U293amFueWEgS29tYXRpbmVuaSA8c2tvbWF0aW5lbmlAbnZpZGlhLmNvbT4NCg0KPiA+IC0tLQ0K
-PiA+ICBkcml2ZXJzL3NwaS9zcGktdGVncmEyMC1zbGluay5jIHwgMTIgKysrKysrKysrLS0tDQo+
-ID4gIDEgZmlsZSBjaGFuZ2VkLCA5IGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pDQo+DQo+
-IExvb2tzIGdvb2QgdG8gbWUuIEFkZGluZyBTb3dqYW55YSB3aG8gaGFzIGJlZW4gbG9va2luZyBp
-bnRvIFNQSSByZWNlbnRseS4NCj4NCj4gVGhpZXJyeQ0KPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2
-ZXJzL3NwaS9zcGktdGVncmEyMC1zbGluay5jIA0KPiA+IGIvZHJpdmVycy9zcGkvc3BpLXRlZ3Jh
-MjAtc2xpbmsuYyBpbmRleCAxNDI3ZjM0M2IzOWEuLjZkNDY3OTEyNjIxMyANCj4gPiAxMDA2NDQN
-Cj4gPiAtLS0gYS9kcml2ZXJzL3NwaS9zcGktdGVncmEyMC1zbGluay5jDQo+ID4gKysrIGIvZHJp
-dmVycy9zcGkvc3BpLXRlZ3JhMjAtc2xpbmsuYw0KPiA+IEBAIC03MTcsOSArNzE3LDYgQEAgc3Rh
-dGljIGludCB0ZWdyYV9zbGlua19zdGFydF90cmFuc2Zlcl9vbmUoc3RydWN0IHNwaV9kZXZpY2Ug
-KnNwaSwNCj4gPiAgCWNvbW1hbmQyID0gdHNwaS0+Y29tbWFuZDJfcmVnOw0KPiA+ICAJY29tbWFu
-ZDIgJj0gfihTTElOS19SWEVOIHwgU0xJTktfVFhFTik7DQo+ID4gIA0KPiA+IC0JdGVncmFfc2xp
-bmtfd3JpdGVsKHRzcGksIGNvbW1hbmQsIFNMSU5LX0NPTU1BTkQpOw0KPiA+IC0JdHNwaS0+Y29t
-bWFuZF9yZWcgPSBjb21tYW5kOw0KPiA+IC0NCj4gPiAgCXRzcGktPmN1cl9kaXJlY3Rpb24gPSAw
-Ow0KPiA+ICAJaWYgKHQtPnJ4X2J1Zikgew0KPiA+ICAJCWNvbW1hbmQyIHw9IFNMSU5LX1JYRU47
-DQo+ID4gQEAgLTcyOSw5ICs3MjYsMTggQEAgc3RhdGljIGludCB0ZWdyYV9zbGlua19zdGFydF90
-cmFuc2Zlcl9vbmUoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSwNCj4gPiAgCQljb21tYW5kMiB8PSBT
-TElOS19UWEVOOw0KPiA+ICAJCXRzcGktPmN1cl9kaXJlY3Rpb24gfD0gREFUQV9ESVJfVFg7DQo+
-ID4gIAl9DQo+ID4gKw0KPiA+ICsJLyoNCj4gPiArCSAqIFdyaXRpbmcgdG8gdGhlIGNvbW1hbmQy
-IHJlZ2lzdGVyIGJldm9yZSB0aGUgY29tbWFuZCByZWdpc3RlciBwcmV2ZW50cw0KPiA+ICsJICog
-YSBzcGlrZSBpbiBjaGlwX3NlbGVjdCBsaW5lIDAuIFRoaXMgc2VsZWN0cyB0aGUgY2hpcF9zZWxl
-Y3QgbGluZQ0KPiA+ICsJICogYmVmb3JlIGNoYW5naW5nIHRoZSBjaGlwX3NlbGVjdCB2YWx1ZS4N
-Cj4gPiArCSAqLw0KDQpUeXBlICJiZWZvcmUiDQoNCj4gPiAgCXRlZ3JhX3NsaW5rX3dyaXRlbCh0
-c3BpLCBjb21tYW5kMiwgU0xJTktfQ09NTUFORDIpOw0KPiA+ICAJdHNwaS0+Y29tbWFuZDJfcmVn
-ID0gY29tbWFuZDI7DQo+ID4gIA0KPiA+ICsJdGVncmFfc2xpbmtfd3JpdGVsKHRzcGksIGNvbW1h
-bmQsIFNMSU5LX0NPTU1BTkQpOw0KPiA+ICsJdHNwaS0+Y29tbWFuZF9yZWcgPSBjb21tYW5kOw0K
-PiA+ICsNCj4gPiAgCWlmICh0b3RhbF9maWZvX3dvcmRzID4gU0xJTktfRklGT19ERVBUSCkNCj4g
-PiAgCQlyZXQgPSB0ZWdyYV9zbGlua19zdGFydF9kbWFfYmFzZWRfdHJhbnNmZXIodHNwaSwgdCk7
-DQo+ID4gIAllbHNlDQo+ID4gLS0NCj4gPiAyLjExLjANCj4gPiANCg==
+Fixes: Clear packed bit when not using packed mode.
+
+Packed bit is not cleared when not using packed mode. This results
+in transfer timeouts for the unpacked mode transfers followed by the
+packed mode transfers.
+
+Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
+---
+ drivers/spi/spi-tegra114.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index 5a21bc808bb6..82431115b7c0 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -731,6 +731,8 @@ static int tegra_spi_start_transfer_one(struct spi_device *spi,
+ 
+ 	if (tspi->is_packed)
+ 		command1 |= SPI_PACKED;
++	else
++		command1 &= ~SPI_PACKED;
+ 
+ 	command1 &= ~(SPI_CS_SEL_MASK | SPI_TX_EN | SPI_RX_EN);
+ 	tspi->cur_direction = 0;
+-- 
+2.7.4

@@ -1,7 +1,7 @@
 From: Mason Yang <masonccyang@mxic.com.tw>
-Subject: [PATCH 6/7] mtd: rawnand: Add Macronix NAND read retry and randomizer support
-Date: Thu, 28 Mar 2019 18:18:37 +0800
-Message-ID: <1553768318-23149-7-git-send-email-masonccyang@mxic.com.tw>
+Subject: [PATCH 1/7] mfd: Add Macronix MX25F0A MFD controller driver
+Date: Thu, 28 Mar 2019 18:18:32 +0800
+Message-ID: <1553768318-23149-2-git-send-email-masonccyang@mxic.com.tw>
 References: <1553768318-23149-1-git-send-email-masonccyang@mxic.com.tw>
 Cc: juliensu@mxic.com.tw, zhengxunli@mxic.com.tw,
         Mason Yang <masonccyang@mxic.com.tw>
@@ -19,199 +19,324 @@ In-Reply-To: <1553768318-23149-1-git-send-email-masonccyang@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add a driver for Macronix NAND read retry and randomizer.
+Add a driver for Macronix MX25F0A multifunction device controller.
 
 Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
 ---
- drivers/mtd/nand/raw/nand_macronix.c | 169 +++++++++++++++++++++++++++++++++++
- 1 file changed, 169 insertions(+)
+ drivers/mfd/Kconfig              |   9 ++
+ drivers/mfd/Makefile             |   1 +
+ drivers/mfd/mxic-mx25f0a.c       |  90 ++++++++++++++++++++
+ include/linux/mfd/mxic-mx25f0a.h | 173 +++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 273 insertions(+)
+ create mode 100644 drivers/mfd/mxic-mx25f0a.c
+ create mode 100644 include/linux/mfd/mxic-mx25f0a.h
 
-diff --git a/drivers/mtd/nand/raw/nand_macronix.c b/drivers/mtd/nand/raw/nand_macronix.c
-index 47d8cda..a19caa4 100644
---- a/drivers/mtd/nand/raw/nand_macronix.c
-+++ b/drivers/mtd/nand/raw/nand_macronix.c
-@@ -17,6 +17,174 @@
+diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+index 0ce2d8d..68aaf2a 100644
+--- a/drivers/mfd/Kconfig
++++ b/drivers/mfd/Kconfig
+@@ -823,6 +823,15 @@ config MFD_MAX8998
+ 	  additional drivers must be enabled in order to use the functionality
+ 	  of the device.
  
- #include "internals.h"
++config MFD_MXIC_MX25F0A
++	tristate "Macronix mx25f0a multifunction device support"
++	select MFD_CORE
++	help
++	  This supports for Macronix mx25f0a multifunction device controller
++	  for raw nand or spi. You have to select individual components like
++	  raw nand controller or spi host controller under the corresponding
++	  menus.
++
+ config MFD_MT6397
+ 	tristate "MediaTek MT6397 PMIC Support"
+ 	select MFD_CORE
+diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+index b4569ed7..dcfe8fd 100644
+--- a/drivers/mfd/Makefile
++++ b/drivers/mfd/Makefile
+@@ -163,6 +163,7 @@ max8925-objs			:= max8925-core.o max8925-i2c.o
+ obj-$(CONFIG_MFD_MAX8925)	+= max8925.o
+ obj-$(CONFIG_MFD_MAX8997)	+= max8997.o max8997-irq.o
+ obj-$(CONFIG_MFD_MAX8998)	+= max8998.o max8998-irq.o
++obj-$(CONFIG_MFD_MXIC_MX25F0A)	+= mxic-mx25f0a.o
  
-+#define MACRONIX_READ_RETRY_BIT BIT(0)
-+#define MACRONIX_RANDOMIZER_BIT BIT(1)
-+#define MACRONIX_READ_RETRY_MODE 5
+ pcf50633-objs			:= pcf50633-core.o pcf50633-irq.o
+ obj-$(CONFIG_MFD_PCF50633)	+= pcf50633.o
+diff --git a/drivers/mfd/mxic-mx25f0a.c b/drivers/mfd/mxic-mx25f0a.c
+new file mode 100644
+index 0000000..04b1173
+--- /dev/null
++++ b/drivers/mfd/mxic-mx25f0a.c
+@@ -0,0 +1,90 @@
++// SPDX-License-Identifier: GPL-2.0
++//
++// Copyright (C) 2019 Macronix International Co., Ltd.
++//
++// Author:
++//	Mason Yang <masonccyang@mxic.com.tw>
++//
 +
-+#define ONFI_FEATURE_ADDR_MXIC_RANDOMIZER 0xB0
++#include <linux/mfd/mxic-mx25f0a.h>
++#include <linux/mfd/core.h>
 +
-+struct nand_onfi_vendor_macronix {
-+	u8 reserved[1];
-+	u8 reliability_func;
-+} __packed;
++static const struct mfd_cell mx25f0a_nand_ctlr = {
++	.name = "mxic-nand-ctlr",
++	.of_compatible = "mxicy,mx25f0a-nand-ctlr",
++};
 +
-+struct nand_chip *mxic_sysfs;
++static const struct mfd_cell mx25f0a_spi_ctlr = {
++	.name = "mxic-spi",
++	.of_compatible = "mxicy,mx25f0a-spi",
++};
 +
-+static int macronix_nand_setup_read_retry(struct nand_chip *chip, int mode)
++static int mx25f0a_mfd_probe(struct platform_device *pdev)
 +{
-+	u8 feature[ONFI_SUBFEATURE_PARAM_LEN] = {0};
++	struct device_node *ctlr;
++	const struct mfd_cell *cell;
++	struct mx25f0a_mfd *mxic;
++	struct resource *res;
 +	int ret;
 +
-+	if (mode > MACRONIX_READ_RETRY_MODE)
-+		mode = MACRONIX_READ_RETRY_MODE;
++	ctlr = of_get_next_child(pdev->dev.of_node, NULL);
++	if (!ctlr) {
++		dev_warn(&pdev->dev, "no spi/nand ctlr node found\n");
++		return -ENODEV;
++	}
 +
-+	feature[0] = mode;
-+	ret =  nand_set_features(chip, ONFI_FEATURE_ADDR_READ_RETRY, feature);
-+	if (ret)
-+		pr_err("failed to enter read retry moded:%d\n", mode);
++	ret = of_device_is_compatible(ctlr, "mxicy,mx25f0a-nand-ctlr");
++	if (ret) {
++		cell = &mx25f0a_nand_ctlr;
++	} else {
++		ret = of_device_is_compatible(ctlr, "mxicy,mx25f0a-spi");
++		if (ret) {
++			cell = &mx25f0a_spi_ctlr;
++		} else {
++			dev_warn(&pdev->dev, "no any spi/nand device found\n");
++			return -ENODEV;
++		}
++	}
 +
-+	if (mode == 0)
-+		ret =  nand_get_features(chip, ONFI_FEATURE_ADDR_READ_RETRY,
-+					 feature);
-+		if (ret)
-+			pr_err("failed to exits read retry moded:%d\n", mode);
++	mxic = devm_kzalloc(&pdev->dev, sizeof(*mxic), GFP_KERNEL);
++	if (!mxic)
++		return -ENOMEM;
++
++	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "regs");
++	mxic->base = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(mxic->base))
++		return PTR_ERR(mxic->base);
++
++	if (cell == &mx25f0a_spi_ctlr) {
++		res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
++						   "dirmap");
++		mxic->dirmap = devm_ioremap_resource(&pdev->dev, res);
++		if (IS_ERR(mxic->dirmap))
++			mxic->dirmap = NULL;
++	}
++
++	platform_set_drvdata(pdev, mxic);
++
++	ret = devm_mfd_add_devices(&pdev->dev, -1, cell, 1, NULL, 0, NULL);
 +
 +	return ret;
 +}
 +
-+static ssize_t mxic_nand_rand_type_show(struct kobject *kobj,
-+					struct kobj_attribute *attr, char *buf)
-+{
-+	struct nand_chip *chip = mxic_sysfs;
-+	u8 feature[ONFI_SUBFEATURE_PARAM_LEN] = {0};
-+	int ret;
++static const struct of_device_id mx25f0a_mfd_of_match[] = {
++	{ .compatible = "mxic,mx25f0a-mfd", },
++	{},
++};
++MODULE_DEVICE_TABLE(of, mx25f0a_mfd_of_match);
 +
-+	nand_select_target(chip, 0);
-+	ret = nand_get_features(chip, ONFI_FEATURE_ADDR_MXIC_RANDOMIZER,
-+				feature);
-+	nand_deselect_target(chip);
-+	if (ret)
-+		pr_err("failed to check mxic nand device randomizer\n");
++static struct platform_driver mx25f0a_mfd_driver = {
++	.probe		= mx25f0a_mfd_probe,
++	.driver = {
++		.name =	"mx25f0a-mfd",
++		.of_match_table = mx25f0a_mfd_of_match,
++	},
++};
++module_platform_driver(mx25f0a_mfd_driver);
 +
-+	return sprintf(buf, "MXIC NAND device randomizer %s(0x%x)\n",
-+		       feature[0] & MACRONIX_RANDOMIZER_BIT ?
-+		       "enable" : "disable", feature[0]);
-+}
++MODULE_AUTHOR("Mason Yang <masonccyang@mxic.com.tw>");
++MODULE_DESCRIPTION("MX25F0A controller MFD driver");
++MODULE_LICENSE("GPL v2");
+diff --git a/include/linux/mfd/mxic-mx25f0a.h b/include/linux/mfd/mxic-mx25f0a.h
+new file mode 100644
+index 0000000..5a8cfc7
+--- /dev/null
++++ b/include/linux/mfd/mxic-mx25f0a.h
+@@ -0,0 +1,173 @@
++// SPDX-License-Identifier: GPL-2.0
++//
++// Copyright (C) 2019 Macronix International Co., Ltd.
++//
++// Author:
++//	Mason Yang <masonccyang@mxic.com.tw>
++//
 +
-+static ssize_t mxic_nand_rand_type_store(struct kobject *kobj,
-+					 struct kobj_attribute *attr,
-+					 const char *buf, size_t count)
-+{
-+	struct nand_chip *chip = mxic_sysfs;
-+	u8 feature[ONFI_SUBFEATURE_PARAM_LEN] = {0};
-+	unsigned int rand_layout;
-+	int ret;
++#ifndef __MFD_MXIC_MX25F0A_H
++#define __MFD_MXIC_MX25F0A_H
 +
-+	nand_select_target(chip, 0);
-+	ret = nand_get_features(chip, ONFI_FEATURE_ADDR_MXIC_RANDOMIZER,
-+				feature);
-+	nand_deselect_target(chip);
++#include <linux/io.h>
++#include <linux/iopoll.h>
++#include <linux/module.h>
++#include <linux/mtd/mtd.h>
++#include <linux/of.h>
++#include <linux/platform_device.h>
 +
-+	if (feature[0]) {
-+		pr_err("Randomizer is enabled 0x%x\n", feature[0]);
-+		goto err_out;
-+	}
++#define HC_CFG			0x0
++#define HC_CFG_IF_CFG(x)	((x) << 27)
++#define HC_CFG_DUAL_SLAVE	BIT(31)
++#define HC_CFG_INDIVIDUAL	BIT(30)
++#define HC_CFG_NIO(x)		(((x) / 4) << 27)
++#define HC_CFG_TYPE(s, t)	((t) << (23 + ((s) * 2)))
++#define HC_CFG_TYPE_SPI_NOR	0
++#define HC_CFG_TYPE_SPI_NAND	1
++#define HC_CFG_TYPE_SPI_RAM	2
++#define HC_CFG_TYPE_RAW_NAND	3
++#define HC_CFG_SLV_ACT(x)	((x) << 21)
++#define HC_CFG_CLK_PH_EN	BIT(20)
++#define HC_CFG_CLK_POL_INV	BIT(19)
++#define HC_CFG_BIG_ENDIAN	BIT(18)
++#define HC_CFG_DATA_PASS	BIT(17)
++#define HC_CFG_IDLE_SIO_LVL(x)	((x) << 16)
++#define HC_CFG_MAN_START_EN	BIT(3)
++#define HC_CFG_MAN_START	BIT(2)
++#define HC_CFG_MAN_CS_EN	BIT(1)
++#define HC_CFG_MAN_CS_ASSERT	BIT(0)
 +
-+	ret = kstrtouint(buf, 0, &rand_layout);
-+	if (ret)
-+		goto err_out;
++#define INT_STS			0x4
++#define INT_STS_EN		0x8
++#define INT_SIG_EN		0xc
++#define INT_STS_ALL		GENMASK(31, 0)
++#define INT_RDY_PIN		BIT(26)
++#define INT_RDY_SR		BIT(25)
++#define INT_LNR_SUSP		BIT(24)
++#define INT_ECC_ERR		BIT(17)
++#define INT_CRC_ERR		BIT(16)
++#define INT_LWR_DIS		BIT(12)
++#define INT_LRD_DIS		BIT(11)
++#define INT_SDMA_INT		BIT(10)
++#define INT_DMA_FINISH		BIT(9)
++#define INT_RX_NOT_FULL		BIT(3)
++#define INT_RX_NOT_EMPTY	BIT(2)
++#define INT_TX_NOT_FULL		BIT(1)
++#define INT_TX_EMPTY		BIT(0)
 +
-+	if (rand_layout > 7) {
-+		pr_err("Error parameter value:0x%x\n", rand_layout);
-+		goto err_out;
-+	}
++#define HC_EN			0x10
++#define HC_EN_BIT		BIT(0)
 +
-+	feature[0] = rand_layout & 0x07;
-+	nand_select_target(chip, 0);
-+	ret = nand_set_features(chip, ONFI_FEATURE_ADDR_MXIC_RANDOMIZER,
-+				feature);
-+	nand_deselect_target(chip);
-+	if (ret) {
-+		pr_err("device randomizer set feature failed\n");
-+		goto err_out;
-+	}
++#define TXD(x)			(0x14 + ((x) * 4))
++#define RXD			0x24
 +
-+	feature[0] = 0x0;
-+	nand_select_target(chip, 0);
-+	ret = nand_prog_page_op(chip, 0, 0, feature, 1);
-+	nand_deselect_target(chip);
-+	if (ret) {
-+		pr_err("Prog device randomizer failed\n");
-+		goto err_out;
-+	}
++#define SS_CTRL(s)		(0x30 + ((s) * 4))
++#define LRD_CFG			0x44
++#define LWR_CFG			0x80
++#define RWW_CFG			0x70
++#define OP_READ			BIT(23)
++#define OP_DUMMY_CYC(x)		((x) << 17)
++#define OP_ADDR_BYTES(x)	((x) << 14)
++#define OP_CMD_BYTES(x)		(((x) - 1) << 13)
++#define OP_OCTA_CRC_EN		BIT(12)
++#define OP_DQS_EN		BIT(11)
++#define OP_ENHC_EN		BIT(10)
++#define OP_PREAMBLE_EN		BIT(9)
++#define OP_DATA_DDR		BIT(8)
++#define OP_DATA_BUSW(x)		((x) << 6)
++#define OP_ADDR_DDR		BIT(5)
++#define OP_ADDR_BUSW(x)		((x) << 3)
++#define OP_CMD_DDR		BIT(2)
++#define OP_CMD_BUSW(x)		(x)
++#define OP_BUSW_1		0
++#define OP_BUSW_2		1
++#define OP_BUSW_4		2
++#define OP_BUSW_8		3
 +
-+	feature[0] = 0x0;
-+	nand_select_target(chip, 0);
-+	ret = nand_set_features(chip, ONFI_FEATURE_ADDR_MXIC_RANDOMIZER,
-+				feature);
-+	nand_deselect_target(chip);
-+	if (ret)
-+		pr_err("failed to exits prog device randomizer\n");
++#define OCTA_CRC		0x38
++#define OCTA_CRC_IN_EN(s)	BIT(3 + ((s) * 16))
++#define OCTA_CRC_CHUNK(s, x)	((fls((x) / 32)) << (1 + ((s) * 16)))
++#define OCTA_CRC_OUT_EN(s)	BIT(0 + ((s) * 16))
 +
-+err_out:
-+	return count;
-+}
++#define ONFI_DIN_CNT(s)		(0x3c + (s))
 +
-+static const struct kobj_attribute sysfs_mxic_nand =
-+	__ATTR(nand_random, S_IRUGO | S_IWUSR,
-+	       mxic_nand_rand_type_show,
-+	       mxic_nand_rand_type_store);
++#define LRD_CTRL		0x48
++#define RWW_CTRL		0x74
++#define LWR_CTRL		0x84
++#define LMODE_EN		BIT(31)
++#define LMODE_SLV_ACT(x)	((x) << 21)
++#define LMODE_CMD1(x)		((x) << 8)
++#define LMODE_CMD0(x)		(x)
 +
-+static void macronix_nand_onfi_init(struct nand_chip *chip)
-+{
-+	struct nand_parameters *p = &chip->parameters;
-+	struct kobject *kobj;
-+	int ret;
++#define LRD_ADDR		0x4c
++#define LWR_ADDR		0x88
++#define LRD_RANGE		0x50
++#define LWR_RANGE		0x8c
 +
-+	mxic_sysfs = chip;
-+	if (p->onfi) {
-+		struct nand_onfi_vendor_macronix *mxic =
-+				(void *)p->onfi->vendor;
++#define AXI_SLV_ADDR		0x54
 +
-+		if (mxic->reliability_func & MACRONIX_READ_RETRY_BIT) {
-+			chip->read_retries = MACRONIX_READ_RETRY_MODE + 1;
-+			chip->setup_read_retry =
-+				 macronix_nand_setup_read_retry;
-+			if (p->supports_set_get_features) {
-+				set_bit(ONFI_FEATURE_ADDR_READ_RETRY,
-+					p->set_feature_list);
-+				set_bit(ONFI_FEATURE_ADDR_READ_RETRY,
-+					p->get_feature_list);
-+			}
-+		}
++#define DMAC_RD_CFG		0x58
++#define DMAC_WR_CFG		0x94
++#define DMAC_CFG_PERIPH_EN	BIT(31)
++#define DMAC_CFG_ALLFLUSH_EN	BIT(30)
++#define DMAC_CFG_LASTFLUSH_EN	BIT(29)
++#define DMAC_CFG_QE(x)		(((x) + 1) << 16)
++#define DMAC_CFG_BURST_LEN(x)	(((x) + 1) << 12)
++#define DMAC_CFG_BURST_SZ(x)	((x) << 8)
++#define DMAC_CFG_DIR_READ	BIT(1)
++#define DMAC_CFG_START		BIT(0)
 +
-+		if (mxic->reliability_func & MACRONIX_RANDOMIZER_BIT) {
-+			if (p->supports_set_get_features) {
-+				set_bit(ONFI_FEATURE_ADDR_MXIC_RANDOMIZER,
-+					p->set_feature_list);
-+				set_bit(ONFI_FEATURE_ADDR_MXIC_RANDOMIZER,
-+					p->get_feature_list);
-+				/*
-+				 * create syfs-fs for MXIC NAND device
-+				 * randomizer status check & enable
-+				 * operations.
-+				 */
-+				kobj = kobject_create_and_add("mxic_rand_nand",
-+							      NULL);
-+				if (!kobj)
-+					return;
++#define DMAC_RD_CNT		0x5c
++#define DMAC_WR_CNT		0x98
 +
-+				ret = sysfs_create_file(kobj,
-+							&sysfs_mxic_nand.attr);
-+				if (ret) {
-+					pr_err("Err: mxic_rand_nand sysfs");
-+					kobject_put(kobj);
-+				}
-+			}
-+		}
-+	}
-+}
++#define SDMA_ADDR		0x60
 +
- /*
-  * Macronix AC series does not support using SET/GET_FEATURES to change
-  * the timings unlike what is declared in the parameter page. Unflag
-@@ -65,6 +233,7 @@ static int macronix_nand_init(struct nand_chip *chip)
- 		chip->bbt_options |= NAND_BBT_SCAN2NDPAGE;
- 
- 	macronix_nand_fix_broken_get_timings(chip);
-+	macronix_nand_onfi_init(chip);
- 
- 	return 0;
- }
++#define DMAM_CFG		0x64
++#define DMAM_CFG_START		BIT(31)
++#define DMAM_CFG_CONT		BIT(30)
++#define DMAM_CFG_SDMA_GAP(x)	(fls((x) / 8192) << 2)
++#define DMAM_CFG_DIR_READ	BIT(1)
++#define DMAM_CFG_EN		BIT(0)
++
++#define DMAM_CNT		0x68
++
++#define LNR_TIMER_TH		0x6c
++
++#define RDM_CFG0		0x78
++#define RDM_CFG0_POLY(x)	(x)
++
++#define RDM_CFG1		0x7c
++#define RDM_CFG1_RDM_EN		BIT(31)
++#define RDM_CFG1_SEED(x)	(x)
++
++#define LWR_SUSP_CTRL		0x90
++#define LWR_SUSP_CTRL_EN	BIT(31)
++
++#define DMAS_CTRL		0x9c
++#define DMAS_CTRL_DIR_READ	BIT(31)
++#define DMAS_CTRL_EN		BIT(30)
++
++#define DATA_STROB		0xa0
++#define DATA_STROB_EDO_EN	BIT(2)
++#define DATA_STROB_INV_POL	BIT(1)
++#define DATA_STROB_DELAY_2CYC	BIT(0)
++
++#define IDLY_CODE(x)		(0xa4 + ((x) * 4))
++#define IDLY_CODE_VAL(x, v)	((v) << (((x) % 4) * 8))
++
++#define GPIO			0xc4
++#define GPIO_PT(x)		BIT(3 + ((x) * 16))
++#define GPIO_RESET(x)		BIT(2 + ((x) * 16))
++#define GPIO_HOLDB(x)		BIT(1 + ((x) * 16))
++#define GPIO_WPB(x)		BIT((x) * 16)
++
++#define HC_VER			0xd0
++
++#define HW_TEST(x)		(0xe0 + ((x) * 4))
++
++struct mx25f0a_mfd {
++	void __iomem *base;
++	void __iomem *dirmap;
++};
++
++#endif // __MFD_MXIC_MX25F0A_H
 -- 
 1.9.1

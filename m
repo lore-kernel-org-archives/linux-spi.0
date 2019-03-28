@@ -1,58 +1,51 @@
 From: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-Subject: [LINUX PATCH 1/3] dt-bindings: spi: Add device tree binding documentation for Zynq QSPI controller
-Date: Thu, 28 Mar 2019 16:46:00 +0530
-Message-ID: <1553771760-2011-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
+Subject: [LINUX PATCH 2/3] spi: spi-mem: call spi_mem_default_supports_op() first
+Date: Thu, 28 Mar 2019 16:46:24 +0530
+Message-ID: <1553771784-3364-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: <michals@xilinx.com>, <mark.rutland@arm.com>,
-        <horms+renesas@verge.net.au>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <nagasuresh12@gmail.com>,
+Cc: <vigneshr@ti.com>, <linux-spi@vger.kernel.org>,
+        <dwmw2@infradead.org>, <marek.vasut@gmail.com>, <richard@nod.at>,
+        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <michal.simek@xilinx.com>, <nagasuresh12@gmail.com>,
         Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-To: <broonie@kernel.org>, <bbrezillon@kernel.org>, <robh@kernel.org>
+To: <broonie@kernel.org>, <bbrezillon@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds the dts binding document for Zynq SOC QSPI controller.
+Call spi_mem_default_supports_op() first, before calling controller
+specific ctlr->supports_op().
+With this, controller drivers can drop checking the buswidths again.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Suggested-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
 ---
- .../devicetree/bindings/spi/spi-zynq-qspi.txt      | 25 ++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-zynq-qspi.txt
+Details can be found at https://lkml.org/lkml/2019/3/1/183
+---
+ drivers/spi/spi-mem.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-zynq-qspi.txt b/Documentation/devicetree/bindings/spi/spi-zynq-qspi.txt
-new file mode 100644
-index 0000000..16b734a
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-zynq-qspi.txt
-@@ -0,0 +1,25 @@
-+Xilinx Zynq QSPI controller Device Tree Bindings
-+-------------------------------------------------------------------
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index 5217a56..56aa158 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -189,11 +189,14 @@ static bool spi_mem_internal_supports_op(struct spi_mem *mem,
+ 					 const struct spi_mem_op *op)
+ {
+ 	struct spi_controller *ctlr = mem->spi->controller;
++	bool ret;
 +
-+Required properties:
-+- compatible		: Should be "xlnx,zynq-qspi-1.0".
-+- reg			: Physical base address and size of QSPI registers map.
-+- interrupts		: Property with a value describing the interrupt
-+			  number.
-+- clock-names		: List of input clock names - "ref_clk", "pclk"
-+			  (See clock bindings for details).
-+- clocks		: Clock phandles (see clock bindings for details).
-+
-+Optional properties:
-+- num-cs		: Number of chip selects used.
-+
-+Example:
-+	qspi: spi@e000d000 {
-+		compatible = "xlnx,zynq-qspi-1.0";
-+		reg = <0xe000d000 0x1000>;
-+		interrupt-parent = <&intc>;
-+		interrupts = <0 19 4>;
-+		clock-names = "ref_clk", "pclk";
-+		clocks = <&clkc 10>, <&clkc 43>;
-+		num-cs = <1>;
-+	};
++	ret = spi_mem_default_supports_op(mem, op);
+ 
+ 	if (ctlr->mem_ops && ctlr->mem_ops->supports_op)
+-		return ctlr->mem_ops->supports_op(mem, op);
++		ret =  ctlr->mem_ops->supports_op(mem, op);
+ 
+-	return spi_mem_default_supports_op(mem, op);
++	return ret;
+ }
+ 
+ /**
 -- 
 2.7.4

@@ -1,51 +1,51 @@
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
-        <u.kleine-koenig@pengutronix.de>
+From: Igor Plyatov <plyatov@gmail.com>
 Subject: Re: Issues with i.MX SPI DMA transfers
-Date: Thu, 28 Mar 2019 07:52:47 +0100
-Message-ID: <20190328065247.uz73lap7ljf5q3tb@pengutronix.de>
+Date: Thu, 28 Mar 2019 09:58:52 +0300
+Message-ID: <ec3fdef9-8f74-1a5a-e34a-d66b9e28dc5d@gmail.com>
 References: <08fcbd65-510f-84f8-d6d6-ff56aa9ca9ad@gmail.com>
+ <AM0PR04MB4211375B0647DE67D8C7406280590@AM0PR04MB4211.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-spi@vger.kernel.org, NXP Linux Team <linux-imx@nxp.com>,
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+To: Aisheng Dong <aisheng.dong@nxp.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        dl-linux-imx <linux-imx@nxp.com>,
         Fabio Estevam <festevam@gmail.com>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
         Sascha Hauer <s.hauer@pengutronix.de>,
         Shawn Guo <shawnguo@kernel.org>,
-        Mark Brown <broonie@kernel.org>, dmaengine@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
         Vinod Koul <vkoul@kernel.org>,
         Dan Williams <dan.j.williams@intel.com>,
         Andy Duan <fugang.duan@nxp.com>, Han Xu <han.xu@nxp.com>,
         Robin Gong <yibin.gong@nxp.com>,
         Clark Wang <xiaoning.wang@nxp.com>
-To: Igor Plyatov <plyatov@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <08fcbd65-510f-84f8-d6d6-ff56aa9ca9ad@gmail.com>
+In-Reply-To: <AM0PR04MB4211375B0647DE67D8C7406280590@AM0PR04MB4211.eurprd04.prod.outlook.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello Igor,
+Dear developers,
 
-On Wed, Mar 27, 2019 at 08:40:00PM +0300, Igor Plyatov wrote:
-> please, help to resolve two issues with SPI DMA transfers at i.MX6Q
-> platform.
-> 
-> First issue is
->  [ 4465.008003] spi_master spi0: I/O Error in DMA RX
-> 
-> Second issue is duplication for one of received bytes.
-> 
-> Probably, these issues related to each one.
+I have update about these issues.
 
-This is probably the same problem I hit some time ago. Check ERR009165
-in the errata. You either need to disable DMA or need a fixed
-sdma-Script.
+12 hours testing show very fast (some seconds) appearance of byte 
+duplication at interface spi4 (alias for ecspi5), while interfaces spi0 
+(alias for ecspi1) and spi1 (alias for ecspi2) work flawless (at least 
+without any other OS load).
 
-Best regards
-Uwe
+Looks like, ecspi5 has some different configuration in SPI or SDMA 
+drivers or bug in SDMA script.
 
--- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Any ideas?
+
+Best wishes.
+
+--
+
+Igor Plyatov

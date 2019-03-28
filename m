@@ -1,7 +1,8 @@
 From: Mason Yang <masonccyang@mxic.com.tw>
-Subject: [PATCH 0/7] Add Macronix MX25F0A MFD driver and NAND function
-Date: Thu, 28 Mar 2019 18:18:31 +0800
-Message-ID: <1553768318-23149-1-git-send-email-masonccyang@mxic.com.tw>
+Subject: [PATCH 2/7] mtd: rawnand: Add Macronix MX25F0A NAND controller driver
+Date: Thu, 28 Mar 2019 18:18:33 +0800
+Message-ID: <1553768318-23149-3-git-send-email-masonccyang@mxic.com.tw>
+References: <1553768318-23149-1-git-send-email-masonccyang@mxic.com.tw>
 Cc: juliensu@mxic.com.tw, zhengxunli@mxic.com.tw,
         Mason Yang <masonccyang@mxic.com.tw>
 To: broonie@kernel.org, marek.vasut@gmail.com,
@@ -14,47 +15,357 @@ To: broonie@kernel.org, marek.vasut@gmail.com,
         marcel.ziswiler@toradex.com, linux-mtd@lists.infradead.org,
         richard@nod.at, miquel.raynal@bootlin.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1553768318-23149-1-git-send-email-masonccyang@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+Add a driver for Macronix MX25F0A NAND controller.
 
-These patches support
-1. Add Macronix MX25F0A MFD driver for SPI and raw NAND controller.
-2. Add direct mapping read mode for SPI host controller.
-3. Macronix NAND device read retry and randomizer function.
-4. Macronix NAND device block protection function.
-
-thanks for your review.
-
-best regards,
-Mason
-
-
-Mason Yang (7):
-  mfd: Add Macronix MX25F0A MFD controller driver
-  mtd: rawnand: Add Macronix MX25F0A NAND controller driver
-  spi: Patch Macronix MX25F0A SPI controller driver
-  dt-bindings: mfd: Document Macronix MX25F0A controller bindings
-  spi: Add direct mapping mode for Macronix SPI controller
-  mtd: rawnand: Add Macronix NAND read retry and randomizer support
-  mtd: rawnand: Add Macronix NAND block protection driver
-
- .../devicetree/bindings/mfd/mxic-mx25f0a.txt       |  66 +++++
- drivers/mfd/Kconfig                                |   9 +
- drivers/mfd/Makefile                               |   1 +
- drivers/mfd/mxic-mx25f0a.c                         |  90 ++++++
- drivers/mtd/nand/raw/Kconfig                       |   6 +
- drivers/mtd/nand/raw/Makefile                      |   1 +
- drivers/mtd/nand/raw/mxic_nand.c                   | 306 +++++++++++++++++++++
- drivers/mtd/nand/raw/nand_macronix.c               | 216 +++++++++++++++
- drivers/spi/spi-mxic.c                             | 288 +++++++------------
- include/linux/mfd/mxic-mx25f0a.h                   | 176 ++++++++++++
- 10 files changed, 974 insertions(+), 185 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/mfd/mxic-mx25f0a.txt
- create mode 100644 drivers/mfd/mxic-mx25f0a.c
+Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+---
+ drivers/mtd/nand/raw/Kconfig     |   6 +
+ drivers/mtd/nand/raw/Makefile    |   1 +
+ drivers/mtd/nand/raw/mxic_nand.c | 303 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 310 insertions(+)
  create mode 100644 drivers/mtd/nand/raw/mxic_nand.c
- create mode 100644 include/linux/mfd/mxic-mx25f0a.h
 
+diff --git a/drivers/mtd/nand/raw/Kconfig b/drivers/mtd/nand/raw/Kconfig
+index e604625..e0329cc 100644
+--- a/drivers/mtd/nand/raw/Kconfig
++++ b/drivers/mtd/nand/raw/Kconfig
+@@ -522,6 +522,12 @@ config MTD_NAND_QCOM
+ 	  Enables support for NAND flash chips on SoCs containing the EBI2 NAND
+ 	  controller. This controller is found on IPQ806x SoC.
+ 
++config MTD_NAND_MXIC
++	tristate "Macronix MX25F0A NAND controller"
++	depends on HAS_IOMEM
++	help
++	  This selects the Macronix MX25F0A NAND controller driver.
++
+ config MTD_NAND_MTK
+ 	tristate "Support for NAND controller on MTK SoCs"
+ 	depends on ARCH_MEDIATEK || COMPILE_TEST
+diff --git a/drivers/mtd/nand/raw/Makefile b/drivers/mtd/nand/raw/Makefile
+index 5a5a72f..c8a6790 100644
+--- a/drivers/mtd/nand/raw/Makefile
++++ b/drivers/mtd/nand/raw/Makefile
+@@ -54,6 +54,7 @@ obj-$(CONFIG_MTD_NAND_SUNXI)		+= sunxi_nand.o
+ obj-$(CONFIG_MTD_NAND_HISI504)	        += hisi504_nand.o
+ obj-$(CONFIG_MTD_NAND_BRCMNAND)		+= brcmnand/
+ obj-$(CONFIG_MTD_NAND_QCOM)		+= qcom_nandc.o
++obj-$(CONFIG_MTD_NAND_MXIC)		+= mxic_nand.o
+ obj-$(CONFIG_MTD_NAND_MTK)		+= mtk_ecc.o mtk_nand.o
+ obj-$(CONFIG_MTD_NAND_TEGRA)		+= tegra_nand.o
+ obj-$(CONFIG_MTD_NAND_STM32_FMC2)	+= stm32_fmc2_nand.o
+diff --git a/drivers/mtd/nand/raw/mxic_nand.c b/drivers/mtd/nand/raw/mxic_nand.c
+new file mode 100644
+index 0000000..03886b2
+--- /dev/null
++++ b/drivers/mtd/nand/raw/mxic_nand.c
+@@ -0,0 +1,303 @@
++// SPDX-License-Identifier: GPL-2.0
++//
++// Copyright (C) 2019 Macronix International Co., Ltd.
++//
++// Authors:
++//	Mason Yang <masonccyang@mxic.com.tw>
++//	zhengxunli <zhengxunli@mxic.com.tw>
++//
++
++#include <linux/mfd/mxic-mx25f0a.h>
++#include <linux/mtd/rawnand.h>
++#include <linux/mtd/nand_ecc.h>
++
++#include "internals.h"
++
++struct mxic_nand_ctlr {
++	struct nand_controller base;
++	struct nand_chip nand;
++	void __iomem *regs;
++};
++
++static void mxic_host_init(struct mxic_nand_ctlr *mxic)
++{
++	writel(DATA_STROB_EDO_EN, mxic->regs + DATA_STROB);
++	writel(INT_STS_ALL, mxic->regs + INT_STS_EN);
++	writel(0x0, mxic->regs + ONFI_DIN_CNT(0));
++	writel(HC_CFG_NIO(8) | HC_CFG_SLV_ACT(0) | HC_CFG_IDLE_SIO_LVL(1) |
++	       HC_CFG_TYPE(1, HC_CFG_TYPE_RAW_NAND) | HC_CFG_MAN_CS_EN,
++	       mxic->regs + HC_CFG);
++	writel(0x0, mxic->regs + HC_EN);
++}
++
++static int  mxic_nand_wait_ready(struct nand_chip *chip)
++{
++	struct mxic_nand_ctlr *mxic = nand_get_controller_data(chip);
++	u32 sts;
++
++	return readl_poll_timeout(mxic->regs + INT_STS, sts,
++				  sts & INT_RDY_PIN, 0, USEC_PER_SEC);
++}
++
++static void mxic_nand_select_chip(struct nand_chip *chip, int chipnr)
++{
++	struct mxic_nand_ctlr *mxic = nand_get_controller_data(chip);
++
++	switch (chipnr) {
++	case 0:
++	case 1:
++		writel(HC_EN_BIT, mxic->regs + HC_EN);
++		writel(HC_CFG_MAN_CS_ASSERT | readl(mxic->regs + HC_CFG),
++		       mxic->regs + HC_CFG);
++		break;
++
++	case -1:
++		writel(~HC_CFG_MAN_CS_ASSERT & readl(mxic->regs + HC_CFG),
++		       mxic->regs + HC_CFG);
++		writel(0, mxic->regs + HC_EN);
++		break;
++
++	default:
++		break;
++	}
++}
++
++static int mxic_nand_data_xfer(struct mxic_nand_ctlr *mxic, const void *txbuf,
++			       void *rxbuf, unsigned int len)
++{
++	unsigned int pos = 0;
++
++	while (pos < len) {
++		unsigned int nbytes = len - pos;
++		u32 data = 0xffffffff;
++		u32 sts;
++		int ret;
++
++		if (nbytes > 4)
++			nbytes = 4;
++
++		if (txbuf)
++			memcpy(&data, txbuf + pos, nbytes);
++
++		ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
++					 sts & INT_TX_EMPTY, 0, USEC_PER_SEC);
++		if (ret)
++			return ret;
++
++		writel(data, mxic->regs + TXD(nbytes % 4));
++
++		if (rxbuf) {
++			ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
++						 sts & INT_TX_EMPTY, 0,
++						 USEC_PER_SEC);
++			if (ret)
++				return ret;
++
++			ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
++						 sts & INT_RX_NOT_EMPTY, 0,
++						 USEC_PER_SEC);
++			if (ret)
++				return ret;
++
++			data = readl(mxic->regs + RXD);
++			data >>= (8 * (4 - nbytes));
++			memcpy(rxbuf + pos, &data, nbytes);
++			WARN_ON(readl(mxic->regs + INT_STS) & INT_RX_NOT_EMPTY);
++		} else {
++			readl(mxic->regs + RXD);
++		}
++		WARN_ON(readl(mxic->regs + INT_STS) & INT_RX_NOT_EMPTY);
++
++		pos += nbytes;
++	}
++
++	return 0;
++}
++
++static int mxic_nand_exec_op(struct nand_chip *chip,
++			     const struct nand_operation *op, bool check_only)
++{
++	struct mxic_nand_ctlr *mxic = nand_get_controller_data(chip);
++	const struct nand_op_instr *instr = NULL;
++	int i, len = 0, ret = 0;
++	unsigned int op_id;
++	unsigned char cmdcnt = 0, addr_cnt = 0, cmd_addr[8] = {0};
++
++	for (op_id = 0; op_id < op->ninstrs; op_id++) {
++		instr = &op->instrs[op_id];
++
++		switch (instr->type) {
++		case NAND_OP_CMD_INSTR:
++			cmd_addr[len++] = instr->ctx.cmd.opcode;
++			cmdcnt++;
++			break;
++
++		case NAND_OP_ADDR_INSTR:
++			for (i = 0; i < instr->ctx.addr.naddrs; i++)
++				cmd_addr[len++] = instr->ctx.addr.addrs[i];
++			addr_cnt = i;
++			break;
++
++		case NAND_OP_DATA_IN_INSTR:
++			break;
++
++		case NAND_OP_DATA_OUT_INSTR:
++			writel(instr->ctx.data.len,
++			       mxic->regs + ONFI_DIN_CNT(0));
++			break;
++
++		case NAND_OP_WAITRDY_INSTR:
++			break;
++		}
++	}
++
++	if (op_id == 5 && instr->type == NAND_OP_WAITRDY_INSTR) {
++		/*
++		 * In case cmd-addr-data-cmd-wait in a sequence,
++		 * separate the 2'nd command, i.e,. nand_prog_page_op()
++		 */
++		writel(OP_CMD_BUSW(OP_BUSW_8) | OP_ADDR_BUSW(OP_BUSW_8) |
++		       OP_DATA_BUSW(OP_BUSW_8) | OP_DUMMY_CYC(0x3F) |
++		       OP_ADDR_BYTES(addr_cnt) |
++		       OP_CMD_BYTES(1), mxic->regs + SS_CTRL(0));
++		writel(0, mxic->regs + HC_EN);
++		writel(HC_EN_BIT, mxic->regs + HC_EN);
++
++		mxic_nand_data_xfer(mxic, cmd_addr, NULL, len - 1);
++
++		mxic_nand_data_xfer(mxic, instr->ctx.data.buf.out, NULL,
++				    instr->ctx.data.len);
++
++		writel(0, mxic->regs + HC_EN);
++		writel(HC_EN_BIT, mxic->regs + HC_EN);
++		mxic_nand_data_xfer(mxic, &cmd_addr[--len], NULL, 1);
++		ret = mxic_nand_wait_ready(chip);
++		if (ret)
++			goto err_out;
++		return ret;
++	}
++
++	if (len) {
++		writel(OP_CMD_BUSW(OP_BUSW_8) | OP_ADDR_BUSW(OP_BUSW_8) |
++		       OP_DATA_BUSW(OP_BUSW_8) | OP_DUMMY_CYC(0x3F) |
++		       OP_ADDR_BYTES(addr_cnt) |
++		       OP_CMD_BYTES(cmdcnt > 0 ? cmdcnt : 0),
++		       mxic->regs + SS_CTRL(0));
++		writel(0, mxic->regs + HC_EN);
++		writel(HC_EN_BIT, mxic->regs + HC_EN);
++
++		mxic_nand_data_xfer(mxic, cmd_addr, NULL, len);
++	}
++
++	for (op_id = 0; op_id < op->ninstrs; op_id++) {
++		instr = &op->instrs[op_id];
++
++		switch (instr->type) {
++		case NAND_OP_CMD_INSTR:
++		case NAND_OP_ADDR_INSTR:
++			break;
++
++		case NAND_OP_DATA_IN_INSTR:
++			writel(0x0, mxic->regs + ONFI_DIN_CNT(0));
++			writel(readl(mxic->regs + SS_CTRL(0)) | OP_READ,
++			       mxic->regs + SS_CTRL(0));
++			mxic_nand_data_xfer(mxic, NULL, instr->ctx.data.buf.in,
++					    instr->ctx.data.len);
++			break;
++
++		case NAND_OP_DATA_OUT_INSTR:
++			mxic_nand_data_xfer(mxic, instr->ctx.data.buf.out, NULL,
++					    instr->ctx.data.len);
++			break;
++
++		case NAND_OP_WAITRDY_INSTR:
++			ret = mxic_nand_wait_ready(chip);
++			if (ret)
++				goto err_out;
++			break;
++		}
++	}
++
++err_out:
++	return ret;
++}
++
++static const struct nand_controller_ops mxic_nand_controller_ops = {
++	.exec_op = mxic_nand_exec_op,
++};
++
++static int mx25f0a_nand_probe(struct platform_device *pdev)
++{
++	struct mtd_info *mtd;
++	struct mx25f0a_mfd *mxic_mfd = dev_get_drvdata(pdev->dev.parent);
++	struct mxic_nand_ctlr *mxic;
++	struct nand_chip *nand_chip;
++	int err;
++
++	mxic = devm_kzalloc(&pdev->dev, sizeof(struct mxic_nand_ctlr),
++			    GFP_KERNEL);
++	if (!mxic)
++		return -ENOMEM;
++
++	nand_chip = &mxic->nand;
++	mtd = nand_to_mtd(nand_chip);
++	mtd->dev.parent = &pdev->dev;
++	nand_chip->ecc.priv = NULL;
++	nand_set_flash_node(nand_chip, pdev->dev.of_node);
++	nand_chip->priv = mxic;
++
++	mxic->regs = mxic_mfd->base;
++	if (IS_ERR(mxic->regs))
++		return PTR_ERR(mxic->regs);
++
++	nand_chip->legacy.select_chip = mxic_nand_select_chip;
++
++	mxic->base.ops = &mxic_nand_controller_ops;
++	nand_controller_init(&mxic->base);
++	nand_chip->controller = &mxic->base;
++
++	mxic_host_init(mxic);
++
++	err = nand_scan(nand_chip, 1);
++	if (err)
++		goto fail;
++
++	err = mtd_device_register(mtd, NULL, 0);
++	if (err)
++		goto fail;
++
++	platform_set_drvdata(pdev, mxic);
++
++	return 0;
++fail:
++	return err;
++}
++
++static int mx25f0a_nand_remove(struct platform_device *pdev)
++{
++	struct mxic_nand_ctlr *mxic = platform_get_drvdata(pdev);
++
++	nand_release(&mxic->nand);
++
++	return 0;
++}
++
++static const struct of_device_id mx25f0a_nand_ids[] = {
++	{ .compatible = "mxicy,mx25f0a-nand-ctlr", },
++	{},
++};
++MODULE_DEVICE_TABLE(of, mx25f0a_nand_ids);
++
++static struct platform_driver mx25f0a_nand_driver = {
++	.probe		= mx25f0a_nand_probe,
++	.remove		= mx25f0a_nand_remove,
++	.driver		= {
++		.name	= "mxic-nand-ctlr",
++		.of_match_table = mx25f0a_nand_ids,
++	},
++};
++module_platform_driver(mx25f0a_nand_driver);
++
++MODULE_AUTHOR("Mason Yang <masonccyang@mxic.com.tw>");
++MODULE_DESCRIPTION("MX25F0A RAW NAND controller driver");
++MODULE_LICENSE("GPL v2");
 -- 
 1.9.1

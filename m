@@ -1,49 +1,64 @@
-From: Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH 23/24] arm64: dts: mediatek: add dtsi for MT8516
-Date: Thu, 28 Mar 2019 14:22:12 -0500
-Message-ID: <CAL_Jsq+Q06O84-MTpgTWGG312VXm_vGOkjMCjtWuS0eZ-j_0yw@mail.gmail.com>
-References: <20190323211612.860-1-fparent@baylibre.com> <20190323211612.860-24-fparent@baylibre.com>
+From: Boris Brezillon <boris.brezillon@collabora.com>
+Subject: Re: [LINUX PATCH 2/3] spi: spi-mem: call
+ spi_mem_default_supports_op() first
+Date: Thu, 28 Mar 2019 20:55:22 +0100
+Message-ID: <20190328205522.272e1da6@collabora.com>
+References: <1553771784-3364-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Matthias Brugger <matthias.bgg@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sean Wang <sean.wang@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Hsin-Hsiung Wang <hsin-hsiung.wang@mediatek.com>,
-        Wenzhen Yu <wenzhen.yu@mediatek.com>,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        Yong Mao <yong.mao@mediatek.com>, jjian.zhou@mediatek.com,
-        devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
-        <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support"
-        <linux-mediatek@lists.infradead.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        "open list:SE
-To: Fabien Parent <fparent@baylibre.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: <broonie@kernel.org>, <bbrezillon@kernel.org>, <vigneshr@ti.com>,
+        <linux-spi@vger.kernel.org>, <dwmw2@infradead.org>,
+        <marek.vasut@gmail.com>, <richard@nod.at>,
+        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <michal.simek@xilinx.com>, <nagasuresh12@gmail.com>
+To: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190323211612.860-24-fparent@baylibre.com>
+In-Reply-To: <1553771784-3364-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, Mar 23, 2019 at 4:17 PM Fabien Parent <fparent@baylibre.com> wrote:
->
-> The MT8516 SoC provides the following peripherals: GPIO, UART, USB2,
-> SPI, eMMC, SDIO, NAND, Flash, ADC, I2C, PWM, Timers, IR, Ethernet, and
-> Audio (I2S, SPDIF, TDM).
->
-> This commit is adding the basic dtsi file with the support of the
-> following IOs: GPIO, UART, SPI, eMMC, I2C, Timers.
->
-> Signed-off-by: Fabien Parent <fparent@baylibre.com>
-> ---
->  arch/arm64/boot/dts/mediatek/mt8516-pinfunc.h | 663 ++++++++++++++++++
->  arch/arm64/boot/dts/mediatek/mt8516.dtsi      | 409 +++++++++++
->  2 files changed, 1072 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/mediatek/mt8516-pinfunc.h
->  create mode 100644 arch/arm64/boot/dts/mediatek/mt8516.dtsi
+On Thu, 28 Mar 2019 16:46:24 +0530
+Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com> wrote:
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+> Call spi_mem_default_supports_op() first, before calling controller
+> specific ctlr->supports_op().
+> With this, controller drivers can drop checking the buswidths again.
+
+No, this was done on purpose, in case the controller does not want the
+default check to be applied (say it does not need bus-width props to
+be defined and has another way to check if a device can be accessed in
+dual, quad or octal mode).
+Just call spi_mem_default_supports_op() from your driver
+->supports_op() hook if needed.
+
+> 
+> Suggested-by: Vignesh Raghavendra <vigneshr@ti.com>
+> Signed-off-by: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+> ---
+> Details can be found at https://lkml.org/lkml/2019/3/1/183
+> ---
+>  drivers/spi/spi-mem.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+> index 5217a56..56aa158 100644
+> --- a/drivers/spi/spi-mem.c
+> +++ b/drivers/spi/spi-mem.c
+> @@ -189,11 +189,14 @@ static bool spi_mem_internal_supports_op(struct spi_mem *mem,
+>  					 const struct spi_mem_op *op)
+>  {
+>  	struct spi_controller *ctlr = mem->spi->controller;
+> +	bool ret;
+> +
+> +	ret = spi_mem_default_supports_op(mem, op);
+>  
+>  	if (ctlr->mem_ops && ctlr->mem_ops->supports_op)
+> -		return ctlr->mem_ops->supports_op(mem, op);
+> +		ret =  ctlr->mem_ops->supports_op(mem, op);
+>  
+> -	return spi_mem_default_supports_op(mem, op);
+> +	return ret;
+>  }
+>  
+>  /**

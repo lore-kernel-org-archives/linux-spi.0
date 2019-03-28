@@ -1,146 +1,129 @@
-From: Robin Gong <yibin.gong@nxp.com>
-Subject: RE: Issues with i.MX SPI DMA transfers
-Date: Thu, 28 Mar 2019 09:23:41 +0000
-Message-ID: <VI1PR04MB45438E01D91829849A4E0BB289590@VI1PR04MB4543.eurprd04.prod.outlook.com>
-References: <08fcbd65-510f-84f8-d6d6-ff56aa9ca9ad@gmail.com>
- <20190328065247.uz73lap7ljf5q3tb@pengutronix.de>
- <b8e80127-e377-9ef9-2447-b0126fdad7dc@gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/mixed;
-        boundary="_003_VI1PR04MB45438E01D91829849A4E0BB289590VI1PR04MB4543eurp_"
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andy Duan <fugang.duan@nxp.com>, Han Xu <han.xu@nxp.com>,
-        Clark Wang <xiaoning.wang@nxp.com>
-To: Igor Plyatov <plyatov@gmail.com>,
-        =?utf-8?B?VXdlIEtsZWluZS1Lw7ZuaWc=?=
-        <u.kleine-koenig@pengutronix.de>
+From: Mason Yang <masonccyang@mxic.com.tw>
+Subject: [PATCH 7/7] mtd: rawnand: Add Macronix NAND block protection driver
+Date: Thu, 28 Mar 2019 18:18:38 +0800
+Message-ID: <1553768318-23149-8-git-send-email-masonccyang@mxic.com.tw>
+References: <1553768318-23149-1-git-send-email-masonccyang@mxic.com.tw>
+Cc: juliensu@mxic.com.tw, zhengxunli@mxic.com.tw,
+        Mason Yang <masonccyang@mxic.com.tw>
+To: broonie@kernel.org, marek.vasut@gmail.com,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        bbrezillon@kernel.org, dwmw2@infradead.org, lee.jones@linaro.org,
+        robh+dt@kernel.org, mark.rutland@arm.com,
+        computersforpeace@gmal.com, paul.burton@mips.com, stefan@agner.ch,
+        christophe.kerello@st.com, liang.yang@amlogic.com,
+        geert@linux-m68k.org, devicetree@vger.kernel.org,
+        marcel.ziswiler@toradex.com, linux-mtd@lists.infradead.org,
+        richard@nod.at, miquel.raynal@bootlin.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <b8e80127-e377-9ef9-2447-b0126fdad7dc@gmail.com>
-Content-Language: en-US
+In-Reply-To: <1553768318-23149-1-git-send-email-masonccyang@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---_003_VI1PR04MB45438E01D91829849A4E0BB289590VI1PR04MB4543eurp_
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Add a driver for Macronix NAND block protection function.
 
-SGkgSWdvciwNCglQbGVhc2UgaGF2ZSBhIHRyeSB3aXRoIHRoZSBhdHRhY2hlZCBwYXRjaCwgYXNz
-dW1lIHlvdSBoYXZlIGFscmVhZHkgdXNlZCB0aGUgc2RtYSBmaXJtd2FyZQ0KRnJvbSBodHRwczov
-L2dpdC5rZXJuZWwub3JnL3B1Yi9zY20vbGludXgva2VybmVsL2dpdC9maXJtd2FyZS9saW51eC1m
-aXJtd2FyZS5naXQvdHJlZS9pbXgvc2RtYS9zZG1hLWlteDZxLmJpbg0KPiAtLS0tLU9yaWdpbmFs
-IE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBJZ29yIFBseWF0b3YgPHBseWF0b3ZAZ21haWwuY29tPg0K
-PiBTZW50OiAyMDE55bm0M+aciDI45pelIDE1OjA0DQo+IFRvOiBVd2UgS2xlaW5lLUvDtm5pZyA8
-dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPg0KPiBDYzogbGludXgta2VybmVsQHZnZXIu
-a2VybmVsLm9yZzsgbGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnOw0KPiBsaW51
-eC1zcGlAdmdlci5rZXJuZWwub3JnOyBkbC1saW51eC1pbXggPGxpbnV4LWlteEBueHAuY29tPjsg
-RmFiaW8gRXN0ZXZhbQ0KPiA8ZmVzdGV2YW1AZ21haWwuY29tPjsgUGVuZ3V0cm9uaXggS2VybmVs
-IFRlYW0gPGtlcm5lbEBwZW5ndXRyb25peC5kZT47DQo+IFNhc2NoYSBIYXVlciA8cy5oYXVlckBw
-ZW5ndXRyb25peC5kZT47IFNoYXduIEd1bw0KPiA8c2hhd25ndW9Aa2VybmVsLm9yZz47IE1hcmsg
-QnJvd24gPGJyb29uaWVAa2VybmVsLm9yZz47DQo+IGRtYWVuZ2luZUB2Z2VyLmtlcm5lbC5vcmc7
-IFZpbm9kIEtvdWwgPHZrb3VsQGtlcm5lbC5vcmc+OyBEYW4gV2lsbGlhbXMNCj4gPGRhbi5qLndp
-bGxpYW1zQGludGVsLmNvbT47IEFuZHkgRHVhbiA8ZnVnYW5nLmR1YW5AbnhwLmNvbT47IEhhbiBY
-dQ0KPiA8aGFuLnh1QG54cC5jb20+OyBSb2JpbiBHb25nIDx5aWJpbi5nb25nQG54cC5jb20+OyBD
-bGFyayBXYW5nDQo+IDx4aWFvbmluZy53YW5nQG54cC5jb20+DQo+IFN1YmplY3Q6IFJlOiBJc3N1
-ZXMgd2l0aCBpLk1YIFNQSSBETUEgdHJhbnNmZXJzDQo+IA0KPiBEZWFyIFV3ZSwNCj4gDQo+IA0K
-PiA+IEhlbGxvIElnb3IsDQo+ID4NCj4gPiBPbiBXZWQsIE1hciAyNywgMjAxOSBhdCAwODo0MDow
-MFBNICswMzAwLCBJZ29yIFBseWF0b3Ygd3JvdGU6DQo+ID4+IHBsZWFzZSwgaGVscCB0byByZXNv
-bHZlIHR3byBpc3N1ZXMgd2l0aCBTUEkgRE1BIHRyYW5zZmVycyBhdCBpLk1YNlENCj4gPj4gcGxh
-dGZvcm0uDQo+ID4+DQo+ID4+IEZpcnN0IGlzc3VlIGlzDQo+ID4+ICDCoFsgNDQ2NS4wMDgwMDNd
-IHNwaV9tYXN0ZXIgc3BpMDogSS9PIEVycm9yIGluIERNQSBSWA0KPiA+Pg0KPiA+PiBTZWNvbmQg
-aXNzdWUgaXMgZHVwbGljYXRpb24gZm9yIG9uZSBvZiByZWNlaXZlZCBieXRlcy4NCj4gPj4NCj4g
-Pj4gUHJvYmFibHksIHRoZXNlIGlzc3VlcyByZWxhdGVkIHRvIGVhY2ggb25lLg0KPiA+IFRoaXMg
-aXMgcHJvYmFibHkgdGhlIHNhbWUgcHJvYmxlbSBJIGhpdCBzb21lIHRpbWUgYWdvLiBDaGVjayBF
-UlIwMDkxNjUNCj4gPiBpbiB0aGUgZXJyYXRhLiBZb3UgZWl0aGVyIG5lZWQgdG8gZGlzYWJsZSBE
-TUEgb3IgbmVlZCBhIGZpeGVkDQo+ID4gc2RtYS1TY3JpcHQuDQo+IA0KPiBkaXNhYmxpbmcgb2Yg
-RE1BIGlzIG5vdCBhbiBvcHRpb24sIGJlY2F1c2UgaGlnaCB0aHJvdWdocHV0IHJlcXVpcmVkIGZv
-ciBTUEkgYnVzDQo+IHRvIGNvbW11bmljYXRlIHdpdGggRFNQcy4NCj4gDQo+IEknbSBhd2FyZSBv
-ZiBFUlIwMDkxNjUsIGJ1dCBhcyBJIHdyaXRlIHNvbWUgbWludXRlcyBlYXJsaWVyIHRvIGxpc3Qs
-DQo+IHNwaTAgKGFsaWFzIGZvciBlY3NwaTEpIGFuZCBzcGkxIChhbGlhcyBmb3IgZWNzcGkyKSB3
-b3JrIGZsYXdsZXNzLCB3aGlsZQ0KPiBzcGk0IChhbGlhcyBmb3IgZWNzcGk1KSBmYWlscyB2ZXJ5
-IGZhc3QuDQo+IA0KPiBEb2VzIHNhbWUgU0RNQSBzY3JpcHQgdXNlZCBmb3IgYWxsIFNQSSBpbnRl
-cmZhY2VzIG9yIHNjcmlwdHMgYXJlIGRpZmZlcmVudD8NCj4gDQo+IEJlc3Qgd2lzaGVzLg0KPiAN
-Cj4gLS0NCj4gDQo+IElnb3IgUGx5YXRvdg0KDQo=
+Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+---
+ drivers/mtd/nand/raw/mxic_nand.c     |  3 +++
+ drivers/mtd/nand/raw/nand_macronix.c | 47 ++++++++++++++++++++++++++++++++++++
+ include/linux/mfd/mxic-mx25f0a.h     |  3 +++
+ 3 files changed, 53 insertions(+)
 
---_003_VI1PR04MB45438E01D91829849A4E0BB289590VI1PR04MB4543eurp_
-Content-Type: application/octet-stream;
-	name="0001-dma-engine-imx-sdma-add-mcu_2_ecspi-script.patch"
-Content-Description: 0001-dma-engine-imx-sdma-add-mcu_2_ecspi-script.patch
-Content-Disposition: attachment;
-	filename="0001-dma-engine-imx-sdma-add-mcu_2_ecspi-script.patch"; size=1369;
-	creation-date="Thu, 28 Mar 2019 09:21:10 GMT";
-	modification-date="Thu, 28 Mar 2019 09:21:10 GMT"
-Content-Transfer-Encoding: base64
-
-RnJvbSBjZWRkN2FlY2U2YTM1NjZmNjFlMzljYmVlOWNlZWFlYTNmMzRjZmQxIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBSb2JpbiBHb25nIDx5aWJpbi5nb25nQG54cC5jb20+CkRhdGU6
-IFRodSwgMjggTWFyIDIwMTkgMTY6MzY6MTIgKzA4MDAKU3ViamVjdDogW1BBVENIIDEvMl0gZG1h
-OiBlbmdpbmU6IGlteC1zZG1hOiBhZGQgbWN1XzJfZWNzcGkgc2NyaXB0CgpBZGQgbWN1XzJfZWNz
-cGkgc2NyaXB0IHRvIGZpeCBlY3NwaSBlcnJhdGEgRVJSMDA5MTY1LgoKU2lnbmVkLW9mZi1ieTog
-Um9iaW4gR29uZyA8eWliaW4uZ29uZ0BueHAuY29tPgotLS0KIGRyaXZlcnMvZG1hL2lteC1zZG1h
-LmMgICAgICAgICAgICAgICAgICAgICB8IDMgKysrCiBpbmNsdWRlL2xpbnV4L3BsYXRmb3JtX2Rh
-dGEvZG1hLWlteC1zZG1hLmggfCAxICsKIDIgZmlsZXMgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCsp
-CgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9kbWEvaW14LXNkbWEuYyBiL2RyaXZlcnMvZG1hL2lteC1z
-ZG1hLmMKaW5kZXggN2ZhZTRiZi4uMWYxY2U3YyAxMDA2NDQKLS0tIGEvZHJpdmVycy9kbWEvaW14
-LXNkbWEuYworKysgYi9kcml2ZXJzL2RtYS9pbXgtc2RtYS5jCkBAIC05MDgsNiArOTA4LDkgQEAg
-c3RhdGljIHZvaWQgc2RtYV9nZXRfcGMoc3RydWN0IHNkbWFfY2hhbm5lbCAqc2RtYWMsCiAJCWVt
-aV8yX3BlciA9IHNkbWEtPnNjcmlwdF9hZGRycy0+bWN1XzJfYXRhX2FkZHI7CiAJCWJyZWFrOwog
-CWNhc2UgSU1YX0RNQVRZUEVfQ1NQSToKKwkJcGVyXzJfZW1pID0gc2RtYS0+c2NyaXB0X2FkZHJz
-LT5hcHBfMl9tY3VfYWRkcjsKKwkJZW1pXzJfcGVyID0gc2RtYS0+c2NyaXB0X2FkZHJzLT5tY3Vf
-Ml9lY3NwaV9hZGRyOworCQlicmVhazsKIAljYXNlIElNWF9ETUFUWVBFX0VYVDoKIAljYXNlIElN
-WF9ETUFUWVBFX1NTSToKIAljYXNlIElNWF9ETUFUWVBFX1NBSToKZGlmZiAtLWdpdCBhL2luY2x1
-ZGUvbGludXgvcGxhdGZvcm1fZGF0YS9kbWEtaW14LXNkbWEuaCBiL2luY2x1ZGUvbGludXgvcGxh
-dGZvcm1fZGF0YS9kbWEtaW14LXNkbWEuaAppbmRleCA2ZWFhNTNjLi5mNzk0ZmVlIDEwMDY0NAot
-LS0gYS9pbmNsdWRlL2xpbnV4L3BsYXRmb3JtX2RhdGEvZG1hLWlteC1zZG1hLmgKKysrIGIvaW5j
-bHVkZS9saW51eC9wbGF0Zm9ybV9kYXRhL2RtYS1pbXgtc2RtYS5oCkBAIC01MSw2ICs1MSw3IEBA
-IHN0cnVjdCBzZG1hX3NjcmlwdF9zdGFydF9hZGRycyB7CiAJLyogRW5kIG9mIHYyIGFycmF5ICov
-CiAJczMyIHpjYW5mZF8yX21jdV9hZGRyOwogCXMzMiB6cXNwaV8yX21jdV9hZGRyOworCXMzMiBt
-Y3VfMl9lY3NwaV9hZGRyOwogCS8qIEVuZCBvZiB2MyBhcnJheSAqLwogfTsKIAotLSAKMi43LjQK
-Cg==
-
---_003_VI1PR04MB45438E01D91829849A4E0BB289590VI1PR04MB4543eurp_
-Content-Type: application/octet-stream;
-	name="0002-spi-spi-imx-fix-ERR009165.patch"
-Content-Description: 0002-spi-spi-imx-fix-ERR009165.patch
-Content-Disposition: attachment;
-	filename="0002-spi-spi-imx-fix-ERR009165.patch"; size=1280;
-	creation-date="Thu, 28 Mar 2019 09:21:10 GMT";
-	modification-date="Thu, 28 Mar 2019 09:21:10 GMT"
-Content-Transfer-Encoding: base64
-
-RnJvbSBkM2ZhMjRiMzdhZGNmYjM4NWE2ZTYwYjQxNGQ3NDg1YTUyOTUxYWNhIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBSb2JpbiBHb25nIDx5aWJpbi5nb25nQG54cC5jb20+CkRhdGU6
-IFRodSwgMjggTWFyIDIwMTkgMTY6Mzg6MTMgKzA4MDAKU3ViamVjdDogW1BBVENIIDIvMl0gc3Bp
-OiBzcGktaW14OiBmaXggRVJSMDA5MTY1CgpDaGFuZ2UgdG8gWENIICBtb2RlIGV2ZW4gaW4gZG1h
-IG1vZGUsIHBsZWFzZSByZWZlciB0byBiZWxvdwplcnJhdGE6Cmh0dHBzOi8vd3d3Lm54cC5jb20v
-ZG9jcy9lbi9lcnJhdGEvSU1YNkRRQ0UucGRmCgpTaWduZWQtb2ZmLWJ5OiBSb2JpbiBHb25nIDx5
-aWJpbi5nb25nQG54cC5jb20+Ci0tLQogZHJpdmVycy9zcGkvc3BpLWlteC5jIHwgNyArKy0tLS0t
-CiAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQoKZGlmZiAt
-LWdpdCBhL2RyaXZlcnMvc3BpL3NwaS1pbXguYyBiL2RyaXZlcnMvc3BpL3NwaS1pbXguYwppbmRl
-eCAwOWM5YTFlLi4yNzU3ODE1IDEwMDY0NAotLS0gYS9kcml2ZXJzL3NwaS9zcGktaW14LmMKKysr
-IGIvZHJpdmVycy9zcGkvc3BpLWlteC5jCkBAIC01ODUsOCArNTg1LDkgQEAgc3RhdGljIGludCBt
-eDUxX2Vjc3BpX3ByZXBhcmVfdHJhbnNmZXIoc3RydWN0IHNwaV9pbXhfZGF0YSAqc3BpX2lteCwK
-IAljdHJsIHw9IG14NTFfZWNzcGlfY2xrZGl2KHNwaV9pbXgsIHQtPnNwZWVkX2h6LCAmY2xrKTsK
-IAlzcGlfaW14LT5zcGlfYnVzX2NsayA9IGNsazsKIAorCS8qIEVSUjAwOTE2NTogd29yayBpbiBY
-SEMgbW9kZSBhcyBQSU8gKi8KIAlpZiAoc3BpX2lteC0+dXNlZG1hKQotCQljdHJsIHw9IE1YNTFf
-RUNTUElfQ1RSTF9TTUM7CisJCWN0cmwgJj0gfk1YNTFfRUNTUElfQ1RSTF9TTUM7CiAKIAl3cml0
-ZWwoY3RybCwgc3BpX2lteC0+YmFzZSArIE1YNTFfRUNTUElfQ1RSTCk7CiAKQEAgLTEyNjUsMTAg
-KzEyNjYsNiBAQCBzdGF0aWMgaW50IHNwaV9pbXhfc2RtYV9pbml0KHN0cnVjdCBkZXZpY2UgKmRl
-diwgc3RydWN0IHNwaV9pbXhfZGF0YSAqc3BpX2lteCwKIHsKIAlpbnQgcmV0OwogCi0JLyogdXNl
-IHBpbyBtb2RlIGZvciBpLm14NmRsIGNoaXAgVEtUMjM4Mjg1ICovCi0JaWYgKG9mX21hY2hpbmVf
-aXNfY29tcGF0aWJsZSgiZnNsLGlteDZkbCIpKQotCQlyZXR1cm4gMDsKLQogCXNwaV9pbXgtPndt
-bCA9IHNwaV9pbXgtPmRldnR5cGVfZGF0YS0+Zmlmb19zaXplIC8gMjsKIAogCS8qIFByZXBhcmUg
-Zm9yIFRYIERNQTogKi8KLS0gCjIuNy40Cgo=
-
---_003_VI1PR04MB45438E01D91829849A4E0BB289590VI1PR04MB4543eurp_--
+diff --git a/drivers/mtd/nand/raw/mxic_nand.c b/drivers/mtd/nand/raw/mxic_nand.c
+index 03886b2..9307ca2 100644
+--- a/drivers/mtd/nand/raw/mxic_nand.c
++++ b/drivers/mtd/nand/raw/mxic_nand.c
+@@ -262,6 +262,9 @@ static int mx25f0a_nand_probe(struct platform_device *pdev)
+ 	if (err)
+ 		goto fail;
+ 
++	mtd->_lock = mxic_nand_lock;
++	mtd->_unlock = mxic_nand_unlock;
++
+ 	err = mtd_device_register(mtd, NULL, 0);
+ 	if (err)
+ 		goto fail;
+diff --git a/drivers/mtd/nand/raw/nand_macronix.c b/drivers/mtd/nand/raw/nand_macronix.c
+index a19caa4..db63350 100644
+--- a/drivers/mtd/nand/raw/nand_macronix.c
++++ b/drivers/mtd/nand/raw/nand_macronix.c
+@@ -21,8 +21,12 @@
+ #define MACRONIX_RANDOMIZER_BIT BIT(1)
+ #define MACRONIX_READ_RETRY_MODE 5
+ 
++#define ONFI_FEATURE_ADDR_MXIC_PROTECTION 0xA0
+ #define ONFI_FEATURE_ADDR_MXIC_RANDOMIZER 0xB0
+ 
++#define MXIC_BLOCK_PROTECTION_ALL_LOCK 0x38
++#define MXIC_BLOCK_PROTECTION_ALL_UNLOCK 0x0
++
+ struct nand_onfi_vendor_macronix {
+ 	u8 reserved[1];
+ 	u8 reliability_func;
+@@ -146,6 +150,13 @@ static void macronix_nand_onfi_init(struct nand_chip *chip)
+ 		struct nand_onfi_vendor_macronix *mxic =
+ 				(void *)p->onfi->vendor;
+ 
++		if (p->supports_set_get_features) {
++			set_bit(ONFI_FEATURE_ADDR_MXIC_PROTECTION,
++				p->get_feature_list);
++			set_bit(ONFI_FEATURE_ADDR_MXIC_PROTECTION,
++				p->set_feature_list);
++		}
++
+ 		if (mxic->reliability_func & MACRONIX_READ_RETRY_BIT) {
+ 			chip->read_retries = MACRONIX_READ_RETRY_MODE + 1;
+ 			chip->setup_read_retry =
+@@ -241,3 +252,39 @@ static int macronix_nand_init(struct nand_chip *chip)
+ const struct nand_manufacturer_ops macronix_nand_manuf_ops = {
+ 	.init = macronix_nand_init,
+ };
++
++int mxic_nand_lock(struct mtd_info *mtd, loff_t ofs, uint64_t len)
++{
++	struct nand_chip *chip = mtd_to_nand(mtd);
++	u8 feature[ONFI_SUBFEATURE_PARAM_LEN] = {0};
++	int ret;
++
++	feature[0] = MXIC_BLOCK_PROTECTION_ALL_LOCK;
++	nand_select_target(chip, 0);
++	ret = nand_set_features(chip, ONFI_FEATURE_ADDR_MXIC_PROTECTION,
++				feature);
++	nand_deselect_target(chip);
++	if (ret)
++		pr_err("Lock MXIC NAND all blocks failed, err:%d\n", ret);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(mxic_nand_lock);
++
++int mxic_nand_unlock(struct mtd_info *mtd, loff_t ofs, uint64_t len)
++{
++	struct nand_chip *chip = mtd_to_nand(mtd);
++	u8 feature[ONFI_SUBFEATURE_PARAM_LEN] = {0};
++	int ret;
++
++	feature[0] = MXIC_BLOCK_PROTECTION_ALL_UNLOCK;
++	nand_select_target(chip, 0);
++	ret = nand_set_features(chip, ONFI_FEATURE_ADDR_MXIC_PROTECTION,
++				feature);
++	nand_deselect_target(chip);
++	if (ret)
++		pr_err("Unlock MXIC NAND all blocks failed, err:%d\n", ret);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(mxic_nand_unlock);
+diff --git a/include/linux/mfd/mxic-mx25f0a.h b/include/linux/mfd/mxic-mx25f0a.h
+index 5a8cfc7..cfce992 100644
+--- a/include/linux/mfd/mxic-mx25f0a.h
++++ b/include/linux/mfd/mxic-mx25f0a.h
+@@ -170,4 +170,7 @@ struct mx25f0a_mfd {
+ 	void __iomem *dirmap;
+ };
+ 
++int mxic_nand_lock(struct mtd_info *mtd, loff_t ofs, uint64_t len);
++int mxic_nand_unlock(struct mtd_info *mtd, loff_t ofs, uint64_t len);
++
+ #endif // __MFD_MXIC_MX25F0A_H
+-- 
+1.9.1

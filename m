@@ -1,8 +1,8 @@
 From: Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH 03/24] dt-bindings: pwrap: mediatek: add pwrap support for MT8516
-Date: Thu, 28 Mar 2019 14:09:03 -0500
-Message-ID: <CAL_JsqKr=SNqcFGQ53L6HVV1ec+aP_n_SZwtkTa3O8HqHhW51w@mail.gmail.com>
-References: <20190323211612.860-1-fparent@baylibre.com> <20190323211612.860-4-fparent@baylibre.com>
+Subject: Re: [PATCH 11/24] dt-bindings: mediatek: topckgen: add support for MT8516
+Date: Thu, 28 Mar 2019 14:09:38 -0500
+Message-ID: <CAL_JsqKdWjtzNVtAm1aO6Dv+bDmurJ2q709Uakf6xP4Co+HgWg@mail.gmail.com>
+References: <20190323211612.860-1-fparent@baylibre.com> <20190323211612.860-12-fparent@baylibre.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Cc: Matthias Brugger <matthias.bgg@gmail.com>,
@@ -25,17 +25,19 @@ Cc: Matthias Brugger <matthias.bgg@gmail.com>,
         "open list:SE
 To: Fabien Parent <fparent@baylibre.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190323211612.860-4-fparent@baylibre.com>
+In-Reply-To: <20190323211612.860-12-fparent@baylibre.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, Mar 23, 2019 at 4:16 PM Fabien Parent <fparent@baylibre.com> wrote:
+On Sat, Mar 23, 2019 at 4:17 PM Fabien Parent <fparent@baylibre.com> wrote:
 >
-> Add binding documentation of pwrap for MT8516 SoCs.
+> Add binding documentation of topckgen for MT8516 SoC.
 >
 > Signed-off-by: Fabien Parent <fparent@baylibre.com>
 > ---
->  Documentation/devicetree/bindings/soc/mediatek/pwrap.txt | 1 +
->  1 file changed, 1 insertion(+)
+>  .../arm/mediatek/mediatek,topckgen.txt        |   1 +
+>  include/dt-bindings/clock/mt8516-clk.h        | 192 ++++++++++++++++++
+>  2 files changed, 193 insertions(+)
+>  create mode 100644 include/dt-bindings/clock/mt8516-clk.h
 
 Acked-by: Rob Herring <robh@kernel.org>

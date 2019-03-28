@@ -1,62 +1,58 @@
 From: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-Subject: [LINUX PATCH 0/3] Add support for Zynq QSPI controller driver
-Date: Thu, 28 Mar 2019 16:44:52 +0530
-Message-ID: <1553771692-30969-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
+Subject: [LINUX PATCH 1/3] dt-bindings: spi: Add device tree binding documentation for Zynq QSPI controller
+Date: Thu, 28 Mar 2019 16:46:00 +0530
+Message-ID: <1553771760-2011-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: <vigneshr@ti.com>, <linux-spi@vger.kernel.org>,
-        <dwmw2@infradead.org>, <marek.vasut@gmail.com>, <richard@nod.at>,
-        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <michal.simek@xilinx.com>, <nagasuresh12@gmail.com>,
+Cc: <michals@xilinx.com>, <mark.rutland@arm.com>,
+        <horms+renesas@verge.net.au>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <nagasuresh12@gmail.com>,
         Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-To: <broonie@kernel.org>, <bbrezillon@kernel.org>
+To: <broonie@kernel.org>, <bbrezillon@kernel.org>, <robh@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Xilinx Zynq uses a QSPI controller that implements all the functionality
-required to support Quad SPI NOR flash devices.
-This driver along with the SPI MEM and MTD layer is used to support
-flash devices.
+This patch adds the dts binding document for Zynq SOC QSPI controller.
 
-The flash device(s) can be connected in three configurations to this
-controller:
-1. Single - One flash device with 1 CS, 1 Clock and 4 IO lines.
-2. Dual Parallel - Two flash devices connected with common CS and
-   separate IO lines (resulting in 8 IO lines).
-   In this configuration, the controller
-   a) Duplicates commands, address etc. sent on both sets of 4 IO lines.
-   b) Stripes data both transmitted and received i.e.
-      4 bits of data is sent to the first flash and the other 4 bits
-      to the second flash. Similarly read data is also consolidated.
-   Due to this, TX and RX data handling in the driver need special
-   handling for parallel mode.
-3. Dual Stacked - Two flash devices connected with separate CS and
-   4 common IO lines. This is largely similar to single, except for
-   the slave selection logic.
-The above configuration is conveyed to the QSPI driver through a
-devicetree property(currently not implemented 2 & 3 mentioned above).
-
-As per Boris suggestion We are currently not targetting for
-dual stacked/dual parallel handling. There are changes needed in the
-framework to handle this. so this update is only for the Single mode.
-
-This is tested with spi-v5.0 tag
-
-Naga Sureshkumar Relli (3):
-  dt-bindings: spi: Add device tree binding documentation for Zynq QSPI
-    controller
-  spi: spi-mem: call spi_mem_default_supports_op() first
-  spi: spi-mem: Add support for Zynq QSPI controller
-
- .../devicetree/bindings/spi/spi-zynq-qspi.txt      |  25 +
- drivers/spi/Kconfig                                |  10 +-
- drivers/spi/Makefile                               |   1 +
- drivers/spi/spi-mem.c                              |   7 +-
- drivers/spi/spi-zynq-qspi.c                        | 770 +++++++++++++++++++++
- 5 files changed, 810 insertions(+), 3 deletions(-)
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+---
+ .../devicetree/bindings/spi/spi-zynq-qspi.txt      | 25 ++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/spi/spi-zynq-qspi.txt
- create mode 100644 drivers/spi/spi-zynq-qspi.c
 
+diff --git a/Documentation/devicetree/bindings/spi/spi-zynq-qspi.txt b/Documentation/devicetree/bindings/spi/spi-zynq-qspi.txt
+new file mode 100644
+index 0000000..16b734a
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-zynq-qspi.txt
+@@ -0,0 +1,25 @@
++Xilinx Zynq QSPI controller Device Tree Bindings
++-------------------------------------------------------------------
++
++Required properties:
++- compatible		: Should be "xlnx,zynq-qspi-1.0".
++- reg			: Physical base address and size of QSPI registers map.
++- interrupts		: Property with a value describing the interrupt
++			  number.
++- clock-names		: List of input clock names - "ref_clk", "pclk"
++			  (See clock bindings for details).
++- clocks		: Clock phandles (see clock bindings for details).
++
++Optional properties:
++- num-cs		: Number of chip selects used.
++
++Example:
++	qspi: spi@e000d000 {
++		compatible = "xlnx,zynq-qspi-1.0";
++		reg = <0xe000d000 0x1000>;
++		interrupt-parent = <&intc>;
++		interrupts = <0 19 4>;
++		clock-names = "ref_clk", "pclk";
++		clocks = <&clkc 10>, <&clkc 43>;
++		num-cs = <1>;
++	};
 -- 
 2.7.4

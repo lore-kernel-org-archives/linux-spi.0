@@ -1,8 +1,8 @@
 From: Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH 18/24] dt-bindings: timer: mtk-timer: add support for MT8516
-Date: Thu, 28 Mar 2019 14:12:01 -0500
-Message-ID: <CAL_Jsq+Uv+dL9qX=6hBbKn7GbZaj1crvGY_uh4tppD8b5dRqcw@mail.gmail.com>
-References: <20190323211612.860-1-fparent@baylibre.com> <20190323211612.860-19-fparent@baylibre.com>
+Subject: Re: [PATCH 19/24] dt-bindings: spi: spi-mt65xx: add support for MT8516
+Date: Thu, 28 Mar 2019 14:12:29 -0500
+Message-ID: <CAL_JsqKJgxERJOcETr638vbdC-HzVs9=nFcQ1eDjgKrJjPRn1w@mail.gmail.com>
+References: <20190323211612.860-1-fparent@baylibre.com> <20190323211612.860-20-fparent@baylibre.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Cc: Matthias Brugger <matthias.bgg@gmail.com>,
@@ -25,17 +25,17 @@ Cc: Matthias Brugger <matthias.bgg@gmail.com>,
         "open list:SE
 To: Fabien Parent <fparent@baylibre.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190323211612.860-19-fparent@baylibre.com>
+In-Reply-To: <20190323211612.860-20-fparent@baylibre.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 On Sat, Mar 23, 2019 at 4:17 PM Fabien Parent <fparent@baylibre.com> wrote:
 >
-> Add binding documentation of mtk-timer for MT8516 SoC.
+> Add binding documentation of spi-mt65xx for MT8516 SoC.
 >
 > Signed-off-by: Fabien Parent <fparent@baylibre.com>
 > ---
->  Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt | 1 +
+>  Documentation/devicetree/bindings/spi/spi-mt65xx.txt | 1 +
 >  1 file changed, 1 insertion(+)
 
 Acked-by: Rob Herring <robh@kernel.org>

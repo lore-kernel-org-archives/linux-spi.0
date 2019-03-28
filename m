@@ -1,70 +1,83 @@
-From: Robin Gong <yibin.gong@nxp.com>
-Subject: RE: Issues with i.MX SPI DMA transfers
-Date: Thu, 28 Mar 2019 07:21:27 +0000
-Message-ID: <VI1PR04MB45433F57929ABE7B5F8803B989590@VI1PR04MB4543.eurprd04.prod.outlook.com>
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
+        <u.kleine-koenig@pengutronix.de>
+Subject: Re: Issues with i.MX SPI DMA transfers
+Date: Thu, 28 Mar 2019 09:22:31 +0100
+Message-ID: <20190328082231.zg4emm66mpbbfb6c@pengutronix.de>
 References: <08fcbd65-510f-84f8-d6d6-ff56aa9ca9ad@gmail.com>
  <20190328065247.uz73lap7ljf5q3tb@pengutronix.de>
  <b8e80127-e377-9ef9-2447-b0126fdad7dc@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Cc: Andy Duan <fugang.duan@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
         Sascha Hauer <s.hauer@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Vinod Koul <vkoul@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Clark Wang <xiaoning.wang@nxp.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        dmaengine@vger.kernel.org, Han Xu <han.xu@nxp.com>,
         Dan Williams <dan.j.williams@intel.com>,
-        Andy Duan <fugang.duan@nxp.com>, Han Xu <han.xu@nxp.com>,
-        Clark Wang <xiaoning.wang@nxp.com>
-To: Igor Plyatov <plyatov@gmail.com>,
-        =?utf-8?B?VXdlIEtsZWluZS1Lw7ZuaWc=?=
-        <u.kleine-koenig@pengutronix.de>
+        Robin Gong <yibin.gong@nxp.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        linux-arm-kernel@lists.infradead.org
+To: Igor Plyatov <plyatov@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
 In-Reply-To: <b8e80127-e377-9ef9-2447-b0126fdad7dc@gmail.com>
-Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSWdvciBQbHlhdG92IDxw
-bHlhdG92QGdtYWlsLmNvbT4NCj4gU2VudDogMjAxOeW5tDPmnIgyOOaXpSAxNTowNA0KPiBUbzog
-VXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4NCj4gQ2M6
-IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5m
-cmFkZWFkLm9yZzsNCj4gbGludXgtc3BpQHZnZXIua2VybmVsLm9yZzsgZGwtbGludXgtaW14IDxs
-aW51eC1pbXhAbnhwLmNvbT47IEZhYmlvIEVzdGV2YW0NCj4gPGZlc3RldmFtQGdtYWlsLmNvbT47
-IFBlbmd1dHJvbml4IEtlcm5lbCBUZWFtIDxrZXJuZWxAcGVuZ3V0cm9uaXguZGU+Ow0KPiBTYXNj
-aGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+OyBTaGF3biBHdW8NCj4gPHNoYXduZ3Vv
-QGtlcm5lbC5vcmc+OyBNYXJrIEJyb3duIDxicm9vbmllQGtlcm5lbC5vcmc+Ow0KPiBkbWFlbmdp
-bmVAdmdlci5rZXJuZWwub3JnOyBWaW5vZCBLb3VsIDx2a291bEBrZXJuZWwub3JnPjsgRGFuIFdp
-bGxpYW1zDQo+IDxkYW4uai53aWxsaWFtc0BpbnRlbC5jb20+OyBBbmR5IER1YW4gPGZ1Z2FuZy5k
-dWFuQG54cC5jb20+OyBIYW4gWHUNCj4gPGhhbi54dUBueHAuY29tPjsgUm9iaW4gR29uZyA8eWli
-aW4uZ29uZ0BueHAuY29tPjsgQ2xhcmsgV2FuZw0KPiA8eGlhb25pbmcud2FuZ0BueHAuY29tPg0K
-PiBTdWJqZWN0OiBSZTogSXNzdWVzIHdpdGggaS5NWCBTUEkgRE1BIHRyYW5zZmVycw0KPiANCj4g
-RGVhciBVd2UsDQo+IA0KPiANCj4gPiBIZWxsbyBJZ29yLA0KPiA+DQo+ID4gT24gV2VkLCBNYXIg
-MjcsIDIwMTkgYXQgMDg6NDA6MDBQTSArMDMwMCwgSWdvciBQbHlhdG92IHdyb3RlOg0KPiA+PiBw
-bGVhc2UsIGhlbHAgdG8gcmVzb2x2ZSB0d28gaXNzdWVzIHdpdGggU1BJIERNQSB0cmFuc2ZlcnMg
-YXQgaS5NWDZRDQo+ID4+IHBsYXRmb3JtLg0KPiA+Pg0KPiA+PiBGaXJzdCBpc3N1ZSBpcw0KPiA+
-PiAgwqBbIDQ0NjUuMDA4MDAzXSBzcGlfbWFzdGVyIHNwaTA6IEkvTyBFcnJvciBpbiBETUEgUlgN
-Cj4gPj4NCj4gPj4gU2Vjb25kIGlzc3VlIGlzIGR1cGxpY2F0aW9uIGZvciBvbmUgb2YgcmVjZWl2
-ZWQgYnl0ZXMuDQo+ID4+DQo+ID4+IFByb2JhYmx5LCB0aGVzZSBpc3N1ZXMgcmVsYXRlZCB0byBl
-YWNoIG9uZS4NCj4gPiBUaGlzIGlzIHByb2JhYmx5IHRoZSBzYW1lIHByb2JsZW0gSSBoaXQgc29t
-ZSB0aW1lIGFnby4gQ2hlY2sgRVJSMDA5MTY1DQo+ID4gaW4gdGhlIGVycmF0YS4gWW91IGVpdGhl
-ciBuZWVkIHRvIGRpc2FibGUgRE1BIG9yIG5lZWQgYSBmaXhlZA0KPiA+IHNkbWEtU2NyaXB0Lg0K
-PiANCj4gZGlzYWJsaW5nIG9mIERNQSBpcyBub3QgYW4gb3B0aW9uLCBiZWNhdXNlIGhpZ2ggdGhy
-b3VnaHB1dCByZXF1aXJlZCBmb3IgU1BJIGJ1cw0KPiB0byBjb21tdW5pY2F0ZSB3aXRoIERTUHMu
-DQo+IA0KPiBJJ20gYXdhcmUgb2YgRVJSMDA5MTY1LCBidXQgYXMgSSB3cml0ZSBzb21lIG1pbnV0
-ZXMgZWFybGllciB0byBsaXN0LA0KPiBzcGkwIChhbGlhcyBmb3IgZWNzcGkxKSBhbmQgc3BpMSAo
-YWxpYXMgZm9yIGVjc3BpMikgd29yayBmbGF3bGVzcywgd2hpbGUNCj4gc3BpNCAoYWxpYXMgZm9y
-IGVjc3BpNSkgZmFpbHMgdmVyeSBmYXN0Lg0KPiANCj4gRG9lcyBzYW1lIFNETUEgc2NyaXB0IHVz
-ZWQgZm9yIGFsbCBTUEkgaW50ZXJmYWNlcyBvciBzY3JpcHRzIGFyZSBkaWZmZXJlbnQ/DQpObyBk
-aWZmZXJlbnQgaGFuZGxlIGluc2lkZSBzZG1hIHNjcmlwdCBmb3IgZGlmZmVyZW50IGVjc3BpIHBv
-cnQuIEFncmVlIFV3ZSwgeW91cg0KZHVwbGljYXRlIGRhdGEgY2F1Z2h0IHNlZW1zIGxpa2UgRVJS
-MDA5MTY1LiBBbnl3YXkgSSdsbCBjcmVhdGUgZWNzcGkgcGF0Y2ggZm9yIHlvdQ0KdG8gdHJ5IGlu
-IHRoZXNlIGRheXMuDQo+IA0KPiBCZXN0IHdpc2hlcy4NCj4gDQo+IC0tDQo+IA0KPiBJZ29yIFBs
-eWF0b3YNCg0K
+On Thu, Mar 28, 2019 at 10:04:21AM +0300, Igor Plyatov wrote:
+> Dear Uwe,
+> 
+> 
+> > Hello Igor,
+> > 
+> > On Wed, Mar 27, 2019 at 08:40:00PM +0300, Igor Plyatov wrote:
+> > > please, help to resolve two issues with SPI DMA transfers at i.MX6Q
+> > > platform.
+> > > 
+> > > First issue is
+> > >   [ 4465.008003] spi_master spi0: I/O Error in DMA RX
+> > > 
+> > > Second issue is duplication for one of received bytes.
+> > > 
+> > > Probably, these issues related to each one.
+> > This is probably the same problem I hit some time ago. Check ERR009165
+> > in the errata. You either need to disable DMA or need a fixed
+> > sdma-Script.
+> 
+> disabling of DMA is not an option, because high throughput required for SPI
+> bus to communicate with DSPs.
+
+Is this a theoretical reasoning, or is that backed by testing? People
+here on the list already said things like:
+
+	The eCSPI appears to insert a 4 bit pause after each word in DMA
+	mode, not done in PIO mode, which can make DMA transfers 50%
+	slower than PIO.
+
+You might want to read the thread
+https://marc.info/?l=linux-spi&m=155191201208766&w=2
+.
+
+> I'm aware of ERR009165, but as I write some minutes earlier to list, spi0
+> (alias for ecspi1) and spi1 (alias for ecspi2) work flawless, while spi4
+> (alias for ecspi5) fails very fast.
+
+As the issue is a timing race, it might depend on things like length of
+the SPI lines, load on the data lines and other electrical properties.
+So you might just be happy that spi0 and spi1 don't show the issue for
+you. Or you didn't apply the "right" work load yet.
+
+> Does same SDMA script used for all SPI interfaces or scripts are different?
+
+As answered already before: The same script is used for all interfaces.
+
+Best regards
+Uwe
+
+-- 
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |

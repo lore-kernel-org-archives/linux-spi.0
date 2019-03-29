@@ -1,64 +1,91 @@
-From: Boris Brezillon <boris.brezillon@collabora.com>
-Subject: Re: [LINUX PATCH 2/3] spi: spi-mem: call
- spi_mem_default_supports_op() first
-Date: Thu, 28 Mar 2019 20:55:22 +0100
-Message-ID: <20190328205522.272e1da6@collabora.com>
-References: <1553771784-3364-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: <broonie@kernel.org>, <bbrezillon@kernel.org>, <vigneshr@ti.com>,
-        <linux-spi@vger.kernel.org>, <dwmw2@infradead.org>,
-        <marek.vasut@gmail.com>, <richard@nod.at>,
-        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <michal.simek@xilinx.com>, <nagasuresh12@gmail.com>
-To: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+From: Mason Yang <masonccyang@mxic.com.tw>
+Subject: [PATCH v9 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3 RPC-IF controller bindings
+Date: Fri, 29 Mar 2019 16:20:06 +0800
+Message-ID: <1553847606-18122-4-git-send-email-masonccyang@mxic.com.tw>
+References: <1553847606-18122-1-git-send-email-masonccyang@mxic.com.tw>
+Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
+        zhengxunli@mxic.com.tw, Mason Yang <masonccyang@mxic.com.tw>
+To: broonie@kernel.org, marek.vasut@gmail.com,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        bbrezillon@kernel.org, linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        sergei.shtylyov@cogentembedded.com, devicetree@vger.kernel.org,
+        mark.rutland@arm.com, robh+dt@kernel.org, lee.jones@linaro.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1553771784-3364-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
+In-Reply-To: <1553847606-18122-1-git-send-email-masonccyang@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 28 Mar 2019 16:46:24 +0530
-Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com> wrote:
+Document the bindings used by the Renesas R-Car Gen3 RPC-IF MFD controller.
 
-> Call spi_mem_default_supports_op() first, before calling controller
-> specific ctlr->supports_op().
-> With this, controller drivers can drop checking the buswidths again.
+Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+---
+ .../devicetree/bindings/mfd/mfd-renesas-rpc.txt    | 57 ++++++++++++++++++++++
+ 1 file changed, 57 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
 
-No, this was done on purpose, in case the controller does not want the
-default check to be applied (say it does not need bus-width props to
-be defined and has another way to check if a device can be accessed in
-dual, quad or octal mode).
-Just call spi_mem_default_supports_op() from your driver
-->supports_op() hook if needed.
-
-> 
-> Suggested-by: Vignesh Raghavendra <vigneshr@ti.com>
-> Signed-off-by: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-> ---
-> Details can be found at https://lkml.org/lkml/2019/3/1/183
-> ---
->  drivers/spi/spi-mem.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-> index 5217a56..56aa158 100644
-> --- a/drivers/spi/spi-mem.c
-> +++ b/drivers/spi/spi-mem.c
-> @@ -189,11 +189,14 @@ static bool spi_mem_internal_supports_op(struct spi_mem *mem,
->  					 const struct spi_mem_op *op)
->  {
->  	struct spi_controller *ctlr = mem->spi->controller;
-> +	bool ret;
-> +
-> +	ret = spi_mem_default_supports_op(mem, op);
->  
->  	if (ctlr->mem_ops && ctlr->mem_ops->supports_op)
-> -		return ctlr->mem_ops->supports_op(mem, op);
-> +		ret =  ctlr->mem_ops->supports_op(mem, op);
->  
-> -	return spi_mem_default_supports_op(mem, op);
-> +	return ret;
->  }
->  
->  /**
+diff --git a/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
+new file mode 100644
+index 0000000..577986b
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
+@@ -0,0 +1,57 @@
++Renesas R-Car Gen3 RPC-IF MFD controller Device Tree Bindings
++---------------------------------------------------------------------
++
++Required properties:
++- compatible: should be an SoC-specific compatible value, followed by
++		"renesas,rcar-gen3-rpc" as a fallback.
++		supported SoC-specific values are:
++		"renesas,r8a77995-rpc"	(R-Car D3)
++- reg: should contain three register areas:
++	first for the base address of rpc-if registers,
++	second for the direct mapping read mode and
++	third for the write buffer area.
++- reg-names: should contain "regs", "dirmap" and "wbuf"
++- clocks: should contain 1 entries for the module's clock
++- clock-names: should contain "rpc"
++- #address-cells: should be 1
++- #size-cells: should be 0
++
++Required nodes:
++	spi:
++	Node for configuring the SPI controller driver.
++	Required properties:
++		compatible = "renesas,rcar-rpc-spi";
++
++	hf:
++	Node for configuring the hyperflash controller driver.
++	Required properties:
++		compatible = "renesas,rcar-rpc-hf";
++
++Example:
++
++	rpc_mfd: rpc-mfd@ee200000 {
++		compatible = "renesas,r8a77995-rpc", "renesas,rcar-gen3-rpc";
++		reg = <0 0xee200000 0 0x200>, <0 0x08000000 0 0x4000000>,
++		      <0 0xee208000 0 0x100>;
++		reg-names = "regs", "dirmap", "wbuf";
++		clocks = <&cpg CPG_MOD 917>;
++		clock-names = "rpc";
++		power-domains = <&sysc R8A77995_PD_ALWAYS_ON>;
++		resets = <&cpg 917>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		spi {
++			compatible = "renesas,rcar-rpc-spi";
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			flash@0 {
++				compatible = "jedec,spi-nor";
++				reg = <0>;
++				spi-max-frequency = <40000000>;
++				spi-tx-bus-width = <1>;
++				spi-rx-bus-width = <1>;
++			};
++		};
++	};
+-- 
+1.9.1

@@ -1,77 +1,111 @@
-From: Boris Brezillon <boris.brezillon@collabora.com>
-Subject: Re: [LINUX PATCH 2/3] spi: spi-mem: call
- spi_mem_default_supports_op() first
-Date: Fri, 29 Mar 2019 09:53:07 +0100
-Message-ID: <20190329095307.02d970fd@collabora.com>
-References: <1553771784-3364-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
-        <20190328205522.272e1da6@collabora.com>
-        <d21f7363-eeea-830e-b9b8-ef5bb9e1261b@ti.com>
+From: Marek Vasut <marek.vasut@gmail.com>
+Subject: Re: [PATCH v9 1/3] mfd: Add Renesas R-Car Gen3 RPC-IF MFD controller
+ driver
+Date: Fri, 29 Mar 2019 11:43:45 +0100
+Message-ID: <1e0107a8-164c-7978-f2d0-2dd3430cc2b9@gmail.com>
+References: <1553847606-18122-1-git-send-email-masonccyang@mxic.com.tw>
+ <1553847606-18122-2-git-send-email-masonccyang@mxic.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "bbrezillon@kernel.org" <bbrezillon@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "richard@nod.at" <richard@nod.at>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "michal.simek@xilinx.com" <michal.simek@xilinx.com>,
-        "nagasuresh12@gmail.com" <nagasuresh12@gmail.com>
-To: Vignesh Raghavendra <vigneshr@ti.com>
+Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
+        zhengxunli@mxic.com.tw
+To: Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        bbrezillon@kernel.org, linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        sergei.shtylyov@cogentembedded.com, devicetree@vger.kernel.org,
+        mark.rutland@arm.com, robh+dt@kernel.org, lee.jones@linaro.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <d21f7363-eeea-830e-b9b8-ef5bb9e1261b@ti.com>
+In-Reply-To: <1553847606-18122-2-git-send-email-masonccyang@mxic.com.tw>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 29 Mar 2019 13:50:26 +0530
-Vignesh Raghavendra <vigneshr@ti.com> wrote:
-
-> Hi Boris,
+On 3/29/19 9:20 AM, Mason Yang wrote:
+> Add a driver for Renesas R-Car Gen3 RPC-IF MFD controller.
 > 
-> On 29/03/19 1:25 AM, Boris Brezillon wrote:
-> > On Thu, 28 Mar 2019 16:46:24 +0530
-> > Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com> wrote:
-> >   
-> >> Call spi_mem_default_supports_op() first, before calling controller
-> >> specific ctlr->supports_op().
-> >> With this, controller drivers can drop checking the buswidths again.  
-> > 
-> > No, this was done on purpose, in case the controller does not want the
-> > default check to be applied (say it does not need bus-width props to
-> > be defined and has another way to check if a device can be accessed in
-> > dual, quad or octal mode).  
+> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+> ---
+>  drivers/mfd/Kconfig             |   9 +++
+>  drivers/mfd/Makefile            |   1 +
+>  drivers/mfd/renesas-rpc.c       | 140 ++++++++++++++++++++++++++++++++++++
+>  include/linux/mfd/renesas-rpc.h | 154 ++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 304 insertions(+)
+>  create mode 100644 drivers/mfd/renesas-rpc.c
+>  create mode 100644 include/linux/mfd/renesas-rpc.h
 > 
-> Sorry, I don't understand here.
-> Based on capabilities declared in spi_device->mode, m25p80 driver will
-> claim appropriate  SNOR_HWCAPS_*.  SPI NOR layer chooses opcodes based
-> on that for which m25p80 layer populates buswidths.
+> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+> index 0ce2d8d..a870e12 100644
+> --- a/drivers/mfd/Kconfig
+> +++ b/drivers/mfd/Kconfig
+> @@ -978,6 +978,15 @@ config MFD_RDC321X
+>  	  southbridge which provides access to GPIOs and Watchdog using the
+>  	  southbridge PCI device configuration space.
+>  
+> +config MFD_RENESAS_RPC
+> +	tristate "Renesas R-Car Gen3 RPC-IF MFD driver"
+> +	select MFD_CORE
+> +	depends on ARCH_RENESAS
+> +	help
+> +	  This supports for Renesas R-Car Gen3 RPC-IF multifunction device
+> +	  controller which provides either SPI host controller or HyperFlash.
+> +	  You have to select individual components under the corresponding menu.
+> +
+>  config MFD_RT5033
+>  	tristate "Richtek RT5033 Power Management IC"
+>  	depends on I2C
+> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+> index b4569ed7..4a49699 100644
+> --- a/drivers/mfd/Makefile
+> +++ b/drivers/mfd/Makefile
+> @@ -183,6 +183,7 @@ obj-$(CONFIG_MFD_INTEL_QUARK_I2C_GPIO)	+= intel_quark_i2c_gpio.o
+>  obj-$(CONFIG_LPC_SCH)		+= lpc_sch.o
+>  obj-$(CONFIG_LPC_ICH)		+= lpc_ich.o
+>  obj-$(CONFIG_MFD_RDC321X)	+= rdc321x-southbridge.o
+> +obj-$(CONFIG_MFD_RENESAS_RPC)	+= renesas-rpc.o
+>  obj-$(CONFIG_MFD_JANZ_CMODIO)	+= janz-cmodio.o
+>  obj-$(CONFIG_MFD_JZ4740_ADC)	+= jz4740-adc.o
+>  obj-$(CONFIG_MFD_TPS6586X)	+= tps6586x.o
+> diff --git a/drivers/mfd/renesas-rpc.c b/drivers/mfd/renesas-rpc.c
+> new file mode 100644
+> index 0000000..c92bb74
+> --- /dev/null
+> +++ b/drivers/mfd/renesas-rpc.c
+> @@ -0,0 +1,140 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +//
+> +// Copyright (C) 2018 ~ 2019 Renesas Solutions Corp.
+> +// Copyright (C) 2019 Macronix International Co., Ltd.
+> +//
+> +// R-Car Gen3 RPC-IF MFD driver
+> +//
+> +// Author:
+> +//	Mason Yang <masonccyang@mxic.com.tw>
+> +//
+> +
+> +#include <linux/mfd/renesas-rpc.h>
+> +#include <linux/mfd/core.h>
+> +
+> +static const struct mfd_cell rpc_hf_ctlr = {
+> +	.name = "rpc-hf",
+> +	.of_compatible = "renesas,rcar-rpc-hf",
+> +};
+> +
+> +static const struct mfd_cell rpc_spi_ctlr = {
+> +	.name = "rpc-spi",
+> +	.of_compatible = "renesas,rcar-rpc-spi",
+> +};
+> +
+> +static const struct regmap_range rpc_mfd_volatile_ranges[] = {
+> +	regmap_reg_range(RPC_SMRDR0, RPC_SMRDR0),
+> +	regmap_reg_range(RPC_SMWDR0, RPC_SMWDR0),
+> +	regmap_reg_range(RPC_CMNSR, RPC_CMNSR),
+> +};
 
-Well, that test in m25p80 should go away and be replaced by a proper
-spi_mem_supports_op() iteration on all modes reported as supported by
-the *chip* (I think that's what I did in my series merging m25p80 code
-into the spi-nor core). But that's not really related to the problem
-we're discussing here.
+Isn't SMWDR1 volatile too ? And SMRDR1 too ?
 
-> 
-> So, I don't really expect any mismatch in spi_mem_default_supports_op()
-> in the case you mentioned. Or did I miss something? Maybe something SPI
-> NAND specific?
-
-Nothing NAND specific, just something controller specific and how we
-want to deal with buswidth detection. Most memory devices expose their
-caps in some way (be it ID-based detection or using some kind of
-caps/parameters table), so they know what they're capable of. SPI
-controllers know what they're capable of, of course. The only part that
-remains unknown for buswidth negotiation is how things are wired on the
-board. I keep thinking that defining buswidth in the DT (using
-spi-{tx,rx}-bus-width) should only be done if there are board-related
-limiting factors (some IO pins not routed).
-If you look at the code, SPI_{TX,RX}_{DUAL,QUAD,OCTAL} flags are only
-set if the spi-{tx,rx}-bus-width props are defined.
-
-The idea behind making spi_mem_default_supports_op() optional is to let
-new drivers implement a new scheme where missing
-spi-{tx,rx}-bus-width does not necessarily mean "use regular SPI mode".
+[...]
+-- 
+Best regards,
+Marek Vasut

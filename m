@@ -1,97 +1,93 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v9 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3
- RPC-IF controller bindings
-Date: Fri, 29 Mar 2019 13:49:58 +0300
-Message-ID: <5e841334-7cd7-3b5f-77d2-bb39bf8ec8b7@cogentembedded.com>
-References: <1553847606-18122-1-git-send-email-masonccyang@mxic.com.tw>
- <1553847606-18122-4-git-send-email-masonccyang@mxic.com.tw>
+From: Vignesh Raghavendra <vigneshr@ti.com>
+Subject: Re: [LINUX PATCH 2/3] spi: spi-mem: call
+ spi_mem_default_supports_op() first
+Date: Fri, 29 Mar 2019 16:31:29 +0530
+Message-ID: <850e1c59-8d00-31e5-e25a-72f36a52b86d@ti.com>
+References: <1553771784-3364-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
+ <20190328205522.272e1da6@collabora.com>
+ <d21f7363-eeea-830e-b9b8-ef5bb9e1261b@ti.com>
+ <20190329095307.02d970fd@collabora.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
-        zhengxunli@mxic.com.tw
-To: Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
-        marek.vasut@gmail.com, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, bbrezillon@kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        devicetree@vger.kernel.org, mark.rutland@arm.com,
-        robh+dt@kernel.org, lee.jones@linaro.org
+Cc: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "bbrezillon@kernel.org" <bbrezillon@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "dwmw2@infradead.org" <dwmw2@infradead.org>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "richard@nod.at" <richard@nod.at>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "michal.simek@xilinx.com" <michal.simek@xilinx.com>,
+        "nagasuresh12@gmail.com" <nagasuresh12@gmail.com>
+To: Boris Brezillon <boris.brezillon@collabora.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1553847606-18122-4-git-send-email-masonccyang@mxic.com.tw>
-Content-Language: en-MW
+In-Reply-To: <20190329095307.02d970fd@collabora.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello!
 
-On 03/29/2019 11:20 AM, Mason Yang wrote:
 
-> Document the bindings used by the Renesas R-Car Gen3 RPC-IF MFD controller.
+On 29/03/19 2:23 PM, Boris Brezillon wrote:
+> On Fri, 29 Mar 2019 13:50:26 +0530
+> Vignesh Raghavendra <vigneshr@ti.com> wrote:
 > 
-> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
-> ---
->  .../devicetree/bindings/mfd/mfd-renesas-rpc.txt    | 57 ++++++++++++++++++++++
->  1 file changed, 57 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
+>> Hi Boris,
+>>
+>> On 29/03/19 1:25 AM, Boris Brezillon wrote:
+>>> On Thu, 28 Mar 2019 16:46:24 +0530
+>>> Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com> wrote:
+>>>   
+>>>> Call spi_mem_default_supports_op() first, before calling controller
+>>>> specific ctlr->supports_op().
+>>>> With this, controller drivers can drop checking the buswidths again.  
+>>>
+>>> No, this was done on purpose, in case the controller does not want the
+>>> default check to be applied (say it does not need bus-width props to
+>>> be defined and has another way to check if a device can be accessed in
+>>> dual, quad or octal mode).  
+>>
+>> Sorry, I don't understand here.
+>> Based on capabilities declared in spi_device->mode, m25p80 driver will
+>> claim appropriate  SNOR_HWCAPS_*.  SPI NOR layer chooses opcodes based
+>> on that for which m25p80 layer populates buswidths.
 > 
-> diff --git a/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
-> new file mode 100644
-> index 0000000..577986b
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
-> @@ -0,0 +1,57 @@
-> +Renesas R-Car Gen3 RPC-IF MFD controller Device Tree Bindings
-> +---------------------------------------------------------------------
+> Well, that test in m25p80 should go away and be replaced by a proper
+> spi_mem_supports_op() iteration on all modes reported as supported by
+> the *chip* (I think that's what I did in my series merging m25p80 code
+> into the spi-nor core). But that's not really related to the problem
+> we're discussing here.
+> 
 
-   Too many dashes. :-)
+I see that now.
 
-> +
-> +Required properties:
-> +- compatible: should be an SoC-specific compatible value, followed by
-> +		"renesas,rcar-gen3-rpc" as a fallback.
-> +		supported SoC-specific values are:
-> +		"renesas,r8a77995-rpc"	(R-Car D3)
-> +- reg: should contain three register areas:
-> +	first for the base address of rpc-if registers,
-> +	second for the direct mapping read mode and
-> +	third for the write buffer area.
-> +- reg-names: should contain "regs", "dirmap" and "wbuf"
-> +- clocks: should contain 1 entries for the module's clock
-> +- clock-names: should contain "rpc"
+>>
+>> So, I don't really expect any mismatch in spi_mem_default_supports_op()
+>> in the case you mentioned. Or did I miss something? Maybe something SPI
+>> NAND specific?
+> 
+> Nothing NAND specific, just something controller specific and how we
+> want to deal with buswidth detection. Most memory devices expose their
+> caps in some way (be it ID-based detection or using some kind of
+> caps/parameters table), so they know what they're capable of. SPI
+> controllers know what they're capable of, of course. The only part that
+> remains unknown for buswidth negotiation is how things are wired on the
+> board. I keep thinking that defining buswidth in the DT (using
+> spi-{tx,rx}-bus-width) should only be done if there are board-related
+> limiting factors (some IO pins not routed).
+> If you look at the code, SPI_{TX,RX}_{DUAL,QUAD,OCTAL} flags are only
+> set if the spi-{tx,rx}-bus-width props are defined.
+> 
+> The idea behind making spi_mem_default_supports_op() optional is to let
+> new drivers implement a new scheme where missing
+> spi-{tx,rx}-bus-width does not necessarily mean "use regular SPI mode".
+> 
 
-   What about the "power-domains" and "resets" props?
+Ok, thanks for explanation.
 
-> +- #address-cells: should be 1
-> +- #size-cells: should be 0
 
-   Why? You don't have the "reg" props in the sub-devices...
-
-> +
-> +Required nodes:
-> +	spi:
-> +	Node for configuring the SPI controller driver.
-> +	Required properties:
-> +		compatible = "renesas,rcar-rpc-spi";
-
-   Sigh... you were supposed to only place the flash device sub-nodes
-under the "main" device node, we don't add the virtual devices to DT,
-there's no matching sub-device in the hardware. You don't have to
-describe these sub-devices in DT, you can register the simple platform
-devices. 
-
-> +
-> +	hf:
-> +	Node for configuring the hyperflash controller driver.
-> +	Required properties:
-> +		compatible = "renesas,rcar-rpc-hf";
-> +
-> +Example:
-> +
-> +	rpc_mfd: rpc-mfd@ee200000 {
-
-   Just "rpc: rpc-if@ee200000, please.
-
-[...]
-
-MBR, Sergei
+-- 
+Regards
+Vignesh

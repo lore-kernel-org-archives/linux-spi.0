@@ -1,95 +1,75 @@
-From: Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Re: [LINUX PATCH 2/3] spi: spi-mem: call
+From: Naga Sureshkumar Relli <nagasure@xilinx.com>
+Subject: RE: [LINUX PATCH 2/3] spi: spi-mem: call
  spi_mem_default_supports_op() first
-Date: Fri, 29 Mar 2019 16:31:46 +0530
-Message-ID: <cf7c971c-4b58-e965-3ca7-b72239772737@ti.com>
+Date: Fri, 29 Mar 2019 11:08:52 +0000
+Message-ID: <MWHPR02MB2623F73BEA721D64EE2C3BF9AF5A0@MWHPR02MB2623.namprd02.prod.outlook.com>
 References: <1553771784-3364-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
  <20190328205522.272e1da6@collabora.com>
+ <cf7c971c-4b58-e965-3ca7-b72239772737@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "bbrezillon@kernel.org" <bbrezillon@kernel.org>,
- "richard@nod.at" <richard@nod.at>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
- "broonie@kernel.org" <broonie@kernel.org>,
- "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
- "nagasuresh12@gmail.com" <nagasuresh12@gmail.com>,
- "dwmw2@infradead.org" <dwmw2@infradead.org>,
- "michal.simek@xilinx.com" <michal.simek@xilinx.com>
-To: Boris Brezillon <boris.brezillon@collabora.com>, Naga Sureshkumar Relli
- <naga.sureshkumar.relli@xilinx.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20190328205522.272e1da6@collabora.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "broonie@kernel.org" <broonie@kernel.org>,
+        "bbrezillon@kernel.org" <bbrezillon@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "dwmw2@infradead.org" <dwmw2@infradead.org>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "richard@nod.at" <richard@nod.at>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Michal Simek <michals@xilinx.com>,
+        "nagasuresh12@gmail.com" <nagasuresh12@gmail.com>
+To: Vignesh Raghavendra <vigneshr@ti.com>,
+        Boris Brezillon <boris.brezillon@collabora.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <cf7c971c-4b58-e965-3ca7-b72239772737@ti.com>
 Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Naga Sureshkumar
-
-On 29/03/19 1:25 AM, Boris Brezillon wrote:
-> On Thu, 28 Mar 2019 16:46:24 +0530
-> Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com> wrote:
-> 
->> Call spi_mem_default_supports_op() first, before calling controller
->> specific ctlr->supports_op().
->> With this, controller drivers can drop checking the buswidths again.
-> 
-> No, this was done on purpose, in case the controller does not want the
-> default check to be applied (say it does not need bus-width props to
-> be defined and has another way to check if a device can be accessed in
-> dual, quad or octal mode).
-> Just call spi_mem_default_supports_op() from your driver
-> ->supports_op() hook if needed.
-> 
-
-Could you rework to follow Boris's suggestion here?
-
->>
->> Suggested-by: Vignesh Raghavendra <vigneshr@ti.com>
->> Signed-off-by: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
->> ---
->> Details can be found at https://lkml.org/lkml/2019/3/1/183
->> ---
->>  drivers/spi/spi-mem.c | 7 +++++--
->>  1 file changed, 5 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
->> index 5217a56..56aa158 100644
->> --- a/drivers/spi/spi-mem.c
->> +++ b/drivers/spi/spi-mem.c
->> @@ -189,11 +189,14 @@ static bool spi_mem_internal_supports_op(struct spi_mem *mem,
->>  					 const struct spi_mem_op *op)
->>  {
->>  	struct spi_controller *ctlr = mem->spi->controller;
->> +	bool ret;
->> +
->> +	ret = spi_mem_default_supports_op(mem, op);
->>  
->>  	if (ctlr->mem_ops && ctlr->mem_ops->supports_op)
->> -		return ctlr->mem_ops->supports_op(mem, op);
->> +		ret =  ctlr->mem_ops->supports_op(mem, op);
->>  
->> -	return spi_mem_default_supports_op(mem, op);
->> +	return ret;
->>  }
->>  
->>  /**
-> 
-
--- 
-Regards
-Vignesh
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+SGkgVmlnbmVzaCwNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBsaW51
+eC1zcGktb3duZXJAdmdlci5rZXJuZWwub3JnIDxsaW51eC1zcGktb3duZXJAdmdlci5rZXJuZWwu
+b3JnPiBPbiBCZWhhbGYgT2YNCj4gVmlnbmVzaCBSYWdoYXZlbmRyYQ0KPiBTZW50OiBGcmlkYXks
+IE1hcmNoIDI5LCAyMDE5IDQ6MzIgUE0NCj4gVG86IEJvcmlzIEJyZXppbGxvbiA8Ym9yaXMuYnJl
+emlsbG9uQGNvbGxhYm9yYS5jb20+OyBOYWdhIFN1cmVzaGt1bWFyIFJlbGxpDQo+IDxuYWdhc3Vy
+ZUB4aWxpbnguY29tPg0KPiBDYzogYnJvb25pZUBrZXJuZWwub3JnOyBiYnJlemlsbG9uQGtlcm5l
+bC5vcmc7IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGR3bXcyQGluZnJhZGVhZC5vcmc7
+IG1hcmVrLnZhc3V0QGdtYWlsLmNvbTsgcmljaGFyZEBub2QuYXQ7IGxpbnV4LQ0KPiBtdGRAbGlz
+dHMuaW5mcmFkZWFkLm9yZzsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsgTWljaGFsIFNp
+bWVrIDxtaWNoYWxzQHhpbGlueC5jb20+Ow0KPiBuYWdhc3VyZXNoMTJAZ21haWwuY29tDQo+IFN1
+YmplY3Q6IFJlOiBbTElOVVggUEFUQ0ggMi8zXSBzcGk6IHNwaS1tZW06IGNhbGwgc3BpX21lbV9k
+ZWZhdWx0X3N1cHBvcnRzX29wKCkgZmlyc3QNCj4gDQo+IEhpIE5hZ2EgU3VyZXNoa3VtYXINCj4g
+DQo+IE9uIDI5LzAzLzE5IDE6MjUgQU0sIEJvcmlzIEJyZXppbGxvbiB3cm90ZToNCj4gPiBPbiBU
+aHUsIDI4IE1hciAyMDE5IDE2OjQ2OjI0ICswNTMwDQo+ID4gTmFnYSBTdXJlc2hrdW1hciBSZWxs
+aSA8bmFnYS5zdXJlc2hrdW1hci5yZWxsaUB4aWxpbnguY29tPiB3cm90ZToNCj4gPg0KPiA+PiBD
+YWxsIHNwaV9tZW1fZGVmYXVsdF9zdXBwb3J0c19vcCgpIGZpcnN0LCBiZWZvcmUgY2FsbGluZyBj
+b250cm9sbGVyDQo+ID4+IHNwZWNpZmljIGN0bHItPnN1cHBvcnRzX29wKCkuDQo+ID4+IFdpdGgg
+dGhpcywgY29udHJvbGxlciBkcml2ZXJzIGNhbiBkcm9wIGNoZWNraW5nIHRoZSBidXN3aWR0aHMg
+YWdhaW4uDQo+ID4NCj4gPiBObywgdGhpcyB3YXMgZG9uZSBvbiBwdXJwb3NlLCBpbiBjYXNlIHRo
+ZSBjb250cm9sbGVyIGRvZXMgbm90IHdhbnQgdGhlDQo+ID4gZGVmYXVsdCBjaGVjayB0byBiZSBh
+cHBsaWVkIChzYXkgaXQgZG9lcyBub3QgbmVlZCBidXMtd2lkdGggcHJvcHMgdG8NCj4gPiBiZSBk
+ZWZpbmVkIGFuZCBoYXMgYW5vdGhlciB3YXkgdG8gY2hlY2sgaWYgYSBkZXZpY2UgY2FuIGJlIGFj
+Y2Vzc2VkIGluDQo+ID4gZHVhbCwgcXVhZCBvciBvY3RhbCBtb2RlKS4NCj4gPiBKdXN0IGNhbGwg
+c3BpX21lbV9kZWZhdWx0X3N1cHBvcnRzX29wKCkgZnJvbSB5b3VyIGRyaXZlcg0KPiA+IC0+c3Vw
+cG9ydHNfb3AoKSBob29rIGlmIG5lZWRlZC4NCj4gPg0KPiANCj4gQ291bGQgeW91IHJld29yayB0
+byBmb2xsb3cgQm9yaXMncyBzdWdnZXN0aW9uIGhlcmU/DQpTdXJlLiBJIHdpbGwgdXBkYXRlLg0K
+DQpUaGFua3MsDQpOYWdhIFN1cmVzaGt1bWFyIFJlbGxpDQo+IA0KPiA+Pg0KPiA+PiBTdWdnZXN0
+ZWQtYnk6IFZpZ25lc2ggUmFnaGF2ZW5kcmEgPHZpZ25lc2hyQHRpLmNvbT4NCj4gPj4gU2lnbmVk
+LW9mZi1ieTogTmFnYSBTdXJlc2hrdW1hciBSZWxsaQ0KPiA+PiA8bmFnYS5zdXJlc2hrdW1hci5y
+ZWxsaUB4aWxpbnguY29tPg0KPiA+PiAtLS0NCj4gPj4gRGV0YWlscyBjYW4gYmUgZm91bmQgYXQg
+aHR0cHM6Ly9sa21sLm9yZy9sa21sLzIwMTkvMy8xLzE4Mw0KPiA+PiAtLS0NCj4gPj4gIGRyaXZl
+cnMvc3BpL3NwaS1tZW0uYyB8IDcgKysrKystLQ0KPiA+PiAgMSBmaWxlIGNoYW5nZWQsIDUgaW5z
+ZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkNCj4gPj4NCj4gPj4gZGlmZiAtLWdpdCBhL2RyaXZl
+cnMvc3BpL3NwaS1tZW0uYyBiL2RyaXZlcnMvc3BpL3NwaS1tZW0uYyBpbmRleA0KPiA+PiA1MjE3
+YTU2Li41NmFhMTU4IDEwMDY0NA0KPiA+PiAtLS0gYS9kcml2ZXJzL3NwaS9zcGktbWVtLmMNCj4g
+Pj4gKysrIGIvZHJpdmVycy9zcGkvc3BpLW1lbS5jDQo+ID4+IEBAIC0xODksMTEgKzE4OSwxNCBA
+QCBzdGF0aWMgYm9vbCBzcGlfbWVtX2ludGVybmFsX3N1cHBvcnRzX29wKHN0cnVjdCBzcGlfbWVt
+DQo+ICptZW0sDQo+ID4+ICAJCQkJCSBjb25zdCBzdHJ1Y3Qgc3BpX21lbV9vcCAqb3ApDQo+ID4+
+ICB7DQo+ID4+ICAJc3RydWN0IHNwaV9jb250cm9sbGVyICpjdGxyID0gbWVtLT5zcGktPmNvbnRy
+b2xsZXI7DQo+ID4+ICsJYm9vbCByZXQ7DQo+ID4+ICsNCj4gPj4gKwlyZXQgPSBzcGlfbWVtX2Rl
+ZmF1bHRfc3VwcG9ydHNfb3AobWVtLCBvcCk7DQo+ID4+DQo+ID4+ICAJaWYgKGN0bHItPm1lbV9v
+cHMgJiYgY3Rsci0+bWVtX29wcy0+c3VwcG9ydHNfb3ApDQo+ID4+IC0JCXJldHVybiBjdGxyLT5t
+ZW1fb3BzLT5zdXBwb3J0c19vcChtZW0sIG9wKTsNCj4gPj4gKwkJcmV0ID0gIGN0bHItPm1lbV9v
+cHMtPnN1cHBvcnRzX29wKG1lbSwgb3ApOw0KPiA+Pg0KPiA+PiAtCXJldHVybiBzcGlfbWVtX2Rl
+ZmF1bHRfc3VwcG9ydHNfb3AobWVtLCBvcCk7DQo+ID4+ICsJcmV0dXJuIHJldDsNCj4gPj4gIH0N
+Cj4gPj4NCj4gPj4gIC8qKg0KPiA+DQo+IA0KPiAtLQ0KPiBSZWdhcmRzDQo+IFZpZ25lc2gNCg==

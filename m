@@ -1,93 +1,150 @@
-From: Igor Plyatov <plyatov@gmail.com>
-Subject: Re: Issues with i.MX SPI DMA transfers
-Date: Fri, 29 Mar 2019 14:57:29 +0300
-Message-ID: <3aa00772-8a62-3da3-c4ed-281dc93cc597@gmail.com>
-References: <08fcbd65-510f-84f8-d6d6-ff56aa9ca9ad@gmail.com>
- <20190328065247.uz73lap7ljf5q3tb@pengutronix.de>
- <b8e80127-e377-9ef9-2447-b0126fdad7dc@gmail.com>
- <20190328082231.zg4emm66mpbbfb6c@pengutronix.de>
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Subject: Re: [PATCH v9 1/3] mfd: Add Renesas R-Car Gen3 RPC-IF MFD controller
+ driver
+Date: Fri, 29 Mar 2019 18:12:43 +0300
+Message-ID: <5cf42c96-183c-1edd-8397-1de6e3033f33@cogentembedded.com>
+References: <1553847606-18122-1-git-send-email-masonccyang@mxic.com.tw>
+ <1553847606-18122-2-git-send-email-masonccyang@mxic.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Cc: Andy Duan <fugang.duan@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Vinod Koul <vkoul@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Clark Wang <xiaoning.wang@nxp.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        dmaengine@vger.kernel.org, Han Xu <han.xu@nxp.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Robin Gong <yibin.gong@nxp.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        linux-arm-kernel@lists.infradead.org
-To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
+        zhengxunli@mxic.com.tw
+To: Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
+        marek.vasut@gmail.com, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, bbrezillon@kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        devicetree@vger.kernel.org, mark.rutland@arm.com,
+        robh+dt@kernel.org, lee.jones@linaro.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190328082231.zg4emm66mpbbfb6c@pengutronix.de>
-Content-Language: en-US
+In-Reply-To: <1553847606-18122-2-git-send-email-masonccyang@mxic.com.tw>
+Content-Language: en-MW
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Uwe,
+On 03/29/2019 11:20 AM, Mason Yang wrote:
 
-> On Thu, Mar 28, 2019 at 10:04:21AM +0300, Igor Plyatov wrote:
->> Dear Uwe,
->>
->>
->>> Hello Igor,
->>>
->>> On Wed, Mar 27, 2019 at 08:40:00PM +0300, Igor Plyatov wrote:
->>>> please, help to resolve two issues with SPI DMA transfers at i.MX6Q
->>>> platform.
->>>>
->>>> First issue is
->>>>    [ 4465.008003] spi_master spi0: I/O Error in DMA RX
->>>>
->>>> Second issue is duplication for one of received bytes.
->>>>
->>>> Probably, these issues related to each one.
->>> This is probably the same problem I hit some time ago. Check ERR009165
->>> in the errata. You either need to disable DMA or need a fixed
->>> sdma-Script.
->> disabling of DMA is not an option, because high throughput required for SPI
->> bus to communicate with DSPs.
-> Is this a theoretical reasoning, or is that backed by testing? People
-> here on the list already said things like:
->
-> 	The eCSPI appears to insert a 4 bit pause after each word in DMA
-> 	mode, not done in PIO mode, which can make DMA transfers 50%
-> 	slower than PIO.
->
-> You might want to read the thread
-> https://marc.info/?l=linux-spi&m=155191201208766&w=2
-> .
+> Add a driver for Renesas R-Car Gen3 RPC-IF MFD controller.
+> 
+> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+[...]
+> diff --git a/drivers/mfd/renesas-rpc.c b/drivers/mfd/renesas-rpc.c
+> new file mode 100644
+> index 0000000..c92bb74
+> --- /dev/null
+> +++ b/drivers/mfd/renesas-rpc.c
+> @@ -0,0 +1,140 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +//
+> +// Copyright (C) 2018 ~ 2019 Renesas Solutions Corp.
+> +// Copyright (C) 2019 Macronix International Co., Ltd.
+> +//
+> +// R-Car Gen3 RPC-IF MFD driver
+> +//
+> +// Author:
+> +//	Mason Yang <masonccyang@mxic.com.tw>
+> +//
+> +
+> +#include <linux/mfd/renesas-rpc.h>
+> +#include <linux/mfd/core.h>
+> +
+> +static const struct mfd_cell rpc_hf_ctlr = {
+> +	.name = "rpc-hf",
+> +	.of_compatible = "renesas,rcar-rpc-hf",
+> +};
+> +
+> +static const struct mfd_cell rpc_spi_ctlr = {
+> +	.name = "rpc-spi",
+> +	.of_compatible = "renesas,rcar-rpc-spi",
+> +};
+> +
+> +static const struct regmap_range rpc_mfd_volatile_ranges[] = {
+> +	regmap_reg_range(RPC_SMRDR0, RPC_SMRDR0),
 
-SPI throughput depends from transfer mode (PIO or DMA), OS load and OS 
-version.
+   regmap_reg_range((RPC_SMRDR0, RPC_SMRDR1), like Marek noted?
 
-For example, Linux-4.9.87 has quite bad results for SPI throughput when 
-PIO transfer used and OS highly loaded by other processes. Throughput 
-varies from 2700 kbps to 0.8 kbps and this is totally unacceptable for 
-my application, where streaming of DSP data required.
+> +	regmap_reg_range(RPC_SMWDR0, RPC_SMWDR0),
 
-Linux-5.1.0-rc2 has much better performance of SPI with PIO transfers. 
-Throughput varies within 10%.
+   regmap_reg_range((RPC_SMWDR0, RPC_SMWDR1)?
 
->> I'm aware of ERR009165, but as I write some minutes earlier to list, spi0
->> (alias for ecspi1) and spi1 (alias for ecspi2) work flawless, while spi4
->> (alias for ecspi5) fails very fast.
-> As the issue is a timing race, it might depend on things like length of
-> the SPI lines, load on the data lines and other electrical properties.
-> So you might just be happy that spi0 and spi1 don't show the issue for
-> you. Or you didn't apply the "right" work load yet.
+> +static int rpc_mfd_probe(struct platform_device *pdev)
+> +{
+> +	struct device_node *ctlr;
+> +	const struct mfd_cell *cell;
+> +	struct resource *res;
+> +	struct rpc_mfd *rpc;
+> +	int ret;
+> +
+> +	ctlr = of_get_next_child(pdev->dev.of_node, NULL);
 
-This e-mail thread discuss operation of SPI only in loopback mode. So, 
-real lines of SPI does not used. SPI module of SOC has connected MOSI 
-and MISO lines internally, while MISO disconnected from SOC pad. So, 
-electrical characteristics of SPI lines are not important at all.
+    The child should be a CFI or JEDEC flash device, no virtual devices,
+please.
 
-Best wishes.
+[...]
+> +	rpc->rstc = devm_reset_control_get_exclusive(&pdev->dev, NULL);
+> +	if (IS_ERR(rpc->rstc))
+> +		return PTR_ERR(rpc->rstc);
+> +
+> +	platform_set_drvdata(pdev, rpc);
+> +
+> +	ret = devm_mfd_add_devices(&pdev->dev, -1, cell, 1, NULL, 0, NULL);
+> +
+> +	return ret;
 
---
+	return devm_mfd_add_devices(&pdev->dev, -1, cell, 1, NULL, 0, NULL);
 
-Igor Plyatov
+> +}
+> +
+> +static int rpc_mfd_remove(struct platform_device *pdev)
+> +{
+> +	mfd_remove_devices(&pdev->dev);
+
+   Why, if you used devm_mfd_add_devices() in the probe method?
+
+> +	return 0;
+> +}
+[...]
+> diff --git a/include/linux/mfd/renesas-rpc.h b/include/linux/mfd/renesas-rpc.h
+> new file mode 100644
+> index 0000000..209e64f1
+> --- /dev/null
+> +++ b/include/linux/mfd/renesas-rpc.h
+> @@ -0,0 +1,154 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +//
+> +// Copyright (C) 2018 ~ 2019 Renesas Solutions Corp.
+> +// Copyright (C) 2019 Macronix International Co., Ltd.
+> +//
+> +// R-Car Gen3 RPC-IF MFD driver
+> +//
+> +// Author:
+> +//	Mason Yang <masonccyang@mxic.com.tw>
+> +//
+> +
+> +#ifndef __MFD_RENESAS_RPC_H
+> +#define __MFD_RENESAS_RPC_H
+> +
+> +#include <linux/clk.h>
+> +#include <linux/io.h>
+> +#include <linux/log2.h>
+> +#include <linux/iopoll.h>
+> +#include <linux/module.h>
+> +#include <linux/mtd/mtd.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/pm_runtime.h>
+> +#include <linux/of.h>
+> +#include <linux/regmap.h>
+> +#include <linux/reset.h>
+
+  Is any of these #include's used by the header itself? I don't think so...
+
+> +
+> +#define RPC_CMNCR		0x0000	// R/W
+
+   Not sure we'd need the registers described in the public header after
+we place the common RPC-IF code into the MFD driver. We'll see though...
+
+[...]
+
+MBR, Sergei

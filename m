@@ -1,75 +1,93 @@
-From: Naga Sureshkumar Relli <nagasure@xilinx.com>
-Subject: RE: [LINUX PATCH 2/3] spi: spi-mem: call
- spi_mem_default_supports_op() first
-Date: Fri, 29 Mar 2019 11:08:52 +0000
-Message-ID: <MWHPR02MB2623F73BEA721D64EE2C3BF9AF5A0@MWHPR02MB2623.namprd02.prod.outlook.com>
-References: <1553771784-3364-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
- <20190328205522.272e1da6@collabora.com>
- <cf7c971c-4b58-e965-3ca7-b72239772737@ti.com>
+From: Igor Plyatov <plyatov@gmail.com>
+Subject: Re: Issues with i.MX SPI DMA transfers
+Date: Fri, 29 Mar 2019 14:57:29 +0300
+Message-ID: <3aa00772-8a62-3da3-c4ed-281dc93cc597@gmail.com>
+References: <08fcbd65-510f-84f8-d6d6-ff56aa9ca9ad@gmail.com>
+ <20190328065247.uz73lap7ljf5q3tb@pengutronix.de>
+ <b8e80127-e377-9ef9-2447-b0126fdad7dc@gmail.com>
+ <20190328082231.zg4emm66mpbbfb6c@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "broonie@kernel.org" <broonie@kernel.org>,
-        "bbrezillon@kernel.org" <bbrezillon@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
-        "richard@nod.at" <richard@nod.at>,
-        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Michal Simek <michals@xilinx.com>,
-        "nagasuresh12@gmail.com" <nagasuresh12@gmail.com>
-To: Vignesh Raghavendra <vigneshr@ti.com>,
-        Boris Brezillon <boris.brezillon@collabora.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Cc: Andy Duan <fugang.duan@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Vinod Koul <vkoul@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Clark Wang <xiaoning.wang@nxp.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        dmaengine@vger.kernel.org, Han Xu <han.xu@nxp.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Robin Gong <yibin.gong@nxp.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        linux-arm-kernel@lists.infradead.org
+To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <cf7c971c-4b58-e965-3ca7-b72239772737@ti.com>
+In-Reply-To: <20190328082231.zg4emm66mpbbfb6c@pengutronix.de>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgVmlnbmVzaCwNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBsaW51
-eC1zcGktb3duZXJAdmdlci5rZXJuZWwub3JnIDxsaW51eC1zcGktb3duZXJAdmdlci5rZXJuZWwu
-b3JnPiBPbiBCZWhhbGYgT2YNCj4gVmlnbmVzaCBSYWdoYXZlbmRyYQ0KPiBTZW50OiBGcmlkYXks
-IE1hcmNoIDI5LCAyMDE5IDQ6MzIgUE0NCj4gVG86IEJvcmlzIEJyZXppbGxvbiA8Ym9yaXMuYnJl
-emlsbG9uQGNvbGxhYm9yYS5jb20+OyBOYWdhIFN1cmVzaGt1bWFyIFJlbGxpDQo+IDxuYWdhc3Vy
-ZUB4aWxpbnguY29tPg0KPiBDYzogYnJvb25pZUBrZXJuZWwub3JnOyBiYnJlemlsbG9uQGtlcm5l
-bC5vcmc7IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmc7DQo+IGR3bXcyQGluZnJhZGVhZC5vcmc7
-IG1hcmVrLnZhc3V0QGdtYWlsLmNvbTsgcmljaGFyZEBub2QuYXQ7IGxpbnV4LQ0KPiBtdGRAbGlz
-dHMuaW5mcmFkZWFkLm9yZzsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsgTWljaGFsIFNp
-bWVrIDxtaWNoYWxzQHhpbGlueC5jb20+Ow0KPiBuYWdhc3VyZXNoMTJAZ21haWwuY29tDQo+IFN1
-YmplY3Q6IFJlOiBbTElOVVggUEFUQ0ggMi8zXSBzcGk6IHNwaS1tZW06IGNhbGwgc3BpX21lbV9k
-ZWZhdWx0X3N1cHBvcnRzX29wKCkgZmlyc3QNCj4gDQo+IEhpIE5hZ2EgU3VyZXNoa3VtYXINCj4g
-DQo+IE9uIDI5LzAzLzE5IDE6MjUgQU0sIEJvcmlzIEJyZXppbGxvbiB3cm90ZToNCj4gPiBPbiBU
-aHUsIDI4IE1hciAyMDE5IDE2OjQ2OjI0ICswNTMwDQo+ID4gTmFnYSBTdXJlc2hrdW1hciBSZWxs
-aSA8bmFnYS5zdXJlc2hrdW1hci5yZWxsaUB4aWxpbnguY29tPiB3cm90ZToNCj4gPg0KPiA+PiBD
-YWxsIHNwaV9tZW1fZGVmYXVsdF9zdXBwb3J0c19vcCgpIGZpcnN0LCBiZWZvcmUgY2FsbGluZyBj
-b250cm9sbGVyDQo+ID4+IHNwZWNpZmljIGN0bHItPnN1cHBvcnRzX29wKCkuDQo+ID4+IFdpdGgg
-dGhpcywgY29udHJvbGxlciBkcml2ZXJzIGNhbiBkcm9wIGNoZWNraW5nIHRoZSBidXN3aWR0aHMg
-YWdhaW4uDQo+ID4NCj4gPiBObywgdGhpcyB3YXMgZG9uZSBvbiBwdXJwb3NlLCBpbiBjYXNlIHRo
-ZSBjb250cm9sbGVyIGRvZXMgbm90IHdhbnQgdGhlDQo+ID4gZGVmYXVsdCBjaGVjayB0byBiZSBh
-cHBsaWVkIChzYXkgaXQgZG9lcyBub3QgbmVlZCBidXMtd2lkdGggcHJvcHMgdG8NCj4gPiBiZSBk
-ZWZpbmVkIGFuZCBoYXMgYW5vdGhlciB3YXkgdG8gY2hlY2sgaWYgYSBkZXZpY2UgY2FuIGJlIGFj
-Y2Vzc2VkIGluDQo+ID4gZHVhbCwgcXVhZCBvciBvY3RhbCBtb2RlKS4NCj4gPiBKdXN0IGNhbGwg
-c3BpX21lbV9kZWZhdWx0X3N1cHBvcnRzX29wKCkgZnJvbSB5b3VyIGRyaXZlcg0KPiA+IC0+c3Vw
-cG9ydHNfb3AoKSBob29rIGlmIG5lZWRlZC4NCj4gPg0KPiANCj4gQ291bGQgeW91IHJld29yayB0
-byBmb2xsb3cgQm9yaXMncyBzdWdnZXN0aW9uIGhlcmU/DQpTdXJlLiBJIHdpbGwgdXBkYXRlLg0K
-DQpUaGFua3MsDQpOYWdhIFN1cmVzaGt1bWFyIFJlbGxpDQo+IA0KPiA+Pg0KPiA+PiBTdWdnZXN0
-ZWQtYnk6IFZpZ25lc2ggUmFnaGF2ZW5kcmEgPHZpZ25lc2hyQHRpLmNvbT4NCj4gPj4gU2lnbmVk
-LW9mZi1ieTogTmFnYSBTdXJlc2hrdW1hciBSZWxsaQ0KPiA+PiA8bmFnYS5zdXJlc2hrdW1hci5y
-ZWxsaUB4aWxpbnguY29tPg0KPiA+PiAtLS0NCj4gPj4gRGV0YWlscyBjYW4gYmUgZm91bmQgYXQg
-aHR0cHM6Ly9sa21sLm9yZy9sa21sLzIwMTkvMy8xLzE4Mw0KPiA+PiAtLS0NCj4gPj4gIGRyaXZl
-cnMvc3BpL3NwaS1tZW0uYyB8IDcgKysrKystLQ0KPiA+PiAgMSBmaWxlIGNoYW5nZWQsIDUgaW5z
-ZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkNCj4gPj4NCj4gPj4gZGlmZiAtLWdpdCBhL2RyaXZl
-cnMvc3BpL3NwaS1tZW0uYyBiL2RyaXZlcnMvc3BpL3NwaS1tZW0uYyBpbmRleA0KPiA+PiA1MjE3
-YTU2Li41NmFhMTU4IDEwMDY0NA0KPiA+PiAtLS0gYS9kcml2ZXJzL3NwaS9zcGktbWVtLmMNCj4g
-Pj4gKysrIGIvZHJpdmVycy9zcGkvc3BpLW1lbS5jDQo+ID4+IEBAIC0xODksMTEgKzE4OSwxNCBA
-QCBzdGF0aWMgYm9vbCBzcGlfbWVtX2ludGVybmFsX3N1cHBvcnRzX29wKHN0cnVjdCBzcGlfbWVt
-DQo+ICptZW0sDQo+ID4+ICAJCQkJCSBjb25zdCBzdHJ1Y3Qgc3BpX21lbV9vcCAqb3ApDQo+ID4+
-ICB7DQo+ID4+ICAJc3RydWN0IHNwaV9jb250cm9sbGVyICpjdGxyID0gbWVtLT5zcGktPmNvbnRy
-b2xsZXI7DQo+ID4+ICsJYm9vbCByZXQ7DQo+ID4+ICsNCj4gPj4gKwlyZXQgPSBzcGlfbWVtX2Rl
-ZmF1bHRfc3VwcG9ydHNfb3AobWVtLCBvcCk7DQo+ID4+DQo+ID4+ICAJaWYgKGN0bHItPm1lbV9v
-cHMgJiYgY3Rsci0+bWVtX29wcy0+c3VwcG9ydHNfb3ApDQo+ID4+IC0JCXJldHVybiBjdGxyLT5t
-ZW1fb3BzLT5zdXBwb3J0c19vcChtZW0sIG9wKTsNCj4gPj4gKwkJcmV0ID0gIGN0bHItPm1lbV9v
-cHMtPnN1cHBvcnRzX29wKG1lbSwgb3ApOw0KPiA+Pg0KPiA+PiAtCXJldHVybiBzcGlfbWVtX2Rl
-ZmF1bHRfc3VwcG9ydHNfb3AobWVtLCBvcCk7DQo+ID4+ICsJcmV0dXJuIHJldDsNCj4gPj4gIH0N
-Cj4gPj4NCj4gPj4gIC8qKg0KPiA+DQo+IA0KPiAtLQ0KPiBSZWdhcmRzDQo+IFZpZ25lc2gNCg==
+Dear Uwe,
+
+> On Thu, Mar 28, 2019 at 10:04:21AM +0300, Igor Plyatov wrote:
+>> Dear Uwe,
+>>
+>>
+>>> Hello Igor,
+>>>
+>>> On Wed, Mar 27, 2019 at 08:40:00PM +0300, Igor Plyatov wrote:
+>>>> please, help to resolve two issues with SPI DMA transfers at i.MX6Q
+>>>> platform.
+>>>>
+>>>> First issue is
+>>>>    [ 4465.008003] spi_master spi0: I/O Error in DMA RX
+>>>>
+>>>> Second issue is duplication for one of received bytes.
+>>>>
+>>>> Probably, these issues related to each one.
+>>> This is probably the same problem I hit some time ago. Check ERR009165
+>>> in the errata. You either need to disable DMA or need a fixed
+>>> sdma-Script.
+>> disabling of DMA is not an option, because high throughput required for SPI
+>> bus to communicate with DSPs.
+> Is this a theoretical reasoning, or is that backed by testing? People
+> here on the list already said things like:
+>
+> 	The eCSPI appears to insert a 4 bit pause after each word in DMA
+> 	mode, not done in PIO mode, which can make DMA transfers 50%
+> 	slower than PIO.
+>
+> You might want to read the thread
+> https://marc.info/?l=linux-spi&m=155191201208766&w=2
+> .
+
+SPI throughput depends from transfer mode (PIO or DMA), OS load and OS 
+version.
+
+For example, Linux-4.9.87 has quite bad results for SPI throughput when 
+PIO transfer used and OS highly loaded by other processes. Throughput 
+varies from 2700 kbps to 0.8 kbps and this is totally unacceptable for 
+my application, where streaming of DSP data required.
+
+Linux-5.1.0-rc2 has much better performance of SPI with PIO transfers. 
+Throughput varies within 10%.
+
+>> I'm aware of ERR009165, but as I write some minutes earlier to list, spi0
+>> (alias for ecspi1) and spi1 (alias for ecspi2) work flawless, while spi4
+>> (alias for ecspi5) fails very fast.
+> As the issue is a timing race, it might depend on things like length of
+> the SPI lines, load on the data lines and other electrical properties.
+> So you might just be happy that spi0 and spi1 don't show the issue for
+> you. Or you didn't apply the "right" work load yet.
+
+This e-mail thread discuss operation of SPI only in loopback mode. So, 
+real lines of SPI does not used. SPI module of SOC has connected MOSI 
+and MISO lines internally, while MISO disconnected from SOC pad. So, 
+electrical characteristics of SPI lines are not important at all.
+
+Best wishes.
+
+--
+
+Igor Plyatov

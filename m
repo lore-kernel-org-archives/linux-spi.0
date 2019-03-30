@@ -1,8 +1,8 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH V3 7/9] spi: bcm2835aux: setup gpio-cs to output and correct
- level during setup
-Date: Sat, 30 Mar 2019 09:31:04 +0000
-Message-ID: <20190330093106.20723-8-kernel@martin.sperl.org>
+Subject: [PATCH V3 6/9] spi: bcm2835aux: warn in dmesg that native cs is not
+ really supported
+Date: Sat, 30 Mar 2019 09:31:03 +0000
+Message-ID: <20190330093106.20723-7-kernel@martin.sperl.org>
 References: <20190330093106.20723-1-kernel@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -26,54 +26,76 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Setup gpio-cs to the correct levels during setup and also make the
-gpio definitely an output GPIO.
+>From personal bad experience (even as the author of the original driver)
+it shows that native-cs is "somewhat" supported by the spi bus driver
+when using a buggy device tree.
 
-This is transparently fixing some badly configured DTs in the process
-where cs-gpio is set but the gpios are still configured with native cs.
-
-It also makes 100% sure that the initial CS levels are as expected -
-especially on systems with devices on a bus with mixed CS_HIGH/CS_LOW
-settings.
+So make sure that the driver is warning in dmesg about this fact
+that we are running in a not supported mode that may have surprizing
+limitations.
 
 Fixes: 1ea29b39f4c812ec ("spi: bcm2835aux: add bcm2835 auxiliary spi device...")
 
 Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-
 ---
 
 Changelog:
-  V2 -> V3: rebased duo to changes in Patch 6
+  V2 -> V3: use dev_warn
+            made messages shorter
 
- drivers/spi/spi-bcm2835aux.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/spi/spi-bcm2835aux.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
 diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-index a105db371417..99414319001a 100644
+index c8acde017b6a..a105db371417 100644
 --- a/drivers/spi/spi-bcm2835aux.c
 +++ b/drivers/spi/spi-bcm2835aux.c
-@@ -403,8 +403,20 @@ static int bcm2835aux_spi_setup(struct spi_device *spi)
- 	/* sanity check for native cs */
- 	if (spi->mode & SPI_NO_CS)
- 		return 0;
--	if (gpio_is_valid(spi->cs_gpio))
--		return 0;
-+	if (gpio_is_valid(spi->cs_gpio)) {
-+		/* with gpio-cs set the GPIO to the correct level
-+		 * and as output (in case the dt has the gpio not configured
-+		 * as output but native cs)
-+		 */
-+		ret = gpio_direction_output(spi->cs_gpio,
-+					    (spi->mode & SPI_CS_HIGH) ? 0 : 1);
-+		if (ret)
-+			dev_err(&spi->dev,
-+				"could not set gpio %i as output: %i\n",
-+				spi->cs_gpio, ret);
-+
-+		return ret;
-+	}
+@@ -396,6 +396,38 @@ static void bcm2835aux_spi_handle_err(struct spi_master *master,
+ 	bcm2835aux_spi_reset_hw(bs);
+ }
 
- 	/* for dt-backwards compatibility: only support native on CS0
- 	 * known things not supported with broken native CS:
++static int bcm2835aux_spi_setup(struct spi_device *spi)
++{
++	int ret;
++
++	/* sanity check for native cs */
++	if (spi->mode & SPI_NO_CS)
++		return 0;
++	if (gpio_is_valid(spi->cs_gpio))
++		return 0;
++
++	/* for dt-backwards compatibility: only support native on CS0
++	 * known things not supported with broken native CS:
++	 * * multiple chip-selects: cs0-cs2 are all
++	 *     simultaniously asserted whenever there is a transfer
++	 *     this even includes SPI_NO_CS
++	 * * SPI_CS_HIGH: cs are always asserted low
++	 * * cs_change: cs is deasserted after each spi_transfer
++	 * * cs_delay_usec: cs is always deasserted one SCK cycle
++	 *     after the last transfer
++	 * probably more...
++	 */
++	dev_warn(&spi->dev,
++		 "Native CS is not supported - please configure cs-gpio in device-tree\n");
++
++	if (spi->chip_select == 0)
++		return 0;
++
++	dev_warn(&spi->dev, "Native CS is not working for cs > 0\n");
++
++	return -EINVAL;
++}
++
+ static int bcm2835aux_spi_probe(struct platform_device *pdev)
+ {
+ 	struct spi_master *master;
+@@ -425,6 +457,7 @@ static int bcm2835aux_spi_probe(struct platform_device *pdev)
+ 	 *     a spi_transfer
+ 	 */
+ 	master->num_chipselect = 1;
++	master->setup = bcm2835aux_spi_setup;
+ 	master->transfer_one = bcm2835aux_spi_transfer_one;
+ 	master->handle_err = bcm2835aux_spi_handle_err;
+ 	master->prepare_message = bcm2835aux_spi_prepare_message;
 --
 2.11.0

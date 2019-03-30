@@ -1,7 +1,8 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH V3 4/9] spi: bcm2835aux: remove dead code
-Date: Sat, 30 Mar 2019 09:31:01 +0000
-Message-ID: <20190330093106.20723-5-kernel@martin.sperl.org>
+Subject: [PATCH V3 5/9] spi: bcm2835aux: fix driver to not allow 65535 (=-1)
+ cs-gpios
+Date: Sat, 30 Mar 2019 09:31:02 +0000
+Message-ID: <20190330093106.20723-6-kernel@martin.sperl.org>
 References: <20190330093106.20723-1-kernel@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -25,28 +26,52 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Remove dead code that never can get reached, as we limit count to
-a max of 3.
+The original driver by default defines num_chipselects as -1.
+This actually allicates an array of 65535 entries in
+of_spi_register_master.
 
-Suggested-by: Hubert Denkmair <h.denkmair-4pT7WzY1KUiELgA04lAiVw@public.gmane.org>
+There is a side-effect for buggy device trees that (contrary to
+dt-binding documentation) have no cs-gpio defined.
+
+This mode was never supported by the driver due to limitations
+of native cs and additional code complexity and is explicitly
+not stated to be implemented.
+
+To keep backwards compatibility with such buggy DTs we limit
+the number of chip_selects to 1, as for all practical purposes
+it is only ever realistic to use a single chip select in
+native cs mode without negative side-effects.
+
+Fixes: 1ea29b39f4c812ec ("spi: bcm2835aux: add bcm2835 auxiliary spi device...")
+
 Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 ---
- drivers/spi/spi-bcm2835aux.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/spi/spi-bcm2835aux.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-index d9e62f717a45..890aca4873a7 100644
+index 890aca4873a7..c8acde017b6a 100644
 --- a/drivers/spi/spi-bcm2835aux.c
 +++ b/drivers/spi/spi-bcm2835aux.c
-@@ -123,9 +123,6 @@ static inline void bcm2835aux_rd_fifo(struct bcm2835aux_spi *bs)
- 	data = bcm2835aux_rd(bs, BCM2835_AUX_SPI_IO);
- 	if (bs->rx_buf) {
- 		switch (count) {
--		case 4:
--			*bs->rx_buf++ = (data >> 24) & 0xff;
--			/* fallthrough */
- 		case 3:
- 			*bs->rx_buf++ = (data >> 16) & 0xff;
- 			/* fallthrough */
+@@ -413,7 +413,18 @@ static int bcm2835aux_spi_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, master);
+ 	master->mode_bits = (SPI_CPOL | SPI_CS_HIGH | SPI_NO_CS);
+ 	master->bits_per_word_mask = SPI_BPW_MASK(8);
+-	master->num_chipselect = -1;
++	/* even though the driver never officially supported native CS
++	 * allow a single native CS for legacy DT support purposes when
++	 * no cs-gpio is configured.
++	 * Known limitations for native cs are:
++	 * * multiple chip-selects: cs0-cs2 are all simultaniously asserted
++	 *     whenever there is a transfer -  this even includes SPI_NO_CS
++	 * * SPI_CS_HIGH: is ignores - cs are always asserted low
++	 * * cs_change: cs is deasserted after each spi_transfer
++	 * * cs_delay_usec: cs is always deasserted one SCK cycle after
++	 *     a spi_transfer
++	 */
++	master->num_chipselect = 1;
+ 	master->transfer_one = bcm2835aux_spi_transfer_one;
+ 	master->handle_err = bcm2835aux_spi_handle_err;
+ 	master->prepare_message = bcm2835aux_spi_prepare_message;
 --
 2.11.0

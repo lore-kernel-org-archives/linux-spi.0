@@ -1,8 +1,8 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH V3 5/9] spi: bcm2835aux: fix driver to not allow 65535 (=-1)
- cs-gpios
-Date: Sat, 30 Mar 2019 09:31:02 +0000
-Message-ID: <20190330093106.20723-6-kernel@martin.sperl.org>
+Subject: [PATCH V3 7/9] spi: bcm2835aux: setup gpio-cs to output and correct
+ level during setup
+Date: Sat, 30 Mar 2019 09:31:04 +0000
+Message-ID: <20190330093106.20723-8-kernel@martin.sperl.org>
 References: <20190330093106.20723-1-kernel@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -26,52 +26,54 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-The original driver by default defines num_chipselects as -1.
-This actually allicates an array of 65535 entries in
-of_spi_register_master.
+Setup gpio-cs to the correct levels during setup and also make the
+gpio definitely an output GPIO.
 
-There is a side-effect for buggy device trees that (contrary to
-dt-binding documentation) have no cs-gpio defined.
+This is transparently fixing some badly configured DTs in the process
+where cs-gpio is set but the gpios are still configured with native cs.
 
-This mode was never supported by the driver due to limitations
-of native cs and additional code complexity and is explicitly
-not stated to be implemented.
-
-To keep backwards compatibility with such buggy DTs we limit
-the number of chip_selects to 1, as for all practical purposes
-it is only ever realistic to use a single chip select in
-native cs mode without negative side-effects.
+It also makes 100% sure that the initial CS levels are as expected -
+especially on systems with devices on a bus with mixed CS_HIGH/CS_LOW
+settings.
 
 Fixes: 1ea29b39f4c812ec ("spi: bcm2835aux: add bcm2835 auxiliary spi device...")
 
 Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+
 ---
- drivers/spi/spi-bcm2835aux.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+
+Changelog:
+  V2 -> V3: rebased duo to changes in Patch 6
+
+ drivers/spi/spi-bcm2835aux.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-index 890aca4873a7..c8acde017b6a 100644
+index a105db371417..99414319001a 100644
 --- a/drivers/spi/spi-bcm2835aux.c
 +++ b/drivers/spi/spi-bcm2835aux.c
-@@ -413,7 +413,18 @@ static int bcm2835aux_spi_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, master);
- 	master->mode_bits = (SPI_CPOL | SPI_CS_HIGH | SPI_NO_CS);
- 	master->bits_per_word_mask = SPI_BPW_MASK(8);
--	master->num_chipselect = -1;
-+	/* even though the driver never officially supported native CS
-+	 * allow a single native CS for legacy DT support purposes when
-+	 * no cs-gpio is configured.
-+	 * Known limitations for native cs are:
-+	 * * multiple chip-selects: cs0-cs2 are all simultaniously asserted
-+	 *     whenever there is a transfer -  this even includes SPI_NO_CS
-+	 * * SPI_CS_HIGH: is ignores - cs are always asserted low
-+	 * * cs_change: cs is deasserted after each spi_transfer
-+	 * * cs_delay_usec: cs is always deasserted one SCK cycle after
-+	 *     a spi_transfer
-+	 */
-+	master->num_chipselect = 1;
- 	master->transfer_one = bcm2835aux_spi_transfer_one;
- 	master->handle_err = bcm2835aux_spi_handle_err;
- 	master->prepare_message = bcm2835aux_spi_prepare_message;
+@@ -403,8 +403,20 @@ static int bcm2835aux_spi_setup(struct spi_device *spi)
+ 	/* sanity check for native cs */
+ 	if (spi->mode & SPI_NO_CS)
+ 		return 0;
+-	if (gpio_is_valid(spi->cs_gpio))
+-		return 0;
++	if (gpio_is_valid(spi->cs_gpio)) {
++		/* with gpio-cs set the GPIO to the correct level
++		 * and as output (in case the dt has the gpio not configured
++		 * as output but native cs)
++		 */
++		ret = gpio_direction_output(spi->cs_gpio,
++					    (spi->mode & SPI_CS_HIGH) ? 0 : 1);
++		if (ret)
++			dev_err(&spi->dev,
++				"could not set gpio %i as output: %i\n",
++				spi->cs_gpio, ret);
++
++		return ret;
++	}
+
+ 	/* for dt-backwards compatibility: only support native on CS0
+ 	 * known things not supported with broken native CS:
 --
 2.11.0

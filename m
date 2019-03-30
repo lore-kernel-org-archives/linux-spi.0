@@ -1,73 +1,78 @@
-From: =?UTF-8?q?Randolph=20Maa=C3=9Fen?= <gaireg@gaireg.de>
-Subject: [PATCH v2] spi: tegra20-slink: change chip select action order
-Date: Fri, 29 Mar 2019 18:44:11 +0100
-Message-ID: <20190329174411.13832-1-gaireg@gaireg.de>
+From: kernel@martin.sperl.org
+Subject: [PATCH V3 0/9] spi: bcm2835aux: bug fixes and improvements
+Date: Sat, 30 Mar 2019 09:30:57 +0000
+Message-ID: <20190330093106.20723-1-kernel@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Cc: Sowjanya Komatineni <skomatineni@nvidia.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Mark Brown <broonie@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-To: gaireg@gaireg.de
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Martin Sperl <kernel@martin.sperl.org>
+To: Mark Brown <broonie@kernel.org>, Eric Anholt <eric@anholt.net>,
+ Stefan Wahren <stefan.wahren@i2se.com>,
+ Hubert Denkmair <h.denkmair@intence.de>, linux-spi@vger.kernel.org,
+ linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-To transfer via SPI the tegra20-slink driver first sets the command
-register, which contains the chip select value, and after that the
-command2 register, which contains the chip select line. This leads to a
-small spike in the chip selct 0 line between the set of the value and
-the selection of the chip select line.
+From: Martin Sperl <kernel@martin.sperl.org>
 
-This commit changes the order of the register writes so that first the
-chip select line is chosen and then the value is set, removing the
-spike.
+Set of patches improving the spi-bcm2835aux driver and fixing
+a data read corruption bug.
 
-Signed-off-by: Randolph Maaßen <gaireg@gaireg.de>
-Reviewed-by: Sowjanya Komatineni <skomatineni@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
+The main motivation is a rare data corruption fix that is mostly
+observed in polling mode first reported by Hubert Denkmair.
+
+So this patchset first implements a means to control the parameters
+of when polling mode is used via module parameters and exports
+the corresponding statistics.
+
+As stated in original patch the driver does not support native CS.
+But when cs-gpios is not configured in the dt (so a buggy dt) it is
+still working with a lot of limitations, but the driver does not report
+this fact.
+
+So this patchset adds reporting and allows for a single native CS
+(with limited functionality) to continue working with a buggy DT.
+One question here remains: do we need to legacy support DTs
+that are not following specs in the first place?
+
+Then there is the real fix for the data-corruption which is split
+into 3 parts: some code cleanup with code reuse, removing "dangerous"
+fifo read (possibly introducing fifo data corruption) and safe fifo read.
+
+Also we remove some dead code.
+
 ---
-v2: fixed typo in comment: bevore -> before
----
- drivers/spi/spi-tegra20-slink.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+Changelog:
+  V1 -> V2: reordering commits as per request of Stefan Wahren
+            to help backporting the "essential" bugfixes go in first
+	    remove the dependency on a different patchset focused on
+	    making cs_change delay configurable
+  V2 -> V3: incorporated feedback by Stefan Wahren
 
-diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index 1427f343b39a..2d173fadeb19 100644
---- a/drivers/spi/spi-tegra20-slink.c
-+++ b/drivers/spi/spi-tegra20-slink.c
-@@ -717,9 +717,6 @@ static int tegra_slink_start_transfer_one(struct spi_device *spi,
- 	command2 = tspi->command2_reg;
- 	command2 &= ~(SLINK_RXEN | SLINK_TXEN);
- 
--	tegra_slink_writel(tspi, command, SLINK_COMMAND);
--	tspi->command_reg = command;
--
- 	tspi->cur_direction = 0;
- 	if (t->rx_buf) {
- 		command2 |= SLINK_RXEN;
-@@ -729,9 +726,18 @@ static int tegra_slink_start_transfer_one(struct spi_device *spi,
- 		command2 |= SLINK_TXEN;
- 		tspi->cur_direction |= DATA_DIR_TX;
- 	}
-+
-+	/*
-+	 * Writing to the command2 register before the command register prevents
-+	 * a spike in chip_select line 0. This selects the chip_select line
-+	 * before changing the chip_select value.
-+	 */
- 	tegra_slink_writel(tspi, command2, SLINK_COMMAND2);
- 	tspi->command2_reg = command2;
- 
-+	tegra_slink_writel(tspi, command, SLINK_COMMAND);
-+	tspi->command_reg = command;
-+
- 	if (total_fifo_words > SLINK_FIFO_DEPTH)
- 		ret = tegra_slink_start_dma_based_transfer(tspi, t);
- 	else
--- 
+Martin Sperl (9):
+  spi: bcm2835aux: unifying code between polling and interrupt driven
+    code
+  spi: bcm2835aux: remove dangerous uncontrolled read of fifo
+  spi: bcm2835aux: fix corruptions for longer spi transfers
+  spi: bcm2835aux: remove dead code
+  spi: bcm2835aux: fix driver to not allow 65535 (=-1) cs-gpios
+  spi: bcm2835aux: warn in dmesg that native cs is not really supported
+  spi: bcm2835aux: setup gpio-cs to output and correct level during
+    setup
+  spi: bcm2835aux: add driver stats to debugfs
+  spi: bcm2835aux: make the polling duration limits configurable
+
+ drivers/spi/spi-bcm2835aux.c | 204 +++++++++++++++++++++++++++++++------------
+ 1 file changed, 147 insertions(+), 57 deletions(-)
+
+--
 2.11.0

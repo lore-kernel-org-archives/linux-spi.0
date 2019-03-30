@@ -1,84 +1,153 @@
-From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH V3 9/9] spi: bcm2835aux: make the polling duration limits
- configurable
-Date: Sat, 30 Mar 2019 09:31:06 +0000
-Message-ID: <20190330093106.20723-10-kernel@martin.sperl.org>
+From: kernel@martin.sperl.org
+Subject: [PATCH V3 8/9] spi: bcm2835aux: add driver stats to debugfs
+Date: Sat, 30 Mar 2019 10:13:53 +0000
+Message-ID: <20190330101353.12981-1-kernel@martin.sperl.org>
 References: <20190330093106.20723-1-kernel@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
- Stefan Wahren <stefan.wahren-eS4NqCHxEME@public.gmane.org>,
- Hubert Denkmair <h.denkmair-4pT7WzY1KUiELgA04lAiVw@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <20190330093106.20723-1-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
-List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Martin Sperl <kernel@martin.sperl.org>
+To: Mark Brown <broonie@kernel.org>, Eric Anholt <eric@anholt.net>,
+ Stefan Wahren <stefan.wahren@i2se.com>,
+ Hubert Denkmair <h.denkmair@intence.de>, linux-spi@vger.kernel.org,
+ linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190330093106.20723-1-kernel@martin.sperl.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-RnJvbTogTWFydGluIFNwZXJsIDxrZXJuZWxAbWFydGluLnNwZXJsLm9yZz4KClVuZGVyIHNvbWUg
-Y2lyY3Vtc3RhbmNlcyB0aGUgZGVmYXVsdCAzMCB1cyBwb2xsaW5nIGxpbWl0IGlzIG5vdCBvcHRp
-bWFsCmFuZCBtYXkgbGVhZCB0byBsb25nIGRlbGF5cyBiZWNhdXNlIHdlIGFyZSB3YWl0aW5nIG9u
-IGFuIGludGVycnVwdC4Kd2l0aCB0aGlzIHBhdGNoIHdlIGhhdmUgdGhlIHBvc3NpYmlsaXR5IHRv
-IGluZmx1ZW5jZSB0aGlzIHBvbGljeS4KClNvIG1ha2UgdGhpcyBsaW1pdCAoaW4gdXMpIGNvbmZp
-Z3VyYWJsZSB2aWEgYSBtb2R1bGUgcGFyYW1ldGVycwooYnV0IGFsc28gbW9kaWZ5YWJsZSB2aWEg
-L3N5cy9tb2R1bGVzLy4uLikKClNpZ25lZC1vZmYtYnk6IE1hcnRpbiBTcGVybCA8a2VybmVsQG1h
-cnRpbi5zcGVybC5vcmc+CgotLS0KQ2hhbmdlbG9nOgogIFYyIC0+IFYzOiBjbGFyaWZpZWQgdXNl
-IGNhc2Ugb2YgcG9sbGluZ19saW1pdF91cyA9IDAKCiBkcml2ZXJzL3NwaS9zcGktYmNtMjgzNWF1
-eC5jIHwgMjUgKysrKysrKysrKysrKystLS0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDE0IGlu
-c2VydGlvbnMoKyksIDExIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL3Nw
-aS1iY20yODM1YXV4LmMgYi9kcml2ZXJzL3NwaS9zcGktYmNtMjgzNWF1eC5jCmluZGV4IGU3YTRh
-MTYxYjc4Yi4uMWExMWI5MTMxNTU2IDEwMDY0NAotLS0gYS9kcml2ZXJzL3NwaS9zcGktYmNtMjgz
-NWF1eC5jCisrKyBiL2RyaXZlcnMvc3BpL3NwaS1iY20yODM1YXV4LmMKQEAgLTM3LDYgKzM3LDEy
-IEBACiAjaW5jbHVkZSA8bGludXgvc3BpL3NwaS5oPgogI2luY2x1ZGUgPGxpbnV4L3NwaW5sb2Nr
-Lmg+CgorLyogZGVmaW5lIHBvbGxpbmcgbGltaXRzICovCit1bnNpZ25lZCBpbnQgcG9sbGluZ19s
-aW1pdF91cyA9IDMwOworbW9kdWxlX3BhcmFtKHBvbGxpbmdfbGltaXRfdXMsIHVpbnQsIDA2NjQp
-OworTU9EVUxFX1BBUk1fREVTQyhwb2xsaW5nX2xpbWl0X3VzLAorCQkgInRpbWUgaW4gdXMgdG8g
-cnVuIGEgdHJhbnNmZXIgaW4gcG9sbGluZyBtb2RlIC0gaWYgemVybyBubyBwb2xsaW5nIGlzIHVz
-ZWRcbiIpOworCiAvKgogICogc3BpIHJlZ2lzdGVyIGRlZmluZXMKICAqCkBAIC04OSwxMCArOTUs
-NiBAQAogI2RlZmluZSBCQ00yODM1X0FVWF9TUElfU1RBVF9CVVNZCTB4MDAwMDAwNDAKICNkZWZp
-bmUgQkNNMjgzNV9BVVhfU1BJX1NUQVRfQklUQ09VTlQJMHgwMDAwMDAzRgoKLS8qIHRpbWVvdXQg
-dmFsdWVzICovCi0jZGVmaW5lIEJDTTI4MzVfQVVYX1NQSV9QT0xMSU5HX0xJTUlUX1VTCTMwCi0j
-ZGVmaW5lIEJDTTI4MzVfQVVYX1NQSV9QT0xMSU5HX0pJRkZJRVMJCTIKLQogc3RydWN0IGJjbTI4
-MzVhdXhfc3BpIHsKIAl2b2lkIF9faW9tZW0gKnJlZ3M7CiAJc3RydWN0IGNsayAqY2xrOwpAQCAt
-MzIwLDggKzMyMiw4IEBAIHN0YXRpYyBpbnQgYmNtMjgzNWF1eF9zcGlfdHJhbnNmZXJfb25lX3Bv
-bGwoc3RydWN0IHNwaV9tYXN0ZXIgKm1hc3RlciwKIAliY20yODM1YXV4X3dyKGJzLCBCQ00yODM1
-X0FVWF9TUElfQ05UTDEsIGJzLT5jbnRsWzFdKTsKIAliY20yODM1YXV4X3dyKGJzLCBCQ00yODM1
-X0FVWF9TUElfQ05UTDAsIGJzLT5jbnRsWzBdKTsKCi0JLyogc2V0IHRoZSB0aW1lb3V0ICovCi0J
-dGltZW91dCA9IGppZmZpZXMgKyBCQ00yODM1X0FVWF9TUElfUE9MTElOR19KSUZGSUVTOworCS8q
-IHNldCB0aGUgdGltZW91dCB0byBhdCBsZWFzdCAyIGppZmZpZXMgKi8KKwl0aW1lb3V0ID0gamlm
-ZmllcyArIDIgKyBIWiAqIHBvbGxpbmdfbGltaXRfdXMgLyAxMDAwMDAwOwoKIAkvKiBsb29wIHVu
-dGlsIGZpbmlzaGVkIHRoZSB0cmFuc2ZlciAqLwogCXdoaWxlIChicy0+cnhfbGVuKSB7CkBAIC0z
-NTEsOCArMzUzLDggQEAgc3RhdGljIGludCBiY20yODM1YXV4X3NwaV90cmFuc2Zlcl9vbmUoc3Ry
-dWN0IHNwaV9tYXN0ZXIgKm1hc3RlciwKIAkJCQkgICAgICAgc3RydWN0IHNwaV90cmFuc2ZlciAq
-dGZyKQogewogCXN0cnVjdCBiY20yODM1YXV4X3NwaSAqYnMgPSBzcGlfbWFzdGVyX2dldF9kZXZk
-YXRhKG1hc3Rlcik7Ci0JdW5zaWduZWQgbG9uZyBzcGlfaHosIGNsa19oeiwgc3BlZWQ7Ci0JdW5z
-aWduZWQgbG9uZyBzcGlfdXNlZF9oejsKKwl1bnNpZ25lZCBsb25nIHNwaV9oeiwgY2xrX2h6LCBz
-cGVlZCwgc3BpX3VzZWRfaHo7CisJdW5zaWduZWQgbG9uZyBoel9wZXJfYnl0ZSwgYnl0ZV9saW1p
-dDsKCiAJLyogY2FsY3VsYXRlIHRoZSByZWdpc3RlcnMgdG8gaGFuZGxlCiAJICoKQEAgLTM5Niwx
-NCArMzk4LDE1IEBAIHN0YXRpYyBpbnQgYmNtMjgzNWF1eF9zcGlfdHJhbnNmZXJfb25lKHN0cnVj
-dCBzcGlfbWFzdGVyICptYXN0ZXIsCiAJICogb2YgSHogcGVyIGJ5dGUgcGVyIHBvbGxpbmcgbGlt
-aXQuICBFLmcuLCB3ZSBjYW4gdHJhbnNmZXIgMSBieXRlIGluCiAJICogMzAgwrVzIHBlciAzMDAs
-MDAwIEh6IG9mIGJ1cyBjbG9jay4KIAkgKi8KLSNkZWZpbmUgSFpfUEVSX0JZVEUgKCg5ICogMTAw
-MDAwMCkgLyBCQ00yODM1X0FVWF9TUElfUE9MTElOR19MSU1JVF9VUykKKwloel9wZXJfYnl0ZSA9
-IHBvbGxpbmdfbGltaXRfdXMgPyAoOSAqIDEwMDAwMDApIC8gcG9sbGluZ19saW1pdF91cyA6IDA7
-CisJYnl0ZV9saW1pdCA9IGh6X3Blcl9ieXRlID8gc3BpX3VzZWRfaHogLyBoel9wZXJfYnl0ZSA6
-IDE7CisKIAkvKiBydW4gaW4gcG9sbGluZyBtb2RlIGZvciBzaG9ydCB0cmFuc2ZlcnMgKi8KLQlp
-ZiAodGZyLT5sZW4gPCBzcGlfdXNlZF9oeiAvIEhaX1BFUl9CWVRFKQorCWlmICh0ZnItPmxlbiA8
-IGJ5dGVfbGltaXQpCiAJCXJldHVybiBiY20yODM1YXV4X3NwaV90cmFuc2Zlcl9vbmVfcG9sbCht
-YXN0ZXIsIHNwaSwgdGZyKTsKCiAJLyogcnVuIGluIGludGVycnVwdCBtb2RlIGZvciBhbGwgb3Ro
-ZXJzICovCiAJcmV0dXJuIGJjbTI4MzVhdXhfc3BpX3RyYW5zZmVyX29uZV9pcnEobWFzdGVyLCBz
-cGksIHRmcik7Ci0jdW5kZWYgSFpfUEVSX0JZVEUKIH0KCiBzdGF0aWMgaW50IGJjbTI4MzVhdXhf
-c3BpX3ByZXBhcmVfbWVzc2FnZShzdHJ1Y3Qgc3BpX21hc3RlciAqbWFzdGVyLAotLQoyLjExLjAK
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmxpbnV4LXJw
-aS1rZXJuZWwgbWFpbGluZyBsaXN0CmxpbnV4LXJwaS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9y
-ZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LXJwaS1r
-ZXJuZWwK
+From: Martin Sperl <kernel@martin.sperl.org>
+
+To estimate efficiency add statistics on transfer types
+(polling and interrupt) used to debugfs.
+
+Signed-off-by: Martin Sperl <kernel@martin.sperl.org>
+
+---
+Changelog:
+  V2 -> V3: make use of counters regardless of CONFIG_DEBUG_FS
+
+ drivers/spi/spi-bcm2835aux.c | 56 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 56 insertions(+)
+
+diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+index 99414319001a..e7a4a161b78b 100644
+--- a/drivers/spi/spi-bcm2835aux.c
++++ b/drivers/spi/spi-bcm2835aux.c
+@@ -21,6 +21,7 @@
+
+ #include <linux/clk.h>
+ #include <linux/completion.h>
++#include <linux/debugfs.h>
+ #include <linux/delay.h>
+ #include <linux/err.h>
+ #include <linux/interrupt.h>
+@@ -102,8 +103,52 @@ struct bcm2835aux_spi {
+ 	int tx_len;
+ 	int rx_len;
+ 	int pending;
++
++	u64 count_transfer_polling;
++	u64 count_transfer_irq;
++	u64 count_transfer_irq_after_poll;
++
++	struct dentry *debugfs_dir;
+ };
+
++#if defined(CONFIG_DEBUG_FS)
++static void bcm2835aux_debugfs_create(struct bcm2835aux_spi *bs,
++				      const char *dname)
++{
++	char name[64];
++	struct dentry *dir;
++
++	/* get full name */
++	snprintf(name, sizeof(name), "spi-bcm2835aux-%s", dname);
++
++	/* the base directory */
++	dir = debugfs_create_dir(name, NULL);
++	bs->debugfs_dir = dir;
++
++	/* the counters */
++	debugfs_create_u64("count_transfer_polling", 0444, dir,
++			   &bs->count_transfer_polling);
++	debugfs_create_u64("count_transfer_irq", 0444, dir,
++			   &bs->count_transfer_irq);
++	debugfs_create_u64("count_transfer_irq_after_poll", 0444, dir,
++			   &bs->count_transfer_irq_after_poll);
++}
++
++static void bcm2835aux_debugfs_remove(struct bcm2835aux_spi *bs)
++{
++	debugfs_remove_recursive(bs->debugfs_dir);
++	bs->debugfs_dir = NULL;
++}
++#else
++static void bcm2835aux_debugfs_create(struct bcm2835aux_spi *bs)
++{
++}
++
++static void bcm2835aux_debugfs_remove(struct bcm2835aux_spi *bs)
++{
++}
++#endif /* CONFIG_DEBUG_FS */
++
+ static inline u32 bcm2835aux_rd(struct bcm2835aux_spi *bs, unsigned reg)
+ {
+ 	return readl(bs->regs + reg);
+@@ -242,6 +287,9 @@ static int bcm2835aux_spi_transfer_one_irq(struct spi_master *master,
+ {
+ 	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
+
++	/* update statistics */
++	bs->count_transfer_irq++;
++
+ 	/* fill in registers and fifos before enabling interrupts */
+ 	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1]);
+ 	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL0, bs->cntl[0]);
+@@ -265,6 +313,9 @@ static int bcm2835aux_spi_transfer_one_poll(struct spi_master *master,
+ 	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
+ 	unsigned long timeout;
+
++	/* update statistics */
++	bs->count_transfer_polling++;
++
+ 	/* configure spi */
+ 	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1]);
+ 	bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL0, bs->cntl[0]);
+@@ -285,6 +336,7 @@ static int bcm2835aux_spi_transfer_one_poll(struct spi_master *master,
+ 					    jiffies - timeout,
+ 					    bs->tx_len, bs->rx_len);
+ 			/* forward to interrupt handler */
++			bs->count_transfer_irq_after_poll++;
+ 			return __bcm2835aux_spi_transfer_one_irq(master,
+ 							       spi, tfr);
+ 		}
+@@ -533,6 +585,8 @@ static int bcm2835aux_spi_probe(struct platform_device *pdev)
+ 		goto out_clk_disable;
+ 	}
+
++	bcm2835aux_debugfs_create(bs, dev_name(&pdev->dev));
++
+ 	return 0;
+
+ out_clk_disable:
+@@ -547,6 +601,8 @@ static int bcm2835aux_spi_remove(struct platform_device *pdev)
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+ 	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
+
++	bcm2835aux_debugfs_remove(bs);
++
+ 	bcm2835aux_spi_reset_hw(bs);
+
+ 	/* disable the HW block by releasing the clock */
+--
+2.11.0

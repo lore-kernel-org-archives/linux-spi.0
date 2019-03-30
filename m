@@ -1,12 +1,12 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH V3 6/9] spi: bcm2835aux: warn in dmesg that native cs is not
- really supported
-Date: Sat, 30 Mar 2019 09:31:03 +0000
-Message-ID: <20190330093106.20723-7-kernel@martin.sperl.org>
+Subject: [PATCH V3 9/9] spi: bcm2835aux: make the polling duration limits
+ configurable
+Date: Sat, 30 Mar 2019 09:31:06 +0000
+Message-ID: <20190330093106.20723-10-kernel@martin.sperl.org>
 References: <20190330093106.20723-1-kernel@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
  Stefan Wahren <stefan.wahren-eS4NqCHxEME@public.gmane.org>,
  Hubert Denkmair <h.denkmair-4pT7WzY1KUiELgA04lAiVw@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -24,78 +24,61 @@ Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BG
 Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-
->From personal bad experience (even as the author of the original driver)
-it shows that native-cs is "somewhat" supported by the spi bus driver
-when using a buggy device tree.
-
-So make sure that the driver is warning in dmesg about this fact
-that we are running in a not supported mode that may have surprizing
-limitations.
-
-Fixes: 1ea29b39f4c812ec ("spi: bcm2835aux: add bcm2835 auxiliary spi device...")
-
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
----
-
-Changelog:
-  V2 -> V3: use dev_warn
-            made messages shorter
-
- drivers/spi/spi-bcm2835aux.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
-
-diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-index c8acde017b6a..a105db371417 100644
---- a/drivers/spi/spi-bcm2835aux.c
-+++ b/drivers/spi/spi-bcm2835aux.c
-@@ -396,6 +396,38 @@ static void bcm2835aux_spi_handle_err(struct spi_master *master,
- 	bcm2835aux_spi_reset_hw(bs);
- }
-
-+static int bcm2835aux_spi_setup(struct spi_device *spi)
-+{
-+	int ret;
-+
-+	/* sanity check for native cs */
-+	if (spi->mode & SPI_NO_CS)
-+		return 0;
-+	if (gpio_is_valid(spi->cs_gpio))
-+		return 0;
-+
-+	/* for dt-backwards compatibility: only support native on CS0
-+	 * known things not supported with broken native CS:
-+	 * * multiple chip-selects: cs0-cs2 are all
-+	 *     simultaniously asserted whenever there is a transfer
-+	 *     this even includes SPI_NO_CS
-+	 * * SPI_CS_HIGH: cs are always asserted low
-+	 * * cs_change: cs is deasserted after each spi_transfer
-+	 * * cs_delay_usec: cs is always deasserted one SCK cycle
-+	 *     after the last transfer
-+	 * probably more...
-+	 */
-+	dev_warn(&spi->dev,
-+		 "Native CS is not supported - please configure cs-gpio in device-tree\n");
-+
-+	if (spi->chip_select == 0)
-+		return 0;
-+
-+	dev_warn(&spi->dev, "Native CS is not working for cs > 0\n");
-+
-+	return -EINVAL;
-+}
-+
- static int bcm2835aux_spi_probe(struct platform_device *pdev)
- {
- 	struct spi_master *master;
-@@ -425,6 +457,7 @@ static int bcm2835aux_spi_probe(struct platform_device *pdev)
- 	 *     a spi_transfer
- 	 */
- 	master->num_chipselect = 1;
-+	master->setup = bcm2835aux_spi_setup;
- 	master->transfer_one = bcm2835aux_spi_transfer_one;
- 	master->handle_err = bcm2835aux_spi_handle_err;
- 	master->prepare_message = bcm2835aux_spi_prepare_message;
---
-2.11.0
+RnJvbTogTWFydGluIFNwZXJsIDxrZXJuZWxAbWFydGluLnNwZXJsLm9yZz4KClVuZGVyIHNvbWUg
+Y2lyY3Vtc3RhbmNlcyB0aGUgZGVmYXVsdCAzMCB1cyBwb2xsaW5nIGxpbWl0IGlzIG5vdCBvcHRp
+bWFsCmFuZCBtYXkgbGVhZCB0byBsb25nIGRlbGF5cyBiZWNhdXNlIHdlIGFyZSB3YWl0aW5nIG9u
+IGFuIGludGVycnVwdC4Kd2l0aCB0aGlzIHBhdGNoIHdlIGhhdmUgdGhlIHBvc3NpYmlsaXR5IHRv
+IGluZmx1ZW5jZSB0aGlzIHBvbGljeS4KClNvIG1ha2UgdGhpcyBsaW1pdCAoaW4gdXMpIGNvbmZp
+Z3VyYWJsZSB2aWEgYSBtb2R1bGUgcGFyYW1ldGVycwooYnV0IGFsc28gbW9kaWZ5YWJsZSB2aWEg
+L3N5cy9tb2R1bGVzLy4uLikKClNpZ25lZC1vZmYtYnk6IE1hcnRpbiBTcGVybCA8a2VybmVsQG1h
+cnRpbi5zcGVybC5vcmc+CgotLS0KQ2hhbmdlbG9nOgogIFYyIC0+IFYzOiBjbGFyaWZpZWQgdXNl
+IGNhc2Ugb2YgcG9sbGluZ19saW1pdF91cyA9IDAKCiBkcml2ZXJzL3NwaS9zcGktYmNtMjgzNWF1
+eC5jIHwgMjUgKysrKysrKysrKysrKystLS0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDE0IGlu
+c2VydGlvbnMoKyksIDExIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL3Nw
+aS1iY20yODM1YXV4LmMgYi9kcml2ZXJzL3NwaS9zcGktYmNtMjgzNWF1eC5jCmluZGV4IGU3YTRh
+MTYxYjc4Yi4uMWExMWI5MTMxNTU2IDEwMDY0NAotLS0gYS9kcml2ZXJzL3NwaS9zcGktYmNtMjgz
+NWF1eC5jCisrKyBiL2RyaXZlcnMvc3BpL3NwaS1iY20yODM1YXV4LmMKQEAgLTM3LDYgKzM3LDEy
+IEBACiAjaW5jbHVkZSA8bGludXgvc3BpL3NwaS5oPgogI2luY2x1ZGUgPGxpbnV4L3NwaW5sb2Nr
+Lmg+CgorLyogZGVmaW5lIHBvbGxpbmcgbGltaXRzICovCit1bnNpZ25lZCBpbnQgcG9sbGluZ19s
+aW1pdF91cyA9IDMwOworbW9kdWxlX3BhcmFtKHBvbGxpbmdfbGltaXRfdXMsIHVpbnQsIDA2NjQp
+OworTU9EVUxFX1BBUk1fREVTQyhwb2xsaW5nX2xpbWl0X3VzLAorCQkgInRpbWUgaW4gdXMgdG8g
+cnVuIGEgdHJhbnNmZXIgaW4gcG9sbGluZyBtb2RlIC0gaWYgemVybyBubyBwb2xsaW5nIGlzIHVz
+ZWRcbiIpOworCiAvKgogICogc3BpIHJlZ2lzdGVyIGRlZmluZXMKICAqCkBAIC04OSwxMCArOTUs
+NiBAQAogI2RlZmluZSBCQ00yODM1X0FVWF9TUElfU1RBVF9CVVNZCTB4MDAwMDAwNDAKICNkZWZp
+bmUgQkNNMjgzNV9BVVhfU1BJX1NUQVRfQklUQ09VTlQJMHgwMDAwMDAzRgoKLS8qIHRpbWVvdXQg
+dmFsdWVzICovCi0jZGVmaW5lIEJDTTI4MzVfQVVYX1NQSV9QT0xMSU5HX0xJTUlUX1VTCTMwCi0j
+ZGVmaW5lIEJDTTI4MzVfQVVYX1NQSV9QT0xMSU5HX0pJRkZJRVMJCTIKLQogc3RydWN0IGJjbTI4
+MzVhdXhfc3BpIHsKIAl2b2lkIF9faW9tZW0gKnJlZ3M7CiAJc3RydWN0IGNsayAqY2xrOwpAQCAt
+MzIwLDggKzMyMiw4IEBAIHN0YXRpYyBpbnQgYmNtMjgzNWF1eF9zcGlfdHJhbnNmZXJfb25lX3Bv
+bGwoc3RydWN0IHNwaV9tYXN0ZXIgKm1hc3RlciwKIAliY20yODM1YXV4X3dyKGJzLCBCQ00yODM1
+X0FVWF9TUElfQ05UTDEsIGJzLT5jbnRsWzFdKTsKIAliY20yODM1YXV4X3dyKGJzLCBCQ00yODM1
+X0FVWF9TUElfQ05UTDAsIGJzLT5jbnRsWzBdKTsKCi0JLyogc2V0IHRoZSB0aW1lb3V0ICovCi0J
+dGltZW91dCA9IGppZmZpZXMgKyBCQ00yODM1X0FVWF9TUElfUE9MTElOR19KSUZGSUVTOworCS8q
+IHNldCB0aGUgdGltZW91dCB0byBhdCBsZWFzdCAyIGppZmZpZXMgKi8KKwl0aW1lb3V0ID0gamlm
+ZmllcyArIDIgKyBIWiAqIHBvbGxpbmdfbGltaXRfdXMgLyAxMDAwMDAwOwoKIAkvKiBsb29wIHVu
+dGlsIGZpbmlzaGVkIHRoZSB0cmFuc2ZlciAqLwogCXdoaWxlIChicy0+cnhfbGVuKSB7CkBAIC0z
+NTEsOCArMzUzLDggQEAgc3RhdGljIGludCBiY20yODM1YXV4X3NwaV90cmFuc2Zlcl9vbmUoc3Ry
+dWN0IHNwaV9tYXN0ZXIgKm1hc3RlciwKIAkJCQkgICAgICAgc3RydWN0IHNwaV90cmFuc2ZlciAq
+dGZyKQogewogCXN0cnVjdCBiY20yODM1YXV4X3NwaSAqYnMgPSBzcGlfbWFzdGVyX2dldF9kZXZk
+YXRhKG1hc3Rlcik7Ci0JdW5zaWduZWQgbG9uZyBzcGlfaHosIGNsa19oeiwgc3BlZWQ7Ci0JdW5z
+aWduZWQgbG9uZyBzcGlfdXNlZF9oejsKKwl1bnNpZ25lZCBsb25nIHNwaV9oeiwgY2xrX2h6LCBz
+cGVlZCwgc3BpX3VzZWRfaHo7CisJdW5zaWduZWQgbG9uZyBoel9wZXJfYnl0ZSwgYnl0ZV9saW1p
+dDsKCiAJLyogY2FsY3VsYXRlIHRoZSByZWdpc3RlcnMgdG8gaGFuZGxlCiAJICoKQEAgLTM5Niwx
+NCArMzk4LDE1IEBAIHN0YXRpYyBpbnQgYmNtMjgzNWF1eF9zcGlfdHJhbnNmZXJfb25lKHN0cnVj
+dCBzcGlfbWFzdGVyICptYXN0ZXIsCiAJICogb2YgSHogcGVyIGJ5dGUgcGVyIHBvbGxpbmcgbGlt
+aXQuICBFLmcuLCB3ZSBjYW4gdHJhbnNmZXIgMSBieXRlIGluCiAJICogMzAgwrVzIHBlciAzMDAs
+MDAwIEh6IG9mIGJ1cyBjbG9jay4KIAkgKi8KLSNkZWZpbmUgSFpfUEVSX0JZVEUgKCg5ICogMTAw
+MDAwMCkgLyBCQ00yODM1X0FVWF9TUElfUE9MTElOR19MSU1JVF9VUykKKwloel9wZXJfYnl0ZSA9
+IHBvbGxpbmdfbGltaXRfdXMgPyAoOSAqIDEwMDAwMDApIC8gcG9sbGluZ19saW1pdF91cyA6IDA7
+CisJYnl0ZV9saW1pdCA9IGh6X3Blcl9ieXRlID8gc3BpX3VzZWRfaHogLyBoel9wZXJfYnl0ZSA6
+IDE7CisKIAkvKiBydW4gaW4gcG9sbGluZyBtb2RlIGZvciBzaG9ydCB0cmFuc2ZlcnMgKi8KLQlp
+ZiAodGZyLT5sZW4gPCBzcGlfdXNlZF9oeiAvIEhaX1BFUl9CWVRFKQorCWlmICh0ZnItPmxlbiA8
+IGJ5dGVfbGltaXQpCiAJCXJldHVybiBiY20yODM1YXV4X3NwaV90cmFuc2Zlcl9vbmVfcG9sbCht
+YXN0ZXIsIHNwaSwgdGZyKTsKCiAJLyogcnVuIGluIGludGVycnVwdCBtb2RlIGZvciBhbGwgb3Ro
+ZXJzICovCiAJcmV0dXJuIGJjbTI4MzVhdXhfc3BpX3RyYW5zZmVyX29uZV9pcnEobWFzdGVyLCBz
+cGksIHRmcik7Ci0jdW5kZWYgSFpfUEVSX0JZVEUKIH0KCiBzdGF0aWMgaW50IGJjbTI4MzVhdXhf
+c3BpX3ByZXBhcmVfbWVzc2FnZShzdHJ1Y3Qgc3BpX21hc3RlciAqbWFzdGVyLAotLQoyLjExLjAK
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmxpbnV4LXJw
+aS1rZXJuZWwgbWFpbGluZyBsaXN0CmxpbnV4LXJwaS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9y
+ZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LXJwaS1r
+ZXJuZWwK

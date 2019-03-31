@@ -1,73 +1,61 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH V1 21/26] DT bindings: spi: add tx/rx clock delay SPI
- client properties
-Date: Sun, 31 Mar 2019 01:42:28 -0500
-Message-ID: <5ca06155.1c69fb81.60281.9b59@mx.google.com>
-References: <1553666207-11414-1-git-send-email-skomatineni@nvidia.com>
- <1553666207-11414-21-git-send-email-skomatineni@nvidia.com>
+From: Mukesh Ojha <mojha@codeaurora.org>
+Subject: Re: [PATCH] spi: oc-tiny: fix negative loop bound error on for loop
+Date: Sun, 31 Mar 2019 14:53:02 +0530
+Message-ID: <2461a0c8-9d60-d8c3-3021-4a97d91f70ee@codeaurora.org>
+References: <20190330212300.11675-1-colin.king@canonical.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: thierry.reding@gmail.com, jonathanh@nvidia.com, talho@nvidia.com,
-        broonie@kernel.org, mark.rutland@arm.com, kyarlagadda@nvidia.com,
-        ldewangan@nvidia.com, linux-tegra@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org
-To: Sowjanya Komatineni <skomatineni@nvidia.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Colin King <colin.king@canonical.com>,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1553666207-11414-21-git-send-email-skomatineni@nvidia.com>
+In-Reply-To: <20190330212300.11675-1-colin.king@canonical.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Mar 26, 2019 at 10:56:42PM -0700, Sowjanya Komatineni wrote:
-> This patch adds Tegra SPI master tx and rx clock delay properties.
-> 
-> TX/RX clock delays may vary depending on the platform design trace lengths
-> for each client on the Tegra SPI bus. These properties helps to tune the
-> clock delays.
-> 
-> Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
+
+On 3/31/2019 2:53 AM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> Currently the for-loop using an unsigned int for the loop counter
+> which is problematic when comparing it to the signed int
+> gt->gpio_cs_count.  This is an issue because if the signed int is
+> negative (for example, the call to of_gpio_count failed) then
+> the negative loop bound is implicitly cast to an unsigned int on
+> the comparison to loop counter i and will yield a very large value,
+> eventually causing an array bounds overflow on hw->gpio_cs.
+>
+> Fix this by simply making the loop counter i a signed int;
+>
+> Fixes: ca632f556697 ("spi: reorganize drivers")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  .../devicetree/bindings/spi/nvidia,tegra114-spi.txt      | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
+>   drivers/spi/spi-oc-tiny.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/spi/spi-oc-tiny.c b/drivers/spi/spi-oc-tiny.c
+> index 085f580be7ec..81f74b938dc9 100644
+> --- a/drivers/spi/spi-oc-tiny.c
+> +++ b/drivers/spi/spi-oc-tiny.c
+> @@ -206,7 +206,7 @@ static int tiny_spi_of_probe(struct platform_device *pdev)
+>   {
+>   	struct tiny_spi *hw = platform_get_drvdata(pdev);
+>   	struct device_node *np = pdev->dev.of_node;
+> -	unsigned int i;
+> +	int i;
 
-Just combine this with patch 19.
 
-> diff --git a/Documentation/devicetree/bindings/spi/nvidia,tegra114-spi.txt b/Documentation/devicetree/bindings/spi/nvidia,tegra114-spi.txt
-> index 6167c5234b64..2b84b7b726ce 100644
-> --- a/Documentation/devicetree/bindings/spi/nvidia,tegra114-spi.txt
-> +++ b/Documentation/devicetree/bindings/spi/nvidia,tegra114-spi.txt
-> @@ -29,6 +29,12 @@ spi-client device controller properties:
->  - nvidia,cs-hold-clk-count: CS hold timing parameter.
->  - nvidia,cs-inactive-cycles: CS inactive delay in terms of clock between
->    transfers.
-> +- nvidia,tx-clk-tap-delay: Delays the clock going out to the external device
-> +  with this tap value. This property is used to tune the outgoing data from
-> +  Tegra SPI master with respect to outgoing Tegra SPI master clock.
-> +- nvidia,rx-clk-tap-delay: Delays the clock coming in from the external device
-> +  with this tap value. This property is used to adjust the Tegra SPI master
-> +  clock with respect to the data from the SPI slave device.
+same here as well you are putting wrapper over a original issue by not 
+checking the returned value.
+Please fix that in both patches.
 
-Are there units? What's the range of values.
 
->  
->  Example:
->  
-> @@ -45,4 +51,14 @@ spi@7000d600 {
->  	reset-names = "spi";
->  	dmas = <&apbdma 16>, <&apbdma 16>;
->  	dma-names = "rx", "tx";
-> +
-> +	<spi-client>@<bus_num> {
-> +		...
-> +		...
-> +		nvidia,cs-setup-clk-count = <10>;
-> +		nvidia,cs-hold-clk-count = <10>;
-> +		nvidia,rx-clk-tap-delay = <0>;
-> +		nvidia,tx-clk-tap-delay = <16>;
-> +		...
-> +	};
->  };
-> -- 
-> 2.7.4
-> 
+
+Thanks.
+Mukesh
+
+>   	u32 val;
+>   
+>   	if (!np)

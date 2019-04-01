@@ -1,60 +1,68 @@
 From: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-Subject: [LINUX PATCH v2 1/3] dt-bindings: spi: Add device tree binding documentation for Zynq QSPI controller
-Date: Mon, 1 Apr 2019 13:28:32 +0530
-Message-ID: <1554105512-18758-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
+Subject: [LINUX PATCH v2 2/3] spi: spi-mem: export spi_mem_default_supports_op()
+Date: Mon, 1 Apr 2019 13:29:00 +0530
+Message-ID: <1554105540-19704-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: <michals@xilinx.com>, <mark.rutland@arm.com>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <nagasuresh12@gmail.com>,
+Cc: <vigneshr@ti.com>, <linux-spi@vger.kernel.org>,
+        <dwmw2@infradead.org>, <marek.vasut@gmail.com>, <richard@nod.at>,
+        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <michal.simek@xilinx.com>, <nagasuresh12@gmail.com>,
         Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-To: <broonie@kernel.org>, <bbrezillon@kernel.org>, <robh@kernel.org>
+To: <broonie@kernel.org>, <bbrezillon@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds the dts binding document for Zynq SOC QSPI controller.
+Export spi_mem_default_supports_op(), so that controller drivers
+can use this.
+spi-mem driver already exports this using EXPORT_SYMBOL,
+but not declared it in spi-mem.h.
+This patch declares spi_mem_default_supports_op() in spi-mem.h and
+also removes the static from the function prototype.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
 ---
 Changes in v2
+ - Export spi_mem_default_supports_op(), so that controller drivers
+   can use it
+ - Removed the code, which modifies calling spi_mem_default_supports_op()
+   before calling ctrl->supports_op()
+Changes in v1
  - None
 ---
- .../devicetree/bindings/spi/spi-zynq-qspi.txt      | 25 ++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-zynq-qspi.txt
+ drivers/spi/spi-mem.c       | 4 ++--
+ include/linux/spi/spi-mem.h | 3 +++
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-zynq-qspi.txt b/Documentation/devicetree/bindings/spi/spi-zynq-qspi.txt
-new file mode 100644
-index 0000000..16b734a
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-zynq-qspi.txt
-@@ -0,0 +1,25 @@
-+Xilinx Zynq QSPI controller Device Tree Bindings
-+-------------------------------------------------------------------
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index 5217a56..10ebf20 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -135,8 +135,8 @@ static int spi_check_buswidth_req(struct spi_mem *mem, u8 buswidth, bool tx)
+ 	return -ENOTSUPP;
+ }
+ 
+-static bool spi_mem_default_supports_op(struct spi_mem *mem,
+-					const struct spi_mem_op *op)
++bool spi_mem_default_supports_op(struct spi_mem *mem,
++				 const struct spi_mem_op *op)
+ {
+ 	if (spi_check_buswidth_req(mem, op->cmd.buswidth, true))
+ 		return false;
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index 3fe2450..eb71e9d 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -336,6 +336,9 @@ int spi_mem_driver_register_with_owner(struct spi_mem_driver *drv,
+ 
+ void spi_mem_driver_unregister(struct spi_mem_driver *drv);
+ 
++bool spi_mem_default_supports_op(struct spi_mem *mem,
++				 const struct spi_mem_op *op);
 +
-+Required properties:
-+- compatible		: Should be "xlnx,zynq-qspi-1.0".
-+- reg			: Physical base address and size of QSPI registers map.
-+- interrupts		: Property with a value describing the interrupt
-+			  number.
-+- clock-names		: List of input clock names - "ref_clk", "pclk"
-+			  (See clock bindings for details).
-+- clocks		: Clock phandles (see clock bindings for details).
-+
-+Optional properties:
-+- num-cs		: Number of chip selects used.
-+
-+Example:
-+	qspi: spi@e000d000 {
-+		compatible = "xlnx,zynq-qspi-1.0";
-+		reg = <0xe000d000 0x1000>;
-+		interrupt-parent = <&intc>;
-+		interrupts = <0 19 4>;
-+		clock-names = "ref_clk", "pclk";
-+		clocks = <&clkc 10>, <&clkc 43>;
-+		num-cs = <1>;
-+	};
+ #define spi_mem_driver_register(__drv)                                  \
+ 	spi_mem_driver_register_with_owner(__drv, THIS_MODULE)
+ 
 -- 
 2.7.4

@@ -1,79 +1,61 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 3/7] spi: Patch Macronix MX25F0A SPI controller driver
-Date: Mon, 1 Apr 2019 14:51:27 +0700
-Message-ID: <20190401075127.GM2059@sirena.org.uk>
-References: <1553768318-23149-1-git-send-email-masonccyang@mxic.com.tw>
- <1553768318-23149-4-git-send-email-masonccyang@mxic.com.tw>
+From: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+Subject: [LINUX PATCH v2 0/3] Add support for Zynq QSPI controller driver
+Date: Mon, 1 Apr 2019 13:27:53 +0530
+Message-ID: <1554105473-17511-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0723319962662507437=="
-Cc: mark.rutland@arm.com, devicetree@vger.kernel.org, juliensu@mxic.com.tw,
- christophe.kerello@st.com, richard@nod.at, bbrezillon@kernel.org,
- marcel.ziswiler@toradex.com, dwmw2@infradead.org, miquel.raynal@bootlin.com,
- linux-kernel@vger.kernel.org, stefan@agner.ch, linux-spi@vger.kernel.org,
- marek.vasut@gmail.com, paul.burton@mips.com, robh+dt@kernel.org,
- geert@linux-m68k.org, linux-mtd@lists.infradead.org,
- computersforpeace@gmal.com, liang.yang@amlogic.com, lee.jones@linaro.org,
- zhengxunli@mxic.com.tw
-To: Mason Yang <masonccyang@mxic.com.tw>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <1553768318-23149-4-git-send-email-masonccyang@mxic.com.tw>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain
+Cc: <vigneshr@ti.com>, <linux-spi@vger.kernel.org>,
+        <dwmw2@infradead.org>, <marek.vasut@gmail.com>, <richard@nod.at>,
+        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <michal.simek@xilinx.com>, <nagasuresh12@gmail.com>,
+        Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+To: <broonie@kernel.org>, <bbrezillon@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Xilinx Zynq uses a QSPI controller that implements all the functionality
+required to support Quad SPI NOR flash devices.
+This driver along with the SPI MEM and MTD layer is used to support
+flash devices.
 
---===============0723319962662507437==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="xtx0sNU5lZ46KfgK"
-Content-Disposition: inline
+The flash device(s) can be connected in three configurations to this
+controller:
+1. Single - One flash device with 1 CS, 1 Clock and 4 IO lines.
+2. Dual Parallel - Two flash devices connected with common CS and
+   separate IO lines (resulting in 8 IO lines).
+   In this configuration, the controller
+   a) Duplicates commands, address etc. sent on both sets of 4 IO lines.
+   b) Stripes data both transmitted and received i.e.
+      4 bits of data is sent to the first flash and the other 4 bits
+      to the second flash. Similarly read data is also consolidated.
+   Due to this, TX and RX data handling in the driver need special
+   handling for parallel mode.
+3. Dual Stacked - Two flash devices connected with separate CS and
+   4 common IO lines. This is largely similar to single, except for
+   the slave selection logic.
+The above configuration is conveyed to the QSPI driver through a
+devicetree property(currently not implemented 2 & 3 mentioned above).
 
+As per Boris suggestion We are currently not targetting for
+dual stacked/dual parallel handling. There are changes needed in the
+framework to handle this. so this update is only for the Single mode.
 
---xtx0sNU5lZ46KfgK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Naga Sureshkumar Relli (3):
+  dt-bindings: spi: Add device tree binding documentation for Zynq QSPI
+    controller
+  spi: spi-mem: export spi_mem_default_supports_op()
+  spi: spi-mem: Add support for Zynq QSPI controller
 
-On Thu, Mar 28, 2019 at 06:18:34PM +0800, Mason Yang wrote:
-> Patch a MFD driver for Macronix MX25F0A SPI controller.
->=20
-> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+ .../devicetree/bindings/spi/spi-zynq-qspi.txt      |  25 +
+ drivers/spi/Kconfig                                |  10 +-
+ drivers/spi/Makefile                               |   1 +
+ drivers/spi/spi-mem.c                              |   4 +-
+ drivers/spi/spi-zynq-qspi.c                        | 761 +++++++++++++++++++++
+ include/linux/spi/spi-mem.h                        |   3 +
+ 6 files changed, 801 insertions(+), 3 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-zynq-qspi.txt
+ create mode 100644 drivers/spi/spi-zynq-qspi.c
 
-I can't tell what this commit is supposed to do based on this commit
-message which makes it hard to review :(
-
---xtx0sNU5lZ46KfgK
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlyhwv4ACgkQJNaLcl1U
-h9DLegf+I4q4dklppx9CBbUDzY7TJuYMR9fUaHEJ+PERL25QB7175CTrJAMJwNUT
-VYMvdLaDFLhYbL5W340U3TsnndEAr5Ad+8UyN6UKyLnDEJ9St1a+mF+s3bGIDh/y
-9eoAmlwLizsthxqUJvBRh7ZhvKvwhSqfJ4AsiNFhXfq1BnPeYks5pHRtzAa2Y4Qn
-2y6UJEi9pKVrl2Dd8Uer91pO51KSbeT8ScjjbDd8/mD1kTNTxejhvJyzrT2jiqnh
-Zqhjwv1kZB6Nx4IvOiLD5SeRi0QPV987Z95qpDgo2EBeY81zRHEt4wcACe95mGcf
-6+BzLYW9fOms8zU/qBIE5kPY923RZw==
-=IEo0
------END PGP SIGNATURE-----
-
---xtx0sNU5lZ46KfgK--
-
-
---===============0723319962662507437==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
-
---===============0723319962662507437==--
+-- 
+2.7.4

@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: tegra114: flush fifos" to the spi tree
-Date: Mon,  1 Apr 2019 09:54:34 +0100 (BST)
-Message-ID: <20190401085434.F3EBF440082@finisterre.ee.mobilebroadband>
-References: <1553666207-11414-7-git-send-email-skomatineni@nvidia.com>
+Subject: Applied "spi: tegra114: fix for unpacked mode transfers" to the spi tree
+Date: Mon,  1 Apr 2019 09:54:40 +0100 (BST)
+Message-ID: <20190401085440.B8359440082@finisterre.ee.mobilebroadband>
+References: <1553666207-11414-3-git-send-email-skomatineni@nvidia.com>
 Cc: Mark Brown <broonie@kernel.org>, thierry.reding@gmail.com,
         jonathanh@nvidia.com, talho@nvidia.com, skomatineni@nvidia.com,
         broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
@@ -12,13 +12,13 @@ Cc: Mark Brown <broonie@kernel.org>, thierry.reding@gmail.com,
         linux-spi@vger.kernel.org
 To: Sowjanya Komatineni <skomatineni@nvidia.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1553666207-11414-7-git-send-email-skomatineni@nvidia.com>
+In-Reply-To: <1553666207-11414-3-git-send-email-skomatineni@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: tegra114: flush fifos
+   spi: tegra114: fix for unpacked mode transfers
 
 has been applied to the spi tree at
 
@@ -43,104 +43,161 @@ to this mail.
 Thanks,
 Mark
 
->From c4fc9e5b28ff787e35137c2cc13316bb11d7657b Mon Sep 17 00:00:00 2001
+>From 1a89ac5b91895127f7c586ec5075c3753ca25501 Mon Sep 17 00:00:00 2001
 From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Date: Tue, 26 Mar 2019 22:56:28 -0700
-Subject: [PATCH] spi: tegra114: flush fifos
+Date: Tue, 26 Mar 2019 22:56:24 -0700
+Subject: [PATCH] spi: tegra114: fix for unpacked mode transfers
 
-Fixes: Flush TX and RX FIFOs before start of new transfer and on FIFO
-overflow or underrun errors.
+Fixes: computation of actual bytes to fill/receive in/from FIFO in unpacked
+mode when transfer length is not a multiple of requested bits per word.
+
+unpacked mode transfers fails when the transfer includes partial bytes in
+the last word.
+
+Total words to be written/read to/from FIFO is computed based on transfer
+length and bits per word. Unpacked mode includes 0 padding bytes for partial
+words to align with bits per word and these extra bytes are also accounted
+for calculating bytes left to transfer in the current driver.
+
+This causes extra bytes access of tx/rx buffers along with buffer index
+position crossing actual length where remain_len becomes negative and due to
+unsigned type, negative value is a 32 bit representation of signed value
+and transferred bytes never meets the actual transfer length resulting in
+transfer timeout and a hang.
+
+This patch fixes this with proper computation of the actual bytes to fill in
+FIFO during transmit and the actual bytes to read from FIFO during receive
+ignoring 0 padded bytes.
 
 Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-tegra114.c | 39 +++++++++++++++++++++++++++++---------
- 1 file changed, 30 insertions(+), 9 deletions(-)
+ drivers/spi/spi-tegra114.c | 43 +++++++++++++++++++++++++++++++-------
+ 1 file changed, 36 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index a6153b905d1a..28aa080a94ff 100644
+index 1435792944c4..876eb2acdef1 100644
 --- a/drivers/spi/spi-tegra114.c
 +++ b/drivers/spi/spi-tegra114.c
-@@ -499,22 +499,37 @@ static int tegra_spi_start_rx_dma(struct tegra_spi_data *tspi, int len)
- 	return 0;
+@@ -307,10 +307,16 @@ static unsigned tegra_spi_fill_tx_fifo_from_client_txbuf(
+ 				x |= (u32)(*tx_buf++) << (i * 8);
+ 			tegra_spi_writel(tspi, x, SPI_TX_FIFO);
+ 		}
++
++		tspi->cur_tx_pos += written_words * tspi->bytes_per_word;
+ 	} else {
++		unsigned int write_bytes;
+ 		max_n_32bit = min(tspi->curr_dma_words,  tx_empty_count);
+ 		written_words = max_n_32bit;
+ 		nbytes = written_words * tspi->bytes_per_word;
++		if (nbytes > t->len - tspi->cur_pos)
++			nbytes = t->len - tspi->cur_pos;
++		write_bytes = nbytes;
+ 		for (count = 0; count < max_n_32bit; count++) {
+ 			u32 x = 0;
+ 
+@@ -319,8 +325,10 @@ static unsigned tegra_spi_fill_tx_fifo_from_client_txbuf(
+ 				x |= (u32)(*tx_buf++) << (i * 8);
+ 			tegra_spi_writel(tspi, x, SPI_TX_FIFO);
+ 		}
++
++		tspi->cur_tx_pos += write_bytes;
+ 	}
+-	tspi->cur_tx_pos += written_words * tspi->bytes_per_word;
++
+ 	return written_words;
  }
  
--static int tegra_spi_start_dma_based_transfer(
--		struct tegra_spi_data *tspi, struct spi_transfer *t)
-+static int tegra_spi_flush_fifos(struct tegra_spi_data *tspi)
- {
--	u32 val;
--	unsigned int len;
--	int ret = 0;
-+	unsigned long timeout = jiffies + HZ;
- 	u32 status;
+@@ -344,20 +352,27 @@ static unsigned int tegra_spi_read_rx_fifo_to_client_rxbuf(
+ 			for (i = 0; len && (i < 4); i++, len--)
+ 				*rx_buf++ = (x >> i*8) & 0xFF;
+ 		}
+-		tspi->cur_rx_pos += tspi->curr_dma_words * tspi->bytes_per_word;
+ 		read_words += tspi->curr_dma_words;
++		tspi->cur_rx_pos += tspi->curr_dma_words * tspi->bytes_per_word;
+ 	} else {
+ 		u32 rx_mask = ((u32)1 << t->bits_per_word) - 1;
++		u8 bytes_per_word = tspi->bytes_per_word;
++		unsigned int read_bytes;
  
--	/* Make sure that Rx and Tx fifo are empty */
- 	status = tegra_spi_readl(tspi, SPI_FIFO_STATUS);
- 	if ((status & SPI_FIFO_EMPTY) != SPI_FIFO_EMPTY) {
--		dev_err(tspi->dev, "Rx/Tx fifo are not empty status 0x%08x\n",
--			(unsigned)status);
--		return -EIO;
-+		status |= SPI_RX_FIFO_FLUSH | SPI_TX_FIFO_FLUSH;
-+		tegra_spi_writel(tspi, status, SPI_FIFO_STATUS);
-+		while ((status & SPI_FIFO_EMPTY) != SPI_FIFO_EMPTY) {
-+			status = tegra_spi_readl(tspi, SPI_FIFO_STATUS);
-+			if (time_after(jiffies, timeout)) {
-+				dev_err(tspi->dev,
-+					"timeout waiting for fifo flush\n");
-+				return -EIO;
-+			}
-+
-+			udelay(1);
-+		}
++		len = rx_full_count * bytes_per_word;
++		if (len > t->len - tspi->cur_pos)
++			len = t->len - tspi->cur_pos;
++		read_bytes = len;
+ 		for (count = 0; count < rx_full_count; count++) {
+ 			u32 x = tegra_spi_readl(tspi, SPI_RX_FIFO) & rx_mask;
+ 
+-			for (i = 0; (i < tspi->bytes_per_word); i++)
++			for (i = 0; len && (i < bytes_per_word); i++, len--)
+ 				*rx_buf++ = (x >> (i*8)) & 0xFF;
+ 		}
+-		tspi->cur_rx_pos += rx_full_count * tspi->bytes_per_word;
+ 		read_words += rx_full_count;
++		tspi->cur_rx_pos += read_bytes;
  	}
- 
-+	return 0;
-+}
 +
-+static int tegra_spi_start_dma_based_transfer(
-+		struct tegra_spi_data *tspi, struct spi_transfer *t)
-+{
-+	u32 val;
-+	unsigned int len;
-+	int ret = 0;
+ 	return read_words;
+ }
+ 
+@@ -372,12 +387,17 @@ static void tegra_spi_copy_client_txbuf_to_spi_txbuf(
+ 		unsigned len = tspi->curr_dma_words * tspi->bytes_per_word;
+ 
+ 		memcpy(tspi->tx_dma_buf, t->tx_buf + tspi->cur_pos, len);
++		tspi->cur_tx_pos += tspi->curr_dma_words * tspi->bytes_per_word;
+ 	} else {
+ 		unsigned int i;
+ 		unsigned int count;
+ 		u8 *tx_buf = (u8 *)t->tx_buf + tspi->cur_tx_pos;
+ 		unsigned consume = tspi->curr_dma_words * tspi->bytes_per_word;
++		unsigned int write_bytes;
+ 
++		if (consume > t->len - tspi->cur_pos)
++			consume = t->len - tspi->cur_pos;
++		write_bytes = consume;
+ 		for (count = 0; count < tspi->curr_dma_words; count++) {
+ 			u32 x = 0;
+ 
+@@ -386,8 +406,9 @@ static void tegra_spi_copy_client_txbuf_to_spi_txbuf(
+ 				x |= (u32)(*tx_buf++) << (i * 8);
+ 			tspi->tx_dma_buf[count] = x;
+ 		}
 +
- 	val = SPI_DMA_BLK_SET(tspi->curr_dma_words - 1);
- 	tegra_spi_writel(tspi, val, SPI_DMA_BLK);
++		tspi->cur_tx_pos += write_bytes;
+ 	}
+-	tspi->cur_tx_pos += tspi->curr_dma_words * tspi->bytes_per_word;
  
-@@ -779,6 +794,9 @@ static int tegra_spi_start_transfer_one(struct spi_device *spi,
- 	dev_dbg(tspi->dev, "The def 0x%x and written 0x%x\n",
- 		tspi->def_command1_reg, (unsigned)command1);
+ 	/* Make the dma buffer to read by dma */
+ 	dma_sync_single_for_device(tspi->dev, tspi->tx_dma_phys,
+@@ -405,20 +426,28 @@ static void tegra_spi_copy_spi_rxbuf_to_client_rxbuf(
+ 		unsigned len = tspi->curr_dma_words * tspi->bytes_per_word;
  
-+	ret = tegra_spi_flush_fifos(tspi);
-+	if (ret < 0)
-+		return ret;
- 	if (total_fifo_words > SPI_FIFO_DEPTH)
- 		ret = tegra_spi_start_dma_based_transfer(tspi, t);
- 	else
-@@ -876,6 +894,7 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
- 			    (tspi->cur_direction & DATA_DIR_RX))
- 				dmaengine_terminate_all(tspi->rx_dma_chan);
- 			ret = -EIO;
-+			tegra_spi_flush_fifos(tspi);
- 			reset_control_assert(tspi->rst);
- 			udelay(2);
- 			reset_control_deassert(tspi->rst);
-@@ -929,6 +948,7 @@ static irqreturn_t handle_cpu_based_xfer(struct tegra_spi_data *tspi)
- 			tspi->status_reg);
- 		dev_err(tspi->dev, "CpuXfer 0x%08x:0x%08x\n",
- 			tspi->command1_reg, tspi->dma_control_reg);
-+		tegra_spi_flush_fifos(tspi);
- 		reset_control_assert(tspi->rst);
- 		udelay(2);
- 		reset_control_deassert(tspi->rst);
-@@ -1001,6 +1021,7 @@ static irqreturn_t handle_dma_based_xfer(struct tegra_spi_data *tspi)
- 			tspi->status_reg);
- 		dev_err(tspi->dev, "DmaXfer 0x%08x:0x%08x\n",
- 			tspi->command1_reg, tspi->dma_control_reg);
-+		tegra_spi_flush_fifos(tspi);
- 		reset_control_assert(tspi->rst);
- 		udelay(2);
- 		reset_control_deassert(tspi->rst);
+ 		memcpy(t->rx_buf + tspi->cur_rx_pos, tspi->rx_dma_buf, len);
++		tspi->cur_rx_pos += tspi->curr_dma_words * tspi->bytes_per_word;
+ 	} else {
+ 		unsigned int i;
+ 		unsigned int count;
+ 		unsigned char *rx_buf = t->rx_buf + tspi->cur_rx_pos;
+ 		u32 rx_mask = ((u32)1 << t->bits_per_word) - 1;
++		unsigned consume = tspi->curr_dma_words * tspi->bytes_per_word;
++		unsigned int read_bytes;
+ 
++		if (consume > t->len - tspi->cur_pos)
++			consume = t->len - tspi->cur_pos;
++		read_bytes = consume;
+ 		for (count = 0; count < tspi->curr_dma_words; count++) {
+ 			u32 x = tspi->rx_dma_buf[count] & rx_mask;
+ 
+-			for (i = 0; (i < tspi->bytes_per_word); i++)
++			for (i = 0; consume && (i < tspi->bytes_per_word);
++							i++, consume--)
+ 				*rx_buf++ = (x >> (i*8)) & 0xFF;
+ 		}
++
++		tspi->cur_rx_pos += read_bytes;
+ 	}
+-	tspi->cur_rx_pos += tspi->curr_dma_words * tspi->bytes_per_word;
+ 
+ 	/* Make the dma buffer to read by dma */
+ 	dma_sync_single_for_device(tspi->dev, tspi->rx_dma_phys,
 -- 
 2.20.1

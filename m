@@ -1,24 +1,23 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: tegra114: use packed mode for 32 bits per word" to the spi tree
-Date: Mon,  1 Apr 2019 09:54:15 +0100 (BST)
-Message-ID: <20190401085415.BEEC5440083@finisterre.ee.mobilebroadband>
-References: <1553666207-11414-4-git-send-email-skomatineni@nvidia.com>
-Cc: Mark Brown <broonie@kernel.org>, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, talho@nvidia.com, skomatineni@nvidia.com,
-        broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        kyarlagadda@nvidia.com, ldewangan@nvidia.com,
-        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+Subject: Applied "spi: spi-fsl-spi: relax message sanity checking a little" to the spi tree
+Date: Mon,  1 Apr 2019 09:54:23 +0100 (BST)
+Message-ID: <20190401085424.08C89440082@finisterre.ee.mobilebroadband>
+References: <20190327143040.16013-3-rasmus.villemoes@prevas.dk>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Fabio Estevam <festevam@gmail.com>,
+        Rasmus Villemoes <Rasmus.Villemoes@prevas.se>,
         linux-spi@vger.kernel.org
-To: Sowjanya Komatineni <skomatineni@nvidia.com>
+To: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1553666207-11414-4-git-send-email-skomatineni@nvidia.com>
+In-Reply-To: <20190327143040.16013-3-rasmus.villemoes@prevas.dk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: tegra114: use packed mode for 32 bits per word
+   spi: spi-fsl-spi: relax message sanity checking a little
 
 has been applied to the spi tree at
 
@@ -43,32 +42,47 @@ to this mail.
 Thanks,
 Mark
 
->From fc9ba6e3e28afcedf3bb3105b1d8cbc5c183c2a3 Mon Sep 17 00:00:00 2001
-From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Date: Tue, 26 Mar 2019 22:56:25 -0700
-Subject: [PATCH] spi: tegra114: use packed mode for 32 bits per word
+>From 17ecffa289489e8442306bbc62ebb964e235cdad Mon Sep 17 00:00:00 2001
+From: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
+Date: Wed, 27 Mar 2019 14:30:51 +0000
+Subject: [PATCH] spi: spi-fsl-spi: relax message sanity checking a little
 
-Fixes: Use packed mode for 32 bits per word transfers to increase
-performance as each packet is a full 32-bit word.
+The comment says that we should not allow changes (to
+bits_per_word/speed_hz) while CS is active, and indeed the code below
+does fsl_spi_setup_transfer() when the ->cs_change of the previous
+spi_transfer was set (and for the very first transfer).
 
-Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
+So the sanity checking is a bit too strict - we can change it to
+follow the same logic as is used by the actual transfer loop.
+
+Signed-off-by: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-tegra114.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-fsl-spi.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index a76acedd7e2f..929358e3487a 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -259,7 +259,7 @@ static unsigned tegra_spi_calculate_curr_xfer_param(
+diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+index 6d114daa178a..481b075689b5 100644
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -370,13 +370,15 @@ static int fsl_spi_do_one_msg(struct spi_master *master,
+ 	int status;
  
- 	tspi->bytes_per_word = DIV_ROUND_UP(bits_per_word, 8);
- 
--	if (bits_per_word == 8 || bits_per_word == 16) {
-+	if (bits_per_word == 8 || bits_per_word == 16 || bits_per_word == 32) {
- 		tspi->is_packed = 1;
- 		tspi->words_per_32bit = 32/bits_per_word;
- 	} else {
+ 	/* Don't allow changes if CS is active */
+-	first = list_first_entry(&m->transfers, struct spi_transfer,
+-			transfer_list);
++	cs_change = 1;
+ 	list_for_each_entry(t, &m->transfers, transfer_list) {
++		if (cs_change)
++			first = t;
++		cs_change = t->cs_change;
+ 		if ((first->bits_per_word != t->bits_per_word) ||
+ 			(first->speed_hz != t->speed_hz)) {
+ 			dev_err(&spi->dev,
+-				"bits_per_word/speed_hz should be same for the same SPI transfer\n");
++				"bits_per_word/speed_hz cannot change while CS is active\n");
+ 			return -EINVAL;
+ 		}
+ 	}
 -- 
 2.20.1

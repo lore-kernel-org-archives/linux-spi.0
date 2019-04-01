@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: tegra114: clear packed bit for unpacked mode" to the spi tree
-Date: Mon,  1 Apr 2019 09:54:43 +0100 (BST)
-Message-ID: <20190401085443.75F74440083@finisterre.ee.mobilebroadband>
-References: <1553666207-11414-2-git-send-email-skomatineni@nvidia.com>
+Subject: Applied "spi: tegra114: terminate dma and reset on transfer timeout" to the spi tree
+Date: Mon,  1 Apr 2019 09:54:37 +0100 (BST)
+Message-ID: <20190401085437.D9D30440083@finisterre.ee.mobilebroadband>
+References: <1553666207-11414-6-git-send-email-skomatineni@nvidia.com>
 Cc: Mark Brown <broonie@kernel.org>, thierry.reding@gmail.com,
         jonathanh@nvidia.com, talho@nvidia.com, skomatineni@nvidia.com,
         broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
@@ -12,13 +12,13 @@ Cc: Mark Brown <broonie@kernel.org>, thierry.reding@gmail.com,
         linux-spi@vger.kernel.org
 To: Sowjanya Komatineni <skomatineni@nvidia.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1553666207-11414-2-git-send-email-skomatineni@nvidia.com>
+In-Reply-To: <1553666207-11414-6-git-send-email-skomatineni@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: tegra114: clear packed bit for unpacked mode
+   spi: tegra114: terminate dma and reset on transfer timeout
 
 has been applied to the spi tree at
 
@@ -43,35 +43,40 @@ to this mail.
 Thanks,
 Mark
 
->From 7b3d10cdf54b8bc1dc0da21faed9789ac4da3684 Mon Sep 17 00:00:00 2001
+>From 32bd1a9551cae34e6889afa235c7afdfede9aeac Mon Sep 17 00:00:00 2001
 From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Date: Tue, 26 Mar 2019 22:56:23 -0700
-Subject: [PATCH] spi: tegra114: clear packed bit for unpacked mode
+Date: Tue, 26 Mar 2019 22:56:27 -0700
+Subject: [PATCH] spi: tegra114: terminate dma and reset on transfer timeout
 
-Fixes: Clear packed bit when not using packed mode.
-
-Packed bit is not cleared when not using packed mode. This results
-in transfer timeouts for the unpacked mode transfers followed by the
-packed mode transfers.
+Fixes: terminate DMA and perform controller reset on transfer timeout
+to clear the FIFO's and errors.
 
 Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-tegra114.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-tegra114.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index a76acedd7e2f..1435792944c4 100644
+index 876eb2acdef1..a6153b905d1a 100644
 --- a/drivers/spi/spi-tegra114.c
 +++ b/drivers/spi/spi-tegra114.c
-@@ -730,6 +730,8 @@ static int tegra_spi_start_transfer_one(struct spi_device *spi,
+@@ -869,7 +869,16 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
+ 		if (WARN_ON(ret == 0)) {
+ 			dev_err(tspi->dev,
+ 				"spi transfer timeout, err %d\n", ret);
++			if (tspi->is_curr_dma_xfer &&
++			    (tspi->cur_direction & DATA_DIR_TX))
++				dmaengine_terminate_all(tspi->tx_dma_chan);
++			if (tspi->is_curr_dma_xfer &&
++			    (tspi->cur_direction & DATA_DIR_RX))
++				dmaengine_terminate_all(tspi->rx_dma_chan);
+ 			ret = -EIO;
++			reset_control_assert(tspi->rst);
++			udelay(2);
++			reset_control_deassert(tspi->rst);
+ 			goto complete_xfer;
+ 		}
  
- 	if (tspi->is_packed)
- 		command1 |= SPI_PACKED;
-+	else
-+		command1 &= ~SPI_PACKED;
- 
- 	command1 &= ~(SPI_CS_SEL_MASK | SPI_TX_EN | SPI_RX_EN);
- 	tspi->cur_direction = 0;
 -- 
 2.20.1

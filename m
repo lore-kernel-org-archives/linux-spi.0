@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: tegra114: add SPI_LSB_FIRST support" to the spi tree
-Date: Mon,  1 Apr 2019 09:54:12 +0100 (BST)
-Message-ID: <20190401085412.D5F23440082@finisterre.ee.mobilebroadband>
-References: <1553666207-11414-12-git-send-email-skomatineni@nvidia.com>
+Subject: Applied "spi: tegra114: use packed mode for 32 bits per word" to the spi tree
+Date: Mon,  1 Apr 2019 09:54:15 +0100 (BST)
+Message-ID: <20190401085415.BEEC5440083@finisterre.ee.mobilebroadband>
+References: <1553666207-11414-4-git-send-email-skomatineni@nvidia.com>
 Cc: Mark Brown <broonie@kernel.org>, thierry.reding@gmail.com,
         jonathanh@nvidia.com, talho@nvidia.com, skomatineni@nvidia.com,
         broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
@@ -12,13 +12,13 @@ Cc: Mark Brown <broonie@kernel.org>, thierry.reding@gmail.com,
         linux-spi@vger.kernel.org
 To: Sowjanya Komatineni <skomatineni@nvidia.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1553666207-11414-12-git-send-email-skomatineni@nvidia.com>
+In-Reply-To: <1553666207-11414-4-git-send-email-skomatineni@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: tegra114: add SPI_LSB_FIRST support
+   spi: tegra114: use packed mode for 32 bits per word
 
 has been applied to the spi tree at
 
@@ -43,48 +43,32 @@ to this mail.
 Thanks,
 Mark
 
->From 2b17a3c759e5e2ed3faafb69e243ec312e3bf0da Mon Sep 17 00:00:00 2001
+>From fc9ba6e3e28afcedf3bb3105b1d8cbc5c183c2a3 Mon Sep 17 00:00:00 2001
 From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Date: Tue, 26 Mar 2019 22:56:33 -0700
-Subject: [PATCH] spi: tegra114: add SPI_LSB_FIRST support
+Date: Tue, 26 Mar 2019 22:56:25 -0700
+Subject: [PATCH] spi: tegra114: use packed mode for 32 bits per word
 
-Tegra SPI controller supports lsb first mode. Default is MSB bit first
-and on selection of SPI_LSB_FIRST through SPI mode transmission happens
-with LSB bit first.
-
-This patch adds SPI_LSB_FIRST flag to mode_bits and also configures it
-on request.
+Fixes: Use packed mode for 32 bits per word transfers to increase
+performance as each packet is a full 32-bit word.
 
 Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-tegra114.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/spi/spi-tegra114.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index 929358e3487a..0c52aeeb1d4f 100644
+index a76acedd7e2f..929358e3487a 100644
 --- a/drivers/spi/spi-tegra114.c
 +++ b/drivers/spi/spi-tegra114.c
-@@ -696,6 +696,11 @@ static u32 tegra_spi_setup_transfer_one(struct spi_device *spi,
- 		else if (req_mode == SPI_MODE_3)
- 			command1 |= SPI_CONTROL_MODE_3;
+@@ -259,7 +259,7 @@ static unsigned tegra_spi_calculate_curr_xfer_param(
  
-+		if (spi->mode & SPI_LSB_FIRST)
-+			command1 |= SPI_LSBIT_FE;
-+		else
-+			command1 &= ~SPI_LSBIT_FE;
-+
- 		if (tspi->cs_control) {
- 			if (tspi->cs_control != spi)
- 				tegra_spi_writel(tspi, command1, SPI_COMMAND1);
-@@ -1047,7 +1052,7 @@ static int tegra_spi_probe(struct platform_device *pdev)
- 		master->max_speed_hz = 25000000; /* 25MHz */
+ 	tspi->bytes_per_word = DIV_ROUND_UP(bits_per_word, 8);
  
- 	/* the spi->mode bits understood by this driver: */
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
-+	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
- 	master->setup = tegra_spi_setup;
- 	master->transfer_one_message = tegra_spi_transfer_one_message;
- 	master->num_chipselect = MAX_CHIP_SELECT;
+-	if (bits_per_word == 8 || bits_per_word == 16) {
++	if (bits_per_word == 8 || bits_per_word == 16 || bits_per_word == 32) {
+ 		tspi->is_packed = 1;
+ 		tspi->words_per_32bit = 32/bits_per_word;
+ 	} else {
 -- 
 2.20.1

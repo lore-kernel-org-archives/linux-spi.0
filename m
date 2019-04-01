@@ -1,124 +1,69 @@
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: Re: [PATCH 4/7] dt-bindings: mfd: Document Macronix MX25F0A
- controller bindings
-Date: Mon, 1 Apr 2019 19:52:35 +0200
-Message-ID: <20190401193431.3e8788a0@xps13>
-References: <1553768318-23149-1-git-send-email-masonccyang@mxic.com.tw>
-        <1553768318-23149-5-git-send-email-masonccyang@mxic.com.tw>
+From: Sowjanya Komatineni <skomatineni@nvidia.com>
+Subject: RE: [PATCH V1 19/26] DT bindings: spi: add spi client device
+ properties
+Date: Mon, 1 Apr 2019 17:59:57 +0000
+Message-ID: <BYAPR12MB3398F515727D46DE21C54FD6C2550@BYAPR12MB3398.namprd12.prod.outlook.com>
+References: <1553666207-11414-1-git-send-email-skomatineni@nvidia.com>
+ <1553666207-11414-19-git-send-email-skomatineni@nvidia.com>
+ <20190401073723.GH2059@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Cc: broonie@kernel.org, marek.vasut@gmail.com,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        bbrezillon@kernel.org, dwmw2@infradead.org, lee.jones@linaro.org,
-        robh+dt@kernel.org, mark.rutland@arm.com,
-        computersforpeace@gmail.com, paul.burton@mips.com, stefan@agner.ch,
-        christophe.kerello@st.com, liang.yang@amlogic.com,
-        geert@linux-m68k.org, devicetree@vger.kernel.org,
-        marcel.ziswiler@toradex.com, linux-mtd@lists.infradead.org,
-        richard@nod.at, juliensu@mxic.com.tw, zhengxunli@mxic.com.tw
-To: Mason Yang <masonccyang@mxic.com.tw>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Cc: "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Timo Alho <talho@nvidia.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "Krishna Yarlagadda" <kyarlagadda@nvidia.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1553768318-23149-5-git-send-email-masonccyang@mxic.com.tw>
+In-Reply-To: <20190401073723.GH2059@sirena.org.uk>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mason,
+> On Tue, Mar 26, 2019 at 10:56:40PM -0700, Sowjanya Komatineni wrote:
+> > This patch adds below cs timing properties to allow SPI master=20
+> > configuring setup, hold and time interval between two SPI transactions=
+=20
+> > to meet specific SPI client device requirements.
+> >  CS setup time
+> >  CS hold time
+> >  CS inactive delay
+> > DKIM-Signature: v=3D1; a=3Drsa-sha256; c=3Drelaxed/relaxed; d=3Dnvidia.=
+com; s=3Dn1;
+> > 	t=3D1553666253; bh=3DTbJVgRAIkjok3TkKNkfcvYc4WGyZhOpiH6sUZvadGrQ=3D;
+> > 	h=3DX-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
+> > 	 In-Reply-To:References:X-NVConfidentiality:MIME-Version:
+> > 	 Content-Type;
+> > 	b=3DTud9guY5XCzkjKA2k2n0+xO/vTfMTNhH1e0viAyYmlgoG/j+uSBAAmOeZucVUlmEa
+> > 	 rwqxlSm+rkYMUfgSWqmJXqEjgRIAqMhA32FOJmhgpblGwYUR22hnbdhbk4TcqMNsIO
+>
+> Something got corrupted?
 
-Mason Yang <masonccyang@mxic.com.tw> wrote on Thu, 28 Mar 2019 18:18:35
-+0800:
+Possible. Will re-send anyway with your feedback fixes.
 
-> Document the bindings used by the Macronix MX25F0A MFD controller.
-> 
-> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
-> ---
->  .../devicetree/bindings/mfd/mxic-mx25f0a.txt       | 66 ++++++++++++++++++++++
->  1 file changed, 66 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mfd/mxic-mx25f0a.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/mfd/mxic-mx25f0a.txt b/Documentation/devicetree/bindings/mfd/mxic-mx25f0a.txt
-> new file mode 100644
-> index 0000000..53b4839
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mfd/mxic-mx25f0a.txt
-> @@ -0,0 +1,66 @@
-> +Macronix MX25F0A Multi-Function Device Tree Bindings
-> +----------------------------------------------------
-> +
-> +MX25F0A is a MultiFunction Device with SPI and raw NAND, which
-> +supports either spi host controller or raw nand controller.
-> +
-> +Required properties:
-> +- compatible: should be "mxic,mx25f0a-mfd"
+> > +spi-client device controller properties:
+> > +- nvidia,cs-setup-clk-count: CS setup timing parameter.
+> > +- nvidia,cs-hold-clk-count: CS hold timing parameter.
+> > +- nvidia,cs-inactive-cycles: CS inactive delay in terms of clock=20
+> > +between
+> > +  transfers.
+>
+> Why are these being done as nVidia specific properties rather than generi=
+c ones and why are these being configured in DT rather than by the client d=
+river?  If the devices have particular timing requirements for chip select =
+presumably that's going to apply no matter what controller or system they'r=
+e used with so it seems best to configure this in the client driver and hav=
+e an API that any controller can implement.
 
-Should probably be "mxic,mx25f0a"
-
-> +- #address-cells: should be 1
-> +- #size-cells: should be 0
-> +- reg: should contain 2 entries, one for the registers and one for the direct
-> +       mapping area in SPI mode.
-> +- reg-names: should contain "regs" and "dirmap"
-> +- interrupts: interrupt line connected to this MFD controller
-> +
-> +Required nodes:
-> + - spi :
-> +	Node for configuring the SPI controller driver.
-> +	Required properties:
-> +		- compatible = "mxicy,mx25f0a-spi";
-> +		- clock-names: should contain "ps_clk", "send_clk" and
-> +			       "send_dly_clk"
-> +		- clocks: should contain 3 entries for the "ps_clk", "send_clk"
-> +			  and "send_dly_clk" clocks
-> +
-> +- nand :
-> +	Node for configuring the raw nand controller driver.
-> +	Required properties:
-> +		- compatible = "mxicy,mx25f0a-nand-ctlr";
-> +		- nand-ecc-mode = "soft";
-> +		- nand-ecc-algo = "bch";
-
-You can have only one node at a time. You can add a mxic,mode property
-being either "spi-controller" or "nand-controller".
-
-> +
-> +Example:
-> +
-> +	mxic: mx25f0a-mfd@43c30000 {
-> +		compatible = "mxic,mx25f0a-mfd";
-> +		reg = <0x43c30000 0x10000>, <0xa0000000 0x4000000>;
-> +		reg-names = "regs", "dirmap";
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		/* either spi or nand */
-> +		spi {
-> +			compatible = "mxicy,mx25f0a-spi";
-> +			clocks = <&clkwizard 0>, <&clkwizard 1>, <&clkc 15>;
-> +			clock-names = "send_clk", "send_dly_clk", "ps_clk";
-> +			#address-cells = <1>;
-> +			#size-cells = <0>;
-> +
-> +			flash@0 {
-> +				compatible = "jedec,spi-nor";
-> +				reg = <0>;
-> +				spi-max-frequency = <25000000>;
-> +				spi-tx-bus-width = <4>;
-> +				spi-rx-bus-width = <4>;
-> +			};
-> +		};
-> +
-> +		nand {
-> +			compatible = "mxicy,mx25f0a-nand-ctlr";
-> +			nand-ecc-mode = "soft";
-> +			nand-ecc-algo = "bch";
-> +			nand-ecc-step-size = <512>;
-> +			nand-ecc-strength = <8>;
-
-Are you sure you want soft correction? (I have not checked the driver
-yet). For hw correction, I prefer to drop the two step-size/strength
-properties. These values will be derived depending on the chip's
-requirements.
-
-
-Thanks,
-Miquèl
+These are implemented thru DT as Tegra SPI is master and master controls th=
+e timing.
+Some SPI slaves have specific requirements of certain CS setup/hold time an=
+d inactive cycles which SPI master should meet when driving during transfer=
+ and Tegra SPI controller supports tuning these parameters.

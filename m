@@ -1,217 +1,46 @@
-From: Igor Plyatov <plyatov@gmail.com>
-Subject: Re: Issues with i.MX SPI DMA transfers
-Date: Tue, 2 Apr 2019 15:15:26 +0300
-Message-ID: <197990d4-b1e2-8db9-0cb7-87b860f23bd7@gmail.com>
-References: <08fcbd65-510f-84f8-d6d6-ff56aa9ca9ad@gmail.com>
- <20190328065247.uz73lap7ljf5q3tb@pengutronix.de>
- <b8e80127-e377-9ef9-2447-b0126fdad7dc@gmail.com>
- <VI1PR04MB45438E01D91829849A4E0BB289590@VI1PR04MB4543.eurprd04.prod.outlook.com>
- <d7a2e5c5-4ee0-8c89-1bab-654db0ae38dd@gmail.com>
- <VI1PR04MB4543B1708FA151EED0CB722A89550@VI1PR04MB4543.eurprd04.prod.outlook.com>
- <95df9334-3d0c-7d13-e431-5a4aa2b9907e@gmail.com>
- <VI1PR04MB454305A56372466A38E9F81989560@VI1PR04MB4543.eurprd04.prod.outlook.com>
+From: Clark Wang <xiaoning.wang@nxp.com>
+Subject: [PATCH] spi: lpspi: add missing complete in abort func at dma mode
+Date: Tue, 2 Apr 2019 12:45:53 +0000
+Message-ID: <20190402124609.22157-1-xiaoning.wang@nxp.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="------------99BBD45BC3E8DDAF16FF0AFC"
-Cc: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andy Duan <fugang.duan@nxp.com>, Han Xu <han.xu@nxp.com>,
-        Clark Wang <xiaoning.wang@nxp.com>
-To: Robin Gong <yibin.gong@nxp.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: "broonie@kernel.org" <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <VI1PR04MB454305A56372466A38E9F81989560@VI1PR04MB4543.eurprd04.prod.outlook.com>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------99BBD45BC3E8DDAF16FF0AFC
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Add the missing complete operations for dma_completion to fix the
+problem of blocking at the wait_for_completion_interruptible()
+function when use spi_slave_abort().
 
-Dear Robin,
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+---
+ drivers/spi/spi-fsl-lpspi.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
->> now I have reverted patch ad0d92d7ba6a.
->> Patches 0001-dma-engine-imx-sdma-add-mcu_2_ecspi-script.patch and
->> 0002-spi-spi-imx-fix-ERR009165.patch are applied.
->>
->>
->> Kernel log show messages
->>
->> [   29.202639] imx-sdma 20ec000.sdma: loaded firmware 3.3
->> [   29.238595] spi_imx 2008000.spi: probed
->> [   29.242802] spi_imx 200c000.spi: probed
->> [   29.245217] spi_imx 2018000.spi: probed
->>
->> SPI DMA transfers still not work.
->>
->> If I test 32 byte transfers, then they work fine. But 64 byte transfers
->> fails always and I see error messages
->>
->> root@cr7:~# spidev_test -D /dev/spidev4.1 -s 1200000 -b 8 -S 64 -I 1 -l
->> spi mode: 0x20
->> bits per word: 8
->> max speed: 1200000 Hz (1200 KHz)
->> [  423.686736] spi_master spi4: I/O Error in DMA RX
->> [  423.691392] spidev spi4.1: SPI transfer failed: -110
->> [  423.696382] spi_master spi4: failed to transfer one message from queue
->> can't send spi message: Connection timed out
->> Aborted (core dumped)
->>
->> I suppose, transfers shorter then 64 bytes made with help of PIO.
->>
->> Robin, is there any chance for you to find some time and look at this
->> issue again?
-> I have quick test with spidev_test loopback, but didn't meet your error,
-> Is your code the almost latest code in linux-next as mine?
->
-> root@imx6qpdlsolox:~# cat /proc/interrupts | grep sdma
->   48:         37       GPC   2 Level     sdma
->   -lt@imx6qpdlsolox:~# ./spidev_test -D /dev/spidev0.0 -s 1200000 -b 8 -S 64 -I 1 -l
-> spi mode: 0x20
-> bits per word: 8
-> max speed: 1200000 Hz (1200 KHz)
-> root@imx6qpdlsolox:~# cat /proc/interrupts | grep sdma
->   48:         43       GPC   2 Level     sdma
-> ./spidev_test -D /dev/spidev0.0 -s 1200000 -b 8 -S 512 -I 1 -l
-> spi mode: 0x20
-> bits per word: 8
-> max speed: 1200000 Hz (1200 KHz)
-> total: tx 0.5KB, rx 0.5KB
-
-
-My previous test results based on kernel from "main" branch of 
-git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git.
-
-Now I have tested kernel from "main" branch of 
-git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git.
-
-Its latest commit is 05d08e2995cbe6efdb993482ee0d38a77040861a.
-
-Additionally, I have reverted patch ad0d92d7ba6a and apply yours patches 
-0001-dma-engine-imx-sdma-add-mcu_2_ecspi-script.patch and 
-0002-spi-spi-imx-fix-ERR009165.patch.
-
-Difference between 05d08e2995cbe6efdb993482ee0d38a77040861a and current 
-state of drivers attached as spi-and-sdma-drivers.diff.
-
-SPI driver still not work. It has same result as from my previous email.
-
-Looks as you use either different GIT branch of kernel or you have 
-forget to say me about some patch.
-
-Best wishes.
-
---
-
-Igor Plyatov
-
-
---------------99BBD45BC3E8DDAF16FF0AFC
-Content-Type: text/x-patch;
- name="spi-and-sdma-drivers.diff"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
- filename="spi-and-sdma-drivers.diff"
-
-diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
-index 5f3c1378b90e..908507fa9526 100644
---- a/drivers/dma/imx-sdma.c
-+++ b/drivers/dma/imx-sdma.c
-@@ -377,7 +377,6 @@ struct sdma_channel {
- 	unsigned long			watermark_level;
- 	u32				shp_addr, per_addr;
- 	enum dma_status			status;
--	bool				context_loaded;
- 	struct imx_dma_data		data;
- 	struct work_struct		terminate_worker;
- };
-@@ -913,6 +912,9 @@ static void sdma_get_pc(struct sdma_channel *sdmac,
- 		emi_2_per = sdma->script_addrs->mcu_2_ata_addr;
- 		break;
- 	case IMX_DMATYPE_CSPI:
-+		per_2_emi = sdma->script_addrs->app_2_mcu_addr;
-+		emi_2_per = sdma->script_addrs->mcu_2_ecspi_addr;
-+		break;
- 	case IMX_DMATYPE_EXT:
- 	case IMX_DMATYPE_SSI:
- 	case IMX_DMATYPE_SAI:
-@@ -976,9 +978,6 @@ static int sdma_load_context(struct sdma_channel *sdmac)
- 	int ret;
- 	unsigned long flags;
- 
--	if (sdmac->context_loaded)
--		return 0;
--
- 	if (sdmac->direction == DMA_DEV_TO_MEM)
- 		load_address = sdmac->pc_from_device;
- 	else if (sdmac->direction == DMA_DEV_TO_DEV)
-@@ -1021,8 +1020,6 @@ static int sdma_load_context(struct sdma_channel *sdmac)
- 
- 	spin_unlock_irqrestore(&sdma->channel_0_lock, flags);
- 
--	sdmac->context_loaded = true;
--
- 	return ret;
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 0252cae0b35b..33b6a8affd55 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -482,7 +482,13 @@ static int fsl_lpspi_slave_abort(struct spi_controller=
+ *controller)
+ 				spi_controller_get_devdata(controller);
+=20
+ 	fsl_lpspi->slave_aborted =3D true;
+-	complete(&fsl_lpspi->xfer_done);
++	if (!fsl_lpspi->usedma)
++		complete(&fsl_lpspi->xfer_done);
++	else {
++		complete(&fsl_lpspi->dma_tx_completion);
++		complete(&fsl_lpspi->dma_rx_completion);
++	}
++
+ 	return 0;
  }
- 
-@@ -1062,7 +1059,6 @@ static void sdma_channel_terminate_work(struct work_struct *work)
- 	sdmac->desc = NULL;
- 	spin_unlock_irqrestore(&sdmac->vc.lock, flags);
- 	vchan_dma_desc_free_list(&sdmac->vc, &head);
--	sdmac->context_loaded = false;
- }
- 
- static int sdma_disable_channel_async(struct dma_chan *chan)
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 09c9a1edb2c6..27578158d922 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -585,8 +585,9 @@ static int mx51_ecspi_prepare_transfer(struct spi_imx_data *spi_imx,
- 	ctrl |= mx51_ecspi_clkdiv(spi_imx, t->speed_hz, &clk);
- 	spi_imx->spi_bus_clk = clk;
- 
-+	/* ERR009165: work in XHC mode as PIO */
- 	if (spi_imx->usedma)
--		ctrl |= MX51_ECSPI_CTRL_SMC;
-+		ctrl &= ~MX51_ECSPI_CTRL_SMC;
- 
- 	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
- 
-@@ -1265,10 +1266,6 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
- {
- 	int ret;
- 
--	/* use pio mode for i.mx6dl chip TKT238285 */
--	if (of_machine_is_compatible("fsl,imx6dl"))
--		return 0;
--
- 	spi_imx->wml = spi_imx->devtype_data->fifo_size / 2;
- 
- 	/* Prepare for TX DMA: */
-diff --git a/include/linux/platform_data/dma-imx-sdma.h b/include/linux/platform_data/dma-imx-sdma.h
-index 6eaa53cef0bd..f794fee8fc0f 100644
---- a/include/linux/platform_data/dma-imx-sdma.h
-+++ b/include/linux/platform_data/dma-imx-sdma.h
-@@ -51,6 +51,7 @@ struct sdma_script_start_addrs {
- 	/* End of v2 array */
- 	s32 zcanfd_2_mcu_addr;
- 	s32 zqspi_2_mcu_addr;
-+	s32 mcu_2_ecspi_addr;
- 	/* End of v3 array */
- };
- 
-
---------------99BBD45BC3E8DDAF16FF0AFC--
+=20
+--=20
+2.17.1

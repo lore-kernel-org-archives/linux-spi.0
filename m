@@ -1,46 +1,58 @@
-From: Clark Wang <xiaoning.wang@nxp.com>
-Subject: [PATCH] spi: lpspi: add missing complete in abort func at dma mode
-Date: Tue, 2 Apr 2019 12:45:53 +0000
-Message-ID: <20190402124609.22157-1-xiaoning.wang@nxp.com>
+From: Stefan Wahren <stefan.wahren@i2se.com>
+Subject: Re: [PATCH V3 0/9] spi: bcm2835aux: bug fixes and improvements
+Date: Tue, 2 Apr 2019 19:03:34 +0200 (CEST)
+Message-ID: <772240203.376689.1554224614445@email.ionos.de>
+References: <20190330093106.20723-1-kernel@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: "broonie@kernel.org" <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: kernel@martin.sperl.org, Mark Brown <broonie@kernel.org>,
+ Eric Anholt <eric@anholt.net>,
+ Hubert Denkmair <h.denkmair@intence.de>, linux-spi@vger.kernel.org,
+ linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190330093106.20723-1-kernel@martin.sperl.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Add the missing complete operations for dma_completion to fix the
-problem of blocking at the wait_for_completion_interruptible()
-function when use spi_slave_abort().
-
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
----
- drivers/spi/spi-fsl-lpspi.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 0252cae0b35b..33b6a8affd55 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -482,7 +482,13 @@ static int fsl_lpspi_slave_abort(struct spi_controller=
- *controller)
- 				spi_controller_get_devdata(controller);
-=20
- 	fsl_lpspi->slave_aborted =3D true;
--	complete(&fsl_lpspi->xfer_done);
-+	if (!fsl_lpspi->usedma)
-+		complete(&fsl_lpspi->xfer_done);
-+	else {
-+		complete(&fsl_lpspi->dma_tx_completion);
-+		complete(&fsl_lpspi->dma_rx_completion);
-+	}
-+
- 	return 0;
- }
-=20
---=20
-2.17.1
+PiBrZXJuZWxAbWFydGluLnNwZXJsLm9yZyBoYXQgYW0gMzAuIE3DpHJ6IDIwMTkgdW0gMTA6MzAg
+Z2VzY2hyaWViZW46Cj4gCj4gCj4gRnJvbTogTWFydGluIFNwZXJsIDxrZXJuZWxAbWFydGluLnNw
+ZXJsLm9yZz4KPiAKPiBTZXQgb2YgcGF0Y2hlcyBpbXByb3ZpbmcgdGhlIHNwaS1iY20yODM1YXV4
+IGRyaXZlciBhbmQgZml4aW5nCj4gYSBkYXRhIHJlYWQgY29ycnVwdGlvbiBidWcuCj4gCj4gVGhl
+IG1haW4gbW90aXZhdGlvbiBpcyBhIHJhcmUgZGF0YSBjb3JydXB0aW9uIGZpeCB0aGF0IGlzIG1v
+c3RseQo+IG9ic2VydmVkIGluIHBvbGxpbmcgbW9kZSBmaXJzdCByZXBvcnRlZCBieSBIdWJlcnQg
+RGVua21haXIuCj4gCj4gU28gdGhpcyBwYXRjaHNldCBmaXJzdCBpbXBsZW1lbnRzIGEgbWVhbnMg
+dG8gY29udHJvbCB0aGUgcGFyYW1ldGVycwo+IG9mIHdoZW4gcG9sbGluZyBtb2RlIGlzIHVzZWQg
+dmlhIG1vZHVsZSBwYXJhbWV0ZXJzIGFuZCBleHBvcnRzCj4gdGhlIGNvcnJlc3BvbmRpbmcgc3Rh
+dGlzdGljcy4KPiAKPiBBcyBzdGF0ZWQgaW4gb3JpZ2luYWwgcGF0Y2ggdGhlIGRyaXZlciBkb2Vz
+IG5vdCBzdXBwb3J0IG5hdGl2ZSBDUy4KPiBCdXQgd2hlbiBjcy1ncGlvcyBpcyBub3QgY29uZmln
+dXJlZCBpbiB0aGUgZHQgKHNvIGEgYnVnZ3kgZHQpIGl0IGlzCj4gc3RpbGwgd29ya2luZyB3aXRo
+IGEgbG90IG9mIGxpbWl0YXRpb25zLCBidXQgdGhlIGRyaXZlciBkb2VzIG5vdCByZXBvcnQKPiB0
+aGlzIGZhY3QuCj4gCj4gU28gdGhpcyBwYXRjaHNldCBhZGRzIHJlcG9ydGluZyBhbmQgYWxsb3dz
+IGZvciBhIHNpbmdsZSBuYXRpdmUgQ1MKPiAod2l0aCBsaW1pdGVkIGZ1bmN0aW9uYWxpdHkpIHRv
+IGNvbnRpbnVlIHdvcmtpbmcgd2l0aCBhIGJ1Z2d5IERULgo+IE9uZSBxdWVzdGlvbiBoZXJlIHJl
+bWFpbnM6IGRvIHdlIG5lZWQgdG8gbGVnYWN5IHN1cHBvcnQgRFRzCj4gdGhhdCBhcmUgbm90IGZv
+bGxvd2luZyBzcGVjcyBpbiB0aGUgZmlyc3QgcGxhY2U/Cj4gCj4gVGhlbiB0aGVyZSBpcyB0aGUg
+cmVhbCBmaXggZm9yIHRoZSBkYXRhLWNvcnJ1cHRpb24gd2hpY2ggaXMgc3BsaXQKPiBpbnRvIDMg
+cGFydHM6IHNvbWUgY29kZSBjbGVhbnVwIHdpdGggY29kZSByZXVzZSwgcmVtb3ZpbmcgImRhbmdl
+cm91cyIKPiBmaWZvIHJlYWQgKHBvc3NpYmx5IGludHJvZHVjaW5nIGZpZm8gZGF0YSBjb3JydXB0
+aW9uKSBhbmQgc2FmZSBmaWZvIHJlYWQuCj4gCj4gQWxzbyB3ZSByZW1vdmUgc29tZSBkZWFkIGNv
+ZGUuCj4gCj4gLS0tCj4gQ2hhbmdlbG9nOgo+ICAgVjEgLT4gVjI6IHJlb3JkZXJpbmcgY29tbWl0
+cyBhcyBwZXIgcmVxdWVzdCBvZiBTdGVmYW4gV2FocmVuCj4gICAgICAgICAgICAgdG8gaGVscCBi
+YWNrcG9ydGluZyB0aGUgImVzc2VudGlhbCIgYnVnZml4ZXMgZ28gaW4gZmlyc3QKPiAJICAgIHJl
+bW92ZSB0aGUgZGVwZW5kZW5jeSBvbiBhIGRpZmZlcmVudCBwYXRjaHNldCBmb2N1c2VkIG9uCj4g
+CSAgICBtYWtpbmcgY3NfY2hhbmdlIGRlbGF5IGNvbmZpZ3VyYWJsZQo+ICAgVjIgLT4gVjM6IGlu
+Y29ycG9yYXRlZCBmZWVkYmFjayBieSBTdGVmYW4gV2FocmVuCgpUaGUgd2hvbGUgc2VyaWVzIGlz
+OgoKQWNrZWQtYnk6IFN0ZWZhbiBXYWhyZW4gPHN0ZWZhbi53YWhyZW5AaTJzZS5jb20+CgpUaGFu
+a3MKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmxpbnV4
+LWFybS1rZXJuZWwgbWFpbGluZyBsaXN0CmxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFk
+Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LWFy
+bS1rZXJuZWwK

@@ -1,81 +1,79 @@
-From: "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: Re: [BUG] gpiolib: spi chip select legacy support breaks modern chip select and whitens the GTA04 LCD panel
-Date: Tue, 2 Apr 2019 08:37:23 +0200
-Message-ID: <F8ACE730-B498-41E2-A486-923C760807F8@goldelico.com>
-References: <7509BFB6-36E4-441A-9F16-7A4FEE7F7CF3@goldelico.com> <5488EF42-08DB-4273-95FF-49ED31E27472@goldelico.com> <CACRpkdb4URKcdZ-=3aG_np86Bp=1ahs+qztM-7yQkSP18ZkE6A@mail.gmail.com> <2286C331-4AFC-46A9-B8C4-8A8BA9CD33C2@goldelico.com> <CACRpkda4k_Vaoo1qEaZ3nv8bA4tcrPEN6oT-v+n9HRdA6=5Xvg@mail.gmail.com> <2D2D13C2-0D3E-47CD-946B-81DBBF3C43E6@goldelico.com> <20190402053143.GZ2059@sirena.org.uk>
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-        Kumar Gala <galak@codeaurora.org>,
-        Wolfgang Ocker <weo@reccoware.de>,
-        Jan Kotas <jank@cadence.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Discussions about the Letux Kernel
-        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
-To: Mark Brown <broonie@kernel.org>
+From: Igor Plyatov <plyatov@gmail.com>
+Subject: Re: Issues with i.MX SPI DMA transfers
+Date: Tue, 2 Apr 2019 10:20:27 +0300
+Message-ID: <95df9334-3d0c-7d13-e431-5a4aa2b9907e@gmail.com>
+References: <08fcbd65-510f-84f8-d6d6-ff56aa9ca9ad@gmail.com>
+ <20190328065247.uz73lap7ljf5q3tb@pengutronix.de>
+ <b8e80127-e377-9ef9-2447-b0126fdad7dc@gmail.com>
+ <VI1PR04MB45438E01D91829849A4E0BB289590@VI1PR04MB4543.eurprd04.prod.outlook.com>
+ <d7a2e5c5-4ee0-8c89-1bab-654db0ae38dd@gmail.com>
+ <VI1PR04MB4543B1708FA151EED0CB722A89550@VI1PR04MB4543.eurprd04.prod.outlook.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andy Duan <fugang.duan@nxp.com>, Han Xu <han.xu@nxp.com>,
+        Clark Wang <xiaoning.wang@nxp.com>
+To: Robin Gong <yibin.gong@nxp.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190402053143.GZ2059@sirena.org.uk>
+In-Reply-To: <VI1PR04MB4543B1708FA151EED0CB722A89550@VI1PR04MB4543.eurprd04.prod.outlook.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Dear Robin Gong,
 
-> Am 02.04.2019 um 07:31 schrieb Mark Brown <broonie@kernel.org>:
->=20
-> It's relatively common, especially with older devices, for people to =
-be
-> perfectly happy to update the kernel and do so frequently but =
-unwilling
-> to update the bootloader as the procedure for recovering a broken
-> bootloader is difficult or perhaps not even possible.
 
-Yes, that is the case Linus tries to solve, where it is not even =
-possible
-to modify the DTB. No idea how it could be solved if it would not be
-possible to change our 6 years old DTB.
+>> Sorry...below another sdma patch(ad0d92d7ba6a) need to be reverted, 
+>> because spi driver may dynamically change burst length.
 
-Fortunately we do not need to change it at all with the latest check for
-cs-gpios.
 
->=20
->> This also gives another idea: make it depend on "powerpc".
->=20
-> That won't fly, the code has always been architecture neutral.
+now I have reverted patch ad0d92d7ba6a.
 
-Ok. Just an idea.
+Patches 0001-dma-engine-imx-sdma-add-mcu_2_ecspi-script.patch and 
+0002-spi-spi-imx-fix-ERR009165.patch are applied.
 
->=20
->>> Dunno about this, it looks fragile, I would prefer to keep all =
-working.
->>> But I will listen to reason.
->=20
->> Reason why I propose a CONFIG option is:
->=20
->> if someone is able to compile and deploy a v5.1 kernel for some =
-device which
->> has (old) and problematic DTB in ROM he/she must have access to the =
-.config.
->> So it is easy to modify it to enable legacy handling of spi-cs-high. =
-And keep
->> it disabled for all others.
->=20
-> This assumes people aren't able to run a distro kernel...
 
-Yes, indeed.
+Kernel log show messages
 
-I have learned from Linus that the problem with legacy spi-cs-high are =
-mostly embedded
-powerpc systems deployed between 2008 and 2013 where the boot-loader =
-can't be
-changed. And where the dts is not maintained on kernel.org.
+[   29.202639] imx-sdma 20ec000.sdma: loaded firmware 3.3
+[   29.238595] spi_imx 2008000.spi: probed
+[   29.242802] spi_imx 200c000.spi: probed
+[   29.245217] spi_imx 2018000.spi: probed
 
-IMHO it is very unlikely that they are running distro kernels. Or is =
-there an example
-of such a system?
+SPI DMA transfers still not work.
 
-BR and thanks,
-Nikolaus
+If I test 32 byte transfers, then they work fine. But 64 byte transfers 
+fails always and I see error messages
+
+root@cr7:~# spidev_test -D /dev/spidev4.1 -s 1200000 -b 8 -S 64 -I 1 -l
+spi mode: 0x20
+bits per word: 8
+max speed: 1200000 Hz (1200 KHz)
+[  423.686736] spi_master spi4: I/O Error in DMA RX
+[  423.691392] spidev spi4.1: SPI transfer failed: -110
+[  423.696382] spi_master spi4: failed to transfer one message from queue
+can't send spi message: Connection timed out
+Aborted (core dumped)
+
+I suppose, transfers shorter then 64 bytes made with help of PIO.
+
+Robin, is there any chance for you to find some time and look at this 
+issue again?
+
+Best wishes.
+--
+Igor Plyatov

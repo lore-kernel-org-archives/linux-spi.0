@@ -1,1656 +1,199 @@
-From: Sean Wang <sean.wang@kernel.org>
-Subject: Re: [PATCH 16/24] pinctrl: mediatek: Add MT8516 Pinctrl driver
-Date: Mon, 1 Apr 2019 14:02:49 -0700
-Message-ID: <CAGp9Lzqj6NE2JH51S93=oY8BNv-R5F-Yh4L2yvfe_EryJRnfEQ@mail.gmail.com>
-References: <20190323211612.860-1-fparent@baylibre.com> <20190323211612.860-17-fparent@baylibre.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [BUG] gpiolib: spi chip select legacy support breaks modern chip
+ select and whitens the GTA04 LCD panel
+Date: Tue, 2 Apr 2019 11:02:12 +0700
+Message-ID: <CACRpkda4k_Vaoo1qEaZ3nv8bA4tcrPEN6oT-v+n9HRdA6=5Xvg@mail.gmail.com>
+References: <7509BFB6-36E4-441A-9F16-7A4FEE7F7CF3@goldelico.com>
+ <5488EF42-08DB-4273-95FF-49ED31E27472@goldelico.com> <CACRpkdb4URKcdZ-=3aG_np86Bp=1ahs+qztM-7yQkSP18ZkE6A@mail.gmail.com>
+ <2286C331-4AFC-46A9-B8C4-8A8BA9CD33C2@goldelico.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Cc: Matthias Brugger <matthias.bgg@gmail.com>,
+Cc: Jan Kotas <jank@cadence.com>, LKML <linux-kernel@vger.kernel.org>,
+        Discussions about the Letux Kernel
+        <letux-kernel@openphoenux.org>, kernel@pyra-handheld.com,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?UTF-8?B?UnlkZXIgTGVlICjmnY7luproq7op?= <ryder.lee@mediatek.com>,
-        Hsin-Hsiung Wang <hsin-hsiung.wang@mediatek.com>,
-        wenzhen.yu@mediatek.com, chaotian.jing@mediatek.com,
-        yong.mao@mediatek.com, jjian.zhou@mediatek.com,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-mmc@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-clk@vger.kernel.org, stephane.leprovost@mediatek.com
-To: Fabien Parent <fparent@baylibre.com>
+        Mark Brown <broonie@kernel.org>
+To: "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Kumar Gala <galak@codeaurora.org>,
+        Wolfgang Ocker <weo@reccoware.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190323211612.860-17-fparent@baylibre.com>
+In-Reply-To: <2286C331-4AFC-46A9-B8C4-8A8BA9CD33C2@goldelico.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi, Fabien
+(CC Kumar and Wolfgang who came up with spi-active-low, I think.)
 
-On Sat, Mar 23, 2019 at 2:17 PM Fabien Parent <fparent@baylibre.com> wrote:
->
-> Signed-off-by: Fabien Parent <fparent@baylibre.com>
-> ---
->  drivers/pinctrl/mediatek/Kconfig              |    7 +
->  drivers/pinctrl/mediatek/Makefile             |    1 +
->  drivers/pinctrl/mediatek/pinctrl-mt8516.c     |  384 ++++++
->  drivers/pinctrl/mediatek/pinctrl-mtk-mt8516.h | 1182 +++++++++++++++++
->  4 files changed, 1574 insertions(+)
->  create mode 100644 drivers/pinctrl/mediatek/pinctrl-mt8516.c
->  create mode 100644 drivers/pinctrl/mediatek/pinctrl-mtk-mt8516.h
->
-> diff --git a/drivers/pinctrl/mediatek/Kconfig b/drivers/pinctrl/mediatek/Kconfig
-> index a005cbccb4f7..26ed5dca1460 100644
-> --- a/drivers/pinctrl/mediatek/Kconfig
-> +++ b/drivers/pinctrl/mediatek/Kconfig
-> @@ -113,6 +113,13 @@ config PINCTRL_MT8183
->         default ARM64 && ARCH_MEDIATEK
->         select PINCTRL_MTK_PARIS
->
-> +config PINCTRL_MT8516
-> +       bool "Mediatek MT8516 pin control"
-> +       depends on OF
-> +       depends on ARM64 || COMPILE_TEST
-> +       default ARM64 && ARCH_MEDIATEK
-> +       select PINCTRL_MTK
-> +
->  # For PMIC
->  config PINCTRL_MT6397
->         bool "Mediatek MT6397 pin control"
-> diff --git a/drivers/pinctrl/mediatek/Makefile b/drivers/pinctrl/mediatek/Makefile
-> index 4b4e2eaf6f2d..a74325abd877 100644
-> --- a/drivers/pinctrl/mediatek/Makefile
-> +++ b/drivers/pinctrl/mediatek/Makefile
-> @@ -17,4 +17,5 @@ obj-$(CONFIG_PINCTRL_MT7623)  += pinctrl-mt7623.o
->  obj-$(CONFIG_PINCTRL_MT7629)   += pinctrl-mt7629.o
->  obj-$(CONFIG_PINCTRL_MT8173)   += pinctrl-mt8173.o
->  obj-$(CONFIG_PINCTRL_MT8183)   += pinctrl-mt8183.o
-> +obj-$(CONFIG_PINCTRL_MT8516)   += pinctrl-mt8516.o
->  obj-$(CONFIG_PINCTRL_MT6397)   += pinctrl-mt6397.o
-> diff --git a/drivers/pinctrl/mediatek/pinctrl-mt8516.c b/drivers/pinctrl/mediatek/pinctrl-mt8516.c
-> new file mode 100644
-> index 000000000000..1e965f119eca
-> --- /dev/null
-> +++ b/drivers/pinctrl/mediatek/pinctrl-mt8516.c
-> @@ -0,0 +1,384 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (c) 2019 MediaTek Inc.
-> + * Author: Min.Guo <min.guo@mediatek.com>
-> + */
-> +
-> +#include <dt-bindings/pinctrl/mt65xx.h>
-> +#include <linux/of.h>
-> +#include <linux/of_device.h>
-> +#include <linux/module.h>
-> +#include <linux/pinctrl/pinctrl.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/regmap.h>
-> +
-> +#include "pinctrl-mtk-common.h"
-> +#include "pinctrl-mtk-mt8516.h"
-> +
-> +static const struct mtk_drv_group_desc mt8516_drv_grp[] = {
-> +       /* 0E4E8SR 4/8/12/16 */
-> +       MTK_DRV_GRP(4, 16, 1, 2, 4),
-> +       /* 0E2E4SR  2/4/6/8 */
-> +       MTK_DRV_GRP(2, 8, 1, 2, 2),
-> +       /* E8E4E2  2/4/6/8/10/12/14/16 */
-> +       MTK_DRV_GRP(2, 16, 0, 2, 2)
-> +};
-> +
-> +static const struct mtk_pin_drv_grp mt8516_pin_drv[] = {
-> +       MTK_PIN_DRV_GRP(0, 0xd00, 0, 0),
-> +       MTK_PIN_DRV_GRP(1, 0xd00, 0, 0),
-> +       MTK_PIN_DRV_GRP(2, 0xd00, 0, 0),
-> +       MTK_PIN_DRV_GRP(3, 0xd00, 0, 0),
-> +       MTK_PIN_DRV_GRP(4, 0xd00, 0, 0),
-> +
-> +       MTK_PIN_DRV_GRP(5, 0xd00, 4, 0),
-> +       MTK_PIN_DRV_GRP(6, 0xd00, 4, 0),
-> +       MTK_PIN_DRV_GRP(7, 0xd00, 4, 0),
-> +       MTK_PIN_DRV_GRP(8, 0xd00, 4, 0),
-> +       MTK_PIN_DRV_GRP(9, 0xd00, 4, 0),
-> +       MTK_PIN_DRV_GRP(10, 0xd00, 4, 0),
-> +
-> +       MTK_PIN_DRV_GRP(11, 0xd00, 8, 0),
-> +       MTK_PIN_DRV_GRP(12, 0xd00, 8, 0),
-> +       MTK_PIN_DRV_GRP(13, 0xd00, 8, 0),
-> +
-> +       MTK_PIN_DRV_GRP(14, 0xd00, 12, 2),
-> +       MTK_PIN_DRV_GRP(15, 0xd00, 12, 2),
-> +       MTK_PIN_DRV_GRP(16, 0xd00, 12, 2),
-> +       MTK_PIN_DRV_GRP(17, 0xd00, 12, 2),
-> +
-> +       MTK_PIN_DRV_GRP(18, 0xd10, 0, 0),
-> +       MTK_PIN_DRV_GRP(19, 0xd10, 0, 0),
-> +       MTK_PIN_DRV_GRP(20, 0xd10, 0, 0),
-> +
-> +       MTK_PIN_DRV_GRP(21, 0xd00, 12, 2),
-> +       MTK_PIN_DRV_GRP(22, 0xd00, 12, 2),
-> +       MTK_PIN_DRV_GRP(23, 0xd00, 12, 2),
-> +
-> +       MTK_PIN_DRV_GRP(24, 0xd00, 8, 0),
-> +       MTK_PIN_DRV_GRP(25, 0xd00, 8, 0),
-> +
-> +       MTK_PIN_DRV_GRP(26, 0xd10, 4, 1),
-> +       MTK_PIN_DRV_GRP(27, 0xd10, 4, 1),
-> +       MTK_PIN_DRV_GRP(28, 0xd10, 4, 1),
-> +       MTK_PIN_DRV_GRP(29, 0xd10, 4, 1),
-> +       MTK_PIN_DRV_GRP(30, 0xd10, 4, 1),
-> +
-> +       MTK_PIN_DRV_GRP(31, 0xd10, 8, 1),
-> +       MTK_PIN_DRV_GRP(32, 0xd10, 8, 1),
-> +       MTK_PIN_DRV_GRP(33, 0xd10, 8, 1),
-> +
-> +       MTK_PIN_DRV_GRP(34, 0xd10, 12, 0),
-> +       MTK_PIN_DRV_GRP(35, 0xd10, 12, 0),
-> +
-> +       MTK_PIN_DRV_GRP(36, 0xd20, 0, 0),
-> +       MTK_PIN_DRV_GRP(37, 0xd20, 0, 0),
-> +       MTK_PIN_DRV_GRP(38, 0xd20, 0, 0),
-> +       MTK_PIN_DRV_GRP(39, 0xd20, 0, 0),
-> +
-> +       MTK_PIN_DRV_GRP(40, 0xd20, 4, 1),
-> +
-> +       MTK_PIN_DRV_GRP(41, 0xd20, 8, 1),
-> +       MTK_PIN_DRV_GRP(42, 0xd20, 8, 1),
-> +       MTK_PIN_DRV_GRP(43, 0xd20, 8, 1),
-> +
-> +       MTK_PIN_DRV_GRP(44, 0xd20, 12, 1),
-> +       MTK_PIN_DRV_GRP(45, 0xd20, 12, 1),
-> +       MTK_PIN_DRV_GRP(46, 0xd20, 12, 1),
-> +       MTK_PIN_DRV_GRP(47, 0xd20, 12, 1),
-> +
-> +       MTK_PIN_DRV_GRP(48, 0xd30, 0, 1),
-> +       MTK_PIN_DRV_GRP(49, 0xd30, 0, 1),
-> +       MTK_PIN_DRV_GRP(50, 0xd30, 0, 1),
-> +       MTK_PIN_DRV_GRP(51, 0xd30, 0, 1),
-> +
-> +       MTK_PIN_DRV_GRP(54, 0xd30, 8, 1),
-> +
-> +       MTK_PIN_DRV_GRP(55, 0xd30, 12, 1),
-> +       MTK_PIN_DRV_GRP(56, 0xd30, 12, 1),
-> +       MTK_PIN_DRV_GRP(57, 0xd30, 12, 1),
-> +
-> +       MTK_PIN_DRV_GRP(62, 0xd40, 8, 1),
-> +       MTK_PIN_DRV_GRP(63, 0xd40, 8, 1),
-> +       MTK_PIN_DRV_GRP(64, 0xd40, 8, 1),
-> +       MTK_PIN_DRV_GRP(65, 0xd40, 8, 1),
-> +       MTK_PIN_DRV_GRP(66, 0xd40, 8, 1),
-> +       MTK_PIN_DRV_GRP(67, 0xd40, 8, 1),
-> +
-> +       MTK_PIN_DRV_GRP(68, 0xd40, 12, 2),
-> +
-> +       MTK_PIN_DRV_GRP(69, 0xd50, 0, 2),
-> +
-> +       MTK_PIN_DRV_GRP(70, 0xd50, 4, 2),
-> +       MTK_PIN_DRV_GRP(71, 0xd50, 4, 2),
-> +       MTK_PIN_DRV_GRP(72, 0xd50, 4, 2),
-> +       MTK_PIN_DRV_GRP(73, 0xd50, 4, 2),
-> +
-> +       MTK_PIN_DRV_GRP(100, 0xd50, 8, 1),
-> +       MTK_PIN_DRV_GRP(101, 0xd50, 8, 1),
-> +       MTK_PIN_DRV_GRP(102, 0xd50, 8, 1),
-> +       MTK_PIN_DRV_GRP(103, 0xd50, 8, 1),
-> +
-> +       MTK_PIN_DRV_GRP(104, 0xd50, 12, 2),
-> +
-> +       MTK_PIN_DRV_GRP(105, 0xd60, 0, 2),
-> +
-> +       MTK_PIN_DRV_GRP(106, 0xd60, 4, 2),
-> +       MTK_PIN_DRV_GRP(107, 0xd60, 4, 2),
-> +       MTK_PIN_DRV_GRP(108, 0xd60, 4, 2),
-> +       MTK_PIN_DRV_GRP(109, 0xd60, 4, 2),
-> +
-> +       MTK_PIN_DRV_GRP(110, 0xd70, 0, 2),
-> +       MTK_PIN_DRV_GRP(111, 0xd70, 0, 2),
-> +       MTK_PIN_DRV_GRP(112, 0xd70, 0, 2),
-> +       MTK_PIN_DRV_GRP(113, 0xd70, 0, 2),
-> +
-> +       MTK_PIN_DRV_GRP(114, 0xd70, 4, 2),
-> +
-> +       MTK_PIN_DRV_GRP(115, 0xd60, 12, 2),
-> +
-> +       MTK_PIN_DRV_GRP(116, 0xd60, 8, 2),
-> +
-> +       MTK_PIN_DRV_GRP(117, 0xd70, 0, 2),
-> +       MTK_PIN_DRV_GRP(118, 0xd70, 0, 2),
-> +       MTK_PIN_DRV_GRP(119, 0xd70, 0, 2),
-> +       MTK_PIN_DRV_GRP(120, 0xd70, 0, 2),
-> +};
-> +
-> +static const struct mtk_pin_spec_pupd_set_samereg mt8516_spec_pupd[] = {
-> +       MTK_PIN_PUPD_SPEC_SR(14, 0xe50, 14, 13, 12),
-> +       MTK_PIN_PUPD_SPEC_SR(15, 0xe60, 2, 1, 0),
-> +       MTK_PIN_PUPD_SPEC_SR(16, 0xe60, 6, 5, 4),
-> +       MTK_PIN_PUPD_SPEC_SR(17, 0xe60, 10, 9, 8),
-> +
-> +       MTK_PIN_PUPD_SPEC_SR(21, 0xe60, 14, 13, 12),
-> +       MTK_PIN_PUPD_SPEC_SR(22, 0xe70, 2, 1, 0),
-> +       MTK_PIN_PUPD_SPEC_SR(23, 0xe70, 6, 5, 4),
-> +
-> +       MTK_PIN_PUPD_SPEC_SR(40, 0xe80, 2, 1, 0),
-> +       MTK_PIN_PUPD_SPEC_SR(41, 0xe80, 6, 5, 4),
-> +       MTK_PIN_PUPD_SPEC_SR(42, 0xe90, 2, 1, 0),
-> +       MTK_PIN_PUPD_SPEC_SR(43, 0xe90, 6, 5, 4),
-> +
-> +       MTK_PIN_PUPD_SPEC_SR(68, 0xe50, 10, 9, 8),
-> +       MTK_PIN_PUPD_SPEC_SR(69, 0xe50, 6, 5, 4),
-> +       MTK_PIN_PUPD_SPEC_SR(70, 0xe40, 6, 5, 4),
-> +       MTK_PIN_PUPD_SPEC_SR(71, 0xe40, 10, 9, 8),
-> +       MTK_PIN_PUPD_SPEC_SR(72, 0xe40, 14, 13, 12),
-> +       MTK_PIN_PUPD_SPEC_SR(73, 0xe50, 2, 1, 0),
-> +
-> +       MTK_PIN_PUPD_SPEC_SR(104, 0xe40, 2, 1, 0),
-> +       MTK_PIN_PUPD_SPEC_SR(105, 0xe30, 14, 13, 12),
-> +       MTK_PIN_PUPD_SPEC_SR(106, 0xe20, 14, 13, 12),
-> +       MTK_PIN_PUPD_SPEC_SR(107, 0xe30, 2, 1, 0),
-> +       MTK_PIN_PUPD_SPEC_SR(108, 0xe30, 6, 5, 4),
-> +       MTK_PIN_PUPD_SPEC_SR(109, 0xe30, 10, 9, 8),
-> +       MTK_PIN_PUPD_SPEC_SR(110, 0xe10, 14, 13, 12),
-> +       MTK_PIN_PUPD_SPEC_SR(111, 0xe10, 10, 9, 8),
-> +       MTK_PIN_PUPD_SPEC_SR(112, 0xe10, 6, 5, 4),
-> +       MTK_PIN_PUPD_SPEC_SR(113, 0xe10, 2, 1, 0),
-> +       MTK_PIN_PUPD_SPEC_SR(114, 0xe20, 10, 9, 8),
-> +       MTK_PIN_PUPD_SPEC_SR(115, 0xe20, 2, 1, 0),
-> +       MTK_PIN_PUPD_SPEC_SR(116, 0xe20, 6, 5, 4),
-> +       MTK_PIN_PUPD_SPEC_SR(117, 0xe00, 14, 13, 12),
-> +       MTK_PIN_PUPD_SPEC_SR(118, 0xe00, 10, 9, 8),
-> +       MTK_PIN_PUPD_SPEC_SR(119, 0xe00, 6, 5, 4),
-> +       MTK_PIN_PUPD_SPEC_SR(120, 0xe00, 2, 1, 0),
-> +};
-> +
-> +static int mt8516_spec_pull_set(struct regmap *regmap, unsigned int pin,
-> +                       unsigned char align, bool isup, unsigned int r1r0)
-> +{
-> +       return mtk_pctrl_spec_pull_set_samereg(regmap, mt8516_spec_pupd,
-> +               ARRAY_SIZE(mt8516_spec_pupd), pin, align, isup, r1r0);
-> +}
-> +
-> +static const struct mtk_pin_ies_smt_set mt8516_ies_set[] = {
-> +       MTK_PIN_IES_SMT_SPEC(0, 6, 0x900, 2),
-> +       MTK_PIN_IES_SMT_SPEC(7, 10, 0x900, 3),
-> +       MTK_PIN_IES_SMT_SPEC(11, 13, 0x900, 12),
-> +       MTK_PIN_IES_SMT_SPEC(14, 17, 0x900, 13),
-> +       MTK_PIN_IES_SMT_SPEC(18, 20, 0x910, 10),
-> +       MTK_PIN_IES_SMT_SPEC(21, 23, 0x900, 13),
-> +       MTK_PIN_IES_SMT_SPEC(24, 25, 0x900, 12),
-> +       MTK_PIN_IES_SMT_SPEC(26, 30, 0x900, 0),
-> +       MTK_PIN_IES_SMT_SPEC(31, 33, 0x900, 1),
-> +       MTK_PIN_IES_SMT_SPEC(34, 39, 0x900, 2),
-> +       MTK_PIN_IES_SMT_SPEC(40, 40, 0x910, 11),
-> +       MTK_PIN_IES_SMT_SPEC(41, 43, 0x900, 10),
-> +       MTK_PIN_IES_SMT_SPEC(44, 47, 0x900, 11),
-> +       MTK_PIN_IES_SMT_SPEC(48, 51, 0x900, 14),
-> +       MTK_PIN_IES_SMT_SPEC(52, 53, 0x910, 0),
-> +       MTK_PIN_IES_SMT_SPEC(54, 54, 0x910, 2),
-> +       MTK_PIN_IES_SMT_SPEC(55, 57, 0x910, 4),
-> +       MTK_PIN_IES_SMT_SPEC(58, 59, 0x900, 15),
-> +       MTK_PIN_IES_SMT_SPEC(60, 61, 0x910, 1),
-> +       MTK_PIN_IES_SMT_SPEC(62, 65, 0x910, 5),
-> +       MTK_PIN_IES_SMT_SPEC(66, 67, 0x910, 6),
-> +       MTK_PIN_IES_SMT_SPEC(68, 68, 0x930, 2),
-> +       MTK_PIN_IES_SMT_SPEC(69, 69, 0x930, 1),
-> +       MTK_PIN_IES_SMT_SPEC(70, 70, 0x930, 6),
-> +       MTK_PIN_IES_SMT_SPEC(71, 71, 0x930, 5),
-> +       MTK_PIN_IES_SMT_SPEC(72, 72, 0x930, 4),
-> +       MTK_PIN_IES_SMT_SPEC(73, 73, 0x930, 3),
-> +       MTK_PIN_IES_SMT_SPEC(100, 103, 0x910, 7),
-> +       MTK_PIN_IES_SMT_SPEC(104, 104, 0x920, 12),
-> +       MTK_PIN_IES_SMT_SPEC(105, 105, 0x920, 11),
-> +       MTK_PIN_IES_SMT_SPEC(106, 106, 0x930, 0),
-> +       MTK_PIN_IES_SMT_SPEC(107, 107, 0x920, 15),
-> +       MTK_PIN_IES_SMT_SPEC(108, 108, 0x920, 14),
-> +       MTK_PIN_IES_SMT_SPEC(109, 109, 0x920, 13),
-> +       MTK_PIN_IES_SMT_SPEC(110, 110, 0x920, 9),
-> +       MTK_PIN_IES_SMT_SPEC(111, 111, 0x920, 8),
-> +       MTK_PIN_IES_SMT_SPEC(112, 112, 0x920, 7),
-> +       MTK_PIN_IES_SMT_SPEC(113, 113, 0x920, 6),
-> +       MTK_PIN_IES_SMT_SPEC(114, 114, 0x920, 10),
-> +       MTK_PIN_IES_SMT_SPEC(115, 115, 0x920, 1),
-> +       MTK_PIN_IES_SMT_SPEC(116, 116, 0x920, 0),
-> +       MTK_PIN_IES_SMT_SPEC(117, 117, 0x920, 5),
-> +       MTK_PIN_IES_SMT_SPEC(118, 118, 0x920, 4),
-> +       MTK_PIN_IES_SMT_SPEC(119, 119, 0x920, 3),
-> +       MTK_PIN_IES_SMT_SPEC(120, 120, 0x920, 2),
-> +       MTK_PIN_IES_SMT_SPEC(121, 124, 0x910, 9),
-> +};
-> +
-> +static const struct mtk_pin_ies_smt_set mt8516_smt_set[] = {
-> +       MTK_PIN_IES_SMT_SPEC(0, 6, 0xA00, 2),
-> +       MTK_PIN_IES_SMT_SPEC(7, 10, 0xA00, 3),
-> +       MTK_PIN_IES_SMT_SPEC(11, 13, 0xA00, 12),
-> +       MTK_PIN_IES_SMT_SPEC(14, 17, 0xA00, 13),
-> +       MTK_PIN_IES_SMT_SPEC(18, 20, 0xA10, 10),
-> +       MTK_PIN_IES_SMT_SPEC(21, 23, 0xA00, 13),
-> +       MTK_PIN_IES_SMT_SPEC(24, 25, 0xA00, 12),
-> +       MTK_PIN_IES_SMT_SPEC(26, 30, 0xA00, 0),
-> +       MTK_PIN_IES_SMT_SPEC(31, 33, 0xA00, 1),
-> +       MTK_PIN_IES_SMT_SPEC(34, 39, 0xA900, 2),
-> +       MTK_PIN_IES_SMT_SPEC(40, 40, 0xA10, 11),
-> +       MTK_PIN_IES_SMT_SPEC(41, 43, 0xA00, 10),
-> +       MTK_PIN_IES_SMT_SPEC(44, 47, 0xA00, 11),
-> +       MTK_PIN_IES_SMT_SPEC(48, 51, 0xA00, 14),
-> +       MTK_PIN_IES_SMT_SPEC(52, 53, 0xA10, 0),
-> +       MTK_PIN_IES_SMT_SPEC(54, 54, 0xA10, 2),
-> +       MTK_PIN_IES_SMT_SPEC(55, 57, 0xA10, 4),
-> +       MTK_PIN_IES_SMT_SPEC(58, 59, 0xA00, 15),
-> +       MTK_PIN_IES_SMT_SPEC(60, 61, 0xA10, 1),
-> +       MTK_PIN_IES_SMT_SPEC(62, 65, 0xA10, 5),
-> +       MTK_PIN_IES_SMT_SPEC(66, 67, 0xA10, 6),
-> +       MTK_PIN_IES_SMT_SPEC(68, 68, 0xA30, 2),
-> +       MTK_PIN_IES_SMT_SPEC(69, 69, 0xA30, 1),
-> +       MTK_PIN_IES_SMT_SPEC(70, 70, 0xA30, 3),
-> +       MTK_PIN_IES_SMT_SPEC(71, 71, 0xA30, 4),
-> +       MTK_PIN_IES_SMT_SPEC(72, 72, 0xA30, 5),
-> +       MTK_PIN_IES_SMT_SPEC(73, 73, 0xA30, 6),
-> +
-> +       MTK_PIN_IES_SMT_SPEC(100, 103, 0xA10, 7),
-> +       MTK_PIN_IES_SMT_SPEC(104, 104, 0xA20, 12),
-> +       MTK_PIN_IES_SMT_SPEC(105, 105, 0xA20, 11),
-> +       MTK_PIN_IES_SMT_SPEC(106, 106, 0xA30, 13),
-> +       MTK_PIN_IES_SMT_SPEC(107, 107, 0xA20, 14),
-> +       MTK_PIN_IES_SMT_SPEC(108, 108, 0xA20, 15),
-> +       MTK_PIN_IES_SMT_SPEC(109, 109, 0xA30, 0),
-> +       MTK_PIN_IES_SMT_SPEC(110, 110, 0xA20, 9),
-> +       MTK_PIN_IES_SMT_SPEC(111, 111, 0xA20, 8),
-> +       MTK_PIN_IES_SMT_SPEC(112, 112, 0xA20, 7),
-> +       MTK_PIN_IES_SMT_SPEC(113, 113, 0xA20, 6),
-> +       MTK_PIN_IES_SMT_SPEC(114, 114, 0xA20, 10),
-> +       MTK_PIN_IES_SMT_SPEC(115, 115, 0xA20, 1),
-> +       MTK_PIN_IES_SMT_SPEC(116, 116, 0xA20, 0),
-> +       MTK_PIN_IES_SMT_SPEC(117, 117, 0xA20, 5),
-> +       MTK_PIN_IES_SMT_SPEC(118, 118, 0xA20, 4),
-> +       MTK_PIN_IES_SMT_SPEC(119, 119, 0xA20, 3),
-> +       MTK_PIN_IES_SMT_SPEC(120, 120, 0xA20, 2),
-> +       MTK_PIN_IES_SMT_SPEC(121, 124, 0xA10, 9),
-> +};
-> +
-> +static int mt8516_ies_smt_set(struct regmap *regmap, unsigned int pin,
-> +               unsigned char align, int value, enum pin_config_param arg)
-> +{
-> +       if (arg == PIN_CONFIG_INPUT_ENABLE)
-> +               return mtk_pconf_spec_set_ies_smt_range(regmap, mt8516_ies_set,
-> +                       ARRAY_SIZE(mt8516_ies_set), pin, align, value);
-> +       else if (arg == PIN_CONFIG_INPUT_SCHMITT_ENABLE)
-> +               return mtk_pconf_spec_set_ies_smt_range(regmap, mt8516_smt_set,
-> +                       ARRAY_SIZE(mt8516_smt_set), pin, align, value);
-> +       return -EINVAL;
-> +}
-> +
-> +static struct mtk_eint_regs mt8516_eint_regs = {
-> +       .stat = 0x000,
-> +       .ack = 0x040,
-> +       .mask = 0x080,
-> +       .mask_set = 0x0c0,
-> +       .mask_clr = 0x100,
-> +       .sens = 0x140,
-> +       .sens_set = 0x180,
-> +       .sens_clr = 0x1c0,
-> +       .soft = 0x200,
-> +       .soft_set = 0x240,
-> +       .soft_clr = 0x280,
-> +       .pol = 0x300,
-> +       .pol_set = 0x340,
-> +       .pol_clr = 0x380,
-> +       .dom_en = 0x400,
-> +       .dbnc_ctrl = 0x500,
-> +       .dbnc_set = 0x600,
-> +       .dbnc_clr = 0x700,
-> +};
-> +
-> +static const struct mtk_pinctrl_devdata mt8516_pinctrl_data = {
-> +       .pins = mtk_pins_mt8516,
-> +       .npins = ARRAY_SIZE(mtk_pins_mt8516),
-> +       .grp_desc = mt8516_drv_grp,
-> +       .n_grp_cls = ARRAY_SIZE(mt8516_drv_grp),
-> +       .pin_drv_grp = mt8516_pin_drv,
-> +       .n_pin_drv_grps = ARRAY_SIZE(mt8516_pin_drv),
-> +       .spec_pull_set = mt8516_spec_pull_set,
-> +       .spec_ies_smt_set = mt8516_ies_smt_set,
-> +       .dir_offset = 0x0000,
-> +       .pullen_offset = 0x0500,
-> +       .pullsel_offset = 0x0600,
-> +       .dout_offset = 0x0100,
-> +       .din_offset = 0x0200,
-> +       .pinmux_offset = 0x0300,
-> +       .type1_start = 125,
-> +       .type1_end = 125,
-> +       .port_shf = 4,
-> +       .port_mask = 0xf,
-> +       .port_align = 4,
-> +       .eint_regs = &mt8516_eint_regs,
+On Sun, Mar 24, 2019 at 1:56 PM H. Nikolaus Schaller <hns@goldelico.com> wrote:
+> > Am 24.03.2019 um 05:15 schrieb Linus Walleij <linus.walleij@linaro.org>:
 
-The eint register layout seems definitely the same to the generic one.
-So mt8516_eint_regs struct defintions and the field assignment can be
-dropped.  And then the driver will fall back to use a generic one
-"mtk_generic_eint_regs" which are currently common to all MediaTek
-pinctrls devices. Others look good to me.
-
-> +       .eint_hw = {
-> +               .port_mask = 7,
-> +               .ports     = 6,
-> +               .ap_num    = 169,
-> +               .db_cnt    = 64,
-> +       },
-> +};
-> +
-> +static int mt8516_pinctrl_probe(struct platform_device *pdev)
-> +{
-> +       return mtk_pctrl_init(pdev, &mt8516_pinctrl_data, NULL);
-> +}
-> +
-> +static const struct of_device_id mt8516_pctrl_match[] = {
-> +       {
-> +               .compatible = "mediatek,mt8516-pinctrl",
-> +       },
-> +       {}
-> +};
-> +
-> +MODULE_DEVICE_TABLE(of, mt8516_pctrl_match);
-> +
-> +static struct platform_driver mtk_pinctrl_driver = {
-> +       .probe = mt8516_pinctrl_probe,
-> +       .driver = {
-> +               .name = "mediatek-mt8516-pinctrl",
-> +               .of_match_table = mt8516_pctrl_match,
-> +               .pm = &mtk_eint_pm_ops,
-> +       },
-> +};
-> +
-> +static int __init mtk_pinctrl_init(void)
-> +{
-> +       return platform_driver_register(&mtk_pinctrl_driver);
-> +}
-> +arch_initcall(mtk_pinctrl_init);
-> diff --git a/drivers/pinctrl/mediatek/pinctrl-mtk-mt8516.h b/drivers/pinctrl/mediatek/pinctrl-mtk-mt8516.h
-> new file mode 100644
-> index 000000000000..f7a4c6e4a026
-> --- /dev/null
-> +++ b/drivers/pinctrl/mediatek/pinctrl-mtk-mt8516.h
-> @@ -0,0 +1,1182 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Copyright (C) 2019 MediaTek Inc.
-> + */
-> +#ifndef __PINCTRL_MTK_MT8516_H
-> +#define __PINCTRL_MTK_MT8516_H
-> +
-> +#include <linux/pinctrl/pinctrl.h>
-> +#include "pinctrl-mtk-common.h"
-> +
-> +static const struct mtk_desc_pin mtk_pins_mt8516[] = {
-> +       MTK_PIN(
-> +               PINCTRL_PIN(0, "EINT0"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 0),
-> +               MTK_FUNCTION(0, "GPIO0"),
-> +               MTK_FUNCTION(1, "PWM_B"),
-> +               MTK_FUNCTION(3, "I2S2_BCK"),
-> +               MTK_FUNCTION(4, "EXT_TXD0"),
-> +               MTK_FUNCTION(6, "SQICS"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[6]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(1, "EINT1"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 1),
-> +               MTK_FUNCTION(0, "GPIO1"),
-> +               MTK_FUNCTION(1, "PWM_C"),
-> +               MTK_FUNCTION(3, "I2S2_DI"),
-> +               MTK_FUNCTION(4, "EXT_TXD1"),
-> +               MTK_FUNCTION(5, "CONN_MCU_TDO"),
-> +               MTK_FUNCTION(6, "SQISO"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[7]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(2, "EINT2"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 2),
-> +               MTK_FUNCTION(0, "GPIO2"),
-> +               MTK_FUNCTION(1, "CLKM0"),
-> +               MTK_FUNCTION(3, "I2S2_LRCK"),
-> +               MTK_FUNCTION(4, "EXT_TXD2"),
-> +               MTK_FUNCTION(5, "CONN_MCU_DBGACK_N"),
-> +               MTK_FUNCTION(6, "SQISI"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[8]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(3, "EINT3"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 3),
-> +               MTK_FUNCTION(0, "GPIO3"),
-> +               MTK_FUNCTION(1, "CLKM1"),
-> +               MTK_FUNCTION(3, "SPI_MI"),
-> +               MTK_FUNCTION(4, "EXT_TXD3"),
-> +               MTK_FUNCTION(5, "CONN_MCU_DBGI_N"),
-> +               MTK_FUNCTION(6, "SQIWP"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[9]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(4, "EINT4"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 4),
-> +               MTK_FUNCTION(0, "GPIO4"),
-> +               MTK_FUNCTION(1, "CLKM2"),
-> +               MTK_FUNCTION(3, "SPI_MO"),
-> +               MTK_FUNCTION(4, "EXT_TXC"),
-> +               MTK_FUNCTION(5, "CONN_MCU_TCK"),
-> +               MTK_FUNCTION(6, "CONN_MCU_AICE_JCKC"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[10]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(5, "EINT5"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 5),
-> +               MTK_FUNCTION(0, "GPIO5"),
-> +               MTK_FUNCTION(1, "UCTS2"),
-> +               MTK_FUNCTION(3, "SPI_CSB"),
-> +               MTK_FUNCTION(4, "EXT_RXER"),
-> +               MTK_FUNCTION(5, "CONN_MCU_TDI"),
-> +               MTK_FUNCTION(6, "CONN_TEST_CK"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[11]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(6, "EINT6"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 6),
-> +               MTK_FUNCTION(0, "GPIO6"),
-> +               MTK_FUNCTION(1, "URTS2"),
-> +               MTK_FUNCTION(3, "SPI_CLK"),
-> +               MTK_FUNCTION(4, "EXT_RXC"),
-> +               MTK_FUNCTION(5, "CONN_MCU_TRST_B"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[12]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(7, "EINT7"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 7),
-> +               MTK_FUNCTION(0, "GPIO7"),
-> +               MTK_FUNCTION(1, "SQIRST"),
-> +               MTK_FUNCTION(3, "SDA1_0"),
-> +               MTK_FUNCTION(4, "EXT_RXDV"),
-> +               MTK_FUNCTION(5, "CONN_MCU_TMS"),
-> +               MTK_FUNCTION(6, "CONN_MCU_AICE_JMSC"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[13]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(8, "EINT8"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 8),
-> +               MTK_FUNCTION(0, "GPIO8"),
-> +               MTK_FUNCTION(1, "SQICK"),
-> +               MTK_FUNCTION(2, "CLKM3"),
-> +               MTK_FUNCTION(3, "SCL1_0"),
-> +               MTK_FUNCTION(4, "EXT_RXD0"),
-> +               MTK_FUNCTION(5, "ANT_SEL0"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[14]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(9, "EINT9"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 9),
-> +               MTK_FUNCTION(0, "GPIO9"),
-> +               MTK_FUNCTION(1, "CLKM4"),
-> +               MTK_FUNCTION(2, "SDA2_0"),
-> +               MTK_FUNCTION(3, "EXT_FRAME_SYNC"),
-> +               MTK_FUNCTION(4, "EXT_RXD1"),
-> +               MTK_FUNCTION(5, "ANT_SEL1"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[15]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(10, "EINT10"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 10),
-> +               MTK_FUNCTION(0, "GPIO10"),
-> +               MTK_FUNCTION(1, "CLKM5"),
-> +               MTK_FUNCTION(2, "SCL2_0"),
-> +               MTK_FUNCTION(3, "EXT_FRAME_SYNC"),
-> +               MTK_FUNCTION(4, "EXT_RXD2"),
-> +               MTK_FUNCTION(5, "ANT_SEL2"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[16]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(11, "EINT11"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 11),
-> +               MTK_FUNCTION(0, "GPIO11"),
-> +               MTK_FUNCTION(1, "CLKM4"),
-> +               MTK_FUNCTION(2, "PWM_C"),
-> +               MTK_FUNCTION(3, "CONN_TEST_CK"),
-> +               MTK_FUNCTION(4, "ANT_SEL3"),
-> +               MTK_FUNCTION(6, "EXT_RXD3"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[17]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(12, "EINT12"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 12),
-> +               MTK_FUNCTION(0, "GPIO12"),
-> +               MTK_FUNCTION(1, "CLKM5"),
-> +               MTK_FUNCTION(2, "PWM_A"),
-> +               MTK_FUNCTION(3, "SPDIF_OUT"),
-> +               MTK_FUNCTION(4, "ANT_SEL4"),
-> +               MTK_FUNCTION(6, "EXT_TXEN"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[18]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(13, "EINT13"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 13),
-> +               MTK_FUNCTION(0, "GPIO13"),
-> +               MTK_FUNCTION(3, "TSF_IN"),
-> +               MTK_FUNCTION(4, "ANT_SEL5"),
-> +               MTK_FUNCTION(6, "SPDIF_IN"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[19]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(14, "EINT14"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 14),
-> +               MTK_FUNCTION(0, "GPIO14"),
-> +               MTK_FUNCTION(2, "I2S_8CH_DO1"),
-> +               MTK_FUNCTION(3, "TDM_RX_MCK"),
-> +               MTK_FUNCTION(4, "ANT_SEL1"),
-> +               MTK_FUNCTION(5, "CONN_MCU_DBGACK_N"),
-> +               MTK_FUNCTION(6, "NCLE"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[8]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(15, "EINT15"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 15),
-> +               MTK_FUNCTION(0, "GPIO15"),
-> +               MTK_FUNCTION(2, "I2S_8CH_LRCK"),
-> +               MTK_FUNCTION(3, "TDM_RX_BCK"),
-> +               MTK_FUNCTION(4, "ANT_SEL2"),
-> +               MTK_FUNCTION(5, "CONN_MCU_DBGI_N"),
-> +               MTK_FUNCTION(6, "NCEB1"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[9]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(16, "EINT16"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 16),
-> +               MTK_FUNCTION(0, "GPIO16"),
-> +               MTK_FUNCTION(2, "I2S_8CH_BCK"),
-> +               MTK_FUNCTION(3, "TDM_RX_LRCK"),
-> +               MTK_FUNCTION(4, "ANT_SEL3"),
-> +               MTK_FUNCTION(5, "CONN_MCU_TRST_B"),
-> +               MTK_FUNCTION(6, "NCEB0"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[10]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(17, "EINT17"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 17),
-> +               MTK_FUNCTION(0, "GPIO17"),
-> +               MTK_FUNCTION(2, "I2S_8CH_MCK"),
-> +               MTK_FUNCTION(3, "TDM_RX_DI"),
-> +               MTK_FUNCTION(4, "IDDIG"),
-> +               MTK_FUNCTION(5, "ANT_SEL4"),
-> +               MTK_FUNCTION(6, "NREB"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[11]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(18, "EINT18"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 18),
-> +               MTK_FUNCTION(0, "GPIO18"),
-> +               MTK_FUNCTION(2, "USB_DRVVBUS"),
-> +               MTK_FUNCTION(3, "I2S3_LRCK"),
-> +               MTK_FUNCTION(4, "CLKM1"),
-> +               MTK_FUNCTION(5, "ANT_SEL3"),
-> +               MTK_FUNCTION(6, "I2S2_BCK"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[20]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(19, "EINT19"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 19),
-> +               MTK_FUNCTION(0, "GPIO19"),
-> +               MTK_FUNCTION(1, "UCTS1"),
-> +               MTK_FUNCTION(2, "IDDIG"),
-> +               MTK_FUNCTION(3, "I2S3_BCK"),
-> +               MTK_FUNCTION(4, "CLKM2"),
-> +               MTK_FUNCTION(5, "ANT_SEL4"),
-> +               MTK_FUNCTION(6, "I2S2_DI"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[21]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(20, "EINT20"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 20),
-> +               MTK_FUNCTION(0, "GPIO20"),
-> +               MTK_FUNCTION(1, "URTS1"),
-> +               MTK_FUNCTION(3, "I2S3_DO"),
-> +               MTK_FUNCTION(4, "CLKM3"),
-> +               MTK_FUNCTION(5, "ANT_SEL5"),
-> +               MTK_FUNCTION(6, "I2S2_LRCK"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[22]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(21, "EINT21"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 21),
-> +               MTK_FUNCTION(0, "GPIO21"),
-> +               MTK_FUNCTION(1, "NRNB"),
-> +               MTK_FUNCTION(2, "ANT_SEL0"),
-> +               MTK_FUNCTION(3, "I2S_8CH_DO4"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[31]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(22, "EINT22"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 22),
-> +               MTK_FUNCTION(0, "GPIO22"),
-> +               MTK_FUNCTION(2, "I2S_8CH_DO2"),
-> +               MTK_FUNCTION(3, "TSF_IN"),
-> +               MTK_FUNCTION(4, "USB_DRVVBUS"),
-> +               MTK_FUNCTION(5, "SPDIF_OUT"),
-> +               MTK_FUNCTION(6, "NRE_C"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[12]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(23, "EINT23"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 23),
-> +               MTK_FUNCTION(0, "GPIO23"),
-> +               MTK_FUNCTION(2, "I2S_8CH_DO3"),
-> +               MTK_FUNCTION(3, "CLKM0"),
-> +               MTK_FUNCTION(4, "IR"),
-> +               MTK_FUNCTION(5, "SPDIF_IN"),
-> +               MTK_FUNCTION(6, "NDQS_C"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[13]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(24, "EINT24"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 24),
-> +               MTK_FUNCTION(0, "GPIO24"),
-> +               MTK_FUNCTION(3, "ANT_SEL1"),
-> +               MTK_FUNCTION(4, "UCTS2"),
-> +               MTK_FUNCTION(5, "PWM_A"),
-> +               MTK_FUNCTION(6, "I2S0_MCK"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[0]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(25, "EINT25"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 25),
-> +               MTK_FUNCTION(0, "GPIO25"),
-> +               MTK_FUNCTION(3, "ANT_SEL0"),
-> +               MTK_FUNCTION(4, "URTS2"),
-> +               MTK_FUNCTION(5, "PWM_B"),
-> +               MTK_FUNCTION(6, "I2S_8CH_MCK"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[1]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(26, "PWRAP_SPI0_MI"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 26),
-> +               MTK_FUNCTION(0, "GPIO26"),
-> +               MTK_FUNCTION(1, "PWRAP_SPI0_MO"),
-> +               MTK_FUNCTION(2, "PWRAP_SPI0_MI")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(27, "PWRAP_SPI0_MO"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 27),
-> +               MTK_FUNCTION(0, "GPIO27"),
-> +               MTK_FUNCTION(1, "PWRAP_SPI0_MI"),
-> +               MTK_FUNCTION(2, "PWRAP_SPI0_MO")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(28, "PWRAP_INT"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 28),
-> +               MTK_FUNCTION(0, "GPIO28"),
-> +               MTK_FUNCTION(1, "I2S0_MCK"),
-> +               MTK_FUNCTION(4, "I2S_8CH_MCK"),
-> +               MTK_FUNCTION(5, "I2S2_MCK"),
-> +               MTK_FUNCTION(6, "I2S3_MCK")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(29, "PWRAP_SPI0_CK"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 29),
-> +               MTK_FUNCTION(0, "GPIO29"),
-> +               MTK_FUNCTION(1, "PWRAP_SPI0_CK")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(30, "PWRAP_SPI0_CSN"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 30),
-> +               MTK_FUNCTION(0, "GPIO30"),
-> +               MTK_FUNCTION(1, "PWRAP_SPI0_CSN")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(31, "RTC32K_CK"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 31),
-> +               MTK_FUNCTION(0, "GPIO31"),
-> +               MTK_FUNCTION(1, "RTC32K_CK")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(32, "WATCHDOG"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 32),
-> +               MTK_FUNCTION(0, "GPIO32"),
-> +               MTK_FUNCTION(1, "WATCHDOG")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(33, "SRCLKENA"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 33),
-> +               MTK_FUNCTION(0, "GPIO33"),
-> +               MTK_FUNCTION(1, "SRCLKENA0")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(34, "URXD2"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 34),
-> +               MTK_FUNCTION(0, "GPIO34"),
-> +               MTK_FUNCTION(1, "URXD2"),
-> +               MTK_FUNCTION(3, "UTXD2"),
-> +               MTK_FUNCTION(4, "DBG_SCL"),
-> +               MTK_FUNCTION(6, "I2S2_MCK"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[0]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(35, "UTXD2"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 35),
-> +               MTK_FUNCTION(0, "GPIO35"),
-> +               MTK_FUNCTION(1, "UTXD2"),
-> +               MTK_FUNCTION(3, "URXD2"),
-> +               MTK_FUNCTION(4, "DBG_SDA"),
-> +               MTK_FUNCTION(6, "I2S3_MCK"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[1]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(36, "MRG_CLK"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 36),
-> +               MTK_FUNCTION(0, "GPIO36"),
-> +               MTK_FUNCTION(1, "MRG_CLK"),
-> +               MTK_FUNCTION(3, "I2S0_BCK"),
-> +               MTK_FUNCTION(4, "I2S3_BCK"),
-> +               MTK_FUNCTION(5, "PCM0_CLK"),
-> +               MTK_FUNCTION(6, "IR"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[2]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(37, "MRG_SYNC"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 37),
-> +               MTK_FUNCTION(0, "GPIO37"),
-> +               MTK_FUNCTION(1, "MRG_SYNC"),
-> +               MTK_FUNCTION(3, "I2S0_LRCK"),
-> +               MTK_FUNCTION(4, "I2S3_LRCK"),
-> +               MTK_FUNCTION(5, "PCM0_SYNC"),
-> +               MTK_FUNCTION(6, "EXT_COL"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[3]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(38, "MRG_DI"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 38),
-> +               MTK_FUNCTION(0, "GPIO38"),
-> +               MTK_FUNCTION(1, "MRG_DI"),
-> +               MTK_FUNCTION(3, "I2S0_DI"),
-> +               MTK_FUNCTION(4, "I2S3_DO"),
-> +               MTK_FUNCTION(5, "PCM0_DI"),
-> +               MTK_FUNCTION(6, "EXT_MDIO"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[4]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(39, "MRG_DO"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 39),
-> +               MTK_FUNCTION(0, "GPIO39"),
-> +               MTK_FUNCTION(1, "MRG_DO"),
-> +               MTK_FUNCTION(3, "I2S0_MCK"),
-> +               MTK_FUNCTION(4, "I2S3_MCK"),
-> +               MTK_FUNCTION(5, "PCM0_DO"),
-> +               MTK_FUNCTION(6, "EXT_MDC"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[5]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(40, "KPROW0"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 40),
-> +               MTK_FUNCTION(0, "GPIO40"),
-> +               MTK_FUNCTION(1, "KPROW0"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[4]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(41, "KPROW1"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 41),
-> +               MTK_FUNCTION(0, "GPIO41"),
-> +               MTK_FUNCTION(1, "KPROW1"),
-> +               MTK_FUNCTION(2, "IDDIG"),
-> +               MTK_FUNCTION(3, "EXT_FRAME_SYNC"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[5]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(42, "KPCOL0"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 42),
-> +               MTK_FUNCTION(0, "GPIO42"),
-> +               MTK_FUNCTION(1, "KPCOL0"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[6]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(43, "KPCOL1"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 43),
-> +               MTK_FUNCTION(0, "GPIO43"),
-> +               MTK_FUNCTION(1, "KPCOL1"),
-> +               MTK_FUNCTION(2, "USB_DRVVBUS"),
-> +               MTK_FUNCTION(3, "EXT_FRAME_SYNC"),
-> +               MTK_FUNCTION(4, "TSF_IN"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[7]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(44, "JTMS"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 44),
-> +               MTK_FUNCTION(0, "GPIO44"),
-> +               MTK_FUNCTION(1, "JTMS"),
-> +               MTK_FUNCTION(2, "CONN_MCU_TMS"),
-> +               MTK_FUNCTION(3, "CONN_MCU_AICE_JMSC")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(45, "JTCK"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 45),
-> +               MTK_FUNCTION(0, "GPIO45"),
-> +               MTK_FUNCTION(1, "JTCK"),
-> +               MTK_FUNCTION(2, "CONN_MCU_TCK"),
-> +               MTK_FUNCTION(3, "CONN_MCU_AICE_JCKC")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(46, "JTDI"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 46),
-> +               MTK_FUNCTION(0, "GPIO46"),
-> +               MTK_FUNCTION(1, "JTDI"),
-> +               MTK_FUNCTION(2, "CONN_MCU_TDI")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(47, "JTDO"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 47),
-> +               MTK_FUNCTION(0, "GPIO47"),
-> +               MTK_FUNCTION(1, "JTDO"),
-> +               MTK_FUNCTION(2, "CONN_MCU_TDO")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(48, "SPI_CS"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 48),
-> +               MTK_FUNCTION(0, "GPIO48"),
-> +               MTK_FUNCTION(1, "SPI_CSB"),
-> +               MTK_FUNCTION(3, "I2S0_DI"),
-> +               MTK_FUNCTION(4, "I2S2_BCK"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[23]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(49, "SPI_CK"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 49),
-> +               MTK_FUNCTION(0, "GPIO49"),
-> +               MTK_FUNCTION(1, "SPI_CLK"),
-> +               MTK_FUNCTION(3, "I2S0_LRCK"),
-> +               MTK_FUNCTION(4, "I2S2_DI"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[24]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(50, "SPI_MI"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 50),
-> +               MTK_FUNCTION(0, "GPIO50"),
-> +               MTK_FUNCTION(1, "SPI_MI"),
-> +               MTK_FUNCTION(2, "SPI_MO"),
-> +               MTK_FUNCTION(3, "I2S0_BCK"),
-> +               MTK_FUNCTION(4, "I2S2_LRCK"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[25]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(51, "SPI_MO"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 51),
-> +               MTK_FUNCTION(0, "GPIO51"),
-> +               MTK_FUNCTION(1, "SPI_MO"),
-> +               MTK_FUNCTION(2, "SPI_MI"),
-> +               MTK_FUNCTION(3, "I2S0_MCK"),
-> +               MTK_FUNCTION(4, "I2S2_MCK"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[26]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(52, "SDA1"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 52),
-> +               MTK_FUNCTION(0, "GPIO52"),
-> +               MTK_FUNCTION(1, "SDA1_0")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(53, "SCL1"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 53),
-> +               MTK_FUNCTION(0, "GPIO53"),
-> +               MTK_FUNCTION(1, "SCL1_0")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(54, "GPIO54"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 54),
-> +               MTK_FUNCTION(0, "GPIO54"),
-> +               MTK_FUNCTION(2, "PWM_B"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[2]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(55, "I2S_DATA_IN"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 55),
-> +               MTK_FUNCTION(0, "GPIO55"),
-> +               MTK_FUNCTION(1, "I2S0_DI"),
-> +               MTK_FUNCTION(2, "UCTS0"),
-> +               MTK_FUNCTION(3, "I2S3_DO"),
-> +               MTK_FUNCTION(4, "I2S_8CH_DO1"),
-> +               MTK_FUNCTION(5, "PWM_A"),
-> +               MTK_FUNCTION(6, "I2S2_BCK"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[28]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(56, "I2S_LRCK"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 56),
-> +               MTK_FUNCTION(0, "GPIO56"),
-> +               MTK_FUNCTION(1, "I2S0_LRCK"),
-> +               MTK_FUNCTION(3, "I2S3_LRCK"),
-> +               MTK_FUNCTION(4, "I2S_8CH_LRCK"),
-> +               MTK_FUNCTION(5, "PWM_B"),
-> +               MTK_FUNCTION(6, "I2S2_DI"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[29]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(57, "I2S_BCK"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 57),
-> +               MTK_FUNCTION(0, "GPIO57"),
-> +               MTK_FUNCTION(1, "I2S0_BCK"),
-> +               MTK_FUNCTION(2, "URTS0"),
-> +               MTK_FUNCTION(3, "I2S3_BCK"),
-> +               MTK_FUNCTION(4, "I2S_8CH_BCK"),
-> +               MTK_FUNCTION(5, "PWM_C"),
-> +               MTK_FUNCTION(6, "I2S2_LRCK"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[30]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(58, "SDA0"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 58),
-> +               MTK_FUNCTION(0, "GPIO58"),
-> +               MTK_FUNCTION(1, "SDA0_0")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(59, "SCL0"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 59),
-> +               MTK_FUNCTION(0, "GPIO59"),
-> +               MTK_FUNCTION(1, "SCL0_0")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(60, "SDA2"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 60),
-> +               MTK_FUNCTION(0, "GPIO60"),
-> +               MTK_FUNCTION(1, "SDA2_0"),
-> +               MTK_FUNCTION(2, "PWM_B")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(61, "SCL2"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 61),
-> +               MTK_FUNCTION(0, "GPIO61"),
-> +               MTK_FUNCTION(1, "SCL2_0"),
-> +               MTK_FUNCTION(2, "PWM_C")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(62, "URXD0"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 62),
-> +               MTK_FUNCTION(0, "GPIO62"),
-> +               MTK_FUNCTION(1, "URXD0"),
-> +               MTK_FUNCTION(2, "UTXD0")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(63, "UTXD0"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 63),
-> +               MTK_FUNCTION(0, "GPIO63"),
-> +               MTK_FUNCTION(1, "UTXD0"),
-> +               MTK_FUNCTION(2, "URXD0")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(64, "URXD1"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 64),
-> +               MTK_FUNCTION(0, "GPIO64"),
-> +               MTK_FUNCTION(1, "URXD1"),
-> +               MTK_FUNCTION(2, "UTXD1"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[27]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(65, "UTXD1"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 65),
-> +               MTK_FUNCTION(0, "GPIO65"),
-> +               MTK_FUNCTION(1, "UTXD1"),
-> +               MTK_FUNCTION(2, "URXD1"),
-> +               MTK_FUNCTION(7, "DBG_MON_A[31]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(66, "LCM_RST"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 66),
-> +               MTK_FUNCTION(0, "GPIO66"),
-> +               MTK_FUNCTION(1, "LCM_RST"),
-> +               MTK_FUNCTION(3, "I2S0_MCK"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[3]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(67, "GPIO67"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 67),
-> +               MTK_FUNCTION(0, "GPIO67"),
-> +               MTK_FUNCTION(3, "I2S_8CH_MCK"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[14]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(68, "MSDC2_CMD"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 68),
-> +               MTK_FUNCTION(0, "GPIO68"),
-> +               MTK_FUNCTION(1, "MSDC2_CMD"),
-> +               MTK_FUNCTION(2, "I2S_8CH_DO4"),
-> +               MTK_FUNCTION(3, "SDA1_0"),
-> +               MTK_FUNCTION(5, "USB_SDA"),
-> +               MTK_FUNCTION(6, "I2S3_BCK"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[15]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(69, "MSDC2_CLK"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 69),
-> +               MTK_FUNCTION(0, "GPIO69"),
-> +               MTK_FUNCTION(1, "MSDC2_CLK"),
-> +               MTK_FUNCTION(2, "I2S_8CH_DO3"),
-> +               MTK_FUNCTION(3, "SCL1_0"),
-> +               MTK_FUNCTION(5, "USB_SCL"),
-> +               MTK_FUNCTION(6, "I2S3_LRCK"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[16]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(70, "MSDC2_DAT0"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 70),
-> +               MTK_FUNCTION(0, "GPIO70"),
-> +               MTK_FUNCTION(1, "MSDC2_DAT0"),
-> +               MTK_FUNCTION(2, "I2S_8CH_DO2"),
-> +               MTK_FUNCTION(5, "UTXD0"),
-> +               MTK_FUNCTION(6, "I2S3_DO"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[17]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(71, "MSDC2_DAT1"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 71),
-> +               MTK_FUNCTION(0, "GPIO71"),
-> +               MTK_FUNCTION(1, "MSDC2_DAT1"),
-> +               MTK_FUNCTION(2, "I2S_8CH_DO1"),
-> +               MTK_FUNCTION(3, "PWM_A"),
-> +               MTK_FUNCTION(4, "I2S3_MCK"),
-> +               MTK_FUNCTION(5, "URXD0"),
-> +               MTK_FUNCTION(6, "PWM_B"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[18]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(72, "MSDC2_DAT2"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 72),
-> +               MTK_FUNCTION(0, "GPIO72"),
-> +               MTK_FUNCTION(1, "MSDC2_DAT2"),
-> +               MTK_FUNCTION(2, "I2S_8CH_LRCK"),
-> +               MTK_FUNCTION(3, "SDA2_0"),
-> +               MTK_FUNCTION(5, "UTXD1"),
-> +               MTK_FUNCTION(6, "PWM_C"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[19]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(73, "MSDC2_DAT3"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 73),
-> +               MTK_FUNCTION(0, "GPIO73"),
-> +               MTK_FUNCTION(1, "MSDC2_DAT3"),
-> +               MTK_FUNCTION(2, "I2S_8CH_BCK"),
-> +               MTK_FUNCTION(3, "SCL2_0"),
-> +               MTK_FUNCTION(4, "EXT_FRAME_SYNC"),
-> +               MTK_FUNCTION(5, "URXD1"),
-> +               MTK_FUNCTION(6, "PWM_A"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[20]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(74, "TDN3"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 74),
-> +               MTK_FUNCTION(0, "GPIO74"),
-> +               MTK_FUNCTION(1, "TDN3")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(75, "TDP3"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 75),
-> +               MTK_FUNCTION(0, "GPIO75"),
-> +               MTK_FUNCTION(1, "TDP3")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(76, "TDN2"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 76),
-> +               MTK_FUNCTION(0, "GPIO76"),
-> +               MTK_FUNCTION(1, "TDN2")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(77, "TDP2"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 77),
-> +               MTK_FUNCTION(0, "GPIO77"),
-> +               MTK_FUNCTION(1, "TDP2")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(78, "TCN"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 78),
-> +               MTK_FUNCTION(0, "GPIO78"),
-> +               MTK_FUNCTION(1, "TCN")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(79, "TCP"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 79),
-> +               MTK_FUNCTION(0, "GPIO79"),
-> +               MTK_FUNCTION(1, "TCP")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(80, "TDN1"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 80),
-> +               MTK_FUNCTION(0, "GPIO80"),
-> +               MTK_FUNCTION(1, "TDN1")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(81, "TDP1"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 81),
-> +               MTK_FUNCTION(0, "GPIO81"),
-> +               MTK_FUNCTION(1, "TDP1")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(82, "TDN0"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 82),
-> +               MTK_FUNCTION(0, "GPIO82"),
-> +               MTK_FUNCTION(1, "TDN0")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(83, "TDP0"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 83),
-> +               MTK_FUNCTION(0, "GPIO83"),
-> +               MTK_FUNCTION(1, "TDP0")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(84, "RDN0"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 84),
-> +               MTK_FUNCTION(0, "GPIO84"),
-> +               MTK_FUNCTION(1, "RDN0")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(85, "RDP0"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 85),
-> +               MTK_FUNCTION(0, "GPIO85"),
-> +               MTK_FUNCTION(1, "RDP0")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(86, "RDN1"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 86),
-> +               MTK_FUNCTION(0, "GPIO86"),
-> +               MTK_FUNCTION(1, "RDN1")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(87, "RDP1"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 87),
-> +               MTK_FUNCTION(0, "GPIO87"),
-> +               MTK_FUNCTION(1, "RDP1")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(88, "RCN"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 88),
-> +               MTK_FUNCTION(0, "GPIO88"),
-> +               MTK_FUNCTION(1, "RCN")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(89, "RCP"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 89),
-> +               MTK_FUNCTION(0, "GPIO89"),
-> +               MTK_FUNCTION(1, "RCP")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(90, "RDN2"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 90),
-> +               MTK_FUNCTION(0, "GPIO90"),
-> +               MTK_FUNCTION(1, "RDN2"),
-> +               MTK_FUNCTION(2, "CMDAT8")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(91, "RDP2"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 91),
-> +               MTK_FUNCTION(0, "GPIO91"),
-> +               MTK_FUNCTION(1, "RDP2"),
-> +               MTK_FUNCTION(2, "CMDAT9")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(92, "RDN3"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 92),
-> +               MTK_FUNCTION(0, "GPIO92"),
-> +               MTK_FUNCTION(1, "RDN3"),
-> +               MTK_FUNCTION(2, "CMDAT4")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(93, "RDP3"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 93),
-> +               MTK_FUNCTION(0, "GPIO93"),
-> +               MTK_FUNCTION(1, "RDP3"),
-> +               MTK_FUNCTION(2, "CMDAT5")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(94, "RCN_A"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 94),
-> +               MTK_FUNCTION(0, "GPIO94"),
-> +               MTK_FUNCTION(1, "RCN_A"),
-> +               MTK_FUNCTION(2, "CMDAT6")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(95, "RCP_A"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 95),
-> +               MTK_FUNCTION(0, "GPIO95"),
-> +               MTK_FUNCTION(1, "RCP_A"),
-> +               MTK_FUNCTION(2, "CMDAT7")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(96, "RDN1_A"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 96),
-> +               MTK_FUNCTION(0, "GPIO96"),
-> +               MTK_FUNCTION(1, "RDN1_A"),
-> +               MTK_FUNCTION(2, "CMDAT2"),
-> +               MTK_FUNCTION(3, "CMCSD2")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(97, "RDP1_A"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 97),
-> +               MTK_FUNCTION(0, "GPIO97"),
-> +               MTK_FUNCTION(1, "RDP1_A"),
-> +               MTK_FUNCTION(2, "CMDAT3"),
-> +               MTK_FUNCTION(3, "CMCSD3")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(98, "RDN0_A"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 98),
-> +               MTK_FUNCTION(0, "GPIO98"),
-> +               MTK_FUNCTION(1, "RDN0_A"),
-> +               MTK_FUNCTION(2, "CMHSYNC")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(99, "RDP0_A"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 99),
-> +               MTK_FUNCTION(0, "GPIO99"),
-> +               MTK_FUNCTION(1, "RDP0_A"),
-> +               MTK_FUNCTION(2, "CMVSYNC")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(100, "CMDAT0"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 100),
-> +               MTK_FUNCTION(0, "GPIO100"),
-> +               MTK_FUNCTION(1, "CMDAT0"),
-> +               MTK_FUNCTION(2, "CMCSD0"),
-> +               MTK_FUNCTION(3, "ANT_SEL2"),
-> +               MTK_FUNCTION(5, "TDM_RX_MCK"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[21]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(101, "CMDAT1"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 101),
-> +               MTK_FUNCTION(0, "GPIO101"),
-> +               MTK_FUNCTION(1, "CMDAT1"),
-> +               MTK_FUNCTION(2, "CMCSD1"),
-> +               MTK_FUNCTION(3, "ANT_SEL3"),
-> +               MTK_FUNCTION(4, "CMFLASH"),
-> +               MTK_FUNCTION(5, "TDM_RX_BCK"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[22]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(102, "CMMCLK"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 102),
-> +               MTK_FUNCTION(0, "GPIO102"),
-> +               MTK_FUNCTION(1, "CMMCLK"),
-> +               MTK_FUNCTION(3, "ANT_SEL4"),
-> +               MTK_FUNCTION(5, "TDM_RX_LRCK"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[23]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(103, "CMPCLK"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 103),
-> +               MTK_FUNCTION(0, "GPIO103"),
-> +               MTK_FUNCTION(1, "CMPCLK"),
-> +               MTK_FUNCTION(2, "CMCSK"),
-> +               MTK_FUNCTION(3, "ANT_SEL5"),
-> +               MTK_FUNCTION(5, " TDM_RX_DI"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[24]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(104, "MSDC1_CMD"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 104),
-> +               MTK_FUNCTION(0, "GPIO104"),
-> +               MTK_FUNCTION(1, "MSDC1_CMD"),
-> +               MTK_FUNCTION(4, "SQICS"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[25]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(105, "MSDC1_CLK"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 105),
-> +               MTK_FUNCTION(0, "GPIO105"),
-> +               MTK_FUNCTION(1, "MSDC1_CLK"),
-> +               MTK_FUNCTION(4, "SQISO"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[26]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(106, "MSDC1_DAT0"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 106),
-> +               MTK_FUNCTION(0, "GPIO106"),
-> +               MTK_FUNCTION(1, "MSDC1_DAT0"),
-> +               MTK_FUNCTION(4, "SQISI"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[27]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(107, "MSDC1_DAT1"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 107),
-> +               MTK_FUNCTION(0, "GPIO107"),
-> +               MTK_FUNCTION(1, "MSDC1_DAT1"),
-> +               MTK_FUNCTION(4, "SQIWP"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[28]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(108, "MSDC1_DAT2"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 108),
-> +               MTK_FUNCTION(0, "GPIO108"),
-> +               MTK_FUNCTION(1, "MSDC1_DAT2"),
-> +               MTK_FUNCTION(4, "SQIRST"),
-> +               MTK_FUNCTION(7, "DBG_MON_B[29]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(109, "MSDC1_DAT3"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 109),
-> +               MTK_FUNCTION(0, "GPIO109"),
-> +               MTK_FUNCTION(1, "MSDC1_DAT3"),
-> +               MTK_FUNCTION(4, "SQICK"), /* WIP */
-> +               MTK_FUNCTION(7, "DBG_MON_B[30]")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(110, "MSDC0_DAT7"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 110),
-> +               MTK_FUNCTION(0, "GPIO110"),
-> +               MTK_FUNCTION(1, "MSDC0_DAT7"),
-> +               MTK_FUNCTION(4, "NLD7")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(111, "MSDC0_DAT6"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 111),
-> +               MTK_FUNCTION(0, "GPIO111"),
-> +               MTK_FUNCTION(1, "MSDC0_DAT6"),
-> +               MTK_FUNCTION(4, "NLD6")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(112, "MSDC0_DAT5"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 112),
-> +               MTK_FUNCTION(0, "GPIO112"),
-> +               MTK_FUNCTION(1, "MSDC0_DAT5"),
-> +               MTK_FUNCTION(4, "NLD4")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(113, "MSDC0_DAT4"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 113),
-> +               MTK_FUNCTION(0, "GPIO113"),
-> +               MTK_FUNCTION(1, "MSDC0_DAT4"),
-> +               MTK_FUNCTION(4, "NLD3")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(114, "MSDC0_RSTB"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 114),
-> +               MTK_FUNCTION(0, "GPIO114"),
-> +               MTK_FUNCTION(1, "MSDC0_RSTB"),
-> +               MTK_FUNCTION(4, "NLD0")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(115, "MSDC0_CMD"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 115),
-> +               MTK_FUNCTION(0, "GPIO115"),
-> +               MTK_FUNCTION(1, "MSDC0_CMD"),
-> +               MTK_FUNCTION(4, "NALE")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(116, "MSDC0_CLK"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 116),
-> +               MTK_FUNCTION(0, "GPIO116"),
-> +               MTK_FUNCTION(1, "MSDC0_CLK"),
-> +               MTK_FUNCTION(4, "NWEB")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(117, "MSDC0_DAT3"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 117),
-> +               MTK_FUNCTION(0, "GPIO117"),
-> +               MTK_FUNCTION(1, "MSDC0_DAT3"),
-> +               MTK_FUNCTION(4, "NLD1")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(118, "MSDC0_DAT2"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 118),
-> +               MTK_FUNCTION(0, "GPIO118"),
-> +               MTK_FUNCTION(1, "MSDC0_DAT2"),
-> +               MTK_FUNCTION(4, "NLD5")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(119, "MSDC0_DAT1"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 119),
-> +               MTK_FUNCTION(0, "GPIO119"),
-> +               MTK_FUNCTION(1, "MSDC0_DAT1"),
-> +               MTK_FUNCTION(4, "NLD8")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(120, "MSDC0_DAT0"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 120),
-> +               MTK_FUNCTION(0, "GPIO120"),
-> +               MTK_FUNCTION(1, "MSDC0_DAT0"),
-> +               MTK_FUNCTION(4, "WATCHDOG"),
-> +               MTK_FUNCTION(5, "NLD2")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(121, "GPIO121"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 121),
-> +               MTK_FUNCTION(0, "GPIO121")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(122, "GPIO122"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 122),
-> +               MTK_FUNCTION(0, "GPIO122")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(123, "GPIO123"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 123),
-> +               MTK_FUNCTION(0, "GPIO123")
-> +       ),
-> +       MTK_PIN(
-> +               PINCTRL_PIN(124, "GPIO124"),
-> +               NULL, "mt8516",
-> +               MTK_EINT_FUNCTION(0, 124),
-> +               MTK_FUNCTION(0, "GPIO124")
-> +       ),
-> +};
-> +
-> +#endif /* __PINCTRL_MTK_MT8516_H */
-> --
-> 2.20.1
+> > But I fixed it in that case by introducing a spi-cs-high into the DTS file:
+> > https://marc.info/?l=linux-arm-kernel&m=155292310015309&w=2
 >
+> Yes, that of course works and is our temporary solution.
+>
+> And I see that you also have it on the controller node and not the slave node.
+
+Yes I git it wrong, the slave should have it and another bug of mine
+made it look at the controller not (some days I should not write
+code in paths that do not get executed).
+
+> > I'm sorry about that, however if you look at the DT binding document:
+> > Documentation/devicetree/bindings/spi/spi-bus.txt
+>
+> Shouldn't it be a property of the slave node and not the controller node?
+
+Indeed.
+
+> > You will see that spi-cs-high is mandatory. So these DTS files are
+> > incorrect.
+>
+> How do you read that it is mandatory from
+>
+> "All slave nodes can contain the following optional properties:
+> - spi-cs-high     - Empty property indicating device requires chip select
+>                     active high."
+>
+> I read it as optional and indicative. Equal priority to cs-gpios.
+
+The basic problem is that spi-cs-high is defined negatively,
+so by default a CS GPIO is active low. This clashes with the
+default GPIO flag, as GPIO_ACTIVE_HIGH is zero, no flag,
+and thus the default if nothing is specified, so if the GPIO flag is
+zero it should be active high, but if "spi-active-high" is not on the
+slave node it should be active low, so one of them have
+to win, they can't both win.
+
+I'd say that spi-cs-high existed before we standardized the GPIO
+flags in the DT bindings. So people were relying on it for years before
+we came up with the ACTIVE_HIGH/LOW flags.
+
+commit f618ebfcbf9616a0fa9a78f5ecb69762f0fa3c59
+Author: Wolfgang Ocker <weo@reccoware.de>
+Date:   Wed Oct 15 15:00:47 2008 +0200
+
+    of/spi: Support specifying chip select as active high via device tree
+
+    The patch allows to specify that an SPI device needs an active high chip
+    select.
+
+    Signed-off-by: Wolfgang Ocker <weo@reccoware.de>
+    Signed-off-by: Kumar Gala <galak@kernel.crashing.org>
+
+While the GPIO binding turns up 5 years later:
+
+commit 71fab21fee07fd6d5f1a984db387cc5e4596f3fa
+Author: Stephen Warren <swarren@nvidia.com>
+Date:   Tue Feb 12 17:22:36 2013 -0700
+
+    ARM: dt: add header to define GPIO flags
+
+    Many GPIO device tree bindings use the same flags. Create a header to
+    define those.
+
+    Signed-off-by: Stephen Warren <swarren@nvidia.com>
+    Acked-by: Rob Herring <rob.herring@calxeda.com>
+
+And then this guy think it is a good idea to standardize this for
+all GPIO phandles two years later:
+
+commit 69d301fdd19635a39cb2b78e53fdd625b7a27924
+Author: Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu Sep 24 15:05:45 2015 -0700
+
+    gpio: add DT bindings for existing consumer flags
+
+    It is customary for GPIO controllers to support open drain/collector
+    and open source/emitter configurations. Add standard GPIO line flags
+    to account for this and augment the documentation to say that these
+    are the most generic bindings.
+
+    Several people approached me to add new flags to the lines, and this
+    makes sense, but let's first bind up the most common cases before we
+    start to add exotic stuff.
+
+    Thanks to H. Nikolaus Schaller for ideas on how to encode single-ended
+    wiring such as open drain/source and open collector/emitter.
+
+    Cc: Tony Lindgren <tony@atomide.com>
+    Cc: Grygorii Strashko <grygorii.strashko@ti.com>
+    Cc: H. Nikolaus Schaller <hns@goldelico.com>
+    Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+
+> > This does not work because there are devices that requires spi-cs-high to be
+> > respected and the DTS second cell GPIO flag to be ignored.
+>
+> Then, those should be fixed...
+
+This can't be done because some old systems (mostly powerpc)
+added between 2008-2013 do not know about GPIO flags and
+have DTBs deployed in firmware that need to keep working.
+They cannot be fixed.
+
+> > They might have deployed DTB binaries that need to keep working,
+>
+> Well, that is a weak argument. What if the GTA04 would have the DTB in FLASH
+> and would need it working (fortunately we always reflash kernel + dtbs)?
+
+Usually the definition I use for "deployed DTB" is not
+"deployed on my desk" but "deployed by a factory" i.e. someone
+producing millions of TV sets or something. For example my monitor
+is using a PowerPC CPU and has one of these DTBs in flash,
+and expect it to keep working if I upgrade the kernel separately.
+
+> BTW, on which node do these invariable DTBs have the spi-cs-high flag?
+> In the controller node (IMHO wrong) or the slave node (according to bindings doc)?
+
+Slave node I hope, the controller thing was just one of my stupid
+mistakes.
+
+> I have checked with randomly picked imx51-babbage.dts and it has it in the
+> slave node (pmic: mc13892@0). It also seems to be an example where different
+> CS lines want different settings.
+
+I'm afraid the consumers of the old powerpc DTS files are not even
+maintained inside the Linux kernel, as we sometimes assume. Those
+were created and dispersed by vendors at a time when it was assumed
+it was OK to maintain your DTS files somewhere out there on the
+side (some people still hold this opinion, I don't).
+
+> > I think in this case the oldest binding wins.
+>
+> Ok, it is the question when such deprecated things are really removed.
+> There is no clear answer...
+
+I think the DT bindings people would say never. They are deprecated
+but they can never stop working. I guess in theory you could try to
+figure out when the last piece of equipment using the old binding and
+ever wanting a FW update stops working. That seems hard, but I don't
+know much about these powerpc systems.
+
+That is the reason why I try to contain these weirdness things inside
+gpiolib-of.c rather than out amongst the different subsystems, so I can
+have it under control.
+
+> > I think you simply have to patch these GTA04 DTS files to use
+> > spi-cs-high.
+>
+> Ugly... Well, if DTS maintainers accept that?
+
+I suppose.
+
+> What about a CONFIG to explicitly enable/disable this legacy support?
+>
+> IMHO it will need to be enabled for les than 1% of the kernel builds and
+> therefore also keeps the zImage smaller for all others. And avoids DTB
+> changes where the gpio flags are already correct.
+
+Dunno about this, it looks fragile, I would prefer to keep all working.
+But I will listen to reason.
+
+I have thought about using of_machine_is_compatible("vendor,foo")
+in gpiolib-of.h to whitelist some systems that will just use the
+new way, or reversely blacklist some old systems that have to use the
+old syntax. What do you think about this?
+
+Yours,
+Linus Walleij

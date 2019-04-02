@@ -1,94 +1,46 @@
-From: Robin Gong <yibin.gong@nxp.com>
-Subject: RE: Issues with i.MX SPI DMA transfers
-Date: Tue, 2 Apr 2019 08:32:44 +0000
-Message-ID: <VI1PR04MB454305A56372466A38E9F81989560@VI1PR04MB4543.eurprd04.prod.outlook.com>
-References: <08fcbd65-510f-84f8-d6d6-ff56aa9ca9ad@gmail.com>
- <20190328065247.uz73lap7ljf5q3tb@pengutronix.de>
- <b8e80127-e377-9ef9-2447-b0126fdad7dc@gmail.com>
- <VI1PR04MB45438E01D91829849A4E0BB289590@VI1PR04MB4543.eurprd04.prod.outlook.com>
- <d7a2e5c5-4ee0-8c89-1bab-654db0ae38dd@gmail.com>
- <VI1PR04MB4543B1708FA151EED0CB722A89550@VI1PR04MB4543.eurprd04.prod.outlook.com>
- <95df9334-3d0c-7d13-e431-5a4aa2b9907e@gmail.com>
+From: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
+Subject: Re: [RFC PATCH 0/4] spi: spi-fsl-spi: try to make cpu-mode transfers
+ faster
+Date: Tue, 2 Apr 2019 08:43:51 +0000
+Message-ID: <ce9e8ca8-6db7-1be8-5ea3-c098b1c1c813@prevas.dk>
+References: <20190327143040.16013-1-rasmus.villemoes@prevas.dk>
+ <20190401073450.GG2059@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Andy Duan <fugang.duan@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- Vinod Koul <vkoul@kernel.org>, Mark Brown <broonie@kernel.org>,
- Clark Wang <xiaoning.wang@nxp.com>, dl-linux-imx <linux-imx@nxp.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
- Han Xu <han.xu@nxp.com>, Dan Williams <dan.j.williams@intel.com>,
- Fabio Estevam <festevam@gmail.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-To: Igor Plyatov <plyatov@gmail.com>, =?utf-8?B?VXdlIEtsZWluZS1Lw7ZuaWc=?=
- <u.kleine-koenig@pengutronix.de>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <95df9334-3d0c-7d13-e431-5a4aa2b9907e@gmail.com>
+Content-Type: text/plain; charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Fabio Estevam <festevam@gmail.com>,
+        Rasmus Villemoes <Rasmus.Villemoes@prevas.se>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190401073450.GG2059@sirena.org.uk>
 Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-ID: <F259E65989CB92429186EC3522A6D6EC@EURPRD10.PROD.OUTLOOK.COM>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBJZ29yIFBseWF0b3YgPHBseWF0
-b3ZAZ21haWwuY29tPg0KPiBTZW50OiAyMDE55bm0NOaciDLml6UgMTU6MjANCj4gVG86IFJvYmlu
-IEdvbmcgPHlpYmluLmdvbmdAbnhwLmNvbT47IFV3ZSBLbGVpbmUtS8O2bmlnDQo+IDx1LmtsZWlu
-ZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+DQo+IENjOiBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwu
-b3JnOyBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7DQo+IGxpbnV4LXNwaUB2
-Z2VyLmtlcm5lbC5vcmc7IGRsLWxpbnV4LWlteCA8bGludXgtaW14QG54cC5jb20+OyBGYWJpbyBF
-c3RldmFtDQo+IDxmZXN0ZXZhbUBnbWFpbC5jb20+OyBQZW5ndXRyb25peCBLZXJuZWwgVGVhbSA8
-a2VybmVsQHBlbmd1dHJvbml4LmRlPjsNCj4gU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJv
-bml4LmRlPjsgU2hhd24gR3VvDQo+IDxzaGF3bmd1b0BrZXJuZWwub3JnPjsgTWFyayBCcm93biA8
-YnJvb25pZUBrZXJuZWwub3JnPjsNCj4gZG1hZW5naW5lQHZnZXIua2VybmVsLm9yZzsgVmlub2Qg
-S291bCA8dmtvdWxAa2VybmVsLm9yZz47IERhbiBXaWxsaWFtcw0KPiA8ZGFuLmoud2lsbGlhbXNA
-aW50ZWwuY29tPjsgQW5keSBEdWFuIDxmdWdhbmcuZHVhbkBueHAuY29tPjsgSGFuIFh1DQo+IDxo
-YW4ueHVAbnhwLmNvbT47IENsYXJrIFdhbmcgPHhpYW9uaW5nLndhbmdAbnhwLmNvbT4NCj4gU3Vi
-amVjdDogUmU6IElzc3VlcyB3aXRoIGkuTVggU1BJIERNQSB0cmFuc2ZlcnMNCj4gDQo+IERlYXIg
-Um9iaW4gR29uZywNCj4gDQo+IA0KPiA+PiBTb3JyeS4uLmJlbG93IGFub3RoZXIgc2RtYSBwYXRj
-aChhZDBkOTJkN2JhNmEpIG5lZWQgdG8gYmUgcmV2ZXJ0ZWQsDQo+ID4+IGJlY2F1c2Ugc3BpIGRy
-aXZlciBtYXkgZHluYW1pY2FsbHkgY2hhbmdlIGJ1cnN0IGxlbmd0aC4NCj4gDQo+IA0KPiBub3cg
-SSBoYXZlIHJldmVydGVkIHBhdGNoIGFkMGQ5MmQ3YmE2YS4NCj4gDQo+IFBhdGNoZXMgMDAwMS1k
-bWEtZW5naW5lLWlteC1zZG1hLWFkZC1tY3VfMl9lY3NwaS1zY3JpcHQucGF0Y2ggYW5kDQo+IDAw
-MDItc3BpLXNwaS1pbXgtZml4LUVSUjAwOTE2NS5wYXRjaCBhcmUgYXBwbGllZC4NCj4gDQo+IA0K
-PiBLZXJuZWwgbG9nIHNob3cgbWVzc2FnZXMNCj4gDQo+IFvCoMKgIDI5LjIwMjYzOV0gaW14LXNk
-bWEgMjBlYzAwMC5zZG1hOiBsb2FkZWQgZmlybXdhcmUgMy4zDQo+IFvCoMKgIDI5LjIzODU5NV0g
-c3BpX2lteCAyMDA4MDAwLnNwaTogcHJvYmVkDQo+IFvCoMKgIDI5LjI0MjgwMl0gc3BpX2lteCAy
-MDBjMDAwLnNwaTogcHJvYmVkDQo+IFvCoMKgIDI5LjI0NTIxN10gc3BpX2lteCAyMDE4MDAwLnNw
-aTogcHJvYmVkDQo+IA0KPiBTUEkgRE1BIHRyYW5zZmVycyBzdGlsbCBub3Qgd29yay4NCj4gDQo+
-IElmIEkgdGVzdCAzMiBieXRlIHRyYW5zZmVycywgdGhlbiB0aGV5IHdvcmsgZmluZS4gQnV0IDY0
-IGJ5dGUgdHJhbnNmZXJzDQo+IGZhaWxzIGFsd2F5cyBhbmQgSSBzZWUgZXJyb3IgbWVzc2FnZXMN
-Cj4gDQo+IHJvb3RAY3I3On4jIHNwaWRldl90ZXN0IC1EIC9kZXYvc3BpZGV2NC4xIC1zIDEyMDAw
-MDAgLWIgOCAtUyA2NCAtSSAxIC1sDQo+IHNwaSBtb2RlOiAweDIwDQo+IGJpdHMgcGVyIHdvcmQ6
-IDgNCj4gbWF4IHNwZWVkOiAxMjAwMDAwIEh6ICgxMjAwIEtIeikNCj4gW8KgIDQyMy42ODY3MzZd
-IHNwaV9tYXN0ZXIgc3BpNDogSS9PIEVycm9yIGluIERNQSBSWA0KPiBbwqAgNDIzLjY5MTM5Ml0g
-c3BpZGV2IHNwaTQuMTogU1BJIHRyYW5zZmVyIGZhaWxlZDogLTExMA0KPiBbwqAgNDIzLjY5NjM4
-Ml0gc3BpX21hc3RlciBzcGk0OiBmYWlsZWQgdG8gdHJhbnNmZXIgb25lIG1lc3NhZ2UgZnJvbSBx
-dWV1ZQ0KPiBjYW4ndCBzZW5kIHNwaSBtZXNzYWdlOiBDb25uZWN0aW9uIHRpbWVkIG91dA0KPiBB
-Ym9ydGVkIChjb3JlIGR1bXBlZCkNCj4gDQo+IEkgc3VwcG9zZSwgdHJhbnNmZXJzIHNob3J0ZXIg
-dGhlbiA2NCBieXRlcyBtYWRlIHdpdGggaGVscCBvZiBQSU8uDQo+IA0KPiBSb2JpbiwgaXMgdGhl
-cmUgYW55IGNoYW5jZSBmb3IgeW91IHRvIGZpbmQgc29tZSB0aW1lIGFuZCBsb29rIGF0IHRoaXMN
-Cj4gaXNzdWUgYWdhaW4/DQpJIGhhdmUgcXVpY2sgdGVzdCB3aXRoIHNwaWRldl90ZXN0IGxvb3Bi
-YWNrLCBidXQgZGlkbid0IG1lZXQgeW91ciBlcnJvciwNCklzIHlvdXIgY29kZSB0aGUgYWxtb3N0
-IGxhdGVzdCBjb2RlIGluIGxpbnV4LW5leHQgYXMgbWluZT8NCg0Kcm9vdEBpbXg2cXBkbHNvbG94
-On4jIGNhdCAvcHJvYy9pbnRlcnJ1cHRzIHwgZ3JlcCBzZG1hDQogNDg6ICAgICAgICAgMzcgICAg
-ICAgR1BDICAgMiBMZXZlbCAgICAgc2RtYQ0KIC1sdEBpbXg2cXBkbHNvbG94On4jIC4vc3BpZGV2
-X3Rlc3QgLUQgL2Rldi9zcGlkZXYwLjAgLXMgMTIwMDAwMCAtYiA4IC1TIDY0IC1JIDEgLWwNCnNw
-aSBtb2RlOiAweDIwDQpiaXRzIHBlciB3b3JkOiA4DQptYXggc3BlZWQ6IDEyMDAwMDAgSHogKDEy
-MDAgS0h6KQ0Kcm9vdEBpbXg2cXBkbHNvbG94On4jIGNhdCAvcHJvYy9pbnRlcnJ1cHRzIHwgZ3Jl
-cCBzZG1hDQogNDg6ICAgICAgICAgNDMgICAgICAgR1BDICAgMiBMZXZlbCAgICAgc2RtYQ0KLi9z
-cGlkZXZfdGVzdCAtRCAvZGV2L3NwaWRldjAuMCAtcyAxMjAwMDAwIC1iIDggLVMgNTEyIC1JIDEg
-LWwNCnNwaSBtb2RlOiAweDIwDQpiaXRzIHBlciB3b3JkOiA4DQptYXggc3BlZWQ6IDEyMDAwMDAg
-SHogKDEyMDAgS0h6KQ0KdG90YWw6IHR4IDAuNUtCLCByeCAwLjVLQg0KPiANCj4gQmVzdCB3aXNo
-ZXMuDQo+IC0tDQo+IElnb3IgUGx5YXRvdg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KbGludXgtYXJtLWtlcm5lbCBtYWlsaW5nIGxpc3QKbGludXgtYXJt
-LWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
-aWxtYW4vbGlzdGluZm8vbGludXgtYXJtLWtlcm5lbAo=
+On 01/04/2019 09.34, Mark Brown wrote:
+> On Wed, Mar 27, 2019 at 02:30:48PM +0000, Rasmus Villemoes wrote:
+>> I doubt patches 3 and 4 are acceptable, but I'd still like to get
+>> comments and/or alternative suggestions for making large transfers
+>> faster.
+>=20
+> I see no problem with this from a framework point of view FWIW, it's
+> going to be a question of if there's any glitches like you say.  I'm not
+> sure how we can get wider testing/review unless the patches actually get
+> merged though...  I'll leave them for a bit longer but unless someone
+> sees a problem I'll probably go ahead and apply them.
+>=20
+
+Thanks! There's one other option I can think of: don't do the interrupts
+at all, but just busy-wait for the completion of each word transfer (in
+a cpu_relax() loop). That could be guarded by something like
+1000000*bits_per_word < hz (roughly, the word transfer takes less than 1
+us). At least on -rt, having the interrupt thread scheduled in and out
+again easily takes more than 1us of cpu time, and AFAIU we'd still be
+preemptible throughout - and/or one can throw in a cond_resched() every
+nnn words. But this might be a bit -rt specific, and the 1us threshold
+is rather arbitrary.
+
+Rasmus

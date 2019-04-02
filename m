@@ -1,79 +1,94 @@
-From: Igor Plyatov <plyatov@gmail.com>
-Subject: Re: Issues with i.MX SPI DMA transfers
-Date: Tue, 2 Apr 2019 10:20:27 +0300
-Message-ID: <95df9334-3d0c-7d13-e431-5a4aa2b9907e@gmail.com>
+From: Robin Gong <yibin.gong@nxp.com>
+Subject: RE: Issues with i.MX SPI DMA transfers
+Date: Tue, 2 Apr 2019 08:32:44 +0000
+Message-ID: <VI1PR04MB454305A56372466A38E9F81989560@VI1PR04MB4543.eurprd04.prod.outlook.com>
 References: <08fcbd65-510f-84f8-d6d6-ff56aa9ca9ad@gmail.com>
  <20190328065247.uz73lap7ljf5q3tb@pengutronix.de>
  <b8e80127-e377-9ef9-2447-b0126fdad7dc@gmail.com>
  <VI1PR04MB45438E01D91829849A4E0BB289590@VI1PR04MB4543.eurprd04.prod.outlook.com>
  <d7a2e5c5-4ee0-8c89-1bab-654db0ae38dd@gmail.com>
  <VI1PR04MB4543B1708FA151EED0CB722A89550@VI1PR04MB4543.eurprd04.prod.outlook.com>
+ <95df9334-3d0c-7d13-e431-5a4aa2b9907e@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andy Duan <fugang.duan@nxp.com>, Han Xu <han.xu@nxp.com>,
-        Clark Wang <xiaoning.wang@nxp.com>
-To: Robin Gong <yibin.gong@nxp.com>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <VI1PR04MB4543B1708FA151EED0CB722A89550@VI1PR04MB4543.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Andy Duan <fugang.duan@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ Vinod Koul <vkoul@kernel.org>, Mark Brown <broonie@kernel.org>,
+ Clark Wang <xiaoning.wang@nxp.com>, dl-linux-imx <linux-imx@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+ Han Xu <han.xu@nxp.com>, Dan Williams <dan.j.williams@intel.com>,
+ Fabio Estevam <festevam@gmail.com>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+To: Igor Plyatov <plyatov@gmail.com>, =?utf-8?B?VXdlIEtsZWluZS1Lw7ZuaWc=?=
+ <u.kleine-koenig@pengutronix.de>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <95df9334-3d0c-7d13-e431-5a4aa2b9907e@gmail.com>
 Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Robin Gong,
-
-
->> Sorry...below another sdma patch(ad0d92d7ba6a) need to be reverted, 
->> because spi driver may dynamically change burst length.
-
-
-now I have reverted patch ad0d92d7ba6a.
-
-Patches 0001-dma-engine-imx-sdma-add-mcu_2_ecspi-script.patch and 
-0002-spi-spi-imx-fix-ERR009165.patch are applied.
-
-
-Kernel log show messages
-
-[   29.202639] imx-sdma 20ec000.sdma: loaded firmware 3.3
-[   29.238595] spi_imx 2008000.spi: probed
-[   29.242802] spi_imx 200c000.spi: probed
-[   29.245217] spi_imx 2018000.spi: probed
-
-SPI DMA transfers still not work.
-
-If I test 32 byte transfers, then they work fine. But 64 byte transfers 
-fails always and I see error messages
-
-root@cr7:~# spidev_test -D /dev/spidev4.1 -s 1200000 -b 8 -S 64 -I 1 -l
-spi mode: 0x20
-bits per word: 8
-max speed: 1200000 Hz (1200 KHz)
-[  423.686736] spi_master spi4: I/O Error in DMA RX
-[  423.691392] spidev spi4.1: SPI transfer failed: -110
-[  423.696382] spi_master spi4: failed to transfer one message from queue
-can't send spi message: Connection timed out
-Aborted (core dumped)
-
-I suppose, transfers shorter then 64 bytes made with help of PIO.
-
-Robin, is there any chance for you to find some time and look at this 
-issue again?
-
-Best wishes.
---
-Igor Plyatov
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBJZ29yIFBseWF0b3YgPHBseWF0
+b3ZAZ21haWwuY29tPg0KPiBTZW50OiAyMDE55bm0NOaciDLml6UgMTU6MjANCj4gVG86IFJvYmlu
+IEdvbmcgPHlpYmluLmdvbmdAbnhwLmNvbT47IFV3ZSBLbGVpbmUtS8O2bmlnDQo+IDx1LmtsZWlu
+ZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+DQo+IENjOiBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwu
+b3JnOyBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7DQo+IGxpbnV4LXNwaUB2
+Z2VyLmtlcm5lbC5vcmc7IGRsLWxpbnV4LWlteCA8bGludXgtaW14QG54cC5jb20+OyBGYWJpbyBF
+c3RldmFtDQo+IDxmZXN0ZXZhbUBnbWFpbC5jb20+OyBQZW5ndXRyb25peCBLZXJuZWwgVGVhbSA8
+a2VybmVsQHBlbmd1dHJvbml4LmRlPjsNCj4gU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJv
+bml4LmRlPjsgU2hhd24gR3VvDQo+IDxzaGF3bmd1b0BrZXJuZWwub3JnPjsgTWFyayBCcm93biA8
+YnJvb25pZUBrZXJuZWwub3JnPjsNCj4gZG1hZW5naW5lQHZnZXIua2VybmVsLm9yZzsgVmlub2Qg
+S291bCA8dmtvdWxAa2VybmVsLm9yZz47IERhbiBXaWxsaWFtcw0KPiA8ZGFuLmoud2lsbGlhbXNA
+aW50ZWwuY29tPjsgQW5keSBEdWFuIDxmdWdhbmcuZHVhbkBueHAuY29tPjsgSGFuIFh1DQo+IDxo
+YW4ueHVAbnhwLmNvbT47IENsYXJrIFdhbmcgPHhpYW9uaW5nLndhbmdAbnhwLmNvbT4NCj4gU3Vi
+amVjdDogUmU6IElzc3VlcyB3aXRoIGkuTVggU1BJIERNQSB0cmFuc2ZlcnMNCj4gDQo+IERlYXIg
+Um9iaW4gR29uZywNCj4gDQo+IA0KPiA+PiBTb3JyeS4uLmJlbG93IGFub3RoZXIgc2RtYSBwYXRj
+aChhZDBkOTJkN2JhNmEpIG5lZWQgdG8gYmUgcmV2ZXJ0ZWQsDQo+ID4+IGJlY2F1c2Ugc3BpIGRy
+aXZlciBtYXkgZHluYW1pY2FsbHkgY2hhbmdlIGJ1cnN0IGxlbmd0aC4NCj4gDQo+IA0KPiBub3cg
+SSBoYXZlIHJldmVydGVkIHBhdGNoIGFkMGQ5MmQ3YmE2YS4NCj4gDQo+IFBhdGNoZXMgMDAwMS1k
+bWEtZW5naW5lLWlteC1zZG1hLWFkZC1tY3VfMl9lY3NwaS1zY3JpcHQucGF0Y2ggYW5kDQo+IDAw
+MDItc3BpLXNwaS1pbXgtZml4LUVSUjAwOTE2NS5wYXRjaCBhcmUgYXBwbGllZC4NCj4gDQo+IA0K
+PiBLZXJuZWwgbG9nIHNob3cgbWVzc2FnZXMNCj4gDQo+IFvCoMKgIDI5LjIwMjYzOV0gaW14LXNk
+bWEgMjBlYzAwMC5zZG1hOiBsb2FkZWQgZmlybXdhcmUgMy4zDQo+IFvCoMKgIDI5LjIzODU5NV0g
+c3BpX2lteCAyMDA4MDAwLnNwaTogcHJvYmVkDQo+IFvCoMKgIDI5LjI0MjgwMl0gc3BpX2lteCAy
+MDBjMDAwLnNwaTogcHJvYmVkDQo+IFvCoMKgIDI5LjI0NTIxN10gc3BpX2lteCAyMDE4MDAwLnNw
+aTogcHJvYmVkDQo+IA0KPiBTUEkgRE1BIHRyYW5zZmVycyBzdGlsbCBub3Qgd29yay4NCj4gDQo+
+IElmIEkgdGVzdCAzMiBieXRlIHRyYW5zZmVycywgdGhlbiB0aGV5IHdvcmsgZmluZS4gQnV0IDY0
+IGJ5dGUgdHJhbnNmZXJzDQo+IGZhaWxzIGFsd2F5cyBhbmQgSSBzZWUgZXJyb3IgbWVzc2FnZXMN
+Cj4gDQo+IHJvb3RAY3I3On4jIHNwaWRldl90ZXN0IC1EIC9kZXYvc3BpZGV2NC4xIC1zIDEyMDAw
+MDAgLWIgOCAtUyA2NCAtSSAxIC1sDQo+IHNwaSBtb2RlOiAweDIwDQo+IGJpdHMgcGVyIHdvcmQ6
+IDgNCj4gbWF4IHNwZWVkOiAxMjAwMDAwIEh6ICgxMjAwIEtIeikNCj4gW8KgIDQyMy42ODY3MzZd
+IHNwaV9tYXN0ZXIgc3BpNDogSS9PIEVycm9yIGluIERNQSBSWA0KPiBbwqAgNDIzLjY5MTM5Ml0g
+c3BpZGV2IHNwaTQuMTogU1BJIHRyYW5zZmVyIGZhaWxlZDogLTExMA0KPiBbwqAgNDIzLjY5NjM4
+Ml0gc3BpX21hc3RlciBzcGk0OiBmYWlsZWQgdG8gdHJhbnNmZXIgb25lIG1lc3NhZ2UgZnJvbSBx
+dWV1ZQ0KPiBjYW4ndCBzZW5kIHNwaSBtZXNzYWdlOiBDb25uZWN0aW9uIHRpbWVkIG91dA0KPiBB
+Ym9ydGVkIChjb3JlIGR1bXBlZCkNCj4gDQo+IEkgc3VwcG9zZSwgdHJhbnNmZXJzIHNob3J0ZXIg
+dGhlbiA2NCBieXRlcyBtYWRlIHdpdGggaGVscCBvZiBQSU8uDQo+IA0KPiBSb2JpbiwgaXMgdGhl
+cmUgYW55IGNoYW5jZSBmb3IgeW91IHRvIGZpbmQgc29tZSB0aW1lIGFuZCBsb29rIGF0IHRoaXMN
+Cj4gaXNzdWUgYWdhaW4/DQpJIGhhdmUgcXVpY2sgdGVzdCB3aXRoIHNwaWRldl90ZXN0IGxvb3Bi
+YWNrLCBidXQgZGlkbid0IG1lZXQgeW91ciBlcnJvciwNCklzIHlvdXIgY29kZSB0aGUgYWxtb3N0
+IGxhdGVzdCBjb2RlIGluIGxpbnV4LW5leHQgYXMgbWluZT8NCg0Kcm9vdEBpbXg2cXBkbHNvbG94
+On4jIGNhdCAvcHJvYy9pbnRlcnJ1cHRzIHwgZ3JlcCBzZG1hDQogNDg6ICAgICAgICAgMzcgICAg
+ICAgR1BDICAgMiBMZXZlbCAgICAgc2RtYQ0KIC1sdEBpbXg2cXBkbHNvbG94On4jIC4vc3BpZGV2
+X3Rlc3QgLUQgL2Rldi9zcGlkZXYwLjAgLXMgMTIwMDAwMCAtYiA4IC1TIDY0IC1JIDEgLWwNCnNw
+aSBtb2RlOiAweDIwDQpiaXRzIHBlciB3b3JkOiA4DQptYXggc3BlZWQ6IDEyMDAwMDAgSHogKDEy
+MDAgS0h6KQ0Kcm9vdEBpbXg2cXBkbHNvbG94On4jIGNhdCAvcHJvYy9pbnRlcnJ1cHRzIHwgZ3Jl
+cCBzZG1hDQogNDg6ICAgICAgICAgNDMgICAgICAgR1BDICAgMiBMZXZlbCAgICAgc2RtYQ0KLi9z
+cGlkZXZfdGVzdCAtRCAvZGV2L3NwaWRldjAuMCAtcyAxMjAwMDAwIC1iIDggLVMgNTEyIC1JIDEg
+LWwNCnNwaSBtb2RlOiAweDIwDQpiaXRzIHBlciB3b3JkOiA4DQptYXggc3BlZWQ6IDEyMDAwMDAg
+SHogKDEyMDAgS0h6KQ0KdG90YWw6IHR4IDAuNUtCLCByeCAwLjVLQg0KPiANCj4gQmVzdCB3aXNo
+ZXMuDQo+IC0tDQo+IElnb3IgUGx5YXRvdg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KbGludXgtYXJtLWtlcm5lbCBtYWlsaW5nIGxpc3QKbGludXgtYXJt
+LWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
+aWxtYW4vbGlzdGluZm8vbGludXgtYXJtLWtlcm5lbAo=

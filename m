@@ -1,7 +1,7 @@
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Subject: [PATCH 07/12] spi: Don't call spi_get_gpio_descs() before device name is set
-Date: Tue,  2 Apr 2019 21:01:28 -0700
-Message-ID: <20190403040133.1459-8-andrew.smirnov@gmail.com>
+Subject: [PATCH 10/12] spi: gpio: Make sure spi_master_put() is called in every error path
+Date: Tue,  2 Apr 2019 21:01:31 -0700
+Message-ID: <20190403040133.1459-11-andrew.smirnov@gmail.com>
 References: <20190403040133.1459-1-andrew.smirnov@gmail.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -14,38 +14,10 @@ In-Reply-To: <20190403040133.1459-1-andrew.smirnov@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Move code calling spi_get_gpio_descs() to happen after ctlr->dev's
-name is set in order to have proper GPIO consumer names.
-
-Before:
-
-cat /sys/kernel/debug/gpio
-gpiochip0: GPIOs 0-31, parent: platform/40049000.gpio, vf610-gpio:
- gpio-6   (                    |regulator-usb0-vbus ) out lo
-
-gpiochip1: GPIOs 32-63, parent: platform/4004a000.gpio, vf610-gpio:
- gpio-36  (                    |scl                 ) in  hi
- gpio-37  (                    |sda                 ) in  hi
- gpio-40  (                    |(null) CS1          ) out lo
- gpio-41  (                    |(null) CS0          ) out lo ACTIVE LOW
- gpio-42  (                    |miso                ) in  hi
- gpio-43  (                    |mosi                ) in  lo
- gpio-44  (                    |sck                 ) out lo
-
-After:
-
-cat /sys/kernel/debug/gpio
-gpiochip0: GPIOs 0-31, parent: platform/40049000.gpio, vf610-gpio:
- gpio-6   (                    |regulator-usb0-vbus ) out lo
-
-gpiochip1: GPIOs 32-63, parent: platform/4004a000.gpio, vf610-gpio:
- gpio-36  (                    |scl                 ) in  hi
- gpio-37  (                    |sda                 ) in  hi
- gpio-40  (                    |spi0 CS1            ) out lo
- gpio-41  (                    |spi0 CS0            ) out lo ACTIVE LOW
- gpio-42  (                    |miso                ) in  hi
- gpio-43  (                    |mosi                ) in  lo
- gpio-44  (                    |sck                 ) out lo
+There's a number of failure paths in spi_gpio_probe() that do not call
+spi_master_put() potentially leaking memory. Fix this problem by
+registering a cleanup funciont via devm_add_action_or_reset() right
+after SPI controller is allocated.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: Mark Brown <broonie@kernel.org>
@@ -53,63 +25,57 @@ Cc: Chris Healy <cphealy@gmail.com>
 Cc: linux-spi@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 ---
- drivers/spi/spi.c | 37 +++++++++++++++++++------------------
- 1 file changed, 19 insertions(+), 18 deletions(-)
+ drivers/spi/spi-gpio.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index bd2a424672df..19d663435b8c 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2279,24 +2279,6 @@ int spi_register_controller(struct spi_controller *ctlr)
- 	if (status)
- 		return status;
+diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
+index 3a6a9c6966c0..668f2cd82d98 100644
+--- a/drivers/spi/spi-gpio.c
++++ b/drivers/spi/spi-gpio.c
+@@ -363,6 +363,11 @@ static int spi_gpio_probe_pdata(struct platform_device *pdev,
+ 	return 0;
+ }
  
--	if (!spi_controller_is_slave(ctlr)) {
--		if (ctlr->use_gpio_descriptors) {
--			status = spi_get_gpio_descs(ctlr);
--			if (status)
--				return status;
--			/*
--			 * A controller using GPIO descriptors always
--			 * supports SPI_CS_HIGH if need be.
--			 */
--			ctlr->mode_bits |= SPI_CS_HIGH;
--		} else {
--			/* Legacy code path for GPIOs from DT */
--			status = of_spi_register_master(ctlr);
--			if (status)
--				return status;
--		}
--	}
++static void spi_gpio_put(void *data)
++{
++	spi_master_put(data);
++}
++
+ static int spi_gpio_probe(struct platform_device *pdev)
+ {
+ 	int				status;
+@@ -378,6 +383,10 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 	if (!master)
+ 		return -ENOMEM;
+ 
++	status = devm_add_action_or_reset(&pdev->dev, spi_gpio_put, master);
++	if (status)
++		return status;
++
+ 	if (of_id)
+ 		status = spi_gpio_probe_dt(pdev, master);
+ 	else
+@@ -429,11 +438,7 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 	}
+ 	bb->setup_transfer = spi_bitbang_setup_transfer;
+ 
+-	status = spi_bitbang_start(&spi_gpio->bitbang);
+-	if (status)
+-		spi_master_put(master);
 -
- 	/* even if it's just one always-selected device, there must
- 	 * be at least one chipselect
- 	 */
-@@ -2353,6 +2335,25 @@ int spi_register_controller(struct spi_controller *ctlr)
- 	 * registration fails if the bus ID is in use.
- 	 */
- 	dev_set_name(&ctlr->dev, "spi%u", ctlr->bus_num);
-+
-+	if (!spi_controller_is_slave(ctlr)) {
-+		if (ctlr->use_gpio_descriptors) {
-+			status = spi_get_gpio_descs(ctlr);
-+			if (status)
-+				return status;
-+			/*
-+			 * A controller using GPIO descriptors always
-+			 * supports SPI_CS_HIGH if need be.
-+			 */
-+			ctlr->mode_bits |= SPI_CS_HIGH;
-+		} else {
-+			/* Legacy code path for GPIOs from DT */
-+			status = of_spi_register_master(ctlr);
-+			if (status)
-+				return status;
-+		}
-+	}
-+
- 	status = device_add(&ctlr->dev);
- 	if (status < 0) {
- 		/* free bus id */
+-	return status;
++	return spi_bitbang_start(&spi_gpio->bitbang);
+ }
+ 
+ static int spi_gpio_remove(struct platform_device *pdev)
+@@ -445,8 +450,6 @@ static int spi_gpio_remove(struct platform_device *pdev)
+ 	/* stop() unregisters child devices too */
+ 	spi_bitbang_stop(&spi_gpio->bitbang);
+ 
+-	spi_master_put(spi_gpio->bitbang.master);
+-
+ 	return 0;
+ }
+ 
 -- 
 2.20.1

@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: gpio: Drop unused spi_to_pdata()" to the spi tree
-Date: Wed,  3 Apr 2019 05:42:36 +0100 (BST)
-Message-ID: <20190403044236.A56CF440082@finisterre.ee.mobilebroadband>
-References: <20190403040133.1459-2-andrew.smirnov@gmail.com>
+Subject: Applied "spi: gpio: Add local struct device pointer in spi_gpio_probe()" to the spi tree
+Date: Wed,  3 Apr 2019 05:42:33 +0100 (BST)
+Message-ID: <20190403044233.7DEDF440083@finisterre.ee.mobilebroadband>
+References: <20190403040133.1459-3-andrew.smirnov@gmail.com>
 Cc: Mark Brown <broonie@kernel.org>, Chris Healy <cphealy@gmail.com>,
         linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
@@ -11,13 +11,13 @@ Cc: Mark Brown <broonie@kernel.org>, Chris Healy <cphealy@gmail.com>,
         linux-spi@vger.kernel.org
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190403040133.1459-2-andrew.smirnov@gmail.com>
+In-Reply-To: <20190403040133.1459-3-andrew.smirnov@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: gpio: Drop unused spi_to_pdata()
+   spi: gpio: Add local struct device pointer in spi_gpio_probe()
 
 has been applied to the spi tree at
 
@@ -42,12 +42,14 @@ to this mail.
 Thanks,
 Mark
 
->From 4d9f8fed42694016b015cbfe201effe8aff0d1b3 Mon Sep 17 00:00:00 2001
+>From 96cad6d78f7f8feac456002020971cba6073bff9 Mon Sep 17 00:00:00 2001
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 2 Apr 2019 21:01:22 -0700
-Subject: [PATCH] spi: gpio: Drop unused spi_to_pdata()
+Date: Tue, 2 Apr 2019 21:01:23 -0700
+Subject: [PATCH] spi: gpio: Add local struct device pointer in
+ spi_gpio_probe()
 
-Spi_to_pdata() is not used anywhere in the code. Drop it.
+Use a local "struct device *dev" in spi_gpio_probe() for brevity. No
+functional change intended.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: Mark Brown <broonie@kernel.org>
@@ -56,25 +58,61 @@ Cc: linux-spi@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-gpio.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/spi/spi-gpio.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index 53b35c56a557..675fd65ebf1d 100644
+index 675fd65ebf1d..2869af5ff936 100644
 --- a/drivers/spi/spi-gpio.c
 +++ b/drivers/spi/spi-gpio.c
-@@ -96,12 +96,6 @@ spi_to_spi_gpio(const struct spi_device *spi)
- 	return spi_gpio;
- }
+@@ -379,6 +379,7 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 	struct spi_master		*master;
+ 	struct spi_gpio			*spi_gpio;
+ 	struct spi_gpio_platform_data	*pdata;
++	struct device			*dev = &pdev->dev;
+ 	u16 master_flags = 0;
+ 	bool use_of = 0;
  
--static inline struct spi_gpio_platform_data *__pure
--spi_to_pdata(const struct spi_device *spi)
--{
--	return &spi_to_spi_gpio(spi)->pdata;
--}
--
- /* These helpers are in turn called by the bitbang inlines */
- static inline void setsck(const struct spi_device *spi, int is_on)
- {
+@@ -388,19 +389,19 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 	if (status > 0)
+ 		use_of = 1;
+ 
+-	pdata = dev_get_platdata(&pdev->dev);
++	pdata = dev_get_platdata(dev);
+ #ifdef GENERIC_BITBANG
+ 	if (!pdata || (!use_of && !pdata->num_chipselect))
+ 		return -ENODEV;
+ #endif
+ 
+-	master = spi_alloc_master(&pdev->dev, sizeof(*spi_gpio));
++	master = spi_alloc_master(dev, sizeof(*spi_gpio));
+ 	if (!master)
+ 		return -ENOMEM;
+ 
+ 	spi_gpio = spi_master_get_devdata(master);
+ 
+-	spi_gpio->cs_gpios = devm_kcalloc(&pdev->dev,
++	spi_gpio->cs_gpios = devm_kcalloc(dev,
+ 				pdata->num_chipselect,
+ 				sizeof(*spi_gpio->cs_gpios),
+ 				GFP_KERNEL);
+@@ -416,7 +417,7 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 	if (pdata)
+ 		spi_gpio->pdata = *pdata;
+ 
+-	status = spi_gpio_request(&pdev->dev, spi_gpio,
++	status = spi_gpio_request(dev, spi_gpio,
+ 				  pdata->num_chipselect, &master_flags);
+ 	if (status)
+ 		return status;
+@@ -431,7 +432,7 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 	master->setup = spi_gpio_setup;
+ 	master->cleanup = spi_gpio_cleanup;
+ #ifdef CONFIG_OF
+-	master->dev.of_node = pdev->dev.of_node;
++	master->dev.of_node = dev->of_node;
+ #endif
+ 
+ 	spi_gpio->bitbang.master = master;
 -- 
 2.20.1

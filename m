@@ -1,7 +1,7 @@
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Subject: [PATCH 08/12] spi: gpio: Drop mflags argument from spi_gpio_request()
-Date: Tue,  2 Apr 2019 21:01:29 -0700
-Message-ID: <20190403040133.1459-9-andrew.smirnov@gmail.com>
+Subject: [PATCH 06/12] spi: gpio: Don't request CS GPIO in DT use-case
+Date: Tue,  2 Apr 2019 21:01:27 -0700
+Message-ID: <20190403040133.1459-7-andrew.smirnov@gmail.com>
 References: <20190403040133.1459-1-andrew.smirnov@gmail.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -14,9 +14,11 @@ In-Reply-To: <20190403040133.1459-1-andrew.smirnov@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The logic of setting mflags in spi_gpio_request() is very simple and
-there isn't much benefit in having it in that function. Move all of
-that code outside into spi_gpio_probe() in order to simplify things.
+DT use-case already relies on SPI core to control CS (requested by
+of_spi_register_master() and controlled spi_set_cs()), so there's no
+need to try to request those GPIO in spi-gpio code. Change the code
+such that spi-gpio's CS related code is only used if device is probed
+via pdata.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: Mark Brown <broonie@kernel.org>
@@ -24,82 +26,229 @@ Cc: Chris Healy <cphealy@gmail.com>
 Cc: linux-spi@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 ---
- drivers/spi/spi-gpio.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ drivers/spi/spi-gpio.c | 134 ++++++++++++++++++-----------------------
+ 1 file changed, 59 insertions(+), 75 deletions(-)
 
 diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index 8feb036aaf36..84ca803f6f69 100644
+index 1cff30adc836..8feb036aaf36 100644
 --- a/drivers/spi/spi-gpio.c
 +++ b/drivers/spi/spi-gpio.c
-@@ -290,25 +290,15 @@ static void spi_gpio_cleanup(struct spi_device *spi)
-  * floating signals.  (A weak pulldown would save power too, but many
-  * drivers expect to see all-ones data as the no slave "response".)
+@@ -47,7 +47,6 @@ struct spi_gpio {
+ 	struct gpio_desc		*miso;
+ 	struct gpio_desc		*mosi;
+ 	struct gpio_desc		**cs_gpios;
+-	bool				has_cs;
+ };
+ 
+ /*----------------------------------------------------------------------*/
+@@ -217,7 +216,7 @@ static void spi_gpio_chipselect(struct spi_device *spi, int is_active)
+ 		gpiod_set_value_cansleep(spi_gpio->sck, spi->mode & SPI_CPOL);
+ 
+ 	/* Drive chip select line, if we have one */
+-	if (spi_gpio->has_cs) {
++	if (spi_gpio->cs_gpios) {
+ 		struct gpio_desc *cs = spi_gpio->cs_gpios[spi->chip_select];
+ 
+ 		/* SPI chip selects are normally active-low */
+@@ -235,10 +234,12 @@ static int spi_gpio_setup(struct spi_device *spi)
+ 	 * The CS GPIOs have already been
+ 	 * initialized from the descriptor lookup.
+ 	 */
+-	cs = spi_gpio->cs_gpios[spi->chip_select];
+-	if (!spi->controller_state && cs)
+-		status = gpiod_direction_output(cs,
+-						!(spi->mode & SPI_CS_HIGH));
++	if (spi_gpio->cs_gpios) {
++		cs = spi_gpio->cs_gpios[spi->chip_select];
++		if (!spi->controller_state && cs)
++			status = gpiod_direction_output(cs,
++						  !(spi->mode & SPI_CS_HIGH));
++	}
+ 
+ 	if (!status)
+ 		status = spi_bitbang_setup(spi);
+@@ -291,11 +292,8 @@ static void spi_gpio_cleanup(struct spi_device *spi)
   */
--static int spi_gpio_request(struct device *dev,
--			    struct spi_gpio *spi_gpio,
--			    u16 *mflags)
-+static int spi_gpio_request(struct device *dev, struct spi_gpio *spi_gpio)
+ static int spi_gpio_request(struct device *dev,
+ 			    struct spi_gpio *spi_gpio,
+-			    unsigned int num_chipselects,
+ 			    u16 *mflags)
  {
+-	int i;
+-
  	spi_gpio->mosi = devm_gpiod_get_optional(dev, "mosi", GPIOD_OUT_LOW);
  	if (IS_ERR(spi_gpio->mosi))
  		return PTR_ERR(spi_gpio->mosi);
--	if (!spi_gpio->mosi)
--		/* HW configuration without MOSI pin */
--		*mflags |= SPI_MASTER_NO_TX;
- 
- 	spi_gpio->miso = devm_gpiod_get_optional(dev, "miso", GPIOD_IN);
- 	if (IS_ERR(spi_gpio->miso))
- 		return PTR_ERR(spi_gpio->miso);
--	/*
--	 * No setting SPI_MASTER_NO_RX here - if there is only a MOSI
--	 * pin connected the host can still do RX by changing the
--	 * direction of the line.
--	 */
- 
- 	spi_gpio->sck = devm_gpiod_get(dev, "sck", GPIOD_OUT_LOW);
+@@ -316,13 +314,6 @@ static int spi_gpio_request(struct device *dev,
  	if (IS_ERR(spi_gpio->sck))
-@@ -382,7 +372,6 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 		return PTR_ERR(spi_gpio->sck);
+ 
+-	for (i = 0; i < num_chipselects; i++) {
+-		spi_gpio->cs_gpios[i] = devm_gpiod_get_index(dev, "cs",
+-							     i, GPIOD_OUT_HIGH);
+-		if (IS_ERR(spi_gpio->cs_gpios[i]))
+-			return PTR_ERR(spi_gpio->cs_gpios[i]);
+-	}
+-
+ 	return 0;
+ }
+ 
+@@ -333,90 +324,87 @@ static const struct of_device_id spi_gpio_dt_ids[] = {
+ };
+ MODULE_DEVICE_TABLE(of, spi_gpio_dt_ids);
+ 
+-static int spi_gpio_probe_dt(struct platform_device *pdev)
++static int spi_gpio_probe_dt(struct platform_device *pdev,
++			     struct spi_master *master)
+ {
+-	int ret;
+-	u32 tmp;
+-	struct spi_gpio_platform_data	*pdata;
+-	struct device_node *np = pdev->dev.of_node;
+-	const struct of_device_id *of_id =
+-			of_match_device(spi_gpio_dt_ids, &pdev->dev);
+-
+-	if (!of_id)
+-		return 0;
++	master->dev.of_node = pdev->dev.of_node;
++	master->use_gpio_descriptors = true;
+ 
+-	pdata = devm_kzalloc(&pdev->dev, sizeof(*pdata), GFP_KERNEL);
+-	if (!pdata)
+-		return -ENOMEM;
++	return 0;
++}
++#else
++static inline int spi_gpio_probe_dt(struct platform_device *pdev,
++				    struct spi_master *master)
++{
++	return 0;
++}
++#endif
+ 
++static int spi_gpio_probe_pdata(struct platform_device *pdev,
++				struct spi_master *master)
++{
++	struct device *dev = &pdev->dev;
++	struct spi_gpio_platform_data *pdata = dev_get_platdata(dev);
++	struct spi_gpio *spi_gpio = spi_master_get_devdata(master);
++	int i;
+ 
+-	ret = of_property_read_u32(np, "num-chipselects", &tmp);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "num-chipselects property not found\n");
+-		goto error_free;
+-	}
++#ifdef GENERIC_BITBANG
++	if (!pdata || !pdata->num_chipselect)
++		return -ENODEV;
++#endif
++	/*
++	 * The master needs to think there is a chipselect even if not
++	 * connected
++	 */
++	master->num_chipselect = pdata->num_chipselect ?: 1;
+ 
+-	pdata->num_chipselect = tmp;
+-	pdev->dev.platform_data = pdata;
++	spi_gpio->cs_gpios = devm_kcalloc(dev, master->num_chipselect,
++					  sizeof(*spi_gpio->cs_gpios),
++					  GFP_KERNEL);
++	if (!spi_gpio->cs_gpios)
++		return -ENOMEM;
+ 
+-	return 1;
++	for (i = 0; i < master->num_chipselect; i++) {
++		spi_gpio->cs_gpios[i] = devm_gpiod_get_index(dev, "cs", i,
++							     GPIOD_OUT_HIGH);
++		if (IS_ERR(spi_gpio->cs_gpios[i]))
++			return PTR_ERR(spi_gpio->cs_gpios[i]);
++	}
+ 
+-error_free:
+-	devm_kfree(&pdev->dev, pdata);
+-	return ret;
+-}
+-#else
+-static inline int spi_gpio_probe_dt(struct platform_device *pdev)
+-{
+ 	return 0;
+ }
+-#endif
+ 
+ static int spi_gpio_probe(struct platform_device *pdev)
+ {
+ 	int				status;
+ 	struct spi_master		*master;
+ 	struct spi_gpio			*spi_gpio;
+-	struct spi_gpio_platform_data	*pdata;
  	struct device			*dev = &pdev->dev;
  	struct spi_bitbang		*bb;
- 	const struct of_device_id	*of_id;
--	u16 master_flags = 0;
++	const struct of_device_id	*of_id;
+ 	u16 master_flags = 0;
+-	bool use_of = 0;
+-
+-	status = spi_gpio_probe_dt(pdev);
+-	if (status < 0)
+-		return status;
+-	if (status > 0)
+-		use_of = 1;
  
- 	of_id = of_match_device(spi_gpio_dt_ids, &pdev->dev);
+-	pdata = dev_get_platdata(dev);
+-#ifdef GENERIC_BITBANG
+-	if (!pdata || (!use_of && !pdata->num_chipselect))
+-		return -ENODEV;
+-#endif
++	of_id = of_match_device(spi_gpio_dt_ids, &pdev->dev);
  
-@@ -404,14 +393,23 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 	master = spi_alloc_master(dev, sizeof(*spi_gpio));
+ 	if (!master)
+ 		return -ENOMEM;
+ 
+-	spi_gpio = spi_master_get_devdata(master);
++	if (of_id)
++		status = spi_gpio_probe_dt(pdev, master);
++	else
++		status = spi_gpio_probe_pdata(pdev, master);
+ 
+-	spi_gpio->cs_gpios = devm_kcalloc(dev,
+-				pdata->num_chipselect,
+-				sizeof(*spi_gpio->cs_gpios),
+-				GFP_KERNEL);
+-	if (!spi_gpio->cs_gpios)
+-		return -ENOMEM;
++	if (status)
++		return status;
+ 
+-	platform_set_drvdata(pdev, spi_gpio);
++	spi_gpio = spi_master_get_devdata(master);
+ 
+-	/* Determine if we have chip selects connected */
+-	spi_gpio->has_cs = !!pdata->num_chipselect;
++	platform_set_drvdata(pdev, spi_gpio);
  
  	spi_gpio->pdev = pdev;
  
--	status = spi_gpio_request(dev, spi_gpio, &master_flags);
-+	status = spi_gpio_request(dev, spi_gpio);
+-	status = spi_gpio_request(dev, spi_gpio,
+-				  pdata->num_chipselect, &master_flags);
++	status = spi_gpio_request(dev, spi_gpio, &master_flags);
  	if (status)
  		return status;
  
- 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
- 	master->mode_bits = SPI_3WIRE | SPI_3WIRE_HIZ | SPI_CPHA | SPI_CPOL |
+@@ -425,13 +413,9 @@ static int spi_gpio_probe(struct platform_device *pdev)
  			    SPI_CS_HIGH;
--	master->flags = master_flags;
-+	if (!spi_gpio->mosi) {
-+		/* HW configuration without MOSI pin
-+		 *
-+		 * No setting SPI_MASTER_NO_RX here - if there is only
-+		 * a MOSI pin connected the host can still do RX by
-+		 * changing the direction of the line.
-+		 */
-+		master->flags = SPI_MASTER_NO_TX;
-+	}
-+
+ 	master->flags = master_flags;
  	master->bus_num = pdev->id;
+-	/* The master needs to think there is a chipselect even if not connected */
+-	master->num_chipselect = spi_gpio->has_cs ? pdata->num_chipselect : 1;
  	master->setup = spi_gpio_setup;
  	master->cleanup = spi_gpio_cleanup;
-@@ -421,7 +419,7 @@ static int spi_gpio_probe(struct platform_device *pdev)
+-#ifdef CONFIG_OF
+-	master->dev.of_node = dev->of_node;
+-#endif
++
+ 	bb = &spi_gpio->bitbang;
+ 	bb->master = master;
  	bb->chipselect = spi_gpio_chipselect;
- 	bb->set_line_direction = spi_gpio_set_direction;
- 
--	if (master_flags & SPI_MASTER_NO_TX) {
-+	if (master->flags & SPI_MASTER_NO_TX) {
- 		bb->txrx_word[SPI_MODE_0] = spi_gpio_spec_txrx_word_mode0;
- 		bb->txrx_word[SPI_MODE_1] = spi_gpio_spec_txrx_word_mode1;
- 		bb->txrx_word[SPI_MODE_2] = spi_gpio_spec_txrx_word_mode2;
 -- 
 2.20.1

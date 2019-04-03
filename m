@@ -1,7 +1,7 @@
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Subject: [PATCH 11/12] spi: bitbang: Introduce spi_bitbang_init()
-Date: Tue,  2 Apr 2019 21:01:32 -0700
-Message-ID: <20190403040133.1459-12-andrew.smirnov@gmail.com>
+Subject: [PATCH 07/12] spi: Don't call spi_get_gpio_descs() before device name is set
+Date: Tue,  2 Apr 2019 21:01:28 -0700
+Message-ID: <20190403040133.1459-8-andrew.smirnov@gmail.com>
 References: <20190403040133.1459-1-andrew.smirnov@gmail.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -14,9 +14,38 @@ In-Reply-To: <20190403040133.1459-1-andrew.smirnov@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Move all of the code doing struct spi_bitbang initialization, so that
-it can be paired with devm_spi_register_master() in order to avoid
-having to call spi_bitbang_stop() explicitly.
+Move code calling spi_get_gpio_descs() to happen after ctlr->dev's
+name is set in order to have proper GPIO consumer names.
+
+Before:
+
+cat /sys/kernel/debug/gpio
+gpiochip0: GPIOs 0-31, parent: platform/40049000.gpio, vf610-gpio:
+ gpio-6   (                    |regulator-usb0-vbus ) out lo
+
+gpiochip1: GPIOs 32-63, parent: platform/4004a000.gpio, vf610-gpio:
+ gpio-36  (                    |scl                 ) in  hi
+ gpio-37  (                    |sda                 ) in  hi
+ gpio-40  (                    |(null) CS1          ) out lo
+ gpio-41  (                    |(null) CS0          ) out lo ACTIVE LOW
+ gpio-42  (                    |miso                ) in  hi
+ gpio-43  (                    |mosi                ) in  lo
+ gpio-44  (                    |sck                 ) out lo
+
+After:
+
+cat /sys/kernel/debug/gpio
+gpiochip0: GPIOs 0-31, parent: platform/40049000.gpio, vf610-gpio:
+ gpio-6   (                    |regulator-usb0-vbus ) out lo
+
+gpiochip1: GPIOs 32-63, parent: platform/4004a000.gpio, vf610-gpio:
+ gpio-36  (                    |scl                 ) in  hi
+ gpio-37  (                    |sda                 ) in  hi
+ gpio-40  (                    |spi0 CS1            ) out lo
+ gpio-41  (                    |spi0 CS0            ) out lo ACTIVE LOW
+ gpio-42  (                    |miso                ) in  hi
+ gpio-43  (                    |mosi                ) in  lo
+ gpio-44  (                    |sck                 ) out lo
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: Mark Brown <broonie@kernel.org>
@@ -24,105 +53,63 @@ Cc: Chris Healy <cphealy@gmail.com>
 Cc: linux-spi@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 ---
- drivers/spi/spi-bitbang.c       | 66 +++++++++++++++++++--------------
- include/linux/spi/spi_bitbang.h |  1 +
- 2 files changed, 40 insertions(+), 27 deletions(-)
+ drivers/spi/spi.c | 37 +++++++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/spi/spi-bitbang.c b/drivers/spi/spi-bitbang.c
-index dd9a8c54a693..4243e53f9f7b 100644
---- a/drivers/spi/spi-bitbang.c
-+++ b/drivers/spi/spi-bitbang.c
-@@ -335,6 +335,42 @@ static void spi_bitbang_set_cs(struct spi_device *spi, bool enable)
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index bd2a424672df..19d663435b8c 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2279,24 +2279,6 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 	if (status)
+ 		return status;
  
- /*----------------------------------------------------------------------*/
- 
-+int spi_bitbang_init(struct spi_bitbang *bitbang)
-+{
-+	struct spi_master *master = bitbang->master;
+-	if (!spi_controller_is_slave(ctlr)) {
+-		if (ctlr->use_gpio_descriptors) {
+-			status = spi_get_gpio_descs(ctlr);
+-			if (status)
+-				return status;
+-			/*
+-			 * A controller using GPIO descriptors always
+-			 * supports SPI_CS_HIGH if need be.
+-			 */
+-			ctlr->mode_bits |= SPI_CS_HIGH;
+-		} else {
+-			/* Legacy code path for GPIOs from DT */
+-			status = of_spi_register_master(ctlr);
+-			if (status)
+-				return status;
+-		}
+-	}
+-
+ 	/* even if it's just one always-selected device, there must
+ 	 * be at least one chipselect
+ 	 */
+@@ -2353,6 +2335,25 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 	 * registration fails if the bus ID is in use.
+ 	 */
+ 	dev_set_name(&ctlr->dev, "spi%u", ctlr->bus_num);
 +
-+	if (!master || !bitbang->chipselect)
-+		return -EINVAL;
-+
-+	mutex_init(&bitbang->lock);
-+
-+	if (!master->mode_bits)
-+		master->mode_bits = SPI_CPOL | SPI_CPHA | bitbang->flags;
-+
-+	if (master->transfer || master->transfer_one_message)
-+		return -EINVAL;
-+
-+	master->prepare_transfer_hardware = spi_bitbang_prepare_hardware;
-+	master->unprepare_transfer_hardware = spi_bitbang_unprepare_hardware;
-+	master->transfer_one = spi_bitbang_transfer_one;
-+	master->set_cs = spi_bitbang_set_cs;
-+
-+	if (!bitbang->txrx_bufs) {
-+		bitbang->use_dma = 0;
-+		bitbang->txrx_bufs = spi_bitbang_bufs;
-+		if (!master->setup) {
-+			if (!bitbang->setup_transfer)
-+				bitbang->setup_transfer =
-+					 spi_bitbang_setup_transfer;
-+			master->setup = spi_bitbang_setup;
-+			master->cleanup = spi_bitbang_cleanup;
++	if (!spi_controller_is_slave(ctlr)) {
++		if (ctlr->use_gpio_descriptors) {
++			status = spi_get_gpio_descs(ctlr);
++			if (status)
++				return status;
++			/*
++			 * A controller using GPIO descriptors always
++			 * supports SPI_CS_HIGH if need be.
++			 */
++			ctlr->mode_bits |= SPI_CS_HIGH;
++		} else {
++			/* Legacy code path for GPIOs from DT */
++			status = of_spi_register_master(ctlr);
++			if (status)
++				return status;
 +		}
 +	}
 +
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(spi_bitbang_init);
-+
- /**
-  * spi_bitbang_start - start up a polled/bitbanging SPI master driver
-  * @bitbang: driver handle
-@@ -368,33 +404,9 @@ int spi_bitbang_start(struct spi_bitbang *bitbang)
- 	struct spi_master *master = bitbang->master;
- 	int ret;
- 
--	if (!master || !bitbang->chipselect)
--		return -EINVAL;
--
--	mutex_init(&bitbang->lock);
--
--	if (!master->mode_bits)
--		master->mode_bits = SPI_CPOL | SPI_CPHA | bitbang->flags;
--
--	if (master->transfer || master->transfer_one_message)
--		return -EINVAL;
--
--	master->prepare_transfer_hardware = spi_bitbang_prepare_hardware;
--	master->unprepare_transfer_hardware = spi_bitbang_unprepare_hardware;
--	master->transfer_one = spi_bitbang_transfer_one;
--	master->set_cs = spi_bitbang_set_cs;
--
--	if (!bitbang->txrx_bufs) {
--		bitbang->use_dma = 0;
--		bitbang->txrx_bufs = spi_bitbang_bufs;
--		if (!master->setup) {
--			if (!bitbang->setup_transfer)
--				bitbang->setup_transfer =
--					 spi_bitbang_setup_transfer;
--			master->setup = spi_bitbang_setup;
--			master->cleanup = spi_bitbang_cleanup;
--		}
--	}
-+	ret = spi_bitbang_init(bitbang);
-+	if (ret)
-+		return ret;
- 
- 	/* driver may get busy before register() returns, especially
- 	 * if someone registered boardinfo for devices
-diff --git a/include/linux/spi/spi_bitbang.h b/include/linux/spi/spi_bitbang.h
-index b7e021b274dc..4444c2a992cb 100644
---- a/include/linux/spi/spi_bitbang.h
-+++ b/include/linux/spi/spi_bitbang.h
-@@ -44,6 +44,7 @@ extern int spi_bitbang_setup_transfer(struct spi_device *spi,
- 
- /* start or stop queue processing */
- extern int spi_bitbang_start(struct spi_bitbang *spi);
-+extern int spi_bitbang_init(struct spi_bitbang *spi);
- extern void spi_bitbang_stop(struct spi_bitbang *spi);
- 
- #endif	/* __SPI_BITBANG_H */
+ 	status = device_add(&ctlr->dev);
+ 	if (status < 0) {
+ 		/* free bus id */
 -- 
 2.20.1

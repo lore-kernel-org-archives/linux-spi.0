@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: gpio: Simplify SPI_MASTER_NO_TX check in spi_gpio_probe()" to the spi tree
-Date: Wed,  3 Apr 2019 05:42:27 +0100 (BST)
-Message-ID: <20190403044227.6B7EE440083@finisterre.ee.mobilebroadband>
-References: <20190403040133.1459-5-andrew.smirnov@gmail.com>
+Subject: Applied "spi: gpio: Drop unused spi_to_pdata()" to the spi tree
+Date: Wed,  3 Apr 2019 05:42:36 +0100 (BST)
+Message-ID: <20190403044236.A56CF440082@finisterre.ee.mobilebroadband>
+References: <20190403040133.1459-2-andrew.smirnov@gmail.com>
 Cc: Mark Brown <broonie@kernel.org>, Chris Healy <cphealy@gmail.com>,
         linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
@@ -11,13 +11,13 @@ Cc: Mark Brown <broonie@kernel.org>, Chris Healy <cphealy@gmail.com>,
         linux-spi@vger.kernel.org
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190403040133.1459-5-andrew.smirnov@gmail.com>
+In-Reply-To: <20190403040133.1459-2-andrew.smirnov@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: gpio: Simplify SPI_MASTER_NO_TX check in spi_gpio_probe()
+   spi: gpio: Drop unused spi_to_pdata()
 
 has been applied to the spi tree at
 
@@ -42,14 +42,12 @@ to this mail.
 Thanks,
 Mark
 
->From 68cd9dc2cc00b2ab0dbcdbbec446d5bdc56fea4b Mon Sep 17 00:00:00 2001
+>From 4d9f8fed42694016b015cbfe201effe8aff0d1b3 Mon Sep 17 00:00:00 2001
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 2 Apr 2019 21:01:25 -0700
-Subject: [PATCH] spi: gpio: Simplify SPI_MASTER_NO_TX check in
- spi_gpio_probe()
+Date: Tue, 2 Apr 2019 21:01:22 -0700
+Subject: [PATCH] spi: gpio: Drop unused spi_to_pdata()
 
-Swap branches of the if statement in order to simplify it's logical
-condition being checked. No functional change intended.
+Spi_to_pdata() is not used anywhere in the code. Drop it.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: Mark Brown <broonie@kernel.org>
@@ -58,35 +56,25 @@ Cc: linux-spi@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-gpio.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/spi/spi-gpio.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
 diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index ca97b861c625..137f47e271dc 100644
+index 53b35c56a557..675fd65ebf1d 100644
 --- a/drivers/spi/spi-gpio.c
 +++ b/drivers/spi/spi-gpio.c
-@@ -440,16 +440,16 @@ static int spi_gpio_probe(struct platform_device *pdev)
- 	bb->chipselect = spi_gpio_chipselect;
- 	bb->set_line_direction = spi_gpio_set_direction;
+@@ -96,12 +96,6 @@ spi_to_spi_gpio(const struct spi_device *spi)
+ 	return spi_gpio;
+ }
  
--	if ((master_flags & SPI_MASTER_NO_TX) == 0) {
--		bb->txrx_word[SPI_MODE_0] = spi_gpio_txrx_word_mode0;
--		bb->txrx_word[SPI_MODE_1] = spi_gpio_txrx_word_mode1;
--		bb->txrx_word[SPI_MODE_2] = spi_gpio_txrx_word_mode2;
--		bb->txrx_word[SPI_MODE_3] = spi_gpio_txrx_word_mode3;
--	} else {
-+	if (master_flags & SPI_MASTER_NO_TX) {
- 		bb->txrx_word[SPI_MODE_0] = spi_gpio_spec_txrx_word_mode0;
- 		bb->txrx_word[SPI_MODE_1] = spi_gpio_spec_txrx_word_mode1;
- 		bb->txrx_word[SPI_MODE_2] = spi_gpio_spec_txrx_word_mode2;
- 		bb->txrx_word[SPI_MODE_3] = spi_gpio_spec_txrx_word_mode3;
-+	} else {
-+		bb->txrx_word[SPI_MODE_0] = spi_gpio_txrx_word_mode0;
-+		bb->txrx_word[SPI_MODE_1] = spi_gpio_txrx_word_mode1;
-+		bb->txrx_word[SPI_MODE_2] = spi_gpio_txrx_word_mode2;
-+		bb->txrx_word[SPI_MODE_3] = spi_gpio_txrx_word_mode3;
- 	}
- 	bb->setup_transfer = spi_bitbang_setup_transfer;
- 
+-static inline struct spi_gpio_platform_data *__pure
+-spi_to_pdata(const struct spi_device *spi)
+-{
+-	return &spi_to_spi_gpio(spi)->pdata;
+-}
+-
+ /* These helpers are in turn called by the bitbang inlines */
+ static inline void setsck(const struct spi_device *spi, int is_on)
+ {
 -- 
 2.20.1

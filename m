@@ -1,78 +1,79 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH V3 5/9] spi: bcm2835aux: fix driver to not allow 65535
- (=-1) cs-gpios
-Date: Wed, 3 Apr 2019 11:32:08 +0700
-Message-ID: <20190403043208.GB5748@sirena.org.uk>
-References: <20190330093106.20723-1-kernel@martin.sperl.org>
- <20190330093106.20723-6-kernel@martin.sperl.org>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3443038189894913339=="
-Cc: Stefan Wahren <stefan.wahren@i2se.com>, linux-spi@vger.kernel.org,
- Eric Anholt <eric@anholt.net>, linux-rpi-kernel@lists.infradead.org,
- Hubert Denkmair <h.denkmair@intence.de>, linux-arm-kernel@lists.infradead.org
-To: kernel@martin.sperl.org
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190330093106.20723-6-kernel@martin.sperl.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Subject: Applied "spi: lpspi: add missing complete in abort func at dma mode" to the spi tree
+Date: Wed,  3 Apr 2019 05:42:21 +0100 (BST)
+Message-ID: <20190403044221.E7247440083@finisterre.ee.mobilebroadband>
+References: <20190402124609.22157-1-xiaoning.wang@nxp.com>
+Cc: Mark Brown <broonie@kernel.org>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-spi@vger.kernel.org
+To: Clark Wang <xiaoning.wang@nxp.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190402124609.22157-1-xiaoning.wang@nxp.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---===============3443038189894913339==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="8P1HSweYDcXXzwPJ"
-Content-Disposition: inline
+   spi: lpspi: add missing complete in abort func at dma mode
 
+has been applied to the spi tree at
 
---8P1HSweYDcXXzwPJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-On Sat, Mar 30, 2019 at 09:31:02AM +0000, kernel@martin.sperl.org wrote:
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> Fixes: 1ea29b39f4c812ec ("spi: bcm2835aux: add bcm2835 auxiliary spi devi=
-ce...")
->=20
-> Signed-off-by: Martin Sperl <kernel@martin.sperl.org>
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-There's no need for the blank lines after the Fixes tags, and they might
-potentially confuse some scripts.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---8P1HSweYDcXXzwPJ
-Content-Type: application/pgp-signature; name="signature.asc"
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
------BEGIN PGP SIGNATURE-----
+Thanks,
+Mark
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlykN0cACgkQJNaLcl1U
-h9CHVAf9HR4zk3a8M8HN2x636XT+qTn0a20b6OqaNt+qGcDNolfUvBtI4eWsgHM5
-i2ci6xx+9HOQdvQu4LPk7WobcbrQK7EP6PPYZR3QwnyXqDrkvO8YO8CMLup4ib+h
-otfIwjub4rhCKBC1xVRrCIOe/9e1O4qutPobk1LcE1dsTZOBBDiwovh/yBg6LkTy
-ocuB4XUoB/lZoJHk31EHptmKrK0/4dGB9G9qjwy7hlfEFAd8quit9kLJ2rzdmYlK
-in7v7pQL8MAbUcnSln2PVFkzZhi9xeM9xV/SWXZnN30CipqiozfoGVE0xQpFs+RT
-NjEnAB4eqx+rMhK7BKboXyS4+qNWuA==
-=IqG5
------END PGP SIGNATURE-----
+>From 8863eca8c46affaa91ae35390b00358b925483eb Mon Sep 17 00:00:00 2001
+From: Clark Wang <xiaoning.wang@nxp.com>
+Date: Tue, 2 Apr 2019 12:45:53 +0000
+Subject: [PATCH] spi: lpspi: add missing complete in abort func at dma mode
 
---8P1HSweYDcXXzwPJ--
+Add the missing complete operations for dma_completion to fix the
+problem of blocking at the wait_for_completion_interruptible()
+function when use spi_slave_abort().
 
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-fsl-lpspi.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---===============3443038189894913339==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
---===============3443038189894913339==--
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 4de8eb378752..2ad9d6262c2b 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -482,7 +482,13 @@ static int fsl_lpspi_slave_abort(struct spi_controller *controller)
+ 				spi_controller_get_devdata(controller);
+ 
+ 	fsl_lpspi->slave_aborted = true;
+-	complete(&fsl_lpspi->xfer_done);
++	if (!fsl_lpspi->usedma)
++		complete(&fsl_lpspi->xfer_done);
++	else {
++		complete(&fsl_lpspi->dma_tx_completion);
++		complete(&fsl_lpspi->dma_rx_completion);
++	}
++
+ 	return 0;
+ }
+ 
+-- 
+2.20.1

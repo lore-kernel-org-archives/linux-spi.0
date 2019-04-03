@@ -1,79 +1,78 @@
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Subject: [PATCH 03/12] spi: gpio: Add local struct spi_bitbang pointer in spi_gpio_probe()
-Date: Tue,  2 Apr 2019 21:01:24 -0700
-Message-ID: <20190403040133.1459-4-andrew.smirnov@gmail.com>
-References: <20190403040133.1459-1-andrew.smirnov@gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH V3 5/9] spi: bcm2835aux: fix driver to not allow 65535
+ (=-1) cs-gpios
+Date: Wed, 3 Apr 2019 11:32:08 +0700
+Message-ID: <20190403043208.GB5748@sirena.org.uk>
+References: <20190330093106.20723-1-kernel@martin.sperl.org>
+ <20190330093106.20723-6-kernel@martin.sperl.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: Andrey Smirnov <andrew.smirnov@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Chris Healy <cphealy@gmail.com>, linux-kernel@vger.kernel.org
-To: linux-spi@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190403040133.1459-1-andrew.smirnov@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============3443038189894913339=="
+Cc: Stefan Wahren <stefan.wahren@i2se.com>, linux-spi@vger.kernel.org,
+ Eric Anholt <eric@anholt.net>, linux-rpi-kernel@lists.infradead.org,
+ Hubert Denkmair <h.denkmair@intence.de>, linux-arm-kernel@lists.infradead.org
+To: kernel@martin.sperl.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190330093106.20723-6-kernel@martin.sperl.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Use a local "struct spi_bitbang *bb" in spi_gpio_probe() for
-brevity. No functional change intended.
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Chris Healy <cphealy@gmail.com>
-Cc: linux-spi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
----
- drivers/spi/spi-gpio.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+--===============3443038189894913339==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="8P1HSweYDcXXzwPJ"
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index 2869af5ff936..ca97b861c625 100644
---- a/drivers/spi/spi-gpio.c
-+++ b/drivers/spi/spi-gpio.c
-@@ -380,6 +380,7 @@ static int spi_gpio_probe(struct platform_device *pdev)
- 	struct spi_gpio			*spi_gpio;
- 	struct spi_gpio_platform_data	*pdata;
- 	struct device			*dev = &pdev->dev;
-+	struct spi_bitbang		*bb;
- 	u16 master_flags = 0;
- 	bool use_of = 0;
- 
-@@ -434,23 +435,23 @@ static int spi_gpio_probe(struct platform_device *pdev)
- #ifdef CONFIG_OF
- 	master->dev.of_node = dev->of_node;
- #endif
--
--	spi_gpio->bitbang.master = master;
--	spi_gpio->bitbang.chipselect = spi_gpio_chipselect;
--	spi_gpio->bitbang.set_line_direction = spi_gpio_set_direction;
-+	bb = &spi_gpio->bitbang;
-+	bb->master = master;
-+	bb->chipselect = spi_gpio_chipselect;
-+	bb->set_line_direction = spi_gpio_set_direction;
- 
- 	if ((master_flags & SPI_MASTER_NO_TX) == 0) {
--		spi_gpio->bitbang.txrx_word[SPI_MODE_0] = spi_gpio_txrx_word_mode0;
--		spi_gpio->bitbang.txrx_word[SPI_MODE_1] = spi_gpio_txrx_word_mode1;
--		spi_gpio->bitbang.txrx_word[SPI_MODE_2] = spi_gpio_txrx_word_mode2;
--		spi_gpio->bitbang.txrx_word[SPI_MODE_3] = spi_gpio_txrx_word_mode3;
-+		bb->txrx_word[SPI_MODE_0] = spi_gpio_txrx_word_mode0;
-+		bb->txrx_word[SPI_MODE_1] = spi_gpio_txrx_word_mode1;
-+		bb->txrx_word[SPI_MODE_2] = spi_gpio_txrx_word_mode2;
-+		bb->txrx_word[SPI_MODE_3] = spi_gpio_txrx_word_mode3;
- 	} else {
--		spi_gpio->bitbang.txrx_word[SPI_MODE_0] = spi_gpio_spec_txrx_word_mode0;
--		spi_gpio->bitbang.txrx_word[SPI_MODE_1] = spi_gpio_spec_txrx_word_mode1;
--		spi_gpio->bitbang.txrx_word[SPI_MODE_2] = spi_gpio_spec_txrx_word_mode2;
--		spi_gpio->bitbang.txrx_word[SPI_MODE_3] = spi_gpio_spec_txrx_word_mode3;
-+		bb->txrx_word[SPI_MODE_0] = spi_gpio_spec_txrx_word_mode0;
-+		bb->txrx_word[SPI_MODE_1] = spi_gpio_spec_txrx_word_mode1;
-+		bb->txrx_word[SPI_MODE_2] = spi_gpio_spec_txrx_word_mode2;
-+		bb->txrx_word[SPI_MODE_3] = spi_gpio_spec_txrx_word_mode3;
- 	}
--	spi_gpio->bitbang.setup_transfer = spi_bitbang_setup_transfer;
-+	bb->setup_transfer = spi_bitbang_setup_transfer;
- 
- 	status = spi_bitbang_start(&spi_gpio->bitbang);
- 	if (status)
--- 
-2.20.1
+
+--8P1HSweYDcXXzwPJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Sat, Mar 30, 2019 at 09:31:02AM +0000, kernel@martin.sperl.org wrote:
+
+> Fixes: 1ea29b39f4c812ec ("spi: bcm2835aux: add bcm2835 auxiliary spi devi=
+ce...")
+>=20
+> Signed-off-by: Martin Sperl <kernel@martin.sperl.org>
+
+There's no need for the blank lines after the Fixes tags, and they might
+potentially confuse some scripts.
+
+--8P1HSweYDcXXzwPJ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlykN0cACgkQJNaLcl1U
+h9CHVAf9HR4zk3a8M8HN2x636XT+qTn0a20b6OqaNt+qGcDNolfUvBtI4eWsgHM5
+i2ci6xx+9HOQdvQu4LPk7WobcbrQK7EP6PPYZR3QwnyXqDrkvO8YO8CMLup4ib+h
+otfIwjub4rhCKBC1xVRrCIOe/9e1O4qutPobk1LcE1dsTZOBBDiwovh/yBg6LkTy
+ocuB4XUoB/lZoJHk31EHptmKrK0/4dGB9G9qjwy7hlfEFAd8quit9kLJ2rzdmYlK
+in7v7pQL8MAbUcnSln2PVFkzZhi9xeM9xV/SWXZnN30CipqiozfoGVE0xQpFs+RT
+NjEnAB4eqx+rMhK7BKboXyS4+qNWuA==
+=IqG5
+-----END PGP SIGNATURE-----
+
+--8P1HSweYDcXXzwPJ--
+
+
+--===============3443038189894913339==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-arm-kernel mailing list
+linux-arm-kernel@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+--===============3443038189894913339==--

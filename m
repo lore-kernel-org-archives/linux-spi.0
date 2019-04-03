@@ -1,22 +1,23 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: lpspi: add missing complete in abort func at dma mode" to the spi tree
-Date: Wed,  3 Apr 2019 05:42:21 +0100 (BST)
-Message-ID: <20190403044221.E7247440083@finisterre.ee.mobilebroadband>
-References: <20190402124609.22157-1-xiaoning.wang@nxp.com>
-Cc: Mark Brown <broonie@kernel.org>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+Subject: Applied "spi: gpio: Drop unused pdata copy in struct spi_gpio" to the spi tree
+Date: Wed,  3 Apr 2019 05:42:24 +0100 (BST)
+Message-ID: <20190403044224.6EE43440082@finisterre.ee.mobilebroadband>
+References: <20190403040133.1459-6-andrew.smirnov@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, Chris Healy <cphealy@gmail.com>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        Chris Healy <cphealy@gmail.com>, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org
-To: Clark Wang <xiaoning.wang@nxp.com>
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190402124609.22157-1-xiaoning.wang@nxp.com>
+In-Reply-To: <20190403040133.1459-6-andrew.smirnov@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: lpspi: add missing complete in abort func at dma mode
+   spi: gpio: Drop unused pdata copy in struct spi_gpio
 
 has been applied to the spi tree at
 
@@ -41,39 +42,44 @@ to this mail.
 Thanks,
 Mark
 
->From 8863eca8c46affaa91ae35390b00358b925483eb Mon Sep 17 00:00:00 2001
-From: Clark Wang <xiaoning.wang@nxp.com>
-Date: Tue, 2 Apr 2019 12:45:53 +0000
-Subject: [PATCH] spi: lpspi: add missing complete in abort func at dma mode
+>From 703b476695237dda54233d2dadb37d2d49de23cf Mon Sep 17 00:00:00 2001
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 2 Apr 2019 21:01:26 -0700
+Subject: [PATCH] spi: gpio: Drop unused pdata copy in struct spi_gpio
 
-Add the missing complete operations for dma_completion to fix the
-problem of blocking at the wait_for_completion_interruptible()
-function when use spi_slave_abort().
+Drop unused pdata copy in struct spi_gpio. No functional change
+intended.
 
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Chris Healy <cphealy@gmail.com>
+Cc: linux-spi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/spi/spi-gpio.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 4de8eb378752..2ad9d6262c2b 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -482,7 +482,13 @@ static int fsl_lpspi_slave_abort(struct spi_controller *controller)
- 				spi_controller_get_devdata(controller);
+diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
+index 137f47e271dc..1cff30adc836 100644
+--- a/drivers/spi/spi-gpio.c
++++ b/drivers/spi/spi-gpio.c
+@@ -42,7 +42,6 @@
  
- 	fsl_lpspi->slave_aborted = true;
--	complete(&fsl_lpspi->xfer_done);
-+	if (!fsl_lpspi->usedma)
-+		complete(&fsl_lpspi->xfer_done);
-+	else {
-+		complete(&fsl_lpspi->dma_tx_completion);
-+		complete(&fsl_lpspi->dma_rx_completion);
-+	}
-+
- 	return 0;
- }
+ struct spi_gpio {
+ 	struct spi_bitbang		bitbang;
+-	struct spi_gpio_platform_data	pdata;
+ 	struct platform_device		*pdev;
+ 	struct gpio_desc		*sck;
+ 	struct gpio_desc		*miso;
+@@ -415,8 +414,6 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 	spi_gpio->has_cs = !!pdata->num_chipselect;
  
+ 	spi_gpio->pdev = pdev;
+-	if (pdata)
+-		spi_gpio->pdata = *pdata;
+ 
+ 	status = spi_gpio_request(dev, spi_gpio,
+ 				  pdata->num_chipselect, &master_flags);
 -- 
 2.20.1

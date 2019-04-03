@@ -1,7 +1,7 @@
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Subject: [PATCH 09/12] spi: gpio: Drop unused pdev field in struct spi_gpio
-Date: Tue,  2 Apr 2019 21:01:30 -0700
-Message-ID: <20190403040133.1459-10-andrew.smirnov@gmail.com>
+Subject: [PATCH 12/12] spi: gpio: Use devm_spi_register_master()
+Date: Tue,  2 Apr 2019 21:01:33 -0700
+Message-ID: <20190403040133.1459-13-andrew.smirnov@gmail.com>
 References: <20190403040133.1459-1-andrew.smirnov@gmail.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -14,7 +14,9 @@ In-Reply-To: <20190403040133.1459-1-andrew.smirnov@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-There's no code using 'pdev' field in struct spi_gpio. Drop it.
+Replace spi_bitbang_start() with a combination of spi_bitbang_init()
+and devm_spi_register_master() and drop all of the explicit
+cleanup-related code that's no longer necessary.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: Mark Brown <broonie@kernel.org>
@@ -22,29 +24,53 @@ Cc: Chris Healy <cphealy@gmail.com>
 Cc: linux-spi@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 ---
- drivers/spi/spi-gpio.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/spi/spi-gpio.c | 19 ++++---------------
+ 1 file changed, 4 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index 84ca803f6f69..3a6a9c6966c0 100644
+index 668f2cd82d98..674432bbbbc2 100644
 --- a/drivers/spi/spi-gpio.c
 +++ b/drivers/spi/spi-gpio.c
-@@ -42,7 +42,6 @@
+@@ -397,8 +397,6 @@ static int spi_gpio_probe(struct platform_device *pdev)
  
- struct spi_gpio {
- 	struct spi_bitbang		bitbang;
--	struct platform_device		*pdev;
- 	struct gpio_desc		*sck;
- 	struct gpio_desc		*miso;
- 	struct gpio_desc		*mosi;
-@@ -391,8 +390,6 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 	spi_gpio = spi_master_get_devdata(master);
  
- 	platform_set_drvdata(pdev, spi_gpio);
- 
--	spi_gpio->pdev = pdev;
+-	platform_set_drvdata(pdev, spi_gpio);
 -
  	status = spi_gpio_request(dev, spi_gpio);
  	if (status)
  		return status;
+@@ -438,19 +436,11 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 	}
+ 	bb->setup_transfer = spi_bitbang_setup_transfer;
+ 
+-	return spi_bitbang_start(&spi_gpio->bitbang);
+-}
+-
+-static int spi_gpio_remove(struct platform_device *pdev)
+-{
+-	struct spi_gpio			*spi_gpio;
+-
+-	spi_gpio = platform_get_drvdata(pdev);
+-
+-	/* stop() unregisters child devices too */
+-	spi_bitbang_stop(&spi_gpio->bitbang);
++	status = spi_bitbang_init(&spi_gpio->bitbang);
++	if (status)
++		return status;
+ 
+-	return 0;
++	return devm_spi_register_master(&pdev->dev, spi_master_get(master));
+ }
+ 
+ MODULE_ALIAS("platform:" DRIVER_NAME);
+@@ -461,7 +451,6 @@ static struct platform_driver spi_gpio_driver = {
+ 		.of_match_table = of_match_ptr(spi_gpio_dt_ids),
+ 	},
+ 	.probe		= spi_gpio_probe,
+-	.remove		= spi_gpio_remove,
+ };
+ module_platform_driver(spi_gpio_driver);
+ 
 -- 
 2.20.1

@@ -1,114 +1,154 @@
-From: Robin Gong <yibin.gong@nxp.com>
-Subject: RE: Issues with i.MX SPI DMA transfers
-Date: Wed, 3 Apr 2019 07:38:24 +0000
-Message-ID: <VI1PR04MB4543DEA3C0CED159C472E85F89570@VI1PR04MB4543.eurprd04.prod.outlook.com>
-References: <08fcbd65-510f-84f8-d6d6-ff56aa9ca9ad@gmail.com>
- <20190328065247.uz73lap7ljf5q3tb@pengutronix.de>
- <b8e80127-e377-9ef9-2447-b0126fdad7dc@gmail.com>
- <VI1PR04MB45438E01D91829849A4E0BB289590@VI1PR04MB4543.eurprd04.prod.outlook.com>
- <d7a2e5c5-4ee0-8c89-1bab-654db0ae38dd@gmail.com>
- <VI1PR04MB4543B1708FA151EED0CB722A89550@VI1PR04MB4543.eurprd04.prod.outlook.com>
- <95df9334-3d0c-7d13-e431-5a4aa2b9907e@gmail.com>
- <VI1PR04MB454305A56372466A38E9F81989560@VI1PR04MB4543.eurprd04.prod.outlook.com>
- <197990d4-b1e2-8db9-0cb7-87b860f23bd7@gmail.com>
+From: Lee Jones <lee.jones@linaro.org>
+Subject: Re: [PATCH 4/7] dt-bindings: mfd: Document Macronix MX25F0A
+ controller bindings
+Date: Wed, 3 Apr 2019 12:51:46 +0100
+Message-ID: <20190403115146.GR11301@dell>
+References: <1553768318-23149-1-git-send-email-masonccyang@mxic.com.tw>
+ <1553768318-23149-5-git-send-email-masonccyang@mxic.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: =?utf-8?B?VXdlIEtsZWluZS1Lw7ZuaWc=?=
-        <u.kleine-koenig@pengutronix.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andy Duan <fugang.duan@nxp.com>, Han Xu <han.xu@nxp.com>,
-        Clark Wang <xiaoning.wang@nxp.com>
-To: Igor Plyatov <plyatov@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Cc: broonie@kernel.org, marek.vasut@gmail.com,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        bbrezillon@kernel.org, dwmw2@infradead.org, robh+dt@kernel.org,
+        mark.rutland@arm.com, computersforpeace@gmal.com,
+        paul.burton@mips.com, stefan@agner.ch, christophe.kerello@st.com,
+        liang.yang@amlogic.com, geert@linux-m68k.org,
+        devicetree@vger.kernel.org, marcel.ziswiler@toradex.com,
+        linux-mtd@lists.infradead.org, richard@nod.at,
+        miquel.raynal@bootlin.com, juliensu@mxic.com.tw,
+        zhengxunli@mxic.com.tw
+To: Mason Yang <masonccyang@mxic.com.tw>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <197990d4-b1e2-8db9-0cb7-87b860f23bd7@gmail.com>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <1553768318-23149-5-git-send-email-masonccyang@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBJZ29yIFBseWF0b3YgPHBseWF0
-b3ZAZ21haWwuY29tPg0KPiBTZW50OiAyMDE55bm0NOaciDLml6UgMjA6MTUNCj4gVG86IFJvYmlu
-IEdvbmcgPHlpYmluLmdvbmdAbnhwLmNvbT4NCj4gQ2M6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1Lmts
-ZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ow0KPiBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwu
-b3JnOyBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7DQo+IGxpbnV4LXNwaUB2
-Z2VyLmtlcm5lbC5vcmc7IGRsLWxpbnV4LWlteCA8bGludXgtaW14QG54cC5jb20+OyBGYWJpbyBF
-c3RldmFtDQo+IDxmZXN0ZXZhbUBnbWFpbC5jb20+OyBQZW5ndXRyb25peCBLZXJuZWwgVGVhbSA8
-a2VybmVsQHBlbmd1dHJvbml4LmRlPjsNCj4gU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJv
-bml4LmRlPjsgU2hhd24gR3VvDQo+IDxzaGF3bmd1b0BrZXJuZWwub3JnPjsgTWFyayBCcm93biA8
-YnJvb25pZUBrZXJuZWwub3JnPjsNCj4gZG1hZW5naW5lQHZnZXIua2VybmVsLm9yZzsgVmlub2Qg
-S291bCA8dmtvdWxAa2VybmVsLm9yZz47IERhbiBXaWxsaWFtcw0KPiA8ZGFuLmoud2lsbGlhbXNA
-aW50ZWwuY29tPjsgQW5keSBEdWFuIDxmdWdhbmcuZHVhbkBueHAuY29tPjsgSGFuIFh1DQo+IDxo
-YW4ueHVAbnhwLmNvbT47IENsYXJrIFdhbmcgPHhpYW9uaW5nLndhbmdAbnhwLmNvbT4NCj4gU3Vi
-amVjdDogUmU6IElzc3VlcyB3aXRoIGkuTVggU1BJIERNQSB0cmFuc2ZlcnMNCj4gDQo+IERlYXIg
-Um9iaW4sDQo+IA0KPiA+PiBub3cgSSBoYXZlIHJldmVydGVkIHBhdGNoIGFkMGQ5MmQ3YmE2YS4N
-Cj4gPj4gUGF0Y2hlcyAwMDAxLWRtYS1lbmdpbmUtaW14LXNkbWEtYWRkLW1jdV8yX2Vjc3BpLXNj
-cmlwdC5wYXRjaCBhbmQNCj4gPj4gMDAwMi1zcGktc3BpLWlteC1maXgtRVJSMDA5MTY1LnBhdGNo
-IGFyZSBhcHBsaWVkLg0KPiA+Pg0KPiA+Pg0KPiA+PiBLZXJuZWwgbG9nIHNob3cgbWVzc2FnZXMN
-Cj4gPj4NCj4gPj4gW8KgwqAgMjkuMjAyNjM5XSBpbXgtc2RtYSAyMGVjMDAwLnNkbWE6IGxvYWRl
-ZCBmaXJtd2FyZSAzLjMgWw0KPiA+PiAyOS4yMzg1OTVdIHNwaV9pbXggMjAwODAwMC5zcGk6IHBy
-b2JlZCBbwqDCoCAyOS4yNDI4MDJdIHNwaV9pbXgNCj4gPj4gMjAwYzAwMC5zcGk6IHByb2JlZCBb
-wqDCoCAyOS4yNDUyMTddIHNwaV9pbXggMjAxODAwMC5zcGk6IHByb2JlZA0KPiA+Pg0KPiA+PiBT
-UEkgRE1BIHRyYW5zZmVycyBzdGlsbCBub3Qgd29yay4NCj4gPj4NCj4gPj4gSWYgSSB0ZXN0IDMy
-IGJ5dGUgdHJhbnNmZXJzLCB0aGVuIHRoZXkgd29yayBmaW5lLiBCdXQgNjQgYnl0ZQ0KPiA+PiB0
-cmFuc2ZlcnMgZmFpbHMgYWx3YXlzIGFuZCBJIHNlZSBlcnJvciBtZXNzYWdlcw0KPiA+Pg0KPiA+
-PiByb290QGNyNzp+IyBzcGlkZXZfdGVzdCAtRCAvZGV2L3NwaWRldjQuMSAtcyAxMjAwMDAwIC1i
-IDggLVMgNjQgLUkgMQ0KPiA+PiAtbCBzcGkgbW9kZTogMHgyMCBiaXRzIHBlciB3b3JkOiA4IG1h
-eCBzcGVlZDogMTIwMDAwMCBIeiAoMTIwMCBLSHopIFsNCj4gPj4gNDIzLjY4NjczNl0gc3BpX21h
-c3RlciBzcGk0OiBJL08gRXJyb3IgaW4gRE1BIFJYIFvCoCA0MjMuNjkxMzkyXQ0KPiA+PiBzcGlk
-ZXYgc3BpNC4xOiBTUEkgdHJhbnNmZXIgZmFpbGVkOiAtMTEwIFvCoCA0MjMuNjk2MzgyXSBzcGlf
-bWFzdGVyDQo+ID4+IHNwaTQ6IGZhaWxlZCB0byB0cmFuc2ZlciBvbmUgbWVzc2FnZSBmcm9tIHF1
-ZXVlIGNhbid0IHNlbmQgc3BpDQo+ID4+IG1lc3NhZ2U6IENvbm5lY3Rpb24gdGltZWQgb3V0IEFi
-b3J0ZWQgKGNvcmUgZHVtcGVkKQ0KPiA+Pg0KPiA+PiBJIHN1cHBvc2UsIHRyYW5zZmVycyBzaG9y
-dGVyIHRoZW4gNjQgYnl0ZXMgbWFkZSB3aXRoIGhlbHAgb2YgUElPLg0KPiA+Pg0KPiA+PiBSb2Jp
-biwgaXMgdGhlcmUgYW55IGNoYW5jZSBmb3IgeW91IHRvIGZpbmQgc29tZSB0aW1lIGFuZCBsb29r
-IGF0IHRoaXMNCj4gPj4gaXNzdWUgYWdhaW4/DQo+ID4gSSBoYXZlIHF1aWNrIHRlc3Qgd2l0aCBz
-cGlkZXZfdGVzdCBsb29wYmFjaywgYnV0IGRpZG4ndCBtZWV0IHlvdXINCj4gPiBlcnJvciwgSXMg
-eW91ciBjb2RlIHRoZSBhbG1vc3QgbGF0ZXN0IGNvZGUgaW4gbGludXgtbmV4dCBhcyBtaW5lPw0K
-PiA+DQo+ID4gcm9vdEBpbXg2cXBkbHNvbG94On4jIGNhdCAvcHJvYy9pbnRlcnJ1cHRzIHwgZ3Jl
-cCBzZG1hDQo+ID4gICA0ODogICAgICAgICAzNyAgICAgICBHUEMgICAyIExldmVsICAgICBzZG1h
-DQo+ID4gICAtbHRAaW14NnFwZGxzb2xveDp+IyAuL3NwaWRldl90ZXN0IC1EIC9kZXYvc3BpZGV2
-MC4wIC1zIDEyMDAwMDAgLWIgOA0KPiA+IC1TIDY0IC1JIDEgLWwgc3BpIG1vZGU6IDB4MjAgYml0
-cyBwZXIgd29yZDogOCBtYXggc3BlZWQ6IDEyMDAwMDAgSHoNCj4gPiAoMTIwMCBLSHopIHJvb3RA
-aW14NnFwZGxzb2xveDp+IyBjYXQgL3Byb2MvaW50ZXJydXB0cyB8IGdyZXAgc2RtYQ0KPiA+ICAg
-NDg6ICAgICAgICAgNDMgICAgICAgR1BDICAgMiBMZXZlbCAgICAgc2RtYQ0KPiA+IC4vc3BpZGV2
-X3Rlc3QgLUQgL2Rldi9zcGlkZXYwLjAgLXMgMTIwMDAwMCAtYiA4IC1TIDUxMiAtSSAxIC1sIHNw
-aQ0KPiA+IG1vZGU6IDB4MjAgYml0cyBwZXIgd29yZDogOCBtYXggc3BlZWQ6IDEyMDAwMDAgSHog
-KDEyMDAgS0h6KQ0KPiA+IHRvdGFsOiB0eCAwLjVLQiwgcnggMC41S0INCj4gDQo+IA0KPiBNeSBw
-cmV2aW91cyB0ZXN0IHJlc3VsdHMgYmFzZWQgb24ga2VybmVsIGZyb20gIm1haW4iIGJyYW5jaCBv
-Zg0KPiBnaXQ6Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvdG9ydmFs
-ZHMvbGludXguZ2l0Lg0KPiANCj4gTm93IEkgaGF2ZSB0ZXN0ZWQga2VybmVsIGZyb20gIm1haW4i
-IGJyYW5jaCBvZg0KPiBnaXQ6Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9n
-aXQvbmV4dC9saW51eC1uZXh0LmdpdC4NCj4gDQo+IEl0cyBsYXRlc3QgY29tbWl0IGlzIDA1ZDA4
-ZTI5OTVjYmU2ZWZkYjk5MzQ4MmVlMGQzOGE3NzA0MDg2MWEuDQo+IA0KPiBBZGRpdGlvbmFsbHks
-IEkgaGF2ZSByZXZlcnRlZCBwYXRjaCBhZDBkOTJkN2JhNmEgYW5kIGFwcGx5IHlvdXJzIHBhdGNo
-ZXMNCj4gMDAwMS1kbWEtZW5naW5lLWlteC1zZG1hLWFkZC1tY3VfMl9lY3NwaS1zY3JpcHQucGF0
-Y2ggYW5kDQo+IDAwMDItc3BpLXNwaS1pbXgtZml4LUVSUjAwOTE2NS5wYXRjaC4NCj4gDQo+IERp
-ZmZlcmVuY2UgYmV0d2VlbiAwNWQwOGUyOTk1Y2JlNmVmZGI5OTM0ODJlZTBkMzhhNzcwNDA4NjFh
-IGFuZA0KPiBjdXJyZW50IHN0YXRlIG9mIGRyaXZlcnMgYXR0YWNoZWQgYXMgc3BpLWFuZC1zZG1h
-LWRyaXZlcnMuZGlmZi4NCj4gDQo+IFNQSSBkcml2ZXIgc3RpbGwgbm90IHdvcmsuIEl0IGhhcyBz
-YW1lIHJlc3VsdCBhcyBmcm9tIG15IHByZXZpb3VzIGVtYWlsLg0KPiANCj4gTG9va3MgYXMgeW91
-IHVzZSBlaXRoZXIgZGlmZmVyZW50IEdJVCBicmFuY2ggb2Yga2VybmVsIG9yIHlvdSBoYXZlIGZv
-cmdldCB0byBzYXkNCj4gbWUgYWJvdXQgc29tZSBwYXRjaC4NClRoZSBzYW1lIGJhc2UgYXMgeW91
-ciBzaWRlIGNvbW1pdCAnMDVkMDhlMjk5NWNiZTZlZmRiOTkzNDgyZWUwZDM4YTc3MDQwODYxYSAn
-IGFuZA0Kc2FtZSBkaWZmLCBidXQgZGlkIHlvdSByZXZlcnQgYW5vdGhlciBzZG1hIHBhdGNoIGFi
-b3V0ICJjbGtfcmF0aW8iIHdoaWNoIGJyb2tlIHNkbWEgYmFzaWMNCmZ1bmN0aW9uIG9uIG5vbi1p
-Lm14OG0gY2hpcHM/DQoNCmNvbW1pdCAyNWFhYTc1ZGYxZTY1OTkwMWQ3NzA4NWJjZGQyNWVhYWJm
-MjY1Njg4DQpBdXRob3I6IEFuZ3VzIEFpbnNsaWUgKFB1cmlzbSkgPGFuZ3VzQGFra2VhLmNhPg0K
-RGF0ZTogICBNb24gSmFuIDI4IDA5OjAzOjIxIDIwMTkgLTA3MDANCg0KICAgIGRtYWVuZ2luZTog
-aW14LXNkbWE6IGFkZCBjbG9jayByYXRpbyAxOjEgY2hlY2sNCg0KICAgIE9uIGkubXg4IG1zY2Fs
-ZSBCMCBjaGlwLCBBSEIvU0RNQSBjbG9jayByYXRpbyAyOjEgY2FuJ3QgYmUgc3VwcG9ydHRlZCwN
-CiAgICBzaW5jZSBTRE1BIGNsb2NrIHJhdGlvIGhhcyB0byBiZSBpbmNyZWFzZWQgdG8gMjUwTWh6
-LCBBSEIgY2FuJ3QgcmVhY2gNCiAgICB0byA1MDBNaHosIHNvIHVzZSAxOjEgaW5zdGVhZC4NCj4g
-DQo+IEJlc3Qgd2lzaGVzLg0KPiANCj4gLS0NCj4gDQo+IElnb3IgUGx5YXRvdg0KDQo=
+On Thu, 28 Mar 2019, Mason Yang wrote:
+
+> Document the bindings used by the Macronix MX25F0A MFD controller.
+> 
+> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+> ---
+>  .../devicetree/bindings/mfd/mxic-mx25f0a.txt       | 66 ++++++++++++++++++++++
+>  1 file changed, 66 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mfd/mxic-mx25f0a.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/mfd/mxic-mx25f0a.txt b/Documentation/devicetree/bindings/mfd/mxic-mx25f0a.txt
+> new file mode 100644
+> index 0000000..53b4839
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mfd/mxic-mx25f0a.txt
+> @@ -0,0 +1,66 @@
+> +Macronix MX25F0A Multi-Function Device Tree Bindings
+> +----------------------------------------------------
+> +
+> +MX25F0A is a MultiFunction Device with SPI and raw NAND, which
+> +supports either spi host controller or raw nand controller.
+> +
+> +Required properties:
+> +- compatible: should be "mxic,mx25f0a-mfd"
+> +- #address-cells: should be 1
+> +- #size-cells: should be 0
+> +- reg: should contain 2 entries, one for the registers and one for the direct
+> +       mapping area in SPI mode.
+> +- reg-names: should contain "regs" and "dirmap"
+> +- interrupts: interrupt line connected to this MFD controller
+> +
+> +Required nodes:
+> + - spi :
+> +	Node for configuring the SPI controller driver.
+> +	Required properties:
+> +		- compatible = "mxicy,mx25f0a-spi";
+> +		- clock-names: should contain "ps_clk", "send_clk" and
+> +			       "send_dly_clk"
+> +		- clocks: should contain 3 entries for the "ps_clk", "send_clk"
+> +			  and "send_dly_clk" clocks
+> +
+> +- nand :
+> +	Node for configuring the raw nand controller driver.
+> +	Required properties:
+> +		- compatible = "mxicy,mx25f0a-nand-ctlr";
+> +		- nand-ecc-mode = "soft";
+> +		- nand-ecc-algo = "bch";
+> +
+> +Example:
+> +
+> +	mxic: mx25f0a-mfd@43c30000 {
+
+I'm not sure I understand why you are using an MFD for this.
+
+> +		compatible = "mxic,mx25f0a-mfd";
+> +		reg = <0x43c30000 0x10000>, <0xa0000000 0x4000000>;
+> +		reg-names = "regs", "dirmap";
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		/* either spi or nand */
+> +		spi {
+> +			compatible = "mxicy,mx25f0a-spi";
+> +			clocks = <&clkwizard 0>, <&clkwizard 1>, <&clkc 15>;
+> +			clock-names = "send_clk", "send_dly_clk", "ps_clk";
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +
+> +			flash@0 {
+> +				compatible = "jedec,spi-nor";
+> +				reg = <0>;
+> +				spi-max-frequency = <25000000>;
+> +				spi-tx-bus-width = <4>;
+> +				spi-rx-bus-width = <4>;
+> +			};
+> +		};
+> +
+> +		nand {
+> +			compatible = "mxicy,mx25f0a-nand-ctlr";
+> +			nand-ecc-mode = "soft";
+> +			nand-ecc-algo = "bch";
+> +			nand-ecc-step-size = <512>;
+> +			nand-ecc-strength = <8>;
+> +		};
+> +	};
+
+Why not just select one using device tree alone, by:
+
+	spi@43c30000 {
+		compatible = "mxicy,mx25f0a-spi";
+		reg = <0x43c30000 0x10000>, <0xa0000000 0x4000000>;
+		reg-names = "regs", "dirmap";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		clocks = <&clkwizard 0>, <&clkwizard 1>, <&clkc 15>;
+		clock-names = "send_clk", "send_dly_clk", "ps_clk";
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		flash@0 {
+			compatible = "jedec,spi-nor";
+			reg = <0>;
+			spi-max-frequency = <25000000>;
+			spi-tx-bus-width = <4>;
+			spi-rx-bus-width = <4>;
+		};
+	};
+
+OR ...
+
+	nand@43c30000 {
+		compatible = "mxicy,mx25f0a-nand-ctlr";
+		reg = <0x43c30000 0x10000>, <0xa0000000 0x4000000>;
+		reg-names = "regs", "dirmap";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		nand-ecc-mode = "soft";
+		nand-ecc-algo = "bch";
+		nand-ecc-step-size = <512>;
+		nand-ecc-strength = <8>;
+	};
+
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

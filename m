@@ -1,23 +1,23 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: gpio: Add local struct device pointer in spi_gpio_probe()" to the spi tree
-Date: Wed,  3 Apr 2019 05:42:33 +0100 (BST)
-Message-ID: <20190403044233.7DEDF440083@finisterre.ee.mobilebroadband>
-References: <20190403040133.1459-3-andrew.smirnov@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, Chris Healy <cphealy@gmail.com>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Chris Healy <cphealy@gmail.com>, linux-kernel@vger.kernel.org,
+Subject: Applied "spi: spi-mem: export spi_mem_default_supports_op()" to the spi tree
+Date: Wed,  3 Apr 2019 05:43:01 +0100 (BST)
+Message-ID: <20190403044301.58669440083@finisterre.ee.mobilebroadband>
+References: <1554105540-19704-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
+Cc: Mark Brown <broonie@kernel.org>, broonie@kernel.org,
+        bbrezillon@kernel.org, vigneshr@ti.com, linux-spi@vger.kernel.org,
+        dwmw2@infradead.org, marek.vasut@gmail.com, richard@nod.at,
+        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+        michal.simek@xilinx.com, nagasuresh12@gmail.com,
         linux-spi@vger.kernel.org
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+To: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190403040133.1459-3-andrew.smirnov@gmail.com>
+In-Reply-To: <1554105540-19704-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: gpio: Add local struct device pointer in spi_gpio_probe()
+   spi: spi-mem: export spi_mem_default_supports_op()
 
 has been applied to the spi tree at
 
@@ -42,77 +42,53 @@ to this mail.
 Thanks,
 Mark
 
->From 96cad6d78f7f8feac456002020971cba6073bff9 Mon Sep 17 00:00:00 2001
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 2 Apr 2019 21:01:23 -0700
-Subject: [PATCH] spi: gpio: Add local struct device pointer in
- spi_gpio_probe()
+>From 46109648052fe778c75f199d72255c899578d6f7 Mon Sep 17 00:00:00 2001
+From: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+Date: Mon, 1 Apr 2019 13:29:00 +0530
+Subject: [PATCH] spi: spi-mem: export spi_mem_default_supports_op()
 
-Use a local "struct device *dev" in spi_gpio_probe() for brevity. No
-functional change intended.
+Export spi_mem_default_supports_op(), so that controller drivers
+can use this.
+spi-mem driver already exports this using EXPORT_SYMBOL,
+but not declared it in spi-mem.h.
+This patch declares spi_mem_default_supports_op() in spi-mem.h and
+also removes the static from the function prototype.
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Chris Healy <cphealy@gmail.com>
-Cc: linux-spi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-gpio.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/spi/spi-mem.c       | 4 ++--
+ include/linux/spi/spi-mem.h | 3 +++
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index 675fd65ebf1d..2869af5ff936 100644
---- a/drivers/spi/spi-gpio.c
-+++ b/drivers/spi/spi-gpio.c
-@@ -379,6 +379,7 @@ static int spi_gpio_probe(struct platform_device *pdev)
- 	struct spi_master		*master;
- 	struct spi_gpio			*spi_gpio;
- 	struct spi_gpio_platform_data	*pdata;
-+	struct device			*dev = &pdev->dev;
- 	u16 master_flags = 0;
- 	bool use_of = 0;
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index a4d8d19ecff9..3397fd10cf8d 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -135,8 +135,8 @@ static int spi_check_buswidth_req(struct spi_mem *mem, u8 buswidth, bool tx)
+ 	return -ENOTSUPP;
+ }
  
-@@ -388,19 +389,19 @@ static int spi_gpio_probe(struct platform_device *pdev)
- 	if (status > 0)
- 		use_of = 1;
+-static bool spi_mem_default_supports_op(struct spi_mem *mem,
+-					const struct spi_mem_op *op)
++bool spi_mem_default_supports_op(struct spi_mem *mem,
++				 const struct spi_mem_op *op)
+ {
+ 	if (spi_check_buswidth_req(mem, op->cmd.buswidth, true))
+ 		return false;
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index 3703d0dcac2e..c845cd6e22ba 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -341,6 +341,9 @@ int spi_mem_driver_register_with_owner(struct spi_mem_driver *drv,
  
--	pdata = dev_get_platdata(&pdev->dev);
-+	pdata = dev_get_platdata(dev);
- #ifdef GENERIC_BITBANG
- 	if (!pdata || (!use_of && !pdata->num_chipselect))
- 		return -ENODEV;
- #endif
+ void spi_mem_driver_unregister(struct spi_mem_driver *drv);
  
--	master = spi_alloc_master(&pdev->dev, sizeof(*spi_gpio));
-+	master = spi_alloc_master(dev, sizeof(*spi_gpio));
- 	if (!master)
- 		return -ENOMEM;
++bool spi_mem_default_supports_op(struct spi_mem *mem,
++				 const struct spi_mem_op *op);
++
+ #define spi_mem_driver_register(__drv)                                  \
+ 	spi_mem_driver_register_with_owner(__drv, THIS_MODULE)
  
- 	spi_gpio = spi_master_get_devdata(master);
- 
--	spi_gpio->cs_gpios = devm_kcalloc(&pdev->dev,
-+	spi_gpio->cs_gpios = devm_kcalloc(dev,
- 				pdata->num_chipselect,
- 				sizeof(*spi_gpio->cs_gpios),
- 				GFP_KERNEL);
-@@ -416,7 +417,7 @@ static int spi_gpio_probe(struct platform_device *pdev)
- 	if (pdata)
- 		spi_gpio->pdata = *pdata;
- 
--	status = spi_gpio_request(&pdev->dev, spi_gpio,
-+	status = spi_gpio_request(dev, spi_gpio,
- 				  pdata->num_chipselect, &master_flags);
- 	if (status)
- 		return status;
-@@ -431,7 +432,7 @@ static int spi_gpio_probe(struct platform_device *pdev)
- 	master->setup = spi_gpio_setup;
- 	master->cleanup = spi_gpio_cleanup;
- #ifdef CONFIG_OF
--	master->dev.of_node = pdev->dev.of_node;
-+	master->dev.of_node = dev->of_node;
- #endif
- 
- 	spi_gpio->bitbang.master = master;
 -- 
 2.20.1

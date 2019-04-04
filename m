@@ -1,21 +1,21 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: Add missing error handling for CS GPIOs" to the spi tree
-Date: Thu,  4 Apr 2019 13:04:48 +0700 (+07)
-Message-ID: <20190404060448.72973441D3E@finisterre.ee.mobilebroadband>
-References: <20190403144656.8257-1-geert+renesas@glider.be>
+Subject: Applied "spi: spi-gpio: Remove spi->controller_data comment" to the spi tree
+Date: Thu,  4 Apr 2019 13:04:51 +0700 (+07)
+Message-ID: <20190404060451.937F4441D3C@finisterre.ee.mobilebroadband>
+References: <20190403144602.8098-1-geert+renesas@glider.be>
 Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
         linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org
 To: Geert Uytterhoeven <geert+renesas@glider.be>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190403144656.8257-1-geert+renesas@glider.be>
+In-Reply-To: <20190403144602.8098-1-geert+renesas@glider.be>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: Add missing error handling for CS GPIOs
+   spi: spi-gpio: Remove spi->controller_data comment
 
 has been applied to the spi tree at
 
@@ -40,43 +40,32 @@ to this mail.
 Thanks,
 Mark
 
->From 1723fdec5fcbc4de3d26bbb23a9e1704ee258955 Mon Sep 17 00:00:00 2001
+>From 807195f2103f8662f8c0f9baf71dd7bc1a6b745b Mon Sep 17 00:00:00 2001
 From: Geert Uytterhoeven <geert+renesas@glider.be>
-Date: Wed, 3 Apr 2019 16:46:56 +0200
-Subject: [PATCH] spi: Add missing error handling for CS GPIOs
+Date: Wed, 3 Apr 2019 16:46:02 +0200
+Subject: [PATCH] spi: spi-gpio: Remove spi->controller_data comment
 
-While devm_gpiod_get_index_optional() returns NULL if the GPIO is not
-present (i.e. -ENOENT), it may still return other error codes, like
--EPROBE_DEFER.  Currently these are not handled, leading to
-unrecoverable failures later in case of probe deferral:
+The conversion from GPIO numbers to GPIO descriptors removed the use of
+spi->controller_data, but forgot to update a comment referring to it.
 
-    gpiod_set_consumer_name: invalid GPIO (errorpointer)
-    gpiod_direction_output: invalid GPIO (errorpointer)
-    gpiod_set_value_cansleep: invalid GPIO (errorpointer)
-    gpiod_set_value_cansleep: invalid GPIO (errorpointer)
-    gpiod_set_value_cansleep: invalid GPIO (errorpointer)
-
-Detect and propagate errors to fix this.
-
-Fixes: f3186dd876697e69 ("spi: Optionally use GPIO descriptors for CS GPIOs")
+Fixes: 9b00bc7b901ff672 ("spi: spi-gpio: Rewrite to use GPIO descriptors")
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-gpio.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 2be394d3bc59..7b6494bd8a9b 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2197,6 +2197,8 @@ static int spi_get_gpio_descs(struct spi_controller *ctlr)
- 		 */
- 		cs[i] = devm_gpiod_get_index_optional(dev, "cs", i,
- 						      GPIOD_OUT_LOW);
-+		if (IS_ERR(cs[i]))
-+			return PTR_ERR(cs[i]);
- 
- 		if (cs[i]) {
- 			/*
+diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
+index 3e98c1a0ba6d..e89348d95817 100644
+--- a/drivers/spi/spi-gpio.c
++++ b/drivers/spi/spi-gpio.c
+@@ -35,7 +35,6 @@
+  * platform_device->driver_data ... points to spi_gpio
+  *
+  * spi->controller_state ... reserved for bitbang framework code
+- * spi->controller_data ... holds chipselect GPIO
+  *
+  * spi->master->dev.driver_data ... points to spi_gpio->bitbang
+  */
 -- 
 2.20.1

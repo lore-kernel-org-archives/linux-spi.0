@@ -1,71 +1,172 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-gpio: Remove spi->controller_data comment" to the spi tree
-Date: Thu,  4 Apr 2019 13:04:51 +0700 (+07)
-Message-ID: <20190404060451.937F4441D3C@finisterre.ee.mobilebroadband>
-References: <20190403144602.8098-1-geert+renesas@glider.be>
-Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Subject: Re: [PATCH v9 2/3] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
+ driver
+Date: Thu, 4 Apr 2019 21:56:19 +0300
+Message-ID: <7467d695-8922-16b2-03d4-fb4bbdda125a@cogentembedded.com>
+References: <1553847606-18122-1-git-send-email-masonccyang@mxic.com.tw>
+ <1553847606-18122-3-git-send-email-masonccyang@mxic.com.tw>
+ <231f7423-bf13-99f8-427b-530f5446348b@cogentembedded.com>
+ <OF7F1B534F.B934A9FE-ON482583D0.001DC618-482583D0.001FE84B@mxic.com.tw>
+ <6d60bbef-a8ef-849e-33f3-3db35cefc09f@cogentembedded.com>
+ <OFAEA16021.C7F7B095-ON482583D1.0031A13D-482583D1.00335085@mxic.com.tw>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: bbrezillon@kernel.org, broonie@kernel.org,
+        devicetree@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
+        lee.jones@linaro.org, linux-kernel@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+        marek.vasut@gmail.com, mark.rutland@arm.com, robh+dt@kernel.org,
+        zhengxunli@mxic.com.tw
+To: masonccyang@mxic.com.tw
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190403144602.8098-1-geert+renesas@glider.be>
+In-Reply-To: <OFAEA16021.C7F7B095-ON482583D1.0031A13D-482583D1.00335085@mxic.com.tw>
+Content-Language: en-MW
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+Hello!
 
-   spi: spi-gpio: Remove spi->controller_data comment
+On 04/03/2019 12:20 PM, masonccyang@mxic.com.tw wrote:
 
-has been applied to the spi tree at
+>> >> > +static void rpc_spi_mem_set_prep_op_cfg(struct spi_device *spi,
+>> >> > +               const struct spi_mem_op *op,
+>> >> > +               u64 *offs, size_t *len)
+>> >> > +{
+>> >> > +   struct rpc_spi *rpc = spi_controller_get_devdata(spi->controller);
+>> >> > +
+>> >> > +   rpc->cmd = RPC_SMCMR_CMD(op->cmd.opcode);
+>> >> > +   rpc->smenr = RPC_SMENR_CDE |
+>> >> > +           RPC_SMENR_CDB(ilog2(op->cmd.buswidth));
+>> >> > +   rpc->totalxferlen = 1;
+>> >> > +   rpc->xfer_dir = SPI_MEM_NO_DATA;
+>> >> > +   rpc->xferlen = 0;
+>> >> > +   rpc->addr = 0;
+>> >> > +
+>> >> > +   if (op->addr.nbytes) {
+>> >> > +      rpc->smenr |= RPC_SMENR_ADB(ilog2(op->addr.buswidth));
+>> >> > +      if (op->addr.nbytes == 4)
+>> >> > +         rpc->smenr |= RPC_SMENR_ADE(0xf);
+>> >> > +      else
+>> >> > +         rpc->smenr |= RPC_SMENR_ADE(0x7);
+>> >> > +
+>> >> > +      if (offs && len)
+>> >> > +         rpc->addr = *offs;
+>> >> > +      else
+>> >> > +         rpc->addr = op->addr.val;
+>> >> > +      rpc->totalxferlen += op->addr.nbytes;
+>> >> > +   }
+>> >> > +
+>> >> > +   if (op->dummy.nbytes) {
+>> >> > +      rpc->smenr |= RPC_SMENR_DME;
+>> >> > +      rpc->dummy = RPC_SMDMCR_DMCYC(op->dummy.nbytes);
+>> >>
+>> >>    So you haven't fixed this bug? I repeat, the driver doesn't work right
+>> >> w/o this fixed!
+>> >
+>> > Do you mean
+>> >
+>> > rpc->dummy = RPC_SMDMCR_DMCYC(op->dummy.nbytes) * 8;   ?
+>>
+>>    Yes. Or some other code that amounts to it.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+   Oops, I wasn't attentive enough, I was proposing:
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+	rpc->dummy = RPC_SMDMCR_DMCYC(op->dummy.nbytes * 8);
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> why not setting "op->dummy.nbytes = 7" from spi-nor.c protocol layer ?
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+   We want 8 dummy clocks, not 8 dummy bytes. And if you'd looked into
+spi_nor_read_sfdp(), you'd have seen that it requests 8 dummy clocks already.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+> driver may check device ID or something else to setup op->dummy.nbytes.
 
-Thanks,
-Mark
+   The RDSFDP command is not chip specific.
 
->From 807195f2103f8662f8c0f9baf71dd7bc1a6b745b Mon Sep 17 00:00:00 2001
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-Date: Wed, 3 Apr 2019 16:46:02 +0200
-Subject: [PATCH] spi: spi-gpio: Remove spi->controller_data comment
+> I think it is not a good idea to *8 in spi host driver.
 
-The conversion from GPIO numbers to GPIO descriptors removed the use of
-spi->controller_data, but forgot to update a comment referring to it.
+>> > What is your flash part number?
+>>
+>>    Spansion/Cypress S25FS512S. The datasheet says there must be 8 dummy cycles
+>> for the RSFDP command...
+>>
+>> > The problem you found is in 1 bit or 4 bits width ?
+>>
+>>    1-bit, I think.
+>>
+>> >>
+>> >> [...]
+>> >> > +static ssize_t rpc_spi_mem_dirmap_read(struct spi_mem_dirmap_desc *desc,
+>> >> > +                   u64 offs, size_t len, void *buf)
+>> >> > +{
+>> >> > +   struct rpc_spi *rpc =
+>> >> > +         spi_controller_get_devdata(desc->mem->spi->controller);
+>> >> > +   int ret;
+>> >> > +
+>> >> > +   if (offs + desc->info.offset + len > U32_MAX)
+>> >> > +      return -EINVAL;
+>> >> > +
+>> >> > +   if (len > 0x4000000)
+>> >> > +      len = 0x4000000;
+>> >>
+>> >>    Ugh...
+>> >
+>> > by mtd->size ?
+>>
+>>   That'd be better, yes.
+>>
+> 
+> Oops, it seems hard to get mtd->size info. from spi_mem_dirmap,
 
-Fixes: 9b00bc7b901ff672 ("spi: spi-gpio: Rewrite to use GPIO descriptors")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-gpio.c | 1 -
- 1 file changed, 1 deletion(-)
+   It's in desc->info.length, no?
 
-diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index 3e98c1a0ba6d..e89348d95817 100644
---- a/drivers/spi/spi-gpio.c
-+++ b/drivers/spi/spi-gpio.c
-@@ -35,7 +35,6 @@
-  * platform_device->driver_data ... points to spi_gpio
-  *
-  * spi->controller_state ... reserved for bitbang framework code
-- * spi->controller_data ... holds chipselect GPIO
-  *
-  * spi->master->dev.driver_data ... points to spi_gpio->bitbang
-  */
--- 
-2.20.1
+> I would like to keep 0x4000000.
+
+   I'm seeing Boris in the CC's... Boris, is it legitimate to limit
+a single dirmap read by the memory "window" size? Or should we try to 
+serve any valid transfer length?
+
+>> >> > +
+>> >> > +   ret = rpc_spi_set_freq(rpc, desc->mem->spi->max_speed_hz);
+>> >> > +   if (ret)
+>> >> > +      return ret;
+>> >> > +
+>> >> > +   rpc_spi_mem_set_prep_op_cfg(desc->mem->spi,
+>> >> > +                &desc->info.op_tmpl, &offs, &len);
+>> >> > +
+>> >> > +   regmap_update_bits(rpc->regmap, RPC_CMNCR, RPC_CMNCR_MD, 0);
+>> >> > +   regmap_write(rpc->regmap, RPC_DRCR, RPC_DRCR_RBURST(32) |
+>> >> > +           RPC_DRCR_RBE);
+>> >> > +
+>> >> > +   regmap_write(rpc->regmap, RPC_DRCMR, rpc->cmd);
+>> >> > +   regmap_write(rpc->regmap, RPC_DREAR, RPC_DREAR_EAC(1));
+>> >>
+>> >>    So you're not even trying to support flashes larger than the
+>> read dirmap?
+>> >> Now I don't think it's acceptable (and I have rewritten this code
+>> internally).
+>> >
+>> > what about the size comes form mtd->size ?
+>>
+>>    I'm not talking about size here; we should use the full address.
+>> I'm attaching
+>> my patch...
+> 
+> okay,got it!
+> what about just
+> -      regmap_write(rpc->mfd->regmap, RPC_DREAR, RPC_DREAR_EAC(1));
+> +      regmap_write(rpc->mfd->regmap, RPC_DREAR,
+> +                   RPC_DREAR_EAV(offs >> 25) | RPC_DREAR_EAC(1));
+> 
+> because only > 64MByte size make RPC_DREAR_EAV() work.
+
+   Boris, what's your opinion on this?
+   Note that for the write dirmap we have just 256-byte buffer (reusing
+the read cache). Is it legitimate to limit the served length to 256 bytes?
+
+> thanks & best regards,
+> Mason
+
+MBR, Sergei

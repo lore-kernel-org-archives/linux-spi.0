@@ -1,58 +1,82 @@
-From: Igor Plyatov <plyatov@gmail.com>
-Subject: Re: Issues with i.MX SPI DMA transfers
-Date: Wed, 3 Apr 2019 20:13:49 +0300
-Message-ID: <7739e283-799c-7dac-2bcd-fbf17fd4fb93@gmail.com>
-References: <08fcbd65-510f-84f8-d6d6-ff56aa9ca9ad@gmail.com>
- <20190328065247.uz73lap7ljf5q3tb@pengutronix.de>
- <b8e80127-e377-9ef9-2447-b0126fdad7dc@gmail.com>
- <VI1PR04MB45438E01D91829849A4E0BB289590@VI1PR04MB4543.eurprd04.prod.outlook.com>
- <d7a2e5c5-4ee0-8c89-1bab-654db0ae38dd@gmail.com>
- <VI1PR04MB4543B1708FA151EED0CB722A89550@VI1PR04MB4543.eurprd04.prod.outlook.com>
- <95df9334-3d0c-7d13-e431-5a4aa2b9907e@gmail.com>
- <VI1PR04MB454305A56372466A38E9F81989560@VI1PR04MB4543.eurprd04.prod.outlook.com>
- <197990d4-b1e2-8db9-0cb7-87b860f23bd7@gmail.com>
- <VI1PR04MB4543DEA3C0CED159C472E85F89570@VI1PR04MB4543.eurprd04.prod.outlook.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andy Duan <fugang.duan@nxp.com>, Han Xu <han.xu@nxp.com>,
-        Clark Wang <xiaoning.wang@nxp.com>
-To: Robin Gong <yibin.gong@nxp.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: Add missing error handling for CS GPIOs" to the spi tree
+Date: Thu,  4 Apr 2019 13:04:48 +0700 (+07)
+Message-ID: <20190404060448.72973441D3E@finisterre.ee.mobilebroadband>
+References: <20190403144656.8257-1-geert+renesas@glider.be>
+Cc: Mark Brown <broonie@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Geert Uytterhoeven <geert+renesas@glider.be>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <VI1PR04MB4543DEA3C0CED159C472E85F89570@VI1PR04MB4543.eurprd04.prod.outlook.com>
-Content-Language: en-US
+In-Reply-To: <20190403144656.8257-1-geert+renesas@glider.be>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Robin,
+The patch
 
-I have made additional tests on another exemplar of board with 
-absolutely same hardware.
+   spi: Add missing error handling for CS GPIOs
 
-The spidev_test failed on eCSPI2 and eCSPI5 interfaces, but works 
-successfully on eCSPI1 interface.
+has been applied to the spi tree at
 
-So, it looks, issue does not correspond to fixed interface number.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-This is generic issue of i.MX6 SOC and hardly broken eCSPI interface 
-number can change from SOC chip to chip.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-Do you have any idea how to improve situation with eCSPI in DMA mode?
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Best wishes.
---
-Igor Plyatov
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 1723fdec5fcbc4de3d26bbb23a9e1704ee258955 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Wed, 3 Apr 2019 16:46:56 +0200
+Subject: [PATCH] spi: Add missing error handling for CS GPIOs
+
+While devm_gpiod_get_index_optional() returns NULL if the GPIO is not
+present (i.e. -ENOENT), it may still return other error codes, like
+-EPROBE_DEFER.  Currently these are not handled, leading to
+unrecoverable failures later in case of probe deferral:
+
+    gpiod_set_consumer_name: invalid GPIO (errorpointer)
+    gpiod_direction_output: invalid GPIO (errorpointer)
+    gpiod_set_value_cansleep: invalid GPIO (errorpointer)
+    gpiod_set_value_cansleep: invalid GPIO (errorpointer)
+    gpiod_set_value_cansleep: invalid GPIO (errorpointer)
+
+Detect and propagate errors to fix this.
+
+Fixes: f3186dd876697e69 ("spi: Optionally use GPIO descriptors for CS GPIOs")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 2be394d3bc59..7b6494bd8a9b 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2197,6 +2197,8 @@ static int spi_get_gpio_descs(struct spi_controller *ctlr)
+ 		 */
+ 		cs[i] = devm_gpiod_get_index_optional(dev, "cs", i,
+ 						      GPIOD_OUT_LOW);
++		if (IS_ERR(cs[i]))
++			return PTR_ERR(cs[i]);
+ 
+ 		if (cs[i]) {
+ 			/*
+-- 
+2.20.1

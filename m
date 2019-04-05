@@ -1,7 +1,7 @@
 From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Subject: [PATCH V2 14/20] spi: tegra114: add support for gpio based cs
-Date: Thu, 4 Apr 2019 17:14:13 -0700
-Message-ID: <1554423259-26056-14-git-send-email-skomatineni@nvidia.com>
+Subject: [PATCH V2 15/20] spi: tegra114: add support for hw based cs
+Date: Thu, 4 Apr 2019 17:14:14 -0700
+Message-ID: <1554423259-26056-15-git-send-email-skomatineni@nvidia.com>
 References: <1554423259-26056-1-git-send-email-skomatineni@nvidia.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -17,140 +17,106 @@ In-Reply-To: <1554423259-26056-1-git-send-email-skomatineni@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds supports for chip select control using GPIO if valid
-CS gpio exists.
+Tegra SPI controller supports both HW and SW based CS control
+for SPI transfers.
+
+This patch adds support for HW based CS control where CS is driven
+to active state during the transfer and is driven inactive at the
+end of the transfer directly by the HW.
+
+This patch enables the use of HW based CS only for single transfers
+without cs_change request.
 
 Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
 ---
- drivers/spi/spi-tegra114.c | 59 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 59 insertions(+)
+ drivers/spi/spi-tegra114.c | 38 ++++++++++++++++++++++++++------------
+ 1 file changed, 26 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index f4e39eb3857c..209ec05a349f 100644
+index 209ec05a349f..5cc347b345b1 100644
 --- a/drivers/spi/spi-tegra114.c
 +++ b/drivers/spi/spi-tegra114.c
-@@ -23,6 +23,7 @@
- #include <linux/dma-mapping.h>
- #include <linux/dmapool.h>
- #include <linux/err.h>
-+#include <linux/gpio.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/kernel.h>
-@@ -167,6 +168,10 @@ struct tegra_spi_soc_data {
- 	bool has_intr_mask_reg;
- };
+@@ -198,6 +198,7 @@ struct tegra_spi_data {
+ 	unsigned				dma_buf_size;
+ 	unsigned				max_buf_size;
+ 	bool					is_curr_dma_xfer;
++	bool					use_hw_based_cs;
  
-+struct tegra_spi_client_state {
-+	bool cs_gpio_valid;
-+};
-+
- struct tegra_spi_data {
- 	struct device				*dev;
- 	struct spi_master			*master;
-@@ -726,6 +731,7 @@ static u32 tegra_spi_setup_transfer_one(struct spi_device *spi,
- 		struct spi_transfer *t, bool is_first_of_msg)
- {
- 	struct tegra_spi_data *tspi = spi_master_get_devdata(spi->master);
-+	struct tegra_spi_client_state *cstate = spi->controller_state;
- 	u32 speed = t->speed_hz;
- 	u8 bits_per_word = t->bits_per_word;
- 	u32 command1;
-@@ -787,6 +793,12 @@ static u32 tegra_spi_setup_transfer_one(struct spi_device *spi,
- 		else
- 			command1 &= ~SPI_CS_SW_VAL;
- 
-+		if (cstate->cs_gpio_valid) {
-+			int val = (spi->mode & SPI_CS_HIGH) ? 1 : 0;
-+
-+			gpio_set_value(spi->cs_gpio, val);
-+		}
-+
- 		tegra_spi_writel(tspi, 0, SPI_COMMAND2);
- 	} else {
- 		command1 = tspi->command1_reg;
-@@ -843,9 +855,20 @@ static int tegra_spi_start_transfer_one(struct spi_device *spi,
- 	return ret;
+ 	struct completion			rx_dma_complete;
+ 	struct completion			tx_dma_complete;
+@@ -728,7 +729,8 @@ static void tegra_spi_deinit_dma_param(struct tegra_spi_data *tspi,
  }
  
-+static void tegra_spi_cleanup(struct spi_device *spi)
-+{
-+	struct tegra_spi_client_state *cstate = spi->controller_state;
-+
-+	spi->controller_state = NULL;
-+	if (cstate && cstate->cs_gpio_valid)
-+		gpio_free(spi->cs_gpio);
-+	kfree(cstate);
-+}
-+
- static int tegra_spi_setup(struct spi_device *spi)
+ static u32 tegra_spi_setup_transfer_one(struct spi_device *spi,
+-		struct spi_transfer *t, bool is_first_of_msg)
++		struct spi_transfer *t, bool is_first_of_msg,
++		bool is_single_xfer)
  {
  	struct tegra_spi_data *tspi = spi_master_get_devdata(spi->master);
-+	struct tegra_spi_client_state *cstate = spi->controller_state;
- 	u32 val;
- 	unsigned long flags;
- 	int ret;
-@@ -856,9 +879,40 @@ static int tegra_spi_setup(struct spi_device *spi)
- 		spi->mode & SPI_CPHA ? "" : "~",
- 		spi->max_speed_hz);
+ 	struct tegra_spi_client_state *cstate = spi->controller_state;
+@@ -787,11 +789,17 @@ static u32 tegra_spi_setup_transfer_one(struct spi_device *spi,
+ 		} else
+ 			tegra_spi_writel(tspi, command1, SPI_COMMAND1);
  
-+	if (!cstate) {
-+		cstate = kzalloc(sizeof(*cstate), GFP_KERNEL);
-+		if (!cstate)
-+			return -ENOMEM;
-+		spi->controller_state = cstate;
-+	}
-+
-+	if (spi->master->cs_gpios && gpio_is_valid(spi->cs_gpio)) {
-+		if (!cstate->cs_gpio_valid) {
-+			int gpio_flag = GPIOF_OUT_INIT_HIGH;
-+
-+			if (spi->mode & SPI_CS_HIGH)
-+				gpio_flag = GPIOF_OUT_INIT_LOW;
-+
-+			ret = gpio_request_one(spi->cs_gpio, gpio_flag,
-+					       "cs_gpio");
-+			if (ret < 0) {
-+				dev_err(&spi->dev,
-+					"GPIO request failed: %d\n", ret);
-+				tegra_spi_cleanup(spi);
-+				return ret;
-+			}
-+			cstate->cs_gpio_valid = true;
+-		command1 |= SPI_CS_SW_HW;
+-		if (spi->mode & SPI_CS_HIGH)
+-			command1 |= SPI_CS_SW_VAL;
+-		else
+-			command1 &= ~SPI_CS_SW_VAL;
++		if (is_single_xfer && !(t->cs_change)) {
++			tspi->use_hw_based_cs = true;
++			command1 &= ~(SPI_CS_SW_HW | SPI_CS_SW_VAL);
 +		} else {
-+			int val = (spi->mode & SPI_CS_HIGH) ? 0 : 1;
-+
-+			gpio_set_value(spi->cs_gpio, val);
++			tspi->use_hw_based_cs = false;
++			command1 |= SPI_CS_SW_HW;
++			if (spi->mode & SPI_CS_HIGH)
++				command1 |= SPI_CS_SW_VAL;
++			else
++				command1 &= ~SPI_CS_SW_VAL;
 +		}
+ 
+ 		if (cstate->cs_gpio_valid) {
+ 			int val = (spi->mode & SPI_CS_HIGH) ? 1 : 0;
+@@ -956,11 +964,14 @@ static void tegra_spi_transfer_end(struct spi_device *spi)
+ 	if (cstate->cs_gpio_valid)
+ 		gpio_set_value(spi->cs_gpio, cs_val);
+ 
+-	if (cs_val)
+-		tspi->command1_reg |= SPI_CS_SW_VAL;
+-	else
+-		tspi->command1_reg &= ~SPI_CS_SW_VAL;
+-	tegra_spi_writel(tspi, tspi->command1_reg, SPI_COMMAND1);
++	if (!tspi->use_hw_based_cs) {
++		if (cs_val)
++			tspi->command1_reg |= SPI_CS_SW_VAL;
++		else
++			tspi->command1_reg &= ~SPI_CS_SW_VAL;
++		tegra_spi_writel(tspi, tspi->command1_reg, SPI_COMMAND1);
 +	}
 +
- 	ret = pm_runtime_get_sync(tspi->dev);
- 	if (ret < 0) {
- 		dev_err(tspi->dev, "pm runtime failed, e = %d\n", ret);
-+		tegra_spi_cleanup(spi);
- 		return ret;
- 	}
+ 	tegra_spi_writel(tspi, tspi->def_command1_reg, SPI_COMMAND1);
+ }
  
-@@ -896,8 +950,12 @@ static void tegra_spi_transfer_delay(int delay)
- static void tegra_spi_transfer_end(struct spi_device *spi)
- {
- 	struct tegra_spi_data *tspi = spi_master_get_devdata(spi->master);
-+	struct tegra_spi_client_state *cstate = spi->controller_state;
- 	int cs_val = (spi->mode & SPI_CS_HIGH) ? 0 : 1;
+@@ -987,16 +998,19 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
+ 	struct spi_device *spi = msg->spi;
+ 	int ret;
+ 	bool skip = false;
++	int single_xfer;
  
-+	if (cstate->cs_gpio_valid)
-+		gpio_set_value(spi->cs_gpio, cs_val);
-+
- 	if (cs_val)
- 		tspi->command1_reg |= SPI_CS_SW_VAL;
- 	else
-@@ -1209,6 +1267,7 @@ static int tegra_spi_probe(struct platform_device *pdev)
- 			    SPI_LSBYTE_FIRST;
- 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
- 	master->setup = tegra_spi_setup;
-+	master->cleanup = tegra_spi_cleanup;
- 	master->transfer_one_message = tegra_spi_transfer_one_message;
- 	master->num_chipselect = MAX_CHIP_SELECT;
- 	master->auto_runtime_pm = true;
+ 	msg->status = 0;
+ 	msg->actual_length = 0;
+ 
++	single_xfer = list_is_singular(&msg->transfers);
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 		u32 cmd1;
+ 
+ 		reinit_completion(&tspi->xfer_completion);
+ 
+-		cmd1 = tegra_spi_setup_transfer_one(spi, xfer, is_first_msg);
++		cmd1 = tegra_spi_setup_transfer_one(spi, xfer, is_first_msg,
++						    single_xfer);
+ 
+ 		if (!xfer->len) {
+ 			ret = 0;
 -- 
 2.7.4

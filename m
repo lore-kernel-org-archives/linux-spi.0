@@ -1,7 +1,7 @@
 From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Subject: [PATCH V2 11/20] spi: expand mode support and add LSBYTE_FIRST mode
-Date: Thu, 4 Apr 2019 17:14:10 -0700
-Message-ID: <1554423259-26056-11-git-send-email-skomatineni@nvidia.com>
+Subject: [PATCH V2 05/20] spi: tegra114: dump SPI registers during timeout
+Date: Thu, 4 Apr 2019 17:14:04 -0700
+Message-ID: <1554423259-26056-5-git-send-email-skomatineni@nvidia.com>
 References: <1554423259-26056-1-git-send-email-skomatineni@nvidia.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -17,90 +17,70 @@ In-Reply-To: <1554423259-26056-1-git-send-email-skomatineni@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Some SPI Master controllers support configuring Least significant byte
-first or Most significant byte first order for transfers. Also some SPI
-slave devices expect bytes to be in Least significant first order and
-some devices expect Most significant first order.
-
-SPI driver declares mode and mode_bits as u16 and all bits are used.
-
-This patch changes mode and mode_bits to be u32 to allow for more mode
-configurations.
-
-This patch also creates SPI_LSBYTE_FIRST mode to allow SPI clients to
-choose LSByte order or MSByte order through the device tree property
-spi-lsbyte-first.
+This patch dumps SPI registers on transfer error or timeout for debug
+purpose.
 
 Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
 ---
- drivers/spi/spi.c       | 5 ++++-
- include/linux/spi/spi.h | 7 ++++---
- 2 files changed, 8 insertions(+), 4 deletions(-)
+ drivers/spi/spi-tegra114.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index bd2a424672df..97ce047a776b 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1638,6 +1638,8 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
- 		spi->mode |= SPI_3WIRE;
- 	if (of_property_read_bool(nc, "spi-lsb-first"))
- 		spi->mode |= SPI_LSB_FIRST;
-+	if (of_property_read_bool(nc, "spi-lsbyte-first"))
-+		spi->mode |= SPI_LSBYTE_FIRST;
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index d928a2c92a3d..e0f20fad5df2 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -876,6 +876,20 @@ static void tegra_spi_transfer_end(struct spi_device *spi)
+ 	tegra_spi_writel(tspi, tspi->def_command1_reg, SPI_COMMAND1);
+ }
  
- 	/*
- 	 * For descriptors associated with the device, polarity inversion is
-@@ -2979,10 +2981,11 @@ int spi_setup(struct spi_device *spi)
- 
- 	spi_set_cs(spi, false);
- 
--	dev_dbg(&spi->dev, "setup mode %d, %s%s%s%s%u bits/w, %u Hz max --> %d\n",
-+	dev_dbg(&spi->dev, "setup mode %d, %s%s%s%s%s%u bits/w, %u Hz max --> %d\n",
- 			(int) (spi->mode & (SPI_CPOL | SPI_CPHA)),
- 			(spi->mode & SPI_CS_HIGH) ? "cs_high, " : "",
- 			(spi->mode & SPI_LSB_FIRST) ? "lsb, " : "",
-+			(spi->mode & SPI_LSBYTE_FIRST) ? "lsbyte, " : "",
- 			(spi->mode & SPI_3WIRE) ? "3wire, " : "",
- 			(spi->mode & SPI_LOOP) ? "loopback, " : "",
- 			spi->bits_per_word, spi->max_speed_hz,
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index a0975cf76cf6..d5c86b763f43 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -143,7 +143,7 @@ struct spi_device {
- 	u32			max_speed_hz;
- 	u8			chip_select;
- 	u8			bits_per_word;
--	u16			mode;
-+	u32			mode;
- #define	SPI_CPHA	0x01			/* clock phase */
- #define	SPI_CPOL	0x02			/* clock polarity */
- #define	SPI_MODE_0	(0|0)			/* (original MicroWire) */
-@@ -164,6 +164,7 @@ struct spi_device {
- #define	SPI_TX_OCTAL	0x2000			/* transmit with 8 wires */
- #define	SPI_RX_OCTAL	0x4000			/* receive with 8 wires */
- #define	SPI_3WIRE_HIZ	0x8000			/* high impedance turnaround */
-+#define SPI_LSBYTE_FIRST	0x10000		/* per-word bytes-on-wire */
- 	int			irq;
- 	void			*controller_state;
- 	void			*controller_data;
-@@ -439,7 +440,7 @@ struct spi_controller {
- 	u16			dma_alignment;
- 
- 	/* spi_device.mode flags understood by this controller driver */
--	u16			mode_bits;
-+	u32			mode_bits;
- 
- 	/* bitmask of supported bits_per_word for transfers */
- 	u32			bits_per_word_mask;
-@@ -1276,7 +1277,7 @@ struct spi_board_info {
- 	/* mode becomes spi_device.mode, and is essential for chips
- 	 * where the default of SPI_CS_HIGH = 0 is wrong.
- 	 */
--	u16		mode;
-+	u32		mode;
- 
- 	/* ... may need additional spi_device chip config data here.
- 	 * avoid stuff protocol drivers can set; but include stuff
++static void tegra_spi_dump_regs(struct tegra_spi_data *tspi)
++{
++	dev_dbg(tspi->dev, "============ SPI REGISTER DUMP ============\n");
++	dev_dbg(tspi->dev, "Command1:    0x%08x | Command2:    0x%08x\n",
++		tegra_spi_readl(tspi, SPI_COMMAND1),
++		tegra_spi_readl(tspi, SPI_COMMAND2));
++	dev_dbg(tspi->dev, "DMA_CTL:     0x%08x | DMA_BLK:     0x%08x\n",
++		tegra_spi_readl(tspi, SPI_DMA_CTL),
++		tegra_spi_readl(tspi, SPI_DMA_BLK));
++	dev_dbg(tspi->dev, "TRANS_STAT:  0x%08x | FIFO_STATUS: 0x%08x\n",
++		tegra_spi_readl(tspi, SPI_TRANS_STATUS),
++		tegra_spi_readl(tspi, SPI_FIFO_STATUS));
++}
++
+ static int tegra_spi_transfer_one_message(struct spi_master *master,
+ 			struct spi_message *msg)
+ {
+@@ -922,6 +936,7 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
+ 			    (tspi->cur_direction & DATA_DIR_RX))
+ 				dmaengine_terminate_all(tspi->rx_dma_chan);
+ 			ret = -EIO;
++			tegra_spi_dump_regs(tspi);
+ 			tegra_spi_flush_fifos(tspi);
+ 			reset_control_assert(tspi->rst);
+ 			udelay(2);
+@@ -932,6 +947,7 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
+ 		if (tspi->tx_status ||  tspi->rx_status) {
+ 			dev_err(tspi->dev, "Error in Transfer\n");
+ 			ret = -EIO;
++			tegra_spi_dump_regs(tspi);
+ 			goto complete_xfer;
+ 		}
+ 		msg->actual_length += xfer->len;
+@@ -973,6 +989,7 @@ static irqreturn_t handle_cpu_based_xfer(struct tegra_spi_data *tspi)
+ 			tspi->status_reg);
+ 		dev_err(tspi->dev, "CpuXfer 0x%08x:0x%08x\n",
+ 			tspi->command1_reg, tspi->dma_control_reg);
++		tegra_spi_dump_regs(tspi);
+ 		tegra_spi_flush_fifos(tspi);
+ 		complete(&tspi->xfer_completion);
+ 		spin_unlock_irqrestore(&tspi->lock, flags);
+@@ -1047,6 +1064,7 @@ static irqreturn_t handle_dma_based_xfer(struct tegra_spi_data *tspi)
+ 			tspi->status_reg);
+ 		dev_err(tspi->dev, "DmaXfer 0x%08x:0x%08x\n",
+ 			tspi->command1_reg, tspi->dma_control_reg);
++		tegra_spi_dump_regs(tspi);
+ 		tegra_spi_flush_fifos(tspi);
+ 		complete(&tspi->xfer_completion);
+ 		spin_unlock_irqrestore(&tspi->lock, flags);
 -- 
 2.7.4

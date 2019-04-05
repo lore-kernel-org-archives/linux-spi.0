@@ -1,7 +1,7 @@
 From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Subject: [PATCH V2 04/20] spi: tegra114: avoid reset call in atomic context
-Date: Thu, 4 Apr 2019 17:14:03 -0700
-Message-ID: <1554423259-26056-4-git-send-email-skomatineni@nvidia.com>
+Subject: [PATCH V2 03/20] spi: tegra114: de-assert CS before SPI mode change
+Date: Thu, 4 Apr 2019 17:14:02 -0700
+Message-ID: <1554423259-26056-3-git-send-email-skomatineni@nvidia.com>
 References: <1554423259-26056-1-git-send-email-skomatineni@nvidia.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -17,45 +17,72 @@ In-Reply-To: <1554423259-26056-1-git-send-email-skomatineni@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch moves SPI controller reset out of spin lock.
+With SW CS, during the transfer completion CS is de-asserted by writing
+default command1 register value to SPI_COMMAND1 register. With this both
+mode and CS state are set at the same time and if current transfer mode
+is different to default SPI mode and if mode change happens prior to CS
+de-assert, clock polarity can change while CS is active before transfer
+finishes.
+
+This causes Slave to see spurious clock edges resulting in data mismatch.
+
+This patch fixes this by de-asserting CS before writing SPI_COMMAND1 to
+its default value so through out the transfer it will be in same SPI mode.
 
 Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
 ---
- drivers/spi/spi-tegra114.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/spi/spi-tegra114.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index c60e40cab0a0..d928a2c92a3d 100644
+index 3042521c3785..c60e40cab0a0 100644
 --- a/drivers/spi/spi-tegra114.c
 +++ b/drivers/spi/spi-tegra114.c
-@@ -974,11 +974,12 @@ static irqreturn_t handle_cpu_based_xfer(struct tegra_spi_data *tspi)
- 		dev_err(tspi->dev, "CpuXfer 0x%08x:0x%08x\n",
- 			tspi->command1_reg, tspi->dma_control_reg);
- 		tegra_spi_flush_fifos(tspi);
-+		complete(&tspi->xfer_completion);
-+		spin_unlock_irqrestore(&tspi->lock, flags);
- 		reset_control_assert(tspi->rst);
- 		udelay(2);
- 		reset_control_deassert(tspi->rst);
--		complete(&tspi->xfer_completion);
--		goto exit;
-+		return IRQ_HANDLED;
- 	}
+@@ -863,6 +863,19 @@ static void tegra_spi_transfer_delay(int delay)
+ 	udelay(delay % 1000);
+ }
  
- 	if (tspi->cur_direction & DATA_DIR_RX)
-@@ -1047,11 +1048,11 @@ static irqreturn_t handle_dma_based_xfer(struct tegra_spi_data *tspi)
- 		dev_err(tspi->dev, "DmaXfer 0x%08x:0x%08x\n",
- 			tspi->command1_reg, tspi->dma_control_reg);
- 		tegra_spi_flush_fifos(tspi);
-+		complete(&tspi->xfer_completion);
-+		spin_unlock_irqrestore(&tspi->lock, flags);
- 		reset_control_assert(tspi->rst);
- 		udelay(2);
- 		reset_control_deassert(tspi->rst);
--		complete(&tspi->xfer_completion);
--		spin_unlock_irqrestore(&tspi->lock, flags);
- 		return IRQ_HANDLED;
- 	}
++static void tegra_spi_transfer_end(struct spi_device *spi)
++{
++	struct tegra_spi_data *tspi = spi_master_get_devdata(spi->master);
++	int cs_val = (spi->mode & SPI_CS_HIGH) ? 0 : 1;
++
++	if (cs_val)
++		tspi->command1_reg |= SPI_CS_SW_VAL;
++	else
++		tspi->command1_reg &= ~SPI_CS_SW_VAL;
++	tegra_spi_writel(tspi, tspi->command1_reg, SPI_COMMAND1);
++	tegra_spi_writel(tspi, tspi->def_command1_reg, SPI_COMMAND1);
++}
++
+ static int tegra_spi_transfer_one_message(struct spi_master *master,
+ 			struct spi_message *msg)
+ {
+@@ -925,8 +938,7 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
+ 
+ complete_xfer:
+ 		if (ret < 0 || skip) {
+-			tegra_spi_writel(tspi, tspi->def_command1_reg,
+-					SPI_COMMAND1);
++			tegra_spi_transfer_end(spi);
+ 			tegra_spi_transfer_delay(xfer->delay_usecs);
+ 			goto exit;
+ 		} else if (list_is_last(&xfer->transfer_list,
+@@ -934,13 +946,11 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
+ 			if (xfer->cs_change)
+ 				tspi->cs_control = spi;
+ 			else {
+-				tegra_spi_writel(tspi, tspi->def_command1_reg,
+-						SPI_COMMAND1);
++				tegra_spi_transfer_end(spi);
+ 				tegra_spi_transfer_delay(xfer->delay_usecs);
+ 			}
+ 		} else if (xfer->cs_change) {
+-			tegra_spi_writel(tspi, tspi->def_command1_reg,
+-					SPI_COMMAND1);
++			tegra_spi_transfer_end(spi);
+ 			tegra_spi_transfer_delay(xfer->delay_usecs);
+ 		}
  
 -- 
 2.7.4

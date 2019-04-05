@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: tegra114: set supported bits per word" to the spi tree
-Date: Fri,  5 Apr 2019 10:26:51 +0700 (+07)
-Message-ID: <20190405032651.EE1F1441D3B@finisterre.ee.mobilebroadband>
-References: <1554423259-26056-6-git-send-email-skomatineni@nvidia.com>
+Subject: Applied "spi: tegra114: avoid reset call in atomic context" to the spi tree
+Date: Fri,  5 Apr 2019 10:26:57 +0700 (+07)
+Message-ID: <20190405032657.E0F6B441D3B@finisterre.ee.mobilebroadband>
+References: <1554423259-26056-4-git-send-email-skomatineni@nvidia.com>
 Cc: Mark Brown <broonie@kernel.org>, thierry.reding@gmail.com,
         jonathanh@nvidia.com, talho@nvidia.com, skomatineni@nvidia.com,
         broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
@@ -12,13 +12,13 @@ Cc: Mark Brown <broonie@kernel.org>, thierry.reding@gmail.com,
         linux-spi@vger.kernel.org
 To: Sowjanya Komatineni <skomatineni@nvidia.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1554423259-26056-6-git-send-email-skomatineni@nvidia.com>
+In-Reply-To: <1554423259-26056-4-git-send-email-skomatineni@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: tegra114: set supported bits per word
+   spi: tegra114: avoid reset call in atomic context
 
 has been applied to the spi tree at
 
@@ -43,33 +43,51 @@ to this mail.
 Thanks,
 Mark
 
->From f0a0bc90c6e7060778911c2b55d085105809d6cf Mon Sep 17 00:00:00 2001
+>From a026525d4e45e3d9690bffd0b05d018ff5638b5a Mon Sep 17 00:00:00 2001
 From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Date: Thu, 4 Apr 2019 17:14:05 -0700
-Subject: [PATCH] spi: tegra114: set supported bits per word
+Date: Thu, 4 Apr 2019 17:14:03 -0700
+Subject: [PATCH] spi: tegra114: avoid reset call in atomic context
 
-Tegra SPI supports 4 through 32 bits per word.
-
-This patch sets bits_per_word_mask accordingly to support transfer
-with these bits per word.
+This patch moves SPI controller reset out of spin lock.
 
 Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-tegra114.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-tegra114.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index 99019f6d2d84..c2ebf1ae632d 100644
+index 8de002fc6943..b57f10182fae 100644
 --- a/drivers/spi/spi-tegra114.c
 +++ b/drivers/spi/spi-tegra114.c
-@@ -1151,6 +1151,7 @@ static int tegra_spi_probe(struct platform_device *pdev)
+@@ -967,11 +967,12 @@ static irqreturn_t handle_cpu_based_xfer(struct tegra_spi_data *tspi)
+ 		dev_err(tspi->dev, "CpuXfer 0x%08x:0x%08x\n",
+ 			tspi->command1_reg, tspi->dma_control_reg);
+ 		tegra_spi_flush_fifos(tspi);
++		complete(&tspi->xfer_completion);
++		spin_unlock_irqrestore(&tspi->lock, flags);
+ 		reset_control_assert(tspi->rst);
+ 		udelay(2);
+ 		reset_control_deassert(tspi->rst);
+-		complete(&tspi->xfer_completion);
+-		goto exit;
++		return IRQ_HANDLED;
+ 	}
  
- 	/* the spi->mode bits understood by this driver: */
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
-+	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
- 	master->setup = tegra_spi_setup;
- 	master->transfer_one_message = tegra_spi_transfer_one_message;
- 	master->num_chipselect = MAX_CHIP_SELECT;
+ 	if (tspi->cur_direction & DATA_DIR_RX)
+@@ -1040,11 +1041,11 @@ static irqreturn_t handle_dma_based_xfer(struct tegra_spi_data *tspi)
+ 		dev_err(tspi->dev, "DmaXfer 0x%08x:0x%08x\n",
+ 			tspi->command1_reg, tspi->dma_control_reg);
+ 		tegra_spi_flush_fifos(tspi);
++		complete(&tspi->xfer_completion);
++		spin_unlock_irqrestore(&tspi->lock, flags);
+ 		reset_control_assert(tspi->rst);
+ 		udelay(2);
+ 		reset_control_deassert(tspi->rst);
+-		complete(&tspi->xfer_completion);
+-		spin_unlock_irqrestore(&tspi->lock, flags);
+ 		return IRQ_HANDLED;
+ 	}
+ 
 -- 
 2.20.1

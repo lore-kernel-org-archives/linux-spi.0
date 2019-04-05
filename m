@@ -1,7 +1,7 @@
 From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Subject: [PATCH V2 02/20] spi: tegra114: use unpacked mode for below 4 bytes
-Date: Thu, 4 Apr 2019 17:14:01 -0700
-Message-ID: <1554423259-26056-2-git-send-email-skomatineni@nvidia.com>
+Subject: [PATCH V2 06/20] spi: tegra114: set supported bits per word
+Date: Thu, 4 Apr 2019 17:14:05 -0700
+Message-ID: <1554423259-26056-6-git-send-email-skomatineni@nvidia.com>
 References: <1554423259-26056-1-git-send-email-skomatineni@nvidia.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -17,29 +17,27 @@ In-Reply-To: <1554423259-26056-1-git-send-email-skomatineni@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Packed mode expects minimum transfer length of 4 bytes.
+Tegra SPI supports 4 through 32 bits per word.
 
-This patch fixes this by using unpacked mode for transfers less
-than 4 bytes.
+This patch sets bits_per_word_mask accordingly to support transfer
+with these bits per word.
 
 Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
 ---
- drivers/spi/spi-tegra114.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-tegra114.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index ba1639310282..3042521c3785 100644
+index e0f20fad5df2..191233eae149 100644
 --- a/drivers/spi/spi-tegra114.c
 +++ b/drivers/spi/spi-tegra114.c
-@@ -259,7 +259,8 @@ static unsigned tegra_spi_calculate_curr_xfer_param(
+@@ -1153,6 +1153,7 @@ static int tegra_spi_probe(struct platform_device *pdev)
  
- 	tspi->bytes_per_word = DIV_ROUND_UP(bits_per_word, 8);
- 
--	if (bits_per_word == 8 || bits_per_word == 16 || bits_per_word == 32) {
-+	if ((bits_per_word == 8 || bits_per_word == 16 ||
-+	     bits_per_word == 32) && t->len > 3) {
- 		tspi->is_packed = 1;
- 		tspi->words_per_32bit = 32/bits_per_word;
- 	} else {
+ 	/* the spi->mode bits understood by this driver: */
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
++	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
+ 	master->setup = tegra_spi_setup;
+ 	master->transfer_one_message = tegra_spi_transfer_one_message;
+ 	master->num_chipselect = MAX_CHIP_SELECT;
 -- 
 2.7.4

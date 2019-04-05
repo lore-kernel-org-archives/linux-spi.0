@@ -1,7 +1,7 @@
 From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Subject: [PATCH V2 10/20] Documentation: devicetree: spi: add spi-lsbyte-first propery
-Date: Thu, 4 Apr 2019 17:14:09 -0700
-Message-ID: <1554423259-26056-10-git-send-email-skomatineni@nvidia.com>
+Subject: [PATCH V2 07/20] spi: tegra114: set bus number based on id
+Date: Thu, 4 Apr 2019 17:14:06 -0700
+Message-ID: <1554423259-26056-7-git-send-email-skomatineni@nvidia.com>
 References: <1554423259-26056-1-git-send-email-skomatineni@nvidia.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -17,25 +17,34 @@ In-Reply-To: <1554423259-26056-1-git-send-email-skomatineni@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-spi-lsbyte-first optional property allows SPI slaves to choose byte
-order of little endian for transfers.
+This patch sets SPI device id from the device tree as the bus number.
 
 Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
 ---
- Documentation/devicetree/bindings/spi/spi-bus.txt | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-tegra114.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
-index 1f6e86f787ef..b455c24a80df 100644
---- a/Documentation/devicetree/bindings/spi/spi-bus.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
-@@ -71,6 +71,7 @@ All slave nodes can contain the following optional properties:
- 		    active high.
- - spi-3wire       - Empty property indicating device requires 3-wire mode.
- - spi-lsb-first   - Empty property indicating device requires LSB first mode.
-+- spi-lsbyte-first - Empty property indicating device requires LSByte first mode.
- - spi-tx-bus-width - The bus width (number of data wires) that is used for MOSI.
- 		    Defaults to 1 if not present.
- - spi-rx-bus-width - The bus width (number of data wires) that is used for MISO.
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index 191233eae149..58f5059b339f 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -1138,6 +1138,7 @@ static int tegra_spi_probe(struct platform_device *pdev)
+ 	struct tegra_spi_data	*tspi;
+ 	struct resource		*r;
+ 	int ret, spi_irq;
++	int bus_num;
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*tspi));
+ 	if (!master) {
+@@ -1158,6 +1159,9 @@ static int tegra_spi_probe(struct platform_device *pdev)
+ 	master->transfer_one_message = tegra_spi_transfer_one_message;
+ 	master->num_chipselect = MAX_CHIP_SELECT;
+ 	master->auto_runtime_pm = true;
++	bus_num = of_alias_get_id(pdev->dev.of_node, "spi");
++	if (bus_num >= 0)
++		master->bus_num = bus_num;
+ 
+ 	tspi->master = master;
+ 	tspi->dev = &pdev->dev;
 -- 
 2.7.4

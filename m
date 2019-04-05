@@ -1,7 +1,7 @@
 From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Subject: [PATCH V2 15/20] spi: tegra114: add support for hw based cs
-Date: Thu, 4 Apr 2019 17:14:14 -0700
-Message-ID: <1554423259-26056-15-git-send-email-skomatineni@nvidia.com>
+Subject: [PATCH V2 17/20] spi: add a method for configuring CS timing
+Date: Thu, 4 Apr 2019 17:14:16 -0700
+Message-ID: <1554423259-26056-17-git-send-email-skomatineni@nvidia.com>
 References: <1554423259-26056-1-git-send-email-skomatineni@nvidia.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -17,106 +17,84 @@ In-Reply-To: <1554423259-26056-1-git-send-email-skomatineni@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Tegra SPI controller supports both HW and SW based CS control
-for SPI transfers.
+This patch creates set_cs_timing SPI master optional method for
+SPI masters to implement configuring CS timing if applicable.
 
-This patch adds support for HW based CS control where CS is driven
-to active state during the transfer and is driven inactive at the
-end of the transfer directly by the HW.
-
-This patch enables the use of HW based CS only for single transfers
-without cs_change request.
+This patch also creates spi_cs_timing accessory for SPI clients to
+use for requesting SPI master controllers to configure device requested
+CS setup time, hold time and inactive delay.
 
 Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
 ---
- drivers/spi/spi-tegra114.c | 38 ++++++++++++++++++++++++++------------
- 1 file changed, 26 insertions(+), 12 deletions(-)
+ drivers/spi/spi.c       | 15 +++++++++++++++
+ include/linux/spi/spi.h | 15 +++++++++++++++
+ 2 files changed, 30 insertions(+)
 
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index 209ec05a349f..5cc347b345b1 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -198,6 +198,7 @@ struct tegra_spi_data {
- 	unsigned				dma_buf_size;
- 	unsigned				max_buf_size;
- 	bool					is_curr_dma_xfer;
-+	bool					use_hw_based_cs;
- 
- 	struct completion			rx_dma_complete;
- 	struct completion			tx_dma_complete;
-@@ -728,7 +729,8 @@ static void tegra_spi_deinit_dma_param(struct tegra_spi_data *tspi,
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 97ce047a776b..0f92329e990f 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2995,6 +2995,21 @@ int spi_setup(struct spi_device *spi)
  }
+ EXPORT_SYMBOL_GPL(spi_setup);
  
- static u32 tegra_spi_setup_transfer_one(struct spi_device *spi,
--		struct spi_transfer *t, bool is_first_of_msg)
-+		struct spi_transfer *t, bool is_first_of_msg,
-+		bool is_single_xfer)
- {
- 	struct tegra_spi_data *tspi = spi_master_get_devdata(spi->master);
- 	struct tegra_spi_client_state *cstate = spi->controller_state;
-@@ -787,11 +789,17 @@ static u32 tegra_spi_setup_transfer_one(struct spi_device *spi,
- 		} else
- 			tegra_spi_writel(tspi, command1, SPI_COMMAND1);
- 
--		command1 |= SPI_CS_SW_HW;
--		if (spi->mode & SPI_CS_HIGH)
--			command1 |= SPI_CS_SW_VAL;
--		else
--			command1 &= ~SPI_CS_SW_VAL;
-+		if (is_single_xfer && !(t->cs_change)) {
-+			tspi->use_hw_based_cs = true;
-+			command1 &= ~(SPI_CS_SW_HW | SPI_CS_SW_VAL);
-+		} else {
-+			tspi->use_hw_based_cs = false;
-+			command1 |= SPI_CS_SW_HW;
-+			if (spi->mode & SPI_CS_HIGH)
-+				command1 |= SPI_CS_SW_VAL;
-+			else
-+				command1 &= ~SPI_CS_SW_VAL;
-+		}
- 
- 		if (cstate->cs_gpio_valid) {
- 			int val = (spi->mode & SPI_CS_HIGH) ? 1 : 0;
-@@ -956,11 +964,14 @@ static void tegra_spi_transfer_end(struct spi_device *spi)
- 	if (cstate->cs_gpio_valid)
- 		gpio_set_value(spi->cs_gpio, cs_val);
- 
--	if (cs_val)
--		tspi->command1_reg |= SPI_CS_SW_VAL;
--	else
--		tspi->command1_reg &= ~SPI_CS_SW_VAL;
--	tegra_spi_writel(tspi, tspi->command1_reg, SPI_COMMAND1);
-+	if (!tspi->use_hw_based_cs) {
-+		if (cs_val)
-+			tspi->command1_reg |= SPI_CS_SW_VAL;
-+		else
-+			tspi->command1_reg &= ~SPI_CS_SW_VAL;
-+		tegra_spi_writel(tspi, tspi->command1_reg, SPI_COMMAND1);
-+	}
++/**
++ * spi_set_cs_timing - configure CS setup, hold, and inactive delays
++ * @spi: the device that requires specific CS timing configuration
++ * @setup: CS setup time in terms of clock count
++ * @hold: CS hold time in terms of clock count
++ * @inactive_dly: CS inactive delay between transfers in terms of clock count
++ */
++void spi_set_cs_timing(struct spi_device *spi, u8 setup, u8 hold,
++		       u8 inactive_dly)
++{
++	if (spi->controller->set_cs_timing)
++		spi->controller->set_cs_timing(spi, setup, hold, inactive_dly);
++}
++EXPORT_SYMBOL_GPL(spi_set_cs_timing);
 +
- 	tegra_spi_writel(tspi, tspi->def_command1_reg, SPI_COMMAND1);
- }
+ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
+ {
+ 	struct spi_controller *ctlr = spi->controller;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index d5c86b763f43..fc4d21b4c2e4 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -331,6 +331,9 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  *	must fail if an unrecognized or unsupported mode is requested.
+  *	It's always safe to call this unless transfers are pending on
+  *	the device whose settings are being modified.
++ * @set_cs_timing: optional hook for SPI devices to request SPI master
++ * controller for configuring specific CS setup time, hold time and inactive
++ * delay interms of clock counts
+  * @transfer: adds a message to the controller's transfer queue.
+  * @cleanup: frees controller-specific state
+  * @can_dma: determine whether this controller supports DMA
+@@ -364,6 +367,7 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  * @unprepare_transfer_hardware: there are currently no more messages on the
+  *	queue so the subsystem notifies the driver that it may relax the
+  *	hardware by issuing this call
++ *
+  * @set_cs: set the logic level of the chip select line.  May be called
+  *          from interrupt context.
+  * @prepare_message: set up the controller to transfer a single message,
+@@ -489,6 +493,17 @@ struct spi_controller {
+ 	 */
+ 	int			(*setup)(struct spi_device *spi);
  
-@@ -987,16 +998,19 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
- 	struct spi_device *spi = msg->spi;
- 	int ret;
- 	bool skip = false;
-+	int single_xfer;
- 
- 	msg->status = 0;
- 	msg->actual_length = 0;
- 
-+	single_xfer = list_is_singular(&msg->transfers);
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
- 		u32 cmd1;
- 
- 		reinit_completion(&tspi->xfer_completion);
- 
--		cmd1 = tegra_spi_setup_transfer_one(spi, xfer, is_first_msg);
-+		cmd1 = tegra_spi_setup_transfer_one(spi, xfer, is_first_msg,
-+						    single_xfer);
- 
- 		if (!xfer->len) {
- 			ret = 0;
++	/*
++	 * set_cs_timing() method is for SPI controllers that supports
++	 * configuring CS timing.
++	 *
++	 * This hook allows SPI client drivers to request SPI controllers
++	 * to configure specific CS timing through spi_set_cs_timing() after
++	 * spi_setup().
++	 */
++	void (*set_cs_timing)(struct spi_device *spi, u8 setup_clk_cycles,
++			      u8 hold_clk_cycles, u8 inactive_clk_cycles);
++
+ 	/* bidirectional bulk transfers
+ 	 *
+ 	 * + The transfer() method may not sleep; its main role is
 -- 
 2.7.4

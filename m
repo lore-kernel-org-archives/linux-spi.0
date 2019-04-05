@@ -1,24 +1,23 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: tegra114: de-assert CS before SPI mode change" to the spi tree
-Date: Fri,  5 Apr 2019 10:27:01 +0700 (+07)
-Message-ID: <20190405032701.14731441D3C@finisterre.ee.mobilebroadband>
-References: <1554423259-26056-3-git-send-email-skomatineni@nvidia.com>
-Cc: Mark Brown <broonie@kernel.org>, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, talho@nvidia.com, skomatineni@nvidia.com,
-        broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        kyarlagadda@nvidia.com, ldewangan@nvidia.com,
-        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+Subject: Applied "spi: Don't call spi_get_gpio_descs() before device name is set" to the spi tree
+Date: Fri,  5 Apr 2019 10:26:39 +0700 (+07)
+Message-ID: <20190405032639.3C438441D3B@finisterre.ee.mobilebroadband>
+References: <20190403040133.1459-8-andrew.smirnov@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, Chris Healy <cphealy@gmail.com>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        Chris Healy <cphealy@gmail.com>, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org
-To: Sowjanya Komatineni <skomatineni@nvidia.com>
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1554423259-26056-3-git-send-email-skomatineni@nvidia.com>
+In-Reply-To: <20190403040133.1459-8-andrew.smirnov@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: tegra114: de-assert CS before SPI mode change
+   spi: Don't call spi_get_gpio_descs() before device name is set
 
 has been applied to the spi tree at
 
@@ -43,78 +42,109 @@ to this mail.
 Thanks,
 Mark
 
->From f3e182c33e534f4caeb255a3ab927debc0d222aa Mon Sep 17 00:00:00 2001
-From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Date: Thu, 4 Apr 2019 17:14:02 -0700
-Subject: [PATCH] spi: tegra114: de-assert CS before SPI mode change
+>From 0a919ae49223d32ac0e8be3494547fcd1e4aa0aa Mon Sep 17 00:00:00 2001
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 2 Apr 2019 21:01:28 -0700
+Subject: [PATCH] spi: Don't call spi_get_gpio_descs() before device name is
+ set
 
-With SW CS, during the transfer completion CS is de-asserted by writing
-default command1 register value to SPI_COMMAND1 register. With this both
-mode and CS state are set at the same time and if current transfer mode
-is different to default SPI mode and if mode change happens prior to CS
-de-assert, clock polarity can change while CS is active before transfer
-finishes.
+Move code calling spi_get_gpio_descs() to happen after ctlr->dev's
+name is set in order to have proper GPIO consumer names.
 
-This causes Slave to see spurious clock edges resulting in data mismatch.
+Before:
 
-This patch fixes this by de-asserting CS before writing SPI_COMMAND1 to
-its default value so through out the transfer it will be in same SPI mode.
+cat /sys/kernel/debug/gpio
+gpiochip0: GPIOs 0-31, parent: platform/40049000.gpio, vf610-gpio:
+ gpio-6   (                    |regulator-usb0-vbus ) out lo
 
-Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
+gpiochip1: GPIOs 32-63, parent: platform/4004a000.gpio, vf610-gpio:
+ gpio-36  (                    |scl                 ) in  hi
+ gpio-37  (                    |sda                 ) in  hi
+ gpio-40  (                    |(null) CS1          ) out lo
+ gpio-41  (                    |(null) CS0          ) out lo ACTIVE LOW
+ gpio-42  (                    |miso                ) in  hi
+ gpio-43  (                    |mosi                ) in  lo
+ gpio-44  (                    |sck                 ) out lo
+
+After:
+
+cat /sys/kernel/debug/gpio
+gpiochip0: GPIOs 0-31, parent: platform/40049000.gpio, vf610-gpio:
+ gpio-6   (                    |regulator-usb0-vbus ) out lo
+
+gpiochip1: GPIOs 32-63, parent: platform/4004a000.gpio, vf610-gpio:
+ gpio-36  (                    |scl                 ) in  hi
+ gpio-37  (                    |sda                 ) in  hi
+ gpio-40  (                    |spi0 CS1            ) out lo
+ gpio-41  (                    |spi0 CS0            ) out lo ACTIVE LOW
+ gpio-42  (                    |miso                ) in  hi
+ gpio-43  (                    |mosi                ) in  lo
+ gpio-44  (                    |sck                 ) out lo
+
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Chris Healy <cphealy@gmail.com>
+Cc: linux-spi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-tegra114.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ drivers/spi/spi.c | 37 +++++++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index 09cfae3abce2..8de002fc6943 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -856,6 +856,19 @@ static void tegra_spi_transfer_delay(int delay)
- 	udelay(delay % 1000);
- }
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 2ad20c735b61..a83fcddf1dad 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2281,24 +2281,6 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 	if (status)
+ 		return status;
  
-+static void tegra_spi_transfer_end(struct spi_device *spi)
-+{
-+	struct tegra_spi_data *tspi = spi_master_get_devdata(spi->master);
-+	int cs_val = (spi->mode & SPI_CS_HIGH) ? 0 : 1;
+-	if (!spi_controller_is_slave(ctlr)) {
+-		if (ctlr->use_gpio_descriptors) {
+-			status = spi_get_gpio_descs(ctlr);
+-			if (status)
+-				return status;
+-			/*
+-			 * A controller using GPIO descriptors always
+-			 * supports SPI_CS_HIGH if need be.
+-			 */
+-			ctlr->mode_bits |= SPI_CS_HIGH;
+-		} else {
+-			/* Legacy code path for GPIOs from DT */
+-			status = of_spi_register_master(ctlr);
+-			if (status)
+-				return status;
+-		}
+-	}
+-
+ 	/* even if it's just one always-selected device, there must
+ 	 * be at least one chipselect
+ 	 */
+@@ -2355,6 +2337,25 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 	 * registration fails if the bus ID is in use.
+ 	 */
+ 	dev_set_name(&ctlr->dev, "spi%u", ctlr->bus_num);
 +
-+	if (cs_val)
-+		tspi->command1_reg |= SPI_CS_SW_VAL;
-+	else
-+		tspi->command1_reg &= ~SPI_CS_SW_VAL;
-+	tegra_spi_writel(tspi, tspi->command1_reg, SPI_COMMAND1);
-+	tegra_spi_writel(tspi, tspi->def_command1_reg, SPI_COMMAND1);
-+}
++	if (!spi_controller_is_slave(ctlr)) {
++		if (ctlr->use_gpio_descriptors) {
++			status = spi_get_gpio_descs(ctlr);
++			if (status)
++				return status;
++			/*
++			 * A controller using GPIO descriptors always
++			 * supports SPI_CS_HIGH if need be.
++			 */
++			ctlr->mode_bits |= SPI_CS_HIGH;
++		} else {
++			/* Legacy code path for GPIOs from DT */
++			status = of_spi_register_master(ctlr);
++			if (status)
++				return status;
++		}
++	}
 +
- static int tegra_spi_transfer_one_message(struct spi_master *master,
- 			struct spi_message *msg)
- {
-@@ -918,8 +931,7 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
- 
- complete_xfer:
- 		if (ret < 0 || skip) {
--			tegra_spi_writel(tspi, tspi->def_command1_reg,
--					SPI_COMMAND1);
-+			tegra_spi_transfer_end(spi);
- 			tegra_spi_transfer_delay(xfer->delay_usecs);
- 			goto exit;
- 		} else if (list_is_last(&xfer->transfer_list,
-@@ -927,13 +939,11 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
- 			if (xfer->cs_change)
- 				tspi->cs_control = spi;
- 			else {
--				tegra_spi_writel(tspi, tspi->def_command1_reg,
--						SPI_COMMAND1);
-+				tegra_spi_transfer_end(spi);
- 				tegra_spi_transfer_delay(xfer->delay_usecs);
- 			}
- 		} else if (xfer->cs_change) {
--			tegra_spi_writel(tspi, tspi->def_command1_reg,
--					SPI_COMMAND1);
-+			tegra_spi_transfer_end(spi);
- 			tegra_spi_transfer_delay(xfer->delay_usecs);
- 		}
- 
+ 	status = device_add(&ctlr->dev);
+ 	if (status < 0) {
+ 		/* free bus id */
 -- 
 2.20.1

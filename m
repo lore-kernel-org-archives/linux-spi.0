@@ -1,100 +1,92 @@
-From: Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Re: [LINUX PATCH v2 3/3] spi: spi-mem: Add support for Zynq QSPI
+From: Naga Sureshkumar Relli <nagasure@xilinx.com>
+Subject: RE: [LINUX PATCH v2 3/3] spi: spi-mem: Add support for Zynq QSPI
  controller
-Date: Fri, 5 Apr 2019 10:13:39 +0530
-Message-ID: <c8f73eab-99eb-ddbc-9776-ea6b3a3ecf0f@ti.com>
+Date: Fri, 5 Apr 2019 05:25:40 +0000
+Message-ID: <MWHPR02MB2623EDDF4207C7CA8F97B5D4AF510@MWHPR02MB2623.namprd02.prod.outlook.com>
 References: <1554105553-20207-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
+ <c8f73eab-99eb-ddbc-9776-ea6b3a3ecf0f@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: richard@nod.at, linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- marek.vasut@gmail.com, linux-mtd@lists.infradead.org, nagasuresh12@gmail.com,
- dwmw2@infradead.org, michal.simek@xilinx.com
-To: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>,
- <broonie@kernel.org>, <bbrezillon@kernel.org>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <1554105553-20207-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "dwmw2@infradead.org" <dwmw2@infradead.org>,
+        "marek.vasut@gmail.com" <marek.vasut@gmail.com>,
+        "richard@nod.at" <richard@nod.at>,
+        "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Michal Simek <michals@xilinx.com>,
+        "nagasuresh12@gmail.com" <nagasuresh12@gmail.com>
+To: Vignesh Raghavendra <vigneshr@ti.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "bbrezillon@kernel.org" <bbrezillon@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <c8f73eab-99eb-ddbc-9776-ea6b3a3ecf0f@ti.com>
 Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
-On 01/04/19 1:29 PM, Naga Sureshkumar Relli wrote:
-> +/**
-> + * zynq_qspi_config_op - Configure QSPI controller for specified transfer
-> + * @xqspi:	Pointer to the zynq_qspi structure
-> + * @qspi:	Pointer to the spi_device structure
-> + *
-> + * Sets the operational mode of QSPI controller for the next QSPI transfer and
-> + * sets the requested clock frequency.
-> + *
-> + * Return:	0 on success and -EINVAL on invalid input parameter
-> + *
-> + * Note: If the requested frequency is not an exact match with what can be
-> + * obtained using the prescalar value, the driver sets the clock frequency which
-> + * is lower than the requested frequency (maximum lower) for the transfer. If
-> + * the requested frequency is higher or lower than that is supported by the QSPI
-> + * controller the driver will set the highest or lowest frequency supported by
-> + * controller.
-> + */
-> +static int zynq_qspi_config_op(struct zynq_qspi *xqspi, struct spi_device *spi)
-> +{
-> +	u32 config_reg, baud_rate_val = 0;
-> +
-> +	/*
-> +	 * Set the clock frequency
-> +	 * The baud rate divisor is not a direct mapping to the value written
-> +	 * into the configuration register (config_reg[5:3])
-> +	 * i.e. 000 - divide by 2
-> +	 *      001 - divide by 4
-> +	 *      ----------------
-> +	 *      111 - divide by 256
-> +	 */
-> +	while ((baud_rate_val < ZYNQ_QSPI_BAUD_DIV_MAX)  &&
-> +	       (clk_get_rate(xqspi->refclk) / (2 << baud_rate_val)) >
-> +		spi->max_speed_hz)
-> +		baud_rate_val++;
-> +
-
-Instead use DIV_ROUND_UP, something like below should work(untested):
-
-	unsigned long refclk_rate = clk_get_rate(xqspi->refclk);
-	u32 baud_rate_val = DIV_ROUND_UP(refclk_rate, spi->max_speed_hz) - 1;
-
-	if (baud_rate_val > ZYNQ_QSPI_BAUD_DIV_MAX)
-		baud_rate_val = ZYNQ_QSPI_BAUD_DIV_MAX;
-
-> +	config_reg = zynq_qspi_read(xqspi, ZYNQ_QSPI_CONFIG_OFFSET);
-> +
-> +	/* Set the QSPI clock phase and clock polarity */
-> +	config_reg &= (~ZYNQ_QSPI_CONFIG_CPHA_MASK) &
-> +		      (~ZYNQ_QSPI_CONFIG_CPOL_MASK);
-> +	if (spi->mode & SPI_CPHA)
-> +		config_reg |= ZYNQ_QSPI_CONFIG_CPHA_MASK;
-> +	if (spi->mode & SPI_CPOL)
-> +		config_reg |= ZYNQ_QSPI_CONFIG_CPOL_MASK;
-> +
-> +	config_reg &= ~ZYNQ_QSPI_CONFIG_BDRATE_MASK;
-> +	config_reg |= (baud_rate_val << ZYNQ_QSPI_BAUD_DIV_SHIFT);
-> +	zynq_qspi_write(xqspi, ZYNQ_QSPI_CONFIG_OFFSET, config_reg);
-> +
-> +	return 0;
-> +}
-> +
-
--- 
-Regards
-Vignesh
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+SGkgVmlnbmVzaCwNCg0KVGhhbmtzIGZvciB0aGUgcmV2aWV3Lg0KDQo+IC0tLS0tT3JpZ2luYWwg
+TWVzc2FnZS0tLS0tDQo+IEZyb206IFZpZ25lc2ggUmFnaGF2ZW5kcmEgPHZpZ25lc2hyQHRpLmNv
+bT4NCj4gU2VudDogRnJpZGF5LCBBcHJpbCA1LCAyMDE5IDEwOjE0IEFNDQo+IFRvOiBOYWdhIFN1
+cmVzaGt1bWFyIFJlbGxpIDxuYWdhc3VyZUB4aWxpbnguY29tPjsgYnJvb25pZUBrZXJuZWwub3Jn
+Ow0KPiBiYnJlemlsbG9uQGtlcm5lbC5vcmcNCj4gQ2M6IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5v
+cmc7IGR3bXcyQGluZnJhZGVhZC5vcmc7IG1hcmVrLnZhc3V0QGdtYWlsLmNvbTsNCj4gcmljaGFy
+ZEBub2QuYXQ7IGxpbnV4LW10ZEBsaXN0cy5pbmZyYWRlYWQub3JnOyBsaW51eC1rZXJuZWxAdmdl
+ci5rZXJuZWwub3JnOyBNaWNoYWwgU2ltZWsNCj4gPG1pY2hhbHNAeGlsaW54LmNvbT47IG5hZ2Fz
+dXJlc2gxMkBnbWFpbC5jb20NCj4gU3ViamVjdDogUmU6IFtMSU5VWCBQQVRDSCB2MiAzLzNdIHNw
+aTogc3BpLW1lbTogQWRkIHN1cHBvcnQgZm9yIFp5bnEgUVNQSSBjb250cm9sbGVyDQo+IA0KPiAN
+Cj4gDQo+IE9uIDAxLzA0LzE5IDE6MjkgUE0sIE5hZ2EgU3VyZXNoa3VtYXIgUmVsbGkgd3JvdGU6
+DQo+ID4gKy8qKg0KPiA+ICsgKiB6eW5xX3FzcGlfY29uZmlnX29wIC0gQ29uZmlndXJlIFFTUEkg
+Y29udHJvbGxlciBmb3Igc3BlY2lmaWVkIHRyYW5zZmVyDQo+ID4gKyAqIEB4cXNwaToJUG9pbnRl
+ciB0byB0aGUgenlucV9xc3BpIHN0cnVjdHVyZQ0KPiA+ICsgKiBAcXNwaToJUG9pbnRlciB0byB0
+aGUgc3BpX2RldmljZSBzdHJ1Y3R1cmUNCj4gPiArICoNCj4gPiArICogU2V0cyB0aGUgb3BlcmF0
+aW9uYWwgbW9kZSBvZiBRU1BJIGNvbnRyb2xsZXIgZm9yIHRoZSBuZXh0IFFTUEkNCj4gPiArdHJh
+bnNmZXIgYW5kDQo+ID4gKyAqIHNldHMgdGhlIHJlcXVlc3RlZCBjbG9jayBmcmVxdWVuY3kuDQo+
+ID4gKyAqDQo+ID4gKyAqIFJldHVybjoJMCBvbiBzdWNjZXNzIGFuZCAtRUlOVkFMIG9uIGludmFs
+aWQgaW5wdXQgcGFyYW1ldGVyDQo+ID4gKyAqDQo+ID4gKyAqIE5vdGU6IElmIHRoZSByZXF1ZXN0
+ZWQgZnJlcXVlbmN5IGlzIG5vdCBhbiBleGFjdCBtYXRjaCB3aXRoIHdoYXQNCj4gPiArY2FuIGJl
+DQo+ID4gKyAqIG9idGFpbmVkIHVzaW5nIHRoZSBwcmVzY2FsYXIgdmFsdWUsIHRoZSBkcml2ZXIg
+c2V0cyB0aGUgY2xvY2sNCj4gPiArZnJlcXVlbmN5IHdoaWNoDQo+ID4gKyAqIGlzIGxvd2VyIHRo
+YW4gdGhlIHJlcXVlc3RlZCBmcmVxdWVuY3kgKG1heGltdW0gbG93ZXIpIGZvciB0aGUNCj4gPiAr
+dHJhbnNmZXIuIElmDQo+ID4gKyAqIHRoZSByZXF1ZXN0ZWQgZnJlcXVlbmN5IGlzIGhpZ2hlciBv
+ciBsb3dlciB0aGFuIHRoYXQgaXMgc3VwcG9ydGVkDQo+ID4gK2J5IHRoZSBRU1BJDQo+ID4gKyAq
+IGNvbnRyb2xsZXIgdGhlIGRyaXZlciB3aWxsIHNldCB0aGUgaGlnaGVzdCBvciBsb3dlc3QgZnJl
+cXVlbmN5DQo+ID4gK3N1cHBvcnRlZCBieQ0KPiA+ICsgKiBjb250cm9sbGVyLg0KPiA+ICsgKi8N
+Cj4gPiArc3RhdGljIGludCB6eW5xX3FzcGlfY29uZmlnX29wKHN0cnVjdCB6eW5xX3FzcGkgKnhx
+c3BpLCBzdHJ1Y3QNCj4gPiArc3BpX2RldmljZSAqc3BpKSB7DQo+ID4gKwl1MzIgY29uZmlnX3Jl
+ZywgYmF1ZF9yYXRlX3ZhbCA9IDA7DQo+ID4gKw0KPiA+ICsJLyoNCj4gPiArCSAqIFNldCB0aGUg
+Y2xvY2sgZnJlcXVlbmN5DQo+ID4gKwkgKiBUaGUgYmF1ZCByYXRlIGRpdmlzb3IgaXMgbm90IGEg
+ZGlyZWN0IG1hcHBpbmcgdG8gdGhlIHZhbHVlIHdyaXR0ZW4NCj4gPiArCSAqIGludG8gdGhlIGNv
+bmZpZ3VyYXRpb24gcmVnaXN0ZXIgKGNvbmZpZ19yZWdbNTozXSkNCj4gPiArCSAqIGkuZS4gMDAw
+IC0gZGl2aWRlIGJ5IDINCj4gPiArCSAqICAgICAgMDAxIC0gZGl2aWRlIGJ5IDQNCj4gPiArCSAq
+ICAgICAgLS0tLS0tLS0tLS0tLS0tLQ0KPiA+ICsJICogICAgICAxMTEgLSBkaXZpZGUgYnkgMjU2
+DQo+ID4gKwkgKi8NCj4gPiArCXdoaWxlICgoYmF1ZF9yYXRlX3ZhbCA8IFpZTlFfUVNQSV9CQVVE
+X0RJVl9NQVgpICAmJg0KPiA+ICsJICAgICAgIChjbGtfZ2V0X3JhdGUoeHFzcGktPnJlZmNsaykg
+LyAoMiA8PCBiYXVkX3JhdGVfdmFsKSkgPg0KPiA+ICsJCXNwaS0+bWF4X3NwZWVkX2h6KQ0KPiA+
+ICsJCWJhdWRfcmF0ZV92YWwrKzsNCj4gPiArDQo+IA0KPiBJbnN0ZWFkIHVzZSBESVZfUk9VTkRf
+VVAsIHNvbWV0aGluZyBsaWtlIGJlbG93IHNob3VsZCB3b3JrKHVudGVzdGVkKToNCj4gDQo+IAl1
+bnNpZ25lZCBsb25nIHJlZmNsa19yYXRlID0gY2xrX2dldF9yYXRlKHhxc3BpLT5yZWZjbGspOw0K
+PiAJdTMyIGJhdWRfcmF0ZV92YWwgPSBESVZfUk9VTkRfVVAocmVmY2xrX3JhdGUsIHNwaS0+bWF4
+X3NwZWVkX2h6KSAtIDE7DQo+IA0KVGhpcyBpcyBub3QganVzdCBkaXJlY3QgY2FsY3VsYXRpb24u
+DQppLmUuIGZvciBleGFtcGxlDQpyZWZjbGtfcmF0ZSA9IDIwME1IeiBhbmQgbWF4X3NwZWVkX2h4
+ID0gMTAwTUh6Lg0KdGhlbiBESVZfUk9VTkRfVVAgZ2l2ZXMgYSB2YWx1ZSBvZiAyLg0KQnV0IHdy
+aXRpbmcgYSB2YWx1ZSBvZiAyIHRvIGNvbmZpZyByZWdpc3RlcnMgbWVhbnMsIGRpdmlkZSBieSA4
+LiBCdXQgd2Ugc2hvdWxkIHdyaXRlIGRpdmlkZSBieSAyICh2YWx1ZSBvZiB6ZXJvKS4NClRoYXTi
+gJlzIHdoeSB3ZSBpbXBsZW1lbnRlZCB0aGUgYWJvdmUgY2FsY3VsYXRpb24uDQoNCjAwMDogZGl2
+aWRlIGJ5IDIuDQowMDE6IGRpdmlkZSBieSA0DQowMTA6IGRpdmlkZSBieSA4DQowMTE6IGRpdmlk
+ZSBieSAxNg0KMTAwOiBkaXZpZGUgYnkgMzINCjEwMTogZGl2aWRlIGJ5IDY0DQoxMTA6IGRpdmlk
+ZSBieSAxMjgNCjExMTogZGl2aWRlIGJ5IDI1Ng0KDQpUaGFua3MsDQpOYWdhIFN1cmVzaGt1bWFy
+IFJlbGxpDQo+IAlpZiAoYmF1ZF9yYXRlX3ZhbCA+IFpZTlFfUVNQSV9CQVVEX0RJVl9NQVgpDQo+
+IAkJYmF1ZF9yYXRlX3ZhbCA9IFpZTlFfUVNQSV9CQVVEX0RJVl9NQVg7DQo+IA0KPiA+ICsJY29u
+ZmlnX3JlZyA9IHp5bnFfcXNwaV9yZWFkKHhxc3BpLCBaWU5RX1FTUElfQ09ORklHX09GRlNFVCk7
+DQo+ID4gKw0KPiA+ICsJLyogU2V0IHRoZSBRU1BJIGNsb2NrIHBoYXNlIGFuZCBjbG9jayBwb2xh
+cml0eSAqLw0KPiA+ICsJY29uZmlnX3JlZyAmPSAoflpZTlFfUVNQSV9DT05GSUdfQ1BIQV9NQVNL
+KSAmDQo+ID4gKwkJICAgICAgKH5aWU5RX1FTUElfQ09ORklHX0NQT0xfTUFTSyk7DQo+ID4gKwlp
+ZiAoc3BpLT5tb2RlICYgU1BJX0NQSEEpDQo+ID4gKwkJY29uZmlnX3JlZyB8PSBaWU5RX1FTUElf
+Q09ORklHX0NQSEFfTUFTSzsNCj4gPiArCWlmIChzcGktPm1vZGUgJiBTUElfQ1BPTCkNCj4gPiAr
+CQljb25maWdfcmVnIHw9IFpZTlFfUVNQSV9DT05GSUdfQ1BPTF9NQVNLOw0KPiA+ICsNCj4gPiAr
+CWNvbmZpZ19yZWcgJj0gflpZTlFfUVNQSV9DT05GSUdfQkRSQVRFX01BU0s7DQo+ID4gKwljb25m
+aWdfcmVnIHw9IChiYXVkX3JhdGVfdmFsIDw8IFpZTlFfUVNQSV9CQVVEX0RJVl9TSElGVCk7DQo+
+ID4gKwl6eW5xX3FzcGlfd3JpdGUoeHFzcGksIFpZTlFfUVNQSV9DT05GSUdfT0ZGU0VULCBjb25m
+aWdfcmVnKTsNCj4gPiArDQo+ID4gKwlyZXR1cm4gMDsNCj4gPiArfQ0KPiA+ICsNCj4gDQo+IC0t
+DQo+IFJlZ2FyZHMNCj4gVmlnbmVzaA0K

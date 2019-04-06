@@ -1,126 +1,68 @@
-From: Vicente Bergas <vicencb-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [BUG] Rockchip SPI: long burst writes produce unexpected result
-Date: Sat, 06 Apr 2019 19:34:32 +0200
-Message-ID: <21d83ed2-a8db-49cf-ba8c-c7844157d7b0@gmail.com>
+From: Mukesh Ojha <mojha@codeaurora.org>
+Subject: Re: [PATCH] spi: bcm2835aux: Fix build error without CONFIG_DEBUG_FS
+Date: Sun, 7 Apr 2019 00:25:00 +0530
+Message-ID: <093507a3-7eb0-3025-57a8-525811627a59@codeaurora.org>
+References: <20190406151457.32104-1-yuehaibing@huawei.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
-Content-Transfer-Encoding: base64
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: <linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
-Return-path: <linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
- <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
-List-Post: <mailto:linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
- <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "Linux-rockchip" <linux-rockchip-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-rpi-kernel@lists.infradead.org
+To: Yue Haibing <yuehaibing@huawei.com>, broonie@kernel.org,
+ f.fainelli@gmail.com, rjui@broadcom.com, sbranden@broadcom.com,
+ bcm-kernel-feedback-list@broadcom.com, eric@anholt.net,
+ stefan.wahren@i2se.com
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190406151457.32104-1-yuehaibing@huawei.com>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-SGksCmkgaGF2ZSBiZWVuIGV4cGVyaWVuY2luZyBpc3N1ZXMgd3JpdGluZyB0byBOT1ItRmxhc2gg
-U1BJIE1lbW9yaWVzCmZyb20gdHdvIFJLMzM5OS1iYXNlZCBwbGF0Zm9ybXM6IGdydS1rZXZpbiBh
-bmQgc2FwcGhpcmUgYm9hcmQuCkZvciBrZXZpbiwgdGhpcyByZXN1bHRlZCBpbiBhIGJyaWNrZWQg
-ZGV2aWNlIGJlY2F1c2UgdGhhdCBtZW1vcnkKaXMgdGhlIG9ubHkgYm9vdCBkZXZpY2UuCkZvcnR1
-bmF0ZWx5IGFuIGV4dGVybmFsIHByb2dyYW1tZXIgaXMgYXZhaWxhYmxlLgoKSW4gb3JkZXIgdG8g
-aXNvbGF0ZSB3aGVyZSB0aGUgaXNzdWUgY2FuIGJlLCBzZXZlcmFsIHRlc3RzIGhhdmUgYmVlbgpk
-b25lLCBhZnRlciB3aGljaCBpdCBtYWtlcyBtZSB0aGluayB0aGUgaXNzdWUgaXMgcmVsYXRlZCB0
-byB0aGUKUm9ja2NoaXAgU1BJIGRyaXZlci4KCjRLQiBidXJzdCByZWFkcyB3b3JrIGZpbmUuClRo
-ZSBpc3N1ZSBpcyBvbmx5IG9ic2VydmVkIG9uIHRoZSB3cml0ZSBidXJzdCBsZW5ndGguCgpUZXN0
-IHVzZXIgICAgIHVzZXIva2VybmVsIGtlcm5lbCAgICBSSzMzOTkgIApOdW0gIHNwYWNlICAgIGlu
-dGVyZmFjZSAgIHNwYWNlICAgICAgIFNvQyAgIFN0YXR1cyBOb3RlcyAKLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KMSAgICBmbGFzaHJvbSBs
-aW51eF9tdGQgICBNVEQvUktzcGkgUktzcGkgICBGYWlsCjIgICAgZmxhc2hyb20gbGludXhfc3Bp
-ICAgUktzcGkgICAgIFJLc3BpICAgRmFpbAozICAgIGZsYXNocm9tIGxpbnV4X3NwaSAgIHNwaV9n
-cGlvICBHUElPICAgIE9LCjQgICAgY3VzdG9tICAgbGludXhfc3BpICAgc3BpX2dwaW8gIEdQSU8g
-ICAgT0sgICAyNjAtYnl0ZSBidXJzdCB3cml0ZXMKNSAgICBjdXN0b20gICBsaW51eF9zcGkgICBS
-S3NwaSAgICAgUktzcGkgICBGYWlsIDI2MC1ieXRlIGJ1cnN0IHdyaXRlcwo2ICAgIGN1c3RvbSAg
-IGxpbnV4X3NwaSAgIFJLc3BpICAgICBSS3NwaSAgIE9LICAgICAxLWJ5dGUgYnVyc3Qgd3JpdGVz
-CjcgICAgY3VzdG9tICAgbGludXhfc3BpICAgUktzcGkgICAgIFJLc3BpICAgT0sgICAgNDctYnl0
-ZSBidXJzdCB3cml0ZXMKOCAgICBjdXN0b20gICBsaW51eF9zcGkgICBSS3NwaSAgICAgUktzcGkg
-ICBGYWlsICA0OC1ieXRlIGJ1cnN0IHdyaXRlcwoKMywgNCkgVW5hY2NldGFibHkgc2xvdywgZGV2
-aWNlIHRyZWUgaXMKICBzcGlfZ3BpbyB7CiAgICBjb21wYXRpYmxlID0gInNwaS1ncGlvIjsKICAg
-ICNhZGRyZXNzLWNlbGxzID0gPDE+OwogICAgI3NpemUtY2VsbHMgPSA8MD47CiAgICBjcy1ncGlv
-cyAgID0gPCZncGlvMSBSS19QQjIgR1BJT19BQ1RJVkVfSElHSD47CiAgICBzY2stZ3Bpb3MgID0g
-PCZncGlvMSBSS19QQjEgR1BJT19BQ1RJVkVfSElHSD47CiAgICBtb3NpLWdwaW9zID0gPCZncGlv
-MSBSS19QQjAgR1BJT19BQ1RJVkVfSElHSD47CiAgICBtaXNvLWdwaW9zID0gPCZncGlvMSBSS19Q
-QTcgR1BJT19BQ1RJVkVfSElHSD47CiAgICBudW0tY2hpcHNlbGVjdHMgPSA8MT47CiAgICBzcGlk
-ZXZAMCB7CiAgICAgIGNvbXBhdGlibGUgPSAic3BpZGV2IjsKICAgICAgcmVnID0gPDA+OwogICAg
-ICBzcGktbWF4LWZyZXF1ZW5jeSA9IDw1MDAwMDAwMD47CiAgICB9OwogIH07CjIsIDUsIDYsIDcs
-IDgpIGRldmljZSB0cmVlIGlzCiAgJnNwaTEgewogICAgc3RhdHVzID0gIm9rYXkiOwogICAgc3Bp
-ZGV2QDAgewogICAgICBjb21wYXRpYmxlID0gInNwaWRldiI7CiAgICAgIHJlZyA9IDwwPjsKICAg
-ICAgc3BpLW1heC1mcmVxdWVuY3kgPSA8NTAwMDAwMDA+OwogICAgfTsKICB9Owo1LCA2LCA3LCA4
-KSBCdXJzdCB3cml0ZXMgYXJlIHBlcmZvcm1lZCB0aGlzIHdheQogIGVudW0geyBCVVJTVCA9IDQ4
-IH07CiAgc3RydWN0IHNwaV9pb2NfdHJhbnNmZXIgbXNnWzB4MTA1XTsKICB1bnNpZ25lZCBpID0g
-MDsKICBmb3IgKHVuc2lnbmVkIGogPSAwOyBqIDwgd2NudDsgaiArPSBCVVJTVCkgewogICAgbXNn
-W2krK10gPSB7IC50eF9idWYgPSB3YXJyLCAubGVuID0gQlVSU1Q8d2NudC1qID8gQlVSU1QgOiB3
-Y250LWogfTsKICAgIHdhcnIgKz0gQlVSU1Q7CiAgfQogIGlmIChyY250KQogICAgbXNnW2krK10g
-PSB7IC5yeF9idWYgPSByYXJyLCAubGVuID0gcmNudCB9OwogIGlvY3RsKGZkLCBTUElfSU9DX01F
-U1NBR0UoaSksIG1zZyk7CjEsIDIsIDUsIDgpIEkgaGF2ZSBubyBsb2dpYyBhbmFseXplciB0byBz
-ZWUgd2hhdCBpcyBoYXBwZW5uaW5nIG9uIHRoZQpTUEkgYnVzLCBidXQgd2hlbiBpdCBmYWlscyBh
-dCA0OC1ieXRlIGJ1cnN0cywgdGhlIGNvbnRlbnRzIG9mIHRoZSBtZW1vcnkKYXJlIGxpa2UgdGhp
-czoKQWRkciBFeHBlY3RlZCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBB
-Y3R1YWwKMDAwICBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBG
-RiAgRkYgRkYgRkYgRkYgRkYgRkYgRkYgCkZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGCjAxMCAg
-RkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgIEZGIEZGIEZG
-IEZGIEZGIEZGIEZGIApGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRgowMjAgIEZGIEZGIEZGIEZG
-IEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEYxIEYyIEYzIEY0ICBGRiBGRiBGRiBGRiBGRiBGRiBG
-RiAKRkYgRkYgRjEgRjIgRjMgRjQgRkYgRkYgRkYKMDMwICBGRiBGRiBGRiBGRiBGRiBGRiBGRiBG
-RiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiAgRkYgRkYgRkYgRkYgRkYgRkYgRkYgCkZGIEZGIEZG
-IEZGIEZGIEZGIEZGIEZGIEZGCjA0MCAgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYg
-RkYgRkYgRkYgRkYgRkYgIEZGIEZGIEZGIEZGIEZGIEZGIEZGIApGRiBGRiBGRiBGRiBGRiBGRiBG
-RiBGRiBGRgowNTAgIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZG
-IEZGICBGRiBGRiBGRiBGRiBGRiBGRiBGRiAKRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYKMDYw
-ICBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiAgRkYgRkYg
-RkYgRkYgRkYgRkYgRkYgCkZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGCjA3MCAgRkYgRkYgRkYg
-RkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRTEgRTIgRTMgRTQgIEZGIEZGIEZGIEZGIEZGIEZG
-IEUxIApFMiBFMyBFNCBGRiBGRiBGRiBGRiBGRiBGRgowODAgIEZGIEZGIEZGIEZGIEZGIEZGIEZG
-IEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGICBGRiBGRiBGRiBGRiBGRiBGRiBGRiAKRkYgRkYg
-RkYgRkYgRkYgRkYgRkYgRkYgRkYKMDkwICBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBG
-RiBGRiBGRiBGRiBGRiBGRiAgRkYgRkYgRkYgRkYgRkYgRkYgRkYgCkZGIEZGIEZGIEZGIEZGIEZG
-IEZGIEZGIEZGCjBBMCAgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYg
-RkYgRkYgIEZGIEZGIEZGIEZGIEZGIEZGIEZGIApGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRgow
-QjAgIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGICBGRiBG
-RiBGRiBGRiBGRiBGRiBGRiAKRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYKMEMwICBGRiBGRiBG
-RiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiAgRkYgRkYgRkYgRkYgRkYg
-RkYgRkYgCkZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGCjBEMCAgRkYgRkYgRkYgRkYgRkYgRkYg
-RkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgIEZGIEZGIEZGIEZGIEZGIEZGIEZGIApGRiBG
-RiBGRiBGRiBGRiBGRiBGRiBGRiBGRgowRTAgIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZG
-IEZGIEZGIEZGIEZGIEZGIEZGICBGRiBGRiBGRiBGRiBGRiBGRiBGRiAKRkYgRkYgRkYgRkYgRkYg
-RkYgRkYgRkYgRkYKMEYwICBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBG
-RiBGRiBGRiAgRkYgRkYgRkYgRkYgRkYgRkYgRkYgCkZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZG
-Cjc4MCAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgIDAw
-IDAwIDAwIDAwIDAwIDAwIDAwIAowMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMAo3OTAgIDAwIDAw
-IDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwICAwMCAwMCAwMCAwMCAw
-MCAwMCAwMCAKMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAKN0EwICAwMCAwMCAwMCAwMCAwMCAw
-MCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgCjAw
-IDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwCjdCMCAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAg
-MDAgMDAgMDAgMDAgMDAgMDAgMDAgIDAwIDAwIDAwIDAwIDAwIDAwIDAwIAowMCAwMCAwMCAwMCAw
-MCAwMCAwMCAwMCAwMAo3QzAgIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAw
-IDAwIDAwIDAwICAwMCAwMCAwMCAwMCAwMCAwMCAwMCAKMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAg
-MDAKN0QwICAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAg
-MDAgMDAgMDAgMDAgMDAgMDAgMDAgCjAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwCjdFMCAgMDAg
-MDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgIDAwIDAwIDAwIDAw
-IDAwIDAwIDAwIAowMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMAo3RjAgIDAwIDAwIDAwIDAwIDAw
-IDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwICAwMCBGRiBGRiBGRiBGRiBGRiBGRiAK
-RkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYKODAwICAwMSAwMiAwMyAwNCAwMCAwMCAwMCAwMCAw
-MCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAgMDEgMDIgMDMgMDQgMDAgMDAgMDAgCjAwIDAwIDAwIDAw
-IDAwIDAwIDAwIDAwIDAwCjgxMCAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAg
-MDAgMDAgMDAgMDAgIDAwIDAwIDAwIDAwIDAwIDAwIDAwIAowMCAwMCAwMCAwMCAwMCAwMCAwMCAw
-MCAwMAo4MjAgIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDA1IDA2IDA3IDA4
-ICAwMCAwMCAwMCAwMCAwMCAwMCAwMCAKMDAgMDAgMDUgMDYgMDcgMDggMDAgMDAgMDAKODMwICAw
-MCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAgMDAgMDAgMDAg
-MDAgMDAgMDAgMDAgCjAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwCjg0MCAgMDAgMDAgMDAgMDAg
-MDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgIDAwIDAwIDAwIDAwIDAwIDAwIDAw
-IAowMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMAo4NTAgIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAw
-IDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwICAwMCAwMCAwMCAwMCAwMCAwMCAwMCAKMDAgMDAgMDAg
-MDAgMDAgMDAgMDAgMDAgMDAKODYwICAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAw
-MCAwMCAwMCAwMCAwMCAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgCjAwIDAwIDAwIDAwIDAwIDAwIDAw
-IDAwIDAwCjg3MCAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAg
-MDAgIDAwIDAwIDAwIDAwIDAwIDAwIDAwIAowMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMAoKUmVn
-YXJkcywKICBWaWNlbsOnLgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCkxpbnV4LXJvY2tjaGlwIG1haWxpbmcgbGlzdApMaW51eC1yb2NrY2hpcEBsaXN0
-cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
-Zm8vbGludXgtcm9ja2NoaXAK
+
+On 4/6/2019 8:44 PM, Yue Haibing wrote:
+> From: YueHaibing <yuehaibing@huawei.com>
+>
+> When building CONFIG_DEBUG_FS is not set
+> gcc warn this:
+>
+> drivers/spi/spi-bcm2835aux.c: In function bcm2835aux_spi_probe:
+> drivers/spi/spi-bcm2835aux.c:591:2: error: too many arguments to function bcm2835aux_debugfs_create
+>    bcm2835aux_debugfs_create(bs, dev_name(&pdev->dev));
+>    ^~~~~~~~~~~~~~~~~~~~~~~~~
+> drivers/spi/spi-bcm2835aux.c:145:13: note: declared here
+>   static void bcm2835aux_debugfs_create(struct bcm2835aux_spi *bs)
+>
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Fixes: 8048d151eb4d ("spi: bcm2835aux: add driver stats to debugfs")
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Reviewed-by: Mukesh Ojha <mojha@codeaurora.org>
+
+Cheers,
+-Mukesh
+
+> ---
+>   drivers/spi/spi-bcm2835aux.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+> index fd8252d..bbf87ad 100644
+> --- a/drivers/spi/spi-bcm2835aux.c
+> +++ b/drivers/spi/spi-bcm2835aux.c
+> @@ -142,7 +142,8 @@ static void bcm2835aux_debugfs_remove(struct bcm2835aux_spi *bs)
+>   	bs->debugfs_dir = NULL;
+>   }
+>   #else
+> -static void bcm2835aux_debugfs_create(struct bcm2835aux_spi *bs)
+> +static void bcm2835aux_debugfs_create(struct bcm2835aux_spi *bs,
+> +				      const char *dname)
+>   {
+>   }
+>   

@@ -1,141 +1,156 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v9 2/3] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
- driver
-Date: Sat, 6 Apr 2019 22:59:33 +0300
-Message-ID: <724feb3b-2ef9-3ff4-8cad-586162fbc471@cogentembedded.com>
-References: <1553847606-18122-1-git-send-email-masonccyang@mxic.com.tw>
- <1553847606-18122-3-git-send-email-masonccyang@mxic.com.tw>
- <231f7423-bf13-99f8-427b-530f5446348b@cogentembedded.com>
- <OF7F1B534F.B934A9FE-ON482583D0.001DC618-482583D0.001FE84B@mxic.com.tw>
- <6d60bbef-a8ef-849e-33f3-3db35cefc09f@cogentembedded.com>
- <OFAEA16021.C7F7B095-ON482583D1.0031A13D-482583D1.00335085@mxic.com.tw>
- <7467d695-8922-16b2-03d4-fb4bbdda125a@cogentembedded.com>
- <20190404211234.5468e7a4@collabora.com>
+From: Vicente Bergas <vicencb-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [BUG] Rockchip SPI: long burst writes produce unexpected result
+Date: Sun, 07 Apr 2019 00:23:33 +0200
+Message-ID: <0168f45b-e624-4da0-878e-655f0f731e13@gmail.com>
+References: <21d83ed2-a8db-49cf-ba8c-c7844157d7b0@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: masonccyang@mxic.com.tw, bbrezillon@kernel.org, broonie@kernel.org,
-        devicetree@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
-        lee.jones@linaro.org, linux-kernel@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-        marek.vasut@gmail.com, mark.rutland@arm.com, robh+dt@kernel.org,
-        zhengxunli@mxic.com.tw
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190404211234.5468e7a4@collabora.com>
-Content-Language: en-MW
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Transfer-Encoding: base64
+Cc: linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Emil Renner Berthing <kernel-sKpHZLTYfq0@public.gmane.org>, Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
+ Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <21d83ed2-a8db-49cf-ba8c-c7844157d7b0-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
+ <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
+List-Post: <mailto:linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
+ <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "Linux-rockchip" <linux-rockchip-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 04/04/2019 10:12 PM, Boris Brezillon wrote:
-
-[...]
->>>>>>> +static ssize_t rpc_spi_mem_dirmap_read(struct spi_mem_dirmap_desc *desc,
->>>>>>> +                   u64 offs, size_t len, void *buf)
->>>>>>> +{
->>>>>>> +   struct rpc_spi *rpc =
->>>>>>> +         spi_controller_get_devdata(desc->mem->spi->controller);
->>>>>>> +   int ret;
->>>>>>> +
->>>>>>> +   if (offs + desc->info.offset + len > U32_MAX)
->>>>>>> +      return -EINVAL;
->>>>>>> +
->>>>>>> +   if (len > 0x4000000)
->>>>>>> +      len = 0x4000000;  
->>>>>>
->>>>>>    Ugh...  
->>>>>
->>>>> by mtd->size ?  
->>>>
->>>>   That'd be better, yes.
->>>>  
->>>
->>> Oops, it seems hard to get mtd->size info. from spi_mem_dirmap,  
->>
->>    It's in desc->info.length, no?
-> 
-> It's the lengths of the mapping which not necessarily mtd->size, but in
-> the SPI NOR case it is :-). Anyway, you should not assume
-> dirmapdesc->info.length == memory_device->size.
-> 
->>
->>> I would like to keep 0x4000000.  
->>
->>    I'm seeing Boris in the CC's... Boris, is it legitimate to limit
->> a single dirmap read by the memory "window" size? Or should we try to 
->> serve any valid transfer length?
-> 
-> If by memory window you're talking about the memory region reserved in
-
-   Yes, we have 64 MiB window thru which we can "look into" the large MTD chips.
-
-> the CPU address space, then no. It should not be limited to this size
-> if possible.
-
-   Mhm, so we're expected to loop incrementing the window address register
-in order to serve the full xfer request?
-
-> Most HW have a way to configure an offset to apply to the spi-mem operation,
-> and in that case, the driver should change this
-> offset on the fly when one tries to access a region that's outside of
-> the currently configured window.
-
-   Well, my question wasn't about that actually -- that seemed quite obvious.
-
->>>>>>> +
->>>>>>> +   ret = rpc_spi_set_freq(rpc, desc->mem->spi->max_speed_hz);
->>>>>>> +   if (ret)
->>>>>>> +      return ret;
->>>>>>> +
->>>>>>> +   rpc_spi_mem_set_prep_op_cfg(desc->mem->spi,
->>>>>>> +                &desc->info.op_tmpl, &offs, &len);
->>>>>>> +
->>>>>>> +   regmap_update_bits(rpc->regmap, RPC_CMNCR, RPC_CMNCR_MD, 0);
->>>>>>> +   regmap_write(rpc->regmap, RPC_DRCR, RPC_DRCR_RBURST(32) |
->>>>>>> +           RPC_DRCR_RBE);
->>>>>>> +
->>>>>>> +   regmap_write(rpc->regmap, RPC_DRCMR, rpc->cmd);
->>>>>>> +   regmap_write(rpc->regmap, RPC_DREAR, RPC_DREAR_EAC(1));  
->>>>>>
->>>>>>    So you're not even trying to support flashes larger than the  
->>>> read dirmap?  
->>>>>> Now I don't think it's acceptable (and I have rewritten this code  
->>>> internally).  
->>>>>
->>>>> what about the size comes form mtd->size ?  
->>>>
->>>>    I'm not talking about size here; we should use the full address.
->>>> I'm attaching
->>>> my patch...  
->>>
->>> okay,got it!
->>> what about just
->>> -      regmap_write(rpc->mfd->regmap, RPC_DREAR, RPC_DREAR_EAC(1));
->>> +      regmap_write(rpc->mfd->regmap, RPC_DREAR,
->>> +                   RPC_DREAR_EAV(offs >> 25) | RPC_DREAR_EAC(1));
->>>
->>> because only > 64MByte size make RPC_DREAR_EAV() work.  
->>
->>    Boris, what's your opinion on this?
->>    Note that for the write dirmap we have just 256-byte buffer (reusing
->> the read cache). Is it legitimate to limit the served length to 256 bytes?
-
-> I don't know what the HW is capable of,
-
-   As I said, there's 64 MiB read window, and for the writes we can re-use the
-read cache to write (exactly) 256 bytes at a time...
-
-> but drivers should use any try
-> they have to dynamically move the memory map window (make it point at a
-> different spi-mem offset on demand). Note that dirmap_read/write() are
-> allowed to return less than the amount of data requested, in that case
-> the caller should continue reading at the offset where things stopped.
-> This avoids having to implement a loop that splits things in several
-> accesses when the access cannot be done in one step.
-
-   Ah, this somewhat contradicts what you said earlier but seems clear now.
-I'll go remove the loops. :-)
-
-MBR, Sergei
+SGkgYWdhaW4sCmp1c3QgZm91bmQgdGhlIGZpcnN0IG9mZmVuZGluZyBjb21taXQ6Cgpjb21taXQg
+ZWZmMDI3NWU1MjUzNjA0NDI5YWVkYzQyYjAwOGM1ZmNhYTZjYzU5NwpEYXRlOiAgIFdlZCBPY3Qg
+MzEgMTE6NTc6MDYgMjAxOCArMDEwMAoKICAgIHNwaTogcm9ja2NoaXA6IHNpbXBsaWZ5IHVzZV9k
+bWEgbG9naWMKICAgIAogICAgV2Ugb25seSBuZWVkIHRvIGtub3cgaWYgd2UncmUgdXNpbmcgZG1h
+IHdoZW4gc2V0dGluZwogICAgdXAgdGhlIHRyYW5zZmVyLCBzbyBqdXN0IHVzZSBhIGxvY2FsIHZh
+cmlhYmxlIGZvcgogICAgdGhhdC4KCkl0IHdhcyBtYWlubGluZWQgaW4gTGludXggdjUuMC4KClRo
+aXMgaXMgdGhlIHJlc3VsdCBvZiBhIGJpbmFyeSBzZWFyY2ggYW1vbmcgdGhpcyBsaXN0IG9mIGNv
+bW1pdHM6CjA0MjkwMTkyZjdlYmU4OTI4MjhmNjlhYzU3YzQ2ODRlMjVkYTM3OGQKNjU0OThjNmFl
+MjQxNGExNDI1YWE2YzQyMzFlNzllMjk5OGFmZWMwNQowMWI1OWNlNWRhYzg1NjMyM2EwYzEzYzFk
+NTFkOTlhODE5ZjMyZWZlCjc0YjdlZmE4MmIxMTkxNGMyMWUzMGQ5ODdlZDYxZDNkYWE1N2ZmMjEK
+NDIwYjgyZjg0Mjk0MWEzMmFkZjMwOWNhMWIxOTNhZGZjNzc2MTZiMAplZmYwMjc1ZTUyNTM2MDQ0
+MjlhZWRjNDJiMDA4YzVmY2FhNmNjNTk3CmQ3OTBjMzQyZTY4OWVhNzdhNWNmNzJkNWI5OTMyOTk5
+MTFlZTUyNzYKZWVlMDZhOWVlMmNkNWRlYWRkYzVmNzdjZThmNjExOGM4YjgyYjJhMApmYzFhZDhl
+ZTMzNDgwYmRmMDQ5M2I1NDkwN2I3NDUzOGJmOWI3NWI4CmNlMzg2MTAwZDk5OTc2NDQyMDkzZmY1
+N2I1YjI0YTk1NjJjNmNjMjcKZmFiM2U0ODcxZjYyM2M4Zjg2ZThhMGUwMDc0OWYxNDgwZmZhMDhk
+YgoyNDEwZDZhM2MzMDcwZTIwNTE2OWExYTc0MWFhNzg4OThlMzBhNjQyCjMxYmNiNTdiZTEyZmQ4
+MTVhOTA1MWYwN2Q2NDMzNDgwOWI4Y2I0NzIKMzA2ODhlNGU2NzBkMjExMjZhYTU5NmRmNDUyMzk0
+MGUyZjhkMjRkZQphM2MxNzQwMjFjZTc4MGY1ZDJlOWIyMTA1ZTJjYjQ5MDNhMzcyMjZkCmQ5MDcx
+YjdlOWZjNDc0ZTQ3NGUzYjg2NTQyOGE4ZDMwZDg4ZGFhZjQKZjM0MGI5MjA1MTFhNjY2YjAyZDM3
+MWU4ODgwMWQzODE3ZWE3YTg4MAowNThmN2M1MDllODRhYmQzNmY5ODhkNGUxNjQzMjM2NmJkNzkz
+ZDhmCmRjZmM4NjFkMjRlYzE5ZjBkMGQzZDU1YmIwMTY2NDY3OTQ1NzFmYmIKZGQ4ZmQyY2JjNzNm
+ODY1MGY2NTFkYTcxZmM2MWE2ZTRmMzBjMTU2NgoKUmVnYXJkcywKICBWaWNlbsOnLgoKT24gU2F0
+dXJkYXksIEFwcmlsIDYsIDIwMTkgNzozNDozMiBQTSBDRVNULCBWaWNlbnRlIEJlcmdhcyB3cm90
+ZToKPiBIaSwKPiBpIGhhdmUgYmVlbiBleHBlcmllbmNpbmcgaXNzdWVzIHdyaXRpbmcgdG8gTk9S
+LUZsYXNoIFNQSSBNZW1vcmllcwo+IGZyb20gdHdvIFJLMzM5OS1iYXNlZCBwbGF0Zm9ybXM6IGdy
+dS1rZXZpbiBhbmQgc2FwcGhpcmUgYm9hcmQuCj4gRm9yIGtldmluLCB0aGlzIHJlc3VsdGVkIGlu
+IGEgYnJpY2tlZCBkZXZpY2UgYmVjYXVzZSB0aGF0IG1lbW9yeQo+IGlzIHRoZSBvbmx5IGJvb3Qg
+ZGV2aWNlLgo+IEZvcnR1bmF0ZWx5IGFuIGV4dGVybmFsIHByb2dyYW1tZXIgaXMgYXZhaWxhYmxl
+Lgo+Cj4gSW4gb3JkZXIgdG8gaXNvbGF0ZSB3aGVyZSB0aGUgaXNzdWUgY2FuIGJlLCBzZXZlcmFs
+IHRlc3RzIGhhdmUgYmVlbgo+IGRvbmUsIGFmdGVyIHdoaWNoIGl0IG1ha2VzIG1lIHRoaW5rIHRo
+ZSBpc3N1ZSBpcyByZWxhdGVkIHRvIHRoZQo+IFJvY2tjaGlwIFNQSSBkcml2ZXIuCj4KPiA0S0Ig
+YnVyc3QgcmVhZHMgd29yayBmaW5lLgo+IFRoZSBpc3N1ZSBpcyBvbmx5IG9ic2VydmVkIG9uIHRo
+ZSB3cml0ZSBidXJzdCBsZW5ndGguCj4KPiBUZXN0IHVzZXIgICAgIHVzZXIva2VybmVsIGtlcm5l
+bCAgICBSSzMzOTkgIE51bSAgc3BhY2UgICAgCj4gaW50ZXJmYWNlICAgc3BhY2UgICAgICAgU29D
+ICAgU3RhdHVzIE5vdGVzIAo+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tCj4gMSAgICBmbGFzaHJvbSBsaW51eF9tdGQgICBNVEQvUktzcGkg
+UktzcGkgICBGYWlsCj4gMiAgICBmbGFzaHJvbSBsaW51eF9zcGkgICBSS3NwaSAgICAgUktzcGkg
+ICBGYWlsCj4gMyAgICBmbGFzaHJvbSBsaW51eF9zcGkgICBzcGlfZ3BpbyAgR1BJTyAgICBPSwo+
+IDQgICAgY3VzdG9tICAgbGludXhfc3BpICAgc3BpX2dwaW8gIEdQSU8gICAgT0sgICAyNjAtYnl0
+ZSBidXJzdCB3cml0ZXMKPiA1ICAgIGN1c3RvbSAgIGxpbnV4X3NwaSAgIFJLc3BpICAgICBSS3Nw
+aSAgIEZhaWwgMjYwLWJ5dGUgYnVyc3Qgd3JpdGVzCj4gNiAgICBjdXN0b20gICBsaW51eF9zcGkg
+ICBSS3NwaSAgICAgUktzcGkgICBPSyAgICAgMS1ieXRlIGJ1cnN0IHdyaXRlcwo+IDcgICAgY3Vz
+dG9tICAgbGludXhfc3BpICAgUktzcGkgICAgIFJLc3BpICAgT0sgICAgNDctYnl0ZSBidXJzdCB3
+cml0ZXMKPiA4ICAgIGN1c3RvbSAgIGxpbnV4X3NwaSAgIFJLc3BpICAgICBSS3NwaSAgIEZhaWwg
+IDQ4LWJ5dGUgYnVyc3Qgd3JpdGVzCj4KPiAzLCA0KSBVbmFjY2V0YWJseSBzbG93LCBkZXZpY2Ug
+dHJlZSBpcwo+ICBzcGlfZ3BpbyB7Cj4gICAgY29tcGF0aWJsZSA9ICJzcGktZ3BpbyI7Cj4gICAg
+I2FkZHJlc3MtY2VsbHMgPSA8MT47Cj4gICAgI3NpemUtY2VsbHMgPSA8MD47Cj4gICAgY3MtZ3Bp
+b3MgICA9IDwmZ3BpbzEgUktfUEIyIEdQSU9fQUNUSVZFX0hJR0g+Owo+ICAgIHNjay1ncGlvcyAg
+PSA8JmdwaW8xIFJLX1BCMSBHUElPX0FDVElWRV9ISUdIPjsKPiAgICBtb3NpLWdwaW9zID0gPCZn
+cGlvMSBSS19QQjAgR1BJT19BQ1RJVkVfSElHSD47Cj4gICAgbWlzby1ncGlvcyA9IDwmZ3BpbzEg
+UktfUEE3IEdQSU9fQUNUSVZFX0hJR0g+Owo+ICAgIG51bS1jaGlwc2VsZWN0cyA9IDwxPjsKPiAg
+ICBzcGlkZXZAMCB7Cj4gICAgICBjb21wYXRpYmxlID0gInNwaWRldiI7Cj4gICAgICByZWcgPSA8
+MD47Cj4gICAgICBzcGktbWF4LWZyZXF1ZW5jeSA9IDw1MDAwMDAwMD47Cj4gICAgfTsKPiAgfTsK
+PiAyLCA1LCA2LCA3LCA4KSBkZXZpY2UgdHJlZSBpcwo+ICAmc3BpMSB7Cj4gICAgc3RhdHVzID0g
+Im9rYXkiOwo+ICAgIHNwaWRldkAwIHsKPiAgICAgIGNvbXBhdGlibGUgPSAic3BpZGV2IjsKPiAg
+ICAgIHJlZyA9IDwwPjsKPiAgICAgIHNwaS1tYXgtZnJlcXVlbmN5ID0gPDUwMDAwMDAwPjsKPiAg
+ICB9Owo+ICB9Owo+IDUsIDYsIDcsIDgpIEJ1cnN0IHdyaXRlcyBhcmUgcGVyZm9ybWVkIHRoaXMg
+d2F5Cj4gIGVudW0geyBCVVJTVCA9IDQ4IH07Cj4gIHN0cnVjdCBzcGlfaW9jX3RyYW5zZmVyIG1z
+Z1sweDEwNV07Cj4gIHVuc2lnbmVkIGkgPSAwOwo+ICBmb3IgKHVuc2lnbmVkIGogPSAwOyBqIDwg
+d2NudDsgaiArPSBCVVJTVCkgewo+ICAgIG1zZ1tpKytdID0geyAudHhfYnVmID0gd2FyciwgLmxl
+biA9IEJVUlNUPHdjbnQtaiA/IEJVUlNUIDogd2NudC1qIH07Cj4gICAgd2FyciArPSBCVVJTVDsK
+PiAgfQo+ICBpZiAocmNudCkKPiAgICBtc2dbaSsrXSA9IHsgLnJ4X2J1ZiA9IHJhcnIsIC5sZW4g
+PSByY250IH07Cj4gIGlvY3RsKGZkLCBTUElfSU9DX01FU1NBR0UoaSksIG1zZyk7Cj4gMSwgMiwg
+NSwgOCkgSSBoYXZlIG5vIGxvZ2ljIGFuYWx5emVyIHRvIHNlZSB3aGF0IGlzIGhhcHBlbm5pbmcg
+b24gdGhlCj4gU1BJIGJ1cywgYnV0IHdoZW4gaXQgZmFpbHMgYXQgNDgtYnl0ZSBidXJzdHMsIHRo
+ZSBjb250ZW50cyBvZiB0aGUgbWVtb3J5Cj4gYXJlIGxpa2UgdGhpczoKPiBBZGRyIEV4cGVjdGVk
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIEFjdHVhbAo+IDAwMCAgRkYg
+RkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgIEZGIEZGIEZGIAo+
+IEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGCj4gMDEwICBGRiBGRiBGRiBG
+RiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiAgRkYgRkYgRkYgCj4gRkYgRkYg
+RkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYKPiAwMjAgIEZGIEZGIEZGIEZGIEZGIEZG
+IEZGIEZGIEZGIEZGIEZGIEZGIEYxIEYyIEYzIEY0ICBGRiBGRiBGRiAKPiBGRiBGRiBGRiBGRiBG
+RiBGRiBGMSBGMiBGMyBGNCBGRiBGRiBGRgo+IDAzMCAgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYg
+RkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgIEZGIEZGIEZGIAo+IEZGIEZGIEZGIEZGIEZGIEZGIEZG
+IEZGIEZGIEZGIEZGIEZGIEZGCj4gMDQwICBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBG
+RiBGRiBGRiBGRiBGRiBGRiAgRkYgRkYgRkYgCj4gRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYg
+RkYgRkYgRkYgRkYKPiAwNTAgIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZG
+IEZGIEZGIEZGICBGRiBGRiBGRiAKPiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBG
+RiBGRgo+IDA2MCAgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYg
+RkYgIEZGIEZGIEZGIAo+IEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGCj4g
+MDcwICBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBFMSBFMiBFMyBFNCAgRkYg
+RkYgRkYgCj4gRkYgRkYgRkYgRTEgRTIgRTMgRTQgRkYgRkYgRkYgRkYgRkYgRkYKPiAwODAgIEZG
+IEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGICBGRiBGRiBGRiAK
+PiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRgo+IDA5MCAgRkYgRkYgRkYg
+RkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgIEZGIEZGIEZGIAo+IEZGIEZG
+IEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGCj4gMEEwICBGRiBGRiBGRiBGRiBGRiBG
+RiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiAgRkYgRkYgRkYgCj4gRkYgRkYgRkYgRkYg
+RkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYKPiAwQjAgIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZG
+IEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGICBGRiBGRiBGRiAKPiBGRiBGRiBGRiBGRiBGRiBGRiBG
+RiBGRiBGRiBGRiBGRiBGRiBGRgo+IDBDMCAgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYg
+RkYgRkYgRkYgRkYgRkYgRkYgIEZGIEZGIEZGIAo+IEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZG
+IEZGIEZGIEZGIEZGCj4gMEQwICBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBG
+RiBGRiBGRiBGRiAgRkYgRkYgRkYgCj4gRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYg
+RkYgRkYKPiAwRTAgIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZG
+IEZGICBGRiBGRiBGRiAKPiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRgo+
+IDBGMCAgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgIEZG
+IEZGIEZGIAo+IEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGCj4gNzgwICAw
+MCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAgMDAgMDAgMDAg
+Cj4gMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAKPiA3OTAgIDAwIDAwIDAw
+IDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwICAwMCAwMCAwMCAKPiAwMCAw
+MCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMAo+IDdBMCAgMDAgMDAgMDAgMDAgMDAg
+MDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgIDAwIDAwIDAwIAo+IDAwIDAwIDAwIDAw
+IDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwCj4gN0IwICAwMCAwMCAwMCAwMCAwMCAwMCAwMCAw
+MCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAgMDAgMDAgMDAgCj4gMDAgMDAgMDAgMDAgMDAgMDAg
+MDAgMDAgMDAgMDAgMDAgMDAgMDAKPiA3QzAgIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAw
+IDAwIDAwIDAwIDAwIDAwIDAwICAwMCAwMCAwMCAKPiAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAw
+MCAwMCAwMCAwMCAwMAo+IDdEMCAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAg
+MDAgMDAgMDAgMDAgIDAwIDAwIDAwIAo+IDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAw
+IDAwIDAwCj4gN0UwICAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAw
+MCAwMCAgMDAgMDAgMDAgCj4gMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAK
+PiA3RjAgIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwICAw
+MCBGRiBGRiAKPiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRgo+IDgwMCAg
+MDEgMDIgMDMgMDQgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgIDAxIDAyIDAz
+IAo+IDA0IDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwCj4gODEwICAwMCAwMCAw
+MCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAgMDAgMDAgMDAgCj4gMDAg
+MDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAKPiA4MjAgIDAwIDAwIDAwIDAwIDAw
+IDAwIDAwIDAwIDAwIDAwIDAwIDAwIDA1IDA2IDA3IDA4ICAwMCAwMCAwMCAKPiAwMCAwMCAwMCAw
+MCAwMCAwMCAwNSAwNiAwNyAwOCAwMCAwMCAwMAo+IDgzMCAgMDAgMDAgMDAgMDAgMDAgMDAgMDAg
+MDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgIDAwIDAwIDAwIAo+IDAwIDAwIDAwIDAwIDAwIDAw
+IDAwIDAwIDAwIDAwIDAwIDAwIDAwCj4gODQwICAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAw
+MCAwMCAwMCAwMCAwMCAwMCAwMCAgMDAgMDAgMDAgCj4gMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAg
+MDAgMDAgMDAgMDAgMDAKPiA4NTAgIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAw
+IDAwIDAwIDAwIDAwICAwMCAwMCAwMCAKPiAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAw
+MCAwMCAwMAo+IDg2MCAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAg
+MDAgMDAgIDAwIDAwIDAwIAo+IDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAw
+Cj4gODcwICAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAg
+MDAgMDAgMDAgCj4gMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAKPgo+IFJl
+Z2FyZHMsCj4gIFZpY2Vuw6cuCj4KPgo+CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KTGludXgtcm9ja2NoaXAgbWFpbGluZyBsaXN0CkxpbnV4LXJvY2tj
+aGlwQGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
+bi9saXN0aW5mby9saW51eC1yb2NrY2hpcAo=

@@ -1,156 +1,189 @@
-From: Vicente Bergas <vicencb-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Vicente Bergas <vicencb@gmail.com>
 Subject: Re: [BUG] Rockchip SPI: long burst writes produce unexpected result
-Date: Sun, 07 Apr 2019 00:23:33 +0200
-Message-ID: <0168f45b-e624-4da0-878e-655f0f731e13@gmail.com>
+Date: Sun, 07 Apr 2019 02:38:08 +0200
+Message-ID: <746e632e-63e2-49af-8e8f-e37270beea73@gmail.com>
 References: <21d83ed2-a8db-49cf-ba8c-c7844157d7b0@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
-Content-Transfer-Encoding: base64
-Cc: linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Emil Renner Berthing <kernel-sKpHZLTYfq0@public.gmane.org>, Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
- Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <21d83ed2-a8db-49cf-ba8c-c7844157d7b0-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
- <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
-List-Post: <mailto:linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
- <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "Linux-rockchip" <linux-rockchip-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+Cc: <linux-rockchip@lists.infradead.org>, <linux-spi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+To: Emil Renner Berthing <kernel@esmil.dk>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <21d83ed2-a8db-49cf-ba8c-c7844157d7b0@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgYWdhaW4sCmp1c3QgZm91bmQgdGhlIGZpcnN0IG9mZmVuZGluZyBjb21taXQ6Cgpjb21taXQg
-ZWZmMDI3NWU1MjUzNjA0NDI5YWVkYzQyYjAwOGM1ZmNhYTZjYzU5NwpEYXRlOiAgIFdlZCBPY3Qg
-MzEgMTE6NTc6MDYgMjAxOCArMDEwMAoKICAgIHNwaTogcm9ja2NoaXA6IHNpbXBsaWZ5IHVzZV9k
-bWEgbG9naWMKICAgIAogICAgV2Ugb25seSBuZWVkIHRvIGtub3cgaWYgd2UncmUgdXNpbmcgZG1h
-IHdoZW4gc2V0dGluZwogICAgdXAgdGhlIHRyYW5zZmVyLCBzbyBqdXN0IHVzZSBhIGxvY2FsIHZh
-cmlhYmxlIGZvcgogICAgdGhhdC4KCkl0IHdhcyBtYWlubGluZWQgaW4gTGludXggdjUuMC4KClRo
-aXMgaXMgdGhlIHJlc3VsdCBvZiBhIGJpbmFyeSBzZWFyY2ggYW1vbmcgdGhpcyBsaXN0IG9mIGNv
-bW1pdHM6CjA0MjkwMTkyZjdlYmU4OTI4MjhmNjlhYzU3YzQ2ODRlMjVkYTM3OGQKNjU0OThjNmFl
-MjQxNGExNDI1YWE2YzQyMzFlNzllMjk5OGFmZWMwNQowMWI1OWNlNWRhYzg1NjMyM2EwYzEzYzFk
-NTFkOTlhODE5ZjMyZWZlCjc0YjdlZmE4MmIxMTkxNGMyMWUzMGQ5ODdlZDYxZDNkYWE1N2ZmMjEK
-NDIwYjgyZjg0Mjk0MWEzMmFkZjMwOWNhMWIxOTNhZGZjNzc2MTZiMAplZmYwMjc1ZTUyNTM2MDQ0
-MjlhZWRjNDJiMDA4YzVmY2FhNmNjNTk3CmQ3OTBjMzQyZTY4OWVhNzdhNWNmNzJkNWI5OTMyOTk5
-MTFlZTUyNzYKZWVlMDZhOWVlMmNkNWRlYWRkYzVmNzdjZThmNjExOGM4YjgyYjJhMApmYzFhZDhl
-ZTMzNDgwYmRmMDQ5M2I1NDkwN2I3NDUzOGJmOWI3NWI4CmNlMzg2MTAwZDk5OTc2NDQyMDkzZmY1
-N2I1YjI0YTk1NjJjNmNjMjcKZmFiM2U0ODcxZjYyM2M4Zjg2ZThhMGUwMDc0OWYxNDgwZmZhMDhk
-YgoyNDEwZDZhM2MzMDcwZTIwNTE2OWExYTc0MWFhNzg4OThlMzBhNjQyCjMxYmNiNTdiZTEyZmQ4
-MTVhOTA1MWYwN2Q2NDMzNDgwOWI4Y2I0NzIKMzA2ODhlNGU2NzBkMjExMjZhYTU5NmRmNDUyMzk0
-MGUyZjhkMjRkZQphM2MxNzQwMjFjZTc4MGY1ZDJlOWIyMTA1ZTJjYjQ5MDNhMzcyMjZkCmQ5MDcx
-YjdlOWZjNDc0ZTQ3NGUzYjg2NTQyOGE4ZDMwZDg4ZGFhZjQKZjM0MGI5MjA1MTFhNjY2YjAyZDM3
-MWU4ODgwMWQzODE3ZWE3YTg4MAowNThmN2M1MDllODRhYmQzNmY5ODhkNGUxNjQzMjM2NmJkNzkz
-ZDhmCmRjZmM4NjFkMjRlYzE5ZjBkMGQzZDU1YmIwMTY2NDY3OTQ1NzFmYmIKZGQ4ZmQyY2JjNzNm
-ODY1MGY2NTFkYTcxZmM2MWE2ZTRmMzBjMTU2NgoKUmVnYXJkcywKICBWaWNlbsOnLgoKT24gU2F0
-dXJkYXksIEFwcmlsIDYsIDIwMTkgNzozNDozMiBQTSBDRVNULCBWaWNlbnRlIEJlcmdhcyB3cm90
-ZToKPiBIaSwKPiBpIGhhdmUgYmVlbiBleHBlcmllbmNpbmcgaXNzdWVzIHdyaXRpbmcgdG8gTk9S
-LUZsYXNoIFNQSSBNZW1vcmllcwo+IGZyb20gdHdvIFJLMzM5OS1iYXNlZCBwbGF0Zm9ybXM6IGdy
-dS1rZXZpbiBhbmQgc2FwcGhpcmUgYm9hcmQuCj4gRm9yIGtldmluLCB0aGlzIHJlc3VsdGVkIGlu
-IGEgYnJpY2tlZCBkZXZpY2UgYmVjYXVzZSB0aGF0IG1lbW9yeQo+IGlzIHRoZSBvbmx5IGJvb3Qg
-ZGV2aWNlLgo+IEZvcnR1bmF0ZWx5IGFuIGV4dGVybmFsIHByb2dyYW1tZXIgaXMgYXZhaWxhYmxl
-Lgo+Cj4gSW4gb3JkZXIgdG8gaXNvbGF0ZSB3aGVyZSB0aGUgaXNzdWUgY2FuIGJlLCBzZXZlcmFs
-IHRlc3RzIGhhdmUgYmVlbgo+IGRvbmUsIGFmdGVyIHdoaWNoIGl0IG1ha2VzIG1lIHRoaW5rIHRo
-ZSBpc3N1ZSBpcyByZWxhdGVkIHRvIHRoZQo+IFJvY2tjaGlwIFNQSSBkcml2ZXIuCj4KPiA0S0Ig
-YnVyc3QgcmVhZHMgd29yayBmaW5lLgo+IFRoZSBpc3N1ZSBpcyBvbmx5IG9ic2VydmVkIG9uIHRo
-ZSB3cml0ZSBidXJzdCBsZW5ndGguCj4KPiBUZXN0IHVzZXIgICAgIHVzZXIva2VybmVsIGtlcm5l
-bCAgICBSSzMzOTkgIE51bSAgc3BhY2UgICAgCj4gaW50ZXJmYWNlICAgc3BhY2UgICAgICAgU29D
-ICAgU3RhdHVzIE5vdGVzIAo+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tCj4gMSAgICBmbGFzaHJvbSBsaW51eF9tdGQgICBNVEQvUktzcGkg
-UktzcGkgICBGYWlsCj4gMiAgICBmbGFzaHJvbSBsaW51eF9zcGkgICBSS3NwaSAgICAgUktzcGkg
-ICBGYWlsCj4gMyAgICBmbGFzaHJvbSBsaW51eF9zcGkgICBzcGlfZ3BpbyAgR1BJTyAgICBPSwo+
-IDQgICAgY3VzdG9tICAgbGludXhfc3BpICAgc3BpX2dwaW8gIEdQSU8gICAgT0sgICAyNjAtYnl0
-ZSBidXJzdCB3cml0ZXMKPiA1ICAgIGN1c3RvbSAgIGxpbnV4X3NwaSAgIFJLc3BpICAgICBSS3Nw
-aSAgIEZhaWwgMjYwLWJ5dGUgYnVyc3Qgd3JpdGVzCj4gNiAgICBjdXN0b20gICBsaW51eF9zcGkg
-ICBSS3NwaSAgICAgUktzcGkgICBPSyAgICAgMS1ieXRlIGJ1cnN0IHdyaXRlcwo+IDcgICAgY3Vz
-dG9tICAgbGludXhfc3BpICAgUktzcGkgICAgIFJLc3BpICAgT0sgICAgNDctYnl0ZSBidXJzdCB3
-cml0ZXMKPiA4ICAgIGN1c3RvbSAgIGxpbnV4X3NwaSAgIFJLc3BpICAgICBSS3NwaSAgIEZhaWwg
-IDQ4LWJ5dGUgYnVyc3Qgd3JpdGVzCj4KPiAzLCA0KSBVbmFjY2V0YWJseSBzbG93LCBkZXZpY2Ug
-dHJlZSBpcwo+ICBzcGlfZ3BpbyB7Cj4gICAgY29tcGF0aWJsZSA9ICJzcGktZ3BpbyI7Cj4gICAg
-I2FkZHJlc3MtY2VsbHMgPSA8MT47Cj4gICAgI3NpemUtY2VsbHMgPSA8MD47Cj4gICAgY3MtZ3Bp
-b3MgICA9IDwmZ3BpbzEgUktfUEIyIEdQSU9fQUNUSVZFX0hJR0g+Owo+ICAgIHNjay1ncGlvcyAg
-PSA8JmdwaW8xIFJLX1BCMSBHUElPX0FDVElWRV9ISUdIPjsKPiAgICBtb3NpLWdwaW9zID0gPCZn
-cGlvMSBSS19QQjAgR1BJT19BQ1RJVkVfSElHSD47Cj4gICAgbWlzby1ncGlvcyA9IDwmZ3BpbzEg
-UktfUEE3IEdQSU9fQUNUSVZFX0hJR0g+Owo+ICAgIG51bS1jaGlwc2VsZWN0cyA9IDwxPjsKPiAg
-ICBzcGlkZXZAMCB7Cj4gICAgICBjb21wYXRpYmxlID0gInNwaWRldiI7Cj4gICAgICByZWcgPSA8
-MD47Cj4gICAgICBzcGktbWF4LWZyZXF1ZW5jeSA9IDw1MDAwMDAwMD47Cj4gICAgfTsKPiAgfTsK
-PiAyLCA1LCA2LCA3LCA4KSBkZXZpY2UgdHJlZSBpcwo+ICAmc3BpMSB7Cj4gICAgc3RhdHVzID0g
-Im9rYXkiOwo+ICAgIHNwaWRldkAwIHsKPiAgICAgIGNvbXBhdGlibGUgPSAic3BpZGV2IjsKPiAg
-ICAgIHJlZyA9IDwwPjsKPiAgICAgIHNwaS1tYXgtZnJlcXVlbmN5ID0gPDUwMDAwMDAwPjsKPiAg
-ICB9Owo+ICB9Owo+IDUsIDYsIDcsIDgpIEJ1cnN0IHdyaXRlcyBhcmUgcGVyZm9ybWVkIHRoaXMg
-d2F5Cj4gIGVudW0geyBCVVJTVCA9IDQ4IH07Cj4gIHN0cnVjdCBzcGlfaW9jX3RyYW5zZmVyIG1z
-Z1sweDEwNV07Cj4gIHVuc2lnbmVkIGkgPSAwOwo+ICBmb3IgKHVuc2lnbmVkIGogPSAwOyBqIDwg
-d2NudDsgaiArPSBCVVJTVCkgewo+ICAgIG1zZ1tpKytdID0geyAudHhfYnVmID0gd2FyciwgLmxl
-biA9IEJVUlNUPHdjbnQtaiA/IEJVUlNUIDogd2NudC1qIH07Cj4gICAgd2FyciArPSBCVVJTVDsK
-PiAgfQo+ICBpZiAocmNudCkKPiAgICBtc2dbaSsrXSA9IHsgLnJ4X2J1ZiA9IHJhcnIsIC5sZW4g
-PSByY250IH07Cj4gIGlvY3RsKGZkLCBTUElfSU9DX01FU1NBR0UoaSksIG1zZyk7Cj4gMSwgMiwg
-NSwgOCkgSSBoYXZlIG5vIGxvZ2ljIGFuYWx5emVyIHRvIHNlZSB3aGF0IGlzIGhhcHBlbm5pbmcg
-b24gdGhlCj4gU1BJIGJ1cywgYnV0IHdoZW4gaXQgZmFpbHMgYXQgNDgtYnl0ZSBidXJzdHMsIHRo
-ZSBjb250ZW50cyBvZiB0aGUgbWVtb3J5Cj4gYXJlIGxpa2UgdGhpczoKPiBBZGRyIEV4cGVjdGVk
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIEFjdHVhbAo+IDAwMCAgRkYg
-RkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgIEZGIEZGIEZGIAo+
-IEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGCj4gMDEwICBGRiBGRiBGRiBG
-RiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiAgRkYgRkYgRkYgCj4gRkYgRkYg
-RkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYKPiAwMjAgIEZGIEZGIEZGIEZGIEZGIEZG
-IEZGIEZGIEZGIEZGIEZGIEZGIEYxIEYyIEYzIEY0ICBGRiBGRiBGRiAKPiBGRiBGRiBGRiBGRiBG
-RiBGRiBGMSBGMiBGMyBGNCBGRiBGRiBGRgo+IDAzMCAgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYg
-RkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgIEZGIEZGIEZGIAo+IEZGIEZGIEZGIEZGIEZGIEZGIEZG
-IEZGIEZGIEZGIEZGIEZGIEZGCj4gMDQwICBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBG
-RiBGRiBGRiBGRiBGRiBGRiAgRkYgRkYgRkYgCj4gRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYg
-RkYgRkYgRkYgRkYKPiAwNTAgIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZG
-IEZGIEZGIEZGICBGRiBGRiBGRiAKPiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBG
-RiBGRgo+IDA2MCAgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYg
-RkYgIEZGIEZGIEZGIAo+IEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGCj4g
-MDcwICBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBFMSBFMiBFMyBFNCAgRkYg
-RkYgRkYgCj4gRkYgRkYgRkYgRTEgRTIgRTMgRTQgRkYgRkYgRkYgRkYgRkYgRkYKPiAwODAgIEZG
-IEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGICBGRiBGRiBGRiAK
-PiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRgo+IDA5MCAgRkYgRkYgRkYg
-RkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgIEZGIEZGIEZGIAo+IEZGIEZG
-IEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGCj4gMEEwICBGRiBGRiBGRiBGRiBGRiBG
-RiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiAgRkYgRkYgRkYgCj4gRkYgRkYgRkYgRkYg
-RkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYKPiAwQjAgIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZG
-IEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGICBGRiBGRiBGRiAKPiBGRiBGRiBGRiBGRiBGRiBGRiBG
-RiBGRiBGRiBGRiBGRiBGRiBGRgo+IDBDMCAgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYg
-RkYgRkYgRkYgRkYgRkYgRkYgIEZGIEZGIEZGIAo+IEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZG
-IEZGIEZGIEZGIEZGCj4gMEQwICBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBG
-RiBGRiBGRiBGRiAgRkYgRkYgRkYgCj4gRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYg
-RkYgRkYKPiAwRTAgIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZG
-IEZGICBGRiBGRiBGRiAKPiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRgo+
-IDBGMCAgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgRkYgIEZG
-IEZGIEZGIAo+IEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGIEZGCj4gNzgwICAw
-MCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAgMDAgMDAgMDAg
-Cj4gMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAKPiA3OTAgIDAwIDAwIDAw
-IDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwICAwMCAwMCAwMCAKPiAwMCAw
-MCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMAo+IDdBMCAgMDAgMDAgMDAgMDAgMDAg
-MDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgIDAwIDAwIDAwIAo+IDAwIDAwIDAwIDAw
-IDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwCj4gN0IwICAwMCAwMCAwMCAwMCAwMCAwMCAwMCAw
-MCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAgMDAgMDAgMDAgCj4gMDAgMDAgMDAgMDAgMDAgMDAg
-MDAgMDAgMDAgMDAgMDAgMDAgMDAKPiA3QzAgIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAw
-IDAwIDAwIDAwIDAwIDAwIDAwICAwMCAwMCAwMCAKPiAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAw
-MCAwMCAwMCAwMCAwMAo+IDdEMCAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAg
-MDAgMDAgMDAgMDAgIDAwIDAwIDAwIAo+IDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAw
-IDAwIDAwCj4gN0UwICAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAw
-MCAwMCAgMDAgMDAgMDAgCj4gMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAK
-PiA3RjAgIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwICAw
-MCBGRiBGRiAKPiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRiBGRgo+IDgwMCAg
-MDEgMDIgMDMgMDQgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgIDAxIDAyIDAz
-IAo+IDA0IDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwCj4gODEwICAwMCAwMCAw
-MCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAgMDAgMDAgMDAgCj4gMDAg
-MDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAKPiA4MjAgIDAwIDAwIDAwIDAwIDAw
-IDAwIDAwIDAwIDAwIDAwIDAwIDAwIDA1IDA2IDA3IDA4ICAwMCAwMCAwMCAKPiAwMCAwMCAwMCAw
-MCAwMCAwMCAwNSAwNiAwNyAwOCAwMCAwMCAwMAo+IDgzMCAgMDAgMDAgMDAgMDAgMDAgMDAgMDAg
-MDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgIDAwIDAwIDAwIAo+IDAwIDAwIDAwIDAwIDAwIDAw
-IDAwIDAwIDAwIDAwIDAwIDAwIDAwCj4gODQwICAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAw
-MCAwMCAwMCAwMCAwMCAwMCAwMCAgMDAgMDAgMDAgCj4gMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAg
-MDAgMDAgMDAgMDAgMDAKPiA4NTAgIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAw
-IDAwIDAwIDAwIDAwICAwMCAwMCAwMCAKPiAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAw
-MCAwMCAwMAo+IDg2MCAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAg
-MDAgMDAgIDAwIDAwIDAwIAo+IDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAwIDAw
-Cj4gODcwICAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAwMCAg
-MDAgMDAgMDAgCj4gMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAKPgo+IFJl
-Z2FyZHMsCj4gIFZpY2Vuw6cuCj4KPgo+CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KTGludXgtcm9ja2NoaXAgbWFpbGluZyBsaXN0CkxpbnV4LXJvY2tj
-aGlwQGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9saW51eC1yb2NrY2hpcAo=
+Hi,
+please, forget my previous mail about
+  eff0275e5253604429aedc42b008c5fcaa6cc597
+  spi: rockchip: simplify use_dma logic
+i messed up with commit IDs, sorry.
+
+The first offending commit is one later than that:
+commit 420b82f842941a32adf309ca1b193adfc77616b0
+Date:   Wed Oct 31 11:57:07 2018 +0100
+
+    spi: rockchip: set min/max speed
+   =20
+    The driver previously checked each transfer if the
+    requested speed was higher than possible with the
+    current spi clock rate and raised the clock rate
+    accordingly.
+   =20
+    However, there is no check to see if the spi clock
+    was actually set that high and no way to dynamically
+    lower the spi clock rate again.
+   =20
+    So it seems any potiential users of this functionality
+    are better off just setting the spi clock rate at init
+    using the assigned-clock-rates devicetree property.
+   =20
+    Removing this dynamic spi clock rate raising allows
+    us let the spi framework handle min/max speeds
+    for us.
+
+Regards,
+  Vicen=C3=A7.
+
+On Saturday, April 6, 2019 7:34:32 PM CEST, Vicente Bergas wrote:
+> Hi,
+> i have been experiencing issues writing to NOR-Flash SPI Memories
+> from two RK3399-based platforms: gru-kevin and sapphire board.
+> For kevin, this resulted in a bricked device because that memory
+> is the only boot device.
+> Fortunately an external programmer is available.
+>
+> In order to isolate where the issue can be, several tests have been
+> done, after which it makes me think the issue is related to the
+> Rockchip SPI driver.
+>
+> 4KB burst reads work fine.
+> The issue is only observed on the write burst length.
+>
+> Test user     user/kernel kernel    RK3399  Num  space   =20
+> interface   space       SoC   Status Notes=20
+> --------------------------------------------------------
+> 1    flashrom linux_mtd   MTD/RKspi RKspi   Fail
+> 2    flashrom linux_spi   RKspi     RKspi   Fail
+> 3    flashrom linux_spi   spi_gpio  GPIO    OK
+> 4    custom   linux_spi   spi_gpio  GPIO    OK   260-byte burst writes
+> 5    custom   linux_spi   RKspi     RKspi   Fail 260-byte burst writes
+> 6    custom   linux_spi   RKspi     RKspi   OK     1-byte burst writes
+> 7    custom   linux_spi   RKspi     RKspi   OK    47-byte burst writes
+> 8    custom   linux_spi   RKspi     RKspi   Fail  48-byte burst writes
+>
+> 3, 4) Unaccetably slow, device tree is
+>  spi_gpio {
+>    compatible =3D "spi-gpio";
+>    #address-cells =3D <1>;
+>    #size-cells =3D <0>;
+>    cs-gpios   =3D <&gpio1 RK_PB2 GPIO_ACTIVE_HIGH>;
+>    sck-gpios  =3D <&gpio1 RK_PB1 GPIO_ACTIVE_HIGH>;
+>    mosi-gpios =3D <&gpio1 RK_PB0 GPIO_ACTIVE_HIGH>;
+>    miso-gpios =3D <&gpio1 RK_PA7 GPIO_ACTIVE_HIGH>;
+>    num-chipselects =3D <1>;
+>    spidev@0 {
+>      compatible =3D "spidev";
+>      reg =3D <0>;
+>      spi-max-frequency =3D <50000000>;
+>    };
+>  };
+> 2, 5, 6, 7, 8) device tree is
+>  &spi1 {
+>    status =3D "okay";
+>    spidev@0 {
+>      compatible =3D "spidev";
+>      reg =3D <0>;
+>      spi-max-frequency =3D <50000000>;
+>    };
+>  };
+> 5, 6, 7, 8) Burst writes are performed this way
+>  enum { BURST =3D 48 };
+>  struct spi_ioc_transfer msg[0x105];
+>  unsigned i =3D 0;
+>  for (unsigned j =3D 0; j < wcnt; j +=3D BURST) {
+>    msg[i++] =3D { .tx_buf =3D warr, .len =3D BURST<wcnt-j ? BURST : wcnt-j =
+};
+>    warr +=3D BURST;
+>  }
+>  if (rcnt)
+>    msg[i++] =3D { .rx_buf =3D rarr, .len =3D rcnt };
+>  ioctl(fd, SPI_IOC_MESSAGE(i), msg);
+> 1, 2, 5, 8) I have no logic analyzer to see what is happenning on the
+> SPI bus, but when it fails at 48-byte bursts, the contents of the memory
+> are like this:
+> Addr Expected                                        Actual
+> 000  FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF  FF FF FF=20
+> FF FF FF FF FF FF FF FF FF FF FF FF FF
+> 010  FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF  FF FF FF=20
+> FF FF FF FF FF FF FF FF FF FF FF FF FF
+> 020  FF FF FF FF FF FF FF FF FF FF FF FF F1 F2 F3 F4  FF FF FF=20
+> FF FF FF FF FF FF F1 F2 F3 F4 FF FF FF
+> 030  FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF  FF FF FF=20
+> FF FF FF FF FF FF FF FF FF FF FF FF FF
+> 040  FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF  FF FF FF=20
+> FF FF FF FF FF FF FF FF FF FF FF FF FF
+> 050  FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF  FF FF FF=20
+> FF FF FF FF FF FF FF FF FF FF FF FF FF
+> 060  FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF  FF FF FF=20
+> FF FF FF FF FF FF FF FF FF FF FF FF FF
+> 070  FF FF FF FF FF FF FF FF FF FF FF FF E1 E2 E3 E4  FF FF FF=20
+> FF FF FF E1 E2 E3 E4 FF FF FF FF FF FF
+> 080  FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF  FF FF FF=20
+> FF FF FF FF FF FF FF FF FF FF FF FF FF
+> 090  FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF  FF FF FF=20
+> FF FF FF FF FF FF FF FF FF FF FF FF FF
+> 0A0  FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF  FF FF FF=20
+> FF FF FF FF FF FF FF FF FF FF FF FF FF
+> 0B0  FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF  FF FF FF=20
+> FF FF FF FF FF FF FF FF FF FF FF FF FF
+> 0C0  FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF  FF FF FF=20
+> FF FF FF FF FF FF FF FF FF FF FF FF FF
+> 0D0  FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF  FF FF FF=20
+> FF FF FF FF FF FF FF FF FF FF FF FF FF
+> 0E0  FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF  FF FF FF=20
+> FF FF FF FF FF FF FF FF FF FF FF FF FF
+> 0F0  FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF  FF FF FF=20
+> FF FF FF FF FF FF FF FF FF FF FF FF FF
+> 780  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  00 00 00=20
+> 00 00 00 00 00 00 00 00 00 00 00 00 00
+> 790  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  00 00 00=20
+> 00 00 00 00 00 00 00 00 00 00 00 00 00
+> 7A0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  00 00 00=20
+> 00 00 00 00 00 00 00 00 00 00 00 00 00
+> 7B0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  00 00 00=20
+> 00 00 00 00 00 00 00 00 00 00 00 00 00
+> 7C0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  00 00 00=20
+> 00 00 00 00 00 00 00 00 00 00 00 00 00
+> 7D0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  00 00 00=20
+> 00 00 00 00 00 00 00 00 00 00 00 00 00
+> 7E0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  00 00 00=20
+> 00 00 00 00 00 00 00 00 00 00 00 00 00
+> 7F0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  00 FF FF=20
+> FF FF FF FF FF FF FF FF FF FF FF FF FF
+> 800  01 02 03 04 00 00 00 00 00 00 00 00 00 00 00 00  01 02 03=20
+> 04 00 00 00 00 00 00 00 00 00 00 00 00
+> 810  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  00 00 00=20
+> 00 00 00 00 00 00 00 00 00 00 00 00 00
+> 820  00 00 00 00 00 00 00 00 00 00 00 00 05 06 07 08  00 00 00=20
+> 00 00 00 00 00 00 05 06 07 08 00 00 00
+> 830  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  00 00 00=20
+> 00 00 00 00 00 00 00 00 00 00 00 00 00
+> 840  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  00 00 00=20
+> 00 00 00 00 00 00 00 00 00 00 00 00 00
+> 850  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  00 00 00=20
+> 00 00 00 00 00 00 00 00 00 00 00 00 00
+> 860  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  00 00 00=20
+> 00 00 00 00 00 00 00 00 00 00 00 00 00
+> 870  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  00 00 00=20
+> 00 00 00 00 00 00 00 00 00 00 00 00 00
+>
+> Regards,
+>  Vicen=C3=A7.
+>
+>
+>

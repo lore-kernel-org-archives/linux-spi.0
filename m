@@ -1,127 +1,29 @@
-From: Robin Gong <yibin.gong@nxp.com>
-Subject: RE: Issues with i.MX SPI DMA transfers
-Date: Mon, 8 Apr 2019 10:18:33 +0000
-Message-ID: <VI1PR04MB4543694861C3452433C9D956892C0@VI1PR04MB4543.eurprd04.prod.outlook.com>
-References: <08fcbd65-510f-84f8-d6d6-ff56aa9ca9ad@gmail.com>
- <20190328065247.uz73lap7ljf5q3tb@pengutronix.de>
- <b8e80127-e377-9ef9-2447-b0126fdad7dc@gmail.com>
- <VI1PR04MB45438E01D91829849A4E0BB289590@VI1PR04MB4543.eurprd04.prod.outlook.com>
- <d7a2e5c5-4ee0-8c89-1bab-654db0ae38dd@gmail.com>
- <VI1PR04MB4543B1708FA151EED0CB722A89550@VI1PR04MB4543.eurprd04.prod.outlook.com>
- <95df9334-3d0c-7d13-e431-5a4aa2b9907e@gmail.com>
- <VI1PR04MB454305A56372466A38E9F81989560@VI1PR04MB4543.eurprd04.prod.outlook.com>
- <197990d4-b1e2-8db9-0cb7-87b860f23bd7@gmail.com>
- <VI1PR04MB4543DEA3C0CED159C472E85F89570@VI1PR04MB4543.eurprd04.prod.outlook.com>
- <fbb4850d-f63f-d384-1a85-1f4c5c077af6@gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH] spi: spi-gpio: Remove spi->controller_data comment
+Date: Mon, 8 Apr 2019 13:11:50 +0200
+Message-ID: <CACRpkdb1AKiuQEsysmOse+qzv4GhJZ1nHQraJozNntORYE0XnA@mail.gmail.com>
+References: <20190403144602.8098-1-geert+renesas@glider.be>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: =?utf-8?B?VXdlIEtsZWluZS1Lw7ZuaWc=?=
-        <u.kleine-koenig@pengutronix.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Andy Duan <fugang.duan@nxp.com>, Han Xu <han.xu@nxp.com>,
-        Clark Wang <xiaoning.wang@nxp.com>
-To: Igor Plyatov <plyatov@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <fbb4850d-f63f-d384-1a85-1f4c5c077af6@gmail.com>
-Content-Language: en-US
+In-Reply-To: <20190403144602.8098-1-geert+renesas@glider.be>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBJZ29yIFBseWF0b3YgPHBseWF0
-b3ZAZ21haWwuY29tPg0KPiBTZW50OiAyMDE55bm0NOaciDPml6UgMjM6NTENCj4gVG86IFJvYmlu
-IEdvbmcgPHlpYmluLmdvbmdAbnhwLmNvbT4NCj4gQ2M6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1Lmts
-ZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ow0KPiBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwu
-b3JnOyBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7DQo+IGxpbnV4LXNwaUB2
-Z2VyLmtlcm5lbC5vcmc7IGRsLWxpbnV4LWlteCA8bGludXgtaW14QG54cC5jb20+OyBGYWJpbyBF
-c3RldmFtDQo+IDxmZXN0ZXZhbUBnbWFpbC5jb20+OyBQZW5ndXRyb25peCBLZXJuZWwgVGVhbSA8
-a2VybmVsQHBlbmd1dHJvbml4LmRlPjsNCj4gU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJv
-bml4LmRlPjsgU2hhd24gR3VvDQo+IDxzaGF3bmd1b0BrZXJuZWwub3JnPjsgTWFyayBCcm93biA8
-YnJvb25pZUBrZXJuZWwub3JnPjsNCj4gZG1hZW5naW5lQHZnZXIua2VybmVsLm9yZzsgVmlub2Qg
-S291bCA8dmtvdWxAa2VybmVsLm9yZz47IERhbiBXaWxsaWFtcw0KPiA8ZGFuLmoud2lsbGlhbXNA
-aW50ZWwuY29tPjsgQW5keSBEdWFuIDxmdWdhbmcuZHVhbkBueHAuY29tPjsgSGFuIFh1DQo+IDxo
-YW4ueHVAbnhwLmNvbT47IENsYXJrIFdhbmcgPHhpYW9uaW5nLndhbmdAbnhwLmNvbT4NCj4gU3Vi
-amVjdDogUmU6IElzc3VlcyB3aXRoIGkuTVggU1BJIERNQSB0cmFuc2ZlcnMNCj4gDQo+IERlYXIg
-Um9iaW4sDQo+IA0KPiANCj4gPiBQbGVhc2UgYXBwbHkgdGhlIGF0dGFjaGVkIHBhdGNoIHdoaWNo
-IGlzIGJhc2VkIG9uIGxpbnV4LW5leHQgY29tbWl0DQo+ID4gMDVkMDhlMjk5NWNiZTZlZmRiOTkz
-NDgyZWUwZDM4YTc3MDQwODYxYS4NCj4gPiBQbGVhc2Ugbm90aWNlIGl0IGhhcyBhbHJlYWR5IGNv
-bnRhaW5lZCB0d28gc2RtYSBwYXRjaGVzIHJldmVydCAtDQo+ICJhZDBkOTJkN2JhNmEiIGFuZCAi
-MjVhYWE3NWRmMWU2Ig0KPiANCj4gMSkgWW91cnMgc291cmNlIGNvZGUgaXMgc2FtZSBhcyBtaW5l
-IHdpdGggZXhjZXB0aW9uIG9mIFNETUEgZGVzY3JpcHRpb24gZm9yDQo+IGVDU1BJIGluIERldmlj
-ZSBUcmVlLg0KPiANCj4gSSBoYXZlIGNoYW5nZWQgRGV2aWNlIFRyZWUgZm9yIGkuTVg2US9ETCBh
-cyBpbiBhdHRhY2hlZCBwYXRjaCBhbmQgZmluYWxseSBTUEkNCj4gaW50ZXJmYWNlcyBvcGVyYXRl
-IG1vcmUgb3IgbGVzcy4NCj4gDQo+IE15IHBhdGNoIHJldmVydCBiYWNrIHBhdGNoZXMgZGYwNzEw
-MWUxYzRhMjllODIwZGYwMmY5OTg5YTA2Njk4OGIxNjBlNg0KPiBhbmQgZGQ0YjQ4N2IzMmEzNTcx
-ZmRjYzY2MDYyZTY2MWUzYTNlMzYwZTM1Yi4gSXQgaXMgc3RyYW5nZSwgYmVjYXVzZQ0KPiB0aGV5
-IGFyZSBtZXJnZWQgaW50byBtYWlubGluZSB3aGlsZSBhZ28uIE1heWJlIHRoZXkgYXJlIHZhbGlk
-IGZvciBzb21lDQo+IHNwZWNpZmljIHZhcmlhbnQgb2YgaS5NWCBTT0M/DQpPa2F5LCBub3cgSSBj
-YW4gdW5kZXJzdGFuZCB3aHkgaXQgZGlkbid0IG5vdCB3b3JrIGluIHlvdXIgc2lkZSB3aXRoIHNk
-bWENCmZyb20gbGludXgtZmlybXdhcmUsIGJlY2F1c2UgdGhlIHdvcmthcm91bmQgb2YgRVJSMDA5
-MTY1IGlzIG9ubHkgZml4ZWQgaW4gDQpBSVBTIHJhbSBzY3JpcHQgd2l0aCBzaW11bGF0aW5nIFBJ
-TyBpbiBYQ0ggbW9kZSBpbnN0ZWFkIG9mIFNNQyBtb2RlLCBidXQgbm90IGZpeGVkDQpJbiBTSFAg
-c2NyaXB0IHdoaWNoIHVzZWQgYnkgU2FzY2hhJ3Mgcm9tIHBhdGNoIGRkNGI0ODdiMzJhMy4gDQpT
-b3JyeSwgSSdtIG5vdCB2ZXJ5IGNsZWFyIGFib3V0IFNhc2NoYSdzIHBhdGNoIHdoaWNoIHNlZW1z
-IHRoZSBzYW1lIGFzIEVSUjAwOTE2NS4gQnV0DQphdCBsZWFzdCwgZWNzcGkgY291bGQgd29yayB3
-aXRoIGFwcF8yX21jdS9tY3VfMl9hcHAgc2NyaXB0LCBub3QgJ211c3QnIGJlIHVzZWQgd2l0aA0K
-c2hwXzJfbWN1L21jdV8yX3NocCwgYmVjYXVzZSBTUEJBIGlzIGFsc28gbG9jYXRlZCBpbiBBSVBT
-IGJ1cywgcGxlYXNlIHJlZmVyIHRvIHRoZQ0KYmVsb3cgaW5mb3JtYXRpb24gZnJvbSBSTS4gU28g
-SSBhbSBhZnJhaWQgU2FzY2hhJ3MgcGF0Y2ggbWF5IG5vdCBzb2xpZC4NCiJBLjMuMS42IGFwcF8y
-X21jdQ0KVGhpcyBnZW5lcmljIHNjcmlwdCBpcyB1c2VkIHRvIHRyYW5zZmVyIGRhdGEgZnJvbSBh
-IDgsIDE2LCAyNCBvciAzMi1iaXQgcGVyaXBoZXJhbCBjb25uZWN0ZWQNCnRvIHRoZSBBSVBTIGFj
-Y2Vzc2VkIHRocm91Z2ggdGhlIFBlcmlwaGVyYSBETUEgb2YgU0RNQSwgdG8gbWVtb3JpZXMgYWNj
-ZXNzZWQgYnkNCnRoZSBCdXJzdERNQSAoRXh0ZXJuYWwgbWVtb3JpZXMpLiINCg0KDQo+IA0KPiAi
-TW9yZSBvciBsZXNzIiBtZWFucyBJIGhhdmUgY29tZSB0byBzdGF0ZSBkZXNjcmliZWQgaW4gZmly
-c3QgZS1tYWlsIG9mIHRoaXMNCj4gZS1tYWlsIHRocmVhZC4gQnl0ZSBkdXBsaWNhdGlvbiAoRVJS
-MDA5MTY1KSBoYXBwZW5zIHZlcnkgb2Z0ZW4gZm9yDQo+IGVDU1BJNSBpbnRlcmZhY2Ugb3BlcmF0
-aW5nIHRocm91Z2ggRE1BLg0KSSBjb3VsZCByZXByb2R1Y2UgeW91ciBpc3N1ZSBhcyBiZWxvdyB3
-aGF0ZXZlciB3aXRoIG15IHBhdGNoZXMgZm9yIEVSUjAwOTE2NSBvciBub3QsIHNvDQp0aGF0J3Mg
-YSBuZXcgaXNzdWUgc2luY2UgaXQncyBvbmx5IGV4aXN0IG9uIGVjc3BpNS4gU29mdHdhcmUgaXMg
-dGhlIHNhbWUgb24gYWxsIGVjc3BpDQpwb3J0LCBzbyBpdCdzIHNlZW1zIGEgaGFyZHdhcmUgaXNz
-dWUsIEkgd2lsbCBpbnZvbHZlIGRlc2lnbiB0ZWFtIHRvIGxvb2sgaW50byBpdC4gRm9yIG5vdywN
-CnN1Z2dlc3QgeW91IHVzaW5nIG90aGVyIGVjc3BpIHBvcnQgaWYgeW91IGNhbi4NCg0KLi9zcGlk
-ZXZfdGVzdCAtRCAvZGV2L3NwaWRldjQuMCAtcyAyMDAwMDAwMCAtYiA4IC1TIDY0IC1JIDEwMA0K
-c3BpIG1vZGU6IDB4MjANCmJpdHMgcGVyIHdvcmQ6IDgNCm1heCBzcGVlZDogMjAwMDAwMDAgSHog
-KDIwMDAwIEtIeikNCg0KDQp0cmFuc2ZlciBlcnJvciAhDQpUWCB8IEUxIDUxIDI0IEU5IEYzIERD
-IDNDIDk5IDA3IDU3IDYyIDEwIDcwIDUzIEY1IDg2IERFIDFDIDlEIDhEIENEIDdBIDZBIDQ2IDVB
-IDlBIDMwIDNFIDE1IEIwIDUzIEY2ICB8LlEkLi4uPC4uV2IucFMuLi4uLi4uempGWi4wPi4uUy58
-DQpUWCB8IDAxIDc3IERGIEY0IDU0IDFCIDhFIDVCIDczIEYwIDZCIEUzIDQzIDYwIDY5IDIxIDdE
-IDA2IEFFIDRBIDgwIDE4IDkwIERCIEIzIEMwIDE5IEM4IDcwIDZDIEJFIDcxICB8LncuLlQuLltz
-LmsuQ2BpIX0uLkouLi4uLi4uLnBsLnF8DQpSWCB8IEUxIDUxIDI0IEU5IEYzIEYzIERDIDNDIDk5
-IDA3IDU3IDYyIDEwIDcwIDUzIEY1IDg2IERFIDFDIDlEIDhEIENEIDdBIDZBIDQ2IDVBIDlBIDMw
-IDNFIDE1IEIwIDUzICB8LlEkLi4uLjwuLldiLnBTLi4uLi4uLnpqRlouMD4uLlN8DQpSWCB8IEY2
-IDAxIDc3IERGIEY0IDU0IDFCIDhFIDVCIDczIEYwIDZCIEUzIDQzIDYwIDY5IDIxIDdEIDA2IEFF
-IDRBIDgwIDE4IDkwIERCIEIzIEMwIDE5IEM4IDcwIDZDIEJFICB8Li53Li5ULi5bcy5rLkNgaSF9
-Li5KLi4uLi4uLi5wbC58DQo+IA0KPiAyKSBJIHdhbnQgdG8gaW1wcm92ZSBkZXNjcmlwdGlvbiBh
-bmQgcmVwbGFjZSBtYWdpYyBudW1iZXJzIGJ5IGNvbnN0YW50cyBpbg0KPiBEZXZpY2UgVHJlZSBm
-b3IgU0RNQS4gSSBtZWFuIHN0cmluZ3MgbGlrZSAiZG1hcyA9IDwmc2RtYSAxMSA3IDE+LCA8JnNk
-bWENCj4gMTIgNyAyPjsiPw0KPiANCj4gU28sIGZpbmFsbHkgRGV2aWNlIFRyZWUgd2lsbCBoYXZl
-IHN0cmluZ3MgbGlrZQ0KPiANCj4gZG1hcyA9IDwmc2RtYSBTT01FX0RFRl9BIElNWF9ETUFUWVBF
-Xy4uIERNQV9QUklPXy4uPiwgPCZzZG1hDQo+IFNPTUVfREVGX0IgSU1YX0RNQVRZUEVfLi4gRE1B
-X1BSSU9fLi4+Ow0KPiANCj4gSSB0aGluaywgdGhpcyB3aWxsIHN0b3AgYmxhY2sgbWFnaWMgbWFu
-aXB1bGF0aW9ucyBmb3IgU0RNQSBpbiBEZXZpY2UgVHJlZSwgYnkNCj4gdmFyaW91cyBkZXZlbG9w
-ZXJzLg0KPiANCj4gRG9lcyBmaXJzdCBkaWdpdCBtZWFucyAiRE1BIHJlcXVlc3QvZXZlbnQgSUQi
-PyBXaGVyZSB0byBmaW5kIG1vcmUgaW5mbyBhYm91dA0KPiB0aGlzPw0KWWVzLCB0aGF0J3MgbWVh
-biBkbWEgZXZlbnQgSUQsIHlvdSBjb3VsZCBmaW5kIGluICJUYWJsZSAzLTIuIFNETUEgZXZlbnQg
-bWFwcGluZyINCmZyb20gUk0uDQo+IA0KPiBEb2VzIHNlY29uZCBkaWdpdCBtZWFucyAiZW51bSBz
-ZG1hX3BlcmlwaGVyYWxfdHlwZSI/DQo+IA0KPiBEb2VzIHRoaXJkIGRpZ2l0IG1lYW5zICJlbnVt
-IGlteF9kbWFfcHJpbyI/DQpZZXMuDQo+IA0KPiBXaGVyZSBjYW4gSSBmaW5kIGRlc2NyaXB0aW9u
-IG9mIGRpZmZlcmVuY2UgYmV0d2VlbiBJTVhfRE1BVFlQRV9DU1BJIChNQ1UNCj4gZG9tYWluIENT
-UEkpIGFuZCBJTVhfRE1BVFlQRV9DU1BJX1NQIChTaGFyZWQgQ1NQSSk/IEdvb2dsaW5nIGRvZXMg
-bm90DQo+IGhlbHAgdG9vIG11Y2guDQpJTVhfRE1BVFlQRV9DU1BJIHVzZSBBSVBTIHNjcmlwdCwg
-SU1YX0RNQVRZUEVfQ1NQSV9TUCB1c2UgU1BCQSBzY3JpcHQgd2hpY2ggDQpTRE1BIGNvdWxkIGFj
-Y2VzcyBwZXJpcGhlcmFscyBvbiBTUEJBIGRpcmVjdGx5LCBBSVBTIHNjcmlwdCBjb3VsZCBiZSB1
-c2VkIGJ5IGFsbCBwZXJpcGhlcmFscw0Kc2luY2Ugb25seSBmZXcgcGVyaXBoZXJhbHMgb24gU1BC
-QSBidXQgU1BCQSBzY3JpcHQgaXMgbW9yZSBlZmZpY2llbmN5IGJlY2F1c2Ugb2Ygc2hvcnQgcGF0
-aC4NCg0KPiANCj4gQmVzdCB3aXNoZXMuDQo+IC0tDQo+IElnb3IgUGx5YXRvdg0K
+On Wed, Apr 3, 2019 at 4:46 PM Geert Uytterhoeven
+<geert+renesas@glider.be> wrote:
+
+> The conversion from GPIO numbers to GPIO descriptors removed the use of
+> spi->controller_data, but forgot to update a comment referring to it.
+>
+> Fixes: 9b00bc7b901ff672 ("spi: spi-gpio: Rewrite to use GPIO descriptors")
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+
+Yours,
+Linus Walleij

@@ -1,23 +1,23 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: gpio: Make sure spi_master_put() is called in every error path" to the spi tree
-Date: Mon,  8 Apr 2019 14:32:33 +0700 (+07)
-Message-ID: <20190408073233.0EFC6441D3B@finisterre.ee.mobilebroadband>
-References: <20190403040133.1459-11-andrew.smirnov@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, Chris Healy <cphealy@gmail.com>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+Subject: Applied "spi: pxa2xxx: change "no DMA channels..." msg from debug to warning" to the spi tree
+Date: Mon,  8 Apr 2019 14:32:41 +0700 (+07)
+Message-ID: <20190408073241.EEC2C441D3C@finisterre.ee.mobilebroadband>
+References: <1554468022-17416-1-git-send-email-f.suligoi@asem.it>
+Cc: Mark Brown <broonie@kernel.org>, Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
         Mark Brown <broonie@kernel.org>,
-        Chris Healy <cphealy@gmail.com>, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Andrey Smirnov <andrew.smirnov@gmail.com>
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Flavio Suligoi <f.suligoi@asem.it>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190403040133.1459-11-andrew.smirnov@gmail.com>
+In-Reply-To: <1554468022-17416-1-git-send-email-f.suligoi@asem.it>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: gpio: Make sure spi_master_put() is called in every error path
+   spi: pxa2xxx: change "no DMA channels..." msg from debug to warning
 
 has been applied to the spi tree at
 
@@ -42,75 +42,48 @@ to this mail.
 Thanks,
 Mark
 
->From 8b797490b4db09492acda4b4a4a4355d2311a614 Mon Sep 17 00:00:00 2001
-From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 2 Apr 2019 21:01:31 -0700
-Subject: [PATCH] spi: gpio: Make sure spi_master_put() is called in every
- error path
+>From 8b57b11bc45ee512566513259cd3c302df3c9dae Mon Sep 17 00:00:00 2001
+From: Flavio Suligoi <f.suligoi@asem.it>
+Date: Fri, 5 Apr 2019 14:40:22 +0200
+Subject: [PATCH] spi: pxa2xxx: change "no DMA channels..." msg from debug to
+ warning
 
-There's a number of failure paths in spi_gpio_probe() that do not call
-spi_master_put() potentially leaking memory. Fix this problem by
-registering a cleanup funciont via devm_add_action_or_reset() right
-after SPI controller is allocated.
+Change the type of the diagnostic message:
 
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Chris Healy <cphealy@gmail.com>
-Cc: linux-spi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
+"no DMA channels available, using PIO"
+
+from debug to warning.
+
+The lack of an available DMA channel is very important regard the
+spi-pxa2xx performance. The transfer speed can be reduced more than 50%.
+
+So it is very important to warn the user about this, without enabling
+the full SPI debug with CONFIG_SPI_DEBUG.
+
+Moreover, enabling the full SPI debug only to enable this specific
+debug message, the dmesg buffer fills quickly with a lot of
+repetitive information during the SPI data transfer.
+This cause the loss of all the first important messages
+written during the initialization.
+
+Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-gpio.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index 5ac9ae192ddf..d4a22f22b04c 100644
---- a/drivers/spi/spi-gpio.c
-+++ b/drivers/spi/spi-gpio.c
-@@ -362,6 +362,11 @@ static int spi_gpio_probe_pdata(struct platform_device *pdev,
- 	return 0;
- }
- 
-+static void spi_gpio_put(void *data)
-+{
-+	spi_master_put(data);
-+}
-+
- static int spi_gpio_probe(struct platform_device *pdev)
- {
- 	int				status;
-@@ -377,6 +382,10 @@ static int spi_gpio_probe(struct platform_device *pdev)
- 	if (!master)
- 		return -ENOMEM;
- 
-+	status = devm_add_action_or_reset(&pdev->dev, spi_gpio_put, master);
-+	if (status)
-+		return status;
-+
- 	if (of_id)
- 		status = spi_gpio_probe_dt(pdev, master);
- 	else
-@@ -428,11 +437,7 @@ static int spi_gpio_probe(struct platform_device *pdev)
- 	}
- 	bb->setup_transfer = spi_bitbang_setup_transfer;
- 
--	status = spi_bitbang_start(&spi_gpio->bitbang);
--	if (status)
--		spi_master_put(master);
--
--	return status;
-+	return spi_bitbang_start(&spi_gpio->bitbang);
- }
- 
- static int spi_gpio_remove(struct platform_device *pdev)
-@@ -444,8 +449,6 @@ static int spi_gpio_remove(struct platform_device *pdev)
- 	/* stop() unregisters child devices too */
- 	spi_bitbang_stop(&spi_gpio->bitbang);
- 
--	spi_master_put(spi_gpio->bitbang.master);
--
- 	return 0;
- }
- 
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 6160fe0ce7ab..f7068ccfe7d2 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1696,7 +1696,7 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 	if (platform_info->enable_dma) {
+ 		status = pxa2xx_spi_dma_setup(drv_data);
+ 		if (status) {
+-			dev_dbg(dev, "no DMA channels available, using PIO\n");
++			dev_warn(dev, "no DMA channels available, using PIO\n");
+ 			platform_info->enable_dma = false;
+ 		} else {
+ 			controller->can_dma = pxa2xx_spi_can_dma;
 -- 
 2.20.1

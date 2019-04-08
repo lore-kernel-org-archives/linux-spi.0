@@ -1,23 +1,24 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: pxa2xxx: change "no DMA channels..." msg from debug to warning" to the spi tree
-Date: Mon,  8 Apr 2019 14:32:41 +0700 (+07)
-Message-ID: <20190408073241.EEC2C441D3C@finisterre.ee.mobilebroadband>
-References: <1554468022-17416-1-git-send-email-f.suligoi@asem.it>
-Cc: Mark Brown <broonie@kernel.org>, Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Mark Brown <broonie@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Flavio Suligoi <f.suligoi@asem.it>
+Subject: Applied "spi: bcm2835aux: Fix build error without CONFIG_DEBUG_FS" to the spi tree
+Date: Mon,  8 Apr 2019 14:33:24 +0700 (+07)
+Message-ID: <20190408073324.BFBA8441D3B@finisterre.ee.mobilebroadband>
+References: <20190406151457.32104-1-yuehaibing@huawei.com>
+Cc: Hulk Robot <hulkci@huawei.com>, Mark Brown <broonie@kernel.org>,
+        broonie@kernel.org, f.fainelli@gmail.com, rjui@broadcom.com,
+        sbranden@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
+        eric@anholt.net, stefan.wahren@i2se.com,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rpi-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: YueHaibing <yuehaibing@huawei.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1554468022-17416-1-git-send-email-f.suligoi@asem.it>
+In-Reply-To: <20190406151457.32104-1-yuehaibing@huawei.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: pxa2xxx: change "no DMA channels..." msg from debug to warning
+   spi: bcm2835aux: Fix build error without CONFIG_DEBUG_FS
 
 has been applied to the spi tree at
 
@@ -42,48 +43,43 @@ to this mail.
 Thanks,
 Mark
 
->From 8b57b11bc45ee512566513259cd3c302df3c9dae Mon Sep 17 00:00:00 2001
-From: Flavio Suligoi <f.suligoi@asem.it>
-Date: Fri, 5 Apr 2019 14:40:22 +0200
-Subject: [PATCH] spi: pxa2xxx: change "no DMA channels..." msg from debug to
- warning
+>From 9b186e9a65bffaef5ed56878095544b64584c29c Mon Sep 17 00:00:00 2001
+From: YueHaibing <yuehaibing@huawei.com>
+Date: Sat, 6 Apr 2019 23:14:57 +0800
+Subject: [PATCH] spi: bcm2835aux: Fix build error without CONFIG_DEBUG_FS
 
-Change the type of the diagnostic message:
+When building CONFIG_DEBUG_FS is not set
+gcc warn this:
 
-"no DMA channels available, using PIO"
+drivers/spi/spi-bcm2835aux.c: In function bcm2835aux_spi_probe:
+drivers/spi/spi-bcm2835aux.c:591:2: error: too many arguments to function bcm2835aux_debugfs_create
+  bcm2835aux_debugfs_create(bs, dev_name(&pdev->dev));
+  ^~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/spi/spi-bcm2835aux.c:145:13: note: declared here
+ static void bcm2835aux_debugfs_create(struct bcm2835aux_spi *bs)
 
-from debug to warning.
-
-The lack of an available DMA channel is very important regard the
-spi-pxa2xx performance. The transfer speed can be reduced more than 50%.
-
-So it is very important to warn the user about this, without enabling
-the full SPI debug with CONFIG_SPI_DEBUG.
-
-Moreover, enabling the full SPI debug only to enable this specific
-debug message, the dmesg buffer fills quickly with a lot of
-repetitive information during the SPI data transfer.
-This cause the loss of all the first important messages
-written during the initialization.
-
-Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Fixes: 8048d151eb4d ("spi: bcm2835aux: add driver stats to debugfs")
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Reviewed-by: Mukesh Ojha <mojha@codeaurora.org>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-pxa2xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-bcm2835aux.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 6160fe0ce7ab..f7068ccfe7d2 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1696,7 +1696,7 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 	if (platform_info->enable_dma) {
- 		status = pxa2xx_spi_dma_setup(drv_data);
- 		if (status) {
--			dev_dbg(dev, "no DMA channels available, using PIO\n");
-+			dev_warn(dev, "no DMA channels available, using PIO\n");
- 			platform_info->enable_dma = false;
- 		} else {
- 			controller->can_dma = pxa2xx_spi_can_dma;
+diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+index fd8252dce4a2..bbf87adb3ff8 100644
+--- a/drivers/spi/spi-bcm2835aux.c
++++ b/drivers/spi/spi-bcm2835aux.c
+@@ -142,7 +142,8 @@ static void bcm2835aux_debugfs_remove(struct bcm2835aux_spi *bs)
+ 	bs->debugfs_dir = NULL;
+ }
+ #else
+-static void bcm2835aux_debugfs_create(struct bcm2835aux_spi *bs)
++static void bcm2835aux_debugfs_create(struct bcm2835aux_spi *bs,
++				      const char *dname)
+ {
+ }
+ 
 -- 
 2.20.1

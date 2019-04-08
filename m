@@ -1,90 +1,52 @@
-From: Emil Renner Berthing <emil.renner.berthing@gmail.com>
-Subject: Re: [BUG] Rockchip SPI: long burst writes produce unexpected result
-Date: Sun, 7 Apr 2019 21:55:10 +0200
-Message-ID: <CANBLGcyeroURDCHrBPRQ8bbhNsy9u0LkCq0MQmWUyvPR=p4b8w@mail.gmail.com>
-References: <21d83ed2-a8db-49cf-ba8c-c7844157d7b0@gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH V2 10/20] Documentation: devicetree: spi: add
+ spi-lsbyte-first propery
+Date: Mon, 8 Apr 2019 13:27:12 +0700
+Message-ID: <20190408062712.GI2803@sirena.org.uk>
+References: <1554423259-26056-1-git-send-email-skomatineni@nvidia.com>
+ <1554423259-26056-10-git-send-email-skomatineni@nvidia.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
-To: Vicente Bergas <vicencb@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="rCb8EA+9TsBVtA92"
+Cc: thierry.reding@gmail.com, jonathanh@nvidia.com, talho@nvidia.com,
+        robh+dt@kernel.org, mark.rutland@arm.com, kyarlagadda@nvidia.com,
+        ldewangan@nvidia.com, linux-tegra@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org
+To: Sowjanya Komatineni <skomatineni@nvidia.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <21d83ed2-a8db-49cf-ba8c-c7844157d7b0@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1554423259-26056-10-git-send-email-skomatineni@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Vicente,
 
-On Sat, 6 Apr 2019 at 19:35, Vicente Bergas <vicencb@gmail.com> wrote:
->
-> Hi,
-> i have been experiencing issues writing to NOR-Flash SPI Memories
-> from two RK3399-based platforms: gru-kevin and sapphire board.
-> For kevin, this resulted in a bricked device because that memory
-> is the only boot device.
-> Fortunately an external programmer is available.
->
-> In order to isolate where the issue can be, several tests have been
-> done, after which it makes me think the issue is related to the
-> Rockchip SPI driver.
->
-> 4KB burst reads work fine.
-> The issue is only observed on the write burst length.
->
-> Test user     user/kernel kernel    RK3399
-> Num  space    interface   space       SoC   Status Notes
-> --------------------------------------------------------
-> 1    flashrom linux_mtd   MTD/RKspi RKspi   Fail
-> 2    flashrom linux_spi   RKspi     RKspi   Fail
-> 3    flashrom linux_spi   spi_gpio  GPIO    OK
-> 4    custom   linux_spi   spi_gpio  GPIO    OK   260-byte burst writes
-> 5    custom   linux_spi   RKspi     RKspi   Fail 260-byte burst writes
-> 6    custom   linux_spi   RKspi     RKspi   OK     1-byte burst writes
-> 7    custom   linux_spi   RKspi     RKspi   OK    47-byte burst writes
-> 8    custom   linux_spi   RKspi     RKspi   Fail  48-byte burst writes
->
-> 3, 4) Unaccetably slow, device tree is
->   spi_gpio {
->     compatible = "spi-gpio";
->     #address-cells = <1>;
->     #size-cells = <0>;
->     cs-gpios   = <&gpio1 RK_PB2 GPIO_ACTIVE_HIGH>;
->     sck-gpios  = <&gpio1 RK_PB1 GPIO_ACTIVE_HIGH>;
->     mosi-gpios = <&gpio1 RK_PB0 GPIO_ACTIVE_HIGH>;
->     miso-gpios = <&gpio1 RK_PA7 GPIO_ACTIVE_HIGH>;
->     num-chipselects = <1>;
->     spidev@0 {
->       compatible = "spidev";
->       reg = <0>;
->       spi-max-frequency = <50000000>;
->     };
->   };
-> 2, 5, 6, 7, 8) device tree is
->   &spi1 {
+--rCb8EA+9TsBVtA92
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Since you say reverting the "set min/max speed" patch fixes your issues
-could you try raising the spi clock like this and see if it works for you?
+On Thu, Apr 04, 2019 at 05:14:09PM -0700, Sowjanya Komatineni wrote:
+> spi-lsbyte-first optional property allows SPI slaves to choose byte
+> order of little endian for transfers.
 
-+       assigned-clocks = <&cru SCLK_SPI1>;
-+       assigned-clock-rates = <400000000>;
+Why make this a DT property - surely it's either a fixed property of the
+relevant devices if they are LSB first (in which case we should know we
+can use it from the device) or it's something that the driver for the
+device can just vary at runtime?
 
-Of course the driver shouldn't let you configure the spi-controller in a way
-that makes it skip bytes, but if this works for you then I still think
-you're better off explicitly setting the spi clock speed rather than having
-the driver raise it for you. At least while it does it without
-checking for errors
-or having a way to lower it again as outlined in the commit message.
+--rCb8EA+9TsBVtA92
+Content-Type: application/pgp-signature; name="signature.asc"
 
->     status = "okay";
->     spidev@0 {
->       compatible = "spidev";
->       reg = <0>;
->       spi-max-frequency = <50000000>;
->     };
->   };
-> ...
+-----BEGIN PGP SIGNATURE-----
 
-/Emil
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlyq6b8ACgkQJNaLcl1U
+h9CIKggAg+pGXgMOqakZ8c/g8PSsF9z9x/vbR2jo4tv/AmNxenu+gDCF78d4wBgB
+a/2l8JORQi+knOxzUq0O7HhN8sR+lz7W45qVrc5jNLSAFPVRPSaBu9o3jxkHh5Sd
+WlI4mX7d18KbnoGgJlXSU7j2FXmVrYQQgco6u259vht9zFqQCxLqUd8Gv2RwzLFL
+3fiUpsU3BBp7EOE3YlMijX6Jqw76cpwmhmQP9joGwGnsUZexvBTkPen8+GSHqEtK
+jBHKF0PSCcHGyvdVGJsd5g92ga3oIPrs0DaW4z/+yXTRKNkkZJTz9rX4rkHnU5ku
+UmftTb8lLZibuRH4x8YdJsgLx5KvqA==
+=Wt2d
+-----END PGP SIGNATURE-----
+
+--rCb8EA+9TsBVtA92--

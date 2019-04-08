@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi-summary: document set_cs_timing" to the spi tree
-Date: Mon,  8 Apr 2019 14:31:39 +0700 (+07)
-Message-ID: <20190408073139.B4C2C441D3B@finisterre.ee.mobilebroadband>
-References: <1554423259-26056-16-git-send-email-skomatineni@nvidia.com>
+Subject: Applied "spi: tegra114: add 3 wire transfer mode support" to the spi tree
+Date: Mon,  8 Apr 2019 14:31:58 +0700 (+07)
+Message-ID: <20190408073158.246DB441D3B@finisterre.ee.mobilebroadband>
+References: <1554423259-26056-9-git-send-email-skomatineni@nvidia.com>
 Cc: Mark Brown <broonie@kernel.org>, thierry.reding@gmail.com,
         jonathanh@nvidia.com, talho@nvidia.com, skomatineni@nvidia.com,
         broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
@@ -12,13 +12,13 @@ Cc: Mark Brown <broonie@kernel.org>, thierry.reding@gmail.com,
         linux-spi@vger.kernel.org
 To: Sowjanya Komatineni <skomatineni@nvidia.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1554423259-26056-16-git-send-email-skomatineni@nvidia.com>
+In-Reply-To: <1554423259-26056-9-git-send-email-skomatineni@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi-summary: document set_cs_timing
+   spi: tegra114: add 3 wire transfer mode support
 
 has been applied to the spi tree at
 
@@ -43,35 +43,48 @@ to this mail.
 Thanks,
 Mark
 
->From 24496da6927fa7399f7f60ab31b4cea27ec3ed00 Mon Sep 17 00:00:00 2001
+>From 9d199231b000414e420a35912760f2d67e9c56d7 Mon Sep 17 00:00:00 2001
 From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Date: Thu, 4 Apr 2019 17:14:15 -0700
-Subject: [PATCH] spi-summary: document set_cs_timing
+Date: Thu, 4 Apr 2019 17:14:08 -0700
+Subject: [PATCH] spi: tegra114: add 3 wire transfer mode support
 
-This patch documents set_cs_timing SPI master method.
+This patch adds 3 wire transfer support to SPI mode list along with
+its implementation.
+
+3 wire or Bi-directional mode uses only one serial data pin for the
+transfer. SPI in master mode uses MOSI data line only and MISO data
+line is not used.
 
 Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- Documentation/spi/spi-summary | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/spi/spi-tegra114.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/spi/spi-summary b/Documentation/spi/spi-summary
-index 1721c1b570c3..1a63194b74d7 100644
---- a/Documentation/spi/spi-summary
-+++ b/Documentation/spi/spi-summary
-@@ -572,6 +572,12 @@ SPI MASTER METHODS
- 	0: transfer is finished
- 	1: transfer is still in progress
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index 1e749ce13029..751672b3bc16 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -754,6 +754,11 @@ static u32 tegra_spi_setup_transfer_one(struct spi_device *spi,
+ 		else
+ 			command1 &= ~SPI_LSBIT_FE;
  
-+    master->set_cs_timing(struct spi_device *spi, u8 setup_clk_cycles,
-+			      u8 hold_clk_cycles, u8 inactive_clk_cycles)
-+	This method allows SPI client drivers to request SPI master controller
-+	for configuring device specific CS setup, hold and inactive timing
-+	requirements.
++		if (spi->mode & SPI_3WIRE)
++			command1 |= SPI_BIDIROE;
++		else
++			command1 &= ~SPI_BIDIROE;
 +
-     DEPRECATED METHODS
+ 		if (tspi->cs_control) {
+ 			if (tspi->cs_control != spi)
+ 				tegra_spi_writel(tspi, command1, SPI_COMMAND1);
+@@ -1158,7 +1163,7 @@ static int tegra_spi_probe(struct platform_device *pdev)
  
-     master->transfer(struct spi_device *spi, struct spi_message *message)
+ 	/* the spi->mode bits understood by this driver: */
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST |
+-			    SPI_TX_DUAL | SPI_RX_DUAL;
++			    SPI_TX_DUAL | SPI_RX_DUAL | SPI_3WIRE;
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
+ 	master->setup = tegra_spi_setup;
+ 	master->transfer_one_message = tegra_spi_transfer_one_message;
 -- 
 2.20.1

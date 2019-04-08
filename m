@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: bitbang: Introduce spi_bitbang_init()" to the spi tree
-Date: Mon,  8 Apr 2019 14:32:24 +0700 (+07)
-Message-ID: <20190408073224.76C3B441D3C@finisterre.ee.mobilebroadband>
-References: <20190403040133.1459-12-andrew.smirnov@gmail.com>
+Subject: Applied "spi: gpio: Make sure spi_master_put() is called in every error path" to the spi tree
+Date: Mon,  8 Apr 2019 14:32:33 +0700 (+07)
+Message-ID: <20190408073233.0EFC6441D3B@finisterre.ee.mobilebroadband>
+References: <20190403040133.1459-11-andrew.smirnov@gmail.com>
 Cc: Mark Brown <broonie@kernel.org>, Chris Healy <cphealy@gmail.com>,
         linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
@@ -11,13 +11,13 @@ Cc: Mark Brown <broonie@kernel.org>, Chris Healy <cphealy@gmail.com>,
         linux-spi@vger.kernel.org
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190403040133.1459-12-andrew.smirnov@gmail.com>
+In-Reply-To: <20190403040133.1459-11-andrew.smirnov@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: bitbang: Introduce spi_bitbang_init()
+   spi: gpio: Make sure spi_master_put() is called in every error path
 
 has been applied to the spi tree at
 
@@ -42,14 +42,16 @@ to this mail.
 Thanks,
 Mark
 
->From 45beec3519983cb11768cd3ee350f44975bf4cea Mon Sep 17 00:00:00 2001
+>From 8b797490b4db09492acda4b4a4a4355d2311a614 Mon Sep 17 00:00:00 2001
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 2 Apr 2019 21:01:32 -0700
-Subject: [PATCH] spi: bitbang: Introduce spi_bitbang_init()
+Date: Tue, 2 Apr 2019 21:01:31 -0700
+Subject: [PATCH] spi: gpio: Make sure spi_master_put() is called in every
+ error path
 
-Move all of the code doing struct spi_bitbang initialization, so that
-it can be paired with devm_spi_register_master() in order to avoid
-having to call spi_bitbang_stop() explicitly.
+There's a number of failure paths in spi_gpio_probe() that do not call
+spi_master_put() potentially leaking memory. Fix this problem by
+registering a cleanup funciont via devm_add_action_or_reset() right
+after SPI controller is allocated.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: Mark Brown <broonie@kernel.org>
@@ -58,105 +60,57 @@ Cc: linux-spi@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-bitbang.c       | 66 +++++++++++++++++++--------------
- include/linux/spi/spi_bitbang.h |  1 +
- 2 files changed, 40 insertions(+), 27 deletions(-)
+ drivers/spi/spi-gpio.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-bitbang.c b/drivers/spi/spi-bitbang.c
-index dd9a8c54a693..4243e53f9f7b 100644
---- a/drivers/spi/spi-bitbang.c
-+++ b/drivers/spi/spi-bitbang.c
-@@ -335,6 +335,42 @@ static void spi_bitbang_set_cs(struct spi_device *spi, bool enable)
+diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
+index 5ac9ae192ddf..d4a22f22b04c 100644
+--- a/drivers/spi/spi-gpio.c
++++ b/drivers/spi/spi-gpio.c
+@@ -362,6 +362,11 @@ static int spi_gpio_probe_pdata(struct platform_device *pdev,
+ 	return 0;
+ }
  
- /*----------------------------------------------------------------------*/
- 
-+int spi_bitbang_init(struct spi_bitbang *bitbang)
++static void spi_gpio_put(void *data)
 +{
-+	struct spi_master *master = bitbang->master;
-+
-+	if (!master || !bitbang->chipselect)
-+		return -EINVAL;
-+
-+	mutex_init(&bitbang->lock);
-+
-+	if (!master->mode_bits)
-+		master->mode_bits = SPI_CPOL | SPI_CPHA | bitbang->flags;
-+
-+	if (master->transfer || master->transfer_one_message)
-+		return -EINVAL;
-+
-+	master->prepare_transfer_hardware = spi_bitbang_prepare_hardware;
-+	master->unprepare_transfer_hardware = spi_bitbang_unprepare_hardware;
-+	master->transfer_one = spi_bitbang_transfer_one;
-+	master->set_cs = spi_bitbang_set_cs;
-+
-+	if (!bitbang->txrx_bufs) {
-+		bitbang->use_dma = 0;
-+		bitbang->txrx_bufs = spi_bitbang_bufs;
-+		if (!master->setup) {
-+			if (!bitbang->setup_transfer)
-+				bitbang->setup_transfer =
-+					 spi_bitbang_setup_transfer;
-+			master->setup = spi_bitbang_setup;
-+			master->cleanup = spi_bitbang_cleanup;
-+		}
-+	}
-+
-+	return 0;
++	spi_master_put(data);
 +}
-+EXPORT_SYMBOL_GPL(spi_bitbang_init);
 +
- /**
-  * spi_bitbang_start - start up a polled/bitbanging SPI master driver
-  * @bitbang: driver handle
-@@ -368,33 +404,9 @@ int spi_bitbang_start(struct spi_bitbang *bitbang)
- 	struct spi_master *master = bitbang->master;
- 	int ret;
+ static int spi_gpio_probe(struct platform_device *pdev)
+ {
+ 	int				status;
+@@ -377,6 +382,10 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 	if (!master)
+ 		return -ENOMEM;
  
--	if (!master || !bitbang->chipselect)
--		return -EINVAL;
--
--	mutex_init(&bitbang->lock);
--
--	if (!master->mode_bits)
--		master->mode_bits = SPI_CPOL | SPI_CPHA | bitbang->flags;
--
--	if (master->transfer || master->transfer_one_message)
--		return -EINVAL;
--
--	master->prepare_transfer_hardware = spi_bitbang_prepare_hardware;
--	master->unprepare_transfer_hardware = spi_bitbang_unprepare_hardware;
--	master->transfer_one = spi_bitbang_transfer_one;
--	master->set_cs = spi_bitbang_set_cs;
--
--	if (!bitbang->txrx_bufs) {
--		bitbang->use_dma = 0;
--		bitbang->txrx_bufs = spi_bitbang_bufs;
--		if (!master->setup) {
--			if (!bitbang->setup_transfer)
--				bitbang->setup_transfer =
--					 spi_bitbang_setup_transfer;
--			master->setup = spi_bitbang_setup;
--			master->cleanup = spi_bitbang_cleanup;
--		}
--	}
-+	ret = spi_bitbang_init(bitbang);
-+	if (ret)
-+		return ret;
++	status = devm_add_action_or_reset(&pdev->dev, spi_gpio_put, master);
++	if (status)
++		return status;
++
+ 	if (of_id)
+ 		status = spi_gpio_probe_dt(pdev, master);
+ 	else
+@@ -428,11 +437,7 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 	}
+ 	bb->setup_transfer = spi_bitbang_setup_transfer;
  
- 	/* driver may get busy before register() returns, especially
- 	 * if someone registered boardinfo for devices
-diff --git a/include/linux/spi/spi_bitbang.h b/include/linux/spi/spi_bitbang.h
-index b7e021b274dc..4444c2a992cb 100644
---- a/include/linux/spi/spi_bitbang.h
-+++ b/include/linux/spi/spi_bitbang.h
-@@ -44,6 +44,7 @@ extern int spi_bitbang_setup_transfer(struct spi_device *spi,
+-	status = spi_bitbang_start(&spi_gpio->bitbang);
+-	if (status)
+-		spi_master_put(master);
+-
+-	return status;
++	return spi_bitbang_start(&spi_gpio->bitbang);
+ }
  
- /* start or stop queue processing */
- extern int spi_bitbang_start(struct spi_bitbang *spi);
-+extern int spi_bitbang_init(struct spi_bitbang *spi);
- extern void spi_bitbang_stop(struct spi_bitbang *spi);
+ static int spi_gpio_remove(struct platform_device *pdev)
+@@ -444,8 +449,6 @@ static int spi_gpio_remove(struct platform_device *pdev)
+ 	/* stop() unregisters child devices too */
+ 	spi_bitbang_stop(&spi_gpio->bitbang);
  
- #endif	/* __SPI_BITBANG_H */
+-	spi_master_put(spi_gpio->bitbang.master);
+-
+ 	return 0;
+ }
+ 
 -- 
 2.20.1

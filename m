@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: gpio: Use devm_spi_register_master()" to the spi tree
-Date: Mon,  8 Apr 2019 14:32:15 +0700 (+07)
-Message-ID: <20190408073215.70AD5441D3B@finisterre.ee.mobilebroadband>
-References: <20190403040133.1459-13-andrew.smirnov@gmail.com>
+Subject: Applied "spi: bitbang: Introduce spi_bitbang_init()" to the spi tree
+Date: Mon,  8 Apr 2019 14:32:24 +0700 (+07)
+Message-ID: <20190408073224.76C3B441D3C@finisterre.ee.mobilebroadband>
+References: <20190403040133.1459-12-andrew.smirnov@gmail.com>
 Cc: Mark Brown <broonie@kernel.org>, Chris Healy <cphealy@gmail.com>,
         linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
@@ -11,13 +11,13 @@ Cc: Mark Brown <broonie@kernel.org>, Chris Healy <cphealy@gmail.com>,
         linux-spi@vger.kernel.org
 To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190403040133.1459-13-andrew.smirnov@gmail.com>
+In-Reply-To: <20190403040133.1459-12-andrew.smirnov@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: gpio: Use devm_spi_register_master()
+   spi: bitbang: Introduce spi_bitbang_init()
 
 has been applied to the spi tree at
 
@@ -42,14 +42,14 @@ to this mail.
 Thanks,
 Mark
 
->From 79567c1a321e7396e734135d56950311dde07db2 Mon Sep 17 00:00:00 2001
+>From 45beec3519983cb11768cd3ee350f44975bf4cea Mon Sep 17 00:00:00 2001
 From: Andrey Smirnov <andrew.smirnov@gmail.com>
-Date: Tue, 2 Apr 2019 21:01:33 -0700
-Subject: [PATCH] spi: gpio: Use devm_spi_register_master()
+Date: Tue, 2 Apr 2019 21:01:32 -0700
+Subject: [PATCH] spi: bitbang: Introduce spi_bitbang_init()
 
-Replace spi_bitbang_start() with a combination of spi_bitbang_init()
-and devm_spi_register_master() and drop all of the explicit
-cleanup-related code that's no longer necessary.
+Move all of the code doing struct spi_bitbang initialization, so that
+it can be paired with devm_spi_register_master() in order to avoid
+having to call spi_bitbang_stop() explicitly.
 
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 Cc: Mark Brown <broonie@kernel.org>
@@ -58,53 +58,105 @@ Cc: linux-spi@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-gpio.c | 19 ++++---------------
- 1 file changed, 4 insertions(+), 15 deletions(-)
+ drivers/spi/spi-bitbang.c       | 66 +++++++++++++++++++--------------
+ include/linux/spi/spi_bitbang.h |  1 +
+ 2 files changed, 40 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index d4a22f22b04c..487ee55d26f7 100644
---- a/drivers/spi/spi-gpio.c
-+++ b/drivers/spi/spi-gpio.c
-@@ -396,8 +396,6 @@ static int spi_gpio_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-bitbang.c b/drivers/spi/spi-bitbang.c
+index dd9a8c54a693..4243e53f9f7b 100644
+--- a/drivers/spi/spi-bitbang.c
++++ b/drivers/spi/spi-bitbang.c
+@@ -335,6 +335,42 @@ static void spi_bitbang_set_cs(struct spi_device *spi, bool enable)
  
- 	spi_gpio = spi_master_get_devdata(master);
+ /*----------------------------------------------------------------------*/
  
--	platform_set_drvdata(pdev, spi_gpio);
++int spi_bitbang_init(struct spi_bitbang *bitbang)
++{
++	struct spi_master *master = bitbang->master;
++
++	if (!master || !bitbang->chipselect)
++		return -EINVAL;
++
++	mutex_init(&bitbang->lock);
++
++	if (!master->mode_bits)
++		master->mode_bits = SPI_CPOL | SPI_CPHA | bitbang->flags;
++
++	if (master->transfer || master->transfer_one_message)
++		return -EINVAL;
++
++	master->prepare_transfer_hardware = spi_bitbang_prepare_hardware;
++	master->unprepare_transfer_hardware = spi_bitbang_unprepare_hardware;
++	master->transfer_one = spi_bitbang_transfer_one;
++	master->set_cs = spi_bitbang_set_cs;
++
++	if (!bitbang->txrx_bufs) {
++		bitbang->use_dma = 0;
++		bitbang->txrx_bufs = spi_bitbang_bufs;
++		if (!master->setup) {
++			if (!bitbang->setup_transfer)
++				bitbang->setup_transfer =
++					 spi_bitbang_setup_transfer;
++			master->setup = spi_bitbang_setup;
++			master->cleanup = spi_bitbang_cleanup;
++		}
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(spi_bitbang_init);
++
+ /**
+  * spi_bitbang_start - start up a polled/bitbanging SPI master driver
+  * @bitbang: driver handle
+@@ -368,33 +404,9 @@ int spi_bitbang_start(struct spi_bitbang *bitbang)
+ 	struct spi_master *master = bitbang->master;
+ 	int ret;
+ 
+-	if (!master || !bitbang->chipselect)
+-		return -EINVAL;
 -
- 	status = spi_gpio_request(dev, spi_gpio);
- 	if (status)
- 		return status;
-@@ -437,19 +435,11 @@ static int spi_gpio_probe(struct platform_device *pdev)
- 	}
- 	bb->setup_transfer = spi_bitbang_setup_transfer;
- 
--	return spi_bitbang_start(&spi_gpio->bitbang);
--}
+-	mutex_init(&bitbang->lock);
 -
--static int spi_gpio_remove(struct platform_device *pdev)
--{
--	struct spi_gpio			*spi_gpio;
+-	if (!master->mode_bits)
+-		master->mode_bits = SPI_CPOL | SPI_CPHA | bitbang->flags;
 -
--	spi_gpio = platform_get_drvdata(pdev);
+-	if (master->transfer || master->transfer_one_message)
+-		return -EINVAL;
 -
--	/* stop() unregisters child devices too */
--	spi_bitbang_stop(&spi_gpio->bitbang);
-+	status = spi_bitbang_init(&spi_gpio->bitbang);
-+	if (status)
-+		return status;
+-	master->prepare_transfer_hardware = spi_bitbang_prepare_hardware;
+-	master->unprepare_transfer_hardware = spi_bitbang_unprepare_hardware;
+-	master->transfer_one = spi_bitbang_transfer_one;
+-	master->set_cs = spi_bitbang_set_cs;
+-
+-	if (!bitbang->txrx_bufs) {
+-		bitbang->use_dma = 0;
+-		bitbang->txrx_bufs = spi_bitbang_bufs;
+-		if (!master->setup) {
+-			if (!bitbang->setup_transfer)
+-				bitbang->setup_transfer =
+-					 spi_bitbang_setup_transfer;
+-			master->setup = spi_bitbang_setup;
+-			master->cleanup = spi_bitbang_cleanup;
+-		}
+-	}
++	ret = spi_bitbang_init(bitbang);
++	if (ret)
++		return ret;
  
--	return 0;
-+	return devm_spi_register_master(&pdev->dev, spi_master_get(master));
- }
+ 	/* driver may get busy before register() returns, especially
+ 	 * if someone registered boardinfo for devices
+diff --git a/include/linux/spi/spi_bitbang.h b/include/linux/spi/spi_bitbang.h
+index b7e021b274dc..4444c2a992cb 100644
+--- a/include/linux/spi/spi_bitbang.h
++++ b/include/linux/spi/spi_bitbang.h
+@@ -44,6 +44,7 @@ extern int spi_bitbang_setup_transfer(struct spi_device *spi,
  
- MODULE_ALIAS("platform:" DRIVER_NAME);
-@@ -460,7 +450,6 @@ static struct platform_driver spi_gpio_driver = {
- 		.of_match_table = of_match_ptr(spi_gpio_dt_ids),
- 	},
- 	.probe		= spi_gpio_probe,
--	.remove		= spi_gpio_remove,
- };
- module_platform_driver(spi_gpio_driver);
+ /* start or stop queue processing */
+ extern int spi_bitbang_start(struct spi_bitbang *spi);
++extern int spi_bitbang_init(struct spi_bitbang *spi);
+ extern void spi_bitbang_stop(struct spi_bitbang *spi);
  
+ #endif	/* __SPI_BITBANG_H */
 -- 
 2.20.1

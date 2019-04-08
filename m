@@ -1,68 +1,44 @@
-From: Yue Haibing <yuehaibing@huawei.com>
-Subject: [PATCH] spi: spi-mem: Fix build error without CONFIG_SPI_MEM
-Date: Mon, 8 Apr 2019 22:39:49 +0800
-Message-ID: <20190408143949.10688-1-yuehaibing@huawei.com>
+From: Flavio Suligoi <f.suligoi@asem.it>
+Subject: [PATCH 1/1] spi: pxa2xx: add driver enabling message
+Date: Mon, 8 Apr 2019 17:22:44 +0200
+Message-ID: <1554736964-6058-1-git-send-email-f.suligoi@asem.it>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        YueHaibing <yuehaibing@huawei.com>
-To: <broonie@kernel.org>, <naga.sureshkumar.relli@xilinx.com>
+Cc: <linux-arm-kernel@lists.infradead.org>,
+        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Flavio Suligoi <f.suligoi@asem.it>
+To: Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: YueHaibing <yuehaibing@huawei.com>
+Add an info message for the PXA2xx device driver start-up,
+with the indication of the transfer mode used (DMA or GPIO).
 
-When building with CONFIG_SPI_MEM is not set
-gc warns this:
+This info is useful to individuate the timing when
+the module starts.
 
-drivers/spi/spi-zynq-qspi.o: In function `zynq_qspi_supports_op':
-spi-zynq-qspi.c:(.text+0x1da): undefined reference to `spi_mem_default_supports_op'
-
-Fixes: 67dca5e580f1 ("spi: spi-mem: Add support for Zynq QSPI controller")
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
 ---
- include/linux/spi/spi-mem.h | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index c845cd6..1941b84 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -295,6 +295,10 @@ int spi_controller_dma_map_mem_op_data(struct spi_controller *ctlr,
- void spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
- 					  const struct spi_mem_op *op,
- 					  struct sg_table *sg);
-+
-+bool spi_mem_default_supports_op(struct spi_mem *mem,
-+				 const struct spi_mem_op *op);
-+
- #else
- static inline int
- spi_controller_dma_map_mem_op_data(struct spi_controller *ctlr,
-@@ -310,6 +314,13 @@ spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
- 				     struct sg_table *sg)
- {
- }
-+
-+bool spi_mem_default_supports_op(struct spi_mem *mem,
-+				 const struct spi_mem_op *op)
-+{
-+	return false;
-+}
-+
- #endif /* CONFIG_SPI_MEM */
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index f7068cc..d449501 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1826,6 +1826,9 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 		goto out_error_clock_enabled;
+ 	}
  
- int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op);
-@@ -341,9 +352,6 @@ int spi_mem_driver_register_with_owner(struct spi_mem_driver *drv,
++	dev_info(dev, "PXA2xx SPI master controller (%s mode)\n",
++		 platform_info->enable_dma ? "DMA" : "PIO");
++
+ 	return status;
  
- void spi_mem_driver_unregister(struct spi_mem_driver *drv);
- 
--bool spi_mem_default_supports_op(struct spi_mem *mem,
--				 const struct spi_mem_op *op);
--
- #define spi_mem_driver_register(__drv)                                  \
- 	spi_mem_driver_register_with_owner(__drv, THIS_MODULE)
- 
+ out_error_clock_enabled:
 -- 
 2.7.4

@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: tegra114: add 3 wire transfer mode support" to the spi tree
-Date: Mon,  8 Apr 2019 14:31:58 +0700 (+07)
-Message-ID: <20190408073158.246DB441D3B@finisterre.ee.mobilebroadband>
-References: <1554423259-26056-9-git-send-email-skomatineni@nvidia.com>
+Subject: Applied "spi: tegra114: add dual mode support" to the spi tree
+Date: Mon,  8 Apr 2019 14:32:06 +0700 (+07)
+Message-ID: <20190408073206.BC75D441D3C@finisterre.ee.mobilebroadband>
+References: <1554423259-26056-8-git-send-email-skomatineni@nvidia.com>
 Cc: Mark Brown <broonie@kernel.org>, thierry.reding@gmail.com,
         jonathanh@nvidia.com, talho@nvidia.com, skomatineni@nvidia.com,
         broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
@@ -12,13 +12,13 @@ Cc: Mark Brown <broonie@kernel.org>, thierry.reding@gmail.com,
         linux-spi@vger.kernel.org
 To: Sowjanya Komatineni <skomatineni@nvidia.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1554423259-26056-9-git-send-email-skomatineni@nvidia.com>
+In-Reply-To: <1554423259-26056-8-git-send-email-skomatineni@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: tegra114: add 3 wire transfer mode support
+   spi: tegra114: add dual mode support
 
 has been applied to the spi tree at
 
@@ -43,46 +43,50 @@ to this mail.
 Thanks,
 Mark
 
->From 9d199231b000414e420a35912760f2d67e9c56d7 Mon Sep 17 00:00:00 2001
+>From 9877a347f2056f7aa4e770de9a20048ad288f545 Mon Sep 17 00:00:00 2001
 From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Date: Thu, 4 Apr 2019 17:14:08 -0700
-Subject: [PATCH] spi: tegra114: add 3 wire transfer mode support
+Date: Thu, 4 Apr 2019 17:14:07 -0700
+Subject: [PATCH] spi: tegra114: add dual mode support
 
-This patch adds 3 wire transfer support to SPI mode list along with
-its implementation.
+This patch adds support for dual mode SPI transfer.
 
-3 wire or Bi-directional mode uses only one serial data pin for the
-transfer. SPI in master mode uses MOSI data line only and MISO data
-line is not used.
+Dual mode uses both MOSI and MISO lines in parallel where the data
+is interleaved on MOSI and MISO lines increasing the throughput.
+
+Packet from Tx FIFO is transmitted on both MOSI and MISO lines and
+packet to Rx FIFO is received from both MOSI and MISO lines. Even
+bits are transmitted or received on the MOSI data line and odd bits
+are transmitted or received on the MISO data line.
 
 Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-tegra114.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/spi/spi-tegra114.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index 1e749ce13029..751672b3bc16 100644
+index 402799c7f6b7..1e749ce13029 100644
 --- a/drivers/spi/spi-tegra114.c
 +++ b/drivers/spi/spi-tegra114.c
-@@ -754,6 +754,11 @@ static u32 tegra_spi_setup_transfer_one(struct spi_device *spi,
- 		else
- 			command1 &= ~SPI_LSBIT_FE;
+@@ -786,6 +786,11 @@ static int tegra_spi_start_transfer_one(struct spi_device *spi,
  
-+		if (spi->mode & SPI_3WIRE)
-+			command1 |= SPI_BIDIROE;
-+		else
-+			command1 &= ~SPI_BIDIROE;
+ 	total_fifo_words = tegra_spi_calculate_curr_xfer_param(spi, tspi, t);
+ 
++	if (t->rx_nbits == SPI_NBITS_DUAL || t->tx_nbits == SPI_NBITS_DUAL)
++		command1 |= SPI_BOTH_EN_BIT;
++	else
++		command1 &= ~SPI_BOTH_EN_BIT;
 +
- 		if (tspi->cs_control) {
- 			if (tspi->cs_control != spi)
- 				tegra_spi_writel(tspi, command1, SPI_COMMAND1);
-@@ -1158,7 +1163,7 @@ static int tegra_spi_probe(struct platform_device *pdev)
+ 	if (tspi->is_packed)
+ 		command1 |= SPI_PACKED;
+ 	else
+@@ -1152,7 +1157,8 @@ static int tegra_spi_probe(struct platform_device *pdev)
+ 		master->max_speed_hz = 25000000; /* 25MHz */
  
  	/* the spi->mode bits understood by this driver: */
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST |
--			    SPI_TX_DUAL | SPI_RX_DUAL;
-+			    SPI_TX_DUAL | SPI_RX_DUAL | SPI_3WIRE;
+-	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
++	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST |
++			    SPI_TX_DUAL | SPI_RX_DUAL;
  	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
  	master->setup = tegra_spi_setup;
  	master->transfer_one_message = tegra_spi_transfer_one_message;

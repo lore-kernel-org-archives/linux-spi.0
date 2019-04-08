@@ -1,24 +1,23 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: tegra114: add dual mode support" to the spi tree
-Date: Mon,  8 Apr 2019 14:32:06 +0700 (+07)
-Message-ID: <20190408073206.BC75D441D3C@finisterre.ee.mobilebroadband>
-References: <1554423259-26056-8-git-send-email-skomatineni@nvidia.com>
-Cc: Mark Brown <broonie@kernel.org>, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, talho@nvidia.com, skomatineni@nvidia.com,
-        broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        kyarlagadda@nvidia.com, ldewangan@nvidia.com,
-        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+Subject: Applied "spi: gpio: Use devm_spi_register_master()" to the spi tree
+Date: Mon,  8 Apr 2019 14:32:15 +0700 (+07)
+Message-ID: <20190408073215.70AD5441D3B@finisterre.ee.mobilebroadband>
+References: <20190403040133.1459-13-andrew.smirnov@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, Chris Healy <cphealy@gmail.com>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        Chris Healy <cphealy@gmail.com>, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org
-To: Sowjanya Komatineni <skomatineni@nvidia.com>
+To: Andrey Smirnov <andrew.smirnov@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1554423259-26056-8-git-send-email-skomatineni@nvidia.com>
+In-Reply-To: <20190403040133.1459-13-andrew.smirnov@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: tegra114: add dual mode support
+   spi: gpio: Use devm_spi_register_master()
 
 has been applied to the spi tree at
 
@@ -43,52 +42,69 @@ to this mail.
 Thanks,
 Mark
 
->From 9877a347f2056f7aa4e770de9a20048ad288f545 Mon Sep 17 00:00:00 2001
-From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Date: Thu, 4 Apr 2019 17:14:07 -0700
-Subject: [PATCH] spi: tegra114: add dual mode support
+>From 79567c1a321e7396e734135d56950311dde07db2 Mon Sep 17 00:00:00 2001
+From: Andrey Smirnov <andrew.smirnov@gmail.com>
+Date: Tue, 2 Apr 2019 21:01:33 -0700
+Subject: [PATCH] spi: gpio: Use devm_spi_register_master()
 
-This patch adds support for dual mode SPI transfer.
+Replace spi_bitbang_start() with a combination of spi_bitbang_init()
+and devm_spi_register_master() and drop all of the explicit
+cleanup-related code that's no longer necessary.
 
-Dual mode uses both MOSI and MISO lines in parallel where the data
-is interleaved on MOSI and MISO lines increasing the throughput.
-
-Packet from Tx FIFO is transmitted on both MOSI and MISO lines and
-packet to Rx FIFO is received from both MOSI and MISO lines. Even
-bits are transmitted or received on the MOSI data line and odd bits
-are transmitted or received on the MISO data line.
-
-Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Chris Healy <cphealy@gmail.com>
+Cc: linux-spi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-tegra114.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/spi/spi-gpio.c | 19 ++++---------------
+ 1 file changed, 4 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index 402799c7f6b7..1e749ce13029 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -786,6 +786,11 @@ static int tegra_spi_start_transfer_one(struct spi_device *spi,
+diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
+index d4a22f22b04c..487ee55d26f7 100644
+--- a/drivers/spi/spi-gpio.c
++++ b/drivers/spi/spi-gpio.c
+@@ -396,8 +396,6 @@ static int spi_gpio_probe(struct platform_device *pdev)
  
- 	total_fifo_words = tegra_spi_calculate_curr_xfer_param(spi, tspi, t);
+ 	spi_gpio = spi_master_get_devdata(master);
  
-+	if (t->rx_nbits == SPI_NBITS_DUAL || t->tx_nbits == SPI_NBITS_DUAL)
-+		command1 |= SPI_BOTH_EN_BIT;
-+	else
-+		command1 &= ~SPI_BOTH_EN_BIT;
-+
- 	if (tspi->is_packed)
- 		command1 |= SPI_PACKED;
- 	else
-@@ -1152,7 +1157,8 @@ static int tegra_spi_probe(struct platform_device *pdev)
- 		master->max_speed_hz = 25000000; /* 25MHz */
+-	platform_set_drvdata(pdev, spi_gpio);
+-
+ 	status = spi_gpio_request(dev, spi_gpio);
+ 	if (status)
+ 		return status;
+@@ -437,19 +435,11 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 	}
+ 	bb->setup_transfer = spi_bitbang_setup_transfer;
  
- 	/* the spi->mode bits understood by this driver: */
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
-+	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST |
-+			    SPI_TX_DUAL | SPI_RX_DUAL;
- 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
- 	master->setup = tegra_spi_setup;
- 	master->transfer_one_message = tegra_spi_transfer_one_message;
+-	return spi_bitbang_start(&spi_gpio->bitbang);
+-}
+-
+-static int spi_gpio_remove(struct platform_device *pdev)
+-{
+-	struct spi_gpio			*spi_gpio;
+-
+-	spi_gpio = platform_get_drvdata(pdev);
+-
+-	/* stop() unregisters child devices too */
+-	spi_bitbang_stop(&spi_gpio->bitbang);
++	status = spi_bitbang_init(&spi_gpio->bitbang);
++	if (status)
++		return status;
+ 
+-	return 0;
++	return devm_spi_register_master(&pdev->dev, spi_master_get(master));
+ }
+ 
+ MODULE_ALIAS("platform:" DRIVER_NAME);
+@@ -460,7 +450,6 @@ static struct platform_driver spi_gpio_driver = {
+ 		.of_match_table = of_match_ptr(spi_gpio_dt_ids),
+ 	},
+ 	.probe		= spi_gpio_probe,
+-	.remove		= spi_gpio_remove,
+ };
+ module_platform_driver(spi_gpio_driver);
+ 
 -- 
 2.20.1

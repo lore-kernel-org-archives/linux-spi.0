@@ -1,89 +1,42 @@
-From: Anatolij Gustschin <agust@denx.de>
-Subject: Re: [PATCH v4 3/3] fpga: Add fpga manager driver for ARRI Altera
- FPP
-Date: Mon, 8 Apr 2019 21:01:26 +0200
-Message-ID: <20190408210126.74920213@crub>
-References: <20190221202506.17744-1-agust@denx.de>
-        <20190221202506.17744-4-agust@denx.de>
-        <20190408180151.GA5643@archbook>
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH 15/24] dt-bindings: pinctrl: pinctrl-mt65xx: add support
+ for MT8516
+Date: Mon, 8 Apr 2019 22:44:59 +0200
+Message-ID: <CACRpkdZZ6-+MVdK4bOP4SHxQ8uQ8zENcir7DSteHy4g+B5uySQ@mail.gmail.com>
+References: <20190323211612.860-1-fparent@baylibre.com> <20190323211612.860-16-fparent@baylibre.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: linux-usb@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-fpga@vger.kernel.org, linux-kernel@vger.kernel.org,
-        gregkh@linuxfoundation.org, broonie@kernel.org, atull@kernel.org
-To: Moritz Fischer <mdf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Matthias Brugger <matthias.bgg@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Sean Wang <sean.wang@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        hsin-hsiung.wang@mediatek.com, wenzhen.yu@mediatek.com,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        Yong Mao <yong.mao@mediatek.com>, jjian.zhou@mediatek.com,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-i2c@vger.kernel.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support"
+        <linux-mediatek@lists.infradead.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-se
+To: Fabien Parent <fparent@baylibre.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190408180151.GA5643@archbook>
+In-Reply-To: <20190323211612.860-16-fparent@baylibre.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Moritz,
+On Sat, Mar 23, 2019 at 10:17 PM Fabien Parent <fparent@baylibre.com> wrote:
 
-On Mon, 8 Apr 2019 11:05:49 -0700
-Moritz Fischer mdf@kernel.org wrote:
-
->Hi Anatolij,
+> Add binding documentation of pinctrl-mt65xx for MT8516 SoC.
 >
->looks mostly good, a couple of nits inline.
+> Signed-off-by: Fabien Parent <fparent@baylibre.com>
 
-Thanks for review.
+Patch applied with Rob's ACK.
 
-...
->> +++ b/drivers/fpga/ftdi-fifo-fpp.c
->> @@ -0,0 +1,594 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * Altera FPGA firmware upload via FPP using FT232H Bitbang/FT245-FIFO.
->> + *
->> + * Copyright (C) 2017 - 2018 DENX Software Engineering  
->Maybe bump that to 2019 ;-)
-
-I'll update it in next version.
-
-...
->> +	gpiod_set_raw_value_cansleep(priv->nconfig, 1);
->> +	gpiod_set_raw_value_cansleep(priv->conf_done, 0);
->> +	msleep(50);  
->
->You could use a constant here for the 50 ...
-
-Do you mean something like below?
-
-  const unsigned int wait_50ms = 50;
-  ...
-  msleep(wait_50ms);
-
-...
->and here ...
->> +	gpiod_set_value_cansleep(priv->nconfig, 1);
->> +	msleep(50);  
->and here ...
->> +	gpiod_set_value_cansleep(priv->nconfig, 0);
->> +
->> +	/* Wait for CONF_DONE to get low */  
->Does the retry number come from datasheet?
-
-No, it is an empirical value.
-
-...
->> +	if (!retries) {
->> +		dev_warn(dev, "CONF_DONE wait timeout\n");  
->
->warn or err?
-
-err fits better here, I'll update to dev_err().
-
-...
->> +	struct fpp_fpga_mgr_priv *priv = mgr->priv;
->> +	struct device *dev = &priv->pdev->dev;
->> +	int retries = MAX_RETRIES;
->> +	int ret;
->> +	u8 mask, status;  
->
->Can you swap the two lines, reverse xmas-tree please.
-
-Will do in v5.
-
-Thanks,
-Anatolij
+Yours,
+Linus Walleij

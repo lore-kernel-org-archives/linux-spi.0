@@ -1,73 +1,52 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v9 2/3] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
- driver
-Date: Tue, 9 Apr 2019 14:20:50 +0300
-Message-ID: <869a1c6d-cfa6-35e9-592b-4e0937530e31@cogentembedded.com>
-References: <1553847606-18122-1-git-send-email-masonccyang@mxic.com.tw>
- <1553847606-18122-3-git-send-email-masonccyang@mxic.com.tw>
- <231f7423-bf13-99f8-427b-530f5446348b@cogentembedded.com>
- <OF7F1B534F.B934A9FE-ON482583D0.001DC618-482583D0.001FE84B@mxic.com.tw>
- <6d60bbef-a8ef-849e-33f3-3db35cefc09f@cogentembedded.com>
- <OFAEA16021.C7F7B095-ON482583D1.0031A13D-482583D1.00335085@mxic.com.tw>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Subject: Re: [PATCH 1/1] spi: pxa2xx: add driver enabling message
+Date: Tue, 9 Apr 2019 16:48:10 +0300
+Message-ID: <51e9e073-625d-f5c0-6b2e-410f6ddb6346@linux.intel.com>
+References: <1554736964-6058-1-git-send-email-f.suligoi@asem.it>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: bbrezillon@kernel.org, broonie@kernel.org,
-        devicetree@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
-        lee.jones@linaro.org, linux-kernel@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-        marek.vasut@gmail.com, mark.rutland@arm.com, robh+dt@kernel.org,
-        zhengxunli@mxic.com.tw
-To: masonccyang@mxic.com.tw
+Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+To: Flavio Suligoi <f.suligoi@asem.it>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OFAEA16021.C7F7B095-ON482583D1.0031A13D-482583D1.00335085@mxic.com.tw>
-Content-Language: en-MW
+In-Reply-To: <1554736964-6058-1-git-send-email-f.suligoi@asem.it>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 04/03/2019 12:20 PM, masonccyang@mxic.com.tw wrote:
+Hi
 
-[...]
->> >> > +   ret = rpc_spi_set_freq(rpc, desc->mem->spi->max_speed_hz);
->> >> > +   if (ret)
->> >> > +      return ret;
->> >> > +
->> >> > +   rpc_spi_mem_set_prep_op_cfg(desc->mem->spi,
->> >> > +                &desc->info.op_tmpl, &offs, &len);
->> >> > +
->> >> > +   regmap_update_bits(rpc->regmap, RPC_CMNCR, RPC_CMNCR_MD, 0);
->> >> > +   regmap_write(rpc->regmap, RPC_DRCR, RPC_DRCR_RBURST(32) |
->> >> > +           RPC_DRCR_RBE);
->> >> > +
->> >> > +   regmap_write(rpc->regmap, RPC_DRCMR, rpc->cmd);
->> >> > +   regmap_write(rpc->regmap, RPC_DREAR, RPC_DREAR_EAC(1));
->> >>
->> >>    So you're not even trying to support flashes larger than the
->> read dirmap?
->> >> Now I don't think it's acceptable (and I have rewritten this code
->> internally).
->> >
->> > what about the size comes form mtd->size ?
->>
->>    I'm not talking about size here; we should use the full address.
->> I'm attaching
->> my patch...
+On 4/8/19 6:22 PM, Flavio Suligoi wrote:
+> Add an info message for the PXA2xx device driver start-up,
+> with the indication of the transfer mode used (DMA or GPIO).
 > 
-> okay,got it!
-> what about just
-> -      regmap_write(rpc->mfd->regmap, RPC_DREAR, RPC_DREAR_EAC(1));
-> +      regmap_write(rpc->mfd->regmap, RPC_DREAR,
-> +                   RPC_DREAR_EAV(offs >> 25) | RPC_DREAR_EAC(1));
+> This info is useful to individuate the timing when
+> the module starts.
 > 
-> because only > 64MByte size make RPC_DREAR_EAV() work.
+> Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
+> ---
+>   drivers/spi/spi-pxa2xx.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+> index f7068cc..d449501 100644
+> --- a/drivers/spi/spi-pxa2xx.c
+> +++ b/drivers/spi/spi-pxa2xx.c
+> @@ -1826,6 +1826,9 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+>   		goto out_error_clock_enabled;
+>   	}
+>   
+> +	dev_info(dev, "PXA2xx SPI master controller (%s mode)\n",
+> +		 platform_info->enable_dma ? "DMA" : "PIO");
+> +
+>   	return status;
+>   
+Would this look better if moved before devm_spi_register_controller() call?
 
-   Seems OK now, after Boris' reply.
-
-> thanks & best regards,
-> Mason
-
-[...]
-
-MBR, Sergei
+-- 
+Jarkko

@@ -1,484 +1,190 @@
-From: Mason Yang <masonccyang@mxic.com.tw>
-Subject: [PATCH v2 3/4] spi: Add MFD for Macronix MX25F0A SPI controller driver
-Date: Tue,  9 Apr 2019 10:29:59 +0800
-Message-ID: <1554777000-10542-4-git-send-email-masonccyang@mxic.com.tw>
-References: <1554777000-10542-1-git-send-email-masonccyang@mxic.com.tw>
-Cc: juliensu@mxic.com.tw, zhengxunli@mxic.com.tw,
-        Mason Yang <masonccyang@mxic.com.tw>
-To: broonie@kernel.org, marek.vasut@gmail.com,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        bbrezillon@kernel.org, dwmw2@infradead.org, lee.jones@linaro.org,
-        robh+dt@kernel.org, mark.rutland@arm.com,
-        computersforpeace@gmal.com, paul.burton@mips.com, stefan@agner.ch,
-        christophe.kerello@st.com, liang.yang@amlogic.com,
-        geert@linux-m68k.org, devicetree@vger.kernel.org,
-        marcel.ziswiler@toradex.com, linux-mtd@lists.infradead.org,
-        richard@nod.at, miquel.raynal@bootlin.com
+From: Robin Gong <yibin.gong@nxp.com>
+Subject: RE: Issues with i.MX SPI DMA transfers
+Date: Tue, 9 Apr 2019 03:26:15 +0000
+Message-ID: <VI1PR04MB454302BAF353124ED13747DC892D0@VI1PR04MB4543.eurprd04.prod.outlook.com>
+References: <08fcbd65-510f-84f8-d6d6-ff56aa9ca9ad@gmail.com>
+ <20190328065247.uz73lap7ljf5q3tb@pengutronix.de>
+ <b8e80127-e377-9ef9-2447-b0126fdad7dc@gmail.com>
+ <VI1PR04MB45438E01D91829849A4E0BB289590@VI1PR04MB4543.eurprd04.prod.outlook.com>
+ <d7a2e5c5-4ee0-8c89-1bab-654db0ae38dd@gmail.com>
+ <VI1PR04MB4543B1708FA151EED0CB722A89550@VI1PR04MB4543.eurprd04.prod.outlook.com>
+ <95df9334-3d0c-7d13-e431-5a4aa2b9907e@gmail.com>
+ <VI1PR04MB454305A56372466A38E9F81989560@VI1PR04MB4543.eurprd04.prod.outlook.com>
+Mime-Version: 1.0
+Content-Type: multipart/mixed;
+        boundary="_003_VI1PR04MB454302BAF353124ED13747DC892D0VI1PR04MB4543eurp_"
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andy Duan <fugang.duan@nxp.com>, Han Xu <han.xu@nxp.com>,
+        Clark Wang <xiaoning.wang@nxp.com>
+To: Igor Plyatov <plyatov@gmail.com>,
+        =?utf-8?B?VXdlIEtsZWluZS1Lw7ZuaWc=?=
+        <u.kleine-koenig@pengutronix.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1554777000-10542-1-git-send-email-masonccyang@mxic.com.tw>
+In-Reply-To: <VI1PR04MB454305A56372466A38E9F81989560@VI1PR04MB4543.eurprd04.prod.outlook.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add a MFD driver for Macronix MX25F0A SPI controller.
+--_003_VI1PR04MB454302BAF353124ED13747DC892D0VI1PR04MB4543eurp_
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
----
- drivers/spi/spi-mxic.c | 275 +++++++++----------------------------------------
- 1 file changed, 49 insertions(+), 226 deletions(-)
+SGkgSWdvciwNCglQbGVhc2UgaGF2ZSBhIHRyeSB3aXRoIHRoZSBhdHRhY2hlZCBwYXRjaGVzLCBh
+bmQgcmV2ZXJ0IDI1YWFhNzVkZjFlNiwgYWQwZDkyZDdiYTZhDQosIGRkNGI0ODdiMzJhMywgZGYw
+NzEwMWUxYzRhIGJlZm9yZSBhcHBseS4gQmVzaWRlcyBYQ0gsIHR4IHRocmVzaCBzaG91bGQgYmUg
+c2V0IHRvIDAgLA0Kbm93IG5vIGZhaWx1cmUgY2F1Z2h0IG9uIGVjc3BpNS4NCg0KPiAtLS0tLU9y
+aWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBSb2JpbiBHb25nDQo+IFNlbnQ6IDIwMTnlubQ0
+5pyIMuaXpSAxNjozMw0KPiBUbzogJ0lnb3IgUGx5YXRvdicgPHBseWF0b3ZAZ21haWwuY29tPjsg
+VXdlIEtsZWluZS1Lw7ZuaWcNCj4gPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4NCj4g
+Q2M6IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMu
+aW5mcmFkZWFkLm9yZzsNCj4gbGludXgtc3BpQHZnZXIua2VybmVsLm9yZzsgZGwtbGludXgtaW14
+IDxsaW51eC1pbXhAbnhwLmNvbT47IEZhYmlvIEVzdGV2YW0NCj4gPGZlc3RldmFtQGdtYWlsLmNv
+bT47IFBlbmd1dHJvbml4IEtlcm5lbCBUZWFtIDxrZXJuZWxAcGVuZ3V0cm9uaXguZGU+Ow0KPiBT
+YXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+OyBTaGF3biBHdW8NCj4gPHNoYXdu
+Z3VvQGtlcm5lbC5vcmc+OyBNYXJrIEJyb3duIDxicm9vbmllQGtlcm5lbC5vcmc+Ow0KPiBkbWFl
+bmdpbmVAdmdlci5rZXJuZWwub3JnOyBWaW5vZCBLb3VsIDx2a291bEBrZXJuZWwub3JnPjsgRGFu
+IFdpbGxpYW1zDQo+IDxkYW4uai53aWxsaWFtc0BpbnRlbC5jb20+OyBBbmR5IER1YW4gPGZ1Z2Fu
+Zy5kdWFuQG54cC5jb20+OyBIYW4gWHUNCj4gPGhhbi54dUBueHAuY29tPjsgQ2xhcmsgV2FuZyA8
+eGlhb25pbmcud2FuZ0BueHAuY29tPg0KPiBTdWJqZWN0OiBSRTogSXNzdWVzIHdpdGggaS5NWCBT
+UEkgRE1BIHRyYW5zZmVycw0KPiANCj4gPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+
+IEZyb206IElnb3IgUGx5YXRvdiA8cGx5YXRvdkBnbWFpbC5jb20+DQo+ID4gU2VudDogMjAxOeW5
+tDTmnIgy5pelIDE1OjIwDQo+ID4gVG86IFJvYmluIEdvbmcgPHlpYmluLmdvbmdAbnhwLmNvbT47
+IFV3ZSBLbGVpbmUtS8O2bmlnDQo+ID4gPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4N
+Cj4gPiBDYzogbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsNCj4gPiBsaW51eC1hcm0ta2Vy
+bmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7DQo+ID4gbGludXgtc3BpQHZnZXIua2VybmVsLm9yZzsg
+ZGwtbGludXgtaW14IDxsaW51eC1pbXhAbnhwLmNvbT47IEZhYmlvDQo+ID4gRXN0ZXZhbSA8ZmVz
+dGV2YW1AZ21haWwuY29tPjsgUGVuZ3V0cm9uaXggS2VybmVsIFRlYW0NCj4gPiA8a2VybmVsQHBl
+bmd1dHJvbml4LmRlPjsgU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjsgU2hh
+d24NCj4gPiBHdW8gPHNoYXduZ3VvQGtlcm5lbC5vcmc+OyBNYXJrIEJyb3duIDxicm9vbmllQGtl
+cm5lbC5vcmc+Ow0KPiA+IGRtYWVuZ2luZUB2Z2VyLmtlcm5lbC5vcmc7IFZpbm9kIEtvdWwgPHZr
+b3VsQGtlcm5lbC5vcmc+OyBEYW4gV2lsbGlhbXMNCj4gPiA8ZGFuLmoud2lsbGlhbXNAaW50ZWwu
+Y29tPjsgQW5keSBEdWFuIDxmdWdhbmcuZHVhbkBueHAuY29tPjsgSGFuIFh1DQo+ID4gPGhhbi54
+dUBueHAuY29tPjsgQ2xhcmsgV2FuZyA8eGlhb25pbmcud2FuZ0BueHAuY29tPg0KPiA+IFN1Ympl
+Y3Q6IFJlOiBJc3N1ZXMgd2l0aCBpLk1YIFNQSSBETUEgdHJhbnNmZXJzDQo+ID4NCj4gPiBEZWFy
+IFJvYmluIEdvbmcsDQo+ID4NCj4gPg0KPiA+ID4+IFNvcnJ5Li4uYmVsb3cgYW5vdGhlciBzZG1h
+IHBhdGNoKGFkMGQ5MmQ3YmE2YSkgbmVlZCB0byBiZSByZXZlcnRlZCwNCj4gPiA+PiBiZWNhdXNl
+IHNwaSBkcml2ZXIgbWF5IGR5bmFtaWNhbGx5IGNoYW5nZSBidXJzdCBsZW5ndGguDQo+ID4NCj4g
+Pg0KPiA+IG5vdyBJIGhhdmUgcmV2ZXJ0ZWQgcGF0Y2ggYWQwZDkyZDdiYTZhLg0KPiA+DQo+ID4g
+UGF0Y2hlcyAwMDAxLWRtYS1lbmdpbmUtaW14LXNkbWEtYWRkLW1jdV8yX2Vjc3BpLXNjcmlwdC5w
+YXRjaCBhbmQNCj4gPiAwMDAyLXNwaS1zcGktaW14LWZpeC1FUlIwMDkxNjUucGF0Y2ggYXJlIGFw
+cGxpZWQuDQo+ID4NCj4gPg0KPiA+IEtlcm5lbCBsb2cgc2hvdyBtZXNzYWdlcw0KPiA+DQo+ID4g
+W8KgwqAgMjkuMjAyNjM5XSBpbXgtc2RtYSAyMGVjMDAwLnNkbWE6IGxvYWRlZCBmaXJtd2FyZSAz
+LjMgWw0KPiA+IDI5LjIzODU5NV0gc3BpX2lteCAyMDA4MDAwLnNwaTogcHJvYmVkIFvCoMKgIDI5
+LjI0MjgwMl0gc3BpX2lteA0KPiA+IDIwMGMwMDAuc3BpOiBwcm9iZWQgW8KgwqAgMjkuMjQ1MjE3
+XSBzcGlfaW14IDIwMTgwMDAuc3BpOiBwcm9iZWQNCj4gPg0KPiA+IFNQSSBETUEgdHJhbnNmZXJz
+IHN0aWxsIG5vdCB3b3JrLg0KPiA+DQo+ID4gSWYgSSB0ZXN0IDMyIGJ5dGUgdHJhbnNmZXJzLCB0
+aGVuIHRoZXkgd29yayBmaW5lLiBCdXQgNjQgYnl0ZQ0KPiA+IHRyYW5zZmVycyBmYWlscyBhbHdh
+eXMgYW5kIEkgc2VlIGVycm9yIG1lc3NhZ2VzDQo+ID4NCj4gPiByb290QGNyNzp+IyBzcGlkZXZf
+dGVzdCAtRCAvZGV2L3NwaWRldjQuMSAtcyAxMjAwMDAwIC1iIDggLVMgNjQgLUkgMQ0KPiA+IC1s
+IHNwaSBtb2RlOiAweDIwIGJpdHMgcGVyIHdvcmQ6IDggbWF4IHNwZWVkOiAxMjAwMDAwIEh6ICgx
+MjAwIEtIeikgWw0KPiA+IDQyMy42ODY3MzZdIHNwaV9tYXN0ZXIgc3BpNDogSS9PIEVycm9yIGlu
+IERNQSBSWCBbwqAgNDIzLjY5MTM5Ml0gc3BpZGV2DQo+ID4gc3BpNC4xOiBTUEkgdHJhbnNmZXIg
+ZmFpbGVkOiAtMTEwIFvCoCA0MjMuNjk2MzgyXSBzcGlfbWFzdGVyIHNwaTQ6DQo+ID4gZmFpbGVk
+IHRvIHRyYW5zZmVyIG9uZSBtZXNzYWdlIGZyb20gcXVldWUgY2FuJ3Qgc2VuZCBzcGkgbWVzc2Fn
+ZToNCj4gPiBDb25uZWN0aW9uIHRpbWVkIG91dCBBYm9ydGVkIChjb3JlIGR1bXBlZCkNCj4gPg0K
+PiA+IEkgc3VwcG9zZSwgdHJhbnNmZXJzIHNob3J0ZXIgdGhlbiA2NCBieXRlcyBtYWRlIHdpdGgg
+aGVscCBvZiBQSU8uDQo+ID4NCj4gPiBSb2JpbiwgaXMgdGhlcmUgYW55IGNoYW5jZSBmb3IgeW91
+IHRvIGZpbmQgc29tZSB0aW1lIGFuZCBsb29rIGF0IHRoaXMNCj4gPiBpc3N1ZSBhZ2Fpbj8NCj4g
+SSBoYXZlIHF1aWNrIHRlc3Qgd2l0aCBzcGlkZXZfdGVzdCBsb29wYmFjaywgYnV0IGRpZG4ndCBt
+ZWV0IHlvdXIgZXJyb3IsIElzIHlvdXINCj4gY29kZSB0aGUgYWxtb3N0IGxhdGVzdCBjb2RlIGlu
+IGxpbnV4LW5leHQgYXMgbWluZT8NCj4gDQo+IHJvb3RAaW14NnFwZGxzb2xveDp+IyBjYXQgL3By
+b2MvaW50ZXJydXB0cyB8IGdyZXAgc2RtYQ0KPiAgNDg6ICAgICAgICAgMzcgICAgICAgR1BDICAg
+MiBMZXZlbCAgICAgc2RtYQ0KPiAgLWx0QGlteDZxcGRsc29sb3g6fiMgLi9zcGlkZXZfdGVzdCAt
+RCAvZGV2L3NwaWRldjAuMCAtcyAxMjAwMDAwIC1iIDggLVMgNjQgLUkNCj4gMSAtbCBzcGkgbW9k
+ZTogMHgyMCBiaXRzIHBlciB3b3JkOiA4IG1heCBzcGVlZDogMTIwMDAwMCBIeiAoMTIwMCBLSHop
+DQo+IHJvb3RAaW14NnFwZGxzb2xveDp+IyBjYXQgL3Byb2MvaW50ZXJydXB0cyB8IGdyZXAgc2Rt
+YQ0KPiAgNDg6ICAgICAgICAgNDMgICAgICAgR1BDICAgMiBMZXZlbCAgICAgc2RtYQ0KPiAuL3Nw
+aWRldl90ZXN0IC1EIC9kZXYvc3BpZGV2MC4wIC1zIDEyMDAwMDAgLWIgOCAtUyA1MTIgLUkgMSAt
+bCBzcGkgbW9kZTogMHgyMCBiaXRzDQo+IHBlciB3b3JkOiA4IG1heCBzcGVlZDogMTIwMDAwMCBI
+eiAoMTIwMCBLSHopDQo+IHRvdGFsOiB0eCAwLjVLQiwgcnggMC41S0INCj4gPg0KPiA+IEJlc3Qg
+d2lzaGVzLg0KPiA+IC0tDQo+ID4gSWdvciBQbHlhdG92DQo=
 
-diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
-index e41ae6e..f98f8e0 100644
---- a/drivers/spi/spi-mxic.c
-+++ b/drivers/spi/spi-mxic.c
-@@ -9,168 +9,13 @@
- //
- 
- #include <linux/clk.h>
--#include <linux/io.h>
--#include <linux/iopoll.h>
--#include <linux/module.h>
--#include <linux/platform_device.h>
-+#include <linux/mfd/mxic-mx25f0a.h>
- #include <linux/pm_runtime.h>
- #include <linux/spi/spi.h>
- #include <linux/spi/spi-mem.h>
- 
--#define HC_CFG			0x0
--#define HC_CFG_IF_CFG(x)	((x) << 27)
--#define HC_CFG_DUAL_SLAVE	BIT(31)
--#define HC_CFG_INDIVIDUAL	BIT(30)
--#define HC_CFG_NIO(x)		(((x) / 4) << 27)
--#define HC_CFG_TYPE(s, t)	((t) << (23 + ((s) * 2)))
--#define HC_CFG_TYPE_SPI_NOR	0
--#define HC_CFG_TYPE_SPI_NAND	1
--#define HC_CFG_TYPE_SPI_RAM	2
--#define HC_CFG_TYPE_RAW_NAND	3
--#define HC_CFG_SLV_ACT(x)	((x) << 21)
--#define HC_CFG_CLK_PH_EN	BIT(20)
--#define HC_CFG_CLK_POL_INV	BIT(19)
--#define HC_CFG_BIG_ENDIAN	BIT(18)
--#define HC_CFG_DATA_PASS	BIT(17)
--#define HC_CFG_IDLE_SIO_LVL(x)	((x) << 16)
--#define HC_CFG_MAN_START_EN	BIT(3)
--#define HC_CFG_MAN_START	BIT(2)
--#define HC_CFG_MAN_CS_EN	BIT(1)
--#define HC_CFG_MAN_CS_ASSERT	BIT(0)
--
--#define INT_STS			0x4
--#define INT_STS_EN		0x8
--#define INT_SIG_EN		0xc
--#define INT_STS_ALL		GENMASK(31, 0)
--#define INT_RDY_PIN		BIT(26)
--#define INT_RDY_SR		BIT(25)
--#define INT_LNR_SUSP		BIT(24)
--#define INT_ECC_ERR		BIT(17)
--#define INT_CRC_ERR		BIT(16)
--#define INT_LWR_DIS		BIT(12)
--#define INT_LRD_DIS		BIT(11)
--#define INT_SDMA_INT		BIT(10)
--#define INT_DMA_FINISH		BIT(9)
--#define INT_RX_NOT_FULL		BIT(3)
--#define INT_RX_NOT_EMPTY	BIT(2)
--#define INT_TX_NOT_FULL		BIT(1)
--#define INT_TX_EMPTY		BIT(0)
--
--#define HC_EN			0x10
--#define HC_EN_BIT		BIT(0)
--
--#define TXD(x)			(0x14 + ((x) * 4))
--#define RXD			0x24
--
--#define SS_CTRL(s)		(0x30 + ((s) * 4))
--#define LRD_CFG			0x44
--#define LWR_CFG			0x80
--#define RWW_CFG			0x70
--#define OP_READ			BIT(23)
--#define OP_DUMMY_CYC(x)		((x) << 17)
--#define OP_ADDR_BYTES(x)	((x) << 14)
--#define OP_CMD_BYTES(x)		(((x) - 1) << 13)
--#define OP_OCTA_CRC_EN		BIT(12)
--#define OP_DQS_EN		BIT(11)
--#define OP_ENHC_EN		BIT(10)
--#define OP_PREAMBLE_EN		BIT(9)
--#define OP_DATA_DDR		BIT(8)
--#define OP_DATA_BUSW(x)		((x) << 6)
--#define OP_ADDR_DDR		BIT(5)
--#define OP_ADDR_BUSW(x)		((x) << 3)
--#define OP_CMD_DDR		BIT(2)
--#define OP_CMD_BUSW(x)		(x)
--#define OP_BUSW_1		0
--#define OP_BUSW_2		1
--#define OP_BUSW_4		2
--#define OP_BUSW_8		3
--
--#define OCTA_CRC		0x38
--#define OCTA_CRC_IN_EN(s)	BIT(3 + ((s) * 16))
--#define OCTA_CRC_CHUNK(s, x)	((fls((x) / 32)) << (1 + ((s) * 16)))
--#define OCTA_CRC_OUT_EN(s)	BIT(0 + ((s) * 16))
--
--#define ONFI_DIN_CNT(s)		(0x3c + (s))
--
--#define LRD_CTRL		0x48
--#define RWW_CTRL		0x74
--#define LWR_CTRL		0x84
--#define LMODE_EN		BIT(31)
--#define LMODE_SLV_ACT(x)	((x) << 21)
--#define LMODE_CMD1(x)		((x) << 8)
--#define LMODE_CMD0(x)		(x)
--
--#define LRD_ADDR		0x4c
--#define LWR_ADDR		0x88
--#define LRD_RANGE		0x50
--#define LWR_RANGE		0x8c
--
--#define AXI_SLV_ADDR		0x54
--
--#define DMAC_RD_CFG		0x58
--#define DMAC_WR_CFG		0x94
--#define DMAC_CFG_PERIPH_EN	BIT(31)
--#define DMAC_CFG_ALLFLUSH_EN	BIT(30)
--#define DMAC_CFG_LASTFLUSH_EN	BIT(29)
--#define DMAC_CFG_QE(x)		(((x) + 1) << 16)
--#define DMAC_CFG_BURST_LEN(x)	(((x) + 1) << 12)
--#define DMAC_CFG_BURST_SZ(x)	((x) << 8)
--#define DMAC_CFG_DIR_READ	BIT(1)
--#define DMAC_CFG_START		BIT(0)
--
--#define DMAC_RD_CNT		0x5c
--#define DMAC_WR_CNT		0x98
--
--#define SDMA_ADDR		0x60
--
--#define DMAM_CFG		0x64
--#define DMAM_CFG_START		BIT(31)
--#define DMAM_CFG_CONT		BIT(30)
--#define DMAM_CFG_SDMA_GAP(x)	(fls((x) / 8192) << 2)
--#define DMAM_CFG_DIR_READ	BIT(1)
--#define DMAM_CFG_EN		BIT(0)
--
--#define DMAM_CNT		0x68
--
--#define LNR_TIMER_TH		0x6c
--
--#define RDM_CFG0		0x78
--#define RDM_CFG0_POLY(x)	(x)
--
--#define RDM_CFG1		0x7c
--#define RDM_CFG1_RDM_EN		BIT(31)
--#define RDM_CFG1_SEED(x)	(x)
--
--#define LWR_SUSP_CTRL		0x90
--#define LWR_SUSP_CTRL_EN	BIT(31)
--
--#define DMAS_CTRL		0x9c
--#define DMAS_CTRL_DIR_READ	BIT(31)
--#define DMAS_CTRL_EN		BIT(30)
--
--#define DATA_STROB		0xa0
--#define DATA_STROB_EDO_EN	BIT(2)
--#define DATA_STROB_INV_POL	BIT(1)
--#define DATA_STROB_DELAY_2CYC	BIT(0)
--
--#define IDLY_CODE(x)		(0xa4 + ((x) * 4))
--#define IDLY_CODE_VAL(x, v)	((v) << (((x) % 4) * 8))
--
--#define GPIO			0xc4
--#define GPIO_PT(x)		BIT(3 + ((x) * 16))
--#define GPIO_RESET(x)		BIT(2 + ((x) * 16))
--#define GPIO_HOLDB(x)		BIT(1 + ((x) * 16))
--#define GPIO_WPB(x)		BIT((x) * 16)
--
--#define HC_VER			0xd0
--
--#define HW_TEST(x)		(0xe0 + ((x) * 4))
--
- struct mxic_spi {
--	struct clk *ps_clk;
--	struct clk *send_clk;
--	struct clk *send_dly_clk;
--	void __iomem *regs;
-+	struct mx25f0a_mfd *mfd;
- 	u32 cur_speed_hz;
- };
- 
-@@ -178,26 +23,26 @@ static int mxic_spi_clk_enable(struct mxic_spi *mxic)
- {
- 	int ret;
- 
--	ret = clk_prepare_enable(mxic->send_clk);
-+	ret = clk_prepare_enable(mxic->mfd->send_clk);
- 	if (ret)
- 		return ret;
- 
--	ret = clk_prepare_enable(mxic->send_dly_clk);
-+	ret = clk_prepare_enable(mxic->mfd->send_dly_clk);
- 	if (ret)
- 		goto err_send_dly_clk;
- 
- 	return ret;
- 
- err_send_dly_clk:
--	clk_disable_unprepare(mxic->send_clk);
-+	clk_disable_unprepare(mxic->mfd->send_clk);
- 
- 	return ret;
- }
- 
- static void mxic_spi_clk_disable(struct mxic_spi *mxic)
- {
--	clk_disable_unprepare(mxic->send_clk);
--	clk_disable_unprepare(mxic->send_dly_clk);
-+	clk_disable_unprepare(mxic->mfd->send_clk);
-+	clk_disable_unprepare(mxic->mfd->send_dly_clk);
- }
- 
- static void mxic_spi_set_input_delay_dqs(struct mxic_spi *mxic, u8 idly_code)
-@@ -206,23 +51,23 @@ static void mxic_spi_set_input_delay_dqs(struct mxic_spi *mxic, u8 idly_code)
- 	       IDLY_CODE_VAL(1, idly_code) |
- 	       IDLY_CODE_VAL(2, idly_code) |
- 	       IDLY_CODE_VAL(3, idly_code),
--	       mxic->regs + IDLY_CODE(0));
-+	       mxic->mfd->regs + IDLY_CODE(0));
- 	writel(IDLY_CODE_VAL(4, idly_code) |
- 	       IDLY_CODE_VAL(5, idly_code) |
- 	       IDLY_CODE_VAL(6, idly_code) |
- 	       IDLY_CODE_VAL(7, idly_code),
--	       mxic->regs + IDLY_CODE(1));
-+	       mxic->mfd->regs + IDLY_CODE(1));
- }
- 
- static int mxic_spi_clk_setup(struct mxic_spi *mxic, unsigned long freq)
- {
- 	int ret;
- 
--	ret = clk_set_rate(mxic->send_clk, freq);
-+	ret = clk_set_rate(mxic->mfd->send_clk, freq);
- 	if (ret)
- 		return ret;
- 
--	ret = clk_set_rate(mxic->send_dly_clk, freq);
-+	ret = clk_set_rate(mxic->mfd->send_dly_clk, freq);
- 	if (ret)
- 		return ret;
- 
-@@ -240,7 +85,7 @@ static int mxic_spi_clk_setup(struct mxic_spi *mxic, unsigned long freq)
- 	 *                  = 360 * freq * 1 sec / 1000000000
- 	 *                  = 9 * freq / 25000000
- 	 */
--	ret = clk_set_phase(mxic->send_dly_clk, 9 * freq / 25000000);
-+	ret = clk_set_phase(mxic->mfd->send_dly_clk, 9 * freq / 25000000);
- 	if (ret)
- 		return ret;
- 
-@@ -270,14 +115,14 @@ static int mxic_spi_set_freq(struct mxic_spi *mxic, unsigned long freq)
- 
- static void mxic_spi_hw_init(struct mxic_spi *mxic)
- {
--	writel(0, mxic->regs + DATA_STROB);
--	writel(INT_STS_ALL, mxic->regs + INT_STS_EN);
--	writel(0, mxic->regs + HC_EN);
--	writel(0, mxic->regs + LRD_CFG);
--	writel(0, mxic->regs + LRD_CTRL);
-+	writel(0, mxic->mfd->regs + DATA_STROB);
-+	writel(INT_STS_ALL, mxic->mfd->regs + INT_STS_EN);
-+	writel(0, mxic->mfd->regs + HC_EN);
-+	writel(0, mxic->mfd->regs + LRD_CFG);
-+	writel(0, mxic->mfd->regs + LRD_CTRL);
- 	writel(HC_CFG_NIO(1) | HC_CFG_TYPE(0, HC_CFG_TYPE_SPI_NAND) |
- 	       HC_CFG_SLV_ACT(0) | HC_CFG_MAN_CS_EN | HC_CFG_IDLE_SIO_LVL(1),
--	       mxic->regs + HC_CFG);
-+	       mxic->mfd->regs + HC_CFG);
- }
- 
- static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
-@@ -297,34 +142,35 @@ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
- 		if (txbuf)
- 			memcpy(&data, txbuf + pos, nbytes);
- 
--		ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
-+		ret = readl_poll_timeout(mxic->mfd->regs + INT_STS, sts,
- 					 sts & INT_TX_EMPTY, 0, USEC_PER_SEC);
- 		if (ret)
- 			return ret;
- 
--		writel(data, mxic->regs + TXD(nbytes % 4));
-+		writel(data, mxic->mfd->regs + TXD(nbytes % 4));
- 
- 		if (rxbuf) {
--			ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
-+			ret = readl_poll_timeout(mxic->mfd->regs + INT_STS, sts,
- 						 sts & INT_TX_EMPTY, 0,
- 						 USEC_PER_SEC);
- 			if (ret)
- 				return ret;
- 
--			ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
-+			ret = readl_poll_timeout(mxic->mfd->regs + INT_STS, sts,
- 						 sts & INT_RX_NOT_EMPTY, 0,
- 						 USEC_PER_SEC);
- 			if (ret)
- 				return ret;
- 
--			data = readl(mxic->regs + RXD);
-+			data = readl(mxic->mfd->regs + RXD);
- 			data >>= (8 * (4 - nbytes));
- 			memcpy(rxbuf + pos, &data, nbytes);
--			WARN_ON(readl(mxic->regs + INT_STS) & INT_RX_NOT_EMPTY);
-+			WARN_ON(readl(mxic->mfd->regs + INT_STS) &
-+				INT_RX_NOT_EMPTY);
- 		} else {
--			readl(mxic->regs + RXD);
-+			readl(mxic->mfd->regs + RXD);
- 		}
--		WARN_ON(readl(mxic->regs + INT_STS) & INT_RX_NOT_EMPTY);
-+		WARN_ON(readl(mxic->mfd->regs + INT_STS) & INT_RX_NOT_EMPTY);
- 
- 		pos += nbytes;
- 	}
-@@ -370,8 +216,8 @@ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
- 	       HC_CFG_TYPE(mem->spi->chip_select, HC_CFG_TYPE_SPI_NOR) |
- 	       HC_CFG_SLV_ACT(mem->spi->chip_select) | HC_CFG_IDLE_SIO_LVL(1) |
- 	       HC_CFG_MAN_CS_EN,
--	       mxic->regs + HC_CFG);
--	writel(HC_EN_BIT, mxic->regs + HC_EN);
-+	       mxic->mfd->regs + HC_CFG);
-+	writel(HC_EN_BIT, mxic->mfd->regs + HC_EN);
- 
- 	ss_ctrl = OP_CMD_BYTES(1) | OP_CMD_BUSW(fls(op->cmd.buswidth) - 1);
- 
-@@ -388,10 +234,10 @@ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
- 			ss_ctrl |= OP_READ;
- 	}
- 
--	writel(ss_ctrl, mxic->regs + SS_CTRL(mem->spi->chip_select));
-+	writel(ss_ctrl, mxic->mfd->regs + SS_CTRL(mem->spi->chip_select));
- 
--	writel(readl(mxic->regs + HC_CFG) | HC_CFG_MAN_CS_ASSERT,
--	       mxic->regs + HC_CFG);
-+	writel(readl(mxic->mfd->regs + HC_CFG) | HC_CFG_MAN_CS_ASSERT,
-+	       mxic->mfd->regs + HC_CFG);
- 
- 	ret = mxic_spi_data_xfer(mxic, &op->cmd.opcode, NULL, 1);
- 	if (ret)
-@@ -416,9 +262,9 @@ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
- 				 op->data.nbytes);
- 
- out:
--	writel(readl(mxic->regs + HC_CFG) & ~HC_CFG_MAN_CS_ASSERT,
--	       mxic->regs + HC_CFG);
--	writel(0, mxic->regs + HC_EN);
-+	writel(readl(mxic->mfd->regs + HC_CFG) & ~HC_CFG_MAN_CS_ASSERT,
-+	       mxic->mfd->regs + HC_CFG);
-+	writel(0, mxic->mfd->regs + HC_EN);
- 
- 	return ret;
- }
-@@ -433,15 +279,15 @@ static void mxic_spi_set_cs(struct spi_device *spi, bool lvl)
- 	struct mxic_spi *mxic = spi_master_get_devdata(spi->master);
- 
- 	if (!lvl) {
--		writel(readl(mxic->regs + HC_CFG) | HC_CFG_MAN_CS_EN,
--		       mxic->regs + HC_CFG);
--		writel(HC_EN_BIT, mxic->regs + HC_EN);
--		writel(readl(mxic->regs + HC_CFG) | HC_CFG_MAN_CS_ASSERT,
--		       mxic->regs + HC_CFG);
-+		writel(readl(mxic->mfd->regs + HC_CFG) | HC_CFG_MAN_CS_EN,
-+		       mxic->mfd->regs + HC_CFG);
-+		writel(HC_EN_BIT, mxic->mfd->regs + HC_EN);
-+		writel(readl(mxic->mfd->regs + HC_CFG) | HC_CFG_MAN_CS_ASSERT,
-+		       mxic->mfd->regs + HC_CFG);
- 	} else {
--		writel(readl(mxic->regs + HC_CFG) & ~HC_CFG_MAN_CS_ASSERT,
--		       mxic->regs + HC_CFG);
--		writel(0, mxic->regs + HC_EN);
-+		writel(readl(mxic->mfd->regs + HC_CFG) & ~HC_CFG_MAN_CS_ASSERT,
-+		       mxic->mfd->regs + HC_CFG);
-+		writel(0, mxic->mfd->regs + HC_EN);
- 	}
- }
- 
-@@ -479,7 +325,7 @@ static int mxic_spi_transfer_one(struct spi_master *master,
- 
- 	writel(OP_CMD_BYTES(1) | OP_CMD_BUSW(busw) |
- 	       OP_DATA_BUSW(busw) | (t->rx_buf ? OP_READ : 0),
--	       mxic->regs + SS_CTRL(0));
-+	       mxic->mfd->regs + SS_CTRL(0));
- 
- 	ret = mxic_spi_data_xfer(mxic, t->tx_buf, t->rx_buf, t->len);
- 	if (ret)
-@@ -497,7 +343,7 @@ static int __maybe_unused mxic_spi_runtime_suspend(struct device *dev)
- 	struct mxic_spi *mxic = spi_master_get_devdata(master);
- 
- 	mxic_spi_clk_disable(mxic);
--	clk_disable_unprepare(mxic->ps_clk);
-+	clk_disable_unprepare(mxic->mfd->ps_clk);
- 
- 	return 0;
- }
-@@ -509,7 +355,7 @@ static int __maybe_unused mxic_spi_runtime_resume(struct device *dev)
- 	struct mxic_spi *mxic = spi_master_get_devdata(master);
- 	int ret;
- 
--	ret = clk_prepare_enable(mxic->ps_clk);
-+	ret = clk_prepare_enable(mxic->mfd->ps_clk);
- 	if (ret) {
- 		dev_err(dev, "Cannot enable ps_clock.\n");
- 		return ret;
-@@ -525,8 +371,8 @@ static int __maybe_unused mxic_spi_runtime_resume(struct device *dev)
- 
- static int mxic_spi_probe(struct platform_device *pdev)
- {
-+	struct mx25f0a_mfd *mfd = dev_get_drvdata(pdev->dev.parent);
- 	struct spi_master *master;
--	struct resource *res;
- 	struct mxic_spi *mxic;
- 	int ret;
- 
-@@ -538,24 +384,8 @@ static int mxic_spi_probe(struct platform_device *pdev)
- 
- 	mxic = spi_master_get_devdata(master);
- 
--	master->dev.of_node = pdev->dev.of_node;
--
--	mxic->ps_clk = devm_clk_get(&pdev->dev, "ps_clk");
--	if (IS_ERR(mxic->ps_clk))
--		return PTR_ERR(mxic->ps_clk);
--
--	mxic->send_clk = devm_clk_get(&pdev->dev, "send_clk");
--	if (IS_ERR(mxic->send_clk))
--		return PTR_ERR(mxic->send_clk);
--
--	mxic->send_dly_clk = devm_clk_get(&pdev->dev, "send_dly_clk");
--	if (IS_ERR(mxic->send_dly_clk))
--		return PTR_ERR(mxic->send_dly_clk);
--
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "regs");
--	mxic->regs = devm_ioremap_resource(&pdev->dev, res);
--	if (IS_ERR(mxic->regs))
--		return PTR_ERR(mxic->regs);
-+	master->dev.of_node = pdev->dev.parent->of_node;
-+	mxic->mfd = mfd;
- 
- 	pm_runtime_enable(&pdev->dev);
- 	master->auto_runtime_pm = true;
-@@ -597,18 +427,11 @@ static int mxic_spi_remove(struct platform_device *pdev)
- 	return 0;
- }
- 
--static const struct of_device_id mxic_spi_of_ids[] = {
--	{ .compatible = "mxicy,mx25f0a-spi", },
--	{ /* sentinel */ }
--};
--MODULE_DEVICE_TABLE(of, mxic_spi_of_ids);
--
- static struct platform_driver mxic_spi_driver = {
- 	.probe = mxic_spi_probe,
- 	.remove = mxic_spi_remove,
- 	.driver = {
- 		.name = "mxic-spi",
--		.of_match_table = mxic_spi_of_ids,
- 		.pm = &mxic_spi_dev_pm_ops,
- 	},
- };
--- 
-1.9.1
+--_003_VI1PR04MB454302BAF353124ED13747DC892D0VI1PR04MB4543eurp_
+Content-Type: application/octet-stream;
+	name="0005-dma-engine-imx-sdma-add-mcu_2_ecspi-script.patch"
+Content-Description: 0005-dma-engine-imx-sdma-add-mcu_2_ecspi-script.patch
+Content-Disposition: attachment;
+	filename="0005-dma-engine-imx-sdma-add-mcu_2_ecspi-script.patch"; size=1369;
+	creation-date="Tue, 09 Apr 2019 03:25:48 GMT";
+	modification-date="Tue, 09 Apr 2019 03:25:48 GMT"
+Content-Transfer-Encoding: base64
+
+RnJvbSBmYmRmNDE1M2I0NzkwYTQzYTczOTZiNWM3OGE4NDhiNGQwNzM1ZjgwIE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBSb2JpbiBHb25nIDx5aWJpbi5nb25nQG54cC5jb20+CkRhdGU6
+IFRodSwgMjggTWFyIDIwMTkgMTY6MzY6MTIgKzA4MDAKU3ViamVjdDogW1BBVENIIDUvNl0gZG1h
+OiBlbmdpbmU6IGlteC1zZG1hOiBhZGQgbWN1XzJfZWNzcGkgc2NyaXB0CgpBZGQgbWN1XzJfZWNz
+cGkgc2NyaXB0IHRvIGZpeCBlY3NwaSBlcnJhdGEgRVJSMDA5MTY1LgoKU2lnbmVkLW9mZi1ieTog
+Um9iaW4gR29uZyA8eWliaW4uZ29uZ0BueHAuY29tPgotLS0KIGRyaXZlcnMvZG1hL2lteC1zZG1h
+LmMgICAgICAgICAgICAgICAgICAgICB8IDMgKysrCiBpbmNsdWRlL2xpbnV4L3BsYXRmb3JtX2Rh
+dGEvZG1hLWlteC1zZG1hLmggfCAxICsKIDIgZmlsZXMgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCsp
+CgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9kbWEvaW14LXNkbWEuYyBiL2RyaXZlcnMvZG1hL2lteC1z
+ZG1hLmMKaW5kZXggYWRjODJkOS4uMGNjNTJkYiAxMDA2NDQKLS0tIGEvZHJpdmVycy9kbWEvaW14
+LXNkbWEuYworKysgYi9kcml2ZXJzL2RtYS9pbXgtc2RtYS5jCkBAIC05MDcsNiArOTA3LDkgQEAg
+c3RhdGljIHZvaWQgc2RtYV9nZXRfcGMoc3RydWN0IHNkbWFfY2hhbm5lbCAqc2RtYWMsCiAJCWVt
+aV8yX3BlciA9IHNkbWEtPnNjcmlwdF9hZGRycy0+bWN1XzJfYXRhX2FkZHI7CiAJCWJyZWFrOwog
+CWNhc2UgSU1YX0RNQVRZUEVfQ1NQSToKKwkJcGVyXzJfZW1pID0gc2RtYS0+c2NyaXB0X2FkZHJz
+LT5hcHBfMl9tY3VfYWRkcjsKKwkJZW1pXzJfcGVyID0gc2RtYS0+c2NyaXB0X2FkZHJzLT5tY3Vf
+Ml9lY3NwaV9hZGRyOworCQlicmVhazsKIAljYXNlIElNWF9ETUFUWVBFX0VYVDoKIAljYXNlIElN
+WF9ETUFUWVBFX1NTSToKIAljYXNlIElNWF9ETUFUWVBFX1NBSToKZGlmZiAtLWdpdCBhL2luY2x1
+ZGUvbGludXgvcGxhdGZvcm1fZGF0YS9kbWEtaW14LXNkbWEuaCBiL2luY2x1ZGUvbGludXgvcGxh
+dGZvcm1fZGF0YS9kbWEtaW14LXNkbWEuaAppbmRleCA2ZWFhNTNjLi5mNzk0ZmVlIDEwMDY0NAot
+LS0gYS9pbmNsdWRlL2xpbnV4L3BsYXRmb3JtX2RhdGEvZG1hLWlteC1zZG1hLmgKKysrIGIvaW5j
+bHVkZS9saW51eC9wbGF0Zm9ybV9kYXRhL2RtYS1pbXgtc2RtYS5oCkBAIC01MSw2ICs1MSw3IEBA
+IHN0cnVjdCBzZG1hX3NjcmlwdF9zdGFydF9hZGRycyB7CiAJLyogRW5kIG9mIHYyIGFycmF5ICov
+CiAJczMyIHpjYW5mZF8yX21jdV9hZGRyOwogCXMzMiB6cXNwaV8yX21jdV9hZGRyOworCXMzMiBt
+Y3VfMl9lY3NwaV9hZGRyOwogCS8qIEVuZCBvZiB2MyBhcnJheSAqLwogfTsKIAotLSAKMi43LjQK
+Cg==
+
+--_003_VI1PR04MB454302BAF353124ED13747DC892D0VI1PR04MB4543eurp_
+Content-Type: application/octet-stream;
+	name="0006-spi-spi-imx-fix-ERR009165.patch"
+Content-Description: 0006-spi-spi-imx-fix-ERR009165.patch
+Content-Disposition: attachment;
+	filename="0006-spi-spi-imx-fix-ERR009165.patch"; size=1635;
+	creation-date="Tue, 09 Apr 2019 03:25:48 GMT";
+	modification-date="Tue, 09 Apr 2019 03:25:48 GMT"
+Content-Transfer-Encoding: base64
+
+RnJvbSBhYTE5OGMzMjY1ZmI1NGQ0MjcxNWM1ZmE0YzI1ZDE1YTczYWQ5MzRjIE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBSb2JpbiBHb25nIDx5aWJpbi5nb25nQG54cC5jb20+CkRhdGU6
+IFRodSwgMjggTWFyIDIwMTkgMTY6Mzg6MTMgKzA4MDAKU3ViamVjdDogW1BBVENIIDYvNl0gc3Bp
+OiBzcGktaW14OiBmaXggRVJSMDA5MTY1CgpDaGFuZ2UgdG8gWENIICBtb2RlIGV2ZW4gaW4gZG1h
+IG1vZGUsIHBsZWFzZSByZWZlciB0byBiZWxvdwplcnJhdGE6Cmh0dHBzOi8vd3d3Lm54cC5jb20v
+ZG9jcy9lbi9lcnJhdGEvSU1YNkRRQ0UucGRmCgpTaWduZWQtb2ZmLWJ5OiBSb2JpbiBHb25nIDx5
+aWJpbi5nb25nQG54cC5jb20+Ci0tLQogZHJpdmVycy9zcGkvc3BpLWlteC5jIHwgOCArKy0tLS0t
+LQogMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgNiBkZWxldGlvbnMoLSkKCmRpZmYg
+LS1naXQgYS9kcml2ZXJzL3NwaS9zcGktaW14LmMgYi9kcml2ZXJzL3NwaS9zcGktaW14LmMKaW5k
+ZXggMDljOWExZS4uMDRhZjg0ZCAxMDA2NDQKLS0tIGEvZHJpdmVycy9zcGkvc3BpLWlteC5jCisr
+KyBiL2RyaXZlcnMvc3BpL3NwaS1pbXguYwpAQCAtNTg1LDggKzU4NSw5IEBAIHN0YXRpYyBpbnQg
+bXg1MV9lY3NwaV9wcmVwYXJlX3RyYW5zZmVyKHN0cnVjdCBzcGlfaW14X2RhdGEgKnNwaV9pbXgs
+CiAJY3RybCB8PSBteDUxX2Vjc3BpX2Nsa2RpdihzcGlfaW14LCB0LT5zcGVlZF9oeiwgJmNsayk7
+CiAJc3BpX2lteC0+c3BpX2J1c19jbGsgPSBjbGs7CiAKKwkvKiBFUlIwMDkxNjU6IHdvcmsgaW4g
+WEhDIG1vZGUgYXMgUElPICovCiAJaWYgKHNwaV9pbXgtPnVzZWRtYSkKLQkJY3RybCB8PSBNWDUx
+X0VDU1BJX0NUUkxfU01DOworCQljdHJsICY9IH5NWDUxX0VDU1BJX0NUUkxfU01DOwogCiAJd3Jp
+dGVsKGN0cmwsIHNwaV9pbXgtPmJhc2UgKyBNWDUxX0VDU1BJX0NUUkwpOwogCkBAIC02MTcsNyAr
+NjE4LDYgQEAgc3RhdGljIHZvaWQgbXg1MV9zZXR1cF93bWwoc3RydWN0IHNwaV9pbXhfZGF0YSAq
+c3BpX2lteCkKIAkgKiBhbmQgZW5hYmxlIERNQSByZXF1ZXN0LgogCSAqLwogCXdyaXRlbChNWDUx
+X0VDU1BJX0RNQV9SWF9XTUwoc3BpX2lteC0+d21sIC0gMSkgfAotCQlNWDUxX0VDU1BJX0RNQV9U
+WF9XTUwoc3BpX2lteC0+d21sKSB8CiAJCU1YNTFfRUNTUElfRE1BX1JYVF9XTUwoc3BpX2lteC0+
+d21sKSB8CiAJCU1YNTFfRUNTUElfRE1BX1RFREVOIHwgTVg1MV9FQ1NQSV9ETUFfUlhERU4gfAog
+CQlNWDUxX0VDU1BJX0RNQV9SWFRERU4sIHNwaV9pbXgtPmJhc2UgKyBNWDUxX0VDU1BJX0RNQSk7
+CkBAIC0xMjY1LDEwICsxMjY1LDYgQEAgc3RhdGljIGludCBzcGlfaW14X3NkbWFfaW5pdChzdHJ1
+Y3QgZGV2aWNlICpkZXYsIHN0cnVjdCBzcGlfaW14X2RhdGEgKnNwaV9pbXgsCiB7CiAJaW50IHJl
+dDsKIAotCS8qIHVzZSBwaW8gbW9kZSBmb3IgaS5teDZkbCBjaGlwIFRLVDIzODI4NSAqLwotCWlm
+IChvZl9tYWNoaW5lX2lzX2NvbXBhdGlibGUoImZzbCxpbXg2ZGwiKSkKLQkJcmV0dXJuIDA7Ci0K
+IAlzcGlfaW14LT53bWwgPSBzcGlfaW14LT5kZXZ0eXBlX2RhdGEtPmZpZm9fc2l6ZSAvIDI7CiAK
+IAkvKiBQcmVwYXJlIGZvciBUWCBETUE6ICovCi0tIAoyLjcuNAoK
+
+--_003_VI1PR04MB454302BAF353124ED13747DC892D0VI1PR04MB4543eurp_--

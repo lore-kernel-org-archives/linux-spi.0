@@ -1,37 +1,50 @@
-From: Yue Haibing <yuehaibing@huawei.com>
-Subject: [PATCH] spi: spi-mem: Make spi_mem_default_supports_op() static inline
-Date: Wed, 10 Apr 2019 21:18:28 +0800
-Message-ID: <20190410131828.35316-1-yuehaibing@huawei.com>
+From: Flavio Suligoi <f.suligoi@asem.it>
+Subject: RE: [PATCH 2/2] spi: pxa2xx: use a module softdep for dw_dmac
+Date: Wed, 10 Apr 2019 14:05:38 +0000
+Message-ID: <6eeaf42f4d3f42c58546c429194213b8@asem.it>
+References: <1554900696-28858-1-git-send-email-f.suligoi@asem.it>
+ <1554900696-28858-2-git-send-email-f.suligoi@asem.it>
+ <20190410125612.GR6106@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <vigneshr@ti.com>, YueHaibing <yuehaibing@huawei.com>
-To: <broonie@kernel.org>, <naga.sureshkumar.relli@xilinx.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Cc: Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190410125612.GR6106@sirena.org.uk>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: YueHaibing <yuehaibing@huawei.com>
+Hi Mark,
 
-Stub helper spi_mem_default_supports_op() should
-be set to static inline
+> On Wed, Apr 10, 2019 at 02:51:36PM +0200, Flavio Suligoi wrote:
+> > With dw_dmac, sometimes the request of a DMA channel fails because
+> > the DMA driver is not ready, so an explicit dependency request
+> > is necessary.
+> 
+> While this isn't going to hurt anything and might actually help so it's
+> fine doesn't this also suggest that there's an issue with deferred probe
+> going on as well?
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- include/linux/spi/spi-mem.h | 1 +
- 1 file changed, 1 insertion(+)
+I think that the problem could be related to how the DMA channel is requested.
+At the moment the function used are:
 
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index 1941b84..af9ff2f 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -315,6 +315,7 @@ spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
- {
- }
- 
-+static inline
- bool spi_mem_default_supports_op(struct spi_mem *mem,
- 				 const struct spi_mem_op *op)
- {
--- 
-2.7.4
+pxa2xx_spi_dma_setup --> dma_request_slave_channel_compat -->
+--> __dma_request_slave_channel_compat --> dma_request_slave_channel -->
+--> dma_request_chan
+
+Actually the final function "dma_request_chan" return
+the channel number or "-EPROBE_DEFER" if it's not ready.
+But this information ("-EPROBE_DEFER") is lost in the penultimate function 
+"dma_request_slave_channel", which return only the chann, if all is ok, or
+NULL, in case of errors.
+So the deferral mechanism is not used.
+
+Flavio

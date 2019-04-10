@@ -1,55 +1,64 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/1] spi: pxa2xx: add driver enabling message
-Date: Wed, 10 Apr 2019 11:32:50 +0100
-Message-ID: <20190410103250.GF6106@sirena.org.uk>
-References: <1554736964-6058-1-git-send-email-f.suligoi@asem.it>
+From: Naga Sureshkumar Relli <nagasure@xilinx.com>
+Subject: RE: [LINUX PATCH v2] spi: spi-mem: Fix build error without
+ CONFIG_SPI_MEM
+Date: Wed, 10 Apr 2019 11:34:54 +0000
+Message-ID: <MWHPR02MB26238A8F658DED8B3B32A5CAAF2E0@MWHPR02MB2623.namprd02.prod.outlook.com>
+References: <1554875085-25350-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
+ <20190410103106.GE6106@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="FeAIMMcddNRN4P4/"
-Cc: Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-To: Flavio Suligoi <f.suligoi@asem.it>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Cc: "yuehaibing@huawei.com" <yuehaibing@huawei.com>,
+        "vigneshr@ti.com" <vigneshr@ti.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        Michal Simek <michals@xilinx.com>,
+        "nagasuresh12@gmail.com" <nagasuresh12@gmail.com>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1554736964-6058-1-git-send-email-f.suligoi@asem.it>
+In-Reply-To: <20190410103106.GE6106@sirena.org.uk>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Mark,
 
---FeAIMMcddNRN4P4/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Apr 08, 2019 at 05:22:44PM +0200, Flavio Suligoi wrote:
-> Add an info message for the PXA2xx device driver start-up,
-> with the indication of the transfer mode used (DMA or GPIO).
+> -----Original Message-----
+> From: Mark Brown <broonie@kernel.org>
+> Sent: Wednesday, April 10, 2019 4:01 PM
+> To: Naga Sureshkumar Relli <nagasure@xilinx.com>
+> Cc: yuehaibing@huawei.com; vigneshr@ti.com; linux-kernel@vger.kernel.org;=
+ linux-
+> spi@vger.kernel.org; Michal Simek <michals@xilinx.com>; nagasuresh12@gmai=
+l.com
+> Subject: Re: [LINUX PATCH v2] spi: spi-mem: Fix build error without CONFI=
+G_SPI_MEM
 >=20
-> This info is useful to individuate the timing when
-> the module starts.
+> On Wed, Apr 10, 2019 at 11:14:45AM +0530, Naga Sureshkumar Relli wrote:
+> > When building with CONFIG_SPI_MEM is not set gc warns this:
+> >
+> > drivers/spi/spi-zynq-qspi.o: In function `zynq_qspi_supports_op':
+> > spi-zynq-qspi.c:(.text+0x1da): undefined reference to `spi_mem_default_=
+supports_op'
+> >
+> > Fixes: 67dca5e580f1 ("spi: spi-mem: Add support for Zynq QSPI
+> > controller")
+> >
+> > Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> > Signed-off-by: Naga Sureshkumar Relli
+> > <naga.sureshkumar.relli@xilinx.com>
+>=20
+> Why is there a signed off by for YueHaibing here?  Did they write the pat=
+ch (in which case the
+> authorship is incorrect)?
+Yes, YueHaibing has wrote this patch.
+I will update the Author name.
 
-Adding this sort of message to every driver is going to make boot far
-too noisy, it's one thing if we actually enumerate information about the
-physical device but this isn't really that.  There are already prints in
-the driver core for when things get probed which can be enabled if
-ordering issues need to be debugged.
+>=20
+> You've also got an extra blank line between the Fixes and the rest of the=
+ tags which is unusual
+> and might confuse some tools.
+Ok I will remove that extra line.
 
---FeAIMMcddNRN4P4/
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlytxlEACgkQJNaLcl1U
-h9AZ7Af+OiGmnQX7HRlnqJrTrMzmIi+/NnGXg5Wo0T0IE1uEoQ1jTgHEgpBZX8A3
-jandhhRDVzZiXSgnnLavco55WLdNuU9aoaX/vZrOuWyUv7SRgiZQ1NSM7HtMM7pE
-3b0acqhQwGdThQ6RICWb7fkna6u6ylLTr6CUKQ7FHuu/pcUwA2FIaZBDSHYFQeBO
-o5sHOgp07QOaQG09TSM9G/7YzTuKbUjAq4d7+iytKxxtgu5ZlLppMqGAYt9PZD0r
-8fRKtGdWaxpdf/ww3P1Nj8d84hnicLoawTlGRFJsi6fX2y7u6M6tcS8gyx0TIweP
-U+MoafBik8icmF32XQwsRNlE7yZC4g==
-=xpxE
------END PGP SIGNATURE-----
-
---FeAIMMcddNRN4P4/--
+Thanks,
+Naga Sureshkumar Relli

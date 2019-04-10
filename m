@@ -1,42 +1,37 @@
-From: YueHaibing <yuehaibing@huawei.com>
-Subject: Re: [LINUX PATCH v3] spi: spi-mem: Fix build error without
- CONFIG_SPI_MEM
-Date: Wed, 10 Apr 2019 21:10:42 +0800
-Message-ID: <8316c6e9-9000-bd1e-aa96-3db069e61824@huawei.com>
-References: <1554897429-5959-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
- <2d9cee19-a776-ad18-b8ac-6d0d1b096ad6@huawei.com>
- <20190410122457.GP6106@sirena.org.uk>
- <MWHPR02MB262352F3C89EB163AB1EC2B5AF2E0@MWHPR02MB2623.namprd02.prod.outlook.com>
- <20190410123558.GQ6106@sirena.org.uk>
+From: Yue Haibing <yuehaibing@huawei.com>
+Subject: [PATCH] spi: spi-mem: Make spi_mem_default_supports_op() static inline
+Date: Wed, 10 Apr 2019 21:18:28 +0800
+Message-ID: <20190410131828.35316-1-yuehaibing@huawei.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Cc: "vigneshr@ti.com" <vigneshr@ti.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        Michal Simek <michals@xilinx.com>,
-        "nagasuresh12@gmail.com" <nagasuresh12@gmail.com>
-To: Mark Brown <broonie@kernel.org>,
-        Naga Sureshkumar Relli <nagasure@xilinx.com>
+Content-Type: text/plain
+Cc: <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <vigneshr@ti.com>, YueHaibing <yuehaibing@huawei.com>
+To: <broonie@kernel.org>, <naga.sureshkumar.relli@xilinx.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190410123558.GQ6106@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 2019/4/10 20:35, Mark Brown wrote:
-> On Wed, Apr 10, 2019 at 12:30:37PM +0000, Naga Sureshkumar Relli wrote:
-> 
->>> Yeah, I'm surprised that builds...
-> 
->> Sorry, I tested with CONFIG_SPI_MEM enabled. It's my bad.
-> 
-> I also see that I'd queued an earlier version for application.  I've
-> lost track of whatever issues there were with that, sorry - could one of
-> you please post an incremental patch for them?  IIRC they were nice to
-> haves and the patch that was applied fixes the correctness issue.
+From: YueHaibing <yuehaibing@huawei.com>
 
-Ok, there just make the stub helper to  static inline
+Stub helper spi_mem_default_supports_op() should
+be set to static inline
 
-I can post a new patch based my initial patch.
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ include/linux/spi/spi-mem.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-> 
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index 1941b84..af9ff2f 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -315,6 +315,7 @@ spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
+ {
+ }
+ 
++static inline
+ bool spi_mem_default_supports_op(struct spi_mem *mem,
+ 				 const struct spi_mem_op *op)
+ {
+-- 
+2.7.4

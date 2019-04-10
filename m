@@ -1,7 +1,8 @@
 From: Flavio Suligoi <f.suligoi@asem.it>
-Subject: [PATCH 1/2] spi: pxa2xx: fix SCR (divisor) calculation
-Date: Wed, 10 Apr 2019 14:51:35 +0200
-Message-ID: <1554900696-28858-1-git-send-email-f.suligoi@asem.it>
+Subject: [PATCH 2/2] spi: pxa2xx: use a module softdep for dw_dmac
+Date: Wed, 10 Apr 2019 14:51:36 +0200
+Message-ID: <1554900696-28858-2-git-send-email-f.suligoi@asem.it>
+References: <1554900696-28858-1-git-send-email-f.suligoi@asem.it>
 Mime-Version: 1.0
 Content-Type: text/plain
 Cc: <linux-arm-kernel@lists.infradead.org>,
@@ -12,56 +13,28 @@ To: Daniel Mack <daniel@zonque.org>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1554900696-28858-1-git-send-email-f.suligoi@asem.it>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Calculate the divisor for the SCR (Serial Clock Rate), avoiding
-that the SSP transmission rate can be greater than the device rate.
-
-When the division between the SSP clock and the device rate generates
-a reminder, we have to increment by one the divisor.
-In this way the resulting SSP clock will never be greater than the
-device SPI max frequency.
-
-For example, with:
-
- - ssp_clk  = 50 MHz
- - dev freq = 15 MHz
-
-without this patch the SSP clock will be greater than 15 MHz:
-
- - 25 MHz for PXA25x_SSP and CE4100_SSP
- - 16,56 MHz for the others
-
-Instead, with this patch, we have in both case an SSP clock of 12.5MHz,
-so the max rate of the SPI device clock is respected.
+With dw_dmac, sometimes the request of a DMA channel fails because
+the DMA driver is not ready, so an explicit dependency request
+is necessary.
 
 Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
 ---
- drivers/spi/spi-pxa2xx.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index f7068cc..c9560a1 100644
+index c9560a1..e8ac26b 100644
 --- a/drivers/spi/spi-pxa2xx.c
 +++ b/drivers/spi/spi-pxa2xx.c
-@@ -884,10 +884,15 @@ static unsigned int ssp_get_clk_div(struct driver_data *drv_data, int rate)
- 
- 	rate = min_t(int, ssp_clk, rate);
- 
-+	/*
-+	 * Calculate the divisor for the SCR (Serial Clock Rate), avoiding
-+	 * that the SSP transmission rate can be greater than the device rate
-+	 */
- 	if (ssp->type == PXA25x_SSP || ssp->type == CE4100_SSP)
--		return (ssp_clk / (2 * rate) - 1) & 0xff;
-+		return (ssp_clk / (2 * rate) - 1 +
-+			(ssp_clk % (2 * rate) ? 1 : 0)) & 0xff;
- 	else
--		return (ssp_clk / rate - 1) & 0xfff;
-+		return (ssp_clk / rate - 1 + (ssp_clk % rate ? 1 : 0)) & 0xfff;
+@@ -1962,3 +1962,5 @@ static void __exit pxa2xx_spi_exit(void)
+ 	platform_driver_unregister(&driver);
  }
- 
- static unsigned int pxa2xx_ssp_get_clk_div(struct driver_data *drv_data,
+ module_exit(pxa2xx_spi_exit);
++
++MODULE_SOFTDEP("pre: dw_dmac");
 -- 
 2.7.4

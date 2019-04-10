@@ -1,70 +1,95 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-mem: Make spi_mem_default_supports_op() static inline" to the spi tree
-Date: Wed, 10 Apr 2019 16:30:27 +0100 (BST)
-Message-ID: <20190410153028.03FE41128ED3@debutante.sirena.org.uk>
-References: <20190410131828.35316-1-yuehaibing@huawei.com>
-Cc: broonie@kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        naga.sureshkumar.relli@xilinx.com, vigneshr@ti.com
-To: YueHaibing <yuehaibing@huawei.com>
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Subject: Re: [PATCH v9 2/3] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
+ driver
+Date: Wed, 10 Apr 2019 20:53:12 +0300
+Message-ID: <3f4a77a9-0c2a-b3c3-c97e-a3c84df90ef0@cogentembedded.com>
+References: <1553847606-18122-1-git-send-email-masonccyang@mxic.com.tw>
+ <1553847606-18122-3-git-send-email-masonccyang@mxic.com.tw>
+ <a2dc294f-f2a1-2469-1f44-db67f9b8cc10@cogentembedded.com>
+ <OFC7F0028A.CFF6BD04-ON482583D8.00084FA1-482583D8.0008985F@mxic.com.tw>
+ <2095d059-8276-a01a-7c3a-da4647f7b7df@gmail.com>
+ <OF75EDBF48.5C308F1B-ON482583D8.0027A537-482583D8.002C0A64@mxic.com.tw>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: bbrezillon@kernel.org, broonie@kernel.org,
+        devicetree@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
+        lee.jones@linaro.org, linux-kernel@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+        mark.rutland@arm.com, robh+dt@kernel.org, zhengxunli@mxic.com.tw
+To: masonccyang@mxic.com.tw, Marek Vasut <marek.vasut@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190410131828.35316-1-yuehaibing@huawei.com>
+In-Reply-To: <OF75EDBF48.5C308F1B-ON482583D8.0027A537-482583D8.002C0A64@mxic.com.tw>
+Content-Language: en-MW
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+Hello!
 
-   spi: spi-mem: Make spi_mem_default_supports_op() static inline
+On 04/10/2019 11:01 AM, masonccyang@mxic.com.tw wrote:
 
-has been applied to the spi tree at
+>> >> > +static ssize_t rpc_spi_mem_dirmap_write(struct spi_mem_dirmap_desc
+>> > *desc,
+>> >> > +               u64 offs, size_t len, const void *buf)
+>> >> > +{
+>> >> > +   struct rpc_spi *rpc =
+>> >> > +         spi_controller_get_devdata(desc->mem->spi->controller);
+>> >> > +   int ret;
+>> >> > +
+>> >> > +   if (offs + desc->info.offset + len > U32_MAX)
+>> >> > +      return -EINVAL;
+>> >> > +
+>> >> > +   if (len > RPC_WBUF_SIZE)
+>> >> > +      len = RPC_WBUF_SIZE;
+>> >> > +
+>> >> > +   ret = rpc_spi_set_freq(rpc, desc->mem->spi->max_speed_hz);
+>> >> > +   if (ret)
+>> >> > +      return ret;
+>> >> > +
+>> >> > +   rpc_spi_mem_set_prep_op_cfg(desc->mem->spi,
+>> >> > +                &desc->info.op_tmpl, &offs, &len);
+>> >> > +
+>> >> > +   regmap_update_bits(rpc->regmap, RPC_CMNCR, RPC_CMNCR_MD,
+>> > RPC_CMNCR_MD);
+>> >> > +
+>> >> > +   regmap_write(rpc->regmap, RPC_SMDRENR, 0);
+>> >> > +
+>> >> > +   regmap_update_bits(rpc->regmap, RPC_PHYCNT, RPC_PHYCNT_STRTIM(7) |
+>> >> > +            RPC_PHYCNT_WBUF2 | RPC_PHYCNT_WBUF,
+>> >> > +            RPC_PHYCNT_WBUF2 | RPC_PHYCNT_WBUF);
+>> >> > +
+>> >> > +   memcpy_toio(rpc->wbuf, buf, len);
+>> >>
+>> >>    Wait, doesn't the manual say that the whole 256-byte buffer should be
+>> >> filled?
+> 
+> it could be less than 256 bytes, i.e., 128 bytes to rpc->wbuf !
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+   The gen3 manual 1.50 contradicts:
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+Note: This area should be accessed sequentially from the start address and transfer size
+to the device is 256-byte unit. All Write Buffer area should be filled with transfer data
+in every transfer. When accessing non-sequentially or at random, the operation is not
+guaranteed. After Write Buffer Operation, this cache area must be cleared by DRCR.RCF bit.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+>  I think that short chunks have to be written w/o WBUF (done,
+>> > in fact,
+>> >> by the HF driver).
+>> >>
+>> >
+>> > From spi-nor.c layer always transfer 256 bytes data with page program
+>> > command.
+>>
+>> Does that apply even for flashes with not-256-byte pages ?
+>>
+> 
+> I think it needs to patch in case of nor->page_size = 512 bytes.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+   What needs to patch what? :-)
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+> thanks & best regards,
+> Mason
 
-Thanks,
-Mark
-
->From d4a91044e241d8f87fb990b673549a7d2f9cacc4 Mon Sep 17 00:00:00 2001
-From: YueHaibing <yuehaibing@huawei.com>
-Date: Wed, 10 Apr 2019 21:18:28 +0800
-Subject: [PATCH] spi: spi-mem: Make spi_mem_default_supports_op() static
- inline
-
-Stub helper spi_mem_default_supports_op() should
-be set to static inline
-
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- include/linux/spi/spi-mem.h | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index 1941b845aa15..af9ff2f0f1b2 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -315,6 +315,7 @@ spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
- {
- }
- 
-+static inline
- bool spi_mem_default_supports_op(struct spi_mem *mem,
- 				 const struct spi_mem_op *op)
- {
--- 
-2.20.1
+MBR, Sergei

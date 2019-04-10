@@ -1,76 +1,89 @@
-From: Marek Vasut <marek.vasut@gmail.com>
-Subject: Re: [PATCH v9 2/3] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
- driver
-Date: Wed, 10 Apr 2019 08:27:55 +0200
-Message-ID: <2095d059-8276-a01a-7c3a-da4647f7b7df@gmail.com>
-References: <1553847606-18122-1-git-send-email-masonccyang@mxic.com.tw>
- <1553847606-18122-3-git-send-email-masonccyang@mxic.com.tw>
- <a2dc294f-f2a1-2469-1f44-db67f9b8cc10@cogentembedded.com>
- <OFC7F0028A.CFF6BD04-ON482583D8.00084FA1-482583D8.0008985F@mxic.com.tw>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Subject: Re: [PATCH 1/1] spi: pxa2xx: add driver enabling message
+Date: Wed, 10 Apr 2019 10:55:29 +0300
+Message-ID: <2c853342-f937-30e6-ce6f-010e06f7376c@linux.intel.com>
+References: <1554736964-6058-1-git-send-email-f.suligoi@asem.it>
+ <51e9e073-625d-f5c0-6b2e-410f6ddb6346@linux.intel.com>
+ <6cef52a73fb547bb9c0dd84efca8f7f8@asem.it>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 8bit
-Cc: bbrezillon@kernel.org, broonie@kernel.org,
-        devicetree@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
-        lee.jones@linaro.org, linux-kernel@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-        mark.rutland@arm.com, robh+dt@kernel.org, zhengxunli@mxic.com.tw
-To: masonccyang@mxic.com.tw,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Flavio Suligoi <f.suligoi@asem.it>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OFC7F0028A.CFF6BD04-ON482583D8.00084FA1-482583D8.0008985F@mxic.com.tw>
+In-Reply-To: <6cef52a73fb547bb9c0dd84efca8f7f8@asem.it>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 4/10/19 3:33 AM, masonccyang@mxic.com.tw wrote:
-> Hi Sergei,
+On 4/9/19 5:11 PM, Flavio Suligoi wrote:
+> Hi Jarkko,
 > 
->> > +static ssize_t rpc_spi_mem_dirmap_write(struct spi_mem_dirmap_desc
-> *desc,
->> > +               u64 offs, size_t len, const void *buf)
->> > +{
->> > +   struct rpc_spi *rpc =
->> > +         spi_controller_get_devdata(desc->mem->spi->controller);
->> > +   int ret;
->> > +
->> > +   if (offs + desc->info.offset + len > U32_MAX)
->> > +      return -EINVAL;
->> > +
->> > +   if (len > RPC_WBUF_SIZE)
->> > +      len = RPC_WBUF_SIZE;
->> > +
->> > +   ret = rpc_spi_set_freq(rpc, desc->mem->spi->max_speed_hz);
->> > +   if (ret)
->> > +      return ret;
->> > +
->> > +   rpc_spi_mem_set_prep_op_cfg(desc->mem->spi,
->> > +                &desc->info.op_tmpl, &offs, &len);
->> > +
->> > +   regmap_update_bits(rpc->regmap, RPC_CMNCR, RPC_CMNCR_MD,
-> RPC_CMNCR_MD);
->> > +
->> > +   regmap_write(rpc->regmap, RPC_SMDRENR, 0);
->> > +
->> > +   regmap_update_bits(rpc->regmap, RPC_PHYCNT, RPC_PHYCNT_STRTIM(7) |
->> > +            RPC_PHYCNT_WBUF2 | RPC_PHYCNT_WBUF,
->> > +            RPC_PHYCNT_WBUF2 | RPC_PHYCNT_WBUF);
->> > +
->> > +   memcpy_toio(rpc->wbuf, buf, len);
+>> Hi
 >>
->>    Wait, doesn't the manual say that the whole 256-byte buffer should be
->> filled?  I think that short chunks have to be written w/o WBUF (done,
-> in fact,
->> by the HF driver).
->>
+>> On 4/8/19 6:22 PM, Flavio Suligoi wrote:
+>>> Add an info message for the PXA2xx device driver start-up,
+>>> with the indication of the transfer mode used (DMA or GPIO).
+>>>
+>>> This info is useful to individuate the timing when
+>>> the module starts.
+>>>
+>>> Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
+>>> ---
+>>>    drivers/spi/spi-pxa2xx.c | 3 +++
+>>>    1 file changed, 3 insertions(+)
+>>>
+>>> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+>>> index f7068cc..d449501 100644
+>>> --- a/drivers/spi/spi-pxa2xx.c
+>>> +++ b/drivers/spi/spi-pxa2xx.c
+>>> @@ -1826,6 +1826,9 @@ static int pxa2xx_spi_probe(struct platform_device
+>> *pdev)
+>>>    		goto out_error_clock_enabled;
+>>>    	}
+>>>
+>>> +	dev_info(dev, "PXA2xx SPI master controller (%s mode)\n",
+>>> +		 platform_info->enable_dma ? "DMA" : "PIO");
+>>> +
+>>>    	return status;
+>>>
+>> Would this look better if moved before devm_spi_register_controller()
+>> call?
 > 
-> From spi-nor.c layer always transfer 256 bytes data with page program
-> command.
+> Ok, so in case of SPI registering failure, we have two messages, as:
+> 
+> pxa2xx-spi 80860F0E:00: PXA2xx SPI master controller (DMA mode)
+> pxa2xx-spi 80860F0E:00: problem registering spi controller
+> 
+> Do you think that it is more explicative?
+> 
+I think yes and it should not cause confusion since the error message is 
+the last one.
 
-Does that apply even for flashes with not-256-byte pages ?
+I was thinking the successful registration case when DMA is not 
+available. First there is a warning, followed by a debug message from 
+SPI core (if CONFIG_SPI_DEBUG) and then info message.
+
+[    9.506895] pxa2xx-spi pxa2xx-spi.13: no DMA channels available, 
+using PIO
+[    9.516770] pxa2xx-spi pxa2xx-spi.13: registered master spi2
+[    9.518527] pxa2xx-spi pxa2xx-spi.13: PXA2xx SPI master controller 
+(PIO mode)
+
+Actually this info message doesn't necessarily tell will the driver end 
+up using DMA for transfers. See pxa2xx_spi_can_dma() and 
+pxa2xx_spi_transfer_one().
+
+How about replacing "no DMA channels available, using PIO" and have 
+instead single info message telling is the DMA available or does the 
+driver use PIO only?
 
 -- 
-Best regards,
-Marek Vasut
+Jarkko

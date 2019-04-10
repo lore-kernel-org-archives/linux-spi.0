@@ -1,70 +1,62 @@
-From: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-Subject: [LINUX PATCH v3] spi: spi-mem: Fix build error without CONFIG_SPI_MEM
-Date: Wed, 10 Apr 2019 17:27:09 +0530
-Message-ID: <1554897429-5959-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
+From: Flavio Suligoi <f.suligoi@asem.it>
+Subject: RE: [PATCH 1/1] spi: pxa2xx: add driver enabling message
+Date: Wed, 10 Apr 2019 12:01:15 +0000
+Message-ID: <6953cafeb6bc4367842f37f567bb893f@asem.it>
+References: <1554736964-6058-1-git-send-email-f.suligoi@asem.it>
+ <20190410103250.GF6106@sirena.org.uk>
+ <a7237e949bb643d5b49ccc5ae241bbb9@asem.it>
+ <20190410115431.GO6106@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <michal.simek@xilinx.com>, <nagasuresh12@gmail.com>,
-        Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-To: <yuehaibing@huawei.com>, <vigneshr@ti.com>, <broonie@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Cc: Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190410115431.GO6106@sirena.org.uk>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: YueHaibing <yuehaibing@huawei.com>
+> On Wed, Apr 10, 2019 at 11:47:43AM +0000, Flavio Suligoi wrote:
+> 
+> > You have right about to avoid too many boot messages,
+> > but in this case, using an x86 machine and with
+> > the spi-pxa2xx in DMA mode, so without the message:
+> 
+> > "no DMA channels available, using PIO",
+> 
+> > there is absolutely no indication about the existence
+> > of the SPI master controller.
+> 
+> It's totally fine to not have a boot print for the device, the best way
+> to find devices if you need them is to look in sysfs anyway.
 
-When building with CONFIG_SPI_MEM is not set
-gc warns this:
+Ok
+ 
+> > The second reason is about the DMA/PIO mode indication.
+> > With the board I'm using, sometimes the spi-pxa2xx driver can't allocate
+> > a DMA channel and works in PIO mode.
+> 
+> > So, with the advice of Jarkko, I think that a valid solution could be:
+> 
+> > 1) remove the "no DMA channels available, using PIO" message
+> > 2) add a new message with the indications of:
+> > 	- controller mode (slave or master)
+> > 	- transfer mode (DMA or PIO)
+> 
+> > What do you think about this?
+> 
+> If the system is randomly failing to assign a DMA channel when it should
+> then shouldn't we just fix that?  A print which is presumably intended
+> to prompt the user to reboot to try to get things working doesn't seem
+> like a good solution.
 
-drivers/spi/spi-zynq-qspi.o: In function `zynq_qspi_supports_op':
-spi-zynq-qspi.c:(.text+0x1da): undefined reference to `spi_mem_default_supports_op'
+Right, I'm just fix the DMA problem (I'm preparing a patch about this)
 
-Fixes: 67dca5e580f1 ("spi: spi-mem: Add support for Zynq QSPI controller")
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Signed-off-by: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
----
-Changes in v3
- - Updated the Author name
- - Removed extra line between Fixes and rest of the tags
-Changes in v2
- - Added static inline to the function spi_mem_default_supports_op();
----
- include/linux/spi/spi-mem.h | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index eb71e9d..bf399f2 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -295,6 +295,8 @@ int spi_controller_dma_map_mem_op_data(struct spi_controller *ctlr,
- void spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
- 					  const struct spi_mem_op *op,
- 					  struct sg_table *sg);
-+bool spi_mem_default_supports_op(struct spi_mem *mem,
-+				 const struct spi_mem_op *op);
- #else
- static inline int
- spi_controller_dma_map_mem_op_data(struct spi_controller *ctlr,
-@@ -310,6 +312,9 @@ spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
- 				     struct sg_table *sg)
- {
- }
-+
-+static inline bool spi_mem_default_supports_op(struct spi_mem *mem,
-+				 const struct spi_mem_op *op);
- #endif /* CONFIG_SPI_MEM */
- 
- int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op);
-@@ -336,9 +341,6 @@ int spi_mem_driver_register_with_owner(struct spi_mem_driver *drv,
- 
- void spi_mem_driver_unregister(struct spi_mem_driver *drv);
- 
--bool spi_mem_default_supports_op(struct spi_mem *mem,
--				 const struct spi_mem_op *op);
--
- #define spi_mem_driver_register(__drv)                                  \
- 	spi_mem_driver_register_with_owner(__drv, THIS_MODULE)
- 
--- 
-2.7.4
+Flavio

@@ -1,99 +1,66 @@
-From: Naga Sureshkumar Relli <nagasure@xilinx.com>
-Subject: RE: [PATCH] spi: spi-mem: Fix build error without CONFIG_SPI_MEM
-Date: Wed, 10 Apr 2019 05:31:00 +0000
-Message-ID: <MWHPR02MB2623958571F4CB10C22E90D7AF2E0@MWHPR02MB2623.namprd02.prod.outlook.com>
-References: <20190408143949.10688-1-yuehaibing@huawei.com>
- <4c9cb550-e0b6-8f66-979d-ab8237e28166@ti.com>
- <f377a323-c490-1185-e471-d5292ab59291@huawei.com>
- <MWHPR02MB2623080FD8E525B2590CF7B4AF2E0@MWHPR02MB2623.namprd02.prod.outlook.com>
+From: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+Subject: [LINUX PATCH v2] spi: spi-mem: Fix build error without CONFIG_SPI_MEM
+Date: Wed, 10 Apr 2019 11:14:45 +0530
+Message-ID: <1554875085-25350-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-To: Naga Sureshkumar Relli <nagasure@xilinx.com>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        "broonie@kernel.org" <broonie@kernel.org>
+Content-Type: text/plain
+Cc: <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <michal.simek@xilinx.com>, <nagasuresh12@gmail.com>,
+        Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+To: <yuehaibing@huawei.com>, <vigneshr@ti.com>, <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <MWHPR02MB2623080FD8E525B2590CF7B4AF2E0@MWHPR02MB2623.namprd02.prod.outlook.com>
-Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgVmlnbmVzaCwNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBsaW51
-eC1zcGktb3duZXJAdmdlci5rZXJuZWwub3JnIDxsaW51eC1zcGktb3duZXJAdmdlci5rZXJuZWwu
-b3JnPiBPbiBCZWhhbGYgT2YNCj4gTmFnYSBTdXJlc2hrdW1hciBSZWxsaQ0KPiBTZW50OiBXZWRu
-ZXNkYXksIEFwcmlsIDEwLCAyMDE5IDEwOjUzIEFNDQo+IFRvOiBZdWVIYWliaW5nIDx5dWVoYWli
-aW5nQGh1YXdlaS5jb20+OyBWaWduZXNoIFJhZ2hhdmVuZHJhIDx2aWduZXNockB0aS5jb20+Ow0K
-PiBicm9vbmllQGtlcm5lbC5vcmcNCj4gQ2M6IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7
-IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogUkU6IFtQQVRDSF0gc3BpOiBz
-cGktbWVtOiBGaXggYnVpbGQgZXJyb3Igd2l0aG91dCBDT05GSUdfU1BJX01FTQ0KPiANCj4gSGkg
-VmlnbmVzaCwNCj4gDQo+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiBGcm9tOiBs
-aW51eC1zcGktb3duZXJAdmdlci5rZXJuZWwub3JnDQo+ID4gPGxpbnV4LXNwaS1vd25lckB2Z2Vy
-Lmtlcm5lbC5vcmc+IE9uIEJlaGFsZiBPZiBZdWVIYWliaW5nDQo+ID4gU2VudDogV2VkbmVzZGF5
-LCBBcHJpbCAxMCwgMjAxOSA5OjAzIEFNDQo+ID4gVG86IFZpZ25lc2ggUmFnaGF2ZW5kcmEgPHZp
-Z25lc2hyQHRpLmNvbT47IGJyb29uaWVAa2VybmVsLm9yZzsgTmFnYQ0KPiA+IFN1cmVzaGt1bWFy
-IFJlbGxpIDxuYWdhc3VyZUB4aWxpbnguY29tPg0KPiA+IENjOiBsaW51eC1rZXJuZWxAdmdlci5r
-ZXJuZWwub3JnOyBsaW51eC1zcGlAdmdlci5rZXJuZWwub3JnDQo+ID4gU3ViamVjdDogUmU6IFtQ
-QVRDSF0gc3BpOiBzcGktbWVtOiBGaXggYnVpbGQgZXJyb3Igd2l0aG91dA0KPiA+IENPTkZJR19T
-UElfTUVNDQo+ID4NCj4gPiBPbiAyMDE5LzQvMTAgMDozMCwgVmlnbmVzaCBSYWdoYXZlbmRyYSB3
-cm90ZToNCj4gPiA+IE9uIDA4LzA0LzE5IDg6MDkgUE0sIFl1ZSBIYWliaW5nIHdyb3RlOg0KPiA+
-ID4+IEZyb206IFl1ZUhhaWJpbmcgPHl1ZWhhaWJpbmdAaHVhd2VpLmNvbT4NCj4gPiA+Pg0KPiA+
-ID4+IFdoZW4gYnVpbGRpbmcgd2l0aCBDT05GSUdfU1BJX01FTSBpcyBub3Qgc2V0IGdjIHdhcm5z
-IHRoaXM6DQo+ID4gPj4NCj4gPiA+PiBkcml2ZXJzL3NwaS9zcGktenlucS1xc3BpLm86IEluIGZ1
-bmN0aW9uIGB6eW5xX3FzcGlfc3VwcG9ydHNfb3AnOg0KPiA+ID4+IHNwaS16eW5xLXFzcGkuYzoo
-LnRleHQrMHgxZGEpOiB1bmRlZmluZWQgcmVmZXJlbmNlIHRvIGBzcGlfbWVtX2RlZmF1bHRfc3Vw
-cG9ydHNfb3AnDQo+ID4gPj4NCj4gPiA+PiBGaXhlczogNjdkY2E1ZTU4MGYxICgic3BpOiBzcGkt
-bWVtOiBBZGQgc3VwcG9ydCBmb3IgWnlucSBRU1BJDQo+ID4gPj4gY29udHJvbGxlciIpDQo+ID4g
-Pj4gU2lnbmVkLW9mZi1ieTogWXVlSGFpYmluZyA8eXVlaGFpYmluZ0BodWF3ZWkuY29tPg0KPiA+
-ID4+IC0tLQ0KPiA+ID4+ICBpbmNsdWRlL2xpbnV4L3NwaS9zcGktbWVtLmggfCAxNCArKysrKysr
-KysrKy0tLQ0KPiA+ID4+ICAxIGZpbGUgY2hhbmdlZCwgMTEgaW5zZXJ0aW9ucygrKSwgMyBkZWxl
-dGlvbnMoLSkNCj4gPiA+Pg0KPiA+ID4+IGRpZmYgLS1naXQgYS9pbmNsdWRlL2xpbnV4L3NwaS9z
-cGktbWVtLmgNCj4gPiA+PiBiL2luY2x1ZGUvbGludXgvc3BpL3NwaS1tZW0uaCBpbmRleCBjODQ1
-Y2Q2Li4xOTQxYjg0IDEwMDY0NA0KPiA+ID4+IC0tLSBhL2luY2x1ZGUvbGludXgvc3BpL3NwaS1t
-ZW0uaA0KPiA+ID4+ICsrKyBiL2luY2x1ZGUvbGludXgvc3BpL3NwaS1tZW0uaA0KPiA+ID4+IEBA
-IC0yOTUsNiArMjk1LDEwIEBAIGludCBzcGlfY29udHJvbGxlcl9kbWFfbWFwX21lbV9vcF9kYXRh
-KHN0cnVjdA0KPiA+ID4+IHNwaV9jb250cm9sbGVyICpjdGxyLCAgdm9pZA0KPiA+ID4+IHNwaV9j
-b250cm9sbGVyX2RtYV91bm1hcF9tZW1fb3BfZGF0YShzdHJ1Y3Qgc3BpX2NvbnRyb2xsZXINCj4g
-PiAqY3RsciwNCj4gPiA+PiAgCQkJCQkgIGNvbnN0IHN0cnVjdCBzcGlfbWVtX29wICpvcCwNCj4g
-PiA+PiAgCQkJCQkgIHN0cnVjdCBzZ190YWJsZSAqc2cpOw0KPiA+ID4+ICsNCj4gPiA+PiArYm9v
-bCBzcGlfbWVtX2RlZmF1bHRfc3VwcG9ydHNfb3Aoc3RydWN0IHNwaV9tZW0gKm1lbSwNCj4gPiA+
-PiArCQkJCSBjb25zdCBzdHJ1Y3Qgc3BpX21lbV9vcCAqb3ApOw0KPiA+ID4+ICsNCj4gPiA+PiAg
-I2Vsc2UNCj4gPiA+PiAgc3RhdGljIGlubGluZSBpbnQNCj4gPiA+PiAgc3BpX2NvbnRyb2xsZXJf
-ZG1hX21hcF9tZW1fb3BfZGF0YShzdHJ1Y3Qgc3BpX2NvbnRyb2xsZXIgKmN0bHIsIEBADQo+ID4g
-Pj4gLTMxMCw2ICszMTQsMTMgQEAgc3BpX2NvbnRyb2xsZXJfZG1hX3VubWFwX21lbV9vcF9kYXRh
-KHN0cnVjdCBzcGlfY29udHJvbGxlcg0KPiAqY3RsciwNCj4gPiA+PiAgCQkJCSAgICAgc3RydWN0
-IHNnX3RhYmxlICpzZykNCj4gPiA+PiAgew0KPiA+ID4+ICB9DQo+ID4gPj4gKw0KPiA+ID4+ICti
-b29sIHNwaV9tZW1fZGVmYXVsdF9zdXBwb3J0c19vcChzdHJ1Y3Qgc3BpX21lbSAqbWVtLA0KPiA+
-ID4+ICsJCQkJIGNvbnN0IHN0cnVjdCBzcGlfbWVtX29wICpvcCkNCj4gPiA+DQo+ID4gPiBUaGlz
-IG5lZWRzIHRvIGJlIGRlY2xhcmVkIHN0YXRpYyBpbmxpbmUgdG8gYXZvaWQgbXVsdGlwbGUgZGVm
-aW5pdGlvbnMuDQo+ID4gPiBSaWdodD8NCj4gPg0KPiA+IEluZGVlZCwgdGhhbmtzIQ0KUGxlYXNl
-IGlnbm9yZSB0aGlzLiBJIGRpZCBtaXN0YWtlIGluIGRlY2xhcmluZy4NCkl0IGNvbXBpbGVkIHdp
-dGggb3V0IGFueSBpc3N1ZXMgdXNpbmcgc3RhdGljIGlubGluZS4NCg0KVGhhbmtzLA0KTmFnYSBT
-dXJlc2hrdW1hciBSZWxsaQ0KDQo+IElmIHdlIGRlY2xhcmUgdGhpcyBhcyBzdGF0aWMgaW5saW5l
-LCB0aGVuIHdlIGNhbid0IGFjY2VzcyB0aGF0IGluIHp5bnEtcXNwaSBkcml2ZXIuDQo+IFRoaXMg
-aXMgdGhlIGVycm9yIEkgYW0gZ2V0dGluZy4NCj4gSW4gZmlsZSBpbmNsdWRlZCBmcm9tIGRyaXZl
-cnMvc3BpL3NwaS16eW5xLXFzcGkuYzoxOTowOg0KPiAuL2luY2x1ZGUvbGludXgvc3BpL3NwaS1t
-ZW0uaDoyOTg6MjA6IHdhcm5pbmc6IOKAmHNwaV9tZW1fZGVmYXVsdF9zdXBwb3J0c19vcOKAmSB1
-c2VkIGJ1dA0KPiBuZXZlciBkZWZpbmVkICBzdGF0aWMgaW5saW5lIGJvb2wgc3BpX21lbV9kZWZh
-dWx0X3N1cHBvcnRzX29wKHN0cnVjdCBzcGlfbWVtICptZW0sDQo+ICAgICAgICAgICAgICAgICAg
-ICAgXn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+DQo+IGRyaXZlcnMvc3BpL3NwaS16eW5xLXFz
-cGkuYzogSW4gZnVuY3Rpb24g4oCYenlucV9xc3BpX3N1cHBvcnRzX29w4oCZOg0KPiAuL2luY2x1
-ZGUvbGludXgvc3BpL3NwaS1tZW0uaDoyOTg6MjA6IGVycm9yOiBpbmxpbmluZyBmYWlsZWQgaW4g
-Y2FsbCB0byBhbHdheXNfaW5saW5lDQo+IOKAmHNwaV9tZW1fZGVmYXVsdF9zdXBwb3J0c19vcOKA
-mTogZnVuY3Rpb24gYm9keSBub3QgYXZhaWxhYmxlDQo+IGRyaXZlcnMvc3BpL3NwaS16eW5xLXFz
-cGkuYzoyMjM6Nzogbm90ZTogY2FsbGVkIGZyb20gaGVyZQ0KPiAgIGlmICghc3BpX21lbV9kZWZh
-dWx0X3N1cHBvcnRzX29wKG1lbSwgb3ApKQ0KPiANCj4gVGhhbmtzLA0KPiBOYWdhIFN1cmVzaGt1
-bWFyIFJlbGxpDQo+ID4NCj4gPiA+DQo+ID4gPj4gK3sNCj4gPiA+PiArCXJldHVybiBmYWxzZTsN
-Cj4gPiA+PiArfQ0KPiA+ID4+ICsNCj4gPiA+PiAgI2VuZGlmIC8qIENPTkZJR19TUElfTUVNICov
-DQo+ID4gPj4NCj4gPiA+PiAgaW50IHNwaV9tZW1fYWRqdXN0X29wX3NpemUoc3RydWN0IHNwaV9t
-ZW0gKm1lbSwgc3RydWN0IHNwaV9tZW1fb3ANCj4gPiA+PiAqb3ApOyBAQCAtMzQxLDkgKzM1Miw2
-IEBAIGludA0KPiA+ID4+IHNwaV9tZW1fZHJpdmVyX3JlZ2lzdGVyX3dpdGhfb3duZXIoc3RydWN0
-IHNwaV9tZW1fZHJpdmVyICpkcnYsDQo+ID4gPj4NCj4gPiA+PiAgdm9pZCBzcGlfbWVtX2RyaXZl
-cl91bnJlZ2lzdGVyKHN0cnVjdCBzcGlfbWVtX2RyaXZlciAqZHJ2KTsNCj4gPiA+Pg0KPiA+ID4+
-IC1ib29sIHNwaV9tZW1fZGVmYXVsdF9zdXBwb3J0c19vcChzdHJ1Y3Qgc3BpX21lbSAqbWVtLA0K
-PiA+ID4+IC0JCQkJIGNvbnN0IHN0cnVjdCBzcGlfbWVtX29wICpvcCk7DQo+ID4gPj4gLQ0KPiA+
-ID4+ICAjZGVmaW5lIHNwaV9tZW1fZHJpdmVyX3JlZ2lzdGVyKF9fZHJ2KSAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICBcDQo+ID4gPj4gIAlzcGlfbWVtX2RyaXZlcl9yZWdpc3Rlcl93
-aXRoX293bmVyKF9fZHJ2LCBUSElTX01PRFVMRSkNCj4gPiA+Pg0KPiA+ID4+DQo+ID4gPg0KDQo=
+When building with CONFIG_SPI_MEM is not set
+gc warns this:
+
+drivers/spi/spi-zynq-qspi.o: In function `zynq_qspi_supports_op':
+spi-zynq-qspi.c:(.text+0x1da): undefined reference to `spi_mem_default_supports_op'
+
+Fixes: 67dca5e580f1 ("spi: spi-mem: Add support for Zynq QSPI controller")
+
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Signed-off-by: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+---
+Changes in v2
+ - Added static inline to the function spi_mem_default_supports_op();
+---
+ include/linux/spi/spi-mem.h | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index eb71e9d..bf399f2 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -295,6 +295,8 @@ int spi_controller_dma_map_mem_op_data(struct spi_controller *ctlr,
+ void spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
+ 					  const struct spi_mem_op *op,
+ 					  struct sg_table *sg);
++bool spi_mem_default_supports_op(struct spi_mem *mem,
++				 const struct spi_mem_op *op);
+ #else
+ static inline int
+ spi_controller_dma_map_mem_op_data(struct spi_controller *ctlr,
+@@ -310,6 +312,9 @@ spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
+ 				     struct sg_table *sg)
+ {
+ }
++
++static inline bool spi_mem_default_supports_op(struct spi_mem *mem,
++				 const struct spi_mem_op *op);
+ #endif /* CONFIG_SPI_MEM */
+ 
+ int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op);
+@@ -336,9 +341,6 @@ int spi_mem_driver_register_with_owner(struct spi_mem_driver *drv,
+ 
+ void spi_mem_driver_unregister(struct spi_mem_driver *drv);
+ 
+-bool spi_mem_default_supports_op(struct spi_mem *mem,
+-				 const struct spi_mem_op *op);
+-
+ #define spi_mem_driver_register(__drv)                                  \
+ 	spi_mem_driver_register_with_owner(__drv, THIS_MODULE)
+ 
+-- 
+2.7.4

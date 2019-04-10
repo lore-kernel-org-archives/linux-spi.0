@@ -1,81 +1,61 @@
-From: YueHaibing <yuehaibing@huawei.com>
-Subject: Re: [PATCH] spi: spi-mem: Fix build error without CONFIG_SPI_MEM
-Date: Wed, 10 Apr 2019 11:33:23 +0800
-Message-ID: <f377a323-c490-1185-e471-d5292ab59291@huawei.com>
-References: <20190408143949.10688-1-yuehaibing@huawei.com>
- <4c9cb550-e0b6-8f66-979d-ab8237e28166@ti.com>
+From: Viresh Kumar <viresh.kumar@linaro.org>
+Subject: Re: [RFC v2 09/11] drm/msm/dpu: Use OPP API to set clk/perf state
+Date: Wed, 10 Apr 2019 09:19:28 +0530
+Message-ID: <20190410034928.wkfnebwmcdonhto6@vireshk-i7>
+References: <20190320094918.20234-1-rnayak@codeaurora.org>
+ <20190320094918.20234-10-rnayak@codeaurora.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Cc: <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>
-To: Vignesh Raghavendra <vigneshr@ti.com>, <broonie@kernel.org>,
-        <naga.sureshkumar.relli@xilinx.com>
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-spi@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-scsi@vger.kernel.org, swboyd@chromium.org,
+        ulf.hansson@linaro.org, dianders@chromium.org, rafael@kernel.org
+To: Rajendra Nayak <rnayak@codeaurora.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <4c9cb550-e0b6-8f66-979d-ab8237e28166@ti.com>
+Content-Disposition: inline
+In-Reply-To: <20190320094918.20234-10-rnayak@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 2019/4/10 0:30, Vignesh Raghavendra wrote:
-> On 08/04/19 8:09 PM, Yue Haibing wrote:
->> From: YueHaibing <yuehaibing@huawei.com>
->>
->> When building with CONFIG_SPI_MEM is not set
->> gc warns this:
->>
->> drivers/spi/spi-zynq-qspi.o: In function `zynq_qspi_supports_op':
->> spi-zynq-qspi.c:(.text+0x1da): undefined reference to `spi_mem_default_supports_op'
->>
->> Fixes: 67dca5e580f1 ("spi: spi-mem: Add support for Zynq QSPI controller")
->> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
->> ---
->>  include/linux/spi/spi-mem.h | 14 +++++++++++---
->>  1 file changed, 11 insertions(+), 3 deletions(-)
->>
->> diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
->> index c845cd6..1941b84 100644
->> --- a/include/linux/spi/spi-mem.h
->> +++ b/include/linux/spi/spi-mem.h
->> @@ -295,6 +295,10 @@ int spi_controller_dma_map_mem_op_data(struct spi_controller *ctlr,
->>  void spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
->>  					  const struct spi_mem_op *op,
->>  					  struct sg_table *sg);
->> +
->> +bool spi_mem_default_supports_op(struct spi_mem *mem,
->> +				 const struct spi_mem_op *op);
->> +
->>  #else
->>  static inline int
->>  spi_controller_dma_map_mem_op_data(struct spi_controller *ctlr,
->> @@ -310,6 +314,13 @@ spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
->>  				     struct sg_table *sg)
->>  {
->>  }
->> +
->> +bool spi_mem_default_supports_op(struct spi_mem *mem,
->> +				 const struct spi_mem_op *op)
+On 20-03-19, 15:19, Rajendra Nayak wrote:
+> On some qualcomm platforms DPU needs to express a perforamnce state
+> requirement on a power domain depennding on the clock rates.
+> Use OPP table from DT to register with OPP framework and use
+> dev_pm_opp_set_rate() to set the clk/perf state.
 > 
-> This needs to be declared static inline to avoid multiple definitions.
-> Right?
+> Signed-off-by: Rajendra Nayak <rnayak@codeaurora.org>
+> ---
+>  drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c | 7 ++++++-
+>  drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c       | 9 +++++++++
+>  2 files changed, 15 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c
+> index 9f20f397f77d..db21a86b242b 100644
+> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c
+> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/debugfs.h>
+>  #include <linux/errno.h>
+>  #include <linux/mutex.h>
+> +#include <linux/pm_opp.h>
+>  #include <linux/sort.h>
+>  #include <linux/clk.h>
+>  #include <linux/bitmap.h>
+> @@ -298,7 +299,11 @@ static int _dpu_core_perf_set_core_clk_rate(struct dpu_kms *kms, u64 rate)
+>  		rate = core_clk->max_rate;
+>  
+>  	core_clk->rate = rate;
+> -	return msm_dss_clk_set_rate(core_clk, 1);
+> +
+> +	if (dev_pm_opp_get_opp_table(&kms->pdev->dev))
 
-Indeed, thanks!
+This takes a reference of the OPP table, you need to call put thing as well to
+balance it off.
 
-> 
->> +{
->> +	return false;
->> +}
->> +
->>  #endif /* CONFIG_SPI_MEM */
->>  
->>  int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op);
->> @@ -341,9 +352,6 @@ int spi_mem_driver_register_with_owner(struct spi_mem_driver *drv,
->>  
->>  void spi_mem_driver_unregister(struct spi_mem_driver *drv);
->>  
->> -bool spi_mem_default_supports_op(struct spi_mem *mem,
->> -				 const struct spi_mem_op *op);
->> -
->>  #define spi_mem_driver_register(__drv)                                  \
->>  	spi_mem_driver_register_with_owner(__drv, THIS_MODULE)
->>  
->>
-> 
+> +		return dev_pm_opp_set_rate(&kms->pdev->dev, core_clk->rate);
+> +	else
+> +		return msm_dss_clk_set_rate(core_clk, 1);
+>  }
+-- 
+viresh

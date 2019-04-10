@@ -1,99 +1,81 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v9 2/3] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
- driver
-Date: Tue, 9 Apr 2019 23:07:13 +0300
-Message-ID: <a2dc294f-f2a1-2469-1f44-db67f9b8cc10@cogentembedded.com>
-References: <1553847606-18122-1-git-send-email-masonccyang@mxic.com.tw>
- <1553847606-18122-3-git-send-email-masonccyang@mxic.com.tw>
+From: YueHaibing <yuehaibing@huawei.com>
+Subject: Re: [PATCH] spi: spi-mem: Fix build error without CONFIG_SPI_MEM
+Date: Wed, 10 Apr 2019 11:33:23 +0800
+Message-ID: <f377a323-c490-1185-e471-d5292ab59291@huawei.com>
+References: <20190408143949.10688-1-yuehaibing@huawei.com>
+ <4c9cb550-e0b6-8f66-979d-ab8237e28166@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
-        zhengxunli@mxic.com.tw
-To: Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
-        marek.vasut@gmail.com, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, bbrezillon@kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        devicetree@vger.kernel.org, mark.rutland@arm.com,
-        robh+dt@kernel.org, lee.jones@linaro.org
+Cc: <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>
+To: Vignesh Raghavendra <vigneshr@ti.com>, <broonie@kernel.org>,
+        <naga.sureshkumar.relli@xilinx.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1553847606-18122-3-git-send-email-masonccyang@mxic.com.tw>
-Content-Language: en-MW
+In-Reply-To: <4c9cb550-e0b6-8f66-979d-ab8237e28166@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello!
-
-On 03/29/2019 11:20 AM, Mason Yang wrote:
-
-> Add a driver for Renesas R-Car Gen3 RPC-IF SPI controller.
+On 2019/4/10 0:30, Vignesh Raghavendra wrote:
+> On 08/04/19 8:09 PM, Yue Haibing wrote:
+>> From: YueHaibing <yuehaibing@huawei.com>
+>>
+>> When building with CONFIG_SPI_MEM is not set
+>> gc warns this:
+>>
+>> drivers/spi/spi-zynq-qspi.o: In function `zynq_qspi_supports_op':
+>> spi-zynq-qspi.c:(.text+0x1da): undefined reference to `spi_mem_default_supports_op'
+>>
+>> Fixes: 67dca5e580f1 ("spi: spi-mem: Add support for Zynq QSPI controller")
+>> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+>> ---
+>>  include/linux/spi/spi-mem.h | 14 +++++++++++---
+>>  1 file changed, 11 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+>> index c845cd6..1941b84 100644
+>> --- a/include/linux/spi/spi-mem.h
+>> +++ b/include/linux/spi/spi-mem.h
+>> @@ -295,6 +295,10 @@ int spi_controller_dma_map_mem_op_data(struct spi_controller *ctlr,
+>>  void spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
+>>  					  const struct spi_mem_op *op,
+>>  					  struct sg_table *sg);
+>> +
+>> +bool spi_mem_default_supports_op(struct spi_mem *mem,
+>> +				 const struct spi_mem_op *op);
+>> +
+>>  #else
+>>  static inline int
+>>  spi_controller_dma_map_mem_op_data(struct spi_controller *ctlr,
+>> @@ -310,6 +314,13 @@ spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
+>>  				     struct sg_table *sg)
+>>  {
+>>  }
+>> +
+>> +bool spi_mem_default_supports_op(struct spi_mem *mem,
+>> +				 const struct spi_mem_op *op)
 > 
-> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
-> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-[...]
+> This needs to be declared static inline to avoid multiple definitions.
+> Right?
 
-> diff --git a/drivers/spi/spi-renesas-rpc.c b/drivers/spi/spi-renesas-rpc.c
-> new file mode 100644
-> index 0000000..037f273
-> --- /dev/null
-> +++ b/drivers/spi/spi-renesas-rpc.c
-[...]
-[...]
-> +static ssize_t rpc_spi_mem_dirmap_write(struct spi_mem_dirmap_desc *desc,
-> +					u64 offs, size_t len, const void *buf)
-> +{
-> +	struct rpc_spi *rpc =
-> +			spi_controller_get_devdata(desc->mem->spi->controller);
-> +	int ret;
-> +
-> +	if (offs + desc->info.offset + len > U32_MAX)
-> +		return -EINVAL;
-> +
-> +	if (len > RPC_WBUF_SIZE)
-> +		len = RPC_WBUF_SIZE;
-> +
-> +	ret = rpc_spi_set_freq(rpc, desc->mem->spi->max_speed_hz);
-> +	if (ret)
-> +		return ret;
-> +
-> +	rpc_spi_mem_set_prep_op_cfg(desc->mem->spi,
-> +				    &desc->info.op_tmpl, &offs, &len);
-> +
-> +	regmap_update_bits(rpc->regmap, RPC_CMNCR, RPC_CMNCR_MD, RPC_CMNCR_MD);
-> +
-> +	regmap_write(rpc->regmap, RPC_SMDRENR, 0);
-> +
-> +	regmap_update_bits(rpc->regmap, RPC_PHYCNT, RPC_PHYCNT_STRTIM(7) |
-> +			   RPC_PHYCNT_WBUF2 | RPC_PHYCNT_WBUF,
-> +			   RPC_PHYCNT_WBUF2 | RPC_PHYCNT_WBUF);
-> +
-> +	memcpy_toio(rpc->wbuf, buf, len);
+Indeed, thanks!
 
-   Wait, doesn't the manual say that the whole 256-byte buffer should be
-filled?  I think that short chunks have to be written w/o WBUF (done, in fact,
-by the HF driver).
-
-> +
-> +	regmap_write(rpc->regmap, RPC_SMCMR, rpc->cmd);
-> +	regmap_write(rpc->regmap, RPC_SMADR, offs);
-> +	regmap_write(rpc->regmap, RPC_SMENR, rpc->smenr);
-> +	regmap_write(rpc->regmap, RPC_SMCR, rpc->smcr | RPC_SMCR_SPIE);
-> +	ret = wait_msg_xfer_end(rpc);
-> +	if (ret)
-> +		goto err_out;
-> +
-> +	regmap_write(rpc->regmap, RPC_DRCR, RPC_DRCR_RCF);
-> +
-> +	regmap_update_bits(rpc->regmap, RPC_PHYCNT, RPC_PHYCNT_STRTIM(7) |
-> +			   RPC_PHYCNT_WBUF2 | RPC_PHYCNT_WBUF,
-> +			   RPC_PHYCNT_STRTIM(6));
-> +
-> +	return len;
-> +
-> +err_out:
-> +	return reset_control_reset(rpc->rstc);
-> +}
-[...]
-
-MBR, Sergei
+> 
+>> +{
+>> +	return false;
+>> +}
+>> +
+>>  #endif /* CONFIG_SPI_MEM */
+>>  
+>>  int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op);
+>> @@ -341,9 +352,6 @@ int spi_mem_driver_register_with_owner(struct spi_mem_driver *drv,
+>>  
+>>  void spi_mem_driver_unregister(struct spi_mem_driver *drv);
+>>  
+>> -bool spi_mem_default_supports_op(struct spi_mem *mem,
+>> -				 const struct spi_mem_op *op);
+>> -
+>>  #define spi_mem_driver_register(__drv)                                  \
+>>  	spi_mem_driver_register_with_owner(__drv, THIS_MODULE)
+>>  
+>>
+> 

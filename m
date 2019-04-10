@@ -1,59 +1,76 @@
-From: Naga Sureshkumar Relli <nagasure@xilinx.com>
-Subject: RE: linux-next: Tree for Apr 9 (spi/spi-zynq-qspi.c)
-Date: Wed, 10 Apr 2019 05:46:54 +0000
-Message-ID: <MWHPR02MB2623DDF884FD2DAA9C4B7C40AF2E0@MWHPR02MB2623.namprd02.prod.outlook.com>
-References: <20190409180042.15bb90b6@canb.auug.org.au>
- <4c933ec6-0247-5820-dfc2-326a5bc6b227@infradead.org>
+From: Marek Vasut <marek.vasut@gmail.com>
+Subject: Re: [PATCH v9 2/3] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
+ driver
+Date: Wed, 10 Apr 2019 08:27:55 +0200
+Message-ID: <2095d059-8276-a01a-7c3a-da4647f7b7df@gmail.com>
+References: <1553847606-18122-1-git-send-email-masonccyang@mxic.com.tw>
+ <1553847606-18122-3-git-send-email-masonccyang@mxic.com.tw>
+ <a2dc294f-f2a1-2469-1f44-db67f9b8cc10@cogentembedded.com>
+ <OFC7F0028A.CFF6BD04-ON482583D8.00084FA1-482583D8.0008985F@mxic.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Michal Simek <michals@xilinx.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        YueHaibing <yuehaibing@huawei.com>
-To: Randy Dunlap <rdunlap@infradead.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8bit
+Cc: bbrezillon@kernel.org, broonie@kernel.org,
+        devicetree@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
+        lee.jones@linaro.org, linux-kernel@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+        mark.rutland@arm.com, robh+dt@kernel.org, zhengxunli@mxic.com.tw
+To: masonccyang@mxic.com.tw,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <4c933ec6-0247-5820-dfc2-326a5bc6b227@infradead.org>
+In-Reply-To: <OFC7F0028A.CFF6BD04-ON482583D8.00084FA1-482583D8.0008985F@mxic.com.tw>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Randy,
+On 4/10/19 3:33 AM, masonccyang@mxic.com.tw wrote:
+> Hi Sergei,
+> 
+>> > +static ssize_t rpc_spi_mem_dirmap_write(struct spi_mem_dirmap_desc
+> *desc,
+>> > +               u64 offs, size_t len, const void *buf)
+>> > +{
+>> > +   struct rpc_spi *rpc =
+>> > +         spi_controller_get_devdata(desc->mem->spi->controller);
+>> > +   int ret;
+>> > +
+>> > +   if (offs + desc->info.offset + len > U32_MAX)
+>> > +      return -EINVAL;
+>> > +
+>> > +   if (len > RPC_WBUF_SIZE)
+>> > +      len = RPC_WBUF_SIZE;
+>> > +
+>> > +   ret = rpc_spi_set_freq(rpc, desc->mem->spi->max_speed_hz);
+>> > +   if (ret)
+>> > +      return ret;
+>> > +
+>> > +   rpc_spi_mem_set_prep_op_cfg(desc->mem->spi,
+>> > +                &desc->info.op_tmpl, &offs, &len);
+>> > +
+>> > +   regmap_update_bits(rpc->regmap, RPC_CMNCR, RPC_CMNCR_MD,
+> RPC_CMNCR_MD);
+>> > +
+>> > +   regmap_write(rpc->regmap, RPC_SMDRENR, 0);
+>> > +
+>> > +   regmap_update_bits(rpc->regmap, RPC_PHYCNT, RPC_PHYCNT_STRTIM(7) |
+>> > +            RPC_PHYCNT_WBUF2 | RPC_PHYCNT_WBUF,
+>> > +            RPC_PHYCNT_WBUF2 | RPC_PHYCNT_WBUF);
+>> > +
+>> > +   memcpy_toio(rpc->wbuf, buf, len);
+>>
+>>    Wait, doesn't the manual say that the whole 256-byte buffer should be
+>> filled?  I think that short chunks have to be written w/o WBUF (done,
+> in fact,
+>> by the HF driver).
+>>
+> 
+> From spi-nor.c layer always transfer 256 bytes data with page program
+> command.
 
-I have sent the patch on top of the patch sent by yuehaibing@huawei.com.
+Does that apply even for flashes with not-256-byte pages ?
 
-Thanks,
-Naga Sureshkumar Relli
-
-> -----Original Message-----
-> From: Randy Dunlap <rdunlap@infradead.org>
-> Sent: Tuesday, April 9, 2019 8:52 PM
-> To: Stephen Rothwell <sfr@canb.auug.org.au>; Linux Next Mailing List <lin=
-ux-
-> next@vger.kernel.org>
-> Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>; Naga Suresh=
-kumar Relli
-> <nagasure@xilinx.com>; Michal Simek <michals@xilinx.com>; linux-spi <linu=
-x-
-> spi@vger.kernel.org>
-> Subject: Re: linux-next: Tree for Apr 9 (spi/spi-zynq-qspi.c)
->=20
-> On 4/9/19 1:00 AM, Stephen Rothwell wrote:
-> > Hi all,
-> >
-> > Changes since 20190408:
-> >
->=20
-> on x86_64:
->=20
-> ld: drivers/spi/spi-zynq-qspi.o: in function `zynq_qspi_supports_op':
-> spi-zynq-qspi.c:(.text+0x185): undefined reference to `spi_mem_default_su=
-pports_op'
->=20
->=20
-> Full randconfig file is attached.
->=20
-> --
-> ~Randy
+-- 
+Best regards,
+Marek Vasut

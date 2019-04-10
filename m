@@ -1,84 +1,52 @@
-From: YueHaibing <yuehaibing@huawei.com>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [LINUX PATCH v3] spi: spi-mem: Fix build error without
  CONFIG_SPI_MEM
-Date: Wed, 10 Apr 2019 20:22:29 +0800
-Message-ID: <2d9cee19-a776-ad18-b8ac-6d0d1b096ad6@huawei.com>
+Date: Wed, 10 Apr 2019 13:24:57 +0100
+Message-ID: <20190410122457.GP6106@sirena.org.uk>
 References: <1554897429-5959-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
+ <2d9cee19-a776-ad18-b8ac-6d0d1b096ad6@huawei.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Cc: <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <michal.simek@xilinx.com>, <nagasuresh12@gmail.com>
-To: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>,
-        <vigneshr@ti.com>, <broonie@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="24/piotZLKF/SXqU"
+Cc: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>,
+        vigneshr@ti.com, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, michal.simek@xilinx.com,
+        nagasuresh12@gmail.com
+To: YueHaibing <yuehaibing@huawei.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1554897429-5959-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
+Content-Disposition: inline
+In-Reply-To: <2d9cee19-a776-ad18-b8ac-6d0d1b096ad6@huawei.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 2019/4/10 19:57, Naga Sureshkumar Relli wrote:
-> From: YueHaibing <yuehaibing@huawei.com>
-> 
-> When building with CONFIG_SPI_MEM is not set
-> gc warns this:
-> 
-> drivers/spi/spi-zynq-qspi.o: In function `zynq_qspi_supports_op':
-> spi-zynq-qspi.c:(.text+0x1da): undefined reference to `spi_mem_default_supports_op'
-> 
-> Fixes: 67dca5e580f1 ("spi: spi-mem: Add support for Zynq QSPI controller")
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-> Signed-off-by: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-> ---
-> Changes in v3
->  - Updated the Author name
->  - Removed extra line between Fixes and rest of the tags
-> Changes in v2
->  - Added static inline to the function spi_mem_default_supports_op();
-> ---
->  include/linux/spi/spi-mem.h | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-> index eb71e9d..bf399f2 100644
-> --- a/include/linux/spi/spi-mem.h
-> +++ b/include/linux/spi/spi-mem.h
-> @@ -295,6 +295,8 @@ int spi_controller_dma_map_mem_op_data(struct spi_controller *ctlr,
->  void spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
->  					  const struct spi_mem_op *op,
->  					  struct sg_table *sg);
-> +bool spi_mem_default_supports_op(struct spi_mem *mem,
-> +				 const struct spi_mem_op *op);
->  #else
->  static inline int
->  spi_controller_dma_map_mem_op_data(struct spi_controller *ctlr,
-> @@ -310,6 +312,9 @@ spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
->  				     struct sg_table *sg)
->  {
->  }
-> +
-> +static inline bool spi_mem_default_supports_op(struct spi_mem *mem,
-> +				 const struct spi_mem_op *op);
 
-Here miss a Function body, right?
+--24/piotZLKF/SXqU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-+static inline bool
-+spi_mem_default_supports_op(struct spi_mem *mem,
-+			    const struct spi_mem_op *op)
-+{
-+	return false;
-+}
+On Wed, Apr 10, 2019 at 08:22:29PM +0800, YueHaibing wrote:
+> On 2019/4/10 19:57, Naga Sureshkumar Relli wrote:
 
->  #endif /* CONFIG_SPI_MEM */
->  
->  int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op);
-> @@ -336,9 +341,6 @@ int spi_mem_driver_register_with_owner(struct spi_mem_driver *drv,
->  
->  void spi_mem_driver_unregister(struct spi_mem_driver *drv);
->  
-> -bool spi_mem_default_supports_op(struct spi_mem *mem,
-> -				 const struct spi_mem_op *op);
-> -
->  #define spi_mem_driver_register(__drv)                                  \
->  	spi_mem_driver_register_with_owner(__drv, THIS_MODULE)
->  
-> 
+> > +static inline bool spi_mem_default_supports_op(struct spi_mem *mem,
+> > +				 const struct spi_mem_op *op);
+
+> Here miss a Function body, right?
+
+Yeah, I'm surprised that builds...
+
+--24/piotZLKF/SXqU
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlyt4JgACgkQJNaLcl1U
+h9AGvAf/XvkuIdQl1Bjc7+gX1oHtpDMd0YFPPdANYn+UGWHXzXOP3QmvT3oacxsl
+bBAr/e5cZ0mJi04HGMcPm+SOFXw1uNkvVtZ9c/HCs/pCVxX3p4S4eDiKbWoxoVA8
+WBNee0/MIPhDqXGy/3X8JIgj11WSKMAFzpy/D1AplqgkTswcncFwED7bsFGw+knk
+5V3ccPAmcGTX+0cR5Yutgofz2E4nvQsdNM9u7HwsNTZuB5XSVxhOKnK4ya4bw8/6
+AyIKtBeV801HJ7TLGZpuYFC6OgO2v/s9nhahFGrwMEPu5xUNtDvqHajYhCbGoVDr
+KJhz+3dpLvTbGk7UjN9lcbkbV6EBbQ==
+=eX1p
+-----END PGP SIGNATURE-----
+
+--24/piotZLKF/SXqU--

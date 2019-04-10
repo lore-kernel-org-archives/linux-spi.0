@@ -1,73 +1,70 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 2/2] spi: pxa2xx: use a module softdep for dw_dmac
-Date: Wed, 10 Apr 2019 16:28:20 +0100
-Message-ID: <20190410152820.GT6106@sirena.org.uk>
-References: <1554900696-28858-1-git-send-email-f.suligoi@asem.it>
- <1554900696-28858-2-git-send-email-f.suligoi@asem.it>
- <20190410125612.GR6106@sirena.org.uk>
- <6eeaf42f4d3f42c58546c429194213b8@asem.it>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="wiiWofWi8Et/oezL"
-Cc: Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Flavio Suligoi <f.suligoi@asem.it>
+Subject: Applied "spi: spi-mem: Make spi_mem_default_supports_op() static inline" to the spi tree
+Date: Wed, 10 Apr 2019 16:30:27 +0100 (BST)
+Message-ID: <20190410153028.03FE41128ED3@debutante.sirena.org.uk>
+References: <20190410131828.35316-1-yuehaibing@huawei.com>
+Cc: broonie@kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        naga.sureshkumar.relli@xilinx.com, vigneshr@ti.com
+To: YueHaibing <yuehaibing@huawei.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <6eeaf42f4d3f42c58546c429194213b8@asem.it>
+In-Reply-To: <20190410131828.35316-1-yuehaibing@huawei.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---wiiWofWi8Et/oezL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: spi-mem: Make spi_mem_default_supports_op() static inline
 
-On Wed, Apr 10, 2019 at 02:05:38PM +0000, Flavio Suligoi wrote:
-> Hi Mark,
+has been applied to the spi tree at
 
-> > While this isn't going to hurt anything and might actually help so it's
-> > fine doesn't this also suggest that there's an issue with deferred probe
-> > going on as well?
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> I think that the problem could be related to how the DMA channel is reque=
-sted.
-> At the moment the function used are:
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> pxa2xx_spi_dma_setup --> dma_request_slave_channel_compat -->
-> --> __dma_request_slave_channel_compat --> dma_request_slave_channel -->
-> --> dma_request_chan
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> Actually the final function "dma_request_chan" return
-> the channel number or "-EPROBE_DEFER" if it's not ready.
-> But this information ("-EPROBE_DEFER") is lost in the penultimate functio=
-n=20
-> "dma_request_slave_channel", which return only the chann, if all is ok, or
-> NULL, in case of errors.
-> So the deferral mechanism is not used.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-Right, yes - that analysis seems correct.  The interfaces seem a bit
-weird here but fixing them looks like the most complete and robust fix.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---wiiWofWi8Et/oezL
-Content-Type: application/pgp-signature; name="signature.asc"
+Thanks,
+Mark
 
------BEGIN PGP SIGNATURE-----
+>From d4a91044e241d8f87fb990b673549a7d2f9cacc4 Mon Sep 17 00:00:00 2001
+From: YueHaibing <yuehaibing@huawei.com>
+Date: Wed, 10 Apr 2019 21:18:28 +0800
+Subject: [PATCH] spi: spi-mem: Make spi_mem_default_supports_op() static
+ inline
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlyuC5QACgkQJNaLcl1U
-h9AzTQf/R/KL3VH0zEc0hVwvrBj1cDrGwBjBmXW9R97WwaXIq1RcLAJp9jazopLd
-siILLz9Fl/KtflQ3YgkgdyizttANuiXYEf0PSWMzeTkUXlaIcIrKYjrMPZtpvCZi
-crpQq730PNf3sbtH+AqNQl1Dgo2LO82hsNekA4irONWIKNRP6EUyccd5BtcbUdp3
-AQUEAd1EDYeOKFI8EHbY4GBHu9hN53Bak1CBmd5y3LsA9P5jfA7dsFkGILTTesII
-DqA0NiLQEcKppgE/IRaK+DmlWXnAk+KKVQOho+QWcQz/PvyrEg62r8c7GsRo2dFe
-C8YNkpxNhOcXxCPou5xpMwPjQNF46g==
-=TuEH
------END PGP SIGNATURE-----
+Stub helper spi_mem_default_supports_op() should
+be set to static inline
 
---wiiWofWi8Et/oezL--
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ include/linux/spi/spi-mem.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index 1941b845aa15..af9ff2f0f1b2 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -315,6 +315,7 @@ spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
+ {
+ }
+ 
++static inline
+ bool spi_mem_default_supports_op(struct spi_mem *mem,
+ 				 const struct spi_mem_op *op)
+ {
+-- 
+2.20.1

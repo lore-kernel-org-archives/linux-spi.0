@@ -1,59 +1,61 @@
-From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Subject: RE: [PATCH V2 11/20] spi: expand mode support and add LSBYTE_FIRST
- mode
-Date: Thu, 11 Apr 2019 19:58:33 +0000
-Message-ID: <BYAPR12MB3398CC43DC1F78A10BC51DE8C22F0@BYAPR12MB3398.namprd12.prod.outlook.com>
-References: <1554423259-26056-1-git-send-email-skomatineni@nvidia.com>
- <1554423259-26056-11-git-send-email-skomatineni@nvidia.com>
- <20190408062819.GJ2803@sirena.org.uk>
+From: =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>
+Subject: Re: [PATCH v4 2/4] spi: Split spi message into max_dma_len size chunks
+Date: Thu, 11 Apr 2019 22:39:26 +0200
+Message-ID: <39cf430a-af20-6fc9-56d9-88e133a25c89@tronnes.org>
+References: <20190411164235.49771-1-noralf@tronnes.org>
+ <20190411164235.49771-3-noralf@tronnes.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-Cc: "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Timo Alho <talho@nvidia.com>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "Krishna Yarlagadda" <kyarlagadda@nvidia.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190408062819.GJ2803@sirena.org.uk>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: stefan.wahren@i2se.com, broonie@kernel.org,
+ linux-rpi-kernel@lists.infradead.org, meghana.madhyastha@gmail.com,
+ kernel@martin.sperl.org
+To: linux-spi@vger.kernel.org, dri-devel@lists.freedesktop.org
+Return-path: <dri-devel-bounces@lists.freedesktop.org>
+In-Reply-To: <20190411164235.49771-3-noralf@tronnes.org>
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
+List-Post: <mailto:dri-devel@lists.freedesktop.org>
+List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: dri-devel-bounces@lists.freedesktop.org
+Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
 List-Id: linux-spi.vger.kernel.org
 
-> On Thu, Apr 04, 2019 at 05:14:10PM -0700, Sowjanya Komatineni wrote:
-> > Some SPI Master controllers support configuring Least significant byte=
-=20
-> > first or Most significant byte first order for transfers. Also some=20
-> > SPI slave devices expect bytes to be in Least significant first order=20
-> > and some devices expect Most significant first order.
-> >=20
-> > SPI driver declares mode and mode_bits as u16 and all bits are used.
-> >=20
-> > This patch changes mode and mode_bits to be u32 to allow for more mode=
-=20
-> > configurations.
-> >=20
-> > This patch also creates SPI_LSBYTE_FIRST mode to allow SPI clients to=20
-> > choose LSByte order or MSByte order through the device tree property=20
-> > spi-lsbyte-first.
->
-> Please submit one patch per change, each with a clear changelog, as cover=
-ed in SubmittingPatches.  This makes it much easier to review things since =
-it's easier to tell if the patch does what it was intended to do and means =
-that if one part of the patch casues problems it won't hold up the other pa=
-rts.
-
-Hi Mark,
-I split changes on SPI code side and SPI Tegra side as separate patches.
-Do you meant to have both changes on SPI core and SPI Tegra together in a s=
-ingle patch?
-
-Thanks
-Sowjanya
+CgpEZW4gMTEuMDQuMjAxOSAxOC40Miwgc2tyZXYgTm9yYWxmIFRyw7hubmVzOgo+IEZyb206IE1l
+Z2hhbmEgTWFkaHlhc3RoYSA8bWVnaGFuYS5tYWRoeWFzdGhhQGdtYWlsLmNvbT4KPiAKPiBTb21l
+IGRyaXZlcnMgbGlrZSBzcGlfYmNtMjgzNSBoYXZlIGEgbWF4IHNpemUgb24gRE1BIHRyYW5zZmVy
+cy4gV29yawo+IGFyb3VuZCB0aGlzIGJ5IHNwbGl0dGluZyB1cCB0aGUgdHJhbnNmZXIgaWYgbmVj
+ZXNzYXJ5Lgo+IAo+IC0+bWF4X3RyYW5zZmVyX3NpemUgaXMgTUFYX0lOVCBpZiB0aGUgZHJpdmVy
+IGRvZXNuJ3Qgc2V0IGl0LCBzbyB0aGlzIGNoYW5nZQo+IHdpbGwgb25seSBhZmZlY3QgZHJpdmVy
+cyB0aGF0IHNldCB0aGUgdmFsdWUuCj4gCj4gU2lnbmVkLW9mZi1ieTogTWVnaGFuYSBNYWRoeWFz
+dGhhIDxtZWdoYW5hLm1hZGh5YXN0aGFAZ21haWwuY29tPgo+IFNpZ25lZC1vZmYtYnk6IE5vcmFs
+ZiBUcsO4bm5lcyA8bm9yYWxmQHRyb25uZXMub3JnPgo+IC0tLQo+ICBkcml2ZXJzL3NwaS9zcGku
+YyB8IDUgKysrKysKPiAgMSBmaWxlIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKQo+IAo+IGRpZmYg
+LS1naXQgYS9kcml2ZXJzL3NwaS9zcGkuYyBiL2RyaXZlcnMvc3BpL3NwaS5jCj4gaW5kZXggMDU4
+NzVlNjNiZTQzLi4yMmJjNjU4MDMyYjMgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9zcGkvc3BpLmMK
+PiArKysgYi9kcml2ZXJzL3NwaS9zcGkuYwo+IEBAIC0xMjk5LDYgKzEyOTksMTEgQEAgc3RhdGlj
+IHZvaWQgX19zcGlfcHVtcF9tZXNzYWdlcyhzdHJ1Y3Qgc3BpX2NvbnRyb2xsZXIgKmN0bHIsIGJv
+b2wgaW5fa3RocmVhZCkKPiAgCj4gIAl0cmFjZV9zcGlfbWVzc2FnZV9zdGFydChjdGxyLT5jdXJf
+bXNnKTsKPiAgCj4gKwlyZXQgPSBzcGlfc3BsaXRfdHJhbnNmZXJzX21heHNpemUoY3RsciwgY3Rs
+ci0+Y3VyX21zZywgY3Rsci0+bWF4X2RtYV9sZW4sCj4gKwkJCQkJICBHRlBfS0VSTkVMIHwgR0ZQ
+X0RNQSk7Cj4gKwlpZiAocmV0KQo+ICsJCWdvdG8gb3V0Owo+ICsKPiAgCWlmIChjdGxyLT5wcmVw
+YXJlX21lc3NhZ2UpIHsKPiAgCQlyZXQgPSBjdGxyLT5wcmVwYXJlX21lc3NhZ2UoY3RsciwgY3Rs
+ci0+Y3VyX21zZyk7Cj4gIAkJaWYgKHJldCkgewo+IAoKVGhpcyBkb2Vzbid0IHdvcmsuCgpJIHN0
+YXJ0ZWQgdG8gd29uZGVyIHdoeSBpdCB3YXMgbmVjZXNzYXJ5IHRvIGxpZnQgdGhlIHVwcGVyIGJv
+dW5kIGluCnNwaS1iY20yODM1LCBzbyBJIHB1dCB0aGUgdGVzdCBiYWNrIGFuZCBpdCB0cmlnZ2Vy
+ZWQuIEFkZGluZyBzb21lCnByaW50aydzIHNob3cgdGhhdCB0aGUgc3BsaXQgdHJhbnNmZXIgYXJl
+IG1hcHBlZCBjb3JyZWN0bHksIGJ1dCB3aGVuCnVubWFwIGhhcHBlbnMgdGhlcmUncyBvbmx5IHRo
+ZSBvbmUgYmlnIHRyYW5zZmVyOgoKWyAgIDcwLjkzNTUyNF0gX19zcGlfbWFwX21zZzogbXNnPWFl
+NzExZGQ0ClsgICA3MC45MzU1NzJdICAgICB4ZmVyPTk1YzVhY2Q4LCB4ZmVyLT5sZW49NjU1MzIK
+WyAgIDcwLjk1NTgwMF0gICAgIHhmZXI9YWVlM2YxOTgsIHhmZXItPmxlbj02NTUzMgpbICAgNzAu
+OTU2MDM0XSAgICAgeGZlcj03ZmMzNDY0ZSwgeGZlci0+bGVuPTIyNTM2ClsgICA3MC45ODI4MDJd
+IF9fc3BpX3VubWFwX21zZzogbXNnPWFlNzExZGQ0ClsgICA3MC45ODI4ODldICAgICB4ZmVyPWQ1
+YjVkYmJmLCB4ZmVyLT5sZW49MTUzNjAwCgpJIG5lZWQgdG8gc3R1ZHkgdGhpcyBtb3JlIHRvbW9y
+cm93IHRvIGZpbmQgb3V0IHdoeSB0aGlzIGlzLCB1bmxlc3MKc29tZW9uZSBrbm93cyBvZmYgaGFu
+ZCB3aGF0IHRoZSBwcm9ibGVtIGlzLgoKTm9yYWxmLgpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwpkcmktZGV2ZWwgbWFpbGluZyBsaXN0CmRyaS1kZXZlbEBs
+aXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
+bi9saXN0aW5mby9kcmktZGV2ZWw=

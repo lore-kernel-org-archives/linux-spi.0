@@ -1,49 +1,82 @@
-From: Flavio Suligoi <f.suligoi@asem.it>
-Subject: RE: [PATCH 2/2] spi: pxa2xx: use a module softdep for dw_dmac
-Date: Thu, 11 Apr 2019 11:31:38 +0000
-Message-ID: <5f59962528d343938ae5978da8edd68d@asem.it>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Subject: Re: [PATCH 1/2] spi: pxa2xx: fix SCR (divisor) calculation
+Date: Thu, 11 Apr 2019 14:55:53 +0300
+Message-ID: <34b8442a-15ac-dea2-a088-fde8b1966e1e@linux.intel.com>
 References: <1554900696-28858-1-git-send-email-f.suligoi@asem.it>
- <1554900696-28858-2-git-send-email-f.suligoi@asem.it>
- <20190410125612.GR6106@sirena.org.uk>
- <6eeaf42f4d3f42c58546c429194213b8@asem.it>
- <20190410152820.GT6106@sirena.org.uk>
- <7ad025c8049e4e828ce75ef1e41dcbfd@asem.it>
- <20190411104212.GA7953@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: Daniel Mack <daniel@zonque.org>,
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+To: Flavio Suligoi <f.suligoi@asem.it>,
+        Daniel Mack <daniel@zonque.org>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
+        Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190411104212.GA7953@sirena.org.uk>
+In-Reply-To: <1554900696-28858-1-git-send-email-f.suligoi@asem.it>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-> > > Right, yes - that analysis seems correct.  The interfaces seem a bit
-> > > weird here but fixing them looks like the most complete and robust
-> fix.
+On 4/10/19 3:51 PM, Flavio Suligoi wrote:
+> Calculate the divisor for the SCR (Serial Clock Rate), avoiding
+> that the SSP transmission rate can be greater than the device rate.
 > 
-> > Ok Mark, I'll fix this problem as soon as I can, using EPROBE_DEFER.
-> > For now, in my application, I use the patch that I already sent,
-> > with the "softdep" workaround:
+> When the division between the SSP clock and the device rate generates
+> a reminder, we have to increment by one the divisor.
+> In this way the resulting SSP clock will never be greater than the
+> device SPI max frequency.
 > 
-> > MODULE_SOFTDEP("pre: dw_dmac");
+> For example, with:
 > 
-> > I tested it a lot, with more than 2000 cold reboot (automatic
-> > switch on/off using a controlled power supply) and it always worked
-> good.
+>   - ssp_clk  = 50 MHz
+>   - dev freq = 15 MHz
 > 
-> Right, and to be clear that patch is good and useful independently of
-> the deferred probe fix so assuming nothing else comes up in review I'll
-> apply it.
+> without this patch the SSP clock will be greater than 15 MHz:
+> 
+>   - 25 MHz for PXA25x_SSP and CE4100_SSP
+>   - 16,56 MHz for the others
+> 
+> Instead, with this patch, we have in both case an SSP clock of 12.5MHz,
+> so the max rate of the SPI device clock is respected.
+> 
+> Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
+> ---
+>   drivers/spi/spi-pxa2xx.c | 9 +++++++--
+>   1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+> index f7068cc..c9560a1 100644
+> --- a/drivers/spi/spi-pxa2xx.c
+> +++ b/drivers/spi/spi-pxa2xx.c
+> @@ -884,10 +884,15 @@ static unsigned int ssp_get_clk_div(struct driver_data *drv_data, int rate)
+>   
+>   	rate = min_t(int, ssp_clk, rate);
+>   
+> +	/*
+> +	 * Calculate the divisor for the SCR (Serial Clock Rate), avoiding
+> +	 * that the SSP transmission rate can be greater than the device rate
+> +	 */
+>   	if (ssp->type == PXA25x_SSP || ssp->type == CE4100_SSP)
+> -		return (ssp_clk / (2 * rate) - 1) & 0xff;
+> +		return (ssp_clk / (2 * rate) - 1 +
+> +			(ssp_clk % (2 * rate) ? 1 : 0)) & 0xff;
+>   	else
+> -		return (ssp_clk / rate - 1) & 0xfff;
+> +		return (ssp_clk / rate - 1 + (ssp_clk % rate ? 1 : 0)) & 0xfff;
+>   }
+>   
+I think DIV_ROUND_UP() - 1 would also fix this?
 
-Thanks Mark,
+I realized we have also another issue here with the low rates. 
+Calculated divider will underflow due masking with 0xff or 0xfff when 
+the rate is low enough.
 
-Flavio
+Would you want to fix that by setting the ctlr->min_speed_hz so that spi 
+core can validate the rate? I'm asking since it goes well together with 
+your fix. Maybe one patch setting the min_speed_hz and getting masking 
+off from here and then another fixing the rate calculation.
+
+-- 
+Jarkko

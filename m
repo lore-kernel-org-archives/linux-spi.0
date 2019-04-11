@@ -1,59 +1,46 @@
-From: =?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>
-Subject: [PATCH v4 3/4] spi/spi-bcm2835: Remove DMA transfer size cap
-Date: Thu, 11 Apr 2019 18:42:34 +0200
-Message-ID: <20190411164235.49771-4-noralf@tronnes.org>
+From: =?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
+Subject: [PATCH v4 2/4] spi: Split spi message into max_dma_len size chunks
+Date: Thu, 11 Apr 2019 18:42:33 +0200
+Message-ID: <20190411164235.49771-3-noralf@tronnes.org>
 References: <20190411164235.49771-1-noralf@tronnes.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Cc: stefan.wahren@i2se.com, broonie@kernel.org,
- linux-rpi-kernel@lists.infradead.org, meghana.madhyastha@gmail.com,
- kernel@martin.sperl.org
-To: linux-spi@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Return-path: <dri-devel-bounces@lists.freedesktop.org>
-In-Reply-To: <20190411164235.49771-1-noralf@tronnes.org>
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
-List-Post: <mailto:dri-devel@lists.freedesktop.org>
-List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: dri-devel-bounces@lists.freedesktop.org
-Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+Cc: =?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+ linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, meghana.madhyastha-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org
+Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <20190411164235.49771-1-noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
+List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 RnJvbTogTWVnaGFuYSBNYWRoeWFzdGhhIDxtZWdoYW5hLm1hZGh5YXN0aGFAZ21haWwuY29tPgoK
-VGhlIHNwaSBjb3JlIHNwbGl0cyB1cCB0cmFuc2ZlcnMgbGFyZ2VyIHRoYW4gLT5tYXhfZG1hX2xl
-biBub3cgc28gd2UgY2FuCnJlbW92ZSB0aGUgdXBwZXIgYm91bmQgb24gRE1BIHRyYW5zZmVycy4g
-TGltaXQgbWF4X2RtYV9sZW4gdG8gNjU1MzIsCmJlY2F1c2UgdGhlIHNjYXR0ZXIgZ2F0aGVyIHNl
-Z21lbnQgaXMgcmVxdWlyZWQgdG8gYmUgYSBtdWx0aXBsZSBvZiA0LgoKU2lnbmVkLW9mZi1ieTog
-TWVnaGFuYSBNYWRoeWFzdGhhIDxtZWdoYW5hLm1hZGh5YXN0aGFAZ21haWwuY29tPgpTaWduZWQt
-b2ZmLWJ5OiBOb3JhbGYgVHLDuG5uZXMgPG5vcmFsZkB0cm9ubmVzLm9yZz4KLS0tCiBkcml2ZXJz
-L3NwaS9zcGktYmNtMjgzNS5jIHwgMTUgKy0tLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwg
-MSBpbnNlcnRpb24oKyksIDE0IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3Bp
-L3NwaS1iY20yODM1LmMgYi9kcml2ZXJzL3NwaS9zcGktYmNtMjgzNS5jCmluZGV4IDM1YWViZGZk
-M2I0ZS4uY2FmMzNkYTAxYWMxIDEwMDY0NAotLS0gYS9kcml2ZXJzL3NwaS9zcGktYmNtMjgzNS5j
-CisrKyBiL2RyaXZlcnMvc3BpL3NwaS1iY20yODM1LmMKQEAgLTYzMCwxOSArNjMwLDYgQEAgc3Rh
-dGljIGJvb2wgYmNtMjgzNV9zcGlfY2FuX2RtYShzdHJ1Y3Qgc3BpX21hc3RlciAqbWFzdGVyLAog
-CWlmICh0ZnItPmxlbiA8IEJDTTI4MzVfU1BJX0RNQV9NSU5fTEVOR1RIKQogCQlyZXR1cm4gZmFs
-c2U7CiAKLQkvKiBCQ00yODM1X1NQSV9ETEVOIGhhcyBkZWZpbmVkIGEgbWF4IHRyYW5zZmVyIHNp
-emUgYXMKLQkgKiAxNiBiaXQsIHNvIG1heCBpcyA2NTUzNQotCSAqIHdlIGNhbiByZXZpc2l0IHRo
-aXMgYnkgdXNpbmcgYW4gYWx0ZXJuYXRpdmUgdHJhbnNmZXIKLQkgKiBtZXRob2QgLSBpZGVhbGx5
-IHRoaXMgd291bGQgZ2V0IGRvbmUgd2l0aG91dCBhbnkgbW9yZQotCSAqIGludGVyYWN0aW9uLi4u
-Ci0JICovCi0JaWYgKHRmci0+bGVuID4gNjU1MzUpIHsKLQkJZGV2X3dhcm5fb25jZSgmc3BpLT5k
-ZXYsCi0JCQkgICAgICAidHJhbnNmZXIgc2l6ZSBvZiAlZCB0b28gYmlnIGZvciBkbWEtdHJhbnNm
-ZXJcbiIsCi0JCQkgICAgICB0ZnItPmxlbik7Ci0JCXJldHVybiBmYWxzZTsKLQl9Ci0KIAkvKiBy
-ZXR1cm4gT0sgKi8KIAlyZXR1cm4gdHJ1ZTsKIH0KQEAgLTcwNyw3ICs2OTQsNyBAQCBzdGF0aWMg
-dm9pZCBiY20yODM1X2RtYV9pbml0KHN0cnVjdCBzcGlfbWFzdGVyICptYXN0ZXIsIHN0cnVjdCBk
-ZXZpY2UgKmRldikKIAogCS8qIGFsbCB3ZW50IHdlbGwsIHNvIHNldCBjYW5fZG1hICovCiAJbWFz
-dGVyLT5jYW5fZG1hID0gYmNtMjgzNV9zcGlfY2FuX2RtYTsKLQltYXN0ZXItPm1heF9kbWFfbGVu
-ID0gNjU1MzU7IC8qIGxpbWl0YXRpb24gYnkgQkNNMjgzNV9TUElfRExFTiAqLworCW1hc3Rlci0+
-bWF4X2RtYV9sZW4gPSA2NTUzMjsgLyogbGltaXRhdGlvbiBieSBCQ00yODM1X1NQSV9ETEVOICov
-CiAJLyogbmVlZCB0byBkbyBUWCBBTkQgUlggRE1BLCBzbyB3ZSBuZWVkIGR1bW15IGJ1ZmZlcnMg
-Ki8KIAltYXN0ZXItPmZsYWdzID0gU1BJX01BU1RFUl9NVVNUX1JYIHwgU1BJX01BU1RFUl9NVVNU
-X1RYOwogCi0tIAoyLjIwLjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCmRyaS1kZXZlbCBtYWlsaW5nIGxpc3QKZHJpLWRldmVsQGxpc3RzLmZyZWVkZXNr
-dG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Ry
-aS1kZXZlbA==
+U29tZSBkcml2ZXJzIGxpa2Ugc3BpX2JjbTI4MzUgaGF2ZSBhIG1heCBzaXplIG9uIERNQSB0cmFu
+c2ZlcnMuIFdvcmsKYXJvdW5kIHRoaXMgYnkgc3BsaXR0aW5nIHVwIHRoZSB0cmFuc2ZlciBpZiBu
+ZWNlc3NhcnkuCgotPm1heF90cmFuc2Zlcl9zaXplIGlzIE1BWF9JTlQgaWYgdGhlIGRyaXZlciBk
+b2Vzbid0IHNldCBpdCwgc28gdGhpcyBjaGFuZ2UKd2lsbCBvbmx5IGFmZmVjdCBkcml2ZXJzIHRo
+YXQgc2V0IHRoZSB2YWx1ZS4KClNpZ25lZC1vZmYtYnk6IE1lZ2hhbmEgTWFkaHlhc3RoYSA8bWVn
+aGFuYS5tYWRoeWFzdGhhQGdtYWlsLmNvbT4KU2lnbmVkLW9mZi1ieTogTm9yYWxmIFRyw7hubmVz
+IDxub3JhbGZAdHJvbm5lcy5vcmc+Ci0tLQogZHJpdmVycy9zcGkvc3BpLmMgfCA1ICsrKysrCiAx
+IGZpbGUgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkv
+c3BpLmMgYi9kcml2ZXJzL3NwaS9zcGkuYwppbmRleCAwNTg3NWU2M2JlNDMuLjIyYmM2NTgwMzJi
+MyAxMDA2NDQKLS0tIGEvZHJpdmVycy9zcGkvc3BpLmMKKysrIGIvZHJpdmVycy9zcGkvc3BpLmMK
+QEAgLTEyOTksNiArMTI5OSwxMSBAQCBzdGF0aWMgdm9pZCBfX3NwaV9wdW1wX21lc3NhZ2VzKHN0
+cnVjdCBzcGlfY29udHJvbGxlciAqY3RsciwgYm9vbCBpbl9rdGhyZWFkKQogCiAJdHJhY2Vfc3Bp
+X21lc3NhZ2Vfc3RhcnQoY3Rsci0+Y3VyX21zZyk7CiAKKwlyZXQgPSBzcGlfc3BsaXRfdHJhbnNm
+ZXJzX21heHNpemUoY3RsciwgY3Rsci0+Y3VyX21zZywgY3Rsci0+bWF4X2RtYV9sZW4sCisJCQkJ
+CSAgR0ZQX0tFUk5FTCB8IEdGUF9ETUEpOworCWlmIChyZXQpCisJCWdvdG8gb3V0OworCiAJaWYg
+KGN0bHItPnByZXBhcmVfbWVzc2FnZSkgewogCQlyZXQgPSBjdGxyLT5wcmVwYXJlX21lc3NhZ2Uo
+Y3RsciwgY3Rsci0+Y3VyX21zZyk7CiAJCWlmIChyZXQpIHsKLS0gCjIuMjAuMQoKCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmxpbnV4LXJwaS1rZXJuZWwg
+bWFpbGluZyBsaXN0CmxpbnV4LXJwaS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
+bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LXJwaS1rZXJuZWwK

@@ -1,60 +1,59 @@
-From: Lukas Wunner <lukas@wunner.de>
-Subject: Re: [PATCH v4 2/4] spi: Split spi message into max_dma_len size chunks
-Date: Thu, 11 Apr 2019 20:18:36 +0200
-Message-ID: <20190411181836.t2vuutqhjglsxsaz@wunner.de>
-References: <20190411164235.49771-1-noralf@tronnes.org>
- <20190411164235.49771-3-noralf@tronnes.org>
+From: Sowjanya Komatineni <skomatineni@nvidia.com>
+Subject: RE: [PATCH V2 11/20] spi: expand mode support and add LSBYTE_FIRST
+ mode
+Date: Thu, 11 Apr 2019 19:58:33 +0000
+Message-ID: <BYAPR12MB3398CC43DC1F78A10BC51DE8C22F0@BYAPR12MB3398.namprd12.prod.outlook.com>
+References: <1554423259-26056-1-git-send-email-skomatineni@nvidia.com>
+ <1554423259-26056-11-git-send-email-skomatineni@nvidia.com>
+ <20190408062819.GJ2803@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: stefan.wahren@i2se.com, dri-devel@lists.freedesktop.org,
- linux-spi@vger.kernel.org, broonie@kernel.org,
- linux-rpi-kernel@lists.infradead.org, meghana.madhyastha@gmail.com,
- kernel@martin.sperl.org
-To: Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf@tronnes.org>
-Return-path: <dri-devel-bounces@lists.freedesktop.org>
-Content-Disposition: inline
-In-Reply-To: <20190411164235.49771-3-noralf@tronnes.org>
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
-List-Post: <mailto:dri-devel@lists.freedesktop.org>
-List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: dri-devel-bounces@lists.freedesktop.org
-Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Cc: "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Timo Alho <talho@nvidia.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "Krishna Yarlagadda" <kyarlagadda@nvidia.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190408062819.GJ2803@sirena.org.uk>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVGh1LCBBcHIgMTEsIDIwMTkgYXQgMDY6NDI6MzNQTSArMDIwMCwgTm9yYWxmIFRyw7hubmVz
-IHdyb3RlOgo+IEBAIC0xMjk5LDYgKzEyOTksMTEgQEAgc3RhdGljIHZvaWQgX19zcGlfcHVtcF9t
-ZXNzYWdlcyhzdHJ1Y3Qgc3BpX2NvbnRyb2xsZXIgKmN0bHIsIGJvb2wgaW5fa3RocmVhZCkKPiAg
-Cj4gIAl0cmFjZV9zcGlfbWVzc2FnZV9zdGFydChjdGxyLT5jdXJfbXNnKTsKPiAgCj4gKwlyZXQg
-PSBzcGlfc3BsaXRfdHJhbnNmZXJzX21heHNpemUoY3RsciwgY3Rsci0+Y3VyX21zZywgY3Rsci0+
-bWF4X2RtYV9sZW4sCj4gKwkJCQkJICBHRlBfS0VSTkVMIHwgR0ZQX0RNQSk7CgpVbSwgc2hvdWxk
-bid0IHRoaXMgYmUgaWZkZWYnZWQgdG8gQ09ORklHX0hBU19ETUE/CgoKPiBTb21lIGRyaXZlcnMg
-bGlrZSBzcGlfYmNtMjgzNSBoYXZlIGEgbWF4IHNpemUgb24gRE1BIHRyYW5zZmVycy4gV29yawo+
-IGFyb3VuZCB0aGlzIGJ5IHNwbGl0dGluZyB1cCB0aGUgdHJhbnNmZXIgaWYgbmVjZXNzYXJ5LgoK
-VGhpcyBmZWVscyBsaWtlIGEgdmVyeSBleHBlbnNpdmUgc29sdXRpb24gdG8gdGhlIHByb2JsZW06
-ICBMYXJnZSB0cmFuc2ZlcnMKYXJlIHNwbGl0IGludG8gbXVsdGlwbGUgc21hbGxlciB0cmFuc2Zl
-cnMgKHJlcXVpcmluZyBsb3RzIG9mIG92ZXJoZWFkIHRvCmFsbG9jYXRlIGFuZCBwb3B1bGF0ZSB0
-aGUgc3RydWN0dXJlcykgYW5kIHRoZSBzcGxpdCB0cmFuc2ZlcnMgc2VlbSB0byBiZQpjYWNoZWQg
-Zm9yIGxhdGVyIHJldXNlLgoKSSdtIHdvbmRlcmluZywgZm9yIGEgZnJhbWUgYnVmZmVyLCBkb2Vz
-bid0IHRoZSBidWZmZXIgKGFuZCBoZW5jZSB0aGUgU1BJCm1lc3NhZ2UpIGNoYW5nZSBvbiBldmVy
-eSB0cmFuc21pc3Npb24/ICBJbiBvdGhlciB3b3JkcywgZG9lcyBhIGZyYW1lCmJ1ZmZlciBiZW5l
-Zml0IGZyb20gdGhlIGNhY2hpbmc/ICBJZiBub3QsIHRoZW4gdGhlIGNhY2hpbmcgc2VlbXMgdG8g
-aW5jdXIKdW5uZWNlc3Nhcnkgb3ZlcmhlYWQuCgpFdmVuIHRoZSBub3JtYWwgY2FzZSB3aGVuIG5v
-IHRyYW5zZmVycyBleGNlZWQgdGhlIGxpbWl0IGlzIGFmZmVjdGVkIGJ5CmFkZGl0aW9uYWwgb3Zl
-cmhlYWQsIG5hbWVseSBhbiBpdGVyYXRpb24gb3ZlciB0aGUgdHJhbnNmZXIgbGlzdCB0bwpjaGVj
-ayBlYWNoIHRyYW5zZmVycycgbGVuZ3RoLiA6LSgKCk5vdGUgdGhhdCBzcGlfbWFwX2J1ZigpIGFs
-cmVhZHkgc3BsaXRzIGV2ZXJ5IHRyYW5zZmVyJ3Mgc2dsaXN0IGludG8Kc2VnbWVudHMgdGhhdCBh
-cmUgc21hbGxlciB0aGFuIGN0bHItPm1heF9kbWFfbGVuLiAgTm93IGFsbCB0aGF0IG5lZWRzCnRv
-IGJlIGRvbmUgaXMgdG8gYW1lbmQgc3BpLWJjbTI4MzUuYyB0byBpdGVyYXRlIG92ZXIgdGhlIHNn
-bGlzdAphbmQgdHJhbnNtaXQgaXQgaW4gcG9ydGlvbnMgd2hpY2ggZG8gbm90IGV4Y2VlZCA2NTUz
-NS4gIEFkZHJlc3NpbmcgdGhlCnByb2JsZW0gYXQgdGhpcyBsb3dlciBsZXZlbCB3b3VsZCBkcmFz
-dGljYWxseSByZWR1Y2UgdGhlIG92ZXJoZWFkCmNvbXBhcmVkIHRvIHRoZSBhcHByb2FjaCBpbiB0
-aGUgcHJlc2VudCBwYXRjaCBhbmQgaGVuY2UgYXBwZWFycyB0byBiZQptb3JlIHJlY29tbWVuZGFi
-bGUuCgpUaGFua3MsCgpMdWthcwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpkcmktZGV2ZWwgbWFpbGluZyBsaXN0CmRyaS1kZXZlbEBsaXN0cy5mcmVlZGVz
-a3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9k
-cmktZGV2ZWw=
+> On Thu, Apr 04, 2019 at 05:14:10PM -0700, Sowjanya Komatineni wrote:
+> > Some SPI Master controllers support configuring Least significant byte=
+=20
+> > first or Most significant byte first order for transfers. Also some=20
+> > SPI slave devices expect bytes to be in Least significant first order=20
+> > and some devices expect Most significant first order.
+> >=20
+> > SPI driver declares mode and mode_bits as u16 and all bits are used.
+> >=20
+> > This patch changes mode and mode_bits to be u32 to allow for more mode=
+=20
+> > configurations.
+> >=20
+> > This patch also creates SPI_LSBYTE_FIRST mode to allow SPI clients to=20
+> > choose LSByte order or MSByte order through the device tree property=20
+> > spi-lsbyte-first.
+>
+> Please submit one patch per change, each with a clear changelog, as cover=
+ed in SubmittingPatches.  This makes it much easier to review things since =
+it's easier to tell if the patch does what it was intended to do and means =
+that if one part of the patch casues problems it won't hold up the other pa=
+rts.
+
+Hi Mark,
+I split changes on SPI code side and SPI Tegra side as separate patches.
+Do you meant to have both changes on SPI core and SPI Tegra together in a s=
+ingle patch?
+
+Thanks
+Sowjanya

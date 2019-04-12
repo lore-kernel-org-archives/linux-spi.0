@@ -1,22 +1,22 @@
-From: Mark Brown <broonie@kernel.org>
+From: Lukas Wunner <lukas@wunner.de>
 Subject: Re: [PATCH v4 2/4] spi: Split spi message into max_dma_len size chunks
-Date: Fri, 12 Apr 2019 11:22:07 +0100
-Message-ID: <20190412102206.GG6909@sirena.org.uk>
+Date: Fri, 12 Apr 2019 12:46:44 +0200
+Message-ID: <20190412104644.rg6dxoxuaxptexdj@wunner.de>
 References: <20190411164235.49771-1-noralf@tronnes.org>
  <20190411164235.49771-3-noralf@tronnes.org>
  <20190411181836.t2vuutqhjglsxsaz@wunner.de>
  <98571639-840a-494c-9e41-29ff89a22a8e@tronnes.org>
- <20190412094721.GE6909@sirena.org.uk>
- <B40B4313-3965-42D9-9228-92E275A7D2AA@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1867558378=="
-Cc: Stefan Wahren <stefan.wahren@i2se.com>, dri-devel@lists.freedesktop.org,
- linux-spi <linux-spi@vger.kernel.org>,
- linux-rpi-kernel <linux-rpi-kernel@lists.infradead.org>,
- meghana.madhyastha@gmail.com
-To: kernel@martin.sperl.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: stefan.wahren@i2se.com, dri-devel@lists.freedesktop.org,
+ linux-spi@vger.kernel.org, broonie@kernel.org,
+ linux-rpi-kernel@lists.infradead.org, meghana.madhyastha@gmail.com,
+ kernel@martin.sperl.org
+To: Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf@tronnes.org>
 Return-path: <dri-devel-bounces@lists.freedesktop.org>
-In-Reply-To: <B40B4313-3965-42D9-9228-92E275A7D2AA@martin.sperl.org>
+Content-Disposition: inline
+In-Reply-To: <98571639-840a-494c-9e41-29ff89a22a8e@tronnes.org>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
  <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
@@ -28,61 +28,64 @@ Errors-To: dri-devel-bounces@lists.freedesktop.org
 Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
 List-Id: linux-spi.vger.kernel.org
 
-
---===============1867558378==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="t4apE7yKrX2dGgJC"
-Content-Disposition: inline
-
-
---t4apE7yKrX2dGgJC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Fri, Apr 12, 2019 at 12:03:35PM +0200, kernel@martin.sperl.org wrote:
-> > On 12.04.2019, at 11:47, Mark Brown <broonie@kernel.org> wrote:
-
-> >> In a previous version of this I suggested to Meghana to put this in the
-> >> driver, but Mark wanted it in the core.
-
-> > If we want to do this at a lower level the DMA code could hide this
-> > limitation from the upper layers; presumably the SPI driver isn't the
-> > only thing that might run into this.
-
-> For clarification:
-> There is a register of the SPI controller where you have to configure the
-> number of bytes that it will request via DMA (primarily support transfers
-> that are not a multiple of 4 - the data is transferred by DMA as words).
-> So it is not really related to the general DMA implementation but to the
-> DMA (request) support of the SPI controller.
-
-Ah, I see.  That's unfortunate :/
-
---t4apE7yKrX2dGgJC
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlywZs4ACgkQJNaLcl1U
-h9B/PQf/RSTE5q9iKH4n63hVRffjLEbGYFvapmk+unzydgHkjPokTJT890QulO5i
-ShuaPXy+rGMZ0kXjIXGFNVgefkwBHmoYKanS8XIpUcRoiGOGaWOhqtJwuTn4peTw
-ZsD1vplBImTTkbvsM+g4zEltWXZN/wuIzrd4E3cPMqC4oPCsrzaAnBG6fXpj44M/
-aQu3nvLOV4A8w9BMEqEXKHRcFf032JR1FXAfURdol7Hv2+7rem9sRBDJpDbWYhip
-TiNJsOfJW60pIy8a6+37DTaKFD1f0EQxWyxPHx/2c7ZT4QCaqTXfVXEI+ZDLLsAt
-snjY4FjAWfqrusFuWZkNyRNIRl31fQ==
-=Pkgq
------END PGP SIGNATURE-----
-
---t4apE7yKrX2dGgJC--
-
---===============1867558378==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KZHJpLWRldmVs
-IG1haWxpbmcgbGlzdApkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vZHJpLWRldmVs
-
---===============1867558378==--
+T24gVGh1LCBBcHIgMTEsIDIwMTkgYXQgMTE6MDI6MjZQTSArMDIwMCwgTm9yYWxmIFRyw7hubmVz
+IHdyb3RlOgo+IERlbiAxMS4wNC4yMDE5IDIwLjE4LCBza3JldiBMdWthcyBXdW5uZXI6Cj4gPiBP
+biBUaHUsIEFwciAxMSwgMjAxOSBhdCAwNjo0MjozM1BNICswMjAwLCBOb3JhbGYgVHLDuG5uZXMg
+d3JvdGU6Cj4gPj4gQEAgLTEyOTksNiArMTI5OSwxMSBAQCBzdGF0aWMgdm9pZCBfX3NwaV9wdW1w
+X21lc3NhZ2VzKHN0cnVjdCBzcGlfY29udHJvbGxlciAqY3RsciwgYm9vbCBpbl9rdGhyZWFkKQo+
+ID4+ICAKPiA+PiAgCXRyYWNlX3NwaV9tZXNzYWdlX3N0YXJ0KGN0bHItPmN1cl9tc2cpOwo+ID4+
+ICAKPiA+PiArCXJldCA9IHNwaV9zcGxpdF90cmFuc2ZlcnNfbWF4c2l6ZShjdGxyLCBjdGxyLT5j
+dXJfbXNnLCBjdGxyLT5tYXhfZG1hX2xlbiwKPiA+PiArCQkJCQkgIEdGUF9LRVJORUwgfCBHRlBf
+RE1BKTsKPiA+IAo+ID4gVW0sIHNob3VsZG4ndCB0aGlzIGJlIGlmZGVmJ2VkIHRvIENPTkZJR19I
+QVNfRE1BPwo+IAo+IE1heWJlLCBJIGRvbid0IGtub3cuIE1hcmsgZGlkbid0IG1lbnRpb25lZCBp
+dCB3aGVuIGhlIGNvbW1lbnRlZCBvbiBhCj4gcHJldmlvdXMgdmVyc2lvbiBvZiB0aGlzLiBTb21l
+IGhhdGUgaWZkZWYncyBhbmQgd2FudCB0byBhdm9pZCB0aGVtLCBzb21lCj4gZG9uJ3QuCgpUaGUg
+YWJvdmUgY2FsbCBpcyBjbGVhcmx5IG9ubHkgbmVjZXNzYXJ5IGlmIERNQSBpcyBwcmVzZW50IGFu
+ZAphbGwgdGhlIERNQS1zcGVjaWZpYyBmdW5jdGlvbmFsaXR5IGluIHNwaS5jIGlzIGlmZGVmJ2Vk
+IHRvCkNPTkZJR19IQVNfRE1BLCBzbyB0aGUgYWJvdmUgc2hvdWxkIGxpa2V3aXNlIG9ubHkgYmUg
+Y29tcGlsZWQKaW4gaWYgRE1BIGlzIHByZXNlbnQuCgpSZWdhcmRsZXNzIHdoZXRoZXIgdGhpcyBp
+cyBhY2hpZXZlZCB3aXRoIGFuICNpZmRlZiBvciBhbiBlbXB0eQppbmxpbmUgc3R1YiBmb3IgdGhl
+IG5vbi1ETUEgY2FzZS4KCgo+ID4gPiBTb21lIGRyaXZlcnMgbGlrZSBzcGlfYmNtMjgzNSBoYXZl
+IGEgbWF4IHNpemUgb24gRE1BIHRyYW5zZmVycy4gV29yawo+ID4gPiBhcm91bmQgdGhpcyBieSBz
+cGxpdHRpbmcgdXAgdGhlIHRyYW5zZmVyIGlmIG5lY2Vzc2FyeS4KPiA+IAo+ID4gVGhpcyBmZWVs
+cyBsaWtlIGEgdmVyeSBleHBlbnNpdmUgc29sdXRpb24gdG8gdGhlIHByb2JsZW06ICBMYXJnZSB0
+cmFuc2ZlcnMKPiA+IGFyZSBzcGxpdCBpbnRvIG11bHRpcGxlIHNtYWxsZXIgdHJhbnNmZXJzIChy
+ZXF1aXJpbmcgbG90cyBvZiBvdmVyaGVhZCB0bwo+ID4gYWxsb2NhdGUgYW5kIHBvcHVsYXRlIHRo
+ZSBzdHJ1Y3R1cmVzKSBhbmQgdGhlIHNwbGl0IHRyYW5zZmVycyBzZWVtIHRvIGJlCj4gPiBjYWNo
+ZWQgZm9yIGxhdGVyIHJldXNlLgo+ID4gCj4gCj4gT25seSBkcml2ZXJzIHRoYXQgc2V0IC0+bWF4
+X2RtYV9sZW4gd2lsbCBiZSBzcGxpdCwgYW5kIG9ubHkgd2hlbiB0aGUKPiBsZW5ndGggaXMgYmln
+Z2VyLgoKVGhlIGlzc3VlIG9uIHRoZSBCQ00yMzg1IGlzIHRoYXQgdGhlIChub24tTGl0ZSkgRE1B
+IGNoYW5uZWxzIGhhdmUgYQptYXggbGVuZ3RoIG9mIDEgR0J5dGUgYnV0IHRoZSBTUEkgY29udHJv
+bGxlciBoYXMgYSA2NTUzNSBieXRlIGxpbWl0LgoKVGhlcmUgYXJlIHRocmVlIG90aGVyIGRyaXZl
+cnMgd2hpY2ggc2V0IG1heF9kbWFfbGVuLCBJJ20gbm90IHN1cmUgaWYKdGhleSBzdWZmZXIgZnJv
+bSB0aGUgc2FtZSBpc3N1ZSBhcyB0aGUgQkNNMjgzNSwgYnV0IHRoaXMgcGF0Y2ggY2F1c2VzCmFk
+ZGl0aW9uYWwgb3ZlcmhlYWQgZm9yIHRoZW0gc28gdGhlIGRyaXZlciBtYWludGFpbmVycyAvIG1h
+aW4gYXV0aG9ycwpzaG91bGQgYXQgbGVhc3QgYmUgY2MnZWQuCgoKPiBJIGNhbid0IHNlZSBhbnkg
+Y2FjaGluZyB3aXRoIGEgcXVpY2sgZ2xhbmNlLCB3aGVyZSBkbyB5b3Ugc2VlIGl0PwoKTWlzdW5k
+ZXJzdGFuZGluZyBvZiB0aGUgY29kZSBvbiBteSBwYXJ0LCBzb3JyeS4gIEkgdGhvdWdodApzcGlf
+cmVzX3JlbGVhc2UoKSB3b3VsZG4ndCBiZSBjYWxsZWQgdW50aWwgdGhlIHNwaV9tZXNzYWdlIGlz
+IGZyZWVkLAppbiB3aGljaCBjYXNlIHRoZSBzcGxpdCB0cmFuc2ZlcnMgd291bGQgYmUga2VwdCBh
+cm91bmQgKGNhY2hlZCkgZm9yCnJldHJhbnNtaXNzaW9ucyBvZiB0aGUgc2FtZSBtZXNzYWdlLiAg
+QnV0IEkgbm90aWNlIG5vdyB0aGF0CnNwaV9yZXNfcmVsZWFzZSgpIGlzIGFscmVhZHkgY2FsbGVk
+IHVwb24gZmluaXNoaW5nIHRoZSBmaXJzdAp0cmFuc21pc3Npb24gb2YgdGhlIHNwaV9tZXNzYWdl
+LCBoZW5jZSB0aGUgc3BsaXQgdHJhbnNmZXJzIGFyZSBnb25lCmFuZCBuZWVkIHRvIGJlIHJlY29u
+c3RydWN0ZWQgb24gcmV0cmFuc21pc3Npb24uCgoKPiA+IE5vdGUgdGhhdCBzcGlfbWFwX2J1Zigp
+IGFscmVhZHkgc3BsaXRzIGV2ZXJ5IHRyYW5zZmVyJ3Mgc2dsaXN0IGludG8KPiA+IHNlZ21lbnRz
+IHRoYXQgYXJlIHNtYWxsZXIgdGhhbiBjdGxyLT5tYXhfZG1hX2xlbi4gIE5vdyBhbGwgdGhhdCBu
+ZWVkcwo+ID4gdG8gYmUgZG9uZSBpcyB0byBhbWVuZCBzcGktYmNtMjgzNS5jIHRvIGl0ZXJhdGUg
+b3ZlciB0aGUgc2dsaXN0Cj4gPiBhbmQgdHJhbnNtaXQgaXQgaW4gcG9ydGlvbnMgd2hpY2ggZG8g
+bm90IGV4Y2VlZCA2NTUzNS4gIEFkZHJlc3NpbmcgdGhlCj4gPiBwcm9ibGVtIGF0IHRoaXMgbG93
+ZXIgbGV2ZWwgd291bGQgZHJhc3RpY2FsbHkgcmVkdWNlIHRoZSBvdmVyaGVhZAo+ID4gY29tcGFy
+ZWQgdG8gdGhlIGFwcHJvYWNoIGluIHRoZSBwcmVzZW50IHBhdGNoIGFuZCBoZW5jZSBhcHBlYXJz
+IHRvIGJlCj4gPiBtb3JlIHJlY29tbWVuZGFibGUuCj4gCj4gSW4gYSBwcmV2aW91cyB2ZXJzaW9u
+IG9mIHRoaXMgSSBzdWdnZXN0ZWQgdG8gTWVnaGFuYSB0byBwdXQgdGhpcyBpbiB0aGUKPiBkcml2
+ZXIsIGJ1dCBNYXJrIHdhbnRlZCBpdCBpbiB0aGUgY29yZS4KCkRvIHlvdSBoYXZlIGEgbGluayB0
+byB0aGVzZSBjb21tZW50cyBvZiBNYXJrPyAgVGhlIGZpcnN0IHZlcnNpb24gb2YKdGhpcyBwYXRj
+aHNldCB0aGF0IEkgaGF2ZSBoZXJlIGlzIHYyIG9mIE1hcmNoIDIwMTggYW5kIGl0IGFscmVhZHkK
+dXNlcyBzcGlfc3BsaXRfdHJhbnNmZXJzX21heHNpemUoKS4gIEkndmUgbmV2ZXIgc2VlbiBhIHZl
+cnNpb24gd2hpY2gKc3BsaXRzIHRoZSBzZ2xpc3QgaW4gc3BpLWJjbTI4MzUuYyAoaW5zdGVhZCBv
+ZiBzcGxpdHRpbmcgdGhlIHRyYW5zZmVycwppbiBzcGkuYywgd2hpY2gsIGFnYWluLCBpcyBzaWdu
+aWZpY2FudGx5IG1vcmUgZXhwZW5zaXZlKS4KClRoYW5rcywKCkx1a2FzCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmRyaS1kZXZlbCBtYWlsaW5nIGxpc3QK
+ZHJpLWRldmVsQGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9w
+Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2RyaS1kZXZlbA==

@@ -1,94 +1,81 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH V2 11/20] spi: expand mode support and add LSBYTE_FIRST
- mode
-Date: Fri, 12 Apr 2019 09:32:48 +0100
-Message-ID: <20190412083248.GB6909@sirena.org.uk>
-References: <1554423259-26056-1-git-send-email-skomatineni@nvidia.com>
- <1554423259-26056-11-git-send-email-skomatineni@nvidia.com>
- <20190408062819.GJ2803@sirena.org.uk>
- <BYAPR12MB3398CC43DC1F78A10BC51DE8C22F0@BYAPR12MB3398.namprd12.prod.outlook.com>
+Subject: Applied "spi: pxa2xx: use a module softdep for dw_dmac" to the spi
+ tree
+Date: Fri, 12 Apr 2019 09:53:22 +0100 (BST)
+Message-ID: <20190412085322.9086311279F6@debutante.sirena.org.uk>
+References: <1554900696-28858-2-git-send-email-f.suligoi@asem.it>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="DKU6Jbt7q3WqK7+M"
-Cc: "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Timo Alho <talho@nvidia.com>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        Krishna Yarlagadda <kyarlagadda@nvidia.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-To: Sowjanya Komatineni <skomatineni@nvidia.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <BYAPR12MB3398CC43DC1F78A10BC51DE8C22F0@BYAPR12MB3398.namprd12.prod.outlook.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-kernel@vger.kernel.org, Haojian Zhuang <haojian.zhuang@gmail.com>,
+ linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+ Daniel Mack <daniel@zonque.org>, Robert Jarzmik <robert.jarzmik@free.fr>,
+ linux-arm-kernel@lists.infradead.org
+To: Flavio Suligoi <f.suligoi@asem.it>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1554900696-28858-2-git-send-email-f.suligoi@asem.it>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---DKU6Jbt7q3WqK7+M
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: pxa2xx: use a module softdep for dw_dmac
 
-On Thu, Apr 11, 2019 at 07:58:33PM +0000, Sowjanya Komatineni wrote:
-> > On Thu, Apr 04, 2019 at 05:14:10PM -0700, Sowjanya Komatineni wrote:
+has been applied to the spi tree at
 
-> > > Some SPI Master controllers support configuring Least significant byt=
-e=20
-> > > first or Most significant byte first order for transfers. Also some=
-=20
-> > > SPI slave devices expect bytes to be in Least significant first order=
-=20
-> > > and some devices expect Most significant first order.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.2
 
-> > > SPI driver declares mode and mode_bits as u16 and all bits are used.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> > > This patch changes mode and mode_bits to be u32 to allow for more mod=
-e=20
-> > > configurations.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> > > This patch also creates SPI_LSBYTE_FIRST mode to allow SPI clients to=
-=20
-> > > choose LSByte order or MSByte order through the device tree property=
-=20
-> > > spi-lsbyte-first.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-> > Please submit one patch per change, each with a clear changelog, as cov=
-ered in SubmittingPatches.  This makes it much easier to review things sinc=
-e it's easier to tell if the patch does what it was intended to do and mean=
-s that if one part of the patch casues problems it won't hold up the other =
-parts.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-> I split changes on SPI code side and SPI Tegra side as separate patches.
-> Do you meant to have both changes on SPI core and SPI Tegra together in a=
- single patch?
+Thanks,
+Mark
 
-You are expanding the size of the mode variable and adding a new mode in
-the same patch.  These are two separate changes and should be in two
-separate patches, as soon as you start writing "Also..." in a changelog
-that should be a warning flag.
+>From 2c54c4a640ed4dc9db03693641a1a651535f05f1 Mon Sep 17 00:00:00 2001
+From: Flavio Suligoi <f.suligoi@asem.it>
+Date: Wed, 10 Apr 2019 14:51:36 +0200
+Subject: [PATCH] spi: pxa2xx: use a module softdep for dw_dmac
 
-Please fix your mail client to word wrap within paragraphs at something
-substantially less than 80 columns.  Doing this makes your messages much
-easier to read and reply to.
+With dw_dmac, sometimes the request of a DMA channel fails because
+the DMA driver is not ready, so an explicit dependency request
+is necessary.
 
---DKU6Jbt7q3WqK7+M
-Content-Type: application/pgp-signature; name="signature.asc"
+Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-pxa2xx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlywTTAACgkQJNaLcl1U
-h9ASVgf/YJl1oQzWArLRQHn7PzVwQ4QsUKLnP+dbbx8RWVhM93Whw0IURubE0Qkj
-zHIRDTu88rSP4hQMymsqJwcN9ZSWA/QgWW/950S+kZQ23a7d2hmSfC5LEXZACawm
-gJ1MFuHKf5zA1nHTeSu1aXVR6QdABMaAvu0Bk+VPplAZPuLI5k7vvLxcxGZ7G3e8
-S5Xwyo3Prv9T4J8pMiD/5eg4jc/o05MTw26M2kFRE2IV9STQ25DaSIQjtMhTq8c2
-kaBMQKAfEnQ+roNYcqNKMo4SPCCmNrR8MljdRf/bmIqaLIhyj9P/qRFOrjeC19eM
-ELTmw4Unue23lYbVs5FVE3JuWWbQgg==
-=0IqI
------END PGP SIGNATURE-----
-
---DKU6Jbt7q3WqK7+M--
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index f7068ccfe7d2..3e6811ef37e8 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1957,3 +1957,5 @@ static void __exit pxa2xx_spi_exit(void)
+ 	platform_driver_unregister(&driver);
+ }
+ module_exit(pxa2xx_spi_exit);
++
++MODULE_SOFTDEP("pre: dw_dmac");
+-- 
+2.20.1

@@ -1,85 +1,49 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v4 2/4] spi: Split spi message into max_dma_len size chunks
-Date: Fri, 12 Apr 2019 10:08:26 +0100
-Message-ID: <20190412090826.GD6909@sirena.org.uk>
-References: <20190411164235.49771-1-noralf@tronnes.org>
- <20190411164235.49771-3-noralf@tronnes.org>
+From: =?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>
+Subject: [PATCH 1/2] spi: Add spi_is_bpw_supported()
+Date: Fri, 12 Apr 2019 11:41:30 +0200
+Message-ID: <20190412094131.25616-1-noralf@tronnes.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5095537813464106717=="
-Cc: dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, meghana.madhyastha-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
-Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <20190411164235.49771-3-noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
-List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: broonie@kernel.org
+To: linux-spi@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Return-path: <dri-devel-bounces@lists.freedesktop.org>
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
+List-Post: <mailto:dri-devel@lists.freedesktop.org>
+List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: dri-devel-bounces@lists.freedesktop.org
+Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
 List-Id: linux-spi.vger.kernel.org
 
-
---===============5095537813464106717==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="at6+YcpfzWZg/htY"
-Content-Disposition: inline
-
-
---at6+YcpfzWZg/htY
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Apr 11, 2019 at 06:42:33PM +0200, Noralf Tr=F8nnes wrote:
-
-> +++ b/drivers/spi/spi.c
-> @@ -1299,6 +1299,11 @@ static void __spi_pump_messages(struct spi_control=
-ler *ctlr, bool in_kthread)
-> =20
->  	trace_spi_message_start(ctlr->cur_msg);
-> =20
-> +	ret =3D spi_split_transfers_maxsize(ctlr, ctlr->cur_msg, ctlr->max_dma_=
-len,
-> +					  GFP_KERNEL | GFP_DMA);
-> +	if (ret)
-> +		goto out;
-> +
-
-We should do any message maipulation in __spi_validate() with all the
-other mainpulation, the message pump should just be pushing messages
-out.
-
---at6+YcpfzWZg/htY
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlywVYkACgkQJNaLcl1U
-h9Di0gf/ey4NlD1dmDWB2CdmV+MO7sLXZNFBNDjb2uV6agbEZ0zLYgeQogiasm7u
-tT/+5Lp72Gr6JmXVzHn7Az4mYJuI3w/J59n+9eq2StLCR0YnAT2wDecTwjukK60C
-T1m13kq0dBD5gD0nrPoOlXczkrg3RmqCh+0YPvygw+pd+VVDtkPqQ+6wFPDay7Wb
-wZFPVRKr33j9gWAoXvVuIcTjVpdhjL+Jf0lfBhZrvZ1g2tOzA0jYP3gDSSv1wa8Z
-Q1AvIVVNKjY7pKYfGQ/frEgANLO2e/W39o2nx3jMp6WxH7obbB3j7kSpXqQ/cJsd
-OXLaySUlb0qTqsirx06r5fZBfpcafg==
-=Wc3K
------END PGP SIGNATURE-----
-
---at6+YcpfzWZg/htY--
-
-
---===============5095537813464106717==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-rpi-kernel mailing list
-linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel
-
---===============5095537813464106717==--
+VGhpcyBsZXQgU1BJIGNsaWVudHMgY2hlY2sgaWYgdGhlIGNvbnRyb2xsZXIgc3VwcG9ydHMgYSBw
+YXJ0aWN1bGFyIHdvcmQKd2lkdGguIGRyaXZlcnMvZ3B1L2RybS90aW55ZHJtL21pcGktZGJpLmMg
+d2lsbCB1c2UgdGhpcyB0byBkZXRlcm1pbmUgaWYKdGhlIGNvbnRyb2xsZXIgc3VwcG9ydHMgMTYt
+Yml0IGZvciBSR0I1NjUgcGl4ZWxzLiBJZiBpdCBkb2Vzbid0IGl0IHdpbGwKc3dhcCB0aGUgYnl0
+ZXMgYmVmb3JlIHRyYW5zZmVyIG9uIGxpdHRsZSBlbmRpYW4gbWFjaGluZXMuCgpTaWduZWQtb2Zm
+LWJ5OiBOb3JhbGYgVHLDuG5uZXMgPG5vcmFsZkB0cm9ubmVzLm9yZz4KLS0tCiBpbmNsdWRlL2xp
+bnV4L3NwaS9zcGkuaCB8IDIwICsrKysrKysrKysrKysrKysrKysrCiAxIGZpbGUgY2hhbmdlZCwg
+MjAgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvc3BpL3NwaS5oIGIv
+aW5jbHVkZS9saW51eC9zcGkvc3BpLmgKaW5kZXggNjYyYjMzNmFhMmU0Li5iMzBlM2QxM2E1YWMg
+MTAwNjQ0Ci0tLSBhL2luY2x1ZGUvbGludXgvc3BpL3NwaS5oCisrKyBiL2luY2x1ZGUvbGludXgv
+c3BpL3NwaS5oCkBAIC05ODMsNiArOTgzLDI2IEBAIHNwaV9tYXhfdHJhbnNmZXJfc2l6ZShzdHJ1
+Y3Qgc3BpX2RldmljZSAqc3BpKQogCXJldHVybiBtaW4odHJfbWF4LCBtc2dfbWF4KTsKIH0KIAor
+LyoqCisgKiBzcGlfaXNfYnB3X3N1cHBvcnRlZCAtIENoZWNrIGlmIGJpdHMgcGVyIHdvcmQgaXMg
+c3VwcG9ydGVkCisgKiBAc3BpOiBTUEkgZGV2aWNlCisgKiBAYnB3OiBCaXRzIHBlciB3b3JkCisg
+KgorICogVGhpcyBmdW5jdGlvbiBjaGVja3MgdG8gc2VlIGlmIHRoZSBTUEkgY29udHJvbGxlciBz
+dXBwb3J0cyBAYnB3LgorICoKKyAqIFJldHVybnM6CisgKiBUcnVlIGlmIEBicHcgaXMgc3VwcG9y
+dGVkLCBmYWxzZSBvdGhlcndpc2UuCisgKi8KK3N0YXRpYyBpbmxpbmUgYm9vbCBzcGlfaXNfYnB3
+X3N1cHBvcnRlZChzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpLCB1MzIgYnB3KQoreworCXUzMiBicHdf
+bWFzayA9IHNwaS0+bWFzdGVyLT5iaXRzX3Blcl93b3JkX21hc2s7CisKKwlpZiAoYnB3ID09IDgg
+fHwgKGJwdyA8PSAzMiAmJiBicHdfbWFzayAmIFNQSV9CUFdfTUFTSyhicHcpKSkKKwkJcmV0dXJu
+IHRydWU7CisKKwlyZXR1cm4gZmFsc2U7Cit9CisKIC8qLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tKi8KIAog
+LyogU1BJIHRyYW5zZmVyIHJlcGxhY2VtZW50IG1ldGhvZHMgd2hpY2ggbWFrZSB1c2Ugb2Ygc3Bp
+X3JlcyAqLwotLSAKMi4yMC4xCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpkcmktZGV2ZWwgbWFpbGluZyBsaXN0CmRyaS1kZXZlbEBsaXN0cy5mcmVlZGVz
+a3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9k
+cmktZGV2ZWw=

@@ -1,101 +1,74 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v4 2/4] spi: Split spi message into max_dma_len size chunks
-Date: Fri, 12 Apr 2019 12:46:23 +0100
-Message-ID: <20190412114623.GJ6909@sirena.org.uk>
-References: <20190411164235.49771-1-noralf@tronnes.org>
- <20190411164235.49771-3-noralf@tronnes.org>
- <20190411181836.t2vuutqhjglsxsaz@wunner.de>
- <98571639-840a-494c-9e41-29ff89a22a8e@tronnes.org>
- <20190412104644.rg6dxoxuaxptexdj@wunner.de>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Subject: Re: [PATCH v2] spi: pxa2xx: fix SCR (divisor) calculation
+Date: Fri, 12 Apr 2019 15:35:38 +0300
+Message-ID: <729d9db2-de3e-e64c-862d-db8a25775b02@linux.intel.com>
+References: <1555054339-17096-1-git-send-email-f.suligoi@asem.it>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2072550339=="
-Cc: stefan.wahren@i2se.com, dri-devel@lists.freedesktop.org,
- linux-spi@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
- meghana.madhyastha@gmail.com, kernel@martin.sperl.org
-To: Lukas Wunner <lukas@wunner.de>
-Return-path: <dri-devel-bounces@lists.freedesktop.org>
-In-Reply-To: <20190412104644.rg6dxoxuaxptexdj@wunner.de>
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
-List-Post: <mailto:dri-devel@lists.freedesktop.org>
-List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: dri-devel-bounces@lists.freedesktop.org
-Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+To: Flavio Suligoi <f.suligoi@asem.it>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1555054339-17096-1-git-send-email-f.suligoi@asem.it>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-
---===============2072550339==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="UlxN1C6awaFNesUv"
-Content-Disposition: inline
-
-
---UlxN1C6awaFNesUv
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Apr 12, 2019 at 12:46:44PM +0200, Lukas Wunner wrote:
-> On Thu, Apr 11, 2019 at 11:02:26PM +0200, Noralf Tr=F8nnes wrote:
-> > Den 11.04.2019 20.18, skrev Lukas Wunner:
-
-> > > Note that spi_map_buf() already splits every transfer's sglist into
-> > > segments that are smaller than ctlr->max_dma_len.  Now all that needs
-> > > to be done is to amend spi-bcm2835.c to iterate over the sglist
-> > > and transmit it in portions which do not exceed 65535.  Addressing the
-> > > problem at this lower level would drastically reduce the overhead
-> > > compared to the approach in the present patch and hence appears to be
-> > > more recommendable.
-
-> > In a previous version of this I suggested to Meghana to put this in the
-> > driver, but Mark wanted it in the core.
-
-> Do you have a link to these comments of Mark?  The first version of
-> this patchset that I have here is v2 of March 2018 and it already
-> uses spi_split_transfers_maxsize().  I've never seen a version which
-> splits the sglist in spi-bcm2835.c (instead of splitting the transfers
-> in spi.c, which, again, is significantly more expensive).
-
-The basic theory is that we shouldn't be open coding the same handling
-in multiple drivers, they should just be able to declare their
-capabilities and have the core handle things as far as possible.  Since
-we're already iterating over the whole message I'd be surprised if there
-were a particularly big hit in cases where we don't need to split things
-out, though obviously that's not been tested yet.
-
-There have also been discussions in the past about pre-cooking some of
-the messages so that if the client is sending the same thing a lot (or
-things that vary only by data) we can do a lot of the validation one
-time which would help.
-
---UlxN1C6awaFNesUv
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlyweo4ACgkQJNaLcl1U
-h9CHwgf/bKJ1Pu6mNMt4H3BTiiFIF3imgxw5avFxzC0AV0J8lZ7wJB48P9I94Mw3
-6Q/RG7jcPK6gvqcQO2IwGczqP22b5kHAlWlvptXRBQqB0vj6PCdv1pU84CgA3rum
-zfJC5uL0gBUCgB5ZEtSiobt6mWlna2zS5Z1nirIXsIZQlf2/bdls5OpGcr1O6KAG
-MMr0zayfv+Y2iCVOcQ/IIJnd/rZPoKI9Q+cgtuK3KCRoxFxDA8vl4Bl8zLZ9RHAw
-YD+oaiV9tJzKVahUElUpsEeWe95/agW5QOQtQQLoVf/5K9oGAelSrDbmewUrjm/R
-UqgxWKH5fw6iINHW9oDc1N16fJ9EkQ==
-=rIwL
------END PGP SIGNATURE-----
-
---UlxN1C6awaFNesUv--
-
---===============2072550339==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KZHJpLWRldmVs
-IG1haWxpbmcgbGlzdApkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vZHJpLWRldmVs
-
---===============2072550339==--
+On 4/12/19 10:32 AM, Flavio Suligoi wrote:
+> Calculate the divisor for the SCR (Serial Clock Rate), avoiding
+> that the SSP transmission rate can be greater than the device rate.
+> 
+> When the division between the SSP clock and the device rate generates
+> a reminder, we have to increment by one the divisor.
+> In this way the resulting SSP clock will never be greater than the
+> device SPI max frequency.
+> 
+> For example, with:
+> 
+>   - ssp_clk  = 50 MHz
+>   - dev freq = 15 MHz
+> 
+> without this patch the SSP clock will be greater than 15 MHz:
+> 
+>   - 25 MHz for PXA25x_SSP and CE4100_SSP
+>   - 16,56 MHz for the others
+> 
+> Instead, with this patch, we have in both case an SSP clock of 12.5MHz,
+> so the max rate of the SPI device clock is respected.
+> 
+> Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
+> Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+> ---
+> 
+> v2: - simplify the code using "DIV_ROUND_UP"
+> v1: - first version
+> 
+>   drivers/spi/spi-pxa2xx.c | 8 ++++++--
+>   1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+> index f7068cc..a35fdcb 100644
+> --- a/drivers/spi/spi-pxa2xx.c
+> +++ b/drivers/spi/spi-pxa2xx.c
+> @@ -884,10 +884,14 @@ static unsigned int ssp_get_clk_div(struct driver_data *drv_data, int rate)
+>   
+>   	rate = min_t(int, ssp_clk, rate);
+>   
+> +	/*
+> +	 * Calculate the divisor for the SCR (Serial Clock Rate), avoiding
+> +	 * that the SSP transmission rate can be greater than the device rate
+> +	 */
+>   	if (ssp->type == PXA25x_SSP || ssp->type == CE4100_SSP)
+> -		return (ssp_clk / (2 * rate) - 1) & 0xff;
+> +		return (DIV_ROUND_UP(ssp_clk, 2 * rate) - 1) & 0xff;
+>   	else
+> -		return (ssp_clk / rate - 1) & 0xfff;
+> +		return (DIV_ROUND_UP(ssp_clk, rate) - 1)  & 0xfff;
+>   }
+>   
+Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>

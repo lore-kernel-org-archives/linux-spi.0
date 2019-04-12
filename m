@@ -1,96 +1,72 @@
-From: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Subject: [PATCH 2/3] spi: Make of_find_spi_controller_by_node visible
-Date: Fri, 12 Apr 2019 17:02:12 +1200
-Message-ID: <20190412050213.17698-3-chris.packham@alliedtelesis.co.nz>
-References: <20190412050213.17698-1-chris.packham@alliedtelesis.co.nz>
+From: Flavio Suligoi <f.suligoi@asem.it>
+Subject: [PATCH v2] spi: pxa2xx: fix SCR (divisor) calculation
+Date: Fri, 12 Apr 2019 09:32:19 +0200
+Message-ID: <1555054339-17096-1-git-send-email-f.suligoi@asem.it>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Cc: Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>
-To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com
+Content-Type: text/plain
+Cc: <linux-arm-kernel@lists.infradead.org>,
+        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Flavio Suligoi <f.suligoi@asem.it>
+To: Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Mark Brown <broonie@kernel.org>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190412050213.17698-1-chris.packham@alliedtelesis.co.nz>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Drop the static and add of_find_spi_controller_by_node() to spi.h. Also
-move it outside of the CONFIG_OF_DYNAMIC so it is available with just
-CONFIG_OF.
+Calculate the divisor for the SCR (Serial Clock Rate), avoiding
+that the SSP transmission rate can be greater than the device rate.
 
-Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+When the division between the SSP clock and the device rate generates
+a reminder, we have to increment by one the divisor.
+In this way the resulting SSP clock will never be greater than the
+device SPI max frequency.
+
+For example, with:
+
+ - ssp_clk  = 50 MHz
+ - dev freq = 15 MHz
+
+without this patch the SSP clock will be greater than 15 MHz:
+
+ - 25 MHz for PXA25x_SSP and CE4100_SSP
+ - 16,56 MHz for the others
+
+Instead, with this patch, we have in both case an SSP clock of 12.5MHz,
+so the max rate of the SPI device clock is respected.
+
+Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
+Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 ---
- drivers/spi/spi.c       | 7 ++++---
- include/linux/spi/spi.h | 7 +++++++
- 2 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 93986f879b09..19929163a45b 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -3531,16 +3531,14 @@ struct spi_device *of_find_spi_device_by_node(str=
-uct device_node *node)
- 	return dev ? to_spi_device(dev) : NULL;
+v2: - simplify the code using "DIV_ROUND_UP"
+v1: - first version
+
+ drivers/spi/spi-pxa2xx.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index f7068cc..a35fdcb 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -884,10 +884,14 @@ static unsigned int ssp_get_clk_div(struct driver_data *drv_data, int rate)
+ 
+ 	rate = min_t(int, ssp_clk, rate);
+ 
++	/*
++	 * Calculate the divisor for the SCR (Serial Clock Rate), avoiding
++	 * that the SSP transmission rate can be greater than the device rate
++	 */
+ 	if (ssp->type == PXA25x_SSP || ssp->type == CE4100_SSP)
+-		return (ssp_clk / (2 * rate) - 1) & 0xff;
++		return (DIV_ROUND_UP(ssp_clk, 2 * rate) - 1) & 0xff;
+ 	else
+-		return (ssp_clk / rate - 1) & 0xfff;
++		return (DIV_ROUND_UP(ssp_clk, rate) - 1)  & 0xfff;
  }
- EXPORT_SYMBOL_GPL(of_find_spi_device_by_node);
--#endif /* IS_ENABLED(CONFIG_OF) */
-=20
--#if IS_ENABLED(CONFIG_OF_DYNAMIC)
- static int __spi_of_controller_match(struct device *dev, const void *dat=
-a)
- {
- 	return dev->of_node =3D=3D data;
- }
-=20
- /* the spi controllers are not using spi_bus, so we find it with another=
- way */
--static struct spi_controller *of_find_spi_controller_by_node(struct devi=
-ce_node *node)
-+struct spi_controller *of_find_spi_controller_by_node(struct device_node=
- *node)
- {
- 	struct device *dev;
-=20
-@@ -3555,7 +3553,10 @@ static struct spi_controller *of_find_spi_controll=
-er_by_node(struct device_node
- 	/* reference got in class_find_device */
- 	return container_of(dev, struct spi_controller, dev);
- }
-+EXPORT_SYMBOL_GPL(of_find_spi_controller_by_node);
-+#endif /* IS_ENABLED(CONFIG_OF) */
-=20
-+#if IS_ENABLED(CONFIG_OF_DYNAMIC)
- static int of_spi_notify(struct notifier_block *nb, unsigned long action=
-,
- 			 void *arg)
- {
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 662b336aa2e4..e763290767ea 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -1334,6 +1334,8 @@ spi_transfer_is_last(struct spi_controller *ctlr, s=
-truct spi_transfer *xfer)
- extern struct spi_device *
- of_find_spi_device_by_node(struct device_node *node);
-=20
-+extern struct spi_controller *
-+of_find_spi_controller_by_node(struct device_node *node);
- #else
-=20
- static inline struct spi_device *
-@@ -1342,6 +1344,11 @@ of_find_spi_device_by_node(struct device_node *nod=
-e)
- 	return NULL;
- }
-=20
-+static inline struct spi_controller *
-+of_find_spi_controller_by_node(struct device_node *node)
-+{
-+	return NULL;
-+}
- #endif /* IS_ENABLED(CONFIG_OF) */
-=20
- /* Compatibility layer */
---=20
-2.21.0
+ 
+ static unsigned int pxa2xx_ssp_get_clk_div(struct driver_data *drv_data,
+-- 
+2.7.4

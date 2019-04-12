@@ -1,81 +1,85 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: pxa2xx: use a module softdep for dw_dmac" to the spi
- tree
-Date: Fri, 12 Apr 2019 09:53:22 +0100 (BST)
-Message-ID: <20190412085322.9086311279F6@debutante.sirena.org.uk>
-References: <1554900696-28858-2-git-send-email-f.suligoi@asem.it>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v4 2/4] spi: Split spi message into max_dma_len size chunks
+Date: Fri, 12 Apr 2019 10:08:26 +0100
+Message-ID: <20190412090826.GD6909@sirena.org.uk>
+References: <20190411164235.49771-1-noralf@tronnes.org>
+ <20190411164235.49771-3-noralf@tronnes.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-kernel@vger.kernel.org, Haojian Zhuang <haojian.zhuang@gmail.com>,
- linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
- Daniel Mack <daniel@zonque.org>, Robert Jarzmik <robert.jarzmik@free.fr>,
- linux-arm-kernel@lists.infradead.org
-To: Flavio Suligoi <f.suligoi@asem.it>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1554900696-28858-2-git-send-email-f.suligoi@asem.it>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: multipart/mixed; boundary="===============5095537813464106717=="
+Cc: dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, meghana.madhyastha-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+To: Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
+Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <20190411164235.49771-3-noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
+List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: pxa2xx: use a module softdep for dw_dmac
+--===============5095537813464106717==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="at6+YcpfzWZg/htY"
+Content-Disposition: inline
 
-has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.2
+--at6+YcpfzWZg/htY
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+On Thu, Apr 11, 2019 at 06:42:33PM +0200, Noralf Tr=F8nnes wrote:
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> +++ b/drivers/spi/spi.c
+> @@ -1299,6 +1299,11 @@ static void __spi_pump_messages(struct spi_control=
+ler *ctlr, bool in_kthread)
+> =20
+>  	trace_spi_message_start(ctlr->cur_msg);
+> =20
+> +	ret =3D spi_split_transfers_maxsize(ctlr, ctlr->cur_msg, ctlr->max_dma_=
+len,
+> +					  GFP_KERNEL | GFP_DMA);
+> +	if (ret)
+> +		goto out;
+> +
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+We should do any message maipulation in __spi_validate() with all the
+other mainpulation, the message pump should just be pushing messages
+out.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+--at6+YcpfzWZg/htY
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thanks,
-Mark
+-----BEGIN PGP SIGNATURE-----
 
->From 2c54c4a640ed4dc9db03693641a1a651535f05f1 Mon Sep 17 00:00:00 2001
-From: Flavio Suligoi <f.suligoi@asem.it>
-Date: Wed, 10 Apr 2019 14:51:36 +0200
-Subject: [PATCH] spi: pxa2xx: use a module softdep for dw_dmac
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlywVYkACgkQJNaLcl1U
+h9Di0gf/ey4NlD1dmDWB2CdmV+MO7sLXZNFBNDjb2uV6agbEZ0zLYgeQogiasm7u
+tT/+5Lp72Gr6JmXVzHn7Az4mYJuI3w/J59n+9eq2StLCR0YnAT2wDecTwjukK60C
+T1m13kq0dBD5gD0nrPoOlXczkrg3RmqCh+0YPvygw+pd+VVDtkPqQ+6wFPDay7Wb
+wZFPVRKr33j9gWAoXvVuIcTjVpdhjL+Jf0lfBhZrvZ1g2tOzA0jYP3gDSSv1wa8Z
+Q1AvIVVNKjY7pKYfGQ/frEgANLO2e/W39o2nx3jMp6WxH7obbB3j7kSpXqQ/cJsd
+OXLaySUlb0qTqsirx06r5fZBfpcafg==
+=Wc3K
+-----END PGP SIGNATURE-----
 
-With dw_dmac, sometimes the request of a DMA channel fails because
-the DMA driver is not ready, so an explicit dependency request
-is necessary.
+--at6+YcpfzWZg/htY--
 
-Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-pxa2xx.c | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index f7068ccfe7d2..3e6811ef37e8 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1957,3 +1957,5 @@ static void __exit pxa2xx_spi_exit(void)
- 	platform_driver_unregister(&driver);
- }
- module_exit(pxa2xx_spi_exit);
-+
-+MODULE_SOFTDEP("pre: dw_dmac");
--- 
-2.20.1
+--===============5095537813464106717==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-rpi-kernel mailing list
+linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel
+
+--===============5095537813464106717==--

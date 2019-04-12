@@ -1,70 +1,115 @@
-From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: Re: [PATCH v4 2/4] spi: Split spi message into max_dma_len size chunks
-Date: Fri, 12 Apr 2019 13:34:48 +0200
-Message-ID: <2B363C38-CDAF-4720-B43F-784CFA05716E@martin.sperl.org>
-References: <20190412102206.GG6909@sirena.org.uk>
- <20190412094721.GE6909@sirena.org.uk>
- <20190412105448.6xamxj2wtuu3yxvt@wunner.de>
- <20190412110934.GH6909@sirena.org.uk>
- <20190412111615.25iogtr6qwc5zbx7@wunner.de>
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: =?utf-8?Q?Noralf_Tr=C3=B8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
- dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org, linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
- linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
- meghana.madhyastha-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <20190412111615.25iogtr6qwc5zbx7-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
-List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+From: syzbot <syzbot+c60ddb60b685777d9d59@syzkaller.appspotmail.com>
+Subject: WARNING in spi_register_controller
+Date: Fri, 12 Apr 2019 04:36:09 -0700
+Message-ID: <00000000000089dace058653b58e@google.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+To: andreyknvl@google.com, broonie@kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-usb@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hello,
 
-> On 12.04.2019, at 13:16, Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org> wrote:
-> 
-> On Fri, Apr 12, 2019 at 12:09:34PM +0100, Mark Brown wrote:
->> On Fri, Apr 12, 2019 at 12:54:48PM +0200, Lukas Wunner wrote:
->>> On Fri, Apr 12, 2019 at 10:47:21AM +0100, Mark Brown wrote:
->>>> I *think* we managed to fix all the architectures to at least stub out
->>>> the DMA interfaces, it's such a pointless thing to have conditional -
->>>> it really only makes a difference for build coverage.
->> 
->>> My point was that the call to spi_split_transfers_maxsize() shouldn't
->>> be called on non-DMA-capable platforms in the first place (because it's
->>> DMA-specific).
->> 
->> It's not a DMA specific problem - there can be SPI controller
->> limitations on transfer sizes too.
-> 
-> The call does pass in ctlr->max_dma_len though, so is clearly motivated
-> by a DMA limitation.
-The limitation is in this register: BCM2835_SPI_DLEN
+syzbot found the following crash on:
 
-Where the bcm2835-SDK (Brcm_Android_ICS_Graphics_Stack.tar.gz)defines:
-bit 0-15 for DLEN
+HEAD commit:    9a33b369 usb-fuzzer: main usb gadget fuzzer driver
+git tree:       https://github.com/google/kasan/tree/usb-fuzzer
+console output: https://syzkaller.appspot.com/x/log.txt?x=1128acd3200000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=23e37f59d94ddd15
+dashboard link: https://syzkaller.appspot.com/bug?extid=c60ddb60b685777d9d59
+compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=149b274b200000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=108c0cd3200000
 
-See transformed data at:
-https://github.com/msperl/rpi-registers/blob/master/md/Region_SPI.md
+IMPORTANT: if you fix the bug, please add the following tag to the commit:
+Reported-by: syzbot+c60ddb60b685777d9d59@syzkaller.appspotmail.com
 
-Or the Arm Periperial Document on page 156 with regards to DLEN register.
+usb 3-1: config 0 has an invalid interface number: 104 but max is 0
+usb 3-1: config 0 has no interface number 0
+------------[ cut here ]------------
+couldn't get idr
+usb 3-1: New USB device found, idVendor=1df7, idProduct=2500,  
+bcdDevice=a9.67
+WARNING: CPU: 0 PID: 534 at drivers/spi/spi.c:2307  
+spi_register_controller+0xf0b/0x1150 drivers/spi/spi.c:2307
+usb 3-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+Kernel panic - not syncing: panic_on_warn set ...
+CPU: 0 PID: 534 Comm: kworker/0:2 Not tainted 5.1.0-rc4-319354-g9a33b36 #3
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS  
+Google 01/01/2011
+Workqueue: usb_hub_wq hub_event
+usb 5-1: New USB device found, idVendor=1df7, idProduct=2500,  
+bcdDevice=a9.67
+Call Trace:
+  __dump_stack lib/dump_stack.c:77 [inline]
+  dump_stack+0xe8/0x16e lib/dump_stack.c:113
+  panic+0x29d/0x5f2 kernel/panic.c:214
+usb 5-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+usb 6-1: New USB device found, idVendor=1df7, idProduct=2500,  
+bcdDevice=a9.67
+usb 6-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+usb 5-1: config 0 descriptor??
+  __warn.cold+0x20/0x48 kernel/panic.c:571
+usb 3-1: config 0 descriptor??
+  report_bug+0x262/0x2a0 lib/bug.c:186
+usb 6-1: config 0 descriptor??
+  fixup_bug arch/x86/kernel/traps.c:179 [inline]
+  fixup_bug arch/x86/kernel/traps.c:174 [inline]
+  do_error_trap+0x130/0x1f0 arch/x86/kernel/traps.c:272
+usb 1-1: config 0 descriptor??
+  do_invalid_op+0x37/0x40 arch/x86/kernel/traps.c:291
+  invalid_op+0x14/0x20 arch/x86/entry/entry_64.S:973
+RIP: 0010:spi_register_controller+0xf0b/0x1150 drivers/spi/spi.c:2307
+Code: ff ff e8 98 e5 00 fb e9 37 f2 ff ff 4c 89 ef e8 ab e5 00 fb e9 c3 f2  
+ff ff e8 11 d5 c9 fa 48 c7 c7 c0 34 3b 8f e8 a5 d1 9b fa <0f> 0b bf e4 ff  
+ff ff 44 89 e6 e8 66 d6 c9 fa 41 83 fc e4 b8 f0 ff
+RSP: 0018:ffff88809f7b7258 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: ffffffff815b1e42 RDI: ffffed1013ef6e3d
+RBP: ffff888099200000 R08: ffff88809f510000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 00000000ffffffe4
+R13: ffff888099200428 R14: 1ffff11013ef6e50 R15: ffff888099200000
+  msi2500_probe+0x78e/0xba1 drivers/media/usb/msi2500/msi2500.c:1257
+  usb_probe_interface+0x31d/0x820 drivers/usb/core/driver.c:361
+  really_probe+0x2da/0xb10 drivers/base/dd.c:509
+  driver_probe_device+0x21d/0x350 drivers/base/dd.c:671
+  __device_attach_driver+0x1d8/0x290 drivers/base/dd.c:778
+  bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:454
+  __device_attach+0x223/0x3a0 drivers/base/dd.c:844
+  bus_probe_device+0x1f1/0x2a0 drivers/base/bus.c:514
+  device_add+0xad2/0x16e0 drivers/base/core.c:2106
+  usb_set_configuration+0xdf7/0x1740 drivers/usb/core/message.c:2021
+  generic_probe+0xa2/0xda drivers/usb/core/generic.c:210
+  usb_probe_device+0xc0/0x150 drivers/usb/core/driver.c:266
+  really_probe+0x2da/0xb10 drivers/base/dd.c:509
+  driver_probe_device+0x21d/0x350 drivers/base/dd.c:671
+  __device_attach_driver+0x1d8/0x290 drivers/base/dd.c:778
+  bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:454
+  __device_attach+0x223/0x3a0 drivers/base/dd.c:844
+  bus_probe_device+0x1f1/0x2a0 drivers/base/bus.c:514
+  device_add+0xad2/0x16e0 drivers/base/core.c:2106
+  usb_new_device.cold+0x537/0xccf drivers/usb/core/hub.c:2534
+  hub_port_connect drivers/usb/core/hub.c:5089 [inline]
+  hub_port_connect_change drivers/usb/core/hub.c:5204 [inline]
+  port_event drivers/usb/core/hub.c:5350 [inline]
+  hub_event+0x138e/0x3b00 drivers/usb/core/hub.c:5432
+  process_one_work+0x90f/0x1580 kernel/workqueue.c:2269
+  worker_thread+0x9b/0xe20 kernel/workqueue.c:2415
+  kthread+0x313/0x420 kernel/kthread.c:253
+  ret_from_fork+0x3a/0x50 arch/x86/entry/entry_64.S:352
+Kernel Offset: disabled
+Rebooting in 86400 seconds..
 
-This is where the DMA length limit comes from - so it is NOT
-really DMA block related but SPI block related.
 
-More specifically to DMA requests are only triggered when this counter
-is > 0.
+---
+This bug is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-That is unless the Documentation has another errata and more bits are
-actually allowed.
-
-Martin
+syzbot will keep track of this bug report. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+syzbot can test patches for this bug, for details see:
+https://goo.gl/tpsmEJ#testing-patches

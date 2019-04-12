@@ -1,69 +1,84 @@
-From: =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>
-Subject: Re: [PATCH v4 2/4] spi: Split spi message into max_dma_len size chunks
-Date: Thu, 11 Apr 2019 23:02:26 +0200
-Message-ID: <98571639-840a-494c-9e41-29ff89a22a8e@tronnes.org>
-References: <20190411164235.49771-1-noralf@tronnes.org>
- <20190411164235.49771-3-noralf@tronnes.org>
- <20190411181836.t2vuutqhjglsxsaz@wunner.de>
+From: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Subject: [PATCH 1/3] dt-bindings: spi: Add spi-mux-gpio
+Date: Fri, 12 Apr 2019 17:02:11 +1200
+Message-ID: <20190412050213.17698-2-chris.packham@alliedtelesis.co.nz>
+References: <20190412050213.17698-1-chris.packham@alliedtelesis.co.nz>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: stefan.wahren@i2se.com, dri-devel@lists.freedesktop.org,
- linux-spi@vger.kernel.org, broonie@kernel.org,
- linux-rpi-kernel@lists.infradead.org, meghana.madhyastha@gmail.com,
- kernel@martin.sperl.org
-To: Lukas Wunner <lukas@wunner.de>
-Return-path: <dri-devel-bounces@lists.freedesktop.org>
-In-Reply-To: <20190411181836.t2vuutqhjglsxsaz@wunner.de>
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
-List-Post: <mailto:dri-devel@lists.freedesktop.org>
-List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: dri-devel-bounces@lists.freedesktop.org
-Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+Content-Transfer-Encoding: quoted-printable
+Cc: Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Chris Packham <chris.packham@alliedtelesis.co.nz>
+To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190412050213.17698-1-chris.packham@alliedtelesis.co.nz>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-CgpEZW4gMTEuMDQuMjAxOSAyMC4xOCwgc2tyZXYgTHVrYXMgV3VubmVyOgo+IE9uIFRodSwgQXBy
-IDExLCAyMDE5IGF0IDA2OjQyOjMzUE0gKzAyMDAsIE5vcmFsZiBUcsO4bm5lcyB3cm90ZToKPj4g
-QEAgLTEyOTksNiArMTI5OSwxMSBAQCBzdGF0aWMgdm9pZCBfX3NwaV9wdW1wX21lc3NhZ2VzKHN0
-cnVjdCBzcGlfY29udHJvbGxlciAqY3RsciwgYm9vbCBpbl9rdGhyZWFkKQo+PiAgCj4+ICAJdHJh
-Y2Vfc3BpX21lc3NhZ2Vfc3RhcnQoY3Rsci0+Y3VyX21zZyk7Cj4+ICAKPj4gKwlyZXQgPSBzcGlf
-c3BsaXRfdHJhbnNmZXJzX21heHNpemUoY3RsciwgY3Rsci0+Y3VyX21zZywgY3Rsci0+bWF4X2Rt
-YV9sZW4sCj4+ICsJCQkJCSAgR0ZQX0tFUk5FTCB8IEdGUF9ETUEpOwo+IAo+IFVtLCBzaG91bGRu
-J3QgdGhpcyBiZSBpZmRlZidlZCB0byBDT05GSUdfSEFTX0RNQT8KPiAKCk1heWJlLCBJIGRvbid0
-IGtub3cuIE1hcmsgZGlkbid0IG1lbnRpb25lZCBpdCB3aGVuIGhlIGNvbW1lbnRlZCBvbiBhCnBy
-ZXZpb3VzIHZlcnNpb24gb2YgdGhpcy4gU29tZSBoYXRlIGlmZGVmJ3MgYW5kIHdhbnQgdG8gYXZv
-aWQgdGhlbSwgc29tZQpkb24ndC4KCj4gCj4+IFNvbWUgZHJpdmVycyBsaWtlIHNwaV9iY20yODM1
-IGhhdmUgYSBtYXggc2l6ZSBvbiBETUEgdHJhbnNmZXJzLiBXb3JrCj4+IGFyb3VuZCB0aGlzIGJ5
-IHNwbGl0dGluZyB1cCB0aGUgdHJhbnNmZXIgaWYgbmVjZXNzYXJ5Lgo+IAo+IFRoaXMgZmVlbHMg
-bGlrZSBhIHZlcnkgZXhwZW5zaXZlIHNvbHV0aW9uIHRvIHRoZSBwcm9ibGVtOiAgTGFyZ2UgdHJh
-bnNmZXJzCj4gYXJlIHNwbGl0IGludG8gbXVsdGlwbGUgc21hbGxlciB0cmFuc2ZlcnMgKHJlcXVp
-cmluZyBsb3RzIG9mIG92ZXJoZWFkIHRvCj4gYWxsb2NhdGUgYW5kIHBvcHVsYXRlIHRoZSBzdHJ1
-Y3R1cmVzKSBhbmQgdGhlIHNwbGl0IHRyYW5zZmVycyBzZWVtIHRvIGJlCj4gY2FjaGVkIGZvciBs
-YXRlciByZXVzZS4KPiAKCk9ubHkgZHJpdmVycyB0aGF0IHNldCAtPm1heF9kbWFfbGVuIHdpbGwg
-YmUgc3BsaXQsIGFuZCBvbmx5IHdoZW4gdGhlCmxlbmd0aCBpcyBiaWdnZXIuIEkgY2FuJ3Qgc2Vl
-IGFueSBjYWNoaW5nIHdpdGggYSBxdWljayBnbGFuY2UsIHdoZXJlIGRvCnlvdSBzZWUgaXQ/Cgo+
-IEknbSB3b25kZXJpbmcsIGZvciBhIGZyYW1lIGJ1ZmZlciwgZG9lc24ndCB0aGUgYnVmZmVyIChh
-bmQgaGVuY2UgdGhlIFNQSQo+IG1lc3NhZ2UpIGNoYW5nZSBvbiBldmVyeSB0cmFuc21pc3Npb24/
-ICBJbiBvdGhlciB3b3JkcywgZG9lcyBhIGZyYW1lCj4gYnVmZmVyIGJlbmVmaXQgZnJvbSB0aGUg
-Y2FjaGluZz8gIElmIG5vdCwgdGhlbiB0aGUgY2FjaGluZyBzZWVtcyB0byBpbmN1cgo+IHVubmVj
-ZXNzYXJ5IG92ZXJoZWFkLgo+IAo+IEV2ZW4gdGhlIG5vcm1hbCBjYXNlIHdoZW4gbm8gdHJhbnNm
-ZXJzIGV4Y2VlZCB0aGUgbGltaXQgaXMgYWZmZWN0ZWQgYnkKPiBhZGRpdGlvbmFsIG92ZXJoZWFk
-LCBuYW1lbHkgYW4gaXRlcmF0aW9uIG92ZXIgdGhlIHRyYW5zZmVyIGxpc3QgdG8KPiBjaGVjayBl
-YWNoIHRyYW5zZmVycycgbGVuZ3RoLiA6LSgKPiAKPiBOb3RlIHRoYXQgc3BpX21hcF9idWYoKSBh
-bHJlYWR5IHNwbGl0cyBldmVyeSB0cmFuc2ZlcidzIHNnbGlzdCBpbnRvCj4gc2VnbWVudHMgdGhh
-dCBhcmUgc21hbGxlciB0aGFuIGN0bHItPm1heF9kbWFfbGVuLiAgTm93IGFsbCB0aGF0IG5lZWRz
-Cj4gdG8gYmUgZG9uZSBpcyB0byBhbWVuZCBzcGktYmNtMjgzNS5jIHRvIGl0ZXJhdGUgb3ZlciB0
-aGUgc2dsaXN0Cj4gYW5kIHRyYW5zbWl0IGl0IGluIHBvcnRpb25zIHdoaWNoIGRvIG5vdCBleGNl
-ZWQgNjU1MzUuICBBZGRyZXNzaW5nIHRoZQo+IHByb2JsZW0gYXQgdGhpcyBsb3dlciBsZXZlbCB3
-b3VsZCBkcmFzdGljYWxseSByZWR1Y2UgdGhlIG92ZXJoZWFkCj4gY29tcGFyZWQgdG8gdGhlIGFw
-cHJvYWNoIGluIHRoZSBwcmVzZW50IHBhdGNoIGFuZCBoZW5jZSBhcHBlYXJzIHRvIGJlCj4gbW9y
-ZSByZWNvbW1lbmRhYmxlLgo+IAoKSW4gYSBwcmV2aW91cyB2ZXJzaW9uIG9mIHRoaXMgSSBzdWdn
-ZXN0ZWQgdG8gTWVnaGFuYSB0byBwdXQgdGhpcyBpbiB0aGUKZHJpdmVyLCBidXQgTWFyayB3YW50
-ZWQgaXQgaW4gdGhlIGNvcmUuCgpOb3JhbGYuCgo+IFRoYW5rcywKPiAKPiBMdWthcwo+IApfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpkcmktZGV2ZWwgbWFp
-bGluZyBsaXN0CmRyaS1kZXZlbEBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9kcmktZGV2ZWw=
+Add binding documentation for spi-mux-gpio which is a slightly more
+complicated hardware implementation of using gpios to steer SPI chip
+selects.
+
+Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+---
+ .../devicetree/bindings/spi/spi-mux-gpio.txt  | 45 +++++++++++++++++++
+ 1 file changed, 45 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-mux-gpio.tx=
+t
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-mux-gpio.txt b/Doc=
+umentation/devicetree/bindings/spi/spi-mux-gpio.txt
+new file mode 100644
+index 000000000000..a32f25321d37
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-mux-gpio.txt
+@@ -0,0 +1,45 @@
++SPI bus gpio multiplexer
++
++The SPI bus gpio multiplexer can be used to implement more complicated a=
+ccess
++logic than can be supported with the cs-gpios property of a SPI bus.
++
++In the example below we have a SoC with a single SPI CS that is gated by=
+ the
++state of a gpio to select the desired SPI device.
++
++     +----------+  CS    +-----+ CS0  +----+
++     |          |--------|     |------|    |
++     |          |        | \ / |      +----+
++     |   SoC    |        |  +  |
++     |          |  GPIO  | / \ | CS1  +----+
++     |          |--------|     |------|    |
++     +----------+        +-----+      +----+
++
++Required properties:
++- compatible	- must be "spi-mux-gpio"
++- gpios		- gpios used to implement the multiplexing logic
++- spi-parent-bus - parent spi bus to use
++
++Optional properties:
++- spi-parent-cs - chip select on parent bus to use. Defaults to 0 if not
++                  specified.
++
++Example for a multiplexer with a single gpio:
++
++	spi-mux {
++		compatible =3D "spi-mux-gpio";
++		#address-cells =3D <1>;
++		#size-cells =3D <0>;
++		gpios =3D <&gpio0 1 0>;
++		spi-parent-bus =3D <&spi0>;
++		spi-parent-cs =3D <0>;
++
++		spi-dev@0 {
++			compatible =3D "...";
++			reg =3D <0>;
++		}
++
++		spi-dev@1 {
++			compatible =3D "...";
++			reg =3D <1>;
++		}
++	};
+--=20
+2.21.0

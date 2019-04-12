@@ -1,72 +1,66 @@
-From: Emil Renner Berthing <kernel-sKpHZLTYfq0@public.gmane.org>
-Subject: [PATCH] spi: rockchip: turn down tx dma bursts
-Date: Fri, 12 Apr 2019 12:53:20 +0200
-Message-ID: <20190412105320.2924-1-kernel@esmil.dk>
+From: Lukas Wunner <lukas@wunner.de>
+Subject: Re: [PATCH v4 2/4] spi: Split spi message into max_dma_len size chunks
+Date: Fri, 12 Apr 2019 12:54:48 +0200
+Message-ID: <20190412105448.6xamxj2wtuu3yxvt@wunner.de>
+References: <20190412102206.GG6909@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- Vicente Bergas <vicencb-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
- Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Robin Murphy <robin.murphy-5wv7dgnIgG8@public.gmane.org>,
- linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Emil Renner Berthing <kernel-sKpHZLTYfq0@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
- <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
-List-Post: <mailto:linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
- <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "Linux-rockchip" <linux-rockchip-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: stefan.wahren@i2se.com, dri-devel@lists.freedesktop.org,
+ linux-spi@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+ meghana.madhyastha@gmail.com, kernel@martin.sperl.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <dri-devel-bounces@lists.freedesktop.org>
+Content-Disposition: inline
+In-Reply-To: <20190412102206.GG6909@sirena.org.uk>
+ <20190412094721.GE6909@sirena.org.uk>
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
+List-Post: <mailto:dri-devel@lists.freedesktop.org>
+List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: dri-devel-bounces@lists.freedesktop.org
+Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
 List-Id: linux-spi.vger.kernel.org
 
-This fixes tx and bi-directional dma transfers on rk3399-gru-kevin.
-
-It seems the SPI fifo must have room for 2 bursts when the dma_tx_req
-signal is generated or it might skip some words. This in turn makes
-the rx dma channel never complete for bi-directional transfers.
-
-Fix it by setting tx burst length to fifo_len / 4 and the dma
-watermark to fifo_len / 2.
-
-However the rk3399 TRM says (sic):
-"DMAC support incrementing-address burst and fixed-address burst. But in
-the case of access SPI and UART at byte or halfword size, DMAC only
-support fixed-address burst and the address must be aligned to word."
-
-So this relies on fifo_len being a multiple of 16 such that the
-burst length (= fifo_len / 4) is a multiple of 4 and the addresses
-will be word-aligned.
-
-Fixes: dcfc861d24ec ("spi: rockchip: adjust dma watermark and burstlen")
-Signed-off-by: Emil Renner Berthing <kernel-sKpHZLTYfq0@public.gmane.org>
----
- drivers/spi/spi-rockchip.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 3912526ead66..19f6a76f1c07 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -425,7 +425,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
- 			.direction = DMA_MEM_TO_DEV,
- 			.dst_addr = rs->dma_addr_tx,
- 			.dst_addr_width = rs->n_bytes,
--			.dst_maxburst = rs->fifo_len / 2,
-+			.dst_maxburst = rs->fifo_len / 4,
- 		};
- 
- 		dmaengine_slave_config(master->dma_tx, &txconf);
-@@ -526,7 +526,7 @@ static void rockchip_spi_config(struct rockchip_spi *rs,
- 	else
- 		writel_relaxed(rs->fifo_len / 2 - 1, rs->regs + ROCKCHIP_SPI_RXFTLR);
- 
--	writel_relaxed(rs->fifo_len / 2 - 1, rs->regs + ROCKCHIP_SPI_DMATDLR);
-+	writel_relaxed(rs->fifo_len / 2, rs->regs + ROCKCHIP_SPI_DMATDLR);
- 	writel_relaxed(0, rs->regs + ROCKCHIP_SPI_DMARDLR);
- 	writel_relaxed(dmacr, rs->regs + ROCKCHIP_SPI_DMACR);
- 
--- 
-2.21.0
+T24gRnJpLCBBcHIgMTIsIDIwMTkgYXQgMTA6NDc6MjFBTSArMDEwMCwgTWFyayBCcm93biB3cm90
+ZToKPiBPbiBUaHUsIEFwciAxMSwgMjAxOSBhdCAxMTowMjoyNlBNICswMjAwLCBOb3JhbGYgVHLD
+uG5uZXMgd3JvdGU6Cj4gPiBEZW4gMTEuMDQuMjAxOSAyMC4xOCwgc2tyZXYgTHVrYXMgV3VubmVy
+Ogo+ID4gPiBPbiBUaHUsIEFwciAxMSwgMjAxOSBhdCAwNjo0MjozM1BNICswMjAwLCBOb3JhbGYg
+VHLDuG5uZXMgd3JvdGU6Cj4gPiA+ID4gQEAgLTEyOTksNiArMTI5OSwxMSBAQCBzdGF0aWMgdm9p
+ZCBfX3NwaV9wdW1wX21lc3NhZ2VzKHN0cnVjdCBzcGlfY29udHJvbGxlciAqY3RsciwgYm9vbCBp
+bl9rdGhyZWFkKQo+IAo+ID4gPiA+ICAJdHJhY2Vfc3BpX21lc3NhZ2Vfc3RhcnQoY3Rsci0+Y3Vy
+X21zZyk7Cj4gCj4gPiA+ID4gKwlyZXQgPSBzcGlfc3BsaXRfdHJhbnNmZXJzX21heHNpemUoY3Rs
+ciwgY3Rsci0+Y3VyX21zZywgY3Rsci0+bWF4X2RtYV9sZW4sCj4gPiA+ID4gKwkJCQkJICBHRlBf
+S0VSTkVMIHwgR0ZQX0RNQSk7Cj4gCj4gPiA+IFVtLCBzaG91bGRuJ3QgdGhpcyBiZSBpZmRlZidl
+ZCB0byBDT05GSUdfSEFTX0RNQT8KPiAKPiA+IE1heWJlLCBJIGRvbid0IGtub3cuIE1hcmsgZGlk
+bid0IG1lbnRpb25lZCBpdCB3aGVuIGhlIGNvbW1lbnRlZCBvbiBhCj4gPiBwcmV2aW91cyB2ZXJz
+aW9uIG9mIHRoaXMuIFNvbWUgaGF0ZSBpZmRlZidzIGFuZCB3YW50IHRvIGF2b2lkIHRoZW0sIHNv
+bWUKPiA+IGRvbid0Lgo+IAo+IEkgKnRoaW5rKiB3ZSBtYW5hZ2VkIHRvIGZpeCBhbGwgdGhlIGFy
+Y2hpdGVjdHVyZXMgdG8gYXQgbGVhc3Qgc3R1YiBvdXQKPiB0aGUgRE1BIGludGVyZmFjZXMsIGl0
+J3Mgc3VjaCBhIHBvaW50bGVzcyB0aGluZyB0byBoYXZlIGNvbmRpdGlvbmFsIC0KPiBpdCByZWFs
+bHkgb25seSBtYWtlcyBhIGRpZmZlcmVuY2UgZm9yIGJ1aWxkIGNvdmVyYWdlLgoKTXkgcG9pbnQg
+d2FzIHRoYXQgdGhlIGNhbGwgdG8gc3BpX3NwbGl0X3RyYW5zZmVyc19tYXhzaXplKCkgc2hvdWxk
+bid0CmJlIGNhbGxlZCBvbiBub24tRE1BLWNhcGFibGUgcGxhdGZvcm1zIGluIHRoZSBmaXJzdCBw
+bGFjZSAoYmVjYXVzZSBpdCdzCkRNQS1zcGVjaWZpYykuCgoKPiBPbiBGcmksIEFwciAxMiwgMjAx
+OSBhdCAxMjowMzozNVBNICswMjAwLCBrZXJuZWxAbWFydGluLnNwZXJsLm9yZyB3cm90ZToKPiA+
+IFRoZXJlIGlzIGEgcmVnaXN0ZXIgb2YgdGhlIFNQSSBjb250cm9sbGVyIHdoZXJlIHlvdSBoYXZl
+IHRvIGNvbmZpZ3VyZSB0aGUKPiA+IG51bWJlciBvZiBieXRlcyB0aGF0IGl0IHdpbGwgcmVxdWVz
+dCB2aWEgRE1BIChwcmltYXJpbHkgc3VwcG9ydCB0cmFuc2ZlcnMKPiA+IHRoYXQgYXJlIG5vdCBh
+IG11bHRpcGxlIG9mIDQgLSB0aGUgZGF0YSBpcyB0cmFuc2ZlcnJlZCBieSBETUEgYXMgd29yZHMp
+Lgo+ID4gU28gaXQgaXMgbm90IHJlYWxseSByZWxhdGVkIHRvIHRoZSBnZW5lcmFsIERNQSBpbXBs
+ZW1lbnRhdGlvbiBidXQgdG8gdGhlCj4gPiBETUEgKHJlcXVlc3QpIHN1cHBvcnQgb2YgdGhlIFNQ
+SSBjb250cm9sbGVyLgoKUmlnaHQsIGlmIHRoZSB0cmFuc2ZlciBpcyBub3QgYSBtdWx0aXBsZSBv
+ZiA0LCB0aGUgRE1BIGVuZ2luZSB3aWxsCndyaXRlIHVwIHRvIDMgc3VycGx1cyBieXRlcyB0byB0
+aGUgVFggRklGTy4gIFRoZSBTUEkgY29udHJvbGxlcgprbm93cyBob3cgbWFueSBieXRlcyBpdCBo
+YXMgdG8gc2VuZCBiZWNhdXNlIHRoZSBsZW5ndGggaXMgc2V0IHZpYQppdHMgRExFTiByZWdpc3Rl
+ciBmaXJzdC4gIEludGVybmFsbHkgaXQgY291bnRzIGRvd24gdGhlIERMRU4gcmVnaXN0ZXIKdG8g
+emVybyBhbmQgdGhlbiBzdG9wcyBjbG9ja2luZyBvdXQgYnl0ZXMuICBUaGUgc3VycGx1cyBieXRl
+cyB3cml0dGVuCmJ5IHRoZSBETUEgZW5naW5lIGFyZSB0aHVzIGxlZnQgYXMgcmVzaWR1ZSBpbiB0
+aGUgVFggRklGTyBhbmQgaGF2ZQp0byBiZSBmbHVzaGVkIGJ5IHNldHRpbmcgdGhlIENMRUFSX1RY
+IGJpdCBpbiB0aGUgQ1MgcmVnaXN0ZXIuCgpUaGFua3MsCgpMdWthcwpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpkcmktZGV2ZWwgbWFpbGluZyBsaXN0CmRy
+aS1kZXZlbEBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9kcmktZGV2ZWw=

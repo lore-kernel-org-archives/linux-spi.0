@@ -1,49 +1,93 @@
-From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: Re: [PATCH v4 2/4] spi: Split spi message into max_dma_len size chunks
-Date: Fri, 12 Apr 2019 12:03:35 +0200
-Message-ID: <B40B4313-3965-42D9-9228-92E275A7D2AA@martin.sperl.org>
-References: <20190411164235.49771-1-noralf@tronnes.org>
- <20190411164235.49771-3-noralf@tronnes.org>
- <20190411181836.t2vuutqhjglsxsaz@wunner.de>
- <98571639-840a-494c-9e41-29ff89a22a8e@tronnes.org>
- <20190412094721.GE6909@sirena.org.uk>
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org, linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- =?iso-8859-1?Q?Noralf_Tr=F8nnes?= <noralf-L59+Z2yzLopAfugRpC6u6w@public.gmane.org>,
- linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
- meghana.madhyastha-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <20190412094721.GE6909-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
-List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/2] spi: Add spi_is_bpw_supported()
+Date: Fri, 12 Apr 2019 11:16:52 +0100
+Message-ID: <20190412101652.GF6909@sirena.org.uk>
+References: <20190412094131.25616-1-noralf@tronnes.org>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============0842659531=="
+Cc: dri-devel@lists.freedesktop.org, linux-spi@vger.kernel.org
+To: Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf@tronnes.org>
+Return-path: <dri-devel-bounces@lists.freedesktop.org>
+In-Reply-To: <20190412094131.25616-1-noralf@tronnes.org>
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
+List-Post: <mailto:dri-devel@lists.freedesktop.org>
+List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: dri-devel-bounces@lists.freedesktop.org
+Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
 List-Id: linux-spi.vger.kernel.org
 
 
-> On 12.04.2019, at 11:47, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> 
-> 
->> In a previous version of this I suggested to Meghana to put this in the
->> driver, but Mark wanted it in the core.
-> 
-> If we want to do this at a lower level the DMA code could hide this
-> limitation from the upper layers; presumably the SPI driver isn't the
-> only thing that might run into this.
+--===============0842659531==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="NQTVMVnDVuULnIzU"
+Content-Disposition: inline
 
-For clarification:
-There is a register of the SPI controller where you have to configure the
-number of bytes that it will request via DMA (primarily support transfers
-that are not a multiple of 4 - the data is transferred by DMA as words).
-So it is not really related to the general DMA implementation but to the
-DMA (request) support of the SPI controller.
 
-Martin
+--NQTVMVnDVuULnIzU
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Apr 12, 2019 at 11:41:30AM +0200, Noralf Tr=F8nnes wrote:
+> This let SPI clients check if the controller supports a particular word
+> width. drivers/gpu/drm/tinydrm/mipi-dbi.c will use this to determine if
+> the controller supports 16-bit for RGB565 pixels. If it doesn't it will
+> swap the bytes before transfer on little endian machines.
+
+The following changes since commit 9e98c678c2d6ae3a17cb2de55d17f69dddaa231b:
+
+  Linux 5.1-rc1 (2019-03-17 14:22:26 -0700)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-=
+bpw-is-supported
+
+for you to fetch changes up to e6f3f7e4dc76eb8d8a546dc66621a02c5c84f4ac:
+
+  spi: Add spi_is_bpw_supported() (2019-04-12 11:13:36 +0100)
+
+----------------------------------------------------------------
+spi: Add spi_is_bpw_supported()
+
+Lets client drivers check and potentially handle issues.
+
+----------------------------------------------------------------
+Noralf Tr=F8nnes (1):
+      spi: Add spi_is_bpw_supported()
+
+ include/linux/spi/spi.h | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+--NQTVMVnDVuULnIzU
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlywZZMACgkQJNaLcl1U
+h9CuNggAgp86JGebZHJT6nnSDJEmlrX5RyuqUtYAKoTAPP1KcNlNXBiiSLR7yBMQ
+KtbhHTmn+0HBsYOzoMDqIUabclku9/O1fhi7UYuF0DVdkldEp+Yi1VONasv9147a
+lMukJHdqHziI/+/C84jJpYcRqxU50xMkcUabVKv5fXGI/xYLyNo/Si7GDqoFJ/ng
+ac1u7jXCOEcDkPxKfZJgZg+jOg1a9MFFndNiVeY8wvji763KgHHKUBigFV2tPivF
+ZxAzu6B39a1jNRh1NKjikL3IYsWxlCCGgG082BgIkfA0/F08ZpRVWagUie/QWc7b
+qLjeHwTRQOohq6i0jVALoVj3Jpi9GA==
+=zxyr
+-----END PGP SIGNATURE-----
+
+--NQTVMVnDVuULnIzU--
+
+--===============0842659531==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KZHJpLWRldmVs
+IG1haWxpbmcgbGlzdApkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
+dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vZHJpLWRldmVs
+
+--===============0842659531==--

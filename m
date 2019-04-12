@@ -1,16 +1,19 @@
-From: =?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>
-Subject: [PATCH 2/2] drm/tinydrm: Use spi_is_bpw_supported()
-Date: Fri, 12 Apr 2019 11:41:31 +0200
-Message-ID: <20190412094131.25616-2-noralf@tronnes.org>
-References: <20190412094131.25616-1-noralf@tronnes.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v4 2/4] spi: Split spi message into max_dma_len size chunks
+Date: Fri, 12 Apr 2019 10:47:21 +0100
+Message-ID: <20190412094721.GE6909@sirena.org.uk>
+References: <20190411164235.49771-1-noralf@tronnes.org>
+ <20190411164235.49771-3-noralf@tronnes.org>
+ <20190411181836.t2vuutqhjglsxsaz@wunner.de>
+ <98571639-840a-494c-9e41-29ff89a22a8e@tronnes.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: broonie@kernel.org
-To: linux-spi@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0254915989=="
+Cc: stefan.wahren@i2se.com, dri-devel@lists.freedesktop.org,
+ linux-spi@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+ meghana.madhyastha@gmail.com, kernel@martin.sperl.org
+To: Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf@tronnes.org>
 Return-path: <dri-devel-bounces@lists.freedesktop.org>
-In-Reply-To: <20190412094131.25616-1-noralf@tronnes.org>
+In-Reply-To: <98571639-840a-494c-9e41-29ff89a22a8e@tronnes.org>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
  <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
@@ -22,68 +25,104 @@ Errors-To: dri-devel-bounces@lists.freedesktop.org
 Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
 List-Id: linux-spi.vger.kernel.org
 
-VGhpcyBtZWFucyB0aGF0IHRpbnlkcm1fc3BpX2Jwd19zdXBwb3J0ZWQoKSBjYW4gYmUgcmVtb3Zl
-ZC4KClNpZ25lZC1vZmYtYnk6IE5vcmFsZiBUcsO4bm5lcyA8bm9yYWxmQHRyb25uZXMub3JnPgot
-LS0KIC4uLi9ncHUvZHJtL3Rpbnlkcm0vY29yZS90aW55ZHJtLWhlbHBlcnMuYyAgICB8IDMyICst
-LS0tLS0tLS0tLS0tLS0tLS0KIGRyaXZlcnMvZ3B1L2RybS90aW55ZHJtL21pcGktZGJpLmMgICAg
-ICAgICAgICB8ICA1ICsrLQogaW5jbHVkZS9kcm0vdGlueWRybS90aW55ZHJtLWhlbHBlcnMuaCAg
-ICAgICAgIHwgIDEgLQogMyBmaWxlcyBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDM1IGRlbGV0
-aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvZ3B1L2RybS90aW55ZHJtL2NvcmUvdGlueWRy
-bS1oZWxwZXJzLmMgYi9kcml2ZXJzL2dwdS9kcm0vdGlueWRybS9jb3JlL3Rpbnlkcm0taGVscGVy
-cy5jCmluZGV4IDZkNTQwZDkzNzU4Zi4uYTJiMjRiNTY4MGJhIDEwMDY0NAotLS0gYS9kcml2ZXJz
-L2dwdS9kcm0vdGlueWRybS9jb3JlL3Rpbnlkcm0taGVscGVycy5jCisrKyBiL2RyaXZlcnMvZ3B1
-L2RybS90aW55ZHJtL2NvcmUvdGlueWRybS1oZWxwZXJzLmMKQEAgLTU3LDM2ICs1Nyw2IEBAIHNp
-emVfdCB0aW55ZHJtX3NwaV9tYXhfdHJhbnNmZXJfc2l6ZShzdHJ1Y3Qgc3BpX2RldmljZSAqc3Bp
-LCBzaXplX3QgbWF4X2xlbikKIH0KIEVYUE9SVF9TWU1CT0wodGlueWRybV9zcGlfbWF4X3RyYW5z
-ZmVyX3NpemUpOwogCi0vKioKLSAqIHRpbnlkcm1fc3BpX2Jwd19zdXBwb3J0ZWQgLSBDaGVjayBp
-ZiBiaXRzIHBlciB3b3JkIGlzIHN1cHBvcnRlZAotICogQHNwaTogU1BJIGRldmljZQotICogQGJw
-dzogQml0cyBwZXIgd29yZAotICoKLSAqIFRoaXMgZnVuY3Rpb24gY2hlY2tzIHRvIHNlZSBpZiB0
-aGUgU1BJIG1hc3RlciBkcml2ZXIgc3VwcG9ydHMgQGJwdy4KLSAqCi0gKiBSZXR1cm5zOgotICog
-VHJ1ZSBpZiBAYnB3IGlzIHN1cHBvcnRlZCwgZmFsc2Ugb3RoZXJ3aXNlLgotICovCi1ib29sIHRp
-bnlkcm1fc3BpX2Jwd19zdXBwb3J0ZWQoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSwgdTggYnB3KQot
-ewotCXUzMiBicHdfbWFzayA9IHNwaS0+bWFzdGVyLT5iaXRzX3Blcl93b3JkX21hc2s7Ci0KLQlp
-ZiAoYnB3ID09IDgpCi0JCXJldHVybiB0cnVlOwotCi0JaWYgKCFicHdfbWFzaykgewotCQlkZXZf
-d2Fybl9vbmNlKCZzcGktPmRldiwKLQkJCSAgICAgICJiaXRzX3Blcl93b3JkX21hc2sgbm90IHNl
-dCwgYXNzdW1lIDgtYml0IG9ubHlcbiIpOwotCQlyZXR1cm4gZmFsc2U7Ci0JfQotCi0JaWYgKGJw
-d19tYXNrICYgU1BJX0JQV19NQVNLKGJwdykpCi0JCXJldHVybiB0cnVlOwotCi0JcmV0dXJuIGZh
-bHNlOwotfQotRVhQT1JUX1NZTUJPTCh0aW55ZHJtX3NwaV9icHdfc3VwcG9ydGVkKTsKLQogc3Rh
-dGljIHZvaWQKIHRpbnlkcm1fZGJnX3NwaV9wcmludChzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpLCBz
-dHJ1Y3Qgc3BpX3RyYW5zZmVyICp0ciwKIAkJICAgICAgY29uc3Qgdm9pZCAqYnVmLCBpbnQgaWR4
-LCBib29sIHR4KQpAQCAtMTYzLDcgKzEzMyw3IEBAIGludCB0aW55ZHJtX3NwaV90cmFuc2Zlcihz
-dHJ1Y3Qgc3BpX2RldmljZSAqc3BpLCB1MzIgc3BlZWRfaHosCiAJCXByX2RlYnVnKCJbZHJtOiVz
-XSBicHc9JXUsIG1heF9jaHVuaz0lenUsIHRyYW5zZmVyczpcbiIsCiAJCQkgX19mdW5jX18sIGJw
-dywgbWF4X2NodW5rKTsKIAotCWlmIChicHcgPT0gMTYgJiYgIXRpbnlkcm1fc3BpX2Jwd19zdXBw
-b3J0ZWQoc3BpLCAxNikpIHsKKwlpZiAoYnB3ID09IDE2ICYmICFzcGlfaXNfYnB3X3N1cHBvcnRl
-ZChzcGksIDE2KSkgewogCQl0ci5iaXRzX3Blcl93b3JkID0gODsKIAkJaWYgKHRpbnlkcm1fbWFj
-aGluZV9saXR0bGVfZW5kaWFuKCkpIHsKIAkJCXN3YXBfYnVmID0ga21hbGxvYyhtaW4obGVuLCBt
-YXhfY2h1bmspLCBHRlBfS0VSTkVMKTsKZGlmZiAtLWdpdCBhL2RyaXZlcnMvZ3B1L2RybS90aW55
-ZHJtL21pcGktZGJpLmMgYi9kcml2ZXJzL2dwdS9kcm0vdGlueWRybS9taXBpLWRiaS5jCmluZGV4
-IDg1NzYxYjRhYmI4My4uNTM0YjE2OTI2YmVlIDEwMDY0NAotLS0gYS9kcml2ZXJzL2dwdS9kcm0v
-dGlueWRybS9taXBpLWRiaS5jCisrKyBiL2RyaXZlcnMvZ3B1L2RybS90aW55ZHJtL21pcGktZGJp
-LmMKQEAgLTc4Nyw3ICs3ODcsNyBAQCBzdGF0aWMgaW50IG1pcGlfZGJpX3NwaTFfdHJhbnNmZXIo
-c3RydWN0IG1pcGlfZGJpICptaXBpLCBpbnQgZGMsCiAJdTE2ICpkc3QxNjsKIAlpbnQgcmV0Owog
-Ci0JaWYgKCF0aW55ZHJtX3NwaV9icHdfc3VwcG9ydGVkKHNwaSwgOSkpCisJaWYgKCFzcGlfaXNf
-YnB3X3N1cHBvcnRlZChzcGksIDkpKQogCQlyZXR1cm4gbWlwaV9kYmlfc3BpMWVfdHJhbnNmZXIo
-bWlwaSwgZGMsIGJ1ZiwgbGVuLCBicHcpOwogCiAJdHIuc3BlZWRfaHogPSBtaXBpX2RiaV9zcGlf
-Y21kX21heF9zcGVlZChzcGksIGxlbik7CkBAIC0xMDA4LDggKzEwMDgsNyBAQCBpbnQgbWlwaV9k
-Ymlfc3BpX2luaXQoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSwgc3RydWN0IG1pcGlfZGJpICptaXBp
-LAogCWlmIChkYykgewogCQltaXBpLT5jb21tYW5kID0gbWlwaV9kYmlfdHlwZWMzX2NvbW1hbmQ7
-CiAJCW1pcGktPmRjID0gZGM7Ci0JCWlmICh0aW55ZHJtX21hY2hpbmVfbGl0dGxlX2VuZGlhbigp
-ICYmCi0JCSAgICAhdGlueWRybV9zcGlfYnB3X3N1cHBvcnRlZChzcGksIDE2KSkKKwkJaWYgKHRp
-bnlkcm1fbWFjaGluZV9saXR0bGVfZW5kaWFuKCkgJiYgIXNwaV9pc19icHdfc3VwcG9ydGVkKHNw
-aSwgMTYpKQogCQkJbWlwaS0+c3dhcF9ieXRlcyA9IHRydWU7CiAJfSBlbHNlIHsKIAkJbWlwaS0+
-Y29tbWFuZCA9IG1pcGlfZGJpX3R5cGVjMV9jb21tYW5kOwpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9k
-cm0vdGlueWRybS90aW55ZHJtLWhlbHBlcnMuaCBiL2luY2x1ZGUvZHJtL3Rpbnlkcm0vdGlueWRy
-bS1oZWxwZXJzLmgKaW5kZXggN2QyNTlhY2I4ODI2Li5hMzVhNzhlN2IxMDkgMTAwNjQ0Ci0tLSBh
-L2luY2x1ZGUvZHJtL3Rpbnlkcm0vdGlueWRybS1oZWxwZXJzLmgKKysrIGIvaW5jbHVkZS9kcm0v
-dGlueWRybS90aW55ZHJtLWhlbHBlcnMuaApAQCAtNDcsNyArNDcsNiBAQCBpbnQgdGlueWRybV9k
-aXNwbGF5X3BpcGVfaW5pdChzdHJ1Y3QgZHJtX2RldmljZSAqZHJtLAogCQkJICAgICAgdW5zaWdu
-ZWQgaW50IHJvdGF0aW9uKTsKIAogc2l6ZV90IHRpbnlkcm1fc3BpX21heF90cmFuc2Zlcl9zaXpl
-KHN0cnVjdCBzcGlfZGV2aWNlICpzcGksIHNpemVfdCBtYXhfbGVuKTsKLWJvb2wgdGlueWRybV9z
-cGlfYnB3X3N1cHBvcnRlZChzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpLCB1OCBicHcpOwogaW50IHRp
-bnlkcm1fc3BpX3RyYW5zZmVyKHN0cnVjdCBzcGlfZGV2aWNlICpzcGksIHUzMiBzcGVlZF9oeiwK
-IAkJCSBzdHJ1Y3Qgc3BpX3RyYW5zZmVyICpoZWFkZXIsIHU4IGJwdywgY29uc3Qgdm9pZCAqYnVm
-LAogCQkJIHNpemVfdCBsZW4pOwotLSAKMi4yMC4xCgpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwpkcmktZGV2ZWwgbWFpbGluZyBsaXN0CmRyaS1kZXZlbEBs
-aXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9kcmktZGV2ZWw=
+
+--===============0254915989==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="pY3vCvL1qV+PayAL"
+Content-Disposition: inline
+
+
+--pY3vCvL1qV+PayAL
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Apr 11, 2019 at 11:02:26PM +0200, Noralf Tr=F8nnes wrote:
+> Den 11.04.2019 20.18, skrev Lukas Wunner:
+> > On Thu, Apr 11, 2019 at 06:42:33PM +0200, Noralf Tr=F8nnes wrote:
+> >> @@ -1299,6 +1299,11 @@ static void __spi_pump_messages(struct spi_cont=
+roller *ctlr, bool in_kthread)
+
+> >>  	trace_spi_message_start(ctlr->cur_msg);
+
+> >> +	ret =3D spi_split_transfers_maxsize(ctlr, ctlr->cur_msg, ctlr->max_d=
+ma_len,
+> >> +					  GFP_KERNEL | GFP_DMA);
+
+> > Um, shouldn't this be ifdef'ed to CONFIG_HAS_DMA?
+
+> Maybe, I don't know. Mark didn't mentioned it when he commented on a
+> previous version of this. Some hate ifdef's and want to avoid them, some
+> don't.
+
+I *think* we managed to fix all the architectures to at least stub out
+the DMA interfaces, it's such a pointless thing to have conditional -
+it really only makes a difference for build coverage.
+
+> >> Some drivers like spi_bcm2835 have a max size on DMA transfers. Work
+> >> around this by splitting up the transfer if necessary.
+
+> > This feels like a very expensive solution to the problem:  Large transf=
+ers
+> > are split into multiple smaller transfers (requiring lots of overhead to
+> > allocate and populate the structures) and the split transfers seem to be
+> > cached for later reuse.
+
+> Only drivers that set ->max_dma_len will be split, and only when the
+> length is bigger. I can't see any caching with a quick glance, where do
+> you see it?
+
+It *is* more expensive to post-process the transfers and have to do
+allocations rather than having them set up as we want them on the way
+in.
+
+> > Even the normal case when no transfers exceed the limit is affected by
+> > additional overhead, namely an iteration over the transfer list to
+> > check each transfers' length. :-(
+
+We already have the iterations in the message validation, if the code is
+integrated there the overhead will be reduced.
+
+> > Note that spi_map_buf() already splits every transfer's sglist into
+> > segments that are smaller than ctlr->max_dma_len.  Now all that needs
+> > to be done is to amend spi-bcm2835.c to iterate over the sglist
+> > and transmit it in portions which do not exceed 65535.  Addressing the
+> > problem at this lower level would drastically reduce the overhead
+> > compared to the approach in the present patch and hence appears to be
+> > more recommendable.
+
+> In a previous version of this I suggested to Meghana to put this in the
+> driver, but Mark wanted it in the core.
+
+If we want to do this at a lower level the DMA code could hide this
+limitation from the upper layers; presumably the SPI driver isn't the
+only thing that might run into this.
+
+--pY3vCvL1qV+PayAL
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlywXqkACgkQJNaLcl1U
+h9AONQf/aGGY6E45d69dINbPciN+mygGwABKQAFAnFDY5SEc9wP4sF7YZd9TCGiG
+8NaJcQ2QkOrywTe469T02PJs1WPOWq3yQIYnOHumt8Z1BsHy7tTh+SuLYCazdQ6r
+5ZYq5nopz/4hEakSNv3DQOBhex+UeHfg48TleldTCmU/icvChIwwiwxxGFNQzihm
+g40dB9cNYnHbcM7Phnbft9banG/s7xBpFBGYGgKKIzhUEBgmb1byLZNoulwzA0cJ
+ZMNPgyKN47Kd3CbxdUo9prsJ9Td+QV7gfia1Z4fwUvH90LJ9pK5bPeAIbkyEZ1tO
+JOXlt/lYn9ZIRMIyF2WBbk92fl+NEg==
+=/TVJ
+-----END PGP SIGNATURE-----
+
+--pY3vCvL1qV+PayAL--
+
+--===============0254915989==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KZHJpLWRldmVs
+IG1haWxpbmcgbGlzdApkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
+dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vZHJpLWRldmVs
+
+--===============0254915989==--

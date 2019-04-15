@@ -1,16 +1,19 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: Add spi_is_bpw_supported()" to the spi tree
+Subject: Applied "spi: Remove warning in spi_split_transfers_maxsize()" to the
+ spi tree
 Date: Mon, 15 Apr 2019 09:53:33 +0100 (BST)
-Message-ID: <20190415085333.EA6241127A64@debutante.sirena.org.uk>
-References: <20190412094131.25616-1-noralf@tronnes.org>
+Message-ID: <20190415085333.3996811279E1@debutante.sirena.org.uk>
+References: <20190413182415.38543-2-noralf@tronnes.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0414107455=="
-Cc: Mark Brown <broonie@kernel.org>, dri-devel@lists.freedesktop.org,
- linux-spi@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============1331447000=="
+Cc: stefan.wahren@i2se.com, dri-devel@lists.freedesktop.org,
+ linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+ linux-rpi-kernel@lists.infradead.org, meghana.madhyastha@gmail.com,
+ kernel@martin.sperl.org
 To: =?UTF-8?Q?Noralf=20Tr=C3=83=C2=B8nnes=20=3Cnora?=
  =?UTF-8?Q?lf=40tronnes=2Eorg=3E?=
 Return-path: <dri-devel-bounces@lists.freedesktop.org>
-In-Reply-To: <20190412094131.25616-1-noralf@tronnes.org>
+In-Reply-To: <20190413182415.38543-2-noralf@tronnes.org>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
  <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
@@ -22,12 +25,12 @@ Errors-To: dri-devel-bounces@lists.freedesktop.org
 Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
 List-Id: linux-spi.vger.kernel.org
 
---===============0414107455==
+--===============1331447000==
 Content-Type: text/plain
 
 The patch
 
-   spi: Add spi_is_bpw_supported()
+   spi: Remove warning in spi_split_transfers_maxsize()
 
 has been applied to the spi tree at
 
@@ -52,61 +55,44 @@ to this mail.
 Thanks,
 Mark
 
->From e6f3f7e4dc76eb8d8a546dc66621a02c5c84f4ac Mon Sep 17 00:00:00 2001
+>From 179f7949c0663f1923564acf0e626d459ea80047 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>
-Date: Fri, 12 Apr 2019 11:41:30 +0200
-Subject: [PATCH] spi: Add spi_is_bpw_supported()
+Date: Sat, 13 Apr 2019 20:24:12 +0200
+Subject: [PATCH] spi: Remove warning in spi_split_transfers_maxsize()
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This let SPI clients check if the controller supports a particular word
-width. drivers/gpu/drm/tinydrm/mipi-dbi.c will use this to determine if
-the controller supports 16-bit for RGB565 pixels. If it doesn't it will
-swap the bytes before transfer on little endian machines.
+Don't warn about splitting transfers, the info is available in the
+statistics if needed.
 
 Signed-off-by: Noralf Trønnes <noralf@tronnes.org>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- include/linux/spi/spi.h | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/spi/spi.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 662b336aa2e4..b30e3d13a5ac 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -983,6 +983,26 @@ spi_max_transfer_size(struct spi_device *spi)
- 	return min(tr_max, msg_max);
- }
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 86a31340ad03..3c6c6101b611 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2788,11 +2788,6 @@ static int __spi_split_transfer_maxsize(struct spi_controller *ctlr,
+ 	size_t offset;
+ 	size_t count, i;
  
-+/**
-+ * spi_is_bpw_supported - Check if bits per word is supported
-+ * @spi: SPI device
-+ * @bpw: Bits per word
-+ *
-+ * This function checks to see if the SPI controller supports @bpw.
-+ *
-+ * Returns:
-+ * True if @bpw is supported, false otherwise.
-+ */
-+static inline bool spi_is_bpw_supported(struct spi_device *spi, u32 bpw)
-+{
-+	u32 bpw_mask = spi->master->bits_per_word_mask;
-+
-+	if (bpw == 8 || (bpw <= 32 && bpw_mask & SPI_BPW_MASK(bpw)))
-+		return true;
-+
-+	return false;
-+}
-+
- /*---------------------------------------------------------------------------*/
+-	/* warn once about this fact that we are splitting a transfer */
+-	dev_warn_once(&msg->spi->dev,
+-		      "spi_transfer of length %i exceed max length of %zu - needed to split transfers\n",
+-		      xfer->len, maxsize);
+-
+ 	/* calculate how many we have to replace */
+ 	count = DIV_ROUND_UP(xfer->len, maxsize);
  
- /* SPI transfer replacement methods which make use of spi_res */
 -- 
 2.20.1
 
 
---===============0414107455==
+--===============1331447000==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: base64
@@ -116,4 +102,4 @@ X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KZHJpLWRldmVs
 IG1haWxpbmcgbGlzdApkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
 dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vZHJpLWRldmVs
 
---===============0414107455==--
+--===============1331447000==--

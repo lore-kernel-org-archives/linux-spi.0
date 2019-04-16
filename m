@@ -1,45 +1,56 @@
-From: Evan Green <evgreen@chromium.org>
-Subject: [PATCH] spi: pxa2xx: Add support for Intel Comet Lake
-Date: Mon, 15 Apr 2019 20:27:43 -0700
-Message-ID: <20190416032743.180517-1-evgreen@chromium.org>
+From: Matthias Brugger <matthias.bgg@gmail.com>
+Subject: Re: [PATCH 18/24] dt-bindings: timer: mtk-timer: add support for
+ MT8516
+Date: Tue, 16 Apr 2019 09:54:46 +0200
+Message-ID: <182f1ae5-9f4f-8ef4-695f-353bbd1966c6@gmail.com>
+References: <20190323211612.860-1-fparent@baylibre.com>
+ <20190323211612.860-19-fparent@baylibre.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: Rajat Jain <rajatja@chromium.org>,
-        Evan Green <evgreen@chromium.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Daniel Mack <daniel@zonque.org>,
-        linux-arm-kernel@lists.infradead.org
-To: Mark Brown <broonie@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: sean.wang@kernel.org, ryder.lee@mediatek.com,
+        hsin-hsiung.wang@mediatek.com, wenzhen.yu@mediatek.com,
+        chaotian.jing@mediatek.com, yong.mao@mediatek.com,
+        jjian.zhou@mediatek.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-mmc@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-clk@vger.kernel.org, stephane.leprovost@mediatek.com
+To: Fabien Parent <fparent@baylibre.com>, robh+dt@kernel.org,
+        mark.rutland@arm.com, Daniel Lezcano <daniel.lezcano@linaro.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190323211612.860-19-fparent@baylibre.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add PCI IDs for SPI on Comet Lake.
 
-Signed-off-by: Evan Green <evgreen@chromium.org>
 
----
+On 23/03/2019 22:16, Fabien Parent wrote:
+> Add binding documentation of mtk-timer for MT8516 SoC.
+> 
+> Signed-off-by: Fabien Parent <fparent@baylibre.com>
+> ---
+>  Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt | 1 +
+>  1 file changed, 1 insertion(+)
 
- drivers/spi/spi-pxa2xx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+applied to v5.1-next/dts64
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index b6ddba833d021..493223e1d032d 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1451,6 +1451,10 @@ static const struct pci_device_id pxa2xx_spi_pci_compound_match[] = {
- 	{ PCI_VDEVICE(INTEL, 0xa32a), LPSS_CNL_SSP },
- 	{ PCI_VDEVICE(INTEL, 0xa32b), LPSS_CNL_SSP },
- 	{ PCI_VDEVICE(INTEL, 0xa37b), LPSS_CNL_SSP },
-+	/* CML-LP */
-+	{ PCI_VDEVICE(INTEL, 0x02aa), LPSS_CNL_SSP },
-+	{ PCI_VDEVICE(INTEL, 0x02ab), LPSS_CNL_SSP },
-+	{ PCI_VDEVICE(INTEL, 0x02fb), LPSS_CNL_SSP },
- 	{ },
- };
- 
--- 
-2.20.1
+Daniel let me know if you want to take it through your tree and I drop the patch.
+
+> 
+> diff --git a/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt b/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt
+> index ff7c567a7972..74c3eadad844 100644
+> --- a/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt
+> +++ b/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt
+> @@ -17,6 +17,7 @@ Required properties:
+>  	* "mediatek,mt8127-timer" for MT8127 compatible timers (GPT)
+>  	* "mediatek,mt8135-timer" for MT8135 compatible timers (GPT)
+>  	* "mediatek,mt8173-timer" for MT8173 compatible timers (GPT)
+> +	* "mediatek,mt8516-timer" for MT8516 compatible timers (GPT)
+>  	* "mediatek,mt6577-timer" for MT6577 and all above compatible timers (GPT)
+>  
+>  	For those SoCs that use SYST
+> 

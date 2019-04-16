@@ -1,15 +1,15 @@
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: Re: [PATCH 18/24] dt-bindings: timer: mtk-timer: add support for
- MT8516
-Date: Tue, 16 Apr 2019 10:09:47 +0200
-Message-ID: <e4895191-c267-7b0b-6203-8e4ff44927e0@linaro.org>
+From: Wolfram Sang <wsa@the-dreams.de>
+Subject: Re: [PATCH 22/24] dt-bindings: i2c: i2c-mtk: add support for MT8516
+Date: Tue, 16 Apr 2019 10:14:33 +0200
+Message-ID: <20190416081433.GA1012@kunai>
 References: <20190323211612.860-1-fparent@baylibre.com>
- <20190323211612.860-19-fparent@baylibre.com>
- <182f1ae5-9f4f-8ef4-695f-353bbd1966c6@gmail.com>
+ <20190323211612.860-23-fparent@baylibre.com>
+ <2a384e4b-a23d-450b-ee37-57af8c097bae@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Cc: sean.wang@kernel.org, ryder.lee@mediatek.com,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="pWyiEgJYm5f9v55/"
+Cc: Fabien Parent <fparent@baylibre.com>, robh+dt@kernel.org,
+        mark.rutland@arm.com, sean.wang@kernel.org, ryder.lee@mediatek.com,
         hsin-hsiung.wang@mediatek.com, wenzhen.yu@mediatek.com,
         chaotian.jing@mediatek.com, yong.mao@mediatek.com,
         jjian.zhou@mediatek.com, devicetree@vger.kernel.org,
@@ -19,52 +19,59 @@ Cc: sean.wang@kernel.org, ryder.lee@mediatek.com,
         linux-gpio@vger.kernel.org, linux-serial@vger.kernel.org,
         linux-spi@vger.kernel.org, linux-watchdog@vger.kernel.org,
         linux-clk@vger.kernel.org, stephane.leprovost@mediatek.com
-To: Matthias Brugger <matthias.bgg@gmail.com>,
-        Fabien Parent <fparent@baylibre.com>, robh+dt@kernel.org,
-        mark.rutland@arm.com
+To: Matthias Brugger <matthias.bgg@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <182f1ae5-9f4f-8ef4-695f-353bbd1966c6@gmail.com>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <2a384e4b-a23d-450b-ee37-57af8c097bae@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 16/04/2019 09:54, Matthias Brugger wrote:
-> 
-> 
+
+--pWyiEgJYm5f9v55/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Apr 16, 2019 at 09:58:09AM +0200, Matthias Brugger wrote:
+>=20
+>=20
 > On 23/03/2019 22:16, Fabien Parent wrote:
->> Add binding documentation of mtk-timer for MT8516 SoC.
->>
->> Signed-off-by: Fabien Parent <fparent@baylibre.com>
->> ---
->>  Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt | 1 +
->>  1 file changed, 1 insertion(+)
-> 
+> > Add binding documentation of i2c-mtk for MT8516 SoC.
+> >=20
+> > Signed-off-by: Fabien Parent <fparent@baylibre.com>
+> > ---
+> >  Documentation/devicetree/bindings/i2c/i2c-mtk.txt | 1 +
+> >  1 file changed, 1 insertion(+)
+> >=20
+>=20
+>=20
 > applied to v5.1-next/dts64
-> 
-> Daniel let me know if you want to take it through your tree and I drop the patch.
+>=20
+> Wolfram let me know if you want to take it through your tree and I drop t=
+he patch.
 
-It is ok.
-
-Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-
->> diff --git a/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt b/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt
->> index ff7c567a7972..74c3eadad844 100644
->> --- a/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt
->> +++ b/Documentation/devicetree/bindings/timer/mediatek,mtk-timer.txt
->> @@ -17,6 +17,7 @@ Required properties:
->>  	* "mediatek,mt8127-timer" for MT8127 compatible timers (GPT)
->>  	* "mediatek,mt8135-timer" for MT8135 compatible timers (GPT)
->>  	* "mediatek,mt8173-timer" for MT8173 compatible timers (GPT)
->> +	* "mediatek,mt8516-timer" for MT8516 compatible timers (GPT)
->>  	* "mediatek,mt6577-timer" for MT6577 and all above compatible timers (GPT)
->>  
->>  	For those SoCs that use SYST
->>
+I'd like to take it via my tree to reduce conflicts. It already needs
+rebasing on top of i2c/for-next because of Qii's MT8183 patches.
 
 
--- 
- <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+--pWyiEgJYm5f9v55/
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAly1juUACgkQFA3kzBSg
+KbYvkBAAo8J4Hb7o2xSpDcB8bhSQ1zO7nKdqSNmT34i8lqsMct1Ou45q3AYaC3cg
+pVFmgD0UWBqAw0WPxsWl2TMUuVn1BajUEr5iOYd7PrxGWXHEeFfZIRn4EGiQrtPl
+4EH0eSgh5Oyh3DbwCuLAv94BaKkLom+RHcmdirrmePEkvlQGrnymlWkyK3MTNi09
+bjcuB4TkVfjoYxq4f/KRQVcIseBwVNls5eGiESPZc4cDz3hUhTbWjRgo7lG21Bf6
+3uEWyzN9zOwwrPssdem4GTLg4kgma+NMeZTlc0DVfzSf05jfCJLyJQraBoTGVrJ8
+wIQYipa3kdpjKx9pqRW3BBAkGNms8o++1Ht3Cd2O7YeXwPmRiNW0mkAfcz8G68sP
+bZIVt8Z/fYqPEvwVWj8XgNih1RLHxNLwTMrVkvvVGM+x9G39LiV6aZQU738FjsGm
+/HuBzRyd+bUBLrJxFGQCpxp+ocdI825KEkCOW7XKPUUeSF+Gm01NeWM9h+CmmMbj
+eX/o095Wj4cNXVhcMqNy8szkHuQbE1Ql5XnoML3eT6kg6POIZSDQzcf97SPHoqxN
+sdUdqQslPz2cufPhdLQKXq5Hu1jL99pwoD0ff3uB7davdsnUxTmTD31GhX2eEDaj
+Lo4dAVDImji28LAAtVhIPXhvZLqzWCUBXVM8hGd9ZSltSVq6DAk=
+=72J6
+-----END PGP SIGNATURE-----
+
+--pWyiEgJYm5f9v55/--

@@ -1,65 +1,76 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 19/24] dt-bindings: spi: spi-mt65xx: add support for
- MT8516
-Date: Tue, 16 Apr 2019 15:28:14 +0100
-Message-ID: <20190416142814.GB4834@sirena.org.uk>
-References: <20190323211612.860-1-fparent@baylibre.com>
- <20190323211612.860-20-fparent@baylibre.com>
- <5bc3fbfa-6d7e-08d3-116c-a8f78bc680cd@gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="0eh6TmSyL6TZE2Uz"
-Cc: Fabien Parent <fparent@baylibre.com>, robh+dt@kernel.org,
-        mark.rutland@arm.com, sean.wang@kernel.org, ryder.lee@mediatek.com,
-        hsin-hsiung.wang@mediatek.com, wenzhen.yu@mediatek.com,
-        chaotian.jing@mediatek.com, yong.mao@mediatek.com,
-        jjian.zhou@mediatek.com, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-mmc@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-clk@vger.kernel.org, stephane.leprovost@mediatek.com
-To: Matthias Brugger <matthias.bgg@gmail.com>
+Subject: Applied "spi: tegra114: fix PIO transfer" to the spi tree
+Date: Tue, 16 Apr 2019 17:32:57 +0100 (BST)
+Message-ID: <20190416163257.956F211281C6@debutante.sirena.org.uk>
+References: <1555363834-32155-2-git-send-email-skomatineni@nvidia.com>
+Cc: broonie@kernel.org, devicetree@vger.kernel.org,
+        jonathanh@nvidia.com, kyarlagadda@nvidia.com, ldewangan@nvidia.com,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-tegra@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        mark.rutland@arm.com, robh+dt@kernel.org, skomatineni@nvidia.com,
+        talho@nvidia.com, thierry.reding@gmail.com
+To: Sowjanya Komatineni <skomatineni@nvidia.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <5bc3fbfa-6d7e-08d3-116c-a8f78bc680cd@gmail.com>
+In-Reply-To: <1555363834-32155-2-git-send-email-skomatineni@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---0eh6TmSyL6TZE2Uz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: tegra114: fix PIO transfer
 
-On Tue, Apr 16, 2019 at 09:55:41AM +0200, Matthias Brugger wrote:
-> On 23/03/2019 22:16, Fabien Parent wrote:
-> > Add binding documentation of spi-mt65xx for MT8516 SoC.
+has been applied to the spi tree at
 
-> > Signed-off-by: Fabien Parent <fparent@baylibre.com>
-> > ---
-> >  Documentation/devicetree/bindings/spi/spi-mt65xx.txt | 1 +
-> >  1 file changed, 1 insertion(+)
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.1
 
-> applied to v5.1-next/dts64
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> Mark let me know if you want to take it through your tree and I drop the patch.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Yes, DT bindings generally get reviewed in the subsystem :(
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---0eh6TmSyL6TZE2Uz
-Content-Type: application/pgp-signature; name="signature.asc"
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
------BEGIN PGP SIGNATURE-----
+Thanks,
+Mark
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAly15n0ACgkQJNaLcl1U
-h9DZ1gf9H2Yrq00KAenFGyeh+9in9sO60dj3xTkLjw+cqBEC68iT6kOwJF1bGe49
-cTerjLC7g1Z4O7Fas/ExIVqn6vQ2DYvGTRDEQ/3OyrGJa0mL8WZe5ZxSPBrIqFGN
-DM83Tt+WHi26ZhKZ7F3eLtoN8TZcs7mNt9OAi2YF4OnoOS51JSyrOKA1sQn00xGf
-uQi9IfnJkLOxel+qQhsefoWYKwNZFcIz2qV4K1eKjcnvZKVW+3OeZ2QJok7qWFNf
-g/JHvvdaPgHk0ObyQXGNH83a2urwHLFrWNFWZIIHlR1HfpsOUXcTy4luxYlikFxg
-1F4MbBZ6WhZuYSlOJ2pQaNJHhEamgQ==
-=t4yQ
------END PGP SIGNATURE-----
+>From 3f6e3f7843a6a1667ed890ca51a1388fc7bf3429 Mon Sep 17 00:00:00 2001
+From: Sowjanya Komatineni <skomatineni@nvidia.com>
+Date: Mon, 15 Apr 2019 14:30:26 -0700
+Subject: [PATCH] spi: tegra114: fix PIO transfer
 
---0eh6TmSyL6TZE2Uz--
+This patch fixes PIO mode transfer to use PIO bit in SPI_COMMAND1 register.
+Current driver uses DMA_EN instead of PIO bit.
+
+Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-tegra114.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index b57f10182fae..21e4fdad013f 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -641,8 +641,9 @@ static int tegra_spi_start_cpu_based_transfer(
+ 
+ 	tspi->is_curr_dma_xfer = false;
+ 
+-	val |= SPI_DMA_EN;
+-	tegra_spi_writel(tspi, val, SPI_DMA_CTL);
++	val = tspi->command1_reg;
++	val |= SPI_PIO;
++	tegra_spi_writel(tspi, val, SPI_COMMAND1);
+ 	return 0;
+ }
+ 
+-- 
+2.20.1

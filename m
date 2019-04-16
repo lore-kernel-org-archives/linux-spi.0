@@ -1,56 +1,61 @@
-From: Matthias Brugger <matthias.bgg@gmail.com>
-Subject: Re: [PATCH 22/24] dt-bindings: i2c: i2c-mtk: add support for MT8516
-Date: Tue, 16 Apr 2019 09:58:09 +0200
-Message-ID: <2a384e4b-a23d-450b-ee37-57af8c097bae@gmail.com>
-References: <20190323211612.860-1-fparent@baylibre.com>
- <20190323211612.860-23-fparent@baylibre.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH] spi: pxa2xx: Add support for Intel Comet Lake
+Date: Tue, 16 Apr 2019 11:00:17 +0300
+Message-ID: <CAHp75VcPYu1APhcqcu-Df5ucpW-q597OCKHwne1dgqQsMM9+Fg@mail.gmail.com>
+References: <20190416032743.180517-1-evgreen@chromium.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: sean.wang@kernel.org, ryder.lee@mediatek.com,
-        hsin-hsiung.wang@mediatek.com, wenzhen.yu@mediatek.com,
-        chaotian.jing@mediatek.com, yong.mao@mediatek.com,
-        jjian.zhou@mediatek.com, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-mmc@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-clk@vger.kernel.org, stephane.leprovost@mediatek.com
-To: Fabien Parent <fparent@baylibre.com>, robh+dt@kernel.org,
-        mark.rutland@arm.com, Wolfram Sang <wsa@the-dreams.de>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rajat Jain <rajatja@chromium.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Daniel Mack <daniel@zonque.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>
+To: Evan Green <evgreen@chromium.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190323211612.860-23-fparent@baylibre.com>
-Content-Language: en-US
+In-Reply-To: <20190416032743.180517-1-evgreen@chromium.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Tue, Apr 16, 2019 at 6:28 AM Evan Green <evgreen@chromium.org> wrote:
+>
+> Add PCI IDs for SPI on Comet Lake.
+>
 
+I didn't check IDs, perhaps Jarkko can do it.
+>From other prospectives looks good.
+Acked-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-On 23/03/2019 22:16, Fabien Parent wrote:
-> Add binding documentation of i2c-mtk for MT8516 SoC.
-> 
-> Signed-off-by: Fabien Parent <fparent@baylibre.com>
+> Signed-off-by: Evan Green <evgreen@chromium.org>
+>
 > ---
->  Documentation/devicetree/bindings/i2c/i2c-mtk.txt | 1 +
->  1 file changed, 1 insertion(+)
-> 
+>
+>  drivers/spi/spi-pxa2xx.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+> index b6ddba833d021..493223e1d032d 100644
+> --- a/drivers/spi/spi-pxa2xx.c
+> +++ b/drivers/spi/spi-pxa2xx.c
+> @@ -1451,6 +1451,10 @@ static const struct pci_device_id pxa2xx_spi_pci_compound_match[] = {
+>         { PCI_VDEVICE(INTEL, 0xa32a), LPSS_CNL_SSP },
+>         { PCI_VDEVICE(INTEL, 0xa32b), LPSS_CNL_SSP },
+>         { PCI_VDEVICE(INTEL, 0xa37b), LPSS_CNL_SSP },
+> +       /* CML-LP */
+> +       { PCI_VDEVICE(INTEL, 0x02aa), LPSS_CNL_SSP },
+> +       { PCI_VDEVICE(INTEL, 0x02ab), LPSS_CNL_SSP },
+> +       { PCI_VDEVICE(INTEL, 0x02fb), LPSS_CNL_SSP },
+>         { },
+>  };
+>
+> --
+> 2.20.1
+>
 
 
-applied to v5.1-next/dts64
-
-Wolfram let me know if you want to take it through your tree and I drop the patch.
-
-> diff --git a/Documentation/devicetree/bindings/i2c/i2c-mtk.txt b/Documentation/devicetree/bindings/i2c/i2c-mtk.txt
-> index ee4c32454198..aac7b56f251f 100644
-> --- a/Documentation/devicetree/bindings/i2c/i2c-mtk.txt
-> +++ b/Documentation/devicetree/bindings/i2c/i2c-mtk.txt
-> @@ -12,6 +12,7 @@ Required properties:
->        "mediatek,mt7623-i2c", "mediatek,mt6577-i2c": for MediaTek MT7623
->        "mediatek,mt7629-i2c", "mediatek,mt2712-i2c": for MediaTek MT7629
->        "mediatek,mt8173-i2c": for MediaTek MT8173
-> +      "mediatek,mt8516-i2c", "mediatek,mt2712-i2c": for MediaTek MT8516
->    - reg: physical base address of the controller and dma base, length of memory
->      mapped region.
->    - interrupts: interrupt number to the cpu.
-> 
+-- 
+With Best Regards,
+Andy Shevchenko

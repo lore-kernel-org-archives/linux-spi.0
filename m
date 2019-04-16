@@ -1,62 +1,40 @@
-From: Wolfram Sang <wsa@the-dreams.de>
-Subject: Re: [PATCH 22/24] dt-bindings: i2c: i2c-mtk: add support for MT8516
-Date: Tue, 16 Apr 2019 13:05:34 +0200
-Message-ID: <20190416110534.ndcnjjy3dzdb6xbv@ninjato>
-References: <20190323211612.860-1-fparent@baylibre.com>
- <20190323211612.860-23-fparent@baylibre.com>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Subject: Re: [PATCH] spi: pxa2xx: Add support for Intel Comet Lake
+Date: Tue, 16 Apr 2019 15:26:16 +0300
+Message-ID: <2898d0e2-1e91-552e-c053-e31f617c7732@linux.intel.com>
+References: <20190416032743.180517-1-evgreen@chromium.org>
+ <CAHp75VcPYu1APhcqcu-Df5ucpW-q597OCKHwne1dgqQsMM9+Fg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="vcxgegcyuczhk53y"
-Cc: matthias.bgg@gmail.com, robh+dt@kernel.org, mark.rutland@arm.com,
-        sean.wang@kernel.org, ryder.lee@mediatek.com,
-        hsin-hsiung.wang@mediatek.com, wenzhen.yu@mediatek.com,
-        chaotian.jing@mediatek.com, yong.mao@mediatek.com,
-        jjian.zhou@mediatek.com, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-mmc@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-clk@vger.kernel.org, stephane.leprovost@mediatek.com
-To: Fabien Parent <fparent@baylibre.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rajat Jain <rajatja@chromium.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Daniel Mack <daniel@zonque.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Evan Green <evgreen@chromium.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20190323211612.860-23-fparent@baylibre.com>
+In-Reply-To: <CAHp75VcPYu1APhcqcu-Df5ucpW-q597OCKHwne1dgqQsMM9+Fg@mail.gmail.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On 4/16/19 11:00 AM, Andy Shevchenko wrote:
+> On Tue, Apr 16, 2019 at 6:28 AM Evan Green <evgreen@chromium.org> wrote:
+>>
+>> Add PCI IDs for SPI on Comet Lake.
+>>
+> 
+> I didn't check IDs, perhaps Jarkko can do it.
+>  From other prospectives looks good.
+> Acked-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> 
+Yes, those IDs and compatibility with Cannon Lake match with my 
+understanding.
 
---vcxgegcyuczhk53y
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Sat, Mar 23, 2019 at 10:16:10PM +0100, Fabien Parent wrote:
-> Add binding documentation of i2c-mtk for MT8516 SoC.
->=20
-> Signed-off-by: Fabien Parent <fparent@baylibre.com>
-
-Applied to for-next, thanks!
-
-
---vcxgegcyuczhk53y
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAly1tv4ACgkQFA3kzBSg
-Kba07w/+KTVnldbBtdAYM6iGz11cWe28Ofxfurg1FNf4t6S9ar2RYhtGMYaJpNwQ
-YYKURH2tM7i8cAB2sVG+h6TbSPr+WeXmeqXFtgdste+rlcHcU7W8xJG0DUgvjVUa
-uC5cJlB9nFzpwX4AVsyhlZHmlT6lwccvtbVE0ZhO9HF3QAAGyzCLTrcwz9upiw06
-uXASUNd8vbNt+Wxh1I5d+bhlmFHtn88+cOm5G2u7wibcOhStgJnqo/VXs11ha48E
-TQdT+WiMSE1JBMq5szsrjaCA094yEh2muSKBTyKi7uOdxAdN3qv8HJHReM9q5HH8
-coLVq8RYb6I7BgbDnuYMTCO2K/GqVstsIp8F/3Mq6ea6uh/5mFME/p5EGHeKBKDM
-sGYj2wehgWE/qsVs3NUJiy/Z7lDpuzkgRo0ULpSx64evmwQWmtHeOuGuTny51G44
-S/0B1boZJerOLpoJTKctG8Eq6lRkUWvRQzX9fZZmhtiyeEGbXE7sRTLeiLTaDvuc
-ma8cDNp7VKfDob4SJeRszjMmgyjOIRtGOutjeS8MipNlKrO8b4AkiiKXoZDWmTt1
-q3tDg1hBsfV5T/Pawr4QJHOEXoZ/sh5AT7fh4HdE0aqYTqNZ5jt11dVVktO56U4X
-VG54fSn9KZ1GIiAFAyhSG9hac8ldBwxR9tdn2DSHmx0Qh6HYg28=
-=TvId
------END PGP SIGNATURE-----
-
---vcxgegcyuczhk53y--
+Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>

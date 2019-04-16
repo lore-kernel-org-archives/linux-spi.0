@@ -1,78 +1,39 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: pxa2xx: Add support for Intel Comet Lake" to the spi tree
-Date: Tue, 16 Apr 2019 17:32:57 +0100 (BST)
-Message-ID: <20190416163257.6B0B81128088@debutante.sirena.org.uk>
-References: <20190416032743.180517-1-evgreen@chromium.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Rajat Jain <rajatja@chromium.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>
-To: Evan Green <evgreen@chromium.org>
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Subject: Re: [PATCH v10 2/3] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
+ driver
+Date: Tue, 16 Apr 2019 21:37:55 +0300
+Message-ID: <490f6e80-3930-2885-a08f-93596e210f88@cogentembedded.com>
+References: <1555313834-15107-1-git-send-email-masonccyang@mxic.com.tw>
+ <1555313834-15107-3-git-send-email-masonccyang@mxic.com.tw>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>
+To: Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
+        marek.vasut@gmail.com, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, bbrezillon@kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        lee.jones@linaro.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        devicetree@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190416032743.180517-1-evgreen@chromium.org>
+In-Reply-To: <1555313834-15107-3-git-send-email-masonccyang@mxic.com.tw>
+Content-Language: en-MW
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+On 04/15/2019 10:37 AM, Mason Yang wrote:
 
-   spi: pxa2xx: Add support for Intel Comet Lake
+> Add a driver for Renesas R-Car Gen3 RPC-IF SPI controller.
+> 
+> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
 
-has been applied to the spi tree at
+   This patch looked good to me (you seem to have incorporated another patch of mine
+here :-)). Since the patch is already carrying my signoff, I wouldn't add a Reviewed-by:
+tag.
+   However, I believe that all manipulations with the RPC-IF hardware need to be moved
+to the MFD driver, to be called from the SPI and HF subdrivers... doesn't seem an easy
+task though...
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.2
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 5127b4d69f96793dfabb602b133dc19d1aa36880 Mon Sep 17 00:00:00 2001
-From: Evan Green <evgreen@chromium.org>
-Date: Mon, 15 Apr 2019 20:27:43 -0700
-Subject: [PATCH] spi: pxa2xx: Add support for Intel Comet Lake
-
-Add PCI IDs for SPI on Comet Lake.
-
-Signed-off-by: Evan Green <evgreen@chromium.org>
-Acked-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-pxa2xx.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 3e6811ef37e8..f5546eeaebe4 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1454,6 +1454,10 @@ static const struct pci_device_id pxa2xx_spi_pci_compound_match[] = {
- 	{ PCI_VDEVICE(INTEL, 0xa32a), LPSS_CNL_SSP },
- 	{ PCI_VDEVICE(INTEL, 0xa32b), LPSS_CNL_SSP },
- 	{ PCI_VDEVICE(INTEL, 0xa37b), LPSS_CNL_SSP },
-+	/* CML-LP */
-+	{ PCI_VDEVICE(INTEL, 0x02aa), LPSS_CNL_SSP },
-+	{ PCI_VDEVICE(INTEL, 0x02ab), LPSS_CNL_SSP },
-+	{ PCI_VDEVICE(INTEL, 0x02fb), LPSS_CNL_SSP },
- 	{ },
- };
- 
--- 
-2.20.1
+MBR, Sergei

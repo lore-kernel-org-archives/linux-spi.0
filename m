@@ -1,70 +1,65 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v10 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3
- RPC-IF controller bindings
-Date: Tue, 16 Apr 2019 11:02:10 +0300
-Message-ID: <8720224d-76f4-c620-9e3f-91605d6fa1e3@cogentembedded.com>
-References: <1555313834-15107-1-git-send-email-masonccyang@mxic.com.tw>
- <1555313834-15107-4-git-send-email-masonccyang@mxic.com.tw>
- <907f2e87-1cb4-fa37-5406-82bf2bf71188@cogentembedded.com>
- <OF2F61A6E6.AA7717A3-ON482583DE.0005C1EE-482583DE.00061474@mxic.com.tw>
+From: Matthias Brugger <matthias.bgg@gmail.com>
+Subject: Re: [PATCH 23/24] arm64: dts: mediatek: add dtsi for MT8516
+Date: Tue, 16 Apr 2019 10:04:02 +0200
+Message-ID: <24517390-0015-d804-8c57-4e1030edba02@gmail.com>
+References: <20190323211612.860-1-fparent@baylibre.com>
+ <20190323211612.860-24-fparent@baylibre.com>
+ <CAL_Jsq+Q06O84-MTpgTWGG312VXm_vGOkjMCjtWuS0eZ-j_0yw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Cc: bbrezillon@kernel.org, broonie@kernel.org,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: Mark Rutland <mark.rutland@arm.com>,
+        Sean Wang <sean.wang@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Hsin-Hsiung Wang <hsin-hsiung.wang@mediatek.com>,
+        Wenzhen Yu <wenzhen.yu@mediatek.com>,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        Yong Mao <yong.mao@mediatek.com>, jjian.zhou@mediatek.com,
         devicetree@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
-        lee.jones@linaro.org, linux-kernel@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-        marek.vasut@gmail.com, mark.rutland@arm.com, robh+dt@kernel.org
-To: masonccyang@mxic.com.tw
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Linux I2C <linux-i2c@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+        <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support"
+        <linux-mediatek@lists.infradead.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+To: Rob Herring <robh+dt@kernel.org>,
+        Fabien Parent <fparent@baylibre.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OF2F61A6E6.AA7717A3-ON482583DE.0005C1EE-482583DE.00061474@mxic.com.tw>
+In-Reply-To: <CAL_Jsq+Q06O84-MTpgTWGG312VXm_vGOkjMCjtWuS0eZ-j_0yw@mail.gmail.com>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 16.04.2019 4:06, masonccyang@mxic.com.tw wrote:
 
->  > > Document the bindings used by the Renesas R-Car Gen3 RPC-IF MFD controller.
->  > >
->  > > Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
->  > > ---
->  > >  .../devicetree/bindings/mfd/mfd-renesas-rpc.txt  | 37 +++++++++
->  > +++++++++++++
->  > >  1 file changed, 37 insertions(+)
->  > >  create mode 100644 Documentation/devicetree/bindings/mfd/mfd-
->  > renesas-rpc.txt
->  > >
->  > > diff --git a/Documentation/devicetree/bindings/mfd/mfd-renesas-
->  > rpc.txt b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
->  > > new file mode 100644
->  > > index 0000000..bfb3d29
->  > > --- /dev/null
->  > > +++ b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
->  > > @@ -0,0 +1,37 @@
->  > > +Renesas R-Car Gen3 RPC-IF MFD controller Device Tree Bindings
->  > > +-------------------------------------------------------------
->  > > +
->  > > +Required properties:
->  > > +- compatible: should be an SoC-specific compatible value, followed by
->  > > +      "renesas,rcar-gen3-rpc" as a fallback.
->  > > +      supported SoC-specific values are:
->  > > +      "renesas,r8a77995-rpc" (R-Car D3)
->  > > +- reg: should contain 2 entries, one for the base address of rpc-
->  > if registers,
->  > > +   and one for the direct mapping area
->  > > +- reg-names: should contain "regs", and "dirmap"
->  >
->  >    The device tree describes the hardware, not the driver. Why did you remove
->  > the "wbuf" area?
+
+On 28/03/2019 20:22, Rob Herring wrote:
+> On Sat, Mar 23, 2019 at 4:17 PM Fabien Parent <fparent@baylibre.com> wrote:
+>>
+>> The MT8516 SoC provides the following peripherals: GPIO, UART, USB2,
+>> SPI, eMMC, SDIO, NAND, Flash, ADC, I2C, PWM, Timers, IR, Ethernet, and
+>> Audio (I2S, SPDIF, TDM).
+>>
+>> This commit is adding the basic dtsi file with the support of the
+>> following IOs: GPIO, UART, SPI, eMMC, I2C, Timers.
+>>
+>> Signed-off-by: Fabien Parent <fparent@baylibre.com>
+>> ---
+>>  arch/arm64/boot/dts/mediatek/mt8516-pinfunc.h | 663 ++++++++++++++++++
+>>  arch/arm64/boot/dts/mediatek/mt8516.dtsi      | 409 +++++++++++
+>>  2 files changed, 1072 insertions(+)
+>>  create mode 100644 arch/arm64/boot/dts/mediatek/mt8516-pinfunc.h
+>>  create mode 100644 arch/arm64/boot/dts/mediatek/mt8516.dtsi
 > 
-> I don't think we should describe the hardware that driver did not implement it
-> because there are still many RPC registers we don't use them.
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> 
 
-    I have to repeat: we describe the hardware, not the driver capabilities.
+Fabien, before taking this through my tree, I'd like to see the drivers merged.
+Can you please resubmit taking into account the outcome of get_maintainers.pl
+script. From my experience it is easier to send one series per driver, as it
+makes the amount of emails every maintainer gets more manageable.
 
-> best regards,
-> Mason
-
-MBR, Sergei
+Regards,
+Matthias

@@ -1,92 +1,47 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v10 1/3] mfd: Add Renesas R-Car Gen3 RPC-IF MFD controller
- driver
-Date: Wed, 17 Apr 2019 23:26:51 +0300
-Message-ID: <76e9c2a8-1537-04ad-17e0-ebd9fa9b7b91@cogentembedded.com>
-References: <1555313834-15107-1-git-send-email-masonccyang@mxic.com.tw>
- <1555313834-15107-2-git-send-email-masonccyang@mxic.com.tw>
- <935046cc-e2e5-b9b8-0c94-1be5ae604276@cogentembedded.com>
- <OF8A9D093C.B3035121-ON482583DE.00065F23-482583DE.00074AC0@mxic.com.tw>
- <770002ab-7e08-b695-b5a5-fce772b600a5@cogentembedded.com>
- <OF2BD84B79.FBC5E822-ON482583DF.0020009F-482583DF.0022E315@mxic.com.tw>
+From: Robin Gong <yibin.gong@nxp.com>
+Subject: RE: Issues with i.MX SPI DMA transfers
+Date: Thu, 18 Apr 2019 01:19:05 +0000
+Message-ID: <VI1PR04MB4543A5CA46FBB3ACC9F3B3E289260@VI1PR04MB4543.eurprd04.prod.outlook.com>
+References: <08fcbd65-510f-84f8-d6d6-ff56aa9ca9ad@gmail.com>
+ <20190328065247.uz73lap7ljf5q3tb@pengutronix.de>
+ <b8e80127-e377-9ef9-2447-b0126fdad7dc@gmail.com>
+ <VI1PR04MB45438E01D91829849A4E0BB289590@VI1PR04MB4543.eurprd04.prod.outlook.com>
+ <d7a2e5c5-4ee0-8c89-1bab-654db0ae38dd@gmail.com>
+ <VI1PR04MB4543B1708FA151EED0CB722A89550@VI1PR04MB4543.eurprd04.prod.outlook.com>
+ <95df9334-3d0c-7d13-e431-5a4aa2b9907e@gmail.com>
+ <VI1PR04MB454305A56372466A38E9F81989560@VI1PR04MB4543.eurprd04.prod.outlook.com>
+ <VI1PR04MB454302BAF353124ED13747DC892D0@VI1PR04MB4543.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: bbrezillon@kernel.org, broonie@kernel.org,
-        devicetree@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
-        lee.jones@linaro.org, linux-kernel@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-        marek.vasut@gmail.com, mark.rutland@arm.com, robh+dt@kernel.org
-To: masonccyang@mxic.com.tw
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andy Duan <fugang.duan@nxp.com>, Han Xu <han.xu@nxp.com>,
+        Clark Wang <xiaoning.wang@nxp.com>
+To: Igor Plyatov <plyatov@gmail.com>,
+        =?utf-8?B?VXdlIEtsZWluZS1Lw7ZuaWc=?=
+        <u.kleine-koenig@pengutronix.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OF2BD84B79.FBC5E822-ON482583DF.0020009F-482583DF.0022E315@mxic.com.tw>
-Content-Language: en-MW
+In-Reply-To: <VI1PR04MB454302BAF353124ED13747DC892D0@VI1PR04MB4543.eurprd04.prod.outlook.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 04/17/2019 09:21 AM, masonccyang@mxic.com.tw wrote:
-
->> >> Re: [PATCH v10 1/3] mfd: Add Renesas R-Car Gen3 RPC-IF MFD
->> controller driver
->> >>
->> >> The patch name is somewhat misleading -- there's no "MFD controller".
->> >
->> > Can't get your point ?
->> >
->> > RPC-IF support SPI and HF, it's a MFD controller and
->> > that's why I patch it to MFD as Marek's comments.
->>
->>    I'd like the "controller" word dropped, as MFD stands for multi-
->> function device
->> anyway. "Controller" seems to be superfluous here...
-> 
-> okay, will rename to:
-> 
-> [PATCH v11 1/3] mfd: Add Renesas R-Car Gen3 RPC-IF MFD driver
-
-   Thanx!
-
->> >> On 04/15/2019 10:37 AM, Mason Yang wrote:
->> >>
->> >> > Add a driver for Renesas R-Car Gen3 RPC-IF MFD controller.
->> >> >
->> >> > Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
->> >> [...]
->> >> > diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
->> >> > index 26ad646..7914349 100644
->> >> > --- a/drivers/mfd/Kconfig
->> >> > +++ b/drivers/mfd/Kconfig
->> >> > @@ -978,6 +978,15 @@ config MFD_RDC321X
->> >> >       southbridge which provides access to GPIOs and Watchdog using the
->> >> >       southbridge PCI device configuration space.
->> >> >  
->> >> > +config MFD_RENESAS_RPC
->> >> > +   tristate "Renesas R-Car Gen3 RPC-IF MFD driver"
->> >> > +   select MFD_CORE
->> >> > +   depends on ARCH_RENESAS
->> >> > +   help
->> >> > +     This supports for Renesas R-Car Gen3 RPC-IF multifunction device
->> >>
->> >>    "For" node needed here.
->> >
->> > ?
->>
->>    Sorry, that was a typo: s/node/not/.
-> 
-> Oops, still don't know what do you mean to ?
-> 
-> Will change to:
->          help
->            This supports for Renesas R-Car Gen3 RPC-IF multifunction device
->            which provides either SPI host or HyperFlash.
->            You have to select individual components under the corresponding menu.
-> 
-> is it ok ?
-
-   Should be "This supports Renesas..."
-
-[...]
-
-MBR, Sergei
+SGkgSWdvciwNCglEaWQgeW91IG1lZXQgYW55IGlzc3VlIHdpdGggbXkgbGF0ZXN0IHBhdGNoPw0K
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IFJvYmluIEdvbmcNCj4gU2Vu
+dDogQXByaWwgOSwgMjAxOSAxMToyNj4gDQo+IEhpIElnb3IsDQo+IAlQbGVhc2UgaGF2ZSBhIHRy
+eSB3aXRoIHRoZSBhdHRhY2hlZCBwYXRjaGVzLCBhbmQgcmV2ZXJ0IDI1YWFhNzVkZjFlNiwNCj4g
+YWQwZDkyZDdiYTZhICwgZGQ0YjQ4N2IzMmEzLCBkZjA3MTAxZTFjNGEgYmVmb3JlIGFwcGx5LiBC
+ZXNpZGVzIFhDSCwgdHgNCj4gdGhyZXNoIHNob3VsZCBiZSBzZXQgdG8gMCAsIG5vdyBubyBmYWls
+dXJlIGNhdWdodCBvbiBlY3NwaTUuDQo+IA0K

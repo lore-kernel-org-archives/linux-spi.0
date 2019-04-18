@@ -1,14 +1,15 @@
 From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v10 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3
- RPC-IF controller bindings
-Date: Thu, 18 Apr 2019 19:55:59 +0300
-Message-ID: <9bc4847f-8e7e-3627-5394-6f2b5c5972bc@cogentembedded.com>
-References: <1555313834-15107-1-git-send-email-masonccyang@mxic.com.tw>
- <1555313834-15107-4-git-send-email-masonccyang@mxic.com.tw>
- <907f2e87-1cb4-fa37-5406-82bf2bf71188@cogentembedded.com>
- <OF2F61A6E6.AA7717A3-ON482583DE.0005C1EE-482583DE.00061474@mxic.com.tw>
- <8720224d-76f4-c620-9e3f-91605d6fa1e3@cogentembedded.com>
- <OFCBCE0527.706EB4F2-ON482583E0.00200707-482583E0.00208EAD@mxic.com.tw>
+Subject: Re: [PATCH v9 2/3] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
+ driver
+Date: Thu, 18 Apr 2019 22:43:24 +0300
+Message-ID: <3971c669-9095-9d18-d029-37f9663a54b2@cogentembedded.com>
+References: <1553847606-18122-1-git-send-email-masonccyang@mxic.com.tw>
+ <1553847606-18122-3-git-send-email-masonccyang@mxic.com.tw>
+ <1e2bf23d-db39-0d1d-0bcc-6d9cd2935a82@cogentembedded.com>
+ <cdee3d53-6ee3-4435-117e-8ba4a58ca72b@cogentembedded.com>
+ <OF82CE76E9.E6395EF7-ON482583DD.000E37D7-482583DD.000E5077@mxic.com.tw>
+ <3d334751-8fd4-7db1-9deb-e6c94936df13@cogentembedded.com>
+ <OF4ABCC306.B053BA23-ON482583E0.000F480C-482583E0.000FAD4A@mxic.com.tw>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
@@ -18,72 +19,124 @@ Cc: bbrezillon@kernel.org, broonie@kernel.org,
         Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
         lee.jones@linaro.org, linux-kernel@vger.kernel.org,
         linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-        marek.vasut@gmail.com, mark.rutland@arm.com, robh+dt@kernel.org
+        marek.vasut@gmail.com, mark.rutland@arm.com, robh+dt@kernel.org,
+        zhengxunli@mxic.com.tw
 To: masonccyang@mxic.com.tw
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OFCBCE0527.706EB4F2-ON482583E0.00200707-482583E0.00208EAD@mxic.com.tw>
+In-Reply-To: <OF4ABCC306.B053BA23-ON482583E0.000F480C-482583E0.000FAD4A@mxic.com.tw>
 Content-Language: en-MW
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello!
+On 04/18/2019 05:51 AM, masonccyang@mxic.com.tw wrote:
 
-On 04/18/2019 08:55 AM, masonccyang@mxic.com.tw wrote:
-
->> >  > > Document the bindings used by the Renesas R-Car Gen3 RPC-IF
->> MFD controller.
->> >  > >
->> >  > > Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
->> >  > > ---
->> >  > >  .../devicetree/bindings/mfd/mfd-renesas-rpc.txt  | 37 +++++++++
->> >  > +++++++++++++
->> >  > >  1 file changed, 37 insertions(+)
->> >  > >  create mode 100644 Documentation/devicetree/bindings/mfd/mfd-
->> >  > renesas-rpc.txt
->> >  > >
->> >  > > diff --git a/Documentation/devicetree/bindings/mfd/mfd-renesas-
->> >  > rpc.txt b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
->> >  > > new file mode 100644
->> >  > > index 0000000..bfb3d29
->> >  > > --- /dev/null
->> >  > > +++ b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
->> >  > > @@ -0,0 +1,37 @@
->> >  > > +Renesas R-Car Gen3 RPC-IF MFD controller Device Tree Bindings
->> >  > > +-------------------------------------------------------------
->> >  > > +
->> >  > > +Required properties:
->> >  > > +- compatible: should be an SoC-specific compatible value, followed by
->> >  > > +      "renesas,rcar-gen3-rpc" as a fallback.
->> >  > > +      supported SoC-specific values are:
->> >  > > +      "renesas,r8a77995-rpc" (R-Car D3)
->> >  > > +- reg: should contain 2 entries, one for the base address of rpc-
->> >  > if registers,
->> >  > > +   and one for the direct mapping area
->> >  > > +- reg-names: should contain "regs", and "dirmap"
->> >  >
->> >  >    The device tree describes the hardware, not the driver. Why
->> did you remove
->> >  > the "wbuf" area?
->> >
->> > I don't think we should describe the hardware that driver did not
->> implement it
->> > because there are still many RPC registers we don't use them.
+>> >> >> Add a driver for Renesas R-Car Gen3 RPC-IF SPI controller.
+>> >> >>
+>> >> >> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+>> >> >> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+>> >> > [...]
+>> >> >> diff --git a/drivers/spi/spi-renesas-rpc.c b/drivers/spi/spi-
+>> renesas-rpc.c
+>> >> >> new file mode 100644
+>> >> >> index 0000000..037f273
+>> >> >> --- /dev/null
+>> >> >> +++ b/drivers/spi/spi-renesas-rpc.c
+>> >> > [...]
+>> >> >> +static int rpc_spi_probe(struct platform_device *pdev)
+>> >> >> +{
+>> >> >> +   struct spi_controller *ctlr;
+>> >> >> +   struct rpc_mfd *rpc_mfd = dev_get_drvdata(pdev->dev.parent);
+>> >> >> +   struct rpc_spi *rpc;
+>> >> >> +   int ret;
+>> >> >> +
+>> >> >> +   ctlr = spi_alloc_master(&pdev->dev, sizeof(*rpc));
+>> >> >> +   if (!ctlr)
+>> >> >> +      return -ENOMEM;
+>> >> >> +
+>> >> >> +   platform_set_drvdata(pdev, ctlr);
+>> >> >> +
+>> >> >> +   rpc = spi_controller_get_devdata(ctlr);
+>> >> >> +
+>> >> >> +   ctlr->dev.of_node = pdev->dev.of_node;
+>> >> > [...]
+>> >> >> +
+>> >> >> +   pm_runtime_enable(&pdev->dev);
+>> >> >> +   ctlr->auto_runtime_pm = true;
+>> >> >
+>> >> >    I think this line no longer works as expected with the new
+>> >> probing scheme.
 >>
->>     I have to repeat: we describe the hardware, not the driver capabilities.
+>>    That's because we added another (SPI) device under our MFD.
 > 
-> how about:
-> 
-> - reg: should contain three register areas:
->           first for the base address of rpc-if registers,
->           second for the direct mapping read mode and
->           third for an optional write buffer area.
->  - reg-names: should contain "regs", "dirmap" and "wbuf"(optional).
-> 
-> is it OK ?
+> Do you mean just to remove one line
+> ctlr->auto_runtime_pm = true;
+> ?
 
-   No, the write buffer area is always there, at least on the gen3 chips.
-(I forgot which other Renesas SoC has RPC-IF as well).
+   No, you should explicitly call RPM for the MFD (not the SPI device).
 
+>> >> > Have you tested reading? v8 patch still works while v9 patches
+>> >> > hang on doing:
+>> >> >
+>> >> > $ cat /dev/mtd<n>...
+>> >>
+>> >>    Sorry, 'od -x', not 'cat'.
+>> >
+>> > root@draak:/# cat /proc/mtd
+>> > dev:    size   erasesize  name
+>> > mtd0: 00040000 00001000 "Bank 1 - Boot parameter"
+>> > mtd1: 00140000 00001000 "Bank 1 - Loader-BL2"
+>> > mtd2: 00040000 00001000 "Bank 1 - Certification"
+>> > mtd3: 00080000 00001000 "Bank 1 - ARM Trusted FW"
+>> > mtd4: 00400000 00001000 "Bank 1 - Reserved-1"
+>> > mtd5: 00300000 00001000 "Bank 1 - U-Boot"
+>> > mtd6: 00200000 00001000 "Bank 1 - Reserved-2"
+>> > mtd7: 00480000 00001000 "Bank 1 - Splash"
+>> > mtd8: 00040000 00001000 "Bank 1 - Device Tree"
+>> > root@draak:/# od -x /dev/mtd1
+>> > 0000000 0000 d280 0001 d280 0002 d280 0003 d280
+>> > 0000020 0004 d280 0005 d280 0006 d280 0007 d280
+>> > 0000040 0008 d280 0009 d280 000a d280 000b d280
+>> > 0000060 000c d280 000d d280 000e d280 000f d280
+>> > 0000100 0010 d280 0011 d280 0012 d280 0013 d280
+>> > 0000120 0014 d280 0015 d280 0016 d280 0017 d280
+>> > 0000140 0018 d280 0019 d280 001a d280 001b d280
+>> > 0000160 001c d280 001d d280 001e d280 1000 d53e
+>> > 0000200 f800 9266 1000 d51e 3fdf d503 3ba0 1005
+>>
+>>    Still hangs for me. After I patches spi-mem.c and the driver to
+>> call RPM for the MFD, it started working again. Perhaps, that clock
+>> is still enabled on your target. What does the following print (for
+>> the RPC clocks)?
+>>
+>> $ mount none -t debugfs /sys/kernel/debug/
+>> $ cat /sys/kernel/debug/clk/clk_summary
+>>
+> 
+> root@draak:/# cat /sys/kernel/debug/clk/clk_summary
+>                                  enable  prepare  protect                                duty
+>    clock                          count    count    count        rate   accuracy phase  cycle
+> ---------------------------------------------------------------------------------------------
+>  audio_clkout1                        0        0        0    11289600          0     0  50000
+>  x19_clk                              0        0        0    24576000          0     0  50000
+>  dclkin-0                             0        0        0           0          0     0  50000
+>  scif                                 1        1        0           0          0     0  50000
+>  audio_clkb                           0        0        0    22579200          0     0  50000
+>  msiof-ref-clock                      0        0        0    66666666          0     0  50000
+>  extal                                2        3        0    48000000          0     0  50000
+>     r                                 0        2        0       31250          0     0  50000
+>        rpc-if                         0        1        0       31250          0     0  50000
+
+   This looks wrong, the RPC-IF module clock should have RPC or RPCD2 (where ae they?)
+as a source, not RLCK...
+
+>        rwdt                           0        1        0       31250          0     0  50000
+>        cmt0                           0        0        0       31250          0     0  50000
+>        cmt1                           0        0        0       31250          0     0  50000
+>        cmt2                           0        0        0       31250          0     0  50000
+>        cmt3                           0        0        0       31250          0     0  50000
+>     osc                               0        0        0      125000          0     0  50000
+> 
+> 
 > thanks & best regards,
 > Mason
 

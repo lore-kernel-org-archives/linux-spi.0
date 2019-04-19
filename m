@@ -1,56 +1,91 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH V3 5/9] spi: export spi core function spi_set_cs
-Date: Fri, 19 Apr 2019 16:18:23 +0100
-Message-ID: <20190419151823.GS2803@sirena.org.uk>
-References: <1555363834-32155-1-git-send-email-skomatineni@nvidia.com>
- <1555363834-32155-6-git-send-email-skomatineni@nvidia.com>
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Subject: Re: [PATCH v10 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3
+ RPC-IF controller bindings
+Date: Fri, 19 Apr 2019 18:44:38 +0300
+Message-ID: <d4e7b0b3-f69e-0513-84b0-076210aa4548@cogentembedded.com>
+References: <1555313834-15107-1-git-send-email-masonccyang@mxic.com.tw>
+ <1555313834-15107-4-git-send-email-masonccyang@mxic.com.tw>
+ <907f2e87-1cb4-fa37-5406-82bf2bf71188@cogentembedded.com>
+ <OF2F61A6E6.AA7717A3-ON482583DE.0005C1EE-482583DE.00061474@mxic.com.tw>
+ <8720224d-76f4-c620-9e3f-91605d6fa1e3@cogentembedded.com>
+ <OFCBCE0527.706EB4F2-ON482583E0.00200707-482583E0.00208EAD@mxic.com.tw>
+ <9bc4847f-8e7e-3627-5394-6f2b5c5972bc@cogentembedded.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="QHhm1I6mwQR20oIa"
-Cc: thierry.reding@gmail.com, jonathanh@nvidia.com, talho@nvidia.com,
-        robh+dt@kernel.org, mark.rutland@arm.com, kyarlagadda@nvidia.com,
-        ldewangan@nvidia.com, linux-tegra@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org
-To: Sowjanya Komatineni <skomatineni@nvidia.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: bbrezillon@kernel.org, broonie@kernel.org,
+        devicetree@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
+        lee.jones@linaro.org, linux-kernel@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+        marek.vasut@gmail.com, mark.rutland@arm.com, robh+dt@kernel.org
+To: masonccyang@mxic.com.tw
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1555363834-32155-6-git-send-email-skomatineni@nvidia.com>
+In-Reply-To: <9bc4847f-8e7e-3627-5394-6f2b5c5972bc@cogentembedded.com>
+Content-Language: en-MW
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On 04/18/2019 07:55 PM, Sergei Shtylyov wrote:
 
---QHhm1I6mwQR20oIa
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+>>>>  > > Document the bindings used by the Renesas R-Car Gen3 RPC-IF
+>>> MFD controller.
+>>>>  > >
+>>>>  > > Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+>>>>  > > ---
+>>>>  > >  .../devicetree/bindings/mfd/mfd-renesas-rpc.txt  | 37 +++++++++
+>>>>  > +++++++++++++
+>>>>  > >  1 file changed, 37 insertions(+)
+>>>>  > >  create mode 100644 Documentation/devicetree/bindings/mfd/mfd-
+>>>>  > renesas-rpc.txt
+>>>>  > >
+>>>>  > > diff --git a/Documentation/devicetree/bindings/mfd/mfd-renesas-
+>>>>  > rpc.txt b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
+>>>>  > > new file mode 100644
+>>>>  > > index 0000000..bfb3d29
+>>>>  > > --- /dev/null
+>>>>  > > +++ b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
+>>>>  > > @@ -0,0 +1,37 @@
+>>>>  > > +Renesas R-Car Gen3 RPC-IF MFD controller Device Tree Bindings
+>>>>  > > +-------------------------------------------------------------
+>>>>  > > +
+>>>>  > > +Required properties:
+>>>>  > > +- compatible: should be an SoC-specific compatible value, followed by
+>>>>  > > +      "renesas,rcar-gen3-rpc" as a fallback.
+>>>>  > > +      supported SoC-specific values are:
+>>>>  > > +      "renesas,r8a77995-rpc" (R-Car D3)
+>>>>  > > +- reg: should contain 2 entries, one for the base address of rpc-
+>>>>  > if registers,
+>>>>  > > +   and one for the direct mapping area
+>>>>  > > +- reg-names: should contain "regs", and "dirmap"
+>>>>  >
+>>>>  >    The device tree describes the hardware, not the driver. Why
+>>> did you remove
+>>>>  > the "wbuf" area?
+>>>>
+>>>> I don't think we should describe the hardware that driver did not
+>>> implement it
+>>>> because there are still many RPC registers we don't use them.
+>>>
+>>>     I have to repeat: we describe the hardware, not the driver capabilities.
+>>
+>> how about:
+>>
+>> - reg: should contain three register areas:
+>>           first for the base address of rpc-if registers,
+>>           second for the direct mapping read mode and
+>>           third for an optional write buffer area.
+>>  - reg-names: should contain "regs", "dirmap" and "wbuf"(optional).
+>>
+>> is it OK ?
+> 
+>    No, the write buffer area is always there, at least on the gen3 chips.
+> (I forgot which other Renesas SoC has RPC-IF as well).
 
-On Mon, Apr 15, 2019 at 02:30:30PM -0700, Sowjanya Komatineni wrote:
-> This patch exports spi_set_cs of the spi core to allow SPI masters
-> to use when gpio based chip select is needed.
+   So it was RZ/A1. But it didn't have the HyperFlash mode...
 
-This isn't really what I meant when I said it'd be good to use the core
-GPIO code - this function doesn't do a huge amount really and the usage
-of it in your subsequent patch for the driver isn't exactly joined up
-with the little it does (which is mainly swapping in the GPIO chip
-select instead of the hardware chip select) isn't used in your driver
-usage of this as far as I can see.  The bulk of the chip select handling
-code in the core is actually in transfer_one_message() which your driver
-doesn't use as it's got it's own implementation of that; I've not looked
-in enough detail to figure out if it could use it.
+>> thanks & best regards,
+>> Mason
 
---QHhm1I6mwQR20oIa
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAly55r4ACgkQJNaLcl1U
-h9ABFQf/di4BhVkLLzj0LzAWfq+W3aQXLwjMllikpbSVi4yBAjMMBCiY/hJ694sK
-t74oXpOBl1I+nU8XTCCo2UQgwEkIg5nVLHQJqoALeiqtM8W26w9xCeN4I3skqA1m
-lftMW84AiOm3Rj8FXw62w8WvnugSHO5D+YMbL1DHlltQw2RBM0K6mVrENcuCu+eZ
-3BVN3SzoKeuWgJV0HrZhFklXSPjbYUHKlWESz2gNukz9mmP7O+IPPAx6YJ5qbQac
-Ek1vYs20B7Ldl3EmbRDIdoiiiPssmHNAqT7wiG+WDrehx2f4SF2LTEHQknLypBim
-/NexZZx63UoROPuN2ifzuZSjJT2bZQ==
-=bYUd
------END PGP SIGNATURE-----
-
---QHhm1I6mwQR20oIa--
+MBR, Sergei

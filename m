@@ -1,143 +1,84 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v9 2/3] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
- driver
-Date: Thu, 18 Apr 2019 22:43:24 +0300
-Message-ID: <3971c669-9095-9d18-d029-37f9663a54b2@cogentembedded.com>
-References: <1553847606-18122-1-git-send-email-masonccyang@mxic.com.tw>
- <1553847606-18122-3-git-send-email-masonccyang@mxic.com.tw>
- <1e2bf23d-db39-0d1d-0bcc-6d9cd2935a82@cogentembedded.com>
- <cdee3d53-6ee3-4435-117e-8ba4a58ca72b@cogentembedded.com>
- <OF82CE76E9.E6395EF7-ON482583DD.000E37D7-482583DD.000E5077@mxic.com.tw>
- <3d334751-8fd4-7db1-9deb-e6c94936df13@cogentembedded.com>
- <OF4ABCC306.B053BA23-ON482583E0.000F480C-482583E0.000FAD4A@mxic.com.tw>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v3 3/4] spi: Patch Macronix SPI controller driver
+ according to MX25F0A MFD driver
+Date: Fri, 19 Apr 2019 15:51:51 +0100
+Message-ID: <20190419145151.GR2803@sirena.org.uk>
+References: <1555320234-15802-1-git-send-email-masonccyang@mxic.com.tw>
+ <1555320234-15802-4-git-send-email-masonccyang@mxic.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: bbrezillon@kernel.org, broonie@kernel.org,
-        devicetree@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
-        lee.jones@linaro.org, linux-kernel@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-        marek.vasut@gmail.com, mark.rutland@arm.com, robh+dt@kernel.org,
-        zhengxunli@mxic.com.tw
-To: masonccyang@mxic.com.tw
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OF4ABCC306.B053BA23-ON482583E0.000F480C-482583E0.000FAD4A@mxic.com.tw>
-Content-Language: en-MW
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============5567328658075726434=="
+Cc: mark.rutland@arm.com, devicetree@vger.kernel.org, juliensu@mxic.com.tw,
+ christophe.kerello@st.com, richard@nod.at, bbrezillon@kernel.org,
+ marcel.ziswiler@toradex.com, dwmw2@infradead.org, miquel.raynal@bootlin.com,
+ linux-kernel@vger.kernel.org, stefan@agner.ch, linux-spi@vger.kernel.org,
+ marek.vasut@gmail.com, paul.burton@mips.com, robh+dt@kernel.org,
+ geert@linux-m68k.org, linux-mtd@lists.infradead.org,
+ computersforpeace@gmal.com, liang.yang@amlogic.com, lee.jones@linaro.org,
+ zhengxunli@mxic.com.tw
+To: Mason Yang <masonccyang@mxic.com.tw>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <1555320234-15802-4-git-send-email-masonccyang@mxic.com.tw>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On 04/18/2019 05:51 AM, masonccyang@mxic.com.tw wrote:
 
->> >> >> Add a driver for Renesas R-Car Gen3 RPC-IF SPI controller.
->> >> >>
->> >> >> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
->> >> >> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
->> >> > [...]
->> >> >> diff --git a/drivers/spi/spi-renesas-rpc.c b/drivers/spi/spi-
->> renesas-rpc.c
->> >> >> new file mode 100644
->> >> >> index 0000000..037f273
->> >> >> --- /dev/null
->> >> >> +++ b/drivers/spi/spi-renesas-rpc.c
->> >> > [...]
->> >> >> +static int rpc_spi_probe(struct platform_device *pdev)
->> >> >> +{
->> >> >> +   struct spi_controller *ctlr;
->> >> >> +   struct rpc_mfd *rpc_mfd = dev_get_drvdata(pdev->dev.parent);
->> >> >> +   struct rpc_spi *rpc;
->> >> >> +   int ret;
->> >> >> +
->> >> >> +   ctlr = spi_alloc_master(&pdev->dev, sizeof(*rpc));
->> >> >> +   if (!ctlr)
->> >> >> +      return -ENOMEM;
->> >> >> +
->> >> >> +   platform_set_drvdata(pdev, ctlr);
->> >> >> +
->> >> >> +   rpc = spi_controller_get_devdata(ctlr);
->> >> >> +
->> >> >> +   ctlr->dev.of_node = pdev->dev.of_node;
->> >> > [...]
->> >> >> +
->> >> >> +   pm_runtime_enable(&pdev->dev);
->> >> >> +   ctlr->auto_runtime_pm = true;
->> >> >
->> >> >    I think this line no longer works as expected with the new
->> >> probing scheme.
->>
->>    That's because we added another (SPI) device under our MFD.
-> 
-> Do you mean just to remove one line
-> ctlr->auto_runtime_pm = true;
-> ?
+--===============5567328658075726434==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="IUSVF+LtaR4kWxuH"
+Content-Disposition: inline
 
-   No, you should explicitly call RPM for the MFD (not the SPI device).
 
->> >> > Have you tested reading? v8 patch still works while v9 patches
->> >> > hang on doing:
->> >> >
->> >> > $ cat /dev/mtd<n>...
->> >>
->> >>    Sorry, 'od -x', not 'cat'.
->> >
->> > root@draak:/# cat /proc/mtd
->> > dev:    size   erasesize  name
->> > mtd0: 00040000 00001000 "Bank 1 - Boot parameter"
->> > mtd1: 00140000 00001000 "Bank 1 - Loader-BL2"
->> > mtd2: 00040000 00001000 "Bank 1 - Certification"
->> > mtd3: 00080000 00001000 "Bank 1 - ARM Trusted FW"
->> > mtd4: 00400000 00001000 "Bank 1 - Reserved-1"
->> > mtd5: 00300000 00001000 "Bank 1 - U-Boot"
->> > mtd6: 00200000 00001000 "Bank 1 - Reserved-2"
->> > mtd7: 00480000 00001000 "Bank 1 - Splash"
->> > mtd8: 00040000 00001000 "Bank 1 - Device Tree"
->> > root@draak:/# od -x /dev/mtd1
->> > 0000000 0000 d280 0001 d280 0002 d280 0003 d280
->> > 0000020 0004 d280 0005 d280 0006 d280 0007 d280
->> > 0000040 0008 d280 0009 d280 000a d280 000b d280
->> > 0000060 000c d280 000d d280 000e d280 000f d280
->> > 0000100 0010 d280 0011 d280 0012 d280 0013 d280
->> > 0000120 0014 d280 0015 d280 0016 d280 0017 d280
->> > 0000140 0018 d280 0019 d280 001a d280 001b d280
->> > 0000160 001c d280 001d d280 001e d280 1000 d53e
->> > 0000200 f800 9266 1000 d51e 3fdf d503 3ba0 1005
->>
->>    Still hangs for me. After I patches spi-mem.c and the driver to
->> call RPM for the MFD, it started working again. Perhaps, that clock
->> is still enabled on your target. What does the following print (for
->> the RPC clocks)?
->>
->> $ mount none -t debugfs /sys/kernel/debug/
->> $ cat /sys/kernel/debug/clk/clk_summary
->>
-> 
-> root@draak:/# cat /sys/kernel/debug/clk/clk_summary
->                                  enable  prepare  protect                                duty
->    clock                          count    count    count        rate   accuracy phase  cycle
-> ---------------------------------------------------------------------------------------------
->  audio_clkout1                        0        0        0    11289600          0     0  50000
->  x19_clk                              0        0        0    24576000          0     0  50000
->  dclkin-0                             0        0        0           0          0     0  50000
->  scif                                 1        1        0           0          0     0  50000
->  audio_clkb                           0        0        0    22579200          0     0  50000
->  msiof-ref-clock                      0        0        0    66666666          0     0  50000
->  extal                                2        3        0    48000000          0     0  50000
->     r                                 0        2        0       31250          0     0  50000
->        rpc-if                         0        1        0       31250          0     0  50000
+--IUSVF+LtaR4kWxuH
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-   This looks wrong, the RPC-IF module clock should have RPC or RPCD2 (where ae they?)
-as a source, not RLCK...
+On Mon, Apr 15, 2019 at 05:23:53PM +0800, Mason Yang wrote:
+> Patch Macronix MX25F0A SPI controller driver according to it's MFD driver.
 
->        rwdt                           0        1        0       31250          0     0  50000
->        cmt0                           0        0        0       31250          0     0  50000
->        cmt1                           0        0        0       31250          0     0  50000
->        cmt2                           0        0        0       31250          0     0  50000
->        cmt3                           0        0        0       31250          0     0  50000
->     osc                               0        0        0      125000          0     0  50000
-> 
-> 
-> thanks & best regards,
-> Mason
+It'd be much better to describe what the above actually means - what
+changes have been made in the introduction of the MFD driver?  It does
+feel like there's not as much abstraction as I'd expect between the MFD
+and the child, there's a lot of peering into the parent and enabling and
+disabling individual clocks for example rather than either having this
+hidden behind a function or just having the clocks owned by the child
+driver.  The driver also isn't using the MFD interfaces to pass through
+the register subblocks for the IP - instead the child driver is peering
+straight into the MFD structure and looking at a variable in there.
 
-MBR, Sergei
+--IUSVF+LtaR4kWxuH
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAly54IYACgkQJNaLcl1U
+h9D0PQf/erY3gZlhAvdcG9BNLPO9WNE8OrfW8W1e5MFQI3MEhJC9fi3BynwsbKtq
+oYO7n4IlWTIXmNDQdlZTdlGU2ybIAMGbUmRh0sP2UB5dh2nNnCTfzdOKdszWov18
+JFDl2+5xeyM5ensdZqRVNaXOP/j3eavC/1AOgDTlVummvycoxPH7AeDEg/+UTHrb
+blDrIxdutZnG+hGdmdoDBZdMsP/eWTS2FJ1t3bnU2AVnftWS/35E5NXpJG4o+gz+
+kb+NmEWgrDFoCOk03rq02pudfkdQawONL85giQwm5Apz4OcKeGRV7tIUjfVr0DxT
+9Rw+gkXFeqGyyD3rS25VYKnDsuXRCg==
+=WftF
+-----END PGP SIGNATURE-----
+
+--IUSVF+LtaR4kWxuH--
+
+
+--===============5567328658075726434==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/
+
+--===============5567328658075726434==--

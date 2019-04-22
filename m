@@ -1,91 +1,99 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v10 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3
- RPC-IF controller bindings
-Date: Fri, 19 Apr 2019 18:44:38 +0300
-Message-ID: <d4e7b0b3-f69e-0513-84b0-076210aa4548@cogentembedded.com>
-References: <1555313834-15107-1-git-send-email-masonccyang@mxic.com.tw>
- <1555313834-15107-4-git-send-email-masonccyang@mxic.com.tw>
- <907f2e87-1cb4-fa37-5406-82bf2bf71188@cogentembedded.com>
- <OF2F61A6E6.AA7717A3-ON482583DE.0005C1EE-482583DE.00061474@mxic.com.tw>
- <8720224d-76f4-c620-9e3f-91605d6fa1e3@cogentembedded.com>
- <OFCBCE0527.706EB4F2-ON482583E0.00200707-482583E0.00208EAD@mxic.com.tw>
- <9bc4847f-8e7e-3627-5394-6f2b5c5972bc@cogentembedded.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: bbrezillon@kernel.org, broonie@kernel.org,
-        devicetree@vger.kernel.org,
+From: Mason Yang <masonccyang@mxic.com.tw>
+Subject: [PATCH v11 0/3] mfd: Add Renesas R-Car Gen3 RPC-IF MFD & SPI driver
+Date: Mon, 22 Apr 2019 11:32:02 +0800
+Message-ID: <1555903925-15292-1-git-send-email-masonccyang@mxic.com.tw>
+Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
+        Mason Yang <masonccyang@mxic.com.tw>, zhengxunli@mxic.com.tw
+To: broonie@kernel.org, marek.vasut@gmail.com,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        bbrezillon@kernel.org, linux-renesas-soc@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
-        lee.jones@linaro.org, linux-kernel@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-        marek.vasut@gmail.com, mark.rutland@arm.com, robh+dt@kernel.org
-To: masonccyang@mxic.com.tw
+        lee.jones@linaro.org, sergei.shtylyov@cogentembedded.com,
+        robh+dt@kernel.org, mark.rutland@arm.com,
+        devicetree@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <9bc4847f-8e7e-3627-5394-6f2b5c5972bc@cogentembedded.com>
-Content-Language: en-MW
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 04/18/2019 07:55 PM, Sergei Shtylyov wrote:
+Hi,
 
->>>>  > > Document the bindings used by the Renesas R-Car Gen3 RPC-IF
->>> MFD controller.
->>>>  > >
->>>>  > > Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
->>>>  > > ---
->>>>  > >  .../devicetree/bindings/mfd/mfd-renesas-rpc.txt  | 37 +++++++++
->>>>  > +++++++++++++
->>>>  > >  1 file changed, 37 insertions(+)
->>>>  > >  create mode 100644 Documentation/devicetree/bindings/mfd/mfd-
->>>>  > renesas-rpc.txt
->>>>  > >
->>>>  > > diff --git a/Documentation/devicetree/bindings/mfd/mfd-renesas-
->>>>  > rpc.txt b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
->>>>  > > new file mode 100644
->>>>  > > index 0000000..bfb3d29
->>>>  > > --- /dev/null
->>>>  > > +++ b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
->>>>  > > @@ -0,0 +1,37 @@
->>>>  > > +Renesas R-Car Gen3 RPC-IF MFD controller Device Tree Bindings
->>>>  > > +-------------------------------------------------------------
->>>>  > > +
->>>>  > > +Required properties:
->>>>  > > +- compatible: should be an SoC-specific compatible value, followed by
->>>>  > > +      "renesas,rcar-gen3-rpc" as a fallback.
->>>>  > > +      supported SoC-specific values are:
->>>>  > > +      "renesas,r8a77995-rpc" (R-Car D3)
->>>>  > > +- reg: should contain 2 entries, one for the base address of rpc-
->>>>  > if registers,
->>>>  > > +   and one for the direct mapping area
->>>>  > > +- reg-names: should contain "regs", and "dirmap"
->>>>  >
->>>>  >    The device tree describes the hardware, not the driver. Why
->>> did you remove
->>>>  > the "wbuf" area?
->>>>
->>>> I don't think we should describe the hardware that driver did not
->>> implement it
->>>> because there are still many RPC registers we don't use them.
->>>
->>>     I have to repeat: we describe the hardware, not the driver capabilities.
->>
->> how about:
->>
->> - reg: should contain three register areas:
->>           first for the base address of rpc-if registers,
->>           second for the direct mapping read mode and
->>           third for an optional write buffer area.
->>  - reg-names: should contain "regs", "dirmap" and "wbuf"(optional).
->>
->> is it OK ?
-> 
->    No, the write buffer area is always there, at least on the gen3 chips.
-> (I forgot which other Renesas SoC has RPC-IF as well).
+v11 patch including:
+1) Patch mfd include header file.
+2) mfd coding style.
+3) add back wbuf description in dts.
 
-   So it was RZ/A1. But it didn't have the HyperFlash mode...
+v10 patch including:
+1) Address range for > 64M byte flash.
+2) Removed dirmap_write due to WBUF 256 bytes transfer issue.
+3) Dummy bytes setting according to spi-nor.c layer.
 
->> thanks & best regards,
->> Mason
+v9 patch is for RPC MFD driver and RPC SPI driver.
 
-MBR, Sergei
+v8 patch including:
+1) Supported SoC-specific values in DTS.
+2) Rename device node name as flash.
+
+v7 patch is according to Geert and Sergei's comments:
+1) Add all R-Car Gen3 model in dts.
+2) patch rpc-if child node search.
+3) minror coding style.
+
+v6 patch is accroding to Geert, Marek and Sergei's comments:
+1) spi_controller for new code.
+2) "renesas,rcar-gen3-rpc" instead of "renesas,r8a77995-rpc."
+3) patch external address read mode w/o u64 readq().
+4) patch dts for write buffer & drop "renesas,rpc-mode".
+5) coding style and so on.
+
+v5 patch is accroding to Sergei's comments:
+1) Read 6 bytes ID from Sergei's patch.
+2) regmap_update_bits().
+3) C++ style comment.
+
+v4 patch is according to Sergei's comments including:
+1) Drop soc_device_match().
+2) Drop unused RPC registers.
+3) Use ilog2() instead of fls().
+4) Patch read 6 bytes ID w/ one command.
+5) Coding style and so on.
+
+v3 patch is according to Marek and Geert's comments including:
+1) soc_device_mach() to set up RPC_PHYCNT_STRTIM.
+2) get_unaligned().
+3) rpc-mode for rpi-spi-flash or rpc-hyperflash.
+4) coding style and so on.
+
+v2 patch including:
+1) remove RPC clock enable/dis-able control,
+2) patch run time PM.
+3) add RPC module software reset,
+4) add regmap.
+5) other coding style and so on.
+
+thanks for your review.
+
+best regards,
+Mason
+
+
+Mason Yang (3):
+  mfd: Add Renesas R-Car Gen3 RPC-IF MFD driver
+  spi: Add Renesas R-Car Gen3 RPC-IF SPI controller driver
+  dt-bindings: mfd: Document Renesas R-Car Gen3 RPC-IF MFD bindings
+
+ .../devicetree/bindings/mfd/mfd-renesas-rpc.txt    |  39 ++
+ drivers/mfd/Kconfig                                |   9 +
+ drivers/mfd/Makefile                               |   1 +
+ drivers/mfd/renesas-rpc.c                          | 125 +++++
+ drivers/spi/Kconfig                                |   6 +
+ drivers/spi/Makefile                               |   1 +
+ drivers/spi/spi-renesas-rpc.c                      | 571 +++++++++++++++++++++
+ include/linux/mfd/renesas-rpc.h                    | 141 +++++
+ 8 files changed, 893 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
+ create mode 100644 drivers/mfd/renesas-rpc.c
+ create mode 100644 drivers/spi/spi-renesas-rpc.c
+ create mode 100644 include/linux/mfd/renesas-rpc.h
+
+-- 
+1.9.1

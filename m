@@ -1,61 +1,91 @@
-From: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-Subject: [LINUX PATCH] spi: spi-mem: zynq-qspi: Fix build error on architectures missing readsl/writesl
-Date: Mon, 22 Apr 2019 12:56:49 +0530
-Message-ID: <1555918009-13172-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Subject: Re: [PATCH v11 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3
+ RPC-IF MFD bindings
+Date: Mon, 22 Apr 2019 14:45:56 +0300
+Message-ID: <2714b406-1038-c3e2-be6b-326c073497ea@cogentembedded.com>
+References: <1555903925-15292-1-git-send-email-masonccyang@mxic.com.tw>
+ <1555903925-15292-4-git-send-email-masonccyang@mxic.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <vigneshr@ti.com>, <linux-spi@vger.kernel.org>,
-        <marek.vasut@gmail.com>, <dwmw2@infradead.org>, <richard@nod.at>,
-        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <michals@xilinx.com>, <nagasuresh12@gmail.com>,
-        Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-To: <broonie@kernel.org>, <bbrezillon@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
+        zhengxunli@mxic.com.tw
+To: Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
+        marek.vasut@gmail.com, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, bbrezillon@kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        lee.jones@linaro.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        devicetree@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1555903925-15292-4-git-send-email-masonccyang@mxic.com.tw>
+Content-Language: en-MW
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Alpha and some of the architectures are missing readsl/writesl functions.
-so the zynq-qspi driver won't be able to build on these arches. hence use
-ioread32_rep()/iowrite32_rep() instead of readsl()/writesl().
+Hello!
 
-Signed-off-by: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-Reported-by: kbuild test robot <lkp@intel.com>
----
-Verified the same by cross compiling the zynq-qspi driver for alpha
-architecture
-ARCH=alpha CROSS_COMPILE=alpha-linux-gnu- make all
+On 04/22/2019 06:32 AM, Mason Yang wrote:
 
-Reference took from the below commit
-0cf1725 mtd: spi-nor: cqspi: Fix build on arches missing readsl/writesl
----
- drivers/spi/spi-zynq-qspi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+> Document the bindings used by the Renesas R-Car Gen3 RPC-IF MFD.
+> 
+> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+> ---
+>  .../devicetree/bindings/mfd/mfd-renesas-rpc.txt    | 39 ++++++++++++++++++++++
+>  1 file changed, 39 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
+> new file mode 100644
+> index 0000000..ee3bad8
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
+> @@ -0,0 +1,39 @@
+> +Renesas R-Car Gen3 RPC-IF MFD controller Device Tree Bindings
+> +-------------------------------------------------------------
+> +
+> +Required properties:
+> +- compatible: should be an SoC-specific compatible value, followed by
+> +		"renesas,rcar-gen3-rpc" as a fallback.
+> +		supported SoC-specific values are:
+> +		"renesas,r8a77995-rpc"	(R-Car D3)
+> +- reg: should contain three register areas:
+> +	first for the base address of rpc-if registers,
 
-diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index 8079d00..c6bee67 100644
---- a/drivers/spi/spi-zynq-qspi.c
-+++ b/drivers/spi/spi-zynq-qspi.c
-@@ -407,8 +407,8 @@ static void zynq_qspi_write_op(struct zynq_qspi *xqspi, int txcount,
- 		count = txcount;
- 
- 	if (xqspi->txbuf) {
--		writesl(xqspi->regs + ZYNQ_QSPI_TXD_00_00_OFFSET,
--			xqspi->txbuf, count);
-+		iowrite32_rep(xqspi->regs + ZYNQ_QSPI_TXD_00_00_OFFSET,
-+			      xqspi->txbuf, count);
- 		xqspi->txbuf += count * 4;
- 	} else {
- 		for (k = 0; k < count; k++)
-@@ -433,8 +433,8 @@ static void zynq_qspi_read_op(struct zynq_qspi *xqspi, int rxcount)
- 	if (count > rxcount)
- 		count = rxcount;
- 	if (xqspi->rxbuf) {
--		readsl(xqspi->regs + ZYNQ_QSPI_RXD_OFFSET,
--		       xqspi->rxbuf, count);
-+		ioread32_rep(xqspi->regs + ZYNQ_QSPI_RXD_OFFSET,
-+			     xqspi->rxbuf, count);
- 		xqspi->rxbuf += count * 4;
- 	} else {
- 		for (k = 0; k < count; k++)
--- 
-2.7.4
+   RPC-IF.
+
+> +	second for the direct mapping read mode and
+> +	third for the write buffer area.
+> +- reg-names: should contain "regs", "dirmap" and "wbuf"
+> +- clocks: should contain 1 entries for the module's clock
+> +- clock-names: should contain "rpc"
+> +- #address-cells: should be 1
+> +- #size-cells: should be 0
+> +
+> +Example:
+> +
+> +	rpc: rpc-if@ee200000 {
+> +		compatible = "renesas,r8a77995-rpc", "renesas,rcar-gen3-rpc";
+> +		reg = <0 0xee200000 0 0x200>, <0 0x08000000 0 0x4000000>;
+> +		reg-names = "regs", "dirmap";
+
+  You forgot to add back the "wbuf" entrees above.
+
+> +		clocks = <&cpg CPG_MOD 917>;
+> +		clock-names = "rpc";
+> +		power-domains = <&sysc R8A77995_PD_ALWAYS_ON>;
+> +		resets = <&cpg 917>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		flash@0 {
+> +			compatible = "jedec,spi-nor";
+> +			reg = <0>;
+> +			spi-max-frequency = <40000000>;
+> +			spi-tx-bus-width = <1>;
+> +			spi-rx-bus-width = <1>;
+> +		};
+> +	};
+> 
+
+MBR, Sergei

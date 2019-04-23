@@ -1,68 +1,72 @@
-From: Matthias Brugger <matthias.bgg@gmail.com>
-Subject: Re: [PATCH 15/24] dt-bindings: pinctrl: pinctrl-mt65xx: add support
- for MT8516
-Date: Tue, 23 Apr 2019 16:24:44 +0200
-Message-ID: <470d475e-b694-ab6a-5ff7-b5635af629bb@gmail.com>
-References: <20190323211612.860-1-fparent@baylibre.com>
- <20190323211612.860-16-fparent@baylibre.com>
- <CACRpkdZZ6-+MVdK4bOP4SHxQ8uQ8zENcir7DSteHy4g+B5uySQ@mail.gmail.com>
- <b1e4eb6c-0d53-0307-99e4-9fef9e2b33d8@gmail.com>
- <CACRpkdZ8gq+hGRT6EAyP2w9K0jz5RAzWeZ6_UrW+v-BOjd-wbg@mail.gmail.com>
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Subject: Re: [PATCH v11 2/3] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
+ driver
+Date: Tue, 23 Apr 2019 19:09:22 +0300
+Message-ID: <060316c8-7675-cfaf-bfef-c3e6458bfa82@cogentembedded.com>
+References: <1555903925-15292-1-git-send-email-masonccyang@mxic.com.tw>
+ <1555903925-15292-3-git-send-email-masonccyang@mxic.com.tw>
+ <d2a7a471-2847-b774-42b1-9feb8f4c69f3@cogentembedded.com>
+ <OFF96C004A.0EFDDD69-ON482583E5.0032EE18-482583E5.00337F42@mxic.com.tw>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Cc: Fabien Parent <fparent@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sean Wang <sean.wang@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        hsin-hsiung.wang@mediatek.com, wenzhen.yu@mediatek.com,
-        Chaotian Jing <chaotian.jing@mediatek.com>,
-        Yong Mao <yong.mao@mediatek.com>, jjian.zhou@mediatek.com,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-i2c@vger.kernel.org,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support"
-        <linux-mediatek@lists.infradead.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linux-serial@
-To: Linus Walleij <linus.walleij@linaro.org>
+Cc: bbrezillon@kernel.org, broonie@kernel.org,
+        devicetree@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
+        lee.jones@linaro.org, linux-kernel@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+        marek.vasut@gmail.com, mark.rutland@arm.com, robh+dt@kernel.org,
+        zhengxunli@mxic.com.tw
+To: masonccyang@mxic.com.tw
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CACRpkdZ8gq+hGRT6EAyP2w9K0jz5RAzWeZ6_UrW+v-BOjd-wbg@mail.gmail.com>
-Content-Language: en-US
+In-Reply-To: <OFF96C004A.0EFDDD69-ON482583E5.0032EE18-482583E5.00337F42@mxic.com.tw>
+Content-Language: en-MW
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On 04/23/2019 12:22 PM, masonccyang@mxic.com.tw wrote:
 
-
-On 23/04/2019 13:01, Linus Walleij wrote:
-> On Tue, Apr 16, 2019 at 11:12 AM Matthias Brugger
-> <matthias.bgg@gmail.com> wrote:
-> 
->> Hi Linus,
+>> > Add a driver for Renesas R-Car Gen3 RPC-IF SPI controller.
+>> >
+>> > Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+>> > Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+>> [...]
 >>
->> On 08/04/2019 22:44, Linus Walleij wrote:
->>> On Sat, Mar 23, 2019 at 10:17 PM Fabien Parent <fparent@baylibre.com> wrote:
->>>
->>>> Add binding documentation of pinctrl-mt65xx for MT8516 SoC.
->>>>
->>>> Signed-off-by: Fabien Parent <fparent@baylibre.com>
->>>
->>> Patch applied with Rob's ACK.
->>>
+>>   Do dote that I'm opposed to the driver separation as it's presented in
+>> this patches, and I have a large patch reworking both MFD and SPI drivers
+>> in the works.
 >>
->> I don't see this in your for-next branch. Did the patch got lost?
 > 
-> I usually push the devel branch to be tested by the build robots
-> and then mix down the for-next branch.
-> 
-> Recent week(s) the build robot was not responding so it got delayed.
-> 
+> Do you mean add your name in both MFD & dt-binding ?
 
-I don't see it in the devel branch [1]. Can you please double check?
+   Of course not!
 
-[1]
-https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-pinctrl.git/log/?h=devel
+> i.e.,
+> [PATCH v12 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3 RPC-IF MFD bindings
+> 
+> Document the bindings used by the Renesas R-Car Gen3 RPC-IF MFD.
+> 
+> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+> 
+> 
+> 
+> [PATCH v12 1/3] mfd: Add Renesas R-Car Gen3 RPC-IF MFD driver
+> 
+> Add a driver for Renesas R-Car Gen3 RPC-IF MFD.
+> 
+> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+> 
+> 
+> Is it ok ?
+
+   I'm not OK with the most of the driver code ending up in the SPI driver,
+I think most of the code should be kept in the MFD driver and just be called
+by SPI/HF drivers.
+
+> best regards,
+> Mason
+
+MBR, Sergei

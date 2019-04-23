@@ -1,47 +1,47 @@
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Subject: Re: [PATCH 1/2] spi: Micrel eth switch: declare missing of table
-Date: Tue, 23 Apr 2019 19:33:10 +0200
-Message-ID: <0d2f503f-bd45-0009-343c-e6d47d7d6fe1@gmail.com>
-References: <1555960084-8462-1-git-send-email-dagmcr@gmail.com>
- <d4376323-36b7-d463-dc75-56970f750d35@gmail.com>
- <20190423122857.GB3371@lunn.ch>
+From: kernel@martin.sperl.org
+Subject: [PATCH V2 0/6] spi: bcm2835: improvements
+Date: Tue, 23 Apr 2019 20:15:07 +0000
+Message-ID: <20190423201513.8073-1-kernel@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Daniel Gomez <dagmcr@gmail.com>, f.fainelli@gmail.com,
-        davem@davemloft.net, netdev@vger.kernel.org, javier@dowhile0.org,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>
-To: Andrew Lunn <andrew@lunn.ch>
-Return-path: <netdev-owner@vger.kernel.org>
-In-Reply-To: <20190423122857.GB3371@lunn.ch>
-Content-Language: en-US
-Sender: netdev-owner@vger.kernel.org
+Cc: Martin Sperl <kernel@martin.sperl.org>
+To: Mark Brown <broonie@kernel.org>, Eric Anholt <eric@anholt.net>,
+ Stefan Wahren <stefan.wahren@i2se.com>, linux-spi@vger.kernel.org,
+ linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On 23.04.2019 14:28, Andrew Lunn wrote:
->> I wonder why this SPI driver is under drivers/net/phy. Just because
->> the SPI IP is found on an ethernet switch chip? And even then it
->> would be wrong, I see no link to a PHY at all. I'd say the driver
->> belongs to drivers/spi. Shouldn't we move it?
-> 
-> This driver is old. It is probably from before the time of DSA. At
-> least in the OpenWRT world, switches have been thought of as PHY
-> devices, since they connect to a MAC. All the OpenWRT switch drivers
-> are in the phy directory.
-> 
-> There is no good place for this. It is not a PHY, but it is a network
-> driver so should be somewhere under driver/net. There are no other net
-> drivers in driver/spi, etc.
-> 
-Except having "switch" in the name this driver is solely a SPI driver
-and it uses no network code at all. And it has no dependency on any
-network driver. Therefore I wouldn't consider it a network driver.
-Else any functionality found on a SoC would need to be under drivers/soc ;)
+From: Martin Sperl <kernel@martin.sperl.org>
 
-> Since there is not a good place for it, not moving it is the easiest
-> thing to do.
-> 
->       Andrew
-> 
-Heiner
+Patchset that implements changes for the spi-bcm2835aux now
+also for the spi-bcm2835
+
+Changelog:
+  V1 -> V2: applied feedback by Stefan Wahren
+            reorganized patchset
+	    added extra rational, descriptions
+
+Martin Sperl (6):
+  spi: bcm2835: bcm2835_spi_transfer_one_poll remove unnecessary
+    argument
+  spi: bcm2835: Avoid 64-bit arithmetic in xfer len calc
+  spi: bcm2835: added comment about different bus behaviour of DMA mode
+  spi: bcm2835: make the polling duration limits configurable
+  spi: bcm2835: make the lower limit for dma mode configurable
+  spi: bcm2835: add driver stats to debugfs
+
+ drivers/spi/spi-bcm2835.c | 128 ++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 107 insertions(+), 21 deletions(-)
+
+--
+2.11.0

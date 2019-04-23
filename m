@@ -1,32 +1,57 @@
-From: Clark Wang <xiaoning.wang@nxp.com>
-Subject: [PATCH 1/3] spi: lpspi: add NULL check when probe device
-Date: Tue, 23 Apr 2019 10:46:20 +0000
-Message-ID: <20190423104649.24483-2-xiaoning.wang@nxp.com>
-References: <20190423104649.24483-1-xiaoning.wang@nxp.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH 15/24] dt-bindings: pinctrl: pinctrl-mt65xx: add support
+ for MT8516
+Date: Tue, 23 Apr 2019 13:01:00 +0200
+Message-ID: <CACRpkdZ8gq+hGRT6EAyP2w9K0jz5RAzWeZ6_UrW+v-BOjd-wbg@mail.gmail.com>
+References: <20190323211612.860-1-fparent@baylibre.com> <20190323211612.860-16-fparent@baylibre.com>
+ <CACRpkdZZ6-+MVdK4bOP4SHxQ8uQ8zENcir7DSteHy4g+B5uySQ@mail.gmail.com> <b1e4eb6c-0d53-0307-99e4-9fef9e2b33d8@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: "broonie@kernel.org" <broonie@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Fabien Parent <fparent@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Sean Wang <sean.wang@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        hsin-hsiung.wang@mediatek.com, wenzhen.yu@mediatek.com,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        Yong Mao <yong.mao@mediatek.com>, jjian.zhou@mediatek.com,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-i2c@vger.kernel.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support"
+        <linux-mediatek@lists.infradead.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-serial@
+To: Matthias Brugger <matthias.bgg@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190423104649.24483-1-xiaoning.wang@nxp.com>
-Content-Language: en-US
+In-Reply-To: <b1e4eb6c-0d53-0307-99e4-9fef9e2b33d8@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-QWRkIGEgTlVMTCBjaGVjayBmb3IgZGV2aWNlIG5vZGUgYW5kIGxwc3BpX3BsYXRmb3JtX2luZm8g
-d2hlbiBscHNwaQ0KZGV2aWNlIHByb2JlLg0KDQpTaWduZWQtb2ZmLWJ5OiBDbGFyayBXYW5nIDx4
-aWFvbmluZy53YW5nQG54cC5jb20+DQpBY2tlZC1ieTogRnVnYW5nIER1YW4gPGZ1Z2FuZy5kdWFu
-QG54cC5jb20+DQotLS0NCiBkcml2ZXJzL3NwaS9zcGktZnNsLWxwc3BpLmMgfCA1ICsrKysrDQog
-MSBmaWxlIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9z
-cGkvc3BpLWZzbC1scHNwaS5jIGIvZHJpdmVycy9zcGkvc3BpLWZzbC1scHNwaS5jDQppbmRleCBk
-MDhlOTMyNDE0MGUuLjE5MDQwYjVlZjM0OSAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvc3BpL3NwaS1m
-c2wtbHBzcGkuYw0KKysrIGIvZHJpdmVycy9zcGkvc3BpLWZzbC1scHNwaS5jDQpAQCAtODQ1LDYg
-Kzg0NSwxMSBAQCBzdGF0aWMgaW50IGZzbF9scHNwaV9wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2
-aWNlICpwZGV2KQ0KIAl1MzIgdGVtcDsNCiAJYm9vbCBpc19zbGF2ZTsNCiANCisJaWYgKCFucCAm
-JiAhbHBzcGlfcGxhdGZvcm1faW5mbykgew0KKwkJZGV2X2VycigmcGRldi0+ZGV2LCAiY2FuJ3Qg
-Z2V0IHRoZSBwbGF0Zm9ybSBkYXRhXG4iKTsNCisJCXJldHVybiAtRUlOVkFMOw0KKwl9DQorDQog
-CWlzX3NsYXZlID0gb2ZfcHJvcGVydHlfcmVhZF9ib29sKCgmcGRldi0+ZGV2KS0+b2Zfbm9kZSwg
-InNwaS1zbGF2ZSIpOw0KIAlpZiAoaXNfc2xhdmUpDQogCQljb250cm9sbGVyID0gc3BpX2FsbG9j
-X3NsYXZlKCZwZGV2LT5kZXYsDQotLSANCjIuMTcuMQ0KDQo=
+On Tue, Apr 16, 2019 at 11:12 AM Matthias Brugger
+<matthias.bgg@gmail.com> wrote:
+
+> Hi Linus,
+>
+> On 08/04/2019 22:44, Linus Walleij wrote:
+> > On Sat, Mar 23, 2019 at 10:17 PM Fabien Parent <fparent@baylibre.com> wrote:
+> >
+> >> Add binding documentation of pinctrl-mt65xx for MT8516 SoC.
+> >>
+> >> Signed-off-by: Fabien Parent <fparent@baylibre.com>
+> >
+> > Patch applied with Rob's ACK.
+> >
+>
+> I don't see this in your for-next branch. Did the patch got lost?
+
+I usually push the devel branch to be tested by the build robots
+and then mix down the for-next branch.
+
+Recent week(s) the build robot was not responding so it got delayed.
+
+Yours,
+Linus Walleij

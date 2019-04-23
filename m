@@ -1,9 +1,9 @@
 From: Fabio Estevam <festevam@gmail.com>
-Subject: Re: [PATCH v1 01/15] Revert "ARM: dts: imx6q: Use correct SDMA script
- for SPI5 core"
-Date: Tue, 23 Apr 2019 11:02:44 -0300
-Message-ID: <CAOMZO5C5Sc0=_Jsb_CW-Vf9_Zka7OaA66uo3OPB4NsHzo92T3A@mail.gmail.com>
-References: <1556027045-5269-1-git-send-email-yibin.gong@nxp.com> <1556027045-5269-2-git-send-email-yibin.gong@nxp.com>
+Subject: Re: [PATCH v1 02/15] Revert "ARM: dts: imx6: Use correct SDMA script
+ for SPI cores"
+Date: Tue, 23 Apr 2019 11:03:10 -0300
+Message-ID: <CAOMZO5D-ucR6hiYRkSJh+es+KkBFrxqmR0jJrJa=eeQXohFEFA@mail.gmail.com>
+References: <1556027045-5269-1-git-send-email-yibin.gong@nxp.com> <1556027045-5269-3-git-send-email-yibin.gong@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Cc: "broonie@kernel.org" <broonie@kernel.org>,
@@ -24,15 +24,12 @@ Cc: "broonie@kernel.org" <broonie@kernel.org>,
         "kernel@pengutronix.de" <kernel@peng
 To: Robin Gong <yibin.gong@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1556027045-5269-2-git-send-email-yibin.gong@nxp.com>
+In-Reply-To: <1556027045-5269-3-git-send-email-yibin.gong@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Robin,
-
 On Tue, Apr 23, 2019 at 10:50 AM Robin Gong <yibin.gong@nxp.com> wrote:
 >
-> This reverts commit df07101e1c4a29e820df02f9989a066988b160e6.
+> This reverts commit dd4b487b32a3571fdcc66062e661e3a3e360e35b.
 
-You need to provide a detailed explanation in the commit log as to why
-the revert is needed.
+Same here.

@@ -1,7 +1,8 @@
 From: Clark Wang <xiaoning.wang@nxp.com>
-Subject: [PATCH 0/3] spi: lpspi: SS function related changes
-Date: Tue, 23 Apr 2019 10:46:16 +0000
-Message-ID: <20190423104649.24483-1-xiaoning.wang@nxp.com>
+Subject: [PATCH 2/3] spi: lpspi: add multi SS support in PIO mode
+Date: Tue, 23 Apr 2019 10:46:22 +0000
+Message-ID: <20190423104649.24483-3-xiaoning.wang@nxp.com>
+References: <20190423104649.24483-1-xiaoning.wang@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
@@ -9,15 +10,31 @@ Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 To: "broonie@kernel.org" <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190423104649.24483-1-xiaoning.wang@nxp.com>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgTWFyaywNCg0KVGhlc2UgdGhyZWUgcGF0Y2hlcyBkbyBzb21lIGNvZGUgY2xlYW4gdXAgd29y
-a3MgYW5kIGZpeCBhIHByb2JsZW0NCndoZW4gdXNlIG11bHRpIFNTIGluIFBJTyBtb2RlLg0KDQpD
-bGFyayBXYW5nICgzKToNCiAgc3BpOiBscHNwaTogYWRkIE5VTEwgY2hlY2sgd2hlbiBwcm9iZSBk
-ZXZpY2UNCiAgc3BpOiBscHNwaTogYWRkIG11bHRpIFNTIHN1cHBvcnQgaW4gUElPIG1vZGUNCiAg
-c3BpOiBscHNwaTogcmVtb3ZlIGZzbF9scHNwaS0+Y2hpcHNlbGVjdA0KDQogZHJpdmVycy9zcGkv
-c3BpLWZzbC1scHNwaS5jIHwgMzEgKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLQ0KIDEg
-ZmlsZSBjaGFuZ2VkLCAyMiBpbnNlcnRpb25zKCspLCA5IGRlbGV0aW9ucygtKQ0KDQotLSANCjIu
-MTcuMQ0KDQo=
+QWRkICJmc2wsc3BpLW51bS1jaGlwc2VsZWN0cyIgY2hlY2sgdG8gc3VwcG9ydCBtdWx0aSBTUyBm
+dW5jdGlvbiBpbiBQSU8NCm1vZGUuDQoNClNpZ25lZC1vZmYtYnk6IENsYXJrIFdhbmcgPHhpYW9u
+aW5nLndhbmdAbnhwLmNvbT4NCkFja2VkLWJ5OiBGdWdhbmcgRHVhbiA8ZnVnYW5nLmR1YW5Abnhw
+LmNvbT4NCi0tLQ0KIGRyaXZlcnMvc3BpL3NwaS1mc2wtbHBzcGkuYyB8IDEyICsrKysrKysrKysr
+LQ0KIDEgZmlsZSBjaGFuZ2VkLCAxMSBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pDQoNCmRp
+ZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGktZnNsLWxwc3BpLmMgYi9kcml2ZXJzL3NwaS9zcGkt
+ZnNsLWxwc3BpLmMNCmluZGV4IDE5MDQwYjVlZjM0OS4uYThlODNjYjk2ZjYxIDEwMDY0NA0KLS0t
+IGEvZHJpdmVycy9zcGkvc3BpLWZzbC1scHNwaS5jDQorKysgYi9kcml2ZXJzL3NwaS9zcGktZnNs
+LWxwc3BpLmMNCkBAIC04NDEsNyArODQxLDcgQEAgc3RhdGljIGludCBmc2xfbHBzcGlfcHJvYmUo
+c3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldikNCiAJc3RydWN0IHNwaV9pbXhfbWFzdGVyICps
+cHNwaV9wbGF0Zm9ybV9pbmZvID0NCiAJCWRldl9nZXRfcGxhdGRhdGEoJnBkZXYtPmRldik7DQog
+CXN0cnVjdCByZXNvdXJjZSAqcmVzOw0KLQlpbnQgaSwgcmV0LCBpcnE7DQorCWludCBpLCByZXQs
+IGlycSwgbnVtX2NzOw0KIAl1MzIgdGVtcDsNCiAJYm9vbCBpc19zbGF2ZTsNCiANCkBAIC04NjMs
+NiArODYzLDE2IEBAIHN0YXRpYyBpbnQgZnNsX2xwc3BpX3Byb2JlKHN0cnVjdCBwbGF0Zm9ybV9k
+ZXZpY2UgKnBkZXYpDQogDQogCXBsYXRmb3JtX3NldF9kcnZkYXRhKHBkZXYsIGNvbnRyb2xsZXIp
+Ow0KIA0KKwlyZXQgPSBvZl9wcm9wZXJ0eV9yZWFkX3UzMihucCwgImZzbCxzcGktbnVtLWNoaXBz
+ZWxlY3RzIiwgJm51bV9jcyk7DQorCWlmIChyZXQgPCAwKSB7DQorCQlpZiAobHBzcGlfcGxhdGZv
+cm1faW5mbykgew0KKwkJCW51bV9jcyA9IGxwc3BpX3BsYXRmb3JtX2luZm8tPm51bV9jaGlwc2Vs
+ZWN0Ow0KKwkJCWNvbnRyb2xsZXItPm51bV9jaGlwc2VsZWN0ID0gbnVtX2NzOw0KKwkJfQ0KKwl9
+IGVsc2Ugew0KKwkJY29udHJvbGxlci0+bnVtX2NoaXBzZWxlY3QgPSBudW1fY3M7DQorCX0NCisN
+CiAJZnNsX2xwc3BpID0gc3BpX2NvbnRyb2xsZXJfZ2V0X2RldmRhdGEoY29udHJvbGxlcik7DQog
+CWZzbF9scHNwaS0+ZGV2ID0gJnBkZXYtPmRldjsNCiAJZnNsX2xwc3BpLT5pc19zbGF2ZSA9IGlz
+X3NsYXZlOw0KLS0gDQoyLjE3LjENCg0K

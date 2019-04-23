@@ -1,52 +1,68 @@
-From: Fabio Estevam <festevam@gmail.com>
-Subject: Re: [PATCH v1 09/15] dmaengine: imx-sdma: remove ERR009165 on i.mx6ul
-Date: Tue, 23 Apr 2019 11:12:58 -0300
-Message-ID: <CAOMZO5AT2dPJwQefKwFsfp8XqodL4k7bhKcmXQskHbc9aQ6n8A@mail.gmail.com>
-References: <1556027045-5269-1-git-send-email-yibin.gong@nxp.com> <1556027045-5269-10-git-send-email-yibin.gong@nxp.com>
+From: Matthias Brugger <matthias.bgg@gmail.com>
+Subject: Re: [PATCH 15/24] dt-bindings: pinctrl: pinctrl-mt65xx: add support
+ for MT8516
+Date: Tue, 23 Apr 2019 16:24:44 +0200
+Message-ID: <470d475e-b694-ab6a-5ff7-b5635af629bb@gmail.com>
+References: <20190323211612.860-1-fparent@baylibre.com>
+ <20190323211612.860-16-fparent@baylibre.com>
+ <CACRpkdZZ6-+MVdK4bOP4SHxQ8uQ8zENcir7DSteHy4g+B5uySQ@mail.gmail.com>
+ <b1e4eb6c-0d53-0307-99e4-9fef9e2b33d8@gmail.com>
+ <CACRpkdZ8gq+hGRT6EAyP2w9K0jz5RAzWeZ6_UrW+v-BOjd-wbg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: "broonie@kernel.org" <broonie@kernel.org>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
-        "plyatov@gmail.com" <plyatov@gmail.com>,
-        "sean.nyekjaer@prevas.dk" <sean.nyekjaer@prevas.dk>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: Fabien Parent <fparent@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Sean Wang <sean.wang@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        hsin-hsiung.wang@mediatek.com, wenzhen.yu@mediatek.com,
+        Chaotian Jing <chaotian.jing@mediatek.com>,
+        Yong Mao <yong.mao@mediatek.com>, jjian.zhou@mediatek.com,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+        <devicetree@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "kernel@pengutronix.de" <kernel@peng
-To: Robin Gong <yibin.gong@nxp.com>
+        linux-i2c@vger.kernel.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support"
+        <linux-mediatek@lists.infradead.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-serial@
+To: Linus Walleij <linus.walleij@linaro.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1556027045-5269-10-git-send-email-yibin.gong@nxp.com>
+In-Reply-To: <CACRpkdZ8gq+hGRT6EAyP2w9K0jz5RAzWeZ6_UrW+v-BOjd-wbg@mail.gmail.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Apr 23, 2019 at 10:51 AM Robin Gong <yibin.gong@nxp.com> wrote:
->
-> ECSPI issue fixed from i.mx6ul at hardware level, no need
-> ERR009165 anymore on those chips such as i.mx8mq. Add i.mx6sx
-> from where i.mx6ul source.
->
-> Signed-off-by: Robin Gong <yibin.gong@nxp.com>
-> ---
->  drivers/dma/imx-sdma.c | 43 ++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 42 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
-> index 1e20470..99c44a5 100644
-> --- a/drivers/dma/imx-sdma.c
-> +++ b/drivers/dma/imx-sdma.c
-> @@ -419,6 +419,7 @@ struct sdma_driver_data {
->         int num_events;
->         struct sdma_script_start_addrs  *script_addrs;
->         bool check_ratio;
-> +       bool ecspi_fixed;
 
-Please state the erratum number in the variable name, such as
-has_err009165_fixed
+
+On 23/04/2019 13:01, Linus Walleij wrote:
+> On Tue, Apr 16, 2019 at 11:12 AM Matthias Brugger
+> <matthias.bgg@gmail.com> wrote:
+> 
+>> Hi Linus,
+>>
+>> On 08/04/2019 22:44, Linus Walleij wrote:
+>>> On Sat, Mar 23, 2019 at 10:17 PM Fabien Parent <fparent@baylibre.com> wrote:
+>>>
+>>>> Add binding documentation of pinctrl-mt65xx for MT8516 SoC.
+>>>>
+>>>> Signed-off-by: Fabien Parent <fparent@baylibre.com>
+>>>
+>>> Patch applied with Rob's ACK.
+>>>
+>>
+>> I don't see this in your for-next branch. Did the patch got lost?
+> 
+> I usually push the devel branch to be tested by the build robots
+> and then mix down the for-next branch.
+> 
+> Recent week(s) the build robot was not responding so it got delayed.
+> 
+
+I don't see it in the devel branch [1]. Can you please double check?
+
+[1]
+https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-pinctrl.git/log/?h=devel

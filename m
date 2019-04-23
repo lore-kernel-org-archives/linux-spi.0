@@ -1,34 +1,36 @@
-From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH V2 1/6] spi: bcm2835: bcm2835_spi_transfer_one_poll remove
- unnecessary argument
-Date: Tue, 23 Apr 2019 20:15:08 +0000
-Message-ID: <20190423201513.8073-2-kernel@martin.sperl.org>
+From: kernel@martin.sperl.org
+Subject: [PATCH V2 2/6] spi: bcm2835: Avoid 64-bit arithmetic in xfer len calc
+Date: Tue, 23 Apr 2019 20:15:09 +0000
+Message-ID: <20190423201513.8073-3-kernel@martin.sperl.org>
 References: <20190423201513.8073-1-kernel@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Anholt <eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org>,
- Stefan Wahren <stefan.wahren-eS4NqCHxEME@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <20190423201513.8073-1-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
-List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Cc: Martin Sperl <kernel@martin.sperl.org>
+To: Mark Brown <broonie@kernel.org>, Eric Anholt <eric@anholt.net>,
+ Stefan Wahren <stefan.wahren@i2se.com>, linux-spi@vger.kernel.org,
+ linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190423201513.8073-1-kernel@martin.sperl.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+From: Martin Sperl <kernel@martin.sperl.org>
 
-Remove the unnecessary argument of xfer_time_us when calling
-bcm2835_spi_transfer_one_poll.
+Avoid 64 bit aritmetics when deciding if we need to use polling or not
+This replicates: commit d704afffe65c
+("spi: bcm2835aux: Avoid 64-bit arithmetic in xfer len calc")
+from spi-bcm2835aux
 
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Signed-off-by: Martin Sperl <kernel@martin.sperl.org>
 
 Changelog:
   V1 -> V2: applied feedback by Stefan Wahren
@@ -36,32 +38,44 @@ Changelog:
 	    added extra rational, descriptions
 
 ---
- drivers/spi/spi-bcm2835.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/spi/spi-bcm2835.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index 35aebdfd3b4e..ef7f8dc9f18e 100644
+index ef7f8dc9f18e..a64bfa8e0710 100644
 --- a/drivers/spi/spi-bcm2835.c
 +++ b/drivers/spi/spi-bcm2835.c
-@@ -725,8 +725,7 @@ static void bcm2835_dma_init(struct spi_master *master, struct device *dev)
- static int bcm2835_spi_transfer_one_poll(struct spi_master *master,
- 					 struct spi_device *spi,
- 					 struct spi_transfer *tfr,
--					 u32 cs,
--					 unsigned long long xfer_time_us)
-+					 u32 cs)
- {
+@@ -777,7 +777,6 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
  	struct bcm2835_spi *bs = spi_master_get_devdata(master);
- 	unsigned long timeout;
-@@ -827,8 +826,7 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
+ 	unsigned long spi_hz, clk_hz, cdiv;
+ 	unsigned long spi_used_hz;
+-	unsigned long long xfer_time_us;
+ 	u32 cs = bcm2835_rd(bs, BCM2835_SPI_CS);
 
- 	/* for short requests run polling*/
- 	if (xfer_time_us <= BCM2835_SPI_POLLING_LIMIT_US)
--		return bcm2835_spi_transfer_one_poll(master, spi, tfr,
--						     cs, xfer_time_us);
-+		return bcm2835_spi_transfer_one_poll(master, spi, tfr, cs);
+ 	/* set clock */
+@@ -818,14 +817,15 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
+ 	bs->tx_len = tfr->len;
+ 	bs->rx_len = tfr->len;
+
+-	/* calculate the estimated time in us the transfer runs */
+-	xfer_time_us = (unsigned long long)tfr->len
+-		* 9 /* clocks/byte - SPI-HW waits 1 clock after each byte */
+-		* 1000000;
+-	do_div(xfer_time_us, spi_used_hz);
+-
+-	/* for short requests run polling*/
+-	if (xfer_time_us <= BCM2835_SPI_POLLING_LIMIT_US)
++	/* Calculate the estimated time in us the transfer runs.  Note that
++	 * there is 1 idle clocks cycles after each byte getting transferred
++	 * so we have 9 cycles/byte.  This is used to find the number of Hz
++	 * per byte per polling limit.  E.g., we can transfer 1 byte in 30 us
++	 * per 300,000 Hz of bus clock.
++	 */
++#define HZ_PER_BYTE ((9 * 1000000) / BCM2835_SPI_POLLING_LIMIT_US)
++	/* run in polling mode for short transfers */
++	if (tfr->len < spi_used_hz / HZ_PER_BYTE)
+ 		return bcm2835_spi_transfer_one_poll(master, spi, tfr, cs);
 
  	/* run in dma mode if conditions are right */
- 	if (master->can_dma && bcm2835_spi_can_dma(master, spi, tfr))
 --
 2.11.0

@@ -1,39 +1,37 @@
-From: Fabio Estevam <festevam@gmail.com>
-Subject: Re: [PATCH 2/3] spi: lpspi: add multi SS support in PIO mode
-Date: Tue, 23 Apr 2019 08:21:34 -0300
-Message-ID: <CAOMZO5CQ04UiYPoVjT6L3MuK6cCLu01Ba=-uui_Lf7t58n1tqQ@mail.gmail.com>
-References: <20190423104649.24483-1-xiaoning.wang@nxp.com> <20190423104649.24483-3-xiaoning.wang@nxp.com>
+From: Andrew Lunn <andrew@lunn.ch>
+Subject: Re: [PATCH 1/2] spi: Micrel eth switch: declare missing of table
+Date: Tue, 23 Apr 2019 14:28:57 +0200
+Message-ID: <20190423122857.GB3371@lunn.ch>
+References: <1555960084-8462-1-git-send-email-dagmcr@gmail.com>
+ <d4376323-36b7-d463-dc75-56970f750d35@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: "broonie@kernel.org" <broonie@kernel.org>,
+Content-Type: text/plain; charset=us-ascii
+Cc: Daniel Gomez <dagmcr@gmail.com>, f.fainelli@gmail.com,
+        davem@davemloft.net, netdev@vger.kernel.org, javier@dowhile0.org,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Clark Wang <xiaoning.wang@nxp.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190423104649.24483-3-xiaoning.wang@nxp.com>
-Sender: linux-kernel-owner@vger.kernel.org
+        Mark Brown <broonie@kernel.org>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Return-path: <netdev-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <d4376323-36b7-d463-dc75-56970f750d35@gmail.com>
+Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Apr 23, 2019 at 7:48 AM Clark Wang <xiaoning.wang@nxp.com> wrote:
->
-> Add "fsl,spi-num-chipselects" check to support multi SS function in PIO
-> mode.
+> I wonder why this SPI driver is under drivers/net/phy. Just because
+> the SPI IP is found on an ethernet switch chip? And even then it
+> would be wrong, I see no link to a PHY at all. I'd say the driver
+> belongs to drivers/spi. Shouldn't we move it?
 
-This custom property does not seem to be needed as the number of chip
-selects can be parsed from the devicetree file directly.
+This driver is old. It is probably from before the time of DSA. At
+least in the OpenWRT world, switches have been thought of as PHY
+devices, since they connect to a MAC. All the OpenWRT switch drivers
+are in the phy directory.
 
-We got rid of "fsl,spi-num-chipselects" property in the spi-imx driver
-in this commit:
+There is no good place for this. It is not a PHY, but it is a network
+driver so should be somewhere under driver/net. There are no other net
+drivers in driver/spi, etc.
 
-commit b36581df7e788b674a4efbb8da7fe4a00c207e8b
-Author: Alexander Shiyan <shc_work@mail.ru>
-Date:   Wed Jun 8 20:02:06 2016 +0300
+Since there is not a good place for it, not moving it is the easiest
+thing to do.
 
-    spi: imx: Using existing properties for chipselects
-
-    Patch reuse existing "chip_select" and "cs_gpio(s)" fields from SPI core.
-
-    Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-    Signed-off-by: Mark Brown <broonie@kernel.org>
-
-and we should try to also avoid such property in spi-fsl-lpspi as well.
+      Andrew

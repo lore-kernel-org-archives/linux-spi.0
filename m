@@ -1,37 +1,81 @@
-From: Andrew Lunn <andrew@lunn.ch>
-Subject: Re: [PATCH 1/2] spi: Micrel eth switch: declare missing of table
-Date: Tue, 23 Apr 2019 14:28:57 +0200
-Message-ID: <20190423122857.GB3371@lunn.ch>
-References: <1555960084-8462-1-git-send-email-dagmcr@gmail.com>
- <d4376323-36b7-d463-dc75-56970f750d35@gmail.com>
+From: Robin Gong <yibin.gong@nxp.com>
+Subject: [PATCH v1 00/15] add ecspi ERR009165 for i.mx6/7 soc family
+Date: Tue, 23 Apr 2019 13:50:34 +0000
+Message-ID: <1556027045-5269-1-git-send-email-yibin.gong@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Daniel Gomez <dagmcr@gmail.com>, f.fainelli@gmail.com,
-        davem@davemloft.net, netdev@vger.kernel.org, javier@dowhile0.org,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: dl-linux-imx <linux-imx@nxp.com>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Return-path: <netdev-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <d4376323-36b7-d463-dc75-56970f750d35@gmail.com>
-Sender: netdev-owner@vger.kernel.org
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>
+To: "broonie@kernel.org" <broonie@kernel.org>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "festevam@gmail.com" <festevam@gmail.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+        "plyatov@gmail.com" <plyatov@gmail.com>,
+        "sean.nyekjaer@prevas.dk" <sean.nyekjaer@prevas.dk>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-> I wonder why this SPI driver is under drivers/net/phy. Just because
-> the SPI IP is found on an ethernet switch chip? And even then it
-> would be wrong, I see no link to a PHY at all. I'd say the driver
-> belongs to drivers/spi. Shouldn't we move it?
-
-This driver is old. It is probably from before the time of DSA. At
-least in the OpenWRT world, switches have been thought of as PHY
-devices, since they connect to a MAC. All the OpenWRT switch drivers
-are in the phy directory.
-
-There is no good place for this. It is not a PHY, but it is a network
-driver so should be somewhere under driver/net. There are no other net
-drivers in driver/spi, etc.
-
-Since there is not a good place for it, not moving it is the easiest
-thing to do.
-
-      Andrew
+ICBUaGVyZSBpcyBlY3NwaSBFUlIwMDkxNjUgb24gaS5teDYvNyBzb2MgZmFtaWx5LCB3aGljaCBj
+YXVzZSBGSUZPDQp0cmFuc2ZlciB0byBiZSBzZW5kIHR3aWNlIGluIERNQSBtb2RlLiBQbGVhc2Ug
+Z2V0IG1vcmUgaW5mb3JtYXRpb24gZnJvbToNCmh0dHBzOi8vd3d3Lm54cC5jb20vZG9jcy9lbi9l
+cnJhdGEvSU1YNkRRQ0UucGRmLiBUaGUgd29ya2Fyb3VuZCBpcyBhZGRpbmcNCm5ldyBzZG1hIHJh
+bSBzY3JpcHQgd2hpY2ggd29ya3MgaW4gWENIICBtb2RlIGFzIFBJTyBpbnNpZGUgc2RtYSBpbnN0
+ZWFkDQpvZiBTTUMgbW9kZSwgbWVhbndoaWxlLCAnVFhfVEhSRVNIT0xEJyBzaG91bGQgYmUgMC4N
+CiAgVGhlIGlzc3VlIHNob3VsZCBiZSBleGlzdCBvbiBhbGwgbGVnYWN5IGkubXg2Lzcgc29jIGZh
+bWlseSBiZWZvcmUgaS5teDZ1bCwNCk5YUCBmaXggdGhpcyBkZXNpZ24gaXNzdWUgZnJvbSBpLm14
+NnVsLCBzbyBuZXdlciBjaGlwcyBzdWNoIGFzIGkubXg2dWxsLw0KaS5teDhtcS9pLm14OG1tLCBk
+b24ndCBuZWVkIHRoaXMgd29ya2Fyb3VkIGFueW1vcmUuIFRoaXMgcGF0Y2ggc2V0DQphZGQgbmV3
+ICdmc2wsaW14NnVsLWVjc3BpJyBmb3IgZWNzcGkgZHJpdmVyIGFuZCAnZWNzcGlfZml4ZWQnIGlu
+IHNkbWENCmRyaXZlciB0byBjaG9vc2UgaWYgbmVlZCBlcnJhdGEgb3Igbm90Lg0KICBUaGUgZmly
+c3QgdHdvIHJldmVydGVkIHBhdGNoZXMgc2hvdWxkIGJlIHRoZSBzYW1lIGlzc3VlLCB0aG91Z2gs
+IGl0DQpzZWVtcyAnZml4ZWQnIGJ5IGNoYW5naW5nIHRvIG90aGVyIHNocCBzY3JpcHQuIEhvcGUg
+U2VhbiBvciBTYXNjaGEgY291bGQNCmhhdmUgdGhlIGNoYW5jZSB0byB0ZXN0IHRoaXMgcGF0Y2gg
+c2V0IGlmIGNvdWxkIGZpeCB0aGVpciBpc3N1ZXMuDQogIEJlc2lkZXMsIGVuYWJsZSBzZG1hIHN1
+cHBvcnQgZm9yIGkubXg4bW0vOG1xIGFuZCBmaXggZWNzcGkxIG5vdCB3b3JrDQpvbiBpLm14OG1t
+IGJlY2F1c2UgdGhlIGV2ZW50IGlkIGlzIHplcm8uDQoNClBTOg0KIFBsZWFzZSBnZXQgc2RtYSBm
+aXJtd2FyZSBmcm9tIGJlbG93IGxpbnV4LWZpcm13YXJlIGFuZCBjb3B5IGl0IHRvIHlvdXINCmxv
+Y2FsIHJvb3RmcyAvbGliL2Zpcm13YXJlL2lteC9zZG1hLg0KaHR0cHM6Ly9naXQua2VybmVsLm9y
+Zy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvZmlybXdhcmUvbGludXgtZmlybXdhcmUuZ2l0L3Ry
+ZWUvaW14L3NkbWENCg0KUm9iaW4gR29uZyAoMTUpOg0KICBSZXZlcnQgIkFSTTogZHRzOiBpbXg2
+cTogVXNlIGNvcnJlY3QgU0RNQSBzY3JpcHQgZm9yIFNQSTUgY29yZSINCiAgUmV2ZXJ0ICJBUk06
+IGR0czogaW14NjogVXNlIGNvcnJlY3QgU0RNQSBzY3JpcHQgZm9yIFNQSSBjb3JlcyINCiAgUmV2
+ZXJ0ICJkbWFlbmdpbmU6IGlteC1zZG1hOiByZWZpbmUgdG8gbG9hZCBjb250ZXh0IG9ubHkgb25j
+ZSINCiAgZG1hZW5naW5lOiBpbXgtc2RtYTogcmVtb3ZlIGR1cGlsaWNhdGVkIHNkbWFfbG9hZF9j
+b250ZXh0DQogIGRtYTogZW5naW5lOiBpbXgtc2RtYTogYWRkIG1jdV8yX2Vjc3BpIHNjcmlwdA0K
+ICBzcGk6IGlteDogZml4IEVSUjAwOTE2NQ0KICBzcGk6IGlteDogcmVtb3ZlIEVSUjAwOTE2NSB3
+b3JrYXJvdW5kIG9uIGkubXg2dWwNCiAgZHQtYmluZGluZ3M6IHNwaTogaW14OiBhZGQgaS5teDZ1
+bCB0byBzdGF0ZSBlcnJhdGEgZml4ZWQNCiAgZG1hZW5naW5lOiBpbXgtc2RtYTogcmVtb3ZlIEVS
+UjAwOTE2NSBvbiBpLm14NnVsDQogIGR0LWJpbmRpbmdzOiBkbWE6IGlteC1zZG1hOiBhZGQgaS5t
+eDZ1bC82c3ggY29tcGF0aWJsZSBuYW1lDQogIGRtYWVuZ2luZTogaW14LXNkbWE6IGZpeCBlY3Nw
+aTEgcnggZG1hIG5vdCB3b3JrIG9uIGkubXg4bW0NCiAgQVJNNjQ6IGR0czogZnJlZXNjYWxlOiBp
+bXg4bW0vOG1xOiB1cGRhdGUgbmV3IGNvbXBhdGlibGUgbmFtZSBmb3INCiAgICBlY3NwaSBhbmQg
+c2RtYQ0KICBBUk06IGR0czogaW14NnVsOiBhZGQgZG1hIHN1cHBvcnQgb24gZWNzcGkNCiAgQVJN
+OiBkdHM6IGlteDZzbGw6IGNvcnJlY3QgZWNzcGkvc2RtYSBjb21wYXRpYmxlDQogIGFybTY0OiBk
+ZWZjb25maWc6IEVuYWJsZSBTRE1BIG9uIGkubXg4bXEvOG1tDQoNCiAuLi4vZGV2aWNldHJlZS9i
+aW5kaW5ncy9kbWEvZnNsLWlteC1zZG1hLnR4dCAgICAgICB8ICAyICsNCiAuLi4vZGV2aWNldHJl
+ZS9iaW5kaW5ncy9zcGkvZnNsLWlteC1jc3BpLnR4dCAgICAgICB8ICAyICsNCiBhcmNoL2FybS9i
+b290L2R0cy9pbXg2cS5kdHNpICAgICAgICAgICAgICAgICAgICAgICB8ICAyICstDQogYXJjaC9h
+cm0vYm9vdC9kdHMvaW14NnFkbC5kdHNpICAgICAgICAgICAgICAgICAgICAgfCAgOCArLS0NCiBh
+cmNoL2FybS9ib290L2R0cy9pbXg2c2xsLmR0c2kgICAgICAgICAgICAgICAgICAgICB8IDEwICsr
+LS0NCiBhcmNoL2FybS9ib290L2R0cy9pbXg2dWwuZHRzaSAgICAgICAgICAgICAgICAgICAgICB8
+ICA4ICsrKw0KIGFyY2gvYXJtNjQvYm9vdC9kdHMvZnJlZXNjYWxlL2lteDhtbS5kdHNpICAgICAg
+ICAgIHwgMTQgKystLS0NCiBhcmNoL2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bXEuZHRz
+aSAgICAgICAgICB8ICA2ICstDQogYXJjaC9hcm02NC9jb25maWdzL2RlZmNvbmZpZyAgICAgICAg
+ICAgICAgICAgICAgICAgfCAgMyArDQogZHJpdmVycy9kbWEvaW14LXNkbWEuYyAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgfCA2NyArKysrKysrKysrKysrKysrLS0tLS0tDQogZHJpdmVycy9z
+cGkvc3BpLWlteC5jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCA0NiArKysrKysrKysr
+KystLS0NCiBpbmNsdWRlL2xpbnV4L3BsYXRmb3JtX2RhdGEvZG1hLWlteC1zZG1hLmggICAgICAg
+ICB8ICAxICsNCiAxMiBmaWxlcyBjaGFuZ2VkLCAxMjQgaW5zZXJ0aW9ucygrKSwgNDUgZGVsZXRp
+b25zKC0pDQoNCi0tIA0KMi43LjQNCg0K

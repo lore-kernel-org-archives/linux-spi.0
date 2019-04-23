@@ -1,8 +1,8 @@
 From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
-Subject: [PATCH V2 4/6] spi: bcm2835: make the polling duration limits
+Subject: [PATCH V2 5/6] spi: bcm2835: make the lower limit for dma mode
  configurable
-Date: Tue, 23 Apr 2019 20:15:11 +0000
-Message-ID: <20190423201513.8073-5-kernel@martin.sperl.org>
+Date: Tue, 23 Apr 2019 20:15:12 +0000
+Message-ID: <20190423201513.8073-6-kernel@martin.sperl.org>
 References: <20190423201513.8073-1-kernel@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -25,86 +25,70 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 
-Under some circumstances the default 30 us polling limit is not optimal
-and may lead to long delays because we are waiting on an interrupt.
-with this patch we have the possibility to influence this policy.
+Under some circumstances the default 96 byte limit is not optimal.
 
-So make this limit (in us) configurable via a module parameters
-(but also modifyable via /sys/modules/...)
+The polling and interrupt mode of the spi-bcm2835 controller exhibit a
+1 idle clock cycle which is missing when using DMA.
 
-This replicates similar code found in spi-bcm2835aux.
+So when transferring a longer spi_transfer to some low spec MCU devices
+without SPI FIFOs like a ATMega it means that the SPI has to get reduced
+by a factor of 2 or more when using DMA mode compared to using PIO modes
+to give the MCU enough time to handle the incoming spi byte and prepare
+the next byte to get delivered - these extra 4+ CPU cycles that the idle
+spi clock is providing allows bigger transfers to work at faster speeds
+(assuming highly optimized MCU code).
+So forcing the transfer to use PIO mode to geth this behaviour for
+longer transfers is of advantage.
+
+The oposite is true when (ab)using the spi MOSI line alone to control a
+WS2812B RGB LED stripe, where the DMA mode makes it possible to use the
+MOSI lines alone (with correct encoding) to control the LED.
+
+So both extremes have there use cases and with this patch we allow to
+control the policy on a controller wide basis.
+
+Right now we only allow to control the limit on a controller wide basis,
+but in the future it may be possible to configure this on a per spi_device
+basis.
 
 Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-
-Changelog:
-  V1 -> V2: applied feedback by Stefan Wahren
-            reorganized patchset
-	    added extra rational, descriptions
-
 ---
- drivers/spi/spi-bcm2835.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ drivers/spi/spi-bcm2835.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index 3140d952c03a..2d702db8689c 100644
+index 2d702db8689c..755e1e6d2252 100644
 --- a/drivers/spi/spi-bcm2835.c
 +++ b/drivers/spi/spi-bcm2835.c
-@@ -73,14 +73,18 @@
-
+@@ -73,7 +73,6 @@
+ 
  #define BCM2835_SPI_FIFO_SIZE		64
  #define BCM2835_SPI_FIFO_SIZE_3_4	48
--#define BCM2835_SPI_POLLING_LIMIT_US	30
--#define BCM2835_SPI_POLLING_JIFFIES	2
- #define BCM2835_SPI_DMA_MIN_LENGTH	96
+-#define BCM2835_SPI_DMA_MIN_LENGTH	96
  #define BCM2835_SPI_MODE_BITS	(SPI_CPOL | SPI_CPHA | SPI_CS_HIGH \
  				| SPI_NO_CS | SPI_3WIRE)
-
- #define DRV_NAME	"spi-bcm2835"
-
-+/* define polling limits */
-+unsigned int polling_limit_us = 30;
-+module_param(polling_limit_us, uint, 0664);
-+MODULE_PARM_DESC(polling_limit_us,
-+		 "time in us to run a transfer in polling mode\n");
+ 
+@@ -85,6 +84,12 @@ module_param(polling_limit_us, uint, 0664);
+ MODULE_PARM_DESC(polling_limit_us,
+ 		 "time in us to run a transfer in polling mode\n");
+ 
++/* define minimum transfer length for which we may use DMA */
++unsigned int dma_min_bytes_limit = 96;
++module_param(dma_min_bytes_limit, uint, 0664);
++MODULE_PARM_DESC(dma_min_bytes_limit,
++		 "minimum number of bytes to run a transfer in dma mode - 0 disables dma-mode completely\n");
 +
  /**
   * struct bcm2835_spi - BCM2835 SPI controller
   * @regs: base address of register map
-@@ -739,8 +743,8 @@ static int bcm2835_spi_transfer_one_poll(struct spi_master *master,
- 	 */
- 	bcm2835_wr_fifo_blind(bs, BCM2835_SPI_FIFO_SIZE);
-
--	/* set the timeout */
--	timeout = jiffies + BCM2835_SPI_POLLING_JIFFIES;
-+	/* set the timeout to at least 2 jiffies */
-+	timeout = jiffies + 2 + HZ * polling_limit_us / 1000000;
-
- 	/* loop until finished the transfer */
- 	while (bs->rx_len) {
-@@ -775,8 +779,8 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
- 				    struct spi_transfer *tfr)
+@@ -631,7 +636,7 @@ static bool bcm2835_spi_can_dma(struct spi_master *master,
+ 				struct spi_transfer *tfr)
  {
- 	struct bcm2835_spi *bs = spi_master_get_devdata(master);
--	unsigned long spi_hz, clk_hz, cdiv;
--	unsigned long spi_used_hz;
-+	unsigned long spi_hz, clk_hz, cdiv, spi_used_hz;
-+	unsigned long hz_per_byte, byte_limit;
- 	u32 cs = bcm2835_rd(bs, BCM2835_SPI_CS);
-
- 	/* set clock */
-@@ -823,9 +827,11 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
- 	 * per byte per polling limit.  E.g., we can transfer 1 byte in 30 us
- 	 * per 300,000 Hz of bus clock.
- 	 */
--#define HZ_PER_BYTE ((9 * 1000000) / BCM2835_SPI_POLLING_LIMIT_US)
-+	hz_per_byte = polling_limit_us ? (9 * 1000000) / polling_limit_us : 0;
-+	byte_limit = hz_per_byte ? spi_used_hz / hz_per_byte : 1;
-+
- 	/* run in polling mode for short transfers */
--	if (tfr->len < spi_used_hz / HZ_PER_BYTE)
-+	if (tfr->len < byte_limit)
- 		return bcm2835_spi_transfer_one_poll(master, spi, tfr, cs);
-
- 	/* run in dma mode if conditions are right
---
+ 	/* we start DMA efforts only on bigger transfers */
+-	if (tfr->len < BCM2835_SPI_DMA_MIN_LENGTH)
++	if (!dma_min_bytes_limit || tfr->len < dma_min_bytes_limit)
+ 		return false;
+ 
+ 	/* BCM2835_SPI_DLEN has defined a max transfer size as
+-- 
 2.11.0

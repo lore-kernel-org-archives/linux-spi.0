@@ -1,51 +1,51 @@
-From: <Tudor.Ambarus@microchip.com>
-Subject: Re: [PATCH] spi: atmel-quadspi: fix crash while suspending
-Date: Wed, 24 Apr 2019 12:21:47 +0000
-Message-ID: <27e8b8f3-5d83-c78b-e1b4-d7c7a150bce1@microchip.com>
-References: <1556097463-29672-1-git-send-email-claudiu.beznea@microchip.com>
+From: Fabien Dessenne <fabien.dessenne@st.com>
+Subject: [PATCH] spi: stm32: return the get_irq error
+Date: Wed, 24 Apr 2019 14:38:44 +0200
+Message-ID: <1556109524-21874-1-git-send-email-fabien.dessenne@st.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-To: <Claudiu.Beznea@microchip.com>, <broonie@kernel.org>,
-        <Nicolas.Ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
-        <Ludovic.Desroches@microchip.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1556097463-29672-1-git-send-email-claudiu.beznea@microchip.com>
-Content-Language: en-US
-Content-ID: <BF0874755D3DE74DA2FF098FFF56EC83@namprd11.prod.outlook.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Fabien Dessenne <fabien.dessenne@st.com>
+To: Mark Brown <broonie@kernel.org>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@st.com>,
+ Amelie Delaunay <amelie.delaunay@st.com>, <linux-spi@vger.kernel.org>,
+ <linux-stm32@st-md-mailman.stormreply.com>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-DQoNCk9uIDA0LzI0LzIwMTkgMTI6MTcgUE0sIENsYXVkaXUuQmV6bmVhQG1pY3JvY2hpcC5jb20g
-d3JvdGU6DQo+IEZyb206IENsYXVkaXUgQmV6bmVhIDxjbGF1ZGl1LmJlem5lYUBtaWNyb2NoaXAu
-Y29tPg0KPiANCj4gYXRtZWxfcXNwaSBvYmplY3RzIGFyZSBrZXB0IGluIHNwaV9jb250cm9sbGVy
-IG9iamVjdHMsIHNvLCBmaXJzdCBnZXQNCj4gcG9pbnRlciB0byBzcGlfY29udHJvbGxlciBvYmpl
-Y3QgYW5kIHRoZW4gZ2V0IGF0bWVsX3FzcGkgb2JqZWN0IGZyb20NCj4gc3BpX2NvbnRyb2xsZXIg
-b2JqZWN0Lg0KPiANCj4gRml4ZXM6IDJkMzBhYzVlZDYzMyAoIm10ZDogc3BpLW5vcjogYXRtZWwt
-cXVhZHNwaTogVXNlIHNwaS1tZW0gaW50ZXJmYWNlIGZvciBhdG1lbC1xdWFkc3BpIGRyaXZlciIp
-DQo+IFNpZ25lZC1vZmYtYnk6IENsYXVkaXUgQmV6bmVhIDxjbGF1ZGl1LmJlem5lYUBtaWNyb2No
-aXAuY29tPg0KDQpSZXZpZXdlZC1ieTogVHVkb3IgQW1iYXJ1cyA8dHVkb3IuYW1iYXJ1c0BtaWNy
-b2NoaXAuY29tPg0KDQo+IC0tLQ0KPiAgZHJpdmVycy9zcGkvYXRtZWwtcXVhZHNwaS5jIHwgNiAr
-KysrLS0NCj4gIDEgZmlsZSBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0p
-DQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvYXRtZWwtcXVhZHNwaS5jIGIvZHJpdmVy
-cy9zcGkvYXRtZWwtcXVhZHNwaS5jDQo+IGluZGV4IGU1NDEwOTc1OWQzNC4uOWYyNGQ1ZjBiNDMx
-IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL3NwaS9hdG1lbC1xdWFkc3BpLmMNCj4gKysrIGIvZHJp
-dmVycy9zcGkvYXRtZWwtcXVhZHNwaS5jDQo+IEBAIC01NzAsNyArNTcwLDggQEAgc3RhdGljIGlu
-dCBhdG1lbF9xc3BpX3JlbW92ZShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2KQ0KPiAgDQo+
-ICBzdGF0aWMgaW50IF9fbWF5YmVfdW51c2VkIGF0bWVsX3FzcGlfc3VzcGVuZChzdHJ1Y3QgZGV2
-aWNlICpkZXYpDQo+ICB7DQo+IC0Jc3RydWN0IGF0bWVsX3FzcGkgKmFxID0gZGV2X2dldF9kcnZk
-YXRhKGRldik7DQo+ICsJc3RydWN0IHNwaV9jb250cm9sbGVyICpjdHJsID0gZGV2X2dldF9kcnZk
-YXRhKGRldik7DQo+ICsJc3RydWN0IGF0bWVsX3FzcGkgKmFxID0gc3BpX2NvbnRyb2xsZXJfZ2V0
-X2RldmRhdGEoY3RybCk7DQo+ICANCj4gIAljbGtfZGlzYWJsZV91bnByZXBhcmUoYXEtPnFzcGlj
-ayk7DQo+ICAJY2xrX2Rpc2FibGVfdW5wcmVwYXJlKGFxLT5wY2xrKTsNCj4gQEAgLTU4MCw3ICs1
-ODEsOCBAQCBzdGF0aWMgaW50IF9fbWF5YmVfdW51c2VkIGF0bWVsX3FzcGlfc3VzcGVuZChzdHJ1
-Y3QgZGV2aWNlICpkZXYpDQo+ICANCj4gIHN0YXRpYyBpbnQgX19tYXliZV91bnVzZWQgYXRtZWxf
-cXNwaV9yZXN1bWUoc3RydWN0IGRldmljZSAqZGV2KQ0KPiAgew0KPiAtCXN0cnVjdCBhdG1lbF9x
-c3BpICphcSA9IGRldl9nZXRfZHJ2ZGF0YShkZXYpOw0KPiArCXN0cnVjdCBzcGlfY29udHJvbGxl
-ciAqY3RybCA9IGRldl9nZXRfZHJ2ZGF0YShkZXYpOw0KPiArCXN0cnVjdCBhdG1lbF9xc3BpICph
-cSA9IHNwaV9jb250cm9sbGVyX2dldF9kZXZkYXRhKGN0cmwpOw0KPiAgDQo+ICAJY2xrX3ByZXBh
-cmVfZW5hYmxlKGFxLT5wY2xrKTsNCj4gIAljbGtfcHJlcGFyZV9lbmFibGUoYXEtPnFzcGljayk7
-DQo+IA0K
+During probe, return the "get_irq" error value instead of -ENOENT. This
+allows the driver to be defer probed if needed.
+
+Signed-off-by: Fabien Dessenne <fabien.dessenne@st.com>
+---
+ drivers/spi/spi-stm32.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index 4186ed2..b222ce8 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -1839,8 +1839,9 @@ static int stm32_spi_probe(struct platform_device *pdev)
+ 
+ 	spi->irq = platform_get_irq(pdev, 0);
+ 	if (spi->irq <= 0) {
+-		dev_err(&pdev->dev, "no irq: %d\n", spi->irq);
+-		ret = -ENOENT;
++		ret = spi->irq;
++		if (ret != -EPROBE_DEFER)
++			dev_err(&pdev->dev, "failed to get irq: %d\n", ret);
+ 		goto err_master_put;
+ 	}
+ 	ret = devm_request_threaded_irq(&pdev->dev, spi->irq,
+-- 
+2.7.4

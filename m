@@ -1,68 +1,103 @@
-From: "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
-Subject: Re: [PATCH v1 14/15] ARM: dts: imx6sll: correct ecspi/sdma compatible
-Date: Wed, 24 Apr 2019 08:37:45 +0200
-Message-ID: <20190424063745.b67kcb3zzifuf22b@pengutronix.de>
-References: <1556027045-5269-1-git-send-email-yibin.gong@nxp.com>
- <1556027045-5269-15-git-send-email-yibin.gong@nxp.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "sean.nyekjaer@prevas.dk" <sean.nyekjaer@prevas.dk>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "plyatov@gmail.com" <plyatov@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "robh+dt@kernel.org" <robh+dt@kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "broonie@kernel.org" <broonie@kernel.org>, dl-linux-imx <linux-imx@nxp.com>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
- "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
- "festevam@gmail.com" <festevam@gmail.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-To: Robin Gong <yibin.gong@nxp.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <1556027045-5269-15-git-send-email-yibin.gong@nxp.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+From: Mason Yang <masonccyang@mxic.com.tw>
+Subject: [PATCH v12 0/3] mfd: Add Renesas R-Car Gen3 RPC-IF MFD & SPI driver
+Date: Wed, 24 Apr 2019 15:55:33 +0800
+Message-ID: <1556092536-17095-1-git-send-email-masonccyang@mxic.com.tw>
+Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
+        Mason Yang <masonccyang@mxic.com.tw>, zhengxunli@mxic.com.tw
+To: broonie@kernel.org, marek.vasut@gmail.com,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        bbrezillon@kernel.org, linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        lee.jones@linaro.org, sergei.shtylyov@cogentembedded.com,
+        robh+dt@kernel.org, mark.rutland@arm.com,
+        devicetree@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Apr 23, 2019 at 01:51:45PM +0000, Robin Gong wrote:
-> Correct ecspi/sdma compatible since ecspi errata ERR009165
-> not fixed on i.mx6sll chip.
-> 
-> Signed-off-by: Robin Gong <yibin.gong@nxp.com>
-> ---
->  arch/arm/boot/dts/imx6sll.dtsi | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/arm/boot/dts/imx6sll.dtsi b/arch/arm/boot/dts/imx6sll.dtsi
-> index 1b4899f..03f2103 100644
-> --- a/arch/arm/boot/dts/imx6sll.dtsi
-> +++ b/arch/arm/boot/dts/imx6sll.dtsi
-> @@ -183,7 +183,7 @@
->  				};
->  
->  				ecspi1: spi@2008000 {
-> -					compatible = "fsl,imx6ul-ecspi", "fsl,imx51-ecspi";
-> +					compatible ="fsl,imx51-ecspi";
+Hi,
 
-Where is the fsl,imx6sll-ecspi compatible that would have prevented us
-from changing this devicetree now? You should at least add it now.
+V12 patch including:
+1) add back "wbuf" in dts example.
+2) RPC-IF replace rpc-if in dts.
 
-Sascha
+v11 patch including:
+1) Patch mfd include header file.
+2) mfd coding style.
+3) add back wbuf description in dts.
+
+v10 patch including:
+1) Address range for > 64M byte flash.
+2) Removed dirmap_write due to WBUF 256 bytes transfer issue.
+3) Dummy bytes setting according to spi-nor.c layer.
+
+v9 patch is for RPC MFD driver and RPC SPI driver.
+
+v8 patch including:
+1) Supported SoC-specific values in DTS.
+2) Rename device node name as flash.
+
+v7 patch is according to Geert and Sergei's comments:
+1) Add all R-Car Gen3 model in dts.
+2) patch rpc-if child node search.
+3) minror coding style.
+
+v6 patch is accroding to Geert, Marek and Sergei's comments:
+1) spi_controller for new code.
+2) "renesas,rcar-gen3-rpc" instead of "renesas,r8a77995-rpc."
+3) patch external address read mode w/o u64 readq().
+4) patch dts for write buffer & drop "renesas,rpc-mode".
+5) coding style and so on.
+
+v5 patch is accroding to Sergei's comments:
+1) Read 6 bytes ID from Sergei's patch.
+2) regmap_update_bits().
+3) C++ style comment.
+
+v4 patch is according to Sergei's comments including:
+1) Drop soc_device_match().
+2) Drop unused RPC registers.
+3) Use ilog2() instead of fls().
+4) Patch read 6 bytes ID w/ one command.
+5) Coding style and so on.
+
+v3 patch is according to Marek and Geert's comments including:
+1) soc_device_mach() to set up RPC_PHYCNT_STRTIM.
+2) get_unaligned().
+3) rpc-mode for rpi-spi-flash or rpc-hyperflash.
+4) coding style and so on.
+
+v2 patch including:
+1) remove RPC clock enable/dis-able control,
+2) patch run time PM.
+3) add RPC module software reset,
+4) add regmap.
+5) other coding style and so on.
+
+thanks for your review.
+
+best regards,
+Mason
+
+
+Mason Yang (3):
+  mfd: Add Renesas R-Car Gen3 RPC-IF MFD driver
+  spi: Add Renesas R-Car Gen3 RPC-IF SPI controller driver
+  dt-bindings: mfd: Document Renesas R-Car Gen3 RPC-IF MFD bindings
+
+ .../devicetree/bindings/mfd/mfd-renesas-rpc.txt    |  40 ++
+ drivers/mfd/Kconfig                                |   9 +
+ drivers/mfd/Makefile                               |   1 +
+ drivers/mfd/renesas-rpc.c                          | 125 +++++
+ drivers/spi/Kconfig                                |   6 +
+ drivers/spi/Makefile                               |   1 +
+ drivers/spi/spi-renesas-rpc.c                      | 571 +++++++++++++++++++++
+ include/linux/mfd/renesas-rpc.h                    | 141 +++++
+ 8 files changed, 894 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
+ create mode 100644 drivers/mfd/renesas-rpc.c
+ create mode 100644 drivers/spi/spi-renesas-rpc.c
+ create mode 100644 include/linux/mfd/renesas-rpc.h
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.1

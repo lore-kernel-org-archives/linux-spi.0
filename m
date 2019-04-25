@@ -1,55 +1,78 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/2] spi: Micrel eth switch: declare missing of table
-Date: Thu, 25 Apr 2019 19:04:48 +0100
-Message-ID: <20190425180448.GB23183@sirena.org.uk>
-References: <1555960084-8462-1-git-send-email-dagmcr@gmail.com>
- <d4376323-36b7-d463-dc75-56970f750d35@gmail.com>
- <20190423122857.GB3371@lunn.ch>
- <0d2f503f-bd45-0009-343c-e6d47d7d6fe1@gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="i0/AhcQY5QxfSsSZ"
-Cc: Andrew Lunn <andrew@lunn.ch>, Daniel Gomez <dagmcr@gmail.com>,
-        f.fainelli@gmail.com, davem@davemloft.net, netdev@vger.kernel.org,
-        javier@dowhile0.org,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Return-path: <netdev-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <0d2f503f-bd45-0009-343c-e6d47d7d6fe1@gmail.com>
-Sender: netdev-owner@vger.kernel.org
+Subject: Applied "spi: stm32: return the get_irq error" to the spi tree
+Date: Thu, 25 Apr 2019 20:24:45 +0100 (BST)
+Message-ID: <20190425192445.10782441D3E@finisterre.ee.mobilebroadband>
+References: <1556109524-21874-1-git-send-email-fabien.dessenne@st.com>
+Cc: Alexandre Torgue <alexandre.torgue@st.com>,
+        Amelie Delaunay <amelie.delaunay@st.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        Mark Brown <broonie@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>
+To: Fabien Dessenne <fabien.dessenne@st.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1556109524-21874-1-git-send-email-fabien.dessenne@st.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---i0/AhcQY5QxfSsSZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: stm32: return the get_irq error
 
-On Tue, Apr 23, 2019 at 07:33:10PM +0200, Heiner Kallweit wrote:
+has been applied to the spi tree at
 
-> Except having "switch" in the name this driver is solely a SPI driver
-> and it uses no network code at all. And it has no dependency on any
-> network driver. Therefore I wouldn't consider it a network driver.
-> Else any functionality found on a SoC would need to be under drivers/soc ;)
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.1
 
-Not seen the code here but what Heiner says makes sense to me - note
-also that we did at some point add some network framework support for
-ethernet switch chips so the device end of the SPI link should be
-supportable via standard frameworks now.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---i0/AhcQY5QxfSsSZ
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzB9r8ACgkQJNaLcl1U
-h9CMuwf/U3loyuII1qSgy+LdXW3AVD1N1ykdQlBXjigcEwe9WYEFvBtmnNN2yIMC
-VWd1hvBbJn0gVpR1qJqXtk7Xv9vJ6YtFuT2rbuplCWfP41WZF87lJZxS8hZwsJOT
-qKbjNPkPWTBe8/QGIZ1fg34frRNXtIYxslwuvmtEPdEiMLtnd5AhiOyRHv+1mEWE
-YXxZx9Dgo2GvYz2YyqudVXnUBhSocgo3N5cCfkAUxpAFsy7bZifo7II62w334ySC
-BHHjxFJe3reFs0NBc3+jec86kbHtLrQaxfHkxDb0vtOapDxf6D0/J6wykyUDBboY
-BIKnF3NMq7SaY2i51QCQHLkbKqs4Rg==
-=aycs
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---i0/AhcQY5QxfSsSZ--
+Thanks,
+Mark
+
+>From adb366f61af4486cafb5234aa820721543e21780 Mon Sep 17 00:00:00 2001
+From: Fabien Dessenne <fabien.dessenne@st.com>
+Date: Wed, 24 Apr 2019 14:38:44 +0200
+Subject: [PATCH] spi: stm32: return the get_irq error
+
+During probe, return the "get_irq" error value instead of -ENOENT. This
+allows the driver to be defer probed if needed.
+
+Signed-off-by: Fabien Dessenne <fabien.dessenne@st.com>
+Acked-by: Amelie Delaunay <amelie.delaunay@st.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-stm32.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index 4186ed20d796..b222ce8d083e 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -1839,8 +1839,9 @@ static int stm32_spi_probe(struct platform_device *pdev)
+ 
+ 	spi->irq = platform_get_irq(pdev, 0);
+ 	if (spi->irq <= 0) {
+-		dev_err(&pdev->dev, "no irq: %d\n", spi->irq);
+-		ret = -ENOENT;
++		ret = spi->irq;
++		if (ret != -EPROBE_DEFER)
++			dev_err(&pdev->dev, "failed to get irq: %d\n", ret);
+ 		goto err_master_put;
+ 	}
+ 	ret = devm_request_threaded_irq(&pdev->dev, spi->irq,
+-- 
+2.20.1

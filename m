@@ -1,24 +1,22 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: stm32: return the get_irq error" to the spi tree
-Date: Thu, 25 Apr 2019 20:24:45 +0100 (BST)
-Message-ID: <20190425192445.10782441D3E@finisterre.ee.mobilebroadband>
-References: <1556109524-21874-1-git-send-email-fabien.dessenne@st.com>
-Cc: Alexandre Torgue <alexandre.torgue@st.com>,
-        Amelie Delaunay <amelie.delaunay@st.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        Mark Brown <broonie@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>
-To: Fabien Dessenne <fabien.dessenne@st.com>
+Subject: Applied "spi: atmel-quadspi: fix crash while suspending" to the spi tree
+Date: Thu, 25 Apr 2019 20:24:44 +0100 (BST)
+Message-ID: <20190425192444.8C74E441D41@finisterre.ee.mobilebroadband>
+References: <1556097463-29672-1-git-send-email-claudiu.beznea@microchip.com>
+Cc: alexandre.belloni@bootlin.com, broonie@kernel.org,
+        Claudiu.Beznea@microchip.com, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Ludovic.Desroches@microchip.com, Mark Brown <broonie@kernel.org>,
+        Nicolas.Ferre@microchip.com
+To: Claudiu Beznea <claudiu.beznea@microchip.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1556109524-21874-1-git-send-email-fabien.dessenne@st.com>
+In-Reply-To: <1556097463-29672-1-git-send-email-claudiu.beznea@microchip.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: stm32: return the get_irq error
+   spi: atmel-quadspi: fix crash while suspending
 
 has been applied to the spi tree at
 
@@ -43,36 +41,46 @@ to this mail.
 Thanks,
 Mark
 
->From adb366f61af4486cafb5234aa820721543e21780 Mon Sep 17 00:00:00 2001
-From: Fabien Dessenne <fabien.dessenne@st.com>
-Date: Wed, 24 Apr 2019 14:38:44 +0200
-Subject: [PATCH] spi: stm32: return the get_irq error
+>From 12eede5fccc06e422b2de869a3675ee57737bf48 Mon Sep 17 00:00:00 2001
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
+Date: Wed, 24 Apr 2019 09:17:59 +0000
+Subject: [PATCH] spi: atmel-quadspi: fix crash while suspending
 
-During probe, return the "get_irq" error value instead of -ENOENT. This
-allows the driver to be defer probed if needed.
+atmel_qspi objects are kept in spi_controller objects, so, first get
+pointer to spi_controller object and then get atmel_qspi object from
+spi_controller object.
 
-Signed-off-by: Fabien Dessenne <fabien.dessenne@st.com>
-Acked-by: Amelie Delaunay <amelie.delaunay@st.com>
+Fixes: 2d30ac5ed633 ("mtd: spi-nor: atmel-quadspi: Use spi-mem interface for atmel-quadspi driver")
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Reviewed-by: Tudor Ambarus <tudor.ambarus@microchip.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-stm32.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/atmel-quadspi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index 4186ed20d796..b222ce8d083e 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -1839,8 +1839,9 @@ static int stm32_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+index fffc21cd5f79..b3173ebddade 100644
+--- a/drivers/spi/atmel-quadspi.c
++++ b/drivers/spi/atmel-quadspi.c
+@@ -570,7 +570,8 @@ static int atmel_qspi_remove(struct platform_device *pdev)
  
- 	spi->irq = platform_get_irq(pdev, 0);
- 	if (spi->irq <= 0) {
--		dev_err(&pdev->dev, "no irq: %d\n", spi->irq);
--		ret = -ENOENT;
-+		ret = spi->irq;
-+		if (ret != -EPROBE_DEFER)
-+			dev_err(&pdev->dev, "failed to get irq: %d\n", ret);
- 		goto err_master_put;
- 	}
- 	ret = devm_request_threaded_irq(&pdev->dev, spi->irq,
+ static int __maybe_unused atmel_qspi_suspend(struct device *dev)
+ {
+-	struct atmel_qspi *aq = dev_get_drvdata(dev);
++	struct spi_controller *ctrl = dev_get_drvdata(dev);
++	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
+ 
+ 	clk_disable_unprepare(aq->qspick);
+ 	clk_disable_unprepare(aq->pclk);
+@@ -580,7 +581,8 @@ static int __maybe_unused atmel_qspi_suspend(struct device *dev)
+ 
+ static int __maybe_unused atmel_qspi_resume(struct device *dev)
+ {
+-	struct atmel_qspi *aq = dev_get_drvdata(dev);
++	struct spi_controller *ctrl = dev_get_drvdata(dev);
++	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
+ 
+ 	clk_prepare_enable(aq->pclk);
+ 	clk_prepare_enable(aq->qspick);
 -- 
 2.20.1

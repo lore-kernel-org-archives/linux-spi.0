@@ -1,33 +1,61 @@
-From: Stephen Boyd <sboyd@kernel.org>
-Subject: Re: [PATCH 14/24] clk: mediatek: add clock driver for MT8516
-Date: Thu, 25 Apr 2019 14:39:24 -0700
-Message-ID: <155622836474.15276.3720750789980463871@swboyd.mtv.corp.google.com>
-References: <20190323211612.860-1-fparent@baylibre.com> <20190323211612.860-15-fparent@baylibre.com>
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v12 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3
+ RPC-IF MFD bindings
+Date: Thu, 25 Apr 2019 18:07:16 -0500
+Message-ID: <CAL_JsqJDh3Z+iFn6fbkGT+jQ3HG2s4n3PT=LrmB-td++G99q_w@mail.gmail.com>
+References: <1556092536-17095-1-git-send-email-masonccyang@mxic.com.tw>
+ <1556092536-17095-4-git-send-email-masonccyang@mxic.com.tw>
+ <20190424212356.GA27103@bogus> <65853dc2-6f3c-1494-7e72-54877797cdd2@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Cc: sean.wang@kernel.org, ryder.lee@mediatek.com,
-        hsin-hsiung.wang@mediatek.com, wenzhen.yu@mediatek.com,
-        chaotian.jing@mediatek.com, yong.mao@mediatek.com,
-        jjian.zhou@mediatek.com, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-mmc@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-clk@vger.kernel.org, stephane.leprovost@mediatek.com,
-        Fabien Parent <fparent@baylibre.com>
-To: Fabien Parent <fparent@baylibre.com>, mark.rutland@arm.com,
-        matthias.bgg@gmail.com, robh+dt@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mason Yang <masonccyang@mxic.com.tw>,
+        Mark Brown <broonie@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Boris Brezillon <bbrezillon@kernel.org>,
+        "open list:MEDIA DRIVERS FOR RENESAS - FCP"
+        <linux-renesas-soc@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Lee Jones <lee.jones@linaro.org>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        devicetree@vger.kernel.org, Julien Su <juliensu@mxic.com.tw>,
+        Simon Horman <horms@verge.net.au>, zhengxunli@mxic.com.tw
+To: Marek Vasut <marek.vasut@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190323211612.860-15-fparent@baylibre.com>
+In-Reply-To: <65853dc2-6f3c-1494-7e72-54877797cdd2@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Quoting Fabien Parent (2019-03-23 14:16:02)
-> Add the clock driver for the MT8516 SoC.
->=20
-> Signed-off-by: Fabien Parent <fparent@baylibre.com>
-> ---
+On Wed, Apr 24, 2019 at 4:54 PM Marek Vasut <marek.vasut@gmail.com> wrote:
+>
+> On 4/24/19 11:23 PM, Rob Herring wrote:
+> > On Wed, Apr 24, 2019 at 03:55:36PM +0800, Mason Yang wrote:
+> >> Document the bindings used by the Renesas R-Car Gen3 RPC-IF MFD.
+> >>
+> >> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+> >> ---
+> >>  .../devicetree/bindings/mfd/mfd-renesas-rpc.txt    | 40 ++++++++++++++++++++++
+> >>  1 file changed, 40 insertions(+)
+> >>  create mode 100644 Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
+> >>
+> >> diff --git a/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
+> >> new file mode 100644
+> >> index 0000000..668b822
+> >> --- /dev/null
+> >> +++ b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
+> >> @@ -0,0 +1,40 @@
+> >> +Renesas R-Car Gen3 RPC-IF MFD Device Tree Bindings
+> >> +--------------------------------------------------
+> >
+> > Looks like a SPI flash controller from the example. What makes it an
+> > MFD?
+>
+> It supports both SPI NOR and HyperFlash (CFI-compliant flash with
+> different bus interface).
 
-Applied to clk-next
+Not sure that really makes it an MFD. Lee probably has an opinion.
+
+In any case, can we get a complete binding that shows both.
+
+Rob

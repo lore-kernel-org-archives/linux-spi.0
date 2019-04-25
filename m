@@ -1,26 +1,39 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: atmel-quadspi: fix crash while suspending" to the spi tree
-Date: Thu, 25 Apr 2019 20:24:44 +0100 (BST)
-Message-ID: <20190425192444.8C74E441D41@finisterre.ee.mobilebroadband>
-References: <1556097463-29672-1-git-send-email-claudiu.beznea@microchip.com>
-Cc: alexandre.belloni@bootlin.com, broonie@kernel.org,
-        Claudiu.Beznea@microchip.com, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Ludovic.Desroches@microchip.com, Mark Brown <broonie@kernel.org>,
-        Nicolas.Ferre@microchip.com
-To: Claudiu Beznea <claudiu.beznea@microchip.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1556097463-29672-1-git-send-email-claudiu.beznea@microchip.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Subject: Applied "spi: stm32-qspi: manage the get_irq error case" to the spi
+ tree
+Date: Thu, 25 Apr 2019 20:24:43 +0100 (BST)
+Message-ID: <20190425192443.8880E441D3B@finisterre.ee.mobilebroadband>
+References: <1556119140-3319-1-git-send-email-fabien.dessenne@st.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Christophe KERELLO <christophe.kerello@st.com>,
+ Alexandre Torgue <alexandre.torgue@st.com>, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+ Ludovic Barre <ludovic.barre@st.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org
+To: Fabien Dessenne <fabien.dessenne@st.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1556119140-3319-1-git-send-email-fabien.dessenne@st.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: atmel-quadspi: fix crash while suspending
+   spi: stm32-qspi: manage the get_irq error case
 
 has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.1
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.2
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
@@ -41,46 +54,36 @@ to this mail.
 Thanks,
 Mark
 
->From 12eede5fccc06e422b2de869a3675ee57737bf48 Mon Sep 17 00:00:00 2001
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
-Date: Wed, 24 Apr 2019 09:17:59 +0000
-Subject: [PATCH] spi: atmel-quadspi: fix crash while suspending
+>From 9852254537c499110f6eb32f00a63d8049d04a69 Mon Sep 17 00:00:00 2001
+From: Fabien Dessenne <fabien.dessenne@st.com>
+Date: Wed, 24 Apr 2019 17:19:00 +0200
+Subject: [PATCH] spi: stm32-qspi: manage the get_irq error case
 
-atmel_qspi objects are kept in spi_controller objects, so, first get
-pointer to spi_controller object and then get atmel_qspi object from
-spi_controller object.
+During probe, check the "get_irq" error value.
 
-Fixes: 2d30ac5ed633 ("mtd: spi-nor: atmel-quadspi: Use spi-mem interface for atmel-quadspi driver")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+Signed-off-by: Fabien Dessenne <fabien.dessenne@st.com>
+Acked-by: Ludovic Barre <ludovic.barre@st.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/atmel-quadspi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/spi/spi-stm32-qspi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index fffc21cd5f79..b3173ebddade 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -570,7 +570,8 @@ static int atmel_qspi_remove(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
+index 11a89aa15d56..42f8e3c6aa1f 100644
+--- a/drivers/spi/spi-stm32-qspi.c
++++ b/drivers/spi/spi-stm32-qspi.c
+@@ -574,6 +574,12 @@ static int stm32_qspi_probe(struct platform_device *pdev)
+ 	}
  
- static int __maybe_unused atmel_qspi_suspend(struct device *dev)
- {
--	struct atmel_qspi *aq = dev_get_drvdata(dev);
-+	struct spi_controller *ctrl = dev_get_drvdata(dev);
-+	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
- 
- 	clk_disable_unprepare(aq->qspick);
- 	clk_disable_unprepare(aq->pclk);
-@@ -580,7 +581,8 @@ static int __maybe_unused atmel_qspi_suspend(struct device *dev)
- 
- static int __maybe_unused atmel_qspi_resume(struct device *dev)
- {
--	struct atmel_qspi *aq = dev_get_drvdata(dev);
-+	struct spi_controller *ctrl = dev_get_drvdata(dev);
-+	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
- 
- 	clk_prepare_enable(aq->pclk);
- 	clk_prepare_enable(aq->qspick);
+ 	irq = platform_get_irq(pdev, 0);
++	if (irq < 0) {
++		if (irq != -EPROBE_DEFER)
++			dev_err(dev, "IRQ error missing or invalid\n");
++		return irq;
++	}
++
+ 	ret = devm_request_irq(dev, irq, stm32_qspi_irq, 0,
+ 			       dev_name(dev), qspi);
+ 	if (ret) {
 -- 
 2.20.1

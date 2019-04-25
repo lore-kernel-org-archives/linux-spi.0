@@ -1,97 +1,55 @@
-From: Marek Vasut <marek.vasut@gmail.com>
-Subject: Re: [PATCH v12 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3
- RPC-IF MFD bindings
-Date: Wed, 24 Apr 2019 23:54:30 +0200
-Message-ID: <65853dc2-6f3c-1494-7e72-54877797cdd2@gmail.com>
-References: <1556092536-17095-1-git-send-email-masonccyang@mxic.com.tw>
- <1556092536-17095-4-git-send-email-masonccyang@mxic.com.tw>
- <20190424212356.GA27103@bogus>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/2] spi: Micrel eth switch: declare missing of table
+Date: Thu, 25 Apr 2019 19:04:48 +0100
+Message-ID: <20190425180448.GB23183@sirena.org.uk>
+References: <1555960084-8462-1-git-send-email-dagmcr@gmail.com>
+ <d4376323-36b7-d463-dc75-56970f750d35@gmail.com>
+ <20190423122857.GB3371@lunn.ch>
+ <0d2f503f-bd45-0009-343c-e6d47d7d6fe1@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: broonie@kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, bbrezillon@kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        lee.jones@linaro.org, sergei.shtylyov@cogentembedded.com,
-        mark.rutland@arm.com, devicetree@vger.kernel.org,
-        juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
-        zhengxunli@mxic.com.tw
-To: Rob Herring <robh@kernel.org>, Mason Yang <masonccyang@mxic.com.tw>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190424212356.GA27103@bogus>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="i0/AhcQY5QxfSsSZ"
+Cc: Andrew Lunn <andrew@lunn.ch>, Daniel Gomez <dagmcr@gmail.com>,
+        f.fainelli@gmail.com, davem@davemloft.net, netdev@vger.kernel.org,
+        javier@dowhile0.org,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Return-path: <netdev-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <0d2f503f-bd45-0009-343c-e6d47d7d6fe1@gmail.com>
+Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 4/24/19 11:23 PM, Rob Herring wrote:
-> On Wed, Apr 24, 2019 at 03:55:36PM +0800, Mason Yang wrote:
->> Document the bindings used by the Renesas R-Car Gen3 RPC-IF MFD.
->>
->> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
->> ---
->>  .../devicetree/bindings/mfd/mfd-renesas-rpc.txt    | 40 ++++++++++++++++++++++
->>  1 file changed, 40 insertions(+)
->>  create mode 100644 Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
->>
->> diff --git a/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
->> new file mode 100644
->> index 0000000..668b822
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
->> @@ -0,0 +1,40 @@
->> +Renesas R-Car Gen3 RPC-IF MFD Device Tree Bindings
->> +--------------------------------------------------
-> 
-> Looks like a SPI flash controller from the example. What makes it an 
-> MFD?
 
-It supports both SPI NOR and HyperFlash (CFI-compliant flash with
-different bus interface).
+--i0/AhcQY5QxfSsSZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
->> +
->> +Required properties:
->> +- compatible: should be an SoC-specific compatible value, followed by
->> +		"renesas,rcar-gen3-rpc" as a fallback.
->> +		supported SoC-specific values are:
->> +		"renesas,r8a77995-rpc"	(R-Car D3)
->> +- reg: should contain three register areas:
->> +	first for the base address of RPC-IF registers,
->> +	second for the direct mapping read mode and
->> +	third for the write buffer area.
->> +- reg-names: should contain "regs", "dirmap" and "wbuf"
->> +- clocks: should contain 1 entries for the module's clock
->> +- clock-names: should contain "rpc"
->> +- #address-cells: should be 1
->> +- #size-cells: should be 0
->> +
->> +Example:
->> +
->> +	rpc: rpc-if@ee200000 {
->> +		compatible = "renesas,r8a77995-rpc", "renesas,rcar-gen3-rpc";
->> +		reg = <0 0xee200000 0 0x200>, <0 0x08000000 0 0x4000000>,
->> +		      <0 0xee208000 0 0x100>;
->> +		reg-names = "regs", "dirmap", "wbuf";
->> +		clocks = <&cpg CPG_MOD 917>;
->> +		clock-names = "rpc";
->> +		power-domains = <&sysc R8A77995_PD_ALWAYS_ON>;
->> +		resets = <&cpg 917>;
->> +		#address-cells = <1>;
->> +		#size-cells = <0>;
->> +
->> +		flash@0 {
->> +			compatible = "jedec,spi-nor";
->> +			reg = <0>;
->> +			spi-max-frequency = <40000000>;
->> +			spi-tx-bus-width = <1>;
->> +			spi-rx-bus-width = <1>;
->> +		};
->> +	};
->> -- 
->> 1.9.1
->>
+On Tue, Apr 23, 2019 at 07:33:10PM +0200, Heiner Kallweit wrote:
 
+> Except having "switch" in the name this driver is solely a SPI driver
+> and it uses no network code at all. And it has no dependency on any
+> network driver. Therefore I wouldn't consider it a network driver.
+> Else any functionality found on a SoC would need to be under drivers/soc ;)
 
--- 
-Best regards,
-Marek Vasut
+Not seen the code here but what Heiner says makes sense to me - note
+also that we did at some point add some network framework support for
+ethernet switch chips so the device end of the SPI link should be
+supportable via standard frameworks now.
+
+--i0/AhcQY5QxfSsSZ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzB9r8ACgkQJNaLcl1U
+h9CMuwf/U3loyuII1qSgy+LdXW3AVD1N1ykdQlBXjigcEwe9WYEFvBtmnNN2yIMC
+VWd1hvBbJn0gVpR1qJqXtk7Xv9vJ6YtFuT2rbuplCWfP41WZF87lJZxS8hZwsJOT
+qKbjNPkPWTBe8/QGIZ1fg34frRNXtIYxslwuvmtEPdEiMLtnd5AhiOyRHv+1mEWE
+YXxZx9Dgo2GvYz2YyqudVXnUBhSocgo3N5cCfkAUxpAFsy7bZifo7II62w334ySC
+BHHjxFJe3reFs0NBc3+jec86kbHtLrQaxfHkxDb0vtOapDxf6D0/J6wykyUDBboY
+BIKnF3NMq7SaY2i51QCQHLkbKqs4Rg==
+=aycs
+-----END PGP SIGNATURE-----
+
+--i0/AhcQY5QxfSsSZ--

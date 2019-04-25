@@ -1,23 +1,33 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-mem: zynq-qspi: Fix build error on architectures missing readsl/writesl" to the spi tree
-Date: Thu, 25 Apr 2019 20:26:38 +0100 (BST)
-Message-ID: <20190425192638.36C8E441D3D@finisterre.ee.mobilebroadband>
-References: <1555918009-13172-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
-Cc: bbrezillon@kernel.org, broonie@kernel.org, dwmw2@infradead.org,
-        kbuild test robot <lkp@intel.com>,
-        linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-spi@vger.kernel.org, marek.vasut@gmail.com,
-        Mark Brown <broonie@kernel.org>, michals@xilinx.com,
-        nagasuresh12@gmail.com, richard@nod.at, vigneshr@ti.com
-To: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1555918009-13172-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Subject: Applied "spi: AD ASoC: declare missing of table" to
+	the spi tree
+Date: Thu, 25 Apr 2019 20:24:42 +0100 (BST)
+Message-ID: <20190425192442.84C16441D41@finisterre.ee.mobilebroadband>
+References: <1555960353-8836-1-git-send-email-dagmcr@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: alsa-devel@alsa-project.org, lars@metafoo.de, tiwai@suse.com,
+ lgirdwood@gmail.com, linux-spi@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, dagmcr@gmail.com,
+ Javier Martinez Canillas <javier@dowhile0.org>
+To: Daniel Gomez <dagmcr@gmail.com>
+Return-path: <alsa-devel-bounces@alsa-project.org>
+In-Reply-To: <1555960353-8836-1-git-send-email-dagmcr@gmail.com>
+List-Unsubscribe: <https://mailman.alsa-project.org/mailman/options/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
+List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
+List-Post: <mailto:alsa-devel@alsa-project.org>
+List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
+List-Subscribe: <https://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
+Errors-To: alsa-devel-bounces@alsa-project.org
+Sender: "Alsa-devel" <alsa-devel-bounces@alsa-project.org>
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spi-mem: zynq-qspi: Fix build error on architectures missing readsl/writesl
+   spi: AD ASoC: declare missing of table
 
 has been applied to the spi tree at
 
@@ -42,48 +52,70 @@ to this mail.
 Thanks,
 Mark
 
->From 2a2dd8cafc06d72a6ad12d9726c9e514839a82bf Mon Sep 17 00:00:00 2001
-From: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-Date: Mon, 22 Apr 2019 12:56:49 +0530
-Subject: [PATCH] spi: spi-mem: zynq-qspi: Fix build error on architectures
- missing readsl/writesl
+>From 89847da2e1dde3d1d077a23a2b6ebb8060778066 Mon Sep 17 00:00:00 2001
+From: Daniel Gomez <dagmcr@gmail.com>
+Date: Mon, 22 Apr 2019 21:12:33 +0200
+Subject: [PATCH] spi: AD ASoC: declare missing of table
 
-Alpha and some of the architectures are missing readsl/writesl functions.
-so the zynq-qspi driver won't be able to build on these arches. hence use
-ioread32_rep()/iowrite32_rep() instead of readsl()/writesl().
+Add missing <of_device_id> table for SPI driver relying on SPI
+device match since compatible is in a DT binding or in a DTS.
 
-Signed-off-by: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-Reported-by: kbuild test robot <lkp@intel.com>
+Before this patch:
+modinfo sound/soc/codecs/snd-soc-adau1977-spi.ko | grep alias
+alias:          spi:adau1979
+alias:          spi:adau1978
+alias:          spi:adau1977
+
+After this patch:
+modinfo sound/soc/codecs/snd-soc-adau1977-spi.ko | grep alias
+alias:          of:N*T*Cadi,adau1979C*
+alias:          of:N*T*Cadi,adau1979
+alias:          of:N*T*Cadi,adau1978C*
+alias:          of:N*T*Cadi,adau1978
+alias:          of:N*T*Cadi,adau1977C*
+alias:          of:N*T*Cadi,adau1977
+alias:          spi:adau1979
+alias:          spi:adau1978
+alias:          spi:adau1977
+
+Reported-by: Javier Martinez Canillas <javier@dowhile0.org>
+Signed-off-by: Daniel Gomez <dagmcr@gmail.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-zynq-qspi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/soc/codecs/adau1977-spi.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index 8079d0062d03..c6bee67decb5 100644
---- a/drivers/spi/spi-zynq-qspi.c
-+++ b/drivers/spi/spi-zynq-qspi.c
-@@ -407,8 +407,8 @@ static void zynq_qspi_write_op(struct zynq_qspi *xqspi, int txcount,
- 		count = txcount;
+diff --git a/sound/soc/codecs/adau1977-spi.c b/sound/soc/codecs/adau1977-spi.c
+index 84ffbde9583f..2baf61567b59 100644
+--- a/sound/soc/codecs/adau1977-spi.c
++++ b/sound/soc/codecs/adau1977-spi.c
+@@ -10,6 +10,8 @@
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+ #include <linux/regmap.h>
++#include <linux/of.h>
++#include <linux/of_device.h>
+ #include <linux/spi/spi.h>
+ #include <sound/soc.h>
  
- 	if (xqspi->txbuf) {
--		writesl(xqspi->regs + ZYNQ_QSPI_TXD_00_00_OFFSET,
--			xqspi->txbuf, count);
-+		iowrite32_rep(xqspi->regs + ZYNQ_QSPI_TXD_00_00_OFFSET,
-+			      xqspi->txbuf, count);
- 		xqspi->txbuf += count * 4;
- 	} else {
- 		for (k = 0; k < count; k++)
-@@ -433,8 +433,8 @@ static void zynq_qspi_read_op(struct zynq_qspi *xqspi, int rxcount)
- 	if (count > rxcount)
- 		count = rxcount;
- 	if (xqspi->rxbuf) {
--		readsl(xqspi->regs + ZYNQ_QSPI_RXD_OFFSET,
--		       xqspi->rxbuf, count);
-+		ioread32_rep(xqspi->regs + ZYNQ_QSPI_RXD_OFFSET,
-+			     xqspi->rxbuf, count);
- 		xqspi->rxbuf += count * 4;
- 	} else {
- 		for (k = 0; k < count; k++)
+@@ -54,9 +56,18 @@ static const struct spi_device_id adau1977_spi_ids[] = {
+ };
+ MODULE_DEVICE_TABLE(spi, adau1977_spi_ids);
+ 
++static const struct of_device_id adau1977_spi_of_match[] = {
++        { .compatible = "adi,adau1977" },
++        { .compatible = "adi,adau1978" },
++        { .compatible = "adi,adau1979" },
++        { },
++};
++MODULE_DEVICE_TABLE(of, adau1977_spi_of_match);
++
+ static struct spi_driver adau1977_spi_driver = {
+ 	.driver = {
+ 		.name = "adau1977",
++		.of_match_table = of_match_ptr(adau1977_spi_of_match),
+ 	},
+ 	.probe = adau1977_spi_probe,
+ 	.id_table = adau1977_spi_ids,
 -- 
 2.20.1

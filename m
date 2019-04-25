@@ -1,35 +1,23 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: stm32-qspi: manage the get_irq error case" to the spi
- tree
+Subject: Applied "spi: spi-mem: zynq-qspi: Fix build error on architectures missing readsl/writesl" to the spi tree
 Date: Thu, 25 Apr 2019 20:24:43 +0100 (BST)
-Message-ID: <20190425192443.8880E441D3B@finisterre.ee.mobilebroadband>
-References: <1556119140-3319-1-git-send-email-fabien.dessenne@st.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Christophe KERELLO <christophe.kerello@st.com>,
- Alexandre Torgue <alexandre.torgue@st.com>, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
- Ludovic Barre <ludovic.barre@st.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org
-To: Fabien Dessenne <fabien.dessenne@st.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1556119140-3319-1-git-send-email-fabien.dessenne@st.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Message-ID: <20190425192443.11C2E441D3E@finisterre.ee.mobilebroadband>
+References: <1555918009-13172-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
+Cc: bbrezillon@kernel.org, broonie@kernel.org, dwmw2@infradead.org,
+        kbuild test robot <lkp@intel.com>,
+        linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-spi@vger.kernel.org, marek.vasut@gmail.com,
+        Mark Brown <broonie@kernel.org>, michals@xilinx.com,
+        nagasuresh12@gmail.com, richard@nod.at, vigneshr@ti.com
+To: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1555918009-13172-1-git-send-email-naga.sureshkumar.relli@xilinx.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: stm32-qspi: manage the get_irq error case
+   spi: spi-mem: zynq-qspi: Fix build error on architectures missing readsl/writesl
 
 has been applied to the spi tree at
 
@@ -54,36 +42,48 @@ to this mail.
 Thanks,
 Mark
 
->From 9852254537c499110f6eb32f00a63d8049d04a69 Mon Sep 17 00:00:00 2001
-From: Fabien Dessenne <fabien.dessenne@st.com>
-Date: Wed, 24 Apr 2019 17:19:00 +0200
-Subject: [PATCH] spi: stm32-qspi: manage the get_irq error case
+>From 2a2dd8cafc06d72a6ad12d9726c9e514839a82bf Mon Sep 17 00:00:00 2001
+From: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+Date: Mon, 22 Apr 2019 12:56:49 +0530
+Subject: [PATCH] spi: spi-mem: zynq-qspi: Fix build error on architectures
+ missing readsl/writesl
 
-During probe, check the "get_irq" error value.
+Alpha and some of the architectures are missing readsl/writesl functions.
+so the zynq-qspi driver won't be able to build on these arches. hence use
+ioread32_rep()/iowrite32_rep() instead of readsl()/writesl().
 
-Signed-off-by: Fabien Dessenne <fabien.dessenne@st.com>
-Acked-by: Ludovic Barre <ludovic.barre@st.com>
+Signed-off-by: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+Reported-by: kbuild test robot <lkp@intel.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-stm32-qspi.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/spi/spi-zynq-qspi.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
-index 11a89aa15d56..42f8e3c6aa1f 100644
---- a/drivers/spi/spi-stm32-qspi.c
-+++ b/drivers/spi/spi-stm32-qspi.c
-@@ -574,6 +574,12 @@ static int stm32_qspi_probe(struct platform_device *pdev)
- 	}
+diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
+index 8079d0062d03..c6bee67decb5 100644
+--- a/drivers/spi/spi-zynq-qspi.c
++++ b/drivers/spi/spi-zynq-qspi.c
+@@ -407,8 +407,8 @@ static void zynq_qspi_write_op(struct zynq_qspi *xqspi, int txcount,
+ 		count = txcount;
  
- 	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0) {
-+		if (irq != -EPROBE_DEFER)
-+			dev_err(dev, "IRQ error missing or invalid\n");
-+		return irq;
-+	}
-+
- 	ret = devm_request_irq(dev, irq, stm32_qspi_irq, 0,
- 			       dev_name(dev), qspi);
- 	if (ret) {
+ 	if (xqspi->txbuf) {
+-		writesl(xqspi->regs + ZYNQ_QSPI_TXD_00_00_OFFSET,
+-			xqspi->txbuf, count);
++		iowrite32_rep(xqspi->regs + ZYNQ_QSPI_TXD_00_00_OFFSET,
++			      xqspi->txbuf, count);
+ 		xqspi->txbuf += count * 4;
+ 	} else {
+ 		for (k = 0; k < count; k++)
+@@ -433,8 +433,8 @@ static void zynq_qspi_read_op(struct zynq_qspi *xqspi, int rxcount)
+ 	if (count > rxcount)
+ 		count = rxcount;
+ 	if (xqspi->rxbuf) {
+-		readsl(xqspi->regs + ZYNQ_QSPI_RXD_OFFSET,
+-		       xqspi->rxbuf, count);
++		ioread32_rep(xqspi->regs + ZYNQ_QSPI_RXD_OFFSET,
++			     xqspi->rxbuf, count);
+ 		xqspi->rxbuf += count * 4;
+ 	} else {
+ 		for (k = 0; k < count; k++)
 -- 
 2.20.1

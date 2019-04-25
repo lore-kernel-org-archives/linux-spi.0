@@ -1,44 +1,33 @@
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH] eeprom: at25: Convert the driver to the spi-mem interface
-Date: Thu, 25 Apr 2019 21:44:51 +0200
-Message-ID: <20190425194451.GA14552@kroah.com>
-References: <20190330141637.22632-1-boris.brezillon@collabora.com>
+From: Stephen Boyd <sboyd@kernel.org>
+Subject: Re: [PATCH 11/24] dt-bindings: mediatek: topckgen: add support for MT8516
+Date: Thu, 25 Apr 2019 14:34:02 -0700
+Message-ID: <155622804294.15276.9513683589761355567@swboyd.mtv.corp.google.com>
+References: <20190323211612.860-1-fparent@baylibre.com> <20190323211612.860-12-fparent@baylibre.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Boris Brezillon <bbrezillon@kernel.org>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-mtd@lists.infradead.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-To: Boris Brezillon <boris.brezillon@collabora.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Cc: sean.wang@kernel.org, ryder.lee@mediatek.com,
+        hsin-hsiung.wang@mediatek.com, wenzhen.yu@mediatek.com,
+        chaotian.jing@mediatek.com, yong.mao@mediatek.com,
+        jjian.zhou@mediatek.com, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-mmc@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-clk@vger.kernel.org, stephane.leprovost@mediatek.com,
+        Fabien Parent <fparent@baylibre.com>
+To: Fabien Parent <fparent@baylibre.com>, mark.rutland@arm.com,
+        matthias.bgg@gmail.com, robh+dt@kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20190330141637.22632-1-boris.brezillon@collabora.com>
+In-Reply-To: <20190323211612.860-12-fparent@baylibre.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, Mar 30, 2019 at 03:16:37PM +0100, Boris Brezillon wrote:
-> The AT25 protocol fits pretty well in the spi-mem model. Convert the
-> at25 spi driver to a spi-mem driver and use the dirmap API instead of
-> forging SPI messages manually.
-> This makes the driver compatible with spi-mem-only controllers
-> (controllers implementing only the spi_mem ops).
-> 
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Quoting Fabien Parent (2019-03-23 14:15:59)
+> Add binding documentation of topckgen for MT8516 SoC.
+>=20
+> Signed-off-by: Fabien Parent <fparent@baylibre.com>
 > ---
->  drivers/misc/eeprom/at25.c | 282 +++++++++++++++++++++++--------------
->  1 file changed, 176 insertions(+), 106 deletions(-)
 
-Will there be a new version of this to fix up the problems that 0-day
-found in it?
-
-thanks,
-
-greg k-h
+Applied to clk-next

@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
 Subject: Applied "spi: AD ASoC: declare missing of table" to
 	the spi tree
-Date: Thu, 25 Apr 2019 20:24:42 +0100 (BST)
-Message-ID: <20190425192442.84C16441D41@finisterre.ee.mobilebroadband>
+Date: Thu, 25 Apr 2019 20:26:37 +0100 (BST)
+Message-ID: <20190425192637.B0C56441D3B@finisterre.ee.mobilebroadband>
 References: <1555960353-8836-1-git-send-email-dagmcr@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"

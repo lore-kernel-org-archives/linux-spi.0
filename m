@@ -1,95 +1,110 @@
-From: Robin Gong <yibin.gong@nxp.com>
+From: Lucas Stach <l.stach@pengutronix.de>
 Subject: Re: [EXT] Re: [PATCH v2 00/15] add ecspi ERR009165 for i.mx6/7 soc
  family
-Date: Fri, 26 Apr 2019 08:47:03 +0000
-Message-ID: <1556268048.9298.11.camel@nxp.com>
+Date: Fri, 26 Apr 2019 11:06:11 +0200
+Message-ID: <1556269571.2584.21.camel@pengutronix.de>
 References: <1556265512-9130-1-git-send-email-yibin.gong@nxp.com>
- <1556266779.2584.15.camel@pengutronix.de>
+         <1556266779.2584.15.camel@pengutronix.de>
+         <1556268048.9298.11.camel@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- dl-linux-imx <linux-imx@nxp.com>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-To: "robh+dt@kernel.org" <robh+dt@kernel.org>,
- "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
- "festevam@gmail.com" <festevam@gmail.com>, "plyatov@gmail.com"
- <plyatov@gmail.com>, "broonie@kernel.org" <broonie@kernel.org>,
- "dan.j.williams@intel.com" <dan.j.williams@intel.com>, "mark.rutland@arm.com"
- <mark.rutland@arm.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "will.deacon@arm.com" <will.deacon@arm.com>, "shawnguo@kernel.org"
- <shawnguo@kernel.org>, "l.stach@pengutronix.de" <l.stach@pengutronix.de>,
- "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1556266779.2584.15.camel@pengutronix.de>
-Content-Language: en-US
-Content-ID: <5C931906363223438109019DB56EA928@eurprd04.prod.outlook.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>
+To: Robin Gong <yibin.gong@nxp.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+        "festevam@gmail.com" <festevam@gmail.com>,
+        "plyatov@gmail.com" <plyatov@gmail.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "will.deacon@arm.com" <will.deacon@arm.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1556268048.9298.11.camel@nxp.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gMjAxOS0wNC0yNiBhdCAwODoxOSArMDAwMCwgTHVjYXMgU3RhY2ggd3JvdGU6DQo+IENhdXRp
-b246IEVYVCBFbWFpbA0KPiANCj4gSGkgUm9iaW4sDQo+IA0KPiBBbSBGcmVpdGFnLCBkZW4gMjYu
-MDQuMjAxOSwgMDg6MDUgKzAwMDAgc2NocmllYiBSb2JpbiBHb25nOg0KPiA+IA0KPiA+IMKgIFRo
-ZXJlIGlzIGVjc3BpIEVSUjAwOTE2NSBvbiBpLm14Ni83IHNvYyBmYW1pbHksIHdoaWNoIGNhdXNl
-IEZJRk8NCj4gPiB0cmFuc2ZlciB0byBiZSBzZW5kIHR3aWNlIGluIERNQSBtb2RlLiBQbGVhc2Ug
-Z2V0IG1vcmUgaW5mb3JtYXRpb24NCj4gPiBmcm9tOg0KPiA+IGh0dHBzOi8vZXVyMDEuc2FmZWxp
-bmtzLnByb3RlY3Rpb24ub3V0bG9vay5jb20vP3VybD1odHRwcyUzQSUyRiUyRncNCj4gPiB3dy5u
-eHAuY29tJTJGZG9jcyUyRmVuJTJGZXJyYXRhJTJGSU1YNkRRQ0UucGRmJmFtcDtkYXRhPTAyJTdD
-MDElN0N5DQo+ID4gaWJpbi5nb25nJTQwbnhwLmNvbSU3QzAwNzg2OTRiMjMxNDQzZDFjYjdkMDhk
-NmNhMWZlZWNmJTdDNjg2ZWExZDNiYw0KPiA+IDJiNGM2ZmE5MmNkOTljNWMzMDE2MzUlN0MwJTdD
-MSU3QzYzNjkxODYzNTgyODQ4OTA0OSZhbXA7c2RhdGE9SWNQemcNCj4gPiB1SFRTODFyZEhHTXpV
-MndRZERZSm45YkUxVURDc2MwQlVPNUluOCUzRCZhbXA7cmVzZXJ2ZWQ9MC4gVGhlDQo+ID4gd29y
-a2Fyb3VuZCBpcyBhZGRpbmcNCj4gPiBuZXcgc2RtYSByYW0gc2NyaXB0IHdoaWNoIHdvcmtzIGlu
-IFhDSMKgwqBtb2RlIGFzIFBJTyBpbnNpZGUgc2RtYQ0KPiA+IGluc3RlYWQNCj4gPiBvZiBTTUMg
-bW9kZSwgbWVhbndoaWxlLCAnVFhfVEhSRVNIT0xEJyBzaG91bGQgYmUgMC4NCj4gSSB3b3VsZCBs
-aWtlIHRvIGhhdmUgYSBtb3JlIGluLWRlcHRoIGV4cGxhbmF0aW9uIGFib3V0IGhvdyB0aGlzIG5l
-dw0KPiBSQU0NCj4gc2NyaXB0IGRpZmZlcnMgZnJvbSB0aGUgZXhpc3RpbmcgUk9NIHNjcmlwdCBh
-bmQgdGhlIGNoYW5nZXMgdG8gdGhlDQo+IHN0YXRlIHRyYW5zaXRpb25zLg0KVGhlIG5ldyBlY3Nw
-aSByYW0gc2NyaXB0IGp1c3QgZm9sbG93IGVycmF0YSB0byBlbmFibGUgZWNzcGkgWENIIGJpdA0K
-YWZ0ZXIgZXZlcnkgdGltZSB0eGZpZm8gZmlsbGVkIGp1c3QgYXMgUElPLCBwbGVhc2UgY2hlY2sg
-c3BpX2lteF9wdXNoKCkNCmluIHNwaS1pbXguYy4NCj4gDQo+ID4gDQo+ID4gwqAgVGhlIGlzc3Vl
-IHNob3VsZCBiZSBleGlzdCBvbiBhbGwgbGVnYWN5IGkubXg2Lzcgc29jIGZhbWlseSBiZWZvcmUN
-Cj4gPiBpLm14NnVsLA0KPiA+IE5YUCBmaXggdGhpcyBkZXNpZ24gaXNzdWUgZnJvbSBpLm14NnVs
-LCBzbyBuZXdlciBjaGlwcyBzdWNoIGFzDQo+ID4gaS5teDZ1bGwvDQo+ID4gaS5teDhtcS9pLm14
-OG1tLCBkb24ndCBuZWVkIHRoaXMgd29ya2Fyb3VkIGFueW1vcmUuIFRoaXMgcGF0Y2ggc2V0DQo+
-ID4gYWRkIG5ldyAnZnNsLGlteDZ1bC1lY3NwaScgZm9yIGVjc3BpIGRyaXZlciBhbmQgJ2Vjc3Bp
-X2ZpeGVkJyBpbg0KPiA+IHNkbWENCj4gPiBkcml2ZXIgdG8gY2hvb3NlIGlmIG5lZWQgZXJyYXRh
-IG9yIG5vdC4NCj4gPiDCoCBUaGUgZmlyc3QgdHdvIHJldmVydGVkIHBhdGNoZXMgc2hvdWxkIGJl
-IHRoZSBzYW1lIGlzc3VlLCB0aG91Z2gsDQo+ID4gaXQNCj4gPiBzZWVtcyAnZml4ZWQnIGJ5IGNo
-YW5naW5nIHRvIG90aGVyIHNocCBzY3JpcHQuIEhvcGUgU2VhbiBvciBTYXNjaGENCj4gPiBjb3Vs
-ZA0KPiA+IGhhdmUgdGhlIGNoYW5jZSB0byB0ZXN0IHRoaXMgcGF0Y2ggc2V0IGlmIGNvdWxkIGZp
-eCB0aGVpciBpc3N1ZXMuDQo+ID4gwqAgQmVzaWRlcywgZW5hYmxlIHNkbWEgc3VwcG9ydCBmb3Ig
-aS5teDhtbS84bXEgYW5kIGZpeCBlY3NwaTEgbm90DQo+ID4gd29yaw0KPiA+IG9uIGkubXg4bW0g
-YmVjYXVzZSB0aGUgZXZlbnQgaWQgaXMgemVyby4NCj4gPiANCj4gPiBQUzoNCj4gPiDCoFBsZWFz
-ZSBnZXQgc2RtYSBmaXJtd2FyZSBmcm9tIGJlbG93IGxpbnV4LWZpcm13YXJlIGFuZCBjb3B5IGl0
-IHRvDQo+ID4geW91cg0KPiA+IGxvY2FsIHJvb3RmcyAvbGliL2Zpcm13YXJlL2lteC9zZG1hLg0K
-PiA+IGh0dHBzOi8vZXVyMDEuc2FmZWxpbmtzLnByb3RlY3Rpb24ub3V0bG9vay5jb20vP3VybD1o
-dHRwcyUzQSUyRiUyRmcNCj4gPiBpdC5rZXJuZWwub3JnJTJGcHViJTJGc2NtJTJGbGludXglMkZr
-ZXJuZWwlMkZnaXQlMkZmaXJtd2FyZSUyRmxpbnV4DQo+ID4gLWZpcm13YXJlLmdpdCUyRnRyZWUl
-MkZpbXglMkZzZG1hJmFtcDtkYXRhPTAyJTdDMDElN0N5aWJpbi5nb25nJTQwbg0KPiA+IHhwLmNv
-bSU3QzAwNzg2OTRiMjMxNDQzZDFjYjdkMDhkNmNhMWZlZWNmJTdDNjg2ZWExZDNiYzJiNGM2ZmE5
-MmNkOTkNCj4gPiBjNWMzMDE2MzUlN0MwJTdDMSU3QzYzNjkxODYzNTgyODQ4OTA0OSZhbXA7c2Rh
-dGE9U01vb25KOUhRcFVqM1R6UG1pDQo+ID4gN0NjQ1NBd2FSNDQlMkJHUGklMkJTQmolMkZYY2Vx
-byUzRCZhbXA7cmVzZXJ2ZWQ9MA0KPiBUaGlzIGlzIG5vdCBhbiBvcHRpb24gYXMgbG9uZyBhcyB0
-aGUgU0RNQSBSQU0gZmlybXdhcmUgYnJlYWtzIHRoZQ0KPiBtYWlubGluZSBzZXJpYWwgRE1BIHN1
-cHBvcnQuIFBsZWFzZSBwcm92aWRlIGEgZml4ZWQgU0RNQSBSQU0gZmlybXdhcmUNCj4gdGhhdCBk
-b2Vzbid0IHJlcGxhY2UgdGhlIFJPTSBzZXJpYWwgc2NyaXB0LCBhcyB0aGF0IG9uZSBpcyB0b3Rh
-bGx5DQo+IGZpbmUuDQpZZXMsIEkgaGF2ZSBhbm90aGVyIHBhdGNoIHRvIGZpeCBzdWNoIHVhcnQg
-ZnVuY3Rpb24gYnJva2VuIHdpdGggU0RNQQ0KUkFNIGZpcm13YXJlLCBpbmNsdWRpbmcgbmV3IHNk
-bWEgZmlybXdhcmUgdXBkYXRlZCBhbmQga2VybmVsIHBhdGNoLg0KU2hvdWxkIEkgYWRkIHRoYXQg
-cGF0Y2ggaW50byB0aGlzIHBhdGNoIHNldD8NCg0KX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18KbGludXgtYXJtLWtlcm5lbCBtYWlsaW5nIGxpc3QKbGludXgt
-YXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
-L21haWxtYW4vbGlzdGluZm8vbGludXgtYXJtLWtlcm5lbAo=
+Am Freitag, den 26.04.2019, 08:47 +0000 schrieb Robin Gong:
+> On 2019-04-26 at 08:19 +0000, Lucas Stach wrote:
+> > Caution: EXT Email
+> > 
+> > Hi Robin,
+> > 
+> > Am Freitag, den 26.04.2019, 08:05 +0000 schrieb Robin Gong:
+> > > 
+> > >   There is ecspi ERR009165 on i.mx6/7 soc family, which cause FIFO
+> > > transfer to be send twice in DMA mode. Please get more information
+> > > from:
+> > > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fw
+> > > ww.nxp.com%2Fdocs%2Fen%2Ferrata%2FIMX6DQCE.pdf&amp;data=02%7C01%7Cy
+> > > ibin.gong%40nxp.com%7C0078694b231443d1cb7d08d6ca1feecf%7C686ea1d3bc
+> > > 2b4c6fa92cd99c5c301635%7C0%7C1%7C636918635828489049&amp;sdata=IcPzg
+> > > uHTS81rdHGMzU2wQdDYJn9bE1UDCsc0BUO5In8%3D&amp;reserved=0. The
+> > > workaround is adding
+> > > new sdma ram script which works in XCH  mode as PIO inside sdma
+> > > instead
+> > > of SMC mode, meanwhile, 'TX_THRESHOLD' should be 0.
+> > 
+> > I would like to have a more in-depth explanation about how this new
+> > RAM
+> > script differs from the existing ROM script and the changes to the
+> > state transitions.
+> 
+> The new ecspi ram script just follow errata to enable ecspi XCH bit
+> after every time txfifo filled just as PIO, please check spi_imx_push()
+> in spi-imx.c.
+> > 
+> > > 
+> > >   The issue should be exist on all legacy i.mx6/7 soc family before
+> > > i.mx6ul,
+> > > NXP fix this design issue from i.mx6ul, so newer chips such as
+> > > i.mx6ull/
+> > > i.mx8mq/i.mx8mm, don't need this workaroud anymore. This patch set
+> > > add new 'fsl,imx6ul-ecspi' for ecspi driver and 'ecspi_fixed' in
+> > > sdma
+> > > driver to choose if need errata or not.
+> > >   The first two reverted patches should be the same issue, though,
+> > > it
+> > > seems 'fixed' by changing to other shp script. Hope Sean or Sascha
+> > > could
+> > > have the chance to test this patch set if could fix their issues.
+> > >   Besides, enable sdma support for i.mx8mm/8mq and fix ecspi1 not
+> > > work
+> > > on i.mx8mm because the event id is zero.
+> > > 
+> > > PS:
+> > >  Please get sdma firmware from below linux-firmware and copy it to
+> > > your
+> > > local rootfs /lib/firmware/imx/sdma.
+> > > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fg
+> > > it.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ffirmware%2Flinux
+> > > -firmware.git%2Ftree%2Fimx%2Fsdma&amp;data=02%7C01%7Cyibin.gong%40n
+> > > xp.com%7C0078694b231443d1cb7d08d6ca1feecf%7C686ea1d3bc2b4c6fa92cd99
+> > > c5c301635%7C0%7C1%7C636918635828489049&amp;sdata=SMoonJ9HQpUj3TzPmi
+> > > 7CcCSAwaR44%2BGPi%2BSBj%2FXceqo%3D&amp;reserved=0
+> > 
+> > This is not an option as long as the SDMA RAM firmware breaks the
+> > mainline serial DMA support. Please provide a fixed SDMA RAM firmware
+> > that doesn't replace the ROM serial script, as that one is totally
+> > fine.
+> 
+> Yes, I have another patch to fix such uart function broken with SDMA
+> RAM firmware, including new sdma firmware updated and kernel patch.
+> Should I add that patch into this patch set?
+
+Why would we need a kernel patch for this? Just drop the SDMA serial
+RAM script, it does not add any value as the ROM script is totally
+fine.
+
+Regards,
+Lucas

@@ -1,85 +1,46 @@
-From: Lucas Stach <l.stach@pengutronix.de>
-Subject: Re: [PATCH v2 07/15] spi: imx: remove ERR009165 workaround on
- i.mx6ul
-Date: Fri, 26 Apr 2019 11:09:56 +0200
-Message-ID: <1556269796.2584.25.camel@pengutronix.de>
+From: Robin Gong <yibin.gong@nxp.com>
+Subject: Re: [EXT] Re: [PATCH v2 06/15] spi: imx: fix ERR009165
+Date: Fri, 26 Apr 2019 09:22:52 +0000
+Message-ID: <1556270196.9298.16.camel@nxp.com>
 References: <1556265512-9130-1-git-send-email-yibin.gong@nxp.com>
-         <1556265512-9130-8-git-send-email-yibin.gong@nxp.com>
+         <1556265512-9130-7-git-send-email-yibin.gong@nxp.com>
+         <1556269635.2584.23.camel@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
         dl-linux-imx <linux-imx@nxp.com>,
         "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         "linux-arm-kernel@lists.infradead.org"
         <linux-arm-kernel@lists.infradead.org>
-To: Robin Gong <yibin.gong@nxp.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-        "festevam@gmail.com" <festevam@gmail.com>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+To: "robh+dt@kernel.org" <robh+dt@kernel.org>,
         "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+        "festevam@gmail.com" <festevam@gmail.com>,
         "plyatov@gmail.com" <plyatov@gmail.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
         "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
         "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will.deacon@arm.com" <will.deacon@arm.com>
+        "will.deacon@arm.com" <will.deacon@arm.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "l.stach@pengutronix.de" <l.stach@pengutronix.de>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1556265512-9130-8-git-send-email-yibin.gong@nxp.com>
+In-Reply-To: <1556269635.2584.23.camel@pengutronix.de>
+Content-Language: en-US
+Content-ID: <A1CDFF5781E36B4989E32D766AA48CC6@eurprd04.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Am Freitag, den 26.04.2019, 08:05 +0000 schrieb Robin Gong:
->    ERR009165 fix on i.mx6ul and next chip, such as i.mx6ull/i.mx8mq/i.mx8mm.
-> Remove workaround on those chips. Add new i.mx6ul type for that.
-> 
-> Signed-off-by: Robin Gong <yibin.gong@nxp.com>
-> ---
->  drivers/spi/spi-imx.c | 39 +++++++++++++++++++++++++++++++++++----
->  1 file changed, 35 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-> index eb56eac..2e5e978 100644
-> --- a/drivers/spi/spi-imx.c
-> +++ b/drivers/spi/spi-imx.c
-> @@ -57,6 +57,7 @@ enum spi_imx_devtype {
->  	IMX35_CSPI,	/* CSPI on all i.mx except above */
->  	IMX51_ECSPI,	/* ECSPI on i.mx51 */
->  	IMX53_ECSPI,	/* ECSPI on i.mx53 and later */
-> +	IMX6UL_ECSPI,	/* ERR009165 fix from i.mx6ul */
->  };
->  
->  struct spi_imx_data;
-> @@ -128,7 +129,8 @@ static inline int is_imx35_cspi(struct spi_imx_data *d)
->  
->  static inline int is_imx51_ecspi(struct spi_imx_data *d)
->  {
-> -	return d->devtype_data->devtype == IMX51_ECSPI;
-> +	return d->devtype_data->devtype == IMX51_ECSPI ||
-> +	       d->devtype_data->devtype == IMX6UL_ECSPI;
->  }
->  
->  static inline int is_imx53_ecspi(struct spi_imx_data *d)
-> @@ -585,9 +587,16 @@ static int mx51_ecspi_prepare_transfer(struct spi_imx_data *spi_imx,
->  	ctrl |= mx51_ecspi_clkdiv(spi_imx, t->speed_hz, &clk);
->  	spi_imx->spi_bus_clk = clk;
->  
-> -	/* ERR009165: work in XHC mode as PIO */
-> -	if (spi_imx->usedma)
-> -		ctrl &= ~MX51_ECSPI_CTRL_SMC;
-> +	/*
-> +	 * ERR009165: work in XHC mode instead of SMC as PIO on the chips
-> +	 * before i.mx6ul.
-> +	 */
-> +	if (spi_imx->usedma) {
-> +		if (spi_imx->devtype_data->devtype == IMX6UL_ECSPI)
-
->=, otherwise the workaround might be applied to later generations of
-the core if more are added later.
-
-Regards,
-Lucas
+T24gMjAxOS0wNC0yNiBhdCAxMTowNyArMDIwMCwgTHVjYXMgU3RhY2ggd3JvdGU6DQo+IA0KPiBB
+bSBGcmVpdGFnLCBkZW4gMjYuMDQuMjAxOSwgMDg6MDUgKzAwMDAgc2NocmllYiBSb2JpbiBHb25n
+Og0KPiA+IMKgc3RhdGljIHZvaWQgbXg1MV9zZXR1cF93bWwoc3RydWN0IHNwaV9pbXhfZGF0YSAq
+c3BpX2lteCkNCj4gPiDCoHsNCj4gPiArwqDCoMKgwqDCoHUzMiB0eF93bWwgPSAwOw0KPiA+ICsN
+Cj4gV2l0aCBhIHdtbCBvZiAwIHlvdSBtaWdodCBzZXQgdGhlIG1heGJ1cnN0IG9mIHRoZSBUWCBk
+bWEgY2hhbm5lbCB0bw0KPiBmaWZvc2l6ZSB0byBtaW5pbWl6ZSB0aGUgcGVyZm9ybWFuY2UgaW1w
+YWN0IG9mIHRoaXMgd29ya2Fyb3VuZC4NCj4gDQo+IFJlZ2FyZHMsDQo+IEx1Y2FzDQpVbmZvcnR1
+bmF0ZWx5LCB0aGlzIGlzIGEgTVVTVCBwYXJ0IG9mIGVycmF0YSB3aGljaCBjYXVzZSBwZXJmb3Jt
+YW5jZQ0KZHJvcC4=

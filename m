@@ -1,73 +1,101 @@
 From: Robin Gong <yibin.gong@nxp.com>
-Subject: [PATCH v2 05/15] dmaengine: imx-sdma: add mcu_2_ecspi script
-Date: Fri, 26 Apr 2019 08:05:34 +0000
-Message-ID: <1556265512-9130-6-git-send-email-yibin.gong@nxp.com>
+Subject: [PATCH v2 12/15] ARM64: dts: freescale: imx8mm/8mq: update new
+ compatible name for ecspi and sdma
+Date: Fri, 26 Apr 2019 08:06:15 +0000
+Message-ID: <1556265512-9130-13-git-send-email-yibin.gong@nxp.com>
 References: <1556265512-9130-1-git-send-email-yibin.gong@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- dl-linux-imx <linux-imx@nxp.com>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-To: "broonie@kernel.org" <broonie@kernel.org>, "shawnguo@kernel.org"
- <shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
- "festevam@gmail.com" <festevam@gmail.com>, "robh+dt@kernel.org"
- <robh+dt@kernel.org>, "mark.rutland@arm.com" <mark.rutland@arm.com>,
- "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
- "plyatov@gmail.com" <plyatov@gmail.com>, "dan.j.williams@intel.com"
- <dan.j.williams@intel.com>, "catalin.marinas@arm.com"
- <catalin.marinas@arm.com>, "will.deacon@arm.com" <will.deacon@arm.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: dl-linux-imx <linux-imx@nxp.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>
+To: "broonie@kernel.org" <broonie@kernel.org>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "festevam@gmail.com" <festevam@gmail.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+        "plyatov@gmail.com" <plyatov@gmail.com>,
+        "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "will.deacon@arm.com" <will.deacon@arm.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <1556265512-9130-1-git-send-email-yibin.gong@nxp.com>
 Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add mcu_2_ecspi script to fix ecspi errata ERR009165.
-
-Signed-off-by: Robin Gong <yibin.gong@nxp.com>
----
- drivers/dma/imx-sdma.c                     | 3 +++
- include/linux/platform_data/dma-imx-sdma.h | 1 +
- 2 files changed, 4 insertions(+)
-
-diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
-index 86a31b4..352b0d5 100644
---- a/drivers/dma/imx-sdma.c
-+++ b/drivers/dma/imx-sdma.c
-@@ -924,6 +924,9 @@ static void sdma_get_pc(struct sdma_channel *sdmac,
- 		emi_2_per = sdma->script_addrs->mcu_2_ata_addr;
- 		break;
- 	case IMX_DMATYPE_CSPI:
-+		per_2_emi = sdma->script_addrs->app_2_mcu_addr;
-+		emi_2_per = sdma->script_addrs->mcu_2_ecspi_addr;
-+		break;
- 	case IMX_DMATYPE_EXT:
- 	case IMX_DMATYPE_SSI:
- 	case IMX_DMATYPE_SAI:
-diff --git a/include/linux/platform_data/dma-imx-sdma.h b/include/linux/platform_data/dma-imx-sdma.h
-index 6eaa53c..f794fee 100644
---- a/include/linux/platform_data/dma-imx-sdma.h
-+++ b/include/linux/platform_data/dma-imx-sdma.h
-@@ -51,6 +51,7 @@ struct sdma_script_start_addrs {
- 	/* End of v2 array */
- 	s32 zcanfd_2_mcu_addr;
- 	s32 zqspi_2_mcu_addr;
-+	s32 mcu_2_ecspi_addr;
- 	/* End of v3 array */
- };
- 
--- 
-2.7.4
+QWRkIG5ldyAnaW14NnVsLWVjc3BpJyBjb21wYXRpYmxlIG5hbWUgZm9yIGVjc3BpIGFuZCBuZXcg
+J2lteDhtcS1zZG1hJyBuYW1lDQpmb3Igc2RtYSBzaW5jZSBvbiBpLm14OG1tL21xIGNoaXAgZml4
+IGVjc3BpIGVycmF0YS4NCg0KU2lnbmVkLW9mZi1ieTogUm9iaW4gR29uZyA8eWliaW4uZ29uZ0Bu
+eHAuY29tPg0KLS0tDQogYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1tLmR0c2kg
+fCAxNCArKysrKysrLS0tLS0tLQ0KIGFyY2gvYXJtNjQvYm9vdC9kdHMvZnJlZXNjYWxlL2lteDht
+cS5kdHNpIHwgIDYgKysrLS0tDQogMiBmaWxlcyBjaGFuZ2VkLCAxMCBpbnNlcnRpb25zKCspLCAx
+MCBkZWxldGlvbnMoLSkNCg0KZGlmZiAtLWdpdCBhL2FyY2gvYXJtNjQvYm9vdC9kdHMvZnJlZXNj
+YWxlL2lteDhtbS5kdHNpIGIvYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1tLmR0
+c2kNCmluZGV4IGRlMzQ5OGMuLjE5NDVhYTMgMTAwNjQ0DQotLS0gYS9hcmNoL2FybTY0L2Jvb3Qv
+ZHRzL2ZyZWVzY2FsZS9pbXg4bW0uZHRzaQ0KKysrIGIvYXJjaC9hcm02NC9ib290L2R0cy9mcmVl
+c2NhbGUvaW14OG1tLmR0c2kNCkBAIC0yNTEsNyArMjUxLDcgQEANCiAJCQl9Ow0KIA0KIAkJCXNk
+bWEyOiBkbWEtY29udHJvbGxlckAzMDJjMDAwMCB7DQotCQkJCWNvbXBhdGlibGUgPSAiZnNsLGlt
+eDhtbS1zZG1hIiwgImZzbCxpbXg3ZC1zZG1hIjsNCisJCQkJY29tcGF0aWJsZSA9ICJmc2wsaW14
+OG1tLXNkbWEiLCAiZnNsLGlteDhtcS1zZG1hIjsNCiAJCQkJcmVnID0gPDB4MzAyYzAwMDAgMHgx
+MDAwMD47DQogCQkJCWludGVycnVwdHMgPSA8R0lDX1NQSSAxMDMgSVJRX1RZUEVfTEVWRUxfSElH
+SD47DQogCQkJCWNsb2NrcyA9IDwmY2xrIElNWDhNTV9DTEtfU0RNQTJfUk9PVD4sDQpAQCAtMjYy
+LDcgKzI2Miw3IEBADQogCQkJfTsNCiANCiAJCQlzZG1hMzogZG1hLWNvbnRyb2xsZXJAMzAyYjAw
+MDAgew0KLQkJCQljb21wYXRpYmxlID0gImZzbCxpbXg4bW0tc2RtYSIsICJmc2wsaW14N2Qtc2Rt
+YSI7DQorCQkJCWNvbXBhdGlibGUgPSAiZnNsLGlteDhtbS1zZG1hIiwgImZzbCxpbXg4bXEtc2Rt
+YSI7DQogCQkJCXJlZyA9IDwweDMwMmIwMDAwIDB4MTAwMDA+Ow0KIAkJCQlpbnRlcnJ1cHRzID0g
+PEdJQ19TUEkgMzQgSVJRX1RZUEVfTEVWRUxfSElHSD47DQogCQkJCWNsb2NrcyA9IDwmY2xrIElN
+WDhNTV9DTEtfU0RNQTNfUk9PVD4sDQpAQCAtMzkzLDcgKzM5Myw3IEBADQogCQkJcmFuZ2VzOw0K
+IA0KIAkJCWVjc3BpMTogc3BpQDMwODIwMDAwIHsNCi0JCQkJY29tcGF0aWJsZSA9ICJmc2wsaW14
+OG1tLWVjc3BpIiwgImZzbCxpbXg1MS1lY3NwaSI7DQorCQkJCWNvbXBhdGlibGUgPSAiZnNsLGlt
+eDhtbS1lY3NwaSIsICJmc2wsaW14NnVsLWVjc3BpIjsNCiAJCQkJI2FkZHJlc3MtY2VsbHMgPSA8
+MT47DQogCQkJCSNzaXplLWNlbGxzID0gPDA+Ow0KIAkJCQlyZWcgPSA8MHgzMDgyMDAwMCAweDEw
+MDAwPjsNCkBAIC00MDcsNyArNDA3LDcgQEANCiAJCQl9Ow0KIA0KIAkJCWVjc3BpMjogc3BpQDMw
+ODMwMDAwIHsNCi0JCQkJY29tcGF0aWJsZSA9ICJmc2wsaW14OG1tLWVjc3BpIiwgImZzbCxpbXg1
+MS1lY3NwaSI7DQorCQkJCWNvbXBhdGlibGUgPSAiZnNsLGlteDhtbS1lY3NwaSIsICJmc2wsaW14
+NnVsLWVjc3BpIjsNCiAJCQkJI2FkZHJlc3MtY2VsbHMgPSA8MT47DQogCQkJCSNzaXplLWNlbGxz
+ID0gPDA+Ow0KIAkJCQlyZWcgPSA8MHgzMDgzMDAwMCAweDEwMDAwPjsNCkBAIC00MjEsNyArNDIx
+LDcgQEANCiAJCQl9Ow0KIA0KIAkJCWVjc3BpMzogc3BpQDMwODQwMDAwIHsNCi0JCQkJY29tcGF0
+aWJsZSA9ICJmc2wsaW14OG1tLWVjc3BpIiwgImZzbCxpbXg1MS1lY3NwaSI7DQorCQkJCWNvbXBh
+dGlibGUgPSAiZnNsLGlteDhtbS1lY3NwaSIsICJmc2wsaW14NnVsLWVjc3BpIjsNCiAJCQkJI2Fk
+ZHJlc3MtY2VsbHMgPSA8MT47DQogCQkJCSNzaXplLWNlbGxzID0gPDA+Ow0KIAkJCQlyZWcgPSA8
+MHgzMDg0MDAwMCAweDEwMDAwPjsNCkBAIC01NjcsMTEgKzU2NywxMSBAQA0KIAkJCX07DQogDQog
+CQkJc2RtYTE6IGRtYS1jb250cm9sbGVyQDMwYmQwMDAwIHsNCi0JCQkJY29tcGF0aWJsZSA9ICJm
+c2wsaW14OG1tLXNkbWEiLCAiZnNsLGlteDdkLXNkbWEiOw0KKwkJCQljb21wYXRpYmxlID0gImZz
+bCxpbXg4bW0tc2RtYSIsICJmc2wsaW14OG1xLXNkbWEiOw0KIAkJCQlyZWcgPSA8MHgzMGJkMDAw
+MCAweDEwMDAwPjsNCiAJCQkJaW50ZXJydXB0cyA9IDxHSUNfU1BJIDIgSVJRX1RZUEVfTEVWRUxf
+SElHSD47DQogCQkJCWNsb2NrcyA9IDwmY2xrIElNWDhNTV9DTEtfU0RNQTFfUk9PVD4sDQotCQkJ
+CQkgPCZjbGsgSU1YOE1NX0NMS19TRE1BMV9ST09UPjsNCisJCQkJCSA8JmNsayBJTVg4TU1fQ0xL
+X0FIQj47DQogCQkJCWNsb2NrLW5hbWVzID0gImlwZyIsICJhaGIiOw0KIAkJCQkjZG1hLWNlbGxz
+ID0gPDM+Ow0KIAkJCQlmc2wsc2RtYS1yYW0tc2NyaXB0LW5hbWUgPSAiaW14L3NkbWEvc2RtYS1p
+bXg3ZC5iaW4iOw0KZGlmZiAtLWdpdCBhL2FyY2gvYXJtNjQvYm9vdC9kdHMvZnJlZXNjYWxlL2lt
+eDhtcS5kdHNpIGIvYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1xLmR0c2kNCmlu
+ZGV4IDdjMGIxMmEuLmYyYTVkMTIgMTAwNjQ0DQotLS0gYS9hcmNoL2FybTY0L2Jvb3QvZHRzL2Zy
+ZWVzY2FsZS9pbXg4bXEuZHRzaQ0KKysrIGIvYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUv
+aW14OG1xLmR0c2kNCkBAIC02MDcsNyArNjA3LDcgQEANCiAJCQllY3NwaTE6IHNwaUAzMDgyMDAw
+MCB7DQogCQkJCSNhZGRyZXNzLWNlbGxzID0gPDE+Ow0KIAkJCQkjc2l6ZS1jZWxscyA9IDwwPjsN
+Ci0JCQkJY29tcGF0aWJsZSA9ICJmc2wsaW14OG1xLWVjc3BpIiwgImZzbCxpbXg1MS1lY3NwaSI7
+DQorCQkJCWNvbXBhdGlibGUgPSAiZnNsLGlteDhtcS1lY3NwaSIsICJmc2wsaW14NnVsLWVjc3Bp
+IjsNCiAJCQkJcmVnID0gPDB4MzA4MjAwMDAgMHgxMDAwMD47DQogCQkJCWludGVycnVwdHMgPSA8
+R0lDX1NQSSAzMSBJUlFfVFlQRV9MRVZFTF9ISUdIPjsNCiAJCQkJY2xvY2tzID0gPCZjbGsgSU1Y
+OE1RX0NMS19FQ1NQSTFfUk9PVD4sDQpAQCAtNjE5LDcgKzYxOSw3IEBADQogCQkJZWNzcGkyOiBz
+cGlAMzA4MzAwMDAgew0KIAkJCQkjYWRkcmVzcy1jZWxscyA9IDwxPjsNCiAJCQkJI3NpemUtY2Vs
+bHMgPSA8MD47DQotCQkJCWNvbXBhdGlibGUgPSAiZnNsLGlteDhtcS1lY3NwaSIsICJmc2wsaW14
+NTEtZWNzcGkiOw0KKwkJCQljb21wYXRpYmxlID0gImZzbCxpbXg4bXEtZWNzcGkiLCAiZnNsLGlt
+eDZ1bC1lY3NwaSI7DQogCQkJCXJlZyA9IDwweDMwODMwMDAwIDB4MTAwMDA+Ow0KIAkJCQlpbnRl
+cnJ1cHRzID0gPEdJQ19TUEkgMzIgSVJRX1RZUEVfTEVWRUxfSElHSD47DQogCQkJCWNsb2NrcyA9
+IDwmY2xrIElNWDhNUV9DTEtfRUNTUEkyX1JPT1Q+LA0KQEAgLTYzMSw3ICs2MzEsNyBAQA0KIAkJ
+CWVjc3BpMzogc3BpQDMwODQwMDAwIHsNCiAJCQkJI2FkZHJlc3MtY2VsbHMgPSA8MT47DQogCQkJ
+CSNzaXplLWNlbGxzID0gPDA+Ow0KLQkJCQljb21wYXRpYmxlID0gImZzbCxpbXg4bXEtZWNzcGki
+LCAiZnNsLGlteDUxLWVjc3BpIjsNCisJCQkJY29tcGF0aWJsZSA9ICJmc2wsaW14OG1xLWVjc3Bp
+IiwgImZzbCxpbXg2dWwtZWNzcGkiOw0KIAkJCQlyZWcgPSA8MHgzMDg0MDAwMCAweDEwMDAwPjsN
+CiAJCQkJaW50ZXJydXB0cyA9IDxHSUNfU1BJIDMzIElSUV9UWVBFX0xFVkVMX0hJR0g+Ow0KIAkJ
+CQljbG9ja3MgPSA8JmNsayBJTVg4TVFfQ0xLX0VDU1BJM19ST09UPiwNCi0tIA0KMi43LjQNCg0K

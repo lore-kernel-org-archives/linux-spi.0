@@ -1,21 +1,21 @@
-From: Robin Gong <yibin.gong@nxp.com>
-Subject: [PATCH v2 12/15] ARM64: dts: freescale: imx8mm/8mq: update new
- compatible name for ecspi and sdma
-Date: Fri, 26 Apr 2019 08:06:15 +0000
-Message-ID: <1556265512-9130-13-git-send-email-yibin.gong@nxp.com>
+From: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH v2 00/15] add ecspi ERR009165 for i.mx6/7 soc family
+Date: Fri, 26 Apr 2019 10:19:39 +0200
+Message-ID: <1556266779.2584.15.camel@pengutronix.de>
 References: <1556265512-9130-1-git-send-email-yibin.gong@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: dl-linux-imx <linux-imx@nxp.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
         "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>
-To: "broonie@kernel.org" <broonie@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>
+To: Robin Gong <yibin.gong@nxp.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
         "shawnguo@kernel.org" <shawnguo@kernel.org>,
         "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
         "festevam@gmail.com" <festevam@gmail.com>,
@@ -28,74 +28,85 @@ To: "broonie@kernel.org" <broonie@kernel.org>,
         "will.deacon@arm.com" <will.deacon@arm.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <1556265512-9130-1-git-send-email-yibin.gong@nxp.com>
-Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-QWRkIG5ldyAnaW14NnVsLWVjc3BpJyBjb21wYXRpYmxlIG5hbWUgZm9yIGVjc3BpIGFuZCBuZXcg
-J2lteDhtcS1zZG1hJyBuYW1lDQpmb3Igc2RtYSBzaW5jZSBvbiBpLm14OG1tL21xIGNoaXAgZml4
-IGVjc3BpIGVycmF0YS4NCg0KU2lnbmVkLW9mZi1ieTogUm9iaW4gR29uZyA8eWliaW4uZ29uZ0Bu
-eHAuY29tPg0KLS0tDQogYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1tLmR0c2kg
-fCAxNCArKysrKysrLS0tLS0tLQ0KIGFyY2gvYXJtNjQvYm9vdC9kdHMvZnJlZXNjYWxlL2lteDht
-cS5kdHNpIHwgIDYgKysrLS0tDQogMiBmaWxlcyBjaGFuZ2VkLCAxMCBpbnNlcnRpb25zKCspLCAx
-MCBkZWxldGlvbnMoLSkNCg0KZGlmZiAtLWdpdCBhL2FyY2gvYXJtNjQvYm9vdC9kdHMvZnJlZXNj
-YWxlL2lteDhtbS5kdHNpIGIvYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1tLmR0
-c2kNCmluZGV4IGRlMzQ5OGMuLjE5NDVhYTMgMTAwNjQ0DQotLS0gYS9hcmNoL2FybTY0L2Jvb3Qv
-ZHRzL2ZyZWVzY2FsZS9pbXg4bW0uZHRzaQ0KKysrIGIvYXJjaC9hcm02NC9ib290L2R0cy9mcmVl
-c2NhbGUvaW14OG1tLmR0c2kNCkBAIC0yNTEsNyArMjUxLDcgQEANCiAJCQl9Ow0KIA0KIAkJCXNk
-bWEyOiBkbWEtY29udHJvbGxlckAzMDJjMDAwMCB7DQotCQkJCWNvbXBhdGlibGUgPSAiZnNsLGlt
-eDhtbS1zZG1hIiwgImZzbCxpbXg3ZC1zZG1hIjsNCisJCQkJY29tcGF0aWJsZSA9ICJmc2wsaW14
-OG1tLXNkbWEiLCAiZnNsLGlteDhtcS1zZG1hIjsNCiAJCQkJcmVnID0gPDB4MzAyYzAwMDAgMHgx
-MDAwMD47DQogCQkJCWludGVycnVwdHMgPSA8R0lDX1NQSSAxMDMgSVJRX1RZUEVfTEVWRUxfSElH
-SD47DQogCQkJCWNsb2NrcyA9IDwmY2xrIElNWDhNTV9DTEtfU0RNQTJfUk9PVD4sDQpAQCAtMjYy
-LDcgKzI2Miw3IEBADQogCQkJfTsNCiANCiAJCQlzZG1hMzogZG1hLWNvbnRyb2xsZXJAMzAyYjAw
-MDAgew0KLQkJCQljb21wYXRpYmxlID0gImZzbCxpbXg4bW0tc2RtYSIsICJmc2wsaW14N2Qtc2Rt
-YSI7DQorCQkJCWNvbXBhdGlibGUgPSAiZnNsLGlteDhtbS1zZG1hIiwgImZzbCxpbXg4bXEtc2Rt
-YSI7DQogCQkJCXJlZyA9IDwweDMwMmIwMDAwIDB4MTAwMDA+Ow0KIAkJCQlpbnRlcnJ1cHRzID0g
-PEdJQ19TUEkgMzQgSVJRX1RZUEVfTEVWRUxfSElHSD47DQogCQkJCWNsb2NrcyA9IDwmY2xrIElN
-WDhNTV9DTEtfU0RNQTNfUk9PVD4sDQpAQCAtMzkzLDcgKzM5Myw3IEBADQogCQkJcmFuZ2VzOw0K
-IA0KIAkJCWVjc3BpMTogc3BpQDMwODIwMDAwIHsNCi0JCQkJY29tcGF0aWJsZSA9ICJmc2wsaW14
-OG1tLWVjc3BpIiwgImZzbCxpbXg1MS1lY3NwaSI7DQorCQkJCWNvbXBhdGlibGUgPSAiZnNsLGlt
-eDhtbS1lY3NwaSIsICJmc2wsaW14NnVsLWVjc3BpIjsNCiAJCQkJI2FkZHJlc3MtY2VsbHMgPSA8
-MT47DQogCQkJCSNzaXplLWNlbGxzID0gPDA+Ow0KIAkJCQlyZWcgPSA8MHgzMDgyMDAwMCAweDEw
-MDAwPjsNCkBAIC00MDcsNyArNDA3LDcgQEANCiAJCQl9Ow0KIA0KIAkJCWVjc3BpMjogc3BpQDMw
-ODMwMDAwIHsNCi0JCQkJY29tcGF0aWJsZSA9ICJmc2wsaW14OG1tLWVjc3BpIiwgImZzbCxpbXg1
-MS1lY3NwaSI7DQorCQkJCWNvbXBhdGlibGUgPSAiZnNsLGlteDhtbS1lY3NwaSIsICJmc2wsaW14
-NnVsLWVjc3BpIjsNCiAJCQkJI2FkZHJlc3MtY2VsbHMgPSA8MT47DQogCQkJCSNzaXplLWNlbGxz
-ID0gPDA+Ow0KIAkJCQlyZWcgPSA8MHgzMDgzMDAwMCAweDEwMDAwPjsNCkBAIC00MjEsNyArNDIx
-LDcgQEANCiAJCQl9Ow0KIA0KIAkJCWVjc3BpMzogc3BpQDMwODQwMDAwIHsNCi0JCQkJY29tcGF0
-aWJsZSA9ICJmc2wsaW14OG1tLWVjc3BpIiwgImZzbCxpbXg1MS1lY3NwaSI7DQorCQkJCWNvbXBh
-dGlibGUgPSAiZnNsLGlteDhtbS1lY3NwaSIsICJmc2wsaW14NnVsLWVjc3BpIjsNCiAJCQkJI2Fk
-ZHJlc3MtY2VsbHMgPSA8MT47DQogCQkJCSNzaXplLWNlbGxzID0gPDA+Ow0KIAkJCQlyZWcgPSA8
-MHgzMDg0MDAwMCAweDEwMDAwPjsNCkBAIC01NjcsMTEgKzU2NywxMSBAQA0KIAkJCX07DQogDQog
-CQkJc2RtYTE6IGRtYS1jb250cm9sbGVyQDMwYmQwMDAwIHsNCi0JCQkJY29tcGF0aWJsZSA9ICJm
-c2wsaW14OG1tLXNkbWEiLCAiZnNsLGlteDdkLXNkbWEiOw0KKwkJCQljb21wYXRpYmxlID0gImZz
-bCxpbXg4bW0tc2RtYSIsICJmc2wsaW14OG1xLXNkbWEiOw0KIAkJCQlyZWcgPSA8MHgzMGJkMDAw
-MCAweDEwMDAwPjsNCiAJCQkJaW50ZXJydXB0cyA9IDxHSUNfU1BJIDIgSVJRX1RZUEVfTEVWRUxf
-SElHSD47DQogCQkJCWNsb2NrcyA9IDwmY2xrIElNWDhNTV9DTEtfU0RNQTFfUk9PVD4sDQotCQkJ
-CQkgPCZjbGsgSU1YOE1NX0NMS19TRE1BMV9ST09UPjsNCisJCQkJCSA8JmNsayBJTVg4TU1fQ0xL
-X0FIQj47DQogCQkJCWNsb2NrLW5hbWVzID0gImlwZyIsICJhaGIiOw0KIAkJCQkjZG1hLWNlbGxz
-ID0gPDM+Ow0KIAkJCQlmc2wsc2RtYS1yYW0tc2NyaXB0LW5hbWUgPSAiaW14L3NkbWEvc2RtYS1p
-bXg3ZC5iaW4iOw0KZGlmZiAtLWdpdCBhL2FyY2gvYXJtNjQvYm9vdC9kdHMvZnJlZXNjYWxlL2lt
-eDhtcS5kdHNpIGIvYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1xLmR0c2kNCmlu
-ZGV4IDdjMGIxMmEuLmYyYTVkMTIgMTAwNjQ0DQotLS0gYS9hcmNoL2FybTY0L2Jvb3QvZHRzL2Zy
-ZWVzY2FsZS9pbXg4bXEuZHRzaQ0KKysrIGIvYXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUv
-aW14OG1xLmR0c2kNCkBAIC02MDcsNyArNjA3LDcgQEANCiAJCQllY3NwaTE6IHNwaUAzMDgyMDAw
-MCB7DQogCQkJCSNhZGRyZXNzLWNlbGxzID0gPDE+Ow0KIAkJCQkjc2l6ZS1jZWxscyA9IDwwPjsN
-Ci0JCQkJY29tcGF0aWJsZSA9ICJmc2wsaW14OG1xLWVjc3BpIiwgImZzbCxpbXg1MS1lY3NwaSI7
-DQorCQkJCWNvbXBhdGlibGUgPSAiZnNsLGlteDhtcS1lY3NwaSIsICJmc2wsaW14NnVsLWVjc3Bp
-IjsNCiAJCQkJcmVnID0gPDB4MzA4MjAwMDAgMHgxMDAwMD47DQogCQkJCWludGVycnVwdHMgPSA8
-R0lDX1NQSSAzMSBJUlFfVFlQRV9MRVZFTF9ISUdIPjsNCiAJCQkJY2xvY2tzID0gPCZjbGsgSU1Y
-OE1RX0NMS19FQ1NQSTFfUk9PVD4sDQpAQCAtNjE5LDcgKzYxOSw3IEBADQogCQkJZWNzcGkyOiBz
-cGlAMzA4MzAwMDAgew0KIAkJCQkjYWRkcmVzcy1jZWxscyA9IDwxPjsNCiAJCQkJI3NpemUtY2Vs
-bHMgPSA8MD47DQotCQkJCWNvbXBhdGlibGUgPSAiZnNsLGlteDhtcS1lY3NwaSIsICJmc2wsaW14
-NTEtZWNzcGkiOw0KKwkJCQljb21wYXRpYmxlID0gImZzbCxpbXg4bXEtZWNzcGkiLCAiZnNsLGlt
-eDZ1bC1lY3NwaSI7DQogCQkJCXJlZyA9IDwweDMwODMwMDAwIDB4MTAwMDA+Ow0KIAkJCQlpbnRl
-cnJ1cHRzID0gPEdJQ19TUEkgMzIgSVJRX1RZUEVfTEVWRUxfSElHSD47DQogCQkJCWNsb2NrcyA9
-IDwmY2xrIElNWDhNUV9DTEtfRUNTUEkyX1JPT1Q+LA0KQEAgLTYzMSw3ICs2MzEsNyBAQA0KIAkJ
-CWVjc3BpMzogc3BpQDMwODQwMDAwIHsNCiAJCQkJI2FkZHJlc3MtY2VsbHMgPSA8MT47DQogCQkJ
-CSNzaXplLWNlbGxzID0gPDA+Ow0KLQkJCQljb21wYXRpYmxlID0gImZzbCxpbXg4bXEtZWNzcGki
-LCAiZnNsLGlteDUxLWVjc3BpIjsNCisJCQkJY29tcGF0aWJsZSA9ICJmc2wsaW14OG1xLWVjc3Bp
-IiwgImZzbCxpbXg2dWwtZWNzcGkiOw0KIAkJCQlyZWcgPSA8MHgzMDg0MDAwMCAweDEwMDAwPjsN
-CiAJCQkJaW50ZXJydXB0cyA9IDxHSUNfU1BJIDMzIElSUV9UWVBFX0xFVkVMX0hJR0g+Ow0KIAkJ
-CQljbG9ja3MgPSA8JmNsayBJTVg4TVFfQ0xLX0VDU1BJM19ST09UPiwNCi0tIA0KMi43LjQNCg0K
+Hi Robin,
+
+Am Freitag, den 26.04.2019, 08:05 +0000 schrieb Robin Gong:
+>   There is ecspi ERR009165 on i.mx6/7 soc family, which cause FIFO
+> transfer to be send twice in DMA mode. Please get more information from:
+> https://www.nxp.com/docs/en/errata/IMX6DQCE.pdf. The workaround is adding
+> new sdma ram script which works in XCH  mode as PIO inside sdma instead
+> of SMC mode, meanwhile, 'TX_THRESHOLD' should be 0.
+
+I would like to have a more in-depth explanation about how this new RAM
+script differs from the existing ROM script and the changes to the
+state transitions.
+
+>   The issue should be exist on all legacy i.mx6/7 soc family before i.mx6ul,
+> NXP fix this design issue from i.mx6ul, so newer chips such as i.mx6ull/
+> i.mx8mq/i.mx8mm, don't need this workaroud anymore. This patch set
+> add new 'fsl,imx6ul-ecspi' for ecspi driver and 'ecspi_fixed' in sdma
+> driver to choose if need errata or not.
+>   The first two reverted patches should be the same issue, though, it
+> seems 'fixed' by changing to other shp script. Hope Sean or Sascha could
+> have the chance to test this patch set if could fix their issues.
+>   Besides, enable sdma support for i.mx8mm/8mq and fix ecspi1 not work
+> on i.mx8mm because the event id is zero.
+> 
+> PS:
+>  Please get sdma firmware from below linux-firmware and copy it to your
+> local rootfs /lib/firmware/imx/sdma.
+> https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/imx/sdma
+
+This is not an option as long as the SDMA RAM firmware breaks the
+mainline serial DMA support. Please provide a fixed SDMA RAM firmware
+that doesn't replace the ROM serial script, as that one is totally
+fine.
+
+Regards,
+Lucas
+
+> v2:
+>   1. add commit log for reverted patches.
+>   2. add comment for 'ecspi_fixed' in sdma driver.
+>   3. add 'fsl,imx6sll-ecspi' compatible instead of 'fsl,imx6ul-ecspi'
+>      rather than remove.
+> 
+> 
+> Robin Gong (15):
+>   Revert "ARM: dts: imx6q: Use correct SDMA script for SPI5 core"
+>   Revert "ARM: dts: imx6: Use correct SDMA script for SPI cores"
+>   Revert "dmaengine: imx-sdma: refine to load context only once"
+>   dmaengine: imx-sdma: remove dupilicated sdma_load_context
+>   dma: engine: imx-sdma: add mcu_2_ecspi script
+>   spi: imx: fix ERR009165
+>   spi: imx: remove ERR009165 workaround on i.mx6ul
+>   dt-bindings: spi: imx: add i.mx6ul to state errata fixed
+>   dmaengine: imx-sdma: remove ERR009165 on i.mx6ul
+>   dt-bindings: dma: imx-sdma: add i.mx6ul/6sx compatible name
+>   dmaengine: imx-sdma: fix ecspi1 rx dma not work on i.mx8mm
+>   ARM64: dts: freescale: imx8mm/8mq: update new compatible name for
+>     ecspi and sdma
+>   ARM: dts: imx6ul: add dma support on ecspi
+>   ARM: dts: imx6sll: correct ecspi/sdma compatible
+>   arm64: defconfig: Enable SDMA on i.mx8mq/8mm
+> 
+>  .../devicetree/bindings/dma/fsl-imx-sdma.txt       |  2 +
+>  .../devicetree/bindings/spi/fsl-imx-cspi.txt       |  2 +
+>  arch/arm/boot/dts/imx6q.dtsi                       |  2 +-
+>  arch/arm/boot/dts/imx6qdl.dtsi                     |  8 +--
+>  arch/arm/boot/dts/imx6sll.dtsi                     | 10 ++--
+>  arch/arm/boot/dts/imx6ul.dtsi                      |  8 +++
+>  arch/arm64/boot/dts/freescale/imx8mm.dtsi          | 14 ++---
+>  arch/arm64/boot/dts/freescale/imx8mq.dtsi          |  6 +-
+>  arch/arm64/configs/defconfig                       |  3 +
+>  drivers/dma/imx-sdma.c                             | 67 ++++++++++++++++------
+>  drivers/spi/spi-imx.c                              | 46 ++++++++++++---
+>  include/linux/platform_data/dma-imx-sdma.h         |  1 +
+>  12 files changed, 124 insertions(+), 45 deletions(-)
+> 
+> -- 
+> 2.7.4
+> 

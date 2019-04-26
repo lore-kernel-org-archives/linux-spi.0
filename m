@@ -1,53 +1,100 @@
-From: Serge Semin <fancer.lancer@gmail.com>
-Subject: [PATCH] spi: Clear SPI_CS_HIGH flag from bad_bits for GPIO chip-select
-Date: Fri, 26 Apr 2019 13:30:07 +0300
-Message-ID: <20190426103007.29612-1-fancer.lancer@gmail.com>
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v3 4/4] dt-bindings: mfd: Document Macronix MX25F0A
+ controller bindings
+Date: Fri, 26 Apr 2019 17:41:36 -0500
+Message-ID: <20190426224136.GA636@bogus>
+References: <1555320234-15802-1-git-send-email-masonccyang@mxic.com.tw>
+ <1555320234-15802-5-git-send-email-masonccyang@mxic.com.tw>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: Serge Semin <Sergey.Semin@t-platforms.ru>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: broonie@kernel.org, marek.vasut@gmail.com,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        bbrezillon@kernel.org, dwmw2@infradead.org, lee.jones@linaro.org,
+        mark.rutland@arm.com, computersforpeace@gmal.com,
+        paul.burton@mips.com, stefan@agner.ch, christophe.kerello@st.com,
+        liang.yang@amlogic.com, geert@linux-m68k.org,
+        devicetree@vger.kernel.org, marcel.ziswiler@toradex.com,
+        linux-mtd@lists.infradead.org, richard@nod.at,
+        miquel.raynal@bootlin.com, juliensu@mxic.com.tw,
+        zhengxunli@mxic.com.tw
+To: Mason Yang <masonccyang@mxic.com.tw>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1555320234-15802-5-git-send-email-masonccyang@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-When GPIO chip-select is used nothing prevents any available SPI
-controllers to work with both CS-high and traditional CS-low modes.
-In fact the SPI bus core code already does it, so we don't need to
-introduce any modification there. But spi_setup() still fails to
-switch the interface settings if CS-high flag is set for the case
-of GPIO-driven slave chip-select when the SPI controller doesn't
-support the hardwired CS-inversion. Lets fix it by clearing the
-SPI_CS_HIGH flag out from bad_bits (unsupported by controller) when
-client chip is selected by GPIO.
+On Mon, Apr 15, 2019 at 05:23:54PM +0800, Mason Yang wrote:
+> Document the bindings used by the Macronix MX25F0A MFD controller.
+> 
+> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+> ---
+>  .../devicetree/bindings/mfd/mxic-mx25f0a.txt       | 51 ++++++++++++++++++++++
+>  1 file changed, 51 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mfd/mxic-mx25f0a.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/mfd/mxic-mx25f0a.txt b/Documentation/devicetree/bindings/mfd/mxic-mx25f0a.txt
+> new file mode 100644
+> index 0000000..7f3e0f8
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mfd/mxic-mx25f0a.txt
+> @@ -0,0 +1,51 @@
+> +Macronix MX25F0A MultiFunction Device Tree Bindings
+> +----------------------------------------------------
+> +
+> +MX25F0A is a MultiFunction Device with SPI and raw NAND, which
+> +supports either spi host controller or raw nand controller.
+> +
+> +Required properties:
+> +- compatible: should be "mxic,mx25f0a"
+> +- #address-cells: should be 1
+> +- #size-cells: should be 0
+> +- reg: should contain 2 entries, one for the registers and one for the direct
+> +       mapping area in SPI mode.
+> +- reg-names: should contain "regs" and "dirmap"
+> +- interrupts: interrupt line connected to this MFD controller
+> +- SPI controller driver:
+> +		- clock-names: should contain "ps_clk", "send_clk" and
+> +			       "send_dly_clk"
+> +		- clocks: should contain 3 entries for the "ps_clk", "send_clk"
+> +			  and "send_dly_clk" clocks
+> +
+> +- Raw nand controller driver.
+> +		- nand-ecc-mode = "soft";
+> +		- nand-ecc-algo = "bch";
+> +
+> +Example:
+> +
+> +	mxic: mx25f0a@43c30000 {
+> +		compatible = "mxic,mx25f0a";
+> +		reg = <0x43c30000 0x10000>, <0xa0000000 0x4000000>;
+> +		reg-names = "regs", "dirmap";
+> +
+> +		/* spi */
+> +		clocks = <&clkwizard 0>, <&clkwizard 1>, <&clkc 15>;
+> +		clock-names = "send_clk", "send_dly_clk", "ps_clk";
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		flash@0 {
+> +			compatible = "jedec,spi-nor";
+> +			reg = <0>;
+> +			spi-max-frequency = <25000000>;
+> +			spi-tx-bus-width = <4>;
+> +			spi-rx-bus-width = <4>;
+> +		};
+> +
+> +		/* nand */
 
-This feature is useful for slave devices, which in accordance with
-communication protocol can work with both active-high and active-low
-chip-selects. I am aware of one such device. It is MMC-SPI interface,
-when at init sequence the driver needs to perform a read operation with
-low and high chip-select sequentially (requirement of 74 clock cycles
-with both chipselect, see the mmc_spi driver for details).
+Don't you need a nand child node? I'm not sure how that's going to work 
+as you are already using the number space (i.e. reg) for SPI CS number 
+and you can't really mix number spaces within a node level.
 
-Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
----
- drivers/spi/spi.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 93986f879b09..49808892ef35 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2943,6 +2943,11 @@ int spi_setup(struct spi_device *spi)
- 	 * so it is ignored here.
- 	 */
- 	bad_bits = spi->mode & ~(spi->controller->mode_bits | SPI_CS_WORD);
-+	/* nothing prevents from working with active-high CS in case if it
-+	 * is driven by GPIO.
-+	 */
-+	if (gpio_is_valid(spi->cs_gpio))
-+		bad_bits &= ~SPI_CS_HIGH;
- 	ugly_bits = bad_bits &
- 		    (SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTAL |
- 		     SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTAL);
--- 
-2.21.0
+> +		nand-ecc-mode = "soft";
+> +		nand-ecc-algo = "bch";
+> +		nand-ecc-step-size = <512>;
+> +		nand-ecc-strength = <8>;
+> +	};
+> -- 
+> 1.9.1
+> 

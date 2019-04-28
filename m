@@ -1,88 +1,51 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: Clear SPI_CS_HIGH flag from bad_bits for GPIO chip-select" to the spi tree
-Date: Sat, 27 Apr 2019 18:32:40 +0100 (BST)
-Message-ID: <20190427173240.59AE7441D3B@finisterre.ee.mobilebroadband>
-References: <20190426103007.29612-1-fancer.lancer@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Serge Semin <Sergey.Semin@t-platforms.ru>
-To: Serge Semin <fancer.lancer@gmail.com>
+From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+Subject: Re: [PATCH 0/3] spi: SPI bus multiplexer
+Date: Sun, 28 Apr 2019 22:28:16 +0000
+Message-ID: <d91ab2261a1f4069bc48e090bd4ec702@svr-chch-ex1.atlnz.lc>
+References: <20190412050213.17698-1-chris.packham@alliedtelesis.co.nz>
+ <20190412082913.GA6909@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Cc: "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        Hamish Martin <Hamish.Martin@alliedtelesis.co.nz>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "tthayer@opensource.altera.com" <tthayer@opensource.altera.com>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190426103007.29612-1-fancer.lancer@gmail.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
-
-   spi: Clear SPI_CS_HIGH flag from bad_bits for GPIO chip-select
-
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.2
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 7f03aece72702c6204c765a2eac038eea2f3c58d Mon Sep 17 00:00:00 2001
-From: Serge Semin <fancer.lancer@gmail.com>
-Date: Fri, 26 Apr 2019 13:30:07 +0300
-Subject: [PATCH] spi: Clear SPI_CS_HIGH flag from bad_bits for GPIO
- chip-select
-
-When GPIO chip-select is used nothing prevents any available SPI
-controllers to work with both CS-high and traditional CS-low modes.
-In fact the SPI bus core code already does it, so we don't need to
-introduce any modification there. But spi_setup() still fails to
-switch the interface settings if CS-high flag is set for the case
-of GPIO-driven slave chip-select when the SPI controller doesn't
-support the hardwired CS-inversion. Lets fix it by clearing the
-SPI_CS_HIGH flag out from bad_bits (unsupported by controller) when
-client chip is selected by GPIO.
-
-This feature is useful for slave devices, which in accordance with
-communication protocol can work with both active-high and active-low
-chip-selects. I am aware of one such device. It is MMC-SPI interface,
-when at init sequence the driver needs to perform a read operation with
-low and high chip-select sequentially (requirement of 74 clock cycles
-with both chipselect, see the mmc_spi driver for details).
-
-Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index bf4027b54a19..5be76ab68737 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2950,6 +2950,11 @@ int spi_setup(struct spi_device *spi)
- 	 * so it is ignored here.
- 	 */
- 	bad_bits = spi->mode & ~(spi->controller->mode_bits | SPI_CS_WORD);
-+	/* nothing prevents from working with active-high CS in case if it
-+	 * is driven by GPIO.
-+	 */
-+	if (gpio_is_valid(spi->cs_gpio))
-+		bad_bits &= ~SPI_CS_HIGH;
- 	ugly_bits = bad_bits &
- 		    (SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTAL |
- 		     SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTAL);
--- 
-2.20.1
+On 12/04/19 8:29 PM, Mark Brown wrote:=0A=
+> On Fri, Apr 12, 2019 at 05:02:10PM +1200, Chris Packham wrote:=0A=
+> =0A=
+>> Unfortunately recent changes have stopped my hacks from working. I've=0A=
+>> tried adapting cs-gpios to work with my particular hardware but I came=
+=0A=
+>> to the realisation that the current cs-gpios support assumes a 1:1=0A=
+>> mapping of gpio to SPI device whereas my hardware used the state of the=
+=0A=
+>> gpio selecting the device i.e. a 1:2 mapping.=0A=
+> =0A=
+>> This is my attempt to implement a driver to deal with this. One nice=0A=
+>> property is that it is pretty much self contained. The only change to=0A=
+>> the core SPI infrastructure is exposing a function I needed to lookup=0A=
+>> the spi_controller instance.=0A=
+> =0A=
+> Why not implement the device that demuxes the GPIOs you're using for=0A=
+> chip select as a GPIO controller?  Presumably it might get used for=0A=
+> things other than chip selects.=0A=
+> =0A=
+=0A=
+Hmm a gpio-gpio driver. Interesting.=0A=
+=0A=
+One other problem that I encounter is the interaction between cs-gpio =0A=
+and SPI_MASTER_GPIO_SS. Having cs-gpio automatically sets SPI_CS_HIGH =0A=
+which has the undesired side-effect that now my real chip select is =0A=
+inverted. I actually wonder if this change breaks commit 8eee6b9dd30d =0A=
+("spi: Add Flag to Enable Slave Select with GPIO Chip Select.") since =0A=
+now there is an extra inversion on the CS enable.=0A=

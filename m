@@ -1,54 +1,89 @@
-From: Michal Simek <michal.simek@xilinx.com>
-Subject: Re: [PATCH] spi: zynqmp: Fix build break
-Date: Mon, 29 Apr 2019 09:28:13 -0700
-Message-ID: <6d31dc90-7d0a-fc8d-cbc3-331200a01755@xilinx.com>
-References: <2bb66114-c976-9c44-6db3-33a5dd12edde@monstr.eu>
- <20190429162246.6061-1-olof@lixom.net>
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH 1/3] dt-bindings: spi: Add spi-mux-gpio
+Date: Mon, 29 Apr 2019 16:37:40 -0500
+Message-ID: <20190429213740.GA29098@bogus>
+References: <20190412050213.17698-1-chris.packham@alliedtelesis.co.nz>
+ <20190412050213.17698-2-chris.packham@alliedtelesis.co.nz>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Cc: <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, Rajan Vaja <rajan.vaja@xilinx.com>,
-        Jolly Shah <jollys@xilinx.com>,
-        Michal Simek <michal.simek@xilinx.com>
-To: Olof Johansson <olof@lixom.net>, <linux-spi@vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: broonie@kernel.org, mark.rutland@arm.com,
+        Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+To: Chris Packham <chris.packham@alliedtelesis.co.nz>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190429162246.6061-1-olof@lixom.net>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20190412050213.17698-2-chris.packham@alliedtelesis.co.nz>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 29. 04. 19 9:22, Olof Johansson wrote:
-> Missing include:
-> drivers/spi/spi-zynqmp-gqspi.c:1025:13: error: implicit declaration of
->   function 'zynqmp_pm_get_eemi_ops'; did you mean
->   'zynqmp_process_dma_irq'? [-Werror=implicit-function-declaration]
+On Fri, Apr 12, 2019 at 05:02:11PM +1200, Chris Packham wrote:
+> Add binding documentation for spi-mux-gpio which is a slightly more
+> complicated hardware implementation of using gpios to steer SPI chip
+> selects.
 > 
-> Fixes: 3d0313786470a ('drivers: Defer probe if firmware is not ready')
-> Cc: Rajan Vaja <rajan.vaja@xilinx.com>
-> Cc: Jolly Shah <jollys@xilinx.com>
-> Cc: Michal Simek <michal.simek@xilinx.com>
-> Signed-off-by: Olof Johansson <olof@lixom.net>
+> Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
 > ---
->  drivers/spi/spi-zynqmp-gqspi.c | 1 +
->  1 file changed, 1 insertion(+)
+>  .../devicetree/bindings/spi/spi-mux-gpio.txt  | 45 +++++++++++++++++++
+>  1 file changed, 45 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-mux-gpio.txt
 > 
-> diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-> index d07b6f940f9f..9850a0efe85a 100644
-> --- a/drivers/spi/spi-zynqmp-gqspi.c
-> +++ b/drivers/spi/spi-zynqmp-gqspi.c
-> @@ -14,6 +14,7 @@
->  #include <linux/delay.h>
->  #include <linux/dma-mapping.h>
->  #include <linux/dmaengine.h>
-> +#include <linux/firmware/xlnx-zynqmp.h>
->  #include <linux/interrupt.h>
->  #include <linux/io.h>
->  #include <linux/module.h>
-> 
+> diff --git a/Documentation/devicetree/bindings/spi/spi-mux-gpio.txt b/Documentation/devicetree/bindings/spi/spi-mux-gpio.txt
+> new file mode 100644
+> index 000000000000..a32f25321d37
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/spi-mux-gpio.txt
+> @@ -0,0 +1,45 @@
+> +SPI bus gpio multiplexer
+> +
+> +The SPI bus gpio multiplexer can be used to implement more complicated access
+> +logic than can be supported with the cs-gpios property of a SPI bus.
+> +
+> +In the example below we have a SoC with a single SPI CS that is gated by the
+> +state of a gpio to select the desired SPI device.
+> +
+> +     +----------+  CS    +-----+ CS0  +----+
+> +     |          |--------|     |------|    |
+> +     |          |        | \ / |      +----+
+> +     |   SoC    |        |  +  |
+> +     |          |  GPIO  | / \ | CS1  +----+
+> +     |          |--------|     |------|    |
+> +     +----------+        +-----+      +----+
+> +
+> +Required properties:
+> +- compatible	- must be "spi-mux-gpio"
+> +- gpios		- gpios used to implement the multiplexing logic
+> +- spi-parent-bus - parent spi bus to use
+> +
+> +Optional properties:
+> +- spi-parent-cs - chip select on parent bus to use. Defaults to 0 if not
+> +                  specified.
+> +
+> +Example for a multiplexer with a single gpio:
+> +
+> +	spi-mux {
+> +		compatible = "spi-mux-gpio";
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +		gpios = <&gpio0 1 0>;
+> +		spi-parent-bus = <&spi0>;
+> +		spi-parent-cs = <0>;
 
+Why is this out of band? We can do something similar to I2C and use the 
+mux-control binding:
 
-Acked-by: Michal Simek <michal.simek@xilinx.com>
+spi {
+	mux@0 {
+		compatible = "spi-mux";
+		reg "0"; 
+		mux-controls = ...;
 
-Thanks,
-Michal
+		spi-dev@0 {};
+		spi-dev@1 {};
+	};
+
+	spi-dev@1 {};
+
+};
+
+Rob

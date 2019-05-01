@@ -1,60 +1,62 @@
-From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Subject: RE: [PATCH V3 5/9] spi: export spi core function spi_set_cs
-Date: Mon, 29 Apr 2019 22:02:46 +0000
-Message-ID: <BYAPR12MB3398D133D1C71355BC530754C2390@BYAPR12MB3398.namprd12.prod.outlook.com>
-References: <1555363834-32155-1-git-send-email-skomatineni@nvidia.com>
- <1555363834-32155-6-git-send-email-skomatineni@nvidia.com>
- <20190419151823.GS2803@sirena.org.uk>
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v2 08/15] dt-bindings: spi: imx: add i.mx6ul to state
+ errata fixed
+Date: Wed, 1 May 2019 15:07:11 -0500
+Message-ID: <20190501200711.GA31231@bogus>
+References: <1556265512-9130-1-git-send-email-yibin.gong@nxp.com>
+ <1556265512-9130-9-git-send-email-yibin.gong@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-Cc: "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Timo Alho <talho@nvidia.com>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+Content-Type: text/plain; charset=us-ascii
+Cc: "broonie@kernel.org" <broonie@kernel.org>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "festevam@gmail.com" <festevam@gmail.com>,
         "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "Krishna Yarlagadda" <kyarlagadda@nvidia.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+        "plyatov@gmail.com" <plyatov@gmail.com>,
+        "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "will.deacon@arm.com" <will.deacon@arm.com>,
+        dl-linux-imx <linux-imx@nxp.com>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.o
+To: Robin Gong <yibin.gong@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190419151823.GS2803@sirena.org.uk>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <1556265512-9130-9-git-send-email-yibin.gong@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-> On Mon, Apr 15, 2019 at 02:30:30PM -0700, Sowjanya Komatineni wrote:
-> > This patch exports spi_set_cs of the spi core to allow SPI masters to=20
-> > use when gpio based chip select is needed.
->
-> This isn't really what I meant when I said it'd be good to use the core G=
-PIO code - this function doesn't do a huge amount really and the usage of i=
-t in your subsequent patch for the > driver isn't exactly joined up with th=
-e little it does (which is mainly swapping in the GPIO chip select instead =
-of the hardware chip select) isn't used in your driver usage of this as far=
- as I can see.  The bulk of the chip select handling code in the core is ac=
-tually in transfer_one_message() which your driver doesn't use as it's got =
-it's own implementation of that; I've not looked in enough detail to figure=
- out if it could use it.
->
->
->
-In SPI Tegra driver, we wanted to have GPIO based CS control when cs-gpios =
-is specified in parallel to HW/SW CS. Having parallel GPIO based CS is to m=
-imic some of the timing stuff that's needed for some spi devices by not act=
-ually using HW CS on platform but only for SPI HW design logic inside the c=
-hip.
+On Fri, Apr 26, 2019 at 08:05:51AM +0000, Robin Gong wrote:
+> ERR009165 fixed from i.mx6ul, add it to show the errata fixed.
+> 
+> Signed-off-by: Robin Gong <yibin.gong@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+> index 2d32641..32c4263d 100644
+> --- a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+> +++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+> @@ -10,6 +10,8 @@ Required properties:
+>    - "fsl,imx35-cspi" for SPI compatible with the one integrated on i.MX35
+>    - "fsl,imx51-ecspi" for SPI compatible with the one integrated on i.MX51
+>    - "fsl,imx53-ecspi" for SPI compatible with the one integrated on i.MX53 and later Soc
+> +  - "fsl,imx6ul-ecspi" ERR009165 fixed on i.MX6UL and later Soc
+> +    (https://www.nxp.com/docs/en/errata/IMX6DQCE.pdf)
 
-Tegra spi driver don't use set_cs callback so looking into spi_set_cs from =
-spi core implementation when cs-gpios property is used it exactly the same =
-that is needed for GPIO control CS. So used this in V3.=20
+What about other i.MX6 chips?
 
-Can you please provide more details on what you are suggesting?
-Do you prefer not to use SPI core spi_set_cs and gpio_set_values APIs and i=
-nstead implement in tegra SPI driver using GPIO descriptors ?
+Seems like this is missing some fallbacks. The binding doc should make 
+it clear what are all valid combinations of compatible strings.
 
-Thanks
-Sowjanya
+>    - "fsl,imx8mq-ecspi" for SPI compatible with the one integrated on i.MX8M
+>  - reg : Offset and length of the register set for the device
+>  - interrupts : Should contain CSPI/eCSPI interrupt
+> -- 
+> 2.7.4
+> 

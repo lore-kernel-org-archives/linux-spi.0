@@ -1,24 +1,37 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-mem: Make spi_mem_default_supports_op() static inline" to the spi tree
-Date: Thu,  2 May 2019 03:19:24 +0100 (BST)
-Message-ID: <20190502021924.8EB28441D3D@finisterre.ee.mobilebroadband>
-References: <20190410131828.35316-1-yuehaibing@huawei.com>
-Cc: broonie@kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        naga.sureshkumar.relli@xilinx.com, vigneshr@ti.com
-To: YueHaibing <yuehaibing@huawei.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190410131828.35316-1-yuehaibing@huawei.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Subject: Applied "spi: stm32: return the get_irq error" to the spi tree
+Date: Thu,  2 May 2019 03:18:54 +0100 (BST)
+Message-ID: <20190502021854.C9DFB441D3C@finisterre.ee.mobilebroadband>
+References: <1556109524-21874-1-git-send-email-fabien.dessenne@st.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Amelie Delaunay <amelie.delaunay@st.com>,
+ Alexandre Torgue <alexandre.torgue@st.com>, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org
+To: Fabien Dessenne <fabien.dessenne@st.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1556109524-21874-1-git-send-email-fabien.dessenne@st.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spi-mem: Make spi_mem_default_supports_op() static inline
+   spi: stm32: return the get_irq error
 
 has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.1
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
@@ -39,32 +52,36 @@ to this mail.
 Thanks,
 Mark
 
->From b5881b153bc81d63a5a7e82a35e8a4bdbe1f8c73 Mon Sep 17 00:00:00 2001
-From: YueHaibing <yuehaibing@huawei.com>
-Date: Wed, 10 Apr 2019 21:18:28 +0800
-Subject: [PATCH] spi: spi-mem: Make spi_mem_default_supports_op() static
- inline
+>From 8d1467a68426c61807c97163459b481ecb714523 Mon Sep 17 00:00:00 2001
+From: Fabien Dessenne <fabien.dessenne@st.com>
+Date: Wed, 24 Apr 2019 14:38:44 +0200
+Subject: [PATCH] spi: stm32: return the get_irq error
 
-Stub helper spi_mem_default_supports_op() should
-be set to static inline
+During probe, return the "get_irq" error value instead of -ENOENT. This
+allows the driver to be defer probed if needed.
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Signed-off-by: Fabien Dessenne <fabien.dessenne@st.com>
+Acked-by: Amelie Delaunay <amelie.delaunay@st.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- include/linux/spi/spi-mem.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-stm32.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index 1941b845aa15..af9ff2f0f1b2 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -315,6 +315,7 @@ spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
- {
- }
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index 4186ed20d796..b222ce8d083e 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -1839,8 +1839,9 @@ static int stm32_spi_probe(struct platform_device *pdev)
  
-+static inline
- bool spi_mem_default_supports_op(struct spi_mem *mem,
- 				 const struct spi_mem_op *op)
- {
+ 	spi->irq = platform_get_irq(pdev, 0);
+ 	if (spi->irq <= 0) {
+-		dev_err(&pdev->dev, "no irq: %d\n", spi->irq);
+-		ret = -ENOENT;
++		ret = spi->irq;
++		if (ret != -EPROBE_DEFER)
++			dev_err(&pdev->dev, "failed to get irq: %d\n", ret);
+ 		goto err_master_put;
+ 	}
+ 	ret = devm_request_threaded_irq(&pdev->dev, spi->irq,
 -- 
 2.20.1

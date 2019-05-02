@@ -1,121 +1,84 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: AD ASoC: declare missing of table" to
-	the spi tree
-Date: Thu,  2 May 2019 03:19:00 +0100 (BST)
-Message-ID: <20190502021900.5D8EE441D3D@finisterre.ee.mobilebroadband>
-References: <1555960353-8836-1-git-send-email-dagmcr@gmail.com>
+Subject: Re: [PATCH v3 3/4] spi: Patch Macronix SPI controller driver
+ according to MX25F0A MFD driver
+Date: Thu, 2 May 2019 11:41:04 +0900
+Message-ID: <20190502024103.GT14916@sirena.org.uk>
+References: <1555320234-15802-1-git-send-email-masonccyang@mxic.com.tw>
+ <1555320234-15802-4-git-send-email-masonccyang@mxic.com.tw>
+ <20190419145151.GR2803@sirena.org.uk>
+ <OF7742B4A9.445066F6-ON482583EC.0037E377-482583EC.0039125B@mxic.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: alsa-devel@alsa-project.org, lars@metafoo.de, tiwai@suse.com,
- lgirdwood@gmail.com, linux-spi@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, dagmcr@gmail.com,
- Javier Martinez Canillas <javier@dowhile0.org>
-To: Daniel Gomez <dagmcr@gmail.com>
-Return-path: <alsa-devel-bounces@alsa-project.org>
-In-Reply-To: <1555960353-8836-1-git-send-email-dagmcr@gmail.com>
-List-Unsubscribe: <https://mailman.alsa-project.org/mailman/options/alsa-devel>,
- <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
-List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
-List-Post: <mailto:alsa-devel@alsa-project.org>
-List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
-List-Subscribe: <https://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
- <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
-Errors-To: alsa-devel-bounces@alsa-project.org
-Sender: "Alsa-devel" <alsa-devel-bounces@alsa-project.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="U2mKMzaWgYxzMy3/"
+Cc: bbrezillon@kernel.org, christophe.kerello@st.com,
+        computersforpeace@gmal.com, devicetree@vger.kernel.org,
+        dwmw2@infradead.org, geert@linux-m68k.org, juliensu@mxic.com.tw,
+        lee.jones@linaro.org, liang.yang@amlogic.com,
+        linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-spi@vger.kernel.org, marcel.ziswiler@toradex.com,
+        marek.vasut@gmail.com, mark.rutland@arm.com,
+        miquel.raynal@bootlin.com, paul.burton@mips.com, richard@nod.at,
+        robh+dt@kernel.org, stefan@agner.ch, zhengxunli@mxic.com.tw
+To: masonccyang@mxic.com.tw
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <OF7742B4A9.445066F6-ON482583EC.0037E377-482583EC.0039125B@mxic.com.tw>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: AD ASoC: declare missing of table
+--U2mKMzaWgYxzMy3/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-has been applied to the spi tree at
+On Tue, Apr 30, 2019 at 06:23:21PM +0800, masonccyang@mxic.com.tw wrote:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.2
+> > It'd be much better to describe what the above actually means - what
+> > changes have been made in the introduction of the MFD driver?  It does
+> > feel like there's not as much abstraction as I'd expect between the MFD
+> > and the child, there's a lot of peering into the parent and enabling and
+> > disabling individual clocks for example rather than either having this
+> > hidden behind a function or just having the clocks owned by the child
+> > driver.=20
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> Do you mean I should remove ps_clk/send_clk/send_dly_clk resource from MF=
+D=20
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> and patch them to spi-mxic.c ?
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+> Or any other ?
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+I think you need to have a clear idea that you can explain as to what
+the MFD is and how it's split up.  What's being abstracted, what's not
+and why.  Without knowing anything about the device or what the series
+is trying to accomplish it's hard to be sure exactly what the best thing
+to do is.
 
-Thanks,
-Mark
+> The driver also isn't using the MFD interfaces to pass through
+> > the register subblocks for the IP - instead the child driver is peering
+> > straight into the MFD structure and looking at a variable in there.
 
->From 2a168e10d6db7b77190c55d994e42fc5a58fc8e5 Mon Sep 17 00:00:00 2001
-From: Daniel Gomez <dagmcr@gmail.com>
-Date: Mon, 22 Apr 2019 21:12:33 +0200
-Subject: [PATCH] spi: AD ASoC: declare missing of table
+> Patch regmap for mfd, nand and spi ?
+> or any other patches is needed ?
 
-Add missing <of_device_id> table for SPI driver relying on SPI
-device match since compatible is in a DT binding or in a DTS.
+This is a memory mapped device so there should be no need to use regmap
+unless you want to.  The MFD subsystem has facilities for passing
+through memory regions to subdevices.
 
-Before this patch:
-modinfo sound/soc/codecs/snd-soc-adau1977-spi.ko | grep alias
-alias:          spi:adau1979
-alias:          spi:adau1978
-alias:          spi:adau1977
+--U2mKMzaWgYxzMy3/
+Content-Type: application/pgp-signature; name="signature.asc"
 
-After this patch:
-modinfo sound/soc/codecs/snd-soc-adau1977-spi.ko | grep alias
-alias:          of:N*T*Cadi,adau1979C*
-alias:          of:N*T*Cadi,adau1979
-alias:          of:N*T*Cadi,adau1978C*
-alias:          of:N*T*Cadi,adau1978
-alias:          of:N*T*Cadi,adau1977C*
-alias:          of:N*T*Cadi,adau1977
-alias:          spi:adau1979
-alias:          spi:adau1978
-alias:          spi:adau1977
+-----BEGIN PGP SIGNATURE-----
 
-Reported-by: Javier Martinez Canillas <javier@dowhile0.org>
-Signed-off-by: Daniel Gomez <dagmcr@gmail.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- sound/soc/codecs/adau1977-spi.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzKWL8ACgkQJNaLcl1U
+h9AjiQf/bW7XYR+RCtB5mk7NUhGOFWv7c4gcOImzc4a6QObhKLrSolCYsj2RWhcl
+Gnq+EA50PHXQZqZMl6tLN7skgu1q8gHz79mwbns4pqSQtAC5Uw5PU2MWGMpBkBXl
+lx4jDU7D7JmlCkkbWCOb9mi/Rhq4AAbn4yWSd4ZN+3FC2znx8HY9x/12257saaV8
+ndBNuyLQdAWw8oz5cIpcLU7w+YaEYcT6qHbTbmfRBdCyIfKTxVOwq403UnLSjKW6
+LU90b3lGa1zs5IP2m6rKwRCggfZnkgjvrRl9VQJXPxx3Ggyj7jG1OKBa7ia0Kf/a
+QZsQU1oxCxD+GUVGvbJkybiuRYKmxw==
+=TLm4
+-----END PGP SIGNATURE-----
 
-diff --git a/sound/soc/codecs/adau1977-spi.c b/sound/soc/codecs/adau1977-spi.c
-index 84ffbde9583f..2baf61567b59 100644
---- a/sound/soc/codecs/adau1977-spi.c
-+++ b/sound/soc/codecs/adau1977-spi.c
-@@ -10,6 +10,8 @@
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/regmap.h>
-+#include <linux/of.h>
-+#include <linux/of_device.h>
- #include <linux/spi/spi.h>
- #include <sound/soc.h>
- 
-@@ -54,9 +56,18 @@ static const struct spi_device_id adau1977_spi_ids[] = {
- };
- MODULE_DEVICE_TABLE(spi, adau1977_spi_ids);
- 
-+static const struct of_device_id adau1977_spi_of_match[] = {
-+        { .compatible = "adi,adau1977" },
-+        { .compatible = "adi,adau1978" },
-+        { .compatible = "adi,adau1979" },
-+        { },
-+};
-+MODULE_DEVICE_TABLE(of, adau1977_spi_of_match);
-+
- static struct spi_driver adau1977_spi_driver = {
- 	.driver = {
- 		.name = "adau1977",
-+		.of_match_table = of_match_ptr(adau1977_spi_of_match),
- 	},
- 	.probe = adau1977_spi_probe,
- 	.id_table = adau1977_spi_ids,
--- 
-2.20.1
+--U2mKMzaWgYxzMy3/--

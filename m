@@ -1,27 +1,24 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: expand mode support" to the spi tree
-Date: Thu,  2 May 2019 03:19:05 +0100 (BST)
-Message-ID: <20190502021905.C1260441D3C@finisterre.ee.mobilebroadband>
-References: <1555363834-32155-3-git-send-email-skomatineni@nvidia.com>
-Cc: broonie@kernel.org, devicetree@vger.kernel.org,
-        jonathanh@nvidia.com, kyarlagadda@nvidia.com, ldewangan@nvidia.com,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-tegra@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        mark.rutland@arm.com, robh+dt@kernel.org, skomatineni@nvidia.com,
-        talho@nvidia.com, thierry.reding@gmail.com
-To: Sowjanya Komatineni <skomatineni@nvidia.com>
+Subject: Applied "spi: Clear SPI_CS_HIGH flag from bad_bits for GPIO chip-select" to the spi tree
+Date: Thu,  2 May 2019 03:18:59 +0100 (BST)
+Message-ID: <20190502021859.40504441D3E@finisterre.ee.mobilebroadband>
+References: <20190426103007.29612-1-fancer.lancer@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        Serge Semin <Sergey.Semin@t-platforms.ru>
+To: Serge Semin <fancer.lancer@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1555363834-32155-3-git-send-email-skomatineni@nvidia.com>
+In-Reply-To: <20190426103007.29612-1-fancer.lancer@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: expand mode support
+   spi: Clear SPI_CS_HIGH flag from bad_bits for GPIO chip-select
 
 has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.2
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
@@ -42,50 +39,50 @@ to this mail.
 Thanks,
 Mark
 
->From 937e6d756422637eeb212c645ded69569a67fabc Mon Sep 17 00:00:00 2001
-From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Date: Mon, 15 Apr 2019 14:30:27 -0700
-Subject: [PATCH] spi: expand mode support
+>From d61ad23cb3be09ff4956e9b9794134456522817f Mon Sep 17 00:00:00 2001
+From: Serge Semin <fancer.lancer@gmail.com>
+Date: Fri, 26 Apr 2019 13:30:07 +0300
+Subject: [PATCH] spi: Clear SPI_CS_HIGH flag from bad_bits for GPIO
+ chip-select
 
-This patch changes mode and mode_bits from u16 to u32 to allow more
-mode configurations.
+When GPIO chip-select is used nothing prevents any available SPI
+controllers to work with both CS-high and traditional CS-low modes.
+In fact the SPI bus core code already does it, so we don't need to
+introduce any modification there. But spi_setup() still fails to
+switch the interface settings if CS-high flag is set for the case
+of GPIO-driven slave chip-select when the SPI controller doesn't
+support the hardwired CS-inversion. Lets fix it by clearing the
+SPI_CS_HIGH flag out from bad_bits (unsupported by controller) when
+client chip is selected by GPIO.
 
-Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
+This feature is useful for slave devices, which in accordance with
+communication protocol can work with both active-high and active-low
+chip-selects. I am aware of one such device. It is MMC-SPI interface,
+when at init sequence the driver needs to perform a read operation with
+low and high chip-select sequentially (requirement of 74 clock cycles
+with both chipselect, see the mmc_spi driver for details).
+
+Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- include/linux/spi/spi.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 589f9dc9ac2b..053abd22ad31 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -143,7 +143,7 @@ struct spi_device {
- 	u32			max_speed_hz;
- 	u8			chip_select;
- 	u8			bits_per_word;
--	u16			mode;
-+	u32			mode;
- #define	SPI_CPHA	0x01			/* clock phase */
- #define	SPI_CPOL	0x02			/* clock polarity */
- #define	SPI_MODE_0	(0|0)			/* (original MicroWire) */
-@@ -443,7 +443,7 @@ struct spi_controller {
- 	u16			dma_alignment;
- 
- 	/* spi_device.mode flags understood by this controller driver */
--	u16			mode_bits;
-+	u32			mode_bits;
- 
- 	/* bitmask of supported bits_per_word for transfers */
- 	u32			bits_per_word_mask;
-@@ -1291,7 +1291,7 @@ struct spi_board_info {
- 	/* mode becomes spi_device.mode, and is essential for chips
- 	 * where the default of SPI_CS_HIGH = 0 is wrong.
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 2195fa265aef..5e75944ad5d1 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2945,6 +2945,11 @@ int spi_setup(struct spi_device *spi)
+ 	 * so it is ignored here.
  	 */
--	u16		mode;
-+	u32		mode;
- 
- 	/* ... may need additional spi_device chip config data here.
- 	 * avoid stuff protocol drivers can set; but include stuff
+ 	bad_bits = spi->mode & ~(spi->controller->mode_bits | SPI_CS_WORD);
++	/* nothing prevents from working with active-high CS in case if it
++	 * is driven by GPIO.
++	 */
++	if (gpio_is_valid(spi->cs_gpio))
++		bad_bits &= ~SPI_CS_HIGH;
+ 	ugly_bits = bad_bits &
+ 		    (SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTAL |
+ 		     SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTAL);
 -- 
 2.20.1

@@ -1,25 +1,23 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: pxa2xx: Add support for Intel Comet Lake" to the spi tree
-Date: Thu,  2 May 2019 03:19:09 +0100 (BST)
-Message-ID: <20190502021909.B70A2441D3E@finisterre.ee.mobilebroadband>
-References: <20190416032743.180517-1-evgreen@chromium.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Rajat Jain <rajatja@chromium.org>,
-        Robert Jarzmik <robert.jarzmik@free.fr>
-To: Evan Green <evgreen@chromium.org>
+Subject: Applied "spi: expand mode support" to the spi tree
+Date: Thu,  2 May 2019 03:19:05 +0100 (BST)
+Message-ID: <20190502021905.C1260441D3C@finisterre.ee.mobilebroadband>
+References: <1555363834-32155-3-git-send-email-skomatineni@nvidia.com>
+Cc: broonie@kernel.org, devicetree@vger.kernel.org,
+        jonathanh@nvidia.com, kyarlagadda@nvidia.com, ldewangan@nvidia.com,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-tegra@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        mark.rutland@arm.com, robh+dt@kernel.org, skomatineni@nvidia.com,
+        talho@nvidia.com, thierry.reding@gmail.com
+To: Sowjanya Komatineni <skomatineni@nvidia.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190416032743.180517-1-evgreen@chromium.org>
+In-Reply-To: <1555363834-32155-3-git-send-email-skomatineni@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: pxa2xx: Add support for Intel Comet Lake
+   spi: expand mode support
 
 has been applied to the spi tree at
 
@@ -44,35 +42,50 @@ to this mail.
 Thanks,
 Mark
 
->From 41a918026407be4ca2727cd0d6243fe6cdbfc4ed Mon Sep 17 00:00:00 2001
-From: Evan Green <evgreen@chromium.org>
-Date: Mon, 15 Apr 2019 20:27:43 -0700
-Subject: [PATCH] spi: pxa2xx: Add support for Intel Comet Lake
+>From 937e6d756422637eeb212c645ded69569a67fabc Mon Sep 17 00:00:00 2001
+From: Sowjanya Komatineni <skomatineni@nvidia.com>
+Date: Mon, 15 Apr 2019 14:30:27 -0700
+Subject: [PATCH] spi: expand mode support
 
-Add PCI IDs for SPI on Comet Lake.
+This patch changes mode and mode_bits from u16 to u32 to allow more
+mode configurations.
 
-Signed-off-by: Evan Green <evgreen@chromium.org>
-Acked-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-pxa2xx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/spi/spi.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 3e6811ef37e8..f5546eeaebe4 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1454,6 +1454,10 @@ static const struct pci_device_id pxa2xx_spi_pci_compound_match[] = {
- 	{ PCI_VDEVICE(INTEL, 0xa32a), LPSS_CNL_SSP },
- 	{ PCI_VDEVICE(INTEL, 0xa32b), LPSS_CNL_SSP },
- 	{ PCI_VDEVICE(INTEL, 0xa37b), LPSS_CNL_SSP },
-+	/* CML-LP */
-+	{ PCI_VDEVICE(INTEL, 0x02aa), LPSS_CNL_SSP },
-+	{ PCI_VDEVICE(INTEL, 0x02ab), LPSS_CNL_SSP },
-+	{ PCI_VDEVICE(INTEL, 0x02fb), LPSS_CNL_SSP },
- 	{ },
- };
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 589f9dc9ac2b..053abd22ad31 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -143,7 +143,7 @@ struct spi_device {
+ 	u32			max_speed_hz;
+ 	u8			chip_select;
+ 	u8			bits_per_word;
+-	u16			mode;
++	u32			mode;
+ #define	SPI_CPHA	0x01			/* clock phase */
+ #define	SPI_CPOL	0x02			/* clock polarity */
+ #define	SPI_MODE_0	(0|0)			/* (original MicroWire) */
+@@ -443,7 +443,7 @@ struct spi_controller {
+ 	u16			dma_alignment;
  
+ 	/* spi_device.mode flags understood by this controller driver */
+-	u16			mode_bits;
++	u32			mode_bits;
+ 
+ 	/* bitmask of supported bits_per_word for transfers */
+ 	u32			bits_per_word_mask;
+@@ -1291,7 +1291,7 @@ struct spi_board_info {
+ 	/* mode becomes spi_device.mode, and is essential for chips
+ 	 * where the default of SPI_CS_HIGH = 0 is wrong.
+ 	 */
+-	u16		mode;
++	u32		mode;
+ 
+ 	/* ... may need additional spi_device chip config data here.
+ 	 * avoid stuff protocol drivers can set; but include stuff
 -- 
 2.20.1

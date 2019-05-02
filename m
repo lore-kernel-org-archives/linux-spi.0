@@ -1,39 +1,29 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: stm32-qspi: manage the get_irq error case" to the spi
- tree
-Date: Thu,  2 May 2019 03:19:01 +0100 (BST)
-Message-ID: <20190502021901.7345A441D56@finisterre.ee.mobilebroadband>
-References: <1556119140-3319-1-git-send-email-fabien.dessenne@st.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Christophe KERELLO <christophe.kerello@st.com>,
- Alexandre Torgue <alexandre.torgue@st.com>, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
- Ludovic Barre <ludovic.barre@st.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org
-To: Fabien Dessenne <fabien.dessenne@st.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1556119140-3319-1-git-send-email-fabien.dessenne@st.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Subject: Applied "spi: pxa2xx: Add support for Intel Comet Lake" to the spi tree
+Date: Thu,  2 May 2019 03:19:09 +0100 (BST)
+Message-ID: <20190502021909.B70A2441D3E@finisterre.ee.mobilebroadband>
+References: <20190416032743.180517-1-evgreen@chromium.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        Rajat Jain <rajatja@chromium.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>
+To: Evan Green <evgreen@chromium.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190416032743.180517-1-evgreen@chromium.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: stm32-qspi: manage the get_irq error case
+   spi: pxa2xx: Add support for Intel Comet Lake
 
 has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.2
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
@@ -54,36 +44,35 @@ to this mail.
 Thanks,
 Mark
 
->From 4b562de4e227dbc2267c367b0a1ec83051c364f6 Mon Sep 17 00:00:00 2001
-From: Fabien Dessenne <fabien.dessenne@st.com>
-Date: Wed, 24 Apr 2019 17:19:00 +0200
-Subject: [PATCH] spi: stm32-qspi: manage the get_irq error case
+>From 41a918026407be4ca2727cd0d6243fe6cdbfc4ed Mon Sep 17 00:00:00 2001
+From: Evan Green <evgreen@chromium.org>
+Date: Mon, 15 Apr 2019 20:27:43 -0700
+Subject: [PATCH] spi: pxa2xx: Add support for Intel Comet Lake
 
-During probe, check the "get_irq" error value.
+Add PCI IDs for SPI on Comet Lake.
 
-Signed-off-by: Fabien Dessenne <fabien.dessenne@st.com>
-Acked-by: Ludovic Barre <ludovic.barre@st.com>
+Signed-off-by: Evan Green <evgreen@chromium.org>
+Acked-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-stm32-qspi.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/spi/spi-pxa2xx.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
-index 11a89aa15d56..42f8e3c6aa1f 100644
---- a/drivers/spi/spi-stm32-qspi.c
-+++ b/drivers/spi/spi-stm32-qspi.c
-@@ -574,6 +574,12 @@ static int stm32_qspi_probe(struct platform_device *pdev)
- 	}
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 3e6811ef37e8..f5546eeaebe4 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1454,6 +1454,10 @@ static const struct pci_device_id pxa2xx_spi_pci_compound_match[] = {
+ 	{ PCI_VDEVICE(INTEL, 0xa32a), LPSS_CNL_SSP },
+ 	{ PCI_VDEVICE(INTEL, 0xa32b), LPSS_CNL_SSP },
+ 	{ PCI_VDEVICE(INTEL, 0xa37b), LPSS_CNL_SSP },
++	/* CML-LP */
++	{ PCI_VDEVICE(INTEL, 0x02aa), LPSS_CNL_SSP },
++	{ PCI_VDEVICE(INTEL, 0x02ab), LPSS_CNL_SSP },
++	{ PCI_VDEVICE(INTEL, 0x02fb), LPSS_CNL_SSP },
+ 	{ },
+ };
  
- 	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0) {
-+		if (irq != -EPROBE_DEFER)
-+			dev_err(dev, "IRQ error missing or invalid\n");
-+		return irq;
-+	}
-+
- 	ret = devm_request_irq(dev, irq, stm32_qspi_irq, 0,
- 			       dev_name(dev), qspi);
- 	if (ret) {
 -- 
 2.20.1

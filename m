@@ -1,20 +1,33 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: Clear SPI_CS_HIGH flag from bad_bits for GPIO chip-select" to the spi tree
-Date: Thu,  2 May 2019 03:18:59 +0100 (BST)
-Message-ID: <20190502021859.40504441D3E@finisterre.ee.mobilebroadband>
-References: <20190426103007.29612-1-fancer.lancer@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Serge Semin <Sergey.Semin@t-platforms.ru>
-To: Serge Semin <fancer.lancer@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190426103007.29612-1-fancer.lancer@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Subject: Applied "spi: AD ASoC: declare missing of table" to
+	the spi tree
+Date: Thu,  2 May 2019 03:19:00 +0100 (BST)
+Message-ID: <20190502021900.5D8EE441D3D@finisterre.ee.mobilebroadband>
+References: <1555960353-8836-1-git-send-email-dagmcr@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: alsa-devel@alsa-project.org, lars@metafoo.de, tiwai@suse.com,
+ lgirdwood@gmail.com, linux-spi@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, dagmcr@gmail.com,
+ Javier Martinez Canillas <javier@dowhile0.org>
+To: Daniel Gomez <dagmcr@gmail.com>
+Return-path: <alsa-devel-bounces@alsa-project.org>
+In-Reply-To: <1555960353-8836-1-git-send-email-dagmcr@gmail.com>
+List-Unsubscribe: <https://mailman.alsa-project.org/mailman/options/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
+List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
+List-Post: <mailto:alsa-devel@alsa-project.org>
+List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
+List-Subscribe: <https://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
+Errors-To: alsa-devel-bounces@alsa-project.org
+Sender: "Alsa-devel" <alsa-devel-bounces@alsa-project.org>
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: Clear SPI_CS_HIGH flag from bad_bits for GPIO chip-select
+   spi: AD ASoC: declare missing of table
 
 has been applied to the spi tree at
 
@@ -39,50 +52,70 @@ to this mail.
 Thanks,
 Mark
 
->From d61ad23cb3be09ff4956e9b9794134456522817f Mon Sep 17 00:00:00 2001
-From: Serge Semin <fancer.lancer@gmail.com>
-Date: Fri, 26 Apr 2019 13:30:07 +0300
-Subject: [PATCH] spi: Clear SPI_CS_HIGH flag from bad_bits for GPIO
- chip-select
+>From 2a168e10d6db7b77190c55d994e42fc5a58fc8e5 Mon Sep 17 00:00:00 2001
+From: Daniel Gomez <dagmcr@gmail.com>
+Date: Mon, 22 Apr 2019 21:12:33 +0200
+Subject: [PATCH] spi: AD ASoC: declare missing of table
 
-When GPIO chip-select is used nothing prevents any available SPI
-controllers to work with both CS-high and traditional CS-low modes.
-In fact the SPI bus core code already does it, so we don't need to
-introduce any modification there. But spi_setup() still fails to
-switch the interface settings if CS-high flag is set for the case
-of GPIO-driven slave chip-select when the SPI controller doesn't
-support the hardwired CS-inversion. Lets fix it by clearing the
-SPI_CS_HIGH flag out from bad_bits (unsupported by controller) when
-client chip is selected by GPIO.
+Add missing <of_device_id> table for SPI driver relying on SPI
+device match since compatible is in a DT binding or in a DTS.
 
-This feature is useful for slave devices, which in accordance with
-communication protocol can work with both active-high and active-low
-chip-selects. I am aware of one such device. It is MMC-SPI interface,
-when at init sequence the driver needs to perform a read operation with
-low and high chip-select sequentially (requirement of 74 clock cycles
-with both chipselect, see the mmc_spi driver for details).
+Before this patch:
+modinfo sound/soc/codecs/snd-soc-adau1977-spi.ko | grep alias
+alias:          spi:adau1979
+alias:          spi:adau1978
+alias:          spi:adau1977
 
-Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+After this patch:
+modinfo sound/soc/codecs/snd-soc-adau1977-spi.ko | grep alias
+alias:          of:N*T*Cadi,adau1979C*
+alias:          of:N*T*Cadi,adau1979
+alias:          of:N*T*Cadi,adau1978C*
+alias:          of:N*T*Cadi,adau1978
+alias:          of:N*T*Cadi,adau1977C*
+alias:          of:N*T*Cadi,adau1977
+alias:          spi:adau1979
+alias:          spi:adau1978
+alias:          spi:adau1977
+
+Reported-by: Javier Martinez Canillas <javier@dowhile0.org>
+Signed-off-by: Daniel Gomez <dagmcr@gmail.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ sound/soc/codecs/adau1977-spi.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 2195fa265aef..5e75944ad5d1 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2945,6 +2945,11 @@ int spi_setup(struct spi_device *spi)
- 	 * so it is ignored here.
- 	 */
- 	bad_bits = spi->mode & ~(spi->controller->mode_bits | SPI_CS_WORD);
-+	/* nothing prevents from working with active-high CS in case if it
-+	 * is driven by GPIO.
-+	 */
-+	if (gpio_is_valid(spi->cs_gpio))
-+		bad_bits &= ~SPI_CS_HIGH;
- 	ugly_bits = bad_bits &
- 		    (SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTAL |
- 		     SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTAL);
+diff --git a/sound/soc/codecs/adau1977-spi.c b/sound/soc/codecs/adau1977-spi.c
+index 84ffbde9583f..2baf61567b59 100644
+--- a/sound/soc/codecs/adau1977-spi.c
++++ b/sound/soc/codecs/adau1977-spi.c
+@@ -10,6 +10,8 @@
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+ #include <linux/regmap.h>
++#include <linux/of.h>
++#include <linux/of_device.h>
+ #include <linux/spi/spi.h>
+ #include <sound/soc.h>
+ 
+@@ -54,9 +56,18 @@ static const struct spi_device_id adau1977_spi_ids[] = {
+ };
+ MODULE_DEVICE_TABLE(spi, adau1977_spi_ids);
+ 
++static const struct of_device_id adau1977_spi_of_match[] = {
++        { .compatible = "adi,adau1977" },
++        { .compatible = "adi,adau1978" },
++        { .compatible = "adi,adau1979" },
++        { },
++};
++MODULE_DEVICE_TABLE(of, adau1977_spi_of_match);
++
+ static struct spi_driver adau1977_spi_driver = {
+ 	.driver = {
+ 		.name = "adau1977",
++		.of_match_table = of_match_ptr(adau1977_spi_of_match),
+ 	},
+ 	.probe = adau1977_spi_probe,
+ 	.id_table = adau1977_spi_ids,
 -- 
 2.20.1

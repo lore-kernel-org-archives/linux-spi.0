@@ -1,61 +1,82 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 0/3] spi: SPI bus multiplexer
-Date: Thu, 2 May 2019 11:45:24 +0900
-Message-ID: <20190502024524.GV14916@sirena.org.uk>
-References: <20190412050213.17698-1-chris.packham@alliedtelesis.co.nz>
- <20190412082913.GA6909@sirena.org.uk>
- <d91ab2261a1f4069bc48e090bd4ec702@svr-chch-ex1.atlnz.lc>
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH v2 08/15] dt-bindings: spi: imx: add i.mx6ul to state
+ errata fixed
+Date: Thu, 2 May 2019 08:59:39 +0200
+Message-ID: <20190502065939.nyejomrsowhy6xox@pengutronix.de>
+References: <1556265512-9130-1-git-send-email-yibin.gong@nxp.com>
+ <1556265512-9130-9-git-send-email-yibin.gong@nxp.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="worL9B4ITIAQZ1FS"
-Cc: "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        Hamish Martin <Hamish.Martin@alliedtelesis.co.nz>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "tthayer@opensource.altera.com" <tthayer@opensource.altera.com>
-To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "shawnguo@kernel.org" <shawnguo@kernel.org>,
+ "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+ "plyatov@gmail.com" <plyatov@gmail.com>,
+ "will.deacon@arm.com" <will.deacon@arm.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "broonie@kernel.org" <broonie@kernel.org>, dl-linux-imx <linux-imx@nxp.com>,
+ "kernel@pengutronix.de" <kernel@pengutronix.de>,
+ "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+ "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+ "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+ "festevam@gmail.com" <festevam@gmail.com>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+To: Robin Gong <yibin.gong@nxp.com>, "robh+dt@kernel.org" <robh+dt@kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 Content-Disposition: inline
-In-Reply-To: <d91ab2261a1f4069bc48e090bd4ec702@svr-chch-ex1.atlnz.lc>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <1556265512-9130-9-git-send-email-yibin.gong@nxp.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+On Fri, Apr 26, 2019 at 08:05:51AM +0000, Robin Gong wrote:
+> ERR009165 fixed from i.mx6ul, add it to show the errata fixed.
+> =
 
---worL9B4ITIAQZ1FS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Signed-off-by: Robin Gong <yibin.gong@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt | 2 ++
+>  1 file changed, 2 insertions(+)
+> =
 
-On Sun, Apr 28, 2019 at 10:28:16PM +0000, Chris Packham wrote:
+> diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt b/Doc=
+umentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+> index 2d32641..32c4263d 100644
+> --- a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+> +++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+> @@ -10,6 +10,8 @@ Required properties:
+>    - "fsl,imx35-cspi" for SPI compatible with the one integrated on i.MX35
+>    - "fsl,imx51-ecspi" for SPI compatible with the one integrated on i.MX=
+51
+>    - "fsl,imx53-ecspi" for SPI compatible with the one integrated on i.MX=
+53 and later Soc
+> +  - "fsl,imx6ul-ecspi" ERR009165 fixed on i.MX6UL and later Soc
+> +    (https://www.nxp.com/docs/en/errata/IMX6DQCE.pdf)
 
-> One other problem that I encounter is the interaction between cs-gpio=20
-> and SPI_MASTER_GPIO_SS. Having cs-gpio automatically sets SPI_CS_HIGH=20
-> which has the undesired side-effect that now my real chip select is=20
-> inverted. I actually wonder if this change breaks commit 8eee6b9dd30d=20
-> ("spi: Add Flag to Enable Slave Select with GPIO Chip Select.") since=20
-> now there is an extra inversion on the CS enable.
+I wouldn't mention this errata in the binding documentation. Just state
+that fsl,imx6ul-ecspi is designed to be used on i.MX6UL. And that it
+might also be used on later SoCs as a "fallback compatible" is a detail
+that is so common that I would expect it not being worth mentioning. So
+for me it would also be OK to drop "fsl,imx53-ecspi" from the list as
+this is only used like:
 
-That sounds like a framework bug which should just be fixed - we
-shouldn't be disrupting users of real chip selects when using a GPIO
-chip select.  Depending on the hardware we might need a chip select
-assigned that isn't connected to anything for use while the GPIOs are
-doing the real work but otherwise we shouldn't be breaking things.
+	compatible =3D "fsl,imx53-ecspi", "fsl,imx51-ecspi";
 
---worL9B4ITIAQZ1FS
-Content-Type: application/pgp-signature; name="signature.asc"
+(But note that I have no authority here.)
 
------BEGIN PGP SIGNATURE-----
+Best regards
+Uwe
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzKWcQACgkQJNaLcl1U
-h9A8mgf+NUGeTId/vCKU5fgsyKAKgLFNNREzR640DJheAW8jSR+tFvdWIcS+Xzui
-wHoMW2SYbEQ9jOoDzhPQKNU9PM4q03Pz3NlbFRkHub9Mz76XQgLzV89K/FvBfOkf
-xhh7repFxc81GLG9gTot2SHBOrsHIPz5LkpXK7FgRQJFiemZEdrDpDn6hmZuiK+v
-kcU4mVpd7rza0fXLRoOcTCSnwjUU7+leF6zx4VsEqSWZ5Sl8oUy2LlvRqfziRKSg
-uvCeyZAn7dYif/78KcjBs5fex/Eb3ac49T85SFAo1GhHPuyQtYJfe2ZxEtz4qrVB
-czstXt8yaIV2diO5m+pXnum3mzstaQ==
-=ou6s
------END PGP SIGNATURE-----
+-- =
 
---worL9B4ITIAQZ1FS--
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |

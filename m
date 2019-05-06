@@ -1,48 +1,27 @@
-From: <Tudor.Ambarus@microchip.com>
-Subject: [PATCH] spi: atmel-quadspi: void return type for atmel_qspi_init()
-Date: Mon, 6 May 2019 14:56:22 +0000
-Message-ID: <20190506145606.5060-1-tudor.ambarus@microchip.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [GIT PULL] spi updates for v5.2
+Date: Mon, 6 May 2019 12:01:44 -0700
+Message-ID: <CAADWXX_MqtZ6RxS2zEVmHtKrjqigiNzdSe5qVwBVvfVU6dxJRQ@mail.gmail.com>
+References: <20190506143301.GU14916@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: <Nicolas.Ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
-        <Ludovic.Desroches@microchip.com>, <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <Tudor.Ambarus@microchip.com>
-To: <broonie@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: linux-spi@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Language: en-US
+In-Reply-To: <20190506143301.GU14916@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-RnJvbTogVHVkb3IgQW1iYXJ1cyA8dHVkb3IuYW1iYXJ1c0BtaWNyb2NoaXAuY29tPg0KDQpjb21t
-aXQgMmQzMGFjNWVkNjMzICgibXRkOiBzcGktbm9yOiBhdG1lbC1xdWFkc3BpOiBVc2Ugc3BpLW1l
-bSBpbnRlcmZhY2UgZm9yIGF0bWVsLXF1YWRzcGkgZHJpdmVyIikNCnJlbW92ZWQgdGhlIGVycm9y
-IHBhdGggZnJvbSBhdG1lbF9xc3BpX2luaXQoKSwgYnV0IG5vdCBjaGFuZ2VkIHRoZQ0KZnVuY3Rp
-b24ncyByZXR1cm4gdHlwZS4gU2V0IHZvaWQgcmV0dXJuIHR5cGUgZm9yIGF0bWVsX3FzcGlfaW5p
-dCgpLg0KDQpTaWduZWQtb2ZmLWJ5OiBUdWRvciBBbWJhcnVzIDx0dWRvci5hbWJhcnVzQG1pY3Jv
-Y2hpcC5jb20+DQotLS0NCiBkcml2ZXJzL3NwaS9hdG1lbC1xdWFkc3BpLmMgfCAxMiArKysrLS0t
-LS0tLS0NCiAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCA4IGRlbGV0aW9ucygtKQ0K
-DQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvYXRtZWwtcXVhZHNwaS5jIGIvZHJpdmVycy9zcGkv
-YXRtZWwtcXVhZHNwaS5jDQppbmRleCA5ZjI0ZDVmMGI0MzEuLjYwYWE1YjM4MmU1OCAxMDA2NDQN
-Ci0tLSBhL2RyaXZlcnMvc3BpL2F0bWVsLXF1YWRzcGkuYw0KKysrIGIvZHJpdmVycy9zcGkvYXRt
-ZWwtcXVhZHNwaS5jDQpAQCAtNDA1LDcgKzQwNSw3IEBAIHN0YXRpYyBpbnQgYXRtZWxfcXNwaV9z
-ZXR1cChzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpKQ0KIAlyZXR1cm4gMDsNCiB9DQogDQotc3RhdGlj
-IGludCBhdG1lbF9xc3BpX2luaXQoc3RydWN0IGF0bWVsX3FzcGkgKmFxKQ0KK3N0YXRpYyB2b2lk
-IGF0bWVsX3FzcGlfaW5pdChzdHJ1Y3QgYXRtZWxfcXNwaSAqYXEpDQogew0KIAkvKiBSZXNldCB0
-aGUgUVNQSSBjb250cm9sbGVyICovDQogCXdyaXRlbF9yZWxheGVkKFFTUElfQ1JfU1dSU1QsIGFx
-LT5yZWdzICsgUVNQSV9DUik7DQpAQCAtNDE2LDggKzQxNiw2IEBAIHN0YXRpYyBpbnQgYXRtZWxf
-cXNwaV9pbml0KHN0cnVjdCBhdG1lbF9xc3BpICphcSkNCiANCiAJLyogRW5hYmxlIHRoZSBRU1BJ
-IGNvbnRyb2xsZXIgKi8NCiAJd3JpdGVsX3JlbGF4ZWQoUVNQSV9DUl9RU1BJRU4sIGFxLT5yZWdz
-ICsgUVNQSV9DUik7DQotDQotCXJldHVybiAwOw0KIH0NCiANCiBzdGF0aWMgaXJxcmV0dXJuX3Qg
-YXRtZWxfcXNwaV9pbnRlcnJ1cHQoaW50IGlycSwgdm9pZCAqZGV2X2lkKQ0KQEAgLTUzNiw5ICs1
-MzQsNyBAQCBzdGF0aWMgaW50IGF0bWVsX3FzcGlfcHJvYmUoc3RydWN0IHBsYXRmb3JtX2Rldmlj
-ZSAqcGRldikNCiAJaWYgKGVycikNCiAJCWdvdG8gZGlzYWJsZV9xc3BpY2s7DQogDQotCWVyciA9
-IGF0bWVsX3FzcGlfaW5pdChhcSk7DQotCWlmIChlcnIpDQotCQlnb3RvIGRpc2FibGVfcXNwaWNr
-Ow0KKwlhdG1lbF9xc3BpX2luaXQoYXEpOw0KIA0KIAllcnIgPSBzcGlfcmVnaXN0ZXJfY29udHJv
-bGxlcihjdHJsKTsNCiAJaWYgKGVycikNCkBAIC01ODYsOCArNTgyLDggQEAgc3RhdGljIGludCBf
-X21heWJlX3VudXNlZCBhdG1lbF9xc3BpX3Jlc3VtZShzdHJ1Y3QgZGV2aWNlICpkZXYpDQogDQog
-CWNsa19wcmVwYXJlX2VuYWJsZShhcS0+cGNsayk7DQogCWNsa19wcmVwYXJlX2VuYWJsZShhcS0+
-cXNwaWNrKTsNCi0NCi0JcmV0dXJuIGF0bWVsX3FzcGlfaW5pdChhcSk7DQorCWF0bWVsX3FzcGlf
-aW5pdChhcSk7DQorCXJldHVybiAwOw0KIH0NCiANCiBzdGF0aWMgU0lNUExFX0RFVl9QTV9PUFMo
-YXRtZWxfcXNwaV9wbV9vcHMsIGF0bWVsX3FzcGlfc3VzcGVuZCwNCi0tIA0KMi45LjUNCg0K
+Mark,
+ gmail once again hates your emails. Your email ends up as spam, due to
+
+    dmarc=fail (p=NONE sp=NONE dis=NONE) header.from=kernel.org
+
+but it has a DKIM signature for sirena.org.uk:
+
+    DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+d=sirena.org.uk; ...
+
+Hmm?
+
+                Linus

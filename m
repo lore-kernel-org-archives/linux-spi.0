@@ -1,352 +1,74 @@
-From: Radu Pirea <radu_nicolae.pirea@upb.ro>
-Subject: [PATCH v2 2/2] spi: at91-usart: add DMA support
-Date: Sun,  5 May 2019 21:06:46 +0300
-Message-ID: <20190505180646.1442-3-radu_nicolae.pirea@upb.ro>
-References: <20190505180646.1442-1-radu_nicolae.pirea@upb.ro>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH V3 3/9] spi: add SPI_LSBYTE_FIRST mode
+Date: Mon, 6 May 2019 13:49:16 +0900
+Message-ID: <20190506044916.GO14916@sirena.org.uk>
+References: <1555363834-32155-1-git-send-email-skomatineni@nvidia.com>
+ <1555363834-32155-4-git-send-email-skomatineni@nvidia.com>
+ <20190419152208.GT2803@sirena.org.uk>
+ <BYAPR12MB33989D8DCEFCDE5DB76429E7C23F0@BYAPR12MB3398.namprd12.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: Radu Pirea <radu_nicolae.pirea@upb.ro>,
- Richard Genoud <richard.genoud@gmail.com>,
- Lee Jones <lee.jones@linaro.org>, Rob Herring <robh+dt@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Ludovic Desroches <ludovic.desroches@microchip.com>,
- Mark Brown <broonie@kernel.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190505180646.1442-1-radu_nicolae.pirea@upb.ro>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="AoBLyXwWXtFbU0pZ"
+Cc: "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Timo Alho <talho@nvidia.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        Krishna Yarlagadda <kyarlagadda@nvidia.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+To: Sowjanya Komatineni <skomatineni@nvidia.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <BYAPR12MB33989D8DCEFCDE5DB76429E7C23F0@BYAPR12MB3398.namprd12.prod.outlook.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds support for DMA. Transfers are done with dma only if
-they are longer than 16 bytes in order to achieve a better performance.
-DMA setup introduces a little overhead and for transfers shorter than 16
-bytes there is no performance improvement.
 
-Signed-off-by: Radu Pirea <radu_nicolae.pirea@upb.ro>
----
- drivers/spi/spi-at91-usart.c | 221 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 219 insertions(+), 2 deletions(-)
+--AoBLyXwWXtFbU0pZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-at91-usart.c b/drivers/spi/spi-at91-usart.c
-index a694d702e574..f3583bdd475b 100644
---- a/drivers/spi/spi-at91-usart.c
-+++ b/drivers/spi/spi-at91-usart.c
-@@ -8,9 +8,12 @@
- 
- #include <linux/clk.h>
- #include <linux/delay.h>
-+#include <linux/dmaengine.h>
-+#include <linux/dma-direction.h>
- #include <linux/interrupt.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/of_platform.h>
- #include <linux/of_gpio.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/platform_device.h>
-@@ -59,6 +62,8 @@
- 
- #define US_INIT \
- 	(US_MR_SPI_MASTER | US_MR_CHRL | US_MR_CLKO | US_MR_WRDBT)
-+#define US_DMA_MIN_BYTES       16
-+#define US_DMA_TIMEOUT         (msecs_to_jiffies(1000))
- 
- /* Register access macros */
- #define at91_usart_spi_readl(port, reg) \
-@@ -72,14 +77,19 @@
- 	writeb_relaxed((value), (port)->regs + US_##reg)
- 
- struct at91_usart_spi {
-+	struct platform_device  *mpdev;
- 	struct spi_transfer	*current_transfer;
- 	void __iomem		*regs;
- 	struct device		*dev;
- 	struct clk		*clk;
- 
-+	struct completion	xfer_completion;
-+
- 	/*used in interrupt to protect data reading*/
- 	spinlock_t		lock;
- 
-+	phys_addr_t		phybase;
-+
- 	int			irq;
- 	unsigned int		current_tx_remaining_bytes;
- 	unsigned int		current_rx_remaining_bytes;
-@@ -88,8 +98,182 @@ struct at91_usart_spi {
- 	u32			status;
- 
- 	bool			xfer_failed;
-+	bool			use_dma;
- };
- 
-+static void dma_callback(void *data)
-+{
-+	struct spi_controller   *ctlr = data;
-+	struct at91_usart_spi   *aus = spi_master_get_devdata(ctlr);
-+
-+	at91_usart_spi_writel(aus, IER, US_IR_RXRDY);
-+	aus->current_rx_remaining_bytes = 0;
-+	complete(&aus->xfer_completion);
-+}
-+
-+static bool at91_usart_spi_can_dma(struct spi_controller *ctrl,
-+				   struct spi_device *spi,
-+				   struct spi_transfer *xfer)
-+{
-+	struct at91_usart_spi *aus = spi_master_get_devdata(ctrl);
-+
-+	return aus->use_dma && xfer->len >= US_DMA_MIN_BYTES;
-+}
-+
-+static int at91_usart_spi_configure_dma(struct spi_controller *ctlr,
-+					struct at91_usart_spi *aus)
-+{
-+	struct dma_slave_config slave_config;
-+	struct device *dev = &aus->mpdev->dev;
-+	phys_addr_t phybase = aus->phybase;
-+	dma_cap_mask_t mask;
-+	int err = 0;
-+
-+	dma_cap_zero(mask);
-+	dma_cap_set(DMA_SLAVE, mask);
-+
-+	ctlr->dma_tx = dma_request_slave_channel_reason(dev, "tx");
-+	if (IS_ERR_OR_NULL(ctlr->dma_tx)) {
-+		if (IS_ERR(ctlr->dma_tx)) {
-+			err = PTR_ERR(ctlr->dma_tx);
-+			goto at91_usart_spi_error_clear;
-+		}
-+
-+		dev_dbg(dev,
-+			"DMA TX channel not available, SPI unable to use DMA\n");
-+		err = -EBUSY;
-+		goto at91_usart_spi_error_clear;
-+	}
-+
-+	ctlr->dma_rx = dma_request_slave_channel_reason(dev, "rx");
-+	if (IS_ERR_OR_NULL(ctlr->dma_rx)) {
-+		if (IS_ERR(ctlr->dma_rx)) {
-+			err = PTR_ERR(ctlr->dma_rx);
-+			goto at91_usart_spi_error;
-+		}
-+
-+		dev_dbg(dev,
-+			"DMA RX channel not available, SPI unable to use DMA\n");
-+		err = -EBUSY;
-+		goto at91_usart_spi_error;
-+	}
-+
-+	slave_config.dst_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
-+	slave_config.src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
-+	slave_config.dst_addr = (dma_addr_t)phybase + US_THR;
-+	slave_config.src_addr = (dma_addr_t)phybase + US_RHR;
-+	slave_config.src_maxburst = 1;
-+	slave_config.dst_maxburst = 1;
-+	slave_config.device_fc = false;
-+
-+	slave_config.direction = DMA_DEV_TO_MEM;
-+	if (dmaengine_slave_config(ctlr->dma_rx, &slave_config)) {
-+		dev_err(&ctlr->dev,
-+			"failed to configure rx dma channel\n");
-+		err = -EINVAL;
-+		goto at91_usart_spi_error;
-+	}
-+
-+	slave_config.direction = DMA_MEM_TO_DEV;
-+	if (dmaengine_slave_config(ctlr->dma_tx, &slave_config)) {
-+		dev_err(&ctlr->dev,
-+			"failed to configure tx dma channel\n");
-+		err = -EINVAL;
-+		goto at91_usart_spi_error;
-+	}
-+
-+	aus->use_dma = true;
-+	return 0;
-+
-+at91_usart_spi_error:
-+	if (!IS_ERR_OR_NULL(ctlr->dma_tx))
-+		dma_release_channel(ctlr->dma_tx);
-+	if (!IS_ERR_OR_NULL(ctlr->dma_rx))
-+		dma_release_channel(ctlr->dma_rx);
-+	ctlr->dma_tx = NULL;
-+	ctlr->dma_rx = NULL;
-+
-+at91_usart_spi_error_clear:
-+	return err;
-+}
-+
-+static void at91_usart_spi_release_dma(struct spi_controller *ctlr)
-+{
-+	if (ctlr->dma_rx)
-+		dma_release_channel(ctlr->dma_rx);
-+	if (ctlr->dma_tx)
-+		dma_release_channel(ctlr->dma_tx);
-+}
-+
-+static void at91_usart_spi_stop_dma(struct spi_controller *ctlr)
-+{
-+	if (ctlr->dma_rx)
-+		dmaengine_terminate_all(ctlr->dma_rx);
-+	if (ctlr->dma_tx)
-+		dmaengine_terminate_all(ctlr->dma_tx);
-+}
-+
-+static int at91_usart_spi_dma_transfer(struct spi_controller *ctlr,
-+				       struct spi_transfer *xfer)
-+{
-+	struct at91_usart_spi *aus = spi_master_get_devdata(ctlr);
-+	struct dma_chan	 *rxchan = ctlr->dma_rx;
-+	struct dma_chan *txchan = ctlr->dma_tx;
-+	struct dma_async_tx_descriptor *rxdesc;
-+	struct dma_async_tx_descriptor *txdesc;
-+	dma_cookie_t cookie;
-+
-+	/* Disable RX interrupt */
-+	at91_usart_spi_writel(aus, IDR, US_IR_RXRDY);
-+
-+	rxdesc = dmaengine_prep_slave_sg(rxchan,
-+					 xfer->rx_sg.sgl,
-+					 xfer->rx_sg.nents,
-+					 DMA_DEV_TO_MEM,
-+					 DMA_PREP_INTERRUPT |
-+					 DMA_CTRL_ACK);
-+	if (!rxdesc)
-+		goto at91_usart_spi_err_dma;
-+
-+	txdesc = dmaengine_prep_slave_sg(txchan,
-+					 xfer->tx_sg.sgl,
-+					 xfer->tx_sg.nents,
-+					 DMA_MEM_TO_DEV,
-+					 DMA_PREP_INTERRUPT |
-+					 DMA_CTRL_ACK);
-+	if (!txdesc)
-+		goto at91_usart_spi_err_dma;
-+
-+	rxdesc->callback = dma_callback;
-+	rxdesc->callback_param = ctlr;
-+
-+	cookie = rxdesc->tx_submit(rxdesc);
-+	if (dma_submit_error(cookie))
-+		goto at91_usart_spi_err_dma;
-+
-+	cookie = txdesc->tx_submit(txdesc);
-+	if (dma_submit_error(cookie))
-+		goto at91_usart_spi_err_dma;
-+
-+	rxchan->device->device_issue_pending(rxchan);
-+	txchan->device->device_issue_pending(txchan);
-+
-+	return 0;
-+
-+at91_usart_spi_err_dma:
-+	/* Enable RX interrupt if something fails and fallback to PIO */
-+	at91_usart_spi_writel(aus, IER, US_IR_RXRDY);
-+	at91_usart_spi_stop_dma(ctlr);
-+
-+	return -ENOMEM;
-+}
-+
-+static unsigned long at91_usart_spi_dma_timeout(struct at91_usart_spi *aus)
-+{
-+	return wait_for_completion_timeout(&aus->xfer_completion,
-+					   US_DMA_TIMEOUT);
-+}
-+
- static inline u32 at91_usart_spi_tx_ready(struct at91_usart_spi *aus)
- {
- 	return aus->status & US_IR_TXRDY;
-@@ -222,6 +406,8 @@ static int at91_usart_spi_transfer_one(struct spi_controller *ctlr,
- 				       struct spi_transfer *xfer)
- {
- 	struct at91_usart_spi *aus = spi_master_get_devdata(ctlr);
-+	unsigned long dma_timeout = 0;
-+	int ret = 0;
- 
- 	at91_usart_spi_set_xfer_speed(aus, xfer);
- 	aus->xfer_failed = false;
-@@ -231,8 +417,25 @@ static int at91_usart_spi_transfer_one(struct spi_controller *ctlr,
- 
- 	while ((aus->current_tx_remaining_bytes ||
- 		aus->current_rx_remaining_bytes) && !aus->xfer_failed) {
--		at91_usart_spi_read_status(aus);
--		at91_usart_spi_tx(aus);
-+		reinit_completion(&aus->xfer_completion);
-+		if (at91_usart_spi_can_dma(ctlr, spi, xfer) &&
-+		    !ret) {
-+			ret = at91_usart_spi_dma_transfer(ctlr, xfer);
-+			if (ret)
-+				continue;
-+
-+			dma_timeout = at91_usart_spi_dma_timeout(aus);
-+
-+			if (WARN_ON(dma_timeout == 0)) {
-+				dev_err(&spi->dev, "DMA transfer timeout\n");
-+				return -EIO;
-+			}
-+			aus->current_tx_remaining_bytes = 0;
-+		} else {
-+			at91_usart_spi_read_status(aus);
-+			at91_usart_spi_tx(aus);
-+		}
-+
- 		cpu_relax();
- 	}
- 
-@@ -351,6 +554,7 @@ static int at91_usart_spi_probe(struct platform_device *pdev)
- 	controller->transfer_one = at91_usart_spi_transfer_one;
- 	controller->prepare_message = at91_usart_spi_prepare_message;
- 	controller->unprepare_message = at91_usart_spi_unprepare_message;
-+	controller->can_dma = at91_usart_spi_can_dma;
- 	controller->cleanup = at91_usart_spi_cleanup;
- 	controller->max_speed_hz = DIV_ROUND_UP(clk_get_rate(clk),
- 						US_MIN_CLK_DIV);
-@@ -382,7 +586,17 @@ static int at91_usart_spi_probe(struct platform_device *pdev)
- 	aus->spi_clk = clk_get_rate(clk);
- 	at91_usart_spi_init(aus);
- 
-+	aus->phybase = regs->start;
-+
-+	aus->mpdev = to_platform_device(pdev->dev.parent);
-+
-+	ret = at91_usart_spi_configure_dma(controller, aus);
-+	if (ret)
-+		goto at91_usart_fail_dma;
-+
- 	spin_lock_init(&aus->lock);
-+	init_completion(&aus->xfer_completion);
-+
- 	ret = devm_spi_register_master(&pdev->dev, controller);
- 	if (ret)
- 		goto at91_usart_fail_register_master;
-@@ -395,6 +609,8 @@ static int at91_usart_spi_probe(struct platform_device *pdev)
- 	return 0;
- 
- at91_usart_fail_register_master:
-+	at91_usart_spi_release_dma(controller);
-+at91_usart_fail_dma:
- 	clk_disable_unprepare(clk);
- at91_usart_spi_probe_fail:
- 	spi_master_put(controller);
-@@ -459,6 +675,7 @@ static int at91_usart_spi_remove(struct platform_device *pdev)
- 	struct spi_controller *ctlr = platform_get_drvdata(pdev);
- 	struct at91_usart_spi *aus = spi_master_get_devdata(ctlr);
- 
-+	at91_usart_spi_release_dma(ctlr);
- 	clk_disable_unprepare(aus->clk);
- 
- 	return 0;
--- 
-2.21.0
+On Sat, Apr 27, 2019 at 12:32:58AM +0000, Sowjanya Komatineni wrote:
+> > On Mon, Apr 15, 2019 at 02:30:28PM -0700, Sowjanya Komatineni wrote:
+
+> > This is byte ordering as opposed to bit ordering which the core
+> > already supports.  Do you have any examples of devices that need
+> > this or is it just being added for completeness?  If devices are
+> > going to rely on this we probably need emulation > support in the
+> > core I guess given that this is a pretty unusual controller feature.
+
+> Current upstream platforms have no specific device requirement but
+> added this feature as Tegra support it for specific requirements of
+> some slaves.
+
+Do we have any examples of such devices?  In any case I think the main
+thing here would be a software implementation of the feature so that
+drivers can use it sensibly - at the minute they'd have to provide code
+to work without the feature anyway and it seems like a relatively small
+optimization for most things.
+
+> [Changed mail client message format word wrap limit to 74 columns]
+
+It's not working, and it's also mangling quoted sections of the mail
+too.
+
+--AoBLyXwWXtFbU0pZ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzPvMwACgkQJNaLcl1U
+h9BhdAf+KaNn14IkNGm8rJREfmZNBQNH91xi4m0l7rxa6aW9c9YwozOM6cKxPdyR
+LRhdsAMvfNxCdosH7hrOPptQgEsAudA3+JVIwnhOuhFkkBmqfeNlc2/HUQIoXkKr
++RIH1nJJA9bxD0Z5u2x7wAt1F4bQ6EQ1kb0oSSuHThMI7WI5u7y3kafC/gUctwzB
+JeU9TplFlzXmGLHkve6berLhGmZOvZ+bnOPHC7H0FlGScV6M6qk9sw7zxt6zxPF9
+Aw9KSh05HPZ5aCYz/4kYBGYf7K+w97bjpUxX73idvJeXauzklnVgAnaq2S1JZf8q
+hUny8YE9djcs/IQXidQFluYReixJDA==
+=8Pu3
+-----END PGP SIGNATURE-----
+
+--AoBLyXwWXtFbU0pZ--

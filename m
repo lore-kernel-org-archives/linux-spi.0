@@ -1,29 +1,93 @@
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [GIT PULL] spi updates for v5.2
-Date: Mon, 6 May 2019 20:13:49 -0700
-Message-ID: <CAHk-=wi4EJQLoMNd4ptiiZvLy8ZW49pcCy0VQwZt4xhDDqSOjw@mail.gmail.com>
-References: <20190506143301.GU14916@sirena.org.uk> <CAADWXX_MqtZ6RxS2zEVmHtKrjqigiNzdSe5qVwBVvfVU6dxJRQ@mail.gmail.com>
- <20190507021853.GY14916@sirena.org.uk> <20190507030241.GC14916@sirena.org.uk>
+From: Robin Gong <yibin.gong@nxp.com>
+Subject: [PATCH v3 00/14] add ecspi ERR009165 for i.mx6/7 soc family
+Date: Tue, 7 May 2019 09:15:35 +0000
+Message-ID: <1557249513-4903-1-git-send-email-yibin.gong@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: linux-spi@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: dl-linux-imx <linux-imx@nxp.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>
+To: "robh@kernel.org" <robh@kernel.org>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "festevam@gmail.com" <festevam@gmail.com>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+        "plyatov@gmail.com" <plyatov@gmail.com>,
+        "vkoul@kernel.org" <vkoul@kernel.org>,
+        "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "will.deacon@arm.com" <will.deacon@arm.com>,
+        "l.stach@pengutronix.de" <l.stach@pengutronix.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190507030241.GC14916@sirena.org.uk>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, May 6, 2019 at 8:02 PM Mark Brown <broonie@kernel.org> wrote:
->
->                    Everything I'm
-> seeing is saying that Google just isn't enthusiastic about domains like
-> kernel.org which is going an issue.
-
-Well, there are other people who use kernel.org email addresses.  Ingo
-Molnar, Rafael Wysocki, a couple of others.  But you're the one
-getting marked as spam.
-
-Somebody just hates you. I do end up checking my spam-box regularly,
-so maybe it doesn't matter.
-
-                 Linus
+ICBUaGVyZSBpcyBlY3NwaSBFUlIwMDkxNjUgb24gaS5teDYvNyBzb2MgZmFtaWx5LCB3aGljaCBj
+YXVzZSBGSUZPDQp0cmFuc2ZlciB0byBiZSBzZW5kIHR3aWNlIGluIERNQSBtb2RlLiBQbGVhc2Ug
+Z2V0IG1vcmUgaW5mb3JtYXRpb24gZnJvbToNCmh0dHBzOi8vd3d3Lm54cC5jb20vZG9jcy9lbi9l
+cnJhdGEvSU1YNkRRQ0UucGRmLiBUaGUgd29ya2Fyb3VuZCBpcyBhZGRpbmcNCm5ldyBzZG1hIHJh
+bSBzY3JpcHQgd2hpY2ggd29ya3MgaW4gWENIICBtb2RlIGFzIFBJTyBpbnNpZGUgc2RtYSBpbnN0
+ZWFkDQpvZiBTTUMgbW9kZSwgbWVhbndoaWxlLCAnVFhfVEhSRVNIT0xEJyBzaG91bGQgYmUgMC4g
+VGhlIGlzc3VlIHNob3VsZCBiZQ0KZXhpc3Qgb24gYWxsIGxlZ2FjeSBpLm14Ni83IHNvYyBmYW1p
+bHkgYmVmb3JlIGkubXg2dWwuDQpOWFAgZml4IHRoaXMgZGVzaWduIGlzc3VlIGZyb20gaS5teDZ1
+bCwgc28gbmV3ZXIgY2hpcHMgaW5jbHVkaW5nIGkubXg2dWwvDQo2dWxsLzZzbGwgZG8gbm90IG5l
+ZWQgdGhpcyB3b3JrYXJvdWQgYW55bW9yZS4gQWxsIG90aGVyIGkubXg2LzcvOCBjaGlwcw0Kc3Rp
+bGwgbmVlZCB0aGlzIHdvcmthcm91ZC4gVGhpcyBwYXRjaCBzZXQgYWRkIG5ldyAnZnNsLGlteDZ1
+bC1lY3NwaScNCmZvciBlY3NwaSBkcml2ZXIgYW5kICdlY3NwaV9maXhlZCcgaW4gc2RtYSBkcml2
+ZXIgdG8gY2hvb3NlIGlmIG5lZWQgZXJyYXRhDQpvciBub3QuDQogIFRoZSBmaXJzdCB0d28gcmV2
+ZXJ0ZWQgcGF0Y2hlcyBzaG91bGQgYmUgdGhlIHNhbWUgaXNzdWUsIHRob3VnaCwgaXQNCnNlZW1z
+ICdmaXhlZCcgYnkgY2hhbmdpbmcgdG8gb3RoZXIgc2hwIHNjcmlwdC4gSG9wZSBTZWFuIG9yIFNh
+c2NoYSBjb3VsZA0KaGF2ZSB0aGUgY2hhbmNlIHRvIHRlc3QgdGhpcyBwYXRjaCBzZXQgaWYgY291
+bGQgZml4IHRoZWlyIGlzc3Vlcy4NCiAgQmVzaWRlcywgZW5hYmxlIHNkbWEgc3VwcG9ydCBmb3Ig
+aS5teDhtbS84bXEgYW5kIGZpeCBlY3NwaTEgbm90IHdvcmsNCm9uIGkubXg4bW0gYmVjYXVzZSB0
+aGUgZXZlbnQgaWQgaXMgemVyby4NCg0KUFM6DQogIFBsZWFzZSBnZXQgc2RtYSBmaXJtd2FyZSBm
+cm9tIGJlbG93IGxpbnV4LWZpcm13YXJlIGFuZCBjb3B5IGl0IHRvIHlvdXINCmxvY2FsIHJvb3Rm
+cyAvbGliL2Zpcm13YXJlL2lteC9zZG1hLg0KaHR0cHM6Ly9naXQua2VybmVsLm9yZy9wdWIvc2Nt
+L2xpbnV4L2tlcm5lbC9naXQvZmlybXdhcmUvbGludXgtZmlybXdhcmUuZ2l0L3RyZWUvaW14L3Nk
+bWENCg0KdjI6DQogIDEuIGFkZCBjb21taXQgbG9nIGZvciByZXZlcnRlZCBwYXRjaGVzLg0KICAy
+LiBhZGQgY29tbWVudCBmb3IgJ2Vjc3BpX2ZpeGVkJyBpbiBzZG1hIGRyaXZlci4NCiAgMy4gYWRk
+ICdmc2wsaW14NnNsbC1lY3NwaScgY29tcGF0aWJsZSBpbnN0ZWFkIG9mICdmc2wsaW14NnVsLWVj
+c3BpJw0KICAgICByYXRoZXIgdGhhbiByZW1vdmUuDQp2MzoNCiAgMS4gY29uZmlybSB3aXRoIGRl
+c2lnbiB0ZWFtIG1ha2Ugc3VyZSBFUlIwMDkxNjUgZml4ZWQgb24gaS5teDZ1bC9pLm14NnVsbA0K
+ICAvaS5teDZzbGwsIG5vdCBmaXhlZCBvbiBpLm14OG0vOG1tIGFuZCBvdGhlciBpLm14Ni83IGxl
+Z2FjeSBjaGlwcy4NCiAgQ29ycmVjdCBkdHMgcmVsYXRlZCBkdHMgcGF0Y2ggaW4gdjIuDQogIDIu
+IGNsZWFuIGVyYXR0YSBpbmZvcm1hdGlvbiBpbiBiaW5kaW5nIGRvYyBhbmQgbmV3ICd0eF9nbGl0
+Y2hfZml4ZWQnIGZsYWcNCiAgaW4gc3BpLWlteCBkcml2ZXIgdG8gc3RhdGUgRVJSMDA5MTY1IGZp
+eGVkIG9yIG5vdC4NCiAgMy4gRW5sYXJnZSBidXJzdCBzaXplIHRvIGZpZm8gc2l6ZSBmb3IgdHgg
+c2luY2UgdHhfd21sIHNldCB0byAwIGluIHRoZQ0KICBlcnJhdGEgd29ya2Fyb3VkLCB0aHVzIGlt
+cHJvdmUgcGVyZm9ybWFuY2UgYXMgcG9zc2libGUuDQoNClJvYmluIEdvbmcgKDE0KToNCiAgUmV2
+ZXJ0ICJBUk06IGR0czogaW14NnE6IFVzZSBjb3JyZWN0IFNETUEgc2NyaXB0IGZvciBTUEk1IGNv
+cmUiDQogIFJldmVydCAiQVJNOiBkdHM6IGlteDY6IFVzZSBjb3JyZWN0IFNETUEgc2NyaXB0IGZv
+ciBTUEkgY29yZXMiDQogIFJldmVydCAiZG1hZW5naW5lOiBpbXgtc2RtYTogcmVmaW5lIHRvIGxv
+YWQgY29udGV4dCBvbmx5IG9uY2UiDQogIGRtYWVuZ2luZTogaW14LXNkbWE6IHJlbW92ZSBkdXBp
+bGljYXRlZCBzZG1hX2xvYWRfY29udGV4dA0KICBkbWFlbmdpbmU6IGlteC1zZG1hOiBhZGQgbWN1
+XzJfZWNzcGkgc2NyaXB0DQogIHNwaTogaW14OiBmaXggRVJSMDA5MTY1DQogIHNwaTogaW14OiBy
+ZW1vdmUgRVJSMDA5MTY1IHdvcmthcm91bmQgb24gaS5teDZ1bA0KICBkdC1iaW5kaW5nczogc3Bp
+OiBpbXg6IGFkZCBuZXcgaS5teDZ1bCBjb21wYXRpYmxlIG5hbWUNCiAgZG1hZW5naW5lOiBpbXgt
+c2RtYTogcmVtb3ZlIEVSUjAwOTE2NSBvbiBpLm14NnVsDQogIGR0LWJpbmRpbmdzOiBkbWE6IGlt
+eC1zZG1hOiBhZGQgaS5teDZ1bC82c3ggY29tcGF0aWJsZSBuYW1lDQogIGRtYWVuZ2luZTogaW14
+LXNkbWE6IGZpeCBlY3NwaTEgcnggZG1hIG5vdCB3b3JrIG9uIGkubXg4bW0NCiAgQVJNOiBkdHM6
+IGlteDZ1bDogYWRkIGRtYSBzdXBwb3J0IG9uIGVjc3BpDQogIEFSTTogZHRzOiBpbXg2c2xsOiBj
+b3JyZWN0IHNkbWEgY29tcGF0aWJsZQ0KICBhcm02NDogZGVmY29uZmlnOiBFbmFibGUgU0RNQSBv
+biBpLm14OG1xLzhtbQ0KDQogLi4uL2RldmljZXRyZWUvYmluZGluZ3MvZG1hL2ZzbC1pbXgtc2Rt
+YS50eHQgICAgICAgfCAgMiArDQogLi4uL2RldmljZXRyZWUvYmluZGluZ3Mvc3BpL2ZzbC1pbXgt
+Y3NwaS50eHQgICAgICAgfCAgMSArDQogYXJjaC9hcm0vYm9vdC9kdHMvaW14NnEuZHRzaSAgICAg
+ICAgICAgICAgICAgICAgICAgfCAgMiArLQ0KIGFyY2gvYXJtL2Jvb3QvZHRzL2lteDZxZGwuZHRz
+aSAgICAgICAgICAgICAgICAgICAgIHwgIDggKy0tDQogYXJjaC9hcm0vYm9vdC9kdHMvaW14NnNs
+bC5kdHNpICAgICAgICAgICAgICAgICAgICAgfCAgMiArLQ0KIGFyY2gvYXJtL2Jvb3QvZHRzL2lt
+eDZ1bC5kdHNpICAgICAgICAgICAgICAgICAgICAgIHwgIDggKysrDQogYXJjaC9hcm02NC9jb25m
+aWdzL2RlZmNvbmZpZyAgICAgICAgICAgICAgICAgICAgICAgfCAgMyArDQogZHJpdmVycy9kbWEv
+aW14LXNkbWEuYyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCA3OCArKysrKysrKysrKysr
+KysrLS0tLS0tDQogZHJpdmVycy9zcGkvc3BpLWlteC5jICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgfCA2MSArKysrKysrKysrKysrKy0tLQ0KIGluY2x1ZGUvbGludXgvcGxhdGZvcm1fZGF0
+YS9kbWEtaW14LXNkbWEuaCAgICAgICAgIHwgIDEgKw0KIDEwIGZpbGVzIGNoYW5nZWQsIDEzMiBp
+bnNlcnRpb25zKCspLCAzNCBkZWxldGlvbnMoLSkNCg0KLS0gDQoyLjcuNA0KDQo=

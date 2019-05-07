@@ -1,90 +1,65 @@
-From: Sebastian Reichel <sre@kernel.org>
-Subject: Re: [GIT PULL] spi updates for v5.2
-Date: Tue, 7 May 2019 14:07:30 +0200
-Message-ID: <20190507120730.5ylk6v4yvzxuzqld@earth.universe>
-References: <20190506143301.GU14916@sirena.org.uk>
- <CAADWXX_MqtZ6RxS2zEVmHtKrjqigiNzdSe5qVwBVvfVU6dxJRQ@mail.gmail.com>
- <20190507021853.GY14916@sirena.org.uk>
- <20190507030241.GC14916@sirena.org.uk>
- <CAHk-=wi4EJQLoMNd4ptiiZvLy8ZW49pcCy0VQwZt4xhDDqSOjw@mail.gmail.com>
- <20190507110345.GF14916@sirena.org.uk>
+From: Lee Jones <lee.jones@linaro.org>
+Subject: Re: [PATCH v12 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3
+ RPC-IF MFD bindings
+Date: Tue, 7 May 2019 13:57:30 +0100
+Message-ID: <20190507125730.GD29524@dell>
+References: <1556092536-17095-1-git-send-email-masonccyang@mxic.com.tw>
+ <1556092536-17095-4-git-send-email-masonccyang@mxic.com.tw>
+ <20190424212356.GA27103@bogus>
+ <65853dc2-6f3c-1494-7e72-54877797cdd2@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="apdjlhrolhn33wku"
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-spi@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Cc: Rob Herring <robh@kernel.org>,
+        Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        bbrezillon@kernel.org, linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        sergei.shtylyov@cogentembedded.com, mark.rutland@arm.com,
+        devicetree@vger.kernel.org, juliensu@mxic.com.tw,
+        Simon Horman <horms@verge.net.au>, zhengxunli@mxic.com.tw
+To: Marek Vasut <marek.vasut@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20190507110345.GF14916@sirena.org.uk>
+In-Reply-To: <65853dc2-6f3c-1494-7e72-54877797cdd2@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Wed, 24 Apr 2019, Marek Vasut wrote:
 
---apdjlhrolhn33wku
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On 4/24/19 11:23 PM, Rob Herring wrote:
+> > On Wed, Apr 24, 2019 at 03:55:36PM +0800, Mason Yang wrote:
+> >> Document the bindings used by the Renesas R-Car Gen3 RPC-IF MFD.
+> >>
+> >> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+> >> ---
+> >>  .../devicetree/bindings/mfd/mfd-renesas-rpc.txt    | 40 ++++++++++++++++++++++
+> >>  1 file changed, 40 insertions(+)
+> >>  create mode 100644 Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
+> >>
+> >> diff --git a/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
+> >> new file mode 100644
+> >> index 0000000..668b822
+> >> --- /dev/null
+> >> +++ b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
+> >> @@ -0,0 +1,40 @@
+> >> +Renesas R-Car Gen3 RPC-IF MFD Device Tree Bindings
+> >> +--------------------------------------------------
+> > 
+> > Looks like a SPI flash controller from the example. What makes it an 
+> > MFD?
+> 
+> It supports both SPI NOR and HyperFlash (CFI-compliant flash with
+> different bus interface).
 
-Hi,
+Looks like you're registering one OR the other.
 
-On Tue, May 07, 2019 at 08:03:45PM +0900, Mark Brown wrote:
-> On Mon, May 06, 2019 at 08:13:49PM -0700, Linus Torvalds wrote:
-> > On Mon, May 6, 2019 at 8:02 PM Mark Brown <broonie@kernel.org> wrote:
->=20
-> > >                    Everything I'm
-> > > seeing is saying that Google just isn't enthusiastic about domains li=
-ke
-> > > kernel.org which is going an issue.
->=20
-> > Well, there are other people who use kernel.org email addresses.  Ingo
-> > Molnar, Rafael Wysocki, a couple of others.  But you're the one
-> > getting marked as spam.
->=20
-> I'm not going to search for rule 36 SPI.
->=20
-> > Somebody just hates you. I do end up checking my spam-box regularly,
-> > so maybe it doesn't matter.
->=20
-> Some spot checks are suggesting that they use gmail as their outbound
-> relay which I can imagine they'd like but would break some stuff for me
-> for non-kernel.org mail I think, it'd be a major rework to not inject
-> stuff via sendmail.
+Why don't you just do this from DT?
 
-FWIW, I send out kernel.org mails via mail.kernel.org. Konstantin
-added that service in 2014. You can get a password with
+No reason for this to be an MFD IMHO.
 
-ssh git@gitolite.kernel.org getsmtppass
-
-and then use the following settings for (example for git):
-
-[sendemail]
-    smtpserver     =3D mail.kernel.org
-    smtpserverport =3D 587
-    smtpencryption =3D tls
-    smtpuser       =3D <user>@kernel.org
-    smtppass       =3D [randomstring]
-
--- Sebastian
-
---apdjlhrolhn33wku
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAlzRdP4ACgkQ2O7X88g7
-+prBZw/+KfZqvuSCjDB0CmIEcWFMa7zz9KEU1klbG3ftpHjdKTrbR6lFBX7jkMuW
-6658BbTexe8PmoWKg3daBeDw6pbLYy65jeMMKV/P+9loo6rRnYAuiwv6lMSr4uDJ
-75VkJTRflXZiTl5j0RTWiJjg53YNpWJ4TxGhtuTsjBzQWG+DgeL4oNINLFcDaS0m
-Cfxs6VQnsQJ3PyfBH8+wIaRQNsvfZukVCU25iAC3G9cs/mvnXvrGyjSEg15AsqUR
-otao8WId93VwJbZ+2cg9REs/SlnQm0aiZy9pMoNGUl+J+TIlbbyLsz+uwkQph1Nk
-+1kxdxCiBjWjZDfXTWpL3+0/1xKfQ6TmZ3F9LLTChGmSdif9qtYjSY61FEkmUBpu
-B0yi0Q+LLqzT9QYl3bBcJWLI1GDnEpG3wJ29O6l5B5W+0qt82Sg8WD16BNgdRpEo
-BM2hiDVDNAUDdElA7uDvdvTaW3VXTL1/cUqVfcIZF4ZfcEOBYV5w0mriFsfwmatY
-pVz506pbRKC8ww4WllcDxIOlwM1rM2QgKvbnd0eO0OeMhFTXRTaMuX2sc4j+SLgG
-1dnBnQ/d2jgX84fhdC2KCIvdUp1nJESGsiXnUgcRyaDEQwOu8UERFYvGM6LtQ6Hh
-6lGNfIjHX5UWw6a5Mi1FtJm6mg6fpnd4h3EPiu6XWBm5XIGHQoU=
-=sj12
------END PGP SIGNATURE-----
-
---apdjlhrolhn33wku--
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

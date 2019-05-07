@@ -1,65 +1,78 @@
-From: Lee Jones <lee.jones@linaro.org>
-Subject: Re: [PATCH v12 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3
- RPC-IF MFD bindings
-Date: Tue, 7 May 2019 13:57:30 +0100
-Message-ID: <20190507125730.GD29524@dell>
-References: <1556092536-17095-1-git-send-email-masonccyang@mxic.com.tw>
- <1556092536-17095-4-git-send-email-masonccyang@mxic.com.tw>
- <20190424212356.GA27103@bogus>
- <65853dc2-6f3c-1494-7e72-54877797cdd2@gmail.com>
+From: Maxime Ripard <maxime.ripard@bootlin.com>
+Subject: [PATCH 4/4] ARM: dts: sun6i: Add default address and size cells for
+ SPI
+Date: Tue,  7 May 2019 15:48:16 +0200
+Message-ID: <ee26c07fa953422fdaeb27c00ddfe98cc82d4017.1557236840.git-series.maxime.ripard@bootlin.com>
+References: <b7a6095a5c900fa23cc54d1ccd8e8ef0ccf6e788.1557236840.git-series.maxime.ripard@bootlin.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Cc: Rob Herring <robh@kernel.org>,
-        Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        bbrezillon@kernel.org, linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        sergei.shtylyov@cogentembedded.com, mark.rutland@arm.com,
-        devicetree@vger.kernel.org, juliensu@mxic.com.tw,
-        Simon Horman <horms@verge.net.au>, zhengxunli@mxic.com.tw
-To: Marek Vasut <marek.vasut@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <65853dc2-6f3c-1494-7e72-54877797cdd2@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-spi@vger.kernel.org
+To: Mark Rutland <mark.rutland@arm.com>, Rob Herring <robh+dt@kernel.org>,
+ Frank Rowand <frowand.list@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Chen-Yu Tsai <wens@csie.org>, Maxime Ripard <maxime.ripard@bootlin.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <b7a6095a5c900fa23cc54d1ccd8e8ef0ccf6e788.1557236840.git-series.maxime.ripard@bootlin.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 24 Apr 2019, Marek Vasut wrote:
+The SPI controller bindings require an address cell size of 1, and a size
+cell size of 0. Let's put it at the DTSI level to make sure that's properly
+enforced.
 
-> On 4/24/19 11:23 PM, Rob Herring wrote:
-> > On Wed, Apr 24, 2019 at 03:55:36PM +0800, Mason Yang wrote:
-> >> Document the bindings used by the Renesas R-Car Gen3 RPC-IF MFD.
-> >>
-> >> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
-> >> ---
-> >>  .../devicetree/bindings/mfd/mfd-renesas-rpc.txt    | 40 ++++++++++++++++++++++
-> >>  1 file changed, 40 insertions(+)
-> >>  create mode 100644 Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
-> >> new file mode 100644
-> >> index 0000000..668b822
-> >> --- /dev/null
-> >> +++ b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
-> >> @@ -0,0 +1,40 @@
-> >> +Renesas R-Car Gen3 RPC-IF MFD Device Tree Bindings
-> >> +--------------------------------------------------
-> > 
-> > Looks like a SPI flash controller from the example. What makes it an 
-> > MFD?
-> 
-> It supports both SPI NOR and HyperFlash (CFI-compliant flash with
-> different bus interface).
+Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
+---
+ arch/arm/boot/dts/sun6i-a31.dtsi | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Looks like you're registering one OR the other.
-
-Why don't you just do this from DT?
-
-No reason for this to be an MFD IMHO.
-
+diff --git a/arch/arm/boot/dts/sun6i-a31.dtsi b/arch/arm/boot/dts/sun6i-a31.dtsi
+index c04efad81bbc..a57cbf33c12f 100644
+--- a/arch/arm/boot/dts/sun6i-a31.dtsi
++++ b/arch/arm/boot/dts/sun6i-a31.dtsi
+@@ -987,6 +987,8 @@
+ 			dma-names = "rx", "tx";
+ 			resets = <&ccu RST_AHB1_SPI0>;
+ 			status = "disabled";
++			#address-cells = <1>;
++			#size-cells = <0>;
+ 		};
+ 
+ 		spi1: spi@1c69000 {
+@@ -999,6 +1001,8 @@
+ 			dma-names = "rx", "tx";
+ 			resets = <&ccu RST_AHB1_SPI1>;
+ 			status = "disabled";
++			#address-cells = <1>;
++			#size-cells = <0>;
+ 		};
+ 
+ 		spi2: spi@1c6a000 {
+@@ -1011,6 +1015,8 @@
+ 			dma-names = "rx", "tx";
+ 			resets = <&ccu RST_AHB1_SPI2>;
+ 			status = "disabled";
++			#address-cells = <1>;
++			#size-cells = <0>;
+ 		};
+ 
+ 		spi3: spi@1c6b000 {
+@@ -1023,6 +1029,8 @@
+ 			dma-names = "rx", "tx";
+ 			resets = <&ccu RST_AHB1_SPI3>;
+ 			status = "disabled";
++			#address-cells = <1>;
++			#size-cells = <0>;
+ 		};
+ 
+ 		gic: interrupt-controller@1c81000 {
 -- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+git-series 0.9.1

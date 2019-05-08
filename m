@@ -1,19 +1,18 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH V2 5/6] spi: bcm2835: make the lower limit for dma mode
- configurable
-Date: Wed, 8 May 2019 17:42:05 +0900
-Message-ID: <20190508084205.GD14916@sirena.org.uk>
-References: <20190423201513.8073-1-kernel@martin.sperl.org>
- <20190423201513.8073-6-kernel@martin.sperl.org>
- <20190424070712.hh6ozvhkvkxhwak3@wunner.de>
+Subject: Applied "spi: bcm2835: make the polling duration limits configurable"
+ to the spi tree
+Date: Wed,  8 May 2019 10:08:54 +0100 (BST)
+Message-ID: <20190508090854.9A734440035@finisterre.sirena.org.uk>
+References: <20190423201513.8073-5-kernel@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5606100541965372624=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: Stefan Wahren <stefan.wahren@i2se.com>, linux-spi@vger.kernel.org,
- Eric Anholt <eric@anholt.net>, linux-rpi-kernel@lists.infradead.org,
- kernel@martin.sperl.org, linux-arm-kernel@lists.infradead.org
-To: Lukas Wunner <lukas@wunner.de>
+ Eric Anholt <eric@anholt.net>, Mark Brown <broonie@kernel.org>,
+ linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+To: Martin Sperl <kernel@martin.sperl.org>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190424070712.hh6ozvhkvkxhwak3@wunner.de>
+In-Reply-To: <20190423201513.8073-5-kernel@martin.sperl.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -25,62 +24,118 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---===============5606100541965372624==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="mO8cNyIiGwRJ/NO+"
-Content-Disposition: inline
+   spi: bcm2835: make the polling duration limits configurable
 
+has been applied to the spi tree at
 
---mO8cNyIiGwRJ/NO+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.3
 
-On Wed, Apr 24, 2019 at 09:07:12AM +0200, Lukas Wunner wrote:
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> Indeed I'd prefer if another bit is added to "mode" in struct device
-> to represent the need for another clock cycle in-between bytes.
-> The SPI core could then reduce the clock speed based on this flag
-> and the problem would be solved for everyone.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> Influencing this behavior with a module parameter feels a bit like a
-> kludge and I fear may stay indefinitely even if a better solution
-> is implemented later.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-This does feel like we know enough to have a more advanced function in
-the driver given a bit of information about the client device
-requireemnts.  Though it's going to be complex to express them,
-especially with the ATMega case where we want fast individual clocks but
-lots of dead space in between bytes (is the controller capable of adding
-that dead space itself in DMA mode BTW?).
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---mO8cNyIiGwRJ/NO+
-Content-Type: application/pgp-signature; name="signature.asc"
+Thanks,
+Mark
 
------BEGIN PGP SIGNATURE-----
+>From ff245d90ebed8d4da6751dfee1bc76e4a5e94257 Mon Sep 17 00:00:00 2001
+From: Martin Sperl <kernel@martin.sperl.org>
+Date: Tue, 23 Apr 2019 20:15:11 +0000
+Subject: [PATCH] spi: bcm2835: make the polling duration limits configurable
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzSll0ACgkQJNaLcl1U
-h9BtCQf+Kt1H2BIy8rCRowJoHOYziXd77HiP3zga+61FigqwiVNAsnc9sgHceaX8
-PC+sIWmiH3sdLwIO+ZCkNwTxPmPwrLLnv7xQa8NWnS7jCxIMnVLRnmlQ9cVuLQ0k
-sHIA+aPAqT/wUZLDrwg4PhAq2laX/KDZb9rOpPbi4kb/zVhVtkXuYVFEgiR5Pl77
-enqEIE+oEUG7Ebns1fzljdzv/h0zu1g+KpzTJ4hVTVCShHUAo8AZmBsgMfP/gT/Y
-q0U8SBCda+HZH5Av6k9lBWMgGgOfF1E1JlQaNYQGTfEVOlt1imMXH4yQVy+bilZ2
-8rHCL74K7lQ5reujgEtw/36TmfZ8qg==
-=atSx
------END PGP SIGNATURE-----
+Under some circumstances the default 30 us polling limit is not optimal
+and may lead to long delays because we are waiting on an interrupt.
+with this patch we have the possibility to influence this policy.
 
---mO8cNyIiGwRJ/NO+--
+So make this limit (in us) configurable via a module parameters
+(but also modifyable via /sys/modules/...)
 
+This replicates similar code found in spi-bcm2835aux.
 
---===============5606100541965372624==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Signed-off-by: Martin Sperl <kernel@martin.sperl.org>
 
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+Changelog:
+  V1 -> V2: applied feedback by Stefan Wahren
+            reorganized patchset
+	    added extra rational, descriptions
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-bcm2835.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
---===============5606100541965372624==--
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index 0d8c97502f14..3230d37fa89a 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -73,14 +73,18 @@
+ 
+ #define BCM2835_SPI_FIFO_SIZE		64
+ #define BCM2835_SPI_FIFO_SIZE_3_4	48
+-#define BCM2835_SPI_POLLING_LIMIT_US	30
+-#define BCM2835_SPI_POLLING_JIFFIES	2
+ #define BCM2835_SPI_DMA_MIN_LENGTH	96
+ #define BCM2835_SPI_MODE_BITS	(SPI_CPOL | SPI_CPHA | SPI_CS_HIGH \
+ 				| SPI_NO_CS | SPI_3WIRE)
+ 
+ #define DRV_NAME	"spi-bcm2835"
+ 
++/* define polling limits */
++unsigned int polling_limit_us = 30;
++module_param(polling_limit_us, uint, 0664);
++MODULE_PARM_DESC(polling_limit_us,
++		 "time in us to run a transfer in polling mode\n");
++
+ /**
+  * struct bcm2835_spi - BCM2835 SPI controller
+  * @regs: base address of register map
+@@ -711,8 +715,8 @@ static int bcm2835_spi_transfer_one_poll(struct spi_master *master,
+ 	 */
+ 	bcm2835_wr_fifo_blind(bs, BCM2835_SPI_FIFO_SIZE);
+ 
+-	/* set the timeout */
+-	timeout = jiffies + BCM2835_SPI_POLLING_JIFFIES;
++	/* set the timeout to at least 2 jiffies */
++	timeout = jiffies + 2 + HZ * polling_limit_us / 1000000;
+ 
+ 	/* loop until finished the transfer */
+ 	while (bs->rx_len) {
+@@ -747,8 +751,8 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
+ 				    struct spi_transfer *tfr)
+ {
+ 	struct bcm2835_spi *bs = spi_master_get_devdata(master);
+-	unsigned long spi_hz, clk_hz, cdiv;
+-	unsigned long spi_used_hz;
++	unsigned long spi_hz, clk_hz, cdiv, spi_used_hz;
++	unsigned long hz_per_byte, byte_limit;
+ 	u32 cs = bcm2835_rd(bs, BCM2835_SPI_CS);
+ 
+ 	/* set clock */
+@@ -795,9 +799,11 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
+ 	 * per byte per polling limit.  E.g., we can transfer 1 byte in 30 us
+ 	 * per 300,000 Hz of bus clock.
+ 	 */
+-#define HZ_PER_BYTE ((9 * 1000000) / BCM2835_SPI_POLLING_LIMIT_US)
++	hz_per_byte = polling_limit_us ? (9 * 1000000) / polling_limit_us : 0;
++	byte_limit = hz_per_byte ? spi_used_hz / hz_per_byte : 1;
++
+ 	/* run in polling mode for short transfers */
+-	if (tfr->len < spi_used_hz / HZ_PER_BYTE)
++	if (tfr->len < byte_limit)
+ 		return bcm2835_spi_transfer_one_poll(master, spi, tfr, cs);
+ 
+ 	/* run in dma mode if conditions are right
+-- 
+2.20.1

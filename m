@@ -1,32 +1,27 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: bcm2835: added comment about different bus behaviour of
- DMA mode" to the spi tree
-Date: Wed,  8 May 2019 10:08:55 +0100 (BST)
-Message-ID: <20190508090855.3E3B3440036@finisterre.sirena.org.uk>
-References: <20190423201513.8073-4-kernel@martin.sperl.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Stefan Wahren <stefan.wahren@i2se.com>, linux-spi@vger.kernel.org,
- Eric Anholt <eric@anholt.net>, Mark Brown <broonie@kernel.org>,
- linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org
-To: Martin Sperl <kernel@martin.sperl.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190423201513.8073-4-kernel@martin.sperl.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Subject: Applied "dt-bindings: mfd: atmel-usart: add DMA bindings for USART in SPI mode" to the spi tree
+Date: Wed,  8 May 2019 10:08:57 +0100 (BST)
+Message-ID: <20190508090857.B7CB344003F@finisterre.sirena.org.uk>
+References: <20190505180646.1442-2-radu_nicolae.pirea@upb.ro>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        devicetree@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Mark Brown <broonie@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Richard Genoud <richard.genoud@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>
+To: Radu Pirea <radu_nicolae.pirea@upb.ro>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190505180646.1442-2-radu_nicolae.pirea@upb.ro>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: bcm2835: added comment about different bus behaviour of DMA mode
+   dt-bindings: mfd: atmel-usart: add DMA bindings for USART in SPI mode
 
 has been applied to the spi tree at
 
@@ -51,40 +46,66 @@ to this mail.
 Thanks,
 Mark
 
->From c41d62b06cb92289ab5db9d37a0f27fe6271fa34 Mon Sep 17 00:00:00 2001
-From: Martin Sperl <kernel@martin.sperl.org>
-Date: Tue, 23 Apr 2019 20:15:10 +0000
-Subject: [PATCH] spi: bcm2835: added comment about different bus behaviour of
- DMA mode
+>From f7b99e5948e6be8b850eecbb2de1986d26a76b36 Mon Sep 17 00:00:00 2001
+From: Radu Pirea <radu_nicolae.pirea@upb.ro>
+Date: Sun, 5 May 2019 21:06:45 +0300
+Subject: [PATCH] dt-bindings: mfd: atmel-usart: add DMA bindings for USART in
+ SPI mode
 
-The DMA mode behaves slightly different than polling or interrupt driven
-mode, so just document the fact
+The bindings for DMA are now common for both drivers of the USART
+IP.
 
-Signed-off-by: Martin Sperl <kernel@martin.sperl.org>
+The node given as an example for USART in SPI mode has been updated in
+order to include DMA bindings.
 
-Changelog:
-  V1 -> V2: applied feedback by Stefan Wahren
-            new in V2
+Signed-off-by: Radu Pirea <radu_nicolae.pirea@upb.ro>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-bcm2835.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ .../devicetree/bindings/mfd/atmel-usart.txt   | 20 ++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index b7bb07c9507d..0d8c97502f14 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -800,7 +800,10 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
- 	if (tfr->len < spi_used_hz / HZ_PER_BYTE)
- 		return bcm2835_spi_transfer_one_poll(master, spi, tfr, cs);
+diff --git a/Documentation/devicetree/bindings/mfd/atmel-usart.txt b/Documentation/devicetree/bindings/mfd/atmel-usart.txt
+index 7f0cd72f47d2..699fd3c9ace8 100644
+--- a/Documentation/devicetree/bindings/mfd/atmel-usart.txt
++++ b/Documentation/devicetree/bindings/mfd/atmel-usart.txt
+@@ -17,17 +17,24 @@ Required properties for USART in SPI mode:
+ - cs-gpios: chipselects (internal cs not supported)
+ - atmel,usart-mode : Must be <AT91_USART_MODE_SPI> (found in dt-bindings/mfd/at91-usart.h)
  
--	/* run in dma mode if conditions are right */
-+	/* run in dma mode if conditions are right
-+	 * Note that unlike poll or interrupt mode DMA mode does not have
-+	 * this 1 idle clock cycle pattern but runs the spi clock without gaps
-+	 */
- 	if (master->can_dma && bcm2835_spi_can_dma(master, spi, tfr))
- 		return bcm2835_spi_transfer_one_dma(master, spi, tfr, cs);
- 
++Optional properties in serial and SPI mode:
++- dma bindings for dma transfer:
++	- dmas: DMA specifier, consisting of a phandle to DMA controller node,
++		memory peripheral interface and USART DMA channel ID, FIFO configuration.
++		The order of DMA channels is fixed. The first DMA channel must be TX
++		associated channel and the second one must be RX associated channel.
++		Refer to dma.txt and atmel-dma.txt for details.
++	- dma-names: "tx" for TX channel.
++		     "rx" for RX channel.
++		     The order of dma-names is also fixed. The first name must be "tx"
++		     and the second one must be "rx" as in the examples below.
++
+ Optional properties in serial mode:
+ - atmel,use-dma-rx: use of PDC or DMA for receiving data
+ - atmel,use-dma-tx: use of PDC or DMA for transmitting data
+ - {rts,cts,dtr,dsr,rng,dcd}-gpios: specify a GPIO for RTS/CTS/DTR/DSR/RI/DCD line respectively.
+   It will use specified PIO instead of the peripheral function pin for the USART feature.
+   If unsure, don't specify this property.
+-- add dma bindings for dma transfer:
+-	- dmas: DMA specifier, consisting of a phandle to DMA controller node,
+-		memory peripheral interface and USART DMA channel ID, FIFO configuration.
+-		Refer to dma.txt and atmel-dma.txt for details.
+-	- dma-names: "rx" for RX channel, "tx" for TX channel.
+ - atmel,fifo-size: maximum number of data the RX and TX FIFOs can store for FIFO
+   capable USARTs.
+ - rs485-rts-delay, rs485-rx-during-tx, linux,rs485-enabled-at-boot-time: see rs485.txt
+@@ -81,5 +88,8 @@ Example:
+ 		interrupts = <12 IRQ_TYPE_LEVEL_HIGH 5>;
+ 		clocks = <&usart0_clk>;
+ 		clock-names = "usart";
++		dmas = <&dma0 2 AT91_DMA_CFG_PER_ID(3)>,
++		       <&dma0 2 (AT91_DMA_CFG_PER_ID(4) | AT91_DMA_CFG_FIFOCFG_ASAP)>;
++		dma-names = "tx", "rx";
+ 		cs-gpios = <&pioB 3 0>;
+ 	};
 -- 
 2.20.1

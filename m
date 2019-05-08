@@ -1,111 +1,101 @@
-From: Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH 1/4] dt-bindings: spi: Add YAML schemas for the generic
- SPI options
-Date: Tue, 7 May 2019 20:37:09 -0500
-Message-ID: <CAL_Jsq+AzBUcJouvOCdYPHK6z8h_V3h5vqYPUuFD756z49wf3w@mail.gmail.com>
-References: <b7a6095a5c900fa23cc54d1ccd8e8ef0ccf6e788.1557236840.git-series.maxime.ripard@bootlin.com>
- <CAL_JsqKeLWgGLafwbKViTgpw4B=W9YGULaMr8h0p_rWX8PP_UQ@mail.gmail.com>
- <20190507151353.ns2i72ii5cw6z7lz@flea>
+From: Marek Vasut <marek.vasut@gmail.com>
+Subject: Re: [PATCH v12 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3
+ RPC-IF MFD bindings
+Date: Wed, 8 May 2019 05:52:16 +0200
+Message-ID: <d229b19e-351c-c576-b5c4-716d10dad1a0@gmail.com>
+References: <1556092536-17095-1-git-send-email-masonccyang@mxic.com.tw>
+ <1556092536-17095-4-git-send-email-masonccyang@mxic.com.tw>
+ <20190424212356.GA27103@bogus>
+ <65853dc2-6f3c-1494-7e72-54877797cdd2@gmail.com>
+ <20190507125730.GD29524@dell>
+ <OF08A5650B.8AE8977C-ON482583F4.000E5B1E-482583F4.000F7215@mxic.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
- linux-spi <linux-spi@vger.kernel.org>, Chen-Yu Tsai <wens@csie.org>,
- Mark Brown <broonie@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>
-To: Maxime Ripard <maxime.ripard@bootlin.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190507151353.ns2i72ii5cw6z7lz@flea>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Cc: bbrezillon@kernel.org, broonie@kernel.org,
+        devicetree@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
+        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-spi@vger.kernel.org, mark.rutland@arm.com,
+        Rob Herring <robh@kernel.org>,
+        sergei.shtylyov@cogentembedded.com, zhengxunli@mxic.com.tw
+To: masonccyang@mxic.com.tw, Lee Jones <lee.jones@linaro.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <OF08A5650B.8AE8977C-ON482583F4.000E5B1E-482583F4.000F7215@mxic.com.tw>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, May 7, 2019 at 1:07 PM Maxime Ripard <maxime.ripard@bootlin.com> wrote:
->
-> Hi,
->
-> On Tue, May 07, 2019 at 09:35:28AM -0500, Rob Herring wrote:
-> > On Tue, May 7, 2019 at 8:48 AM Maxime Ripard <maxime.ripard@bootlin.com> wrote:
-> > >
-> > > The SPI controllers have a bunch of generic options that are needed in a
-> > > device tree. Add a YAML schemas for those.
-> >
-> > I'd started on this one, but was planning to move it to the schema
-> > repository. The issue there is re-licensing (adding BSD 2 clause).
-> > Maybe better to just move it later.
->
-> I just found out that dt-doc-validate also chokes on the reference
-> URI. Maybe I should just submit it to the repo then once that is
-> settled?
+On 5/8/19 4:48 AM, masonccyang@mxic.com.tw wrote:
+> Hi Jones,
+> 
+>> "Lee Jones" <lee.jones@linaro.org>
+>> 2019/05/07 下午 08:58
+>>
+>> To
+>>
+>> "Marek Vasut" <marek.vasut@gmail.com>,
+>>
+>> cc
+>>
+>> "Rob Herring" <robh@kernel.org>, "Mason Yang"
+>> <masonccyang@mxic.com.tw>, broonie@kernel.org, linux-
+>> kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+>> bbrezillon@kernel.org, linux-renesas-soc@vger.kernel.org, "Geert
+>> Uytterhoeven" <geert+renesas@glider.be>,
+>> sergei.shtylyov@cogentembedded.com, mark.rutland@arm.com,
+>> devicetree@vger.kernel.org, juliensu@mxic.com.tw, "Simon Horman"
+>> <horms@verge.net.au>, zhengxunli@mxic.com.tw
+>>
+>> Subject
+>>
+>> Re: [PATCH v12 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3
+>> RPC-IF MFD bindings
+>>
+>> On Wed, 24 Apr 2019, Marek Vasut wrote:
+>>
+>> > On 4/24/19 11:23 PM, Rob Herring wrote:
+>> > > On Wed, Apr 24, 2019 at 03:55:36PM +0800, Mason Yang wrote:
+>> > >> Document the bindings used by the Renesas R-Car Gen3 RPC-IF MFD.
+>> > >>
+>> > >> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+>> > >> ---
+>> > >>  .../devicetree/bindings/mfd/mfd-renesas-rpc.txt    | 40 ++++++
+>> ++++++++++++++++
+>> > >>  1 file changed, 40 insertions(+)
+>> > >>  create mode 100644 Documentation/devicetree/bindings/mfd/mfd-
+>> renesas-rpc.txt
+>> > >>
+>> > >> diff --git a/Documentation/devicetree/bindings/mfd/mfd-renesas-
+>> rpc.txt b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
+>> > >> new file mode 100644
+>> > >> index 0000000..668b822
+>> > >> --- /dev/null
+>> > >> +++ b/Documentation/devicetree/bindings/mfd/mfd-renesas-rpc.txt
+>> > >> @@ -0,0 +1,40 @@
+>> > >> +Renesas R-Car Gen3 RPC-IF MFD Device Tree Bindings
+>> > >> +--------------------------------------------------
+>> > >
+>> > > Looks like a SPI flash controller from the example. What makes it an
+>> > > MFD?
+>> >
+>> > It supports both SPI NOR and HyperFlash (CFI-compliant flash with
+>> > different bus interface).
+>>
+>> Looks like you're registering one OR the other.
+>>
+>> Why don't you just do this from DT?
+>>
+>> No reason for this to be an MFD IMHO.
+> 
+> 
+> okay, I will patch it back to SPI mode only.
 
-I'm not really too excited about chasing down licensing on every file
-we want to move and I'd like to avoid per file licenses, so I'd like
-local $refs to work. I think I've got something figured out that will
-work. It will need a small kernel side change though.
+I don't think that's what Lee meant . The controller supports _both_
+modes , hence it would have the same compatible string. You just need to
+extract the mode of operation from the DT.
 
-> > > +properties:
-> > > +  $nodename:
-> > > +    pattern: "^spi(@[a-zA-Z0-9]+)?$"
-> >
-> > I think we want just "(@.*)". At a minimum, you need to allow for ','.
-> > It would be the a bus schema for the parent which should validate unit
-> > addresses, so we should pretty much just allow anything here.
->
-> The issue with this is that it will also match any node starting with
-> spi. In the Allwinner case, that also means the pinctrl nodes with spi
-> pins in them, but I'm sure we can find more corner cases.
-
-Maybe I wasn't clear, but I meant changing just the unit-address part. So:
-
-"^spi(@.*)$"
-
->
-> > > +
-> > > +  "#address-cells":
-> > > +    const: 1
-> > > +
-> > > +  "#size-cells":
-> > > +    const: 0
-> > > +
-> > > +  cs-gpios:
-> > > +    description: |
-> > > +      GPIOs used as chip selects.
-> > > +      If that property is used, the number of chip selects will be
-> > > +      increased automatically with max(cs-gpios, hardware chip selects).
-> > > +
-> > > +      So if, for example, the controller has 2 CS lines, and the
-> > > +      cs-gpios looks like this
-> > > +        cs-gpios = <&gpio1 0 0>, <0>, <&gpio1 1 0>, <&gpio1 2 0>;
-> > > +
-> > > +      Then it should be configured so that num_chipselect = 4, with
-> > > +      the following mapping
-> > > +        cs0 : &gpio1 0 0
-> > > +        cs1 : native
-> > > +        cs2 : &gpio1 1 0
-> > > +        cs3 : &gpio1 2 0
-> > > +
-> > > +  num-cs:
-> > > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > > +    description:
-> > > +      Total number of chip selects.
-> > > +
-> > > +  spi-slave:
-> > > +    $ref: /schemas/types.yaml#/definitions/flag
-> >
-> > "type: boolean" is sufficient here. Maybe we should just remove
-> > 'flag'. OTOH, maybe consistency with other types and the abstraction
-> > is better as we could add to the flag schema.
->
-> I was trying to be consistent. Do you want me to remove it?
-
-No, it's fine.
-
-Rob
+-- 
+Best regards,
+Marek Vasut

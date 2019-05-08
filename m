@@ -1,9 +1,9 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: bcm2835: Avoid 64-bit arithmetic in xfer len calc" to
- the spi tree
+Subject: Applied "spi: bcm2835: added comment about different bus behaviour of
+ DMA mode" to the spi tree
 Date: Wed,  8 May 2019 10:08:55 +0100 (BST)
-Message-ID: <20190508090855.DA05F440039@finisterre.sirena.org.uk>
-References: <20190423201513.8073-3-kernel@martin.sperl.org>
+Message-ID: <20190508090855.3E3B3440036@finisterre.sirena.org.uk>
+References: <20190423201513.8073-4-kernel@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -12,7 +12,7 @@ Cc: Stefan Wahren <stefan.wahren@i2se.com>, linux-spi@vger.kernel.org,
  linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org
 To: Martin Sperl <kernel@martin.sperl.org>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190423201513.8073-3-kernel@martin.sperl.org>
+In-Reply-To: <20190423201513.8073-4-kernel@martin.sperl.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -26,7 +26,7 @@ List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: bcm2835: Avoid 64-bit arithmetic in xfer len calc
+   spi: bcm2835: added comment about different bus behaviour of DMA mode
 
 has been applied to the spi tree at
 
@@ -51,62 +51,40 @@ to this mail.
 Thanks,
 Mark
 
->From 7f1922eb3adba8c372fdf0d04fe9e6268f98291a Mon Sep 17 00:00:00 2001
+>From c41d62b06cb92289ab5db9d37a0f27fe6271fa34 Mon Sep 17 00:00:00 2001
 From: Martin Sperl <kernel@martin.sperl.org>
-Date: Tue, 23 Apr 2019 20:15:09 +0000
-Subject: [PATCH] spi: bcm2835: Avoid 64-bit arithmetic in xfer len calc
+Date: Tue, 23 Apr 2019 20:15:10 +0000
+Subject: [PATCH] spi: bcm2835: added comment about different bus behaviour of
+ DMA mode
 
-Avoid 64 bit aritmetics when deciding if we need to use polling or not
-This replicates: commit d704afffe65c
-("spi: bcm2835aux: Avoid 64-bit arithmetic in xfer len calc")
-from spi-bcm2835aux
+The DMA mode behaves slightly different than polling or interrupt driven
+mode, so just document the fact
 
 Signed-off-by: Martin Sperl <kernel@martin.sperl.org>
 
 Changelog:
   V1 -> V2: applied feedback by Stefan Wahren
-            reorganized patchset
-	    added extra rational, descriptions
+            new in V2
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-bcm2835.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/spi/spi-bcm2835.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index 6c73e694794a..b7bb07c9507d 100644
+index b7bb07c9507d..0d8c97502f14 100644
 --- a/drivers/spi/spi-bcm2835.c
 +++ b/drivers/spi/spi-bcm2835.c
-@@ -749,7 +749,6 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
- 	struct bcm2835_spi *bs = spi_master_get_devdata(master);
- 	unsigned long spi_hz, clk_hz, cdiv;
- 	unsigned long spi_used_hz;
--	unsigned long long xfer_time_us;
- 	u32 cs = bcm2835_rd(bs, BCM2835_SPI_CS);
- 
- 	/* set clock */
-@@ -790,14 +789,15 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
- 	bs->tx_len = tfr->len;
- 	bs->rx_len = tfr->len;
- 
--	/* calculate the estimated time in us the transfer runs */
--	xfer_time_us = (unsigned long long)tfr->len
--		* 9 /* clocks/byte - SPI-HW waits 1 clock after each byte */
--		* 1000000;
--	do_div(xfer_time_us, spi_used_hz);
--
--	/* for short requests run polling*/
--	if (xfer_time_us <= BCM2835_SPI_POLLING_LIMIT_US)
-+	/* Calculate the estimated time in us the transfer runs.  Note that
-+	 * there is 1 idle clocks cycles after each byte getting transferred
-+	 * so we have 9 cycles/byte.  This is used to find the number of Hz
-+	 * per byte per polling limit.  E.g., we can transfer 1 byte in 30 us
-+	 * per 300,000 Hz of bus clock.
-+	 */
-+#define HZ_PER_BYTE ((9 * 1000000) / BCM2835_SPI_POLLING_LIMIT_US)
-+	/* run in polling mode for short transfers */
-+	if (tfr->len < spi_used_hz / HZ_PER_BYTE)
+@@ -800,7 +800,10 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
+ 	if (tfr->len < spi_used_hz / HZ_PER_BYTE)
  		return bcm2835_spi_transfer_one_poll(master, spi, tfr, cs);
  
- 	/* run in dma mode if conditions are right */
+-	/* run in dma mode if conditions are right */
++	/* run in dma mode if conditions are right
++	 * Note that unlike poll or interrupt mode DMA mode does not have
++	 * this 1 idle clock cycle pattern but runs the spi clock without gaps
++	 */
+ 	if (master->can_dma && bcm2835_spi_can_dma(master, spi, tfr))
+ 		return bcm2835_spi_transfer_one_dma(master, spi, tfr, cs);
+ 
 -- 
 2.20.1

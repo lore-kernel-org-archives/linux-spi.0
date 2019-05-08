@@ -1,56 +1,59 @@
 From: Mark Brown <broonie@kernel.org>
 Subject: Re: [GIT PULL] spi updates for v5.2
-Date: Wed, 8 May 2019 15:11:36 +0900
-Message-ID: <20190508061136.GI14916@sirena.org.uk>
+Date: Wed, 8 May 2019 15:09:36 +0900
+Message-ID: <20190508060936.GH14916@sirena.org.uk>
 References: <20190506143301.GU14916@sirena.org.uk>
- <CAADWXX_k_D7=SPd=bi-=3EtBjeG6fe0EaTb4U4ZZgoOoRSub-Q@mail.gmail.com>
+ <CAADWXX_MqtZ6RxS2zEVmHtKrjqigiNzdSe5qVwBVvfVU6dxJRQ@mail.gmail.com>
+ <20190507021853.GY14916@sirena.org.uk>
+ <20190507030241.GC14916@sirena.org.uk>
+ <CAHk-=wi4EJQLoMNd4ptiiZvLy8ZW49pcCy0VQwZt4xhDDqSOjw@mail.gmail.com>
+ <20190507110345.GF14916@sirena.org.uk>
+ <20190507120730.5ylk6v4yvzxuzqld@earth.universe>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="BX5bBAwwbKvz0cyO"
-Cc: linux-spi@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
+        protocol="application/pgp-signature"; boundary="Q+W+CH9ft+eKPnpy"
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-spi@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>
+To: Sebastian Reichel <sre@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAADWXX_k_D7=SPd=bi-=3EtBjeG6fe0EaTb4U4ZZgoOoRSub-Q@mail.gmail.com>
+In-Reply-To: <20190507120730.5ylk6v4yvzxuzqld@earth.universe>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---BX5bBAwwbKvz0cyO
+--Q+W+CH9ft+eKPnpy
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 07, 2019 at 08:08:50AM -0700, Linus Torvalds wrote:
-> On Mon, May 6, 2019 at 7:33 AM Mark Brown <broonie@kernel.org> wrote:
+On Tue, May 07, 2019 at 02:07:30PM +0200, Sebastian Reichel wrote:
 
-> > spi: Updates for v5.2
+> FWIW, I send out kernel.org mails via mail.kernel.org. Konstantin
+> added that service in 2014. You can get a password with
 
-> Hmm. Please be more careful. Commit 1dfbf334f123 ("spi: ep93xx:
-> Convert to use CS GPIO descriptors") caused a new warning because it
-> removed a "for ()" loop, but left the now unused variable 'i' around.
+> ssh git@gitolite.kernel.org getsmtppass
+>=20
+> and then use the following settings for (example for git):
 
-> I fixed it up in the merge, because I hate warnings that may hide real
-> problems. But I also expect maintainers to check their warnings,
-> exactly because the normal build is supposed to have none. So a new
-> warning does stand out.
+I'd have to send all mail out via kernel.org to do that, or persuade a
+MTA to route mail differently based on contents which seems interesting
+- I inject most of my mail via /usr/sbin/sendmail rather than SMTP
+(including a bunch of scripts).
 
-Sorry, I've actually got a fix for that queued but obviously didn't
-manage to make sure it made it all the way through the process to the
-pull request.
-
---BX5bBAwwbKvz0cyO
+--Q+W+CH9ft+eKPnpy
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzScxgACgkQJNaLcl1U
-h9CnJwf/eKpzIkTbhVcC7J2Bb3sJsMXD6vuBkkbnkgLlu4ajKp9FJx+eTtd4eETY
-NobQp2PD84TpU62FmkQxvxvCMNezwtGN+IcttLV0o7I6MvJKbFU6vJwKTBztXawA
-pcd43PWu9rI9KearSLkkGdVGAQAbY6CurPPJNeG3/JElOHkUgoEt04PW2DE6OoyX
-lSHkynrdR+R+EmYtDXj9ZJO2Hd8ebDodBd/XB2Ay+VQubqzFY7rHiHI/q+zRDD6V
-LLRkDphcmwVOnurHYGeYNoi56XYidEmvTN9dkjP+Jzu5l5K03kXf1Q2xo7LQPhZk
-s96tTYvAn0pM7gu2JM7zy8m1BR9pOg==
-=VZ8j
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzScpkACgkQJNaLcl1U
+h9DXhAf/XzfJdDG22K/iKDUuJvjWUO59zufCy4BxgEJGK8HPBSlopkDNIsaQGTZW
+WQZGulm0jnTefDYruWieHqZclQhbIpIa6n7KbLOGtwVDH4XdLWXMkxi3SgpG9vi1
+WTb5ytQUhtcr+W5cjDFM4vfv5InrtFHB0PtOQPSFX9JrGLZuhGU3P8LiW71JyH6Q
+Ov52ilihNnxsVjFe/lmVhs3whgLAUYalhi9HAz9tDZjFdGZKW+zfSGlx1KRLUBMQ
+2fWuzXc1vweZJDLSmz0Wvyx7OR0a54e8nw3QFge+EdYRMJd+eAOZNTNwBTzxW0Mw
+8faWeNojbsEvwiajqy1wS8zkRiF71w==
+=EQvQ
 -----END PGP SIGNATURE-----
 
---BX5bBAwwbKvz0cyO--
+--Q+W+CH9ft+eKPnpy--

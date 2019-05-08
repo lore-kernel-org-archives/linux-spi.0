@@ -1,31 +1,31 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: bcm2835: add driver stats to debugfs" to the spi tree
-Date: Wed,  8 May 2019 10:08:53 +0100 (BST)
-Message-ID: <20190508090854.0A5F2440034@finisterre.sirena.org.uk>
-References: <20190423201513.8073-7-kernel@martin.sperl.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: core: allow defining time that cs is deasserted" to the
+ spi tree
+Date: Wed,  8 May 2019 10:34:54 +0100 (BST)
+Message-ID: <20190508093455.0BE15440010@finisterre.sirena.org.uk>
+References: <20190223084952.14758-2-kernel@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Stefan Wahren <stefan.wahren@i2se.com>, linux-spi@vger.kernel.org,
- Eric Anholt <eric@anholt.net>, Mark Brown <broonie@kernel.org>,
- linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org
-To: Martin Sperl <kernel@martin.sperl.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190423201513.8073-7-kernel@martin.sperl.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+ linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <20190223084952.14758-2-kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
+List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: bcm2835: add driver stats to debugfs
+   spi: core: allow defining time that cs is deasserted
 
 has been applied to the spi tree at
 
@@ -50,168 +50,149 @@ to this mail.
 Thanks,
 Mark
 
->From 154f7da56f1ecba42021d550c9e8432ac8d32c26 Mon Sep 17 00:00:00 2001
-From: Martin Sperl <kernel@martin.sperl.org>
-Date: Tue, 23 Apr 2019 20:15:13 +0000
-Subject: [PATCH] spi: bcm2835: add driver stats to debugfs
+>From 0ff2de8bb163551ec4230a5a6f3c40c1f6adec4f Mon Sep 17 00:00:00 2001
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Date: Sat, 23 Feb 2019 08:49:48 +0000
+Subject: [PATCH] spi: core: allow defining time that cs is deasserted
 
-To estimate efficiency add statistics on transfer types
-(polling, interrupt and dma) used to debugfs.
+For some SPI devices that support speed_hz > 1MHz the default 10 us delay
+when cs_change = 1 is typically way to long and may result in poor spi bus
+utilization.
 
-Signed-off-by: Martin Sperl <kernel@martin.sperl.org>
+This patch makes it possible to control the delay at micro or nano second
+resolution on a per spi_transfer basis. It even allows an "as fast as
+possible" mode with:
+    xfer.cs_change_delay_unit = SPI_DELAY_UNIT_NSECS;
+    xfer.cs_change_delay = 0;
 
-Changelog:
-  V1 -> V2: applied feedback by Stefan Wahren
-            reorganized patchset
-	    added extra rational, descriptions
-	    fixed compile issue when CONFIG_DEBUG_FS is unset
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The delay code is shared between delay_usecs and cs_change_delay for
+consistency and reuse, so in the future this change_delay_unit could also
+apply to delay_usec as well.
+
+Note that on slower SOCs/CPU actually reaching ns deasserts on cs is not
+realistic as the gpio overhead alone (without any delays added ) may
+already leave cs deasserted for more than 1us - at least on a raspberry pi.
+But at the very least this way we can keep it as short as possible.
+
+Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-bcm2835.c | 74 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 74 insertions(+)
+ drivers/spi/spi.c       | 59 ++++++++++++++++++++++++++++++++++-------
+ include/linux/spi/spi.h |  7 +++++
+ 2 files changed, 56 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index 3230d37fa89a..eb67da697ef5 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -22,6 +22,7 @@
- 
- #include <linux/clk.h>
- #include <linux/completion.h>
-+#include <linux/debugfs.h>
- #include <linux/delay.h>
- #include <linux/dma-mapping.h>
- #include <linux/dmaengine.h>
-@@ -101,6 +102,15 @@ MODULE_PARM_DESC(polling_limit_us,
-  *	length is not a multiple of 4 (to overcome hardware limitation)
-  * @tx_spillover: whether @tx_prologue spills over to second TX sglist entry
-  * @dma_pending: whether a DMA transfer is in progress
-+ * @debugfs_dir: the debugfs directory - neede to remove debugfs when
-+ *      unloading the module
-+ * @count_transfer_polling: count of how often polling mode is used
-+ * @count_transfer_irq: count of how often interrupt mode is used
-+ * @count_transfer_irq_after_polling: count of how often we fall back to
-+ *      interrupt mode after starting in polling mode.
-+ *      These are counted as well in @count_transfer_polling and
-+ *      @count_transfer_irq
-+ * @count_transfer_dma: count how often dma mode is used
-  */
- struct bcm2835_spi {
- 	void __iomem *regs;
-@@ -115,8 +125,55 @@ struct bcm2835_spi {
- 	int rx_prologue;
- 	unsigned int tx_spillover;
- 	unsigned int dma_pending;
-+
-+	struct dentry *debugfs_dir;
-+	u64 count_transfer_polling;
-+	u64 count_transfer_irq;
-+	u64 count_transfer_irq_after_polling;
-+	u64 count_transfer_dma;
- };
- 
-+#if defined(CONFIG_DEBUG_FS)
-+static void bcm2835_debugfs_create(struct bcm2835_spi *bs,
-+				   const char *dname)
-+{
-+	char name[64];
-+	struct dentry *dir;
-+
-+	/* get full name */
-+	snprintf(name, sizeof(name), "spi-bcm2835-%s", dname);
-+
-+	/* the base directory */
-+	dir = debugfs_create_dir(name, NULL);
-+	bs->debugfs_dir = dir;
-+
-+	/* the counters */
-+	debugfs_create_u64("count_transfer_polling", 0444, dir,
-+			   &bs->count_transfer_polling);
-+	debugfs_create_u64("count_transfer_irq", 0444, dir,
-+			   &bs->count_transfer_irq);
-+	debugfs_create_u64("count_transfer_irq_after_polling", 0444, dir,
-+			   &bs->count_transfer_irq_after_polling);
-+	debugfs_create_u64("count_transfer_dma", 0444, dir,
-+			   &bs->count_transfer_dma);
-+}
-+
-+static void bcm2835_debugfs_remove(struct bcm2835_spi *bs)
-+{
-+	debugfs_remove_recursive(bs->debugfs_dir);
-+	bs->debugfs_dir = NULL;
-+}
-+#else
-+static void bcm2835_debugfs_create(struct bcm2835_spi *bs,
-+				   const char *dname)
-+{
-+}
-+
-+static void bcm2835_debugfs_remove(struct bcm2835_spi *bs)
-+{
-+}
-+#endif /* CONFIG_DEBUG_FS */
-+
- static inline u32 bcm2835_rd(struct bcm2835_spi *bs, unsigned reg)
- {
- 	return readl(bs->regs + reg);
-@@ -320,6 +377,9 @@ static int bcm2835_spi_transfer_one_irq(struct spi_master *master,
- {
- 	struct bcm2835_spi *bs = spi_master_get_devdata(master);
- 
-+	/* update usage statistics */
-+	bs->count_transfer_irq++;
-+
- 	/*
- 	 * Enable HW block, but with interrupts still disabled.
- 	 * Otherwise the empty TX FIFO would immediately trigger an interrupt.
-@@ -564,6 +624,9 @@ static int bcm2835_spi_transfer_one_dma(struct spi_master *master,
- 	struct bcm2835_spi *bs = spi_master_get_devdata(master);
- 	int ret;
- 
-+	/* update usage statistics */
-+	bs->count_transfer_dma++;
-+
- 	/*
- 	 * Transfer first few bytes without DMA if length of first TX or RX
- 	 * sglist entry is not a multiple of 4 bytes (hardware limitation).
-@@ -706,6 +769,9 @@ static int bcm2835_spi_transfer_one_poll(struct spi_master *master,
- 	struct bcm2835_spi *bs = spi_master_get_devdata(master);
- 	unsigned long timeout;
- 
-+	/* update usage statistics */
-+	bs->count_transfer_polling++;
-+
- 	/* enable HW block without interrupts */
- 	bcm2835_wr(bs, BCM2835_SPI_CS, cs | BCM2835_SPI_CS_TA);
- 
-@@ -735,6 +801,10 @@ static int bcm2835_spi_transfer_one_poll(struct spi_master *master,
- 					    jiffies - timeout,
- 					    bs->tx_len, bs->rx_len);
- 			/* fall back to interrupt mode */
-+
-+			/* update usage statistics */
-+			bs->count_transfer_irq_after_polling++;
-+
- 			return bcm2835_spi_transfer_one_irq(master, spi,
- 							    tfr, cs, false);
- 		}
-@@ -982,6 +1052,8 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
- 		goto out_clk_disable;
- 	}
- 
-+	bcm2835_debugfs_create(bs, dev_name(&pdev->dev));
-+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 5e75944ad5d1..7e8ffe3fdc00 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1090,6 +1090,52 @@ static int spi_transfer_wait(struct spi_controller *ctlr,
  	return 0;
+ }
  
- out_clk_disable:
-@@ -996,6 +1068,8 @@ static int bcm2835_spi_remove(struct platform_device *pdev)
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct bcm2835_spi *bs = spi_master_get_devdata(master);
- 
-+	bcm2835_debugfs_remove(bs);
++static void _spi_transfer_delay_ns(u32 ns)
++{
++	if (!ns)
++		return;
++	if (ns <= 1000) {
++		ndelay(ns);
++	} else {
++		u32 us = DIV_ROUND_UP(ns, 1000);
 +
- 	/* Clear FIFOs, and disable the HW block */
- 	bcm2835_wr(bs, BCM2835_SPI_CS,
- 		   BCM2835_SPI_CS_CLEAR_RX | BCM2835_SPI_CS_CLEAR_TX);
++		if (us <= 10)
++			udelay(us);
++		else
++			usleep_range(us, us + DIV_ROUND_UP(us, 10));
++	}
++}
++
++static void _spi_transfer_cs_change_delay(struct spi_message *msg,
++					  struct spi_transfer *xfer)
++{
++	u32 delay = xfer->cs_change_delay;
++	u32 unit = xfer->cs_change_delay_unit;
++
++	/* return early on "fast" mode - for everything but USECS */
++	if (!delay && unit != SPI_DELAY_UNIT_USECS)
++		return;
++
++	switch (unit) {
++	case SPI_DELAY_UNIT_USECS:
++		/* for compatibility use default of 10us */
++		if (!delay)
++			delay = 10000;
++		else
++			delay *= 1000;
++		break;
++	case SPI_DELAY_UNIT_NSECS: /* nothing to do here */
++		break;
++	default:
++		dev_err_once(&msg->spi->dev,
++			     "Use of unsupported delay unit %i, using default of 10us\n",
++			     xfer->cs_change_delay_unit);
++		delay = 10000;
++	}
++	/* now sleep for the requested amount of time */
++	_spi_transfer_delay_ns(delay);
++}
++
+ /*
+  * spi_transfer_one_message - Default implementation of transfer_one_message()
+  *
+@@ -1148,14 +1194,8 @@ static int spi_transfer_one_message(struct spi_controller *ctlr,
+ 		if (msg->status != -EINPROGRESS)
+ 			goto out;
+ 
+-		if (xfer->delay_usecs) {
+-			u16 us = xfer->delay_usecs;
+-
+-			if (us <= 10)
+-				udelay(us);
+-			else
+-				usleep_range(us, us + DIV_ROUND_UP(us, 10));
+-		}
++		if (xfer->delay_usecs)
++			_spi_transfer_delay_ns(xfer->delay_usecs * 1000);
+ 
+ 		if (xfer->cs_change) {
+ 			if (list_is_last(&xfer->transfer_list,
+@@ -1163,7 +1203,7 @@ static int spi_transfer_one_message(struct spi_controller *ctlr,
+ 				keep_cs = true;
+ 			} else {
+ 				spi_set_cs(msg->spi, false);
+-				udelay(10);
++				_spi_transfer_cs_change_delay(msg, xfer);
+ 				spi_set_cs(msg->spi, true);
+ 			}
+ 		}
+@@ -3757,4 +3797,3 @@ static int __init spi_init(void)
+  * include needing to have boardinfo data structures be much more public.
+  */
+ postcore_initcall(spi_init);
+-
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 053abd22ad31..023beb9e9e4b 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -735,6 +735,9 @@ extern void spi_res_release(struct spi_controller *ctlr,
+  * @bits_per_word: select a bits_per_word other than the device default
+  *      for this transfer. If 0 the default (from @spi_device) is used.
+  * @cs_change: affects chipselect after this transfer completes
++ * @cs_change_delay: delay between cs deassert and assert when
++ *      @cs_change is set and @spi_transfer is not the last in @spi_message
++ * @cs_change_delay_unit: unit of cs_change_delay
+  * @delay_usecs: microseconds to delay after this transfer before
+  *	(optionally) changing the chipselect status, then starting
+  *	the next transfer or completing this @spi_message.
+@@ -824,6 +827,10 @@ struct spi_transfer {
+ 	u8		bits_per_word;
+ 	u8		word_delay_usecs;
+ 	u16		delay_usecs;
++	u16		cs_change_delay;
++	u8		cs_change_delay_unit;
++#define SPI_DELAY_UNIT_USECS	0
++#define SPI_DELAY_UNIT_NSECS	1
+ 	u32		speed_hz;
+ 	u16		word_delay;
+ 
 -- 
 2.20.1

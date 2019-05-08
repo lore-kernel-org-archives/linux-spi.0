@@ -1,79 +1,39 @@
-From: Lee Jones <lee.jones@linaro.org>
-Subject: Re: Applied "dt-bindings: mfd: atmel-usart: add DMA bindings for
- USART in SPI mode" to the spi tree
-Date: Wed, 8 May 2019 11:51:05 +0100
-Message-ID: <20190508105105.GN3995@dell>
-References: <20190505180646.1442-2-radu_nicolae.pirea@upb.ro>
- <20190508090857.B7CB344003F@finisterre.sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Cc: Radu Pirea <radu_nicolae.pirea@upb.ro>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Richard Genoud <richard.genoud@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20190508090857.B7CB344003F@finisterre.sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+From: kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org
+Subject: Re: [PATCH V2 5/6] spi: bcm2835: make the lower limit for dma mode
+ configurable
+Date: Wed, 8 May 2019 12:55:32 +0200
+Message-ID: <CE110436-866D-44F4-B8A5-F7D02DD06F70@martin.sperl.org>
+References: <20190423201513.8073-1-kernel@martin.sperl.org>
+ <20190423201513.8073-6-kernel@martin.sperl.org>
+ <20190424070712.hh6ozvhkvkxhwak3@wunner.de>
+ <20190508084205.GD14916@sirena.org.uk>
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+ linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <20190508084205.GD14916-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
+List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 08 May 2019, Mark Brown wrote:
 
-> The patch
+> On 08.05.2019, at 10:42, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
 > 
->    dt-bindings: mfd: atmel-usart: add DMA bindings for USART in SPI mode
-> 
-> has been applied to the spi tree at
-> 
->    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.3
-> 
-> All being well this means that it will be integrated into the linux-next
-> tree (usually sometime in the next 24 hours) and sent to Linus during
-> the next merge window (or sooner if it is a bug fix), however if
-> problems are discovered then the patch may be dropped or reverted.  
-> 
-> You may get further e-mails resulting from automated or manual testing
-> and review of the tree, please engage with people reporting problems and
-> send followup patches addressing any issues that are reported if needed.
-> 
-> If any updates are required or you are submitting further changes they
-> should be sent as incremental updates against current git, existing
-> patches will not be replaced.
-> 
-> Please add any relevant lists and maintainers to the CCs when replying
-> to this mail.
-> 
-> Thanks,
-> Mark
-> 
-> From f7b99e5948e6be8b850eecbb2de1986d26a76b36 Mon Sep 17 00:00:00 2001
-> From: Radu Pirea <radu_nicolae.pirea@upb.ro>
-> Date: Sun, 5 May 2019 21:06:45 +0300
-> Subject: [PATCH] dt-bindings: mfd: atmel-usart: add DMA bindings for USART in
->  SPI mode
-> 
-> The bindings for DMA are now common for both drivers of the USART
-> IP.
-> 
-> The node given as an example for USART in SPI mode has been updated in
-> order to include DMA bindings.
-> 
-> Signed-off-by: Radu Pirea <radu_nicolae.pirea@upb.ro>
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> ---
->  .../devicetree/bindings/mfd/atmel-usart.txt   | 20 ++++++++++++++-----
+> especially with the ATMega case where we want fast individual clocks but
+> lots of dead space in between bytes (is the controller capable of adding
+> that dead space itself in DMA mode BTW?).
 
-Interesting!
+No it is not - at least not so far as I know of (and I just went over the
+available documentation again).
 
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Martin

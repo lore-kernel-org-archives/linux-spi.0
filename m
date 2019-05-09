@@ -1,61 +1,81 @@
-From: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-Subject: [PATCH] spi: bcm2835: only split transfers that exceed DLEN if DMA available
-Date: Thu,  9 May 2019 16:39:59 +0200
-Message-ID: <20190509144000.681-1-nsaenzjulienne@suse.de>
+From: =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>
+Subject: Re: Applied "spi: Add spi_is_bpw_supported()" to the spi tree
+Date: Thu, 9 May 2019 17:50:36 +0200
+Message-ID: <e87abf19-4616-01e3-5bca-5938dee39c63@tronnes.org>
+References: <20190415085333.EA6241127A64@debutante.sirena.org.uk>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        linux-spi@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Eric Anholt <eric@anholt.net>,
-        Stefan Wahren <stefan.wahren@i2se.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: dri-devel@lists.freedesktop.org, linux-spi@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <dri-devel-bounces@lists.freedesktop.org>
+In-Reply-To: <20190415085333.EA6241127A64@debutante.sirena.org.uk>
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
+List-Post: <mailto:dri-devel@lists.freedesktop.org>
+List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: dri-devel-bounces@lists.freedesktop.org
+Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
 List-Id: linux-spi.vger.kernel.org
 
-There is no use for this when performing non DMA operations. So we
-bypass the split.
-
-Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
----
- drivers/spi/spi-bcm2835.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index 37893313e595..649fd6caed35 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -861,15 +861,17 @@ static int bcm2835_spi_prepare_message(struct spi_master *master,
- 	u32 cs = bcm2835_rd(bs, BCM2835_SPI_CS);
- 	int ret;
- 
--	/*
--	 * DMA transfers are limited to 16 bit (0 to 65535 bytes) by the SPI HW
--	 * due to DLEN. Split up transfers (32-bit FIFO aligned) if the limit is
--	 * exceeded.
--	 */
--	ret = spi_split_transfers_maxsize(master, msg, 65532,
--					  GFP_KERNEL | GFP_DMA);
--	if (ret)
--		return ret;
-+	if (master->can_dma) {
-+		/*
-+		 * DMA transfers are limited to 16 bit (0 to 65535 bytes) by
-+		 * the SPI HW due to DLEN. Split up transfers (32-bit FIFO
-+		 * aligned) if the limit is exceeded.
-+		 */
-+		ret = spi_split_transfers_maxsize(master, msg, 65532,
-+						  GFP_KERNEL | GFP_DMA);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	cs &= ~(BCM2835_SPI_CS_CPOL | BCM2835_SPI_CS_CPHA);
- 
--- 
-2.21.0
+SGkgTWFyaywKCkRlbiAxNS4wNC4yMDE5IDEwLjUzLCBza3JldiBNYXJrIEJyb3duOgo+IFRoZSBw
+YXRjaAo+IAo+ICAgIHNwaTogQWRkIHNwaV9pc19icHdfc3VwcG9ydGVkKCkKPiAKPiBoYXMgYmVl
+biBhcHBsaWVkIHRvIHRoZSBzcGkgdHJlZSBhdAo+IAo+ICAgIGh0dHBzOi8vZ2l0Lmtlcm5lbC5v
+cmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L2Jyb29uaWUvc3BpLmdpdCBmb3ItNS4yCj4gCgpJ
+IGNhbid0IHNlZSB0aGlzIGluIGZvci01LjIgb3IgbGludXgtbmV4dC4gWW91IGFsc28gZ2F2ZSBt
+ZSBhIHRvcGljCmJyYW5jaCBmb3IgdGhpcywgYnV0IEkgd2Fzbid0IGFibGUgdG8gZ2V0IGFuIHIt
+YiBvbiB0aGUgZHJtIHBhdGNoIGluIHRoZQpmZXcgZGF5cyBsZWZ0IGJlZm9yZSB0aGUgLXJjNSBj
+dXRvZmYgaW4gdGhlIGRybSBzdWJzeXN0ZW0uIFRoaXMgbWVhbnMKdGhhdCB0aGUgcGF0Y2ggZGlk
+bid0IGdvIGluIHRocm91Z2ggZHJtIGZvciA1LjIuCgpIb3cgZG8gd2UgcHJvY2VlZCBmcm9tIGhl
+cmU/CgpOb3JhbGYuCgo+IEFsbCBiZWluZyB3ZWxsIHRoaXMgbWVhbnMgdGhhdCBpdCB3aWxsIGJl
+IGludGVncmF0ZWQgaW50byB0aGUgbGludXgtbmV4dAo+IHRyZWUgKHVzdWFsbHkgc29tZXRpbWUg
+aW4gdGhlIG5leHQgMjQgaG91cnMpIGFuZCBzZW50IHRvIExpbnVzIGR1cmluZwo+IHRoZSBuZXh0
+IG1lcmdlIHdpbmRvdyAob3Igc29vbmVyIGlmIGl0IGlzIGEgYnVnIGZpeCksIGhvd2V2ZXIgaWYK
+PiBwcm9ibGVtcyBhcmUgZGlzY292ZXJlZCB0aGVuIHRoZSBwYXRjaCBtYXkgYmUgZHJvcHBlZCBv
+ciByZXZlcnRlZC4gIAo+IAo+IFlvdSBtYXkgZ2V0IGZ1cnRoZXIgZS1tYWlscyByZXN1bHRpbmcg
+ZnJvbSBhdXRvbWF0ZWQgb3IgbWFudWFsIHRlc3RpbmcKPiBhbmQgcmV2aWV3IG9mIHRoZSB0cmVl
+LCBwbGVhc2UgZW5nYWdlIHdpdGggcGVvcGxlIHJlcG9ydGluZyBwcm9ibGVtcyBhbmQKPiBzZW5k
+IGZvbGxvd3VwIHBhdGNoZXMgYWRkcmVzc2luZyBhbnkgaXNzdWVzIHRoYXQgYXJlIHJlcG9ydGVk
+IGlmIG5lZWRlZC4KPiAKPiBJZiBhbnkgdXBkYXRlcyBhcmUgcmVxdWlyZWQgb3IgeW91IGFyZSBz
+dWJtaXR0aW5nIGZ1cnRoZXIgY2hhbmdlcyB0aGV5Cj4gc2hvdWxkIGJlIHNlbnQgYXMgaW5jcmVt
+ZW50YWwgdXBkYXRlcyBhZ2FpbnN0IGN1cnJlbnQgZ2l0LCBleGlzdGluZwo+IHBhdGNoZXMgd2ls
+bCBub3QgYmUgcmVwbGFjZWQuCj4gCj4gUGxlYXNlIGFkZCBhbnkgcmVsZXZhbnQgbGlzdHMgYW5k
+IG1haW50YWluZXJzIHRvIHRoZSBDQ3Mgd2hlbiByZXBseWluZwo+IHRvIHRoaXMgbWFpbC4KPiAK
+PiBUaGFua3MsCj4gTWFyawo+IAo+IEZyb20gZTZmM2Y3ZTRkYzc2ZWI4ZDhhNTQ2ZGM2NjYyMWEw
+MmM1Yzg0ZjRhYyBNb24gU2VwIDE3IDAwOjAwOjAwIDIwMDEKPiBGcm9tOiA9P1VURi04P3E/Tm9y
+YWxmPTIwVHI9QzM9QjhubmVzPz0gPG5vcmFsZkB0cm9ubmVzLm9yZz4KPiBEYXRlOiBGcmksIDEy
+IEFwciAyMDE5IDExOjQxOjMwICswMjAwCj4gU3ViamVjdDogW1BBVENIXSBzcGk6IEFkZCBzcGlf
+aXNfYnB3X3N1cHBvcnRlZCgpCj4gTUlNRS1WZXJzaW9uOiAxLjAKPiBDb250ZW50LVR5cGU6IHRl
+eHQvcGxhaW47IGNoYXJzZXQ9VVRGLTgKPiBDb250ZW50LVRyYW5zZmVyLUVuY29kaW5nOiA4Yml0
+Cj4gCj4gVGhpcyBsZXQgU1BJIGNsaWVudHMgY2hlY2sgaWYgdGhlIGNvbnRyb2xsZXIgc3VwcG9y
+dHMgYSBwYXJ0aWN1bGFyIHdvcmQKPiB3aWR0aC4gZHJpdmVycy9ncHUvZHJtL3Rpbnlkcm0vbWlw
+aS1kYmkuYyB3aWxsIHVzZSB0aGlzIHRvIGRldGVybWluZSBpZgo+IHRoZSBjb250cm9sbGVyIHN1
+cHBvcnRzIDE2LWJpdCBmb3IgUkdCNTY1IHBpeGVscy4gSWYgaXQgZG9lc24ndCBpdCB3aWxsCj4g
+c3dhcCB0aGUgYnl0ZXMgYmVmb3JlIHRyYW5zZmVyIG9uIGxpdHRsZSBlbmRpYW4gbWFjaGluZXMu
+Cj4gCj4gU2lnbmVkLW9mZi1ieTogTm9yYWxmIFRyw4PCuG5uZXMgPG5vcmFsZkB0cm9ubmVzLm9y
+Zz4KPiBTaWduZWQtb2ZmLWJ5OiBNYXJrIEJyb3duIDxicm9vbmllQGtlcm5lbC5vcmc+Cj4gLS0t
+Cj4gIGluY2x1ZGUvbGludXgvc3BpL3NwaS5oIHwgMjAgKysrKysrKysrKysrKysrKysrKysKPiAg
+MSBmaWxlIGNoYW5nZWQsIDIwIGluc2VydGlvbnMoKykKPiAKPiBkaWZmIC0tZ2l0IGEvaW5jbHVk
+ZS9saW51eC9zcGkvc3BpLmggYi9pbmNsdWRlL2xpbnV4L3NwaS9zcGkuaAo+IGluZGV4IDY2MmIz
+MzZhYTJlNC4uYjMwZTNkMTNhNWFjIDEwMDY0NAo+IC0tLSBhL2luY2x1ZGUvbGludXgvc3BpL3Nw
+aS5oCj4gKysrIGIvaW5jbHVkZS9saW51eC9zcGkvc3BpLmgKPiBAQCAtOTgzLDYgKzk4MywyNiBA
+QCBzcGlfbWF4X3RyYW5zZmVyX3NpemUoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSkKPiAgCXJldHVy
+biBtaW4odHJfbWF4LCBtc2dfbWF4KTsKPiAgfQo+ICAKPiArLyoqCj4gKyAqIHNwaV9pc19icHdf
+c3VwcG9ydGVkIC0gQ2hlY2sgaWYgYml0cyBwZXIgd29yZCBpcyBzdXBwb3J0ZWQKPiArICogQHNw
+aTogU1BJIGRldmljZQo+ICsgKiBAYnB3OiBCaXRzIHBlciB3b3JkCj4gKyAqCj4gKyAqIFRoaXMg
+ZnVuY3Rpb24gY2hlY2tzIHRvIHNlZSBpZiB0aGUgU1BJIGNvbnRyb2xsZXIgc3VwcG9ydHMgQGJw
+dy4KPiArICoKPiArICogUmV0dXJuczoKPiArICogVHJ1ZSBpZiBAYnB3IGlzIHN1cHBvcnRlZCwg
+ZmFsc2Ugb3RoZXJ3aXNlLgo+ICsgKi8KPiArc3RhdGljIGlubGluZSBib29sIHNwaV9pc19icHdf
+c3VwcG9ydGVkKHN0cnVjdCBzcGlfZGV2aWNlICpzcGksIHUzMiBicHcpCj4gK3sKPiArCXUzMiBi
+cHdfbWFzayA9IHNwaS0+bWFzdGVyLT5iaXRzX3Blcl93b3JkX21hc2s7Cj4gKwo+ICsJaWYgKGJw
+dyA9PSA4IHx8IChicHcgPD0gMzIgJiYgYnB3X21hc2sgJiBTUElfQlBXX01BU0soYnB3KSkpCj4g
+KwkJcmV0dXJuIHRydWU7Cj4gKwo+ICsJcmV0dXJuIGZhbHNlOwo+ICt9Cj4gKwo+ICAvKi0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLSovCj4gIAo+ICAvKiBTUEkgdHJhbnNmZXIgcmVwbGFjZW1lbnQgbWV0aG9k
+cyB3aGljaCBtYWtlIHVzZSBvZiBzcGlfcmVzICovCj4gCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmRyaS1kZXZlbCBtYWlsaW5nIGxpc3QKZHJpLWRldmVs
+QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2RyaS1kZXZlbA==

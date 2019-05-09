@@ -1,70 +1,57 @@
-From: Martin Sperl <kernel@martin.sperl.org>
-Subject: Re: Regression: spi: core: avoid waking pump thread from spi_sync instead run teardown delayed
-Date: Thu, 9 May 2019 21:47:08 +0200
-Message-ID: <CB6BCD42-60F9-493A-B05B-FC27C125E982@martin.sperl.org>
-References: <f86eaebb-0359-13be-f4a2-4f2b8832252e@nvidia.com> <7C4A5EFC-8235-40C8-96E1-E6020529DF72@martin.sperl.org> <aabd916e-005e-6cda-25d7-8ab875afa7a0@nvidia.com> <AAA7943B-B1F1-4389-AAC3-8621EC6E38B8@martin.sperl.org> <20190115192619.GG5522@sirena.org.uk> <5D3256B1-5DAE-4E3F-9099-5425F4BCA304@martin.sperl.org> <20190115212539.GK5522@sirena.org.uk> <EA757B47-A264-4B4D-9E5F-16611ABA0278@martin.sperl.org> <20190118191202.GG6260@sirena.org.uk> <EE52ED32-CBB4-40D4-8615-CA814158C826@martin.sperl.org> <20190123175609.GG7503@sirena.org.uk>
-Mime-Version: 1.0 (1.0)
-Content-Type: text/plain;
-        charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Cc: Jon Hunter <jonathanh@nvidia.com>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190123175609.GG7503@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Florian Fainelli <f.fainelli@gmail.com>
+Subject: [PATCH] spi: Allow selecting BCM2835 SPI controllers on ARCH_BRCMSTB
+Date: Thu,  9 May 2019 13:36:00 -0700
+Message-ID: <20190509203600.6867-1-f.fainelli@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: stefan.wahren@i2se.com, Florian Fainelli <f.fainelli@gmail.com>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>, eric@anholt.net,
+ Mark Brown <broonie@kernel.org>, bcm-kernel-feedback-list@Broadcom.com,
+ wahrenst@gmx.net
+To: linux-arm-kernel@lists.infradead.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark!
+ARCH_BRCMSTB platforms have the BCM2835 SPI controllers (normal and
+auxiliary), allow selecting the two drivers on such platforms.
 
-> On 23.01.2019, at 18:56, Mark Brown <broonie@kernel.org> wrote:
-> 
->> On Sun, Jan 20, 2019 at 12:24:23PM +0100, kernel@martin.sperl.org wrote:
->> 
->> These kind of changes it requires are consuming a bit more time than
->> I was hoping for.
-> 
-> Thanks for trying.
-> 
->> So maybe at this very moment the best is reverting the patch.
-> 
-> Yes, I'm just going to do that for now.
-> 
->> As for the root cause of the regression: my guess is that spi-mem is
->> just not triggering a shutdown any more because of how message_pump works.
-> 
-> I'm fairly sure that's what's going on but not been able to get my head
-> around things enough to figure out what's going wrong yet.
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+---
+ drivers/spi/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-While thinking about this again maybe an idea:
-What about implement a second spi_transfer_one implementation (together
-with a message pump implementation) that would handle things correctly.
-
-Any driver then can select the old (default) or new implementation and thus
-would allow the optimizations to take place only for verified working drivers...
-
-At least this way we would not be blocked because no hw exposing this
-Behavior is available to us - at the cost of extra code to get maintained.
-
-What I would then also like to do for the new implementation is modify the
-API a bit - ideally I would like to:
-* Make spi_sync the primary interface which the message pump is also 
-  using directly
-* move all the prepare stuff early into spi-sync, so that for example the
-  Preparing (including dma mapping) would get done in the calling thread
-  And only the prepared message would get submitted to the queue
-  - special processing would be needed for the spi-async case.
-
-This should optimize the computations out of the central loop faster.
-
-Adding spi-nand support could get added later by someone who has
-access to a device making use of this.
-
-If that sounds as somewhat acceptable then I will try get something
-Implemented.
-
-Any other ideas where we could improve as well?
-
-Martin
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 0fba8f400c59..3ee152feee2b 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -119,7 +119,7 @@ config SPI_AXI_SPI_ENGINE
+ config SPI_BCM2835
+ 	tristate "BCM2835 SPI controller"
+ 	depends on GPIOLIB
+-	depends on ARCH_BCM2835 || COMPILE_TEST
++	depends on ARCH_BCM2835 || ARCH_BRCMSTB || COMPILE_TEST
+ 	help
+ 	  This selects a driver for the Broadcom BCM2835 SPI master.
+ 
+@@ -130,7 +130,7 @@ config SPI_BCM2835
+ 
+ config SPI_BCM2835AUX
+ 	tristate "BCM2835 SPI auxiliary controller"
+-	depends on (ARCH_BCM2835 && GPIOLIB) || COMPILE_TEST
++	depends on ((ARCH_BCM2835 || ARCH_BRCMSTB) && GPIOLIB) || COMPILE_TEST
+ 	help
+ 	  This selects a driver for the Broadcom BCM2835 SPI aux master.
+ 
+-- 
+2.17.1

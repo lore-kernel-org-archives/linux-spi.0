@@ -1,95 +1,101 @@
-From: Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v2 1/4] dt-bindings: spi: Add YAML schemas for the generic
- SPI options
-Date: Fri, 10 May 2019 11:05:48 -0500
-Message-ID: <CAL_JsqLRWSWk7cV=pYi1fbYsLJFUxE1fMo6Bm2FC99oPtS-88w@mail.gmail.com>
-References: <1acc9ff7f59064b74cc319b7812479bcd842a897.1557386749.git-series.maxime.ripard@bootlin.com>
+From: Sowjanya Komatineni <skomatineni@nvidia.com>
+Subject: RE: [PATCH V3 5/9] spi: export spi core function spi_set_cs
+Date: Fri, 10 May 2019 18:53:25 +0000
+Message-ID: <BYAPR12MB3398D946FDD0E5406B23EB50C20C0@BYAPR12MB3398.namprd12.prod.outlook.com>
+References: <1555363834-32155-1-git-send-email-skomatineni@nvidia.com>
+ <1555363834-32155-6-git-send-email-skomatineni@nvidia.com>
+ <20190419151823.GS2803@sirena.org.uk>
+ <BYAPR12MB3398D133D1C71355BC530754C2390@BYAPR12MB3398.namprd12.prod.outlook.com>
+ <20190506044425.GN14916@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
- linux-spi <linux-spi@vger.kernel.org>, Chen-Yu Tsai <wens@csie.org>,
- Mark Brown <broonie@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>
-To: Maxime Ripard <maxime.ripard@bootlin.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1acc9ff7f59064b74cc319b7812479bcd842a897.1557386749.git-series.maxime.ripard@bootlin.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Transfer-Encoding: quoted-printable
+Cc: "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Timo Alho <talho@nvidia.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "Krishna Yarlagadda" <kyarlagadda@nvidia.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190506044425.GN14916@sirena.org.uk>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, May 9, 2019 at 2:26 AM Maxime Ripard <maxime.ripard@bootlin.com> wrote:
+> On Mon, Apr 29, 2019 at 10:02:46PM +0000, Sowjanya Komatineni wrote:
+>=20
+> Please fix your mail client to word wrap within paragraphs at something s=
+ubstantially less than 80 columns.  Doing this makes your messages much eas=
+ier to read and reply to.
+>=20
+> > > On Mon, Apr 15, 2019 at 02:30:30PM -0700, Sowjanya Komatineni wrote:
+> > > > This patch exports spi_set_cs of the spi core to allow SPI masters=
+=20
+> > > > to use when gpio based chip select is needed.
 >
-> The SPI controllers have a bunch of generic options that are needed in a
-> device tree. Add a YAML schemas for those.
+> > > This isn't really what I meant when I said it'd be good to use the=20
+> > > core GPIO code - this function doesn't do a huge amount really and=20
+> > > the usage of it in your subsequent patch for the > driver isn't=20
+> > > exactly joined up with the little it does (which is mainly swapping=20
+> > > in the GPIO chip select instead of the hardware chip select) isn't=20
+> > > used in your driver usage of this as far as I can see.  The bulk of=20
+> > > the chip select handling code in the core is actually in
+> > > transfer_one_message() which your driver doesn't use as it's got=20
+> > > it's own implementation of that; I've not looked in enough detail to=
+=20
+> > > figure out if it could use it.
 >
-> Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
+> > In SPI Tegra driver, we wanted to have GPIO based CS control when=20
+> > cs-gpios is specified in parallel to HW/SW CS. Having parallel GPIO=20
+> > based CS is to mimic some of the timing stuff that's needed for some=20
+> > spi devices by not actually using HW CS on platform but only for SPI=20
+> > HW design logic inside the chip.
 >
-> ---
+> > Tegra spi driver don't use set_cs callback so looking into spi_set_cs=20
+> > from spi core implementation when cs-gpios property is used it exactly=
+=20
+> > the same that is needed for GPIO control CS. So used this in V3.
 >
-> Changes from v1:
->   - Rework the nodename pattern
->   - Limit the index of the usable chip selects to 256
->   - Rework the slave devices regex
->   - Remove the requirement on #address-cells and #size-cells
->   - Declare the slave and slave devices nodes as objects
->   - Add spi-max-frequency
->   - Fix the bus width range
-> ---
->  Documentation/devicetree/bindings/spi/spi-bus.txt         | 111 +-----
->  Documentation/devicetree/bindings/spi/spi-controller.yaml | 161 +++++++-
->  2 files changed, 161 insertions(+), 111 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/spi/spi-bus.txt
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-controller.yaml
+> > Can you please provide more details on what you are suggesting?
+> > Do you prefer not to use SPI core spi_set_cs and gpio_set_values APIs=20
+> > and instead implement in tegra SPI driver using GPIO descriptors ?
+>
+> You're probably best open coding in the driver if there's value in using =
+the hardware chip select.
+
+Sorry, Just to be clear on my understanding of your suggestion,
+
+3 ways of CS control implementation is needed for Tegra SPI
+- SW CS thru SPI Controller
+- HW CS thru SPI Controller
+- Direct GPIO based CS control=20
+
+Patch Series includes both HW CS and also direct GPIO based CS.
+
+Regarding direct GPIO based CS, I understood you prefer to use GPIO descrip=
+tors.
+I see SPI core set_cs API also uses GPIO descriptor for direct GPIO control=
+ of CS.=20
+
+Tegra SPI driver need parallel implementation of direct gpio based cs to hw=
+/sw based
+CS control thru SPI controller.
+Since SPI core set_cs already has implementation using gpio descriptors, in=
+ V3 I am using
+the same API.
+
+Any concerns for using set_cs API from SPI core as it already does direct g=
+pio based cs using
+Descriptors?
+
+Thanks
+Sowjanya
 
 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-> new file mode 100644
-> index 000000000000..6258644249b2
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-> @@ -0,0 +1,161 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/spi/spi-controller.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: SPI Controller Generic Binding
-> +
-> +maintainers:
-> +  - Mark Brown <broonie@kernel.org>
-> +
-> +description: |
-> +  SPI busses can be described with a node for the SPI controller device
-> +  and a set of child nodes for each SPI slave on the bus. The system SPI
-> +  controller may be described for use in SPI master mode or in SPI slave mode,
-> +  but not for both at the same time.
-> +
-> +properties:
-> +  $nodename:
-> +    pattern: "^spi(@.*)$"
-
-Doing some testing with spi-gpio schema I'm writing, this needs to be
-"^spi(@.*)*$" so that just 'spi' is allowed. However, that's not
-enough for handling multiple instances of spi-gpio. So maybe we need
-"^spi(@.*|-[0-9a-f])*$" to allow spi-1, spi-2, etc. Really, we need to
-decide the larger issue of how we handle multiple instances when
-there's no address space.
-
-Also, this schema will be applied to any matching node name as it is
-used for automatic selection if compatible schema is not present. If
-we want to prevent that and only apply it when explicitly included,
-then we need to add a 'select: false'. Without it, we get more
-coverage, but it could slow things down and we'll get double printing
-of errors.
-
-Rob
+=20

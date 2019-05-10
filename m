@@ -1,7 +1,8 @@
 From: Douglas Anderson <dianders@chromium.org>
-Subject: [PATCH 0/4] spi: A better solution for cros_ec_spi reliability
-Date: Fri, 10 May 2019 15:34:33 -0700
-Message-ID: <20190510223437.84368-1-dianders@chromium.org>
+Subject: [PATCH 1/4] spi: For controllers that need realtime always use the pump thread
+Date: Fri, 10 May 2019 15:34:34 -0700
+Message-ID: <20190510223437.84368-2-dianders@chromium.org>
+References: <20190510223437.84368-1-dianders@chromium.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Cc: linux-rockchip@lists.infradead.org, drinkcat@chromium.org,
@@ -12,33 +13,38 @@ To: Mark Brown <broonie@kernel.org>,
         Benson Leung <bleung@chromium.org>,
         Enric Balletbo i Serra <enric.balletbo@collabora.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190510223437.84368-1-dianders@chromium.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This series is a much better solution for getting the Chrome OS EC to
-talk reliably and replaces commit 37a186225a0c ("platform/chrome:
-cros_ec_spi: Transfer messages at high priority").
+If a controller specifies that it needs high priority for sending
+messages we should always schedule our transfers on the thread.  If we
+don't do this we'll do the transfer in the caller's context which
+might not be very high priority.
 
-Note that the cros_ec bits can't land until the SPI bits are
-somewhere.  If the SPI bits look OK to land it might be convenient if
-they could be placed somewhere with a stable git hash?
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+---
 
-Special thanks to Guenter Roeck for pointing out the "realtime"
-feature of the SPI framework so I didn't re-invent the wheel.  I have
-no idea how I missed it.  :-/
+ drivers/spi/spi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-
-Douglas Anderson (4):
-  spi: For controllers that need realtime always use the pump thread
-  spi: Allow SPI devices to specify that they are timing sensitive
-  platform/chrome: cros_ec_spi: Set ourselves as timing sensitive
-  Revert "platform/chrome: cros_ec_spi: Transfer messages at high
-    priority"
-
- drivers/platform/chrome/cros_ec_spi.c | 81 +++------------------------
- drivers/spi/spi.c                     | 41 +++++++++++---
- include/linux/spi/spi.h               |  3 +
- 3 files changed, 43 insertions(+), 82 deletions(-)
-
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 8eb7460dd744..0597f7086de3 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1230,8 +1230,11 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
+ 		return;
+ 	}
+ 
+-	/* If another context is idling the device then defer */
+-	if (ctlr->idling) {
++	/*
++	 * If another context is idling the device then defer.
++	 * If we are high priority then the thread should do the transfer.
++	 */
++	if (ctlr->idling || (ctlr->rt && !in_kthread)) {
+ 		kthread_queue_work(&ctlr->kworker, &ctlr->pump_messages);
+ 		spin_unlock_irqrestore(&ctlr->queue_lock, flags);
+ 		return;
 -- 
 2.21.0.1020.gf2820cf01a-goog

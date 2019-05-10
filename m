@@ -1,53 +1,50 @@
-From: Eric Anholt <eric@anholt.net>
-Subject: Re: [PATCH] spi: Allow selecting BCM2835 SPI controllers on ARCH_BRCMSTB
-Date: Thu, 09 May 2019 15:46:43 -0700
-Message-ID: <8736lns0to.fsf@anholt.net>
-References: <20190509203600.6867-1-f.fainelli@gmail.com>
+From: Nguyen An Hoan <na-hoan-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+Subject: [PATCH] spi: bcm2835: Remove spi_alloc_master() error printing
+Date: Fri, 10 May 2019 17:42:18 +0900
+Message-ID: <1557477738-20634-1-git-send-email-na-hoan@jinso.co.jp>
 Mime-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-        micalg=pgp-sha512; protocol="application/pgp-signature"
-Cc: stefan.wahren@i2se.com, wahrenst@gmx.net,
-        bcm-kernel-feedback-list@Broadcom.com,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        "open list\:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-To: Florian Fainelli <f.fainelli@gmail.com>,
-        linux-arm-kernel@lists.infradead.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190509203600.6867-1-f.fainelli@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: na-hoan-HEF513clHfp3+QwDJ9on6Q@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, eric-WhKQ6XTQaPysTnJN9+BGXg@public.gmane.org,
+ stefan.wahren-eS4NqCHxEME@public.gmane.org
+Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
+List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---=-=-=
-Content-Type: text/plain
+From: Hoan Nguyen An <na-hoan-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
 
-Florian Fainelli <f.fainelli@gmail.com> writes:
+Printing an error on memory allocation failure is unnecessary,
+as the memory allocation core code already takes care of that.
 
-> ARCH_BRCMSTB platforms have the BCM2835 SPI controllers (normal and
-> auxiliary), allow selecting the two drivers on such platforms.
->
-> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Signed-off-by: Hoan Nguyen An <na-hoan-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+---
+ drivers/spi/spi-bcm2835.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-Reviewed-by: Eric Anholt <eric@anholt.net>
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE/JuuFDWp9/ZkuCBXtdYpNtH8nugFAlzUrdMACgkQtdYpNtH8
-nuhySA/+N/RO3Z8Yoc+fKHRBsufh8kvxUe7tTv6WBVdDwEN6bRS6KVjUflP2j7fE
-CuwNjCCJJNzFudG7ufzYGy4p6AVr1YK89a7V1eIlAmujkIzX7dhiXNqg8QxmBheZ
-erNrMFofbYI1Vw5/6ULrlb8jsyOEsGcp/OdQbnwpc/0Ww9Bil4tV7e8v8tG4Ig1y
-pzMoUnSw8qRpa5lz5yrIBLEDLlAz7TfofZMAa42s1VpGhkDuqgm5ug9UMq23eJkN
-cTU0DZhXHAd9m0AU3hyree8tOFoSyP9woPL3Q9VIjgpLN3YOiLtKMoye7yYVCLTl
-V80B4VM4YPVFjCH+agq0Y1jtuq2eQ/YlZdTpdiqnsVVRQ+dsSgKec3oz5IQrokbN
-a+SuVspTcJUElx//UYqVuJFJLdTwreGnzeWi2U+DuhyzOtS2OQqb+VkKRQXa4vff
-Q888zRwVoBm7hVUPkg/Kk8xvAZDH1j6DNLexQ1nHOc/0uKUQw4UHX7GvErUP0kdr
-IREH+o/42O98FRKSd033J6ZSwW5K1MfFLZjZighzj2fC6oJ1EEZ3BhOQEmRvlNtJ
-myw2ML/IoSg4qcR61ON23pplfALWtOzZi2pwWTNgamaDgdgzIDDXEdVmcPP0V0yU
-xppd+BACNw0YMATfRAWIUbIFM7OGA71a4mKJ6cTw7Rl0FUYKei0=
-=O1Gq
------END PGP SIGNATURE-----
---=-=-=--
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index 35aebdf..0b779c2 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -932,10 +932,8 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
+ 	int err;
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*bs));
+-	if (!master) {
+-		dev_err(&pdev->dev, "spi_alloc_master() failed\n");
++	if (!master)
+ 		return -ENOMEM;
+-	}
+ 
+ 	platform_set_drvdata(pdev, master);
+ 
+-- 
+2.7.4

@@ -1,12 +1,12 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/4] spi: For controllers that need realtime always use
- the pump thread
-Date: Sun, 12 May 2019 16:33:01 +0900
-Message-ID: <20190512073301.GC21483@sirena.org.uk>
+Subject: Re: [PATCH 2/4] spi: Allow SPI devices to specify that they are
+ timing sensitive
+Date: Sun, 12 May 2019 16:42:53 +0900
+Message-ID: <20190512074252.GD21483@sirena.org.uk>
 References: <20190510223437.84368-1-dianders@chromium.org>
- <20190510223437.84368-2-dianders@chromium.org>
+ <20190510223437.84368-3-dianders@chromium.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7376112348469151644=="
+Content-Type: multipart/mixed; boundary="===============7029108184277579259=="
 Cc: drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
  linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
  linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, mka-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
@@ -14,7 +14,7 @@ Cc: drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, briannorris-F7+t8E8rja9g9h
  Guenter Roeck <groeck-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Benson Leung <bleung-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 To: Douglas Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Return-path: <linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <20190510223437.84368-2-dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <20190510223437.84368-3-dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
  <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
@@ -27,51 +27,49 @@ Errors-To: linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7u
 List-Id: linux-spi.vger.kernel.org
 
 
---===============7376112348469151644==
+--===============7029108184277579259==
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="/e2eDi0V/xtL+Mc8"
+	protocol="application/pgp-signature"; boundary="+B+y8wtTXqdUj1xM"
 Content-Disposition: inline
 
 
---/e2eDi0V/xtL+Mc8
+--+B+y8wtTXqdUj1xM
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, May 10, 2019 at 03:34:34PM -0700, Douglas Anderson wrote:
-> If a controller specifies that it needs high priority for sending
-> messages we should always schedule our transfers on the thread.  If we
-> don't do this we'll do the transfer in the caller's context which
-> might not be very high priority.
+On Fri, May 10, 2019 at 03:34:35PM -0700, Douglas Anderson wrote:
 
-If performance is important you probably also want to avoid the context
-thrashing - executing in the calling context is generally a substantial
-performance boost.  I can see this causing problems further down the
-line when someone else turns up with a different requirement, perhaps in
-an application where the caller does actually have a raised priority
-themselves and just wanted to make sure that the thread wasn't lower
-than they are.  I guess it'd be nice if we could check what priority the
-calling thread has and make a decision based on that but there don't
-seem to be any facilities for doing that which I can see right now.
+> + * @timing_sensitive: Transfers for this device are senstive to timing
+> + *	so we should do our transfer at high priority.
 
---/e2eDi0V/xtL+Mc8
+Not sure this is the best name.  Every device is timing sensitive to
+some extent and it's a bit wooly about what it's trying to accomplish,
+it's specifically about the timing involved in ensuring that the entire
+message goes out as quickly as possible AIUI.  I think if anything I'd
+just have the caller specifying a RT priority for the thread, but that's
+awkward as we might want to switch over to deadline at some point.  How
+about just calling the parameter rt the same as it is when the
+controller does the same configuration?
+
+--+B+y8wtTXqdUj1xM
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzXzCcACgkQJNaLcl1U
-h9AjOAf+MXPHyjoQyfbJn08k/H8FZGylRFAxKaq4gxN0q4GV4ErRQ4izUJ80gQ5U
-sCbdavMU+2u2yZ8yl/uthfJzXlmpViMGmi/nnHwRcPunHFz1nBmA9sZ4/ODkIj8N
-cCWjLrCRxeE9e23yjIInTgiMkgg2DgSeA+0kVbtg4S0gyIM+POpLXtN6thC9bi0N
-+ZVukER12euMeuVoruZ9jAo52XBhVjj2tpFK18N+bbgIMKB1T2qrd1Fp2r3H6+ty
-GQsyEb/f1XN0NXaLDI5wunSFe0EiUe6P6rZuu4p9ZTyPhg663C+JsqU72Rj8EBXA
-qT+vCFKYWKPzapEj1LDuT9p+DyPnyg==
-=aJHR
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzXznkACgkQJNaLcl1U
+h9BbrAf/QuZJvvnzSN9f3YRIMrxOcWjPSXe8m7cpjjYwT8RgFk/K/D2EtHZqpPa8
+elj2mlHof5nWuPrCydyTZz4dV2Q7K49cprgr2q7oK+nifKWCIVDFZvB5NjIP165o
+dI34Xs1qOUui3KPVSl1CGed2W9d2y+5TEck0os5MsnjpL89b4NrMr/lq3z8zZ0dE
+6WfF7Tr49s10iLyo0g7QYPqvw1/nGoxKloIEGs2j2GALOqzDZgd6UjXOTig8UfgR
+VYCn8zQ3IO2FBFLnnS+jSqzNwacaKtqLIP+4oeKiQWCzIiw6HDvV/vMbOg6PvAUO
+cWErMjpY5aVcL/XP4BawO+V+ivVgVw==
+=Eybc
 -----END PGP SIGNATURE-----
 
---/e2eDi0V/xtL+Mc8--
+--+B+y8wtTXqdUj1xM--
 
 
---===============7376112348469151644==
+--===============7029108184277579259==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -82,4 +80,4 @@ Linux-rockchip mailing list
 Linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 http://lists.infradead.org/mailman/listinfo/linux-rockchip
 
---===============7376112348469151644==--
+--===============7029108184277579259==--

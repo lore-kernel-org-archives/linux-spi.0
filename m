@@ -1,58 +1,61 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: Applied "dt-bindings: mfd: atmel-usart: add DMA bindings for
- USART in SPI mode" to the spi tree
-Date: Sun, 12 May 2019 16:52:23 +0900
-Message-ID: <20190512075223.GF21483@sirena.org.uk>
-References: <20190505180646.1442-2-radu_nicolae.pirea@upb.ro>
- <20190508090857.B7CB344003F@finisterre.sirena.org.uk>
- <20190508105105.GN3995@dell>
+Subject: Re: [PATCH v3 06/14] spi: imx: fix ERR009165
+Date: Sun, 12 May 2019 18:16:18 +0900
+Message-ID: <20190512091618.GP21483@sirena.org.uk>
+References: <1557249513-4903-1-git-send-email-yibin.gong@nxp.com>
+ <1557249513-4903-7-git-send-email-yibin.gong@nxp.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="xkXJwpr35CY/Lc3I"
-Cc: Radu Pirea <radu_nicolae.pirea@upb.ro>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Richard Genoud <richard.genoud@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>
-To: Lee Jones <lee.jones@linaro.org>
+        protocol="application/pgp-signature"; boundary="h9WqFG8zn/Mwlkpe"
+Cc: "robh@kernel.org" <robh@kernel.org>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "festevam@gmail.com" <festevam@gmail.com>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+        "plyatov@gmail.com" <plyatov@gmail.com>,
+        "vkoul@kernel.org" <vkoul@kernel.org>,
+        "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "will.deacon@arm.com" <will.deacon@arm.com>,
+        "l.stach@pengutronix.de" <l.stach@pengutronix.de>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kern
+To: Robin Gong <yibin.gong@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20190508105105.GN3995@dell>
+In-Reply-To: <1557249513-4903-7-git-send-email-yibin.gong@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---xkXJwpr35CY/Lc3I
+--h9WqFG8zn/Mwlkpe
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, May 08, 2019 at 11:51:05AM +0100, Lee Jones wrote:
-> > Signed-off-by: Mark Brown <broonie@kernel.org>
-> > ---
-> >  .../devicetree/bindings/mfd/atmel-usart.txt   | 20 ++++++++++++++-----
+On Tue, May 07, 2019 at 09:16:13AM +0000, Robin Gong wrote:
+> Change to XCH  mode even in dma mode, please refer to the below
+> errata:
+> https://www.nxp.com/docs/en/errata/IMX6DQCE.pdf
 
-> Interesting!
+Acked-by: Mark Brown <broonie@kernel.org>
 
-For some reason the bindings for the SPI function got put in the MFD
-directory, dunno why.
-
---xkXJwpr35CY/Lc3I
+--h9WqFG8zn/Mwlkpe
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzX0LcACgkQJNaLcl1U
-h9DQCwf/WFhMZtcust0DuMCXriQ8faNSLBTBaf77XBUl0FDL66Uge3k6OO/5RP3h
-8hEh7TTviJw3VCcryu1ee9kRNUVdBqdiSHEzb18Q2gDfGmmGrJWGzj59B/47NUjz
-e5enUWORH2PLwGFNmZ81Ay2w2DUvN1UPDHKcCWX1/fbJBxBkzRYiCLjZAOMh9QE6
-QEKjmRIJmVnvgNYeSoz5DNo+++PUKxZYX2IN0JN9oX7LtPdjN9UL4HegW+3xflrB
-IVi2Am4CNMwDCNlMDHrkdClRKmEmAlDRU3kWxlUDLezIKbA3LAiFhQ9nuXyC+Q7e
-Ncn36/FFn/CtfjbD1EWLwGhBGQGoGw==
-=A/JO
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzX5GIACgkQJNaLcl1U
+h9Ax/Qf9F9Mm2dXsW6BETnXLb+haskxu5BW0ouwrc02+EmnMZCpk+eK2JWSx/BVA
+hHEAVO5EpQ0txbRvSYWbDxfOheX1M6BYaA2ROjxHirVL+HT52VRa+dYja6OcK/LY
+PDXYdW6hHB3YqCBFcV+/oXF94jjke9Rh+pnUIs5YEdRnd5MoZiYSCzvJKVcsDaHl
+FAzP/LhX8HAupSbLbGojE7NKqKj2SuOeaKsD10zBEdo0eVFzCCsKwkNvmTlweDgy
+VXujenPsoeAsM9VNu5En2yvrMtAN+7oe2mo5HZvOvdF4deOUS4HqR87fFEzT4Zad
+IWZBFcTVrdqXuUinn5daxLAhu/5Rjg==
+=9X9u
 -----END PGP SIGNATURE-----
 
---xkXJwpr35CY/Lc3I--
+--h9WqFG8zn/Mwlkpe--

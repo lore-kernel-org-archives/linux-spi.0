@@ -1,66 +1,53 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v3 08/14] dt-bindings: spi: imx: add new i.mx6ul
- compatible name
-Date: Sun, 12 May 2019 18:17:53 +0900
-Message-ID: <20190512091753.GR21483@sirena.org.uk>
-References: <1557249513-4903-1-git-send-email-yibin.gong@nxp.com>
- <1557249513-4903-9-git-send-email-yibin.gong@nxp.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: Applied "dt-bindings: mfd: atmel-usart: add DMA bindings for
+ USART in SPI mode" to the spi tree
+Date: Mon, 13 May 2019 09:04:54 +0200
+Message-ID: <CAMuHMdUOwff68bSjvG3vo5+HUjtRCNXLbAiUc7et4m+yfSCoFA@mail.gmail.com>
+References: <20190505180646.1442-2-radu_nicolae.pirea@upb.ro>
+ <20190508090857.B7CB344003F@finisterre.sirena.org.uk> <20190508105105.GN3995@dell>
+ <20190512075223.GF21483@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="7UIJfHqpdi+oBJdT"
-Cc: "robh@kernel.org" <robh@kernel.org>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-        "festevam@gmail.com" <festevam@gmail.com>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
-        "plyatov@gmail.com" <plyatov@gmail.com>,
-        "vkoul@kernel.org" <vkoul@kernel.org>,
-        "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will.deacon@arm.com" <will.deacon@arm.com>,
-        "l.stach@pengutronix.de" <l.stach@pengutronix.de>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kern
-To: Robin Gong <yibin.gong@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Lee Jones <lee.jones@linaro.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+        <devicetree@vger.kernel.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Richard Genoud <richard.genoud@gmail.com>,
+        Radu Pirea <radu_nicolae.pirea@upb.ro>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1557249513-4903-9-git-send-email-yibin.gong@nxp.com>
+In-Reply-To: <20190512075223.GF21483@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Mark,
 
---7UIJfHqpdi+oBJdT
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Sun, May 12, 2019 at 7:05 PM Mark Brown <broonie@kernel.org> wrote:
+> On Wed, May 08, 2019 at 11:51:05AM +0100, Lee Jones wrote:
+> > > Signed-off-by: Mark Brown <broonie@kernel.org>
+> > > ---
+> > >  .../devicetree/bindings/mfd/atmel-usart.txt   | 20 ++++++++++++++-----
+>
+> > Interesting!
+>
+> For some reason the bindings for the SPI function got put in the MFD
+> directory, dunno why.
 
-On Tue, May 07, 2019 at 09:16:25AM +0000, Robin Gong wrote:
-> ERR009165 fixed from i.mx6ul, add its compatible name.
->=20
-> Signed-off-by: Robin Gong <yibin.gong@nxp.com>
+Because this is a block that can do either SPI or USART, hence MFD?
 
-Acked-by: Mark Brown <broonie@kernel.org>
+Gr{oetje,eeting}s,
 
-Please use subject lines matching the style for the subsystem.  This
-makes it easier for people to identify relevant patches.
+                        Geert
 
---7UIJfHqpdi+oBJdT
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzX5MEACgkQJNaLcl1U
-h9DdIAf/X2qeVaCSbFh1puBpR4faa0Kk6jowtA52t44qC/EzFms+BOzR9IEV5IEl
-CMfUXrocjbJGM9ubz9YDaTcdp1hfJPXjfpkkFfnYubbnPeIR7gH5JQVDb9k21Q4q
-DQ3x92Ldeq94CS1/5udatrzwOwnPwzayg+jnMrXg8piLbxdaJND8cxuvCdcr5be2
-7TCvW2RvUU1RCVLa3RlgTrfPDPx5DMHEvrNihyLa9MBeWBqvL4w/amqfgFefglJo
-oymv3ABjbEAWv31Gl/ZsvQsU3CAFv/pLy9C5MSysjtK9jJA2HZXzDCn+kPYwu7ul
-XGAR6UEeIZ8LBryhYFFLGTrT89O+fQ==
-=5tdn
------END PGP SIGNATURE-----
-
---7UIJfHqpdi+oBJdT--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

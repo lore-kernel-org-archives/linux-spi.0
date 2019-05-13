@@ -1,234 +1,178 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v12 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3
- RPC-IF MFD bindings
-Date: Mon, 13 May 2019 22:08:30 +0300
-Message-ID: <b51d1cb7-b3b5-208f-ab4c-145ecb57805d@cogentembedded.com>
-References: <1556092536-17095-1-git-send-email-masonccyang@mxic.com.tw>
- <1556092536-17095-4-git-send-email-masonccyang@mxic.com.tw>
- <20190424212356.GA27103@bogus>
- <65853dc2-6f3c-1494-7e72-54877797cdd2@gmail.com>
- <20190507125730.GD29524@dell>
- <OF08A5650B.8AE8977C-ON482583F4.000E5B1E-482583F4.000F7215@mxic.com.tw>
- <d229b19e-351c-c576-b5c4-716d10dad1a0@gmail.com> <20190508061119.GB7627@dell>
- <OFE86674B9.06D723A0-ON482583F5.000AD50C-482583F5.000BA075@mxic.com.tw>
- <a05cff8f-7df2-1938-c0e7-f9366bece607@cogentembedded.com>
- <OFB19BCE91.6EBBAA77-ON482583F6.000234E2-482583F6.00061290@mxic.com.tw>
- <CAMuHMdUP8KU3Dbv6cwOvrY0hWOcm1xqVcsi20+GvazYMDLGGZg@mail.gmail.com>
- <OFD932ABFC.E3FFCEB8-ON482583F9.003412B1-482583F9.0034D5CA@mxic.com.tw>
+From: Douglas Anderson <dianders@chromium.org>
+Subject: [PATCH v2 1/3] spi: Allow SPI devices to force transfers on a realtime thread
+Date: Mon, 13 May 2019 13:18:23 -0700
+Message-ID: <20190513201825.166969-2-dianders@chromium.org>
+References: <20190513201825.166969-1-dianders@chromium.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: Boris Brezillon <bbrezillon@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
-        Lee Jones <lee.jones@linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh@kernel.org>, zhengxunli@mxic.com.tw
-To: masonccyang@mxic.com.tw, Geert Uytterhoeven <geert@linux-m68k.org>
+Content-Transfer-Encoding: 8bit
+Cc: linux-rockchip@lists.infradead.org, drinkcat@chromium.org,
+        Guenter Roeck <groeck@chromium.org>, briannorris@chromium.org,
+        mka@chromium.org, Douglas Anderson <dianders@chromium.org>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OFD932ABFC.E3FFCEB8-ON482583F9.003412B1-482583F9.0034D5CA@mxic.com.tw>
-Content-Language: en-MW
+In-Reply-To: <20190513201825.166969-1-dianders@chromium.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello!
+For communication with some SPI devices it may be necessary (for
+correctness) not to get interrupted during a transfer.  One example is
+the EC (Embedded Controller) on Chromebooks.  The Chrome OS EC will
+drop a transfer if more than ~8ms passes between the chip select being
+asserted and the transfer finishing.
 
-On 05/13/2019 12:37 PM, masonccyang@mxic.com.tw wrote:
+The best way to make transfers to devices like this succeed is to run
+the transfers at realtime priority.  ...but, since there is no easy
+way in the kernel to just temporarily bump the priority of the current
+thread the current best way to do this is to schedule work on another
+thread and give that thread a boosted priority.
 
->> > > [...]
->> > > >> > >> > On 4/24/19 11:23 PM, Rob Herring wrote:
->> > > >> > >> > > On Wed, Apr 24, 2019 at 03:55:36PM +0800, Mason Yang wrote:
->> > > >> > >> > >> Document the bindings used by the Renesas R-Car
->> Gen3 RPC-IF MFD.
->> > > >> > >> > >>
->> > > >> > >> > >> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
->> > > >> > >> > >> ---
->> > > >> > >> > >>  .../devicetree/bindings/mfd/mfd-renesas-rpc.txt  
->> | 40 ++++++
->> > > >> > >> ++++++++++++++++
->> > > >> > >> > >>  1 file changed, 40 insertions(+)
->> > > >> > >> > >>  create mode 100644 Documentation/devicetree/
->> bindings/mfd/mfd-
->> > > >> > >> renesas-rpc.txt
->> > > >> > >> > >>
->> > > >> > >> > >> diff --git a/Documentation/devicetree/bindings/mfd/
->> mfd-renesas-
->> > > >> > >> rpc.txt b/Documentation/devicetree/bindings/mfd/mfd-
->> renesas-rpc.txt
->> > > >> > >> > >> new file mode 100644
->> > > >> > >> > >> index 0000000..668b822
->> > > >> > >> > >> --- /dev/null
->> > > >> > >> > >> +++ b/Documentation/devicetree/bindings/mfd/mfd-
->> renesas-rpc.txt
->> > > >> > >> > >> @@ -0,0 +1,40 @@
->> > > >> > >> > >> +Renesas R-Car Gen3 RPC-IF MFD Device Tree Bindings
->> > > >> > >> > >> +--------------------------------------------------
->> > > >> > >> > >
->> > > >> > >> > > Looks like a SPI flash controller from the example. What
->> > > makes it an
->> > > >> > >> > > MFD?
->> > > >> > >> >
->> > > >> > >> > It supports both SPI NOR and HyperFlash (CFI-compliantflash with
->> > > >> > >> > different bus interface).
->> > > >> > >>
->> > > >> > >> Looks like you're registering one OR the other.
->> > > >> > >>
->> > > >> > >> Why don't you just do this from DT?
->> > > >> > >>
->> > > >> > >> No reason for this to be an MFD IMHO.
->> > > >> > >
->> > > >> > >
->> > > >> > > okay, I will patch it back to SPI mode only.
->> > > >> >
->> > > >> > I don't think that's what Lee meant . The controller supports _both_
->> > > >> > modes , hence it would have the same compatible string. You
->> just need to
->> > > >> > extract the mode of operation from the DT.
->> > > >>
->> > > >> HiSilicon attempted to upstream something similar, only their
->> > > >> controller provided NAND and NOR functionality.  They used different
->> > > >> compatible strings to differentiate between the varying
->> > > >> technologies.
->> > > >>
->> > > >> They too tried to use MFD as a means to select between them (which was
->> > > >> also NACKed).  Not sure what they ended up doing, but the original
->> > > >> submission and (half of) the conversation can be found at [0].  Some
->> > > >> more of the thread continues at [1].
->> > > >>
->> > > >> Hope that helps.
->> > > >>
->> > > >> [0] https://groups.google.com/forum/#!topic/fa.linux.kernel/F6i9o8sfOIw
->> > > >> [1] https://marc.info/?l=devicetree&m=147669165104431&w=2
->> > > >
->> > > >
->> > > > Hi Marek,
->> > > >
->> > > > By Jones's comments:
->> > > >
->> --------------------------------------------------------------------------
->> > > >> From: Shunquan Lin <linshunquan1@hisilicon.com>
->> > > >>
->> > > >> This patch adds driver support for HiSilicon Flash Memory
->> > > >> Controller(FMC). HiSilicon FMC is a multi-functions device which
->> > > >> supports SPI Nor flash controller, SPI nand Flash controller and
->> > > >> parallel nand flash controller.
->> > > >
->> > > > MFDs are for devices which span multiple subsystems.
->> > >
->> > >    And we do! One of the subdrivers will live under drivers/
->> spi/, the other
->> > > under drivers/mtd/...
->> > >
->> >
->> > From my point of view, I think Jones mean to MFD's subsystems are
->> working simultaneously
->> > at the run-time, one period of time is working for sub-device-1
->> and later period of time
->> > is working for sub-device-2 and so on.
->> >
->> > But for RPC-IF, SPI or HF mode is decided at boot time by pins
->> configure and later in kernel
->> > by dtb, RPC-IF can't switch SPI and HF mode at the run time.
->>
->> > So far, Jones seems don't agree RPC-IF to MFD and then RPC MFD
->> will not applied
->> > to mfd tree by him !
->>
->> There's precedence for such constructs being an MFD: please see
->> drivers/mfd/at91-usart.c, which registers a single MFD cell for either
->> serial or SPI.
+The SPI framework already has another thread and, in fact, that other
+thread is already made realtime priority in some cases.  Let's add an
+ability for a SPI device driver to request that this thread always be
+used and that it's realtime priority.
 
-   Thanks fir your example, Geert! :-)
+NOTE: Forcing all transfers to the message pumping thread will add
+extra overhead to each transfer.  On some systems this may lower your
+overall bus throughput and may increase CPU utilization.  You only
+want to use this feature when it's important that a transfer not get
+interrupt once started.
 
-> okay, many thanks for your information.
-> 
-> How about to patch RPF-IF dts to:
-> -------------------------------------------------------------->
-> 
-> Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
-> ---------------------------------------------------------
->  
->   RPC-IF supports both SPI NOR and HyperFlash (CFI-compliant flash)
->  
->   Required properties:
->   - compatible: should be an SoC-specific compatible value, followed by
->                   "renesas,rcar-gen3-rpc" as a fallback.
->                   supported SoC-specific values are:
->                   "renesas,r8a77995-rpc"  (R-Car D3)
->   - reg: should contain three register areas:
->           first for the base address of RPC-IF registers,
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+---
+Another option is to change this patch to allow a SPI device driver to
+request that the pumping thread be realtime but not to _force_ all
+messages onto that thread.  In the case of cros_ec this means a bunch
+of code duplication (we need to create a thread to do basically the
+same thing as the SPI core) but that would make sense if the SPI
+framework doesn't expect other use cases like this and doesn't want to
+carry the baggage in the SPI core.
 
-   I'd drop "the base address" here.
+Changes in v2:
+- Now only force transfers to the thread for devices that want it.
+- Squashed patch #1 and #2 together.
+- Renamed variable to "force_rt_transfers".
 
->           second for the direct mapping read mode and
->           third for the write buffer area.
->   - reg-names: should contain "regs", "dirmap" and "wbuf"
->   - clocks: should contain 1 entries for the module's clock
->   - clock-names: should contain "rpc"
+ drivers/spi/spi.c       | 49 +++++++++++++++++++++++++++++++++--------
+ include/linux/spi/spi.h |  5 +++++
+ 2 files changed, 45 insertions(+), 9 deletions(-)
 
-   I suspect we'd need the RPC/RPCD2 clocks mentioned as well (not sure yet)...
-   And how about "power-domains", "resets" (seen in the example below),
-also what about #address-cells & #size-cells?
-
->  
->   Example:
-
-   Could you please indent with 1 or 2 tabs where you used 8 or 16 spaces?
-
->   - SPI mode:
->  
->           rpc: rpc-if@ee200000 {
-
-   The node names should be generic, based on the device class. And in this
-case I'd like to use "spi@ee200000" as otherwise dtc keeps bitching like below:
-
-arch/arm64/boot/dts/renesas/r8a77980.dtsi:1344.21-1359.5: Warning (spi_bus_bridge):
-/soc/rpc@ee200000: node name for SPI buses should be 'spi'
-  also defined at arch/arm64/boot/dts/renesas/r8a77980-condor.dts:283.6-343.3
-arch/arm64/boot/dts/renesas/r8a77980-condor.dtb: Warning (spi_bus_reg):
-Failed prerequisite 'spi_bus_bridge'
-
-
->   - HF mode:
->           rpc: rpc-if@ee200000 {
-
-   Again, spi@<...>.
-
->                   compatible = "renesas,r8a77995-rpc", "renesas,rcar-gen3-rpc";
->                   reg = <0 0xee200000 0 0x200>, <0 0x08000000 0 0x4000000>,
->                         <0 0xee208000 0 0x100>;
->                   reg-names = "regs", "dirmap", "wbuf";
->                   clocks = <&cpg CPG_MOD 917>;
->                   clock-names = "rpc";
->                   power-domains = <&sysc R8A77995_PD_ALWAYS_ON>;
->                   resets = <&cpg 917>;
->                   #address-cells = <1>;
->                   #size-cells = <1>;
->  
->                   flash@0 {
->                           compatible = "cfi-flash";
-
-   The working HF implementation has "cypress,hyperflash" before "cfi-flash".
-
->                           reg = <0 0x4000000>;
->                   };
->           };
-> 
-> --------------------------------------------------------------<
-> 
-> Is it OK ?
-
-   Yeah, seems good (assuming you fix the issues above).
-
-[...]
-> thanks & best regards,
-> Mason
-
-MBR, Sergei
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 8eb7460dd744..911961bb230d 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1217,6 +1217,7 @@ EXPORT_SYMBOL_GPL(spi_finalize_current_transfer);
+  */
+ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
+ {
++	struct spi_message *msg;
+ 	unsigned long flags;
+ 	bool was_busy = false;
+ 	int ret;
+@@ -1276,10 +1277,16 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
+ 		return;
+ 	}
+ 
+-	/* Extract head of queue */
+-	ctlr->cur_msg =
+-		list_first_entry(&ctlr->queue, struct spi_message, queue);
++	/* If device for this message needs a realtime thread; queue it */
++	msg = list_first_entry(&ctlr->queue, struct spi_message, queue);
++	if (msg->spi->force_rt_transfers & !in_kthread) {
++		kthread_queue_work(&ctlr->kworker, &ctlr->pump_messages);
++		spin_unlock_irqrestore(&ctlr->queue_lock, flags);
++		return;
++	}
+ 
++	/* Extract head of queue */
++	ctlr->cur_msg = msg;
+ 	list_del_init(&ctlr->cur_msg->queue);
+ 	if (ctlr->busy)
+ 		was_busy = true;
+@@ -1364,10 +1371,32 @@ static void spi_pump_messages(struct kthread_work *work)
+ 	__spi_pump_messages(ctlr, true);
+ }
+ 
+-static int spi_init_queue(struct spi_controller *ctlr)
++/**
++ * spi_set_thread_rt - set the controller to pump at realtime priority
++ * @ctlr: controller to boost priority of
++ *
++ * This can be called because the controller requested realtime priority
++ * (by setting the ->rt value before calling spi_register_controller()) or
++ * because a device on the bus said that its transfers needed realtime
++ * priority.
++ *
++ * NOTE: at the moment if any device on a bus says it needs realtime then
++ * the thread will be at realtime priority for all transfers on that
++ * controller.  If this eventually becomes a problem we may see if we can
++ * find a way to boost the priority only temporarily during relevant
++ * transfers.
++ */
++static void spi_set_thread_rt(struct spi_controller *ctlr)
+ {
+ 	struct sched_param param = { .sched_priority = MAX_RT_PRIO - 1 };
+ 
++	dev_info(&ctlr->dev,
++		"will run message pump with realtime priority\n");
++	sched_setscheduler(ctlr->kworker_task, SCHED_FIFO, &param);
++}
++
++static int spi_init_queue(struct spi_controller *ctlr)
++{
+ 	ctlr->running = false;
+ 	ctlr->busy = false;
+ 
+@@ -1387,11 +1416,8 @@ static int spi_init_queue(struct spi_controller *ctlr)
+ 	 * request and the scheduling of the message pump thread. Without this
+ 	 * setting the message pump thread will remain at default priority.
+ 	 */
+-	if (ctlr->rt) {
+-		dev_info(&ctlr->dev,
+-			"will run message pump with realtime priority\n");
+-		sched_setscheduler(ctlr->kworker_task, SCHED_FIFO, &param);
+-	}
++	if (ctlr->rt)
++		spi_set_thread_rt(ctlr);
+ 
+ 	return 0;
+ }
+@@ -2982,6 +3008,11 @@ int spi_setup(struct spi_device *spi)
+ 
+ 	spi_set_cs(spi, false);
+ 
++	if (spi->force_rt_transfers && !spi->controller->rt) {
++		spi->controller->rt = true;
++		spi_set_thread_rt(spi->controller);
++	}
++
+ 	dev_dbg(&spi->dev, "setup mode %d, %s%s%s%s%u bits/w, %u Hz max --> %d\n",
+ 			(int) (spi->mode & (SPI_CPOL | SPI_CPHA)),
+ 			(spi->mode & SPI_CS_HIGH) ? "cs_high, " : "",
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 053abd22ad31..4d6ea3366480 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -109,6 +109,10 @@ void spi_statistics_add_transfer_stats(struct spi_statistics *stats,
+  *	This may be changed by the device's driver, or left at the
+  *	default (0) indicating protocol words are eight bit bytes.
+  *	The spi_transfer.bits_per_word can override this for each transfer.
++ * @force_rt_transfers: Transfers for this device should always be done
++ *	at realtime priority. NOTE that this might add some latency in
++ *	starting the transfer (since we may need to context switch) but
++ *	once the transfer starts it will be done at high priority.
+  * @irq: Negative, or the number passed to request_irq() to receive
+  *	interrupts from this device.
+  * @controller_state: Controller's runtime state
+@@ -143,6 +147,7 @@ struct spi_device {
+ 	u32			max_speed_hz;
+ 	u8			chip_select;
+ 	u8			bits_per_word;
++	bool			force_rt_transfers;
+ 	u32			mode;
+ #define	SPI_CPHA	0x01			/* clock phase */
+ #define	SPI_CPOL	0x02			/* clock polarity */
+-- 
+2.21.0.1020.gf2820cf01a-goog

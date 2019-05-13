@@ -1,35 +1,31 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: bcm2835: only split transfers that exceed DLEN if DMA
- available" to the spi tree
-Date: Mon, 13 May 2019 13:31:51 +0100 (BST)
-Message-ID: <20190513123151.6CC771129232@debutante.sirena.org.uk>
-References: <20190509144000.681-1-nsaenzjulienne@suse.de>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: bcm2835aux: Remove spi_alloc_master() error printing"
+ to the spi tree
+Date: Mon, 13 May 2019 13:31:52 +0100 (BST)
+Message-ID: <20190513123152.0B6F31129232@debutante.sirena.org.uk>
+References: <1557480060-15311-1-git-send-email-na-hoan@jinso.co.jp>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Stefan Wahren <stefan.wahren@i2se.com>,
- Florian Fainelli <f.fainelli@gmail.com>, Scott Branden <sbranden@broadcom.com>,
- Ray Jui <rjui@broadcom.com>, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, Eric Anholt <eric@anholt.net>,
- Mark Brown <broonie@kernel.org>, bcm-kernel-feedback-list@broadcom.com,
- linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org
-To: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190509144000.681-1-nsaenzjulienne@suse.de>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+ linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Hoan Nguyen An <na-hoan-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <1557480060-15311-1-git-send-email-na-hoan-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
+List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: bcm2835: only split transfers that exceed DLEN if DMA available
+   spi: bcm2835aux: Remove spi_alloc_master() error printing
 
 has been applied to the spi tree at
 
@@ -54,51 +50,37 @@ to this mail.
 Thanks,
 Mark
 
->From 3393f7d924510cfdb2ff9594eac2590d5de16d92 Mon Sep 17 00:00:00 2001
-From: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-Date: Thu, 9 May 2019 16:39:59 +0200
-Subject: [PATCH] spi: bcm2835: only split transfers that exceed DLEN if DMA
- available
+>From bf93b9512645d2b2f42740ba4918b55d7b5f40a7 Mon Sep 17 00:00:00 2001
+From: Hoan Nguyen An <na-hoan-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+Date: Fri, 10 May 2019 18:21:00 +0900
+Subject: [PATCH] spi: bcm2835aux: Remove spi_alloc_master() error printing
 
-There is no use for this when performing non DMA operations. So we
-bypass the split.
+Printing an error on memory allocation failure is unnecessary,
+as the memory allocation core code already takes care of that.
 
-Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Hoan Nguyen An <na-hoan-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Reviewed-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-bcm2835.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ drivers/spi/spi-bcm2835aux.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index 3a9b2187787a..f87a023a445a 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -895,15 +895,17 @@ static int bcm2835_spi_prepare_message(struct spi_master *master,
- 	u32 cs = bcm2835_rd(bs, BCM2835_SPI_CS);
- 	int ret;
+diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+index bbf87adb3ff8..4523bacd583f 100644
+--- a/drivers/spi/spi-bcm2835aux.c
++++ b/drivers/spi/spi-bcm2835aux.c
+@@ -505,10 +505,8 @@ static int bcm2835aux_spi_probe(struct platform_device *pdev)
+ 	int err;
  
--	/*
--	 * DMA transfers are limited to 16 bit (0 to 65535 bytes) by the SPI HW
--	 * due to DLEN. Split up transfers (32-bit FIFO aligned) if the limit is
--	 * exceeded.
--	 */
--	ret = spi_split_transfers_maxsize(master, msg, 65532,
--					  GFP_KERNEL | GFP_DMA);
--	if (ret)
--		return ret;
-+	if (master->can_dma) {
-+		/*
-+		 * DMA transfers are limited to 16 bit (0 to 65535 bytes) by
-+		 * the SPI HW due to DLEN. Split up transfers (32-bit FIFO
-+		 * aligned) if the limit is exceeded.
-+		 */
-+		ret = spi_split_transfers_maxsize(master, msg, 65532,
-+						  GFP_KERNEL | GFP_DMA);
-+		if (ret)
-+			return ret;
-+	}
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*bs));
+-	if (!master) {
+-		dev_err(&pdev->dev, "spi_alloc_master() failed\n");
++	if (!master)
+ 		return -ENOMEM;
+-	}
  
- 	cs &= ~(BCM2835_SPI_CS_CPOL | BCM2835_SPI_CS_CPHA);
- 
+ 	platform_set_drvdata(pdev, master);
+ 	master->mode_bits = (SPI_CPOL | SPI_CS_HIGH | SPI_NO_CS);
 -- 
 2.20.1

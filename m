@@ -1,86 +1,53 @@
-From: Douglas Anderson <dianders@chromium.org>
-Subject: [PATCH v2 0/3] spi: A better solution for cros_ec_spi reliability
-Date: Mon, 13 May 2019 13:18:22 -0700
-Message-ID: <20190513201825.166969-1-dianders@chromium.org>
+From: Doug Anderson <dianders@chromium.org>
+Subject: Re: [PATCH 1/4] spi: For controllers that need realtime always use
+ the pump thread
+Date: Mon, 13 May 2019 13:24:57 -0700
+Message-ID: <CAD=FV=UBic4qywgYQFGEXx_frD9ZoRJX7XGgDbQCvb2CbkBa9w@mail.gmail.com>
+References: <20190510223437.84368-1-dianders@chromium.org> <20190510223437.84368-2-dianders@chromium.org>
+ <20190512073301.GC21483@sirena.org.uk>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: linux-rockchip@lists.infradead.org, drinkcat@chromium.org,
-        Guenter Roeck <groeck@chromium.org>, briannorris@chromium.org,
-        mka@chromium.org, Douglas Anderson <dianders@chromium.org>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>,
-        Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        Nicolas Boichat <drinkcat@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190512073301.GC21483@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This series is a much better solution for getting the Chrome OS EC to
-talk reliably and replaces commit 37a186225a0c ("platform/chrome:
-cros_ec_spi: Transfer messages at high priority").
+Hi,
 
-Specifically note that even though the above commit made things
-better, we still saw some failures.
+On Sun, May 12, 2019 at 10:05 AM Mark Brown <broonie@kernel.org> wrote:
 
-The majority of these failures were because we were competing for time
-with dm-crypt which also scheduled work on HIGHPRI workqueues.  While
-we can consider reverting the change that made dm-crypt run its work
-at HIGHPRI, the argument in commit a1b89132dc4f ("dm crypt: use
-WQ_HIGHPRI for the IO and crypt workqueues") is somewhat compelling.
-It does make sense for IO to be scheduled at a priority that's higher
-than the default user priority.
+> On Fri, May 10, 2019 at 03:34:34PM -0700, Douglas Anderson wrote:
+> > If a controller specifies that it needs high priority for sending
+> > messages we should always schedule our transfers on the thread.  If we
+> > don't do this we'll do the transfer in the caller's context which
+> > might not be very high priority.
+>
+> If performance is important you probably also want to avoid the context
+> thrashing - executing in the calling context is generally a substantial
+> performance boost.  I can see this causing problems further down the
+> line when someone else turns up with a different requirement, perhaps in
+> an application where the caller does actually have a raised priority
+> themselves and just wanted to make sure that the thread wasn't lower
+> than they are.  I guess it'd be nice if we could check what priority the
+> calling thread has and make a decision based on that but there don't
+> seem to be any facilities for doing that which I can see right now.
 
-It turns out that we could also see problems because loop devices also
-run at high priority.  See the set_user_nice() in
-loop_prepare_queue().
+In my case performance is 2nd place to a transfer not getting
+interrupted once started (so we don't break the 8ms rule of the EC).
+My solution in v2 of my series is to take out the forcing in the case
+that the controller wanted "rt" priority and then to add "force" to
+the parameter name.  If someone wants rt priority for the thread but
+doesn't want to force all transfers to the thread we can later add a
+different parameter for that?
 
-Looking in more detail, it can be seen that the high priority
-workqueue isn't actually that high of a priority.  It runs at MIN_NICE
-which is _fairly_ high priority but still below all real time
-priority.  We can do better by using realtime priority.  That makes
-sense because cros_ec_spi actually needs to run quickly for
-correctness.  As I understand this is exactly what real time priority
-is for.  Note that there is a discussion going on about the dm-crypt
-priority [1].
-
-We also had other problems with the previous patch because sometimes
-we'd end up on the SPI pumping thread and had our priority downgraded.
-
-Both the competition with other high priority things and the priority
-downgrading are fixed by this new series.
-
-After this series I can run the following test on Chrome OS (which
-mounts /var as stateful encrypted) with no errors:
-  dd if=/dev/zero of=/var/log/foo.txt bs=4M count=512&
-  while true; do
-    ectool version > /dev/null;
-  done
-
-Special thanks to Guenter Roeck for pointing out the "realtime"
-feature of the SPI framework so I didn't re-invent the wheel.  I have
-no idea how I missed it.  :-/
-
-Also note: if you want some history on investigation done here, feel
-free to peruse the Chrome OS bug [2].
-
-[1] https://lkml.kernel.org/r/CAD=FV=VOAjgdrvkK8YKPP-8zqwPpo39rA43JH2BCeYLB0UkgAQ@mail.gmail.com
-[2] https://crbug.com/948742
-
-Changes in v2:
-- Now only force transfers to the thread for devices that want it.
-- Squashed patch #1 and #2 together.
-- Renamed variable to "force_rt_transfers".
-
-Douglas Anderson (3):
-  spi: Allow SPI devices to force transfers on a realtime thread
-  platform/chrome: cros_ec_spi: Force transfers to realtime priority
-  Revert "platform/chrome: cros_ec_spi: Transfer messages at high
-    priority"
-
- drivers/platform/chrome/cros_ec_spi.c | 81 +++------------------------
- drivers/spi/spi.c                     | 49 +++++++++++++---
- include/linux/spi/spi.h               |  5 ++
- 3 files changed, 52 insertions(+), 83 deletions(-)
-
--- 
-2.21.0.1020.gf2820cf01a-goog
+-Doug

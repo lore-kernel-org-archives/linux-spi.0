@@ -1,112 +1,104 @@
-From: Lucas Stach <l.stach@pengutronix.de>
-Subject: Re: [PATCH v3 00/14] add ecspi ERR009165 for i.mx6/7 soc family
-Date: Mon, 13 May 2019 11:31:30 +0200
-Message-ID: <1557739890.3997.1.camel@pengutronix.de>
-References: <1557249513-4903-1-git-send-email-yibin.gong@nxp.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: bcm2835: only split transfers that exceed DLEN if DMA
+ available" to the spi tree
+Date: Mon, 13 May 2019 13:31:51 +0100 (BST)
+Message-ID: <20190513123151.6CC771129232@debutante.sirena.org.uk>
+References: <20190509144000.681-1-nsaenzjulienne@suse.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>
-To: Robin Gong <yibin.gong@nxp.com>,
-        "robh@kernel.org" <robh@kernel.org>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-        "festevam@gmail.com" <festevam@gmail.com>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
-        "plyatov@gmail.com" <plyatov@gmail.com>,
-        "vkoul@kernel.org" <vkoul@kernel.org>,
-        "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will.deacon@arm.com" <will.deacon@arm.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1557249513-4903-1-git-send-email-yibin.gong@nxp.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Stefan Wahren <stefan.wahren@i2se.com>,
+ Florian Fainelli <f.fainelli@gmail.com>, Scott Branden <sbranden@broadcom.com>,
+ Ray Jui <rjui@broadcom.com>, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, Eric Anholt <eric@anholt.net>,
+ Mark Brown <broonie@kernel.org>, bcm-kernel-feedback-list@broadcom.com,
+ linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+To: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190509144000.681-1-nsaenzjulienne@suse.de>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Robin,
+The patch
 
-Am Dienstag, den 07.05.2019, 09:15 +0000 schrieb Robin Gong:
->   There is ecspi ERR009165 on i.mx6/7 soc family, which cause FIFO
-> transfer to be send twice in DMA mode. Please get more information from:
-> https://www.nxp.com/docs/en/errata/IMX6DQCE.pdf. The workaround is adding
-> new sdma ram script which works in XCH  mode as PIO inside sdma instead
-> of SMC mode, meanwhile, 'TX_THRESHOLD' should be 0. The issue should be
-> exist on all legacy i.mx6/7 soc family before i.mx6ul.
-> NXP fix this design issue from i.mx6ul, so newer chips including i.mx6ul/
-> 6ull/6sll do not need this workaroud anymore. All other i.mx6/7/8 chips
-> still need this workaroud. This patch set add new 'fsl,imx6ul-ecspi'
-> for ecspi driver and 'ecspi_fixed' in sdma driver to choose if need errata
-> or not.
->   The first two reverted patches should be the same issue, though, it
-> seems 'fixed' by changing to other shp script. Hope Sean or Sascha could
-> have the chance to test this patch set if could fix their issues.
->   Besides, enable sdma support for i.mx8mm/8mq and fix ecspi1 not work
-> on i.mx8mm because the event id is zero.
-> 
-> PS:
->   Please get sdma firmware from below linux-firmware and copy it to your
-> local rootfs /lib/firmware/imx/sdma.
-> https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/imx/sdma
+   spi: bcm2835: only split transfers that exceed DLEN if DMA available
 
-This series is unfit for merging, as long as it depends on a SDMA RAM
-script that is known to break serial DMA. When can we expect to get a
-firmware version with the broken serial script removed out into the
-public?
+has been applied to the spi tree at
 
-Regards,
-Lucas
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.3
 
-> v2:
->   1. add commit log for reverted patches.
->   2. add comment for 'ecspi_fixed' in sdma driver.
->   3. add 'fsl,imx6sll-ecspi' compatible instead of 'fsl,imx6ul-ecspi'
->      rather than remove.
-> v3:
->   1. confirm with design team make sure ERR009165 fixed on i.mx6ul/i.mx6ull
->   /i.mx6sll, not fixed on i.mx8m/8mm and other i.mx6/7 legacy chips.
->   Correct dts related dts patch in v2.
->   2. clean eratta information in binding doc and new 'tx_glitch_fixed' flag
->   in spi-imx driver to state ERR009165 fixed or not.
->   3. Enlarge burst size to fifo size for tx since tx_wml set to 0 in the
->   errata workaroud, thus improve performance as possible.
-> 
-> Robin Gong (14):
->   Revert "ARM: dts: imx6q: Use correct SDMA script for SPI5 core"
->   Revert "ARM: dts: imx6: Use correct SDMA script for SPI cores"
->   Revert "dmaengine: imx-sdma: refine to load context only once"
->   dmaengine: imx-sdma: remove dupilicated sdma_load_context
->   dmaengine: imx-sdma: add mcu_2_ecspi script
->   spi: imx: fix ERR009165
->   spi: imx: remove ERR009165 workaround on i.mx6ul
->   dt-bindings: spi: imx: add new i.mx6ul compatible name
->   dmaengine: imx-sdma: remove ERR009165 on i.mx6ul
->   dt-bindings: dma: imx-sdma: add i.mx6ul/6sx compatible name
->   dmaengine: imx-sdma: fix ecspi1 rx dma not work on i.mx8mm
->   ARM: dts: imx6ul: add dma support on ecspi
->   ARM: dts: imx6sll: correct sdma compatible
->   arm64: defconfig: Enable SDMA on i.mx8mq/8mm
-> 
->  .../devicetree/bindings/dma/fsl-imx-sdma.txt       |  2 +
->  .../devicetree/bindings/spi/fsl-imx-cspi.txt       |  1 +
->  arch/arm/boot/dts/imx6q.dtsi                       |  2 +-
->  arch/arm/boot/dts/imx6qdl.dtsi                     |  8 +--
->  arch/arm/boot/dts/imx6sll.dtsi                     |  2 +-
->  arch/arm/boot/dts/imx6ul.dtsi                      |  8 +++
->  arch/arm64/configs/defconfig                       |  3 +
->  drivers/dma/imx-sdma.c                             | 78 ++++++++++++++++------
->  drivers/spi/spi-imx.c                              | 61 ++++++++++++++---
->  include/linux/platform_data/dma-imx-sdma.h         |  1 +
->  10 files changed, 132 insertions(+), 34 deletions(-)
-> 
-> -- 
-> 2.7.4
-> 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 3393f7d924510cfdb2ff9594eac2590d5de16d92 Mon Sep 17 00:00:00 2001
+From: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Date: Thu, 9 May 2019 16:39:59 +0200
+Subject: [PATCH] spi: bcm2835: only split transfers that exceed DLEN if DMA
+ available
+
+There is no use for this when performing non DMA operations. So we
+bypass the split.
+
+Signed-off-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-bcm2835.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index 3a9b2187787a..f87a023a445a 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -895,15 +895,17 @@ static int bcm2835_spi_prepare_message(struct spi_master *master,
+ 	u32 cs = bcm2835_rd(bs, BCM2835_SPI_CS);
+ 	int ret;
+ 
+-	/*
+-	 * DMA transfers are limited to 16 bit (0 to 65535 bytes) by the SPI HW
+-	 * due to DLEN. Split up transfers (32-bit FIFO aligned) if the limit is
+-	 * exceeded.
+-	 */
+-	ret = spi_split_transfers_maxsize(master, msg, 65532,
+-					  GFP_KERNEL | GFP_DMA);
+-	if (ret)
+-		return ret;
++	if (master->can_dma) {
++		/*
++		 * DMA transfers are limited to 16 bit (0 to 65535 bytes) by
++		 * the SPI HW due to DLEN. Split up transfers (32-bit FIFO
++		 * aligned) if the limit is exceeded.
++		 */
++		ret = spi_split_transfers_maxsize(master, msg, 65532,
++						  GFP_KERNEL | GFP_DMA);
++		if (ret)
++			return ret;
++	}
+ 
+ 	cs &= ~(BCM2835_SPI_CS_CPOL | BCM2835_SPI_CS_CPHA);
+ 
+-- 
+2.20.1

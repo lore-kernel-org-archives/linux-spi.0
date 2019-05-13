@@ -1,17 +1,17 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: bcm2835aux: Remove spi_alloc_master() error printing"
- to the spi tree
-Date: Mon, 13 May 2019 13:31:52 +0100 (BST)
-Message-ID: <20190513123152.0B6F31129232@debutante.sirena.org.uk>
-References: <1557480060-15311-1-git-send-email-na-hoan@jinso.co.jp>
+Subject: Applied "spi: bcm2835: Remove spi_alloc_master() error printing" to
+ the spi tree
+Date: Mon, 13 May 2019 13:31:51 +0100 (BST)
+Message-ID: <20190513123151.CFAD31129234@debutante.sirena.org.uk>
+References: <1557477738-20634-1-git-send-email-na-hoan@jinso.co.jp>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
- linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+ na-hoan-HEF513clHfp3+QwDJ9on6Q@public.gmane.org, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: Hoan Nguyen An <na-hoan-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
 Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <1557480060-15311-1-git-send-email-na-hoan-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+In-Reply-To: <1557477738-20634-1-git-send-email-na-hoan-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
  <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
@@ -25,7 +25,7 @@ List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: bcm2835aux: Remove spi_alloc_master() error printing
+   spi: bcm2835: Remove spi_alloc_master() error printing
 
 has been applied to the spi tree at
 
@@ -50,10 +50,10 @@ to this mail.
 Thanks,
 Mark
 
->From bf93b9512645d2b2f42740ba4918b55d7b5f40a7 Mon Sep 17 00:00:00 2001
+>From bfada2080b6439e997bfeae43ed73a3e41c351fd Mon Sep 17 00:00:00 2001
 From: Hoan Nguyen An <na-hoan-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
-Date: Fri, 10 May 2019 18:21:00 +0900
-Subject: [PATCH] spi: bcm2835aux: Remove spi_alloc_master() error printing
+Date: Fri, 10 May 2019 17:42:18 +0900
+Subject: [PATCH] spi: bcm2835: Remove spi_alloc_master() error printing
 
 Printing an error on memory allocation failure is unnecessary,
 as the memory allocation core code already takes care of that.
@@ -63,14 +63,14 @@ Reviewed-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gma
 Reviewed-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-bcm2835aux.c | 4 +---
+ drivers/spi/spi-bcm2835.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-index bbf87adb3ff8..4523bacd583f 100644
---- a/drivers/spi/spi-bcm2835aux.c
-+++ b/drivers/spi/spi-bcm2835aux.c
-@@ -505,10 +505,8 @@ static int bcm2835aux_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index eb67da697ef5..3a9b2187787a 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -992,10 +992,8 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
  	int err;
  
  	master = spi_alloc_master(&pdev->dev, sizeof(*bs));
@@ -81,6 +81,6 @@ index bbf87adb3ff8..4523bacd583f 100644
 -	}
  
  	platform_set_drvdata(pdev, master);
- 	master->mode_bits = (SPI_CPOL | SPI_CS_HIGH | SPI_NO_CS);
+ 
 -- 
 2.20.1

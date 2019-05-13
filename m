@@ -1,229 +1,75 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH v12 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3
- RPC-IF MFD bindings
-Date: Mon, 13 May 2019 16:43:09 +0200
-Message-ID: <CAMuHMdWsZPevpYg0HfbgaXPD89RFdOOEPawvvZDt3Kp4=PeLRQ@mail.gmail.com>
-References: <1556092536-17095-1-git-send-email-masonccyang@mxic.com.tw>
- <1556092536-17095-4-git-send-email-masonccyang@mxic.com.tw>
- <20190424212356.GA27103@bogus> <65853dc2-6f3c-1494-7e72-54877797cdd2@gmail.com>
- <20190507125730.GD29524@dell> <OF08A5650B.8AE8977C-ON482583F4.000E5B1E-482583F4.000F7215@mxic.com.tw>
- <d229b19e-351c-c576-b5c4-716d10dad1a0@gmail.com> <20190508061119.GB7627@dell>
- <OFE86674B9.06D723A0-ON482583F5.000AD50C-482583F5.000BA075@mxic.com.tw>
- <a05cff8f-7df2-1938-c0e7-f9366bece607@cogentembedded.com> <OFB19BCE91.6EBBAA77-ON482583F6.000234E2-482583F6.00061290@mxic.com.tw>
- <CAMuHMdUP8KU3Dbv6cwOvrY0hWOcm1xqVcsi20+GvazYMDLGGZg@mail.gmail.com> <OFD932ABFC.E3FFCEB8-ON482583F9.003412B1-482583F9.0034D5CA@mxic.com.tw>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [resend] [PATCH 5/5] spi: bcm2835aux: support effective_speed_hz
+Date: Mon, 13 May 2019 16:12:14 +0100
+Message-ID: <20190513151214.GB5168@sirena.org.uk>
+References: <20190223150705.10729-1-kernel@martin.sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Boris Brezillon <bbrezillon@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
-        Lee Jones <lee.jones@linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        zhengxunli@mxic.com.tw
-To: Mason Yang <masonccyang@mxic.com.tw>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OFD932ABFC.E3FFCEB8-ON482583F9.003412B1-482583F9.0034D5CA@mxic.com.tw>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============5581634880545130080=="
+Cc: Stefan Wahren <stefan.wahren@i2se.com>, Eric Anholt <eric@anholt.net>,
+ linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-spi@vger.kernel.org
+To: kernel@martin.sperl.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190223150705.10729-1-kernel@martin.sperl.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mason,
 
-Note that if you send multipart/text+html emails, they will be dropped silently
-by most Linux mailing lists.
-Hence I'm quoting your last email fully, to give other people a chance
-reading it (and commenting).
+--===============5581634880545130080==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="s2ZSL+KKDSLx8OML"
+Content-Disposition: inline
 
-On Mon, May 13, 2019 at 11:37 AM <masonccyang@mxic.com.tw> wrote:
-> > > > [...]
-> > > > >> > >> > On 4/24/19 11:23 PM, Rob Herring wrote:
-> > > > >> > >> > > On Wed, Apr 24, 2019 at 03:55:36PM +0800, Mason Yang wrote:
-> > > > >> > >> > >> Document the bindings used by the Renesas R-Car
-> > Gen3 RPC-IF MFD.
-> > > > >> > >> > >>
-> > > > >> > >> > >> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
-> > > > >> > >> > >> ---
-> > > > >> > >> > >>  .../devicetree/bindings/mfd/mfd-renesas-rpc.txt
-> > | 40 ++++++
-> > > > >> > >> ++++++++++++++++
-> > > > >> > >> > >>  1 file changed, 40 insertions(+)
-> > > > >> > >> > >>  create mode 100644 Documentation/devicetree/
-> > bindings/mfd/mfd-
-> > > > >> > >> renesas-rpc.txt
-> > > > >> > >> > >>
-> > > > >> > >> > >> diff --git a/Documentation/devicetree/bindings/mfd/
-> > mfd-renesas-
-> > > > >> > >> rpc.txt b/Documentation/devicetree/bindings/mfd/mfd-
-> > renesas-rpc.txt
-> > > > >> > >> > >> new file mode 100644
-> > > > >> > >> > >> index 0000000..668b822
-> > > > >> > >> > >> --- /dev/null
-> > > > >> > >> > >> +++ b/Documentation/devicetree/bindings/mfd/mfd-
-> > renesas-rpc.txt
-> > > > >> > >> > >> @@ -0,0 +1,40 @@
-> > > > >> > >> > >> +Renesas R-Car Gen3 RPC-IF MFD Device Tree Bindings
-> > > > >> > >> > >> +--------------------------------------------------
-> > > > >> > >> > >
-> > > > >> > >> > > Looks like a SPI flash controller from the example. What
-> > > > makes it an
-> > > > >> > >> > > MFD?
-> > > > >> > >> >
-> > > > >> > >> > It supports both SPI NOR and HyperFlash (CFI-compliantflash with
-> > > > >> > >> > different bus interface).
-> > > > >> > >>
-> > > > >> > >> Looks like you're registering one OR the other.
-> > > > >> > >>
-> > > > >> > >> Why don't you just do this from DT?
-> > > > >> > >>
-> > > > >> > >> No reason for this to be an MFD IMHO.
-> > > > >> > >
-> > > > >> > >
-> > > > >> > > okay, I will patch it back to SPI mode only.
-> > > > >> >
-> > > > >> > I don't think that's what Lee meant . The controller supports _both_
-> > > > >> > modes , hence it would have the same compatible string. You
-> > just need to
-> > > > >> > extract the mode of operation from the DT.
-> > > > >>
-> > > > >> HiSilicon attempted to upstream something similar, only their
-> > > > >> controller provided NAND and NOR functionality.  They used different
-> > > > >> compatible strings to differentiate between the varying
-> > > > >> technologies.
-> > > > >>
-> > > > >> They too tried to use MFD as a means to select between them (which was
-> > > > >> also NACKed).  Not sure what they ended up doing, but the original
-> > > > >> submission and (half of) the conversation can be found at [0].  Some
-> > > > >> more of the thread continues at [1].
-> > > > >>
-> > > > >> Hope that helps.
-> > > > >>
-> > > > >> [0] https://groups.google.com/forum/#!topic/fa.linux.kernel/F6i9o8sfOIw
-> > > > >> [1] https://marc.info/?l=devicetree&m=147669165104431&w=2
-> > > > >
-> > > > >
-> > > > > Hi Marek,
-> > > > >
-> > > > > By Jones's comments:
-> > > > >
-> > --------------------------------------------------------------------------
-> > > > >> From: Shunquan Lin <linshunquan1@hisilicon.com>
-> > > > >>
-> > > > >> This patch adds driver support for HiSilicon Flash Memory
-> > > > >> Controller(FMC). HiSilicon FMC is a multi-functions device which
-> > > > >> supports SPI Nor flash controller, SPI nand Flash controller and
-> > > > >> parallel nand flash controller.
-> > > > >
-> > > > > MFDs are for devices which span multiple subsystems.
-> > > >
-> > > >    And we do! One of the subdrivers will live under drivers/
-> > spi/, the other
-> > > > under drivers/mtd/...
-> > > >
-> > >
-> > > From my point of view, I think Jones mean to MFD's subsystems are
-> > working simultaneously
-> > > at the run-time, one period of time is working for sub-device-1
-> > and later period of time
-> > > is working for sub-device-2 and so on.
-> > >
-> > > But for RPC-IF, SPI or HF mode is decided at boot time by pins
-> > configure and later in kernel
-> > > by dtb, RPC-IF can't switch SPI and HF mode at the run time.
-> >
-> > > So far, Jones seems don't agree RPC-IF to MFD and then RPC MFD
-> > will not applied
-> > > to mfd tree by him !
-> >
-> > There's precedence for such constructs being an MFD: please see
-> > drivers/mfd/at91-usart.c, which registers a single MFD cell for either
-> > serial or SPI.
->
-> okay, many thanks for your information.
->
-> How about to patch RPF-IF dts to:
-> -------------------------------------------------------------->
->
-> Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
-> ---------------------------------------------------------
->
->   RPC-IF supports both SPI NOR and HyperFlash (CFI-compliant flash)
->
->   Required properties:
->   - compatible: should be an SoC-specific compatible value, followed by
->                   "renesas,rcar-gen3-rpc" as a fallback.
->                   supported SoC-specific values are:
->                   "renesas,r8a77995-rpc"  (R-Car D3)
->   - reg: should contain three register areas:
->           first for the base address of RPC-IF registers,
->           second for the direct mapping read mode and
->           third for the write buffer area.
->   - reg-names: should contain "regs", "dirmap" and "wbuf"
->   - clocks: should contain 1 entries for the module's clock
->   - clock-names: should contain "rpc"
->
->   Example:
->   - SPI mode:
->
->           rpc: rpc-if@ee200000 {
->                   compatible = "renesas,r8a77995-rpc", "renesas,rcar-gen3-rpc";
->                   reg = <0 0xee200000 0 0x200>, <0 0x08000000 0 0x4000000>,
->                         <0 0xee208000 0 0x100>;
->                   reg-names = "regs", "dirmap", "wbuf";
->                   clocks = <&cpg CPG_MOD 917>;
->                   clock-names = "rpc";
->                   power-domains = <&sysc R8A77995_PD_ALWAYS_ON>;
->                   resets = <&cpg 917>;
->                   #address-cells = <1>;
->                   #size-cells = <0>;
->
->                   flash@0 {
->                           compatible = "jedec,spi-nor";
->                           reg = <0>;
->                           spi-max-frequency = <40000000>;
->                           spi-tx-bus-width = <1>;
->                           spi-rx-bus-width = <1>;
->                   };
->           };
->
->   - HF mode:
->           rpc: rpc-if@ee200000 {
->                   compatible = "renesas,r8a77995-rpc", "renesas,rcar-gen3-rpc";
->                   reg = <0 0xee200000 0 0x200>, <0 0x08000000 0 0x4000000>,
->                         <0 0xee208000 0 0x100>;
->                   reg-names = "regs", "dirmap", "wbuf";
->                   clocks = <&cpg CPG_MOD 917>;
->                   clock-names = "rpc";
->                   power-domains = <&sysc R8A77995_PD_ALWAYS_ON>;
->                   resets = <&cpg 917>;
->                   #address-cells = <1>;
->                   #size-cells = <1>;
->
->                   flash@0 {
->                           compatible = "cfi-flash";
->                           reg = <0 0x4000000>;
->                   };
->           };
->
-> --------------------------------------------------------------<
->
-> Is it OK ?
 
-I'll defer to the MTD experts.
+--s2ZSL+KKDSLx8OML
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Gr{oetje,eeting}s,
+On Sat, Feb 23, 2019 at 03:07:05PM +0000, kernel@martin.sperl.org wrote:
+> From: Martin Sperl <kernel@martin.sperl.org>
+>=20
+> Setting spi_transfer->effective_speed_hz in transfer_one so that
+> it can get used in cs_change_delay configured with delay as a muliple
+> of SPI clock cycles.
 
-                        Geert
+This needs rebasing against current code.
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+--s2ZSL+KKDSLx8OML
+Content-Type: application/pgp-signature; name="signature.asc"
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzZiU4ACgkQJNaLcl1U
+h9DUMwf9HVUWCWikiFC7SUxOGSqhM2/tdziY9oZvOLbKO5fqkF9etxS2JQMCLyFK
+SOceSXWZO+JOX5BR780dE6Mi4OwWjt7edeQmhGfrz6FbQ2kBOTeDyx5VVg2UCm4x
+fphwn4/EwX1IQAz6ZBqmVE1WSuZBede/dT+7GeRKRRMlhqY8r8T1AElKOKbQsdlO
+RbZ8SaizniMo68tqXDX595rt9Vy73yeAE2WFchucJjQPzj9mU6gDzoyBv6b9EL/R
+jBegJsUNzmrdlDL4I0wAIdLrOZiF+LTN5EUZDTlV5R5do8eLl9ErRHQyF9iAExpO
+vqGdIyW/QMtJXQvxOHrEsO6ce9CiBw==
+=3EQn
+-----END PGP SIGNATURE-----
+
+--s2ZSL+KKDSLx8OML--
+
+
+--===============5581634880545130080==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-arm-kernel mailing list
+linux-arm-kernel@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+--===============5581634880545130080==--

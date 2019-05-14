@@ -1,157 +1,73 @@
-From: Lee Jones <lee.jones@linaro.org>
-Subject: Re: [PATCH v12 2/3] spi: Add Renesas R-Car Gen3 RPC-IF SPI
- controller driver
-Date: Tue, 14 May 2019 07:52:16 +0100
-Message-ID: <20190514065216.GL4319@dell>
-References: <1556092536-17095-1-git-send-email-masonccyang@mxic.com.tw>
- <1556092536-17095-3-git-send-email-masonccyang@mxic.com.tw>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [RFC v2 08/11] arm64: dts: sdm845: Add ufs opps and power-domains
+Date: Tue, 14 May 2019 09:53:34 +0200
+Message-ID: <CAPDyKFppirfM7B9TB=jZzo67E=rdMnfVKEjdv0wn1zBAUoY_HA@mail.gmail.com>
+References: <20190320094918.20234-1-rnayak@codeaurora.org> <20190320094918.20234-9-rnayak@codeaurora.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Cc: broonie@kernel.org, marek.vasut@gmail.com,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        bbrezillon@kernel.org, linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        sergei.shtylyov@cogentembedded.com, robh+dt@kernel.org,
-        mark.rutland@arm.com, devicetree@vger.kernel.org,
-        juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
-        zhengxunli@mxic.com.tw
-To: Mason Yang <masonccyang@mxic.com.tw>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        linux-scsi <linux-scsi@vger.kernel.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Doug Anderson <dianders@chromium.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+To: Rajendra Nayak <rnayak@codeaurora.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1556092536-17095-3-git-send-email-masonccyang@mxic.com.tw>
+In-Reply-To: <20190320094918.20234-9-rnayak@codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 24 Apr 2019, Mason Yang wrote:
-
-> Add a driver for Renesas R-Car Gen3 RPC-IF SPI controller.
-> 
-> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
-> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+On Wed, 20 Mar 2019 at 10:50, Rajendra Nayak <rnayak@codeaurora.org> wrote:
+>
+> Add the additional power domain and the OPP table for ufs on sdm845
+> so the driver can set the appropriate performance state of the
+> power domain while setting the clock rate.
+>
+> Signed-off-by: Rajendra Nayak <rnayak@codeaurora.org>
 > ---
->  drivers/spi/Kconfig           |   6 +
->  drivers/spi/Makefile          |   1 +
->  drivers/spi/spi-renesas-rpc.c | 571 ++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 578 insertions(+)
->  create mode 100644 drivers/spi/spi-renesas-rpc.c
-> 
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index f761655..1f52bcf 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -564,6 +564,12 @@ config SPI_RSPI
->  	help
->  	  SPI driver for Renesas RSPI and QSPI blocks.
->  
-> +config SPI_RENESAS_RPC
-> +	tristate "Renesas R-Car Gen3 RPC-IF controller"
-> +	depends on ARCH_RENESAS || COMPILE_TEST
-> +	help
-> +	  SPI driver for Renesas R-Car Gen3 RPC-IF.
+>  arch/arm64/boot/dts/qcom/sdm845.dtsi | 20 +++++++++++++++++++-
+>  1 file changed, 19 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+> index 027ffe6e93e8..a3af4a1757b4 100644
+> --- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+> @@ -1140,6 +1140,21 @@
+>                         };
+>                 };
+>
+> +               ufs_opp_table: ufs-opp-table {
+> +                       compatible = "operating-points-v2";
 > +
->  config SPI_QCOM_QSPI
->  	tristate "QTI QSPI controller"
->  	depends on ARCH_QCOM
-> diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-> index d8fc03c..b3a3deb 100644
-> --- a/drivers/spi/Makefile
-> +++ b/drivers/spi/Makefile
-> @@ -86,6 +86,7 @@ obj-$(CONFIG_SPI_QUP)			+= spi-qup.o
->  obj-$(CONFIG_SPI_ROCKCHIP)		+= spi-rockchip.o
->  obj-$(CONFIG_SPI_RB4XX)			+= spi-rb4xx.o
->  obj-$(CONFIG_SPI_RSPI)			+= spi-rspi.o
-> +obj-$(CONFIG_SPI_RENESAS_RPC)		+= spi-renesas-rpc.o
->  obj-$(CONFIG_SPI_S3C24XX)		+= spi-s3c24xx-hw.o
->  spi-s3c24xx-hw-y			:= spi-s3c24xx.o
->  spi-s3c24xx-hw-$(CONFIG_SPI_S3C24XX_FIQ) += spi-s3c24xx-fiq.o
-> diff --git a/drivers/spi/spi-renesas-rpc.c b/drivers/spi/spi-renesas-rpc.c
-> new file mode 100644
-> index 0000000..c2202d4
-> --- /dev/null
-> +++ b/drivers/spi/spi-renesas-rpc.c
-> @@ -0,0 +1,571 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +//
-> +// Copyright (C) 2018 ~ 2019 Renesas Solutions Corp.
-> +// Copyright (C) 2019 Macronix International Co., Ltd.
-> +//
-> +// R-Car Gen3 RPC-IF SPI/QSPI/Octa driver
-> +//
-> +// Author:
-> +//	Mason Yang <masonccyang@mxic.com.tw>
-> +//
+> +                       opp-50000000 {
+> +                               opp-hz = /bits/ 64 <50000000>;
+> +                               required-opps = <&rpmhpd_opp_min_svs>;
+> +                       };
 > +
-> +#include <linux/clk.h>
-> +#include <linux/io.h>
-> +#include <linux/log2.h>
-> +#include <linux/iopoll.h>
-> +#include <linux/mfd/renesas-rpc.h>
-> +#include <linux/module.h>
-> +#include <linux/mtd/mtd.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/pm_runtime.h>
-> +#include <linux/regmap.h>
-> +#include <linux/reset.h>
-> +#include <linux/spi/spi.h>
-> +#include <linux/spi/spi-mem.h>
+> +                       opp-200000000 {
+> +                               opp-hz = /bits/ 64 <200000000>;
+> +                               required-opps = <&rpmhpd_opp_nom>;
 > +
-> +#include <asm/unaligned.h>
+> +                       };
+> +               };
 > +
-> +struct rpc_spi {
-> +	struct rpc_mfd *mfd;
+>                 ufs_mem_hc: ufshc@1d84000 {
+>                         compatible = "qcom,sdm845-ufshc", "qcom,ufshc",
+>                                      "jedec,ufs-2.0";
+> @@ -1148,7 +1163,7 @@
+>                         phys = <&ufs_mem_phy_lanes>;
+>                         phy-names = "ufsphy";
+>                         lanes-per-direction = <2>;
+> -                       power-domains = <&gcc UFS_PHY_GDSC>;
+> +                       power-domains = <&gcc UFS_PHY_GDSC>, <&rpmhpd SDM845_CX>;
 
-The term MFD isn't a real thing.  What you're obtaining below is
-driver data and is normally articulated as 'ddata' in drivers.
-
-> +	u32 cur_speed_hz;
-> +	u32 cmd;
-> +	u32 addr;
-> +	u32 dummy;
-> +	u32 smcr;
-> +	u32 smenr;
-> +	u32 xferlen;
-> +	u32 totalxferlen;
-> +	enum spi_mem_data_dir xfer_dir;
-> +};
+You probably want to use "power-domain-names" as well.
 
 [...]
 
-> +static void rpc_spi_hw_init(struct rpc_spi *rpc)
-> +{
-> +	//
-> +	// NOTE: The 0x260 are undocumented bits, but they must be set.
-> +	//	 RPC_PHYCNT_STRTIM is strobe timing adjustment bit,
-> +	//	 0x0 : the delay is biggest,
-> +	//	 0x1 : the delay is 2nd biggest,
-> +	//	 On H3 ES1.x, the value should be 0, while on others,
-> +	//	 the value should be 6.
-> +	//
-
-C++ style comments?  Is that a thing now?
-
-> +	regmap_write(rpc->mfd->regmap, RPC_PHYCNT, RPC_PHYCNT_CAL |
-> +				  RPC_PHYCNT_STRTIM(6) | 0x260);
-> +
-> +	//
-> +	// NOTE: The 0x1511144 are undocumented bits, but they must be set
-> +	//       for RPC_PHYOFFSET1.
-> +	//	 The 0x31 are undocumented bits, but they must be set
-> +	//	 for RPC_PHYOFFSET2.
-> +	//
-> +	regmap_write(rpc->mfd->regmap, RPC_PHYOFFSET1,
-> +		     RPC_PHYOFFSET1_DDRTMG(3) | 0x1511144);
-> +	regmap_write(rpc->mfd->regmap, RPC_PHYOFFSET2, 0x31 |
-> +		     RPC_PHYOFFSET2_OCTTMG(4));
-> +	regmap_write(rpc->mfd->regmap, RPC_SSLDR, RPC_SSLDR_SPNDL(7) |
-> +		     RPC_SSLDR_SLNDL(7) | RPC_SSLDR_SCKDL(7));
-> +	regmap_write(rpc->mfd->regmap, RPC_CMNCR, RPC_CMNCR_MD |
-> +		     RPC_CMNCR_SFDE | RPC_CMNCR_MOIIO_HIZ | RPC_CMNCR_IOFV_HIZ |
-> +		     RPC_CMNCR_BSZ(0));
-> +}
-
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Kind regards
+Uffe

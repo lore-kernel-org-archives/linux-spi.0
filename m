@@ -1,146 +1,224 @@
-From: Guenter Roeck <groeck@google.com>
-Subject: Re: [PATCH v3 2/3] spi: Allow SPI devices to request the pumping
- thread be realtime
-Date: Tue, 14 May 2019 12:44:42 -0700
-Message-ID: <CABXOdTdiEgF2Jypha1qZ4s1X2bkYqVTmT7XNYge19WQtSarSVw@mail.gmail.com>
-References: <20190514183935.143463-1-dianders@chromium.org> <20190514183935.143463-3-dianders@chromium.org>
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Subject: Re: [PATCH v12 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3
+ RPC-IF MFD bindings
+Date: Tue, 14 May 2019 23:27:50 +0300
+Message-ID: <44bc8f0a-cbdc-db4a-9a46-b8bae5cc37a2@cogentembedded.com>
+References: <1556092536-17095-1-git-send-email-masonccyang@mxic.com.tw>
+ <1556092536-17095-4-git-send-email-masonccyang@mxic.com.tw>
+ <20190424212356.GA27103@bogus>
+ <65853dc2-6f3c-1494-7e72-54877797cdd2@gmail.com>
+ <20190507125730.GD29524@dell>
+ <OF08A5650B.8AE8977C-ON482583F4.000E5B1E-482583F4.000F7215@mxic.com.tw>
+ <d229b19e-351c-c576-b5c4-716d10dad1a0@gmail.com> <20190508061119.GB7627@dell>
+ <OFE86674B9.06D723A0-ON482583F5.000AD50C-482583F5.000BA075@mxic.com.tw>
+ <a05cff8f-7df2-1938-c0e7-f9366bece607@cogentembedded.com>
+ <OFB19BCE91.6EBBAA77-ON482583F6.000234E2-482583F6.00061290@mxic.com.tw>
+ <CAMuHMdUP8KU3Dbv6cwOvrY0hWOcm1xqVcsi20+GvazYMDLGGZg@mail.gmail.com>
+ <OFD932ABFC.E3FFCEB8-ON482583F9.003412B1-482583F9.0034D5CA@mxic.com.tw>
+ <b51d1cb7-b3b5-208f-ab4c-145ecb57805d@cogentembedded.com>
+ <OFAD9AA573.86373900-ON482583FA.0034781A-482583FA.0035B40C@mxic.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>,
-        Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        Nicolas Boichat <drinkcat@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-spi@vger.kernel.org
-To: Douglas Anderson <dianders@chromium.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: Boris Brezillon <bbrezillon@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+        <devicetree@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh@kernel.org>, zhengxunli@mxic.com.tw
+To: masonccyang@mxic.com.tw, Geert Uytterhoeven <geert@linux-m68k.org>,
+        Lee Jones <lee.jones@linaro.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190514183935.143463-3-dianders@chromium.org>
+In-Reply-To: <OFAD9AA573.86373900-ON482583FA.0034781A-482583FA.0035B40C@mxic.com.tw>
+Content-Language: en-MW
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, May 14, 2019 at 11:40 AM Douglas Anderson <dianders@chromium.org> wrote:
->
-> Right now the only way to get the SPI pumping thread bumped up to
-> realtime priority is for the controller to request it.  However it may
-> be that the controller works fine with the normal priority but
-> communication to a particular SPI device on the bus needs realtime
-> priority.
->
-> Let's add a way for devices to request realtime priority when they set
-> themselves up.
->
-> NOTE: this will just affect the priority of transfers that end up on
-> the SPI core's pumping thread.  In many cases transfers happen in the
-> context of the caller so if you need realtime priority for all
-> transfers you should ensure the calling context is also realtime
-> priority.
->
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+On 05/14/2019 12:46 PM, masonccyang@mxic.com.tw wrote:
 
-Reviewed-by: Guenter Roeck <groeck@chromium.org>
+>>>> There's precedence for such constructs being an MFD: please see
+>>>> drivers/mfd/at91-usart.c, which registers a single MFD cell for 
+> either
+>>>> serial or SPI.
+>>
+>>    Thanks fir your example, Geert! :-)
 
-> ---
->
-> Changes in v3:
-> - SPI core change now like patch v1 patch #2 (with name "rt").
->
-> Changes in v2:
-> - Now only force transfers to the thread for devices that want it.
-> - Squashed patch #1 and #2 together.
-> - Renamed variable to "force_rt_transfers".
->
->  drivers/spi/spi.c       | 36 ++++++++++++++++++++++++++++++------
->  include/linux/spi/spi.h |  2 ++
->  2 files changed, 32 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 8eb7460dd744..466984796dd9 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -1364,10 +1364,32 @@ static void spi_pump_messages(struct kthread_work *work)
->         __spi_pump_messages(ctlr, true);
->  }
->
-> -static int spi_init_queue(struct spi_controller *ctlr)
-> +/**
-> + * spi_set_thread_rt - set the controller to pump at realtime priority
-> + * @ctlr: controller to boost priority of
-> + *
-> + * This can be called because the controller requested realtime priority
-> + * (by setting the ->rt value before calling spi_register_controller()) or
-> + * because a device on the bus said that its transfers needed realtime
-> + * priority.
-> + *
-> + * NOTE: at the moment if any device on a bus says it needs realtime then
-> + * the thread will be at realtime priority for all transfers on that
-> + * controller.  If this eventually becomes a problem we may see if we can
-> + * find a way to boost the priority only temporarily during relevant
-> + * transfers.
-> + */
-> +static void spi_set_thread_rt(struct spi_controller *ctlr)
->  {
->         struct sched_param param = { .sched_priority = MAX_RT_PRIO - 1 };
->
-> +       dev_info(&ctlr->dev,
-> +               "will run message pump with realtime priority\n");
-> +       sched_setscheduler(ctlr->kworker_task, SCHED_FIFO, &param);
-> +}
+   s/fir/for/, not the firtree season anymore. :-)
+
+>>> okay, many thanks for your information.
+>>>
+>>> How about to patch RPF-IF dts to:
+>>> -------------------------------------------------------------->
+>>>
+>>> Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
+>>> ---------------------------------------------------------
+>>>
+>>>   RPC-IF supports both SPI NOR and HyperFlash (CFI-compliant flash)
+>>>
+>>>   Required properties:
+>>>   - compatible: should be an SoC-specific compatible value, followed 
+> by
+>>>                   "renesas,rcar-gen3-rpc" as a fallback.
+>>>                   supported SoC-specific values are:
+>>>                   "renesas,r8a77995-rpc"  (R-Car D3)
+>>>   - reg: should contain three register areas:
+>>>           first for the base address of RPC-IF registers,
+>>
+>>    I'd drop "the base address" here.
+> 
+> okay.
+> 
+>>>           second for the direct mapping read mode and
+>>>           third for the write buffer area.
+>>>   - reg-names: should contain "regs", "dirmap" and "wbuf"
+>>>   - clocks: should contain 1 entries for the module's clock
+>>>   - clock-names: should contain "rpc"
+>>
+>>    I suspect we'd need the RPC/RPCD2 clocks mentioned as well (not sure 
+> yet)...
+> 
+> Need it ?
+
+   You seem to call clk_get_rate() on the module clock, I doubt that's
+correct topologically...
+
+> RPCD2 is derived from RPC and it's value is half of RPC,
+> i.e., RPC = 160MHz, RPCD2 = 80 MHz
+
+   I know.
+
+>>    And how about "power-domains", "resets" (seen in the example below),
+>> also what about #address-cells & #size-cells?
+>>
+>>>
+>>>   Example:
+>>
+>>    Could you please indent with 1 or 2 tabs where you used 8 or 16 
+> spaces?
+>>
+>>>   - SPI mode:
+>>>
+>>>           rpc: rpc-if@ee200000 {
+>>
+>>    The node names should be generic, based on the device class. And in 
+> this
+>> case I'd like to use "spi@ee200000" as otherwise dtc keeps bitching like 
+> below:
+> 
+> okay, patch to
+> 
+> rpc_if: spi@<...>
+
+   That, or just keep the node label.
+
+>> arch/arm64/boot/dts/renesas/r8a77980.dtsi:1344.21-1359.5: Warning 
+> (spi_bus_bridge):
+>> /soc/rpc@ee200000: node name for SPI buses should be 'spi'
+>>   also defined at 
+> arch/arm64/boot/dts/renesas/r8a77980-condor.dts:283.6-343.3
+>> arch/arm64/boot/dts/renesas/r8a77980-condor.dtb: Warning (spi_bus_reg):
+>> Failed prerequisite 'spi_bus_bridge'
+>>
+>>
+>>>   - HF mode:
+>>>           rpc: rpc-if@ee200000 {
+>>
+>>    Again, spi@<...>.
+> 
+> what about rpc_if: hf@<...>
+
+   Can't change the node name, as it's declared in the .dtsi files, not *.dts
+ones. And "spi" works for the HF case as well -- no complaints from dtc. :-)
+
+>>>                   compatible = "renesas,r8a77995-rpc", 
+> "renesas,rcar-gen3-rpc";
+>>>                   reg = <0 0xee200000 0 0x200>, <0 0x08000000 0 
+> 0x4000000>,
+>>>                         <0 0xee208000 0 0x100>;
+>>>                   reg-names = "regs", "dirmap", "wbuf";
+>>>                   clocks = <&cpg CPG_MOD 917>;
+>>>                   clock-names = "rpc";
+>>>                   power-domains = <&sysc R8A77995_PD_ALWAYS_ON>;
+>>>                   resets = <&cpg 917>;
+>>>                   #address-cells = <1>;
+>>>                   #size-cells = <1>;
+>>>
+>>>                   flash@0 {
+>>>                           compatible = "cfi-flash";
+>>
+>>    The working HF implementation has "cypress,hyperflash" before 
+> "cfi-flash".
+>>
+>>>                           reg = <0 0x4000000>;
+>>>                   };
+>>>           };
+>>>
+>>> --------------------------------------------------------------<
+>>>
+>>> Is it OK ?
+>>
+>>    Yeah, seems good (assuming you fix the issues above).
+> 
+> Patch new DTS to
+> ===============================================================> 
+> 
+> +Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
+> +---------------------------------------------------------
 > +
-> +static int spi_init_queue(struct spi_controller *ctlr)
-> +{
->         ctlr->running = false;
->         ctlr->busy = false;
->
-> @@ -1387,11 +1409,8 @@ static int spi_init_queue(struct spi_controller *ctlr)
->          * request and the scheduling of the message pump thread. Without this
->          * setting the message pump thread will remain at default priority.
->          */
-> -       if (ctlr->rt) {
-> -               dev_info(&ctlr->dev,
-> -                       "will run message pump with realtime priority\n");
-> -               sched_setscheduler(ctlr->kworker_task, SCHED_FIFO, &param);
-> -       }
-> +       if (ctlr->rt)
-> +               spi_set_thread_rt(ctlr);
->
->         return 0;
->  }
-> @@ -2982,6 +3001,11 @@ int spi_setup(struct spi_device *spi)
->
->         spi_set_cs(spi, false);
->
-> +       if (spi->rt && !spi->controller->rt) {
-> +               spi->controller->rt = true;
-> +               spi_set_thread_rt(spi->controller);
-> +       }
+> +RPC-IF supports both SPI NOR and HyperFlash (CFI-compliant flash)
 > +
->         dev_dbg(&spi->dev, "setup mode %d, %s%s%s%s%u bits/w, %u Hz max --> %d\n",
->                         (int) (spi->mode & (SPI_CPOL | SPI_CPHA)),
->                         (spi->mode & SPI_CS_HIGH) ? "cs_high, " : "",
-> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-> index 053abd22ad31..15505c2485d6 100644
-> --- a/include/linux/spi/spi.h
-> +++ b/include/linux/spi/spi.h
-> @@ -109,6 +109,7 @@ void spi_statistics_add_transfer_stats(struct spi_statistics *stats,
->   *     This may be changed by the device's driver, or left at the
->   *     default (0) indicating protocol words are eight bit bytes.
->   *     The spi_transfer.bits_per_word can override this for each transfer.
-> + * @rt: Make the pump thread real time priority.
->   * @irq: Negative, or the number passed to request_irq() to receive
->   *     interrupts from this device.
->   * @controller_state: Controller's runtime state
-> @@ -143,6 +144,7 @@ struct spi_device {
->         u32                     max_speed_hz;
->         u8                      chip_select;
->         u8                      bits_per_word;
-> +       bool                    rt;
->         u32                     mode;
->  #define        SPI_CPHA        0x01                    /* clock phase */
->  #define        SPI_CPOL        0x02                    /* clock polarity */
-> --
-> 2.21.0.1020.gf2820cf01a-goog
->
+> +Required properties:
+> +- compatible: should be an SoC-specific compatible value, followed by
+> +                                "renesas,rcar-gen3-rpc" as a fallback.
+> +                                supported SoC-specific values are:
+> +                                "renesas,r8a77995-rpc"          (R-Car 
+> D3)
+> +- reg: should contain three register areas:
+> +                first for RPC-IF registers,
+> +                second for the direct mapping read mode and
+> +                third for the write buffer area.
+> +- reg-names: should contain "regs", "dirmap" and "wbuf"
+> +- clocks: should contain 1 entries for the module's clock
+> +- clock-names: should contain "rpc"
+> +- #address-cells: should be 1
+> +- #size-cells: should be 0
+
+   Still nothing about the "oower-domains" and "resets" props... :-(
+
+> +
+> +Example:
+> +- SPI mode:
+> +
+> +                rpc_if: spi@ee200000 {
+> +                                compatible = "renesas,r8a77995-rpc", 
+> "renesas,rcar-gen3-rpc";
+> +                                reg = <0 0xee200000 0 0x200>, <0 
+> 0x08000000 0 0x4000000>,
+> +                                      <0 0xee208000 0 0x100>;
+> +                                reg-names = "regs", "dirmap", "wbuf";
+> +                                clocks = <&cpg CPG_MOD 917>;
+> +                                clock-names = "rpc";
+> +                                power-domains = <&sysc 
+> R8A77995_PD_ALWAYS_ON>;
+> +                                resets = <&cpg 917>;
+> +                                #address-cells = <1>;
+> +                                #size-cells = <0>;
+[...]
+> =======================================================================<
+> 
+> OK ?
+
+   Yes, with the remaining issue fixed.
+ 
+> thanks & best regards,
+> Mason
+
+[...]
+
+MBR, Sergei

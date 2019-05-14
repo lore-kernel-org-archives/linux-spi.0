@@ -1,66 +1,42 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/4] spi: For controllers that need realtime always use
- the pump thread
-Date: Tue, 14 May 2019 16:06:07 +0100
-Message-ID: <20190514150607.GA1917@sirena.org.uk>
-References: <20190510223437.84368-1-dianders@chromium.org>
- <20190510223437.84368-2-dianders@chromium.org>
- <20190512073301.GC21483@sirena.org.uk>
- <CAD=FV=UBic4qywgYQFGEXx_frD9ZoRJX7XGgDbQCvb2CbkBa9w@mail.gmail.com>
- <20190514093038.GB8665@sirena.org.uk>
- <CAD=FV=UXhQg2CuNsTCkSe1BuEvkGMj6qeUB2iF=Qfj=Z0fLiWw@mail.gmail.com>
+From: Sowjanya Komatineni <skomatineni@nvidia.com>
+Subject: RE: [PATCH V5 1/4] spi: tegra114: add support for gpio based CS
+Date: Tue, 14 May 2019 17:18:48 +0000
+Message-ID: <BYAPR12MB33986B88CF3A30036E3F1F04C2080@BYAPR12MB3398.namprd12.prod.outlook.com>
+References: <1557810235-16401-1-git-send-email-skomatineni@nvidia.com>
+ <1557810235-16401-2-git-send-email-skomatineni@nvidia.com>
+ <cf4bd167-49b8-5649-a2e2-7bf5ddcc6e2d@nvidia.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ikeVEW9yuYc//A+q"
-Cc: Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        Nicolas Boichat <drinkcat@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>
-To: Doug Anderson <dianders@chromium.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+To: Jonathan Hunter <jonathanh@nvidia.com>,
+        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        Krishna Yarlagadda <kyarlagadda@nvidia.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAD=FV=UXhQg2CuNsTCkSe1BuEvkGMj6qeUB2iF=Qfj=Z0fLiWw@mail.gmail.com>
+In-Reply-To: <cf4bd167-49b8-5649-a2e2-7bf5ddcc6e2d@nvidia.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-
---ikeVEW9yuYc//A+q
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Tue, May 14, 2019 at 07:42:38AM -0700, Doug Anderson wrote:
-
-> ...but I guess you're saying that you don't want to guarantee that the
-> SPI core will happen to have this thread sitting around in the future
-> so you'd rather add the extra complexity to cros_ec so the core can
-> evolve more freely?
-
-We need something to support spi_async() but what you're asking for is
-fairly specific implementation details about how things are currently
-structured, and we do need to be able to continue to make improvements
-for users who are interested in performance.  Ensuring that the calling
-context is also less likely to be preempted is going to make it much
-less likely that any other work is going to cause some timing change
-that creates problems for you.
-
---ikeVEW9yuYc//A+q
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlza2V4ACgkQJNaLcl1U
-h9BdzAf+KMVQaYP9/vNw0i0uGrveiVFMzejKMkn1HLO53K5CGl+UPRj+Y2OYUy/4
-o4zonygqZNCkn+XY4BVZHOGInN1sb2Vzp6Ky1kuw76YxxwL+xKsLuua7+HQ9bCQM
-oVh1Okwky0twqGK78DMtZpfRrYyetWfXA6teiW7G3LZ9+eEd0hXuVVGamq9lzDlM
-zYR8ar3mdRRJmW8JGkJSE0t6Q03CMoeVPoNT8TUs41QnLfNOi/shVZ5kRwbuyoTA
-PZGyAEjbIEYmMe7UR09ePu685ymCtrO9KjqplYeBQBOaUm6KqjURqrJBGWhVyLqF
-sRSuDvQVfjGjiNbqlpfc7QsEj0HaLw==
-=RN96
------END PGP SIGNATURE-----
-
---ikeVEW9yuYc//A+q--
+PiBTdWJqZWN0OiBSZTogW1BBVENIIFY1IDEvNF0gc3BpOiB0ZWdyYTExNDogYWRkIHN1cHBvcnQg
+Zm9yIGdwaW8gYmFzZWQgQ1MNCg0KPiBPbiAxNC8wNS8yMDE5IDA2OjAzLCBTb3dqYW55YSBLb21h
+dGluZW5pIHdyb3RlOg0KPiA+IFRoaXMgcGF0Y2ggYWRkcyBzdXBwb3J0IGZvciBHUElPIGJhc2Vk
+IENTIGNvbnRyb2wgdGhyb3VnaCBTUEkgY29yZSANCj4gPiBmdW5jdGlvbiBzcGlfc2V0X2NzLg0K
+PiA+IA0KPiA+IFNpZ25lZC1vZmYtYnk6IFNvd2phbnlhIEtvbWF0aW5lbmkgPHNrb21hdGluZW5p
+QG52aWRpYS5jb20+DQo+IENhbiB5b3UgZWxhYm9yYXRlIG9uIHRoZSB1c2UtY2FzZSB3aGVyZSB0
+aGlzIGlzIG5lZWRlZD8gSSBhbSBjdXJpb3VzIHdoYXQgcGxhdGZvcm1zIGFyZSB1c2luZyB0aGlz
+IGFuZCB3aHkgdGhleSB3b3VsZCBub3QgdXNlIHRoZSBkZWRpY2F0ZWQgQ1Mgc2lnbmFscy4NCj4N
+Cj4gQ2hlZXJzDQo+IEpvbg0KDQpUZWdyYSBTUEkgZG9lc27igJl0IHN1cHBvcnQgaW50ZXIgYnl0
+ZSBkZWxheSBkaXJlY3RseSB0byBtZWV0IHNvbWUgU1BJIHNsYXZlIHJlcXVpcmVtZW50cy4NClNv
+IHdlIHVzZSBHUElPIGNvbnRyb2wgQ1MgaW4gcGFyYWxsZWwgd2l0aCBhIGR1bW15IEhXIENTIGFu
+ZCB1c2UgaW5hY3RpdmUgY3ljbGVzIGRlbGF5IG9mIFNQSSBjb250cm9sbGVyIHRvIG1pbWljIGlu
+dGVyIGJ5dGUgZGVsYXkuDQoNCkN1cnJlbnRseSB3ZSBkb27igJl0IGhhdmUgc3BlY2lmaWMgU1BJ
+IHNsYXZlIG9uIHVwc3RyZWFtIHN1cHBvcnRlZCBwbGF0Zm9ybXMgYnV0IGNvbnNpZGVyaW5nIHJh
+c3BiZXJyeSBQSSBoZWFkZXIgd2hlcmUgU1BJIEkvRiBpcyBleHBvc2VkIHRvIHBpbnMgaXQgYWxs
+b3dzIHVzZXIgdG8gY29ubmVjdCBhbnkgU1BJIHNsYXZlIGFuZCB0aGlzIGhlbHBzIGZvciBzb21l
+IHNsYXZlcyB0aGF0IG5lZWQgc3BlY2lmaWMgaW50ZXIgYnl0ZSBkZWxheS4NCg0KVGhhbmtzDQpz
+b3dqYW55YQ0K

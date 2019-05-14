@@ -1,7 +1,7 @@
 From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Subject: [PATCH V4 0/4] additional features to Tegra SPI
-Date: Mon, 13 May 2019 21:36:09 -0700
-Message-ID: <1557808569-3747-1-git-send-email-skomatineni@nvidia.com>
+Subject: [PATCH V5 0/4] additional features to Tegra SPI
+Date: Mon, 13 May 2019 22:03:51 -0700
+Message-ID: <1557810235-16401-1-git-send-email-skomatineni@nvidia.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Cc: <linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
@@ -13,15 +13,17 @@ Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-[V4] : This patch series version includes
+[V5] : This patch series version includes
 	- Updated GPIO based chip select control using GPIO descriptor.
-	- HW based chip select implementation is same as V3 but V4
+	- HW based chip select implementation is same as V3 but V5
 	  has this patch updated to be on top of above changes.
-	- HW CS timing implementation is same as V3 but V4
+	- HW CS timing implementation is same as V3 but V5
 	  has this patch updated to be on top of above changes.
 	- support for TX and RX trimmers implementation is same as V3
-	  but V4 has this patch updated to be on top of above changes
+	  but V5 has this patch updated to be on top of above changes
 	  and updated commit description.
+
+[V4] : This version went out accidentally. Please discard.
 
 [V3] : This patch series version includes
 	- only patches that are not applied from V2.
@@ -56,8 +58,8 @@ Sowjanya Komatineni (4):
   spi: tegra114: add support for HW CS timing
   spi: tegra114: add support for TX and RX trimmers
 
- drivers/spi/spi-tegra114.c | 169 ++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 153 insertions(+), 16 deletions(-)
+ drivers/spi/spi-tegra114.c | 167 ++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 151 insertions(+), 16 deletions(-)
 
 -- 
 2.7.4

@@ -1,53 +1,81 @@
-From: Doug Anderson <dianders@chromium.org>
-Subject: Re: [PATCH 1/4] spi: For controllers that need realtime always use
- the pump thread
-Date: Mon, 13 May 2019 13:24:57 -0700
-Message-ID: <CAD=FV=UBic4qywgYQFGEXx_frD9ZoRJX7XGgDbQCvb2CbkBa9w@mail.gmail.com>
-References: <20190510223437.84368-1-dianders@chromium.org> <20190510223437.84368-2-dianders@chromium.org>
- <20190512073301.GC21483@sirena.org.uk>
+From: masonccyang@mxic.com.tw
+Subject: Re: [PATCH v12 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3 RPC-IF
+ MFD bindings
+Date: Tue, 14 May 2019 10:33:10 +0800
+Message-ID: <OFD347E742.50D5CB45-ON482583FA.000D5FC2-482583FA.000E05BB@mxic.com.tw>
+References: <1556092536-17095-1-git-send-email-masonccyang@mxic.com.tw> <1556092536-17095-4-git-send-email-masonccyang@mxic.com.tw> <20190424212356.GA27103@bogus> <65853dc2-6f3c-1494-7e72-54877797cdd2@gmail.com> <20190507125730.GD29524@dell> <OF08A5650B.8AE8977C-ON482583F4.000E5B1E-482583F4.000F7215@mxic.com.tw> <d229b19e-351c-c576-b5c4-716d10dad1a0@gmail.com> <20190508061119.GB7627@dell> <OFE86674B9.06D723A0-ON482583F5.000AD50C-482583F5.000BA075@mxic.com.tw> <a05cff8f-7df2-1938-c0e7-f9366bece607@cogentembedded.com> <OFB19BCE91.6EBBAA77-ON482583F6.000234E2-482583F6.00061290@mxic.com.tw> <CAMuHMdUP8KU3Dbv6cwOvrY0hWOcm1xqVcsi20+GvazYMDLGGZg@mail.gmail.com> <OFD932ABFC.E3FFCEB8-ON482583F9.003412B1-482583F9.0034D5CA@mxic.com.tw> <CAMuHMdWsZPevpYg0HfbgaXPD89RFdOOEPawvvZDt3Kp4=PeLRQ@mail.gmail.c
+ om>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
-        Nicolas Boichat <drinkcat@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset="US-ASCII"
+Cc: "Boris Brezillon" <bbrezillon@kernel.org>,
+        "Mark Brown" <broonie@kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+        <devicetree@vger.kernel.org>,
+        "Geert Uytterhoeven" <geert+renesas@glider.be>,
+        "Simon Horman" <horms@verge.net.au>, juliensu@mxic.com.tw,
+        "Lee Jones" <lee.jones@linaro.org>,
+        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
+        "Linux-Renesas" <linux-renesas-soc@vger.kernel.org>,
+        "linux-spi" <linux-spi@vger.kernel.org>,
+        "Marek Vasut" <marek.vasut@gmail.com>,
+        "Mark Rutland" <mark.rutland@arm.com>,
+        "Rob Herring" <robh@kernel.org>,
+        "Sergei Shtylyov" <sergei.shtylyov@cogentembedded.com>,
+        zhengxunli@mxic.com.tw
+To: "Geert Uytterhoeven" <geert@linux-m68k.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190512073301.GC21483@sirena.org.uk>
+In-Reply-To: <CAMuHMdWsZPevpYg0HfbgaXPD89RFdOOEPawvvZDt3Kp4=PeLRQ@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
 
-On Sun, May 12, 2019 at 10:05 AM Mark Brown <broonie@kernel.org> wrote:
+Hi Geert,
 
-> On Fri, May 10, 2019 at 03:34:34PM -0700, Douglas Anderson wrote:
-> > If a controller specifies that it needs high priority for sending
-> > messages we should always schedule our transfers on the thread.  If we
-> > don't do this we'll do the transfer in the caller's context which
-> > might not be very high priority.
->
-> If performance is important you probably also want to avoid the context
-> thrashing - executing in the calling context is generally a substantial
-> performance boost.  I can see this causing problems further down the
-> line when someone else turns up with a different requirement, perhaps in
-> an application where the caller does actually have a raised priority
-> themselves and just wanted to make sure that the thread wasn't lower
-> than they are.  I guess it'd be nice if we could check what priority the
-> calling thread has and make a decision based on that but there don't
-> seem to be any facilities for doing that which I can see right now.
+> Subject
+> 
+> Re: [PATCH v12 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3 RPC-IF 
+MFD bindings
+> 
+> Hi Mason,
+> 
+> Note that if you send multipart/text+html emails, they will be dropped 
+silently
+> by most Linux mailing lists.
+> Hence I'm quoting your last email fully, to give other people a chance
+> reading it (and commenting).
 
-In my case performance is 2nd place to a transfer not getting
-interrupted once started (so we don't break the 8ms rule of the EC).
-My solution in v2 of my series is to take out the forcing in the case
-that the controller wanted "rt" priority and then to add "force" to
-the parameter name.  If someone wants rt priority for the thread but
-doesn't want to force all transfers to the thread we can later add a
-different parameter for that?
+Thanks for your remind !
+I have configured my Lotus Notes to plain text mode only and it should be 
+OK
+for Linux mailing lists now.
 
--Doug
+thanks & best regards,
+Mason
+
+CONFIDENTIALITY NOTE:
+
+This e-mail and any attachments may contain confidential information 
+and/or personal data, which is protected by applicable laws. Please be 
+reminded that duplication, disclosure, distribution, or use of this e-mail 
+(and/or its attachments) or any part thereof is prohibited. If you receive 
+this e-mail in error, please notify us immediately and delete this mail as 
+well as its attachment(s) from your system. In addition, please be 
+informed that collection, processing, and/or use of personal data is 
+prohibited unless expressly permitted by personal data protection laws. 
+Thank you for your attention and cooperation.
+
+Macronix International Co., Ltd.
+
+=====================================================================
+
+
+
+============================================================================
+
+CONFIDENTIALITY NOTE:
+
+This e-mail and any attachments may contain confidential information and/or personal data, which is protected by applicable laws. Please be reminded that duplication, disclosure, distribution, or use of this e-mail (and/or its attachments) or any part thereof is prohibited. If you receive this e-mail in error, please notify us immediately and delete this mail as well as its attachment(s) from your system. In addition, please be informed that collection, processing, and/or use of personal data is prohibited unless expressly permitted by personal data protection laws. Thank you for your attention and cooperation.
+
+Macronix International Co., Ltd.
+
+=====================================================================

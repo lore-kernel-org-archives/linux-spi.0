@@ -1,81 +1,121 @@
-From: masonccyang@mxic.com.tw
-Subject: Re: [PATCH v12 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3 RPC-IF
- MFD bindings
-Date: Tue, 14 May 2019 10:33:10 +0800
-Message-ID: <OFD347E742.50D5CB45-ON482583FA.000D5FC2-482583FA.000E05BB@mxic.com.tw>
-References: <1556092536-17095-1-git-send-email-masonccyang@mxic.com.tw> <1556092536-17095-4-git-send-email-masonccyang@mxic.com.tw> <20190424212356.GA27103@bogus> <65853dc2-6f3c-1494-7e72-54877797cdd2@gmail.com> <20190507125730.GD29524@dell> <OF08A5650B.8AE8977C-ON482583F4.000E5B1E-482583F4.000F7215@mxic.com.tw> <d229b19e-351c-c576-b5c4-716d10dad1a0@gmail.com> <20190508061119.GB7627@dell> <OFE86674B9.06D723A0-ON482583F5.000AD50C-482583F5.000BA075@mxic.com.tw> <a05cff8f-7df2-1938-c0e7-f9366bece607@cogentembedded.com> <OFB19BCE91.6EBBAA77-ON482583F6.000234E2-482583F6.00061290@mxic.com.tw> <CAMuHMdUP8KU3Dbv6cwOvrY0hWOcm1xqVcsi20+GvazYMDLGGZg@mail.gmail.com> <OFD932ABFC.E3FFCEB8-ON482583F9.003412B1-482583F9.0034D5CA@mxic.com.tw> <CAMuHMdWsZPevpYg0HfbgaXPD89RFdOOEPawvvZDt3Kp4=PeLRQ@mail.gmail.c
- om>
+From: Sowjanya Komatineni <skomatineni@nvidia.com>
+Subject: [PATCH V4 2/4] spi: tegra114: add support for hw based cs
+Date: Mon, 13 May 2019 21:31:50 -0700
+Message-ID: <1557808312-3213-2-git-send-email-skomatineni@nvidia.com>
+References: <1557808312-3213-1-git-send-email-skomatineni@nvidia.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Cc: "Boris Brezillon" <bbrezillon@kernel.org>,
-        "Mark Brown" <broonie@kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree@vger.kernel.org>,
-        "Geert Uytterhoeven" <geert+renesas@glider.be>,
-        "Simon Horman" <horms@verge.net.au>, juliensu@mxic.com.tw,
-        "Lee Jones" <lee.jones@linaro.org>,
-        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
-        "Linux-Renesas" <linux-renesas-soc@vger.kernel.org>,
-        "linux-spi" <linux-spi@vger.kernel.org>,
-        "Marek Vasut" <marek.vasut@gmail.com>,
-        "Mark Rutland" <mark.rutland@arm.com>,
-        "Rob Herring" <robh@kernel.org>,
-        "Sergei Shtylyov" <sergei.shtylyov@cogentembedded.com>,
-        zhengxunli@mxic.com.tw
-To: "Geert Uytterhoeven" <geert@linux-m68k.org>
+Content-Type: text/plain
+Cc: <linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>,
+        Sowjanya Komatineni <skomatineni@nvidia.com>
+To: <thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
+        <ldewangan@nvidia.com>, <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAMuHMdWsZPevpYg0HfbgaXPD89RFdOOEPawvvZDt3Kp4=PeLRQ@mail.gmail.com>
+In-Reply-To: <1557808312-3213-1-git-send-email-skomatineni@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Tegra SPI controller supports both HW and SW based CS control
+for SPI transfers.
 
-Hi Geert,
+This patch adds support for HW based CS control where CS is driven
+to active state during the transfer and is driven inactive at the
+end of the transfer directly by the HW.
 
-> Subject
-> 
-> Re: [PATCH v12 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3 RPC-IF 
-MFD bindings
-> 
-> Hi Mason,
-> 
-> Note that if you send multipart/text+html emails, they will be dropped 
-silently
-> by most Linux mailing lists.
-> Hence I'm quoting your last email fully, to give other people a chance
-> reading it (and commenting).
+This patch enables the use of HW based CS only for single transfers
+without cs_change request.
 
-Thanks for your remind !
-I have configured my Lotus Notes to plain text mode only and it should be 
-OK
-for Linux mailing lists now.
+Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
+---
+ drivers/spi/spi-tegra114.c | 39 +++++++++++++++++++++++++++------------
+ 1 file changed, 27 insertions(+), 12 deletions(-)
 
-thanks & best regards,
-Mason
-
-CONFIDENTIALITY NOTE:
-
-This e-mail and any attachments may contain confidential information 
-and/or personal data, which is protected by applicable laws. Please be 
-reminded that duplication, disclosure, distribution, or use of this e-mail 
-(and/or its attachments) or any part thereof is prohibited. If you receive 
-this e-mail in error, please notify us immediately and delete this mail as 
-well as its attachment(s) from your system. In addition, please be 
-informed that collection, processing, and/or use of personal data is 
-prohibited unless expressly permitted by personal data protection laws. 
-Thank you for your attention and cooperation.
-
-Macronix International Co., Ltd.
-
-=====================================================================
-
-
-
-============================================================================
-
-CONFIDENTIALITY NOTE:
-
-This e-mail and any attachments may contain confidential information and/or personal data, which is protected by applicable laws. Please be reminded that duplication, disclosure, distribution, or use of this e-mail (and/or its attachments) or any part thereof is prohibited. If you receive this e-mail in error, please notify us immediately and delete this mail as well as its attachment(s) from your system. In addition, please be informed that collection, processing, and/or use of personal data is prohibited unless expressly permitted by personal data protection laws. Thank you for your attention and cooperation.
-
-Macronix International Co., Ltd.
-
-=====================================================================
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index f47417dd9edb..0cb0932d32fd 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -193,6 +193,7 @@ struct tegra_spi_data {
+ 	unsigned				dma_buf_size;
+ 	unsigned				max_buf_size;
+ 	bool					is_curr_dma_xfer;
++	bool					use_hw_based_cs;
+ 
+ 	struct completion			rx_dma_complete;
+ 	struct completion			tx_dma_complete;
+@@ -723,7 +724,9 @@ static void tegra_spi_deinit_dma_param(struct tegra_spi_data *tspi,
+ }
+ 
+ static u32 tegra_spi_setup_transfer_one(struct spi_device *spi,
+-		struct spi_transfer *t, bool is_first_of_msg)
++					struct spi_transfer *t,
++					bool is_first_of_msg,
++					bool is_single_xfer)
+ {
+ 	struct tegra_spi_data *tspi = spi_master_get_devdata(spi->master);
+ 	u32 speed = t->speed_hz;
+@@ -780,11 +783,17 @@ static u32 tegra_spi_setup_transfer_one(struct spi_device *spi,
+ 		if (spi->cs_gpiod)
+ 			gpiod_set_value(spi->cs_gpiod, 1);
+ 
+-		command1 |= SPI_CS_SW_HW;
+-		if (spi->mode & SPI_CS_HIGH)
+-			command1 |= SPI_CS_SW_VAL;
+-		else
+-			command1 &= ~SPI_CS_SW_VAL;
++		if (is_single_xfer && !(t->cs_change)) {
++			tspi->use_hw_based_cs = true;
++			command1 &= ~(SPI_CS_SW_HW | SPI_CS_SW_VAL);
++		} else {
++			tspi->use_hw_based_cs = false;
++			command1 |= SPI_CS_SW_HW;
++			if (spi->mode & SPI_CS_HIGH)
++				command1 |= SPI_CS_SW_VAL;
++			else
++				command1 &= ~SPI_CS_SW_VAL;
++		}
+ 
+ 		tegra_spi_writel(tspi, 0, SPI_COMMAND2);
+ 	} else {
+@@ -905,11 +914,14 @@ static void tegra_spi_transfer_end(struct spi_device *spi)
+ 	if (spi->cs_gpiod)
+ 		gpiod_set_value(spi->cs_gpiod, 0);
+ 
+-	if (cs_val)
+-		tspi->command1_reg |= SPI_CS_SW_VAL;
+-	else
+-		tspi->command1_reg &= ~SPI_CS_SW_VAL;
+-	tegra_spi_writel(tspi, tspi->command1_reg, SPI_COMMAND1);
++	if (!tspi->use_hw_based_cs) {
++		if (cs_val)
++			tspi->command1_reg |= SPI_CS_SW_VAL;
++		else
++			tspi->command1_reg &= ~SPI_CS_SW_VAL;
++		tegra_spi_writel(tspi, tspi->command1_reg, SPI_COMMAND1);
++	}
++
+ 	tegra_spi_writel(tspi, tspi->def_command1_reg, SPI_COMMAND1);
+ }
+ 
+@@ -936,16 +948,19 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
+ 	struct spi_device *spi = msg->spi;
+ 	int ret;
+ 	bool skip = false;
++	int single_xfer;
+ 
+ 	msg->status = 0;
+ 	msg->actual_length = 0;
+ 
++	single_xfer = list_is_singular(&msg->transfers);
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 		u32 cmd1;
+ 
+ 		reinit_completion(&tspi->xfer_completion);
+ 
+-		cmd1 = tegra_spi_setup_transfer_one(spi, xfer, is_first_msg);
++		cmd1 = tegra_spi_setup_transfer_one(spi, xfer, is_first_msg,
++						    single_xfer);
+ 
+ 		if (!xfer->len) {
+ 			ret = 0;
+-- 
+2.7.4

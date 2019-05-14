@@ -1,59 +1,54 @@
-From: Jon Hunter <jonathanh@nvidia.com>
-Subject: Re: [PATCH V5 1/4] spi: tegra114: add support for gpio based CS
-Date: Tue, 14 May 2019 18:31:17 +0100
-Message-ID: <ec2e9dab-e299-0f73-090c-e060b4683361@nvidia.com>
-References: <1557810235-16401-1-git-send-email-skomatineni@nvidia.com>
- <1557810235-16401-2-git-send-email-skomatineni@nvidia.com>
- <cf4bd167-49b8-5649-a2e2-7bf5ddcc6e2d@nvidia.com>
- <BYAPR12MB33986B88CF3A30036E3F1F04C2080@BYAPR12MB3398.namprd12.prod.outlook.com>
+From: Douglas Anderson <dianders@chromium.org>
+Subject: [PATCH v3 0/3] spi: A better solution for cros_ec_spi reliability
+Date: Tue, 14 May 2019 11:39:32 -0700
+Message-ID: <20190514183935.143463-1-dianders@chromium.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Cc: "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-To: Sowjanya Komatineni <skomatineni@nvidia.com>,
-        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        Krishna Yarlagadda <kyarlagadda@nvidia.com>
+Content-Transfer-Encoding: 8bit
+Cc: linux-rockchip@lists.infradead.org, drinkcat@chromium.org,
+        Guenter Roeck <groeck@chromium.org>, briannorris@chromium.org,
+        mka@chromium.org, Douglas Anderson <dianders@chromium.org>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <BYAPR12MB33986B88CF3A30036E3F1F04C2080@BYAPR12MB3398.namprd12.prod.outlook.com>
-Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+This series is a much better solution for getting the Chrome OS EC to
+talk reliably.
 
-On 14/05/2019 18:18, Sowjanya Komatineni wrote:
->> Subject: Re: [PATCH V5 1/4] spi: tegra114: add support for gpio based CS
->=20
->> On 14/05/2019 06:03, Sowjanya Komatineni wrote:
->>> This patch adds support for GPIO based CS control through SPI core=20
->>> function spi_set_cs.
->>>
->>> Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
->> Can you elaborate on the use-case where this is needed? I am curious wha=
-t platforms are using this and why they would not use the dedicated CS sign=
-als.
->>
->> Cheers
->> Jon
->=20
-> Tegra SPI doesn=E2=80=99t support inter byte delay directly to meet some =
-SPI slave requirements.
-> So we use GPIO control CS in parallel with a dummy HW CS and use inactive=
- cycles delay of SPI controller to mimic inter byte delay.
->=20
-> Currently we don=E2=80=99t have specific SPI slave on upstream supported =
-platforms but considering raspberry PI header where SPI I/F is exposed to p=
-ins it allows user to connect any SPI slave and this helps for some slaves =
-that need specific inter byte delay.
+Patch #1 in this series is the most important.  It can land any time.
 
-Maybe add these details to the commit message so that it is clear what
-the motivation for this is.
+Patch #2 in this series (a SPI framework patch) needs to land before
+patch #3.  Note that patches #2 and #3 really just fix a corner case
+and just having patch #1 is the most important.  We don't end up on
+the pumping thread very often.
 
-Thanks
-Jon
+Note:
+- If you want some history on investigation done here, feel free to
+  peruse the Chrome OS bug: <https://crbug.com/948742>.
 
---=20
-nvpublic
+Changes in v3:
+- cros_ec realtime patch replaces revert; now patch #1
+- SPI core change now like patch v1 patch #2 (with name "rt").
+- Updated description and variable name since we no longer force.
+
+Changes in v2:
+- Now only force transfers to the thread for devices that want it.
+- Squashed patch #1 and #2 together.
+- Renamed variable to "force_rt_transfers".
+- Renamed variable to "force_rt_transfers".
+
+Douglas Anderson (3):
+  platform/chrome: cros_ec_spi: Move to real time priority for transfers
+  spi: Allow SPI devices to request the pumping thread be realtime
+  platform/chrome: cros_ec_spi: Request the SPI thread be realtime
+
+ drivers/platform/chrome/cros_ec_spi.c | 89 +++++++++++++++++++++++----
+ drivers/spi/spi.c                     | 36 +++++++++--
+ include/linux/spi/spi.h               |  2 +
+ 3 files changed, 110 insertions(+), 17 deletions(-)
+
+-- 
+2.21.0.1020.gf2820cf01a-goog

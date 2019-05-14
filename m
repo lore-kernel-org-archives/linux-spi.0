@@ -1,75 +1,58 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH v12 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3
- RPC-IF MFD bindings
-Date: Tue, 14 May 2019 12:07:54 +0200
-Message-ID: <CAMuHMdVyfnO+wTHNrjjvJoqopC_xC0+sxSY+9a=pv-Wf=w6aCQ@mail.gmail.com>
-References: <1556092536-17095-1-git-send-email-masonccyang@mxic.com.tw>
- <1556092536-17095-4-git-send-email-masonccyang@mxic.com.tw>
- <20190424212356.GA27103@bogus> <65853dc2-6f3c-1494-7e72-54877797cdd2@gmail.com>
- <20190507125730.GD29524@dell> <OF08A5650B.8AE8977C-ON482583F4.000E5B1E-482583F4.000F7215@mxic.com.tw>
- <d229b19e-351c-c576-b5c4-716d10dad1a0@gmail.com> <20190508061119.GB7627@dell>
- <OFE86674B9.06D723A0-ON482583F5.000AD50C-482583F5.000BA075@mxic.com.tw>
- <a05cff8f-7df2-1938-c0e7-f9366bece607@cogentembedded.com> <OFB19BCE91.6EBBAA77-ON482583F6.000234E2-482583F6.00061290@mxic.com.tw>
- <CAMuHMdUP8KU3Dbv6cwOvrY0hWOcm1xqVcsi20+GvazYMDLGGZg@mail.gmail.com>
- <OFD932ABFC.E3FFCEB8-ON482583F9.003412B1-482583F9.0034D5CA@mxic.com.tw>
- <b51d1cb7-b3b5-208f-ab4c-145ecb57805d@cogentembedded.com> <OFAD9AA573.86373900-ON482583FA.0034781A-482583FA.0035B40C@mxic.com.tw>
+From: Doug Anderson <dianders@chromium.org>
+Subject: Re: [PATCH 1/4] spi: For controllers that need realtime always use
+ the pump thread
+Date: Tue, 14 May 2019 07:42:38 -0700
+Message-ID: <CAD=FV=UXhQg2CuNsTCkSe1BuEvkGMj6qeUB2iF=Qfj=Z0fLiWw@mail.gmail.com>
+References: <20190510223437.84368-1-dianders@chromium.org> <20190510223437.84368-2-dianders@chromium.org>
+ <20190512073301.GC21483@sirena.org.uk> <CAD=FV=UBic4qywgYQFGEXx_frD9ZoRJX7XGgDbQCvb2CbkBa9w@mail.gmail.com>
+ <20190514093038.GB8665@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Cc: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Boris Brezillon <bbrezillon@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh@kernel.org>, zhengxunli@mxic.com.tw
-To: Mason Yang <masonccyang@mxic.com.tw>
+Cc: Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        "open list:ARM/Rockchip SoC..." <linux-rockchip@lists.infradead.org>,
+        Nicolas Boichat <drinkcat@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OFAD9AA573.86373900-ON482583FA.0034781A-482583FA.0035B40C@mxic.com.tw>
+In-Reply-To: <20190514093038.GB8665@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mason,
+Hi,
 
-On Tue, May 14, 2019 at 11:46 AM <masonccyang@mxic.com.tw> wrote:
-> > >> There's precedence for such constructs being an MFD: please see
-> > >> drivers/mfd/at91-usart.c, which registers a single MFD cell for
-> > >           second for the direct mapping read mode and
-> > >           third for the write buffer area.
-> > >   - reg-names: should contain "regs", "dirmap" and "wbuf"
-> > >   - clocks: should contain 1 entries for the module's clock
-> > >   - clock-names: should contain "rpc"
-> >
-> >    I suspect we'd need the RPC/RPCD2 clocks mentioned as well (not sure
-> yet)...
+On Tue, May 14, 2019 at 2:30 AM Mark Brown <broonie@kernel.org> wrote:
+
+> On Mon, May 13, 2019 at 01:24:57PM -0700, Doug Anderson wrote:
+> > On Sun, May 12, 2019 at 10:05 AM Mark Brown <broonie@kernel.org> wrote:
 >
-> Need it ?
-> RPCD2 is derived from RPC and it's value is half of RPC,
-> i.e., RPC = 160MHz, RPCD2 = 80 MHz
+> > In my case performance is 2nd place to a transfer not getting
+> > interrupted once started (so we don't break the 8ms rule of the EC).
+>
+> That's great but other users do care very much about performance and are
+> also interested in both priority control and avoiding context thrashing.
+>
+> > My solution in v2 of my series is to take out the forcing in the case
+> > that the controller wanted "rt" priority and then to add "force" to
+> > the parameter name.  If someone wants rt priority for the thread but
+> > doesn't want to force all transfers to the thread we can later add a
+> > different parameter for that?
+>
+> I think that's going to be the common case for this.  Forcing context
+> thrashing is really not something anyone else is asking for.
 
-That hierarchy depends on the actual SoC, right?
-AFAIU, both are derived from RPCSRC, and can be controlled individually
-on some SoCs.
+OK, that's fair.  Even if nobody else is asking for it, the solution
+I've coded up for v2 still allows cros_ec to use the SPI core's thread
+in a pretty clean way and saves a bunch of code in cros_ec.  It
+shouldn't penalize any other SPI users.
 
-BTW, I still haven't seen a patch for drivers/clk/renesas/r8a77995-cpg-mssr.c
-adding RPC-related clocks, so I have no idea what's the Linux view of the
-hierarchy on your system.
+...but I guess you're saying that you don't want to guarantee that the
+SPI core will happen to have this thread sitting around in the future
+so you'd rather add the extra complexity to cros_ec so the core can
+evolve more freely?
 
-Thanks!
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+-Doug

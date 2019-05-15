@@ -1,61 +1,50 @@
-From: Mark Brown <broonie@kernel.org>
+From: Sowjanya Komatineni <skomatineni@nvidia.com>
 Subject: Re: [PATCH V5 1/4] spi: tegra114: add support for gpio based CS
-Date: Wed, 15 May 2019 12:42:33 +0100
-Message-ID: <20190515114233.GF5613@sirena.org.uk>
+Date: Wed, 15 May 2019 11:24:22 +0000
+Message-ID: <BYAPR12MB3398ED52051F5BFA08D7B3A6C2090@BYAPR12MB3398.namprd12.prod.outlook.com>
 References: <1557810235-16401-1-git-send-email-skomatineni@nvidia.com>
  <1557810235-16401-2-git-send-email-skomatineni@nvidia.com>
  <cf4bd167-49b8-5649-a2e2-7bf5ddcc6e2d@nvidia.com>
- <BYAPR12MB33986B88CF3A30036E3F1F04C2080@BYAPR12MB3398.namprd12.prod.outlook.com>
- <20190515093522.GC5613@sirena.org.uk>
- <BYAPR12MB3398ED52051F5BFA08D7B3A6C2090@BYAPR12MB3398.namprd12.prod.outlook.com>
- <20190515112900.GE5613@sirena.org.uk>
- <BYAPR12MB3398528B86D3DE9CC3AA6D85C2090@BYAPR12MB3398.namprd12.prod.outlook.com>
+ <BYAPR12MB33986B88CF3A30036E3F1F04C2080@BYAPR12MB3398.namprd12.prod.outlook.com>,<20190515093522.GC5613@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="dgjlcl3Tl+kb3YDk"
+Content-Type: text/plain; charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
 Cc: Jonathan Hunter <jonathanh@nvidia.com>,
         "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
         Laxman Dewangan <ldewangan@nvidia.com>,
-        Krishna Yarlagadda <kyarlagadda@nvidia.com>,
+        "Krishna Yarlagadda" <kyarlagadda@nvidia.com>,
         "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-To: Sowjanya Komatineni <skomatineni@nvidia.com>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <BYAPR12MB3398528B86D3DE9CC3AA6D85C2090@BYAPR12MB3398.namprd12.prod.outlook.com>
+In-Reply-To: <20190515093522.GC5613@sirena.org.uk>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+> > Tegra SPI doesn=92t support inter byte delay directly to meet some SPI =
+slave requirements.
+> > So we use GPIO control CS in parallel with a dummy HW CS and use inacti=
+ve cycles delay of SPI controller to mimic inter byte delay.
 
---dgjlcl3Tl+kb3YDk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Please fix your mail client to word wrap within paragraphs at something
+substantially less than 80 columns.  Doing this makes your messages much
+easier to read and reply to.
 
-On Wed, May 15, 2019 at 11:40:41AM +0000, Sowjanya Komatineni wrote:
-> I tried few settings before sending V5 too but didn't made diff.
-> Will try with different email client.
->=20
-> What email client are you using?
+I did changed but looks like it didn't made diff. Will try with different e=
+mail client.
 
-I personally use mutt.  I know people also use things like Thunderbird
-and Evolution successfully.  There should be other people at nVidia you
-can ask about how they get things set up I guess?
+> Please don't ignore review comments, people are generally making them
+for a reason and are likely to have the same concerns if issues remain
+unaddressed.  Having to repeat the same comments can get repetitive and
+make people question the value of time spent reviewing.  If you disagree
+with the review comments that's fine but you need to reply and discuss
+your concerns so that the reviewer can understand your decisions.
 
---dgjlcl3Tl+kb3YDk
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+If you are referring to comment from Jon on updating commit, I didn't ignor=
+ed. I am just waiting if any more comments from you or others before postin=
+g updated patch.=20
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzb+ygACgkQJNaLcl1U
-h9B1yQf/aoNSV/N3Iq8hWgg8l7YtShuKh8pJ5p5FRa8eM/RrsWiGS0Ih3uARw12Y
-jwhP0HRwm1WMSphc4F/gwbRIS6KiCLmtK21uVfQ8ZhwePMzM7riNNCNInkHsEyq/
-MWm7JRK3YEjPpbqRhzGjUylGbuMqeY2oifTnZPMhLpu98nqZBxdkLlbvVMvQ4Lzq
-bs8R5PeuqWFOZgb2d89fb6jGVheVWKGjP4cxlreDlGd00IlBZDdKFMUlkxqWytj8
-LRLPtjy6Ekaq5qQh7TDrxHkogptz9dQo5cB4gfDPj3AN+UVX7caCwUe2qc3x3e66
-xjey0jls24Elt0FLSZAgUIPOremvZw==
-=Fhe/
------END PGP SIGNATURE-----
-
---dgjlcl3Tl+kb3YDk--
+But I see you applied patch now. So how should I post with updated commit?=

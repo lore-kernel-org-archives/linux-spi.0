@@ -1,153 +1,65 @@
-From: masonccyang@mxic.com.tw
-Subject: Re: [PATCH v3 2/4] mtd: rawnand: Add Macronix MX25F0A NAND controller
-Date: Wed, 15 May 2019 17:18:35 +0800
-Message-ID: <OFBFE3CB74.F4E01135-ON482583FB.00313C7E-482583FB.003323B4@mxic.com.tw>
-References: <1555320234-15802-1-git-send-email-masonccyang@mxic.com.tw> <1555320234-15802-3-git-send-email-masonccyang@mxic.com.tw> <20190512151820.4f2dd9da@xps13> <OF8A566F14.A2F0F576-ON482583FB.002E7E32-482583FB.003068B1@LocalDomain>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH V5 1/4] spi: tegra114: add support for gpio based CS
+Date: Wed, 15 May 2019 10:35:22 +0100
+Message-ID: <20190515093522.GC5613@sirena.org.uk>
+References: <1557810235-16401-1-git-send-email-skomatineni@nvidia.com>
+ <1557810235-16401-2-git-send-email-skomatineni@nvidia.com>
+ <cf4bd167-49b8-5649-a2e2-7bf5ddcc6e2d@nvidia.com>
+ <BYAPR12MB33986B88CF3A30036E3F1F04C2080@BYAPR12MB3398.namprd12.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Cc: bbrezillon@kernel.org, broonie@kernel.org,
-        christophe.kerello@st.com, computersforpeace@gmail.com,
-        devicetree@vger.kernel.org, dwmw2@infradead.org,
-        geert@linux-m68k.org, juliensu@mxic.com.tw, lee.jones@linaro.org,
-        liang.yang@amlogic.com, linux-kernel@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
-        marcel.ziswiler@toradex.com, marek.vasut@gmail.com,
-        mark.rutland@arm.com, "Miquel Raynal" <miquel.raynal@bootlin.com>,
-        paul.burton@mips.com, richard@nod.at, robh+dt@kernel.org,
-        stefan@agner.ch, zhengxunli@mxic.com.tw
-To: "Miquel Raynal" <miquel.raynal@bootlin.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="raC6veAxrt5nqIoY"
+Cc: Jonathan Hunter <jonathanh@nvidia.com>,
+        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Krishna Yarlagadda <kyarlagadda@nvidia.com>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+To: Sowjanya Komatineni <skomatineni@nvidia.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OF8A566F14.A2F0F576-ON482583FB.002E7E32-482583FB.003068B1@LocalDomain>
+Content-Disposition: inline
+In-Reply-To: <BYAPR12MB33986B88CF3A30036E3F1F04C2080@BYAPR12MB3398.namprd12.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
-Hi Miquel,
+--raC6veAxrt5nqIoY
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Sorry, previous email missed this mxic_nand_data_xfer() reply.
+On Tue, May 14, 2019 at 05:18:48PM +0000, Sowjanya Komatineni wrote:
 
-This Flash Memory Controller implemented the Buffer read-write data 
-transfer 
-for SPI mode and raw NAND mode.
+> Tegra SPI doesn=E2=80=99t support inter byte delay directly to meet some =
+SPI slave requirements.
+> So we use GPIO control CS in parallel with a dummy HW CS and use inactive=
+ cycles delay of SPI controller to mimic inter byte delay.
 
-That is each time driver write to the transmit of the TXD port and the 
-data 
-is shifted out, new data is received in RXD port. 
-By transmitting the entire buffer without reading any data, driver are 
-losing
-the received data.
+Please fix your mail client to word wrap within paragraphs at something
+substantially less than 80 columns.  Doing this makes your messages much
+easier to read and reply to.
 
-Actually the mxic_nand_data_xfer() is a copy of mxic_spi_data_xfer().
+Please don't ignore review comments, people are generally making them
+for a reason and are likely to have the same concerns if issues remain
+unaddressed.  Having to repeat the same comments can get repetitive and
+make people question the value of time spent reviewing.  If you disagree
+with the review comments that's fine but you need to reply and discuss
+your concerns so that the reviewer can understand your decisions.
 
-https://github.com/torvalds/linux/blame/master/drivers/spi/spi-mxic.c 
+--raC6veAxrt5nqIoY
+Content-Type: application/pgp-signature; name="signature.asc"
 
-therefore, I plan to patch this part to MFD as a common code for 
-both raw NAND and SPI.
+-----BEGIN PGP SIGNATURE-----
 
-i.e,. 
-In driver/mfd/mxic-mfd.c, we have mxic_mfd_data_xfer() and 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzb3VkACgkQJNaLcl1U
+h9DDwgf+IgSDwzI5qR9A6I3NzqXiuPcYQwmgXzmah1o3/xQ9fvEAUz4bAkK2FkqX
+VtvQy+JWAMR/3O5ydxa3czZfwgWVTXvwM45kwrgye/uuc6plpsJmsHPNraBuy28z
+iPEJZSuAWrhTYT/5sHrjAv4tEapzYRBMs/HIYxXclBbz3mvHy9TvgF49iwgScJF/
+p2GZVLoX2cfaxzvhdFzV2HZrJA/838DdOp06vKR1PPr7csfwDtTBOnjpMd6WLEJ1
+pi/+g/kRW7qCzshGjqBhKGorhPo5HONC9qap8+D1RU8ol7p4JjuxgDhjgaSDa/rY
+x/RgG+BBwZjujStSaE/v31pqdFUAzA==
+=GuwL
+-----END PGP SIGNATURE-----
 
-here call mxic_mfd_data_xfer() for raw NAND data read-write.
-
-
-> > > +static int mxic_nand_data_xfer(struct mxic_nand_ctlr *mxic, const 
-void *txbuf,
-> > > +                void *rxbuf, unsigned int len)
-> > > +{
-> > 
-> > There is not so much code shared, why not separating this function for
-> > rx and tx cases?
-> > 
-> > > +   unsigned int pos = 0;
-> > > +
-> > > +   while (pos < len) {
-> > > +      unsigned int nbytes = len - pos;
-> > > +      u32 data = 0xffffffff;
-> > > +      u32 sts;
-> > > +      int ret;
-> > > +
-> > > +      if (nbytes > 4)
-> > > +         nbytes = 4;
-> > > +
-> > > +      if (txbuf)
-> > > +         memcpy(&data, txbuf + pos, nbytes);
-> > > +
-> > > +      ret = readl_poll_timeout(mxic->mfd->regs + INT_STS, sts,
-> > > +                sts & INT_TX_EMPTY, 0, USEC_PER_SEC);
-> > 
-> > Using USEC_PER_SEC for a delay is weird
-> > 
-> > > +      if (ret)
-> > > +         return ret;
-> > > +
-> > > +      writel(data, mxic->mfd->regs + TXD(nbytes % 4));
-> > > +
-> > > +      if (rxbuf) {
-> > > +         ret = readl_poll_timeout(mxic->mfd->regs + INT_STS, sts,
-> > > +                   sts & INT_TX_EMPTY, 0,
-> > > +                   USEC_PER_SEC);
-> > > +         if (ret)
-> > > +            return ret;
-> > > +
-> > > +         ret = readl_poll_timeout(mxic->mfd->regs + INT_STS, sts,
-> > > +                   sts & INT_RX_NOT_EMPTY, 0,
-> > > +                   USEC_PER_SEC);
-> > > +         if (ret)
-> > > +            return ret;
-> > > +
-> > > +         data = readl(mxic->mfd->regs + RXD);
-> > > +         data >>= (8 * (4 - nbytes));
-> > 
-> > What is this? Are you trying to handle some endianness issue?
-> 
-> yes,
-> 
-> > 
-> > > +         memcpy(rxbuf + pos, &data, nbytes);
-> > > +         WARN_ON(readl(mxic->mfd->regs + INT_STS) &
-> > > +            INT_RX_NOT_EMPTY);
-> > > +      } else {
-> > > +         readl(mxic->mfd->regs + RXD);
-> > > +      }
-> > > +      WARN_ON(readl(mxic->mfd->regs + INT_STS) & INT_RX_NOT_EMPTY);
-> > > +
-> > > +      pos += nbytes;
-> > > +   }
-> > > +
-> > > +   return 0;
-> > > +}
-
-thanks for your review.
-
-best regards,
-Mason
-
---
-
-CONFIDENTIALITY NOTE:
-
-This e-mail and any attachments may contain confidential information 
-and/or personal data, which is protected by applicable laws. Please be 
-reminded that duplication, disclosure, distribution, or use of this e-mail 
-(and/or its attachments) or any part thereof is prohibited. If you receive 
-this e-mail in error, please notify us immediately and delete this mail as 
-well as its attachment(s) from your system. In addition, please be 
-informed that collection, processing, and/or use of personal data is 
-prohibited unless expressly permitted by personal data protection laws. 
-Thank you for your attention and cooperation.
-
-Macronix International Co., Ltd.
-
-=====================================================================
-
-
-
-============================================================================
-
-CONFIDENTIALITY NOTE:
-
-This e-mail and any attachments may contain confidential information and/or personal data, which is protected by applicable laws. Please be reminded that duplication, disclosure, distribution, or use of this e-mail (and/or its attachments) or any part thereof is prohibited. If you receive this e-mail in error, please notify us immediately and delete this mail as well as its attachment(s) from your system. In addition, please be informed that collection, processing, and/or use of personal data is prohibited unless expressly permitted by personal data protection laws. Thank you for your attention and cooperation.
-
-Macronix International Co., Ltd.
-
-=====================================================================
+--raC6veAxrt5nqIoY--

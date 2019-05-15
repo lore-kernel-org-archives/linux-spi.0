@@ -1,109 +1,50 @@
-From: masonccyang@mxic.com.tw
-Subject: Re: [PATCH v3 1/4]  mfd: Add Macronix MX25F0A MFD controller driver
-Date: Wed, 15 May 2019 14:46:07 +0800
-Message-ID: <OF4F52243F.0954FF8C-ON482583FB.0023B249-482583FB.00252E6F@mxic.com.tw>
-References: <1555320234-15802-1-git-send-email-masonccyang@mxic.com.tw> <1555320234-15802-2-git-send-email-masonccyang@mxic.com.tw> <20190512142835.4caddc8e@xps13>
+From: Lee Jones <lee.jones@linaro.org>
+Subject: Re: [PATCH v12 2/3] spi: Add Renesas R-Car Gen3 RPC-IF SPI
+ controller driver
+Date: Wed, 15 May 2019 08:16:01 +0100
+Message-ID: <20190515071601.GQ4319@dell>
+References: <1556092536-17095-1-git-send-email-masonccyang@mxic.com.tw>
+ <1556092536-17095-3-git-send-email-masonccyang@mxic.com.tw>
+ <20190514065216.GL4319@dell>
+ <OF794FCFCD.155B914B-ON482583FB.001EDBB3-482583FB.0020821B@mxic.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 Cc: bbrezillon@kernel.org, broonie@kernel.org,
-        christophe.kerello@st.com, computersforpeace@gmail.com,
-        devicetree@vger.kernel.org, dwmw2@infradead.org,
-        geert@linux-m68k.org, juliensu@mxic.com.tw, lee.jones@linaro.org,
-        liang.yang@amlogic.com, linux-kernel@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
-        marcel.ziswiler@toradex.com, marek.vasut@gmail.com,
-        mark.rutland@arm.com, paul.burton@mips.com, richard@nod.at,
-        robh+dt@kernel.org, stefan@agner.ch, zhengxunli@mxic.com.tw
-To: "Miquel Raynal" <miquel.raynal@bootlin.com>
+        devicetree@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
+        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-spi@vger.kernel.org, marek.vasut@gmail.com,
+        mark.rutland@arm.com, robh+dt@kernel.org,
+        sergei.shtylyov@cogentembedded.com, zhengxunli@mxic.com.tw
+To: masonccyang@mxic.com.tw
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190512142835.4caddc8e@xps13>
+Content-Disposition: inline
+In-Reply-To: <OF794FCFCD.155B914B-ON482583FB.001EDBB3-482583FB.0020821B@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Wed, 15 May 2019, masonccyang@mxic.com.tw wrote:
 
-Hi Miquel,
-
- 
-> > Add a driver for Macronix MX25F0A multifunction device controller.
-> > 
-> > Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
-> > ---
-> >  drivers/mfd/Kconfig              |   9 ++
-> >  drivers/mfd/Makefile             |   1 +
-> >  drivers/mfd/mxic-mx25f0a.c       |  84 +++++++++++++++++++
-> >  include/linux/mfd/mxic-mx25f0a.h | 175 
-+++++++++++++++++++++++++++++++++++++++
-> >  4 files changed, 269 insertions(+)
-> >  create mode 100644 drivers/mfd/mxic-mx25f0a.c
-> >  create mode 100644 include/linux/mfd/mxic-mx25f0a.h
-> > 
-> > diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-> > index 26ad646..7e99e93 100644
-> > --- a/drivers/mfd/Kconfig
-> > +++ b/drivers/mfd/Kconfig
-> > @@ -823,6 +823,15 @@ config MFD_MAX8998
-> >       additional drivers must be enabled in order to use the 
-functionality
-> >       of the device.
-> > 
-> > +config MFD_MXIC_MX25F0A
-> > +   tristate "Macronix mx25f0a multifunction device support"
-> > +   select MFD_CORE
-> > +   help
-> > +     This supports for Macronix mx25f0a multifunction device 
-controller
-> > +     for raw nand or spi. You have to select individual components 
-like
+> Hi Jones,
 > 
-> Please use upper case for acronyms in plain English: NAND, SPI
+> 
+> > > +
+> > > +struct rpc_spi {
+> > > +   struct rpc_mfd *mfd;
+> > 
+> > The term MFD isn't a real thing.  What you're obtaining below is
+> > driver data and is normally articulated as 'ddata' in drivers.
+> 
+> yes, it's just imply that data is from MFD.
+> 
+> Should I rename "mfd" ?
 
-okay, will fix.
+Yes please.
 
-And I also would like to remove "mx25f0a" char.
-
-patch to:
-------------------------------------------------------------------------
-config MFD_MXIC_FMC
-   tristate "Macronix Flash Memory Controller support"
-   select MFD_CORE
-   help
-     This supports Macronix Flash Memory Controller for raw NAND and SPI.
-     You have to select individual components like raw NAND controller
-     or SPI host controller under the corresponding  menus.
--------------------------------------------------------------------------
-
-thanks for your review.
-
-best regards,
-Mason
-
-
-
-
-CONFIDENTIALITY NOTE:
-
-This e-mail and any attachments may contain confidential information 
-and/or personal data, which is protected by applicable laws. Please be 
-reminded that duplication, disclosure, distribution, or use of this e-mail 
-(and/or its attachments) or any part thereof is prohibited. If you receive 
-this e-mail in error, please notify us immediately and delete this mail as 
-well as its attachment(s) from your system. In addition, please be 
-informed that collection, processing, and/or use of personal data is 
-prohibited unless expressly permitted by personal data protection laws. 
-Thank you for your attention and cooperation.
-
-Macronix International Co., Ltd.
-
-=====================================================================
-
-
-
-============================================================================
-
-CONFIDENTIALITY NOTE:
-
-This e-mail and any attachments may contain confidential information and/or personal data, which is protected by applicable laws. Please be reminded that duplication, disclosure, distribution, or use of this e-mail (and/or its attachments) or any part thereof is prohibited. If you receive this e-mail in error, please notify us immediately and delete this mail as well as its attachment(s) from your system. In addition, please be informed that collection, processing, and/or use of personal data is prohibited unless expressly permitted by personal data protection laws. Thank you for your attention and cooperation.
-
-Macronix International Co., Ltd.
-
-=====================================================================
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

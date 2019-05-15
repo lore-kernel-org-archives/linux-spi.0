@@ -1,81 +1,60 @@
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: Re: [PATCH v3 2/4] mtd: rawnand: Add Macronix MX25F0A NAND
- controller
-Date: Wed, 15 May 2019 14:08:58 +0200
-Message-ID: <20190515140858.77213af9@xps13>
-References: <1555320234-15802-1-git-send-email-masonccyang@mxic.com.tw>
-        <1555320234-15802-3-git-send-email-masonccyang@mxic.com.tw>
-        <20190512151820.4f2dd9da@xps13>
-        <OF8A566F14.A2F0F576-ON482583FB.002E7E32-482583FB.003068BA@mxic.com.tw>
+From: Douglas Anderson <dianders@chromium.org>
+Subject: [PATCH v4 0/3] spi: A better solution for cros_ec_spi reliability
+Date: Wed, 15 May 2019 09:48:10 -0700
+Message-ID: <20190515164814.258898-1-dianders@chromium.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Cc: bbrezillon@kernel.org, broonie@kernel.org,
-        christophe.kerello@st.com, computersforpeace@gmail.com,
-        devicetree@vger.kernel.org, dwmw2@infradead.org,
-        geert@linux-m68k.org, juliensu@mxic.com.tw, lee.jones@linaro.org,
-        liang.yang@amlogic.com, linux-kernel@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
-        marcel.ziswiler@toradex.com, marek.vasut@gmail.com,
-        mark.rutland@arm.com, paul.burton@mips.com, richard@nod.at,
-        robh+dt@kernel.org, stefan@agner.ch, zhengxunli@mxic.com.tw
-To: masonccyang@mxic.com.tw
+Content-Transfer-Encoding: 8bit
+Cc: linux-rockchip@lists.infradead.org, drinkcat@chromium.org,
+        Guenter Roeck <groeck@chromium.org>, briannorris@chromium.org,
+        mka@chromium.org, Douglas Anderson <dianders@chromium.org>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OF8A566F14.A2F0F576-ON482583FB.002E7E32-482583FB.003068BA@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi masonccyang@mxic.com.tw,
+This series is a much better solution for getting the Chrome OS EC to
+talk reliably.
 
-masonccyang@mxic.com.tw wrote on Wed, 15 May 2019 16:48:46 +0800:
+Patch #1 in this series is the most important.  It can land any time.
 
-> Hi Miquel,
-> 
-> > > +// SPDX-License-Identifier: GPL-2.0
-> > > +//
-> > > +// Copyright (C) 2019 Macronix International Co., Ltd.
-> > > +//
-> > > +// Authors:
-> > > +//   Mason Yang <masonccyang@mxic.com.tw>
-> > > +//   zhengxunli <zhengxunli@mxic.com.tw>  
-> > 
-> > This is not a valid name.
-> > 
-> > Also if he appears here I suppose he should be credited in the
-> > module_authors() macro too.  
-> 
-> I think Li should maintain this NAND driver later, 
+Patch #2 in this series (a SPI framework patch) needs to land before
+patch #3.  Note that patches #2 and #3 really just fix a corner case
+and just having patch #1 is the most important.  We don't end up on
+the pumping thread very often.
 
-This entry is for the authors of the driver.
+Note:
+- If you want some history on investigation done here, feel free to
+  peruse the Chrome OS bug: <https://crbug.com/948742>.
 
-If he will maintain the driver, then add a new entry in MAINTAINERS.
+Changes in v4:
+- No needless init of err in cros_ec_spi_devm_high_pri_alloc (Guenter).
+- Removed blank lines near #includes (Guenter).
+- Switch to kthread_create_worker() and fix error handling (Guenter).
+- Cleaner devm code (Guenter).
 
-> > > +}
-> > > +
-> > > +static const struct nand_controller_ops mxic_nand_controller_ops = {
-> > > +   .exec_op = mxic_nand_exec_op,
-> > > +};
-> > > +
-> > > +static int mx25f0a_nand_probe(struct platform_device *pdev)
-> > > +{
-> > > +   struct mtd_info *mtd;
-> > > +   struct mx25f0a_mfd *mfd = dev_get_drvdata(pdev->dev.parent);
-> > > +   struct mxic_nand_ctlr *mxic;
-> > > +   struct nand_chip *nand_chip;
-> > > +   int err;
-> > > +
-> > > +   mxic = devm_kzalloc(&pdev->dev, sizeof(struct mxic_nand_ctlr),
-> > > +             GFP_KERNEL);  
-> > 
-> > mxic for a NAND controller structure is probably not a name meaningful
-> > enough.  
-> 
-> How about *fmc or *mxic_fmc ?
+Changes in v3:
+- cros_ec realtime patch replaces revert; now patch #1
+- SPI core change now like patch v1 patch #2 (with name "rt").
+- Updated description and variable name since we no longer force.
 
-fmc is fine, even if I personally prefer nfc for NAND flash controller.
-Here the 'm' in fmc stands for 'memory' but I am not sure if the
-controller can manage something else than NAND flash anyway?
+Changes in v2:
+- Now only force transfers to the thread for devices that want it.
+- Squashed patch #1 and #2 together.
+- Renamed variable to "force_rt_transfers".
+- Renamed variable to "force_rt_transfers".
 
+Douglas Anderson (3):
+  platform/chrome: cros_ec_spi: Move to real time priority for transfers
+  spi: Allow SPI devices to request the pumping thread be realtime
+  platform/chrome: cros_ec_spi: Request the SPI thread be realtime
 
-Thanks,
-Miquèl
+ drivers/platform/chrome/cros_ec_spi.c | 66 ++++++++++++++++++++++-----
+ drivers/spi/spi.c                     | 36 ++++++++++++---
+ include/linux/spi/spi.h               |  2 +
+ 3 files changed, 86 insertions(+), 18 deletions(-)
+
+-- 
+2.21.0.1020.gf2820cf01a-goog

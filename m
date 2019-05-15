@@ -1,224 +1,91 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v12 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3
- RPC-IF MFD bindings
-Date: Tue, 14 May 2019 23:27:50 +0300
-Message-ID: <44bc8f0a-cbdc-db4a-9a46-b8bae5cc37a2@cogentembedded.com>
-References: <1556092536-17095-1-git-send-email-masonccyang@mxic.com.tw>
- <1556092536-17095-4-git-send-email-masonccyang@mxic.com.tw>
- <20190424212356.GA27103@bogus>
- <65853dc2-6f3c-1494-7e72-54877797cdd2@gmail.com>
- <20190507125730.GD29524@dell>
- <OF08A5650B.8AE8977C-ON482583F4.000E5B1E-482583F4.000F7215@mxic.com.tw>
- <d229b19e-351c-c576-b5c4-716d10dad1a0@gmail.com> <20190508061119.GB7627@dell>
- <OFE86674B9.06D723A0-ON482583F5.000AD50C-482583F5.000BA075@mxic.com.tw>
- <a05cff8f-7df2-1938-c0e7-f9366bece607@cogentembedded.com>
- <OFB19BCE91.6EBBAA77-ON482583F6.000234E2-482583F6.00061290@mxic.com.tw>
- <CAMuHMdUP8KU3Dbv6cwOvrY0hWOcm1xqVcsi20+GvazYMDLGGZg@mail.gmail.com>
- <OFD932ABFC.E3FFCEB8-ON482583F9.003412B1-482583F9.0034D5CA@mxic.com.tw>
- <b51d1cb7-b3b5-208f-ab4c-145ecb57805d@cogentembedded.com>
- <OFAD9AA573.86373900-ON482583FA.0034781A-482583FA.0035B40C@mxic.com.tw>
+From: masonccyang@mxic.com.tw
+Subject: Re: [PATCH v12 2/3] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
+ driver
+Date: Wed, 15 May 2019 13:55:05 +0800
+Message-ID: <OF794FCFCD.155B914B-ON482583FB.001EDBB3-482583FB.0020821B@mxic.com.tw>
+References: <1556092536-17095-1-git-send-email-masonccyang@mxic.com.tw> <1556092536-17095-3-git-send-email-masonccyang@mxic.com.tw> <20190514065216.GL4319@dell>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: Boris Brezillon <bbrezillon@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh@kernel.org>, zhengxunli@mxic.com.tw
-To: masonccyang@mxic.com.tw, Geert Uytterhoeven <geert@linux-m68k.org>,
-        Lee Jones <lee.jones@linaro.org>
+Content-Type: text/plain; charset="GB2312"
+Content-Transfer-Encoding: base64
+Cc: bbrezillon@kernel.org, broonie@kernel.org,
+        devicetree@vger.kernel.org,
+        "Geert Uytterhoeven" <geert+renesas@glider.be>,
+        "Simon Horman" <horms@verge.net.au>, juliensu@mxic.com.tw,
+        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-spi@vger.kernel.org, marek.vasut@gmail.com,
+        mark.rutland@arm.com, robh+dt@kernel.org,
+        sergei.shtylyov@cogentembedded.com, zhengxunli@mxic.com.tw
+To: "Lee Jones" <lee.jones@linaro.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OFAD9AA573.86373900-ON482583FA.0034781A-482583FA.0035B40C@mxic.com.tw>
-Content-Language: en-MW
+In-Reply-To: <20190514065216.GL4319@dell>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 05/14/2019 12:46 PM, masonccyang@mxic.com.tw wrote:
 
->>>> There's precedence for such constructs being an MFD: please see
->>>> drivers/mfd/at91-usart.c, which registers a single MFD cell for 
-> either
->>>> serial or SPI.
->>
->>    Thanks fir your example, Geert! :-)
-
-   s/fir/for/, not the firtree season anymore. :-)
-
->>> okay, many thanks for your information.
->>>
->>> How about to patch RPF-IF dts to:
->>> -------------------------------------------------------------->
->>>
->>> Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
->>> ---------------------------------------------------------
->>>
->>>   RPC-IF supports both SPI NOR and HyperFlash (CFI-compliant flash)
->>>
->>>   Required properties:
->>>   - compatible: should be an SoC-specific compatible value, followed 
-> by
->>>                   "renesas,rcar-gen3-rpc" as a fallback.
->>>                   supported SoC-specific values are:
->>>                   "renesas,r8a77995-rpc"  (R-Car D3)
->>>   - reg: should contain three register areas:
->>>           first for the base address of RPC-IF registers,
->>
->>    I'd drop "the base address" here.
-> 
-> okay.
-> 
->>>           second for the direct mapping read mode and
->>>           third for the write buffer area.
->>>   - reg-names: should contain "regs", "dirmap" and "wbuf"
->>>   - clocks: should contain 1 entries for the module's clock
->>>   - clock-names: should contain "rpc"
->>
->>    I suspect we'd need the RPC/RPCD2 clocks mentioned as well (not sure 
-> yet)...
-> 
-> Need it ?
-
-   You seem to call clk_get_rate() on the module clock, I doubt that's
-correct topologically...
-
-> RPCD2 is derived from RPC and it's value is half of RPC,
-> i.e., RPC = 160MHz, RPCD2 = 80 MHz
-
-   I know.
-
->>    And how about "power-domains", "resets" (seen in the example below),
->> also what about #address-cells & #size-cells?
->>
->>>
->>>   Example:
->>
->>    Could you please indent with 1 or 2 tabs where you used 8 or 16 
-> spaces?
->>
->>>   - SPI mode:
->>>
->>>           rpc: rpc-if@ee200000 {
->>
->>    The node names should be generic, based on the device class. And in 
-> this
->> case I'd like to use "spi@ee200000" as otherwise dtc keeps bitching like 
-> below:
-> 
-> okay, patch to
-> 
-> rpc_if: spi@<...>
-
-   That, or just keep the node label.
-
->> arch/arm64/boot/dts/renesas/r8a77980.dtsi:1344.21-1359.5: Warning 
-> (spi_bus_bridge):
->> /soc/rpc@ee200000: node name for SPI buses should be 'spi'
->>   also defined at 
-> arch/arm64/boot/dts/renesas/r8a77980-condor.dts:283.6-343.3
->> arch/arm64/boot/dts/renesas/r8a77980-condor.dtb: Warning (spi_bus_reg):
->> Failed prerequisite 'spi_bus_bridge'
->>
->>
->>>   - HF mode:
->>>           rpc: rpc-if@ee200000 {
->>
->>    Again, spi@<...>.
-> 
-> what about rpc_if: hf@<...>
-
-   Can't change the node name, as it's declared in the .dtsi files, not *.dts
-ones. And "spi" works for the HF case as well -- no complaints from dtc. :-)
-
->>>                   compatible = "renesas,r8a77995-rpc", 
-> "renesas,rcar-gen3-rpc";
->>>                   reg = <0 0xee200000 0 0x200>, <0 0x08000000 0 
-> 0x4000000>,
->>>                         <0 0xee208000 0 0x100>;
->>>                   reg-names = "regs", "dirmap", "wbuf";
->>>                   clocks = <&cpg CPG_MOD 917>;
->>>                   clock-names = "rpc";
->>>                   power-domains = <&sysc R8A77995_PD_ALWAYS_ON>;
->>>                   resets = <&cpg 917>;
->>>                   #address-cells = <1>;
->>>                   #size-cells = <1>;
->>>
->>>                   flash@0 {
->>>                           compatible = "cfi-flash";
->>
->>    The working HF implementation has "cypress,hyperflash" before 
-> "cfi-flash".
->>
->>>                           reg = <0 0x4000000>;
->>>                   };
->>>           };
->>>
->>> --------------------------------------------------------------<
->>>
->>> Is it OK ?
->>
->>    Yeah, seems good (assuming you fix the issues above).
-> 
-> Patch new DTS to
-> ===============================================================> 
-> 
-> +Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
-> +---------------------------------------------------------
-> +
-> +RPC-IF supports both SPI NOR and HyperFlash (CFI-compliant flash)
-> +
-> +Required properties:
-> +- compatible: should be an SoC-specific compatible value, followed by
-> +                                "renesas,rcar-gen3-rpc" as a fallback.
-> +                                supported SoC-specific values are:
-> +                                "renesas,r8a77995-rpc"          (R-Car 
-> D3)
-> +- reg: should contain three register areas:
-> +                first for RPC-IF registers,
-> +                second for the direct mapping read mode and
-> +                third for the write buffer area.
-> +- reg-names: should contain "regs", "dirmap" and "wbuf"
-> +- clocks: should contain 1 entries for the module's clock
-> +- clock-names: should contain "rpc"
-> +- #address-cells: should be 1
-> +- #size-cells: should be 0
-
-   Still nothing about the "oower-domains" and "resets" props... :-(
-
-> +
-> +Example:
-> +- SPI mode:
-> +
-> +                rpc_if: spi@ee200000 {
-> +                                compatible = "renesas,r8a77995-rpc", 
-> "renesas,rcar-gen3-rpc";
-> +                                reg = <0 0xee200000 0 0x200>, <0 
-> 0x08000000 0 0x4000000>,
-> +                                      <0 0xee208000 0 0x100>;
-> +                                reg-names = "regs", "dirmap", "wbuf";
-> +                                clocks = <&cpg CPG_MOD 917>;
-> +                                clock-names = "rpc";
-> +                                power-domains = <&sysc 
-> R8A77995_PD_ALWAYS_ON>;
-> +                                resets = <&cpg 917>;
-> +                                #address-cells = <1>;
-> +                                #size-cells = <0>;
-[...]
-> =======================================================================<
-> 
-> OK ?
-
-   Yes, with the remaining issue fixed.
- 
-> thanks & best regards,
-> Mason
-
-[...]
-
-MBR, Sergei
+SGkgSm9uZXMsDQoNCg0KPiA+ICsNCj4gPiArc3RydWN0IHJwY19zcGkgew0KPiA+ICsgICBzdHJ1
+Y3QgcnBjX21mZCAqbWZkOw0KPiANCj4gVGhlIHRlcm0gTUZEIGlzbid0IGEgcmVhbCB0aGluZy4g
+IFdoYXQgeW91J3JlIG9idGFpbmluZyBiZWxvdyBpcw0KPiBkcml2ZXIgZGF0YSBhbmQgaXMgbm9y
+bWFsbHkgYXJ0aWN1bGF0ZWQgYXMgJ2RkYXRhJyBpbiBkcml2ZXJzLg0KDQp5ZXMsIGl0J3MganVz
+dCBpbXBseSB0aGF0IGRhdGEgaXMgZnJvbSBNRkQuDQoNClNob3VsZCBJIHJlbmFtZSAibWZkIiA/
+DQoNCj4gDQo+ID4gKyAgIHUzMiBjdXJfc3BlZWRfaHo7DQo+ID4gKyAgIHUzMiBjbWQ7DQo+ID4g
+KyAgIHUzMiBhZGRyOw0KPiA+ICsgICB1MzIgZHVtbXk7DQo+ID4gKyAgIHUzMiBzbWNyOw0KPiA+
+ICsgICB1MzIgc21lbnI7DQo+ID4gKyAgIHUzMiB4ZmVybGVuOw0KPiA+ICsgICB1MzIgdG90YWx4
+ZmVybGVuOw0KPiA+ICsgICBlbnVtIHNwaV9tZW1fZGF0YV9kaXIgeGZlcl9kaXI7DQo+ID4gK307
+DQo+IA0KPiBbLi4uXQ0KPiANCj4gPiArc3RhdGljIHZvaWQgcnBjX3NwaV9od19pbml0KHN0cnVj
+dCBycGNfc3BpICpycGMpDQo+ID4gK3sNCj4gPiArICAgLy8NCj4gPiArICAgLy8gTk9URTogVGhl
+IDB4MjYwIGFyZSB1bmRvY3VtZW50ZWQgYml0cywgYnV0IHRoZXkgbXVzdCBiZSBzZXQuDQo+ID4g
+KyAgIC8vICAgIFJQQ19QSFlDTlRfU1RSVElNIGlzIHN0cm9iZSB0aW1pbmcgYWRqdXN0bWVudCBi
+aXQsDQo+ID4gKyAgIC8vICAgIDB4MCA6IHRoZSBkZWxheSBpcyBiaWdnZXN0LA0KPiA+ICsgICAv
+LyAgICAweDEgOiB0aGUgZGVsYXkgaXMgMm5kIGJpZ2dlc3QsDQo+ID4gKyAgIC8vICAgIE9uIEgz
+IEVTMS54LCB0aGUgdmFsdWUgc2hvdWxkIGJlIDAsIHdoaWxlIG9uIG90aGVycywNCj4gPiArICAg
+Ly8gICAgdGhlIHZhbHVlIHNob3VsZCBiZSA2Lg0KPiA+ICsgICAvLw0KPiANCj4gQysrIHN0eWxl
+IGNvbW1lbnRzPyAgSXMgdGhhdCBhIHRoaW5nIG5vdz8NCg0KSXQncyBraW5kIG9mIE1hcmsncyBw
+cmV2aW91cyBjb21tZW50cy4NCg0KPiANCj4gPiArICAgcmVnbWFwX3dyaXRlKHJwYy0+bWZkLT5y
+ZWdtYXAsIFJQQ19QSFlDTlQsIFJQQ19QSFlDTlRfQ0FMIHwNCj4gPiArICAgICAgICAgICAgICBS
+UENfUEhZQ05UX1NUUlRJTSg2KSB8IDB4MjYwKTsNCj4gPiArDQo+ID4gKyAgIC8vDQo+ID4gKyAg
+IC8vIE5PVEU6IFRoZSAweDE1MTExNDQgYXJlIHVuZG9jdW1lbnRlZCBiaXRzLCBidXQgdGhleSBt
+dXN0IGJlIHNldA0KPiA+ICsgICAvLyAgICAgICBmb3IgUlBDX1BIWU9GRlNFVDEuDQo+ID4gKyAg
+IC8vICAgIFRoZSAweDMxIGFyZSB1bmRvY3VtZW50ZWQgYml0cywgYnV0IHRoZXkgbXVzdCBiZSBz
+ZXQNCj4gPiArICAgLy8gICAgZm9yIFJQQ19QSFlPRkZTRVQyLg0KPiA+ICsgICAvLw0KPiA+ICsg
+ICByZWdtYXBfd3JpdGUocnBjLT5tZmQtPnJlZ21hcCwgUlBDX1BIWU9GRlNFVDEsDQo+ID4gKyAg
+ICAgICAgICAgUlBDX1BIWU9GRlNFVDFfRERSVE1HKDMpIHwgMHgxNTExMTQ0KTsNCj4gPiArICAg
+cmVnbWFwX3dyaXRlKHJwYy0+bWZkLT5yZWdtYXAsIFJQQ19QSFlPRkZTRVQyLCAweDMxIHwNCj4g
+PiArICAgICAgICAgICBSUENfUEhZT0ZGU0VUMl9PQ1RUTUcoNCkpOw0KPiA+ICsgICByZWdtYXBf
+d3JpdGUocnBjLT5tZmQtPnJlZ21hcCwgUlBDX1NTTERSLCBSUENfU1NMRFJfU1BOREwoNykgfA0K
+PiA+ICsgICAgICAgICAgIFJQQ19TU0xEUl9TTE5ETCg3KSB8IFJQQ19TU0xEUl9TQ0tETCg3KSk7
+DQo+ID4gKyAgIHJlZ21hcF93cml0ZShycGMtPm1mZC0+cmVnbWFwLCBSUENfQ01OQ1IsIFJQQ19D
+TU5DUl9NRCB8DQo+ID4gKyAgICAgICAgICAgUlBDX0NNTkNSX1NGREUgfCBSUENfQ01OQ1JfTU9J
+SU9fSElaIHwgUlBDX0NNTkNSX0lPRlZfSElaIA0KfA0KPiA+ICsgICAgICAgICAgIFJQQ19DTU5D
+Ul9CU1ooMCkpOw0KPiA+ICt9DQo+IA0KPiAtLSANCj4gTGVlIEpvbmVzIFvA7sfty7ldDQo+IExp
+bmFybyBTZXJ2aWNlcyBUZWNobmljYWwgTGVhZA0KPiBMaW5hcm8ub3JnIKmmIE9wZW4gc291cmNl
+IHNvZnR3YXJlIGZvciBBUk0gU29Dcw0KPiBGb2xsb3cgTGluYXJvOiBGYWNlYm9vayB8IFR3aXR0
+ZXIgfCBCbG9nDQoNCnRoYW5rcyAmIGJlc3QgcmVnYXJkcywNCk1hc29uDQoNCkNPTkZJREVOVElB
+TElUWSBOT1RFOg0KDQpUaGlzIGUtbWFpbCBhbmQgYW55IGF0dGFjaG1lbnRzIG1heSBjb250YWlu
+IGNvbmZpZGVudGlhbCBpbmZvcm1hdGlvbiANCmFuZC9vciBwZXJzb25hbCBkYXRhLCB3aGljaCBp
+cyBwcm90ZWN0ZWQgYnkgYXBwbGljYWJsZSBsYXdzLiBQbGVhc2UgYmUgDQpyZW1pbmRlZCB0aGF0
+IGR1cGxpY2F0aW9uLCBkaXNjbG9zdXJlLCBkaXN0cmlidXRpb24sIG9yIHVzZSBvZiB0aGlzIGUt
+bWFpbCANCihhbmQvb3IgaXRzIGF0dGFjaG1lbnRzKSBvciBhbnkgcGFydCB0aGVyZW9mIGlzIHBy
+b2hpYml0ZWQuIElmIHlvdSByZWNlaXZlIA0KdGhpcyBlLW1haWwgaW4gZXJyb3IsIHBsZWFzZSBu
+b3RpZnkgdXMgaW1tZWRpYXRlbHkgYW5kIGRlbGV0ZSB0aGlzIG1haWwgYXMgDQp3ZWxsIGFzIGl0
+cyBhdHRhY2htZW50KHMpIGZyb20geW91ciBzeXN0ZW0uIEluIGFkZGl0aW9uLCBwbGVhc2UgYmUg
+DQppbmZvcm1lZCB0aGF0IGNvbGxlY3Rpb24sIHByb2Nlc3NpbmcsIGFuZC9vciB1c2Ugb2YgcGVy
+c29uYWwgZGF0YSBpcyANCnByb2hpYml0ZWQgdW5sZXNzIGV4cHJlc3NseSBwZXJtaXR0ZWQgYnkg
+cGVyc29uYWwgZGF0YSBwcm90ZWN0aW9uIGxhd3MuIA0KVGhhbmsgeW91IGZvciB5b3VyIGF0dGVu
+dGlvbiBhbmQgY29vcGVyYXRpb24uDQoNCk1hY3Jvbml4IEludGVybmF0aW9uYWwgQ28uLCBMdGQu
+DQoNCj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PQ0KDQoNCg0KPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQ0KDQpDT05GSURFTlRJ
+QUxJVFkgTk9URToNCg0KVGhpcyBlLW1haWwgYW5kIGFueSBhdHRhY2htZW50cyBtYXkgY29udGFp
+biBjb25maWRlbnRpYWwgaW5mb3JtYXRpb24gYW5kL29yIHBlcnNvbmFsIGRhdGEsIHdoaWNoIGlz
+IHByb3RlY3RlZCBieSBhcHBsaWNhYmxlIGxhd3MuIFBsZWFzZSBiZSByZW1pbmRlZCB0aGF0IGR1
+cGxpY2F0aW9uLCBkaXNjbG9zdXJlLCBkaXN0cmlidXRpb24sIG9yIHVzZSBvZiB0aGlzIGUtbWFp
+bCAoYW5kL29yIGl0cyBhdHRhY2htZW50cykgb3IgYW55IHBhcnQgdGhlcmVvZiBpcyBwcm9oaWJp
+dGVkLiBJZiB5b3UgcmVjZWl2ZSB0aGlzIGUtbWFpbCBpbiBlcnJvciwgcGxlYXNlIG5vdGlmeSB1
+cyBpbW1lZGlhdGVseSBhbmQgZGVsZXRlIHRoaXMgbWFpbCBhcyB3ZWxsIGFzIGl0cyBhdHRhY2ht
+ZW50KHMpIGZyb20geW91ciBzeXN0ZW0uIEluIGFkZGl0aW9uLCBwbGVhc2UgYmUgaW5mb3JtZWQg
+dGhhdCBjb2xsZWN0aW9uLCBwcm9jZXNzaW5nLCBhbmQvb3IgdXNlIG9mIHBlcnNvbmFsIGRhdGEg
+aXMgcHJvaGliaXRlZCB1bmxlc3MgZXhwcmVzc2x5IHBlcm1pdHRlZCBieSBwZXJzb25hbCBkYXRh
+IHByb3RlY3Rpb24gbGF3cy4gVGhhbmsgeW91IGZvciB5b3VyIGF0dGVudGlvbiBhbmQgY29vcGVy
+YXRpb24uDQoNCk1hY3Jvbml4IEludGVybmF0aW9uYWwgQ28uLCBMdGQuDQoNCj09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PQ0K

@@ -1,214 +1,83 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: tegra114: add support for TX and RX trimmers" to the spi tree
-Date: Wed, 15 May 2019 12:18:23 +0100 (BST)
-Message-ID: <20190515111823.B28F41126D6A@debutante.sirena.org.uk>
-References: <1557810235-16401-5-git-send-email-skomatineni@nvidia.com>
-Cc: broonie@kernel.org, jonathanh@nvidia.com, ldewangan@nvidia.com,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-tegra@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        thierry.reding@gmail.com
+Subject: Re: [PATCH V5 1/4] spi: tegra114: add support for gpio based CS
+Date: Wed, 15 May 2019 12:29:00 +0100
+Message-ID: <20190515112900.GE5613@sirena.org.uk>
+References: <1557810235-16401-1-git-send-email-skomatineni@nvidia.com>
+ <1557810235-16401-2-git-send-email-skomatineni@nvidia.com>
+ <cf4bd167-49b8-5649-a2e2-7bf5ddcc6e2d@nvidia.com>
+ <BYAPR12MB33986B88CF3A30036E3F1F04C2080@BYAPR12MB3398.namprd12.prod.outlook.com>
+ <20190515093522.GC5613@sirena.org.uk>
+ <BYAPR12MB3398ED52051F5BFA08D7B3A6C2090@BYAPR12MB3398.namprd12.prod.outlook.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="5oH/S/bF6lOfqCQb"
+Cc: Jonathan Hunter <jonathanh@nvidia.com>,
+        "thierry.reding@gmail.com" <thierry.reding@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        Krishna Yarlagadda <kyarlagadda@nvidia.com>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
 To: Sowjanya Komatineni <skomatineni@nvidia.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1557810235-16401-5-git-send-email-skomatineni@nvidia.com>
+Content-Disposition: inline
+In-Reply-To: <BYAPR12MB3398ED52051F5BFA08D7B3A6C2090@BYAPR12MB3398.namprd12.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: tegra114: add support for TX and RX trimmers
+--5oH/S/bF6lOfqCQb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-has been applied to the spi tree at
+On Wed, May 15, 2019 at 11:24:22AM +0000, Sowjanya Komatineni wrote:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.3
+> > Please fix your mail client to word wrap within paragraphs at something
+> substantially less than 80 columns.  Doing this makes your messages much
+> easier to read and reply to.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> I did changed but looks like it didn't made diff. Will try with different=
+ email client.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Yeah, the behaviour is exactly the same - it's not only not wrapping
+your content but also reflowing quoted content.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+> > Please don't ignore review comments, people are generally making them
+> for a reason and are likely to have the same concerns if issues remain
+> unaddressed.  Having to repeat the same comments can get repetitive and
+> make people question the value of time spent reviewing.  If you disagree
+> with the review comments that's fine but you need to reply and discuss
+> your concerns so that the reviewer can understand your decisions.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+> If you are referring to comment from Jon on updating commit, I didn't ign=
+ored. I am just waiting if any more comments from you or others before post=
+ing updated patch.=20
 
-Thanks,
-Mark
+That was more about the continuing issues with mail formatting.
 
->From 318dacbd049b447a5b45290b39f1c889b9cbde4d Mon Sep 17 00:00:00 2001
-From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Date: Mon, 13 May 2019 22:03:55 -0700
-Subject: [PATCH] spi: tegra114: add support for TX and RX trimmers
+> But I see you applied patch now. So how should I post with updated commit?
 
-Tegra SPI master controller has programmable trimmers to adjust the
-data with respect to the clock.
+No, it's fine.  It would have been better to have a clearer commit
+message but I think the usage makes it reasonably clear in the final
+code why that was done and honestly "the hardware doesn't support all
+the features we need to properly control devices" is an extremely common
+reason for using GPIO chip selects even when hardware support is
+available.
 
-These trimmers are programmed in TX_CLK_TAP_DELAY and RX_CLK_TAP_DELAY
-fields of COMMAND2 register.
+--5oH/S/bF6lOfqCQb
+Content-Type: application/pgp-signature; name="signature.asc"
 
-SPI TX trimmer is to adjust the outgoing data with respect to the
-outgoing clock and SPI RX trimmer is to adjust the loopback clock with
-respect to the incoming data from the slave device.
+-----BEGIN PGP SIGNATURE-----
 
-These trimmers vary based on trace lengths of the platform design for
-each of the slaves on the SPI bus and optimal value programmed is from
-the platform validation across PVT.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzb9/sACgkQJNaLcl1U
+h9BUDwf/bPfCyFuksT4NWyI8p6GWwFAUqqbX6kRmGX6QVE+z2hnkF6KlYKBRlIV6
+lgYs5tiInlHAw7ZLHeqzL0i6R+OzTGprmMKnl+Tjh1JmwwVbbpe4MX2i0EM575Yo
+tySU55KRQjtCC9pDBjqbND2Drh7PcAQqZNnj2izJyimjcQrCNTlZaUeWDbdptqVI
+JInzZFPpsdvgSMMj7RTAmo22RzO2jdNNZncxo86MXp8zCvBupMDZTem3aXL9PFCJ
+qVP1LJ8JvHPGZcyCag9ForjT5XTHqygCSupKrqol9X2QXsJMNFMqcB5tsJkINGXk
+pZdS55eooHyxJvRybmtWPKzsiGJCww==
+=2+CF
+-----END PGP SIGNATURE-----
 
-This patch adds support for configuring TX and RX clock delay trimmers
-through the device tree properties.
-
-Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-tegra114.c | 67 ++++++++++++++++++++++++++++++++++++--
- 1 file changed, 65 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index e59ff7c1cee6..253a7f182fc9 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -169,6 +169,11 @@ struct tegra_spi_soc_data {
- 	bool has_intr_mask_reg;
- };
- 
-+struct tegra_spi_client_data {
-+	int tx_clk_tap_delay;
-+	int rx_clk_tap_delay;
-+};
-+
- struct tegra_spi_data {
- 	struct device				*dev;
- 	struct spi_master			*master;
-@@ -208,8 +213,10 @@ struct tegra_spi_data {
- 	u32					command1_reg;
- 	u32					dma_control_reg;
- 	u32					def_command1_reg;
-+	u32					def_command2_reg;
- 	u32					spi_cs_timing1;
- 	u32					spi_cs_timing2;
-+	u8					last_used_cs;
- 
- 	struct completion			xfer_completion;
- 	struct spi_transfer			*curr_xfer;
-@@ -770,10 +777,12 @@ static u32 tegra_spi_setup_transfer_one(struct spi_device *spi,
- 					bool is_single_xfer)
- {
- 	struct tegra_spi_data *tspi = spi_master_get_devdata(spi->master);
-+	struct tegra_spi_client_data *cdata = spi->controller_data;
- 	u32 speed = t->speed_hz;
- 	u8 bits_per_word = t->bits_per_word;
--	u32 command1;
-+	u32 command1, command2;
- 	int req_mode;
-+	u32 tx_tap = 0, rx_tap = 0;
- 
- 	if (speed != tspi->cur_speed) {
- 		clk_set_rate(tspi->clk, speed);
-@@ -836,7 +845,18 @@ static u32 tegra_spi_setup_transfer_one(struct spi_device *spi,
- 				command1 &= ~SPI_CS_SW_VAL;
- 		}
- 
--		tegra_spi_writel(tspi, 0, SPI_COMMAND2);
-+		if (tspi->last_used_cs != spi->chip_select) {
-+			if (cdata && cdata->tx_clk_tap_delay)
-+				tx_tap = cdata->tx_clk_tap_delay;
-+			if (cdata && cdata->rx_clk_tap_delay)
-+				rx_tap = cdata->rx_clk_tap_delay;
-+			command2 = SPI_TX_TAP_DELAY(tx_tap) |
-+				   SPI_RX_TAP_DELAY(rx_tap);
-+			if (command2 != tspi->def_command2_reg)
-+				tegra_spi_writel(tspi, command2, SPI_COMMAND2);
-+			tspi->last_used_cs = spi->chip_select;
-+		}
-+
- 	} else {
- 		command1 = tspi->command1_reg;
- 		command1 &= ~SPI_BIT_LENGTH(~0);
-@@ -892,9 +912,42 @@ static int tegra_spi_start_transfer_one(struct spi_device *spi,
- 	return ret;
- }
- 
-+static struct tegra_spi_client_data
-+	*tegra_spi_parse_cdata_dt(struct spi_device *spi)
-+{
-+	struct tegra_spi_client_data *cdata;
-+	struct device_node *slave_np;
-+
-+	slave_np = spi->dev.of_node;
-+	if (!slave_np) {
-+		dev_dbg(&spi->dev, "device node not found\n");
-+		return NULL;
-+	}
-+
-+	cdata = kzalloc(sizeof(*cdata), GFP_KERNEL);
-+	if (!cdata)
-+		return NULL;
-+
-+	of_property_read_u32(slave_np, "nvidia,tx-clk-tap-delay",
-+			     &cdata->tx_clk_tap_delay);
-+	of_property_read_u32(slave_np, "nvidia,rx-clk-tap-delay",
-+			     &cdata->rx_clk_tap_delay);
-+	return cdata;
-+}
-+
-+static void tegra_spi_cleanup(struct spi_device *spi)
-+{
-+	struct tegra_spi_client_data *cdata = spi->controller_data;
-+
-+	spi->controller_data = NULL;
-+	if (spi->dev.of_node)
-+		kfree(cdata);
-+}
-+
- static int tegra_spi_setup(struct spi_device *spi)
- {
- 	struct tegra_spi_data *tspi = spi_master_get_devdata(spi->master);
-+	struct tegra_spi_client_data *cdata = spi->controller_data;
- 	u32 val;
- 	unsigned long flags;
- 	int ret;
-@@ -905,6 +958,11 @@ static int tegra_spi_setup(struct spi_device *spi)
- 		spi->mode & SPI_CPHA ? "" : "~",
- 		spi->max_speed_hz);
- 
-+	if (!cdata) {
-+		cdata = tegra_spi_parse_cdata_dt(spi);
-+		spi->controller_data = cdata;
-+	}
-+
- 	ret = pm_runtime_get_sync(tspi->dev);
- 	if (ret < 0) {
- 		dev_err(tspi->dev, "pm runtime failed, e = %d\n", ret);
-@@ -1034,6 +1092,7 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
- 			reset_control_assert(tspi->rst);
- 			udelay(2);
- 			reset_control_deassert(tspi->rst);
-+			tspi->last_used_cs = master->num_chipselect + 1;
- 			goto complete_xfer;
- 		}
- 
-@@ -1351,6 +1410,8 @@ static int tegra_spi_probe(struct platform_device *pdev)
- 	tegra_spi_writel(tspi, tspi->def_command1_reg, SPI_COMMAND1);
- 	tspi->spi_cs_timing1 = tegra_spi_readl(tspi, SPI_CS_TIMING1);
- 	tspi->spi_cs_timing2 = tegra_spi_readl(tspi, SPI_CS_TIMING2);
-+	tspi->def_command2_reg = tegra_spi_readl(tspi, SPI_COMMAND2);
-+	tspi->last_used_cs = master->num_chipselect + 1;
- 	pm_runtime_put(&pdev->dev);
- 	ret = request_threaded_irq(tspi->irq, tegra_spi_isr,
- 				   tegra_spi_isr_thread, IRQF_ONESHOT,
-@@ -1423,6 +1484,8 @@ static int tegra_spi_resume(struct device *dev)
- 		return ret;
- 	}
- 	tegra_spi_writel(tspi, tspi->command1_reg, SPI_COMMAND1);
-+	tegra_spi_writel(tspi, tspi->def_command2_reg, SPI_COMMAND2);
-+	tspi->last_used_cs = master->num_chipselect + 1;
- 	pm_runtime_put(dev);
- 
- 	return spi_master_resume(master);
--- 
-2.20.1
+--5oH/S/bF6lOfqCQb--

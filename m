@@ -1,40 +1,49 @@
-From: YueHaibing <yuehaibing@huawei.com>
-Subject: Re: [PATCH] spi: bitbang: Fix NULL pointer dereference in
- spi_unregister_master
-Date: Thu, 16 May 2019 21:27:52 +0800
-Message-ID: <0569fc4c-c6b0-4971-f6f7-800084fb1824@huawei.com>
-References: <20190516075656.25880-1-yuehaibing@huawei.com>
- <20190516095148.GA5598@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: spidev: Add dhcom-board to compatibility list
+ [Klartext]
+Date: Thu, 16 May 2019 16:56:02 +0100
+Message-ID: <20190516155602.GH5598@sirena.org.uk>
+References: <kcis.7DC7E250415B4C2E9DA25490D6832213@DHPLMX01>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-Cc: <axel.lin@ingics.com>, <linux-kernel@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <albeu@free.fr>,
-        <lorenzo.bianconi@redhat.com>
-To: Mark Brown <broonie@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="N8ia4yKhAKKETby7"
+Cc: Fabio Estevam <festevam@gmail.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+To: Christoph Niedermaier <cniedermaier@dh-electronics.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190516095148.GA5598@sirena.org.uk>
+Content-Disposition: inline
+In-Reply-To: <kcis.7DC7E250415B4C2E9DA25490D6832213@DHPLMX01>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 2019/5/16 17:51, Mark Brown wrote:
-> On Thu, May 16, 2019 at 03:56:56PM +0800, YueHaibing wrote:
-> 
->> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.10.2-1ubuntu1 04/01/2014
->> Call Trace:
->>  dump_stack+0xa9/0x10e
->>  ? __list_del_entry_valid+0x45/0xd0
->>  ? __list_del_entry_valid+0x45/0xd0
->>  __kasan_report+0x171/0x18d
->>  ? __list_del_entry_valid+0x45/0xd0
->>  kasan_report+0xe/0x20
-> 
-> Please think hard before including complete backtraces in upstream
-> reports, they are very large and contain almost no useful information
-> relative to their size so often obscure the relevant content in your
-> message. If part of the backtrace is usefully illustrative then it's
-> usually better to pull out the relevant sections.
 
-Thanks, got it.
+--N8ia4yKhAKKETby7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> 
+On Thu, May 16, 2019 at 12:48:10PM +0000, Christoph Niedermaier wrote:
+
+> You are right, it has something do to with encryption on our mailing server.
+> I am in contact with our IT department to fix this issue.
+> Should I resend the patch when this issue is fixed?
+
+This is already the second time you sent it today, the other time didn't
+have this problem.
+
+--N8ia4yKhAKKETby7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzdiBIACgkQJNaLcl1U
+h9AWxAf9HlPgqvZTVahRW3CfddQctwPCo7feSgJDs9NW7GSx/CRLWlNpAXj+Bi0Q
+TO03hjqaSgez+yU/ptkYZDIy7Xh+G6R2O8BZ0avQGT/fv9YNa98pjGj6MJaClb0q
+6xgsDauTMzvAScwgc1h8YRXfNvkjb258SjxmYFwA0JcZZAeXORd15ZuvLB7RXau+
+Yv00Ru97EXjxK0qHKr/NWs5QJ4jPaSBqPKqWtzNC2sUndNz7/eUr3C4rdsGTXBXH
+/sBYUU/t8XT33fEA+Bl7Rlxc09DqJWek+V8t/O4sOtezxgKPFrOdEFt4ManISbX5
+tRXLJayyjQHV61ZRG+CbObjgh/UrPw==
+=BvsO
+-----END PGP SIGNATURE-----
+
+--N8ia4yKhAKKETby7--

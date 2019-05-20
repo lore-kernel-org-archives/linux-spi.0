@@ -1,8 +1,8 @@
 From: Maxime Ripard <maxime.ripard@bootlin.com>
-Subject: [PATCH v3 1/4] dt-bindings: spi: Add YAML schemas for the generic SPI
- options
-Date: Mon, 20 May 2019 16:50:33 +0200
-Message-ID: <f53ee257855c6499fd783dc8665558f7670312f6.1558363790.git-series.maxime.ripard@bootlin.com>
+Subject: [PATCH v3 3/4] dt-bindings: spi: sun6i: Add YAML schemas
+Date: Mon, 20 May 2019 16:50:35 +0200
+Message-ID: <682af95d93f4065ee7ab6a5d6f226c848f6a7da8.1558363790.git-series.maxime.ripard@bootlin.com>
+References: <f53ee257855c6499fd783dc8665558f7670312f6.1558363790.git-series.maxime.ripard@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -12,6 +12,7 @@ To: Mark Rutland <mark.rutland@arm.com>, Rob Herring <robh+dt@kernel.org>,
  Frank Rowand <frowand.list@gmail.com>, Mark Brown <broonie@kernel.org>,
  Chen-Yu Tsai <wens@csie.org>, Maxime Ripard <maxime.ripard@bootlin.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <f53ee257855c6499fd783dc8665558f7670312f6.1558363790.git-series.maxime.ripard@bootlin.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -23,316 +24,182 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The SPI controllers have a bunch of generic options that are needed in a
-device tree. Add a YAML schemas for those.
+Switch the DT binding to a YAML schema to enable the DT validation.
 
 Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
 
 ---
 
-Changes from v2:
-  - Change the nodename pattern
-  - Add a note to mention that the binding has moved
-
 Changes from v1:
-  - Rework the nodename pattern
-  - Limit the index of the usable chip selects to 256
-  - Rework the slave devices regex
-  - Remove the requirement on #address-cells and #size-cells
-  - Declare the slave and slave devices nodes as objects
-  - Add spi-max-frequency
-  - Fix the bus width range
+  - Fix the slave device regex
 ---
- Documentation/devicetree/bindings/spi/spi-bus.txt         | 112 +-----
- Documentation/devicetree/bindings/spi/spi-controller.yaml | 161 +++++++-
- 2 files changed, 162 insertions(+), 111 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-controller.yaml
+ Documentation/devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml | 106 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ Documentation/devicetree/bindings/spi/spi-sun6i.txt                |  44 +------------------------------
+ 2 files changed, 106 insertions(+), 44 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml
+ delete mode 100644 Documentation/devicetree/bindings/spi/spi-sun6i.txt
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
-index 1f6e86f787ef..e07783505498 100644
---- a/Documentation/devicetree/bindings/spi/spi-bus.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
-@@ -1,111 +1 @@
--SPI (Serial Peripheral Interface) busses
--
--SPI busses can be described with a node for the SPI controller device
--and a set of child nodes for each SPI slave on the bus.  The system's SPI
--controller may be described for use in SPI master mode or in SPI slave mode,
--but not for both at the same time.
--
--The SPI controller node requires the following properties:
--- compatible      - Name of SPI bus controller following generic names
--		    recommended practice.
--
--In master mode, the SPI controller node requires the following additional
--properties:
--- #address-cells  - number of cells required to define a chip select
--		address on the SPI bus.
--- #size-cells     - should be zero.
--
--In slave mode, the SPI controller node requires one additional property:
--- spi-slave       - Empty property.
--
--No other properties are required in the SPI bus node.  It is assumed
--that a driver for an SPI bus device will understand that it is an SPI bus.
--However, the binding does not attempt to define the specific method for
--assigning chip select numbers.  Since SPI chip select configuration is
--flexible and non-standardized, it is left out of this binding with the
--assumption that board specific platform code will be used to manage
--chip selects.  Individual drivers can define additional properties to
--support describing the chip select layout.
--
--Optional properties (master mode only):
--- cs-gpios	  - gpios chip select.
--- num-cs	  - total number of chipselects.
--
--If cs-gpios is used the number of chip selects will be increased automatically
--with max(cs-gpios > hw cs).
--
--So if for example the controller has 2 CS lines, and the cs-gpios
--property looks like this:
--
--cs-gpios = <&gpio1 0 0>, <0>, <&gpio1 1 0>, <&gpio1 2 0>;
--
--Then it should be configured so that num_chipselect = 4 with the
--following mapping:
--
--cs0 : &gpio1 0 0
--cs1 : native
--cs2 : &gpio1 1 0
--cs3 : &gpio1 2 0
--
--
--SPI slave nodes must be children of the SPI controller node.
--
--In master mode, one or more slave nodes (up to the number of chip selects) can
--be present.  Required properties are:
--- compatible      - Name of SPI device following generic names recommended
--		    practice.
--- reg             - Chip select address of device.
--- spi-max-frequency - Maximum SPI clocking speed of device in Hz.
--
--In slave mode, the (single) slave node is optional.
--If present, it must be called "slave".  Required properties are:
--- compatible      - Name of SPI device following generic names recommended
--		    practice.
--
--All slave nodes can contain the following optional properties:
--- spi-cpol        - Empty property indicating device requires inverse clock
--		    polarity (CPOL) mode.
--- spi-cpha        - Empty property indicating device requires shifted clock
--		    phase (CPHA) mode.
--- spi-cs-high     - Empty property indicating device requires chip select
--		    active high.
--- spi-3wire       - Empty property indicating device requires 3-wire mode.
--- spi-lsb-first   - Empty property indicating device requires LSB first mode.
--- spi-tx-bus-width - The bus width (number of data wires) that is used for MOSI.
--		    Defaults to 1 if not present.
--- spi-rx-bus-width - The bus width (number of data wires) that is used for MISO.
--		    Defaults to 1 if not present.
--- spi-rx-delay-us - Microsecond delay after a read transfer.
--- spi-tx-delay-us - Microsecond delay after a write transfer.
--
--Some SPI controllers and devices support Dual and Quad SPI transfer mode.
--It allows data in the SPI system to be transferred using 2 wires (DUAL) or 4
--wires (QUAD).
--Now the value that spi-tx-bus-width and spi-rx-bus-width can receive is
--only 1 (SINGLE), 2 (DUAL) and 4 (QUAD).
--Dual/Quad mode is not allowed when 3-wire mode is used.
--
--If a gpio chipselect is used for the SPI slave the gpio number will be passed
--via the SPI master node cs-gpios property.
--
--SPI example for an MPC5200 SPI bus:
--	spi@f00 {
--		#address-cells = <1>;
--		#size-cells = <0>;
--		compatible = "fsl,mpc5200b-spi","fsl,mpc5200-spi";
--		reg = <0xf00 0x20>;
--		interrupts = <2 13 0 2 14 0>;
--		interrupt-parent = <&mpc5200_pic>;
--
--		ethernet-switch@0 {
--			compatible = "micrel,ks8995m";
--			spi-max-frequency = <1000000>;
--			reg = <0>;
--		};
--
--		codec@1 {
--			compatible = "ti,tlv320aic26";
--			spi-max-frequency = <100000>;
--			reg = <1>;
--		};
--	};
-+This file has moved to spi-controller.yaml.
-diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+diff --git a/Documentation/devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml b/Documentation/devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml
 new file mode 100644
-index 000000000000..876c0623f322
+index 000000000000..bda7a5befd8b
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-@@ -0,0 +1,161 @@
++++ b/Documentation/devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml
+@@ -0,0 +1,106 @@
 +# SPDX-License-Identifier: GPL-2.0
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/spi/spi-controller.yaml#
++$id: http://devicetree.org/schemas/spi/allwinner,sun6i-a31-spi.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: SPI Controller Generic Binding
++title: Allwinner A31 SPI Controller Device Tree Bindings
++
++allOf:
++  - $ref: "spi-controller.yaml"
 +
 +maintainers:
-+  - Mark Brown <broonie@kernel.org>
-+
-+description: |
-+  SPI busses can be described with a node for the SPI controller device
-+  and a set of child nodes for each SPI slave on the bus. The system SPI
-+  controller may be described for use in SPI master mode or in SPI slave mode,
-+  but not for both at the same time.
++  - Chen-Yu Tsai <wens@csie.org>
++  - Maxime Ripard <maxime.ripard@bootlin.com>
 +
 +properties:
-+  $nodename:
-+    pattern: "^spi(@.*|-[0-9a-f])*$"
++  "#address-cells": true
++  "#size-cells": true
 +
-+  "#address-cells":
-+    const: 1
++  compatible:
++    enum:
++      - allwinner,sun6i-a31-spi
++      - allwinner,sun8i-h3-spi
 +
-+  "#size-cells":
-+    const: 0
++  reg:
++    maxItems: 1
 +
-+  cs-gpios:
-+    description: |
-+      GPIOs used as chip selects.
-+      If that property is used, the number of chip selects will be
-+      increased automatically with max(cs-gpios, hardware chip selects).
++  interrupts:
++    maxItems: 1
 +
-+      So if, for example, the controller has 2 CS lines, and the
-+      cs-gpios looks like this
-+        cs-gpios = <&gpio1 0 0>, <0>, <&gpio1 1 0>, <&gpio1 2 0>;
++  clocks:
++    items:
++      - description: Bus Clock
++      - description: Module Clock
 +
-+      Then it should be configured so that num_chipselect = 4, with
-+      the following mapping
-+        cs0 : &gpio1 0 0
-+        cs1 : native
-+        cs2 : &gpio1 1 0
-+        cs3 : &gpio1 2 0
++  clock-names:
++    items:
++      - const: ahb
++      - const: mod
 +
-+  num-cs:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      Total number of chip selects.
++  resets:
++    maxItems: 1
 +
-+  spi-slave:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      The SPI controller acts as a slave, instead of a master.
++  dmas:
++    items:
++      - description: RX DMA Channel
++      - description: TX DMA Channel
++
++  dma-names:
++    items:
++      - const: rx
++      - const: tx
++
++  num-cs: true
 +
 +patternProperties:
-+  "^slave$":
-+    type: object
-+
++  "^.*@[0-9a-f]+":
 +    properties:
-+      compatible:
-+        description:
-+          Compatible of the SPI device.
-+
-+    required:
-+      - compatible
-+
-+  "^.*@[0-9a-f]+$":
-+    type: object
-+
-+    properties:
-+      compatible:
-+        description:
-+          Compatible of the SPI device.
-+
 +      reg:
-+        maxItems: 1
-+        minimum: 0
-+        maximum: 256
-+        description:
-+          Chip select used by the device.
-+
-+      spi-3wire:
-+        $ref: /schemas/types.yaml#/definitions/flag
-+        description:
-+          The device requires 3-wire mode.
-+
-+      spi-cpha:
-+        $ref: /schemas/types.yaml#/definitions/flag
-+        description:
-+          The device requires shifted clock phase (CPHA) mode.
-+
-+      spi-cpol:
-+        $ref: /schemas/types.yaml#/definitions/flag
-+        description:
-+          The device requires inverse clock polarity (CPOL) mode.
-+
-+      spi-cs-high:
-+        $ref: /schemas/types.yaml#/definitions/flag
-+        description:
-+          The device requires the chip select active high.
-+
-+      spi-lsb-first:
-+        $ref: /schemas/types.yaml#/definitions/flag
-+        description:
-+          The device requires the LSB first mode.
-+
-+      spi-max-frequency:
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+        description:
-+          Maximum SPI clocking speed of the device in Hz.
++        items:
++          minimum: 0
++          maximum: 4
 +
 +      spi-rx-bus-width:
-+        allOf:
-+          - $ref: /schemas/types.yaml#/definitions/uint32
-+          - enum: [ 1, 2, 4 ]
-+          - default: 1
-+        description:
-+          Bus width to the SPI bus used for MISO.
-+
-+      spi-rx-delay-us:
-+        description:
-+          Delay, in microseconds, after a read transfer.
++        const: 1
 +
 +      spi-tx-bus-width:
-+        allOf:
-+          - $ref: /schemas/types.yaml#/definitions/uint32
-+          - enum: [ 1, 2, 4 ]
-+          - default: 1
-+        description:
-+          Bus width to the SPI bus used for MOSI.
++        const: 1
 +
-+      spi-tx-delay-us:
-+        description:
-+          Delay, in microseconds, after a write transfer.
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++  - clock-names
 +
-+    required:
-+      - compatible
-+      - reg
++additionalProperties: false
 +
 +examples:
 +  - |
-+    spi@f00 {
++    spi1: spi@1c69000 {
++        compatible = "allwinner,sun6i-a31-spi";
++        reg = <0x01c69000 0x1000>;
++        interrupts = <0 66 4>;
++        clocks = <&ahb1_gates 21>, <&spi1_clk>;
++        clock-names = "ahb", "mod";
++        resets = <&ahb1_rst 21>;
 +        #address-cells = <1>;
 +        #size-cells = <0>;
-+        compatible = "fsl,mpc5200b-spi","fsl,mpc5200-spi";
-+        reg = <0xf00 0x20>;
-+        interrupts = <2 13 0 2 14 0>;
-+        interrupt-parent = <&mpc5200_pic>;
-+
-+        ethernet-switch@0 {
-+            compatible = "micrel,ks8995m";
-+            spi-max-frequency = <1000000>;
-+            reg = <0>;
-+        };
-+
-+        codec@1 {
-+            compatible = "ti,tlv320aic26";
-+            spi-max-frequency = <100000>;
-+            reg = <1>;
-+        };
 +    };
-
-base-commit: a188339ca5a396acc588e5851ed7e19f66b0ebd9
++
++  - |
++    spi0: spi@1c68000 {
++        compatible = "allwinner,sun8i-h3-spi";
++        reg = <0x01c68000 0x1000>;
++        interrupts = <0 65 4>;
++        clocks = <&ccu 30>, <&ccu 82>;
++        clock-names = "ahb", "mod";
++        dmas = <&dma 23>, <&dma 23>;
++        dma-names = "rx", "tx";
++        resets = <&ccu 15>;
++        #address-cells = <1>;
++        #size-cells = <0>;
++    };
++
++...
+diff --git a/Documentation/devicetree/bindings/spi/spi-sun6i.txt b/Documentation/devicetree/bindings/spi/spi-sun6i.txt
+deleted file mode 100644
+index 435a8e0731ac..000000000000
+--- a/Documentation/devicetree/bindings/spi/spi-sun6i.txt
++++ /dev/null
+@@ -1,44 +0,0 @@
+-Allwinner A31/H3 SPI controller
+-
+-Required properties:
+-- compatible: Should be "allwinner,sun6i-a31-spi" or "allwinner,sun8i-h3-spi".
+-- reg: Should contain register location and length.
+-- interrupts: Should contain interrupt.
+-- clocks: phandle to the clocks feeding the SPI controller. Two are
+-          needed:
+-  - "ahb": the gated AHB parent clock
+-  - "mod": the parent module clock
+-- clock-names: Must contain the clock names described just above
+-- resets: phandle to the reset controller asserting this device in
+-          reset
+-
+-Optional properties:
+-- dmas: DMA specifiers for rx and tx dma. See the DMA client binding,
+-	Documentation/devicetree/bindings/dma/dma.txt
+-- dma-names: DMA request names should include "rx" and "tx" if present.
+-
+-Example:
+-
+-spi1: spi@1c69000 {
+-	compatible = "allwinner,sun6i-a31-spi";
+-	reg = <0x01c69000 0x1000>;
+-	interrupts = <0 66 4>;
+-	clocks = <&ahb1_gates 21>, <&spi1_clk>;
+-	clock-names = "ahb", "mod";
+-	resets = <&ahb1_rst 21>;
+-};
+-
+-spi0: spi@1c68000 {
+-	compatible = "allwinner,sun8i-h3-spi";
+-	reg = <0x01c68000 0x1000>;
+-	interrupts = <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>;
+-	clocks = <&ccu CLK_BUS_SPI0>, <&ccu CLK_SPI0>;
+-	clock-names = "ahb", "mod";
+-	dmas = <&dma 23>, <&dma 23>;
+-	dma-names = "rx", "tx";
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&spi0_pins>;
+-	resets = <&ccu RST_BUS_SPI0>;
+-	#address-cells = <1>;
+-	#size-cells = <0>;
+-};
 -- 
 git-series 0.9.1

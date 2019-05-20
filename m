@@ -1,7 +1,8 @@
 From: Maxime Ripard <maxime.ripard@bootlin.com>
-Subject: [PATCH v3 2/4] dt-bindings: spi: sun4i: Add YAML schemas
-Date: Mon, 20 May 2019 16:50:34 +0200
-Message-ID: <b83d0e208072a4f7d017650bc10de8cbe7558a99.1558363790.git-series.maxime.ripard@bootlin.com>
+Subject: [PATCH v3 4/4] ARM: dts: sun6i: Add default address and size cells
+ for SPI
+Date: Mon, 20 May 2019 16:50:36 +0200
+Message-ID: <622e3d2ece14e5b84a7975026bb1a981228ee3ab.1558363790.git-series.maxime.ripard@bootlin.com>
 References: <f53ee257855c6499fd783dc8665558f7670312f6.1558363790.git-series.maxime.ripard@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -24,141 +25,54 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Switch the DT binding to a YAML schema to enable the DT validation.
+The SPI controller bindings require an address cell size of 1, and a size
+cell size of 0. Let's put it at the DTSI level to make sure that's properly
+enforced.
 
 Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
-
 ---
+ arch/arm/boot/dts/sun6i-a31.dtsi | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Changes from v1:
-  - Fix the slave device regex
----
- Documentation/devicetree/bindings/spi/allwinner,sun4i-a10-spi.yaml | 86 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
- Documentation/devicetree/bindings/spi/spi-sun4i.txt                | 23 +-------------------
- 2 files changed, 86 insertions(+), 23 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/spi/allwinner,sun4i-a10-spi.yaml
- delete mode 100644 Documentation/devicetree/bindings/spi/spi-sun4i.txt
-
-diff --git a/Documentation/devicetree/bindings/spi/allwinner,sun4i-a10-spi.yaml b/Documentation/devicetree/bindings/spi/allwinner,sun4i-a10-spi.yaml
-new file mode 100644
-index 000000000000..c374fd4923a6
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/allwinner,sun4i-a10-spi.yaml
-@@ -0,0 +1,86 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/allwinner,sun4i-a10-spi.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Allwinner A10 SPI Controller Device Tree Bindings
-+
-+allOf:
-+  - $ref: "spi-controller.yaml"
-+
-+maintainers:
-+  - Chen-Yu Tsai <wens@csie.org>
-+  - Maxime Ripard <maxime.ripard@bootlin.com>
-+
-+properties:
-+  "#address-cells": true
-+  "#size-cells": true
-+
-+  compatible:
-+    const: allwinner,sun4i-a10-spi
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clocks:
-+    items:
-+      - description: Bus Clock
-+      - description: Module Clock
-+
-+  clock-names:
-+    items:
-+      - const: ahb
-+      - const: mod
-+
-+  dmas:
-+    items:
-+      - description: RX DMA Channel
-+      - description: TX DMA Channel
-+
-+  dma-names:
-+    items:
-+      - const: rx
-+      - const: tx
-+
-+  num-cs: true
-+
-+patternProperties:
-+  "^.*@[0-9a-f]+":
-+    properties:
-+      reg:
-+        items:
-+          minimum: 0
-+          maximum: 4
-+
-+      spi-rx-bus-width:
-+        const: 1
-+
-+      spi-tx-bus-width:
-+        const: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
-+  - clock-names
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    spi1: spi@1c06000 {
-+        compatible = "allwinner,sun4i-a10-spi";
-+        reg = <0x01c06000 0x1000>;
-+        interrupts = <11>;
-+        clocks = <&ahb_gates 21>, <&spi1_clk>;
-+        clock-names = "ahb", "mod";
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+    };
-+
-+...
-diff --git a/Documentation/devicetree/bindings/spi/spi-sun4i.txt b/Documentation/devicetree/bindings/spi/spi-sun4i.txt
-deleted file mode 100644
-index c75d604a8290..000000000000
---- a/Documentation/devicetree/bindings/spi/spi-sun4i.txt
-+++ /dev/null
-@@ -1,23 +0,0 @@
--Allwinner A10 SPI controller
--
--Required properties:
--- compatible: Should be "allwinner,sun4-a10-spi".
--- reg: Should contain register location and length.
--- interrupts: Should contain interrupt.
--- clocks: phandle to the clocks feeding the SPI controller. Two are
--          needed:
--  - "ahb": the gated AHB parent clock
--  - "mod": the parent module clock
--- clock-names: Must contain the clock names described just above
--
--Example:
--
--spi1: spi@1c06000 {
--	compatible = "allwinner,sun4i-a10-spi";
--	reg = <0x01c06000 0x1000>;
--	interrupts = <11>;
--	clocks = <&ahb_gates 21>, <&spi1_clk>;
--	clock-names = "ahb", "mod";
--	#address-cells = <1>;
--	#size-cells = <0>;
--};
+diff --git a/arch/arm/boot/dts/sun6i-a31.dtsi b/arch/arm/boot/dts/sun6i-a31.dtsi
+index c04efad81bbc..a57cbf33c12f 100644
+--- a/arch/arm/boot/dts/sun6i-a31.dtsi
++++ b/arch/arm/boot/dts/sun6i-a31.dtsi
+@@ -987,6 +987,8 @@
+ 			dma-names = "rx", "tx";
+ 			resets = <&ccu RST_AHB1_SPI0>;
+ 			status = "disabled";
++			#address-cells = <1>;
++			#size-cells = <0>;
+ 		};
+ 
+ 		spi1: spi@1c69000 {
+@@ -999,6 +1001,8 @@
+ 			dma-names = "rx", "tx";
+ 			resets = <&ccu RST_AHB1_SPI1>;
+ 			status = "disabled";
++			#address-cells = <1>;
++			#size-cells = <0>;
+ 		};
+ 
+ 		spi2: spi@1c6a000 {
+@@ -1011,6 +1015,8 @@
+ 			dma-names = "rx", "tx";
+ 			resets = <&ccu RST_AHB1_SPI2>;
+ 			status = "disabled";
++			#address-cells = <1>;
++			#size-cells = <0>;
+ 		};
+ 
+ 		spi3: spi@1c6b000 {
+@@ -1023,6 +1029,8 @@
+ 			dma-names = "rx", "tx";
+ 			resets = <&ccu RST_AHB1_SPI3>;
+ 			status = "disabled";
++			#address-cells = <1>;
++			#size-cells = <0>;
+ 		};
+ 
+ 		gic: interrupt-controller@1c81000 {
 -- 
 git-series 0.9.1

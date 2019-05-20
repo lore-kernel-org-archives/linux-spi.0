@@ -1,17 +1,18 @@
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Subject: [PATCH v3 4/4] ARM: dts: sun6i: Add default address and size cells
- for SPI
-Date: Mon, 20 May 2019 16:50:36 +0200
-Message-ID: <622e3d2ece14e5b84a7975026bb1a981228ee3ab.1558363790.git-series.maxime.ripard@bootlin.com>
+From: Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH v3 1/4] dt-bindings: spi: Add YAML schemas for the generic
+ SPI options
+Date: Mon, 20 May 2019 18:04:40 -0500
+Message-ID: <CAL_JsqJ+GAgJuQy85bw1WoXCkpaqRY+V9G9HY8PUM3MGXqLyoQ@mail.gmail.com>
 References: <f53ee257855c6499fd783dc8665558f7670312f6.1558363790.git-series.maxime.ripard@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-spi@vger.kernel.org
-To: Mark Rutland <mark.rutland@arm.com>, Rob Herring <robh+dt@kernel.org>,
- Frank Rowand <frowand.list@gmail.com>, Mark Brown <broonie@kernel.org>,
- Chen-Yu Tsai <wens@csie.org>, Maxime Ripard <maxime.ripard@bootlin.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+ linux-spi <linux-spi@vger.kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+ Mark Brown <broonie@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>
+To: Maxime Ripard <maxime.ripard@bootlin.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 In-Reply-To: <f53ee257855c6499fd783dc8665558f7670312f6.1558363790.git-series.maxime.ripard@bootlin.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
@@ -25,54 +26,31 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The SPI controller bindings require an address cell size of 1, and a size
-cell size of 0. Let's put it at the DTSI level to make sure that's properly
-enforced.
+On Mon, May 20, 2019 at 9:50 AM Maxime Ripard <maxime.ripard@bootlin.com> wrote:
+>
+> The SPI controllers have a bunch of generic options that are needed in a
+> device tree. Add a YAML schemas for those.
+>
+> Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
+>
+> ---
+>
+> Changes from v2:
+>   - Change the nodename pattern
+>   - Add a note to mention that the binding has moved
+>
+> Changes from v1:
+>   - Rework the nodename pattern
+>   - Limit the index of the usable chip selects to 256
+>   - Rework the slave devices regex
+>   - Remove the requirement on #address-cells and #size-cells
+>   - Declare the slave and slave devices nodes as objects
+>   - Add spi-max-frequency
+>   - Fix the bus width range
+> ---
+>  Documentation/devicetree/bindings/spi/spi-bus.txt         | 112 +-----
+>  Documentation/devicetree/bindings/spi/spi-controller.yaml | 161 +++++++-
+>  2 files changed, 162 insertions(+), 111 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-controller.yaml
 
-Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
----
- arch/arm/boot/dts/sun6i-a31.dtsi | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/arch/arm/boot/dts/sun6i-a31.dtsi b/arch/arm/boot/dts/sun6i-a31.dtsi
-index c04efad81bbc..a57cbf33c12f 100644
---- a/arch/arm/boot/dts/sun6i-a31.dtsi
-+++ b/arch/arm/boot/dts/sun6i-a31.dtsi
-@@ -987,6 +987,8 @@
- 			dma-names = "rx", "tx";
- 			resets = <&ccu RST_AHB1_SPI0>;
- 			status = "disabled";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
- 		};
- 
- 		spi1: spi@1c69000 {
-@@ -999,6 +1001,8 @@
- 			dma-names = "rx", "tx";
- 			resets = <&ccu RST_AHB1_SPI1>;
- 			status = "disabled";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
- 		};
- 
- 		spi2: spi@1c6a000 {
-@@ -1011,6 +1015,8 @@
- 			dma-names = "rx", "tx";
- 			resets = <&ccu RST_AHB1_SPI2>;
- 			status = "disabled";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
- 		};
- 
- 		spi3: spi@1c6b000 {
-@@ -1023,6 +1029,8 @@
- 			dma-names = "rx", "tx";
- 			resets = <&ccu RST_AHB1_SPI3>;
- 			status = "disabled";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
- 		};
- 
- 		gic: interrupt-controller@1c81000 {
--- 
-git-series 0.9.1
+Reviewed-by: Rob Herring <robh@kernel.org>

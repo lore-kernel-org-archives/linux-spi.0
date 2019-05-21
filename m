@@ -1,53 +1,51 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: zynqmp: Fix build break
-Date: Tue, 21 May 2019 22:08:43 +0100
-Message-ID: <20190521210843.GC1580@sirena.org.uk>
-References: <2bb66114-c976-9c44-6db3-33a5dd12edde@monstr.eu>
- <20190429162246.6061-1-olof@lixom.net>
+Subject: Re: [PATCH] spi: spi-meson-spifc: update with SPDX Licence identifier
+Date: Tue, 21 May 2019 22:15:48 +0100
+Message-ID: <20190521211548.GE1580@sirena.org.uk>
+References: <20190520140452.30167-1-narmstrong@baylibre.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="4jXrM3lyYWu4nBt5"
-Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Rajan Vaja <rajan.vaja@xilinx.com>,
-        Jolly Shah <jollys@xilinx.com>,
-        Michal Simek <michal.simek@xilinx.com>
-To: Olof Johansson <olof@lixom.net>
+        protocol="application/pgp-signature"; boundary="GxcwvYAGnODwn7V8"
+Cc: linux-spi@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+To: Neil Armstrong <narmstrong@baylibre.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20190429162246.6061-1-olof@lixom.net>
+In-Reply-To: <20190520140452.30167-1-narmstrong@baylibre.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---4jXrM3lyYWu4nBt5
+--GxcwvYAGnODwn7V8
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 29, 2019 at 09:22:46AM -0700, Olof Johansson wrote:
-> Missing include:
-> drivers/spi/spi-zynqmp-gqspi.c:1025:13: error: implicit declaration of
->   function 'zynqmp_pm_get_eemi_ops'; did you mean
->   'zynqmp_process_dma_irq'? [-Werror=3Dimplicit-function-declaration]
->=20
-> Fixes: 3d0313786470a ('drivers: Defer probe if firmware is not ready')
+On Mon, May 20, 2019 at 04:04:52PM +0200, Neil Armstrong wrote:
+> index 616566e793c6..20413def4cfb 100644
+> --- a/drivers/spi/spi-meson-spifc.c
+> +++ b/drivers/spi/spi-meson-spifc.c
+> @@ -1,14 +1,8 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+>  /*
+>   * Driver for Amlogic Meson SPI flash controller (SPIFC)
+>   *
 
-Please copy maintainers on patches so they aren't surprised when they
-get mails saying they accepted patches they never heard of before!
+Please make the entire comment a C++ comment so things look neater and
+more intentional.
 
---4jXrM3lyYWu4nBt5
+--GxcwvYAGnODwn7V8
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzkaNoACgkQJNaLcl1U
-h9CBfwgAgbLrAnQDkYTUpP7MdSDSiv8ppwZ4R/EN9OCgQb6Cjms4xG6hrxkbloPA
-+oUebvqpcjb2wzduZU8tdCKx2CSU/uGlqTxG55BLy+pyrGHmFDY3MBpWr0aAj8hi
-XZGbyLoZWQYWTWorcXeC50RTLzX+fRTPx0A5KJzjXU8pjUmjnA+hjDeruCcW2JNN
-Suy2LE8ivUVCFUAOHVhM0bVXIbteUPRu08p3XGd3aTsfzJRn35GWepyfhnzAKX1g
-OwIBgEZFHVzQ0AZh4jm4c4YdkrF/vpawZdC+48BCVtfsdreTlVzBZ8OvKfC9j4jX
-q0QdP42x5IWG+4mrek1zsa3JoYmsJA==
-=tUfm
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzkaoMACgkQJNaLcl1U
+h9BHUAf9GB3ropLIXJhU8dEhK1T6AsQ2s+d1xMhXjSzVIZRgTMg/hYap+PnSYoEP
+4ZBpi/9WeXKntdAxw7zRiFnoq9rYtGagtTJR0ja010dVBz2erwlPoYWSUUHeKRKx
+4OKncRLCGY5KUtk48ywFrUdUkvJQeKGfR9PAvy0QgdSUs6lofeHJctCbbmNfWKhy
+QbJQY7mcz261N6xlEpto4++2w9I+njwJjbajPoFSkB9M18FDPga0wk8t//GWPX3D
+HzaurmQoSdPY+z9PaXOcsr4b3RUnLNwXdURHPXua83txGVR4GEikgbN3jFhWbjdm
+6vmDIfWwXQGI83JVypiThIgS7LV1JQ==
+=AoI8
 -----END PGP SIGNATURE-----
 
---4jXrM3lyYWu4nBt5--
+--GxcwvYAGnODwn7V8--

@@ -1,12 +1,11 @@
-From: Vinod Koul <vkoul@kernel.org>
-Subject: Re: Re: [PATCH v3 11/14] dmaengine: imx-sdma: fix ecspi1 rx dma not
- work on i.mx8mm
-Date: Tue, 21 May 2019 10:42:50 +0530
-Message-ID: <20190521051250.GY15118@vkoul-mobl>
-References: <VI1PR04MB45436C98D70C16635CF3CFDE89070@VI1PR04MB4543.eurprd04.prod.outlook.com>
+From: Robin Gong <yibin.gong@nxp.com>
+Subject: RE: Re: Re: [PATCH v3 11/14] dmaengine: imx-sdma: fix ecspi1 rx dma
+ not work on i.mx8mm
+Date: Tue, 21 May 2019 05:41:46 +0000
+Message-ID: <VI1PR04MB4543DEEC702531ED69616B8C89070@VI1PR04MB4543.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: "robh@kernel.org" <robh@kernel.org>,
         "broonie@kernel.org" <broonie@kernel.org>,
         "shawnguo@kernel.org" <shawnguo@kernel.org>,
@@ -24,31 +23,29 @@ Cc: "robh@kernel.org" <robh@kernel.org>,
         "linux-arm-kernel@lists.infradead.org"
         <linux-arm-kernel@lists.infradead.org>,
         "linux-kernel@vger.
-To: Robin Gong <yibin.gong@nxp.com>
+To: Vinod Koul <vkoul@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <VI1PR04MB45436C98D70C16635CF3CFDE89070@VI1PR04MB4543.eurprd04.prod.outlook.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 21-05-19, 04:58, Robin Gong wrote:
-> > -----Original Message-----
-> > From: Vinod Koul <vkoul@kernel.org>
-> > Sent: 2019年5月21日 12:18
-> > 
-> > On 07-05-19, 09:16, Robin Gong wrote:
-> > > Because the number of ecspi1 rx event on i.mx8mm is 0, the condition
-> > > check ignore such special case without dma channel enabled, which
-> > > caused
-> > > ecspi1 rx works failed. Actually, no need to check event_id0, checking
-> > > event_id1 is enough for DEV_2_DEV case because it's so lucky that
-> > > event_id1 never be 0.
-> > 
-> > Well is that by chance or design that event_id1 will be never 0?
-> > 
-> That's by chance. DEV_2_DEV is just for Audio case and non-zero for event_id1 on current i.MX family.
-
-Then it wont be fgood to rely on chance :)
-
--- 
-~Vinod
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBWaW5vZCBLb3VsIDx2a291bEBr
+ZXJuZWwub3JnPg0KPiBTZW50OiAyMDE55bm0NeaciDIx5pelIDEzOjEzDQo+IA0KPiBPbiAyMS0w
+NS0xOSwgMDQ6NTgsIFJvYmluIEdvbmcgd3JvdGU6DQo+ID4gPiAtLS0tLU9yaWdpbmFsIE1lc3Nh
+Z2UtLS0tLQ0KPiA+ID4gRnJvbTogVmlub2QgS291bCA8dmtvdWxAa2VybmVsLm9yZz4NCj4gPiA+
+IFNlbnQ6IDIwMTnlubQ15pyIMjHml6UgMTI6MTgNCj4gPiA+DQo+ID4gPiBPbiAwNy0wNS0xOSwg
+MDk6MTYsIFJvYmluIEdvbmcgd3JvdGU6DQo+ID4gPiA+IEJlY2F1c2UgdGhlIG51bWJlciBvZiBl
+Y3NwaTEgcnggZXZlbnQgb24gaS5teDhtbSBpcyAwLCB0aGUNCj4gPiA+ID4gY29uZGl0aW9uIGNo
+ZWNrIGlnbm9yZSBzdWNoIHNwZWNpYWwgY2FzZSB3aXRob3V0IGRtYSBjaGFubmVsDQo+ID4gPiA+
+IGVuYWJsZWQsIHdoaWNoIGNhdXNlZA0KPiA+ID4gPiBlY3NwaTEgcnggd29ya3MgZmFpbGVkLiBB
+Y3R1YWxseSwgbm8gbmVlZCB0byBjaGVjayBldmVudF9pZDAsDQo+ID4gPiA+IGNoZWNraW5nDQo+
+ID4gPiA+IGV2ZW50X2lkMSBpcyBlbm91Z2ggZm9yIERFVl8yX0RFViBjYXNlIGJlY2F1c2UgaXQn
+cyBzbyBsdWNreSB0aGF0DQo+ID4gPiA+IGV2ZW50X2lkMSBuZXZlciBiZSAwLg0KPiA+ID4NCj4g
+PiA+IFdlbGwgaXMgdGhhdCBieSBjaGFuY2Ugb3IgZGVzaWduIHRoYXQgZXZlbnRfaWQxIHdpbGwg
+YmUgbmV2ZXIgMD8NCj4gPiA+DQo+ID4gVGhhdCdzIGJ5IGNoYW5jZS4gREVWXzJfREVWIGlzIGp1
+c3QgZm9yIEF1ZGlvIGNhc2UgYW5kIG5vbi16ZXJvIGZvcg0KPiBldmVudF9pZDEgb24gY3VycmVu
+dCBpLk1YIGZhbWlseS4NCj4gDQo+IFRoZW4gaXQgd29udCBiZSBmZ29vZCB0byByZWx5IG9uIGNo
+YW5jZSA6KQ0KWWVzLCBJIGtuZXcgdGhhdC4gTWF5IEkgY3JlYXRlIGFub3RoZXIgaW5kZXBlbmRl
+bnQgcGF0Y2ggZm9yIGV2ZW50X2lkMSBzaW5jZSB0aGF0J3MgcG90ZW50aWFsIGlzc3VlIGlzIG5v
+dCByZWxhdGVkIHdpdGggdGhpcyBlY3NwaSBwYXRjaCBzZXQ/DQo+IA0KPiAtLQ0KPiB+Vmlub2QN
+Cg==

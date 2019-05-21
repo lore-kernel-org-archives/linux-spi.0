@@ -1,80 +1,69 @@
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Subject: Re: [PATCH v3 4/4] ARM: dts: sun6i: Add default address and size
- cells for SPI
-Date: Tue, 21 May 2019 16:29:25 +0200
-Message-ID: <20190521142925.bryspvr7gtits5yl@flea>
-References: <f53ee257855c6499fd783dc8665558f7670312f6.1558363790.git-series.maxime.ripard@bootlin.com>
- <622e3d2ece14e5b84a7975026bb1a981228ee3ab.1558363790.git-series.maxime.ripard@bootlin.com>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1690917841433595883=="
-Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-spi@vger.kernel.org
-To: Mark Rutland <mark.rutland@arm.com>, Rob Herring <robh+dt@kernel.org>,
- Frank Rowand <frowand.list@gmail.com>,
- Mark Brown <broonie@kernel.org>, Chen-Yu Tsai <wens@csie.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <622e3d2ece14e5b84a7975026bb1a981228ee3ab.1558363790.git-series.maxime.ripard@bootlin.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: spidev: Add dhcom-board to compatibility list" to the spi tree
+Date: Tue, 21 May 2019 21:33:09 +0100 (BST)
+Message-ID: <20190521203309.A48CA1126D18@debutante.sirena.org.uk>
+References: <20190516110149.6165-1-cniedermaier@dh-electronics.com>
+Cc: broonie@kernel.org, cniedermaier@dh-electronics.com,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>
+To: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190516110149.6165-1-cniedermaier@dh-electronics.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---===============1690917841433595883==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="hidp36y4x4lmbvra"
-Content-Disposition: inline
+   spi: spidev: Add dhcom-board to compatibility list
 
+has been applied to the spi tree at
 
---hidp36y4x4lmbvra
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.3
 
-On Mon, May 20, 2019 at 04:50:36PM +0200, Maxime Ripard wrote:
-> The SPI controller bindings require an address cell size of 1, and a size
-> cell size of 0. Let's put it at the DTSI level to make sure that's properly
-> enforced.
->
-> Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-Applied for 5.3
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Maxime
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---
-Maxime Ripard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---hidp36y4x4lmbvra
-Content-Type: application/pgp-signature; name="signature.asc"
+Thanks,
+Mark
 
------BEGIN PGP SIGNATURE-----
+>From 9783da2384c5623d376e4641bbce9339be1001eb Mon Sep 17 00:00:00 2001
+From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Date: Thu, 16 May 2019 13:01:49 +0200
+Subject: [PATCH] spi: spidev: Add dhcom-board to compatibility list
 
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXOQLRQAKCRDj7w1vZxhR
-xa4tAP90agmm4bwpSelFojJE/k2pi16ny4VH2dp4uVgB35fCdAD/WErlps7dg9uQ
-517cMenZoCTA7hr+o7V2P9I/TKr9cQs=
-=7tJA
------END PGP SIGNATURE-----
+Prepare to use devices on the external SPI interface
+on a DH electronics Development Board.
 
---hidp36y4x4lmbvra--
+Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spidev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-
---===============1690917841433595883==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
---===============1690917841433595883==--
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index ce9142d87f41..df4c0a9b34dd 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -672,6 +672,7 @@ static const struct of_device_id spidev_dt_ids[] = {
+ 	{ .compatible = "ge,achc" },
+ 	{ .compatible = "semtech,sx1301" },
+ 	{ .compatible = "lwn,bk4" },
++	{ .compatible = "dh,dhcom-board" },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, spidev_dt_ids);
+-- 
+2.20.1

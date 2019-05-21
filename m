@@ -1,11 +1,12 @@
-From: Robin Gong <yibin.gong@nxp.com>
-Subject: RE:  Re: [PATCH v3 11/14] dmaengine: imx-sdma: fix ecspi1 rx dma not
+From: Vinod Koul <vkoul@kernel.org>
+Subject: Re: Re: [PATCH v3 11/14] dmaengine: imx-sdma: fix ecspi1 rx dma not
  work on i.mx8mm
-Date: Tue, 21 May 2019 04:58:38 +0000
-Message-ID: <VI1PR04MB45436C98D70C16635CF3CFDE89070@VI1PR04MB4543.eurprd04.prod.outlook.com>
+Date: Tue, 21 May 2019 10:42:50 +0530
+Message-ID: <20190521051250.GY15118@vkoul-mobl>
+References: <VI1PR04MB45436C98D70C16635CF3CFDE89070@VI1PR04MB4543.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 Cc: "robh@kernel.org" <robh@kernel.org>,
         "broonie@kernel.org" <broonie@kernel.org>,
         "shawnguo@kernel.org" <shawnguo@kernel.org>,
@@ -23,21 +24,31 @@ Cc: "robh@kernel.org" <robh@kernel.org>,
         "linux-arm-kernel@lists.infradead.org"
         <linux-arm-kernel@lists.infradead.org>,
         "linux-kernel@vger.
-To: Vinod Koul <vkoul@kernel.org>
+To: Robin Gong <yibin.gong@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <VI1PR04MB45436C98D70C16635CF3CFDE89070@VI1PR04MB4543.eurprd04.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBWaW5vZCBLb3VsIDx2a291bEBr
-ZXJuZWwub3JnPg0KPiBTZW50OiAyMDE5xOo11MIyMcjVIDEyOjE4DQo+IA0KPiBPbiAwNy0wNS0x
-OSwgMDk6MTYsIFJvYmluIEdvbmcgd3JvdGU6DQo+ID4gQmVjYXVzZSB0aGUgbnVtYmVyIG9mIGVj
-c3BpMSByeCBldmVudCBvbiBpLm14OG1tIGlzIDAsIHRoZSBjb25kaXRpb24NCj4gPiBjaGVjayBp
-Z25vcmUgc3VjaCBzcGVjaWFsIGNhc2Ugd2l0aG91dCBkbWEgY2hhbm5lbCBlbmFibGVkLCB3aGlj
-aA0KPiA+IGNhdXNlZA0KPiA+IGVjc3BpMSByeCB3b3JrcyBmYWlsZWQuIEFjdHVhbGx5LCBubyBu
-ZWVkIHRvIGNoZWNrIGV2ZW50X2lkMCwgY2hlY2tpbmcNCj4gPiBldmVudF9pZDEgaXMgZW5vdWdo
-IGZvciBERVZfMl9ERVYgY2FzZSBiZWNhdXNlIGl0J3Mgc28gbHVja3kgdGhhdA0KPiA+IGV2ZW50
-X2lkMSBuZXZlciBiZSAwLg0KPiANCj4gV2VsbCBpcyB0aGF0IGJ5IGNoYW5jZSBvciBkZXNpZ24g
-dGhhdCBldmVudF9pZDEgd2lsbCBiZSBuZXZlciAwPw0KPiANClRoYXQncyBieSBjaGFuY2UuIERF
-Vl8yX0RFViBpcyBqdXN0IGZvciBBdWRpbyBjYXNlIGFuZCBub24temVybyBmb3IgZXZlbnRfaWQx
-IG9uIGN1cnJlbnQgaS5NWCBmYW1pbHkuDQo=
+On 21-05-19, 04:58, Robin Gong wrote:
+> > -----Original Message-----
+> > From: Vinod Koul <vkoul@kernel.org>
+> > Sent: 2019年5月21日 12:18
+> > 
+> > On 07-05-19, 09:16, Robin Gong wrote:
+> > > Because the number of ecspi1 rx event on i.mx8mm is 0, the condition
+> > > check ignore such special case without dma channel enabled, which
+> > > caused
+> > > ecspi1 rx works failed. Actually, no need to check event_id0, checking
+> > > event_id1 is enough for DEV_2_DEV case because it's so lucky that
+> > > event_id1 never be 0.
+> > 
+> > Well is that by chance or design that event_id1 will be never 0?
+> > 
+> That's by chance. DEV_2_DEV is just for Audio case and non-zero for event_id1 on current i.MX family.
+
+Then it wont be fgood to rely on chance :)
+
+-- 
+~Vinod

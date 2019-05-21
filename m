@@ -1,10 +1,9 @@
 From: Vinod Koul <vkoul@kernel.org>
-Subject: Re: [PATCH v3 04/14] dmaengine: imx-sdma: remove dupilicated
- sdma_load_context
-Date: Tue, 21 May 2019 09:45:52 +0530
-Message-ID: <20190521041552.GD15118@vkoul-mobl>
+Subject: Re: [PATCH v3 05/14] dmaengine: imx-sdma: add mcu_2_ecspi script
+Date: Tue, 21 May 2019 09:46:27 +0530
+Message-ID: <20190521041627.GE15118@vkoul-mobl>
 References: <1557249513-4903-1-git-send-email-yibin.gong@nxp.com>
- <1557249513-4903-5-git-send-email-yibin.gong@nxp.com>
+ <1557249513-4903-6-git-send-email-yibin.gong@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: "robh@kernel.org" <robh@kernel.org>,
@@ -27,13 +26,12 @@ Cc: "robh@kernel.org" <robh@kernel.org>,
 To: Robin Gong <yibin.gong@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1557249513-4903-5-git-send-email-yibin.gong@nxp.com>
+In-Reply-To: <1557249513-4903-6-git-send-email-yibin.gong@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 On 07-05-19, 09:16, Robin Gong wrote:
-> Since sdma_transfer_init() will do sdma_load_context before any
-> sdma transfer, no need once more in sdma_config_channel().
+> Add mcu_2_ecspi script to fix ecspi errata ERR009165.
 
 Acked-by: Vinod Koul <vkoul@kernel.org>
 

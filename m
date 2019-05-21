@@ -1,12 +1,11 @@
-From: Vinod Koul <vkoul@kernel.org>
-Subject: Re: [PATCH v3 11/14] dmaengine: imx-sdma: fix ecspi1 rx dma not work
- on i.mx8mm
-Date: Tue, 21 May 2019 09:48:28 +0530
-Message-ID: <20190521041828.GG15118@vkoul-mobl>
-References: <1557249513-4903-1-git-send-email-yibin.gong@nxp.com>
- <1557249513-4903-12-git-send-email-yibin.gong@nxp.com>
+From: Robin Gong <yibin.gong@nxp.com>
+Subject: RE:  Re: [PATCH v3 11/14] dmaengine: imx-sdma: fix ecspi1 rx dma not
+ work on i.mx8mm
+Date: Tue, 21 May 2019 04:58:38 +0000
+Message-ID: <VI1PR04MB45436C98D70C16635CF3CFDE89070@VI1PR04MB4543.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 Cc: "robh@kernel.org" <robh@kernel.org>,
         "broonie@kernel.org" <broonie@kernel.org>,
         "shawnguo@kernel.org" <shawnguo@kernel.org>,
@@ -24,61 +23,21 @@ Cc: "robh@kernel.org" <robh@kernel.org>,
         "linux-arm-kernel@lists.infradead.org"
         <linux-arm-kernel@lists.infradead.org>,
         "linux-kernel@vger.
-To: Robin Gong <yibin.gong@nxp.com>
+To: Vinod Koul <vkoul@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1557249513-4903-12-git-send-email-yibin.gong@nxp.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 07-05-19, 09:16, Robin Gong wrote:
-> Because the number of ecspi1 rx event on i.mx8mm is 0, the condition
-> check ignore such special case without dma channel enabled, which caused
-> ecspi1 rx works failed. Actually, no need to check event_id0, checking
-> event_id1 is enough for DEV_2_DEV case because it's so lucky that event_id1
-> never be 0.
-
-Well is that by chance or design that event_id1 will be never 0?
-
-> 
-> Signed-off-by: Robin Gong <yibin.gong@nxp.com>
-> ---
->  drivers/dma/imx-sdma.c | 12 +++++-------
->  1 file changed, 5 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
-> index a495c7f..86594fc 100644
-> --- a/drivers/dma/imx-sdma.c
-> +++ b/drivers/dma/imx-sdma.c
-> @@ -1370,8 +1370,8 @@ static void sdma_free_chan_resources(struct dma_chan *chan)
->  
->  	sdma_channel_synchronize(chan);
->  
-> -	if (sdmac->event_id0)
-> -		sdma_event_disable(sdmac, sdmac->event_id0);
-> +	sdma_event_disable(sdmac, sdmac->event_id0);
-> +
->  	if (sdmac->event_id1)
->  		sdma_event_disable(sdmac, sdmac->event_id1);
->  
-> @@ -1670,11 +1670,9 @@ static int sdma_config(struct dma_chan *chan,
->  	memcpy(&sdmac->slave_config, dmaengine_cfg, sizeof(*dmaengine_cfg));
->  
->  	/* Set ENBLn earlier to make sure dma request triggered after that */
-> -	if (sdmac->event_id0) {
-> -		if (sdmac->event_id0 >= sdmac->sdma->drvdata->num_events)
-> -			return -EINVAL;
-> -		sdma_event_enable(sdmac, sdmac->event_id0);
-> -	}
-> +	if (sdmac->event_id0 >= sdmac->sdma->drvdata->num_events)
-> +		return -EINVAL;
-> +	sdma_event_enable(sdmac, sdmac->event_id0);
->  
->  	if (sdmac->event_id1) {
->  		if (sdmac->event_id1 >= sdmac->sdma->drvdata->num_events)
-> -- 
-> 2.7.4
-> 
-
--- 
-~Vinod
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBWaW5vZCBLb3VsIDx2a291bEBr
+ZXJuZWwub3JnPg0KPiBTZW50OiAyMDE5xOo11MIyMcjVIDEyOjE4DQo+IA0KPiBPbiAwNy0wNS0x
+OSwgMDk6MTYsIFJvYmluIEdvbmcgd3JvdGU6DQo+ID4gQmVjYXVzZSB0aGUgbnVtYmVyIG9mIGVj
+c3BpMSByeCBldmVudCBvbiBpLm14OG1tIGlzIDAsIHRoZSBjb25kaXRpb24NCj4gPiBjaGVjayBp
+Z25vcmUgc3VjaCBzcGVjaWFsIGNhc2Ugd2l0aG91dCBkbWEgY2hhbm5lbCBlbmFibGVkLCB3aGlj
+aA0KPiA+IGNhdXNlZA0KPiA+IGVjc3BpMSByeCB3b3JrcyBmYWlsZWQuIEFjdHVhbGx5LCBubyBu
+ZWVkIHRvIGNoZWNrIGV2ZW50X2lkMCwgY2hlY2tpbmcNCj4gPiBldmVudF9pZDEgaXMgZW5vdWdo
+IGZvciBERVZfMl9ERVYgY2FzZSBiZWNhdXNlIGl0J3Mgc28gbHVja3kgdGhhdA0KPiA+IGV2ZW50
+X2lkMSBuZXZlciBiZSAwLg0KPiANCj4gV2VsbCBpcyB0aGF0IGJ5IGNoYW5jZSBvciBkZXNpZ24g
+dGhhdCBldmVudF9pZDEgd2lsbCBiZSBuZXZlciAwPw0KPiANClRoYXQncyBieSBjaGFuY2UuIERF
+Vl8yX0RFViBpcyBqdXN0IGZvciBBdWRpbyBjYXNlIGFuZCBub24temVybyBmb3IgZXZlbnRfaWQx
+IG9uIGN1cnJlbnQgaS5NWCBmYW1pbHkuDQo=

@@ -1,156 +1,94 @@
-From: Rob Herring <robh@kernel.org>
-Subject: [PATCH] spi: dt-bindings: Convert spi-gpio binding to json-schema
-Date: Tue, 21 May 2019 16:23:25 -0500
-Message-ID: <20190521212325.16639-2-robh@kernel.org>
+From: Robin Gong <yibin.gong@nxp.com>
+Subject: [PATCH v4 00/14] add ecspi ERR009165 for i.mx6/7 soc family
+Date: Wed, 22 May 2019 09:59:39 +0000
+Message-ID: <1558548188-1155-1-git-send-email-yibin.gong@nxp.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>
+To: "robh@kernel.org" <robh@kernel.org>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "festevam@gmail.com" <festevam@gmail.com>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "vkoul@kernel.org" <vkoul@kernel.org>,
+        "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+        "plyatov@gmail.com" <plyatov@gmail.com>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "l.stach@pengutronix.de" <l.stach@pengutronix.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Convert the spi-gpio binding to DT schema format.
-
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>
-Cc: linux-spi@vger.kernel.org
-Signed-off-by: Rob Herring <robh@kernel.org>
----
- .../devicetree/bindings/spi/spi-gpio.txt      | 43 -----------
- .../devicetree/bindings/spi/spi-gpio.yaml     | 72 +++++++++++++++++++
- 2 files changed, 72 insertions(+), 43 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/spi/spi-gpio.txt
- create mode 100644 Documentation/devicetree/bindings/spi/spi-gpio.yaml
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-gpio.txt b/Documentation/devicetree/bindings/spi/spi-gpio.txt
-deleted file mode 100644
-index 52db562f17a4..000000000000
---- a/Documentation/devicetree/bindings/spi/spi-gpio.txt
-+++ /dev/null
-@@ -1,43 +0,0 @@
--SPI-GPIO devicetree bindings
--
--This represents a group of 3-n GPIO lines used for bit-banged SPI on dedicated
--GPIO lines.
--
--Required properties:
--
-- - compatible: should be set to "spi-gpio"
-- - #address-cells: should be set to <0x1>
-- - ranges
-- - sck-gpios: GPIO spec for the SCK line to use
-- - miso-gpios: GPIO spec for the MISO line to use
-- - mosi-gpios: GPIO spec for the MOSI line to use
-- - cs-gpios: GPIOs to use for chipselect lines.
--             Not needed if num-chipselects = <0>.
-- - num-chipselects: Number of chipselect lines. Should be <0> if a single device
--                    with no chip select is connected.
--
--Deprecated bindings:
--
--These legacy GPIO line bindings can alternatively be used to define the
--GPIO lines used, they should not be used in new device trees.
--
-- - gpio-sck: GPIO spec for the SCK line to use
-- - gpio-miso: GPIO spec for the MISO line to use
-- - gpio-mosi: GPIO spec for the MOSI line to use
--
--Example:
--
--	spi {
--		compatible = "spi-gpio";
--		#address-cells = <0x1>;
--		ranges;
--
--		sck-gpios = <&gpio 95 0>;
--		miso-gpios = <&gpio 98 0>;
--		mosi-gpios = <&gpio 97 0>;
--		cs-gpios = <&gpio 125 0>;
--		num-chipselects = <1>;
--
--		/* clients */
--	};
--
-diff --git a/Documentation/devicetree/bindings/spi/spi-gpio.yaml b/Documentation/devicetree/bindings/spi/spi-gpio.yaml
-new file mode 100644
-index 000000000000..55c4f1705f07
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-gpio.yaml
-@@ -0,0 +1,72 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/spi-gpio.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: SPI-GPIO devicetree bindings
-+
-+maintainers:
-+  - Rob Herring <robh@kernel.org>
-+
-+description:
-+  This represents a group of 3-n GPIO lines used for bit-banged SPI on
-+  dedicated GPIO lines.
-+
-+allOf:
-+  - $ref: "/schemas/spi/spi-controller.yaml#"
-+
-+properties:
-+  compatible:
-+    const: spi-gpio
-+
-+  sck-gpios:
-+    description: GPIO spec for the SCK line to use
-+    maxItems: 1
-+
-+  miso-gpios:
-+    description: GPIO spec for the MISO line to use
-+    maxItems: 1
-+
-+  mosi-gpios:
-+    description: GPIO spec for the MOSI line to use
-+    maxItems: 1
-+
-+  cs-gpios:
-+    description: GPIOs to use for chipselect lines.
-+      Not needed if num-chipselects = <0>.
-+    minItems: 1
-+    maxItems: 1024
-+
-+  num-chipselects:
-+    description: Number of chipselect lines. Should be <0> if a single device
-+      with no chip select is connected.
-+    $ref: "/schemas/types.yaml#/definitions/uint32"
-+
-+  # Deprecated properties
-+  gpio-sck: false
-+  gpio-miso: false
-+  gpio-mosi: false
-+
-+required:
-+  - compatible
-+  - num-chipselects
-+  - sck-gpios
-+
-+examples:
-+  - |
-+    spi {
-+      compatible = "spi-gpio";
-+      #address-cells = <0x1>;
-+      #size-cells = <0x0>;
-+
-+      sck-gpios = <&gpio 95 0>;
-+      miso-gpios = <&gpio 98 0>;
-+      mosi-gpios = <&gpio 97 0>;
-+      cs-gpios = <&gpio 125 0>;
-+      num-chipselects = <1>;
-+
-+      /* clients */
-+    };
-+
-+...
--- 
-2.20.1
+ICBUaGVyZSBpcyBlY3NwaSBFUlIwMDkxNjUgb24gaS5teDYvNyBzb2MgZmFtaWx5LCB3aGljaCBj
+YXVzZSBGSUZPDQp0cmFuc2ZlciB0byBiZSBzZW5kIHR3aWNlIGluIERNQSBtb2RlLiBQbGVhc2Ug
+Z2V0IG1vcmUgaW5mb3JtYXRpb24gZnJvbToNCmh0dHBzOi8vd3d3Lm54cC5jb20vZG9jcy9lbi9l
+cnJhdGEvSU1YNkRRQ0UucGRmLiBUaGUgd29ya2Fyb3VuZCBpcyBhZGRpbmcNCm5ldyBzZG1hIHJh
+bSBzY3JpcHQgd2hpY2ggd29ya3MgaW4gWENIICBtb2RlIGFzIFBJTyBpbnNpZGUgc2RtYSBpbnN0
+ZWFkDQpvZiBTTUMgbW9kZSwgbWVhbndoaWxlLCAnVFhfVEhSRVNIT0xEJyBzaG91bGQgYmUgMC4g
+VGhlIGlzc3VlIHNob3VsZCBiZQ0KZXhpc3Qgb24gYWxsIGxlZ2FjeSBpLm14Ni83IHNvYyBmYW1p
+bHkgYmVmb3JlIGkubXg2dWwuDQpOWFAgZml4IHRoaXMgZGVzaWduIGlzc3VlIGZyb20gaS5teDZ1
+bCwgc28gbmV3ZXIgY2hpcHMgaW5jbHVkaW5nIGkubXg2dWwvDQo2dWxsLzZzbGwgZG8gbm90IG5l
+ZWQgdGhpcyB3b3JrYXJvdWQgYW55bW9yZS4gQWxsIG90aGVyIGkubXg2LzcvOCBjaGlwcw0Kc3Rp
+bGwgbmVlZCB0aGlzIHdvcmthcm91ZC4gVGhpcyBwYXRjaCBzZXQgYWRkIG5ldyAnZnNsLGlteDZ1
+bC1lY3NwaScNCmZvciBlY3NwaSBkcml2ZXIgYW5kICdlY3NwaV9maXhlZCcgaW4gc2RtYSBkcml2
+ZXIgdG8gY2hvb3NlIGlmIG5lZWQgZXJyYXRhDQpvciBub3QuDQogIFRoZSBmaXJzdCB0d28gcmV2
+ZXJ0ZWQgcGF0Y2hlcyBzaG91bGQgYmUgdGhlIHNhbWUgaXNzdWUsIHRob3VnaCwgaXQNCnNlZW1z
+ICdmaXhlZCcgYnkgY2hhbmdpbmcgdG8gb3RoZXIgc2hwIHNjcmlwdC4gSG9wZSBTZWFuIG9yIFNh
+c2NoYSBjb3VsZA0KaGF2ZSB0aGUgY2hhbmNlIHRvIHRlc3QgdGhpcyBwYXRjaCBzZXQgaWYgY291
+bGQgZml4IHRoZWlyIGlzc3Vlcy4NCiAgQmVzaWRlcywgZW5hYmxlIHNkbWEgc3VwcG9ydCBmb3Ig
+aS5teDhtbS84bXEgYW5kIGZpeCBlY3NwaTEgbm90IHdvcmsNCm9uIGkubXg4bW0gYmVjYXVzZSB0
+aGUgZXZlbnQgaWQgaXMgemVyby4NCg0KUFM6DQogIFBsZWFzZSBnZXQgc2RtYSBmaXJtd2FyZSBm
+cm9tIGJlbG93IGxpbnV4LWZpcm13YXJlIGFuZCBjb3B5IGl0IHRvIHlvdXINCmxvY2FsIHJvb3Rm
+cyAvbGliL2Zpcm13YXJlL2lteC9zZG1hLg0KaHR0cHM6Ly9naXQua2VybmVsLm9yZy9wdWIvc2Nt
+L2xpbnV4L2tlcm5lbC9naXQvZmlybXdhcmUvbGludXgtZmlybXdhcmUuZ2l0L3RyZWUvaW14L3Nk
+bWENCg0KdjI6DQogIDEuIGFkZCBjb21taXQgbG9nIGZvciByZXZlcnRlZCBwYXRjaGVzLg0KICAy
+LiBhZGQgY29tbWVudCBmb3IgJ2Vjc3BpX2ZpeGVkJyBpbiBzZG1hIGRyaXZlci4NCiAgMy4gYWRk
+ICdmc2wsaW14NnNsbC1lY3NwaScgY29tcGF0aWJsZSBpbnN0ZWFkIG9mICdmc2wsaW14NnVsLWVj
+c3BpJw0KICAgICByYXRoZXIgdGhhbiByZW1vdmUuDQp2MzoNCiAgMS4gY29uZmlybSB3aXRoIGRl
+c2lnbiB0ZWFtIG1ha2Ugc3VyZSBFUlIwMDkxNjUgZml4ZWQgb24gaS5teDZ1bC9pLm14NnVsbA0K
+ICAvaS5teDZzbGwsIG5vdCBmaXhlZCBvbiBpLm14OG0vOG1tIGFuZCBvdGhlciBpLm14Ni83IGxl
+Z2FjeSBjaGlwcy4NCiAgQ29ycmVjdCBkdHMgcmVsYXRlZCBkdHMgcGF0Y2ggaW4gdjIuDQogIDIu
+IGNsZWFuIGVyYXR0YSBpbmZvcm1hdGlvbiBpbiBiaW5kaW5nIGRvYyBhbmQgbmV3ICd0eF9nbGl0
+Y2hfZml4ZWQnIGZsYWcNCiAgaW4gc3BpLWlteCBkcml2ZXIgdG8gc3RhdGUgRVJSMDA5MTY1IGZp
+eGVkIG9yIG5vdC4NCiAgMy4gRW5sYXJnZSBidXJzdCBzaXplIHRvIGZpZm8gc2l6ZSBmb3IgdHgg
+c2luY2UgdHhfd21sIHNldCB0byAwIGluIHRoZQ0KICBlcnJhdGEgd29ya2Fyb3VkLCB0aHVzIGlt
+cHJvdmUgcGVyZm9ybWFuY2UgYXMgcG9zc2libGUuDQp2NDoNCiAgMS4gYWRkIEFjayB0YWcgZnJv
+bSBNYXJrIGFuZCBWaW5vZA0KICAyLiByZW1vdmUgY2hlY2tpbmcgJ2V2ZW50X2lkMScgemVybyBh
+cyAnZXZlbnRfaWQwJy4NCg0KUm9iaW4gR29uZyAoMTQpOg0KICBSZXZlcnQgIkFSTTogZHRzOiBp
+bXg2cTogVXNlIGNvcnJlY3QgU0RNQSBzY3JpcHQgZm9yIFNQSTUgY29yZSINCiAgUmV2ZXJ0ICJB
+Uk06IGR0czogaW14NjogVXNlIGNvcnJlY3QgU0RNQSBzY3JpcHQgZm9yIFNQSSBjb3JlcyINCiAg
+UmV2ZXJ0ICJkbWFlbmdpbmU6IGlteC1zZG1hOiByZWZpbmUgdG8gbG9hZCBjb250ZXh0IG9ubHkg
+b25jZSINCiAgZG1hZW5naW5lOiBpbXgtc2RtYTogcmVtb3ZlIGR1cGlsaWNhdGVkIHNkbWFfbG9h
+ZF9jb250ZXh0DQogIGRtYWVuZ2luZTogaW14LXNkbWE6IGFkZCBtY3VfMl9lY3NwaSBzY3JpcHQN
+CiAgc3BpOiBpbXg6IGZpeCBFUlIwMDkxNjUNCiAgc3BpOiBpbXg6IHJlbW92ZSBFUlIwMDkxNjUg
+d29ya2Fyb3VuZCBvbiBpLm14NnVsDQogIGR0LWJpbmRpbmdzOiBzcGk6IGlteDogYWRkIG5ldyBp
+Lm14NnVsIGNvbXBhdGlibGUgbmFtZQ0KICBkbWFlbmdpbmU6IGlteC1zZG1hOiByZW1vdmUgRVJS
+MDA5MTY1IG9uIGkubXg2dWwNCiAgZHQtYmluZGluZ3M6IGRtYTogaW14LXNkbWE6IGFkZCBpLm14
+NnVsLzZzeCBjb21wYXRpYmxlIG5hbWUNCiAgZG1hZW5naW5lOiBpbXgtc2RtYTogZml4IGVjc3Bp
+MSByeCBkbWEgbm90IHdvcmsgb24gaS5teDhtbQ0KICBBUk06IGR0czogaW14NnVsOiBhZGQgZG1h
+IHN1cHBvcnQgb24gZWNzcGkNCiAgQVJNOiBkdHM6IGlteDZzbGw6IGNvcnJlY3Qgc2RtYSBjb21w
+YXRpYmxlDQogIGFybTY0OiBkZWZjb25maWc6IEVuYWJsZSBTRE1BIG9uIGkubXg4bXEvOG1tDQoN
+CiAuLi4vZGV2aWNldHJlZS9iaW5kaW5ncy9kbWEvZnNsLWlteC1zZG1hLnR4dCAgICAgICB8ICAy
+ICsNCiAuLi4vZGV2aWNldHJlZS9iaW5kaW5ncy9zcGkvZnNsLWlteC1jc3BpLnR4dCAgICAgICB8
+ICAxICsNCiBhcmNoL2FybS9ib290L2R0cy9pbXg2cS5kdHNpICAgICAgICAgICAgICAgICAgICAg
+ICB8ICAyICstDQogYXJjaC9hcm0vYm9vdC9kdHMvaW14NnFkbC5kdHNpICAgICAgICAgICAgICAg
+ICAgICAgfCAgOCArLS0NCiBhcmNoL2FybS9ib290L2R0cy9pbXg2c2xsLmR0c2kgICAgICAgICAg
+ICAgICAgICAgICB8ICAyICstDQogYXJjaC9hcm0vYm9vdC9kdHMvaW14NnVsLmR0c2kgICAgICAg
+ICAgICAgICAgICAgICAgfCAgOCArKysNCiBhcmNoL2FybTY0L2NvbmZpZ3MvZGVmY29uZmlnICAg
+ICAgICAgICAgICAgICAgICAgICB8ICAzICsNCiBkcml2ZXJzL2RtYS9pbXgtc2RtYS5jICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICB8IDc4ICsrKysrKysrKysrKysrKystLS0tLS0NCiBkcml2
+ZXJzL3NwaS9zcGktaW14LmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8IDYxICsrKysr
+KysrKysrKysrLS0tDQogaW5jbHVkZS9saW51eC9wbGF0Zm9ybV9kYXRhL2RtYS1pbXgtc2RtYS5o
+ICAgICAgICAgfCAgMSArDQogMTAgZmlsZXMgY2hhbmdlZCwgMTMyIGluc2VydGlvbnMoKyksIDM0
+IGRlbGV0aW9ucygtKQ0KDQotLSANCjIuNy40DQoNCg==

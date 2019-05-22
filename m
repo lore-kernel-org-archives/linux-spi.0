@@ -1,72 +1,59 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v13 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3
- RPC-IF controller bindings
-Date: Wed, 22 May 2019 19:50:57 +0300
-Message-ID: <0e2994d6-6efc-9f36-f681-609199f20b9f@cogentembedded.com>
-References: <1558423174-10748-1-git-send-email-masonccyang@mxic.com.tw>
- <1558423174-10748-4-git-send-email-masonccyang@mxic.com.tw>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH v12 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3
+ RPC-IF MFD bindings
+Date: Wed, 22 May 2019 19:05:11 +0200
+Message-ID: <CAMuHMdUWNqkZz5DEWFJsoHLmC86ziLjWKHpz=A-EmvMDDgnSNQ@mail.gmail.com>
+References: <1556092536-17095-1-git-send-email-masonccyang@mxic.com.tw>
+ <20190424212356.GA27103@bogus> <65853dc2-6f3c-1494-7e72-54877797cdd2@gmail.com>
+ <20190507125730.GD29524@dell> <OF08A5650B.8AE8977C-ON482583F4.000E5B1E-482583F4.000F7215@mxic.com.tw>
+ <d229b19e-351c-c576-b5c4-716d10dad1a0@gmail.com> <20190508061119.GB7627@dell>
+ <OFE86674B9.06D723A0-ON482583F5.000AD50C-482583F5.000BA075@mxic.com.tw>
+ <a05cff8f-7df2-1938-c0e7-f9366bece607@cogentembedded.com> <OFB19BCE91.6EBBAA77-ON482583F6.000234E2-482583F6.00061290@mxic.com.tw>
+ <CAMuHMdUP8KU3Dbv6cwOvrY0hWOcm1xqVcsi20+GvazYMDLGGZg@mail.gmail.com>
+ <OFD932ABFC.E3FFCEB8-ON482583F9.003412B1-482583F9.0034D5CA@mxic.com.tw>
+ <b51d1cb7-b3b5-208f-ab4c-145ecb57805d@cogentembedded.com> <44bc8f0a-cbdc-db4a-9a46-b8bae5cc37a2@cogentembedded.com>
+ <OF5AF00898.3CE87C98-ON48258400.00259B16-48258400.0028A4F5@mxic.com.tw> <5e718d9f-3aeb-c2ef-0723-400497b2b98f@cogentembedded.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
-        miquel.raynal@bootlin.com
-To: Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
-        marek.vasut@gmail.com, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, bbrezillon@kernel.org,
-        linux-renesas-soc@vger.kernel.org,
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mason Yang <masonccyang@mxic.com.tw>,
+        Lee Jones <lee.jones@linaro.org>,
+        Boris Brezillon <bbrezillon@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+        <devicetree@vger.kernel.org>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
-        lee.jones@linaro.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        devicetree@vger.kernel.org
+        Simon Horman <horms@verge.net.au>, juliensu@mxic.com.tw,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh@kernel.org>, zhengxunli@mxic.com.tw,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+To: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1558423174-10748-4-git-send-email-masonccyang@mxic.com.tw>
-Content-Language: en-MW
+In-Reply-To: <5e718d9f-3aeb-c2ef-0723-400497b2b98f@cogentembedded.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 05/21/2019 10:19 AM, Mason Yang wrote:
+Hi Sergei,
 
-> Document the bindings used by the Renesas R-Car Gen3 RPC-IF controller.
-> 
-> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
-> ---
->  .../devicetree/bindings/mfd/renesas-rpc-if.txt     | 65 ++++++++++++++++++++++
->  1 file changed, 65 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mfd/renesas-rpc-if.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/mfd/renesas-rpc-if.txt b/Documentation/devicetree/bindings/mfd/renesas-rpc-if.txt
-> new file mode 100644
-> index 0000000..20ec85b
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mfd/renesas-rpc-if.txt
-> @@ -0,0 +1,65 @@
-> +Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
-> +---------------------------------------------------------
-> +
-> +RPC-IF supports both SPI NOR and HyperFlash (CFI-compliant flash)
-> +
-> +Required properties:
-> +- compatible: should be an SoC-specific compatible value, followed by
-> +		"renesas,rcar-gen3-rpc" as a fallback.
-> +		supported SoC-specific values are:
-> +		"renesas,r8a77995-rpc"	(R-Car D3)
-> +- reg: should contain three register areas:
-> +	first for RPC-IF registers,
-> +	second for the direct mapping read mode and
-> +	third for the write buffer area.
-> +- reg-names: should contain "regs", "dirmap" and "wbuf"
-> +- clocks: should contain 1 entries for the module's clock
-> +- clock-names: should contain "rpc"
-> +- power-domains: should contain system-controller(sysc) for power-domain-cell
-> +- resets: should contain clock pulse generator(cpg) for reset-cell,
-> +	  power-domain-cell and clock-cell
+On Wed, May 22, 2019 at 6:32 PM Sergei Shtylyov
+<sergei.shtylyov@cogentembedded.com> wrote:
+> On 05/20/2019 10:23 AM, masonccyang@mxic.com.tw wrote:
+> > +- clocks: should contain 1 entries for the module's clock
+>
+>    1 entry (clock node phandle and specifier).
 
-   That's just some nonsense, sorry...
-   I suggest that you stop reposting your patches as I'm going to post
-my version of this patchset RSN (based on your patches, of course) and I'm
-going to take care of fixing this file as well.
+Doesn't "specifier" mean "phandle + optional arguments"?
 
-> +- #address-cells: should be 1
-> +- #size-cells: should be 0
-[...]
+Gr{oetje,eeting}s,
 
-MBR, Sergei
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

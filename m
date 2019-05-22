@@ -1,8 +1,8 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.9 010/114] spi: pxa2xx: fix SCR (divisor) calculation
-Date: Wed, 22 May 2019 15:28:33 -0400
-Message-ID: <20190522193017.26567-10-sashal@kernel.org>
-References: <20190522193017.26567-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 026/244] spi: pxa2xx: fix SCR (divisor) calculation
+Date: Wed, 22 May 2019 15:22:52 -0400
+Message-ID: <20190522192630.24917-26-sashal@kernel.org>
+References: <20190522192630.24917-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Cc: Flavio Suligoi <f.suligoi@asem.it>,
@@ -10,9 +10,9 @@ Cc: Flavio Suligoi <f.suligoi@asem.it>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190522193017.26567-1-sashal@kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20190522192630.24917-1-sashal@kernel.org>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Flavio Suligoi <f.suligoi@asem.it>
@@ -50,10 +50,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index f2209ec4cb68d..8b618f0fa459f 100644
+index b624f6fb04ce5..729be74621e37 100644
 --- a/drivers/spi/spi-pxa2xx.c
 +++ b/drivers/spi/spi-pxa2xx.c
-@@ -921,10 +921,14 @@ static unsigned int ssp_get_clk_div(struct driver_data *drv_data, int rate)
+@@ -876,10 +876,14 @@ static unsigned int ssp_get_clk_div(struct driver_data *drv_data, int rate)
  
  	rate = min_t(int, ssp_clk, rate);
  

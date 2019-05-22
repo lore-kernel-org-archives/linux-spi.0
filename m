@@ -1,35 +1,46 @@
 From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH] spi: dt-bindings: Convert Arm pl022 to json-schema
-Date: Wed, 22 May 2019 07:49:44 -0500
-Message-ID: <CAL_Jsq+JimAYW9GiPz6_hNJfnA+8bnN=kPDOEJFPyt+57bwriw@mail.gmail.com>
-References: <20190521212325.16639-1-robh@kernel.org> <20190522104226.nwcvx33akt6q576m@flea>
+Subject: Re: [PATCH v4 10/14] dma: imx-sdma: add i.mx6ul/6sx compatible name
+Date: Wed, 22 May 2019 08:51:28 -0500
+Message-ID: <20190522135128.GA24987@bogus>
+References: <1558548188-1155-1-git-send-email-yibin.gong@nxp.com>
+ <1558548188-1155-11-git-send-email-yibin.gong@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
-        <linux-arm-kernel@lists.infradead.org>
-To: Maxime Ripard <maxime.ripard@bootlin.com>
+Content-Type: text/plain; charset=us-ascii
+Cc: "robh@kernel.org" <robh@kernel.org>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "festevam@gmail.com" <festevam@gmail.com>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "vkoul@kernel.org" <vkoul@kernel.org>,
+        "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+        "plyatov@gmail.com" <plyatov@gmail.com>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "l.stach@pengutronix.de" <l.stach@pengutronix.de>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel
+To: Robin Gong <yibin.gong@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190522104226.nwcvx33akt6q576m@flea>
+Content-Disposition: inline
+In-Reply-To: <1558548188-1155-11-git-send-email-yibin.gong@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, May 22, 2019 at 5:42 AM Maxime Ripard <maxime.ripard@bootlin.com> wrote:
->
-> Hi Rob,
->
-> On Tue, May 21, 2019 at 04:23:24PM -0500, Rob Herring wrote:
-> > +allOf:
-> > +  - $ref: "spi-controller.yaml#"
->
-> You're using a different construct on the spi-gpio binding you just
-> sent (/schemas/spi/spi-controller.yaml).
->
-> Is that on purpose?
+On Wed, 22 May 2019 10:00:38 +0000, Robin Gong wrote:
+> Add i.mx6ul and i.mx6sx compatible name in binding doc.
+> 
+> Signed-off-by: Robin Gong <yibin.gong@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/dma/fsl-imx-sdma.txt | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
 
-No. This one is correct (though both work).
+Please add Acked-by/Reviewed-by tags when posting new versions. However,
+there's no need to repost patches *only* to add the tags. The upstream
+maintainer will do that for acks received on the version they apply.
 
-Rob
+If a tag was not added on purpose, please state why and what changed.

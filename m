@@ -1,60 +1,74 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.0 032/317] spi: atmel-quadspi: fix crash while suspending
-Date: Wed, 22 May 2019 15:18:53 -0400
-Message-ID: <20190522192338.23715-32-sashal@kernel.org>
-References: <20190522192338.23715-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 017/167] spi: pxa2xx: fix SCR (divisor) calculation
+Date: Wed, 22 May 2019 15:26:12 -0400
+Message-ID: <20190522192842.25858-17-sashal@kernel.org>
+References: <20190522192842.25858-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
+Cc: Flavio Suligoi <f.suligoi@asem.it>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190522192338.23715-1-sashal@kernel.org>
+In-Reply-To: <20190522192842.25858-1-sashal@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Flavio Suligoi <f.suligoi@asem.it>
 
-[ Upstream commit e5c27498a0403b270620b1a8a0a66e3efc222fb6 ]
+[ Upstream commit 29f2133717c527f492933b0622a4aafe0b3cbe9e ]
 
-atmel_qspi objects are kept in spi_controller objects, so, first get
-pointer to spi_controller object and then get atmel_qspi object from
-spi_controller object.
+Calculate the divisor for the SCR (Serial Clock Rate), avoiding
+that the SSP transmission rate can be greater than the device rate.
 
-Fixes: 2d30ac5ed633 ("mtd: spi-nor: atmel-quadspi: Use spi-mem interface for atmel-quadspi driver")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+When the division between the SSP clock and the device rate generates
+a reminder, we have to increment by one the divisor.
+In this way the resulting SSP clock will never be greater than the
+device SPI max frequency.
+
+For example, with:
+
+ - ssp_clk  = 50 MHz
+ - dev freq = 15 MHz
+
+without this patch the SSP clock will be greater than 15 MHz:
+
+ - 25 MHz for PXA25x_SSP and CE4100_SSP
+ - 16,56 MHz for the others
+
+Instead, with this patch, we have in both case an SSP clock of 12.5MHz,
+so the max rate of the SPI device clock is respected.
+
+Signed-off-by: Flavio Suligoi <f.suligoi@asem.it>
+Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/atmel-quadspi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index ddc7124108125..ec6e9970d7750 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -506,7 +506,8 @@ static int atmel_qspi_remove(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index c0e915d8da5d2..efdae686a7619 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -938,10 +938,14 @@ static unsigned int ssp_get_clk_div(struct driver_data *drv_data, int rate)
  
- static int __maybe_unused atmel_qspi_suspend(struct device *dev)
- {
--	struct atmel_qspi *aq = dev_get_drvdata(dev);
-+	struct spi_controller *ctrl = dev_get_drvdata(dev);
-+	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
+ 	rate = min_t(int, ssp_clk, rate);
  
- 	clk_disable_unprepare(aq->clk);
++	/*
++	 * Calculate the divisor for the SCR (Serial Clock Rate), avoiding
++	 * that the SSP transmission rate can be greater than the device rate
++	 */
+ 	if (ssp->type == PXA25x_SSP || ssp->type == CE4100_SSP)
+-		return (ssp_clk / (2 * rate) - 1) & 0xff;
++		return (DIV_ROUND_UP(ssp_clk, 2 * rate) - 1) & 0xff;
+ 	else
+-		return (ssp_clk / rate - 1) & 0xfff;
++		return (DIV_ROUND_UP(ssp_clk, rate) - 1)  & 0xfff;
+ }
  
-@@ -515,7 +516,8 @@ static int __maybe_unused atmel_qspi_suspend(struct device *dev)
- 
- static int __maybe_unused atmel_qspi_resume(struct device *dev)
- {
--	struct atmel_qspi *aq = dev_get_drvdata(dev);
-+	struct spi_controller *ctrl = dev_get_drvdata(dev);
-+	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
- 
- 	clk_prepare_enable(aq->clk);
- 
+ static unsigned int pxa2xx_ssp_get_clk_div(struct driver_data *drv_data,
 -- 
 2.20.1

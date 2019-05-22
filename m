@@ -1,8 +1,8 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.1 037/375] spi: atmel-quadspi: fix crash while suspending
-Date: Wed, 22 May 2019 15:15:37 -0400
-Message-ID: <20190522192115.22666-37-sashal@kernel.org>
-References: <20190522192115.22666-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.0 032/317] spi: atmel-quadspi: fix crash while suspending
+Date: Wed, 22 May 2019 15:18:53 -0400
+Message-ID: <20190522192338.23715-32-sashal@kernel.org>
+References: <20190522192338.23715-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Cc: Claudiu Beznea <claudiu.beznea@microchip.com>,
@@ -11,7 +11,7 @@ Cc: Claudiu Beznea <claudiu.beznea@microchip.com>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190522192115.22666-1-sashal@kernel.org>
+In-Reply-To: <20190522192338.23715-1-sashal@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
@@ -33,10 +33,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index fffc21cd5f793..b3173ebddaded 100644
+index ddc7124108125..ec6e9970d7750 100644
 --- a/drivers/spi/atmel-quadspi.c
 +++ b/drivers/spi/atmel-quadspi.c
-@@ -570,7 +570,8 @@ static int atmel_qspi_remove(struct platform_device *pdev)
+@@ -506,7 +506,8 @@ static int atmel_qspi_remove(struct platform_device *pdev)
  
  static int __maybe_unused atmel_qspi_suspend(struct device *dev)
  {
@@ -44,9 +44,9 @@ index fffc21cd5f793..b3173ebddaded 100644
 +	struct spi_controller *ctrl = dev_get_drvdata(dev);
 +	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
  
- 	clk_disable_unprepare(aq->qspick);
- 	clk_disable_unprepare(aq->pclk);
-@@ -580,7 +581,8 @@ static int __maybe_unused atmel_qspi_suspend(struct device *dev)
+ 	clk_disable_unprepare(aq->clk);
+ 
+@@ -515,7 +516,8 @@ static int __maybe_unused atmel_qspi_suspend(struct device *dev)
  
  static int __maybe_unused atmel_qspi_resume(struct device *dev)
  {
@@ -54,7 +54,7 @@ index fffc21cd5f793..b3173ebddaded 100644
 +	struct spi_controller *ctrl = dev_get_drvdata(dev);
 +	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
  
- 	clk_prepare_enable(aq->pclk);
- 	clk_prepare_enable(aq->qspick);
+ 	clk_prepare_enable(aq->clk);
+ 
 -- 
 2.20.1

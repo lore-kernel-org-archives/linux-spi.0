@@ -1,7 +1,7 @@
 From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Subject: [PATCH V1 00/12] LP0 entry and exit support for Tegra210
-Date: Wed, 22 May 2019 18:28:29 -0700
-Message-ID: <1558574922-16531-1-git-send-email-skomatineni@nvidia.com>
+Subject: [PATCH V1] spi: tegra114: set master cleanup and also invoke it on probe error
+Date: Wed, 22 May 2019 18:29:04 -0700
+Message-ID: <1558574945-19275-1-git-send-email-skomatineni@nvidia.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Cc: <linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
@@ -14,52 +14,34 @@ Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch series includes Tegra210 deepsleep or LP0 support with
-deep sleep exit through RTC alarm wake and power button wake events.
+This patch sets master cleanup and also invokes tegra spi clean on
+tegra spi probe failure to release tegra spi client data.
 
-This series also includes save and restore of PLLs, clocks, OSC contexts
-for basic LP0 exit.
+Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
+---
+ drivers/spi/spi-tegra114.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-This patch series is doesn't support for 100% suspend/resume to fully
-functional state and we are working on some more drivers suspend and
-resume implementations.
-
-Sowjanya Komatineni (12):
-  irqchip: tegra: do not disable COP IRQ during suspend
-  pinctrl: tegra: add suspend and resume support
-  clk: tegra: save and restore PLLs state for system
-  clk: tegra: add support for peripheral clock suspend and resume
-  clk: tegra: add support for OSC clock resume
-  clk: tegra: add suspend resume support for DFLL clock
-  clk: tegra: support for Tegra210 clocks suspend-resume
-  soc/tegra: pmc: allow support for more tegra wake models
-  soc/tegra: pmc: add pmc wake support for tegra210
-  gpio: tegra: implement wake event support for Tegra210 and prior GPIO
-  soc/tegra: pmc: configure tegra deep sleep control settings
-  arm64: tegra: enable wake from deep sleep on RTC alarm.
-
- arch/arm64/boot/dts/nvidia/tegra210-p2180.dtsi |   7 +
- arch/arm64/boot/dts/nvidia/tegra210.dtsi       |   5 +-
- drivers/clk/tegra/clk-dfll.c                   |  82 ++++++
- drivers/clk/tegra/clk-dfll.h                   |   2 +
- drivers/clk/tegra/clk-divider.c                |  19 ++
- drivers/clk/tegra/clk-pll-out.c                |  25 ++
- drivers/clk/tegra/clk-pll.c                    | 220 ++++++++++++--
- drivers/clk/tegra/clk-tegra-fixed.c            |  15 +
- drivers/clk/tegra/clk-tegra210.c               | 382 +++++++++++++++++++++++++
- drivers/clk/tegra/clk.c                        |  74 ++++-
- drivers/clk/tegra/clk.h                        |  18 ++
- drivers/gpio/gpio-tegra.c                      | 109 ++++++-
- drivers/irqchip/irq-tegra.c                    |  10 +-
- drivers/pinctrl/tegra/pinctrl-tegra.c          |  68 ++++-
- drivers/pinctrl/tegra/pinctrl-tegra.h          |   3 +
- drivers/pinctrl/tegra/pinctrl-tegra114.c       |   1 +
- drivers/pinctrl/tegra/pinctrl-tegra124.c       |   1 +
- drivers/pinctrl/tegra/pinctrl-tegra20.c        |   1 +
- drivers/pinctrl/tegra/pinctrl-tegra210.c       |   1 +
- drivers/pinctrl/tegra/pinctrl-tegra30.c        |   1 +
- drivers/soc/tegra/pmc.c                        | 159 +++++++++-
- 21 files changed, 1167 insertions(+), 36 deletions(-)
-
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index 253a7f182fc9..15f9368fc0f8 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -966,6 +966,8 @@ static int tegra_spi_setup(struct spi_device *spi)
+ 	ret = pm_runtime_get_sync(tspi->dev);
+ 	if (ret < 0) {
+ 		dev_err(tspi->dev, "pm runtime failed, e = %d\n", ret);
++		if (cdata)
++			tegra_spi_cleanup(spi);
+ 		return ret;
+ 	}
+ 
+@@ -1331,6 +1333,7 @@ static int tegra_spi_probe(struct platform_device *pdev)
+ 			    SPI_TX_DUAL | SPI_RX_DUAL | SPI_3WIRE;
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
+ 	master->setup = tegra_spi_setup;
++	master->cleanup = tegra_spi_cleanup;
+ 	master->transfer_one_message = tegra_spi_transfer_one_message;
+ 	master->set_cs_timing = tegra_spi_set_hw_cs_timing;
+ 	master->num_chipselect = MAX_CHIP_SELECT;
 -- 
 2.7.4

@@ -1,99 +1,79 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v4 2/3] spi: Allow SPI devices to request the pumping
- thread be realtime
-Date: Thu, 23 May 2019 14:46:25 +0100
-Message-ID: <20190523134625.GG17245@sirena.org.uk>
-References: <20190515164814.258898-1-dianders@chromium.org>
- <20190515164814.258898-3-dianders@chromium.org>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3101645039599833252=="
-Cc: drinkcat-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, briannorris-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
- linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, mka-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
- Enric Balletbo i Serra <enric.balletbo-ZGY8ohtN/8qB+jHODAdFcQ@public.gmane.org>,
- Guenter Roeck <groeck-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Benson Leung <bleung-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-To: Douglas Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Return-path: <linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <20190515164814.258898-3-dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
- <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
-List-Post: <mailto:linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
- <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "Linux-rockchip" <linux-rockchip-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: spi-fsl-spi: call spi_finalize_current_message() at the end" to the spi tree
+Date: Thu, 23 May 2019 14:49:07 +0100 (BST)
+Message-ID: <20190523134907.F15B31126D2A@debutante.sirena.org.uk>
+References: <9c1b9545e6683666a795cd89070fa9491f33b9da.1558522754.git.christophe.leroy@c-s.fr>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <9c1b9545e6683666a795cd89070fa9491f33b9da.1558522754.git.christophe.leroy@c-s.fr>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---===============3101645039599833252==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="bO4vSxwwZtUjUWHo"
-Content-Disposition: inline
+   spi: spi-fsl-spi: call spi_finalize_current_message() at the end
 
+has been applied to the spi tree at
 
---bO4vSxwwZtUjUWHo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.2
 
-On Wed, May 15, 2019 at 09:48:12AM -0700, Douglas Anderson wrote:
-> Right now the only way to get the SPI pumping thread bumped up to
-> realtime priority is for the controller to request it.  However it may
-> be that the controller works fine with the normal priority but
-> communication to a particular SPI device on the bus needs realtime
-> priority.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-The following changes since commit a188339ca5a396acc588e5851ed7e19f66b0ebd9:
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-  Linux 5.2-rc1 (2019-05-19 15:47:09 -0700)
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-are available in the Git repository at:
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-rt-pump
+Thanks,
+Mark
 
-for you to fetch changes up to 924b5867e7bd6a6a98014f0517b747465b108011:
+>From 44a042182cb1e9f7916e015c836967bf638b33c4 Mon Sep 17 00:00:00 2001
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Date: Wed, 22 May 2019 11:00:36 +0000
+Subject: [PATCH] spi: spi-fsl-spi: call spi_finalize_current_message() at the
+ end
 
-  spi: Allow SPI devices to request the pumping thread be realtime (2019-05-23 14:44:02 +0100)
+spi_finalize_current_message() shall be called once all
+actions are finished, otherwise the last actions might
+step over a newly started transfer.
 
-----------------------------------------------------------------
-spi: Allow setting pump to RT priority
+Fixes: c592becbe704 ("spi: fsl-(e)spi: migrate to generic master queueing")
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-fsl-spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-----------------------------------------------------------------
-Douglas Anderson (1):
-      spi: Allow SPI devices to request the pumping thread be realtime
-
- drivers/spi/spi.c       | 36 ++++++++++++++++++++++++++++++------
- include/linux/spi/spi.h |  2 ++
- 2 files changed, 32 insertions(+), 6 deletions(-)
-
---bO4vSxwwZtUjUWHo
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlzmpDEACgkQJNaLcl1U
-h9AT8wf9HCQwiI9ChQBim3VkHh1VA8vwPgC20zoPo4PUGPcvvaWX5I3lrUoeCp1Q
-vpMaUDp9J8OQ57wbmNFjqYYwLAK66XMUPQmqyH6q+1m1JSp5FP41aVGkJD32UOnk
-wqsDdznTOvdDrgnVtJWtqjSWiK18M4OQJhIJGwe0wBRIfk+bpQDa+s+R34wgHCt8
-xGJZcdJagggMsco0HvSgLuIRcIVuLbsCiu9Vxh1GR3ko3x7xLUVhkoKzxJ81qVu1
-99KmShuE/rXn2IKU0lfC6WjItvey3r1RWyKFsSd7xKI6Izz45lNFrUlgrSOyLW4R
-NqMXjQUeC/nEluG0IIC4X0mbopIIsw==
-=Xgy/
------END PGP SIGNATURE-----
-
---bO4vSxwwZtUjUWHo--
-
-
---===============3101645039599833252==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-Linux-rockchip mailing list
-Linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-http://lists.infradead.org/mailman/listinfo/linux-rockchip
-
---===============3101645039599833252==--
+diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+index b36ac6aa3b1f..7fbdaf066719 100644
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -432,7 +432,6 @@ static int fsl_spi_do_one_msg(struct spi_master *master,
+ 	}
+ 
+ 	m->status = status;
+-	spi_finalize_current_message(master);
+ 
+ 	if (status || !cs_change) {
+ 		ndelay(nsecs);
+@@ -440,6 +439,7 @@ static int fsl_spi_do_one_msg(struct spi_master *master,
+ 	}
+ 
+ 	fsl_spi_setup_transfer(spi, NULL);
++	spi_finalize_current_message(master);
+ 	return 0;
+ }
+ 
+-- 
+2.20.1

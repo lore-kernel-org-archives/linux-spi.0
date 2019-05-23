@@ -1,75 +1,51 @@
-From: Sowjanya Komatineni <skomatineni@nvidia.com>
-Subject: Re: [PATCH V1 00/12] LP0 entry and exit support for Tegra210
-Date: Wed, 22 May 2019 18:29:45 -0700
-Message-ID: <0418cbdb-1bb6-23c3-f13d-e0a70f899f3c@nvidia.com>
-References: <1558574922-16531-1-git-send-email-skomatineni@nvidia.com>
+From: Robin Gong <yibin.gong@nxp.com>
+Subject: RE: [EXT] Re: [PATCH v4 10/14] dma: imx-sdma: add i.mx6ul/6sx
+ compatible name
+Date: Thu, 23 May 2019 02:08:54 +0000
+Message-ID: <VI1PR04MB4543BE5BB829A2BFDA48824789010@VI1PR04MB4543.eurprd04.prod.outlook.com>
+References: <1558548188-1155-1-git-send-email-yibin.gong@nxp.com>
+ <1558548188-1155-11-git-send-email-yibin.gong@nxp.com>
+ <20190522135128.GA24987@bogus>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: <linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>
-To: <thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
-        <ldewangan@nvidia.com>, <broonie@kernel.org>,
-        <natechancellor@gmail.com>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+Cc: "broonie@kernel.org" <broonie@kernel.org>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "festevam@gmail.com" <festevam@gmail.com>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "vkoul@kernel.org" <vkoul@kernel.org>,
+        "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+        "plyatov@gmail.com" <plyatov@gmail.com>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "l.stach@pengutronix.de" <l.stach@pengutronix.de>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+To: Rob Herring <robh@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1558574922-16531-1-git-send-email-skomatineni@nvidia.com>
+In-Reply-To: <20190522135128.GA24987@bogus>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-HI All
-
-Sorry. Please ignore this as it was sent out accidentally
-
-thanks
-
-sowjanya
-
-On 5/22/19 6:28 PM, Sowjanya Komatineni wrote:
-> This patch series includes Tegra210 deepsleep or LP0 support with
-> deep sleep exit through RTC alarm wake and power button wake events.
->
-> This series also includes save and restore of PLLs, clocks, OSC contexts
-> for basic LP0 exit.
->
-> This patch series is doesn't support for 100% suspend/resume to fully
-> functional state and we are working on some more drivers suspend and
-> resume implementations.
->
-> Sowjanya Komatineni (12):
->    irqchip: tegra: do not disable COP IRQ during suspend
->    pinctrl: tegra: add suspend and resume support
->    clk: tegra: save and restore PLLs state for system
->    clk: tegra: add support for peripheral clock suspend and resume
->    clk: tegra: add support for OSC clock resume
->    clk: tegra: add suspend resume support for DFLL clock
->    clk: tegra: support for Tegra210 clocks suspend-resume
->    soc/tegra: pmc: allow support for more tegra wake models
->    soc/tegra: pmc: add pmc wake support for tegra210
->    gpio: tegra: implement wake event support for Tegra210 and prior GPIO
->    soc/tegra: pmc: configure tegra deep sleep control settings
->    arm64: tegra: enable wake from deep sleep on RTC alarm.
->
->   arch/arm64/boot/dts/nvidia/tegra210-p2180.dtsi |   7 +
->   arch/arm64/boot/dts/nvidia/tegra210.dtsi       |   5 +-
->   drivers/clk/tegra/clk-dfll.c                   |  82 ++++++
->   drivers/clk/tegra/clk-dfll.h                   |   2 +
->   drivers/clk/tegra/clk-divider.c                |  19 ++
->   drivers/clk/tegra/clk-pll-out.c                |  25 ++
->   drivers/clk/tegra/clk-pll.c                    | 220 ++++++++++++--
->   drivers/clk/tegra/clk-tegra-fixed.c            |  15 +
->   drivers/clk/tegra/clk-tegra210.c               | 382 +++++++++++++++++++++++++
->   drivers/clk/tegra/clk.c                        |  74 ++++-
->   drivers/clk/tegra/clk.h                        |  18 ++
->   drivers/gpio/gpio-tegra.c                      | 109 ++++++-
->   drivers/irqchip/irq-tegra.c                    |  10 +-
->   drivers/pinctrl/tegra/pinctrl-tegra.c          |  68 ++++-
->   drivers/pinctrl/tegra/pinctrl-tegra.h          |   3 +
->   drivers/pinctrl/tegra/pinctrl-tegra114.c       |   1 +
->   drivers/pinctrl/tegra/pinctrl-tegra124.c       |   1 +
->   drivers/pinctrl/tegra/pinctrl-tegra20.c        |   1 +
->   drivers/pinctrl/tegra/pinctrl-tegra210.c       |   1 +
->   drivers/pinctrl/tegra/pinctrl-tegra30.c        |   1 +
->   drivers/soc/tegra/pmc.c                        | 159 +++++++++-
->   21 files changed, 1167 insertions(+), 36 deletions(-)
->
+SGkgUm9iLA0KCVRoYW5rIHlvdSBmb3IgeW91ciByZW1pbmRpbmcsIEkgaGF2ZSBhZGRlZCBBY2tl
+ZC1ieSB0YWdzIGdvdHRlbiBmcm9tIE1hcmsgYW5kIFZpbm9kIGluIHY0IHBhdGNoIHNldCwgYnV0
+IHRoZXJlIGlzIHN0aWxsIG9uZSB1cGRhdGUgKA0KcmVtb3ZlIGNoZWNraW5nICdldmVudF9pZDEn
+IHplcm8gYXMgJ2V2ZW50X2lkMCcuKSBmb3IgVmlub2QncyBjb25jZXJuLCBzbyBJIHNlbnQgbmV3
+IHY0Lg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBSb2IgSGVycmluZyA8
+cm9iaEBrZXJuZWwub3JnPg0KPiBTZW50OiAyMDE5xOo11MIyMsjVIDIxOjUxPiANCj4gT24gV2Vk
+LCAyMiBNYXkgMjAxOSAxMDowMDozOCArMDAwMCwgUm9iaW4gR29uZyB3cm90ZToNCj4gPiBBZGQg
+aS5teDZ1bCBhbmQgaS5teDZzeCBjb21wYXRpYmxlIG5hbWUgaW4gYmluZGluZyBkb2MuDQo+ID4N
+Cj4gPiBTaWduZWQtb2ZmLWJ5OiBSb2JpbiBHb25nIDx5aWJpbi5nb25nQG54cC5jb20+DQo+ID4g
+LS0tDQo+ID4gIERvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9kbWEvZnNsLWlteC1z
+ZG1hLnR4dCB8IDIgKysNCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKQ0KPiA+
+DQo+IA0KPiBQbGVhc2UgYWRkIEFja2VkLWJ5L1Jldmlld2VkLWJ5IHRhZ3Mgd2hlbiBwb3N0aW5n
+IG5ldyB2ZXJzaW9ucy4gSG93ZXZlciwNCj4gdGhlcmUncyBubyBuZWVkIHRvIHJlcG9zdCBwYXRj
+aGVzICpvbmx5KiB0byBhZGQgdGhlIHRhZ3MuIFRoZSB1cHN0cmVhbQ0KPiBtYWludGFpbmVyIHdp
+bGwgZG8gdGhhdCBmb3IgYWNrcyByZWNlaXZlZCBvbiB0aGUgdmVyc2lvbiB0aGV5IGFwcGx5Lg0K
+PiANCj4gSWYgYSB0YWcgd2FzIG5vdCBhZGRlZCBvbiBwdXJwb3NlLCBwbGVhc2Ugc3RhdGUgd2h5
+IGFuZCB3aGF0IGNoYW5nZWQuDQo=

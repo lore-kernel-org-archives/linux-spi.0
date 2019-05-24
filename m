@@ -1,161 +1,56 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: Allow SPI devices to request the pumping thread be realtime" to the spi tree
-Date: Thu, 23 May 2019 14:49:06 +0100 (BST)
-Message-ID: <20190523134906.74DD41126D24@debutante.sirena.org.uk>
-References: <20190515164814.258898-3-dianders@chromium.org>
-Cc: Benson Leung <bleung@chromium.org>, briannorris@chromium.org,
-        drinkcat@chromium.org,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        linux-kernel@vger.kernel.org, linux-rockchip@lists.infradead.org,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        mka@chromium.org
-To: Douglas Anderson <dianders@chromium.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190515164814.258898-3-dianders@chromium.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Rajendra Nayak <rnayak@codeaurora.org>
+Subject: Re: [RFC v2 00/11] DVFS in the OPP core
+Date: Fri, 24 May 2019 11:33:52 +0530
+Message-ID: <85dbc630-f526-c06f-8a8b-9bbc3b794693@codeaurora.org>
+References: <20190320094918.20234-1-rnayak@codeaurora.org>
+ <20190521062248.ogjetb2rwtqekflx@vireshk-i7>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Transfer-Encoding: base64
+Cc: ulf.hansson@linaro.org, dianders@chromium.org, vincent.guittot@linaro.org,
+ linux-scsi@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, rafael@kernel.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-spi@vger.kernel.org,
+ linux-serial@vger.kernel.org, swboyd@chromium.org
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Return-path: <dri-devel-bounces@lists.freedesktop.org>
+In-Reply-To: <20190521062248.ogjetb2rwtqekflx@vireshk-i7>
+Content-Language: en-US
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
+List-Post: <mailto:dri-devel@lists.freedesktop.org>
+List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: dri-devel-bounces@lists.freedesktop.org
+Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
 List-Id: linux-spi.vger.kernel.org
 
-The patch
-
-   spi: Allow SPI devices to request the pumping thread be realtime
-
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.3
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 924b5867e7bd6a6a98014f0517b747465b108011 Mon Sep 17 00:00:00 2001
-From: Douglas Anderson <dianders@chromium.org>
-Date: Wed, 15 May 2019 09:48:12 -0700
-Subject: [PATCH] spi: Allow SPI devices to request the pumping thread be
- realtime
-
-Right now the only way to get the SPI pumping thread bumped up to
-realtime priority is for the controller to request it.  However it may
-be that the controller works fine with the normal priority but
-communication to a particular SPI device on the bus needs realtime
-priority.
-
-Let's add a way for devices to request realtime priority when they set
-themselves up.
-
-NOTE: this will just affect the priority of transfers that end up on
-the SPI core's pumping thread.  In many cases transfers happen in the
-context of the caller so if you need realtime priority for all
-transfers you should ensure the calling context is also realtime
-priority.
-
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Guenter Roeck <groeck@chromium.org>
-Tested-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi.c       | 36 ++++++++++++++++++++++++++++++------
- include/linux/spi/spi.h |  2 ++
- 2 files changed, 32 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 5e75944ad5d1..18f70e4bbb31 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1364,10 +1364,32 @@ static void spi_pump_messages(struct kthread_work *work)
- 	__spi_pump_messages(ctlr, true);
- }
- 
--static int spi_init_queue(struct spi_controller *ctlr)
-+/**
-+ * spi_set_thread_rt - set the controller to pump at realtime priority
-+ * @ctlr: controller to boost priority of
-+ *
-+ * This can be called because the controller requested realtime priority
-+ * (by setting the ->rt value before calling spi_register_controller()) or
-+ * because a device on the bus said that its transfers needed realtime
-+ * priority.
-+ *
-+ * NOTE: at the moment if any device on a bus says it needs realtime then
-+ * the thread will be at realtime priority for all transfers on that
-+ * controller.  If this eventually becomes a problem we may see if we can
-+ * find a way to boost the priority only temporarily during relevant
-+ * transfers.
-+ */
-+static void spi_set_thread_rt(struct spi_controller *ctlr)
- {
- 	struct sched_param param = { .sched_priority = MAX_RT_PRIO - 1 };
- 
-+	dev_info(&ctlr->dev,
-+		"will run message pump with realtime priority\n");
-+	sched_setscheduler(ctlr->kworker_task, SCHED_FIFO, &param);
-+}
-+
-+static int spi_init_queue(struct spi_controller *ctlr)
-+{
- 	ctlr->running = false;
- 	ctlr->busy = false;
- 
-@@ -1387,11 +1409,8 @@ static int spi_init_queue(struct spi_controller *ctlr)
- 	 * request and the scheduling of the message pump thread. Without this
- 	 * setting the message pump thread will remain at default priority.
- 	 */
--	if (ctlr->rt) {
--		dev_info(&ctlr->dev,
--			"will run message pump with realtime priority\n");
--		sched_setscheduler(ctlr->kworker_task, SCHED_FIFO, &param);
--	}
-+	if (ctlr->rt)
-+		spi_set_thread_rt(ctlr);
- 
- 	return 0;
- }
-@@ -2982,6 +3001,11 @@ int spi_setup(struct spi_device *spi)
- 
- 	spi_set_cs(spi, false);
- 
-+	if (spi->rt && !spi->controller->rt) {
-+		spi->controller->rt = true;
-+		spi_set_thread_rt(spi->controller);
-+	}
-+
- 	dev_dbg(&spi->dev, "setup mode %d, %s%s%s%s%u bits/w, %u Hz max --> %d\n",
- 			(int) (spi->mode & (SPI_CPOL | SPI_CPHA)),
- 			(spi->mode & SPI_CS_HIGH) ? "cs_high, " : "",
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 053abd22ad31..15505c2485d6 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -109,6 +109,7 @@ void spi_statistics_add_transfer_stats(struct spi_statistics *stats,
-  *	This may be changed by the device's driver, or left at the
-  *	default (0) indicating protocol words are eight bit bytes.
-  *	The spi_transfer.bits_per_word can override this for each transfer.
-+ * @rt: Make the pump thread real time priority.
-  * @irq: Negative, or the number passed to request_irq() to receive
-  *	interrupts from this device.
-  * @controller_state: Controller's runtime state
-@@ -143,6 +144,7 @@ struct spi_device {
- 	u32			max_speed_hz;
- 	u8			chip_select;
- 	u8			bits_per_word;
-+	bool			rt;
- 	u32			mode;
- #define	SPI_CPHA	0x01			/* clock phase */
- #define	SPI_CPOL	0x02			/* clock polarity */
--- 
-2.20.1
+Ck9uIDUvMjEvMjAxOSAxMTo1MiBBTSwgVmlyZXNoIEt1bWFyIHdyb3RlOgo+IE9uIDIwLTAzLTE5
+LCAxNToxOSwgUmFqZW5kcmEgTmF5YWsgd3JvdGU6Cj4+IFRoaXMgaXMgYSB2MiBvZiB0aGUgUkZD
+IHBvc3RlZCBlYXJsaWVyIGJ5IFN0ZXBoZW4gQm95ZCBbMV0KPj4KPj4gQXMgcGFydCBvZiB2MiBJ
+IHN0aWxsIGZvbGxvdyB0aGUgc2FtZSBhcHByb2FjaCBvZiBkZXZfcG1fb3BwX3NldF9yYXRlKCkK
+Pj4gQVBJIHVzaW5nIGNsayBmcmFtZXdvcmsgdG8gcm91bmQgdGhlIGZyZXF1ZW5jeSBwYXNzZWQg
+YW5kIG1ha2luZyBpdAo+PiBhY2NlcHQgMCBhcyBhIHZhbGlkIGZyZXF1ZW5jeSBpbmRpY2F0aW5n
+IHRoZSBmcmVxdWVuY3kgaXNuJ3QgcmVxdWlyZWQKPj4gYW55bW9yZS4gSXQganVzdCBoYXMgYSBm
+ZXcgbW9yZSBkcml2ZXJzIGNvbnZlcnRlZCB0byB1c2UgdGhpcyBhcHByb2FjaAo+PiBsaWtlIGRz
+aS9kcHUgYW5kIHVmcy4KPj4gdWZzIGRlbW9uc3RyYXRlcyB0aGUgY2FzZSBvZiBoYXZpbmcgdG8g
+aGFuZGxlIG11bHRpcGxlIHBvd2VyIGRvbWFpbnMsIG9uZQo+PiBvZiB3aGljaCBpcyBzY2FsYWJs
+ZS4KPj4KPj4gVGhlIHBhdGNoZXMgYXJlIGJhc2VkIG9uIDUuMS1yYzEgYW5kIGRlcGVuZCBvbiBz
+b21lIHVmcyBmaXhlcyBJIHBvc3RlZAo+PiBlYXJsaWVyIFsyXSBhbmQgYSBEVCBwYXRjaCB0byBp
+bmNsdWRlIHRoZSBycG1wZCBoZWFkZXIgWzNdCj4+Cj4+IFsxXSBodHRwczovL2xrbWwub3JnL2xr
+bWwvMjAxOS8xLzI4LzIwODYKPj4gWzJdIGh0dHBzOi8vbGttbC5vcmcvbGttbC8yMDE5LzMvOC83
+MAo+PiBbM10gaHR0cHM6Ly9sa21sLm9yZy9sa21sLzIwMTkvMy8yMC8xMjAKPiAKPiBIaSBSYWpl
+bmRyYSwKPiAKPiBJIGFtIGluY2xpbmVkIHRvIGFwcGx5L3B1c2ggdGhpcyBzZXJpZXMgZm9yIDUu
+My1yYzEsIHdpbGwgaXQgYmUKPiBwb3NzaWJsZSBmb3IgeW91IHRvIHNwZW5kIHNvbWUgdGltZSBv
+biB0aGlzIGF0IHByaW9yaXR5ID8KCkhleSBWaXJlc2gsIEkgd2FzIG9uIHZhY2F0aW9uLCBqdXN0
+IGdvdCBiYWNrLiBJIHdpbGwgcmVmcmVzaCB0aGlzIHNlcmllcwphbmQgYWRkcmVzcyB5b3VyIHBy
+ZXZpb3VzIGZlZWRiYWNrLCBJIGhhdmVuJ3QgcmVjZWl2ZWQgbXVjaCBmZWVkYmFjayBmb3IgdGhl
+CmRyaXZlciBjaGFuZ2VzIDovIGJ1dCB3ZSBjYW4gYXRsZWFzdCByZXZpZXcgYW5kIGdldCB0aGUg
+T1BQIGxheWVyIGNoYW5nZXMKZmluYWxpemVkLiB0aGFua3MuCgotLSAKUVVBTENPTU0gSU5ESUEs
+IG9uIGJlaGFsZiBvZiBRdWFsY29tbSBJbm5vdmF0aW9uIENlbnRlciwgSW5jLiBpcyBhIG1lbWJl
+cgpvZiBDb2RlIEF1cm9yYSBGb3J1bSwgaG9zdGVkIGJ5IFRoZSBMaW51eCBGb3VuZGF0aW9uCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmRyaS1kZXZlbCBt
+YWlsaW5nIGxpc3QKZHJpLWRldmVsQGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3Rz
+LmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2RyaS1kZXZlbA==

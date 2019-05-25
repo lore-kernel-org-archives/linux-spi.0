@@ -1,56 +1,40 @@
-From: Rajendra Nayak <rnayak@codeaurora.org>
-Subject: Re: [RFC v2 00/11] DVFS in the OPP core
-Date: Fri, 24 May 2019 11:33:52 +0530
-Message-ID: <85dbc630-f526-c06f-8a8b-9bbc3b794693@codeaurora.org>
-References: <20190320094918.20234-1-rnayak@codeaurora.org>
- <20190521062248.ogjetb2rwtqekflx@vireshk-i7>
+From: Hariprasad Kelam <hariprasad.kelam@gmail.com>
+Subject: [PATCH] spi: gpio: fix warning PTR_ERR_OR_ZERO can be used
+Date: Sat, 25 May 2019 15:17:05 +0530
+Message-ID: <20190525094705.GA23374@hari-Inspiron-1545>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
-Content-Transfer-Encoding: base64
-Cc: ulf.hansson@linaro.org, dianders@chromium.org, vincent.guittot@linaro.org,
- linux-scsi@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, rafael@kernel.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-spi@vger.kernel.org,
- linux-serial@vger.kernel.org, swboyd@chromium.org
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Return-path: <dri-devel-bounces@lists.freedesktop.org>
-In-Reply-To: <20190521062248.ogjetb2rwtqekflx@vireshk-i7>
-Content-Language: en-US
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
-List-Post: <mailto:dri-devel@lists.freedesktop.org>
-List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: dri-devel-bounces@lists.freedesktop.org
-Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+Content-Type: text/plain; charset=us-ascii
+To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Ck9uIDUvMjEvMjAxOSAxMTo1MiBBTSwgVmlyZXNoIEt1bWFyIHdyb3RlOgo+IE9uIDIwLTAzLTE5
-LCAxNToxOSwgUmFqZW5kcmEgTmF5YWsgd3JvdGU6Cj4+IFRoaXMgaXMgYSB2MiBvZiB0aGUgUkZD
-IHBvc3RlZCBlYXJsaWVyIGJ5IFN0ZXBoZW4gQm95ZCBbMV0KPj4KPj4gQXMgcGFydCBvZiB2MiBJ
-IHN0aWxsIGZvbGxvdyB0aGUgc2FtZSBhcHByb2FjaCBvZiBkZXZfcG1fb3BwX3NldF9yYXRlKCkK
-Pj4gQVBJIHVzaW5nIGNsayBmcmFtZXdvcmsgdG8gcm91bmQgdGhlIGZyZXF1ZW5jeSBwYXNzZWQg
-YW5kIG1ha2luZyBpdAo+PiBhY2NlcHQgMCBhcyBhIHZhbGlkIGZyZXF1ZW5jeSBpbmRpY2F0aW5n
-IHRoZSBmcmVxdWVuY3kgaXNuJ3QgcmVxdWlyZWQKPj4gYW55bW9yZS4gSXQganVzdCBoYXMgYSBm
-ZXcgbW9yZSBkcml2ZXJzIGNvbnZlcnRlZCB0byB1c2UgdGhpcyBhcHByb2FjaAo+PiBsaWtlIGRz
-aS9kcHUgYW5kIHVmcy4KPj4gdWZzIGRlbW9uc3RyYXRlcyB0aGUgY2FzZSBvZiBoYXZpbmcgdG8g
-aGFuZGxlIG11bHRpcGxlIHBvd2VyIGRvbWFpbnMsIG9uZQo+PiBvZiB3aGljaCBpcyBzY2FsYWJs
-ZS4KPj4KPj4gVGhlIHBhdGNoZXMgYXJlIGJhc2VkIG9uIDUuMS1yYzEgYW5kIGRlcGVuZCBvbiBz
-b21lIHVmcyBmaXhlcyBJIHBvc3RlZAo+PiBlYXJsaWVyIFsyXSBhbmQgYSBEVCBwYXRjaCB0byBp
-bmNsdWRlIHRoZSBycG1wZCBoZWFkZXIgWzNdCj4+Cj4+IFsxXSBodHRwczovL2xrbWwub3JnL2xr
-bWwvMjAxOS8xLzI4LzIwODYKPj4gWzJdIGh0dHBzOi8vbGttbC5vcmcvbGttbC8yMDE5LzMvOC83
-MAo+PiBbM10gaHR0cHM6Ly9sa21sLm9yZy9sa21sLzIwMTkvMy8yMC8xMjAKPiAKPiBIaSBSYWpl
-bmRyYSwKPiAKPiBJIGFtIGluY2xpbmVkIHRvIGFwcGx5L3B1c2ggdGhpcyBzZXJpZXMgZm9yIDUu
-My1yYzEsIHdpbGwgaXQgYmUKPiBwb3NzaWJsZSBmb3IgeW91IHRvIHNwZW5kIHNvbWUgdGltZSBv
-biB0aGlzIGF0IHByaW9yaXR5ID8KCkhleSBWaXJlc2gsIEkgd2FzIG9uIHZhY2F0aW9uLCBqdXN0
-IGdvdCBiYWNrLiBJIHdpbGwgcmVmcmVzaCB0aGlzIHNlcmllcwphbmQgYWRkcmVzcyB5b3VyIHBy
-ZXZpb3VzIGZlZWRiYWNrLCBJIGhhdmVuJ3QgcmVjZWl2ZWQgbXVjaCBmZWVkYmFjayBmb3IgdGhl
-CmRyaXZlciBjaGFuZ2VzIDovIGJ1dCB3ZSBjYW4gYXRsZWFzdCByZXZpZXcgYW5kIGdldCB0aGUg
-T1BQIGxheWVyIGNoYW5nZXMKZmluYWxpemVkLiB0aGFua3MuCgotLSAKUVVBTENPTU0gSU5ESUEs
-IG9uIGJlaGFsZiBvZiBRdWFsY29tbSBJbm5vdmF0aW9uIENlbnRlciwgSW5jLiBpcyBhIG1lbWJl
-cgpvZiBDb2RlIEF1cm9yYSBGb3J1bSwgaG9zdGVkIGJ5IFRoZSBMaW51eCBGb3VuZGF0aW9uCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmRyaS1kZXZlbCBt
-YWlsaW5nIGxpc3QKZHJpLWRldmVsQGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3Rz
-LmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2RyaS1kZXZlbA==
+fix below warning reported by coccicheck
+
+./drivers/spi/spi-gpio.c:302:1-3: WARNING: PTR_ERR_OR_ZERO can be used
+
+Signed-off-by: Hariprasad Kelam <hariprasad.kelam@gmail.com>
+---
+ drivers/spi/spi-gpio.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
+index 487ee55..8c5b98a 100644
+--- a/drivers/spi/spi-gpio.c
++++ b/drivers/spi/spi-gpio.c
+@@ -299,10 +299,8 @@ static int spi_gpio_request(struct device *dev, struct spi_gpio *spi_gpio)
+ 		return PTR_ERR(spi_gpio->miso);
+ 
+ 	spi_gpio->sck = devm_gpiod_get(dev, "sck", GPIOD_OUT_LOW);
+-	if (IS_ERR(spi_gpio->sck))
+-		return PTR_ERR(spi_gpio->sck);
+ 
+-	return 0;
++	return PTR_ERR_OR_ZERO(spi_gpio->sck);
+ }
+ 
+ #ifdef CONFIG_OF
+-- 
+2.7.4

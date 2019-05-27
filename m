@@ -1,62 +1,50 @@
-From: Tony Lindgren <tony@atomide.com>
-Subject: Re: 5.2-rc1 on droid4: spi crash
-Date: Mon, 27 May 2019 06:31:19 -0700
-Message-ID: <20190527133119.GK5447@atomide.com>
-References: <20190523090926.GA9106@amd>
- <20190523093325.6si5jpvrvyktpax6@earth.universe>
- <20190527055343.GG5447@atomide.com>
- <c741aa5b9d366b231b5c40899b1ef814@webmail.domeneshop.no>
+From: Neil Armstrong <narmstrong@baylibre.com>
+Subject: [PATCH v2] spi: spi-meson-spifc: update with SPDX Licence identifier
+Date: Mon, 27 May 2019 15:41:24 +0200
+Message-ID: <20190527134124.3034-1-narmstrong@baylibre.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Cc: Sebastian Reichel <sre@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap@vger.kernel.org, nekit1000@gmail.com, mpartap@gmx.net,
-        merlijn@wizzup.org,
-        Noralf =?utf-8?Q?Tr=C3=B8nnes?= <noralf@tronnes.org>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
-To: Noralf =?utf-8?Q?Tr=C3=B8nnes?= <notro@tronnes.org>
+Cc: linux-spi@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Neil Armstrong <narmstrong@baylibre.com>
+To: broonie@kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <c741aa5b9d366b231b5c40899b1ef814@webmail.domeneshop.no>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-* Noralf Trønnes <notro@tronnes.org> [190527 13:16]:
-> 
-> 
-> Den 2019-05-27 07:53, skrev Tony Lindgren:
-> > Hi,
-> > 
-> > * Sebastian Reichel <sre@kernel.org> [190523 09:33]:
-> > > Hi,
-> > > 
-> > > On Thu, May 23, 2019 at 11:09:26AM +0200, Pavel Machek wrote:
-> > > > This was greeting me overnight... I don't yet know how reproducible it
-> > > > is, it happened once so far.
-> > > 
-> > > Please pipe the stacktrace into ./scripts/decode_stacktrace.sh
-> > > to get a readable stacktrace, otherwise this is pretty much useless.
-> > > FWIW the only SPI device in the Droid 4 is the PMIC.
-> > 
-> > I've seen this too, and looks like reverting commit c9ba7a16d0f1
-> > ("spi: Release spi_res after finalizing message") fixes it based
-> > several days of testing.
-> > 
-> > Noralf and Mark, any ideas what needs to be fixed here?
-> 
-> Mark has a revert in his for-5.2 branch:
-> spi: Fix Raspberry Pi breakage
-> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git/commit/?h=for-5.2&id=0ed56252c9567351344cb7b5cff6140e1bcec943
+Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
+---
+Changes since v1:
+- Moved to a single C++ comment block
 
-Oh OK good to hear.
+ drivers/spi/spi-meson-spifc.c | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
-> I don't know when or if he has sent a pull request.
-> Sorry about the breakage.
-
-No worries, thanks for the update.
-
-Regards,
-
-Tony
+diff --git a/drivers/spi/spi-meson-spifc.c b/drivers/spi/spi-meson-spifc.c
+index 616566e793c6..f7fe9b13d122 100644
+--- a/drivers/spi/spi-meson-spifc.c
++++ b/drivers/spi/spi-meson-spifc.c
+@@ -1,15 +1,9 @@
+-/*
+- * Driver for Amlogic Meson SPI flash controller (SPIFC)
+- *
+- * Copyright (C) 2014 Beniamino Galvani <b.galvani@gmail.com>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License
+- * version 2 as published by the Free Software Foundation.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+- */
++// SPDX-License-Identifier: GPL-2.0+
++//
++// Driver for Amlogic Meson SPI flash controller (SPIFC)
++//
++// Copyright (C) 2014 Beniamino Galvani <b.galvani@gmail.com>
++//
+ 
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+-- 
+2.21.0

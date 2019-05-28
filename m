@@ -1,50 +1,30 @@
-From: Neil Armstrong <narmstrong@baylibre.com>
-Subject: [PATCH v2] spi: spi-meson-spifc: update with SPDX Licence identifier
-Date: Mon, 27 May 2019 15:41:24 +0200
-Message-ID: <20190527134124.3034-1-narmstrong@baylibre.com>
+From: Billy Laws <blaws05@gmail.com>
+Subject: Re: [PATCH V1 00/12] LP0 entry and exit support for Tegra210
+Date: Tue, 28 May 2019 10:28:48 +0100
+Message-ID: <CAFUUQHP5e=oQZC29foYD+uA96r5-M4wCxKYVL_LodrWRG5kp1Q@mail.gmail.com>
+References: <1558574922-16531-1-git-send-email-skomatineni@nvidia.com> <0418cbdb-1bb6-23c3-f13d-e0a70f899f3c@nvidia.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: linux-spi@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Neil Armstrong <narmstrong@baylibre.com>
-To: broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: thierry.reding@gmail.com, jonathanh@nvidia.com,
+        Laxman Dewangan <ldewangan@nvidia.com>, broonie@kernel.org,
+        natechancellor@gmail.com, linux-tegra@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Sowjanya Komatineni <skomatineni@nvidia.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <0418cbdb-1bb6-23c3-f13d-e0a70f899f3c@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
----
-Changes since v1:
-- Moved to a single C++ comment block
-
- drivers/spi/spi-meson-spifc.c | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/spi/spi-meson-spifc.c b/drivers/spi/spi-meson-spifc.c
-index 616566e793c6..f7fe9b13d122 100644
---- a/drivers/spi/spi-meson-spifc.c
-+++ b/drivers/spi/spi-meson-spifc.c
-@@ -1,15 +1,9 @@
--/*
-- * Driver for Amlogic Meson SPI flash controller (SPIFC)
-- *
-- * Copyright (C) 2014 Beniamino Galvani <b.galvani@gmail.com>
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License
-- * version 2 as published by the Free Software Foundation.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program. If not, see <http://www.gnu.org/licenses/>.
-- */
-+// SPDX-License-Identifier: GPL-2.0+
-+//
-+// Driver for Amlogic Meson SPI flash controller (SPIFC)
-+//
-+// Copyright (C) 2014 Beniamino Galvani <b.galvani@gmail.com>
-+//
- 
- #include <linux/clk.h>
- #include <linux/delay.h>
--- 
-2.21.0
+Hi,
+By the looks of this you configure wake events but the pmc driver
+still only configures lp1, which is the same as linux 4 tegra 4.4+
+which also doesn't support lp0, if its selected in dts it'll just
+change it to LP1/SC7 (both have same code path and neither set any lp0
+stuff trm says). What confuses me further is that l4t and this
+ptachset both configure wake events, which I think should only work in
+LP0 and not LP1 and yet neither have lp0 entry code for t210. I also
+looked at ATF, whis sets the flags to wake the cpu on interrupts,
+which would suggest that it only supports lp1 (in deep sleep I dont
+think them flags would work). Am I missing some important detail here?
+Two other things, will you be adding full lp0 in later patchets and
+will they use the bpmp or not?

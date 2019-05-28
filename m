@@ -1,21 +1,20 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: sh-msiof: Reduce delays in sh_msiof_modify_ctr_wait()" to the spi tree
-Date: Tue, 28 May 2019 16:07:23 +0100 (BST)
-Message-ID: <20190528150723.46DD7440046@finisterre.sirena.org.uk>
-References: <20190527121935.5370-1-geert+renesas@glider.be>
-Cc: linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: Applied "spi: spi-meson-spifc: update with SPDX Licence identifier" to the spi tree
+Date: Tue, 28 May 2019 16:07:22 +0100 (BST)
+Message-ID: <20190528150722.8F921440046@finisterre.sirena.org.uk>
+References: <20190527134124.3034-1-narmstrong@baylibre.com>
+Cc: broonie@kernel.org, linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
+To: Neil Armstrong <narmstrong@baylibre.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190527121935.5370-1-geert+renesas@glider.be>
+In-Reply-To: <20190527134124.3034-1-narmstrong@baylibre.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: sh-msiof: Reduce delays in sh_msiof_modify_ctr_wait()
+   spi: spi-meson-spifc: update with SPDX Licence identifier
 
 has been applied to the spi tree at
 
@@ -40,47 +39,42 @@ to this mail.
 Thanks,
 Mark
 
->From 635bdb7a3e1fe1531573ff87b92c2506adafe7f7 Mon Sep 17 00:00:00 2001
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-Date: Mon, 27 May 2019 14:19:35 +0200
-Subject: [PATCH] spi: sh-msiof: Reduce delays in sh_msiof_modify_ctr_wait()
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+>From 891100dfa2d6eeca6913b45c883b72efee7c229b Mon Sep 17 00:00:00 2001
+From: Neil Armstrong <narmstrong@baylibre.com>
+Date: Mon, 27 May 2019 15:41:24 +0200
+Subject: [PATCH] spi: spi-meson-spifc: update with SPDX Licence identifier
 
-While the Hardware User Manual does not document the maximum time needed
-for modifying bits in the MSIOF Control Register, experiments on R-Car
-Gen2/Gen3 and SH-Mobile AG5 revealed the following typical modification
-times for the various bits:
-  - CTR.TXE and CTR.RXE: no delay,
-  - CTR.TSCKE: less than 10 ns,
-  - CTR.TFSE: up to a few hundred ns (depending on SPI transfer clock,
-    i.e. less for faster transfers).
-There are no reasons to believe these figures are different for
-SH-MobileR2 SoCs (SH7723/SH7724).
-
-Hence the minimum busy-looping delay of 10 µs is excessive.
-Reduce the delay per loop iteration from 10 to 1 us, and the maximum
-delay from 1000 to 100 µs.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-sh-msiof.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-meson-spifc.c | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 6aab7b2136db..b50bdbc27e58 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -229,7 +229,7 @@ static int sh_msiof_modify_ctr_wait(struct sh_msiof_spi_priv *p,
- 	sh_msiof_write(p, CTR, data);
+diff --git a/drivers/spi/spi-meson-spifc.c b/drivers/spi/spi-meson-spifc.c
+index 616566e793c6..f7fe9b13d122 100644
+--- a/drivers/spi/spi-meson-spifc.c
++++ b/drivers/spi/spi-meson-spifc.c
+@@ -1,15 +1,9 @@
+-/*
+- * Driver for Amlogic Meson SPI flash controller (SPIFC)
+- *
+- * Copyright (C) 2014 Beniamino Galvani <b.galvani@gmail.com>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License
+- * version 2 as published by the Free Software Foundation.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+- */
++// SPDX-License-Identifier: GPL-2.0+
++//
++// Driver for Amlogic Meson SPI flash controller (SPIFC)
++//
++// Copyright (C) 2014 Beniamino Galvani <b.galvani@gmail.com>
++//
  
- 	return readl_poll_timeout_atomic(p->mapbase + CTR, data,
--					 (data & mask) == set, 10, 1000);
-+					 (data & mask) == set, 1, 100);
- }
- 
- static irqreturn_t sh_msiof_spi_irq(int irq, void *data)
+ #include <linux/clk.h>
+ #include <linux/delay.h>
 -- 
 2.20.1

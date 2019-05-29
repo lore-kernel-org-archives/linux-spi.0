@@ -1,80 +1,167 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-meson-spifc: update with SPDX Licence identifier" to the spi tree
-Date: Tue, 28 May 2019 16:07:22 +0100 (BST)
-Message-ID: <20190528150722.8F921440046@finisterre.sirena.org.uk>
-References: <20190527134124.3034-1-narmstrong@baylibre.com>
-Cc: broonie@kernel.org, linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
-To: Neil Armstrong <narmstrong@baylibre.com>
+From: masonccyang@mxic.com.tw
+Subject: Re: [PATCH v3 2/4] mtd: rawnand: Add Macronix MX25F0A NAND controller
+Date: Wed, 29 May 2019 11:12:08 +0800
+Message-ID: <OFE923A8E5.50375C30-ON48258409.0009AE1B-48258409.00119767@mxic.com.tw>
+References: <1555320234-15802-1-git-send-email-masonccyang@mxic.com.tw> <1555320234-15802-3-git-send-email-masonccyang@mxic.com.tw>
+        <20190512151820.4f2dd9da@xps13> <OF074A1F06.5C1A58BE-ON482583FD.0031CD95-482583FD.003437AD@mxic.com.tw>
+        <20190520142333.390091d5@xps13> <OFADC47344.0F9941B2-ON48258403.002336E3-48258403.003141F0@mxic.com.tw> <20190527144250.71908bd9@xps13>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+Cc: bbrezillon@kernel.org, broonie@kernel.org,
+        christophe.kerello@st.com, computersforpeace@gmail.com,
+        devicetree@vger.kernel.org, dwmw2@infradead.org,
+        geert@linux-m68k.org, juliensu@mxic.com.tw, lee.jones@linaro.org,
+        liang.yang@amlogic.com, linux-kernel@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        marcel.ziswiler@toradex.com, marek.vasut@gmail.com,
+        mark.rutland@arm.com, paul.burton@mips.com, richard@nod.at,
+        robh+dt@kernel.org, stefan@agner.ch, zhengxunli@mxic.com.tw
+To: "Miquel Raynal" <miquel.raynal@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190527134124.3034-1-narmstrong@baylibre.com>
+In-Reply-To: <20190527144250.71908bd9@xps13>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: spi-meson-spifc: update with SPDX Licence identifier
+Hi Miquel,
 
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.3
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 891100dfa2d6eeca6913b45c883b72efee7c229b Mon Sep 17 00:00:00 2001
-From: Neil Armstrong <narmstrong@baylibre.com>
-Date: Mon, 27 May 2019 15:41:24 +0200
-Subject: [PATCH] spi: spi-meson-spifc: update with SPDX Licence identifier
-
-Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-meson-spifc.c | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/spi/spi-meson-spifc.c b/drivers/spi/spi-meson-spifc.c
-index 616566e793c6..f7fe9b13d122 100644
---- a/drivers/spi/spi-meson-spifc.c
-+++ b/drivers/spi/spi-meson-spifc.c
-@@ -1,15 +1,9 @@
--/*
-- * Driver for Amlogic Meson SPI flash controller (SPIFC)
-- *
-- * Copyright (C) 2014 Beniamino Galvani <b.galvani@gmail.com>
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License
-- * version 2 as published by the Free Software Foundation.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program. If not, see <http://www.gnu.org/licenses/>.
-- */
-+// SPDX-License-Identifier: GPL-2.0+
-+//
-+// Driver for Amlogic Meson SPI flash controller (SPIFC)
-+//
-+// Copyright (C) 2014 Beniamino Galvani <b.galvani@gmail.com>
-+//
+> > > > > > +static void mxic_nand_select_chip(struct nand_chip *chip, int 
  
- #include <linux/clk.h>
- #include <linux/delay.h>
--- 
-2.20.1
+> > chipnr) 
+> > > > > 
+> > > > > _select_target() is preferred now 
+> > > > 
+> > > > Do you mean I implement mxic_nand_select_target() to control #CS ?
+> > > > 
+> > > > If so, I need to call mxic_nand_select_target( ) to control #CS ON
+> > > > and then #CS OFF in _exec_op() due to nand_select_target()<in 
+> > nand_base,c> 
+> > > > is still calling chip->legacy.select_chip ? 
+> > > 
+> > > You must forget about the ->select_chip() callback. Now it should be
+> > > handled directly from the controller driver. Please have a look at 
+the
+> > > commit pointed against the marvell_nand.c driver. 
+> > 
+> > I have no Marvell NFC datasheet and have one question.
+> > 
+> > In marvell_nand.c, there is no xxx_deselect_target() or 
+> > something like that doing #CS OFF.
+> > marvell_nfc_select_target() seems always to make one of chip or die
+> > #CS keep low.
+> > 
+> > Is it right ?
+> 
+> Yes, AFAIR there is no "de-assert" mechanism in this controller.
+> 
+> > 
+> > How to make all #CS keep high for NAND to enter 
+> > low-power standby mode if driver don't use "legacy.select_chip()" ?
+> 
+> See commit 02b4a52604a4 ("mtd: rawnand: Make ->select_chip() optional
+> when ->exec_op() is implemented") which states:
+> 
+>         "When [->select_chip() is] not implemented, the core is assuming
+>    the CS line is automatically asserted/deasserted by the driver
+>    ->exec_op() implementation."
+> 
+> Of course, the above is right only when the controller driver supports
+> the ->exec_op() interface. 
+
+Currently, it seems that we will get the incorrect data and error
+operation due to CS in error toggling if CS line is controlled in 
+->exec_op().
+i.e,. 
+
+1) In nand_onfi_detect() to call nand_exec_op() twice by 
+nand_read_param_page_op() and annd_read_data_op()
+
+2) In nand_write_page_xxx to call nand_exec_op() many times by
+nand_prog_page_begin_op(), nand_write_data_op() and 
+nand_prog_page_end_op().
+
+
+Should we consider to add a CS line controller in struct nand_controller
+i.e,.
+
+struct nand_controller {
+         struct mutex lock;
+         const struct nand_controller_ops *ops;
++          void (*select_chip)(struct nand_chip *chip, int cs);
+};
+
+to replace legacy.select_chip() ?
+
+
+To patch in nand_select_target() and nand_deselect_target()
+
+void nand_select_target(struct nand_chip *chip, unsigned int cs)
+{
+        /*
+         * cs should always lie between 0 and chip->numchips, when that's 
+not
+         * the case it's a bug and the caller should be fixed.
+         */
+        if (WARN_ON(cs > chip->numchips))
+                return;
+
+        chip->cur_cs = cs;
+
++       if (chip->controller->select_chip)
++               chip->controller->select_chip(chip, cs);
++
+        if (chip->legacy.select_chip)
+                chip->legacy.select_chip(chip, cs);
+}
+
+void nand_deselect_target(struct nand_chip *chip)
+{
++       if (chip->controller->select_chip)
++               chip->controller->select_chip(chip, -1);
++
+        if (chip->legacy.select_chip)
+                chip->legacy.select_chip(chip, -1);
+
+        chip->cur_cs = -1;
+}
+
+
+> 
+> So if you think it is not too time consuming and worth the trouble to
+> assert/deassert the CS at each operation, you may do it in your driver.
+> 
+> 
+> Thanks,
+> Miquèl
+
+thanks & best regards,
+Mason
+
+CONFIDENTIALITY NOTE:
+
+This e-mail and any attachments may contain confidential information 
+and/or personal data, which is protected by applicable laws. Please be 
+reminded that duplication, disclosure, distribution, or use of this e-mail 
+(and/or its attachments) or any part thereof is prohibited. If you receive 
+this e-mail in error, please notify us immediately and delete this mail as 
+well as its attachment(s) from your system. In addition, please be 
+informed that collection, processing, and/or use of personal data is 
+prohibited unless expressly permitted by personal data protection laws. 
+Thank you for your attention and cooperation.
+
+Macronix International Co., Ltd.
+
+=====================================================================
+
+
+
+============================================================================
+
+CONFIDENTIALITY NOTE:
+
+This e-mail and any attachments may contain confidential information and/or personal data, which is protected by applicable laws. Please be reminded that duplication, disclosure, distribution, or use of this e-mail (and/or its attachments) or any part thereof is prohibited. If you receive this e-mail in error, please notify us immediately and delete this mail as well as its attachment(s) from your system. In addition, please be informed that collection, processing, and/or use of personal data is prohibited unless expressly permitted by personal data protection laws. Thank you for your attention and cooperation.
+
+Macronix International Co., Ltd.
+
+=====================================================================

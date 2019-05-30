@@ -1,122 +1,263 @@
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH 5.1 236/405] spi: Dont call spi_get_gpio_descs() before device name is set
-Date: Wed, 29 May 2019 20:03:54 -0700
-Message-ID: <20190530030552.951884503@linuxfoundation.org>
-References: <20190530030540.291644921@linuxfoundation.org>
+From: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Subject: [PATCH v2] spi/acpi: enumerate all SPI slaves in the namespace
+Date: Thu, 30 May 2019 13:16:34 +0200
+Message-ID: <20190530111634.32209-1-ard.biesheuvel@linaro.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Andrey Smirnov <andrew.smirnov@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Chris Healy <cphealy@gmail.com>, linux-spi@vger.kernel.org,
-        Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190530030540.291644921@linuxfoundation.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-spi@vger.kernel.org,
+ linux-acpi@vger.kernel.org, andy.shevchenko@gmail.com, broonie@kernel.org,
+ Jarkko Nikula <jarkko.nikula@linux.intel.com>, Lukas Wunner <lukas@wunner.de>,
+ masahisa.kojima@linaro.org, Mika Westerberg <mika.westerberg@linux.intel.com>
+To: linux-arm-kernel@lists.infradead.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-[ Upstream commit 0a919ae49223d32ac0e8be3494547fcd1e4aa0aa ]
+Currently, the ACPI enumeration that takes place when registering a
+SPI master only considers immediate child devices in the ACPI namespace,
+rather than checking the ResourceSource field in the SpiSerialBus()
+resource descriptor.
 
-Move code calling spi_get_gpio_descs() to happen after ctlr->dev's
-name is set in order to have proper GPIO consumer names.
+This is incorrect: SPI slaves could reside anywhere in the ACPI
+namespace, and so we should enumerate the entire namespace and look for
+any device that refers to the newly registered SPI master in its
+resource descriptor.
 
-Before:
+So refactor the existing code and use a lookup structure so that
+allocating the SPI device structure is deferred until we have identified
+the device as an actual child of the controller. This approach is
+loosely based on the way the I2C subsystem handles ACPI enumeration.
 
-cat /sys/kernel/debug/gpio
-gpiochip0: GPIOs 0-31, parent: platform/40049000.gpio, vf610-gpio:
- gpio-6   (                    |regulator-usb0-vbus ) out lo
+Note that Apple x86 hardware does not rely on SpiSerialBus() resources
+in _CRS but uses nested devices below the controller's device node in
+the ACPI namespace, with a special set of device properties. This means
+we have to take care to only parse those properties for device nodes
+that are direct children of the controller node.
 
-gpiochip1: GPIOs 32-63, parent: platform/4004a000.gpio, vf610-gpio:
- gpio-36  (                    |scl                 ) in  hi
- gpio-37  (                    |sda                 ) in  hi
- gpio-40  (                    |(null) CS1          ) out lo
- gpio-41  (                    |(null) CS0          ) out lo ACTIVE LOW
- gpio-42  (                    |miso                ) in  hi
- gpio-43  (                    |mosi                ) in  lo
- gpio-44  (                    |sck                 ) out lo
-
-After:
-
-cat /sys/kernel/debug/gpio
-gpiochip0: GPIOs 0-31, parent: platform/40049000.gpio, vf610-gpio:
- gpio-6   (                    |regulator-usb0-vbus ) out lo
-
-gpiochip1: GPIOs 32-63, parent: platform/4004a000.gpio, vf610-gpio:
- gpio-36  (                    |scl                 ) in  hi
- gpio-37  (                    |sda                 ) in  hi
- gpio-40  (                    |spi0 CS1            ) out lo
- gpio-41  (                    |spi0 CS0            ) out lo ACTIVE LOW
- gpio-42  (                    |miso                ) in  hi
- gpio-43  (                    |mosi                ) in  lo
- gpio-44  (                    |sck                 ) out lo
-
-Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Chris Healy <cphealy@gmail.com>
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
 Cc: linux-spi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: broonie@kernel.org
+Cc: andy.shevchenko@gmail.com
+Cc: masahisa.kojima@linaro.org
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Cc: linux-acpi@vger.kernel.org
+Cc: Lukas Wunner <lukas@wunner.de>
+
+Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 ---
- drivers/spi/spi.c | 37 +++++++++++++++++++------------------
- 1 file changed, 19 insertions(+), 18 deletions(-)
+ drivers/spi/spi.c | 103 ++++++++++++++------
+ 1 file changed, 72 insertions(+), 31 deletions(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 93986f879b09e..d17f68775a4bb 100644
+index 5e75944ad5d1..4661b219a7e7 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -2275,24 +2275,6 @@ int spi_register_controller(struct spi_controller *ctlr)
- 	if (status)
- 		return status;
+@@ -1799,9 +1799,18 @@ static void of_register_spi_devices(struct spi_controller *ctlr) { }
+ #endif
  
--	if (!spi_controller_is_slave(ctlr)) {
--		if (ctlr->use_gpio_descriptors) {
--			status = spi_get_gpio_descs(ctlr);
--			if (status)
--				return status;
--			/*
--			 * A controller using GPIO descriptors always
--			 * supports SPI_CS_HIGH if need be.
--			 */
--			ctlr->mode_bits |= SPI_CS_HIGH;
--		} else {
--			/* Legacy code path for GPIOs from DT */
--			status = of_spi_register_master(ctlr);
--			if (status)
--				return status;
--		}
+ #ifdef CONFIG_ACPI
+-static void acpi_spi_parse_apple_properties(struct spi_device *spi)
++struct acpi_spi_lookup {
++	struct spi_controller 	*ctlr;
++	u32			max_speed_hz;
++	u32			mode;
++	int			irq;
++	u8			bits_per_word;
++	u8			chip_select;
++};
++
++static void acpi_spi_parse_apple_properties(struct acpi_device *dev,
++					    struct acpi_spi_lookup *lookup)
+ {
+-	struct acpi_device *dev = ACPI_COMPANION(&spi->dev);
+ 	const union acpi_object *obj;
+ 
+ 	if (!x86_apple_machine)
+@@ -1809,35 +1818,46 @@ static void acpi_spi_parse_apple_properties(struct spi_device *spi)
+ 
+ 	if (!acpi_dev_get_property(dev, "spiSclkPeriod", ACPI_TYPE_BUFFER, &obj)
+ 	    && obj->buffer.length >= 4)
+-		spi->max_speed_hz  = NSEC_PER_SEC / *(u32 *)obj->buffer.pointer;
++		lookup->max_speed_hz  = NSEC_PER_SEC / *(u32 *)obj->buffer.pointer;
+ 
+ 	if (!acpi_dev_get_property(dev, "spiWordSize", ACPI_TYPE_BUFFER, &obj)
+ 	    && obj->buffer.length == 8)
+-		spi->bits_per_word = *(u64 *)obj->buffer.pointer;
++		lookup->bits_per_word = *(u64 *)obj->buffer.pointer;
+ 
+ 	if (!acpi_dev_get_property(dev, "spiBitOrder", ACPI_TYPE_BUFFER, &obj)
+ 	    && obj->buffer.length == 8 && !*(u64 *)obj->buffer.pointer)
+-		spi->mode |= SPI_LSB_FIRST;
++		lookup->mode |= SPI_LSB_FIRST;
+ 
+ 	if (!acpi_dev_get_property(dev, "spiSPO", ACPI_TYPE_BUFFER, &obj)
+ 	    && obj->buffer.length == 8 &&  *(u64 *)obj->buffer.pointer)
+-		spi->mode |= SPI_CPOL;
++		lookup->mode |= SPI_CPOL;
+ 
+ 	if (!acpi_dev_get_property(dev, "spiSPH", ACPI_TYPE_BUFFER, &obj)
+ 	    && obj->buffer.length == 8 &&  *(u64 *)obj->buffer.pointer)
+-		spi->mode |= SPI_CPHA;
++		lookup->mode |= SPI_CPHA;
+ }
+ 
+ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
+ {
+-	struct spi_device *spi = data;
+-	struct spi_controller *ctlr = spi->controller;
++	struct acpi_spi_lookup *lookup = data;
++	struct spi_controller *ctlr = lookup->ctlr;
+ 
+ 	if (ares->type == ACPI_RESOURCE_TYPE_SERIAL_BUS) {
+ 		struct acpi_resource_spi_serialbus *sb;
++		acpi_handle parent_handle;
++		acpi_status status;
+ 
+ 		sb = &ares->data.spi_serial_bus;
+ 		if (sb->type == ACPI_RESOURCE_SERIAL_TYPE_SPI) {
++
++			status = acpi_get_handle(NULL,
++						 sb->resource_source.string_ptr,
++						 &parent_handle);
++
++			if (!status ||
++			    ACPI_HANDLE(ctlr->dev.parent) != parent_handle)
++				return -ENODEV;
++
+ 			/*
+ 			 * ACPI DeviceSelection numbering is handled by the
+ 			 * host controller driver in Windows and can vary
+@@ -1850,25 +1870,25 @@ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
+ 						sb->device_selection);
+ 				if (cs < 0)
+ 					return cs;
+-				spi->chip_select = cs;
++				lookup->chip_select = cs;
+ 			} else {
+-				spi->chip_select = sb->device_selection;
++				lookup->chip_select = sb->device_selection;
+ 			}
+ 
+-			spi->max_speed_hz = sb->connection_speed;
++			lookup->max_speed_hz = sb->connection_speed;
+ 
+ 			if (sb->clock_phase == ACPI_SPI_SECOND_PHASE)
+-				spi->mode |= SPI_CPHA;
++				lookup->mode |= SPI_CPHA;
+ 			if (sb->clock_polarity == ACPI_SPI_START_HIGH)
+-				spi->mode |= SPI_CPOL;
++				lookup->mode |= SPI_CPOL;
+ 			if (sb->device_polarity == ACPI_SPI_ACTIVE_HIGH)
+-				spi->mode |= SPI_CS_HIGH;
++				lookup->mode |= SPI_CS_HIGH;
+ 		}
+-	} else if (spi->irq < 0) {
++	} else if (lookup->irq < 0) {
+ 		struct resource r;
+ 
+ 		if (acpi_dev_resource_interrupt(ares, 0, &r))
+-			spi->irq = r.start;
++			lookup->irq = r.start;
+ 	}
+ 
+ 	/* Always tell the ACPI core to skip this resource */
+@@ -1878,7 +1898,9 @@ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
+ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+ 					    struct acpi_device *adev)
+ {
++	acpi_handle parent_handle = NULL;
+ 	struct list_head resource_list;
++	struct acpi_spi_lookup lookup;
+ 	struct spi_device *spi;
+ 	int ret;
+ 
+@@ -1886,28 +1908,44 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+ 	    acpi_device_enumerated(adev))
+ 		return AE_OK;
+ 
+-	spi = spi_alloc_device(ctlr);
+-	if (!spi) {
+-		dev_err(&ctlr->dev, "failed to allocate SPI device for %s\n",
+-			dev_name(&adev->dev));
+-		return AE_NO_MEMORY;
 -	}
 -
- 	/* even if it's just one always-selected device, there must
- 	 * be at least one chipselect
- 	 */
-@@ -2349,6 +2331,25 @@ int spi_register_controller(struct spi_controller *ctlr)
- 	 * registration fails if the bus ID is in use.
- 	 */
- 	dev_set_name(&ctlr->dev, "spi%u", ctlr->bus_num);
-+
-+	if (!spi_controller_is_slave(ctlr)) {
-+		if (ctlr->use_gpio_descriptors) {
-+			status = spi_get_gpio_descs(ctlr);
-+			if (status)
-+				return status;
-+			/*
-+			 * A controller using GPIO descriptors always
-+			 * supports SPI_CS_HIGH if need be.
-+			 */
-+			ctlr->mode_bits |= SPI_CS_HIGH;
-+		} else {
-+			/* Legacy code path for GPIOs from DT */
-+			status = of_spi_register_master(ctlr);
-+			if (status)
-+				return status;
-+		}
+-	ACPI_COMPANION_SET(&spi->dev, adev);
+-	spi->irq = -1;
++	lookup.ctlr		= ctlr;
++	lookup.mode		= 0;
++	lookup.bits_per_word	= 0;
++	lookup.irq		= -1;
+ 
+ 	INIT_LIST_HEAD(&resource_list);
+ 	ret = acpi_dev_get_resources(adev, &resource_list,
+-				     acpi_spi_add_resource, spi);
++				     acpi_spi_add_resource, &lookup);
+ 	acpi_dev_free_resource_list(&resource_list);
+ 
+-	acpi_spi_parse_apple_properties(spi);
++	if (ret < 0)
++		/* found SPI in _CRS but it points to another controller */
++		return AE_OK;
+ 
+-	if (ret < 0 || !spi->max_speed_hz) {
+-		spi_dev_put(spi);
++	if (!lookup.max_speed_hz &&
++	    !ACPI_FAILURE(acpi_get_parent(adev->handle, &parent_handle)) &&
++	    ACPI_HANDLE(ctlr->dev.parent) == parent_handle) {
++		/* Apple does not use _CRS but nested devices for SPI slaves */
++		acpi_spi_parse_apple_properties(adev, &lookup);
 +	}
 +
- 	status = device_add(&ctlr->dev);
- 	if (status < 0) {
- 		/* free bus id */
++	if (!lookup.max_speed_hz)
+ 		return AE_OK;
++
++	spi = spi_alloc_device(ctlr);
++	if (!spi) {
++		dev_err(&ctlr->dev, "failed to allocate SPI device for %s\n",
++			dev_name(&adev->dev));
++		return AE_NO_MEMORY;
+ 	}
+ 
++	ACPI_COMPANION_SET(&spi->dev, adev);
++	spi->max_speed_hz	= lookup.max_speed_hz;
++	spi->mode		= lookup.mode;
++	spi->irq		= lookup.irq;
++	spi->bits_per_word	= lookup.bits_per_word;
++	spi->chip_select	= lookup.chip_select;
++
+ 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
+ 			  sizeof(spi->modalias));
+ 
+@@ -1939,6 +1977,8 @@ static acpi_status acpi_spi_add_device(acpi_handle handle, u32 level,
+ 	return acpi_register_spi_device(ctlr, adev);
+ }
+ 
++#define SPI_ACPI_ENUMERATE_MAX_DEPTH		32
++
+ static void acpi_register_spi_devices(struct spi_controller *ctlr)
+ {
+ 	acpi_status status;
+@@ -1948,7 +1988,8 @@ static void acpi_register_spi_devices(struct spi_controller *ctlr)
+ 	if (!handle)
+ 		return;
+ 
+-	status = acpi_walk_namespace(ACPI_TYPE_DEVICE, handle, 1,
++	status = acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT,
++				     SPI_ACPI_ENUMERATE_MAX_DEPTH,
+ 				     acpi_spi_add_device, NULL, ctlr, NULL);
+ 	if (ACPI_FAILURE(status))
+ 		dev_warn(&ctlr->dev, "failed to enumerate SPI slaves\n");
 -- 
 2.20.1

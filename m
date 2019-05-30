@@ -1,167 +1,122 @@
-From: masonccyang@mxic.com.tw
-Subject: Re: [PATCH v3 2/4] mtd: rawnand: Add Macronix MX25F0A NAND controller
-Date: Wed, 29 May 2019 11:12:08 +0800
-Message-ID: <OFE923A8E5.50375C30-ON48258409.0009AE1B-48258409.00119767@mxic.com.tw>
-References: <1555320234-15802-1-git-send-email-masonccyang@mxic.com.tw> <1555320234-15802-3-git-send-email-masonccyang@mxic.com.tw>
-        <20190512151820.4f2dd9da@xps13> <OF074A1F06.5C1A58BE-ON482583FD.0031CD95-482583FD.003437AD@mxic.com.tw>
-        <20190520142333.390091d5@xps13> <OFADC47344.0F9941B2-ON48258403.002336E3-48258403.003141F0@mxic.com.tw> <20190527144250.71908bd9@xps13>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH 5.1 236/405] spi: Dont call spi_get_gpio_descs() before device name is set
+Date: Wed, 29 May 2019 20:03:54 -0700
+Message-ID: <20190530030552.951884503@linuxfoundation.org>
+References: <20190530030540.291644921@linuxfoundation.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 8BIT
-Cc: bbrezillon@kernel.org, broonie@kernel.org,
-        christophe.kerello@st.com, computersforpeace@gmail.com,
-        devicetree@vger.kernel.org, dwmw2@infradead.org,
-        geert@linux-m68k.org, juliensu@mxic.com.tw, lee.jones@linaro.org,
-        liang.yang@amlogic.com, linux-kernel@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
-        marcel.ziswiler@toradex.com, marek.vasut@gmail.com,
-        mark.rutland@arm.com, paul.burton@mips.com, richard@nod.at,
-        robh+dt@kernel.org, stefan@agner.ch, zhengxunli@mxic.com.tw
-To: "Miquel Raynal" <miquel.raynal@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Andrey Smirnov <andrew.smirnov@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Chris Healy <cphealy@gmail.com>, linux-spi@vger.kernel.org,
+        Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190527144250.71908bd9@xps13>
+In-Reply-To: <20190530030540.291644921@linuxfoundation.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+[ Upstream commit 0a919ae49223d32ac0e8be3494547fcd1e4aa0aa ]
 
-Hi Miquel,
+Move code calling spi_get_gpio_descs() to happen after ctlr->dev's
+name is set in order to have proper GPIO consumer names.
 
-> > > > > > +static void mxic_nand_select_chip(struct nand_chip *chip, int 
+Before:
+
+cat /sys/kernel/debug/gpio
+gpiochip0: GPIOs 0-31, parent: platform/40049000.gpio, vf610-gpio:
+ gpio-6   (                    |regulator-usb0-vbus ) out lo
+
+gpiochip1: GPIOs 32-63, parent: platform/4004a000.gpio, vf610-gpio:
+ gpio-36  (                    |scl                 ) in  hi
+ gpio-37  (                    |sda                 ) in  hi
+ gpio-40  (                    |(null) CS1          ) out lo
+ gpio-41  (                    |(null) CS0          ) out lo ACTIVE LOW
+ gpio-42  (                    |miso                ) in  hi
+ gpio-43  (                    |mosi                ) in  lo
+ gpio-44  (                    |sck                 ) out lo
+
+After:
+
+cat /sys/kernel/debug/gpio
+gpiochip0: GPIOs 0-31, parent: platform/40049000.gpio, vf610-gpio:
+ gpio-6   (                    |regulator-usb0-vbus ) out lo
+
+gpiochip1: GPIOs 32-63, parent: platform/4004a000.gpio, vf610-gpio:
+ gpio-36  (                    |scl                 ) in  hi
+ gpio-37  (                    |sda                 ) in  hi
+ gpio-40  (                    |spi0 CS1            ) out lo
+ gpio-41  (                    |spi0 CS0            ) out lo ACTIVE LOW
+ gpio-42  (                    |miso                ) in  hi
+ gpio-43  (                    |mosi                ) in  lo
+ gpio-44  (                    |sck                 ) out lo
+
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Chris Healy <cphealy@gmail.com>
+Cc: linux-spi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi.c | 37 +++++++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 18 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 93986f879b09e..d17f68775a4bb 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2275,24 +2275,6 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 	if (status)
+ 		return status;
  
-> > chipnr) 
-> > > > > 
-> > > > > _select_target() is preferred now 
-> > > > 
-> > > > Do you mean I implement mxic_nand_select_target() to control #CS ?
-> > > > 
-> > > > If so, I need to call mxic_nand_select_target( ) to control #CS ON
-> > > > and then #CS OFF in _exec_op() due to nand_select_target()<in 
-> > nand_base,c> 
-> > > > is still calling chip->legacy.select_chip ? 
-> > > 
-> > > You must forget about the ->select_chip() callback. Now it should be
-> > > handled directly from the controller driver. Please have a look at 
-the
-> > > commit pointed against the marvell_nand.c driver. 
-> > 
-> > I have no Marvell NFC datasheet and have one question.
-> > 
-> > In marvell_nand.c, there is no xxx_deselect_target() or 
-> > something like that doing #CS OFF.
-> > marvell_nfc_select_target() seems always to make one of chip or die
-> > #CS keep low.
-> > 
-> > Is it right ?
-> 
-> Yes, AFAIR there is no "de-assert" mechanism in this controller.
-> 
-> > 
-> > How to make all #CS keep high for NAND to enter 
-> > low-power standby mode if driver don't use "legacy.select_chip()" ?
-> 
-> See commit 02b4a52604a4 ("mtd: rawnand: Make ->select_chip() optional
-> when ->exec_op() is implemented") which states:
-> 
->         "When [->select_chip() is] not implemented, the core is assuming
->    the CS line is automatically asserted/deasserted by the driver
->    ->exec_op() implementation."
-> 
-> Of course, the above is right only when the controller driver supports
-> the ->exec_op() interface. 
-
-Currently, it seems that we will get the incorrect data and error
-operation due to CS in error toggling if CS line is controlled in 
-->exec_op().
-i.e,. 
-
-1) In nand_onfi_detect() to call nand_exec_op() twice by 
-nand_read_param_page_op() and annd_read_data_op()
-
-2) In nand_write_page_xxx to call nand_exec_op() many times by
-nand_prog_page_begin_op(), nand_write_data_op() and 
-nand_prog_page_end_op().
-
-
-Should we consider to add a CS line controller in struct nand_controller
-i.e,.
-
-struct nand_controller {
-         struct mutex lock;
-         const struct nand_controller_ops *ops;
-+          void (*select_chip)(struct nand_chip *chip, int cs);
-};
-
-to replace legacy.select_chip() ?
-
-
-To patch in nand_select_target() and nand_deselect_target()
-
-void nand_select_target(struct nand_chip *chip, unsigned int cs)
-{
-        /*
-         * cs should always lie between 0 and chip->numchips, when that's 
-not
-         * the case it's a bug and the caller should be fixed.
-         */
-        if (WARN_ON(cs > chip->numchips))
-                return;
-
-        chip->cur_cs = cs;
-
-+       if (chip->controller->select_chip)
-+               chip->controller->select_chip(chip, cs);
+-	if (!spi_controller_is_slave(ctlr)) {
+-		if (ctlr->use_gpio_descriptors) {
+-			status = spi_get_gpio_descs(ctlr);
+-			if (status)
+-				return status;
+-			/*
+-			 * A controller using GPIO descriptors always
+-			 * supports SPI_CS_HIGH if need be.
+-			 */
+-			ctlr->mode_bits |= SPI_CS_HIGH;
+-		} else {
+-			/* Legacy code path for GPIOs from DT */
+-			status = of_spi_register_master(ctlr);
+-			if (status)
+-				return status;
+-		}
+-	}
+-
+ 	/* even if it's just one always-selected device, there must
+ 	 * be at least one chipselect
+ 	 */
+@@ -2349,6 +2331,25 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 	 * registration fails if the bus ID is in use.
+ 	 */
+ 	dev_set_name(&ctlr->dev, "spi%u", ctlr->bus_num);
 +
-        if (chip->legacy.select_chip)
-                chip->legacy.select_chip(chip, cs);
-}
-
-void nand_deselect_target(struct nand_chip *chip)
-{
-+       if (chip->controller->select_chip)
-+               chip->controller->select_chip(chip, -1);
++	if (!spi_controller_is_slave(ctlr)) {
++		if (ctlr->use_gpio_descriptors) {
++			status = spi_get_gpio_descs(ctlr);
++			if (status)
++				return status;
++			/*
++			 * A controller using GPIO descriptors always
++			 * supports SPI_CS_HIGH if need be.
++			 */
++			ctlr->mode_bits |= SPI_CS_HIGH;
++		} else {
++			/* Legacy code path for GPIOs from DT */
++			status = of_spi_register_master(ctlr);
++			if (status)
++				return status;
++		}
++	}
 +
-        if (chip->legacy.select_chip)
-                chip->legacy.select_chip(chip, -1);
-
-        chip->cur_cs = -1;
-}
-
-
-> 
-> So if you think it is not too time consuming and worth the trouble to
-> assert/deassert the CS at each operation, you may do it in your driver.
-> 
-> 
-> Thanks,
-> Miquèl
-
-thanks & best regards,
-Mason
-
-CONFIDENTIALITY NOTE:
-
-This e-mail and any attachments may contain confidential information 
-and/or personal data, which is protected by applicable laws. Please be 
-reminded that duplication, disclosure, distribution, or use of this e-mail 
-(and/or its attachments) or any part thereof is prohibited. If you receive 
-this e-mail in error, please notify us immediately and delete this mail as 
-well as its attachment(s) from your system. In addition, please be 
-informed that collection, processing, and/or use of personal data is 
-prohibited unless expressly permitted by personal data protection laws. 
-Thank you for your attention and cooperation.
-
-Macronix International Co., Ltd.
-
-=====================================================================
-
-
-
-============================================================================
-
-CONFIDENTIALITY NOTE:
-
-This e-mail and any attachments may contain confidential information and/or personal data, which is protected by applicable laws. Please be reminded that duplication, disclosure, distribution, or use of this e-mail (and/or its attachments) or any part thereof is prohibited. If you receive this e-mail in error, please notify us immediately and delete this mail as well as its attachment(s) from your system. In addition, please be informed that collection, processing, and/or use of personal data is prohibited unless expressly permitted by personal data protection laws. Thank you for your attention and cooperation.
-
-Macronix International Co., Ltd.
-
-=====================================================================
+ 	status = device_add(&ctlr->dev);
+ 	if (status < 0) {
+ 		/* free bus id */
+-- 
+2.20.1

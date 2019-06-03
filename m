@@ -1,48 +1,72 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [RFC PATCH 23/57] drivers: spi: Use bus_find_device_by_acpi_dev
- match helper
-Date: Mon, 3 Jun 2019 17:04:29 +0100
-Message-ID: <20190603160429.GC27065@sirena.org.uk>
-References: <1559577023-558-1-git-send-email-suzuki.poulose@arm.com>
- <1559577023-558-24-git-send-email-suzuki.poulose@arm.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="i7F3eY7HS/tUJxUd"
-Cc: linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
-        rafael@kernel.org, linux-spi@vger.kernel.org
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Subject: Applied "spi: qup: remove unnecessary goto" to the spi tree
+Date: Mon,  3 Jun 2019 19:02:50 +0100 (BST)
+Message-ID: <20190603180250.9792D440046@finisterre.sirena.org.uk>
+References: <20190531144636.27843-1-jorge.ramirez-ortiz@linaro.org>
+Cc: agross@kernel.org, broonie@kernel.org, david.brown@linaro.org,
+        jorge.ramirez-ortiz@linaro.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>
+To: Jorge Ramirez-Ortiz <jorge.ramirez-ortiz@linaro.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1559577023-558-24-git-send-email-suzuki.poulose@arm.com>
+In-Reply-To: <20190531144636.27843-1-jorge.ramirez-ortiz@linaro.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---i7F3eY7HS/tUJxUd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: qup: remove unnecessary goto
 
-On Mon, Jun 03, 2019 at 04:49:49PM +0100, Suzuki K Poulose wrote:
-> Switch to the generic helper bus_find_device_by_acpi_dev.
+has been applied to the spi tree at
 
-Please use subject lines matching the style for the subsystem.  This
-makes it easier for people to identify relevant patches.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.3
 
-Acked-by: Mark Brown <broonie@kernel.org>
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---i7F3eY7HS/tUJxUd
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlz1RQ0ACgkQJNaLcl1U
-h9CQBwf9H09l78szJ3SsaQn6PSfi69VPGAAQ3ow2xP765ppwg205GOWZSFh91i/F
-S+GgszqbRJl/KiEwrPBe8nOrIAIXrBryWxDELZ4tI4h+nQnu5BoHq70B8rhGuZln
-U80DQsvKrmTXSpgal77fz/OWr3+An9Bz+NQSmTfWkJRDSXasypcBOIowJ39CzvCh
-DQdiFSpYkUXkX5ohtkRR1sWagTgbIvj2CtAyI74VcRPU8qT0f5ag46p7rJ01qmqr
-Pbeb6wvubWgO2tPPiZ89bsR712tSXhxJ3dKCJ+Hg/ORBAVkqYl48hpov0PU0lJFh
-kdzI6tgsUFi2fwHzKWdwoSnCby1C1g==
-=9Tow
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---i7F3eY7HS/tUJxUd--
+Thanks,
+Mark
+
+>From 3594bfa265da38dcfbab2312ddaff39711b98857 Mon Sep 17 00:00:00 2001
+From: Jorge Ramirez-Ortiz <jorge.ramirez-ortiz@linaro.org>
+Date: Fri, 31 May 2019 16:46:36 +0200
+Subject: [PATCH] spi: qup: remove unnecessary goto
+
+Remove unnecessary condition check and associated goto.
+
+Signed-off-by: Jorge Ramirez-Ortiz <jorge.ramirez-ortiz@linaro.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-qup.c | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+index 974a8ce58b68..314d91b95a16 100644
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -842,10 +842,6 @@ static int spi_qup_transfer_one(struct spi_master *master,
+ 	else
+ 		ret = spi_qup_do_pio(spi, xfer, timeout);
+ 
+-	if (ret)
+-		goto exit;
+-
+-exit:
+ 	spi_qup_set_state(controller, QUP_STATE_RESET);
+ 	spin_lock_irqsave(&controller->lock, flags);
+ 	if (!ret)
+-- 
+2.20.1

@@ -1,41 +1,44 @@
-From: Vivek Pernamitta <pervivek@gmail.com>
-Subject: [PATCH] spi: spidev: Fix for reverting spi max speed value only on failure
-Date: Sun,  2 Jun 2019 19:49:59 +0530
-Message-ID: <20190602141959.5616-1-pervivek@gmail.com>
-Cc: pervivek@gmail.com, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: unlisted-recipients:; (no To-header on input)
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: Re: [PATCH v2] spi/acpi: enumerate all SPI slaves in the namespace
+Date: Mon, 3 Jun 2019 14:08:32 +0300
+Message-ID: <20190603110832.GA2781@lahna.fi.intel.com>
+References: <20190530111634.32209-1-ard.biesheuvel@linaro.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Lukas Wunner <lukas@wunner.de>, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
+ andy.shevchenko@gmail.com, broonie@kernel.org,
+ Jarkko Nikula <jarkko.nikula@linux.intel.com>, masahisa.kojima@linaro.org,
+ linux-arm-kernel@lists.infradead.org
+To: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Disposition: inline
+In-Reply-To: <20190530111634.32209-1-ard.biesheuvel@linaro.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-When user space application request for change in spi clock
-using ioctl, current value is taken back-up and new value is
-assigned to spi->max_speed_hz, then spi_setup() function is
-called with new value. If spi_setup() function fails, it needs
-reverting to old spi_max_speed value only in failure condition.
+On Thu, May 30, 2019 at 01:16:34PM +0200, Ard Biesheuvel wrote:
+> @@ -1948,7 +1988,8 @@ static void acpi_register_spi_devices(struct spi_controller *ctlr)
+>  	if (!handle)
+>  		return;
+>  
+> -	status = acpi_walk_namespace(ACPI_TYPE_DEVICE, handle, 1,
+> +	status = acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT,
 
-Signed-off-by: Vivek Pernamitta <pervivek@gmail.com>
----
- drivers/spi/spidev.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Would it be simpler to differentiate here between Apple and non-Apple
+systems? Then we don't need all that special code and the above becomes:
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 30498cf25f3b..70382b642f37 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -458,9 +458,10 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
- 			retval = spi_setup(spi);
- 			if (retval >= 0)
- 				spidev->speed_hz = tmp;
--			else
-+			else {
- 				dev_dbg(&spi->dev, "%d Hz (max)\n", tmp);
--			spi->max_speed_hz = save;
-+				spi->max_speed_hz = save;
-+			}
- 		}
- 		break;
- 
--- 
-2.17.1
+	depth = x86_apple_system ? 1 : SPI_ACPI_ENUMERATE_MAX_DEPTH;
+	status = acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT, depth,
+	..
+
+Probably requires a comment explaining why we do it like that, though.

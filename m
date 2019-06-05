@@ -1,82 +1,100 @@
-From: Leilk Liu <leilk.liu@mediatek.com>
-Subject: [PATCH] spi: mediatek: add SPI_LSB_FIRST support
-Date: Wed, 5 Jun 2019 11:07:04 +0800
-Message-ID: <1559704024-5369-1-git-send-email-leilk.liu@mediatek.com>
-Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Mark Rutland <mark.rutland@arm.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-        <fparent@baylibre.com>, Leilk Liu <leilk.liu@mediatek.com>
-To: Mark Brown <broonie@kernel.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+Subject: [PATCH 04/13] drivers: Add generic helper to match by of_node
+Date: Wed,  5 Jun 2019 16:13:41 +0100
+Message-ID: <1559747630-28065-5-git-send-email-suzuki.poulose@arm.com>
+References: <1559747630-28065-1-git-send-email-suzuki.poulose@arm.com>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org,
+        suzuki.poulose@arm.com, Alan Tull <atull@kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>, Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        "David S. Miller" <davem@davemloft.net>,
+        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Jiri Slaby <jslaby@suse.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        linux-fpga@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-spi@vger.kernel.org,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Mathieu Poirier <mathieu.poiri
+To: linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1559747630-28065-1-git-send-email-suzuki.poulose@arm.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-this patch add SPI_LSB_FIRST feature support.
+Add a helper to match device by the of_node. This will be later used
+to provide generic lookup functions by of_node.
 
-Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
+Cc: Alan Tull <atull@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: David Airlie <airlied@linux.ie>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: devicetree@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Frank Rowand <frowand.list@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Jiri Slaby <jslaby@suse.com>
+Cc: Jonathan Hunter <jonathanh@nvidia.com>
+Cc: Lee Jones <lee.jones@linaro.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>
+Cc: linux-fpga@vger.kernel.org
+Cc: linux-i2c@vger.kernel.org
+Cc: linux-spi@vger.kernel.org
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Maxime Ripard <maxime.ripard@bootlin.com>
+Cc: Moritz Fischer <mdf@kernel.org>
+Cc: Peter Rosin <peda@axentia.se>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Cc: Thor Thayer <thor.thayer@linux.intel.com>
+Cc: Wolfram Sang <wsa@the-dreams.de>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Joe Perches <joe@perches.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 ---
- drivers/spi/spi-mt65xx.c                 |   15 ++++++---------
- include/linux/platform_data/spi-mt65xx.h |    2 --
- 2 files changed, 6 insertions(+), 11 deletions(-)
+ drivers/base/core.c    | 6 ++++++
+ include/linux/device.h | 2 ++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 0cce6f0..7f4dc18 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -131,8 +131,6 @@ struct mtk_spi {
-  * supplies it.
-  */
- static const struct mtk_chip_config mtk_default_chip_info = {
--	.rx_mlsb = 1,
--	.tx_mlsb = 1,
- 	.cs_pol = 0,
- 	.sample_sel = 0,
- };
-@@ -203,14 +201,13 @@ static int mtk_spi_prepare_message(struct spi_master *master,
- 		reg_val &= ~SPI_CMD_CPOL;
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index fd7511e..9211908 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -3328,3 +3328,9 @@ void device_set_of_node_from_dev(struct device *dev, const struct device *dev2)
+ 	dev->of_node_reused = true;
+ }
+ EXPORT_SYMBOL_GPL(device_set_of_node_from_dev);
++
++int device_match_of_node(struct device *dev, const void *np)
++{
++	return dev->of_node == np;
++}
++EXPORT_SYMBOL_GPL(device_match_of_node);
+diff --git a/include/linux/device.h b/include/linux/device.h
+index 4d7c881..7093085 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -163,6 +163,8 @@ void subsys_dev_iter_init(struct subsys_dev_iter *iter,
+ struct device *subsys_dev_iter_next(struct subsys_dev_iter *iter);
+ void subsys_dev_iter_exit(struct subsys_dev_iter *iter);
  
- 	/* set the mlsbx and mlsbtx */
--	if (chip_config->tx_mlsb)
--		reg_val |= SPI_CMD_TXMSBF;
--	else
-+	if (spi->mode & SPI_LSB_FIRST) {
- 		reg_val &= ~SPI_CMD_TXMSBF;
--	if (chip_config->rx_mlsb)
--		reg_val |= SPI_CMD_RXMSBF;
--	else
- 		reg_val &= ~SPI_CMD_RXMSBF;
-+	} else {
-+		reg_val |= SPI_CMD_TXMSBF;
-+		reg_val |= SPI_CMD_RXMSBF;
-+	}
- 
- 	/* set the tx/rx endian */
- #ifdef __LITTLE_ENDIAN
-@@ -607,7 +604,7 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 
- 	master->auto_runtime_pm = true;
- 	master->dev.of_node = pdev->dev.of_node;
--	master->mode_bits = SPI_CPOL | SPI_CPHA;
-+	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
- 
- 	master->set_cs = mtk_spi_set_cs;
- 	master->prepare_message = mtk_spi_prepare_message;
-diff --git a/include/linux/platform_data/spi-mt65xx.h b/include/linux/platform_data/spi-mt65xx.h
-index ba4e4bb..8d5df58 100644
---- a/include/linux/platform_data/spi-mt65xx.h
-+++ b/include/linux/platform_data/spi-mt65xx.h
-@@ -14,8 +14,6 @@
- 
- /* Board specific platform_data */
- struct mtk_chip_config {
--	u32 tx_mlsb;
--	u32 rx_mlsb;
- 	u32 cs_pol;
- 	u32 sample_sel;
- };
++int device_match_of_node(struct device *dev, const void *np);
++
+ int bus_for_each_dev(struct bus_type *bus, struct device *start, void *data,
+ 		     int (*fn)(struct device *dev, void *data));
+ struct device *bus_find_device(struct bus_type *bus, struct device *start,
 -- 
-1.7.9.5
+2.7.4

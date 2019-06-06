@@ -1,184 +1,73 @@
-From: masonccyang@mxic.com.tw
-Subject: Re: [PATCH v13 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3 RPC-IF
- controller bindings
-Date: Thu, 6 Jun 2019 15:40:45 +0800
-Message-ID: <OFDA7648A0.F1733EA5-ON48258411.002946DF-48258411.002A2F0D@mxic.com.tw>
-References: <1558423174-10748-1-git-send-email-masonccyang@mxic.com.tw> <1558423174-10748-4-git-send-email-masonccyang@mxic.com.tw> <0e2994d6-6efc-9f36-f681-609199f20b9f@cogentembedded.com> <20190603130428.GX4797@dell> <02addf64-9f6e-ccc1-2f94-8983456e3ebc@cogentembedded.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [PATCH 07/13] drivers: Add generic match helper by ACPI_COMPANION device
+Date: Thu, 6 Jun 2019 11:17:41 +0200
+Message-ID: <CAJZ5v0h+maPj-ijKV_vvQBpHD7N-VMiAqSeyztAkiUR9E2WdmQ@mail.gmail.com>
+References: <1559747630-28065-1-git-send-email-suzuki.poulose@arm.com> <1559747630-28065-8-git-send-email-suzuki.poulose@arm.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Cc: bbrezillon@kernel.org, broonie@kernel.org,
-        devicetree@vger.kernel.org,
-        "Geert Uytterhoeven" <geert+renesas@glider.be>,
-        "Simon Horman" <horms@verge.net.au>, juliensu@mxic.com.tw,
-        "Lee Jones" <lee.jones@linaro.org>, linux-kernel@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-        marek.vasut@gmail.com, mark.rutland@arm.com,
-        miquel.raynal@bootlin.com, robh+dt@kernel.org,
-        "Sergei Shtylyov" <sergei.shtylyov@cogentembedded.com>
-To: "Lee Jones" <lee.jones@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Mark Brown <broonie@kernel.org>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <02addf64-9f6e-ccc1-2f94-8983456e3ebc@cogentembedded.com>
+In-Reply-To: <1559747630-28065-8-git-send-email-suzuki.poulose@arm.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Wed, Jun 5, 2019 at 5:14 PM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+>
+> Add a generic helper to match a device by the acpi device.
 
-Hi Jones,
+"by its ACPI companion device object", please.
 
+Also, it would be good to combine this patch with the patch(es) that
+cause device_match_acpi_dev() to be actually used.
 
-> Subject
-> 
-> Re: [PATCH v13 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3 RPC-IF 
+Helpers without any users are arguably not useful.
 
-> controller bindings
-> 
-> Hello!
-> 
-> On 06/03/2019 04:04 PM, Lee Jones wrote:
-> 
-> >>> Document the bindings used by the Renesas R-Car Gen3 RPC-IF 
-controller.
-> >>>
-> >>> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
-> >>> ---
-> >>>  .../devicetree/bindings/mfd/renesas-rpc-if.txt     | 65 
-++++++++++++++++++++++
-> >>>  1 file changed, 65 insertions(+)
-> >>>  create mode 100644 
-Documentation/devicetree/bindings/mfd/renesas-rpc-if.txt
-> >>>
-> >>> diff --git 
-a/Documentation/devicetree/bindings/mfd/renesas-rpc-if.txt b/
-> Documentation/devicetree/bindings/mfd/renesas-rpc-if.txt
-> >>> new file mode 100644
-> >>> index 0000000..20ec85b
-> >>> --- /dev/null
-> >>> +++ b/Documentation/devicetree/bindings/mfd/renesas-rpc-if.txt
-> >>> @@ -0,0 +1,65 @@
-> >>> +Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
-> >>> +---------------------------------------------------------
-> >>> +
-> >>> +RPC-IF supports both SPI NOR and HyperFlash (CFI-compliant flash)
-> >>> +
-> >>> +Required properties:
-> >>> +- compatible: should be an SoC-specific compatible value, followed 
-by
-> >>> +      "renesas,rcar-gen3-rpc" as a fallback.
-> >>> +      supported SoC-specific values are:
-> >>> +      "renesas,r8a77995-rpc"   (R-Car D3)
-> >>> +- reg: should contain three register areas:
-> >>> +   first for RPC-IF registers,
-> >>> +   second for the direct mapping read mode and
-> >>> +   third for the write buffer area.
-> >>> +- reg-names: should contain "regs", "dirmap" and "wbuf"
-> >>> +- clocks: should contain 1 entries for the module's clock
-> >>> +- clock-names: should contain "rpc"
-> >>> +- power-domains: should contain system-controller(sysc) for 
-power-domain-cell
-> >>> +- resets: should contain clock pulse generator(cpg) for reset-cell,
-> >>> +     power-domain-cell and clock-cell
-> >>
-> >>    That's just some nonsense, sorry...
-> >>    I suggest that you stop reposting your patches as I'm going to 
-post
-> >> my version of this patchset RSN (based on your patches, of course) 
-and I'm
-> >> going to take care of fixing this file as well.
-> > 
-> > Why is this necessary?
-> 
->    Because Mason doesn't want to develop the HyperFlash driver (or even 
-move his code
-> in preparation to this driver being developed). I must develop this 
-driver, and I'd
-> like to avoid the extra churn of mving the code between the MFD and SPI 
-drivers.
-> 
-
-There might be some misunderstandings.
-
-I had been requested to boot R-CAR from the OctaFlash and finally I have 
-achieved it 
-by patching SPI framework for OctaFlash operation and RPC-IF SPI driver. 
-
-We were aware of the lacking support of RPC-IF in the Linux kernel at that 
-time and 
-I though I could contribute what I had developed.
-
-At that time for my first submission of RPC-IF SPI on 15 NOv 2018, there 
-was no any 
-HyperFlash (or Hyper Bus) patches. And we did not consider it because the 
-resource
-of HyperFlash was shortage to us.
-
-RPC-IF SPI was applied by Mark on 12,Feb 2019 but Marek comment to add 
-supporting
-MFD for RPC-IF and then I patched RPC-IF to MFD and SPI till this v13.
-
-I always think about:
-
-Is RPC-IF really good/suitable for MFD ?
-RPC-IF works either in SPI or HyperFlash is decided by external hardware 
-pins 
-configuration and it can NOT switch it's operation mode in the run time. 
-This is not like my understanding of MFD.
-
-As your comments:
------------------------------------------------------------------------->
-> +              flash = of_get_next_child(pdev->dev.of_node, NULL);
-> +              if (!flash) {
-> +                              dev_warn(&pdev->dev, "no flash node 
-found\n");
-> +                              return -ENODEV;
-> +              }
+>
+> Cc: Len Brown <lenb@kernel.org>
+> Cc: linux-acpi@vger.kernel.org
+> Cc: linux-spi@vger.kernel.org
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> ---
+>  drivers/base/core.c    | 6 ++++++
+>  include/linux/device.h | 1 +
+>  2 files changed, 7 insertions(+)
+>
+> diff --git a/drivers/base/core.c b/drivers/base/core.c
+> index b827ca1..597095b 100644
+> --- a/drivers/base/core.c
+> +++ b/drivers/base/core.c
+> @@ -3346,3 +3346,9 @@ int device_match_devt(struct device *dev, const void *pdevt)
+>         return dev->devt == *(dev_t *)pdevt;
+>  }
+>  EXPORT_SYMBOL_GPL(device_match_devt);
 > +
-> +              if (of_device_is_compatible(flash, "jedec,spi-nor")) {
-> +                              cell = &rpc_spi_ctlr;
-> +              } else if (of_device_is_compatible(flash, "cfi-flash")) {
-> +                              cell = &rpc_hf_ctlr;
-> +              } else {
-> +                              dev_warn(&pdev->dev, "unknown flash 
-type\n");
-> +                              return -ENODEV;
-> +              }
-
-Are there going to be more children coming?
-
-If not, I'd argue that this is not an MFD.
-<-------------------------------------------------------------------
-
-I agreed with your opinion and I will resubmit RPC-IF in SPI only
-if you also agree with it.
-
-
-thanks & best regards,
-Mason
-
-
-
-CONFIDENTIALITY NOTE:
-
-This e-mail and any attachments may contain confidential information 
-and/or personal data, which is protected by applicable laws. Please be 
-reminded that duplication, disclosure, distribution, or use of this e-mail 
-(and/or its attachments) or any part thereof is prohibited. If you receive 
-this e-mail in error, please notify us immediately and delete this mail as 
-well as its attachment(s) from your system. In addition, please be 
-informed that collection, processing, and/or use of personal data is 
-prohibited unless expressly permitted by personal data protection laws. 
-Thank you for your attention and cooperation.
-
-Macronix International Co., Ltd.
-
-=====================================================================
-
-
-
-============================================================================
-
-CONFIDENTIALITY NOTE:
-
-This e-mail and any attachments may contain confidential information and/or personal data, which is protected by applicable laws. Please be reminded that duplication, disclosure, distribution, or use of this e-mail (and/or its attachments) or any part thereof is prohibited. If you receive this e-mail in error, please notify us immediately and delete this mail as well as its attachment(s) from your system. In addition, please be informed that collection, processing, and/or use of personal data is prohibited unless expressly permitted by personal data protection laws. Thank you for your attention and cooperation.
-
-Macronix International Co., Ltd.
-
-=====================================================================
+> +int device_match_acpi_dev(struct device *dev, const void *adev)
+> +{
+> +       return ACPI_COMPANION(dev) == adev;
+> +}
+> +EXPORT_SYMBOL(device_match_acpi_dev);
+> diff --git a/include/linux/device.h b/include/linux/device.h
+> index f315692..a03b50d 100644
+> --- a/include/linux/device.h
+> +++ b/include/linux/device.h
+> @@ -166,6 +166,7 @@ void subsys_dev_iter_exit(struct subsys_dev_iter *iter);
+>  int device_match_of_node(struct device *dev, const void *np);
+>  int device_match_fwnode(struct device *dev, const void *fwnode);
+>  int device_match_devt(struct device *dev, const void *pdevt);
+> +int device_match_acpi_dev(struct device *dev, const void *adev);
+>
+>  int bus_for_each_dev(struct bus_type *bus, struct device *start, void *data,
+>                      int (*fn)(struct device *dev, void *data));
+> --
+> 2.7.4
+>

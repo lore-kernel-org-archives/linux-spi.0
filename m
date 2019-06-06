@@ -1,213 +1,184 @@
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: [PATCH 00/13] drivers: Introduce generic device lookup helpers
-Date: Wed,  5 Jun 2019 16:13:37 +0100
-Message-ID: <1559747630-28065-1-git-send-email-suzuki.poulose@arm.com>
+From: masonccyang@mxic.com.tw
+Subject: Re: [PATCH v13 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3 RPC-IF
+ controller bindings
+Date: Thu, 6 Jun 2019 15:40:45 +0800
+Message-ID: <OFDA7648A0.F1733EA5-ON48258411.002946DF-48258411.002A2F0D@mxic.com.tw>
+References: <1558423174-10748-1-git-send-email-masonccyang@mxic.com.tw> <1558423174-10748-4-git-send-email-masonccyang@mxic.com.tw> <0e2994d6-6efc-9f36-f681-609199f20b9f@cogentembedded.com> <20190603130428.GX4797@dell> <02addf64-9f6e-ccc1-2f94-8983456e3ebc@cogentembedded.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Andrew Lunn <andrew@lunn.ch>, Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
- rafael@kernel.org, Will Deacon <will.deacon@arm.com>,
- Ulf Hansson <ulf.hansson@linaro.org>, dri-devel@lists.freedesktop.org,
- Pavel Machek <pavel@ucw.cz>, Stefan Schmidt <stefan@datenfreihafen.org>,
- Wolfram Sang <wsa@the-dreams.de>, linux-acpi@vger.kernel.org,
- Doug Ledford <dledford@redhat.com>, Jiri Slaby <jslaby@suse.com>,
- Tomas Winkler <tomas.winkler@intel.com>, Dan Murphy <dmurphy@ti.com>,
- gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
- Seung-Woo Kim <sw0312.kim@samsung.com>, linux-spi@vger.kernel.org,
- Joe Perches <joe@perches.com>, linux-wpan@vger.kernel.org,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- David Airlie <airlied@linux.ie>, "Rafael J . Wysocki " <rjw@rjwysocki.net>,
- Thierry Reding <thierry.reding@gmail.com>,
- Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
- linux-
-To: linux-kernel@vger.kernel.org
-Return-path: <dri-devel-bounces@lists.freedesktop.org>
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
-List-Post: <mailto:dri-devel@lists.freedesktop.org>
-List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
- <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: dri-devel-bounces@lists.freedesktop.org
-Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+Content-Type: text/plain; charset="US-ASCII"
+Cc: bbrezillon@kernel.org, broonie@kernel.org,
+        devicetree@vger.kernel.org,
+        "Geert Uytterhoeven" <geert+renesas@glider.be>,
+        "Simon Horman" <horms@verge.net.au>, juliensu@mxic.com.tw,
+        "Lee Jones" <lee.jones@linaro.org>, linux-kernel@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+        marek.vasut@gmail.com, mark.rutland@arm.com,
+        miquel.raynal@bootlin.com, robh+dt@kernel.org,
+        "Sergei Shtylyov" <sergei.shtylyov@cogentembedded.com>
+To: "Lee Jones" <lee.jones@linaro.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <02addf64-9f6e-ccc1-2f94-8983456e3ebc@cogentembedded.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-V2UgaGF2ZSBkZXZpY2UgaXRlcmF0b3JzIHRvIGZpbmQgYSBwYXJ0aWN1bGFyIGRldmljZSBtYXRj
-aGluZyBhIGNyaXRlcmlhCmZvciBhIGdpdmVuIGJ1cy9jbGFzcy9kcml2ZXIuIGkuZSwge2J1cyxj
-bGFzcyxkcml2ZXJ9X2ZpbmRfZGV2aWNlKCkgQVBJcy4KVGhlIG1hdGNoaW5nIGNyaXRlcmlhIGlz
-IGEgZnVuY3Rpb24gcG9pbnRlciBmb3IgdGhlIEFQSXMuIE9mdGVuIHRoZSBsb29rdXAKaXMgYmFz
-ZWQgb24gYSBnZW5lcmljIHByb3BlcnR5IG9mIGEgZGV2aWNlIChlLmcsIG5hbWUsIGZ3bm9kZSwg
-b2Ygbm9kZSBwb2ludGVyCm9yIGRldmljZSB0eXBlKSByYXRoZXIgdGhhbiBhIGRyaXZlciBzcGVj
-aWZpYyBpbmZvcm1hdGlvbi4gSG93ZXZlciwgZWFjaCBkcml2ZXIKd3JpdGVzIHVwIGl0cyBvd24g
-Im1hdGNoIiBmdW5jdGlvbiwgc3BpbGxpbmcgdGhlIHNpbWlsYXIgbWF0Y2ggZnVuY3Rpb25zIGFs
-bApvdmVyIHRoZSBkcml2ZXIgc3Vic3lzdGVtcy4KCkFkZGl0aW9uYWxseSB0aGUgcHJvdG90eXBl
-IGZvciB0aGUgIm1hdGNoIiBmdW5jdGlvbnMgYWNjZXB0ZWQgYnkgdGhlIGFib3ZlIEFQSXMKaGF2
-ZSBhIG1pbnV0ZSBkaWZmZXJlbmNlIHdoaWNoIHByZXZlbnRzIHVzIG90aGVyd2lzZSBzaGFyaW5n
-IHRoZSBtYXRjaCBmdW5jdGlvbnMuCmkuZSwKCWludCAoKm1hdGNoKShzdHJ1Y3QgZGV2aWNlICpk
-ZXYsIHZvaWQgKmRhdGEpIGZvciB7YnVzL2RyaXZlcn1fZmluZF9kZXZpY2UoKQoJICB2cwoJaW50
-ICgqbWF0Y2gpKHN0cnVjdCBkZXZpY2UgKmRldiwgY29uc3Qgdm9pZCAqKSBmb3IgY2xhc3NfZmlu
-ZF9kZXZpY2UoKQoKSWYgd2UgcHJvbW90ZSB0aGUgZm9ybWVyIHRvIGFjY2VwdCBhICJjb25zdCB2
-b2lkKiIgcGFyYW1ldGVyLCB3ZSBjb3VsZCBzaGFyZSBvbmUKc2luZ2xlIG1hdGNoIGZ1bmN0aW9u
-IGZvciBhbGwgdGhlIGhlbHBlcnMuIFRoaXMgc2VyaWVzIGFjaGlldmVzIHRoZSBmb2xsb3dpbmc6
-CgogMSkgVW5pZnkgdGhlIHByb3RvdHlwZSBmb3IgIm1hdGNoIiBmdW5jdGlvbnMgYWNjZXB0ZWQg
-YnkgdGhlIGRldmljZSBsb29rdXAgQVBJcy4KIDIpIEludHJvZHVjZSBnZW5lcmljIG1hdGNoIGZ1
-bmN0aW9ucyB0byBtYXRjaCBkZXZpY2VzIGJ5IHRoZSBnZW5lcmljIGF0dHJpYnV0ZXMKICAgIG9m
-IGEgZGV2aWNlIChlLmcsIG5hbWUsIGZ3bm9kZSwgb2Zfbm9kZSBhbmQgZGV2dCkuCgpBbHNvLCBp
-biBvcmRlciB0byBwcmV2ZW50IGNyZWF0aW9uIG9mIHN1Y2ggbWF0Y2ggZnVuY3Rpb25zIGluIHRo
-ZSBmdXR1cmUsCndlIGludHJvZHVjZSB3cmFwcGVyIGZ1bmN0aW9ucyBmb3IgdGhlIGxvb2sgdXAg
-QVBJcywgd2hpY2ggYXV0b21hdGljYWxseQp1c2VzIHRoZSBhcHByb3ByaWF0ZSBtYXRjaCBmdW5j
-dGlvbnMuCgppLmUsCgl7YnVzL2NsYXNzL2RyaXZlcn1fZmluZF9kZXZpY2VfYnlfbmFtZQoJe2J1
-cy9jbGFzcy9kcml2ZXJ9X2ZpbmRfZGV2aWNlX2J5X29mX25vZGUKCXtidXMvY2xhc3MvZHJpdmVy
-fV9maW5kX2RldmljZV9ieV9md25vZGUKCXtidXMvY2xhc3MvZHJpdmVyfV9maW5kX2RldmljZV9i
-eV9kZXZ0CgpBZGRpdGlvbmFsbHksIHRoaXMgc2VyaWVzIGFsc28gYWRkcyB3cmFwcGVyIGZvciBm
-aW5kaW5nIGEgZGV2aWNlIGJ5IG1hdGNoaW5nCmEgZGV2aWNlIGRyaXZlciBmb3IgcGxhdGZvcm0g
-YnVzIGRldmljZXMgLSBwbGF0Zm9ybV9maW5kX2RldmljZV9ieV9kcml2ZXIoKSB0bwphdm9pZCBh
-IGZldyBkcml2ZXJzIGhhcmQgY29kaW5nIHRoZSBwbGF0Zm9ybSBidXMgc3BlY2lmaWMgZGV0YWls
-cy4KClRoaXMgaXMgcGFydCAxIG9mIHJldmlzZWQgdmVyc2lvbiBvZiB0aGUgc2VyaWVzIHBvc3Rl
-ZCBoZXJlIFswXSwgdG8gYWxsb3cgZm9yIGJldHRlcgptYW5hZ2VtZW50IG9mIHRoZSBtZXJnaW5n
-LiBQYXJ0IDIgb2YgdGhlIHNlcmllcywgd2hlcmUgdGhlc2UgbmV3IGhlbHBlcnMgYXJlIGNvbnN1
-bWVkCmJ5IHRoZSBpbmRpdmlkdWFsIGRyaXZlciBzdWJzeXN0ZW1zIHdpbGwgYmUgcG9zdGVkIG9u
-Y2UgdGhpcyBpcyBzZXJpZXMgaXMgbWVyZ2VkLgpUaGUgZW50aXJlIHRyZWUgd2l0aCBib3RoIHRo
-ZSBwYXJ0cyBpbiBpcyBhdmFpbGFibGUgYXQgWzFdCgpbMF0gaHR0cHM6Ly9tYXJjLmluZm8vP2k9
-MTU1OTU3NzAyMy01NTgtMS1naXQtc2VuZC1lbWFpbC1zdXp1a2kucG91bG9zZUBhcm0uY29tClsx
-XSBnaXQ6Ly9saW51eC1hcm0ub3JnL2xpbnV4LXNrcC5naXQgZHJpdmVyLWNsZWFudXAvdjEKCkNj
-OiBBbGFuIFR1bGwgPGF0dWxsQGtlcm5lbC5vcmc+CkNjOiBBbGVzc2FuZHJvIFp1bW1vIDxhLnp1
-bW1vQHRvd2VydGVjaC5pdD4KQ2M6IEFsZXhhbmRlciBBcmluZyA8YWxleC5hcmluZ0BnbWFpbC5j
-b20+CkNjOiBBbGV4YW5kZXIgU2hpc2hraW4gPGFsZXhhbmRlci5zaGlzaGtpbkBsaW51eC5pbnRl
-bC5jb20+CkNjOiBBbGV4YW5kcmUgQmVsbG9uaSA8YWxleGFuZHJlLmJlbGxvbmlAYm9vdGxpbi5j
-b20+CkNjOiBBbmRyZWFzIE5vZXZlciA8YW5kcmVhcy5ub2V2ZXJAZ21haWwuY29tPgpDYzogQW5k
-cmV3IEx1bm4gPGFuZHJld0BsdW5uLmNoPgpDYzogQXJuZCBCZXJnbWFubiA8YXJuZEBhcm5kYi5k
-ZT4KQ2M6IEJqb3JuIEhlbGdhYXMgPGJoZWxnYWFzQGdvb2dsZS5jb20+CkNjOiBDb3JleSBNaW55
-YXJkIDxtaW55YXJkQGFjbS5vcmc+CkNjOiBEYW5pZWwgVmV0dGVyIDxkYW5pZWxAZmZ3bGwuY2g+
-CkNjOiBEYW4gTXVycGh5IDxkbXVycGh5QHRpLmNvbT4KQ2M6IERhdmlkIEFpcmxpZSA8YWlybGll
-ZEBsaW51eC5pZT4KQ2M6IERhdmlkIEtlcnNobmVyIDxkYXZpZC5rZXJzaG5lckB1bmlzeXMuY29t
-PgpDYzogIkRhdmlkIFMuIE1pbGxlciIgPGRhdmVtQGRhdmVtbG9mdC5uZXQ+CkNjOiBEb3VnIExl
-ZGZvcmQgPGRsZWRmb3JkQHJlZGhhdC5jb20+CkNjOiBkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnCkNjOiBFbGllIE1vcmlzc2UgPHN5bml1cmdlQGdtYWlsLmNvbT4KQ2M6IEVyaWMgQW5o
-b2x0IDxlcmljQGFuaG9sdC5uZXQ+CkNjOiBGZWxpcGUgQmFsYmkgPGJhbGJpQGtlcm5lbC5vcmc+
-CkNjOiBGbG9yaWFuIEZhaW5lbGxpIDxmLmZhaW5lbGxpQGdtYWlsLmNvbT4KQ2M6IEZyYW5rIFJv
-d2FuZCA8ZnJvd2FuZC5saXN0QGdtYWlsLmNvbT4KQ2M6IEdyYW50IExpa2VseSA8Z3JhbnQubGlr
-ZWx5QGFybS5jb20+CkNjOiBHcmVnIEtyb2FoLUhhcnRtYW4gPGdyZWdraEBsaW51eGZvdW5kYXRp
-b24ub3JnPgpDYzogR3J5Z29yaWkgU3RyYXNoa28gPGdyeWdvcmlpLnN0cmFzaGtvQHRpLmNvbT4K
-Q2M6IEhhcmFsZCBGcmV1ZGVuYmVyZ2VyIDxmcmV1ZGVAbGludXguaWJtLmNvbT4KQ2M6IEhhcnRt
-dXQgS25hYWNrIDxrbmFhY2suaEBnbXguZGU+CkNjOiBIZWlra2kgS3JvZ2VydXMgPGhlaWtraS5r
-cm9nZXJ1c0BsaW51eC5pbnRlbC5jb20+CkNjOiBIZWlrbyBDYXJzdGVucyA8aGVpa28uY2Fyc3Rl
-bnNAZGUuaWJtLmNvbT4KQ2M6ICJIZWlrbyBTdMO8Ym5lciIgPGhlaWtvQHNudGVjaC5kZT4KQ2M6
-IEhlaWtvIFN0dWVibmVyIDxoZWlrb0BzbnRlY2guZGU+CkNjOiBIZWluZXIgS2FsbHdlaXQgPGhr
-YWxsd2VpdDFAZ21haWwuY29tPgpDYzogSW5raSBEYWUgPGlua2kuZGFlQHNhbXN1bmcuY29tPgpD
-YzogSmFjZWsgQW5hc3pld3NraSA8amFjZWsuYW5hc3pld3NraUBnbWFpbC5jb20+CkNjOiAiSmFt
-ZXMgRS5KLiBCb3R0b21sZXkiIDxqZWpiQGxpbnV4LmlibS5jb20+CkNjOiBKYXNvbiBHdW50aG9y
-cGUgPGpnZ0B6aWVwZS5jYT4KQ2M6IEppcmkgU2xhYnkgPGpzbGFieUBzdXNlLmNvbT4KQ2M6IEpv
-ZSBQZXJjaGVzIDxqb2VAcGVyY2hlcy5jb20+CkNjOiBKb2VyZyBSb2VkZWwgPGpvcm9AOGJ5dGVz
-Lm9yZz4KQ2M6IEpvbmF0aGFuIENhbWVyb24gPGppYzIzQGtlcm5lbC5vcmc+CkNjOiBKb25hdGhh
-biBIdW50ZXIgPGpvbmF0aGFuaEBudmlkaWEuY29tPgpDYzogTGVlIEpvbmVzIDxsZWUuam9uZXNA
-bGluYXJvLm9yZz4KQ2M6IExlbiBCcm93biA8bGVuYkBrZXJuZWwub3JnCkNjOiBMaWFtIEdpcmR3
-b29kIDxsZ2lyZHdvb2RAZ21haWwuY29tPgpDYzogTWFhcnRlbiBMYW5raG9yc3QgPG1hYXJ0ZW4u
-bGFua2hvcnN0QGxpbnV4LmludGVsLmNvbT4KQ2M6IE1hcmsgQnJvd24gPGJyb29uaWVAa2VybmVs
-Lm9yZz4KQ2M6ICJNYXJ0aW4gSy4gUGV0ZXJzZW4iIDxtYXJ0aW4ucGV0ZXJzZW5Ab3JhY2xlLmNv
-bT4KQ2M6IE1hdGhpZXUgUG9pcmllciA8bWF0aGlldS5wb2lyaWVyQGxpbmFyby5vcmc+CkNjOiBN
-YXhpbWUgQ29xdWVsaW4gPG1jb3F1ZWxpbi5zdG0zMkBnbWFpbC5jb20+CkNjOiBNYXhpbWUgUmlw
-YXJkIDxtYXhpbWUucmlwYXJkQGJvb3RsaW4uY29tPgpDYzogTWljaGFlbCBKYW1ldCA8bWljaGFl
-bC5qYW1ldEBpbnRlbC5jb20+CkNjOiBNaWthIFdlc3RlcmJlcmcgPG1pa2Eud2VzdGVyYmVyZ0Bs
-aW51eC5pbnRlbC5jb20+CkNjOiBNb3JpdHogRmlzY2hlciA8bWRmQGtlcm5lbC5vcmc+CkNjOiBO
-ZWhhbCBTaGFoIDxuZWhhbC1iYWt1bGNoYW5kcmEuc2hhaEBhbWQuY29tPgpDYzogT2xpdmVyIE5l
-dWt1bSA8b25ldWt1bUBzdXNlLmNvbT4KQ2M6IFBhdmVsIE1hY2hlayA8cGF2ZWxAdWN3LmN6PgpD
-YzogUGV0ZXIgT2JlcnBhcmxlaXRlciA8b2JlcnBhckBsaW51eC5pYm0uY29tPgpDYzogUGV0ZXIg
-Um9zaW4gPHBlZGFAYXhlbnRpYS5zZT4KQ2M6ICJSYWZhZWwgSi4gV3lzb2NraSIgPHJhZmFlbC5q
-Lnd5c29ja2lAaW50ZWwuY29tPgpDYzogIlJhZmFlbCBKLiBXeXNvY2tpIiA8cmFmYWVsQGtlcm5l
-bC5vcmc+CkNjOiBSYWZhZWwgSi4gV3lzb2NraSIgPHJqd0Byand5c29ja2kubmV0PgpDYzogUm9i
-IEhlcnJpbmcgPHJvYmgrZHRAa2VybmVsLm9yZz4KQ2M6IFJvYmluIE11cnBoeSA8cm9iaW4ubXVy
-cGh5QGFybS5jb20+CkNjOiBSdXNzZWxsIEtpbmcgPGxpbnV4QGFybWxpbnV4Lm9yZy51az4KQ2M6
-IFNhbmR5IEh1YW5nIDxoamNAcm9jay1jaGlwcy5jb20+CkNjOiBTZWJhc3RpYW4gQW5kcnplaiBT
-aWV3aW9yIDxiaWdlYXN5QGxpbnV0cm9uaXguZGU+CkNjOiBTZWJhc3RpYW4gT3R0IDxzZWJvdHRA
-bGludXguaWJtLmNvbT4KQ2M6IFNldW5nLVdvbyBLaW0gPHN3MDMxMi5raW1Ac2Ftc3VuZy5jb20+
-CkNjOiBTaHlhbSBTdW5kYXIgUyBLIDxzaHlhbS1zdW5kYXIucy1rQGFtZC5jb20+CkNjOiBTcmlu
-aXZhcyBLYW5kYWdhdGxhIDxzcmluaXZhcy5rYW5kYWdhdGxhQGxpbmFyby5vcmc+CkNjOiBTdGVm
-YW4gU2NobWlkdCA8c3RlZmFuQGRhdGVuZnJlaWhhZmVuLm9yZz4KQ2M6IFRha2FzaGkgSXdhaSA8
-dGl3YWlAc3VzZS5jb20+CkNjOiBUaGllcnJ5IFJlZGluZyA8dGhpZXJyeS5yZWRpbmdAZ21haWwu
-Y29tPgpDYzogVGhvciBUaGF5ZXIgPHRob3IudGhheWVyQGxpbnV4LmludGVsLmNvbT4KQ2M6IFRv
-bWFzIFdpbmtsZXIgPHRvbWFzLndpbmtsZXJAaW50ZWwuY29tPgpDYzogVWxmIEhhbnNzb24gPHVs
-Zi5oYW5zc29uQGxpbmFyby5vcmc+CkNjOiBXaWxsIERlYWNvbiA8d2lsbC5kZWFjb25AYXJtLmNv
-bT4KQ2M6IFdvbGZyYW0gU2FuZyA8d3NhQHRoZS1kcmVhbXMuZGU+CkNjOiBkZXZpY2V0cmVlQHZn
-ZXIua2VybmVsLm9yZwpDYzogbGludXgtYWNwaUB2Z2VyLmtlcm5lbC5vcmcKQ2M6IGxpbnV4LWZw
-Z2FAdmdlci5rZXJuZWwub3JnCkNjOiBsaW51eC1pMmNAdmdlci5rZXJuZWwub3JnCkNjOiBsaW51
-eC1sZWRzQHZnZXIua2VybmVsLm9yZwpDYzogbGludXgtcm9ja2NoaXBAbGlzdHMuaW5mcmFkZWFk
-Lm9yZwpDYzogbGludXgtcnRjQHZnZXIua2VybmVsLm9yZwpDYzogbGludXgtc3BpQHZnZXIua2Vy
-bmVsLm9yZwpDYzogbGludXgtdXNiQHZnZXIua2VybmVsLm9yZwpDYzogbGludXgtd3BhbkB2Z2Vy
-Lmtlcm5lbC5vcmcKClN1enVraSBLIFBvdWxvc2UgKDEzKToKICBhY3BpOiB1dGlsczogQ2xlYW51
-cCBhY3BpX2Rldl9tYXRjaF9jYgogIGJ1c19maW5kX2RldmljZTogVW5pZnkgdGhlIG1hdGNoIGNh
-bGxiYWNrIHdpdGggY2xhc3NfZmluZF9kZXZpY2UKICBkcml2ZXJfZmluZF9kZXZpY2U6IFVuaWZ5
-IHRoZSBtYXRjaCBmdW5jdGlvbiB3aXRoIGNsYXNzX2ZpbmRfZGV2aWNlKCkKICBkcml2ZXJzOiBB
-ZGQgZ2VuZXJpYyBoZWxwZXIgdG8gbWF0Y2ggYnkgb2Zfbm9kZQogIGRyaXZlcnM6IEFkZCBnZW5l
-cmljIGhlbHBlciB0byBtYXRjaCBieSBmd25vZGUKICBkcml2ZXJzOiBBZGQgZ2VuZXJpYyBoZWxw
-ZXIgdG8gbWF0Y2ggYnkgZGV2dAogIGRyaXZlcnM6IEFkZCBnZW5lcmljIG1hdGNoIGhlbHBlciBi
-eSBBQ1BJX0NPTVBBTklPTiBkZXZpY2UKICBkcml2ZXJzOiBBZGQgZ2VuZXJpYyBoZWxwZXIgdG8g
-bWF0Y2ggYnkgbmFtZQogIGRyaXZlcnM6IEFkZCBnZW5lcmljIGhlbHBlciB0byBtYXRjaCBhbnkg
-ZGV2aWNlCiAgZHJpdmVyczogSW50cm9kdWNlIHZhcmlhbnRzIG9mIGNsYXNzX2ZpbmRfZGV2aWNl
-KCkKICBkcml2ZXJzOiBJbnRyb2R1Y2UgdmFyaWFudHMgZm9yIGJ1c19maW5kX2RldmljZSgpCiAg
-ZHJpdmVyczogSW50cm9kdWNlIHZhcmlhbnRzIG9mIGRyaXZlcl9maW5kX2RldmljZSgpCiAgcGxh
-dGZvcm06IEFkZCBwbGF0Zm9ybV9maW5kX2RldmljZV9ieV9kcml2ZXIoKSBoZWxwZXIKCiBhcmNo
-L3Bvd2VycGMvcGxhdGZvcm1zL3BzZXJpZXMvaWJtZWJ1cy5jICAgICAgICAgICB8ICAgNCArLQog
-ZHJpdmVycy9hY3BpL2FjcGlfbHBzcy5jICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDQg
-Ky0KIGRyaXZlcnMvYWNwaS9zbGVlcC5jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwg
-ICAyICstCiBkcml2ZXJzL2FjcGkvdXRpbHMuYyAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICB8ICAxMSArLQogZHJpdmVycy9hbWJhL3RlZ3JhLWFoYi5jICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgfCAgIDQgKy0KIGRyaXZlcnMvYmFzZS9idXMuYyAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIHwgIDI4ICstLQogZHJpdmVycy9iYXNlL2NvcmUuYyAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgfCAgMzYgKysrKwogZHJpdmVycy9iYXNlL2RldmNvbi5jICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgfCAgIDIgKy0KIGRyaXZlcnMvYmFzZS9kcml2ZXIuYyAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHwgICA0ICstCiBkcml2ZXJzL2Jhc2UvcGxhdGZvcm0u
-YyAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAxNCArKwogZHJpdmVycy9jaGFyL2lwbWkv
-aXBtaV9tc2doYW5kbGVyLmMgICAgICAgICAgICAgICAgfCAgIDggKy0KIGRyaXZlcnMvY2hhci9p
-cG1pL2lwbWlfc2lfcGxhdGZvcm0uYyAgICAgICAgICAgICAgIHwgICAyICstCiBkcml2ZXJzL2Zp
-cm13YXJlL2VmaS9kZXYtcGF0aC1wYXJzZXIuYyAgICAgICAgICAgICB8ICAgNCArLQogZHJpdmVy
-cy9ncHUvZHJtL2RybV9taXBpX2RzaS5jICAgICAgICAgICAgICAgICAgICAgfCAgIDIgKy0KIGRy
-aXZlcnMvZ3B1L2RybS90ZWdyYS9kYy5jICAgICAgICAgICAgICAgICAgICAgICAgIHwgICA0ICst
-CiBkcml2ZXJzL2h3dHJhY2luZy9jb3Jlc2lnaHQvY29yZXNpZ2h0LmMgICAgICAgICAgICB8ICAg
-NiArLQogZHJpdmVycy9od3RyYWNpbmcvY29yZXNpZ2h0L29mX2NvcmVzaWdodC5jICAgICAgICAg
-fCAgIDIgKy0KIGRyaXZlcnMvaHd0cmFjaW5nL2ludGVsX3RoL2NvcmUuYyAgICAgICAgICAgICAg
-ICAgIHwgICA1ICstCiBkcml2ZXJzL2kyYy9idXNzZXMvaTJjLWFtZC1tcDItcGNpLmMgICAgICAg
-ICAgICAgICB8ICAgMiArLQogZHJpdmVycy9pMmMvaTJjLWNvcmUtYWNwaS5jICAgICAgICAgICAg
-ICAgICAgICAgICAgfCAgIDQgKy0KIGRyaXZlcnMvaTJjL2kyYy1jb3JlLW9mLmMgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHwgICA0ICstCiBkcml2ZXJzL2lpby9pbmtlcm4uYyAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICB8ICAgMiArLQogZHJpdmVycy9pbmZpbmliYW5kL2h3L2hucy9o
-bnNfcm9jZV9od192MS5jICAgICAgICAgfCAgIDIgKy0KIGRyaXZlcnMvaW9tbXUvYXJtLXNtbXUt
-djMuYyAgICAgICAgICAgICAgICAgICAgICAgIHwgICAyICstCiBkcml2ZXJzL2lvbW11L2FybS1z
-bW11LmMgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMiArLQogZHJpdmVycy9tZmQvYWx0
-ZXJhLXN5c21nci5jICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDQgKy0KIGRyaXZlcnMvbWZk
-L3N5c2Nvbi5jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAyICstCiBkcml2ZXJz
-L25ldC9ldGhlcm5ldC9oaXNpbGljb24vaG5zL2huc19kc2FmX21pc2MuYyB8ICAgMiArLQogZHJp
-dmVycy9uZXQvZXRoZXJuZXQvdGkvY3Bzdy1waHktc2VsLmMgICAgICAgICAgICAgfCAgIDQgKy0K
-IGRyaXZlcnMvbmV0L2V0aGVybmV0L3RpL2RhdmluY2lfZW1hYy5jICAgICAgICAgICAgIHwgICAy
-ICstCiBkcml2ZXJzL25ldC9ldGhlcm5ldC90b3NoaWJhL3RjMzU4MTUuYyAgICAgICAgICAgICB8
-ICAgNCArLQogZHJpdmVycy9udm1lbS9jb3JlLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgfCAgIDIgKy0KIGRyaXZlcnMvb2Yvb2ZfbWRpby5jICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIHwgICAyICstCiBkcml2ZXJzL29mL3BsYXRmb3JtLmMgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICB8ICAgMiArLQogZHJpdmVycy9wY2kvcHJvYmUuYyAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgfCAgIDIgKy0KIGRyaXZlcnMvcGNpL3NlYXJjaC5jICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIHwgICA0ICstCiBkcml2ZXJzL3MzOTAvY2lvL2Njd2dyb3VwLmMg
-ICAgICAgICAgICAgICAgICAgICAgICB8ICAgMiArLQogZHJpdmVycy9zMzkwL2Npby9jaHNjX3Nj
-aC5jICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDIgKy0KIGRyaXZlcnMvczM5MC9jaW8vY3Nz
-LmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICA0ICstCiBkcml2ZXJzL3MzOTAvY2lv
-L2RldmljZS5jICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgNiArLQogZHJpdmVycy9zMzkw
-L2Npby9zY20uYyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDQgKy0KIGRyaXZlcnMv
-czM5MC9jcnlwdG8vYXBfYnVzLmMgICAgICAgICAgICAgICAgICAgICAgIHwgICA4ICstCiBkcml2
-ZXJzL3Njc2kvc2NzaV9wcm9jLmMgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMiArLQog
-ZHJpdmVycy9zcGkvc3BpLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDQg
-Ky0KIGRyaXZlcnMvc3RhZ2luZy9tb3N0L2NvcmUuYyAgICAgICAgICAgICAgICAgICAgICAgIHwg
-ICA0ICstCiBkcml2ZXJzL3RodW5kZXJib2x0L3N3aXRjaC5jICAgICAgICAgICAgICAgICAgICAg
-ICB8ICAgNCArLQogZHJpdmVycy91c2IvY29yZS9kZXZpby5jICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgfCAgIDQgKy0KIGRyaXZlcnMvdXNiL2NvcmUvdXNiLmMgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIHwgICA0ICstCiBkcml2ZXJzL3VzYi9waHkvcGh5LWFtMzM1eC1jb250cm9sLmMg
-ICAgICAgICAgICAgICB8ICAgNCArLQogZHJpdmVycy91c2IvcGh5L3BoeS1pc3AxMzAxLmMgICAg
-ICAgICAgICAgICAgICAgICAgfCAgIDQgKy0KIGRyaXZlcnMvdmlzb3JidXMvdmlzb3JidXNfbWFp
-bi5jICAgICAgICAgICAgICAgICAgIHwgICA0ICstCiBpbmNsdWRlL2xpbnV4L2RldmljZS5oICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICB8IDE4OCArKysrKysrKysrKysrKysrKysrKy0KIGlu
-Y2x1ZGUvbGludXgvcGxhdGZvcm1fZGV2aWNlLmggICAgICAgICAgICAgICAgICAgIHwgICAzICsK
-IHNvdW5kL3NvYy9yb2NrY2hpcC9yazMzOTlfZ3J1X3NvdW5kLmMgICAgICAgICAgICAgIHwgICAy
-ICstCiA1NCBmaWxlcyBjaGFuZ2VkLCAzMjAgaW5zZXJ0aW9ucygrKSwgMTIzIGRlbGV0aW9ucygt
-KQoKLS0gCjIuNy40CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwpkcmktZGV2ZWwgbWFpbGluZyBsaXN0CmRyaS1kZXZlbEBsaXN0cy5mcmVlZGVza3RvcC5v
-cmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9kcmktZGV2
-ZWw=
+
+Hi Jones,
+
+
+> Subject
+> 
+> Re: [PATCH v13 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3 RPC-IF 
+
+> controller bindings
+> 
+> Hello!
+> 
+> On 06/03/2019 04:04 PM, Lee Jones wrote:
+> 
+> >>> Document the bindings used by the Renesas R-Car Gen3 RPC-IF 
+controller.
+> >>>
+> >>> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+> >>> ---
+> >>>  .../devicetree/bindings/mfd/renesas-rpc-if.txt     | 65 
+++++++++++++++++++++++
+> >>>  1 file changed, 65 insertions(+)
+> >>>  create mode 100644 
+Documentation/devicetree/bindings/mfd/renesas-rpc-if.txt
+> >>>
+> >>> diff --git 
+a/Documentation/devicetree/bindings/mfd/renesas-rpc-if.txt b/
+> Documentation/devicetree/bindings/mfd/renesas-rpc-if.txt
+> >>> new file mode 100644
+> >>> index 0000000..20ec85b
+> >>> --- /dev/null
+> >>> +++ b/Documentation/devicetree/bindings/mfd/renesas-rpc-if.txt
+> >>> @@ -0,0 +1,65 @@
+> >>> +Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
+> >>> +---------------------------------------------------------
+> >>> +
+> >>> +RPC-IF supports both SPI NOR and HyperFlash (CFI-compliant flash)
+> >>> +
+> >>> +Required properties:
+> >>> +- compatible: should be an SoC-specific compatible value, followed 
+by
+> >>> +      "renesas,rcar-gen3-rpc" as a fallback.
+> >>> +      supported SoC-specific values are:
+> >>> +      "renesas,r8a77995-rpc"   (R-Car D3)
+> >>> +- reg: should contain three register areas:
+> >>> +   first for RPC-IF registers,
+> >>> +   second for the direct mapping read mode and
+> >>> +   third for the write buffer area.
+> >>> +- reg-names: should contain "regs", "dirmap" and "wbuf"
+> >>> +- clocks: should contain 1 entries for the module's clock
+> >>> +- clock-names: should contain "rpc"
+> >>> +- power-domains: should contain system-controller(sysc) for 
+power-domain-cell
+> >>> +- resets: should contain clock pulse generator(cpg) for reset-cell,
+> >>> +     power-domain-cell and clock-cell
+> >>
+> >>    That's just some nonsense, sorry...
+> >>    I suggest that you stop reposting your patches as I'm going to 
+post
+> >> my version of this patchset RSN (based on your patches, of course) 
+and I'm
+> >> going to take care of fixing this file as well.
+> > 
+> > Why is this necessary?
+> 
+>    Because Mason doesn't want to develop the HyperFlash driver (or even 
+move his code
+> in preparation to this driver being developed). I must develop this 
+driver, and I'd
+> like to avoid the extra churn of mving the code between the MFD and SPI 
+drivers.
+> 
+
+There might be some misunderstandings.
+
+I had been requested to boot R-CAR from the OctaFlash and finally I have 
+achieved it 
+by patching SPI framework for OctaFlash operation and RPC-IF SPI driver. 
+
+We were aware of the lacking support of RPC-IF in the Linux kernel at that 
+time and 
+I though I could contribute what I had developed.
+
+At that time for my first submission of RPC-IF SPI on 15 NOv 2018, there 
+was no any 
+HyperFlash (or Hyper Bus) patches. And we did not consider it because the 
+resource
+of HyperFlash was shortage to us.
+
+RPC-IF SPI was applied by Mark on 12,Feb 2019 but Marek comment to add 
+supporting
+MFD for RPC-IF and then I patched RPC-IF to MFD and SPI till this v13.
+
+I always think about:
+
+Is RPC-IF really good/suitable for MFD ?
+RPC-IF works either in SPI or HyperFlash is decided by external hardware 
+pins 
+configuration and it can NOT switch it's operation mode in the run time. 
+This is not like my understanding of MFD.
+
+As your comments:
+------------------------------------------------------------------------>
+> +              flash = of_get_next_child(pdev->dev.of_node, NULL);
+> +              if (!flash) {
+> +                              dev_warn(&pdev->dev, "no flash node 
+found\n");
+> +                              return -ENODEV;
+> +              }
+> +
+> +              if (of_device_is_compatible(flash, "jedec,spi-nor")) {
+> +                              cell = &rpc_spi_ctlr;
+> +              } else if (of_device_is_compatible(flash, "cfi-flash")) {
+> +                              cell = &rpc_hf_ctlr;
+> +              } else {
+> +                              dev_warn(&pdev->dev, "unknown flash 
+type\n");
+> +                              return -ENODEV;
+> +              }
+
+Are there going to be more children coming?
+
+If not, I'd argue that this is not an MFD.
+<-------------------------------------------------------------------
+
+I agreed with your opinion and I will resubmit RPC-IF in SPI only
+if you also agree with it.
+
+
+thanks & best regards,
+Mason
+
+
+
+CONFIDENTIALITY NOTE:
+
+This e-mail and any attachments may contain confidential information 
+and/or personal data, which is protected by applicable laws. Please be 
+reminded that duplication, disclosure, distribution, or use of this e-mail 
+(and/or its attachments) or any part thereof is prohibited. If you receive 
+this e-mail in error, please notify us immediately and delete this mail as 
+well as its attachment(s) from your system. In addition, please be 
+informed that collection, processing, and/or use of personal data is 
+prohibited unless expressly permitted by personal data protection laws. 
+Thank you for your attention and cooperation.
+
+Macronix International Co., Ltd.
+
+=====================================================================
+
+
+
+============================================================================
+
+CONFIDENTIALITY NOTE:
+
+This e-mail and any attachments may contain confidential information and/or personal data, which is protected by applicable laws. Please be reminded that duplication, disclosure, distribution, or use of this e-mail (and/or its attachments) or any part thereof is prohibited. If you receive this e-mail in error, please notify us immediately and delete this mail as well as its attachment(s) from your system. In addition, please be informed that collection, processing, and/or use of personal data is prohibited unless expressly permitted by personal data protection laws. Thank you for your attention and cooperation.
+
+Macronix International Co., Ltd.
+
+=====================================================================

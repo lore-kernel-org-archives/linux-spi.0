@@ -1,64 +1,125 @@
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH 07/13] drivers: Add generic match helper by ACPI_COMPANION device
-Date: Thu, 6 Jun 2019 11:57:33 +0200
-Message-ID: <CAJZ5v0i0WP88+vTEheSTfAoSi5nEdjaLs4KOGxXK3_AoPhPrhg@mail.gmail.com>
-References: <1559747630-28065-1-git-send-email-suzuki.poulose@arm.com>
- <1559747630-28065-8-git-send-email-suzuki.poulose@arm.com>
- <CAJZ5v0h+maPj-ijKV_vvQBpHD7N-VMiAqSeyztAkiUR9E2WdmQ@mail.gmail.com> <1f230eb7-f4e3-ed4e-960d-c3bbb60f0a18@arm.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: mediatek: add SPI_LSB_FIRST support" to the spi tree
+Date: Thu,  6 Jun 2019 22:27:33 +0100 (BST)
+Message-ID: <20190606212733.5E2FE440046@finisterre.sirena.org.uk>
+References: <1559704024-5369-1-git-send-email-leilk.liu@mediatek.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Len Brown <lenb@kernel.org>,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1f230eb7-f4e3-ed4e-960d-c3bbb60f0a18@arm.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Rutland <mark.rutland@arm.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, fparent@baylibre.com,
+ Mark Brown <broonie@kernel.org>, linux-mediatek@lists.infradead.org,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ linux-arm-kernel@lists.infradead.org
+To: Leilk Liu <leilk.liu@mediatek.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1559704024-5369-1-git-send-email-leilk.liu@mediatek.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jun 6, 2019 at 11:28 AM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
->
->
->
-> On 06/06/2019 10:17, Rafael J. Wysocki wrote:
-> > On Wed, Jun 5, 2019 at 5:14 PM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
-> >>
-> >> Add a generic helper to match a device by the acpi device.
-> >
-> > "by its ACPI companion device object", please.
->
-> Sure.
->
-> >
-> > Also, it would be good to combine this patch with the patch(es) that
-> > cause device_match_acpi_dev() to be actually used.
-> >
-> > Helpers without any users are arguably not useful.
->
-> Sure, the helpers will be part of the part2 of the whole series,
-> which will actually have the individual subsystems consuming the
-> new helpers. For your reference, it is available here :
->
-> http://linux-arm.org/git?p=linux-skp.git;a=shortlog;h=refs/heads/driver-cleanup/v2
->
-> e.g:
-> http://linux-arm.org/git?p=linux-skp.git;a=commit;h=59534e843e2f214f1f29659993f6e423bef16b28
->
-> I could simply pull those patches into this part, if you prefer that.
+The patch
 
-Not really.
+   spi: mediatek: add SPI_LSB_FIRST support
 
-I'd rather do it the other way around: push the introduction of the
-helpers to part 2.
+has been applied to the spi tree at
 
-> However, that would be true for the other patches in the part2.
-> I am open to suggestions, on how to split the series.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.3
 
-You can introduce each helper along with its users in one patch.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-This way the total number of patches will be reduced and they will be
-easier to review IMO.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 3e582c6e911ffe6c90b9f90324bdf85fc728d0c3 Mon Sep 17 00:00:00 2001
+From: Leilk Liu <leilk.liu@mediatek.com>
+Date: Wed, 5 Jun 2019 11:07:04 +0800
+Subject: [PATCH] spi: mediatek: add SPI_LSB_FIRST support
+
+this patch add SPI_LSB_FIRST feature support.
+
+Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-mt65xx.c                 | 15 ++++++---------
+ include/linux/platform_data/spi-mt65xx.h |  2 --
+ 2 files changed, 6 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 0cce6f0ba824..7f4dc1844789 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -131,8 +131,6 @@ static const struct mtk_spi_compatible mt8183_compat = {
+  * supplies it.
+  */
+ static const struct mtk_chip_config mtk_default_chip_info = {
+-	.rx_mlsb = 1,
+-	.tx_mlsb = 1,
+ 	.cs_pol = 0,
+ 	.sample_sel = 0,
+ };
+@@ -203,14 +201,13 @@ static int mtk_spi_prepare_message(struct spi_master *master,
+ 		reg_val &= ~SPI_CMD_CPOL;
+ 
+ 	/* set the mlsbx and mlsbtx */
+-	if (chip_config->tx_mlsb)
+-		reg_val |= SPI_CMD_TXMSBF;
+-	else
++	if (spi->mode & SPI_LSB_FIRST) {
+ 		reg_val &= ~SPI_CMD_TXMSBF;
+-	if (chip_config->rx_mlsb)
+-		reg_val |= SPI_CMD_RXMSBF;
+-	else
+ 		reg_val &= ~SPI_CMD_RXMSBF;
++	} else {
++		reg_val |= SPI_CMD_TXMSBF;
++		reg_val |= SPI_CMD_RXMSBF;
++	}
+ 
+ 	/* set the tx/rx endian */
+ #ifdef __LITTLE_ENDIAN
+@@ -607,7 +604,7 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 
+ 	master->auto_runtime_pm = true;
+ 	master->dev.of_node = pdev->dev.of_node;
+-	master->mode_bits = SPI_CPOL | SPI_CPHA;
++	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
+ 
+ 	master->set_cs = mtk_spi_set_cs;
+ 	master->prepare_message = mtk_spi_prepare_message;
+diff --git a/include/linux/platform_data/spi-mt65xx.h b/include/linux/platform_data/spi-mt65xx.h
+index ba4e4bb70262..8d5df58a13ef 100644
+--- a/include/linux/platform_data/spi-mt65xx.h
++++ b/include/linux/platform_data/spi-mt65xx.h
+@@ -14,8 +14,6 @@
+ 
+ /* Board specific platform_data */
+ struct mtk_chip_config {
+-	u32 tx_mlsb;
+-	u32 rx_mlsb;
+ 	u32 cs_pol;
+ 	u32 sample_sel;
+ };
+-- 
+2.20.1

@@ -1,52 +1,57 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: spi-gpio: Make probe function __init_or_module
-Date: Fri, 7 Jun 2019 17:05:39 +0100
-Message-ID: <20190607160539.GI2456@sirena.org.uk>
-References: <20190607155631.15072-1-paul@crapouillou.net>
- <20190607155907.GH2456@sirena.org.uk>
- <1559923340.1918.0@crapouillou.net>
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Subject: [PATCH] spi: Use struct_size() helper
+Date: Fri, 7 Jun 2019 13:48:45 -0500
+Message-ID: <20190607184845.GA13401@embeddedor>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="LPYkZes1JsE9T1lX"
-Cc: od@zcrc.me, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Paul Cercueil <paul@crapouillou.net>
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1559923340.1918.0@crapouillou.net>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+One of the more common cases of allocation size calculations is finding
+the size of a structure that has a zero-sized array at the end, along
+with memory for some number of elements for that array. For example:
 
---LPYkZes1JsE9T1lX
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+struct spi_replaced_transfers {
+	...
+        struct spi_transfer inserted_transfers[];
+};
 
-On Fri, Jun 07, 2019 at 06:02:20PM +0200, Paul Cercueil wrote:
-> Le ven. 7 juin 2019 =E0 17:59, Mark Brown <broonie@kernel.org> a =E9crit :
+Make use of the struct_size() helper instead of an open-coded version
+in order to avoid any potential type mistakes.
 
-> > Hopefully not since we might probe later on if something registers a new
-> > device...
+So, replace the following form:
 
-> Makes sense. Sorry for the noise.
+insert * sizeof(struct spi_transfer) + sizeof(struct spi_replaced_transfers)
 
-No problem.  There used to be an annotation for probe() and remove()
-functions but it got removed since hotplug and deferred probe made it
-very difficult to ever practically take advanage of it.
+with:
 
---LPYkZes1JsE9T1lX
-Content-Type: application/pgp-signature; name="signature.asc"
+struct_size(rxfer, inserted_transfers, insert)
 
------BEGIN PGP SIGNATURE-----
+This code was detected with the help of Coccinelle.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlz6i1IACgkQJNaLcl1U
-h9Ctggf/ZkWVbeBDP7S/xhHdF5lonQeFIVA24awMWy1BPO+zdDas4oSFwUBik4c4
-u+krCzZdQzwLx5ZTHPFSP+cxhvYy0HV3hQxIXjhCFS7JupiL1npDKoCLGjvKSCYI
-5hMjEASlUQYk0XiRBVfnEKshR7dPq0UBcRkgCnmo7xOpxaeg75vfjtePZmGYNPKA
-q3aDOK9Z7fGJFzF8qSDAUrofo7D2DiWZRuH8/aB6W46IAstodUZjLOS9cnU+SC0e
-GQ+hj4XaJg7Jfmy3SAeck6fmDOF6+Xq5hulHItYU+nzYLOLGZiJrjiHzf9ilPNyG
-7wU+IQpIiKYRkfo5BIueEGnAvKUf3A==
-=UR4I
------END PGP SIGNATURE-----
+Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+---
+ drivers/spi/spi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---LPYkZes1JsE9T1lX--
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index e0cd8ccfe92d..69e492ed414a 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2769,8 +2769,7 @@ struct spi_replaced_transfers *spi_replace_transfers(
+ 
+ 	/* allocate the structure using spi_res */
+ 	rxfer = spi_res_alloc(msg->spi, __spi_replace_transfers_release,
+-			      insert * sizeof(struct spi_transfer)
+-			      + sizeof(struct spi_replaced_transfers)
++			      struct_size(rxfer, inserted_transfers, insert)
+ 			      + extradatasize,
+ 			      gfp);
+ 	if (!rxfer)
+-- 
+2.21.0

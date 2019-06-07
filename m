@@ -1,37 +1,45 @@
-From: Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH] spi: spi-gpio: Make probe function __init_or_module
-Date: Fri,  7 Jun 2019 17:56:31 +0200
-Message-ID: <20190607155631.15072-1-paul@crapouillou.net>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: spi-gpio: Make probe function __init_or_module
+Date: Fri, 7 Jun 2019 16:59:07 +0100
+Message-ID: <20190607155907.GH2456@sirena.org.uk>
+References: <20190607155631.15072-1-paul@crapouillou.net>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: od@zcrc.me, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>
-To: Mark Brown <broonie@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="J5NgmdQsYR8vwsNL"
+Cc: od@zcrc.me, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Paul Cercueil <paul@crapouillou.net>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20190607155631.15072-1-paul@crapouillou.net>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This allows the probe function to be dropped after the kernel finished
-its initialization, in the case where the driver was not compiled as a
-module.
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
----
- drivers/spi/spi-gpio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--J5NgmdQsYR8vwsNL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index eca9d52ecf65..c242c962772d 100644
---- a/drivers/spi/spi-gpio.c
-+++ b/drivers/spi/spi-gpio.c
-@@ -358,7 +358,7 @@ static void spi_gpio_put(void *data)
- 	spi_master_put(data);
- }
- 
--static int spi_gpio_probe(struct platform_device *pdev)
-+static int __init_or_module spi_gpio_probe(struct platform_device *pdev)
- {
- 	int				status;
- 	struct spi_master		*master;
--- 
-2.21.0.593.g511ec345e18
+On Fri, Jun 07, 2019 at 05:56:31PM +0200, Paul Cercueil wrote:
+> This allows the probe function to be dropped after the kernel finished
+> its initialization, in the case where the driver was not compiled as a
+> module.
+
+Hopefully not since we might probe later on if something registers a new
+device...
+
+--J5NgmdQsYR8vwsNL
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlz6icgACgkQJNaLcl1U
+h9Ad9wf/Wgtxk0TyVloO/xxpWXuSBoddyvwLGPNpQgU0WoznSXy9Q8G9bklGm2OY
+YRQr42szaLb26rgpWfS6m73qNGAbroMwNAzOLIasQx4a1vMPVC7cgPqQBQ7rCOY1
+lWLX0LsbTJM7lnrYxQVH48TTJtqg8JDAo4JuhrCO0Cd6USMmiBDXP1csXbYcdyLi
+7MVQD5N04g2XvMAQ3l0Y8HPU2JmzvIr0lcRRlwUo+Q4ybRF9zoDlPaxvumhmJAam
+6tbrW7iZPPdPtBgoAiDEjifXojCwPbfrL1GgUtkIRWKkkDcKGAwzTJvLFR6kVa7l
+qL8dkCcwCADNwG/O09b3O+YyD8ksLA==
+=P0kD
+-----END PGP SIGNATURE-----
+
+--J5NgmdQsYR8vwsNL--

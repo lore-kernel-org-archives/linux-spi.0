@@ -1,57 +1,76 @@
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: [PATCH] spi: Use struct_size() helper
-Date: Fri, 7 Jun 2019 13:48:45 -0500
-Message-ID: <20190607184845.GA13401@embeddedor>
+From: "Life is hard, and then you die" <ronald@innovation.ch>
+Subject: Re: [PATCH v2] spi/acpi: enumerate all SPI slaves in the namespace
+Date: Sun, 9 Jun 2019 16:44:27 -0700
+Message-ID: <20190609234427.GA16597@innovation.ch>
+References: <20190530111634.32209-1-ard.biesheuvel@linaro.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Lukas Wunner <lukas@wunner.de>, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
+ andy.shevchenko@gmail.com, broonie@kernel.org,
+ Jarkko Nikula <jarkko.nikula@linux.intel.com>, masahisa.kojima@linaro.org,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ linux-arm-kernel@lists.infradead.org
+To: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <20190530111634.32209-1-ard.biesheuvel@linaro.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-One of the more common cases of allocation size calculations is finding
-the size of a structure that has a zero-sized array at the end, along
-with memory for some number of elements for that array. For example:
 
-struct spi_replaced_transfers {
-	...
-        struct spi_transfer inserted_transfers[];
-};
+On Thu, May 30, 2019 at 01:16:34PM +0200, Ard Biesheuvel wrote:
+> Currently, the ACPI enumeration that takes place when registering a
+> SPI master only considers immediate child devices in the ACPI namespace,
+> rather than checking the ResourceSource field in the SpiSerialBus()
+> resource descriptor.
+> 
+> This is incorrect: SPI slaves could reside anywhere in the ACPI
+> namespace, and so we should enumerate the entire namespace and look for
+> any device that refers to the newly registered SPI master in its
+> resource descriptor.
+> 
+> So refactor the existing code and use a lookup structure so that
+> allocating the SPI device structure is deferred until we have identified
+> the device as an actual child of the controller. This approach is
+> loosely based on the way the I2C subsystem handles ACPI enumeration.
+> 
+> Note that Apple x86 hardware does not rely on SpiSerialBus() resources
+> in _CRS but uses nested devices below the controller's device node in
+> the ACPI namespace, with a special set of device properties. This means
+> we have to take care to only parse those properties for device nodes
+> that are direct children of the controller node.
+> 
+> Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Cc: linux-spi@vger.kernel.org
+> Cc: broonie@kernel.org
+> Cc: andy.shevchenko@gmail.com
+> Cc: masahisa.kojima@linaro.org
+> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+> Cc: linux-acpi@vger.kernel.org
+> Cc: Lukas Wunner <lukas@wunner.de>
+> 
+> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> ---
+>  drivers/spi/spi.c | 103 ++++++++++++++------
+>  1 file changed, 72 insertions(+), 31 deletions(-)
+[snip]
 
-Make use of the struct_size() helper instead of an open-coded version
-in order to avoid any potential type mistakes.
+FYI, I tested this on a MacBook Pro where the (SPI) keyboard driver
+depends on those special device properties, and verified this patch
+doesn't break anything there.
 
-So, replace the following form:
 
-insert * sizeof(struct spi_transfer) + sizeof(struct spi_replaced_transfers)
+  Cheers,
 
-with:
-
-struct_size(rxfer, inserted_transfers, insert)
-
-This code was detected with the help of Coccinelle.
-
-Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
----
- drivers/spi/spi.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index e0cd8ccfe92d..69e492ed414a 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2769,8 +2769,7 @@ struct spi_replaced_transfers *spi_replace_transfers(
- 
- 	/* allocate the structure using spi_res */
- 	rxfer = spi_res_alloc(msg->spi, __spi_replace_transfers_release,
--			      insert * sizeof(struct spi_transfer)
--			      + sizeof(struct spi_replaced_transfers)
-+			      struct_size(rxfer, inserted_transfers, insert)
- 			      + extradatasize,
- 			      gfp);
- 	if (!rxfer)
--- 
-2.21.0
+  Ronald

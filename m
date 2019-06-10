@@ -1,7 +1,7 @@
 From: yibin.gong@nxp.com
-Subject: [PATCH v5 10/15] dma: imx-sdma: add i.mx6ul/6sx compatible name
-Date: Mon, 10 Jun 2019 16:17:48 +0800
-Message-ID: <20190610081753.11422-11-yibin.gong@nxp.com>
+Subject: [PATCH v5 14/15]  arm64: defconfig: Enable SDMA on i.mx8mq/8mm
+Date: Mon, 10 Jun 2019 16:17:52 +0800
+Message-ID: <20190610081753.11422-15-yibin.gong@nxp.com>
 References: <20190610081753.11422-1-yibin.gong@nxp.com>
 Cc: linux-spi@vger.kernel.org, linux-imx@nxp.com,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
@@ -18,25 +18,35 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Robin Gong <yibin.gong@nxp.com>
 
-Add i.mx6ul and i.mx6sx compatible name in binding doc.
+Enable SDMA support on i.mx8mq/8mm chips, including enabling
+CONFIG_FW_LOADER_USER_HELPER/CONFIG_FW_LOADER_USER_HELPER_FALLBACK
+for firmware loaded by udev.
 
 Signed-off-by: Robin Gong <yibin.gong@nxp.com>
 ---
- Documentation/devicetree/bindings/dma/fsl-imx-sdma.txt | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/configs/defconfig | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/dma/fsl-imx-sdma.txt b/Documentation/devicetree/bindings/dma/fsl-imx-sdma.txt
-index 9d8bbac..d024a83 100644
---- a/Documentation/devicetree/bindings/dma/fsl-imx-sdma.txt
-+++ b/Documentation/devicetree/bindings/dma/fsl-imx-sdma.txt
-@@ -9,6 +9,8 @@ Required properties:
-       "fsl,imx53-sdma"
-       "fsl,imx6q-sdma"
-       "fsl,imx7d-sdma"
-+      "fsl,imx6sx-sdma"
-+      "fsl,imx6ul-sdma"
-       "fsl,imx8mq-sdma"
-   The -to variants should be preferred since they allow to determine the
-   correct ROM script addresses needed for the driver to work without additional
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index bb0705e..e8aabc52 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -195,6 +195,8 @@ CONFIG_PCIE_HISI_STB=y
+ CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
+ CONFIG_DEVTMPFS=y
+ CONFIG_DEVTMPFS_MOUNT=y
++CONFIG_FW_LOADER_USER_HELPER=y
++CONFIG_FW_LOADER_USER_HELPER_FALLBACK=y
+ CONFIG_HISILICON_LPC=y
+ CONFIG_SIMPLE_PM_BUS=y
+ CONFIG_MTD=y
+@@ -627,6 +629,7 @@ CONFIG_RTC_DRV_XGENE=y
+ CONFIG_DMADEVICES=y
+ CONFIG_FSL_EDMA=y
+ CONFIG_DMA_BCM2835=m
++CONFIG_IMX_SDMA=y
+ CONFIG_K3_DMA=y
+ CONFIG_MV_XOR=y
+ CONFIG_MV_XOR_V2=y
 -- 
 2.7.4

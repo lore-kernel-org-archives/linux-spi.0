@@ -1,107 +1,74 @@
-From: Vinod Koul <vkoul@kernel.org>
-Subject: Re: [PATCH v5 15/15] dmaengine: imx-sdma: add uart rom script
-Date: Mon, 10 Jun 2019 18:25:34 +0530
-Message-ID: <20190610125534.GQ9160@vkoul-mobl.Dlink>
-References: <20190610081753.11422-1-yibin.gong@nxp.com>
- <20190610081753.11422-16-yibin.gong@nxp.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] spi fixes for v5.2
+Date: Mon, 10 Jun 2019 15:26:48 +0100
+Message-ID: <20190610142648.GB5316@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: robh+dt@kernel.org, mark.rutland@arm.com, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, kernel@pengutronix.de, broonie@kernel.org,
-        festevam@gmail.com, dan.j.williams@intel.com,
-        u.kleine-koenig@pengutronix.de, catalin.marinas@arm.com,
-        l.stach@pengutronix.de, will.deacon@arm.com,
-        linux-spi@vger.kernel.org, linux-imx@nxp.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        dmaengine@vger.kernel.org, devicetree@vger.kernel.org
-To: yibin.gong@nxp.com
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="5I6of5zJg18YgZEa"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Linus Torvalds <torvalds@linux-foundation.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20190610081753.11422-16-yibin.gong@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 10-06-19, 16:17, yibin.gong@nxp.com wrote:
-> From: Robin Gong <yibin.gong@nxp.com>
-> 
-> For the compatibility of NXP internal legacy kernel before 4.19 which
-> is based on uart ram script and upstreaming kernel based on uart rom
-> script, add both uart ram/rom script in latest sdma firmware. By default
-> uart rom script used.
-> Besides, add two multi-fifo scripts for SAI/PDM on i.mx8m/8mm and add
-> back qspi script miss for v4(i.mx7d/8m/8mm family, but v3 is for i.mx6).
-> 
-> rom script:
-> 	uart_2_mcu_addr
-> 	uartsh_2_mcu_addr /* through spba bus */
-> ram script:
-> 	uart_2_mcu_ram_addr
-> 	uartsh_2_mcu_ram_addr /* through spba bus */
-> 
-> Please get latest sdma firmware from the below and put them into the path
-> (/lib/firmware/imx/sdma/):
-> https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
-> /tree/imx/sdma
 
-How does this work with folks have older firmware?
+--5I6of5zJg18YgZEa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> 
-> Signed-off-by: Robin Gong <yibin.gong@nxp.com>
-> ---
->  drivers/dma/imx-sdma.c                     |  4 ++--
->  include/linux/platform_data/dma-imx-sdma.h | 10 ++++++++--
->  2 files changed, 10 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
-> index f7c150d..deea9aa 100644
-> --- a/drivers/dma/imx-sdma.c
-> +++ b/drivers/dma/imx-sdma.c
-> @@ -1733,8 +1733,8 @@ static void sdma_issue_pending(struct dma_chan *chan)
->  
->  #define SDMA_SCRIPT_ADDRS_ARRAY_SIZE_V1	34
->  #define SDMA_SCRIPT_ADDRS_ARRAY_SIZE_V2	38
-> -#define SDMA_SCRIPT_ADDRS_ARRAY_SIZE_V3	41
-> -#define SDMA_SCRIPT_ADDRS_ARRAY_SIZE_V4	42
-> +#define SDMA_SCRIPT_ADDRS_ARRAY_SIZE_V3	45
-> +#define SDMA_SCRIPT_ADDRS_ARRAY_SIZE_V4	46
->  
->  static void sdma_add_scripts(struct sdma_engine *sdma,
->  		const struct sdma_script_start_addrs *addr)
-> diff --git a/include/linux/platform_data/dma-imx-sdma.h b/include/linux/platform_data/dma-imx-sdma.h
-> index f794fee..e12d2e8 100644
-> --- a/include/linux/platform_data/dma-imx-sdma.h
-> +++ b/include/linux/platform_data/dma-imx-sdma.h
-> @@ -20,12 +20,12 @@ struct sdma_script_start_addrs {
->  	s32 per_2_firi_addr;
->  	s32 mcu_2_firi_addr;
->  	s32 uart_2_per_addr;
-> -	s32 uart_2_mcu_addr;
-> +	s32 uart_2_mcu_ram_addr;
->  	s32 per_2_app_addr;
->  	s32 mcu_2_app_addr;
->  	s32 per_2_per_addr;
->  	s32 uartsh_2_per_addr;
-> -	s32 uartsh_2_mcu_addr;
-> +	s32 uartsh_2_mcu_ram_addr;
->  	s32 per_2_shp_addr;
->  	s32 mcu_2_shp_addr;
->  	s32 ata_2_mcu_addr;
-> @@ -52,7 +52,13 @@ struct sdma_script_start_addrs {
->  	s32 zcanfd_2_mcu_addr;
->  	s32 zqspi_2_mcu_addr;
->  	s32 mcu_2_ecspi_addr;
-> +	s32 mcu_2_sai_addr;
-> +	s32 sai_2_mcu_addr;
-> +	s32 uart_2_mcu_addr;
-> +	s32 uartsh_2_mcu_addr;
->  	/* End of v3 array */
-> +	s32 mcu_2_zqspi_addr;
-> +	/* End of v4 array */
->  };
->  
->  /**
-> -- 
-> 2.7.4
+The following changes since commit d61ad23cb3be09ff4956e9b9794134456522817f:
 
--- 
-~Vinod
+  spi: Clear SPI_CS_HIGH flag from bad_bits for GPIO chip-select (2019-05-02 10:38:00 +0900)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v5.2-rc4
+
+for you to fetch changes up to f3440d9a0da292dc4998d9393162fcfb996fd671:
+
+  spi: abort spi_sync if failed to prepare_transfer_hardware (2019-05-23 14:36:13 +0100)
+
+----------------------------------------------------------------
+spi: Fixes for v5.2
+
+A small set of fixes here, one core fix for error handling when we fail
+to set up the hardware before initiating a transfer and another one
+reverting a change in the core which broke Raspberry Pi in common use
+cases as part of some optimization work.  There's also a couple of
+driver specific fixes.
+
+----------------------------------------------------------------
+Christophe Leroy (1):
+      spi: spi-fsl-spi: call spi_finalize_current_message() at the end
+
+Mark Brown (1):
+      spi: Fix Raspberry Pi breakage
+
+Super Liu (1):
+      spi: abort spi_sync if failed to prepare_transfer_hardware
+
+YueHaibing (1):
+      spi: bitbang: Fix NULL pointer dereference in spi_unregister_master
+
+ drivers/spi/spi-bitbang.c |  2 +-
+ drivers/spi/spi-fsl-spi.c |  2 +-
+ drivers/spi/spi.c         | 11 ++++++++---
+ 3 files changed, 10 insertions(+), 5 deletions(-)
+
+--5I6of5zJg18YgZEa
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAlz+aKcACgkQJNaLcl1U
+h9CIFAf/ROOT3trWHzotcI7wHH8gQPZdZ9Ojm2mjxC6XGbhafTvd+XgLv9dDiT88
+B70DVcuR7VUBtJSDSirKXeOuDQ+vG9/xKtRQMLjIojmkJ2+yO6MzmZLCX3xRZZ9K
+xIgj8U+A5Mbed48XvwD9kHRd57SpUvjaUwp4GBypxHVp6cqJnFDoEcLkN15MNgOQ
+6t2hReLFATJdEPMVRfADLkr6ksVc25pIfmXgpeedT7NXiErkDNez5AtVY0gukLqK
+YM4TSwidRhp8gnXD6wZtBZtniiI881zw25YbCGpIyNJBfL2PykskDGDARB4Gl1t7
+uaEtGcGKR23bSzjQQ2+s9cDmwpADZA==
+=XCGZ
+-----END PGP SIGNATURE-----
+
+--5I6of5zJg18YgZEa--

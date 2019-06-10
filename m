@@ -1,7 +1,7 @@
 From: yibin.gong@nxp.com
-Subject: [PATCH v5 08/15] spi: imx: add new i.mx6ul compatible name in binding doc
-Date: Mon, 10 Jun 2019 16:17:46 +0800
-Message-ID: <20190610081753.11422-9-yibin.gong@nxp.com>
+Subject: [PATCH v5 05/15] dmaengine: imx-sdma: add mcu_2_ecspi script
+Date: Mon, 10 Jun 2019 16:17:43 +0800
+Message-ID: <20190610081753.11422-6-yibin.gong@nxp.com>
 References: <20190610081753.11422-1-yibin.gong@nxp.com>
 Cc: linux-spi@vger.kernel.org, linux-imx@nxp.com,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
@@ -18,26 +18,40 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Robin Gong <yibin.gong@nxp.com>
 
-ERR009165 fixed from i.mx6ul, add its compatible name in binding
-doc.
+Add mcu_2_ecspi script to fix ecspi errata ERR009165.
 
 Signed-off-by: Robin Gong <yibin.gong@nxp.com>
-Acked-by: Mark Brown <broonie@kernel.org>
+Acked-by: Vinod Koul <vkoul@kernel.org>
 ---
- Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/dma/imx-sdma.c                     | 3 +++
+ include/linux/platform_data/dma-imx-sdma.h | 1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-index 2d32641..b3d02a3 100644
---- a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-+++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-@@ -10,6 +10,7 @@ Required properties:
-   - "fsl,imx35-cspi" for SPI compatible with the one integrated on i.MX35
-   - "fsl,imx51-ecspi" for SPI compatible with the one integrated on i.MX51
-   - "fsl,imx53-ecspi" for SPI compatible with the one integrated on i.MX53 and later Soc
-+  - "fsl,imx6ul-ecspi" for SPI compatible with the one integrated on i.MX6UL and later Soc
-   - "fsl,imx8mq-ecspi" for SPI compatible with the one integrated on i.MX8M
- - reg : Offset and length of the register set for the device
- - interrupts : Should contain CSPI/eCSPI interrupt
+diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
+index dbd1dcd..61af656 100644
+--- a/drivers/dma/imx-sdma.c
++++ b/drivers/dma/imx-sdma.c
+@@ -924,6 +924,9 @@ static void sdma_get_pc(struct sdma_channel *sdmac,
+ 		emi_2_per = sdma->script_addrs->mcu_2_ata_addr;
+ 		break;
+ 	case IMX_DMATYPE_CSPI:
++		per_2_emi = sdma->script_addrs->app_2_mcu_addr;
++		emi_2_per = sdma->script_addrs->mcu_2_ecspi_addr;
++		break;
+ 	case IMX_DMATYPE_EXT:
+ 	case IMX_DMATYPE_SSI:
+ 	case IMX_DMATYPE_SAI:
+diff --git a/include/linux/platform_data/dma-imx-sdma.h b/include/linux/platform_data/dma-imx-sdma.h
+index 6eaa53c..f794fee 100644
+--- a/include/linux/platform_data/dma-imx-sdma.h
++++ b/include/linux/platform_data/dma-imx-sdma.h
+@@ -51,6 +51,7 @@ struct sdma_script_start_addrs {
+ 	/* End of v2 array */
+ 	s32 zcanfd_2_mcu_addr;
+ 	s32 zqspi_2_mcu_addr;
++	s32 mcu_2_ecspi_addr;
+ 	/* End of v3 array */
+ };
+ 
 -- 
 2.7.4

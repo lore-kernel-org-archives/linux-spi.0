@@ -1,76 +1,143 @@
-From: "Life is hard, and then you die" <ronald@innovation.ch>
-Subject: Re: [PATCH v2] spi/acpi: enumerate all SPI slaves in the namespace
-Date: Sun, 9 Jun 2019 16:44:27 -0700
-Message-ID: <20190609234427.GA16597@innovation.ch>
-References: <20190530111634.32209-1-ard.biesheuvel@linaro.org>
+From: Jorge Ramirez-Ortiz <jorge.ramirez-ortiz@linaro.org>
+Subject: [PATCH] spi: qup: fix PIO/DMA transfers.
+Date: Mon, 10 Jun 2019 09:22:43 +0200
+Message-ID: <20190610072243.19710-1-jorge.ramirez-ortiz@linaro.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Lukas Wunner <lukas@wunner.de>, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
- andy.shevchenko@gmail.com, broonie@kernel.org,
- Jarkko Nikula <jarkko.nikula@linux.intel.com>, masahisa.kojima@linaro.org,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- linux-arm-kernel@lists.infradead.org
-To: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <20190530111634.32209-1-ard.biesheuvel@linaro.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Transfer-Encoding: 8bit
+Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, bjorn.andersson@linaro.org,
+        khasim.mohammed@linaro.org
+To: jorge.ramirez-ortiz@linaro.org, agross@kernel.org,
+        david.brown@linaro.org, broonie@kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+- DMA/PIO:
+  If an error IRQ occurred during PIO or DMA mode make sure to log it so
+on completion the transfer can be marked as an error.
 
-On Thu, May 30, 2019 at 01:16:34PM +0200, Ard Biesheuvel wrote:
-> Currently, the ACPI enumeration that takes place when registering a
-> SPI master only considers immediate child devices in the ACPI namespace,
-> rather than checking the ResourceSource field in the SpiSerialBus()
-> resource descriptor.
-> 
-> This is incorrect: SPI slaves could reside anywhere in the ACPI
-> namespace, and so we should enumerate the entire namespace and look for
-> any device that refers to the newly registered SPI master in its
-> resource descriptor.
-> 
-> So refactor the existing code and use a lookup structure so that
-> allocating the SPI device structure is deferred until we have identified
-> the device as an actual child of the controller. This approach is
-> loosely based on the way the I2C subsystem handles ACPI enumeration.
-> 
-> Note that Apple x86 hardware does not rely on SpiSerialBus() resources
-> in _CRS but uses nested devices below the controller's device node in
-> the ACPI namespace, with a special set of device properties. This means
-> we have to take care to only parse those properties for device nodes
-> that are direct children of the controller node.
-> 
-> Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-> Cc: linux-spi@vger.kernel.org
-> Cc: broonie@kernel.org
-> Cc: andy.shevchenko@gmail.com
-> Cc: masahisa.kojima@linaro.org
-> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-> Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-> Cc: linux-acpi@vger.kernel.org
-> Cc: Lukas Wunner <lukas@wunner.de>
-> 
-> Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> ---
->  drivers/spi/spi.c | 103 ++++++++++++++------
->  1 file changed, 72 insertions(+), 31 deletions(-)
-[snip]
+- PIO:
+  Do not complete a transaction until all data has been transferred or
+an error IRQ was flagged.
 
-FYI, I tested this on a MacBook Pro where the (SPI) keyboard driver
-depends on those special device properties, and verified this patch
-doesn't break anything there.
+1) If there was no error IRQ, ignore the done flag IRQ
+(QUP_OP_MAX_INPUT_DONE_FLAG) until all data for the transfer has been
+processed: not doing so risks completing the transfer returning
+uninitialized data in the buffers.
 
+2) Under stress testing we have identified the need to
+protect read/write operations against spurious IN/OUT service events.
 
-  Cheers,
+Signed-off-by: Jorge Ramirez-Ortiz <jorge.ramirez-ortiz@linaro.org>
+---
+ drivers/spi/spi-qup.c | 51 ++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 45 insertions(+), 6 deletions(-)
 
-  Ronald
+diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+index 974a8ce58b68..0a2ffd2f968a 100644
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -281,6 +281,9 @@ static void spi_qup_read(struct spi_qup *controller, u32 *opflags)
+ 		writel_relaxed(QUP_OP_IN_SERVICE_FLAG,
+ 			       controller->base + QUP_OPERATIONAL);
+ 
++		if (!remainder)
++			goto exit;
++
+ 		if (is_block_mode) {
+ 			num_words = (remainder > words_per_block) ?
+ 					words_per_block : remainder;
+@@ -310,11 +313,13 @@ static void spi_qup_read(struct spi_qup *controller, u32 *opflags)
+ 	 * to refresh opflags value because MAX_INPUT_DONE_FLAG may now be
+ 	 * present and this is used to determine if transaction is complete
+ 	 */
+-	*opflags = readl_relaxed(controller->base + QUP_OPERATIONAL);
+-	if (is_block_mode && *opflags & QUP_OP_MAX_INPUT_DONE_FLAG)
+-		writel_relaxed(QUP_OP_IN_SERVICE_FLAG,
+-			       controller->base + QUP_OPERATIONAL);
+-
++exit:
++	if (!remainder) {
++		*opflags = readl_relaxed(controller->base + QUP_OPERATIONAL);
++		if (is_block_mode && *opflags & QUP_OP_MAX_INPUT_DONE_FLAG)
++			writel_relaxed(QUP_OP_IN_SERVICE_FLAG,
++				       controller->base + QUP_OPERATIONAL);
++	}
+ }
+ 
+ static void spi_qup_write_to_fifo(struct spi_qup *controller, u32 num_words)
+@@ -362,6 +367,10 @@ static void spi_qup_write(struct spi_qup *controller)
+ 		writel_relaxed(QUP_OP_OUT_SERVICE_FLAG,
+ 			       controller->base + QUP_OPERATIONAL);
+ 
++		/* make sure the interrupt is valid */
++		if (!remainder)
++			return;
++
+ 		if (is_block_mode) {
+ 			num_words = (remainder > words_per_block) ?
+ 				words_per_block : remainder;
+@@ -575,10 +584,24 @@ static int spi_qup_do_pio(struct spi_device *spi, struct spi_transfer *xfer,
+ 	return 0;
+ }
+ 
++static bool spi_qup_data_pending(struct spi_qup *controller)
++{
++	unsigned int remainder_tx, remainder_rx;
++
++	remainder_tx = DIV_ROUND_UP(spi_qup_len(controller) -
++				    controller->tx_bytes, controller->w_size);
++
++	remainder_rx = DIV_ROUND_UP(spi_qup_len(controller) -
++				    controller->rx_bytes, controller->w_size);
++
++	return remainder_tx || remainder_rx;
++}
++
+ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
+ {
+ 	struct spi_qup *controller = dev_id;
+ 	u32 opflags, qup_err, spi_err;
++	unsigned long flags;
+ 	int error = 0;
+ 
+ 	qup_err = readl_relaxed(controller->base + QUP_ERROR_FLAGS);
+@@ -610,6 +633,11 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
+ 		error = -EIO;
+ 	}
+ 
++	spin_lock_irqsave(&controller->lock, flags);
++	if (!controller->error)
++		controller->error = error;
++	spin_unlock_irqrestore(&controller->lock, flags);
++
+ 	if (spi_qup_is_dma_xfer(controller->mode)) {
+ 		writel_relaxed(opflags, controller->base + QUP_OPERATIONAL);
+ 	} else {
+@@ -618,11 +646,22 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
+ 
+ 		if (opflags & QUP_OP_OUT_SERVICE_FLAG)
+ 			spi_qup_write(controller);
++
++		if (!spi_qup_data_pending(controller))
++			complete(&controller->done);
+ 	}
+ 
+-	if ((opflags & QUP_OP_MAX_INPUT_DONE_FLAG) || error)
++	if (error)
+ 		complete(&controller->done);
+ 
++	if (opflags & QUP_OP_MAX_INPUT_DONE_FLAG) {
++		if (!spi_qup_is_dma_xfer(controller->mode)) {
++			if (spi_qup_data_pending(controller))
++				return IRQ_HANDLED;
++		}
++		complete(&controller->done);
++	}
++
+ 	return IRQ_HANDLED;
+ }
+ 
+-- 
+2.21.0

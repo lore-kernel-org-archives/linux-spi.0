@@ -1,7 +1,7 @@
 From: yibin.gong@nxp.com
-Subject: [PATCH v5 13/15] ARM: dts: imx6sll: correct sdma compatible
-Date: Mon, 10 Jun 2019 16:17:51 +0800
-Message-ID: <20190610081753.11422-14-yibin.gong@nxp.com>
+Subject: [PATCH v5 12/15] ARM: dts: imx6ul: add dma support on ecspi
+Date: Mon, 10 Jun 2019 16:17:50 +0800
+Message-ID: <20190610081753.11422-13-yibin.gong@nxp.com>
 References: <20190610081753.11422-1-yibin.gong@nxp.com>
 Cc: linux-spi@vger.kernel.org, linux-imx@nxp.com,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
@@ -18,26 +18,52 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Robin Gong <yibin.gong@nxp.com>
 
-Correct sdma compatible since ecspi errata ERR009165 has been fixed
-on i.mx6sll as i.mx6ul.
+Add dma support on ecspi.
 
 Signed-off-by: Robin Gong <yibin.gong@nxp.com>
 ---
- arch/arm/boot/dts/imx6sll.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/imx6ul.dtsi | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/arm/boot/dts/imx6sll.dtsi b/arch/arm/boot/dts/imx6sll.dtsi
-index 1b4899f..d810e10 100644
---- a/arch/arm/boot/dts/imx6sll.dtsi
-+++ b/arch/arm/boot/dts/imx6sll.dtsi
-@@ -619,7 +619,7 @@
- 			};
+diff --git a/arch/arm/boot/dts/imx6ul.dtsi b/arch/arm/boot/dts/imx6ul.dtsi
+index fc388b8..4a34316 100644
+--- a/arch/arm/boot/dts/imx6ul.dtsi
++++ b/arch/arm/boot/dts/imx6ul.dtsi
+@@ -227,6 +227,8 @@
+ 					clocks = <&clks IMX6UL_CLK_ECSPI1>,
+ 						 <&clks IMX6UL_CLK_ECSPI1>;
+ 					clock-names = "ipg", "per";
++					dmas = <&sdma 3 7 1>, <&sdma 4 7 2>;
++					dma-names = "rx", "tx";
+ 					status = "disabled";
+ 				};
  
- 			sdma: dma-controller@20ec000 {
--				compatible = "fsl,imx6sll-sdma", "fsl,imx35-sdma";
-+				compatible = "fsl,imx6sll-sdma", "fsl,imx6ul-sdma";
- 				reg = <0x020ec000 0x4000>;
- 				interrupts = <GIC_SPI 2 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clks IMX6SLL_CLK_IPG>,
+@@ -239,6 +241,8 @@
+ 					clocks = <&clks IMX6UL_CLK_ECSPI2>,
+ 						 <&clks IMX6UL_CLK_ECSPI2>;
+ 					clock-names = "ipg", "per";
++					dmas = <&sdma 5 7 1>, <&sdma 6 7 2>;
++					dma-names = "rx", "tx";
+ 					status = "disabled";
+ 				};
+ 
+@@ -251,6 +255,8 @@
+ 					clocks = <&clks IMX6UL_CLK_ECSPI3>,
+ 						 <&clks IMX6UL_CLK_ECSPI3>;
+ 					clock-names = "ipg", "per";
++					dmas = <&sdma 7 7 1>, <&sdma 8 7 2>;
++					dma-names = "rx", "tx";
+ 					status = "disabled";
+ 				};
+ 
+@@ -263,6 +269,8 @@
+ 					clocks = <&clks IMX6UL_CLK_ECSPI4>,
+ 						 <&clks IMX6UL_CLK_ECSPI4>;
+ 					clock-names = "ipg", "per";
++					dmas = <&sdma 9 7 1>, <&sdma 10 7 2>;
++					dma-names = "rx", "tx";
+ 					status = "disabled";
+ 				};
+ 
 -- 
 2.7.4

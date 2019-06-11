@@ -1,13 +1,13 @@
-From: Robin Gong <yibin.gong@nxp.com>
+From: Vinod Koul <vkoul@kernel.org>
 Subject: Re: [PATCH v5 15/15] dmaengine: imx-sdma: add uart rom script
-Date: Tue, 11 Jun 2019 03:04:12 +0000
-Message-ID: <1560251269.9731.41.camel@nxp.com>
+Date: Tue, 11 Jun 2019 10:07:31 +0530
+Message-ID: <20190611043731.GS9160@vkoul-mobl.Dlink>
 References: <20190610081753.11422-1-yibin.gong@nxp.com>
-         <20190610081753.11422-16-yibin.gong@nxp.com>
-         <20190610125534.GQ9160@vkoul-mobl.Dlink>
+ <20190610081753.11422-16-yibin.gong@nxp.com>
+ <20190610125534.GQ9160@vkoul-mobl.Dlink>
+ <1560251269.9731.41.camel@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
 Cc: dl-linux-imx <linux-imx@nxp.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "robh+dt@kernel.org" <robh+dt@kernel.org>,
@@ -24,93 +24,69 @@ Cc: dl-linux-imx <linux-imx@nxp.com>,
         "linux-arm-kernel@lists.infradead.org"
         <linux-arm-kernel@lists.infradead.org>,
         "linux-spi@vger.kernel.org" <linux-spi@vge
-To: "vkoul@kernel.org" <vkoul@kernel.org>
+To: Robin Gong <yibin.gong@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190610125534.GQ9160@vkoul-mobl.Dlink>
-Content-Language: en-US
-Content-ID: <6D7E76014612004390E68113066BA45F@eurprd04.prod.outlook.com>
+Content-Disposition: inline
+In-Reply-To: <1560251269.9731.41.camel@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gMjAxOS0wNi0xMCBhdCAxMjo1NSArMDAwMCwgVmlub2QgS291bCB3cm90ZToNCj4gT24gMTAt
-MDYtMTksIDE2OjE3LCB5aWJpbi5nb25nQG54cC5jb20gd3JvdGU6DQo+ID4gDQo+ID4gRnJvbTog
-Um9iaW4gR29uZyA8eWliaW4uZ29uZ0BueHAuY29tPg0KPiA+IA0KPiA+IEZvciB0aGUgY29tcGF0
-aWJpbGl0eSBvZiBOWFAgaW50ZXJuYWwgbGVnYWN5IGtlcm5lbCBiZWZvcmUgNC4xOQ0KPiA+IHdo
-aWNoDQo+ID4gaXMgYmFzZWQgb24gdWFydCByYW0gc2NyaXB0IGFuZCB1cHN0cmVhbWluZyBrZXJu
-ZWwgYmFzZWQgb24gdWFydA0KPiA+IHJvbQ0KPiA+IHNjcmlwdCwgYWRkIGJvdGggdWFydCByYW0v
-cm9tIHNjcmlwdCBpbiBsYXRlc3Qgc2RtYSBmaXJtd2FyZS4gQnkNCj4gPiBkZWZhdWx0DQo+ID4g
-dWFydCByb20gc2NyaXB0IHVzZWQuDQo+ID4gQmVzaWRlcywgYWRkIHR3byBtdWx0aS1maWZvIHNj
-cmlwdHMgZm9yIFNBSS9QRE0gb24gaS5teDhtLzhtbSBhbmQNCj4gPiBhZGQNCj4gPiBiYWNrIHFz
-cGkgc2NyaXB0IG1pc3MgZm9yIHY0KGkubXg3ZC84bS84bW0gZmFtaWx5LCBidXQgdjMgaXMgZm9y
-DQo+ID4gaS5teDYpLg0KPiA+IA0KPiA+IHJvbSBzY3JpcHQ6DQo+ID4gCXVhcnRfMl9tY3VfYWRk
-cg0KPiA+IAl1YXJ0c2hfMl9tY3VfYWRkciAvKiB0aHJvdWdoIHNwYmEgYnVzICovDQo+ID4gcmFt
-IHNjcmlwdDoNCj4gPiAJdWFydF8yX21jdV9yYW1fYWRkcg0KPiA+IAl1YXJ0c2hfMl9tY3VfcmFt
-X2FkZHIgLyogdGhyb3VnaCBzcGJhIGJ1cyAqLw0KPiA+IA0KPiA+IFBsZWFzZSBnZXQgbGF0ZXN0
-IHNkbWEgZmlybXdhcmUgZnJvbSB0aGUgYmVsb3cgYW5kIHB1dCB0aGVtIGludG8NCj4gPiB0aGUg
-cGF0aA0KPiA+ICgvbGliL2Zpcm13YXJlL2lteC9zZG1hLyk6DQo+ID4gaHR0cHM6Ly9ldXIwMS5z
-YWZlbGlua3MucHJvdGVjdGlvbi5vdXRsb29rLmNvbS8/dXJsPWh0dHBzJTNBJTJGJTJGZw0KPiA+
-IGl0Lmtlcm5lbC5vcmclMkZwdWIlMkZzY20lMkZsaW51eCUyRmtlcm5lbCUyRmdpdCUyRmZpcm13
-YXJlJTJGbGludXgNCj4gPiAtZmlybXdhcmUuZ2l0JmFtcDtkYXRhPTAyJTdDMDElN0N5aWJpbi5n
-b25nJTQwbnhwLmNvbSU3QzZhNzgzM2U4YTA5DQo+ID4gMzQ0ZDk5NTFlMDhkNmVkYTM1ZmM1JTdD
-Njg2ZWExZDNiYzJiNGM2ZmE5MmNkOTljNWMzMDE2MzUlN0MwJTdDMCU3Qw0KPiA+IDYzNjk1NzY4
-MzI3ODE5MDI3OSZhbXA7c2RhdGE9UkhleXBFT1JFaVBHbUt2ZWc2Z1lQeSUyRk1nOER6ejRKcGNI
-c20NCj4gPiAlMkJiZHhsem8lM0QmYW1wO3Jlc2VydmVkPTANCj4gPiAvdHJlZS9pbXgvc2RtYQ0K
-PiBIb3cgZG9lcyB0aGlzIHdvcmsgd2l0aCBmb2xrcyBoYXZlIG9sZGVyIGZpcm13YXJlPw0KVGhl
-IG9sZGVyIFNETUEgUkFNIHNjcmlwdChmaXJtd2FyZSkgd2lsbCBicmVhayB0aGUgdWFydCBkcml2
-ZXIgb2YNCnVwc3RyZWFtaW5nIGtlcm5lbCBmb3IgdGhlc2UgeWVhcnMsIHRoaXMgaXMgd2h5IEx1
-Y2FzIHJhaXNlIHVhcnQgZHJpdmVyDQpwYXRjaCAoY29tbWl0IDkwNWMwZGVjYWQyOCkgdG8gdXNl
-IFJPTSBzY3JpcHQgaW5zdGVhZC4gVGhlcmUgYXJlIHR3bw0Kd2F5cyB0byBmaXggdWFydCBpc3N1
-ZTogb25lIGlzIGNoZWNraW5nICdJZGxlIENvbmRpdGlvbg0KRGV0ZWN0aW9uJy8nQWdpbmcgdGlt
-ZXInIGluIFJBTSBzY3JpcHQgYW5kIGVuYWJsZSAnSURMRScgaW4gdWFydA0KZHJpdmVyLCBhbm90
-aGVyIGlzIG9ubHkgY2hlY2tpbmcgJ0FnaW5nIHRpbWVyJyBpbiBST00gc2NyaXB0IGFuZA0KYWRq
-dXN0aW5nIFJYIEZJRk8gYnVyc3QgbGVuZ3RoIG9uZSB3b3JkIGxlc3MgdG8gZW5zdXJlIGF0IGxl
-YXN0IG9uZQ0Kd29yZCBsZWZ0IGZvcmV2ZXIgaW4gUlggRklGTyB3aGljaCBpcyB0aGUgdHJpZ2dl
-ciByZXF1aXJlbWVudCBvZiAnQWdpbmcNCnRpbWVyJyhTbyBubyBuZWVkICdJRExFJywgJ0FnaW5n
-IHRpbWUnIGlzIGVub3VnaCkgLiBGU0wvTlhQIGludGVybmFsDQprZXJuZWwgZ28gd2l0aCB0aGUg
-Zmlyc3Qgb3B0aW9uLCB3aGlsZSB1cHN0cmVhbWluZyBrZXJuZWwgZ28gd2l0aCB0aGUNCnNlY29u
-ZC4gU2luY2UgTHVjYXMncyBwYXRjaCBhc3N1bWUgUk9NIHNjcmlwdCB1c2VkIGluIGtlcm5lbCBh
-bmQNCmRpc2FibGUgJ0lETEUnLCB1cHN0cmVhbWluZyBrZXJuZWwgYnJva2VuIGluIHVhcnQgZHJp
-dmVyIHdpdGggb2xkZXINCmZpcm13YXJlIGZvciB0aGVzZSB5ZWFycy4gU28gdGhpcyBwYXRjaCBp
-cyBqdXN0IGZvciBmaXggdGhpcw0KY29tcGF0aWJpbGl0eSBpc3N1ZSB3aXRoIHRoZSByYW0gc2Ny
-aXB0KG9sZGVyIGZpcm13YXJlKSB1cGRhdGVkIGluDQpsaW51eC1maXJtd2FyZShkb25lIGFscmVh
-ZHkuKSwgdGh1cyBib3RoIFJBTSBzY3JpcHQgYW5kIFJPTSBzY3JpcHQgY2FuDQp3b3JrIGluIGtl
-cm5lbC4gQmVzaWRlcywga2VybmVsIHdpdGggdGhlIGxhdGVzdCBSQU0gZmlybXdhcmUgYW5kIHRo
-aXMNCnBhdGNoIHNldCBjYW4gd29ya2Fyb3VuZCBlY3NwaSBpc3N1ZSB3aXRob3V0IGFueSBmdW5j
-dGlvbiBicmVhayB3aGljaA0KTHVjYXMgY29uY2VybmVkIGFib3V0Lg0KPiANCj4gPiANCj4gPiAN
-Cj4gPiBTaWduZWQtb2ZmLWJ5OiBSb2JpbiBHb25nIDx5aWJpbi5nb25nQG54cC5jb20+DQo+ID4g
-LS0tDQo+ID4gwqBkcml2ZXJzL2RtYS9pbXgtc2RtYS5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgfMKgwqA0ICsrLS0NCj4gPiDCoGluY2x1ZGUvbGludXgvcGxhdGZv
-cm1fZGF0YS9kbWEtaW14LXNkbWEuaCB8IDEwICsrKysrKysrLS0NCj4gPiDCoDIgZmlsZXMgY2hh
-bmdlZCwgMTAgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkNCj4gPiANCj4gPiBkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9kbWEvaW14LXNkbWEuYyBiL2RyaXZlcnMvZG1hL2lteC1zZG1hLmMNCj4g
-PiBpbmRleCBmN2MxNTBkLi5kZWVhOWFhIDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvZG1hL2lt
-eC1zZG1hLmMNCj4gPiArKysgYi9kcml2ZXJzL2RtYS9pbXgtc2RtYS5jDQo+ID4gQEAgLTE3MzMs
-OCArMTczMyw4IEBAIHN0YXRpYyB2b2lkIHNkbWFfaXNzdWVfcGVuZGluZyhzdHJ1Y3QNCj4gPiBk
-bWFfY2hhbiAqY2hhbikNCj4gPiDCoA0KPiA+IMKgI2RlZmluZSBTRE1BX1NDUklQVF9BRERSU19B
-UlJBWV9TSVpFX1YxCTM0DQo+ID4gwqAjZGVmaW5lIFNETUFfU0NSSVBUX0FERFJTX0FSUkFZX1NJ
-WkVfVjIJMzgNCj4gPiAtI2RlZmluZSBTRE1BX1NDUklQVF9BRERSU19BUlJBWV9TSVpFX1YzCTQx
-DQo+ID4gLSNkZWZpbmUgU0RNQV9TQ1JJUFRfQUREUlNfQVJSQVlfU0laRV9WNAk0Mg0KPiA+ICsj
-ZGVmaW5lIFNETUFfU0NSSVBUX0FERFJTX0FSUkFZX1NJWkVfVjMJNDUNCj4gPiArI2RlZmluZSBT
-RE1BX1NDUklQVF9BRERSU19BUlJBWV9TSVpFX1Y0CTQ2DQo+ID4gwqANCj4gPiDCoHN0YXRpYyB2
-b2lkIHNkbWFfYWRkX3NjcmlwdHMoc3RydWN0IHNkbWFfZW5naW5lICpzZG1hLA0KPiA+IMKgCQlj
-b25zdCBzdHJ1Y3Qgc2RtYV9zY3JpcHRfc3RhcnRfYWRkcnMgKmFkZHIpDQo+ID4gZGlmZiAtLWdp
-dCBhL2luY2x1ZGUvbGludXgvcGxhdGZvcm1fZGF0YS9kbWEtaW14LXNkbWEuaA0KPiA+IGIvaW5j
-bHVkZS9saW51eC9wbGF0Zm9ybV9kYXRhL2RtYS1pbXgtc2RtYS5oDQo+ID4gaW5kZXggZjc5NGZl
-ZS4uZTEyZDJlOCAxMDA2NDQNCj4gPiAtLS0gYS9pbmNsdWRlL2xpbnV4L3BsYXRmb3JtX2RhdGEv
-ZG1hLWlteC1zZG1hLmgNCj4gPiArKysgYi9pbmNsdWRlL2xpbnV4L3BsYXRmb3JtX2RhdGEvZG1h
-LWlteC1zZG1hLmgNCj4gPiBAQCAtMjAsMTIgKzIwLDEyIEBAIHN0cnVjdCBzZG1hX3NjcmlwdF9z
-dGFydF9hZGRycyB7DQo+ID4gwqAJczMyIHBlcl8yX2ZpcmlfYWRkcjsNCj4gPiDCoAlzMzIgbWN1
-XzJfZmlyaV9hZGRyOw0KPiA+IMKgCXMzMiB1YXJ0XzJfcGVyX2FkZHI7DQo+ID4gLQlzMzIgdWFy
-dF8yX21jdV9hZGRyOw0KPiA+ICsJczMyIHVhcnRfMl9tY3VfcmFtX2FkZHI7DQo+ID4gwqAJczMy
-IHBlcl8yX2FwcF9hZGRyOw0KPiA+IMKgCXMzMiBtY3VfMl9hcHBfYWRkcjsNCj4gPiDCoAlzMzIg
-cGVyXzJfcGVyX2FkZHI7DQo+ID4gwqAJczMyIHVhcnRzaF8yX3Blcl9hZGRyOw0KPiA+IC0JczMy
-IHVhcnRzaF8yX21jdV9hZGRyOw0KPiA+ICsJczMyIHVhcnRzaF8yX21jdV9yYW1fYWRkcjsNCj4g
-PiDCoAlzMzIgcGVyXzJfc2hwX2FkZHI7DQo+ID4gwqAJczMyIG1jdV8yX3NocF9hZGRyOw0KPiA+
-IMKgCXMzMiBhdGFfMl9tY3VfYWRkcjsNCj4gPiBAQCAtNTIsNyArNTIsMTMgQEAgc3RydWN0IHNk
-bWFfc2NyaXB0X3N0YXJ0X2FkZHJzIHsNCj4gPiDCoAlzMzIgemNhbmZkXzJfbWN1X2FkZHI7DQo+
-ID4gwqAJczMyIHpxc3BpXzJfbWN1X2FkZHI7DQo+ID4gwqAJczMyIG1jdV8yX2Vjc3BpX2FkZHI7
-DQo+ID4gKwlzMzIgbWN1XzJfc2FpX2FkZHI7DQo+ID4gKwlzMzIgc2FpXzJfbWN1X2FkZHI7DQo+
-ID4gKwlzMzIgdWFydF8yX21jdV9hZGRyOw0KPiA+ICsJczMyIHVhcnRzaF8yX21jdV9hZGRyOw0K
-PiA+IMKgCS8qIEVuZCBvZiB2MyBhcnJheSAqLw0KPiA+ICsJczMyIG1jdV8yX3pxc3BpX2FkZHI7
-DQo+ID4gKwkvKiBFbmQgb2YgdjQgYXJyYXkgKi8NCj4gPiDCoH07DQo+ID4gwqANCj4gPiDCoC8q
-Kg0KPiA+IC0twqANCj4gPiAyLjcuNA==
+On 11-06-19, 03:04, Robin Gong wrote:
+> On 2019-06-10 at 12:55 +0000, Vinod Koul wrote:
+> > On 10-06-19, 16:17, yibin.gong@nxp.com wrote:
+> > > 
+> > > From: Robin Gong <yibin.gong@nxp.com>
+> > > 
+> > > For the compatibility of NXP internal legacy kernel before 4.19
+> > > which
+> > > is based on uart ram script and upstreaming kernel based on uart
+> > > rom
+> > > script, add both uart ram/rom script in latest sdma firmware. By
+> > > default
+> > > uart rom script used.
+> > > Besides, add two multi-fifo scripts for SAI/PDM on i.mx8m/8mm and
+> > > add
+> > > back qspi script miss for v4(i.mx7d/8m/8mm family, but v3 is for
+> > > i.mx6).
+> > > 
+> > > rom script:
+> > > 	uart_2_mcu_addr
+> > > 	uartsh_2_mcu_addr /* through spba bus */
+> > > ram script:
+> > > 	uart_2_mcu_ram_addr
+> > > 	uartsh_2_mcu_ram_addr /* through spba bus */
+> > > 
+> > > Please get latest sdma firmware from the below and put them into
+> > > the path
+> > > (/lib/firmware/imx/sdma/):
+> > > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fg
+> > > it.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ffirmware%2Flinux
+> > > -firmware.git&amp;data=02%7C01%7Cyibin.gong%40nxp.com%7C6a7833e8a09
+> > > 344d9951e08d6eda35fc5%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C
+> > > 636957683278190279&amp;sdata=RHeypEOREiPGmKveg6gYPy%2FMg8Dzz4JpcHsm
+> > > %2Bbdxlzo%3D&amp;reserved=0
+> > > /tree/imx/sdma
+> > How does this work with folks have older firmware?
+> The older SDMA RAM script(firmware) will break the uart driver of
+> upstreaming kernel for these years, this is why Lucas raise uart driver
+> patch (commit 905c0decad28) to use ROM script instead. There are two
+> ways to fix uart issue: one is checking 'Idle Condition
+> Detection'/'Aging timer' in RAM script and enable 'IDLE' in uart
+> driver, another is only checking 'Aging timer' in ROM script and
+> adjusting RX FIFO burst length one word less to ensure at least one
+> word left forever in RX FIFO which is the trigger requirement of 'Aging
+> timer'(So no need 'IDLE', 'Aging time' is enough) . FSL/NXP internal
+> kernel go with the first option, while upstreaming kernel go with the
+> second. Since Lucas's patch assume ROM script used in kernel and
+> disable 'IDLE', upstreaming kernel broken in uart driver with older
+> firmware for these years. So this patch is just for fix this
+> compatibility issue with the ram script(older firmware) updated in
+> linux-firmware(done already.), thus both RAM script and ROM script can
+> work in kernel. Besides, kernel with the latest RAM firmware and this
+> patch set can workaround ecspi issue without any function break which
+> Lucas concerned about.
+
+Acked-by: Vinod Koul <vkoul@kernel.org>
+
+-- 
+~Vinod

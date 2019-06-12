@@ -1,104 +1,78 @@
-From: Viresh Kumar <viresh.kumar@linaro.org>
-Subject: Re: [RFC v2 01/11] OPP: Don't overwrite rounded clk rate
-Date: Wed, 12 Jun 2019 13:55:06 +0530
-Message-ID: <20190612082506.m735bsk7bjijf2yg@vireshk-i7>
-References: <20190320094918.20234-1-rnayak@codeaurora.org>
- <20190320094918.20234-2-rnayak@codeaurora.org>
- <20190611105432.x3nzqiib35t6mvyg@vireshk-i7>
- <c173a57d-a4de-99f7-e8d8-28a7612f4ca3@codeaurora.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+Subject: Re: [PATCH 07/13] drivers: Add generic match helper by ACPI_COMPANION
+ device
+Date: Wed, 12 Jun 2019 10:43:38 +0100
+Message-ID: <621f33db-d7d8-380e-fe50-effb27523068@arm.com>
+References: <1559747630-28065-1-git-send-email-suzuki.poulose@arm.com>
+ <1559747630-28065-8-git-send-email-suzuki.poulose@arm.com>
+ <CAJZ5v0h+maPj-ijKV_vvQBpHD7N-VMiAqSeyztAkiUR9E2WdmQ@mail.gmail.com>
+ <1f230eb7-f4e3-ed4e-960d-c3bbb60f0a18@arm.com>
+ <CAJZ5v0i0WP88+vTEheSTfAoSi5nEdjaLs4KOGxXK3_AoPhPrhg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: swboyd@chromium.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-scsi@vger.kernel.org,
-        ulf.hansson@linaro.org, dianders@chromium.org, rafael@kernel.org
-To: Rajendra Nayak <rnayak@codeaurora.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
+        lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-spi@vger.kernel.org, broonie@kernel.org
+To: rafael@kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <c173a57d-a4de-99f7-e8d8-28a7612f4ca3@codeaurora.org>
+In-Reply-To: <CAJZ5v0i0WP88+vTEheSTfAoSi5nEdjaLs4KOGxXK3_AoPhPrhg@mail.gmail.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 12-06-19, 13:12, Rajendra Nayak wrote:
-> so the 'fmax' tables basically say what the max frequency the device can
-> operate at for a given performance state/voltage level.
+Hi Rafael,
+
+On 06/06/2019 10:57, Rafael J. Wysocki wrote:
+> On Thu, Jun 6, 2019 at 11:28 AM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+>>
+>>
+>>
+>> On 06/06/2019 10:17, Rafael J. Wysocki wrote:
+>>> On Wed, Jun 5, 2019 at 5:14 PM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+>>>>
+>>>> Add a generic helper to match a device by the acpi device.
+>>>
+>>> "by its ACPI companion device object", please.
+>>
+>> Sure.
+>>
+>>>
+>>> Also, it would be good to combine this patch with the patch(es) that
+>>> cause device_match_acpi_dev() to be actually used.
+>>>
+>>> Helpers without any users are arguably not useful.
+>>
+>> Sure, the helpers will be part of the part2 of the whole series,
+>> which will actually have the individual subsystems consuming the
+>> new helpers. For your reference, it is available here :
+>>
+>> http://linux-arm.org/git?p=linux-skp.git;a=shortlog;h=refs/heads/driver-cleanup/v2
+>>
+>> e.g:
+>> http://linux-arm.org/git?p=linux-skp.git;a=commit;h=59534e843e2f214f1f29659993f6e423bef16b28
+>>
+>> I could simply pull those patches into this part, if you prefer that.
 > 
-> so in your example it would be for instance
+> Not really.
 > 
-> 500M, Perf state = 2
-> 1G, Perf state = 3
-> 1.2G, Perf state = 4
+> I'd rather do it the other way around: push the introduction of the
+> helpers to part 2.
+
+Sure, I will do that.
+
 > 
-> Now when the device wants to operate at say 800Mhz, you need to set the
-> Perf state to 3, so this patch basically avoids you having to put those additional
-> OPPs in the table which would otherwise look something like this
+>> However, that would be true for the other patches in the part2.
+>> I am open to suggestions, on how to split the series.
 > 
-> 500M, Perf state = 2
-> 800M, Perf state = 3 <-- redundant OPP
-> 1G, Perf state = 3
-> 1.2G, Perf state = 4
+> You can introduce each helper along with its users in one patch.
 > 
-> Your example had just 1 missing entry in the 'fmax' tables in reality its a lot more,
-> atleast on all qualcomm platforms.
+> This way the total number of patches will be reduced and they will be
+> easier to review IMO.
+> 
 
-Okay, I have applied this patch (alone) to the OPP tree with minor
-modifications in commit log and diff.
+Wouldn't it make the merging complicated ? I am still not clear how we plan
+to merge the part 2 ?
 
--- 
-viresh
-
--------------------------8<-------------------------
-
-From: Stephen Boyd <swboyd@chromium.org>
-Date: Wed, 20 Mar 2019 15:19:08 +0530
-Subject: [PATCH] opp: Don't overwrite rounded clk rate
-
-Doing this allows us to call this API with any rate requested and have
-it no need to match in the OPP table. Instead, we'll round the rate up
-to the nearest OPP, so that we can get the voltage or performance level
-required for that OPP. This supports users of the OPP core that want to
-specify the possible 'fmax' values corresponding to the voltage or
-performance levels of each OPP. And for devices that required the exact
-frequency, we can rely on the clk framework to round the rate to the
-nearest supported frequency instead of the OPP framework to do so.
-
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
-Signed-off-by: Rajendra Nayak <rnayak@codeaurora.org>
-[ Viresh: Massaged changelog and use temp_opp variable instead ]
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
----
- drivers/opp/core.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/opp/core.c b/drivers/opp/core.c
-index 764e05a2fa66..0fbc77f05048 100644
---- a/drivers/opp/core.c
-+++ b/drivers/opp/core.c
-@@ -757,7 +757,7 @@ static int _set_required_opps(struct device *dev,
- int dev_pm_opp_set_rate(struct device *dev, unsigned long target_freq)
- {
- 	struct opp_table *opp_table;
--	unsigned long freq, old_freq;
-+	unsigned long freq, old_freq, temp_freq;
- 	struct dev_pm_opp *old_opp, *opp;
- 	struct clk *clk;
- 	int ret;
-@@ -796,13 +796,15 @@ int dev_pm_opp_set_rate(struct device *dev, unsigned long target_freq)
- 		goto put_opp_table;
- 	}
- 
--	old_opp = _find_freq_ceil(opp_table, &old_freq);
-+	temp_freq = old_freq;
-+	old_opp = _find_freq_ceil(opp_table, &temp_freq);
- 	if (IS_ERR(old_opp)) {
- 		dev_err(dev, "%s: failed to find current OPP for freq %lu (%ld)\n",
- 			__func__, old_freq, PTR_ERR(old_opp));
- 	}
- 
--	opp = _find_freq_ceil(opp_table, &freq);
-+	temp_freq = freq;
-+	opp = _find_freq_ceil(opp_table, &temp_freq);
- 	if (IS_ERR(opp)) {
- 		ret = PTR_ERR(opp);
- 		dev_err(dev, "%s: failed to find OPP for freq %lu (%d)\n",
+Cheers
+Suzuki

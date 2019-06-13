@@ -1,76 +1,300 @@
-From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Subject: Re: [PATCH 07/13] drivers: Add generic match helper by ACPI_COMPANION device
-Date: Thu, 13 Jun 2019 00:07:34 +0200
-Message-ID: <12403040.8iQv1AJh6Y@kreacher>
-References: <1559747630-28065-1-git-send-email-suzuki.poulose@arm.com> <CAJZ5v0i0WP88+vTEheSTfAoSi5nEdjaLs4KOGxXK3_AoPhPrhg@mail.gmail.com> <621f33db-d7d8-380e-fe50-effb27523068@arm.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi/acpi: enumerate all SPI slaves in the namespace" to the
+ spi tree
+Date: Thu, 13 Jun 2019 20:06:19 +0100 (BST)
+Message-ID: <20190613190619.DF3C2440046@finisterre.sirena.org.uk>
+References: <20190530111634.32209-1-ard.biesheuvel@linaro.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: rafael@kernel.org, linux-kernel@vger.kernel.org,
-        gregkh@linuxfoundation.org, lenb@kernel.org,
-        linux-acpi@vger.kernel.org, linux-spi@vger.kernel.org,
-        broonie@kernel.org
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <621f33db-d7d8-380e-fe50-effb27523068@arm.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Cc: Lukas Wunner <lukas@wunner.de>, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
+ andy.shevchenko@gmail.com, Mark Brown <broonie@kernel.org>,
+ Jarkko Nikula <jarkko.nikula@linux.intel.com>, masahisa.kojima@linaro.org,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ linux-arm-kernel@lists.infradead.org
+To: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190530111634.32209-1-ard.biesheuvel@linaro.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wednesday, June 12, 2019 11:43:38 AM CEST Suzuki K Poulose wrote:
-> Hi Rafael,
-> 
-> On 06/06/2019 10:57, Rafael J. Wysocki wrote:
-> > On Thu, Jun 6, 2019 at 11:28 AM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
-> >>
-> >>
-> >>
-> >> On 06/06/2019 10:17, Rafael J. Wysocki wrote:
-> >>> On Wed, Jun 5, 2019 at 5:14 PM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
-> >>>>
-> >>>> Add a generic helper to match a device by the acpi device.
-> >>>
-> >>> "by its ACPI companion device object", please.
-> >>
-> >> Sure.
-> >>
-> >>>
-> >>> Also, it would be good to combine this patch with the patch(es) that
-> >>> cause device_match_acpi_dev() to be actually used.
-> >>>
-> >>> Helpers without any users are arguably not useful.
-> >>
-> >> Sure, the helpers will be part of the part2 of the whole series,
-> >> which will actually have the individual subsystems consuming the
-> >> new helpers. For your reference, it is available here :
-> >>
-> >> http://linux-arm.org/git?p=linux-skp.git;a=shortlog;h=refs/heads/driver-cleanup/v2
-> >>
-> >> e.g:
-> >> http://linux-arm.org/git?p=linux-skp.git;a=commit;h=59534e843e2f214f1f29659993f6e423bef16b28
-> >>
-> >> I could simply pull those patches into this part, if you prefer that.
-> > 
-> > Not really.
-> > 
-> > I'd rather do it the other way around: push the introduction of the
-> > helpers to part 2.
-> 
-> Sure, I will do that.
-> 
-> > 
-> >> However, that would be true for the other patches in the part2.
-> >> I am open to suggestions, on how to split the series.
-> > 
-> > You can introduce each helper along with its users in one patch.
-> > 
-> > This way the total number of patches will be reduced and they will be
-> > easier to review IMO.
-> > 
-> 
-> Wouldn't it make the merging complicated ? I am still not clear how we plan
-> to merge the part 2 ?
+The patch
 
-I wouldn't worry about it that much.  Without review, you have nothing to merge anyway.
+   spi/acpi: enumerate all SPI slaves in the namespace
 
-Technically, every patch with a new helper and its users can go in via the Greg's tree
-as long as it has been ACKed by the maintainers of the code touched by it.
+has been applied to the spi tree at
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.3
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 4c3c59544f33e97cf8557f27e05a9904ead16363 Mon Sep 17 00:00:00 2001
+From: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date: Thu, 30 May 2019 13:16:34 +0200
+Subject: [PATCH] spi/acpi: enumerate all SPI slaves in the namespace
+
+Currently, the ACPI enumeration that takes place when registering a
+SPI master only considers immediate child devices in the ACPI namespace,
+rather than checking the ResourceSource field in the SpiSerialBus()
+resource descriptor.
+
+This is incorrect: SPI slaves could reside anywhere in the ACPI
+namespace, and so we should enumerate the entire namespace and look for
+any device that refers to the newly registered SPI master in its
+resource descriptor.
+
+So refactor the existing code and use a lookup structure so that
+allocating the SPI device structure is deferred until we have identified
+the device as an actual child of the controller. This approach is
+loosely based on the way the I2C subsystem handles ACPI enumeration.
+
+Note that Apple x86 hardware does not rely on SpiSerialBus() resources
+in _CRS but uses nested devices below the controller's device node in
+the ACPI namespace, with a special set of device properties. This means
+we have to take care to only parse those properties for device nodes
+that are direct children of the controller node.
+
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: linux-spi@vger.kernel.org
+Cc: broonie@kernel.org
+Cc: andy.shevchenko@gmail.com
+Cc: masahisa.kojima@linaro.org
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Cc: linux-acpi@vger.kernel.org
+Cc: Lukas Wunner <lukas@wunner.de>
+
+Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi.c | 103 ++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 72 insertions(+), 31 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index bced6876de79..498f9b7419a4 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1852,9 +1852,18 @@ static void of_register_spi_devices(struct spi_controller *ctlr) { }
+ #endif
+ 
+ #ifdef CONFIG_ACPI
+-static void acpi_spi_parse_apple_properties(struct spi_device *spi)
++struct acpi_spi_lookup {
++	struct spi_controller 	*ctlr;
++	u32			max_speed_hz;
++	u32			mode;
++	int			irq;
++	u8			bits_per_word;
++	u8			chip_select;
++};
++
++static void acpi_spi_parse_apple_properties(struct acpi_device *dev,
++					    struct acpi_spi_lookup *lookup)
+ {
+-	struct acpi_device *dev = ACPI_COMPANION(&spi->dev);
+ 	const union acpi_object *obj;
+ 
+ 	if (!x86_apple_machine)
+@@ -1862,35 +1871,46 @@ static void acpi_spi_parse_apple_properties(struct spi_device *spi)
+ 
+ 	if (!acpi_dev_get_property(dev, "spiSclkPeriod", ACPI_TYPE_BUFFER, &obj)
+ 	    && obj->buffer.length >= 4)
+-		spi->max_speed_hz  = NSEC_PER_SEC / *(u32 *)obj->buffer.pointer;
++		lookup->max_speed_hz  = NSEC_PER_SEC / *(u32 *)obj->buffer.pointer;
+ 
+ 	if (!acpi_dev_get_property(dev, "spiWordSize", ACPI_TYPE_BUFFER, &obj)
+ 	    && obj->buffer.length == 8)
+-		spi->bits_per_word = *(u64 *)obj->buffer.pointer;
++		lookup->bits_per_word = *(u64 *)obj->buffer.pointer;
+ 
+ 	if (!acpi_dev_get_property(dev, "spiBitOrder", ACPI_TYPE_BUFFER, &obj)
+ 	    && obj->buffer.length == 8 && !*(u64 *)obj->buffer.pointer)
+-		spi->mode |= SPI_LSB_FIRST;
++		lookup->mode |= SPI_LSB_FIRST;
+ 
+ 	if (!acpi_dev_get_property(dev, "spiSPO", ACPI_TYPE_BUFFER, &obj)
+ 	    && obj->buffer.length == 8 &&  *(u64 *)obj->buffer.pointer)
+-		spi->mode |= SPI_CPOL;
++		lookup->mode |= SPI_CPOL;
+ 
+ 	if (!acpi_dev_get_property(dev, "spiSPH", ACPI_TYPE_BUFFER, &obj)
+ 	    && obj->buffer.length == 8 &&  *(u64 *)obj->buffer.pointer)
+-		spi->mode |= SPI_CPHA;
++		lookup->mode |= SPI_CPHA;
+ }
+ 
+ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
+ {
+-	struct spi_device *spi = data;
+-	struct spi_controller *ctlr = spi->controller;
++	struct acpi_spi_lookup *lookup = data;
++	struct spi_controller *ctlr = lookup->ctlr;
+ 
+ 	if (ares->type == ACPI_RESOURCE_TYPE_SERIAL_BUS) {
+ 		struct acpi_resource_spi_serialbus *sb;
++		acpi_handle parent_handle;
++		acpi_status status;
+ 
+ 		sb = &ares->data.spi_serial_bus;
+ 		if (sb->type == ACPI_RESOURCE_SERIAL_TYPE_SPI) {
++
++			status = acpi_get_handle(NULL,
++						 sb->resource_source.string_ptr,
++						 &parent_handle);
++
++			if (!status ||
++			    ACPI_HANDLE(ctlr->dev.parent) != parent_handle)
++				return -ENODEV;
++
+ 			/*
+ 			 * ACPI DeviceSelection numbering is handled by the
+ 			 * host controller driver in Windows and can vary
+@@ -1903,25 +1923,25 @@ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
+ 						sb->device_selection);
+ 				if (cs < 0)
+ 					return cs;
+-				spi->chip_select = cs;
++				lookup->chip_select = cs;
+ 			} else {
+-				spi->chip_select = sb->device_selection;
++				lookup->chip_select = sb->device_selection;
+ 			}
+ 
+-			spi->max_speed_hz = sb->connection_speed;
++			lookup->max_speed_hz = sb->connection_speed;
+ 
+ 			if (sb->clock_phase == ACPI_SPI_SECOND_PHASE)
+-				spi->mode |= SPI_CPHA;
++				lookup->mode |= SPI_CPHA;
+ 			if (sb->clock_polarity == ACPI_SPI_START_HIGH)
+-				spi->mode |= SPI_CPOL;
++				lookup->mode |= SPI_CPOL;
+ 			if (sb->device_polarity == ACPI_SPI_ACTIVE_HIGH)
+-				spi->mode |= SPI_CS_HIGH;
++				lookup->mode |= SPI_CS_HIGH;
+ 		}
+-	} else if (spi->irq < 0) {
++	} else if (lookup->irq < 0) {
+ 		struct resource r;
+ 
+ 		if (acpi_dev_resource_interrupt(ares, 0, &r))
+-			spi->irq = r.start;
++			lookup->irq = r.start;
+ 	}
+ 
+ 	/* Always tell the ACPI core to skip this resource */
+@@ -1931,7 +1951,9 @@ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
+ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+ 					    struct acpi_device *adev)
+ {
++	acpi_handle parent_handle = NULL;
+ 	struct list_head resource_list;
++	struct acpi_spi_lookup lookup;
+ 	struct spi_device *spi;
+ 	int ret;
+ 
+@@ -1939,28 +1961,44 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+ 	    acpi_device_enumerated(adev))
+ 		return AE_OK;
+ 
+-	spi = spi_alloc_device(ctlr);
+-	if (!spi) {
+-		dev_err(&ctlr->dev, "failed to allocate SPI device for %s\n",
+-			dev_name(&adev->dev));
+-		return AE_NO_MEMORY;
+-	}
+-
+-	ACPI_COMPANION_SET(&spi->dev, adev);
+-	spi->irq = -1;
++	lookup.ctlr		= ctlr;
++	lookup.mode		= 0;
++	lookup.bits_per_word	= 0;
++	lookup.irq		= -1;
+ 
+ 	INIT_LIST_HEAD(&resource_list);
+ 	ret = acpi_dev_get_resources(adev, &resource_list,
+-				     acpi_spi_add_resource, spi);
++				     acpi_spi_add_resource, &lookup);
+ 	acpi_dev_free_resource_list(&resource_list);
+ 
+-	acpi_spi_parse_apple_properties(spi);
++	if (ret < 0)
++		/* found SPI in _CRS but it points to another controller */
++		return AE_OK;
+ 
+-	if (ret < 0 || !spi->max_speed_hz) {
+-		spi_dev_put(spi);
++	if (!lookup.max_speed_hz &&
++	    !ACPI_FAILURE(acpi_get_parent(adev->handle, &parent_handle)) &&
++	    ACPI_HANDLE(ctlr->dev.parent) == parent_handle) {
++		/* Apple does not use _CRS but nested devices for SPI slaves */
++		acpi_spi_parse_apple_properties(adev, &lookup);
++	}
++
++	if (!lookup.max_speed_hz)
+ 		return AE_OK;
++
++	spi = spi_alloc_device(ctlr);
++	if (!spi) {
++		dev_err(&ctlr->dev, "failed to allocate SPI device for %s\n",
++			dev_name(&adev->dev));
++		return AE_NO_MEMORY;
+ 	}
+ 
++	ACPI_COMPANION_SET(&spi->dev, adev);
++	spi->max_speed_hz	= lookup.max_speed_hz;
++	spi->mode		= lookup.mode;
++	spi->irq		= lookup.irq;
++	spi->bits_per_word	= lookup.bits_per_word;
++	spi->chip_select	= lookup.chip_select;
++
+ 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
+ 			  sizeof(spi->modalias));
+ 
+@@ -1992,6 +2030,8 @@ static acpi_status acpi_spi_add_device(acpi_handle handle, u32 level,
+ 	return acpi_register_spi_device(ctlr, adev);
+ }
+ 
++#define SPI_ACPI_ENUMERATE_MAX_DEPTH		32
++
+ static void acpi_register_spi_devices(struct spi_controller *ctlr)
+ {
+ 	acpi_status status;
+@@ -2001,7 +2041,8 @@ static void acpi_register_spi_devices(struct spi_controller *ctlr)
+ 	if (!handle)
+ 		return;
+ 
+-	status = acpi_walk_namespace(ACPI_TYPE_DEVICE, handle, 1,
++	status = acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT,
++				     SPI_ACPI_ENUMERATE_MAX_DEPTH,
+ 				     acpi_spi_add_device, NULL, ctlr, NULL);
+ 	if (ACPI_FAILURE(status))
+ 		dev_warn(&ctlr->dev, "failed to enumerate SPI slaves\n");
+-- 
+2.20.1

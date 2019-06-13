@@ -1,21 +1,22 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi/acpi: enumerate all SPI slaves in the namespace" to the
- spi tree
-Date: Thu, 13 Jun 2019 20:06:19 +0100 (BST)
-Message-ID: <20190613190619.DF3C2440046@finisterre.sirena.org.uk>
+Subject: Re: [PATCH v2] spi/acpi: enumerate all SPI slaves in the namespace
+Date: Thu, 13 Jun 2019 20:14:35 +0100
+Message-ID: <20190613191435.GY5316@sirena.org.uk>
 References: <20190530111634.32209-1-ard.biesheuvel@linaro.org>
+ <20190603110832.GA2781@lahna.fi.intel.com>
+ <CAKv+Gu8rTernjct93rsWo0X3FTp6bsV=0JvNGQr8C8OaqB1S7A@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Lukas Wunner <lukas@wunner.de>, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
- andy.shevchenko@gmail.com, Mark Brown <broonie@kernel.org>,
- Jarkko Nikula <jarkko.nikula@linux.intel.com>, masahisa.kojima@linaro.org,
+Content-Type: multipart/mixed; boundary="===============4988661656290101599=="
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-spi@vger.kernel.org,
+ ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>, Lukas Wunner <lukas@wunner.de>,
+ Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+ Masahisa Kojima <masahisa.kojima@linaro.org>,
  Mika Westerberg <mika.westerberg@linux.intel.com>,
- linux-arm-kernel@lists.infradead.org
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
 To: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190530111634.32209-1-ard.biesheuvel@linaro.org>
+In-Reply-To: <CAKv+Gu8rTernjct93rsWo0X3FTp6bsV=0JvNGQr8C8OaqB1S7A@mail.gmail.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -27,274 +28,67 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi/acpi: enumerate all SPI slaves in the namespace
+--===============4988661656290101599==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="g3IWFuR7/O9KKcN6"
+Content-Disposition: inline
 
-has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.3
+--g3IWFuR7/O9KKcN6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+On Mon, Jun 03, 2019 at 05:56:00PM +0200, Ard Biesheuvel wrote:
+> On Mon, 3 Jun 2019 at 13:08, Mika Westerberg
+> > On Thu, May 30, 2019 at 01:16:34PM +0200, Ard Biesheuvel wrote:
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> > > -     status = acpi_walk_namespace(ACPI_TYPE_DEVICE, handle, 1,
+> > > +     status = acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT,
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+> > Would it be simpler to differentiate here between Apple and non-Apple
+> > systems? Then we don't need all that special code and the above becomes:
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+> >         depth = x86_apple_system ? 1 : SPI_ACPI_ENUMERATE_MAX_DEPTH;
+> >         status = acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT, depth,
+> >         ..
 
-Thanks,
-Mark
+> > Probably requires a comment explaining why we do it like that, though.
 
->From 4c3c59544f33e97cf8557f27e05a9904ead16363 Mon Sep 17 00:00:00 2001
-From: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date: Thu, 30 May 2019 13:16:34 +0200
-Subject: [PATCH] spi/acpi: enumerate all SPI slaves in the namespace
+> Yes, but note that both the root and the depth are different in this case.
 
-Currently, the ACPI enumeration that takes place when registering a
-SPI master only considers immediate child devices in the ACPI namespace,
-rather than checking the ResourceSource field in the SpiSerialBus()
-resource descriptor.
+> I'll play around with this idea, to see if it simplifies things.
 
-This is incorrect: SPI slaves could reside anywhere in the ACPI
-namespace, and so we should enumerate the entire namespace and look for
-any device that refers to the newly registered SPI master in its
-resource descriptor.
+Given that this works and got some testing I've applied this now, if
+there's a simplification it can always be done incrementally.
 
-So refactor the existing code and use a lookup structure so that
-allocating the SPI device structure is deferred until we have identified
-the device as an actual child of the controller. This approach is
-loosely based on the way the I2C subsystem handles ACPI enumeration.
+--g3IWFuR7/O9KKcN6
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Note that Apple x86 hardware does not rely on SpiSerialBus() resources
-in _CRS but uses nested devices below the controller's device node in
-the ACPI namespace, with a special set of device properties. This means
-we have to take care to only parse those properties for device nodes
-that are direct children of the controller node.
+-----BEGIN PGP SIGNATURE-----
 
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: linux-spi@vger.kernel.org
-Cc: broonie@kernel.org
-Cc: andy.shevchenko@gmail.com
-Cc: masahisa.kojima@linaro.org
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Cc: linux-acpi@vger.kernel.org
-Cc: Lukas Wunner <lukas@wunner.de>
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl0CoJoACgkQJNaLcl1U
+h9CsSgf/ct5qv0UqPxaWfJKOm8GT3NBa0M/seyJphcRzfO/WQrlDOz8HC4iGV6AE
+v3NZWqcmzuQPtu477cXwOc5NqHqzUVHOOrWk+D7Pe5/urIS37xh8wSeY9mINlwim
+YZzzpPQCXVEcO8GeijfooBSsSSpuuCq6EmOowOLuO58WlY1yx0h9BvgCwWWO0Dlx
+B76uCITIixiZRoWME5PuucBDTMjFp7RrtCNvVt6xjBFHCrFEIC7UKCK931AbicTM
+G2tXuMYjxteIWeZ4jYLDHGu/OFzQg7bTOcdQrhU8sybBsdek+FhBYdVTukS55Hxd
+MMfuw861PELtqd3OW7oxpUQpQ/AcMg==
+=Gd1/
+-----END PGP SIGNATURE-----
 
-Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi.c | 103 ++++++++++++++++++++++++++++++++--------------
- 1 file changed, 72 insertions(+), 31 deletions(-)
+--g3IWFuR7/O9KKcN6--
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index bced6876de79..498f9b7419a4 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1852,9 +1852,18 @@ static void of_register_spi_devices(struct spi_controller *ctlr) { }
- #endif
- 
- #ifdef CONFIG_ACPI
--static void acpi_spi_parse_apple_properties(struct spi_device *spi)
-+struct acpi_spi_lookup {
-+	struct spi_controller 	*ctlr;
-+	u32			max_speed_hz;
-+	u32			mode;
-+	int			irq;
-+	u8			bits_per_word;
-+	u8			chip_select;
-+};
-+
-+static void acpi_spi_parse_apple_properties(struct acpi_device *dev,
-+					    struct acpi_spi_lookup *lookup)
- {
--	struct acpi_device *dev = ACPI_COMPANION(&spi->dev);
- 	const union acpi_object *obj;
- 
- 	if (!x86_apple_machine)
-@@ -1862,35 +1871,46 @@ static void acpi_spi_parse_apple_properties(struct spi_device *spi)
- 
- 	if (!acpi_dev_get_property(dev, "spiSclkPeriod", ACPI_TYPE_BUFFER, &obj)
- 	    && obj->buffer.length >= 4)
--		spi->max_speed_hz  = NSEC_PER_SEC / *(u32 *)obj->buffer.pointer;
-+		lookup->max_speed_hz  = NSEC_PER_SEC / *(u32 *)obj->buffer.pointer;
- 
- 	if (!acpi_dev_get_property(dev, "spiWordSize", ACPI_TYPE_BUFFER, &obj)
- 	    && obj->buffer.length == 8)
--		spi->bits_per_word = *(u64 *)obj->buffer.pointer;
-+		lookup->bits_per_word = *(u64 *)obj->buffer.pointer;
- 
- 	if (!acpi_dev_get_property(dev, "spiBitOrder", ACPI_TYPE_BUFFER, &obj)
- 	    && obj->buffer.length == 8 && !*(u64 *)obj->buffer.pointer)
--		spi->mode |= SPI_LSB_FIRST;
-+		lookup->mode |= SPI_LSB_FIRST;
- 
- 	if (!acpi_dev_get_property(dev, "spiSPO", ACPI_TYPE_BUFFER, &obj)
- 	    && obj->buffer.length == 8 &&  *(u64 *)obj->buffer.pointer)
--		spi->mode |= SPI_CPOL;
-+		lookup->mode |= SPI_CPOL;
- 
- 	if (!acpi_dev_get_property(dev, "spiSPH", ACPI_TYPE_BUFFER, &obj)
- 	    && obj->buffer.length == 8 &&  *(u64 *)obj->buffer.pointer)
--		spi->mode |= SPI_CPHA;
-+		lookup->mode |= SPI_CPHA;
- }
- 
- static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
- {
--	struct spi_device *spi = data;
--	struct spi_controller *ctlr = spi->controller;
-+	struct acpi_spi_lookup *lookup = data;
-+	struct spi_controller *ctlr = lookup->ctlr;
- 
- 	if (ares->type == ACPI_RESOURCE_TYPE_SERIAL_BUS) {
- 		struct acpi_resource_spi_serialbus *sb;
-+		acpi_handle parent_handle;
-+		acpi_status status;
- 
- 		sb = &ares->data.spi_serial_bus;
- 		if (sb->type == ACPI_RESOURCE_SERIAL_TYPE_SPI) {
-+
-+			status = acpi_get_handle(NULL,
-+						 sb->resource_source.string_ptr,
-+						 &parent_handle);
-+
-+			if (!status ||
-+			    ACPI_HANDLE(ctlr->dev.parent) != parent_handle)
-+				return -ENODEV;
-+
- 			/*
- 			 * ACPI DeviceSelection numbering is handled by the
- 			 * host controller driver in Windows and can vary
-@@ -1903,25 +1923,25 @@ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
- 						sb->device_selection);
- 				if (cs < 0)
- 					return cs;
--				spi->chip_select = cs;
-+				lookup->chip_select = cs;
- 			} else {
--				spi->chip_select = sb->device_selection;
-+				lookup->chip_select = sb->device_selection;
- 			}
- 
--			spi->max_speed_hz = sb->connection_speed;
-+			lookup->max_speed_hz = sb->connection_speed;
- 
- 			if (sb->clock_phase == ACPI_SPI_SECOND_PHASE)
--				spi->mode |= SPI_CPHA;
-+				lookup->mode |= SPI_CPHA;
- 			if (sb->clock_polarity == ACPI_SPI_START_HIGH)
--				spi->mode |= SPI_CPOL;
-+				lookup->mode |= SPI_CPOL;
- 			if (sb->device_polarity == ACPI_SPI_ACTIVE_HIGH)
--				spi->mode |= SPI_CS_HIGH;
-+				lookup->mode |= SPI_CS_HIGH;
- 		}
--	} else if (spi->irq < 0) {
-+	} else if (lookup->irq < 0) {
- 		struct resource r;
- 
- 		if (acpi_dev_resource_interrupt(ares, 0, &r))
--			spi->irq = r.start;
-+			lookup->irq = r.start;
- 	}
- 
- 	/* Always tell the ACPI core to skip this resource */
-@@ -1931,7 +1951,9 @@ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
- static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
- 					    struct acpi_device *adev)
- {
-+	acpi_handle parent_handle = NULL;
- 	struct list_head resource_list;
-+	struct acpi_spi_lookup lookup;
- 	struct spi_device *spi;
- 	int ret;
- 
-@@ -1939,28 +1961,44 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
- 	    acpi_device_enumerated(adev))
- 		return AE_OK;
- 
--	spi = spi_alloc_device(ctlr);
--	if (!spi) {
--		dev_err(&ctlr->dev, "failed to allocate SPI device for %s\n",
--			dev_name(&adev->dev));
--		return AE_NO_MEMORY;
--	}
--
--	ACPI_COMPANION_SET(&spi->dev, adev);
--	spi->irq = -1;
-+	lookup.ctlr		= ctlr;
-+	lookup.mode		= 0;
-+	lookup.bits_per_word	= 0;
-+	lookup.irq		= -1;
- 
- 	INIT_LIST_HEAD(&resource_list);
- 	ret = acpi_dev_get_resources(adev, &resource_list,
--				     acpi_spi_add_resource, spi);
-+				     acpi_spi_add_resource, &lookup);
- 	acpi_dev_free_resource_list(&resource_list);
- 
--	acpi_spi_parse_apple_properties(spi);
-+	if (ret < 0)
-+		/* found SPI in _CRS but it points to another controller */
-+		return AE_OK;
- 
--	if (ret < 0 || !spi->max_speed_hz) {
--		spi_dev_put(spi);
-+	if (!lookup.max_speed_hz &&
-+	    !ACPI_FAILURE(acpi_get_parent(adev->handle, &parent_handle)) &&
-+	    ACPI_HANDLE(ctlr->dev.parent) == parent_handle) {
-+		/* Apple does not use _CRS but nested devices for SPI slaves */
-+		acpi_spi_parse_apple_properties(adev, &lookup);
-+	}
-+
-+	if (!lookup.max_speed_hz)
- 		return AE_OK;
-+
-+	spi = spi_alloc_device(ctlr);
-+	if (!spi) {
-+		dev_err(&ctlr->dev, "failed to allocate SPI device for %s\n",
-+			dev_name(&adev->dev));
-+		return AE_NO_MEMORY;
- 	}
- 
-+	ACPI_COMPANION_SET(&spi->dev, adev);
-+	spi->max_speed_hz	= lookup.max_speed_hz;
-+	spi->mode		= lookup.mode;
-+	spi->irq		= lookup.irq;
-+	spi->bits_per_word	= lookup.bits_per_word;
-+	spi->chip_select	= lookup.chip_select;
-+
- 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
- 			  sizeof(spi->modalias));
- 
-@@ -1992,6 +2030,8 @@ static acpi_status acpi_spi_add_device(acpi_handle handle, u32 level,
- 	return acpi_register_spi_device(ctlr, adev);
- }
- 
-+#define SPI_ACPI_ENUMERATE_MAX_DEPTH		32
-+
- static void acpi_register_spi_devices(struct spi_controller *ctlr)
- {
- 	acpi_status status;
-@@ -2001,7 +2041,8 @@ static void acpi_register_spi_devices(struct spi_controller *ctlr)
- 	if (!handle)
- 		return;
- 
--	status = acpi_walk_namespace(ACPI_TYPE_DEVICE, handle, 1,
-+	status = acpi_walk_namespace(ACPI_TYPE_DEVICE, ACPI_ROOT_OBJECT,
-+				     SPI_ACPI_ENUMERATE_MAX_DEPTH,
- 				     acpi_spi_add_device, NULL, ctlr, NULL);
- 	if (ACPI_FAILURE(status))
- 		dev_warn(&ctlr->dev, "failed to enumerate SPI slaves\n");
--- 
-2.20.1
+
+--===============4988661656290101599==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-arm-kernel mailing list
+linux-arm-kernel@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+--===============4988661656290101599==--

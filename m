@@ -1,69 +1,118 @@
-From: Wolfram Sang <wsa@the-dreams.de>
-Subject: Re: [PATCH v2 06/28] drivers: Add generic helper to match by of_node
-Date: Mon, 17 Jun 2019 12:06:11 +0200
-Message-ID: <20190617100611.GB3502@kunai>
-References: <1560534863-15115-1-git-send-email-suzuki.poulose@arm.com>
- <1560534863-15115-7-git-send-email-suzuki.poulose@arm.com>
- <20190614203144.GB7991@kunai>
- <d050ae69-52ee-b32d-2bc0-708b408f3bd4@arm.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: Re: [PATCH v3 2/4] mtd: rawnand: Add Macronix MX25F0A NAND
+ controller
+Date: Mon, 17 Jun 2019 14:35:10 +0200
+Message-ID: <20190617143510.4ded5728@xps13>
+References: <1555320234-15802-1-git-send-email-masonccyang@mxic.com.tw>
+        <1555320234-15802-3-git-send-email-masonccyang@mxic.com.tw>
+        <20190512151820.4f2dd9da@xps13>
+        <OF074A1F06.5C1A58BE-ON482583FD.0031CD95-482583FD.003437AD@mxic.com.tw>
+        <20190520142333.390091d5@xps13>
+        <OFADC47344.0F9941B2-ON48258403.002336E3-48258403.003141F0@mxic.com.tw>
+        <20190527144250.71908bd9@xps13>
+        <OFE923A8E5.50375C30-ON48258409.0009AE1B-48258409.00119767@mxic.com.tw>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="7ZAtKRhVyVSsbBD2"
-Cc: linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
-        rafael@kernel.org, atull@kernel.org, andrew@lunn.ch,
-        daniel@ffwll.ch, airlied@linux.ie, davem@davemloft.net,
-        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        f.fainelli@gmail.com, frowand.list@gmail.com, hkallweit1@gmail.com,
-        jslaby@suse.com, jonathanh@nvidia.com, lee.jones@linaro.org,
-        lgirdwood@gmail.com, linux-fpga@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
-        maarten.lankhorst@linux.intel.com, broonie@kernel.org,
-        mathieu.poirier@linaro.org, maxime.ripard@bootlin.com,
-        mdf@kernel.org, peda@axentia.se, robh+dt@kernel.org,
-        srinivas.kandagatla@linaro.org, thierry.reding@gmail.com,
-        thor.thayer@linux.intel.com, ulf.hansson@linaro.org,
-        joe@perches.com
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Cc: bbrezillon@kernel.org, broonie@kernel.org,
+        christophe.kerello@st.com, computersforpeace@gmail.com,
+        devicetree@vger.kernel.org, dwmw2@infradead.org,
+        geert@linux-m68k.org, juliensu@mxic.com.tw, lee.jones@linaro.org,
+        liang.yang@amlogic.com, linux-kernel@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        marcel.ziswiler@toradex.com, marek.vasut@gmail.com,
+        mark.rutland@arm.com, paul.burton@mips.com, richard@nod.at,
+        robh+dt@kernel.org, stefan@agner.ch, zhengxunli@mxic.com.tw
+To: masonccyang@mxic.com.tw
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <d050ae69-52ee-b32d-2bc0-708b408f3bd4@arm.com>
+In-Reply-To: <OFE923A8E5.50375C30-ON48258409.0009AE1B-48258409.00119767@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Mason,
 
---7ZAtKRhVyVSsbBD2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+masonccyang@mxic.com.tw wrote on Wed, 29 May 2019 11:12:08 +0800:
+
+> Hi Miquel,
+> 
+> > > > > > > +static void mxic_nand_select_chip(struct nand_chip *chip, int   
+>  
+> > > chipnr)   
+> > > > > > 
+> > > > > > _select_target() is preferred now   
+> > > > > 
+> > > > > Do you mean I implement mxic_nand_select_target() to control #CS ?
+> > > > > 
+> > > > > If so, I need to call mxic_nand_select_target( ) to control #CS ON
+> > > > > and then #CS OFF in _exec_op() due to nand_select_target()<in   
+> > > nand_base,c>   
+> > > > > is still calling chip->legacy.select_chip ?   
+> > > > 
+> > > > You must forget about the ->select_chip() callback. Now it should be
+> > > > handled directly from the controller driver. Please have a look at   
+> the
+> > > > commit pointed against the marvell_nand.c driver.   
+> > > 
+> > > I have no Marvell NFC datasheet and have one question.
+> > > 
+> > > In marvell_nand.c, there is no xxx_deselect_target() or 
+> > > something like that doing #CS OFF.
+> > > marvell_nfc_select_target() seems always to make one of chip or die
+> > > #CS keep low.
+> > > 
+> > > Is it right ?  
+> > 
+> > Yes, AFAIR there is no "de-assert" mechanism in this controller.
+> >   
+> > > 
+> > > How to make all #CS keep high for NAND to enter 
+> > > low-power standby mode if driver don't use "legacy.select_chip()" ?  
+> > 
+> > See commit 02b4a52604a4 ("mtd: rawnand: Make ->select_chip() optional
+> > when ->exec_op() is implemented") which states:
+> > 
+> >         "When [->select_chip() is] not implemented, the core is assuming
+> >    the CS line is automatically asserted/deasserted by the driver  
+> >    ->exec_op() implementation."  
+> > 
+> > Of course, the above is right only when the controller driver supports
+> > the ->exec_op() interface.   
+> 
+> Currently, it seems that we will get the incorrect data and error
+> operation due to CS in error toggling if CS line is controlled in 
+> ->exec_op().  
+
+Most of the chips today are CS-don't-care, which chip are you using?
+
+Is this behavior publicly documented?
+
+Is this LPM mode always activated?
+
+> i.e,. 
+> 
+> 1) In nand_onfi_detect() to call nand_exec_op() twice by 
+> nand_read_param_page_op() and annd_read_data_op()
+> 
+> 2) In nand_write_page_xxx to call nand_exec_op() many times by
+> nand_prog_page_begin_op(), nand_write_data_op() and 
+> nand_prog_page_end_op().
+> 
+> 
+> Should we consider to add a CS line controller in struct nand_controller
+> i.e,.
+> 
+> struct nand_controller {
+>          struct mutex lock;
+>          const struct nand_controller_ops *ops;
+> +          void (*select_chip)(struct nand_chip *chip, int cs);
+> };
+> 
+> to replace legacy.select_chip() ?
+> 
+
+No, if really needed, we could add a "macro op done" flag in the nand
+operation structure.
 
 
-> > Is it an option to 'static inline' this simple function in the header,
-> > saving the EXPORT?
-> >=20
->=20
-> No.
-
-OK, thanks for the explanation!
-
-
---7ZAtKRhVyVSsbBD2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl0HZhMACgkQFA3kzBSg
-Kbbl3A/+LFTwA3gh8PCif9bJi4Ywry/gCg7cCVuGAw1ZhH5h29SAhoONggyXvO8N
-XvGR09Q0NYX1CpAogNTRqTtpOKSudrSozBdFRxKlNCuACTghf1AdboPKq+pM2Zos
-+Q75BJMykwO00W+5ghmbztldccufXFjjwXzDwdBq5zNjtVf3yne4h1wWAubXItsQ
-LMaf+2X6WrAPfIPVvBbtV33cG/1f8l7GemdTJj02Z+5+u1NH4L1e00WP+rxqj0Q7
-nYMFIFYfjfqHBkhAltu6bx/gqqORuDfQ6DQ/vl/qyXVHY6WcYIzUde/NpnVSjAX/
-e6d3JrHaEHw7qBEH+39w54dQr4fRii9mUOF9keTO7OSfQnAAva1QQyERtAhPj7EA
-I2X/qEU6ncbQJK91mxlelKLbD+WuJUcqahDM0tQ07nQ2lz6zwVpBQzn3VNZiXxh1
-KAJFCCaWJRGp0P1JZMwnVbmMSeFoPWJx5fXweNoQXdgz/4yy2VpTh7AdvWFCOl9+
-u5N+YWIn6gygP5kUJuDevsLDTzyodTVxi3zvYaaFM+2eIF2nT8a0AI2HPzmR3G1R
-xlNjF3xnwWLlW/0g11vgj9PPAnKgNazMZflNXIbPSRZjHZzh6+C/GYnxlDXf5N3V
-tFjRbBS861rgNrq+zJv9HqLqlF7opQ3x7jAh8LwHdpF/Z95yDW0=
-=hDM+
------END PGP SIGNATURE-----
-
---7ZAtKRhVyVSsbBD2--
+Thanks,
+Miquèl

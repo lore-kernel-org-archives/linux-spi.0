@@ -1,48 +1,53 @@
-From: Viresh Kumar <viresh.kumar@linaro.org>
-Subject: Re: [RFC v2 00/11] DVFS in the OPP core
-Date: Mon, 17 Jun 2019 09:56:54 +0530
-Message-ID: <20190617042654.xdqx5naxo3lq7kv6@vireshk-i7>
-References: <20190320094918.20234-1-rnayak@codeaurora.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+Subject: Re: [PATCH v2 06/28] drivers: Add generic helper to match by of_node
+Date: Mon, 17 Jun 2019 10:59:03 +0100
+Message-ID: <d050ae69-52ee-b32d-2bc0-708b408f3bd4@arm.com>
+References: <1560534863-15115-1-git-send-email-suzuki.poulose@arm.com>
+ <1560534863-15115-7-git-send-email-suzuki.poulose@arm.com>
+ <20190614203144.GB7991@kunai>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-spi@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-scsi@vger.kernel.org, swboyd@chromium.org,
-        ulf.hansson@linaro.org, dianders@chromium.org, rafael@kernel.org
-To: Rajendra Nayak <rnayak@codeaurora.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
+        rafael@kernel.org, atull@kernel.org, andrew@lunn.ch,
+        daniel@ffwll.ch, airlied@linux.ie, davem@davemloft.net,
+        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        f.fainelli@gmail.com, frowand.list@gmail.com, hkallweit1@gmail.com,
+        jslaby@suse.com, jonathanh@nvidia.com, lee.jones@linaro.org,
+        lgirdwood@gmail.com, linux-fpga@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
+        maarten.lankhorst@linux.intel.com, broonie@kernel.org,
+        mathieu.poirier@linaro.org, maxime.ripard@bootlin.com,
+        mdf@kernel.org, peda@axentia.se, robh+dt@kernel.org,
+        srinivas.kandagatla@linaro.org, thierry.reding@gmail.com,
+        thor.thayer@linux.intel.com, ulf.hansson@linaro.org,
+        joe@perches.com
+To: wsa@the-dreams.de
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20190320094918.20234-1-rnayak@codeaurora.org>
+In-Reply-To: <20190614203144.GB7991@kunai>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 20-03-19, 15:19, Rajendra Nayak wrote:
-> This is a v2 of the RFC posted earlier by Stephen Boyd [1]
-> 
-> As part of v2 I still follow the same approach of dev_pm_opp_set_rate()
-> API using clk framework to round the frequency passed and making it
-> accept 0 as a valid frequency indicating the frequency isn't required
-> anymore. It just has a few more drivers converted to use this approach
-> like dsi/dpu and ufs.
-> ufs demonstrates the case of having to handle multiple power domains, one
-> of which is scalable.
-> 
-> The patches are based on 5.1-rc1 and depend on some ufs fixes I posted
-> earlier [2] and a DT patch to include the rpmpd header [3]
-> 
-> [1] https://lkml.org/lkml/2019/1/28/2086
-> [2] https://lkml.org/lkml/2019/3/8/70
-> [3] https://lkml.org/lkml/2019/3/20/120
-> 
-> Rajendra Nayak (10):
->   OPP: Make dev_pm_opp_set_rate() with freq=0 as valid
-> 
-> Stephen Boyd (1):
->   OPP: Don't overwrite rounded clk rate
+Hi
 
-I have applied modified version of these two patches to the OPP tree now.
-Thanks.
+On 14/06/2019 21:31, Wolfram Sang wrote:
+>> +
+>> +int device_match_of_node(struct device *dev, const void *np)
+>> +{
+>> +	return dev->of_node == np;
+>> +}
+>> +EXPORT_SYMBOL_GPL(device_match_of_node);
+> 
+> Is it an option to 'static inline' this simple function in the header,
+> saving the EXPORT?
+> 
 
--- 
-viresh
+No. This is supposed to be passed on as a call back function pointer
+for the APIs. Having it as a static inline, would simply replicate
+the same function through the driver subsystems, which is one of the
+issues that series is trying to solve. Also, by having them exported,
+we can convert the new specialized device lookup functions,
+*_find_device_by_<property> to be static inlines.
+
+Suzuki

@@ -1,55 +1,53 @@
 From: "Enrico Weigelt, metux IT consult" <info@metux.net>
-Subject: [PATCH 1/3] include: linux: spi: more helpers for declaring spi drivers
-Date: Mon, 17 Jun 2019 20:40:38 +0200
-Message-ID: <1560796840-18207-1-git-send-email-info@metux.net>
+Subject: [PATCH 3/3] drivers: gpio: mc33880: use subsys_spi_driver()
+Date: Mon, 17 Jun 2019 20:40:40 +0200
+Message-ID: <1560796840-18207-3-git-send-email-info@metux.net>
+References: <1560796840-18207-1-git-send-email-info@metux.net>
 Cc: linus.walleij@linaro.org, bgolaszewski@baylibre.com,
         broonie@kernel.org, linux-gpio@vger.kernel.org,
         linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1560796840-18207-1-git-send-email-info@metux.net>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Enrico Weigelt <info@metux.net>
 
-Add more helper macros for trivial driver init cases, similar to the
-already existing module_spi_driver()+friends - now for those which
-are initialized at other stages (eg. by subsys_initcall()).
-
-This helps to further reduce driver init boilerplate.
+Reduce driver init boilerplate by using the new
+subsys_spi_driver() macro.
 
 Signed-off-by: Enrico Weigelt <info@metux.net>
 ---
- include/linux/spi/spi.h | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/gpio/gpio-mc33880.c | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 053abd2..f55ba34 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -296,6 +296,23 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
- 	module_driver(__spi_driver, spi_register_driver, \
- 			spi_unregister_driver)
+diff --git a/drivers/gpio/gpio-mc33880.c b/drivers/gpio/gpio-mc33880.c
+index f8194f7..1b9434c 100644
+--- a/drivers/gpio/gpio-mc33880.c
++++ b/drivers/gpio/gpio-mc33880.c
+@@ -156,21 +156,10 @@ static int mc33880_remove(struct spi_device *spi)
+ 	.remove		= mc33880_remove,
+ };
  
-+/* subsys_spi_driver() - Helper macro for drivers that don't do
-+ * anything special in module init/exit.  This eliminates a lot of
-+ * boilerplate.  Each module may only use this macro once, and
-+ * calling it replaces subsys_initcall() and module_exit()
-+ */
-+#define subsys_spi_driver(__spi_driver) \
-+static int __init __spi_driver##_init(void) \
-+{ \
-+	return spi_register_driver(&(__spi_driver)); \
-+} \
-+subsys_initcall(__spi_driver##_init); \
-+static void __exit __spi_driver##_exit(void) \
-+{ \
-+	spi_unregister_driver(&(__spi_driver)); \
-+} \
-+module_exit(__spi_driver##_exit);
-+
- /**
-  * struct spi_controller - interface to SPI master or slave controller
-  * @dev: device interface to this driver
+-static int __init mc33880_init(void)
+-{
+-	return spi_register_driver(&mc33880_driver);
+-}
+ /* register after spi postcore initcall and before
+  * subsys initcalls that may rely on these GPIOs
+  */
+-subsys_initcall(mc33880_init);
+-
+-static void __exit mc33880_exit(void)
+-{
+-	spi_unregister_driver(&mc33880_driver);
+-}
+-module_exit(mc33880_exit);
++subsys_spi_driver(mc33880_driver);
+ 
+ MODULE_AUTHOR("Mocean Laboratories <info@mocean-labs.com>");
+ MODULE_LICENSE("GPL v2");
+-
 -- 
 1.9.1

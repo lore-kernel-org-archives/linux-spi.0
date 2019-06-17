@@ -1,118 +1,55 @@
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: Re: [PATCH v3 2/4] mtd: rawnand: Add Macronix MX25F0A NAND
- controller
-Date: Mon, 17 Jun 2019 14:35:10 +0200
-Message-ID: <20190617143510.4ded5728@xps13>
-References: <1555320234-15802-1-git-send-email-masonccyang@mxic.com.tw>
-        <1555320234-15802-3-git-send-email-masonccyang@mxic.com.tw>
-        <20190512151820.4f2dd9da@xps13>
-        <OF074A1F06.5C1A58BE-ON482583FD.0031CD95-482583FD.003437AD@mxic.com.tw>
-        <20190520142333.390091d5@xps13>
-        <OFADC47344.0F9941B2-ON48258403.002336E3-48258403.003141F0@mxic.com.tw>
-        <20190527144250.71908bd9@xps13>
-        <OFE923A8E5.50375C30-ON48258409.0009AE1B-48258409.00119767@mxic.com.tw>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Cc: bbrezillon@kernel.org, broonie@kernel.org,
-        christophe.kerello@st.com, computersforpeace@gmail.com,
-        devicetree@vger.kernel.org, dwmw2@infradead.org,
-        geert@linux-m68k.org, juliensu@mxic.com.tw, lee.jones@linaro.org,
-        liang.yang@amlogic.com, linux-kernel@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
-        marcel.ziswiler@toradex.com, marek.vasut@gmail.com,
-        mark.rutland@arm.com, paul.burton@mips.com, richard@nod.at,
-        robh+dt@kernel.org, stefan@agner.ch, zhengxunli@mxic.com.tw
-To: masonccyang@mxic.com.tw
+From: "Enrico Weigelt, metux IT consult" <info@metux.net>
+Subject: [PATCH 1/3] include: linux: spi: more helpers for declaring spi drivers
+Date: Mon, 17 Jun 2019 20:40:38 +0200
+Message-ID: <1560796840-18207-1-git-send-email-info@metux.net>
+Cc: linus.walleij@linaro.org, bgolaszewski@baylibre.com,
+        broonie@kernel.org, linux-gpio@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <OFE923A8E5.50375C30-ON48258409.0009AE1B-48258409.00119767@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mason,
+From: Enrico Weigelt <info@metux.net>
 
-masonccyang@mxic.com.tw wrote on Wed, 29 May 2019 11:12:08 +0800:
+Add more helper macros for trivial driver init cases, similar to the
+already existing module_spi_driver()+friends - now for those which
+are initialized at other stages (eg. by subsys_initcall()).
 
-> Hi Miquel,
-> 
-> > > > > > > +static void mxic_nand_select_chip(struct nand_chip *chip, int   
->  
-> > > chipnr)   
-> > > > > > 
-> > > > > > _select_target() is preferred now   
-> > > > > 
-> > > > > Do you mean I implement mxic_nand_select_target() to control #CS ?
-> > > > > 
-> > > > > If so, I need to call mxic_nand_select_target( ) to control #CS ON
-> > > > > and then #CS OFF in _exec_op() due to nand_select_target()<in   
-> > > nand_base,c>   
-> > > > > is still calling chip->legacy.select_chip ?   
-> > > > 
-> > > > You must forget about the ->select_chip() callback. Now it should be
-> > > > handled directly from the controller driver. Please have a look at   
-> the
-> > > > commit pointed against the marvell_nand.c driver.   
-> > > 
-> > > I have no Marvell NFC datasheet and have one question.
-> > > 
-> > > In marvell_nand.c, there is no xxx_deselect_target() or 
-> > > something like that doing #CS OFF.
-> > > marvell_nfc_select_target() seems always to make one of chip or die
-> > > #CS keep low.
-> > > 
-> > > Is it right ?  
-> > 
-> > Yes, AFAIR there is no "de-assert" mechanism in this controller.
-> >   
-> > > 
-> > > How to make all #CS keep high for NAND to enter 
-> > > low-power standby mode if driver don't use "legacy.select_chip()" ?  
-> > 
-> > See commit 02b4a52604a4 ("mtd: rawnand: Make ->select_chip() optional
-> > when ->exec_op() is implemented") which states:
-> > 
-> >         "When [->select_chip() is] not implemented, the core is assuming
-> >    the CS line is automatically asserted/deasserted by the driver  
-> >    ->exec_op() implementation."  
-> > 
-> > Of course, the above is right only when the controller driver supports
-> > the ->exec_op() interface.   
-> 
-> Currently, it seems that we will get the incorrect data and error
-> operation due to CS in error toggling if CS line is controlled in 
-> ->exec_op().  
+This helps to further reduce driver init boilerplate.
 
-Most of the chips today are CS-don't-care, which chip are you using?
+Signed-off-by: Enrico Weigelt <info@metux.net>
+---
+ include/linux/spi/spi.h | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-Is this behavior publicly documented?
-
-Is this LPM mode always activated?
-
-> i.e,. 
-> 
-> 1) In nand_onfi_detect() to call nand_exec_op() twice by 
-> nand_read_param_page_op() and annd_read_data_op()
-> 
-> 2) In nand_write_page_xxx to call nand_exec_op() many times by
-> nand_prog_page_begin_op(), nand_write_data_op() and 
-> nand_prog_page_end_op().
-> 
-> 
-> Should we consider to add a CS line controller in struct nand_controller
-> i.e,.
-> 
-> struct nand_controller {
->          struct mutex lock;
->          const struct nand_controller_ops *ops;
-> +          void (*select_chip)(struct nand_chip *chip, int cs);
-> };
-> 
-> to replace legacy.select_chip() ?
-> 
-
-No, if really needed, we could add a "macro op done" flag in the nand
-operation structure.
-
-
-Thanks,
-Miquèl
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 053abd2..f55ba34 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -296,6 +296,23 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+ 	module_driver(__spi_driver, spi_register_driver, \
+ 			spi_unregister_driver)
+ 
++/* subsys_spi_driver() - Helper macro for drivers that don't do
++ * anything special in module init/exit.  This eliminates a lot of
++ * boilerplate.  Each module may only use this macro once, and
++ * calling it replaces subsys_initcall() and module_exit()
++ */
++#define subsys_spi_driver(__spi_driver) \
++static int __init __spi_driver##_init(void) \
++{ \
++	return spi_register_driver(&(__spi_driver)); \
++} \
++subsys_initcall(__spi_driver##_init); \
++static void __exit __spi_driver##_exit(void) \
++{ \
++	spi_unregister_driver(&(__spi_driver)); \
++} \
++module_exit(__spi_driver##_exit);
++
+ /**
+  * struct spi_controller - interface to SPI master or slave controller
+  * @dev: device interface to this driver
+-- 
+1.9.1

@@ -1,63 +1,53 @@
-From: Boris Brezillon <boris.brezillon@collabora.com>
-Subject: Re: [PATCH v3 2/4] mtd: rawnand: Add Macronix MX25F0A NAND
- controller
-Date: Tue, 18 Jun 2019 09:29:01 +0200
-Message-ID: <20190618092901.3bdd9f61@collabora.com>
-References: <1555320234-15802-1-git-send-email-masonccyang@mxic.com.tw>
-        <1555320234-15802-3-git-send-email-masonccyang@mxic.com.tw>
-        <20190512151820.4f2dd9da@xps13>
-        <OF074A1F06.5C1A58BE-ON482583FD.0031CD95-482583FD.003437AD@mxic.com.tw>
-        <20190520142333.390091d5@xps13>
-        <OFADC47344.0F9941B2-ON48258403.002336E3-48258403.003141F0@mxic.com.tw>
-        <20190527144250.71908bd9@xps13>
-        <OFE923A8E5.50375C30-ON48258409.0009AE1B-48258409.00119767@mxic.com.tw>
-        <20190617143510.4ded5728@xps13>
-        <OF1C1397B4.241DC339-ON4825841D.000482A2-4825841D.0007B67E@mxic.com.tw>
-        <20190618081436.5d488320@collabora.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+Subject: Re: [PATCH v2 09/28] drivers: Add generic match helper by
+ ACPI_COMPANION device
+Date: Tue, 18 Jun 2019 09:38:35 +0100
+Message-ID: <85f942fc-52fd-c4ed-29b3-f28c55a6a7bb@arm.com>
+References: <1560534863-15115-1-git-send-email-suzuki.poulose@arm.com>
+ <1560534863-15115-10-git-send-email-suzuki.poulose@arm.com>
+ <CAJZ5v0gi2vpr5y3USnPnPBHjPA1YAwfqjsJppfLgBP5CcycGog@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: "Miquel Raynal" <miquel.raynal@bootlin.com>, bbrezillon@kernel.org,
-        broonie@kernel.org, christophe.kerello@st.com,
-        computersforpeace@gmail.com, devicetree@vger.kernel.org,
-        dwmw2@infradead.org, geert@linux-m68k.org, juliensu@mxic.com.tw,
-        lee.jones@linaro.org, liang.yang@amlogic.com,
-        linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-spi@vger.kernel.org, marcel.ziswiler@toradex.com,
-        marek.vasut@gmail.com, mark.rutland@arm.com, paul.burton@mips.com,
-        richard@nod.at, robh+dt@kernel.org, stefan@agner.ch,
-        zhengxunli@mxic.com.tw
-To: masonccyang@mxic.com.tw
+Cc: linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
+        lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-spi@vger.kernel.org, broonie@kernel.org
+To: rafael@kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190618081436.5d488320@collabora.com>
+In-Reply-To: <CAJZ5v0gi2vpr5y3USnPnPBHjPA1YAwfqjsJppfLgBP5CcycGog@mail.gmail.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 18 Jun 2019 08:14:36 +0200
-Boris Brezillon <boris.brezillon@collabora.com> wrote:
+Hi Rafael,
 
-> > > > > > 
-> > > > > > How to make all #CS keep high for NAND to enter 
-> > > > > > low-power standby mode if driver don't use "legacy.select_chip()"     
-> > ?   
-> > > > > 
-> > > > > See commit 02b4a52604a4 ("mtd: rawnand: Make ->select_chip()     
-> > optional  
-> > > > > when ->exec_op() is implemented") which states:
-> > > > > 
-> > > > >         "When [->select_chip() is] not implemented, the core is     
-> > assuming  
-> > > > >    the CS line is automatically asserted/deasserted by the driver     
-> > > > >    ->exec_op() implementation."     
-> > > > > 
-> > > > > Of course, the above is right only when the controller driver     
-> > supports  
-> > > > > the ->exec_op() interface.     
-> > > > 
-> > > > Currently, it seems that we will get the incorrect data and error
-> > > > operation due to CS in error toggling if CS line is controlled in     
-> > > > ->exec_op().     
+On 17/06/2019 23:07, Rafael J. Wysocki wrote:
+> On Fri, Jun 14, 2019 at 7:55 PM Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+>>
+>> Add a generic helper to match a device by the ACPI_COMPANION device.
+>> This will be later used for providing wrappers for
+>> (bus/class/driver)_find_device().
+>>
+>> Cc: Len Brown <lenb@kernel.org>
+>> Cc: linux-acpi@vger.kernel.org
+>> Cc: linux-spi@vger.kernel.org
+>> Cc: Mark Brown <broonie@kernel.org>
+>> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> 
+> Please fold this change into the patch adding users of device_match_acpi_dev().
 
-Oh, and please provide the modifications you added on top of this patch.
-Right now we're speculating on what you've done which is definitely not
-an efficient way to debug this sort of issues.
+There are variants of this by class/bus/driver and all of them are introduced
+as separate patches with the respective users. If we do for this, we have to
+do the same for other matches as well.
+
+i.e, [ device_match_by_attr + class_find_device_by_attr & users + 
+driver_find_device_by_attr & users + bus_find_device_by_attr & users ]
+
+And that becomes a large chunk, which could make the review painful.
+
+If you would still like that approach, I could do that in the next revision.
+
+Cheers
+Suzuki

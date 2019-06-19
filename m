@@ -1,36 +1,34 @@
 From: masonccyang@mxic.com.tw
 Subject: Re: [PATCH v3 2/4] mtd: rawnand: Add Macronix MX25F0A NAND controller
-Date: Wed, 19 Jun 2019 16:48:44 +0800
-Message-ID: <OFACBC7B27.1732CFB6-ON4825841E.0030075C-4825841E.0030689C@mxic.com.tw>
+Date: Wed, 19 Jun 2019 16:55:52 +0800
+Message-ID: <OF9EFE4BDE.3166D82B-ON4825841E.00307F51-4825841E.00310FB5@mxic.com.tw>
 References: <1555320234-15802-1-git-send-email-masonccyang@mxic.com.tw> <1555320234-15802-3-git-send-email-masonccyang@mxic.com.tw>
         <20190512151820.4f2dd9da@xps13> <OF074A1F06.5C1A58BE-ON482583FD.0031CD95-482583FD.003437AD@mxic.com.tw>
         <20190520142333.390091d5@xps13> <OFADC47344.0F9941B2-ON48258403.002336E3-48258403.003141F0@mxic.com.tw>
         <20190527144250.71908bd9@xps13> <OFE923A8E5.50375C30-ON48258409.0009AE1B-48258409.00119767@mxic.com.tw>
         <20190617143510.4ded5728@xps13> <OF1C1397B4.241DC339-ON4825841D.000482A2-4825841D.0007B67E@mxic.com.tw>
         <20190618081436.5d488320@collabora.com> <20190618092901.3bdd9f61@collabora.com>
-        <OF5EAF94EB.AE31CF59-ON4825841E.002A2C38-4825841E.002C60BF@mxic.com.tw> <20190619100904.6b759377@xps13>
+        <OF5EAF94EB.AE31CF59-ON4825841E.002A2C38-4825841E.002C60BF@mxic.com.tw> <20190619101519.391919ec@collabora.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 8BIT
-Cc: bbrezillon@kernel.org,
-        "Boris Brezillon" <boris.brezillon@collabora.com>,
-        broonie@kernel.org, christophe.kerello@st.com,
-        computersforpeace@gmail.com, devicetree@vger.kernel.org,
-        dwmw2@infradead.org, geert@linux-m68k.org, juliensu@mxic.com.tw,
-        lee.jones@linaro.org, liang.yang@amlogic.com,
-        linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-spi@vger.kernel.org, marcel.ziswiler@toradex.com,
-        marek.vasut@gmail.com, mark.rutland@arm.com, paul.burton@mips.com,
-        richard@nod.at, robh+dt@kernel.org, stefan@agner.ch,
-        zhengxunli@mxic.com.tw
-To: "Miquel Raynal" <miquel.raynal@bootlin.com>
+Content-Type: text/plain; charset="US-ASCII"
+Cc: bbrezillon@kernel.org, broonie@kernel.org,
+        christophe.kerello@st.com, computersforpeace@gmail.com,
+        devicetree@vger.kernel.org, dwmw2@infradead.org,
+        geert@linux-m68k.org, juliensu@mxic.com.tw, lee.jones@linaro.org,
+        liang.yang@amlogic.com, linux-kernel@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        marcel.ziswiler@toradex.com, marek.vasut@gmail.com,
+        mark.rutland@arm.com, "Miquel Raynal" <miquel.raynal@bootlin.com>,
+        paul.burton@mips.com, richard@nod.at, robh+dt@kernel.org,
+        stefan@agner.ch, zhengxunli@mxic.com.tw
+To: "Boris Brezillon" <boris.brezillon@collabora.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190619100904.6b759377@xps13>
+In-Reply-To: <20190619101519.391919ec@collabora.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
-Hi Miquel,
+Hi Boris,
 
 > > > 
 > > > Re: [PATCH v3 2/4] mtd: rawnand: Add Macronix MX25F0A NAND 
@@ -79,14 +77,6 @@ patch.
 not
 > > > an efficient way to debug this sort of issues. 
 > > 
-> 
-> We really need to see the datasheet of the NAND chip which has a
-> problem and how this LPM mode is advertized to understand what the
-> chip expects and eventually how to work-around it.
-
-okay, got it and thanks.
-
-> 
 > > The patch is to add in beginning of ->exec_op() to control CS# low and 
 
 > > before return from ->exec_op() to control CS# High.
@@ -103,23 +93,26 @@ okay, got it and thanks.
 > > 
 > > But for nand_onfi_detect(), 
 > > it calls nand_read_param_page_op() and then nand_read_data_op().
-> > mxic_nand_exec_op() be called twice for nand_onfi_detect()
-> 
-> Yes, this is expected and usually chips don't care.
-
-got it and I will try to fix it on my NFC driver.
-
-> 
-> > and
+> > mxic_nand_exec_op() be called twice for nand_onfi_detect() and
 > > driver will get incorrect ONFI parameter table data from 
 > > nand_read_data_op().
-> > 
 > 
-> Thanks,
-> Miquèl
+> And I think it's valid to release the CE pin between
+> read_param_page_op() (CMD(0xEC)+ADDR(0x0)) and read_data_op() (data
+> cycles) if your chip is CE-dont-care compliant. So, either you have a
+> problem with your controller driver (CS-related timings are incorrect)
+> or your chip is not CE-dont-care compliant.
 
-best regards,
+Understood, I will try to fix it on my NFC driver.
+
+And I think CS# pin goes to high is much important for power consumption.
+
+thanks & best regards,
 Mason
+
+
+
+
 
 CONFIDENTIALITY NOTE:
 

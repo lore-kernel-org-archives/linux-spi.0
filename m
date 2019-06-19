@@ -1,61 +1,102 @@
 From: masonccyang@mxic.com.tw
-Subject: Re: [PATCH v13 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3 RPC-IF
- controller bindings
-Date: Wed, 19 Jun 2019 15:36:20 +0800
-Message-ID: <OFE8CD77A1.CDBE040B-ON4825841E.00288DA8-4825841E.0029C76F@mxic.com.tw>
-References: <1558423174-10748-1-git-send-email-masonccyang@mxic.com.tw> <1558423174-10748-4-git-send-email-masonccyang@mxic.com.tw> <0e2994d6-6efc-9f36-f681-609199f20b9f@cogentembedded.com> <20190603130428.GX4797@dell> <02addf64-9f6e-ccc1-2f94-8983456e3ebc@cogentembedded.com> <OFDA7648A0.F1733EA5-ON48258411.002946DF-48258411.002A2F0D@mxic.com.tw> <2671d488-82a1-8720-d9a1-03554d955a38@gmail.com>
+Subject: Re: [PATCH v3 2/4] mtd: rawnand: Add Macronix MX25F0A NAND controller
+Date: Wed, 19 Jun 2019 16:04:43 +0800
+Message-ID: <OF5EAF94EB.AE31CF59-ON4825841E.002A2C38-4825841E.002C60BF@mxic.com.tw>
+References: <1555320234-15802-1-git-send-email-masonccyang@mxic.com.tw> <1555320234-15802-3-git-send-email-masonccyang@mxic.com.tw>
+        <20190512151820.4f2dd9da@xps13> <OF074A1F06.5C1A58BE-ON482583FD.0031CD95-482583FD.003437AD@mxic.com.tw>
+        <20190520142333.390091d5@xps13> <OFADC47344.0F9941B2-ON48258403.002336E3-48258403.003141F0@mxic.com.tw>
+        <20190527144250.71908bd9@xps13> <OFE923A8E5.50375C30-ON48258409.0009AE1B-48258409.00119767@mxic.com.tw>
+        <20190617143510.4ded5728@xps13> <OF1C1397B4.241DC339-ON4825841D.000482A2-4825841D.0007B67E@mxic.com.tw>
+        <20190618081436.5d488320@collabora.com> <20190618092901.3bdd9f61@collabora.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
 Cc: bbrezillon@kernel.org, broonie@kernel.org,
-        devicetree@vger.kernel.org,
-        "Geert Uytterhoeven" <geert+renesas@glider.be>,
-        "Simon Horman" <horms@verge.net.au>, juliensu@mxic.com.tw,
-        "Lee Jones" <lee.jones@linaro.org>, linux-kernel@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-        mark.rutland@arm.com, miquel.raynal@bootlin.com,
-        robh+dt@kernel.org,
-        "Sergei Shtylyov" <sergei.shtylyov@cogentembedded.com>
-To: "Marek Vasut" <marek.vasut@gmail.com>
+        christophe.kerello@st.com, computersforpeace@gmail.com,
+        devicetree@vger.kernel.org, dwmw2@infradead.org,
+        geert@linux-m68k.org, juliensu@mxic.com.tw, lee.jones@linaro.org,
+        liang.yang@amlogic.com, linux-kernel@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        marcel.ziswiler@toradex.com, marek.vasut@gmail.com,
+        mark.rutland@arm.com, "Miquel Raynal" <miquel.raynal@bootlin.com>,
+        paul.burton@mips.com, richard@nod.at, robh+dt@kernel.org,
+        stefan@agner.ch, zhengxunli@mxic.com.tw
+To: "Boris Brezillon" <boris.brezillon@collabora.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <2671d488-82a1-8720-d9a1-03554d955a38@gmail.com>
+In-Reply-To: <20190618092901.3bdd9f61@collabora.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
-Hi Marek, 
+Hi Boris,
 
-> Subject
 > 
-> Re: [PATCH v13 3/3] dt-bindings: mfd: Document Renesas R-Car Gen3 RPC-IF 
+> Re: [PATCH v3 2/4] mtd: rawnand: Add Macronix MX25F0A NAND controller
+> 
+> On Tue, 18 Jun 2019 08:14:36 +0200
+> Boris Brezillon <boris.brezillon@collabora.com> wrote:
+> 
+> > > > > > > 
+> > > > > > > How to make all #CS keep high for NAND to enter 
+> > > > > > > low-power standby mode if driver don't use 
+"legacy.select_chip()" 
+> > > ? 
+> > > > > > 
+> > > > > > See commit 02b4a52604a4 ("mtd: rawnand: Make ->select_chip()  
+> > > optional 
+> > > > > > when ->exec_op() is implemented") which states:
+> > > > > > 
+> > > > > >         "When [->select_chip() is] not implemented, the core 
+is 
+> > > assuming 
+> > > > > >    the CS line is automatically asserted/deasserted by the 
+driver 
+> > > > > >    ->exec_op() implementation." 
+> > > > > > 
+> > > > > > Of course, the above is right only when the controller driver  
+ 
+> > > supports 
+> > > > > > the ->exec_op() interface. 
+> > > > > 
+> > > > > Currently, it seems that we will get the incorrect data and 
+error
+> > > > > operation due to CS in error toggling if CS line is controlled 
+in 
+> > > > > ->exec_op(). 
+> 
+> Oh, and please provide the modifications you added on top of this patch.
+> Right now we're speculating on what you've done which is definitely not
+> an efficient way to debug this sort of issues.
 
-> controller bindings
-> 
-> On 6/6/19 9:40 AM, masonccyang@mxic.com.tw wrote:
-> [...]
-> 
-> > RPC-IF works either in SPI or HyperFlash is decided by external 
-hardware 
-> > pins 
-> > configuration and it can NOT switch it's operation mode in the run 
-time. 
-> > This is not like my understanding of MFD.
-> 
-> Which external hardware pins decide the RPC configuration ?
-> 
-> It seems to me like PHYCNT register, PHYMEM bitfield, selects what
-> device is connected, and then a couple of other bits control the
-> communication, but I see nothing which would be tied to any external
-> configuration pins.
-> 
+The patch is to add in beginning of ->exec_op() to control CS# low and 
+before return from ->exec_op() to control CS# High.
+i.e,.
+static in mxic_nand_exec_op( )
+{
+ cs_to_low();
 
-You may refer to R-Car D3 Draak Eva. board hardware manual 
-and start-up guide, i.e., 
-Table 2.12 Pin Multiplexing of R-Car D3 Mode setting pins and
-set by hardware switch 1, 2, 3, 13, 31 and 10 to configure
-booting from SPI mode or HyperFlash mode.
+
+
+ cs_to_high();
+ return;
+}
+
+But for nand_onfi_detect(), 
+it calls nand_read_param_page_op() and then nand_read_data_op().
+mxic_nand_exec_op() be called twice for nand_onfi_detect() and
+driver will get incorrect ONFI parameter table data from 
+nand_read_data_op().
 
 thanks & best regards,
 Mason
+
+
+
+
+
+
+
+
+
 
 CONFIDENTIALITY NOTE:
 

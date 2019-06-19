@@ -1,57 +1,52 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/3] include: linux: spi: more helpers for declaring spi
- drivers
-Date: Wed, 19 Jun 2019 13:14:41 +0100
-Message-ID: <20190619121441.GS5316@sirena.org.uk>
-References: <1560796840-18207-1-git-send-email-info@metux.net>
+From: <Tudor.Ambarus@microchip.com>
+Subject: [PATCH] spi: fix ctrl->num_chipselect constraint
+Date: Wed, 19 Jun 2019 14:38:28 +0000
+Message-ID: <20190619143820.4045-1-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="6s/G0Ait2f6IH9MX"
-Cc: linux-kernel@vger.kernel.org, linus.walleij@linaro.org,
-        bgolaszewski@baylibre.com, linux-gpio@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: "Enrico Weigelt, metux IT consult" <info@metux.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: <linus.walleij@linaro.org>, <Nicolas.Ferre@microchip.com>,
+        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <Tudor.Ambarus@microchip.com>
+To: <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1560796840-18207-1-git-send-email-info@metux.net>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-
---6s/G0Ait2f6IH9MX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Mon, Jun 17, 2019 at 08:40:38PM +0200, Enrico Weigelt, metux IT consult wrote:
-
-> +/* subsys_spi_driver() - Helper macro for drivers that don't do
-> + * anything special in module init/exit.  This eliminates a lot of
-> + * boilerplate.  Each module may only use this macro once, and
-> + * calling it replaces subsys_initcall() and module_exit()
-> + */
-> +#define subsys_spi_driver(__spi_driver) \
-
-I'm not convinced we want to be encouraging anyone to be using
-subsys_initcall() for SPI drivers in the first place - my guess would be
-that with deferred probing none of that is needed anyway and the driver
-could just use module_spi_driver().  Certainly if the drivers do
-actually need subsys_initcall() I'd like to understand why before going
-forward with something like this, and ideally we'd be able to remove the
-need.
-
---6s/G0Ait2f6IH9MX
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl0KJzAACgkQJNaLcl1U
-h9DeUQf+PgOAkyo4pT4LasAHcsQL8bXxE3hqloJcMpaFpRgnSp4/I5Pc/Jg04XCu
-CI2k7QnDLDIcUq1FlrI+eVvb0SKhzeEkIfJyaL8dX1kRPea2n9WbP0ZF5GcnQQ2d
-ZidAKFQNB7eSWEhgPUIvkNHIvGm7TUNST35PbhZCd+j4ACcErdrKhGpZPm2hmHRN
-7T7nUtkLFL5YvCH8QqdPLUzg2Co6BFik3jiseCAIi1PH4+zIA9QPi3g47VDPQ6aF
-nTUg51S5Y4aduklIOTW8G+D47tUTsjFiKb3g2ZqUz1wbgmJlyd6q48h4lR55gSj8
-xJYmx5diMemXIks5Ksr1Ny2mhGsXqg==
-=szr+
------END PGP SIGNATURE-----
-
---6s/G0Ait2f6IH9MX--
+RnJvbTogVHVkb3IgQW1iYXJ1cyA8dHVkb3IuYW1iYXJ1c0BtaWNyb2NoaXAuY29tPg0KDQphdDkx
+c2FtOWcyNWVrIHNob3dlZCB0aGUgZm9sbG93aW5nIGVycm9yIGF0IHByb2JlOg0KYXRtZWxfc3Bp
+IGYwMDAwMDAwLnNwaTogVXNpbmcgZG1hMGNoYW4yICh0eCkgYW5kIGRtYTBjaGFuMyAocngpDQpm
+b3IgRE1BIHRyYW5zZmVycw0KYXRtZWxfc3BpOiBwcm9iZSBvZiBmMDAwMDAwMC5zcGkgZmFpbGVk
+IHdpdGggZXJyb3IgLTIyDQoNCkNvbW1pdCAwYTkxOWFlNDkyMjMgKCJzcGk6IERvbid0IGNhbGwg
+c3BpX2dldF9ncGlvX2Rlc2NzKCkgYmVmb3JlIGRldmljZSBuYW1lIGlzIHNldCIpDQptb3ZlZCB0
+aGUgY2FsbGluZyBvZiBzcGlfZ2V0X2dwaW9fZGVzY3MoKSBhZnRlciBjdHJsLT5kZXYgaXMgc2V0
+LA0KYnV0IGRpZG4ndCBtb3ZlIHRoZSAhY3RybC0+bnVtX2NoaXBzZWxlY3QgY2hlY2suIFdoZW4g
+dGhlcmUgYXJlDQpjaGlwIHNlbGVjdHMgaW4gdGhlIGRldmljZSB0cmVlLCB0aGUgc3BpLWF0bWVs
+IGRyaXZlciBsZXRzIHRoZQ0KU1BJIGNvcmUgZGlzY292ZXIgdGhlbSB3aGVuIHJlZ2lzdGVyaW5n
+IHRoZSBTUEkgbWFzdGVyLg0KVGhlIGN0cmwtPm51bV9jaGlwc2VsZWN0IGlzIHRodXMgZXhwZWN0
+ZWQgdG8gYmUgc2V0IGJ5DQpzcGlfZ2V0X2dwaW9fZGVzY3MoKS4NCg0KTW92ZSB0aGUgIWN0bHIt
+Pm51bV9jaGlwc2VsZWN0IGFmdGVyIHNwaV9nZXRfZ3Bpb19kZXNjcygpIGFzIGl0IHdhcw0KYmVm
+b3JlIHRoZSBhZm9yZW1lbnRpb25lZCBjb21taXQuIFdoaWxlIHRvdWNoaW5nIHRoaXMgYmxvY2ss
+IGdldCByaWQNCm9mIHRoZSBleHBsaWNpdCBjb21wYXJpc29uIHdpdGggMCBhbmQgdXBkYXRlIHRo
+ZSBjb21tZW50aW5nIHN0eWxlLg0KDQpGaXhlczogMGE5MTlhZTQ5MjIzICgic3BpOiBEb24ndCBj
+YWxsIHNwaV9nZXRfZ3Bpb19kZXNjcygpIGJlZm9yZSBkZXZpY2UgbmFtZSBpcyBzZXQiKQ0KU2ln
+bmVkLW9mZi1ieTogVHVkb3IgQW1iYXJ1cyA8dHVkb3IuYW1iYXJ1c0BtaWNyb2NoaXAuY29tPg0K
+LS0tDQogZHJpdmVycy9zcGkvc3BpLmMgfCAxMiArKysrKysrLS0tLS0NCiAxIGZpbGUgY2hhbmdl
+ZCwgNyBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVy
+cy9zcGkvc3BpLmMgYi9kcml2ZXJzL3NwaS9zcGkuYw0KaW5kZXggZGI3ZDllODQ2NmM3Li41YzA4
+MWY4Y2YwYjggMTAwNjQ0DQotLS0gYS9kcml2ZXJzL3NwaS9zcGkuYw0KKysrIGIvZHJpdmVycy9z
+cGkvc3BpLmMNCkBAIC0yMzk0LDExICsyMzk0LDYgQEAgaW50IHNwaV9yZWdpc3Rlcl9jb250cm9s
+bGVyKHN0cnVjdCBzcGlfY29udHJvbGxlciAqY3RscikNCiAJaWYgKHN0YXR1cykNCiAJCXJldHVy
+biBzdGF0dXM7DQogDQotCS8qIGV2ZW4gaWYgaXQncyBqdXN0IG9uZSBhbHdheXMtc2VsZWN0ZWQg
+ZGV2aWNlLCB0aGVyZSBtdXN0DQotCSAqIGJlIGF0IGxlYXN0IG9uZSBjaGlwc2VsZWN0DQotCSAq
+Lw0KLQlpZiAoY3Rsci0+bnVtX2NoaXBzZWxlY3QgPT0gMCkNCi0JCXJldHVybiAtRUlOVkFMOw0K
+IAlpZiAoY3Rsci0+YnVzX251bSA+PSAwKSB7DQogCQkvKiBkZXZpY2VzIHdpdGggYSBmaXhlZCBi
+dXMgbnVtIG11c3QgY2hlY2staW4gd2l0aCB0aGUgbnVtICovDQogCQltdXRleF9sb2NrKCZib2Fy
+ZF9sb2NrKTsNCkBAIC0yNDY5LDYgKzI0NjQsMTMgQEAgaW50IHNwaV9yZWdpc3Rlcl9jb250cm9s
+bGVyKHN0cnVjdCBzcGlfY29udHJvbGxlciAqY3RscikNCiAJCX0NCiAJfQ0KIA0KKwkvKg0KKwkg
+KiBFdmVuIGlmIGl0J3MganVzdCBvbmUgYWx3YXlzLXNlbGVjdGVkIGRldmljZSwgdGhlcmUgbXVz
+dA0KKwkgKiBiZSBhdCBsZWFzdCBvbmUgY2hpcHNlbGVjdC4NCisJICovDQorCWlmICghY3Rsci0+
+bnVtX2NoaXBzZWxlY3QpDQorCQlyZXR1cm4gLUVJTlZBTDsNCisNCiAJc3RhdHVzID0gZGV2aWNl
+X2FkZCgmY3Rsci0+ZGV2KTsNCiAJaWYgKHN0YXR1cyA8IDApIHsNCiAJCS8qIGZyZWUgYnVzIGlk
+ICovDQotLSANCjIuOS41DQoNCg==

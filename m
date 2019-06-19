@@ -1,8 +1,8 @@
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Boris Brezillon <boris.brezillon@collabora.com>
 Subject: Re: [PATCH v3 2/4] mtd: rawnand: Add Macronix MX25F0A NAND
  controller
-Date: Wed, 19 Jun 2019 10:09:04 +0200
-Message-ID: <20190619100904.6b759377@xps13>
+Date: Wed, 19 Jun 2019 10:15:19 +0200
+Message-ID: <20190619101519.391919ec@collabora.com>
 References: <1555320234-15802-1-git-send-email-masonccyang@mxic.com.tw>
         <1555320234-15802-3-git-send-email-masonccyang@mxic.com.tw>
         <20190512151820.4f2dd9da@xps13>
@@ -17,27 +17,26 @@ References: <1555320234-15802-1-git-send-email-masonccyang@mxic.com.tw>
         <20190618092901.3bdd9f61@collabora.com>
         <OF5EAF94EB.AE31CF59-ON4825841E.002A2C38-4825841E.002C60BF@mxic.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Cc: "Boris Brezillon" <boris.brezillon@collabora.com>,
-        bbrezillon@kernel.org, broonie@kernel.org,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: bbrezillon@kernel.org, broonie@kernel.org,
         christophe.kerello@st.com, computersforpeace@gmail.com,
         devicetree@vger.kernel.org, dwmw2@infradead.org,
         geert@linux-m68k.org, juliensu@mxic.com.tw, lee.jones@linaro.org,
         liang.yang@amlogic.com, linux-kernel@vger.kernel.org,
         linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
         marcel.ziswiler@toradex.com, marek.vasut@gmail.com,
-        mark.rutland@arm.com, paul.burton@mips.com, richard@nod.at,
-        robh+dt@kernel.org, stefan@agner.ch, zhengxunli@mxic.com.tw
+        mark.rutland@arm.com, "Miquel Raynal" <miquel.raynal@bootlin.com>,
+        paul.burton@mips.com, richard@nod.at, robh+dt@kernel.org,
+        stefan@agner.ch, zhengxunli@mxic.com.tw
 To: masonccyang@mxic.com.tw
 Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <OF5EAF94EB.AE31CF59-ON4825841E.002A2C38-4825841E.002C60BF@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mason,
-
-masonccyang@mxic.com.tw wrote on Wed, 19 Jun 2019 16:04:43 +0800:
+On Wed, 19 Jun 2019 16:04:43 +0800
+masonccyang@mxic.com.tw wrote:
 
 > Hi Boris,
 > 
@@ -79,11 +78,6 @@ masonccyang@mxic.com.tw wrote on Wed, 19 Jun 2019 16:04:43 +0800:
 > > Right now we're speculating on what you've done which is definitely not
 > > an efficient way to debug this sort of issues.  
 > 
-
-We really need to see the datasheet of the NAND chip which has a
-problem and how this LPM mode is advertized to understand what the
-chip expects and eventually how to work-around it.
-
 > The patch is to add in beginning of ->exec_op() to control CS# low and 
 > before return from ->exec_op() to control CS# High.
 > i.e,.
@@ -99,14 +93,12 @@ chip expects and eventually how to work-around it.
 > 
 > But for nand_onfi_detect(), 
 > it calls nand_read_param_page_op() and then nand_read_data_op().
-> mxic_nand_exec_op() be called twice for nand_onfi_detect()
-
-Yes, this is expected and usually chips don't care.
-
-> and
+> mxic_nand_exec_op() be called twice for nand_onfi_detect() and
 > driver will get incorrect ONFI parameter table data from 
 > nand_read_data_op().
-> 
 
-Thanks,
-Miquèl
+And I think it's valid to release the CE pin between
+read_param_page_op() (CMD(0xEC)+ADDR(0x0)) and read_data_op() (data
+cycles) if your chip is CE-dont-care compliant. So, either you have a
+problem with your controller driver (CS-related timings are incorrect)
+or your chip is not CE-dont-care compliant.

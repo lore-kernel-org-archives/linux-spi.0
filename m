@@ -1,52 +1,106 @@
-From: <Tudor.Ambarus@microchip.com>
-Subject: [PATCH] spi: fix ctrl->num_chipselect constraint
-Date: Wed, 19 Jun 2019 14:38:28 +0000
-Message-ID: <20190619143820.4045-1-tudor.ambarus@microchip.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: <linus.walleij@linaro.org>, <Nicolas.Ferre@microchip.com>,
-        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <Tudor.Ambarus@microchip.com>
-To: <broonie@kernel.org>
+From: Mason Yang <masonccyang@mxic.com.tw>
+Subject: [PATCH v14 0/2] spi: Add Renesas R-Car Gen3 RPC-IF SPI driver
+Date: Thu, 20 Jun 2019 17:30:44 +0800
+Message-ID: <1561023046-20886-1-git-send-email-masonccyang@mxic.com.tw>
+Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
+        Mason Yang <masonccyang@mxic.com.tw>, miquel.raynal@bootlin.com
+To: broonie@kernel.org, marek.vasut@gmail.com,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        bbrezillon@kernel.org, linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        lee.jones@linaro.org, sergei.shtylyov@cogentembedded.com,
+        robh+dt@kernel.org, mark.rutland@arm.com,
+        devicetree@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-RnJvbTogVHVkb3IgQW1iYXJ1cyA8dHVkb3IuYW1iYXJ1c0BtaWNyb2NoaXAuY29tPg0KDQphdDkx
-c2FtOWcyNWVrIHNob3dlZCB0aGUgZm9sbG93aW5nIGVycm9yIGF0IHByb2JlOg0KYXRtZWxfc3Bp
-IGYwMDAwMDAwLnNwaTogVXNpbmcgZG1hMGNoYW4yICh0eCkgYW5kIGRtYTBjaGFuMyAocngpDQpm
-b3IgRE1BIHRyYW5zZmVycw0KYXRtZWxfc3BpOiBwcm9iZSBvZiBmMDAwMDAwMC5zcGkgZmFpbGVk
-IHdpdGggZXJyb3IgLTIyDQoNCkNvbW1pdCAwYTkxOWFlNDkyMjMgKCJzcGk6IERvbid0IGNhbGwg
-c3BpX2dldF9ncGlvX2Rlc2NzKCkgYmVmb3JlIGRldmljZSBuYW1lIGlzIHNldCIpDQptb3ZlZCB0
-aGUgY2FsbGluZyBvZiBzcGlfZ2V0X2dwaW9fZGVzY3MoKSBhZnRlciBjdHJsLT5kZXYgaXMgc2V0
-LA0KYnV0IGRpZG4ndCBtb3ZlIHRoZSAhY3RybC0+bnVtX2NoaXBzZWxlY3QgY2hlY2suIFdoZW4g
-dGhlcmUgYXJlDQpjaGlwIHNlbGVjdHMgaW4gdGhlIGRldmljZSB0cmVlLCB0aGUgc3BpLWF0bWVs
-IGRyaXZlciBsZXRzIHRoZQ0KU1BJIGNvcmUgZGlzY292ZXIgdGhlbSB3aGVuIHJlZ2lzdGVyaW5n
-IHRoZSBTUEkgbWFzdGVyLg0KVGhlIGN0cmwtPm51bV9jaGlwc2VsZWN0IGlzIHRodXMgZXhwZWN0
-ZWQgdG8gYmUgc2V0IGJ5DQpzcGlfZ2V0X2dwaW9fZGVzY3MoKS4NCg0KTW92ZSB0aGUgIWN0bHIt
-Pm51bV9jaGlwc2VsZWN0IGFmdGVyIHNwaV9nZXRfZ3Bpb19kZXNjcygpIGFzIGl0IHdhcw0KYmVm
-b3JlIHRoZSBhZm9yZW1lbnRpb25lZCBjb21taXQuIFdoaWxlIHRvdWNoaW5nIHRoaXMgYmxvY2ss
-IGdldCByaWQNCm9mIHRoZSBleHBsaWNpdCBjb21wYXJpc29uIHdpdGggMCBhbmQgdXBkYXRlIHRo
-ZSBjb21tZW50aW5nIHN0eWxlLg0KDQpGaXhlczogMGE5MTlhZTQ5MjIzICgic3BpOiBEb24ndCBj
-YWxsIHNwaV9nZXRfZ3Bpb19kZXNjcygpIGJlZm9yZSBkZXZpY2UgbmFtZSBpcyBzZXQiKQ0KU2ln
-bmVkLW9mZi1ieTogVHVkb3IgQW1iYXJ1cyA8dHVkb3IuYW1iYXJ1c0BtaWNyb2NoaXAuY29tPg0K
-LS0tDQogZHJpdmVycy9zcGkvc3BpLmMgfCAxMiArKysrKysrLS0tLS0NCiAxIGZpbGUgY2hhbmdl
-ZCwgNyBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVy
-cy9zcGkvc3BpLmMgYi9kcml2ZXJzL3NwaS9zcGkuYw0KaW5kZXggZGI3ZDllODQ2NmM3Li41YzA4
-MWY4Y2YwYjggMTAwNjQ0DQotLS0gYS9kcml2ZXJzL3NwaS9zcGkuYw0KKysrIGIvZHJpdmVycy9z
-cGkvc3BpLmMNCkBAIC0yMzk0LDExICsyMzk0LDYgQEAgaW50IHNwaV9yZWdpc3Rlcl9jb250cm9s
-bGVyKHN0cnVjdCBzcGlfY29udHJvbGxlciAqY3RscikNCiAJaWYgKHN0YXR1cykNCiAJCXJldHVy
-biBzdGF0dXM7DQogDQotCS8qIGV2ZW4gaWYgaXQncyBqdXN0IG9uZSBhbHdheXMtc2VsZWN0ZWQg
-ZGV2aWNlLCB0aGVyZSBtdXN0DQotCSAqIGJlIGF0IGxlYXN0IG9uZSBjaGlwc2VsZWN0DQotCSAq
-Lw0KLQlpZiAoY3Rsci0+bnVtX2NoaXBzZWxlY3QgPT0gMCkNCi0JCXJldHVybiAtRUlOVkFMOw0K
-IAlpZiAoY3Rsci0+YnVzX251bSA+PSAwKSB7DQogCQkvKiBkZXZpY2VzIHdpdGggYSBmaXhlZCBi
-dXMgbnVtIG11c3QgY2hlY2staW4gd2l0aCB0aGUgbnVtICovDQogCQltdXRleF9sb2NrKCZib2Fy
-ZF9sb2NrKTsNCkBAIC0yNDY5LDYgKzI0NjQsMTMgQEAgaW50IHNwaV9yZWdpc3Rlcl9jb250cm9s
-bGVyKHN0cnVjdCBzcGlfY29udHJvbGxlciAqY3RscikNCiAJCX0NCiAJfQ0KIA0KKwkvKg0KKwkg
-KiBFdmVuIGlmIGl0J3MganVzdCBvbmUgYWx3YXlzLXNlbGVjdGVkIGRldmljZSwgdGhlcmUgbXVz
-dA0KKwkgKiBiZSBhdCBsZWFzdCBvbmUgY2hpcHNlbGVjdC4NCisJICovDQorCWlmICghY3Rsci0+
-bnVtX2NoaXBzZWxlY3QpDQorCQlyZXR1cm4gLUVJTlZBTDsNCisNCiAJc3RhdHVzID0gZGV2aWNl
-X2FkZCgmY3Rsci0+ZGV2KTsNCiAJaWYgKHN0YXR1cyA8IDApIHsNCiAJCS8qIGZyZWUgYnVzIGlk
-ICovDQotLSANCjIuOS41DQoNCg==
+Hi Mark,
+
+V14 patch including:
+1) Patch RPC-IF back to SPI mode only instead of MFD & SPI 
+   by MFD maintainer, Lee Jones comments.
+2) Patch pm_runtime control in spi transfer.
+
+v13 patch including:
+1) rename mfd to ddata for SPI driver.
+2) Patch RPC-IF devicetree for SPI and HyperFlash.
+
+v12 patch including:
+1) add back "wbuf" in dts example.
+2) RPC-IF replace rpc-if in dts.
+
+v11 patch including:
+1) Patch mfd include header file.
+2) mfd coding style.
+3) add back wbuf description in dts.
+
+v10 patch including:
+1) Address range for > 64M byte flash.
+2) Removed dirmap_write due to WBUF 256 bytes transfer issue.
+3) Dummy bytes setting according to spi-nor.c layer.
+
+v9 patch is for RPC MFD driver and RPC SPI driver.
+
+v8 patch including:
+1) Supported SoC-specific values in DTS.
+2) Rename device node name as flash.
+
+v7 patch is according to Geert and Sergei's comments:
+1) Add all R-Car Gen3 model in dts.
+2) patch rpc-if child node search.
+3) minror coding style.
+
+v6 patch is accroding to Geert, Marek and Sergei's comments:
+1) spi_controller for new code.
+2) "renesas,rcar-gen3-rpc" instead of "renesas,r8a77995-rpc."
+3) patch external address read mode w/o u64 readq().
+4) patch dts for write buffer & drop "renesas,rpc-mode".
+5) coding style and so on.
+
+v5 patch is accroding to Sergei's comments:
+1) Read 6 bytes ID from Sergei's patch.
+2) regmap_update_bits().
+3) C++ style comment.
+
+v4 patch is according to Sergei's comments including:
+1) Drop soc_device_match().
+2) Drop unused RPC registers.
+3) Use ilog2() instead of fls().
+4) Patch read 6 bytes ID w/ one command.
+5) Coding style and so on.
+
+v3 patch is according to Marek and Geert's comments including:
+1) soc_device_mach() to set up RPC_PHYCNT_STRTIM.
+2) get_unaligned().
+3) rpc-mode for rpi-spi-flash or rpc-hyperflash.
+4) coding style and so on.
+
+v2 patch including:
+1) remove RPC clock enable/dis-able control,
+2) patch run time PM.
+3) add RPC module software reset,
+4) add regmap.
+5) other coding style and so on.
+
+thanks for your review.
+
+best regards,
+Mason
+
+
+Mason Yang (2):
+  spi: Add Renesas R-Car Gen3 RPC-IF SPI controller driver
+  dt-bindings: spi: Document Renesas R-Car Gen3 RPC-IF controller
+    bindings
+
+ .../devicetree/bindings/spi/spi-renesas-rpc.txt    |  43 ++
+ drivers/spi/Kconfig                                |   6 +
+ drivers/spi/Makefile                               |   1 +
+ drivers/spi/spi-renesas-rpc.c                      | 760 +++++++++++++++++++++
+ 4 files changed, 810 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
+ create mode 100644 drivers/spi/spi-renesas-rpc.c
+
+-- 
+1.9.1

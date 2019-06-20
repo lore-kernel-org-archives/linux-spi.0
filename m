@@ -1,78 +1,58 @@
-From: Mason Yang <masonccyang@mxic.com.tw>
-Subject: [PATCH v14 2/2] dt-bindings: spi: Document Renesas R-Car Gen3 RPC-IF controller bindings
-Date: Thu, 20 Jun 2019 17:30:46 +0800
-Message-ID: <1561023046-20886-3-git-send-email-masonccyang@mxic.com.tw>
-References: <1561023046-20886-1-git-send-email-masonccyang@mxic.com.tw>
-Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
-        Mason Yang <masonccyang@mxic.com.tw>, miquel.raynal@bootlin.com
-To: broonie@kernel.org, marek.vasut@gmail.com,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        bbrezillon@kernel.org, linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        lee.jones@linaro.org, sergei.shtylyov@cogentembedded.com,
-        robh+dt@kernel.org, mark.rutland@arm.com,
-        devicetree@vger.kernel.org
+From: <patrice.chotard@st.com>
+Subject: [PATCH 1/1] spi: spi-stm32-qspi: Remove CR_FTHRES_MASK usage
+Date: Thu, 20 Jun 2019 15:13:23 +0200
+Message-ID: <20190620131323.5955-1-patrice.chotard@st.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: <patrice.chotard@st.com>, <christophe.kerello@st.com>
+To: Mark Brown <broonie@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        <linux-spi@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1561023046-20886-1-git-send-email-masonccyang@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Dcument the bindings used by the Renesas R-Car Gen3 RPC-IF controller.
+From: Patrice Chotard <patrice.chotard@st.com>
 
-Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+On STM32 F4/F7/H7 SoCs, FTHRES is a 5 bits field in QSPI_CR register,
+but for STM32MP1 SoCs, FTHRES is a 4 bits field long. CR_FTHRES_MASK
+definition is not correct.
+
+As for all these SoCs, FTHRES field is set to 3, FIELD_PREP() macro
+is used with a constant as second parameter which make its usage useless.
+
+CR_FTHRES_MASK and FIELD_PREP() can be removed.
+
+Signed-off-by: Patrice Chotard <patrice.chotard@st.com>
 ---
- .../devicetree/bindings/spi/spi-renesas-rpc.txt    | 43 ++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
+ drivers/spi/spi-stm32-qspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
-new file mode 100644
-index 0000000..e8edf99
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
-@@ -0,0 +1,43 @@
-+Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
-+---------------------------------------------------------
-+
-+Required properties:
-+- compatible: should be an SoC-specific compatible value, followed by
-+		"renesas,rcar-gen3-rpc" as a fallback.
-+		supported SoC-specific values are:
-+		"renesas,r8a77980-rpc"	(R-Car V3H)
-+		"renesas,r8a77995-rpc"	(R-Car D3)
-+- reg: should contain three register areas:
-+       first for the base address of RPC-IF registers,
-+       second for the direct mapping read mode and
-+       third for the write buffer area.
-+- reg-names: should contain "regs", "dirmap" and "wbuf"
-+- clocks: should contain the clock phandle/specifier pair for the module clock.
-+- clock-names: should contain "rpc"
-+- power-domain: should contain the power domain phandle/secifier pair.
-+- resets: should contain the reset controller phandle/specifier pair.
-+- #address-cells: should be 1
-+- #size-cells: should be 0
-+
-+Example:
-+
-+	rpc: spi@ee200000 {
-+		compatible = "renesas,r8a77995-rpc", "renesas,rcar-gen3-rpc";
-+		reg = <0 0xee200000 0 0x200>, <0 0x08000000 0 0x4000000>,
-+		      <0 0xee208000 0 0x100>;
-+		reg-names = "regs", "dirmap", "wbuf";
-+		clocks = <&cpg CPG_MOD 917>;
-+		clock-names = "rpc";
-+		power-domains = <&sysc R8A77995_PD_ALWAYS_ON>;
-+		resets = <&cpg 917>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		flash@0 {
-+			compatible = "jedec,spi-nor";
-+			reg = <0>;
-+			spi-max-frequency = <40000000>;
-+			spi-tx-bus-width = <1>;
-+			spi-rx-bus-width = <1>;
-+		};
-+	};
+diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
+index 42f8e3c6aa1f..5dbb6a8e893c 100644
+--- a/drivers/spi/spi-stm32-qspi.c
++++ b/drivers/spi/spi-stm32-qspi.c
+@@ -29,7 +29,7 @@
+ #define CR_SSHIFT		BIT(4)
+ #define CR_DFM			BIT(6)
+ #define CR_FSEL			BIT(7)
+-#define CR_FTHRES_MASK		GENMASK(12, 8)
++#define CR_FTHRES_SHIFT		8
+ #define CR_TEIE			BIT(16)
+ #define CR_TCIE			BIT(17)
+ #define CR_FTIE			BIT(18)
+@@ -463,7 +463,7 @@ static int stm32_qspi_setup(struct spi_device *spi)
+ 	flash->presc = presc;
+ 
+ 	mutex_lock(&qspi->lock);
+-	qspi->cr_reg = FIELD_PREP(CR_FTHRES_MASK, 3) | CR_SSHIFT | CR_EN;
++	qspi->cr_reg = 3 << CR_FTHRES_SHIFT | CR_SSHIFT | CR_EN;
+ 	writel_relaxed(qspi->cr_reg, qspi->io_base + QSPI_CR);
+ 
+ 	/* set dcr fsize to max address */
 -- 
-1.9.1
+2.17.1

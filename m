@@ -1,58 +1,103 @@
-From: <patrice.chotard@st.com>
-Subject: [PATCH 1/1] spi: spi-stm32-qspi: Remove CR_FTHRES_MASK usage
-Date: Thu, 20 Jun 2019 15:13:23 +0200
-Message-ID: <20190620131323.5955-1-patrice.chotard@st.com>
-Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <patrice.chotard@st.com>, <christophe.kerello@st.com>
-To: Mark Brown <broonie@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        <linux-spi@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: fix ctrl->num_chipselect constraint" to the spi tree
+Date: Thu, 20 Jun 2019 14:32:36 +0100 (BST)
+Message-ID: <20190620133236.B1610440046@finisterre.sirena.org.uk>
+References: <20190619143820.4045-1-tudor.ambarus@microchip.com>
+Cc: broonie@kernel.org, linus.walleij@linaro.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>, Nicolas.Ferre@microchip.com,
+        Tudor.Ambarus@microchip.com
+To: Tudor Ambarus <tudor.ambarus@microchip.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190619143820.4045-1-tudor.ambarus@microchip.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Patrice Chotard <patrice.chotard@st.com>
+The patch
 
-On STM32 F4/F7/H7 SoCs, FTHRES is a 5 bits field in QSPI_CR register,
-but for STM32MP1 SoCs, FTHRES is a 4 bits field long. CR_FTHRES_MASK
-definition is not correct.
+   spi: fix ctrl->num_chipselect constraint
 
-As for all these SoCs, FTHRES field is set to 3, FIELD_PREP() macro
-is used with a constant as second parameter which make its usage useless.
+has been applied to the spi tree at
 
-CR_FTHRES_MASK and FIELD_PREP() can be removed.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.3
 
-Signed-off-by: Patrice Chotard <patrice.chotard@st.com>
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From f9481b08220d7dc1ff21e296a330ee8b721b44e4 Mon Sep 17 00:00:00 2001
+From: Tudor Ambarus <tudor.ambarus@microchip.com>
+Date: Wed, 19 Jun 2019 14:38:28 +0000
+Subject: [PATCH] spi: fix ctrl->num_chipselect constraint
+
+at91sam9g25ek showed the following error at probe:
+atmel_spi f0000000.spi: Using dma0chan2 (tx) and dma0chan3 (rx)
+for DMA transfers
+atmel_spi: probe of f0000000.spi failed with error -22
+
+Commit 0a919ae49223 ("spi: Don't call spi_get_gpio_descs() before device name is set")
+moved the calling of spi_get_gpio_descs() after ctrl->dev is set,
+but didn't move the !ctrl->num_chipselect check. When there are
+chip selects in the device tree, the spi-atmel driver lets the
+SPI core discover them when registering the SPI master.
+The ctrl->num_chipselect is thus expected to be set by
+spi_get_gpio_descs().
+
+Move the !ctlr->num_chipselect after spi_get_gpio_descs() as it was
+before the aforementioned commit. While touching this block, get rid
+of the explicit comparison with 0 and update the commenting style.
+
+Fixes: 0a919ae49223 ("spi: Don't call spi_get_gpio_descs() before device name is set")
+Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-stm32-qspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
-index 42f8e3c6aa1f..5dbb6a8e893c 100644
---- a/drivers/spi/spi-stm32-qspi.c
-+++ b/drivers/spi/spi-stm32-qspi.c
-@@ -29,7 +29,7 @@
- #define CR_SSHIFT		BIT(4)
- #define CR_DFM			BIT(6)
- #define CR_FSEL			BIT(7)
--#define CR_FTHRES_MASK		GENMASK(12, 8)
-+#define CR_FTHRES_SHIFT		8
- #define CR_TEIE			BIT(16)
- #define CR_TCIE			BIT(17)
- #define CR_FTIE			BIT(18)
-@@ -463,7 +463,7 @@ static int stm32_qspi_setup(struct spi_device *spi)
- 	flash->presc = presc;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index a31e1e291335..80d2d14f6294 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2375,11 +2375,6 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 	if (status)
+ 		return status;
  
- 	mutex_lock(&qspi->lock);
--	qspi->cr_reg = FIELD_PREP(CR_FTHRES_MASK, 3) | CR_SSHIFT | CR_EN;
-+	qspi->cr_reg = 3 << CR_FTHRES_SHIFT | CR_SSHIFT | CR_EN;
- 	writel_relaxed(qspi->cr_reg, qspi->io_base + QSPI_CR);
+-	/* even if it's just one always-selected device, there must
+-	 * be at least one chipselect
+-	 */
+-	if (ctlr->num_chipselect == 0)
+-		return -EINVAL;
+ 	if (ctlr->bus_num >= 0) {
+ 		/* devices with a fixed bus num must check-in with the num */
+ 		mutex_lock(&board_lock);
+@@ -2450,6 +2445,13 @@ int spi_register_controller(struct spi_controller *ctlr)
+ 		}
+ 	}
  
- 	/* set dcr fsize to max address */
++	/*
++	 * Even if it's just one always-selected device, there must
++	 * be at least one chipselect.
++	 */
++	if (!ctlr->num_chipselect)
++		return -EINVAL;
++
+ 	status = device_add(&ctlr->dev);
+ 	if (status < 0) {
+ 		/* free bus id */
 -- 
-2.17.1
+2.20.1

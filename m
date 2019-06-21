@@ -1,103 +1,126 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: fix ctrl->num_chipselect constraint" to the spi tree
-Date: Thu, 20 Jun 2019 14:32:36 +0100 (BST)
-Message-ID: <20190620133236.B1610440046@finisterre.sirena.org.uk>
-References: <20190619143820.4045-1-tudor.ambarus@microchip.com>
-Cc: broonie@kernel.org, linus.walleij@linaro.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, Nicolas.Ferre@microchip.com,
-        Tudor.Ambarus@microchip.com
-To: Tudor Ambarus <tudor.ambarus@microchip.com>
+From: Robin Gong <yibin.gong@nxp.com>
+Subject: Re: [PATCH v5 00/15] add ecspi ERR009165 for i.mx6/7 soc family
+Date: Fri, 21 Jun 2019 08:42:48 +0000
+Message-ID: <1561135476.7537.5.camel@nxp.com>
+References: <20190610081753.11422-1-yibin.gong@nxp.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+To: "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+        "festevam@gmail.com" <festevam@gmail.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "will.deacon@arm.com" <will.deacon@arm.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "vkoul@kernel.org" <vkoul@kernel.org>,
+        "l.stach@pengutronix.de" <l.stach@pengutronix.de>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190619143820.4045-1-tudor.ambarus@microchip.com>
+In-Reply-To: <20190610081753.11422-1-yibin.gong@nxp.com>
+Content-Language: en-US
+Content-ID: <5DD48EB19266B94CB45FA603ABACCE29@eurprd04.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
-
-   spi: fix ctrl->num_chipselect constraint
-
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.3
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From f9481b08220d7dc1ff21e296a330ee8b721b44e4 Mon Sep 17 00:00:00 2001
-From: Tudor Ambarus <tudor.ambarus@microchip.com>
-Date: Wed, 19 Jun 2019 14:38:28 +0000
-Subject: [PATCH] spi: fix ctrl->num_chipselect constraint
-
-at91sam9g25ek showed the following error at probe:
-atmel_spi f0000000.spi: Using dma0chan2 (tx) and dma0chan3 (rx)
-for DMA transfers
-atmel_spi: probe of f0000000.spi failed with error -22
-
-Commit 0a919ae49223 ("spi: Don't call spi_get_gpio_descs() before device name is set")
-moved the calling of spi_get_gpio_descs() after ctrl->dev is set,
-but didn't move the !ctrl->num_chipselect check. When there are
-chip selects in the device tree, the spi-atmel driver lets the
-SPI core discover them when registering the SPI master.
-The ctrl->num_chipselect is thus expected to be set by
-spi_get_gpio_descs().
-
-Move the !ctlr->num_chipselect after spi_get_gpio_descs() as it was
-before the aforementioned commit. While touching this block, get rid
-of the explicit comparison with 0 and update the commenting style.
-
-Fixes: 0a919ae49223 ("spi: Don't call spi_get_gpio_descs() before device name is set")
-Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index a31e1e291335..80d2d14f6294 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2375,11 +2375,6 @@ int spi_register_controller(struct spi_controller *ctlr)
- 	if (status)
- 		return status;
- 
--	/* even if it's just one always-selected device, there must
--	 * be at least one chipselect
--	 */
--	if (ctlr->num_chipselect == 0)
--		return -EINVAL;
- 	if (ctlr->bus_num >= 0) {
- 		/* devices with a fixed bus num must check-in with the num */
- 		mutex_lock(&board_lock);
-@@ -2450,6 +2445,13 @@ int spi_register_controller(struct spi_controller *ctlr)
- 		}
- 	}
- 
-+	/*
-+	 * Even if it's just one always-selected device, there must
-+	 * be at least one chipselect.
-+	 */
-+	if (!ctlr->num_chipselect)
-+		return -EINVAL;
-+
- 	status = device_add(&ctlr->dev);
- 	if (status < 0) {
- 		/* free bus id */
--- 
-2.20.1
+SGVsbG8gU2hhd24vV2lsbCwNCsKgIERvIHlvdSBoYXZlIGNvbW1lbnRzIGZvciB0aGlzIFY1IHBh
+dGNoIHNldD8gSSBnb3QgdGFncyBmcm9tIE1hcmssDQpWaW5vZCBhbmQgUm9iLg0KDQpPbiAyMDE5
+LTA2LTEwIGF0IDA4OjE3ICswMDAwLCB5aWJpbi5nb25nQG54cC5jb20gd3JvdGU6DQo+IEZyb206
+IFJvYmluIEdvbmcgPHlpYmluLmdvbmdAbnhwLmNvbT4NCj4gDQo+IMKgIFRoZXJlIGlzIGVjc3Bp
+IEVSUjAwOTE2NSBvbiBpLm14Ni83IHNvYyBmYW1pbHksIHdoaWNoIGNhdXNlIEZJRk8NCj4gdHJh
+bnNmZXIgdG8gYmUgc2VuZCB0d2ljZSBpbiBETUEgbW9kZS4gUGxlYXNlIGdldCBtb3JlIGluZm9y
+bWF0aW9uDQo+IGZyb206DQo+IGh0dHBzOi8vZXVyMDEuc2FmZWxpbmtzLnByb3RlY3Rpb24ub3V0
+bG9vay5jb20vP3VybD1odHRwcyUzQSUyRiUyRnd3dw0KPiAubnhwLmNvbSUyRmRvY3MlMkZlbiUy
+RmVycmF0YSUyRklNWDZEUUNFLnBkZiZhbXA7ZGF0YT0wMiU3QzAxJTdDeWliaW4NCj4gLmdvbmcl
+NDBueHAuY29tJTdDNjdkM2U3OGZlNWVmNDQyOGIzYWYwOGQ2ZWQ3YmViNzQlN0M2ODZlYTFkM2Jj
+MmI0YzZmDQo+IGE5MmNkOTljNWMzMDE2MzUlN0MwJTdDMSU3QzYzNjk1NzUxMzgxNDk3MDQxMiZh
+bXA7c2RhdGE9JTJGOXNickRFbUlwdQ0KPiBPYXpjSUFWcElyRUxaTUVqTzk0JTJCamVuN3dPT2xW
+c1ZrJTNEJmFtcDtyZXNlcnZlZD0wLiBUaGUgd29ya2Fyb3VuZA0KPiBpcyBhZGRpbmcNCj4gbmV3
+IHNkbWEgcmFtIHNjcmlwdCB3aGljaCB3b3JrcyBpbiBYQ0jCoMKgbW9kZSBhcyBQSU8gaW5zaWRl
+IHNkbWENCj4gaW5zdGVhZA0KPiBvZiBTTUMgbW9kZSwgbWVhbndoaWxlLCAnVFhfVEhSRVNIT0xE
+JyBzaG91bGQgYmUgMC4gVGhlIGlzc3VlIHNob3VsZA0KPiBiZQ0KPiBleGlzdCBvbiBhbGwgbGVn
+YWN5IGkubXg2Lzcgc29jIGZhbWlseSBiZWZvcmUgaS5teDZ1bC4NCj4gwqAgTlhQIGZpeCB0aGlz
+IGRlc2lnbiBpc3N1ZSBmcm9tIGkubXg2dWwsIHNvIG5ld2VyIGNoaXBzIGluY2x1ZGluZw0KPiBp
+Lm14NnVsLw0KPiA2dWxsLzZzbGwgZG8gbm90IG5lZWQgdGhpcyB3b3JrYXJvdWQgYW55bW9yZS4g
+QWxsIG90aGVyIGkubXg2LzcvOA0KPiBjaGlwcw0KPiBzdGlsbCBuZWVkIHRoaXMgd29ya2Fyb3Vk
+LiBUaGlzIHBhdGNoIHNldCBhZGQgbmV3ICdmc2wsaW14NnVsLWVjc3BpJw0KPiBmb3IgZWNzcGkg
+ZHJpdmVyIGFuZCAnZWNzcGlfZml4ZWQnIGluIHNkbWEgZHJpdmVyIHRvIGNob29zZSBpZiBuZWVk
+DQo+IGVycmF0YQ0KPiBvciBub3QuDQo+IMKgIFRoZSBmaXJzdCB0d28gcmV2ZXJ0ZWQgcGF0Y2hl
+cyBzaG91bGQgYmUgdGhlIHNhbWUgaXNzdWUsIHRob3VnaCwgaXQNCj4gc2VlbXMgJ2ZpeGVkJyBi
+eSBjaGFuZ2luZyB0byBvdGhlciBzaHAgc2NyaXB0LiBIb3BlIFNlYW4gb3IgU2FzY2hhDQo+IGNv
+dWxkDQo+IGhhdmUgdGhlIGNoYW5jZSB0byB0ZXN0IHRoaXMgcGF0Y2ggc2V0IGlmIGNvdWxkIGZp
+eCB0aGVpciBpc3N1ZXMuDQo+IMKgIEJlc2lkZXMsIGVuYWJsZSBzZG1hIHN1cHBvcnQgZm9yIGku
+bXg4bW0vOG1xIGFuZCBmaXggZWNzcGkxIG5vdA0KPiB3b3JrDQo+IG9uIGkubXg4bW0gYmVjYXVz
+ZSB0aGUgZXZlbnQgaWQgaXMgemVyby4NCj4gDQo+IFBTOg0KPiDCoMKgwqBQbGVhc2UgZ2V0IHNk
+bWEgZmlybXdhcmUgZnJvbSBiZWxvdyBsaW51eC1maXJtd2FyZSBhbmQgY29weSBpdCB0bw0KPiB5
+b3VyDQo+IGxvY2FsIHJvb3RmcyAvbGliL2Zpcm13YXJlL2lteC9zZG1hLg0KPiBodHRwczovL2V1
+cjAxLnNhZmVsaW5rcy5wcm90ZWN0aW9uLm91dGxvb2suY29tLz91cmw9aHR0cHMlM0ElMkYlMkZn
+aXQNCj4gLmtlcm5lbC5vcmclMkZwdWIlMkZzY20lMkZsaW51eCUyRmtlcm5lbCUyRmdpdCUyRmZp
+cm13YXJlJTJGbGludXgtDQo+IGZpcm13YXJlLmdpdCUyRnRyZWUlMkZpbXglMkZzZG1hJmFtcDtk
+YXRhPTAyJTdDMDElN0N5aWJpbi5nb25nJTQwbnhwLg0KPiBjb20lN0M2N2QzZTc4ZmU1ZWY0NDI4
+YjNhZjA4ZDZlZDdiZWI3NCU3QzY4NmVhMWQzYmMyYjRjNmZhOTJjZDk5YzVjMzANCj4gMTYzNSU3
+QzAlN0MxJTdDNjM2OTU3NTEzODE0OTcwNDEyJmFtcDtzZGF0YT14WEhCV3BTYVNMbU1vc2IlMkZh
+ak9BaVhuDQo+IG5reGFZVjZIQ3QyNU9PemdSTGJJJTNEJmFtcDtyZXNlcnZlZD0wDQo+IA0KPiB2
+MjoNCj4gwqAgMS5BZGQgY29tbWl0IGxvZyBmb3IgcmV2ZXJ0ZWQgcGF0Y2hlcy4NCj4gwqAgMi5B
+ZGQgY29tbWVudCBmb3IgJ2Vjc3BpX2ZpeGVkJyBpbiBzZG1hIGRyaXZlci4NCj4gwqAgMy5BZGQg
+J2ZzbCxpbXg2c2xsLWVjc3BpJyBjb21wYXRpYmxlIGluc3RlYWQgb2YgJ2ZzbCxpbXg2dWwtZWNz
+cGknDQo+IMKgwqDCoMKgcmF0aGVyIHRoYW4gcmVtb3ZlLg0KPiB2MzoNCj4gwqAgMS5Db25maXJt
+IHdpdGggZGVzaWduIHRlYW0gbWFrZSBzdXJlIEVSUjAwOTE2NSBmaXhlZCBvbg0KPiBpLm14NnVs
+L2kubXg2dWxsDQo+IMKgwqDCoMKgL2kubXg2c2xsLCBub3QgZml4ZWQgb24gaS5teDhtLzhtbSBh
+bmQgb3RoZXIgaS5teDYvNyBsZWdhY3kNCj4gY2hpcHMuDQo+IMKgwqDCoMKgQ29ycmVjdCBkdHMg
+cmVsYXRlZCBkdHMgcGF0Y2ggaW4gdjIuDQo+IMKgIDIuQ2xlYW4gZXJhdHRhIGluZm9ybWF0aW9u
+IGluIGJpbmRpbmcgZG9jIGFuZCBuZXcgJ3R4X2dsaXRjaF9maXhlZCcNCj4gZmxhZw0KPiDCoMKg
+wqDCoGluIHNwaS1pbXggZHJpdmVyIHRvIHN0YXRlIEVSUjAwOTE2NSBmaXhlZCBvciBub3QuDQo+
+IMKgIDMuRW5sYXJnZSBidXJzdCBzaXplIHRvIGZpZm8gc2l6ZSBmb3IgdHggc2luY2UgdHhfd21s
+IHNldCB0byAwIGluDQo+IHRoZQ0KPiDCoMKgwqDCoGVycmF0YSB3b3JrYXJvdWQsIHRodXMgaW1w
+cm92ZSBwZXJmb3JtYW5jZSBhcyBwb3NzaWJsZS4NCj4gdjQ6DQo+IMKgIDEuYWRkIEFjayB0YWcg
+ZnJvbSBNYXJrIGFuZCBWaW5vZA0KPiDCoCAyLiByZW1vdmUgY2hlY2tpbmcgJ2V2ZW50X2lkMScg
+emVybyBhcyAnZXZlbnRfaWQwJy4NCj4gdjU6DQo+IMKgIDEuQWRkIGFub3RoZXIgcGF0Y2ggZm9y
+IGNvbXBhdGlibGUgd2l0aCB0aGUgY3VycmVudCB1YXJ0IGRyaXZlcg0KPiB3aGljaA0KPiDCoMKg
+wqDCoHVzaW5nIHJvbSBzY3JpcHQsIHNvIGJvdGggdWFydCByYW0gc2NyaXB0IGFuZCByb20gc2Ny
+aXB0DQo+IHN1cHBvcnRlZA0KPiDCoMKgwqDCoGluIGxhdGVzdCBmaXJtd2FyZSwgYnkgZGVmYXVs
+dCB1YXJ0IHJvbSBzY3JpcHQgdXNlZC4gVUFSVCBkcml2ZXINCj4gwqDCoMKgwqB3aWxsIGJlIGJy
+b2tlbiB3aXRob3V0IHRoaXMgcGF0Y2guIExhdGVzdCBzZG1hIGZpcm13YXJlIGhhcyBiZWVuDQo+
+IMKgwqDCoMKgYWxyZWFkeSB1cGRhdGVkIGluIGxpbnV4LWZpcm13YXJlLsKgDQo+IA0KPiBSb2Jp
+biBHb25nICgxNSk6DQo+IMKgIFJldmVydCAiQVJNOiBkdHM6IGlteDZxOiBVc2UgY29ycmVjdCBT
+RE1BIHNjcmlwdCBmb3IgU1BJNSBjb3JlIg0KPiDCoCBSZXZlcnQgIkFSTTogZHRzOiBpbXg2OiBV
+c2UgY29ycmVjdCBTRE1BIHNjcmlwdCBmb3IgU1BJIGNvcmVzIg0KPiDCoCBSZXZlcnQgImRtYWVu
+Z2luZTogaW14LXNkbWE6IHJlZmluZSB0byBsb2FkIGNvbnRleHQgb25seSBvbmNlIg0KPiDCoCBk
+bWFlbmdpbmU6IGlteC1zZG1hOiByZW1vdmUgZHVwaWxpY2F0ZWQgc2RtYV9sb2FkX2NvbnRleHQN
+Cj4gwqAgZG1hZW5naW5lOiBpbXgtc2RtYTogYWRkIG1jdV8yX2Vjc3BpIHNjcmlwdA0KPiDCoCBz
+cGk6IGlteDogZml4IEVSUjAwOTE2NQ0KPiDCoCBzcGk6IGlteDogcmVtb3ZlIEVSUjAwOTE2NSB3
+b3JrYXJvdW5kIG9uIGkubXg2dWwNCj4gwqAgc3BpOiBpbXg6IGFkZCBuZXcgaS5teDZ1bCBjb21w
+YXRpYmxlIG5hbWUgaW4gYmluZGluZyBkb2MNCj4gwqAgZG1hZW5naW5lOiBpbXgtc2RtYTogcmVt
+b3ZlIEVSUjAwOTE2NSBvbiBpLm14NnVsDQo+IMKgIGRtYTogaW14LXNkbWE6IGFkZCBpLm14NnVs
+LzZzeCBjb21wYXRpYmxlIG5hbWUNCj4gwqAgZG1hZW5naW5lOiBpbXgtc2RtYTogZml4IGVjc3Bp
+MSByeCBkbWEgbm90IHdvcmsgb24gaS5teDhtbQ0KPiDCoCBBUk06IGR0czogaW14NnVsOiBhZGQg
+ZG1hIHN1cHBvcnQgb24gZWNzcGkNCj4gwqAgQVJNOiBkdHM6IGlteDZzbGw6IGNvcnJlY3Qgc2Rt
+YSBjb21wYXRpYmxlDQo+IMKgIGFybTY0OiBkZWZjb25maWc6IEVuYWJsZSBTRE1BIG9uIGkubXg4
+bXEvOG1tDQo+IMKgIGRtYWVuZ2luZTogaW14LXNkbWE6IGFkZCB1YXJ0IHJvbSBzY3JpcHQNCj4g
+DQo+IMKgLi4uL2RldmljZXRyZWUvYmluZGluZ3MvZG1hL2ZzbC1pbXgtc2RtYS50eHTCoMKgwqDC
+oMKgwqDCoHzCoMKgMiArDQo+IMKgLi4uL2RldmljZXRyZWUvYmluZGluZ3Mvc3BpL2ZzbC1pbXgt
+Y3NwaS50eHTCoMKgwqDCoMKgwqDCoHzCoMKgMSArDQo+IMKgYXJjaC9hcm0vYm9vdC9kdHMvaW14
+NnEuZHRzacKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB8wqDC
+oDIgKy0NCj4gwqBhcmNoL2FybS9ib290L2R0cy9pbXg2cWRsLmR0c2nCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB8wqDCoDggKy0NCj4gwqBhcmNoL2FybS9ib290L2R0
+cy9pbXg2c2xsLmR0c2nCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB8
+wqDCoDIgKy0NCj4gwqBhcmNoL2FybS9ib290L2R0cy9pbXg2dWwuZHRzacKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfMKgwqA4ICsrDQo+IMKgYXJjaC9hcm02NC9j
+b25maWdzL2RlZmNvbmZpZ8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqB8wqDCoDMgKw0KPiDCoGRyaXZlcnMvZG1hL2lteC1zZG1hLmPCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfCA4OA0KPiArKysrKysr
+KysrKysrKysrLS0tLS0tDQo+IMKgZHJpdmVycy9zcGkvc3BpLWlteC5jwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfCA2MQ0KPiArKysr
+KysrKysrKystLS0NCj4gwqBpbmNsdWRlL2xpbnV4L3BsYXRmb3JtX2RhdGEvZG1hLWlteC1zZG1h
+LmjCoMKgwqDCoMKgwqDCoMKgwqB8IDExICsrLQ0KPiDCoDEwIGZpbGVzIGNoYW5nZWQsIDE0NSBp
+bnNlcnRpb25zKCspLCA0MSBkZWxldGlvbnMoLSkNCj4g

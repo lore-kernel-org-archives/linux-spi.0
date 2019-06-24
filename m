@@ -1,126 +1,174 @@
-From: Robin Gong <yibin.gong@nxp.com>
+From: Shawn Guo <shawnguo@kernel.org>
 Subject: Re: [PATCH v5 00/15] add ecspi ERR009165 for i.mx6/7 soc family
-Date: Fri, 21 Jun 2019 08:42:48 +0000
-Message-ID: <1561135476.7537.5.camel@nxp.com>
+Date: Mon, 24 Jun 2019 08:16:45 +0800
+Message-ID: <20190624001643.GB3800@dragon>
 References: <20190610081753.11422-1-yibin.gong@nxp.com>
+ <1561135476.7537.5.camel@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-To: "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
-        "festevam@gmail.com" <festevam@gmail.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will.deacon@arm.com" <will.deacon@arm.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "vkoul@kernel.org" <vkoul@kernel.org>,
-        "l.stach@pengutronix.de" <l.stach@pengutronix.de>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190610081753.11422-1-yibin.gong@nxp.com>
-Content-Language: en-US
-Content-ID: <5DD48EB19266B94CB45FA603ABACCE29@eurprd04.prod.outlook.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: "mark.rutland@arm.com" <mark.rutland@arm.com>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+ "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+ "will.deacon@arm.com" <will.deacon@arm.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "robh+dt@kernel.org" <robh+dt@kernel.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "vkoul@kernel.org" <vkoul@kernel.org>,
+ "broonie@kernel.org" <broonie@kernel.org>, dl-linux-imx <linux-imx@nxp.com>,
+ "kernel@pengutronix.de" <kernel@pengutronix.de>,
+ "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+ "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+ "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+ "festevam@gmail.com" <festevam@gmail.com>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org
+To: Robin Gong <yibin.gong@nxp.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Disposition: inline
+In-Reply-To: <1561135476.7537.5.camel@nxp.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-SGVsbG8gU2hhd24vV2lsbCwNCsKgIERvIHlvdSBoYXZlIGNvbW1lbnRzIGZvciB0aGlzIFY1IHBh
-dGNoIHNldD8gSSBnb3QgdGFncyBmcm9tIE1hcmssDQpWaW5vZCBhbmQgUm9iLg0KDQpPbiAyMDE5
-LTA2LTEwIGF0IDA4OjE3ICswMDAwLCB5aWJpbi5nb25nQG54cC5jb20gd3JvdGU6DQo+IEZyb206
-IFJvYmluIEdvbmcgPHlpYmluLmdvbmdAbnhwLmNvbT4NCj4gDQo+IMKgIFRoZXJlIGlzIGVjc3Bp
-IEVSUjAwOTE2NSBvbiBpLm14Ni83IHNvYyBmYW1pbHksIHdoaWNoIGNhdXNlIEZJRk8NCj4gdHJh
-bnNmZXIgdG8gYmUgc2VuZCB0d2ljZSBpbiBETUEgbW9kZS4gUGxlYXNlIGdldCBtb3JlIGluZm9y
-bWF0aW9uDQo+IGZyb206DQo+IGh0dHBzOi8vZXVyMDEuc2FmZWxpbmtzLnByb3RlY3Rpb24ub3V0
-bG9vay5jb20vP3VybD1odHRwcyUzQSUyRiUyRnd3dw0KPiAubnhwLmNvbSUyRmRvY3MlMkZlbiUy
-RmVycmF0YSUyRklNWDZEUUNFLnBkZiZhbXA7ZGF0YT0wMiU3QzAxJTdDeWliaW4NCj4gLmdvbmcl
-NDBueHAuY29tJTdDNjdkM2U3OGZlNWVmNDQyOGIzYWYwOGQ2ZWQ3YmViNzQlN0M2ODZlYTFkM2Jj
-MmI0YzZmDQo+IGE5MmNkOTljNWMzMDE2MzUlN0MwJTdDMSU3QzYzNjk1NzUxMzgxNDk3MDQxMiZh
-bXA7c2RhdGE9JTJGOXNickRFbUlwdQ0KPiBPYXpjSUFWcElyRUxaTUVqTzk0JTJCamVuN3dPT2xW
-c1ZrJTNEJmFtcDtyZXNlcnZlZD0wLiBUaGUgd29ya2Fyb3VuZA0KPiBpcyBhZGRpbmcNCj4gbmV3
-IHNkbWEgcmFtIHNjcmlwdCB3aGljaCB3b3JrcyBpbiBYQ0jCoMKgbW9kZSBhcyBQSU8gaW5zaWRl
-IHNkbWENCj4gaW5zdGVhZA0KPiBvZiBTTUMgbW9kZSwgbWVhbndoaWxlLCAnVFhfVEhSRVNIT0xE
-JyBzaG91bGQgYmUgMC4gVGhlIGlzc3VlIHNob3VsZA0KPiBiZQ0KPiBleGlzdCBvbiBhbGwgbGVn
-YWN5IGkubXg2Lzcgc29jIGZhbWlseSBiZWZvcmUgaS5teDZ1bC4NCj4gwqAgTlhQIGZpeCB0aGlz
-IGRlc2lnbiBpc3N1ZSBmcm9tIGkubXg2dWwsIHNvIG5ld2VyIGNoaXBzIGluY2x1ZGluZw0KPiBp
-Lm14NnVsLw0KPiA2dWxsLzZzbGwgZG8gbm90IG5lZWQgdGhpcyB3b3JrYXJvdWQgYW55bW9yZS4g
-QWxsIG90aGVyIGkubXg2LzcvOA0KPiBjaGlwcw0KPiBzdGlsbCBuZWVkIHRoaXMgd29ya2Fyb3Vk
-LiBUaGlzIHBhdGNoIHNldCBhZGQgbmV3ICdmc2wsaW14NnVsLWVjc3BpJw0KPiBmb3IgZWNzcGkg
-ZHJpdmVyIGFuZCAnZWNzcGlfZml4ZWQnIGluIHNkbWEgZHJpdmVyIHRvIGNob29zZSBpZiBuZWVk
-DQo+IGVycmF0YQ0KPiBvciBub3QuDQo+IMKgIFRoZSBmaXJzdCB0d28gcmV2ZXJ0ZWQgcGF0Y2hl
-cyBzaG91bGQgYmUgdGhlIHNhbWUgaXNzdWUsIHRob3VnaCwgaXQNCj4gc2VlbXMgJ2ZpeGVkJyBi
-eSBjaGFuZ2luZyB0byBvdGhlciBzaHAgc2NyaXB0LiBIb3BlIFNlYW4gb3IgU2FzY2hhDQo+IGNv
-dWxkDQo+IGhhdmUgdGhlIGNoYW5jZSB0byB0ZXN0IHRoaXMgcGF0Y2ggc2V0IGlmIGNvdWxkIGZp
-eCB0aGVpciBpc3N1ZXMuDQo+IMKgIEJlc2lkZXMsIGVuYWJsZSBzZG1hIHN1cHBvcnQgZm9yIGku
-bXg4bW0vOG1xIGFuZCBmaXggZWNzcGkxIG5vdA0KPiB3b3JrDQo+IG9uIGkubXg4bW0gYmVjYXVz
-ZSB0aGUgZXZlbnQgaWQgaXMgemVyby4NCj4gDQo+IFBTOg0KPiDCoMKgwqBQbGVhc2UgZ2V0IHNk
-bWEgZmlybXdhcmUgZnJvbSBiZWxvdyBsaW51eC1maXJtd2FyZSBhbmQgY29weSBpdCB0bw0KPiB5
-b3VyDQo+IGxvY2FsIHJvb3RmcyAvbGliL2Zpcm13YXJlL2lteC9zZG1hLg0KPiBodHRwczovL2V1
-cjAxLnNhZmVsaW5rcy5wcm90ZWN0aW9uLm91dGxvb2suY29tLz91cmw9aHR0cHMlM0ElMkYlMkZn
-aXQNCj4gLmtlcm5lbC5vcmclMkZwdWIlMkZzY20lMkZsaW51eCUyRmtlcm5lbCUyRmdpdCUyRmZp
-cm13YXJlJTJGbGludXgtDQo+IGZpcm13YXJlLmdpdCUyRnRyZWUlMkZpbXglMkZzZG1hJmFtcDtk
-YXRhPTAyJTdDMDElN0N5aWJpbi5nb25nJTQwbnhwLg0KPiBjb20lN0M2N2QzZTc4ZmU1ZWY0NDI4
-YjNhZjA4ZDZlZDdiZWI3NCU3QzY4NmVhMWQzYmMyYjRjNmZhOTJjZDk5YzVjMzANCj4gMTYzNSU3
-QzAlN0MxJTdDNjM2OTU3NTEzODE0OTcwNDEyJmFtcDtzZGF0YT14WEhCV3BTYVNMbU1vc2IlMkZh
-ak9BaVhuDQo+IG5reGFZVjZIQ3QyNU9PemdSTGJJJTNEJmFtcDtyZXNlcnZlZD0wDQo+IA0KPiB2
-MjoNCj4gwqAgMS5BZGQgY29tbWl0IGxvZyBmb3IgcmV2ZXJ0ZWQgcGF0Y2hlcy4NCj4gwqAgMi5B
-ZGQgY29tbWVudCBmb3IgJ2Vjc3BpX2ZpeGVkJyBpbiBzZG1hIGRyaXZlci4NCj4gwqAgMy5BZGQg
-J2ZzbCxpbXg2c2xsLWVjc3BpJyBjb21wYXRpYmxlIGluc3RlYWQgb2YgJ2ZzbCxpbXg2dWwtZWNz
-cGknDQo+IMKgwqDCoMKgcmF0aGVyIHRoYW4gcmVtb3ZlLg0KPiB2MzoNCj4gwqAgMS5Db25maXJt
-IHdpdGggZGVzaWduIHRlYW0gbWFrZSBzdXJlIEVSUjAwOTE2NSBmaXhlZCBvbg0KPiBpLm14NnVs
-L2kubXg2dWxsDQo+IMKgwqDCoMKgL2kubXg2c2xsLCBub3QgZml4ZWQgb24gaS5teDhtLzhtbSBh
-bmQgb3RoZXIgaS5teDYvNyBsZWdhY3kNCj4gY2hpcHMuDQo+IMKgwqDCoMKgQ29ycmVjdCBkdHMg
-cmVsYXRlZCBkdHMgcGF0Y2ggaW4gdjIuDQo+IMKgIDIuQ2xlYW4gZXJhdHRhIGluZm9ybWF0aW9u
-IGluIGJpbmRpbmcgZG9jIGFuZCBuZXcgJ3R4X2dsaXRjaF9maXhlZCcNCj4gZmxhZw0KPiDCoMKg
-wqDCoGluIHNwaS1pbXggZHJpdmVyIHRvIHN0YXRlIEVSUjAwOTE2NSBmaXhlZCBvciBub3QuDQo+
-IMKgIDMuRW5sYXJnZSBidXJzdCBzaXplIHRvIGZpZm8gc2l6ZSBmb3IgdHggc2luY2UgdHhfd21s
-IHNldCB0byAwIGluDQo+IHRoZQ0KPiDCoMKgwqDCoGVycmF0YSB3b3JrYXJvdWQsIHRodXMgaW1w
-cm92ZSBwZXJmb3JtYW5jZSBhcyBwb3NzaWJsZS4NCj4gdjQ6DQo+IMKgIDEuYWRkIEFjayB0YWcg
-ZnJvbSBNYXJrIGFuZCBWaW5vZA0KPiDCoCAyLiByZW1vdmUgY2hlY2tpbmcgJ2V2ZW50X2lkMScg
-emVybyBhcyAnZXZlbnRfaWQwJy4NCj4gdjU6DQo+IMKgIDEuQWRkIGFub3RoZXIgcGF0Y2ggZm9y
-IGNvbXBhdGlibGUgd2l0aCB0aGUgY3VycmVudCB1YXJ0IGRyaXZlcg0KPiB3aGljaA0KPiDCoMKg
-wqDCoHVzaW5nIHJvbSBzY3JpcHQsIHNvIGJvdGggdWFydCByYW0gc2NyaXB0IGFuZCByb20gc2Ny
-aXB0DQo+IHN1cHBvcnRlZA0KPiDCoMKgwqDCoGluIGxhdGVzdCBmaXJtd2FyZSwgYnkgZGVmYXVs
-dCB1YXJ0IHJvbSBzY3JpcHQgdXNlZC4gVUFSVCBkcml2ZXINCj4gwqDCoMKgwqB3aWxsIGJlIGJy
-b2tlbiB3aXRob3V0IHRoaXMgcGF0Y2guIExhdGVzdCBzZG1hIGZpcm13YXJlIGhhcyBiZWVuDQo+
-IMKgwqDCoMKgYWxyZWFkeSB1cGRhdGVkIGluIGxpbnV4LWZpcm13YXJlLsKgDQo+IA0KPiBSb2Jp
-biBHb25nICgxNSk6DQo+IMKgIFJldmVydCAiQVJNOiBkdHM6IGlteDZxOiBVc2UgY29ycmVjdCBT
-RE1BIHNjcmlwdCBmb3IgU1BJNSBjb3JlIg0KPiDCoCBSZXZlcnQgIkFSTTogZHRzOiBpbXg2OiBV
-c2UgY29ycmVjdCBTRE1BIHNjcmlwdCBmb3IgU1BJIGNvcmVzIg0KPiDCoCBSZXZlcnQgImRtYWVu
-Z2luZTogaW14LXNkbWE6IHJlZmluZSB0byBsb2FkIGNvbnRleHQgb25seSBvbmNlIg0KPiDCoCBk
-bWFlbmdpbmU6IGlteC1zZG1hOiByZW1vdmUgZHVwaWxpY2F0ZWQgc2RtYV9sb2FkX2NvbnRleHQN
-Cj4gwqAgZG1hZW5naW5lOiBpbXgtc2RtYTogYWRkIG1jdV8yX2Vjc3BpIHNjcmlwdA0KPiDCoCBz
-cGk6IGlteDogZml4IEVSUjAwOTE2NQ0KPiDCoCBzcGk6IGlteDogcmVtb3ZlIEVSUjAwOTE2NSB3
-b3JrYXJvdW5kIG9uIGkubXg2dWwNCj4gwqAgc3BpOiBpbXg6IGFkZCBuZXcgaS5teDZ1bCBjb21w
-YXRpYmxlIG5hbWUgaW4gYmluZGluZyBkb2MNCj4gwqAgZG1hZW5naW5lOiBpbXgtc2RtYTogcmVt
-b3ZlIEVSUjAwOTE2NSBvbiBpLm14NnVsDQo+IMKgIGRtYTogaW14LXNkbWE6IGFkZCBpLm14NnVs
-LzZzeCBjb21wYXRpYmxlIG5hbWUNCj4gwqAgZG1hZW5naW5lOiBpbXgtc2RtYTogZml4IGVjc3Bp
-MSByeCBkbWEgbm90IHdvcmsgb24gaS5teDhtbQ0KPiDCoCBBUk06IGR0czogaW14NnVsOiBhZGQg
-ZG1hIHN1cHBvcnQgb24gZWNzcGkNCj4gwqAgQVJNOiBkdHM6IGlteDZzbGw6IGNvcnJlY3Qgc2Rt
-YSBjb21wYXRpYmxlDQo+IMKgIGFybTY0OiBkZWZjb25maWc6IEVuYWJsZSBTRE1BIG9uIGkubXg4
-bXEvOG1tDQo+IMKgIGRtYWVuZ2luZTogaW14LXNkbWE6IGFkZCB1YXJ0IHJvbSBzY3JpcHQNCj4g
-DQo+IMKgLi4uL2RldmljZXRyZWUvYmluZGluZ3MvZG1hL2ZzbC1pbXgtc2RtYS50eHTCoMKgwqDC
-oMKgwqDCoHzCoMKgMiArDQo+IMKgLi4uL2RldmljZXRyZWUvYmluZGluZ3Mvc3BpL2ZzbC1pbXgt
-Y3NwaS50eHTCoMKgwqDCoMKgwqDCoHzCoMKgMSArDQo+IMKgYXJjaC9hcm0vYm9vdC9kdHMvaW14
-NnEuZHRzacKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB8wqDC
-oDIgKy0NCj4gwqBhcmNoL2FybS9ib290L2R0cy9pbXg2cWRsLmR0c2nCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB8wqDCoDggKy0NCj4gwqBhcmNoL2FybS9ib290L2R0
-cy9pbXg2c2xsLmR0c2nCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB8
-wqDCoDIgKy0NCj4gwqBhcmNoL2FybS9ib290L2R0cy9pbXg2dWwuZHRzacKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfMKgwqA4ICsrDQo+IMKgYXJjaC9hcm02NC9j
-b25maWdzL2RlZmNvbmZpZ8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqB8wqDCoDMgKw0KPiDCoGRyaXZlcnMvZG1hL2lteC1zZG1hLmPCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfCA4OA0KPiArKysrKysr
-KysrKysrKysrLS0tLS0tDQo+IMKgZHJpdmVycy9zcGkvc3BpLWlteC5jwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfCA2MQ0KPiArKysr
-KysrKysrKystLS0NCj4gwqBpbmNsdWRlL2xpbnV4L3BsYXRmb3JtX2RhdGEvZG1hLWlteC1zZG1h
-LmjCoMKgwqDCoMKgwqDCoMKgwqB8IDExICsrLQ0KPiDCoDEwIGZpbGVzIGNoYW5nZWQsIDE0NSBp
-bnNlcnRpb25zKCspLCA0MSBkZWxldGlvbnMoLSkNCj4g
+On Fri, Jun 21, 2019 at 08:42:48AM +0000, Robin Gong wrote:
+> Hello Shawn/Will,
+> =A0 Do you have comments for this V5 patch set? I got tags from Mark,
+> Vinod and Rob.
+
+I'm fine with the DTS change, but not sure how the series should be
+merged.
+
+Shawn
+
+> =
+
+> On 2019-06-10 at 08:17 +0000, yibin.gong@nxp.com wrote:
+> > From: Robin Gong <yibin.gong@nxp.com>
+> > =
+
+> > =A0 There is ecspi ERR009165 on i.mx6/7 soc family, which cause FIFO
+> > transfer to be send twice in DMA mode. Please get more information
+> > from:
+> > https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwww
+> > .nxp.com%2Fdocs%2Fen%2Ferrata%2FIMX6DQCE.pdf&amp;data=3D02%7C01%7Cyibin
+> > .gong%40nxp.com%7C67d3e78fe5ef4428b3af08d6ed7beb74%7C686ea1d3bc2b4c6f
+> > a92cd99c5c301635%7C0%7C1%7C636957513814970412&amp;sdata=3D%2F9sbrDEmIpu
+> > OazcIAVpIrELZMEjO94%2Bjen7wOOlVsVk%3D&amp;reserved=3D0. The workaround
+> > is adding
+> > new sdma ram script which works in XCH=A0=A0mode as PIO inside sdma
+> > instead
+> > of SMC mode, meanwhile, 'TX_THRESHOLD' should be 0. The issue should
+> > be
+> > exist on all legacy i.mx6/7 soc family before i.mx6ul.
+> > =A0 NXP fix this design issue from i.mx6ul, so newer chips including
+> > i.mx6ul/
+> > 6ull/6sll do not need this workaroud anymore. All other i.mx6/7/8
+> > chips
+> > still need this workaroud. This patch set add new 'fsl,imx6ul-ecspi'
+> > for ecspi driver and 'ecspi_fixed' in sdma driver to choose if need
+> > errata
+> > or not.
+> > =A0 The first two reverted patches should be the same issue, though, it
+> > seems 'fixed' by changing to other shp script. Hope Sean or Sascha
+> > could
+> > have the chance to test this patch set if could fix their issues.
+> > =A0 Besides, enable sdma support for i.mx8mm/8mq and fix ecspi1 not
+> > work
+> > on i.mx8mm because the event id is zero.
+> > =
+
+> > PS:
+> > =A0=A0=A0Please get sdma firmware from below linux-firmware and copy it=
+ to
+> > your
+> > local rootfs /lib/firmware/imx/sdma.
+> > https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fgit
+> > .kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ffirmware%2Flinux-
+> > firmware.git%2Ftree%2Fimx%2Fsdma&amp;data=3D02%7C01%7Cyibin.gong%40nxp.
+> > com%7C67d3e78fe5ef4428b3af08d6ed7beb74%7C686ea1d3bc2b4c6fa92cd99c5c30
+> > 1635%7C0%7C1%7C636957513814970412&amp;sdata=3DxXHBWpSaSLmMosb%2FajOAiXn
+> > nkxaYV6HCt25OOzgRLbI%3D&amp;reserved=3D0
+> > =
+
+> > v2:
+> > =A0 1.Add commit log for reverted patches.
+> > =A0 2.Add comment for 'ecspi_fixed' in sdma driver.
+> > =A0 3.Add 'fsl,imx6sll-ecspi' compatible instead of 'fsl,imx6ul-ecspi'
+> > =A0=A0=A0=A0rather than remove.
+> > v3:
+> > =A0 1.Confirm with design team make sure ERR009165 fixed on
+> > i.mx6ul/i.mx6ull
+> > =A0=A0=A0=A0/i.mx6sll, not fixed on i.mx8m/8mm and other i.mx6/7 legacy
+> > chips.
+> > =A0=A0=A0=A0Correct dts related dts patch in v2.
+> > =A0 2.Clean eratta information in binding doc and new 'tx_glitch_fixed'
+> > flag
+> > =A0=A0=A0=A0in spi-imx driver to state ERR009165 fixed or not.
+> > =A0 3.Enlarge burst size to fifo size for tx since tx_wml set to 0 in
+> > the
+> > =A0=A0=A0=A0errata workaroud, thus improve performance as possible.
+> > v4:
+> > =A0 1.add Ack tag from Mark and Vinod
+> > =A0 2. remove checking 'event_id1' zero as 'event_id0'.
+> > v5:
+> > =A0 1.Add another patch for compatible with the current uart driver
+> > which
+> > =A0=A0=A0=A0using rom script, so both uart ram script and rom script
+> > supported
+> > =A0=A0=A0=A0in latest firmware, by default uart rom script used. UART d=
+river
+> > =A0=A0=A0=A0will be broken without this patch. Latest sdma firmware has=
+ been
+> > =A0=A0=A0=A0already updated in linux-firmware.=A0
+> > =
+
+> > Robin Gong (15):
+> > =A0 Revert "ARM: dts: imx6q: Use correct SDMA script for SPI5 core"
+> > =A0 Revert "ARM: dts: imx6: Use correct SDMA script for SPI cores"
+> > =A0 Revert "dmaengine: imx-sdma: refine to load context only once"
+> > =A0 dmaengine: imx-sdma: remove dupilicated sdma_load_context
+> > =A0 dmaengine: imx-sdma: add mcu_2_ecspi script
+> > =A0 spi: imx: fix ERR009165
+> > =A0 spi: imx: remove ERR009165 workaround on i.mx6ul
+> > =A0 spi: imx: add new i.mx6ul compatible name in binding doc
+> > =A0 dmaengine: imx-sdma: remove ERR009165 on i.mx6ul
+> > =A0 dma: imx-sdma: add i.mx6ul/6sx compatible name
+> > =A0 dmaengine: imx-sdma: fix ecspi1 rx dma not work on i.mx8mm
+> > =A0 ARM: dts: imx6ul: add dma support on ecspi
+> > =A0 ARM: dts: imx6sll: correct sdma compatible
+> > =A0 arm64: defconfig: Enable SDMA on i.mx8mq/8mm
+> > =A0 dmaengine: imx-sdma: add uart rom script
+> > =
+
+> > =A0.../devicetree/bindings/dma/fsl-imx-sdma.txt=A0=A0=A0=A0=A0=A0=A0|=
+=A0=A02 +
+> > =A0.../devicetree/bindings/spi/fsl-imx-cspi.txt=A0=A0=A0=A0=A0=A0=A0|=
+=A0=A01 +
+> > =A0arch/arm/boot/dts/imx6q.dtsi=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0|=A0=A02 +-
+> > =A0arch/arm/boot/dts/imx6qdl.dtsi=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0|=A0=A08 +-
+> > =A0arch/arm/boot/dts/imx6sll.dtsi=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0|=A0=A02 +-
+> > =A0arch/arm/boot/dts/imx6ul.dtsi=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0|=A0=A08 ++
+> > =A0arch/arm64/configs/defconfig=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0|=A0=A03 +
+> > =A0drivers/dma/imx-sdma.c=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0| 88
+> > ++++++++++++++++------
+> > =A0drivers/spi/spi-imx.c=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0| 61
+> > ++++++++++++---
+> > =A0include/linux/platform_data/dma-imx-sdma.h=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0| 11 ++-
+> > =A010 files changed, 145 insertions(+), 41 deletions(-)
+> > =

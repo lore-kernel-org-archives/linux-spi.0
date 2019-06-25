@@ -1,66 +1,42 @@
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH 2/5] drivers: spi: core: Add optional stall delay between cs_change transfers
-Date: Tue, 25 Jun 2019 16:13:25 +0300
-Message-ID: <20190625131328.11883-2-alexandru.ardelean@analog.com>
-References: <20190625131328.11883-1-alexandru.ardelean@analog.com>
+Subject: [PATCH 1/5] MAINTAINERS: add ADIS IMU driver library entry
+Date: Tue, 25 Jun 2019 16:13:24 +0300
+Message-ID: <20190625131328.11883-1-alexandru.ardelean@analog.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
-Cc: Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Michael Hennerich <michael.hennerich@analog.com>
+Cc: Alexandru Ardelean <alexandru.ardelean@analog.com>
 To: <linux-iio@vger.kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190625131328.11883-1-alexandru.ardelean@analog.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Some devices like the ADIS16460 IMU require a stall period between
-transfers, i.e. between when the CS is de-asserted and re-asserted. The
-default value of 10us is not enough. This change makes the delay
-configurable for when the next CS change goes active.
+This change adds the ADIS driver library to the MAINTAINERS list, and adds
+myself as the current maintainer of this library.
 
-Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- drivers/spi/spi.c       | 3 ++-
- include/linux/spi/spi.h | 3 +++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ MAINTAINERS | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 5e75944ad5d1..739de0118ee1 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1163,7 +1163,8 @@ static int spi_transfer_one_message(struct spi_controller *ctlr,
- 				keep_cs = true;
- 			} else {
- 				spi_set_cs(msg->spi, false);
--				udelay(10);
-+				udelay(xfer->cs_change_stall_delay_us ?
-+				       xfer->cs_change_stall_delay_us : 10);
- 				spi_set_cs(msg->spi, true);
- 			}
- 		}
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 053abd22ad31..d23add3b4790 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -734,6 +734,8 @@ extern void spi_res_release(struct spi_controller *ctlr,
-  *      transfer. If 0 the default (from @spi_device) is used.
-  * @bits_per_word: select a bits_per_word other than the device default
-  *      for this transfer. If 0 the default (from @spi_device) is used.
-+ * @cs_change_stall_delay_us: microseconds to delay between cs_change
-+ * 	transfers.
-  * @cs_change: affects chipselect after this transfer completes
-  * @delay_usecs: microseconds to delay after this transfer before
-  *	(optionally) changing the chipselect status, then starting
-@@ -823,6 +825,7 @@ struct spi_transfer {
- #define	SPI_NBITS_QUAD		0x04 /* 4bits transfer */
- 	u8		bits_per_word;
- 	u8		word_delay_usecs;
-+	u8		cs_change_stall_delay_us;
- 	u16		delay_usecs;
- 	u32		speed_hz;
- 	u16		word_delay;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 1eb971608ac4..544e23753e96 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -930,6 +930,13 @@ S:	Supported
+ F:	drivers/mux/adgs1408.c
+ F:	Documentation/devicetree/bindings/mux/adi,adgs1408.txt
+ 
++ANALOG DEVICES INC ADIS DRIVER LIBRARY
++M:	Alexandru Ardelean <alexandru.ardelean@analog.com>
++S:	Supported
++L:	linux-iio@vger.kernel.org
++F:	include/linux/iio/imu/adis.h
++F:	drivers/iio/imu/adis.c
++
+ ANALOG DEVICES INC ADP5061 DRIVER
+ M:	Stefan Popa <stefan.popa@analog.com>
+ L:	linux-pm@vger.kernel.org
 -- 
 2.20.1

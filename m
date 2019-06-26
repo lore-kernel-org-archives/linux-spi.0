@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: uniphier: fix zero-length transfer" to the spi tree
+Subject: Applied "spi: uniphier: fix timeout error" to the spi tree
 Date: Wed, 26 Jun 2019 12:32:58 +0100 (BST)
-Message-ID: <20190626113258.BD290440046@finisterre.sirena.org.uk>
-References: <1561509708-4175-3-git-send-email-hayashibara.keiji@socionext.com>
+Message-ID: <20190626113258.D7724440049@finisterre.sirena.org.uk>
+References: <1561509708-4175-2-git-send-email-hayashibara.keiji@socionext.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -12,7 +12,7 @@ Cc: masami.hiramatsu@linaro.org, hayashibara.keiji@socionext.com,
  Mark Brown <broonie@kernel.org>, linux-arm-kernel@lists.infradead.org
 To: Keiji Hayashibara <hayashibara.keiji@socionext.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1561509708-4175-3-git-send-email-hayashibara.keiji@socionext.com>
+In-Reply-To: <1561509708-4175-2-git-send-email-hayashibara.keiji@socionext.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -26,7 +26,7 @@ List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: uniphier: fix zero-length transfer
+   spi: uniphier: fix timeout error
 
 has been applied to the spi tree at
 
@@ -51,35 +51,54 @@ to this mail.
 Thanks,
 Mark
 
->From 2b947137f2b8f77474dfe77d68c52778bf6ae453 Mon Sep 17 00:00:00 2001
+>From e4671df0bfd67d4864de014fa1751d5e2a56c7a6 Mon Sep 17 00:00:00 2001
 From: Keiji Hayashibara <hayashibara.keiji@socionext.com>
-Date: Wed, 26 Jun 2019 09:41:48 +0900
-Subject: [PATCH] spi: uniphier: fix zero-length transfer
+Date: Wed, 26 Jun 2019 09:41:47 +0900
+Subject: [PATCH] spi: uniphier: fix timeout error
 
-The zero-length transfer results in timeout error because
-the transfer doesn't start.
-This commit modified to return success in this case.
+Timeout error was silently ignored.
+This commit adds timeout error handling and modifies return type of
+wait_for_completion_timeout().
 
 Signed-off-by: Keiji Hayashibara <hayashibara.keiji@socionext.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-uniphier.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/spi/spi-uniphier.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/spi/spi-uniphier.c b/drivers/spi/spi-uniphier.c
-index c3c35c041ef1..b32c77df5d49 100644
+index 5a6137fe172d..c3c35c041ef1 100644
 --- a/drivers/spi/spi-uniphier.c
 +++ b/drivers/spi/spi-uniphier.c
-@@ -331,6 +331,10 @@ static int uniphier_spi_transfer_one(struct spi_master *master,
- 	struct device *dev = master->dev.parent;
- 	unsigned long time_left;
+@@ -328,7 +328,8 @@ static int uniphier_spi_transfer_one(struct spi_master *master,
+ 				     struct spi_transfer *t)
+ {
+ 	struct uniphier_spi_priv *priv = spi_master_get_devdata(master);
+-	int status;
++	struct device *dev = master->dev.parent;
++	unsigned long time_left;
  
-+	/* Terminate and return success for 0 byte length transfer */
-+	if (!t->len)
-+		return 0;
-+
  	uniphier_spi_setup_transfer(spi, t);
  
- 	reinit_completion(&priv->xfer_done);
+@@ -338,13 +339,15 @@ static int uniphier_spi_transfer_one(struct spi_master *master,
+ 
+ 	uniphier_spi_irq_enable(spi, SSI_IE_RCIE | SSI_IE_RORIE);
+ 
+-	status = wait_for_completion_timeout(&priv->xfer_done,
+-					     msecs_to_jiffies(SSI_TIMEOUT_MS));
++	time_left = wait_for_completion_timeout(&priv->xfer_done,
++					msecs_to_jiffies(SSI_TIMEOUT_MS));
+ 
+ 	uniphier_spi_irq_disable(spi, SSI_IE_RCIE | SSI_IE_RORIE);
+ 
+-	if (status < 0)
+-		return status;
++	if (!time_left) {
++		dev_err(dev, "transfer timeout.\n");
++		return -ETIMEDOUT;
++	}
+ 
+ 	return priv->error;
+ }
 -- 
 2.20.1

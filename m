@@ -1,8 +1,8 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 05/34] spi: bitbang: Fix NULL pointer dereference in spi_unregister_master
-Date: Tue, 25 Jun 2019 23:43:06 -0400
-Message-ID: <20190626034335.23767-5-sashal@kernel.org>
-References: <20190626034335.23767-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.1 06/51] spi: bitbang: Fix NULL pointer dereference in spi_unregister_master
+Date: Tue, 25 Jun 2019 23:40:22 -0400
+Message-ID: <20190626034117.23247-6-sashal@kernel.org>
+References: <20190626034117.23247-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Cc: YueHaibing <yuehaibing@huawei.com>, Hulk Robot <hulkci@huawei.com>,
@@ -13,7 +13,7 @@ Cc: YueHaibing <yuehaibing@huawei.com>, Hulk Robot <hulkci@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190626034335.23767-1-sashal@kernel.org>
+In-Reply-To: <20190626034117.23247-1-sashal@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
@@ -85,10 +85,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-bitbang.c b/drivers/spi/spi-bitbang.c
-index f29176000b8d..06cf9388e74f 100644
+index dd9a8c54a693..be95be4fe985 100644
 --- a/drivers/spi/spi-bitbang.c
 +++ b/drivers/spi/spi-bitbang.c
-@@ -416,7 +416,7 @@ int spi_bitbang_start(struct spi_bitbang *bitbang)
+@@ -403,7 +403,7 @@ int spi_bitbang_start(struct spi_bitbang *bitbang)
  	if (ret)
  		spi_master_put(master);
  

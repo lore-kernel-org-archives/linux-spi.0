@@ -1,120 +1,59 @@
-From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH 3/5] iio: imu: adis: Add support for SPI transfer cs_change_stall_delay_us
-Date: Tue, 25 Jun 2019 16:13:26 +0300
-Message-ID: <20190625131328.11883-3-alexandru.ardelean@analog.com>
-References: <20190625131328.11883-1-alexandru.ardelean@analog.com>
-Mime-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-Cc: Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Michael Hennerich <michael.hennerich@analog.com>
-To: <linux-iio@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+From: Keiji Hayashibara <hayashibara.keiji@socionext.com>
+Subject: [PATCH 1/2] spi: uniphier: fix timeout error
+Date: Wed, 26 Jun 2019 09:41:47 +0900
+Message-ID: <1561509708-4175-2-git-send-email-hayashibara.keiji@socionext.com>
+References: <1561509708-4175-1-git-send-email-hayashibara.keiji@socionext.com>
+Cc: masami.hiramatsu@linaro.org, jaswinder.singh@linaro.org,
+        linux-kernel@vger.kernel.org, hayashibara.keiji@socionext.com
+To: broonie@kernel.org, yamada.masahiro@socionext.com,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190625131328.11883-1-alexandru.ardelean@analog.com>
+In-Reply-To: <1561509708-4175-1-git-send-email-hayashibara.keiji@socionext.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The ADIS16460 requires a higher delay before the next transfer. Since the
-SPI framework supports configuring the delay before the next transfer, this
-driver will become the first user of it.
+Timeout error was silently ignored.
+This commit adds timeout error handling and modifies return type of
+wait_for_completion_timeout().
 
-The support for this functionality in ADIS16460 requires an addition to the
-ADIS lib to support the `cs_change_stall_delay_us` functionality in SPI.
-
-Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Signed-off-by: Keiji Hayashibara <hayashibara.keiji@socionext.com>
 ---
- drivers/iio/imu/adis.c       | 9 +++++++++
- include/linux/iio/imu/adis.h | 2 ++
- 2 files changed, 11 insertions(+)
+ drivers/spi/spi-uniphier.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/imu/adis.c b/drivers/iio/imu/adis.c
-index c771ae6803a9..90dac69910b3 100644
---- a/drivers/iio/imu/adis.c
-+++ b/drivers/iio/imu/adis.c
-@@ -40,28 +40,33 @@ int adis_write_reg(struct adis *adis, unsigned int reg,
- 			.len = 2,
- 			.cs_change = 1,
- 			.delay_usecs = adis->data->write_delay,
-+			.cs_change_stall_delay_us = adis->data->cs_stall_delay,
- 		}, {
- 			.tx_buf = adis->tx + 2,
- 			.bits_per_word = 8,
- 			.len = 2,
- 			.cs_change = 1,
- 			.delay_usecs = adis->data->write_delay,
-+			.cs_change_stall_delay_us = adis->data->cs_stall_delay,
- 		}, {
- 			.tx_buf = adis->tx + 4,
- 			.bits_per_word = 8,
- 			.len = 2,
- 			.cs_change = 1,
- 			.delay_usecs = adis->data->write_delay,
-+			.cs_change_stall_delay_us = adis->data->cs_stall_delay,
- 		}, {
- 			.tx_buf = adis->tx + 6,
- 			.bits_per_word = 8,
- 			.len = 2,
- 			.delay_usecs = adis->data->write_delay,
-+			.cs_change_stall_delay_us = adis->data->cs_stall_delay,
- 		}, {
- 			.tx_buf = adis->tx + 8,
- 			.bits_per_word = 8,
- 			.len = 2,
- 			.delay_usecs = adis->data->write_delay,
-+			.cs_change_stall_delay_us = adis->data->cs_stall_delay,
- 		},
- 	};
+diff --git a/drivers/spi/spi-uniphier.c b/drivers/spi/spi-uniphier.c
+index 5a6137f..c3c35c0 100644
+--- a/drivers/spi/spi-uniphier.c
++++ b/drivers/spi/spi-uniphier.c
+@@ -328,7 +328,8 @@ static int uniphier_spi_transfer_one(struct spi_master *master,
+ 				     struct spi_transfer *t)
+ {
+ 	struct uniphier_spi_priv *priv = spi_master_get_devdata(master);
+-	int status;
++	struct device *dev = master->dev.parent;
++	unsigned long time_left;
  
-@@ -134,12 +139,14 @@ int adis_read_reg(struct adis *adis, unsigned int reg,
- 			.len = 2,
- 			.cs_change = 1,
- 			.delay_usecs = adis->data->write_delay,
-+			.cs_change_stall_delay_us = adis->data->cs_stall_delay,
- 		}, {
- 			.tx_buf = adis->tx + 2,
- 			.bits_per_word = 8,
- 			.len = 2,
- 			.cs_change = 1,
- 			.delay_usecs = adis->data->read_delay,
-+			.cs_change_stall_delay_us = adis->data->cs_stall_delay,
- 		}, {
- 			.tx_buf = adis->tx + 4,
- 			.rx_buf = adis->rx,
-@@ -147,11 +154,13 @@ int adis_read_reg(struct adis *adis, unsigned int reg,
- 			.len = 2,
- 			.cs_change = 1,
- 			.delay_usecs = adis->data->read_delay,
-+			.cs_change_stall_delay_us = adis->data->cs_stall_delay,
- 		}, {
- 			.rx_buf = adis->rx + 2,
- 			.bits_per_word = 8,
- 			.len = 2,
- 			.delay_usecs = adis->data->read_delay,
-+			.cs_change_stall_delay_us = adis->data->cs_stall_delay,
- 		},
- 	};
+ 	uniphier_spi_setup_transfer(spi, t);
  
-diff --git a/include/linux/iio/imu/adis.h b/include/linux/iio/imu/adis.h
-index 469a493f7ae0..4aa248b6b3bd 100644
---- a/include/linux/iio/imu/adis.h
-+++ b/include/linux/iio/imu/adis.h
-@@ -27,6 +27,7 @@ struct adis_burst;
-  * struct adis_data - ADIS chip variant specific data
-  * @read_delay: SPI delay for read operations in us
-  * @write_delay: SPI delay for write operations in us
-+ * @cs_stall_delay: SPI stall delay between transfers in us
-  * @glob_cmd_reg: Register address of the GLOB_CMD register
-  * @msc_ctrl_reg: Register address of the MSC_CTRL register
-  * @diag_stat_reg: Register address of the DIAG_STAT register
-@@ -36,6 +37,7 @@ struct adis_burst;
- struct adis_data {
- 	unsigned int read_delay;
- 	unsigned int write_delay;
-+	unsigned int cs_stall_delay;
+@@ -338,13 +339,15 @@ static int uniphier_spi_transfer_one(struct spi_master *master,
  
- 	unsigned int glob_cmd_reg;
- 	unsigned int msc_ctrl_reg;
+ 	uniphier_spi_irq_enable(spi, SSI_IE_RCIE | SSI_IE_RORIE);
+ 
+-	status = wait_for_completion_timeout(&priv->xfer_done,
+-					     msecs_to_jiffies(SSI_TIMEOUT_MS));
++	time_left = wait_for_completion_timeout(&priv->xfer_done,
++					msecs_to_jiffies(SSI_TIMEOUT_MS));
+ 
+ 	uniphier_spi_irq_disable(spi, SSI_IE_RCIE | SSI_IE_RORIE);
+ 
+-	if (status < 0)
+-		return status;
++	if (!time_left) {
++		dev_err(dev, "transfer timeout.\n");
++		return -ETIMEDOUT;
++	}
+ 
+ 	return priv->error;
+ }
 -- 
-2.20.1
+2.7.4

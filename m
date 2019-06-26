@@ -1,8 +1,8 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.14 03/21] spi: bitbang: Fix NULL pointer dereference in spi_unregister_master
-Date: Tue, 25 Jun 2019 23:44:48 -0400
-Message-ID: <20190626034506.24125-3-sashal@kernel.org>
-References: <20190626034506.24125-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 03/11] spi: bitbang: Fix NULL pointer dereference in spi_unregister_master
+Date: Tue, 25 Jun 2019 23:45:53 -0400
+Message-ID: <20190626034602.24367-3-sashal@kernel.org>
+References: <20190626034602.24367-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Cc: YueHaibing <yuehaibing@huawei.com>, Hulk Robot <hulkci@huawei.com>,
@@ -13,7 +13,7 @@ Cc: YueHaibing <yuehaibing@huawei.com>, Hulk Robot <hulkci@huawei.com>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <20190626034506.24125-1-sashal@kernel.org>
+In-Reply-To: <20190626034602.24367-1-sashal@kernel.org>
 Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 

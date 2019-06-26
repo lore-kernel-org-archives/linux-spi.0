@@ -1,40 +1,36 @@
 From: Keiji Hayashibara <hayashibara.keiji@socionext.com>
-Subject: [PATCH 2/2] spi: uniphier: fix zero-length transfer
-Date: Wed, 26 Jun 2019 09:41:48 +0900
-Message-ID: <1561509708-4175-3-git-send-email-hayashibara.keiji@socionext.com>
-References: <1561509708-4175-1-git-send-email-hayashibara.keiji@socionext.com>
-Cc: masami.hiramatsu@linaro.org, jaswinder.singh@linaro.org,
-        linux-kernel@vger.kernel.org, hayashibara.keiji@socionext.com
+Subject: [PATCH 0/2] spi: fix spi driver for UniPhier SoC
+Date: Wed, 26 Jun 2019 09:41:46 +0900
+Message-ID: <1561509708-4175-1-git-send-email-hayashibara.keiji@socionext.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: jaswinder.singh@linaro.org, linux-kernel@vger.kernel.org,
+ masami.hiramatsu@linaro.org, hayashibara.keiji@socionext.com
 To: broonie@kernel.org, yamada.masahiro@socionext.com,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1561509708-4175-1-git-send-email-hayashibara.keiji@socionext.com>
-Sender: linux-kernel-owner@vger.kernel.org
+ linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The zero-length transfer results in timeout error because
-the transfer doesn't start.
-This commit modified to return success in this case.
+This series fixes timeout problem and modifies timeout handling.
+The zero-length transfer results in two second timeout
+and the transfer speed becomes slow.
 
-Signed-off-by: Keiji Hayashibara <hayashibara.keiji@socionext.com>
----
- drivers/spi/spi-uniphier.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Keiji Hayashibara (2):
+  spi: uniphier: fix timeout error
+  spi: uniphier: fix zero-length transfer
 
-diff --git a/drivers/spi/spi-uniphier.c b/drivers/spi/spi-uniphier.c
-index c3c35c0..b32c77d 100644
---- a/drivers/spi/spi-uniphier.c
-+++ b/drivers/spi/spi-uniphier.c
-@@ -331,6 +331,10 @@ static int uniphier_spi_transfer_one(struct spi_master *master,
- 	struct device *dev = master->dev.parent;
- 	unsigned long time_left;
- 
-+	/* Terminate and return success for 0 byte length transfer */
-+	if (!t->len)
-+		return 0;
-+
- 	uniphier_spi_setup_transfer(spi, t);
- 
- 	reinit_completion(&priv->xfer_done);
+ drivers/spi/spi-uniphier.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
+
 -- 
 2.7.4

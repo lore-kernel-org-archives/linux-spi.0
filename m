@@ -1,64 +1,49 @@
-From: Ludovic Barre <ludovic.Barre@st.com>
-Subject: [PATCH] spi: stm32-qspi: remove signal sensitive on completion
-Date: Thu, 27 Jun 2019 09:43:59 +0200
-Message-ID: <1561621439-7305-2-git-send-email-ludovic.Barre@st.com>
-References: <1561621439-7305-1-git-send-email-ludovic.Barre@st.com>
+From: "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Subject: Re: [PATCH 1/5] MAINTAINERS: add ADIS IMU driver library entry
+Date: Thu, 27 Jun 2019 13:26:50 +0000
+Message-ID: <0e47b26902a7fc41cb4bc633633b6b9426853da7.camel@analog.com>
+References: <20190625131328.11883-1-alexandru.ardelean@analog.com>
+         <20190626193247.09006ac4@archlinux>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        <linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <devicetree@vger.kernel.org>, Ludovic Barre <ludovic.barre@st.com>
-To: Mark Brown <broonie@kernel.org>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Boris Brezillon <bbrezillon@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+To: "jic23@jic23.retrosnub.co.uk" <jic23@jic23.retrosnub.co.uk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1561621439-7305-1-git-send-email-ludovic.Barre@st.com>
+In-Reply-To: <20190626193247.09006ac4@archlinux>
+Content-Language: en-US
+Content-ID: <686CC9F63A84C94FBE8D98D8F4ADB3EC@analog.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Ludovic Barre <ludovic.barre@st.com>
-
-On umount step a sigkill signal is set (without user specific
-action), due to sigkill signal the completion will be interrupted and
-the data transfer can't be finished if a sync is needed.
-
-Signed-off-by: Ludovic Barre <ludovic.barre@st.com>
----
- drivers/spi/spi-stm32-qspi.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
-index 5dbb6a8..655e4af 100644
---- a/drivers/spi/spi-stm32-qspi.c
-+++ b/drivers/spi/spi-stm32-qspi.c
-@@ -245,12 +245,8 @@ static int stm32_qspi_tx_dma(struct stm32_qspi *qspi,
- 	writel_relaxed(cr | CR_DMAEN, qspi->io_base + QSPI_CR);
- 
- 	t_out = sgt.nents * STM32_COMP_TIMEOUT_MS;
--	if (!wait_for_completion_interruptible_timeout(&qspi->dma_completion,
--						       msecs_to_jiffies(t_out)))
--		err = -ETIMEDOUT;
--
--	if (dma_async_is_tx_complete(dma_ch, cookie,
--				     NULL, NULL) != DMA_COMPLETE)
-+	if (!wait_for_completion_timeout(&qspi->dma_completion,
-+					 msecs_to_jiffies(t_out)))
- 		err = -ETIMEDOUT;
- 
- 	if (err)
-@@ -304,7 +300,7 @@ static int stm32_qspi_wait_cmd(struct stm32_qspi *qspi,
- 	cr = readl_relaxed(qspi->io_base + QSPI_CR);
- 	writel_relaxed(cr | CR_TCIE | CR_TEIE, qspi->io_base + QSPI_CR);
- 
--	if (!wait_for_completion_interruptible_timeout(&qspi->data_completion,
-+	if (!wait_for_completion_timeout(&qspi->data_completion,
- 				msecs_to_jiffies(STM32_COMP_TIMEOUT_MS))) {
- 		err = -ETIMEDOUT;
- 	} else {
--- 
-2.7.4
+T24gV2VkLCAyMDE5LTA2LTI2IGF0IDE5OjMyICswMTAwLCBKb25hdGhhbiBDYW1lcm9uIHdyb3Rl
+Og0KPiBbRXh0ZXJuYWxdDQo+IA0KPiBPbiBUdWUsIDI1IEp1biAyMDE5IDE2OjEzOjI0ICswMzAw
+DQo+IEFsZXhhbmRydSBBcmRlbGVhbiA8YWxleGFuZHJ1LmFyZGVsZWFuQGFuYWxvZy5jb20+IHdy
+b3RlOg0KPiANCj4gPiBUaGlzIGNoYW5nZSBhZGRzIHRoZSBBRElTIGRyaXZlciBsaWJyYXJ5IHRv
+IHRoZSBNQUlOVEFJTkVSUyBsaXN0LCBhbmQgYWRkcw0KPiA+IG15c2VsZiBhcyB0aGUgY3VycmVu
+dCBtYWludGFpbmVyIG9mIHRoaXMgbGlicmFyeS4NCj4gPiANCj4gPiBTaWduZWQtb2ZmLWJ5OiBB
+bGV4YW5kcnUgQXJkZWxlYW4gPGFsZXhhbmRydS5hcmRlbGVhbkBhbmFsb2cuY29tPg0KPiBIaSBB
+bGV4YW5kcnUsDQo+IA0KPiBHaXZlbiB0aGlzIG9ubHkgaGFzIGEgdGFuZ2VudGlhbCByZWxhdGlv
+bnNoaXAgdG8gdGhlIHJlc3Qgb2YgdGhlIHBhdGNoZXMNCj4gSSdsbCBwaWNrIHVwIG5vdy4NCj4g
+DQo+IE1vcmUgZ2VuZXJhbGx5IHRoaXMgc2VyaWVzIGlzIGNvbXBsZXggZW5vdWdoIGEgY292ZXIg
+bGV0dGVyIHdvdWxkIGhhdmUNCj4gYmVlbiBnb29kICsgNS81IGlzbid0IGFueXdoZXJlIHRoYXQg
+SSBjYW4gZmluZD8NCg0KVGhhdCBpcyBhIGJpdCB3ZWlyZC4NCkkgZ3Vlc3Mgb3VyIG1haWwgc2Vy
+dmVyIHdlbnQgYSBsaXR0bGUgYnVzdCB3aGVuIHNlbmRpbmcgdGhlIHNlcmllcyBhbmQgZHJvcHBl
+ZCB0aGUgc2VyaWVzLg0KDQpTb3JyeSBhYm91dCB0aGF0Lg0KQWxleA0KDQo+IA0KPiANCj4gVGhh
+bmtzLA0KPiANCj4gSm9uYXRoYW4NCj4gDQo+ID4gLS0tDQo+ID4gIE1BSU5UQUlORVJTIHwgNyAr
+KysrKysrDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA3IGluc2VydGlvbnMoKykNCj4gPiANCj4gPiBk
+aWZmIC0tZ2l0IGEvTUFJTlRBSU5FUlMgYi9NQUlOVEFJTkVSUw0KPiA+IGluZGV4IDFlYjk3MTYw
+OGFjNC4uNTQ0ZTIzNzUzZTk2IDEwMDY0NA0KPiA+IC0tLSBhL01BSU5UQUlORVJTDQo+ID4gKysr
+IGIvTUFJTlRBSU5FUlMNCj4gPiBAQCAtOTMwLDYgKzkzMCwxMyBAQCBTOglTdXBwb3J0ZWQNCj4g
+PiAgRjoJZHJpdmVycy9tdXgvYWRnczE0MDguYw0KPiA+ICBGOglEb2N1bWVudGF0aW9uL2Rldmlj
+ZXRyZWUvYmluZGluZ3MvbXV4L2FkaSxhZGdzMTQwOC50eHQNCj4gPiAgDQo+ID4gK0FOQUxPRyBE
+RVZJQ0VTIElOQyBBRElTIERSSVZFUiBMSUJSQVJZDQo+ID4gK006CUFsZXhhbmRydSBBcmRlbGVh
+biA8YWxleGFuZHJ1LmFyZGVsZWFuQGFuYWxvZy5jb20+DQo+ID4gK1M6CVN1cHBvcnRlZA0KPiA+
+ICtMOglsaW51eC1paW9Admdlci5rZXJuZWwub3JnDQo+ID4gK0Y6CWluY2x1ZGUvbGludXgvaWlv
+L2ltdS9hZGlzLmgNCj4gPiArRjoJZHJpdmVycy9paW8vaW11L2FkaXMuYw0KPiA+ICsNCj4gPiAg
+QU5BTE9HIERFVklDRVMgSU5DIEFEUDUwNjEgRFJJVkVSDQo+ID4gIE06CVN0ZWZhbiBQb3BhIDxz
+dGVmYW4ucG9wYUBhbmFsb2cuY29tPg0KPiA+ICBMOglsaW51eC1wbUB2Z2VyLmtlcm5lbC5vcmcN
+Cg==

@@ -1,7 +1,7 @@
 From: <Tudor.Ambarus@microchip.com>
-Subject: [PATCH 1/2] spi: atmel-quadspi: void return type for atmel_qspi_init()
-Date: Fri, 28 Jun 2019 15:30:32 +0000
-Message-ID: <20190628153009.7571-2-tudor.ambarus@microchip.com>
+Subject: [PATCH 2/2] spi: atmel-quadspi: fix resume call
+Date: Fri, 28 Jun 2019 15:30:34 +0000
+Message-ID: <20190628153009.7571-3-tudor.ambarus@microchip.com>
 References: <20190628153009.7571-1-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -26,57 +26,66 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Tudor Ambarus <tudor.ambarus@microchip.com>
 
-commit 2d30ac5ed633 ("mtd: spi-nor: atmel-quadspi: Use spi-mem interface for atmel-quadspi driver")
-removed the error path from atmel_qspi_init(), but not changed the
-function's return type. Set void return type for atmel_qspi_init().
+When waking up from the Suspend-to-RAM state, the following error
+was seen:
 
+m25p80 spi2.0: flash operation timed out
+
+The flash remained in an undefined state, returning 0xFFs.
+Fix it by setting the Serial Clock Baud Rate, as it was set
+before the conversion to SPIMEM.
+
+Tested with sama5d2_xplained and mx25l25673g spi-nor in
+Backup + Self-Refresh and Suspend modes.
+
+Fixes: 0e6aae08e9ae ("spi: Add QuadSPI driver for Atmel SAMA5D2")
+Reported-by: Mark Deneen <mdeneen@gmail.com>
 Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
 ---
- drivers/spi/atmel-quadspi.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ drivers/spi/atmel-quadspi.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index 9f24d5f0b431..32eb7447c31a 100644
+index 32eb7447c31a..6a7d7b553d95 100644
 --- a/drivers/spi/atmel-quadspi.c
 +++ b/drivers/spi/atmel-quadspi.c
-@@ -405,7 +405,7 @@ static int atmel_qspi_setup(struct spi_device *spi)
+@@ -151,6 +151,7 @@ struct atmel_qspi {
+ 	const struct atmel_qspi_caps *caps;
+ 	u32			pending;
+ 	u32			mr;
++	u32			scr;
+ 	struct completion	cmd_completion;
+ };
+ 
+@@ -382,7 +383,7 @@ static int atmel_qspi_setup(struct spi_device *spi)
+ 	struct spi_controller *ctrl = spi->master;
+ 	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
+ 	unsigned long src_rate;
+-	u32 scr, scbr;
++	u32 scbr;
+ 
+ 	if (ctrl->busy)
+ 		return -EBUSY;
+@@ -399,8 +400,8 @@ static int atmel_qspi_setup(struct spi_device *spi)
+ 	if (scbr > 0)
+ 		scbr--;
+ 
+-	scr = QSPI_SCR_SCBR(scbr);
+-	writel_relaxed(scr, aq->regs + QSPI_SCR);
++	aq->scr = QSPI_SCR_SCBR(scbr);
++	writel_relaxed(aq->scr, aq->regs + QSPI_SCR);
+ 
+ 	return 0;
+ }
+@@ -584,6 +585,9 @@ static int __maybe_unused atmel_qspi_resume(struct device *dev)
+ 	clk_prepare_enable(aq->qspick);
+ 
+ 	atmel_qspi_init(aq);
++
++	writel_relaxed(aq->scr, aq->regs + QSPI_SCR);
++
  	return 0;
  }
  
--static int atmel_qspi_init(struct atmel_qspi *aq)
-+static void atmel_qspi_init(struct atmel_qspi *aq)
- {
- 	/* Reset the QSPI controller */
- 	writel_relaxed(QSPI_CR_SWRST, aq->regs + QSPI_CR);
-@@ -416,8 +416,6 @@ static int atmel_qspi_init(struct atmel_qspi *aq)
- 
- 	/* Enable the QSPI controller */
- 	writel_relaxed(QSPI_CR_QSPIEN, aq->regs + QSPI_CR);
--
--	return 0;
- }
- 
- static irqreturn_t atmel_qspi_interrupt(int irq, void *dev_id)
-@@ -536,9 +534,7 @@ static int atmel_qspi_probe(struct platform_device *pdev)
- 	if (err)
- 		goto disable_qspick;
- 
--	err = atmel_qspi_init(aq);
--	if (err)
--		goto disable_qspick;
-+	atmel_qspi_init(aq);
- 
- 	err = spi_register_controller(ctrl);
- 	if (err)
-@@ -587,7 +583,8 @@ static int __maybe_unused atmel_qspi_resume(struct device *dev)
- 	clk_prepare_enable(aq->pclk);
- 	clk_prepare_enable(aq->qspick);
- 
--	return atmel_qspi_init(aq);
-+	atmel_qspi_init(aq);
-+	return 0;
- }
- 
- static SIMPLE_DEV_PM_OPS(atmel_qspi_pm_ops, atmel_qspi_suspend,
 -- 
 2.9.5

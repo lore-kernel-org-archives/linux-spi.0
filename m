@@ -1,89 +1,56 @@
-From: "Sa, Nuno" <Nuno.Sa@analog.com>
+From: Lukas Wunner <lukas@wunner.de>
 Subject: Re: [PATCH] spi: spi-bcm2835.c: Fix 3-wire mode
-Date: Mon, 1 Jul 2019 07:24:23 +0000
-Message-ID: <54323339606a36febc6a8633a8d3a7db84b975c4.camel@analog.com>
+Date: Mon, 1 Jul 2019 13:55:06 +0200
+Message-ID: <20190701115506.42rr4o4hbuvwytjc@wunner.de>
 References: <20190628123023.4696-1-nuno.sa@analog.com>
  <1b932c61-982b-aae0-1fef-3c574e7d17eb@gmx.net>
  <20190628190022.vya4h2lihm6x2xpb@wunner.de>
+ <54323339606a36febc6a8633a8d3a7db84b975c4.camel@analog.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
- "sbranden@broadcom.com" <sbranden@broadcom.com>,
- "rjui@broadcom.com" <rjui@broadcom.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "eric@anholt.net" <eric@anholt.net>, "broonie@kernel.org" <broonie@kernel.org>,
- "bcm-kernel-feedback-list@broadcom.com"
- <bcm-kernel-feedback-list@broadcom.com>,
- "linux-rpi-kernel@lists.infradead.org" <linux-rpi-kernel@lists.infradead.org>,
- "kernel@martin.sperl.org" <kernel@martin.sperl.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-To: "lukas@wunner.de" <lukas@wunner.de>, "wahrenst@gmx.net" <wahrenst@gmx.net>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190628190022.vya4h2lihm6x2xpb@wunner.de>
-Content-Language: en-US
-Content-ID: <497AEA5E6E7D5B4A816686905C8A2FF6@namprd03.prod.outlook.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=us-ascii
+Cc: "wahrenst@gmx.net" <wahrenst@gmx.net>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "bcm-kernel-feedback-list@broadcom.com"
+        <bcm-kernel-feedback-list@broadcom.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "kernel@martin.sperl.org" <kernel@martin.sperl.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "sbranden@broadcom.com" <sbranden@broadcom.com>,
+        "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
+        "rjui@broadcom.com" <rjui@broadcom.com>,
+        "linux-rpi-kernel@lists.infradead.org"
+        <linux-rpi-kernel@lists.infradead.org>,
+        "eric@anholt.net" <eric@anholt.net>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>
+To: "Sa, Nuno" <Nuno.Sa@analog.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <54323339606a36febc6a8633a8d3a7db84b975c4.camel@analog.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgTHVrYXMgYW5kIFN0ZWZhbiwNCg0KT24gRnJpLCAyMDE5LTA2LTI4IGF0IDIxOjAwICswMjAw
-LCBMdWthcyBXdW5uZXIgd3JvdGU6DQo+IA0KPiBPbiBGcmksIEp1biAyOCwgMjAxOSBhdCAwNToy
-Mzo1NFBNICswMjAwLCBTdGVmYW4gV2FocmVuIHdyb3RlOg0KPiA+IEFtIDI4LjA2LjE5IHVtIDE0
-OjMwIHNjaHJpZWIgTnVubyBTw6E6DQo+ID4gPiBBcyBzdGF0ZWQgaW4NCj4gPiA+IGh0dHBzOi8v
-d3d3LnJhc3BiZXJyeXBpLm9yZy9kb2N1bWVudGF0aW9uL2hhcmR3YXJlL3Jhc3BiZXJyeXBpL3Nw
-aS9SRUFETUUubWQsDQo+ID4gPiBvbmUgb2Ygcnggb3IgdHggYnVmZmVyJ3MgbXVzdCBiZSBudWxs
-LiBIb3dldmVyLCBpZiBETUEgaXMNCj4gPiA+IGVuYWJsZWQsIHRoZQ0KPiA+ID4gZHJpdmVyIHNl
-dHMgdGhlIFNQSV9DT05UUk9MTEVSX01VU1RfUlggfCBTUElfQ09OVFJPTExFUl9NVVNUX1RYDQo+
-ID4gPiBvbiB0aGUNCj4gPiA+IGNvbnRyb2xsZXIgZmxhZ3MuIEhlbmNlLCB0aGUgc3BpIGNvcmUg
-d2lsbCBwcm92aWRlIGR1bW15IGJ1ZmZlcnMNCj4gPiA+IGV2ZW4gaWYNCj4gPiA+IG9uZSBvZiB0
-aGUgYnVmZmVycyB3YXMgc2V0IHRvIG51bGwgYnkgdGhlIGRldmljZSBkcml2ZXIuIFRodXMsDQo+
-ID4gPiB0aGUNCj4gPiA+IGNvbW11bmljYXRpb24gd2l0aCB0aGUgMy13aXJlIGRldmljZSBmYWls
-cy4NCj4gPiA+IA0KPiA+ID4gVGhpcyBwYXRjaCB1c2VzIHRoZSBwcmVwYXJlX21lc3NhZ2UgY2Fs
-bGJhY2sgdG8gbG9vayBmb3IgdGhlDQo+ID4gPiBkZXZpY2UgbW9kZQ0KPiA+ID4gYW5kIHNldHMv
-Y2xlYXJzIHRoZSBTUElfQ09OVFJPTExFUl9NVVNUX1JYIHwNCj4gPiA+IFNQSV9DT05UUk9MTEVS
-X01VU1RfVFggb24gYQ0KPiA+ID4gcGVyIHNwaSBtZXNzYWdlIGJhc2lzLiBJdCBhbHNvIGFzc3Vt
-ZXMgdGhhdCBETUEgaXMgbm90IHN1cHBvcnRlZA0KPiA+ID4gb24NCj4gPiA+IGhhbGYtZHVwbGV4
-IGRldmljZXMuDQo+ID4gPiANCj4gPiA+IFNpZ25lZC1vZmYtYnk6IE51bm8gU8OhIDxudW5vLnNh
-QGFuYWxvZy5jb20+DQo+ID4gDQo+ID4gaSBuZXZlciB0ZXN0ZWQgdGhlIDMtd2lyZSBtb2RlLiBD
-b3VsZCB5b3UgcGxlYXNlIGRlc2NyaWJlIHlvdXIgdGVzdA0KPiA+IHNldHVwPw0KDQpJJ20gd29y
-a2luZyBvbiBhIHJwaSBjYXBlIHdoaWNoIHVzZXMgdGhpcyBkZXZpY2UgDQpodHRwczovL2dpdGh1
-Yi5jb20vYW5hbG9nZGV2aWNlc2luYy9saW51eC9ibG9iL21hc3Rlci9kcml2ZXJzL2lpby9mcmVx
-dWVuY3kvYWRmNDM3MS5jDQp3aGljaCBpcyBjb25uZWN0ZWQgaW4gMy1XSVJFIG1vZGUuIEkgY291
-bGQgY29uZmlybSB0aGF0IHNwaSB3YXMgbm90DQp3b3JraW5nLg0KDQo+IA0KPiBfX3NwaV92YWxp
-ZGF0ZSgpIHJldHVybnMgLUVJTlZBTCBpZiAzLXdpcmUgbW9kZSBpcyB1c2VkIGFuZCBib3RoDQo+
-IGJ1ZmZlcnMNCj4gYXJlIG5vbi1OVUxMLCBJIGd1ZXNzIHRoYXQncyB0aGUgcHJvYmxlbS4NCg0K
-SW4gbXkgY2FzZSwgX19zcGlfdmFsaWRhdGUoKSB3YXMgb2sgYmVjYXVzZSBteSBkZXZpY2UgZHJp
-dmVyIGlzIHBhc3NpbmcNCm9uZSBvZiByeCBvciB0eCBhcyBOVUxMLiBUaGUgcHJvYmxlbSBpcyBp
-biBzcGlfbWFwX21zZygpIHdoaWNoDQphbGxvY2F0ZXMgZHVtbXkgYnVmZmVycyAoYmVjYXVzZSBv
-ZiB0aGUgY3RybCBmbGFncykuIEFzIGEgcmVzdWx0LCBpbg0KYmNtMjgzNV9zcGlfdHJhbnNmZXJf
-b25lKCkgd2Ugc2V0ICJjcyB8PSBCQ00yODM1X1NQSV9DU19SRU47IiB3aGVuIHdlDQp3YW50IHRv
-IGRvIHR4IG9ubHkuIEkgYmVsaWV2ZSB0aGlzIHdhcyB0aGUgYWN0dWFsIHByb2JsZW0uLi4NCg0K
-PiANCj4gDQo+ID4gQE1hcnRpbiwgQEx1a2FzIEFyZSB5b3UgZmluZSB3aXRoIHRoaXMgcGF0Y2g/
-DQo+IA0KPiBJIGhhdmUgYSBwYXRjaCBzZXQgaW4gdGhlIHBpcGVsaW5lIHRvIGRyb3AgU1BJX0NP
-TlRST0xMRVJfTVVTVF9SWA0KPiBhbmQgU1BJX0NPTlRST0xMRVJfTVVTVF9UWCBmcm9tIHNwaS1i
-Y20yODM1LmMuDQo+IA0KPiBMYXRlc3Qgc25hcHNob3QgaXMgYXZhaWxhYmxlIGhlcmUgKHRvcC1t
-b3N0IDEwIGNvbW1pdHMpOg0KPiBodHRwczovL2dpdGh1Yi5jb20vbDFrL2xpbnV4L2NvbW1pdHMv
-cmV2cGlfc3RhZ2luZw0KPiANCj4gQE51bm8sIGNvdWxkIHlvdSBnaXZlIHRoaXMgYnJhbmNoIGEg
-c3BpbiBhbmQgc2VlIGlmIGl0IGZpeGVzIHRoZQ0KPiBpc3N1ZSBmb3IgeW91PyAgSWYgc28sIHRo
-aXMgbWlnaHQgYmUgYSBiZXR0ZXIgc29sdXRpb24uICBZb3VyIHBhdGNoDQo+IGlzIGZpbmUgaW4g
-cHJpbmNpcGxlIHNpbmNlIGl0IHdvcmtzIGFyb3VuZCB0aGUgcHJvYmxlbSwgYnV0IHRoZQ0KPiBw
-YXRjaCBzZXQgb24gdGhlIGFib3ZlLWxpbmtlZCBicmFuY2ggZml4ZXMgaXQgYXQgdGhlIHJvb3Qu
-DQo+IEl0IGFsc28gcHJvdmlkZXMgYSBuaWNlIHdlbGNvbWUgc3BlZWR1cCBhbmQgcmVkdWNlcyBy
-ZXNvdXJjZQ0KPiBjb25zdW1wdGlvbi4NCj4gDQo+IEkndmUgYmVlbiB3b3JraW5nIG9uIHRoaXMg
-b24tYW5kLW9mZiBmb3IgYWJvdXQgaGFsZiBhIHllYXIsDQo+IEkgdGhpbmsgdGhlIHBhdGNoIHNl
-dCBpcyBpbiBwcmV0dHkgZ29vZCBzaGFwZSBub3cgc28gSSB3YXMNCj4gcGxhbm5pbmcgdG8gc3Vi
-bWl0IGl0IHByb2JhYmx5IGluIDIgd2Vla3Mgb3Igc28uDQo+IA0KDQpUaGlzIGxvb2tzIGdyZWF0
-LiBJIHdpbGwgdHJ5IHRvIGdpdmUgdGhpcyBhIHRyeSBzdGlsbCB0b2RheS4NCg0KPiBUaGFua3Ms
-DQo+IA0KPiBMdWthcw0KDQpSZWdhcmRzLA0KTnVubyBTw6ENCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmxpbnV4LWFybS1rZXJuZWwgbWFpbGluZyBsaXN0
-CmxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
-ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LWFybS1rZXJuZWwK
+On Mon, Jul 01, 2019 at 07:24:23AM +0000, Sa, Nuno wrote:
+> The problem is in spi_map_msg() which
+> allocates dummy buffers (because of the ctrl flags). As a result, in
+> bcm2835_spi_transfer_one() we set "cs |= BCM2835_SPI_CS_REN;" when we
+> want to do tx only. I believe this was the actual problem...
+
+I see.  In that case, try:
+
+ 	/* handle all the 3-wire mode */
+-	if ((spi->mode & SPI_3WIRE) && (tfr->rx_buf))
++	if ((spi->mode & SPI_3WIRE) && (tfr->rx_buf != ctlr->dummy_rx))
+ 		cs |= BCM2835_SPI_CS_REN;
+ 	else
+ 		cs &= ~BCM2835_SPI_CS_REN;
+
+Use master->dummy_rx instead of ctlr->dummy_rx prior to commit
+5f336ea53b6b ("spi: bcm2835: Replace spi_master by spi_controller").
+
+This could be something that users of your cape might use on older
+kernels in lieu of my upcoming patch set to drop MUST_RX / MUST_TX.
+
+Thanks,
+
+Lukas

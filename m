@@ -1,31 +1,18 @@
-From: "Sa, Nuno" <Nuno.Sa@analog.com>
-Subject: Re: [PATCH] spi: spi-bcm2835.c: Fix 3-wire mode
-Date: Mon, 1 Jul 2019 14:21:21 +0000
-Message-ID: <42a533cbf1e47ab8c8a44c5e865ec15193a2e956.camel@analog.com>
-References: <20190628123023.4696-1-nuno.sa@analog.com>
- <1b932c61-982b-aae0-1fef-3c574e7d17eb@gmx.net>
- <20190628190022.vya4h2lihm6x2xpb@wunner.de>
- <54323339606a36febc6a8633a8d3a7db84b975c4.camel@analog.com>
- <20190701115506.42rr4o4hbuvwytjc@wunner.de>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: atmel-quadspi: fix resume call" to the spi tree
+Date: Tue,  2 Jul 2019 14:04:54 +0100 (BST)
+Message-ID: <20190702130454.6FCC0440046@finisterre.sirena.org.uk>
+References: <20190628153009.7571-3-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
- "sbranden@broadcom.com" <sbranden@broadcom.com>,
- "rjui@broadcom.com" <rjui@broadcom.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "eric@anholt.net" <eric@anholt.net>, "broonie@kernel.org" <broonie@kernel.org>,
- "bcm-kernel-feedback-list@broadcom.com"
- <bcm-kernel-feedback-list@broadcom.com>, "wahrenst@gmx.net" <wahrenst@gmx.net>,
- "kernel@martin.sperl.org" <kernel@martin.sperl.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "linux-rpi-kernel@lists.infradead.org" <linux-rpi-kernel@lists.infradead.org>
-To: "lukas@wunner.de" <lukas@wunner.de>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: alexandre.belloni@bootlin.com, Tudor.Ambarus@microchip.com,
+ mdeneen@gmail.com, linux-spi@vger.kernel.org, Ludovic.Desroches@microchip.com,
+ Mark Brown <broonie@kernel.org>, Claudiu.Beznea@microchip.com,
+ linux-arm-kernel@lists.infradead.org
+To: Tudor Ambarus <tudor.ambarus@microchip.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190701115506.42rr4o4hbuvwytjc@wunner.de>
-Content-Language: en-US
-Content-ID: <8396F84502FD1D4AABB8932E32F898B0@namprd03.prod.outlook.com>
+In-Reply-To: <20190628153009.7571-3-tudor.ambarus@microchip.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -37,19 +24,99 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gTW9uLCAyMDE5LTA3LTAxIGF0IDEzOjU1ICswMjAwLCBMdWthcyBXdW5uZXIgd3JvdGU6DQo+
-IEkgc2VlLiAgSW4gdGhhdCBjYXNlLCB0cnk6DQo+IA0KPiAgCS8qIGhhbmRsZSBhbGwgdGhlIDMt
-d2lyZSBtb2RlICovDQo+IC0JaWYgKChzcGktPm1vZGUgJiBTUElfM1dJUkUpICYmICh0ZnItPnJ4
-X2J1ZikpDQo+ICsJaWYgKChzcGktPm1vZGUgJiBTUElfM1dJUkUpICYmICh0ZnItPnJ4X2J1ZiAh
-PSBjdGxyLT5kdW1teV9yeCkpDQo+ICAJCWNzIHw9IEJDTTI4MzVfU1BJX0NTX1JFTjsNCj4gIAll
-bHNlDQo+ICAJCWNzICY9IH5CQ00yODM1X1NQSV9DU19SRU47DQo+IA0KDQpUaGlzIHdvcmtlZCBm
-aW5lLiBBbHNvLCBJIGRpZCBhIHF1aWNrIGJhY2twb3J0IG9mIHRoZSBzdGF0ZSBvZiB5b3VyDQpk
-cml2ZXIncyAoYm90aCBzcGktYmNtMjgzNSBhbmQgYmNtMjgzNS1kbWEpIGluIHJldnBpX3N0YWdp
-bmcgYW5kIGl0DQphbHNvIHdvcmtlZCBmaW5lIHdpdGggbXkgZGV2aWNlLg0KU28sIGFzIGZhciBh
-cyBJIHVuZGVyc3RhbmQsIHRoZSBhYm92ZSBzdWdnZXN0aW9uIChvciBteSBwYXRjaCkgaXMgbm90
-DQppbnRlbmRlZCB0byBiZSB1cHN0cmVhbWVkLCByaWdodD8gSXQgaXMganVzdCBhIHRlbXBvcmFy
-eSBmaXggdGhhdCBJIGNhbg0KdXNlIHdoaWxlIHlvdXIgcGF0Y2hzZXQgZ2V0cyB1cHN0cmVhbS4N
-Cg0KVGhhbmtzIGZvciB5b3VyIGhlbHAhDQpOdW5vIFPDoQ0KDQpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpsaW51eC1hcm0ta2VybmVsIG1haWxpbmcgbGlz
-dApsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
-ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1hcm0ta2VybmVsCg==
+The patch
+
+   spi: atmel-quadspi: fix resume call
+
+has been applied to the spi tree at
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.3
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 0db3a61b4b3ceaea68b748ee63cc88f110757b7f Mon Sep 17 00:00:00 2001
+From: Tudor Ambarus <tudor.ambarus@microchip.com>
+Date: Fri, 28 Jun 2019 15:30:34 +0000
+Subject: [PATCH] spi: atmel-quadspi: fix resume call
+
+When waking up from the Suspend-to-RAM state, the following error
+was seen:
+
+m25p80 spi2.0: flash operation timed out
+
+The flash remained in an undefined state, returning 0xFFs.
+Fix it by setting the Serial Clock Baud Rate, as it was set
+before the conversion to SPIMEM.
+
+Tested with sama5d2_xplained and mx25l25673g spi-nor in
+Backup + Self-Refresh and Suspend modes.
+
+Fixes: 0e6aae08e9ae ("spi: Add QuadSPI driver for Atmel SAMA5D2")
+Reported-by: Mark Deneen <mdeneen@gmail.com>
+Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/atmel-quadspi.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+index 32eb7447c31a..6a7d7b553d95 100644
+--- a/drivers/spi/atmel-quadspi.c
++++ b/drivers/spi/atmel-quadspi.c
+@@ -151,6 +151,7 @@ struct atmel_qspi {
+ 	const struct atmel_qspi_caps *caps;
+ 	u32			pending;
+ 	u32			mr;
++	u32			scr;
+ 	struct completion	cmd_completion;
+ };
+ 
+@@ -382,7 +383,7 @@ static int atmel_qspi_setup(struct spi_device *spi)
+ 	struct spi_controller *ctrl = spi->master;
+ 	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
+ 	unsigned long src_rate;
+-	u32 scr, scbr;
++	u32 scbr;
+ 
+ 	if (ctrl->busy)
+ 		return -EBUSY;
+@@ -399,8 +400,8 @@ static int atmel_qspi_setup(struct spi_device *spi)
+ 	if (scbr > 0)
+ 		scbr--;
+ 
+-	scr = QSPI_SCR_SCBR(scbr);
+-	writel_relaxed(scr, aq->regs + QSPI_SCR);
++	aq->scr = QSPI_SCR_SCBR(scbr);
++	writel_relaxed(aq->scr, aq->regs + QSPI_SCR);
+ 
+ 	return 0;
+ }
+@@ -584,6 +585,9 @@ static int __maybe_unused atmel_qspi_resume(struct device *dev)
+ 	clk_prepare_enable(aq->qspick);
+ 
+ 	atmel_qspi_init(aq);
++
++	writel_relaxed(aq->scr, aq->regs + QSPI_SCR);
++
+ 	return 0;
+ }
+ 
+-- 
+2.20.1

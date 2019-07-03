@@ -1,114 +1,64 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: atmel-quadspi: void return type for atmel_qspi_init()"
- to the spi tree
-Date: Tue,  2 Jul 2019 14:04:54 +0100 (BST)
-Message-ID: <20190702130454.BCAC644004B@finisterre.sirena.org.uk>
-References: <20190628153009.7571-2-tudor.ambarus@microchip.com>
+From: Lukas Wunner <lukas@wunner.de>
+Subject: Re: [PATCH] spi: spi-bcm2835.c: Fix 3-wire mode
+Date: Wed, 3 Jul 2019 12:43:38 +0200
+Message-ID: <20190703104338.m5vfkbyq4fhqmjh4@wunner.de>
+References: <20190628123023.4696-1-nuno.sa@analog.com>
+ <1b932c61-982b-aae0-1fef-3c574e7d17eb@gmx.net>
+ <20190628190022.vya4h2lihm6x2xpb@wunner.de>
+ <54323339606a36febc6a8633a8d3a7db84b975c4.camel@analog.com>
+ <20190701115506.42rr4o4hbuvwytjc@wunner.de>
+ <42a533cbf1e47ab8c8a44c5e865ec15193a2e956.camel@analog.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: alexandre.belloni@bootlin.com, Tudor.Ambarus@microchip.com,
- mdeneen@gmail.com, linux-spi@vger.kernel.org, Ludovic.Desroches@microchip.com,
- Mark Brown <broonie@kernel.org>, Claudiu.Beznea@microchip.com,
- linux-arm-kernel@lists.infradead.org
-To: Tudor Ambarus <tudor.ambarus@microchip.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190628153009.7571-2-tudor.ambarus@microchip.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=us-ascii
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "bcm-kernel-feedback-list@broadcom.com"
+        <bcm-kernel-feedback-list@broadcom.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "kernel@martin.sperl.org" <kernel@martin.sperl.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "sbranden@broadcom.com" <sbranden@broadcom.com>,
+        "wahrenst@gmx.net" <wahrenst@gmx.net>,
+        "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
+        "linux-rpi-kernel@lists.infradead.org"
+        <linux-rpi-kernel@lists.infradead.org>,
+        "eric@anholt.net" <eric@anholt.net>,
+        "rjui@broadcom.com" <rjui@broadcom.com>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>
+To: "Sa, Nuno" <Nuno.Sa@analog.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <42a533cbf1e47ab8c8a44c5e865ec15193a2e956.camel@analog.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+On Mon, Jul 01, 2019 at 02:21:21PM +0000, Sa, Nuno wrote:
+> On Mon, 2019-07-01 at 13:55 +0200, Lukas Wunner wrote:
+> > I see.  In that case, try:
+> > 
+> >  	/* handle all the 3-wire mode */
+> > -	if ((spi->mode & SPI_3WIRE) && (tfr->rx_buf))
+> > +	if ((spi->mode & SPI_3WIRE) && (tfr->rx_buf != ctlr->dummy_rx))
+> >  		cs |= BCM2835_SPI_CS_REN;
+> >  	else
+> >  		cs &= ~BCM2835_SPI_CS_REN;
+> 
+> This worked fine. Also, I did a quick backport of the state of your
+> driver's (both spi-bcm2835 and bcm2835-dma) in revpi_staging and it
+> also worked fine with my device.
+> So, as far as I understand, the above suggestion (or my patch) is not
+> intended to be upstreamed, right? It is just a temporary fix that I can
+> use while your patchset gets upstream.
 
-   spi: atmel-quadspi: void return type for atmel_qspi_init()
+Thanks for testing.  I've just submitted the above as a fix for 5.3.
+(Actually with a small change, the check for (tfr->rx_buf) needs to
+be preserved in case DMA is disabled.)
 
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.3
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+The patch can be backported to 5.2 and older stable kernels if "ctlr"
+is replaced by "master", we can inform Greg about that once the patch
+lands in Linus' tree.  And I've amended my patch set to revert this
+patch when dropping MUST_RX.
 
 Thanks,
-Mark
 
->From 5b74e9a306267be3b371b309faef8626b18e6423 Mon Sep 17 00:00:00 2001
-From: Tudor Ambarus <tudor.ambarus@microchip.com>
-Date: Fri, 28 Jun 2019 15:30:32 +0000
-Subject: [PATCH] spi: atmel-quadspi: void return type for atmel_qspi_init()
-
-commit 2d30ac5ed633 ("mtd: spi-nor: atmel-quadspi: Use spi-mem interface for atmel-quadspi driver")
-removed the error path from atmel_qspi_init(), but not changed the
-function's return type. Set void return type for atmel_qspi_init().
-
-Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/atmel-quadspi.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index 9f24d5f0b431..32eb7447c31a 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -405,7 +405,7 @@ static int atmel_qspi_setup(struct spi_device *spi)
- 	return 0;
- }
- 
--static int atmel_qspi_init(struct atmel_qspi *aq)
-+static void atmel_qspi_init(struct atmel_qspi *aq)
- {
- 	/* Reset the QSPI controller */
- 	writel_relaxed(QSPI_CR_SWRST, aq->regs + QSPI_CR);
-@@ -416,8 +416,6 @@ static int atmel_qspi_init(struct atmel_qspi *aq)
- 
- 	/* Enable the QSPI controller */
- 	writel_relaxed(QSPI_CR_QSPIEN, aq->regs + QSPI_CR);
--
--	return 0;
- }
- 
- static irqreturn_t atmel_qspi_interrupt(int irq, void *dev_id)
-@@ -536,9 +534,7 @@ static int atmel_qspi_probe(struct platform_device *pdev)
- 	if (err)
- 		goto disable_qspick;
- 
--	err = atmel_qspi_init(aq);
--	if (err)
--		goto disable_qspick;
-+	atmel_qspi_init(aq);
- 
- 	err = spi_register_controller(ctrl);
- 	if (err)
-@@ -587,7 +583,8 @@ static int __maybe_unused atmel_qspi_resume(struct device *dev)
- 	clk_prepare_enable(aq->pclk);
- 	clk_prepare_enable(aq->qspick);
- 
--	return atmel_qspi_init(aq);
-+	atmel_qspi_init(aq);
-+	return 0;
- }
- 
- static SIMPLE_DEV_PM_OPS(atmel_qspi_pm_ops, atmel_qspi_suspend,
--- 
-2.20.1
+Lukas

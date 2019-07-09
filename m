@@ -1,25 +1,40 @@
-From: pr-tracker-bot@kernel.org
-Subject: Re: [GIT PULL] SPI updates for v5.3
-Date: Tue, 09 Jul 2019 18:05:10 +0000
-Message-ID: <156269551020.14383.15290822098573855750.pr-tracker-bot@kernel.org>
-References: <20190708124940.GB12731@sirena.co.uk>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+From: Rob Herring <robh@kernel.org>
+Subject: [PATCH] spi: dt-bindings: spi-controller: remove unnecessary 'maxItems: 1' from reg
+Date: Tue,  9 Jul 2019 13:26:31 -0600
+Message-ID: <20190709192631.16394-1-robh@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        linux-spi@vger.kernel.org
 To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190708124940.GB12731@sirena.co.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The pull request you sent on Mon, 8 Jul 2019 13:49:40 +0100:
+Mixing array constraints like 'maxItems' and string or integer value
+constraints like 'minimum' don't make sense. Also, with only value
+constraints, it is implied we have a single value. So lets remove
+'maxItems: 1'.
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v5.3
+Cc: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+ Documentation/devicetree/bindings/spi/spi-controller.yaml | 1 -
+ 1 file changed, 1 deletion(-)
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/c6b6cebbc597aaf7d941f781b5fc114c58cc3352
-
-Thank you!
-
+diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+index 876c0623f322..a02e2fe2bfb2 100644
+--- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+@@ -73,7 +73,6 @@ patternProperties:
+           Compatible of the SPI device.
+ 
+       reg:
+-        maxItems: 1
+         minimum: 0
+         maximum: 256
+         description:
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+2.20.1

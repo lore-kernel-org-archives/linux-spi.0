@@ -1,40 +1,36 @@
 From: Rob Herring <robh@kernel.org>
-Subject: [PATCH] spi: dt-bindings: spi-controller: remove unnecessary 'maxItems: 1' from reg
-Date: Tue,  9 Jul 2019 13:26:31 -0600
-Message-ID: <20190709192631.16394-1-robh@kernel.org>
+Subject: Re: [PATCH v14 2/2] dt-bindings: spi: Document Renesas R-Car Gen3
+ RPC-IF controller bindings
+Date: Tue, 9 Jul 2019 14:12:17 -0600
+Message-ID: <20190709201217.GA14681@bogus>
+References: <1561023046-20886-1-git-send-email-masonccyang@mxic.com.tw>
+ <1561023046-20886-3-git-send-email-masonccyang@mxic.com.tw>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: broonie@kernel.org, marek.vasut@gmail.com,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        bbrezillon@kernel.org, linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        lee.jones@linaro.org, sergei.shtylyov@cogentembedded.com,
+        robh+dt@kernel.org, mark.rutland@arm.com,
+        devicetree@vger.kernel.org, juliensu@mxic.com.tw,
+        Simon Horman <horms@verge.net.au>,
+        Mason Yang <masonccyang@mxic.com.tw>, miquel.raynal@bootlin.com
+To: Mason Yang <masonccyang@mxic.com.tw>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1561023046-20886-3-git-send-email-masonccyang@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Mixing array constraints like 'maxItems' and string or integer value
-constraints like 'minimum' don't make sense. Also, with only value
-constraints, it is implied we have a single value. So lets remove
-'maxItems: 1'.
+On Thu, 20 Jun 2019 17:30:46 +0800, Mason Yang wrote:
+> Dcument the bindings used by the Renesas R-Car Gen3 RPC-IF controller.
+> 
+> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+> ---
+>  .../devicetree/bindings/spi/spi-renesas-rpc.txt    | 43 ++++++++++++++++++++++
+>  1 file changed, 43 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
+> 
 
-Cc: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org
-Signed-off-by: Rob Herring <robh@kernel.org>
----
- Documentation/devicetree/bindings/spi/spi-controller.yaml | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-index 876c0623f322..a02e2fe2bfb2 100644
---- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
-+++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-@@ -73,7 +73,6 @@ patternProperties:
-           Compatible of the SPI device.
- 
-       reg:
--        maxItems: 1
-         minimum: 0
-         maximum: 256
-         description:
--- 
-2.20.1
+Reviewed-by: Rob Herring <robh@kernel.org>

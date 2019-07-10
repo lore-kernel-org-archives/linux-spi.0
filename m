@@ -1,50 +1,71 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/3] spi: spi-nxp-fspi: dynamically alloc AHB memory for
- FSPI
-Date: Wed, 10 Jul 2019 16:16:28 +0100
-Message-ID: <20190710151628.GF14859@sirena.co.uk>
-References: <20190710023128.13115-1-han.xu@nxp.com>
- <20190710023128.13115-2-han.xu@nxp.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Y/WcH0a6A93yCHGr"
-Cc: ashish.kumar@nxp.com, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-imx@nxp.com
-To: han.xu@nxp.com
+Subject: Applied "spi: spi-fsl-qspi: change i.MX7D RX FIFO size" to the spi tree
+Date: Wed, 10 Jul 2019 16:34:53 +0100 (BST)
+Message-ID: <20190710153453.DF598D02D7C@fitzroy.sirena.org.uk>
+References: <20190710023128.13115-3-han.xu@nxp.com>
+Cc: ashish.kumar@nxp.com, broonie@kernel.org, han.xu@nxp.com,
+        linux-imx@nxp.com, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
+To: Han Xu <han.xu@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20190710023128.13115-2-han.xu@nxp.com>
+In-Reply-To: <20190710023128.13115-3-han.xu@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---Y/WcH0a6A93yCHGr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+   spi: spi-fsl-qspi: change i.MX7D RX FIFO size
 
-On Wed, Jul 10, 2019 at 10:31:26AM +0800, han.xu@nxp.com wrote:
-> From: Han Xu <han.xu@nxp.com>
->=20
-> dynamically alloc AHB memory for FSPI controller
+has been applied to the spi tree at
 
-Why?  This is currently done at probe which is what you'd expect
-to happen here, there's no explanation as to why this change is
-being made.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.3
 
---Y/WcH0a6A93yCHGr
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl0mAUsACgkQJNaLcl1U
-h9Dwqwf/XfgT2pwWuQsy6NbQs7XkAQ/D0a1jByJNafCXGsuoIDp9fBsT27ugprQ0
-2BkIzw0Mj2hgvh7Fx0vlB78sDiU17SLMFKWHzHxLQGCHFDeX0z2i9pfnFYKgN1fn
-r0qusnbnu0ZqgFcXtqMV+muWvGVZXrXqraICv9mnbfgUc2LgizjDY6vD4RrgLrWM
-Gpu65WuvbMXf/FXOuIHGSlfe2Cl4dLBkaf5Vr/sxti0r6n0bxmm3RoTO6GpS9Z+h
-21pGi63ixddVXMCGOK+93DutGZcTpPx9JFuIKha3oJVNNblrXEEIBfWd4RgAQJD7
-GitY8PwFzdAShFzKzne8bzwtUfIIUQ==
-=89qm
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---Y/WcH0a6A93yCHGr--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From d6b197a14863818a7ed7890e91f043fab49e8c60 Mon Sep 17 00:00:00 2001
+From: Han Xu <han.xu@nxp.com>
+Date: Wed, 10 Jul 2019 10:31:27 +0800
+Subject: [PATCH] spi: spi-fsl-qspi: change i.MX7D RX FIFO size
+
+The RX FIFO should be 128 byte rather than 512 byte. It's a typo on
+reference manual.
+
+Signed-off-by: Han Xu <han.xu@nxp.com>
+Link: https://lore.kernel.org/r/20190710023128.13115-3-han.xu@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-fsl-qspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
+index 41a49b93ca60..448c00e4065b 100644
+--- a/drivers/spi/spi-fsl-qspi.c
++++ b/drivers/spi/spi-fsl-qspi.c
+@@ -206,7 +206,7 @@ static const struct fsl_qspi_devtype_data imx6sx_data = {
+ };
+ 
+ static const struct fsl_qspi_devtype_data imx7d_data = {
+-	.rxfifo = SZ_512,
++	.rxfifo = SZ_128,
+ 	.txfifo = SZ_512,
+ 	.ahb_buf_size = SZ_1K,
+ 	.quirks = QUADSPI_QUIRK_TKT253890 | QUADSPI_QUIRK_4X_INT_CLK,
+-- 
+2.20.1

@@ -1,36 +1,30 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v14 2/2] dt-bindings: spi: Document Renesas R-Car Gen3
- RPC-IF controller bindings
-Date: Tue, 9 Jul 2019 14:12:17 -0600
-Message-ID: <20190709201217.GA14681@bogus>
-References: <1561023046-20886-1-git-send-email-masonccyang@mxic.com.tw>
- <1561023046-20886-3-git-send-email-masonccyang@mxic.com.tw>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: broonie@kernel.org, marek.vasut@gmail.com,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        bbrezillon@kernel.org, linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        lee.jones@linaro.org, sergei.shtylyov@cogentembedded.com,
-        robh+dt@kernel.org, mark.rutland@arm.com,
-        devicetree@vger.kernel.org, juliensu@mxic.com.tw,
-        Simon Horman <horms@verge.net.au>,
-        Mason Yang <masonccyang@mxic.com.tw>, miquel.raynal@bootlin.com
-To: Mason Yang <masonccyang@mxic.com.tw>
+From: han.xu@nxp.com
+Subject: [PATCH 0/3] dynamically alloc AHB memory
+Date: Wed, 10 Jul 2019 10:31:25 +0800
+Message-ID: <20190710023128.13115-1-han.xu@nxp.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-imx@nxp.com
+To: han.xu@nxp.com, broonie@kernel.org, ashish.kumar@nxp.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1561023046-20886-3-git-send-email-masonccyang@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 20 Jun 2019 17:30:46 +0800, Mason Yang wrote:
-> Dcument the bindings used by the Renesas R-Car Gen3 RPC-IF controller.
-> 
-> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
-> ---
->  .../devicetree/bindings/spi/spi-renesas-rpc.txt    | 43 ++++++++++++++++++++++
->  1 file changed, 43 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
-> 
+From: Han Xu <han.xu@nxp.com>
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+i.MX platforms reserved 256M memory area for FSPI/QSPI AHB memory, it
+may failed to alloc all of them at once on some platforms. These patches
+allow the controller alloc AHB as needed.
+
+i.MX7D RX FIFO should be 128B rather than 512B.
+
+Han Xu (3):
+  spi: spi-nxp-fspi: dynamically alloc AHB memory for FSPI
+  spi: spi-fsl-qspi: change i.MX7D RX FIFO size
+  spi: spi-fsl-qspi: dynamically alloc AHB memory for QSPI
+
+ drivers/spi/spi-fsl-qspi.c | 60 +++++++++++++++++++++++++++-----------
+ drivers/spi/spi-nxp-fspi.c | 39 ++++++++++++++++++++-----
+ 2 files changed, 74 insertions(+), 25 deletions(-)
+
+-- 
+2.17.1

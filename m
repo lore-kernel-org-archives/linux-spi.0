@@ -1,75 +1,51 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: dt-bindings: spi-controller: remove unnecessary 'maxItems: 1' from reg" to the spi tree
-Date: Wed, 10 Jul 2019 16:34:53 +0100 (BST)
-Message-ID: <20190710153453.F057BD02D84@fitzroy.sirena.org.uk>
-References: <20190709192631.16394-1-robh@kernel.org>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Maxime Ripard <maxime.ripard@bootlin.com>
-To: Rob Herring <robh@kernel.org>
+From: Han Xu <han.xu@nxp.com>
+Subject: RE: [EXT] Re: [PATCH 1/3] spi: spi-nxp-fspi: dynamically alloc AHB
+ memory for FSPI
+Date: Wed, 10 Jul 2019 15:35:46 +0000
+Message-ID: <AM6PR04MB49672BE152440416ACCE275197F00@AM6PR04MB4967.eurprd04.prod.outlook.com>
+References: <20190710023128.13115-1-han.xu@nxp.com>
+ <20190710023128.13115-2-han.xu@nxp.com> <20190710151628.GF14859@sirena.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Cc: Ashish Kumar <ashish.kumar@nxp.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        dl-linux-imx <linux-imx@nxp.com>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190709192631.16394-1-robh@kernel.org>
+In-Reply-To: <20190710151628.GF14859@sirena.co.uk>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: dt-bindings: spi-controller: remove unnecessary 'maxItems: 1' from reg
 
-has been applied to the spi tree at
+> -----Original Message-----
+> From: Mark Brown <broonie@kernel.org>
+> Sent: Wednesday, July 10, 2019 10:16 AM
+> To: Han Xu <han.xu@nxp.com>
+> Cc: Ashish Kumar <ashish.kumar@nxp.com>; linux-spi@vger.kernel.org; linux=
+-
+> kernel@vger.kernel.org; dl-linux-imx <linux-imx@nxp.com>
+> Subject: [EXT] Re: [PATCH 1/3] spi: spi-nxp-fspi: dynamically alloc AHB m=
+emory
+> for FSPI
+>=20
+> On Wed, Jul 10, 2019 at 10:31:26AM +0800, han.xu@nxp.com wrote:
+> > From: Han Xu <han.xu@nxp.com>
+> >
+> > dynamically alloc AHB memory for FSPI controller
+>=20
+> Why?  This is currently done at probe which is what you'd expect to happe=
+n
+> here, there's no explanation as to why this change is being made.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.3
+Explained in cover letter, It failed to alloc the whole memory mapping area=
+ during
+probe on some platforms, since the AHB memory area could be pretty large. T=
+he
+error may look like:
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 43167bb1f6bb7efa73adc40d2dd700bb6546cc2c Mon Sep 17 00:00:00 2001
-From: Rob Herring <robh@kernel.org>
-Date: Tue, 9 Jul 2019 13:26:31 -0600
-Subject: [PATCH] spi: dt-bindings: spi-controller: remove unnecessary
- 'maxItems: 1' from reg
-
-Mixing array constraints like 'maxItems' and string or integer value
-constraints like 'minimum' don't make sense. Also, with only value
-constraints, it is implied we have a single value. So lets remove
-'maxItems: 1'.
-
-Cc: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org
-Signed-off-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/20190709192631.16394-1-robh@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- Documentation/devicetree/bindings/spi/spi-controller.yaml | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-index 876c0623f322..a02e2fe2bfb2 100644
---- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
-+++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-@@ -73,7 +73,6 @@ patternProperties:
-           Compatible of the SPI device.
- 
-       reg:
--        maxItems: 1
-         minimum: 0
-         maximum: 256
-         description:
--- 
-2.20.1
+[    1.129404] fsl-quadspi 1550000.spi: ioremap failed for resource [mem 0x=
+40000000-0x7fffffff]

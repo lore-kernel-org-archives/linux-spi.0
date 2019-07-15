@@ -1,8 +1,8 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.1 007/219] spi: rockchip: turn down tx dma bursts
-Date: Mon, 15 Jul 2019 09:34:39 -0400
-Message-ID: <20190715133811.2441-7-sashal@kernel.org>
-References: <20190715133811.2441-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.2 007/249] spi: rockchip: turn down tx dma bursts
+Date: Mon, 15 Jul 2019 09:42:52 -0400
+Message-ID: <20190715134655.4076-7-sashal@kernel.org>
+References: <20190715134655.4076-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Cc: Emil Renner Berthing <kernel@esmil.dk>,
@@ -11,7 +11,7 @@ Cc: Emil Renner Berthing <kernel@esmil.dk>,
         linux-rockchip@lists.infradead.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190715133811.2441-1-sashal@kernel.org>
+In-Reply-To: <20190715134655.4076-1-sashal@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
@@ -46,10 +46,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 3912526ead66..19f6a76f1c07 100644
+index 9b91188a85f9..2cc6d9951b52 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -425,7 +425,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
+@@ -417,7 +417,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
  			.direction = DMA_MEM_TO_DEV,
  			.dst_addr = rs->dma_addr_tx,
  			.dst_addr_width = rs->n_bytes,
@@ -58,7 +58,7 @@ index 3912526ead66..19f6a76f1c07 100644
  		};
  
  		dmaengine_slave_config(master->dma_tx, &txconf);
-@@ -526,7 +526,7 @@ static void rockchip_spi_config(struct rockchip_spi *rs,
+@@ -518,7 +518,7 @@ static void rockchip_spi_config(struct rockchip_spi *rs,
  	else
  		writel_relaxed(rs->fifo_len / 2 - 1, rs->regs + ROCKCHIP_SPI_RXFTLR);
  

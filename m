@@ -1,8 +1,8 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.1 115/219] spi: fix ctrl->num_chipselect constraint
-Date: Mon, 15 Jul 2019 10:01:56 -0400
-Message-ID: <20190715140341.6443-115-sashal@kernel.org>
-References: <20190715140341.6443-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.2 131/249] spi: fix ctrl->num_chipselect constraint
+Date: Mon, 15 Jul 2019 09:44:56 -0400
+Message-ID: <20190715134655.4076-131-sashal@kernel.org>
+References: <20190715134655.4076-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Cc: Tudor Ambarus <tudor.ambarus@microchip.com>,
@@ -10,7 +10,7 @@ Cc: Tudor Ambarus <tudor.ambarus@microchip.com>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190715140341.6443-1-sashal@kernel.org>
+In-Reply-To: <20190715134655.4076-1-sashal@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
@@ -44,10 +44,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index a83fcddf1dad..7f6fb383d7a7 100644
+index 5e4654032bfa..29916e446143 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -2281,11 +2281,6 @@ int spi_register_controller(struct spi_controller *ctlr)
+@@ -2286,11 +2286,6 @@ int spi_register_controller(struct spi_controller *ctlr)
  	if (status)
  		return status;
  
@@ -59,7 +59,7 @@ index a83fcddf1dad..7f6fb383d7a7 100644
  	if (ctlr->bus_num >= 0) {
  		/* devices with a fixed bus num must check-in with the num */
  		mutex_lock(&board_lock);
-@@ -2356,6 +2351,13 @@ int spi_register_controller(struct spi_controller *ctlr)
+@@ -2361,6 +2356,13 @@ int spi_register_controller(struct spi_controller *ctlr)
  		}
  	}
  

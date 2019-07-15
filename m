@@ -1,77 +1,73 @@
-From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.2 131/249] spi: fix ctrl->num_chipselect constraint
-Date: Mon, 15 Jul 2019 09:44:56 -0400
-Message-ID: <20190715134655.4076-131-sashal@kernel.org>
-References: <20190715134655.4076-1-sashal@kernel.org>
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH] Revert "gpio/spi: Fix spi-gpio regression on active high CS"
+Date: Mon, 15 Jul 2019 22:45:29 +0200
+Message-ID: <20190715204529.9539-1-linus.walleij@linaro.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190715134655.4076-1-sashal@kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-spi@vger.kernel.org, stable@vger.kernel.org
+To: linux-gpio@vger.kernel.org
+Return-path: <stable-owner@vger.kernel.org>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Tudor Ambarus <tudor.ambarus@microchip.com>
+This reverts commit fbbf145a0e0a0177e089c52275fbfa55763e7d1d.
 
-[ Upstream commit f9481b08220d7dc1ff21e296a330ee8b721b44e4 ]
+It seems I was misguided in my fixup, which was working at the
+time but did not work on the final v5.2.
 
-at91sam9g25ek showed the following error at probe:
-atmel_spi f0000000.spi: Using dma0chan2 (tx) and dma0chan3 (rx)
-for DMA transfers
-atmel_spi: probe of f0000000.spi failed with error -22
+The patch tried to avoid a quirk the gpiolib code not to treat
+"spi-gpio" CS gpios "special" by enforcing them to be active
+low, in the belief that since the "spi-gpio" driver was
+parsing the device tree on its own, it did not care to inspect
+the "spi-cs-high" attribute on the device nodes.
 
-Commit 0a919ae49223 ("spi: Don't call spi_get_gpio_descs() before device name is set")
-moved the calling of spi_get_gpio_descs() after ctrl->dev is set,
-but didn't move the !ctrl->num_chipselect check. When there are
-chip selects in the device tree, the spi-atmel driver lets the
-SPI core discover them when registering the SPI master.
-The ctrl->num_chipselect is thus expected to be set by
-spi_get_gpio_descs().
+That's wrong. The SPI core was inspecting them inside the
+of_spi_parse_dt() funtion and setting SPI_CS_HIGH on the
+nodes, and the driver inspected this flag when driving the
+line.
 
-Move the !ctlr->num_chipselect after spi_get_gpio_descs() as it was
-before the aforementioned commit. While touching this block, get rid
-of the explicit comparison with 0 and update the commenting style.
+As of now, the core handles the GPIO and it will consistently
+set the GPIO descriptor to 1 to enable CS, strictly requireing
+the gpiolib to invert it. And the gpiolib should indeed
+enforce active low on the CS line.
 
-Fixes: 0a919ae49223 ("spi: Don't call spi_get_gpio_descs() before device name is set")
-Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Device trees should of course put the right flag on the GPIO
+handles, but it used to not matter. If we don't enforce active
+low on "gpio-gpio" we may run into ABI backward compatibility
+issues, so revert this.
+
+Cc: linux-spi@vger.kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/spi/spi.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+I am sorry that this at one point fixed a problem for me, it
+doesn't anymore and I don't know why it ever did. :(
+---
+ drivers/gpio/gpiolib-of.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 5e4654032bfa..29916e446143 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2286,11 +2286,6 @@ int spi_register_controller(struct spi_controller *ctlr)
- 	if (status)
- 		return status;
- 
--	/* even if it's just one always-selected device, there must
--	 * be at least one chipselect
--	 */
--	if (ctlr->num_chipselect == 0)
--		return -EINVAL;
- 	if (ctlr->bus_num >= 0) {
- 		/* devices with a fixed bus num must check-in with the num */
- 		mutex_lock(&board_lock);
-@@ -2361,6 +2356,13 @@ int spi_register_controller(struct spi_controller *ctlr)
- 		}
- 	}
- 
-+	/*
-+	 * Even if it's just one always-selected device, there must
-+	 * be at least one chipselect.
-+	 */
-+	if (!ctlr->num_chipselect)
-+		return -EINVAL;
-+
- 	status = device_add(&ctlr->dev);
- 	if (status < 0) {
- 		/* free bus id */
+diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
+index f974075ff00e..a8f02f551d6b 100644
+--- a/drivers/gpio/gpiolib-of.c
++++ b/drivers/gpio/gpiolib-of.c
+@@ -118,15 +118,8 @@ static void of_gpio_flags_quirks(struct device_node *np,
+ 	 * Legacy handling of SPI active high chip select. If we have a
+ 	 * property named "cs-gpios" we need to inspect the child node
+ 	 * to determine if the flags should have inverted semantics.
+-	 *
+-	 * This does not apply to an SPI device named "spi-gpio", because
+-	 * these have traditionally obtained their own GPIOs by parsing
+-	 * the device tree directly and did not respect any "spi-cs-high"
+-	 * property on the SPI bus children.
+ 	 */
+-	if (IS_ENABLED(CONFIG_SPI_MASTER) &&
+-	    !strcmp(propname, "cs-gpios") &&
+-	    !of_device_is_compatible(np, "spi-gpio") &&
++	if (IS_ENABLED(CONFIG_SPI_MASTER) && !strcmp(propname, "cs-gpios") &&
+ 	    of_property_read_bool(np, "cs-gpios")) {
+ 		struct device_node *child;
+ 		u32 cs;
 -- 
-2.20.1
+2.21.0

@@ -1,61 +1,28 @@
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Subject: Re: [PATCH] dt-bindings: Ensure child nodes are of type 'object'
-Date: Tue, 16 Jul 2019 10:28:21 +0200
-Message-ID: <20190716082821.eafjvqfczxahx4as@flea>
-References: <20190715230457.3901-1-robh@kernel.org>
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH] Revert "gpio/spi: Fix spi-gpio regression on active high CS"
+Date: Tue, 16 Jul 2019 10:56:40 +0200
+Message-ID: <CACRpkdaLQzax2XPJ4j1a9gNw3r=ZizVSgsbLFGAycCLd2TzD0g@mail.gmail.com>
+References: <20190715204529.9539-1-linus.walleij@linaro.org> <20190716012712.BC9F22173C@mail.kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Chen-Yu Tsai <wens@csie.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Brian Norris <computersforpeace@gmail.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Mark Brown <broonie@kernel.org>, linux-mtd@lists.infradead.org,
-        linux-gpio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com, linux-spi@vger.kernel.org
-To: Rob Herring <robh@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20190715230457.3901-1-robh@kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        stable <stable@vger.kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20190716012712.BC9F22173C@mail.kernel.org>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jul 15, 2019 at 05:04:57PM -0600, Rob Herring wrote:
-> Properties which are child node definitions need to have an explict
-> type. Otherwise, a matching (DT) property can silently match when an
-> error is desired. Fix this up tree-wide. Once this is fixed, the
-> meta-schema will enforce this on any child node definitions.
->
-> Cc: Maxime Ripard <maxime.ripard@bootlin.com>
-> Cc: Chen-Yu Tsai <wens@csie.org>
-> Cc: David Woodhouse <dwmw2@infradead.org>
-> Cc: Brian Norris <computersforpeace@gmail.com>
-> Cc: Marek Vasut <marek.vasut@gmail.com>
-> Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-> Cc: Richard Weinberger <richard@nod.at>
-> Cc: Vignesh Raghavendra <vigneshr@ti.com>
-> Cc: Linus Walleij <linus.walleij@linaro.org>
-> Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-> Cc: Alexandre Torgue <alexandre.torgue@st.com>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: linux-mtd@lists.infradead.org
-> Cc: linux-gpio@vger.kernel.org
-> Cc: linux-stm32@st-md-mailman.stormreply.com
-> Cc: linux-spi@vger.kernel.org
-> Signed-off-by: Rob Herring <robh@kernel.org>
+On Tue, Jul 16, 2019 at 3:27 AM Sasha Levin <sashal@kernel.org> wrote:
 
-Acked-by: Maxime Ripard <maxime.ripard@bootlin.com>
+> v5.2.1: Build OK!
+> v5.1.18: Failed to apply! Possible dependencies:
+(...)
+> How should we proceed with this patch?
+
+Only apply it to 5.2.y once upstream.
 
 Thanks!
-Maxime
-
---
-Maxime Ripard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Linus Walleij

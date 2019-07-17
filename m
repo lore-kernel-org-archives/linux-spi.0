@@ -1,53 +1,49 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: remove redundant put_device
-Date: Wed, 17 Jul 2019 12:11:36 +0100
-Message-ID: <20190717111136.GB4459@sirena.org.uk>
-References: <1563357944-24496-1-git-send-email-dingxiang@cmss.chinamobile.com>
+From: "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Subject: Re: [PATCH 2/5] drivers: spi: core: Add optional stall delay
+ between cs_change transfers
+Date: Wed, 17 Jul 2019 11:37:30 +0000
+Message-ID: <138d96e8af0f1c873046b7257c6c40a3d4b9d95e.camel@analog.com>
+References: <20190625131328.11883-1-alexandru.ardelean@analog.com>
+         <20190625131328.11883-2-alexandru.ardelean@analog.com>
+         <20190626193438.7248d0a9@archlinux> <20190709141228.GC14859@sirena.co.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="JYK4vJDZwFMowpUq"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Ding Xiang <dingxiang@cmss.chinamobile.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+To: "broonie@kernel.org" <broonie@kernel.org>,
+        "jic23@jic23.retrosnub.co.uk" <jic23@jic23.retrosnub.co.uk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1563357944-24496-1-git-send-email-dingxiang@cmss.chinamobile.com>
+In-Reply-To: <20190709141228.GC14859@sirena.co.uk>
+Content-Language: en-US
+Content-ID: <2E005C72BC45774396FB9D4262E0F4AE@analog.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-
---JYK4vJDZwFMowpUq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Wed, Jul 17, 2019 at 06:05:44PM +0800, Ding Xiang wrote:
-
-> device_unregister will call put_device,
-> so remove the redundant put_device
-
->  	child = device_find_child(&ctlr->dev, NULL, match_true);
-> -	if (child) {
-> +	if (child)
->  		/* Remove registered slave */
->  		device_unregister(child);
-> -		put_device(child);
-> -	}
-
-That's to undo the extra get we have from device_find_child(),
-not to undo part of the registration.
-
---JYK4vJDZwFMowpUq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl0vAmgACgkQJNaLcl1U
-h9BxeQgAgRydnwPM775pyEWvHZVBMnZKxO5KnJ44V8lw2qXRKK9Kz8z973ADoIWS
-31b8shX3Ei9CHkC9eW334ha2stXGD316psiHzeo/7TAS/0VW88XfQ1c9Htn2rT1S
-VmED80yhjqttGATYKeXSApnG5GFtM8geQ/hINWrtRc15RV/1z9ng/2gs5XURVfcC
-y6DrZoYmOEywyA1NtsdTmUhh31cmovlwaGDWgaekIY/ZmSWF95al9jMLzJiL8V1W
-BJNswwTcrlF93GvIddxA/LqjMe1/8xck6gik4y18Npw2qbnpqFpu6yujgOowmBW8
-SuB872plg39gO2fiYBRLl2ytmx6P1Q==
-=/MxI
------END PGP SIGNATURE-----
-
---JYK4vJDZwFMowpUq--
+T24gVHVlLCAyMDE5LTA3LTA5IGF0IDE1OjEyICswMTAwLCBNYXJrIEJyb3duIHdyb3RlOg0KPiBP
+biBXZWQsIEp1biAyNiwgMjAxOSBhdCAwNzozNDozOFBNICswMTAwLCBKb25hdGhhbiBDYW1lcm9u
+IHdyb3RlOg0KPiA+IE9uIFR1ZSwgMjUgSnVuIDIwMTkgMTY6MTM6MjUgKzAzMDANCj4gPiBBbGV4
+YW5kcnUgQXJkZWxlYW4gPGFsZXhhbmRydS5hcmRlbGVhbkBhbmFsb2cuY29tPiB3cm90ZToNCj4g
+PiANCj4gPiA+IFNvbWUgZGV2aWNlcyBsaWtlIHRoZSBBRElTMTY0NjAgSU1VIHJlcXVpcmUgYSBz
+dGFsbCBwZXJpb2QgYmV0d2Vlbg0KPiA+ID4gdHJhbnNmZXJzLCBpLmUuIGJldHdlZW4gd2hlbiB0
+aGUgQ1MgaXMgZGUtYXNzZXJ0ZWQgYW5kIHJlLWFzc2VydGVkLiBUaGUNCj4gPiA+IGRlZmF1bHQg
+dmFsdWUgb2YgMTB1cyBpcyBub3QgZW5vdWdoLiBUaGlzIGNoYW5nZSBtYWtlcyB0aGUgZGVsYXkN
+Cj4gPiA+IGNvbmZpZ3VyYWJsZSBmb3Igd2hlbiB0aGUgbmV4dCBDUyBjaGFuZ2UgZ29lcyBhY3Rp
+dmUuDQo+IA0KPiBUaGlzIGxvb2tzIGxpa2UgY3NfY2hhbmdlX2RlbGF5Lg0KPiANCj4gQXMgZG9j
+dW1lbnRlZCBpbiBTdWJtaXR0aW5nUGF0Y2hlcyBwbGVhc2Ugc2VuZCBwYXRjaGVzIHRvIHRoZSAN
+Cj4gbWFpbnRhaW5lcnMgZm9yIHRoZSBjb2RlIHlvdSB3b3VsZCBsaWtlIHRvIGNoYW5nZS4gIFRo
+ZSBub3JtYWwga2VybmVsDQo+IHdvcmtmbG93IGlzIHRoYXQgcGVvcGxlIGFwcGx5IHBhdGNoZXMg
+ZnJvbSB0aGVpciBpbmJveGVzLCBpZiB0aGV5IGFyZW4ndA0KPiBjb3BpZWQgdGhleSBhcmUgbGlr
+ZWx5IHRvIG5vdCBzZWUgdGhlIHBhdGNoIGF0IGFsbCBhbmQgaXQgaXMgbXVjaCBtb3JlDQo+IGRp
+ZmZpY3VsdCB0byBhcHBseSBwYXRjaGVzLg0KDQpBY2suDQpbU29ycnkgZm9yIHRoZSBsYXRlIHJl
+cGx5OyBJJ20gYmFsYW5jaW5nIG90aGVyIHN0dWZmIGFzIHdlbGwgYW5kIHRlcnJpYmxlIGF0IGl0
+XQ0KDQpJJ2xsIHByb2JhYmx5IHVwZGF0ZSBteSBwcmFjdGljZSB0byBhbHNvIGluY2x1ZGUgbWFp
+bnRhaW5lcnMgdmlhIC0tY2MgdG8gYGdpdCBzZW5kLWVtYWlsYC4NClVwIHVudGlsIG5vdywgSSB3
+b3VsZCBzZW5kIGVtYWlscyB0byBsaXN0cyBbYXMgbXVjaCBhcyBwb3NzaWJsZV0gYW5kIHRyeSB0
+byBub3QgaW5jbHVkZSBwZW9wbGUgZGlyZWN0bHkuDQpNeSBhc3N1bXB0aW9uIHdhcyB0aGF0IHRo
+ZSBsaXN0IGlzIGVub3VnaC4NCg0KSSdtIHN0aWxsIGFkanVzdGluZyB0byBob3cgdGhpbmdzIGdl
+dCBkb25lIGluIHRoZSB2YXJpb3VzIExpbnV4IGtlcm5lbCBzdWJzeXN0ZW1zL3N1Ymdyb3Vwcy4N
+Cg==

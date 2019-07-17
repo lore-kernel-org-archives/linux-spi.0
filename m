@@ -1,33 +1,37 @@
-From: Shawn Guo <shawnguo@kernel.org>
-Subject: Re: [PATCH v5 14/15]  arm64: defconfig: Enable SDMA on i.mx8mq/8mm
-Date: Wed, 17 Jul 2019 14:48:02 +0800
-Message-ID: <20190717064800.GC3738@dragon>
-References: <20190610081753.11422-1-yibin.gong@nxp.com>
- <20190610081753.11422-15-yibin.gong@nxp.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: robh+dt@kernel.org, mark.rutland@arm.com, s.hauer@pengutronix.de,
-        kernel@pengutronix.de, broonie@kernel.org, festevam@gmail.com,
-        vkoul@kernel.org, dan.j.williams@intel.com,
-        u.kleine-koenig@pengutronix.de, catalin.marinas@arm.com,
-        l.stach@pengutronix.de, will.deacon@arm.com,
-        linux-spi@vger.kernel.org, linux-imx@nxp.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        dmaengine@vger.kernel.org, devicetree@vger.kernel.org
-To: yibin.gong@nxp.com
+From: Ding Xiang <dingxiang@cmss.chinamobile.com>
+Subject: [PATCH] spi: remove redundant put_device
+Date: Wed, 17 Jul 2019 18:05:44 +0800
+Message-ID: <1563357944-24496-1-git-send-email-dingxiang@cmss.chinamobile.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: broonie@kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20190610081753.11422-15-yibin.gong@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jun 10, 2019 at 04:17:52PM +0800, yibin.gong@nxp.com wrote:
-> From: Robin Gong <yibin.gong@nxp.com>
-> 
-> Enable SDMA support on i.mx8mq/8mm chips, including enabling
-> CONFIG_FW_LOADER_USER_HELPER/CONFIG_FW_LOADER_USER_HELPER_FALLBACK
-> for firmware loaded by udev.
-> 
-> Signed-off-by: Robin Gong <yibin.gong@nxp.com>
+device_unregister will call put_device,
+so remove the redundant put_device
 
-Applied, thanks.
+Signed-off-by: Ding Xiang <dingxiang@cmss.chinamobile.com>
+---
+ drivers/spi/spi.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 75ac046..d753689 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2133,11 +2133,9 @@ static ssize_t spi_slave_store(struct device *dev,
+ 		return -EINVAL;
+ 
+ 	child = device_find_child(&ctlr->dev, NULL, match_true);
+-	if (child) {
++	if (child)
+ 		/* Remove registered slave */
+ 		device_unregister(child);
+-		put_device(child);
+-	}
+ 
+ 	if (strcmp(name, "(null)")) {
+ 		/* Register new slave */
+-- 
+1.9.1

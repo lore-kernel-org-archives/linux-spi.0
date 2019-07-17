@@ -1,7 +1,7 @@
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH 1/4][V2] drivers: spi: core: Add optional delay between cs_change transfers
-Date: Wed, 17 Jul 2019 14:51:06 +0300
-Message-ID: <20190717115109.15168-2-alexandru.ardelean@analog.com>
+Subject: [PATCH 2/4][V2] iio: imu: adis: Add support for SPI transfer cs_change_delay_usecs
+Date: Wed, 17 Jul 2019 14:51:07 +0300
+Message-ID: <20190717115109.15168-3-alexandru.ardelean@analog.com>
 References: <20190717115109.15168-1-alexandru.ardelean@analog.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -17,52 +17,91 @@ In-Reply-To: <20190717115109.15168-1-alexandru.ardelean@analog.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Some devices like the ADIS16460 IMU require a stall period between
-transfers, i.e. between when the CS is de-asserted and re-asserted. The
-default value of 10us is not enough. This change makes the delay
-configurable for when the next CS change goes active.
+The ADIS16460 requires a higher delay before the next transfer. Since the
+SPI framework supports configuring the delay before the next transfer, this
+driver will become the first user of it.
+
+The support for this functionality in ADIS16460 requires an addition to the
+ADIS lib to support the `cs_change_stall_delay_us` functionality in SPI.
+
+Not all transfers set `cs_change` to 1. Only those that do, have the
+`cs_change_delay` assigned.
 
 Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- drivers/spi/spi.c       | 3 ++-
- include/linux/spi/spi.h | 3 +++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/iio/imu/adis.c       | 6 ++++++
+ include/linux/iio/imu/adis.h | 2 ++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 5e75944ad5d1..02fd00bcaace 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1163,7 +1163,8 @@ static int spi_transfer_one_message(struct spi_controller *ctlr,
- 				keep_cs = true;
- 			} else {
- 				spi_set_cs(msg->spi, false);
--				udelay(10);
-+				udelay(xfer->cs_change_delay_usecs ?
-+				       xfer->cs_change_delay_usecs : 10);
- 				spi_set_cs(msg->spi, true);
- 			}
- 		}
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 053abd22ad31..c884b3b94841 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -734,6 +734,8 @@ extern void spi_res_release(struct spi_controller *ctlr,
-  *      transfer. If 0 the default (from @spi_device) is used.
-  * @bits_per_word: select a bits_per_word other than the device default
-  *      for this transfer. If 0 the default (from @spi_device) is used.
-+ * @cs_change_delay_usecs: microseconds to delay between cs_change
-+ *	transfers.
-  * @cs_change: affects chipselect after this transfer completes
-  * @delay_usecs: microseconds to delay after this transfer before
-  *	(optionally) changing the chipselect status, then starting
-@@ -823,6 +825,7 @@ struct spi_transfer {
- #define	SPI_NBITS_QUAD		0x04 /* 4bits transfer */
- 	u8		bits_per_word;
- 	u8		word_delay_usecs;
-+	u8		cs_change_delay_usecs;
- 	u16		delay_usecs;
- 	u32		speed_hz;
- 	u16		word_delay;
+diff --git a/drivers/iio/imu/adis.c b/drivers/iio/imu/adis.c
+index c771ae6803a9..6fdb6f4cebd4 100644
+--- a/drivers/iio/imu/adis.c
++++ b/drivers/iio/imu/adis.c
+@@ -40,18 +40,21 @@ int adis_write_reg(struct adis *adis, unsigned int reg,
+ 			.len = 2,
+ 			.cs_change = 1,
+ 			.delay_usecs = adis->data->write_delay,
++			.cs_change_delay_usecs = adis->data->cs_change_delay,
+ 		}, {
+ 			.tx_buf = adis->tx + 2,
+ 			.bits_per_word = 8,
+ 			.len = 2,
+ 			.cs_change = 1,
+ 			.delay_usecs = adis->data->write_delay,
++			.cs_change_delay_usecs = adis->data->cs_change_delay,
+ 		}, {
+ 			.tx_buf = adis->tx + 4,
+ 			.bits_per_word = 8,
+ 			.len = 2,
+ 			.cs_change = 1,
+ 			.delay_usecs = adis->data->write_delay,
++			.cs_change_delay_usecs = adis->data->cs_change_delay,
+ 		}, {
+ 			.tx_buf = adis->tx + 6,
+ 			.bits_per_word = 8,
+@@ -134,12 +137,14 @@ int adis_read_reg(struct adis *adis, unsigned int reg,
+ 			.len = 2,
+ 			.cs_change = 1,
+ 			.delay_usecs = adis->data->write_delay,
++			.cs_change_delay_usecs = adis->data->cs_change_delay,
+ 		}, {
+ 			.tx_buf = adis->tx + 2,
+ 			.bits_per_word = 8,
+ 			.len = 2,
+ 			.cs_change = 1,
+ 			.delay_usecs = adis->data->read_delay,
++			.cs_change_delay_usecs = adis->data->cs_change_delay,
+ 		}, {
+ 			.tx_buf = adis->tx + 4,
+ 			.rx_buf = adis->rx,
+@@ -147,6 +152,7 @@ int adis_read_reg(struct adis *adis, unsigned int reg,
+ 			.len = 2,
+ 			.cs_change = 1,
+ 			.delay_usecs = adis->data->read_delay,
++			.cs_change_delay_usecs = adis->data->cs_change_delay,
+ 		}, {
+ 			.rx_buf = adis->rx + 2,
+ 			.bits_per_word = 8,
+diff --git a/include/linux/iio/imu/adis.h b/include/linux/iio/imu/adis.h
+index 469a493f7ae0..fd884b45ed45 100644
+--- a/include/linux/iio/imu/adis.h
++++ b/include/linux/iio/imu/adis.h
+@@ -27,6 +27,7 @@ struct adis_burst;
+  * struct adis_data - ADIS chip variant specific data
+  * @read_delay: SPI delay for read operations in us
+  * @write_delay: SPI delay for write operations in us
++ * @cs_change_delay: SPI delay between CS changes in us
+  * @glob_cmd_reg: Register address of the GLOB_CMD register
+  * @msc_ctrl_reg: Register address of the MSC_CTRL register
+  * @diag_stat_reg: Register address of the DIAG_STAT register
+@@ -36,6 +37,7 @@ struct adis_burst;
+ struct adis_data {
+ 	unsigned int read_delay;
+ 	unsigned int write_delay;
++	unsigned int cs_change_delay;
+ 
+ 	unsigned int glob_cmd_reg;
+ 	unsigned int msc_ctrl_reg;
 -- 
 2.20.1

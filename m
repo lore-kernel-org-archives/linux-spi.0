@@ -1,15 +1,14 @@
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH 2/4][V2] iio: imu: adis: Add support for SPI transfer cs_change_delay_usecs
-Date: Wed, 17 Jul 2019 14:51:07 +0300
-Message-ID: <20190717115109.15168-3-alexandru.ardelean@analog.com>
+Subject: [PATCH 4/4][V2] dt-bindings: iio: imu: add bindings for ADIS16460
+Date: Wed, 17 Jul 2019 14:51:09 +0300
+Message-ID: <20190717115109.15168-5-alexandru.ardelean@analog.com>
 References: <20190717115109.15168-1-alexandru.ardelean@analog.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 Cc: <jic23@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
         <broonie@kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Michael Hennerich <michael.hennerich@analog.com>
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
 To: <linux-iio@vger.kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
@@ -17,91 +16,85 @@ In-Reply-To: <20190717115109.15168-1-alexandru.ardelean@analog.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The ADIS16460 requires a higher delay before the next transfer. Since the
-SPI framework supports configuring the delay before the next transfer, this
-driver will become the first user of it.
+This change adds device-tree bindings for the ADIS16460.
 
-The support for this functionality in ADIS16460 requires an addition to the
-ADIS lib to support the `cs_change_stall_delay_us` functionality in SPI.
-
-Not all transfers set `cs_change` to 1. Only those that do, have the
-`cs_change_delay` assigned.
-
-Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- drivers/iio/imu/adis.c       | 6 ++++++
- include/linux/iio/imu/adis.h | 2 ++
- 2 files changed, 8 insertions(+)
+ .../bindings/iio/imu/adi,adis16460.yaml       | 53 +++++++++++++++++++
+ MAINTAINERS                                   |  1 +
+ 2 files changed, 54 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
 
-diff --git a/drivers/iio/imu/adis.c b/drivers/iio/imu/adis.c
-index c771ae6803a9..6fdb6f4cebd4 100644
---- a/drivers/iio/imu/adis.c
-+++ b/drivers/iio/imu/adis.c
-@@ -40,18 +40,21 @@ int adis_write_reg(struct adis *adis, unsigned int reg,
- 			.len = 2,
- 			.cs_change = 1,
- 			.delay_usecs = adis->data->write_delay,
-+			.cs_change_delay_usecs = adis->data->cs_change_delay,
- 		}, {
- 			.tx_buf = adis->tx + 2,
- 			.bits_per_word = 8,
- 			.len = 2,
- 			.cs_change = 1,
- 			.delay_usecs = adis->data->write_delay,
-+			.cs_change_delay_usecs = adis->data->cs_change_delay,
- 		}, {
- 			.tx_buf = adis->tx + 4,
- 			.bits_per_word = 8,
- 			.len = 2,
- 			.cs_change = 1,
- 			.delay_usecs = adis->data->write_delay,
-+			.cs_change_delay_usecs = adis->data->cs_change_delay,
- 		}, {
- 			.tx_buf = adis->tx + 6,
- 			.bits_per_word = 8,
-@@ -134,12 +137,14 @@ int adis_read_reg(struct adis *adis, unsigned int reg,
- 			.len = 2,
- 			.cs_change = 1,
- 			.delay_usecs = adis->data->write_delay,
-+			.cs_change_delay_usecs = adis->data->cs_change_delay,
- 		}, {
- 			.tx_buf = adis->tx + 2,
- 			.bits_per_word = 8,
- 			.len = 2,
- 			.cs_change = 1,
- 			.delay_usecs = adis->data->read_delay,
-+			.cs_change_delay_usecs = adis->data->cs_change_delay,
- 		}, {
- 			.tx_buf = adis->tx + 4,
- 			.rx_buf = adis->rx,
-@@ -147,6 +152,7 @@ int adis_read_reg(struct adis *adis, unsigned int reg,
- 			.len = 2,
- 			.cs_change = 1,
- 			.delay_usecs = adis->data->read_delay,
-+			.cs_change_delay_usecs = adis->data->cs_change_delay,
- 		}, {
- 			.rx_buf = adis->rx + 2,
- 			.bits_per_word = 8,
-diff --git a/include/linux/iio/imu/adis.h b/include/linux/iio/imu/adis.h
-index 469a493f7ae0..fd884b45ed45 100644
---- a/include/linux/iio/imu/adis.h
-+++ b/include/linux/iio/imu/adis.h
-@@ -27,6 +27,7 @@ struct adis_burst;
-  * struct adis_data - ADIS chip variant specific data
-  * @read_delay: SPI delay for read operations in us
-  * @write_delay: SPI delay for write operations in us
-+ * @cs_change_delay: SPI delay between CS changes in us
-  * @glob_cmd_reg: Register address of the GLOB_CMD register
-  * @msc_ctrl_reg: Register address of the MSC_CTRL register
-  * @diag_stat_reg: Register address of the DIAG_STAT register
-@@ -36,6 +37,7 @@ struct adis_burst;
- struct adis_data {
- 	unsigned int read_delay;
- 	unsigned int write_delay;
-+	unsigned int cs_change_delay;
+diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml b/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
+new file mode 100644
+index 000000000000..0c53009ba7d6
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
+@@ -0,0 +1,53 @@
++# SPDX-License-Identifier: GPL-2.0
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/imu/adi,adis16460.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices ADIS16460 and similar IMUs
++
++maintainers:
++  - Dragos Bogdan <dragos.bogdan@analog.com>
++
++description: |
++  Analog Devices ADIS16460 and similar IMUs
++  https://www.analog.com/media/en/technical-documentation/data-sheets/ADIS16460.pdf
++
++properties:
++  compatible:
++    enum:
++      - adi,adis16460
++
++  reg:
++    maxItems: 1
++
++  spi-cpha: true
++
++  spi-cpol: true
++
++  interrupts:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - interrupts
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++    spi0 {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        imu@0 {
++            compatible = "adi,adis16460";
++            reg = <0>;
++            spi-max-frequency = <5000000>;
++            spi-cpol;
++            spi-cpha;
++            interrupt-parent = <&gpio0>;
++            interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
++        };
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8e679504c087..c44fbe8e91e9 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -943,6 +943,7 @@ S:	Supported
+ L:	linux-iio@vger.kernel.org
+ W:	http://ez.analog.com/community/linux-device-drivers
+ F:	drivers/iio/imu/adis16460.c
++F:	Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
  
- 	unsigned int glob_cmd_reg;
- 	unsigned int msc_ctrl_reg;
+ ANALOG DEVICES INC ADP5061 DRIVER
+ M:	Stefan Popa <stefan.popa@analog.com>
 -- 
 2.20.1

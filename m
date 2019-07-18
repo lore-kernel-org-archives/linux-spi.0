@@ -1,62 +1,76 @@
-From: Mark Brown <broonie@kernel.org>
+From: "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
 Subject: Re: [PATCH 1/4][V2] drivers: spi: core: Add optional delay between
  cs_change transfers
-Date: Thu, 18 Jul 2019 13:50:08 +0100
-Message-ID: <20190718125008.GD5761@sirena.org.uk>
+Date: Thu, 18 Jul 2019 13:36:54 +0000
+Message-ID: <3b5c33bb4f3ed4bb73304f1034184a683107ea55.camel@analog.com>
 References: <20190717115109.15168-1-alexandru.ardelean@analog.com>
- <20190717115109.15168-2-alexandru.ardelean@analog.com>
+         <20190717115109.15168-2-alexandru.ardelean@analog.com>
+         <20190718125008.GD5761@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="3Gf/FFewwPeBMqCJ"
-Cc: linux-iio@vger.kernel.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        jic23@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        Michael Hennerich <michael.hennerich@analog.com>
-To: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>
+To: "broonie@kernel.org" <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20190717115109.15168-2-alexandru.ardelean@analog.com>
+In-Reply-To: <20190718125008.GD5761@sirena.org.uk>
+Content-Language: en-US
+Content-ID: <8A96C2C30BB4DB49BA8C6F2B476A331A@analog.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-
---3Gf/FFewwPeBMqCJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Wed, Jul 17, 2019 at 02:51:06PM +0300, Alexandru Ardelean wrote:
-> Some devices like the ADIS16460 IMU require a stall period between
-> transfers, i.e. between when the CS is de-asserted and re-asserted. The
-> default value of 10us is not enough. This change makes the delay
-> configurable for when the next CS change goes active.
-
-To repeat my previous feedback:
-
-| This looks like cs_change_delay.
-
-Please use subject lines matching the style for the subsystem.  This
-makes it easier for people to identify relevant patches.
-
-Please don't ignore review comments, people are generally making them
-for a reason and are likely to have the same concerns if issues remain
-unaddressed.  Having to repeat the same comments can get repetitive and
-make people question the value of time spent reviewing.  If you disagree
-with the review comments that's fine but you need to reply and discuss
-your concerns so that the reviewer can understand your decisions.
-
---3Gf/FFewwPeBMqCJ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl0wav8ACgkQJNaLcl1U
-h9APhQf/QOouOeq0OOWIhFy4+/g0D4HdPXY0lzPOPRqIa3No7BWtewQIntQ7uARy
-/6nZrCA4lT9IuLtQY9TtxBtY3GyY1hLyWXnibxUsD0vZqS7cBjvVdYYv9/FTdDEK
-VquUng/K54Vp6Ku0GCfh9EXhEs05w/L4B1cWa1r7FD6gbF5llweQ6A/JP68B2Jzl
-mAj3fEjb7brceyU08UiJsfDCIehvVc3vpu5wCyFFj0FzGhJ+IfJdAmFn7C6EmotF
-CM8deV1NaeQB0iUkCSVgTj+pBG4UZ0hj0CGju8xXxE6/f/+1BgBp6EpNZj1Tptzg
-XIBZ7Xf1k9oTXGZ+05q/wXtv2P9N+w==
-=liAJ
------END PGP SIGNATURE-----
-
---3Gf/FFewwPeBMqCJ--
+T24gVGh1LCAyMDE5LTA3LTE4IGF0IDEzOjUwICswMTAwLCBNYXJrIEJyb3duIHdyb3RlOg0KPiBP
+biBXZWQsIEp1bCAxNywgMjAxOSBhdCAwMjo1MTowNlBNICswMzAwLCBBbGV4YW5kcnUgQXJkZWxl
+YW4gd3JvdGU6DQo+ID4gU29tZSBkZXZpY2VzIGxpa2UgdGhlIEFESVMxNjQ2MCBJTVUgcmVxdWly
+ZSBhIHN0YWxsIHBlcmlvZCBiZXR3ZWVuDQo+ID4gdHJhbnNmZXJzLCBpLmUuIGJldHdlZW4gd2hl
+biB0aGUgQ1MgaXMgZGUtYXNzZXJ0ZWQgYW5kIHJlLWFzc2VydGVkLiBUaGUNCj4gPiBkZWZhdWx0
+IHZhbHVlIG9mIDEwdXMgaXMgbm90IGVub3VnaC4gVGhpcyBjaGFuZ2UgbWFrZXMgdGhlIGRlbGF5
+DQo+ID4gY29uZmlndXJhYmxlIGZvciB3aGVuIHRoZSBuZXh0IENTIGNoYW5nZSBnb2VzIGFjdGl2
+ZS4NCj4gDQo+IFRvIHJlcGVhdCBteSBwcmV2aW91cyBmZWVkYmFjazoNCj4gDQo+ID4gVGhpcyBs
+b29rcyBsaWtlIGNzX2NoYW5nZV9kZWxheS4NCg0KQWNrLg0KV2lsbCB1c2UgYGNzX2NoYW5nZV9k
+ZWxheWAuDQpJIGhhdmUgbm8gc3Ryb25nIHByZWZlcmVuY2UgcmVnYXJkaW5nIHRoZSBuYW1lLg0K
+DQo+IA0KPiBQbGVhc2UgdXNlIHN1YmplY3QgbGluZXMgbWF0Y2hpbmcgdGhlIHN0eWxlIGZvciB0
+aGUgc3Vic3lzdGVtLiAgVGhpcw0KPiBtYWtlcyBpdCBlYXNpZXIgZm9yIHBlb3BsZSB0byBpZGVu
+dGlmeSByZWxldmFudCBwYXRjaGVzLg0KDQpBY2suDQpXaWxsIGxvb2sgZm9yIFNQSSBzdWJzeXN0
+ZW0gc3BlY2lmaWMgc3ViamVjdCBsaW5lcyBhbmQgdXNlIHRoZW0uDQoNCj4gDQo+IFBsZWFzZSBk
+b24ndCBpZ25vcmUgcmV2aWV3IGNvbW1lbnRzLCBwZW9wbGUgYXJlIGdlbmVyYWxseSBtYWtpbmcg
+dGhlbQ0KPiBmb3IgYSByZWFzb24gYW5kIGFyZSBsaWtlbHkgdG8gaGF2ZSB0aGUgc2FtZSBjb25j
+ZXJucyBpZiBpc3N1ZXMgcmVtYWluDQo+IHVuYWRkcmVzc2VkLiAgSGF2aW5nIHRvIHJlcGVhdCB0
+aGUgc2FtZSBjb21tZW50cyBjYW4gZ2V0IHJlcGV0aXRpdmUgYW5kDQo+IG1ha2UgcGVvcGxlIHF1
+ZXN0aW9uIHRoZSB2YWx1ZSBvZiB0aW1lIHNwZW50IHJldmlld2luZy4gIElmIHlvdSBkaXNhZ3Jl
+ZQ0KPiB3aXRoIHRoZSByZXZpZXcgY29tbWVudHMgdGhhdCdzIGZpbmUgYnV0IHlvdSBuZWVkIHRv
+IHJlcGx5IGFuZCBkaXNjdXNzDQo+IHlvdXIgY29uY2VybnMgc28gdGhhdCB0aGUgcmV2aWV3ZXIg
+Y2FuIHVuZGVyc3RhbmQgeW91ciBkZWNpc2lvbnMuDQoNClsgdGhlIGZvbGxvd2luZyBwYXJ0IHNo
+b3VsZCBub3QgYmUgY29uc2lkZXJlZCBpbiBhIGRpc3Jlc3BlY3RmdWwgdG9uZSA7IHRoZSBpbnRl
+bnQgaXMgbm93aGVyZSBuZWFyIHRoYXQsIGJ1dCB0ZXh0LQ0KY29tbXVuaWNhdGlvbiBoYXMgYSBk
+ZXNpZ24tZmxhdyB3aGVyZSBhIGRpc3Jlc3BlY3RmdWwgdG9uZSBtYXkgYmUgaW50ZXJwcmV0ZWQg
+W3doZXJlIHRoZXJlIGlzbid0IG9uZV0gXQ0KDQpNeSBpbnRlbnQgd2Fzbid0IHRvIGlnbm9yZSB0
+aGUgcmV2aWV3IGNvbW1lbnQuDQpTb3JyeSBpZiBpdCBjYW1lIG91dCBsaWtlIHRoYXQuDQoNCkkg
+YXNzdW1lZCBhIHBhdGNoIHJlLXNwaW4gd2FzIHByZWZlcnJlZCB2cyBhIHZlcmJhbCBkaXNjdXNz
+aW9uLg0KU29tZSBwZW9wbGUgcHJlZmVyIHBhdGNoIHJlLXNwaW5zIGFzIGEgYmFzaXMgZm9yIGRp
+c2N1c3Npb24uDQpWYXJpb3VzIHBlb3BsZSBoYXZlIHZhcmlvdXMgcHJlZmVyZW5jZXMuDQoNCkFs
+c28sIEkgd2Fzbid0IHN1cmUgaG93IHNvb24gSSdkIGdldCBhIHJlcGx5IGJhY2sgb24gdGhpcywg
+c2luY2UgdmFyaW91cyBwZW9wbGUvbWFpbnRhaW5lcnMgaGF2ZSB2YXJpb3VzIHJlcGx5LXRpbWVz
+Lg0KQW5kIEkgYWxzbyBbc29tZXRpbWVzXSBoYXZlIGxvbmdlciByZXBseS1iYWNrLXRpbWVzIFt3
+aGljaCBkb2Vzbid0IGhlbHAgZWl0aGVyXS4NCkFuZCBJIHdhc24ndCBzdXJlIGlmIGBjc19jaGFu
+Z2VfZGVsYXlgIHdhcyBmdWxseSBpbnRlbnRpb25hbC9hZC1saXRlcmFtLCBvciB3aGV0aGVyIGl0
+IHdhcyBhIGZlZWRiYWNrIG9mIHRoZSBzb3J0cw0KImFsb25nLXRoZS1saW5lcyBvZiBgY3NfY2hh
+bmdlX2RlbGF5YCIuDQoNCldoaWxlIGxvb2tpbmcgYXQgYHN0cnVjdCBzcGlfdHJhbnNmZXJgIHRo
+ZSBvdGhlciAiZGVsYXkiIGZpZWxkcyBzZWVtIHRvIGJlOiBgd29yZF9kZWxheV91c2Vjc2AgJiBg
+ZGVsYXlfdXNlY3NgLCB3aGljaCBpcw0Kd2h5IEkgYXNzdW1lZCBgY3NfY2hhbmdlX2RlbGF5X3Vz
+ZWNzYCB3YXMgcHJlZmVycmVkIFt0aG91Z2ggSSB3aWxsIGFkbWl0LCBpdCBpcyBhIGxvbmcgdmFy
+LW5hbWVdLg0KDQpBbmQgdGhlIGNvbmNsdXNpb24gW2Zyb20gbXkgc2lkZV0gaXM6IG1heWJlIEkg
+cnVzaGVkIHRoaXMgYSBiaXQgYW5kIG1heWJlIGl0IGFubm95ZWQgeW91Lg0KTm90IG15IGludGVu
+dGlvbiwgYW5kIGl0J2xsIHRha2UgbWUgYSBiaXQgdG8gYWRqdXN0IHRvIHlvdXIgc3R5bGUuDQoN
+Ck1vdmluZyBmb3J3YXJkLg0KDQoxLiBJIHdpbGwgdXNlIGBjc19jaGFuZ2VfZGVsYXlgIGFzIGZp
+ZWxkIG5hbWUgDQoyLiBJIHdpbGwgdXNlIFNQSSBzdWJzeXN0ZW0gc3ViamVjdCBsaW5lOyBJIHdp
+bGwgYWRtaXQgSSBmb3JnZXQgdGhpcyBzdHVmZiBwZXJpb2RpY2FsbHkNCg0KSXMgdGhlcmUgYW55
+dGhpbmcgZWxzZSBJIHNob3VsZCBjb25zaWRlcj8NCk9yIGFueXRoaW5nIGVsc2UgdG8gZGlzY3Vz
+cz8NCg0KSSdtIG9wZW4gdG8gZWxlbWVudHMgSSBtYXkgaGF2ZSBmb3Jnb3R0ZW4vb21pdHRlZCB1
+bmludGVudGlvbmFsbHkuDQoNClRoYW5rcw0KQWxleA0K

@@ -1,77 +1,125 @@
-From: Alexandre Torgue <alexandre.torgue@st.com>
-Subject: Re: [PATCH] dt-bindings: Ensure child nodes are of type 'object'
-Date: Thu, 18 Jul 2019 18:20:42 +0200
-Message-ID: <66b45e4e-31b1-f878-5042-2282a5e8334f@st.com>
-References: <20190715230457.3901-1-robh@kernel.org>
+From: masonccyang@mxic.com.tw
+Subject: Re: [PATCH v14 2/2] dt-bindings: spi: Document Renesas R-Car Gen3 RPC-IF
+ controller bindings
+Date: Fri, 19 Jul 2019 10:38:56 +0800
+Message-ID: <OF43DF9AAE.9EB63E41-ON4825843C.000C61B7-4825843C.000E8D45@mxic.com.tw>
+References: <1561023046-20886-1-git-send-email-masonccyang@mxic.com.tw> <1561023046-20886-3-git-send-email-masonccyang@mxic.com.tw> <CAMuHMdUPmj0tAhJ18DhQEbYxP7g4MMBMe0U_2eQFQ7mOq4ZFLQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Content-Transfer-Encoding: 7bit
-Cc: Vignesh Raghavendra <vigneshr@ti.com>, linux-gpio@vger.kernel.org,
- Maxime Ripard <maxime.ripard@bootlin.com>, Richard Weinberger <richard@nod.at>,
- Linus Walleij <linus.walleij@linaro.org>, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, Marek Vasut <marek.vasut@gmail.com>,
- Chen-Yu Tsai <wens@csie.org>, Mark Brown <broonie@kernel.org>,
- linux-mtd@lists.infradead.org, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>,
- linux-stm32@st-md-mailman.stormreply.com
-To: Rob Herring <robh@kernel.org>, <devicetree@vger.kernel.org>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20190715230457.3901-1-robh@kernel.org>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="US-ASCII"
+Cc: "Boris Brezillon" <bbrezillon@kernel.org>,
+        "Mark Brown" <broonie@kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+        <devicetree@vger.kernel.org>,
+        "Geert Uytterhoeven" <geert+renesas@glider.be>,
+        "Simon Horman" <horms@verge.net.au>, juliensu@mxic.com.tw,
+        "Lee Jones" <lee.jones@linaro.org>,
+        "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
+        "Linux-Renesas" <linux-renesas-soc@vger.kernel.org>,
+        "linux-spi" <linux-spi@vger.kernel.org>,
+        "Marek Vasut" <marek.vasut@gmail.com>,
+        "Mark Rutland" <mark.rutland@arm.com>,
+        "Miquel Raynal" <miquel.raynal@bootlin.com>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Sergei Shtylyov" <sergei.shtylyov@cogentembedded.com>
+To: "Geert Uytterhoeven" <geert@linux-m68k.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <CAMuHMdUPmj0tAhJ18DhQEbYxP7g4MMBMe0U_2eQFQ7mOq4ZFLQ@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Rob
 
-On 7/16/19 1:04 AM, Rob Herring wrote:
-> Properties which are child node definitions need to have an explict
-> type. Otherwise, a matching (DT) property can silently match when an
-> error is desired. Fix this up tree-wide. Once this is fixed, the
-> meta-schema will enforce this on any child node definitions.
-> 
-> Cc: Maxime Ripard <maxime.ripard@bootlin.com>
-> Cc: Chen-Yu Tsai <wens@csie.org>
-> Cc: David Woodhouse <dwmw2@infradead.org>
-> Cc: Brian Norris <computersforpeace@gmail.com>
-> Cc: Marek Vasut <marek.vasut@gmail.com>
-> Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-> Cc: Richard Weinberger <richard@nod.at>
-> Cc: Vignesh Raghavendra <vigneshr@ti.com>
-> Cc: Linus Walleij <linus.walleij@linaro.org>
-> Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-> Cc: Alexandre Torgue <alexandre.torgue@st.com>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: linux-mtd@lists.infradead.org
-> Cc: linux-gpio@vger.kernel.org
-> Cc: linux-stm32@st-md-mailman.stormreply.com
-> Cc: linux-spi@vger.kernel.org
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
-> Please ack. I will take this via the DT tree.
->
+Hi Geert, 
+ 
+Thanks for your review!
 
-For pinctrl STM32:
+Will fix it as 
 
-Acked-by: Alexandre TORGUE <alexandre.torgue@st.com>
++Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
++---------------------------------------------------------
++
++Required properties:
++- compatible: should be an SoC-specific compatible value, followed by
++                                "renesas,rcar-gen3-rpc" as a fallback.
++                                supported SoC-specific values are:
++                                "renesas,r8a77980-rpc"          (R-Car 
+V3H)
++                                "renesas,r8a77995-rpc"          (R-Car 
+D3)
++- reg: should contain three register areas:
++       first for the base address of RPC-IF registers,
++       second for the direct mapping read mode and
++       third for the write buffer area.
++- reg-names: should contain "regs", "dirmap" and "wbuf"
++- clocks: should contain the clock phandle/specifier pair for the module 
+clock.
++- clock-names: should contain "rpc"
++- power-domains: should contain the power domain phandle/secifier pair.
++- resets: should contain the reset controller phandle/specifier pair.
++- #address-cells: should be 1
++- #size-cells: should be 0
++
++  flash: should be represented by a subnode of the RPC-IF node, 
++  which "compatible" property contains "jedec,spi-nor", it presents SPI 
+is used.
++
++Example:
++
++                rpc: spi@ee200000 {
++                                compatible = "renesas,r8a77995-rpc", 
+"renesas,rcar-gen3-rpc";
++                                reg = <0 0xee200000 0 0x200>, <0 
+0x08000000 0 0x4000000>,
++                                      <0 0xee208000 0 0x100>;
++                                reg-names = "regs", "dirmap", "wbuf";
++                                clocks = <&cpg CPG_MOD 917>;
++                                clock-names = "rpc";
++                                power-domains = <&sysc 
+R8A77995_PD_ALWAYS_ON>;
++                                resets = <&cpg 917>;
++                                #address-cells = <1>;
++                                #size-cells = <0>;
++
++                                flash@0 {
++                                                compatible = 
+"jedec,spi-nor";
++                                                reg = <0>;
++                                                spi-max-frequency = 
+<40000000>;
++                                                spi-tx-bus-width = <1>;
++                                                spi-rx-bus-width = <1>;
++                                };
++                };
 
-thanks
+Is it OK ?
 
-Alexandre
+thanks & best regards,
+Mason
 
-> Rob
-> 
->
 
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+CONFIDENTIALITY NOTE:
+
+This e-mail and any attachments may contain confidential information 
+and/or personal data, which is protected by applicable laws. Please be 
+reminded that duplication, disclosure, distribution, or use of this e-mail 
+(and/or its attachments) or any part thereof is prohibited. If you receive 
+this e-mail in error, please notify us immediately and delete this mail as 
+well as its attachment(s) from your system. In addition, please be 
+informed that collection, processing, and/or use of personal data is 
+prohibited unless expressly permitted by personal data protection laws. 
+Thank you for your attention and cooperation.
+
+Macronix International Co., Ltd.
+
+=====================================================================
+
+
+
+============================================================================
+
+CONFIDENTIALITY NOTE:
+
+This e-mail and any attachments may contain confidential information and/or personal data, which is protected by applicable laws. Please be reminded that duplication, disclosure, distribution, or use of this e-mail (and/or its attachments) or any part thereof is prohibited. If you receive this e-mail in error, please notify us immediately and delete this mail as well as its attachment(s) from your system. In addition, please be informed that collection, processing, and/or use of personal data is prohibited unless expressly permitted by personal data protection laws. Thank you for your attention and cooperation.
+
+Macronix International Co., Ltd.
+
+=====================================================================

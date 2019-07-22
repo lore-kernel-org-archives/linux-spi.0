@@ -1,102 +1,78 @@
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH 4/4][V3] dt-bindings: iio: imu: add bindings for ADIS16460
-Date: Mon, 22 Jul 2019 15:47:47 +0300
-Message-ID: <20190722124747.4792-5-alexandru.ardelean@analog.com>
-References: <20190722124747.4792-1-alexandru.ardelean@analog.com>
+Subject: [PATCH 0/4][V3] iio: imu: Add support for the ADIS16460 IMU
+Date: Mon, 22 Jul 2019 15:47:43 +0300
+Message-ID: <20190722124747.4792-1-alexandru.ardelean@analog.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 Cc: <jic23@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
         <broonie@kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Rob Herring <robh@kernel.org>
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
 To: <linux-iio@vger.kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190722124747.4792-1-alexandru.ardelean@analog.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This change adds device-tree bindings for the ADIS16460.
+This changeset adds support for the ADIS16460.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
- .../bindings/iio/imu/adi,adis16460.yaml       | 53 +++++++++++++++++++
- MAINTAINERS                                   |  1 +
- 2 files changed, 54 insertions(+)
+Support for this chip, requires changes in both IIO & SPI, in order to
+support configurable/longer CS change delays.
+
+The default CS change delay is 10 uS, while the ADIS16460 requires a
+minimum of 16 uS. In order to accomodate this, the SPI transfer struct
+requires a `cs_change_delay_usecs` parameter that is used when `cs_change`
+is set.
+
+The ADIS library also requires a small update to support the new SPI
+`cs_change_delay_usecs`, and after that, support for ADIS16460 is added,
+since all the required parts for operating the chip are in the kernel.
+
+Continuing discussion from:
+  https://lore.kernel.org/lkml/20190717115109.15168-5-alexandru.ardelean@analog.com/T/
+
+Changelog v2 -> v3:
+* for SPI:
+  * used `cs_change_delay` instead of `cs_change_delay_usecs` (i.e. removed
+    `_usecs` suffix
+  * used SPI specific subject line for SPI patch
+* for ADIS lib:
+  * updated to use the `cs_change_delay`
+* for DT:
+  * added Rob's `Reviewed-by` tag
+
+Changelog v1 -> v2:
+* for SPI:
+  * renamed `cs_change_stall_delay_us` -> `cs_change_delay_usecs`
+    initial recommendation was `cs_change_delay`, but decided to name this
+    `cs_change_delay_usecs`, since the convention for these delays seems
+    to add the `_usecs` suffix
+* for ADIS lib:
+  * renamed `stall_delay` -> `cs_change_delay`
+  * removed some assignments of `cs_change_delay`
+    where `cs_change` is not set
+* for ADIS16460 driver:
+  * fixed license
+  * adjusted to new `cs_change_delay[_usecs]`
+
+Alexandru Ardelean (4):
+  spi: Add optional stall delay between cs_change transfers
+  iio: imu: adis: Add support for SPI transfer cs_change_delay
+  iio: imu: Add support for the ADIS16460 IMU
+  dt-bindings: iio: imu: add bindings for ADIS16460
+
+ .../bindings/iio/imu/adi,adis16460.yaml       |  53 ++
+ MAINTAINERS                                   |   8 +
+ drivers/iio/imu/Kconfig                       |  12 +
+ drivers/iio/imu/Makefile                      |   1 +
+ drivers/iio/imu/adis.c                        |   6 +
+ drivers/iio/imu/adis16460.c                   | 489 ++++++++++++++++++
+ drivers/spi/spi.c                             |   3 +-
+ include/linux/iio/imu/adis.h                  |   2 +
+ include/linux/spi/spi.h                       |   2 +
+ 9 files changed, 575 insertions(+), 1 deletion(-)
  create mode 100644 Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
+ create mode 100644 drivers/iio/imu/adis16460.c
 
-diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml b/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-new file mode 100644
-index 000000000000..0c53009ba7d6
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-@@ -0,0 +1,53 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/imu/adi,adis16460.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices ADIS16460 and similar IMUs
-+
-+maintainers:
-+  - Dragos Bogdan <dragos.bogdan@analog.com>
-+
-+description: |
-+  Analog Devices ADIS16460 and similar IMUs
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/ADIS16460.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,adis16460
-+
-+  reg:
-+    maxItems: 1
-+
-+  spi-cpha: true
-+
-+  spi-cpol: true
-+
-+  interrupts:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    spi0 {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        imu@0 {
-+            compatible = "adi,adis16460";
-+            reg = <0>;
-+            spi-max-frequency = <5000000>;
-+            spi-cpol;
-+            spi-cpha;
-+            interrupt-parent = <&gpio0>;
-+            interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-+        };
-+    };
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8e679504c087..c44fbe8e91e9 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -943,6 +943,7 @@ S:	Supported
- L:	linux-iio@vger.kernel.org
- W:	http://ez.analog.com/community/linux-device-drivers
- F:	drivers/iio/imu/adis16460.c
-+F:	Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
- 
- ANALOG DEVICES INC ADP5061 DRIVER
- M:	Stefan Popa <stefan.popa@analog.com>
 -- 
 2.20.1

@@ -1,78 +1,64 @@
-From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH 0/4][V3] iio: imu: Add support for the ADIS16460 IMU
-Date: Mon, 22 Jul 2019 15:47:43 +0300
-Message-ID: <20190722124747.4792-1-alexandru.ardelean@analog.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/4][V3] spi: Add optional stall delay between cs_change
+ transfers
+Date: Mon, 22 Jul 2019 17:32:02 +0100
+Message-ID: <20190722163202.GG4756@sirena.org.uk>
+References: <20190722124747.4792-1-alexandru.ardelean@analog.com>
+ <20190722124747.4792-2-alexandru.ardelean@analog.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-Cc: <jic23@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
-        <broonie@kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-To: <linux-iio@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="B8ONY/mu/bqBak9m"
+Cc: linux-iio@vger.kernel.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        jic23@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        Michael Hennerich <michael.hennerich@analog.com>
+To: Alexandru Ardelean <alexandru.ardelean@analog.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20190722124747.4792-2-alexandru.ardelean@analog.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This changeset adds support for the ADIS16460.
 
-Support for this chip, requires changes in both IIO & SPI, in order to
-support configurable/longer CS change delays.
+--B8ONY/mu/bqBak9m
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The default CS change delay is 10 uS, while the ADIS16460 requires a
-minimum of 16 uS. In order to accomodate this, the SPI transfer struct
-requires a `cs_change_delay_usecs` parameter that is used when `cs_change`
-is set.
+On Mon, Jul 22, 2019 at 03:47:44PM +0300, Alexandru Ardelean wrote:
+> Some devices like the ADIS16460 IMU require a longer period between
+> transfers, i.e. between when the CS is de-asserted and re-asserted. The
+> default value of 10us is not enough. This change makes the delay
+> configurable for when the next CS change goes active, allowing the default
+> to remain 10us is case it is unspecified.
 
-The ADIS library also requires a small update to support the new SPI
-`cs_change_delay_usecs`, and after that, support for ADIS16460 is added,
-since all the required parts for operating the chip are in the kernel.
+For the third time:
 
-Continuing discussion from:
-  https://lore.kernel.org/lkml/20190717115109.15168-5-alexandru.ardelean@analog.com/T/
+| This looks like cs_change_delay.
 
-Changelog v2 -> v3:
-* for SPI:
-  * used `cs_change_delay` instead of `cs_change_delay_usecs` (i.e. removed
-    `_usecs` suffix
-  * used SPI specific subject line for SPI patch
-* for ADIS lib:
-  * updated to use the `cs_change_delay`
-* for DT:
-  * added Rob's `Reviewed-by` tag
+>  #define	SPI_NBITS_QUAD		0x04 /* 4bits transfer */
+>  	u8		bits_per_word;
+>  	u8		word_delay_usecs;
+> +	u8		cs_change_delay;
+>  	u16		delay_usecs;
+>  	u32		speed_hz;
+>  	u16		word_delay;
 
-Changelog v1 -> v2:
-* for SPI:
-  * renamed `cs_change_stall_delay_us` -> `cs_change_delay_usecs`
-    initial recommendation was `cs_change_delay`, but decided to name this
-    `cs_change_delay_usecs`, since the convention for these delays seems
-    to add the `_usecs` suffix
-* for ADIS lib:
-  * renamed `stall_delay` -> `cs_change_delay`
-  * removed some assignments of `cs_change_delay`
-    where `cs_change` is not set
-* for ADIS16460 driver:
-  * fixed license
-  * adjusted to new `cs_change_delay[_usecs]`
+This patch doesn't apply and even if it did it won't compile because you
+are trying to add a field with the same name as an existing one.
 
-Alexandru Ardelean (4):
-  spi: Add optional stall delay between cs_change transfers
-  iio: imu: adis: Add support for SPI transfer cs_change_delay
-  iio: imu: Add support for the ADIS16460 IMU
-  dt-bindings: iio: imu: add bindings for ADIS16460
+--B8ONY/mu/bqBak9m
+Content-Type: application/pgp-signature; name="signature.asc"
 
- .../bindings/iio/imu/adi,adis16460.yaml       |  53 ++
- MAINTAINERS                                   |   8 +
- drivers/iio/imu/Kconfig                       |  12 +
- drivers/iio/imu/Makefile                      |   1 +
- drivers/iio/imu/adis.c                        |   6 +
- drivers/iio/imu/adis16460.c                   | 489 ++++++++++++++++++
- drivers/spi/spi.c                             |   3 +-
- include/linux/iio/imu/adis.h                  |   2 +
- include/linux/spi/spi.h                       |   2 +
- 9 files changed, 575 insertions(+), 1 deletion(-)
- create mode 100644 Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
- create mode 100644 drivers/iio/imu/adis16460.c
+-----BEGIN PGP SIGNATURE-----
 
--- 
-2.20.1
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl015QIACgkQJNaLcl1U
+h9D5fwf/Wo4+Hmy98fxnDeg7DpbiGSC8Ran91cmRVruDQ85ReTVXSyjGLF7QuDPU
+h5eXuOE2jwzrDrqVmX1CK8kXQCF5k9I9SiLWZZlPBxVAFGQmOBufa2voUWHN3zr7
+lhESGw8Ayl7JzHYF6KRvtGSIFq5vJ2fhLLFH+lDZ0ewq7A92U99OqyjaZD0gZCo7
+Nb3YJ2wASgP37haiibEHvpddA585QtGgcCjqdxybeoIxAqkez/2RTijc3DBRcXeb
+VsseUyF20RRXnICBpBgUnonhzzwN7jwf1VIOM4aKGiWIIXGRqiKO3OD9akqXodSG
+owJ6FsifVUS4oEXPHb76eFpu1x5A0g==
+=+XeL
+-----END PGP SIGNATURE-----
+
+--B8ONY/mu/bqBak9m--

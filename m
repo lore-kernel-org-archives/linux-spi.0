@@ -1,111 +1,77 @@
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH 1/3][V4] iio: imu: adis: Add support for SPI transfer cs_change_delay
-Date: Tue, 23 Jul 2019 10:36:38 +0300
-Message-ID: <20190723073641.27801-2-alexandru.ardelean@analog.com>
-References: <20190723073641.27801-1-alexandru.ardelean@analog.com>
+Subject: [PATCH 0/3][V4] iio: imu: Add support for the ADIS16460 IMU
+Date: Tue, 23 Jul 2019 10:36:37 +0300
+Message-ID: <20190723073641.27801-1-alexandru.ardelean@analog.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 Cc: <jic23@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
         <broonie@kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Michael Hennerich <michael.hennerich@analog.com>
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
 To: <linux-iio@vger.kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190723073641.27801-1-alexandru.ardelean@analog.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The ADIS16460 requires a higher delay before the next transfer. Since the
-SPI framework supports configuring the delay before the next transfer, this
-driver will become the first user of it.
+This changeset adds support for the ADIS16460.
+The default CS change delay is 10 uS, while the ADIS16460 requires a
+minimum of 16 uS.
 
-The support for this functionality in ADIS16460 requires an addition to the
-ADIS lib to support the `cs_change_delay` functionality from the SPI
-subsystem.
+As it turns out, the SPI framework support already has support for this
+feature, which is currently present in the for-next branch:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git/commit/?h=0ff2de8bb163551ec4230a5a6f3c40c1f6adec4f
 
-Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
- drivers/iio/imu/adis.c       | 12 ++++++++++++
- include/linux/iio/imu/adis.h |  2 ++
- 2 files changed, 14 insertions(+)
+This changeset now makes use of that feature, to allow longer CS change
+times (as needed) for ADIS16460.
 
-diff --git a/drivers/iio/imu/adis.c b/drivers/iio/imu/adis.c
-index 30281e91dbf9..1631c255deab 100644
---- a/drivers/iio/imu/adis.c
-+++ b/drivers/iio/imu/adis.c
-@@ -39,18 +39,24 @@ int adis_write_reg(struct adis *adis, unsigned int reg,
- 			.len = 2,
- 			.cs_change = 1,
- 			.delay_usecs = adis->data->write_delay,
-+			.cs_change_delay = adis->data->cs_change_delay,
-+			.cs_change_delay_unit = SPI_DELAY_UNIT_USECS,
- 		}, {
- 			.tx_buf = adis->tx + 2,
- 			.bits_per_word = 8,
- 			.len = 2,
- 			.cs_change = 1,
- 			.delay_usecs = adis->data->write_delay,
-+			.cs_change_delay = adis->data->cs_change_delay,
-+			.cs_change_delay_unit = SPI_DELAY_UNIT_USECS,
- 		}, {
- 			.tx_buf = adis->tx + 4,
- 			.bits_per_word = 8,
- 			.len = 2,
- 			.cs_change = 1,
- 			.delay_usecs = adis->data->write_delay,
-+			.cs_change_delay = adis->data->cs_change_delay,
-+			.cs_change_delay_unit = SPI_DELAY_UNIT_USECS,
- 		}, {
- 			.tx_buf = adis->tx + 6,
- 			.bits_per_word = 8,
-@@ -133,12 +139,16 @@ int adis_read_reg(struct adis *adis, unsigned int reg,
- 			.len = 2,
- 			.cs_change = 1,
- 			.delay_usecs = adis->data->write_delay,
-+			.cs_change_delay = adis->data->cs_change_delay,
-+			.cs_change_delay_unit = SPI_DELAY_UNIT_USECS,
- 		}, {
- 			.tx_buf = adis->tx + 2,
- 			.bits_per_word = 8,
- 			.len = 2,
- 			.cs_change = 1,
- 			.delay_usecs = adis->data->read_delay,
-+			.cs_change_delay = adis->data->cs_change_delay,
-+			.cs_change_delay_unit = SPI_DELAY_UNIT_USECS,
- 		}, {
- 			.tx_buf = adis->tx + 4,
- 			.rx_buf = adis->rx,
-@@ -146,6 +156,8 @@ int adis_read_reg(struct adis *adis, unsigned int reg,
- 			.len = 2,
- 			.cs_change = 1,
- 			.delay_usecs = adis->data->read_delay,
-+			.cs_change_delay = adis->data->cs_change_delay,
-+			.cs_change_delay_unit = SPI_DELAY_UNIT_USECS,
- 		}, {
- 			.rx_buf = adis->rx + 2,
- 			.bits_per_word = 8,
-diff --git a/include/linux/iio/imu/adis.h b/include/linux/iio/imu/adis.h
-index 3428d06b2f44..4c53815bb729 100644
---- a/include/linux/iio/imu/adis.h
-+++ b/include/linux/iio/imu/adis.h
-@@ -26,6 +26,7 @@ struct adis_burst;
-  * struct adis_data - ADIS chip variant specific data
-  * @read_delay: SPI delay for read operations in us
-  * @write_delay: SPI delay for write operations in us
-+ * @cs_change_delay: SPI delay between CS changes in us
-  * @glob_cmd_reg: Register address of the GLOB_CMD register
-  * @msc_ctrl_reg: Register address of the MSC_CTRL register
-  * @diag_stat_reg: Register address of the DIAG_STAT register
-@@ -35,6 +36,7 @@ struct adis_burst;
- struct adis_data {
- 	unsigned int read_delay;
- 	unsigned int write_delay;
-+	unsigned int cs_change_delay;
- 
- 	unsigned int glob_cmd_reg;
- 	unsigned int msc_ctrl_reg;
+The SPI patch is present in the iio/testing branch, but not present in the
+iio/togreg branch.
+
+Changelog v3 -> v4:
+* for SPI: no change
+* for ADIS lib: use existing `cs_change_delay` feature (from SPI)
+* for DT: no change
+
+Changelog v2 -> v3:
+* for SPI:
+  * used `cs_change_delay` instead of `cs_change_delay_usecs` (i.e. removed
+    `_usecs` suffix
+  * used SPI specific subject line for SPI patch
+* for ADIS lib:
+  * updated to use the `cs_change_delay`
+* for DT:
+  * added Rob's `Reviewed-by` tag
+
+Changelog v1 -> v2:
+* for SPI:
+  * renamed `cs_change_stall_delay_us` -> `cs_change_delay_usecs`
+    initial recommendation was `cs_change_delay`, but decided to name this
+    `cs_change_delay_usecs`, since the convention for these delays seems
+    to add the `_usecs` suffix
+* for ADIS lib:
+  * renamed `stall_delay` -> `cs_change_delay`
+  * removed some assignments of `cs_change_delay`
+    where `cs_change` is not set
+* for ADIS16460 driver:
+  * fixed license
+  * adjusted to new `cs_change_delay[_usecs]`
+
+Alexandru Ardelean (3):
+  iio: imu: adis: Add support for SPI transfer cs_change_delay
+  iio: imu: Add support for the ADIS16460 IMU
+  dt-bindings: iio: imu: add bindings for ADIS16460
+
+ .../bindings/iio/imu/adi,adis16460.yaml       |  53 ++
+ MAINTAINERS                                   |   8 +
+ drivers/iio/imu/Kconfig                       |  12 +
+ drivers/iio/imu/Makefile                      |   1 +
+ drivers/iio/imu/adis.c                        |  12 +
+ drivers/iio/imu/adis16460.c                   | 489 ++++++++++++++++++
+ include/linux/iio/imu/adis.h                  |   2 +
+ 7 files changed, 577 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
+ create mode 100644 drivers/iio/imu/adis16460.c
+
 -- 
 2.20.1

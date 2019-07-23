@@ -1,102 +1,47 @@
-From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH 3/3][V4] dt-bindings: iio: imu: add bindings for ADIS16460
-Date: Tue, 23 Jul 2019 10:36:40 +0300
-Message-ID: <20190723073641.27801-4-alexandru.ardelean@analog.com>
-References: <20190723073641.27801-1-alexandru.ardelean@analog.com>
+From: Robin Gong <yibin.gong@nxp.com>
+Subject: RE: [PATCH v5 12/15] ARM: dts: imx6ul: add dma support on ecspi
+Date: Tue, 23 Jul 2019 09:39:38 +0000
+Message-ID: <VE1PR04MB663894FA5BC88B130C70AC0789C70@VE1PR04MB6638.eurprd04.prod.outlook.com>
+References: <20190610081753.11422-1-yibin.gong@nxp.com>
+ <20190610081753.11422-13-yibin.gong@nxp.com> <20190717064204.GA3738@dragon>
 Mime-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-Cc: <jic23@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
-        <broonie@kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Rob Herring <robh@kernel.org>
-To: <linux-iio@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Cc: "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "festevam@gmail.com" <festevam@gmail.com>,
+        "vkoul@kernel.org" <vkoul@kernel.org>,
+        "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "l.stach@pengutronix.de" <l.stach@pengutronix.de>,
+        "will.deacon@arm.com" <will.deacon@arm.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-kern
+To: Shawn Guo <shawnguo@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190723073641.27801-1-alexandru.ardelean@analog.com>
+In-Reply-To: <20190717064204.GA3738@dragon>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This change adds device-tree bindings for the ADIS16460.
-
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
- .../bindings/iio/imu/adi,adis16460.yaml       | 53 +++++++++++++++++++
- MAINTAINERS                                   |  1 +
- 2 files changed, 54 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-
-diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml b/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-new file mode 100644
-index 000000000000..0c53009ba7d6
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
-@@ -0,0 +1,53 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/imu/adi,adis16460.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices ADIS16460 and similar IMUs
-+
-+maintainers:
-+  - Dragos Bogdan <dragos.bogdan@analog.com>
-+
-+description: |
-+  Analog Devices ADIS16460 and similar IMUs
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/ADIS16460.pdf
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,adis16460
-+
-+  reg:
-+    maxItems: 1
-+
-+  spi-cpha: true
-+
-+  spi-cpol: true
-+
-+  interrupts:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    spi0 {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        imu@0 {
-+            compatible = "adi,adis16460";
-+            reg = <0>;
-+            spi-max-frequency = <5000000>;
-+            spi-cpol;
-+            spi-cpha;
-+            interrupt-parent = <&gpio0>;
-+            interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-+        };
-+    };
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f7de89e82e35..07105e43ea1e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -951,6 +951,7 @@ S:	Supported
- L:	linux-iio@vger.kernel.org
- W:	http://ez.analog.com/community/linux-device-drivers
- F:	drivers/iio/imu/adis16460.c
-+F:	Documentation/devicetree/bindings/iio/imu/adi,adis16460.yaml
- 
- ANALOG DEVICES INC ADP5061 DRIVER
- M:	Stefan Popa <stefan.popa@analog.com>
--- 
-2.20.1
+On 2019-7-17 at 14:42 Shawn Guo <shawnguo@kernel.org> wrote:
+> On Mon, Jun 10, 2019 at 04:17:50PM +0800, yibin.gong@nxp.com wrote:
+> > From: Robin Gong <yibin.gong@nxp.com>
+> >
+> > Add dma support on ecspi.
+> >
+> > Signed-off-by: Robin Gong <yibin.gong@nxp.com>
+>=20
+> Applied, thanks.
+Thanks Shawn, but how about other dts patches such as 01/15,02/15?
+Hi Mark and Vinod,
+ I got Ack from you last month on v5, https://patchwork.kernel.org/cover/10=
+984301/
+Is it the right time to apply v5 ? Any concern, please let me know, thanks.

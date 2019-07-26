@@ -1,110 +1,35 @@
-From: Mason Yang <masonccyang@mxic.com.tw>
-Subject: [PATCH v15 0/2] spi: Add Renesas R-Car Gen3 RPC-IF SPI driver
-Date: Fri, 26 Jul 2019 10:42:53 +0800
-Message-ID: <1564108975-27423-1-git-send-email-masonccyang@mxic.com.tw>
-Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
-        lee.jones@linaro.org, sergei.shtylyov@cogentembedded.com,
-        Mason Yang <masonccyang@mxic.com.tw>, marek.vasut@gmail.com,
-        miquel.raynal@bootlin.com
+From: Baolin Wang <baolin.wang@linaro.org>
+Subject: [PATCH 0/6] Optimize Spreadtrum ADI driver
+Date: Fri, 26 Jul 2019 15:20:47 +0800
+Message-ID: <cover.1564125131.git.baolin.wang@linaro.org>
+Cc: weicx@spreadst.com, sherry.zong@unisoc.com, baolin.wang@linaro.org,
+        vincent.guittot@linaro.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        devicetree@vger.kernel.org
+        orsonzhai@gmail.com, zhang.lyra@gmail.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+This patchset did some optimization to remove some redundant code,
+add more reboot mode support and change hardware spinlock support
+to be optional.
 
-v15 patch including:
-1) A typo in dt-bindings and add flash subnode description
-2) v14 dt-binding file has reviewed by Rob Herring.
+Baolin Wang (3):
+  spi: sprd: adi: Remove redundant address bits setting
+  spi: sprd: adi: Change hwlock to be optional
+  dt-bindings: spi: sprd: Change the hwlock support to be optional
 
-v14 patch including:
-1) Patch RPC-IF back to SPI mode only instead of MFD & SPI 
-   by MFD maintainer, Lee Jones comments.
-2) Patch pm_runtime control in spi transfer.
+Chenxu Wei (1):
+  spi: sprd: adi: Add a reset reason for TOS panic
 
-v13 patch including:
-1) rename mfd to ddata for SPI driver.
-2) Patch RPC-IF devicetree for SPI and HyperFlash.
+Sherry Zong (2):
+  spi: sprd: adi: Add a reset reason for factory test mode
+  spi: sprd: adi: Add a reset reason for watchdog mode
 
-v12 patch including:
-1) add back "wbuf" in dts example.
-2) RPC-IF replace rpc-if in dts.
-
-v11 patch including:
-1) Patch mfd include header file.
-2) mfd coding style.
-3) add back wbuf description in dts.
-
-v10 patch including:
-1) Address range for > 64M byte flash.
-2) Removed dirmap_write due to WBUF 256 bytes transfer issue.
-3) Dummy bytes setting according to spi-nor.c layer.
-
-v9 patch is for RPC MFD driver and RPC SPI driver.
-
-v8 patch including:
-1) Supported SoC-specific values in DTS.
-2) Rename device node name as flash.
-
-v7 patch is according to Geert and Sergei's comments:
-1) Add all R-Car Gen3 model in dts.
-2) patch rpc-if child node search.
-3) minror coding style.
-
-v6 patch is accroding to Geert, Marek and Sergei's comments:
-1) spi_controller for new code.
-2) "renesas,rcar-gen3-rpc" instead of "renesas,r8a77995-rpc."
-3) patch external address read mode w/o u64 readq().
-4) patch dts for write buffer & drop "renesas,rpc-mode".
-5) coding style and so on.
-
-v5 patch is accroding to Sergei's comments:
-1) Read 6 bytes ID from Sergei's patch.
-2) regmap_update_bits().
-3) C++ style comment.
-
-v4 patch is according to Sergei's comments including:
-1) Drop soc_device_match().
-2) Drop unused RPC registers.
-3) Use ilog2() instead of fls().
-4) Patch read 6 bytes ID w/ one command.
-5) Coding style and so on.
-
-v3 patch is according to Marek and Geert's comments including:
-1) soc_device_mach() to set up RPC_PHYCNT_STRTIM.
-2) get_unaligned().
-3) rpc-mode for rpi-spi-flash or rpc-hyperflash.
-4) coding style and so on.
-
-v2 patch including:
-1) remove RPC clock enable/dis-able control,
-2) patch run time PM.
-3) add RPC module software reset,
-4) add regmap.
-5) other coding style and so on.
-
-thanks for your review.
-
-best regards,
-Mason
-
-
-Mason Yang (2):
-  spi: Add Renesas R-Car Gen3 RPC-IF SPI controller driver
-  dt-bindings: spi: Document Renesas R-Car Gen3 RPC-IF controller
-    bindings
-
- .../devicetree/bindings/spi/spi-renesas-rpc.txt    |  46 ++
- drivers/spi/Kconfig                                |   6 +
- drivers/spi/Makefile                               |   1 +
- drivers/spi/spi-renesas-rpc.c                      | 754 +++++++++++++++++++++
- 4 files changed, 807 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
- create mode 100644 drivers/spi/spi-renesas-rpc.c
+ .../devicetree/bindings/spi/spi-sprd-adi.txt       |   11 ++-
+ drivers/spi/spi-sprd-adi.c                         |   92 ++++++++++++++------
+ 2 files changed, 71 insertions(+), 32 deletions(-)
 
 -- 
-1.9.1
+1.7.9.5

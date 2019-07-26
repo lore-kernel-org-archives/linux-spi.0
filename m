@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: sprd: adi: Add a reset reason for watchdog mode" to the spi tree
+Subject: Applied "spi: sprd: adi: Add a reset reason for TOS panic" to the spi tree
 Date: Fri, 26 Jul 2019 13:12:24 +0100 (BST)
-Message-ID: <20190726121224.0FE5C2742B9F@ypsilon.sirena.org.uk>
-References: <1563f3de43c6c2262d597a25d6138b5de61ea23d.1564125131.git.baolin.wang@linaro.org>
+Message-ID: <20190726121224.8440C2742BAB@ypsilon.sirena.org.uk>
+References: <97583aad1f2b849d69b4e76e8d29113da72a9fff.1564125131.git.baolin.wang@linaro.org>
 Cc: Baolin Wang <baolin.wang@linaro.org>, baolin.wang@linaro.org,
         broonie@kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
@@ -10,15 +10,15 @@ Cc: Baolin Wang <baolin.wang@linaro.org>, baolin.wang@linaro.org,
         orsonzhai@gmail.com, robh+dt@kernel.org, sherry.zong@unisoc.com,
         vincent.guittot@linaro.org, weicx@spreadst.com,
         zhang.lyra@gmail.com
-To: Sherry Zong <sherry.zong@unisoc.com>
+To: Chenxu Wei <weicx@spreadst.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1563f3de43c6c2262d597a25d6138b5de61ea23d.1564125131.git.baolin.wang@linaro.org>
+In-Reply-To: <97583aad1f2b849d69b4e76e8d29113da72a9fff.1564125131.git.baolin.wang@linaro.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: sprd: adi: Add a reset reason for watchdog mode
+   spi: sprd: adi: Add a reset reason for TOS panic
 
 has been applied to the spi tree at
 
@@ -43,73 +43,41 @@ to this mail.
 Thanks,
 Mark
 
->From e6d722ca09c1eebba5660e58b6bcac30c1ccc7ca Mon Sep 17 00:00:00 2001
-From: Sherry Zong <sherry.zong@unisoc.com>
-Date: Fri, 26 Jul 2019 15:20:51 +0800
-Subject: [PATCH] spi: sprd: adi: Add a reset reason for watchdog mode
+>From cc6b3431b36a1109d44cb8e4015cc68dddc75208 Mon Sep 17 00:00:00 2001
+From: Chenxu Wei <weicx@spreadst.com>
+Date: Fri, 26 Jul 2019 15:20:49 +0800
+Subject: [PATCH] spi: sprd: adi: Add a reset reason for TOS panic
 
-When the system was rebooted by watchdog, now we did not save the watchdog
-reset mode which will make system enter a incorrect mode after rebooting.
+Add a new reset flag to indicate the reset reason is caused by TOS.
 
-Thus we should set the watchdog reset mode as default when opening the
-watchdog configuration, that means if the system was rebooted by other
-reason through the restart_handler(), then we will clear the default
-watchdog reset mode to save the correct reset mode.
-
-Signed-off-by: Sherry Zong <sherry.zong@unisoc.com>
+Signed-off-by: Chenxu Wei <weicx@spreadst.com>
 Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
-Link: https://lore.kernel.org/r/1563f3de43c6c2262d597a25d6138b5de61ea23d.1564125131.git.baolin.wang@linaro.org
+Link: https://lore.kernel.org/r/97583aad1f2b849d69b4e76e8d29113da72a9fff.1564125131.git.baolin.wang@linaro.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-sprd-adi.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/spi/spi-sprd-adi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
-index 509ce6943adc..0d767eb67fcf 100644
+index 11880db08ce9..0b3f23ad6479 100644
 --- a/drivers/spi/spi-sprd-adi.c
 +++ b/drivers/spi/spi-sprd-adi.c
-@@ -99,6 +99,7 @@
- #define HWRST_STATUS_IQMODE		0xb0
- #define HWRST_STATUS_SPRDISK		0xc0
- #define HWRST_STATUS_FACTORYTEST	0xe0
-+#define HWRST_STATUS_WATCHDOG		0xf0
+@@ -86,6 +86,7 @@
+ #define BIT_WDG_EN			BIT(2)
  
- /* Use default timeout 50 ms that converts to watchdog values */
- #define WDG_LOAD_VAL			((50 * 1000) / 32768)
-@@ -309,6 +310,18 @@ static int sprd_adi_transfer_one(struct spi_controller *ctlr,
- 	return 0;
- }
+ /* Definition of PMIC reset status register */
++#define HWRST_STATUS_SECURITY		0x02
+ #define HWRST_STATUS_RECOVERY		0x20
+ #define HWRST_STATUS_NORMAL		0x40
+ #define HWRST_STATUS_ALARM		0x50
+@@ -336,6 +337,8 @@ static int sprd_adi_restart_handler(struct notifier_block *this,
+ 		reboot_mode = HWRST_STATUS_IQMODE;
+ 	else if (!strncmp(cmd, "sprdisk", 7))
+ 		reboot_mode = HWRST_STATUS_SPRDISK;
++	else if (!strncmp(cmd, "tospanic", 8))
++		reboot_mode = HWRST_STATUS_SECURITY;
+ 	else
+ 		reboot_mode = HWRST_STATUS_NORMAL;
  
-+static void sprd_adi_set_wdt_rst_mode(struct sprd_adi *sadi)
-+{
-+#ifdef CONFIG_SPRD_WATCHDOG
-+	u32 val;
-+
-+	/* Set default watchdog reboot mode */
-+	sprd_adi_read(sadi, sadi->slave_pbase + PMIC_RST_STATUS, &val);
-+	val |= HWRST_STATUS_WATCHDOG;
-+	sprd_adi_write(sadi, sadi->slave_pbase + PMIC_RST_STATUS, val);
-+#endif
-+}
-+
- static int sprd_adi_restart_handler(struct notifier_block *this,
- 				    unsigned long mode, void *cmd)
- {
-@@ -347,6 +360,7 @@ static int sprd_adi_restart_handler(struct notifier_block *this,
- 
- 	/* Record the reboot mode */
- 	sprd_adi_read(sadi, sadi->slave_pbase + PMIC_RST_STATUS, &val);
-+	val &= ~HWRST_STATUS_WATCHDOG;
- 	val |= reboot_mode;
- 	sprd_adi_write(sadi, sadi->slave_pbase + PMIC_RST_STATUS, val);
- 
-@@ -475,6 +489,7 @@ static int sprd_adi_probe(struct platform_device *pdev)
- 	}
- 
- 	sprd_adi_hw_init(sadi);
-+	sprd_adi_set_wdt_rst_mode(sadi);
- 
- 	ctlr->dev.of_node = pdev->dev.of_node;
- 	ctlr->bus_num = pdev->id;
 -- 
 2.20.1

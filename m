@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: sprd: Change the hwlock support to be optional" to the spi tree
+Subject: Applied "spi: sprd: adi: Change hwlock to be optional" to the spi tree
 Date: Fri, 26 Jul 2019 13:12:23 +0100 (BST)
-Message-ID: <20190726121223.99EF52742B63@ypsilon.sirena.org.uk>
-References: <23d51f5d9c9cc647ad0c5a1fb950d3d9fb9c1303.1564125131.git.baolin.wang@linaro.org>
+Message-ID: <20190726121223.D105E2742B66@ypsilon.sirena.org.uk>
+References: <2abe7dcf210e4197f8c5ece7fc6d6cc1eda8c655.1564125131.git.baolin.wang@linaro.org>
 Cc: baolin.wang@linaro.org, broonie@kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
@@ -11,13 +11,13 @@ Cc: baolin.wang@linaro.org, broonie@kernel.org,
         weicx@spreadst.com, zhang.lyra@gmail.com
 To: Baolin Wang <baolin.wang@linaro.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <23d51f5d9c9cc647ad0c5a1fb950d3d9fb9c1303.1564125131.git.baolin.wang@linaro.org>
+In-Reply-To: <2abe7dcf210e4197f8c5ece7fc6d6cc1eda8c655.1564125131.git.baolin.wang@linaro.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: sprd: Change the hwlock support to be optional
+   spi: sprd: adi: Change hwlock to be optional
 
 has been applied to the spi tree at
 
@@ -42,51 +42,132 @@ to this mail.
 Thanks,
 Mark
 
->From 70f69f481b87da0614360e57e05a3ba962d60439 Mon Sep 17 00:00:00 2001
+>From f9adf61e983f5d03334d841bc30f0e967a340b37 Mon Sep 17 00:00:00 2001
 From: Baolin Wang <baolin.wang@linaro.org>
-Date: Fri, 26 Jul 2019 15:20:53 +0800
-Subject: [PATCH] spi: sprd: Change the hwlock support to be optional
+Date: Fri, 26 Jul 2019 15:20:52 +0800
+Subject: [PATCH] spi: sprd: adi: Change hwlock to be optional
 
-No need to add hardware spinlock proctection due to add multiple
-msater channel, so change it to be optional in documentation.
+Now Spreadtrum ADI controller supplies multiple master accessing channel
+to support multiple subsystems accessing, instead of using a hardware
+spinlock to synchronize between the multiple subsystems.
+
+To keep backward compatibility, we should change the hardware spinlock
+to be optional. Moreover change to use of_hwspin_lock_get_id() function
+which return -ENOENT error number to indicate no hwlock support.
 
 Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
-Link: https://lore.kernel.org/r/23d51f5d9c9cc647ad0c5a1fb950d3d9fb9c1303.1564125131.git.baolin.wang@linaro.org
+Link: https://lore.kernel.org/r/2abe7dcf210e4197f8c5ece7fc6d6cc1eda8c655.1564125131.git.baolin.wang@linaro.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- .../devicetree/bindings/spi/spi-sprd-adi.txt          | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/spi/spi-sprd-adi.c | 68 +++++++++++++++++++++++---------------
+ 1 file changed, 42 insertions(+), 26 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-sprd-adi.txt b/Documentation/devicetree/bindings/spi/spi-sprd-adi.txt
-index 8de589b376ce..2567c829e2dc 100644
---- a/Documentation/devicetree/bindings/spi/spi-sprd-adi.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-sprd-adi.txt
-@@ -25,18 +25,23 @@ data by ADI software channels at the same time, or two parallel routine of setti
- ADI registers will make ADI controller registers chaos to lead incorrect results.
- Then we need one hardware spinlock to synchronize between the multiple subsystems.
- 
-+The new version ADI controller supplies multiple master channels for different
-+subsystem accessing, that means no need to add hardware spinlock to synchronize,
-+thus change the hardware spinlock support to be optional to keep backward
-+compatibility.
+diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
+index 0d767eb67fcf..9a051286f120 100644
+--- a/drivers/spi/spi-sprd-adi.c
++++ b/drivers/spi/spi-sprd-adi.c
+@@ -165,14 +165,16 @@ static int sprd_adi_read(struct sprd_adi *sadi, u32 reg_paddr, u32 *read_val)
+ 	int read_timeout = ADI_READ_TIMEOUT;
+ 	unsigned long flags;
+ 	u32 val, rd_addr;
+-	int ret;
+-
+-	ret = hwspin_lock_timeout_irqsave(sadi->hwlock,
+-					  ADI_HWSPINLOCK_TIMEOUT,
+-					  &flags);
+-	if (ret) {
+-		dev_err(sadi->dev, "get the hw lock failed\n");
+-		return ret;
++	int ret = 0;
 +
- Required properties:
- - compatible: Should be "sprd,sc9860-adi".
- - reg: Offset and length of ADI-SPI controller register space.
--- hwlocks: Reference to a phandle of a hwlock provider node.
--- hwlock-names: Reference to hwlock name strings defined in the same order
--	as the hwlocks, should be "adi".
- - #address-cells: Number of cells required to define a chip select address
- 	on the ADI-SPI bus. Should be set to 1.
- - #size-cells: Size of cells required to define a chip select address size
- 	on the ADI-SPI bus. Should be set to 0.
++	if (sadi->hwlock) {
++		ret = hwspin_lock_timeout_irqsave(sadi->hwlock,
++						  ADI_HWSPINLOCK_TIMEOUT,
++						  &flags);
++		if (ret) {
++			dev_err(sadi->dev, "get the hw lock failed\n");
++			return ret;
++		}
+ 	}
  
- Optional properties:
-+- hwlocks: Reference to a phandle of a hwlock provider node.
-+- hwlock-names: Reference to hwlock name strings defined in the same order
-+	as the hwlocks, should be "adi".
- - sprd,hw-channels: This is an array of channel values up to 49 channels.
- 	The first value specifies the hardware channel id which is used to
- 	transfer data triggered by hardware automatically, and the second
+ 	/*
+@@ -219,7 +221,8 @@ static int sprd_adi_read(struct sprd_adi *sadi, u32 reg_paddr, u32 *read_val)
+ 	*read_val = val & RD_VALUE_MASK;
+ 
+ out:
+-	hwspin_unlock_irqrestore(sadi->hwlock, &flags);
++	if (sadi->hwlock)
++		hwspin_unlock_irqrestore(sadi->hwlock, &flags);
+ 	return ret;
+ }
+ 
+@@ -230,12 +233,14 @@ static int sprd_adi_write(struct sprd_adi *sadi, u32 reg_paddr, u32 val)
+ 	unsigned long flags;
+ 	int ret;
+ 
+-	ret = hwspin_lock_timeout_irqsave(sadi->hwlock,
+-					  ADI_HWSPINLOCK_TIMEOUT,
+-					  &flags);
+-	if (ret) {
+-		dev_err(sadi->dev, "get the hw lock failed\n");
+-		return ret;
++	if (sadi->hwlock) {
++		ret = hwspin_lock_timeout_irqsave(sadi->hwlock,
++						  ADI_HWSPINLOCK_TIMEOUT,
++						  &flags);
++		if (ret) {
++			dev_err(sadi->dev, "get the hw lock failed\n");
++			return ret;
++		}
+ 	}
+ 
+ 	ret = sprd_adi_drain_fifo(sadi);
+@@ -261,7 +266,8 @@ static int sprd_adi_write(struct sprd_adi *sadi, u32 reg_paddr, u32 val)
+ 	}
+ 
+ out:
+-	hwspin_unlock_irqrestore(sadi->hwlock, &flags);
++	if (sadi->hwlock)
++		hwspin_unlock_irqrestore(sadi->hwlock, &flags);
+ 	return ret;
+ }
+ 
+@@ -476,16 +482,26 @@ static int sprd_adi_probe(struct platform_device *pdev)
+ 	sadi->slave_pbase = res->start + ADI_SLAVE_OFFSET;
+ 	sadi->ctlr = ctlr;
+ 	sadi->dev = &pdev->dev;
+-	ret = of_hwspin_lock_get_id_byname(np, "adi");
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "can not get the hardware spinlock\n");
+-		goto put_ctlr;
+-	}
+-
+-	sadi->hwlock = devm_hwspin_lock_request_specific(&pdev->dev, ret);
+-	if (!sadi->hwlock) {
+-		ret = -ENXIO;
+-		goto put_ctlr;
++	ret = of_hwspin_lock_get_id(np, 0);
++	if (ret > 0 || (IS_ENABLED(CONFIG_HWSPINLOCK) && ret == 0)) {
++		sadi->hwlock =
++			devm_hwspin_lock_request_specific(&pdev->dev, ret);
++		if (!sadi->hwlock) {
++			ret = -ENXIO;
++			goto put_ctlr;
++		}
++	} else {
++		switch (ret) {
++		case -ENOENT:
++			dev_info(&pdev->dev, "no hardware spinlock supplied\n");
++			break;
++		default:
++			dev_err(&pdev->dev,
++				"failed to find hwlock id, %d\n", ret);
++			/* fall-through */
++		case -EPROBE_DEFER:
++			goto put_ctlr;
++		}
+ 	}
+ 
+ 	sprd_adi_hw_init(sadi);
 -- 
 2.20.1

@@ -1,84 +1,82 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH 2/2] DTS: ARM: gta04: introduce legacy spi-cs-high to make
- display work again
-Date: Thu, 25 Jul 2019 16:42:53 -0600
-Message-ID: <CAL_JsqLe_Y9Z6MRt7ojgSVKAb9n95S8j=eGidSVNz2T83j-zPQ@mail.gmail.com>
-References: <cover.1562597164.git.hns@goldelico.com> <8ae7cf816b22ef9cecee0d789fcf9e8a06495c39.1562597164.git.hns@goldelico.com>
- <20190724194259.GA25847@bogus> <2EA06398-E45B-481B-9A26-4DD2E043BF9C@goldelico.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Discussions about the Letux Kernel
-        <letux-kernel@openphoenux.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        stable <stable@vger.kernel.org>
-To: "H. Nikolaus Schaller" <hns@goldelico.com>
+From: Mason Yang <masonccyang@mxic.com.tw>
+Subject: [PATCH v15 2/2] dt-bindings: spi: Document Renesas R-Car Gen3 RPC-IF controller bindings
+Date: Fri, 26 Jul 2019 10:42:55 +0800
+Message-ID: <1564108975-27423-3-git-send-email-masonccyang@mxic.com.tw>
+References: <1564108975-27423-1-git-send-email-masonccyang@mxic.com.tw>
+Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
+        lee.jones@linaro.org, sergei.shtylyov@cogentembedded.com,
+        Mason Yang <masonccyang@mxic.com.tw>, marek.vasut@gmail.com,
+        miquel.raynal@bootlin.com
+To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        devicetree@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <2EA06398-E45B-481B-9A26-4DD2E043BF9C@goldelico.com>
+In-Reply-To: <1564108975-27423-1-git-send-email-masonccyang@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jul 25, 2019 at 12:23 AM H. Nikolaus Schaller <hns@goldelico.com> wrote:
->
-> Hi Rob,
->
-> > Am 24.07.2019 um 21:42 schrieb Rob Herring <robh@kernel.org>:
-> >
-> > On Mon, Jul 08, 2019 at 04:46:05PM +0200, H. Nikolaus Schaller wrote:
-> >> commit 6953c57ab172 "gpio: of: Handle SPI chipselect legacy bindings"
-> >>
-> >> did introduce logic to centrally handle the legacy spi-cs-high property
-> >> in combination with cs-gpios. This assumes that the polarity
-> >> of the CS has to be inverted if spi-cs-high is missing, even
-> >> and especially if non-legacy GPIO_ACTIVE_HIGH is specified.
-> >>
-> >> The DTS for the GTA04 was orginally introduced under the assumption
-> >> that there is no need for spi-cs-high if the gpio is defined with
-> >> proper polarity GPIO_ACTIVE_HIGH.
-> >
-> > Given that spi-cs-high is called legacy, that would imply that DT's
-> > should not have to use spi-cs-high.
->
-> Yes.
->
-> >
-> >> This was not a problem until gpiolib changed the interpretation of
-> >> GPIO_ACTIVE_HIGH and missing spi-cs-high.
-> >
-> > Then we should fix gpiolib...
->
-> I tried to convince Linus that this is the right way but he convinced
-> me that a fix that handles all cases does not exist.
->
-> There seem to be embedded devices with older DTB (potentially in ROM)
-> which provide a plain 0 value for a gpios definition. And either with
-> or without spi-cs-high.
->
-> Since "0" is the same as "GPIO_ACTIVE_HIGH", the absence of
-> spi-cs-high was and must be interpreted as active low for these
-> devices. This leads to the inversion logic in code.
->
-> AFAIR it boils down to the question if gpiolib and the bindings
-> should still support such legacy devices with out-of tree DTB,
-> but force in-tree DTS to add the legacy spi-cs-high property.
->
-> Or if we should fix the 2 or 3 cases of in-tree legacy cases
-> and potentially break out-of tree DTBs.
+Dcument the bindings used by the Renesas R-Car Gen3 RPC-IF controller.
 
-If it is small number of platforms, then the kernel could handle those
-cases explicitly as needed.
+Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+Reviewed-by: Rob Herring <robh@kernel.org>
+---
+ .../devicetree/bindings/spi/spi-renesas-rpc.txt    | 46 ++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
 
-> IMHO it is more general to keep the out-of-tree DTBs working
-> and "fix" what we can control (in-tree DTS).
-
-If we do this, then we need to not call spi-cs-high legacy because
-we're stuck with it forever.
-
-Rob
+diff --git a/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
+new file mode 100644
+index 0000000..d929850
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
+@@ -0,0 +1,46 @@
++Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
++---------------------------------------------------------
++
++Required properties:
++- compatible: should be an SoC-specific compatible value, followed by
++		"renesas,rcar-gen3-rpc" as a fallback.
++		supported SoC-specific values are:
++		"renesas,r8a77980-rpc"	(R-Car V3H)
++		"renesas,r8a77995-rpc"	(R-Car D3)
++- reg: should contain three register areas:
++       first for the base address of RPC-IF registers,
++       second for the direct mapping read mode and
++       third for the write buffer area.
++- reg-names: should contain "regs", "dirmap" and "wbuf"
++- clocks: should contain the clock phandle/specifier pair for the module clock.
++- clock-names: should contain "rpc"
++- power-domains: should contain the power domain phandle/secifier pair.
++- resets: should contain the reset controller phandle/specifier pair.
++- #address-cells: should be 1
++- #size-cells: should be 0
++- flash: should be represented by a subnode of the RPC-IF node,
++	 which "compatible" property contains "jedec,spi-nor", it presents
++	 SPI is used.
++
++Example:
++
++	rpc: spi@ee200000 {
++		compatible = "renesas,r8a77995-rpc", "renesas,rcar-gen3-rpc";
++		reg = <0 0xee200000 0 0x200>, <0 0x08000000 0 0x4000000>,
++		      <0 0xee208000 0 0x100>;
++		reg-names = "regs", "dirmap", "wbuf";
++		clocks = <&cpg CPG_MOD 917>;
++		clock-names = "rpc";
++		power-domains = <&sysc R8A77995_PD_ALWAYS_ON>;
++		resets = <&cpg 917>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		flash@0 {
++			compatible = "jedec,spi-nor";
++			reg = <0>;
++			spi-max-frequency = <40000000>;
++			spi-tx-bus-width = <1>;
++			spi-rx-bus-width = <1>;
++		};
++	};
+-- 
+1.9.1

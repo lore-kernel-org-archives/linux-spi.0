@@ -1,24 +1,23 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: sprd: adi: Add a reset reason for factory test mode" to the spi tree
+Subject: Applied "spi: sprd: adi: Remove redundant address bits setting" to the spi tree
 Date: Fri, 26 Jul 2019 13:12:24 +0100 (BST)
-Message-ID: <20190726121224.491122742B63@ypsilon.sirena.org.uk>
-References: <8ae5651e876b527920ff878721a8a8ef47b099ac.1564125131.git.baolin.wang@linaro.org>
-Cc: Baolin Wang <baolin.wang@linaro.org>, baolin.wang@linaro.org,
-        broonie@kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, mark.rutland@arm.com,
-        orsonzhai@gmail.com, robh+dt@kernel.org, sherry.zong@unisoc.com,
-        vincent.guittot@linaro.org, weicx@spreadst.com,
-        zhang.lyra@gmail.com
-To: Sherry Zong <sherry.zong@unisoc.com>
+Message-ID: <20190726121224.BD6AA2742B66@ypsilon.sirena.org.uk>
+References: <3cb57b8aadb7747a9f833e9b4fe8596ba738d9f6.1564125131.git.baolin.wang@linaro.org>
+Cc: baolin.wang@linaro.org, broonie@kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        mark.rutland@arm.com, orsonzhai@gmail.com, robh+dt@kernel.org,
+        sherry.zong@unisoc.com, vincent.guittot@linaro.org,
+        weicx@spreadst.com, zhang.lyra@gmail.com
+To: Baolin Wang <baolin.wang@linaro.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <8ae5651e876b527920ff878721a8a8ef47b099ac.1564125131.git.baolin.wang@linaro.org>
+In-Reply-To: <3cb57b8aadb7747a9f833e9b4fe8596ba738d9f6.1564125131.git.baolin.wang@linaro.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: sprd: adi: Add a reset reason for factory test mode
+   spi: sprd: adi: Remove redundant address bits setting
 
 has been applied to the spi tree at
 
@@ -43,42 +42,34 @@ to this mail.
 Thanks,
 Mark
 
->From 9d9aa1cc91d68e2140e5948c15947b8254e008e2 Mon Sep 17 00:00:00 2001
-From: Sherry Zong <sherry.zong@unisoc.com>
-Date: Fri, 26 Jul 2019 15:20:50 +0800
-Subject: [PATCH] spi: sprd: adi: Add a reset reason for factory test mode
+>From c627c58acdc48055a9e4d40d6f9f1b434222a68d Mon Sep 17 00:00:00 2001
+From: Baolin Wang <baolin.wang@linaro.org>
+Date: Fri, 26 Jul 2019 15:20:48 +0800
+Subject: [PATCH] spi: sprd: adi: Remove redundant address bits setting
 
-Add a new reset flag to indicate that the system need enter factory test
-mode after restarting system.
+The ADI default transfer address bits is 12bit on Spreadtrum SC9860
+platform, thus there is no need to set again, remove it.
 
-Signed-off-by: Sherry Zong <sherry.zong@unisoc.com>
 Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
-Link: https://lore.kernel.org/r/8ae5651e876b527920ff878721a8a8ef47b099ac.1564125131.git.baolin.wang@linaro.org
+Link: https://lore.kernel.org/r/3cb57b8aadb7747a9f833e9b4fe8596ba738d9f6.1564125131.git.baolin.wang@linaro.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-sprd-adi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-sprd-adi.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
-index 0b3f23ad6479..509ce6943adc 100644
+index df5960bddfe6..11880db08ce9 100644
 --- a/drivers/spi/spi-sprd-adi.c
 +++ b/drivers/spi/spi-sprd-adi.c
-@@ -98,6 +98,7 @@
- #define HWRST_STATUS_AUTODLOADER	0xa0
- #define HWRST_STATUS_IQMODE		0xb0
- #define HWRST_STATUS_SPRDISK		0xc0
-+#define HWRST_STATUS_FACTORYTEST	0xe0
+@@ -380,9 +380,6 @@ static void sprd_adi_hw_init(struct sprd_adi *sadi)
+ 	const __be32 *list;
+ 	u32 tmp;
  
- /* Use default timeout 50 ms that converts to watchdog values */
- #define WDG_LOAD_VAL			((50 * 1000) / 32768)
-@@ -339,6 +340,8 @@ static int sprd_adi_restart_handler(struct notifier_block *this,
- 		reboot_mode = HWRST_STATUS_SPRDISK;
- 	else if (!strncmp(cmd, "tospanic", 8))
- 		reboot_mode = HWRST_STATUS_SECURITY;
-+	else if (!strncmp(cmd, "factorytest", 11))
-+		reboot_mode = HWRST_STATUS_FACTORYTEST;
- 	else
- 		reboot_mode = HWRST_STATUS_NORMAL;
- 
+-	/* Address bits select default 12 bits */
+-	writel_relaxed(0, sadi->base + REG_ADI_CTRL0);
+-
+ 	/* Set all channels as default priority */
+ 	writel_relaxed(0, sadi->base + REG_ADI_CHN_PRIL);
+ 	writel_relaxed(0, sadi->base + REG_ADI_CHN_PRIH);
 -- 
 2.20.1

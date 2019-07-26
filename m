@@ -1,7 +1,7 @@
 From: Baolin Wang <baolin.wang@linaro.org>
-Subject: [PATCH 1/6] spi: sprd: adi: Remove redundant address bits setting
-Date: Fri, 26 Jul 2019 15:20:48 +0800
-Message-ID: <3cb57b8aadb7747a9f833e9b4fe8596ba738d9f6.1564125131.git.baolin.wang@linaro.org>
+Subject: [PATCH 2/6] spi: sprd: adi: Add a reset reason for TOS panic
+Date: Fri, 26 Jul 2019 15:20:49 +0800
+Message-ID: <97583aad1f2b849d69b4e76e8d29113da72a9fff.1564125131.git.baolin.wang@linaro.org>
 References: <cover.1564125131.git.baolin.wang@linaro.org>
 Cc: weicx@spreadst.com, sherry.zong@unisoc.com, baolin.wang@linaro.org,
         vincent.guittot@linaro.org, linux-spi@vger.kernel.org,
@@ -15,27 +15,36 @@ References: <cover.1564125131.git.baolin.wang@linaro.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The ADI default transfer address bits is 12bit on Spreadtrum SC9860
-platform, thus there is no need to set again, remove it.
+From: Chenxu Wei <weicx@spreadst.com>
 
+Add a new reset flag to indicate the reset reason is caused by TOS.
+
+Signed-off-by: Chenxu Wei <weicx@spreadst.com>
 Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
 ---
- drivers/spi/spi-sprd-adi.c |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/spi/spi-sprd-adi.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
-index df5960b..11880db 100644
+index 11880db..0b3f23a 100644
 --- a/drivers/spi/spi-sprd-adi.c
 +++ b/drivers/spi/spi-sprd-adi.c
-@@ -380,9 +380,6 @@ static void sprd_adi_hw_init(struct sprd_adi *sadi)
- 	const __be32 *list;
- 	u32 tmp;
+@@ -86,6 +86,7 @@
+ #define BIT_WDG_EN			BIT(2)
  
--	/* Address bits select default 12 bits */
--	writel_relaxed(0, sadi->base + REG_ADI_CTRL0);
--
- 	/* Set all channels as default priority */
- 	writel_relaxed(0, sadi->base + REG_ADI_CHN_PRIL);
- 	writel_relaxed(0, sadi->base + REG_ADI_CHN_PRIH);
+ /* Definition of PMIC reset status register */
++#define HWRST_STATUS_SECURITY		0x02
+ #define HWRST_STATUS_RECOVERY		0x20
+ #define HWRST_STATUS_NORMAL		0x40
+ #define HWRST_STATUS_ALARM		0x50
+@@ -336,6 +337,8 @@ static int sprd_adi_restart_handler(struct notifier_block *this,
+ 		reboot_mode = HWRST_STATUS_IQMODE;
+ 	else if (!strncmp(cmd, "sprdisk", 7))
+ 		reboot_mode = HWRST_STATUS_SPRDISK;
++	else if (!strncmp(cmd, "tospanic", 8))
++		reboot_mode = HWRST_STATUS_SECURITY;
+ 	else
+ 		reboot_mode = HWRST_STATUS_NORMAL;
+ 
 -- 
 1.7.9.5

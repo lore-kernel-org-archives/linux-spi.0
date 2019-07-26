@@ -1,24 +1,23 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: sprd: adi: Add a reset reason for TOS panic" to the spi tree
-Date: Fri, 26 Jul 2019 13:12:24 +0100 (BST)
-Message-ID: <20190726121224.8440C2742BAB@ypsilon.sirena.org.uk>
-References: <97583aad1f2b849d69b4e76e8d29113da72a9fff.1564125131.git.baolin.wang@linaro.org>
-Cc: Baolin Wang <baolin.wang@linaro.org>, baolin.wang@linaro.org,
-        broonie@kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, mark.rutland@arm.com,
-        orsonzhai@gmail.com, robh+dt@kernel.org, sherry.zong@unisoc.com,
-        vincent.guittot@linaro.org, weicx@spreadst.com,
-        zhang.lyra@gmail.com
-To: Chenxu Wei <weicx@spreadst.com>
+Subject: Applied "spi: sprd: Change the hwlock support to be optional" to the spi tree
+Date: Fri, 26 Jul 2019 13:12:23 +0100 (BST)
+Message-ID: <20190726121223.99EF52742B63@ypsilon.sirena.org.uk>
+References: <23d51f5d9c9cc647ad0c5a1fb950d3d9fb9c1303.1564125131.git.baolin.wang@linaro.org>
+Cc: baolin.wang@linaro.org, broonie@kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        mark.rutland@arm.com, orsonzhai@gmail.com, robh+dt@kernel.org,
+        sherry.zong@unisoc.com, vincent.guittot@linaro.org,
+        weicx@spreadst.com, zhang.lyra@gmail.com
+To: Baolin Wang <baolin.wang@linaro.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <97583aad1f2b849d69b4e76e8d29113da72a9fff.1564125131.git.baolin.wang@linaro.org>
+In-Reply-To: <23d51f5d9c9cc647ad0c5a1fb950d3d9fb9c1303.1564125131.git.baolin.wang@linaro.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: sprd: adi: Add a reset reason for TOS panic
+   spi: sprd: Change the hwlock support to be optional
 
 has been applied to the spi tree at
 
@@ -43,41 +42,51 @@ to this mail.
 Thanks,
 Mark
 
->From cc6b3431b36a1109d44cb8e4015cc68dddc75208 Mon Sep 17 00:00:00 2001
-From: Chenxu Wei <weicx@spreadst.com>
-Date: Fri, 26 Jul 2019 15:20:49 +0800
-Subject: [PATCH] spi: sprd: adi: Add a reset reason for TOS panic
+>From 70f69f481b87da0614360e57e05a3ba962d60439 Mon Sep 17 00:00:00 2001
+From: Baolin Wang <baolin.wang@linaro.org>
+Date: Fri, 26 Jul 2019 15:20:53 +0800
+Subject: [PATCH] spi: sprd: Change the hwlock support to be optional
 
-Add a new reset flag to indicate the reset reason is caused by TOS.
+No need to add hardware spinlock proctection due to add multiple
+msater channel, so change it to be optional in documentation.
 
-Signed-off-by: Chenxu Wei <weicx@spreadst.com>
 Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
-Link: https://lore.kernel.org/r/97583aad1f2b849d69b4e76e8d29113da72a9fff.1564125131.git.baolin.wang@linaro.org
+Link: https://lore.kernel.org/r/23d51f5d9c9cc647ad0c5a1fb950d3d9fb9c1303.1564125131.git.baolin.wang@linaro.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-sprd-adi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ .../devicetree/bindings/spi/spi-sprd-adi.txt          | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
-index 11880db08ce9..0b3f23ad6479 100644
---- a/drivers/spi/spi-sprd-adi.c
-+++ b/drivers/spi/spi-sprd-adi.c
-@@ -86,6 +86,7 @@
- #define BIT_WDG_EN			BIT(2)
+diff --git a/Documentation/devicetree/bindings/spi/spi-sprd-adi.txt b/Documentation/devicetree/bindings/spi/spi-sprd-adi.txt
+index 8de589b376ce..2567c829e2dc 100644
+--- a/Documentation/devicetree/bindings/spi/spi-sprd-adi.txt
++++ b/Documentation/devicetree/bindings/spi/spi-sprd-adi.txt
+@@ -25,18 +25,23 @@ data by ADI software channels at the same time, or two parallel routine of setti
+ ADI registers will make ADI controller registers chaos to lead incorrect results.
+ Then we need one hardware spinlock to synchronize between the multiple subsystems.
  
- /* Definition of PMIC reset status register */
-+#define HWRST_STATUS_SECURITY		0x02
- #define HWRST_STATUS_RECOVERY		0x20
- #define HWRST_STATUS_NORMAL		0x40
- #define HWRST_STATUS_ALARM		0x50
-@@ -336,6 +337,8 @@ static int sprd_adi_restart_handler(struct notifier_block *this,
- 		reboot_mode = HWRST_STATUS_IQMODE;
- 	else if (!strncmp(cmd, "sprdisk", 7))
- 		reboot_mode = HWRST_STATUS_SPRDISK;
-+	else if (!strncmp(cmd, "tospanic", 8))
-+		reboot_mode = HWRST_STATUS_SECURITY;
- 	else
- 		reboot_mode = HWRST_STATUS_NORMAL;
++The new version ADI controller supplies multiple master channels for different
++subsystem accessing, that means no need to add hardware spinlock to synchronize,
++thus change the hardware spinlock support to be optional to keep backward
++compatibility.
++
+ Required properties:
+ - compatible: Should be "sprd,sc9860-adi".
+ - reg: Offset and length of ADI-SPI controller register space.
+-- hwlocks: Reference to a phandle of a hwlock provider node.
+-- hwlock-names: Reference to hwlock name strings defined in the same order
+-	as the hwlocks, should be "adi".
+ - #address-cells: Number of cells required to define a chip select address
+ 	on the ADI-SPI bus. Should be set to 1.
+ - #size-cells: Size of cells required to define a chip select address size
+ 	on the ADI-SPI bus. Should be set to 0.
  
+ Optional properties:
++- hwlocks: Reference to a phandle of a hwlock provider node.
++- hwlock-names: Reference to hwlock name strings defined in the same order
++	as the hwlocks, should be "adi".
+ - sprd,hw-channels: This is an array of channel values up to 49 channels.
+ 	The first value specifies the hardware channel id which is used to
+ 	transfer data triggered by hardware automatically, and the second
 -- 
 2.20.1

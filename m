@@ -1,65 +1,46 @@
-From: Boris Brezillon <boris.brezillon@collabora.com>
-Subject: Re: [RFC v1 0/3] *spi-mem: adding setup and callback function
-Date: Mon, 29 Jul 2019 17:28:59 +0200
-Message-ID: <20190729172859.4374a2ad@collabora.com>
-References: <20190729142504.188336-1-tmaimon77@gmail.com>
+From: Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH 3/3][V4] dt-bindings: iio: imu: add bindings for ADIS16460
+Date: Mon, 29 Jul 2019 17:24:40 -0600
+Message-ID: <CAL_JsqLXTnrtCr4hVVc9HrOkkvwGWk02EibdutfUBm4JDnJO5Q@mail.gmail.com>
+References: <20190723073641.27801-1-alexandru.ardelean@analog.com>
+ <20190723073641.27801-4-alexandru.ardelean@analog.com> <20190727195623.42c8b4f3@archlinux>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: broonie@kernel.org, dwmw2@infradead.org,
-        computersforpeace@gmail.com, marek.vasut@gmail.com,
-        miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
-        bbrezillon@kernel.org, yogeshnarayan.gaur@nxp.com,
-        tudor.ambarus@microchip.com, gregkh@linuxfoundation.org,
-        frieder.schrempf@exceet.de, tglx@linutronix.de,
-        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Tomer Maimon <tmaimon77@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        devicetree@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mark Brown <broonie@kernel.org>
+To: Jonathan Cameron <jic23@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190729142504.188336-1-tmaimon77@gmail.com>
+In-Reply-To: <20190727195623.42c8b4f3@archlinux>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Tomer,
+On Sat, Jul 27, 2019 at 12:56 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Tue, 23 Jul 2019 10:36:40 +0300
+> Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+>
+> > This change adds device-tree bindings for the ADIS16460.
+> >
+> > Reviewed-by: Rob Herring <robh@kernel.org>
+> > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+>
+> Really trivial, but convention (as driven by what git am -s does if nothing
+> else, is to add extra tags in chronological order.  So Rob would be after
+> you.  I tweaked it which I don't always remember to do.
 
-On Mon, 29 Jul 2019 17:25:01 +0300
-Tomer Maimon <tmaimon77@gmail.com> wrote:
+I'd argue it is in chronological order as the submitter added my tag
+and then sent it out. If you applied it and added my tag, then it
+would be after (but before yours).
 
-> Lately we have working on Flash interface unit (FIU) SPI driver that 
-> using spi-mem interface, Our FIU HW module support direct Flash Rd//Wr.
-> 
-> In our SOC (32 bit dual core ARM) we have 3 FIU's that using memory mapping as follow:
-> 
-> FIU0 - have 2 chip select and each one have 128MB memory mapping (total 256MB memory mapping)
-> FIU1 - have 4 chip select and each one have 128MB memory mapping (total 512MB memory mapping)
-> FIU2 - have 4 chip select and each one have 16MB memory mapping (total 32MB memory mapping)
-> 
-> Totally 800MB memory mapping.
-> 
-> When the FIU driver probe it don't know the size of each Flash that 
-> connected to the FIU, so the entire memory mapping is allocated for each FIU 
-> according the FIU device tree memory map parameters.
+> It's not consistent across the kernel but I'll fight for my little corner
+> to be :)
 
-Do you need those mappings to be active to support simple reg accesses?
+More consistency would be nice then there's less tribal knowledge
+about maintainers for submitters to learn.
 
-> It means, if we enable all three FIU's the drivers will try to allocate totally 800MB.
-> 
-> In 32bit system it is problematic because the kernel have only 1GB 
-> of memory allocation so the vmalloc cannot take 800MB.
-> 
-> When implementing the FIU driver in the mtd/spi-nor we allocating memory address only 
-> for detected Flash with exact size (usually we are not using 128MB Flash), and in that case usually we allocating much less memory.
-> 
-> To solve this issue we needed to overcome two things:
-> 
-> 1.	Get argument from the upper layer (spi-mem layer) 
-> 2.	Calling the get argument function after SPI_NOR_SCAN function. (the MTD Flash size filled in  SPI_NOR_SCAN function)
-
-That's clearly breaking the layering we've tried to restore with the
-spi-nor/spi-mem split, and I don't see why this is needed since we now
-have a way to create direct mappings dynamically (with the dirmap API).
-Have you tried implementing the dirmap hooks in your driver?
-
-Regards,
-
-Boris
+Rob

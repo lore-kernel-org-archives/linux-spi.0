@@ -1,46 +1,76 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [RFC PATCH] spi: tle620x: remove stale driver
-Date: Mon, 29 Jul 2019 11:51:25 +0100
-Message-ID: <20190729105125.GA4787@sirena.org.uk>
-References: <20190728161304.32022-1-yamada.masahiro@socionext.com>
+From: Tomer Maimon <tmaimon77@gmail.com>
+Subject: [RFC v1 2/3] spi: spi-mem: add callback function to spi-mem device
+Date: Mon, 29 Jul 2019 17:25:03 +0300
+Message-ID: <20190729142504.188336-3-tmaimon77@gmail.com>
+References: <20190729142504.188336-1-tmaimon77@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="zhXaljGHf11kAtnf"
-Cc: linux-spi@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Ben Dooks <ben.dooks@codethink.co.uk>,
-        Russell King <linux@armlinux.org.uk>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-To: Masahiro Yamada <yamada.masahiro@socionext.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20190728161304.32022-1-yamada.masahiro@socionext.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Tomer Maimon <tmaimon77@gmail.com>, linux-spi@vger.kernel.org
+To: broonie@kernel.org, dwmw2@infradead.org, computersforpeace@gmail.com,
+ marek.vasut@gmail.com, miquel.raynal@bootlin.com, richard@nod.at,
+ vigneshr@ti.com, bbrezillon@kernel.org, yogeshnarayan.gaur@nxp.com,
+ tudor.ambarus@microchip.com, gregkh@linuxfoundation.org,
+ frieder.schrempf@exceet.de, tglx@linutronix.de
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20190729142504.188336-1-tmaimon77@gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+Add callback function support to the spi-mem device
+for passing an argument from the spi-mem layer
+to the spi layer.
 
---zhXaljGHf11kAtnf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
+---
+ include/linux/spi/spi-mem.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-On Mon, Jul 29, 2019 at 01:13:04AM +0900, Masahiro Yamada wrote:
-> This driver seems obsolte because this driver needs platform data
-> but no one in upstream passes it.
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index 5f7d20bd2b09..b9841a9030be 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -13,6 +13,8 @@
+ 
+ #include <linux/spi/spi.h>
+ 
++typedef size_t (*spi_mem_callback)(void *spi_mem_param);
++
+ #define SPI_MEM_OP_CMD(__opcode, __buswidth)			\
+ 	{							\
+ 		.buswidth = __buswidth,				\
+@@ -172,6 +174,9 @@ struct spi_mem_dirmap_desc {
+  * @spi: the underlying SPI device
+  * @drvpriv: spi_mem_driver private data
+  * @name: name of the SPI memory device
++ * @callback: routine for passing an argument from the
++ *            spi-mem layer to the spi layer.
++ * @callback_param: general parameter to pass to the callback routine
+  *
+  * Extra information that describe the SPI memory device and may be needed by
+  * the controller to properly handle this device should be placed here.
+@@ -183,6 +188,8 @@ struct spi_mem {
+ 	struct spi_device *spi;
+ 	void *drvpriv;
+ 	const char *name;
++	spi_mem_callback callback;
++	void *callback_param;
+ };
+ 
+ /**
+-- 
+2.18.0
 
-I've not noticed this driver getting in the way of anything?
 
---zhXaljGHf11kAtnf
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl0+z6wACgkQJNaLcl1U
-h9A8iQf/WUaWbus2/y56hSB5wgIdbmnLdlQKFIbOiLlLCvTHg1+B16u4ggqtmNNy
-i/LxhIXJHljhPSB5UqNvqGbUUfJPqlC6EjP/VH9Se25srhYgCzNetng4TSJgUhf6
-mPx38/UCRMss9iggUIlCcZlwum4olpdkChGQCKbRpJYiJEmAT4/iiNdRbOhNVGor
-w75RTowSMbKKwzSw/vcrpZiyH+XV2xoRGiDRAR2yltKK84yEEvRd8LsiZnYtKm/f
-oEVeTbr2aM5P0EmyoTUN6waKMEHyUKDfiYI8fPqh+YIqEUM1cGor0tRyQUFah9G/
-+M/W7SX1YG7bE4+hsWQjfNpfkAxf4Q==
-=+NF+
------END PGP SIGNATURE-----
-
---zhXaljGHf11kAtnf--
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

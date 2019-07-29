@@ -1,7 +1,8 @@
 From: Tomer Maimon <tmaimon77@gmail.com>
-Subject: [RFC v1 0/3] *spi-mem: adding setup and callback function
-Date: Mon, 29 Jul 2019 17:25:01 +0300
-Message-ID: <20190729142504.188336-1-tmaimon77@gmail.com>
+Subject: [RFC v1 3/3] mtd: m25p80: add get Flash size callback support
+Date: Mon, 29 Jul 2019 17:25:04 +0300
+Message-ID: <20190729142504.188336-4-tmaimon77@gmail.com>
+References: <20190729142504.188336-1-tmaimon77@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -13,6 +14,7 @@ To: broonie@kernel.org, dwmw2@infradead.org, computersforpeace@gmail.com,
  tudor.ambarus@microchip.com, gregkh@linuxfoundation.org,
  frieder.schrempf@exceet.de, tglx@linutronix.de
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20190729142504.188336-1-tmaimon77@gmail.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -24,58 +26,47 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Lately we have working on Flash interface unit (FIU) SPI driver that 
-using spi-mem interface, Our FIU HW module support direct Flash Rd//Wr.
+Add get Flash size function support for
+passing Flash size through callback use
+to the spi layer.
 
-In our SOC (32 bit dual core ARM) we have 3 FIU's that using memory mapping as follow:
+Add get Flash size function support
 
-FIU0 - have 2 chip select and each one have 128MB memory mapping (total 256MB memory mapping)
-FIU1 - have 4 chip select and each one have 128MB memory mapping (total 512MB memory mapping)
-FIU2 - have 4 chip select and each one have 16MB memory mapping (total 32MB memory mapping)
-
-Totally 800MB memory mapping.
-
-When the FIU driver probe it don't know the size of each Flash that 
-connected to the FIU, so the entire memory mapping is allocated for each FIU 
-according the FIU device tree memory map parameters.
-It means, if we enable all three FIU's the drivers will try to allocate totally 800MB.
-
-In 32bit system it is problematic because the kernel have only 1GB 
-of memory allocation so the vmalloc cannot take 800MB.
-
-When implementing the FIU driver in the mtd/spi-nor we allocating memory address only 
-for detected Flash with exact size (usually we are not using 128MB Flash), and in that case usually we allocating much less memory.
-
-To solve this issue we needed to overcome two things:
-
-1.	Get argument from the upper layer (spi-mem layer) 
-2.	Calling the get argument function after SPI_NOR_SCAN function. (the MTD Flash size filled in  SPI_NOR_SCAN function)
-
-The attach patch set solving the describe issue by:
-
-1.	Add spi-mem callback function and value to the SPI device 
-	for passing an argument from the spi-mem layer to the spi layer
-2.	Add spi-mem setup function to the spi-memory operation that running 
-	after the spi-mem probe finished.
-3.	Implement function callback in the m25p80 driver that execute 
-	get Flash size.
-
-The patch set tested on NPCM750 EVB with FIU driver (implemented with SPI-MEM interface).
-
-Thanks for your attention.
-
-Tomer
-
-Tomer Maimon (3):
-  spi: spi-mem: add spi-mem setup function
-  spi: spi-mem: add callback function to spi-mem device
-  mtd: m25p80: add get Flash size callback support
-
+Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
+---
  drivers/mtd/devices/m25p80.c | 12 ++++++++++++
- drivers/spi/spi-mem.c        | 27 ++++++++++++++++++++++++++-
- include/linux/spi/spi-mem.h  | 11 +++++++++++
- 3 files changed, 49 insertions(+), 1 deletion(-)
+ 1 file changed, 12 insertions(+)
 
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index c50888670250..fd14c8c6d8d8 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -151,6 +151,15 @@ static ssize_t m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
+ 	return len;
+ }
+ 
++/* Sending Flash size thourgh callback function to spi layer */
++size_t	m25p80_get_flash_size(void *param)
++{
++	struct spi_mem *spimem = param;
++	struct m25p *flash = spi_mem_get_drvdata(spimem);
++
++	return (u32)(flash->spi_nor.mtd.size >> 10) * 1024;
++}
++
+ /*
+  * board specific setup should have ensured the SPI clock used here
+  * matches what the READ command supports, at least until this driver
+@@ -188,6 +197,9 @@ static int m25p_probe(struct spi_mem *spimem)
+ 	spi_nor_set_flash_node(nor, spi->dev.of_node);
+ 	nor->priv = flash;
+ 
++	spimem->callback = m25p80_get_flash_size;
++	spimem->callback_param = spimem;
++
+ 	spi_mem_set_drvdata(spimem, flash);
+ 	flash->spimem = spimem;
+ 
 -- 
 2.18.0
 

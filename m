@@ -1,7 +1,7 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+From: Vignesh Raghavendra <vigneshr@ti.com>
 Subject: Re: [RFC v1 0/3] *spi-mem: adding setup and callback function
-Date: Tue, 30 Jul 2019 19:53:49 +0300
-Message-ID: <2272f934-df83-bd6d-2aee-ac2d93799092@cogentembedded.com>
+Date: Tue, 30 Jul 2019 23:18:25 +0530
+Message-ID: <d8adef3f-e901-2e25-6183-35cb1e53bcda@ti.com>
 References: <20190729142504.188336-1-tmaimon77@gmail.com>
  <20190729172859.4374a2ad@collabora.com>
  <CAP6Zq1iPXDX_Gtz6ZWYm3JoHgHjdapotVLGw-Lq4tc2X-6eAug@mail.gmail.com>
@@ -9,14 +9,15 @@ References: <20190729142504.188336-1-tmaimon77@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: bbrezillon@kernel.org, richard@nod.at, tudor.ambarus@microchip.com,
+Cc: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>, bbrezillon@kernel.org,
+ richard@nod.at, tudor.ambarus@microchip.com,
  Schrempf Frieder <frieder.schrempf@kontron.de>, linux-spi@vger.kernel.org,
  broonie@kernel.org, linux-mtd@lists.infradead.org, miquel.raynal@bootlin.com
-To: Boris Brezillon <boris.brezillon@collabora.com>,
- Tomer Maimon <tmaimon77@gmail.com>, vigneshr@ti.com
+To: Boris Brezillon <boris.brezillon@collabora.com>, Tomer Maimon
+ <tmaimon77@gmail.com>
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
 In-Reply-To: <20190730085438.6fe0480b@collabora.com>
-Content-Language: en-MW
+Content-Language: en-US
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -28,13 +29,12 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On 07/30/2019 09:54 AM, Boris Brezillon wrote:
 
+
+On 30-Jul-19 12:24 PM, Boris Brezillon wrote:
 > Trimmed the recipient list a bit and used Frieder's new address.
 > +Sergey
-
-  TY. :-)
-
+> 
 > On Mon, 29 Jul 2019 23:55:05 +0300
 > Tomer Maimon <tmaimon77@gmail.com> wrote:
 > 
@@ -101,21 +101,17 @@ On 07/30/2019 09:54 AM, Boris Brezillon wrote:
 >> seems it needed to implemented in the m25p80 driver as well, am I correct?
 > 
 > There's this patch [1] floating around. IIRC, Sergey was waiting for
-> the m25p80 -> spi-nor merge to send a v5.
-
-   No, not really waiting for it. I was asked to recast the patch using
-the managed device APIs, and I got sucked into my HyperFlash driver and
-dropped the ball...
-
-> Vignesh, any updates on that
+> the m25p80 -> spi-nor merge to send a v5. Vignesh, any updates on that
 > one? If you don't have time to work on that, maybe Sergey could send a
 > v5.
+> 
 
-   I can try recasting it RSN, if it's blocking some other stuff...
+I did send an updated series of merging m25p80 to spi-nor last week and
+have received few comments. Will respin one more version this week
+(mostly by tomorrow).
 
-> [1]https://www.spinics.net/lists/linux-mtd/msg07358.html
-
-MBR, Sergei
+Regards
+Vignesh
 
 ______________________________________________________
 Linux MTD discussion mailing list

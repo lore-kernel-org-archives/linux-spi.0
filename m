@@ -1,106 +1,90 @@
-From: Boris Brezillon <boris.brezillon@collabora.com>
-Subject: Re: [RFC v1 0/3] *spi-mem: adding setup and callback function
-Date: Tue, 30 Jul 2019 08:54:38 +0200
-Message-ID: <20190730085438.6fe0480b@collabora.com>
-References: <20190729142504.188336-1-tmaimon77@gmail.com>
- <20190729172859.4374a2ad@collabora.com>
- <CAP6Zq1iPXDX_Gtz6ZWYm3JoHgHjdapotVLGw-Lq4tc2X-6eAug@mail.gmail.com>
+From: Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v3 2/7] drivers: Introduce device lookup variants by
+ of_node
+Date: Tue, 30 Jul 2019 13:03:15 +0200
+Message-ID: <20190730110315.GA31631@kroah.com>
+References: <20190723221838.12024-1-suzuki.poulose@arm.com>
+ <20190723221838.12024-3-suzuki.poulose@arm.com>
+ <20190725135402.GL23883@dell>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>, bbrezillon@kernel.org,
- richard@nod.at, tudor.ambarus@microchip.com,
- Schrempf Frieder <frieder.schrempf@kontron.de>, linux-spi@vger.kernel.org,
- broonie@kernel.org, linux-mtd@lists.infradead.org, miquel.raynal@bootlin.com
-To: Tomer Maimon <tmaimon77@gmail.com>, vigneshr@ti.com
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <CAP6Zq1iPXDX_Gtz6ZWYm3JoHgHjdapotVLGw-Lq4tc2X-6eAug@mail.gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Andrew Lunn <andrew@lunn.ch>, Thor Thayer <thor.thayer@linux.intel.com>,
+ rafael@kernel.org, Maxime Ripard <maxime.ripard@bootlin.com>,
+ linux-fpga@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ Liam Girdwood <lgirdwood@gmail.com>, "David S. Miller" <davem@davemloft.net>,
+ Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+ linux-i2c@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>,
+ Florian Fainelli <f.fainelli@gmail.com>, linux-rockchip@lists.infradead.org,
+ Wolfram Sang <wsa@the-dreams.de>, David Airlie <airlied@linux.ie>,
+ Jiri Slaby <jslaby@suse.com>, devicetree@vger.kernel.org,
+ Alan Tull <atull@kernel.org>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Rob Herring <robh+dt@kernel.org>, Moritz Fischer <mdf@kernel.org>,
+ Takashi Iwai <tiwai@suse.com>, linux-arm-kernel@lists.infradead.org,
+ Mathieu Poirier <mathieu.poirier@linaro.org>, linux-kernel@vger.kernel.org,
+ li
+To: Lee Jones <lee.jones@linaro.org>
+Return-path: <dri-devel-bounces@lists.freedesktop.org>
+Content-Disposition: inline
+In-Reply-To: <20190725135402.GL23883@dell>
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
+List-Post: <mailto:dri-devel@lists.freedesktop.org>
+List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: dri-devel-bounces@lists.freedesktop.org
+Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
 List-Id: linux-spi.vger.kernel.org
 
-Trimmed the recipient list a bit and used Frieder's new address.
-+Sergey
-
-On Mon, 29 Jul 2019 23:55:05 +0300
-Tomer Maimon <tmaimon77@gmail.com> wrote:
-
-> Hi Boris,
-> 
-> Thanks for the prompt reply,
-> 
-> 
-> 
-> On Mon, 29 Jul 2019 at 18:29, Boris Brezillon <boris.brezillon@collabora.com>
-> wrote:
-> 
-> > Hi Tomer,
-> >
-> > On Mon, 29 Jul 2019 17:25:01 +0300
-> > Tomer Maimon <tmaimon77@gmail.com> wrote:
-> >  
-> > > Lately we have working on Flash interface unit (FIU) SPI driver that
-> > > using spi-mem interface, Our FIU HW module support direct Flash Rd//Wr.
-> > >
-> > > In our SOC (32 bit dual core ARM) we have 3 FIU's that using memory  
-> > mapping as follow:  
-> > >
-> > > FIU0 - have 2 chip select and each one have 128MB memory mapping (total  
-> > 256MB memory mapping)  
-> > > FIU1 - have 4 chip select and each one have 128MB memory mapping (total  
-> > 512MB memory mapping)  
-> > > FIU2 - have 4 chip select and each one have 16MB memory mapping (total  
-> > 32MB memory mapping)  
-> > >
-> > > Totally 800MB memory mapping.
-> > >
-> > > When the FIU driver probe it don't know the size of each Flash that
-> > > connected to the FIU, so the entire memory mapping is allocated for each  
-> > FIU  
-> > > according the FIU device tree memory map parameters.  
-> >
-> > Do you need those mappings to be active to support simple reg accesses?
-> >  
-> > > It means, if we enable all three FIU's the drivers will try to allocate  
-> > totally 800MB.  
-> > >
-> > > In 32bit system it is problematic because the kernel have only 1GB
-> > > of memory allocation so the vmalloc cannot take 800MB.
-> > >
-> > > When implementing the FIU driver in the mtd/spi-nor we allocating memory  
-> > address only  
-> > > for detected Flash with exact size (usually we are not using 128MB  
-> > Flash), and in that case usually we allocating much less memory.  
-> > >
-> > > To solve this issue we needed to overcome two things:
-> > >
-> > > 1.    Get argument from the upper layer (spi-mem layer)
-> > > 2.    Calling the get argument function after SPI_NOR_SCAN function.  
-> > (the MTD Flash size filled in  SPI_NOR_SCAN function)
-> >
-> > That's clearly breaking the layering we've tried to restore with the
-> > spi-nor/spi-mem split, and I don't see why this is needed since we now
-> > have a way to create direct mappings dynamically (with the dirmap API).
-> > Have you tried implementing the dirmap hooks in your driver?  
-> 
-> 
->  Sorry but I wasn't familiar with the direct mapping in the spi-mem, it
-> seems it needed to implemented in the m25p80 driver as well, am I correct?
-
-There's this patch [1] floating around. IIRC, Sergey was waiting for
-the m25p80 -> spi-nor merge to send a v5. Vignesh, any updates on that
-one? If you don't have time to work on that, maybe Sergey could send a
-v5.
-
-[1]https://www.spinics.net/lists/linux-mtd/msg07358.html
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+T24gVGh1LCBKdWwgMjUsIDIwMTkgYXQgMDI6NTQ6MDJQTSArMDEwMCwgTGVlIEpvbmVzIHdyb3Rl
+Ogo+IE9uIFR1ZSwgMjMgSnVsIDIwMTksIFN1enVraSBLIFBvdWxvc2Ugd3JvdGU6Cj4gCj4gPiBJ
+bnRyb2R1Y2Ugd3JhcHBlcnMgZm9yIHtidXMvZHJpdmVyL2NsYXNzfV9maW5kX2RldmljZSgpIHRv
+Cj4gPiBsb2NhdGUgZGV2aWNlcyBieSBpdHMgb2Zfbm9kZS4KPiA+IAo+ID4gQ2M6IE1hYXJ0ZW4g
+TGFua2hvcnN0IDxtYWFydGVuLmxhbmtob3JzdEBsaW51eC5pbnRlbC5jb20+Cj4gPiBDYzogTWF4
+aW1lIFJpcGFyZCA8bWF4aW1lLnJpcGFyZEBib290bGluLmNvbT4KPiA+IENjOiBkcmktZGV2ZWxA
+bGlzdHMuZnJlZWRlc2t0b3Aub3JnCj4gPiBDYzogRGF2aWQgQWlybGllIDxhaXJsaWVkQGxpbnV4
+LmllPgo+ID4gQ2M6IERhbmllbCBWZXR0ZXIgPGRhbmllbEBmZndsbC5jaD4KPiA+IENjOiBkZXZp
+Y2V0cmVlQHZnZXIua2VybmVsLm9yZwo+ID4gQ2M6IEZsb3JpYW4gRmFpbmVsbGkgPGYuZmFpbmVs
+bGlAZ21haWwuY29tPgo+ID4gQ2M6IEZyYW5rIFJvd2FuZCA8ZnJvd2FuZC5saXN0QGdtYWlsLmNv
+bT4KPiA+IENjOiBIZWlrbyBTdHVlYm5lciA8aGVpa29Ac250ZWNoLmRlPgo+ID4gQ2M6IExpYW0g
+R2lyZHdvb2QgPGxnaXJkd29vZEBnbWFpbC5jb20+Cj4gPiBDYzogbGludXgtaTJjQHZnZXIua2Vy
+bmVsLm9yZwo+ID4gQ2M6IGxpbnV4LXJvY2tjaGlwQGxpc3RzLmluZnJhZGVhZC5vcmcKPiA+IENj
+OiBsaW51eC1zcGlAdmdlci5rZXJuZWwub3JnCj4gPiBDYzogTWF0aGlldSBQb2lyaWVyIDxtYXRo
+aWV1LnBvaXJpZXJAbGluYXJvLm9yZz4KPiA+IENjOiBSb2IgSGVycmluZyA8cm9iaCtkdEBrZXJu
+ZWwub3JnPgo+ID4gQ2M6IFNyaW5pdmFzIEthbmRhZ2F0bGEgPHNyaW5pdmFzLmthbmRhZ2F0bGFA
+bGluYXJvLm9yZz4KPiA+IENjOiBUYWthc2hpIEl3YWkgPHRpd2FpQHN1c2UuY29tPgo+ID4gQ2M6
+IFdvbGZyYW0gU2FuZyA8d3NhQHRoZS1kcmVhbXMuZGU+Cj4gPiBDYzogQWxhbiBUdWxsIDxhdHVs
+bEBrZXJuZWwub3JnPgo+ID4gQ2M6IE1vcml0eiBGaXNjaGVyIDxtZGZAa2VybmVsLm9yZz4KPiA+
+IENjOiBsaW51eC1mcGdhQHZnZXIua2VybmVsLm9yZwo+ID4gQ2M6IFBldGVyIFJvc2luIDxwZWRh
+QGF4ZW50aWEuc2U+Cj4gPiBDYzogTWFyayBCcm93biA8YnJvb25pZUBrZXJuZWwub3JnPgo+ID4g
+Q2M6IEZsb3JpYW4gRmFpbmVsbGkgPGYuZmFpbmVsbGlAZ21haWwuY29tPgo+ID4gQ2M6IEhlaW5l
+ciBLYWxsd2VpdCA8aGthbGx3ZWl0MUBnbWFpbC5jb20+Cj4gPiBDYzogIkRhdmlkIFMuIE1pbGxl
+ciIgPGRhdmVtQGRhdmVtbG9mdC5uZXQ+Cj4gPiBDYzogQW5kcmV3IEx1bm4gPGFuZHJld0BsdW5u
+LmNoPgo+ID4gQ2M6IExpYW0gR2lyZHdvb2QgPGxnaXJkd29vZEBnbWFpbC5jb20+Cj4gPiBDYzog
+R3JlZyBLcm9haC1IYXJ0bWFuIDxncmVna2hAbGludXhmb3VuZGF0aW9uLm9yZz4KPiA+IENjOiAi
+UmFmYWVsIEouIFd5c29ja2kiIDxyYWZhZWxAa2VybmVsLm9yZz4KPiA+IENjOiBMZWUgSm9uZXMg
+PGxlZS5qb25lc0BsaW5hcm8ub3JnPgo+ID4gQ2M6IFRob3IgVGhheWVyIDx0aG9yLnRoYXllckBs
+aW51eC5pbnRlbC5jb20+Cj4gPiBDYzogSmlyaSBTbGFieSA8anNsYWJ5QHN1c2UuY29tPgo+ID4g
+Q2M6IE1hcmsgQnJvd24gPGJyb29uaWVAa2VybmVsLm9yZz4KPiA+IENjOiBBbmRyZXcgTHVubiA8
+YW5kcmV3QGx1bm4uY2g+Cj4gPiBDYzogUGV0ZXIgUm9zaW4gPHBlZGFAYXhlbnRpYS5zZT4KPiA+
+IFNpZ25lZC1vZmYtYnk6IFN1enVraSBLIFBvdWxvc2UgPHN1enVraS5wb3Vsb3NlQGFybS5jb20+
+Cj4gPiAtLS0KPiA+ICAtIERyb3BwZWQgdGhlIHJldmlld2VkLWJ5IHRhZ3MgZnJvbSBUaG9yLCBN
+YXJrLCBBbmRyZXcgYW5kIFBldGVyIGFzIHRoZQo+ID4gICAgcGF0Y2hlcyBhcmUgbWVyZWdlZCwg
+dGhvdWdoIHRoZXJlIGFyZSBubyBmdW5jdGlvbmFsIGNoYW5nZXMuCj4gPiAtLS0KPiA+ICBkcml2
+ZXJzL2FtYmEvdGVncmEtYWhiLmMgICAgICAgICAgICAgIHwgMTEgKy0tLS0tLS0KPiA+ICBkcml2
+ZXJzL2ZwZ2EvZnBnYS1icmlkZ2UuYyAgICAgICAgICAgIHwgIDggKy0tLS0tCj4gPiAgZHJpdmVy
+cy9mcGdhL2ZwZ2EtbWdyLmMgICAgICAgICAgICAgICB8ICA4ICstLS0tLQo+ID4gIGRyaXZlcnMv
+Z3B1L2RybS9kcm1fbWlwaV9kc2kuYyAgICAgICAgfCAgNyArLS0tLQo+ID4gIGRyaXZlcnMvaTJj
+L2kyYy1jb3JlLW9mLmMgICAgICAgICAgICAgfCAgNyArLS0tLQo+ID4gIGRyaXZlcnMvbWZkL2Fs
+dGVyYS1zeXNtZ3IuYyAgICAgICAgICAgfCAxNCArKy0tLS0tLS0tCj4gCj4gRm9yIG15IG93biBy
+ZWZlcmVuY2U6Cj4gICBBY2tlZC1mb3ItTUZELWJ5OiBMZWUgSm9uZXMgPGxlZS5qb25lc0BsaW5h
+cm8ub3JnPgo+IAo+IFdoYXQncyB0aGUgbWVyZ2UgcGxhbiBmb3IgdGhpcyBwYXRjaD8KPiAKPiBJ
+cyBhbnlvbmUgcHJlcGFyZWQgdG8gY3JlYXRlIGFuIGltbXV0YWJsZSBicmFuY2ggZm9yIHVzIHRv
+IHB1bGwgZnJvbT8KPiBJJ20gaGFwcHkgdG8gZG8gaXQgaWYgbm8gb25lIGVsc2Ugc3RlcHMgdXAu
+CgpJJ2xsIHRha2UgaXQsIGFuZCBjcmVhdGUgYSBicmFuY2ggZm9yIGV2ZXJ5b25lIHRvIHB1bGwg
+ZnJvbS4KCnRoYW5rcywKCmdyZWcgay1oCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCmRyaS1kZXZlbCBtYWlsaW5nIGxpc3QKZHJpLWRldmVsQGxpc3RzLmZy
+ZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3Rp
+bmZvL2RyaS1kZXZlbA==

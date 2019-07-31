@@ -1,57 +1,139 @@
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] spi: core: Use DEVICE_ATTR_RW() for SPI slave control sysfs attribute
-Date: Wed, 31 Jul 2019 14:47:38 +0200
-Message-ID: <20190731124738.14519-1-geert+renesas@glider.be>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-To: Mark Brown <broonie@kernel.org>
+From: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Subject: [PATCH 0/6] ReST conversion patches not applied yet
+Date: Wed, 31 Jul 2019 17:08:47 -0300
+Message-ID: <cover.1564603513.git.mchehab+samsung@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Cc: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@infradead.org>,
+        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        samba-technical@lists.samba.org, Mark Brown <broonie@kernel.org>,
+        devicetree@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>,
+        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Evgeniy Dushistov <dushistov@mail.ru>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Steve French <sfrench@samba.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        linux-cifs@vger.kernel.org, Dave Kleikamp <shaggy@kernel.org>,
+        Mark Rutland <mark.rutland@arm.c
+To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Convert the SPI slave control sysfs attribute from DEVICE_ATTR() to
-DEVICE_ATTR_RW(), to reduce boilerplate.
+Hi Jon,
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
- drivers/spi/spi.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+As promised, this is the rebased version of the patches that were not applied
+from the /26 patch series because you had merge conflicts.
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 75ac046cae5267b7..9fd7926e80c07681 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2105,8 +2105,8 @@ static int match_true(struct device *dev, void *data)
- 	return 1;
- }
- 
--static ssize_t spi_slave_show(struct device *dev,
--			      struct device_attribute *attr, char *buf)
-+static ssize_t slave_show(struct device *dev, struct device_attribute *attr,
-+			  char *buf)
- {
- 	struct spi_controller *ctlr = container_of(dev, struct spi_controller,
- 						   dev);
-@@ -2117,9 +2117,8 @@ static ssize_t spi_slave_show(struct device *dev,
- 		       child ? to_spi_device(child)->modalias : NULL);
- }
- 
--static ssize_t spi_slave_store(struct device *dev,
--			       struct device_attribute *attr, const char *buf,
--			       size_t count)
-+static ssize_t slave_store(struct device *dev, struct device_attribute *attr,
-+			   const char *buf, size_t count)
- {
- 	struct spi_controller *ctlr = container_of(dev, struct spi_controller,
- 						   dev);
-@@ -2157,7 +2156,7 @@ static ssize_t spi_slave_store(struct device *dev,
- 	return count;
- }
- 
--static DEVICE_ATTR(slave, 0644, spi_slave_show, spi_slave_store);
-+static DEVICE_ATTR_RW(slave);
- 
- static struct attribute *spi_slave_attrs[] = {
- 	&dev_attr_slave.attr,
+They're all based on your docs-next branch, so should apply fine.
+
+The first one fixes all but one error with a broken reference.
+
+The only broken reference right now is due to a DT patch with was not
+accepted (no idea why), but whose driver is upstream.
+
+
+Mauro Carvalho Chehab (6):
+  docs: fix a couple of new broken references
+  docs: writing-schema.md: convert from markdown to ReST
+  spi: docs: convert to ReST and add it to the kABI bookset
+  docs: fs: cifs: convert to ReST and add to admin-guide book
+  docs: fs: convert porting to ReST
+  docs: w1: convert to ReST and add to the kAPI group of docs
+
+ Documentation/ABI/stable/sysfs-bus-w1         |   2 +-
+ .../ABI/stable/sysfs-driver-w1_ds28e04        |   4 +-
+ .../ABI/stable/sysfs-driver-w1_ds28ea00       |   2 +-
+ .../AUTHORS => admin-guide/cifs/authors.rst}  |  64 +-
+ .../CHANGES => admin-guide/cifs/changes.rst}  |   4 +
+ Documentation/admin-guide/cifs/index.rst      |  21 +
+ .../cifs/introduction.rst}                    |   8 +
+ .../cifs/TODO => admin-guide/cifs/todo.rst}   |  87 +--
+ .../README => admin-guide/cifs/usage.rst}     | 560 +++++++++++-------
+ .../cifs/winucase_convert.pl                  |   0
+ Documentation/admin-guide/index.rst           |   1 +
+ .../bindings/sound/sun8i-a33-codec.txt        |   2 +-
+ Documentation/devicetree/writing-schema.md    | 130 ----
+ Documentation/devicetree/writing-schema.rst   | 153 +++++
+ Documentation/filesystems/porting.rst         |   2 +-
+ Documentation/index.rst                       |   2 +
+ .../spi/{butterfly => butterfly.rst}          |  44 +-
+ Documentation/spi/index.rst                   |  22 +
+ Documentation/spi/{pxa2xx => pxa2xx.rst}      |  95 +--
+ .../spi/{spi-lm70llp => spi-lm70llp.rst}      |  17 +-
+ .../spi/{spi-sc18is602 => spi-sc18is602.rst}  |   3 +
+ .../spi/{spi-summary => spi-summary.rst}      | 105 ++--
+ Documentation/spi/{spidev => spidev.rst}      |  30 +-
+ Documentation/w1/index.rst                    |  21 +
+ .../w1/masters/{ds2482 => ds2482.rst}         |  16 +-
+ .../w1/masters/{ds2490 => ds2490.rst}         |   6 +-
+ Documentation/w1/masters/index.rst            |  14 +
+ Documentation/w1/masters/mxc-w1               |  12 -
+ Documentation/w1/masters/mxc-w1.rst           |  17 +
+ .../w1/masters/{omap-hdq => omap-hdq.rst}     |  12 +-
+ .../w1/masters/{w1-gpio => w1-gpio.rst}       |  21 +-
+ Documentation/w1/slaves/index.rst             |  16 +
+ .../w1/slaves/{w1_ds2406 => w1_ds2406.rst}    |   4 +-
+ .../w1/slaves/{w1_ds2413 => w1_ds2413.rst}    |   9 +
+ Documentation/w1/slaves/w1_ds2423             |  47 --
+ Documentation/w1/slaves/w1_ds2423.rst         |  54 ++
+ .../w1/slaves/{w1_ds2438 => w1_ds2438.rst}    |  10 +-
+ .../w1/slaves/{w1_ds28e04 => w1_ds28e04.rst}  |   5 +
+ .../w1/slaves/{w1_ds28e17 => w1_ds28e17.rst}  |  16 +-
+ .../w1/slaves/{w1_therm => w1_therm.rst}      |  11 +-
+ .../w1/{w1.generic => w1-generic.rst}         |  88 +--
+ .../w1/{w1.netlink => w1-netlink.rst}         |  89 +--
+ MAINTAINERS                                   |   6 +-
+ drivers/hwtracing/coresight/Kconfig           |   2 +-
+ drivers/iio/dummy/iio_simple_dummy.c          |   2 +-
+ drivers/spi/Kconfig                           |   2 +-
+ drivers/spi/spi-butterfly.c                   |   2 +-
+ drivers/spi/spi-lm70llp.c                     |   2 +-
+ fs/jfs/Kconfig                                |   2 +-
+ fs/ufs/Kconfig                                |   2 +-
+ include/linux/platform_data/sc18is602.h       |   2 +-
+ 51 files changed, 1126 insertions(+), 722 deletions(-)
+ rename Documentation/{filesystems/cifs/AUTHORS => admin-guide/cifs/authors.rst} (60%)
+ rename Documentation/{filesystems/cifs/CHANGES => admin-guide/cifs/changes.rst} (91%)
+ create mode 100644 Documentation/admin-guide/cifs/index.rst
+ rename Documentation/{filesystems/cifs/cifs.txt => admin-guide/cifs/introduction.rst} (98%)
+ rename Documentation/{filesystems/cifs/TODO => admin-guide/cifs/todo.rst} (58%)
+ rename Documentation/{filesystems/cifs/README => admin-guide/cifs/usage.rst} (72%)
+ rename Documentation/{filesystems => admin-guide}/cifs/winucase_convert.pl (100%)
+ delete mode 100644 Documentation/devicetree/writing-schema.md
+ create mode 100644 Documentation/devicetree/writing-schema.rst
+ rename Documentation/spi/{butterfly => butterfly.rst} (71%)
+ create mode 100644 Documentation/spi/index.rst
+ rename Documentation/spi/{pxa2xx => pxa2xx.rst} (83%)
+ rename Documentation/spi/{spi-lm70llp => spi-lm70llp.rst} (88%)
+ rename Documentation/spi/{spi-sc18is602 => spi-sc18is602.rst} (97%)
+ rename Documentation/spi/{spi-summary => spi-summary.rst} (93%)
+ rename Documentation/spi/{spidev => spidev.rst} (90%)
+ create mode 100644 Documentation/w1/index.rst
+ rename Documentation/w1/masters/{ds2482 => ds2482.rst} (71%)
+ rename Documentation/w1/masters/{ds2490 => ds2490.rst} (98%)
+ create mode 100644 Documentation/w1/masters/index.rst
+ delete mode 100644 Documentation/w1/masters/mxc-w1
+ create mode 100644 Documentation/w1/masters/mxc-w1.rst
+ rename Documentation/w1/masters/{omap-hdq => omap-hdq.rst} (90%)
+ rename Documentation/w1/masters/{w1-gpio => w1-gpio.rst} (75%)
+ create mode 100644 Documentation/w1/slaves/index.rst
+ rename Documentation/w1/slaves/{w1_ds2406 => w1_ds2406.rst} (96%)
+ rename Documentation/w1/slaves/{w1_ds2413 => w1_ds2413.rst} (81%)
+ delete mode 100644 Documentation/w1/slaves/w1_ds2423
+ create mode 100644 Documentation/w1/slaves/w1_ds2423.rst
+ rename Documentation/w1/slaves/{w1_ds2438 => w1_ds2438.rst} (93%)
+ rename Documentation/w1/slaves/{w1_ds28e04 => w1_ds28e04.rst} (93%)
+ rename Documentation/w1/slaves/{w1_ds28e17 => w1_ds28e17.rst} (88%)
+ rename Documentation/w1/slaves/{w1_therm => w1_therm.rst} (95%)
+ rename Documentation/w1/{w1.generic => w1-generic.rst} (59%)
+ rename Documentation/w1/{w1.netlink => w1-netlink.rst} (77%)
+
 -- 
-2.17.1
+2.21.0

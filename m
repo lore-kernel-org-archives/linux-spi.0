@@ -1,81 +1,57 @@
-From: Mason Yang <masonccyang@mxic.com.tw>
-Subject: [PATCH v16 2/2] dt-bindings: spi: Document Renesas R-Car Gen3 RPC-IF controller bindings
-Date: Wed, 31 Jul 2019 10:14:18 +0800
-Message-ID: <1564539258-16313-3-git-send-email-masonccyang@mxic.com.tw>
-References: <1564539258-16313-1-git-send-email-masonccyang@mxic.com.tw>
-Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
-        lee.jones@linaro.org, sergei.shtylyov@cogentembedded.com,
-        Mason Yang <masonccyang@mxic.com.tw>, marek.vasut@gmail.com,
-        miquel.raynal@bootlin.com
-To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        devicetree@vger.kernel.org
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH] spi: core: Use DEVICE_ATTR_RW() for SPI slave control sysfs attribute
+Date: Wed, 31 Jul 2019 14:47:38 +0200
+Message-ID: <20190731124738.14519-1-geert+renesas@glider.be>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1564539258-16313-1-git-send-email-masonccyang@mxic.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Document the bindings used by the Renesas R-Car Gen3 RPC-IF controller.
+Convert the SPI slave control sysfs attribute from DEVICE_ATTR() to
+DEVICE_ATTR_RW(), to reduce boilerplate.
 
-Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
-Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- .../devicetree/bindings/spi/spi-renesas-rpc.txt    | 45 ++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
+ drivers/spi/spi.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
-new file mode 100644
-index 0000000..d4344c9
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
-@@ -0,0 +1,45 @@
-+Renesas R-Car Gen3 RPC-IF controller Device Tree Bindings
-+---------------------------------------------------------
-+
-+Required properties:
-+- compatible: should be an SoC-specific compatible value, followed by
-+		"renesas,rcar-gen3-rpc" as a fallback.
-+		supported SoC-specific values are:
-+		"renesas,r8a77980-rpc"	(R-Car V3H)
-+		"renesas,r8a77995-rpc"	(R-Car D3)
-+- reg: should contain three register areas:
-+       first for the base address of RPC-IF registers,
-+       second for the direct mapping read mode and
-+       third for the write buffer area.
-+- reg-names: should contain "regs", "dirmap" and "wbuf"
-+- clocks: should contain the clock phandle/specifier pair for the module clock.
-+- clock-names: should contain "rpc"
-+- power-domains: should contain the power domain phandle/secifier pair.
-+- resets: should contain the reset controller phandle/specifier pair.
-+- #address-cells: should be 1
-+- #size-cells: should be 0
-+- flash: should be represented by a subnode of the RPC-IF node,
-+	 its "compatible" property contains "jedec,spi-nor" if SPI is used.
-+
-+Example:
-+
-+	rpc: spi@ee200000 {
-+		compatible = "renesas,r8a77995-rpc", "renesas,rcar-gen3-rpc";
-+		reg = <0 0xee200000 0 0x200>, <0 0x08000000 0 0x4000000>,
-+		      <0 0xee208000 0 0x100>;
-+		reg-names = "regs", "dirmap", "wbuf";
-+		clocks = <&cpg CPG_MOD 917>;
-+		clock-names = "rpc";
-+		power-domains = <&sysc R8A77995_PD_ALWAYS_ON>;
-+		resets = <&cpg 917>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		flash@0 {
-+			compatible = "jedec,spi-nor";
-+			reg = <0>;
-+			spi-max-frequency = <40000000>;
-+			spi-tx-bus-width = <4>;
-+			spi-rx-bus-width = <4>;
-+		};
-+	};
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 75ac046cae5267b7..9fd7926e80c07681 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2105,8 +2105,8 @@ static int match_true(struct device *dev, void *data)
+ 	return 1;
+ }
+ 
+-static ssize_t spi_slave_show(struct device *dev,
+-			      struct device_attribute *attr, char *buf)
++static ssize_t slave_show(struct device *dev, struct device_attribute *attr,
++			  char *buf)
+ {
+ 	struct spi_controller *ctlr = container_of(dev, struct spi_controller,
+ 						   dev);
+@@ -2117,9 +2117,8 @@ static ssize_t spi_slave_show(struct device *dev,
+ 		       child ? to_spi_device(child)->modalias : NULL);
+ }
+ 
+-static ssize_t spi_slave_store(struct device *dev,
+-			       struct device_attribute *attr, const char *buf,
+-			       size_t count)
++static ssize_t slave_store(struct device *dev, struct device_attribute *attr,
++			   const char *buf, size_t count)
+ {
+ 	struct spi_controller *ctlr = container_of(dev, struct spi_controller,
+ 						   dev);
+@@ -2157,7 +2156,7 @@ static ssize_t spi_slave_store(struct device *dev,
+ 	return count;
+ }
+ 
+-static DEVICE_ATTR(slave, 0644, spi_slave_show, spi_slave_store);
++static DEVICE_ATTR_RW(slave);
+ 
+ static struct attribute *spi_slave_attrs[] = {
+ 	&dev_attr_slave.attr,
 -- 
-1.9.1
+2.17.1

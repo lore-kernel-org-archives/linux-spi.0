@@ -1,60 +1,69 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 5/5] spi: Reduce kthread priority
-Date: Thu, 1 Aug 2019 13:35:03 +0100
-Message-ID: <20190801123503.GC5488@sirena.org.uk>
-References: <20190801111348.530242235@infradead.org>
- <20190801111541.917256884@infradead.org>
- <640721f8-8a20-b161-473f-98a9dbc053cc@collabora.com>
- <20190801121718.GE31381@hirez.programming.kicks-ass.net>
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+Subject: Re: [PATCH 3/3][V4] dt-bindings: iio: imu: add bindings for
+ ADIS16460
+Date: Thu, 1 Aug 2019 13:41:21 +0100
+Message-ID: <20190801134121.00003097@huawei.com>
+References: <20190723073641.27801-1-alexandru.ardelean@analog.com>
+        <20190723073641.27801-4-alexandru.ardelean@analog.com>
+        <20190727195623.42c8b4f3@archlinux>
+        <CAL_JsqLXTnrtCr4hVVc9HrOkkvwGWk02EibdutfUBm4JDnJO5Q@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="S1BNGpv0yoYahz37"
-Cc: Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        mingo@kernel.org, linux-kernel@vger.kernel.org,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>, linux-spi@vger.kernel.org,
-        Doug Anderson <dianders@google.com>
-To: Peter Zijlstra <peterz@infradead.org>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+Cc: Jonathan Cameron <jic23@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "Mark Brown" <broonie@kernel.org>
+To: Rob Herring <robh+dt@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20190801121718.GE31381@hirez.programming.kicks-ass.net>
+In-Reply-To: <CAL_JsqLXTnrtCr4hVVc9HrOkkvwGWk02EibdutfUBm4JDnJO5Q@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Mon, 29 Jul 2019 17:24:40 -0600
+Rob Herring <robh+dt@kernel.org> wrote:
 
---S1BNGpv0yoYahz37
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> On Sat, Jul 27, 2019 at 12:56 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > On Tue, 23 Jul 2019 10:36:40 +0300
+> > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
+> >  
+> > > This change adds device-tree bindings for the ADIS16460.
+> > >
+> > > Reviewed-by: Rob Herring <robh@kernel.org>
+> > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>  
+> >
+> > Really trivial, but convention (as driven by what git am -s does if nothing
+> > else, is to add extra tags in chronological order.  So Rob would be after
+> > you.  I tweaked it which I don't always remember to do.  
+> 
+> I'd argue it is in chronological order as the submitter added my tag
+> and then sent it out. If you applied it and added my tag, then it
+> would be after (but before yours).
 
-On Thu, Aug 01, 2019 at 02:17:18PM +0200, Peter Zijlstra wrote:
+Bike shedding to follow...
 
-> I'm thinking that isn't true 99% of the time, except of course when that
-> bandsaw emergency break is attached through SPI, but in that case the
-> admin can very well chrt the prio of this thread.
+Possibly but given you gave the Reviewed-by for v2, and it hasn't changed
+is Alex's the same Signed-off-by as seen on V2, or a new one reflecting the
+addition of your Reviewed-by? 
 
-The SPI thread isn't usually RT, it's only made RT if something in the
-system asks for it - the reason the ChromeOS people got CCed in is that
-some of their embedded controllers are very fragile and need super tight
-timing on some of the interactions over their control interface so
-they're one of the users here.  Of course everyone is then going to
-claim that their usage is the most critical usage in the system, and
-they may well even be right, but I do tend to agree that just any old RT
-priority is probably a sensible default since for most cases there will
-be few if any other RT tasks anyway.
+:)
 
---S1BNGpv0yoYahz37
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+> 
+> > It's not consistent across the kernel but I'll fight for my little corner
+> > to be :)  
+> 
+> More consistency would be nice then there's less tribal knowledge
+> about maintainers for submitters to learn.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1C3HYACgkQJNaLcl1U
-h9Alfwf6AugMBoXb++tNEYu9FBXmJsqiEoyD4n90hKDCTMRgF8sokxYAvUGTJzQQ
-iE0h+bYBl8vU2eJG4nCGRQZRRFmACX/amPXBY82xVOcBooUZ74g+igbRW35/nSuR
-vtE8DGr2jugTuTznssPMVCKYSYcvxvV3PRzdvx30phQCUtqtBlpEFWVHH0FtacEM
-UQPH01JiVA7QcE/ZqYXAR7Jsgfm7kNEMTAgaxvGUhYVVnHmWwZnioK8Ke/cE75SL
-Uwa38z692JzCAL0c5qepeOF2aXLAjt+F1IPFWGrAjgmjRjqjS4ZzZWTGAWMMPscP
-2Y/hPW2i7J6cvNkLxXborjsKCte3iw==
-=t0Pu
------END PGP SIGNATURE-----
+Agreed.
 
---S1BNGpv0yoYahz37--
+Jonathan
+
+> 
+> Rob

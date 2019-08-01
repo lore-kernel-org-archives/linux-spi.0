@@ -1,69 +1,94 @@
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-Subject: Re: [PATCH 3/3][V4] dt-bindings: iio: imu: add bindings for
- ADIS16460
-Date: Thu, 1 Aug 2019 13:41:21 +0100
-Message-ID: <20190801134121.00003097@huawei.com>
-References: <20190723073641.27801-1-alexandru.ardelean@analog.com>
-        <20190723073641.27801-4-alexandru.ardelean@analog.com>
-        <20190727195623.42c8b4f3@archlinux>
-        <CAL_JsqLXTnrtCr4hVVc9HrOkkvwGWk02EibdutfUBm4JDnJO5Q@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-Cc: Jonathan Cameron <jic23@kernel.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "Mark Brown" <broonie@kernel.org>
-To: Rob Herring <robh+dt@kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: core: Use DEVICE_ATTR_RW() for SPI slave control sysfs attribute" to the spi tree
+Date: Thu,  1 Aug 2019 14:10:55 +0100 (BST)
+Message-ID: <20190801131055.CB19E2742C48@ypsilon.sirena.org.uk>
+References: <20190731124738.14519-1-geert+renesas@glider.be>
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAL_JsqLXTnrtCr4hVVc9HrOkkvwGWk02EibdutfUBm4JDnJO5Q@mail.gmail.com>
+In-Reply-To: <20190731124738.14519-1-geert+renesas@glider.be>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 29 Jul 2019 17:24:40 -0600
-Rob Herring <robh+dt@kernel.org> wrote:
+The patch
 
-> On Sat, Jul 27, 2019 at 12:56 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > On Tue, 23 Jul 2019 10:36:40 +0300
-> > Alexandru Ardelean <alexandru.ardelean@analog.com> wrote:
-> >  
-> > > This change adds device-tree bindings for the ADIS16460.
-> > >
-> > > Reviewed-by: Rob Herring <robh@kernel.org>
-> > > Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>  
-> >
-> > Really trivial, but convention (as driven by what git am -s does if nothing
-> > else, is to add extra tags in chronological order.  So Rob would be after
-> > you.  I tweaked it which I don't always remember to do.  
-> 
-> I'd argue it is in chronological order as the submitter added my tag
-> and then sent it out. If you applied it and added my tag, then it
-> would be after (but before yours).
+   spi: core: Use DEVICE_ATTR_RW() for SPI slave control sysfs attribute
 
-Bike shedding to follow...
+has been applied to the spi tree at
 
-Possibly but given you gave the Reviewed-by for v2, and it hasn't changed
-is Alex's the same Signed-off-by as seen on V2, or a new one reflecting the
-addition of your Reviewed-by? 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.4
 
-:)
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> 
-> > It's not consistent across the kernel but I'll fight for my little corner
-> > to be :)  
-> 
-> More consistency would be nice then there's less tribal knowledge
-> about maintainers for submitters to learn.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-Agreed.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-Jonathan
+Thanks,
+Mark
 
-> 
-> Rob
+>From cc8b4659491d23577eb8992449d82c7f4f4fc170 Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Wed, 31 Jul 2019 14:47:38 +0200
+Subject: [PATCH] spi: core: Use DEVICE_ATTR_RW() for SPI slave control sysfs
+ attribute
+
+Convert the SPI slave control sysfs attribute from DEVICE_ATTR() to
+DEVICE_ATTR_RW(), to reduce boilerplate.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20190731124738.14519-1-geert+renesas@glider.be
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 75ac046cae52..9fd7926e80c0 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2105,8 +2105,8 @@ static int match_true(struct device *dev, void *data)
+ 	return 1;
+ }
+ 
+-static ssize_t spi_slave_show(struct device *dev,
+-			      struct device_attribute *attr, char *buf)
++static ssize_t slave_show(struct device *dev, struct device_attribute *attr,
++			  char *buf)
+ {
+ 	struct spi_controller *ctlr = container_of(dev, struct spi_controller,
+ 						   dev);
+@@ -2117,9 +2117,8 @@ static ssize_t spi_slave_show(struct device *dev,
+ 		       child ? to_spi_device(child)->modalias : NULL);
+ }
+ 
+-static ssize_t spi_slave_store(struct device *dev,
+-			       struct device_attribute *attr, const char *buf,
+-			       size_t count)
++static ssize_t slave_store(struct device *dev, struct device_attribute *attr,
++			   const char *buf, size_t count)
+ {
+ 	struct spi_controller *ctlr = container_of(dev, struct spi_controller,
+ 						   dev);
+@@ -2157,7 +2156,7 @@ static ssize_t spi_slave_store(struct device *dev,
+ 	return count;
+ }
+ 
+-static DEVICE_ATTR(slave, 0644, spi_slave_show, spi_slave_store);
++static DEVICE_ATTR_RW(slave);
+ 
+ static struct attribute *spi_slave_attrs[] = {
+ 	&dev_attr_slave.attr,
+-- 
+2.20.1

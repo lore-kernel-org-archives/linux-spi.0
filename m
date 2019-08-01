@@ -1,92 +1,44 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+From: Peter Zijlstra <peterz@infradead.org>
 Subject: Re: [PATCH 5/5] spi: Reduce kthread priority
-Date: Thu, 1 Aug 2019 14:16:58 +0200
-Message-ID: <CAMuHMdXvq4ZDecpaiFHmQbETP=Z0Y2QVHsWpfDGU2bgaDDOA0A@mail.gmail.com>
-References: <20190801111348.530242235@infradead.org> <20190801111541.917256884@infradead.org>
- <CAMuHMdU3D22PAWepGP6rMvDwJKVTfbxxH9J=kuo59PB7CCVKOA@mail.gmail.com> <20190801121209.GD31381@hirez.programming.kicks-ass.net>
+Date: Thu, 1 Aug 2019 14:17:18 +0200
+Message-ID: <20190801121718.GE31381@hirez.programming.kicks-ass.net>
+References: <20190801111348.530242235@infradead.org>
+ <20190801111541.917256884@infradead.org>
+ <640721f8-8a20-b161-473f-98a9dbc053cc@collabora.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Ingo Molnar <mingo@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Content-Type: text/plain; charset=us-ascii
+Cc: mingo@kernel.org, linux-kernel@vger.kernel.org,
         Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
         Guenter Roeck <groeck@chromium.org>,
-        Mark Brown <broonie@kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        Doug Anderson <dianders@google.com>
+To: Enric Balletbo i Serra <enric.balletbo@collabora.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190801121209.GD31381@hirez.programming.kicks-ass.net>
+Content-Disposition: inline
+In-Reply-To: <640721f8-8a20-b161-473f-98a9dbc053cc@collabora.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Peter,
+On Thu, Aug 01, 2019 at 01:27:04PM +0200, Enric Balletbo i Serra wrote:
+> 
+> cc'ing Doug as he might be really interested on this patch
+> 
+> On 1/8/19 13:13, Peter Zijlstra wrote:
+> > The SPI thingies request FIFO-99 by default, reduce this to FIFO-50.
+> > 
+> 
+> You say below that is not a suitable default but there is any other reason? Did
+> you observed problems with this?
 
-On Thu, Aug 1, 2019 at 2:12 PM Peter Zijlstra <peterz@infradead.org> wrote:
-> On Thu, Aug 01, 2019 at 01:27:03PM +0200, Geert Uytterhoeven wrote:
-> > On Thu, Aug 1, 2019 at 1:18 PM Peter Zijlstra <peterz@infradead.org> wrote:
-> > > The SPI thingies request FIFO-99 by default, reduce this to FIFO-50.
-> > >
-> > > FIFO-99 is the very highest priority available to SCHED_FIFO and
-> > > it not a suitable default; it would indicate the SPI work is the
-> > > most important work on the machine.
-> > >
-> > > Cc: Benson Leung <bleung@chromium.org>
-> > > Cc: Enric Balletbo i Serra <enric.balletbo@collabora.com>
-> > > Cc: Guenter Roeck <groeck@chromium.org>
-> > > Cc: Mark Brown <broonie@kernel.org>
-> > > Cc: linux-spi@vger.kernel.org
-> > > Cc: linux-kernel@vger.kernel.org
-> > > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > > ---
-> > >  drivers/platform/chrome/cros_ec_spi.c |    2 +-
-> > >  drivers/spi/spi.c                     |    2 +-
-> > >  2 files changed, 2 insertions(+), 2 deletions(-)
-> > >
-> > > --- a/drivers/platform/chrome/cros_ec_spi.c
-> > > +++ b/drivers/platform/chrome/cros_ec_spi.c
-> > > @@ -706,7 +706,7 @@ static int cros_ec_spi_devm_high_pri_all
-> > >                                            struct cros_ec_spi *ec_spi)
-> > >  {
-> > >         struct sched_param sched_priority = {
-> > > -               .sched_priority = MAX_RT_PRIO - 1,
-> > > +               .sched_priority = MAX_RT_PRIO / 2,
-> >
-> > include/linux/sched/prio.h says:
-> >
-> >  * Priority of a process goes from 0..MAX_PRIO-1, valid RT
-> >  * priority is 0..MAX_RT_PRIO-1, and SCHED_NORMAL/SCHED_BATCH
-> >  * tasks are in the range MAX_RT_PRIO..MAX_PRIO-1. Priority
-> >  * values are inverted: lower p->prio value means higher priority.
-> >
-> > So the new 50 is actually a higher priority than the old 99?
-> >
-> > Given I'm far from an RT expert, I must be missing something?
-> > Thanks!
->
-> Ah; you found the confusion ;-)
->
-> https://lkml.kernel.org/20190617122448.GA3436@hirez.programming.kicks-ass.net
+I didn't observe any problems with it personally. But imagine your
+device is used to control something critical, like something leathal,
+say a bandsaw. And just as you stick your hand through the laser
+guarding it, your SPI device chirps and preempts the task that was about
+to pull the emergency break and save your hand.
 
-/me adds /r after org/
-Thanks!
+FIFO-99 is the highest possible prio (for SCHED_FIFO) and by using it
+you say your task is the utmost imporant task on the system.
 
-> But basically, user-space prio is [1-99], while in-kernel prio is
-> [0-98]. The above is user prio (it basically uses the
-> sched_setscheduler() syscall).
->
-> So 50 really is lower than 99.
-
-IC.
-
-BTW, what about having a #define for MAX_RT_PRIO / 2?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+I'm thinking that isn't true 99% of the time, except of course when that
+bandsaw emergency break is attached through SPI, but in that case the
+admin can very well chrt the prio of this thread.

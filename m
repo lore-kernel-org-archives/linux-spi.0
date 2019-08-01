@@ -1,241 +1,82 @@
-From: Neil Armstrong <narmstrong@baylibre.com>
-Subject: [RFC 3/9] dt-bindings: spi: meson: convert to yaml
-Date: Thu,  1 Aug 2019 15:56:38 +0200
-Message-ID: <20190801135644.12843-4-narmstrong@baylibre.com>
-References: <20190801135644.12843-1-narmstrong@baylibre.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-amlogic@lists.infradead.org, devicetree@vger.kernel.org,
- linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- Neil Armstrong <narmstrong@baylibre.com>
-To: robh+dt@kernel.org
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190801135644.12843-1-narmstrong@baylibre.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+From: Tomer Maimon <tmaimon77@gmail.com>
+Subject: [PATCH v1 1/2] dt-binding: spi: add NPCM FIU controller
+Date: Thu,  1 Aug 2019 17:04:18 +0300
+Message-ID: <20190801140419.58029-2-tmaimon77@gmail.com>
+References: <20190801140419.58029-1-tmaimon77@gmail.com>
+Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        openbmc@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        Tomer Maimon <tmaimon77@gmail.com>
+To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        vigneshr@ti.com, bbrezillon@kernel.org, avifishman70@gmail.com,
+        tali.perry1@gmail.com, venture@google.com, yuenn@google.com,
+        benjaminfair@google.com
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190801140419.58029-1-tmaimon77@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
----
- .../bindings/spi/amlogic,meson-gx-spicc.yaml  | 74 +++++++++++++++++++
- .../bindings/spi/amlogic,meson6-spifc.yaml    | 57 ++++++++++++++
- .../devicetree/bindings/spi/spi-meson.txt     | 55 --------------
- 3 files changed, 131 insertions(+), 55 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
- create mode 100644 Documentation/devicetree/bindings/spi/amlogic,meson6-spifc.yaml
- delete mode 100644 Documentation/devicetree/bindings/spi/spi-meson.txt
+Added device tree binding documentation for Nuvoton BMC
+NPCM Flash Interface Unit(FIU) SPI master controller
+using SPI-MEM interface.
 
-diff --git a/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml b/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
+Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
+---
+ .../bindings/spi/nuvoton,npcm-fiu.txt         | 47 +++++++++++++++++++
+ 1 file changed, 47 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt
+
+diff --git a/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt b/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt
 new file mode 100644
-index 000000000000..6e2c41c730b5
+index 000000000000..ab37aae91d19
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
-@@ -0,0 +1,74 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+# Copyright 2019 BayLibre, SAS
-+%YAML 1.2
-+---
-+$id: "http://devicetree.org/schemas/spi/amlogic,meson-gx-spicc.yaml#"
-+$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++++ b/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt
+@@ -0,0 +1,47 @@
++* Nuvoton FLASH Interface Unit (FIU) SPI Controller
 +
-+title: Amlogic Meson SPI Communication Controller
++NPCM FIU supports single, dual and quad communication interface.
 +
-+maintainers:
-+  - Neil Armstrong <narmstrong@baylibre.com>
++The NPCM7XX supports three FIU modules,
++FIU0 and FIUx supports two chip selects,
++FIU3 support four chip select.
 +
-+allOf:
-+  - $ref: "spi-controller.yaml#"
++Required properties:
++  - compatible : "nuvoton,npcm750-fiu" for the NPCM7XX BMC
++  - #address-cells : should be 1.
++  - #size-cells : should be 0.
++  - reg : the first contains the register location and length,
++          the second contains the memory mapping address and length
++  - reg-names: Should contain the reg names "control" and "memory"
++  - clocks : phandle of FIU reference clock.
 +
-+description: |
-+  The Meson SPICC is a generic SPI controller for general purpose Full-Duplex
-+  communications with dedicated 16 words RX/TX PIO FIFOs.
++Required properties in case the pins can be muxed:
++  - pinctrl-names : a pinctrl state named "default" must be defined.
++  - pinctrl-0 : phandle referencing pin configuration of the device.
 +
-+properties:
-+  compatible:
-+    oneOf:
-+     - description: SPICC controller on Amlogic GX and compatible SoCs
-+       enum:
-+       - amlogic,meson-gx-spicc
-+     - description: SPICC controller on Amlogic AXG and compatible SoCs
-+       enum:
-+       - amlogic,meson-axg-spicc
++Optional property:
++  - spix-mode: enable spix-mode for an expansion bus to an ASIC or CPLD.
 +
-+  interrupts:
-+    maxItems: 1
++Aliases:
++- All the FIU controller nodes should be represented in the aliases node using
++  the following format 'fiu{n}' where n is a unique number for the alias.
++  In the NPCM7XX BMC:
++  		fiu0 represent fiu 0 controller
++  		fiu1 represent fiu 3 controller
++  		fiu2 represent fiu x controller
 +
-+  reg:
-+    maxItems: 1
++Example:
++fiu3: fiu@c00000000 {
++	compatible = "nuvoton,npcm750-fiu";
++	#address-cells = <1>;
++	#size-cells = <0>;
++	reg = <0xfb000000 0x1000>, <0x80000000 0x10000000>;
++	reg-names = "control", "memory";
++	clocks = <&clk NPCM7XX_CLK_AHB>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&spi3_pins>;
++	spi-nor@0 {
++			...
++	};
++};
 +
-+  resets:
-+    description: phandle of the internal reset line
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  clock-names:
-+    description: input clock for the baud rate generator
-+    items:
-+      - const: core
-+
-+  "#address-cells":
-+    const: 1
-+
-+  "#size-cells":
-+    const: 0
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
-+  - clock-names
-+  - "#address-cells"
-+  - "#size-cells"
-+
-+examples:
-+  - |
-+    spi@c1108d80 {
-+          compatible = "amlogic,meson-gx-spicc";
-+          reg = <0xc1108d80 0x80>;
-+          interrupts = <112>;
-+          clocks = <&clk81>;
-+          clock-names = "core";
-+          #address-cells = <1>;
-+          #size-cells = <0>;
-+    };
-+
-diff --git a/Documentation/devicetree/bindings/spi/amlogic,meson6-spifc.yaml b/Documentation/devicetree/bindings/spi/amlogic,meson6-spifc.yaml
-new file mode 100644
-index 000000000000..5f34aed1ad40
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/amlogic,meson6-spifc.yaml
-@@ -0,0 +1,57 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+# Copyright 2019 BayLibre, SAS
-+%YAML 1.2
-+---
-+$id: "http://devicetree.org/schemas/spi/amlogic,meson6-spifc.yaml#"
-+$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+
-+title: Amlogic Meson SPI Flash Controller
-+
-+maintainers:
-+  - Neil Armstrong <narmstrong@baylibre.com>
-+
-+allOf:
-+  - $ref: "spi-controller.yaml#"
-+
-+description: |
-+  The Meson SPIFC is a controller optimized for communication with SPI
-+  NOR memories, without DMA support and a 64-byte unified transmit /
-+  receive buffer.
-+
-+properties:
-+  compatible:
-+    oneOf:
-+     - enum:
-+       - amlogic,meson6-spifc
-+     - enum:
-+       - amlogic,meson-gxbb-spifc
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  "#address-cells":
-+    const: 1
-+
-+  "#size-cells":
-+    const: 0
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - "#address-cells"
-+  - "#size-cells"
-+
-+examples:
-+  - |
-+    spi@c1108c80 {
-+          compatible = "amlogic,meson6-spifc";
-+          reg = <0xc1108c80 0x80>;
-+          clocks = <&clk81>;
-+          #address-cells = <1>;
-+          #size-cells = <0>;
-+    };
-+
-diff --git a/Documentation/devicetree/bindings/spi/spi-meson.txt b/Documentation/devicetree/bindings/spi/spi-meson.txt
-deleted file mode 100644
-index b7f5e86fed22..000000000000
---- a/Documentation/devicetree/bindings/spi/spi-meson.txt
-+++ /dev/null
-@@ -1,55 +0,0 @@
--Amlogic Meson SPI controllers
--
--* SPIFC (SPI Flash Controller)
--
--The Meson SPIFC is a controller optimized for communication with SPI
--NOR memories, without DMA support and a 64-byte unified transmit /
--receive buffer.
--
--Required properties:
-- - compatible: should be "amlogic,meson6-spifc" or "amlogic,meson-gxbb-spifc"
-- - reg: physical base address and length of the controller registers
-- - clocks: phandle of the input clock for the baud rate generator
-- - #address-cells: should be 1
-- - #size-cells: should be 0
--
--	spi@c1108c80 {
--		compatible = "amlogic,meson6-spifc";
--		reg = <0xc1108c80 0x80>;
--		clocks = <&clk81>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--	};
--
--* SPICC (SPI Communication Controller)
--
--The Meson SPICC is generic SPI controller for general purpose Full-Duplex
--communications with dedicated 16 words RX/TX PIO FIFOs.
--
--Required properties:
-- - compatible: should be:
--	"amlogic,meson-gx-spicc" on Amlogic GX and compatible SoCs.
--	"amlogic,meson-axg-spicc" on Amlogic AXG and compatible SoCs
-- - reg: physical base address and length of the controller registers
-- - interrupts: The interrupt specifier
-- - clock-names: Must contain "core"
-- - clocks: phandle of the input clock for the baud rate generator
-- - #address-cells: should be 1
-- - #size-cells: should be 0
--
--Optional properties:
-- - resets: phandle of the internal reset line
--
--See ../spi/spi-bus.txt for more details on SPI bus master and slave devices
--required and optional properties.
--
--Example :
--	spi@c1108d80 {
--		compatible = "amlogic,meson-gx-spicc";
--		reg = <0xc1108d80 0x80>;
--		interrupts = <GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>;
--		clock-names = "core";
--		clocks = <&clk81>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--	};
 -- 
-2.22.0
+2.18.0

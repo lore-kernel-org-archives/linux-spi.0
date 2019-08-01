@@ -1,72 +1,246 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 5/5] spi: Reduce kthread priority
-Date: Thu, 1 Aug 2019 13:27:03 +0200
-Message-ID: <CAMuHMdU3D22PAWepGP6rMvDwJKVTfbxxH9J=kuo59PB7CCVKOA@mail.gmail.com>
-References: <20190801111348.530242235@infradead.org> <20190801111541.917256884@infradead.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v3 5/7] drivers: Introduce device lookup variants by
+ ACPI_COMPANION device
+Date: Thu, 1 Aug 2019 14:58:56 +0300
+Message-ID: <20190801115856.GS23480@smile.fi.intel.com>
+References: <20190723221838.12024-1-suzuki.poulose@arm.com>
+ <20190723221838.12024-6-suzuki.poulose@arm.com>
+ <20190726202353.GA963@kunai>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Ingo Molnar <mingo@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Mark Brown <broonie@kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190801111541.917256884@infradead.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: rafael@kernel.org, gregkh@linuxfoundation.org,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+ linux-i2c@vger.kernel.org, Mika Westerberg <mika.westerberg@linux.intel.com>,
+ linux-arm-kernel@lists.infradead.org, Len Brown <lenb@kernel.org>
+To: Wolfram Sang <wsa@the-dreams.de>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Disposition: inline
+In-Reply-To: <20190726202353.GA963@kunai>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Peter,
+On Fri, Jul 26, 2019 at 10:23:54PM +0200, Wolfram Sang wrote:
+> On Tue, Jul 23, 2019 at 11:18:36PM +0100, Suzuki K Poulose wrote:
+> > Add a generic helper to match a device by the ACPI_COMPANION device
+> > and provide wrappers for the device lookup APIs.
+> > 
+> > Cc: Len Brown <lenb@kernel.org>
+> > Cc: linux-acpi@vger.kernel.org
+> > Cc: linux-spi@vger.kernel.org
+> > Cc: Mark Brown <broonie@kernel.org>
+> > Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+> > Cc: Wolfram Sang <wsa@the-dreams.de>
+> > Cc: linux-i2c@vger.kernel.org
+> > Cc: Mark Brown <broonie@kernel.org>
+> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> 
+> From my side, OK:
+> 
+> Acked-by: Wolfram Sang <wsa@the-dreams.de> # I2C parts
+> 
+> yet you missed to cc the I2C ACPI maintainers. Done so now.
 
-On Thu, Aug 1, 2019 at 1:18 PM Peter Zijlstra <peterz@infradead.org> wrote:
-> The SPI thingies request FIFO-99 by default, reduce this to FIFO-50.
->
-> FIFO-99 is the very highest priority available to SCHED_FIFO and
-> it not a suitable default; it would indicate the SPI work is the
-> most important work on the machine.
->
-> Cc: Benson Leung <bleung@chromium.org>
-> Cc: Enric Balletbo i Serra <enric.balletbo@collabora.com>
-> Cc: Guenter Roeck <groeck@chromium.org>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: linux-spi@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> ---
->  drivers/platform/chrome/cros_ec_spi.c |    2 +-
->  drivers/spi/spi.c                     |    2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
->
-> --- a/drivers/platform/chrome/cros_ec_spi.c
-> +++ b/drivers/platform/chrome/cros_ec_spi.c
-> @@ -706,7 +706,7 @@ static int cros_ec_spi_devm_high_pri_all
->                                            struct cros_ec_spi *ec_spi)
->  {
->         struct sched_param sched_priority = {
-> -               .sched_priority = MAX_RT_PRIO - 1,
-> +               .sched_priority = MAX_RT_PRIO / 2,
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-include/linux/sched/prio.h says:
+Thanks, Wolfram, for notifying.
 
- * Priority of a process goes from 0..MAX_PRIO-1, valid RT
- * priority is 0..MAX_RT_PRIO-1, and SCHED_NORMAL/SCHED_BATCH
- * tasks are in the range MAX_RT_PRIO..MAX_PRIO-1. Priority
- * values are inverted: lower p->prio value means higher priority.
+> 
+> > ---
+> >  drivers/base/core.c         |  6 ++++
+> >  drivers/i2c/i2c-core-acpi.c | 11 ++-----
+> >  drivers/spi/spi.c           |  8 +----
+> >  include/linux/device.h      | 65 +++++++++++++++++++++++++++++++++++++
+> >  4 files changed, 74 insertions(+), 16 deletions(-)
+> > 
+> > diff --git a/drivers/base/core.c b/drivers/base/core.c
+> > index 3abc32b60c0a..57d71bc2c559 100644
+> > --- a/drivers/base/core.c
+> > +++ b/drivers/base/core.c
+> > @@ -3373,3 +3373,9 @@ int device_match_devt(struct device *dev, const void *pdevt)
+> >  	return dev->devt == *(dev_t *)pdevt;
+> >  }
+> >  EXPORT_SYMBOL_GPL(device_match_devt);
+> > +
+> > +int device_match_acpi_dev(struct device *dev, const void *adev)
+> > +{
+> > +	return ACPI_COMPANION(dev) == adev;
+> > +}
+> > +EXPORT_SYMBOL(device_match_acpi_dev);
+> > diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+> > index 4dbbc9a35f65..bc80aafb521f 100644
+> > --- a/drivers/i2c/i2c-core-acpi.c
+> > +++ b/drivers/i2c/i2c-core-acpi.c
+> > @@ -354,17 +354,11 @@ static int i2c_acpi_find_match_adapter(struct device *dev, const void *data)
+> >  	return ACPI_HANDLE(dev) == (acpi_handle)data;
+> >  }
+> >  
+> > -static int i2c_acpi_find_match_device(struct device *dev, const void *data)
+> > -{
+> > -	return ACPI_COMPANION(dev) == data;
+> > -}
+> >  
+> >  struct i2c_adapter *i2c_acpi_find_adapter_by_handle(acpi_handle handle)
+> >  {
+> > -	struct device *dev;
+> > +	struct device *dev = bus_find_device_by_acpi_dev(&i2c_bus_type, handle);
+> >  
+> > -	dev = bus_find_device(&i2c_bus_type, NULL, handle,
+> > -			      i2c_acpi_find_match_adapter);
+> >  	return dev ? i2c_verify_adapter(dev) : NULL;
+> >  }
+> >  EXPORT_SYMBOL_GPL(i2c_acpi_find_adapter_by_handle);
+> > @@ -373,8 +367,7 @@ static struct i2c_client *i2c_acpi_find_client_by_adev(struct acpi_device *adev)
+> >  {
+> >  	struct device *dev;
+> >  
+> > -	dev = bus_find_device(&i2c_bus_type, NULL, adev,
+> > -			      i2c_acpi_find_match_device);
+> > +	dev = bus_find_device_by_acpi_dev(&i2c_bus_type, adev);
+> >  	return dev ? i2c_verify_client(dev) : NULL;
+> >  }
+> >  
+> > diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> > index a591da87981a..c486a6f84c2c 100644
+> > --- a/drivers/spi/spi.c
+> > +++ b/drivers/spi/spi.c
+> > @@ -3741,11 +3741,6 @@ static int spi_acpi_controller_match(struct device *dev, const void *data)
+> >  	return ACPI_COMPANION(dev->parent) == data;
+> >  }
+> >  
+> > -static int spi_acpi_device_match(struct device *dev, const void *data)
+> > -{
+> > -	return ACPI_COMPANION(dev) == data;
+> > -}
+> > -
+> >  static struct spi_controller *acpi_spi_find_controller_by_adev(struct acpi_device *adev)
+> >  {
+> >  	struct device *dev;
+> > @@ -3765,8 +3760,7 @@ static struct spi_device *acpi_spi_find_device_by_adev(struct acpi_device *adev)
+> >  {
+> >  	struct device *dev;
+> >  
+> > -	dev = bus_find_device(&spi_bus_type, NULL, adev, spi_acpi_device_match);
+> > -
+> > +	dev = bus_find_device_by_acpi_dev(&spi_bus_type, adev);
+> >  	return dev ? to_spi_device(dev) : NULL;
+> >  }
+> >  
+> > diff --git a/include/linux/device.h b/include/linux/device.h
+> > index 93b2f55ef44e..7514ef3d3f1a 100644
+> > --- a/include/linux/device.h
+> > +++ b/include/linux/device.h
+> > @@ -168,6 +168,7 @@ int device_match_name(struct device *dev, const void *name);
+> >  int device_match_of_node(struct device *dev, const void *np);
+> >  int device_match_fwnode(struct device *dev, const void *fwnode);
+> >  int device_match_devt(struct device *dev, const void *pdevt);
+> > +int device_match_acpi_dev(struct device *dev, const void *adev);
+> >  
+> >  int bus_for_each_dev(struct bus_type *bus, struct device *start, void *data,
+> >  		     int (*fn)(struct device *dev, void *data));
+> > @@ -224,6 +225,28 @@ static inline struct device *bus_find_device_by_devt(struct bus_type *bus,
+> >  	return bus_find_device(bus, NULL, &devt, device_match_devt);
+> >  }
+> >  
+> > +#ifdef CONFIG_ACPI
+> > +struct acpi_device;
+> > +
+> > +/**
+> > + * bus_find_device_by_acpi_dev : device iterator for locating a particular device
+> > + * matching the ACPI COMPANION device.
+> > + * @bus: bus type
+> > + * @adev: ACPI COMPANION device to match.
+> > + */
+> > +static inline struct device *
+> > +bus_find_device_by_acpi_dev(struct bus_type *bus, const struct acpi_device *adev)
+> > +{
+> > +	return bus_find_device(bus, NULL, adev, device_match_acpi_dev);
+> > +}
+> > +#else
+> > +static inline struct device *
+> > +bus_find_device_by_acpi_dev(struct bus_type *bus, const void *adev)
+> > +{
+> > +	return NULL;
+> > +}
+> > +#endif
+> > +
+> >  struct device *subsys_find_device_by_id(struct bus_type *bus, unsigned int id,
+> >  					struct device *hint);
+> >  int bus_for_each_drv(struct bus_type *bus, struct device_driver *start,
+> > @@ -442,6 +465,27 @@ static inline struct device *driver_find_device_by_devt(struct device_driver *dr
+> >  	return driver_find_device(drv, NULL, &devt, device_match_devt);
+> >  }
+> >  
+> > +#ifdef CONFIG_ACPI
+> > +/**
+> > + * driver_find_device_by_acpi_dev : device iterator for locating a particular
+> > + * device matching the ACPI_COMPANION device.
+> > + * @driver: the driver we're iterating
+> > + * @adev: ACPI_COMPANION device to match.
+> > + */
+> > +static inline struct device *
+> > +driver_find_device_by_acpi_dev(struct device_driver *drv,
+> > +			       const struct acpi_device *adev)
+> > +{
+> > +	return driver_find_device(drv, NULL, adev, device_match_acpi_dev);
+> > +}
+> > +#else
+> > +static inline struct device *
+> > +driver_find_device_by_acpi_dev(struct device_driver *drv, const void *adev)
+> > +{
+> > +	return NULL;
+> > +}
+> > +#endif
+> > +
+> >  void driver_deferred_probe_add(struct device *dev);
+> >  int driver_deferred_probe_check_state(struct device *dev);
+> >  int driver_deferred_probe_check_state_continue(struct device *dev);
+> > @@ -620,6 +664,27 @@ static inline struct device *class_find_device_by_devt(struct class *class,
+> >  	return class_find_device(class, NULL, &devt, device_match_devt);
+> >  }
+> >  
+> > +#ifdef CONFIG_ACPI
+> > +struct acpi_device;
+> > +/**
+> > + * class_find_device_by_acpi_dev : device iterator for locating a particular
+> > + * device matching the ACPI_COMPANION device.
+> > + * @class: class type
+> > + * @adev: ACPI_COMPANION device to match.
+> > + */
+> > +static inline struct device *
+> > +class_find_device_by_acpi_dev(struct class *class, const struct acpi_device *adev)
+> > +{
+> > +	return class_find_device(class, NULL, adev, device_match_acpi_dev);
+> > +}
+> > +#else
+> > +static inline struct device *
+> > +class_find_device_by_acpi_dev(struct class *class, const void *adev)
+> > +{
+> > +	return NULL;
+> > +}
+> > +#endif
+> > +
+> >  struct class_attribute {
+> >  	struct attribute attr;
+> >  	ssize_t (*show)(struct class *class, struct class_attribute *attr,
+> > -- 
+> > 2.21.0
+> > 
 
-So the new 50 is actually a higher priority than the old 99?
 
-Given I'm far from an RT expert, I must be missing something?
-Thanks!
-
-Gr{oetje,eeting}s,
-
-                        Geert
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+With Best Regards,
+Andy Shevchenko

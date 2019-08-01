@@ -1,120 +1,34 @@
-From: Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Re: [RFC v1 0/3] *spi-mem: adding setup and callback function
-Date: Thu, 1 Aug 2019 12:12:47 +0530
-Message-ID: <ac96da83-3b52-c030-cefa-e0d366fc3151@ti.com>
-References: <20190729142504.188336-1-tmaimon77@gmail.com>
- <20190729172859.4374a2ad@collabora.com>
- <CAP6Zq1iPXDX_Gtz6ZWYm3JoHgHjdapotVLGw-Lq4tc2X-6eAug@mail.gmail.com>
- <20190730085438.6fe0480b@collabora.com>
- <d8adef3f-e901-2e25-6183-35cb1e53bcda@ti.com>
- <20190730200410.72b2f7d3@collabora.com>
- <CAP6Zq1hfVoS8+VU0rAtKAX7D22qTVHDMosiCRMKV8sQB_m0qOQ@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>, bbrezillon@kernel.org,
- richard@nod.at, tudor.ambarus@microchip.com,
- Schrempf Frieder <frieder.schrempf@kontron.de>, linux-spi@vger.kernel.org,
- broonie@kernel.org, linux-mtd@lists.infradead.org, miquel.raynal@bootlin.com
-To: Tomer Maimon <tmaimon77@gmail.com>, Boris Brezillon
- <boris.brezillon@collabora.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <CAP6Zq1hfVoS8+VU0rAtKAX7D22qTVHDMosiCRMKV8sQB_m0qOQ@mail.gmail.com>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+From: Chuanhua Han <chuanhua.han@nxp.com>
+Subject: [PATCH 1/3] dt-bindings: fsl: dspi: Add fsl,ls1088a-dspi compatible string
+Date: Thu,  1 Aug 2019 16:31:03 +0800
+Message-ID: <20190801083105.30102-1-chuanhua.han@nxp.com>
+Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Chuanhua Han <chuanhua.han@nxp.com>
+To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        shawnguo@kernel.org, leoyang.li@nxp.com
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGksCgpPbiAzMS8wNy8xOSAxOjQ5IFBNLCBUb21lciBNYWltb24gd3JvdGU6Cj4gSGkgVmlnbmVz
-aCwKPiAKPiBEb2VzIHlvdXIgbmV3IG1lcmdlIHZlcnNpb24gd2lsbCBzdXBwb3J0IGRpcmVjdCBz
-cGktbWVtIEFQST8KPiAKCgpObywgSSBkb24ndCBoYXZlIGEgZHJpdmVyIHRvIHRlc3Qgb3V0IGRp
-cm1hcCBBUElzLiBTbywgdGhhdCB3b3VsZCBuZWVkCnRvIGJlIGFkZGVkIHNlcGFyYXRlbHkgb24g
-dG9wLgoKSSBoYXZlIHBvc3RlZCBuZXh0IHZlcnNpb24gb2YgbXkgc2VyaWVzIGhlcmUgKGV4cGVj
-dCBtb3JlIHJldmlzaW9ucyk6Cmh0dHBzOi8vcGF0Y2h3b3JrLm96bGFicy5vcmcvY292ZXIvMTE0
-MDI2OS8KCkZlZWwgZnJlZSB0byB0ZXN0IGFuZCByZWJhc2UgZGlybWFwIEFQSSBhZGRpdGlvbiBv
-biB0b3Agb2YgaXQuCgpSZWdhcmRzClZpZ25lc2gKCgo+IFRoYW5rcywKPiAKPiBUb21lcgo+IAo+
-IE9uIFR1ZSwgMzAgSnVsIDIwMTkgYXQgMjE6MDQsIEJvcmlzIEJyZXppbGxvbgo+IDxib3Jpcy5i
-cmV6aWxsb25AY29sbGFib3JhLmNvbSA8bWFpbHRvOmJvcmlzLmJyZXppbGxvbkBjb2xsYWJvcmEu
-Y29tPj4KPiB3cm90ZToKPiAKPiAgICAgT24gVHVlLCAzMCBKdWwgMjAxOSAyMzoxODoyNSArMDUz
-MAo+ICAgICBWaWduZXNoIFJhZ2hhdmVuZHJhIDx2aWduZXNockB0aS5jb20gPG1haWx0bzp2aWdu
-ZXNockB0aS5jb20+PiB3cm90ZToKPiAKPiAgICAgPiBPbiAzMC1KdWwtMTkgMTI6MjQgUE0sIEJv
-cmlzIEJyZXppbGxvbiB3cm90ZToKPiAgICAgPiA+IFRyaW1tZWQgdGhlIHJlY2lwaWVudCBsaXN0
-IGEgYml0IGFuZCB1c2VkIEZyaWVkZXIncyBuZXcgYWRkcmVzcy4KPiAgICAgPiA+ICtTZXJnZXkK
-PiAgICAgPiA+Cj4gICAgID4gPiBPbiBNb24sIDI5IEp1bCAyMDE5IDIzOjU1OjA1ICswMzAwCj4g
-ICAgID4gPiBUb21lciBNYWltb24gPHRtYWltb243N0BnbWFpbC5jb20gPG1haWx0bzp0bWFpbW9u
-NzdAZ21haWwuY29tPj4KPiAgICAgd3JvdGU6Cj4gICAgID4gPsKgIMKgCj4gICAgID4gPj4gSGkg
-Qm9yaXMsCj4gICAgID4gPj4KPiAgICAgPiA+PiBUaGFua3MgZm9yIHRoZSBwcm9tcHQgcmVwbHks
-Cj4gICAgID4gPj4KPiAgICAgPiA+Pgo+ICAgICA+ID4+Cj4gICAgID4gPj4gT24gTW9uLCAyOSBK
-dWwgMjAxOSBhdCAxODoyOSwgQm9yaXMgQnJlemlsbG9uCj4gICAgIDxib3Jpcy5icmV6aWxsb25A
-Y29sbGFib3JhLmNvbSA8bWFpbHRvOmJvcmlzLmJyZXppbGxvbkBjb2xsYWJvcmEuY29tPj4KPiAg
-ICAgPiA+PiB3cm90ZToKPiAgICAgPiA+PsKgCj4gICAgID4gPj4+IEhpIFRvbWVyLAo+ICAgICA+
-ID4+Pgo+ICAgICA+ID4+PiBPbiBNb24sIDI5IEp1bCAyMDE5IDE3OjI1OjAxICswMzAwCj4gICAg
-ID4gPj4+IFRvbWVyIE1haW1vbiA8dG1haW1vbjc3QGdtYWlsLmNvbQo+ICAgICA8bWFpbHRvOnRt
-YWltb243N0BnbWFpbC5jb20+PiB3cm90ZToKPiAgICAgPiA+Pj7CoCDCoAo+ICAgICA+ID4+Pj4g
-TGF0ZWx5IHdlIGhhdmUgd29ya2luZyBvbiBGbGFzaCBpbnRlcmZhY2UgdW5pdCAoRklVKSBTUEkK
-PiAgICAgZHJpdmVyIHRoYXQKPiAgICAgPiA+Pj4+IHVzaW5nIHNwaS1tZW0gaW50ZXJmYWNlLCBP
-dXIgRklVIEhXIG1vZHVsZSBzdXBwb3J0IGRpcmVjdAo+ICAgICBGbGFzaCBSZC8vV3IuCj4gICAg
-ID4gPj4+Pgo+ICAgICA+ID4+Pj4gSW4gb3VyIFNPQyAoMzIgYml0IGR1YWwgY29yZSBBUk0pIHdl
-IGhhdmUgMyBGSVUncyB0aGF0IHVzaW5nCj4gICAgIG1lbW9yecKgIMKgCj4gICAgID4gPj4+IG1h
-cHBpbmcgYXMgZm9sbG93OsKgIMKgCj4gICAgID4gPj4+Pgo+ICAgICA+ID4+Pj4gRklVMCAtIGhh
-dmUgMiBjaGlwIHNlbGVjdCBhbmQgZWFjaCBvbmUgaGF2ZSAxMjhNQiBtZW1vcnkKPiAgICAgbWFw
-cGluZyAodG90YWzCoCDCoAo+ICAgICA+ID4+PiAyNTZNQiBtZW1vcnkgbWFwcGluZynCoCDCoAo+
-ICAgICA+ID4+Pj4gRklVMSAtIGhhdmUgNCBjaGlwIHNlbGVjdCBhbmQgZWFjaCBvbmUgaGF2ZSAx
-MjhNQiBtZW1vcnkKPiAgICAgbWFwcGluZyAodG90YWzCoCDCoAo+ICAgICA+ID4+PiA1MTJNQiBt
-ZW1vcnkgbWFwcGluZynCoCDCoAo+ICAgICA+ID4+Pj4gRklVMiAtIGhhdmUgNCBjaGlwIHNlbGVj
-dCBhbmQgZWFjaCBvbmUgaGF2ZSAxNk1CIG1lbW9yeQo+ICAgICBtYXBwaW5nICh0b3RhbMKgIMKg
-Cj4gICAgID4gPj4+IDMyTUIgbWVtb3J5IG1hcHBpbmcpwqAgwqAKPiAgICAgPiA+Pj4+Cj4gICAg
-ID4gPj4+PiBUb3RhbGx5IDgwME1CIG1lbW9yeSBtYXBwaW5nLgo+ICAgICA+ID4+Pj4KPiAgICAg
-PiA+Pj4+IFdoZW4gdGhlIEZJVSBkcml2ZXIgcHJvYmUgaXQgZG9uJ3Qga25vdyB0aGUgc2l6ZSBv
-ZiBlYWNoCj4gICAgIEZsYXNoIHRoYXQKPiAgICAgPiA+Pj4+IGNvbm5lY3RlZCB0byB0aGUgRklV
-LCBzbyB0aGUgZW50aXJlIG1lbW9yeSBtYXBwaW5nIGlzCj4gICAgIGFsbG9jYXRlZCBmb3IgZWFj
-aMKgIMKgCj4gICAgID4gPj4+IEZJVcKgIMKgCj4gICAgID4gPj4+PiBhY2NvcmRpbmcgdGhlIEZJ
-VSBkZXZpY2UgdHJlZSBtZW1vcnkgbWFwIHBhcmFtZXRlcnMuwqAgwqAKPiAgICAgPiA+Pj4KPiAg
-ICAgPiA+Pj4gRG8geW91IG5lZWQgdGhvc2UgbWFwcGluZ3MgdG8gYmUgYWN0aXZlIHRvIHN1cHBv
-cnQgc2ltcGxlIHJlZwo+ICAgICBhY2Nlc3Nlcz8KPiAgICAgPiA+Pj7CoCDCoAo+ICAgICA+ID4+
-Pj4gSXQgbWVhbnMsIGlmIHdlIGVuYWJsZSBhbGwgdGhyZWUgRklVJ3MgdGhlIGRyaXZlcnMgd2ls
-bCB0cnkKPiAgICAgdG8gYWxsb2NhdGXCoCDCoAo+ICAgICA+ID4+PiB0b3RhbGx5IDgwME1CLsKg
-IMKgCj4gICAgID4gPj4+Pgo+ICAgICA+ID4+Pj4gSW4gMzJiaXQgc3lzdGVtIGl0IGlzIHByb2Js
-ZW1hdGljIGJlY2F1c2UgdGhlIGtlcm5lbCBoYXZlCj4gICAgIG9ubHkgMUdCCj4gICAgID4gPj4+
-PiBvZiBtZW1vcnkgYWxsb2NhdGlvbiBzbyB0aGUgdm1hbGxvYyBjYW5ub3QgdGFrZSA4MDBNQi4K
-PiAgICAgPiA+Pj4+Cj4gICAgID4gPj4+PiBXaGVuIGltcGxlbWVudGluZyB0aGUgRklVIGRyaXZl
-ciBpbiB0aGUgbXRkL3NwaS1ub3Igd2UKPiAgICAgYWxsb2NhdGluZyBtZW1vcnnCoCDCoAo+ICAg
-ICA+ID4+PiBhZGRyZXNzIG9ubHnCoCDCoAo+ICAgICA+ID4+Pj4gZm9yIGRldGVjdGVkIEZsYXNo
-IHdpdGggZXhhY3Qgc2l6ZSAodXN1YWxseSB3ZSBhcmUgbm90IHVzaW5nCj4gICAgIDEyOE1CwqAg
-wqAKPiAgICAgPiA+Pj4gRmxhc2gpLCBhbmQgaW4gdGhhdCBjYXNlIHVzdWFsbHkgd2UgYWxsb2Nh
-dGluZyBtdWNoIGxlc3MKPiAgICAgbWVtb3J5LsKgIMKgCj4gICAgID4gPj4+Pgo+ICAgICA+ID4+
-Pj4gVG8gc29sdmUgdGhpcyBpc3N1ZSB3ZSBuZWVkZWQgdG8gb3ZlcmNvbWUgdHdvIHRoaW5nczoK
-PiAgICAgPiA+Pj4+Cj4gICAgID4gPj4+PiAxLsKgIMKgIEdldCBhcmd1bWVudCBmcm9tIHRoZSB1
-cHBlciBsYXllciAoc3BpLW1lbSBsYXllcikKPiAgICAgPiA+Pj4+IDIuwqAgwqAgQ2FsbGluZyB0
-aGUgZ2V0IGFyZ3VtZW50IGZ1bmN0aW9uIGFmdGVyIFNQSV9OT1JfU0NBTgo+ICAgICBmdW5jdGlv
-bi7CoCDCoAo+ICAgICA+ID4+PiAodGhlIE1URCBGbGFzaCBzaXplIGZpbGxlZCBpbsKgIFNQSV9O
-T1JfU0NBTiBmdW5jdGlvbikKPiAgICAgPiA+Pj4KPiAgICAgPiA+Pj4gVGhhdCdzIGNsZWFybHkg
-YnJlYWtpbmcgdGhlIGxheWVyaW5nIHdlJ3ZlIHRyaWVkIHRvIHJlc3RvcmUKPiAgICAgd2l0aCB0
-aGUKPiAgICAgPiA+Pj4gc3BpLW5vci9zcGktbWVtIHNwbGl0LCBhbmQgSSBkb24ndCBzZWUgd2h5
-IHRoaXMgaXMgbmVlZGVkCj4gICAgIHNpbmNlIHdlIG5vdwo+ICAgICA+ID4+PiBoYXZlIGEgd2F5
-IHRvIGNyZWF0ZSBkaXJlY3QgbWFwcGluZ3MgZHluYW1pY2FsbHkgKHdpdGggdGhlCj4gICAgIGRp
-cm1hcCBBUEkpLgo+ICAgICA+ID4+PiBIYXZlIHlvdSB0cmllZCBpbXBsZW1lbnRpbmcgdGhlIGRp
-cm1hcCBob29rcyBpbiB5b3VyIGRyaXZlcj/CoCDCoAo+ICAgICA+ID4+Cj4gICAgID4gPj4KPiAg
-ICAgPiA+PsKgIFNvcnJ5IGJ1dCBJIHdhc24ndCBmYW1pbGlhciB3aXRoIHRoZSBkaXJlY3QgbWFw
-cGluZyBpbiB0aGUKPiAgICAgc3BpLW1lbSwgaXQKPiAgICAgPiA+PiBzZWVtcyBpdCBuZWVkZWQg
-dG8gaW1wbGVtZW50ZWQgaW4gdGhlIG0yNXA4MCBkcml2ZXIgYXMgd2VsbCwgYW0KPiAgICAgSSBj
-b3JyZWN0P8KgCj4gICAgID4gPgo+ICAgICA+ID4gVGhlcmUncyB0aGlzIHBhdGNoIFsxXSBmbG9h
-dGluZyBhcm91bmQuIElJUkMsIFNlcmdleSB3YXMgd2FpdGluZyBmb3IKPiAgICAgPiA+IHRoZSBt
-MjVwODAgLT4gc3BpLW5vciBtZXJnZSB0byBzZW5kIGEgdjUuIFZpZ25lc2gsIGFueSB1cGRhdGVz
-Cj4gICAgIG9uIHRoYXQKPiAgICAgPiA+IG9uZT8gSWYgeW91IGRvbid0IGhhdmUgdGltZSB0byB3
-b3JrIG9uIHRoYXQsIG1heWJlIFNlcmdleSBjb3VsZAo+ICAgICBzZW5kIGEKPiAgICAgPiA+IHY1
-Lgo+ICAgICA+ID7CoCDCoAo+ICAgICA+Cj4gICAgID4gSSBkaWQgc2VuZCBhbiB1cGRhdGVkIHNl
-cmllcyBvZiBtZXJnaW5nIG0yNXA4MCB0byBzcGktbm9yIGxhc3QKPiAgICAgd2VlayBhbmQKPiAg
-ICAgPiBoYXZlIHJlY2VpdmVkIGZldyBjb21tZW50cy4gV2lsbCByZXNwaW4gb25lIG1vcmUgdmVy
-c2lvbiB0aGlzIHdlZWsKPiAgICAgPiAobW9zdGx5IGJ5IHRvbW9ycm93KS4KPiAKPiAgICAgT2th
-eSwgZ3JlYXQhCj4gCgotLSAKUmVnYXJkcwpWaWduZXNoCgpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXggTVREIGRpc2N1c3Npb24gbWFp
-bGluZyBsaXN0Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vbGlu
-dXgtbXRkLwo=
+new compatible string: "fsl,ls1088a-dspi".
+
+Signed-off-by: Chuanhua Han <chuanhua.han@nxp.com>
+---
+ Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt b/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
+index dcc7eaa..162e024 100644
+--- a/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
++++ b/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
+@@ -6,6 +6,7 @@ Required properties:
+ 		or
+ 		"fsl,ls2080a-dspi" followed by "fsl,ls2085a-dspi"
+ 		"fsl,ls1012a-dspi" followed by "fsl,ls1021a-v1.0-dspi"
++		"fsl,ls1088a-dspi" followed by "fsl,ls1021a-v1.0-dspi"
+ - reg : Offset and length of the register set for the device
+ - interrupts : Should contain SPI controller interrupt
+ - clocks: from common clock binding: handle to dspi clock.
+-- 
+2.9.5

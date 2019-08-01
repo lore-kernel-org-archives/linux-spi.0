@@ -1,37 +1,32 @@
-From: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 Subject: Re: [PATCH 5/5] spi: Reduce kthread priority
-Date: Thu, 1 Aug 2019 13:27:04 +0200
-Message-ID: <640721f8-8a20-b161-473f-98a9dbc053cc@collabora.com>
-References: <20190801111348.530242235@infradead.org>
- <20190801111541.917256884@infradead.org>
+Date: Thu, 1 Aug 2019 13:27:03 +0200
+Message-ID: <CAMuHMdU3D22PAWepGP6rMvDwJKVTfbxxH9J=kuo59PB7CCVKOA@mail.gmail.com>
+References: <20190801111348.530242235@infradead.org> <20190801111541.917256884@infradead.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: linux-kernel@vger.kernel.org, Benson Leung <bleung@chromium.org>,
+Content-Type: text/plain; charset="UTF-8"
+Cc: Ingo Molnar <mingo@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
         Guenter Roeck <groeck@chromium.org>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        Doug Anderson <dianders@google.com>
-To: Peter Zijlstra <peterz@infradead.org>, mingo@kernel.org
+        Mark Brown <broonie@kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20190801111541.917256884@infradead.org>
-Content-Language: en-GB
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Peter,
 
-cc'ing Doug as he might be really interested on this patch
-
-On 1/8/19 13:13, Peter Zijlstra wrote:
+On Thu, Aug 1, 2019 at 1:18 PM Peter Zijlstra <peterz@infradead.org> wrote:
 > The SPI thingies request FIFO-99 by default, reduce this to FIFO-50.
-> 
-
-You say below that is not a suitable default but there is any other reason? Did
-you observed problems with this?
-
+>
 > FIFO-99 is the very highest priority available to SCHED_FIFO and
 > it not a suitable default; it would indicate the SPI work is the
 > most important work on the machine.
-> 
+>
 > Cc: Benson Leung <bleung@chromium.org>
 > Cc: Enric Balletbo i Serra <enric.balletbo@collabora.com>
 > Cc: Guenter Roeck <groeck@chromium.org>
@@ -43,28 +38,35 @@ you observed problems with this?
 >  drivers/platform/chrome/cros_ec_spi.c |    2 +-
 >  drivers/spi/spi.c                     |    2 +-
 >  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
+>
 > --- a/drivers/platform/chrome/cros_ec_spi.c
 > +++ b/drivers/platform/chrome/cros_ec_spi.c
 > @@ -706,7 +706,7 @@ static int cros_ec_spi_devm_high_pri_all
->  					   struct cros_ec_spi *ec_spi)
+>                                            struct cros_ec_spi *ec_spi)
 >  {
->  	struct sched_param sched_priority = {
-> -		.sched_priority = MAX_RT_PRIO - 1,
-> +		.sched_priority = MAX_RT_PRIO / 2,
->  	};
->  	int err;
->  
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -1434,7 +1434,7 @@ static void spi_pump_messages(struct kth
->   */
->  static void spi_set_thread_rt(struct spi_controller *ctlr)
->  {
-> -	struct sched_param param = { .sched_priority = MAX_RT_PRIO - 1 };
-> +	struct sched_param param = { .sched_priority = MAX_RT_PRIO / 2 };
->  
->  	dev_info(&ctlr->dev,
->  		"will run message pump with realtime priority\n");
-> 
-> 
+>         struct sched_param sched_priority = {
+> -               .sched_priority = MAX_RT_PRIO - 1,
+> +               .sched_priority = MAX_RT_PRIO / 2,
+
+include/linux/sched/prio.h says:
+
+ * Priority of a process goes from 0..MAX_PRIO-1, valid RT
+ * priority is 0..MAX_RT_PRIO-1, and SCHED_NORMAL/SCHED_BATCH
+ * tasks are in the range MAX_RT_PRIO..MAX_PRIO-1. Priority
+ * values are inverted: lower p->prio value means higher priority.
+
+So the new 50 is actually a higher priority than the old 99?
+
+Given I'm far from an RT expert, I must be missing something?
+Thanks!
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

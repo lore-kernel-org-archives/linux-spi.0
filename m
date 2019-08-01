@@ -1,15 +1,17 @@
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Wolfram Sang <wsa@the-dreams.de>
 Subject: Re: [PATCH v3 5/7] drivers: Introduce device lookup variants by
  ACPI_COMPANION device
-Date: Thu, 1 Aug 2019 15:21:06 +0300
-Message-ID: <20190801122106.GU23480@smile.fi.intel.com>
+Date: Thu, 1 Aug 2019 14:27:35 +0200
+Message-ID: <20190801122735.GD1659@ninjato>
 References: <20190723221838.12024-1-suzuki.poulose@arm.com>
  <20190723221838.12024-6-suzuki.poulose@arm.com>
  <20190726202353.GA963@kunai>
  <20190801115856.GS23480@smile.fi.intel.com>
  <20190801120830.GA1659@ninjato>
+ <20190801122106.GU23480@smile.fi.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="n2Pv11Ogg/Ox8ay5"
 Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
         Jarkko Nikula <jarkko.nikula@linux.intel.com>,
@@ -18,52 +20,45 @@ Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
         Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
         linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
         linux-i2c@vger.kernel.org
-To: Wolfram Sang <wsa@the-dreams.de>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20190801120830.GA1659@ninjato>
+In-Reply-To: <20190801122106.GU23480@smile.fi.intel.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Aug 01, 2019 at 02:08:30PM +0200, Wolfram Sang wrote:
-> On Thu, Aug 01, 2019 at 02:58:56PM +0300, Andy Shevchenko wrote:
-> > On Fri, Jul 26, 2019 at 10:23:54PM +0200, Wolfram Sang wrote:
-> > > On Tue, Jul 23, 2019 at 11:18:36PM +0100, Suzuki K Poulose wrote:
-> > > > Add a generic helper to match a device by the ACPI_COMPANION device
-> > > > and provide wrappers for the device lookup APIs.
-> > > > 
-> > > > Cc: Len Brown <lenb@kernel.org>
-> > > > Cc: linux-acpi@vger.kernel.org
-> > > > Cc: linux-spi@vger.kernel.org
-> > > > Cc: Mark Brown <broonie@kernel.org>
-> > > > Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-> > > > Cc: Wolfram Sang <wsa@the-dreams.de>
-> > > > Cc: linux-i2c@vger.kernel.org
-> > > > Cc: Mark Brown <broonie@kernel.org>
-> > > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> > > > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> > > 
-> > > From my side, OK:
-> > > 
-> > > Acked-by: Wolfram Sang <wsa@the-dreams.de> # I2C parts
-> > > 
-> > > yet you missed to cc the I2C ACPI maintainers. Done so now.
-> > 
-> > Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > 
-> > Thanks, Wolfram, for notifying.
-> 
-> Sure. There seems to be a problem, though? Please check:
-> 
-> [PATCH 1/3] i2c: Revert incorrect conversion to use generic helper
-> 
-> which came in today.
 
-It's again not Cc'ed to all parties.
-But OK, looks good to me.
-Tough may be Jarkko can test all this.
+--n2Pv11Ogg/Ox8ay5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
--- 
-With Best Regards,
-Andy Shevchenko
+
+> It's again not Cc'ed to all parties.
+> But OK, looks good to me.
+> Tough may be Jarkko can test all this.
+
+To be fair, only Mika is listed as I2C ACPI maintainer. Feel free to add
+more :) I assume Mika doesn't mind.
+
+
+--n2Pv11Ogg/Ox8ay5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl1C2rcACgkQFA3kzBSg
+KbbC7g/+JDJ/wQtaEgLwko1svAEbCfU6wxRadTwM0jWd4adQgIpPuwceKEDRV5ap
+sdqUoIDjY4UInI7HeUYLRTY/VUIaOmQ4C0VkWvgYFnAsZoAU/GWKrGVnJ74C34oK
+L1n76meYZVFj1+kuOPce8PKPbZ1N6t2N0H5VHChczypiPldel2s/UiW5Myk18T5v
+ZBt/xDU/C+vn2IPRKu5ybKFWzsSGIeAq0D/LvrnsO6q7z3bu8nmOL8rNTQCOVVwl
+vG1B3arBO1jwtT5kVA3/1hQZDoDucaXlFNw/8oL/jSHCajH2kKf/Ux0D4gAjK18y
+XWexgt84CLU9Q1MIwuYoJ+yuB8jyeJVdWAEkDSBVS6qUSZRx+00arhni5AJKWKGG
+aXe/UHiDv1FAgyqekJDwerz3pRRULCqtiGTZ3H3IOlLc1FtTibJ5VJeDZ8dH/+4z
++TeZiW+iLpNDufs3x8Sf6I+StIUB0bDWlvWyY2rdcL0YqozlUMYlQLvRfjOJLf9t
+3C1S9F4JB8pf9XOxPHKMIUgXpruGuWSLKm2m+rX7X49kQ3Ey4YRAhhVGT8PT9e3B
+1YtgOqFwsdaexAc3Y1LoVutgoLEARcqZ4q30pao5uIVzy7reLFmM/u3NRJDTKurR
+UxJH+EIkqg6UzLXABaZ5mTPYOFeiNDbjRAvLF7yBFENM9bBw2ZY=
+=K7Ly
+-----END PGP SIGNATURE-----
+
+--n2Pv11Ogg/Ox8ay5--

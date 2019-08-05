@@ -1,122 +1,67 @@
-From: masonccyang@mxic.com.tw
-Subject: Re: [PATCH v16 1/2] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
- driver
-Date: Mon, 5 Aug 2019 10:00:57 +0800
-Message-ID: <OFEFAD46C0.5BE85077-ON4825844D.000AB143-4825844D.000B12C8@mxic.com.tw>
-References: <1564539258-16313-1-git-send-email-masonccyang@mxic.com.tw> <1564539258-16313-2-git-send-email-masonccyang@mxic.com.tw> <3d01957a-7318-274f-f3d5-6cd00850511b@cogentembedded.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH 2/2] DTS: ARM: gta04: introduce legacy spi-cs-high to make
+ display work again
+Date: Mon, 5 Aug 2019 12:29:19 +0200
+Message-ID: <CACRpkdY0AVnkRa8sV_Z54qfX9SYufvaYYhU0k2+LitXo0sLx2w@mail.gmail.com>
+References: <cover.1562597164.git.hns@goldelico.com> <8ae7cf816b22ef9cecee0d789fcf9e8a06495c39.1562597164.git.hns@goldelico.com>
+ <20190724194259.GA25847@bogus> <2EA06398-E45B-481B-9A26-4DD2E043BF9C@goldelico.com>
+ <CAL_JsqLe_Y9Z6MRt7ojgSVKAb9n95S8j=eGidSVNz2T83j-zPQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Cc: broonie@kernel.org, devicetree@vger.kernel.org,
-        "Geert Uytterhoeven" <geert+renesas@glider.be>,
-        "Simon Horman" <horms@verge.net.au>, juliensu@mxic.com.tw,
-        lee.jones@linaro.org, linux-kernel@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-        marek.vasut@gmail.com, mark.rutland@arm.com,
-        miquel.raynal@bootlin.com, robh+dt@kernel.org
-To: "Sergei Shtylyov" <sergei.shtylyov@cogentembedded.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <3d01957a-7318-274f-f3d5-6cd00850511b@cogentembedded.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Mark Brown <broonie@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Discussions about the Letux Kernel
+        <letux-kernel@openphoenux.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        stable <stable@vger.kernel.org>
+To: Rob Herring <robh@kernel.org>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <CAL_JsqLe_Y9Z6MRt7ojgSVKAb9n95S8j=eGidSVNz2T83j-zPQ@mail.gmail.com>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Fri, Jul 26, 2019 at 12:43 AM Rob Herring <robh@kernel.org> wrote:
+> On Thu, Jul 25, 2019 at 12:23 AM H. Nikolaus Schaller <hns@goldelico.com> wrote:
 
-Hi Sergei, 
+> > I tried to convince Linus that this is the right way but he convinced
+> > me that a fix that handles all cases does not exist.
+> >
+> > There seem to be embedded devices with older DTB (potentially in ROM)
+> > which provide a plain 0 value for a gpios definition. And either with
+> > or without spi-cs-high.
+> >
+> > Since "0" is the same as "GPIO_ACTIVE_HIGH", the absence of
+> > spi-cs-high was and must be interpreted as active low for these
+> > devices. This leads to the inversion logic in code.
+> >
+> > AFAIR it boils down to the question if gpiolib and the bindings
+> > should still support such legacy devices with out-of tree DTB,
+> > but force in-tree DTS to add the legacy spi-cs-high property.
+> >
+> > Or if we should fix the 2 or 3 cases of in-tree legacy cases
+> > and potentially break out-of tree DTBs.
+>
+> If it is small number of platforms, then the kernel could handle those
+> cases explicitly as needed.
+>
+> > IMHO it is more general to keep the out-of-tree DTBs working
+> > and "fix" what we can control (in-tree DTS).
+>
+> If we do this, then we need to not call spi-cs-high legacy because
+> we're stuck with it forever.
 
-> > Add a driver for Renesas R-Car Gen3 RPC-IF SPI controller.
-> > 
-> > Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
-> > Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-> [...]
-> > diff --git a/drivers/spi/spi-renesas-rpc.c 
-b/drivers/spi/spi-renesas-rpc.c
-> > new file mode 100644
-> > index 0000000..648d14e
-> > --- /dev/null
-> > +++ b/drivers/spi/spi-renesas-rpc.c
-> > @@ -0,0 +1,754 @@
-> [...]
-> > +static void rpc_spi_hw_init(struct rpc_spi *rpc)
-> > +{
-> > +   //
-> > +   // NOTE: The 0x260 are undocumented bits, but they must be set.
-> > +   //    RPC_PHYCNT_STRTIM is strobe timing adjustment bit,
-> > +   //    0x0 : the delay is biggest,
-> > +   //    0x1 : the delay is 2nd biggest,
-> > +   //    On H3 ES1.x, the value should be 0, while on others,
-> > +   //    the value should be 6.
-> > +   //
-> > +   regmap_write(rpc->regmap, RPC_PHYCNT, RPC_PHYCNT_CAL |
-> > +              RPC_PHYCNT_STRTIM(6) | 0x260);
-> > +
-> > +   //
-> > +   // NOTE: The 0x1511144 are undocumented bits, but they must be set
-> > +   //       for RPC_PHYOFFSET1.
-> > +   //    The 0x31 are undocumented bits, but they must be set
-> > +   //    for RPC_PHYOFFSET2.
-> > +   //
-> > +   regmap_write(rpc->regmap, RPC_PHYOFFSET1, RPC_PHYOFFSET1_DDRTMG(3) 
-|
-> > +           0x1511144);
-> > +   regmap_write(rpc->regmap, RPC_PHYOFFSET2, 0x31 |
-> > +           RPC_PHYOFFSET2_OCTTMG(4));
-> > +   regmap_write(rpc->regmap, RPC_SSLDR, RPC_SSLDR_SPNDL(7) |
-> > +           RPC_SSLDR_SLNDL(7) | RPC_SSLDR_SCKDL(7));
-> > +   regmap_write(rpc->regmap, RPC_CMNCR, RPC_CMNCR_MD | RPC_CMNCR_SFDE 
-|
-> > +           RPC_CMNCR_MOIIO_HIZ | RPC_CMNCR_IOFV_HIZ |
-> > +           RPC_CMNCR_BSZ(0));
-> > +}
-> [...]
-> > +static int rpc_spi_io_xfer(struct rpc_spi *rpc,
-> > +            const void *tx_buf, void *rx_buf)
-> > +{
-> [...]
-> > +err_out:
-> > +   return reset_control_reset(rpc->rstc);
-> 
->    Don't toy need to call rpc_spi_hw_init(( here? The reset would spoil
-> the PHY/etc register setup otherwise...
+I agree. The background on it is here:
+https://lkml.org/lkml/2019/4/2/4
 
-ummm, will fix to
--------------------------------------->
-ret = reset_control_reset(rpc->rstc);
-rpc_spi_hw_init(rpc);
-return ret;
---------------------------------------<
-thanks for your review.
+Not using the negatively defined (i.e. if it is no there, the line is
+by default active low) spi-cs-high would break
+PowerPC, who were AFAICT using this to ship devices.
 
-> 
-> [...]
-> 
-> MBR, Sergei
-
-best regards,
-Mason
-
-CONFIDENTIALITY NOTE:
-
-This e-mail and any attachments may contain confidential information 
-and/or personal data, which is protected by applicable laws. Please be 
-reminded that duplication, disclosure, distribution, or use of this e-mail 
-(and/or its attachments) or any part thereof is prohibited. If you receive 
-this e-mail in error, please notify us immediately and delete this mail as 
-well as its attachment(s) from your system. In addition, please be 
-informed that collection, processing, and/or use of personal data is 
-prohibited unless expressly permitted by personal data protection laws. 
-Thank you for your attention and cooperation.
-
-Macronix International Co., Ltd.
-
-=====================================================================
-
-
-
-============================================================================
-
-CONFIDENTIALITY NOTE:
-
-This e-mail and any attachments may contain confidential information and/or personal data, which is protected by applicable laws. Please be reminded that duplication, disclosure, distribution, or use of this e-mail (and/or its attachments) or any part thereof is prohibited. If you receive this e-mail in error, please notify us immediately and delete this mail as well as its attachment(s) from your system. In addition, please be informed that collection, processing, and/or use of personal data is prohibited unless expressly permitted by personal data protection laws. Thank you for your attention and cooperation.
-
-Macronix International Co., Ltd.
-
-=====================================================================
+Yours,
+Linus Walleij

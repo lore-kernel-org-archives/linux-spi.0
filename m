@@ -1,18 +1,17 @@
 From: Neil Armstrong <narmstrong@baylibre.com>
-Subject: [RFCv2 0/9] dt-bindings: first tentative of conversion to yaml format
-Date: Mon,  5 Aug 2019 14:03:11 +0200
-Message-ID: <20190805120320.32282-1-narmstrong@baylibre.com>
+Subject: [RFCv2 3/9] dt-bindings: spi: meson: convert to yaml
+Date: Mon,  5 Aug 2019 14:03:14 +0200
+Message-ID: <20190805120320.32282-4-narmstrong@baylibre.com>
+References: <20190805120320.32282-1-narmstrong@baylibre.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: p.zabel@pengutronix.de, devicetree@vger.kernel.org,
- linux-watchdog@vger.kernel.org, Neil Armstrong <narmstrong@baylibre.com>,
- jassisinghbrar@gmail.com, linux-spi@vger.kernel.org,
- linux-crypto@vger.kernel.org, linux-serial@vger.kernel.org,
- linux-amlogic@lists.infradead.org, kishon@ti.com,
- linux-arm-kernel@lists.infradead.org
+Cc: linux-amlogic@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ Neil Armstrong <narmstrong@baylibre.com>
 To: robh+dt@kernel.org
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190805120320.32282-1-narmstrong@baylibre.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -24,71 +23,211 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a first tentative to convert some of the simplest Amlogic
-dt-bindings to the yaml format.
+Now that we have the DT validation in place, let's convert the device tree
+bindings for the Amlogic SPI controllers over to two separate YAML schemas.
 
-All have been tested using :
-$ make ARCH=arm64 dtbs_check
-
-Issues with the amlogic arm64 DTs has already been identified thanks
-to the validation scripts. The DT fixes will be pushed once these yaml
-bindings are acked.
-
-Changes since rfc v1:
-- Fixed bindings according to Rob's comments
-- Added commit log
-- renamed yaml files using amlogic prefix
-
-Neil Armstrong (9):
-  dt-bindings: mailbox: meson-mhu: convert to yaml
-  dt-bindings: rng: amlogic,meson-rng: convert to yaml
-  dt-bindings: spi: meson: convert to yaml
-  dt-bindings: reset: amlogic,meson-reset: convert to yaml
-  dt-bindings: arm: amlogic: amlogic,meson-gx-ao-secure: convert to yaml
-  dt-bindings: phy: meson-g12a-usb2-phy: convert to yaml
-  dt-bindings: phy: meson-g12a-usb3-pcie-phy: convert to yaml
-  dt-bindings: serial: meson-uart: convert to yaml
-  dt-bindings: watchdog: meson-gxbb-wdt: convert to yaml
-
- .../amlogic/amlogic,meson-gx-ao-secure.txt    | 28 -------
- .../amlogic/amlogic,meson-gx-ao-secure.yaml   | 52 +++++++++++++
- .../mailbox/amlogic,meson-gxbb-mhu.yaml       | 53 ++++++++++++++
- .../devicetree/bindings/mailbox/meson-mhu.txt | 34 ---------
- .../phy/amlogic,meson-g12a-usb2-phy.yaml      | 63 ++++++++++++++++
- .../phy/amlogic,meson-g12a-usb3-pcie-phy.yaml | 57 +++++++++++++++
- .../bindings/phy/meson-g12a-usb2-phy.txt      | 22 ------
- .../bindings/phy/meson-g12a-usb3-pcie-phy.txt | 22 ------
- .../bindings/reset/amlogic,meson-reset.txt    | 19 -----
- .../bindings/reset/amlogic,meson-reset.yaml   | 37 ++++++++++
- .../bindings/rng/amlogic,meson-rng.txt        | 21 ------
- .../bindings/rng/amlogic,meson-rng.yaml       | 37 ++++++++++
- .../bindings/serial/amlogic,meson-uart.txt    | 38 ----------
- .../bindings/serial/amlogic,meson-uart.yaml   | 73 +++++++++++++++++++
- .../bindings/spi/amlogic,meson-gx-spicc.yaml  | 67 +++++++++++++++++
- .../bindings/spi/amlogic,meson6-spifc.yaml    | 53 ++++++++++++++
- .../devicetree/bindings/spi/spi-meson.txt     | 55 --------------
- .../watchdog/amlogic,meson-gxbb-wdt.yaml      | 37 ++++++++++
- .../bindings/watchdog/meson-gxbb-wdt.txt      | 16 ----
- 19 files changed, 529 insertions(+), 255 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/arm/amlogic/amlogic,meson-gx-ao-secure.txt
- create mode 100644 Documentation/devicetree/bindings/arm/amlogic/amlogic,meson-gx-ao-secure.yaml
- create mode 100644 Documentation/devicetree/bindings/mailbox/amlogic,meson-gxbb-mhu.yaml
- delete mode 100644 Documentation/devicetree/bindings/mailbox/meson-mhu.txt
- create mode 100644 Documentation/devicetree/bindings/phy/amlogic,meson-g12a-usb2-phy.yaml
- create mode 100644 Documentation/devicetree/bindings/phy/amlogic,meson-g12a-usb3-pcie-phy.yaml
- delete mode 100644 Documentation/devicetree/bindings/phy/meson-g12a-usb2-phy.txt
- delete mode 100644 Documentation/devicetree/bindings/phy/meson-g12a-usb3-pcie-phy.txt
- delete mode 100644 Documentation/devicetree/bindings/reset/amlogic,meson-reset.txt
- create mode 100644 Documentation/devicetree/bindings/reset/amlogic,meson-reset.yaml
- delete mode 100644 Documentation/devicetree/bindings/rng/amlogic,meson-rng.txt
- create mode 100644 Documentation/devicetree/bindings/rng/amlogic,meson-rng.yaml
- delete mode 100644 Documentation/devicetree/bindings/serial/amlogic,meson-uart.txt
- create mode 100644 Documentation/devicetree/bindings/serial/amlogic,meson-uart.yaml
+Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
+---
+ .../bindings/spi/amlogic,meson-gx-spicc.yaml  | 67 +++++++++++++++++++
+ .../bindings/spi/amlogic,meson6-spifc.yaml    | 53 +++++++++++++++
+ .../devicetree/bindings/spi/spi-meson.txt     | 55 ---------------
+ 3 files changed, 120 insertions(+), 55 deletions(-)
  create mode 100644 Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
  create mode 100644 Documentation/devicetree/bindings/spi/amlogic,meson6-spifc.yaml
  delete mode 100644 Documentation/devicetree/bindings/spi/spi-meson.txt
- create mode 100644 Documentation/devicetree/bindings/watchdog/amlogic,meson-gxbb-wdt.yaml
- delete mode 100644 Documentation/devicetree/bindings/watchdog/meson-gxbb-wdt.txt
 
+diff --git a/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml b/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
+new file mode 100644
+index 000000000000..49b617c98ae7
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
+@@ -0,0 +1,67 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++# Copyright 2019 BayLibre, SAS
++%YAML 1.2
++---
++$id: "http://devicetree.org/schemas/spi/amlogic,meson-gx-spicc.yaml#"
++$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++
++title: Amlogic Meson SPI Communication Controller
++
++maintainers:
++  - Neil Armstrong <narmstrong@baylibre.com>
++
++allOf:
++  - $ref: "spi-controller.yaml#"
++
++description: |
++  The Meson SPICC is a generic SPI controller for general purpose Full-Duplex
++  communications with dedicated 16 words RX/TX PIO FIFOs.
++
++properties:
++  compatible:
++    enum:
++      - amlogic,meson-gx-spicc # SPICC controller on Amlogic GX and compatible SoCs
++      - amlogic,meson-axg-spicc # SPICC controller on Amlogic AXG and compatible SoCs
++
++  interrupts:
++    maxItems: 1
++
++  reg:
++    maxItems: 1
++
++  resets:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++  clock-names:
++    description: input clock for the baud rate generator
++    items:
++      - const: core
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++  - clock-names
++
++examples:
++  - |
++    spi@c1108d80 {
++          compatible = "amlogic,meson-gx-spicc";
++          reg = <0xc1108d80 0x80>;
++          interrupts = <112>;
++          clocks = <&clk81>;
++          clock-names = "core";
++          #address-cells = <1>;
++          #size-cells = <0>;
++
++          ethernet-switch@0 {
++              compatible = "micrel,ks8995m";
++              spi-max-frequency = <1000000>;
++              reg = <0>;
++          };
++    };
++
+diff --git a/Documentation/devicetree/bindings/spi/amlogic,meson6-spifc.yaml b/Documentation/devicetree/bindings/spi/amlogic,meson6-spifc.yaml
+new file mode 100644
+index 000000000000..67dcedc81a5e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/amlogic,meson6-spifc.yaml
+@@ -0,0 +1,53 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++# Copyright 2019 BayLibre, SAS
++%YAML 1.2
++---
++$id: "http://devicetree.org/schemas/spi/amlogic,meson6-spifc.yaml#"
++$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++
++title: Amlogic Meson SPI Flash Controller
++
++maintainers:
++  - Neil Armstrong <narmstrong@baylibre.com>
++
++allOf:
++  - $ref: "spi-controller.yaml#"
++
++description: |
++  The Meson SPIFC is a controller optimized for communication with SPI
++  NOR memories, without DMA support and a 64-byte unified transmit /
++  receive buffer.
++
++properties:
++  compatible:
++    enum:
++      - amlogic,meson6-spifc # SPI Flash Controller on Meson6 and compatible SoCs
++      - amlogic,meson-gxbb-spifc # SPI Flash Controller on GXBB and compatible SoCs
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - clocks
++
++examples:
++  - |
++    spi@c1108c80 {
++          compatible = "amlogic,meson6-spifc";
++          reg = <0xc1108c80 0x80>;
++          clocks = <&clk81>;
++          #address-cells = <1>;
++          #size-cells = <0>;
++
++          flash: m25p80@0 {
++              compatible = "spansion,m25p80", "jedec,spi-nor";
++              reg = <0>;
++              spi-max-frequency = <40000000>;
++          };
++    };
++
+diff --git a/Documentation/devicetree/bindings/spi/spi-meson.txt b/Documentation/devicetree/bindings/spi/spi-meson.txt
+deleted file mode 100644
+index b7f5e86fed22..000000000000
+--- a/Documentation/devicetree/bindings/spi/spi-meson.txt
++++ /dev/null
+@@ -1,55 +0,0 @@
+-Amlogic Meson SPI controllers
+-
+-* SPIFC (SPI Flash Controller)
+-
+-The Meson SPIFC is a controller optimized for communication with SPI
+-NOR memories, without DMA support and a 64-byte unified transmit /
+-receive buffer.
+-
+-Required properties:
+- - compatible: should be "amlogic,meson6-spifc" or "amlogic,meson-gxbb-spifc"
+- - reg: physical base address and length of the controller registers
+- - clocks: phandle of the input clock for the baud rate generator
+- - #address-cells: should be 1
+- - #size-cells: should be 0
+-
+-	spi@c1108c80 {
+-		compatible = "amlogic,meson6-spifc";
+-		reg = <0xc1108c80 0x80>;
+-		clocks = <&clk81>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-	};
+-
+-* SPICC (SPI Communication Controller)
+-
+-The Meson SPICC is generic SPI controller for general purpose Full-Duplex
+-communications with dedicated 16 words RX/TX PIO FIFOs.
+-
+-Required properties:
+- - compatible: should be:
+-	"amlogic,meson-gx-spicc" on Amlogic GX and compatible SoCs.
+-	"amlogic,meson-axg-spicc" on Amlogic AXG and compatible SoCs
+- - reg: physical base address and length of the controller registers
+- - interrupts: The interrupt specifier
+- - clock-names: Must contain "core"
+- - clocks: phandle of the input clock for the baud rate generator
+- - #address-cells: should be 1
+- - #size-cells: should be 0
+-
+-Optional properties:
+- - resets: phandle of the internal reset line
+-
+-See ../spi/spi-bus.txt for more details on SPI bus master and slave devices
+-required and optional properties.
+-
+-Example :
+-	spi@c1108d80 {
+-		compatible = "amlogic,meson-gx-spicc";
+-		reg = <0xc1108d80 0x80>;
+-		interrupts = <GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>;
+-		clock-names = "core";
+-		clocks = <&clk81>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-	};
 -- 
 2.22.0

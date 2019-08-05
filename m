@@ -1,233 +1,83 @@
-From: Neil Armstrong <narmstrong@baylibre.com>
-Subject: [RFCv2 3/9] dt-bindings: spi: meson: convert to yaml
-Date: Mon,  5 Aug 2019 14:03:14 +0200
-Message-ID: <20190805120320.32282-4-narmstrong@baylibre.com>
-References: <20190805120320.32282-1-narmstrong@baylibre.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] SPI fixes for v5.3
+Date: Mon, 5 Aug 2019 15:50:14 +0100
+Message-ID: <20190805145014.GI6432@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-amlogic@lists.infradead.org, devicetree@vger.kernel.org,
- linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- Neil Armstrong <narmstrong@baylibre.com>
-To: robh+dt@kernel.org
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190805120320.32282-1-narmstrong@baylibre.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="hABqaeELJqnDDeDE"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Now that we have the DT validation in place, let's convert the device tree
-bindings for the Amlogic SPI controllers over to two separate YAML schemas.
 
-Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
----
- .../bindings/spi/amlogic,meson-gx-spicc.yaml  | 67 +++++++++++++++++++
- .../bindings/spi/amlogic,meson6-spifc.yaml    | 53 +++++++++++++++
- .../devicetree/bindings/spi/spi-meson.txt     | 55 ---------------
- 3 files changed, 120 insertions(+), 55 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
- create mode 100644 Documentation/devicetree/bindings/spi/amlogic,meson6-spifc.yaml
- delete mode 100644 Documentation/devicetree/bindings/spi/spi-meson.txt
+--hABqaeELJqnDDeDE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml b/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
-new file mode 100644
-index 000000000000..49b617c98ae7
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
-@@ -0,0 +1,67 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+# Copyright 2019 BayLibre, SAS
-+%YAML 1.2
-+---
-+$id: "http://devicetree.org/schemas/spi/amlogic,meson-gx-spicc.yaml#"
-+$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+
-+title: Amlogic Meson SPI Communication Controller
-+
-+maintainers:
-+  - Neil Armstrong <narmstrong@baylibre.com>
-+
-+allOf:
-+  - $ref: "spi-controller.yaml#"
-+
-+description: |
-+  The Meson SPICC is a generic SPI controller for general purpose Full-Duplex
-+  communications with dedicated 16 words RX/TX PIO FIFOs.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - amlogic,meson-gx-spicc # SPICC controller on Amlogic GX and compatible SoCs
-+      - amlogic,meson-axg-spicc # SPICC controller on Amlogic AXG and compatible SoCs
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  reg:
-+    maxItems: 1
-+
-+  resets:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  clock-names:
-+    description: input clock for the baud rate generator
-+    items:
-+      - const: core
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
-+  - clock-names
-+
-+examples:
-+  - |
-+    spi@c1108d80 {
-+          compatible = "amlogic,meson-gx-spicc";
-+          reg = <0xc1108d80 0x80>;
-+          interrupts = <112>;
-+          clocks = <&clk81>;
-+          clock-names = "core";
-+          #address-cells = <1>;
-+          #size-cells = <0>;
-+
-+          ethernet-switch@0 {
-+              compatible = "micrel,ks8995m";
-+              spi-max-frequency = <1000000>;
-+              reg = <0>;
-+          };
-+    };
-+
-diff --git a/Documentation/devicetree/bindings/spi/amlogic,meson6-spifc.yaml b/Documentation/devicetree/bindings/spi/amlogic,meson6-spifc.yaml
-new file mode 100644
-index 000000000000..67dcedc81a5e
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/amlogic,meson6-spifc.yaml
-@@ -0,0 +1,53 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+# Copyright 2019 BayLibre, SAS
-+%YAML 1.2
-+---
-+$id: "http://devicetree.org/schemas/spi/amlogic,meson6-spifc.yaml#"
-+$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+
-+title: Amlogic Meson SPI Flash Controller
-+
-+maintainers:
-+  - Neil Armstrong <narmstrong@baylibre.com>
-+
-+allOf:
-+  - $ref: "spi-controller.yaml#"
-+
-+description: |
-+  The Meson SPIFC is a controller optimized for communication with SPI
-+  NOR memories, without DMA support and a 64-byte unified transmit /
-+  receive buffer.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - amlogic,meson6-spifc # SPI Flash Controller on Meson6 and compatible SoCs
-+      - amlogic,meson-gxbb-spifc # SPI Flash Controller on GXBB and compatible SoCs
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+
-+examples:
-+  - |
-+    spi@c1108c80 {
-+          compatible = "amlogic,meson6-spifc";
-+          reg = <0xc1108c80 0x80>;
-+          clocks = <&clk81>;
-+          #address-cells = <1>;
-+          #size-cells = <0>;
-+
-+          flash: m25p80@0 {
-+              compatible = "spansion,m25p80", "jedec,spi-nor";
-+              reg = <0>;
-+              spi-max-frequency = <40000000>;
-+          };
-+    };
-+
-diff --git a/Documentation/devicetree/bindings/spi/spi-meson.txt b/Documentation/devicetree/bindings/spi/spi-meson.txt
-deleted file mode 100644
-index b7f5e86fed22..000000000000
---- a/Documentation/devicetree/bindings/spi/spi-meson.txt
-+++ /dev/null
-@@ -1,55 +0,0 @@
--Amlogic Meson SPI controllers
--
--* SPIFC (SPI Flash Controller)
--
--The Meson SPIFC is a controller optimized for communication with SPI
--NOR memories, without DMA support and a 64-byte unified transmit /
--receive buffer.
--
--Required properties:
-- - compatible: should be "amlogic,meson6-spifc" or "amlogic,meson-gxbb-spifc"
-- - reg: physical base address and length of the controller registers
-- - clocks: phandle of the input clock for the baud rate generator
-- - #address-cells: should be 1
-- - #size-cells: should be 0
--
--	spi@c1108c80 {
--		compatible = "amlogic,meson6-spifc";
--		reg = <0xc1108c80 0x80>;
--		clocks = <&clk81>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--	};
--
--* SPICC (SPI Communication Controller)
--
--The Meson SPICC is generic SPI controller for general purpose Full-Duplex
--communications with dedicated 16 words RX/TX PIO FIFOs.
--
--Required properties:
-- - compatible: should be:
--	"amlogic,meson-gx-spicc" on Amlogic GX and compatible SoCs.
--	"amlogic,meson-axg-spicc" on Amlogic AXG and compatible SoCs
-- - reg: physical base address and length of the controller registers
-- - interrupts: The interrupt specifier
-- - clock-names: Must contain "core"
-- - clocks: phandle of the input clock for the baud rate generator
-- - #address-cells: should be 1
-- - #size-cells: should be 0
--
--Optional properties:
-- - resets: phandle of the internal reset line
--
--See ../spi/spi-bus.txt for more details on SPI bus master and slave devices
--required and optional properties.
--
--Example :
--	spi@c1108d80 {
--		compatible = "amlogic,meson-gx-spicc";
--		reg = <0xc1108d80 0x80>;
--		interrupts = <GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>;
--		clock-names = "core";
--		clocks = <&clk81>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--	};
--- 
-2.22.0
+The following changes since commit 8cc7720470a17558bd6f8d67df63361600e46c55:
+
+  spi: pxa2xx: Add support for Intel Elkhart Lake (2019-07-03 13:03:44 +0100)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v5.3-rc3
+
+for you to fetch changes up to a4127952859a869cf3fc5a49547dbe2ffa2eac89:
+
+  spi: pxa2xx: Add support for Intel Tiger Lake (2019-08-02 12:14:23 +0100)
+
+----------------------------------------------------------------
+spi: Fixes for v5.3
+
+A bunch of small, device specific things here plus a DT bindings fix for
+the new validatable YAML binding format.  The most notable thing is the
+fix for GPIO chip selects which fixes a corner case in updates of that
+code to modern APIs, unfortunately due to a historical mess the code
+around GPIO support is obscure, fragile and an ABI which makes and
+attempt to improve the situation painful.
+
+----------------------------------------------------------------
+Han Xu (1):
+      spi: spi-fsl-qspi: change i.MX7D RX FIFO size
+
+Jarkko Nikula (1):
+      spi: pxa2xx: Add support for Intel Tiger Lake
+
+Linus Walleij (1):
+      spi: gpio: Add SPI_MASTER_GPIO_SS flag
+
+Lubomir Rintel (1):
+      spi: pxa2xx: Balance runtime PM enable/disable on error
+
+Lukas Wunner (1):
+      spi: bcm2835: Fix 3-wire mode if DMA is enabled
+
+Rob Herring (1):
+      spi: dt-bindings: spi-controller: remove unnecessary 'maxItems: 1' from reg
+
+ Documentation/devicetree/bindings/spi/spi-controller.yaml |  1 -
+ drivers/spi/spi-bcm2835.c                                 |  3 ++-
+ drivers/spi/spi-fsl-qspi.c                                |  2 +-
+ drivers/spi/spi-gpio.c                                    |  6 ++++++
+ drivers/spi/spi-pxa2xx.c                                  | 14 ++++++++++++--
+ 5 files changed, 21 insertions(+), 5 deletions(-)
+
+--hABqaeELJqnDDeDE
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEyBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1IQiYACgkQJNaLcl1U
+h9DVrAf4rI7VruSCdKi9gWLD+MK79ppEONhiDo3KiVnkHghlOck5NtA88KzhQizW
+QF3hd29Y3hJil+r31iuPIqj9GdLKGMpFPrgovR184SrA7aUikm8niuuqh0RE0voX
+KKEAXz+AYpUxsBlLAu6pyF+5treKw+B/HmHXSaT/+Bv9TDrbrL1GcZKYLVm747ta
+BkFP6Sc/IJRgw8hq6TdRtshGoxlgT4rLaSxuMtkltbu1UoAA/qyq98rjmJvNfbSi
+b4Y0hmhY50wM9dN1F0Vj4PGmfGOTqM9YqubE6yLuWHS8dgXL/pLULjXqfxoYMjCE
+PQxWUtWfcE/GAHD/sMUs8IYK8L3Q
+=AiZ5
+-----END PGP SIGNATURE-----
+
+--hABqaeELJqnDDeDE--

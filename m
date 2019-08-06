@@ -1,67 +1,118 @@
-From: Rob Herring <robh+dt@kernel.org>
-Subject: Re: [RFCv2 0/9] dt-bindings: first tentative of conversion to yaml
- format
-Date: Mon, 5 Aug 2019 15:51:36 -0600
-Message-ID: <CAL_JsqJzwtSXX0nrS7RBP8u-e=16SiWOBjLrvy8Amc08PfpXag@mail.gmail.com>
-References: <20190805120320.32282-1-narmstrong@baylibre.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Philipp Zabel <p.zabel@pengutronix.de>, devicetree@vger.kernel.org,
- LINUX-WATCHDOG <linux-watchdog@vger.kernel.org>,
- Jassi Brar <jassisinghbrar@gmail.com>, linux-spi <linux-spi@vger.kernel.org>,
- "open list:HARDWARE RANDOM NUMBER GENERATOR CORE"
- <linux-crypto@vger.kernel.org>,
- "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
- linux-amlogic@lists.infradead.org, Kishon Vijay Abraham I <kishon@ti.com>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>
-To: Neil Armstrong <narmstrong@baylibre.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190805120320.32282-1-narmstrong@baylibre.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+From: Mason Yang <masonccyang@mxic.com.tw>
+Subject: [PATCH v17 0/2] spi: Add Renesas R-Car Gen3 RPC-IF SPI driver
+Date: Tue,  6 Aug 2019 10:54:19 +0800
+Message-ID: <1565060061-11588-1-git-send-email-masonccyang@mxic.com.tw>
+Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
+        lee.jones@linaro.org, sergei.shtylyov@cogentembedded.com,
+        Mason Yang <masonccyang@mxic.com.tw>, marek.vasut@gmail.com,
+        miquel.raynal@bootlin.com
+To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        devicetree@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Aug 5, 2019 at 6:03 AM Neil Armstrong <narmstrong@baylibre.com> wrote:
->
-> This is a first tentative to convert some of the simplest Amlogic
-> dt-bindings to the yaml format.
->
-> All have been tested using :
-> $ make ARCH=arm64 dtbs_check
->
-> Issues with the amlogic arm64 DTs has already been identified thanks
-> to the validation scripts. The DT fixes will be pushed once these yaml
-> bindings are acked.
->
-> Changes since rfc v1:
-> - Fixed bindings according to Rob's comments
-> - Added commit log
-> - renamed yaml files using amlogic prefix
->
-> Neil Armstrong (9):
->   dt-bindings: mailbox: meson-mhu: convert to yaml
->   dt-bindings: rng: amlogic,meson-rng: convert to yaml
->   dt-bindings: spi: meson: convert to yaml
->   dt-bindings: reset: amlogic,meson-reset: convert to yaml
->   dt-bindings: arm: amlogic: amlogic,meson-gx-ao-secure: convert to yaml
->   dt-bindings: phy: meson-g12a-usb2-phy: convert to yaml
->   dt-bindings: phy: meson-g12a-usb3-pcie-phy: convert to yaml
->   dt-bindings: serial: meson-uart: convert to yaml
->   dt-bindings: watchdog: meson-gxbb-wdt: convert to yaml
+Hi Mark,
 
-For the series,
+v17 patch including:
+1) patch adding rpc_spi_hw_init() after reset_control_rest()
+2) v14 dt-binding file has reviewed by Rob Herring.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+v16 patch including:
+1) fixed typo and spi-tx/rx-bus-width in DTS.
+2) v14 dt-binding file has reviewed by Rob Herring.
 
-What's your merge plan? Do you want me to take the whole series?
+v15 patch including:
+1) A typo in dt-bindings and add flash subnode description
+2) v14 dt-binding file has reviewed by Rob Herring.
 
-Rob
+v14 patch including:
+1) Patch RPC-IF back to SPI mode only instead of MFD & SPI 
+   by MFD maintainer, Lee Jones comments.
+2) Patch pm_runtime control in spi transfer.
+
+v13 patch including:
+1) rename mfd to ddata for SPI driver.
+2) Patch RPC-IF devicetree for SPI and HyperFlash.
+
+v12 patch including:
+1) add back "wbuf" in dts example.
+2) RPC-IF replace rpc-if in dts.
+
+v11 patch including:
+1) Patch mfd include header file.
+2) mfd coding style.
+3) add back wbuf description in dts.
+
+v10 patch including:
+1) Address range for > 64M byte flash.
+2) Removed dirmap_write due to WBUF 256 bytes transfer issue.
+3) Dummy bytes setting according to spi-nor.c layer.
+
+v9 patch is for RPC MFD driver and RPC SPI driver.
+
+v8 patch including:
+1) Supported SoC-specific values in DTS.
+2) Rename device node name as flash.
+
+v7 patch is according to Geert and Sergei's comments:
+1) Add all R-Car Gen3 model in dts.
+2) patch rpc-if child node search.
+3) minror coding style.
+
+v6 patch is accroding to Geert, Marek and Sergei's comments:
+1) spi_controller for new code.
+2) "renesas,rcar-gen3-rpc" instead of "renesas,r8a77995-rpc."
+3) patch external address read mode w/o u64 readq().
+4) patch dts for write buffer & drop "renesas,rpc-mode".
+5) coding style and so on.
+
+v5 patch is accroding to Sergei's comments:
+1) Read 6 bytes ID from Sergei's patch.
+2) regmap_update_bits().
+3) C++ style comment.
+
+v4 patch is according to Sergei's comments including:
+1) Drop soc_device_match().
+2) Drop unused RPC registers.
+3) Use ilog2() instead of fls().
+4) Patch read 6 bytes ID w/ one command.
+5) Coding style and so on.
+
+v3 patch is according to Marek and Geert's comments including:
+1) soc_device_mach() to set up RPC_PHYCNT_STRTIM.
+2) get_unaligned().
+3) rpc-mode for rpi-spi-flash or rpc-hyperflash.
+4) coding style and so on.
+
+v2 patch including:
+1) remove RPC clock enable/dis-able control,
+2) patch run time PM.
+3) add RPC module software reset,
+4) add regmap.
+5) other coding style and so on.
+
+thanks for your review.
+
+best regards,
+Mason
+
+
+Mason Yang (2):
+  spi: Add Renesas R-Car Gen3 RPC-IF SPI controller driver
+  dt-bindings: spi: Document Renesas R-Car Gen3 RPC-IF controller
+    bindings
+
+ .../devicetree/bindings/spi/spi-renesas-rpc.txt    |  45 ++
+ drivers/spi/Kconfig                                |   6 +
+ drivers/spi/Makefile                               |   1 +
+ drivers/spi/spi-renesas-rpc.c                      | 756 +++++++++++++++++++++
+ 4 files changed, 808 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-renesas-rpc.txt
+ create mode 100644 drivers/spi/spi-renesas-rpc.c
+
+-- 
+1.9.1

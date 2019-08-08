@@ -1,65 +1,111 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 2/2] spi: npcm-fiu: add NPCM FIU controller driver
-Date: Thu, 8 Aug 2019 19:55:22 +0100
-Message-ID: <20190808185522.GJ3795@sirena.co.uk>
-References: <20190808131448.349161-1-tmaimon77@gmail.com>
- <20190808131448.349161-3-tmaimon77@gmail.com>
- <20190808132740.GG3795@sirena.co.uk>
- <CAP6Zq1j7jHejdx9h-nxCJcVjtGx_3rHmay7R8nn11DLaE8Q4gA@mail.gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 07/22] ARM: omap1: move perseus spi pinconf to board file
+Date: Thu,  8 Aug 2019 23:22:16 +0200
+Message-ID: <20190808212234.2213262-8-arnd@arndb.de>
+References: <20190808212234.2213262-1-arnd@arndb.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="5me2qT3T17SWzdxI"
-Cc: Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>, bbrezillon@kernel.org,
-        Avi Fishman <avifishman70@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Patrick Venture <venture@google.com>,
-        Nancy Yuen <yuenn@google.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        linux-spi@vger.kernel.org, devicetree <devicetree@vger.kernel.org>,
-        OpenBMC Maillist <openbmc@lists.ozlabs.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-To: Tomer Maimon <tmaimon77@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAP6Zq1j7jHejdx9h-nxCJcVjtGx_3rHmay7R8nn11DLaE8Q4gA@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Arnd Bergmann <arnd@arndb.de>,
+ Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Boris Brezillon <bbrezillon@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, Tomi Valkeinen <tomi.valkeinen@ti.com>,
+ linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+To: Tony Lindgren <tony@atomide.com>, Aaro Koskinen <aaro.koskinen@iki.fi>,
+ Mark Brown <broonie@kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190808212234.2213262-1-arnd@arndb.de>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+The driver has always had a FIXME about this, and it seems
+like this trivial code move avoids a mach header inclusion,
+so just do it.
 
---5me2qT3T17SWzdxI
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+With that out of the way, and the header file inclusions
+changed to global files, the driver can also be compile-tested
+on other platforms.
 
-On Thu, Aug 08, 2019 at 06:37:06PM +0300, Tomer Maimon wrote:
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ arch/arm/mach-omap1/board-perseus2.c |  6 ++++++
+ drivers/spi/Kconfig                  |  2 +-
+ drivers/spi/spi-omap-uwire.c         | 15 +++------------
+ 3 files changed, 10 insertions(+), 13 deletions(-)
 
-> for example in our driver we modify the access type (singe, dual or quad)
-> according the op->addr.buswidth
-> for example in the npcm_fiu_set_drd function.
-
->         regmap_update_bits(fiu->regmap, NPCM_FIU_DRD_CFG,
->                            NPCM_FIU_DRD_CFG_ACCTYPE,
->                            ilog2(op->addr.buswidth) <<
->                            NPCM_FIU_DRD_ACCTYPE_SHIFT);
-
-> we also modify it in the UMA R/W functions.
-
-Ah, it's only for the flash functions - that's fine.
-
---5me2qT3T17SWzdxI
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1McBkACgkQJNaLcl1U
-h9CSyQf9HMQyWI7F+/mz/TefzbACHnpE0c8lwToPC8gs3NlHo8g0orLblfG3DsLm
-UEB893DEnNq2PyAZ3RalNBeet13paLEA0qBru8OSMUWpeNwDNxNPJnw0LKgWMfJd
-hR7ajSCzI8nNleQRxNko7depUDzpemRXDWxmIyeoBPOYzHxX3AWFoyuaz9aUo2Rl
-Unh0Hf1osxqIy1e/McvePEnPv0TT99Ymj8k6/8GnvioyP4EpahOXI8dSR2jI0EhD
-E00zLhgmAoNpkwrV/jtjy/U4bWl2oEXrySbQ9Ljy8b0iFVArSIEFILHO06iXOkXP
-gKzJeeqWsQ6fz//+fGxegx1F6fcTpg==
-=AZer
------END PGP SIGNATURE-----
-
---5me2qT3T17SWzdxI--
+diff --git a/arch/arm/mach-omap1/board-perseus2.c b/arch/arm/mach-omap1/board-perseus2.c
+index 1aeeb7337d29..da0155107d85 100644
+--- a/arch/arm/mach-omap1/board-perseus2.c
++++ b/arch/arm/mach-omap1/board-perseus2.c
+@@ -289,6 +289,12 @@ static void __init omap_perseus2_init(void)
+ 	omap_cfg_reg(F4_7XX_KBC3);
+ 	omap_cfg_reg(E3_7XX_KBC4);
+ 
++	if (IS_ENABLED(CONFIG_SPI_OMAP_UWIRE)) {
++		/* configure pins: MPU_UW_nSCS1, MPU_UW_SDO, MPU_UW_SCLK */
++		int val = omap_readl(OMAP7XX_IO_CONF_9) & ~0x00EEE000;
++		omap_writel(val | 0x00AAA000, OMAP7XX_IO_CONF_9);
++	}
++
+ 	platform_add_devices(devices, ARRAY_SIZE(devices));
+ 
+ 	omap_serial_init();
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 949b18ed9d6b..4e67c155229e 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -464,7 +464,7 @@ config SPI_OCTEON
+ 
+ config SPI_OMAP_UWIRE
+ 	tristate "OMAP1 MicroWire"
+-	depends on ARCH_OMAP1
++	depends on ARCH_OMAP1 || (ARM && COMPILE_TEST)
+ 	select SPI_BITBANG
+ 	help
+ 	  This hooks up to the MicroWire controller on OMAP1 chips.
+diff --git a/drivers/spi/spi-omap-uwire.c b/drivers/spi/spi-omap-uwire.c
+index ce8dbdbce312..278d42a2ec49 100644
+--- a/drivers/spi/spi-omap-uwire.c
++++ b/drivers/spi/spi-omap-uwire.c
+@@ -44,13 +44,10 @@
+ #include <linux/module.h>
+ #include <linux/io.h>
+ 
+-#include <mach/hardware.h>
+ #include <asm/mach-types.h>
+-
+-#include <mach/mux.h>
+-
+-#include <mach/omap7xx.h>	/* OMAP7XX_IO_CONF registers */
+-
++#include <linux/soc/ti/omap1-io.h>
++#include <linux/soc/ti/omap1-soc.h>
++#include <linux/soc/ti/omap1-mux.h>
+ 
+ /* FIXME address is now a platform device resource,
+  * and irqs should show there too...
+@@ -541,12 +538,6 @@ static int __init omap_uwire_init(void)
+ 		omap_cfg_reg(N14_1610_UWIRE_CS0);
+ 		omap_cfg_reg(N15_1610_UWIRE_CS1);
+ 	}
+-	if (machine_is_omap_perseus2()) {
+-		/* configure pins: MPU_UW_nSCS1, MPU_UW_SDO, MPU_UW_SCLK */
+-		int val = omap_readl(OMAP7XX_IO_CONF_9) & ~0x00EEE000;
+-		omap_writel(val | 0x00AAA000, OMAP7XX_IO_CONF_9);
+-	}
+-
+ 	return platform_driver_register(&uwire_driver);
+ }
+ 
+-- 
+2.20.0

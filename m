@@ -1,82 +1,58 @@
-From: Tomer Maimon <tmaimon77@gmail.com>
-Subject: [PATCH v2 1/2] dt-binding: spi: add NPCM FIU controller
-Date: Thu,  8 Aug 2019 16:14:47 +0300
-Message-ID: <20190808131448.349161-2-tmaimon77@gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 2/2] spi: npcm-fiu: add NPCM FIU controller driver
+Date: Thu, 8 Aug 2019 14:27:40 +0100
+Message-ID: <20190808132740.GG3795@sirena.co.uk>
 References: <20190808131448.349161-1-tmaimon77@gmail.com>
-Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        openbmc@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        Tomer Maimon <tmaimon77@gmail.com>
-To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        vigneshr@ti.com, bbrezillon@kernel.org, avifishman70@gmail.com,
+ <20190808131448.349161-3-tmaimon77@gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="S5HS5MvDw4DmbRmb"
+Cc: robh+dt@kernel.org, mark.rutland@arm.com, vigneshr@ti.com,
+        bbrezillon@kernel.org, avifishman70@gmail.com,
         tali.perry1@gmail.com, venture@google.com, yuenn@google.com,
-        benjaminfair@google.com
+        benjaminfair@google.com, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, openbmc@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org
+To: Tomer Maimon <tmaimon77@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190808131448.349161-1-tmaimon77@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20190808131448.349161-3-tmaimon77@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Added device tree binding documentation for Nuvoton BMC
-NPCM Flash Interface Unit(FIU) SPI master controller
-using SPI-MEM interface.
 
-Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
----
- .../bindings/spi/nuvoton,npcm-fiu.txt         | 47 +++++++++++++++++++
- 1 file changed, 47 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt
+--S5HS5MvDw4DmbRmb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt b/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt
-new file mode 100644
-index 000000000000..ab37aae91d19
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt
-@@ -0,0 +1,47 @@
-+* Nuvoton FLASH Interface Unit (FIU) SPI Controller
-+
-+NPCM FIU supports single, dual and quad communication interface.
-+
-+The NPCM7XX supports three FIU modules,
-+FIU0 and FIUx supports two chip selects,
-+FIU3 support four chip select.
-+
-+Required properties:
-+  - compatible : "nuvoton,npcm750-fiu" for the NPCM7XX BMC
-+  - #address-cells : should be 1.
-+  - #size-cells : should be 0.
-+  - reg : the first contains the register location and length,
-+          the second contains the memory mapping address and length
-+  - reg-names: Should contain the reg names "control" and "memory"
-+  - clocks : phandle of FIU reference clock.
-+
-+Required properties in case the pins can be muxed:
-+  - pinctrl-names : a pinctrl state named "default" must be defined.
-+  - pinctrl-0 : phandle referencing pin configuration of the device.
-+
-+Optional property:
-+  - spix-mode: enable spix-mode for an expansion bus to an ASIC or CPLD.
-+
-+Aliases:
-+- All the FIU controller nodes should be represented in the aliases node using
-+  the following format 'fiu{n}' where n is a unique number for the alias.
-+  In the NPCM7XX BMC:
-+  		fiu0 represent fiu 0 controller
-+  		fiu1 represent fiu 3 controller
-+  		fiu2 represent fiu x controller
-+
-+Example:
-+fiu3: fiu@c00000000 {
-+	compatible = "nuvoton,npcm750-fiu";
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	reg = <0xfb000000 0x1000>, <0x80000000 0x10000000>;
-+	reg-names = "control", "memory";
-+	clocks = <&clk NPCM7XX_CLK_AHB>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&spi3_pins>;
-+	spi-nor@0 {
-+			...
-+	};
-+};
-+
--- 
-2.18.0
+On Thu, Aug 08, 2019 at 04:14:48PM +0300, Tomer Maimon wrote:
+
+> +	ctrl->mode_bits =3D SPI_RX_DUAL | SPI_RX_QUAD
+> +		| SPI_TX_DUAL | SPI_TX_QUAD;
+> +	ctrl->setup =3D npcm_fiu_setup;
+
+I'm not seeing where we implement dual or quad modes in the driver?
+There's some=20
+
+> +	dev_info(dev, "NPCM %s probe succeed\n", fiu->info->name);
+
+Just remove this, it makes the log more verbose but doesn't really add
+any information.
+
+--S5HS5MvDw4DmbRmb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1MI0sACgkQJNaLcl1U
+h9Cu2wf9FI8ekzKOtKPknDdXJFSkW34/Y7Fa6IFFOzRNy/zJa/KK4039pd967txp
+uqy4z1++x9xd9hct1F2qFzJRRAAfKHxCQVjwfxfXKf5kwHLS/tP9Q3LQtI4Curae
+jmY4wrFeNsDTGDtA9BFQFdDbDUp1nNETnWzNPBijNo9cuzTlCsTEEhBpOM5HhhJS
+E5i/L3B/If5JDs18ULa4B7vsL4oqMxgHw6ztC2EwkxcNl0/8ymCTzHI8D1kpl/+c
+nJ/cX59A4kqGn42v5Zw/dt1zrqAL5lPTywW2RL/WbS7IiDjREsFoHrF4vtnKHJAJ
+VEB121JZAJjasaLrxwfT/dO0JDeQFw==
+=tVs8
+-----END PGP SIGNATURE-----
+
+--S5HS5MvDw4DmbRmb--

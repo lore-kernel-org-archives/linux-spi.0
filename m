@@ -1,130 +1,99 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH v6 41/57] spi: Remove dev_err() usage after platform_get_irq()
-Date: Thu, 8 Aug 2019 10:09:10 +0200
-Message-ID: <CAMuHMdWBFzNGhzAdEyFEbRE6nOWBKpCQ-5VXZfh3Bg+FMB7NXg@mail.gmail.com>
-References: <20190730181557.90391-1-swboyd@chromium.org> <20190730181557.90391-42-swboyd@chromium.org>
+From: Neil Armstrong <narmstrong@baylibre.com>
+Subject: [PATCH 0/9] dt-bindings: first tentative of conversion to yaml format
+Date: Thu,  8 Aug 2019 10:51:30 +0200
+Message-ID: <20190808085139.21438-1-narmstrong@baylibre.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Stephen Boyd <swboyd@chromium.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190730181557.90391-42-swboyd@chromium.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: p.zabel@pengutronix.de, devicetree@vger.kernel.org,
+ linux-watchdog@vger.kernel.org, Neil Armstrong <narmstrong@baylibre.com>,
+ jassisinghbrar@gmail.com, linux-spi@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linux-serial@vger.kernel.org,
+ linux-amlogic@lists.infradead.org, kishon@ti.com,
+ linux-arm-kernel@lists.infradead.org
+To: robh+dt@kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Stephen,
+This is a first tentative to convert some of the simplest Amlogic
+dt-bindings to the yaml format.
 
-On Tue, Jul 30, 2019 at 8:19 PM Stephen Boyd <swboyd@chromium.org> wrote:
-> We don't need dev_err() messages when platform_get_irq() fails now that
-> platform_get_irq() prints an error message itself when something goes
-> wrong. Let's remove these prints with a simple semantic patch.
->
-> // <smpl>
-> @@
-> expression ret;
-> struct platform_device *E;
-> @@
->
-> ret =
-> (
-> platform_get_irq(E, ...)
-> |
-> platform_get_irq_byname(E, ...)
-> );
->
-> if ( \( ret < 0 \| ret <= 0 \) )
-> {
-> (
-> -if (ret != -EPROBE_DEFER)
-> -{ ...
-> -dev_err(...);
-> -... }
-> |
-> ...
-> -dev_err(...);
-> )
-> ...
-> }
-> // </smpl>
->
-> While we're here, remove braces on if statements that only have one
-> statement (manually).
->
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: linux-spi@vger.kernel.org
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: Stephen Boyd <swboyd@chromium.org>
-> ---
->
-> Please apply directly to subsystem trees
->
->  drivers/spi/atmel-quadspi.c     |  1 -
->  drivers/spi/spi-armada-3700.c   |  1 -
->  drivers/spi/spi-bcm2835.c       |  1 -
->  drivers/spi/spi-bcm2835aux.c    |  1 -
->  drivers/spi/spi-bcm63xx-hsspi.c |  4 +---
->  drivers/spi/spi-bcm63xx.c       |  4 +---
->  drivers/spi/spi-cadence.c       |  1 -
->  drivers/spi/spi-dw-mmio.c       |  4 +---
->  drivers/spi/spi-efm32.c         |  4 +---
->  drivers/spi/spi-ep93xx.c        |  4 +---
->  drivers/spi/spi-fsl-dspi.c      |  1 -
->  drivers/spi/spi-fsl-qspi.c      |  4 +---
->  drivers/spi/spi-geni-qcom.c     |  4 +---
->  drivers/spi/spi-lantiq-ssc.c    | 12 +++---------
->  drivers/spi/spi-mt65xx.c        |  1 -
->  drivers/spi/spi-npcm-pspi.c     |  1 -
->  drivers/spi/spi-nuc900.c        |  1 -
->  drivers/spi/spi-nxp-fspi.c      |  4 +---
->  drivers/spi/spi-pic32-sqi.c     |  1 -
->  drivers/spi/spi-pic32.c         | 12 +++---------
->  drivers/spi/spi-qcom-qspi.c     |  4 +---
->  drivers/spi/spi-s3c24xx.c       |  1 -
->  drivers/spi/spi-sh-msiof.c      |  1 -
->  drivers/spi/spi-sh.c            |  4 +---
->  drivers/spi/spi-sifive.c        |  1 -
->  drivers/spi/spi-slave-mt27xx.c  |  1 -
->  drivers/spi/spi-sprd.c          |  4 +---
->  drivers/spi/spi-stm32-qspi.c    |  5 +----
->  drivers/spi/spi-sun4i.c         |  1 -
->  drivers/spi/spi-sun6i.c         |  1 -
->  drivers/spi/spi-synquacer.c     |  2 --
->  drivers/spi/spi-ti-qspi.c       |  1 -
->  drivers/spi/spi-uniphier.c      |  1 -
->  drivers/spi/spi-xlp.c           |  4 +---
->  drivers/spi/spi-zynq-qspi.c     |  1 -
->  drivers/spi/spi-zynqmp-gqspi.c  |  1 -
->  36 files changed, 19 insertions(+), 80 deletions(-)
+All have been tested using :
+$ make ARCH=arm64 dtbs_check
 
-Failed to catch
-drivers/spi/spi-rspi.c: ret = platform_get_irq_byname(pdev, "rx");
-drivers/spi/spi-rspi.c- if (ret < 0) {
-drivers/spi/spi-rspi.c:         ret = platform_get_irq_byname(pdev, "mux");
-drivers/spi/spi-rspi.c-         if (ret < 0)
-drivers/spi/spi-rspi.c:                 ret = platform_get_irq(pdev, 0);
-drivers/spi/spi-rspi.c-         if (ret >= 0)
-drivers/spi/spi-rspi.c-                 rspi->rx_irq = rspi->tx_irq = ret;
-drivers/spi/spi-rspi.c- } else {
-drivers/spi/spi-rspi.c-         rspi->rx_irq = ret;
-drivers/spi/spi-rspi.c:         ret = platform_get_irq_byname(pdev, "tx");
-drivers/spi/spi-rspi.c-         if (ret >= 0)
-drivers/spi/spi-rspi.c-                 rspi->tx_irq = ret;
-drivers/spi/spi-rspi.c- }
-drivers/spi/spi-rspi.c- if (ret < 0) {
-drivers/spi/spi-rspi.c:         dev_err(&pdev->dev, "platform_get_irq error\n");
-drivers/spi/spi-rspi.c-         goto error2;
-drivers/spi/spi-rspi.c- }
+Issues with the amlogic arm64 DTs has already been identified thanks
+to the validation scripts. The DT fixes will be pushed once these yaml
+bindings are acked.
 
-Gr{oetje,eeting}s,
+Changes since rfc v2:
+- Collected Rob's, Martin's, Philipp's and Guenter's tags
+- Removed mhu maxItems: 3 to leave only minItems
+- Fixed flash@0 in spifc example
 
-                        Geert
+Changes since rfc v1:
+- Fixed bindings according to Rob's comments
+- Added commit log
+- renamed yaml files using amlogic prefix
+
+Neil Armstrong (9):
+  dt-bindings: mailbox: meson-mhu: convert to yaml
+  dt-bindings: rng: amlogic,meson-rng: convert to yaml
+  dt-bindings: spi: meson: convert to yaml
+  dt-bindings: reset: amlogic,meson-reset: convert to yaml
+  dt-bindings: arm: amlogic: amlogic,meson-gx-ao-secure: convert to yaml
+  dt-bindings: phy: meson-g12a-usb2-phy: convert to yaml
+  dt-bindings: phy: meson-g12a-usb3-pcie-phy: convert to yaml
+  dt-bindings: serial: meson-uart: convert to yaml
+  dt-bindings: watchdog: meson-gxbb-wdt: convert to yaml
+
+ .../amlogic/amlogic,meson-gx-ao-secure.txt    | 28 -------
+ .../amlogic/amlogic,meson-gx-ao-secure.yaml   | 52 +++++++++++++
+ .../mailbox/amlogic,meson-gxbb-mhu.yaml       | 52 +++++++++++++
+ .../devicetree/bindings/mailbox/meson-mhu.txt | 34 ---------
+ .../phy/amlogic,meson-g12a-usb2-phy.yaml      | 63 ++++++++++++++++
+ .../phy/amlogic,meson-g12a-usb3-pcie-phy.yaml | 57 +++++++++++++++
+ .../bindings/phy/meson-g12a-usb2-phy.txt      | 22 ------
+ .../bindings/phy/meson-g12a-usb3-pcie-phy.txt | 22 ------
+ .../bindings/reset/amlogic,meson-reset.txt    | 19 -----
+ .../bindings/reset/amlogic,meson-reset.yaml   | 37 ++++++++++
+ .../bindings/rng/amlogic,meson-rng.txt        | 21 ------
+ .../bindings/rng/amlogic,meson-rng.yaml       | 37 ++++++++++
+ .../bindings/serial/amlogic,meson-uart.txt    | 38 ----------
+ .../bindings/serial/amlogic,meson-uart.yaml   | 73 +++++++++++++++++++
+ .../bindings/spi/amlogic,meson-gx-spicc.yaml  | 67 +++++++++++++++++
+ .../bindings/spi/amlogic,meson6-spifc.yaml    | 53 ++++++++++++++
+ .../devicetree/bindings/spi/spi-meson.txt     | 55 --------------
+ .../watchdog/amlogic,meson-gxbb-wdt.yaml      | 37 ++++++++++
+ .../bindings/watchdog/meson-gxbb-wdt.txt      | 16 ----
+ 19 files changed, 528 insertions(+), 255 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/arm/amlogic/amlogic,meson-gx-ao-secure.txt
+ create mode 100644 Documentation/devicetree/bindings/arm/amlogic/amlogic,meson-gx-ao-secure.yaml
+ create mode 100644 Documentation/devicetree/bindings/mailbox/amlogic,meson-gxbb-mhu.yaml
+ delete mode 100644 Documentation/devicetree/bindings/mailbox/meson-mhu.txt
+ create mode 100644 Documentation/devicetree/bindings/phy/amlogic,meson-g12a-usb2-phy.yaml
+ create mode 100644 Documentation/devicetree/bindings/phy/amlogic,meson-g12a-usb3-pcie-phy.yaml
+ delete mode 100644 Documentation/devicetree/bindings/phy/meson-g12a-usb2-phy.txt
+ delete mode 100644 Documentation/devicetree/bindings/phy/meson-g12a-usb3-pcie-phy.txt
+ delete mode 100644 Documentation/devicetree/bindings/reset/amlogic,meson-reset.txt
+ create mode 100644 Documentation/devicetree/bindings/reset/amlogic,meson-reset.yaml
+ delete mode 100644 Documentation/devicetree/bindings/rng/amlogic,meson-rng.txt
+ create mode 100644 Documentation/devicetree/bindings/rng/amlogic,meson-rng.yaml
+ delete mode 100644 Documentation/devicetree/bindings/serial/amlogic,meson-uart.txt
+ create mode 100644 Documentation/devicetree/bindings/serial/amlogic,meson-uart.yaml
+ create mode 100644 Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
+ create mode 100644 Documentation/devicetree/bindings/spi/amlogic,meson6-spifc.yaml
+ delete mode 100644 Documentation/devicetree/bindings/spi/spi-meson.txt
+ create mode 100644 Documentation/devicetree/bindings/watchdog/amlogic,meson-gxbb-wdt.yaml
+ delete mode 100644 Documentation/devicetree/bindings/watchdog/meson-gxbb-wdt.txt
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+2.22.0

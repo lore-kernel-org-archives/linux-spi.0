@@ -1,85 +1,130 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: bcm-qspi: Fix BSPI QUAD and DUAL mode support when using flex mode" to the spi tree
-Date: Wed,  7 Aug 2019 14:30:55 +0100 (BST)
-Message-ID: <20190807133055.D6BF32742BE8@ypsilon.sirena.org.uk>
-References: <1565086070-28451-1-git-send-email-rayagonda.kokatanur@broadcom.com>
-Cc: bcm-kernel-feedback-list@broadcom.com,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>
-To: Rayagonda Kokatanur <rayagonda.kokatanur@broadcom.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH v6 41/57] spi: Remove dev_err() usage after platform_get_irq()
+Date: Thu, 8 Aug 2019 10:09:10 +0200
+Message-ID: <CAMuHMdWBFzNGhzAdEyFEbRE6nOWBKpCQ-5VXZfh3Bg+FMB7NXg@mail.gmail.com>
+References: <20190730181557.90391-1-swboyd@chromium.org> <20190730181557.90391-42-swboyd@chromium.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Stephen Boyd <swboyd@chromium.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1565086070-28451-1-git-send-email-rayagonda.kokatanur@broadcom.com>
+In-Reply-To: <20190730181557.90391-42-swboyd@chromium.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+Hi Stephen,
 
-   spi: bcm-qspi: Fix BSPI QUAD and DUAL mode support when using flex mode
+On Tue, Jul 30, 2019 at 8:19 PM Stephen Boyd <swboyd@chromium.org> wrote:
+> We don't need dev_err() messages when platform_get_irq() fails now that
+> platform_get_irq() prints an error message itself when something goes
+> wrong. Let's remove these prints with a simple semantic patch.
+>
+> // <smpl>
+> @@
+> expression ret;
+> struct platform_device *E;
+> @@
+>
+> ret =
+> (
+> platform_get_irq(E, ...)
+> |
+> platform_get_irq_byname(E, ...)
+> );
+>
+> if ( \( ret < 0 \| ret <= 0 \) )
+> {
+> (
+> -if (ret != -EPROBE_DEFER)
+> -{ ...
+> -dev_err(...);
+> -... }
+> |
+> ...
+> -dev_err(...);
+> )
+> ...
+> }
+> // </smpl>
+>
+> While we're here, remove braces on if statements that only have one
+> statement (manually).
+>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: linux-spi@vger.kernel.org
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+> ---
+>
+> Please apply directly to subsystem trees
+>
+>  drivers/spi/atmel-quadspi.c     |  1 -
+>  drivers/spi/spi-armada-3700.c   |  1 -
+>  drivers/spi/spi-bcm2835.c       |  1 -
+>  drivers/spi/spi-bcm2835aux.c    |  1 -
+>  drivers/spi/spi-bcm63xx-hsspi.c |  4 +---
+>  drivers/spi/spi-bcm63xx.c       |  4 +---
+>  drivers/spi/spi-cadence.c       |  1 -
+>  drivers/spi/spi-dw-mmio.c       |  4 +---
+>  drivers/spi/spi-efm32.c         |  4 +---
+>  drivers/spi/spi-ep93xx.c        |  4 +---
+>  drivers/spi/spi-fsl-dspi.c      |  1 -
+>  drivers/spi/spi-fsl-qspi.c      |  4 +---
+>  drivers/spi/spi-geni-qcom.c     |  4 +---
+>  drivers/spi/spi-lantiq-ssc.c    | 12 +++---------
+>  drivers/spi/spi-mt65xx.c        |  1 -
+>  drivers/spi/spi-npcm-pspi.c     |  1 -
+>  drivers/spi/spi-nuc900.c        |  1 -
+>  drivers/spi/spi-nxp-fspi.c      |  4 +---
+>  drivers/spi/spi-pic32-sqi.c     |  1 -
+>  drivers/spi/spi-pic32.c         | 12 +++---------
+>  drivers/spi/spi-qcom-qspi.c     |  4 +---
+>  drivers/spi/spi-s3c24xx.c       |  1 -
+>  drivers/spi/spi-sh-msiof.c      |  1 -
+>  drivers/spi/spi-sh.c            |  4 +---
+>  drivers/spi/spi-sifive.c        |  1 -
+>  drivers/spi/spi-slave-mt27xx.c  |  1 -
+>  drivers/spi/spi-sprd.c          |  4 +---
+>  drivers/spi/spi-stm32-qspi.c    |  5 +----
+>  drivers/spi/spi-sun4i.c         |  1 -
+>  drivers/spi/spi-sun6i.c         |  1 -
+>  drivers/spi/spi-synquacer.c     |  2 --
+>  drivers/spi/spi-ti-qspi.c       |  1 -
+>  drivers/spi/spi-uniphier.c      |  1 -
+>  drivers/spi/spi-xlp.c           |  4 +---
+>  drivers/spi/spi-zynq-qspi.c     |  1 -
+>  drivers/spi/spi-zynqmp-gqspi.c  |  1 -
+>  36 files changed, 19 insertions(+), 80 deletions(-)
 
-has been applied to the spi tree at
+Failed to catch
+drivers/spi/spi-rspi.c: ret = platform_get_irq_byname(pdev, "rx");
+drivers/spi/spi-rspi.c- if (ret < 0) {
+drivers/spi/spi-rspi.c:         ret = platform_get_irq_byname(pdev, "mux");
+drivers/spi/spi-rspi.c-         if (ret < 0)
+drivers/spi/spi-rspi.c:                 ret = platform_get_irq(pdev, 0);
+drivers/spi/spi-rspi.c-         if (ret >= 0)
+drivers/spi/spi-rspi.c-                 rspi->rx_irq = rspi->tx_irq = ret;
+drivers/spi/spi-rspi.c- } else {
+drivers/spi/spi-rspi.c-         rspi->rx_irq = ret;
+drivers/spi/spi-rspi.c:         ret = platform_get_irq_byname(pdev, "tx");
+drivers/spi/spi-rspi.c-         if (ret >= 0)
+drivers/spi/spi-rspi.c-                 rspi->tx_irq = ret;
+drivers/spi/spi-rspi.c- }
+drivers/spi/spi-rspi.c- if (ret < 0) {
+drivers/spi/spi-rspi.c:         dev_err(&pdev->dev, "platform_get_irq error\n");
+drivers/spi/spi-rspi.c-         goto error2;
+drivers/spi/spi-rspi.c- }
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.3
+Gr{oetje,eeting}s,
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+                        Geert
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 79629d0f7ce5b38515c1716911a0181f01b91102 Mon Sep 17 00:00:00 2001
-From: Rayagonda Kokatanur <rayagonda.kokatanur@broadcom.com>
-Date: Tue, 6 Aug 2019 15:37:50 +0530
-Subject: [PATCH] spi: bcm-qspi: Fix BSPI QUAD and DUAL mode support when using
- flex mode
-
-Fix data transfer width settings based on DT field 'spi-rx-bus-width'
-to configure BSPI in single, dual or quad mode by using data width
-and not the command width.
-
-Fixes: 5f195ee7d830c ("spi: bcm-qspi: Implement the spi_mem interface")
-
-Signed-off-by: Rayagonda Kokatanur <rayagonda.kokatanur@broadcom.com>
-Link: https://lore.kernel.org/r/1565086070-28451-1-git-send-email-rayagonda.kokatanur@broadcom.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-bcm-qspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
-index 584bcb018a62..285a6f463013 100644
---- a/drivers/spi/spi-bcm-qspi.c
-+++ b/drivers/spi/spi-bcm-qspi.c
-@@ -354,7 +354,7 @@ static int bcm_qspi_bspi_set_flex_mode(struct bcm_qspi *qspi,
- {
- 	int bpc = 0, bpp = 0;
- 	u8 command = op->cmd.opcode;
--	int width  = op->cmd.buswidth ? op->cmd.buswidth : SPI_NBITS_SINGLE;
-+	int width = op->data.buswidth ? op->data.buswidth : SPI_NBITS_SINGLE;
- 	int addrlen = op->addr.nbytes;
- 	int flex_mode = 1;
- 
-@@ -992,7 +992,7 @@ static int bcm_qspi_exec_mem_op(struct spi_mem *mem,
- 	if (mspi_read)
- 		return bcm_qspi_mspi_exec_mem_op(spi, op);
- 
--	ret = bcm_qspi_bspi_set_mode(qspi, op, -1);
-+	ret = bcm_qspi_bspi_set_mode(qspi, op, 0);
- 
- 	if (!ret)
- 		ret = bcm_qspi_bspi_exec_mem_op(spi, op);
 -- 
-2.20.1
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

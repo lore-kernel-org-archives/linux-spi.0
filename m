@@ -1,12 +1,12 @@
 From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH 07/16] spi: remove w90x900 driver
-Date: Mon, 12 Aug 2019 11:36:28 +0100
-Message-ID: <20190812103628.GA4592@sirena.co.uk>
+Date: Mon, 12 Aug 2019 14:06:33 +0100
+Message-ID: <20190812130633.GK4592@sirena.co.uk>
 References: <20190809202749.742267-1-arnd@arndb.de>
  <20190809202749.742267-8-arnd@arndb.de>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Qxx1br4bt0+wmkIi"
+        protocol="application/pgp-signature"; boundary="mGCtrYeZ202LI9ZG"
 Cc: soc@kernel.org, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org
 To: Arnd Bergmann <arnd@arndb.de>
@@ -17,28 +17,28 @@ Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---Qxx1br4bt0+wmkIi
+--mGCtrYeZ202LI9ZG
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 On Fri, Aug 09, 2019 at 10:27:35PM +0200, Arnd Bergmann wrote:
 > The ARM w90x900 platform is getting removed, so this driver is obsolete.
 
-Acked-by: Mark Brown <broonie@kernel.org>
+This doesn't apply against current code, please check and resend.
 
---Qxx1br4bt0+wmkIi
+--mGCtrYeZ202LI9ZG
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1RQSkACgkQJNaLcl1U
-h9CDjQf/RnQEad1Kg30+vtpDmN4Xrm5TRgeg5j/scALpOxLR2dbuo7W788H3DPuA
-j/o36yT6ruzAkmiZ0jOXFx62DMB2HEOstaCSQbJ2hJphSjzRpvRAGFn9oCUecEiS
-Jh41nOEfDJKXG7NlZ3gGEdnnBaUBoVFg3eK9ayy/ooMOUClclN/m2wkujFMMsCGV
-upLOPCtPBmibARDCJAq5ia5UukfEV9jP1Era0d8GW6y4feTpz7+dbDs2DqnUW9zU
-3o3g69PFW2TKNBl4df2conTNaNzFBroTBGTzuR1rUZT24yx5z48pZsL8l67vrKVi
-qazVXvhlE78RDYJtNz8ie8tIY6apkg==
-=yqU8
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1RZFgACgkQJNaLcl1U
+h9D4tAf/QZWqB5njZanGjNO1DH1B3pBBDjVRROlyO3EsnnnH8Ro3vruDK+rX3324
+mED3dhurDA9V7j5OywgEyaGE+m0bnVetxR68wsL2HhWXTn762ynlNE9k1ROsRoBt
+DtXvD/O1OW2dv/HsPDPiYleYzTqHKQGgZJMeUp7trmb3s01SuEUE0wGQz29E7rXX
+qnPTcynGKbZgJM2ZZJ14m9F0GlFxGuEl6FtbDEDrr2stX7cHoqXqcTBqwu74h7aJ
+66vQlVC0RC+0Ek7UOVzU64n9mk5JTEdljY8Gh8I9pg0+Ulk9aUiTRUBLa+Pb3cIg
+f+ezLxFbvwpFEob20b6fY8N9bnxgYA==
+=yMIY
 -----END PGP SIGNATURE-----
 
---Qxx1br4bt0+wmkIi--
+--mGCtrYeZ202LI9ZG--

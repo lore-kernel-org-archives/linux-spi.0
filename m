@@ -1,41 +1,44 @@
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 00/16] ARM: remove ks8695 and w90x900 platforms
-Date: Sat, 10 Aug 2019 09:29:00 +0200
-Message-ID: <20190810072900.GA16359@kroah.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 07/16] spi: remove w90x900 driver
+Date: Mon, 12 Aug 2019 11:36:28 +0100
+Message-ID: <20190812103628.GA4592@sirena.co.uk>
 References: <20190809202749.742267-1-arnd@arndb.de>
+ <20190809202749.742267-8-arnd@arndb.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: soc@kernel.org, "Wanzongshun (Vincent)" <wanzongshun@huawei.com>,
-        Greg Ungerer <gerg@kernel.org>, linux-serial@vger.kernel.org,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-input@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-gpio@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        Guenter Roeck <linux@roeck-us.net>,
-        Mark Brown <broonie@kernel.org>, alsa-devel@alsa-project.org,
-        linux-spi@vger.kernel.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-fbdev@vger.kernel.org,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        linux-mtd@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="Qxx1br4bt0+wmkIi"
+Cc: soc@kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
 To: Arnd Bergmann <arnd@arndb.de>
-Return-path: <netdev-owner@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20190809202749.742267-1-arnd@arndb.de>
-Sender: netdev-owner@vger.kernel.org
+In-Reply-To: <20190809202749.742267-8-arnd@arndb.de>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Aug 09, 2019 at 10:27:28PM +0200, Arnd Bergmann wrote:
-> As discussed previously, these two ARM platforms have no
-> known remaining users, let's remove them completely.
-> 
-> Subsystem maintainers: feel free to take the driver removals
-> through your respective trees, they are all independent of
-> one another. We can merge any remaining patches through the
-> soc tree.
 
-Serial and USB host controller driver patches applied, thanks!
+--Qxx1br4bt0+wmkIi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-greg k-h
+On Fri, Aug 09, 2019 at 10:27:35PM +0200, Arnd Bergmann wrote:
+> The ARM w90x900 platform is getting removed, so this driver is obsolete.
+
+Acked-by: Mark Brown <broonie@kernel.org>
+
+--Qxx1br4bt0+wmkIi
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1RQSkACgkQJNaLcl1U
+h9CDjQf/RnQEad1Kg30+vtpDmN4Xrm5TRgeg5j/scALpOxLR2dbuo7W788H3DPuA
+j/o36yT6ruzAkmiZ0jOXFx62DMB2HEOstaCSQbJ2hJphSjzRpvRAGFn9oCUecEiS
+Jh41nOEfDJKXG7NlZ3gGEdnnBaUBoVFg3eK9ayy/ooMOUClclN/m2wkujFMMsCGV
+upLOPCtPBmibARDCJAq5ia5UukfEV9jP1Era0d8GW6y4feTpz7+dbDs2DqnUW9zU
+3o3g69PFW2TKNBl4df2conTNaNzFBroTBGTzuR1rUZT24yx5z48pZsL8l67vrKVi
+qazVXvhlE78RDYJtNz8ie8tIY6apkg==
+=yqU8
+-----END PGP SIGNATURE-----
+
+--Qxx1br4bt0+wmkIi--

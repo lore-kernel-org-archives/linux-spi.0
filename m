@@ -1,27 +1,68 @@
-From: Tony Lindgren <tony@atomide.com>
-Subject: Re: [PATCH 1/2] DTS: ARM: gta04: define chosen/stdout-path
-Date: Tue, 13 Aug 2019 04:47:44 -0700
-Message-ID: <20190813114744.GT52127@atomide.com>
-References: <cover.1562597164.git.hns@goldelico.com>
- <21ed570c5920346bf9dc1284c8dfee2e6ef79a51.1562597164.git.hns@goldelico.com>
+From: Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH 0/9] dt-bindings: first tentative of conversion to yaml
+ format
+Date: Tue, 13 Aug 2019 15:19:03 -0600
+Message-ID: <CAL_Jsq+rBUWCBo0CnhnJX91o+8QF4gO5cJYqFgKEJeekAeuVxg@mail.gmail.com>
+References: <20190808085139.21438-1-narmstrong@baylibre.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
-        letux-kernel@openphoenux.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-omap@vger.kernel.org
-To: "H. Nikolaus Schaller" <hns@goldelico.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <21ed570c5920346bf9dc1284c8dfee2e6ef79a51.1562597164.git.hns@goldelico.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Philipp Zabel <p.zabel@pengutronix.de>, devicetree@vger.kernel.org,
+ LINUX-WATCHDOG <linux-watchdog@vger.kernel.org>,
+ Jassi Brar <jassisinghbrar@gmail.com>, linux-spi <linux-spi@vger.kernel.org>,
+ "open list:HARDWARE RANDOM NUMBER GENERATOR CORE"
+ <linux-crypto@vger.kernel.org>,
+ "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
+ linux-amlogic@lists.infradead.org, Kishon Vijay Abraham I <kishon@ti.com>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>
+To: Neil Armstrong <narmstrong@baylibre.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190808085139.21438-1-narmstrong@baylibre.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-* H. Nikolaus Schaller <hns@goldelico.com> [190708 14:46]:
-> This allows to remove the console= entry in the kernel command line.
+On Thu, Aug 8, 2019 at 2:51 AM Neil Armstrong <narmstrong@baylibre.com> wrote:
+>
+> This is a first tentative to convert some of the simplest Amlogic
+> dt-bindings to the yaml format.
+>
+> All have been tested using :
+> $ make ARCH=arm64 dtbs_check
+>
+> Issues with the amlogic arm64 DTs has already been identified thanks
+> to the validation scripts. The DT fixes will be pushed once these yaml
+> bindings are acked.
+>
+> Changes since rfc v2:
+> - Collected Rob's, Martin's, Philipp's and Guenter's tags
+> - Removed mhu maxItems: 3 to leave only minItems
+> - Fixed flash@0 in spifc example
+>
+> Changes since rfc v1:
+> - Fixed bindings according to Rob's comments
+> - Added commit log
+> - renamed yaml files using amlogic prefix
+>
+> Neil Armstrong (9):
+>   dt-bindings: mailbox: meson-mhu: convert to yaml
+>   dt-bindings: rng: amlogic,meson-rng: convert to yaml
+>   dt-bindings: spi: meson: convert to yaml
+>   dt-bindings: reset: amlogic,meson-reset: convert to yaml
+>   dt-bindings: arm: amlogic: amlogic,meson-gx-ao-secure: convert to yaml
+>   dt-bindings: phy: meson-g12a-usb2-phy: convert to yaml
+>   dt-bindings: phy: meson-g12a-usb3-pcie-phy: convert to yaml
+>   dt-bindings: serial: meson-uart: convert to yaml
+>   dt-bindings: watchdog: meson-gxbb-wdt: convert to yaml
 
-Applying this patch into omap-for-v5.4/dt thanks.
+Series applied.
 
-Tony
+Rob

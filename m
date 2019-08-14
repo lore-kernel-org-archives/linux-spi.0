@@ -1,53 +1,60 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.2 074/123] spi: pxa2xx: Add support for Intel Tiger Lake
-Date: Tue, 13 Aug 2019 22:09:58 -0400
-Message-ID: <20190814021047.14828-74-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.2 024/123] spi: pxa2xx: Balance runtime PM enable/disable on error
+Date: Tue, 13 Aug 2019 22:09:08 -0400
+Message-ID: <20190814021047.14828-24-sashal@kernel.org>
 References: <20190814021047.14828-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
+Cc: Lubomir Rintel <lkundrak@v3.sk>, Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Return-path: <stable-owner@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20190814021047.14828-1-sashal@kernel.org>
-Sender: stable-owner@vger.kernel.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+From: Lubomir Rintel <lkundrak@v3.sk>
 
-[ Upstream commit a4127952859a869cf3fc5a49547dbe2ffa2eac89 ]
+[ Upstream commit 1274204542f683e1d8491ebe9cc86284d5a8ebcc ]
 
-Intel Tiger Lake -LP LPSS SPI controller is otherwise similar than
-Cannon Lake but has more controllers and up to two chip selects per
-controller.
+Don't undo the PM initialization if we error out before we managed to
+initialize it. The call to pm_runtime_disable() without being preceded
+by pm_runtime_enable() would disturb the balance of the Force.
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Link: https://lore.kernel.org/r/20190801134901.12635-1-jarkko.nikula@linux.intel.com
+In practice, this happens if we fail to allocate any of the GPIOS ("cs",
+"ready") due to -EPROBE_DEFER because we're getting probled before the
+GPIO driver.
+
+Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+Link: https://lore.kernel.org/r/20190719122713.3444318-1-lkundrak@v3.sk
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-pxa2xx.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/spi/spi-pxa2xx.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index c1af8887d9186..1f32c9e3ca65c 100644
+index af3f37ba82c83..c1af8887d9186 100644
 --- a/drivers/spi/spi-pxa2xx.c
 +++ b/drivers/spi/spi-pxa2xx.c
-@@ -1453,6 +1453,14 @@ static const struct pci_device_id pxa2xx_spi_pci_compound_match[] = {
- 	{ PCI_VDEVICE(INTEL, 0x02aa), LPSS_CNL_SSP },
- 	{ PCI_VDEVICE(INTEL, 0x02ab), LPSS_CNL_SSP },
- 	{ PCI_VDEVICE(INTEL, 0x02fb), LPSS_CNL_SSP },
-+	/* TGL-LP */
-+	{ PCI_VDEVICE(INTEL, 0xa0aa), LPSS_CNL_SSP },
-+	{ PCI_VDEVICE(INTEL, 0xa0ab), LPSS_CNL_SSP },
-+	{ PCI_VDEVICE(INTEL, 0xa0de), LPSS_CNL_SSP },
-+	{ PCI_VDEVICE(INTEL, 0xa0df), LPSS_CNL_SSP },
-+	{ PCI_VDEVICE(INTEL, 0xa0fb), LPSS_CNL_SSP },
-+	{ PCI_VDEVICE(INTEL, 0xa0fd), LPSS_CNL_SSP },
-+	{ PCI_VDEVICE(INTEL, 0xa0fe), LPSS_CNL_SSP },
- 	{ },
- };
+@@ -1817,14 +1817,16 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 	status = devm_spi_register_controller(&pdev->dev, controller);
+ 	if (status != 0) {
+ 		dev_err(&pdev->dev, "problem registering spi controller\n");
+-		goto out_error_clock_enabled;
++		goto out_error_pm_runtime_enabled;
+ 	}
  
+ 	return status;
+ 
+-out_error_clock_enabled:
++out_error_pm_runtime_enabled:
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
++
++out_error_clock_enabled:
+ 	clk_disable_unprepare(ssp->clk);
+ 
+ out_error_dma_irq_alloc:
 -- 
 2.20.1

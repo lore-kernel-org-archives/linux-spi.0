@@ -1,68 +1,53 @@
-From: Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH 0/9] dt-bindings: first tentative of conversion to yaml
- format
-Date: Tue, 13 Aug 2019 15:19:03 -0600
-Message-ID: <CAL_Jsq+rBUWCBo0CnhnJX91o+8QF4gO5cJYqFgKEJeekAeuVxg@mail.gmail.com>
-References: <20190808085139.21438-1-narmstrong@baylibre.com>
+From: Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.2 074/123] spi: pxa2xx: Add support for Intel Tiger Lake
+Date: Tue, 13 Aug 2019 22:09:58 -0400
+Message-ID: <20190814021047.14828-74-sashal@kernel.org>
+References: <20190814021047.14828-1-sashal@kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Philipp Zabel <p.zabel@pengutronix.de>, devicetree@vger.kernel.org,
- LINUX-WATCHDOG <linux-watchdog@vger.kernel.org>,
- Jassi Brar <jassisinghbrar@gmail.com>, linux-spi <linux-spi@vger.kernel.org>,
- "open list:HARDWARE RANDOM NUMBER GENERATOR CORE"
- <linux-crypto@vger.kernel.org>,
- "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
- linux-amlogic@lists.infradead.org, Kishon Vijay Abraham I <kishon@ti.com>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>
-To: Neil Armstrong <narmstrong@baylibre.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190808085139.21438-1-narmstrong@baylibre.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Transfer-Encoding: 8bit
+Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
+To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20190814021047.14828-1-sashal@kernel.org>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Aug 8, 2019 at 2:51 AM Neil Armstrong <narmstrong@baylibre.com> wrote:
->
-> This is a first tentative to convert some of the simplest Amlogic
-> dt-bindings to the yaml format.
->
-> All have been tested using :
-> $ make ARCH=arm64 dtbs_check
->
-> Issues with the amlogic arm64 DTs has already been identified thanks
-> to the validation scripts. The DT fixes will be pushed once these yaml
-> bindings are acked.
->
-> Changes since rfc v2:
-> - Collected Rob's, Martin's, Philipp's and Guenter's tags
-> - Removed mhu maxItems: 3 to leave only minItems
-> - Fixed flash@0 in spifc example
->
-> Changes since rfc v1:
-> - Fixed bindings according to Rob's comments
-> - Added commit log
-> - renamed yaml files using amlogic prefix
->
-> Neil Armstrong (9):
->   dt-bindings: mailbox: meson-mhu: convert to yaml
->   dt-bindings: rng: amlogic,meson-rng: convert to yaml
->   dt-bindings: spi: meson: convert to yaml
->   dt-bindings: reset: amlogic,meson-reset: convert to yaml
->   dt-bindings: arm: amlogic: amlogic,meson-gx-ao-secure: convert to yaml
->   dt-bindings: phy: meson-g12a-usb2-phy: convert to yaml
->   dt-bindings: phy: meson-g12a-usb3-pcie-phy: convert to yaml
->   dt-bindings: serial: meson-uart: convert to yaml
->   dt-bindings: watchdog: meson-gxbb-wdt: convert to yaml
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 
-Series applied.
+[ Upstream commit a4127952859a869cf3fc5a49547dbe2ffa2eac89 ]
 
-Rob
+Intel Tiger Lake -LP LPSS SPI controller is otherwise similar than
+Cannon Lake but has more controllers and up to two chip selects per
+controller.
+
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Link: https://lore.kernel.org/r/20190801134901.12635-1-jarkko.nikula@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi-pxa2xx.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index c1af8887d9186..1f32c9e3ca65c 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1453,6 +1453,14 @@ static const struct pci_device_id pxa2xx_spi_pci_compound_match[] = {
+ 	{ PCI_VDEVICE(INTEL, 0x02aa), LPSS_CNL_SSP },
+ 	{ PCI_VDEVICE(INTEL, 0x02ab), LPSS_CNL_SSP },
+ 	{ PCI_VDEVICE(INTEL, 0x02fb), LPSS_CNL_SSP },
++	/* TGL-LP */
++	{ PCI_VDEVICE(INTEL, 0xa0aa), LPSS_CNL_SSP },
++	{ PCI_VDEVICE(INTEL, 0xa0ab), LPSS_CNL_SSP },
++	{ PCI_VDEVICE(INTEL, 0xa0de), LPSS_CNL_SSP },
++	{ PCI_VDEVICE(INTEL, 0xa0df), LPSS_CNL_SSP },
++	{ PCI_VDEVICE(INTEL, 0xa0fb), LPSS_CNL_SSP },
++	{ PCI_VDEVICE(INTEL, 0xa0fd), LPSS_CNL_SSP },
++	{ PCI_VDEVICE(INTEL, 0xa0fe), LPSS_CNL_SSP },
+ 	{ },
+ };
+ 
+-- 
+2.20.1

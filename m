@@ -1,7 +1,7 @@
 From: Vladimir Oltean <olteanv@gmail.com>
-Subject: [RFC PATCH net-next 05/11] spi: spi-fsl-dspi: Use poll mode in case the platform IRQ is missing
-Date: Fri, 16 Aug 2019 03:44:43 +0300
-Message-ID: <20190816004449.10100-6-olteanv@gmail.com>
+Subject: [RFC PATCH net-next 02/11] net: dsa: sja1105: Implement the .gettimex64 system call for PTP
+Date: Fri, 16 Aug 2019 03:44:40 +0300
+Message-ID: <20190816004449.10100-3-olteanv@gmail.com>
 References: <20190816004449.10100-1-olteanv@gmail.com>
 Cc: linux-spi@vger.kernel.org, netdev@vger.kernel.org,
         Vladimir Oltean <olteanv@gmail.com>
@@ -13,225 +13,251 @@ In-Reply-To: <20190816004449.10100-1-olteanv@gmail.com>
 Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On platforms like LS1021A which use TCFQ mode, an interrupt needs to be
-processed after each byte is TXed/RXed. I tried to make the DSPI
-implementation on this SoC operate in other, more efficient modes (EOQ,
-DMA) but it looks like it simply isn't possible.
+Through the PTP_SYS_OFFSET_EXTENDED ioctl, it is possible for userspace
+applications (i.e. phc2sys) to compensate for the delays incurred while
+reading the PHC's time.
 
-Therefore allow the driver to operate in poll mode, to ease a bit of
-this absurd amount of IRQ load generated in TCFQ mode. Doing so reduces
-both the net time it takes to transmit a SPI message, as well as the
-inter-frame jitter that occurs while doing so.
+Implement this ioctl by passing the PTP system timestamp to the switch's
+SPI controller driver.
+
+The 'read PTP time' message is a 12 byte structure, first 4 bytes of
+which represent the SPI header, and the last 8 bytes represent the
+64-bit PTP time. The switch itself starts processing the command
+immediately after receiving the last bit of the address, i.e. at the
+middle of byte 3 (last byte of header). The PTP time is shadowed to a
+buffer register in the switch, and retrieved atomically during the
+subsequent SPI frames.
+
+As such, specify to the SPI controller that we want byte 3 to be the one
+that gets software-timestamped.
 
 Signed-off-by: Vladimir Oltean <olteanv@gmail.com>
 ---
- drivers/spi/spi-fsl-dspi.c | 156 +++++++++++++++++++++----------------
- 1 file changed, 90 insertions(+), 66 deletions(-)
+ drivers/net/dsa/sja1105/sja1105.h      |  4 ++-
+ drivers/net/dsa/sja1105/sja1105_main.c |  4 +--
+ drivers/net/dsa/sja1105/sja1105_ptp.c  | 21 ++++++++++------
+ drivers/net/dsa/sja1105/sja1105_spi.c  | 34 ++++++++++++++++++--------
+ 4 files changed, 42 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 99708b36ee4f..41c45ee2bb2d 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -652,6 +652,77 @@ static void dspi_eoq_read(struct fsl_dspi *dspi)
- 		dspi_push_rx(dspi, fifo_read(dspi));
+diff --git a/drivers/net/dsa/sja1105/sja1105.h b/drivers/net/dsa/sja1105/sja1105.h
+index e6371b2c2df1..18c4f2f808e4 100644
+--- a/drivers/net/dsa/sja1105/sja1105.h
++++ b/drivers/net/dsa/sja1105/sja1105.h
+@@ -93,6 +93,7 @@ struct sja1105_private {
+ 	struct spi_device *spidev;
+ 	struct dsa_switch *ds;
+ 	struct sja1105_port ports[SJA1105_NUM_PORTS];
++	struct ptp_system_timestamp *ptp_sts;
+ 	struct ptp_clock_info ptp_caps;
+ 	struct ptp_clock *clock;
+ 	/* The cycle counter translates the PTP timestamps (based on
+@@ -136,7 +137,8 @@ int sja1105_spi_send_packed_buf(const struct sja1105_private *priv,
+ 				void *packed_buf, size_t size_bytes);
+ int sja1105_spi_send_int(const struct sja1105_private *priv,
+ 			 sja1105_spi_rw_mode_t rw, u64 reg_addr,
+-			 u64 *value, u64 size_bytes);
++			 u64 *value, u64 size_bytes,
++			 struct ptp_system_timestamp *ptp_sts);
+ int sja1105_spi_send_long_packed_buf(const struct sja1105_private *priv,
+ 				     sja1105_spi_rw_mode_t rw, u64 base_addr,
+ 				     void *packed_buf, u64 buf_len);
+diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
+index 82bdc2da8f8f..c4df2cef89cd 100644
+--- a/drivers/net/dsa/sja1105/sja1105_main.c
++++ b/drivers/net/dsa/sja1105/sja1105_main.c
+@@ -2100,8 +2100,8 @@ static int sja1105_check_device_id(struct sja1105_private *priv)
+ 	u64 part_no;
+ 	int rc;
+ 
+-	rc = sja1105_spi_send_int(priv, SPI_READ, regs->device_id,
+-				  &device_id, SJA1105_SIZE_DEVICE_ID);
++	rc = sja1105_spi_send_int(priv, SPI_READ, regs->device_id, &device_id,
++				  SJA1105_SIZE_DEVICE_ID, NULL);
+ 	if (rc < 0)
+ 		return rc;
+ 
+diff --git a/drivers/net/dsa/sja1105/sja1105_ptp.c b/drivers/net/dsa/sja1105/sja1105_ptp.c
+index 51a0014369fc..ee7d1065d745 100644
+--- a/drivers/net/dsa/sja1105/sja1105_ptp.c
++++ b/drivers/net/dsa/sja1105/sja1105_ptp.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /* Copyright (c) 2019, Vladimir Oltean <olteanv@gmail.com>
+  */
++#include <linux/spi/spi.h>
+ #include "sja1105.h"
+ 
+ /* The adjfine API clamps ppb between [-32,768,000, 32,768,000], and
+@@ -262,14 +263,17 @@ int sja1105_ptp_reset(struct sja1105_private *priv)
+ 	return rc;
  }
  
-+static int dspi_rxtx(struct fsl_dspi *dspi)
-+{
-+	struct spi_message *msg = dspi->cur_msg;
-+	u16 spi_tcnt;
-+	u32 spi_tcr;
-+
-+	/* Get transfer counter (in number of SPI transfers). It was
-+	 * reset to 0 when transfer(s) were started.
-+	 */
-+	regmap_read(dspi->regmap, SPI_TCR, &spi_tcr);
-+	spi_tcnt = SPI_TCR_GET_TCNT(spi_tcr);
-+	/* Update total number of bytes that were transferred */
-+	msg->actual_length += spi_tcnt * dspi->bytes_per_word;
-+
-+	if (dspi->devtype_data->trans_mode == DSPI_EOQ_MODE)
-+		dspi_eoq_read(dspi);
-+	else
-+		dspi_tcfq_read(dspi);
-+
-+	if (!dspi->len)
-+		/* Success! */
-+		return 0;
-+
-+	if (dspi->devtype_data->trans_mode == DSPI_EOQ_MODE)
-+		dspi_eoq_write(dspi);
-+	else
-+		dspi_tcfq_write(dspi);
-+
-+	return -EAGAIN;
-+}
-+
-+static int dspi_poll(struct fsl_dspi *dspi)
-+{
-+	int tries = 1000;
-+	u32 spi_sr;
-+
-+	do {
-+		regmap_read(dspi->regmap, SPI_SR, &spi_sr);
-+		regmap_write(dspi->regmap, SPI_SR, spi_sr);
-+
-+		if (spi_sr & (SPI_SR_EOQF | SPI_SR_TCFQF))
-+			break;
-+	} while (--tries);
-+
-+	if (!tries)
-+		return -ETIMEDOUT;
-+
-+	return dspi_rxtx(dspi);
-+}
-+
-+static irqreturn_t dspi_interrupt(int irq, void *dev_id)
-+{
-+	struct fsl_dspi *dspi = (struct fsl_dspi *)dev_id;
-+	u32 spi_sr;
-+
-+	regmap_read(dspi->regmap, SPI_SR, &spi_sr);
-+	regmap_write(dspi->regmap, SPI_SR, spi_sr);
-+
-+	if (!(spi_sr & (SPI_SR_EOQF | SPI_SR_TCFQF)))
-+		return IRQ_HANDLED;
-+
-+	dspi_rxtx(dspi);
-+
-+	if (!dspi->len) {
-+		dspi->waitflags = 1;
-+		wake_up_interruptible(&dspi->waitq);
-+	}
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int dspi_transfer_one_message(struct spi_master *master,
- 				     struct spi_message *message)
+-static int sja1105_ptp_gettime(struct ptp_clock_info *ptp,
+-			       struct timespec64 *ts)
++static int sja1105_ptp_gettimex(struct ptp_clock_info *ptp,
++				struct timespec64 *ts,
++				struct ptp_system_timestamp *sts)
  {
-@@ -736,13 +807,18 @@ static int dspi_transfer_one_message(struct spi_master *master,
- 			goto out;
- 		}
+ 	struct sja1105_private *priv = ptp_to_sja1105(ptp);
+ 	u64 ns;
  
--		if (trans_mode != DSPI_DMA_MODE) {
--			if (wait_event_interruptible(dspi->waitq,
--						     dspi->waitflags))
--				dev_err(&dspi->pdev->dev,
--					"wait transfer complete fail!\n");
-+		if (!dspi->irq) {
-+			do {
-+				status = dspi_poll(dspi);
-+			} while (status == -EAGAIN);
-+		} else if (trans_mode != DSPI_DMA_MODE) {
-+			status = wait_event_interruptible(dspi->waitq,
-+							  dspi->waitflags);
- 			dspi->waitflags = 0;
- 		}
-+		if (status)
-+			dev_err(&dspi->pdev->dev,
-+				"Waiting for transfer to complete failed!\n");
+ 	mutex_lock(&priv->ptp_lock);
++	priv->ptp_sts = sts;
+ 	ns = timecounter_read(&priv->tstamp_tc);
++	priv->ptp_sts = NULL;
+ 	mutex_unlock(&priv->ptp_lock);
  
- 		if (transfer->delay_usecs)
- 			udelay(transfer->delay_usecs);
-@@ -830,62 +906,6 @@ static void dspi_cleanup(struct spi_device *spi)
- 	kfree(chip);
+ 	*ts = ns_to_timespec64(ns);
+@@ -355,7 +359,7 @@ static u64 sja1105_ptptsclk_read(const struct cyclecounter *cc)
+ 
+ 	sja1105_debug_gpio(priv, 1);
+ 	rc = sja1105_spi_send_int(priv, SPI_READ, regs->ptptsclk,
+-				  &ptptsclk, 8);
++				  &ptptsclk, 8, priv->ptp_sts);
+ 	sja1105_debug_gpio(priv, 0);
+ 	if (rc < 0)
+ 		dev_err_ratelimited(priv->ds->dev,
+@@ -368,9 +372,10 @@ static void sja1105_ptp_overflow_check(struct work_struct *work)
+ {
+ 	struct delayed_work *dw = to_delayed_work(work);
+ 	struct sja1105_private *priv = rw_to_sja1105(dw);
++	struct ptp_system_timestamp dummy;
+ 	struct timespec64 ts;
+ 
+-	sja1105_ptp_gettime(&priv->ptp_caps, &ts);
++	sja1105_ptp_gettimex(&priv->ptp_caps, &ts, &dummy);
+ 
+ 	schedule_delayed_work(&priv->refresh_work, SJA1105_REFRESH_INTERVAL);
+ }
+@@ -387,7 +392,7 @@ static void sja1105_ptp_extts_work(struct work_struct *work)
+ 	mutex_lock(&priv->ptp_lock);
+ 
+ 	rc = sja1105_spi_send_int(priv, SPI_READ, regs->ptpsyncts,
+-				  &ptpsyncts, 8);
++				  &ptpsyncts, 8, NULL);
+ 	if (rc < 0)
+ 		dev_err(priv->ds->dev, "Failed to read PTPSYNCTS: %d\n", rc);
+ 
+@@ -433,12 +438,12 @@ static int sja1105_pps_enable(struct sja1105_private *priv, bool on)
+ 		ptp_pin_duration = SJA1105_HZ_TO_PIN_DURATION(1);
+ 
+ 		rc = sja1105_spi_send_int(priv, SPI_WRITE, regs->ptppinst,
+-					  &ptp_pin_start, 8);
++					  &ptp_pin_start, 8, NULL);
+ 		if (rc < 0)
+ 			return rc;
+ 
+ 		rc = sja1105_spi_send_int(priv, SPI_WRITE, regs->ptppindur,
+-					  &ptp_pin_duration, 4);
++					  &ptp_pin_duration, 4, NULL);
+ 		if (rc < 0)
+ 			return rc;
+ 	}
+@@ -500,7 +505,7 @@ int sja1105_ptp_clock_register(struct sja1105_private *priv)
+ 		.name		= "SJA1105 PHC",
+ 		.adjfine	= sja1105_ptp_adjfine,
+ 		.adjtime	= sja1105_ptp_adjtime,
+-		.gettime64	= sja1105_ptp_gettime,
++		.gettimex64	= sja1105_ptp_gettimex,
+ 		.settime64	= sja1105_ptp_settime,
+ 		.enable		= sja1105_ptp_enable,
+ 		.max_adj	= SJA1105_MAX_ADJ_PPB,
+diff --git a/drivers/net/dsa/sja1105/sja1105_spi.c b/drivers/net/dsa/sja1105/sja1105_spi.c
+index e33c85569882..a3486a40e0fb 100644
+--- a/drivers/net/dsa/sja1105/sja1105_spi.c
++++ b/drivers/net/dsa/sja1105/sja1105_spi.c
+@@ -15,10 +15,13 @@
+ 	(SJA1105_SIZE_SPI_MSG_HEADER + SJA1105_SIZE_SPI_MSG_MAXLEN)
+ 
+ static int sja1105_spi_transfer(const struct sja1105_private *priv,
+-				const void *tx, void *rx, int size)
++				const void *tx, void *rx, int size,
++				struct ptp_system_timestamp *ptp_sts)
+ {
+ 	struct spi_device *spi = priv->spidev;
+ 	struct spi_transfer transfer = {
++		.ptp_sts_word_offset = 3,
++		.ptp_sts = ptp_sts,
+ 		.tx_buf = tx,
+ 		.rx_buf = rx,
+ 		.len = size,
+@@ -66,9 +69,11 @@ sja1105_spi_message_pack(void *buf, const struct sja1105_spi_message *msg)
+  * @size_bytes is smaller than SIZE_SPI_MSG_MAXLEN. Larger packed buffers
+  * are chunked in smaller pieces by sja1105_spi_send_long_packed_buf below.
+  */
+-int sja1105_spi_send_packed_buf(const struct sja1105_private *priv,
+-				sja1105_spi_rw_mode_t rw, u64 reg_addr,
+-				void *packed_buf, size_t size_bytes)
++static int
++__sja1105_spi_send_packed_buf(const struct sja1105_private *priv,
++			      sja1105_spi_rw_mode_t rw, u64 reg_addr,
++			      void *packed_buf, size_t size_bytes,
++			      struct ptp_system_timestamp *ptp_sts)
+ {
+ 	u8 tx_buf[SJA1105_SIZE_SPI_TRANSFER_MAX] = {0};
+ 	u8 rx_buf[SJA1105_SIZE_SPI_TRANSFER_MAX] = {0};
+@@ -90,7 +95,7 @@ int sja1105_spi_send_packed_buf(const struct sja1105_private *priv,
+ 		memcpy(tx_buf + SJA1105_SIZE_SPI_MSG_HEADER,
+ 		       packed_buf, size_bytes);
+ 
+-	rc = sja1105_spi_transfer(priv, tx_buf, rx_buf, msg_len);
++	rc = sja1105_spi_transfer(priv, tx_buf, rx_buf, msg_len, ptp_sts);
+ 	if (rc < 0)
+ 		return rc;
+ 
+@@ -101,6 +106,14 @@ int sja1105_spi_send_packed_buf(const struct sja1105_private *priv,
+ 	return 0;
  }
  
--static irqreturn_t dspi_interrupt(int irq, void *dev_id)
--{
--	struct fsl_dspi *dspi = (struct fsl_dspi *)dev_id;
--	struct spi_message *msg = dspi->cur_msg;
--	enum dspi_trans_mode trans_mode;
--	u32 spi_sr, spi_tcr;
--	u16 spi_tcnt;
--
--	regmap_read(dspi->regmap, SPI_SR, &spi_sr);
--	regmap_write(dspi->regmap, SPI_SR, spi_sr);
--
--	if (spi_sr & (SPI_SR_EOQF | SPI_SR_TCFQF)) {
--		/* Get transfer counter (in number of SPI transfers). It was
--		 * reset to 0 when transfer(s) were started.
--		 */
--		regmap_read(dspi->regmap, SPI_TCR, &spi_tcr);
--		spi_tcnt = SPI_TCR_GET_TCNT(spi_tcr);
--		/* Update total number of bytes that were transferred */
--		msg->actual_length += spi_tcnt * dspi->bytes_per_word;
--
--		trans_mode = dspi->devtype_data->trans_mode;
--		switch (trans_mode) {
--		case DSPI_EOQ_MODE:
--			dspi_eoq_read(dspi);
--			break;
--		case DSPI_TCFQ_MODE:
--			dspi_tcfq_read(dspi);
--			break;
--		default:
--			dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
--				trans_mode);
--				return IRQ_HANDLED;
--		}
--
--		if (!dspi->len) {
--			dspi->waitflags = 1;
--			wake_up_interruptible(&dspi->waitq);
--		} else {
--			switch (trans_mode) {
--			case DSPI_EOQ_MODE:
--				dspi_eoq_write(dspi);
--				break;
--			case DSPI_TCFQ_MODE:
--				dspi_tcfq_write(dspi);
--				break;
--			default:
--				dev_err(&dspi->pdev->dev,
--					"unsupported trans_mode %u\n",
--					trans_mode);
--			}
--		}
--	}
--
--	return IRQ_HANDLED;
--}
--
- static const struct of_device_id fsl_dspi_dt_ids[] = {
- 	{ .compatible = "fsl,vf610-dspi", .data = &vf610_data, },
- 	{ .compatible = "fsl,ls1021a-v1.0-dspi", .data = &ls1021a_v1_data, },
-@@ -1099,11 +1119,13 @@ static int dspi_probe(struct platform_device *pdev)
- 		goto out_master_put;
- 
- 	dspi_init(dspi);
++int sja1105_spi_send_packed_buf(const struct sja1105_private *priv,
++				sja1105_spi_rw_mode_t rw, u64 reg_addr,
++				void *packed_buf, size_t size_bytes)
++{
++	return __sja1105_spi_send_packed_buf(priv, rw, reg_addr, packed_buf,
++					     size_bytes, NULL);
++}
 +
- 	dspi->irq = platform_get_irq(pdev, 0);
--	if (dspi->irq < 0) {
--		dev_err(&pdev->dev, "can't get platform irq\n");
--		ret = dspi->irq;
--		goto out_clk_put;
-+	if (dspi->irq <= 0) {
-+		dev_info(&pdev->dev,
-+			 "can't get platform irq, using poll mode\n");
-+		dspi->irq = 0;
-+		goto poll_mode;
- 	}
+ /* If @rw is:
+  * - SPI_WRITE: creates and sends an SPI write message at absolute
+  *		address reg_addr, taking size_bytes from *packed_buf
+@@ -114,7 +127,8 @@ int sja1105_spi_send_packed_buf(const struct sja1105_private *priv,
+  */
+ int sja1105_spi_send_int(const struct sja1105_private *priv,
+ 			 sja1105_spi_rw_mode_t rw, u64 reg_addr,
+-			 u64 *value, u64 size_bytes)
++			 u64 *value, u64 size_bytes,
++			 struct ptp_system_timestamp *ptp_sts)
+ {
+ 	u8 packed_buf[SJA1105_SIZE_SPI_MSG_MAXLEN];
+ 	int rc;
+@@ -126,8 +140,8 @@ int sja1105_spi_send_int(const struct sja1105_private *priv,
+ 		sja1105_pack(packed_buf, value, 8 * size_bytes - 1, 0,
+ 			     size_bytes);
  
- 	ret = devm_request_irq(&pdev->dev, dspi->irq, dspi_interrupt,
-@@ -1113,6 +1135,9 @@ static int dspi_probe(struct platform_device *pdev)
- 		goto out_clk_put;
- 	}
+-	rc = sja1105_spi_send_packed_buf(priv, rw, reg_addr, packed_buf,
+-					 size_bytes);
++	rc = __sja1105_spi_send_packed_buf(priv, rw, reg_addr, packed_buf,
++					   size_bytes, ptp_sts);
  
-+	init_waitqueue_head(&dspi->waitq);
-+
-+poll_mode:
- 	if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
- 		ret = dspi_request_dma(dspi, res->start);
- 		if (ret < 0) {
-@@ -1124,7 +1149,6 @@ static int dspi_probe(struct platform_device *pdev)
- 	master->max_speed_hz =
- 		clk_get_rate(dspi->clk) / dspi->devtype_data->max_clock_factor;
+ 	if (rw == SPI_READ)
+ 		sja1105_unpack(packed_buf, value, 8 * size_bytes - 1, 0,
+@@ -291,7 +305,7 @@ int sja1105_inhibit_tx(const struct sja1105_private *priv,
+ 	int rc;
  
--	init_waitqueue_head(&dspi->waitq);
- 	platform_set_drvdata(pdev, master);
+ 	rc = sja1105_spi_send_int(priv, SPI_READ, regs->port_control,
+-				  &inhibit_cmd, SJA1105_SIZE_PORT_CTRL);
++				  &inhibit_cmd, SJA1105_SIZE_PORT_CTRL, NULL);
+ 	if (rc < 0)
+ 		return rc;
  
- 	ret = spi_register_master(master);
+@@ -301,7 +315,7 @@ int sja1105_inhibit_tx(const struct sja1105_private *priv,
+ 		inhibit_cmd &= ~port_bitmap;
+ 
+ 	return sja1105_spi_send_int(priv, SPI_WRITE, regs->port_control,
+-				    &inhibit_cmd, SJA1105_SIZE_PORT_CTRL);
++				    &inhibit_cmd, SJA1105_SIZE_PORT_CTRL, NULL);
+ }
+ 
+ struct sja1105_status {
 -- 
 2.17.1

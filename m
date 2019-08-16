@@ -1,7 +1,7 @@
 From: Vladimir Oltean <olteanv@gmail.com>
-Subject: [RFC PATCH net-next 10/11] ARM: dts: ls1021a-tsn: Use the DSPI controller in poll mode
-Date: Fri, 16 Aug 2019 03:44:48 +0300
-Message-ID: <20190816004449.10100-11-olteanv@gmail.com>
+Subject: [RFC PATCH net-next 11/11] ARM: dts: ls1021a-tsn: Reduce the SJA1105 SPI frequency for debug
+Date: Fri, 16 Aug 2019 03:44:49 +0300
+Message-ID: <20190816004449.10100-12-olteanv@gmail.com>
 References: <20190816004449.10100-1-olteanv@gmail.com>
 Cc: linux-spi@vger.kernel.org, netdev@vger.kernel.org,
         Vladimir Oltean <olteanv@gmail.com>
@@ -13,33 +13,27 @@ In-Reply-To: <20190816004449.10100-1-olteanv@gmail.com>
 Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Connected to the LS1021A DSPI is the SJA1105 DSA switch. This
-constitutes 4 of the 6 Ethernet ports on this board. When using the
-board as a PTP switch and bridging all 6 ports under one single L2
-entity, it is good to also have the PTP clocks of the switch and of the
-standalone Ethernet ports in sync.
-
-This cannot be done with hardware timestamping, and is where phc2sys
-comes into play. Using poll mode for SPI access helps ensure that all
-transfers take a deterministic time to complete, which is an important
-requirement for a TSN switch.
+I have a logic analyzer that cannot sample signals at a higher frequency
+than this, and it's nice to actually see the captured data and not just
+an amorphous mess.
 
 Signed-off-by: Vladimir Oltean <olteanv@gmail.com>
 ---
- arch/arm/boot/dts/ls1021a-tsn.dts | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boot/dts/ls1021a-tsn.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm/boot/dts/ls1021a-tsn.dts b/arch/arm/boot/dts/ls1021a-tsn.dts
-index 6cec454c484c..3b35e6b5977f 100644
+index 3b35e6b5977f..8fdf4c3b24c7 100644
 --- a/arch/arm/boot/dts/ls1021a-tsn.dts
 +++ b/arch/arm/boot/dts/ls1021a-tsn.dts
-@@ -37,6 +37,7 @@
- 	bus-num = <0>;
- 	/* EXP1_GPIO6 is GPIO4_18 */
- 	debug-gpios = <&gpio3 18 GPIO_ACTIVE_HIGH>;
-+	/delete-property/ interrupts;
- 	status = "okay";
- 
- 	/* ADG704BRMZ 1:4 SPI mux/demux */
+@@ -55,7 +55,7 @@
+ 		#size-cells = <0>;
+ 		compatible = "nxp,sja1105t";
+ 		/* 12 MHz */
+-		spi-max-frequency = <12000000>;
++		spi-max-frequency = <6000000>;
+ 		/* Sample data on trailing clock edge */
+ 		spi-cpha;
+ 		/* SPI controller settings for SJA1105 timing requirements */
 -- 
 2.17.1

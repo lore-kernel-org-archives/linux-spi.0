@@ -1,15 +1,14 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [RFC PATCH net-next 03/11] spi: Add a PTP system timestamp to
- the transfer structure
-Date: Fri, 16 Aug 2019 13:58:20 +0100
-Message-ID: <20190816125820.GF4039@sirena.co.uk>
+Subject: Re: [RFC PATCH net-next 04/11] spi: spi-fsl-dspi: Cosmetic cleanup
+Date: Fri, 16 Aug 2019 13:59:42 +0100
+Message-ID: <20190816125942.GG4039@sirena.co.uk>
 References: <20190816004449.10100-1-olteanv@gmail.com>
- <20190816004449.10100-4-olteanv@gmail.com>
- <20190816121837.GD4039@sirena.co.uk>
- <CA+h21hqatTeS2shV9QSiPzkjSeNj2Z4SOTrycffDjRHj=9s=nQ@mail.gmail.com>
+ <20190816004449.10100-5-olteanv@gmail.com>
+ <20190816122103.GE4039@sirena.co.uk>
+ <CA+h21hoP3t6j2mTd2BLwizqbFap+9Z2vdxQ4ahHS3-7Vr31Lxw@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="TU+u6i6jrDPzmlWF"
+        protocol="application/pgp-signature"; boundary="TdkiTnkLhLQllcMS"
 Cc: Hubert Feurstein <h.feurstein@gmail.com>, mlichvar@redhat.com,
         Richard Cochran <richardcochran@gmail.com>,
         Andrew Lunn <andrew@lunn.ch>,
@@ -18,83 +17,47 @@ Cc: Hubert Feurstein <h.feurstein@gmail.com>, mlichvar@redhat.com,
 To: Vladimir Oltean <olteanv@gmail.com>
 Return-path: <netdev-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CA+h21hqatTeS2shV9QSiPzkjSeNj2Z4SOTrycffDjRHj=9s=nQ@mail.gmail.com>
+In-Reply-To: <CA+h21hoP3t6j2mTd2BLwizqbFap+9Z2vdxQ4ahHS3-7Vr31Lxw@mail.gmail.com>
 Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---TU+u6i6jrDPzmlWF
+--TdkiTnkLhLQllcMS
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Aug 16, 2019 at 03:35:30PM +0300, Vladimir Oltean wrote:
-> On Fri, 16 Aug 2019 at 15:18, Mark Brown <broonie@kernel.org> wrote:
-> > On Fri, Aug 16, 2019 at 03:44:41AM +0300, Vladimir Oltean wrote:
+On Fri, Aug 16, 2019 at 03:37:46PM +0300, Vladimir Oltean wrote:
+> On Fri, 16 Aug 2019 at 15:21, Mark Brown <broonie@kernel.org> wrote:
 
-> > > @@ -842,6 +843,9 @@ struct spi_transfer {
-> > >
-> > >       u32             effective_speed_hz;
-> > >
-> > > +     struct ptp_system_timestamp *ptp_sts;
-> > > +     unsigned int    ptp_sts_word_offset;
-> > > +
+> > This is difficult to review since there's a bunch of largely unrelated
+> > changes all munged into one patch.  It'd be better to split this up so
+> > each change makes one kind of fix, and better to do this separately to
+> > the rest of the series.  In particular having alignment changes along
+> > with other changes hurts reviewability as it's less immediately clear
+> > what's a like for liken substitution.
 
-> > You've not documented these fields at all so it's not clear what the
-> > intended usage is.
+> Yes, the diff of this patch looks relatively bad. But I don't know if
+> splitting it in more patches isn't in fact going to pollute the git
+> history, so I can just as well drop it.
 
-> Thanks for looking into this.
-> Indeed I didn't document them as the patch is part of a RFC and I
-> thought the purpose was more clear from the context (cover letter
-> etc).
-> If I do ever send a patchset for submission I will document the newly
-> introduced fields properly.
+No problem with lots of patches in git history if you want to split it
+up (and probably split it out of the series).  Like I say it's mainly
+the alignment changes that it'd be better to pull out, the others really
+should be but it's easier to cope there.
 
-The issue I'm having is that I have zero idea about the PTP API so I've
-got nothing to go on when thinking about if this approach makes any
-sense unless I go do some research.
-
-> So let me clarify:
-> The SPI slave device driver is populating these fields to indicate to
-> the controller driver that it wants word number @ptp_sts_word_offset
-> from the tx buffer snapshotted. The controller driver is supposed to
-> put the snapshot into the @ptp_sts field, which is a pointer to a
-> memory location under the control of the SPI slave device driver.
-
-Snapshot here basically meaning recording a timestamp?  This interface
-does seem like it basically precludes DMA based controllers from using
-it unless someone happened to implement some very specific stuff in
-hardware which seems implausible.  I'd be inclined to just require that
-users can only snapshot the first (and possibly also the last, though
-DMA completions make that fun) word of a transfer, we could then pull
-this out into the core a bit by providing a wrapper function drivers
-should call at the appropriate moment.
-
-> It is ok if the ptp_sts pointer is NULL (no need to check), because
-> the API for taking snapshots already checks for that.
-> At the moment there is yet no proposed mechanism for the SPI slave
-> driver to ensure that the controller will really act upon this
-> request. That would be really nice to have, since some SPI slave
-> devices are time-sensitive and warning early is a good way to prevent
-> unnecessary troubleshooting.
-
-Yes, that's one of the things I was thinking about looking at the series
-- we should at least be able to warn if we can't timestamp so nobody
-gets confused, possibly error out if the calling code particularly
-depends on it.
-
---TU+u6i6jrDPzmlWF
+--TdkiTnkLhLQllcMS
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1WqGsACgkQJNaLcl1U
-h9CGoAf/UIB6zifv+qd++v5V+GB33nvGyd/uZvEunEr1laYQfXDcZwBlGWdiIYHU
-NrjjdvRpmKjIkj0VcTnSnY2PQRRsWuiz4qnjRchLbe2cKJLQGNp+GNH3HvdhTyqv
-mXNmKeO1LXOhxViuiSeqW5XxvKH2gT6dngXb5hKbCsTYwSWB73CTJ2GyrzXJBDPU
-+rKLUlFhDb0lziPkKV584IuE2ArCyxVwGwwjE2bOKqprMOknLBDiLwr811/dYDg7
-4InYjtkrDfccr58d+INSrQJTXpyVxuKtD9vkNiSzXeqS7msp1wiVafPwIf31WspT
-x7pIGwR6FyKgrZCqPTC/lev3JawcPw==
-=fXS5
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1WqL0ACgkQJNaLcl1U
+h9DF+wf7B3B4JsNBW4VWkpFnGhsr4gl+XnKkqDJ7m73tC2Dl3/3FKwqSYXVfkUWS
+LbcxZOobEr61s9fmfjA0TUFu8B4JB8wp/jKmmzTj5ygRP07LF0jYuGAiRBaS0X7m
+tfDkFIaBbHbxUdVcjqkWPAJ5LxJWMhgsDJR4rWC4FW8/KYABGNTGtKzKiMA89UEI
+1UeQ13P7LnA+uSIqgypnD1QOmucjJyBZH2QWGR3D/ZoxF9Uc4M+uticmdK6+baNM
+0xXq29jl5RjwEJ33XgAL9I6bSNPooiu4QVRr4DkhVV7Tvu6w7O8/sLnrq8e/bZWM
+Uvi+kxInQPyMoTHZdyylCtohid/Grg==
+=1nYD
 -----END PGP SIGNATURE-----
 
---TU+u6i6jrDPzmlWF--
+--TdkiTnkLhLQllcMS--

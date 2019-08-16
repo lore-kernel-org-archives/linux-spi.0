@@ -1,55 +1,57 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [RFC PATCH net-next 03/11] spi: Add a PTP system timestamp to
- the transfer structure
-Date: Fri, 16 Aug 2019 13:18:37 +0100
-Message-ID: <20190816121837.GD4039@sirena.co.uk>
+Subject: Re: [RFC PATCH net-next 04/11] spi: spi-fsl-dspi: Cosmetic cleanup
+Date: Fri, 16 Aug 2019 13:21:03 +0100
+Message-ID: <20190816122103.GE4039@sirena.co.uk>
 References: <20190816004449.10100-1-olteanv@gmail.com>
- <20190816004449.10100-4-olteanv@gmail.com>
+ <20190816004449.10100-5-olteanv@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="hxkXGo8AKqTJ+9QI"
+        protocol="application/pgp-signature"; boundary="Q8BnQc91gJZX4vDc"
 Cc: h.feurstein@gmail.com, mlichvar@redhat.com,
         richardcochran@gmail.com, andrew@lunn.ch, f.fainelli@gmail.com,
         linux-spi@vger.kernel.org, netdev@vger.kernel.org
 To: Vladimir Oltean <olteanv@gmail.com>
 Return-path: <netdev-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20190816004449.10100-4-olteanv@gmail.com>
+In-Reply-To: <20190816004449.10100-5-olteanv@gmail.com>
 Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---hxkXGo8AKqTJ+9QI
+--Q8BnQc91gJZX4vDc
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 16, 2019 at 03:44:41AM +0300, Vladimir Oltean wrote:
+On Fri, Aug 16, 2019 at 03:44:42AM +0300, Vladimir Oltean wrote:
+> This patch addresses some cosmetic issues:
+> - Alignment
+> - Typos
+> - (Non-)use of BIT() and GENMASK() macros
+> - Unused definitions
+> - Unused includes
+> - Abuse of ternary operator in detriment of readability
+> - Reduce indentation level
 
-> @@ -842,6 +843,9 @@ struct spi_transfer {
-> =20
->  	u32		effective_speed_hz;
-> =20
-> +	struct ptp_system_timestamp *ptp_sts;
-> +	unsigned int	ptp_sts_word_offset;
-> +
+This is difficult to review since there's a bunch of largely unrelated
+changes all munged into one patch.  It'd be better to split this up so
+each change makes one kind of fix, and better to do this separately to
+the rest of the series.  In particular having alignment changes along
+with other changes hurts reviewability as it's less immediately clear
+what's a like for liken substitution.
 
-You've not documented these fields at all so it's not clear what the
-intended usage is.
-
---hxkXGo8AKqTJ+9QI
+--Q8BnQc91gJZX4vDc
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1WnxwACgkQJNaLcl1U
-h9D8nwf8DrLh/nyypE5Z9eyCgD6tjtuKC/OLPBwFr+Ok3tAYfcVFUJ32DJ8ZsCMh
-U3HfHE/KSUK/VgOCv3d6iuNk/2fozEYiFgggeyqoDagiyssXjNSFQwaBI1jNh/8A
-9gG+00aG06VCwcYtFPeXNZGyv1ifPFZOuyuwZjIyM9Wfl4B4CbX3o+cxGBhpHQvE
-F1Nn4b4/rttBYAmxt5whDtU6ZgGnilVy9i3naqH5bO1ZPR8Mi3i8lOtntBetVVHG
-obyEBNVcgWAfxcuHoGZnQXRVJjYicjNa3odkE971eZnqFJlBlQdOWZc5sOpdVFrs
-/3NmdZUt9i/YniIdFEhbJ2YM954ivg==
-=C5En
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1Wn64ACgkQJNaLcl1U
+h9D5Bwf+OKuQMiT2y6NsdVvC4VV6RHVuXDYQxs3lIWdb2gLw+ikQZum3e77gvc+Z
+If4Yc1d+XAwqFbrD81a522yH0cyGfWIed/Hlmc6CwkKMZC1j+0ngO2PSIKeBdZzA
+cuVlqNjke4qPs6lsNcBN9tig3A7Qer4de9hkCCtctdPGBalJSBprV+ow85cjyXbp
+4wvnTojb1EzWCMplDPvoTeAGgZHZjsfp5lpf+eTI+isYBjRFeyokFvsosUZiMdZI
+Wi+o/Swe1nL/6jM8+EVmJpUzTUDtT191cSM4KaHEifU9zXdrSk1ss09wlruRAETy
+ACNvbL2isq76eFbeLwIwtDqf/mfaaA==
+=2xml
 -----END PGP SIGNATURE-----
 
---hxkXGo8AKqTJ+9QI--
+--Q8BnQc91gJZX4vDc--

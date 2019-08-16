@@ -1,47 +1,40 @@
-From: Andreas Kemnade <andreas@kemnade.info>
-Subject: [PATCH] gpio: of: fix Freescale SPI CS quirk handling
-Date: Fri, 16 Aug 2019 18:50:00 +0200
-Message-ID: <20190816165000.32334-1-andreas@kemnade.info>
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH] gpio: of: fix Freescale SPI CS quirk handling
+Date: Sat, 17 Aug 2019 00:29:14 +0200
+Message-ID: <CACRpkdaVHPFgw9g8D=zrYECO5Syk1kMT3VgL+wq2ebKQxg_FGA@mail.gmail.com>
+References: <20190816165000.32334-1-andreas@kemnade.info>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: Andreas Kemnade <andreas@kemnade.info>,
+Content-Type: text/plain; charset="UTF-8"
+Cc: Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Discussions about the Letux Kernel
+        <letux-kernel@openphoenux.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
         "H . Nikolaus Schaller" <hns@goldelico.com>
-To: linus.walleij@linaro.org, bgolaszewski@baylibre.com,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        letux-kernel@openphoenux.org, linux-spi@vger.kernel.org
+To: Andreas Kemnade <andreas@kemnade.info>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190816165000.32334-1-andreas@kemnade.info>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On the gta04 we see:
-spi_gpio: probe of spi_lcd failed with error -2
+On Fri, Aug 16, 2019 at 6:50 PM Andreas Kemnade <andreas@kemnade.info> wrote:
 
-The quirk introduced in
-commit e3023bf80639 ("gpio: of: Handle the Freescale SPI CS")
-can also be triggered by a temporary -EPROBE_DEFER and
-so "convert" it to a hard -ENOENT.
+> On the gta04 we see:
+> spi_gpio: probe of spi_lcd failed with error -2
+>
+> The quirk introduced in
+> commit e3023bf80639 ("gpio: of: Handle the Freescale SPI CS")
+> can also be triggered by a temporary -EPROBE_DEFER and
+> so "convert" it to a hard -ENOENT.
+>
+> Disable that conversion by checking for -EPROBE_DEFER.
+>
+> Fixes: e3023bf80639 ("gpio: of: Handle the Freescale SPI CS")
+> Suggested-by: H. Nikolaus Schaller <hns@goldelico.com>
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
 
-Disable that conversion by checking for -EPROBE_DEFER.
+Good catch! Patch applied for fixes.
 
-Fixes: e3023bf80639 ("gpio: of: Handle the Freescale SPI CS")
-Suggested-by: H. Nikolaus Schaller <hns@goldelico.com>
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
----
- drivers/gpio/gpiolib-of.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
-index 567fb98c0892..9762dd6d99fa 100644
---- a/drivers/gpio/gpiolib-of.c
-+++ b/drivers/gpio/gpiolib-of.c
-@@ -363,7 +363,7 @@ struct gpio_desc *of_find_gpio(struct device *dev, const char *con_id,
- 	/* Special handling for SPI GPIOs if used */
- 	if (IS_ERR(desc))
- 		desc = of_find_spi_gpio(dev, con_id, &of_flags);
--	if (IS_ERR(desc)) {
-+	if (IS_ERR(desc) && PTR_ERR(desc) != -EPROBE_DEFER) {
- 		/* This quirk looks up flags and all */
- 		desc = of_find_spi_cs_gpio(dev, con_id, idx, flags);
- 		if (!IS_ERR(desc))
--- 
-2.20.1
+Yours,
+Linus Walleij

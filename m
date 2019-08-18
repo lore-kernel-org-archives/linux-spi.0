@@ -1,46 +1,98 @@
-From: Axel Lin <axel.lin@ingics.com>
-Subject: [PATCH] spi: zynq-qspi: Fix missing spi_unregister_controller when
- unload module
-Date: Sun, 18 Aug 2019 17:51:13 +0800
-Message-ID: <20190818095113.2397-1-axel.lin@ingics.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Axel Lin <axel.lin@ingics.com>, Michal Simek <michal.simek@xilinx.com>,
- linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+From: Vladimir Oltean <olteanv@gmail.com>
+Subject: [PATCH spi for-5.4 1/5] spi: Use an abbreviated pointer to ctlr->cur_msg in __spi_pump_messages
+Date: Sun, 18 Aug 2019 21:25:56 +0300
+Message-ID: <20190818182600.3047-2-olteanv@gmail.com>
+References: <20190818182600.3047-1-olteanv@gmail.com>
+Cc: linux-spi@vger.kernel.org, netdev@vger.kernel.org,
+        Vladimir Oltean <olteanv@gmail.com>
+To: broonie@kernel.org, h.feurstein@gmail.com, mlichvar@redhat.com,
+        richardcochran@gmail.com, andrew@lunn.ch, f.fainelli@gmail.com
+Return-path: <netdev-owner@vger.kernel.org>
+In-Reply-To: <20190818182600.3047-1-olteanv@gmail.com>
+Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Use devm_spi_register_controller to fix missing spi_unregister_controller
-when unload module.
+This helps a bit with line fitting now (the list_first_entry call) as
+well as during the next patch which needs to iterate through all
+transfers of ctlr->cur_msg so it timestamps them.
 
-Signed-off-by: Axel Lin <axel.lin@ingics.com>
+Signed-off-by: Vladimir Oltean <olteanv@gmail.com>
 ---
- drivers/spi/spi-zynq-qspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index 3155e2cabb1e..4a5326ccf65a 100644
---- a/drivers/spi/spi-zynq-qspi.c
-+++ b/drivers/spi/spi-zynq-qspi.c
-@@ -694,7 +694,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 	ctlr->setup = zynq_qspi_setup_op;
- 	ctlr->max_speed_hz = clk_get_rate(xqspi->refclk) / 2;
- 	ctlr->dev.of_node = np;
--	ret = spi_register_controller(ctlr);
-+	ret = devm_spi_register_controller(&pdev->dev, ctlr);
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index aef55acb5ccd..d96e04627982 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1265,8 +1265,9 @@ EXPORT_SYMBOL_GPL(spi_finalize_current_transfer);
+  */
+ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
+ {
+-	unsigned long flags;
++	struct spi_message *mesg;
+ 	bool was_busy = false;
++	unsigned long flags;
+ 	int ret;
+ 
+ 	/* Lock queue */
+@@ -1325,10 +1326,10 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
+ 	}
+ 
+ 	/* Extract head of queue */
+-	ctlr->cur_msg =
+-		list_first_entry(&ctlr->queue, struct spi_message, queue);
++	mesg = list_first_entry(&ctlr->queue, struct spi_message, queue);
++	ctlr->cur_msg = mesg;
+ 
+-	list_del_init(&ctlr->cur_msg->queue);
++	list_del_init(&mesg->queue);
+ 	if (ctlr->busy)
+ 		was_busy = true;
+ 	else
+@@ -1361,7 +1362,7 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
+ 			if (ctlr->auto_runtime_pm)
+ 				pm_runtime_put(ctlr->dev.parent);
+ 
+-			ctlr->cur_msg->status = ret;
++			mesg->status = ret;
+ 			spi_finalize_current_message(ctlr);
+ 
+ 			mutex_unlock(&ctlr->io_mutex);
+@@ -1369,28 +1370,28 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
+ 		}
+ 	}
+ 
+-	trace_spi_message_start(ctlr->cur_msg);
++	trace_spi_message_start(mesg);
+ 
+ 	if (ctlr->prepare_message) {
+-		ret = ctlr->prepare_message(ctlr, ctlr->cur_msg);
++		ret = ctlr->prepare_message(ctlr, mesg);
+ 		if (ret) {
+ 			dev_err(&ctlr->dev, "failed to prepare message: %d\n",
+ 				ret);
+-			ctlr->cur_msg->status = ret;
++			mesg->status = ret;
+ 			spi_finalize_current_message(ctlr);
+ 			goto out;
+ 		}
+ 		ctlr->cur_msg_prepared = true;
+ 	}
+ 
+-	ret = spi_map_msg(ctlr, ctlr->cur_msg);
++	ret = spi_map_msg(ctlr, mesg);
  	if (ret) {
- 		dev_err(&pdev->dev, "spi_register_master failed\n");
- 		goto clk_dis_all;
+-		ctlr->cur_msg->status = ret;
++		mesg->status = ret;
+ 		spi_finalize_current_message(ctlr);
+ 		goto out;
+ 	}
+ 
+-	ret = ctlr->transfer_one_message(ctlr, ctlr->cur_msg);
++	ret = ctlr->transfer_one_message(ctlr, mesg);
+ 	if (ret) {
+ 		dev_err(&ctlr->dev,
+ 			"failed to transfer one message from queue\n");
 -- 
-2.20.1
+2.17.1

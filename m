@@ -1,7 +1,7 @@
 From: Vladimir Oltean <olteanv@gmail.com>
-Subject: [PATCH spi for-5.4 4/5] spi: spi-fsl-dspi: Implement the PTP system timestamping for TCFQ mode
-Date: Sun, 18 Aug 2019 21:25:59 +0300
-Message-ID: <20190818182600.3047-5-olteanv@gmail.com>
+Subject: [PATCH spi for-5.4 5/5] spi: spi-fsl-dspi: Disable interrupts and preemption during poll mode transfer
+Date: Sun, 18 Aug 2019 21:26:00 +0300
+Message-ID: <20190818182600.3047-6-olteanv@gmail.com>
 References: <20190818182600.3047-1-olteanv@gmail.com>
 Cc: linux-spi@vger.kernel.org, netdev@vger.kernel.org,
         Vladimir Oltean <olteanv@gmail.com>
@@ -12,113 +12,97 @@ In-Reply-To: <20190818182600.3047-1-olteanv@gmail.com>
 Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-In this mode, the DSPI controller uses PIO to transfer word by word. In
-comparison, in EOQ mode the 4-word deep FIFO is being used, hence the
-current logic will need some adaptation for which I do not have the
-hardware (Coldfire) to test. It is not clear what is the timing of DMA
-transfers and whether timestamping in the driver brings any overall
-performance increase compared to regular timestamping done in the core.
+While the poll mode helps reduce the overall latency in transmitting a
+SPI message in the EOQ and TCFQ modes, the transmission can still have
+jitter due to the CPU needing to service interrupts.
 
-Tested on LS1021A.
+The transmission latency does not matter except in situations where the
+SPI transfer represents the readout of a POSIX clock. In that case,
+even with the byte-level PTP system timestamping in place, a pending IRQ
+might find its way to be processed on the local CPU exactly during the
+window when the transfer is snapshotted.
+
+Disabling interrupts ensures the above situation never happens. When it
+does, it manifests itself as random delay spikes, which throw off the
+servo loop of phc2sys and make it lose lock.
+
+Short phc2sys summary after 58 minutes of running without this patch:
+
+  offset: min -26251 max 16416 mean -21.8672 std dev 863.416
+  delay: min 4720 max 57280 mean 5182.49 std dev 1607.19
+  lost servo lock 3 times
+
+Summary of the same phc2sys service running for 120 minutes with the
+patch:
+
+  offset: min -378 max 381 mean -0.0083089 std dev 101.495
+  delay: min 4720 max 5920 mean 5129.38 std dev 154.899
+  lost servo lock 0 times
+
+Disable interrupts unconditionally if running in poll mode.
+Two aspects:
+- If the DSPI driver is in IRQ mode, then disabling interrupts becomes a
+  contradiction in terms. Poll mode is recommendable for predictable
+  latency.
+- In theory it should be possible to disable interrupts only for SPI
+  transfers that represent an interaction with a POSIX clock. The driver
+  can sense this by looking at transfer->ptp_sts. However enabling this
+  unconditionally makes issues much more visible (and not just in fringe
+  cases), were they to ever appear.
 
 Signed-off-by: Vladimir Oltean <olteanv@gmail.com>
 ---
- drivers/spi/spi-fsl-dspi.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/spi/spi-fsl-dspi.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 4daf8c3d07b7..ea7169d18e09 100644
+index ea7169d18e09..c94574a20c8a 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -129,6 +129,7 @@ enum dspi_trans_mode {
- struct fsl_dspi_devtype_data {
- 	enum dspi_trans_mode	trans_mode;
- 	u8			max_clock_factor;
-+	bool			ptp_sts_supported;
- 	bool			xspi_mode;
- };
- 
-@@ -140,12 +141,14 @@ static const struct fsl_dspi_devtype_data vf610_data = {
- static const struct fsl_dspi_devtype_data ls1021a_v1_data = {
- 	.trans_mode		= DSPI_TCFQ_MODE,
- 	.max_clock_factor	= 8,
-+	.ptp_sts_supported	= true,
- 	.xspi_mode		= true,
- };
- 
- static const struct fsl_dspi_devtype_data ls2085a_data = {
- 	.trans_mode		= DSPI_TCFQ_MODE,
- 	.max_clock_factor	= 8,
-+	.ptp_sts_supported	= true,
- };
- 
- static const struct fsl_dspi_devtype_data coldfire_data = {
-@@ -179,6 +182,11 @@ struct fsl_dspi {
+@@ -182,6 +182,8 @@ struct fsl_dspi {
  	int					irq;
  	struct clk				*clk;
  
-+	struct ptp_system_timestamp		*ptp_sts;
-+	const void				*ptp_sts_word_pre;
-+	const void				*ptp_sts_word_post;
-+	bool					take_snapshot_pre;
-+	bool					take_snapshot_post;
- 	struct spi_transfer			*cur_transfer;
- 	struct spi_message			*cur_msg;
- 	struct chip_data			*cur_chip;
-@@ -653,6 +661,9 @@ static int dspi_rxtx(struct fsl_dspi *dspi)
- 	u16 spi_tcnt;
- 	u32 spi_tcr;
++	/* Used to disable IRQs and preemption */
++	spinlock_t				lock;
+ 	struct ptp_system_timestamp		*ptp_sts;
+ 	const void				*ptp_sts_word_pre;
+ 	const void				*ptp_sts_word_post;
+@@ -739,6 +741,7 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 	struct spi_device *spi = message->spi;
+ 	enum dspi_trans_mode trans_mode;
+ 	struct spi_transfer *transfer;
++	unsigned long flags = 0;
+ 	int status = 0;
  
-+	if (dspi->take_snapshot_post)
-+		ptp_read_system_postts(dspi->ptp_sts);
-+
- 	/* Get transfer counter (in number of SPI transfers). It was
- 	 * reset to 0 when transfer(s) were started.
- 	 */
-@@ -670,6 +681,12 @@ static int dspi_rxtx(struct fsl_dspi *dspi)
- 		/* Success! */
- 		return 0;
- 
-+	dspi->take_snapshot_pre = (dspi->tx == dspi->ptp_sts_word_pre);
-+	dspi->take_snapshot_post = (dspi->tx == dspi->ptp_sts_word_post);
-+
-+	if (dspi->take_snapshot_pre)
-+		ptp_read_system_prets(dspi->ptp_sts);
-+
- 	if (dspi->devtype_data->trans_mode == DSPI_EOQ_MODE)
- 		dspi_eoq_write(dspi);
- 	else
-@@ -764,6 +781,10 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 			dspi->bytes_per_word = 2;
- 		else
- 			dspi->bytes_per_word = 4;
-+		dspi->ptp_sts = transfer->ptp_sts;
-+		dspi->ptp_sts_word_pre = spi_xfer_ptp_sts_word(transfer, true);
-+		dspi->ptp_sts_word_post = spi_xfer_ptp_sts_word(transfer,
-+								false);
- 
- 		regmap_update_bits(dspi->regmap, SPI_MCR,
- 				   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF,
-@@ -776,6 +797,11 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 	message->actual_length = 0;
+@@ -797,6 +800,9 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
  				     SPI_FRAME_EBITS(transfer->bits_per_word) |
  				     SPI_CTARE_DTCP(1));
  
-+		dspi->take_snapshot_pre = (dspi->tx == dspi->ptp_sts_word_pre);
++		if (!dspi->irq)
++			spin_lock_irqsave(&dspi->lock, flags);
 +
-+		if (dspi->take_snapshot_pre)
-+			ptp_read_system_prets(dspi->ptp_sts);
-+
- 		trans_mode = dspi->devtype_data->trans_mode;
- 		switch (trans_mode) {
- 		case DSPI_EOQ_MODE:
-@@ -1140,6 +1166,8 @@ static int dspi_probe(struct platform_device *pdev)
- 	ctlr->max_speed_hz =
- 		clk_get_rate(dspi->clk) / dspi->devtype_data->max_clock_factor;
+ 		dspi->take_snapshot_pre = (dspi->tx == dspi->ptp_sts_word_pre);
  
-+	ctlr->ptp_sts_supported = dspi->devtype_data->ptp_sts_supported;
+ 		if (dspi->take_snapshot_pre)
+@@ -829,6 +835,9 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 			do {
+ 				status = dspi_poll(dspi);
+ 			} while (status == -EINPROGRESS);
 +
- 	platform_set_drvdata(pdev, ctlr);
++			spin_unlock_irqrestore(&dspi->lock, flags);
++
+ 		} else if (trans_mode != DSPI_DMA_MODE) {
+ 			status = wait_event_interruptible(dspi->waitq,
+ 							  dspi->waitflags);
+@@ -1153,6 +1162,7 @@ static int dspi_probe(struct platform_device *pdev)
+ 	}
  
- 	ret = spi_register_controller(ctlr);
+ 	init_waitqueue_head(&dspi->waitq);
++	spin_lock_init(&dspi->lock);
+ 
+ poll_mode:
+ 	if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
 -- 
 2.17.1

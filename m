@@ -1,7 +1,7 @@
 From: Vladimir Oltean <olteanv@gmail.com>
-Subject: [PATCH spi for-5.4 5/5] spi: spi-fsl-dspi: Disable interrupts and preemption during poll mode transfer
-Date: Sun, 18 Aug 2019 21:26:00 +0300
-Message-ID: <20190818182600.3047-6-olteanv@gmail.com>
+Subject: [PATCH spi for-5.4 3/5] spi: spi-fsl-dspi: Use poll mode in case the platform IRQ is missing
+Date: Sun, 18 Aug 2019 21:25:58 +0300
+Message-ID: <20190818182600.3047-4-olteanv@gmail.com>
 References: <20190818182600.3047-1-olteanv@gmail.com>
 Cc: linux-spi@vger.kernel.org, netdev@vger.kernel.org,
         Vladimir Oltean <olteanv@gmail.com>
@@ -12,97 +12,159 @@ In-Reply-To: <20190818182600.3047-1-olteanv@gmail.com>
 Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-While the poll mode helps reduce the overall latency in transmitting a
-SPI message in the EOQ and TCFQ modes, the transmission can still have
-jitter due to the CPU needing to service interrupts.
+On platforms like LS1021A which use TCFQ mode, an interrupt needs to be
+processed after each byte is TXed/RXed. I tried to make the DSPI
+implementation on this SoC operate in other, more efficient modes (EOQ,
+DMA) but it looks like it simply isn't possible.
 
-The transmission latency does not matter except in situations where the
-SPI transfer represents the readout of a POSIX clock. In that case,
-even with the byte-level PTP system timestamping in place, a pending IRQ
-might find its way to be processed on the local CPU exactly during the
-window when the transfer is snapshotted.
-
-Disabling interrupts ensures the above situation never happens. When it
-does, it manifests itself as random delay spikes, which throw off the
-servo loop of phc2sys and make it lose lock.
-
-Short phc2sys summary after 58 minutes of running without this patch:
-
-  offset: min -26251 max 16416 mean -21.8672 std dev 863.416
-  delay: min 4720 max 57280 mean 5182.49 std dev 1607.19
-  lost servo lock 3 times
-
-Summary of the same phc2sys service running for 120 minutes with the
-patch:
-
-  offset: min -378 max 381 mean -0.0083089 std dev 101.495
-  delay: min 4720 max 5920 mean 5129.38 std dev 154.899
-  lost servo lock 0 times
-
-Disable interrupts unconditionally if running in poll mode.
-Two aspects:
-- If the DSPI driver is in IRQ mode, then disabling interrupts becomes a
-  contradiction in terms. Poll mode is recommendable for predictable
-  latency.
-- In theory it should be possible to disable interrupts only for SPI
-  transfers that represent an interaction with a POSIX clock. The driver
-  can sense this by looking at transfer->ptp_sts. However enabling this
-  unconditionally makes issues much more visible (and not just in fringe
-  cases), were they to ever appear.
+Therefore allow the driver to operate in poll mode, to ease a bit of
+this absurd amount of IRQ load generated in TCFQ mode. Doing so reduces
+both the net time it takes to transmit a SPI message, as well as the
+inter-frame jitter that occurs while doing so.
 
 Signed-off-by: Vladimir Oltean <olteanv@gmail.com>
 ---
- drivers/spi/spi-fsl-dspi.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/spi/spi-fsl-dspi.c | 81 ++++++++++++++++++++++++++++----------
+ 1 file changed, 61 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index ea7169d18e09..c94574a20c8a 100644
+index 238bbe172b79..4daf8c3d07b7 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -182,6 +182,8 @@ struct fsl_dspi {
- 	int					irq;
- 	struct clk				*clk;
+@@ -647,15 +647,11 @@ static void dspi_eoq_read(struct fsl_dspi *dspi)
+ 		dspi_push_rx(dspi, fifo_read(dspi));
+ }
  
-+	/* Used to disable IRQs and preemption */
-+	spinlock_t				lock;
- 	struct ptp_system_timestamp		*ptp_sts;
- 	const void				*ptp_sts_word_pre;
- 	const void				*ptp_sts_word_post;
-@@ -739,6 +741,7 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 	struct spi_device *spi = message->spi;
- 	enum dspi_trans_mode trans_mode;
- 	struct spi_transfer *transfer;
-+	unsigned long flags = 0;
- 	int status = 0;
+-static irqreturn_t dspi_interrupt(int irq, void *dev_id)
++static int dspi_rxtx(struct fsl_dspi *dspi)
+ {
+-	struct fsl_dspi *dspi = (struct fsl_dspi *)dev_id;
+ 	struct spi_message *msg = dspi->cur_msg;
+-	u32 spi_sr, spi_tcr;
+ 	u16 spi_tcnt;
+-
+-	regmap_read(dspi->regmap, SPI_SR, &spi_sr);
+-	regmap_write(dspi->regmap, SPI_SR, spi_sr);
++	u32 spi_tcr;
  
- 	message->actual_length = 0;
-@@ -797,6 +800,9 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 				     SPI_FRAME_EBITS(transfer->bits_per_word) |
- 				     SPI_CTARE_DTCP(1));
+ 	/* Get transfer counter (in number of SPI transfers). It was
+ 	 * reset to 0 when transfer(s) were started.
+@@ -670,17 +666,52 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
+ 	else
+ 		dspi_tcfq_read(dspi);
  
-+		if (!dspi->irq)
-+			spin_lock_irqsave(&dspi->lock, flags);
+-	if (!dspi->len) {
+-		dspi->waitflags = 1;
+-		wake_up_interruptible(&dspi->waitq);
+-		return IRQ_HANDLED;
+-	}
++	if (!dspi->len)
++		/* Success! */
++		return 0;
+ 
+ 	if (dspi->devtype_data->trans_mode == DSPI_EOQ_MODE)
+ 		dspi_eoq_write(dspi);
+ 	else
+ 		dspi_tcfq_write(dspi);
+ 
++	return -EINPROGRESS;
++}
 +
- 		dspi->take_snapshot_pre = (dspi->tx == dspi->ptp_sts_word_pre);
++static int dspi_poll(struct fsl_dspi *dspi)
++{
++	int tries = 1000;
++	u32 spi_sr;
++
++	do {
++		regmap_read(dspi->regmap, SPI_SR, &spi_sr);
++		regmap_write(dspi->regmap, SPI_SR, spi_sr);
++
++		if (spi_sr & (SPI_SR_EOQF | SPI_SR_TCFQF))
++			break;
++	} while (--tries);
++
++	if (!tries)
++		return -ETIMEDOUT;
++
++	return dspi_rxtx(dspi);
++}
++
++static irqreturn_t dspi_interrupt(int irq, void *dev_id)
++{
++	struct fsl_dspi *dspi = (struct fsl_dspi *)dev_id;
++	u32 spi_sr;
++
++	regmap_read(dspi->regmap, SPI_SR, &spi_sr);
++	regmap_write(dspi->regmap, SPI_SR, spi_sr);
++
++	dspi_rxtx(dspi);
++
++	if (!dspi->len) {
++		dspi->waitflags = 1;
++		wake_up_interruptible(&dspi->waitq);
++	}
++
+ 	return IRQ_HANDLED;
+ }
  
- 		if (dspi->take_snapshot_pre)
-@@ -829,6 +835,9 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 			do {
- 				status = dspi_poll(dspi);
- 			} while (status == -EINPROGRESS);
+@@ -768,13 +799,18 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 			goto out;
+ 		}
+ 
+-		if (trans_mode != DSPI_DMA_MODE) {
+-			if (wait_event_interruptible(dspi->waitq,
+-						     dspi->waitflags))
+-				dev_err(&dspi->pdev->dev,
+-					"wait transfer complete fail!\n");
++		if (!dspi->irq) {
++			do {
++				status = dspi_poll(dspi);
++			} while (status == -EINPROGRESS);
++		} else if (trans_mode != DSPI_DMA_MODE) {
++			status = wait_event_interruptible(dspi->waitq,
++							  dspi->waitflags);
+ 			dspi->waitflags = 0;
+ 		}
++		if (status)
++			dev_err(&dspi->pdev->dev,
++				"Waiting for transfer to complete failed!\n");
+ 
+ 		if (transfer->delay_usecs)
+ 			udelay(transfer->delay_usecs);
+@@ -1074,10 +1110,13 @@ static int dspi_probe(struct platform_device *pdev)
+ 		goto out_ctlr_put;
+ 
+ 	dspi_init(dspi);
 +
-+			spin_unlock_irqrestore(&dspi->lock, flags);
-+
- 		} else if (trans_mode != DSPI_DMA_MODE) {
- 			status = wait_event_interruptible(dspi->waitq,
- 							  dspi->waitflags);
-@@ -1153,6 +1162,7 @@ static int dspi_probe(struct platform_device *pdev)
+ 	dspi->irq = platform_get_irq(pdev, 0);
+-	if (dspi->irq < 0) {
+-		ret = dspi->irq;
+-		goto out_clk_put;
++	if (dspi->irq <= 0) {
++		dev_info(&pdev->dev,
++			 "can't get platform irq, using poll mode\n");
++		dspi->irq = 0;
++		goto poll_mode;
  	}
  
- 	init_waitqueue_head(&dspi->waitq);
-+	spin_lock_init(&dspi->lock);
+ 	ret = devm_request_irq(&pdev->dev, dspi->irq, dspi_interrupt,
+@@ -1087,6 +1126,9 @@ static int dspi_probe(struct platform_device *pdev)
+ 		goto out_clk_put;
+ 	}
  
- poll_mode:
++	init_waitqueue_head(&dspi->waitq);
++
++poll_mode:
  	if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
+ 		ret = dspi_request_dma(dspi, res->start);
+ 		if (ret < 0) {
+@@ -1098,7 +1140,6 @@ static int dspi_probe(struct platform_device *pdev)
+ 	ctlr->max_speed_hz =
+ 		clk_get_rate(dspi->clk) / dspi->devtype_data->max_clock_factor;
+ 
+-	init_waitqueue_head(&dspi->waitq);
+ 	platform_set_drvdata(pdev, ctlr);
+ 
+ 	ret = spi_register_controller(ctlr);
 -- 
 2.17.1

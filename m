@@ -1,20 +1,31 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: Fix the number of CS lines documented as an example" to the spi tree
+Subject: Applied "spi: zynq-qspi: Fix missing spi_unregister_controller when
+ unload module" to the spi tree
 Date: Tue, 20 Aug 2019 13:54:59 +0100 (BST)
-Message-ID: <20190820125459.867A42742ABD@ypsilon.sirena.org.uk>
-References: <20190820115000.32041-1-manivannan.sadhasivam@linaro.org>
-Cc: broonie@kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, robh+dt@kernel.org
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190820115000.32041-1-manivannan.sadhasivam@linaro.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Message-ID: <20190820125459.B15E9274314C@ypsilon.sirena.org.uk>
+References: <20190818095113.2397-1-axel.lin@ingics.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie@kernel.org>, Michal Simek <michal.simek@xilinx.com>,
+ linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+To: Axel Lin <axel.lin@ingics.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190818095113.2397-1-axel.lin@ingics.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: Fix the number of CS lines documented as an example
+   spi: zynq-qspi: Fix missing spi_unregister_controller when unload module
 
 has been applied to the spi tree at
 
@@ -39,34 +50,35 @@ to this mail.
 Thanks,
 Mark
 
->From 7f01494fd85f3ac40635bc2a7bf005b607084c96 Mon Sep 17 00:00:00 2001
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Date: Tue, 20 Aug 2019 17:20:00 +0530
-Subject: [PATCH] spi: Fix the number of CS lines documented as an example
+>From 8eb2fd00f65a96143ed1535bdbf4ca4e129d30d1 Mon Sep 17 00:00:00 2001
+From: Axel Lin <axel.lin@ingics.com>
+Date: Sun, 18 Aug 2019 17:51:13 +0800
+Subject: [PATCH] spi: zynq-qspi: Fix missing spi_unregister_controller when
+ unload module
 
-The number of CS lines is mentioned as 2 in the spi-controller binding
-but however in the example, 4 cs-gpios are used. Hence fix that to
-mention 4.
+Use devm_spi_register_controller to fix missing spi_unregister_controller
+when unload module.
 
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20190820115000.32041-1-manivannan.sadhasivam@linaro.org
+Signed-off-by: Axel Lin <axel.lin@ingics.com>
+Acked-by: Michal Simek <michal.simek@xilinx.com>
+Link: https://lore.kernel.org/r/20190818095113.2397-1-axel.lin@ingics.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- Documentation/devicetree/bindings/spi/spi-controller.yaml | 2 +-
+ drivers/spi/spi-zynq-qspi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-index a02e2fe2bfb2..732339275848 100644
---- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
-+++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-@@ -31,7 +31,7 @@ properties:
-       If that property is used, the number of chip selects will be
-       increased automatically with max(cs-gpios, hardware chip selects).
- 
--      So if, for example, the controller has 2 CS lines, and the
-+      So if, for example, the controller has 4 CS lines, and the
-       cs-gpios looks like this
-         cs-gpios = <&gpio1 0 0>, <0>, <&gpio1 1 0>, <&gpio1 2 0>;
- 
+diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
+index c6bee67decb5..d812a215ae5c 100644
+--- a/drivers/spi/spi-zynq-qspi.c
++++ b/drivers/spi/spi-zynq-qspi.c
+@@ -695,7 +695,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
+ 	ctlr->setup = zynq_qspi_setup_op;
+ 	ctlr->max_speed_hz = clk_get_rate(xqspi->refclk) / 2;
+ 	ctlr->dev.of_node = np;
+-	ret = spi_register_controller(ctlr);
++	ret = devm_spi_register_controller(&pdev->dev, ctlr);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "spi_register_master failed\n");
+ 		goto clk_dis_all;
 -- 
 2.20.1

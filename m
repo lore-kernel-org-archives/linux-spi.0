@@ -1,47 +1,72 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] dt-bindings: spi: Fix the number of CS lines documented
- as an example
-Date: Tue, 20 Aug 2019 13:05:47 +0100
-Message-ID: <20190820120547.GA4738@sirena.co.uk>
+Subject: Applied "spi: Fix the number of CS lines documented as an example" to the spi tree
+Date: Tue, 20 Aug 2019 13:54:59 +0100 (BST)
+Message-ID: <20190820125459.867A42742ABD@ypsilon.sirena.org.uk>
 References: <20190820115000.32041-1-manivannan.sadhasivam@linaro.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="uAKRQypu60I7Lcqm"
-Cc: robh+dt@kernel.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: broonie@kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>, robh+dt@kernel.org
 To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
 In-Reply-To: <20190820115000.32041-1-manivannan.sadhasivam@linaro.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---uAKRQypu60I7Lcqm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: Fix the number of CS lines documented as an example
 
-On Tue, Aug 20, 2019 at 05:20:00PM +0530, Manivannan Sadhasivam wrote:
-> The number of CS lines is mentioned as 2 in the spi-controller binding
-> but however in the example, 4 cs-gpios are used. Hence fix that to
-> mention 4.
+has been applied to the spi tree at
 
-Please use subject lines matching the style for the subsystem.  This
-makes it easier for people to identify relevant patches.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.3
 
---uAKRQypu60I7Lcqm
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1b4hgACgkQJNaLcl1U
-h9CaTAf+NDDtCxFNPDyqiudCbpGsmAOBaem3UqwpTZRbK9vy7b0ePoD9WJKWG+2O
-1VxpcQp243Ardj1r8k9gZPYeWpolHmFen00GoakMDJiP7HLfjUIj/qReHkvbY23k
-6f0+DWwWlW6dNYOTzunzeqihVNB8Ca+IRADgp6S89o9fMD/2KbIAsNrSKOJwuhAG
-qtELaiaIKSFFbibjD1kLAjhcvcSZ6kYeF6sA6dNXvgvH9VgAuoWxcJTR092lPPDd
-3f1T/MKZQyo3yal/0WJ9O5rKdUe7HAinhnc8ptUm11hvog21k+sWQkMFgELcJ3Ci
-tVI+DaUHu+fv61YcaPMmvHPb8hITEA==
-=qfh+
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---uAKRQypu60I7Lcqm--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 7f01494fd85f3ac40635bc2a7bf005b607084c96 Mon Sep 17 00:00:00 2001
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Date: Tue, 20 Aug 2019 17:20:00 +0530
+Subject: [PATCH] spi: Fix the number of CS lines documented as an example
+
+The number of CS lines is mentioned as 2 in the spi-controller binding
+but however in the example, 4 cs-gpios are used. Hence fix that to
+mention 4.
+
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20190820115000.32041-1-manivannan.sadhasivam@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ Documentation/devicetree/bindings/spi/spi-controller.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+index a02e2fe2bfb2..732339275848 100644
+--- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+@@ -31,7 +31,7 @@ properties:
+       If that property is used, the number of chip selects will be
+       increased automatically with max(cs-gpios, hardware chip selects).
+ 
+-      So if, for example, the controller has 2 CS lines, and the
++      So if, for example, the controller has 4 CS lines, and the
+       cs-gpios looks like this
+         cs-gpios = <&gpio1 0 0>, <0>, <&gpio1 1 0>, <&gpio1 2 0>;
+ 
+-- 
+2.20.1

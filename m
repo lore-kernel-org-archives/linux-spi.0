@@ -1,42 +1,51 @@
-From: Andrew Lunn <andrew@lunn.ch>
-Subject: Re: [PATCH spi for-5.4 0/5] Deterministic SPI latency with NXP DSPI
- driver
-Date: Tue, 20 Aug 2019 18:57:29 +0200
-Message-ID: <20190820165729.GQ29991@lunn.ch>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH spi for-5.4 1/5] spi: Use an abbreviated pointer to
+ ctlr->cur_msg in __spi_pump_messages
+Date: Tue, 20 Aug 2019 19:21:28 +0100
+Message-ID: <20190820182128.GH4738@sirena.co.uk>
 References: <20190818182600.3047-1-olteanv@gmail.com>
- <CA+h21hr4UcoJK7upNJjG0ibtX7CkF=akxVdrb--1AJn6-z=sUQ@mail.gmail.com>
+ <20190818182600.3047-2-olteanv@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>,
-        Hubert Feurstein <h.feurstein@gmail.com>, mlichvar@redhat.com,
-        Richard Cochran <richardcochran@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        linux-spi@vger.kernel.org, netdev <netdev@vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="PNpeiK4tTqhYOExY"
+Cc: h.feurstein@gmail.com, mlichvar@redhat.com,
+        richardcochran@gmail.com, andrew@lunn.ch, f.fainelli@gmail.com,
+        linux-spi@vger.kernel.org, netdev@vger.kernel.org
 To: Vladimir Oltean <olteanv@gmail.com>
 Return-path: <netdev-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CA+h21hr4UcoJK7upNJjG0ibtX7CkF=akxVdrb--1AJn6-z=sUQ@mail.gmail.com>
+In-Reply-To: <20190818182600.3047-2-olteanv@gmail.com>
 Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-> - Ethernet has support for hardware timestamping
 
-True, but not all drivers support it.
+--PNpeiK4tTqhYOExY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Marvell switches are often combined with Marvell MACs. None of the
-Marvell MAC drivers, mv643xx, mvneta, mvpp2 or octeontx2 support
-hardware timestamping. My guess is, the hardware probably supports it,
-but nobody has taken the time to writing the driver code. FEC does
-have PTP support, but what does it look like in general? Are Marvell
-drives the exception, or the norm?
+On Sun, Aug 18, 2019 at 09:25:56PM +0300, Vladimir Oltean wrote:
 
-What we have been talking about in this thread, adding timestamp calls
-at various places, is simple, compared to adding driver code to a
-number of MAC drivers. We can get a lot of 'bang for our buck' with
-time stamps, it is easy to copy to other drivers, you don't need a
-good knowledge of the hardware, datasheet, etc.
+>  	/* Extract head of queue */
+> -	ctlr->cur_msg =
+> -		list_first_entry(&ctlr->queue, struct spi_message, queue);
+> +	mesg = list_first_entry(&ctlr->queue, struct spi_message, queue);
+> +	ctlr->cur_msg = mesg;
 
-So if we can get this accepted, we should try to do it. You can always
-come back later and add your full hardware solution.
+Why mesg when the existing code uses msg as an abbreviation here?
 
-   Andrew
+--PNpeiK4tTqhYOExY
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1cOicACgkQJNaLcl1U
+h9AOqgf/cjzfm7bvt631xQj45WADd1zxrsMogZIZK1dMYJhoUv9wZeeG9HRoTiQV
+KFWp5wZJG7DZpJIIOTWvJruK9Kqg1xDx6Vn78qLBPwJDq9JnFb4g/PHV3tTkHGk0
+QyexBehdFr6IcovmKnA2uyp0N3fSIgzysv5CfB54NqyZMwE+9hCzxnE+N2DsKjfn
+FfLRuyDINJJChwWQokpNnlTYP13mpe7UTBueTxn7ye42jBbgIkrPV2JYRZZQtZLY
+QP3+0raudadXAc67mHcQgNGPB3G9TRZgt3M1QEw9sOUb7uvqQBTN6roL2X9JEeVB
+LQVdcmmYX4v6Qv8O731AKmKVvnckBw==
+=BmOu
+-----END PGP SIGNATURE-----
+
+--PNpeiK4tTqhYOExY--

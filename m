@@ -1,84 +1,86 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: zynq-qspi: Fix missing spi_unregister_controller when
- unload module" to the spi tree
-Date: Tue, 20 Aug 2019 13:54:59 +0100 (BST)
-Message-ID: <20190820125459.B15E9274314C@ypsilon.sirena.org.uk>
-References: <20190818095113.2397-1-axel.lin@ingics.com>
+Subject: Re: [RFC PATCH net-next 03/11] spi: Add a PTP system timestamp to
+ the transfer structure
+Date: Tue, 20 Aug 2019 13:55:57 +0100
+Message-ID: <20190820125557.GB4738@sirena.co.uk>
+References: <20190816004449.10100-1-olteanv@gmail.com>
+ <20190816004449.10100-4-olteanv@gmail.com>
+ <20190816121837.GD4039@sirena.co.uk>
+ <CA+h21hqatTeS2shV9QSiPzkjSeNj2Z4SOTrycffDjRHj=9s=nQ@mail.gmail.com>
+ <20190816125820.GF4039@sirena.co.uk>
+ <CA+h21hrZbun_j+oABJFP+P+V3zHP2x0mAhv-1ocF38miCvZHew@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>, Michal Simek <michal.simek@xilinx.com>,
- linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: Axel Lin <axel.lin@ingics.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190818095113.2397-1-axel.lin@ingics.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="DBIVS5p969aUjpLe"
+Cc: Hubert Feurstein <h.feurstein@gmail.com>, mlichvar@redhat.com,
+        Richard Cochran <richardcochran@gmail.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        linux-spi@vger.kernel.org, netdev <netdev@vger.kernel.org>
+To: Vladimir Oltean <olteanv@gmail.com>
+Return-path: <netdev-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CA+h21hrZbun_j+oABJFP+P+V3zHP2x0mAhv-1ocF38miCvZHew@mail.gmail.com>
+Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: zynq-qspi: Fix missing spi_unregister_controller when unload module
+--DBIVS5p969aUjpLe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-has been applied to the spi tree at
+On Fri, Aug 16, 2019 at 05:05:53PM +0300, Vladimir Oltean wrote:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.3
+> I'm not sure how to respond to this, because I don't know anything
+> about the timing of DMA transfers.
+> Maybe snapshotting DMA transfers the same way is not possible (if at
+> all). Maybe they are not exactly adequate for this sort of application
+> anyway. Maybe it depends.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+DMA transfers generally proceed without any involvement from the CPU,
+this is broadly the point of DMA.  You *may* be able to split into
+multiple transactions but it's not reliable that you'd be able to do so
+on byte boundaries and there will be latency getting notified of
+completions.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> In other words, from a purely performance perspective, I am against
+> limiting the API to just snapshotting the first and last byte. At this
+> level of "zoom", if I change the offset of the byte to anything other
+> than 3, the synchronization offset refuses to converge towards zero,
+> because the snapshot is incurring a constant offset that the servo
+> loop from userspace (phc2sys) can't compensate for.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+> Maybe the SPI master driver should just report what sort of
+> snapshotting capability it can offer, ranging from none (default
+> unless otherwise specified), to transfer-level (DMA style) or
+> byte-level.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+That does then have the consequence that the majority of controllers
+aren't going to be usable with the API which isn't great.
 
-Thanks,
-Mark
+> I'm afraid more actual experimentation is needed with DMA-based
+> controllers to understand what can be expected from them, and as a
+> result, how the API should map around them.
+> MDIO bus controllers are in a similar situation (with Hubert's patch)
+> but at least there the frame size is fixed and I haven't heard of an
+> MDIO controller to use DMA.
 
->From 8eb2fd00f65a96143ed1535bdbf4ca4e129d30d1 Mon Sep 17 00:00:00 2001
-From: Axel Lin <axel.lin@ingics.com>
-Date: Sun, 18 Aug 2019 17:51:13 +0800
-Subject: [PATCH] spi: zynq-qspi: Fix missing spi_unregister_controller when
- unload module
+I'm not 100% clear what the problem you're trying to solve is, or if
+it's a sensible problem to try to solve for that matter.
 
-Use devm_spi_register_controller to fix missing spi_unregister_controller
-when unload module.
+--DBIVS5p969aUjpLe
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Signed-off-by: Axel Lin <axel.lin@ingics.com>
-Acked-by: Michal Simek <michal.simek@xilinx.com>
-Link: https://lore.kernel.org/r/20190818095113.2397-1-axel.lin@ingics.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-zynq-qspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index c6bee67decb5..d812a215ae5c 100644
---- a/drivers/spi/spi-zynq-qspi.c
-+++ b/drivers/spi/spi-zynq-qspi.c
-@@ -695,7 +695,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 	ctlr->setup = zynq_qspi_setup_op;
- 	ctlr->max_speed_hz = clk_get_rate(xqspi->refclk) / 2;
- 	ctlr->dev.of_node = np;
--	ret = spi_register_controller(ctlr);
-+	ret = devm_spi_register_controller(&pdev->dev, ctlr);
- 	if (ret) {
- 		dev_err(&pdev->dev, "spi_register_master failed\n");
- 		goto clk_dis_all;
--- 
-2.20.1
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1b7dwACgkQJNaLcl1U
+h9Dwjwf/dbqcU17zGra+YlgRKo6DqR3lr7Zs78XeUA8t53b61L28+ZuDRE1j6wYZ
+9OR/cjPU20FZ5KSjqpHsGbGvvJh6M0/v5az8EBm0e3vpglKcTRNGJ5dsZHLbOyPb
+uEhweMwaanElatxIvhQJvnL6aicGZhl4CQeWqLglAfxvmnfxDzAluYoalAMBk5+c
+pjUunBGPtX3bIDuSS/TGeoAtP1+wu/pNS8Nr6+rJ6IIclLlxrm9m3UqxxU8Gg48o
+Wxlm31t+Byb5sp8BgweEStjxUzKgwFr4yrgVXCP/mPNpdUv6ViqAq5usdN0SlNsS
+ph2TXu+C7V/RLrSsXeCjjbK+STc2Xg==
+=wLY1
+-----END PGP SIGNATURE-----
+
+--DBIVS5p969aUjpLe--

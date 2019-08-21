@@ -1,64 +1,59 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH spi for-5.4 1/5] spi: Use an abbreviated pointer to
- ctlr->cur_msg in __spi_pump_messages
-Date: Wed, 21 Aug 2019 12:01:26 +0100
-Message-ID: <20190821110126.GB5128@sirena.co.uk>
-References: <20190818182600.3047-1-olteanv@gmail.com>
- <20190818182600.3047-2-olteanv@gmail.com>
- <20190820182128.GH4738@sirena.co.uk>
- <CA+h21hpgi7-dJ-QoRBEQorcRyEuhqhKixpFK5fGxOnZxTHi-4g@mail.gmail.com>
+Subject: Re: [Patch v4 1/3] dt-bindings: spi: spi-fsl-qspi: Add ls2080a
+ compatibility string to bindings
+Date: Wed, 21 Aug 2019 12:06:40 +0100
+Message-ID: <20190821110640.GC5128@sirena.co.uk>
+References: <1565691791-26167-1-git-send-email-Ashish.Kumar@nxp.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="jq0ap7NbKX2Kqbes"
-Cc: Hubert Feurstein <h.feurstein@gmail.com>, mlichvar@redhat.com,
-        Richard Cochran <richardcochran@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        linux-spi@vger.kernel.org, netdev <netdev@vger.kernel.org>
-To: Vladimir Oltean <olteanv@gmail.com>
-Return-path: <netdev-owner@vger.kernel.org>
+        protocol="application/pgp-signature"; boundary="7qSK/uQB79J36Y4o"
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, robh+dt@kernel.org,
+        mark.rutland@arm.com, linux-next@vger.kernel.org,
+        Kuldeep Singh <kuldeep.singh@nxp.com>
+To: Ashish Kumar <Ashish.Kumar@nxp.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CA+h21hpgi7-dJ-QoRBEQorcRyEuhqhKixpFK5fGxOnZxTHi-4g@mail.gmail.com>
-Sender: netdev-owner@vger.kernel.org
+In-Reply-To: <1565691791-26167-1-git-send-email-Ashish.Kumar@nxp.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---jq0ap7NbKX2Kqbes
+--7qSK/uQB79J36Y4o
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 20, 2019 at 10:36:43PM +0300, Vladimir Oltean wrote:
-> On Tue, 20 Aug 2019 at 21:21, Mark Brown <broonie@kernel.org> wrote:
+On Tue, Aug 13, 2019 at 03:53:09PM +0530, Ashish Kumar wrote:
 
-> > On Sun, Aug 18, 2019 at 09:25:56PM +0300, Vladimir Oltean wrote:
+> There are 2 version of QSPI-IP, according to which controller registers s=
+ets
+> can be big endian or little endian.There are some other minor changes like
+> RX fifo depth etc.
+>=20
+> The big endian version uses driver compatible "fsl,ls1021a-qspi" and
+> little endian version uses driver compatible "fsl,ls2080a-qspi"
 
-> > >       /* Extract head of queue */
-> > > -     ctlr->cur_msg =
-> > > -             list_first_entry(&ctlr->queue, struct spi_message, queue);
-> > > +     mesg = list_first_entry(&ctlr->queue, struct spi_message, queue);
-> > > +     ctlr->cur_msg = mesg;
+I'm not seeing the corresponding code changes anywhere?  I'd at least
+expect to see the compatibles added, and it sounds like some actual code
+updates are needed.
 
-> > Why mesg when the existing code uses msg as an abbreviation here?
+Please use subject lines matching the style for the subsystem.  This
+makes it easier for people to identify relevant patches.
 
-> Does it matter? I took from spi_finalize_current_message which also uses mesg.
-
-It's particularly visible when it's on the same line, flags up a
-question about if things are the same.  Other things not being great
-doesn't preclude making this one better.
-
---jq0ap7NbKX2Kqbes
+--7qSK/uQB79J36Y4o
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1dJIUACgkQJNaLcl1U
-h9CzMQf9HnNPDySLqccfz5BLBVZCLMOkkVcR47jnut4j/UXE9Cl0GtNlVZGOkncP
-fasOSOPlkY5bjdlscjCnI/cfWyioihIVgad/3oz6yLbjjPoVShvFkYtcDnI1pF+h
-9qiT8FoZH/5fSZcMSfBsVYo0pYqAwVFxAnOLhVKlx+1Hs00Z5+VqD8Hkxx8Utwju
-hfUtJ5+qWzSb9FeP8shiHTqrvEjd0BCDrx1+cEpbkXPLaGtB5wrOpCba28MUxXLn
-8I4KA9kmCTDHI6dEE5FbgVcaf1o3lcunvZiwWXi8xhKht0jaCsTg/3JckTOWlNPk
-ScvVb5mG5SMzHea76Z89qyYb47zccw==
-=Z8rS
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1dJcAACgkQJNaLcl1U
+h9ALWAf9FuOa4W9/UQrIJZeOZ/BujLFsH5QKFVBvWEBDKZF/EXSWLrYORXZxko35
+l4tKWlUnJd4XbiikYKCJF+d3HWK8f6ZBgPKKMi5PYX9HeUtBF6fJ8mjn2Tz/xh6h
+sG7ZNP9OCu+i7HviwHWORMPBCeOplTwNShinPGIAMxCqM92AppySQfbSbFXl2u5i
+dDwGHh6zPt7raw0Jetq8zjOePmNxwgb8MyF4htJv/W62zF6InmY0XoXeAH3pVNpU
+e0R8Mp/hbYHKEql5s5GTgiBd1toZ5RiSsxWj0it+J66/nWKzQTsihCv0HVJUlGNu
+rdUYox05ntwGBCd4uTGuECa8E4cwrQ==
+=E1Em
 -----END PGP SIGNATURE-----
 
---jq0ap7NbKX2Kqbes--
+--7qSK/uQB79J36Y4o--

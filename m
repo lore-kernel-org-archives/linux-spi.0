@@ -1,59 +1,94 @@
-From: Vladimir Oltean <olteanv@gmail.com>
-Subject: Re: [PATCH spi for-5.4 0/5] Deterministic SPI latency with NXP DSPI driver
-Date: Wed, 21 Aug 2019 23:17:23 +0300
-Message-ID: <CA+h21hrtzU1XL-0m+BG5TYZvVh8WN6hgcM7CV5taHyq2MsR5dw@mail.gmail.com>
-References: <20190818182600.3047-1-olteanv@gmail.com> <CA+h21hr4UcoJK7upNJjG0ibtX7CkF=akxVdrb--1AJn6-z=sUQ@mail.gmail.com>
- <20190821043845.GB1332@localhost> <20190821140815.GA1447@localhost>
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v2 1/2] dt-binding: spi: add NPCM FIU controller
+Date: Wed, 21 Aug 2019 15:56:50 -0500
+Message-ID: <20190821205650.GA14884@bogus>
+References: <20190808131448.349161-1-tmaimon77@gmail.com>
+ <20190808131448.349161-2-tmaimon77@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>,
-        Hubert Feurstein <h.feurstein@gmail.com>,
-        Miroslav Lichvar <mlichvar@redhat.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        linux-spi@vger.kernel.org, netdev <netdev@vger.kernel.org>
-To: Richard Cochran <richardcochran@gmail.com>
-Return-path: <netdev-owner@vger.kernel.org>
-In-Reply-To: <20190821140815.GA1447@localhost>
-Sender: netdev-owner@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: broonie@kernel.org, mark.rutland@arm.com, vigneshr@ti.com,
+        bbrezillon@kernel.org, avifishman70@gmail.com,
+        tali.perry1@gmail.com, venture@google.com, yuenn@google.com,
+        benjaminfair@google.com, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, openbmc@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org
+To: Tomer Maimon <tmaimon77@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20190808131448.349161-2-tmaimon77@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Richard,
+On Thu, Aug 08, 2019 at 04:14:47PM +0300, Tomer Maimon wrote:
+> Added device tree binding documentation for Nuvoton BMC
+> NPCM Flash Interface Unit(FIU) SPI master controller
+> using SPI-MEM interface.
+> 
+> Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
+> ---
+>  .../bindings/spi/nuvoton,npcm-fiu.txt         | 47 +++++++++++++++++++
+>  1 file changed, 47 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt b/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt
+> new file mode 100644
+> index 000000000000..ab37aae91d19
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt
+> @@ -0,0 +1,47 @@
+> +* Nuvoton FLASH Interface Unit (FIU) SPI Controller
+> +
+> +NPCM FIU supports single, dual and quad communication interface.
+> +
+> +The NPCM7XX supports three FIU modules,
+> +FIU0 and FIUx supports two chip selects,
+> +FIU3 support four chip select.
+> +
+> +Required properties:
+> +  - compatible : "nuvoton,npcm750-fiu" for the NPCM7XX BMC
+> +  - #address-cells : should be 1.
+> +  - #size-cells : should be 0.
+> +  - reg : the first contains the register location and length,
+> +          the second contains the memory mapping address and length
+> +  - reg-names: Should contain the reg names "control" and "memory"
+> +  - clocks : phandle of FIU reference clock.
+> +
+> +Required properties in case the pins can be muxed:
+> +  - pinctrl-names : a pinctrl state named "default" must be defined.
+> +  - pinctrl-0 : phandle referencing pin configuration of the device.
+> +
+> +Optional property:
+> +  - spix-mode: enable spix-mode for an expansion bus to an ASIC or CPLD.
 
-On Wed, 21 Aug 2019 at 17:08, Richard Cochran <richardcochran@gmail.com> wrote:
->
-> On Tue, Aug 20, 2019 at 09:38:45PM -0700, Richard Cochran wrote:
-> > Overall, the PTP switch use case is well supported by Linux.  The
-> > synchronization of the management CPU to the PTP, while nice to have,
-> > is not required to implement a Transparent Clock.  Your specific
-> > application might require it, but honestly, if the management CPU
-> > needs good synchronization, then you really aught to feed a PPS from
-> > the switch into a gpio (for example) on the CPU.
->
-> Another way to achieve this is to have a second MAC interface on the
-> management CPU connected to a spare port on the switch.  Then time
-> stamping, PHC, ptp4l, and phc2sys work as expected.
->
-> Thanks,
-> Richard
+Is this something standard? If not, add a vendor prefix.
 
-Of course PPS with a dedicated hardware receiver that can take input
-compare timestamps is always preferable. However non-Ethernet
-synchronization in the field looks to me like "make do with whatever
-you can". I'm not sure a plain GPIO that raises an interrupt is better
-than an interrupt-driven serial protocol controller - it's (mostly)
-the interrupts that throw off the precision of the software timestamp.
-And use Miroslav's pps-gpio-poll module and you're back from where you
-started (try to make a sw timestamp as precise as possible).
-As for dedicating a second interface pair in (basically) loopback just
-for sync, that's how I'm testing PTP when I don't have a second board
-and hence how the idea occurred to me. I can imagine this even getting
-deployed and I can also probably name an example, but it certainly
-wouldn't be my first choice. But DSA could have that built-in, and
-with the added latency benefit of a MAC-to-MAC connection.
-Too bad the mv88e6xxx driver can't do loopback timestamping, that's
-already 50% of the DSA drivers that support PTP at all. An embedded
-solution for this is less compelling now.
+> +
+> +Aliases:
+> +- All the FIU controller nodes should be represented in the aliases node using
+> +  the following format 'fiu{n}' where n is a unique number for the alias.
+> +  In the NPCM7XX BMC:
+> +  		fiu0 represent fiu 0 controller
+> +  		fiu1 represent fiu 3 controller
+> +  		fiu2 represent fiu x controller
+> +
+> +Example:
+> +fiu3: fiu@c00000000 {
 
-Regards,
--Vladimir
+spi@...
+
+> +	compatible = "nuvoton,npcm750-fiu";
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	reg = <0xfb000000 0x1000>, <0x80000000 0x10000000>;
+> +	reg-names = "control", "memory";
+> +	clocks = <&clk NPCM7XX_CLK_AHB>;
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&spi3_pins>;
+> +	spi-nor@0 {
+> +			...
+> +	};
+> +};
+> +
+> -- 
+> 2.18.0
+> 

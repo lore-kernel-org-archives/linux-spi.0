@@ -1,8 +1,8 @@
 From: Richard Cochran <richardcochran@gmail.com>
 Subject: Re: [PATCH spi for-5.4 0/5] Deterministic SPI latency with NXP DSPI
  driver
-Date: Thu, 22 Aug 2019 09:05:21 -0700
-Message-ID: <20190822160521.GC4522@localhost>
+Date: Thu, 22 Aug 2019 09:10:42 -0700
+Message-ID: <20190822161042.GD4522@localhost>
 References: <20190818182600.3047-1-olteanv@gmail.com>
  <CA+h21hr4UcoJK7upNJjG0ibtX7CkF=akxVdrb--1AJn6-z=sUQ@mail.gmail.com>
  <20190821043845.GB1332@localhost>
@@ -26,45 +26,11 @@ Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 On Thu, Aug 22, 2019 at 05:58:49PM +0300, Vladimir Oltean wrote:
-> I don't think I understand the problem here.
+> If you mean the latter, then yes, having HWTSTAMP_FILTER_ALL in the
+> rx_filter of the DSA master is a hard requirement.
 
-On the contrary, I do.
-
-> You'd have something like this:
-> 
-> Master (DSA master port)         Slave (switch CPU port)
-> 
->     |                            |         Tstamps known
->     |                            |         to slave
->     |       Local_sync_req       |
->  t1 |------\                     |         t1
->     |       \-----\              |
->     |              \-----\       |
->     |                     \----->| t2      t1, t2
->     |                            |
->     |     Local_sync_resp /------| t3      t1, t2, t3
->     |              /-----/       |
->     |       /-----/              |
->  t4 |<-----/                     |         t1, t2, t3, t4
->     |                            |
->     |                            |
->     v           time             v
-
-And who generates Local_sync_resp?
-
-Also, what sort of frame is it?  PTP has no Sync request or response.
-
-> But you don't mean a TX timestamp at the egress of swp4 here, do you?
-
-Yes, I do.
- 
-> Why would that matter?
-
-Because in order to synchronize to an external GM, you need to measure
-two things:
-
-1. the (unchanging) delay from MAC to MAC
-2. the (per-packet) switch residence time
+And to clear, the marvell only recognizes PTP frames.  That means that
+DSA frames cannot be time stamped.
 
 Thanks,
 Richard

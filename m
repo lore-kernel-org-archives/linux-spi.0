@@ -1,23 +1,21 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-fsl-qspi: Add ls2080a compatibility string to bindings" to the spi tree
-Date: Thu, 22 Aug 2019 20:22:54 +0100 (BST)
-Message-ID: <20190822192254.EC64ED02CB0@fitzroy.sirena.org.uk>
-References: <1565691791-26167-1-git-send-email-Ashish.Kumar@nxp.com>
-Cc: Ashish Kumar <ashish.kumar@nxp.com>, broonie@kernel.org,
-        devicetree@vger.kernel.org, Han Xu <han.xu@nxp.com>,
-        Kuldeep Singh <kuldeep.singh@nxp.com>,
+Subject: Applied "spi: fsl-qspi: Enhance binding to extend example for flash entry" to the spi tree
+Date: Thu, 22 Aug 2019 20:22:57 +0100 (BST)
+Message-ID: <20190822192257.CF419D02CB0@fitzroy.sirena.org.uk>
+References: <1565691791-26167-3-git-send-email-Ashish.Kumar@nxp.com>
+Cc: broonie@kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-next@vger.kernel.org,
         linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
         mark.rutland@arm.com, robh+dt@kernel.org
 To: Ashish Kumar <Ashish.Kumar@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1565691791-26167-1-git-send-email-Ashish.Kumar@nxp.com>
+In-Reply-To: <1565691791-26167-3-git-send-email-Ashish.Kumar@nxp.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spi-fsl-qspi: Add ls2080a compatibility string to bindings
+   spi: fsl-qspi: Enhance binding to extend example for flash entry
 
 has been applied to the spi tree at
 
@@ -42,43 +40,38 @@ to this mail.
 Thanks,
 Mark
 
->From be28f76b7e8ffaf04690e30fd17683d8afea1fd9 Mon Sep 17 00:00:00 2001
+>From 303290e130bfd504a8230f49e545f6b91e120553 Mon Sep 17 00:00:00 2001
 From: Ashish Kumar <Ashish.Kumar@nxp.com>
-Date: Tue, 13 Aug 2019 15:53:09 +0530
-Subject: [PATCH] spi: spi-fsl-qspi: Add ls2080a compatibility string to
- bindings
+Date: Tue, 13 Aug 2019 15:53:11 +0530
+Subject: [PATCH] spi: fsl-qspi: Enhance binding to extend example for flash
+ entry
 
-There are 2 version of QSPI-IP, according to which controller registers sets
-can be big endian or little endian.There are some other minor changes like
-RX fifo depth etc.
+Add example for adding flash entry on various boards' dts
+using flash manufacture spansion/cypress.
 
-The big endian version uses driver compatible "fsl,ls1021a-qspi" and
-little endian version uses driver compatible "fsl,ls2080a-qspi"
-
-Signed-off-by: Kuldeep Singh <kuldeep.singh@nxp.com>
-Signed-off-by: Ashish Kumar <ashish.kumar@nxp.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Acked-by: Han Xu <han.xu@nxp.com>
-Link: https://lore.kernel.org/r/1565691791-26167-1-git-send-email-Ashish.Kumar@nxp.com
+Signed-off-by: Ashish Kumar <Ashish.Kumar@nxp.com>
+Link: https://lore.kernel.org/r/1565691791-26167-3-git-send-email-Ashish.Kumar@nxp.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- Documentation/devicetree/bindings/spi/spi-fsl-qspi.txt | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ Documentation/devicetree/bindings/spi/spi-fsl-qspi.txt | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-qspi.txt b/Documentation/devicetree/bindings/spi/spi-fsl-qspi.txt
-index 1b23cfd7b39b..69dc5d57b1ef 100644
+index e8f1d627d288..1b23cfd7b39b 100644
 --- a/Documentation/devicetree/bindings/spi/spi-fsl-qspi.txt
 +++ b/Documentation/devicetree/bindings/spi/spi-fsl-qspi.txt
-@@ -3,9 +3,8 @@
- Required properties:
-   - compatible : Should be "fsl,vf610-qspi", "fsl,imx6sx-qspi",
- 		 "fsl,imx7d-qspi", "fsl,imx6ul-qspi",
--		 "fsl,ls1021a-qspi"
-+		 "fsl,ls1021a-qspi", "fsl,ls2080a-qspi"
- 		 or
--		 "fsl,ls2080a-qspi" followed by "fsl,ls1021a-qspi",
- 		 "fsl,ls1043a-qspi" followed by "fsl,ls1021a-qspi"
-   - reg : the first contains the register location and length,
-           the second contains the memory mapping address and length
+@@ -34,7 +34,11 @@ qspi0: quadspi@40044000 {
+ 	clock-names = "qspi_en", "qspi";
+ 
+ 	flash0: s25fl128s@0 {
+-		....
++		#address-cells = <1>;
++		#size-cells = <1>;
++		compatible = "spansion,s25fl128s", "jedec,spi-nor";
++		spi-max-frequency = <50000000>;
++		reg = <0>;
+ 	};
+ };
+ 
 -- 
 2.20.1

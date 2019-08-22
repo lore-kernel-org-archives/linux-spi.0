@@ -1,68 +1,118 @@
 From: Vladimir Oltean <olteanv@gmail.com>
-Subject: [PATCH v2 5/5] ARM: dts: ls1021a-tsn: Use the DSPI controller in poll mode
-Date: Fri, 23 Aug 2019 00:15:14 +0300
-Message-ID: <20190822211514.19288-6-olteanv@gmail.com>
+Subject: [PATCH v2 1/5] spi: spi-fsl-dspi: Reduce indentation level in dspi_interrupt
+Date: Fri, 23 Aug 2019 00:15:10 +0300
+Message-ID: <20190822211514.19288-2-olteanv@gmail.com>
 References: <20190822211514.19288-1-olteanv@gmail.com>
 Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org, netdev@vger.kernel.org,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>
+        Vladimir Oltean <olteanv@gmail.com>
 To: broonie@kernel.org
 Return-path: <netdev-owner@vger.kernel.org>
 In-Reply-To: <20190822211514.19288-1-olteanv@gmail.com>
 Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Connected to the LS1021A DSPI is the SJA1105 DSA switch. This
-constitutes 4 of the 6 Ethernet ports on this board.
+If the entire function depends on the SPI status register having the
+interrupt bits asserted, then just check it and exit early if those bits
+aren't set (such as in the case of the shared IRQ being triggered for
+the other peripheral). Cosmetic patch.
 
-As the SJA1105 is a PTP switch, constant disciplining of its PTP clock
-is necessary, and that translates into a lot of SPI I/O even when
-otherwise idle.
-
-Switching to using the DSPI in poll mode has several distinct
-benefits:
-
-- With interrupts, the DSPI driver in TCFQ mode raises an IRQ after each
-  transmitted byte. There is more time wasted for the "waitq" event than
-  for actual I/O. And the DSPI IRQ count is by far the largest in
-  /proc/interrupts on this board (larger than Ethernet). I should
-  mention that due to various LS1021A errata, other operating modes than
-  TCFQ are not available.
-
-- The SPI I/O time is both lower, and more consistently so. For a TSN
-  switch it is important that all SPI transfers take a deterministic
-  time to complete.
-  Reading the PTP clock is an important example.
-  Egressing through the switch requires some setup in advance (an SPI
-  write command). Without this patch, that operation required a
-  --tx_timestamp_timeout 50 (ms), now it can be done with
-  --tx_timestamp_timeout 10.
-  Yet another example is reconstructing timestamps, which has a hard
-  deadline because the PTP timestamping counter wraps around in 0.135
-  seconds. Combined with other I/O needed for that to happen, there is
-  a real risk that the deadline is not always met.
-
-See drivers/net/dsa/sja1105/ for more info about the above.
-
-Cc: Rob Herring <robh@kernel.org>
-Cc: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Vladimir Oltean <olteanv@gmail.com>
 ---
- arch/arm/boot/dts/ls1021a-tsn.dts | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-fsl-dspi.c | 79 +++++++++++++++++++-------------------
+ 1 file changed, 40 insertions(+), 39 deletions(-)
 
-diff --git a/arch/arm/boot/dts/ls1021a-tsn.dts b/arch/arm/boot/dts/ls1021a-tsn.dts
-index 5b7689094b70..1c09cfc766af 100644
---- a/arch/arm/boot/dts/ls1021a-tsn.dts
-+++ b/arch/arm/boot/dts/ls1021a-tsn.dts
-@@ -33,6 +33,7 @@
- };
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 790cb02fc181..c90db7db4121 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -658,47 +658,48 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
+ 	regmap_read(dspi->regmap, SPI_SR, &spi_sr);
+ 	regmap_write(dspi->regmap, SPI_SR, spi_sr);
  
- &dspi0 {
-+	/delete-property/ interrupts;
- 	bus-num = <0>;
- 	status = "okay";
++	if (!(spi_sr & (SPI_SR_EOQF | SPI_SR_TCFQF)))
++		return IRQ_HANDLED;
++
++	/* Get transfer counter (in number of SPI transfers). It was
++	 * reset to 0 when transfer(s) were started.
++	 */
++	regmap_read(dspi->regmap, SPI_TCR, &spi_tcr);
++	spi_tcnt = SPI_TCR_GET_TCNT(spi_tcr);
++	/* Update total number of bytes that were transferred */
++	msg->actual_length += spi_tcnt * dspi->bytes_per_word;
++
++	trans_mode = dspi->devtype_data->trans_mode;
++	switch (trans_mode) {
++	case DSPI_EOQ_MODE:
++		dspi_eoq_read(dspi);
++		break;
++	case DSPI_TCFQ_MODE:
++		dspi_tcfq_read(dspi);
++		break;
++	default:
++		dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
++			trans_mode);
++			return IRQ_HANDLED;
++	}
  
+-	if (spi_sr & (SPI_SR_EOQF | SPI_SR_TCFQF)) {
+-		/* Get transfer counter (in number of SPI transfers). It was
+-		 * reset to 0 when transfer(s) were started.
+-		 */
+-		regmap_read(dspi->regmap, SPI_TCR, &spi_tcr);
+-		spi_tcnt = SPI_TCR_GET_TCNT(spi_tcr);
+-		/* Update total number of bytes that were transferred */
+-		msg->actual_length += spi_tcnt * dspi->bytes_per_word;
+-
+-		trans_mode = dspi->devtype_data->trans_mode;
+-		switch (trans_mode) {
+-		case DSPI_EOQ_MODE:
+-			dspi_eoq_read(dspi);
+-			break;
+-		case DSPI_TCFQ_MODE:
+-			dspi_tcfq_read(dspi);
+-			break;
+-		default:
+-			dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
+-				trans_mode);
+-				return IRQ_HANDLED;
+-		}
++	if (!dspi->len) {
++		dspi->waitflags = 1;
++		wake_up_interruptible(&dspi->waitq);
++		return IRQ_HANDLED;
++	}
+ 
+-		if (!dspi->len) {
+-			dspi->waitflags = 1;
+-			wake_up_interruptible(&dspi->waitq);
+-		} else {
+-			switch (trans_mode) {
+-			case DSPI_EOQ_MODE:
+-				dspi_eoq_write(dspi);
+-				break;
+-			case DSPI_TCFQ_MODE:
+-				dspi_tcfq_write(dspi);
+-				break;
+-			default:
+-				dev_err(&dspi->pdev->dev,
+-					"unsupported trans_mode %u\n",
+-					trans_mode);
+-			}
+-		}
++	switch (trans_mode) {
++	case DSPI_EOQ_MODE:
++		dspi_eoq_write(dspi);
++		break;
++	case DSPI_TCFQ_MODE:
++		dspi_tcfq_write(dspi);
++		break;
++	default:
++		dev_err(&dspi->pdev->dev,
++			"unsupported trans_mode %u\n",
++			trans_mode);
+ 	}
+ 
+ 	return IRQ_HANDLED;
 -- 
 2.17.1

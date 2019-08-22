@@ -1,87 +1,85 @@
-From: Vladimir Oltean <olteanv@gmail.com>
-Subject: Re: [PATCH spi for-5.4 0/5] Deterministic SPI latency with NXP DSPI driver
-Date: Thu, 22 Aug 2019 19:13:12 +0300
-Message-ID: <CA+h21hrELeUKbfGD3n=BL741QN9m3SaoJJ0y+q_uthdxvSFVRg@mail.gmail.com>
-References: <20190818182600.3047-1-olteanv@gmail.com> <CA+h21hr4UcoJK7upNJjG0ibtX7CkF=akxVdrb--1AJn6-z=sUQ@mail.gmail.com>
- <20190821043845.GB1332@localhost> <20190821140815.GA1447@localhost>
- <CA+h21hrtzU1XL-0m+BG5TYZvVh8WN6hgcM7CV5taHyq2MsR5dw@mail.gmail.com>
- <20190822141641.GB1437@localhost> <CA+h21hpJm-3svfV93pYYrpoiV12jDjuROHCgvCjPivAjXTB_VA@mail.gmail.com>
- <20190822160521.GC4522@localhost>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH spi for-5.4 2/5] spi: Add a PTP system timestamp to the
+ transfer structure
+Date: Thu, 22 Aug 2019 18:11:37 +0100
+Message-ID: <20190822171137.GB23391@sirena.co.uk>
+References: <20190818182600.3047-1-olteanv@gmail.com>
+ <20190818182600.3047-3-olteanv@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>,
-        Hubert Feurstein <h.feurstein@gmail.com>,
-        Miroslav Lichvar <mlichvar@redhat.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        linux-spi@vger.kernel.org, netdev <netdev@vger.kernel.org>
-To: Richard Cochran <richardcochran@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="BwCQnh7xodEAoBMC"
+Cc: h.feurstein@gmail.com, mlichvar@redhat.com,
+        richardcochran@gmail.com, andrew@lunn.ch, f.fainelli@gmail.com,
+        linux-spi@vger.kernel.org, netdev@vger.kernel.org
+To: Vladimir Oltean <olteanv@gmail.com>
 Return-path: <netdev-owner@vger.kernel.org>
-In-Reply-To: <20190822160521.GC4522@localhost>
+Content-Disposition: inline
+In-Reply-To: <20190818182600.3047-3-olteanv@gmail.com>
 Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 22 Aug 2019 at 19:05, Richard Cochran <richardcochran@gmail.com> wrote:
->
-> On Thu, Aug 22, 2019 at 05:58:49PM +0300, Vladimir Oltean wrote:
-> > I don't think I understand the problem here.
->
-> On the contrary, I do.
->
 
-You do think that I understand the problem? But I don't!
+--BwCQnh7xodEAoBMC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> > You'd have something like this:
-> >
-> > Master (DSA master port)         Slave (switch CPU port)
-> >
-> >     |                            |         Tstamps known
-> >     |                            |         to slave
-> >     |       Local_sync_req       |
-> >  t1 |------\                     |         t1
-> >     |       \-----\              |
-> >     |              \-----\       |
-> >     |                     \----->| t2      t1, t2
-> >     |                            |
-> >     |     Local_sync_resp /------| t3      t1, t2, t3
-> >     |              /-----/       |
-> >     |       /-----/              |
-> >  t4 |<-----/                     |         t1, t2, t3, t4
-> >     |                            |
-> >     |                            |
-> >     v           time             v
->
-> And who generates Local_sync_resp?
->
+On Sun, Aug 18, 2019 at 09:25:57PM +0300, Vladimir Oltean wrote:
 
-Local_sync_resp is the same as Local_sync_req except maybe with a
-custom tag added by the switch. Irrelevant as long as the DSA master
-can timestamp it.
+> @@ -1391,6 +1402,13 @@ static void __spi_pump_messages(struct spi_control=
+ler *ctlr, bool in_kthread)
+>  		goto out;
+>  	}
+> =20
+> +	if (!ctlr->ptp_sts_supported) {
+> +		list_for_each_entry(xfer, &mesg->transfers, transfer_list) {
+> +			xfer->ptp_sts_word_pre =3D 0;
+> +			ptp_read_system_prets(xfer->ptp_sts);
+> +		}
+> +	}
+> +
 
-> Also, what sort of frame is it?  PTP has no Sync request or response.
->
+We can do better than this for controllers which use transfer_one().
 
-A frame that can be timestamped on RX and TX by the DSA switch and
-master, that is not a PTP frame.
+> +const void *spi_xfer_ptp_sts_word(struct spi_transfer *xfer, bool pre)
+> +{
 
-> > But you don't mean a TX timestamp at the egress of swp4 here, do you?
->
-> Yes, I do.
->
-> > Why would that matter?
->
-> Because in order to synchronize to an external GM, you need to measure
-> two things:
->
-> 1. the (unchanging) delay from MAC to MAC
-> 2. the (per-packet) switch residence time
->
+xfer can be const here too.
 
-But since when are we discussing the synchronization to an external
-grandmaster? I don't see the connection.
+> + * @ptp_sts_supported: If the driver sets this to true, it must provide a
+> + *	time snapshot in @spi_transfer->ptp_sts as close as possible to the
+> + *	moment in time when @spi_transfer->ptp_sts_word_pre and
+> + *	@spi_transfer->ptp_sts_word_post were transmitted.
+> + *	If the driver does not set this, the SPI core takes the snapshot as
+> + *	close to the driver hand-over as possible.
 
-> Thanks,
-> Richard
+A couple of issues here.  The big one is that for PIO transfers
+this is going to either complicate the code or introduce overhead
+in individual drivers for an extremely niche use case.  I guess
+most drivers won't implement it which makes this a bit moot but
+then this is a concern that pushes back against the idea of
+implementing the feature.
 
-Regards,
--Vladimir
+The other is that it's not 100% clear what you're looking to
+timestamp here - is it when the data goes on the wire, is it when
+the data goes on the FIFO (which could be relatively large)?  I'm
+guessing you're looking for the physical transfer here, if that's
+the case should there be some effort to compensate for the delays
+in the controller?
+
+--BwCQnh7xodEAoBMC
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1ezMgACgkQJNaLcl1U
+h9Dtlwf8D458UfQqr72thVWI+Ey8aogmoV90iL49JqGttusBMDAzjT53BuOcQqwH
+qnhIsIhw5c9GntD5ecx5US51xCJspCBd2krEL6xkadG2zAUFbjM7IAZogNzSHSe7
+4AycBeqzcABbZU1ajW1AEg/KDJ9RVryh15rxsDKPrvCq29lFTTD/GOG9DJOMfR1/
+KusCvjkIe7KN8y84i//XaugzufS2H+M66d1w1gka84/ML3tpnpLRKdqmXL2fbrN2
+3kH1ntk0zeV/EpHR/LYCZ3dRy8vesTfNRCFbm2iUGQuLCe9Jsv3+vdWBBQ6YQLqv
+2erPwB/lwaAUM9kXu/xkbtTOl+GryQ==
+=j++/
+-----END PGP SIGNATURE-----
+
+--BwCQnh7xodEAoBMC--

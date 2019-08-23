@@ -1,43 +1,46 @@
-From: Vladimir Oltean <olteanv@gmail.com>
-Subject: [PATCH 1/1] spi: spi-fsl-dspi: Exit the ISR with IRQ_NONE when it's not ours
-Date: Fri, 23 Aug 2019 00:24:50 +0300
-Message-ID: <20190822212450.21420-2-olteanv@gmail.com>
-References: <20190822212450.21420-1-olteanv@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Vladimir Oltean <olteanv@gmail.com>
-To: broonie@kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190822212450.21420-1-olteanv@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Richard Cochran <richardcochran@gmail.com>
+Subject: Re: [PATCH spi for-5.4 0/5] Deterministic SPI latency with NXP DSPI
+ driver
+Date: Thu, 22 Aug 2019 22:22:17 -0700
+Message-ID: <20190823052217.GD2502@localhost>
+References: <20190818182600.3047-1-olteanv@gmail.com>
+ <CA+h21hr4UcoJK7upNJjG0ibtX7CkF=akxVdrb--1AJn6-z=sUQ@mail.gmail.com>
+ <20190821043845.GB1332@localhost>
+ <20190821140815.GA1447@localhost>
+ <CA+h21hrtzU1XL-0m+BG5TYZvVh8WN6hgcM7CV5taHyq2MsR5dw@mail.gmail.com>
+ <20190822141641.GB1437@localhost>
+ <CA+h21hpJm-3svfV93pYYrpoiV12jDjuROHCgvCjPivAjXTB_VA@mail.gmail.com>
+ <20190822160521.GC4522@localhost>
+ <CA+h21hrELeUKbfGD3n=BL741QN9m3SaoJJ0y+q_uthdxvSFVRg@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie@kernel.org>,
+        Hubert Feurstein <h.feurstein@gmail.com>,
+        Miroslav Lichvar <mlichvar@redhat.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        linux-spi@vger.kernel.org, netdev <netdev@vger.kernel.org>
+To: Vladimir Oltean <olteanv@gmail.com>
+Return-path: <netdev-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CA+h21hrELeUKbfGD3n=BL741QN9m3SaoJJ0y+q_uthdxvSFVRg@mail.gmail.com>
+Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The DSPI interrupt can be shared between two controllers at least on the
-LX2160A. In that case, the driver for one controller might misbehave and
-consume the other's interrupt. Fix this by actually checking if any of
-the bits in the status register have been asserted.
+On Thu, Aug 22, 2019 at 07:13:12PM +0300, Vladimir Oltean wrote:
+> You do think that I understand the problem? But I don't!
 
-Fixes: 13aed2392741 ("spi: spi-fsl-dspi: use IRQF_SHARED mode to request IRQ")
-Signed-off-by: Vladimir Oltean <olteanv@gmail.com>
----
- drivers/spi/spi-fsl-dspi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+;^)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 5e10dc5c93a5..6c2a30f9d85b 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -874,9 +874,11 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
- 					trans_mode);
- 			}
- 		}
-+
-+		return IRQ_HANDLED;
- 	}
+> > And who generates Local_sync_resp?
+> >
+> 
+> Local_sync_resp is the same as Local_sync_req except maybe with a
+> custom tag added by the switch. Irrelevant as long as the DSA master
+> can timestamp it.
+
+So this is point why it won't work.  The time stamping logic in the
+switch only recognizes PTP frames.
  
--	return IRQ_HANDLED;
-+	return IRQ_NONE;
- }
- 
- static const struct of_device_id fsl_dspi_dt_ids[] = {
--- 
-2.17.1
+Thanks,
+Richard

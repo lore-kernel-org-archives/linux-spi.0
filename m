@@ -1,20 +1,20 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-fsl-dspi: Remove impossible to reach error check" to the spi tree
+Subject: Applied "spi: spi-fsl-dspi: Reduce indentation level in dspi_interrupt" to the spi tree
 Date: Fri, 23 Aug 2019 12:02:27 +0100 (BST)
-Message-ID: <20190823110227.24769D02CD0@fitzroy.sirena.org.uk>
-References: <20190822211514.19288-4-olteanv@gmail.com>
+Message-ID: <20190823110227.4885AD02CD3@fitzroy.sirena.org.uk>
+References: <20190822211514.19288-2-olteanv@gmail.com>
 Cc: broonie@kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
         Mark Brown <broonie@kernel.org>, netdev@vger.kernel.org
 To: Vladimir Oltean <olteanv@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190822211514.19288-4-olteanv@gmail.com>
+In-Reply-To: <20190822211514.19288-2-olteanv@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spi-fsl-dspi: Remove impossible to reach error check
+   spi: spi-fsl-dspi: Reduce indentation level in dspi_interrupt
 
 has been applied to the spi tree at
 
@@ -39,71 +39,114 @@ to this mail.
 Thanks,
 Mark
 
->From 1eaeba70738e723be1e5787bdfd9a30f7471d730 Mon Sep 17 00:00:00 2001
+>From 12fb61a973935c63f2580b3b053017cc14b51f42 Mon Sep 17 00:00:00 2001
 From: Vladimir Oltean <olteanv@gmail.com>
-Date: Fri, 23 Aug 2019 00:15:12 +0300
-Subject: [PATCH] spi: spi-fsl-dspi: Remove impossible to reach error check
+Date: Fri, 23 Aug 2019 00:15:10 +0300
+Subject: [PATCH] spi: spi-fsl-dspi: Reduce indentation level in dspi_interrupt
 
-dspi->devtype_data is under the total control of the driver. Therefore,
-a bad value is a driver bug and checking it at runtime (and during an
-ISR, at that!) is pointless.
-
-The second "else if" check is only for clarity (instead of a broader
-"else") in case other transfer modes are added in the future. But the
-printing is dead code and can be removed.
+If the entire function depends on the SPI status register having the
+interrupt bits asserted, then just check it and exit early if those bits
+aren't set (such as in the case of the shared IRQ being triggered for
+the other peripheral). Cosmetic patch.
 
 Signed-off-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://lore.kernel.org/r/20190822211514.19288-4-olteanv@gmail.com
+Link: https://lore.kernel.org/r/20190822211514.19288-2-olteanv@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 24 ++++--------------------
- 1 file changed, 4 insertions(+), 20 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 79 +++++++++++++++++++-------------------
+ 1 file changed, 40 insertions(+), 39 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 6ef2279a3699..6d2c7984ab0e 100644
+index 790cb02fc181..c90db7db4121 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -670,18 +670,10 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
- 	msg->actual_length += spi_tcnt * dspi->bytes_per_word;
+@@ -658,47 +658,48 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
+ 	regmap_read(dspi->regmap, SPI_SR, &spi_sr);
+ 	regmap_write(dspi->regmap, SPI_SR, spi_sr);
  
- 	trans_mode = dspi->devtype_data->trans_mode;
--	switch (trans_mode) {
--	case DSPI_EOQ_MODE:
-+	if (trans_mode == DSPI_EOQ_MODE)
- 		dspi_eoq_read(dspi);
--		break;
--	case DSPI_TCFQ_MODE:
-+	else if (trans_mode == DSPI_TCFQ_MODE)
- 		dspi_tcfq_read(dspi);
--		break;
--	default:
--		dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
--			trans_mode);
--			return IRQ_HANDLED;
--	}
++	if (!(spi_sr & (SPI_SR_EOQF | SPI_SR_TCFQF)))
++		return IRQ_HANDLED;
++
++	/* Get transfer counter (in number of SPI transfers). It was
++	 * reset to 0 when transfer(s) were started.
++	 */
++	regmap_read(dspi->regmap, SPI_TCR, &spi_tcr);
++	spi_tcnt = SPI_TCR_GET_TCNT(spi_tcr);
++	/* Update total number of bytes that were transferred */
++	msg->actual_length += spi_tcnt * dspi->bytes_per_word;
++
++	trans_mode = dspi->devtype_data->trans_mode;
++	switch (trans_mode) {
++	case DSPI_EOQ_MODE:
++		dspi_eoq_read(dspi);
++		break;
++	case DSPI_TCFQ_MODE:
++		dspi_tcfq_read(dspi);
++		break;
++	default:
++		dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
++			trans_mode);
++			return IRQ_HANDLED;
++	}
  
- 	if (!dspi->len) {
- 		dspi->waitflags = 1;
-@@ -689,18 +681,10 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
- 		return IRQ_HANDLED;
+-	if (spi_sr & (SPI_SR_EOQF | SPI_SR_TCFQF)) {
+-		/* Get transfer counter (in number of SPI transfers). It was
+-		 * reset to 0 when transfer(s) were started.
+-		 */
+-		regmap_read(dspi->regmap, SPI_TCR, &spi_tcr);
+-		spi_tcnt = SPI_TCR_GET_TCNT(spi_tcr);
+-		/* Update total number of bytes that were transferred */
+-		msg->actual_length += spi_tcnt * dspi->bytes_per_word;
+-
+-		trans_mode = dspi->devtype_data->trans_mode;
+-		switch (trans_mode) {
+-		case DSPI_EOQ_MODE:
+-			dspi_eoq_read(dspi);
+-			break;
+-		case DSPI_TCFQ_MODE:
+-			dspi_tcfq_read(dspi);
+-			break;
+-		default:
+-			dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
+-				trans_mode);
+-				return IRQ_HANDLED;
+-		}
++	if (!dspi->len) {
++		dspi->waitflags = 1;
++		wake_up_interruptible(&dspi->waitq);
++		return IRQ_HANDLED;
++	}
+ 
+-		if (!dspi->len) {
+-			dspi->waitflags = 1;
+-			wake_up_interruptible(&dspi->waitq);
+-		} else {
+-			switch (trans_mode) {
+-			case DSPI_EOQ_MODE:
+-				dspi_eoq_write(dspi);
+-				break;
+-			case DSPI_TCFQ_MODE:
+-				dspi_tcfq_write(dspi);
+-				break;
+-			default:
+-				dev_err(&dspi->pdev->dev,
+-					"unsupported trans_mode %u\n",
+-					trans_mode);
+-			}
+-		}
++	switch (trans_mode) {
++	case DSPI_EOQ_MODE:
++		dspi_eoq_write(dspi);
++		break;
++	case DSPI_TCFQ_MODE:
++		dspi_tcfq_write(dspi);
++		break;
++	default:
++		dev_err(&dspi->pdev->dev,
++			"unsupported trans_mode %u\n",
++			trans_mode);
  	}
  
--	switch (trans_mode) {
--	case DSPI_EOQ_MODE:
-+	if (trans_mode == DSPI_EOQ_MODE)
- 		dspi_eoq_write(dspi);
--		break;
--	case DSPI_TCFQ_MODE:
-+	else if (trans_mode == DSPI_TCFQ_MODE)
- 		dspi_tcfq_write(dspi);
--		break;
--	default:
--		dev_err(&dspi->pdev->dev,
--			"unsupported trans_mode %u\n",
--			trans_mode);
--	}
- 
  	return IRQ_HANDLED;
- }
 -- 
 2.20.1

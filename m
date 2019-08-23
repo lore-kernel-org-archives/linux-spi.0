@@ -1,46 +1,50 @@
-From: Richard Cochran <richardcochran@gmail.com>
-Subject: Re: [PATCH spi for-5.4 0/5] Deterministic SPI latency with NXP DSPI
- driver
-Date: Thu, 22 Aug 2019 22:22:17 -0700
-Message-ID: <20190823052217.GD2502@localhost>
-References: <20190818182600.3047-1-olteanv@gmail.com>
- <CA+h21hr4UcoJK7upNJjG0ibtX7CkF=akxVdrb--1AJn6-z=sUQ@mail.gmail.com>
- <20190821043845.GB1332@localhost>
- <20190821140815.GA1447@localhost>
- <CA+h21hrtzU1XL-0m+BG5TYZvVh8WN6hgcM7CV5taHyq2MsR5dw@mail.gmail.com>
- <20190822141641.GB1437@localhost>
- <CA+h21hpJm-3svfV93pYYrpoiV12jDjuROHCgvCjPivAjXTB_VA@mail.gmail.com>
- <20190822160521.GC4522@localhost>
- <CA+h21hrELeUKbfGD3n=BL741QN9m3SaoJJ0y+q_uthdxvSFVRg@mail.gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 2/5] spi: spi-fsl-dspi: Exit the ISR with IRQ_NONE
+ when it's not ours
+Date: Fri, 23 Aug 2019 11:28:16 +0100
+Message-ID: <20190823102816.GN23391@sirena.co.uk>
+References: <20190822211514.19288-1-olteanv@gmail.com>
+ <20190822211514.19288-3-olteanv@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>,
-        Hubert Feurstein <h.feurstein@gmail.com>,
-        Miroslav Lichvar <mlichvar@redhat.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        linux-spi@vger.kernel.org, netdev <netdev@vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="SLfjTIIQuAzj8yil"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, netdev@vger.kernel.org
 To: Vladimir Oltean <olteanv@gmail.com>
-Return-path: <netdev-owner@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CA+h21hrELeUKbfGD3n=BL741QN9m3SaoJJ0y+q_uthdxvSFVRg@mail.gmail.com>
-Sender: netdev-owner@vger.kernel.org
+In-Reply-To: <20190822211514.19288-3-olteanv@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Aug 22, 2019 at 07:13:12PM +0300, Vladimir Oltean wrote:
-> You do think that I understand the problem? But I don't!
 
-;^)
+--SLfjTIIQuAzj8yil
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> > And who generates Local_sync_resp?
-> >
-> 
-> Local_sync_resp is the same as Local_sync_req except maybe with a
-> custom tag added by the switch. Irrelevant as long as the DSA master
-> can timestamp it.
+On Fri, Aug 23, 2019 at 12:15:11AM +0300, Vladimir Oltean wrote:
+> The DSPI interrupt can be shared between two controllers at least on the
+> LX2160A. In that case, the driver for one controller might misbehave and
+> consume the other's interrupt. Fix this by actually checking if any of
+> the bits in the status register have been asserted.
 
-So this is point why it won't work.  The time stamping logic in the
-switch only recognizes PTP frames.
- 
-Thanks,
-Richard
+It would be better to have done this as the first patch before
+the restructuring, that way we could send this as a fix - the
+refactoring while good doesn't really fit with stable.
+
+--SLfjTIIQuAzj8yil
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1fv78ACgkQJNaLcl1U
+h9Cv4gf+PlempNcDKec7OiBxdWny+wFPRO1wq7OKtAEtzU2wFvuZYAjGYbCciUyw
+cKlSUJ9T9Lg4Rq9PTM7CbmY3FobaqJyqTeZT6cADZE1QZoTJD78lQxB8XmJtRBu1
+r8z6XPbgLbRnws9lzRQIDdRvdIX4DO9sFiY/M+9nbbMGbGbkYKbHNk5461pHEV45
+c9lCEgHX62vJerrt0jxfomw50W8tEaqhZ9q6dg1zXwuXjXMmPBPQNnTkexYuco8L
+PIfr5fq2cFMOH0hvXdim2H8spTU3tizQQlZS7NeXkaC8tgE4vBYibF1BYnoCfuos
+AYL6TZxFXh9I5JM/fUCBs+qbLtbneg==
+=lQOn
+-----END PGP SIGNATURE-----
+
+--SLfjTIIQuAzj8yil--

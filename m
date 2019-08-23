@@ -1,152 +1,107 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-fsl-dspi: Reduce indentation level in dspi_interrupt" to the spi tree
-Date: Fri, 23 Aug 2019 12:02:27 +0100 (BST)
-Message-ID: <20190823110227.4885AD02CD3@fitzroy.sirena.org.uk>
-References: <20190822211514.19288-2-olteanv@gmail.com>
-Cc: broonie@kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, netdev@vger.kernel.org
-To: Vladimir Oltean <olteanv@gmail.com>
+From: Vladimir Oltean <olteanv@gmail.com>
+Subject: Re: [PATCH v2 2/5] spi: spi-fsl-dspi: Exit the ISR with IRQ_NONE when
+ it's not ours
+Date: Fri, 23 Aug 2019 15:06:52 +0300
+Message-ID: <CA+h21hrj6VjceGJFz7XuS9DFjy=Fb5SHTYUuOWkagtsWf0Egbg@mail.gmail.com>
+References: <20190822211514.19288-1-olteanv@gmail.com> <20190822211514.19288-3-olteanv@gmail.com>
+ <20190823102816.GN23391@sirena.co.uk> <CA+h21hoUfbW8Gpyfa+a-vqVp_qARYoq1_eyFfZFh-5USNGNE2g@mail.gmail.com>
+ <20190823105044.GO23391@sirena.co.uk> <20190823105949.GQ23391@sirena.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Cc: linux-spi@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>,
+        devicetree@vger.kernel.org, netdev <netdev@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190822211514.19288-2-olteanv@gmail.com>
+In-Reply-To: <20190823105949.GQ23391@sirena.co.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+Hi Mark,
 
-   spi: spi-fsl-dspi: Reduce indentation level in dspi_interrupt
+On Fri, 23 Aug 2019 at 13:59, Mark Brown <broonie@kernel.org> wrote:
+>
+> On Fri, Aug 23, 2019 at 11:50:44AM +0100, Mark Brown wrote:
+> > On Fri, Aug 23, 2019 at 01:30:27PM +0300, Vladimir Oltean wrote:
+>
+> > > Did you see this?
+> > > https://lkml.org/lkml/2019/8/22/1542
+>
+> > I'm not online enough to readily follow that link right now, I
+> > did apply another patch for a similar issue though.  If that's
+> > a different version of the same change please don't do that,
+> > sending multiple conflicting versions of the same thing creates
+> > conflicts and makes everything harder to work with.
+>
+> Oh, I guess this was due to there being an existing refactoring
+> in -next that meant the fix wouldn't apply directly.  I sorted
+> that out now I think, but in general the same thing applies -
+> it's better to put fixes before anything else in the series,
+> it'll flag up when reviewing.
 
-has been applied to the spi tree at
+I try to require as little attention span as possible from you and I
+apologize that I'm sending patches like a noob, but I'm not used to
+this sort of interaction with a maintainer. It's taking me some time
+to adjust expectations.
+- You left change requests in the initial patchset I submitted, but
+you partially applied the series anyway. You didn't give me a chance
+to respin the whole series and put the shared IRQ fix on top, so it
+applies on old trees as well. No problem, I sent two versions of the
+patch.
+- On my previous series you left this comment:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.4
+> Please don't include all the extra tags you've got in your subject
+> lines.  In my inbox this series looks like:
+>
+>    790 N T 08/18 Vladimir Oltean ( 16K) =E2=94=9C=E2=94=80>[PATCH spi for=
+-5.4 01/14] spi: spi-f
+>
+> so I can't tell what it's actually about just from looking at it.  Just
+> [PATCH 01/14] would be enough, putting a target version in or versioning
+> the patch series can be OK but you usually don't use a target version
+> for -next and adding spi in there is redundant given that it's also in
+> the changelog.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+So I didn't put any target version in the patch titles this time,
+although arguably it would have been clearer to you that there's a
+patch for-5.4 and another version of it for-4.20 (which i *think* is
+how I should submit a fix, I don't see any branch for inclusion in
+stable trees per se).
+No problem, I explained in the cover letters that one patchset is for
+-next and the other is for inclusion in stable trees. Maintainers do
+read cover letters, right?
+Message from the -next cover letter:
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> The series also contains a bug fix for the shared IRQ of the DSPI
+> driver. I am going to respin a version of it as a separate patch for
+> inclusion in stable trees, independent of this patchset.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Message from the fix's cover letter:
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+> This patch is taken out of the "Poll mode for NXP DSPI driver" series
+> and respun against the "for-4.20" branch.
+> $(git describe --tags 13aed2392741) shows:
+> v4.20-rc1-18-g13aed2392741
 
-Thanks,
-Mark
+Yes, I did send a cover letter for a single patch. I thought it's
+harder to miss than a note hidden under patch 2/5 of one series, and
+in the note section of the other's. I think you could have also made
+an argument about me not doing it the other way around. In the end,
+you can not read a note just as well as not read a cover letter, and
+there's little I can do.
 
->From 12fb61a973935c63f2580b3b053017cc14b51f42 Mon Sep 17 00:00:00 2001
-From: Vladimir Oltean <olteanv@gmail.com>
-Date: Fri, 23 Aug 2019 00:15:10 +0300
-Subject: [PATCH] spi: spi-fsl-dspi: Reduce indentation level in dspi_interrupt
+No problem, you missed the link between the two. I sent you a link to
+the lkml archive. You said "I'm not online enough to readily follow
+that link right now". Please teach me - I really don't know - how can
+I make links between patchsets easier for you to follow, if you don't
+read cover letters and you can't access lkml? I promise I'll use that
+method next time.
 
-If the entire function depends on the SPI status register having the
-interrupt bits asserted, then just check it and exit early if those bits
-aren't set (such as in the case of the shared IRQ being triggered for
-the other peripheral). Cosmetic patch.
+> I do frequently catch up on my mail on flights or while otherwise
+> travelling so this is even more pressing for me than just being about
+> making things a bit easier to read.
 
-Signed-off-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://lore.kernel.org/r/20190822211514.19288-2-olteanv@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-fsl-dspi.c | 79 +++++++++++++++++++-------------------
- 1 file changed, 40 insertions(+), 39 deletions(-)
+Maybe you simply should do something else while traveling, just saying.
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 790cb02fc181..c90db7db4121 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -658,47 +658,48 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
- 	regmap_read(dspi->regmap, SPI_SR, &spi_sr);
- 	regmap_write(dspi->regmap, SPI_SR, spi_sr);
- 
-+	if (!(spi_sr & (SPI_SR_EOQF | SPI_SR_TCFQF)))
-+		return IRQ_HANDLED;
-+
-+	/* Get transfer counter (in number of SPI transfers). It was
-+	 * reset to 0 when transfer(s) were started.
-+	 */
-+	regmap_read(dspi->regmap, SPI_TCR, &spi_tcr);
-+	spi_tcnt = SPI_TCR_GET_TCNT(spi_tcr);
-+	/* Update total number of bytes that were transferred */
-+	msg->actual_length += spi_tcnt * dspi->bytes_per_word;
-+
-+	trans_mode = dspi->devtype_data->trans_mode;
-+	switch (trans_mode) {
-+	case DSPI_EOQ_MODE:
-+		dspi_eoq_read(dspi);
-+		break;
-+	case DSPI_TCFQ_MODE:
-+		dspi_tcfq_read(dspi);
-+		break;
-+	default:
-+		dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
-+			trans_mode);
-+			return IRQ_HANDLED;
-+	}
- 
--	if (spi_sr & (SPI_SR_EOQF | SPI_SR_TCFQF)) {
--		/* Get transfer counter (in number of SPI transfers). It was
--		 * reset to 0 when transfer(s) were started.
--		 */
--		regmap_read(dspi->regmap, SPI_TCR, &spi_tcr);
--		spi_tcnt = SPI_TCR_GET_TCNT(spi_tcr);
--		/* Update total number of bytes that were transferred */
--		msg->actual_length += spi_tcnt * dspi->bytes_per_word;
--
--		trans_mode = dspi->devtype_data->trans_mode;
--		switch (trans_mode) {
--		case DSPI_EOQ_MODE:
--			dspi_eoq_read(dspi);
--			break;
--		case DSPI_TCFQ_MODE:
--			dspi_tcfq_read(dspi);
--			break;
--		default:
--			dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
--				trans_mode);
--				return IRQ_HANDLED;
--		}
-+	if (!dspi->len) {
-+		dspi->waitflags = 1;
-+		wake_up_interruptible(&dspi->waitq);
-+		return IRQ_HANDLED;
-+	}
- 
--		if (!dspi->len) {
--			dspi->waitflags = 1;
--			wake_up_interruptible(&dspi->waitq);
--		} else {
--			switch (trans_mode) {
--			case DSPI_EOQ_MODE:
--				dspi_eoq_write(dspi);
--				break;
--			case DSPI_TCFQ_MODE:
--				dspi_tcfq_write(dspi);
--				break;
--			default:
--				dev_err(&dspi->pdev->dev,
--					"unsupported trans_mode %u\n",
--					trans_mode);
--			}
--		}
-+	switch (trans_mode) {
-+	case DSPI_EOQ_MODE:
-+		dspi_eoq_write(dspi);
-+		break;
-+	case DSPI_TCFQ_MODE:
-+		dspi_tcfq_write(dspi);
-+		break;
-+	default:
-+		dev_err(&dspi->pdev->dev,
-+			"unsupported trans_mode %u\n",
-+			trans_mode);
- 	}
- 
- 	return IRQ_HANDLED;
--- 
-2.20.1
+Regards,
+-Vladimir

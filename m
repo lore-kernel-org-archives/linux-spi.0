@@ -1,120 +1,73 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 2/5] spi: spi-fsl-dspi: Exit the ISR with IRQ_NONE
- when it's not ours
-Date: Fri, 23 Aug 2019 22:03:56 +0100
-Message-ID: <20190823210356.GU23391@sirena.co.uk>
-References: <20190822211514.19288-1-olteanv@gmail.com>
- <20190822211514.19288-3-olteanv@gmail.com>
- <20190823102816.GN23391@sirena.co.uk>
- <CA+h21hoUfbW8Gpyfa+a-vqVp_qARYoq1_eyFfZFh-5USNGNE2g@mail.gmail.com>
- <20190823105044.GO23391@sirena.co.uk>
- <20190823105949.GQ23391@sirena.co.uk>
- <CA+h21hrj6VjceGJFz7XuS9DFjy=Fb5SHTYUuOWkagtsWf0Egbg@mail.gmail.com>
+From: Vladimir Oltean <olteanv@gmail.com>
+Subject: Re: [PATCH spi for-5.4 0/5] Deterministic SPI latency with NXP DSPI driver
+Date: Sat, 24 Aug 2019 15:13:02 +0300
+Message-ID: <CA+h21hpUytc2S=NmEbjDiQo4wRrKJiE5ZT+jVgCyocUb2RMYNg@mail.gmail.com>
+References: <20190818182600.3047-1-olteanv@gmail.com> <CA+h21hr4UcoJK7upNJjG0ibtX7CkF=akxVdrb--1AJn6-z=sUQ@mail.gmail.com>
+ <20190821043845.GB1332@localhost> <20190821140815.GA1447@localhost>
+ <CA+h21hrtzU1XL-0m+BG5TYZvVh8WN6hgcM7CV5taHyq2MsR5dw@mail.gmail.com>
+ <20190822141641.GB1437@localhost> <CA+h21hpJm-3svfV93pYYrpoiV12jDjuROHCgvCjPivAjXTB_VA@mail.gmail.com>
+ <20190822160521.GC4522@localhost> <CA+h21hrELeUKbfGD3n=BL741QN9m3SaoJJ0y+q_uthdxvSFVRg@mail.gmail.com>
+ <20190823052217.GD2502@localhost>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="25rOlkxR6a4U87uN"
-Cc: linux-spi@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>,
-        devicetree@vger.kernel.org, netdev <netdev@vger.kernel.org>
-To: Vladimir Oltean <olteanv@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>,
+        Hubert Feurstein <h.feurstein@gmail.com>,
+        Miroslav Lichvar <mlichvar@redhat.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        linux-spi@vger.kernel.org, netdev <netdev@vger.kernel.org>
+To: Richard Cochran <richardcochran@gmail.com>
 Return-path: <netdev-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CA+h21hrj6VjceGJFz7XuS9DFjy=Fb5SHTYUuOWkagtsWf0Egbg@mail.gmail.com>
+In-Reply-To: <20190823052217.GD2502@localhost>
 Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Fri, 23 Aug 2019 at 08:22, Richard Cochran <richardcochran@gmail.com> wrote:
+>
+> On Thu, Aug 22, 2019 at 07:13:12PM +0300, Vladimir Oltean wrote:
+> > You do think that I understand the problem? But I don't!
+>
+> ;^)
+>
+> > > And who generates Local_sync_resp?
+> > >
+> >
+> > Local_sync_resp is the same as Local_sync_req except maybe with a
+> > custom tag added by the switch. Irrelevant as long as the DSA master
+> > can timestamp it.
+>
+> So this is point why it won't work.  The time stamping logic in the
+> switch only recognizes PTP frames.
+>
+> Thanks,
+> Richard
 
---25rOlkxR6a4U87uN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+So to summarize the pros and cons of a PHC-to-PHC loopback sync:
+Pros:
+- At least two orders of magnitude improvement in offset compared to a
+software timestamping solution, even in the situation where the
+software timestamp is fully optimized
+- Does not depend on the availability of PPS hardware
+- In the case where both MACs support this, the synchronization can
+simply reuse the DSA link with no dedicated circuitry
+Cons:
+- DSA framework for retrieving timestamps would need to be reworked
+- The solution would have to be implemented in the kernel
+- A separate protocol from PTP would have to be devised
+- Not all DSA masters support hardware timestamping. Of those that do,
+not all may support timestamping generic frames
+- Not all PTP-capable DSA switches support timestamping generic frames
+- Not all DSA switches may be able to loop back traffic from their CPU
+port. I think this is called "hairpinning".
+- The solution only covers the sync of the top-most switch in the DSA
+tree. The hairpinning described above would need to be selective as
+well, not just possible.
 
-On Fri, Aug 23, 2019 at 03:06:52PM +0300, Vladimir Oltean wrote:
+So at this point, the solution is not generic enough for me to be
+compelled to prototype it. Taking system clock timestamps in the SPI
+driver is "good enough". We'll just need to work out a way with Mark
+that this can be added to the SPI subsystem, given the valid
+objections already expressed.
 
-> - You left change requests in the initial patchset I submitted, but
-> you partially applied the series anyway. You didn't give me a chance
-> to respin the whole series and put the shared IRQ fix on top, so it
-> applies on old trees as well. No problem, I sent two versions of the
-> patch.
-
-Right, and this is fine.  A big part of this is that it's just
-generally bad practice to not have fixes at the front of the
-series, I'd flag this up as a problem even if the code was all
-new and there was no question of applying as a bug fix.  It's
-something that's noticable just at the level of looking at the
-shape of the series without even looking at the contents of the
-patches, if the fix is actually a good one or anything like that.
-In the context of this it made it look like the reason you'd had
-to do two versions.
-
-> So I didn't put any target version in the patch titles this time,
-> although arguably it would have been clearer to you that there's a
-> patch for-5.4 and another version of it for-4.20 (which i *think* is
-> how I should submit a fix, I don't see any branch for inclusion in
-> stable trees per se).
-
-Not for 4.20, for v5.3 - we basically only fix Linus' tree
-directly, anything else gets backported from there unless it's
-super important.  I don't think anyone is updating v4.20 at all
-these days, the version number change from v4 to v5 was totally
-arbatrary.
-
-> Yes, I did send a cover letter for a single patch. I thought it's
-> harder to miss than a note hidden under patch 2/5 of one series, and
-> in the note section of the other's. I think you could have also made
-
-If you're sending a multi-patch series it's of course good to
-send a cover letter, it's just single patches where it's adding
-overhead.
-
-> No problem, you missed the link between the two. I sent you a link to
-> the lkml archive. You said "I'm not online enough to readily follow
-> that link right now". Please teach me - I really don't know - how can
-
-It's not that I missed the link between them, it's that what I'd
-expected to see was the fix being the first patch in the series
-for -next and for that fix to look substantially the same with at
-most some context difference.  I wasn't expecting to see a
-completely different patch that wasn't at the start of the
-series, had the fix been at the start of the series it'd have
-been fairly clear what was going on but the refactoring patch
-looked like the main reason you'd needed different versions (it's
-certainly why they don't visually resemble each other).
-
-In other words it looked like you'd sent a different fix because
-the fix you'd done for -next was based on the first patch in the
-series rather than there also being some context changes.
-
-> I make links between patchsets easier for you to follow, if you don't
-> read cover letters and you can't access lkml? I promise I'll use that
-> method next time.
-
-Like I said include a plain text description of what you're
-linking to (eg, the subject line from a mail).
-
-> > I do frequently catch up on my mail on flights or while otherwise
-> > travelling so this is even more pressing for me than just being about
-> > making things a bit easier to read.
-
-> Maybe you simply should do something else while traveling, just saying.
-
-I could also add in the coffee shop I sometimes work from which
-doesn't have WiFi or mobile coverage.  Besides, like that part of
-the text does say it's also a usability thing, having to fire up
-a web browser to figure out what's being described is a stumbling
-block.
-
---25rOlkxR6a4U87uN
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1gVLsACgkQJNaLcl1U
-h9B2pAf+OqEH0c/ir0i5HzOOu3foBEg4ijLDLobzCWquMYtExGnWzATCgFiBeNua
-ukOy2G0NaRiaIVws5VQXj5y9+okcAFfjfVVwMIKTjqT6CwmTmGZb9Xlg/mgk1yJs
-OzKiKXM2b+vc3QyIFHI1EqmLqdz750Pdh6Lnulsl9TYm6zdsv7ecc2lIlnnRP79d
-eWCN2wNbGO8WUXLr/W83nXUfm03qs6KVes765JTaYqDLeYx8QoIV9Lf4UqPFtLDI
-iWT2+NUTPUP2oR7wokomqY8Ql7woJYFr5Okbl33288iJL1XLmM1j8BKxWg+207Cj
-BgnfvF9wzTpzBVO6dTlqlOZK7s6SQA==
-=vtug
------END PGP SIGNATURE-----
-
---25rOlkxR6a4U87uN--
+Thanks,
+-Vladimir

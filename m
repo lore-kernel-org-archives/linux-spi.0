@@ -1,121 +1,72 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH spi for-5.4 2/5] spi: Add a PTP system timestamp to the
- transfer structure
-Date: Tue, 27 Aug 2019 20:01:44 +0100
-Message-ID: <20190827190144.GK23391@sirena.co.uk>
-References: <20190818182600.3047-1-olteanv@gmail.com>
- <20190818182600.3047-3-olteanv@gmail.com>
- <20190822171137.GB23391@sirena.co.uk>
- <CA+h21hrwJi1ftJn56RrfobdkcCpsKZGy1VV1+ANWpxoKxwRmwA@mail.gmail.com>
+Subject: Re: [EXT] Re: [Patch v4 1/3] dt-bindings: spi: spi-fsl-qspi: Add
+ ls2080a compatibility string to bindings
+Date: Tue, 27 Aug 2019 20:56:06 +0100
+Message-ID: <20190827195606.GA28879@sirena.org.uk>
+References: <1565691791-26167-1-git-send-email-Ashish.Kumar@nxp.com>
+ <20190821110640.GC5128@sirena.co.uk>
+ <VI1PR04MB401528B4F92DAD98385EF53395AA0@VI1PR04MB4015.eurprd04.prod.outlook.com>
+ <VI1PR04MB4015474B3086AE99354FE65395A50@VI1PR04MB4015.eurprd04.prod.outlook.com>
+ <20190822184927.GH23391@sirena.co.uk>
+ <20190827155005.GA18581@bogus>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="w3gPeeaTISh83WAP"
-Cc: Hubert Feurstein <h.feurstein@gmail.com>,
-        Miroslav Lichvar <mlichvar@redhat.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        linux-spi@vger.kernel.org, netdev <netdev@vger.kernel.org>
-To: Vladimir Oltean <olteanv@gmail.com>
-Return-path: <netdev-owner@vger.kernel.org>
+        protocol="application/pgp-signature"; boundary="r5Pyd7+fXNt84Ff3"
+Cc: Ashish Kumar <ashish.kumar@nxp.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>,
+        Kuldeep Singh <kuldeep.singh@nxp.com>
+To: Rob Herring <robh@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CA+h21hrwJi1ftJn56RrfobdkcCpsKZGy1VV1+ANWpxoKxwRmwA@mail.gmail.com>
-Sender: netdev-owner@vger.kernel.org
+In-Reply-To: <20190827155005.GA18581@bogus>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---w3gPeeaTISh83WAP
+--r5Pyd7+fXNt84Ff3
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Aug 24, 2019 at 03:38:16PM +0300, Vladimir Oltean wrote:
-> On Thu, 22 Aug 2019 at 21:19, Mark Brown <broonie@kernel.org> wrote:
-> > On Sun, Aug 18, 2019 at 09:25:57PM +0300, Vladimir Oltean wrote:
+On Tue, Aug 27, 2019 at 10:50:05AM -0500, Rob Herring wrote:
+> On Thu, Aug 22, 2019 at 07:49:27PM +0100, Mark Brown wrote:
 
-> > > +     if (!ctlr->ptp_sts_supported) {
-> > > +             list_for_each_entry(xfer, &mesg->transfers, transfer_list) {
-> > > +                     xfer->ptp_sts_word_pre = 0;
-> > > +                     ptp_read_system_prets(xfer->ptp_sts);
-> > > +             }
-> > > +     }
+> > Drop the dt-bindings:.
 
-> > We can do better than this for controllers which use transfer_one().
+> If you do 'git log --oneline Documentation/devicetree/bindings/' you'll=
+=20
+> notice that SPI and ASoC are the oddballs now. I don't really care
+> except it does add to tribal knowledge needed regarding maintainers'=20
+> requirements.
 
-> You mean I should guard this "if", and the one below, with "&&
-> !ctlr->transfer_one"?
+Well, you have been pushing people to change over to using
+dt-bindings: so I guess you do care :(  It really does cause me
+to miss stuff, especially where people don't even include the
+subsystem name in the header.  I get quite a lot of CCs for
+things where I once reviewed a patch for a subsystem that made
+use of some subsystem I do maintain or where one patch in a
+series (perhaps even an already applied one) was relevant at some
+point so I'm doing quite a bit of triage that's purely based on
+the subject lines.
 
-Yes, that'd make it a bit more obvious that the better handling
-is there.
-
-> > > + * @ptp_sts_supported: If the driver sets this to true, it must provide a
-> > > + *   time snapshot in @spi_transfer->ptp_sts as close as possible to the
-> > > + *   moment in time when @spi_transfer->ptp_sts_word_pre and
-> > > + *   @spi_transfer->ptp_sts_word_post were transmitted.
-> > > + *   If the driver does not set this, the SPI core takes the snapshot as
-> > > + *   close to the driver hand-over as possible.
-
-> > A couple of issues here.  The big one is that for PIO transfers
-> > this is going to either complicate the code or introduce overhead
-> > in individual drivers for an extremely niche use case.  I guess
-> > most drivers won't implement it which makes this a bit moot but
-> > then this is a concern that pushes back against the idea of
-> > implementing the feature.
-
-> The concern is the overhead in terms of code, or runtime performance?
-
-Both, yes.
-
-> Arguably the applications that require deterministic latency are
-> actually going to push for overall less overhead at runtime, even if
-> that comes at a cost in terms of code size. The spi-fsl-dspi driver
-> does not perform worse by any metric after this rework.
-
-Determinalistic and fast are often note the same thing here,
-sometimes it's better not to optimize if the optimization only
-works some of the time for example.
-
-> > The other is that it's not 100% clear what you're looking to
-> > timestamp here - is it when the data goes on the wire, is it when
-> > the data goes on the FIFO (which could be relatively large)?  I'm
-> > guessing you're looking for the physical transfer here, if that's
-> > the case should there be some effort to compensate for the delays
-> > in the controller?
-
-> The goal is to timestamp the moment when the SPI slave sees word N of
-> the data. Luckily the DSPI driver raises the TCF (Transfer Complete
-> Flag) once that word has been transmitted, which I used to my
-> advantage. The EOQ mode behaves similarly, but has a granularity of 4
-> words. The controller delays are hence implicitly included in the
-> software timestamp.
-
-The documentation should be clear on that, it'd be very natural
-for someone to timestamp on entry to the FIFO.
-
-> But the question is valid and I expect that such compensation might be
-> needed for some hardware, provided that it can be measured and
-> guaranteed. In fact Hubert did add such logic to the v3 of his MDIO
-> patch: https://lkml.org/lkml/2019/8/20/195 There were some objections
-> mainly related to the certainty of those offset corrections. I don't
-> want to "future-proof" the API now with features I have no use of, but
-> such compensation logic might come in the future.
-
-I think it's mainly important that people know what the
-expectations are so different drivers are consistent in how they
-work, as you say the API can always be extended later.
-
---w3gPeeaTISh83WAP
+--r5Pyd7+fXNt84Ff3
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1lfhcACgkQJNaLcl1U
-h9BfVgf/TBGpRMHiwIYmVpVCz4WXDNwCglzzVNRyywnwWSMWRSo73+uDZqnOdT+1
-YkywbCcO2JWuHw+JuqIGa9jg/48x9/8HEoMPDe/RvhXqfE2IqCDOXIeiHf+wQstJ
-P3a4/p13qbuzav3PTGYfoIxz8i6DtD/1m3dLvm8N/ONyIoqoJn8+K2XhMsb4lcbv
-cHp9VOV3V2/8SDutfQcMHkGP5DnvyYTJNY7ld08/0txQf3WFSTfvUHGiXPf7wpEd
-4GOp6mpHmD6aQ3kLw+scbrsmiNxZUucJr/LpD5gAeOfrd2aEqTnMfV3X2p8hRqWm
-TLTHdyKhjai2va8NxzU4K1Dddg4T1Q==
-=hvGY
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1litUACgkQJNaLcl1U
+h9CT3Qf/blNHGchHmk2gQ8FvcJr6UsKNmtbrNv1Zov3/pMDT0H/NiFlJzdL4A6lh
+F/4aSXaqEoR8Ns/IBrQ+geoVVr8dzb0P44QVSOPBlP2PlnMH1lKtLjtGoVYMwd9s
+WtByb4e5KTeuOGUWdVC7+//RwjZyx5dMiV5qTv7f6yEZb+bq208Lrm30mluybDiF
+8xj3c1HFSN4S+U0qvDcgsTjPOP0sOSP/DxXQUpKBPjf04446WOB7D8f7z8E+avI3
+y22TeatnvVC9KDuGM136rHNNpWnO7X7wB2HQKs12JwOjQJCcNNx8/WbGaQFgZ1Zp
+fdK3xIKw8dtN4DMr9QAh2R8lLLOunw==
+=8aqH
 -----END PGP SIGNATURE-----
 
---w3gPeeaTISh83WAP--
+--r5Pyd7+fXNt84Ff3--

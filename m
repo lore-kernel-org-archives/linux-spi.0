@@ -1,54 +1,77 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v1 1/1] spi: bcm-qspi: Make BSPI default mode
-Date: Wed, 28 Aug 2019 14:09:13 +0100
-Message-ID: <20190828130913.GI4298@sirena.co.uk>
-References: <1565086474-4461-1-git-send-email-rayagonda.kokatanur@broadcom.com>
- <20190806121612.GB4527@sirena.org.uk>
- <CAC=U0a2VsdrjypcLQCJTROmbF9ojuJ2rA4Og7XXeR48LAjrArA@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="/GPgYEyhnw15BExa"
-Cc: Rayagonda Kokatanur <rayagonda.kokatanur@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-To: Kamal Dasu <kdasu.kdev@gmail.com>
+From: Tomer Maimon <tmaimon77@gmail.com>
+Subject: [PATCH v3 0/2] spi: add NPCM FIU controller driver
+Date: Wed, 28 Aug 2019 17:25:11 +0300
+Message-ID: <20190828142513.228556-1-tmaimon77@gmail.com>
+Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        openbmc@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        Tomer Maimon <tmaimon77@gmail.com>
+To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        vigneshr@ti.com, bbrezillon@kernel.org, avifishman70@gmail.com,
+        tali.perry1@gmail.com, venture@google.com, yuenn@google.com,
+        benjaminfair@google.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAC=U0a2VsdrjypcLQCJTROmbF9ojuJ2rA4Og7XXeR48LAjrArA@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+This patch set adds Flash Interface Unit(FIU) SPI 
+master support for the Nuvoton NPCM Baseboard 
+Management Controller (BMC).
 
---/GPgYEyhnw15BExa
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The FIU supports single, dual or quad communication interface.
 
-On Tue, Aug 27, 2019 at 09:01:42AM -0400, Kamal Dasu wrote:
+the FIU controller can operate in following modes:
+- User Mode Access(UMA): provides flash access by using an
+  indirect address/data mechanism.
+- direct rd/wr mode: maps the flash memory into the core
+  address space.
+- SPI-X mode: used for an expansion bus to an ASIC or CPLD.
 
-Please don't top post, reply in line with needed context.  This allows
-readers to readily follow the flow of conversation and understand what
-you are talking about and also helps ensure that everything in the
-discussion is being addressed.
+The NPCM750/730/715/710 supports up to three FIU devices:
+- FIU0 supports two chip select.
+- FIU3 supports four chip select.
+- FIUX supports two chip select.
 
-> The spi-nor controller defaults to BSPI mode. So its being put to its
-> default mode.
+The NPCM FIU driver tested on NPCM750 evaluation board. 
 
-The changelog should explain this.
+The FIU controller driver using direct map API SPI-MEM
+interface and tested with the latest m25p80 driver patch
+https://www.spinics.net/lists/linux-mtd/msg07358.html
 
---/GPgYEyhnw15BExa
-Content-Type: application/pgp-signature; name="signature.asc"
+According a conversion about direct SPI-MEM API
+https://www.spinics.net/lists/linux-mtd/msg08225.html
 
------BEGIN PGP SIGNATURE-----
+The m25p80 driver will merge to the spi-nor driver we
+need to make sure the m25p80 direct SPI-MEM will merge
+as well.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1mfPgACgkQJNaLcl1U
-h9DT8Af/W9xLRIZrZOMJ7/axJAM6NO/K2kioTvE+M5sZVU6WqHQf8PxU2bIEMUk4
-Thq6SBNkopZrxLYPuEVvztrBImWJhpvG7cxd5xb6+3XWDxU+gfRNGdBoOn1J+k7u
-cCs1Fl8eCkUWcu09MPuQ/iL7kbZcXxOdyvN3xP4T+q4TpLudWae7dTOUc7CxltqL
-dNWj8/UEAjr/Qa7uyzYZ+zUe6rjamJ0NafvgFzOdlbQjB+rWzmvXVE4JjeLoj/yT
-X1ApML5M/o0Ii2LHvsTVFWQiW0bXhwjQhrV+yZu7afFBlocXHSqacP+txTrWhRBX
-wPMTLMcjgcFYeyZGIg5NxZWZ+D0xkg==
-=l/ec
------END PGP SIGNATURE-----
+The FIU controller driver tested with the latest spi-nor driver patch
+https://www.spinics.net/lists/linux-mtd/msg08472.html
 
---/GPgYEyhnw15BExa--
+Addressed comments from:
+ - Mark Brown: https://www.spinics.net/lists/linux-spi/msg18166.html
+ - Boris Brezillon: https://www.spinics.net/lists/linux-spi/msg18176.html 
+ - Rob Herring: https://www.spinics.net/lists/linux-spi/msg18289.html
+  
+Changes since version 2:
+ - Remove unnecessary dev_info probe print.
+ - Support address SPI memory operation. 
+ - Limit address size support.
+ - Add vendor prefix to spi-mode property dt-binding documentation.
+
+Changes since version 1:
+ - Support spi-mem no data transferred option (SPI_MEM_NO_DATA)
+
+Tomer Maimon (2):
+  dt-binding: spi: add NPCM FIU controller
+  spi: npcm-fiu: add NPCM FIU controller driver
+
+ .../bindings/spi/nuvoton,npcm-fiu.txt         |  47 ++
+ drivers/spi/Kconfig                           |  10 +
+ drivers/spi/Makefile                          |   1 +
+ drivers/spi/spi-npcm-fiu.c                    | 771 ++++++++++++++++++
+ 4 files changed, 829 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt
+ create mode 100644 drivers/spi/spi-npcm-fiu.c
+
+-- 
+2.18.0

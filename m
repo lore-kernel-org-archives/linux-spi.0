@@ -1,82 +1,67 @@
-From: Tomer Maimon <tmaimon77@gmail.com>
-Subject: [PATCH v3 1/2] dt-binding: spi: add NPCM FIU controller
-Date: Wed, 28 Aug 2019 17:25:12 +0300
-Message-ID: <20190828142513.228556-2-tmaimon77@gmail.com>
-References: <20190828142513.228556-1-tmaimon77@gmail.com>
-Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        openbmc@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        Tomer Maimon <tmaimon77@gmail.com>
-To: broonie@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        vigneshr@ti.com, bbrezillon@kernel.org, avifishman70@gmail.com,
-        tali.perry1@gmail.com, venture@google.com, yuenn@google.com,
-        benjaminfair@google.com
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [EXT] Re: [Patch v4 1/3] dt-bindings: spi: spi-fsl-qspi: Add
+ ls2080a compatibility string to bindings
+Date: Wed, 28 Aug 2019 15:01:15 -0500
+Message-ID: <CAL_JsqKnY1ucejpaSUYu_dGZ=uHMybsW4ryJAtEgimUXB+ozbg@mail.gmail.com>
+References: <1565691791-26167-1-git-send-email-Ashish.Kumar@nxp.com>
+ <20190821110640.GC5128@sirena.co.uk> <VI1PR04MB401528B4F92DAD98385EF53395AA0@VI1PR04MB4015.eurprd04.prod.outlook.com>
+ <VI1PR04MB4015474B3086AE99354FE65395A50@VI1PR04MB4015.eurprd04.prod.outlook.com>
+ <20190822184927.GH23391@sirena.co.uk> <20190827155005.GA18581@bogus> <20190827195606.GA28879@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Cc: Ashish Kumar <ashish.kumar@nxp.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "linux-next@vger.kernel.org" <linux-next@vger.kernel.org>,
+        Kuldeep Singh <kuldeep.singh@nxp.com>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190828142513.228556-1-tmaimon77@gmail.com>
+In-Reply-To: <20190827195606.GA28879@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Added device tree binding documentation for Nuvoton BMC
-NPCM Flash Interface Unit(FIU) SPI master controller
-using SPI-MEM interface.
+On Tue, Aug 27, 2019 at 2:56 PM Mark Brown <broonie@kernel.org> wrote:
+>
+> On Tue, Aug 27, 2019 at 10:50:05AM -0500, Rob Herring wrote:
+> > On Thu, Aug 22, 2019 at 07:49:27PM +0100, Mark Brown wrote:
+>
+> > > Drop the dt-bindings:.
+>
+> > If you do 'git log --oneline Documentation/devicetree/bindings/' you'll
+> > notice that SPI and ASoC are the oddballs now. I don't really care
+> > except it does add to tribal knowledge needed regarding maintainers'
+> > requirements.
+>
+> Well, you have been pushing people to change over to using
+> dt-bindings: so I guess you do care :(
 
-Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
----
- .../bindings/spi/nuvoton,npcm-fiu.txt         | 47 +++++++++++++++++++
- 1 file changed, 47 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt
+Well, yes. In the absence of any sort of pattern, I have pushed for
+some consistency. And to get rid of subjects like this:
 
-diff --git a/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt b/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt
-new file mode 100644
-index 000000000000..a388005842ad
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt
-@@ -0,0 +1,47 @@
-+* Nuvoton FLASH Interface Unit (FIU) SPI Controller
-+
-+NPCM FIU supports single, dual and quad communication interface.
-+
-+The NPCM7XX supports three FIU modules,
-+FIU0 and FIUx supports two chip selects,
-+FIU3 support four chip select.
-+
-+Required properties:
-+  - compatible : "nuvoton,npcm750-fiu" for the NPCM7XX BMC
-+  - #address-cells : should be 1.
-+  - #size-cells : should be 0.
-+  - reg : the first contains the register location and length,
-+          the second contains the memory mapping address and length
-+  - reg-names: Should contain the reg names "control" and "memory"
-+  - clocks : phandle of FIU reference clock.
-+
-+Required properties in case the pins can be muxed:
-+  - pinctrl-names : a pinctrl state named "default" must be defined.
-+  - pinctrl-0 : phandle referencing pin configuration of the device.
-+
-+Optional property:
-+  - nuvoton,spix-mode: enable spix-mode for an expansion bus to an ASIC or CPLD.
-+
-+Aliases:
-+- All the FIU controller nodes should be represented in the aliases node using
-+  the following format 'fiu{n}' where n is a unique number for the alias.
-+  In the NPCM7XX BMC:
-+  		fiu0 represent fiu 0 controller
-+  		fiu1 represent fiu 3 controller
-+  		fiu2 represent fiu x controller
-+
-+Example:
-+fiu3: spi@c00000000 {
-+	compatible = "nuvoton,npcm750-fiu";
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	reg = <0xfb000000 0x1000>, <0x80000000 0x10000000>;
-+	reg-names = "control", "memory";
-+	clocks = <&clk NPCM7XX_CLK_AHB>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&spi3_pins>;
-+	spi-nor@0 {
-+			...
-+	};
-+};
-+
--- 
-2.18.0
+Documentation/devicetree/bindings: Add the DT binding documentation for foo-bar
+
+If subsystems are consistent with their own standard as you are, then
+as a maintainer I don't really care. My point was in regard to what
+submitters need to know and follow.
+
+> It really does cause me
+> to miss stuff, especially where people don't even include the
+> subsystem name in the header.  I get quite a lot of CCs for
+> things where I once reviewed a patch for a subsystem that made
+> use of some subsystem I do maintain or where one patch in a
+> series (perhaps even an already applied one) was relevant at some
+> point so I'm doing quite a bit of triage that's purely based on
+> the subject lines.
+
+I can't imagine filtering on subjects will ever be that reliable
+unless we add subject prefixes to MAINTAINERS and have checkpatch
+check commits against those. Filtering on the diffstat is the only
+thing that's kept things to a sane list for me (MAINTAINERS for DT
+used to tag of_* functions which just meant getting copied on *every*
+driver). This is done on the patchwork server side for me, but I
+imagine one could do it on the client side too.
+
+Rob

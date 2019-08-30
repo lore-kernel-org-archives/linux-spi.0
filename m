@@ -1,21 +1,24 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: bcm-qspi: Make BSPI default mode" to the spi tree
-Date: Fri, 30 Aug 2019 12:45:31 +0100 (BST)
-Message-ID: <20190830114531.D3C672742B61@ypsilon.sirena.org.uk>
-References: <1567139325-7912-1-git-send-email-rayagonda.kokatanur@broadcom.com>
-Cc: bcm-kernel-feedback-list@broadcom.com,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>
-To: Rayagonda Kokatanur <rayagonda.kokatanur@broadcom.com>
+Subject: Applied "dt-binding: spi: add NPCM FIU controller" to the spi tree
+Date: Fri, 30 Aug 2019 12:45:32 +0100 (BST)
+Message-ID: <20190830114532.47E7B2742CA1@ypsilon.sirena.org.uk>
+References: <20190828142513.228556-2-tmaimon77@gmail.com>
+Cc: avifishman70@gmail.com, bbrezillon@kernel.org,
+        benjaminfair@google.com, broonie@kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        mark.rutland@arm.com, openbmc@lists.ozlabs.org, robh+dt@kernel.org,
+        tali.perry1@gmail.com, venture@google.com, vigneshr@ti.com,
+        yuenn@google.com
+To: Tomer Maimon <tmaimon77@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1567139325-7912-1-git-send-email-rayagonda.kokatanur@broadcom.com>
+In-Reply-To: <20190828142513.228556-2-tmaimon77@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: bcm-qspi: Make BSPI default mode
+   dt-binding: spi: add NPCM FIU controller
 
 has been applied to the spi tree at
 
@@ -40,35 +43,75 @@ to this mail.
 Thanks,
 Mark
 
->From ca105398430de8c11e5e56a7bbfb00746ac5a268 Mon Sep 17 00:00:00 2001
-From: Rayagonda Kokatanur <rayagonda.kokatanur@broadcom.com>
-Date: Fri, 30 Aug 2019 09:58:45 +0530
-Subject: [PATCH] spi: bcm-qspi: Make BSPI default mode
+>From 91d0c59f460fd61db977d35b0d7c057128e7f7b7 Mon Sep 17 00:00:00 2001
+From: Tomer Maimon <tmaimon77@gmail.com>
+Date: Wed, 28 Aug 2019 17:25:12 +0300
+Subject: [PATCH] dt-binding: spi: add NPCM FIU controller
 
-The spi-nor controller defaults to BSPI mode, hence switch back
-to its default mode after MSPI operations (write or erase)
-are completed.
+Added device tree binding documentation for Nuvoton BMC
+NPCM Flash Interface Unit(FIU) SPI master controller
+using SPI-MEM interface.
 
-Signed-off-by: Rayagonda Kokatanur <rayagonda.kokatanur@broadcom.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Reviewed-by: Kamal Dasu <kdasu.kdev@gmail.com>
-Link: https://lore.kernel.org/r/1567139325-7912-1-git-send-email-rayagonda.kokatanur@broadcom.com
+Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
+Link: https://lore.kernel.org/r/20190828142513.228556-2-tmaimon77@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-bcm-qspi.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../bindings/spi/nuvoton,npcm-fiu.txt         | 47 +++++++++++++++++++
+ 1 file changed, 47 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt
 
-diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
-index 0dbfd2496ab8..7a3531856491 100644
---- a/drivers/spi/spi-bcm-qspi.c
-+++ b/drivers/spi/spi-bcm-qspi.c
-@@ -897,6 +897,7 @@ static int bcm_qspi_transfer_one(struct spi_master *master,
- 
- 		read_from_hw(qspi, slots);
- 	}
-+	bcm_qspi_enable_bspi(qspi);
- 
- 	return 0;
- }
+diff --git a/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt b/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt
+new file mode 100644
+index 000000000000..a388005842ad
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt
+@@ -0,0 +1,47 @@
++* Nuvoton FLASH Interface Unit (FIU) SPI Controller
++
++NPCM FIU supports single, dual and quad communication interface.
++
++The NPCM7XX supports three FIU modules,
++FIU0 and FIUx supports two chip selects,
++FIU3 support four chip select.
++
++Required properties:
++  - compatible : "nuvoton,npcm750-fiu" for the NPCM7XX BMC
++  - #address-cells : should be 1.
++  - #size-cells : should be 0.
++  - reg : the first contains the register location and length,
++          the second contains the memory mapping address and length
++  - reg-names: Should contain the reg names "control" and "memory"
++  - clocks : phandle of FIU reference clock.
++
++Required properties in case the pins can be muxed:
++  - pinctrl-names : a pinctrl state named "default" must be defined.
++  - pinctrl-0 : phandle referencing pin configuration of the device.
++
++Optional property:
++  - nuvoton,spix-mode: enable spix-mode for an expansion bus to an ASIC or CPLD.
++
++Aliases:
++- All the FIU controller nodes should be represented in the aliases node using
++  the following format 'fiu{n}' where n is a unique number for the alias.
++  In the NPCM7XX BMC:
++  		fiu0 represent fiu 0 controller
++  		fiu1 represent fiu 3 controller
++  		fiu2 represent fiu x controller
++
++Example:
++fiu3: spi@c00000000 {
++	compatible = "nuvoton,npcm750-fiu";
++	#address-cells = <1>;
++	#size-cells = <0>;
++	reg = <0xfb000000 0x1000>, <0x80000000 0x10000000>;
++	reg-names = "control", "memory";
++	clocks = <&clk NPCM7XX_CLK_AHB>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&spi3_pins>;
++	spi-nor@0 {
++			...
++	};
++};
++
 -- 
 2.20.1

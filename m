@@ -1,13 +1,47 @@
-From: Vladimir Oltean <olteanv@gmail.com>
-Subject: [PATCH] spi: spi-fsl-dspi: Fix race condition in TCFQ/EOQ interrupt
-Date: Tue,  3 Sep 2019 13:57:08 +0300
-Message-ID: <20190903105708.32273-1-olteanv@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Vladimir Oltean <olteanv@gmail.com>
-To: broonie@kernel.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: spi-fsl-dspi: Fix race condition in TCFQ/EOQ interrupt" to the spi tree
+Date: Tue,  3 Sep 2019 12:57:48 +0100 (BST)
+Message-ID: <20190903115748.A1DA72742D32@ypsilon.sirena.org.uk>
+References: <20190903105708.32273-1-olteanv@gmail.com>
+Cc: broonie@kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
+To: Vladimir Oltean <olteanv@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190903105708.32273-1-olteanv@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
+
+The patch
+
+   spi: spi-fsl-dspi: Fix race condition in TCFQ/EOQ interrupt
+
+has been applied to the spi tree at
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.4
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From e327364948492f6a4e866417d3d4d17d95fed285 Mon Sep 17 00:00:00 2001
+From: Vladimir Oltean <olteanv@gmail.com>
+Date: Tue, 3 Sep 2019 13:57:08 +0300
+Subject: [PATCH] spi: spi-fsl-dspi: Fix race condition in TCFQ/EOQ interrupt
 
 When the driver is working in TCFQ/EOQ mode (i.e. interacts with the SPI
 controller's FIFOs directly) the following sequence of operations
@@ -40,6 +74,8 @@ collected the last RX byte.
 
 Fixes: c55be3059159 ("spi: spi-fsl-dspi: Use poll mode in case the platform IRQ is missing")
 Signed-off-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://lore.kernel.org/r/20190903105708.32273-1-olteanv@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
  drivers/spi/spi-fsl-dspi.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
@@ -60,4 +96,4 @@ index 77db43f1290f..bec758e978fb 100644
  		wake_up_interruptible(&dspi->waitq);
  	}
 -- 
-2.17.1
+2.20.1

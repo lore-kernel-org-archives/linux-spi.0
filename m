@@ -1,78 +1,90 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: npcm-fiu: fix spelling mistake "frequancy" -> "frequency"" to the spi tree
-Date: Tue,  3 Sep 2019 19:00:23 +0100 (BST)
-Message-ID: <20190903180023.769DA2740A97@ypsilon.sirena.org.uk>
-References: <20190903122812.3986-1-colin.king@canonical.com>
-Cc: Avi Fishman <avifishman70@gmail.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Nancy Yuen <yuenn@google.com>, openbmc@lists.ozlabs.org,
-        Patrick Venture <venture@google.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>
-To: Colin Ian King <colin.king@canonical.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH] gpiolib: of: fix fallback quirks handling
+Date: Tue, 3 Sep 2019 16:18:56 -0700
+Message-ID: <20190903231856.GA165165@dtor-ws>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        linux-gpio@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+To: Linus Walleij <linus.walleij@linaro.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190903122812.3986-1-colin.king@canonical.com>
+Content-Disposition: inline
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+We should only try to execute fallback quirks handling when previous
+call returned -ENOENT, and not when we did not get -EPROBE_DEFER.
+The other errors should be treated as hard errors: we did find the GPIO
+description, but for some reason we failed to handle it properly.
 
-   spi: npcm-fiu: fix spelling mistake "frequancy" -> "frequency"
+The fallbacks should only be executed when previous handlers returned
+-ENOENT, which means the mapping/description was not found.
 
-has been applied to the spi tree at
+Also let's remove the explicit deferral handling when iterating through
+GPIO suffixes: it is not needed anymore as we will not be calling
+fallbacks for anything but -ENOENT.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.4
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 0d6fccc1b6fbaf9c24e71efbbe9c3826a7b6a03d Mon Sep 17 00:00:00 2001
-From: Colin Ian King <colin.king@canonical.com>
-Date: Tue, 3 Sep 2019 13:28:12 +0100
-Subject: [PATCH] spi: npcm-fiu: fix spelling mistake "frequancy" ->
- "frequency"
-
-There is a spelling mistake in a dev_warning message. Fix it. Also
-break line to clear up checkpatch warning.
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Link: https://lore.kernel.org/r/20190903122812.3986-1-colin.king@canonical.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: df451f83e1fc ("gpio: of: fix Freescale SPI CS quirk handling")
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 ---
- drivers/spi/spi-npcm-fiu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpio/gpiolib-of.c | 27 +++++++++------------------
+ 1 file changed, 9 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/spi/spi-npcm-fiu.c b/drivers/spi/spi-npcm-fiu.c
-index 3ea1ec68147e..d9e2f58b104b 100644
---- a/drivers/spi/spi-npcm-fiu.c
-+++ b/drivers/spi/spi-npcm-fiu.c
-@@ -544,7 +544,8 @@ static int npcm_fiu_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 	if (fiu->clkrate != chip->clkrate) {
- 		ret = clk_set_rate(fiu->clk, chip->clkrate);
- 		if (ret < 0)
--			dev_warn(fiu->dev, "Failed setting %lu frequancy, stay at %lu frequancy\n", chip->clkrate, fiu->clkrate);
-+			dev_warn(fiu->dev, "Failed setting %lu frequency, stay at %lu frequency\n",
-+				 chip->clkrate, fiu->clkrate);
- 		else
- 			fiu->clkrate = chip->clkrate;
+diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
+index b034abe59f28..b45b39c48a34 100644
+--- a/drivers/gpio/gpiolib-of.c
++++ b/drivers/gpio/gpiolib-of.c
+@@ -457,36 +457,27 @@ struct gpio_desc *of_find_gpio(struct device *dev, const char *con_id,
+ 
+ 		desc = of_get_named_gpiod_flags(dev->of_node, prop_name, idx,
+ 						&of_flags);
+-		/*
+-		 * -EPROBE_DEFER in our case means that we found a
+-		 * valid GPIO property, but no controller has been
+-		 * registered so far.
+-		 *
+-		 * This means we don't need to look any further for
+-		 * alternate name conventions, and we should really
+-		 * preserve the return code for our user to be able to
+-		 * retry probing later.
+-		 */
+-		if (IS_ERR(desc) && PTR_ERR(desc) == -EPROBE_DEFER)
+-			return desc;
+ 
+-		if (!IS_ERR(desc) || (PTR_ERR(desc) != -ENOENT))
++		if (!IS_ERR(desc) || PTR_ERR(desc) != -ENOENT)
+ 			break;
  	}
+ 
+-	/* Special handling for SPI GPIOs if used */
+-	if (IS_ERR(desc))
++	if (IS_ERR(desc) && PTR_ERR(desc) == -ENOENT) {
++		/* Special handling for SPI GPIOs if used */
+ 		desc = of_find_spi_gpio(dev, con_id, &of_flags);
+-	if (IS_ERR(desc) && PTR_ERR(desc) != -EPROBE_DEFER) {
++	}
++
++	if (IS_ERR(desc) && PTR_ERR(desc) == -ENOENT) {
+ 		/* This quirk looks up flags and all */
+ 		desc = of_find_spi_cs_gpio(dev, con_id, idx, flags);
+ 		if (!IS_ERR(desc))
+ 			return desc;
+ 	}
+ 
+-	/* Special handling for regulator GPIOs if used */
+-	if (IS_ERR(desc) && PTR_ERR(desc) != -EPROBE_DEFER)
++	if (IS_ERR(desc) && PTR_ERR(desc) == -ENOENT) {
++		/* Special handling for regulator GPIOs if used */
+ 		desc = of_find_regulator_gpio(dev, con_id, &of_flags);
++	}
+ 
+ 	if (IS_ERR(desc))
+ 		return desc;
 -- 
-2.20.1
+2.23.0.187.g17f5b7556c-goog
+
+
+-- 
+Dmitry

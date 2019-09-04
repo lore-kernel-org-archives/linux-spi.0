@@ -1,7 +1,7 @@
 From: YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next 06/36] spi: bcm2835: use devm_platform_ioremap_resource() to simplify code
-Date: Wed, 4 Sep 2019 21:58:48 +0800
-Message-ID: <20190904135918.25352-7-yuehaibing@huawei.com>
+Subject: [PATCH -next 09/36] spi: octeon: use devm_platform_ioremap_resource() to simplify code
+Date: Wed, 4 Sep 2019 21:58:51 +0800
+Message-ID: <20190904135918.25352-10-yuehaibing@huawei.com>
 References: <20190904135918.25352-1-yuehaibing@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -40,30 +40,30 @@ This is detected by coccinelle.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/spi/spi-bcm2835.c | 4 +---
+ drivers/spi/spi-cavium-octeon.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index fd2bfb4..fbd6d1a 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -1001,7 +1001,6 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-cavium-octeon.c b/drivers/spi/spi-cavium-octeon.c
+index ee4703e..1a2de6c 100644
+--- a/drivers/spi/spi-cavium-octeon.c
++++ b/drivers/spi/spi-cavium-octeon.c
+@@ -18,7 +18,6 @@
+ 
+ static int octeon_spi_probe(struct platform_device *pdev)
  {
- 	struct spi_controller *ctlr;
- 	struct bcm2835_spi *bs;
--	struct resource *res;
- 	int err;
+-	struct resource *res_mem;
+ 	void __iomem *reg_base;
+ 	struct spi_master *master;
+ 	struct octeon_spi *p;
+@@ -30,8 +29,7 @@ static int octeon_spi_probe(struct platform_device *pdev)
+ 	p = spi_master_get_devdata(master);
+ 	platform_set_drvdata(pdev, master);
  
- 	ctlr = spi_alloc_master(&pdev->dev, sizeof(*bs));
-@@ -1022,8 +1021,7 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
- 
- 	bs = spi_controller_get_devdata(ctlr);
- 
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	bs->regs = devm_ioremap_resource(&pdev->dev, res);
-+	bs->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(bs->regs)) {
- 		err = PTR_ERR(bs->regs);
- 		goto out_controller_put;
+-	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	reg_base = devm_ioremap_resource(&pdev->dev, res_mem);
++	reg_base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(reg_base)) {
+ 		err = PTR_ERR(reg_base);
+ 		goto fail;
 -- 
 2.7.4

@@ -1,7 +1,7 @@
 From: YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next 09/36] spi: octeon: use devm_platform_ioremap_resource() to simplify code
-Date: Wed, 4 Sep 2019 21:58:51 +0800
-Message-ID: <20190904135918.25352-10-yuehaibing@huawei.com>
+Subject: [PATCH -next 08/36] spi: cadence: use devm_platform_ioremap_resource() to simplify code
+Date: Wed, 4 Sep 2019 21:58:50 +0800
+Message-ID: <20190904135918.25352-9-yuehaibing@huawei.com>
 References: <20190904135918.25352-1-yuehaibing@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -40,30 +40,30 @@ This is detected by coccinelle.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/spi/spi-cavium-octeon.c | 4 +---
+ drivers/spi/spi-cadence.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-cavium-octeon.c b/drivers/spi/spi-cavium-octeon.c
-index ee4703e..1a2de6c 100644
---- a/drivers/spi/spi-cavium-octeon.c
-+++ b/drivers/spi/spi-cavium-octeon.c
-@@ -18,7 +18,6 @@
- 
- static int octeon_spi_probe(struct platform_device *pdev)
- {
--	struct resource *res_mem;
- 	void __iomem *reg_base;
+diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
+index 1c35eaa..c36587b 100644
+--- a/drivers/spi/spi-cadence.c
++++ b/drivers/spi/spi-cadence.c
+@@ -474,7 +474,6 @@ static int cdns_spi_probe(struct platform_device *pdev)
+ 	int ret = 0, irq;
  	struct spi_master *master;
- 	struct octeon_spi *p;
-@@ -30,8 +29,7 @@ static int octeon_spi_probe(struct platform_device *pdev)
- 	p = spi_master_get_devdata(master);
+ 	struct cdns_spi *xspi;
+-	struct resource *res;
+ 	u32 num_cs;
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*xspi));
+@@ -485,8 +484,7 @@ static int cdns_spi_probe(struct platform_device *pdev)
+ 	master->dev.of_node = pdev->dev.of_node;
  	platform_set_drvdata(pdev, master);
  
--	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	reg_base = devm_ioremap_resource(&pdev->dev, res_mem);
-+	reg_base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(reg_base)) {
- 		err = PTR_ERR(reg_base);
- 		goto fail;
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	xspi->regs = devm_ioremap_resource(&pdev->dev, res);
++	xspi->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(xspi->regs)) {
+ 		ret = PTR_ERR(xspi->regs);
+ 		goto remove_master;
 -- 
 2.7.4

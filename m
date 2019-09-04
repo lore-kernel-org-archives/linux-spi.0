@@ -1,7 +1,7 @@
 From: YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next 31/36] spi: tegra: use devm_platform_ioremap_resource() to simplify code
-Date: Wed, 4 Sep 2019 21:59:13 +0800
-Message-ID: <20190904135918.25352-32-yuehaibing@huawei.com>
+Subject: [PATCH -next 33/36] spi: xlp: use devm_platform_ioremap_resource() to simplify code
+Date: Wed, 4 Sep 2019 21:59:15 +0800
+Message-ID: <20190904135918.25352-34-yuehaibing@huawei.com>
 References: <20190904135918.25352-1-yuehaibing@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -40,30 +40,30 @@ This is detected by coccinelle.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/spi/spi-tegra20-sflash.c | 4 +---
+ drivers/spi/spi-xlp.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
-index cd714a4..a841a72 100644
---- a/drivers/spi/spi-tegra20-sflash.c
-+++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -419,7 +419,6 @@ static int tegra_sflash_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-xlp.c b/drivers/spi/spi-xlp.c
+index 4eb5bc9..797ac0e 100644
+--- a/drivers/spi/spi-xlp.c
++++ b/drivers/spi/spi-xlp.c
+@@ -370,7 +370,6 @@ static int xlp_spi_probe(struct platform_device *pdev)
  {
- 	struct spi_master	*master;
- 	struct tegra_sflash_data	*tsd;
--	struct resource		*r;
- 	int ret;
- 	const struct of_device_id *match;
+ 	struct spi_master *master;
+ 	struct xlp_spi_priv *xspi;
+-	struct resource *res;
+ 	struct clk *clk;
+ 	int irq, err;
  
-@@ -451,8 +450,7 @@ static int tegra_sflash_probe(struct platform_device *pdev)
- 				 &master->max_speed_hz))
- 		master->max_speed_hz = 25000000; /* 25MHz */
+@@ -378,8 +377,7 @@ static int xlp_spi_probe(struct platform_device *pdev)
+ 	if (!xspi)
+ 		return -ENOMEM;
  
--	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	tsd->base = devm_ioremap_resource(&pdev->dev, r);
-+	tsd->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(tsd->base)) {
- 		ret = PTR_ERR(tsd->base);
- 		goto exit_free_master;
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	xspi->base = devm_ioremap_resource(&pdev->dev, res);
++	xspi->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(xspi->base))
+ 		return PTR_ERR(xspi->base);
+ 
 -- 
 2.7.4

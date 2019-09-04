@@ -1,7 +1,7 @@
 From: YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next 35/36] spi: zynq-qspi: use devm_platform_ioremap_resource() to simplify code
-Date: Wed, 4 Sep 2019 21:59:17 +0800
-Message-ID: <20190904135918.25352-36-yuehaibing@huawei.com>
+Subject: [PATCH -next 29/36] spi: sun4i: use devm_platform_ioremap_resource() to simplify code
+Date: Wed, 4 Sep 2019 21:59:11 +0800
+Message-ID: <20190904135918.25352-30-yuehaibing@huawei.com>
 References: <20190904135918.25352-1-yuehaibing@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -40,30 +40,30 @@ This is detected by coccinelle.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/spi/spi-zynq-qspi.c | 4 +---
+ drivers/spi/spi-sun4i.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index 4a5326c..5cf6993 100644
---- a/drivers/spi/spi-zynq-qspi.c
-+++ b/drivers/spi/spi-zynq-qspi.c
-@@ -620,7 +620,6 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct device_node *np = dev->of_node;
- 	struct zynq_qspi *xqspi;
--	struct resource *res;
- 	u32 num_cs;
+diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
+index 92e5c66..cbfac65 100644
+--- a/drivers/spi/spi-sun4i.c
++++ b/drivers/spi/spi-sun4i.c
+@@ -428,7 +428,6 @@ static int sun4i_spi_probe(struct platform_device *pdev)
+ {
+ 	struct spi_master *master;
+ 	struct sun4i_spi *sspi;
+-	struct resource	*res;
+ 	int ret = 0, irq;
  
- 	ctlr = spi_alloc_master(&pdev->dev, sizeof(*xqspi));
-@@ -630,8 +629,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 	xqspi = spi_controller_get_devdata(ctlr);
- 	xqspi->dev = dev;
- 	platform_set_drvdata(pdev, xqspi);
+ 	master = spi_alloc_master(&pdev->dev, sizeof(struct sun4i_spi));
+@@ -440,8 +439,7 @@ static int sun4i_spi_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, master);
+ 	sspi = spi_master_get_devdata(master);
+ 
 -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	xqspi->regs = devm_ioremap_resource(&pdev->dev, res);
-+	xqspi->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(xqspi->regs)) {
- 		ret = PTR_ERR(xqspi->regs);
- 		goto remove_master;
+-	sspi->base_addr = devm_ioremap_resource(&pdev->dev, res);
++	sspi->base_addr = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(sspi->base_addr)) {
+ 		ret = PTR_ERR(sspi->base_addr);
+ 		goto err_free_master;
 -- 
 2.7.4

@@ -1,48 +1,40 @@
-From: Florian Fainelli <f.fainelli@gmail.com>
-Subject: Re: [PATCH -next 07/36] spi: bcm63xx-hsspi: use
- devm_platform_ioremap_resource() to simplify code
-Date: Wed, 4 Sep 2019 15:10:57 -0700
-Message-ID: <d36f7e5f-d629-dcad-61c5-fcf896cbd91e@gmail.com>
-References: <20190904135918.25352-1-yuehaibing@huawei.com>
- <20190904135918.25352-8-yuehaibing@huawei.com>
+From: Paul Walmsley <paul.walmsley@sifive.com>
+Subject: Re: [PATCH -next 26/36] spi: sifive: use devm_platform_ioremap_resource()
+ to simplify code
+Date: Wed, 4 Sep 2019 15:20:53 -0700 (PDT)
+Message-ID: <alpine.DEB.2.21.9999.1909041520130.13502@viisi.sifive.com>
+References: <20190904135918.25352-1-yuehaibing@huawei.com> <20190904135918.25352-27-yuehaibing@huawei.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: bcm-kernel-feedback-list@broadcom.com, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, openbmc@lists.ozlabs.org,
-        linux-samsung-soc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-tegra@vger.kernel.org
-To: YueHaibing <yuehaibing@huawei.com>, broonie@kernel.org,
-        rjui@broadcom.com, sbranden@broadcom.com, eric@anholt.net,
-        wahrenst@gmx.net, shc_work@mail.ru, agross@kernel.org,
-        khilman@baylibre.com, matthias.bgg@gmail.com, shawnguo@kernel.org,
+Content-Type: text/plain; charset=US-ASCII
+Cc: broonie@kernel.org, f.fainelli@gmail.com, rjui@broadcom.com,
+        sbranden@broadcom.com, eric@anholt.net, wahrenst@gmx.net,
+        shc_work@mail.ru, agross@kernel.org, khilman@baylibre.com,
+        matthias.bgg@gmail.com, shawnguo@kernel.org,
         s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
         linux-imx@nxp.com, avifishman70@gmail.com, tmaimon77@gmail.com,
         tali.perry1@gmail.com, venture@google.com, yuenn@google.com,
         benjaminfair@google.com, kgene@kernel.org, krzk@kernel.org,
-        andi@etezian.org, palmer@sifive.com, paul.walmsley@sifive.com,
-        baohua@kernel.org, mripard@kernel.org, wens@csie.org,
-        ldewangan@nvidia.com, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, yamada.masahiro@socionext.com,
-        michal.simek@xilinx.com
+        andi@etezian.org, palmer@sifive.com, baohua@kernel.org,
+        mripard@kernel.org, wens@csie.org, ldewangan@nvidia.com,
+        thierry.reding@gmail.com, jonathanh@nvidia.com,
+        yamada.masahiro@socionext.com, michal.simek@xilinx.com,
+        bcm-kernel-feedback-list@broadcom.com, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linu
+To: YueHaibing <yuehaibing@huawei.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190904135918.25352-8-yuehaibing@huawei.com>
-Content-Language: en-US
+In-Reply-To: <20190904135918.25352-27-yuehaibing@huawei.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Wed, 4 Sep 2019, YueHaibing wrote:
 
-
-On 9/4/2019 6:58 AM, YueHaibing wrote:
 > Use devm_platform_ioremap_resource() to simplify the code a bit.
 > This is detected by coccinelle.
 > 
 > Reported-by: Hulk Robot <hulkci@huawei.com>
 > Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
--- 
-Florian
+Acked-by: Paul Walmsley <paul.walmsley@sifive.com>
+
+
+- Paul

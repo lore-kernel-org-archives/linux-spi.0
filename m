@@ -1,7 +1,7 @@
 From: YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next 01/36] spi: altera: use devm_platform_ioremap_resource() to simplify code
-Date: Wed, 4 Sep 2019 21:58:43 +0800
-Message-ID: <20190904135918.25352-2-yuehaibing@huawei.com>
+Subject: [PATCH -next 02/36] spi: a3700: use devm_platform_ioremap_resource() to simplify code
+Date: Wed, 4 Sep 2019 21:58:44 +0800
+Message-ID: <20190904135918.25352-3-yuehaibing@huawei.com>
 References: <20190904135918.25352-1-yuehaibing@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -40,30 +40,30 @@ This is detected by coccinelle.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/spi/spi-altera.c | 4 +---
+ drivers/spi/spi-armada-3700.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-altera.c b/drivers/spi/spi-altera.c
-index ea160f11..41d71ba 100644
---- a/drivers/spi/spi-altera.c
-+++ b/drivers/spi/spi-altera.c
-@@ -170,7 +170,6 @@ static int altera_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
+index 119ae87..e450ee1 100644
+--- a/drivers/spi/spi-armada-3700.c
++++ b/drivers/spi/spi-armada-3700.c
+@@ -817,7 +817,6 @@ static int a3700_spi_probe(struct platform_device *pdev)
  {
- 	struct altera_spi *hw;
- 	struct spi_master *master;
+ 	struct device *dev = &pdev->dev;
+ 	struct device_node *of_node = dev->of_node;
 -	struct resource *res;
- 	int err = -ENODEV;
+ 	struct spi_master *master;
+ 	struct a3700_spi *spi;
+ 	u32 num_cs = 0;
+@@ -855,8 +854,7 @@ static int a3700_spi_probe(struct platform_device *pdev)
  
- 	master = spi_alloc_master(&pdev->dev, sizeof(struct altera_spi));
-@@ -189,8 +188,7 @@ static int altera_spi_probe(struct platform_device *pdev)
- 	hw = spi_master_get_devdata(master);
+ 	spi->master = master;
  
- 	/* find and map our resources */
 -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	hw->base = devm_ioremap_resource(&pdev->dev, res);
-+	hw->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(hw->base)) {
- 		err = PTR_ERR(hw->base);
- 		goto exit;
+-	spi->base = devm_ioremap_resource(dev, res);
++	spi->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(spi->base)) {
+ 		ret = PTR_ERR(spi->base);
+ 		goto error;
 -- 
 2.7.4

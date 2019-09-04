@@ -1,7 +1,7 @@
 From: YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next 29/36] spi: sun4i: use devm_platform_ioremap_resource() to simplify code
-Date: Wed, 4 Sep 2019 21:59:11 +0800
-Message-ID: <20190904135918.25352-30-yuehaibing@huawei.com>
+Subject: [PATCH -next 23/36] spi: spi-qcom-qspi: use devm_platform_ioremap_resource() to simplify code
+Date: Wed, 4 Sep 2019 21:59:05 +0800
+Message-ID: <20190904135918.25352-24-yuehaibing@huawei.com>
 References: <20190904135918.25352-1-yuehaibing@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -40,30 +40,30 @@ This is detected by coccinelle.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/spi/spi-sun4i.c | 4 +---
+ drivers/spi/spi-qcom-qspi.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
-index 92e5c66..cbfac65 100644
---- a/drivers/spi/spi-sun4i.c
-+++ b/drivers/spi/spi-sun4i.c
-@@ -428,7 +428,6 @@ static int sun4i_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-qcom-qspi.c b/drivers/spi/spi-qcom-qspi.c
+index a0ad73f..250fd60 100644
+--- a/drivers/spi/spi-qcom-qspi.c
++++ b/drivers/spi/spi-qcom-qspi.c
+@@ -424,7 +424,6 @@ static int qcom_qspi_probe(struct platform_device *pdev)
  {
+ 	int ret;
+ 	struct device *dev;
+-	struct resource *res;
  	struct spi_master *master;
- 	struct sun4i_spi *sspi;
--	struct resource	*res;
- 	int ret = 0, irq;
+ 	struct qcom_qspi *ctrl;
  
- 	master = spi_alloc_master(&pdev->dev, sizeof(struct sun4i_spi));
-@@ -440,8 +439,7 @@ static int sun4i_spi_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, master);
- 	sspi = spi_master_get_devdata(master);
+@@ -440,8 +439,7 @@ static int qcom_qspi_probe(struct platform_device *pdev)
  
+ 	spin_lock_init(&ctrl->lock);
+ 	ctrl->dev = dev;
 -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	sspi->base_addr = devm_ioremap_resource(&pdev->dev, res);
-+	sspi->base_addr = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(sspi->base_addr)) {
- 		ret = PTR_ERR(sspi->base_addr);
- 		goto err_free_master;
+-	ctrl->base = devm_ioremap_resource(dev, res);
++	ctrl->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(ctrl->base)) {
+ 		ret = PTR_ERR(ctrl->base);
+ 		goto exit_probe_master_put;
 -- 
 2.7.4

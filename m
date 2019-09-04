@@ -1,7 +1,7 @@
 From: YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next 36/36] spi: fsl-spi: use devm_platform_ioremap_resource() to simplify code
-Date: Wed, 4 Sep 2019 21:59:18 +0800
-Message-ID: <20190904135918.25352-37-yuehaibing@huawei.com>
+Subject: [PATCH -next 34/36] spi: zynqmp: use devm_platform_ioremap_resource() to simplify code
+Date: Wed, 4 Sep 2019 21:59:16 +0800
+Message-ID: <20190904135918.25352-35-yuehaibing@huawei.com>
 References: <20190904135918.25352-1-yuehaibing@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -40,27 +40,30 @@ This is detected by coccinelle.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/spi/spi-fsl-cpm.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/spi/spi-zynqmp-gqspi.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-cpm.c b/drivers/spi/spi-fsl-cpm.c
-index e967ac5..858f054 100644
---- a/drivers/spi/spi-fsl-cpm.c
-+++ b/drivers/spi/spi-fsl-cpm.c
-@@ -305,12 +305,10 @@ int fsl_spi_cpm_init(struct mpc8xxx_spi *mspi)
- 	}
+diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
+index 5e9ea8a..60c4de4 100644
+--- a/drivers/spi/spi-zynqmp-gqspi.c
++++ b/drivers/spi/spi-zynqmp-gqspi.c
+@@ -1016,7 +1016,6 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
+ 	int ret = 0;
+ 	struct spi_master *master;
+ 	struct zynqmp_qspi *xqspi;
+-	struct resource *res;
+ 	struct device *dev = &pdev->dev;
  
- 	if (mspi->flags & SPI_CPM1) {
--		struct resource *res;
- 		void *pram;
+ 	eemi_ops = zynqmp_pm_get_eemi_ops();
+@@ -1031,8 +1030,7 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
+ 	master->dev.of_node = pdev->dev.of_node;
+ 	platform_set_drvdata(pdev, master);
  
--		res = platform_get_resource(to_platform_device(dev),
--					    IORESOURCE_MEM, 1);
--		pram = devm_ioremap_resource(dev, res);
-+		pram = devm_platform_ioremap_resource(to_platform_device(dev),
-+						      1);
- 		if (IS_ERR(pram))
- 			mspi->pram = NULL;
- 		else
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	xqspi->regs = devm_ioremap_resource(&pdev->dev, res);
++	xqspi->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(xqspi->regs)) {
+ 		ret = PTR_ERR(xqspi->regs);
+ 		goto remove_master;
 -- 
 2.7.4

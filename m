@@ -1,7 +1,7 @@
 From: YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next 19/36] spi: npcm: use devm_platform_ioremap_resource() to simplify code
-Date: Wed, 4 Sep 2019 21:59:01 +0800
-Message-ID: <20190904135918.25352-20-yuehaibing@huawei.com>
+Subject: [PATCH -next 21/36] spi: oc-tiny: use devm_platform_ioremap_resource() to simplify code
+Date: Wed, 4 Sep 2019 21:59:03 +0800
+Message-ID: <20190904135918.25352-22-yuehaibing@huawei.com>
 References: <20190904135918.25352-1-yuehaibing@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -40,30 +40,30 @@ This is detected by coccinelle.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/spi/spi-npcm-pspi.c | 4 +---
+ drivers/spi/spi-oc-tiny.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-npcm-pspi.c b/drivers/spi/spi-npcm-pspi.c
-index 5c56cae..b191d57 100644
---- a/drivers/spi/spi-npcm-pspi.c
-+++ b/drivers/spi/spi-npcm-pspi.c
-@@ -341,7 +341,6 @@ static int npcm_pspi_probe(struct platform_device *pdev)
- {
- 	struct npcm_pspi *priv;
+diff --git a/drivers/spi/spi-oc-tiny.c b/drivers/spi/spi-oc-tiny.c
+index bbc4ba6..e2331eb 100644
+--- a/drivers/spi/spi-oc-tiny.c
++++ b/drivers/spi/spi-oc-tiny.c
+@@ -240,7 +240,6 @@ static int tiny_spi_probe(struct platform_device *pdev)
+ 	struct tiny_spi_platform_data *platp = dev_get_platdata(&pdev->dev);
+ 	struct tiny_spi *hw;
  	struct spi_master *master;
 -	struct resource *res;
- 	unsigned long clk_hz;
- 	struct device_node *np = pdev->dev.of_node;
- 	int num_cs, i;
-@@ -368,8 +367,7 @@ static int npcm_pspi_probe(struct platform_device *pdev)
- 	priv->is_save_param = false;
- 	priv->id = pdev->id;
+ 	unsigned int i;
+ 	int err = -ENODEV;
  
+@@ -264,8 +263,7 @@ static int tiny_spi_probe(struct platform_device *pdev)
+ 	hw->bitbang.txrx_bufs = tiny_spi_txrx_bufs;
+ 
+ 	/* find and map our resources */
 -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	priv->base = devm_ioremap_resource(&pdev->dev, res);
-+	priv->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(priv->base)) {
- 		ret = PTR_ERR(priv->base);
- 		goto out_master_put;
+-	hw->base = devm_ioremap_resource(&pdev->dev, res);
++	hw->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(hw->base)) {
+ 		err = PTR_ERR(hw->base);
+ 		goto exit;
 -- 
 2.7.4

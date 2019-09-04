@@ -1,7 +1,7 @@
 From: YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next 25/36] spi: s3c24xx: use devm_platform_ioremap_resource() to simplify code
-Date: Wed, 4 Sep 2019 21:59:07 +0800
-Message-ID: <20190904135918.25352-26-yuehaibing@huawei.com>
+Subject: [PATCH -next 26/36] spi: sifive: use devm_platform_ioremap_resource() to simplify code
+Date: Wed, 4 Sep 2019 21:59:08 +0800
+Message-ID: <20190904135918.25352-27-yuehaibing@huawei.com>
 References: <20190904135918.25352-1-yuehaibing@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -40,30 +40,30 @@ This is detected by coccinelle.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/spi/spi-s3c24xx.c | 4 +---
+ drivers/spi/spi-sifive.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
-index aea8fd9..2d6e37f 100644
---- a/drivers/spi/spi-s3c24xx.c
-+++ b/drivers/spi/spi-s3c24xx.c
-@@ -487,7 +487,6 @@ static int s3c24xx_spi_probe(struct platform_device *pdev)
- 	struct s3c2410_spi_info *pdata;
- 	struct s3c24xx_spi *hw;
- 	struct spi_master *master;
+diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
+index 5bf2b57..35254bd 100644
+--- a/drivers/spi/spi-sifive.c
++++ b/drivers/spi/spi-sifive.c
+@@ -292,7 +292,6 @@ sifive_spi_transfer_one(struct spi_master *master, struct spi_device *device,
+ static int sifive_spi_probe(struct platform_device *pdev)
+ {
+ 	struct sifive_spi *spi;
 -	struct resource *res;
- 	int err = 0;
+ 	int ret, irq, num_cs;
+ 	u32 cs_bits, max_bits_per_word;
+ 	struct spi_master *master;
+@@ -307,8 +306,7 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 	init_completion(&spi->done);
+ 	platform_set_drvdata(pdev, master);
  
- 	master = spi_alloc_master(&pdev->dev, sizeof(struct s3c24xx_spi));
-@@ -536,8 +535,7 @@ static int s3c24xx_spi_probe(struct platform_device *pdev)
- 	dev_dbg(hw->dev, "bitbang at %p\n", &hw->bitbang);
- 
- 	/* find and map our resources */
 -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	hw->regs = devm_ioremap_resource(&pdev->dev, res);
-+	hw->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(hw->regs)) {
- 		err = PTR_ERR(hw->regs);
- 		goto err_no_pdata;
+-	spi->regs = devm_ioremap_resource(&pdev->dev, res);
++	spi->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(spi->regs)) {
+ 		ret = PTR_ERR(spi->regs);
+ 		goto put_master;
 -- 
 2.7.4

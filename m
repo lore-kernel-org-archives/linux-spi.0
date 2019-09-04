@@ -1,7 +1,7 @@
 From: YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next 14/36] spi: lp-8841: use devm_platform_ioremap_resource() to simplify code
-Date: Wed, 4 Sep 2019 21:58:56 +0800
-Message-ID: <20190904135918.25352-15-yuehaibing@huawei.com>
+Subject: [PATCH -next 15/36] spi: meson-spicc: use devm_platform_ioremap_resource() to simplify code
+Date: Wed, 4 Sep 2019 21:58:57 +0800
+Message-ID: <20190904135918.25352-16-yuehaibing@huawei.com>
 References: <20190904135918.25352-1-yuehaibing@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -40,30 +40,30 @@ This is detected by coccinelle.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/spi/spi-lp8841-rtc.c | 4 +---
+ drivers/spi/spi-meson-spicc.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-lp8841-rtc.c b/drivers/spi/spi-lp8841-rtc.c
-index f50779f..2d43654 100644
---- a/drivers/spi/spi-lp8841-rtc.c
-+++ b/drivers/spi/spi-lp8841-rtc.c
-@@ -185,7 +185,6 @@ spi_lp8841_rtc_probe(struct platform_device *pdev)
- 	int				ret;
- 	struct spi_master		*master;
- 	struct spi_lp8841_rtc		*data;
--	void				*iomem;
+diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
+index 7fe4488..f3f1044 100644
+--- a/drivers/spi/spi-meson-spicc.c
++++ b/drivers/spi/spi-meson-spicc.c
+@@ -503,7 +503,6 @@ static int meson_spicc_probe(struct platform_device *pdev)
+ {
+ 	struct spi_master *master;
+ 	struct meson_spicc_device *spicc;
+-	struct resource *res;
+ 	int ret, irq, rate;
  
- 	master = spi_alloc_master(&pdev->dev, sizeof(*data));
- 	if (!master)
-@@ -207,8 +206,7 @@ spi_lp8841_rtc_probe(struct platform_device *pdev)
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*spicc));
+@@ -517,8 +516,7 @@ static int meson_spicc_probe(struct platform_device *pdev)
+ 	spicc->pdev = pdev;
+ 	platform_set_drvdata(pdev, spicc);
  
- 	data = spi_master_get_devdata(master);
- 
--	iomem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	data->iomem = devm_ioremap_resource(&pdev->dev, iomem);
-+	data->iomem = devm_platform_ioremap_resource(pdev, 0);
- 	ret = PTR_ERR_OR_ZERO(data->iomem);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to get IO address\n");
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	spicc->base = devm_ioremap_resource(&pdev->dev, res);
++	spicc->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(spicc->base)) {
+ 		dev_err(&pdev->dev, "io resource mapping failed\n");
+ 		ret = PTR_ERR(spicc->base);
 -- 
 2.7.4

@@ -1,7 +1,7 @@
 From: YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next 28/36] spi: st-ssc4: use devm_platform_ioremap_resource() to simplify code
-Date: Wed, 4 Sep 2019 21:59:10 +0800
-Message-ID: <20190904135918.25352-29-yuehaibing@huawei.com>
+Subject: [PATCH -next 30/36] spi: sun6i: use devm_platform_ioremap_resource() to simplify code
+Date: Wed, 4 Sep 2019 21:59:12 +0800
+Message-ID: <20190904135918.25352-31-yuehaibing@huawei.com>
 References: <20190904135918.25352-1-yuehaibing@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -40,30 +40,30 @@ This is detected by coccinelle.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/spi/spi-st-ssc4.c | 4 +---
+ drivers/spi/spi-sun6i.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-st-ssc4.c b/drivers/spi/spi-st-ssc4.c
-index 840a6bf..0c24c49 100644
---- a/drivers/spi/spi-st-ssc4.c
-+++ b/drivers/spi/spi-st-ssc4.c
-@@ -298,7 +298,6 @@ static int spi_st_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index 1cf3051..ec7967b 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -435,7 +435,6 @@ static int sun6i_spi_probe(struct platform_device *pdev)
  {
- 	struct device_node *np = pdev->dev.of_node;
  	struct spi_master *master;
--	struct resource *res;
- 	struct spi_st *spi_st;
- 	int irq, ret = 0;
- 	u32 var;
-@@ -331,8 +330,7 @@ static int spi_st_probe(struct platform_device *pdev)
- 	init_completion(&spi_st->done);
+ 	struct sun6i_spi *sspi;
+-	struct resource	*res;
+ 	int ret = 0, irq;
  
- 	/* Get resources */
+ 	master = spi_alloc_master(&pdev->dev, sizeof(struct sun6i_spi));
+@@ -447,8 +446,7 @@ static int sun6i_spi_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, master);
+ 	sspi = spi_master_get_devdata(master);
+ 
 -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	spi_st->base = devm_ioremap_resource(&pdev->dev, res);
-+	spi_st->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(spi_st->base)) {
- 		ret = PTR_ERR(spi_st->base);
- 		goto clk_disable;
+-	sspi->base_addr = devm_ioremap_resource(&pdev->dev, res);
++	sspi->base_addr = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(sspi->base_addr)) {
+ 		ret = PTR_ERR(sspi->base_addr);
+ 		goto err_free_master;
 -- 
 2.7.4

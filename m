@@ -1,7 +1,7 @@
 From: YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next 21/36] spi: oc-tiny: use devm_platform_ioremap_resource() to simplify code
-Date: Wed, 4 Sep 2019 21:59:03 +0800
-Message-ID: <20190904135918.25352-22-yuehaibing@huawei.com>
+Subject: [PATCH -next 11/36] spi: coldfire-qspi: use devm_platform_ioremap_resource() to simplify code
+Date: Wed, 4 Sep 2019 21:58:53 +0800
+Message-ID: <20190904135918.25352-12-yuehaibing@huawei.com>
 References: <20190904135918.25352-1-yuehaibing@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -40,30 +40,30 @@ This is detected by coccinelle.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/spi/spi-oc-tiny.c | 4 +---
+ drivers/spi/spi-coldfire-qspi.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-oc-tiny.c b/drivers/spi/spi-oc-tiny.c
-index bbc4ba6..e2331eb 100644
---- a/drivers/spi/spi-oc-tiny.c
-+++ b/drivers/spi/spi-oc-tiny.c
-@@ -240,7 +240,6 @@ static int tiny_spi_probe(struct platform_device *pdev)
- 	struct tiny_spi_platform_data *platp = dev_get_platdata(&pdev->dev);
- 	struct tiny_spi *hw;
+diff --git a/drivers/spi/spi-coldfire-qspi.c b/drivers/spi/spi-coldfire-qspi.c
+index 5ff48ab..f80e06c 100644
+--- a/drivers/spi/spi-coldfire-qspi.c
++++ b/drivers/spi/spi-coldfire-qspi.c
+@@ -339,7 +339,6 @@ static int mcfqspi_probe(struct platform_device *pdev)
+ {
  	struct spi_master *master;
+ 	struct mcfqspi *mcfqspi;
 -	struct resource *res;
- 	unsigned int i;
- 	int err = -ENODEV;
+ 	struct mcfqspi_platform_data *pdata;
+ 	int status;
  
-@@ -264,8 +263,7 @@ static int tiny_spi_probe(struct platform_device *pdev)
- 	hw->bitbang.txrx_bufs = tiny_spi_txrx_bufs;
+@@ -362,8 +361,7 @@ static int mcfqspi_probe(struct platform_device *pdev)
  
- 	/* find and map our resources */
+ 	mcfqspi = spi_master_get_devdata(master);
+ 
 -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	hw->base = devm_ioremap_resource(&pdev->dev, res);
-+	hw->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(hw->base)) {
- 		err = PTR_ERR(hw->base);
- 		goto exit;
+-	mcfqspi->iobase = devm_ioremap_resource(&pdev->dev, res);
++	mcfqspi->iobase = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(mcfqspi->iobase)) {
+ 		status = PTR_ERR(mcfqspi->iobase);
+ 		goto fail0;
 -- 
 2.7.4

@@ -1,7 +1,7 @@
 From: YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next 34/36] spi: zynqmp: use devm_platform_ioremap_resource() to simplify code
-Date: Wed, 4 Sep 2019 21:59:16 +0800
-Message-ID: <20190904135918.25352-35-yuehaibing@huawei.com>
+Subject: [PATCH -next 35/36] spi: zynq-qspi: use devm_platform_ioremap_resource() to simplify code
+Date: Wed, 4 Sep 2019 21:59:17 +0800
+Message-ID: <20190904135918.25352-36-yuehaibing@huawei.com>
 References: <20190904135918.25352-1-yuehaibing@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -40,25 +40,25 @@ This is detected by coccinelle.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/spi/spi-zynqmp-gqspi.c | 4 +---
+ drivers/spi/spi-zynq-qspi.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index 5e9ea8a..60c4de4 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -1016,7 +1016,6 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 	int ret = 0;
- 	struct spi_master *master;
- 	struct zynqmp_qspi *xqspi;
--	struct resource *res;
+diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
+index 4a5326c..5cf6993 100644
+--- a/drivers/spi/spi-zynq-qspi.c
++++ b/drivers/spi/spi-zynq-qspi.c
+@@ -620,7 +620,6 @@ static int zynq_qspi_probe(struct platform_device *pdev)
  	struct device *dev = &pdev->dev;
+ 	struct device_node *np = dev->of_node;
+ 	struct zynq_qspi *xqspi;
+-	struct resource *res;
+ 	u32 num_cs;
  
- 	eemi_ops = zynqmp_pm_get_eemi_ops();
-@@ -1031,8 +1030,7 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 	master->dev.of_node = pdev->dev.of_node;
- 	platform_set_drvdata(pdev, master);
- 
+ 	ctlr = spi_alloc_master(&pdev->dev, sizeof(*xqspi));
+@@ -630,8 +629,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
+ 	xqspi = spi_controller_get_devdata(ctlr);
+ 	xqspi->dev = dev;
+ 	platform_set_drvdata(pdev, xqspi);
 -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 -	xqspi->regs = devm_ioremap_resource(&pdev->dev, res);
 +	xqspi->regs = devm_platform_ioremap_resource(pdev, 0);

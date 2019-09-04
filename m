@@ -1,7 +1,7 @@
 From: YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next 18/36] spi: mxs: use devm_platform_ioremap_resource() to simplify code
-Date: Wed, 4 Sep 2019 21:59:00 +0800
-Message-ID: <20190904135918.25352-19-yuehaibing@huawei.com>
+Subject: [PATCH -next 20/36] spi: nuc900: use devm_platform_ioremap_resource() to simplify code
+Date: Wed, 4 Sep 2019 21:59:02 +0800
+Message-ID: <20190904135918.25352-21-yuehaibing@huawei.com>
 References: <20190904135918.25352-1-yuehaibing@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -40,34 +40,30 @@ This is detected by coccinelle.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/spi/spi-mxs.c | 4 +---
+ drivers/spi/spi-nuc900.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-index 7bf53cf..996c1c8 100644
---- a/drivers/spi/spi-mxs.c
-+++ b/drivers/spi/spi-mxs.c
-@@ -532,7 +532,6 @@ static int mxs_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-nuc900.c b/drivers/spi/spi-nuc900.c
+index f65a029e..6140035 100644
+--- a/drivers/spi/spi-nuc900.c
++++ b/drivers/spi/spi-nuc900.c
+@@ -327,7 +327,6 @@ static int nuc900_spi_probe(struct platform_device *pdev)
+ {
+ 	struct nuc900_spi *hw;
  	struct spi_master *master;
- 	struct mxs_spi *spi;
- 	struct mxs_ssp *ssp;
--	struct resource *iores;
- 	struct clk *clk;
- 	void __iomem *base;
- 	int devid, clk_freq;
-@@ -545,12 +544,11 @@ static int mxs_spi_probe(struct platform_device *pdev)
- 	 */
- 	const int clk_freq_default = 160000000;
+-	struct resource *res;
+ 	int err = 0;
  
--	iores = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	irq_err = platform_get_irq(pdev, 0);
- 	if (irq_err < 0)
- 		return irq_err;
+ 	master = spi_alloc_master(&pdev->dev, sizeof(struct nuc900_spi));
+@@ -358,8 +357,7 @@ static int nuc900_spi_probe(struct platform_device *pdev)
+ 	hw->bitbang.chipselect     = nuc900_spi_chipsel;
+ 	hw->bitbang.txrx_bufs      = nuc900_spi_txrx;
  
--	base = devm_ioremap_resource(&pdev->dev, iores);
-+	base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(base))
- 		return PTR_ERR(base);
- 
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	hw->regs = devm_ioremap_resource(&pdev->dev, res);
++	hw->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(hw->regs)) {
+ 		err = PTR_ERR(hw->regs);
+ 		goto err_pdata;
 -- 
 2.7.4

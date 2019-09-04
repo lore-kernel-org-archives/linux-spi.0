@@ -1,7 +1,7 @@
 From: YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next 07/36] spi: bcm63xx-hsspi: use devm_platform_ioremap_resource() to simplify code
-Date: Wed, 4 Sep 2019 21:58:49 +0800
-Message-ID: <20190904135918.25352-8-yuehaibing@huawei.com>
+Subject: [PATCH -next 06/36] spi: bcm2835: use devm_platform_ioremap_resource() to simplify code
+Date: Wed, 4 Sep 2019 21:58:48 +0800
+Message-ID: <20190904135918.25352-7-yuehaibing@huawei.com>
 References: <20190904135918.25352-1-yuehaibing@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -40,30 +40,30 @@ This is detected by coccinelle.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/spi/spi-bcm63xx-hsspi.c | 4 +---
+ drivers/spi/spi-bcm2835.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-index 373cb53..c6836a9 100644
---- a/drivers/spi/spi-bcm63xx-hsspi.c
-+++ b/drivers/spi/spi-bcm63xx-hsspi.c
-@@ -330,7 +330,6 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index fd2bfb4..fbd6d1a 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -1001,7 +1001,6 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
  {
- 	struct spi_master *master;
- 	struct bcm63xx_hsspi *bs;
--	struct resource *res_mem;
- 	void __iomem *regs;
- 	struct device *dev = &pdev->dev;
- 	struct clk *clk, *pll_clk = NULL;
-@@ -341,8 +340,7 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
- 	if (irq < 0)
- 		return irq;
+ 	struct spi_controller *ctlr;
+ 	struct bcm2835_spi *bs;
+-	struct resource *res;
+ 	int err;
  
--	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	regs = devm_ioremap_resource(dev, res_mem);
-+	regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(regs))
- 		return PTR_ERR(regs);
+ 	ctlr = spi_alloc_master(&pdev->dev, sizeof(*bs));
+@@ -1022,8 +1021,7 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
  
+ 	bs = spi_controller_get_devdata(ctlr);
+ 
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	bs->regs = devm_ioremap_resource(&pdev->dev, res);
++	bs->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(bs->regs)) {
+ 		err = PTR_ERR(bs->regs);
+ 		goto out_controller_put;
 -- 
 2.7.4

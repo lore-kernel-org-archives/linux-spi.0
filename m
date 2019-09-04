@@ -1,115 +1,70 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH -next 25/36] spi: s3c24xx: use
+From: Bjorn Andersson <bjorn.andersson@linaro.org>
+Subject: Re: [PATCH -next 13/36] spi: spi-geni-qcom: use
  devm_platform_ioremap_resource() to simplify code
-Date: Wed, 4 Sep 2019 17:13:48 +0100
-Message-ID: <20190904161348.GE4348@sirena.co.uk>
+Date: Wed, 4 Sep 2019 13:44:33 -0700
+Message-ID: <20190904204433.GE580@tuxbook-pro>
 References: <20190904135918.25352-1-yuehaibing@huawei.com>
- <20190904135918.25352-26-yuehaibing@huawei.com>
- <CAJKOXPdq4as1Oe3U+9znkvP0RA=sxUoiWVBCSbzf_wq_um2t=w@mail.gmail.com>
- <20190904143928.GB4348@sirena.co.uk>
- <CAJKOXPeRtbAvmR-=8Qa8ukGXt-cCj3ud_7y1Z4LgRpX3YCeumg@mail.gmail.com>
+ <20190904135918.25352-14-yuehaibing@huawei.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3310340839892836204=="
-Cc: tmaimon77@gmail.com, palmer@sifive.com, tali.perry1@gmail.com,
- eric@anholt.net, ldewangan@nvidia.com, linux-riscv@lists.infradead.org,
- festevam@gmail.com, f.fainelli@gmail.com, benjaminfair@google.com,
- shc_work@mail.ru, khilman@baylibre.com, openbmc@lists.ozlabs.org,
- YueHaibing <yuehaibing@huawei.com>, michal.simek@xilinx.com,
- jonathanh@nvidia.com, yuenn@google.com, wens@csie.org, agross@kernel.org,
- bcm-kernel-feedback-list@broadcom.com, linux-imx@nxp.com,
- linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
- Andi Shyti <andi@etezian.org>, rjui@broadcom.com, s.hauer@pengutronix.de,
- mripard@kernel.org,
- "linux-samsung-soc@vger.kernel.org" <linux-samsung-soc@vger.kernel.org>,
- linux-mediatek@lists.infradead.org, linux-rpi-kernel@lists.infradead.org,
- paul.walmsley@sifive.com, matthias.bgg@gmail.com,
- linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <CAJKOXPeRtbAvmR-=8Qa8ukGXt-cCj3ud_7y1Z4LgRpX3YCeumg@mail.gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=us-ascii
+Cc: broonie@kernel.org, f.fainelli@gmail.com, rjui@broadcom.com,
+        sbranden@broadcom.com, eric@anholt.net, wahrenst@gmx.net,
+        shc_work@mail.ru, agross@kernel.org, khilman@baylibre.com,
+        matthias.bgg@gmail.com, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+        linux-imx@nxp.com, avifishman70@gmail.com, tmaimon77@gmail.com,
+        tali.perry1@gmail.com, venture@google.com, yuenn@google.com,
+        benjaminfair@google.com, kgene@kernel.org, krzk@kernel.org,
+        andi@etezian.org, palmer@sifive.com, paul.walmsley@sifive.com,
+        baohua@kernel.org, mripard@kernel.org, wens@csie.org,
+        ldewangan@nvidia.com, thierry.reding@gmail.com,
+        jonathanh@nvidia.com, yamada.masahiro@socionext.com,
+        michal.simek@xilinx.com, bcm-kernel-feedback-list@broadcom.com,
+        linux-spi@vger.kernel.org, linux-ke
+To: YueHaibing <yuehaibing@huawei.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20190904135918.25352-14-yuehaibing@huawei.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Wed 04 Sep 06:58 PDT 2019, YueHaibing wrote:
 
---===============3310340839892836204==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="N1GIdlSm9i+YlY4t"
-Content-Disposition: inline
+> Use devm_platform_ioremap_resource() to simplify the code a bit.
+> This is detected by coccinelle.
+> 
 
+Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
 
---N1GIdlSm9i+YlY4t
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Wed, Sep 04, 2019 at 05:09:45PM +0200, Krzysztof Kozlowski wrote:
-> On Wed, 4 Sep 2019 at 16:39, Mark Brown <broonie@kernel.org> wrote:
-
-> > I think it's reasonable, it's giving credit to the automated system
-> > they've got running coccinelle (which they do mention in their commit
-> > logs).  It doesn't really hurt anyone and lets people see their system
-> > is finding stuff.
-
-> Running internally coccinelle is already credited with commit author.
-> The credits are coming with "From:" field.
-
-I guess if other people look at the same CI and send patches as well
-then there's some use tying them all together.
-
-> Otherwise for commits I send I could use:
->   From: krzk
->   ...
->   Reported-by: www.krzk.eu
->   Signed-off-by: krzk
-> To me it is ridiculous.
-
-Sure, on the other hand it doesn't really cost anyone anything if you do
-that.
-
-> Different thing is that Reported-by is for fixing bugs or issues.
-> There is no bug here. There is no problem solved except making the
-> code smaller. That's not what is Reported-by for.
-
-That is true, this one isn't fixing any bug but then the line does get a
-bit fuzzy all round with things like warnings and coccinelle output -
-even just having the warning pop up is noise for people looking at the
-output even if there's no concrete problem.  Again I don't see it as
-something that's worth getting worked up over.
-
---N1GIdlSm9i+YlY4t
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1v4rsACgkQJNaLcl1U
-h9ADfQf/V7pUFkik9p4ok45W4iQXJ+1Wee9ghMi2ut+nuRzX8NRSwWYnFgK3w119
-nf1YXfJsWCcs9af+DjcSoEyJWq/wegSyF/egvEd36QdqtaJJbMs/J5Kl+TEcglDA
-uRJW6F/zevMcwamDE2I6UqdQjTIa2R8QG2S9yaw36Hd2b0k38lLq2Z1knHnQNbX7
-6mFEqyt+sTaFjsBtlkgeUiTkMp36WsnTY7oRzGr/RKAd9ByHDmQKtPTuJl4eQTx6
-zzkUK0PzNpBPqNyILAt7MYr01EyZfO3gjxnRNIH8yKl+80mkhiV2Td6DJehCuNqE
-F30QD0NUhsOuqyDT26hqXFcIWtym6A==
-=GPj9
------END PGP SIGNATURE-----
-
---N1GIdlSm9i+YlY4t--
-
-
---===============3310340839892836204==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
---===============3310340839892836204==--
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> ---
+>  drivers/spi/spi-geni-qcom.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+> index 242b6c8..6f3d64a 100644
+> --- a/drivers/spi/spi-geni-qcom.c
+> +++ b/drivers/spi/spi-geni-qcom.c
+> @@ -534,7 +534,6 @@ static int spi_geni_probe(struct platform_device *pdev)
+>  	int ret, irq;
+>  	struct spi_master *spi;
+>  	struct spi_geni_master *mas;
+> -	struct resource *res;
+>  	void __iomem *base;
+>  	struct clk *clk;
+>  
+> @@ -542,8 +541,7 @@ static int spi_geni_probe(struct platform_device *pdev)
+>  	if (irq < 0)
+>  		return irq;
+>  
+> -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -	base = devm_ioremap_resource(&pdev->dev, res);
+> +	base = devm_platform_ioremap_resource(pdev, 0);
+>  	if (IS_ERR(base))
+>  		return PTR_ERR(base);
+>  
+> -- 
+> 2.7.4
+> 
+> 

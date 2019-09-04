@@ -1,7 +1,7 @@
 From: YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next 13/36] spi: spi-geni-qcom: use devm_platform_ioremap_resource() to simplify code
-Date: Wed, 4 Sep 2019 21:58:55 +0800
-Message-ID: <20190904135918.25352-14-yuehaibing@huawei.com>
+Subject: [PATCH -next 10/36] spi: clps711x: use devm_platform_ioremap_resource() to simplify code
+Date: Wed, 4 Sep 2019 21:58:52 +0800
+Message-ID: <20190904135918.25352-11-yuehaibing@huawei.com>
 References: <20190904135918.25352-1-yuehaibing@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -40,30 +40,30 @@ This is detected by coccinelle.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/spi/spi-geni-qcom.c | 4 +---
+ drivers/spi/spi-clps711x.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index 242b6c8..6f3d64a 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -534,7 +534,6 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	int ret, irq;
- 	struct spi_master *spi;
- 	struct spi_geni_master *mas;
+diff --git a/drivers/spi/spi-clps711x.c b/drivers/spi/spi-clps711x.c
+index 4daba12..5e900f2 100644
+--- a/drivers/spi/spi-clps711x.c
++++ b/drivers/spi/spi-clps711x.c
+@@ -91,7 +91,6 @@ static int spi_clps711x_probe(struct platform_device *pdev)
+ {
+ 	struct spi_clps711x_data *hw;
+ 	struct spi_master *master;
 -	struct resource *res;
- 	void __iomem *base;
- 	struct clk *clk;
+ 	int irq, ret;
  
-@@ -542,8 +541,7 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	if (irq < 0)
- 		return irq;
+ 	irq = platform_get_irq(pdev, 0);
+@@ -125,8 +124,7 @@ static int spi_clps711x_probe(struct platform_device *pdev)
+ 		goto err_out;
+ 	}
  
 -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	base = devm_ioremap_resource(&pdev->dev, res);
-+	base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(base))
- 		return PTR_ERR(base);
- 
+-	hw->syncio = devm_ioremap_resource(&pdev->dev, res);
++	hw->syncio = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(hw->syncio)) {
+ 		ret = PTR_ERR(hw->syncio);
+ 		goto err_out;
 -- 
 2.7.4

@@ -1,7 +1,7 @@
 From: YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next 04/36] spi: spi-axi: use devm_platform_ioremap_resource() to simplify code
-Date: Wed, 4 Sep 2019 21:58:46 +0800
-Message-ID: <20190904135918.25352-5-yuehaibing@huawei.com>
+Subject: [PATCH -next 05/36] spi: bcm2835aux: use devm_platform_ioremap_resource() to simplify code
+Date: Wed, 4 Sep 2019 21:58:47 +0800
+Message-ID: <20190904135918.25352-6-yuehaibing@huawei.com>
 References: <20190904135918.25352-1-yuehaibing@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -40,30 +40,30 @@ This is detected by coccinelle.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/spi/spi-axi-spi-engine.c | 4 +---
+ drivers/spi/spi-bcm2835aux.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
-index 3b1833e..74842f6 100644
---- a/drivers/spi/spi-axi-spi-engine.c
-+++ b/drivers/spi/spi-axi-spi-engine.c
-@@ -460,7 +460,6 @@ static int spi_engine_probe(struct platform_device *pdev)
- 	struct spi_engine *spi_engine;
+diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+index b18ce69..a2162ff 100644
+--- a/drivers/spi/spi-bcm2835aux.c
++++ b/drivers/spi/spi-bcm2835aux.c
+@@ -491,7 +491,6 @@ static int bcm2835aux_spi_probe(struct platform_device *pdev)
+ {
  	struct spi_master *master;
- 	unsigned int version;
+ 	struct bcm2835aux_spi *bs;
 -	struct resource *res;
- 	int irq;
- 	int ret;
+ 	unsigned long clk_hz;
+ 	int err;
  
-@@ -480,8 +479,7 @@ static int spi_engine_probe(struct platform_device *pdev)
+@@ -524,8 +523,7 @@ static int bcm2835aux_spi_probe(struct platform_device *pdev)
+ 	bs = spi_master_get_devdata(master);
  
- 	spin_lock_init(&spi_engine->lock);
- 
+ 	/* the main area */
 -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	spi_engine->base = devm_ioremap_resource(&pdev->dev, res);
-+	spi_engine->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(spi_engine->base)) {
- 		ret = PTR_ERR(spi_engine->base);
- 		goto err_put_master;
+-	bs->regs = devm_ioremap_resource(&pdev->dev, res);
++	bs->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(bs->regs)) {
+ 		err = PTR_ERR(bs->regs);
+ 		goto out_master_put;
 -- 
 2.7.4

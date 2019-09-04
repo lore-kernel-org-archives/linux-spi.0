@@ -1,10 +1,10 @@
 From: Neil Armstrong <narmstrong@baylibre.com>
-Subject: Re: [PATCH -next 15/36] spi: meson-spicc: use
+Subject: Re: [PATCH -next 16/36] spi: spi-meson-spifc: use
  devm_platform_ioremap_resource() to simplify code
-Date: Wed, 4 Sep 2019 16:13:41 +0200
-Message-ID: <231852cf-274a-797c-1c01-c7264629a915@baylibre.com>
+Date: Wed, 4 Sep 2019 16:14:12 +0200
+Message-ID: <f4afcae3-8796-2ce4-0377-918536d5bf3e@baylibre.com>
 References: <20190904135918.25352-1-yuehaibing@huawei.com>
- <20190904135918.25352-16-yuehaibing@huawei.com>
+ <20190904135918.25352-17-yuehaibing@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
@@ -29,7 +29,7 @@ To: YueHaibing <yuehaibing@huawei.com>, broonie@kernel.org,
         jonathanh@nvidia.com, yamada.masahiro@socionext.com,
         michal.simek@xilinx.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190904135918.25352-16-yuehaibing@huawei.com>
+In-Reply-To: <20190904135918.25352-17-yuehaibing@huawei.com>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
@@ -41,31 +41,31 @@ On 04/09/2019 15:58, YueHaibing wrote:
 > Reported-by: Hulk Robot <hulkci@huawei.com>
 > Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 > ---
->  drivers/spi/spi-meson-spicc.c | 4 +---
+>  drivers/spi/spi-meson-spifc.c | 4 +---
 >  1 file changed, 1 insertion(+), 3 deletions(-)
 > 
-> diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
-> index 7fe4488..f3f1044 100644
-> --- a/drivers/spi/spi-meson-spicc.c
-> +++ b/drivers/spi/spi-meson-spicc.c
-> @@ -503,7 +503,6 @@ static int meson_spicc_probe(struct platform_device *pdev)
+> diff --git a/drivers/spi/spi-meson-spifc.c b/drivers/spi/spi-meson-spifc.c
+> index f7fe9b1..c7b0399 100644
+> --- a/drivers/spi/spi-meson-spifc.c
+> +++ b/drivers/spi/spi-meson-spifc.c
+> @@ -286,7 +286,6 @@ static int meson_spifc_probe(struct platform_device *pdev)
 >  {
 >  	struct spi_master *master;
->  	struct meson_spicc_device *spicc;
+>  	struct meson_spifc *spifc;
 > -	struct resource *res;
->  	int ret, irq, rate;
->  
->  	master = spi_alloc_master(&pdev->dev, sizeof(*spicc));
-> @@ -517,8 +516,7 @@ static int meson_spicc_probe(struct platform_device *pdev)
->  	spicc->pdev = pdev;
->  	platform_set_drvdata(pdev, spicc);
+>  	void __iomem *base;
+>  	unsigned int rate;
+>  	int ret = 0;
+> @@ -300,8 +299,7 @@ static int meson_spifc_probe(struct platform_device *pdev)
+>  	spifc = spi_master_get_devdata(master);
+>  	spifc->dev = &pdev->dev;
 >  
 > -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -	spicc->base = devm_ioremap_resource(&pdev->dev, res);
-> +	spicc->base = devm_platform_ioremap_resource(pdev, 0);
->  	if (IS_ERR(spicc->base)) {
->  		dev_err(&pdev->dev, "io resource mapping failed\n");
->  		ret = PTR_ERR(spicc->base);
+> -	base = devm_ioremap_resource(spifc->dev, res);
+> +	base = devm_platform_ioremap_resource(pdev, 0);
+>  	if (IS_ERR(base)) {
+>  		ret = PTR_ERR(base);
+>  		goto out_err;
 > 
 
-Acked-by: Neil Armstrong <narmstrong@baylibre.com>
+Reviewed-by: Neil Armstrong <narmstrong@baylibre.com>

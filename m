@@ -1,7 +1,7 @@
 From: YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next 33/36] spi: xlp: use devm_platform_ioremap_resource() to simplify code
-Date: Wed, 4 Sep 2019 21:59:15 +0800
-Message-ID: <20190904135918.25352-34-yuehaibing@huawei.com>
+Subject: [PATCH -next 36/36] spi: fsl-spi: use devm_platform_ioremap_resource() to simplify code
+Date: Wed, 4 Sep 2019 21:59:18 +0800
+Message-ID: <20190904135918.25352-37-yuehaibing@huawei.com>
 References: <20190904135918.25352-1-yuehaibing@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -40,30 +40,27 @@ This is detected by coccinelle.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/spi/spi-xlp.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/spi/spi-fsl-cpm.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-xlp.c b/drivers/spi/spi-xlp.c
-index 4eb5bc9..797ac0e 100644
---- a/drivers/spi/spi-xlp.c
-+++ b/drivers/spi/spi-xlp.c
-@@ -370,7 +370,6 @@ static int xlp_spi_probe(struct platform_device *pdev)
- {
- 	struct spi_master *master;
- 	struct xlp_spi_priv *xspi;
--	struct resource *res;
- 	struct clk *clk;
- 	int irq, err;
+diff --git a/drivers/spi/spi-fsl-cpm.c b/drivers/spi/spi-fsl-cpm.c
+index e967ac5..858f054 100644
+--- a/drivers/spi/spi-fsl-cpm.c
++++ b/drivers/spi/spi-fsl-cpm.c
+@@ -305,12 +305,10 @@ int fsl_spi_cpm_init(struct mpc8xxx_spi *mspi)
+ 	}
  
-@@ -378,8 +377,7 @@ static int xlp_spi_probe(struct platform_device *pdev)
- 	if (!xspi)
- 		return -ENOMEM;
+ 	if (mspi->flags & SPI_CPM1) {
+-		struct resource *res;
+ 		void *pram;
  
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	xspi->base = devm_ioremap_resource(&pdev->dev, res);
-+	xspi->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(xspi->base))
- 		return PTR_ERR(xspi->base);
- 
+-		res = platform_get_resource(to_platform_device(dev),
+-					    IORESOURCE_MEM, 1);
+-		pram = devm_ioremap_resource(dev, res);
++		pram = devm_platform_ioremap_resource(to_platform_device(dev),
++						      1);
+ 		if (IS_ERR(pram))
+ 			mspi->pram = NULL;
+ 		else
 -- 
 2.7.4

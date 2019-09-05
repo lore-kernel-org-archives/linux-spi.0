@@ -1,125 +1,74 @@
-From: Vladimir Oltean <olteanv@gmail.com>
-Subject: [PATCH v2 3/4] spi: spi-fsl-dspi: Implement the PTP system timestamping for TCFQ mode
-Date: Thu,  5 Sep 2019 04:01:13 +0300
-Message-ID: <20190905010114.26718-4-olteanv@gmail.com>
-References: <20190905010114.26718-1-olteanv@gmail.com>
-Cc: linux-spi@vger.kernel.org, netdev@vger.kernel.org,
-        Vladimir Oltean <olteanv@gmail.com>
-To: broonie@kernel.org, h.feurstein@gmail.com, mlichvar@redhat.com,
-        richardcochran@gmail.com, andrew@lunn.ch, f.fainelli@gmail.com
-Return-path: <netdev-owner@vger.kernel.org>
-In-Reply-To: <20190905010114.26718-1-olteanv@gmail.com>
-Sender: netdev-owner@vger.kernel.org
+From: Michal Simek <michal.simek@xilinx.com>
+Subject: Re: [PATCH -next 35/36] spi: zynq-qspi: use
+ devm_platform_ioremap_resource() to simplify code
+Date: Thu, 5 Sep 2019 07:19:56 +0200
+Message-ID: <fbd385ec-f24d-7628-5f63-03f4444976aa@xilinx.com>
+References: <20190904135918.25352-1-yuehaibing@huawei.com>
+ <20190904135918.25352-36-yuehaibing@huawei.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: bcm-kernel-feedback-list@broadcom.com, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, openbmc@lists.ozlabs.org,
+        linux-samsung-soc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-tegra@vger.kernel.org
+To: YueHaibing <yuehaibing@huawei.com>, broonie@kernel.org,
+        f.fainelli@gmail.com, rjui@broadcom.com, sbranden@broadcom.com,
+        eric@anholt.net, wahrenst@gmx.net, shc_work@mail.ru,
+        agross@kernel.org, khilman@baylibre.com, matthias.bgg@gmail.com,
+        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+        festevam@gmail.com, linux-imx@nxp.com, avifishman70@gmail.com,
+        tmaimon77@gmail.com, tali.perry1@gmail.com, venture@google.com,
+        yuenn@google.com, benjaminfair@google.com, kgene@kernel.org,
+        krzk@kernel.org, andi@etezian.org, palmer@sifive.com,
+        paul.walmsley@sifive.com, baohua@kernel.org, mripard@kernel.org,
+        wens@csie.org, ldewangan@nvidia.com, thierry.reding@gmail.com,
+        jonathanh@nvidia.com, yamada.masahiro@socionext.com,
+        michal.simek@xilinx.com
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190904135918.25352-36-yuehaibing@huawei.com>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-In this mode, the DSPI controller uses PIO to transfer word by word. In
-comparison, in EOQ mode the 4-word deep FIFO is being used, hence the
-current logic will need some adaptation for which I do not have the
-hardware (Coldfire) to test. It is not clear what is the timing of DMA
-transfers and whether timestamping in the driver brings any overall
-performance increase compared to regular timestamping done in the core.
+On 04. 09. 19 15:59, YueHaibing wrote:
+> Use devm_platform_ioremap_resource() to simplify the code a bit.
+> This is detected by coccinelle.
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> ---
+>  drivers/spi/spi-zynq-qspi.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
+> index 4a5326c..5cf6993 100644
+> --- a/drivers/spi/spi-zynq-qspi.c
+> +++ b/drivers/spi/spi-zynq-qspi.c
+> @@ -620,7 +620,6 @@ static int zynq_qspi_probe(struct platform_device *pdev)
+>  	struct device *dev = &pdev->dev;
+>  	struct device_node *np = dev->of_node;
+>  	struct zynq_qspi *xqspi;
+> -	struct resource *res;
+>  	u32 num_cs;
+>  
+>  	ctlr = spi_alloc_master(&pdev->dev, sizeof(*xqspi));
+> @@ -630,8 +629,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
+>  	xqspi = spi_controller_get_devdata(ctlr);
+>  	xqspi->dev = dev;
+>  	platform_set_drvdata(pdev, xqspi);
+> -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -	xqspi->regs = devm_ioremap_resource(&pdev->dev, res);
+> +	xqspi->regs = devm_platform_ioremap_resource(pdev, 0);
+>  	if (IS_ERR(xqspi->regs)) {
+>  		ret = PTR_ERR(xqspi->regs);
+>  		goto remove_master;
+> 
 
-Short phc2sys summary after 58 minutes of running on LS1021A-TSN with
-interrupts disabled during the critical section:
+Acked-by: Michal Simek <michal.simek@xilinx.com>
 
-  offset: min -26251 max 16416 mean -21.8672 std dev 863.416
-  delay: min 4720 max 57280 mean 5182.49 std dev 1607.19
-  lost servo lock 3 times
-
-Summary of the same phc2sys service running for 120 minutes with
-interrupts disabled:
-
-  offset: min -378 max 381 mean -0.0083089 std dev 101.495
-  delay: min 4720 max 5920 mean 5129.38 std dev 154.899
-  lost servo lock 0 times
-
-The minimum delay (pre to post time) in nanoseconds is the same, but the
-maximum delay is quite a bit higher, due to interrupts getting sometimes
-executed and interfering with the measurement. Hence set disable_irqs
-whenever possible (aka when the driver runs in poll mode - otherwise it
-would be a contradiction in terms).
-
-Signed-off-by: Vladimir Oltean <olteanv@gmail.com>
----
-Changes in v2:
-- Adapted to the newly introduced SPI core API from 02/04.
-
- drivers/spi/spi-fsl-dspi.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index bec758e978fb..7caea2da4397 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -129,6 +129,7 @@ enum dspi_trans_mode {
- struct fsl_dspi_devtype_data {
- 	enum dspi_trans_mode	trans_mode;
- 	u8			max_clock_factor;
-+	bool			ptp_sts_supported;
- 	bool			xspi_mode;
- };
- 
-@@ -140,12 +141,14 @@ static const struct fsl_dspi_devtype_data vf610_data = {
- static const struct fsl_dspi_devtype_data ls1021a_v1_data = {
- 	.trans_mode		= DSPI_TCFQ_MODE,
- 	.max_clock_factor	= 8,
-+	.ptp_sts_supported	= true,
- 	.xspi_mode		= true,
- };
- 
- static const struct fsl_dspi_devtype_data ls2085a_data = {
- 	.trans_mode		= DSPI_TCFQ_MODE,
- 	.max_clock_factor	= 8,
-+	.ptp_sts_supported	= true,
- };
- 
- static const struct fsl_dspi_devtype_data coldfire_data = {
-@@ -654,6 +657,9 @@ static int dspi_rxtx(struct fsl_dspi *dspi)
- 	u16 spi_tcnt;
- 	u32 spi_tcr;
- 
-+	spi_take_timestamp_post(dspi->ctlr, dspi->cur_transfer,
-+				dspi->tx - dspi->bytes_per_word, !dspi->irq);
-+
- 	/* Get transfer counter (in number of SPI transfers). It was
- 	 * reset to 0 when transfer(s) were started.
- 	 */
-@@ -672,6 +678,9 @@ static int dspi_rxtx(struct fsl_dspi *dspi)
- 		/* Success! */
- 		return 0;
- 
-+	spi_take_timestamp_pre(dspi->ctlr, dspi->cur_transfer,
-+			       dspi->tx, !dspi->irq);
-+
- 	if (trans_mode == DSPI_EOQ_MODE)
- 		dspi_eoq_write(dspi);
- 	else if (trans_mode == DSPI_TCFQ_MODE)
-@@ -779,6 +788,9 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 				     SPI_FRAME_EBITS(transfer->bits_per_word) |
- 				     SPI_CTARE_DTCP(1));
- 
-+		spi_take_timestamp_pre(dspi->ctlr, dspi->cur_transfer,
-+				       dspi->tx, !dspi->irq);
-+
- 		trans_mode = dspi->devtype_data->trans_mode;
- 		switch (trans_mode) {
- 		case DSPI_EOQ_MODE:
-@@ -1132,6 +1144,7 @@ static int dspi_probe(struct platform_device *pdev)
- 	init_waitqueue_head(&dspi->waitq);
- 
- poll_mode:
-+
- 	if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
- 		ret = dspi_request_dma(dspi, res->start);
- 		if (ret < 0) {
-@@ -1143,6 +1156,8 @@ static int dspi_probe(struct platform_device *pdev)
- 	ctlr->max_speed_hz =
- 		clk_get_rate(dspi->clk) / dspi->devtype_data->max_clock_factor;
- 
-+	ctlr->ptp_sts_supported = dspi->devtype_data->ptp_sts_supported;
-+
- 	platform_set_drvdata(pdev, ctlr);
- 
- 	ret = spi_register_controller(ctlr);
--- 
-2.17.1
+Thanks,
+Michal

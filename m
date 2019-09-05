@@ -1,74 +1,49 @@
-From: Michal Simek <michal.simek@xilinx.com>
-Subject: Re: [PATCH -next 34/36] spi: zynqmp: use
- devm_platform_ioremap_resource() to simplify code
-Date: Thu, 5 Sep 2019 07:19:47 +0200
-Message-ID: <f267daf8-3351-a90a-35ea-94e1d8c20583@xilinx.com>
-References: <20190904135918.25352-1-yuehaibing@huawei.com>
- <20190904135918.25352-35-yuehaibing@huawei.com>
+From: YueHaibing <yuehaibing@huawei.com>
+Subject: [PATCH -next] spi: npcm-fiu: remove set but not used variable 'retlen'
+Date: Thu, 5 Sep 2019 15:24:36 +0800
+Message-ID: <20190905072436.23932-1-yuehaibing@huawei.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: bcm-kernel-feedback-list@broadcom.com, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, openbmc@lists.ozlabs.org,
-        linux-samsung-soc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-tegra@vger.kernel.org
-To: YueHaibing <yuehaibing@huawei.com>, broonie@kernel.org,
-        f.fainelli@gmail.com, rjui@broadcom.com, sbranden@broadcom.com,
-        eric@anholt.net, wahrenst@gmx.net, shc_work@mail.ru,
-        agross@kernel.org, khilman@baylibre.com, matthias.bgg@gmail.com,
-        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-        festevam@gmail.com, linux-imx@nxp.com, avifishman70@gmail.com,
-        tmaimon77@gmail.com, tali.perry1@gmail.com, venture@google.com,
-        yuenn@google.com, benjaminfair@google.com, kgene@kernel.org,
-        krzk@kernel.org, andi@etezian.org, palmer@sifive.com,
-        paul.walmsley@sifive.com, baohua@kernel.org, mripard@kernel.org,
-        wens@csie.org, ldewangan@nvidia.com, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, yamada.masahiro@socionext.com,
-        michal.simek@xilinx.com
+Content-Type: text/plain
+Cc: <openbmc@lists.ozlabs.org>, <linux-spi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
+To: <avifishman70@gmail.com>, <tmaimon77@gmail.com>,
+        <tali.perry1@gmail.com>, <venture@google.com>, <yuenn@google.com>,
+        <benjaminfair@google.com>, <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190904135918.25352-35-yuehaibing@huawei.com>
-Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 04. 09. 19 15:59, YueHaibing wrote:
-> Use devm_platform_ioremap_resource() to simplify the code a bit.
-> This is detected by coccinelle.
-> 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-> ---
->  drivers/spi/spi-zynqmp-gqspi.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-> index 5e9ea8a..60c4de4 100644
-> --- a/drivers/spi/spi-zynqmp-gqspi.c
-> +++ b/drivers/spi/spi-zynqmp-gqspi.c
-> @@ -1016,7 +1016,6 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
->  	int ret = 0;
->  	struct spi_master *master;
->  	struct zynqmp_qspi *xqspi;
-> -	struct resource *res;
->  	struct device *dev = &pdev->dev;
->  
->  	eemi_ops = zynqmp_pm_get_eemi_ops();
-> @@ -1031,8 +1030,7 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
->  	master->dev.of_node = pdev->dev.of_node;
->  	platform_set_drvdata(pdev, master);
->  
-> -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -	xqspi->regs = devm_ioremap_resource(&pdev->dev, res);
-> +	xqspi->regs = devm_platform_ioremap_resource(pdev, 0);
->  	if (IS_ERR(xqspi->regs)) {
->  		ret = PTR_ERR(xqspi->regs);
->  		goto remove_master;
-> 
+drivers/spi/spi-npcm-fiu.c: In function npcm_fiu_read:
+drivers/spi/spi-npcm-fiu.c:472:9: warning:
+ variable retlen set but not used [-Wunused-but-set-variable]
 
-Acked-by: Michal Simek <michal.simek@xilinx.com>
+It is never used, so remove it.
 
-Thanks,
-Michal
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/spi/spi-npcm-fiu.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/drivers/spi/spi-npcm-fiu.c b/drivers/spi/spi-npcm-fiu.c
+index d9e2f58..cb52fd8 100644
+--- a/drivers/spi/spi-npcm-fiu.c
++++ b/drivers/spi/spi-npcm-fiu.c
+@@ -469,7 +469,6 @@ static int npcm_fiu_read(struct spi_mem *mem, const struct spi_mem_op *op)
+ {
+ 	u8 *data = op->data.buf.in;
+ 	int i, readlen, currlen;
+-	size_t retlen = 0;
+ 	u8 *buf_ptr;
+ 	u32 addr;
+ 	int ret;
+@@ -494,8 +493,6 @@ static int npcm_fiu_read(struct spi_mem *mem, const struct spi_mem_op *op)
+ 		currlen -= 16;
+ 	} while (currlen > 0);
+ 
+-	retlen = i;
+-
+ 	return 0;
+ }
+ 
+-- 
+2.7.4

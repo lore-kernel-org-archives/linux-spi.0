@@ -1,40 +1,101 @@
-From: Paul Walmsley <paul.walmsley@sifive.com>
-Subject: Re: [PATCH -next 26/36] spi: sifive: use devm_platform_ioremap_resource()
- to simplify code
-Date: Wed, 4 Sep 2019 15:20:53 -0700 (PDT)
-Message-ID: <alpine.DEB.2.21.9999.1909041520130.13502@viisi.sifive.com>
-References: <20190904135918.25352-1-yuehaibing@huawei.com> <20190904135918.25352-27-yuehaibing@huawei.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Cc: broonie@kernel.org, f.fainelli@gmail.com, rjui@broadcom.com,
-        sbranden@broadcom.com, eric@anholt.net, wahrenst@gmx.net,
-        shc_work@mail.ru, agross@kernel.org, khilman@baylibre.com,
-        matthias.bgg@gmail.com, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-        linux-imx@nxp.com, avifishman70@gmail.com, tmaimon77@gmail.com,
-        tali.perry1@gmail.com, venture@google.com, yuenn@google.com,
-        benjaminfair@google.com, kgene@kernel.org, krzk@kernel.org,
-        andi@etezian.org, palmer@sifive.com, baohua@kernel.org,
-        mripard@kernel.org, wens@csie.org, ldewangan@nvidia.com,
-        thierry.reding@gmail.com, jonathanh@nvidia.com,
-        yamada.masahiro@socionext.com, michal.simek@xilinx.com,
-        bcm-kernel-feedback-list@broadcom.com, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linu
-To: YueHaibing <yuehaibing@huawei.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190904135918.25352-27-yuehaibing@huawei.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Vladimir Oltean <olteanv@gmail.com>
+Subject: [PATCH v2 1/4] spi: Use an abbreviated pointer to ctlr->cur_msg in __spi_pump_messages
+Date: Thu,  5 Sep 2019 04:01:11 +0300
+Message-ID: <20190905010114.26718-2-olteanv@gmail.com>
+References: <20190905010114.26718-1-olteanv@gmail.com>
+Cc: linux-spi@vger.kernel.org, netdev@vger.kernel.org,
+        Vladimir Oltean <olteanv@gmail.com>
+To: broonie@kernel.org, h.feurstein@gmail.com, mlichvar@redhat.com,
+        richardcochran@gmail.com, andrew@lunn.ch, f.fainelli@gmail.com
+Return-path: <netdev-owner@vger.kernel.org>
+In-Reply-To: <20190905010114.26718-1-olteanv@gmail.com>
+Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 4 Sep 2019, YueHaibing wrote:
+This helps a bit with line fitting now (the list_first_entry call) as
+well as during the next patch which needs to iterate through all
+transfers of ctlr->cur_msg so it timestamps them.
 
-> Use devm_platform_ioremap_resource() to simplify the code a bit.
-> This is detected by coccinelle.
-> 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Signed-off-by: Vladimir Oltean <olteanv@gmail.com>
+---
+Changes in v2:
+- Renamed mesg to msg.
 
-Acked-by: Paul Walmsley <paul.walmsley@sifive.com>
+ drivers/spi/spi.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
-
-- Paul
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 75ac046cae52..9ce86f761763 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1265,8 +1265,9 @@ EXPORT_SYMBOL_GPL(spi_finalize_current_transfer);
+  */
+ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
+ {
+-	unsigned long flags;
++	struct spi_message *msg;
+ 	bool was_busy = false;
++	unsigned long flags;
+ 	int ret;
+ 
+ 	/* Lock queue */
+@@ -1325,10 +1326,10 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
+ 	}
+ 
+ 	/* Extract head of queue */
+-	ctlr->cur_msg =
+-		list_first_entry(&ctlr->queue, struct spi_message, queue);
++	msg = list_first_entry(&ctlr->queue, struct spi_message, queue);
++	ctlr->cur_msg = msg;
+ 
+-	list_del_init(&ctlr->cur_msg->queue);
++	list_del_init(&msg->queue);
+ 	if (ctlr->busy)
+ 		was_busy = true;
+ 	else
+@@ -1361,7 +1362,7 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
+ 			if (ctlr->auto_runtime_pm)
+ 				pm_runtime_put(ctlr->dev.parent);
+ 
+-			ctlr->cur_msg->status = ret;
++			msg->status = ret;
+ 			spi_finalize_current_message(ctlr);
+ 
+ 			mutex_unlock(&ctlr->io_mutex);
+@@ -1369,28 +1370,28 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
+ 		}
+ 	}
+ 
+-	trace_spi_message_start(ctlr->cur_msg);
++	trace_spi_message_start(msg);
+ 
+ 	if (ctlr->prepare_message) {
+-		ret = ctlr->prepare_message(ctlr, ctlr->cur_msg);
++		ret = ctlr->prepare_message(ctlr, msg);
+ 		if (ret) {
+ 			dev_err(&ctlr->dev, "failed to prepare message: %d\n",
+ 				ret);
+-			ctlr->cur_msg->status = ret;
++			msg->status = ret;
+ 			spi_finalize_current_message(ctlr);
+ 			goto out;
+ 		}
+ 		ctlr->cur_msg_prepared = true;
+ 	}
+ 
+-	ret = spi_map_msg(ctlr, ctlr->cur_msg);
++	ret = spi_map_msg(ctlr, msg);
+ 	if (ret) {
+-		ctlr->cur_msg->status = ret;
++		msg->status = ret;
+ 		spi_finalize_current_message(ctlr);
+ 		goto out;
+ 	}
+ 
+-	ret = ctlr->transfer_one_message(ctlr, ctlr->cur_msg);
++	ret = ctlr->transfer_one_message(ctlr, msg);
+ 	if (ret) {
+ 		dev_err(&ctlr->dev,
+ 			"failed to transfer one message from queue\n");
+-- 
+2.17.1

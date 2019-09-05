@@ -1,10 +1,10 @@
 From: Michal Simek <michal.simek@xilinx.com>
-Subject: Re: [PATCH -next 35/36] spi: zynq-qspi: use
+Subject: Re: [PATCH -next 34/36] spi: zynqmp: use
  devm_platform_ioremap_resource() to simplify code
-Date: Thu, 5 Sep 2019 07:19:56 +0200
-Message-ID: <fbd385ec-f24d-7628-5f63-03f4444976aa@xilinx.com>
+Date: Thu, 5 Sep 2019 07:19:47 +0200
+Message-ID: <f267daf8-3351-a90a-35ea-94e1d8c20583@xilinx.com>
 References: <20190904135918.25352-1-yuehaibing@huawei.com>
- <20190904135918.25352-36-yuehaibing@huawei.com>
+ <20190904135918.25352-35-yuehaibing@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
@@ -29,7 +29,7 @@ To: YueHaibing <yuehaibing@huawei.com>, broonie@kernel.org,
         jonathanh@nvidia.com, yamada.masahiro@socionext.com,
         michal.simek@xilinx.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190904135918.25352-36-yuehaibing@huawei.com>
+In-Reply-To: <20190904135918.25352-35-yuehaibing@huawei.com>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
@@ -41,25 +41,25 @@ On 04. 09. 19 15:59, YueHaibing wrote:
 > Reported-by: Hulk Robot <hulkci@huawei.com>
 > Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 > ---
->  drivers/spi/spi-zynq-qspi.c | 4 +---
+>  drivers/spi/spi-zynqmp-gqspi.c | 4 +---
 >  1 file changed, 1 insertion(+), 3 deletions(-)
 > 
-> diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-> index 4a5326c..5cf6993 100644
-> --- a/drivers/spi/spi-zynq-qspi.c
-> +++ b/drivers/spi/spi-zynq-qspi.c
-> @@ -620,7 +620,6 @@ static int zynq_qspi_probe(struct platform_device *pdev)
->  	struct device *dev = &pdev->dev;
->  	struct device_node *np = dev->of_node;
->  	struct zynq_qspi *xqspi;
+> diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
+> index 5e9ea8a..60c4de4 100644
+> --- a/drivers/spi/spi-zynqmp-gqspi.c
+> +++ b/drivers/spi/spi-zynqmp-gqspi.c
+> @@ -1016,7 +1016,6 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
+>  	int ret = 0;
+>  	struct spi_master *master;
+>  	struct zynqmp_qspi *xqspi;
 > -	struct resource *res;
->  	u32 num_cs;
+>  	struct device *dev = &pdev->dev;
 >  
->  	ctlr = spi_alloc_master(&pdev->dev, sizeof(*xqspi));
-> @@ -630,8 +629,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
->  	xqspi = spi_controller_get_devdata(ctlr);
->  	xqspi->dev = dev;
->  	platform_set_drvdata(pdev, xqspi);
+>  	eemi_ops = zynqmp_pm_get_eemi_ops();
+> @@ -1031,8 +1030,7 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
+>  	master->dev.of_node = pdev->dev.of_node;
+>  	platform_set_drvdata(pdev, master);
+>  
 > -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 > -	xqspi->regs = devm_ioremap_resource(&pdev->dev, res);
 > +	xqspi->regs = devm_platform_ioremap_resource(pdev, 0);

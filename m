@@ -1,10 +1,10 @@
 From: Stefan Wahren <wahrenst@gmx.net>
-Subject: Re: [PATCH -next 05/36] spi: bcm2835aux: use
+Subject: Re: [PATCH -next 06/36] spi: bcm2835: use
  devm_platform_ioremap_resource() to simplify code
-Date: Thu, 5 Sep 2019 20:38:50 +0200
-Message-ID: <491084d3-c2d6-3a24-687b-2668c7f0c09a@gmx.net>
+Date: Thu, 5 Sep 2019 20:39:45 +0200
+Message-ID: <c9c6a9ca-5725-513f-2ef3-734ecf0878b8@gmx.net>
 References: <20190904135918.25352-1-yuehaibing@huawei.com>
- <20190904135918.25352-6-yuehaibing@huawei.com>
+ <20190904135918.25352-7-yuehaibing@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
@@ -29,7 +29,7 @@ To: YueHaibing <yuehaibing@huawei.com>, broonie@kernel.org,
         jonathanh@nvidia.com, yamada.masahiro@socionext.com,
         michal.simek@xilinx.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190904135918.25352-6-yuehaibing@huawei.com>
+In-Reply-To: <20190904135918.25352-7-yuehaibing@huawei.com>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org

@@ -1,8 +1,8 @@
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH 4.4 17/23] spi: bcm2835aux: ensure interrupts are enabled for shared handler
-Date: Sun,  8 Sep 2019 13:41:52 +0100
-Message-ID: <20190908121100.841586731@linuxfoundation.org>
-References: <20190908121052.898169328@linuxfoundation.org>
+Subject: [PATCH 4.9 18/26] spi: bcm2835aux: ensure interrupts are enabled for shared handler
+Date: Sun,  8 Sep 2019 13:41:57 +0100
+Message-ID: <20190908121108.502407891@linuxfoundation.org>
+References: <20190908121057.216802689@linuxfoundation.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -19,9 +19,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-arm-kernel@lists.infradead.org,
         Rob Herring <robh@kernel.org>, Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190908121052.898169328@linuxfoundation.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20190908121057.216802689@linuxfoundation.org>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 [ Upstream commit bc519d9574618e47a0c788000fb78da95e18d953 ]
@@ -60,10 +60,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 5 insertions(+)
 
 diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-index 7de6f8472a810..6f4c6aa801f14 100644
+index 7428091d3f5b8..bd00b7cc8b78b 100644
 --- a/drivers/spi/spi-bcm2835aux.c
 +++ b/drivers/spi/spi-bcm2835aux.c
-@@ -187,6 +187,11 @@ static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
+@@ -184,6 +184,11 @@ static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
  	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
  	irqreturn_t ret = IRQ_NONE;
  

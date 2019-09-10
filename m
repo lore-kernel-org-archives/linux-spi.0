@@ -1,162 +1,43 @@
-From: Pragnesh Patel <pragnesh.patel@sifive.com>
-Subject: [PATCH] spi: dt-bindings: Convert spi-sifive binding to json-schema
-Date: Tue, 10 Sep 2019 12:32:51 +0530
-Message-ID: <1568098996-4180-1-git-send-email-pragnesh.patel@sifive.com>
-Cc: Pragnesh Patel <pragnesh.patel@sifive.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-To: palmer@sifive.com, paul.walmsley@sifive.com
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH] gpiolib: of: fix fallback quirks handling
+Date: Tue, 10 Sep 2019 11:33:32 +0100
+Message-ID: <CACRpkdYrSt7R8tA+zfN21DZpkz=1KaV5QihzHw7-KPCrUZhA-Q@mail.gmail.com>
+References: <20190903231856.GA165165@dtor-ws>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Andreas Kemnade <andreas@kemnade.info>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190903231856.GA165165@dtor-ws>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Convert the spi-sifive binding to DT schema format.
+On Wed, Sep 4, 2019 at 12:18 AM Dmitry Torokhov
+<dmitry.torokhov@gmail.com> wrote:
 
-Signed-off-by: Pragnesh Patel <pragnesh.patel@sifive.com>
----
- .../devicetree/bindings/spi/spi-sifive.txt         | 37 ----------
- .../devicetree/bindings/spi/spi-sifive.yaml        | 86 ++++++++++++++++++++++
- 2 files changed, 86 insertions(+), 37 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/spi/spi-sifive.txt
- create mode 100644 Documentation/devicetree/bindings/spi/spi-sifive.yaml
+> We should only try to execute fallback quirks handling when previous
+> call returned -ENOENT, and not when we did not get -EPROBE_DEFER.
+> The other errors should be treated as hard errors: we did find the GPIO
+> description, but for some reason we failed to handle it properly.
+>
+> The fallbacks should only be executed when previous handlers returned
+> -ENOENT, which means the mapping/description was not found.
+>
+> Also let's remove the explicit deferral handling when iterating through
+> GPIO suffixes: it is not needed anymore as we will not be calling
+> fallbacks for anything but -ENOENT.
+>
+> Fixes: df451f83e1fc ("gpio: of: fix Freescale SPI CS quirk handling")
+> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-sifive.txt b/Documentation/devicetree/bindings/spi/spi-sifive.txt
-deleted file mode 100644
-index 3f5c6e4..0000000
---- a/Documentation/devicetree/bindings/spi/spi-sifive.txt
-+++ /dev/null
-@@ -1,37 +0,0 @@
--SiFive SPI controller Device Tree Bindings
--------------------------------------------
--
--Required properties:
--- compatible		: Should be "sifive,<chip>-spi" and "sifive,spi<version>".
--			  Supported compatible strings are:
--			  "sifive,fu540-c000-spi" for the SiFive SPI v0 as integrated
--			  onto the SiFive FU540 chip, and "sifive,spi0" for the SiFive
--			  SPI v0 IP block with no chip integration tweaks.
--			  Please refer to sifive-blocks-ip-versioning.txt for details
--- reg			: Physical base address and size of SPI registers map
--			  A second (optional) range can indicate memory mapped flash
--- interrupts		: Must contain one entry
--- interrupt-parent	: Must be core interrupt controller
--- clocks		: Must reference the frequency given to the controller
--- #address-cells	: Must be '1', indicating which CS to use
--- #size-cells		: Must be '0'
--
--Optional properties:
--- sifive,fifo-depth		: Depth of hardware queues; defaults to 8
--- sifive,max-bits-per-word	: Maximum bits per word; defaults to 8
--
--SPI RTL that corresponds to the IP block version numbers can be found here:
--https://github.com/sifive/sifive-blocks/tree/master/src/main/scala/devices/spi
--
--Example:
--	spi: spi@10040000 {
--		compatible = "sifive,fu540-c000-spi", "sifive,spi0";
--		reg = <0x0 0x10040000 0x0 0x1000 0x0 0x20000000 0x0 0x10000000>;
--		interrupt-parent = <&plic>;
--		interrupts = <51>;
--		clocks = <&tlclk>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--		sifive,fifo-depth = <8>;
--		sifive,max-bits-per-word = <8>;
--	};
-diff --git a/Documentation/devicetree/bindings/spi/spi-sifive.yaml b/Documentation/devicetree/bindings/spi/spi-sifive.yaml
-new file mode 100644
-index 0000000..368f5d5
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-sifive.yaml
-@@ -0,0 +1,86 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/spi-sifive.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: SiFive SPI controller
-+
-+maintainers:
-+  - Pragnesh Patel <pragnesh.patel@sifive.com>
-+  - Paul Walmsley  <paul.walmsley@sifive.com>
-+  - Palmer Dabbelt <palmer@sifive.com>
-+
-+allOf:
-+  - $ref: "spi-controller.yaml#"
-+
-+properties:
-+  compatible:
-+    items:
-+      - const: sifive,fu540-c000-spi
-+      - const: sifive,spi0
-+
-+    description:
-+      Should be "sifive,<chip>-spi" and "sifive,spi<version>".
-+      Supported compatible strings are -
-+      "sifive,fu540-c000-spi" for the SiFive SPI v0 as integrated
-+      onto the SiFive FU540 chip, and "sifive,spi0" for the SiFive
-+      SPI v0 IP block with no chip integration tweaks.
-+      Please refer to sifive-blocks-ip-versioning.txt for details
-+
-+      SPI RTL that corresponds to the IP block version numbers can be found here -
-+      https://github.com/sifive/sifive-blocks/tree/master/src/main/scala/devices/spi
-+
-+  reg:
-+    maxItems: 1
-+
-+    description:
-+      Physical base address and size of SPI registers map
-+      A second (optional) range can indicate memory mapped flash
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+    description:
-+      Must reference the frequency given to the controller
-+
-+  "#address-cells":
-+    const: 1
-+
-+  "#size-cells":
-+    const: 0
-+
-+  sifive,fifo-depth:
-+    description:
-+      Depth of hardware queues; defaults to 8
-+    $ref: "/schemas/types.yaml#/definitions/uint32"
-+
-+  sifive,max-bits-per-word:
-+    description:
-+      Maximum bits per word; defaults to 8
-+    $ref: "/schemas/types.yaml#/definitions/uint32"
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
-+
-+examples:
-+  - |
-+    spi: spi@10040000 {
-+      compatible = "sifive,fu540-c000-spi", "sifive,spi0";
-+      reg = <0x0 0x10040000 0x0 0x1000 0x0 0x20000000 0x0 0x10000000>;
-+      interrupt-parent = <&plic>;
-+      interrupts = <51>;
-+      clocks = <&tlclk>;
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+      sifive,fifo-depth = <8>;
-+      sifive,max-bits-per-word = <8>;
-+    };
-+
-+...
--- 
-2.7.4
+Patch applied with Andy's review tag.
+
+Sorry for not catching this before, the reasoning with the patch
+is correct and I should have noticed. Overload I guess.
+
+Yours,
+Linus Walleij

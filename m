@@ -1,13 +1,12 @@
-From: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH v2 04/10] spi: bcm2835: Work around DONE bit erratum
-Date: Wed, 11 Sep 2019 12:15:30 +0200
-Message-ID: <7ceb98f154cdcf72c577615fa312df41adea5f47.1568187525.git.lukas@wunner.de>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2 00/10] Speed up SPI simplex transfers on Raspberry Pi
+Date: Wed, 11 Sep 2019 11:47:21 +0100
+Message-ID: <20190911104721.GX2036@sirena.org.uk>
 References: <cover.1568187525.git.lukas@wunner.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1795843313686695934=="
 Cc: linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
 Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 In-Reply-To: <cover.1568187525.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
@@ -21,71 +20,62 @@ Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BG
 Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Q29tbWl0IDNiZDdmNjU4OWY2NyAoInNwaTogYmNtMjgzNTogT3ZlcmNvbWUgc2dsaXN0IGVudHJ5
-IGxlbmd0aApsaW1pdGF0aW9uIikgYW1lbmRlZCB0aGUgQkNNMjgzNSBTUEkgZHJpdmVyIHdpdGgg
-c3VwcG9ydCBmb3IgRE1BCnRyYW5zZmVycyB3aG9zZSBidWZmZXJzIGFyZSBub3QgYWxpZ25lZCB0
-byA0IGJ5dGVzIGFuZCByZXF1aXJlIG1vcmUgdGhhbgpvbmUgc2dsaXN0IGVudHJ5LgoKV2hlbiB0
-ZXN0aW5nIHRoaXMgZmVhdHVyZSB3aXRoIHVwY29taW5nIGNvbW1pdHMgdG8gc3BlZWQgdXAgVFgt
-b25seSBhbmQKUlgtb25seSB0cmFuc2ZlcnMsIEkgbm90aWNlZCB0aGF0IFNQSSB0cmFuc21pc3Np
-b24gc29tZXRpbWVzIGJyZWFrcy4KQSBmdW5jdGlvbiBpbnRyb2R1Y2VkIGJ5IHRoZSBjb21taXQs
-IGJjbTI4MzVfc3BpX3RyYW5zZmVyX3Byb2xvZ3VlKCksCnBlcmZvcm1zIG9uZSBvciB0d28gUElP
-IHRyYW5zbWlzc2lvbnMgYXMgYSBwcm9sb2d1ZSB0byB0aGUgYWN0dWFsIERNQQp0cmFuc21pc3Np
-b24uICBJdCB0dXJucyBvdXQgdGhhdCB0aGUgYnJlYWthZ2UgZ29lcyBhd2F5IGlmIHRoZSBET05F
-IGJpdAppbiB0aGUgQ1MgcmVnaXN0ZXIgaXMgc2V0IHdoZW4gZW5kaW5nIHN1Y2ggYSBQSU8gdHJh
-bnNtaXNzaW9uLgoKVGhlIERPTkUgYml0IHNpZ25pZmllcyBlbXB0aW5lc3Mgb2YgdGhlIFRYIEZJ
-Rk8uICBBY2NvcmRpbmcgdG8gdGhlIHNwZWMsCnRoZSBiaXQgaXMgb2YgdHlwZSBSTywgc28gd3Jp
-dGluZyBpdCBzaG91bGQgbmV2ZXIgaGF2ZSBhbnkgZWZmZWN0LgpQZXJoYXBzIHRoZSBzcGVjIGlz
-IHdyb25nIGFuZCB0aGUgYml0IGlzIGFjdHVhbGx5IG9mIHR5cGUgUlcxQy4KRS5nLiB0aGUgSTJD
-IGNvbnRyb2xsZXIgb24gdGhlIEJDTTI4MzUgZG9lcyBoYXZlIGFuIFJXMUMgRE9ORSBiaXQgd2hp
-Y2gKbmVlZHMgdG8gYmUgY2xlYXJlZCBieSB0aGUgZHJpdmVyLiAgQW5vdGhlciwgcG9zc2libHkg
-bW9yZSBsaWtlbHkKZXhwbGFuYXRpb24gaXMgdGhhdCBpdCdzIGEgaGFyZHdhcmUgZXJyYXR1bSBz
-aW5jZSB0aGUgaXNzdWUgZG9lcyBub3QKb2NjdXIgY29uc2lzdGVudGx5LgoKRWl0aGVyIHdheSwg
-YW1lbmQgYmNtMjgzNV9zcGlfdHJhbnNmZXJfcHJvbG9ndWUoKSB0byBhbHdheXMgd3JpdGUgdGhl
-CkRPTkUgYml0LgoKVXN1YWxseSBhIHRyYW5zbWlzc2lvbiBpcyBlbmRlZCBieSBiY20yODM1X3Nw
-aV9yZXNldF9odygpLiAgSWYgdGhlCnRyYW5zbWlzc2lvbiB3YXMgc3VjY2Vzc2Z1bCwgdGhlIFRY
-IEZJRk8gaXMgZW1wdHkgYW5kIHRodXMgdGhlIERPTkUgYml0CmlzIHNldCB3aGVuIGJjbTI4MzVf
-c3BpX3Jlc2V0X2h3KCkgcmVhZHMgdGhlIENTIHJlZ2lzdGVyLiAgVGhlIGJpdCBpcwp0aGVuIHdy
-aXR0ZW4gYmFjayB0byB0aGUgcmVnaXN0ZXIsIHNvIHdlIGhhcHBlbiB0byBkbyB0aGUgcmlnaHQg
-dGhpbmcuCgpIb3dldmVyIGlmIERPTkUgaXMgbm90IHNldCwgZS5nLiBiZWNhdXNlIHRyYW5zbWlz
-c2lvbiBpcyBhYm9ydGVkIHdpdGgKYSBub24tZW1wdHkgVFggRklGTywgdGhlIGJpdCB3b24ndCBi
-ZSB3cml0dGVuIGJ5IGJjbTI4MzVfc3BpX3Jlc2V0X2h3KCkKYW5kIGl0IHNlZW1zIHBvc3NpYmxl
-IHRoYXQgdHJhbnNtaXNzaW9uIG1pZ2h0IHN1YnNlcXVlbnRseSBicmVhay4gIFRvIGJlCm9uIHRo
-ZSBzYWZlIHNpZGUsIGxpa2V3aXNlIGFtZW5kIGJjbTI4MzVfc3BpX3Jlc2V0X2h3KCkgdG8gYWx3
-YXlzIHdyaXRlCnRoZSBiaXQuCgpUZXN0ZWQtYnk6IE51bm8gU8OhIDxudW5vLnNhQGFuYWxvZy5j
-b20+ClRlc3RlZC1ieTogTm9yYWxmIFRyw7hubmVzIDxub3JhbGZAdHJvbm5lcy5vcmc+ClNpZ25l
-ZC1vZmYtYnk6IEx1a2FzIFd1bm5lciA8bHVrYXNAd3VubmVyLmRlPgpBY2tlZC1ieTogU3RlZmFu
-IFdhaHJlbiA8d2FocmVuc3RAZ214Lm5ldD4KQWNrZWQtYnk6IE1hcnRpbiBTcGVybCA8a2VybmVs
-QG1hcnRpbi5zcGVybC5vcmc+Ci0tLQogZHJpdmVycy9zcGkvc3BpLWJjbTI4MzUuYyB8IDE0ICsr
-KysrKysrKysrKy0tCiAxIGZpbGUgY2hhbmdlZCwgMTIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlv
-bnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGktYmNtMjgzNS5jIGIvZHJpdmVycy9z
-cGkvc3BpLWJjbTI4MzUuYwppbmRleCBmYmQ2ZDFhZTRjNWUuLmY3OWYwNGVhNDJlNSAxMDA2NDQK
-LS0tIGEvZHJpdmVycy9zcGkvc3BpLWJjbTI4MzUuYworKysgYi9kcml2ZXJzL3NwaS9zcGktYmNt
-MjgzNS5jCkBAIC0zMjEsNiArMzIxLDEzIEBAIHN0YXRpYyB2b2lkIGJjbTI4MzVfc3BpX3Jlc2V0
-X2h3KHN0cnVjdCBzcGlfY29udHJvbGxlciAqY3RscikKIAkJQkNNMjgzNV9TUElfQ1NfSU5URCB8
-CiAJCUJDTTI4MzVfU1BJX0NTX0RNQUVOIHwKIAkJQkNNMjgzNV9TUElfQ1NfVEEpOworCS8qCisJ
-ICogVHJhbnNtaXNzaW9uIHNvbWV0aW1lcyBicmVha3MgdW5sZXNzIHRoZSBET05FIGJpdCBpcyB3
-cml0dGVuIGF0IHRoZQorCSAqIGVuZCBvZiBldmVyeSB0cmFuc2Zlci4gIFRoZSBzcGVjIHNheXMg
-aXQncyBhIFJPIGJpdC4gIEVpdGhlciB0aGUKKwkgKiBzcGVjIGlzIHdyb25nIGFuZCB0aGUgYml0
-IGlzIGFjdHVhbGx5IG9mIHR5cGUgUlcxQywgb3IgaXQncyBhCisJICogaGFyZHdhcmUgZXJyYXR1
-bS4KKwkgKi8KKwljcyB8PSBCQ00yODM1X1NQSV9DU19ET05FOwogCS8qIGFuZCByZXNldCBSWC9U
-WCBGSUZPUyAqLwogCWNzIHw9IEJDTTI4MzVfU1BJX0NTX0NMRUFSX1JYIHwgQkNNMjgzNV9TUElf
-Q1NfQ0xFQVJfVFg7CiAKQEAgLTQ3OSw3ICs0ODYsOSBAQCBzdGF0aWMgdm9pZCBiY20yODM1X3Nw
-aV90cmFuc2Zlcl9wcm9sb2d1ZShzdHJ1Y3Qgc3BpX2NvbnRyb2xsZXIgKmN0bHIsCiAJCWJjbTI4
-MzVfd3JfZmlmb19jb3VudChicywgYnMtPnJ4X3Byb2xvZ3VlKTsKIAkJYmNtMjgzNV93YWl0X3R4
-X2ZpZm9fZW1wdHkoYnMpOwogCQliY20yODM1X3JkX2ZpZm9fY291bnQoYnMsIGJzLT5yeF9wcm9s
-b2d1ZSk7Ci0JCWJjbTI4MzVfc3BpX3Jlc2V0X2h3KGN0bHIpOworCQliY20yODM1X3dyKGJzLCBC
-Q00yODM1X1NQSV9DUywgY3MgfCBCQ00yODM1X1NQSV9DU19DTEVBUl9SWAorCQkJCQkJICB8IEJD
-TTI4MzVfU1BJX0NTX0NMRUFSX1RYCisJCQkJCQkgIHwgQkNNMjgzNV9TUElfQ1NfRE9ORSk7CiAK
-IAkJZG1hX3N5bmNfc2luZ2xlX2Zvcl9kZXZpY2UoY3Rsci0+ZG1hX3J4LT5kZXZpY2UtPmRldiwK
-IAkJCQkJICAgc2dfZG1hX2FkZHJlc3MoJnRmci0+cnhfc2cuc2dsWzBdKSwKQEAgLTUwMCw3ICs1
-MDksOCBAQCBzdGF0aWMgdm9pZCBiY20yODM1X3NwaV90cmFuc2Zlcl9wcm9sb2d1ZShzdHJ1Y3Qg
-c3BpX2NvbnRyb2xsZXIgKmN0bHIsCiAJCQkJCQkgIHwgQkNNMjgzNV9TUElfQ1NfRE1BRU4pOwog
-CQliY20yODM1X3dyX2ZpZm9fY291bnQoYnMsIHR4X3JlbWFpbmluZyk7CiAJCWJjbTI4MzVfd2Fp
-dF90eF9maWZvX2VtcHR5KGJzKTsKLQkJYmNtMjgzNV93cihicywgQkNNMjgzNV9TUElfQ1MsIGNz
-IHwgQkNNMjgzNV9TUElfQ1NfQ0xFQVJfVFgpOworCQliY20yODM1X3dyKGJzLCBCQ00yODM1X1NQ
-SV9DUywgY3MgfCBCQ00yODM1X1NQSV9DU19DTEVBUl9UWAorCQkJCQkJICB8IEJDTTI4MzVfU1BJ
-X0NTX0RPTkUpOwogCX0KIAogCWlmIChsaWtlbHkoIWJzLT50eF9zcGlsbG92ZXIpKSB7Ci0tIAoy
-LjIzLjAKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwps
-aW51eC1ycGkta2VybmVsIG1haWxpbmcgbGlzdApsaW51eC1ycGkta2VybmVsQGxpc3RzLmluZnJh
-ZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51
-eC1ycGkta2VybmVsCg==
+
+--===============1795843313686695934==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="sBvc846/5FzkyDmz"
+Content-Disposition: inline
+
+
+--sBvc846/5FzkyDmz
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Sep 11, 2019 at 12:15:30PM +0200, Lukas Wunner wrote:
+> Extend the BCM2835 SPI driver to handle simplex transfers internally,
+> thereby reducing their latency and CPU usage and obviating the need to
+> have the SPI core convert to full-duplex via SPI_CONTROLLER_MUST_TX/RX.
+
+Whatever you're doing to send these is still not sending the
+patches in order:
+
+    779 N T 09/11 Lukas Wunner    (1.6K) [PATCH v2 00/10] Speed up SPI simp=
+lex t
+    780 N T 09/11 Lukas Wunner    (2.1K) =E2=94=9C=E2=94=80>[PATCH v2 02/10=
+] dmaengine: bcm2835:
+    781 N T 09/11 Lukas Wunner    (1.3K) =E2=94=9C=E2=94=80>[PATCH v2 01/10=
+] dmaengine: bcm2835:
+    782 N T 09/11 Lukas Wunner    (2.6K) =E2=94=9C=E2=94=80>[PATCH v2 03/10=
+] spi: Guarantee cac
+
+--sBvc846/5FzkyDmz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEyBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl140LYACgkQJNaLcl1U
+h9CJuAf40t7iOsCtCUCgOGIXB+YibWRckLCGnZaxx9lO8FpS02JKK8a1kZ7BzmBu
+KUB9QEeaKj5mR76HSW9ptzpbLt2Dhgy92E9In/53UHZK8w7xCRzpngrLvLy/ngg9
+BKxBDoUN5rANRRMIhK18StZ4TKHqviLnTyfFlFkchbmu9KH3bQpwV1v+t0Mv4TqS
+rbeE860BfkVkR6iCMCt/vTlIi+XwRxoTVgjLUWPIphox2CzAYX0ChmRuuX+lXfz3
+t1LJLptjNXavM3z03a/6EeLrgjIvTlc0EmXJNb2YpjSl4w2Lfhtiy8saxwuwXa1s
+UIApc9MXI4DnImX3tQ8K1ZWo2qJq
+=9QgI
+-----END PGP SIGNATURE-----
+
+--sBvc846/5FzkyDmz--
+
+
+--===============1795843313686695934==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-rpi-kernel mailing list
+linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel
+
+--===============1795843313686695934==--

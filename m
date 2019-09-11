@@ -1,12 +1,13 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 00/10] Speed up SPI simplex transfers on Raspberry Pi
-Date: Wed, 11 Sep 2019 11:47:21 +0100
-Message-ID: <20190911104721.GX2036@sirena.org.uk>
+From: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH v2 05/10] spi: bcm2835: Drop dma_pending flag
+Date: Wed, 11 Sep 2019 12:15:30 +0200
+Message-ID: <062b03b7f86af77a13ce0ec3b22e0bdbfcfba10d.1568187525.git.lukas@wunner.de>
 References: <cover.1568187525.git.lukas@wunner.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1795843313686695934=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 In-Reply-To: <cover.1568187525.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
@@ -20,62 +21,78 @@ Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BG
 Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
---===============1795843313686695934==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="sBvc846/5FzkyDmz"
-Content-Disposition: inline
-
-
---sBvc846/5FzkyDmz
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Sep 11, 2019 at 12:15:30PM +0200, Lukas Wunner wrote:
-> Extend the BCM2835 SPI driver to handle simplex transfers internally,
-> thereby reducing their latency and CPU usage and obviating the need to
-> have the SPI core convert to full-duplex via SPI_CONTROLLER_MUST_TX/RX.
-
-Whatever you're doing to send these is still not sending the
-patches in order:
-
-    779 N T 09/11 Lukas Wunner    (1.6K) [PATCH v2 00/10] Speed up SPI simp=
-lex t
-    780 N T 09/11 Lukas Wunner    (2.1K) =E2=94=9C=E2=94=80>[PATCH v2 02/10=
-] dmaengine: bcm2835:
-    781 N T 09/11 Lukas Wunner    (1.3K) =E2=94=9C=E2=94=80>[PATCH v2 01/10=
-] dmaengine: bcm2835:
-    782 N T 09/11 Lukas Wunner    (2.6K) =E2=94=9C=E2=94=80>[PATCH v2 03/10=
-] spi: Guarantee cac
-
---sBvc846/5FzkyDmz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEyBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl140LYACgkQJNaLcl1U
-h9CJuAf40t7iOsCtCUCgOGIXB+YibWRckLCGnZaxx9lO8FpS02JKK8a1kZ7BzmBu
-KUB9QEeaKj5mR76HSW9ptzpbLt2Dhgy92E9In/53UHZK8w7xCRzpngrLvLy/ngg9
-BKxBDoUN5rANRRMIhK18StZ4TKHqviLnTyfFlFkchbmu9KH3bQpwV1v+t0Mv4TqS
-rbeE860BfkVkR6iCMCt/vTlIi+XwRxoTVgjLUWPIphox2CzAYX0ChmRuuX+lXfz3
-t1LJLptjNXavM3z03a/6EeLrgjIvTlc0EmXJNb2YpjSl4w2Lfhtiy8saxwuwXa1s
-UIApc9MXI4DnImX3tQ8K1ZWo2qJq
-=9QgI
------END PGP SIGNATURE-----
-
---sBvc846/5FzkyDmz--
-
-
---===============1795843313686695934==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-rpi-kernel mailing list
-linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel
-
---===============1795843313686695934==--
+VGhlIEJDTTI4MzUgU1BJIGRyaXZlciB1c2VzIGEgZmxhZyB0byBrZWVwIHRyYWNrIG9mIHdoZXRo
+ZXIgYSBETUEKdHJhbnNmZXIgaXMgaW4gcHJvZ3Jlc3MuCgpUaGUgZmxhZyBpcyB1c2VkIHRvIGF2
+b2lkIHRlcm1pbmF0aW5nIERNQSBjaGFubmVscyBtdWx0aXBsZSB0aW1lcyBpZiBhCnRyYW5zZmVy
+IGZpbmlzaGVzIG9yZGVybHkgd2hpbGUgc2ltdWx0YW5lb3VzbHkgdGhlIFNQSSBjb3JlIGludm9r
+ZXMgdGhlCi0+aGFuZGxlX2VycigpIGNhbGxiYWNrIGJlY2F1c2UgdGhlIHRyYW5zZmVyIHRvb2sg
+dG9vIGxvbmcuICBIb3dldmVyCnRlcm1pbmF0aW5nIERNQSBjaGFubmVscyBtdWx0aXBsZSB0aW1l
+cyBpcyBwZXJmZWN0bHkgZmluZSwgc28gdGhlIGZsYWcKaXMgdW5uZWNlc3NhcnkgZm9yIHRoaXMg
+cGFydGljdWxhciBwdXJwb3NlLgoKVGhlIGZsYWcgaXMgYWxzbyB1c2VkIHRvIGF2b2lkIGludm9r
+aW5nIGJjbTI4MzVfc3BpX3VuZG9fcHJvbG9ndWUoKQptdWx0aXBsZSB0aW1lcyB1bmRlciB0aGlz
+IHJhY2UgY29uZGl0aW9uLiAgSG93ZXZlciBtdWx0aXBsZSAqY29uY3VycmVudCoKaW52b2NhdGlv
+bnMgY2FuIG5vIGxvbmdlciBoYXBwZW4gc2luY2UgY29tbWl0IDI1Mjc3MDRkODQxMSAoInNwaToK
+YmNtMjgzNTogU3luY2hyb25pemUgd2l0aCBjYWxsYmFjayBvbiBETUEgdGVybWluYXRpb24iKSBi
+ZWNhdXNlIHRoZQotPmhhbmRsZV9lcnIoKSBjYWxsYmFjayBub3cgdXNlcyB0aGUgX3N5bmMoKSB2
+YXJpYW50IHdoZW4gdGVybWluYXRpbmcKRE1BIGNoYW5uZWxzLgoKVGhlIG9ubHkgcmFpc29uIGQn
+w6p0cmUgb2YgdGhlIGZsYWcgaXMgdGhlcmVmb3JlIHRoYXQKYmNtMjgzNV9zcGlfdW5kb19wcm9s
+b2d1ZSgpIGNhbm5vdCBjb3BlIHdpdGggbXVsdGlwbGUgKnNlcXVlbnRpYWwqCmludm9jYXRpb25z
+LiAgQWNoaWV2ZSB0aGF0IGJ5IHNldHRpbmcgdHhfcHJvbG9ndWUgdG8gMCBhdCB0aGUgZW5kIG9m
+CnRoZSBmdW5jdGlvbi4gIFN1YnNlcXVlbnQgaW52b2NhdGlvbnMgdGh1cyBiZWNvbWUgbm8tb3Bz
+LgoKV2l0aCB0aGF0LCB0aGUgZG1hX3BlbmRpbmcgZmxhZyBiZWNvbWVzIHVubmVjZXNzYXJ5LCBz
+byBkcm9wIGl0LgoKVGVzdGVkLWJ5OiBOdW5vIFPDoSA8bnVuby5zYUBhbmFsb2cuY29tPgpUZXN0
+ZWQtYnk6IE5vcmFsZiBUcsO4bm5lcyA8bm9yYWxmQHRyb25uZXMub3JnPgpTaWduZWQtb2ZmLWJ5
+OiBMdWthcyBXdW5uZXIgPGx1a2FzQHd1bm5lci5kZT4KQWNrZWQtYnk6IFN0ZWZhbiBXYWhyZW4g
+PHdhaHJlbnN0QGdteC5uZXQ+CkFja2VkLWJ5OiBNYXJ0aW4gU3BlcmwgPGtlcm5lbEBtYXJ0aW4u
+c3Blcmwub3JnPgotLS0KIGRyaXZlcnMvc3BpL3NwaS1iY20yODM1LmMgfCAyMyArKysrKysrKy0t
+LS0tLS0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDggaW5zZXJ0aW9ucygrKSwgMTUgZGVsZXRp
+b25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvc3BpLWJjbTI4MzUuYyBiL2RyaXZlcnMv
+c3BpL3NwaS1iY20yODM1LmMKaW5kZXggZjc5ZjA0ZWE0MmU1Li41MzJjNThiY2ZkNDUgMTAwNjQ0
+Ci0tLSBhL2RyaXZlcnMvc3BpL3NwaS1iY20yODM1LmMKKysrIGIvZHJpdmVycy9zcGkvc3BpLWJj
+bTI4MzUuYwpAQCAtOTQsNyArOTQsNiBAQCBNT0RVTEVfUEFSTV9ERVNDKHBvbGxpbmdfbGltaXRf
+dXMsCiAgKiBAcnhfcHJvbG9ndWU6IGJ5dGVzIHJlY2VpdmVkIHdpdGhvdXQgRE1BIGlmIGZpcnN0
+IFJYIHNnbGlzdCBlbnRyeSdzCiAgKglsZW5ndGggaXMgbm90IGEgbXVsdGlwbGUgb2YgNCAodG8g
+b3ZlcmNvbWUgaGFyZHdhcmUgbGltaXRhdGlvbikKICAqIEB0eF9zcGlsbG92ZXI6IHdoZXRoZXIg
+QHR4X3Byb2xvZ3VlIHNwaWxscyBvdmVyIHRvIHNlY29uZCBUWCBzZ2xpc3QgZW50cnkKLSAqIEBk
+bWFfcGVuZGluZzogd2hldGhlciBhIERNQSB0cmFuc2ZlciBpcyBpbiBwcm9ncmVzcwogICogQGRl
+YnVnZnNfZGlyOiB0aGUgZGVidWdmcyBkaXJlY3RvcnkgLSBuZWVkZSB0byByZW1vdmUgZGVidWdm
+cyB3aGVuCiAgKiAgICAgIHVubG9hZGluZyB0aGUgbW9kdWxlCiAgKiBAY291bnRfdHJhbnNmZXJf
+cG9sbGluZzogY291bnQgb2YgaG93IG9mdGVuIHBvbGxpbmcgbW9kZSBpcyB1c2VkCkBAIC0xMTcs
+NyArMTE2LDYgQEAgc3RydWN0IGJjbTI4MzVfc3BpIHsKIAlpbnQgdHhfcHJvbG9ndWU7CiAJaW50
+IHJ4X3Byb2xvZ3VlOwogCXVuc2lnbmVkIGludCB0eF9zcGlsbG92ZXI7Ci0JdW5zaWduZWQgaW50
+IGRtYV9wZW5kaW5nOwogCiAJc3RydWN0IGRlbnRyeSAqZGVidWdmc19kaXI7CiAJdTY0IGNvdW50
+X3RyYW5zZmVyX3BvbGxpbmc7CkBAIC01NTEsNiArNTQ5LDggQEAgc3RhdGljIHZvaWQgYmNtMjgz
+NV9zcGlfdW5kb19wcm9sb2d1ZShzdHJ1Y3QgYmNtMjgzNV9zcGkgKmJzKQogCQlzZ19kbWFfYWRk
+cmVzcygmdGZyLT50eF9zZy5zZ2xbMV0pIC09IDQ7CiAJCXNnX2RtYV9sZW4oJnRmci0+dHhfc2cu
+c2dsWzFdKSAgICAgKz0gNDsKIAl9CisKKwlicy0+dHhfcHJvbG9ndWUgPSAwOwogfQogCiBzdGF0
+aWMgdm9pZCBiY20yODM1X3NwaV9kbWFfZG9uZSh2b2lkICpkYXRhKQpAQCAtNTY2LDEwICs1NjYs
+OCBAQCBzdGF0aWMgdm9pZCBiY20yODM1X3NwaV9kbWFfZG9uZSh2b2lkICpkYXRhKQogCSAqIGlz
+IGNhbGxlZCB0aGUgdHgtZG1hIG11c3QgaGF2ZSBmaW5pc2hlZCAtIGNhbid0IGdldCB0byB0aGlz
+CiAJICogc2l0dWF0aW9uIG90aGVyd2lzZS4uLgogCSAqLwotCWlmIChjbXB4Y2hnKCZicy0+ZG1h
+X3BlbmRpbmcsIHRydWUsIGZhbHNlKSkgewotCQlkbWFlbmdpbmVfdGVybWluYXRlX2FzeW5jKGN0
+bHItPmRtYV90eCk7Ci0JCWJjbTI4MzVfc3BpX3VuZG9fcHJvbG9ndWUoYnMpOwotCX0KKwlkbWFl
+bmdpbmVfdGVybWluYXRlX2FzeW5jKGN0bHItPmRtYV90eCk7CisJYmNtMjgzNV9zcGlfdW5kb19w
+cm9sb2d1ZShicyk7CiAKIAkvKiBhbmQgbWFyayBhcyBjb21wbGV0ZWQgKi87CiAJY29tcGxldGUo
+JmN0bHItPnhmZXJfY29tcGxldGlvbik7CkBAIC02NDQsOSArNjQyLDYgQEAgc3RhdGljIGludCBi
+Y20yODM1X3NwaV90cmFuc2Zlcl9vbmVfZG1hKHN0cnVjdCBzcGlfY29udHJvbGxlciAqY3RsciwK
+IAkvKiBzdGFydCBUWCBlYXJseSAqLwogCWRtYV9hc3luY19pc3N1ZV9wZW5kaW5nKGN0bHItPmRt
+YV90eCk7CiAKLQkvKiBtYXJrIGFzIGRtYSBwZW5kaW5nICovCi0JYnMtPmRtYV9wZW5kaW5nID0g
+MTsKLQogCS8qIHNldCB0aGUgRE1BIGxlbmd0aCAqLwogCWJjbTI4MzVfd3IoYnMsIEJDTTI4MzVf
+U1BJX0RMRU4sIGJzLT50eF9sZW4pOwogCkBAIC02NjIsNyArNjU3LDYgQEAgc3RhdGljIGludCBi
+Y20yODM1X3NwaV90cmFuc2Zlcl9vbmVfZG1hKHN0cnVjdCBzcGlfY29udHJvbGxlciAqY3RsciwK
+IAlpZiAocmV0KSB7CiAJCS8qIG5lZWQgdG8gcmVzZXQgb24gZXJyb3JzICovCiAJCWRtYWVuZ2lu
+ZV90ZXJtaW5hdGVfc3luYyhjdGxyLT5kbWFfdHgpOwotCQlicy0+ZG1hX3BlbmRpbmcgPSBmYWxz
+ZTsKIAkJZ290byBlcnJfcmVzZXRfaHc7CiAJfQogCkBAIC05MjcsMTEgKzkyMSwxMCBAQCBzdGF0
+aWMgdm9pZCBiY20yODM1X3NwaV9oYW5kbGVfZXJyKHN0cnVjdCBzcGlfY29udHJvbGxlciAqY3Rs
+ciwKIAlzdHJ1Y3QgYmNtMjgzNV9zcGkgKmJzID0gc3BpX2NvbnRyb2xsZXJfZ2V0X2RldmRhdGEo
+Y3Rscik7CiAKIAkvKiBpZiBhbiBlcnJvciBvY2N1cnJlZCBhbmQgd2UgaGF2ZSBhbiBhY3RpdmUg
+ZG1hLCB0aGVuIHRlcm1pbmF0ZSAqLwotCWlmIChjbXB4Y2hnKCZicy0+ZG1hX3BlbmRpbmcsIHRy
+dWUsIGZhbHNlKSkgewotCQlkbWFlbmdpbmVfdGVybWluYXRlX3N5bmMoY3Rsci0+ZG1hX3R4KTsK
+LQkJZG1hZW5naW5lX3Rlcm1pbmF0ZV9zeW5jKGN0bHItPmRtYV9yeCk7Ci0JCWJjbTI4MzVfc3Bp
+X3VuZG9fcHJvbG9ndWUoYnMpOwotCX0KKwlkbWFlbmdpbmVfdGVybWluYXRlX3N5bmMoY3Rsci0+
+ZG1hX3R4KTsKKwlkbWFlbmdpbmVfdGVybWluYXRlX3N5bmMoY3Rsci0+ZG1hX3J4KTsKKwliY20y
+ODM1X3NwaV91bmRvX3Byb2xvZ3VlKGJzKTsKKwogCS8qIGFuZCByZXNldCAqLwogCWJjbTI4MzVf
+c3BpX3Jlc2V0X2h3KGN0bHIpOwogfQotLSAKMi4yMy4wCgoKX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KbGludXgtcnBpLWtlcm5lbCBtYWlsaW5nIGxpc3QK
+bGludXgtcnBpLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
+YWQub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtcnBpLWtlcm5lbAo=

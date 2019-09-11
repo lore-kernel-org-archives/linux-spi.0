@@ -1,13 +1,15 @@
 From: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH v2 00/10] Speed up SPI simplex transfers on Raspberry Pi
+Subject: [PATCH v2 01/10] dmaengine: bcm2835: Allow reusable descriptors
 Date: Wed, 11 Sep 2019 12:15:30 +0200
-Message-ID: <cover.1568187525.git.lukas@wunner.de>
+Message-ID: <bfc98a38225bbec4158440ad06cb9eee675e3e6f.1568187525.git.lukas@wunner.de>
+References: <cover.1568187525.git.lukas@wunner.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <cover.1568187525.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
  <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
@@ -19,45 +21,30 @@ Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BG
 Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Extend the BCM2835 SPI driver to handle simplex transfers internally,
-thereby reducing their latency and CPU usage and obviating the need to
-have the SPI core convert to full-duplex via SPI_CONTROLLER_MUST_TX/RX.
-
-
-Changes since v2:
-
-* Patch [03/10]: Round up struct spi_controller to cacheline size
-  instead of putting it behind the driver-private data. (Mark Brown)
-
-* Move patch "spi: bcm2835: Work around DONE bit erratum" to the front
-  of the series to ease backporting to stable. (Mark Brown)
-  (I don't think it's necessary to backport it, hence it's not marked
-  for stable, but it might be autoselected by Sasha Levin's AI.)
-
-* Add all collected Acked-by and Tested-by tags, rebase on for-5.4.
-
-
-Link to v1:
-
-https://lore.kernel.org/dmaengine/20190910112141.GM2036-GFdadSzt00ze9xe1eoZjHA@public.gmane.org/T/#t
-
-
-Lukas Wunner (10):
-  dmaengine: bcm2835: Allow reusable descriptors
-  dmaengine: bcm2835: Allow cyclic transactions without interrupt
-  spi: Guarantee cacheline alignment of driver-private data
-  spi: bcm2835: Work around DONE bit erratum
-  spi: bcm2835: Drop dma_pending flag
-  spi: bcm2835: Cache CS register value for ->prepare_message()
-  spi: bcm2835: Speed up TX-only DMA transfers by clearing RX FIFO
-  dmaengine: bcm2835: Document struct bcm2835_dmadev
-  dmaengine: bcm2835: Avoid accessing memory when copying zeroes
-  spi: bcm2835: Speed up RX-only DMA transfers by zero-filling TX FIFO
-
- drivers/dma/bcm2835-dma.c |  38 +++-
- drivers/spi/spi-bcm2835.c | 407 +++++++++++++++++++++++++++++++-------
- drivers/spi/spi.c         |  11 +-
- 3 files changed, 384 insertions(+), 72 deletions(-)
-
--- 
-2.23.0
+VGhlIERNQSBlbmdpbmUgQVBJIHJlcXVpcmVzIERNQSBkcml2ZXJzIHRvIGV4cGxpY2l0bHkgYWxs
+b3cgdGhhdApkZXNjcmlwdG9ycyBhcmUgcHJlcGFyZWQgb25jZSBhbmQgcmV1c2VkIG11bHRpcGxl
+IHRpbWVzLiBPbmx5IGEKc2luZ2xlIGRyaXZlciBtYWtlcyB1c2Ugb2YgdGhpcyBmdW5jdGlvbmFs
+aXR5IHNvIGZhciAocHhhX2RtYS5jLAp0byBzcGVlZCB1cCBweGFfY2FtZXJhLmMpLgoKV2UncmUg
+YWJvdXQgdG8gYWRkIGFub3RoZXIgdXNlIGNhc2UgZm9yIHJldXNhYmxlIGRlc2NyaXB0b3JzIGlu
+CnRoZSBCQ00yODM1IFNQSSBkcml2ZXIsIHNvIGFsbG93IHRoYXQgaW4gdGhlIEJDTTI4MzUgRE1B
+IGRyaXZlci4KClRlc3RlZC1ieTogTnVubyBTw6EgPG51bm8uc2FAYW5hbG9nLmNvbT4KVGVzdGVk
+LWJ5OiBOb3JhbGYgVHLDuG5uZXMgPG5vcmFsZkB0cm9ubmVzLm9yZz4KU2lnbmVkLW9mZi1ieTog
+THVrYXMgV3VubmVyIDxsdWthc0B3dW5uZXIuZGU+CkFja2VkLWJ5OiBWaW5vZCBLb3VsIDx2a291
+bEBrZXJuZWwub3JnPgpBY2tlZC1ieTogU3RlZmFuIFdhaHJlbiA8d2FocmVuc3RAZ214Lm5ldD4K
+QWNrZWQtYnk6IE1hcnRpbiBTcGVybCA8a2VybmVsQG1hcnRpbi5zcGVybC5vcmc+CkNjOiBGbG9y
+aWFuIEthdWVyIDxmbG9yaWFuLmthdWVyQGtvYWxvLmRlPgpDYzogUm9iZXJ0IEphcnptaWsgPHJv
+YmVydC5qYXJ6bWlrQGZyZWUuZnI+Ci0tLQogZHJpdmVycy9kbWEvYmNtMjgzNS1kbWEuYyB8IDEg
+KwogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9k
+bWEvYmNtMjgzNS1kbWEuYyBiL2RyaXZlcnMvZG1hL2JjbTI4MzUtZG1hLmMKaW5kZXggODEwMWZm
+MmYwNWMxLi41MjNjNTA3YWQ2OWUgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvZG1hL2JjbTI4MzUtZG1h
+LmMKKysrIGIvZHJpdmVycy9kbWEvYmNtMjgzNS1kbWEuYwpAQCAtOTA3LDYgKzkwNyw3IEBAIHN0
+YXRpYyBpbnQgYmNtMjgzNV9kbWFfcHJvYmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldikK
+IAlvZC0+ZGRldi5kaXJlY3Rpb25zID0gQklUKERNQV9ERVZfVE9fTUVNKSB8IEJJVChETUFfTUVN
+X1RPX0RFVikgfAogCQkJICAgICAgQklUKERNQV9NRU1fVE9fTUVNKTsKIAlvZC0+ZGRldi5yZXNp
+ZHVlX2dyYW51bGFyaXR5ID0gRE1BX1JFU0lEVUVfR1JBTlVMQVJJVFlfQlVSU1Q7CisJb2QtPmRk
+ZXYuZGVzY3JpcHRvcl9yZXVzZSA9IHRydWU7CiAJb2QtPmRkZXYuZGV2ID0gJnBkZXYtPmRldjsK
+IAlJTklUX0xJU1RfSEVBRCgmb2QtPmRkZXYuY2hhbm5lbHMpOwogCi0tIAoyLjIzLjAKCgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpsaW51eC1ycGkta2Vy
+bmVsIG1haWxpbmcgbGlzdApsaW51eC1ycGkta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1ycGkta2VybmVs
+Cg==

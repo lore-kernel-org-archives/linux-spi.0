@@ -1,12 +1,12 @@
 From: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH v2 02/10] dmaengine: bcm2835: Allow cyclic transactions
- without interrupt
+Subject: [PATCH v2 03/10] spi: Guarantee cacheline alignment of driver-private
+ data
 Date: Wed, 11 Sep 2019 12:15:30 +0200
-Message-ID: <73cf37be56eb4cbe6f696057c719f3a38cbaf26e.1568187525.git.lukas@wunner.de>
+Message-ID: <01625b9b26b93417fb09d2c15ad02dfe9cdbbbe5.1568187525.git.lukas@wunner.de>
 References: <cover.1568187525.git.lukas@wunner.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
@@ -22,44 +22,66 @@ Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BG
 Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-VGhlIEJDTTI4MzUgRE1BIGRyaXZlciBjdXJyZW50bHkgcmVxdWVzdHMgYW4gaW50ZXJydXB0IGZy
-b20gdGhlCmNvbnRyb2xsZXIgcmVnYXJkbGVzcyB3aGV0aGVyIG9yIG5vdCB0aGUgY2xpZW50IGhh
-cyBwYXNzZWQgaW4gdGhlCkRNQV9QUkVQX0lOVEVSUlVQVCBmbGFnLiBUaGlzIGNhdXNlcyB1bm5l
-Y2Vzc2FyeSBvdmVyaGVhZCBmb3IgY3ljbGljCnRyYW5zYWN0aW9ucyB3aGljaCBkbyBub3QgbmVl
-ZCBhbiBpbnRlcnJ1cHQgYWZ0ZXIgZWFjaCBwZXJpb2QuCgpXZSdyZSBhYm91dCB0byBhZGQgc3Vj
-aCBhIHVzZSBjYXNlLCBuYW1lbHkgY3ljbGljIGNsZWFyaW5nIG9mIHRoZSBTUEkKY29udHJvbGxl
-cidzIFJYIEZJRk8sIHNvIGFtZW5kIHRoZSBETUEgZHJpdmVyIHRvIHJlcXVlc3QgYW4gaW50ZXJy
-dXB0Cm9ubHkgaWYgRE1BX1BSRVBfSU5URVJSVVBUIHdhcyBwYXNzZWQgaW4uIElnbm9yZSB0aGUg
-cGVyaW9kX2xlbiBmb3IKc3VjaCB0cmFuc2FjdGlvbnMgYW5kIHNldCBpdCB0byB0aGUgYnVmZmVy
-IGxlbmd0aCB0byBtYWtlIHRoZSBkcml2ZXIncwpjYWxjdWxhdGlvbnMgd29yay4KClRlc3RlZC1i
-eTogTnVubyBTw6EgPG51bm8uc2FAYW5hbG9nLmNvbT4KVGVzdGVkLWJ5OiBOb3JhbGYgVHLDuG5u
-ZXMgPG5vcmFsZkB0cm9ubmVzLm9yZz4KU2lnbmVkLW9mZi1ieTogTHVrYXMgV3VubmVyIDxsdWth
-c0B3dW5uZXIuZGU+CkFja2VkLWJ5OiBWaW5vZCBLb3VsIDx2a291bEBrZXJuZWwub3JnPgpBY2tl
-ZC1ieTogU3RlZmFuIFdhaHJlbiA8d2FocmVuc3RAZ214Lm5ldD4KQWNrZWQtYnk6IE1hcnRpbiBT
-cGVybCA8a2VybmVsQG1hcnRpbi5zcGVybC5vcmc+CkNjOiBGbG9yaWFuIEthdWVyIDxmbG9yaWFu
-LmthdWVyQGtvYWxvLmRlPgotLS0KIGRyaXZlcnMvZG1hL2JjbTI4MzUtZG1hLmMgfCAxMiArKysr
-KysrKysrLS0KIDEgZmlsZSBjaGFuZ2VkLCAxMCBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygt
-KQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvZG1hL2JjbTI4MzUtZG1hLmMgYi9kcml2ZXJzL2RtYS9i
-Y20yODM1LWRtYS5jCmluZGV4IDUyM2M1MDdhZDY5ZS4uYTY1NTE0ZmNiN2YyIDEwMDY0NAotLS0g
-YS9kcml2ZXJzL2RtYS9iY20yODM1LWRtYS5jCisrKyBiL2RyaXZlcnMvZG1hL2JjbTI4MzUtZG1h
-LmMKQEAgLTY5MSw3ICs2OTEsNyBAQCBzdGF0aWMgc3RydWN0IGRtYV9hc3luY190eF9kZXNjcmlw
-dG9yICpiY20yODM1X2RtYV9wcmVwX2RtYV9jeWNsaWMoCiAJc3RydWN0IGJjbTI4MzVfZGVzYyAq
-ZDsKIAlkbWFfYWRkcl90IHNyYywgZHN0OwogCXUzMiBpbmZvID0gQkNNMjgzNV9ETUFfV0FJVF9S
-RVNQOwotCXUzMiBleHRyYSA9IEJDTTI4MzVfRE1BX0lOVF9FTjsKKwl1MzIgZXh0cmEgPSAwOwog
-CXNpemVfdCBtYXhfbGVuID0gYmNtMjgzNV9kbWFfbWF4X2ZyYW1lX2xlbmd0aChjKTsKIAlzaXpl
-X3QgZnJhbWVzOwogCkBAIC03MDcsNiArNzA3LDExIEBAIHN0YXRpYyBzdHJ1Y3QgZG1hX2FzeW5j
-X3R4X2Rlc2NyaXB0b3IgKmJjbTI4MzVfZG1hX3ByZXBfZG1hX2N5Y2xpYygKIAkJcmV0dXJuIE5V
-TEw7CiAJfQogCisJaWYgKGZsYWdzICYgRE1BX1BSRVBfSU5URVJSVVBUKQorCQlleHRyYSB8PSBC
-Q00yODM1X0RNQV9JTlRfRU47CisJZWxzZQorCQlwZXJpb2RfbGVuID0gYnVmX2xlbjsKKwogCS8q
-CiAJICogd2FybiBpZiBidWZfbGVuIGlzIG5vdCBhIG11bHRpcGxlIG9mIHBlcmlvZF9sZW4gLSB0
-aGlzIG1heSBsZWVkCiAJICogdG8gdW5leHBlY3RlZCBsYXRlbmNpZXMgZm9yIGludGVycnVwdHMg
-YW5kIHRodXMgYXVkaWFibGUgY2xpY2tzCkBAIC03NzgsNyArNzgzLDEwIEBAIHN0YXRpYyBpbnQg
-YmNtMjgzNV9kbWFfdGVybWluYXRlX2FsbChzdHJ1Y3QgZG1hX2NoYW4gKmNoYW4pCiAKIAkvKiBz
-dG9wIERNQSBhY3Rpdml0eSAqLwogCWlmIChjLT5kZXNjKSB7Ci0JCXZjaGFuX3Rlcm1pbmF0ZV92
-ZGVzYygmYy0+ZGVzYy0+dmQpOworCQlpZiAoYy0+ZGVzYy0+dmQudHguZmxhZ3MgJiBETUFfUFJF
-UF9JTlRFUlJVUFQpCisJCQl2Y2hhbl90ZXJtaW5hdGVfdmRlc2MoJmMtPmRlc2MtPnZkKTsKKwkJ
-ZWxzZQorCQkJdmNoYW5fdmRlc2NfZmluaSgmYy0+ZGVzYy0+dmQpOwogCQljLT5kZXNjID0gTlVM
-TDsKIAkJYmNtMjgzNV9kbWFfYWJvcnQoYyk7CiAJfQotLSAKMi4yMy4wCgoKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KbGludXgtcnBpLWtlcm5lbCBtYWls
-aW5nIGxpc3QKbGludXgtcnBpLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
-cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtcnBpLWtlcm5lbAo=
+__spi_alloc_controller() uses a single allocation to accommodate struct
+spi_controller and the driver-private data, but places the latter behind
+the former.  This order does not guarantee cacheline alignment of the
+driver-private data.  (It does guarantee cacheline alignment of struct
+spi_controller but the structure doesn't make any use of that property.)
+
+Round up struct spi_controller to cacheline size.  A forthcoming commit
+leverages this to grant DMA access to driver-private data of the BCM2835
+SPI master.
+
+An alternative, less economical approach would be to use two allocations.
+
+A third approach consists of reversing the order to conserve memory.
+But Mark Brown is concerned that it may result in a performance penalty
+on architectures that don't like unaligned accesses.
+
+Signed-off-by: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+---
+ drivers/spi/spi.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index b2890923d256..f8b4654a57d3 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2188,8 +2188,10 @@ extern struct class spi_slave_class;	/* dummy */
+  * __spi_alloc_controller - allocate an SPI master or slave controller
+  * @dev: the controller, possibly using the platform_bus
+  * @size: how much zeroed driver-private data to allocate; the pointer to this
+- *	memory is in the driver_data field of the returned device,
+- *	accessible with spi_controller_get_devdata().
++ *	memory is in the driver_data field of the returned device, accessible
++ *	with spi_controller_get_devdata(); the memory is cacheline aligned;
++ *	drivers granting DMA access to portions of their private data need to
++ *	round up @size using ALIGN(size, dma_get_cache_alignment()).
+  * @slave: flag indicating whether to allocate an SPI master (false) or SPI
+  *	slave (true) controller
+  * Context: can sleep
+@@ -2211,11 +2213,12 @@ struct spi_controller *__spi_alloc_controller(struct device *dev,
+ 					      unsigned int size, bool slave)
+ {
+ 	struct spi_controller	*ctlr;
++	size_t ctlr_size = ALIGN(sizeof(*ctlr), dma_get_cache_alignment());
+ 
+ 	if (!dev)
+ 		return NULL;
+ 
+-	ctlr = kzalloc(size + sizeof(*ctlr), GFP_KERNEL);
++	ctlr = kzalloc(size + ctlr_size, GFP_KERNEL);
+ 	if (!ctlr)
+ 		return NULL;
+ 
+@@ -2229,7 +2232,7 @@ struct spi_controller *__spi_alloc_controller(struct device *dev,
+ 		ctlr->dev.class = &spi_master_class;
+ 	ctlr->dev.parent = dev;
+ 	pm_suspend_ignore_children(&ctlr->dev, true);
+-	spi_controller_set_devdata(ctlr, &ctlr[1]);
++	spi_controller_set_devdata(ctlr, (void *)ctlr + ctlr_size);
+ 
+ 	return ctlr;
+ }
+-- 
+2.23.0

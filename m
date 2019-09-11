@@ -1,16 +1,17 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 00/10] Speed up SPI simplex transfers on Raspberry Pi
-Date: Wed, 11 Sep 2019 12:59:28 +0100
-Message-ID: <20190911115928.GE2036@sirena.org.uk>
-References: <cover.1568187525.git.lukas@wunner.de>
- <20190911104721.GX2036@sirena.org.uk>
- <20190911114352.w2htkzfi5v6zl7nq@wunner.de>
+Subject: Applied "spi: Guarantee cacheline alignment of driver-private data"
+ to the spi tree
+Date: Wed, 11 Sep 2019 15:59:52 +0100 (BST)
+Message-ID: <20190911145952.2D94CD00486@fitzroy.sirena.org.uk>
+References: <01625b9b26b93417fb09d2c15ad02dfe9cdbbbe5.1568187525.git.lukas@wunner.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6031579073418001077=="
-Cc: linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+ linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
 Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <20190911114352.w2htkzfi5v6zl7nq-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+In-Reply-To: <01625b9b26b93417fb09d2c15ad02dfe9cdbbbe5.1568187525.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
  <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
@@ -22,58 +23,100 @@ Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BG
 Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---===============6031579073418001077==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Lg8eXa+brxrbjAbR"
-Content-Disposition: inline
+   spi: Guarantee cacheline alignment of driver-private data
 
+has been applied to the spi tree at
 
---Lg8eXa+brxrbjAbR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.4
 
-On Wed, Sep 11, 2019 at 01:43:52PM +0200, Lukas Wunner wrote:
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> I use "git format-patch --thread=shallow", then use a Perl script
-> to change the Date: header and send out the raw messages with msmtp.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Sounds like your perl script could just be git send-email?
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-> I suspect the incorrect order may be because all messages use the
-> same Date: header and you're using "sort_aux=date-sent" in Mutt.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-or that the messages are getting reordered in transit by the
-intervening MTAs and it's falling back on delivery order lacking
-any other information.
+Thanks,
+Mark
 
---Lg8eXa+brxrbjAbR
-Content-Type: application/pgp-signature; name="signature.asc"
+>From 229e6af102e407feada76d3c270395d7cda2cdfe Mon Sep 17 00:00:00 2001
+From: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Date: Wed, 11 Sep 2019 12:15:30 +0200
+Subject: [PATCH] spi: Guarantee cacheline alignment of driver-private data
 
------BEGIN PGP SIGNATURE-----
+__spi_alloc_controller() uses a single allocation to accommodate struct
+spi_controller and the driver-private data, but places the latter behind
+the former.  This order does not guarantee cacheline alignment of the
+driver-private data.  (It does guarantee cacheline alignment of struct
+spi_controller but the structure doesn't make any use of that property.)
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl144Z0ACgkQJNaLcl1U
-h9CiGgf+IZkFNPyHBjwAVwbah4Xor1XYDP/HVn9fnXlcm4hxeMSuYkCdimjnkwFy
-NBEgTw0samr7jvJtNwoU8GIOuntj2nbkPyQRTRktAfUX7hwXoPnWXyo6CKmBlGKY
-kL1CZhQa62BVgS8p8a/0e9q4oE4hUo/7zTqNrNw11kMcIA1SSs+h6dtWtT65RidS
-YZsY4IJclh+qZpnERxE9ceRCOuviz7bIEcGz8H0ZA7/nftR+9va8vjmYgwjnW0ir
-5pel+Me4nixf0+fYorS97DvGGq2puMhUfwwajDAaFYa6shsNjea2EbBho5BpqIH5
-JBsy+0Z93PeNmUEGgvfprEGmbnpxxw==
-=CdYe
------END PGP SIGNATURE-----
+Round up struct spi_controller to cacheline size.  A forthcoming commit
+leverages this to grant DMA access to driver-private data of the BCM2835
+SPI master.
 
---Lg8eXa+brxrbjAbR--
+An alternative, less economical approach would be to use two allocations.
 
+A third approach consists of reversing the order to conserve memory.
+But Mark Brown is concerned that it may result in a performance penalty
+on architectures that don't like unaligned accesses.
 
---===============6031579073418001077==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Signed-off-by: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Link: https://lore.kernel.org/r/01625b9b26b93417fb09d2c15ad02dfe9cdbbbe5.1568187525.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-_______________________________________________
-linux-rpi-kernel mailing list
-linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel
-
---===============6031579073418001077==--
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index b2890923d256..f8b4654a57d3 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2188,8 +2188,10 @@ extern struct class spi_slave_class;	/* dummy */
+  * __spi_alloc_controller - allocate an SPI master or slave controller
+  * @dev: the controller, possibly using the platform_bus
+  * @size: how much zeroed driver-private data to allocate; the pointer to this
+- *	memory is in the driver_data field of the returned device,
+- *	accessible with spi_controller_get_devdata().
++ *	memory is in the driver_data field of the returned device, accessible
++ *	with spi_controller_get_devdata(); the memory is cacheline aligned;
++ *	drivers granting DMA access to portions of their private data need to
++ *	round up @size using ALIGN(size, dma_get_cache_alignment()).
+  * @slave: flag indicating whether to allocate an SPI master (false) or SPI
+  *	slave (true) controller
+  * Context: can sleep
+@@ -2211,11 +2213,12 @@ struct spi_controller *__spi_alloc_controller(struct device *dev,
+ 					      unsigned int size, bool slave)
+ {
+ 	struct spi_controller	*ctlr;
++	size_t ctlr_size = ALIGN(sizeof(*ctlr), dma_get_cache_alignment());
+ 
+ 	if (!dev)
+ 		return NULL;
+ 
+-	ctlr = kzalloc(size + sizeof(*ctlr), GFP_KERNEL);
++	ctlr = kzalloc(size + ctlr_size, GFP_KERNEL);
+ 	if (!ctlr)
+ 		return NULL;
+ 
+@@ -2229,7 +2232,7 @@ struct spi_controller *__spi_alloc_controller(struct device *dev,
+ 		ctlr->dev.class = &spi_master_class;
+ 	ctlr->dev.parent = dev;
+ 	pm_suspend_ignore_children(&ctlr->dev, true);
+-	spi_controller_set_devdata(ctlr, &ctlr[1]);
++	spi_controller_set_devdata(ctlr, (void *)ctlr + ctlr_size);
+ 
+ 	return ctlr;
+ }
+-- 
+2.20.1

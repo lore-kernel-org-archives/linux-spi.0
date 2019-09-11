@@ -1,15 +1,16 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 04/10] spi: bcm2835: Work around DONE bit erratum
-Date: Wed, 11 Sep 2019 12:25:22 +0100
-Message-ID: <20190911112522.GD2036@sirena.org.uk>
+Subject: Re: [PATCH v2 00/10] Speed up SPI simplex transfers on Raspberry Pi
+Date: Wed, 11 Sep 2019 12:59:28 +0100
+Message-ID: <20190911115928.GE2036@sirena.org.uk>
 References: <cover.1568187525.git.lukas@wunner.de>
- <7ceb98f154cdcf72c577615fa312df41adea5f47.1568187525.git.lukas@wunner.de>
+ <20190911104721.GX2036@sirena.org.uk>
+ <20190911114352.w2htkzfi5v6zl7nq@wunner.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8258217309464866912=="
+Content-Type: multipart/mixed; boundary="===============6031579073418001077=="
 Cc: linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
 Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <7ceb98f154cdcf72c577615fa312df41adea5f47.1568187525.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+In-Reply-To: <20190911114352.w2htkzfi5v6zl7nq-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
  <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
@@ -22,80 +23,49 @@ Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJW
 List-Id: linux-spi.vger.kernel.org
 
 
---===============8258217309464866912==
+--===============6031579073418001077==
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="qXCixuLMVvZDruUh"
+	protocol="application/pgp-signature"; boundary="Lg8eXa+brxrbjAbR"
 Content-Disposition: inline
 
 
---qXCixuLMVvZDruUh
-Content-Type: text/plain; charset=utf-8
+--Lg8eXa+brxrbjAbR
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 11, 2019 at 12:15:30PM +0200, Lukas Wunner wrote:
-> Commit 3bd7f6589f67 ("spi: bcm2835: Overcome sglist entry length
-> limitation") amended the BCM2835 SPI driver with support for DMA
-> transfers whose buffers are not aligned to 4 bytes and require more than
-> one sglist entry.
+On Wed, Sep 11, 2019 at 01:43:52PM +0200, Lukas Wunner wrote:
 
-You said in the cover letter that this was at the start of the
-series but it's actually patch 4 (or patch 3 in terms of the
-order they were sent), and in any case it was already applied so
-I'm not clear why you're resending it.  If there's any difference
-=66rom the previous version please send an incremental fix for it
-instead.
+> I use "git format-patch --thread=shallow", then use a Perl script
+> to change the Date: header and send out the raw messages with msmtp.
 
-The entire series has arrived but it looks like this in my inbox:
+Sounds like your perl script could just be git send-email?
 
-    749 r T 09/11 Lukas Wunner    (1.6K) [PATCH v2 00/10] Speed up SPI simp=
-lex t
-    750 N T 09/11 Lukas Wunner    (4.0K) =E2=94=9C=E2=94=80>[PATCH v2 05/10=
-] spi: bcm2835: Drop
-    751 N T 09/11 Lukas Wunner    (3.5K) =E2=94=9C=E2=94=80>[PATCH v2 09/10=
-] dmaengine: bcm2835:
-    752 N T 09/11 Lukas Wunner    (3.6K) =E2=94=9C=E2=94=80>[PATCH v2 04/10=
-] spi: bcm2835: Work
-    753 N T 09/11 Lukas Wunner    ( 17K) =E2=94=9C=E2=94=80>[PATCH v2 07/10=
-] spi: bcm2835: Speed
-    754 N T 09/11 Lukas Wunner    (5.2K) =E2=94=9C=E2=94=80>[PATCH v2 06/10=
-] spi: bcm2835: Cache
-    755 N T 09/11 Lukas Wunner    (2.1K) =E2=94=9C=E2=94=80>[PATCH v2 02/10=
-] dmaengine: bcm2835:
-    756 N T 09/11 Lukas Wunner    (1.3K) =E2=94=9C=E2=94=80>[PATCH v2 01/10=
-] dmaengine: bcm2835:
-    757 N T 09/11 Lukas Wunner    (2.6K) =E2=94=9C=E2=94=80>[PATCH v2 03/10=
-] spi: Guarantee cach
-    758 N T 09/11 Lukas Wunner    (1.1K) =E2=94=9C=E2=94=80>[PATCH v2 08/10=
-] dmaengine: bcm2835:
-    759 N T 09/11 Lukas Wunner    (8.6K) =E2=94=94=E2=94=80>[PATCH v2 10/10=
-] spi: bcm2835: Speed
+> I suspect the incorrect order may be because all messages use the
+> same Date: header and you're using "sort_aux=date-sent" in Mutt.
 
-which is really not good, the random ordering you're using when
-you send things means that it's a hassle to even figure out that
-I've got the entire series.  Please look into what you're doing
-here, other people's patch serieses don't have this problem so
-there must be something unusual with your tooling.
+or that the messages are getting reordered in transit by the
+intervening MTAs and it's falling back on delivery order lacking
+any other information.
 
---qXCixuLMVvZDruUh
+--Lg8eXa+brxrbjAbR
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl142aEACgkQJNaLcl1U
-h9DfPAf+OYtqXMV5gYBzU4XTKR08XD1PV2nI4GT7e675+/MifpQk2bPDDqVQYYQw
-lysfjslqQAmGX8aHnoyaPPIyiGkT1aCUG7j8DdqgWPdXPRoGWNnknhVc7Lwko5+v
-9nOxr3Zft3KmhKr50btHGengwyNJNlZlhvEi4nSmwKYyJLR8+nK3HmvIHew+yABM
-DppyiPrwx7Q4JNKYPj3zS8rz8vUUp0mUpdYv2e377jLilQYuhlvvP8DfADc52zhN
-S0dXlGpjChPSBfzK/nM8mP+l8txFax/ERE/g7w9APK1gAJ/HUhniJp13Q1PFTNF3
-AWYr1YSUDj94ktqrczb+BgyDd4YrrA==
-=h6tk
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl144Z0ACgkQJNaLcl1U
+h9CiGgf+IZkFNPyHBjwAVwbah4Xor1XYDP/HVn9fnXlcm4hxeMSuYkCdimjnkwFy
+NBEgTw0samr7jvJtNwoU8GIOuntj2nbkPyQRTRktAfUX7hwXoPnWXyo6CKmBlGKY
+kL1CZhQa62BVgS8p8a/0e9q4oE4hUo/7zTqNrNw11kMcIA1SSs+h6dtWtT65RidS
+YZsY4IJclh+qZpnERxE9ceRCOuviz7bIEcGz8H0ZA7/nftR+9va8vjmYgwjnW0ir
+5pel+Me4nixf0+fYorS97DvGGq2puMhUfwwajDAaFYa6shsNjea2EbBho5BpqIH5
+JBsy+0Z93PeNmUEGgvfprEGmbnpxxw==
+=CdYe
 -----END PGP SIGNATURE-----
 
---qXCixuLMVvZDruUh--
+--Lg8eXa+brxrbjAbR--
 
 
---===============8258217309464866912==
+--===============6031579073418001077==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -106,4 +76,4 @@ linux-rpi-kernel mailing list
 linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel
 
---===============8258217309464866912==--
+--===============6031579073418001077==--

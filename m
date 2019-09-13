@@ -1,7 +1,8 @@
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [RFC PATCH 00/15] Unify SPI delays into an `struct spi_delay`
-Date: Fri, 13 Sep 2019 14:45:35 +0300
-Message-ID: <20190913114550.956-1-alexandru.ardelean@analog.com>
+Subject: [RFC PATCH 02/15] spi: introduce spi_delay struct as "value + unit" & spi_delay_exec()
+Date: Fri, 13 Sep 2019 14:45:37 +0300
+Message-ID: <20190913114550.956-3-alexandru.ardelean@analog.com>
+References: <20190913114550.956-1-alexandru.ardelean@analog.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
@@ -14,76 +15,133 @@ To: <linux-spi@vger.kernel.org>, <linux-iio@vger.kernel.org>,
         <linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <bcm-kernel-feedback-list@broadcom.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190913114550.956-1-alexandru.ardelean@analog.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Initially, I started this patchset thinking: "we need a new delay for
-something-something" (in case someone is curios, we need a CS-hold-time for
-the first transfer, because the CS wakes a chip from sleep-mode).
+There are plenty of delays that have been introduced in SPI core. Most of
+them are in micro-seconds, some need to be in nano-seconds, and some in
+clock-cycles.
 
-Then I added the delay, and felt a bit dirty-inside about adding a new one
-(just like that), and decided to look at maybe cleaning things up a bit,
-and a few days later, I got here.
+For some of these delays (related to transfers & CS timing) it may make
+sense to have a `spi_delay` struct that abstracts these a bit.
 
-Full disclaimer: this patchset is not complete. It's an RFC.
-It's based on top of Jonathan's `iio/togreg` branch which also includes the
-ADIS driver library changes and also includes `cs_change_delay`.
+The important element of these delays [for unification] seems to be the
+`unit` of the delay.
+It looks like micro-seconds is good enough for most people, but every-once
+in a while, some delays seem to require other units of measurement.
 
-I'll send a V2 patchset, which just the first 4 patches, since I feel that
-those are a bit more complete.
+This change adds the `spi_delay` struct & a `spi_delay_exec()` function
+that processes a `spi_delay` object/struct to execute the delay.
+It's a copy of the `cs_change_delay` mechanism, but without the default
+for 10 uS.
 
-I thought about just sending the first 4 patches on-their-own, but I
-figured that the whole series (even if not complete) serves as a better
-explanation about the whole "why?".
+The clock-cycle delay unit is a bit special, as it needs to be bound to an
+`spi_transfer` object to execute.
 
-Hopefully, this can sort-of-explain things.
-I'll reference this RFC on the next series.
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+ drivers/spi/spi.c       | 51 +++++++++++++++++++++++++++++++++++++++++
+ include/linux/spi/spi.h | 18 ++++++++++++---
+ 2 files changed, 66 insertions(+), 3 deletions(-)
 
-Thanks
-
-Alexandru Ardelean (15):
-  spi: move `cs_change_delay` backwards compat logic outside switch
-  spi: introduce spi_delay struct as "value + unit" &  spi_delay_exec()
-  spi: make `cs_change_delay` the first user of the `spi_delay` logic
-  iio: imu: adis: convert cs_change_delay to spi_delay struct
-  spi: sprd: convert transfer word delay to spi_delay struct
-  spi: orion: use new `word_delay` field for SPI transfers
-  spi: spidev: use new `word_delay` field for spi transfers
-  spi: core,atmel: convert `word_delay_usecs` -> `word_delay` for
-    spi_device
-  spi: introduce `delay` field for `spi_transfer` + spi_transfer_exec()
-  spi: use new `spi_transfer_delay` helper where straightforward
-  spi: tegra114: use `spi_transfer_delay` helper
-  spi: spi-loopback-test: use new `delay` field
-  spi: spidev: use new `delay` field for spi transfers
-  spi: tegra114: change format for `spi_set_cs_timing()` function
-  spi: implement SW control for CS times
-
- drivers/iio/imu/adis.c           |  24 ++---
- drivers/spi/spi-atmel.c          |  29 +++++-
- drivers/spi/spi-bcm63xx-hsspi.c  |   3 +-
- drivers/spi/spi-cavium.c         |   3 +-
- drivers/spi/spi-fsl-dspi.c       |   3 +-
- drivers/spi/spi-fsl-espi.c       |   3 +-
- drivers/spi/spi-fsl-spi.c        |   3 +-
- drivers/spi/spi-loopback-test.c  |  12 ++-
- drivers/spi/spi-mpc512x-psc.c    |   3 +-
- drivers/spi/spi-mpc52xx-psc.c    |   3 +-
- drivers/spi/spi-omap-100k.c      |   3 +-
- drivers/spi/spi-orion.c          |   6 +-
- drivers/spi/spi-pl022.c          |  25 +++--
- drivers/spi/spi-sc18is602.c      |   3 +-
- drivers/spi/spi-sh-hspi.c        |   3 +-
- drivers/spi/spi-sprd.c           |  11 ++-
- drivers/spi/spi-tegra114.c       |  39 +++++---
- drivers/spi/spi-tegra20-sflash.c |   2 +-
- drivers/spi/spi-topcliff-pch.c   |   7 +-
- drivers/spi/spi-txx9.c           |   3 +-
- drivers/spi/spi-xcomm.c          |   3 +-
- drivers/spi/spi.c                | 162 +++++++++++++++++++++++++------
- drivers/spi/spidev.c             |   6 +-
- include/linux/spi/spi.h          |  65 ++++++++++---
- 24 files changed, 293 insertions(+), 131 deletions(-)
-
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index c90e02e6d62f..1883de8ffa82 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1106,6 +1106,57 @@ static void _spi_transfer_delay_ns(u32 ns)
+ 	}
+ }
+ 
++static int _spi_delay_to_ns(struct spi_delay *_delay, struct spi_transfer *xfer)
++{
++	u32 delay = _delay->value;
++	u32 unit = _delay->unit;
++	u32 hz;
++
++	if (!delay)
++		return 0;
++
++	switch (unit) {
++	case SPI_DELAY_UNIT_USECS:
++		delay *= 1000;
++		break;
++	case SPI_DELAY_UNIT_NSECS: /* nothing to do here */
++		break;
++	case SPI_DELAY_UNIT_SCK:
++		/* clock cycles need to be obtained from spi_transfer */
++		if (!xfer)
++			return -EINVAL;
++		/* if there is no effective speed know, then approximate
++		 * by underestimating with half the requested hz
++		 */
++		hz = xfer->effective_speed_hz ?: xfer->speed_hz / 2;
++		if (!hz)
++			return -EINVAL;
++		delay *= DIV_ROUND_UP(1000000000, hz);
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	return delay;
++}
++
++int spi_delay_exec(struct spi_delay *_delay, struct spi_transfer *xfer)
++{
++	int delay;
++
++	if (!_delay)
++		return -EINVAL;
++
++	delay = _spi_delay_to_ns(_delay, xfer);
++	if (delay < 0)
++		return delay;
++
++	_spi_transfer_delay_ns(delay);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(spi_delay_exec);
++
+ static void _spi_transfer_cs_change_delay(struct spi_message *msg,
+ 					  struct spi_transfer *xfer)
+ {
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index af4f265d0f67..c18cfa7cda35 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -89,6 +89,21 @@ void spi_statistics_add_transfer_stats(struct spi_statistics *stats,
+ #define SPI_STATISTICS_INCREMENT_FIELD(stats, field)	\
+ 	SPI_STATISTICS_ADD_TO_FIELD(stats, field, 1)
+ 
++/**
++ * struct spi_delay - SPI delay information
++ * @value: Value for the delay
++ * @unit: Unit for the delay
++ */
++struct spi_delay {
++#define SPI_DELAY_UNIT_USECS	0
++#define SPI_DELAY_UNIT_NSECS	1
++#define SPI_DELAY_UNIT_SCK	2
++	u16	value;
++	u8	unit;
++};
++
++extern int spi_delay_exec(struct spi_delay *_delay, struct spi_transfer *xfer);
++
+ /**
+  * struct spi_device - Controller side proxy for an SPI slave device
+  * @dev: Driver model representation of the device.
+@@ -834,9 +849,6 @@ struct spi_transfer {
+ 	u16		delay_usecs;
+ 	u16		cs_change_delay;
+ 	u8		cs_change_delay_unit;
+-#define SPI_DELAY_UNIT_USECS	0
+-#define SPI_DELAY_UNIT_NSECS	1
+-#define SPI_DELAY_UNIT_SCK	2
+ 	u32		speed_hz;
+ 	u16		word_delay;
+ 
 -- 
 2.20.1

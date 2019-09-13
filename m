@@ -1,7 +1,7 @@
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [RFC PATCH 11/15] spi: tegra114: use `spi_transfer_delay` helper
-Date: Fri, 13 Sep 2019 14:45:46 +0300
-Message-ID: <20190913114550.956-12-alexandru.ardelean@analog.com>
+Subject: [RFC PATCH 12/15] spi: spi-loopback-test: use new `delay` field
+Date: Fri, 13 Sep 2019 14:45:47 +0300
+Message-ID: <20190913114550.956-13-alexandru.ardelean@analog.com>
 References: <20190913114550.956-1-alexandru.ardelean@analog.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -19,68 +19,48 @@ In-Reply-To: <20190913114550.956-1-alexandru.ardelean@analog.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The tegra114 driver has a weird/separate `tegra_spi_transfer_delay()`
-function that does 2 delays: one mdelay() and one udelay().
-
-This was introduced via commit f4fade12d506e14867a2b0a5e2f7aaf227297d8b
-("spi/tegra114: Correct support for cs_change").
-
-There doesn't seem to be a mention in that commit message to suggest a
-specific need/use-case for having the 2 delay calls.
-For the most part, udelay() should be sufficient.
-
-This change replaces it with the new `spi_transfer_delay()`, which should
-do the same thing.
+This change replaces the use of the `delay_usecs` field with the new
+`delay` field. The code/test still uses micro-seconds, but they are now
+configured and used via the `struct spi_delay` format of the `delay` field.
 
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- drivers/spi/spi-tegra114.c | 17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
+ drivers/spi/spi-loopback-test.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index 39374c2edcf3..5ac2ceb234fc 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -984,17 +984,6 @@ static int tegra_spi_setup(struct spi_device *spi)
- 	return 0;
- }
+diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
+index 6f18d4952767..b6d79cd156fb 100644
+--- a/drivers/spi/spi-loopback-test.c
++++ b/drivers/spi/spi-loopback-test.c
+@@ -298,12 +298,18 @@ static struct spi_test spi_tests[] = {
+ 			{
+ 				.tx_buf = TX(0),
+ 				.rx_buf = RX(0),
+-				.delay_usecs = 1000,
++				.delay = {
++					.value = 1000,
++					.unit = SPI_DELAY_UNIT_USECS,
++				},
+ 			},
+ 			{
+ 				.tx_buf = TX(0),
+ 				.rx_buf = RX(0),
+-				.delay_usecs = 1000,
++				.delay = {
++					.value = 1000,
++					.unit = SPI_DELAY_UNIT_USECS,
++				},
+ 			},
+ 		},
+ 	},
+@@ -537,7 +543,7 @@ static int spi_test_check_elapsed_time(struct spi_device *spi,
+ 		unsigned long long nbits = (unsigned long long)BITS_PER_BYTE *
+ 					   xfer->len;
  
--static void tegra_spi_transfer_delay(int delay)
--{
--	if (!delay)
--		return;
--
--	if (delay >= 1000)
--		mdelay(delay / 1000);
--
--	udelay(delay % 1000);
--}
--
- static void tegra_spi_transfer_end(struct spi_device *spi)
- {
- 	struct tegra_spi_data *tspi = spi_master_get_devdata(spi->master);
-@@ -1098,7 +1087,7 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
- complete_xfer:
- 		if (ret < 0 || skip) {
- 			tegra_spi_transfer_end(spi);
--			tegra_spi_transfer_delay(xfer->delay_usecs);
-+			spi_transfer_delay(xfer);
- 			goto exit;
- 		} else if (list_is_last(&xfer->transfer_list,
- 					&msg->transfers)) {
-@@ -1106,11 +1095,11 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
- 				tspi->cs_control = spi;
- 			else {
- 				tegra_spi_transfer_end(spi);
--				tegra_spi_transfer_delay(xfer->delay_usecs);
-+				spi_transfer_delay(xfer);
- 			}
- 		} else if (xfer->cs_change) {
- 			tegra_spi_transfer_end(spi);
--			tegra_spi_transfer_delay(xfer->delay_usecs);
-+			spi_transfer_delay(xfer);
- 		}
- 
- 	}
+-		delay_usecs += xfer->delay_usecs;
++		delay_usecs += xfer->delay.value;
+ 		if (!xfer->speed_hz)
+ 			continue;
+ 		estimated_time += div_u64(nbits * NSEC_PER_SEC, xfer->speed_hz);
 -- 
 2.20.1

@@ -1,7 +1,7 @@
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [RFC PATCH 02/15] spi: introduce spi_delay struct as "value + unit" & spi_delay_exec()
-Date: Fri, 13 Sep 2019 14:45:37 +0300
-Message-ID: <20190913114550.956-3-alexandru.ardelean@analog.com>
+Subject: [RFC PATCH 05/15] spi: sprd: convert transfer word delay to spi_delay struct
+Date: Fri, 13 Sep 2019 14:45:40 +0300
+Message-ID: <20190913114550.956-6-alexandru.ardelean@analog.com>
 References: <20190913114550.956-1-alexandru.ardelean@analog.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -19,129 +19,85 @@ In-Reply-To: <20190913114550.956-1-alexandru.ardelean@analog.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-There are plenty of delays that have been introduced in SPI core. Most of
-them are in micro-seconds, some need to be in nano-seconds, and some in
-clock-cycles.
+The Spreadtrum SPI driver is the only user of the `word_delay` field in
+the `spi_transfer` struct.
 
-For some of these delays (related to transfers & CS timing) it may make
-sense to have a `spi_delay` struct that abstracts these a bit.
-
-The important element of these delays [for unification] seems to be the
-`unit` of the delay.
-It looks like micro-seconds is good enough for most people, but every-once
-in a while, some delays seem to require other units of measurement.
-
-This change adds the `spi_delay` struct & a `spi_delay_exec()` function
-that processes a `spi_delay` object/struct to execute the delay.
-It's a copy of the `cs_change_delay` mechanism, but without the default
-for 10 uS.
-
-The clock-cycle delay unit is a bit special, as it needs to be bound to an
-`spi_transfer` object to execute.
+This change converts the field to use the `spi_delay` struct. This also
+enforces the users to specify the delay unit to be `SPI_DELAY_UNIT_SCK`.
 
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- drivers/spi/spi.c       | 51 +++++++++++++++++++++++++++++++++++++++++
- include/linux/spi/spi.h | 18 ++++++++++++---
- 2 files changed, 66 insertions(+), 3 deletions(-)
+ drivers/spi/spi-sprd.c  | 11 +++++++++--
+ include/linux/spi/spi.h |  4 ++--
+ 2 files changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index c90e02e6d62f..1883de8ffa82 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1106,6 +1106,57 @@ static void _spi_transfer_delay_ns(u32 ns)
- 	}
- }
+diff --git a/drivers/spi/spi-sprd.c b/drivers/spi/spi-sprd.c
+index 1b7eebb72c07..5634cd3e4a8d 100644
+--- a/drivers/spi/spi-sprd.c
++++ b/drivers/spi/spi-sprd.c
+@@ -671,9 +671,13 @@ static void sprd_spi_set_speed(struct sprd_spi *ss, u32 speed_hz)
  
-+static int _spi_delay_to_ns(struct spi_delay *_delay, struct spi_transfer *xfer)
-+{
-+	u32 delay = _delay->value;
-+	u32 unit = _delay->unit;
-+	u32 hz;
-+
-+	if (!delay)
-+		return 0;
-+
-+	switch (unit) {
-+	case SPI_DELAY_UNIT_USECS:
-+		delay *= 1000;
-+		break;
-+	case SPI_DELAY_UNIT_NSECS: /* nothing to do here */
-+		break;
-+	case SPI_DELAY_UNIT_SCK:
-+		/* clock cycles need to be obtained from spi_transfer */
-+		if (!xfer)
-+			return -EINVAL;
-+		/* if there is no effective speed know, then approximate
-+		 * by underestimating with half the requested hz
-+		 */
-+		hz = xfer->effective_speed_hz ?: xfer->speed_hz / 2;
-+		if (!hz)
-+			return -EINVAL;
-+		delay *= DIV_ROUND_UP(1000000000, hz);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return delay;
-+}
-+
-+int spi_delay_exec(struct spi_delay *_delay, struct spi_transfer *xfer)
-+{
-+	int delay;
-+
-+	if (!_delay)
-+		return -EINVAL;
-+
-+	delay = _spi_delay_to_ns(_delay, xfer);
-+	if (delay < 0)
-+		return delay;
-+
-+	_spi_transfer_delay_ns(delay);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(spi_delay_exec);
-+
- static void _spi_transfer_cs_change_delay(struct spi_message *msg,
- 					  struct spi_transfer *xfer)
+ static void sprd_spi_init_hw(struct sprd_spi *ss, struct spi_transfer *t)
  {
++	struct spi_delay *d = &t->word_delay;
+ 	u16 word_delay, interval;
+ 	u32 val;
+ 
++	if (t->unit != SPI_DELAY_UNIT_SCK)
++		return -EINVAL;
++
+ 	val = readl_relaxed(ss->base + SPRD_SPI_CTL7);
+ 	val &= ~(SPRD_SPI_SCK_REV | SPRD_SPI_NG_TX | SPRD_SPI_NG_RX);
+ 	/* Set default chip selection, clock phase and clock polarity */
+@@ -686,7 +690,7 @@ static void sprd_spi_init_hw(struct sprd_spi *ss, struct spi_transfer *t)
+ 	 * formula as below per datasheet:
+ 	 * interval time (source clock cycles) = interval * 4 + 10.
+ 	 */
+-	word_delay = clamp_t(u16, t->word_delay, SPRD_SPI_MIN_DELAY_CYCLE,
++	word_delay = clamp_t(u16, d->value, SPRD_SPI_MIN_DELAY_CYCLE,
+ 			     SPRD_SPI_MAX_DELAY_CYCLE);
+ 	interval = DIV_ROUND_UP(word_delay - 10, 4);
+ 	ss->word_delay = interval * 4 + 10;
+@@ -719,13 +723,16 @@ static int sprd_spi_setup_transfer(struct spi_device *sdev,
+ 	struct sprd_spi *ss = spi_controller_get_devdata(sdev->controller);
+ 	u8 bits_per_word = t->bits_per_word;
+ 	u32 val, mode = 0;
++	int ret;
+ 
+ 	ss->len = t->len;
+ 	ss->tx_buf = t->tx_buf;
+ 	ss->rx_buf = t->rx_buf;
+ 
+ 	ss->hw_mode = sdev->mode;
+-	sprd_spi_init_hw(ss, t);
++	ret = sprd_spi_init_hw(ss, t);
++	if (ret)
++		return ret;
+ 
+ 	/* Set tansfer speed and valid bits */
+ 	sprd_spi_set_speed(ss, t->speed_hz);
 diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index af4f265d0f67..c18cfa7cda35 100644
+index 9ded3f44d58e..16397b210e0c 100644
 --- a/include/linux/spi/spi.h
 +++ b/include/linux/spi/spi.h
-@@ -89,6 +89,21 @@ void spi_statistics_add_transfer_stats(struct spi_statistics *stats,
- #define SPI_STATISTICS_INCREMENT_FIELD(stats, field)	\
- 	SPI_STATISTICS_ADD_TO_FIELD(stats, field, 1)
- 
-+/**
-+ * struct spi_delay - SPI delay information
-+ * @value: Value for the delay
-+ * @unit: Unit for the delay
-+ */
-+struct spi_delay {
-+#define SPI_DELAY_UNIT_USECS	0
-+#define SPI_DELAY_UNIT_NSECS	1
-+#define SPI_DELAY_UNIT_SCK	2
-+	u16	value;
-+	u8	unit;
-+};
-+
-+extern int spi_delay_exec(struct spi_delay *_delay, struct spi_transfer *xfer);
-+
- /**
-  * struct spi_device - Controller side proxy for an SPI slave device
-  * @dev: Driver model representation of the device.
-@@ -834,9 +849,6 @@ struct spi_transfer {
+@@ -759,7 +759,7 @@ extern void spi_res_release(struct spi_controller *ctlr,
+  *	the next transfer or completing this @spi_message.
+  * @word_delay_usecs: microseconds to inter word delay after each word size
+  *	(set by bits_per_word) transmission.
+- * @word_delay: clock cycles to inter word delay after each word size
++ * @word_delay: inter word delay to be introduced after each word size
+  *	(set by bits_per_word) transmission.
+  * @effective_speed_hz: the effective SCK-speed that was used to
+  *      transfer this transfer. Set to 0 if the spi bus driver does
+@@ -847,8 +847,8 @@ struct spi_transfer {
+ 	u8		word_delay_usecs;
  	u16		delay_usecs;
- 	u16		cs_change_delay;
- 	u8		cs_change_delay_unit;
--#define SPI_DELAY_UNIT_USECS	0
--#define SPI_DELAY_UNIT_NSECS	1
--#define SPI_DELAY_UNIT_SCK	2
+ 	struct spi_delay	cs_change_delay;
++	struct spi_delay	word_delay;
  	u32		speed_hz;
- 	u16		word_delay;
+-	u16		word_delay;
+ 
+ 	u32		effective_speed_hz;
  
 -- 
 2.20.1

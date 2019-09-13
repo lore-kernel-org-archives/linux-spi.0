@@ -1,7 +1,8 @@
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v2 0/4] spi: introduce `struct spi_delay` data-type
-Date: Fri, 13 Sep 2019 14:55:45 +0300
-Message-ID: <20190913115549.3823-1-alexandru.ardelean@analog.com>
+Subject: [PATCH v2 1/4] spi: move `cs_change_delay` backwards compat logic outside switch
+Date: Fri, 13 Sep 2019 14:55:46 +0300
+Message-ID: <20190913115549.3823-2-alexandru.ardelean@analog.com>
+References: <20190913115549.3823-1-alexandru.ardelean@analog.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
@@ -10,41 +11,44 @@ Cc: <jic23@kernel.org>, <broonie@kernel.org>,
 To: <linux-iio@vger.kernel.org>, <linux-spi@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190913115549.3823-1-alexandru.ardelean@analog.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Discussion reference:
-  https://lore.kernel.org/lkml/20190913114550.956-1-alexandru.ardelean@analog.com/
+The `cs_change_delay` backwards compatibility value could be moved outside
+of the switch statement.
+The only reason to do it, is to make the next patches easier to diff.
 
-This changeset introduces an `spi_delay` struct/data-type and makes the
-IIO ADIS driver library the first user of this.
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+ drivers/spi/spi.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-The patchset base is Jonathan's `iio/togreg` branch, but it also applies on
-Mark's `spi/for-next` branch.
-
-The reasons for choosing `cs_change_delay`, is:
-1. this change introduces delay units
-2. it is not yet widely used, meaning it can still be changed 
-
-Some delays like `delay` from `spi_transfer` would require a longer
-update-time change & discussion.
-
-Alexandru Ardelean (4):
-  spi: move `cs_change_delay` backwards compat logic outside switch
-  spi: introduce spi_delay struct as "value + unit" &  spi_delay_exec()
-  spi: make `cs_change_delay` the first user of the `spi_delay` logic
-  iio: imu: adis: convert cs_change_delay to spi_delay struct
-
- drivers/iio/imu/adis.c  | 24 +++++++--------
- drivers/spi/spi.c       | 68 +++++++++++++++++++++++++++++++----------
- include/linux/spi/spi.h | 22 +++++++++----
- 3 files changed, 80 insertions(+), 34 deletions(-)
-
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 75ac046cae52..c90e02e6d62f 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1114,16 +1114,15 @@ static void _spi_transfer_cs_change_delay(struct spi_message *msg,
+ 	u32 hz;
+ 
+ 	/* return early on "fast" mode - for everything but USECS */
+-	if (!delay && unit != SPI_DELAY_UNIT_USECS)
++	if (!delay) {
++		if (unit == SPI_DELAY_UNIT_USECS)
++			_spi_transfer_delay_ns(10000);
+ 		return;
++	}
+ 
+ 	switch (unit) {
+ 	case SPI_DELAY_UNIT_USECS:
+-		/* for compatibility use default of 10us */
+-		if (!delay)
+-			delay = 10000;
+-		else
+-			delay *= 1000;
++		delay *= 1000;
+ 		break;
+ 	case SPI_DELAY_UNIT_NSECS: /* nothing to do here */
+ 		break;
 -- 
-
-Changelog v1 -> v2:
-* split away from the RFC patchset, which aims to be a broader explanation
-  for this changeset; parts of v1 are not 100% defined yet, and may require
-  some discussion and refinement.
-
 2.20.1

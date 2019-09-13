@@ -1,7 +1,7 @@
 From: Gareth Williams <gareth.williams.jx@renesas.com>
-Subject: [PATCH 2/3] spi: dw: Add basic runtime PM support
-Date: Fri, 13 Sep 2019 13:11:59 +0100
-Message-ID: <1568376720-7402-3-git-send-email-gareth.williams.jx@renesas.com>
+Subject: [PATCH 3/3] spi: dw: Add compatible string for Renesas RZ/N1 SPI  Controller
+Date: Fri, 13 Sep 2019 13:12:00 +0100
+Message-ID: <1568376720-7402-4-git-send-email-gareth.williams.jx@renesas.com>
 References: <1568376720-7402-1-git-send-email-gareth.williams.jx@renesas.com>
 Cc: Phil Edworthy <phil.edworthy@renesas.com>,
         linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -14,36 +14,29 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Phil Edworthy <phil.edworthy@renesas.com>
 
-Enable runtime PM so that the clock used to access the registers in the
-peripheral is turned on using a clock domain.
+The Renesas RZ/N1 SPI Controller is based on the Synopsys DW SSI, but has
+additional registers for software CS control and DMA. This patch does not
+address the changes required for DMA support, it simply adds the compatible
+string. The CS registers are not needed as Linux can use gpios for the CS
+signals.
 
-Signed-off-by: Phil Edworthy <phil.edworthy@renesas.com>
 Signed-off-by: Gareth Williams <gareth.williams.jx@renesas.com>
+Signed-off-by: Phil Edworthy <phil.edworthy@renesas.com>
 ---
- drivers/spi/spi-dw.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/spi/spi-dw-mmio.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 9a49e07..593bbb0 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -10,6 +10,7 @@
- #include <linux/module.h>
- #include <linux/highmem.h>
- #include <linux/delay.h>
-+#include <linux/pm_runtime.h>
- #include <linux/slab.h>
- #include <linux/spi/spi.h>
- 
-@@ -497,6 +498,9 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 	if (dws->set_cs)
- 		master->set_cs = dws->set_cs;
- 
-+	pm_runtime_enable(dev);
-+	pm_runtime_get_sync(dev);
-+
- 	/* Basic HW init */
- 	spi_hw_init(dev, dws);
- 
+diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+index edb3cf6..3640b01 100644
+--- a/drivers/spi/spi-dw-mmio.c
++++ b/drivers/spi/spi-dw-mmio.c
+@@ -225,6 +225,7 @@ static const struct of_device_id dw_spi_mmio_of_match[] = {
+ 	{ .compatible = "mscc,ocelot-spi", .data = dw_spi_mscc_ocelot_init},
+ 	{ .compatible = "mscc,jaguar2-spi", .data = dw_spi_mscc_jaguar2_init},
+ 	{ .compatible = "amazon,alpine-dw-apb-ssi", .data = dw_spi_alpine_init},
++	{ .compatible = "renesas,rzn1-spi", },
+ 	{ /* end of table */}
+ };
+ MODULE_DEVICE_TABLE(of, dw_spi_mmio_of_match);
 -- 
 2.7.4

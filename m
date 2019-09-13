@@ -1,7 +1,7 @@
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v2 3/4] spi: make `cs_change_delay` the first user of the `spi_delay` logic
-Date: Fri, 13 Sep 2019 14:55:48 +0300
-Message-ID: <20190913115549.3823-4-alexandru.ardelean@analog.com>
+Subject: [PATCH v2 2/4] spi: introduce spi_delay struct as "value + unit" &  spi_delay_exec()
+Date: Fri, 13 Sep 2019 14:55:47 +0300
+Message-ID: <20190913115549.3823-3-alexandru.ardelean@analog.com>
 References: <20190913115549.3823-1-alexandru.ardelean@analog.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -15,88 +15,127 @@ In-Reply-To: <20190913115549.3823-1-alexandru.ardelean@analog.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Since the logic for `spi_delay` struct + `spi_delay_exec()` has been copied
-from the `cs_change_delay` logic, it's natural to make this delay, the
-first user.
+There are plenty of delays that have been introduced in SPI core. Most of
+them are in micro-seconds, some need to be in nano-seconds, and some in
+clock-cycles.
 
-The `cs_change_delay` logic requires that the default remain 10 uS, in case
-it is unspecified/unconfigured. So, there is some special handling needed
-to do that.
+For some of these delays (related to transfers & CS timing) it may make
+sense to have a `spi_delay` struct that abstracts these a bit.
+
+The important element of these delays [for unification] seems to be the
+`unit` of the delay.
+It looks like micro-seconds is good enough for most people, but every-once
+in a while, some delays seem to require other units of measurement.
+
+This change adds the `spi_delay` struct & a `spi_delay_exec()` function
+that processes a `spi_delay` object/struct to execute the delay.
+It's a copy of the `cs_change_delay` mechanism, but without the default
+for 10 uS.
+
+The clock-cycle delay unit is a bit special, as it needs to be bound to an
+`spi_transfer` object to execute.
 
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- drivers/spi/spi.c       | 28 +++++++---------------------
- include/linux/spi/spi.h |  4 +---
- 2 files changed, 8 insertions(+), 24 deletions(-)
+ drivers/spi/spi.c       | 51 +++++++++++++++++++++++++++++++++++++++++
+ include/linux/spi/spi.h | 18 ++++++++++++---
+ 2 files changed, 66 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 1883de8ffa82..d0bf0ffca042 100644
+index c90e02e6d62f..1883de8ffa82 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -1160,9 +1160,9 @@ EXPORT_SYMBOL_GPL(spi_delay_exec);
+@@ -1106,6 +1106,57 @@ static void _spi_transfer_delay_ns(u32 ns)
+ 	}
+ }
+ 
++static int _spi_delay_to_ns(struct spi_delay *_delay, struct spi_transfer *xfer)
++{
++	u32 delay = _delay->value;
++	u32 unit = _delay->unit;
++	u32 hz;
++
++	if (!delay)
++		return 0;
++
++	switch (unit) {
++	case SPI_DELAY_UNIT_USECS:
++		delay *= 1000;
++		break;
++	case SPI_DELAY_UNIT_NSECS: /* nothing to do here */
++		break;
++	case SPI_DELAY_UNIT_SCK:
++		/* clock cycles need to be obtained from spi_transfer */
++		if (!xfer)
++			return -EINVAL;
++		/* if there is no effective speed know, then approximate
++		 * by underestimating with half the requested hz
++		 */
++		hz = xfer->effective_speed_hz ?: xfer->speed_hz / 2;
++		if (!hz)
++			return -EINVAL;
++		delay *= DIV_ROUND_UP(1000000000, hz);
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	return delay;
++}
++
++int spi_delay_exec(struct spi_delay *_delay, struct spi_transfer *xfer)
++{
++	int delay;
++
++	if (!_delay)
++		return -EINVAL;
++
++	delay = _spi_delay_to_ns(_delay, xfer);
++	if (delay < 0)
++		return delay;
++
++	_spi_transfer_delay_ns(delay);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(spi_delay_exec);
++
  static void _spi_transfer_cs_change_delay(struct spi_message *msg,
  					  struct spi_transfer *xfer)
  {
--	u32 delay = xfer->cs_change_delay;
--	u32 unit = xfer->cs_change_delay_unit;
--	u32 hz;
-+	u32 delay = xfer->cs_change_delay.value;
-+	u32 unit = xfer->cs_change_delay.unit;
-+	int ret;
- 
- 	/* return early on "fast" mode - for everything but USECS */
- 	if (!delay) {
-@@ -1171,27 +1171,13 @@ static void _spi_transfer_cs_change_delay(struct spi_message *msg,
- 		return;
- 	}
- 
--	switch (unit) {
--	case SPI_DELAY_UNIT_USECS:
--		delay *= 1000;
--		break;
--	case SPI_DELAY_UNIT_NSECS: /* nothing to do here */
--		break;
--	case SPI_DELAY_UNIT_SCK:
--		/* if there is no effective speed know, then approximate
--		 * by underestimating with half the requested hz
--		 */
--		hz = xfer->effective_speed_hz ?: xfer->speed_hz / 2;
--		delay *= DIV_ROUND_UP(1000000000, hz);
--		break;
--	default:
-+	ret = spi_delay_exec(&xfer->cs_change_delay, xfer);
-+	if (ret) {
- 		dev_err_once(&msg->spi->dev,
- 			     "Use of unsupported delay unit %i, using default of 10us\n",
--			     xfer->cs_change_delay_unit);
--		delay = 10000;
-+			     unit);
-+		_spi_transfer_delay_ns(10000);
- 	}
--	/* now sleep for the requested amount of time */
--	_spi_transfer_delay_ns(delay);
- }
- 
- /*
 diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index c18cfa7cda35..9ded3f44d58e 100644
+index af4f265d0f67..c18cfa7cda35 100644
 --- a/include/linux/spi/spi.h
 +++ b/include/linux/spi/spi.h
-@@ -754,7 +754,6 @@ extern void spi_res_release(struct spi_controller *ctlr,
-  * @cs_change: affects chipselect after this transfer completes
-  * @cs_change_delay: delay between cs deassert and assert when
-  *      @cs_change is set and @spi_transfer is not the last in @spi_message
-- * @cs_change_delay_unit: unit of cs_change_delay
-  * @delay_usecs: microseconds to delay after this transfer before
-  *	(optionally) changing the chipselect status, then starting
-  *	the next transfer or completing this @spi_message.
-@@ -847,8 +846,7 @@ struct spi_transfer {
- 	u8		bits_per_word;
- 	u8		word_delay_usecs;
+@@ -89,6 +89,21 @@ void spi_statistics_add_transfer_stats(struct spi_statistics *stats,
+ #define SPI_STATISTICS_INCREMENT_FIELD(stats, field)	\
+ 	SPI_STATISTICS_ADD_TO_FIELD(stats, field, 1)
+ 
++/**
++ * struct spi_delay - SPI delay information
++ * @value: Value for the delay
++ * @unit: Unit for the delay
++ */
++struct spi_delay {
++#define SPI_DELAY_UNIT_USECS	0
++#define SPI_DELAY_UNIT_NSECS	1
++#define SPI_DELAY_UNIT_SCK	2
++	u16	value;
++	u8	unit;
++};
++
++extern int spi_delay_exec(struct spi_delay *_delay, struct spi_transfer *xfer);
++
+ /**
+  * struct spi_device - Controller side proxy for an SPI slave device
+  * @dev: Driver model representation of the device.
+@@ -834,9 +849,6 @@ struct spi_transfer {
  	u16		delay_usecs;
--	u16		cs_change_delay;
--	u8		cs_change_delay_unit;
-+	struct spi_delay	cs_change_delay;
+ 	u16		cs_change_delay;
+ 	u8		cs_change_delay_unit;
+-#define SPI_DELAY_UNIT_USECS	0
+-#define SPI_DELAY_UNIT_NSECS	1
+-#define SPI_DELAY_UNIT_SCK	2
  	u32		speed_hz;
  	u16		word_delay;
  

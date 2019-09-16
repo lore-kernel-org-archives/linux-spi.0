@@ -1,73 +1,64 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 2/3] spi: dw: Add basic runtime PM support
-Date: Mon, 16 Sep 2019 16:36:03 +0200
-Message-ID: <CAMuHMdUnzmYEcp0B5MG7itB1JHtNL7Stj9S2EFB0U0y_naQVBQ@mail.gmail.com>
-References: <1568376720-7402-1-git-send-email-gareth.williams.jx@renesas.com> <1568376720-7402-3-git-send-email-gareth.williams.jx@renesas.com>
+From: Gareth Williams <gareth.williams.jx@renesas.com>
+Subject: RE: [PATCH 2/3] spi: dw: Add basic runtime PM support
+Date: Mon, 16 Sep 2019 16:14:13 +0000
+Message-ID: <TY2PR01MB2924AA1B012C2D305EE5C9B7DF8C0@TY2PR01MB2924.jpnprd01.prod.outlook.com>
+References: <1568376720-7402-1-git-send-email-gareth.williams.jx@renesas.com>
+ <1568376720-7402-3-git-send-email-gareth.williams.jx@renesas.com>
+ <CAMuHMdUnzmYEcp0B5MG7itB1JHtNL7Stj9S2EFB0U0y_naQVBQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: Mark Brown <broonie@kernel.org>,
         Phil Edworthy <phil.edworthy@renesas.com>,
         linux-spi <linux-spi@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-To: Gareth Williams <gareth.williams.jx@renesas.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1568376720-7402-3-git-send-email-gareth.williams.jx@renesas.com>
+In-Reply-To: <CAMuHMdUnzmYEcp0B5MG7itB1JHtNL7Stj9S2EFB0U0y_naQVBQ@mail.gmail.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Gareth,
-
-On Fri, Sep 13, 2019 at 2:13 PM Gareth Williams
-<gareth.williams.jx@renesas.com> wrote:
-> From: Phil Edworthy <phil.edworthy@renesas.com>
->
-> Enable runtime PM so that the clock used to access the registers in the
-> peripheral is turned on using a clock domain.
->
-> Signed-off-by: Phil Edworthy <phil.edworthy@renesas.com>
-> Signed-off-by: Gareth Williams <gareth.williams.jx@renesas.com>
-
-Thanks for your patch!
-
-> --- a/drivers/spi/spi-dw.c
-> +++ b/drivers/spi/spi-dw.c
-> @@ -10,6 +10,7 @@
->  #include <linux/module.h>
->  #include <linux/highmem.h>
->  #include <linux/delay.h>
-> +#include <linux/pm_runtime.h>
->  #include <linux/slab.h>
->  #include <linux/spi/spi.h>
->
-> @@ -497,6 +498,9 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
->         if (dws->set_cs)
->                 master->set_cs = dws->set_cs;
->
-> +       pm_runtime_enable(dev);
-> +       pm_runtime_get_sync(dev);
-
-The second line keeps the device powered all the time.
-What about setting spi_controller.auto_runtime_pm = true, so the SPI
-code can manage its Runtime PM status?
-
-> +
->         /* Basic HW init */
->         spi_hw_init(dev, dws);
->
-
-What about the error path?
-Don't you need to disable Runtime PM again in dw_spi_remove_host()?
-
-I assume this will be called from drivers/spi/spi-dw-mmio.c, which already
-enables the clock explicitly all the timer?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+SGkgR2VlcnQsDQoNCkkgYXBwcmVjaWF0ZSB0aGUgZmVlZGJhY2suDQoNCj4gT24gTW9uLCBTZXAg
+MTYsIDIwMTkgYXQgMTU6MzYgUE0gR2VlcnQgVXl0dGVyaG9ldmVuDQo+IDxnZWVydEBsaW51eC1t
+NjhrLm9yZz4gd3JvdGU6DQo+IEhpIEdhcmV0aCwNCj4gDQo+IE9uIEZyaSwgU2VwIDEzLCAyMDE5
+IGF0IDI6MTMgUE0gR2FyZXRoIFdpbGxpYW1zDQo+IDxnYXJldGgud2lsbGlhbXMuanhAcmVuZXNh
+cy5jb20+IHdyb3RlOg0KPiA+IEZyb206IFBoaWwgRWR3b3J0aHkgPHBoaWwuZWR3b3J0aHlAcmVu
+ZXNhcy5jb20+DQo+ID4NCj4gPiBFbmFibGUgcnVudGltZSBQTSBzbyB0aGF0IHRoZSBjbG9jayB1
+c2VkIHRvIGFjY2VzcyB0aGUgcmVnaXN0ZXJzIGluDQo+ID4gdGhlIHBlcmlwaGVyYWwgaXMgdHVy
+bmVkIG9uIHVzaW5nIGEgY2xvY2sgZG9tYWluLg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogUGhp
+bCBFZHdvcnRoeSA8cGhpbC5lZHdvcnRoeUByZW5lc2FzLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5
+OiBHYXJldGggV2lsbGlhbXMgPGdhcmV0aC53aWxsaWFtcy5qeEByZW5lc2FzLmNvbT4NCj4gDQo+
+IFRoYW5rcyBmb3IgeW91ciBwYXRjaCENCj4gDQo+ID4gLS0tIGEvZHJpdmVycy9zcGkvc3BpLWR3
+LmMNCj4gPiArKysgYi9kcml2ZXJzL3NwaS9zcGktZHcuYw0KPiA+IEBAIC0xMCw2ICsxMCw3IEBA
+DQo+ID4gICNpbmNsdWRlIDxsaW51eC9tb2R1bGUuaD4NCj4gPiAgI2luY2x1ZGUgPGxpbnV4L2hp
+Z2htZW0uaD4NCj4gPiAgI2luY2x1ZGUgPGxpbnV4L2RlbGF5Lmg+DQo+ID4gKyNpbmNsdWRlIDxs
+aW51eC9wbV9ydW50aW1lLmg+DQo+ID4gICNpbmNsdWRlIDxsaW51eC9zbGFiLmg+DQo+ID4gICNp
+bmNsdWRlIDxsaW51eC9zcGkvc3BpLmg+DQo+ID4NCj4gPiBAQCAtNDk3LDYgKzQ5OCw5IEBAIGlu
+dCBkd19zcGlfYWRkX2hvc3Qoc3RydWN0IGRldmljZSAqZGV2LCBzdHJ1Y3QNCj4gZHdfc3BpICpk
+d3MpDQo+ID4gICAgICAgICBpZiAoZHdzLT5zZXRfY3MpDQo+ID4gICAgICAgICAgICAgICAgIG1h
+c3Rlci0+c2V0X2NzID0gZHdzLT5zZXRfY3M7DQo+ID4NCj4gPiArICAgICAgIHBtX3J1bnRpbWVf
+ZW5hYmxlKGRldik7DQo+ID4gKyAgICAgICBwbV9ydW50aW1lX2dldF9zeW5jKGRldik7DQo+IA0K
+PiBUaGUgc2Vjb25kIGxpbmUga2VlcHMgdGhlIGRldmljZSBwb3dlcmVkIGFsbCB0aGUgdGltZS4N
+Cj4gV2hhdCBhYm91dCBzZXR0aW5nIHNwaV9jb250cm9sbGVyLmF1dG9fcnVudGltZV9wbSA9IHRy
+dWUsIHNvIHRoZSBTUEkgY29kZQ0KPiBjYW4gbWFuYWdlIGl0cyBSdW50aW1lIFBNIHN0YXR1cz8N
+ClRoYXQgbWFrZXMgc2Vuc2UgYW5kIHdvcmtzIG9uIHRhcmdldCwgSSB3aWxsIGNoYW5nZSB0aGlz
+IGZvciBWMi4NCg0KPiANCj4gPiArDQo+ID4gICAgICAgICAvKiBCYXNpYyBIVyBpbml0ICovDQo+
+ID4gICAgICAgICBzcGlfaHdfaW5pdChkZXYsIGR3cyk7DQo+ID4NCj4gDQo+IFdoYXQgYWJvdXQg
+dGhlIGVycm9yIHBhdGg/DQo+IERvbid0IHlvdSBuZWVkIHRvIGRpc2FibGUgUnVudGltZSBQTSBh
+Z2FpbiBpbiBkd19zcGlfcmVtb3ZlX2hvc3QoKT8NCkkgd2lsbCBhZGQgYSBjYWxsIHRvIGRpc2Fi
+bGUgcG0gaW4gZHdfc3BpX3JlbW92ZV9ob3N0KCkgYW5kIHRoZSBlcnIgcGF0aCBpbg0KZHdfc3Bp
+X2FkZF9ob3N0IGZvciB2Mi4gDQoNCj4gDQo+IEkgYXNzdW1lIHRoaXMgd2lsbCBiZSBjYWxsZWQg
+ZnJvbSBkcml2ZXJzL3NwaS9zcGktZHctbW1pby5jLCB3aGljaCBhbHJlYWR5DQo+IGVuYWJsZXMg
+dGhlIGNsb2NrIGV4cGxpY2l0bHkgYWxsIHRoZSB0aW1lcj8NClllcywgc3BpLWR3LW1taW8uYyBh
+bHJlYWR5IGVuYWJsZXMgdGhlIGJ1cyBjbG9jaywgaG93ZXZlciB3ZSB3YW50IHRvIHVzZSBjbG9j
+ayANCmRvbWFpbiB0byBlbmFibGUgdGhlIGNsb2NrIGFuZCBub3QgZXhwbGljaXRseSBwcm92aWRl
+IHBjbGsgaW4gdGhlIGR0cy4gSWYgdGhlcmUgYXJlIA0Kbm8gb3RoZXIgdXNlcyBvZiB0aGF0IHBj
+bGssIHdlIGNhbiByZW1vdmUgdGhhdCBsYXRlciBvbi4gDQoNCj4gDQo+IEdye29ldGplLGVldGlu
+Z31zLA0KPiANCj4gICAgICAgICAgICAgICAgICAgICAgICAgR2VlcnQNCj4gDQo+IC0tDQo+IEdl
+ZXJ0IFV5dHRlcmhvZXZlbiAtLSBUaGVyZSdzIGxvdHMgb2YgTGludXggYmV5b25kIGlhMzIgLS0g
+Z2VlcnRAbGludXgtDQo+IG02OGsub3JnDQo+IA0KPiBJbiBwZXJzb25hbCBjb252ZXJzYXRpb25z
+IHdpdGggdGVjaG5pY2FsIHBlb3BsZSwgSSBjYWxsIG15c2VsZiBhIGhhY2tlci4gQnV0DQo+IHdo
+ZW4gSSdtIHRhbGtpbmcgdG8gam91cm5hbGlzdHMgSSBqdXN0IHNheSAicHJvZ3JhbW1lciIgb3Ig
+c29tZXRoaW5nIGxpa2UgdGhhdC4NCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAt
+LSBMaW51cyBUb3J2YWxkcw0KDQoNCktpbmQgUmVnYXJkcywNCg0KR2FyZXRoDQo=

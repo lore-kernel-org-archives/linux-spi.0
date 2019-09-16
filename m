@@ -1,64 +1,67 @@
-From: Gareth Williams <gareth.williams.jx@renesas.com>
-Subject: RE: [PATCH 2/3] spi: dw: Add basic runtime PM support
-Date: Mon, 16 Sep 2019 16:14:13 +0000
-Message-ID: <TY2PR01MB2924AA1B012C2D305EE5C9B7DF8C0@TY2PR01MB2924.jpnprd01.prod.outlook.com>
-References: <1568376720-7402-1-git-send-email-gareth.williams.jx@renesas.com>
- <1568376720-7402-3-git-send-email-gareth.williams.jx@renesas.com>
- <CAMuHMdUnzmYEcp0B5MG7itB1JHtNL7Stj9S2EFB0U0y_naQVBQ@mail.gmail.com>
+From: Vignesh Raghavendra <vigneshr@ti.com>
+Subject: Re: [PATCH v1 0/2] spi: cadence-qspi: Add cadence-qspi support for
+ Intel LGM SoC
+Date: Mon, 16 Sep 2019 22:20:47 +0530
+Message-ID: <c4555df5-89d5-e8a6-bed4-887c23ac4f0f@ti.com>
+References: <20190916073843.39618-1-vadivel.muruganx.ramuthevar@linux.intel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Mark Brown <broonie@kernel.org>,
-        Phil Edworthy <phil.edworthy@renesas.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
+Content-Transfer-Encoding: 7bit
+Cc: <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+        <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <cheol.yong.kim@intel.com>,
+        <qi-ming.wu@intel.com>
+To: "Ramuthevar,Vadivel MuruganX"
+        <vadivel.muruganx.ramuthevar@linux.intel.com>, <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAMuHMdUnzmYEcp0B5MG7itB1JHtNL7Stj9S2EFB0U0y_naQVBQ@mail.gmail.com>
+In-Reply-To: <20190916073843.39618-1-vadivel.muruganx.ramuthevar@linux.intel.com>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgR2VlcnQsDQoNCkkgYXBwcmVjaWF0ZSB0aGUgZmVlZGJhY2suDQoNCj4gT24gTW9uLCBTZXAg
-MTYsIDIwMTkgYXQgMTU6MzYgUE0gR2VlcnQgVXl0dGVyaG9ldmVuDQo+IDxnZWVydEBsaW51eC1t
-NjhrLm9yZz4gd3JvdGU6DQo+IEhpIEdhcmV0aCwNCj4gDQo+IE9uIEZyaSwgU2VwIDEzLCAyMDE5
-IGF0IDI6MTMgUE0gR2FyZXRoIFdpbGxpYW1zDQo+IDxnYXJldGgud2lsbGlhbXMuanhAcmVuZXNh
-cy5jb20+IHdyb3RlOg0KPiA+IEZyb206IFBoaWwgRWR3b3J0aHkgPHBoaWwuZWR3b3J0aHlAcmVu
-ZXNhcy5jb20+DQo+ID4NCj4gPiBFbmFibGUgcnVudGltZSBQTSBzbyB0aGF0IHRoZSBjbG9jayB1
-c2VkIHRvIGFjY2VzcyB0aGUgcmVnaXN0ZXJzIGluDQo+ID4gdGhlIHBlcmlwaGVyYWwgaXMgdHVy
-bmVkIG9uIHVzaW5nIGEgY2xvY2sgZG9tYWluLg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogUGhp
-bCBFZHdvcnRoeSA8cGhpbC5lZHdvcnRoeUByZW5lc2FzLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5
-OiBHYXJldGggV2lsbGlhbXMgPGdhcmV0aC53aWxsaWFtcy5qeEByZW5lc2FzLmNvbT4NCj4gDQo+
-IFRoYW5rcyBmb3IgeW91ciBwYXRjaCENCj4gDQo+ID4gLS0tIGEvZHJpdmVycy9zcGkvc3BpLWR3
-LmMNCj4gPiArKysgYi9kcml2ZXJzL3NwaS9zcGktZHcuYw0KPiA+IEBAIC0xMCw2ICsxMCw3IEBA
-DQo+ID4gICNpbmNsdWRlIDxsaW51eC9tb2R1bGUuaD4NCj4gPiAgI2luY2x1ZGUgPGxpbnV4L2hp
-Z2htZW0uaD4NCj4gPiAgI2luY2x1ZGUgPGxpbnV4L2RlbGF5Lmg+DQo+ID4gKyNpbmNsdWRlIDxs
-aW51eC9wbV9ydW50aW1lLmg+DQo+ID4gICNpbmNsdWRlIDxsaW51eC9zbGFiLmg+DQo+ID4gICNp
-bmNsdWRlIDxsaW51eC9zcGkvc3BpLmg+DQo+ID4NCj4gPiBAQCAtNDk3LDYgKzQ5OCw5IEBAIGlu
-dCBkd19zcGlfYWRkX2hvc3Qoc3RydWN0IGRldmljZSAqZGV2LCBzdHJ1Y3QNCj4gZHdfc3BpICpk
-d3MpDQo+ID4gICAgICAgICBpZiAoZHdzLT5zZXRfY3MpDQo+ID4gICAgICAgICAgICAgICAgIG1h
-c3Rlci0+c2V0X2NzID0gZHdzLT5zZXRfY3M7DQo+ID4NCj4gPiArICAgICAgIHBtX3J1bnRpbWVf
-ZW5hYmxlKGRldik7DQo+ID4gKyAgICAgICBwbV9ydW50aW1lX2dldF9zeW5jKGRldik7DQo+IA0K
-PiBUaGUgc2Vjb25kIGxpbmUga2VlcHMgdGhlIGRldmljZSBwb3dlcmVkIGFsbCB0aGUgdGltZS4N
-Cj4gV2hhdCBhYm91dCBzZXR0aW5nIHNwaV9jb250cm9sbGVyLmF1dG9fcnVudGltZV9wbSA9IHRy
-dWUsIHNvIHRoZSBTUEkgY29kZQ0KPiBjYW4gbWFuYWdlIGl0cyBSdW50aW1lIFBNIHN0YXR1cz8N
-ClRoYXQgbWFrZXMgc2Vuc2UgYW5kIHdvcmtzIG9uIHRhcmdldCwgSSB3aWxsIGNoYW5nZSB0aGlz
-IGZvciBWMi4NCg0KPiANCj4gPiArDQo+ID4gICAgICAgICAvKiBCYXNpYyBIVyBpbml0ICovDQo+
-ID4gICAgICAgICBzcGlfaHdfaW5pdChkZXYsIGR3cyk7DQo+ID4NCj4gDQo+IFdoYXQgYWJvdXQg
-dGhlIGVycm9yIHBhdGg/DQo+IERvbid0IHlvdSBuZWVkIHRvIGRpc2FibGUgUnVudGltZSBQTSBh
-Z2FpbiBpbiBkd19zcGlfcmVtb3ZlX2hvc3QoKT8NCkkgd2lsbCBhZGQgYSBjYWxsIHRvIGRpc2Fi
-bGUgcG0gaW4gZHdfc3BpX3JlbW92ZV9ob3N0KCkgYW5kIHRoZSBlcnIgcGF0aCBpbg0KZHdfc3Bp
-X2FkZF9ob3N0IGZvciB2Mi4gDQoNCj4gDQo+IEkgYXNzdW1lIHRoaXMgd2lsbCBiZSBjYWxsZWQg
-ZnJvbSBkcml2ZXJzL3NwaS9zcGktZHctbW1pby5jLCB3aGljaCBhbHJlYWR5DQo+IGVuYWJsZXMg
-dGhlIGNsb2NrIGV4cGxpY2l0bHkgYWxsIHRoZSB0aW1lcj8NClllcywgc3BpLWR3LW1taW8uYyBh
-bHJlYWR5IGVuYWJsZXMgdGhlIGJ1cyBjbG9jaywgaG93ZXZlciB3ZSB3YW50IHRvIHVzZSBjbG9j
-ayANCmRvbWFpbiB0byBlbmFibGUgdGhlIGNsb2NrIGFuZCBub3QgZXhwbGljaXRseSBwcm92aWRl
-IHBjbGsgaW4gdGhlIGR0cy4gSWYgdGhlcmUgYXJlIA0Kbm8gb3RoZXIgdXNlcyBvZiB0aGF0IHBj
-bGssIHdlIGNhbiByZW1vdmUgdGhhdCBsYXRlciBvbi4gDQoNCj4gDQo+IEdye29ldGplLGVldGlu
-Z31zLA0KPiANCj4gICAgICAgICAgICAgICAgICAgICAgICAgR2VlcnQNCj4gDQo+IC0tDQo+IEdl
-ZXJ0IFV5dHRlcmhvZXZlbiAtLSBUaGVyZSdzIGxvdHMgb2YgTGludXggYmV5b25kIGlhMzIgLS0g
-Z2VlcnRAbGludXgtDQo+IG02OGsub3JnDQo+IA0KPiBJbiBwZXJzb25hbCBjb252ZXJzYXRpb25z
-IHdpdGggdGVjaG5pY2FsIHBlb3BsZSwgSSBjYWxsIG15c2VsZiBhIGhhY2tlci4gQnV0DQo+IHdo
-ZW4gSSdtIHRhbGtpbmcgdG8gam91cm5hbGlzdHMgSSBqdXN0IHNheSAicHJvZ3JhbW1lciIgb3Ig
-c29tZXRoaW5nIGxpa2UgdGhhdC4NCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAt
-LSBMaW51cyBUb3J2YWxkcw0KDQoNCktpbmQgUmVnYXJkcywNCg0KR2FyZXRoDQo=
+Hi,
+
+On 16/09/19 1:08 PM, Ramuthevar,Vadivel MuruganX wrote:
+> patch 1: Add YAML for cadence-qspi devicetree cdocumentation.
+> patch 2: cadence-qspi controller driver to support QSPI-NAND flash
+> using existing spi-nand framework with legacy spi protocol.
+
+Nope, you cannot have two drivers for the same IP (i.e Cadence QSPI)
+just to support to different types of SPI memories. This is the reason
+why spi_mem_ops was introduced.
+
+Please rewrite this driver over to use spi_mem_ops (instead of using
+generic SPI xfers) so that same driver supports both SPI-NOR and
+SPI-NAND flashes. Once that's done drivers/mtd/spi-nor/cadence-quadspi.c
+can be deleted.
+
+There are few existing examples of spi_mem_ops users in drivers/spi/
+(git grep spi_mem_ops) and materials here on how to write such a driver:
+
+[1]
+https://bootlin.com/blog/spi-mem-bringing-some-consistency-to-the-spi-memory-ecosystem/
+[2] https://www.youtube.com/watch?v=PkWbuLM_gmU
+
+> 
+> Ramuthevar Vadivel Murugan (2):
+>   dt-bindings: spi: Add support for cadence-qspi IP Intel LGM SoC
+>   spi: cadence-qspi: Add QSPI support for Intel LGM SoC
+> 
+>  .../devicetree/bindings/spi/cadence,qspi-nand.yaml |  84 +++
+>  drivers/spi/Kconfig                                |   9 +
+>  drivers/spi/Makefile                               |   1 +
+>  drivers/spi/spi-cadence-qspi-apb.c                 | 644 +++++++++++++++++++++
+>  drivers/spi/spi-cadence-qspi-apb.h                 | 174 ++++++
+>  drivers/spi/spi-cadence-qspi.c                     | 461 +++++++++++++++
+>  drivers/spi/spi-cadence-qspi.h                     |  73 +++
+>  7 files changed, 1446 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/cadence,qspi-nand.yaml
+>  create mode 100644 drivers/spi/spi-cadence-qspi-apb.c
+>  create mode 100644 drivers/spi/spi-cadence-qspi-apb.h
+>  create mode 100644 drivers/spi/spi-cadence-qspi.c
+>  create mode 100644 drivers/spi/spi-cadence-qspi.h
+> 
+
+-- 
+Regards
+Vignesh

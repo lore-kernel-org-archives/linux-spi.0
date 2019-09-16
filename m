@@ -1,16 +1,17 @@
-From: "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [RFC PATCH 03/15] spi: make `cs_change_delay` the first user of
  the `spi_delay` logic
-Date: Mon, 16 Sep 2019 13:04:42 +0000
-Message-ID: <458cbb212fbd04c157c9861501f51c03ea958302.camel@analog.com>
+Date: Mon, 16 Sep 2019 14:43:09 +0100
+Message-ID: <20190916134309.GH4352@sirena.co.uk>
 References: <20190913114550.956-1-alexandru.ardelean@analog.com>
-         <20190913114550.956-4-alexandru.ardelean@analog.com>
-         <20190916122505.GC4352@sirena.co.uk>
-         <ae469c65828443524f9ff0409f1c7a81bf64cf6b.camel@analog.com>
-         <20190916124707.GD4352@sirena.co.uk>
+ <20190913114550.956-4-alexandru.ardelean@analog.com>
+ <20190916122505.GC4352@sirena.co.uk>
+ <ae469c65828443524f9ff0409f1c7a81bf64cf6b.camel@analog.com>
+ <20190916124707.GD4352@sirena.co.uk>
+ <458cbb212fbd04c157c9861501f51c03ea958302.camel@analog.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="u0lqphHC8S+ob1K0"
 Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "baolin.wang@linaro.org" <baolin.wang@linaro.org>,
         "bcm-kernel-feedback-list@broadcom.com"
@@ -25,28 +26,54 @@ Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
         "orsonzhai@gmail.com" <orsonzhai@gmail.com>,
         "zhang.lyra@gmail.com" <zhang.lyra@gmail.com>
-To: "broonie@kernel.org" <broonie@kernel.org>
+To: "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190916124707.GD4352@sirena.co.uk>
-Content-Language: en-US
-Content-ID: <D9A871C55AD7F64187978CE710CCCF5B@namprd03.prod.outlook.com>
+Content-Disposition: inline
+In-Reply-To: <458cbb212fbd04c157c9861501f51c03ea958302.camel@analog.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gTW9uLCAyMDE5LTA5LTE2IGF0IDEzOjQ3ICswMTAwLCBNYXJrIEJyb3duIHdyb3RlOg0KPiBb
-RXh0ZXJuYWxdDQo+IA0KPiBPbiBNb24sIFNlcCAxNiwgMjAxOSBhdCAxMjozNzoxMlBNICswMDAw
-LCBBcmRlbGVhbiwgQWxleGFuZHJ1IHdyb3RlOg0KPiANCj4gPiA+IFRoaXMgYnJlYWtzIHRoZSBi
-dWlsZCBhcyB0aGVyZSBpcyBhIHVzZXIgb2YgdGhpcyBpbnRlcmZhY2UuDQo+ID4gQWNrLg0KPiA+
-IEpvbmF0aGFuIHBvaW50ZWQgdGhpcyBvdXQuDQo+ID4gVGhlcmUncyBhIFYzIHRoYXQgY2hhbmdl
-cyBib3RoIHRoaXMgYW5kIGl0J3MgdXNlciAoaW4gSUlPKS4NCj4gDQo+IFRoYXQgdjMgc2VlbXMg
-dG8gYmUgYSBzbWFsbCBzdWJzZXQgb2YgdGhpcyBzZXJpZXM/DQoNCkFjay4NClYzIGlzIHRoZSBm
-aXJzdCA0IHBhdGNoZXMgZnJvbSB0aGlzIHNlcmllcy4NCldlbGwsIHBhdGNoZXMgMyAmIDQgYXJl
-IHNxdWFzaGVkLg0KDQpJIGFtIDEwMCUgY29udmluY2VkIHRoYXQgdGhlIGVudGlyZSBzZXJpZXMg
-aXMgYSBnb29kIGlkZWEuDQpJbiB0aGUgc2Vuc2UgdGhhdCBhIGBzdHJ1Y3Qgc3BpX2RlbGF5YCBt
-YXkgYmUgYSBnb29kIGlkZWEsIGJ1dCBhdCB0aGUgc2FtZSB0aW1lLCBpdCBtYXkgYmUgdW4tbmVl
-ZGVkLg0KDQpBbGwgSSB3YW50ZWQgdG8gZG8sIHdhcyB0byBhZGQgYW5vdGhlciBkZWxheSBzb21l
-d2hlcmUsIGFuZCBnb3QgbG9zdCBpbiB0aGUgcmV3b3JrIG9mIGN1cnJlbnQgZGVsYXlzLg0KSSB0
-aG91Z2h0IGFib3V0IHByb3Bvc2luZyBqdXN0IHRoZSBmaXJzdCA0IHBhdGNoZXMgW29uIHRoZWly
-IG93bl0sIGJ1dCBJIHRob3VnaHQgdGhhdCBzaG93aW5nIHRoZSBjdXJyZW50IHNlcmllcyBhcy1p
-cw0Kbm93LCBtYXkgYmUgYSBnb29kIGlkZWEgYXMgd2VsbCBbdG8gZ2F0aGVyIHNvbWUgZmVlZGJh
-Y2tdLg0K
+
+--u0lqphHC8S+ob1K0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Mon, Sep 16, 2019 at 01:04:42PM +0000, Ardelean, Alexandru wrote:
+> On Mon, 2019-09-16 at 13:47 +0100, Mark Brown wrote:
+
+> > That v3 seems to be a small subset of this series?
+
+> Ack.
+> V3 is the first 4 patches from this series.
+> Well, patches 3 & 4 are squashed.
+
+> I am 100% convinced that the entire series is a good idea.
+> In the sense that a `struct spi_delay` may be a good idea, but at the same time, it may be un-needed.
+
+> All I wanted to do, was to add another delay somewhere, and got lost in the rework of current delays.
+> I thought about proposing just the first 4 patches [on their own], but I thought that showing the current series as-is
+> now, may be a good idea as well [to gather some feedback].
+
+I think it makes more sense to review as a whole series rather than only
+a part of the conversion, it doesn't really help to only do part of it.
+
+Please fix your mail client to word wrap within paragraphs at something
+substantially less than 80 columns.  Doing this makes your messages much
+easier to read and reply to.
+
+--u0lqphHC8S+ob1K0
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1/kW0ACgkQJNaLcl1U
+h9AhYQf/a5Mv8ax53FhE2w2Iee+bq5bvfdkZRudCki/iqJxBUwCNKGfc62eBUwGY
+qva3K4T6zi4pbX0dWNMojeJ5lQ7Viu2bnR20voTcVJhOmplIgWhH57tVxRU5bnRt
+9205UV5Uc2FNDE1P60lC6Msts6I+8Rzx/a20fZ8pyXlVwOW4n0xxEkiMxYgg5mpo
+BbGVM5rYkasqqmq8KjbIKWYl/XwcWDIKw8mlyAuLAq4Vh8KRGfu+kRUY3IqNzDIj
+puzpCj6MJZW/8pzNfi/z6Lelkhtvmn04gEu0pMN2C1u9ILeUxixwtqQPv64qTR7I
+ySxA++9//Vej3QKiuzfu/u+eDK6+WA==
+=nPuT
+-----END PGP SIGNATURE-----
+
+--u0lqphHC8S+ob1K0--

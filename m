@@ -1,7 +1,8 @@
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v3 0/3] spi: introduce `struct spi_delay` data-type
-Date: Mon, 16 Sep 2019 10:10:21 +0300
-Message-ID: <20190916071024.21447-1-alexandru.ardelean@analog.com>
+Subject: [PATCH v3 3/3] spi: make `cs_change_delay` the first user of the `spi_delay` logic
+Date: Mon, 16 Sep 2019 10:10:24 +0300
+Message-ID: <20190916071024.21447-4-alexandru.ardelean@analog.com>
+References: <20190916071024.21447-1-alexandru.ardelean@analog.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
@@ -10,44 +11,168 @@ Cc: <jic23@kernel.org>, <broonie@kernel.org>,
 To: <linux-iio@vger.kernel.org>, <linux-spi@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190916071024.21447-1-alexandru.ardelean@analog.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Discussion reference:
-  https://lore.kernel.org/lkml/20190913114550.956-1-alexandru.ardelean@analog.com/
+Since the logic for `spi_delay` struct + `spi_delay_exec()` has been copied
+from the `cs_change_delay` logic, it's natural to make this delay, the
+first user.
 
-This changeset introduces an `spi_delay` struct/data-type and makes the
-IIO ADIS driver library the first user of this.
+The `cs_change_delay` logic requires that the default remain 10 uS, in case
+it is unspecified/unconfigured. So, there is some special handling needed
+to do that.
 
-The patchset base is Jonathan's `iio/togreg` branch, but it also applies on
-Mark's `spi/for-next` branch.
+The ADIS library is one of the few users of the new `cs_change_delay`
+parameter for an spi_transfer.
 
-The reasons for choosing `cs_change_delay`, is:
-1. this change introduces delay units
-2. it is not yet widely used, meaning it can still be changed 
+The introduction of the `spi_delay` struct, requires that the users of of
+`cs_change_delay` get an update. This change also updates the ADIS library.
 
-Some delays like `delay` from `spi_transfer` would require a longer
-update-time change & discussion.
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+ drivers/iio/imu/adis.c  | 24 ++++++++++++------------
+ drivers/spi/spi.c       | 28 +++++++---------------------
+ include/linux/spi/spi.h |  4 +---
+ 3 files changed, 20 insertions(+), 36 deletions(-)
 
-Alexandru Ardelean (3):
-  spi: move `cs_change_delay` backwards compat logic outside switch
-  spi: introduce spi_delay struct as "value + unit" &  spi_delay_exec()
-  spi: make `cs_change_delay` the first user of the `spi_delay` logic
-
- drivers/iio/imu/adis.c  | 24 +++++++--------
- drivers/spi/spi.c       | 68 +++++++++++++++++++++++++++++++----------
- include/linux/spi/spi.h | 22 +++++++++----
- 3 files changed, 80 insertions(+), 34 deletions(-)
-
---
-
-Changelog v2 -> v3:
-* squash patches 3 & 4 into a single patch; otherwise the kernel is in
-  broken state between those 2 patches
-
-Changelog v1 -> v2:
-* split away from the RFC patchset, which aims to be a broader explanation
-  for this changeset; parts of v1 are not 100% defined yet, and may require
-  some discussion and refinement.
+diff --git a/drivers/iio/imu/adis.c b/drivers/iio/imu/adis.c
+index 1631c255deab..2cd2cc2316c6 100644
+--- a/drivers/iio/imu/adis.c
++++ b/drivers/iio/imu/adis.c
+@@ -39,24 +39,24 @@ int adis_write_reg(struct adis *adis, unsigned int reg,
+ 			.len = 2,
+ 			.cs_change = 1,
+ 			.delay_usecs = adis->data->write_delay,
+-			.cs_change_delay = adis->data->cs_change_delay,
+-			.cs_change_delay_unit = SPI_DELAY_UNIT_USECS,
++			.cs_change_delay.value = adis->data->cs_change_delay,
++			.cs_change_delay.unit = SPI_DELAY_UNIT_USECS,
+ 		}, {
+ 			.tx_buf = adis->tx + 2,
+ 			.bits_per_word = 8,
+ 			.len = 2,
+ 			.cs_change = 1,
+ 			.delay_usecs = adis->data->write_delay,
+-			.cs_change_delay = adis->data->cs_change_delay,
+-			.cs_change_delay_unit = SPI_DELAY_UNIT_USECS,
++			.cs_change_delay.value = adis->data->cs_change_delay,
++			.cs_change_delay.unit = SPI_DELAY_UNIT_USECS,
+ 		}, {
+ 			.tx_buf = adis->tx + 4,
+ 			.bits_per_word = 8,
+ 			.len = 2,
+ 			.cs_change = 1,
+ 			.delay_usecs = adis->data->write_delay,
+-			.cs_change_delay = adis->data->cs_change_delay,
+-			.cs_change_delay_unit = SPI_DELAY_UNIT_USECS,
++			.cs_change_delay.value = adis->data->cs_change_delay,
++			.cs_change_delay.unit = SPI_DELAY_UNIT_USECS,
+ 		}, {
+ 			.tx_buf = adis->tx + 6,
+ 			.bits_per_word = 8,
+@@ -139,16 +139,16 @@ int adis_read_reg(struct adis *adis, unsigned int reg,
+ 			.len = 2,
+ 			.cs_change = 1,
+ 			.delay_usecs = adis->data->write_delay,
+-			.cs_change_delay = adis->data->cs_change_delay,
+-			.cs_change_delay_unit = SPI_DELAY_UNIT_USECS,
++			.cs_change_delay.value = adis->data->cs_change_delay,
++			.cs_change_delay.unit = SPI_DELAY_UNIT_USECS,
+ 		}, {
+ 			.tx_buf = adis->tx + 2,
+ 			.bits_per_word = 8,
+ 			.len = 2,
+ 			.cs_change = 1,
+ 			.delay_usecs = adis->data->read_delay,
+-			.cs_change_delay = adis->data->cs_change_delay,
+-			.cs_change_delay_unit = SPI_DELAY_UNIT_USECS,
++			.cs_change_delay.value = adis->data->cs_change_delay,
++			.cs_change_delay.unit = SPI_DELAY_UNIT_USECS,
+ 		}, {
+ 			.tx_buf = adis->tx + 4,
+ 			.rx_buf = adis->rx,
+@@ -156,8 +156,8 @@ int adis_read_reg(struct adis *adis, unsigned int reg,
+ 			.len = 2,
+ 			.cs_change = 1,
+ 			.delay_usecs = adis->data->read_delay,
+-			.cs_change_delay = adis->data->cs_change_delay,
+-			.cs_change_delay_unit = SPI_DELAY_UNIT_USECS,
++			.cs_change_delay.value = adis->data->cs_change_delay,
++			.cs_change_delay.unit = SPI_DELAY_UNIT_USECS,
+ 		}, {
+ 			.rx_buf = adis->rx + 2,
+ 			.bits_per_word = 8,
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 1883de8ffa82..d0bf0ffca042 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1160,9 +1160,9 @@ EXPORT_SYMBOL_GPL(spi_delay_exec);
+ static void _spi_transfer_cs_change_delay(struct spi_message *msg,
+ 					  struct spi_transfer *xfer)
+ {
+-	u32 delay = xfer->cs_change_delay;
+-	u32 unit = xfer->cs_change_delay_unit;
+-	u32 hz;
++	u32 delay = xfer->cs_change_delay.value;
++	u32 unit = xfer->cs_change_delay.unit;
++	int ret;
  
+ 	/* return early on "fast" mode - for everything but USECS */
+ 	if (!delay) {
+@@ -1171,27 +1171,13 @@ static void _spi_transfer_cs_change_delay(struct spi_message *msg,
+ 		return;
+ 	}
+ 
+-	switch (unit) {
+-	case SPI_DELAY_UNIT_USECS:
+-		delay *= 1000;
+-		break;
+-	case SPI_DELAY_UNIT_NSECS: /* nothing to do here */
+-		break;
+-	case SPI_DELAY_UNIT_SCK:
+-		/* if there is no effective speed know, then approximate
+-		 * by underestimating with half the requested hz
+-		 */
+-		hz = xfer->effective_speed_hz ?: xfer->speed_hz / 2;
+-		delay *= DIV_ROUND_UP(1000000000, hz);
+-		break;
+-	default:
++	ret = spi_delay_exec(&xfer->cs_change_delay, xfer);
++	if (ret) {
+ 		dev_err_once(&msg->spi->dev,
+ 			     "Use of unsupported delay unit %i, using default of 10us\n",
+-			     xfer->cs_change_delay_unit);
+-		delay = 10000;
++			     unit);
++		_spi_transfer_delay_ns(10000);
+ 	}
+-	/* now sleep for the requested amount of time */
+-	_spi_transfer_delay_ns(delay);
+ }
+ 
+ /*
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index c18cfa7cda35..9ded3f44d58e 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -754,7 +754,6 @@ extern void spi_res_release(struct spi_controller *ctlr,
+  * @cs_change: affects chipselect after this transfer completes
+  * @cs_change_delay: delay between cs deassert and assert when
+  *      @cs_change is set and @spi_transfer is not the last in @spi_message
+- * @cs_change_delay_unit: unit of cs_change_delay
+  * @delay_usecs: microseconds to delay after this transfer before
+  *	(optionally) changing the chipselect status, then starting
+  *	the next transfer or completing this @spi_message.
+@@ -847,8 +846,7 @@ struct spi_transfer {
+ 	u8		bits_per_word;
+ 	u8		word_delay_usecs;
+ 	u16		delay_usecs;
+-	u16		cs_change_delay;
+-	u8		cs_change_delay_unit;
++	struct spi_delay	cs_change_delay;
+ 	u32		speed_hz;
+ 	u16		word_delay;
+ 
+-- 
 2.20.1

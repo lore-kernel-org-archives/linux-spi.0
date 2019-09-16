@@ -1,92 +1,53 @@
-From: "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Subject: Re: [PATCH v2 4/4] iio: imu: adis: convert cs_change_delay to
- spi_delay struct
-Date: Mon, 16 Sep 2019 06:58:08 +0000
-Message-ID: <4bf1afcd8c913cdf3b48b72cd74d5255a6413cf9.camel@analog.com>
-References: <20190913115549.3823-1-alexandru.ardelean@analog.com>
-         <20190913115549.3823-5-alexandru.ardelean@analog.com>
-         <20190915111442.27e3c221@archlinux>
+From: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH v3 0/3] spi: introduce `struct spi_delay` data-type
+Date: Mon, 16 Sep 2019 10:10:21 +0300
+Message-ID: <20190916071024.21447-1-alexandru.ardelean@analog.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-To: "jic23@kernel.org" <jic23@kernel.org>
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+Cc: <jic23@kernel.org>, <broonie@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>
+To: <linux-iio@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190915111442.27e3c221@archlinux>
-Content-Language: en-US
-Content-ID: <E191D0DC14DEB6409C9749DA8DAC5203@namprd03.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gU3VuLCAyMDE5LTA5LTE1IGF0IDExOjE0ICswMTAwLCBKb25hdGhhbiBDYW1lcm9uIHdyb3Rl
-Og0KPiBbRXh0ZXJuYWxdDQo+IA0KPiBPbiBGcmksIDEzIFNlcCAyMDE5IDE0OjU1OjQ5ICswMzAw
-DQo+IEFsZXhhbmRydSBBcmRlbGVhbiA8YWxleGFuZHJ1LmFyZGVsZWFuQGFuYWxvZy5jb20+IHdy
-b3RlOg0KPiANCj4gPiBUaGUgQURJUyBsaWJyYXJ5IGlzIG9uZSBvZiB0aGUgZmV3IHVzZXJzIG9m
-IHRoZSBuZXcgYGNzX2NoYW5nZV9kZWxheWANCj4gPiBwYXJhbWV0ZXIgZm9yIGFuIHNwaV90cmFu
-c2Zlci4NCj4gPiANCj4gPiBUaGUgaW50cm9kdWN0aW9uIG9mIHRoZSBgc3BpX2RlbGF5YCBzdHJ1
-Y3QsIHJlcXVpcmVzIHRoYXQgdGhlIHVzZXJzIG9mIG9mDQo+ID4gYGNzX2NoYW5nZV9kZWxheWAg
-Z2V0IGFuIHVwZGF0ZS4gVGhpcyBjaGFuZ2UgdXBkYXRlcyB0aGUgQURJUyBsaWJyYXJ5Lg0KPiA+
-IA0KPiA+IFNpZ25lZC1vZmYtYnk6IEFsZXhhbmRydSBBcmRlbGVhbiA8YWxleGFuZHJ1LmFyZGVs
-ZWFuQGFuYWxvZy5jb20+DQo+IA0KPiBMb29rcyB0byBtZSBsaWtlIHRoZSBidWlsZCBpcyBicm9r
-ZW4gYmV0d2VlbiBwYXRjaGVzIDMgYW5kIDQuDQo+IERvbid0IGRvIHRoYXQgYXMgaXQgYnJlYWtz
-IGJpc2VjdGFiaWxpdHkuDQo+IA0KPiBJZiB5b3UgYXJlIGNoYW5naW5nIGFuIGludGVyZmFjZSBs
-aWtlIHRoaXMgaXQgaGFzIHRvIG9jY3VyIGluIG9uZSBwYXRjaCwNCj4gb2YgeW91IGhhdmUgdG8g
-aGF2ZSBpbnRlcm1lZGlhdGUgY29kZSB0aGF0IGRlYWxzIHdpdGggdGhlIHNtb290aCB0cmFuc2l0
-aW9uLg0KPiANCj4gT3RoZXJ3aXNlLCBsb29rcyBsaWtlIGEgc2Vuc2libGUgYml0IG9mIHJld29y
-ayB0byBtZS4NCg0KSSB0aG91Z2h0IGFib3V0IGl0LCBidXQgd2Fzbid0IHN1cmUuDQpXaWxsIGNy
-ZWF0ZSBhIHYzIHdpdGggcGF0Y2hlcyAzICYgNCBzcXVhc2hlZC4NCg0KVGhhbmtzDQpBbGV4DQoN
-Cj4gDQo+IEpvbmF0aGFuDQo+IA0KPiA+IC0tLQ0KPiA+ICBkcml2ZXJzL2lpby9pbXUvYWRpcy5j
-IHwgMjQgKysrKysrKysrKysrLS0tLS0tLS0tLS0tDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAxMiBp
-bnNlcnRpb25zKCspLCAxMiBkZWxldGlvbnMoLSkNCj4gPiANCj4gPiBkaWZmIC0tZ2l0IGEvZHJp
-dmVycy9paW8vaW11L2FkaXMuYyBiL2RyaXZlcnMvaWlvL2ltdS9hZGlzLmMNCj4gPiBpbmRleCAx
-NjMxYzI1NWRlYWIuLjJjZDJjYzIzMTZjNiAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL2lpby9p
-bXUvYWRpcy5jDQo+ID4gKysrIGIvZHJpdmVycy9paW8vaW11L2FkaXMuYw0KPiA+IEBAIC0zOSwy
-NCArMzksMjQgQEAgaW50IGFkaXNfd3JpdGVfcmVnKHN0cnVjdCBhZGlzICphZGlzLCB1bnNpZ25l
-ZCBpbnQgcmVnLA0KPiA+ICAJCQkubGVuID0gMiwNCj4gPiAgCQkJLmNzX2NoYW5nZSA9IDEsDQo+
-ID4gIAkJCS5kZWxheV91c2VjcyA9IGFkaXMtPmRhdGEtPndyaXRlX2RlbGF5LA0KPiA+IC0JCQku
-Y3NfY2hhbmdlX2RlbGF5ID0gYWRpcy0+ZGF0YS0+Y3NfY2hhbmdlX2RlbGF5LA0KPiA+IC0JCQku
-Y3NfY2hhbmdlX2RlbGF5X3VuaXQgPSBTUElfREVMQVlfVU5JVF9VU0VDUywNCj4gPiArCQkJLmNz
-X2NoYW5nZV9kZWxheS52YWx1ZSA9IGFkaXMtPmRhdGEtPmNzX2NoYW5nZV9kZWxheSwNCj4gPiAr
-CQkJLmNzX2NoYW5nZV9kZWxheS51bml0ID0gU1BJX0RFTEFZX1VOSVRfVVNFQ1MsDQo+ID4gIAkJ
-fSwgew0KPiA+ICAJCQkudHhfYnVmID0gYWRpcy0+dHggKyAyLA0KPiA+ICAJCQkuYml0c19wZXJf
-d29yZCA9IDgsDQo+ID4gIAkJCS5sZW4gPSAyLA0KPiA+ICAJCQkuY3NfY2hhbmdlID0gMSwNCj4g
-PiAgCQkJLmRlbGF5X3VzZWNzID0gYWRpcy0+ZGF0YS0+d3JpdGVfZGVsYXksDQo+ID4gLQkJCS5j
-c19jaGFuZ2VfZGVsYXkgPSBhZGlzLT5kYXRhLT5jc19jaGFuZ2VfZGVsYXksDQo+ID4gLQkJCS5j
-c19jaGFuZ2VfZGVsYXlfdW5pdCA9IFNQSV9ERUxBWV9VTklUX1VTRUNTLA0KPiA+ICsJCQkuY3Nf
-Y2hhbmdlX2RlbGF5LnZhbHVlID0gYWRpcy0+ZGF0YS0+Y3NfY2hhbmdlX2RlbGF5LA0KPiA+ICsJ
-CQkuY3NfY2hhbmdlX2RlbGF5LnVuaXQgPSBTUElfREVMQVlfVU5JVF9VU0VDUywNCj4gPiAgCQl9
-LCB7DQo+ID4gIAkJCS50eF9idWYgPSBhZGlzLT50eCArIDQsDQo+ID4gIAkJCS5iaXRzX3Blcl93
-b3JkID0gOCwNCj4gPiAgCQkJLmxlbiA9IDIsDQo+ID4gIAkJCS5jc19jaGFuZ2UgPSAxLA0KPiA+
-ICAJCQkuZGVsYXlfdXNlY3MgPSBhZGlzLT5kYXRhLT53cml0ZV9kZWxheSwNCj4gPiAtCQkJLmNz
-X2NoYW5nZV9kZWxheSA9IGFkaXMtPmRhdGEtPmNzX2NoYW5nZV9kZWxheSwNCj4gPiAtCQkJLmNz
-X2NoYW5nZV9kZWxheV91bml0ID0gU1BJX0RFTEFZX1VOSVRfVVNFQ1MsDQo+ID4gKwkJCS5jc19j
-aGFuZ2VfZGVsYXkudmFsdWUgPSBhZGlzLT5kYXRhLT5jc19jaGFuZ2VfZGVsYXksDQo+ID4gKwkJ
-CS5jc19jaGFuZ2VfZGVsYXkudW5pdCA9IFNQSV9ERUxBWV9VTklUX1VTRUNTLA0KPiA+ICAJCX0s
-IHsNCj4gPiAgCQkJLnR4X2J1ZiA9IGFkaXMtPnR4ICsgNiwNCj4gPiAgCQkJLmJpdHNfcGVyX3dv
-cmQgPSA4LA0KPiA+IEBAIC0xMzksMTYgKzEzOSwxNiBAQCBpbnQgYWRpc19yZWFkX3JlZyhzdHJ1
-Y3QgYWRpcyAqYWRpcywgdW5zaWduZWQgaW50IHJlZywNCj4gPiAgCQkJLmxlbiA9IDIsDQo+ID4g
-IAkJCS5jc19jaGFuZ2UgPSAxLA0KPiA+ICAJCQkuZGVsYXlfdXNlY3MgPSBhZGlzLT5kYXRhLT53
-cml0ZV9kZWxheSwNCj4gPiAtCQkJLmNzX2NoYW5nZV9kZWxheSA9IGFkaXMtPmRhdGEtPmNzX2No
-YW5nZV9kZWxheSwNCj4gPiAtCQkJLmNzX2NoYW5nZV9kZWxheV91bml0ID0gU1BJX0RFTEFZX1VO
-SVRfVVNFQ1MsDQo+ID4gKwkJCS5jc19jaGFuZ2VfZGVsYXkudmFsdWUgPSBhZGlzLT5kYXRhLT5j
-c19jaGFuZ2VfZGVsYXksDQo+ID4gKwkJCS5jc19jaGFuZ2VfZGVsYXkudW5pdCA9IFNQSV9ERUxB
-WV9VTklUX1VTRUNTLA0KPiA+ICAJCX0sIHsNCj4gPiAgCQkJLnR4X2J1ZiA9IGFkaXMtPnR4ICsg
-MiwNCj4gPiAgCQkJLmJpdHNfcGVyX3dvcmQgPSA4LA0KPiA+ICAJCQkubGVuID0gMiwNCj4gPiAg
-CQkJLmNzX2NoYW5nZSA9IDEsDQo+ID4gIAkJCS5kZWxheV91c2VjcyA9IGFkaXMtPmRhdGEtPnJl
-YWRfZGVsYXksDQo+ID4gLQkJCS5jc19jaGFuZ2VfZGVsYXkgPSBhZGlzLT5kYXRhLT5jc19jaGFu
-Z2VfZGVsYXksDQo+ID4gLQkJCS5jc19jaGFuZ2VfZGVsYXlfdW5pdCA9IFNQSV9ERUxBWV9VTklU
-X1VTRUNTLA0KPiA+ICsJCQkuY3NfY2hhbmdlX2RlbGF5LnZhbHVlID0gYWRpcy0+ZGF0YS0+Y3Nf
-Y2hhbmdlX2RlbGF5LA0KPiA+ICsJCQkuY3NfY2hhbmdlX2RlbGF5LnVuaXQgPSBTUElfREVMQVlf
-VU5JVF9VU0VDUywNCj4gPiAgCQl9LCB7DQo+ID4gIAkJCS50eF9idWYgPSBhZGlzLT50eCArIDQs
-DQo+ID4gIAkJCS5yeF9idWYgPSBhZGlzLT5yeCwNCj4gPiBAQCAtMTU2LDggKzE1Niw4IEBAIGlu
-dCBhZGlzX3JlYWRfcmVnKHN0cnVjdCBhZGlzICphZGlzLCB1bnNpZ25lZCBpbnQgcmVnLA0KPiA+
-ICAJCQkubGVuID0gMiwNCj4gPiAgCQkJLmNzX2NoYW5nZSA9IDEsDQo+ID4gIAkJCS5kZWxheV91
-c2VjcyA9IGFkaXMtPmRhdGEtPnJlYWRfZGVsYXksDQo+ID4gLQkJCS5jc19jaGFuZ2VfZGVsYXkg
-PSBhZGlzLT5kYXRhLT5jc19jaGFuZ2VfZGVsYXksDQo+ID4gLQkJCS5jc19jaGFuZ2VfZGVsYXlf
-dW5pdCA9IFNQSV9ERUxBWV9VTklUX1VTRUNTLA0KPiA+ICsJCQkuY3NfY2hhbmdlX2RlbGF5LnZh
-bHVlID0gYWRpcy0+ZGF0YS0+Y3NfY2hhbmdlX2RlbGF5LA0KPiA+ICsJCQkuY3NfY2hhbmdlX2Rl
-bGF5LnVuaXQgPSBTUElfREVMQVlfVU5JVF9VU0VDUywNCj4gPiAgCQl9LCB7DQo+ID4gIAkJCS5y
-eF9idWYgPSBhZGlzLT5yeCArIDIsDQo+ID4gIAkJCS5iaXRzX3Blcl93b3JkID0gOCwNCg==
+Discussion reference:
+  https://lore.kernel.org/lkml/20190913114550.956-1-alexandru.ardelean@analog.com/
+
+This changeset introduces an `spi_delay` struct/data-type and makes the
+IIO ADIS driver library the first user of this.
+
+The patchset base is Jonathan's `iio/togreg` branch, but it also applies on
+Mark's `spi/for-next` branch.
+
+The reasons for choosing `cs_change_delay`, is:
+1. this change introduces delay units
+2. it is not yet widely used, meaning it can still be changed 
+
+Some delays like `delay` from `spi_transfer` would require a longer
+update-time change & discussion.
+
+Alexandru Ardelean (3):
+  spi: move `cs_change_delay` backwards compat logic outside switch
+  spi: introduce spi_delay struct as "value + unit" &  spi_delay_exec()
+  spi: make `cs_change_delay` the first user of the `spi_delay` logic
+
+ drivers/iio/imu/adis.c  | 24 +++++++--------
+ drivers/spi/spi.c       | 68 +++++++++++++++++++++++++++++++----------
+ include/linux/spi/spi.h | 22 +++++++++----
+ 3 files changed, 80 insertions(+), 34 deletions(-)
+
+--
+
+Changelog v2 -> v3:
+* squash patches 3 & 4 into a single patch; otherwise the kernel is in
+  broken state between those 2 patches
+
+Changelog v1 -> v2:
+* split away from the RFC patchset, which aims to be a broader explanation
+  for this changeset; parts of v1 are not 100% defined yet, and may require
+  some discussion and refinement.
+ 
+2.20.1

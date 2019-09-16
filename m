@@ -1,25 +1,56 @@
-From: pr-tracker-bot@kernel.org
-Subject: Re: [GIT PULL] SPI updates for v5.4
-Date: Mon, 16 Sep 2019 21:35:11 +0000
-Message-ID: <156866971191.13102.14352639353908386650.pr-tracker-bot@kernel.org>
-References: <20190915231811.GQ4352@sirena.co.uk>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190915231811.GQ4352@sirena.co.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [Letux-kernel] [PATCH 2/2] DTS: ARM: gta04: introduce legacy
+ spi-cs-high to make display work again
+Date: Tue, 17 Sep 2019 00:52:39 +0200
+Message-ID: <CACRpkdZQgPVvB=78vOFsHe5n45Vwe4N6JJOcm1_vz5FbAw9CYA@mail.gmail.com>
+References: <cover.1562597164.git.hns@goldelico.com> <8ae7cf816b22ef9cecee0d789fcf9e8a06495c39.1562597164.git.hns@goldelico.com>
+ <20190724194259.GA25847@bogus> <2EA06398-E45B-481B-9A26-4DD2E043BF9C@goldelico.com>
+ <CAL_JsqLe_Y9Z6MRt7ojgSVKAb9n95S8j=eGidSVNz2T83j-zPQ@mail.gmail.com>
+ <CACRpkdY0AVnkRa8sV_Z54qfX9SYufvaYYhU0k2+LitXo0sLx2w@mail.gmail.com>
+ <20190831084852.5e726cfa@aktux> <ED6A6797-D1F9-473B-ABFF-B6951A924BC1@goldelico.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Cc: Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
+        Rob Herring <robh@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        stable <stable@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>
+To: "H. Nikolaus Schaller" <hns@goldelico.com>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <ED6A6797-D1F9-473B-ABFF-B6951A924BC1@goldelico.com>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The pull request you sent on Mon, 16 Sep 2019 00:18:11 +0100:
+On Mon, Sep 16, 2019 at 12:59 PM H. Nikolaus Schaller <hns@goldelico.com> wrote:
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v5.4
+> ping.
+>
+> Device omap3-gta04 is neither working with v5.3 nor linux-next quite a while and we need a solution.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/aa62325dc38de2be8b1c27eb180ad3751b3f58ec
+Can't we just apply the last part of the patch in this thread:
 
-Thank you!
+diff --git a/arch/arm/boot/dts/omap3-gta04.dtsi
+b/arch/arm/boot/dts/omap3-gta04.dtsi
+index 9a9a29fe88ec..47bab8e1040e 100644
+--- a/arch/arm/boot/dts/omap3-gta04.dtsi
++++ b/arch/arm/boot/dts/omap3-gta04.dtsi
+@@ -124,6 +124,7 @@
+                        spi-max-frequency = <100000>;
+                        spi-cpol;
+                        spi-cpha;
++                       spi-cs-high;
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+                        backlight= <&backlight>;
+                        label = "lcd";
+
+
+Surely this fixes the problem?
+
+Yours,
+Linus Walleij

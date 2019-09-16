@@ -1,14 +1,15 @@
-From: "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [RFC PATCH 03/15] spi: make `cs_change_delay` the first user of
  the `spi_delay` logic
-Date: Mon, 16 Sep 2019 12:37:12 +0000
-Message-ID: <ae469c65828443524f9ff0409f1c7a81bf64cf6b.camel@analog.com>
+Date: Mon, 16 Sep 2019 13:47:08 +0100
+Message-ID: <20190916124707.GD4352@sirena.co.uk>
 References: <20190913114550.956-1-alexandru.ardelean@analog.com>
-         <20190913114550.956-4-alexandru.ardelean@analog.com>
-         <20190916122505.GC4352@sirena.co.uk>
+ <20190913114550.956-4-alexandru.ardelean@analog.com>
+ <20190916122505.GC4352@sirena.co.uk>
+ <ae469c65828443524f9ff0409f1c7a81bf64cf6b.camel@analog.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="cd1j4nHwcOEAktEG"
 Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "baolin.wang@linaro.org" <baolin.wang@linaro.org>,
         "bcm-kernel-feedback-list@broadcom.com"
@@ -23,27 +24,41 @@ Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
         "orsonzhai@gmail.com" <orsonzhai@gmail.com>,
         "zhang.lyra@gmail.com" <zhang.lyra@gmail.com>
-To: "broonie@kernel.org" <broonie@kernel.org>
+To: "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190916122505.GC4352@sirena.co.uk>
-Content-Language: en-US
-Content-ID: <7A207019A739BF4BB5EC44846BC146A6@namprd03.prod.outlook.com>
+Content-Disposition: inline
+In-Reply-To: <ae469c65828443524f9ff0409f1c7a81bf64cf6b.camel@analog.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gTW9uLCAyMDE5LTA5LTE2IGF0IDEzOjI1ICswMTAwLCBNYXJrIEJyb3duIHdyb3RlOg0KPiBb
-RXh0ZXJuYWxdDQo+IA0KPiBPbiBGcmksIFNlcCAxMywgMjAxOSBhdCAwMjo0NTozOFBNICswMzAw
-LCBBbGV4YW5kcnUgQXJkZWxlYW4gd3JvdGU6DQo+IA0KPiA+IC0JdTE2CQljc19jaGFuZ2VfZGVs
-YXk7DQo+ID4gLQl1OAkJY3NfY2hhbmdlX2RlbGF5X3VuaXQ7DQo+ID4gKwlzdHJ1Y3Qgc3BpX2Rl
-bGF5CWNzX2NoYW5nZV9kZWxheTsNCj4gDQo+IFRoaXMgYnJlYWtzIHRoZSBidWlsZCBhcyB0aGVy
-ZSBpcyBhIHVzZXIgb2YgdGhpcyBpbnRlcmZhY2UuDQoNCg0KQWNrLg0KSm9uYXRoYW4gcG9pbnRl
-ZCB0aGlzIG91dC4NClRoZXJlJ3MgYSBWMyB0aGF0IGNoYW5nZXMgYm90aCB0aGlzIGFuZCBpdCdz
-IHVzZXIgKGluIElJTykuDQoNClYzOg0KaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGludXgtaWlv
-LzIwMTkwOTE2MDcxMDI0LjIxNDQ3LTEtYWxleGFuZHJ1LmFyZGVsZWFuQGFuYWxvZy5jb20vVC8j
-dA0KDQpWMjoNCmh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xpbnV4LWlpby8yMDE5MDkxMzExNTU0
-OS4zODIzLTEtYWxleGFuZHJ1LmFyZGVsZWFuQGFuYWxvZy5jb20vVC8jdA0KDQpbIGFyY2hpdmUg
-aXMgZnJvbSB0aGUgSUlPIGxpc3QgXQ0KDQpXZWxsLCBJJ20gaG9waW5nIHlvdSBhcmUgcmVmZXJy
-aW5nIHRvIHRoZSBzYW1lIHVzZXIuDQoNCk9uIGEgZ2VuZXJhbCBub3RlOiBJIGFwb2xvZ2lzZSBm
-b3IgdGhlIGFtb3VudCBvZiBub2lzZS9zcGFtIEkgYW0gZG9pbmcgaGVyZS4gU3RpbGwgYWRqdXN0
-aW5nIHRvIGhvdyB0byBkbyB0aGluZ3MvY2hhbmdlcw0KdGhhdCB0b3VjaCAyIHN1YnN5c3RlbXMs
-IGVzcGVjaWFsbHkgd2hlbiB0cmVlcyBhcmUgbm90IHF1aXRlIGluLXN5bmMuDQo=
+
+--cd1j4nHwcOEAktEG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Mon, Sep 16, 2019 at 12:37:12PM +0000, Ardelean, Alexandru wrote:
+
+> > This breaks the build as there is a user of this interface.
+
+> Ack.
+> Jonathan pointed this out.
+> There's a V3 that changes both this and it's user (in IIO).
+
+That v3 seems to be a small subset of this series?
+
+--cd1j4nHwcOEAktEG
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1/hEsACgkQJNaLcl1U
+h9BGGQf+KEkdqu8sl97blIC9u02sAznBDKI8WBw8hq8w1EI3irkrZZsjLo+22UTB
+cUIp8bzIXq5GQ/ZbRPTG/jQOKc44E8gajZBxhWc9bFF2oNQQUy/9H5JoIgeUQspk
+Nd6lo3EyKLFHLHHc2zLeYt0HK70RKJHO09MRciWmJBDWoanZC0x7wohRuvJvoNy5
+nbtGX9+mdgIqsp17Z4RrDvr4hr1d8vPOHSl54jA0L8y+M+qo4Zcn9WvJ9WXybVZL
+yik9wnQApavBdBrubRMqnUri/p6fvp6yGGYKJlNssskGyKB8RoNFqNWSA2YAshPi
+WxdlbuP6o9Qq/Twrv5sM9fj02xApyw==
+=zm0D
+-----END PGP SIGNATURE-----
+
+--cd1j4nHwcOEAktEG--

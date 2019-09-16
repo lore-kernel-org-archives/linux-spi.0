@@ -1,15 +1,16 @@
-From: Mark Brown <broonie@kernel.org>
+From: "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
 Subject: Re: [RFC PATCH 03/15] spi: make `cs_change_delay` the first user of
  the `spi_delay` logic
-Date: Mon, 16 Sep 2019 13:47:08 +0100
-Message-ID: <20190916124707.GD4352@sirena.co.uk>
+Date: Mon, 16 Sep 2019 13:04:42 +0000
+Message-ID: <458cbb212fbd04c157c9861501f51c03ea958302.camel@analog.com>
 References: <20190913114550.956-1-alexandru.ardelean@analog.com>
- <20190913114550.956-4-alexandru.ardelean@analog.com>
- <20190916122505.GC4352@sirena.co.uk>
- <ae469c65828443524f9ff0409f1c7a81bf64cf6b.camel@analog.com>
+         <20190913114550.956-4-alexandru.ardelean@analog.com>
+         <20190916122505.GC4352@sirena.co.uk>
+         <ae469c65828443524f9ff0409f1c7a81bf64cf6b.camel@analog.com>
+         <20190916124707.GD4352@sirena.co.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="cd1j4nHwcOEAktEG"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "baolin.wang@linaro.org" <baolin.wang@linaro.org>,
         "bcm-kernel-feedback-list@broadcom.com"
@@ -24,41 +25,28 @@ Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
         "orsonzhai@gmail.com" <orsonzhai@gmail.com>,
         "zhang.lyra@gmail.com" <zhang.lyra@gmail.com>
-To: "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+To: "broonie@kernel.org" <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <ae469c65828443524f9ff0409f1c7a81bf64cf6b.camel@analog.com>
+In-Reply-To: <20190916124707.GD4352@sirena.co.uk>
+Content-Language: en-US
+Content-ID: <D9A871C55AD7F64187978CE710CCCF5B@namprd03.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-
---cd1j4nHwcOEAktEG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Mon, Sep 16, 2019 at 12:37:12PM +0000, Ardelean, Alexandru wrote:
-
-> > This breaks the build as there is a user of this interface.
-
-> Ack.
-> Jonathan pointed this out.
-> There's a V3 that changes both this and it's user (in IIO).
-
-That v3 seems to be a small subset of this series?
-
---cd1j4nHwcOEAktEG
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl1/hEsACgkQJNaLcl1U
-h9BGGQf+KEkdqu8sl97blIC9u02sAznBDKI8WBw8hq8w1EI3irkrZZsjLo+22UTB
-cUIp8bzIXq5GQ/ZbRPTG/jQOKc44E8gajZBxhWc9bFF2oNQQUy/9H5JoIgeUQspk
-Nd6lo3EyKLFHLHHc2zLeYt0HK70RKJHO09MRciWmJBDWoanZC0x7wohRuvJvoNy5
-nbtGX9+mdgIqsp17Z4RrDvr4hr1d8vPOHSl54jA0L8y+M+qo4Zcn9WvJ9WXybVZL
-yik9wnQApavBdBrubRMqnUri/p6fvp6yGGYKJlNssskGyKB8RoNFqNWSA2YAshPi
-WxdlbuP6o9Qq/Twrv5sM9fj02xApyw==
-=zm0D
------END PGP SIGNATURE-----
-
---cd1j4nHwcOEAktEG--
+T24gTW9uLCAyMDE5LTA5LTE2IGF0IDEzOjQ3ICswMTAwLCBNYXJrIEJyb3duIHdyb3RlOg0KPiBb
+RXh0ZXJuYWxdDQo+IA0KPiBPbiBNb24sIFNlcCAxNiwgMjAxOSBhdCAxMjozNzoxMlBNICswMDAw
+LCBBcmRlbGVhbiwgQWxleGFuZHJ1IHdyb3RlOg0KPiANCj4gPiA+IFRoaXMgYnJlYWtzIHRoZSBi
+dWlsZCBhcyB0aGVyZSBpcyBhIHVzZXIgb2YgdGhpcyBpbnRlcmZhY2UuDQo+ID4gQWNrLg0KPiA+
+IEpvbmF0aGFuIHBvaW50ZWQgdGhpcyBvdXQuDQo+ID4gVGhlcmUncyBhIFYzIHRoYXQgY2hhbmdl
+cyBib3RoIHRoaXMgYW5kIGl0J3MgdXNlciAoaW4gSUlPKS4NCj4gDQo+IFRoYXQgdjMgc2VlbXMg
+dG8gYmUgYSBzbWFsbCBzdWJzZXQgb2YgdGhpcyBzZXJpZXM/DQoNCkFjay4NClYzIGlzIHRoZSBm
+aXJzdCA0IHBhdGNoZXMgZnJvbSB0aGlzIHNlcmllcy4NCldlbGwsIHBhdGNoZXMgMyAmIDQgYXJl
+IHNxdWFzaGVkLg0KDQpJIGFtIDEwMCUgY29udmluY2VkIHRoYXQgdGhlIGVudGlyZSBzZXJpZXMg
+aXMgYSBnb29kIGlkZWEuDQpJbiB0aGUgc2Vuc2UgdGhhdCBhIGBzdHJ1Y3Qgc3BpX2RlbGF5YCBt
+YXkgYmUgYSBnb29kIGlkZWEsIGJ1dCBhdCB0aGUgc2FtZSB0aW1lLCBpdCBtYXkgYmUgdW4tbmVl
+ZGVkLg0KDQpBbGwgSSB3YW50ZWQgdG8gZG8sIHdhcyB0byBhZGQgYW5vdGhlciBkZWxheSBzb21l
+d2hlcmUsIGFuZCBnb3QgbG9zdCBpbiB0aGUgcmV3b3JrIG9mIGN1cnJlbnQgZGVsYXlzLg0KSSB0
+aG91Z2h0IGFib3V0IHByb3Bvc2luZyBqdXN0IHRoZSBmaXJzdCA0IHBhdGNoZXMgW29uIHRoZWly
+IG93bl0sIGJ1dCBJIHRob3VnaHQgdGhhdCBzaG93aW5nIHRoZSBjdXJyZW50IHNlcmllcyBhcy1p
+cw0Kbm93LCBtYXkgYmUgYSBnb29kIGlkZWEgYXMgd2VsbCBbdG8gZ2F0aGVyIHNvbWUgZmVlZGJh
+Y2tdLg0K

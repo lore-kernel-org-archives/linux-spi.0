@@ -1,157 +1,73 @@
-From: Paul Walmsley <paul.walmsley@sifive.com>
-Subject: Re: [PATCH] spi: sifive: check return value for
- platform_get_resource()
-Date: Tue, 17 Sep 2019 07:11:16 -0700 (PDT)
-Message-ID: <alpine.DEB.2.21.9999.1909170709070.8198@viisi.sifive.com>
-References: <20190917085627.4562-1-mail@aurabindo.in> <CAMz4kuJczzjTPSohQ=kbZ0Pr7U_9-hzXk-jPgKk79PENOM1-dA@mail.gmail.com> <alpine.DEB.2.21.9999.1909170514130.11980@viisi.sifive.com>
- <ij_UksEXUomr_L7KQam02lHBryAppgwKDjG90VbVcRRUeXlKU8TAiBWc3aU8vt20Wvlwt_6NDgz5fuMSwwP1mm-1eP6GYWoR1Kbr0y0ElRk=@aurabindo.in>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1565122568-1568729476=:8198"
-Cc: Baolin Wang <baolin.wang@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        "palmer@sifive.com" <palmer@sifive.com>,
+From: "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: Re: [Letux-kernel] [PATCH 2/2] DTS: ARM: gta04: introduce legacy spi-cs-high to make display work again
+Date: Tue, 17 Sep 2019 16:26:15 +0200
+Message-ID: <1624298A-C51B-418A-96C3-EA09367A010D@goldelico.com>
+References: <cover.1562597164.git.hns@goldelico.com> <8ae7cf816b22ef9cecee0d789fcf9e8a06495c39.1562597164.git.hns@goldelico.com> <20190724194259.GA25847@bogus> <2EA06398-E45B-481B-9A26-4DD2E043BF9C@goldelico.com> <CAL_JsqLe_Y9Z6MRt7ojgSVKAb9n95S8j=eGidSVNz2T83j-zPQ@mail.gmail.com> <CACRpkdY0AVnkRa8sV_Z54qfX9SYufvaYYhU0k2+LitXo0sLx2w@mail.gmail.com> <20190831084852.5e726cfa@aktux> <ED6A6797-D1F9-473B-ABFF-B6951A924BC1@goldelico.com> <CACRpkdZQgPVvB=78vOFsHe5n45Vwe4N6JJOcm1_vz5FbAw9CYA@mail.gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+Cc: Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
+        Rob Herring <robh@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux-OMAP <linux-omap@vger.kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        stable <stable@vger.kernel.org>,
         linux-spi <linux-spi@vger.kernel.org>,
-        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-        LKML <linux-kernel@vger.kernel.org>
-To: Aurabindo Jayamohanan <mail@aurabindo.in>
+        Mark Brown <broonie@kernel.org>,
+        =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>
+To: Linus Walleij <linus.walleij@linaro.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <ij_UksEXUomr_L7KQam02lHBryAppgwKDjG90VbVcRRUeXlKU8TAiBWc3aU8vt20Wvlwt_6NDgz5fuMSwwP1mm-1eP6GYWoR1Kbr0y0ElRk=@aurabindo.in>
+In-Reply-To: <CACRpkdZQgPVvB=78vOFsHe5n45Vwe4N6JJOcm1_vz5FbAw9CYA@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi Lunus,
 
---8323329-1565122568-1568729476=:8198
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-
-Aurobindo,=20
-
-On Tue, 17 Sep 2019, Aurabindo Jayamohanan wrote:
-
-> =E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90 Original =
-Message =E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90
-> On Tuesday, September 17, 2019 5:45 PM, Paul Walmsley <paul.walmsley@sifi=
-ve.com> wrote:
+> Am 17.09.2019 um 00:52 schrieb Linus Walleij =
+<linus.walleij@linaro.org>:
 >=20
-> > On Tue, 17 Sep 2019, Baolin Wang wrote:
-> >
-> > > On Tue, 17 Sep 2019 at 17:12, Aurabindo Jayamohanan mail@aurabindo.in=
- wrote:
-> > >
-> > > > platform_get_resource() may return NULL. If it is so, return -ENXIO
-> > > >
-> > > > Signed-off-by: Aurabindo Jayamohanan mail@aurabindo.in
-> > > >
-> > > > -------------------------------------------------------
-> > > >
-> > > > drivers/spi/spi-sifive.c | 6 ++++++
-> > > > 1 file changed, 6 insertions(+)
-> > > > diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
-> > > > index 93ec2c6cdbfd..67485067a694 100644
-> > > > --- a/drivers/spi/spi-sifive.c
-> > > > +++ b/drivers/spi/spi-sifive.c
-> > > > @@ -308,6 +308,12 @@ static int sifive_spi_probe(struct platform_de=
-vice *pdev)
-> > > > platform_set_drvdata(pdev, master);
-> > > >
-> > > >         res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> > > >
-> > > >
-> > > > -         if (!res) {
-> > > >
-> > > >
-> > > > -                 dev_err(&pdev->dev, "no IOMEM resource found\\n")=
-;
-> > > >
-> > > >
-> > > > -                 ret =3D -ENXIO;
-> > > >
-> > > >
-> > > > -                 goto put_master;
-> > > >
-> > > >
-> > > > -         }
-> > > >
-> > > >
-> > >
-> > > Seems unnecessary, the devm_ioremap_resource() already validated if
-> > > the resource is available.
-> >
-> > Just doublechecked lib/devres.c and I agree with you.
-> >
-> > Aurobindo, is this a patch for a real problem that you've encountered?
-> >
-> > -   Paul
+> On Mon, Sep 16, 2019 at 12:59 PM H. Nikolaus Schaller =
+<hns@goldelico.com> wrote:
 >=20
-> Geert is right. I was just breezing through the source and found it odd s=
-ince
-> I noticed other instances checking for return value. Apparently none of t=
-hose
-> use the managed api.
+>> ping.
+>>=20
+>> Device omap3-gta04 is neither working with v5.3 nor linux-next quite =
+a while and we need a solution.
 >=20
-> If you didnt already do Geert's suggestion,
-
-Mark Brown is the maintainer, so he'd be the one to apply anything=20
-touching these drivers.
-
-> here is a patch:
-
-Could you please send this as a separate E-mail?
-
-> ____
+> Can't we just apply the last part of the patch in this thread:
 >=20
-> spi: sifive: use device managed api to get plaform resource
-
-"platform resource"
-
+> diff --git a/arch/arm/boot/dts/omap3-gta04.dtsi
+> b/arch/arm/boot/dts/omap3-gta04.dtsi
+> index 9a9a29fe88ec..47bab8e1040e 100644
+> --- a/arch/arm/boot/dts/omap3-gta04.dtsi
+> +++ b/arch/arm/boot/dts/omap3-gta04.dtsi
+> @@ -124,6 +124,7 @@
+>                        spi-max-frequency =3D <100000>;
+>                        spi-cpol;
+>                        spi-cpha;
+> +                       spi-cs-high;
 >=20
-> calls to devm_ioremap_resource() preceeded by platform_get_resource()
-
-"Calls"
-
-"preceded"
-
-> may be replaced by devm_platform_ioremap_resource().
-
-Please explain why.  In this case "removing boilerplate from the code"=20
-seems like a reasonable explanation.
-
+>                        backlight=3D <&backlight>;
+>                        label =3D "lcd";
 >=20
-> Signed-off-by: Aurabindo Jayamohanan <mail@aurabindo.in>
-> ---
->  drivers/spi/spi-sifive.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
 >=20
-> diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
-> index 93ec2c6cdbfd..c0925aa98aad 100644
-> --- a/drivers/spi/spi-sifive.c
-> +++ b/drivers/spi/spi-sifive.c
-> @@ -292,7 +292,6 @@ sifive_spi_transfer_one(struct spi_master *master, st=
-ruct spi_device *device,
->  static int sifive_spi_probe(struct platform_device *pdev)
->  {
->  =09struct sifive_spi *spi;
-> -=09struct resource *res;
->  =09int ret, irq, num_cs;
->  =09u32 cs_bits, max_bits_per_word;
->  =09struct spi_master *master;
-> @@ -307,8 +306,7 @@ static int sifive_spi_probe(struct platform_device *p=
-dev)
->  =09init_completion(&spi->done);
->  =09platform_set_drvdata(pdev, master);
->=20
-> -=09res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -=09spi->regs =3D devm_ioremap_resource(&pdev->dev, res);
-> +=09spi->regs =3D devm_platform_ioremap_resource(pdev, 0);
->  =09if (IS_ERR(spi->regs)) {
->  =09=09ret =3D PTR_ERR(spi->regs);
->  =09=09goto put_master;
-> --
-> 2.23.0
->=20
+> Surely this fixes the problem?
 
+yes, it is a workaround, but appears to violate some policies.
+E.g. the spi-cs-high; is undocumented but DT bindings maintainer
+seems to be against documenting it as I had proposed in my
+other patch.
 
-- Paul
---8323329-1565122568-1568729476=:8198--
+Rather he seems to have proposed a white-list in the driver code.
+So that the legacy mode is only becoming active for those systems
+which really need the legacy mode instead of everyone.
+
+Then, we do not need this patch for GTA04.
+
+So its up to you to decide which way to go. We are happy with
+any one that makes mainline work again asap...
+
+BR and thanks,
+Nikolaus

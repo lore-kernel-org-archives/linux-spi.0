@@ -1,56 +1,73 @@
-From: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [Letux-kernel] [PATCH 2/2] DTS: ARM: gta04: introduce legacy
- spi-cs-high to make display work again
-Date: Tue, 17 Sep 2019 00:52:39 +0200
-Message-ID: <CACRpkdZQgPVvB=78vOFsHe5n45Vwe4N6JJOcm1_vz5FbAw9CYA@mail.gmail.com>
-References: <cover.1562597164.git.hns@goldelico.com> <8ae7cf816b22ef9cecee0d789fcf9e8a06495c39.1562597164.git.hns@goldelico.com>
- <20190724194259.GA25847@bogus> <2EA06398-E45B-481B-9A26-4DD2E043BF9C@goldelico.com>
- <CAL_JsqLe_Y9Z6MRt7ojgSVKAb9n95S8j=eGidSVNz2T83j-zPQ@mail.gmail.com>
- <CACRpkdY0AVnkRa8sV_Z54qfX9SYufvaYYhU0k2+LitXo0sLx2w@mail.gmail.com>
- <20190831084852.5e726cfa@aktux> <ED6A6797-D1F9-473B-ABFF-B6951A924BC1@goldelico.com>
+From: "Ramuthevar, Vadivel MuruganX"
+        <vadivel.muruganx.ramuthevar@linux.intel.com>
+Subject: Re: [PATCH v1 0/2] spi: cadence-qspi: Add cadence-qspi support for
+ Intel LGM SoC
+Date: Tue, 17 Sep 2019 11:31:03 +0800
+Message-ID: <371e0d6f-6d2b-78aa-1ece-19cb4356faf4@linux.intel.com>
+References: <20190916073843.39618-1-vadivel.muruganx.ramuthevar@linux.intel.com>
+ <c4555df5-89d5-e8a6-bed4-887c23ac4f0f@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
-        Rob Herring <robh@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        stable <stable@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        =?UTF-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>
-To: "H. Nikolaus Schaller" <hns@goldelico.com>
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <ED6A6797-D1F9-473B-ABFF-B6951A924BC1@goldelico.com>
-Sender: stable-owner@vger.kernel.org
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Cc: robh+dt@kernel.org, mark.rutland@arm.com,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, cheol.yong.kim@intel.com,
+        qi-ming.wu@intel.com
+To: Vignesh Raghavendra <vigneshr@ti.com>, broonie@kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <c4555df5-89d5-e8a6-bed4-887c23ac4f0f@ti.com>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Sep 16, 2019 at 12:59 PM H. Nikolaus Schaller <hns@goldelico.com> wrote:
+Hi Vignesh,
 
-> ping.
+    Thank you for the review comments and suggestions.
+
+On 17/9/2019 12:50 AM, Vignesh Raghavendra wrote:
+> Hi,
 >
-> Device omap3-gta04 is neither working with v5.3 nor linux-next quite a while and we need a solution.
+> On 16/09/19 1:08 PM, Ramuthevar,Vadivel MuruganX wrote:
+>> patch 1: Add YAML for cadence-qspi devicetree cdocumentation.
+>> patch 2: cadence-qspi controller driver to support QSPI-NAND flash
+>> using existing spi-nand framework with legacy spi protocol.
+> Nope, you cannot have two drivers for the same IP (i.e Cadence QSPI)
+> just to support to different types of SPI memories. This is the reason
+> why spi_mem_ops was introduced.
+>
+> Please rewrite this driver over to use spi_mem_ops (instead of using
+> generic SPI xfers) so that same driver supports both SPI-NOR and
+> SPI-NAND flashes. Once that's done drivers/mtd/spi-nor/cadence-quadspi.c
+> can be deleted.
+>
+> There are few existing examples of spi_mem_ops users in drivers/spi/
+> (git grep spi_mem_ops) and materials here on how to write such a driver:
+>
+> [1]
+> https://bootlin.com/blog/spi-mem-bringing-some-consistency-to-the-spi-memory-ecosystem/
+> [2] https://www.youtube.com/watch?v=PkWbuLM_gmU
+Agreed!, Surely let me go through the above link and put my effort to 
+rewrite the drivers as per your suggestions.
 
-Can't we just apply the last part of the patch in this thread:
+---
+With Best Regards
+Vadivel Murugan R
 
-diff --git a/arch/arm/boot/dts/omap3-gta04.dtsi
-b/arch/arm/boot/dts/omap3-gta04.dtsi
-index 9a9a29fe88ec..47bab8e1040e 100644
---- a/arch/arm/boot/dts/omap3-gta04.dtsi
-+++ b/arch/arm/boot/dts/omap3-gta04.dtsi
-@@ -124,6 +124,7 @@
-                        spi-max-frequency = <100000>;
-                        spi-cpol;
-                        spi-cpha;
-+                       spi-cs-high;
-
-                        backlight= <&backlight>;
-                        label = "lcd";
-
-
-Surely this fixes the problem?
-
-Yours,
-Linus Walleij
+>> Ramuthevar Vadivel Murugan (2):
+>>    dt-bindings: spi: Add support for cadence-qspi IP Intel LGM SoC
+>>    spi: cadence-qspi: Add QSPI support for Intel LGM SoC
+>>
+>>   .../devicetree/bindings/spi/cadence,qspi-nand.yaml |  84 +++
+>>   drivers/spi/Kconfig                                |   9 +
+>>   drivers/spi/Makefile                               |   1 +
+>>   drivers/spi/spi-cadence-qspi-apb.c                 | 644 +++++++++++++++++++++
+>>   drivers/spi/spi-cadence-qspi-apb.h                 | 174 ++++++
+>>   drivers/spi/spi-cadence-qspi.c                     | 461 +++++++++++++++
+>>   drivers/spi/spi-cadence-qspi.h                     |  73 +++
+>>   7 files changed, 1446 insertions(+)
+>>   create mode 100644 Documentation/devicetree/bindings/spi/cadence,qspi-nand.yaml
+>>   create mode 100644 drivers/spi/spi-cadence-qspi-apb.c
+>>   create mode 100644 drivers/spi/spi-cadence-qspi-apb.h
+>>   create mode 100644 drivers/spi/spi-cadence-qspi.c
+>>   create mode 100644 drivers/spi/spi-cadence-qspi.h
+>>

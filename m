@@ -1,66 +1,89 @@
-From: "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Subject: Re: [RFC PATCH 03/15] spi: make `cs_change_delay` the first user of
- the `spi_delay` logic
-Date: Tue, 17 Sep 2019 06:05:15 +0000
-Message-ID: <2ebd680eb38bd3bc46414a5e18e399279946bd9b.camel@analog.com>
-References: <20190913114550.956-1-alexandru.ardelean@analog.com>
-         <20190913114550.956-4-alexandru.ardelean@analog.com>
-         <20190916122505.GC4352@sirena.co.uk>
-         <ae469c65828443524f9ff0409f1c7a81bf64cf6b.camel@analog.com>
-         <20190916124707.GD4352@sirena.co.uk>
-         <458cbb212fbd04c157c9861501f51c03ea958302.camel@analog.com>
-         <20190916134309.GH4352@sirena.co.uk>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH 2/3] spi: dw: Add basic runtime PM support
+Date: Tue, 17 Sep 2019 08:36:01 +0200
+Message-ID: <CAMuHMdX9ZdLMmpHGqm2wmajwEDjuTY7s19PqwQ3kaVu8WLLykA@mail.gmail.com>
+References: <1568376720-7402-1-git-send-email-gareth.williams.jx@renesas.com>
+ <1568376720-7402-3-git-send-email-gareth.williams.jx@renesas.com>
+ <CAMuHMdUnzmYEcp0B5MG7itB1JHtNL7Stj9S2EFB0U0y_naQVBQ@mail.gmail.com> <TY2PR01MB2924AA1B012C2D305EE5C9B7DF8C0@TY2PR01MB2924.jpnprd01.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "baolin.wang@linaro.org" <baolin.wang@linaro.org>,
-        "bcm-kernel-feedback-list@broadcom.com"
-        <bcm-kernel-feedback-list@broadcom.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
-        "orsonzhai@gmail.com" <orsonzhai@gmail.com>,
-        "zhang.lyra@gmail.com" <zhang.lyra@gmail.com>
-To: "broonie@kernel.org" <broonie@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>,
+        Phil Edworthy <phil.edworthy@renesas.com>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+To: Gareth Williams <gareth.williams.jx@renesas.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190916134309.GH4352@sirena.co.uk>
-Content-Language: en-US
-Content-ID: <418F646267A0C44DA315D6E3661E68FC@namprd03.prod.outlook.com>
+In-Reply-To: <TY2PR01MB2924AA1B012C2D305EE5C9B7DF8C0@TY2PR01MB2924.jpnprd01.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gTW9uLCAyMDE5LTA5LTE2IGF0IDE0OjQzICswMTAwLCBNYXJrIEJyb3duIHdyb3RlOg0KPiBb
-RXh0ZXJuYWxdDQo+IA0KPiBPbiBNb24sIFNlcCAxNiwgMjAxOSBhdCAwMTowNDo0MlBNICswMDAw
-LCBBcmRlbGVhbiwgQWxleGFuZHJ1IHdyb3RlOg0KPiA+IE9uIE1vbiwgMjAxOS0wOS0xNiBhdCAx
-Mzo0NyArMDEwMCwgTWFyayBCcm93biB3cm90ZToNCj4gPiA+IFRoYXQgdjMgc2VlbXMgdG8gYmUg
-YSBzbWFsbCBzdWJzZXQgb2YgdGhpcyBzZXJpZXM/DQo+ID4gQWNrLg0KPiA+IFYzIGlzIHRoZSBm
-aXJzdCA0IHBhdGNoZXMgZnJvbSB0aGlzIHNlcmllcy4NCj4gPiBXZWxsLCBwYXRjaGVzIDMgJiA0
-IGFyZSBzcXVhc2hlZC4NCj4gPiBJIGFtIDEwMCUgY29udmluY2VkIHRoYXQgdGhlIGVudGlyZSBz
-ZXJpZXMgaXMgYSBnb29kIGlkZWEuDQoNClNvbWV0aGluZyBoYXBwZW5lZCBoZXJlIHRvIHRoZSAi
-bm90IiB3b3JkLg0KUHJvYmFibHkgZ290IGxvc3QgaW4gYW4gYWx0ZXJuYXRlIGRpbWVuc2lvbiAg
-wq9cXyjjg4QpXy/CryAuDQoNCldhcyBzdXBwb3NlZCB0byBiZToNCiJJIGFtIG5vdCAxMDAlIGNv
-bnZpbmNlZCB0aGF0IHRoZSBlbnRpcmUgc2VyaWVzIGlzIGEgZ29vZCBpZGVhLiINCg0KDQo+ID4g
-SW4gdGhlIHNlbnNlIHRoYXQgYSBgc3RydWN0IHNwaV9kZWxheWAgbWF5IGJlIGEgZ29vZCBpZGVh
-LCBidXQgYXQgdGhlDQo+ID4gc2FtZSB0aW1lLCBpdCBtYXkgYmUgdW4tbmVlZGVkLg0KPiA+IEFs
-bCBJIHdhbnRlZCB0byBkbywgd2FzIHRvIGFkZCBhbm90aGVyIGRlbGF5IHNvbWV3aGVyZSwgYW5k
-IGdvdCBsb3N0IGluDQo+ID4gdGhlIHJld29yayBvZiBjdXJyZW50IGRlbGF5cy4NCj4gPiBJIHRo
-b3VnaHQgYWJvdXQgcHJvcG9zaW5nIGp1c3QgdGhlIGZpcnN0IDQgcGF0Y2hlcyBbb24gdGhlaXIg
-b3duXSwgYnV0DQo+ID4gSSB0aG91Z2h0IHRoYXQgc2hvd2luZyB0aGUgY3VycmVudCBzZXJpZXMg
-YXMtaXMNCj4gPiBub3csIG1heSBiZSBhIGdvb2QgaWRlYSBhcyB3ZWxsIFt0byBnYXRoZXIgc29t
-ZSBmZWVkYmFja10uDQo+IA0KPiBJIHRoaW5rIGl0IG1ha2VzIG1vcmUgc2Vuc2UgdG8gcmV2aWV3
-IGFzIGEgd2hvbGUgc2VyaWVzIHJhdGhlciB0aGFuIG9ubHkNCj4gYSBwYXJ0IG9mIHRoZSBjb252
-ZXJzaW9uLCBpdCBkb2Vzbid0IHJlYWxseSBoZWxwIHRvIG9ubHkgZG8gcGFydCBvZiBpdC4NCj4g
-DQo+IFBsZWFzZSBmaXggeW91ciBtYWlsIGNsaWVudCB0byB3b3JkIHdyYXAgd2l0aGluIHBhcmFn
-cmFwaHMgYXQgc29tZXRoaW5nDQo+IHN1YnN0YW50aWFsbHkgbGVzcyB0aGFuIDgwIGNvbHVtbnMu
-ICBEb2luZyB0aGlzIG1ha2VzIHlvdXIgbWVzc2FnZXMgbXVjaA0KPiBlYXNpZXIgdG8gcmVhZCBh
-bmQgcmVwbHkgdG8uDQoNCkFjay4NClByb2JsZW0gaXM6IEkgaGF2ZSB0byByZS1zZXR1cCBteSBl
-bWFpbCBjbGllbnQgZXZlcnkgbm93LW4tdGhlbiBzaW5jZSB0aGUNCndvcmstZW1haWwgc2VydmVy
-IGhhcyBzb21lIGlzc3VlcyB3aXRoIExpbnV4IGVtYWlsIGNsaWVudHMuDQpBbmQgSSBzb21ldGlt
-ZXMgZm9yZ2V0IHRvIGNvbmZpZ3VyZSB0aGlzLg0KWyBFeGNoYW5nZSBkb2VzIG5vdCBhbHdheXMg
-Z2V0IGFsb25nIHdlbGwgd2l0aCBub24tT3V0bG9vayBjbGllbnRzIF0NCg==
+Hi Gareth,
+
+On Mon, Sep 16, 2019 at 6:14 PM Gareth Williams
+<gareth.williams.jx@renesas.com> wrote:
+> > On Mon, Sep 16, 2019 at 15:36 PM Geert Uytterhoeven
+> > <geert@linux-m68k.org> wrote:
+> > On Fri, Sep 13, 2019 at 2:13 PM Gareth Williams
+> > <gareth.williams.jx@renesas.com> wrote:
+> > > From: Phil Edworthy <phil.edworthy@renesas.com>
+> > >
+> > > Enable runtime PM so that the clock used to access the registers in
+> > > the peripheral is turned on using a clock domain.
+> > >
+> > > Signed-off-by: Phil Edworthy <phil.edworthy@renesas.com>
+> > > Signed-off-by: Gareth Williams <gareth.williams.jx@renesas.com>
+> >
+> > Thanks for your patch!
+> >
+> > > --- a/drivers/spi/spi-dw.c
+> > > +++ b/drivers/spi/spi-dw.c
+> > > @@ -10,6 +10,7 @@
+> > >  #include <linux/module.h>
+> > >  #include <linux/highmem.h>
+> > >  #include <linux/delay.h>
+> > > +#include <linux/pm_runtime.h>
+> > >  #include <linux/slab.h>
+> > >  #include <linux/spi/spi.h>
+> > >
+> > > @@ -497,6 +498,9 @@ int dw_spi_add_host(struct device *dev, struct
+> > dw_spi *dws)
+> > >         if (dws->set_cs)
+> > >                 master->set_cs = dws->set_cs;
+> > >
+> > > +       pm_runtime_enable(dev);
+> > > +       pm_runtime_get_sync(dev);
+> >
+> > The second line keeps the device powered all the time.
+> > What about setting spi_controller.auto_runtime_pm = true, so the SPI code
+> > can manage its Runtime PM status?
+>
+> That makes sense and works on target, I will change this for V2.
+
+> > I assume this will be called from drivers/spi/spi-dw-mmio.c, which already
+> > enables the clock explicitly all the timer?
+> Yes, spi-dw-mmio.c already enables the bus clock, however we want to use clock
+>
+> domain to enable the clock and not explicitly provide pclk in the dts. If there are
+> no other uses of that pclk, we can remove that later on.
+
+IC, that's useful sideband information.
+
+"pclk" is indeed an optional clock.
+"ssi_clk" must be first.
+
+However, to make use of the clock domain code, you still have to list "pclk"
+in DT, but use a different name, to avoid spi-dw-mmio.c enabling it all the
+time? Or do you plan to modify spi-dw-mmio.c for that?
+In the former case, you should document that in your bindings, which
+currently build on top of snps,dw-apb-ssi.txt, thus include "pclk".
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

@@ -1,7 +1,7 @@
 From: Aurabindo Jayamohanan <mail@aurabindo.in>
 Subject: [PATCH] spi: sifive: check return value for platform_get_resource()
-Date: Tue, 17 Sep 2019 09:12:14 +0000
-Message-ID: <20190917091207.4925-1-mail@aurabindo.in>
+Date: Tue, 17 Sep 2019 09:12:38 +0000
+Message-ID: <20190917085627.4562-1-mail@aurabindo.in>
 Reply-To: Aurabindo Jayamohanan <mail@aurabindo.in>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8

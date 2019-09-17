@@ -1,46 +1,78 @@
-From: Baolin Wang <baolin.wang@linaro.org>
-Subject: Re: [PATCH] spi: sifive: check return value for platform_get_resource()
-Date: Tue, 17 Sep 2019 17:23:13 +0800
-Message-ID: <CAMz4kuJczzjTPSohQ=kbZ0Pr7U_9-hzXk-jPgKk79PENOM1-dA@mail.gmail.com>
-References: <20190917085627.4562-1-mail@aurabindo.in>
+From: Gareth Williams <gareth.williams.jx@renesas.com>
+Subject: RE: [PATCH 2/3] spi: dw: Add basic runtime PM support
+Date: Tue, 17 Sep 2019 09:34:21 +0000
+Message-ID: <TY2PR01MB29248194652814C3FEB1C189DF8F0@TY2PR01MB2924.jpnprd01.prod.outlook.com>
+References: <1568376720-7402-1-git-send-email-gareth.williams.jx@renesas.com>
+ <1568376720-7402-3-git-send-email-gareth.williams.jx@renesas.com>
+ <CAMuHMdUnzmYEcp0B5MG7itB1JHtNL7Stj9S2EFB0U0y_naQVBQ@mail.gmail.com>
+ <TY2PR01MB2924AA1B012C2D305EE5C9B7DF8C0@TY2PR01MB2924.jpnprd01.prod.outlook.com>
+ <CAMuHMdX9ZdLMmpHGqm2wmajwEDjuTY7s19PqwQ3kaVu8WLLykA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>, palmer@sifive.com,
-        paul.walmsley@sifive.com, linux-spi <linux-spi@vger.kernel.org>,
-        linux-riscv@lists.infradead.org,
-        LKML <linux-kernel@vger.kernel.org>
-To: Aurabindo Jayamohanan <mail@aurabindo.in>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Mark Brown <broonie@kernel.org>,
+        Phil Edworthy <phil.edworthy@renesas.com>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190917085627.4562-1-mail@aurabindo.in>
+In-Reply-To: <CAMuHMdX9ZdLMmpHGqm2wmajwEDjuTY7s19PqwQ3kaVu8WLLykA@mail.gmail.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 17 Sep 2019 at 17:12, Aurabindo Jayamohanan <mail@aurabindo.in> wrote:
->
-> platform_get_resource() may return NULL. If it is so, return -ENXIO
->
-> Signed-off-by: Aurabindo Jayamohanan <mail@aurabindo.in>
-> ---
->  drivers/spi/spi-sifive.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
-> index 93ec2c6cdbfd..67485067a694 100644
-> --- a/drivers/spi/spi-sifive.c
-> +++ b/drivers/spi/spi-sifive.c
-> @@ -308,6 +308,12 @@ static int sifive_spi_probe(struct platform_device *pdev)
->         platform_set_drvdata(pdev, master);
->
->         res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +       if (!res) {
-> +               dev_err(&pdev->dev, "no IOMEM resource found\n");
-> +               ret = -ENXIO;
-> +               goto put_master;
-> +       }
-
-Seems unnecessary, the devm_ioremap_resource() already validated if
-the resource is available.
-
--- 
-Baolin Wang
-Best Regards
+SGkgR2VlcnQsDQoNCj4gT24gTW9uLCBTZXAgMTcsIDIwMTkgYXQgMDc6MzYgUE0gR2VlcnQgVXl0
+dGVyaG9ldmVuDQo+IDxnZWVydEBsaW51eC1tNjhrLm9yZz4gd3JvdGU6DQo+IA0KPiBIaSBHYXJl
+dGgsDQo+IA0KPiBPbiBNb24sIFNlcCAxNiwgMjAxOSBhdCA2OjE0IFBNIEdhcmV0aCBXaWxsaWFt
+cw0KPiA8Z2FyZXRoLndpbGxpYW1zLmp4QHJlbmVzYXMuY29tPiB3cm90ZToNCj4gPiA+IE9uIE1v
+biwgU2VwIDE2LCAyMDE5IGF0IDE1OjM2IFBNIEdlZXJ0IFV5dHRlcmhvZXZlbg0KPiA+ID4gPGdl
+ZXJ0QGxpbnV4LW02OGsub3JnPiB3cm90ZToNCj4gPiA+IE9uIEZyaSwgU2VwIDEzLCAyMDE5IGF0
+IDI6MTMgUE0gR2FyZXRoIFdpbGxpYW1zDQo+ID4gPiA8Z2FyZXRoLndpbGxpYW1zLmp4QHJlbmVz
+YXMuY29tPiB3cm90ZToNCj4gPiA+ID4gRnJvbTogUGhpbCBFZHdvcnRoeSA8cGhpbC5lZHdvcnRo
+eUByZW5lc2FzLmNvbT4NCj4gPiA+ID4NCj4gPiA+ID4gRW5hYmxlIHJ1bnRpbWUgUE0gc28gdGhh
+dCB0aGUgY2xvY2sgdXNlZCB0byBhY2Nlc3MgdGhlIHJlZ2lzdGVycw0KPiA+ID4gPiBpbiB0aGUg
+cGVyaXBoZXJhbCBpcyB0dXJuZWQgb24gdXNpbmcgYSBjbG9jayBkb21haW4uDQo+ID4gPiA+DQo+
+ID4gPiA+IFNpZ25lZC1vZmYtYnk6IFBoaWwgRWR3b3J0aHkgPHBoaWwuZWR3b3J0aHlAcmVuZXNh
+cy5jb20+DQo+ID4gPiA+IFNpZ25lZC1vZmYtYnk6IEdhcmV0aCBXaWxsaWFtcyA8Z2FyZXRoLndp
+bGxpYW1zLmp4QHJlbmVzYXMuY29tPg0KPiA+ID4NCj4gPiA+IFRoYW5rcyBmb3IgeW91ciBwYXRj
+aCENCj4gPiA+DQo+ID4gPiA+IC0tLSBhL2RyaXZlcnMvc3BpL3NwaS1kdy5jDQo+ID4gPiA+ICsr
+KyBiL2RyaXZlcnMvc3BpL3NwaS1kdy5jDQo+ID4gPiA+IEBAIC0xMCw2ICsxMCw3IEBADQo+ID4g
+PiA+ICAjaW5jbHVkZSA8bGludXgvbW9kdWxlLmg+DQo+ID4gPiA+ICAjaW5jbHVkZSA8bGludXgv
+aGlnaG1lbS5oPg0KPiA+ID4gPiAgI2luY2x1ZGUgPGxpbnV4L2RlbGF5Lmg+DQo+ID4gPiA+ICsj
+aW5jbHVkZSA8bGludXgvcG1fcnVudGltZS5oPg0KPiA+ID4gPiAgI2luY2x1ZGUgPGxpbnV4L3Ns
+YWIuaD4NCj4gPiA+ID4gICNpbmNsdWRlIDxsaW51eC9zcGkvc3BpLmg+DQo+ID4gPiA+DQo+ID4g
+PiA+IEBAIC00OTcsNiArNDk4LDkgQEAgaW50IGR3X3NwaV9hZGRfaG9zdChzdHJ1Y3QgZGV2aWNl
+ICpkZXYsIHN0cnVjdA0KPiA+ID4gZHdfc3BpICpkd3MpDQo+ID4gPiA+ICAgICAgICAgaWYgKGR3
+cy0+c2V0X2NzKQ0KPiA+ID4gPiAgICAgICAgICAgICAgICAgbWFzdGVyLT5zZXRfY3MgPSBkd3Mt
+PnNldF9jczsNCj4gPiA+ID4NCj4gPiA+ID4gKyAgICAgICBwbV9ydW50aW1lX2VuYWJsZShkZXYp
+Ow0KPiA+ID4gPiArICAgICAgIHBtX3J1bnRpbWVfZ2V0X3N5bmMoZGV2KTsNCj4gPiA+DQo+ID4g
+PiBUaGUgc2Vjb25kIGxpbmUga2VlcHMgdGhlIGRldmljZSBwb3dlcmVkIGFsbCB0aGUgdGltZS4N
+Cj4gPiA+IFdoYXQgYWJvdXQgc2V0dGluZyBzcGlfY29udHJvbGxlci5hdXRvX3J1bnRpbWVfcG0g
+PSB0cnVlLCBzbyB0aGUgU1BJDQo+ID4gPiBjb2RlIGNhbiBtYW5hZ2UgaXRzIFJ1bnRpbWUgUE0g
+c3RhdHVzPw0KPiA+DQo+ID4gVGhhdCBtYWtlcyBzZW5zZSBhbmQgd29ya3Mgb24gdGFyZ2V0LCBJ
+IHdpbGwgY2hhbmdlIHRoaXMgZm9yIFYyLg0KPiANCj4gPiA+IEkgYXNzdW1lIHRoaXMgd2lsbCBi
+ZSBjYWxsZWQgZnJvbSBkcml2ZXJzL3NwaS9zcGktZHctbW1pby5jLCB3aGljaA0KPiA+ID4gYWxy
+ZWFkeSBlbmFibGVzIHRoZSBjbG9jayBleHBsaWNpdGx5IGFsbCB0aGUgdGltZXI/DQo+ID4gWWVz
+LCBzcGktZHctbW1pby5jIGFscmVhZHkgZW5hYmxlcyB0aGUgYnVzIGNsb2NrLCBob3dldmVyIHdl
+IHdhbnQgdG8NCj4gPiB1c2UgY2xvY2sNCj4gPg0KPiA+IGRvbWFpbiB0byBlbmFibGUgdGhlIGNs
+b2NrIGFuZCBub3QgZXhwbGljaXRseSBwcm92aWRlIHBjbGsgaW4gdGhlIGR0cy4NCj4gPiBJZiB0
+aGVyZSBhcmUgbm8gb3RoZXIgdXNlcyBvZiB0aGF0IHBjbGssIHdlIGNhbiByZW1vdmUgdGhhdCBs
+YXRlciBvbi4NCj4gDQo+IElDLCB0aGF0J3MgdXNlZnVsIHNpZGViYW5kIGluZm9ybWF0aW9uLg0K
+PiANCj4gInBjbGsiIGlzIGluZGVlZCBhbiBvcHRpb25hbCBjbG9jay4NCj4gInNzaV9jbGsiIG11
+c3QgYmUgZmlyc3QuDQo+IA0KPiBIb3dldmVyLCB0byBtYWtlIHVzZSBvZiB0aGUgY2xvY2sgZG9t
+YWluIGNvZGUsIHlvdSBzdGlsbCBoYXZlIHRvIGxpc3QgInBjbGsiDQo+IGluIERULCBidXQgdXNl
+IGEgZGlmZmVyZW50IG5hbWUsIHRvIGF2b2lkIHNwaS1kdy1tbWlvLmMgZW5hYmxpbmcgaXQgYWxs
+IHRoZQ0KPiB0aW1lPyBPciBkbyB5b3UgcGxhbiB0byBtb2RpZnkgc3BpLWR3LW1taW8uYyBmb3Ig
+dGhhdD8NCj4gSW4gdGhlIGZvcm1lciBjYXNlLCB5b3Ugc2hvdWxkIGRvY3VtZW50IHRoYXQgaW4g
+eW91ciBiaW5kaW5ncywgd2hpY2gNCj4gY3VycmVudGx5IGJ1aWxkIG9uIHRvcCBvZiBzbnBzLGR3
+LWFwYi1zc2kudHh0LCB0aHVzIGluY2x1ZGUgInBjbGsiLg0KV2UgYXJlIGludGVuZGluZyB0byBk
+byB0aGUgZm9ybWVyLCBzbyBJIHdpbGwgaW5jbHVkZSBhIGJpbmRpbmcgdXBkYXRlIGluIFYyIHRo
+YXQNCm5vdGVzIHRvIHJlbmFtZSAicGNsayIgaW4gdGhlIGNhc2UgYSBjbG9jayBkb21haW4gaXMg
+aW4gdXNlLiBUaGFua3MgZm9yIHBvaW50aW5nDQp0aGlzIG91dC4NCg0KPiBHcntvZXRqZSxlZXRp
+bmd9cywNCj4gDQo+ICAgICAgICAgICAgICAgICAgICAgICAgIEdlZXJ0DQo+IA0KPiAtLQ0KPiBH
+ZWVydCBVeXR0ZXJob2V2ZW4gLS0gVGhlcmUncyBsb3RzIG9mIExpbnV4IGJleW9uZCBpYTMyIC0t
+IGdlZXJ0QGxpbnV4LQ0KPiBtNjhrLm9yZw0KPiANCj4gSW4gcGVyc29uYWwgY29udmVyc2F0aW9u
+cyB3aXRoIHRlY2huaWNhbCBwZW9wbGUsIEkgY2FsbCBteXNlbGYgYSBoYWNrZXIuIEJ1dA0KPiB3
+aGVuIEknbSB0YWxraW5nIHRvIGpvdXJuYWxpc3RzIEkganVzdCBzYXkgInByb2dyYW1tZXIiIG9y
+IHNvbWV0aGluZyBsaWtlIHRoYXQuDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+LS0gTGludXMgVG9ydmFsZHMNCg0KS2luZCBSZWdhcmRzLA0KDQpHYXJldGgNCg==

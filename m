@@ -1,17 +1,19 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+From: Aurabindo Jayamohanan <mail@aurabindo.in>
 Subject: Re: [PATCH] spi: sifive: check return value for platform_get_resource()
-Date: Tue, 17 Sep 2019 15:07:50 +0200
-Message-ID: <CAMuHMdW5VgFG3NrYpPmr0VY-oG4AV3itT7mk6jbpT2w3BH0vOw@mail.gmail.com>
-References: <20190917085627.4562-1-mail@aurabindo.in> <CAMz4kuJczzjTPSohQ=kbZ0Pr7U_9-hzXk-jPgKk79PENOM1-dA@mail.gmail.com>
+Date: Tue, 17 Sep 2019 14:06:46 +0000
+Message-ID: <ij_UksEXUomr_L7KQam02lHBryAppgwKDjG90VbVcRRUeXlKU8TAiBWc3aU8vt20Wvlwt_6NDgz5fuMSwwP1mm-1eP6GYWoR1Kbr0y0ElRk=@aurabindo.in>
+References: <20190917085627.4562-1-mail@aurabindo.in>
+ <CAMz4kuJczzjTPSohQ=kbZ0Pr7U_9-hzXk-jPgKk79PENOM1-dA@mail.gmail.com>
  <alpine.DEB.2.21.9999.1909170514130.11980@viisi.sifive.com>
+Reply-To: Aurabindo Jayamohanan <mail@aurabindo.in>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Cc: Baolin Wang <baolin.wang@linaro.org>,
-        Aurabindo Jayamohanan <mail@aurabindo.in>,
         Mark Brown <broonie@kernel.org>,
-        Palmer Dabbelt <palmer@sifive.com>,
+        "palmer@sifive.com" <palmer@sifive.com>,
         linux-spi <linux-spi@vger.kernel.org>,
-        linux-riscv@lists.infradead.org,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
         LKML <linux-kernel@vger.kernel.org>
 To: Paul Walmsley <paul.walmsley@sifive.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
@@ -21,29 +23,50 @@ List-Id: linux-spi.vger.kernel.org
 
 Hi Paul,
 
-On Tue, Sep 17, 2019 at 2:16 PM Paul Walmsley <paul.walmsley@sifive.com> wrote:
+=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90 Original Me=
+ssage =E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90
+On Tuesday, September 17, 2019 5:45 PM, Paul Walmsley <paul.walmsley@sifive=
+.com> wrote:
+
 > On Tue, 17 Sep 2019, Baolin Wang wrote:
-> > On Tue, 17 Sep 2019 at 17:12, Aurabindo Jayamohanan <mail@aurabindo.in> wrote:
+>
+> > On Tue, 17 Sep 2019 at 17:12, Aurabindo Jayamohanan mail@aurabindo.in w=
+rote:
+> >
 > > > platform_get_resource() may return NULL. If it is so, return -ENXIO
 > > >
-> > > Signed-off-by: Aurabindo Jayamohanan <mail@aurabindo.in>
-> > > ---
-> > >  drivers/spi/spi-sifive.c | 6 ++++++
-> > >  1 file changed, 6 insertions(+)
+> > > Signed-off-by: Aurabindo Jayamohanan mail@aurabindo.in
 > > >
+> > > -------------------------------------------------------
+> > >
+> > > drivers/spi/spi-sifive.c | 6 ++++++
+> > > 1 file changed, 6 insertions(+)
 > > > diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
 > > > index 93ec2c6cdbfd..67485067a694 100644
 > > > --- a/drivers/spi/spi-sifive.c
 > > > +++ b/drivers/spi/spi-sifive.c
-> > > @@ -308,6 +308,12 @@ static int sifive_spi_probe(struct platform_device *pdev)
-> > >         platform_set_drvdata(pdev, master);
+> > > @@ -308,6 +308,12 @@ static int sifive_spi_probe(struct platform_devi=
+ce *pdev)
+> > > platform_set_drvdata(pdev, master);
 > > >
-> > >         res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> > > +       if (!res) {
-> > > +               dev_err(&pdev->dev, "no IOMEM resource found\n");
-> > > +               ret = -ENXIO;
-> > > +               goto put_master;
-> > > +       }
+> > >         res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> > >
+> > >
+> > > -         if (!res) {
+> > >
+> > >
+> > > -                 dev_err(&pdev->dev, "no IOMEM resource found\\n");
+> > >
+> > >
+> > > -                 ret =3D -ENXIO;
+> > >
+> > >
+> > > -                 goto put_master;
+> > >
+> > >
+> > > -         }
+> > >
+> > >
 > >
 > > Seems unnecessary, the devm_ioremap_resource() already validated if
 > > the resource is available.
@@ -51,20 +74,51 @@ On Tue, Sep 17, 2019 at 2:16 PM Paul Walmsley <paul.walmsley@sifive.com> wrote:
 > Just doublechecked lib/devres.c and I agree with you.
 >
 > Aurobindo, is this a patch for a real problem that you've encountered?
+>
+> -   Paul
 
-Probably not.
+Geert is right. I was just breezing through the source and found it odd sin=
+ce
+I noticed other instances checking for return value. Apparently none of tho=
+se
+use the managed api.
 
-The sequence can be replaced by a single call to
-devm_platform_ioremap_resource(), which BTW also doesn't check the
-intermediate result, as that's unneeded.
+If you didnt already do Geert's suggestion, here is a patch:
+____
 
-Gr{oetje,eeting}s,
+spi: sifive: use device managed api to get plaform resource
 
-                        Geert
+calls to devm_ioremap_resource() preceeded by platform_get_resource()
+may be replaced by devm_platform_ioremap_resource().
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Signed-off-by: Aurabindo Jayamohanan <mail@aurabindo.in>
+---
+ drivers/spi/spi-sifive.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
+index 93ec2c6cdbfd..c0925aa98aad 100644
+--- a/drivers/spi/spi-sifive.c
++++ b/drivers/spi/spi-sifive.c
+@@ -292,7 +292,6 @@ sifive_spi_transfer_one(struct spi_master *master, stru=
+ct spi_device *device,
+ static int sifive_spi_probe(struct platform_device *pdev)
+ {
+ =09struct sifive_spi *spi;
+-=09struct resource *res;
+ =09int ret, irq, num_cs;
+ =09u32 cs_bits, max_bits_per_word;
+ =09struct spi_master *master;
+@@ -307,8 +306,7 @@ static int sifive_spi_probe(struct platform_device *pde=
+v)
+ =09init_completion(&spi->done);
+ =09platform_set_drvdata(pdev, master);
+
+-=09res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-=09spi->regs =3D devm_ioremap_resource(&pdev->dev, res);
++=09spi->regs =3D devm_platform_ioremap_resource(pdev, 0);
+ =09if (IS_ERR(spi->regs)) {
+ =09=09ret =3D PTR_ERR(spi->regs);
+ =09=09goto put_master;
+--
+2.23.0

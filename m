@@ -1,62 +1,42 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v1 2/2] spi: cadence-qspi: Add QSPI support for Intel LGM
- SoC
-Date: Tue, 17 Sep 2019 16:36:50 +0100
-Message-ID: <20190917153650.GF3524@sirena.co.uk>
-References: <20190916073843.39618-1-vadivel.muruganx.ramuthevar@linux.intel.com>
- <20190916073843.39618-3-vadivel.muruganx.ramuthevar@linux.intel.com>
- <20190916113255.GA4352@sirena.co.uk>
- <466b41c1-3d65-0bf4-6db7-d3b3e06b107b@linux.intel.com>
+From: Aurabindo Jayamohanan <mail@aurabindo.in>
+Subject: Re: [PATCH] spi: sifive: check return value for platform_get_resource()
+Date: Tue, 17 Sep 2019 17:13:32 +0000
+Message-ID: <KINCBM4noQrzRVzR5KPbVAIlCxDi1_pLvCu6FYZT3Alj83dH1Q6Aspaph78A1c17AxxG1vSVuW-vdPSka8Cr-zdaGJbEZPQg4Q14gax4-H0=@aurabindo.in>
+References: <20190917085627.4562-1-mail@aurabindo.in>
+ <CAMz4kuJczzjTPSohQ=kbZ0Pr7U_9-hzXk-jPgKk79PENOM1-dA@mail.gmail.com>
+ <alpine.DEB.2.21.9999.1909170514130.11980@viisi.sifive.com>
+ <ij_UksEXUomr_L7KQam02lHBryAppgwKDjG90VbVcRRUeXlKU8TAiBWc3aU8vt20Wvlwt_6NDgz5fuMSwwP1mm-1eP6GYWoR1Kbr0y0ElRk=@aurabindo.in>
+ <alpine.DEB.2.21.9999.1909170709070.8198@viisi.sifive.com>
+ <alpine.DEB.2.21.9999.1909170820470.21451@viisi.sifive.com>
+Reply-To: Aurabindo Jayamohanan <mail@aurabindo.in>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ryJZkp9/svQ58syV"
-Cc: robh+dt@kernel.org, mark.rutland@arm.com,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, cheol.yong.kim@intel.com,
-        qi-ming.wu@intel.com
-To: "Ramuthevar, Vadivel MuruganX"
-        <vadivel.muruganx.ramuthevar@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Cc: Baolin Wang <baolin.wang@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        "palmer@sifive.com" <palmer@sifive.com>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+        LKML <linux-kernel@vger.kernel.org>
+To: Paul Walmsley <paul.walmsley@sifive.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <466b41c1-3d65-0bf4-6db7-d3b3e06b107b@linux.intel.com>
+In-Reply-To: <alpine.DEB.2.21.9999.1909170820470.21451@viisi.sifive.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Paul,
 
---ryJZkp9/svQ58syV
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90 Original Me=
+ssage =E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90=E2=80=90
+On Tuesday, September 17, 2019 8:51 PM, Paul Walmsley <paul.walmsley@sifive=
+.com> wrote:
 
-On Tue, Sep 17, 2019 at 10:11:28AM +0800, Ramuthevar, Vadivel MuruganX wrot=
-e:
+>
+>
+> I just recalled that YueHaibing already posted a patch to do this:
+>
+> https://lore.kernel.org/linux-riscv/alpine.DEB.2.21.9999.1909041520130.13=
+502@viisi.sifive.com/
+>
 
-> *=A0=A0=A0 spi-cadence.c* in *drivers/spi/*, which supports very old lega=
-cy
-> cadence-spi based devices(normal)
-> *=A0=A0=A0 cadence-quadspi.c(drivers/mtd/spi-nor/)* : specific support to=
- SPI-NOR
-> flash with new spi-nor layer.
-> =A0=A0=A0 all the API's in this driver purely on spi-nor specific, so cou=
-ldn't=A0
-> proceed to adapt.
-
-Are these completely separate IPs or are they just different versions of
-the same IP?
-
---ryJZkp9/svQ58syV
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl2A/ZEACgkQJNaLcl1U
-h9CyIgf8CTzBHfnl6ab2KtgUkLdtcsjko33jDsWaIjRogAUFSRsdNX6r7vpmaPBO
-qfrx0rskry+jdBRHt5EYiTmvUIsxLeDzXz0WLtSawdjxG/mG1zKdM8sSk50eNdES
-8Abj/5z0s6xNx6gpE0Rb7X2Z/peg0msPqIaJDGrVUWEATB+qih7K/vMJUzvQ4snS
-zX+/SOl1PTFJl65fLm7H1DNurJTaokNrV1TNdSpzavnIWu2zaMfkPSTc8x+qIMOr
-M8ApiHjcmr8Fjdf4UrHA1msXxn98rQvemS9KBYgzWE3TgnTCg0/NfJs65W6WYAor
-XZljVmIteJ/4/Pk0nxzlmCgWd6UeoA==
-=v5W8
------END PGP SIGNATURE-----
-
---ryJZkp9/svQ58syV--
+Ah, sorry for the noise.

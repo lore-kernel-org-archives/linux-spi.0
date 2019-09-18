@@ -1,79 +1,40 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v1 2/2] spi: cadence-qspi: Add QSPI support for Intel LGM
- SoC
-Date: Wed, 18 Sep 2019 13:08:48 +0100
-Message-ID: <20190918120846.GH2596@sirena.co.uk>
-References: <20190916073843.39618-1-vadivel.muruganx.ramuthevar@linux.intel.com>
- <20190916073843.39618-3-vadivel.muruganx.ramuthevar@linux.intel.com>
- <20190916113255.GA4352@sirena.co.uk>
- <466b41c1-3d65-0bf4-6db7-d3b3e06b107b@linux.intel.com>
- <20190917153650.GF3524@sirena.co.uk>
- <eeefa79b-0a3b-5d62-3a1b-c1e9dcb03aa7@linux.intel.com>
+From: Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH v2] spi: dt-bindings: Convert spi-sifive binding to json-schema
+Date: Wed, 18 Sep 2019 08:44:39 -0500
+Message-ID: <CAL_JsqJhH2x6xto9yJ+0V5YiYn9J_Y_bABG4_N6MK0M3XFCPqg@mail.gmail.com>
+References: <1568804927-13565-1-git-send-email-pragnesh.patel@sifive.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="oPmsXEqKQNHCSXW7"
-Cc: robh+dt@kernel.org, mark.rutland@arm.com,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, cheol.yong.kim@intel.com,
-        qi-ming.wu@intel.com
-To: "Ramuthevar, Vadivel MuruganX"
-        <vadivel.muruganx.ramuthevar@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Palmer Dabbelt <palmer@sifive.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Mark Brown <broonie@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        devicetree@vger.kernel.org, linux-riscv@lists.infradead.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Pragnesh Patel <pragnesh.patel@sifive.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <eeefa79b-0a3b-5d62-3a1b-c1e9dcb03aa7@linux.intel.com>
+In-Reply-To: <1568804927-13565-1-git-send-email-pragnesh.patel@sifive.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Wed, Sep 18, 2019 at 6:10 AM Pragnesh Patel
+<pragnesh.patel@sifive.com> wrote:
+>
+> Convert the spi-sifive binding to DT schema format.
+>
+> Signed-off-by: Pragnesh Patel <pragnesh.patel@sifive.com>
+> ---
+>
+> Changes in v2:
+> - Remove address-cells and size-cells property
+> - Added valid values for sifive,fifo-depth and sifive,max-bits-per-word
+>   property
+>
+>  .../devicetree/bindings/spi/spi-sifive.txt         | 37 ----------
+>  .../devicetree/bindings/spi/spi-sifive.yaml        | 86 ++++++++++++++++++++++
+>  2 files changed, 86 insertions(+), 37 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/spi/spi-sifive.txt
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-sifive.yaml
 
---oPmsXEqKQNHCSXW7
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Sep 18, 2019 at 01:59:06PM +0800, Ramuthevar, Vadivel MuruganX wrot=
-e:
-> On 17/9/2019 11:36 PM, Mark Brown wrote:
-> > On Tue, Sep 17, 2019 at 10:11:28AM +0800, Ramuthevar, Vadivel MuruganX =
-wrote:
-
-> > > *=A0=A0=A0 spi-cadence.c* in *drivers/spi/*, which supports very old =
-legacy
-> > > cadence-spi based devices(normal)
-> > > *=A0=A0=A0 cadence-quadspi.c(drivers/mtd/spi-nor/)* : specific suppor=
-t to SPI-NOR
-> > > flash with new spi-nor layer.
-> > >  =A0=A0=A0 all the API's in this driver purely on spi-nor specific, s=
-o couldn't
-> > > proceed to adapt.
-
-> > Are these completely separate IPs or are they just different versions of
-> > the same IP?
-
-> These are same IPs , but different features Enabled/Disabled depends upon
-> the SoC vendors.
-
-> for e.g: Intel LGM SoC uses the same IP, but without DMA and Direct access
-> controller.
-
-> also dedicated support to flash devices.
-
-If it's different versions of the same IP then everything should be in
-one driver with the optional features enabled depending on what's in a
-given system.
-
---oPmsXEqKQNHCSXW7
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl2CHk0ACgkQJNaLcl1U
-h9Duggf/UlIeAX6UQNcW0YdFNuwqat0JWT+iz9wojEIWynEPLQj26Zh5zXSa6B4F
-tIJd1JvLU9o7A2VFxTUf2H3WZCYoWuHLXKIKWZfutmabb87KoPRI7B8QaOKy1bGe
-oJEsKY4AjDv+UnEZo6kNZN7+i7VzpHtBjjg/huoyvLhcVe16a5ScecMKNSA8paQj
-JusD7wK1Iub9V+h6Px1n+lb/y+AUc4VXFtzSb/sEgrVAzLBxkoTID5RDFTBRQK0P
-K/U30jwLyJjYxD6HBz0Dq8CBdXhg1FYUSURWo/tSSSb+8aSNO3yW2NNZ50BnHVSo
-NaPNX7zL7BebDSOMEYBZCGNv8XRFYQ==
-=b6Nh
------END PGP SIGNATURE-----
-
---oPmsXEqKQNHCSXW7--
+Reviewed-by: Rob Herring <robh@kernel.org>

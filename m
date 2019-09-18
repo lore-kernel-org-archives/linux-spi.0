@@ -1,168 +1,79 @@
-From: Pragnesh Patel <pragnesh.patel@sifive.com>
-Subject: [PATCH v2] spi: dt-bindings: Convert spi-sifive binding to json-schema
-Date: Wed, 18 Sep 2019 16:38:39 +0530
-Message-ID: <1568804927-13565-1-git-send-email-pragnesh.patel@sifive.com>
-Cc: Pragnesh Patel <pragnesh.patel@sifive.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-To: palmer@sifive.com, paul.walmsley@sifive.com
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v1 2/2] spi: cadence-qspi: Add QSPI support for Intel LGM
+ SoC
+Date: Wed, 18 Sep 2019 13:08:48 +0100
+Message-ID: <20190918120846.GH2596@sirena.co.uk>
+References: <20190916073843.39618-1-vadivel.muruganx.ramuthevar@linux.intel.com>
+ <20190916073843.39618-3-vadivel.muruganx.ramuthevar@linux.intel.com>
+ <20190916113255.GA4352@sirena.co.uk>
+ <466b41c1-3d65-0bf4-6db7-d3b3e06b107b@linux.intel.com>
+ <20190917153650.GF3524@sirena.co.uk>
+ <eeefa79b-0a3b-5d62-3a1b-c1e9dcb03aa7@linux.intel.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="oPmsXEqKQNHCSXW7"
+Cc: robh+dt@kernel.org, mark.rutland@arm.com,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, cheol.yong.kim@intel.com,
+        qi-ming.wu@intel.com
+To: "Ramuthevar, Vadivel MuruganX"
+        <vadivel.muruganx.ramuthevar@linux.intel.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <eeefa79b-0a3b-5d62-3a1b-c1e9dcb03aa7@linux.intel.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Convert the spi-sifive binding to DT schema format.
 
-Signed-off-by: Pragnesh Patel <pragnesh.patel@sifive.com>
----
+--oPmsXEqKQNHCSXW7
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Changes in v2:
-- Remove address-cells and size-cells property
-- Added valid values for sifive,fifo-depth and sifive,max-bits-per-word
-  property
+On Wed, Sep 18, 2019 at 01:59:06PM +0800, Ramuthevar, Vadivel MuruganX wrot=
+e:
+> On 17/9/2019 11:36 PM, Mark Brown wrote:
+> > On Tue, Sep 17, 2019 at 10:11:28AM +0800, Ramuthevar, Vadivel MuruganX =
+wrote:
 
- .../devicetree/bindings/spi/spi-sifive.txt         | 37 ----------
- .../devicetree/bindings/spi/spi-sifive.yaml        | 86 ++++++++++++++++++++++
- 2 files changed, 86 insertions(+), 37 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/spi/spi-sifive.txt
- create mode 100644 Documentation/devicetree/bindings/spi/spi-sifive.yaml
+> > > *=A0=A0=A0 spi-cadence.c* in *drivers/spi/*, which supports very old =
+legacy
+> > > cadence-spi based devices(normal)
+> > > *=A0=A0=A0 cadence-quadspi.c(drivers/mtd/spi-nor/)* : specific suppor=
+t to SPI-NOR
+> > > flash with new spi-nor layer.
+> > >  =A0=A0=A0 all the API's in this driver purely on spi-nor specific, s=
+o couldn't
+> > > proceed to adapt.
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-sifive.txt b/Documentation/devicetree/bindings/spi/spi-sifive.txt
-deleted file mode 100644
-index 3f5c6e4..0000000
---- a/Documentation/devicetree/bindings/spi/spi-sifive.txt
-+++ /dev/null
-@@ -1,37 +0,0 @@
--SiFive SPI controller Device Tree Bindings
--------------------------------------------
--
--Required properties:
--- compatible		: Should be "sifive,<chip>-spi" and "sifive,spi<version>".
--			  Supported compatible strings are:
--			  "sifive,fu540-c000-spi" for the SiFive SPI v0 as integrated
--			  onto the SiFive FU540 chip, and "sifive,spi0" for the SiFive
--			  SPI v0 IP block with no chip integration tweaks.
--			  Please refer to sifive-blocks-ip-versioning.txt for details
--- reg			: Physical base address and size of SPI registers map
--			  A second (optional) range can indicate memory mapped flash
--- interrupts		: Must contain one entry
--- interrupt-parent	: Must be core interrupt controller
--- clocks		: Must reference the frequency given to the controller
--- #address-cells	: Must be '1', indicating which CS to use
--- #size-cells		: Must be '0'
--
--Optional properties:
--- sifive,fifo-depth		: Depth of hardware queues; defaults to 8
--- sifive,max-bits-per-word	: Maximum bits per word; defaults to 8
--
--SPI RTL that corresponds to the IP block version numbers can be found here:
--https://github.com/sifive/sifive-blocks/tree/master/src/main/scala/devices/spi
--
--Example:
--	spi: spi@10040000 {
--		compatible = "sifive,fu540-c000-spi", "sifive,spi0";
--		reg = <0x0 0x10040000 0x0 0x1000 0x0 0x20000000 0x0 0x10000000>;
--		interrupt-parent = <&plic>;
--		interrupts = <51>;
--		clocks = <&tlclk>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--		sifive,fifo-depth = <8>;
--		sifive,max-bits-per-word = <8>;
--	};
-diff --git a/Documentation/devicetree/bindings/spi/spi-sifive.yaml b/Documentation/devicetree/bindings/spi/spi-sifive.yaml
-new file mode 100644
-index 0000000..140e435
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-sifive.yaml
-@@ -0,0 +1,86 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/spi-sifive.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: SiFive SPI controller
-+
-+maintainers:
-+  - Pragnesh Patel <pragnesh.patel@sifive.com>
-+  - Paul Walmsley  <paul.walmsley@sifive.com>
-+  - Palmer Dabbelt <palmer@sifive.com>
-+
-+allOf:
-+  - $ref: "spi-controller.yaml#"
-+
-+properties:
-+  compatible:
-+    items:
-+      - const: sifive,fu540-c000-spi
-+      - const: sifive,spi0
-+
-+    description:
-+      Should be "sifive,<chip>-spi" and "sifive,spi<version>".
-+      Supported compatible strings are -
-+      "sifive,fu540-c000-spi" for the SiFive SPI v0 as integrated
-+      onto the SiFive FU540 chip, and "sifive,spi0" for the SiFive
-+      SPI v0 IP block with no chip integration tweaks.
-+      Please refer to sifive-blocks-ip-versioning.txt for details
-+
-+      SPI RTL that corresponds to the IP block version numbers can be found here -
-+      https://github.com/sifive/sifive-blocks/tree/master/src/main/scala/devices/spi
-+
-+  reg:
-+    maxItems: 1
-+
-+    description:
-+      Physical base address and size of SPI registers map
-+      A second (optional) range can indicate memory mapped flash
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+    description:
-+      Must reference the frequency given to the controller
-+
-+  sifive,fifo-depth:
-+    description:
-+      Depth of hardware queues; defaults to 8
-+    allOf:
-+      - $ref: "/schemas/types.yaml#/definitions/uint32"
-+      - enum: [ 8 ]
-+      - default: 8
-+
-+  sifive,max-bits-per-word:
-+    description:
-+      Maximum bits per word; defaults to 8
-+    allOf:
-+      - $ref: "/schemas/types.yaml#/definitions/uint32"
-+      - enum: [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
-+      - default: 8
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
-+
-+examples:
-+  - |
-+    spi: spi@10040000 {
-+      compatible = "sifive,fu540-c000-spi", "sifive,spi0";
-+      reg = <0x0 0x10040000 0x0 0x1000 0x0 0x20000000 0x0 0x10000000>;
-+      interrupt-parent = <&plic>;
-+      interrupts = <51>;
-+      clocks = <&tlclk>;
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+      sifive,fifo-depth = <8>;
-+      sifive,max-bits-per-word = <8>;
-+    };
-+
-+...
--- 
-2.7.4
+> > Are these completely separate IPs or are they just different versions of
+> > the same IP?
+
+> These are same IPs , but different features Enabled/Disabled depends upon
+> the SoC vendors.
+
+> for e.g: Intel LGM SoC uses the same IP, but without DMA and Direct access
+> controller.
+
+> also dedicated support to flash devices.
+
+If it's different versions of the same IP then everything should be in
+one driver with the optional features enabled depending on what's in a
+given system.
+
+--oPmsXEqKQNHCSXW7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl2CHk0ACgkQJNaLcl1U
+h9Duggf/UlIeAX6UQNcW0YdFNuwqat0JWT+iz9wojEIWynEPLQj26Zh5zXSa6B4F
+tIJd1JvLU9o7A2VFxTUf2H3WZCYoWuHLXKIKWZfutmabb87KoPRI7B8QaOKy1bGe
+oJEsKY4AjDv+UnEZo6kNZN7+i7VzpHtBjjg/huoyvLhcVe16a5ScecMKNSA8paQj
+JusD7wK1Iub9V+h6Px1n+lb/y+AUc4VXFtzSb/sEgrVAzLBxkoTID5RDFTBRQK0P
+K/U30jwLyJjYxD6HBz0Dq8CBdXhg1FYUSURWo/tSSSb+8aSNO3yW2NNZ50BnHVSo
+NaPNX7zL7BebDSOMEYBZCGNv8XRFYQ==
+=b6Nh
+-----END PGP SIGNATURE-----
+
+--oPmsXEqKQNHCSXW7--

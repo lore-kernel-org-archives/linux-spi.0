@@ -1,55 +1,47 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 0/4] spi: dw: Add basic runtime PM support
-Date: Thu, 19 Sep 2019 14:31:13 +0100
-Message-ID: <20190919133113.GK3642@sirena.co.uk>
+From: Gareth Williams <gareth.williams.jx@renesas.com>
+Subject: RE: [PATCH v2 0/4] spi: dw: Add basic runtime PM support
+Date: Thu, 19 Sep 2019 15:14:54 +0000
+Message-ID: <TYAPR01MB292515FE4C74044CA53321C5DF890@TYAPR01MB2925.jpnprd01.prod.outlook.com>
 References: <1568793876-9009-1-git-send-email-gareth.williams.jx@renesas.com>
+ <20190919133113.GK3642@sirena.co.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="tcC6YSqBgqqkz7Sb"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Cc: Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Phil Edworthy <phil.edworthy@renesas.com>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-To: Gareth Williams <gareth.williams.jx@renesas.com>
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1568793876-9009-1-git-send-email-gareth.williams.jx@renesas.com>
+In-Reply-To: <20190919133113.GK3642@sirena.co.uk>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Mark,
 
---tcC6YSqBgqqkz7Sb
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Wed, Sep 19, 2019 at 14:31:32AM +0100, Mark Brown wrote:
 
-On Wed, Sep 18, 2019 at 09:04:32AM +0100, Gareth Williams wrote:
-
-> Gareth Williams (1):
->   dt-bindings: snps,dw-apb-ssi: Add optional clock domain information
+> On Wed, Sep 18, 2019 at 09:04:32AM +0100, Gareth Williams wrote:
 >=20
-> Phil Edworthy (3):
->   dt: spi: Add Renesas RZ/N1 binding documentation
+> > Gareth Williams (1):
+> >   dt-bindings: snps,dw-apb-ssi: Add optional clock domain information
+> >
+> > Phil Edworthy (3):
+> >   dt: spi: Add Renesas RZ/N1 binding documentation
+>=20
+> Please use subject lines matching the style for the subsystem.  This make=
+s it
+> easier for people to identify relevant patches.  This isn't even consiste=
+nt
+> within the series :(
+Sorry about that, I will correct the subject lines for V3.
+Is there a set convention for the subsystem I should follow in future?
+Or should I follow the style of the individual files I work on?
 
-Please use subject lines matching the style for the subsystem.  This
-makes it easier for people to identify relevant patches.  This isn't
-even consistent within the series :(
+Kind Regards,
 
---tcC6YSqBgqqkz7Sb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl2DgyEACgkQJNaLcl1U
-h9CySAgAgDnSgZkYFNYM2rEOjD3mK2F8DU/d10qh1tJqQkX5Fo7DqE0mxuvcJfAM
-kdtdWxCG5DRh2q3iM2T7k20iU9tQOjiW3E0dL4W4pUSObgat68DxlTXe2ag/fntc
-VwC6D1+AIoNFnOXTYKYPt8Pp+NqBlgNxHByHW7KXxbbSDgslBZESYG9fLQBf+KJ/
-FrMgo8aRnez6Sv1adY2aCSGwZxK643tL5ZgVBdv3+KjObqdlSex4EbphqkEO8mVY
-eoGKz7X3EDv/IeJfHNoy3O3Y3w064iEnv8ioO6+XTKDiVkntQV1xxmDjnQs6fNy/
-A5PqKEMRpy36c5gNU3JP9C72+3PjxA==
-=73/l
------END PGP SIGNATURE-----
-
---tcC6YSqBgqqkz7Sb--
+Gareth

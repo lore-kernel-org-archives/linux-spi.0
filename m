@@ -1,57 +1,55 @@
-From: "Ramuthevar, Vadivel MuruganX"
-        <vadivel.muruganx.ramuthevar@linux.intel.com>
-Subject: Re: [PATCH v1 2/2] spi: cadence-qspi: Add QSPI support for Intel LGM
- SoC
-Date: Thu, 19 Sep 2019 13:45:02 +0800
-Message-ID: <f31b82ff-478e-bf28-0898-96f5bdfacc61@linux.intel.com>
-References: <20190916073843.39618-1-vadivel.muruganx.ramuthevar@linux.intel.com>
- <20190916073843.39618-3-vadivel.muruganx.ramuthevar@linux.intel.com>
- <20190916113255.GA4352@sirena.co.uk>
- <466b41c1-3d65-0bf4-6db7-d3b3e06b107b@linux.intel.com>
- <20190917153650.GF3524@sirena.co.uk>
- <eeefa79b-0a3b-5d62-3a1b-c1e9dcb03aa7@linux.intel.com>
- <20190918120846.GH2596@sirena.co.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 0/4] spi: dw: Add basic runtime PM support
+Date: Thu, 19 Sep 2019 14:31:13 +0100
+Message-ID: <20190919133113.GK3642@sirena.co.uk>
+References: <1568793876-9009-1-git-send-email-gareth.williams.jx@renesas.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 8bit
-Cc: robh+dt@kernel.org, mark.rutland@arm.com,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="tcC6YSqBgqqkz7Sb"
+Cc: Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Phil Edworthy <phil.edworthy@renesas.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
         linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, cheol.yong.kim@intel.com,
-        qi-ming.wu@intel.com
-To: Mark Brown <broonie@kernel.org>
+        linux-kernel@vger.kernel.org
+To: Gareth Williams <gareth.williams.jx@renesas.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190918120846.GH2596@sirena.co.uk>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <1568793876-9009-1-git-send-email-gareth.williams.jx@renesas.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
 
-    Thank you for the comments and queries.
+--tcC6YSqBgqqkz7Sb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 18/9/2019 8:08 PM, Mark Brown wrote:
-> On Wed, Sep 18, 2019 at 01:59:06PM +0800, Ramuthevar, Vadivel MuruganX wrote:
->> On 17/9/2019 11:36 PM, Mark Brown wrote:
->>> On Tue, Sep 17, 2019 at 10:11:28AM +0800, Ramuthevar, Vadivel MuruganX wrote:
->>>> *    spi-cadence.c* in *drivers/spi/*, which supports very old legacy
->>>> cadence-spi based devices(normal)
->>>> *    cadence-quadspi.c(drivers/mtd/spi-nor/)* : specific support to SPI-NOR
->>>> flash with new spi-nor layer.
->>>>       all the API's in this driver purely on spi-nor specific, so couldn't
->>>> proceed to adapt.
->>> Are these completely separate IPs or are they just different versions of
->>> the same IP?
->> These are same IPs , but different features Enabled/Disabled depends upon
->> the SoC vendors.
->> for e.g: Intel LGM SoC uses the same IP, but without DMA and Direct access
->> controller.
->> also dedicated support to flash devices.
-> If it's different versions of the same IP then everything should be in
-> one driver with the optional features enabled depending on what's in a
-> given system.
-Agreed!, I am trying to adapt the driver/mtd/spi-nor/cadence-quadspi.c 
-and newly sent patches
-in a single driver file, also trying to use spi_mem_ops framework.
+On Wed, Sep 18, 2019 at 09:04:32AM +0100, Gareth Williams wrote:
 
-With Best Regards
-Vadivel
+> Gareth Williams (1):
+>   dt-bindings: snps,dw-apb-ssi: Add optional clock domain information
+>=20
+> Phil Edworthy (3):
+>   dt: spi: Add Renesas RZ/N1 binding documentation
+
+Please use subject lines matching the style for the subsystem.  This
+makes it easier for people to identify relevant patches.  This isn't
+even consistent within the series :(
+
+--tcC6YSqBgqqkz7Sb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl2DgyEACgkQJNaLcl1U
+h9CySAgAgDnSgZkYFNYM2rEOjD3mK2F8DU/d10qh1tJqQkX5Fo7DqE0mxuvcJfAM
+kdtdWxCG5DRh2q3iM2T7k20iU9tQOjiW3E0dL4W4pUSObgat68DxlTXe2ag/fntc
+VwC6D1+AIoNFnOXTYKYPt8Pp+NqBlgNxHByHW7KXxbbSDgslBZESYG9fLQBf+KJ/
+FrMgo8aRnez6Sv1adY2aCSGwZxK643tL5ZgVBdv3+KjObqdlSex4EbphqkEO8mVY
+eoGKz7X3EDv/IeJfHNoy3O3Y3w064iEnv8ioO6+XTKDiVkntQV1xxmDjnQs6fNy/
+A5PqKEMRpy36c5gNU3JP9C72+3PjxA==
+=73/l
+-----END PGP SIGNATURE-----
+
+--tcC6YSqBgqqkz7Sb--

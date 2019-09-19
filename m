@@ -1,71 +1,53 @@
-From: Gregory CLEMENT <gregory.clement@bootlin.com>
-Subject: [PATCH] spi: atmel: Remove AVR32 leftover
-Date: Thu, 19 Sep 2019 17:40:34 +0200
-Message-ID: <20190919154034.7489-1-gregory.clement@bootlin.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: atmel: Fix crash when using more than 4 gpio CS
+Date: Thu, 19 Sep 2019 17:03:15 +0100
+Message-ID: <20190919160315.GQ3642@sirena.co.uk>
+References: <20190919153847.7179-1-gregory.clement@bootlin.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="Vxa5joy26gVGOrvU"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Ludovic Desroches <ludovic.desroches@microchip.com>,
         linux-arm-kernel@lists.infradead.org,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Gregory CLEMENT <gregory.clement@bootlin.com>
-To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Nicolas Ferre <nicolas.ferre@microchip.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+        stable@vger.kernel.org
+To: Gregory CLEMENT <gregory.clement@bootlin.com>
+Return-path: <stable-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20190919153847.7179-1-gregory.clement@bootlin.com>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-AV32 support has been from the kernel a few release ago, but there was
-still some specific macro for this architecture in this driver. Lets
-remove it.
 
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
----
- drivers/spi/spi-atmel.c | 24 ------------------------
- 1 file changed, 24 deletions(-)
+--Vxa5joy26gVGOrvU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index bb94f5927819..de1e1861a70c 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -222,37 +222,13 @@
- 	  | SPI_BF(name, value))
- 
- /* Register access macros */
--#ifdef CONFIG_AVR32
--#define spi_readl(port, reg) \
--	__raw_readl((port)->regs + SPI_##reg)
--#define spi_writel(port, reg, value) \
--	__raw_writel((value), (port)->regs + SPI_##reg)
--
--#define spi_readw(port, reg) \
--	__raw_readw((port)->regs + SPI_##reg)
--#define spi_writew(port, reg, value) \
--	__raw_writew((value), (port)->regs + SPI_##reg)
--
--#define spi_readb(port, reg) \
--	__raw_readb((port)->regs + SPI_##reg)
--#define spi_writeb(port, reg, value) \
--	__raw_writeb((value), (port)->regs + SPI_##reg)
--#else
- #define spi_readl(port, reg) \
- 	readl_relaxed((port)->regs + SPI_##reg)
- #define spi_writel(port, reg, value) \
- 	writel_relaxed((value), (port)->regs + SPI_##reg)
--
--#define spi_readw(port, reg) \
--	readw_relaxed((port)->regs + SPI_##reg)
- #define spi_writew(port, reg, value) \
- 	writew_relaxed((value), (port)->regs + SPI_##reg)
- 
--#define spi_readb(port, reg) \
--	readb_relaxed((port)->regs + SPI_##reg)
--#define spi_writeb(port, reg, value) \
--	writeb_relaxed((value), (port)->regs + SPI_##reg)
--#endif
- /* use PIO for small transfers, avoiding DMA setup/teardown overhead and
-  * cache operations; better heuristics consider wordsize and bitrate.
-  */
--- 
-2.23.0
+On Thu, Sep 19, 2019 at 05:38:47PM +0200, Gregory CLEMENT wrote:
+
+> With this patch, when using a gpio CS, the hardware CS0 is always
+> used. Thanks to this, there is no more limitation for the number of
+> gpio CS we can use.
+
+This is going to break any system where we use both a GPIO chip select
+and chip select 0.  Ideally we'd try to figure out an unused chip select
+to use here...
+
+--Vxa5joy26gVGOrvU
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl2DpsIACgkQJNaLcl1U
+h9DKfgf+Jsooil74xOpQ+umzYyZp8Qb3FEcyImIlX60lGCNBSHiEvAhRajJ6+AXX
+CsWEWs+bSzrHgo4y5RRwOrtp7RXbEJARgR2ke9JZ0l9P9qdU3oW/m8A8Ghq4Q8z/
+3w+GW4UoWkqUuDjK/LZeOvBtmq1+viYePqq+wOLg12uVCc+aifI1qZlTJHFaGJUf
+EJDxnopv92Ct66G3ZcQ8lMmujukMAuk6Z7+H6SJqvhIDOQLd8Ryt955+6v198wcq
+M8zO5suWI6sTMK0HpsN6L3K/WOe7vOUOPYyyLtKBSAA4+Piy9EaQcVsWv1mVLJfp
+SO2Y3XYEQykklvv+yX+7XlZxS6QYAg==
+=WMib
+-----END PGP SIGNATURE-----
+
+--Vxa5joy26gVGOrvU--

@@ -1,50 +1,75 @@
-From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH] spi: atmel: Remove AVR32 leftover
-Date: Thu, 19 Sep 2019 21:13:08 +0200
-Message-ID: <20190919211308.56c9503e@windsurf>
-References: <20190919154034.7489-1-gregory.clement@bootlin.com>
-        <20190919172453.GA21254@piout.net>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 1/4] spi: mxic: Fix transmit path
+Date: Thu, 19 Sep 2019 22:25:01 +0200
+Message-ID: <20190919202504.9619-1-miquel.raynal@bootlin.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: Gregory CLEMENT <gregory.clement@bootlin.com>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        linux-arm-kernel@lists.infradead.org
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190919172453.GA21254@piout.net>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Transfer-Encoding: 8bit
+Cc: <linux-spi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Mason Yang <masonccyang@mxic.com.tw>,
+        Julien Su <juliensu@mxic.com.tw>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Boris Brezillon <boris.brezillon@collabora.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        stable@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <stable-owner@vger.kernel.org>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 19 Sep 2019 19:24:53 +0200
-Alexandre Belloni <alexandre.belloni@bootlin.com> wrote:
+In certain circumstances, it is needed to check INT_TX_EMPTY and
+INT_RX_NOT_EMPTY in the transmit path, not only in the receive
+path. In both cases, the delay penalty is negligible.
 
-> On 19/09/2019 17:40:34+0200, Gregory CLEMENT wrote:
-> > AV32 support has been from the kernel a few release ago, but there was  
-> AVR32 and  missing word^
-> 
-> > still some specific macro for this architecture in this driver. Lets
-> > remove it.
+Fixes: b942d80b0a39 ("spi: Add MXIC controller driver")
+Cc: stable@vger.kernel.org
+Suggested-by: Mason Yang <masonccyang@mxic.com.tw>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+---
+ drivers/spi/spi-mxic.c | 28 ++++++++++++----------------
+ 1 file changed, 12 insertions(+), 16 deletions(-)
 
-If you want to actually be pedantic, there are a few other typos in the
-commit. Hopefully the below text has all of them fixed (and does not
-introduce any new one):
-
-==
-
-AVR32 support has been removed from the kernel a few releases ago, but
-there were still some specific macros for this architecture in this
-driver. Let's remove them.
-
-==
-
-Best regards,
-
-Thomas
+diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
+index f48563c09b97..eaa7a6a9044d 100644
+--- a/drivers/spi/spi-mxic.c
++++ b/drivers/spi/spi-mxic.c
+@@ -304,25 +304,21 @@ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
+ 
+ 		writel(data, mxic->regs + TXD(nbytes % 4));
+ 
++		ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
++					 sts & INT_TX_EMPTY, 0, USEC_PER_SEC);
++		if (ret)
++			return ret;
++
++		ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
++					 sts & INT_RX_NOT_EMPTY, 0,
++					 USEC_PER_SEC);
++		if (ret)
++			return ret;
++
++		data = readl(mxic->regs + RXD);
+ 		if (rxbuf) {
+-			ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
+-						 sts & INT_TX_EMPTY, 0,
+-						 USEC_PER_SEC);
+-			if (ret)
+-				return ret;
+-
+-			ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
+-						 sts & INT_RX_NOT_EMPTY, 0,
+-						 USEC_PER_SEC);
+-			if (ret)
+-				return ret;
+-
+-			data = readl(mxic->regs + RXD);
+ 			data >>= (8 * (4 - nbytes));
+ 			memcpy(rxbuf + pos, &data, nbytes);
+-			WARN_ON(readl(mxic->regs + INT_STS) & INT_RX_NOT_EMPTY);
+-		} else {
+-			readl(mxic->regs + RXD);
+ 		}
+ 		WARN_ON(readl(mxic->regs + INT_STS) & INT_RX_NOT_EMPTY);
+ 
 -- 
-Thomas Petazzoni, CTO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.20.1

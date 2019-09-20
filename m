@@ -1,50 +1,54 @@
-From: "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: Re: [Letux-kernel] [PATCH 2/2] DTS: ARM: gta04: introduce legacy spi-cs-high to make display work again
-Date: Fri, 20 Sep 2019 16:54:18 +0200
-Message-ID: <633E7AD9-A909-4619-BBD7-8CFD965FDFF7@goldelico.com>
-References: <20190724194259.GA25847@bogus> <2EA06398-E45B-481B-9A26-4DD2E043BF9C@goldelico.com> <CAL_JsqLe_Y9Z6MRt7ojgSVKAb9n95S8j=eGidSVNz2T83j-zPQ@mail.gmail.com> <CACRpkdY0AVnkRa8sV_Z54qfX9SYufvaYYhU0k2+LitXo0sLx2w@mail.gmail.com> <20190831084852.5e726cfa@aktux> <ED6A6797-D1F9-473B-ABFF-B6951A924BC1@goldelico.com> <CACRpkdZQgPVvB=78vOFsHe5n45Vwe4N6JJOcm1_vz5FbAw9CYA@mail.gmail.com> <1624298A-C51B-418A-96C3-EA09367A010D@goldelico.com> <CACRpkdZvpPOM1Ug-=GHf7Z-2VEbJz3Cuo7+0yDFuNm5ShXK8=Q@mail.gmail.com> <7DF102BC-C818-4D27-988F-150C7527E6CC@goldelico.com> <20190920142059.GO5610@atomide.com>
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-        Discussions about the Letux Kernel
-        <letux-kernel@openphoenux.org>, Rob Herring <robh@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        stable <stable@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>
-To: Tony Lindgren <tony@atomide.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190920142059.GO5610@atomide.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Gregory CLEMENT <gregory.clement@bootlin.com>
+Subject: Re: [PATCH] spi: atmel: Fix crash when using more than 4 gpio CS
+Date: Fri, 20 Sep 2019 17:27:49 +0200
+Message-ID: <87a7az7zt6.fsf@FE-laptop>
+References: <20190919153847.7179-1-gregory.clement@bootlin.com> <20190919160315.GQ3642@sirena.co.uk> <20190919172350.GZ21254@piout.net> <20190920105101.GA3822@sirena.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        stable@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20190920105101.GA3822@sirena.co.uk>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hello Mark,
 
-> Am 20.09.2019 um 16:20 schrieb Tony Lindgren <tony@atomide.com>:
-> 
-> * H. Nikolaus Schaller <hns@goldelico.com> [190920 09:19]:
->>> Am 20.09.2019 um 10:55 schrieb Linus Walleij <linus.walleij@linaro.org>:
->>> I suggest to go both way:
->>> apply this oneliner and tag for stable so that GTA04 works
->>> again.
->>> 
->>> Then for the next kernel think about a possible more abitious
->>> whitelist solution and after adding that remove *all* "spi-cs-high"
->>> flags from all device trees in the kernel after fixing them
->>> all up.
->> 
->> Ok, that looks like a viable path.
-> 
-> Please repost the oneline so people can ack easily. At least
-> I've already lost track of this thread.
+> On Thu, Sep 19, 2019 at 07:23:50PM +0200, Alexandre Belloni wrote:
+>> On 19/09/2019 17:03:15+0100, Mark Brown wrote:
+>
+>> > This is going to break any system where we use both a GPIO chip select
+>> > and chip select 0.  Ideally we'd try to figure out an unused chip select
+>> > to use here...
+>
+>> The point is that this use case is already broken and this patch fixes
+>> the crash and is easily backportable.
+>
+>> Fixing the CS + gpio CS should probably be done in a separate patch.
+>
+> If the GPIO is overlaid on any of the existing slots (except GPIO 0)
+> then it'll cause GPIO 0 to start toggling.  I'm not convinced that the
+> code doesn't currently support that.
 
-It is all here:
+Actually, the current code is not designed to mix CS and gpio CS, so
+this patch doesn't introduce any regression on this side.
 
-https://patchwork.kernel.org/patch/11035253/
+But after going further in the details of the driver, this patch could
+cause a regression for on the old controllers.
 
-Best regards,
-Nikolaus
+I also found other issues in this driver in the chip select
+management. So I will send a new series fixing all of it.
+
+Gregory
+
+
+-- 
+Gregory Clement, Bootlin
+Embedded Linux and Kernel engineering
+http://bootlin.com

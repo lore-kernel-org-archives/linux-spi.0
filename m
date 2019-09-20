@@ -1,75 +1,33 @@
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 1/4] spi: mxic: Fix transmit path
-Date: Thu, 19 Sep 2019 22:25:01 +0200
-Message-ID: <20190919202504.9619-1-miquel.raynal@bootlin.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH] spi: spi-gpio: fix crash when num-chipselects is 0
+Date: Fri, 20 Sep 2019 10:22:21 +0200
+Message-ID: <CACRpkda30tm0cVHpZHnjQki86m_4ZfGiufg8e=6Rx-S+zFHF_g@mail.gmail.com>
+References: <20190918155200.12614-1-dqfext@gmail.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Mason Yang <masonccyang@mxic.com.tw>,
-        Julien Su <juliensu@mxic.com.tw>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Boris Brezillon <boris.brezillon@collabora.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        stable@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: linux-spi <linux-spi@vger.kernel.org>,
+        stable <stable@vger.kernel.org>
+To: DENG Qingfang <dqfext@gmail.com>
 Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20190918155200.12614-1-dqfext@gmail.com>
 Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-In certain circumstances, it is needed to check INT_TX_EMPTY and
-INT_RX_NOT_EMPTY in the transmit path, not only in the receive
-path. In both cases, the delay penalty is negligible.
+On Wed, Sep 18, 2019 at 5:52 PM DENG Qingfang <dqfext@gmail.com> wrote:
 
-Fixes: b942d80b0a39 ("spi: Add MXIC controller driver")
-Cc: stable@vger.kernel.org
-Suggested-by: Mason Yang <masonccyang@mxic.com.tw>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
----
- drivers/spi/spi-mxic.c | 28 ++++++++++++----------------
- 1 file changed, 12 insertions(+), 16 deletions(-)
+> The cause is spi_gpio_setup() did not check if the spi-gpio has chipselect pins
+> before setting their direction and results in derefing an invalid pointer.
+>
+> The bug is spotted in kernel 4.19.72 on OpenWrt, and does not occur in 4.14.
+>
+> There is a similar fix upstream 249e2632dcd0509b8f8f296f5aabf4d48dfd6da8.
 
-diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
-index f48563c09b97..eaa7a6a9044d 100644
---- a/drivers/spi/spi-mxic.c
-+++ b/drivers/spi/spi-mxic.c
-@@ -304,25 +304,21 @@ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
- 
- 		writel(data, mxic->regs + TXD(nbytes % 4));
- 
-+		ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
-+					 sts & INT_TX_EMPTY, 0, USEC_PER_SEC);
-+		if (ret)
-+			return ret;
-+
-+		ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
-+					 sts & INT_RX_NOT_EMPTY, 0,
-+					 USEC_PER_SEC);
-+		if (ret)
-+			return ret;
-+
-+		data = readl(mxic->regs + RXD);
- 		if (rxbuf) {
--			ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
--						 sts & INT_TX_EMPTY, 0,
--						 USEC_PER_SEC);
--			if (ret)
--				return ret;
--
--			ret = readl_poll_timeout(mxic->regs + INT_STS, sts,
--						 sts & INT_RX_NOT_EMPTY, 0,
--						 USEC_PER_SEC);
--			if (ret)
--				return ret;
--
--			data = readl(mxic->regs + RXD);
- 			data >>= (8 * (4 - nbytes));
- 			memcpy(rxbuf + pos, &data, nbytes);
--			WARN_ON(readl(mxic->regs + INT_STS) & INT_RX_NOT_EMPTY);
--		} else {
--			readl(mxic->regs + RXD);
- 		}
- 		WARN_ON(readl(mxic->regs + INT_STS) & INT_RX_NOT_EMPTY);
- 
--- 
-2.20.1
+So since this is fixed upstream I assume you mean that this should be for
+stable v4.19?
+
+I think the stable people want a special commit message structure,
+see:
+https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+
+Yours,
+Linus Walleij

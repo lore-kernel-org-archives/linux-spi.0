@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: mxic: Fix DMAS_CTRL register layout" to the spi tree
+Subject: Applied "spi: mxic: Select SPI_NOR type by default" to the spi tree
 Date: Fri, 20 Sep 2019 12:09:40 +0100 (BST)
-Message-ID: <20190920110940.22EDD274293C@ypsilon.sirena.org.uk>
-References: <20190919202504.9619-4-miquel.raynal@bootlin.com>
+Message-ID: <20190920110940.5A0AB274293F@ypsilon.sirena.org.uk>
+References: <20190919202504.9619-3-miquel.raynal@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -13,7 +13,7 @@ Cc: Julien Su <juliensu@mxic.com.tw>, linux-spi@vger.kernel.org,
  Mason Yang <masonccyang@mxic.com.tw>, linux-arm-kernel@lists.infradead.org
 To: Miquel Raynal <miquel.raynal@bootlin.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190919202504.9619-4-miquel.raynal@bootlin.com>
+In-Reply-To: <20190919202504.9619-3-miquel.raynal@bootlin.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -27,7 +27,7 @@ List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: mxic: Fix DMAS_CTRL register layout
+   spi: mxic: Select SPI_NOR type by default
 
 has been applied to the spi tree at
 
@@ -52,37 +52,36 @@ to this mail.
 Thanks,
 Mark
 
->From 6fe7ab3837bdbc4830addac9898a5e4bc0783dcc Mon Sep 17 00:00:00 2001
+>From 4a82fe0e184263b5ed8f9d8079f7dfd144598127 Mon Sep 17 00:00:00 2001
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Thu, 19 Sep 2019 22:25:04 +0200
-Subject: [PATCH] spi: mxic: Fix DMAS_CTRL register layout
+Date: Thu, 19 Sep 2019 22:25:03 +0200
+Subject: [PATCH] spi: mxic: Select SPI_NOR type by default
 
-Fix the current layout which only matches early non-public revisions
-of the IP. Since its official distribution, two bytes of the SPI
-controller DMAS_CTRL register have been inverted.
+The SPI_NAND bit is a (wrongly named) placeholder that is intended
+to be used in the future. Right now SPI_NOR (which is currently
+identical to SPI_NAND in this version of the IP) should be used in
+both cases.
 
 Suggested-by: Mason Yang <masonccyang@mxic.com.tw>
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20190919202504.9619-4-miquel.raynal@bootlin.com
+Link: https://lore.kernel.org/r/20190919202504.9619-3-miquel.raynal@bootlin.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-mxic.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-mxic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
-index b641954fdc4b..a736fdf47119 100644
+index f48563c09b97..b641954fdc4b 100644
 --- a/drivers/spi/spi-mxic.c
 +++ b/drivers/spi/spi-mxic.c
-@@ -145,8 +145,8 @@
- #define LWR_SUSP_CTRL_EN	BIT(31)
- 
- #define DMAS_CTRL		0x9c
--#define DMAS_CTRL_DIR_READ	BIT(31)
--#define DMAS_CTRL_EN		BIT(30)
-+#define DMAS_CTRL_EN		BIT(31)
-+#define DMAS_CTRL_DIR_READ	BIT(30)
- 
- #define DATA_STROB		0xa0
- #define DATA_STROB_EDO_EN	BIT(2)
+@@ -275,7 +275,7 @@ static void mxic_spi_hw_init(struct mxic_spi *mxic)
+ 	writel(0, mxic->regs + HC_EN);
+ 	writel(0, mxic->regs + LRD_CFG);
+ 	writel(0, mxic->regs + LRD_CTRL);
+-	writel(HC_CFG_NIO(1) | HC_CFG_TYPE(0, HC_CFG_TYPE_SPI_NAND) |
++	writel(HC_CFG_NIO(1) | HC_CFG_TYPE(0, HC_CFG_TYPE_SPI_NOR) |
+ 	       HC_CFG_SLV_ACT(0) | HC_CFG_MAN_CS_EN | HC_CFG_IDLE_SIO_LVL(1),
+ 	       mxic->regs + HC_CFG);
+ }
 -- 
 2.20.1

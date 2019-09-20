@@ -1,112 +1,61 @@
-From: "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: Re: [Letux-kernel] [PATCH 2/2] DTS: ARM: gta04: introduce legacy spi-cs-high to make display work again
-Date: Fri, 20 Sep 2019 11:19:11 +0200
-Message-ID: <7DF102BC-C818-4D27-988F-150C7527E6CC@goldelico.com>
-References: <cover.1562597164.git.hns@goldelico.com> <8ae7cf816b22ef9cecee0d789fcf9e8a06495c39.1562597164.git.hns@goldelico.com> <20190724194259.GA25847@bogus> <2EA06398-E45B-481B-9A26-4DD2E043BF9C@goldelico.com> <CAL_JsqLe_Y9Z6MRt7ojgSVKAb9n95S8j=eGidSVNz2T83j-zPQ@mail.gmail.com> <CACRpkdY0AVnkRa8sV_Z54qfX9SYufvaYYhU0k2+LitXo0sLx2w@mail.gmail.com> <20190831084852.5e726cfa@aktux> <ED6A6797-D1F9-473B-ABFF-B6951A924BC1@goldelico.com> <CACRpkdZQgPVvB=78vOFsHe5n45Vwe4N6JJOcm1_vz5FbAw9CYA@mail.gmail.com> <1624298A-C51B-418A-96C3-EA09367A010D@goldelico.com> <CACRpkdZvpPOM1Ug-=GHf7Z-2VEbJz3Cuo7+0yDFuNm5ShXK8=Q@mail.gmail.com>
-Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
-Cc: Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
-        Rob Herring <robh@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        stable <stable@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        =?utf-8?Q?Beno=C3=AEt_Cousson?= <bcousson@baylibre.com>
-To: Linus Walleij <linus.walleij@linaro.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: atmel: Fix crash when using more than 4 gpio CS
+Date: Fri, 20 Sep 2019 11:51:01 +0100
+Message-ID: <20190920105101.GA3822@sirena.co.uk>
+References: <20190919153847.7179-1-gregory.clement@bootlin.com>
+ <20190919160315.GQ3642@sirena.co.uk>
+ <20190919172350.GZ21254@piout.net>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="G4iJoqBmSsgzjUCe"
+Cc: Gregory CLEMENT <gregory.clement@bootlin.com>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        stable@vger.kernel.org
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <CACRpkdZvpPOM1Ug-=GHf7Z-2VEbJz3Cuo7+0yDFuNm5ShXK8=Q@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20190919172350.GZ21254@piout.net>
 Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
-> Am 20.09.2019 um 10:55 schrieb Linus Walleij =
-<linus.walleij@linaro.org>:
->=20
-> On Tue, Sep 17, 2019 at 4:26 PM H. Nikolaus Schaller =
-<hns@goldelico.com> wrote:
->>> Am 17.09.2019 um 00:52 schrieb Linus Walleij =
-<linus.walleij@linaro.org>:
->>> On Mon, Sep 16, 2019 at 12:59 PM H. Nikolaus Schaller =
-<hns@goldelico.com> wrote:
->>>=20
->>>> ping.
->>>>=20
->>>> Device omap3-gta04 is neither working with v5.3 nor linux-next =
-quite a while and we need a solution.
->>>=20
->>> Can't we just apply the last part of the patch in this thread:
->>>=20
->>> diff --git a/arch/arm/boot/dts/omap3-gta04.dtsi
->>> b/arch/arm/boot/dts/omap3-gta04.dtsi
->>> index 9a9a29fe88ec..47bab8e1040e 100644
->>> --- a/arch/arm/boot/dts/omap3-gta04.dtsi
->>> +++ b/arch/arm/boot/dts/omap3-gta04.dtsi
->>> @@ -124,6 +124,7 @@
->>>                       spi-max-frequency =3D <100000>;
->>>                       spi-cpol;
->>>                       spi-cpha;
->>> +                       spi-cs-high;
->>>=20
->>>                       backlight=3D <&backlight>;
->>>                       label =3D "lcd";
->>>=20
->>>=20
->>> Surely this fixes the problem?
->>=20
->> yes, it is a workaround, but appears to violate some policies.
->> E.g. the spi-cs-high; is undocumented but DT bindings maintainer
->> seems to be against documenting it as I had proposed in my
->> other patch.
->=20
-> It is documented as a boolean in
-> Documentation/devicetree/bindings/spi/spi-controller.yaml
-> with the following description:
->=20
->      spi-cs-high:
->        $ref: /schemas/types.yaml#/definitions/flag
->        description:
->          The device requires the chip select active high.
->=20
-> So I don't think it is about it being undocumented.
+--G4iJoqBmSsgzjUCe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Yes, the basic property is documented. But incomplete.
+On Thu, Sep 19, 2019 at 07:23:50PM +0200, Alexandre Belloni wrote:
+> On 19/09/2019 17:03:15+0100, Mark Brown wrote:
 
-The strange inversion side-effect on the third gpio parameter
-is undocumented and not understandable from this description
-alone.
+> > This is going to break any system where we use both a GPIO chip select
+> > and chip select 0.  Ideally we'd try to figure out an unused chip select
+> > to use here...
 
->=20
->> Rather he seems to have proposed a white-list in the driver code.
->> So that the legacy mode is only becoming active for those systems
->> which really need the legacy mode instead of everyone.
->=20
-> Yeah that seems like a plausible way forward if we want to
-> move away from the legacy way of specifying polarity.
->=20
->> Then, we do not need this patch for GTA04.
->=20
-> We don't need to implement the perfect solution up front.
-> We can aim for that in the long run. I usually go by the IETF
-> motto "rough consensus and running code".
->=20
->> So its up to you to decide which way to go. We are happy with
->> any one that makes mainline work again asap...
->=20
-> I suggest to go both way:
-> apply this oneliner and tag for stable so that GTA04 works
-> again.
->=20
-> Then for the next kernel think about a possible more abitious
-> whitelist solution and after adding that remove *all* "spi-cs-high"
-> flags from all device trees in the kernel after fixing them
-> all up.
+> The point is that this use case is already broken and this patch fixes
+> the crash and is easily backportable.
 
-Ok, that looks like a viable path.
+> Fixing the CS + gpio CS should probably be done in a separate patch.
 
-BR and thanks,
-Nikolaus
+If the GPIO is overlaid on any of the existing slots (except GPIO 0)
+then it'll cause GPIO 0 to start toggling.  I'm not convinced that the
+code doesn't currently support that.
+
+--G4iJoqBmSsgzjUCe
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl2ErxQACgkQJNaLcl1U
+h9C4OAf9FfyzqjxlHkt3ntI6EvTAyZw0LS08pAM3Y9UgSh+9oAHuivVW0ZQ55DFO
+IXeXuTGoNbS0doU2lJfCc4/mRGV0SLFkdf9Oa8OHBVnHjtYo7iHhWLuGfwVr6YOr
+CqDSofMpphdzsQxhZ8xTycUYjC5ZrJ2Zd31CddLcCZNWRM1HsLN89XXVQ2HclVhi
+dVhOkAiGJ3Cy4AeXky7/UNCJbKJfeQQvhSy8Dn+LOqbPrglKDh4xwbfTVUMChBH4
+IjFd5De9X/Y5GP1Mqbr7dDz/3fVFbH8bb4jAuaWBJiO2tNkeE4WRKoTSG3BBp9EM
+HhAPo7EorLaMmfC1Id2HdhxFrNrNIQ==
+=40sX
+-----END PGP SIGNATURE-----
+
+--G4iJoqBmSsgzjUCe--

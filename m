@@ -1,83 +1,57 @@
-From: Tony Lindgren <tony@atomide.com>
-Subject: Re: [Letux-kernel] [PATCH 2/2] DTS: ARM: gta04: introduce legacy
- spi-cs-high to make display work again
-Date: Fri, 20 Sep 2019 08:53:06 -0700
-Message-ID: <20190920155306.GT5610@atomide.com>
-References: <20190831084852.5e726cfa@aktux>
- <ED6A6797-D1F9-473B-ABFF-B6951A924BC1@goldelico.com>
- <CACRpkdZQgPVvB=78vOFsHe5n45Vwe4N6JJOcm1_vz5FbAw9CYA@mail.gmail.com>
- <1624298A-C51B-418A-96C3-EA09367A010D@goldelico.com>
- <CACRpkdZvpPOM1Ug-=GHf7Z-2VEbJz3Cuo7+0yDFuNm5ShXK8=Q@mail.gmail.com>
- <7DF102BC-C818-4D27-988F-150C7527E6CC@goldelico.com>
- <20190920142059.GO5610@atomide.com>
- <633E7AD9-A909-4619-BBD7-8CFD965FDFF7@goldelico.com>
- <20190920172947.51c1fdec@aktux>
- <96E62EC2-2A3E-4722-A9DE-3F320B0A98B0@goldelico.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: atmel: Fix crash when using more than 4 gpio CS
+Date: Fri, 20 Sep 2019 16:54:01 +0100
+Message-ID: <20190920155400.GH3822@sirena.co.uk>
+References: <20190919153847.7179-1-gregory.clement@bootlin.com>
+ <20190919160315.GQ3642@sirena.co.uk>
+ <20190919172350.GZ21254@piout.net>
+ <20190920105101.GA3822@sirena.co.uk>
+ <87a7az7zt6.fsf@FE-laptop>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Andreas Kemnade <andreas@kemnade.info>,
-        Discussions about the Letux Kernel
-        <letux-kernel@openphoenux.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Linux-OMAP <linux-omap@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        stable <stable@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>
-To: "H. Nikolaus Schaller" <hns@goldelico.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="nFBW6CQlri5Qm8JQ"
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        stable@vger.kernel.org
+To: Gregory CLEMENT <gregory.clement@bootlin.com>
+Return-path: <stable-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <96E62EC2-2A3E-4722-A9DE-3F320B0A98B0@goldelico.com>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <87a7az7zt6.fsf@FE-laptop>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-* H. Nikolaus Schaller <hns@goldelico.com> [190920 15:50]:
-> 
-> > Am 20.09.2019 um 17:29 schrieb Andreas Kemnade <andreas@kemnade.info>:
-> > 
-> > On Fri, 20 Sep 2019 16:54:18 +0200
-> > "H. Nikolaus Schaller" <hns@goldelico.com> wrote:
-> > 
-> >>> Am 20.09.2019 um 16:20 schrieb Tony Lindgren <tony@atomide.com>:
-> >>> 
-> >>> * H. Nikolaus Schaller <hns@goldelico.com> [190920 09:19]:  
-> >>>>> Am 20.09.2019 um 10:55 schrieb Linus Walleij <linus.walleij@linaro.org>:
-> >>>>> I suggest to go both way:
-> >>>>> apply this oneliner and tag for stable so that GTA04 works
-> >>>>> again.
-> >>>>> 
-> >>>>> Then for the next kernel think about a possible more abitious
-> >>>>> whitelist solution and after adding that remove *all* "spi-cs-high"
-> >>>>> flags from all device trees in the kernel after fixing them
-> >>>>> all up.  
-> >>>> 
-> >>>> Ok, that looks like a viable path.  
-> >>> 
-> >>> Please repost the oneline so people can ack easily. At least
-> >>> I've already lost track of this thread.  
-> >> 
-> >> It is all here:
-> >> 
-> >> https://patchwork.kernel.org/patch/11035253/
-> >> 
-> > It is the full one (incl. documentation), not the oneline and does not
-> > apply.
-> 
-> Looks as if it was sitting too long in the queue and linux-next has changed
-> the basis in the meantime, while v5.3 has not yet.
-> 
-> Documentation/devicetree/bindings/spi/spi-bus.txt -> spi-controller.yaml
-> 
-> So it should still apply for v5.3.1 and earlier and we need both versions.
-> One for stable and one for linux-next. I don't know how to handle such cases.
 
-Please just repost a minimal dts one line fix. Then a separate
-patch for the documentation changes.
+--nFBW6CQlri5Qm8JQ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Regards,
+On Fri, Sep 20, 2019 at 05:27:49PM +0200, Gregory CLEMENT wrote:
 
-Tony
+> But after going further in the details of the driver, this patch could
+> cause a regression for on the old controllers.
+
+> I also found other issues in this driver in the chip select
+> management. So I will send a new series fixing all of it.
+
+OK, great - glad at least one of us spotted a real problem!
+
+--nFBW6CQlri5Qm8JQ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl2E9hgACgkQJNaLcl1U
+h9DuOQf/d1YSSM95RC3kUN0e8uki1dRX6P/DzkwsU8aq/UjqRJWFqJfINJoq/iX2
+Bxv2so1RItyHhc7DeDbguqZd3q7ZoGEIdpydEs0YiCe0ZsIC2WO5oQYbzR+StoUP
+Go9tnNJxG00tYTUoOLSkuFt0oF28j6+IiBOqU028GK0CcCpEY5gK6bdLrO3Yg/bp
+x7dnew+UZGVIqBygo6Gf4o781L0aV9exnr8toNx2meSItYSd53qBOywiLt+olUPB
+i1y7ZIBMFvM/CADLLfgT8u+3bu8q6tVFs7olDfPXfiSqWC9tOzur/x3aDfY4CdQz
+8iOeWl80Sr4wXQgZWxBJGWp6Gz1JHA==
+=vx4t
+-----END PGP SIGNATURE-----
+
+--nFBW6CQlri5Qm8JQ--

@@ -1,70 +1,68 @@
-From: Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] spi: lantiq-ssc: Use devm_platform_ioremap_resource() in
- lantiq_ssc_probe()
-Date: Sat, 21 Sep 2019 14:24:18 +0200
-Message-ID: <230495a7-b754-bc6a-05e0-059a6b6c643d@web.de>
+From: Markus Elfring <Markus.Elfring-S0/GAf8tV78@public.gmane.org>
+Subject: [PATCH] spi: mediatek: Use devm_platform_ioremap_resource() in
+ mtk_spi_probe()
+Date: Sat, 21 Sep 2019 14:52:50 +0200
+Message-ID: <478e0df1-e800-8cf1-f9b3-d72f8e26aa0b@web.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Cc: LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Daniel Schwierzeck <daniel.schwierzeck@gmail.com>
-To: linux-spi@vger.kernel.org, Hauke Mehrtens <hauke@hauke-m.de>,
-        Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+ linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
+ Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-mediatek-bounces+glpam-linux-mediatek=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mediatek>,
+ <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mediatek/>
+List-Post: <mailto:linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mediatek>,
+ <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "Linux-mediatek" <linux-mediatek-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-mediatek-bounces+glpam-linux-mediatek=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sat, 21 Sep 2019 14:16:49 +0200
+From: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Date: Sat, 21 Sep 2019 14:45:40 +0200
 
 Simplify this function implementation by using a known wrapper function.
 
 This issue was detected by using the Coccinelle software.
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- drivers/spi/spi-lantiq-ssc.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+Signed-off-by: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+---
+ drivers/spi/spi-mt65xx.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/drivers/spi/spi-lantiq-ssc.c b/drivers/spi/spi-lantiq-ssc.c
-index 9dfe8b04e688..1fd7ee53d451 100644
-=2D-- a/drivers/spi/spi-lantiq-ssc.c
-+++ b/drivers/spi/spi-lantiq-ssc.c
-@@ -797,7 +797,6 @@ static int lantiq_ssc_probe(struct platform_device *pd=
-ev)
- {
- 	struct device *dev =3D &pdev->dev;
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 6888a4dcff6d..25fe149a8d9a 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -619,7 +619,6 @@ static int mtk_spi_probe(struct platform_device *pdev)
  	struct spi_master *master;
+ 	struct mtk_spi *mdata;
+ 	const struct of_device_id *of_id;
 -	struct resource *res;
- 	struct lantiq_ssc_spi *spi;
- 	const struct lantiq_ssc_hwcfg *hwcfg;
- 	const struct of_device_id *match;
-@@ -812,12 +811,6 @@ static int lantiq_ssc_probe(struct platform_device *p=
-dev)
- 	}
- 	hwcfg =3D match->data;
+ 	int i, irq, ret, addr_bits;
 
--	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*mdata));
+@@ -682,15 +681,7 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 	}
+
+ 	platform_set_drvdata(pdev, master);
+-
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 -	if (!res) {
--		dev_err(dev, "failed to get resources\n");
--		return -ENXIO;
+-		ret = -ENODEV;
+-		dev_err(&pdev->dev, "failed to determine base address\n");
+-		goto err_put_master;
 -	}
 -
- 	rx_irq =3D platform_get_irq_byname(pdev, LTQ_SPI_RX_IRQ_NAME);
- 	if (rx_irq < 0)
- 		return -ENXIO;
-@@ -839,8 +832,7 @@ static int lantiq_ssc_probe(struct platform_device *pd=
-ev)
- 	spi->dev =3D dev;
- 	spi->hwcfg =3D hwcfg;
- 	platform_set_drvdata(pdev, spi);
--
--	spi->regbase =3D devm_ioremap_resource(dev, res);
-+	spi->regbase =3D devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(spi->regbase)) {
- 		err =3D PTR_ERR(spi->regbase);
- 		goto err_master_put;
-=2D-
+-	mdata->base = devm_ioremap_resource(&pdev->dev, res);
++	mdata->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(mdata->base)) {
+ 		ret = PTR_ERR(mdata->base);
+ 		goto err_put_master;
+--
 2.23.0

@@ -1,61 +1,70 @@
-From: "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: [PATCH v2] DTS: ARM: gta04: introduce legacy spi-cs-high to make display work again
-Date: Fri, 20 Sep 2019 18:11:15 +0200
-Message-ID: <c031340840daba810bb2a612c35eea7fab307e56.1568995874.git.hns@goldelico.com>
+From: Markus Elfring <Markus.Elfring@web.de>
+Subject: [PATCH] spi: lantiq-ssc: Use devm_platform_ioremap_resource() in
+ lantiq_ssc_probe()
+Date: Sat, 21 Sep 2019 14:24:18 +0200
+Message-ID: <230495a7-b754-bc6a-05e0-059a6b6c643d@web.de>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: stable@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org,
-        kernel@pyra-handheld.com,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-To: =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, broonie@kernel.org,
-        linus.walleij@linaro.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Cc: LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Daniel Schwierzeck <daniel.schwierzeck@gmail.com>
+To: linux-spi@vger.kernel.org, Hauke Mehrtens <hauke@hauke-m.de>,
+        Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-commit 6953c57ab172 "gpio: of: Handle SPI chipselect legacy bindings"
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Sat, 21 Sep 2019 14:16:49 +0200
 
-did introduce logic to centrally handle the legacy spi-cs-high property
-in combination with cs-gpios. This assumes that the polarity
-of the CS has to be inverted if spi-cs-high is missing, even
-and especially if non-legacy GPIO_ACTIVE_HIGH is specified.
+Simplify this function implementation by using a known wrapper function.
 
-The DTS for the GTA04 was orginally introduced under the assumption
-that there is no need for spi-cs-high if the gpio is defined with
-proper polarity GPIO_ACTIVE_HIGH.
+This issue was detected by using the Coccinelle software.
 
-This was not a problem until gpiolib changed the interpretation of
-GPIO_ACTIVE_HIGH and missing spi-cs-high.
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ drivers/spi/spi-lantiq-ssc.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-The effect is that the missing spi-cs-high is now interpreted as CS being
-low (despite GPIO_ACTIVE_HIGH) which turns off the SPI interface when the
-panel is to be programmed by the panel driver.
+diff --git a/drivers/spi/spi-lantiq-ssc.c b/drivers/spi/spi-lantiq-ssc.c
+index 9dfe8b04e688..1fd7ee53d451 100644
+=2D-- a/drivers/spi/spi-lantiq-ssc.c
++++ b/drivers/spi/spi-lantiq-ssc.c
+@@ -797,7 +797,6 @@ static int lantiq_ssc_probe(struct platform_device *pd=
+ev)
+ {
+ 	struct device *dev =3D &pdev->dev;
+ 	struct spi_master *master;
+-	struct resource *res;
+ 	struct lantiq_ssc_spi *spi;
+ 	const struct lantiq_ssc_hwcfg *hwcfg;
+ 	const struct of_device_id *match;
+@@ -812,12 +811,6 @@ static int lantiq_ssc_probe(struct platform_device *p=
+dev)
+ 	}
+ 	hwcfg =3D match->data;
 
-Therefore, we have to add the redundant and legacy spi-cs-high property
-to properly activate CS.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
----
- arch/arm/boot/dts/omap3-gta04.dtsi | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/arm/boot/dts/omap3-gta04.dtsi b/arch/arm/boot/dts/omap3-gta04.dtsi
-index b295f6fad2a5..954c216140ad 100644
---- a/arch/arm/boot/dts/omap3-gta04.dtsi
-+++ b/arch/arm/boot/dts/omap3-gta04.dtsi
-@@ -120,6 +120,7 @@
- 			spi-max-frequency = <100000>;
- 			spi-cpol;
- 			spi-cpha;
-+			spi-cs-high;
- 
- 			backlight= <&backlight>;
- 			label = "lcd";
--- 
-2.19.1
+-	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!res) {
+-		dev_err(dev, "failed to get resources\n");
+-		return -ENXIO;
+-	}
+-
+ 	rx_irq =3D platform_get_irq_byname(pdev, LTQ_SPI_RX_IRQ_NAME);
+ 	if (rx_irq < 0)
+ 		return -ENXIO;
+@@ -839,8 +832,7 @@ static int lantiq_ssc_probe(struct platform_device *pd=
+ev)
+ 	spi->dev =3D dev;
+ 	spi->hwcfg =3D hwcfg;
+ 	platform_set_drvdata(pdev, spi);
+-
+-	spi->regbase =3D devm_ioremap_resource(dev, res);
++	spi->regbase =3D devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(spi->regbase)) {
+ 		err =3D PTR_ERR(spi->regbase);
+ 		goto err_master_put;
+=2D-
+2.23.0

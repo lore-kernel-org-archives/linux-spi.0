@@ -1,68 +1,68 @@
-From: Markus Elfring <Markus.Elfring-S0/GAf8tV78@public.gmane.org>
+From: Markus Elfring <Markus.Elfring@web.de>
 Subject: [PATCH] spi: mediatek: Use devm_platform_ioremap_resource() in
- mtk_spi_probe()
-Date: Sat, 21 Sep 2019 14:52:50 +0200
-Message-ID: <478e0df1-e800-8cf1-f9b3-d72f8e26aa0b@web.de>
+ mtk_spi_slave_probe()
+Date: Sat, 21 Sep 2019 15:19:27 +0200
+Message-ID: <225b76ca-a367-4bef-d8ce-42c7af9242a5@web.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
- linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Leilk Liu <leilk.liu-NuS5LvNUpcJWk0Htik3J/w@public.gmane.org>,
- Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-mediatek-bounces+glpam-linux-mediatek=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Cc: LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+To: linux-spi@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        Leilk Liu <leilk.liu@mediatek.com>,
+        Mark Brown <broonie@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mediatek>,
- <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mediatek/>
-List-Post: <mailto:linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mediatek>,
- <mailto:linux-mediatek-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "Linux-mediatek" <linux-mediatek-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-mediatek-bounces+glpam-linux-mediatek=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Date: Sat, 21 Sep 2019 14:45:40 +0200
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Sat, 21 Sep 2019 15:12:33 +0200
 
 Simplify this function implementation by using a known wrapper function.
 
 This issue was detected by using the Coccinelle software.
 
-Signed-off-by: Markus Elfring <elfring-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
----
- drivers/spi/spi-mt65xx.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ drivers/spi/spi-slave-mt27xx.c | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 6888a4dcff6d..25fe149a8d9a 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -619,7 +619,6 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 	struct spi_master *master;
- 	struct mtk_spi *mdata;
- 	const struct of_device_id *of_id;
+diff --git a/drivers/spi/spi-slave-mt27xx.c b/drivers/spi/spi-slave-mt27xx=
+.c
+index 61bc43b0fe57..44edaa360405 100644
+=2D-- a/drivers/spi/spi-slave-mt27xx.c
++++ b/drivers/spi/spi-slave-mt27xx.c
+@@ -368,7 +368,6 @@ static int mtk_spi_slave_probe(struct platform_device =
+*pdev)
+ {
+ 	struct spi_controller *ctlr;
+ 	struct mtk_spi_slave *mdata;
 -	struct resource *res;
- 	int i, irq, ret, addr_bits;
+ 	int irq, ret;
 
- 	master = spi_alloc_master(&pdev->dev, sizeof(*mdata));
-@@ -682,15 +681,7 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 	}
+ 	ctlr =3D spi_alloc_slave(&pdev->dev, sizeof(*mdata));
+@@ -392,17 +391,8 @@ static int mtk_spi_slave_probe(struct platform_device=
+ *pdev)
+ 	platform_set_drvdata(pdev, ctlr);
 
- 	platform_set_drvdata(pdev, master);
+ 	init_completion(&mdata->xfer_done);
 -
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
 -	if (!res) {
--		ret = -ENODEV;
+-		ret =3D -ENODEV;
 -		dev_err(&pdev->dev, "failed to determine base address\n");
--		goto err_put_master;
+-		goto err_put_ctlr;
 -	}
 -
--	mdata->base = devm_ioremap_resource(&pdev->dev, res);
-+	mdata->base = devm_platform_ioremap_resource(pdev, 0);
+ 	mdata->dev =3D &pdev->dev;
+-
+-	mdata->base =3D devm_ioremap_resource(&pdev->dev, res);
++	mdata->base =3D devm_platform_ioremap_resource(pdev, 0);
  	if (IS_ERR(mdata->base)) {
- 		ret = PTR_ERR(mdata->base);
- 		goto err_put_master;
---
+ 		ret =3D PTR_ERR(mdata->base);
+ 		goto err_put_ctlr;
+=2D-
 2.23.0

@@ -1,62 +1,56 @@
-From: Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] spi: xtensa-xtfpga: Use devm_platform_ioremap_resource() in
- xtfpga_spi_probe()
-Date: Sat, 21 Sep 2019 15:40:38 +0200
-Message-ID: <178bb78e-714f-645f-d819-5732870c4272@web.de>
+From: Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.3 007/203] spi: dw-mmio: Clock should be shut when error occurs
+Date: Sun, 22 Sep 2019 14:40:33 -0400
+Message-ID: <20190922184350.30563-7-sashal@kernel.org>
+References: <20190922184350.30563-1-sashal@kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Cc: LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-To: linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Max Filippov <jcmvbkbc@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Transfer-Encoding: 8bit
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Phil Edworthy <phil.edworthy@renesas.com>,
+        Gareth Williams <gareth.williams.jx@renesas.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
+To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20190922184350.30563-1-sashal@kernel.org>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sat, 21 Sep 2019 15:35:08 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Simplify this function implementation by using a known wrapper function.
+[ Upstream commit 3da9834d9381dd99273f2ad4e6d096c9187dc4f2 ]
 
-This issue was detected by using the Coccinelle software.
+When optional clock requesting fails, the main clock is still up and running,
+we should shut it down in such caee.
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- drivers/spi/spi-xtensa-xtfpga.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+Fixes: 560ee7e91009 ("spi: dw: Add support for an optional interface clock")
+Cc: Phil Edworthy <phil.edworthy@renesas.com>
+Cc: Gareth Williams <gareth.williams.jx@renesas.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Gareth Williams <gareth.williams.jx@renesas.com>
+Link: https://lore.kernel.org/r/20190710114243.30101-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi-dw-mmio.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-xtensa-xtfpga.c b/drivers/spi/spi-xtensa-xtfp=
-ga.c
-index 86516eb1e143..fc2b5eb7d614 100644
-=2D-- a/drivers/spi/spi-xtensa-xtfpga.c
-+++ b/drivers/spi/spi-xtensa-xtfpga.c
-@@ -80,7 +80,6 @@ static void xtfpga_spi_chipselect(struct spi_device *spi=
-, int is_on)
- static int xtfpga_spi_probe(struct platform_device *pdev)
- {
- 	struct xtfpga_spi *xspi;
--	struct resource *mem;
- 	int ret;
- 	struct spi_master *master;
-
-@@ -97,14 +96,7 @@ static int xtfpga_spi_probe(struct platform_device *pde=
-v)
- 	xspi->bitbang.master =3D master;
- 	xspi->bitbang.chipselect =3D xtfpga_spi_chipselect;
- 	xspi->bitbang.txrx_word[SPI_MODE_0] =3D xtfpga_spi_txrx_word;
--
--	mem =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!mem) {
--		dev_err(&pdev->dev, "No memory resource\n");
--		ret =3D -ENODEV;
--		goto err;
--	}
--	xspi->regs =3D devm_ioremap_resource(&pdev->dev, mem);
-+	xspi->regs =3D devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(xspi->regs)) {
- 		ret =3D PTR_ERR(xspi->regs);
- 		goto err;
-=2D-
-2.23.0
+diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+index 18c06568805e7..86789dbaf5771 100644
+--- a/drivers/spi/spi-dw-mmio.c
++++ b/drivers/spi/spi-dw-mmio.c
+@@ -172,8 +172,10 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
+ 
+ 	/* Optional clock needed to access the registers */
+ 	dwsmmio->pclk = devm_clk_get_optional(&pdev->dev, "pclk");
+-	if (IS_ERR(dwsmmio->pclk))
+-		return PTR_ERR(dwsmmio->pclk);
++	if (IS_ERR(dwsmmio->pclk)) {
++		ret = PTR_ERR(dwsmmio->pclk);
++		goto out_clk;
++	}
+ 	ret = clk_prepare_enable(dwsmmio->pclk);
+ 	if (ret)
+ 		goto out_clk;
+-- 
+2.20.1

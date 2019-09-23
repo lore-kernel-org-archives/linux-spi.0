@@ -1,56 +1,47 @@
-From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.2 005/185] spi: dw-mmio: Clock should be shut when error occurs
-Date: Sun, 22 Sep 2019 14:46:23 -0400
-Message-ID: <20190922184924.32534-5-sashal@kernel.org>
-References: <20190922184924.32534-1-sashal@kernel.org>
+From: Tony Lindgren <tony@atomide.com>
+Subject: Re: [PATCH v2] DTS: ARM: gta04: introduce legacy spi-cs-high to make
+ display work again
+Date: Mon, 23 Sep 2019 10:34:41 -0700
+Message-ID: <20190923173441.GV5610@atomide.com>
+References: <c031340840daba810bb2a612c35eea7fab307e56.1568995874.git.hns@goldelico.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Phil Edworthy <phil.edworthy@renesas.com>,
-        Gareth Williams <gareth.williams.jx@renesas.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: =?utf-8?Q?Beno=C3=AEt?= Cousson <bcousson@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>, broonie@kernel.org,
+        linus.walleij@linaro.org, stable@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-omap@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        letux-kernel@openphoenux.org, kernel@pyra-handheld.com
+To: "H. Nikolaus Schaller" <hns@goldelico.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190922184924.32534-1-sashal@kernel.org>
+Content-Disposition: inline
+In-Reply-To: <c031340840daba810bb2a612c35eea7fab307e56.1568995874.git.hns@goldelico.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+* H. Nikolaus Schaller <hns@goldelico.com> [190920 09:12]:
+> commit 6953c57ab172 "gpio: of: Handle SPI chipselect legacy bindings"
+> 
+> did introduce logic to centrally handle the legacy spi-cs-high property
+> in combination with cs-gpios. This assumes that the polarity
+> of the CS has to be inverted if spi-cs-high is missing, even
+> and especially if non-legacy GPIO_ACTIVE_HIGH is specified.
+> 
+> The DTS for the GTA04 was orginally introduced under the assumption
+> that there is no need for spi-cs-high if the gpio is defined with
+> proper polarity GPIO_ACTIVE_HIGH.
+> 
+> This was not a problem until gpiolib changed the interpretation of
+> GPIO_ACTIVE_HIGH and missing spi-cs-high.
+> 
+> The effect is that the missing spi-cs-high is now interpreted as CS being
+> low (despite GPIO_ACTIVE_HIGH) which turns off the SPI interface when the
+> panel is to be programmed by the panel driver.
+> 
+> Therefore, we have to add the redundant and legacy spi-cs-high property
+> to properly activate CS.
 
-[ Upstream commit 3da9834d9381dd99273f2ad4e6d096c9187dc4f2 ]
+Thanks applying into fixes.
 
-When optional clock requesting fails, the main clock is still up and running,
-we should shut it down in such caee.
-
-Fixes: 560ee7e91009 ("spi: dw: Add support for an optional interface clock")
-Cc: Phil Edworthy <phil.edworthy@renesas.com>
-Cc: Gareth Williams <gareth.williams.jx@renesas.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Gareth Williams <gareth.williams.jx@renesas.com>
-Link: https://lore.kernel.org/r/20190710114243.30101-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/spi/spi-dw-mmio.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index 18c06568805e7..86789dbaf5771 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -172,8 +172,10 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
- 
- 	/* Optional clock needed to access the registers */
- 	dwsmmio->pclk = devm_clk_get_optional(&pdev->dev, "pclk");
--	if (IS_ERR(dwsmmio->pclk))
--		return PTR_ERR(dwsmmio->pclk);
-+	if (IS_ERR(dwsmmio->pclk)) {
-+		ret = PTR_ERR(dwsmmio->pclk);
-+		goto out_clk;
-+	}
- 	ret = clk_prepare_enable(dwsmmio->pclk);
- 	if (ret)
- 		goto out_clk;
--- 
-2.20.1
+Tony

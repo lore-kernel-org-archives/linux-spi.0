@@ -1,33 +1,66 @@
 From: Lukasz Majewski <lukma@denx.de>
-Subject: [PATCH 0/2] spi: Fix problem with interrupted slave transmission
-Date: Tue, 24 Sep 2019 13:05:45 +0200
-Message-ID: <20190924110547.14770-1-lukma@denx.de>
+Subject: [PATCH 2/2] spi: Introduce dspi_slave_abort() function for NXP's dspi SPI driver
+Date: Tue, 24 Sep 2019 13:05:47 +0200
+Message-ID: <20190924110547.14770-3-lukma@denx.de>
+References: <20190924110547.14770-1-lukma@denx.de>
 Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         krzk@kernel.org, Lukasz Majewski <lukma@denx.de>
 To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190924110547.14770-1-lukma@denx.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch series fixes problem with recovering Vybrid's NXP DSPI
-controller state after master transmission distortion.
+This change provides the dspi_slave_abort() function, which is a callback
+for slave_abort() method of SPI controller generic driver.
 
-It was tested with a setup where /dev/spidevX.Y devices were used in
-a loopback mode (provided by proper HW connections). During this test
-the distortion was introduced and the system was assessed if it is
-possible to continue correct SPI transmission.
+As in the SPI slave mode the transmission is driven by master, any
+distortion may cause the slave to enter undefined internal state.
+To avoid this problem the dspi_slave_abort() terminates all pending and
+ongoing DMA transactions (with sync) and clears internal FIFOs.
 
-This series applies clearly on v5.2 (tag) and current mainline:
-SHA1: 4c07e2ddab5b6b57dbcb09aedbda1f484d5940cc
-
-Lukasz Majewski (2):
-  spi: Add call to spi_slave_abort() function when spidev driver is
-    released
-  spi: Introduce dspi_slave_abort() function for NXP's dspi SPI driver
-
+Signed-off-by: Lukasz Majewski <lukma@denx.de>
+---
  drivers/spi/spi-fsl-dspi.c | 20 ++++++++++++++++++++
- drivers/spi/spidev.c       |  1 +
- 2 files changed, 21 insertions(+)
+ 1 file changed, 20 insertions(+)
 
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index bec758e978fb..2c0f211eed87 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -1006,6 +1006,25 @@ static void dspi_init(struct fsl_dspi *dspi)
+ 			     SPI_CTARE_FMSZE(0) | SPI_CTARE_DTCP(1));
+ }
+ 
++static int dspi_slave_abort(struct spi_master *master)
++{
++	struct fsl_dspi *dspi = spi_master_get_devdata(master);
++
++	/*
++	 * Terminate all pending DMA transactions for the SPI working
++	 * in SLAVE mode.
++	 */
++	dmaengine_terminate_sync(dspi->dma->chan_rx);
++	dmaengine_terminate_sync(dspi->dma->chan_tx);
++
++	/* Clear the internal DSPI RX and TX FIFO buffers */
++	regmap_update_bits(dspi->regmap, SPI_MCR,
++			   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF,
++			   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF);
++
++	return 0;
++}
++
+ static int dspi_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *np = pdev->dev.of_node;
+@@ -1030,6 +1049,7 @@ static int dspi_probe(struct platform_device *pdev)
+ 	ctlr->dev.of_node = pdev->dev.of_node;
+ 
+ 	ctlr->cleanup = dspi_cleanup;
++	ctlr->slave_abort = dspi_slave_abort;
+ 	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
+ 
+ 	pdata = dev_get_platdata(&pdev->dev);
 -- 
 2.20.1

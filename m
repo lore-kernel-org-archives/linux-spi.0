@@ -1,58 +1,72 @@
-From: Lukasz Majewski <lukma@denx.de>
-Subject: [PATCH v2 1/2] spi: Add call to spi_slave_abort() function when spidev driver is released
-Date: Wed, 25 Sep 2019 11:11:42 +0200
-Message-ID: <20190925091143.15468-2-lukma@denx.de>
-References: <20190924110547.14770-1-lukma@denx.de>
- <20190925091143.15468-1-lukma@denx.de>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        krzk@kernel.org, Lukasz Majewski <lukma@denx.de>
-To: Mark Brown <broonie@kernel.org>
+From: Schrempf Frieder <frieder.schrempf@kontron.de>
+Subject: Re: [PATCH v5 11/15] dmaengine: imx-sdma: fix ecspi1 rx dma not work
+ on i.mx8mm
+Date: Wed, 25 Sep 2019 14:53:29 +0000
+Message-ID: <1307d229-4c49-80e3-04ba-377c0caeae9c@kontron.de>
+References: <20190610081753.11422-12-yibin.gong@nxp.com>
+ <29cf9f29-bdb4-94db-00b0-56ec36386f7a@kontron.de>
+ <VE1PR04MB6638639EF4F580E04689538E89870@VE1PR04MB6638.eurprd04.prod.outlook.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "vkoul@kernel.org" <vkoul@kernel.org>,
+        "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+To: Robin Gong <yibin.gong@nxp.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190925091143.15468-1-lukma@denx.de>
+In-Reply-To: <VE1PR04MB6638639EF4F580E04689538E89870@VE1PR04MB6638.eurprd04.prod.outlook.com>
+Content-Language: en-US
+Content-ID: <8326CD696BB9F14CBFF37C6E31B2574A@snt-world.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This change is necessary for spidev devices (e.g. /dev/spidev3.0) working
-in the slave mode (like NXP's dspi driver for Vybrid SoC).
-
-When SPI HW works in this mode - the master is responsible for providing
-CS and CLK signals. However, when some fault happens - like for example
-distortion on SPI lines - the SPI Linux driver needs a chance to recover
-from this abnormal situation and prepare itself for next (correct)
-transmission.
-
-This change doesn't pose any threat on drivers working in master mode as
-spi_slave_abort() function checks if SPI slave mode is supported.
-
-Signed-off-by: Lukasz Majewski <lukma@denx.de>
-Link: https://lore.kernel.org/r/20190924110547.14770-2-lukma@denx.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Reported-by: kbuild test robot <lkp@intel.com>
-
----
-Changes for v2:
-- Add #ifdef CONFIG_SPI_SLAVE to not compile in spi_slave_abort() on systems
-  which are only using master mode.
-  (The spi_slave_abort() is 'protected' by this Kconfig define in drivers/spi.c
-  file).
-  This error was spotted by kbuild test robot from Intel.
----
- drivers/spi/spidev.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 255786f2e844..3ea9d8a3e6e8 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -627,6 +627,9 @@ static int spidev_release(struct inode *inode, struct file *filp)
- 		if (dofree)
- 			kfree(spidev);
- 	}
-+#ifdef CONFIG_SPI_SLAVE
-+	spi_slave_abort(spidev->spi);
-+#endif
- 	mutex_unlock(&device_list_lock);
- 
- 	return 0;
--- 
-2.20.1
+T24gMjUuMDkuMTkgMTM6MjYsIFJvYmluIEdvbmcgd3JvdGU6DQo+IE9uIDIwMTktOS0yNCAyMToy
+OCBTY2hyZW1wZiBGcmllZGVyIDxmcmllZGVyLnNjaHJlbXBmQGtvbnRyb24uZGU+IHdyb3RlOg0K
+Pj4NCj4+IEhpIFJvYmluLA0KPj4NCj4+PiBGcm9tOiBSb2JpbiBHb25nIDx5aWJpbi5nb25nIGF0
+IG54cC5jb20+DQo+Pj4NCj4+PiBCZWNhdXNlIHRoZSBudW1iZXIgb2YgZWNzcGkxIHJ4IGV2ZW50
+IG9uIGkubXg4bW0gaXMgMCwgdGhlIGNvbmRpdGlvbg0KPj4+IGNoZWNrIGlnbm9yZSBzdWNoIHNw
+ZWNpYWwgY2FzZSB3aXRob3V0IGRtYSBjaGFubmVsIGVuYWJsZWQsIHdoaWNoDQo+Pj4gY2F1c2Vk
+DQo+Pj4gZWNzcGkxIHJ4IHdvcmtzIGZhaWxlZC4gQWN0dWFsbHksIG5vIG5lZWQgdG8gY2hlY2sg
+ZXZlbnRfaWQwL2V2ZW50X2lkMQ0KPj4+IGFuZCByZXBsYWNlIGNoZWNraW5nICdldmVudF9pZDEn
+IHdpdGggJ0RNQV9ERVZfVE9fREVWJywgc28gdGhhdA0KPj4+IGNvbmZpZ3VyZQ0KPj4+IGV2ZW50
+X2lkMSBvbmx5IGluIGNhc2UgREVWX1RPX0RFVi4NCj4+Pg0KPj4+IFNpZ25lZC1vZmYtYnk6IFJv
+YmluIEdvbmcgPHlpYmluLmdvbmcgYXQgbnhwLmNvbT4NCj4+PiBBY2tlZC1ieTogVmlub2QgS291
+bCA8dmtvdWwgYXQga2VybmVsLm9yZz4NCj4+DQo+PiBJIGhhdmUgYSBjdXN0b20gYm9hcmQgd2l0
+aCBpLk1YOE1NIGFuZCBTUEkgZmxhc2ggb24gZWNzcGkxLiBJJ20gY3VycmVudGx5DQo+PiB0ZXN0
+aW5nIHdpdGggdjUuMyBhbmQgYXMgU1BJIGRpZG4ndCB3b3JrLCBJIHRyaWVkIHR3byBkaWZmZXJl
+bnQgdGhpbmdzOg0KPj4NCj4+IDEuIFJlbW92aW5nICdkbWFzJyBhbmQgJ2RtYS1uYW1lcycgZnJv
+bSB0aGUgZWNzcGkxIG5vZGUgaW4gaW14OG1tLmR0c2ksDQo+PiAgICAgIHRvIHVzZSBQSU8gaW5z
+dGVhZCBvZiBETUEuIFRoaXMgd29ya3MgYXMgZXhwZWN0ZWQgYW5kIHRoZSBkcml2ZXINCj4+ICAg
+ICAgYm9vdHMgd2l0aCB0aGUgZm9sbG93aW5nIG1lc3NhZ2VzOg0KPj4NCj4+ICAgICAgICAgIHNw
+aV9pbXggMzA4MjAwMDAuc3BpOiBkbWEgc2V0dXAgZXJyb3IgLTE5LCB1c2UgcGlvDQo+PiAgICAg
+ICAgICBtMjVwODAgc3BpMC4wOiBteDI1djgwMzVmICgxMDI0IEtieXRlcykNCj4+ICAgICAgICAg
+IHNwaV9pbXggMzA4MjAwMDAuc3BpOiBwcm9iZWQNCj4+DQo+PiAyLiBBcHBseWluZyB5b3VyIHBh
+dGNoc2V0IGFuZCB1c2UgRE1BLiBJbiB0aGlzIGNhc2UsIHRoZSBmbGFzaCBhbHNvDQo+PiAgICAg
+IHdvcmtzIGZpbmUsIGJ1dCB0aGVyZSBhcmUgc29tZSBlcnJvciBtZXNzYWdlcyBwcmludGVkIHdo
+aWxlIGJvb3Rpbmc6DQo+Pg0KPj4gICAgICAgICAgc3BpX21hc3RlciBzcGkwOiBJL08gRXJyb3Ig
+aW4gRE1BIFJYDQo+PiAgICAgICAgICBtMjVwODAgc3BpMC4wOiBTUEkgdHJhbnNmZXIgZmFpbGVk
+OiAtMTEwDQo+PiAgICAgICAgICBzcGlfbWFzdGVyIHNwaTA6IGZhaWxlZCB0byB0cmFuc2ZlciBv
+bmUgbWVzc2FnZSBmcm9tIHF1ZXVlDQo+PiAgICAgICAgICBtMjVwODAgc3BpMC4wOiBteDI1djgw
+MzVmICgxMDI0IEtieXRlcykNCj4+ICAgICAgICAgIHNwaV9pbXggMzA4MjAwMDAuc3BpOiBwcm9i
+ZWQNCj4+DQo+PiBJdCB3b3VsZCBiZSBncmVhdCB0byBnZXQgeW91ciBwYXRjaGVzIG1lcmdlZCBh
+bmQgZml4IFNQSSArIERNQSwgYnV0IGZvcg0KPj4gaS5NWDhNTSwgd2UgbmVlZCB0byBnZXQgcmlk
+IG9mIHRoZSBlcnJvciBtZXNzYWdlcy4gRG8geW91IGhhdmUgYW4gaWRlYSwNCj4+IHdoYXQncyB3
+cm9uZz8NCg0KPiBDb3VsZCB5b3UgY2hlY2sgaWYgdGhlIGxlbmd0aCBvZiBzcGkgbWVzc2FnZSBp
+cyBiaWdnZXIgdGhhbiBmaWZvX3NpemUgZHVyaW5nDQo+IHNwaV9ub3IgcHJvYmU/IElmIHllcywg
+YXQgdGhhdCB0aW1lIG1heWJlIHNkbWEgZmlybXdhcmUgbm90IGxvYWRlZC4NCj4gaWYgKHRyYW5z
+ZmVyLT5sZW4gPCBzcGlfaW14LT5kZXZ0eXBlX2RhdGEtPmZpZm9fc2l6ZSkNCg0KSW5kZWVkLCBt
+b3N0IG9mIHRoZSB0cmFuc2ZlcnMgdHJpZ2dlcmVkIGJ5IHRoZSBTUEkgTk9SIGRpcnZlciBhcmUg
+YmVsb3cgDQpmaWZvX3NpemUgYW5kIHdvcmsgZmluZSwgYnV0IHNvbWUgYXJlIGJpZ2dlci4gVGhl
+IHRyYW5zZmVycyB0aGVyZWZvcmUgDQp0cnkgdG8gdXNlIERNQSwgYnV0IHRoZSBmaXJtd2FyZSBp
+cyBub3QgbG9hZGVkIHlldC4NCg0KSG93IGlzIHRoaXMgc3VwcG9zZWQgdG8gd29yaz8gU2hvdWxk
+bid0IGFsbCB0cmFuc2ZlcnMgdXNlIFBJTyBhcyBsb25nIGFzIA0KdGhlIFNETUEgZmlybXdhcmUg
+aXMgbm90IGxvYWRlZCB5ZXQ/DQoNCigrIENjOiBsaW51eC1zcGlAdmdlci5rZXJuZWwub3JnKQ==

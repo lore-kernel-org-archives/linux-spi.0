@@ -1,7 +1,7 @@
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v4 13/19] spi: spidev: use new `delay` field for spi transfers
-Date: Thu, 26 Sep 2019 13:51:41 +0300
-Message-ID: <20190926105147.7839-14-alexandru.ardelean@analog.com>
+Subject: [PATCH v4 12/19] spi: spi-loopback-test: use new `delay` field
+Date: Thu, 26 Sep 2019 13:51:40 +0300
+Message-ID: <20190926105147.7839-13-alexandru.ardelean@analog.com>
 References: <20190926105147.7839-1-alexandru.ardelean@analog.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -20,34 +20,48 @@ In-Reply-To: <20190926105147.7839-1-alexandru.ardelean@analog.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The `delay` field has type `struct spi_delay`.
-This allows users to specify nano-second or clock-cycle delays (if needed).
-
-Converting to use `delay` is straightforward: it's just assigning the
-value to `delay.value` and hard-coding the `delay.unit` to
-`SPI_DELAY_UNIT_USECS`.
-
-This keeps the uapi for spidev un-changed. Changing it can be part of
-another changeset and discussion.
+This change replaces the use of the `delay_usecs` field with the new
+`delay` field. The code/test still uses micro-seconds, but they are now
+configured and used via the `struct spi_delay` format of the `delay` field.
 
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- drivers/spi/spidev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-loopback-test.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 495319c2fa11..6b6afd27f4a1 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -265,7 +265,8 @@ static int spidev_message(struct spidev_data *spidev,
- 		k_tmp->tx_nbits = u_tmp->tx_nbits;
- 		k_tmp->rx_nbits = u_tmp->rx_nbits;
- 		k_tmp->bits_per_word = u_tmp->bits_per_word;
--		k_tmp->delay_usecs = u_tmp->delay_usecs;
-+		k_tmp->delay.value = u_tmp->delay_usecs;
-+		k_tmp->delay.unit = SPI_DELAY_UNIT_USECS;
- 		k_tmp->speed_hz = u_tmp->speed_hz;
- 		k_tmp->word_delay.value = u_tmp->word_delay_usecs;
- 		k_tmp->word_delay.unit = SPI_DELAY_UNIT_USECS;
+diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
+index 6f18d4952767..b6d79cd156fb 100644
+--- a/drivers/spi/spi-loopback-test.c
++++ b/drivers/spi/spi-loopback-test.c
+@@ -298,12 +298,18 @@ static struct spi_test spi_tests[] = {
+ 			{
+ 				.tx_buf = TX(0),
+ 				.rx_buf = RX(0),
+-				.delay_usecs = 1000,
++				.delay = {
++					.value = 1000,
++					.unit = SPI_DELAY_UNIT_USECS,
++				},
+ 			},
+ 			{
+ 				.tx_buf = TX(0),
+ 				.rx_buf = RX(0),
+-				.delay_usecs = 1000,
++				.delay = {
++					.value = 1000,
++					.unit = SPI_DELAY_UNIT_USECS,
++				},
+ 			},
+ 		},
+ 	},
+@@ -537,7 +543,7 @@ static int spi_test_check_elapsed_time(struct spi_device *spi,
+ 		unsigned long long nbits = (unsigned long long)BITS_PER_BYTE *
+ 					   xfer->len;
+ 
+-		delay_usecs += xfer->delay_usecs;
++		delay_usecs += xfer->delay.value;
+ 		if (!xfer->speed_hz)
+ 			continue;
+ 		estimated_time += div_u64(nbits * NSEC_PER_SEC, xfer->speed_hz);
 -- 
 2.20.1

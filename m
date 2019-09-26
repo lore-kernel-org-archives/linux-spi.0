@@ -1,7 +1,7 @@
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v4 14/19] spi: tegra114: change format for `spi_set_cs_timing()` function
-Date: Thu, 26 Sep 2019 13:51:42 +0300
-Message-ID: <20190926105147.7839-15-alexandru.ardelean@analog.com>
+Subject: [PATCH v4 15/19] spi: implement SW control for CS times
+Date: Thu, 26 Sep 2019 13:51:43 +0300
+Message-ID: <20190926105147.7839-16-alexandru.ardelean@analog.com>
 References: <20190926105147.7839-1-alexandru.ardelean@analog.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -20,124 +20,122 @@ In-Reply-To: <20190926105147.7839-1-alexandru.ardelean@analog.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The initial version of `spi_set_cs_timing()` was implemented with
-consideration only for clock-cycles as delay.
+This change implements CS control for setup, hold & inactive delays.
 
-For cases like `CS setup` time, it's sometimes needed that micro-seconds
-(or nano-seconds) are required, or sometimes even longer delays, for cases
-where the device needs a little longer to start transferring that after CS
-is asserted.
+The `cs_setup` delay is completely new, and can help with cases where
+asserting the CS, also brings the device out of power-sleep, where there
+needs to be a longer (than usual), before transferring data.
+
+The `cs_hold` time can overlap with the `delay` (or `delay_usecs`) from an
+SPI transfer. The main difference is that `cs_hold` implies that CS will be
+de-asserted.
+
+The `cs_inactive` delay does not have a clear use-case yet. It has been
+implemented mostly because the `spi_set_cs_timing()` function implements
+it. To some degree, this could overlap or replace `cs_change_delay`, but
+this will require more consideration/investigation in the future.
+
+All these delays have been added to the `spi_controller` struct, as they
+would typically be configured by calling `spi_set_cs_timing()` after an
+`spi_setup()` call.
+
+Software-mode for CS control, implies that the `set_cs_timing()` hook has
+not been provided for the `spi_controller` object.
 
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- drivers/spi/spi-tegra114.c | 22 ++++++++++++++++++++--
- drivers/spi/spi.c          | 16 ++++++++++------
- include/linux/spi/spi.h    |  9 ++++++---
- 3 files changed, 36 insertions(+), 11 deletions(-)
+ drivers/spi/spi.c       | 45 ++++++++++++++++++++++++++++++++++++++++-
+ include/linux/spi/spi.h |  5 +++++
+ 2 files changed, 49 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index 8133dc49d34f..e6a450d9b4f0 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -723,15 +723,31 @@ static void tegra_spi_deinit_dma_param(struct tegra_spi_data *tspi,
- 	dma_release_channel(dma_chan);
- }
- 
--static void tegra_spi_set_hw_cs_timing(struct spi_device *spi, u8 setup_dly,
--				       u8 hold_dly, u8 inactive_dly)
-+static int tegra_spi_set_hw_cs_timing(struct spi_device *spi,
-+				      struct spi_delay *setup,
-+				      struct spi_delay *hold,
-+				      struct spi_delay *inactive)
- {
- 	struct tegra_spi_data *tspi = spi_master_get_devdata(spi->master);
-+	u8 setup_dly, hold_dly, inactive_dly;
- 	u32 setup_hold;
- 	u32 spi_cs_timing;
- 	u32 inactive_cycles;
- 	u8 cs_state;
- 
-+	if ((setup && setup->unit != SPI_DELAY_UNIT_SCK) ||
-+	    (hold && hold->unit != SPI_DELAY_UNIT_SCK) ||
-+	    (inactive && inactive->unit != SPI_DELAY_UNIT_SCK)) {
-+		dev_err(&spi->dev,
-+			"Invalid delay unit %d, should be SPI_DELAY_UNIT_SCK\n",
-+			SPI_DELAY_UNIT_SCK);
-+		return -EINVAL;
-+	}
-+
-+	setup_dly = setup ? setup->value : 0;
-+	hold_dly = hold ? hold->value : 0;
-+	inactive_dly = inactive ? inactive->value : 0;
-+
- 	setup_dly = min_t(u8, setup_dly, MAX_SETUP_HOLD_CYCLES);
- 	hold_dly = min_t(u8, hold_dly, MAX_SETUP_HOLD_CYCLES);
- 	if (setup_dly && hold_dly) {
-@@ -758,6 +774,8 @@ static void tegra_spi_set_hw_cs_timing(struct spi_device *spi, u8 setup_dly,
- 		tspi->spi_cs_timing2 = spi_cs_timing;
- 		tegra_spi_writel(tspi, spi_cs_timing, SPI_CS_TIMING2);
- 	}
-+
-+	return 0;
- }
- 
- static u32 tegra_spi_setup_transfer_one(struct spi_device *spi,
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 489eb64d9ee0..122af2264bfe 100644
+index 122af2264bfe..61ef286f954a 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -3147,15 +3147,19 @@ EXPORT_SYMBOL_GPL(spi_setup);
- /**
-  * spi_set_cs_timing - configure CS setup, hold, and inactive delays
-  * @spi: the device that requires specific CS timing configuration
-- * @setup: CS setup time in terms of clock count
-- * @hold: CS hold time in terms of clock count
-- * @inactive_dly: CS inactive delay between transfers in terms of clock count
-+ * @setup: CS setup time specified via @spi_delay
-+ * @hold: CS hold time specified via @spi_delay
-+ * @inactive: CS inactive delay between transfers specified via @spi_delay
-+ *
-+ * Return: zero on success, else a negative error code.
-  */
--void spi_set_cs_timing(struct spi_device *spi, u8 setup, u8 hold,
--		       u8 inactive_dly)
-+int spi_set_cs_timing(struct spi_device *spi, struct spi_delay *setup,
-+		      struct spi_delay *hold, struct spi_delay *inactive)
+@@ -775,6 +775,15 @@ int spi_register_board_info(struct spi_board_info const *info, unsigned n)
+ 
+ static void spi_set_cs(struct spi_device *spi, bool enable)
  {
++	bool enable1 = enable;
++
++	if (!spi->controller->set_cs_timing) {
++		if (enable1)
++			spi_delay_exec(&spi->controller->cs_setup, NULL);
++		else
++			spi_delay_exec(&spi->controller->cs_hold, NULL);
++	}
++
+ 	if (spi->mode & SPI_CS_HIGH)
+ 		enable = !enable;
+ 
+@@ -800,6 +809,11 @@ static void spi_set_cs(struct spi_device *spi, bool enable)
+ 	} else if (spi->controller->set_cs) {
+ 		spi->controller->set_cs(spi, !enable);
+ 	}
++
++	if (!spi->controller->set_cs_timing) {
++		if (!enable1)
++			spi_delay_exec(&spi->controller->cs_inactive, NULL);
++	}
+ }
+ 
+ #ifdef CONFIG_HAS_DMA
+@@ -3156,10 +3170,39 @@ EXPORT_SYMBOL_GPL(spi_setup);
+ int spi_set_cs_timing(struct spi_device *spi, struct spi_delay *setup,
+ 		      struct spi_delay *hold, struct spi_delay *inactive)
+ {
++	size_t len;
++
  	if (spi->controller->set_cs_timing)
--		spi->controller->set_cs_timing(spi, setup, hold, inactive_dly);
-+		return spi->controller->set_cs_timing(spi, setup, hold,
-+						      inactive);
-+	return -ENOTSUPP;
+ 		return spi->controller->set_cs_timing(spi, setup, hold,
+ 						      inactive);
+-	return -ENOTSUPP;
++
++	if ((setup && setup->unit == SPI_DELAY_UNIT_SCK) ||
++	    (hold && hold->unit == SPI_DELAY_UNIT_SCK) ||
++	    (inactive && inactive->unit == SPI_DELAY_UNIT_SCK)) {
++		dev_err(&spi->dev,
++			"Clock-cycle delays for CS not supported in SW mode\n");
++		return -ENOTSUPP;
++	}
++
++	len = sizeof(struct spi_delay);
++
++	/* copy delays to controller */
++	if (setup)
++		memcpy(&spi->controller->cs_setup, setup, len);
++	else
++		memset(&spi->controller->cs_setup, 0, len);
++
++	if (hold)
++		memcpy(&spi->controller->cs_hold, hold, len);
++	else
++		memset(&spi->controller->cs_hold, 0, len);
++
++	if (inactive)
++		memcpy(&spi->controller->cs_inactive, inactive, len);
++	else
++		memset(&spi->controller->cs_inactive, 0, len);
++
++	return 0;
  }
  EXPORT_SYMBOL_GPL(spi_set_cs_timing);
  
 diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 2cee9ac35737..592e50aae998 100644
+index 592e50aae998..66031c8d0093 100644
 --- a/include/linux/spi/spi.h
 +++ b/include/linux/spi/spi.h
-@@ -517,8 +517,8 @@ struct spi_controller {
- 	 * to configure specific CS timing through spi_set_cs_timing() after
- 	 * spi_setup().
- 	 */
--	void (*set_cs_timing)(struct spi_device *spi, u8 setup_clk_cycles,
--			      u8 hold_clk_cycles, u8 inactive_clk_cycles);
-+	int (*set_cs_timing)(struct spi_device *spi, struct spi_delay *setup,
-+			     struct spi_delay *hold, struct spi_delay *inactive);
+@@ -602,6 +602,11 @@ struct spi_controller {
+ 	/* Optimized handlers for SPI memory-like operations. */
+ 	const struct spi_controller_mem_ops *mem_ops;
  
- 	/* bidirectional bulk transfers
- 	 *
-@@ -1007,7 +1007,10 @@ static inline void spi_message_free(struct spi_message *m)
- 	kfree(m);
- }
- 
--extern void spi_set_cs_timing(struct spi_device *spi, u8 setup, u8 hold, u8 inactive_dly);
-+extern int spi_set_cs_timing(struct spi_device *spi,
-+			     struct spi_delay *setup,
-+			     struct spi_delay *hold,
-+			     struct spi_delay *inactive);
- 
- extern int spi_setup(struct spi_device *spi);
- extern int spi_async(struct spi_device *spi, struct spi_message *message);
++	/* CS delays */
++	struct spi_delay	cs_setup;
++	struct spi_delay	cs_hold;
++	struct spi_delay	cs_inactive;
++
+ 	/* gpio chip select */
+ 	int			*cs_gpios;
+ 	struct gpio_desc	**cs_gpiods;
 -- 
 2.20.1

@@ -1,141 +1,154 @@
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v4 15/19] spi: implement SW control for CS times
-Date: Thu, 26 Sep 2019 13:51:43 +0300
-Message-ID: <20190926105147.7839-16-alexandru.ardelean@analog.com>
+Subject: [PATCH v4 02/19] spi: introduce spi_delay struct as "value + unit" &
+ spi_delay_exec()
+Date: Thu, 26 Sep 2019 13:51:30 +0300
+Message-ID: <20190926105147.7839-3-alexandru.ardelean@analog.com>
 References: <20190926105147.7839-1-alexandru.ardelean@analog.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-Cc: <jic23@kernel.org>, <broonie@kernel.org>, <f.fainelli@gmail.com>,
-        <linus.walleij@linaro.org>, <orsonzhai@gmail.com>,
-        <baolin.wang@linaro.org>, <zhang.lyra@gmail.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-To: <bcm-kernel-feedback-list@broadcom.com>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-tegra@vger.kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: f.fainelli@gmail.com, baolin.wang@linaro.org, zhang.lyra@gmail.com,
+ linus.walleij@linaro.org, broonie@kernel.org, orsonzhai@gmail.com,
+ Alexandru Ardelean <alexandru.ardelean@analog.com>, jic23@kernel.org
+To: <bcm-kernel-feedback-list@broadcom.com>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-tegra@vger.kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 In-Reply-To: <20190926105147.7839-1-alexandru.ardelean@analog.com>
-Sender: linux-kernel-owner@vger.kernel.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-This change implements CS control for setup, hold & inactive delays.
+There are plenty of delays that have been introduced in SPI core. Most of
+them are in micro-seconds, some need to be in nano-seconds, and some in
+clock-cycles.
 
-The `cs_setup` delay is completely new, and can help with cases where
-asserting the CS, also brings the device out of power-sleep, where there
-needs to be a longer (than usual), before transferring data.
+For some of these delays (related to transfers & CS timing) it may make
+sense to have a `spi_delay` struct that abstracts these a bit.
 
-The `cs_hold` time can overlap with the `delay` (or `delay_usecs`) from an
-SPI transfer. The main difference is that `cs_hold` implies that CS will be
-de-asserted.
+The important element of these delays [for unification] seems to be the
+`unit` of the delay.
+It looks like micro-seconds is good enough for most people, but every-once
+in a while, some delays seem to require other units of measurement.
 
-The `cs_inactive` delay does not have a clear use-case yet. It has been
-implemented mostly because the `spi_set_cs_timing()` function implements
-it. To some degree, this could overlap or replace `cs_change_delay`, but
-this will require more consideration/investigation in the future.
+This change adds the `spi_delay` struct & a `spi_delay_exec()` function
+that processes a `spi_delay` object/struct to execute the delay.
+It's a copy of the `cs_change_delay` mechanism, but without the default
+for 10 uS.
 
-All these delays have been added to the `spi_controller` struct, as they
-would typically be configured by calling `spi_set_cs_timing()` after an
-`spi_setup()` call.
-
-Software-mode for CS control, implies that the `set_cs_timing()` hook has
-not been provided for the `spi_controller` object.
+The clock-cycle delay unit is a bit special, as it needs to be bound to an
+`spi_transfer` object to execute.
 
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- drivers/spi/spi.c       | 45 ++++++++++++++++++++++++++++++++++++++++-
- include/linux/spi/spi.h |  5 +++++
- 2 files changed, 49 insertions(+), 1 deletion(-)
+ drivers/spi/spi.c       | 51 +++++++++++++++++++++++++++++++++++++++++
+ include/linux/spi/spi.h | 18 ++++++++++++---
+ 2 files changed, 66 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 122af2264bfe..61ef286f954a 100644
+index c90e02e6d62f..1883de8ffa82 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -775,6 +775,15 @@ int spi_register_board_info(struct spi_board_info const *info, unsigned n)
- 
- static void spi_set_cs(struct spi_device *spi, bool enable)
- {
-+	bool enable1 = enable;
-+
-+	if (!spi->controller->set_cs_timing) {
-+		if (enable1)
-+			spi_delay_exec(&spi->controller->cs_setup, NULL);
-+		else
-+			spi_delay_exec(&spi->controller->cs_hold, NULL);
-+	}
-+
- 	if (spi->mode & SPI_CS_HIGH)
- 		enable = !enable;
- 
-@@ -800,6 +809,11 @@ static void spi_set_cs(struct spi_device *spi, bool enable)
- 	} else if (spi->controller->set_cs) {
- 		spi->controller->set_cs(spi, !enable);
+@@ -1106,6 +1106,57 @@ static void _spi_transfer_delay_ns(u32 ns)
  	}
-+
-+	if (!spi->controller->set_cs_timing) {
-+		if (!enable1)
-+			spi_delay_exec(&spi->controller->cs_inactive, NULL);
-+	}
  }
  
- #ifdef CONFIG_HAS_DMA
-@@ -3156,10 +3170,39 @@ EXPORT_SYMBOL_GPL(spi_setup);
- int spi_set_cs_timing(struct spi_device *spi, struct spi_delay *setup,
- 		      struct spi_delay *hold, struct spi_delay *inactive)
- {
-+	size_t len;
++static int _spi_delay_to_ns(struct spi_delay *_delay, struct spi_transfer *xfer)
++{
++	u32 delay = _delay->value;
++	u32 unit = _delay->unit;
++	u32 hz;
 +
- 	if (spi->controller->set_cs_timing)
- 		return spi->controller->set_cs_timing(spi, setup, hold,
- 						      inactive);
--	return -ENOTSUPP;
++	if (!delay)
++		return 0;
 +
-+	if ((setup && setup->unit == SPI_DELAY_UNIT_SCK) ||
-+	    (hold && hold->unit == SPI_DELAY_UNIT_SCK) ||
-+	    (inactive && inactive->unit == SPI_DELAY_UNIT_SCK)) {
-+		dev_err(&spi->dev,
-+			"Clock-cycle delays for CS not supported in SW mode\n");
-+		return -ENOTSUPP;
++	switch (unit) {
++	case SPI_DELAY_UNIT_USECS:
++		delay *= 1000;
++		break;
++	case SPI_DELAY_UNIT_NSECS: /* nothing to do here */
++		break;
++	case SPI_DELAY_UNIT_SCK:
++		/* clock cycles need to be obtained from spi_transfer */
++		if (!xfer)
++			return -EINVAL;
++		/* if there is no effective speed know, then approximate
++		 * by underestimating with half the requested hz
++		 */
++		hz = xfer->effective_speed_hz ?: xfer->speed_hz / 2;
++		if (!hz)
++			return -EINVAL;
++		delay *= DIV_ROUND_UP(1000000000, hz);
++		break;
++	default:
++		return -EINVAL;
 +	}
 +
-+	len = sizeof(struct spi_delay);
++	return delay;
++}
 +
-+	/* copy delays to controller */
-+	if (setup)
-+		memcpy(&spi->controller->cs_setup, setup, len);
-+	else
-+		memset(&spi->controller->cs_setup, 0, len);
++int spi_delay_exec(struct spi_delay *_delay, struct spi_transfer *xfer)
++{
++	int delay;
 +
-+	if (hold)
-+		memcpy(&spi->controller->cs_hold, hold, len);
-+	else
-+		memset(&spi->controller->cs_hold, 0, len);
++	if (!_delay)
++		return -EINVAL;
 +
-+	if (inactive)
-+		memcpy(&spi->controller->cs_inactive, inactive, len);
-+	else
-+		memset(&spi->controller->cs_inactive, 0, len);
++	delay = _spi_delay_to_ns(_delay, xfer);
++	if (delay < 0)
++		return delay;
++
++	_spi_transfer_delay_ns(delay);
 +
 +	return 0;
- }
- EXPORT_SYMBOL_GPL(spi_set_cs_timing);
- 
++}
++EXPORT_SYMBOL_GPL(spi_delay_exec);
++
+ static void _spi_transfer_cs_change_delay(struct spi_message *msg,
+ 					  struct spi_transfer *xfer)
+ {
 diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 592e50aae998..66031c8d0093 100644
+index af4f265d0f67..c18cfa7cda35 100644
 --- a/include/linux/spi/spi.h
 +++ b/include/linux/spi/spi.h
-@@ -602,6 +602,11 @@ struct spi_controller {
- 	/* Optimized handlers for SPI memory-like operations. */
- 	const struct spi_controller_mem_ops *mem_ops;
+@@ -89,6 +89,21 @@ void spi_statistics_add_transfer_stats(struct spi_statistics *stats,
+ #define SPI_STATISTICS_INCREMENT_FIELD(stats, field)	\
+ 	SPI_STATISTICS_ADD_TO_FIELD(stats, field, 1)
  
-+	/* CS delays */
-+	struct spi_delay	cs_setup;
-+	struct spi_delay	cs_hold;
-+	struct spi_delay	cs_inactive;
++/**
++ * struct spi_delay - SPI delay information
++ * @value: Value for the delay
++ * @unit: Unit for the delay
++ */
++struct spi_delay {
++#define SPI_DELAY_UNIT_USECS	0
++#define SPI_DELAY_UNIT_NSECS	1
++#define SPI_DELAY_UNIT_SCK	2
++	u16	value;
++	u8	unit;
++};
 +
- 	/* gpio chip select */
- 	int			*cs_gpios;
- 	struct gpio_desc	**cs_gpiods;
++extern int spi_delay_exec(struct spi_delay *_delay, struct spi_transfer *xfer);
++
+ /**
+  * struct spi_device - Controller side proxy for an SPI slave device
+  * @dev: Driver model representation of the device.
+@@ -834,9 +849,6 @@ struct spi_transfer {
+ 	u16		delay_usecs;
+ 	u16		cs_change_delay;
+ 	u8		cs_change_delay_unit;
+-#define SPI_DELAY_UNIT_USECS	0
+-#define SPI_DELAY_UNIT_NSECS	1
+-#define SPI_DELAY_UNIT_SCK	2
+ 	u32		speed_hz;
+ 	u16		word_delay;
+ 
 -- 
 2.20.1

@@ -1,7 +1,7 @@
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v4 09/19] spi: use new `spi_transfer_delay_exec` helper where straightforward
-Date: Thu, 26 Sep 2019 13:51:37 +0300
-Message-ID: <20190926105147.7839-10-alexandru.ardelean@analog.com>
+Subject: [PATCH v4 13/19] spi: spidev: use new `delay` field for spi transfers
+Date: Thu, 26 Sep 2019 13:51:41 +0300
+Message-ID: <20190926105147.7839-14-alexandru.ardelean@analog.com>
 References: <20190926105147.7839-1-alexandru.ardelean@analog.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -20,287 +20,34 @@ In-Reply-To: <20190926105147.7839-1-alexandru.ardelean@analog.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-For many places in the spi drivers, using the new `spi_transfer_delay`
-helper is straightforward.
-It's just replacing:
-```
-  if (t->delay_usecs)
-     udelay(t->delay_usecs);
-```
-with `spi_transfer_delay(t)` which handles both `delay_usecs` and the new
-`delay` field.
+The `delay` field has type `struct spi_delay`.
+This allows users to specify nano-second or clock-cycle delays (if needed).
 
-This change replaces in all places (in the spi drivers)  where this change
-is simple.
+Converting to use `delay` is straightforward: it's just assigning the
+value to `delay.value` and hard-coding the `delay.unit` to
+`SPI_DELAY_UNIT_USECS`.
+
+This keeps the uapi for spidev un-changed. Changing it can be part of
+another changeset and discussion.
 
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- drivers/spi/spi-atmel.c         |  3 +--
- drivers/spi/spi-bcm63xx-hsspi.c |  3 +--
- drivers/spi/spi-cavium.c        |  3 +--
- drivers/spi/spi-fsl-dspi.c      |  3 +--
- drivers/spi/spi-fsl-espi.c      |  3 +--
- drivers/spi/spi-fsl-spi.c       |  3 +--
- drivers/spi/spi-mpc512x-psc.c   |  3 +--
- drivers/spi/spi-mpc52xx-psc.c   |  3 +--
- drivers/spi/spi-omap-100k.c     |  3 +--
- drivers/spi/spi-pl022.c         | 25 +++++++++++--------------
- drivers/spi/spi-sc18is602.c     |  3 +--
- drivers/spi/spi-sh-hspi.c       |  3 +--
- drivers/spi/spi-topcliff-pch.c  |  7 +------
- drivers/spi/spi-txx9.c          |  3 +--
- drivers/spi/spi-xcomm.c         |  3 +--
- 15 files changed, 25 insertions(+), 46 deletions(-)
+ drivers/spi/spidev.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index f04b92791515..2f7388e53b82 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -1389,8 +1389,7 @@ static int atmel_spi_one_transfer(struct spi_master *master,
- 		&& as->use_pdc)
- 		atmel_spi_dma_unmap_xfer(master, xfer);
- 
--	if (xfer->delay_usecs)
--		udelay(xfer->delay_usecs);
-+	spi_transfer_delay_exec(xfer);
- 
- 	if (xfer->cs_change) {
- 		if (list_is_last(&xfer->transfer_list,
-diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-index 9a06ffdb73b8..949b59b6449f 100644
---- a/drivers/spi/spi-bcm63xx-hsspi.c
-+++ b/drivers/spi/spi-bcm63xx-hsspi.c
-@@ -291,8 +291,7 @@ static int bcm63xx_hsspi_transfer_one(struct spi_master *master,
- 
- 		msg->actual_length += t->len;
- 
--		if (t->delay_usecs)
--			udelay(t->delay_usecs);
-+		spi_transfer_delay_exec(t);
- 
- 		if (t->cs_change)
- 			bcm63xx_hsspi_set_cs(bs, spi->chip_select, false);
-diff --git a/drivers/spi/spi-cavium.c b/drivers/spi/spi-cavium.c
-index 5aaf21582cb5..6854c3ce423b 100644
---- a/drivers/spi/spi-cavium.c
-+++ b/drivers/spi/spi-cavium.c
-@@ -119,8 +119,7 @@ static int octeon_spi_do_transfer(struct octeon_spi *p,
- 			*rx_buf++ = (u8)v;
- 		}
- 
--	if (xfer->delay_usecs)
--		udelay(xfer->delay_usecs);
-+	spi_transfer_delay_exec(xfer);
- 
- 	return xfer->len;
- }
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 53335ccc98f6..736071e2b9d8 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -752,8 +752,7 @@ static int dspi_transfer_one_message(struct spi_master *master,
- 			dspi->waitflags = 0;
- 		}
- 
--		if (transfer->delay_usecs)
--			udelay(transfer->delay_usecs);
-+		spi_transfer_delay_exec(transfer);
- 	}
- 
- out:
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index f20326714b9d..732bf3195917 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -427,8 +427,7 @@ static int fsl_espi_trans(struct spi_message *m, struct spi_transfer *trans)
- 
- 	ret = fsl_espi_bufs(spi, trans);
- 
--	if (trans->delay_usecs)
--		udelay(trans->delay_usecs);
-+	spi_transfer_delay_exec(trans);
- 
- 	return ret;
- }
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index 1d9b33aa1a3b..139ab57aec99 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -417,8 +417,7 @@ static int fsl_spi_do_one_msg(struct spi_master *master,
- 		}
- 		m->actual_length += t->len;
- 
--		if (t->delay_usecs)
--			udelay(t->delay_usecs);
-+		spi_transfer_delay_exec(t);
- 
- 		if (cs_change) {
- 			ndelay(nsecs);
-diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
-index a337b842ae8c..ea1b07953d38 100644
---- a/drivers/spi/spi-mpc512x-psc.c
-+++ b/drivers/spi/spi-mpc512x-psc.c
-@@ -311,8 +311,7 @@ static int mpc512x_psc_spi_msg_xfer(struct spi_master *master,
- 			break;
- 		m->actual_length += t->len;
- 
--		if (t->delay_usecs)
--			udelay(t->delay_usecs);
-+		spi_transfer_delay_exec(t);
- 
- 		if (cs_change)
- 			mpc512x_psc_spi_deactivate_cs(spi);
-diff --git a/drivers/spi/spi-mpc52xx-psc.c b/drivers/spi/spi-mpc52xx-psc.c
-index c7e478b9b586..17935e71b02f 100644
---- a/drivers/spi/spi-mpc52xx-psc.c
-+++ b/drivers/spi/spi-mpc52xx-psc.c
-@@ -234,8 +234,7 @@ static void mpc52xx_psc_spi_work(struct work_struct *work)
- 				break;
- 			m->actual_length += t->len;
- 
--			if (t->delay_usecs)
--				udelay(t->delay_usecs);
-+			spi_transfer_delay_exec(t);
- 
- 			if (cs_change)
- 				mpc52xx_psc_spi_deactivate_cs(spi);
-diff --git a/drivers/spi/spi-omap-100k.c b/drivers/spi/spi-omap-100k.c
-index b955ca8796d2..89608eb55f1f 100644
---- a/drivers/spi/spi-omap-100k.c
-+++ b/drivers/spi/spi-omap-100k.c
-@@ -321,8 +321,7 @@ static int omap1_spi100k_transfer_one_message(struct spi_master *master,
- 			}
- 		}
- 
--		if (t->delay_usecs)
--			udelay(t->delay_usecs);
-+		spi_transfer_delay_exec(t);
- 
- 		/* ignore the "leave it on after last xfer" hint */
- 
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 7fedea67159c..3024c30e7f2e 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -485,12 +485,11 @@ static void giveback(struct pl022 *pl022)
- 					struct spi_transfer, transfer_list);
- 
- 	/* Delay if requested before any change in chip select */
--	if (last_transfer->delay_usecs)
--		/*
--		 * FIXME: This runs in interrupt context.
--		 * Is this really smart?
--		 */
--		udelay(last_transfer->delay_usecs);
-+	/*
-+	 * FIXME: This runs in interrupt context.
-+	 * Is this really smart?
-+	 */
-+	spi_transfer_delay_exec(last_transfer);
- 
- 	if (!last_transfer->cs_change) {
- 		struct spi_message *next_msg;
-@@ -1401,12 +1400,11 @@ static void pump_transfers(unsigned long data)
- 		previous = list_entry(transfer->transfer_list.prev,
- 					struct spi_transfer,
- 					transfer_list);
--		if (previous->delay_usecs)
--			/*
--			 * FIXME: This runs in interrupt context.
--			 * Is this really smart?
--			 */
--			udelay(previous->delay_usecs);
-+		/*
-+		 * FIXME: This runs in interrupt context.
-+		 * Is this really smart?
-+		 */
-+		spi_transfer_delay_exec(previous);
- 
- 		/* Reselect chip select only if cs_change was requested */
- 		if (previous->cs_change)
-@@ -1520,8 +1518,7 @@ static void do_polling_transfer(struct pl022 *pl022)
- 			previous =
- 			    list_entry(transfer->transfer_list.prev,
- 				       struct spi_transfer, transfer_list);
--			if (previous->delay_usecs)
--				udelay(previous->delay_usecs);
-+			spi_transfer_delay_exec(previous);
- 			if (previous->cs_change)
- 				pl022_cs_control(pl022, SSP_CHIP_SELECT);
- 		} else {
-diff --git a/drivers/spi/spi-sc18is602.c b/drivers/spi/spi-sc18is602.c
-index 11acddc83304..5497eeb3bf3e 100644
---- a/drivers/spi/spi-sc18is602.c
-+++ b/drivers/spi/spi-sc18is602.c
-@@ -211,8 +211,7 @@ static int sc18is602_transfer_one(struct spi_master *master,
- 		}
- 		status = 0;
- 
--		if (t->delay_usecs)
--			udelay(t->delay_usecs);
-+		spi_transfer_delay_exec(t);
- 	}
- 	m->status = status;
- 	spi_finalize_current_message(master);
-diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
-index 7f73f91d412a..a62034e2a7cb 100644
---- a/drivers/spi/spi-sh-hspi.c
-+++ b/drivers/spi/spi-sh-hspi.c
-@@ -190,8 +190,7 @@ static int hspi_transfer_one_message(struct spi_controller *ctlr,
- 
- 		msg->actual_length += t->len;
- 
--		if (t->delay_usecs)
--			udelay(t->delay_usecs);
-+		spi_transfer_delay_exec(t);
- 
- 		if (cs_change) {
- 			ndelay(nsecs);
-diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index f88cbb94ce12..223353fa2d8a 100644
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1229,12 +1229,7 @@ static void pch_spi_process_messages(struct work_struct *pwork)
- 			"%s:data->current_msg->actual_length=%d\n",
- 			__func__, data->current_msg->actual_length);
- 
--		/* check for delay */
--		if (data->cur_trans->delay_usecs) {
--			dev_dbg(&data->master->dev, "%s:delay in usec=%d\n",
--				__func__, data->cur_trans->delay_usecs);
--			udelay(data->cur_trans->delay_usecs);
--		}
-+		spi_transfer_delay_exec(data->cur_trans);
- 
- 		spin_lock(&data->lock);
- 
-diff --git a/drivers/spi/spi-txx9.c b/drivers/spi/spi-txx9.c
-index 51759d3fd45f..83daaa597acc 100644
---- a/drivers/spi/spi-txx9.c
-+++ b/drivers/spi/spi-txx9.c
-@@ -248,8 +248,7 @@ static void txx9spi_work_one(struct txx9spi *c, struct spi_message *m)
- 			len -= count * wsize;
- 		}
- 		m->actual_length += t->len;
--		if (t->delay_usecs)
--			udelay(t->delay_usecs);
-+		spi_transfer_delay_exec(t);
- 
- 		if (!cs_change)
- 			continue;
-diff --git a/drivers/spi/spi-xcomm.c b/drivers/spi/spi-xcomm.c
-index a3496c46cc1b..1d9b3f03d986 100644
---- a/drivers/spi/spi-xcomm.c
-+++ b/drivers/spi/spi-xcomm.c
-@@ -188,8 +188,7 @@ static int spi_xcomm_transfer_one(struct spi_master *master,
- 		}
- 		status = 0;
- 
--		if (t->delay_usecs)
--			udelay(t->delay_usecs);
-+		spi_transfer_delay_exec(t);
- 
- 		is_first = false;
- 	}
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 495319c2fa11..6b6afd27f4a1 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -265,7 +265,8 @@ static int spidev_message(struct spidev_data *spidev,
+ 		k_tmp->tx_nbits = u_tmp->tx_nbits;
+ 		k_tmp->rx_nbits = u_tmp->rx_nbits;
+ 		k_tmp->bits_per_word = u_tmp->bits_per_word;
+-		k_tmp->delay_usecs = u_tmp->delay_usecs;
++		k_tmp->delay.value = u_tmp->delay_usecs;
++		k_tmp->delay.unit = SPI_DELAY_UNIT_USECS;
+ 		k_tmp->speed_hz = u_tmp->speed_hz;
+ 		k_tmp->word_delay.value = u_tmp->word_delay_usecs;
+ 		k_tmp->word_delay.unit = SPI_DELAY_UNIT_USECS;
 -- 
 2.20.1

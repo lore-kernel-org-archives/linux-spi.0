@@ -1,68 +1,66 @@
-From: Lukasz Majewski <lukma@denx.de>
-Subject: Re: [PATCH v2 1/2] spi: Add call to spi_slave_abort() function when
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH 1/2] spi: Add call to spi_slave_abort() function when
  spidev driver is released
-Date: Wed, 25 Sep 2019 21:57:39 +0200
-Message-ID: <20190925215739.6692ee89@jawa>
-References: <20190924110547.14770-1-lukma@denx.de>
-        <20190925091143.15468-1-lukma@denx.de>
-        <20190925091143.15468-2-lukma@denx.de>
-        <20190925164517.GI2036@sirena.org.uk>
+Date: Thu, 26 Sep 2019 08:52:48 +0200
+Message-ID: <CAMuHMdXseZppE74D8XW=5ZWNNNLXZFLTSiqqe_qoZ8C1rAFQSg@mail.gmail.com>
+References: <20190924110547.14770-1-lukma@denx.de> <20190924110547.14770-2-lukma@denx.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/CKOQSV_mYnHZAmlMvZlX5hf"; protocol="application/pgp-signature"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        krzk@kernel.org
-To: Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>
+To: Lukasz Majewski <lukma@denx.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190925164517.GI2036@sirena.org.uk>
+In-Reply-To: <20190924110547.14770-2-lukma@denx.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---Sig_/CKOQSV_mYnHZAmlMvZlX5hf
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Hi Lukasz,
 
-Hi Mark,
+On Thu, Sep 26, 2019 at 3:33 AM Lukasz Majewski <lukma@denx.de> wrote:
+> This change is necessary for spidev devices (e.g. /dev/spidev3.0) working
+> in the slave mode (like NXP's dspi driver for Vybrid SoC).
+>
+> When SPI HW works in this mode - the master is responsible for providing
+> CS and CLK signals. However, when some fault happens - like for example
+> distortion on SPI lines - the SPI Linux driver needs a chance to recover
+> from this abnormal situation and prepare itself for next (correct)
+> transmission.
+>
+> This change doesn't pose any threat on drivers working in master mode as
+> spi_slave_abort() function checks if SPI slave mode is supported.
+>
+> Signed-off-by: Lukasz Majewski <lukma@denx.de>
 
-> On Wed, Sep 25, 2019 at 11:11:42AM +0200, Lukasz Majewski wrote:
-> > This change is necessary for spidev devices (e.g. /dev/spidev3.0)
-> > working in the slave mode (like NXP's dspi driver for Vybrid SoC). =20
->=20
-> Please do not submit new versions of already applied patches, please
-> submit incremental updates to the existing code.  Modifying existing
-> commits creates problems for other users building on top of those
-> commits so it's best practice to only change pubished git commits if
-> absolutely essential.
->=20
-> That said I'll handle this this one time.
+Thanks for your patch!
 
-Thanks for help (and patience).
+Yesterday I saw this appear on spi/for-next, but I couldn't find the
+email in my mbox.  Today it has arrived. Looks like gmail had some troubles
+("Delivered after 138401 seconds", ugh).
 
+> --- a/drivers/spi/spidev.c
+> +++ b/drivers/spi/spidev.c
+> @@ -627,6 +627,7 @@ static int spidev_release(struct inode *inode, struct file *filp)
+>                 if (dofree)
+>                         kfree(spidev);
+>         }
+> +       spi_slave_abort(spidev->spi);
 
-Best regards,
+Looks good to me.  Just wondering if this should be done for the last user only,
+i.e. in the "if" block above, like resetting speed_hz?
 
-Lukasz Majewski
+>         mutex_unlock(&device_list_lock);
+>
+>         return 0;
 
---
+Gr{oetje,eeting}s,
 
-DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+                        Geert
 
---Sig_/CKOQSV_mYnHZAmlMvZlX5hf
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAl2LxrMACgkQAR8vZIA0
-zr38owf+NfpYq4idAYaz+acP1zbwiI6XJ+N6XPIdsxu6mT8UYz0fEfStkeuiCr+J
-YTYcu5Krtr7nWv12Dgh+kDTCDqp3Pn9I+mRwOxEz2O6Rr9GqcE17LX8sFeBWToRW
-3MT0phpVUKPwO3jqke9uoSItQ66we4UjGArhgiq5c14GYWSJl0TTwRyDwpkXKB0X
-TlkAE/8H5Hld5ioXglA056fnYcXXz7sPYXUMmw8cm0jGwjzLTAjWs/WzI8S89TQF
-Y3S+QVnskhA+r+XoMFZo6wpelqZQD3RULU6K/4ryoUYyiN8Buo1XGrVZBOJvUpIY
-db8l3hi11iraVVU2bFilUdc59nofBw==
-=M3+b
------END PGP SIGNATURE-----
-
---Sig_/CKOQSV_mYnHZAmlMvZlX5hf--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

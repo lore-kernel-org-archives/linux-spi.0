@@ -1,120 +1,115 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: spi: Add call to spi_slave_abort() function when spidev driver is released
-Date: Thu, 26 Sep 2019 12:32:45 +0200
-Message-ID: <CAMuHMdVBrKnA3TJnOEG0G0FVKf7VwQUvLzkmJc7DAX4kvHYWYQ@mail.gmail.com>
-References: <f4db4595-7673-f2ae-4222-cbb9c2d771f9@canonical.com> <20190926121438.655f1f10@jawa>
+From: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH v4 00/19] spi: introduce `struct spi_delay` data-type
+Date: Thu, 26 Sep 2019 13:51:28 +0300
+Message-ID: <20190926105147.7839-1-alexandru.ardelean@analog.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Colin Ian King <colin.king@canonical.com>,
-        Mark Brown <broonie@kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Lukasz Majewski <lukma@denx.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190926121438.655f1f10@jawa>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: f.fainelli@gmail.com, baolin.wang@linaro.org, zhang.lyra@gmail.com,
+ linus.walleij@linaro.org, broonie@kernel.org, orsonzhai@gmail.com,
+ Alexandru Ardelean <alexandru.ardelean@analog.com>, jic23@kernel.org
+To: <bcm-kernel-feedback-list@broadcom.com>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-tegra@vger.kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Lukasz,
+Initially, I started this patchset thinking: "we need a new delay for
+something-something" (in case someone is curios, we needed a CS-hold-time
+when CS is asserted, because the CS wakes a chip from sleep-mode).
 
-On Thu, Sep 26, 2019 at 12:14 PM Lukasz Majewski <lukma@denx.de> wrote:
-> > Static analysis with Coverity has detected an potential dereference
-> > of a free'd object with commit:
-> >
-> > commit 9f918a728cf86b2757b6a7025e1f46824bfe3155
-> > Author: Lukasz Majewski <lukma@denx.de>
-> > Date:   Wed Sep 25 11:11:42 2019 +0200
-> >
-> >     spi: Add call to spi_slave_abort() function when spidev driver is
-> > released
-> >
-> > In spidev_release() in drivers/spi/spidev.c the analysis is as
-> > follows:
-> >
-> > 600static int spidev_release(struct inode *inode, struct file *filp)
-> > 601{
-> > 602        struct spidev_data      *spidev;
-> > 603
-> > 604        mutex_lock(&device_list_lock);
-> >
-> >    1. alias: Assigning: spidev = filp->private_data. Now both point to
-> > the same storage.
-> >
-> > 605        spidev = filp->private_data;
-> > 606        filp->private_data = NULL;
-> > 607
-> > 608        /* last close? */
-> > 609        spidev->users--;
-> >
-> >    2. Condition !spidev->users, taking true branch.
-> >
-> > 610        if (!spidev->users) {
-> > 611                int             dofree;
-> > 612
-> > 613                kfree(spidev->tx_buffer);
-> > 614                spidev->tx_buffer = NULL;
-> > 615
-> > 616                kfree(spidev->rx_buffer);
-> > 617                spidev->rx_buffer = NULL;
-> > 618
-> > 619                spin_lock_irq(&spidev->spi_lock);
-> >
-> >    3. Condition spidev->spi, taking false branch.
-> >
-> > 620                if (spidev->spi)
-> > 621                        spidev->speed_hz =
-> > spidev->spi->max_speed_hz; 622
-> > 623                /* ... after we unbound from the underlying
-> > device? */
-> >
-> >    4. Condition spidev->spi == NULL, taking true branch.
-> >
-> > 624                dofree = (spidev->spi == NULL);
-> > 625                spin_unlock_irq(&spidev->spi_lock);
-> > 626
-> >
-> >    5. Condition dofree, taking true branch.
-> >
-> > 627                if (dofree)
-> >
-> >    6. freed_arg: kfree frees spidev.
-> >
-> > 628                        kfree(spidev);
-> > 629        }
-> > 630#ifdef CONFIG_SPI_SLAVE
-> >
-> >    CID 89726 (#1 of 1): Read from pointer after free (USE_AFTER_FREE)
-> > 7. deref_after_free: Dereferencing freed pointer spidev.
-> >
-> > 631        spi_slave_abort(spidev->spi);
-> > 632#endif
-> > 633        mutex_unlock(&device_list_lock);
-> > 634
-> > 635        return 0;
-> > 636}
-> >
-> > The call to spi_slave_abort() on spidev is reading an earlier kfree'd
-> > spidev.
->
-> Thanks for spotting this issue - indeed there is a possibility to use
-> spidev after being kfree'd.
+Then I added the delay, and felt a bit dirty-inside about adding a new one
+(just like that), and decided to look at maybe cleaning things up a bit,
+and a few days/weeks later, I got here.
 
-Worse, this makes me realize spidev->spi may be a NULL pointer, which
-will be dereferenced by spi_slave_abort(), so caching it before the
-call to kfree() won't work.
+It's based on top of Jonathan's `iio/togreg` branch which also includes the
+ADIS driver library changes for `cs_change_delay`.
 
-> However, Geert (CC'ed) had some questions about placement of this
-> function call, so I will wait with providing fix until he replies.
+The current v4 tries to be a complete change as possible about converting
+all delays to the `struct delay` data-type; at least in the scope of the
+SPI subsystem. Many external users of the SPI subsystem use the
+`delay_usecs` field to specify delays for transfers; which is why this
+field is still kept temporarily for backwards compatibility until all other
+delays are switched to `delay`.
 
-Seems like this needs more thought...
+Thanks
+Alex
 
-Gr{oetje,eeting}s,
+Changelog v3 -> v4:
+* re-unify all `spi_delay` changes into a single big series spanning SPI &
+  IIO subsystems; patches are based on top of IIO, so patch
+  `drivers/iio/imu/adis.c` does not apply on top of SPI/for-next tree
 
-                        Geert
+Changelog v2 -> v3:
+* squash patches 3 & 4 into a single patch; otherwise the kernel is in
+  broken state between those 2 patches
+
+Changelog v1 -> v2:
+* split away from the RFC patchset, which aims to be a broader explanation
+  for this changeset; parts of v1 are not 100% defined yet, and may require
+  some discussion and refinement.
+
+
+Alexandru Ardelean (19):
+  spi: move `cs_change_delay` backwards compat logic outside switch
+  spi: introduce spi_delay struct as "value + unit" &  spi_delay_exec()
+  spi: make `cs_change_delay` the first user of the `spi_delay` logic
+  spi: sprd: convert transfer word delay to spi_delay struct
+  spi: orion: use new `word_delay` field for SPI transfers
+  spi: spidev: use new `word_delay` field for spi transfers
+  spi: core,atmel: convert `word_delay_usecs` -> `word_delay` for
+    spi_device
+  spi: introduce `delay` field for `spi_transfer` +
+    spi_transfer_delay_exec()
+  spi: use new `spi_transfer_delay_exec` helper where straightforward
+  spi: tegra114: use `spi_transfer_delay_exec` helper
+  spi: tegra20-sflash: use to new `spi_transfer_delay_exec`
+  spi: spi-loopback-test: use new `delay` field
+  spi: spidev: use new `delay` field for spi transfers
+  spi: tegra114: change format for `spi_set_cs_timing()` function
+  spi: implement SW control for CS times
+  spi: spi-fsl-espi: convert transfer delay to `spi_delay` format
+  spi: spi-falcon: extend warning to `delay` as well
+  spi: bcm63xx: extend error condition to `delay` as well
+  spi: spi-axi: extend support for the `delay` field
+
+ drivers/iio/imu/adis.c           |  24 ++---
+ drivers/spi/spi-atmel.c          |  29 +++++-
+ drivers/spi/spi-axi-spi-engine.c |  16 +++-
+ drivers/spi/spi-bcm63xx-hsspi.c  |   3 +-
+ drivers/spi/spi-bcm63xx.c        |   2 +-
+ drivers/spi/spi-cavium.c         |   3 +-
+ drivers/spi/spi-falcon.c         |   2 +-
+ drivers/spi/spi-fsl-dspi.c       |   3 +-
+ drivers/spi/spi-fsl-espi.c       |  19 +++-
+ drivers/spi/spi-fsl-spi.c        |   3 +-
+ drivers/spi/spi-loopback-test.c  |  12 ++-
+ drivers/spi/spi-mpc512x-psc.c    |   3 +-
+ drivers/spi/spi-mpc52xx-psc.c    |   3 +-
+ drivers/spi/spi-omap-100k.c      |   3 +-
+ drivers/spi/spi-orion.c          |   6 +-
+ drivers/spi/spi-pl022.c          |  25 +++--
+ drivers/spi/spi-sc18is602.c      |   3 +-
+ drivers/spi/spi-sh-hspi.c        |   3 +-
+ drivers/spi/spi-sprd.c           |  15 ++-
+ drivers/spi/spi-tegra114.c       |  39 ++++----
+ drivers/spi/spi-tegra20-sflash.c |   5 +-
+ drivers/spi/spi-topcliff-pch.c   |   7 +-
+ drivers/spi/spi-txx9.c           |   3 +-
+ drivers/spi/spi-xcomm.c          |   3 +-
+ drivers/spi/spi.c                | 158 +++++++++++++++++++++++++------
+ drivers/spi/spidev.c             |   6 +-
+ include/linux/spi/spi.h          |  66 +++++++++----
+ 27 files changed, 323 insertions(+), 141 deletions(-)
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+2.20.1

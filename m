@@ -1,115 +1,95 @@
-From: Lukasz Majewski <lukma@denx.de>
-Subject: Re: [PATCH 1/2] spi: Add call to spi_slave_abort() function when
- spidev driver is released
-Date: Thu, 26 Sep 2019 09:59:41 +0200
-Message-ID: <20190926095941.0615f335@jawa>
-References: <20190924110547.14770-1-lukma@denx.de>
-        <20190924110547.14770-2-lukma@denx.de>
-        <CAMuHMdXseZppE74D8XW=5ZWNNNLXZFLTSiqqe_qoZ8C1rAFQSg@mail.gmail.com>
+From: Colin Ian King <colin.king@canonical.com>
+Subject: re: spi: Add call to spi_slave_abort() function when spidev driver is
+ released
+Date: Thu, 26 Sep 2019 11:00:19 +0100
+Message-ID: <f4db4595-7673-f2ae-4222-cbb9c2d771f9@canonical.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/5s0ODXtpIoabspOUcWPgLRh"; protocol="application/pgp-signature"
-Cc: Mark Brown <broonie@kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Lukasz Majewski <lukma@denx.de>, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAMuHMdXseZppE74D8XW=5ZWNNNLXZFLTSiqqe_qoZ8C1rAFQSg@mail.gmail.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---Sig_/5s0ODXtpIoabspOUcWPgLRh
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Hi,
 
-Hi Geert,
+Static analysis with Coverity has detected an potential dereference of a
+free'd object with commit:
 
-> Hi Lukasz,
->=20
-> On Thu, Sep 26, 2019 at 3:33 AM Lukasz Majewski <lukma@denx.de> wrote:
-> > This change is necessary for spidev devices (e.g. /dev/spidev3.0)
-> > working in the slave mode (like NXP's dspi driver for Vybrid SoC).
-> >
-> > When SPI HW works in this mode - the master is responsible for
-> > providing CS and CLK signals. However, when some fault happens -
-> > like for example distortion on SPI lines - the SPI Linux driver
-> > needs a chance to recover from this abnormal situation and prepare
-> > itself for next (correct) transmission.
-> >
-> > This change doesn't pose any threat on drivers working in master
-> > mode as spi_slave_abort() function checks if SPI slave mode is
-> > supported.
-> >
-> > Signed-off-by: Lukasz Majewski <lukma@denx.de> =20
->=20
-> Thanks for your patch!
->=20
-> Yesterday I saw this appear on spi/for-next, but I couldn't find the
-> email in my mbox.  Today it has arrived. Looks like gmail had some
-> troubles ("Delivered after 138401 seconds", ugh).
+commit 9f918a728cf86b2757b6a7025e1f46824bfe3155
+Author: Lukasz Majewski <lukma@denx.de>
+Date:   Wed Sep 25 11:11:42 2019 +0200
 
-I've already sent v2 of this patch, as Intel Linux test setup spot the
-error with lack of #define guards.
+    spi: Add call to spi_slave_abort() function when spidev driver is
+released
 
->=20
-> > --- a/drivers/spi/spidev.c
-> > +++ b/drivers/spi/spidev.c
-> > @@ -627,6 +627,7 @@ static int spidev_release(struct inode *inode,
-> > struct file *filp) if (dofree)
-> >                         kfree(spidev);
-> >         }
-> > +       spi_slave_abort(spidev->spi); =20
->=20
-> Looks good to me.  Just wondering if this should be done for the last
-> user only, i.e. in the "if" block above, like resetting speed_hz?
+In spidev_release() in drivers/spi/spidev.c the analysis is as follows:
 
-I also thought about this. However, from my use case the user must end
-the transmission with CTRL+C on his user space program, which in turn
-communicate via SPI with /dev/spidev3.0.
+600static int spidev_release(struct inode *inode, struct file *filp)
+601{
+602        struct spidev_data      *spidev;
+603
+604        mutex_lock(&device_list_lock);
 
-There might be many (potential) programs using the /dev/spidev3.0 at the
-same time, so the usage count may be not one.
+   1. alias: Assigning: spidev = filp->private_data. Now both point to
+the same storage.
 
-For the above reason I've moved it outside the above if().
+605        spidev = filp->private_data;
+606        filp->private_data = NULL;
+607
+608        /* last close? */
+609        spidev->users--;
 
->=20
-> >         mutex_unlock(&device_list_lock);
-> >
-> >         return 0; =20
->=20
-> Gr{oetje,eeting}s,
->=20
->                         Geert
->=20
+   2. Condition !spidev->users, taking true branch.
 
+610        if (!spidev->users) {
+611                int             dofree;
+612
+613                kfree(spidev->tx_buffer);
+614                spidev->tx_buffer = NULL;
+615
+616                kfree(spidev->rx_buffer);
+617                spidev->rx_buffer = NULL;
+618
+619                spin_lock_irq(&spidev->spi_lock);
 
+   3. Condition spidev->spi, taking false branch.
 
+620                if (spidev->spi)
+621                        spidev->speed_hz = spidev->spi->max_speed_hz;
+622
+623                /* ... after we unbound from the underlying device? */
 
-Best regards,
+   4. Condition spidev->spi == NULL, taking true branch.
 
-Lukasz Majewski
+624                dofree = (spidev->spi == NULL);
+625                spin_unlock_irq(&spidev->spi_lock);
+626
 
---
+   5. Condition dofree, taking true branch.
 
-DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
+627                if (dofree)
 
---Sig_/5s0ODXtpIoabspOUcWPgLRh
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+   6. freed_arg: kfree frees spidev.
 
------BEGIN PGP SIGNATURE-----
+628                        kfree(spidev);
+629        }
+630#ifdef CONFIG_SPI_SLAVE
 
-iQEzBAEBCAAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAl2Mb+0ACgkQAR8vZIA0
-zr18ogf+Nkm6YALkd0PZS43sKVKplV00GjN15f39tfe1iYqHDzToQk2HTKQgJYFJ
-q713F216HIdJTpNDTpc+EZkMARIlPAAse5HphE0WIUUk41ZW6Gi038tJtzrgJFRF
-xkgQSVPFy3mIfheTBenYzYgvF0CKCDl0hOScBsmXoYQ4A6doQXZoniENZp1f3ybc
-vb+ruj9PjepQyp/jHjYO7KiQC9nPY+azM3qkp8AHkYXY9iN3SnIrFg5hqCE2zSnZ
-NyCgt+380i6WlXpLua0oxvp5ypxSbufWFkKjIo0mjU67A/cgWe1WUZWCIkrG+J+y
-Y/g3fKvcaeW6LwWO5Jc67yBQ3HQm2g==
-=cdef
------END PGP SIGNATURE-----
+   CID 89726 (#1 of 1): Read from pointer after free (USE_AFTER_FREE)
+7. deref_after_free: Dereferencing freed pointer spidev.
 
---Sig_/5s0ODXtpIoabspOUcWPgLRh--
+631        spi_slave_abort(spidev->spi);
+632#endif
+633        mutex_unlock(&device_list_lock);
+634
+635        return 0;
+636}
+
+The call to spi_slave_abort() on spidev is reading an earlier kfree'd
+spidev.
+
+Colin

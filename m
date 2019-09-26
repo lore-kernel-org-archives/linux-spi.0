@@ -1,7 +1,7 @@
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v4 11/19] spi: tegra20-sflash: use to new `spi_transfer_delay_exec`
-Date: Thu, 26 Sep 2019 13:51:39 +0300
-Message-ID: <20190926105147.7839-12-alexandru.ardelean@analog.com>
+Subject: [PATCH v4 14/19] spi: tegra114: change format for `spi_set_cs_timing()` function
+Date: Thu, 26 Sep 2019 13:51:42 +0300
+Message-ID: <20190926105147.7839-15-alexandru.ardelean@analog.com>
 References: <20190926105147.7839-1-alexandru.ardelean@analog.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -20,36 +20,124 @@ In-Reply-To: <20190926105147.7839-1-alexandru.ardelean@analog.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This conversion to the spi_transfer_delay_exec() helper is not
-straightforward, as it seems that when a delay is present, the controller
-issues a command, and then a delay is followed.
+The initial version of `spi_set_cs_timing()` was implemented with
+consideration only for clock-cycles as delay.
 
-This change adds support for the new `delay` field which is of type
-`spi_delay` and keeps backwards compatibility with the old `delay_usecs`
-field.
+For cases like `CS setup` time, it's sometimes needed that micro-seconds
+(or nano-seconds) are required, or sometimes even longer delays, for cases
+where the device needs a little longer to start transferring that after CS
+is asserted.
 
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
 ---
- drivers/spi/spi-tegra20-sflash.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi-tegra114.c | 22 ++++++++++++++++++++--
+ drivers/spi/spi.c          | 16 ++++++++++------
+ include/linux/spi/spi.h    |  9 ++++++---
+ 3 files changed, 36 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
-index cd714a4f52c6..ff1933e55830 100644
---- a/drivers/spi/spi-tegra20-sflash.c
-+++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -341,10 +341,11 @@ static int tegra_sflash_transfer_one_message(struct spi_master *master,
- 			goto exit;
- 		}
- 		msg->actual_length += xfer->len;
--		if (xfer->cs_change && xfer->delay_usecs) {
-+		if (xfer->cs_change &&
-+		    (xfer->delay_usecs || xfer->delay.value)) {
- 			tegra_sflash_writel(tsd, tsd->def_command_reg,
- 					SPI_COMMAND);
--			udelay(xfer->delay_usecs);
-+			spi_transfer_delay_exec(xfer);
- 		}
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index 8133dc49d34f..e6a450d9b4f0 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -723,15 +723,31 @@ static void tegra_spi_deinit_dma_param(struct tegra_spi_data *tspi,
+ 	dma_release_channel(dma_chan);
+ }
+ 
+-static void tegra_spi_set_hw_cs_timing(struct spi_device *spi, u8 setup_dly,
+-				       u8 hold_dly, u8 inactive_dly)
++static int tegra_spi_set_hw_cs_timing(struct spi_device *spi,
++				      struct spi_delay *setup,
++				      struct spi_delay *hold,
++				      struct spi_delay *inactive)
+ {
+ 	struct tegra_spi_data *tspi = spi_master_get_devdata(spi->master);
++	u8 setup_dly, hold_dly, inactive_dly;
+ 	u32 setup_hold;
+ 	u32 spi_cs_timing;
+ 	u32 inactive_cycles;
+ 	u8 cs_state;
+ 
++	if ((setup && setup->unit != SPI_DELAY_UNIT_SCK) ||
++	    (hold && hold->unit != SPI_DELAY_UNIT_SCK) ||
++	    (inactive && inactive->unit != SPI_DELAY_UNIT_SCK)) {
++		dev_err(&spi->dev,
++			"Invalid delay unit %d, should be SPI_DELAY_UNIT_SCK\n",
++			SPI_DELAY_UNIT_SCK);
++		return -EINVAL;
++	}
++
++	setup_dly = setup ? setup->value : 0;
++	hold_dly = hold ? hold->value : 0;
++	inactive_dly = inactive ? inactive->value : 0;
++
+ 	setup_dly = min_t(u8, setup_dly, MAX_SETUP_HOLD_CYCLES);
+ 	hold_dly = min_t(u8, hold_dly, MAX_SETUP_HOLD_CYCLES);
+ 	if (setup_dly && hold_dly) {
+@@ -758,6 +774,8 @@ static void tegra_spi_set_hw_cs_timing(struct spi_device *spi, u8 setup_dly,
+ 		tspi->spi_cs_timing2 = spi_cs_timing;
+ 		tegra_spi_writel(tspi, spi_cs_timing, SPI_CS_TIMING2);
  	}
- 	ret = 0;
++
++	return 0;
+ }
+ 
+ static u32 tegra_spi_setup_transfer_one(struct spi_device *spi,
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 489eb64d9ee0..122af2264bfe 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -3147,15 +3147,19 @@ EXPORT_SYMBOL_GPL(spi_setup);
+ /**
+  * spi_set_cs_timing - configure CS setup, hold, and inactive delays
+  * @spi: the device that requires specific CS timing configuration
+- * @setup: CS setup time in terms of clock count
+- * @hold: CS hold time in terms of clock count
+- * @inactive_dly: CS inactive delay between transfers in terms of clock count
++ * @setup: CS setup time specified via @spi_delay
++ * @hold: CS hold time specified via @spi_delay
++ * @inactive: CS inactive delay between transfers specified via @spi_delay
++ *
++ * Return: zero on success, else a negative error code.
+  */
+-void spi_set_cs_timing(struct spi_device *spi, u8 setup, u8 hold,
+-		       u8 inactive_dly)
++int spi_set_cs_timing(struct spi_device *spi, struct spi_delay *setup,
++		      struct spi_delay *hold, struct spi_delay *inactive)
+ {
+ 	if (spi->controller->set_cs_timing)
+-		spi->controller->set_cs_timing(spi, setup, hold, inactive_dly);
++		return spi->controller->set_cs_timing(spi, setup, hold,
++						      inactive);
++	return -ENOTSUPP;
+ }
+ EXPORT_SYMBOL_GPL(spi_set_cs_timing);
+ 
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 2cee9ac35737..592e50aae998 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -517,8 +517,8 @@ struct spi_controller {
+ 	 * to configure specific CS timing through spi_set_cs_timing() after
+ 	 * spi_setup().
+ 	 */
+-	void (*set_cs_timing)(struct spi_device *spi, u8 setup_clk_cycles,
+-			      u8 hold_clk_cycles, u8 inactive_clk_cycles);
++	int (*set_cs_timing)(struct spi_device *spi, struct spi_delay *setup,
++			     struct spi_delay *hold, struct spi_delay *inactive);
+ 
+ 	/* bidirectional bulk transfers
+ 	 *
+@@ -1007,7 +1007,10 @@ static inline void spi_message_free(struct spi_message *m)
+ 	kfree(m);
+ }
+ 
+-extern void spi_set_cs_timing(struct spi_device *spi, u8 setup, u8 hold, u8 inactive_dly);
++extern int spi_set_cs_timing(struct spi_device *spi,
++			     struct spi_delay *setup,
++			     struct spi_delay *hold,
++			     struct spi_delay *inactive);
+ 
+ extern int spi_setup(struct spi_device *spi);
+ extern int spi_async(struct spi_device *spi, struct spi_message *message);
 -- 
 2.20.1

@@ -1,97 +1,80 @@
-From: Lukasz Majewski <lukma@denx.de>
-Subject: Re: spi: Add call to spi_slave_abort() function when spidev driver
- is released
-Date: Fri, 27 Sep 2019 00:38:49 +0200
-Message-ID: <20190927003849.0c9e4335@jawa>
-References: <f4db4595-7673-f2ae-4222-cbb9c2d771f9@canonical.com>
-        <20190926121438.655f1f10@jawa>
-        <CAMuHMdVBrKnA3TJnOEG0G0FVKf7VwQUvLzkmJc7DAX4kvHYWYQ@mail.gmail.com>
-        <20190926144342.327a3c66@jawa>
-        <CAMuHMdXm+vUB4iRTsTq64Kg2KC2p7AA1TwFgjc7FuCeiS9EG=Q@mail.gmail.com>
-        <20190926160645.0a2623fa@jawa>
-        <20190926151752.GU2036@sirena.org.uk>
+From: Robin Gong <yibin.gong@nxp.com>
+Subject: RE: [PATCH v5 11/15] dmaengine: imx-sdma: fix ecspi1 rx dma not work
+ on i.mx8mm
+Date: Fri, 27 Sep 2019 01:55:13 +0000
+Message-ID: <VE1PR04MB6638B066EE28781A3C21973D89810@VE1PR04MB6638.eurprd04.prod.outlook.com>
+References: <20190610081753.11422-12-yibin.gong@nxp.com>
+ <29cf9f29-bdb4-94db-00b0-56ec36386f7a@kontron.de>
+ <VE1PR04MB6638639EF4F580E04689538E89870@VE1PR04MB6638.eurprd04.prod.outlook.com>
+ <1307d229-4c49-80e3-04ba-377c0caeae9c@kontron.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- boundary="Sig_/MWul8reh.Rz47nd.lOSx1tl"; protocol="application/pgp-signature"
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-        Colin Ian King <colin.king@canonical.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "vkoul@kernel.org" <vkoul@kernel.org>,
+        "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+To: Schrempf Frieder <frieder.schrempf@kontron.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190926151752.GU2036@sirena.org.uk>
+In-Reply-To: <1307d229-4c49-80e3-04ba-377c0caeae9c@kontron.de>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---Sig_/MWul8reh.Rz47nd.lOSx1tl
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-
-Hi Mark, Geert,
-
-> On Thu, Sep 26, 2019 at 04:06:45PM +0200, Lukasz Majewski wrote:
-> > > On Thu, Sep 26, 2019 at 2:49 PM Lukasz Majewski <lukma@denx.de>
-> > > wrote: =20
->=20
-> > > > The question is if we shall call the spi_slave_abort() when
-> > > > cleaning up spi after releasing last reference, or each time
-> > > > release callback is called ?   =20
->=20
-> > > TBH, I don't know.  Is it realistic that there are multiple
-> > > opens? =20
->=20
-> > I'm using on my setup only one test program to use /dev/spidevX.Y
-> > and /dev/spidevA.B (loopback with wired connection). =20
->=20
-> > However, you also shall be able to connect via ssh and run the same
-> > setup in parallel... =20
->=20
-> It doesn't seem entirely realistic, but I can imagine cases like
-> fork()/exec() where we end up with two copies of the file open
-> but end up immediately closing one.
->=20
-> > > That means the abort is called only for the last user.
-> > > And only if the underlying device still exists.  Which means that
-> > > if it has disappeared (how can that happen? spidev unbind?), =20
->=20
-> > In my case, I just disconnect some SPI signals and the test program
-> > just hangs. I do need to ctrl+c to stop it (or use timeout).  =20
->=20
-> > From my debugging the .release callback is called each time the
-> > program is aborted (either with ctrl+c or timeout). =20
->=20
-> Should be on file close IIRC.
-
-Any ideas on how to solve this issue?
-
-Maybe, it would be sufficient for now to move the spi_slave_abort() in
-spi_release() before we decrease (spidev->users--) the use count?
-
-
-Best regards,
-
-Lukasz Majewski
-
---
-
-DENX Software Engineering GmbH,      Managing Director: Wolfgang Denk
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-Phone: (+49)-8142-66989-59 Fax: (+49)-8142-66989-80 Email: lukma@denx.de
-
---Sig_/MWul8reh.Rz47nd.lOSx1tl
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEgAyFJ+N6uu6+XupJAR8vZIA0zr0FAl2NPfkACgkQAR8vZIA0
-zr021wgAiv7whL2JbgJhEsGJ7+wE8+VstDmdil3dJj2370tZ1TV6dToiTi/UcAIt
-ivYET/WG1RxKE0W58RfOvjo/D24kad2MT+RIujWZoWyu3kVVyGOpS1cQe6QUocXx
-jXiCRBavxoCn9CEFOmJZ/ypxea62I4gKFQ/VAeGuJJLBCNQnuzZAcAADPfQMKkCj
-l0ZYOLF6yQbz47gRdgHxuunPpUDjqw9sdlc7Hv2zMEcW021bi4pYni9Hb6ZAeIJ9
-geoh0ep5tWNoS8Vvw+TuG5jGOigRDEazqX1X8uVuRVa1wu3B6wXLjMMwBSUC2rE9
-sUS5ctBukWrLZndmHt3CiYIaDz1Rmg==
-=nmDF
------END PGP SIGNATURE-----
-
---Sig_/MWul8reh.Rz47nd.lOSx1tl--
+T24gMjAxOS05LTI1IDIyOjUzIFNjaHJlbXBmIEZyaWVkZXIgPGZyaWVkZXIuc2NocmVtcGZAa29u
+dHJvbi5kZT4gd3JvdGU6DQo+IE9uIDI1LjA5LjE5IDEzOjI2LCBSb2JpbiBHb25nIHdyb3RlOg0K
+PiA+IE9uIDIwMTktOS0yNCAyMToyOCBTY2hyZW1wZiBGcmllZGVyIDxmcmllZGVyLnNjaHJlbXBm
+QGtvbnRyb24uZGU+DQo+IHdyb3RlOg0KPiA+Pg0KPiA+PiBIaSBSb2JpbiwNCj4gPj4NCj4gPj4+
+IEZyb206IFJvYmluIEdvbmcgPHlpYmluLmdvbmcgYXQgbnhwLmNvbT4NCj4gPj4+DQo+ID4+PiBC
+ZWNhdXNlIHRoZSBudW1iZXIgb2YgZWNzcGkxIHJ4IGV2ZW50IG9uIGkubXg4bW0gaXMgMCwgdGhl
+IGNvbmRpdGlvbg0KPiA+Pj4gY2hlY2sgaWdub3JlIHN1Y2ggc3BlY2lhbCBjYXNlIHdpdGhvdXQg
+ZG1hIGNoYW5uZWwgZW5hYmxlZCwgd2hpY2gNCj4gPj4+IGNhdXNlZA0KPiA+Pj4gZWNzcGkxIHJ4
+IHdvcmtzIGZhaWxlZC4gQWN0dWFsbHksIG5vIG5lZWQgdG8gY2hlY2sNCj4gPj4+IGV2ZW50X2lk
+MC9ldmVudF9pZDEgYW5kIHJlcGxhY2UgY2hlY2tpbmcgJ2V2ZW50X2lkMScgd2l0aA0KPiA+Pj4g
+J0RNQV9ERVZfVE9fREVWJywgc28gdGhhdCBjb25maWd1cmUNCj4gPj4+IGV2ZW50X2lkMSBvbmx5
+IGluIGNhc2UgREVWX1RPX0RFVi4NCj4gPj4+DQo+ID4+PiBTaWduZWQtb2ZmLWJ5OiBSb2JpbiBH
+b25nIDx5aWJpbi5nb25nIGF0IG54cC5jb20+DQo+ID4+PiBBY2tlZC1ieTogVmlub2QgS291bCA8
+dmtvdWwgYXQga2VybmVsLm9yZz4NCj4gPj4NCj4gPj4gSSBoYXZlIGEgY3VzdG9tIGJvYXJkIHdp
+dGggaS5NWDhNTSBhbmQgU1BJIGZsYXNoIG9uIGVjc3BpMS4gSSdtDQo+ID4+IGN1cnJlbnRseSB0
+ZXN0aW5nIHdpdGggdjUuMyBhbmQgYXMgU1BJIGRpZG4ndCB3b3JrLCBJIHRyaWVkIHR3byBkaWZm
+ZXJlbnQNCj4gdGhpbmdzOg0KPiA+Pg0KPiA+PiAxLiBSZW1vdmluZyAnZG1hcycgYW5kICdkbWEt
+bmFtZXMnIGZyb20gdGhlIGVjc3BpMSBub2RlIGluDQo+IGlteDhtbS5kdHNpLA0KPiA+PiAgICAg
+IHRvIHVzZSBQSU8gaW5zdGVhZCBvZiBETUEuIFRoaXMgd29ya3MgYXMgZXhwZWN0ZWQgYW5kIHRo
+ZSBkcml2ZXINCj4gPj4gICAgICBib290cyB3aXRoIHRoZSBmb2xsb3dpbmcgbWVzc2FnZXM6DQo+
+ID4+DQo+ID4+ICAgICAgICAgIHNwaV9pbXggMzA4MjAwMDAuc3BpOiBkbWEgc2V0dXAgZXJyb3Ig
+LTE5LCB1c2UgcGlvDQo+ID4+ICAgICAgICAgIG0yNXA4MCBzcGkwLjA6IG14MjV2ODAzNWYgKDEw
+MjQgS2J5dGVzKQ0KPiA+PiAgICAgICAgICBzcGlfaW14IDMwODIwMDAwLnNwaTogcHJvYmVkDQo+
+ID4+DQo+ID4+IDIuIEFwcGx5aW5nIHlvdXIgcGF0Y2hzZXQgYW5kIHVzZSBETUEuIEluIHRoaXMg
+Y2FzZSwgdGhlIGZsYXNoIGFsc28NCj4gPj4gICAgICB3b3JrcyBmaW5lLCBidXQgdGhlcmUgYXJl
+IHNvbWUgZXJyb3IgbWVzc2FnZXMgcHJpbnRlZCB3aGlsZQ0KPiBib290aW5nOg0KPiA+Pg0KPiA+
+PiAgICAgICAgICBzcGlfbWFzdGVyIHNwaTA6IEkvTyBFcnJvciBpbiBETUEgUlgNCj4gPj4gICAg
+ICAgICAgbTI1cDgwIHNwaTAuMDogU1BJIHRyYW5zZmVyIGZhaWxlZDogLTExMA0KPiA+PiAgICAg
+ICAgICBzcGlfbWFzdGVyIHNwaTA6IGZhaWxlZCB0byB0cmFuc2ZlciBvbmUgbWVzc2FnZSBmcm9t
+IHF1ZXVlDQo+ID4+ICAgICAgICAgIG0yNXA4MCBzcGkwLjA6IG14MjV2ODAzNWYgKDEwMjQgS2J5
+dGVzKQ0KPiA+PiAgICAgICAgICBzcGlfaW14IDMwODIwMDAwLnNwaTogcHJvYmVkDQo+ID4+DQo+
+ID4+IEl0IHdvdWxkIGJlIGdyZWF0IHRvIGdldCB5b3VyIHBhdGNoZXMgbWVyZ2VkIGFuZCBmaXgg
+U1BJICsgRE1BLCBidXQNCj4gPj4gZm9yIGkuTVg4TU0sIHdlIG5lZWQgdG8gZ2V0IHJpZCBvZiB0
+aGUgZXJyb3IgbWVzc2FnZXMuIERvIHlvdSBoYXZlIGFuDQo+ID4+IGlkZWEsIHdoYXQncyB3cm9u
+Zz8NCj4gDQo+ID4gQ291bGQgeW91IGNoZWNrIGlmIHRoZSBsZW5ndGggb2Ygc3BpIG1lc3NhZ2Ug
+aXMgYmlnZ2VyIHRoYW4gZmlmb19zaXplDQo+ID4gZHVyaW5nIHNwaV9ub3IgcHJvYmU/IElmIHll
+cywgYXQgdGhhdCB0aW1lIG1heWJlIHNkbWEgZmlybXdhcmUgbm90IGxvYWRlZC4NCj4gPiBpZiAo
+dHJhbnNmZXItPmxlbiA8IHNwaV9pbXgtPmRldnR5cGVfZGF0YS0+Zmlmb19zaXplKQ0KPiANCj4g
+SW5kZWVkLCBtb3N0IG9mIHRoZSB0cmFuc2ZlcnMgdHJpZ2dlcmVkIGJ5IHRoZSBTUEkgTk9SIGRp
+cnZlciBhcmUgYmVsb3cNCj4gZmlmb19zaXplIGFuZCB3b3JrIGZpbmUsIGJ1dCBzb21lIGFyZSBi
+aWdnZXIuIFRoZSB0cmFuc2ZlcnMgdGhlcmVmb3JlIHRyeSB0bw0KPiB1c2UgRE1BLCBidXQgdGhl
+IGZpcm13YXJlIGlzIG5vdCBsb2FkZWQgeWV0Lg0KPiANCj4gSG93IGlzIHRoaXMgc3VwcG9zZWQg
+dG8gd29yaz8gU2hvdWxkbid0IGFsbCB0cmFuc2ZlcnMgdXNlIFBJTyBhcyBsb25nIGFzIHRoZQ0K
+PiBTRE1BIGZpcm13YXJlIGlzIG5vdCBsb2FkZWQgeWV0Pw0KWWVzLCBmb3IgZWNzcGkgc2hvdWxk
+IHdvcmsgd2l0aCByYW0gc2NyaXB0LCBpdCdzIGJldHRlciBjaGVjayBpZiBzZG1hIGZpcm13YXJl
+DQppcyByZWFkeSBpbiBzcGlfaW14X2RtYV9jb25maWd1cmUoKSwgbmVlZCBtb2RpZmljYXRpb24g
+aW4gc2RtYSBkcml2ZXIgdG9vLg0KSSdsbCBjcmVhdGUgYW5vdGhlciBwYXRjaCBhZnRlciB0aGlz
+IHBhdGNoIHNldCBhY2NlcHRlZC4gDQo+IA0KPiAoKyBDYzogbGludXgtc3BpQHZnZXIua2VybmVs
+Lm9yZykNCg==

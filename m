@@ -1,7 +1,7 @@
 From: Navid Emamdoost <navid.emamdoost@gmail.com>
-Subject: [PATCH] spi: gpio: prevent memroy leak in spi_gpio_probe
-Date: Sun, 29 Sep 2019 22:39:27 -0500
-Message-ID: <20190930033928.32312-1-navid.emamdoost@gmail.com>
+Subject: [PATCH] spi: lpspi: fix memory leak in fsl_lpspi_probe
+Date: Sun, 29 Sep 2019 22:46:01 -0500
+Message-ID: <20190930034602.1467-1-navid.emamdoost@gmail.com>
 Cc: emamd001@umn.edu, kjlu@umn.edu, smccaman@umn.edu,
         Navid Emamdoost <navid.emamdoost@gmail.com>,
         Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
@@ -11,32 +11,30 @@ Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-In spi_gpio_probe an SPI master is allocated via spi_alloc_master, but
-this controller should be released if devm_add_action_or_reset fails,
-otherwise memory leaks. This commit adds Fixes: spi_contriller_put in
-case of failure for devm_add_action_or_reset.
+In fsl_lpspi_probe an SPI controller is allocated either via
+spi_alloc_slave or spi_alloc_master. In all but one error cases this
+controller is put by going to error handling code. This commit fixes the
+case when pm_runtime_get_sync fails and it should go to the error
+handling path.
 
-Fixes: 8b797490b4db ("spi: gpio: Make sure spi_master_put() is called in every error path")
+Fixes: 944c01a889d9 ("spi: lpspi: enable runtime pm for lpspi")
 Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
 ---
- drivers/spi/spi-gpio.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-fsl-lpspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index 1d3e23ec20a6..f9c5bbb74714 100644
---- a/drivers/spi/spi-gpio.c
-+++ b/drivers/spi/spi-gpio.c
-@@ -371,8 +371,10 @@ static int spi_gpio_probe(struct platform_device *pdev)
- 		return -ENOMEM;
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index d08e9324140e..3528ed5eea9b 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -938,7 +938,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 	ret = pm_runtime_get_sync(fsl_lpspi->dev);
+ 	if (ret < 0) {
+ 		dev_err(fsl_lpspi->dev, "failed to enable clock\n");
+-		return ret;
++		goto out_controller_put;
+ 	}
  
- 	status = devm_add_action_or_reset(&pdev->dev, spi_gpio_put, master);
--	if (status)
-+	if (status) {
-+		spi_master_put(master);
- 		return status;
-+	}
- 
- 	if (of_id)
- 		status = spi_gpio_probe_dt(pdev, master);
+ 	temp = readl(fsl_lpspi->base + IMX7ULP_PARAM);
 -- 
 2.17.1

@@ -1,19 +1,22 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: Introduce dspi_slave_abort() function for NXP's dspi SPI driver" to the spi tree
-Date: Tue,  1 Oct 2019 12:41:05 +0100 (BST)
-Message-ID: <20191001114105.7830D2742A10@ypsilon.sirena.org.uk>
-References: <20190924110547.14770-3-lukma@denx.de>
-Cc: krzk@kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
-To: Lukasz Majewski <lukma@denx.de>
+Subject: Applied "spi: dt-bindings: Convert spi-sifive binding to json-schema" to the spi tree
+Date: Tue,  1 Oct 2019 12:41:08 +0100 (BST)
+Message-ID: <20191001114108.2D26327429C0@ypsilon.sirena.org.uk>
+References: <1568804927-13565-1-git-send-email-pragnesh.patel@sifive.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>, palmer@sifive.com,
+        paul.walmsley@sifive.com, Rob Herring <robh+dt@kernel.org>
+To: Pragnesh Patel <pragnesh.patel@sifive.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190924110547.14770-3-lukma@denx.de>
+In-Reply-To: <1568804927-13565-1-git-send-email-pragnesh.patel@sifive.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: Introduce dspi_slave_abort() function for NXP's dspi SPI driver
+   spi: dt-bindings: Convert spi-sifive binding to json-schema
 
 has been applied to the spi tree at
 
@@ -38,64 +41,158 @@ to this mail.
 Thanks,
 Mark
 
->From f4b323905d8b3e28b2a9cef9325dbec1b0f7f064 Mon Sep 17 00:00:00 2001
-From: Lukasz Majewski <lukma@denx.de>
-Date: Tue, 24 Sep 2019 13:05:47 +0200
-Subject: [PATCH] spi: Introduce dspi_slave_abort() function for NXP's dspi SPI
- driver
+>From 9c12e34a3be127454b26054043c3b302bca08fdc Mon Sep 17 00:00:00 2001
+From: Pragnesh Patel <pragnesh.patel@sifive.com>
+Date: Wed, 18 Sep 2019 16:38:39 +0530
+Subject: [PATCH] spi: dt-bindings: Convert spi-sifive binding to json-schema
 
-This change provides the dspi_slave_abort() function, which is a callback
-for slave_abort() method of SPI controller generic driver.
+Convert the spi-sifive binding to DT schema format.
 
-As in the SPI slave mode the transmission is driven by master, any
-distortion may cause the slave to enter undefined internal state.
-To avoid this problem the dspi_slave_abort() terminates all pending and
-ongoing DMA transactions (with sync) and clears internal FIFOs.
-
-Signed-off-by: Lukasz Majewski <lukma@denx.de>
-Link: https://lore.kernel.org/r/20190924110547.14770-3-lukma@denx.de
+Signed-off-by: Pragnesh Patel <pragnesh.patel@sifive.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/1568804927-13565-1-git-send-email-pragnesh.patel@sifive.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ .../devicetree/bindings/spi/spi-sifive.txt    | 37 --------
+ .../devicetree/bindings/spi/spi-sifive.yaml   | 86 +++++++++++++++++++
+ 2 files changed, 86 insertions(+), 37 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/spi/spi-sifive.txt
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-sifive.yaml
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index bec758e978fb..2c0f211eed87 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -1006,6 +1006,25 @@ static void dspi_init(struct fsl_dspi *dspi)
- 			     SPI_CTARE_FMSZE(0) | SPI_CTARE_DTCP(1));
- }
- 
-+static int dspi_slave_abort(struct spi_master *master)
-+{
-+	struct fsl_dspi *dspi = spi_master_get_devdata(master);
+diff --git a/Documentation/devicetree/bindings/spi/spi-sifive.txt b/Documentation/devicetree/bindings/spi/spi-sifive.txt
+deleted file mode 100644
+index 3f5c6e438972..000000000000
+--- a/Documentation/devicetree/bindings/spi/spi-sifive.txt
++++ /dev/null
+@@ -1,37 +0,0 @@
+-SiFive SPI controller Device Tree Bindings
+-------------------------------------------
+-
+-Required properties:
+-- compatible		: Should be "sifive,<chip>-spi" and "sifive,spi<version>".
+-			  Supported compatible strings are:
+-			  "sifive,fu540-c000-spi" for the SiFive SPI v0 as integrated
+-			  onto the SiFive FU540 chip, and "sifive,spi0" for the SiFive
+-			  SPI v0 IP block with no chip integration tweaks.
+-			  Please refer to sifive-blocks-ip-versioning.txt for details
+-- reg			: Physical base address and size of SPI registers map
+-			  A second (optional) range can indicate memory mapped flash
+-- interrupts		: Must contain one entry
+-- interrupt-parent	: Must be core interrupt controller
+-- clocks		: Must reference the frequency given to the controller
+-- #address-cells	: Must be '1', indicating which CS to use
+-- #size-cells		: Must be '0'
+-
+-Optional properties:
+-- sifive,fifo-depth		: Depth of hardware queues; defaults to 8
+-- sifive,max-bits-per-word	: Maximum bits per word; defaults to 8
+-
+-SPI RTL that corresponds to the IP block version numbers can be found here:
+-https://github.com/sifive/sifive-blocks/tree/master/src/main/scala/devices/spi
+-
+-Example:
+-	spi: spi@10040000 {
+-		compatible = "sifive,fu540-c000-spi", "sifive,spi0";
+-		reg = <0x0 0x10040000 0x0 0x1000 0x0 0x20000000 0x0 0x10000000>;
+-		interrupt-parent = <&plic>;
+-		interrupts = <51>;
+-		clocks = <&tlclk>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		sifive,fifo-depth = <8>;
+-		sifive,max-bits-per-word = <8>;
+-	};
+diff --git a/Documentation/devicetree/bindings/spi/spi-sifive.yaml b/Documentation/devicetree/bindings/spi/spi-sifive.yaml
+new file mode 100644
+index 000000000000..140e4351a19f
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-sifive.yaml
+@@ -0,0 +1,86 @@
++# SPDX-License-Identifier: GPL-2.0
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/spi-sifive.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+	/*
-+	 * Terminate all pending DMA transactions for the SPI working
-+	 * in SLAVE mode.
-+	 */
-+	dmaengine_terminate_sync(dspi->dma->chan_rx);
-+	dmaengine_terminate_sync(dspi->dma->chan_tx);
++title: SiFive SPI controller
 +
-+	/* Clear the internal DSPI RX and TX FIFO buffers */
-+	regmap_update_bits(dspi->regmap, SPI_MCR,
-+			   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF,
-+			   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF);
++maintainers:
++  - Pragnesh Patel <pragnesh.patel@sifive.com>
++  - Paul Walmsley  <paul.walmsley@sifive.com>
++  - Palmer Dabbelt <palmer@sifive.com>
 +
-+	return 0;
-+}
++allOf:
++  - $ref: "spi-controller.yaml#"
 +
- static int dspi_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
-@@ -1030,6 +1049,7 @@ static int dspi_probe(struct platform_device *pdev)
- 	ctlr->dev.of_node = pdev->dev.of_node;
- 
- 	ctlr->cleanup = dspi_cleanup;
-+	ctlr->slave_abort = dspi_slave_abort;
- 	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
- 
- 	pdata = dev_get_platdata(&pdev->dev);
++properties:
++  compatible:
++    items:
++      - const: sifive,fu540-c000-spi
++      - const: sifive,spi0
++
++    description:
++      Should be "sifive,<chip>-spi" and "sifive,spi<version>".
++      Supported compatible strings are -
++      "sifive,fu540-c000-spi" for the SiFive SPI v0 as integrated
++      onto the SiFive FU540 chip, and "sifive,spi0" for the SiFive
++      SPI v0 IP block with no chip integration tweaks.
++      Please refer to sifive-blocks-ip-versioning.txt for details
++
++      SPI RTL that corresponds to the IP block version numbers can be found here -
++      https://github.com/sifive/sifive-blocks/tree/master/src/main/scala/devices/spi
++
++  reg:
++    maxItems: 1
++
++    description:
++      Physical base address and size of SPI registers map
++      A second (optional) range can indicate memory mapped flash
++
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++    description:
++      Must reference the frequency given to the controller
++
++  sifive,fifo-depth:
++    description:
++      Depth of hardware queues; defaults to 8
++    allOf:
++      - $ref: "/schemas/types.yaml#/definitions/uint32"
++      - enum: [ 8 ]
++      - default: 8
++
++  sifive,max-bits-per-word:
++    description:
++      Maximum bits per word; defaults to 8
++    allOf:
++      - $ref: "/schemas/types.yaml#/definitions/uint32"
++      - enum: [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
++      - default: 8
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++
++examples:
++  - |
++    spi: spi@10040000 {
++      compatible = "sifive,fu540-c000-spi", "sifive,spi0";
++      reg = <0x0 0x10040000 0x0 0x1000 0x0 0x20000000 0x0 0x10000000>;
++      interrupt-parent = <&plic>;
++      interrupts = <51>;
++      clocks = <&tlclk>;
++      #address-cells = <1>;
++      #size-cells = <0>;
++      sifive,fifo-depth = <8>;
++      sifive,max-bits-per-word = <8>;
++    };
++
++...
 -- 
 2.20.1

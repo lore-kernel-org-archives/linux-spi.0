@@ -1,158 +1,116 @@
-From: "Ramuthevar, Vadivel MuruganX"
-        <vadivel.muruganx.ramuthevar@linux.intel.com>
-Subject: Re: [PATCH v1 1/2] dt-bindings: spi: Add support for cadence-qspi IP
- Intel LGM SoC
-Date: Tue, 1 Oct 2019 09:13:13 +0800
-Message-ID: <e70c6f98-7e0f-97f2-bede-00de4389f825@linux.intel.com>
-References: <20190916073843.39618-1-vadivel.muruganx.ramuthevar@linux.intel.com>
- <20190916073843.39618-2-vadivel.muruganx.ramuthevar@linux.intel.com>
- <20190930223640.GA18491@bogus>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Cc: broonie@kernel.org, mark.rutland@arm.com,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, cheol.yong.kim@intel.com,
-        qi-ming.wu@intel.com
-To: Rob Herring <robh@kernel.org>
+From: Kuldeep Singh <kuldeep.singh@nxp.com>
+Subject: [PATCH] spi: spi-fsl-qspi: Introduce variable to fix different invalid master Id
+Date: Tue,  1 Oct 2019 14:29:16 +0530
+Message-ID: <1569920356-8953-1-git-send-email-kuldeep.singh@nxp.com>
+Cc: Kuldeep Singh <kuldeep.singh@nxp.com>,
+        Suresh Gupta <suresh.gupta@nxp.com>
+To: han.xu@nxp.com, broonie@kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190930223640.GA18491@bogus>
-Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Rob,
+Different platforms have different Master with different SourceID on
+AHB bus. The 0X0E Master ID is used by cluster 3 in case of LS2088A.
+So, patch introduce an invalid master id variable to fix invalid
+mastered on different platforms.
 
-    Thank you for the review comments.
+Signed-off-by: Suresh Gupta <suresh.gupta@nxp.com>
+Signed-off-by: Kuldeep Singh <kuldeep.singh@nxp.com>
+---
+ drivers/spi/spi-fsl-qspi.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-On 1/10/2019 6:36 AM, Rob Herring wrote:
-> On Mon, Sep 16, 2019 at 03:38:42PM +0800, Ramuthevar,Vadivel MuruganX wrote:
->> From: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
->>
->> On Intel Lightening Mountain(LGM) SoCs QSPI controller support
->> to QSPI-NAND flash. This introduces to device tree binding
->> documentation for Cadence-QSPI controller and spi-nand flash.
->>
->> Signed-off-by: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
->> ---
->>   .../devicetree/bindings/spi/cadence,qspi-nand.yaml | 84 ++++++++++++++++++++++
->>   1 file changed, 84 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/spi/cadence,qspi-nand.yaml
->>
->> diff --git a/Documentation/devicetree/bindings/spi/cadence,qspi-nand.yaml b/Documentation/devicetree/bindings/spi/cadence,qspi-nand.yaml
->> new file mode 100644
->> index 000000000000..9aae4c1459cc
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/spi/cadence,qspi-nand.yaml
->> @@ -0,0 +1,84 @@
->> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: "http://devicetree.org/schemas/spi/cadence,qspi-nand.yaml#"
->> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
->> +
->> +title: Cadence QSPI Flash Controller on Intel's SoC
->> +
->> +maintainers:
->> +  - Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
->> +
->> +allOf:
->> +  - $ref: "spi-controller.yaml#"
->> +
->> +description: |
->> +  The Cadence QSPI is a controller optimized for communication with SPI
->> +  FLASH memories, without DMA support on Intel's SoC.
->> +
->> +properties:
->> +  compatible:
->> +    const: cadence,lgm-qspi
-> Vendor here should be 'intel'. Perhaps the binding should be shared too
-> like the driver.
->
-> Plus the vendor prefix for Cadence is cdns.
-Agreed!, will update.
->> +
->> +  reg:
->> +    maxItems: 1
->> +
->> +  fifo-depth:
->> +    maxItems: 1
->> +
-> This is vendor specific, so needs a vendor prefix, type, and
-> description.
-agreed!
->> +  fifo-width:
->> +    maxItems: 1
-> Same
->
->> +
->> +  qspi-phyaddr:
->> +    maxItems: 1
-> Same
->
->> +
->> +  qspi-phymask:
->> +    maxItems: 1
-> Same
-will update all the above.
->> +
->> +  clocks:
->> +    maxItems: 2
-> Need to define what each clock is when there is more than 1.
-Sure, will update.
->> +
->> +  clocks-names:
->> +    maxItems: 2
-> Need to define the strings.
-Noted, will update.
->> +
->> +  resets:
->> +    maxItems: 1
->> +
->> +  reset-names:
->> +    maxItems: 1
->> +
->> +required:
->> +  - compatible
->> +  - reg
->> +  - fifo-depth
->> +  - fifo-width
->> +  - qspi-phyaddr
->> +  - qspi-phymask
->> +  - clocks
->> +  - clock-names
->> +  - resets
->> +  - reset-names
->> +
->> +examples:
->> +  - |
->> +    qspi@ec000000 {
-> spi@...
-
-Controller is qspi , so that have updated.
-
-With Best Regards
-Vadivel Murugan R
->> +          compatible = "cadence,qspi-nand";
->> +          reg = <0xec000000 0x100>;
->> +          fifo-depth = <128>;
->> +          fifo-width = <4>;
->> +          qspi-phyaddr = <0xf4000000>;
->> +          qspi-phymask = <0xffffffff>;
->> +          clocks = <&cgu0 LGM_CLK_QSPI>, <&cgu0 LGM_GCLK_QSPI>;
->> +          clock-names = "freq", "qspi";
->> +          resets = <&rcu0 0x10 1>;
->> +          reset-names = "qspi";
->> +          #address-cells = <1>;
->> +          #size-cells = <0>;
->> +
->> +          flash: flash@1 {
->> +              compatible = "spi-nand";
->> +              reg = <1>;
->> +              spi-max-frequency = <10000000>;
->> +          };
->> +    };
->> +
->> -- 
->> 2.11.0
->>
+diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
+index c02e24c..51385b0 100644
+--- a/drivers/spi/spi-fsl-qspi.c
++++ b/drivers/spi/spi-fsl-qspi.c
+@@ -63,6 +63,11 @@
+ #define QUADSPI_IPCR			0x08
+ #define QUADSPI_IPCR_SEQID(x)		((x) << 24)
+ 
++#define QUADSPI_BUF0CR                  0x10
++#define QUADSPI_BUF1CR                  0x14
++#define QUADSPI_BUF2CR                  0x18
++#define QUADSPI_BUFXCR_INVALID_MSTRID   0xe
++
+ #define QUADSPI_BUF3CR			0x1c
+ #define QUADSPI_BUF3CR_ALLMST_MASK	BIT(31)
+ #define QUADSPI_BUF3CR_ADATSZ(x)	((x) << 8)
+@@ -184,6 +189,7 @@
+ struct fsl_qspi_devtype_data {
+ 	unsigned int rxfifo;
+ 	unsigned int txfifo;
++	int invalid_mstrid;
+ 	unsigned int ahb_buf_size;
+ 	unsigned int quirks;
+ 	bool little_endian;
+@@ -192,6 +198,7 @@ struct fsl_qspi_devtype_data {
+ static const struct fsl_qspi_devtype_data vybrid_data = {
+ 	.rxfifo = SZ_128,
+ 	.txfifo = SZ_64,
++	.invalid_mstrid = QUADSPI_BUFXCR_INVALID_MSTRID,
+ 	.ahb_buf_size = SZ_1K,
+ 	.quirks = QUADSPI_QUIRK_SWAP_ENDIAN,
+ 	.little_endian = true,
+@@ -200,6 +207,7 @@ static const struct fsl_qspi_devtype_data vybrid_data = {
+ static const struct fsl_qspi_devtype_data imx6sx_data = {
+ 	.rxfifo = SZ_128,
+ 	.txfifo = SZ_512,
++	.invalid_mstrid = QUADSPI_BUFXCR_INVALID_MSTRID,
+ 	.ahb_buf_size = SZ_1K,
+ 	.quirks = QUADSPI_QUIRK_4X_INT_CLK | QUADSPI_QUIRK_TKT245618,
+ 	.little_endian = true,
+@@ -208,6 +216,7 @@ static const struct fsl_qspi_devtype_data imx6sx_data = {
+ static const struct fsl_qspi_devtype_data imx7d_data = {
+ 	.rxfifo = SZ_128,
+ 	.txfifo = SZ_512,
++	.invalid_mstrid = QUADSPI_BUFXCR_INVALID_MSTRID,
+ 	.ahb_buf_size = SZ_1K,
+ 	.quirks = QUADSPI_QUIRK_TKT253890 | QUADSPI_QUIRK_4X_INT_CLK,
+ 	.little_endian = true,
+@@ -216,6 +225,7 @@ static const struct fsl_qspi_devtype_data imx7d_data = {
+ static const struct fsl_qspi_devtype_data imx6ul_data = {
+ 	.rxfifo = SZ_128,
+ 	.txfifo = SZ_512,
++	.invalid_mstrid = QUADSPI_BUFXCR_INVALID_MSTRID,
+ 	.ahb_buf_size = SZ_1K,
+ 	.quirks = QUADSPI_QUIRK_TKT253890 | QUADSPI_QUIRK_4X_INT_CLK,
+ 	.little_endian = true,
+@@ -224,6 +234,7 @@ static const struct fsl_qspi_devtype_data imx6ul_data = {
+ static const struct fsl_qspi_devtype_data ls1021a_data = {
+ 	.rxfifo = SZ_128,
+ 	.txfifo = SZ_64,
++	.invalid_mstrid = QUADSPI_BUFXCR_INVALID_MSTRID,
+ 	.ahb_buf_size = SZ_1K,
+ 	.quirks = 0,
+ 	.little_endian = false,
+@@ -233,6 +244,7 @@ static const struct fsl_qspi_devtype_data ls2080a_data = {
+ 	.rxfifo = SZ_128,
+ 	.txfifo = SZ_64,
+ 	.ahb_buf_size = SZ_1K,
++	.invalid_mstrid = 0x0,
+ 	.quirks = QUADSPI_QUIRK_TKT253890 | QUADSPI_QUIRK_BASE_INTERNAL,
+ 	.little_endian = true,
+ };
+@@ -615,6 +627,7 @@ static int fsl_qspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	void __iomem *base = q->iobase;
+ 	u32 addr_offset = 0;
+ 	int err = 0;
++	int invalid_mstrid = q->devtype_data->invalid_mstrid;
+ 
+ 	mutex_lock(&q->lock);
+ 
+@@ -638,6 +651,10 @@ static int fsl_qspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	qspi_writel(q, QUADSPI_SPTRCLR_BFPTRC | QUADSPI_SPTRCLR_IPPTRC,
+ 		    base + QUADSPI_SPTRCLR);
+ 
++	qspi_writel(q, invalid_mstrid, base + QUADSPI_BUF0CR);
++	qspi_writel(q, invalid_mstrid, base + QUADSPI_BUF1CR);
++	qspi_writel(q, invalid_mstrid, base + QUADSPI_BUF2CR);
++
+ 	fsl_qspi_prepare_lut(q, op);
+ 
+ 	/*
+-- 
+2.7.4

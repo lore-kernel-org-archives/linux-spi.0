@@ -1,22 +1,21 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: lantiq-ssc: Use devm_platform_ioremap_resource() in lantiq_ssc_probe()" to the spi tree
-Date: Tue,  1 Oct 2019 12:41:06 +0100 (BST)
-Message-ID: <20191001114106.6CD7D2742A30@ypsilon.sirena.org.uk>
-References: <230495a7-b754-bc6a-05e0-059a6b6c643d@web.de>
-Cc: Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        kernel-janitors@vger.kernel.org, linux-spi@vger.kernel.org,
+Subject: Applied "spi: xtensa-xtfpga: Use devm_platform_ioremap_resource() in xtfpga_spi_probe()" to the spi tree
+Date: Tue,  1 Oct 2019 12:41:05 +0100 (BST)
+Message-ID: <20191001114105.AF4BB2742A30@ypsilon.sirena.org.uk>
+References: <178bb78e-714f-645f-d819-5732870c4272@web.de>
+Cc: kernel-janitors@vger.kernel.org, linux-spi@vger.kernel.org,
         LKML <linux-kernel@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>
+        Mark Brown <broonie@kernel.org>,
+        Max Filippov <jcmvbkbc@gmail.com>
 To: Markus Elfring <elfring@users.sourceforge.net>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <230495a7-b754-bc6a-05e0-059a6b6c643d@web.de>
+In-Reply-To: <178bb78e-714f-645f-d819-5732870c4272@web.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: lantiq-ssc: Use devm_platform_ioremap_resource() in lantiq_ssc_probe()
+   spi: xtensa-xtfpga: Use devm_platform_ioremap_resource() in xtfpga_spi_probe()
 
 has been applied to the spi tree at
 
@@ -41,57 +40,50 @@ to this mail.
 Thanks,
 Mark
 
->From 22262695f46b68659ba98a12e275df388c74968c Mon Sep 17 00:00:00 2001
+>From 3f049e7df22e563b04fd576bdc37e6b3e2c7a996 Mon Sep 17 00:00:00 2001
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sat, 21 Sep 2019 14:16:49 +0200
-Subject: [PATCH] spi: lantiq-ssc: Use devm_platform_ioremap_resource() in
- lantiq_ssc_probe()
+Date: Sat, 21 Sep 2019 15:35:08 +0200
+Subject: [PATCH] spi: xtensa-xtfpga: Use devm_platform_ioremap_resource() in
+ xtfpga_spi_probe()
 
 Simplify this function implementation by using a known wrapper function.
 
 This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Link: https://lore.kernel.org/r/230495a7-b754-bc6a-05e0-059a6b6c643d@web.de
+Link: https://lore.kernel.org/r/178bb78e-714f-645f-d819-5732870c4272@web.de
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-lantiq-ssc.c | 10 +---------
+ drivers/spi/spi-xtensa-xtfpga.c | 10 +---------
  1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi-lantiq-ssc.c b/drivers/spi/spi-lantiq-ssc.c
-index 9dfe8b04e688..1fd7ee53d451 100644
---- a/drivers/spi/spi-lantiq-ssc.c
-+++ b/drivers/spi/spi-lantiq-ssc.c
-@@ -797,7 +797,6 @@ static int lantiq_ssc_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-xtensa-xtfpga.c b/drivers/spi/spi-xtensa-xtfpga.c
+index 86516eb1e143..fc2b5eb7d614 100644
+--- a/drivers/spi/spi-xtensa-xtfpga.c
++++ b/drivers/spi/spi-xtensa-xtfpga.c
+@@ -80,7 +80,6 @@ static void xtfpga_spi_chipselect(struct spi_device *spi, int is_on)
+ static int xtfpga_spi_probe(struct platform_device *pdev)
  {
- 	struct device *dev = &pdev->dev;
+ 	struct xtfpga_spi *xspi;
+-	struct resource *mem;
+ 	int ret;
  	struct spi_master *master;
--	struct resource *res;
- 	struct lantiq_ssc_spi *spi;
- 	const struct lantiq_ssc_hwcfg *hwcfg;
- 	const struct of_device_id *match;
-@@ -812,12 +811,6 @@ static int lantiq_ssc_probe(struct platform_device *pdev)
- 	}
- 	hwcfg = match->data;
  
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!res) {
--		dev_err(dev, "failed to get resources\n");
--		return -ENXIO;
+@@ -97,14 +96,7 @@ static int xtfpga_spi_probe(struct platform_device *pdev)
+ 	xspi->bitbang.master = master;
+ 	xspi->bitbang.chipselect = xtfpga_spi_chipselect;
+ 	xspi->bitbang.txrx_word[SPI_MODE_0] = xtfpga_spi_txrx_word;
+-
+-	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!mem) {
+-		dev_err(&pdev->dev, "No memory resource\n");
+-		ret = -ENODEV;
+-		goto err;
 -	}
--
- 	rx_irq = platform_get_irq_byname(pdev, LTQ_SPI_RX_IRQ_NAME);
- 	if (rx_irq < 0)
- 		return -ENXIO;
-@@ -839,8 +832,7 @@ static int lantiq_ssc_probe(struct platform_device *pdev)
- 	spi->dev = dev;
- 	spi->hwcfg = hwcfg;
- 	platform_set_drvdata(pdev, spi);
--
--	spi->regbase = devm_ioremap_resource(dev, res);
-+	spi->regbase = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(spi->regbase)) {
- 		err = PTR_ERR(spi->regbase);
- 		goto err_master_put;
+-	xspi->regs = devm_ioremap_resource(&pdev->dev, mem);
++	xspi->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(xspi->regs)) {
+ 		ret = PTR_ERR(xspi->regs);
+ 		goto err;
 -- 
 2.20.1

@@ -1,24 +1,24 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: atmel: Remove AVR32 leftover" to the spi tree
+Subject: Applied "dt: spi: Add Renesas RZ/N1 binding documentation" to the spi tree
 Date: Tue,  1 Oct 2019 12:41:07 +0100 (BST)
-Message-ID: <20191001114107.0FAEC2742A10@ypsilon.sirena.org.uk>
-References: <20190919154034.7489-1-gregory.clement@bootlin.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
+Message-ID: <20191001114107.EA2CF2742A30@ypsilon.sirena.org.uk>
+References: <1568793876-9009-2-git-send-email-gareth.williams.jx@renesas.com>
+Cc: devicetree@vger.kernel.org,
+        Gareth Williams <gareth.williams.jx@renesas.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
         Mark Brown <broonie@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-To: Gregory CLEMENT <gregory.clement@bootlin.com>
+        Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>
+To: Phil Edworthy <phil.edworthy@renesas.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190919154034.7489-1-gregory.clement@bootlin.com>
+In-Reply-To: <1568793876-9009-2-git-send-email-gareth.williams.jx@renesas.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: atmel: Remove AVR32 leftover
+   dt: spi: Add Renesas RZ/N1 binding documentation
 
 has been applied to the spi tree at
 
@@ -43,63 +43,45 @@ to this mail.
 Thanks,
 Mark
 
->From e61bb114d41ddf6ae5bf05a0109fc13116550c7d Mon Sep 17 00:00:00 2001
-From: Gregory CLEMENT <gregory.clement@bootlin.com>
-Date: Thu, 19 Sep 2019 17:40:34 +0200
-Subject: [PATCH] spi: atmel: Remove AVR32 leftover
+>From da182a61fce01dbd7c4a78c68a34af110f00e36f Mon Sep 17 00:00:00 2001
+From: Phil Edworthy <phil.edworthy@renesas.com>
+Date: Wed, 18 Sep 2019 09:04:33 +0100
+Subject: [PATCH] dt: spi: Add Renesas RZ/N1 binding documentation
 
-AV32 support has been from the kernel a few release ago, but there was
-still some specific macro for this architecture in this driver. Lets
-remove it.
+The Renesas RZ/N1 SPI Controller is based on the Synopsys DW SSI, but has
+additional registers for software CS control and DMA. This patch does not
+address the changes required for DMA support, it simply adds the compatible
+string. The CS functionality is not very useful and also not needed as
+Linux can use gpios for the CS signals.
 
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Link: https://lore.kernel.org/r/20190919154034.7489-1-gregory.clement@bootlin.com
+Add a compatible string to handle any unforeseen issues that may arise, and
+pave the way for DMA support.
+
+Signed-off-by: Gareth Williams <gareth.williams.jx@renesas.com>
+Signed-off-by: Phil Edworthy <phil.edworthy@renesas.com>
+Link: https://lore.kernel.org/r/1568793876-9009-2-git-send-email-gareth.williams.jx@renesas.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-atmel.c | 24 ------------------------
- 1 file changed, 24 deletions(-)
+ .../devicetree/bindings/spi/renesas,rzn1-spi.txt      | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/renesas,rzn1-spi.txt
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index acf318e7330c..3ed5e663da6f 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -222,37 +222,13 @@
- 	  | SPI_BF(name, value))
- 
- /* Register access macros */
--#ifdef CONFIG_AVR32
--#define spi_readl(port, reg) \
--	__raw_readl((port)->regs + SPI_##reg)
--#define spi_writel(port, reg, value) \
--	__raw_writel((value), (port)->regs + SPI_##reg)
--
--#define spi_readw(port, reg) \
--	__raw_readw((port)->regs + SPI_##reg)
--#define spi_writew(port, reg, value) \
--	__raw_writew((value), (port)->regs + SPI_##reg)
--
--#define spi_readb(port, reg) \
--	__raw_readb((port)->regs + SPI_##reg)
--#define spi_writeb(port, reg, value) \
--	__raw_writeb((value), (port)->regs + SPI_##reg)
--#else
- #define spi_readl(port, reg) \
- 	readl_relaxed((port)->regs + SPI_##reg)
- #define spi_writel(port, reg, value) \
- 	writel_relaxed((value), (port)->regs + SPI_##reg)
--
--#define spi_readw(port, reg) \
--	readw_relaxed((port)->regs + SPI_##reg)
- #define spi_writew(port, reg, value) \
- 	writew_relaxed((value), (port)->regs + SPI_##reg)
- 
--#define spi_readb(port, reg) \
--	readb_relaxed((port)->regs + SPI_##reg)
--#define spi_writeb(port, reg, value) \
--	writeb_relaxed((value), (port)->regs + SPI_##reg)
--#endif
- /* use PIO for small transfers, avoiding DMA setup/teardown overhead and
-  * cache operations; better heuristics consider wordsize and bitrate.
-  */
+diff --git a/Documentation/devicetree/bindings/spi/renesas,rzn1-spi.txt b/Documentation/devicetree/bindings/spi/renesas,rzn1-spi.txt
+new file mode 100644
+index 000000000000..fb1a6728638d
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/renesas,rzn1-spi.txt
+@@ -0,0 +1,11 @@
++Renesas RZ/N1 SPI Controller
++
++This controller is based on the Synopsys DW Synchronous Serial Interface and
++inherits all properties defined in snps,dw-apb-ssi.txt except for the
++compatible property.
++
++Required properties:
++- compatible : The device specific string followed by the generic RZ/N1 string.
++   Therefore it must be one of:
++   "renesas,r9a06g032-spi", "renesas,rzn1-spi"
++   "renesas,r9a06g033-spi", "renesas,rzn1-spi"
 -- 
 2.20.1

@@ -1,24 +1,24 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "dt: spi: Add Renesas RZ/N1 binding documentation" to the spi tree
+Subject: Applied "dt-bindings: snps,dw-apb-ssi: Add optional clock domain information" to the spi tree
 Date: Tue,  1 Oct 2019 12:41:07 +0100 (BST)
-Message-ID: <20191001114107.EA2CF2742A30@ypsilon.sirena.org.uk>
-References: <1568793876-9009-2-git-send-email-gareth.williams.jx@renesas.com>
+Message-ID: <20191001114107.ACF3F2742A10@ypsilon.sirena.org.uk>
+References: <1568793876-9009-3-git-send-email-gareth.williams.jx@renesas.com>
 Cc: devicetree@vger.kernel.org,
-        Gareth Williams <gareth.williams.jx@renesas.com>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
         Mark Brown <broonie@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
+        Phil Edworthy <phil.edworthy@renesas.com>,
         Rob Herring <robh+dt@kernel.org>
-To: Phil Edworthy <phil.edworthy@renesas.com>
+To: Gareth Williams <gareth.williams.jx@renesas.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1568793876-9009-2-git-send-email-gareth.williams.jx@renesas.com>
+In-Reply-To: <1568793876-9009-3-git-send-email-gareth.williams.jx@renesas.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   dt: spi: Add Renesas RZ/N1 binding documentation
+   dt-bindings: snps,dw-apb-ssi: Add optional clock domain information
 
 has been applied to the spi tree at
 
@@ -43,45 +43,35 @@ to this mail.
 Thanks,
 Mark
 
->From da182a61fce01dbd7c4a78c68a34af110f00e36f Mon Sep 17 00:00:00 2001
-From: Phil Edworthy <phil.edworthy@renesas.com>
-Date: Wed, 18 Sep 2019 09:04:33 +0100
-Subject: [PATCH] dt: spi: Add Renesas RZ/N1 binding documentation
+>From 47cf13bc763c891c6192184c5e5aa8c1b331b2ff Mon Sep 17 00:00:00 2001
+From: Gareth Williams <gareth.williams.jx@renesas.com>
+Date: Wed, 18 Sep 2019 09:04:34 +0100
+Subject: [PATCH] dt-bindings: snps,dw-apb-ssi: Add optional clock domain
+ information
 
-The Renesas RZ/N1 SPI Controller is based on the Synopsys DW SSI, but has
-additional registers for software CS control and DMA. This patch does not
-address the changes required for DMA support, it simply adds the compatible
-string. The CS functionality is not very useful and also not needed as
-Linux can use gpios for the CS signals.
-
-Add a compatible string to handle any unforeseen issues that may arise, and
-pave the way for DMA support.
+Note in the bindings documentation that pclk should be renamed if a clock
+domain is used to enable the optional bus clock.
 
 Signed-off-by: Gareth Williams <gareth.williams.jx@renesas.com>
-Signed-off-by: Phil Edworthy <phil.edworthy@renesas.com>
-Link: https://lore.kernel.org/r/1568793876-9009-2-git-send-email-gareth.williams.jx@renesas.com
+Link: https://lore.kernel.org/r/1568793876-9009-3-git-send-email-gareth.williams.jx@renesas.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- .../devicetree/bindings/spi/renesas,rzn1-spi.txt      | 11 +++++++++++
- 1 file changed, 11 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/renesas,rzn1-spi.txt
+ Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/renesas,rzn1-spi.txt b/Documentation/devicetree/bindings/spi/renesas,rzn1-spi.txt
-new file mode 100644
-index 000000000000..fb1a6728638d
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/renesas,rzn1-spi.txt
-@@ -0,0 +1,11 @@
-+Renesas RZ/N1 SPI Controller
-+
-+This controller is based on the Synopsys DW Synchronous Serial Interface and
-+inherits all properties defined in snps,dw-apb-ssi.txt except for the
-+compatible property.
-+
-+Required properties:
-+- compatible : The device specific string followed by the generic RZ/N1 string.
-+   Therefore it must be one of:
-+   "renesas,r9a06g032-spi", "renesas,rzn1-spi"
-+   "renesas,r9a06g033-spi", "renesas,rzn1-spi"
+diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
+index f54c8c36395e..3ed08ee9feba 100644
+--- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
++++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
+@@ -16,7 +16,8 @@ Required properties:
+ Optional properties:
+ - clock-names : Contains the names of the clocks:
+     "ssi_clk", for the core clock used to generate the external SPI clock.
+-    "pclk", the interface clock, required for register access.
++    "pclk", the interface clock, required for register access. If a clock domain
++     used to enable this clock then it should be named "pclk_clkdomain".
+ - cs-gpios : Specifies the gpio pins to be used for chipselects.
+ - num-cs : The number of chipselects. If omitted, this will default to 4.
+ - reg-io-width : The I/O register width (in bytes) implemented by this
 -- 
 2.20.1

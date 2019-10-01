@@ -1,51 +1,76 @@
-From: Navid Emamdoost <navid.emamdoost@gmail.com>
-Subject: Re: [PATCH v2] spi: gpio: prevent memory leak in spi_gpio_probe
-Date: Tue, 1 Oct 2019 12:32:41 -0500
-Message-ID: <CAEkB2ES3-gotqS9184izf0fKOigFaFUetBiqekmYJPBgPWbSBQ@mail.gmail.com>
-References: <20190930205241.5483-1-navid.emamdoost@gmail.com> <6b55e753-5797-2bdc-fae6-f575a0ef8186@web.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Cc: linux-spi@vger.kernel.org, Navid Emamdoost <emamd001@umn.edu>,
-        Kangjie Lu <kjlu@umn.edu>, Stephen McCamant <smccaman@umn.edu>,
-        Mark Brown <broonie@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-To: Markus Elfring <Markus.Elfring@web.de>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: lpspi: fix memory leak in fsl_lpspi_probe" to the spi tree
+Date: Tue,  1 Oct 2019 18:57:01 +0100 (BST)
+Message-ID: <20191001175701.638832742A30@ypsilon.sirena.org.uk>
+References: <20190930034602.1467-1-navid.emamdoost@gmail.com>
+Cc: "Cc:"@sirena.co.uk, "Cc:"@sirena.co.uk, emamd001@umn.edu,
+        kjlu@umn.edu, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        smccaman@umn.edu
+To: Navid Emamdoost <navid.emamdoost@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <6b55e753-5797-2bdc-fae6-f575a0ef8186@web.de>
+In-Reply-To: <20190930034602.1467-1-navid.emamdoost@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Markus, thanks for your suggestions for improving the quality of
-the patch. At the moment I prefer first get a confirmation from
-contributors about the leak and then work on any possible improvements
-for the patch.
+The patch
+
+   spi: lpspi: fix memory leak in fsl_lpspi_probe
+
+has been applied to the spi tree at
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.4
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
 Thanks,
-Navid.
+Mark
 
-On Tue, Oct 1, 2019 at 4:11 AM Markus Elfring <Markus.Elfring@web.de> wrote=
-:
->
-> > =E2=80=A6 In order to avoid leak spi_contriller_put must
-> > be called in case of failure for devm_add_action_or_reset.
->
-> How does this wording fit to the diff display that you would like
-> to add the function call =E2=80=9Cspi_master_put(master)=E2=80=9D in
-> one if branch?
->
->
-> > Fixes: 8b797490b4db ("spi: gpio: Make sure spi_master_put() is called i=
-n every error path")
->
-> Is there a need to complete the corresponding exception handling
-> at any more source code places?
->
-> Regards,
-> Markus
+>From 057b8945f78f76d0b04eeb5c27cd9225e5e7ad86 Mon Sep 17 00:00:00 2001
+From: Navid Emamdoost <navid.emamdoost@gmail.com>
+Date: Sun, 29 Sep 2019 22:46:01 -0500
+Subject: [PATCH] spi: lpspi: fix memory leak in fsl_lpspi_probe
 
+In fsl_lpspi_probe an SPI controller is allocated either via
+spi_alloc_slave or spi_alloc_master. In all but one error cases this
+controller is put by going to error handling code. This commit fixes the
+case when pm_runtime_get_sync fails and it should go to the error
+handling path.
 
+Fixes: 944c01a889d9 ("spi: lpspi: enable runtime pm for lpspi")
+Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
+Link: https://lore.kernel.org/r/20190930034602.1467-1-navid.emamdoost@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-fsl-lpspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---=20
-Navid.
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index d08e9324140e..3528ed5eea9b 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -938,7 +938,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 	ret = pm_runtime_get_sync(fsl_lpspi->dev);
+ 	if (ret < 0) {
+ 		dev_err(fsl_lpspi->dev, "failed to enable clock\n");
+-		return ret;
++		goto out_controller_put;
+ 	}
+ 
+ 	temp = readl(fsl_lpspi->base + IMX7ULP_PARAM);
+-- 
+2.20.1

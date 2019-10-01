@@ -1,24 +1,21 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: mediatek: Use devm_platform_ioremap_resource() in mtk_spi_slave_probe()" to the spi tree
-Date: Tue,  1 Oct 2019 12:41:05 +0100 (BST)
-Message-ID: <20191001114105.EAA1C27429C0@ypsilon.sirena.org.uk>
-References: <225b76ca-a367-4bef-d8ce-42c7af9242a5@web.de>
-Cc: kernel-janitors@vger.kernel.org,
-        Leilk Liu <leilk.liu@mediatek.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-spi@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>
-To: Markus Elfring <elfring@users.sourceforge.net>
+Subject: Applied "spi: dw: Add basic runtime PM support" to the spi tree
+Date: Tue,  1 Oct 2019 12:41:07 +0100 (BST)
+Message-ID: <20191001114107.79E5727429C0@ypsilon.sirena.org.uk>
+References: <1568793876-9009-4-git-send-email-gareth.williams.jx@renesas.com>
+Cc: Gareth Williams <gareth.williams.jx@renesas.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>
+To: Phil Edworthy <phil.edworthy@renesas.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <225b76ca-a367-4bef-d8ce-42c7af9242a5@web.de>
+In-Reply-To: <1568793876-9009-4-git-send-email-gareth.williams.jx@renesas.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: mediatek: Use devm_platform_ioremap_resource() in mtk_spi_slave_probe()
+   spi: dw: Add basic runtime PM support
 
 has been applied to the spi tree at
 
@@ -43,53 +40,65 @@ to this mail.
 Thanks,
 Mark
 
->From 6cdcb5d394413d906773f1ae2efaa86485d6d6e1 Mon Sep 17 00:00:00 2001
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sat, 21 Sep 2019 15:12:33 +0200
-Subject: [PATCH] spi: mediatek: Use devm_platform_ioremap_resource() in
- mtk_spi_slave_probe()
+>From 1e695983251029dc0b0fc516290077539df400ff Mon Sep 17 00:00:00 2001
+From: Phil Edworthy <phil.edworthy@renesas.com>
+Date: Wed, 18 Sep 2019 09:04:35 +0100
+Subject: [PATCH] spi: dw: Add basic runtime PM support
 
-Simplify this function implementation by using a known wrapper function.
+Enable runtime PM so that the clock used to access the registers in the
+peripheral is turned on using a clock domain.
 
-This issue was detected by using the Coccinelle software.
-
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Link: https://lore.kernel.org/r/225b76ca-a367-4bef-d8ce-42c7af9242a5@web.de
+Signed-off-by: Phil Edworthy <phil.edworthy@renesas.com>
+Signed-off-by: Gareth Williams <gareth.williams.jx@renesas.com>
+Link: https://lore.kernel.org/r/1568793876-9009-4-git-send-email-gareth.williams.jx@renesas.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-slave-mt27xx.c | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ drivers/spi/spi-dw.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/spi/spi-slave-mt27xx.c b/drivers/spi/spi-slave-mt27xx.c
-index 61bc43b0fe57..44edaa360405 100644
---- a/drivers/spi/spi-slave-mt27xx.c
-+++ b/drivers/spi/spi-slave-mt27xx.c
-@@ -368,7 +368,6 @@ static int mtk_spi_slave_probe(struct platform_device *pdev)
- {
- 	struct spi_controller *ctlr;
- 	struct mtk_spi_slave *mdata;
--	struct resource *res;
- 	int irq, ret;
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index 9a49e073e8b7..54ed6eb3e252 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -10,6 +10,7 @@
+ #include <linux/module.h>
+ #include <linux/highmem.h>
+ #include <linux/delay.h>
++#include <linux/pm_runtime.h>
+ #include <linux/slab.h>
+ #include <linux/spi/spi.h>
  
- 	ctlr = spi_alloc_slave(&pdev->dev, sizeof(*mdata));
-@@ -392,17 +391,8 @@ static int mtk_spi_slave_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, ctlr);
+@@ -493,10 +494,13 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+ 	master->dev.of_node = dev->of_node;
+ 	master->dev.fwnode = dev->fwnode;
+ 	master->flags = SPI_MASTER_GPIO_SS;
++	master->auto_runtime_pm = true;
  
- 	init_completion(&mdata->xfer_done);
--
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!res) {
--		ret = -ENODEV;
--		dev_err(&pdev->dev, "failed to determine base address\n");
--		goto err_put_ctlr;
--	}
--
- 	mdata->dev = &pdev->dev;
--
--	mdata->base = devm_ioremap_resource(&pdev->dev, res);
-+	mdata->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(mdata->base)) {
- 		ret = PTR_ERR(mdata->base);
- 		goto err_put_ctlr;
+ 	if (dws->set_cs)
+ 		master->set_cs = dws->set_cs;
+ 
++	pm_runtime_enable(dev);
++
+ 	/* Basic HW init */
+ 	spi_hw_init(dev, dws);
+ 
+@@ -525,6 +529,7 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+ 	spi_enable_chip(dws, 0);
+ 	free_irq(dws->irq, master);
+ err_free_master:
++	pm_runtime_disable(dev);
+ 	spi_controller_put(master);
+ 	return ret;
+ }
+@@ -539,6 +544,9 @@ void dw_spi_remove_host(struct dw_spi *dws)
+ 
+ 	spi_shutdown_chip(dws);
+ 
++	if (dws->master)
++		pm_runtime_disable(&dws->master->dev);
++
+ 	free_irq(dws->irq, dws->master);
+ }
+ EXPORT_SYMBOL_GPL(dw_spi_remove_host);
 -- 
 2.20.1

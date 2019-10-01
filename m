@@ -1,24 +1,22 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "dt-bindings: snps,dw-apb-ssi: Add optional clock domain information" to the spi tree
-Date: Tue,  1 Oct 2019 12:41:07 +0100 (BST)
-Message-ID: <20191001114107.ACF3F2742A10@ypsilon.sirena.org.uk>
-References: <1568793876-9009-3-git-send-email-gareth.williams.jx@renesas.com>
-Cc: devicetree@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Phil Edworthy <phil.edworthy@renesas.com>,
-        Rob Herring <robh+dt@kernel.org>
-To: Gareth Williams <gareth.williams.jx@renesas.com>
+Subject: Applied "spi: lantiq-ssc: Use devm_platform_ioremap_resource() in lantiq_ssc_probe()" to the spi tree
+Date: Tue,  1 Oct 2019 12:41:06 +0100 (BST)
+Message-ID: <20191001114106.6CD7D2742A30@ypsilon.sirena.org.uk>
+References: <230495a7-b754-bc6a-05e0-059a6b6c643d@web.de>
+Cc: Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        kernel-janitors@vger.kernel.org, linux-spi@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        Mark Brown <broonie@kernel.org>
+To: Markus Elfring <elfring@users.sourceforge.net>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1568793876-9009-3-git-send-email-gareth.williams.jx@renesas.com>
+In-Reply-To: <230495a7-b754-bc6a-05e0-059a6b6c643d@web.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   dt-bindings: snps,dw-apb-ssi: Add optional clock domain information
+   spi: lantiq-ssc: Use devm_platform_ioremap_resource() in lantiq_ssc_probe()
 
 has been applied to the spi tree at
 
@@ -43,35 +41,57 @@ to this mail.
 Thanks,
 Mark
 
->From 47cf13bc763c891c6192184c5e5aa8c1b331b2ff Mon Sep 17 00:00:00 2001
-From: Gareth Williams <gareth.williams.jx@renesas.com>
-Date: Wed, 18 Sep 2019 09:04:34 +0100
-Subject: [PATCH] dt-bindings: snps,dw-apb-ssi: Add optional clock domain
- information
+>From 22262695f46b68659ba98a12e275df388c74968c Mon Sep 17 00:00:00 2001
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Sat, 21 Sep 2019 14:16:49 +0200
+Subject: [PATCH] spi: lantiq-ssc: Use devm_platform_ioremap_resource() in
+ lantiq_ssc_probe()
 
-Note in the bindings documentation that pclk should be renamed if a clock
-domain is used to enable the optional bus clock.
+Simplify this function implementation by using a known wrapper function.
 
-Signed-off-by: Gareth Williams <gareth.williams.jx@renesas.com>
-Link: https://lore.kernel.org/r/1568793876-9009-3-git-send-email-gareth.williams.jx@renesas.com
+This issue was detected by using the Coccinelle software.
+
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Link: https://lore.kernel.org/r/230495a7-b754-bc6a-05e0-059a6b6c643d@web.de
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-lantiq-ssc.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
-index f54c8c36395e..3ed08ee9feba 100644
---- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
-+++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
-@@ -16,7 +16,8 @@ Required properties:
- Optional properties:
- - clock-names : Contains the names of the clocks:
-     "ssi_clk", for the core clock used to generate the external SPI clock.
--    "pclk", the interface clock, required for register access.
-+    "pclk", the interface clock, required for register access. If a clock domain
-+     used to enable this clock then it should be named "pclk_clkdomain".
- - cs-gpios : Specifies the gpio pins to be used for chipselects.
- - num-cs : The number of chipselects. If omitted, this will default to 4.
- - reg-io-width : The I/O register width (in bytes) implemented by this
+diff --git a/drivers/spi/spi-lantiq-ssc.c b/drivers/spi/spi-lantiq-ssc.c
+index 9dfe8b04e688..1fd7ee53d451 100644
+--- a/drivers/spi/spi-lantiq-ssc.c
++++ b/drivers/spi/spi-lantiq-ssc.c
+@@ -797,7 +797,6 @@ static int lantiq_ssc_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+ 	struct spi_master *master;
+-	struct resource *res;
+ 	struct lantiq_ssc_spi *spi;
+ 	const struct lantiq_ssc_hwcfg *hwcfg;
+ 	const struct of_device_id *match;
+@@ -812,12 +811,6 @@ static int lantiq_ssc_probe(struct platform_device *pdev)
+ 	}
+ 	hwcfg = match->data;
+ 
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!res) {
+-		dev_err(dev, "failed to get resources\n");
+-		return -ENXIO;
+-	}
+-
+ 	rx_irq = platform_get_irq_byname(pdev, LTQ_SPI_RX_IRQ_NAME);
+ 	if (rx_irq < 0)
+ 		return -ENXIO;
+@@ -839,8 +832,7 @@ static int lantiq_ssc_probe(struct platform_device *pdev)
+ 	spi->dev = dev;
+ 	spi->hwcfg = hwcfg;
+ 	platform_set_drvdata(pdev, spi);
+-
+-	spi->regbase = devm_ioremap_resource(dev, res);
++	spi->regbase = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(spi->regbase)) {
+ 		err = PTR_ERR(spi->regbase);
+ 		goto err_master_put;
 -- 
 2.20.1

@@ -1,24 +1,24 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: mediatek: Use devm_platform_ioremap_resource() in mtk_spi_probe()" to the spi tree
-Date: Tue,  1 Oct 2019 12:41:06 +0100 (BST)
-Message-ID: <20191001114106.2FA1C2742A10@ypsilon.sirena.org.uk>
-References: <478e0df1-e800-8cf1-f9b3-d72f8e26aa0b@web.de>
-Cc: kernel-janitors@vger.kernel.org,
-        Leilk Liu <leilk.liu@mediatek.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-spi@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
+Subject: Applied "spi: atmel: Remove AVR32 leftover" to the spi tree
+Date: Tue,  1 Oct 2019 12:41:07 +0100 (BST)
+Message-ID: <20191001114107.0FAEC2742A10@ypsilon.sirena.org.uk>
+References: <20190919154034.7489-1-gregory.clement@bootlin.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
         Mark Brown <broonie@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>
-To: Markus Elfring <elfring@users.sourceforge.net>
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+To: Gregory CLEMENT <gregory.clement@bootlin.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <478e0df1-e800-8cf1-f9b3-d72f8e26aa0b@web.de>
+In-Reply-To: <20190919154034.7489-1-gregory.clement@bootlin.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: mediatek: Use devm_platform_ioremap_resource() in mtk_spi_probe()
+   spi: atmel: Remove AVR32 leftover
 
 has been applied to the spi tree at
 
@@ -43,51 +43,63 @@ to this mail.
 Thanks,
 Mark
 
->From 5dd381e71994ab554f711afe89b5a6157bdcd19d Mon Sep 17 00:00:00 2001
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sat, 21 Sep 2019 14:45:40 +0200
-Subject: [PATCH] spi: mediatek: Use devm_platform_ioremap_resource() in
- mtk_spi_probe()
+>From e61bb114d41ddf6ae5bf05a0109fc13116550c7d Mon Sep 17 00:00:00 2001
+From: Gregory CLEMENT <gregory.clement@bootlin.com>
+Date: Thu, 19 Sep 2019 17:40:34 +0200
+Subject: [PATCH] spi: atmel: Remove AVR32 leftover
 
-Simplify this function implementation by using a known wrapper function.
+AV32 support has been from the kernel a few release ago, but there was
+still some specific macro for this architecture in this driver. Lets
+remove it.
 
-This issue was detected by using the Coccinelle software.
-
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Link: https://lore.kernel.org/r/478e0df1-e800-8cf1-f9b3-d72f8e26aa0b@web.de
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Link: https://lore.kernel.org/r/20190919154034.7489-1-gregory.clement@bootlin.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-mt65xx.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ drivers/spi/spi-atmel.c | 24 ------------------------
+ 1 file changed, 24 deletions(-)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 6888a4dcff6d..25fe149a8d9a 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -619,7 +619,6 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 	struct spi_master *master;
- 	struct mtk_spi *mdata;
- 	const struct of_device_id *of_id;
--	struct resource *res;
- 	int i, irq, ret, addr_bits;
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index acf318e7330c..3ed5e663da6f 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -222,37 +222,13 @@
+ 	  | SPI_BF(name, value))
  
- 	master = spi_alloc_master(&pdev->dev, sizeof(*mdata));
-@@ -682,15 +681,7 @@ static int mtk_spi_probe(struct platform_device *pdev)
- 	}
+ /* Register access macros */
+-#ifdef CONFIG_AVR32
+-#define spi_readl(port, reg) \
+-	__raw_readl((port)->regs + SPI_##reg)
+-#define spi_writel(port, reg, value) \
+-	__raw_writel((value), (port)->regs + SPI_##reg)
+-
+-#define spi_readw(port, reg) \
+-	__raw_readw((port)->regs + SPI_##reg)
+-#define spi_writew(port, reg, value) \
+-	__raw_writew((value), (port)->regs + SPI_##reg)
+-
+-#define spi_readb(port, reg) \
+-	__raw_readb((port)->regs + SPI_##reg)
+-#define spi_writeb(port, reg, value) \
+-	__raw_writeb((value), (port)->regs + SPI_##reg)
+-#else
+ #define spi_readl(port, reg) \
+ 	readl_relaxed((port)->regs + SPI_##reg)
+ #define spi_writel(port, reg, value) \
+ 	writel_relaxed((value), (port)->regs + SPI_##reg)
+-
+-#define spi_readw(port, reg) \
+-	readw_relaxed((port)->regs + SPI_##reg)
+ #define spi_writew(port, reg, value) \
+ 	writew_relaxed((value), (port)->regs + SPI_##reg)
  
- 	platform_set_drvdata(pdev, master);
--
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!res) {
--		ret = -ENODEV;
--		dev_err(&pdev->dev, "failed to determine base address\n");
--		goto err_put_master;
--	}
--
--	mdata->base = devm_ioremap_resource(&pdev->dev, res);
-+	mdata->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(mdata->base)) {
- 		ret = PTR_ERR(mdata->base);
- 		goto err_put_master;
+-#define spi_readb(port, reg) \
+-	readb_relaxed((port)->regs + SPI_##reg)
+-#define spi_writeb(port, reg, value) \
+-	writeb_relaxed((value), (port)->regs + SPI_##reg)
+-#endif
+ /* use PIO for small transfers, avoiding DMA setup/teardown overhead and
+  * cache operations; better heuristics consider wordsize and bitrate.
+  */
 -- 
 2.20.1

@@ -1,24 +1,25 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-fsl-qspi: Introduce variable to fix different invalid master Id" to the spi tree
+Subject: Applied "spi: gpio: prevent memory leak in spi_gpio_probe" to the spi tree
 Date: Tue,  1 Oct 2019 18:57:01 +0100 (BST)
-Message-ID: <20191001175701.2E5512742A10@ypsilon.sirena.org.uk>
-References: <1569920356-8953-1-git-send-email-kuldeep.singh@nxp.com>
-Cc: broonie@kernel.org, han.xu@nxp.com, linux-kernel@vger.kernel.org,
+Message-ID: <20191001175701.A2CF127429C0@ypsilon.sirena.org.uk>
+References: <20190930205241.5483-1-navid.emamdoost@gmail.com>
+Cc: "Cc:"@sirena.co.uk, "Cc:"@sirena.co.uk, emamd001@umn.edu,
+        kjlu@umn.edu, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Suresh Gupta <suresh.gupta@nxp.com>
-To: Kuldeep Singh <kuldeep.singh@nxp.com>
+        smccaman@umn.edu
+To: Navid Emamdoost <navid.emamdoost@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1569920356-8953-1-git-send-email-kuldeep.singh@nxp.com>
+In-Reply-To: <20190930205241.5483-1-navid.emamdoost@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spi-fsl-qspi: Introduce variable to fix different invalid master Id
+   spi: gpio: prevent memory leak in spi_gpio_probe
 
 has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.4
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
@@ -39,115 +40,39 @@ to this mail.
 Thanks,
 Mark
 
->From 16c3e058036a6f5be542962e487d428518edcb45 Mon Sep 17 00:00:00 2001
-From: Kuldeep Singh <kuldeep.singh@nxp.com>
-Date: Tue, 1 Oct 2019 14:29:16 +0530
-Subject: [PATCH] spi: spi-fsl-qspi: Introduce variable to fix different
- invalid master Id
+>From d3b0ffa1d75d5305ebe34735598993afbb8a869d Mon Sep 17 00:00:00 2001
+From: Navid Emamdoost <navid.emamdoost@gmail.com>
+Date: Mon, 30 Sep 2019 15:52:40 -0500
+Subject: [PATCH] spi: gpio: prevent memory leak in spi_gpio_probe
 
-Different platforms have different Master with different SourceID on
-AHB bus. The 0X0E Master ID is used by cluster 3 in case of LS2088A.
-So, patch introduce an invalid master id variable to fix invalid
-mastered on different platforms.
+In spi_gpio_probe an SPI master is allocated via spi_alloc_master, but
+this controller should be released if devm_add_action_or_reset fails,
+otherwise memory leaks. In order to avoid leak spi_contriller_put must
+be called in case of failure for devm_add_action_or_reset.
 
-Signed-off-by: Suresh Gupta <suresh.gupta@nxp.com>
-Signed-off-by: Kuldeep Singh <kuldeep.singh@nxp.com>
-Link: https://lore.kernel.org/r/1569920356-8953-1-git-send-email-kuldeep.singh@nxp.com
+Fixes: 8b797490b4db ("spi: gpio: Make sure spi_master_put() is called in every error path")
+Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
+Link: https://lore.kernel.org/r/20190930205241.5483-1-navid.emamdoost@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-fsl-qspi.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/spi/spi-gpio.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
-index c02e24c01136..51385b0927e3 100644
---- a/drivers/spi/spi-fsl-qspi.c
-+++ b/drivers/spi/spi-fsl-qspi.c
-@@ -63,6 +63,11 @@
- #define QUADSPI_IPCR			0x08
- #define QUADSPI_IPCR_SEQID(x)		((x) << 24)
+diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
+index 1d3e23ec20a6..f9c5bbb74714 100644
+--- a/drivers/spi/spi-gpio.c
++++ b/drivers/spi/spi-gpio.c
+@@ -371,8 +371,10 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
  
-+#define QUADSPI_BUF0CR                  0x10
-+#define QUADSPI_BUF1CR                  0x14
-+#define QUADSPI_BUF2CR                  0x18
-+#define QUADSPI_BUFXCR_INVALID_MSTRID   0xe
-+
- #define QUADSPI_BUF3CR			0x1c
- #define QUADSPI_BUF3CR_ALLMST_MASK	BIT(31)
- #define QUADSPI_BUF3CR_ADATSZ(x)	((x) << 8)
-@@ -184,6 +189,7 @@
- struct fsl_qspi_devtype_data {
- 	unsigned int rxfifo;
- 	unsigned int txfifo;
-+	int invalid_mstrid;
- 	unsigned int ahb_buf_size;
- 	unsigned int quirks;
- 	bool little_endian;
-@@ -192,6 +198,7 @@ struct fsl_qspi_devtype_data {
- static const struct fsl_qspi_devtype_data vybrid_data = {
- 	.rxfifo = SZ_128,
- 	.txfifo = SZ_64,
-+	.invalid_mstrid = QUADSPI_BUFXCR_INVALID_MSTRID,
- 	.ahb_buf_size = SZ_1K,
- 	.quirks = QUADSPI_QUIRK_SWAP_ENDIAN,
- 	.little_endian = true,
-@@ -200,6 +207,7 @@ static const struct fsl_qspi_devtype_data vybrid_data = {
- static const struct fsl_qspi_devtype_data imx6sx_data = {
- 	.rxfifo = SZ_128,
- 	.txfifo = SZ_512,
-+	.invalid_mstrid = QUADSPI_BUFXCR_INVALID_MSTRID,
- 	.ahb_buf_size = SZ_1K,
- 	.quirks = QUADSPI_QUIRK_4X_INT_CLK | QUADSPI_QUIRK_TKT245618,
- 	.little_endian = true,
-@@ -208,6 +216,7 @@ static const struct fsl_qspi_devtype_data imx6sx_data = {
- static const struct fsl_qspi_devtype_data imx7d_data = {
- 	.rxfifo = SZ_128,
- 	.txfifo = SZ_512,
-+	.invalid_mstrid = QUADSPI_BUFXCR_INVALID_MSTRID,
- 	.ahb_buf_size = SZ_1K,
- 	.quirks = QUADSPI_QUIRK_TKT253890 | QUADSPI_QUIRK_4X_INT_CLK,
- 	.little_endian = true,
-@@ -216,6 +225,7 @@ static const struct fsl_qspi_devtype_data imx7d_data = {
- static const struct fsl_qspi_devtype_data imx6ul_data = {
- 	.rxfifo = SZ_128,
- 	.txfifo = SZ_512,
-+	.invalid_mstrid = QUADSPI_BUFXCR_INVALID_MSTRID,
- 	.ahb_buf_size = SZ_1K,
- 	.quirks = QUADSPI_QUIRK_TKT253890 | QUADSPI_QUIRK_4X_INT_CLK,
- 	.little_endian = true,
-@@ -224,6 +234,7 @@ static const struct fsl_qspi_devtype_data imx6ul_data = {
- static const struct fsl_qspi_devtype_data ls1021a_data = {
- 	.rxfifo = SZ_128,
- 	.txfifo = SZ_64,
-+	.invalid_mstrid = QUADSPI_BUFXCR_INVALID_MSTRID,
- 	.ahb_buf_size = SZ_1K,
- 	.quirks = 0,
- 	.little_endian = false,
-@@ -233,6 +244,7 @@ static const struct fsl_qspi_devtype_data ls2080a_data = {
- 	.rxfifo = SZ_128,
- 	.txfifo = SZ_64,
- 	.ahb_buf_size = SZ_1K,
-+	.invalid_mstrid = 0x0,
- 	.quirks = QUADSPI_QUIRK_TKT253890 | QUADSPI_QUIRK_BASE_INTERNAL,
- 	.little_endian = true,
- };
-@@ -615,6 +627,7 @@ static int fsl_qspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 	void __iomem *base = q->iobase;
- 	u32 addr_offset = 0;
- 	int err = 0;
-+	int invalid_mstrid = q->devtype_data->invalid_mstrid;
+ 	status = devm_add_action_or_reset(&pdev->dev, spi_gpio_put, master);
+-	if (status)
++	if (status) {
++		spi_master_put(master);
+ 		return status;
++	}
  
- 	mutex_lock(&q->lock);
- 
-@@ -638,6 +651,10 @@ static int fsl_qspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 	qspi_writel(q, QUADSPI_SPTRCLR_BFPTRC | QUADSPI_SPTRCLR_IPPTRC,
- 		    base + QUADSPI_SPTRCLR);
- 
-+	qspi_writel(q, invalid_mstrid, base + QUADSPI_BUF0CR);
-+	qspi_writel(q, invalid_mstrid, base + QUADSPI_BUF1CR);
-+	qspi_writel(q, invalid_mstrid, base + QUADSPI_BUF2CR);
-+
- 	fsl_qspi_prepare_lut(q, op);
- 
- 	/*
+ 	if (of_id)
+ 		status = spi_gpio_probe_dt(pdev, master);
 -- 
 2.20.1

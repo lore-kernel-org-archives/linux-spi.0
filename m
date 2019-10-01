@@ -1,76 +1,61 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: dw: Add compatible string for Renesas RZ/N1 SPI Controller" to the spi tree
-Date: Tue,  1 Oct 2019 12:41:07 +0100 (BST)
-Message-ID: <20191001114107.44C832742A30@ypsilon.sirena.org.uk>
-References: <1568793876-9009-5-git-send-email-gareth.williams.jx@renesas.com>
-Cc: Gareth Williams <gareth.williams.jx@renesas.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>
-To: Phil Edworthy <phil.edworthy@renesas.com>
+Subject: Re: [PATCH] spi: Avoid calling spi_slave_abort() with kfreed spidev
+Date: Tue, 1 Oct 2019 12:41:08 +0100
+Message-ID: <20191001114108.GA4786@sirena.co.uk>
+References: <20191001090657.25721-1-lukma@denx.de>
+ <CAMuHMdWHTaPkzTdzz-j1rFeT=aAEG+J46fgKiPYrXoAR_DTvtQ@mail.gmail.com>
+ <20191001113420.032dbfef@jawa>
+ <CAMuHMdWh7xPZqp4J1qG22dXk_g=Q1WtQ9Xu-r3wiFOL3kW+WBg@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="LZvS9be/3tNcYl/X"
+Cc: Lukasz Majewski <lukma@denx.de>,
+        Colin Ian King <colin.king@canonical.com>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kbuild test robot <lkp@intel.com>,
+        Julia Lawall <julia.lawall@lip6.fr>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1568793876-9009-5-git-send-email-gareth.williams.jx@renesas.com>
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdWh7xPZqp4J1qG22dXk_g=Q1WtQ9Xu-r3wiFOL3kW+WBg@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: dw: Add compatible string for Renesas RZ/N1 SPI Controller
+--LZvS9be/3tNcYl/X
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-has been applied to the spi tree at
+On Tue, Oct 01, 2019 at 12:00:07PM +0200, Geert Uytterhoeven wrote:
+> On Tue, Oct 1, 2019 at 11:34 AM Lukasz Majewski <lukma@denx.de> wrote:
+> > > On Tue, Oct 1, 2019 at 11:07 AM Lukasz Majewski <lukma@denx.de> wrote:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
+> > The if (!dofree) prevents from calling spi_slave_abort() when
+> > spidev->spi == NULL and spidev is kfree'd.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> If spidev->users != 0, the block checking spidev->spi == NULL is never
+> executed, and spi_slave_abort() will be called.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> I'm wondering if spidev->spi can be NULL if spidev->users is still positive.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+It *shouldn't* be.  I think we have other problems if it is.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+--LZvS9be/3tNcYl/X
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thanks,
-Mark
+-----BEGIN PGP SIGNATURE-----
 
->From 3ade3a37bdd77319dd7865228402cf1669c9b678 Mon Sep 17 00:00:00 2001
-From: Phil Edworthy <phil.edworthy@renesas.com>
-Date: Wed, 18 Sep 2019 09:04:36 +0100
-Subject: [PATCH] spi: dw: Add compatible string for Renesas RZ/N1 SPI
- Controller
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl2TO1MACgkQJNaLcl1U
+h9Co+gf9EMfuNyB92VOoFo9okqWdMzDPwyTkYJyk6HSgVicME9grYfHDe81a7GjJ
+9Dph4fdIVAcDkIFL/MbVPi3hsJCKFy+8QV1htiKYl32T9J3fKWROCKUD67c+PDwb
+6LV+0EZCb5He4bdw3/CbrMsLhDTMedQL0/smyCNVcfj9WNeRBX64tv+48sE6lCaZ
+bIGvhUppBJfIjDUU9hmKBweOp7XdMvGQE8SZmhruhgVEl/XICBkL73hYrHyW0QnJ
+6FTJmaYLaW8nTDsk9XEiCM/AV8yC+hGdQhlEg4VxiGJ+1sm3QfXvyqYVQo7umAkV
+hNXIGjDoZ61XFt7E/0SnzKLru/taCg==
+=mQ+T
+-----END PGP SIGNATURE-----
 
-The Renesas RZ/N1 SPI Controller is based on the Synopsys DW SSI, but has
-additional registers for software CS control and DMA. This patch does not
-address the changes required for DMA support, it simply adds the compatible
-string. The CS registers are not needed as Linux can use gpios for the CS
-signals.
-
-Signed-off-by: Gareth Williams <gareth.williams.jx@renesas.com>
-Signed-off-by: Phil Edworthy <phil.edworthy@renesas.com>
-Link: https://lore.kernel.org/r/1568793876-9009-5-git-send-email-gareth.williams.jx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-dw-mmio.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index bd46fca3f094..b5ce8bd58d9e 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -223,6 +223,7 @@ static const struct of_device_id dw_spi_mmio_of_match[] = {
- 	{ .compatible = "mscc,ocelot-spi", .data = dw_spi_mscc_ocelot_init},
- 	{ .compatible = "mscc,jaguar2-spi", .data = dw_spi_mscc_jaguar2_init},
- 	{ .compatible = "amazon,alpine-dw-apb-ssi", .data = dw_spi_alpine_init},
-+	{ .compatible = "renesas,rzn1-spi", },
- 	{ /* end of table */}
- };
- MODULE_DEVICE_TABLE(of, dw_spi_mmio_of_match);
--- 
-2.20.1
+--LZvS9be/3tNcYl/X--

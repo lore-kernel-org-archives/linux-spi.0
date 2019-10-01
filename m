@@ -1,19 +1,19 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: fsl-lpspi: clean up indentation issue" to the spi tree
+Subject: Applied "spi: Introduce dspi_slave_abort() function for NXP's dspi SPI driver" to the spi tree
 Date: Tue,  1 Oct 2019 12:41:05 +0100 (BST)
-Message-ID: <20191001114105.4111927429C0@ypsilon.sirena.org.uk>
-References: <20190926113701.26986-1-colin.king@canonical.com>
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+Message-ID: <20191001114105.7830D2742A10@ypsilon.sirena.org.uk>
+References: <20190924110547.14770-3-lukma@denx.de>
+Cc: krzk@kernel.org, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
-To: Colin Ian King <colin.king@canonical.com>
+To: Lukasz Majewski <lukma@denx.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190926113701.26986-1-colin.king@canonical.com>
+In-Reply-To: <20190924110547.14770-3-lukma@denx.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: fsl-lpspi: clean up indentation issue
+   spi: Introduce dspi_slave_abort() function for NXP's dspi SPI driver
 
 has been applied to the spi tree at
 
@@ -38,32 +38,64 @@ to this mail.
 Thanks,
 Mark
 
->From 1b0a2b2d3ccb98cf998816d87f7193139d54579e Mon Sep 17 00:00:00 2001
-From: Colin Ian King <colin.king@canonical.com>
-Date: Thu, 26 Sep 2019 12:37:01 +0100
-Subject: [PATCH] spi: fsl-lpspi: clean up indentation issue
+>From f4b323905d8b3e28b2a9cef9325dbec1b0f7f064 Mon Sep 17 00:00:00 2001
+From: Lukasz Majewski <lukma@denx.de>
+Date: Tue, 24 Sep 2019 13:05:47 +0200
+Subject: [PATCH] spi: Introduce dspi_slave_abort() function for NXP's dspi SPI
+ driver
 
-The complete call is indented incorrectly, remove the extraneous tabs.
+This change provides the dspi_slave_abort() function, which is a callback
+for slave_abort() method of SPI controller generic driver.
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Link: https://lore.kernel.org/r/20190926113701.26986-1-colin.king@canonical.com
+As in the SPI slave mode the transmission is driven by master, any
+distortion may cause the slave to enter undefined internal state.
+To avoid this problem the dspi_slave_abort() terminates all pending and
+ongoing DMA transactions (with sync) and clears internal FIFOs.
+
+Signed-off-by: Lukasz Majewski <lukma@denx.de>
+Link: https://lore.kernel.org/r/20190924110547.14770-3-lukma@denx.de
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-fsl-dspi.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index d08e9324140e..5efd73cd0ead 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -779,7 +779,7 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id)
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index bec758e978fb..2c0f211eed87 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -1006,6 +1006,25 @@ static void dspi_init(struct fsl_dspi *dspi)
+ 			     SPI_CTARE_FMSZE(0) | SPI_CTARE_DTCP(1));
+ }
  
- 	if (temp_SR & SR_FCF && (temp_IER & IER_FCIE)) {
- 		writel(SR_FCF, fsl_lpspi->base + IMX7ULP_SR);
--			complete(&fsl_lpspi->xfer_done);
-+		complete(&fsl_lpspi->xfer_done);
- 		return IRQ_HANDLED;
- 	}
++static int dspi_slave_abort(struct spi_master *master)
++{
++	struct fsl_dspi *dspi = spi_master_get_devdata(master);
++
++	/*
++	 * Terminate all pending DMA transactions for the SPI working
++	 * in SLAVE mode.
++	 */
++	dmaengine_terminate_sync(dspi->dma->chan_rx);
++	dmaengine_terminate_sync(dspi->dma->chan_tx);
++
++	/* Clear the internal DSPI RX and TX FIFO buffers */
++	regmap_update_bits(dspi->regmap, SPI_MCR,
++			   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF,
++			   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF);
++
++	return 0;
++}
++
+ static int dspi_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *np = pdev->dev.of_node;
+@@ -1030,6 +1049,7 @@ static int dspi_probe(struct platform_device *pdev)
+ 	ctlr->dev.of_node = pdev->dev.of_node;
  
+ 	ctlr->cleanup = dspi_cleanup;
++	ctlr->slave_abort = dspi_slave_abort;
+ 	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
+ 
+ 	pdata = dev_get_platdata(&pdev->dev);
 -- 
 2.20.1

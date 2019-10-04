@@ -1,7 +1,7 @@
 From: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
-Subject: [PATCH 1/7] dt-bindings: watchdog: renesas-wdt: Document r8a774b1 support
-Date: Fri,  4 Oct 2019 09:35:27 +0100
-Message-ID: <1570178133-21532-2-git-send-email-fabrizio.castro@bp.renesas.com>
+Subject: [PATCH 2/7] dt-bindings: spi: sh-msiof: Add r8a774b1 support
+Date: Fri,  4 Oct 2019 09:35:28 +0100
+Message-ID: <1570178133-21532-3-git-send-email-fabrizio.castro@bp.renesas.com>
 References: <1570178133-21532-1-git-send-email-fabrizio.castro@bp.renesas.com>
 Cc: Fabrizio Castro <fabrizio.castro@bp.renesas.com>,
         Bjorn Helgaas <bhelgaas@google.com>,
@@ -26,25 +26,28 @@ In-Reply-To: <1570178133-21532-1-git-send-email-fabrizio.castro@bp.renesas.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-RZ/G2N (a.k.a. R8A774B1) watchdog implementation is compatible
-with R-Car Gen3, therefore add the relevant documentation.
+Document RZ/G2N (R8A774B1) SoC bindings.
 
 Signed-off-by: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
+
 ---
- Documentation/devicetree/bindings/watchdog/renesas,wdt.txt | 1 +
+
+This patch depends on https://patchwork.kernel.org/patch/11162283/
+---
+ Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/watchdog/renesas,wdt.txt b/Documentation/devicetree/bindings/watchdog/renesas,wdt.txt
-index 9f365c1..a5bf04d 100644
---- a/Documentation/devicetree/bindings/watchdog/renesas,wdt.txt
-+++ b/Documentation/devicetree/bindings/watchdog/renesas,wdt.txt
-@@ -10,6 +10,7 @@ Required properties:
- 		 - "renesas,r8a7745-wdt" (RZ/G1E)
- 		 - "renesas,r8a77470-wdt" (RZ/G1C)
- 		 - "renesas,r8a774a1-wdt" (RZ/G2M)
-+		 - "renesas,r8a774b1-wdt" (RZ/G2N)
- 		 - "renesas,r8a774c0-wdt" (RZ/G2E)
- 	         - "renesas,r8a7790-wdt" (R-Car H2)
- 	         - "renesas,r8a7791-wdt" (R-Car M2-W)
+diff --git a/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml b/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
+index 4afaa48..b6c1dd2 100644
+--- a/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
++++ b/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
+@@ -35,6 +35,7 @@ properties:
+       - items:
+           - enum:
+               - renesas,msiof-r8a774a1      # RZ/G2M
++              - renesas,msiof-r8a774b1      # RZ/G2N
+               - renesas,msiof-r8a774c0      # RZ/G2E
+               - renesas,msiof-r8a7795       # R-Car H3
+               - renesas,msiof-r8a7796       # R-Car M3-W
 -- 
 2.7.4

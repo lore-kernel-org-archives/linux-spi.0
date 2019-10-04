@@ -1,111 +1,65 @@
 From: Stephen Boyd <swboyd@chromium.org>
-Subject: [PATCH 00/10] Stop NULLifying match pointer in of_match_device()
-Date: Fri,  4 Oct 2019 14:43:24 -0700
-Message-ID: <20191004214334.149976-1-swboyd@chromium.org>
+Subject: [PATCH 08/10] spi: gpio: Look for a device node instead of match
+Date: Fri,  4 Oct 2019 14:43:32 -0700
+Message-ID: <20191004214334.149976-9-swboyd@chromium.org>
+References: <20191004214334.149976-1-swboyd@chromium.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        alsa-devel@alsa-project.org, Andrew Lunn <andrew@lunn.ch>,
-        Arnd Bergmann <arnd@arndb.de>, Dan Murphy <dmurphy@ti.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Frank Rowand <frowand.list@gmail.com>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Jacopo Mondi <jacopo@jmondi.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Jean Delvare <jdelvare@suse.com>, Jiri Slaby <jslaby@suse.co
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20191004214334.149976-1-swboyd@chromium.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-of_match_device() uses of_match_ptr() to make the match table argument
-NULL via the pre-processor when CONFIG_OF=n. This makes life harder for
-compilers who think that match tables are never used and warn about
-unused variables when CONFIG_OF=n. This series changes various callers
-to use of_device_get_match_data() instead, which doesn't have this
-problem, and removes the of_match_ptr() usage from of_match_device() so
-that the compiler can stop complaining about unused variables. It will
-do dead code elimination instead and remove the match table if it isn't
-actually used.
+This driver doesn't do anything with the match for the device node. The
+logic is the same as looking to see if a device node exists or not
+because this driver wouldn't probe unless there is a device node match
+when the device is created from DT. Just test for the presence of the
+device node to simplify and avoid referencing a potentially undefined
+match table when CONFIG_OF=n.
 
-Huge Cc list!
-
-Cc: Alessandro Zummo <a.zummo@towertech.it>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Alexandre Torgue <alexandre.torgue@st.com>
-Cc: <alsa-devel@alsa-project.org>
-Cc: Andrew Lunn <andrew@lunn.ch>
 Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Dan Murphy <dmurphy@ti.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Frank Rowand <frowand.list@gmail.com>
 Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Gregory Clement <gregory.clement@bootlin.com>
-Cc: Grygorii Strashko <grygorii.strashko@ti.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Cc: Jacopo Mondi <jacopo@jmondi.org>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Jason Cooper <jason@lakedaemon.net>
-Cc: Jean Delvare <jdelvare@suse.com>
-Cc: Jiri Slaby <jslaby@suse.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>
-Cc: <linux-hwmon@vger.kernel.org>
-Cc: <linux-leds@vger.kernel.org>
-Cc: <linux-media@vger.kernel.org>
-Cc: <linux-omap@vger.kernel.org>
-Cc: <linux-renesas-soc@vger.kernel.org>
-Cc: <linux-rtc@vger.kernel.org>
-Cc: <linux-serial@vger.kernel.org>
-Cc: <linux-spi@vger.kernel.org>
-Cc: <linux-usb@vger.kernel.org>
 Cc: Mark Brown <broonie@kernel.org>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Paul Cercueil <paul@crapouillou.net>
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Richard Leitner <richard.leitner@skidata.com>
-Cc: Riku Voipio <riku.voipio@iki.fi>
 Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: Takashi Iwai <tiwai@suse.com>
+Cc: Frank Rowand <frowand.list@gmail.com>
+Cc: <linux-spi@vger.kernel.org>
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+---
 
-Stephen Boyd (10):
-  leds: pca953x: Use of_device_get_match_data()
-  media: renesas-ceu: Use of_device_get_match_data()
-  rtc: armada38x: Use of_device_get_match_data()
-  drivers: net: davinci_mdio: Use of_device_get_match_data()
-  serial: stm32: Use of_device_get_match_data()
-  usb: usb251xb: Use of_device_get_match_data()
-  ASoC: jz4740: Use of_device_get_match_data()
-  spi: gpio: Look for a device node instead of match
-  hwmon: (lm70) Avoid undefined reference to match table
-  of/device: Don't NULLify match table in of_match_device() with
-    CONFIG_OF=n
+Please ack or pick for immediate merge so the last patch can be merged.
 
- drivers/hwmon/lm70.c                   |  2 +-
- drivers/leds/leds-pca9532.c            | 14 +----
- drivers/media/platform/renesas-ceu.c   |  2 +-
- drivers/net/ethernet/ti/davinci_mdio.c | 12 ++---
- drivers/rtc/rtc-armada38x.c            | 10 ++--
- drivers/spi/spi-gpio.c                 |  5 +-
- drivers/tty/serial/stm32-usart.c       | 71 ++++++++++++--------------
- drivers/tty/serial/stm32-usart.h       |  2 +-
- drivers/usb/misc/usb251xb.c            | 12 ++---
- include/linux/of_device.h              |  4 +-
- sound/soc/jz4740/jz4740-i2s.c          |  5 +-
- 11 files changed, 55 insertions(+), 84 deletions(-)
+ drivers/spi/spi-gpio.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-
-base-commit: 54ecb8f7028c5eb3d740bb82b0f1d90f2df63c5c
+diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
+index 1d3e23ec20a6..42f4d82e9c5a 100644
+--- a/drivers/spi/spi-gpio.c
++++ b/drivers/spi/spi-gpio.c
+@@ -362,9 +362,6 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 	struct spi_gpio			*spi_gpio;
+ 	struct device			*dev = &pdev->dev;
+ 	struct spi_bitbang		*bb;
+-	const struct of_device_id	*of_id;
+-
+-	of_id = of_match_device(spi_gpio_dt_ids, &pdev->dev);
+ 
+ 	master = spi_alloc_master(dev, sizeof(*spi_gpio));
+ 	if (!master)
+@@ -374,7 +371,7 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 	if (status)
+ 		return status;
+ 
+-	if (of_id)
++	if (pdev->dev.of_node)
+ 		status = spi_gpio_probe_dt(pdev, master);
+ 	else
+ 		status = spi_gpio_probe_pdata(pdev, master);
 -- 
 Sent by a computer through tubes

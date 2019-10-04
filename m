@@ -1,7 +1,8 @@
 From: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
-Subject: [PATCH 0/7] Add RZ/G2N MSIOF/RWDT/PCIEC support
-Date: Fri,  4 Oct 2019 09:35:26 +0100
-Message-ID: <1570178133-21532-1-git-send-email-fabrizio.castro@bp.renesas.com>
+Subject: [PATCH 1/7] dt-bindings: watchdog: renesas-wdt: Document r8a774b1 support
+Date: Fri,  4 Oct 2019 09:35:27 +0100
+Message-ID: <1570178133-21532-2-git-send-email-fabrizio.castro@bp.renesas.com>
+References: <1570178133-21532-1-git-send-email-fabrizio.castro@bp.renesas.com>
 Cc: Fabrizio Castro <fabrizio.castro@bp.renesas.com>,
         Bjorn Helgaas <bhelgaas@google.com>,
         Simon Horman <horms@verge.net.au>,
@@ -21,41 +22,29 @@ To: Geert Uytterhoeven <geert+renesas@glider.be>,
         Wim Van Sebroeck <wim@linux-watchdog.org>,
         Guenter Roeck <linux@roeck-us.net>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1570178133-21532-1-git-send-email-fabrizio.castro@bp.renesas.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear All,
+RZ/G2N (a.k.a. R8A774B1) watchdog implementation is compatible
+with R-Car Gen3, therefore add the relevant documentation.
 
-this series adds MSDIF/RWDT/PCIEC support to the HiHope RZ/G2N.
+Signed-off-by: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
+---
+ Documentation/devicetree/bindings/watchdog/renesas,wdt.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-This series depends on the following series and patches:
-* https://patchwork.kernel.org/cover/11166155/
-* https://patchwork.kernel.org/cover/11157129/
-* https://patchwork.kernel.org/cover/11158259/
-* https://patchwork.kernel.org/patch/11166327/
-* https://patchwork.kernel.org/cover/11171325/
-* https://patchwork.kernel.org/patch/11162283/
-
-Thanks,
-Fab
-
-Fabrizio Castro (7):
-  dt-bindings: watchdog: renesas-wdt: Document r8a774b1 support
-  dt-bindings: spi: sh-msiof: Add r8a774b1 support
-  dt-bindings: PCI: rcar: Add device tree support for r8a774b1
-  arm64: dts: renesas: r8a774b1: Add RWDT node
-  arm64: dts: renesas: r8a774b1: Add all MSIOF nodes
-  arm64: dts: renesas: r8a774b1: Add PCIe device nodes
-  arm64: dts: renesas: hihope-rzg2-ex: Let the board specific DT decide
-    about pciec1
-
- Documentation/devicetree/bindings/pci/rcar-pci.txt |   1 +
- .../devicetree/bindings/spi/renesas,sh-msiof.yaml  |   1 +
- .../devicetree/bindings/watchdog/renesas,wdt.txt   |   1 +
- arch/arm64/boot/dts/renesas/hihope-rzg2-ex.dtsi    |   4 -
- .../boot/dts/renesas/r8a774a1-hihope-rzg2m-ex.dts  |   4 +
- arch/arm64/boot/dts/renesas/r8a774b1.dtsi          | 111 ++++++++++++++++++++-
- 6 files changed, 115 insertions(+), 7 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/watchdog/renesas,wdt.txt b/Documentation/devicetree/bindings/watchdog/renesas,wdt.txt
+index 9f365c1..a5bf04d 100644
+--- a/Documentation/devicetree/bindings/watchdog/renesas,wdt.txt
++++ b/Documentation/devicetree/bindings/watchdog/renesas,wdt.txt
+@@ -10,6 +10,7 @@ Required properties:
+ 		 - "renesas,r8a7745-wdt" (RZ/G1E)
+ 		 - "renesas,r8a77470-wdt" (RZ/G1C)
+ 		 - "renesas,r8a774a1-wdt" (RZ/G2M)
++		 - "renesas,r8a774b1-wdt" (RZ/G2N)
+ 		 - "renesas,r8a774c0-wdt" (RZ/G2E)
+ 	         - "renesas,r8a7790-wdt" (R-Car H2)
+ 	         - "renesas,r8a7791-wdt" (R-Car M2-W)
 -- 
 2.7.4

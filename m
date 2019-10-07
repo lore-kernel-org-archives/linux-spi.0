@@ -1,65 +1,135 @@
-From: Stephen Boyd <swboyd@chromium.org>
-Subject: [PATCH 08/10] spi: gpio: Look for a device node instead of match
-Date: Fri,  4 Oct 2019 14:43:32 -0700
-Message-ID: <20191004214334.149976-9-swboyd@chromium.org>
-References: <20191004214334.149976-1-swboyd@chromium.org>
+From: Schrempf Frieder <frieder.schrempf@kontron.de>
+Subject: [PATCH] spi: spi-fsl-qspi: Clear TDH bits in FLSHCR register
+Date: Mon, 7 Oct 2019 07:23:02 +0000
+Message-ID: <20191007071933.26786-1-frieder.schrempf@kontron.de>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: Arnd Bergmann <arnd@arndb.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        linux-spi@vger.kernel.org
-To: linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Cc: Schrempf Frieder <frieder.schrempf@kontron.de>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Han Xu <han.xu@nxp.com>, Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191004214334.149976-1-swboyd@chromium.org>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This driver doesn't do anything with the match for the device node. The
-logic is the same as looking to see if a device node exists or not
-because this driver wouldn't probe unless there is a device node match
-when the device is created from DT. Just test for the presence of the
-device node to simplify and avoid referencing a potentially undefined
-match table when CONFIG_OF=n.
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Frank Rowand <frowand.list@gmail.com>
-Cc: <linux-spi@vger.kernel.org>
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Later versions of the QSPI controller (e.g. in i.MX6UL/ULL and i.MX7)
+seem to have an additional TDH setting in the FLSHCR register, that
+needs to be set in accordance with the access mode that is used (DDR
+or SDR).
+
+Previous bootstages such as BootROM or bootloader might have used the
+DDR mode to access the flash. As we currently only use SDR mode, we
+need to make sure the TDH bits are cleared upon initialization.
+
+Fixes: 84d043185dbe ("spi: Add a driver for the Freescale/NXP QuadSPI controller")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
 ---
+ drivers/spi/spi-fsl-qspi.c | 38 +++++++++++++++++++++++++++++++++-----
+ 1 file changed, 33 insertions(+), 5 deletions(-)
 
-Please ack or pick for immediate merge so the last patch can be merged.
-
- drivers/spi/spi-gpio.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index 1d3e23ec20a6..42f4d82e9c5a 100644
---- a/drivers/spi/spi-gpio.c
-+++ b/drivers/spi/spi-gpio.c
-@@ -362,9 +362,6 @@ static int spi_gpio_probe(struct platform_device *pdev)
- 	struct spi_gpio			*spi_gpio;
- 	struct device			*dev = &pdev->dev;
- 	struct spi_bitbang		*bb;
--	const struct of_device_id	*of_id;
+diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
+index c02e24c01136..63c9f7edaf6c 100644
+--- a/drivers/spi/spi-fsl-qspi.c
++++ b/drivers/spi/spi-fsl-qspi.c
+@@ -63,6 +63,11 @@
+ #define QUADSPI_IPCR			0x08
+ #define QUADSPI_IPCR_SEQID(x)		((x) << 24)
+ 
++#define QUADSPI_FLSHCR			0x0c
++#define QUADSPI_FLSHCR_TCSS_MASK	GENMASK(3, 0)
++#define QUADSPI_FLSHCR_TCSH_MASK	GENMASK(11, 8)
++#define QUADSPI_FLSHCR_TDH_MASK		GENMASK(17, 16)
++
+ #define QUADSPI_BUF3CR			0x1c
+ #define QUADSPI_BUF3CR_ALLMST_MASK	BIT(31)
+ #define QUADSPI_BUF3CR_ADATSZ(x)	((x) << 8)
+@@ -95,6 +100,9 @@
+ #define QUADSPI_FR			0x160
+ #define QUADSPI_FR_TFF_MASK		BIT(0)
+ 
++#define QUADSPI_RSER			0x164
++#define QUADSPI_RSER_TFIE		BIT(0)
++
+ #define QUADSPI_SPTRCLR			0x16c
+ #define QUADSPI_SPTRCLR_IPPTRC		BIT(8)
+ #define QUADSPI_SPTRCLR_BFPTRC		BIT(0)
+@@ -112,9 +120,6 @@
+ #define QUADSPI_LCKER_LOCK		BIT(0)
+ #define QUADSPI_LCKER_UNLOCK		BIT(1)
+ 
+-#define QUADSPI_RSER			0x164
+-#define QUADSPI_RSER_TFIE		BIT(0)
 -
--	of_id = of_match_device(spi_gpio_dt_ids, &pdev->dev);
+ #define QUADSPI_LUT_BASE		0x310
+ #define QUADSPI_LUT_OFFSET		(SEQID_LUT * 4 * 4)
+ #define QUADSPI_LUT_REG(idx) \
+@@ -181,6 +186,12 @@
+  */
+ #define QUADSPI_QUIRK_BASE_INTERNAL	BIT(4)
  
- 	master = spi_alloc_master(dev, sizeof(*spi_gpio));
- 	if (!master)
-@@ -374,7 +371,7 @@ static int spi_gpio_probe(struct platform_device *pdev)
- 	if (status)
- 		return status;
++/*
++ * Controller uses TDH bits in register QUADSPI_FLSHCR.
++ * They need to be set in accordance with the DDR/SDR mode.
++ */
++#define QUADSPI_QUIRK_USE_TDH_SETTING	BIT(5)
++
+ struct fsl_qspi_devtype_data {
+ 	unsigned int rxfifo;
+ 	unsigned int txfifo;
+@@ -209,7 +220,8 @@ static const struct fsl_qspi_devtype_data imx7d_data = {
+ 	.rxfifo = SZ_128,
+ 	.txfifo = SZ_512,
+ 	.ahb_buf_size = SZ_1K,
+-	.quirks = QUADSPI_QUIRK_TKT253890 | QUADSPI_QUIRK_4X_INT_CLK,
++	.quirks = QUADSPI_QUIRK_TKT253890 | QUADSPI_QUIRK_4X_INT_CLK |
++		  QUADSPI_QUIRK_USE_TDH_SETTING,
+ 	.little_endian = true,
+ };
  
--	if (of_id)
-+	if (pdev->dev.of_node)
- 		status = spi_gpio_probe_dt(pdev, master);
- 	else
- 		status = spi_gpio_probe_pdata(pdev, master);
+@@ -217,7 +229,8 @@ static const struct fsl_qspi_devtype_data imx6ul_data = {
+ 	.rxfifo = SZ_128,
+ 	.txfifo = SZ_512,
+ 	.ahb_buf_size = SZ_1K,
+-	.quirks = QUADSPI_QUIRK_TKT253890 | QUADSPI_QUIRK_4X_INT_CLK,
++	.quirks = QUADSPI_QUIRK_TKT253890 | QUADSPI_QUIRK_4X_INT_CLK |
++		  QUADSPI_QUIRK_USE_TDH_SETTING,
+ 	.little_endian = true,
+ };
+ 
+@@ -275,6 +288,11 @@ static inline int needs_amba_base_offset(struct fsl_qspi *q)
+ 	return !(q->devtype_data->quirks & QUADSPI_QUIRK_BASE_INTERNAL);
+ }
+ 
++static inline int needs_tdh_setting(struct fsl_qspi *q)
++{
++	return q->devtype_data->quirks & QUADSPI_QUIRK_USE_TDH_SETTING;
++}
++
+ /*
+  * An IC bug makes it necessary to rearrange the 32-bit data.
+  * Later chips, such as IMX6SLX, have fixed this bug.
+@@ -710,6 +728,16 @@ static int fsl_qspi_default_setup(struct fsl_qspi *q)
+ 	qspi_writel(q, QUADSPI_MCR_MDIS_MASK | QUADSPI_MCR_RESERVED_MASK,
+ 		    base + QUADSPI_MCR);
+ 
++	/*
++	 * Previous boot stages (BootROM, bootloader) might have used DDR
++	 * mode and did not clear the TDH bits. As we currently use SDR mode
++	 * only, clear the TDH bits if necessary.
++	 */
++	if (needs_tdh_setting(q))
++		qspi_writel(q, qspi_readl(q, base + QUADSPI_FLSHCR) &
++			    ~QUADSPI_FLSHCR_TDH_MASK,
++			    base + QUADSPI_FLSHCR);
++
+ 	reg = qspi_readl(q, base + QUADSPI_SMPR);
+ 	qspi_writel(q, reg & ~(QUADSPI_SMPR_FSDLY_MASK
+ 			| QUADSPI_SMPR_FSPHS_MASK
 -- 
-Sent by a computer through tubes
+2.17.1

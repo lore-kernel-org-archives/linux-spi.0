@@ -1,12 +1,11 @@
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 2/7] dt-bindings: spi: sh-msiof: Add r8a774b1 support
-Date: Mon, 7 Oct 2019 13:27:00 +0200
-Message-ID: <CAMuHMdW+FAYwuV876Y_BkHoSMtmV=0zUTU_cU1PGhX6zorqbwg@mail.gmail.com>
-References: <1570178133-21532-1-git-send-email-fabrizio.castro@bp.renesas.com> <1570178133-21532-3-git-send-email-fabrizio.castro@bp.renesas.com>
+Subject: Re: [PATCH 1/7] dt-bindings: watchdog: renesas-wdt: Document r8a774b1 support
+Date: Mon, 7 Oct 2019 13:28:07 +0200
+Message-ID: <CAMuHMdUJZGYCSV2SSqJ4BOUfP08ML+gz4_UkOx7nKqCj+vHwXg@mail.gmail.com>
+References: <1570178133-21532-1-git-send-email-fabrizio.castro@bp.renesas.com> <1570178133-21532-2-git-send-email-fabrizio.castro@bp.renesas.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-        Rob Herring <robh+dt@kernel.org>,
+Cc: Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Mark Brown <broonie@kernel.org>,
         Wim Van Sebroeck <wim@linux-watchdog.org>,
@@ -23,15 +22,17 @@ Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
         Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
         Chris Paterson <Chris.Paterson2@renesas.com>,
         Biju Das <biju.das@bp.renesas.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboa
 To: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1570178133-21532-3-git-send-email-fabrizio.castro@bp.renesas.com>
+In-Reply-To: <1570178133-21532-2-git-send-email-fabrizio.castro@bp.renesas.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 On Fri, Oct 4, 2019 at 10:35 AM Fabrizio Castro
 <fabrizio.castro@bp.renesas.com> wrote:
-> Document RZ/G2N (R8A774B1) SoC bindings.
+> RZ/G2N (a.k.a. R8A774B1) watchdog implementation is compatible
+> with R-Car Gen3, therefore add the relevant documentation.
 >
 > Signed-off-by: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
 

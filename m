@@ -1,49 +1,94 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 3/7] dt-bindings: PCI: rcar: Add device tree support for r8a774b1
-Date: Mon, 7 Oct 2019 13:29:25 +0200
-Message-ID: <CAMuHMdX4P_5Bu2dO_kVtFFyOOTycm2jFqk8qNAzH3XEeePfG0Q@mail.gmail.com>
-References: <1570178133-21532-1-git-send-email-fabrizio.castro@bp.renesas.com> <1570178133-21532-4-git-send-email-fabrizio.castro@bp.renesas.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Simon Horman <horms@verge.net.au>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Linux Watchdog Mailing List <linux-watchdog@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Chris Paterson <Chris.Paterson2@renesas.com>,
-        Biju Das <biju.das@bp.renesas.com>,
-To: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: gpio: Look for a device node instead of match" to the spi tree
+Date: Mon,  7 Oct 2019 14:03:29 +0100 (BST)
+Message-ID: <20191007130329.47D48274162F@ypsilon.sirena.org.uk>
+References: <20191004214334.149976-9-swboyd@chromium.org>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-kernel@vger.kernel.org, <linux-spi@vger.kernel.org>,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>
+To: Stephen Boyd <swboyd@chromium.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1570178133-21532-4-git-send-email-fabrizio.castro@bp.renesas.com>
+In-Reply-To: <20191004214334.149976-9-swboyd@chromium.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Oct 4, 2019 at 10:35 AM Fabrizio Castro
-<fabrizio.castro@bp.renesas.com> wrote:
-> Add PCIe support for the RZ/G2N (a.k.a. R8A774B1).
->
-> Signed-off-by: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
+The patch
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+   spi: gpio: Look for a device node instead of match
 
-Gr{oetje,eeting}s,
+has been applied to the spi tree at
 
-                        Geert
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 62217f8b084a05dd2d84781a8ca065098df21ec7 Mon Sep 17 00:00:00 2001
+From: Stephen Boyd <swboyd@chromium.org>
+Date: Fri, 4 Oct 2019 14:43:32 -0700
+Subject: [PATCH] spi: gpio: Look for a device node instead of match
+
+This driver doesn't do anything with the match for the device node. The
+logic is the same as looking to see if a device node exists or not
+because this driver wouldn't probe unless there is a device node match
+when the device is created from DT. Just test for the presence of the
+device node to simplify and avoid referencing a potentially undefined
+match table when CONFIG_OF=n.
+
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Frank Rowand <frowand.list@gmail.com>
+Cc: <linux-spi@vger.kernel.org>
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Link: https://lore.kernel.org/r/20191004214334.149976-9-swboyd@chromium.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-gpio.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
+index 1d3e23ec20a6..42f4d82e9c5a 100644
+--- a/drivers/spi/spi-gpio.c
++++ b/drivers/spi/spi-gpio.c
+@@ -362,9 +362,6 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 	struct spi_gpio			*spi_gpio;
+ 	struct device			*dev = &pdev->dev;
+ 	struct spi_bitbang		*bb;
+-	const struct of_device_id	*of_id;
+-
+-	of_id = of_match_device(spi_gpio_dt_ids, &pdev->dev);
+ 
+ 	master = spi_alloc_master(dev, sizeof(*spi_gpio));
+ 	if (!master)
+@@ -374,7 +371,7 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 	if (status)
+ 		return status;
+ 
+-	if (of_id)
++	if (pdev->dev.of_node)
+ 		status = spi_gpio_probe_dt(pdev, master);
+ 	else
+ 		status = spi_gpio_probe_pdata(pdev, master);
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+2.20.1

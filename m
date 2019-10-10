@@ -1,153 +1,152 @@
 From: Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 16/36] ARM: s3c: move spi fiq handler into platform
-Date: Thu, 10 Oct 2019 22:30:00 +0200
-Message-ID: <20191010203043.1241612-16-arnd@arndb.de>
+Subject: [PATCH 25/36] ARM: s3c: spi: avoid hardcoding fiq number in driver
+Date: Thu, 10 Oct 2019 22:30:09 +0200
+Message-ID: <20191010203043.1241612-25-arnd@arndb.de>
 References: <20191010202802.1132272-1-arnd@arndb.de>
  <20191010203043.1241612-1-arnd@arndb.de>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linus.walleij@linaro.org,
-        Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-To: Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Mark Brown <broonie@kernel.org>, Andi Shyti <andi@etezian.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-samsung-soc@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+ linus.walleij@linaro.org, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+To: Kukjin Kim <kgene@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 In-Reply-To: <20191010203043.1241612-1-arnd@arndb.de>
-Sender: linux-kernel-owner@vger.kernel.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The fiq handler needs access to some register definitions that
-should not be used directly by device drivers.
+The IRQ_EINT0 constant is a platform detail that is
+defined in mach/irqs.h and not visible to drivers once
+that header is made private.
 
-Since this is closely related to the irqchip driver anyway,
-move it into the same place.
+Since the same calculation already happens in s3c24xx_set_fiq,
+just return the value from there.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/arm/mach-s3c24xx/Makefile                           | 2 ++
- arch/arm/mach-s3c24xx/irq-s3c24xx-fiq-exports.c          | 9 +++++++++
- .../arm/mach-s3c24xx/irq-s3c24xx-fiq.S                   | 2 +-
- drivers/spi/Makefile                                     | 1 -
- drivers/spi/spi-s3c24xx.c                                | 7 +------
- .../spi-s3c24xx-fiq.h => include/linux/spi/s3c24xx-fiq.h | 5 +++++
- 6 files changed, 18 insertions(+), 8 deletions(-)
- create mode 100644 arch/arm/mach-s3c24xx/irq-s3c24xx-fiq-exports.c
- rename drivers/spi/spi-s3c24xx-fiq.S => arch/arm/mach-s3c24xx/irq-s3c24xx-fiq.S (98%)
- rename drivers/spi/spi-s3c24xx-fiq.h => include/linux/spi/s3c24xx-fiq.h (78%)
+ arch/arm/mach-s3c24xx/irq-s3c24xx.c | 12 +++++++++---
+ drivers/spi/spi-s3c24xx.c           | 18 ++----------------
+ include/linux/spi/s3c24xx.h         |  2 +-
+ 3 files changed, 12 insertions(+), 20 deletions(-)
 
-diff --git a/arch/arm/mach-s3c24xx/Makefile b/arch/arm/mach-s3c24xx/Makefile
-index 8c31f84f8c97..695573df00b1 100644
---- a/arch/arm/mach-s3c24xx/Makefile
-+++ b/arch/arm/mach-s3c24xx/Makefile
-@@ -9,6 +9,8 @@
+diff --git a/arch/arm/mach-s3c24xx/irq-s3c24xx.c b/arch/arm/mach-s3c24xx/irq-s3c24xx.c
+index b0e879ee14c1..3965347cacf0 100644
+--- a/arch/arm/mach-s3c24xx/irq-s3c24xx.c
++++ b/arch/arm/mach-s3c24xx/irq-s3c24xx.c
+@@ -376,14 +376,17 @@ asmlinkage void __exception_irq_entry s3c24xx_handle_irq(struct pt_regs *regs)
+ /**
+  * s3c24xx_set_fiq - set the FIQ routing
+  * @irq: IRQ number to route to FIQ on processor.
++ * @ack_ptr: pointer to a location for storing the bit mask
+  * @on: Whether to route @irq to the FIQ, or to remove the FIQ routing.
+  *
+  * Change the state of the IRQ to FIQ routing depending on @irq and @on. If
+  * @on is true, the @irq is checked to see if it can be routed and the
+  * interrupt controller updated to route the IRQ. If @on is false, the FIQ
+  * routing is cleared, regardless of which @irq is specified.
++ *
++ * returns the mask value for the register.
+  */
+-int s3c24xx_set_fiq(unsigned int irq, bool on)
++int s3c24xx_set_fiq(unsigned int irq, u32 *ack_ptr, bool on)
+ {
+ 	u32 intmod;
+ 	unsigned offs;
+@@ -391,15 +394,18 @@ int s3c24xx_set_fiq(unsigned int irq, bool on)
+ 	if (on) {
+ 		offs = irq - FIQ_START;
+ 		if (offs > 31)
+-			return -EINVAL;
++			return 0;
  
- obj-y				+= common.o
- obj-y				+= irq-s3c24xx.o
-+obj-$(CONFIG_SPI_S3C24XX_FIQ)	+= irq-s3c24xx-fiq.o
-+obj-$(CONFIG_SPI_S3C24XX_FIQ)	+= irq-s3c24xx-fiq-exports.o
+ 		intmod = 1 << offs;
+ 	} else {
+ 		intmod = 0;
+ 	}
  
- obj-$(CONFIG_CPU_S3C2410)	+= s3c2410.o
- obj-$(CONFIG_S3C2410_PLL)	+= pll-s3c2410.o
-diff --git a/arch/arm/mach-s3c24xx/irq-s3c24xx-fiq-exports.c b/arch/arm/mach-s3c24xx/irq-s3c24xx-fiq-exports.c
-new file mode 100644
-index 000000000000..ef2d1f664e67
---- /dev/null
-+++ b/arch/arm/mach-s3c24xx/irq-s3c24xx-fiq-exports.c
-@@ -0,0 +1,9 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
++	if (ack_ptr)
++		*ack_ptr = intmod;
+ 	writel_relaxed(intmod, S3C2410_INTMOD);
+-	return 0;
 +
-+#include <linux/stddef.h>
-+#include <linux/export.h>
-+#include <linux/spi/s3c24xx-fiq.h>
-+
-+EXPORT_SYMBOL(s3c24xx_spi_fiq_rx);
-+EXPORT_SYMBOL(s3c24xx_spi_fiq_txrx);
-+EXPORT_SYMBOL(s3c24xx_spi_fiq_tx);
-diff --git a/drivers/spi/spi-s3c24xx-fiq.S b/arch/arm/mach-s3c24xx/irq-s3c24xx-fiq.S
-similarity index 98%
-rename from drivers/spi/spi-s3c24xx-fiq.S
-rename to arch/arm/mach-s3c24xx/irq-s3c24xx-fiq.S
-index 9d5f8f1e5e81..2a84535a14fd 100644
---- a/drivers/spi/spi-s3c24xx-fiq.S
-+++ b/arch/arm/mach-s3c24xx/irq-s3c24xx-fiq.S
-@@ -13,7 +13,7 @@
- #include <mach/map.h>
- #include <mach/regs-irq.h>
++	return intmod;
+ }
  
--#include "spi-s3c24xx-fiq.h"
-+#include <linux/spi/s3c24xx-fiq.h>
- 
- #define S3C2410_SPTDAT           (0x10)
- #define S3C2410_SPRDAT           (0x14)
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index bb49c9e6d0a0..4bcbbd35d2e8 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -89,7 +89,6 @@ obj-$(CONFIG_SPI_RB4XX)			+= spi-rb4xx.o
- obj-$(CONFIG_SPI_RSPI)			+= spi-rspi.o
- obj-$(CONFIG_SPI_S3C24XX)		+= spi-s3c24xx-hw.o
- spi-s3c24xx-hw-y			:= spi-s3c24xx.o
--spi-s3c24xx-hw-$(CONFIG_SPI_S3C24XX_FIQ) += spi-s3c24xx-fiq.o
- obj-$(CONFIG_SPI_S3C64XX)		+= spi-s3c64xx.o
- obj-$(CONFIG_SPI_SC18IS602)		+= spi-sc18is602.o
- obj-$(CONFIG_SPI_SH)			+= spi-sh.o
+ EXPORT_SYMBOL_GPL(s3c24xx_set_fiq);
 diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
-index 2f395e4861f6..464146fc8420 100644
+index 464146fc8420..58025876a081 100644
 --- a/drivers/spi/spi-s3c24xx.c
 +++ b/drivers/spi/spi-s3c24xx.c
-@@ -19,12 +19,12 @@
- #include <linux/spi/spi.h>
- #include <linux/spi/spi_bitbang.h>
- #include <linux/spi/s3c24xx.h>
-+#include <linux/spi/s3c24xx-fiq.h>
- #include <linux/module.h>
- 
- #include <asm/fiq.h>
- 
- #include "spi-s3c24xx-regs.h"
--#include "spi-s3c24xx-fiq.h"
- 
- /**
-  * s3c24xx_spi_devstate - per device data
-@@ -229,10 +229,6 @@ struct spi_fiq_code {
+@@ -229,17 +229,6 @@ struct spi_fiq_code {
  	u8	data[0];
  };
  
--extern struct spi_fiq_code s3c24xx_spi_fiq_txrx;
--extern struct spi_fiq_code s3c24xx_spi_fiq_tx;
--extern struct spi_fiq_code s3c24xx_spi_fiq_rx;
+-/**
+- * ack_bit - turn IRQ into IRQ acknowledgement bit
+- * @irq: The interrupt number
+- *
+- * Returns the bit to write to the interrupt acknowledge register.
+- */
+-static inline u32 ack_bit(unsigned int irq)
+-{
+-	return 1 << (irq - IRQ_EINT0);
+-}
 -
  /**
-  * ack_bit - turn IRQ into IRQ acknowledgement bit
-  * @irq: The interrupt number
-@@ -282,7 +278,6 @@ static void s3c24xx_spi_tryfiq(struct s3c24xx_spi *hw)
- 	regs.uregs[fiq_rrx]  = (long)hw->rx;
- 	regs.uregs[fiq_rtx]  = (long)hw->tx + 1;
- 	regs.uregs[fiq_rcount] = hw->len - 1;
--	regs.uregs[fiq_rirq] = (long)S3C24XX_VA_IRQ;
+  * s3c24xx_spi_tryfiq - attempt to claim and setup FIQ for transfer
+  * @hw: The hardware state.
+@@ -256,6 +245,7 @@ static void s3c24xx_spi_tryfiq(struct s3c24xx_spi *hw)
+ 	struct pt_regs regs;
+ 	enum spi_fiq_mode mode;
+ 	struct spi_fiq_code *code;
++	u32 *ack_ptr = NULL;
+ 	int ret;
  
+ 	if (!hw->fiq_claimed) {
+@@ -282,8 +272,6 @@ static void s3c24xx_spi_tryfiq(struct s3c24xx_spi *hw)
  	set_fiq_regs(&regs);
  
-diff --git a/drivers/spi/spi-s3c24xx-fiq.h b/include/linux/spi/s3c24xx-fiq.h
-similarity index 78%
-rename from drivers/spi/spi-s3c24xx-fiq.h
-rename to include/linux/spi/s3c24xx-fiq.h
-index 7786b0ea56ec..954452618dfe 100644
---- a/drivers/spi/spi-s3c24xx-fiq.h
-+++ b/include/linux/spi/s3c24xx-fiq.h
-@@ -12,6 +12,11 @@
- #ifdef __ASSEMBLY__
- #define __REG_NR(x)     r##x
- #else
-+
-+extern struct spi_fiq_code s3c24xx_spi_fiq_txrx;
-+extern struct spi_fiq_code s3c24xx_spi_fiq_tx;
-+extern struct spi_fiq_code s3c24xx_spi_fiq_rx;
-+
- #define __REG_NR(x)     (x)
- #endif
+ 	if (hw->fiq_mode != mode) {
+-		u32 *ack_ptr;
+-
+ 		hw->fiq_mode = mode;
  
+ 		switch (mode) {
+@@ -303,12 +291,10 @@ static void s3c24xx_spi_tryfiq(struct s3c24xx_spi *hw)
+ 		BUG_ON(!code);
+ 
+ 		ack_ptr = (u32 *)&code->data[code->ack_offset];
+-		*ack_ptr = ack_bit(hw->irq);
+-
+ 		set_fiq_handler(&code->data, code->length);
+ 	}
+ 
+-	s3c24xx_set_fiq(hw->irq, true);
++	s3c24xx_set_fiq(hw->irq, ack_ptr, true);
+ 
+ 	hw->fiq_mode = mode;
+ 	hw->fiq_inuse = 1;
+diff --git a/include/linux/spi/s3c24xx.h b/include/linux/spi/s3c24xx.h
+index c91d10b82f08..440a71593162 100644
+--- a/include/linux/spi/s3c24xx.h
++++ b/include/linux/spi/s3c24xx.h
+@@ -20,6 +20,6 @@ struct s3c2410_spi_info {
+ 	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
+ };
+ 
+-extern int s3c24xx_set_fiq(unsigned int irq, bool on);
++extern int s3c24xx_set_fiq(unsigned int irq, u32 *ack_ptr, bool on);
+ 
+ #endif /* __LINUX_SPI_S3C24XX_H */
 -- 
 2.20.0

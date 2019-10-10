@@ -1,132 +1,153 @@
 From: Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 13/36] ARM: s3c: move regs-spi.h into spi driver
-Date: Thu, 10 Oct 2019 22:29:57 +0200
-Message-ID: <20191010203043.1241612-13-arnd@arndb.de>
+Subject: [PATCH 16/36] ARM: s3c: move spi fiq handler into platform
+Date: Thu, 10 Oct 2019 22:30:00 +0200
+Message-ID: <20191010203043.1241612-16-arnd@arndb.de>
 References: <20191010202802.1132272-1-arnd@arndb.de>
  <20191010203043.1241612-1-arnd@arndb.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-samsung-soc@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- linus.walleij@linaro.org, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-To: Kukjin Kim <kgene@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
- Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Transfer-Encoding: 8bit
+Cc: linux-samsung-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linus.walleij@linaro.org,
+        Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Mark Brown <broonie@kernel.org>, Andi Shyti <andi@etezian.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20191010203043.1241612-1-arnd@arndb.de>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The file is mostly specific to the driver, the few bits that
-are actually used by the platform code get moved to mach/map.h
-instead.
+The fiq handler needs access to some register definitions that
+should not be used directly by device drivers.
+
+Since this is closely related to the irqchip driver anyway,
+move it into the same place.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/arm/mach-s3c24xx/include/mach/map.h                      | 2 ++
- arch/arm/mach-s3c24xx/s3c2412.c                               | 1 -
- arch/arm/plat-samsung/devs.c                                  | 1 -
- drivers/spi/spi-s3c24xx-fiq.S                                 | 4 +++-
- .../include/plat/regs-spi.h => drivers/spi/spi-s3c24xx-regs.h | 3 ---
- drivers/spi/spi-s3c24xx.c                                     | 3 +--
- 6 files changed, 6 insertions(+), 8 deletions(-)
- rename arch/arm/plat-samsung/include/plat/regs-spi.h => drivers/spi/spi-s3c24xx-regs.h (95%)
+ arch/arm/mach-s3c24xx/Makefile                           | 2 ++
+ arch/arm/mach-s3c24xx/irq-s3c24xx-fiq-exports.c          | 9 +++++++++
+ .../arm/mach-s3c24xx/irq-s3c24xx-fiq.S                   | 2 +-
+ drivers/spi/Makefile                                     | 1 -
+ drivers/spi/spi-s3c24xx.c                                | 7 +------
+ .../spi-s3c24xx-fiq.h => include/linux/spi/s3c24xx-fiq.h | 5 +++++
+ 6 files changed, 18 insertions(+), 8 deletions(-)
+ create mode 100644 arch/arm/mach-s3c24xx/irq-s3c24xx-fiq-exports.c
+ rename drivers/spi/spi-s3c24xx-fiq.S => arch/arm/mach-s3c24xx/irq-s3c24xx-fiq.S (98%)
+ rename drivers/spi/spi-s3c24xx-fiq.h => include/linux/spi/s3c24xx-fiq.h (78%)
 
-diff --git a/arch/arm/mach-s3c24xx/include/mach/map.h b/arch/arm/mach-s3c24xx/include/mach/map.h
-index bca93112f57d..a20c9fd0d855 100644
---- a/arch/arm/mach-s3c24xx/include/mach/map.h
-+++ b/arch/arm/mach-s3c24xx/include/mach/map.h
-@@ -86,6 +86,8 @@
- #define S3C2410_PA_SPI	   (0x59000000)
- #define S3C2443_PA_SPI0		(0x52000000)
- #define S3C2443_PA_SPI1		S3C2410_PA_SPI
-+#define S3C2410_SPI1		(0x20)
-+#define S3C2412_SPI1		(0x100)
+diff --git a/arch/arm/mach-s3c24xx/Makefile b/arch/arm/mach-s3c24xx/Makefile
+index 8c31f84f8c97..695573df00b1 100644
+--- a/arch/arm/mach-s3c24xx/Makefile
++++ b/arch/arm/mach-s3c24xx/Makefile
+@@ -9,6 +9,8 @@
  
- /* SDI */
- #define S3C2410_PA_SDI	   (0x5A000000)
-diff --git a/arch/arm/mach-s3c24xx/s3c2412.c b/arch/arm/mach-s3c24xx/s3c2412.c
-index 8fe4d4670dcb..c3fb3e6c0dd8 100644
---- a/arch/arm/mach-s3c24xx/s3c2412.c
-+++ b/arch/arm/mach-s3c24xx/s3c2412.c
-@@ -37,7 +37,6 @@
- #include <plat/cpu-freq.h>
- #include <plat/devs.h>
- #include <plat/pm.h>
--#include <plat/regs-spi.h>
+ obj-y				+= common.o
+ obj-y				+= irq-s3c24xx.o
++obj-$(CONFIG_SPI_S3C24XX_FIQ)	+= irq-s3c24xx-fiq.o
++obj-$(CONFIG_SPI_S3C24XX_FIQ)	+= irq-s3c24xx-fiq-exports.o
  
- #include "common.h"
- #include "nand-core.h"
-diff --git a/arch/arm/plat-samsung/devs.c b/arch/arm/plat-samsung/devs.c
-index 6e4c1cb07104..fd94a35e22f8 100644
---- a/arch/arm/plat-samsung/devs.c
-+++ b/arch/arm/plat-samsung/devs.c
-@@ -59,7 +59,6 @@
- #include <linux/platform_data/usb-s3c2410_udc.h>
- #include <linux/platform_data/usb-ohci-s3c2410.h>
- #include <plat/usb-phy.h>
--#include <plat/regs-spi.h>
- #include <linux/platform_data/asoc-s3c.h>
- #include <linux/platform_data/spi-s3c64xx.h>
- 
-diff --git a/drivers/spi/spi-s3c24xx-fiq.S b/drivers/spi/spi-s3c24xx-fiq.S
-index e95d6282109e..9d5f8f1e5e81 100644
+ obj-$(CONFIG_CPU_S3C2410)	+= s3c2410.o
+ obj-$(CONFIG_S3C2410_PLL)	+= pll-s3c2410.o
+diff --git a/arch/arm/mach-s3c24xx/irq-s3c24xx-fiq-exports.c b/arch/arm/mach-s3c24xx/irq-s3c24xx-fiq-exports.c
+new file mode 100644
+index 000000000000..ef2d1f664e67
+--- /dev/null
++++ b/arch/arm/mach-s3c24xx/irq-s3c24xx-fiq-exports.c
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#include <linux/stddef.h>
++#include <linux/export.h>
++#include <linux/spi/s3c24xx-fiq.h>
++
++EXPORT_SYMBOL(s3c24xx_spi_fiq_rx);
++EXPORT_SYMBOL(s3c24xx_spi_fiq_txrx);
++EXPORT_SYMBOL(s3c24xx_spi_fiq_tx);
+diff --git a/drivers/spi/spi-s3c24xx-fiq.S b/arch/arm/mach-s3c24xx/irq-s3c24xx-fiq.S
+similarity index 98%
+rename from drivers/spi/spi-s3c24xx-fiq.S
+rename to arch/arm/mach-s3c24xx/irq-s3c24xx-fiq.S
+index 9d5f8f1e5e81..2a84535a14fd 100644
 --- a/drivers/spi/spi-s3c24xx-fiq.S
-+++ b/drivers/spi/spi-s3c24xx-fiq.S
-@@ -12,10 +12,12 @@
- 
++++ b/arch/arm/mach-s3c24xx/irq-s3c24xx-fiq.S
+@@ -13,7 +13,7 @@
  #include <mach/map.h>
  #include <mach/regs-irq.h>
--#include <plat/regs-spi.h>
  
- #include "spi-s3c24xx-fiq.h"
+-#include "spi-s3c24xx-fiq.h"
++#include <linux/spi/s3c24xx-fiq.h>
  
-+#define S3C2410_SPTDAT           (0x10)
-+#define S3C2410_SPRDAT           (0x14)
-+
- 	.text
- 
- 	@ entry to these routines is as follows, with the register names
-diff --git a/arch/arm/plat-samsung/include/plat/regs-spi.h b/drivers/spi/spi-s3c24xx-regs.h
-similarity index 95%
-rename from arch/arm/plat-samsung/include/plat/regs-spi.h
-rename to drivers/spi/spi-s3c24xx-regs.h
-index 607844311566..37b93ff7c7fe 100644
---- a/arch/arm/plat-samsung/include/plat/regs-spi.h
-+++ b/drivers/spi/spi-s3c24xx-regs.h
-@@ -8,9 +8,6 @@
- #ifndef __ASM_ARCH_REGS_SPI_H
- #define __ASM_ARCH_REGS_SPI_H
- 
--#define S3C2410_SPI1		(0x20)
--#define S3C2412_SPI1		(0x100)
--
- #define S3C2410_SPCON		(0x00)
- 
- #define S3C2410_SPCON_SMOD_DMA	(2 << 5)	/* DMA mode */
+ #define S3C2410_SPTDAT           (0x10)
+ #define S3C2410_SPRDAT           (0x14)
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index bb49c9e6d0a0..4bcbbd35d2e8 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -89,7 +89,6 @@ obj-$(CONFIG_SPI_RB4XX)			+= spi-rb4xx.o
+ obj-$(CONFIG_SPI_RSPI)			+= spi-rspi.o
+ obj-$(CONFIG_SPI_S3C24XX)		+= spi-s3c24xx-hw.o
+ spi-s3c24xx-hw-y			:= spi-s3c24xx.o
+-spi-s3c24xx-hw-$(CONFIG_SPI_S3C24XX_FIQ) += spi-s3c24xx-fiq.o
+ obj-$(CONFIG_SPI_S3C64XX)		+= spi-s3c64xx.o
+ obj-$(CONFIG_SPI_SC18IS602)		+= spi-sc18is602.o
+ obj-$(CONFIG_SPI_SH)			+= spi-sh.o
 diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
-index 2d6e37f25e2d..2f395e4861f6 100644
+index 2f395e4861f6..464146fc8420 100644
 --- a/drivers/spi/spi-s3c24xx.c
 +++ b/drivers/spi/spi-s3c24xx.c
-@@ -21,10 +21,9 @@
+@@ -19,12 +19,12 @@
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi_bitbang.h>
  #include <linux/spi/s3c24xx.h>
++#include <linux/spi/s3c24xx-fiq.h>
  #include <linux/module.h>
  
--#include <plat/regs-spi.h>
--
  #include <asm/fiq.h>
  
-+#include "spi-s3c24xx-regs.h"
- #include "spi-s3c24xx-fiq.h"
+ #include "spi-s3c24xx-regs.h"
+-#include "spi-s3c24xx-fiq.h"
  
  /**
+  * s3c24xx_spi_devstate - per device data
+@@ -229,10 +229,6 @@ struct spi_fiq_code {
+ 	u8	data[0];
+ };
+ 
+-extern struct spi_fiq_code s3c24xx_spi_fiq_txrx;
+-extern struct spi_fiq_code s3c24xx_spi_fiq_tx;
+-extern struct spi_fiq_code s3c24xx_spi_fiq_rx;
+-
+ /**
+  * ack_bit - turn IRQ into IRQ acknowledgement bit
+  * @irq: The interrupt number
+@@ -282,7 +278,6 @@ static void s3c24xx_spi_tryfiq(struct s3c24xx_spi *hw)
+ 	regs.uregs[fiq_rrx]  = (long)hw->rx;
+ 	regs.uregs[fiq_rtx]  = (long)hw->tx + 1;
+ 	regs.uregs[fiq_rcount] = hw->len - 1;
+-	regs.uregs[fiq_rirq] = (long)S3C24XX_VA_IRQ;
+ 
+ 	set_fiq_regs(&regs);
+ 
+diff --git a/drivers/spi/spi-s3c24xx-fiq.h b/include/linux/spi/s3c24xx-fiq.h
+similarity index 78%
+rename from drivers/spi/spi-s3c24xx-fiq.h
+rename to include/linux/spi/s3c24xx-fiq.h
+index 7786b0ea56ec..954452618dfe 100644
+--- a/drivers/spi/spi-s3c24xx-fiq.h
++++ b/include/linux/spi/s3c24xx-fiq.h
+@@ -12,6 +12,11 @@
+ #ifdef __ASSEMBLY__
+ #define __REG_NR(x)     r##x
+ #else
++
++extern struct spi_fiq_code s3c24xx_spi_fiq_txrx;
++extern struct spi_fiq_code s3c24xx_spi_fiq_tx;
++extern struct spi_fiq_code s3c24xx_spi_fiq_rx;
++
+ #define __REG_NR(x)     (x)
+ #endif
+ 
 -- 
 2.20.0

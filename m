@@ -1,10 +1,10 @@
 From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH 1/7] dt-bindings: watchdog: renesas-wdt: Document
- r8a774b1 support
-Date: Tue, 15 Oct 2019 14:24:56 -0500
-Message-ID: <20191015192456.GA407@bogus>
+Subject: Re: [PATCH 3/7] dt-bindings: PCI: rcar: Add device tree support for
+ r8a774b1
+Date: Tue, 15 Oct 2019 14:25:39 -0500
+Message-ID: <20191015192539.GA1694@bogus>
 References: <1570178133-21532-1-git-send-email-fabrizio.castro@bp.renesas.com>
- <1570178133-21532-2-git-send-email-fabrizio.castro@bp.renesas.com>
+ <1570178133-21532-4-git-send-email-fabrizio.castro@bp.renesas.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
@@ -25,17 +25,16 @@ Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
 To: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1570178133-21532-2-git-send-email-fabrizio.castro@bp.renesas.com>
+In-Reply-To: <1570178133-21532-4-git-send-email-fabrizio.castro@bp.renesas.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri,  4 Oct 2019 09:35:27 +0100, Fabrizio Castro wrote:
-> RZ/G2N (a.k.a. R8A774B1) watchdog implementation is compatible
-> with R-Car Gen3, therefore add the relevant documentation.
+On Fri,  4 Oct 2019 09:35:29 +0100, Fabrizio Castro wrote:
+> Add PCIe support for the RZ/G2N (a.k.a. R8A774B1).
 > 
 > Signed-off-by: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
 > ---
->  Documentation/devicetree/bindings/watchdog/renesas,wdt.txt | 1 +
+>  Documentation/devicetree/bindings/pci/rcar-pci.txt | 1 +
 >  1 file changed, 1 insertion(+)
 > 
 

@@ -1,28 +1,38 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: sprd: convert transfer word delay to spi_delay struct" to the spi tree
-Date: Tue, 15 Oct 2019 12:12:27 +0100 (BST)
-Message-ID: <20191015111227.F296127419E4@ypsilon.sirena.org.uk>
-References: <20190926105147.7839-5-alexandru.ardelean@analog.com>
-Cc: baolin.wang@linaro.org, bcm-kernel-feedback-list@broadcom.com,
-        broonie@kernel.org, f.fainelli@gmail.com, jic23@kernel.org,
-        linus.walleij@linaro.org, linux-arm-kernel@lists.infradead.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, orsonzhai@gmail.com,
-        zhang.lyra@gmail.com
+Subject: Applied "spi: spi-axi: extend support for the `delay` field" to the
+ spi tree
+Date: Tue, 15 Oct 2019 12:12:21 +0100 (BST)
+Message-ID: <20191015111221.CAFB92741CD7@ypsilon.sirena.org.uk>
+References: <20190926105147.7839-20-alexandru.ardelean@analog.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: f.fainelli@gmail.com, baolin.wang@linaro.org, linux-iio@vger.kernel.org,
+ zhang.lyra@gmail.com, linus.walleij@linaro.org, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+ bcm-kernel-feedback-list@broadcom.com, linux-arm-kernel@lists.infradead.org,
+ linux-tegra@vger.kernel.org, orsonzhai@gmail.com, jic23@kernel.org
 To: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190926105147.7839-5-alexandru.ardelean@analog.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190926105147.7839-20-alexandru.ardelean@analog.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: sprd: convert transfer word delay to spi_delay struct
+   spi: spi-axi: extend support for the `delay` field
 
 has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
@@ -43,104 +53,59 @@ to this mail.
 Thanks,
 Mark
 
->From 84593a131c3af21d686d05c4b4432290a415d399 Mon Sep 17 00:00:00 2001
+>From acc7720de3cb9721ac07f68309dd6d7aae8e9a7a Mon Sep 17 00:00:00 2001
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Date: Thu, 26 Sep 2019 13:51:32 +0300
-Subject: [PATCH] spi: sprd: convert transfer word delay to spi_delay struct
+Date: Thu, 26 Sep 2019 13:51:47 +0300
+Subject: [PATCH] spi: spi-axi: extend support for the `delay` field
 
-The Spreadtrum SPI driver is the only user of the `word_delay` field in
-the `spi_transfer` struct.
-
-This change converts the field to use the `spi_delay` struct. This also
-enforces the users to specify the delay unit to be `SPI_DELAY_UNIT_SCK`.
+The AXI SPI engine driver uses the `delay_usecs` field from `spi_transfer`
+to configure delays, which the controller will execute.
+This change extends the logic to also include the `delay` value, in case it
+is used (instead if `delay_usecs`).
 
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Link: https://lore.kernel.org/r/20190926105147.7839-5-alexandru.ardelean@analog.com
+Link: https://lore.kernel.org/r/20190926105147.7839-20-alexandru.ardelean@analog.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-sprd.c  | 15 ++++++++++++---
- include/linux/spi/spi.h |  4 ++--
- 2 files changed, 14 insertions(+), 5 deletions(-)
+ drivers/spi/spi-axi-spi-engine.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-sprd.c b/drivers/spi/spi-sprd.c
-index 8c9021b7f7a9..2ee1feb41681 100644
---- a/drivers/spi/spi-sprd.c
-+++ b/drivers/spi/spi-sprd.c
-@@ -669,11 +669,15 @@ static void sprd_spi_set_speed(struct sprd_spi *ss, u32 speed_hz)
- 	writel_relaxed(clk_div, ss->base + SPRD_SPI_CLKD);
+diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
+index 74842f6019ed..eb9b78a90dcf 100644
+--- a/drivers/spi/spi-axi-spi-engine.c
++++ b/drivers/spi/spi-axi-spi-engine.c
+@@ -163,10 +163,21 @@ static void spi_engine_gen_xfer(struct spi_engine_program *p, bool dry,
  }
  
--static void sprd_spi_init_hw(struct sprd_spi *ss, struct spi_transfer *t)
-+static int sprd_spi_init_hw(struct sprd_spi *ss, struct spi_transfer *t)
+ static void spi_engine_gen_sleep(struct spi_engine_program *p, bool dry,
+-	struct spi_engine *spi_engine, unsigned int clk_div, unsigned int delay)
++	struct spi_engine *spi_engine, unsigned int clk_div,
++	struct spi_transfer *xfer)
  {
-+	struct spi_delay *d = &t->word_delay;
- 	u16 word_delay, interval;
- 	u32 val;
- 
-+	if (d->unit != SPI_DELAY_UNIT_SCK)
-+		return -EINVAL;
+ 	unsigned int spi_clk = clk_get_rate(spi_engine->ref_clk);
+ 	unsigned int t;
++	int delay;
 +
- 	val = readl_relaxed(ss->base + SPRD_SPI_CTL7);
- 	val &= ~(SPRD_SPI_SCK_REV | SPRD_SPI_NG_TX | SPRD_SPI_NG_RX);
- 	/* Set default chip selection, clock phase and clock polarity */
-@@ -686,7 +690,7 @@ static void sprd_spi_init_hw(struct sprd_spi *ss, struct spi_transfer *t)
- 	 * formula as below per datasheet:
- 	 * interval time (source clock cycles) = interval * 4 + 10.
- 	 */
--	word_delay = clamp_t(u16, t->word_delay, SPRD_SPI_MIN_DELAY_CYCLE,
-+	word_delay = clamp_t(u16, d->value, SPRD_SPI_MIN_DELAY_CYCLE,
- 			     SPRD_SPI_MAX_DELAY_CYCLE);
- 	interval = DIV_ROUND_UP(word_delay - 10, 4);
- 	ss->word_delay = interval * 4 + 10;
-@@ -711,6 +715,8 @@ static void sprd_spi_init_hw(struct sprd_spi *ss, struct spi_transfer *t)
- 		val &= ~SPRD_SPI_DATA_LINE2_EN;
++	if (xfer->delay_usecs) {
++		delay = xfer->delay_usecs;
++	} else {
++		delay = spi_delay_to_ns(&xfer->delay, xfer);
++		if (delay < 0)
++			return;
++		delay /= 1000;
++	}
  
- 	writel_relaxed(val, ss->base + SPRD_SPI_CTL7);
-+
-+	return 0;
- }
+ 	if (delay == 0)
+ 		return;
+@@ -218,8 +229,7 @@ static int spi_engine_compile_message(struct spi_engine *spi_engine,
+ 			spi_engine_gen_cs(p, dry, spi, true);
  
- static int sprd_spi_setup_transfer(struct spi_device *sdev,
-@@ -719,13 +725,16 @@ static int sprd_spi_setup_transfer(struct spi_device *sdev,
- 	struct sprd_spi *ss = spi_controller_get_devdata(sdev->controller);
- 	u8 bits_per_word = t->bits_per_word;
- 	u32 val, mode = 0;
-+	int ret;
+ 		spi_engine_gen_xfer(p, dry, xfer);
+-		spi_engine_gen_sleep(p, dry, spi_engine, clk_div,
+-			xfer->delay_usecs);
++		spi_engine_gen_sleep(p, dry, spi_engine, clk_div, xfer);
  
- 	ss->len = t->len;
- 	ss->tx_buf = t->tx_buf;
- 	ss->rx_buf = t->rx_buf;
- 
- 	ss->hw_mode = sdev->mode;
--	sprd_spi_init_hw(ss, t);
-+	ret = sprd_spi_init_hw(ss, t);
-+	if (ret)
-+		return ret;
- 
- 	/* Set tansfer speed and valid bits */
- 	sprd_spi_set_speed(ss, t->speed_hz);
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 7670be934643..6cb67ad53ffa 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -783,7 +783,7 @@ extern void spi_res_release(struct spi_controller *ctlr,
-  *	the next transfer or completing this @spi_message.
-  * @word_delay_usecs: microseconds to inter word delay after each word size
-  *	(set by bits_per_word) transmission.
-- * @word_delay: clock cycles to inter word delay after each word size
-+ * @word_delay: inter word delay to be introduced after each word size
-  *	(set by bits_per_word) transmission.
-  * @effective_speed_hz: the effective SCK-speed that was used to
-  *      transfer this transfer. Set to 0 if the spi bus driver does
-@@ -900,8 +900,8 @@ struct spi_transfer {
- 	u8		word_delay_usecs;
- 	u16		delay_usecs;
- 	struct spi_delay	cs_change_delay;
-+	struct spi_delay	word_delay;
- 	u32		speed_hz;
--	u16		word_delay;
- 
- 	u32		effective_speed_hz;
- 
+ 		cs_change = xfer->cs_change;
+ 		if (list_is_last(&xfer->transfer_list, &msg->transfers))
 -- 
 2.20.1

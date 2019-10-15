@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-fsl-espi: convert transfer delay to `spi_delay` format" to the spi tree
-Date: Tue, 15 Oct 2019 12:12:22 +0100 (BST)
-Message-ID: <20191015111222.A2DE12741CD7@ypsilon.sirena.org.uk>
-References: <20190926105147.7839-17-alexandru.ardelean@analog.com>
+Subject: Applied "spi: orion: use new `word_delay` field for SPI transfers" to the spi tree
+Date: Tue, 15 Oct 2019 12:12:25 +0100 (BST)
+Message-ID: <20191015111225.C17322741DCA@ypsilon.sirena.org.uk>
+References: <20190926105147.7839-6-alexandru.ardelean@analog.com>
 Cc: baolin.wang@linaro.org, bcm-kernel-feedback-list@broadcom.com,
         broonie@kernel.org, f.fainelli@gmail.com, jic23@kernel.org,
         linus.walleij@linaro.org, linux-arm-kernel@lists.infradead.org,
@@ -12,13 +12,13 @@ Cc: baolin.wang@linaro.org, bcm-kernel-feedback-list@broadcom.com,
         zhang.lyra@gmail.com
 To: Alexandru Ardelean <alexandru.ardelean@analog.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20190926105147.7839-17-alexandru.ardelean@analog.com>
+In-Reply-To: <20190926105147.7839-6-alexandru.ardelean@analog.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spi-fsl-espi: convert transfer delay to `spi_delay` format
+   spi: orion: use new `word_delay` field for SPI transfers
 
 has been applied to the spi tree at
 
@@ -43,123 +43,47 @@ to this mail.
 Thanks,
 Mark
 
->From 3984d39b0e41ac4de8b4530ae3911ccf52ed4bbf Mon Sep 17 00:00:00 2001
+>From 21e26062052c60d31640e614b792473fca787f9f Mon Sep 17 00:00:00 2001
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Date: Thu, 26 Sep 2019 13:51:44 +0300
-Subject: [PATCH] spi: spi-fsl-espi: convert transfer delay to `spi_delay`
- format
+Date: Thu, 26 Sep 2019 13:51:33 +0300
+Subject: [PATCH] spi: orion: use new `word_delay` field for SPI transfers
 
-The way the max delay is computed for this controller, it looks like it is
-searching for the max delay from an SPI message a using that.
+The `word_delay` field had it's type changed to `struct spi_delay`.
+This allows users to specify nano-second or clock-cycle delays (if needed).
 
-No idea if this is valid. But this change should support both `delay_usecs`
-and the new `delay` data which is of `spi_delay` type.
+Converting to use `word_delay` is straightforward: it just uses the new
+`spi_delay_exec()` routine, that handles the `unit` part.
 
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Link: https://lore.kernel.org/r/20190926105147.7839-17-alexandru.ardelean@analog.com
+Link: https://lore.kernel.org/r/20190926105147.7839-6-alexandru.ardelean@analog.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-fsl-espi.c | 16 +++++++++++++---
- drivers/spi/spi.c          |  9 +++++----
- include/linux/spi/spi.h    |  1 +
- 3 files changed, 19 insertions(+), 7 deletions(-)
+ drivers/spi/spi-orion.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index f20326714b9d..f72daf66f3f3 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -437,6 +437,7 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
- 			       struct spi_message *m)
- {
- 	unsigned int delay_usecs = 0, rx_nbits = 0;
-+	unsigned int delay_nsecs = 0, delay_nsecs1 = 0;
- 	struct spi_transfer *t, trans = {};
- 	int ret;
- 
-@@ -445,8 +446,16 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
- 		goto out;
- 
- 	list_for_each_entry(t, &m->transfers, transfer_list) {
--		if (t->delay_usecs > delay_usecs)
--			delay_usecs = t->delay_usecs;
-+		if (t->delay_usecs) {
-+			if (t->delay_usecs > delay_usecs) {
-+				delay_usecs = t->delay_usecs;
-+				delay_nsecs = delay_usecs * 1000;
-+			}
-+		} else {
-+			delay_nsecs1 = spi_delay_to_ns(&t->delay, t);
-+			if (delay_nsecs1 > delay_nsecs)
-+				delay_nsecs = delay_nsecs1;
-+		}
- 		if (t->rx_nbits > rx_nbits)
- 			rx_nbits = t->rx_nbits;
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index 81c991c4ddbf..c7266ef295fd 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -467,8 +467,7 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
+ 			if (orion_spi_write_read_8bit(spi, &tx, &rx) < 0)
+ 				goto out;
+ 			count--;
+-			if (xfer->word_delay_usecs)
+-				udelay(xfer->word_delay_usecs);
++			spi_delay_exec(&xfer->word_delay, xfer);
+ 		} while (count);
+ 	} else if (word_len == 16) {
+ 		const u16 *tx = xfer->tx_buf;
+@@ -478,8 +477,7 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
+ 			if (orion_spi_write_read_16bit(spi, &tx, &rx) < 0)
+ 				goto out;
+ 			count -= 2;
+-			if (xfer->word_delay_usecs)
+-				udelay(xfer->word_delay_usecs);
++			spi_delay_exec(&xfer->word_delay, xfer);
+ 		} while (count);
  	}
-@@ -457,7 +466,8 @@ static int fsl_espi_do_one_msg(struct spi_master *master,
- 	trans.len = m->frame_length;
- 	trans.speed_hz = t->speed_hz;
- 	trans.bits_per_word = t->bits_per_word;
--	trans.delay_usecs = delay_usecs;
-+	trans.delay.value = delay_nsecs;
-+	trans.delay.unit = SPI_DELAY_UNIT_NSECS;
- 	trans.rx_nbits = rx_nbits;
  
- 	if (trans.len)
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 21628b0728f1..5414a10afd65 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1120,7 +1120,7 @@ static void _spi_transfer_delay_ns(u32 ns)
- 	}
- }
- 
--static int _spi_delay_to_ns(struct spi_delay *_delay, struct spi_transfer *xfer)
-+int spi_delay_to_ns(struct spi_delay *_delay, struct spi_transfer *xfer)
- {
- 	u32 delay = _delay->value;
- 	u32 unit = _delay->unit;
-@@ -1153,6 +1153,7 @@ static int _spi_delay_to_ns(struct spi_delay *_delay, struct spi_transfer *xfer)
- 
- 	return delay;
- }
-+EXPORT_SYMBOL_GPL(spi_delay_to_ns);
- 
- int spi_delay_exec(struct spi_delay *_delay, struct spi_transfer *xfer)
- {
-@@ -1161,7 +1162,7 @@ int spi_delay_exec(struct spi_delay *_delay, struct spi_transfer *xfer)
- 	if (!_delay)
- 		return -EINVAL;
- 
--	delay = _spi_delay_to_ns(_delay, xfer);
-+	delay = spi_delay_to_ns(_delay, xfer);
- 	if (delay < 0)
- 		return delay;
- 
-@@ -3333,11 +3334,11 @@ static int _spi_xfer_word_delay_update(struct spi_transfer *xfer,
- {
- 	int delay1, delay2;
- 
--	delay1 = _spi_delay_to_ns(&xfer->word_delay, xfer);
-+	delay1 = spi_delay_to_ns(&xfer->word_delay, xfer);
- 	if (delay1 < 0)
- 		return delay1;
- 
--	delay2 = _spi_delay_to_ns(&spi->word_delay, xfer);
-+	delay2 = spi_delay_to_ns(&spi->word_delay, xfer);
- 	if (delay2 < 0)
- 		return delay2;
- 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index cfd87b18f077..c40d6af2bf07 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -103,6 +103,7 @@ struct spi_delay {
- 	u8	unit;
- };
- 
-+extern int spi_delay_to_ns(struct spi_delay *_delay, struct spi_transfer *xfer);
- extern int spi_delay_exec(struct spi_delay *_delay, struct spi_transfer *xfer);
- 
- /**
 -- 
 2.20.1

@@ -1,34 +1,24 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-axi: extend support for the `delay` field" to the
- spi tree
-Date: Tue, 15 Oct 2019 12:12:21 +0100 (BST)
-Message-ID: <20191015111221.CAFB92741CD7@ypsilon.sirena.org.uk>
-References: <20190926105147.7839-20-alexandru.ardelean@analog.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: f.fainelli@gmail.com, baolin.wang@linaro.org, linux-iio@vger.kernel.org,
- zhang.lyra@gmail.com, linus.walleij@linaro.org, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
- bcm-kernel-feedback-list@broadcom.com, linux-arm-kernel@lists.infradead.org,
- linux-tegra@vger.kernel.org, orsonzhai@gmail.com, jic23@kernel.org
+Subject: Applied "spi: tegra20-sflash: use to new `spi_transfer_delay_exec`" to the spi tree
+Date: Tue, 15 Oct 2019 12:12:24 +0100 (BST)
+Message-ID: <20191015111224.6B0342741CD7@ypsilon.sirena.org.uk>
+References: <20190926105147.7839-12-alexandru.ardelean@analog.com>
+Cc: baolin.wang@linaro.org, bcm-kernel-feedback-list@broadcom.com,
+        broonie@kernel.org, f.fainelli@gmail.com, jic23@kernel.org,
+        linus.walleij@linaro.org, linux-arm-kernel@lists.infradead.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>, orsonzhai@gmail.com,
+        zhang.lyra@gmail.com
 To: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20190926105147.7839-20-alexandru.ardelean@analog.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190926105147.7839-12-alexandru.ardelean@analog.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spi-axi: extend support for the `delay` field
+   spi: tegra20-sflash: use to new `spi_transfer_delay_exec`
 
 has been applied to the spi tree at
 
@@ -53,59 +43,43 @@ to this mail.
 Thanks,
 Mark
 
->From acc7720de3cb9721ac07f68309dd6d7aae8e9a7a Mon Sep 17 00:00:00 2001
+>From b883d5eda6c49a807e925b257bf9687d5c351004 Mon Sep 17 00:00:00 2001
 From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Date: Thu, 26 Sep 2019 13:51:47 +0300
-Subject: [PATCH] spi: spi-axi: extend support for the `delay` field
+Date: Thu, 26 Sep 2019 13:51:39 +0300
+Subject: [PATCH] spi: tegra20-sflash: use to new `spi_transfer_delay_exec`
 
-The AXI SPI engine driver uses the `delay_usecs` field from `spi_transfer`
-to configure delays, which the controller will execute.
-This change extends the logic to also include the `delay` value, in case it
-is used (instead if `delay_usecs`).
+This conversion to the spi_transfer_delay_exec() helper is not
+straightforward, as it seems that when a delay is present, the controller
+issues a command, and then a delay is followed.
+
+This change adds support for the new `delay` field which is of type
+`spi_delay` and keeps backwards compatibility with the old `delay_usecs`
+field.
 
 Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Link: https://lore.kernel.org/r/20190926105147.7839-20-alexandru.ardelean@analog.com
+Link: https://lore.kernel.org/r/20190926105147.7839-12-alexandru.ardelean@analog.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-axi-spi-engine.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/spi/spi-tegra20-sflash.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
-index 74842f6019ed..eb9b78a90dcf 100644
---- a/drivers/spi/spi-axi-spi-engine.c
-+++ b/drivers/spi/spi-axi-spi-engine.c
-@@ -163,10 +163,21 @@ static void spi_engine_gen_xfer(struct spi_engine_program *p, bool dry,
- }
- 
- static void spi_engine_gen_sleep(struct spi_engine_program *p, bool dry,
--	struct spi_engine *spi_engine, unsigned int clk_div, unsigned int delay)
-+	struct spi_engine *spi_engine, unsigned int clk_div,
-+	struct spi_transfer *xfer)
- {
- 	unsigned int spi_clk = clk_get_rate(spi_engine->ref_clk);
- 	unsigned int t;
-+	int delay;
-+
-+	if (xfer->delay_usecs) {
-+		delay = xfer->delay_usecs;
-+	} else {
-+		delay = spi_delay_to_ns(&xfer->delay, xfer);
-+		if (delay < 0)
-+			return;
-+		delay /= 1000;
-+	}
- 
- 	if (delay == 0)
- 		return;
-@@ -218,8 +229,7 @@ static int spi_engine_compile_message(struct spi_engine *spi_engine,
- 			spi_engine_gen_cs(p, dry, spi, true);
- 
- 		spi_engine_gen_xfer(p, dry, xfer);
--		spi_engine_gen_sleep(p, dry, spi_engine, clk_div,
--			xfer->delay_usecs);
-+		spi_engine_gen_sleep(p, dry, spi_engine, clk_div, xfer);
- 
- 		cs_change = xfer->cs_change;
- 		if (list_is_last(&xfer->transfer_list, &msg->transfers))
+diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
+index a841a7250d14..514429379206 100644
+--- a/drivers/spi/spi-tegra20-sflash.c
++++ b/drivers/spi/spi-tegra20-sflash.c
+@@ -341,10 +341,11 @@ static int tegra_sflash_transfer_one_message(struct spi_master *master,
+ 			goto exit;
+ 		}
+ 		msg->actual_length += xfer->len;
+-		if (xfer->cs_change && xfer->delay_usecs) {
++		if (xfer->cs_change &&
++		    (xfer->delay_usecs || xfer->delay.value)) {
+ 			tegra_sflash_writel(tsd, tsd->def_command_reg,
+ 					SPI_COMMAND);
+-			udelay(xfer->delay_usecs);
++			spi_transfer_delay_exec(xfer);
+ 		}
+ 	}
+ 	ret = 0;
 -- 
 2.20.1

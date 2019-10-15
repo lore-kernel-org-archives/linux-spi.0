@@ -1,85 +1,75 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "dt-bindings: spi: sh-msiof: Add r8a774b1 support" to the spi tree
-Date: Tue, 15 Oct 2019 10:26:57 +0100 (BST)
-Message-ID: <20191015092657.CF9B62742905@ypsilon.sirena.org.uk>
-References: <1570178133-21532-3-git-send-email-fabrizio.castro@bp.renesas.com>
-Cc: Biju Das <biju.das@bp.renesas.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Chris Paterson <Chris.Paterson2@renesas.com>,
-        devicetree@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jacopo Mondi <jacopo+renesas@jmondi.org>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-watchdog@vger.kernel.org,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Simon Horman <horms@verge.net.au>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-To: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1570178133-21532-3-git-send-email-fabrizio.castro@bp.renesas.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Subject: Re: [PATCH v4 04/19] spi: sprd: convert transfer word delay to
+ spi_delay struct
+Date: Tue, 15 Oct 2019 12:11:26 +0100
+Message-ID: <20191015111126.GA4030@sirena.co.uk>
+References: <20190926105147.7839-1-alexandru.ardelean@analog.com>
+ <20190926105147.7839-5-alexandru.ardelean@analog.com>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============7783444321353056408=="
+Cc: f.fainelli@gmail.com, baolin.wang@linaro.org, linux-iio@vger.kernel.org,
+ zhang.lyra@gmail.com, linus.walleij@linaro.org, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
+ jic23@kernel.org, linux-tegra@vger.kernel.org, orsonzhai@gmail.com,
+ linux-arm-kernel@lists.infradead.org
+To: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20190926105147.7839-5-alexandru.ardelean@analog.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   dt-bindings: spi: sh-msiof: Add r8a774b1 support
+--===============7783444321353056408==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="n8g4imXOkfNTN/H1"
+Content-Disposition: inline
 
-has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
+--n8g4imXOkfNTN/H1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+On Thu, Sep 26, 2019 at 01:51:32PM +0300, Alexandru Ardelean wrote:
+> The Spreadtrum SPI driver is the only user of the `word_delay` field in
+> the `spi_transfer` struct.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+This doesn't apply against current code, please check and resend.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+--n8g4imXOkfNTN/H1
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+-----BEGIN PGP SIGNATURE-----
 
-Thanks,
-Mark
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl2lqV0ACgkQJNaLcl1U
+h9CHiQf9GnqkNc3cR7NIFRHuaNNvuhYAgTsUs8m4UlwI7cQ/XcISc7kD1fUMD3tu
+By1lFV/xCEANfVBa8wDijwRyvK5RMcTXYFuPZAetNPoRb006+se0MZbPeukeTjlw
+JSA7tlI9mnu5p+5lXHQxIIigZnVdcgCqujQ3AG3lPW3YUHt8BIrVJqPGNkvhBDkF
+YLjLMMUvSJpskjMq9OLBCtKhevA7ZHMdvfuxJ22h5BQPsNZWZxZJv7QAMdhXA7VI
+nkJjcxeyvBY0GzAz5vi3SJGlLFDAec1qvF16d7mOre/0bWCRTNML0gyIt0wNiwZs
+80Dr9YLhjDBQmNejzh3MvVO6sStBxQ==
+=wgwp
+-----END PGP SIGNATURE-----
 
->From 97f41c68b83ea5216dbf3ac51fd86b0fbd399a97 Mon Sep 17 00:00:00 2001
-From: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
-Date: Fri, 4 Oct 2019 09:35:28 +0100
-Subject: [PATCH] dt-bindings: spi: sh-msiof: Add r8a774b1 support
+--n8g4imXOkfNTN/H1--
 
-Document RZ/G2N (R8A774B1) SoC bindings.
 
-Signed-off-by: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/1570178133-21532-3-git-send-email-fabrizio.castro@bp.renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml | 1 +
- 1 file changed, 1 insertion(+)
+--===============7783444321353056408==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-diff --git a/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml b/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
-index 4afaa48c1666..b6c1dd2a9c5e 100644
---- a/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
-+++ b/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
-@@ -35,6 +35,7 @@ properties:
-       - items:
-           - enum:
-               - renesas,msiof-r8a774a1      # RZ/G2M
-+              - renesas,msiof-r8a774b1      # RZ/G2N
-               - renesas,msiof-r8a774c0      # RZ/G2E
-               - renesas,msiof-r8a7795       # R-Car H3
-               - renesas,msiof-r8a7796       # R-Car M3-W
--- 
-2.20.1
+_______________________________________________
+linux-arm-kernel mailing list
+linux-arm-kernel@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+--===============7783444321353056408==--

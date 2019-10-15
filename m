@@ -1,73 +1,85 @@
-From: Eric Dumazet <eric.dumazet@gmail.com>
-Subject: Re: Potential NULL pointer deference in spi
-Date: Fri, 11 Oct 2019 09:01:10 -0700
-Message-ID: <214886b4-ec40-3959-35ff-f9b5a2507300@gmail.com>
-References: <CABvMjLToYzmCue-TiDhR4Yu4v3+Z+-UV9WhixV7uvwoMh2m5Lw@mail.gmail.com>
- <f3ce1620-c421-b41f-440b-efe3ff6e91fe@gmail.com>
- <CABvMjLTrGprdgFTP-+2XC_p+vE+tVWeYvyuLGkKj1dY7KR+JDg@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Zhiyun Qian <zhiyunq@cs.ucr.edu>,
-        Chengyu Song <csong@cs.ucr.edu>
-To: Yizhuo Zhai <yzhai003@ucr.edu>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "dt-bindings: spi: sh-msiof: Add r8a774b1 support" to the spi tree
+Date: Tue, 15 Oct 2019 10:26:57 +0100 (BST)
+Message-ID: <20191015092657.CF9B62742905@ypsilon.sirena.org.uk>
+References: <1570178133-21532-3-git-send-email-fabrizio.castro@bp.renesas.com>
+Cc: Biju Das <biju.das@bp.renesas.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Chris Paterson <Chris.Paterson2@renesas.com>,
+        devicetree@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jacopo Mondi <jacopo+renesas@jmondi.org>,
+        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-watchdog@vger.kernel.org,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Simon Horman <horms@verge.net.au>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+To: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CABvMjLTrGprdgFTP-+2XC_p+vE+tVWeYvyuLGkKj1dY7KR+JDg@mail.gmail.com>
-Content-Language: en-US
+In-Reply-To: <1570178133-21532-3-git-send-email-fabrizio.castro@bp.renesas.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
+   dt-bindings: spi: sh-msiof: Add r8a774b1 support
 
-On 10/10/19 10:31 PM, Yizhuo Zhai wrote:
-> Hi Eric:
-> 
-> My apologies for bothering, we got those report via static analysis
-> and haven't got a good method to verify the path to trigger them.
-> Therefore I sent those email to you maintainers first since you
-> know much better about the details. Sorry again for your time and
-> I take your suggestions.
+has been applied to the spi tree at
 
-My suggestion is that you need to make deep investigations on your own,
-before sending mails to lkml@, reaching thousands of people on the planet.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
 
-Static analysis tools having too many false positive are not worth
-the time spent by humans.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-I knew nothing about drivers/spi/spi.c, but after few minutes reading the code,
-it was clear your report was wrong.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Do not ask us to do what you should do yourself.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-Thanks.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-> 
-> On Wed, Oct 9, 2019 at 10:48 PM Eric Dumazet <eric.dumazet@gmail.com> wrote:
->>
->>
->>
->> On 10/9/19 10:37 PM, Yizhuo Zhai wrote:
->>> Hi All:
->>>
->>> drivers/spi/spi.c:
->>>
->>> The function to_spi_device() could return NULL, but some callers
->>> in this file does not check the return value while directly dereference
->>> it, which seems potentially unsafe.
->>>
->>> Such callers include spidev_release(),  spi_dev_check(),
->>> driver_override_store(), etc.
->>>
->>>
->>
->>
->> Many of your reports are completely bogus.
->>
->> I suggest you spend more time before sending such emails to very large audience
->> and risk being ignored at some point.
->>
->> Thanks.
-> 
-> 
-> 
+Thanks,
+Mark
+
+>From 97f41c68b83ea5216dbf3ac51fd86b0fbd399a97 Mon Sep 17 00:00:00 2001
+From: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
+Date: Fri, 4 Oct 2019 09:35:28 +0100
+Subject: [PATCH] dt-bindings: spi: sh-msiof: Add r8a774b1 support
+
+Document RZ/G2N (R8A774B1) SoC bindings.
+
+Signed-off-by: Fabrizio Castro <fabrizio.castro@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/1570178133-21532-3-git-send-email-fabrizio.castro@bp.renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml b/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
+index 4afaa48c1666..b6c1dd2a9c5e 100644
+--- a/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
++++ b/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
+@@ -35,6 +35,7 @@ properties:
+       - items:
+           - enum:
+               - renesas,msiof-r8a774a1      # RZ/G2M
++              - renesas,msiof-r8a774b1      # RZ/G2N
+               - renesas,msiof-r8a774c0      # RZ/G2E
+               - renesas,msiof-r8a7795       # R-Car H3
+               - renesas,msiof-r8a7796       # R-Car M3-W
+-- 
+2.20.1

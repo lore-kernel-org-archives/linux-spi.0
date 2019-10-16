@@ -1,27 +1,26 @@
-From: Daniel Vetter <daniel@ffwll.ch>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH v2 05/11] drm/tinydrm: Remove
  tinydrm_spi_max_transfer_size()
-Date: Wed, 16 Oct 2019 19:44:51 +0200
-Message-ID: <CAKMK7uEp39uvLtgyTTj31u-GYVoPiVJDTVbUThtn7NU_EoKk3A@mail.gmail.com>
+Date: Wed, 16 Oct 2019 19:00:21 +0100
+Message-ID: <20191016180021.GF4881@sirena.co.uk>
 References: <20190719155916.62465-1-noralf@tronnes.org>
  <20190719155916.62465-6-noralf@tronnes.org>
  <20191015143236.GA5363@smile.fi.intel.com>
  <253aec49-e51c-b35b-4e7d-53a8a948655d@tronnes.org>
  <20191015155720.GQ11828@phenom.ffwll.local>
  <20191016161300.GW32742@smile.fi.intel.com>
+ <CAKMK7uEp39uvLtgyTTj31u-GYVoPiVJDTVbUThtn7NU_EoKk3A@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: David Lechner <david@lechnology.com>,
- dri-devel <dri-devel@lists.freedesktop.org>, linux-spi@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, Jarkko Nikula <jarkko.nikula@linux.intel.com>,
- Sam Ravnborg <sam@ravnborg.org>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>,
- Daniel Mack <daniel@zonque.org>,
- Haojian Zhuang <haojian.zhuang@gmail.com>,
- Robert Jarzmik <robert.jarzmik@free.fr>
+Content-Type: multipart/mixed; boundary="===============0492929857=="
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
+ Robert Jarzmik <robert.jarzmik@free.fr>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org,
+ Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+ dri-devel <dri-devel@lists.freedesktop.org>, Sam Ravnborg <sam@ravnborg.org>,
+ Daniel Mack <daniel@zonque.org>, David Lechner <david@lechnology.com>
+To: Daniel Vetter <daniel@ffwll.ch>
 Return-path: <dri-devel-bounces@lists.freedesktop.org>
-In-Reply-To: <20191016161300.GW32742@smile.fi.intel.com>
+In-Reply-To: <CAKMK7uEp39uvLtgyTTj31u-GYVoPiVJDTVbUThtn7NU_EoKk3A@mail.gmail.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
  <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
@@ -33,70 +32,67 @@ Errors-To: dri-devel-bounces@lists.freedesktop.org
 Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
 List-Id: linux-spi.vger.kernel.org
 
-T24gV2VkLCBPY3QgMTYsIDIwMTkgYXQgNjoxMyBQTSBBbmR5IFNoZXZjaGVua28KPGFuZHJpeS5z
-aGV2Y2hlbmtvQGludGVsLmNvbT4gd3JvdGU6Cj4KPiBPbiBUdWUsIE9jdCAxNSwgMjAxOSBhdCAw
-NTo1NzoyMFBNICswMjAwLCBEYW5pZWwgVmV0dGVyIHdyb3RlOgo+ID4gT24gVHVlLCBPY3QgMTUs
-IDIwMTkgYXQgMDU6NDE6NTNQTSArMDIwMCwgTm9yYWxmIFRyw7hubmVzIHdyb3RlOgo+ID4gPiBE
-ZW4gMTUuMTAuMjAxOSAxNi4zMiwgc2tyZXYgQW5keSBTaGV2Y2hlbmtvOgo+ID4gPiA+IE9uIEZy
-aSwgSnVsIDE5LCAyMDE5IGF0IDA1OjU5OjEwUE0gKzAyMDAsIE5vcmFsZiBUcsO4bm5lcyB3cm90
-ZToKPiA+ID4gPj4gc3BpLWJjbTI4MzUgY2FuIGhhbmRsZSA+NjRrQiBidWZmZXJzIG5vdyBzbyB0
-aGVyZSBpcyBubyBuZWVkIHRvIGNoZWNrCj4gPiA+ID4+IC0+bWF4X2RtYV9sZW4uIFRoZSB0aW55
-ZHJtX3NwaV9tYXhfdHJhbnNmZXJfc2l6ZSgpIG1heF9sZW4gYXJndW1lbnQgaXMKPiA+ID4gPj4g
-bm90IHVzZWQgYnkgYW55IGNhbGxlcnMsIHNvIG5vdCBuZWVkZWQuCj4gPiA+ID4+Cj4gPiA+ID4+
-IFRoZW4gd2UgaGF2ZSB0aGUgc3BpX21heCBtb2R1bGUgcGFyYW1ldGVyLiBJdCB3YXMgYWRkZWQg
-YmVjYXVzZQo+ID4gPiA+PiBzdGFnaW5nL2ZidGZ0IGhhcyBzdXBwb3J0IGZvciBpdCBhbmQgdGhl
-cmUgd2FzIGEgcmVwb3J0IHRoYXQgc29tZW9uZSB1c2VkCj4gPiA+ID4+IGl0IHRvIHNldCBhIHNt
-YWxsIGJ1ZmZlciBzaXplIHRvIGF2b2lkIHBvcHBpbmcgb24gYSBVU0Igc291bmRjYXJkIG9uIGEK
-PiA+ID4gPj4gUmFzcGJlcnJ5IFBpLiBJbiBoaW5kc2lnaHQgaXQgc2hvdWxkbid0IGhhdmUgYmVl
-biBhZGRlZCwgSSBzaG91bGQgaGF2ZQo+ID4gPiA+PiB3YWl0ZWQgZm9yIGl0IHRvIGJlY29tZSBh
-IHByb2JsZW0gZmlyc3QuIEkgZG9uJ3Qga25vdyBpdCBhbnlvbmUgaXMKPiA+ID4gPj4gYWN0dWFs
-bHkgdXNpbmcgaXQsIGJ1dCBzaW5jZSB0aW55ZHJtX3NwaV90cmFuc2ZlcigpIGlzIGJlaW5nIG1v
-dmVkIHRvCj4gPiA+ID4+IG1pcGktZGJpLCBJJ20gdGFraW5nIHRoZSBvcHBvcnR1bml0eSB0byBy
-ZW1vdmUgaXQuIEknbGwgYWRkIGl0IGJhY2sgdG8KPiA+ID4gPj4gbWlwaS1kYmkgaWYgc29tZW9u
-ZSBjb21wbGFpbnMuCj4gPiA+ID4+Cj4gPiA+ID4+IFdpdGggdGhhdCBvdXQgb2YgdGhlIHdheSwg
-c3BpX21heF90cmFuc2Zlcl9zaXplKCkgY2FuIGJlIHVzZWQgaW5zdGVhZC4KPiA+ID4gPj4KPiA+
-ID4gPj4gVGhlIGNob3NlbiAxNmtCIGJ1ZmZlciBzaXplIGZvciBUeXBlIEMgT3B0aW9uIDEgKDkt
-Yml0KSBpbnRlcmZhY2UgaXMKPiA+ID4gPj4gc29tZXdoYXQgYXJiaXRyYXJ5LCBidXQgYSBiaWdn
-ZXIgYnVmZmVyIHdpbGwgaGF2ZSBhIG1pbmlzY3VsZSBpbXBhY3Qgb24KPiA+ID4gPj4gdHJhbnNm
-ZXIgc3BlZWQsIHNvIGl0J3MgcHJvYmFibHkgZmluZS4KPiA+ID4gPgo+ID4gPiA+IFRoaXMgYnJl
-YWtzIHRoZSBTUEkgUFhBMnh4IGNhc2UgSSdtIHVzaW5nLiBUaGUgd29ybGQgaXMgbm90IGEgUGk6
-ZS4KPiA+ID4gPgo+ID4gPiA+IFsgIDM4OC40NDU3NTJdIG1pMDI4M3F0IHNwaS1QUlAwMDAxOjAx
-OiBETUEgZGlzYWJsZWQgZm9yIHRyYW5zZmVyIGxlbmd0aCAxNTM2MDAgZ3JlYXRlciB0aGFuIDY1
-NTM2Cj4gPiA+ID4gWyAgMzg4LjYzNDQzN10gbWkwMjgzcXQgc3BpLVBSUDAwMDE6MDE6IERNQSBk
-aXNhYmxlZCBmb3IgdHJhbnNmZXIgbGVuZ3RoIDE1MzYwMCBncmVhdGVyIHRoYW4gNjU1MzYKPiA+
-ID4gPiBbICAzODguODIyOTMzXSBtaTAyODNxdCBzcGktUFJQMDAwMTowMTogRE1BIGRpc2FibGVk
-IGZvciB0cmFuc2ZlciBsZW5ndGggMTUzNjAwIGdyZWF0ZXIgdGhhbiA2NTUzNgo+ID4gPiA+Cj4g
-PiA+ID4gVGhlIGNydWNpYWwgdGhpbmcgaXMgdG8gY2hlY2sgdGhlIHRyYW5zZmVyIHNpemUgYWdh
-aW5zdCBtYXhpbXVtIERNQSBsZW5ndGgKPiA+ID4gPiBvZiB0aGUgbWFzdGVyLgo+ID4gPiA+Cj4g
-PiA+Cj4gPiA+IElzbid0IHRoaXMgYSBzcGkgY29udHJvbGxlciBkcml2ZXIgcHJvYmxlbT8KPiA+
-ID4gc3BpX21heF90cmFuc2Zlcl9zaXplKCkgdGVsbHMgdGhlIGNsaWVudCB3aGF0IHRoZSBtYXhp
-bXVtIHRyYW5zZmVyCj4gPiA+IGxlbmd0aCBpcy4gVGhlIGNvbnRyb2xsZXIgZHJpdmVyIGNhbiB1
-c2UgY3Rsci0+bWF4X3RyYW5zZmVyX3NpemUgaWYgaXQKPiA+ID4gaGFzIHJlc3RyaWN0aW9ucy4K
-PiA+ID4gQUZBSVVJIG1heF9kbWFfbGVuIGlzIHVzZWQgd2hlbiBzcGxpdHRpbmcgdXAgdGhlIGJ1
-ZmZlciBmb3IgdGhlIHNnIHRhYmxlCj4gPiA+IGluIHNwaV9tYXBfYnVmKCkuCj4gPgo+ID4gU29t
-ZXRoaW5nIGxpa2UgdGhpcywgYXMgYSB0ZXN0IHBhdGNoLgo+Cj4gbWF4X3RyYW5zZmVyX3NpemUg
-c2hvdWxkIGJlIGEgZnVuY3Rpb24uIEluIHRoYXQgY2FzZSBpdCB3b3Jrcy4KCldoeSBkbyB5b3Ug
-d2FudCB0byBtYWtlIGl0IGEgZnVuY3Rpb24/IEF0IGxlYXN0IGZyb20gbXkgcmVhZGluZyBvZiB0
-aGUKY29kZSwgdGhlIGRtYSB2cyBwaW8gZGVjaXNpb24gc2VlbXMgdG8gYmUgZG9uZSBvbmNlLiBT
-byBubyBuZWVkIHRvCmNoYW5nZSB0aGlzIGF0IHJ1bnRpbWUuIENoYW5naW5nIGF0IHJ1bnRpbWUg
-d291bGQgYWxzbyBiZSBhIHByZXR0eSBiaWcKc3VycHJpc2UgSSB0aGluayBmb3IgdXNlcnMgb2Yg
-c3BpLgoKPiBIb3dldmVyIEknbSBub3Qgc3VyZSBpdCdzIHRoZSBiZXN0IGFwcHJvYWNoLCB0aHVz
-LCBDYyB0byBTUEkgUFhBIHBlb3BsZS4KCkhtIGRpZG4ndCBzcG90IHRoZSBweGEgcGVvcGxlLCBh
-ZGRlZCB0aGVtLiBNYXJrLCBzaG91bGQgSSBqdXN0IGdvCmFoZWFkIGFuZCBiYWtlIHRoaXMgaW50
-byBhIHByb3BlciBwYXRjaCBmb3IgZGlzY3Vzc2lvbj8gT3IKZnVuZGFtZW50YWxseSB3cm9uZyBh
-cHByb2FjaD8KLURhbmllbAoKPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGktcHhhMnh4
-LmMgYi9kcml2ZXJzL3NwaS9zcGktcHhhMnh4LmMKPiA+IGluZGV4IGJiNmExNGQxYWIwZi4uZjc3
-MjAxOTE1MDMzIDEwMDY0NAo+ID4gLS0tIGEvZHJpdmVycy9zcGkvc3BpLXB4YTJ4eC5jCj4gPiAr
-KysgYi9kcml2ZXJzL3NwaS9zcGktcHhhMnh4LmMKPiA+IEBAIC0xNzA3LDYgKzE3MDcsNyBAQCBz
-dGF0aWMgaW50IHB4YTJ4eF9zcGlfcHJvYmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldikK
-PiA+ICAgICAgICAgICAgICAgfSBlbHNlIHsKPiA+ICAgICAgICAgICAgICAgICAgICAgICBjb250
-cm9sbGVyLT5jYW5fZG1hID0gcHhhMnh4X3NwaV9jYW5fZG1hOwo+ID4gICAgICAgICAgICAgICAg
-ICAgICAgIGNvbnRyb2xsZXItPm1heF9kbWFfbGVuID0gTUFYX0RNQV9MRU47Cj4gPiArICAgICAg
-ICAgICAgICAgICAgICAgY29udHJvbGxlci0+bWF4X3RyYW5zZmVyX3NpemUgPSBNQVhfRE1BX0xF
-TjsKPiA+ICAgICAgICAgICAgICAgfQo+ID4gICAgICAgfQo+ID4KPgo+IC0tCj4gV2l0aCBCZXN0
-IFJlZ2FyZHMsCj4gQW5keSBTaGV2Y2hlbmtvCj4KPgoKCi0tIApEYW5pZWwgVmV0dGVyClNvZnR3
-YXJlIEVuZ2luZWVyLCBJbnRlbCBDb3Jwb3JhdGlvbgorNDEgKDApIDc5IDM2NSA1NyA0OCAtIGh0
-dHA6Ly9ibG9nLmZmd2xsLmNoCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCmRyaS1kZXZlbCBtYWlsaW5nIGxpc3QKZHJpLWRldmVsQGxpc3RzLmZyZWVkZXNr
-dG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Ry
-aS1kZXZlbA==
+
+--===============0492929857==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="fwqqG+mf3f7vyBCB"
+Content-Disposition: inline
+
+
+--fwqqG+mf3f7vyBCB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Wed, Oct 16, 2019 at 07:44:51PM +0200, Daniel Vetter wrote:
+> On Wed, Oct 16, 2019 at 6:13 PM Andy Shevchenko
+> > On Tue, Oct 15, 2019 at 05:57:20PM +0200, Daniel Vetter wrote:
+
+> > > Something like this, as a test patch.
+
+> > max_transfer_size should be a function. In that case it works.
+
+> Why do you want to make it a function? At least from my reading of the
+> code, the dma vs pio decision seems to be done once. So no need to
+> change this at runtime. Changing at runtime would also be a pretty big
+> surprise I think for users of spi.
+
+Yeah, I'd expect it to be a fixed property of the hardware that doesn't
+vary at runtime though I'm sure there must be some innovation out there
+which challenges that assumption.
+
+> > However I'm not sure it's the best approach, thus, Cc to SPI PXA people.
+
+> Hm didn't spot the pxa people, added them. Mark, should I just go
+> ahead and bake this into a proper patch for discussion? Or
+> fundamentally wrong approach?
+
+That seems sensible enough, it should certainly fix the immediate issue.
+
+--fwqqG+mf3f7vyBCB
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl2nWrQACgkQJNaLcl1U
+h9ACpgf9FYcLQbfzOaqA6bv23GWM5kYHA1UQOKHgZlYLGC2Aw2IeM1XqAs7af+EZ
+fzW3MX3jF1BIV508BV4aPBDjos8meM4SQLXnHHzAn1Kvtfky92yyKuQJuz3/S8Q8
+kU6Eg9MYfC32v/Ii1T8Xo/Du9uNI9cmdBkO7D3jteSBIztHjJGWKbD4zvJ7DZIfO
+pA3aKflUVJoigqGqpCC/DCiksKAlcLVML61jwSDl611fibVqYSOmfsjsTl9M+FMm
+REE2KZdwbugKtbhrNA0oLIJqG8lEVbx23IFjHixlGJfOmHk/Aqw8yF75f/DIofxt
+lXwPoa9S1SUlO1mBG3bonq/CynXuZg==
+=Ib+9
+-----END PGP SIGNATURE-----
+
+--fwqqG+mf3f7vyBCB--
+
+--===============0492929857==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KZHJpLWRldmVs
+IG1haWxpbmcgbGlzdApkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
+dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vZHJpLWRldmVs
+
+--===============0492929857==--

@@ -1,20 +1,21 @@
-From: =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH] spi: pxa2xx: Set controller->max_transfer_size in dma mode
-Date: Wed, 16 Oct 2019 23:30:51 +0200
-Message-ID: <36610873-fa30-a286-d05c-5eceb3cbcb57@tronnes.org>
+Date: Wed, 16 Oct 2019 22:49:18 +0100
+Message-ID: <20191016214918.GA11473@sirena.co.uk>
 References: <20191016195721.3714-1-daniel.vetter@ffwll.ch>
+ <36610873-fa30-a286-d05c-5eceb3cbcb57@tronnes.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
- Sam Ravnborg <sam@ravnborg.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
- linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
- linux-arm-kernel@lists.infradead.org, Robert Jarzmik <robert.jarzmik@free.fr>,
- Daniel Mack <daniel@zonque.org>
-To: Daniel Vetter <daniel.vetter@ffwll.ch>,
- DRI Development <dri-devel@lists.freedesktop.org>
+Content-Type: multipart/mixed; boundary="===============1527627776=="
+Cc: linux-arm-kernel@lists.infradead.org,
+ Andy Shevchenko <andriy.shevchenko@intel.com>,
+ Daniel Vetter <daniel.vetter@ffwll.ch>,
+ Robert Jarzmik <robert.jarzmik@free.fr>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org,
+ DRI Development <dri-devel@lists.freedesktop.org>,
+ Sam Ravnborg <sam@ravnborg.org>, Daniel Mack <daniel@zonque.org>
+To: Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf@tronnes.org>
 Return-path: <dri-devel-bounces@lists.freedesktop.org>
-In-Reply-To: <20191016195721.3714-1-daniel.vetter@ffwll.ch>
+In-Reply-To: <36610873-fa30-a286-d05c-5eceb3cbcb57@tronnes.org>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
  <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
@@ -26,49 +27,63 @@ Errors-To: dri-devel-bounces@lists.freedesktop.org
 Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
 List-Id: linux-spi.vger.kernel.org
 
-CgpEZW4gMTYuMTAuMjAxOSAyMS41Nywgc2tyZXYgRGFuaWVsIFZldHRlcjoKPiBJbiBETUEgbW9k
-ZSB3ZSBoYXZlIGEgbWF4aW11bSB0cmFuc2ZlciBzaXplLCBwYXN0IHRoYXQgdGhlIGRyaXZlcgo+
-IGZhbGxzIGJhY2sgdG8gUElPIChzZWUgdGhlIGNoZWNrIGF0IHRoZSB0b3Agb2YgcHhhMnh4X3Nw
-aV90cmFuc2Zlcl9vbmUpLgo+IEZhbGxpbmcgYmFjayB0byBQSU8gZm9yIGJpZyB0cmFuc2ZlcnMg
-ZGVmZWF0cyB0aGUgcG9pbnQgb2YgYSBkbWEgZW5naW5lLAo+IGhlbmNlIHNldCB0aGUgbWF4IHRy
-YW5zZmVyIHNpemUgdG8gaW5mb3JtIHNwaSBjbGllbnRzIHRoYXQgdGhleSBuZWVkCj4gdG8gZG8g
-c29tZXRoaW5nIHNtYXJ0ZXIuCj4gCj4gVGhpcyB3YXMgdW5jb3ZlcmVkIGJ5IHRoZSBkcm1fbWlw
-aV9kYmkgc3BpIHBhbmVsIGNvZGUsIHdoaWNoIGRvZXMKPiBsYXJnZSBzcGkgdHJhbnNmZXJzLCBi
-dXQgc3RvcHBlZCBzcGxpdHRpbmcgdGhlbSBhZnRlcjoKPiAKPiBjb21taXQgZTE0MzM2NGI0YzE3
-NzRmNjhlOTIzYTVhMGJiMGZjYTI4YWMyNTg4OAo+IEF1dGhvcjogTm9yYWxmIFRyw7hubmVzIDxu
-b3JhbGZAdHJvbm5lcy5vcmc+Cj4gRGF0ZTogICBGcmkgSnVsIDE5IDE3OjU5OjEwIDIwMTkgKzAy
-MDAKPiAKPiAgICAgZHJtL3Rpbnlkcm06IFJlbW92ZSB0aW55ZHJtX3NwaV9tYXhfdHJhbnNmZXJf
-c2l6ZSgpCj4gCj4gQWZ0ZXIgdGhpcyBjb21taXQgdGhlIGNvZGUgcmVsaWVkIG9uIHRoZSBzcGkg
-Y29yZSB0byBzcGxpdCB0cmFuc2ZlcnMKPiBpbnRvIG1heCBkbWEtYWJsZSBibG9ja3MsIHdoaWNo
-IGFsc28gcGFwZXJlZCBvdmVyIHRoZSBQSU8gZmFsbGJhY2sgaXNzdWUuCj4gCj4gRml4IHRoaXMg
-Ynkgc2V0dGluZyB0aGUgb3ZlcmFsbCBtYXggdHJhbnNmZXIgc2l6ZSB0byB0aGUgRE1BIGxpbWl0
-LAo+IGJ1dCBvbmx5IHdoZW4gdGhlIGNvbnRyb2xsZXIgcnVucyBpbiBETUEgbW9kZS4KPiAKPiBG
-aXhlczogZTE0MzM2NGI0YzE3ICgiZHJtL3Rpbnlkcm06IFJlbW92ZSB0aW55ZHJtX3NwaV9tYXhf
-dHJhbnNmZXJfc2l6ZSgpIikKPiBDYzogU2FtIFJhdm5ib3JnIDxzYW1AcmF2bmJvcmcub3JnPgo+
-IENjOiBOb3JhbGYgVHLDuG5uZXMgPG5vcmFsZkB0cm9ubmVzLm9yZz4KPiBDYzogQW5keSBTaGV2
-Y2hlbmtvIDxhbmRyaXkuc2hldmNoZW5rb0BpbnRlbC5jb20+Cj4gUmVwb3J0ZWQtYW5kLXRlc3Rl
-ZC1ieTogQW5keSBTaGV2Y2hlbmtvIDxhbmRyaXkuc2hldmNoZW5rb0BpbnRlbC5jb20+Cj4gQ2M6
-IERhbmllbCBNYWNrIDxkYW5pZWxAem9ucXVlLm9yZz4KPiBDYzogSGFvamlhbiBaaHVhbmcgPGhh
-b2ppYW4uemh1YW5nQGdtYWlsLmNvbT4KPiBDYzogUm9iZXJ0IEphcnptaWsgPHJvYmVydC5qYXJ6
-bWlrQGZyZWUuZnI+Cj4gQ2M6IE1hcmsgQnJvd24gPGJyb29uaWVAa2VybmVsLm9yZz4KPiBDYzog
-bGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnCj4gQ2M6IGxpbnV4LXNwaUB2Z2Vy
-Lmtlcm5lbC5vcmcKPiBTaWduZWQtb2ZmLWJ5OiBEYW5pZWwgVmV0dGVyIDxkYW5pZWwudmV0dGVy
-QGZmd2xsLmNoPgo+IC0tLQo+ICBkcml2ZXJzL3NwaS9zcGktcHhhMnh4LmMgfCAxICsKPiAgMSBm
-aWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspCj4gCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3Bp
-L3NwaS1weGEyeHguYyBiL2RyaXZlcnMvc3BpL3NwaS1weGEyeHguYwo+IGluZGV4IGJiNmExNGQx
-YWIwZi4uZjc3MjAxOTE1MDMzIDEwMDY0NAo+IC0tLSBhL2RyaXZlcnMvc3BpL3NwaS1weGEyeHgu
-Ywo+ICsrKyBiL2RyaXZlcnMvc3BpL3NwaS1weGEyeHguYwo+IEBAIC0xNzA3LDYgKzE3MDcsNyBA
-QCBzdGF0aWMgaW50IHB4YTJ4eF9zcGlfcHJvYmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRl
-dikKPiAgCQl9IGVsc2Ugewo+ICAJCQljb250cm9sbGVyLT5jYW5fZG1hID0gcHhhMnh4X3NwaV9j
-YW5fZG1hOwo+ICAJCQljb250cm9sbGVyLT5tYXhfZG1hX2xlbiA9IE1BWF9ETUFfTEVOOwo+ICsJ
-CQljb250cm9sbGVyLT5tYXhfdHJhbnNmZXJfc2l6ZSA9IE1BWF9ETUFfTEVOOwoKQXMgQW5keSBt
-ZW50aW9uZWQsIC0+bWF4X3RyYW5zZmVyX3NpemUgaXMgYSBjYWxsYmFjazoKCnN0cnVjdCBzcGlf
-Y29udHJvbGxlciB7CgkvKgoJICogb24gc29tZSBoYXJkd2FyZSB0cmFuc2ZlciAvIG1lc3NhZ2Ug
-c2l6ZSBtYXkgYmUgY29uc3RyYWluZWQKCSAqIHRoZSBsaW1pdCBtYXkgZGVwZW5kIG9uIGRldmlj
-ZSB0cmFuc2ZlciBzZXR0aW5ncwoJICovCglzaXplX3QgKCptYXhfdHJhbnNmZXJfc2l6ZSkoc3Ry
-dWN0IHNwaV9kZXZpY2UgKnNwaSk7CgooSSBsb29rZWQgYXQgaXRzIHVzZXJzIGFuZCB0aGV5IGFs
-bCByZXR1cm4gYSBzdGF0aWMgb3IgcHJvYmUgdGltZSB2YWx1ZQpzbyBub3Qgc3VyZSB3aHkgaXQn
-cyBhIGNhbGxiYWNrLikKCk5vcmFsZi4KCj4gIAkJfQo+ICAJfQo+ICAKPiAKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KZHJpLWRldmVsIG1haWxpbmcgbGlz
-dApkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnL21haWxtYW4vbGlzdGluZm8vZHJpLWRldmVs
+
+--===============1527627776==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="yrj/dFKFPuw6o+aM"
+Content-Disposition: inline
+
+
+--yrj/dFKFPuw6o+aM
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Oct 16, 2019 at 11:30:51PM +0200, Noralf Tr=F8nnes wrote:
+
+> As Andy mentioned, ->max_transfer_size is a callback:
+
+> struct spi_controller {
+> 	/*
+> 	 * on some hardware transfer / message size may be constrained
+> 	 * the limit may depend on device transfer settings
+> 	 */
+> 	size_t (*max_transfer_size)(struct spi_device *spi);
+
+> (I looked at its users and they all return a static or probe time value
+> so not sure why it's a callback.)
+
+Huh, I wonder why we did that...  I can't find any clear record, and
+like you say nothing is using it so we should probably fix it - however
+that's best done separately to this :/  Sorry for the confusion, I
+didn't register what Andy was saying as being pointing out the current
+state of the code.
+
+--yrj/dFKFPuw6o+aM
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl2nkF4ACgkQJNaLcl1U
+h9A+Pwf/W+TqlKqBacstyeP18KY0oRQ7ySrj544UYjH8VdN93ZMgWCSCZ5FgL9tv
+APkLEB1mXcpDeqLbLHKrNBS+8yMpCzqOVIYjmA1COIRm627P28BGBF1IKaFaPg2N
+fjG5vu2nWcgpCjPneFPOdCP0RLEiRd0qWLCbPv4VpKJpYHK4U44/m7bN8iuM9cHB
+Chd4H3kndisVKQXkwsAT6emauaPLaf17Hbhovoar5TlHECfIwOYKanPDPIYqgol6
+uOFs93BJbfky2Wj5rbCNh1F6T2zKpG8ctOvrPrDVvNcVF2vv0+EIlESSGM+aON42
+h/DQKS+S9hNCPnEKRtbjv++nzuZbow==
+=+n2p
+-----END PGP SIGNATURE-----
+
+--yrj/dFKFPuw6o+aM--
+
+--===============1527627776==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KZHJpLWRldmVs
+IG1haWxpbmcgbGlzdApkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
+dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vZHJpLWRldmVs
+
+--===============1527627776==--

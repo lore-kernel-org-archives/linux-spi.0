@@ -1,26 +1,19 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 05/11] drm/tinydrm: Remove
- tinydrm_spi_max_transfer_size()
-Date: Wed, 16 Oct 2019 19:00:21 +0100
-Message-ID: <20191016180021.GF4881@sirena.co.uk>
-References: <20190719155916.62465-1-noralf@tronnes.org>
- <20190719155916.62465-6-noralf@tronnes.org>
- <20191015143236.GA5363@smile.fi.intel.com>
- <253aec49-e51c-b35b-4e7d-53a8a948655d@tronnes.org>
- <20191015155720.GQ11828@phenom.ffwll.local>
- <20191016161300.GW32742@smile.fi.intel.com>
- <CAKMK7uEp39uvLtgyTTj31u-GYVoPiVJDTVbUThtn7NU_EoKk3A@mail.gmail.com>
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
+Subject: [PATCH] spi: pxa2xx: Set controller->max_transfer_size in dma mode
+Date: Wed, 16 Oct 2019 21:57:21 +0200
+Message-ID: <20191016195721.3714-1-daniel.vetter@ffwll.ch>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0492929857=="
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: linux-arm-kernel@lists.infradead.org,
+ Andy Shevchenko <andriy.shevchenko@intel.com>,
+ Daniel Vetter <daniel.vetter@ffwll.ch>,
  Robert Jarzmik <robert.jarzmik@free.fr>,
  Haojian Zhuang <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org,
- Jarkko Nikula <jarkko.nikula@linux.intel.com>,
- dri-devel <dri-devel@lists.freedesktop.org>, Sam Ravnborg <sam@ravnborg.org>,
- Daniel Mack <daniel@zonque.org>, David Lechner <david@lechnology.com>
-To: Daniel Vetter <daniel@ffwll.ch>
+ Mark Brown <broonie@kernel.org>, Sam Ravnborg <sam@ravnborg.org>,
+ Daniel Mack <daniel@zonque.org>
+To: DRI Development <dri-devel@lists.freedesktop.org>
 Return-path: <dri-devel-bounces@lists.freedesktop.org>
-In-Reply-To: <CAKMK7uEp39uvLtgyTTj31u-GYVoPiVJDTVbUThtn7NU_EoKk3A@mail.gmail.com>
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
  <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
@@ -32,67 +25,40 @@ Errors-To: dri-devel-bounces@lists.freedesktop.org
 Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
 List-Id: linux-spi.vger.kernel.org
 
-
---===============0492929857==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="fwqqG+mf3f7vyBCB"
-Content-Disposition: inline
-
-
---fwqqG+mf3f7vyBCB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Wed, Oct 16, 2019 at 07:44:51PM +0200, Daniel Vetter wrote:
-> On Wed, Oct 16, 2019 at 6:13 PM Andy Shevchenko
-> > On Tue, Oct 15, 2019 at 05:57:20PM +0200, Daniel Vetter wrote:
-
-> > > Something like this, as a test patch.
-
-> > max_transfer_size should be a function. In that case it works.
-
-> Why do you want to make it a function? At least from my reading of the
-> code, the dma vs pio decision seems to be done once. So no need to
-> change this at runtime. Changing at runtime would also be a pretty big
-> surprise I think for users of spi.
-
-Yeah, I'd expect it to be a fixed property of the hardware that doesn't
-vary at runtime though I'm sure there must be some innovation out there
-which challenges that assumption.
-
-> > However I'm not sure it's the best approach, thus, Cc to SPI PXA people.
-
-> Hm didn't spot the pxa people, added them. Mark, should I just go
-> ahead and bake this into a proper patch for discussion? Or
-> fundamentally wrong approach?
-
-That seems sensible enough, it should certainly fix the immediate issue.
-
---fwqqG+mf3f7vyBCB
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl2nWrQACgkQJNaLcl1U
-h9ACpgf9FYcLQbfzOaqA6bv23GWM5kYHA1UQOKHgZlYLGC2Aw2IeM1XqAs7af+EZ
-fzW3MX3jF1BIV508BV4aPBDjos8meM4SQLXnHHzAn1Kvtfky92yyKuQJuz3/S8Q8
-kU6Eg9MYfC32v/Ii1T8Xo/Du9uNI9cmdBkO7D3jteSBIztHjJGWKbD4zvJ7DZIfO
-pA3aKflUVJoigqGqpCC/DCiksKAlcLVML61jwSDl611fibVqYSOmfsjsTl9M+FMm
-REE2KZdwbugKtbhrNA0oLIJqG8lEVbx23IFjHixlGJfOmHk/Aqw8yF75f/DIofxt
-lXwPoa9S1SUlO1mBG3bonq/CynXuZg==
-=Ib+9
------END PGP SIGNATURE-----
-
---fwqqG+mf3f7vyBCB--
-
---===============0492929857==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KZHJpLWRldmVs
-IG1haWxpbmcgbGlzdApkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vZHJpLWRldmVs
-
---===============0492929857==--
+SW4gRE1BIG1vZGUgd2UgaGF2ZSBhIG1heGltdW0gdHJhbnNmZXIgc2l6ZSwgcGFzdCB0aGF0IHRo
+ZSBkcml2ZXIKZmFsbHMgYmFjayB0byBQSU8gKHNlZSB0aGUgY2hlY2sgYXQgdGhlIHRvcCBvZiBw
+eGEyeHhfc3BpX3RyYW5zZmVyX29uZSkuCkZhbGxpbmcgYmFjayB0byBQSU8gZm9yIGJpZyB0cmFu
+c2ZlcnMgZGVmZWF0cyB0aGUgcG9pbnQgb2YgYSBkbWEgZW5naW5lLApoZW5jZSBzZXQgdGhlIG1h
+eCB0cmFuc2ZlciBzaXplIHRvIGluZm9ybSBzcGkgY2xpZW50cyB0aGF0IHRoZXkgbmVlZAp0byBk
+byBzb21ldGhpbmcgc21hcnRlci4KClRoaXMgd2FzIHVuY292ZXJlZCBieSB0aGUgZHJtX21pcGlf
+ZGJpIHNwaSBwYW5lbCBjb2RlLCB3aGljaCBkb2VzCmxhcmdlIHNwaSB0cmFuc2ZlcnMsIGJ1dCBz
+dG9wcGVkIHNwbGl0dGluZyB0aGVtIGFmdGVyOgoKY29tbWl0IGUxNDMzNjRiNGMxNzc0ZjY4ZTky
+M2E1YTBiYjBmY2EyOGFjMjU4ODgKQXV0aG9yOiBOb3JhbGYgVHLDuG5uZXMgPG5vcmFsZkB0cm9u
+bmVzLm9yZz4KRGF0ZTogICBGcmkgSnVsIDE5IDE3OjU5OjEwIDIwMTkgKzAyMDAKCiAgICBkcm0v
+dGlueWRybTogUmVtb3ZlIHRpbnlkcm1fc3BpX21heF90cmFuc2Zlcl9zaXplKCkKCkFmdGVyIHRo
+aXMgY29tbWl0IHRoZSBjb2RlIHJlbGllZCBvbiB0aGUgc3BpIGNvcmUgdG8gc3BsaXQgdHJhbnNm
+ZXJzCmludG8gbWF4IGRtYS1hYmxlIGJsb2Nrcywgd2hpY2ggYWxzbyBwYXBlcmVkIG92ZXIgdGhl
+IFBJTyBmYWxsYmFjayBpc3N1ZS4KCkZpeCB0aGlzIGJ5IHNldHRpbmcgdGhlIG92ZXJhbGwgbWF4
+IHRyYW5zZmVyIHNpemUgdG8gdGhlIERNQSBsaW1pdCwKYnV0IG9ubHkgd2hlbiB0aGUgY29udHJv
+bGxlciBydW5zIGluIERNQSBtb2RlLgoKRml4ZXM6IGUxNDMzNjRiNGMxNyAoImRybS90aW55ZHJt
+OiBSZW1vdmUgdGlueWRybV9zcGlfbWF4X3RyYW5zZmVyX3NpemUoKSIpCkNjOiBTYW0gUmF2bmJv
+cmcgPHNhbUByYXZuYm9yZy5vcmc+CkNjOiBOb3JhbGYgVHLDuG5uZXMgPG5vcmFsZkB0cm9ubmVz
+Lm9yZz4KQ2M6IEFuZHkgU2hldmNoZW5rbyA8YW5kcml5LnNoZXZjaGVua29AaW50ZWwuY29tPgpS
+ZXBvcnRlZC1hbmQtdGVzdGVkLWJ5OiBBbmR5IFNoZXZjaGVua28gPGFuZHJpeS5zaGV2Y2hlbmtv
+QGludGVsLmNvbT4KQ2M6IERhbmllbCBNYWNrIDxkYW5pZWxAem9ucXVlLm9yZz4KQ2M6IEhhb2pp
+YW4gWmh1YW5nIDxoYW9qaWFuLnpodWFuZ0BnbWFpbC5jb20+CkNjOiBSb2JlcnQgSmFyem1payA8
+cm9iZXJ0LmphcnptaWtAZnJlZS5mcj4KQ2M6IE1hcmsgQnJvd24gPGJyb29uaWVAa2VybmVsLm9y
+Zz4KQ2M6IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwpDYzogbGludXgtc3Bp
+QHZnZXIua2VybmVsLm9yZwpTaWduZWQtb2ZmLWJ5OiBEYW5pZWwgVmV0dGVyIDxkYW5pZWwudmV0
+dGVyQGZmd2xsLmNoPgotLS0KIGRyaXZlcnMvc3BpL3NwaS1weGEyeHguYyB8IDEgKwogMSBmaWxl
+IGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvc3BpLXB4
+YTJ4eC5jIGIvZHJpdmVycy9zcGkvc3BpLXB4YTJ4eC5jCmluZGV4IGJiNmExNGQxYWIwZi4uZjc3
+MjAxOTE1MDMzIDEwMDY0NAotLS0gYS9kcml2ZXJzL3NwaS9zcGktcHhhMnh4LmMKKysrIGIvZHJp
+dmVycy9zcGkvc3BpLXB4YTJ4eC5jCkBAIC0xNzA3LDYgKzE3MDcsNyBAQCBzdGF0aWMgaW50IHB4
+YTJ4eF9zcGlfcHJvYmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldikKIAkJfSBlbHNlIHsK
+IAkJCWNvbnRyb2xsZXItPmNhbl9kbWEgPSBweGEyeHhfc3BpX2Nhbl9kbWE7CiAJCQljb250cm9s
+bGVyLT5tYXhfZG1hX2xlbiA9IE1BWF9ETUFfTEVOOworCQkJY29udHJvbGxlci0+bWF4X3RyYW5z
+ZmVyX3NpemUgPSBNQVhfRE1BX0xFTjsKIAkJfQogCX0KIAotLSAKMi4yMy4wCgpfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpkcmktZGV2ZWwgbWFpbGluZyBs
+aXN0CmRyaS1kZXZlbEBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVz
+a3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9kcmktZGV2ZWw=

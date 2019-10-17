@@ -1,7 +1,7 @@
 From: Gregory CLEMENT <gregory.clement@bootlin.com>
-Subject: [PATCH 5/7] spi: atmel: Remove platform data support
-Date: Thu, 17 Oct 2019 16:18:44 +0200
-Message-ID: <20191017141846.7523-6-gregory.clement@bootlin.com>
+Subject: [PATCH 3/7] spi: atmel: Configure GPIO per CS instead of by controller
+Date: Thu, 17 Oct 2019 16:18:42 +0200
+Message-ID: <20191017141846.7523-4-gregory.clement@bootlin.com>
 References: <20191017141846.7523-1-gregory.clement@bootlin.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -18,78 +18,111 @@ In-Reply-To: <20191017141846.7523-1-gregory.clement@bootlin.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This driver is now only used through the device tree. Simplify code
-by explicitly depend on device tree.
+Instead of setting up the GPIO configuration for the whole controller,
+do it at CS level. It will allow to mix internal CS and GPIO CS, which
+is not possible with the current implementation.
 
 Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
 ---
- drivers/spi/Kconfig     |  1 +
- drivers/spi/spi-atmel.c | 16 ++--------------
- 2 files changed, 3 insertions(+), 14 deletions(-)
+ drivers/spi/spi-atmel.c | 32 ++++++++------------------------
+ 1 file changed, 8 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 6f7fdcbb9151..6c0c1f55bd71 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -80,6 +80,7 @@ config SPI_ARMADA_3700
- config SPI_ATMEL
- 	tristate "Atmel SPI Controller"
- 	depends on ARCH_AT91 || COMPILE_TEST
-+	depends on OF
- 	help
- 	  This selects a driver for the Atmel SPI Controller, present on
- 	  many AT91 ARM chips.
 diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 19600de40422..1ff5b20eabf7 100644
+index 6e08ae539bc0..b511df6a4846 100644
 --- a/drivers/spi/spi-atmel.c
 +++ b/drivers/spi/spi-atmel.c
-@@ -1500,7 +1500,7 @@ static int atmel_spi_probe(struct platform_device *pdev)
- 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 16);
- 	master->dev.of_node = pdev->dev.of_node;
- 	master->bus_num = pdev->id;
--	master->num_chipselect = master->dev.of_node ? 0 : 4;
-+	master->num_chipselect = 4;
- 	master->setup = atmel_spi_setup;
- 	master->flags = (SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX);
- 	master->transfer_one_message = atmel_spi_transfer_one_message;
-@@ -1528,16 +1528,6 @@ static int atmel_spi_probe(struct platform_device *pdev)
+@@ -275,7 +275,6 @@ struct atmel_spi {
  
- 	atmel_get_caps(as);
+ 	bool			use_dma;
+ 	bool			use_pdc;
+-	bool			use_cs_gpios;
  
--	/*
--	 * If there are chip selects in the device tree, those will be
--	 * discovered by the SPI core when registering the SPI master
--	 * and assigned to each SPI device.
--	 */
--	if (atmel_spi_is_v2(as) &&
--	    pdev->dev.of_node &&
--	    !of_get_property(pdev->dev.of_node, "cs-gpios", NULL))
--		master->num_chipselect = 4;
--
+ 	bool			keep_cs;
+ 	bool			cs_active;
+@@ -348,7 +347,7 @@ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
+ 		}
+ 
+ 		mr = spi_readl(as, MR);
+-		if (as->use_cs_gpios)
++		if (asd->npcs_pin)
+ 			gpiod_set_value(asd->npcs_pin, 1);
+ 	} else {
+ 		u32 cpol = (spi->mode & SPI_CPOL) ? SPI_BIT(CPOL) : 0;
+@@ -365,7 +364,7 @@ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
+ 
+ 		mr = spi_readl(as, MR);
+ 		mr = SPI_BFINS(PCS, ~(1 << spi->chip_select), mr);
+-		if (as->use_cs_gpios && spi->chip_select != 0)
++		if (asd->npcs_pin && spi->chip_select != 0)
+ 			gpiod_set_value(asd->npcs_pin, 1);
+ 		spi_writel(as, MR, mr);
+ 	}
+@@ -389,7 +388,7 @@ static void cs_deactivate(struct atmel_spi *as, struct spi_device *spi)
+ 
+ 	dev_dbg(&spi->dev, "DEactivate NPCS, mr %08x\n", mr);
+ 
+-	if (!as->use_cs_gpios)
++	if (!asd->npcs_pin)
+ 		spi_writel(as, CR, SPI_BIT(LASTXFER));
+ 	else if (atmel_spi_is_v2(as) || spi->chip_select != 0)
+ 		gpiod_set_value(asd->npcs_pin, 0);
+@@ -1176,7 +1175,7 @@ static int atmel_spi_setup(struct spi_device *spi)
+ 	as = spi_master_get_devdata(spi->master);
+ 
+ 	/* see notes above re chipselect */
+-	if (!as->use_cs_gpios && (spi->mode & SPI_CS_HIGH)) {
++	if (!spi->cs_gpiod && (spi->mode & SPI_CS_HIGH)) {
+ 		dev_warn(&spi->dev, "setup: non GPIO CS can't be active-high\n");
+ 		return -EINVAL;
+ 	}
+@@ -1186,9 +1185,9 @@ static int atmel_spi_setup(struct spi_device *spi)
+ 		csr |= SPI_BIT(CPOL);
+ 	if (!(spi->mode & SPI_CPHA))
+ 		csr |= SPI_BIT(NCPHA);
+-	if (!as->use_cs_gpios)
+-		csr |= SPI_BIT(CSAAT);
+ 
++	if (!spi->cs_gpiod)
++		csr |= SPI_BIT(CSAAT);
+ 	csr |= SPI_BF(DLYBS, 0);
+ 
+ 	word_delay_csr = atmel_word_delay_csr(spi, as);
+@@ -1206,20 +1205,8 @@ static int atmel_spi_setup(struct spi_device *spi)
+ 		if (!asd)
+ 			return -ENOMEM;
+ 
+-		/*
+-		 * If use_cs_gpios is true this means that we have "cs-gpios"
+-		 * defined in the device tree node so we should have
+-		 * gotten the GPIO lines from the device tree inside the
+-		 * SPI core. Warn if this is not the case but continue since
+-		 * CS GPIOs are after all optional.
+-		 */
+-		if (as->use_cs_gpios) {
+-			if (!spi->cs_gpiod) {
+-				dev_err(&spi->dev,
+-					"host claims to use CS GPIOs but no CS found in DT by the SPI core\n");
+-			}
++		if (spi->cs_gpiod)
+ 			asd->npcs_pin = spi->cs_gpiod;
+-		}
+ 
+ 		spi->controller_state = asd;
+ 	}
+@@ -1551,13 +1538,10 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 	 * discovered by the SPI core when registering the SPI master
+ 	 * and assigned to each SPI device.
+ 	 */
+-	as->use_cs_gpios = true;
+ 	if (atmel_spi_is_v2(as) &&
+ 	    pdev->dev.of_node &&
+-	    !of_get_property(pdev->dev.of_node, "cs-gpios", NULL)) {
+-		as->use_cs_gpios = false;
++	    !of_get_property(pdev->dev.of_node, "cs-gpios", NULL))
+ 		master->num_chipselect = 4;
+-	}
+ 
  	as->use_dma = false;
  	as->use_pdc = false;
- 	if (as->caps.has_dma_support) {
-@@ -1745,20 +1735,18 @@ static const struct dev_pm_ops atmel_spi_pm_ops = {
- #define ATMEL_SPI_PM_OPS	NULL
- #endif
- 
--#if defined(CONFIG_OF)
- static const struct of_device_id atmel_spi_dt_ids[] = {
- 	{ .compatible = "atmel,at91rm9200-spi" },
- 	{ /* sentinel */ }
- };
- 
- MODULE_DEVICE_TABLE(of, atmel_spi_dt_ids);
--#endif
- 
- static struct platform_driver atmel_spi_driver = {
- 	.driver		= {
- 		.name	= "atmel_spi",
- 		.pm	= ATMEL_SPI_PM_OPS,
--		.of_match_table	= of_match_ptr(atmel_spi_dt_ids),
-+		.of_match_table	= atmel_spi_dt_ids,
- 	},
- 	.probe		= atmel_spi_probe,
- 	.remove		= atmel_spi_remove,
 -- 
 2.23.0

@@ -1,46 +1,75 @@
-From: Chuhong Yuan <hslester96@gmail.com>
-Subject: [PATCH] spi: pxa2xx: Add missed security checks
-Date: Thu, 17 Oct 2019 10:50:58 +0800
-Message-ID: <20191017025058.31528-1-hslester96@gmail.com>
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
+Subject: [PATCH] spi: pxa2xx: Set controller->max_transfer_size in dma mode
+Date: Thu, 17 Oct 2019 08:44:26 +0200
+Message-ID: <20191017064426.30814-1-daniel.vetter@ffwll.ch>
+References: <20191016195721.3714-1-daniel.vetter@ffwll.ch>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Mark Brown <broonie@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
-To: unlisted-recipients:; (no To-header on input)
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: linux-arm-kernel@lists.infradead.org,
+ Andy Shevchenko <andriy.shevchenko@intel.com>,
+ Daniel Vetter <daniel.vetter@ffwll.ch>,
+ Robert Jarzmik <robert.jarzmik@free.fr>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org,
+ =?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
+ Mark Brown <broonie@kernel.org>, Sam Ravnborg <sam@ravnborg.org>,
+ Daniel Mack <daniel@zonque.org>
+To: DRI Development <dri-devel@lists.freedesktop.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20191016195721.3714-1-daniel.vetter@ffwll.ch>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-pxa2xx_spi_init_pdata misses checks for devm_clk_get and
-platform_get_irq.
-Add checks for them to fix the bugs.
-
-Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
----
- drivers/spi/spi-pxa2xx.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index bb6a14d1ab0f..2e73d75a6ac5 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1565,7 +1565,13 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
- #endif
- 
- 	ssp->clk = devm_clk_get(&pdev->dev, NULL);
-+	if (IS_ERR(ssp->clk))
-+		return NULL;
-+
- 	ssp->irq = platform_get_irq(pdev, 0);
-+	if (ssp->irq < 0)
-+		return NULL;
-+
- 	ssp->type = type;
- 	ssp->pdev = pdev;
- 	ssp->port_id = pxa2xx_spi_get_port_id(adev);
--- 
-2.20.1
+SW4gRE1BIG1vZGUgd2UgaGF2ZSBhIG1heGltdW0gdHJhbnNmZXIgc2l6ZSwgcGFzdCB0aGF0IHRo
+ZSBkcml2ZXIKZmFsbHMgYmFjayB0byBQSU8gKHNlZSB0aGUgY2hlY2sgYXQgdGhlIHRvcCBvZiBw
+eGEyeHhfc3BpX3RyYW5zZmVyX29uZSkuCkZhbGxpbmcgYmFjayB0byBQSU8gZm9yIGJpZyB0cmFu
+c2ZlcnMgZGVmZWF0cyB0aGUgcG9pbnQgb2YgYSBkbWEgZW5naW5lLApoZW5jZSBzZXQgdGhlIG1h
+eCB0cmFuc2ZlciBzaXplIHRvIGluZm9ybSBzcGkgY2xpZW50cyB0aGF0IHRoZXkgbmVlZAp0byBk
+byBzb21ldGhpbmcgc21hcnRlci4KClRoaXMgd2FzIHVuY292ZXJlZCBieSB0aGUgZHJtX21pcGlf
+ZGJpIHNwaSBwYW5lbCBjb2RlLCB3aGljaCBkb2VzCmxhcmdlIHNwaSB0cmFuc2ZlcnMsIGJ1dCBz
+dG9wcGVkIHNwbGl0dGluZyB0aGVtIGFmdGVyOgoKY29tbWl0IGUxNDMzNjRiNGMxNzc0ZjY4ZTky
+M2E1YTBiYjBmY2EyOGFjMjU4ODgKQXV0aG9yOiBOb3JhbGYgVHLDuG5uZXMgPG5vcmFsZkB0cm9u
+bmVzLm9yZz4KRGF0ZTogICBGcmkgSnVsIDE5IDE3OjU5OjEwIDIwMTkgKzAyMDAKCiAgICBkcm0v
+dGlueWRybTogUmVtb3ZlIHRpbnlkcm1fc3BpX21heF90cmFuc2Zlcl9zaXplKCkKCkFmdGVyIHRo
+aXMgY29tbWl0IHRoZSBjb2RlIHJlbGllZCBvbiB0aGUgc3BpIGNvcmUgdG8gc3BsaXQgdHJhbnNm
+ZXJzCmludG8gbWF4IGRtYS1hYmxlIGJsb2Nrcywgd2hpY2ggYWxzbyBwYXBlcmVkIG92ZXIgdGhl
+IFBJTyBmYWxsYmFjayBpc3N1ZS4KCkZpeCB0aGlzIGJ5IHNldHRpbmcgdGhlIG92ZXJhbGwgbWF4
+IHRyYW5zZmVyIHNpemUgdG8gdGhlIERNQSBsaW1pdCwKYnV0IG9ubHkgd2hlbiB0aGUgY29udHJv
+bGxlciBydW5zIGluIERNQSBtb2RlLgoKRml4ZXM6IGUxNDMzNjRiNGMxNyAoImRybS90aW55ZHJt
+OiBSZW1vdmUgdGlueWRybV9zcGlfbWF4X3RyYW5zZmVyX3NpemUoKSIpCkNjOiBTYW0gUmF2bmJv
+cmcgPHNhbUByYXZuYm9yZy5vcmc+CkNjOiBOb3JhbGYgVHLDuG5uZXMgPG5vcmFsZkB0cm9ubmVz
+Lm9yZz4KQ2M6IEFuZHkgU2hldmNoZW5rbyA8YW5kcml5LnNoZXZjaGVua29AaW50ZWwuY29tPgpS
+ZXBvcnRlZC1hbmQtdGVzdGVkLWJ5OiBBbmR5IFNoZXZjaGVua28gPGFuZHJpeS5zaGV2Y2hlbmtv
+QGludGVsLmNvbT4KQ2M6IERhbmllbCBNYWNrIDxkYW5pZWxAem9ucXVlLm9yZz4KQ2M6IEhhb2pp
+YW4gWmh1YW5nIDxoYW9qaWFuLnpodWFuZ0BnbWFpbC5jb20+CkNjOiBSb2JlcnQgSmFyem1payA8
+cm9iZXJ0LmphcnptaWtAZnJlZS5mcj4KQ2M6IE1hcmsgQnJvd24gPGJyb29uaWVAa2VybmVsLm9y
+Zz4KQ2M6IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwpDYzogbGludXgtc3Bp
+QHZnZXIua2VybmVsLm9yZwpTaWduZWQtb2ZmLWJ5OiBEYW5pZWwgVmV0dGVyIDxkYW5pZWwudmV0
+dGVyQGZmd2xsLmNoPgotLQp2MjogQnJvd24gcGFwZXIgYmFnIGVkaXRpb24sIGl0IG5lZWRzIHRv
+IGJlIGEgZnVuY3Rpb24gLi4uCi0tLQogZHJpdmVycy9zcGkvc3BpLXB4YTJ4eC5jIHwgNyArKysr
+KysrCiAxIGZpbGUgY2hhbmdlZCwgNyBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvZHJpdmVy
+cy9zcGkvc3BpLXB4YTJ4eC5jIGIvZHJpdmVycy9zcGkvc3BpLXB4YTJ4eC5jCmluZGV4IGJiNmEx
+NGQxYWIwZi4uMDY4YzIxMDM3Njc5IDEwMDY0NAotLS0gYS9kcml2ZXJzL3NwaS9zcGktcHhhMnh4
+LmMKKysrIGIvZHJpdmVycy9zcGkvc3BpLXB4YTJ4eC5jCkBAIC0xNjAyLDYgKzE2MDIsMTEgQEAg
+c3RhdGljIGludCBweGEyeHhfc3BpX2Z3X3RyYW5zbGF0ZV9jcyhzdHJ1Y3Qgc3BpX2NvbnRyb2xs
+ZXIgKmNvbnRyb2xsZXIsCiAJcmV0dXJuIGNzOwogfQogCitzdGF0aWMgc2l6ZV90IHB4YTJ4eF9z
+cGlfbWF4X2RtYV90cmFuc2Zlcl9zaXplKHN0cnVjdCBzcGlfZGV2aWNlICpzcGkpCit7CisJcmV0
+dXJuIE1BWF9ETUFfTEVOOworfQorCiBzdGF0aWMgaW50IHB4YTJ4eF9zcGlfcHJvYmUoc3RydWN0
+IHBsYXRmb3JtX2RldmljZSAqcGRldikKIHsKIAlzdHJ1Y3QgZGV2aWNlICpkZXYgPSAmcGRldi0+
+ZGV2OwpAQCAtMTcwNyw2ICsxNzEyLDggQEAgc3RhdGljIGludCBweGEyeHhfc3BpX3Byb2JlKHN0
+cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYpCiAJCX0gZWxzZSB7CiAJCQljb250cm9sbGVyLT5j
+YW5fZG1hID0gcHhhMnh4X3NwaV9jYW5fZG1hOwogCQkJY29udHJvbGxlci0+bWF4X2RtYV9sZW4g
+PSBNQVhfRE1BX0xFTjsKKwkJCWNvbnRyb2xsZXItPm1heF90cmFuc2Zlcl9zaXplID0KKwkJCQlw
+eGEyeHhfc3BpX21heF9kbWFfdHJhbnNmZXJfc2l6ZTsKIAkJfQogCX0KIAotLSAKMi4yMy4wCgoK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KbGludXgtYXJt
+LWtlcm5lbCBtYWlsaW5nIGxpc3QKbGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3Jn
+Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtYXJtLWtl
+cm5lbAo=

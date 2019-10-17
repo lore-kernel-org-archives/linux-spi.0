@@ -1,75 +1,49 @@
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
-Subject: [PATCH] spi: pxa2xx: Set controller->max_transfer_size in dma mode
-Date: Thu, 17 Oct 2019 08:44:26 +0200
-Message-ID: <20191017064426.30814-1-daniel.vetter@ffwll.ch>
-References: <20191016195721.3714-1-daniel.vetter@ffwll.ch>
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+Subject: Re: [PATCH v2 05/11] drm/tinydrm: Remove
+ tinydrm_spi_max_transfer_size()
+Date: Thu, 17 Oct 2019 09:58:35 +0300
+Message-ID: <20191017065835.GZ32742@smile.fi.intel.com>
+References: <20190719155916.62465-1-noralf@tronnes.org>
+ <20190719155916.62465-6-noralf@tronnes.org>
+ <20191015143236.GA5363@smile.fi.intel.com>
+ <253aec49-e51c-b35b-4e7d-53a8a948655d@tronnes.org>
+ <20191015155720.GQ11828@phenom.ffwll.local>
+ <20191016161300.GW32742@smile.fi.intel.com>
+ <CAKMK7uEp39uvLtgyTTj31u-GYVoPiVJDTVbUThtn7NU_EoKk3A@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Cc: linux-arm-kernel@lists.infradead.org,
- Andy Shevchenko <andriy.shevchenko@intel.com>,
- Daniel Vetter <daniel.vetter@ffwll.ch>,
- Robert Jarzmik <robert.jarzmik@free.fr>,
+Cc: David Lechner <david@lechnology.com>,
+ Robert Jarzmik <robert.jarzmik@free.fr>, Mark Brown <broonie@kernel.org>,
  Haojian Zhuang <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org,
- =?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
- Mark Brown <broonie@kernel.org>, Sam Ravnborg <sam@ravnborg.org>,
+ Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+ dri-devel <dri-devel@lists.freedesktop.org>, Sam Ravnborg <sam@ravnborg.org>,
  Daniel Mack <daniel@zonque.org>
-To: DRI Development <dri-devel@lists.freedesktop.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20191016195721.3714-1-daniel.vetter@ffwll.ch>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+To: Daniel Vetter <daniel@ffwll.ch>
+Return-path: <dri-devel-bounces@lists.freedesktop.org>
+Content-Disposition: inline
+In-Reply-To: <CAKMK7uEp39uvLtgyTTj31u-GYVoPiVJDTVbUThtn7NU_EoKk3A@mail.gmail.com>
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/dri-devel>
+List-Post: <mailto:dri-devel@lists.freedesktop.org>
+List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/dri-devel>,
+ <mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: dri-devel-bounces@lists.freedesktop.org
+Sender: "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
 List-Id: linux-spi.vger.kernel.org
 
-SW4gRE1BIG1vZGUgd2UgaGF2ZSBhIG1heGltdW0gdHJhbnNmZXIgc2l6ZSwgcGFzdCB0aGF0IHRo
-ZSBkcml2ZXIKZmFsbHMgYmFjayB0byBQSU8gKHNlZSB0aGUgY2hlY2sgYXQgdGhlIHRvcCBvZiBw
-eGEyeHhfc3BpX3RyYW5zZmVyX29uZSkuCkZhbGxpbmcgYmFjayB0byBQSU8gZm9yIGJpZyB0cmFu
-c2ZlcnMgZGVmZWF0cyB0aGUgcG9pbnQgb2YgYSBkbWEgZW5naW5lLApoZW5jZSBzZXQgdGhlIG1h
-eCB0cmFuc2ZlciBzaXplIHRvIGluZm9ybSBzcGkgY2xpZW50cyB0aGF0IHRoZXkgbmVlZAp0byBk
-byBzb21ldGhpbmcgc21hcnRlci4KClRoaXMgd2FzIHVuY292ZXJlZCBieSB0aGUgZHJtX21pcGlf
-ZGJpIHNwaSBwYW5lbCBjb2RlLCB3aGljaCBkb2VzCmxhcmdlIHNwaSB0cmFuc2ZlcnMsIGJ1dCBz
-dG9wcGVkIHNwbGl0dGluZyB0aGVtIGFmdGVyOgoKY29tbWl0IGUxNDMzNjRiNGMxNzc0ZjY4ZTky
-M2E1YTBiYjBmY2EyOGFjMjU4ODgKQXV0aG9yOiBOb3JhbGYgVHLDuG5uZXMgPG5vcmFsZkB0cm9u
-bmVzLm9yZz4KRGF0ZTogICBGcmkgSnVsIDE5IDE3OjU5OjEwIDIwMTkgKzAyMDAKCiAgICBkcm0v
-dGlueWRybTogUmVtb3ZlIHRpbnlkcm1fc3BpX21heF90cmFuc2Zlcl9zaXplKCkKCkFmdGVyIHRo
-aXMgY29tbWl0IHRoZSBjb2RlIHJlbGllZCBvbiB0aGUgc3BpIGNvcmUgdG8gc3BsaXQgdHJhbnNm
-ZXJzCmludG8gbWF4IGRtYS1hYmxlIGJsb2Nrcywgd2hpY2ggYWxzbyBwYXBlcmVkIG92ZXIgdGhl
-IFBJTyBmYWxsYmFjayBpc3N1ZS4KCkZpeCB0aGlzIGJ5IHNldHRpbmcgdGhlIG92ZXJhbGwgbWF4
-IHRyYW5zZmVyIHNpemUgdG8gdGhlIERNQSBsaW1pdCwKYnV0IG9ubHkgd2hlbiB0aGUgY29udHJv
-bGxlciBydW5zIGluIERNQSBtb2RlLgoKRml4ZXM6IGUxNDMzNjRiNGMxNyAoImRybS90aW55ZHJt
-OiBSZW1vdmUgdGlueWRybV9zcGlfbWF4X3RyYW5zZmVyX3NpemUoKSIpCkNjOiBTYW0gUmF2bmJv
-cmcgPHNhbUByYXZuYm9yZy5vcmc+CkNjOiBOb3JhbGYgVHLDuG5uZXMgPG5vcmFsZkB0cm9ubmVz
-Lm9yZz4KQ2M6IEFuZHkgU2hldmNoZW5rbyA8YW5kcml5LnNoZXZjaGVua29AaW50ZWwuY29tPgpS
-ZXBvcnRlZC1hbmQtdGVzdGVkLWJ5OiBBbmR5IFNoZXZjaGVua28gPGFuZHJpeS5zaGV2Y2hlbmtv
-QGludGVsLmNvbT4KQ2M6IERhbmllbCBNYWNrIDxkYW5pZWxAem9ucXVlLm9yZz4KQ2M6IEhhb2pp
-YW4gWmh1YW5nIDxoYW9qaWFuLnpodWFuZ0BnbWFpbC5jb20+CkNjOiBSb2JlcnQgSmFyem1payA8
-cm9iZXJ0LmphcnptaWtAZnJlZS5mcj4KQ2M6IE1hcmsgQnJvd24gPGJyb29uaWVAa2VybmVsLm9y
-Zz4KQ2M6IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwpDYzogbGludXgtc3Bp
-QHZnZXIua2VybmVsLm9yZwpTaWduZWQtb2ZmLWJ5OiBEYW5pZWwgVmV0dGVyIDxkYW5pZWwudmV0
-dGVyQGZmd2xsLmNoPgotLQp2MjogQnJvd24gcGFwZXIgYmFnIGVkaXRpb24sIGl0IG5lZWRzIHRv
-IGJlIGEgZnVuY3Rpb24gLi4uCi0tLQogZHJpdmVycy9zcGkvc3BpLXB4YTJ4eC5jIHwgNyArKysr
-KysrCiAxIGZpbGUgY2hhbmdlZCwgNyBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvZHJpdmVy
-cy9zcGkvc3BpLXB4YTJ4eC5jIGIvZHJpdmVycy9zcGkvc3BpLXB4YTJ4eC5jCmluZGV4IGJiNmEx
-NGQxYWIwZi4uMDY4YzIxMDM3Njc5IDEwMDY0NAotLS0gYS9kcml2ZXJzL3NwaS9zcGktcHhhMnh4
-LmMKKysrIGIvZHJpdmVycy9zcGkvc3BpLXB4YTJ4eC5jCkBAIC0xNjAyLDYgKzE2MDIsMTEgQEAg
-c3RhdGljIGludCBweGEyeHhfc3BpX2Z3X3RyYW5zbGF0ZV9jcyhzdHJ1Y3Qgc3BpX2NvbnRyb2xs
-ZXIgKmNvbnRyb2xsZXIsCiAJcmV0dXJuIGNzOwogfQogCitzdGF0aWMgc2l6ZV90IHB4YTJ4eF9z
-cGlfbWF4X2RtYV90cmFuc2Zlcl9zaXplKHN0cnVjdCBzcGlfZGV2aWNlICpzcGkpCit7CisJcmV0
-dXJuIE1BWF9ETUFfTEVOOworfQorCiBzdGF0aWMgaW50IHB4YTJ4eF9zcGlfcHJvYmUoc3RydWN0
-IHBsYXRmb3JtX2RldmljZSAqcGRldikKIHsKIAlzdHJ1Y3QgZGV2aWNlICpkZXYgPSAmcGRldi0+
-ZGV2OwpAQCAtMTcwNyw2ICsxNzEyLDggQEAgc3RhdGljIGludCBweGEyeHhfc3BpX3Byb2JlKHN0
-cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYpCiAJCX0gZWxzZSB7CiAJCQljb250cm9sbGVyLT5j
-YW5fZG1hID0gcHhhMnh4X3NwaV9jYW5fZG1hOwogCQkJY29udHJvbGxlci0+bWF4X2RtYV9sZW4g
-PSBNQVhfRE1BX0xFTjsKKwkJCWNvbnRyb2xsZXItPm1heF90cmFuc2Zlcl9zaXplID0KKwkJCQlw
-eGEyeHhfc3BpX21heF9kbWFfdHJhbnNmZXJfc2l6ZTsKIAkJfQogCX0KIAotLSAKMi4yMy4wCgoK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KbGludXgtYXJt
-LWtlcm5lbCBtYWlsaW5nIGxpc3QKbGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3Jn
-Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtYXJtLWtl
-cm5lbAo=
+T24gV2VkLCBPY3QgMTYsIDIwMTkgYXQgMDc6NDQ6NTFQTSArMDIwMCwgRGFuaWVsIFZldHRlciB3
+cm90ZToKPiBPbiBXZWQsIE9jdCAxNiwgMjAxOSBhdCA2OjEzIFBNIEFuZHkgU2hldmNoZW5rbwo+
+IDxhbmRyaXkuc2hldmNoZW5rb0BpbnRlbC5jb20+IHdyb3RlOgo+ID4gT24gVHVlLCBPY3QgMTUs
+IDIwMTkgYXQgMDU6NTc6MjBQTSArMDIwMCwgRGFuaWVsIFZldHRlciB3cm90ZToKCj4gPiBtYXhf
+dHJhbnNmZXJfc2l6ZSBzaG91bGQgYmUgYSBmdW5jdGlvbi4gSW4gdGhhdCBjYXNlIGl0IHdvcmtz
+Lgo+IAo+IFdoeSBkbyB5b3Ugd2FudCB0byBtYWtlIGl0IGEgZnVuY3Rpb24/CgpNZT8hCgpjb21t
+aXQgNGFjYWQ0YWFlMTBkMWZhNzlhMDc1YjM4YjVjNzM3NzJjNDRmNTc2YwpBdXRob3I6IE1pY2hh
+bCBTdWNoYW5layA8aHJhbXJhY2hAZ21haWwuY29tPgpEYXRlOiAgIFdlZCBEZWMgMiAxMDozODoy
+MSAyMDE1ICswMDAwCgogICAgc3BpOiBleHBvc2UgbWFzdGVyIHRyYW5zZmVyIHNpemUgbGltaXRh
+dGlvbi4KCi0tIApXaXRoIEJlc3QgUmVnYXJkcywKQW5keSBTaGV2Y2hlbmtvCgoKX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KZHJpLWRldmVsIG1haWxpbmcg
+bGlzdApkcmktZGV2ZWxAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRl
+c2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vZHJpLWRldmVs

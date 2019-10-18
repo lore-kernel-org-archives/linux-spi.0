@@ -1,34 +1,24 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: atmel: Fix CS high support" to the spi tree
+Subject: Applied "spi: atmel: Remove useless private field" to the spi tree
 Date: Fri, 18 Oct 2019 19:07:08 +0100 (BST)
-Message-ID: <20191018180708.D914D2741DEA@ypsilon.sirena.org.uk>
-References: <20191017141846.7523-3-gregory.clement@bootlin.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Message-ID: <20191018180708.500EB2743259@ypsilon.sirena.org.uk>
+References: <20191017141846.7523-5-gregory.clement@bootlin.com>
 Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- linux-spi@vger.kernel.org, Ludovic Desroches <ludovic.desroches@microchip.com>,
- Mark Brown <broonie@kernel.org>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- linux-arm-kernel@lists.infradead.org
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Mark Brown <broonie@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 To: Gregory CLEMENT <gregory.clement@bootlin.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20191017141846.7523-3-gregory.clement@bootlin.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20191017141846.7523-5-gregory.clement@bootlin.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: atmel: Fix CS high support
+   spi: atmel: Remove useless private field
 
 has been applied to the spi tree at
 
@@ -53,50 +43,85 @@ to this mail.
 Thanks,
 Mark
 
->From 7cbb16b2122c09f2ae393a1542fed628505b9da6 Mon Sep 17 00:00:00 2001
+>From 60086e23e64f7b3b60d957471cfd10948e25648e Mon Sep 17 00:00:00 2001
 From: Gregory CLEMENT <gregory.clement@bootlin.com>
-Date: Thu, 17 Oct 2019 16:18:41 +0200
-Subject: [PATCH] spi: atmel: Fix CS high support
+Date: Thu, 17 Oct 2019 16:18:43 +0200
+Subject: [PATCH] spi: atmel: Remove useless private field
 
-Until a few years ago, this driver was only used with CS GPIO. The
-only exception is CS0 on AT91RM9200 which has to use internal CS. A
-limitation of the internal CS is that they don't support CS High.
+Since the conversion to GPIO descriptor, the GPIO used as chip select,
+can be directly access from the spi_device struct. So there is no need
+to keep the field npcs_pin.
 
-So by using the CS GPIO the CS high configuration was available except
-for the particular case CS0 on RM9200.
-
-When the support for the internal chip-select was added, the check of
-the CS high support was not updated. Due to this the driver accepts
-this configuration for all the SPI controller v2 (used by all SoCs
-excepting the AT91RM9200) whereas the hardware doesn't support it for
-infernal CS.
-
-This patch fixes the test to match the hardware capabilities.
-
-Fixes: 4820303480a1 ("spi: atmel: add support for the internal chip-select of the spi controller")
-Cc: <stable@vger.kernel.org>
 Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Link: https://lore.kernel.org/r/20191017141846.7523-3-gregory.clement@bootlin.com
+Link: https://lore.kernel.org/r/20191017141846.7523-5-gregory.clement@bootlin.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-atmel.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/spi/spi-atmel.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 7a17c3e2a8ee..6e08ae539bc0 100644
+index b511df6a4846..19600de40422 100644
 --- a/drivers/spi/spi-atmel.c
 +++ b/drivers/spi/spi-atmel.c
-@@ -1176,10 +1176,8 @@ static int atmel_spi_setup(struct spi_device *spi)
- 	as = spi_master_get_devdata(spi->master);
+@@ -284,7 +284,6 @@ struct atmel_spi {
  
- 	/* see notes above re chipselect */
--	if (!atmel_spi_is_v2(as)
--			&& spi->chip_select == 0
--			&& (spi->mode & SPI_CS_HIGH)) {
--		dev_dbg(&spi->dev, "setup: can't be active-high\n");
-+	if (!as->use_cs_gpios && (spi->mode & SPI_CS_HIGH)) {
-+		dev_warn(&spi->dev, "setup: non GPIO CS can't be active-high\n");
- 		return -EINVAL;
+ /* Controller-specific per-slave state */
+ struct atmel_spi_device {
+-	struct gpio_desc	*npcs_pin;
+ 	u32			csr;
+ };
+ 
+@@ -347,8 +346,8 @@ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
+ 		}
+ 
+ 		mr = spi_readl(as, MR);
+-		if (asd->npcs_pin)
+-			gpiod_set_value(asd->npcs_pin, 1);
++		if (spi->cs_gpiod)
++			gpiod_set_value(spi->cs_gpiod, 1);
+ 	} else {
+ 		u32 cpol = (spi->mode & SPI_CPOL) ? SPI_BIT(CPOL) : 0;
+ 		int i;
+@@ -364,8 +363,8 @@ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
+ 
+ 		mr = spi_readl(as, MR);
+ 		mr = SPI_BFINS(PCS, ~(1 << spi->chip_select), mr);
+-		if (asd->npcs_pin && spi->chip_select != 0)
+-			gpiod_set_value(asd->npcs_pin, 1);
++		if (spi->cs_gpiod && spi->chip_select != 0)
++			gpiod_set_value(spi->cs_gpiod, 1);
+ 		spi_writel(as, MR, mr);
+ 	}
+ 
+@@ -374,7 +373,6 @@ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
+ 
+ static void cs_deactivate(struct atmel_spi *as, struct spi_device *spi)
+ {
+-	struct atmel_spi_device *asd = spi->controller_state;
+ 	u32 mr;
+ 
+ 	/* only deactivate *this* device; sometimes transfers to
+@@ -388,10 +386,10 @@ static void cs_deactivate(struct atmel_spi *as, struct spi_device *spi)
+ 
+ 	dev_dbg(&spi->dev, "DEactivate NPCS, mr %08x\n", mr);
+ 
+-	if (!asd->npcs_pin)
++	if (!spi->cs_gpiod)
+ 		spi_writel(as, CR, SPI_BIT(LASTXFER));
+ 	else if (atmel_spi_is_v2(as) || spi->chip_select != 0)
+-		gpiod_set_value(asd->npcs_pin, 0);
++		gpiod_set_value(spi->cs_gpiod, 0);
+ }
+ 
+ static void atmel_spi_lock(struct atmel_spi *as) __acquires(&as->lock)
+@@ -1205,9 +1203,6 @@ static int atmel_spi_setup(struct spi_device *spi)
+ 		if (!asd)
+ 			return -ENOMEM;
+ 
+-		if (spi->cs_gpiod)
+-			asd->npcs_pin = spi->cs_gpiod;
+-
+ 		spi->controller_state = asd;
  	}
  
 -- 

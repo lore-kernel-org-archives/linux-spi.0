@@ -1,24 +1,34 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: atmel: Remove and fix erroneous comments" to the spi tree
-Date: Fri, 18 Oct 2019 19:07:09 +0100 (BST)
-Message-ID: <20191018180709.17FD42743259@ypsilon.sirena.org.uk>
-References: <20191017141846.7523-2-gregory.clement@bootlin.com>
+Subject: Applied "spi: atmel: Fix CS high support" to the spi tree
+Date: Fri, 18 Oct 2019 19:07:08 +0100 (BST)
+Message-ID: <20191018180708.D914D2741DEA@ypsilon.sirena.org.uk>
+References: <20191017141846.7523-3-gregory.clement@bootlin.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Mark Brown <broonie@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ linux-spi@vger.kernel.org, Ludovic Desroches <ludovic.desroches@microchip.com>,
+ Mark Brown <broonie@kernel.org>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ linux-arm-kernel@lists.infradead.org
 To: Gregory CLEMENT <gregory.clement@bootlin.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191017141846.7523-2-gregory.clement@bootlin.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20191017141846.7523-3-gregory.clement@bootlin.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: atmel: Remove and fix erroneous comments
+   spi: atmel: Fix CS high support
 
 has been applied to the spi tree at
 
@@ -43,48 +53,51 @@ to this mail.
 Thanks,
 Mark
 
->From 4d8672d17450b457c0dbbcfe9868438036b4647c Mon Sep 17 00:00:00 2001
+>From 7cbb16b2122c09f2ae393a1542fed628505b9da6 Mon Sep 17 00:00:00 2001
 From: Gregory CLEMENT <gregory.clement@bootlin.com>
-Date: Thu, 17 Oct 2019 16:18:40 +0200
-Subject: [PATCH] spi: atmel: Remove and fix erroneous comments
+Date: Thu, 17 Oct 2019 16:18:41 +0200
+Subject: [PATCH] spi: atmel: Fix CS high support
 
-Since CSAAT functionality support has been added. Some comments become
-wrong. Fix them to match the current driver behavior.
+Until a few years ago, this driver was only used with CS GPIO. The
+only exception is CS0 on AT91RM9200 which has to use internal CS. A
+limitation of the internal CS is that they don't support CS High.
 
+So by using the CS GPIO the CS high configuration was available except
+for the particular case CS0 on RM9200.
+
+When the support for the internal chip-select was added, the check of
+the CS high support was not updated. Due to this the driver accepts
+this configuration for all the SPI controller v2 (used by all SoCs
+excepting the AT91RM9200) whereas the hardware doesn't support it for
+infernal CS.
+
+This patch fixes the test to match the hardware capabilities.
+
+Fixes: 4820303480a1 ("spi: atmel: add support for the internal chip-select of the spi controller")
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Link: https://lore.kernel.org/r/20191017141846.7523-2-gregory.clement@bootlin.com
+Link: https://lore.kernel.org/r/20191017141846.7523-3-gregory.clement@bootlin.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-atmel.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/spi/spi-atmel.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index e34ab587b980..7a17c3e2a8ee 100644
+index 7a17c3e2a8ee..6e08ae539bc0 100644
 --- a/drivers/spi/spi-atmel.c
 +++ b/drivers/spi/spi-atmel.c
-@@ -312,11 +312,9 @@ static bool atmel_spi_is_v2(struct atmel_spi *as)
-  * transmitted")  Not so!  Workaround uses nCSx pins as GPIOs; or newer
-  * controllers have CSAAT and friends.
-  *
-- * Since the CSAAT functionality is a bit weird on newer controllers as
-- * well, we use GPIO to control nCSx pins on all controllers, updating
-- * MR.PCS to avoid confusing the controller.  Using GPIOs also lets us
-- * support active-high chipselects despite the controller's belief that
-- * only active-low devices/systems exists.
-+ * Even controller newer than ar91rm9200, using GPIOs can make sens as
-+ * it lets us support active-high chipselects despite the controller's
-+ * belief that only active-low devices/systems exists.
-  *
-  * However, at91rm9200 has a second erratum whereby nCS0 doesn't work
-  * right when driven with GPIO.  ("Mode Fault does not allow more than one
-@@ -1193,8 +1191,6 @@ static int atmel_spi_setup(struct spi_device *spi)
- 	if (!as->use_cs_gpios)
- 		csr |= SPI_BIT(CSAAT);
+@@ -1176,10 +1176,8 @@ static int atmel_spi_setup(struct spi_device *spi)
+ 	as = spi_master_get_devdata(spi->master);
  
--	/* DLYBS is mostly irrelevant since we manage chipselect using GPIOs.
--	 */
- 	csr |= SPI_BF(DLYBS, 0);
+ 	/* see notes above re chipselect */
+-	if (!atmel_spi_is_v2(as)
+-			&& spi->chip_select == 0
+-			&& (spi->mode & SPI_CS_HIGH)) {
+-		dev_dbg(&spi->dev, "setup: can't be active-high\n");
++	if (!as->use_cs_gpios && (spi->mode & SPI_CS_HIGH)) {
++		dev_warn(&spi->dev, "setup: non GPIO CS can't be active-high\n");
+ 		return -EINVAL;
+ 	}
  
- 	word_delay_csr = atmel_word_delay_csr(spi, as);
 -- 
 2.20.1

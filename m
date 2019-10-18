@@ -1,35 +1,24 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: atmel: Improve CS0 case support on AT91RM9200" to the
- spi tree
-Date: Fri, 18 Oct 2019 19:07:07 +0100 (BST)
-Message-ID: <20191018180707.BB5532743259@ypsilon.sirena.org.uk>
-References: <20191017141846.7523-8-gregory.clement@bootlin.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Subject: Applied "spi: atmel: Remove platform data support" to the spi tree
+Date: Fri, 18 Oct 2019 19:07:08 +0100 (BST)
+Message-ID: <20191018180708.2111C2741DEA@ypsilon.sirena.org.uk>
+References: <20191017141846.7523-6-gregory.clement@bootlin.com>
 Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- Ludovic Desroches <ludovic.desroches@microchip.com>,
- Mark Brown <broonie@kernel.org>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- linux-arm-kernel@lists.infradead.org
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Mark Brown <broonie@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 To: Gregory CLEMENT <gregory.clement@bootlin.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20191017141846.7523-8-gregory.clement@bootlin.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20191017141846.7523-6-gregory.clement@bootlin.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: atmel: Improve CS0 case support on AT91RM9200
+   spi: atmel: Remove platform data support
 
 has been applied to the spi tree at
 
@@ -54,62 +43,85 @@ to this mail.
 Thanks,
 Mark
 
->From 9c86f12a36479dec06df3e4a4f31cecf8eba0222 Mon Sep 17 00:00:00 2001
+>From 1cb84b02bf130f34ee81f99bc7dee5bca2943ed7 Mon Sep 17 00:00:00 2001
 From: Gregory CLEMENT <gregory.clement@bootlin.com>
-Date: Thu, 17 Oct 2019 16:18:46 +0200
-Subject: [PATCH] spi: atmel: Improve CS0 case support on AT91RM9200
+Date: Thu, 17 Oct 2019 16:18:44 +0200
+Subject: [PATCH] spi: atmel: Remove platform data support
 
-Thanks to the recent change in this driver, it is now possible to
-prevent using the CS0 with GPIO during setup. It then allows to remove
-the special handling of this case in the cs_activate() and
-cs_deactivate() functions.
+This driver is now only used through the device tree. Simplify code
+by explicitly depend on device tree.
 
 Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Link: https://lore.kernel.org/r/20191017141846.7523-8-gregory.clement@bootlin.com
+Link: https://lore.kernel.org/r/20191017141846.7523-6-gregory.clement@bootlin.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-atmel.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/spi/Kconfig     |  1 +
+ drivers/spi/spi-atmel.c | 16 ++--------------
+ 2 files changed, 3 insertions(+), 14 deletions(-)
 
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 6f7fdcbb9151..6c0c1f55bd71 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -80,6 +80,7 @@ config SPI_ARMADA_3700
+ config SPI_ATMEL
+ 	tristate "Atmel SPI Controller"
+ 	depends on ARCH_AT91 || COMPILE_TEST
++	depends on OF
+ 	help
+ 	  This selects a driver for the Atmel SPI Controller, present on
+ 	  many AT91 ARM chips.
 diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index ac5e2ddf9e1b..d88e2aa64839 100644
+index 19600de40422..1ff5b20eabf7 100644
 --- a/drivers/spi/spi-atmel.c
 +++ b/drivers/spi/spi-atmel.c
-@@ -371,7 +371,7 @@ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
+@@ -1500,7 +1500,7 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 16);
+ 	master->dev.of_node = pdev->dev.of_node;
+ 	master->bus_num = pdev->id;
+-	master->num_chipselect = master->dev.of_node ? 0 : 4;
++	master->num_chipselect = 4;
+ 	master->setup = atmel_spi_setup;
+ 	master->flags = (SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX);
+ 	master->transfer_one_message = atmel_spi_transfer_one_message;
+@@ -1528,16 +1528,6 @@ static int atmel_spi_probe(struct platform_device *pdev)
  
- 		mr = spi_readl(as, MR);
- 		mr = SPI_BFINS(PCS, ~(1 << chip_select), mr);
--		if (spi->cs_gpiod && spi->chip_select != 0)
-+		if (spi->cs_gpiod)
- 			gpiod_set_value(spi->cs_gpiod, 1);
- 		spi_writel(as, MR, mr);
- 	}
-@@ -402,7 +402,7 @@ static void cs_deactivate(struct atmel_spi *as, struct spi_device *spi)
+ 	atmel_get_caps(as);
  
- 	if (!spi->cs_gpiod)
- 		spi_writel(as, CR, SPI_BIT(LASTXFER));
--	else if (atmel_spi_is_v2(as) || spi->chip_select != 0)
-+	else
- 		gpiod_set_value(spi->cs_gpiod, 0);
- }
+-	/*
+-	 * If there are chip selects in the device tree, those will be
+-	 * discovered by the SPI core when registering the SPI master
+-	 * and assigned to each SPI device.
+-	 */
+-	if (atmel_spi_is_v2(as) &&
+-	    pdev->dev.of_node &&
+-	    !of_get_property(pdev->dev.of_node, "cs-gpios", NULL))
+-		master->num_chipselect = 4;
+-
+ 	as->use_dma = false;
+ 	as->use_pdc = false;
+ 	if (as->caps.has_dma_support) {
+@@ -1745,20 +1735,18 @@ static const struct dev_pm_ops atmel_spi_pm_ops = {
+ #define ATMEL_SPI_PM_OPS	NULL
+ #endif
  
-@@ -1193,7 +1193,16 @@ static void initialize_native_cs_for_gpio(struct atmel_spi *as)
- 	if (!master->cs_gpiods)
- 		return; /* No CS GPIO */
+-#if defined(CONFIG_OF)
+ static const struct of_device_id atmel_spi_dt_ids[] = {
+ 	{ .compatible = "atmel,at91rm9200-spi" },
+ 	{ /* sentinel */ }
+ };
  
--	for (i = 0; i < 4; i++)
-+	/*
-+	 * On the first version of the controller (AT91RM9200), CS0
-+	 * can't be used associated with GPIO
-+	 */
-+	if (atmel_spi_is_v2(as))
-+		i = 0;
-+	else
-+		i = 1;
-+
-+	for (; i < 4; i++)
- 		if (master->cs_gpiods[i])
- 			as->native_cs_free |= BIT(i);
+ MODULE_DEVICE_TABLE(of, atmel_spi_dt_ids);
+-#endif
  
+ static struct platform_driver atmel_spi_driver = {
+ 	.driver		= {
+ 		.name	= "atmel_spi",
+ 		.pm	= ATMEL_SPI_PM_OPS,
+-		.of_match_table	= of_match_ptr(atmel_spi_dt_ids),
++		.of_match_table	= atmel_spi_dt_ids,
+ 	},
+ 	.probe		= atmel_spi_probe,
+ 	.remove		= atmel_spi_remove,
 -- 
 2.20.1

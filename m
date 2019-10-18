@@ -1,56 +1,74 @@
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH] spi: pxa2xx: Add missed security checks
-Date: Fri, 18 Oct 2019 17:04:22 +0300
-Message-ID: <CAHp75Vdb19w02zKHo1tqAtF8TmT=z6Ye2YFfxVw_TGtO3VxfLA@mail.gmail.com>
-References: <20191017025058.31528-1-hslester96@gmail.com> <CAHp75Vd2SMERjtvNumxAF1HSp8GSThmcyx96zkFzUXKwnD5d2Q@mail.gmail.com>
- <CANhBUQ2yxGbjk_DgXbip=TPT=evzA5naoJSY9t1_Ep47e9oupw@mail.gmail.com>
- <CAHp75VeLyTi=gqfNr-=Tg36yQs_fYG__iQAxAEKdks0mqsTbug@mail.gmail.com> <CANhBUQ1CnCHiY8tkCMcXZ3DAPcfnQZgfA_Fj4qf3yYBKGg10Wg@mail.gmail.com>
+From: Gregory CLEMENT <gregory.clement@bootlin.com>
+Subject: [PATCH] spi: Fix SPI_CS_HIGH setting when using native and GPIO CS
+Date: Fri, 18 Oct 2019 17:29:29 +0200
+Message-ID: <20191018152929.3287-1-gregory.clement@bootlin.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Mark Brown <broonie@kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-To: Chuhong Yuan <hslester96@gmail.com>
+Content-Transfer-Encoding: 8bit
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Gregory CLEMENT <gregory.clement@bootlin.com>,
+        stable@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CANhBUQ1CnCHiY8tkCMcXZ3DAPcfnQZgfA_Fj4qf3yYBKGg10Wg@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Oct 18, 2019 at 2:37 PM Chuhong Yuan <hslester96@gmail.com> wrote:
-> On Fri, Oct 18, 2019 at 7:14 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> > On Fri, Oct 18, 2019 at 1:39 PM Chuhong Yuan <hslester96@gmail.com> wrote:
-> > > On Fri, Oct 18, 2019 at 5:35 PM Andy Shevchenko
-> > > <andy.shevchenko@gmail.com> wrote:
-> > > > On Fri, Oct 18, 2019 at 8:59 AM Chuhong Yuan <hslester96@gmail.com> wrote:
+When improving the CS GPIO support at core level, the SPI_CS_HIGH
+has been enabled for all the CS lines used for a given SPI controller.
 
-> > > > I'm not sure they are mandatory for all platforms.
-> > > > To be on the safe side, you simple need to add _optional() to the both
-> > > > call along with above change.
-> > > >
-> > >
-> > > As I know, this is the only one in spi which does not have a check for
-> > > devm_clk_get.
-> >
-> > For some it still may be optional. That's why better to check it and
-> > mention in the commit message.
-> >
-> > > Even if add _optional(), they still may return errors and need security checks.
-> >
-> > Of course, see "along with" in my previous comment.
-> >
->
-> Got it. I will send version 2 in which both _optional() and security
-> checks will be added.
+However, the SPI framework allows to have on the same controller native
+CS and GPIO CS. The native CS may not support the SPI_CS_HIGH, so they
+should not be setup automatically.
 
-Let me be clear. I didn't check if _optional() needed or not. You need
-to investigate this before sending new verison.
-And in either case this should be explained in commit message.
+With this patch the setting is done only for the CS that will use a
+GPIO as CS
 
+Fixes: f3186dd87669 ("spi: Optionally use GPIO descriptors for CS GPIOs")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+---
+ drivers/spi/spi.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 5414a10afd65..1b68acc28c8f 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1880,15 +1880,7 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+ 		spi->mode |= SPI_3WIRE;
+ 	if (of_property_read_bool(nc, "spi-lsb-first"))
+ 		spi->mode |= SPI_LSB_FIRST;
+-
+-	/*
+-	 * For descriptors associated with the device, polarity inversion is
+-	 * handled in the gpiolib, so all chip selects are "active high" in
+-	 * the logical sense, the gpiolib will invert the line if need be.
+-	 */
+-	if (ctlr->use_gpio_descriptors)
+-		spi->mode |= SPI_CS_HIGH;
+-	else if (of_property_read_bool(nc, "spi-cs-high"))
++	if (of_property_read_bool(nc, "spi-cs-high"))
+ 		spi->mode |= SPI_CS_HIGH;
+ 
+ 	/* Device DUAL/QUAD mode */
+@@ -1952,6 +1944,14 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+ 	}
+ 	spi->chip_select = value;
+ 
++	/*
++	 * For descriptors associated with the device, polarity inversion is
++	 * handled in the gpiolib, so all gpio chip selects are "active high"
++	 * in the logical sense, the gpiolib will invert the line if need be.
++	 */
++	if ((ctlr->use_gpio_descriptors) && ctlr->cs_gpiods[spi->chip_select])
++		spi->mode |= SPI_CS_HIGH;
++
+ 	/* Device speed */
+ 	rc = of_property_read_u32(nc, "spi-max-frequency", &value);
+ 	if (rc) {
 -- 
-With Best Regards,
-Andy Shevchenko
+2.23.0

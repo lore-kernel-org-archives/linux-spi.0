@@ -1,24 +1,32 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: atmel: Remove useless private field" to the spi tree
-Date: Fri, 18 Oct 2019 19:07:08 +0100 (BST)
-Message-ID: <20191018180708.500EB2743259@ypsilon.sirena.org.uk>
-References: <20191017141846.7523-5-gregory.clement@bootlin.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Mark Brown <broonie@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-To: Gregory CLEMENT <gregory.clement@bootlin.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191017141846.7523-5-gregory.clement@bootlin.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Subject: Applied "spi: pxa2xx: Convert pxa2xx_spi_get_port_id() to take struct
+ device" to the spi tree
+Date: Fri, 18 Oct 2019 19:07:09 +0100 (BST)
+Message-ID: <20191018180709.AB2082743259@ypsilon.sirena.org.uk>
+References: <20191018105429.82782-3-andriy.shevchenko@linux.intel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Haojian Zhuang <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, Daniel Mack <daniel@zonque.org>,
+ Robert Jarzmik <robert.jarzmik@free.fr>, linux-arm-kernel@lists.infradead.org
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20191018105429.82782-3-andriy.shevchenko@linux.intel.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: atmel: Remove useless private field
+   spi: pxa2xx: Convert pxa2xx_spi_get_port_id() to take struct device
 
 has been applied to the spi tree at
 
@@ -43,86 +51,57 @@ to this mail.
 Thanks,
 Mark
 
->From 60086e23e64f7b3b60d957471cfd10948e25648e Mon Sep 17 00:00:00 2001
-From: Gregory CLEMENT <gregory.clement@bootlin.com>
-Date: Thu, 17 Oct 2019 16:18:43 +0200
-Subject: [PATCH] spi: atmel: Remove useless private field
+>From 365e856e18b88e360388f9de4f5da0d5b332114b Mon Sep 17 00:00:00 2001
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Date: Fri, 18 Oct 2019 13:54:27 +0300
+Subject: [PATCH] spi: pxa2xx: Convert pxa2xx_spi_get_port_id() to take struct
+ device
 
-Since the conversion to GPIO descriptor, the GPIO used as chip select,
-can be directly access from the spi_device struct. So there is no need
-to keep the field npcs_pin.
+This is preparatory patch before converting to use device_get_match_data() API.
 
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Link: https://lore.kernel.org/r/20191017141846.7523-5-gregory.clement@bootlin.com
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20191018105429.82782-3-andriy.shevchenko@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-atmel.c | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index b511df6a4846..19600de40422 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -284,7 +284,6 @@ struct atmel_spi {
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 670734b3d56a..04ca80770e35 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1476,11 +1476,13 @@ MODULE_DEVICE_TABLE(of, pxa2xx_spi_of_match);
  
- /* Controller-specific per-slave state */
- struct atmel_spi_device {
--	struct gpio_desc	*npcs_pin;
- 	u32			csr;
- };
+ #ifdef CONFIG_ACPI
  
-@@ -347,8 +346,8 @@ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
- 		}
- 
- 		mr = spi_readl(as, MR);
--		if (asd->npcs_pin)
--			gpiod_set_value(asd->npcs_pin, 1);
-+		if (spi->cs_gpiod)
-+			gpiod_set_value(spi->cs_gpiod, 1);
- 	} else {
- 		u32 cpol = (spi->mode & SPI_CPOL) ? SPI_BIT(CPOL) : 0;
- 		int i;
-@@ -364,8 +363,8 @@ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
- 
- 		mr = spi_readl(as, MR);
- 		mr = SPI_BFINS(PCS, ~(1 << spi->chip_select), mr);
--		if (asd->npcs_pin && spi->chip_select != 0)
--			gpiod_set_value(asd->npcs_pin, 1);
-+		if (spi->cs_gpiod && spi->chip_select != 0)
-+			gpiod_set_value(spi->cs_gpiod, 1);
- 		spi_writel(as, MR, mr);
- 	}
- 
-@@ -374,7 +373,6 @@ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
- 
- static void cs_deactivate(struct atmel_spi *as, struct spi_device *spi)
+-static int pxa2xx_spi_get_port_id(struct acpi_device *adev)
++static int pxa2xx_spi_get_port_id(struct device *dev)
  {
--	struct atmel_spi_device *asd = spi->controller_state;
- 	u32 mr;
++	struct acpi_device *adev;
+ 	unsigned int devid;
+ 	int port_id = -1;
  
- 	/* only deactivate *this* device; sometimes transfers to
-@@ -388,10 +386,10 @@ static void cs_deactivate(struct atmel_spi *as, struct spi_device *spi)
++	adev = ACPI_COMPANION(dev);
+ 	if (adev && adev->pnp.unique_id &&
+ 	    !kstrtouint(adev->pnp.unique_id, 0, &devid))
+ 		port_id = devid;
+@@ -1489,7 +1491,7 @@ static int pxa2xx_spi_get_port_id(struct acpi_device *adev)
  
- 	dev_dbg(&spi->dev, "DEactivate NPCS, mr %08x\n", mr);
+ #else /* !CONFIG_ACPI */
  
--	if (!asd->npcs_pin)
-+	if (!spi->cs_gpiod)
- 		spi_writel(as, CR, SPI_BIT(LASTXFER));
- 	else if (atmel_spi_is_v2(as) || spi->chip_select != 0)
--		gpiod_set_value(asd->npcs_pin, 0);
-+		gpiod_set_value(spi->cs_gpiod, 0);
+-static int pxa2xx_spi_get_port_id(struct acpi_device *adev)
++static int pxa2xx_spi_get_port_id(struct device *dev)
+ {
+ 	return -1;
  }
+@@ -1568,7 +1570,7 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 	ssp->irq = platform_get_irq(pdev, 0);
+ 	ssp->type = type;
+ 	ssp->dev = &pdev->dev;
+-	ssp->port_id = pxa2xx_spi_get_port_id(adev);
++	ssp->port_id = pxa2xx_spi_get_port_id(&pdev->dev);
  
- static void atmel_spi_lock(struct atmel_spi *as) __acquires(&as->lock)
-@@ -1205,9 +1203,6 @@ static int atmel_spi_setup(struct spi_device *spi)
- 		if (!asd)
- 			return -ENOMEM;
- 
--		if (spi->cs_gpiod)
--			asd->npcs_pin = spi->cs_gpiod;
--
- 		spi->controller_state = asd;
- 	}
- 
+ 	pdata->is_slave = of_property_read_bool(pdev->dev.of_node, "spi-slave");
+ 	pdata->num_chipselect = 1;
 -- 
 2.20.1

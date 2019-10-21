@@ -1,19 +1,23 @@
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 2/2] spi: pxa2xx: Drop extra check of
- platform_get_resource() returned value
-Date: Mon, 21 Oct 2019 13:36:25 +0300
-Message-ID: <20191021103625.4250-2-andriy.shevchenko@linux.intel.com>
-References: <20191021103625.4250-1-andriy.shevchenko@linux.intel.com>
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+Subject: Re: [PATCH] spi: pxa2xx: Set controller->max_transfer_size in dma mode
+Date: Mon, 21 Oct 2019 14:08:57 +0300
+Message-ID: <20191021110857.GR32742@smile.fi.intel.com>
+References: <20191016195721.3714-1-daniel.vetter@ffwll.ch>
+ <20191017064426.30814-1-daniel.vetter@ffwll.ch>
+ <20191017070638.GB32742@smile.fi.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
- Robert Jarzmik <robert.jarzmik@free.fr>,
- linux-arm-kernel@lists.infradead.org, Mark Brown <broonie@kernel.org>,
- linux-spi@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: linux-arm-kernel@lists.infradead.org, Sam Ravnborg <sam@ravnborg.org>,
+ Mark Brown <broonie@kernel.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
+ linux-spi@vger.kernel.org,
+ Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf@tronnes.org>,
+ DRI Development <dri-devel@lists.freedesktop.org>,
+ Robert Jarzmik <robert.jarzmik@free.fr>, Daniel Mack <daniel@zonque.org>
+To: Daniel Vetter <daniel.vetter@ffwll.ch>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20191021103625.4250-1-andriy.shevchenko@linux.intel.com>
+Content-Disposition: inline
+In-Reply-To: <20191017070638.GB32742@smile.fi.intel.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -25,40 +29,43 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The devm_ioremap_resource() has already a check for resource pointer
-being NULL. No need to double check this.
+On Thu, Oct 17, 2019 at 10:06:38AM +0300, Andy Shevchenko wrote:
+> On Thu, Oct 17, 2019 at 08:44:26AM +0200, Daniel Vetter wrote:
+> > In DMA mode we have a maximum transfer size, past that the driver
+> > falls back to PIO (see the check at the top of pxa2xx_spi_transfer_one).
+> > Falling back to PIO for big transfers defeats the point of a dma engine,
+> > hence set the max transfer size to inform spi clients that they need
+> > to do something smarter.
+> > =
 
-Drop extra check of platform_get_resource() returned value.
+> > This was uncovered by the drm_mipi_dbi spi panel code, which does
+> > large spi transfers, but stopped splitting them after:
+> > =
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/spi/spi-pxa2xx.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+> > commit e143364b4c1774f68e923a5a0bb0fca28ac25888
+> > Author: Noralf Tr=F8nnes <noralf@tronnes.org>
+> > Date:   Fri Jul 19 17:59:10 2019 +0200
+> > =
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 02daba3dbd0d..3a440ab9a841 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1537,17 +1537,15 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
- 	if (!pdata)
- 		return NULL;
- 
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!res)
--		return NULL;
--
- 	ssp = &pdata->ssp;
- 
--	ssp->phys_base = res->start;
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	ssp->mmio_base = devm_ioremap_resource(&pdev->dev, res);
- 	if (IS_ERR(ssp->mmio_base))
- 		return NULL;
- 
-+	ssp->phys_base = res->start;
-+
- #ifdef CONFIG_PCI
- 	if (pcidev_id) {
- 		pdata->tx_param = parent;
--- 
-2.23.0
+> >     drm/tinydrm: Remove tinydrm_spi_max_transfer_size()
+> > =
+
+> > After this commit the code relied on the spi core to split transfers
+> > into max dma-able blocks, which also papered over the PIO fallback issu=
+e.
+> > =
+
+> > Fix this by setting the overall max transfer size to the DMA limit,
+> > but only when the controller runs in DMA mode.
+> > =
+
+> =
+
+> Thank you, Daniel!
+
+Mark, can be this applied?
+
+-- =
+
+With Best Regards,
+Andy Shevchenko

@@ -1,169 +1,69 @@
-From: "kernelci.org bot" <bot@kernelci.org>
-Subject: broonie-spi/for-next boot bisection: v5.4-rc3-73-gc673f2d99c3d on
- jetson-tk1
-Date: Fri, 18 Oct 2019 23:24:13 -0700 (PDT)
-Message-ID: <5daaac0d.1c69fb81.12761.2a24@mx.google.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/2] spi: pxa2xx: Introduce temporary variables to increase
+ readability
+Date: Mon, 21 Oct 2019 13:36:24 +0300
+Message-ID: <20191021103625.4250-1-andriy.shevchenko@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>, tomeu.vizoso@collabora.com,
-        Gregory CLEMENT <gregory.clement@bootlin.com>,
-        guillaume.tucker@collabora.com, mgalka@collabora.com,
-        broonie@kernel.org, matthew.hart@linaro.org, khilman@baylibre.com,
-        enric.balletbo@collabora.com
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
+ Robert Jarzmik <robert.jarzmik@free.fr>,
+ linux-arm-kernel@lists.infradead.org, Mark Brown <broonie@kernel.org>,
+ linux-spi@vger.kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-* This automated bisection report was sent to you on the basis  *
-* that you may be involved with the breaking commit it has      *
-* found.  No manual investigation has been done to verify it,   *
-* and the root cause of the problem may be somewhere else.      *
-*                                                               *
-* If you do send a fix, please include this trailer:            *
-*   Reported-by: "kernelci.org bot" <bot@kernelci.org>          *
-*                                                               *
-* Hope this helps!                                              *
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+The current conditional for PCI ID matching is hard to read.
+Introduce couple of temporary variables to increase readability
+of the code.
 
-broonie-spi/for-next boot bisection: v5.4-rc3-73-gc673f2d99c3d on jetson-tk1
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/spi-pxa2xx.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-Summary:
-  Start:      c673f2d99c3d Merge remote-tracking branch 'spi/topic/ptp' int=
-o spi-next
-  Details:    https://kernelci.org/boot/id/5daa485f59b5142f647525a0
-  Plain log:  https://storage.kernelci.org//broonie-spi/for-next/v5.4-rc3-7=
-3-gc673f2d99c3d/arm/multi_v7_defconfig+CONFIG_SMP=3Dn/gcc-8/lab-collabora/b=
-oot-tegra124-jetson-tk1.txt
-  HTML log:   https://storage.kernelci.org//broonie-spi/for-next/v5.4-rc3-7=
-3-gc673f2d99c3d/arm/multi_v7_defconfig+CONFIG_SMP=3Dn/gcc-8/lab-collabora/b=
-oot-tegra124-jetson-tk1.html
-  Result:     3e5ec1db8bfe spi: Fix SPI_CS_HIGH setting when using native a=
-nd GPIO CS
-
-Checks:
-  revert:     PASS
-  verify:     PASS
-
-Parameters:
-  Tree:       broonie-spi
-  URL:        https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.g=
-it
-  Branch:     for-next
-  Target:     jetson-tk1
-  CPU arch:   arm
-  Lab:        lab-collabora
-  Compiler:   gcc-8
-  Config:     multi_v7_defconfig+CONFIG_SMP=3Dn
-  Test suite: boot
-
-Breaking commit found:
-
----------------------------------------------------------------------------=
-----
-commit 3e5ec1db8bfee845d9f8560d1c64aeaccd586398
-Author: Gregory CLEMENT <gregory.clement@bootlin.com>
-Date:   Fri Oct 18 17:29:29 2019 +0200
-
-    spi: Fix SPI_CS_HIGH setting when using native and GPIO CS
-    =
-
-    When improving the CS GPIO support at core level, the SPI_CS_HIGH
-    has been enabled for all the CS lines used for a given SPI controller.
-    =
-
-    However, the SPI framework allows to have on the same controller native
-    CS and GPIO CS. The native CS may not support the SPI_CS_HIGH, so they
-    should not be setup automatically.
-    =
-
-    With this patch the setting is done only for the CS that will use a
-    GPIO as CS
-    =
-
-    Fixes: f3186dd87669 ("spi: Optionally use GPIO descriptors for CS GPIOs=
-")
-    Cc: <stable@vger.kernel.org>
-    Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-    Link: https://lore.kernel.org/r/20191018152929.3287-1-gregory.clement@b=
-ootlin.com
-    Signed-off-by: Mark Brown <broonie@kernel.org>
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index f8b4654a57d3..d07517151340 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1711,15 +1711,7 @@ static int of_spi_parse_dt(struct spi_controller *ct=
-lr, struct spi_device *spi,
- 		spi->mode |=3D SPI_3WIRE;
- 	if (of_property_read_bool(nc, "spi-lsb-first"))
- 		spi->mode |=3D SPI_LSB_FIRST;
--
--	/*
--	 * For descriptors associated with the device, polarity inversion is
--	 * handled in the gpiolib, so all chip selects are "active high" in
--	 * the logical sense, the gpiolib will invert the line if need be.
--	 */
--	if (ctlr->use_gpio_descriptors)
--		spi->mode |=3D SPI_CS_HIGH;
--	else if (of_property_read_bool(nc, "spi-cs-high"))
-+	if (of_property_read_bool(nc, "spi-cs-high"))
- 		spi->mode |=3D SPI_CS_HIGH;
- =
-
- 	/* Device DUAL/QUAD mode */
-@@ -1783,6 +1775,14 @@ static int of_spi_parse_dt(struct spi_controller *ct=
-lr, struct spi_device *spi,
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 0390053ed8f5..02daba3dbd0d 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1516,13 +1516,14 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 	struct pxa2xx_spi_controller *pdata;
+ 	struct ssp_device *ssp;
+ 	struct resource *res;
++	struct device *parent = pdev->dev.parent;
++	struct pci_dev *pcidev = dev_is_pci(parent) ? to_pci_dev(parent) : NULL;
+ 	const struct pci_device_id *pcidev_id = NULL;
+ 	enum pxa_ssp_type type;
+ 	const void *match;
+ 
+-	if (dev_is_pci(pdev->dev.parent))
+-		pcidev_id = pci_match_id(pxa2xx_spi_pci_compound_match,
+-					 to_pci_dev(pdev->dev.parent));
++	if (pcidev)
++		pcidev_id = pci_match_id(pxa2xx_spi_pci_compound_match, pcidev);
+ 
+ 	match = device_get_match_data(&pdev->dev);
+ 	if (match)
+@@ -1549,8 +1550,8 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 
+ #ifdef CONFIG_PCI
+ 	if (pcidev_id) {
+-		pdata->tx_param = pdev->dev.parent;
+-		pdata->rx_param = pdev->dev.parent;
++		pdata->tx_param = parent;
++		pdata->rx_param = parent;
+ 		pdata->dma_filter = pxa2xx_spi_idma_filter;
  	}
- 	spi->chip_select =3D value;
- =
-
-+	/*
-+	 * For descriptors associated with the device, polarity inversion is
-+	 * handled in the gpiolib, so all gpio chip selects are "active high"
-+	 * in the logical sense, the gpiolib will invert the line if need be.
-+	 */
-+	if ((ctlr->use_gpio_descriptors) && ctlr->cs_gpiods[spi->chip_select])
-+		spi->mode |=3D SPI_CS_HIGH;
-+
- 	/* Device speed */
- 	rc =3D of_property_read_u32(nc, "spi-max-frequency", &value);
- 	if (rc) {
----------------------------------------------------------------------------=
-----
-
-
-Git bisection log:
-
----------------------------------------------------------------------------=
-----
-git bisect start
-# good: [4f5cafb5cb8471e54afdc9054d973535614f7675] Linux 5.4-rc3
-git bisect good 4f5cafb5cb8471e54afdc9054d973535614f7675
-# bad: [c673f2d99c3d644733cc1b0ceabdec47047bbe80] Merge remote-tracking bra=
-nch 'spi/topic/ptp' into spi-next
-git bisect bad c673f2d99c3d644733cc1b0ceabdec47047bbe80
-# good: [b2c98153f45fc17b9fcb241000f2d131ddea6030] spi: introduce spi_delay=
- struct as "value + unit" & spi_delay_exec()
-git bisect good b2c98153f45fc17b9fcb241000f2d131ddea6030
-# good: [4f3d957718e7f0ac2b033dbf48c7cddecd0a8dd3] spi: pxa2xx: No need to =
-keep pointer to platform device
-git bisect good 4f3d957718e7f0ac2b033dbf48c7cddecd0a8dd3
-# good: [1cb84b02bf130f34ee81f99bc7dee5bca2943ed7] spi: atmel: Remove platf=
-orm data support
-git bisect good 1cb84b02bf130f34ee81f99bc7dee5bca2943ed7
-# bad: [fed8d8c7a6dc2a76d7764842853d81c770b0788e] spi: atmel: fix handling =
-of cs_change set on non-last xfer
-git bisect bad fed8d8c7a6dc2a76d7764842853d81c770b0788e
-# bad: [3e5ec1db8bfee845d9f8560d1c64aeaccd586398] spi: Fix SPI_CS_HIGH sett=
-ing when using native and GPIO CS
-git bisect bad 3e5ec1db8bfee845d9f8560d1c64aeaccd586398
-# good: [b2662a164f9dc48da8822e56600686d639056282] spi: pxa2xx: Set control=
-ler->max_transfer_size in dma mode
-git bisect good b2662a164f9dc48da8822e56600686d639056282
-# first bad commit: [3e5ec1db8bfee845d9f8560d1c64aeaccd586398] spi: Fix SPI=
-_CS_HIGH setting when using native and GPIO CS
----------------------------------------------------------------------------=
-----
+ #endif
+-- 
+2.23.0

@@ -1,46 +1,44 @@
-From: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH 11/36] ARM: s5pv210: split from plat-samsung
-Date: Tue, 22 Oct 2019 18:20:41 +0200
-Message-ID: <CAK8P3a1mvbss6Q-CQBYRAf7ozYgyOu3WFGkoaSaoJriUbuRACA@mail.gmail.com>
-References: <20191010202802.1132272-1-arnd@arndb.de> <20191010203043.1241612-1-arnd@arndb.de>
- <20191010203043.1241612-11-arnd@arndb.de> <20191011055149.4dudr4tk2znpt65u@pengutronix.de>
- <CAK8P3a1st8gR7u+8-oyP6HrzZdmrzhq7PRonYuz0a5O8rfKaSA@mail.gmail.com> <20191022155307.izh4ryorm7thw7tq@pengutronix.de>
+From: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Subject: [PATCH] spi: document CS setup, hold & inactive times in header
+Date: Wed, 23 Oct 2019 10:00:46 +0300
+Message-ID: <20191023070046.12478-1-alexandru.ardelean@analog.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-Cc: Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>,
-        Sangbeom Kim <sbkim73@samsung.com>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        "moderated list:ARM/SAMSUNG EXYNOS ARM ARCHITECTURES"
-        <linux-samsung-soc@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, Olof Johansson <olof@lixom.net>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        =?UTF-8?B?Q2zDqW1lbnQgUMOpcm9u?= <peron.clem@gmail.com>,
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?=
-        <u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+Cc: <broonie@kernel.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        kbuild test robot <lkp@intel.com>
+To: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191022155307.izh4ryorm7thw7tq@pengutronix.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Oct 22, 2019 at 5:53 PM Uwe Kleine-König
-<u.kleine-koenig@pengutronix.de> wrote:
-> The background of my question was me wondering if builds
-> for PLAT_S3C24XX=y (before your patch series) don't need plat-samsung.
+This change documents the CS setup, host & inactive times. They were
+omitted when the fields were added, and were caught by one of the build
+bots.
 
-What I found is that the DT-based platforms (exynos and s5p) need almost nothing
-from plat-samsung, while the board files and the s3c24xx/s3c64xx power
-management
-needs almost all of it.
+Fixes: 25093bdeb6bc ("spi: implement SW control for CS times")
+Reported-by: kbuild test robot <lkp@intel.com>
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+---
+ include/linux/spi/spi.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-      Arnd
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index c40d6af2bf07..98fe8663033a 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -407,6 +407,11 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  *	     controller has native support for memory like operations.
+  * @unprepare_message: undo any work done by prepare_message().
+  * @slave_abort: abort the ongoing transfer request on an SPI slave controller
++ * @cs_setup: delay to be introduced by the controller after CS is asserted
++ * @cs_hold: delay to be introduced by the controller before CS is deasserted
++ * @cs_inactive: delay to be introduced by the controller after CS is
++ *	deasserted. If @cs_change_delay is used from @spi_transfer, then the
++ *	two delays will be added up.
+  * @cs_gpios: LEGACY: array of GPIO descs to use as chip select lines; one per
+  *	CS number. Any individual value may be -ENOENT for CS lines that
+  *	are not GPIOs (driven by the SPI controller itself). Use the cs_gpiods
+-- 
+2.20.1

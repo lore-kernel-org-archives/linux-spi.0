@@ -1,24 +1,36 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: document CS setup, hold & inactive times in header" to the spi tree
+Subject: Applied "spi: pxa2xx: Drop extra check of platform_get_resource()
+ returned value" to the spi tree
 Date: Wed, 23 Oct 2019 19:56:17 +0100 (BST)
-Message-ID: <20191023185617.DD3E5274326E@ypsilon.sirena.org.uk>
-References: <20191023070046.12478-1-alexandru.ardelean@analog.com>
-Cc: broonie@kernel.org, kbuild test robot <lkp@intel.com>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>
-To: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191023070046.12478-1-alexandru.ardelean@analog.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Message-ID: <20191023185617.770E32743021@ypsilon.sirena.org.uk>
+References: <20191021103625.4250-2-andriy.shevchenko@linux.intel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Haojian Zhuang <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, Daniel Mack <daniel@zonque.org>,
+ Robert Jarzmik <robert.jarzmik@free.fr>, linux-arm-kernel@lists.infradead.org
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20191021103625.4250-2-andriy.shevchenko@linux.intel.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: document CS setup, hold & inactive times in header
+   spi: pxa2xx: Drop extra check of platform_get_resource() returned value
 
 has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.4
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
@@ -39,39 +51,48 @@ to this mail.
 Thanks,
 Mark
 
->From a3470c1829c0c856a19c10af58f8e7792ae27d7a Mon Sep 17 00:00:00 2001
-From: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Date: Wed, 23 Oct 2019 10:00:46 +0300
-Subject: [PATCH] spi: document CS setup, hold & inactive times in header
+>From 77c544d243f3b0d1ae3487ebb170c07c79734fe7 Mon Sep 17 00:00:00 2001
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Date: Mon, 21 Oct 2019 13:36:25 +0300
+Subject: [PATCH] spi: pxa2xx: Drop extra check of platform_get_resource()
+ returned value
 
-This change documents the CS setup, host & inactive times. They were
-omitted when the fields were added, and were caught by one of the build
-bots.
+The devm_ioremap_resource() has already a check for resource pointer
+being NULL. No need to double check this.
 
-Fixes: 25093bdeb6bc ("spi: implement SW control for CS times")
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Link: https://lore.kernel.org/r/20191023070046.12478-1-alexandru.ardelean@analog.com
+Drop extra check of platform_get_resource() returned value.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20191021103625.4250-2-andriy.shevchenko@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- include/linux/spi/spi.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/spi/spi-pxa2xx.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index c40d6af2bf07..98fe8663033a 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -407,6 +407,11 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
-  *	     controller has native support for memory like operations.
-  * @unprepare_message: undo any work done by prepare_message().
-  * @slave_abort: abort the ongoing transfer request on an SPI slave controller
-+ * @cs_setup: delay to be introduced by the controller after CS is asserted
-+ * @cs_hold: delay to be introduced by the controller before CS is deasserted
-+ * @cs_inactive: delay to be introduced by the controller after CS is
-+ *	deasserted. If @cs_change_delay is used from @spi_transfer, then the
-+ *	two delays will be added up.
-  * @cs_gpios: LEGACY: array of GPIO descs to use as chip select lines; one per
-  *	CS number. Any individual value may be -ENOENT for CS lines that
-  *	are not GPIOs (driven by the SPI controller itself). Use the cs_gpiods
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 068c21037679..4249bcaf77bd 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1545,17 +1545,15 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
+ 	if (!pdata)
+ 		return NULL;
+ 
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!res)
+-		return NULL;
+-
+ 	ssp = &pdata->ssp;
+ 
+-	ssp->phys_base = res->start;
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	ssp->mmio_base = devm_ioremap_resource(&pdev->dev, res);
+ 	if (IS_ERR(ssp->mmio_base))
+ 		return NULL;
+ 
++	ssp->phys_base = res->start;
++
+ #ifdef CONFIG_PCI
+ 	if (pcidev_id) {
+ 		pdata->tx_param = pdev->dev.parent;
 -- 
 2.20.1

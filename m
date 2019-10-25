@@ -1,18 +1,22 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: pxa2xx: Introduce temporary variables to increase
- readability" to the spi tree
+Subject: Applied "spi: Fix NULL pointer when setting SPI_CS_HIGH for GPIO CS"
+ to the spi tree
 Date: Fri, 25 Oct 2019 11:12:18 +0100 (BST)
-Message-ID: <20191025101218.D8076274326E@ypsilon.sirena.org.uk>
-References: <20191021103625.4250-1-andriy.shevchenko@linux.intel.com>
+Message-ID: <20191025101218.A913F2743267@ypsilon.sirena.org.uk>
+References: <20191024141309.22434-1-gregory.clement@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Haojian Zhuang <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, Daniel Mack <daniel@zonque.org>,
- Robert Jarzmik <robert.jarzmik@free.fr>, linux-arm-kernel@lists.infradead.org
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ "kernelci.org bot" <bot@kernelci.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, linux-spi@vger.kernel.org,
+ Ludovic Desroches <ludovic.desroches@microchip.com>,
+ Mark Brown <broonie@kernel.org>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ linux-arm-kernel@lists.infradead.org
+To: Gregory CLEMENT <gregory.clement@bootlin.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20191021103625.4250-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20191024141309.22434-1-gregory.clement@bootlin.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -26,11 +30,11 @@ List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: pxa2xx: Introduce temporary variables to increase readability
+   spi: Fix NULL pointer when setting SPI_CS_HIGH for GPIO CS
 
 has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.4
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
@@ -51,55 +55,37 @@ to this mail.
 Thanks,
 Mark
 
->From 6fb7427d84f6ed064776434436485cfb0f6711e9 Mon Sep 17 00:00:00 2001
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Date: Mon, 21 Oct 2019 13:36:24 +0300
-Subject: [PATCH] spi: pxa2xx: Introduce temporary variables to increase
- readability
+>From 15f794bd977a0135328fbdd8a83cc64c1d267b39 Mon Sep 17 00:00:00 2001
+From: Gregory CLEMENT <gregory.clement@bootlin.com>
+Date: Thu, 24 Oct 2019 16:13:09 +0200
+Subject: [PATCH] spi: Fix NULL pointer when setting SPI_CS_HIGH for GPIO CS
 
-The current conditional for PCI ID matching is hard to read.
-Introduce couple of temporary variables to increase readability
-of the code.
+Even if the flag use_gpio_descriptors is set, it is possible that
+cs_gpiods was not allocated, which leads to a kernel crash.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20191021103625.4250-1-andriy.shevchenko@linux.intel.com
+Reported-by: "kernelci.org bot" <bot@kernelci.org>
+Fixes: 3e5ec1db8bfe ("spi: Fix SPI_CS_HIGH setting when using native and GPIO CS")
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Link: https://lore.kernel.org/r/20191024141309.22434-1-gregory.clement@bootlin.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: <stable@vger.kernel.org>
 ---
- drivers/spi/spi-pxa2xx.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/spi/spi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 443c1f4d2a9a..6eb6805ee51d 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1516,13 +1516,14 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
- 	struct pxa2xx_spi_controller *pdata;
- 	struct ssp_device *ssp;
- 	struct resource *res;
-+	struct device *parent = pdev->dev.parent;
-+	struct pci_dev *pcidev = dev_is_pci(parent) ? to_pci_dev(parent) : NULL;
- 	const struct pci_device_id *pcidev_id = NULL;
- 	enum pxa_ssp_type type;
- 	const void *match;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 38699eaebcea..26b91ee0855d 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1780,7 +1780,8 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+ 	 * handled in the gpiolib, so all gpio chip selects are "active high"
+ 	 * in the logical sense, the gpiolib will invert the line if need be.
+ 	 */
+-	if ((ctlr->use_gpio_descriptors) && ctlr->cs_gpiods[spi->chip_select])
++	if ((ctlr->use_gpio_descriptors) && ctlr->cs_gpiods &&
++	    ctlr->cs_gpiods[spi->chip_select])
+ 		spi->mode |= SPI_CS_HIGH;
  
--	if (dev_is_pci(pdev->dev.parent))
--		pcidev_id = pci_match_id(pxa2xx_spi_pci_compound_match,
--					 to_pci_dev(pdev->dev.parent));
-+	if (pcidev)
-+		pcidev_id = pci_match_id(pxa2xx_spi_pci_compound_match, pcidev);
- 
- 	match = device_get_match_data(&pdev->dev);
- 	if (match)
-@@ -1549,8 +1550,8 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
- 
- #ifdef CONFIG_PCI
- 	if (pcidev_id) {
--		pdata->tx_param = pdev->dev.parent;
--		pdata->rx_param = pdev->dev.parent;
-+		pdata->tx_param = parent;
-+		pdata->rx_param = parent;
- 		pdata->dma_filter = pxa2xx_spi_idma_filter;
- 	}
- #endif
+ 	/* Device speed */
 -- 
 2.20.1

@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: sprd: adi: Add missing lock protection when rebooting" to the spi tree
-Date: Mon, 28 Oct 2019 14:56:50 +0000 (GMT)
-Message-ID: <20191028145650.4A9B627403EE@ypsilon.sirena.org.uk>
-References: <7b04711127434555e3a1a86bc6be99860cd86668.1572257085.git.baolin.wang@linaro.org>
+Subject: Applied "spi: sprd: adi: Set BIT_WDG_NEW bit when rebooting" to the spi tree
+Date: Mon, 28 Oct 2019 14:56:49 +0000 (GMT)
+Message-ID: <20191028145650.137E127403E4@ypsilon.sirena.org.uk>
+References: <5655318a7252c9ea518c2f7950a61228ab8f42bf.1572257085.git.baolin.wang@linaro.org>
 Cc: baolin.wang7@gmail.com, Baolin Wang <baolin.wang@linaro.org>,
         baolin.wang@linaro.org, broonie@kernel.org,
         ling_ling.xu@unisoc.com, linux-kernel@vger.kernel.org,
@@ -10,13 +10,13 @@ Cc: baolin.wang7@gmail.com, Baolin Wang <baolin.wang@linaro.org>,
         orsonzhai@gmail.com, zhang.lyra@gmail.com
 To: Lingling Xu <ling_ling.xu@unisoc.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <7b04711127434555e3a1a86bc6be99860cd86668.1572257085.git.baolin.wang@linaro.org>
+In-Reply-To: <5655318a7252c9ea518c2f7950a61228ab8f42bf.1572257085.git.baolin.wang@linaro.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: sprd: adi: Add missing lock protection when rebooting
+   spi: sprd: adi: Set BIT_WDG_NEW bit when rebooting
 
 has been applied to the spi tree at
 
@@ -41,36 +41,49 @@ to this mail.
 Thanks,
 Mark
 
->From 91ea1d70607e374b014b4b9bea771ce661f9f64b Mon Sep 17 00:00:00 2001
+>From 1d00a67c2da2d8d82e6dcc5b398d9f6db656d9be Mon Sep 17 00:00:00 2001
 From: Lingling Xu <ling_ling.xu@unisoc.com>
-Date: Mon, 28 Oct 2019 18:10:30 +0800
-Subject: [PATCH] spi: sprd: adi: Add missing lock protection when rebooting
+Date: Mon, 28 Oct 2019 18:10:31 +0800
+Subject: [PATCH] spi: sprd: adi: Set BIT_WDG_NEW bit when rebooting
 
-When rebooting the system, we should lock the watchdog after
-configuration to make sure the watchdog can reboot the system
-successfully.
+When rebooting system, the PMIC watchdog time loading may not be loaded
+correctly when another system is feeding the PMIC watchdog, since we did
+not check the watchdog busy status before loading time values.
+
+Thus we should set the BIT_WDG_NEW bit before loading time values, that
+can support multiple loads without checking busy status to make sure the
+time values can be loaded successfully to avoid this potential issue.
 
 Signed-off-by: Lingling Xu <ling_ling.xu@unisoc.com>
 Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
-Link: https://lore.kernel.org/r/7b04711127434555e3a1a86bc6be99860cd86668.1572257085.git.baolin.wang@linaro.org
+Link: https://lore.kernel.org/r/5655318a7252c9ea518c2f7950a61228ab8f42bf.1572257085.git.baolin.wang@linaro.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-sprd-adi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-sprd-adi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
-index 9a051286f120..9613cfe3c0a2 100644
+index 9613cfe3c0a2..87dadb6b8ebf 100644
 --- a/drivers/spi/spi-sprd-adi.c
 +++ b/drivers/spi/spi-sprd-adi.c
-@@ -393,6 +393,9 @@ static int sprd_adi_restart_handler(struct notifier_block *this,
- 	val |= BIT_WDG_RUN | BIT_WDG_RST;
- 	sprd_adi_write(sadi, sadi->slave_pbase + REG_WDG_CTRL, val);
+@@ -77,6 +77,7 @@
  
-+	/* Lock the watchdog */
-+	sprd_adi_write(sadi, sadi->slave_pbase + REG_WDG_LOCK, ~WDG_UNLOCK_KEY);
+ /* Bits definitions for register REG_WDG_CTRL */
+ #define BIT_WDG_RUN			BIT(1)
++#define BIT_WDG_NEW			BIT(2)
+ #define BIT_WDG_RST			BIT(3)
+ 
+ /* Registers definitions for PMIC */
+@@ -383,6 +384,10 @@ static int sprd_adi_restart_handler(struct notifier_block *this,
+ 	/* Unlock the watchdog */
+ 	sprd_adi_write(sadi, sadi->slave_pbase + REG_WDG_LOCK, WDG_UNLOCK_KEY);
+ 
++	sprd_adi_read(sadi, sadi->slave_pbase + REG_WDG_CTRL, &val);
++	val |= BIT_WDG_NEW;
++	sprd_adi_write(sadi, sadi->slave_pbase + REG_WDG_CTRL, val);
 +
- 	mdelay(1000);
- 
- 	dev_emerg(sadi->dev, "Unable to restart system\n");
+ 	/* Load the watchdog timeout value, 50ms is always enough. */
+ 	sprd_adi_write(sadi, sadi->slave_pbase + REG_WDG_LOAD_LOW,
+ 		       WDG_LOAD_VAL & WDG_LOAD_MASK);
 -- 
 2.20.1

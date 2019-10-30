@@ -1,59 +1,66 @@
-From: Luhua Xu <luhua.xu@mediatek.com>
-Subject: [PATCH V2] spi: add power control when set_cs
-Date: Wed, 30 Oct 2019 16:08:16 +0800
-Message-ID: <1572422896-29487-1-git-send-email-luhua.xu@mediatek.com>
-Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>, <wsd_upstream@mediatek.com>,
-        Luhua Xu <luhua.xu@mediatek.com>
-To: Mark Brown <broonie@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>
+From: "Ramuthevar,Vadivel MuruganX"
+        <vadivel.muruganx.ramuthevar@linux.intel.com>
+Subject: [PATCH v2 0/2] spi: cadence-quadpsi: Add support for the Cadence QSPI controller
+Date: Wed, 30 Oct 2019 16:11:53 +0800
+Message-ID: <20191030081155.29947-1-vadivel.muruganx.ramuthevar@linux.intel.com>
+Cc: broonie@kernel.org, vigneshr@ti.com, robh+dt@kernel.org,
+        cheol.yong.kim@intel.com, qi-ming.wu@intel.com,
+        "Ramuthevar,Vadivel MuruganX"
+        <vadivel.muruganx.ramuthevar@linux.intel.com>
+To: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: "Luhua Xu" <luhua.xu@mediatek.com>
+Add support for the Cadence QSPI controller. This controller is
+present in the Intel Lightning Mountain(LGM) SoCs, Altera and TI SoCs.
+This driver has been tested on the Intel LGM SoCs.
 
-As to set_cs takes effect immediately, power spi
-is needed when setup spi.
+This driver does not support generic SPI and also the implementation
+only supports spi-mem interface to replace the existing driver in
+mtd/spi-nor/cadence-quadspi.c, the existing driver only support SPI-NOR
+flash memory.
 
-Signed-off-by: Luhua Xu <luhua.xu@mediatek.com>
----
-V2:
-- move set_cs PM control from .set_cs callback in
-  vendor driver to spi_setup in spi framework
+v2 changes from v1:
+  Thank you Mark and Vignesh for the review comments and also shared link to develop 
+cadence-quadspi driver based on spi-mem framework against removal of legacy SPI.
 
+Mark Brown Review comments:
+	If it's different versions of the same IP then everything should be in
+	one driver with the optional features enabled depending on what's in a
+	given system.
 
- drivers/spi/spi.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+Vignesh review comments:
+	Nope, you cannot have two drivers for the same IP (i.e Cadence QSPI)
+	just to support to different types of SPI memories. This is the reason
+	why spi_mem_ops was introduced.
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index f9502db..19007e0 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -3091,7 +3091,20 @@ int spi_setup(struct spi_device *spi)
- 	if (spi->controller->setup)
- 		status = spi->controller->setup(spi);
+	Please rewrite this driver over to use spi_mem_ops (instead of using
+	generic SPI xfers) so that same driver supports both SPI-NOR and
+	SPI-NAND flashes. Once that's done drivers/mtd/spi-nor/cadence-quadspi.c
+	can be deleted.
+
+	There are few existing examples of spi_mem_ops users in drivers/spi/
+	(git grep spi_mem_ops) and materials here on how to write such a driver:
+	
+	[1] https://bootlin.com/blog/spi-mem-bringing-some-consistency-to-the-spi-memory-ecosystem/
+	[2] https://www.youtube.com/watch?v=PkWbuLM_gmU
+
  
--	spi_set_cs(spi, false);
-+	if (spi->controller->auto_runtime_pm && spi->controller->set_cs) {
-+		status = pm_runtime_get_sync(spi->controller->dev.parent);
-+		if (status < 0) {
-+			pm_runtime_put_noidle(spi->controller->dev.parent);
-+			dev_err(&spi->controller->dev, "Failed to power device: %d\n",
-+				status);
-+			return status;
-+		}
-+		spi_set_cs(spi, false);
-+		pm_runtime_mark_last_busy(spi->controller->dev.parent);
-+		pm_runtime_put_autosuspend(spi->controller->dev.parent);
-+	} else {
-+		spi_set_cs(spi, false);
-+	}
- 
- 	if (spi->rt && !spi->controller->rt) {
- 		spi->controller->rt = true;
+
+Ramuthevar Vadivel Murugan (2):
+  dt-bindings: spi: Add schema for Cadence QSPI Controller driver
+  spi: cadence-quadpsi: Add support for the Cadence QSPI controller
+
+ .../devicetree/bindings/spi/cadence,qspi.yaml      |   65 +
+ drivers/spi/Kconfig                                |   10 +
+ drivers/spi/Makefile                               |    1 +
+ drivers/spi/spi-cadence-quadspi.c                  | 1290 ++++++++++++++++++++
+ drivers/spi/spi-cadence-quadspi.h                  |  272 +++++
+ 5 files changed, 1638 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/cadence,qspi.yaml
+ create mode 100644 drivers/spi/spi-cadence-quadspi.c
+ create mode 100644 drivers/spi/spi-cadence-quadspi.h
+
 -- 
-2.6.4
+2.11.0

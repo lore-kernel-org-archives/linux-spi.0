@@ -1,322 +1,90 @@
-From: kbuild test robot <lkp@intel.com>
-Subject: Re: [PATCH v2 2/2] spi: cadence-quadpsi: Add support for the Cadence
- QSPI controller
-Date: Sat, 2 Nov 2019 01:36:39 +0800
-Message-ID: <201911020136.R1wgSagX%lkp@intel.com>
-References: <20191030081155.29947-3-vadivel.muruganx.ramuthevar@linux.intel.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: kbuild-all@lists.01.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, broonie@kernel.org, vigneshr@ti.com,
-        robh+dt@kernel.org, cheol.yong.kim@intel.com, qi-ming.wu@intel.com,
-        Ramuthevar Vadivel Murugan
-        <vadivel.muruganx.ramuthevar@linux.intel.com>
-To: "Ramuthevar,Vadivel MuruganX"
-        <vadivel.muruganx.ramuthevar@linux.intel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20191030081155.29947-3-vadivel.muruganx.ramuthevar@linux.intel.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Palmer Dabbelt <palmer@dabbelt.com>
+Subject: Re: [PATCH] spi: sifive: disable clk when probe fails and remove
+Date: Fri, 01 Nov 2019 16:07:29 -0700 (PDT)
+Message-ID: <mhng-3be3dc4e-15f2-4ad2-b156-ea5439e729bd@palmer-si-x1c4>
+References: <20191101121745.13413-1-hslester96@gmail.com>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+Cc: hslester96@gmail.com, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, broonie@kernel.org,
+ Paul Walmsley <paul.walmsley@sifive.com>, linux-riscv@lists.infradead.org
+To: hslester96@gmail.com
+Return-path: <linux-riscv-bounces+glpr-linux-riscv=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20191101121745.13413-1-hslester96@gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-riscv>,
+ <mailto:linux-riscv-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-riscv/>
+List-Post: <mailto:linux-riscv@lists.infradead.org>
+List-Help: <mailto:linux-riscv-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-riscv>,
+ <mailto:linux-riscv-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-riscv" <linux-riscv-bounces@lists.infradead.org>
+Errors-To: linux-riscv-bounces+glpr-linux-riscv=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi "Ramuthevar,Vadivel,
+On Fri, 01 Nov 2019 05:17:45 PDT (-0700), hslester96@gmail.com wrote:
+> The driver forgets to disable and unprepare clk when probe fails and
+> remove.
+> Add the calls to fix the problem.
+>
+> Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+> ---
+>  drivers/spi/spi-sifive.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
+> index 35254bdc42c4..f7c1e20432e0 100644
+> --- a/drivers/spi/spi-sifive.c
+> +++ b/drivers/spi/spi-sifive.c
+> @@ -357,14 +357,14 @@ static int sifive_spi_probe(struct platform_device *pdev)
+>  	if (!cs_bits) {
+>  		dev_err(&pdev->dev, "Could not auto probe CS lines\n");
+>  		ret = -EINVAL;
+> -		goto put_master;
+> +		goto disable_clk;
+>  	}
+>
+>  	num_cs = ilog2(cs_bits) + 1;
+>  	if (num_cs > SIFIVE_SPI_MAX_CS) {
+>  		dev_err(&pdev->dev, "Invalid number of spi slaves\n");
+>  		ret = -EINVAL;
+> -		goto put_master;
+> +		goto disable_clk;
+>  	}
+>
+>  	/* Define our master */
+> @@ -393,7 +393,7 @@ static int sifive_spi_probe(struct platform_device *pdev)
+>  			       dev_name(&pdev->dev), spi);
+>  	if (ret) {
+>  		dev_err(&pdev->dev, "Unable to bind to interrupt\n");
+> -		goto put_master;
+> +		goto disable_clk;
+>  	}
+>
+>  	dev_info(&pdev->dev, "mapped; irq=%d, cs=%d\n",
+> @@ -402,11 +402,13 @@ static int sifive_spi_probe(struct platform_device *pdev)
+>  	ret = devm_spi_register_master(&pdev->dev, master);
+>  	if (ret < 0) {
+>  		dev_err(&pdev->dev, "spi_register_master failed\n");
+> -		goto put_master;
+> +		goto disable_clk;
+>  	}
+>
+>  	return 0;
+>
+> +disable_clk:
+> +	clk_disable_unprepare(spi->clk);
+>  put_master:
+>  	spi_master_put(master);
+>
+> @@ -420,6 +422,7 @@ static int sifive_spi_remove(struct platform_device *pdev)
+>
+>  	/* Disable all the interrupts just in case */
+>  	sifive_spi_write(spi, SIFIVE_SPI_REG_IE, 0);
+> +	clk_disable_unprepare(spi->clk);
+>
+>  	return 0;
+>  }
 
-Thank you for the patch! Perhaps something to improve:
-
-[auto build test WARNING on spi/for-next]
-[also build test WARNING on v5.4-rc5 next-20191031]
-[if your patch is applied to the wrong git tree, please drop us a note to help
-improve the system. BTW, we also suggest to use '--base' option to specify the
-base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
-
-url:    https://github.com/0day-ci/linux/commits/Ramuthevar-Vadivel-MuruganX/spi-cadence-quadpsi-Add-support-for-the-Cadence-QSPI-controller/20191101-174846
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
-reproduce:
-        # apt-get install sparse
-        # sparse version: v0.6.1-dirty
-        make ARCH=x86_64 allmodconfig
-        make C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
-
-If you fix the issue, kindly add following tag
-Reported-by: kbuild test robot <lkp@intel.com>
-
-
-sparse warnings: (new ones prefixed by >>)
-
->> drivers/spi/spi-cadence-quadspi.c:54:14: sparse: sparse: symbol 'cadence_qspi_init_timeout' was not declared. Should it be static?
->> drivers/spi/spi-cadence-quadspi.c:59:14: sparse: sparse: symbol 'cadence_qspi_check_timeout' was not declared. Should it be static?
->> drivers/spi/spi-cadence-quadspi.c:105:30: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void const volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
->> drivers/spi/spi-cadence-quadspi.c:105:30: sparse:    expected void const volatile [noderef] <asn:2> *addr
->> drivers/spi/spi-cadence-quadspi.c:105:30: sparse:    got void *
->> drivers/spi/spi-cadence-quadspi.c:111:30: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
->> drivers/spi/spi-cadence-quadspi.c:111:30: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:111:30: sparse:    got void *
->> drivers/spi/spi-cadence-quadspi.c:101:6: sparse: sparse: symbol 'enable_qspi_direct_access' was not declared. Should it be static?
-   drivers/spi/spi-cadence-quadspi.c:118:30: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void const volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:118:30: sparse:    expected void const volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:118:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:124:30: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:124:30: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:124:30: sparse:    got void *
->> drivers/spi/spi-cadence-quadspi.c:114:6: sparse: sparse: symbol 'cadence_qspi_controller_enable' was not declared. Should it be static?
-   drivers/spi/spi-cadence-quadspi.c:133:21: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void const volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:133:21: sparse:    expected void const volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:133:21: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:151:30: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void const volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:151:30: sparse:    expected void const volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:151:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:161:30: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:161:30: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:161:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:174:30: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void const volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:174:30: sparse:    expected void const volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:174:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:177:30: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:177:30: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:177:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:186:30: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void const volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:186:30: sparse:    expected void const volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:186:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:198:30: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:198:30: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:198:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:206:30: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:206:30: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:206:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:208:30: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:208:30: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:208:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:212:38: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void const volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:212:38: sparse:    expected void const volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:212:38: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:242:45: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:242:45: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:242:45: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:251:30: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void const volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:251:30: sparse:    expected void const volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:251:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:257:38: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void const volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:257:38: sparse:    expected void const volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:257:38: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:280:39: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:280:39: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:280:39: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:287:45: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:287:45: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:287:45: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:302:45: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:302:45: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:302:45: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:313:39: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:313:39: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:313:39: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:323:30: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:323:30: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:323:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:325:30: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void const volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:325:30: sparse:    expected void const volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:325:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:328:30: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:328:30: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:328:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:330:30: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void const volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:330:30: sparse:    expected void const volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:330:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:332:30: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:332:30: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:332:30: sparse:    got void *
->> drivers/spi/spi-cadence-quadspi.c:422:31: sparse: sparse: incorrect type in initializer (different address spaces) @@    expected void *reg_base @@    got void [noderef] <asvoid *reg_base @@
->> drivers/spi/spi-cadence-quadspi.c:422:31: sparse:    expected void *reg_base
->> drivers/spi/spi-cadence-quadspi.c:422:31: sparse:    got void [noderef] <asn:2> *iobase
->> drivers/spi/spi-cadence-quadspi.c:423:31: sparse: sparse: incorrect type in initializer (different address spaces) @@    expected void *ahb_base @@    got void [noderef] <asvoid *ahb_base @@
->> drivers/spi/spi-cadence-quadspi.c:423:31: sparse:    expected void *ahb_base
->> drivers/spi/spi-cadence-quadspi.c:423:31: sparse:    got void [noderef] <asn:2> *qspi_ahb_virt
-   drivers/spi/spi-cadence-quadspi.c:431:28: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:431:28: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:431:28: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:432:30: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:432:30: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:432:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:433:36: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:433:36: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:433:36: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:438:25: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:438:25: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:438:25: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:440:48: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:440:48: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:440:48: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:441:44: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:441:44: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:441:44: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:445:25: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:445:25: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:445:25: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:448:33: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void const volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:448:33: sparse:    expected void const volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:448:33: sparse:    got void *
->> drivers/spi/spi-cadence-quadspi.c:458:46: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void [noderef] <asn:2> *port @@    got n:2> *port @@
->> drivers/spi/spi-cadence-quadspi.c:458:46: sparse:    expected void [noderef] <asn:2> *port
->> drivers/spi/spi-cadence-quadspi.c:458:46: sparse:    got void *ahb_base
->> drivers/spi/spi-cadence-quadspi.c:461:62: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void [noderef] <asn:2> * @@    got n:2> * @@
->> drivers/spi/spi-cadence-quadspi.c:461:62: sparse:    expected void [noderef] <asn:2> *
-   drivers/spi/spi-cadence-quadspi.c:461:62: sparse:    got void *ahb_base
-   drivers/spi/spi-cadence-quadspi.c:470:41: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void const volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:470:41: sparse:    expected void const volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:470:41: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:480:38: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void const volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:480:38: sparse:    expected void const volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:480:38: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:490:28: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:490:28: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:490:28: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:492:57: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:492:57: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:492:57: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:497:28: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:497:28: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:497:28: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:500:25: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:500:25: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:500:25: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:514:30: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void const volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:514:30: sparse:    expected void const volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:514:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:517:30: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:517:30: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:517:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:531:30: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:531:30: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:531:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:534:30: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:534:30: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:534:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:535:30: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void const volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:535:30: sparse:    expected void const volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:535:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:538:30: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:538:30: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:538:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:541:30: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void const volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:541:30: sparse:    expected void const volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:541:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:543:30: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:543:30: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:543:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:555:31: sparse: sparse: incorrect type in initializer (different address spaces) @@    expected void *reg_base @@    got void [noderef] <asvoid *reg_base @@
-   drivers/spi/spi-cadence-quadspi.c:555:31: sparse:    expected void *reg_base
-   drivers/spi/spi-cadence-quadspi.c:555:31: sparse:    got void [noderef] <asn:2> *iobase
-   drivers/spi/spi-cadence-quadspi.c:556:31: sparse: sparse: incorrect type in initializer (different address spaces) @@    expected void *ahb_base @@    got void [noderef] <asvoid *ahb_base @@
-   drivers/spi/spi-cadence-quadspi.c:556:31: sparse:    expected void *ahb_base
-   drivers/spi/spi-cadence-quadspi.c:556:31: sparse:    got void [noderef] <asn:2> *qspi_ahb_virt
-   drivers/spi/spi-cadence-quadspi.c:563:30: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:563:30: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:563:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:564:30: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:564:30: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:564:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:565:30: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void const volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:565:30: sparse:    expected void const volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:565:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:570:30: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:570:30: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:570:30: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:572:36: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:572:36: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:572:36: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:573:54: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:573:54: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:573:54: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:575:48: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:575:48: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:575:48: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:576:44: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:576:44: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:576:44: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:579:25: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:579:25: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:579:25: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:592:39: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void [noderef] <asn:2> *port @@    got n:2> *port @@
-   drivers/spi/spi-cadence-quadspi.c:592:39: sparse:    expected void [noderef] <asn:2> *port
-   drivers/spi/spi-cadence-quadspi.c:592:39: sparse:    got void *ahb_base
-   drivers/spi/spi-cadence-quadspi.c:599:41: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void [noderef] <asn:2> * @@    got n:2> * @@
-   drivers/spi/spi-cadence-quadspi.c:599:41: sparse:    expected void [noderef] <asn:2> *
-   drivers/spi/spi-cadence-quadspi.c:599:41: sparse:    got void *ahb_base
->> drivers/spi/spi-cadence-quadspi.c:606:28: sparse: sparse: dubious: !x & y
-   drivers/spi/spi-cadence-quadspi.c:621:38: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void const volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:621:38: sparse:    expected void const volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:621:38: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:635:28: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:635:28: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:635:28: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:637:57: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:637:57: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:637:57: sparse:    got void *
-   drivers/spi/spi-cadence-quadspi.c:642:33: sparse: sparse: incorrect type in argument 2 (different address spaces) @@    expected void volatile [noderef] <asn:2> *addr @@    got n:2> *addr @@
-   drivers/spi/spi-cadence-quadspi.c:642:33: sparse:    expected void volatile [noderef] <asn:2> *addr
-   drivers/spi/spi-cadence-quadspi.c:642:33: sparse:    got void *
->> drivers/spi/spi-cadence-quadspi.c:647:14: sparse: sparse: symbol 'cadence_qspi_is_controller_ready' was not declared. Should it be static?
->> drivers/spi/spi-cadence-quadspi.c:657:45: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void *reg_base @@    got void [noderef] <asvoid *reg_base @@
-   drivers/spi/spi-cadence-quadspi.c:657:45: sparse:    expected void *reg_base
-   drivers/spi/spi-cadence-quadspi.c:657:45: sparse:    got void [noderef] <asn:2> *iobase
-   drivers/spi/spi-cadence-quadspi.c:666:48: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void *reg_base @@    got void [noderef] <asvoid *reg_base @@
-   drivers/spi/spi-cadence-quadspi.c:666:48: sparse:    expected void *reg_base
-   drivers/spi/spi-cadence-quadspi.c:666:48: sparse:    got void [noderef] <asn:2> *iobase
-   drivers/spi/spi-cadence-quadspi.c:668:48: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void *reg_base @@    got void [noderef] <asvoid *reg_base @@
-   drivers/spi/spi-cadence-quadspi.c:668:48: sparse:    expected void *reg_base
-   drivers/spi/spi-cadence-quadspi.c:668:48: sparse:    got void [noderef] <asn:2> *iobase
-   drivers/spi/spi-cadence-quadspi.c:677:45: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void *reg_base @@    got void [noderef] <asvoid *reg_base @@
-   drivers/spi/spi-cadence-quadspi.c:677:45: sparse:    expected void *reg_base
-   drivers/spi/spi-cadence-quadspi.c:677:45: sparse:    got void [noderef] <asn:2> *iobase
->> drivers/spi/spi-cadence-quadspi.c:652:6: sparse: sparse: symbol 'cadence_qspi_controller_init' was not declared. Should it be static?
-   drivers/spi/spi-cadence-quadspi.c:701:45: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void *reg_base @@    got void [noderef] <asvoid *reg_base @@
-   drivers/spi/spi-cadence-quadspi.c:701:45: sparse:    expected void *reg_base
-   drivers/spi/spi-cadence-quadspi.c:701:45: sparse:    got void [noderef] <asn:2> *iobase
-   drivers/spi/spi-cadence-quadspi.c:722:45: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void *reg_base @@    got void [noderef] <asvoid *reg_base @@
-   drivers/spi/spi-cadence-quadspi.c:722:45: sparse:    expected void *reg_base
-   drivers/spi/spi-cadence-quadspi.c:722:45: sparse:    got void [noderef] <asn:2> *iobase
->> drivers/spi/spi-cadence-quadspi.c:690:6: sparse: sparse: symbol 'cadence_qspi_delay' was not declared. Should it be static?
-   drivers/spi/spi-cadence-quadspi.c:733:45: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void *reg_base @@    got void [noderef] <asvoid *reg_base @@
-   drivers/spi/spi-cadence-quadspi.c:733:45: sparse:    expected void *reg_base
-   drivers/spi/spi-cadence-quadspi.c:733:45: sparse:    got void [noderef] <asn:2> *iobase
-   drivers/spi/spi-cadence-quadspi.c:743:25: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void *reg_base @@    got void [noderef] <asvoid *reg_base @@
-   drivers/spi/spi-cadence-quadspi.c:743:25: sparse:    expected void *reg_base
-   drivers/spi/spi-cadence-quadspi.c:743:25: sparse:    got void [noderef] <asn:2> *iobase
-   drivers/spi/spi-cadence-quadspi.c:744:45: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void *reg_base @@    got void [noderef] <asvoid *reg_base @@
-   drivers/spi/spi-cadence-quadspi.c:744:45: sparse:    expected void *reg_base
-   drivers/spi/spi-cadence-quadspi.c:744:45: sparse:    got void [noderef] <asn:2> *iobase
->> drivers/spi/spi-cadence-quadspi.c:725:6: sparse: sparse: symbol 'cadence_qspi_switch_chipselect' was not declared. Should it be static?
-   drivers/spi/spi-cadence-quadspi.c:870:40: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void *reg_base @@    got void [noderef] <asvoid *reg_base @@
-   drivers/spi/spi-cadence-quadspi.c:870:40: sparse:    expected void *reg_base
-   drivers/spi/spi-cadence-quadspi.c:870:40: sparse:    got void [noderef] <asn:2> *iobase
-   drivers/spi/spi-cadence-quadspi.c:871:42: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void *reg_base @@    got void [noderef] <asvoid *reg_base @@
-   drivers/spi/spi-cadence-quadspi.c:871:42: sparse:    expected void *reg_base
-   drivers/spi/spi-cadence-quadspi.c:871:42: sparse:    got void [noderef] <asn:2> *iobase
-   drivers/spi/spi-cadence-quadspi.c:874:39: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void *reg_base @@    got void [noderef] <asvoid *reg_base @@
-   drivers/spi/spi-cadence-quadspi.c:874:39: sparse:    expected void *reg_base
-   drivers/spi/spi-cadence-quadspi.c:874:39: sparse:    got void [noderef] <asn:2> *iobase
-   drivers/spi/spi-cadence-quadspi.c:875:40: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void *reg_base @@    got void [noderef] <asvoid *reg_base @@
-   drivers/spi/spi-cadence-quadspi.c:875:40: sparse:    expected void *reg_base
-   drivers/spi/spi-cadence-quadspi.c:875:40: sparse:    got void [noderef] <asn:2> *iobase
-   drivers/spi/spi-cadence-quadspi.c:880:43: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void *reg_base @@    got void [noderef] <asvoid *reg_base @@
-   drivers/spi/spi-cadence-quadspi.c:880:43: sparse:    expected void *reg_base
-   drivers/spi/spi-cadence-quadspi.c:880:43: sparse:    got void [noderef] <asn:2> *iobase
-   drivers/spi/spi-cadence-quadspi.c:888:42: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void *reg_base @@    got void [noderef] <asvoid *reg_base @@
-   drivers/spi/spi-cadence-quadspi.c:888:42: sparse:    expected void *reg_base
-   drivers/spi/spi-cadence-quadspi.c:888:42: sparse:    got void [noderef] <asn:2> *iobase
-   drivers/spi/spi-cadence-quadspi.c:896:50: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void *reg_base @@    got void [noderef] <asvoid *reg_base @@
-   drivers/spi/spi-cadence-quadspi.c:896:50: sparse:    expected void *reg_base
-   drivers/spi/spi-cadence-quadspi.c:896:50: sparse:    got void [noderef] <asn:2> *iobase
->> drivers/spi/spi-cadence-quadspi.c:899:80: sparse: sparse: Using plain integer as NULL pointer
-   drivers/spi/spi-cadence-quadspi.c:907:49: sparse: sparse: incorrect type in argument 1 (different address spaces) @@    expected void *reg_base @@    got void [noderef] <asvoid *reg_base @@
-   drivers/spi/spi-cadence-quadspi.c:907:49: sparse:    expected void *reg_base
-   drivers/spi/spi-cadence-quadspi.c:907:49: sparse:    got void [noderef] <asn:2> *iobase
-   drivers/spi/spi-cadence-quadspi.c:910:79: sparse: sparse: Using plain integer as NULL pointer
->> drivers/spi/spi-cadence-quadspi.c:927:5: sparse: sparse: symbol 'cadence_qspi_exec_mem_op' was not declared. Should it be static?
->> drivers/spi/spi-cadence-quadspi.c:1225:52: sparse: sparse: too many warnings
-
-Please review and possibly fold the followup patch.
-
----
-0-DAY kernel test infrastructure                Open Source Technology Center
-https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
+Reviewed-by: Palmer Dabbelt <palmer@dabbelt.com>

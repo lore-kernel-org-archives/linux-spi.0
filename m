@@ -1,106 +1,40 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 2/3] spi: Add HiSilicon v3xx SPI NOR flash controller
- driver
-Date: Mon, 4 Nov 2019 19:24:06 +0000
-Message-ID: <20191104192406.GH5238@sirena.co.uk>
-References: <1572886297-45400-1-git-send-email-john.garry@huawei.com>
- <1572886297-45400-3-git-send-email-john.garry@huawei.com>
+From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+Subject: Re: spi-mem and gpio chipselects
+Date: Mon, 4 Nov 2019 20:06:42 +0000
+Message-ID: <039edb7cdd9114ad7a14e27f869db6c85d756418.camel@alliedtelesis.co.nz>
+References: <cbe69f5457c4dd1c2cc96a247c6c6fca61c0d43c.camel@alliedtelesis.co.nz>
+         <20191104124444.GB5238@sirena.co.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Rn7IEEq3VEzCw+ji"
-Cc: marek.vasut@gmail.com, tudor.ambarus@microchip.com,
-        linuxarm@huawei.com, linux-kernel@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
-        xuejiancheng@hisilicon.com, fengsheng5@huawei.com
-To: John Garry <john.garry@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: "broonie@kernel.org" <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1572886297-45400-3-git-send-email-john.garry@huawei.com>
+In-Reply-To: <20191104124444.GB5238@sirena.co.uk>
+Content-Language: en-US
+Content-ID: <CBD24C53A2CF2E449E990610426137AD@atlnz.lc>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-
---Rn7IEEq3VEzCw+ji
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Tue, Nov 05, 2019 at 12:51:36AM +0800, John Garry wrote:
-
-> Only ACPI firmware is supported.
-
-There's no ACPI dependency though?  If the driver only works with ACPI
-I'd expect to see one with an || COMPILE_TEST like the architecture
-dependency.
-
-> @@ -0,0 +1,287 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * HiSilicon SPI NOR V3XX Flash Controller Driver for hi16xx chipsets
-> + *
-
-Please make the entire comment a C++ one for neatness.
-
-> + * Copyright (c) 2019 HiSilicon Technologies Co., Ltd.
-> + * Author: John Garry <john.garry@huawei.com>
-> + */
-> +//#define DEBUG 1
-
-Please remove this.
-
-> +#define GLOBAL_CFG (0x100)
-> +
-> +#define BUS_CFG1 (0x200)
-> +#define BUS_CFG2 (0x204)
-> +#define BUS_FLASH_SIZE (0x210)
-> +
-> +#define VERSION (0x1f8)
-
-These could use some namespacing, especially the last one - it seems
-quite likely there'll be some collisions at some point.
-
-> +#define HISI_SFC_V3XX_WAIT_TIMEOUT_US		1000000
-> +#define HISI_SFC_V3XX_WAIT_POLL_INTERVAL_US	10
-
-Plus if we've got these long prefixes here it'd be good to be
-consistent.
-
-> +	if (IS_ALIGNED((uintptr_t)to, 4)) {
-> +		int words = len / 4;
-> +
-> +		__ioread32_copy(to, host->regbase + CMD_DATABUF(0), words);
-> +
-> +		len -= words * 4;
-> +		if (len) {
-> +			u32 val;
-> +
-> +			val = __raw_readl(host->regbase + CMD_DATABUF(words));
-> +
-> +			to += words * 4;
-> +			for (i = 0; i < len; i++, val >>= 8, to++)
-> +				*to = (u8)val;
-> +		}
-> +	} else {
-> +		for (i = 0; i < DIV_ROUND_UP(len, 4); i++) {
-> +			u32 val = __raw_readl(host->regbase + CMD_DATABUF(i));
-> +			int j;
-
-The more usual pattern for these would be to do some unaligned accesses
-for the start/end of the buffer to get to alignment and then transfer
-the rest as aligned data.
-
---Rn7IEEq3VEzCw+ji
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl3AetUACgkQJNaLcl1U
-h9AUDggAhbUOC9Q2ExVskNhuRVMVMw5Xq0UlE6+60CYcvZfy1w/TQvgxMcP5764e
-+EhXHAQ8BZ+JleaTtcuIoAg7OyBF1OOTQLEsSJ5AE5UOidvK1ft1Pud5D5rIXgYK
-kUxszOb2BCfW/rZMaLiKB2ydw1o1TsUEH76COG9+J8rVnLoLC/BwcMat7DVFtnPW
-orgevaNjPRUzmWOb7HuSziDLA+okmX+nLF+buquH1LR585JXMbTJd+1cgDk0aJFx
-bojmWsK0E1Ra52pwKO7qFdJS9mIzFN6GOVUqT47XhZm3BVmUkTHiugVun+AKT7el
-YpZbCCyYdb2H27r96NdBA3Ns3o/fJg==
-=PHLm
------END PGP SIGNATURE-----
-
---Rn7IEEq3VEzCw+ji--
+T24gTW9uLCAyMDE5LTExLTA0IGF0IDEyOjQ0ICswMDAwLCBNYXJrIEJyb3duIHdyb3RlOg0KPiBP
+biBNb24sIE5vdiAwNCwgMjAxOSBhdCAxMjozNToyNEFNICswMDAwLCBDaHJpcyBQYWNraGFtIHdy
+b3RlOg0KPiANCj4gPiBJJ20gd29ya2luZyBvbiBhIHBsYXRmb3JtIHRoYXQgaGFzIGEgc2xpZ2h0
+bHkgY29tcGxpY2F0ZWQgc2NoZW1lIGZvcg0KPiA+IFNQSSBjaGlwLXNlbGVjdHMgdXNpbmcgZ3Bp
+b3NbMV0uIFRoZSBzcGkgY29udHJvbGxlciBkcml2ZXIgaW4gdGhpcyBjYXNlDQo+ID4gc3VwcG9y
+dHMgdGhlIHNwaS1tZW0gb3BlcmF0aW9ucyB3aGljaCBhcHBlYXIgdG8gYnlwYXNzIHRoZSBnZW5l
+cmljDQo+ID4gc3BpX3NldF9jcygpLg0KPiA+IFdvdWxkIHRoZXJlIGJlIGFueSBoYXJtIGluIGFk
+ZGluZyBjYWxscyB0byBzcGlfc2V0X2NzKCkgdG8gc3BpLW1lbS5jPw0KPiA+IE5haXZlbHkgc3Bp
+X21lbV9hY2Nlc3Nfc3RhcnQoKSBhbmQgc3BpX21lbV9hY2Nlc3NfZW5kKCkgc2VlbSBsaWtlDQo+
+ID4gY29udmVuaWVudCBwbGFjZXMgdG8gc3RhcnQuDQo+IA0KPiBUaGF0J3Mgb25seSBnb2luZyB0
+byB3b3JrIGluIGNhc2VzIHdoZXJlIHRoZSBjb250cm9sbGVyIHRyYW5zbGF0ZXMNCj4gdGhpbmdz
+IGludG8gYSBzaW5nbGUgU1BJIG9wZXJhdGlvbiBvbiB0aGUgZmxhc2ggd2hpY2ggSSdtIG5vdCBz
+dXJlIGlzDQo+IGFsd2F5cyBnb2luZyB0byBiZSB0aGUgY2FzZS4gIFdlJ2QgbmVlZCBhIHdheSB0
+byBndWFyYW50ZWUgdGhhdCB0aGUNCj4gY29udHJvbGxlciBpcyBnb2luZyB0byBkbyB0aGF0IGlu
+IG9yZGVyIHRvIGF2b2lkIGRhdGEgY29ycnVwdGlvbiBpc3N1ZXMuDQoNCkluIG15IHBhcnRpY3Vs
+YXIgY2FzZSAoc3BpLWJjbS1xc3BpLmMpIGJjbV9xc3BpX2JzcGlfZXhlY19tZW1fb3AoKSBkb2Vz
+DQpzZWVtIHRvIGFzc2VydCB0aGUgbmF0aXZlIGNoaXAtc2VsZWN0IHRoZW4gZG8gaXQncyBvcGVy
+YXRpb24uIEFzIEkNCnVuZGVyc3RhbmQgdGhlIHdhaXRfZm9yX2NvbXBsZXRpb25fdGltZW91dCgp
+IHdpbGwgc2NoZWR1bGUgc28gb3RoZXINCnRhc2tzIG1heSBydW4gYnV0IHNwaV9tZW1fYWNjZXNz
+X3N0YXJ0KCkgaGFzIHRha2VuIGFuIGlvX211dGV4IHNvDQphbnl0aGluZyB0aGF0IGFjY2Vzc2Vz
+IHRoYXQgc3BpIGJ1cyB3aWxsIGJsb2NrLg0K

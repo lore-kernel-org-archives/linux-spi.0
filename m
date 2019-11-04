@@ -1,53 +1,115 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: sifive: disable clk when probe fails and remove
-Date: Mon, 4 Nov 2019 12:47:18 +0000
-Message-ID: <20191104124718.GC5238@sirena.co.uk>
+Subject: Applied "spi: sifive: disable clk when probe fails and remove" to the spi tree
+Date: Mon,  4 Nov 2019 13:27:19 +0000 (GMT)
+Message-ID: <20191104132719.C2681274301E@ypsilon.sirena.org.uk>
 References: <20191101121745.13413-1-hslester96@gmail.com>
- <mhng-3be3dc4e-15f2-4ad2-b156-ea5439e729bd@palmer-si-x1c4>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="96YOpH+ONegL0A3E"
-Cc: hslester96@gmail.com, Paul Walmsley <paul.walmsley@sifive.com>,
-        linux-spi@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-To: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: "Cc:"@sirena.co.uk, "Cc:"@sirena.co.uk,
+        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        Palmer Dabbelt <palmer@sifive.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>
+To: Chuhong Yuan <hslester96@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <mhng-3be3dc4e-15f2-4ad2-b156-ea5439e729bd@palmer-si-x1c4>
+In-Reply-To: <20191101121745.13413-1-hslester96@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---96YOpH+ONegL0A3E
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: sifive: disable clk when probe fails and remove
 
-On Fri, Nov 01, 2019 at 04:07:29PM -0700, Palmer Dabbelt wrote:
-> On Fri, 01 Nov 2019 05:17:45 PDT (-0700), hslester96@gmail.com wrote:
-> > The driver forgets to disable and unprepare clk when probe fails and
-> > remove.
-> > Add the calls to fix the problem.
+has been applied to the spi tree at
 
-> Reviewed-by: Palmer Dabbelt <palmer@dabbelt.com>
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.4
 
-Please delete unneeded context from mails when replying.  Doing this
-makes it much easier to find your reply in the message, helping ensure
-it won't be missed by people scrolling through the irrelevant quoted
-material.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
---96YOpH+ONegL0A3E
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl3AHdYACgkQJNaLcl1U
-h9Bxbwf+PS/3tt1r3nRdDUeTgiw12asFTlFdosGPaCdJ0zCp0XBMPgFZBia9R16z
-QBrOHOQ5BL+W7FEEOh9hfPpvdVPzgygwAip2n2uHEWrOZ7pt7PWoGj2ybu0JDXTu
-rPhwWNvY36hCVKElOiixQeR43pU7yKJZzPoWVTxJgGarWaE03ngE0jEvQUqtsVMB
-aI0LNK076Dt9geC7wg5FFSppQTVv6c9PvpTehaS5hKvY00hfUS3i9uFgYsXjuggz
-TYsKknIrHD0gm0Q1bCfGK7u6C3YkbyPs6uj1j2xZLh5isMgVokBkrlpkbpMtKl+i
-PPxqmUKox9ymgSDfmnZ1yGneuS3qVg==
-=2j2y
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---96YOpH+ONegL0A3E--
+Thanks,
+Mark
+
+>From a725272bda77e61c1b4de85c7b0c875b2ea639b6 Mon Sep 17 00:00:00 2001
+From: Chuhong Yuan <hslester96@gmail.com>
+Date: Fri, 1 Nov 2019 20:17:45 +0800
+Subject: [PATCH] spi: sifive: disable clk when probe fails and remove
+
+The driver forgets to disable and unprepare clk when probe fails and
+remove.
+Add the calls to fix the problem.
+
+Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+Reviewed-by: Palmer Dabbelt <palmer@dabbelt.com>
+Link: https://lore.kernel.org/r/20191101121745.13413-1-hslester96@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-sifive.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
+index 35254bdc42c4..f7c1e20432e0 100644
+--- a/drivers/spi/spi-sifive.c
++++ b/drivers/spi/spi-sifive.c
+@@ -357,14 +357,14 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 	if (!cs_bits) {
+ 		dev_err(&pdev->dev, "Could not auto probe CS lines\n");
+ 		ret = -EINVAL;
+-		goto put_master;
++		goto disable_clk;
+ 	}
+ 
+ 	num_cs = ilog2(cs_bits) + 1;
+ 	if (num_cs > SIFIVE_SPI_MAX_CS) {
+ 		dev_err(&pdev->dev, "Invalid number of spi slaves\n");
+ 		ret = -EINVAL;
+-		goto put_master;
++		goto disable_clk;
+ 	}
+ 
+ 	/* Define our master */
+@@ -393,7 +393,7 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 			       dev_name(&pdev->dev), spi);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Unable to bind to interrupt\n");
+-		goto put_master;
++		goto disable_clk;
+ 	}
+ 
+ 	dev_info(&pdev->dev, "mapped; irq=%d, cs=%d\n",
+@@ -402,11 +402,13 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 	ret = devm_spi_register_master(&pdev->dev, master);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "spi_register_master failed\n");
+-		goto put_master;
++		goto disable_clk;
+ 	}
+ 
+ 	return 0;
+ 
++disable_clk:
++	clk_disable_unprepare(spi->clk);
+ put_master:
+ 	spi_master_put(master);
+ 
+@@ -420,6 +422,7 @@ static int sifive_spi_remove(struct platform_device *pdev)
+ 
+ 	/* Disable all the interrupts just in case */
+ 	sifive_spi_write(spi, SIFIVE_SPI_REG_IE, 0);
++	clk_disable_unprepare(spi->clk);
+ 
+ 	return 0;
+ }
+-- 
+2.20.1

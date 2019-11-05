@@ -1,127 +1,118 @@
-From: Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: spi: Add schema for Cadence QSPI
- Controller driver
-Date: Tue, 5 Nov 2019 10:00:40 +0530
-Message-ID: <b553b1e8-1c35-fd7c-6855-75a4c1c943fe@ti.com>
-References: <20191030081155.29947-1-vadivel.muruganx.ramuthevar@linux.intel.com>
- <20191030081155.29947-2-vadivel.muruganx.ramuthevar@linux.intel.com>
+From: John Garry <john.garry@huawei.com>
+Subject: Re: [PATCH 2/3] spi: Add HiSilicon v3xx SPI NOR flash controller
+ driver
+Date: Tue, 5 Nov 2019 10:58:39 +0000
+Message-ID: <855a67dc-1356-a763-e374-540f6ac400ab@huawei.com>
+References: <1572886297-45400-1-git-send-email-john.garry@huawei.com>
+ <1572886297-45400-3-git-send-email-john.garry@huawei.com>
+ <20191104192406.GH5238@sirena.co.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="windows-1252"; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: <broonie@kernel.org>, <robh+dt@kernel.org>,
-        <cheol.yong.kim@intel.com>, <qi-ming.wu@intel.com>
-To: "Ramuthevar,Vadivel MuruganX"
-        <vadivel.muruganx.ramuthevar@linux.intel.com>,
-        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Cc: <marek.vasut@gmail.com>, <tudor.ambarus@microchip.com>,
+        <linuxarm@huawei.com>, <linux-kernel@vger.kernel.org>,
+        <linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>,
+        <xuejiancheng@hisilicon.com>, <fengsheng5@huawei.com>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191030081155.29947-2-vadivel.muruganx.ramuthevar@linux.intel.com>
+In-Reply-To: <20191104192406.GH5238@sirena.co.uk>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
-
-On 30/10/19 1:41 PM, Ramuthevar,Vadivel MuruganX wrote:
-> From: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
-> 
-> Add dt-bindings documentation for Cadence-QSPI controller to support
-> spi based flash memories.
+On 04/11/2019 19:24, Mark Brown wrote:
+> On Tue, Nov 05, 2019 at 12:51:36AM +0800, John Garry wrote:
 > 
 
-The new driver being added in patch 2/2 is supposed to replace
-drivers/mtd/spi-nor/cadence-quadspi.c. Therefore the bindings should be
-exactly same as
-Documentation/devicetree/bindings/mtd/cadence-quadspi.txt. Otherwise, it
-breaks DT backward compatibility. There cannot be two different sets of
-bindings for same HW IP.
+Hi Mark,
 
-Therefore please rewrite yaml schema to match existing bindings at
-Documentation/devicetree/bindings/mtd/cadence-quadspi.txt.
-And then include a patch dropping older bindings.
-
-
-> Signed-off-by: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
-> ---
->  .../devicetree/bindings/spi/cadence,qspi.yaml      | 65 ++++++++++++++++++++++
->  1 file changed, 65 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/cadence,qspi.yaml
+>> Only ACPI firmware is supported.
 > 
-> diff --git a/Documentation/devicetree/bindings/spi/cadence,qspi.yaml b/Documentation/devicetree/bindings/spi/cadence,qspi.yaml
-> new file mode 100644
-> index 000000000000..295501f01e5e
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/cadence,qspi.yaml
-> @@ -0,0 +1,65 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: "http://devicetree.org/schemas/spi/cadence,qspi.yaml#"
-> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-> +
-> +title: Cadence QSPI Flash Controller support
-> +
-> +maintainers:
-> +  - Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
-> +
-> +allOf:
-> +  - $ref: "spi-controller.yaml#"
-> +
-> +description: |
-> +  Add support for the Cadence QSPI controller,This controller is
-> +  present in the Intel LGM, Altera SoCFPGA and TI SoCs and this driver
-> +  has been tested On Intel's LGM SoC.
-> +
-> +properties:
-> +  compatible:
-> +    const: cadence,qspi
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  clocks-names:
-> +    maxItems: 1
-> +
-> +  resets:
-> +    maxItems: 1
-> +
-> +  reset-names:
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - clock-names
-> +  - resets
-> +  - reset-names
-> +
-> +examples:
-> +  - |
-> +    spi@ec000000 {
-> +          compatible = "cadence,qspi";
-> +          reg = <0xec000000 0x100>;
-> +          clocks = <&cgu0 LGM_CLK_QSPI>, <&cgu0 LGM_GCLK_QSPI>;
-> +          clock-names = "qspi";
-> +          resets = <&rcu0 0x10 1>;
-> +          reset-names = "qspi";
-> +          #address-cells = <1>;
-> +          #size-cells = <0>;
-> +
-> +          flash: flash@1 {
-> +              compatible = "spi-nand", "jedec, spi-nor";
+> There's no ACPI dependency though?  If the driver only works with ACPI
+> I'd expect to see one with an || COMPILE_TEST like the architecture
+> dependency.
 
-s/"jedec, spi-nor"/"jedec,spi-nor" (i.e no space after comma)
+Yeah, you're right. So the driver can build for !ACPI and !COMPILE_TEST, 
+but there's no point really. I'll update.
 
-> +              reg = <1>;
-> +              spi-max-frequency = <10000000>;
-> +          };
-> +    };
-> +
+> 
+>> @@ -0,0 +1,287 @@
+>> +// SPDX-License-Identifier: GPL-2.0-only
+>> +/*
+>> + * HiSilicon SPI NOR V3XX Flash Controller Driver for hi16xx chipsets
+>> + *
+> 
+> Please make the entire comment a C++ one for neatness.
+
+ok
+
+> 
+>> + * Copyright (c) 2019 HiSilicon Technologies Co., Ltd.
+>> + * Author: John Garry <john.garry@huawei.com>
+>> + */
+>> +//#define DEBUG 1
+> 
+> Please remove this.
+
+ok
+
+> 
+>> +#define GLOBAL_CFG (0x100)
+>> +
+>> +#define BUS_CFG1 (0x200)
+>> +#define BUS_CFG2 (0x204)
+>> +#define BUS_FLASH_SIZE (0x210)
+>> +
+>> +#define VERSION (0x1f8)
+> 
+> These could use some namespacing, especially the last one - it seems
+> quite likely there'll be some collisions at some point.
+
+ok
+
+> 
+>> +#define HISI_SFC_V3XX_WAIT_TIMEOUT_US		1000000
+>> +#define HISI_SFC_V3XX_WAIT_POLL_INTERVAL_US	10
+> 
+> Plus if we've got these long prefixes here it'd be good to be
+> consistent.
+
+sure
+
+> 
+>> +	if (IS_ALIGNED((uintptr_t)to, 4)) {
+>> +		int words = len / 4;
+>> +
+>> +		__ioread32_copy(to, host->regbase + CMD_DATABUF(0), words);
+>> +
+>> +		len -= words * 4;
+>> +		if (len) {
+>> +			u32 val;
+>> +
+>> +			val = __raw_readl(host->regbase + CMD_DATABUF(words));
+>> +
+>> +			to += words * 4;
+>> +			for (i = 0; i < len; i++, val >>= 8, to++)
+>> +				*to = (u8)val;
+>> +		}
+>> +	} else {
+>> +		for (i = 0; i < DIV_ROUND_UP(len, 4); i++) {
+>> +			u32 val = __raw_readl(host->regbase + CMD_DATABUF(i));
+>> +			int j;
+> 
+> The more usual pattern for these would be to do some unaligned accesses
+> for the start/end of the buffer to get to alignment and then transfer
+> the rest as aligned data.
 > 
 
--- 
-Regards
-Vignesh
+Yeah, I understand you, but for that I would need to generate multiple 
+transactions in the driver, and I wanted to keep 1x transaction per 
+spi_controller_mem_ops.exec_op call.
+
+So maybe I can do some trickery in my adjust_op_size method to generate 
+these multiple transactions: a. any unaligned start data b. the 
+32b-aligned data b. unaligned end. I think that the HW should be able to 
+handle that.
+
+Thanks,
+John

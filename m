@@ -1,38 +1,37 @@
-From: thor.thayer@linux.intel.com
-Subject: [PATCH] spi: dw: Fix Designware SPI loopback
-Date: Tue,  5 Nov 2019 14:22:10 -0600
-Message-ID: <1572985330-5525-1-git-send-email-thor.thayer@linux.intel.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Thor Thayer <thor.thayer@linux.intel.com>
+From: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Subject: [PATCH] spi: bcm2835: fix typo in comment
+Date: Wed,  6 Nov 2019 10:41:34 +1300
+Message-ID: <20191105214134.25142-1-chris.packham@alliedtelesis.co.nz>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Cc: trivial@kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Chris Packham <chris.packham@alliedtelesis.co.nz>
 To: broonie@kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Thor Thayer <thor.thayer@linux.intel.com>
+GPIOS_OUT_LOW should be GPIOD_OUT_LOW.
 
-The SPI_LOOP is set in spi->mode but not propagated to the register.
-A previous patch removed the bit during a cleanup.
-
-Fixes: e1bc204894ea ("spi: dw: fix potential variable assignment error")
-Signed-off-by: Thor Thayer <thor.thayer@linux.intel.com>
+Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
 ---
- drivers/spi/spi-dw.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-bcm2835.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 9a49e073e8b7..076652d3d051 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -308,7 +308,8 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 	cr0 = (transfer->bits_per_word - 1)
- 		| (chip->type << SPI_FRF_OFFSET)
- 		| ((((spi->mode & SPI_CPOL) ? 1 : 0) << SPI_SCOL_OFFSET) |
--			(((spi->mode & SPI_CPHA) ? 1 : 0) << SPI_SCPH_OFFSET))
-+			(((spi->mode & SPI_CPHA) ? 1 : 0) << SPI_SCPH_OFFSET) |
-+			(((spi->mode & SPI_LOOP) ? 1 : 0) << SPI_SRL_OFFSET))
- 		| (chip->tmode << SPI_TMOD_OFFSET);
- 
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index b4070c0de3df..fb61a620effc 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -1248,7 +1248,7 @@ static int bcm2835_spi_setup(struct spi_device *spi=
+)
  	/*
--- 
-2.7.4
+ 	 * Retrieve the corresponding GPIO line used for CS.
+ 	 * The inversion semantics will be handled by the GPIO core
+-	 * code, so we pass GPIOS_OUT_LOW for "unasserted" and
++	 * code, so we pass GPIOD_OUT_LOW for "unasserted" and
+ 	 * the correct flag for inversion semantics. The SPI_CS_HIGH
+ 	 * on spi->mode cannot be checked for polarity in this case
+ 	 * as the flag use_gpio_descriptors enforces SPI_CS_HIGH.
+--=20
+2.24.0

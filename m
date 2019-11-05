@@ -1,76 +1,63 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 2/3] spi: Add HiSilicon v3xx SPI NOR flash controller
- driver
-Date: Tue, 5 Nov 2019 11:05:05 +0000
-Message-ID: <20191105110504.GA4500@sirena.co.uk>
-References: <1572886297-45400-1-git-send-email-john.garry@huawei.com>
- <1572886297-45400-3-git-send-email-john.garry@huawei.com>
- <20191104192406.GH5238@sirena.co.uk>
- <855a67dc-1356-a763-e374-540f6ac400ab@huawei.com>
+Subject: Re: spi-mem and gpio chipselects
+Date: Tue, 5 Nov 2019 11:42:27 +0000
+Message-ID: <20191105114227.GB4500@sirena.co.uk>
+References: <cbe69f5457c4dd1c2cc96a247c6c6fca61c0d43c.camel@alliedtelesis.co.nz>
+ <20191104124444.GB5238@sirena.co.uk>
+ <039edb7cdd9114ad7a14e27f869db6c85d756418.camel@alliedtelesis.co.nz>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="yrj/dFKFPuw6o+aM"
-Cc: marek.vasut@gmail.com, tudor.ambarus@microchip.com,
-        linuxarm@huawei.com, linux-kernel@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
-        xuejiancheng@hisilicon.com, fengsheng5@huawei.com
-To: John Garry <john.garry@huawei.com>
+        protocol="application/pgp-signature"; boundary="oLBj+sq0vYjzfsbl"
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <855a67dc-1356-a763-e374-540f6ac400ab@huawei.com>
+In-Reply-To: <039edb7cdd9114ad7a14e27f869db6c85d756418.camel@alliedtelesis.co.nz>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---yrj/dFKFPuw6o+aM
+--oLBj+sq0vYjzfsbl
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Nov 05, 2019 at 10:58:39AM +0000, John Garry wrote:
-> On 04/11/2019 19:24, Mark Brown wrote:
-> > On Tue, Nov 05, 2019 at 12:51:36AM +0800, John Garry wrote:
+On Mon, Nov 04, 2019 at 08:06:42PM +0000, Chris Packham wrote:
+> On Mon, 2019-11-04 at 12:44 +0000, Mark Brown wrote:
 
-> > > +		if (len) {
-> > > +			u32 val;
-> > > +
-> > > +			val = __raw_readl(host->regbase + CMD_DATABUF(words));
-> > > +
-> > > +			to += words * 4;
-> > > +			for (i = 0; i < len; i++, val >>= 8, to++)
-> > > +				*to = (u8)val;
-> > > +		}
-> > > +	} else {
-> > > +		for (i = 0; i < DIV_ROUND_UP(len, 4); i++) {
-> > > +			u32 val = __raw_readl(host->regbase + CMD_DATABUF(i));
-> > > +			int j;
+> > That's only going to work in cases where the controller translates
+> > things into a single SPI operation on the flash which I'm not sure is
+> > always going to be the case.  We'd need a way to guarantee that the
+> > controller is going to do that in order to avoid data corruption issues.
 
-> > The more usual pattern for these would be to do some unaligned accesses
-> > for the start/end of the buffer to get to alignment and then transfer
-> > the rest as aligned data.
+> In my particular case (spi-bcm-qspi.c) bcm_qspi_bspi_exec_mem_op() does
+> seem to assert the native chip-select then do it's operation. As I
+> understand the wait_for_completion_timeout() will schedule so other
 
-> Yeah, I understand you, but for that I would need to generate multiple
-> transactions in the driver, and I wanted to keep 1x transaction per
-> spi_controller_mem_ops.exec_op call.
+The issue is what happens if the hardware translates the operations it's
+being asked to do into multiple physical operations on the bus for some
+reason.  It sounds like yours won't but we can't just unconditionally
+push the chip select control out to software even if the normal SPI
+modes support it.
 
-> So maybe I can do some trickery in my adjust_op_size method to generate
-> these multiple transactions: a. any unaligned start data b. the 32b-aligned
-> data b. unaligned end. I think that the HW should be able to handle that.
+> tasks may run but spi_mem_access_start() has taken an io_mutex so
+> anything that accesses that spi bus will block.
 
-Right, that's what I was expecting.
+That's guaranteed.
 
---yrj/dFKFPuw6o+aM
+--oLBj+sq0vYjzfsbl
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl3BV14ACgkQJNaLcl1U
-h9BKZAf6Ash1CMprp9CmtoZgXDlZGjI+I84fZ7x4ZvMSHOMZ20e7KMwVEKBJ4UH8
-onKbrC/sLhV9dOTh4KdW9H7QnPp7NQPru6ZartbDCKHDT2wT7SJCXlQWapZrg5Gh
-E/xH29aG6yQrIxTvYtsqNjBw7cheRBDQUTAvMH+rqNMLtOQVnWgh+Tf09izlS1ve
-6vJrCROj/xO319Oc2iAhRGRbXgr++392iYarO3qdad6SSGFZFVKCs9lU/U+9I8Dz
-KG2nKTMal8tnwJw4GRJ5PqPVsrs3+UYJwey6mbPVeIXfp1Oe2H8igZmXdmd4o9F2
-OHTRDQDXOG8K/Opk2MV79xBmKG+pKw==
-=S6Z7
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl3BYCIACgkQJNaLcl1U
+h9DUGAf6AgYGHHtC8fjKSGW1POmrYB0mCJNdi6rKRYZinsVOIroYP0LIhjZUqUNP
+ZxMkM9qsd0D6LWIJSsBjInHzKMP1JnD/Wv8eKsfkmU/vXQ4zpGWtnJ7fKEgGUZOE
+MMLj5vfAHtvwKMBdAHzAZn4/iRw8U0EgDnXA0KtlmACpxKUgPxJ4RAuxeDIDygc8
+OSmebFYqYVOvJeCI+mokjyv6MNQqUuZW6u7WDAQp4vHp8JbHFULXuGOtLFNwXdv9
+6JD7FcEXG1Q5QP3CkrrnPs7a3wTVCZllbNvZLQM7xI8+vVjwQFxqOyELnAmc/+uX
+JdHNYU7Wd+KlbLB9SpXBPCpufwIi5Q==
+=MtHO
 -----END PGP SIGNATURE-----
 
---yrj/dFKFPuw6o+aM--
+--oLBj+sq0vYjzfsbl--

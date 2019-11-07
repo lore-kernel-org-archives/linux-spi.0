@@ -1,73 +1,60 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: img-spfi: fix potential double release" to the spi tree
-Date: Wed,  6 Nov 2019 16:21:56 +0000 (GMT)
-Message-ID: <20191106162156.5B0D82743035@ypsilon.sirena.org.uk>
-References: <1573007769-20131-1-git-send-email-bianpan2016@163.com>
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>
-To: Pan Bian <bianpan2016@163.com>
+From: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Subject: [PATCH 1/2] spi: bcm-qspi: Convert to use CS GPIO descriptors
+Date: Thu,  7 Nov 2019 17:42:34 +1300
+Message-ID: <20191107044235.4864-2-chris.packham@alliedtelesis.co.nz>
+References: <20191107044235.4864-1-chris.packham@alliedtelesis.co.nz>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Chris Packham <chris.packham@alliedtelesis.co.nz>
+To: broonie@kernel.org, kdasu.kdev@gmail.com,
+        bcm-kernel-feedback-list@broadcom.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1573007769-20131-1-git-send-email-bianpan2016@163.com>
+In-Reply-To: <20191107044235.4864-1-chris.packham@alliedtelesis.co.nz>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+Set use_gpio_descriptors to true and avoid asserting the native chip
+select if the spi core has done it for us.
 
-   spi: img-spfi: fix potential double release
-
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From e9a8ba9769a0e354341bc6cc01b98aadcea1dfe9 Mon Sep 17 00:00:00 2001
-From: Pan Bian <bianpan2016@163.com>
-Date: Wed, 6 Nov 2019 10:36:09 +0800
-Subject: [PATCH] spi: img-spfi: fix potential double release
-
-The channels spfi->tx_ch and spfi->rx_ch are not set to NULL after they
-are released. As a result, they will be released again, either on the
-error handling branch in the same function or in the corresponding
-remove function, i.e. img_spfi_remove(). This patch fixes the bug by
-setting the two members to NULL.
-
-Signed-off-by: Pan Bian <bianpan2016@163.com>
-Link: https://lore.kernel.org/r/1573007769-20131-1-git-send-email-bianpan2016@163.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
 ---
- drivers/spi/spi-img-spfi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-bcm-qspi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
-index 439b01e4a2c8..f4a8f470aecc 100644
---- a/drivers/spi/spi-img-spfi.c
-+++ b/drivers/spi/spi-img-spfi.c
-@@ -673,6 +673,8 @@ static int img_spfi_probe(struct platform_device *pdev)
- 			dma_release_channel(spfi->tx_ch);
- 		if (spfi->rx_ch)
- 			dma_release_channel(spfi->rx_ch);
-+		spfi->tx_ch = NULL;
-+		spfi->rx_ch = NULL;
- 		dev_warn(spfi->dev, "Failed to get DMA channels, falling back to PIO mode\n");
- 	} else {
- 		master->dma_tx = spfi->tx_ch;
--- 
-2.20.1
+diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
+index 7a3531856491..85bad70f59e3 100644
+--- a/drivers/spi/spi-bcm-qspi.c
++++ b/drivers/spi/spi-bcm-qspi.c
+@@ -803,7 +803,8 @@ static int bcm_qspi_bspi_exec_mem_op(struct spi_devic=
+e *spi,
+ 			return -EIO;
+=20
+ 	from =3D op->addr.val;
+-	bcm_qspi_chip_select(qspi, spi->chip_select);
++	if (!spi->cs_gpiod)
++		bcm_qspi_chip_select(qspi, spi->chip_select);
+ 	bcm_qspi_write(qspi, MSPI, MSPI_WRITE_LOCK, 0);
+=20
+ 	/*
+@@ -882,7 +883,8 @@ static int bcm_qspi_transfer_one(struct spi_master *m=
+aster,
+ 	int slots;
+ 	unsigned long timeo =3D msecs_to_jiffies(100);
+=20
+-	bcm_qspi_chip_select(qspi, spi->chip_select);
++	if (!spi->cs_gpiod)
++		bcm_qspi_chip_select(qspi, spi->chip_select);
+ 	qspi->trans_pos.trans =3D trans;
+ 	qspi->trans_pos.byte =3D 0;
+=20
+@@ -1234,6 +1236,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
+ 	master->cleanup =3D bcm_qspi_cleanup;
+ 	master->dev.of_node =3D dev->of_node;
+ 	master->num_chipselect =3D NUM_CHIPSELECT;
++	master->use_gpio_descriptors =3D true;
+=20
+ 	qspi->big_endian =3D of_device_is_big_endian(dev->of_node);
+=20
+--=20
+2.24.0

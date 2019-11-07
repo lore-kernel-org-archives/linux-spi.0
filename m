@@ -1,20 +1,20 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-mem: fallback to using transfers when CS gpios are used" to the spi tree
-Date: Thu,  7 Nov 2019 13:13:39 +0000 (GMT)
-Message-ID: <20191107131340.0A18327431AF@ypsilon.sirena.org.uk>
-References: <20191107044235.4864-3-chris.packham@alliedtelesis.co.nz>
+Subject: Applied "spi: bcm-qspi: Convert to use CS GPIO descriptors" to the spi tree
+Date: Thu,  7 Nov 2019 13:13:40 +0000 (GMT)
+Message-ID: <20191107131340.3F28427431C3@ypsilon.sirena.org.uk>
+References: <20191107044235.4864-2-chris.packham@alliedtelesis.co.nz>
 Cc: bcm-kernel-feedback-list@broadcom.com, broonie@kernel.org,
         kdasu.kdev@gmail.com, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
 To: Chris Packham <chris.packham@alliedtelesis.co.nz>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191107044235.4864-3-chris.packham@alliedtelesis.co.nz>
+In-Reply-To: <20191107044235.4864-2-chris.packham@alliedtelesis.co.nz>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spi-mem: fallback to using transfers when CS gpios are used
+   spi: bcm-qspi: Convert to use CS GPIO descriptors
 
 has been applied to the spi tree at
 
@@ -39,35 +39,52 @@ to this mail.
 Thanks,
 Mark
 
->From 05766050d5bd9af24dcaec6b29255a6f2b324543 Mon Sep 17 00:00:00 2001
+>From 27fb2313f28d8c82adace68bf49f12fe810ba58c Mon Sep 17 00:00:00 2001
 From: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Date: Thu, 7 Nov 2019 17:42:35 +1300
-Subject: [PATCH] spi: spi-mem: fallback to using transfers when CS gpios are
- used
+Date: Thu, 7 Nov 2019 17:42:34 +1300
+Subject: [PATCH] spi: bcm-qspi: Convert to use CS GPIO descriptors
 
-Devices with chip selects driven via GPIO are not compatible with the
-spi-mem operations. Fallback to using standard spi transfers when the
-device is connected with a gpio CS.
+Set use_gpio_descriptors to true and avoid asserting the native chip
+select if the spi core has done it for us.
 
 Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Link: https://lore.kernel.org/r/20191107044235.4864-3-chris.packham@alliedtelesis.co.nz
+Link: https://lore.kernel.org/r/20191107044235.4864-2-chris.packham@alliedtelesis.co.nz
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-mem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-bcm-qspi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index 9f0fa9f3116d..e5a46f0eb93b 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -286,7 +286,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 	if (!spi_mem_internal_supports_op(mem, op))
- 		return -ENOTSUPP;
+diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
+index 7a3531856491..85bad70f59e3 100644
+--- a/drivers/spi/spi-bcm-qspi.c
++++ b/drivers/spi/spi-bcm-qspi.c
+@@ -803,7 +803,8 @@ static int bcm_qspi_bspi_exec_mem_op(struct spi_device *spi,
+ 			return -EIO;
  
--	if (ctlr->mem_ops) {
-+	if (ctlr->mem_ops && !mem->spi->cs_gpiod) {
- 		ret = spi_mem_access_start(mem);
- 		if (ret)
- 			return ret;
+ 	from = op->addr.val;
+-	bcm_qspi_chip_select(qspi, spi->chip_select);
++	if (!spi->cs_gpiod)
++		bcm_qspi_chip_select(qspi, spi->chip_select);
+ 	bcm_qspi_write(qspi, MSPI, MSPI_WRITE_LOCK, 0);
+ 
+ 	/*
+@@ -882,7 +883,8 @@ static int bcm_qspi_transfer_one(struct spi_master *master,
+ 	int slots;
+ 	unsigned long timeo = msecs_to_jiffies(100);
+ 
+-	bcm_qspi_chip_select(qspi, spi->chip_select);
++	if (!spi->cs_gpiod)
++		bcm_qspi_chip_select(qspi, spi->chip_select);
+ 	qspi->trans_pos.trans = trans;
+ 	qspi->trans_pos.byte = 0;
+ 
+@@ -1234,6 +1236,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
+ 	master->cleanup = bcm_qspi_cleanup;
+ 	master->dev.of_node = dev->of_node;
+ 	master->num_chipselect = NUM_CHIPSELECT;
++	master->use_gpio_descriptors = true;
+ 
+ 	qspi->big_endian = of_device_is_big_endian(dev->of_node);
+ 
 -- 
 2.20.1

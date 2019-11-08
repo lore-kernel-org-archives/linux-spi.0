@@ -1,9 +1,9 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: zynq-qspi: Enhance the Linear CFG bit definitions" to
- the spi tree
+Subject: Applied "spi: zynq-qspi: Clarify the select chip function" to the spi
+ tree
 Date: Fri,  8 Nov 2019 17:45:43 +0000 (GMT)
-Message-ID: <20191108174543.B52C92741704@ypsilon.sirena.org.uk>
-References: <20191108140744.1734-5-miquel.raynal@bootlin.com>
+Message-ID: <20191108174543.7A0102741703@ypsilon.sirena.org.uk>
+References: <20191108140744.1734-6-miquel.raynal@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -15,7 +15,7 @@ Cc: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>,
  linux-arm-kernel@lists.infradead.org
 To: Miquel Raynal <miquel.raynal@bootlin.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20191108140744.1734-5-miquel.raynal@bootlin.com>
+In-Reply-To: <20191108140744.1734-6-miquel.raynal@bootlin.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -29,7 +29,7 @@ List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: zynq-qspi: Enhance the Linear CFG bit definitions
+   spi: zynq-qspi: Clarify the select chip function
 
 has been applied to the spi tree at
 
@@ -54,39 +54,68 @@ to this mail.
 Thanks,
 Mark
 
->From 044ac826200f08adebe3207a618d829279e9f3b1 Mon Sep 17 00:00:00 2001
+>From dffaf7439979e6dbb820633bb4f44dcadcac847e Mon Sep 17 00:00:00 2001
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Fri, 8 Nov 2019 15:07:41 +0100
-Subject: [PATCH] spi: zynq-qspi: Enhance the Linear CFG bit definitions
+Date: Fri, 8 Nov 2019 15:07:42 +0100
+Subject: [PATCH] spi: zynq-qspi: Clarify the select chip function
 
-Using masks makes sense when manipulating fields of several bits. When
-only one bit is involved, it is usual to just use the BIT() macro but
-in this case using the term mask is abusive. Fix the #define macros
-and their comments.
+The code used to assert and de-assert a chip select line is very
+complicated for no reason. Simplify the logic by either setting or
+resetting the concerned bit, which actually only changes an electrical
+state.
+
+Update the comment to reflect that there is no possibility to actually
+choose a CS as the default (CS0) will be driven in any case.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20191108140744.1734-5-miquel.raynal@bootlin.com
+Link: https://lore.kernel.org/r/20191108140744.1734-6-miquel.raynal@bootlin.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-zynq-qspi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-zynq-qspi.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index 530533b6c974..70ecefd817f7 100644
+index 70ecefd817f7..80e51c894eaa 100644
 --- a/drivers/spi/spi-zynq-qspi.c
 +++ b/drivers/spi/spi-zynq-qspi.c
-@@ -98,9 +98,9 @@
-  * It is named Linear Configuration but it controls other modes when not in
-  * linear mode also.
+@@ -50,7 +50,6 @@
+ #define ZYNQ_QSPI_CONFIG_BDRATE_MASK	GENMASK(5, 3) /* Baud Rate Mask */
+ #define ZYNQ_QSPI_CONFIG_CPHA_MASK	BIT(2) /* Clock Phase Control */
+ #define ZYNQ_QSPI_CONFIG_CPOL_MASK	BIT(1) /* Clock Polarity Control */
+-#define ZYNQ_QSPI_CONFIG_SSCTRL_MASK	BIT(10) /* Slave Select Mask */
+ #define ZYNQ_QSPI_CONFIG_FWIDTH_MASK	GENMASK(7, 6) /* FIFO width */
+ #define ZYNQ_QSPI_CONFIG_MSTREN_MASK	BIT(0) /* Master Mode */
+ 
+@@ -62,7 +61,7 @@
   */
--#define ZYNQ_QSPI_LCFG_TWO_MEM_MASK	BIT(30) /* LQSPI Two memories Mask */
--#define ZYNQ_QSPI_LCFG_SEP_BUS_MASK	BIT(29) /* LQSPI Separate bus Mask */
--#define ZYNQ_QSPI_LCFG_U_PAGE_MASK	BIT(28) /* LQSPI Upper Page Mask */
-+#define ZYNQ_QSPI_LCFG_TWO_MEM		BIT(30) /* LQSPI Two memories */
-+#define ZYNQ_QSPI_LCFG_SEP_BUS		BIT(29) /* LQSPI Separate bus */
-+#define ZYNQ_QSPI_LCFG_U_PAGE		BIT(28) /* LQSPI Upper Page */
+ #define ZYNQ_QSPI_CONFIG_BAUD_DIV_MAX	GENMASK(2, 0) /* Baud rate maximum */
+ #define ZYNQ_QSPI_CONFIG_BAUD_DIV_SHIFT	3 /* Baud rate divisor shift */
+-#define ZYNQ_QSPI_CONFIG_PCS		10 /* Peripheral Chip Select */
++#define ZYNQ_QSPI_CONFIG_PCS		BIT(10) /* Peripheral Chip Select */
  
- #define ZYNQ_QSPI_LCFG_DUMMY_SHIFT	8
+ /*
+  * QSPI Interrupt Registers bit Masks
+@@ -287,16 +286,12 @@ static void zynq_qspi_chipselect(struct spi_device *spi, bool assert)
+ 	struct zynq_qspi *xqspi = spi_controller_get_devdata(ctlr);
+ 	u32 config_reg;
  
++	/* Ground the line to assert the CS */
+ 	config_reg = zynq_qspi_read(xqspi, ZYNQ_QSPI_CONFIG_OFFSET);
+-	if (assert) {
+-		/* Select the slave */
+-		config_reg &= ~ZYNQ_QSPI_CONFIG_SSCTRL_MASK;
+-		config_reg |= (((~(BIT(spi->chip_select))) <<
+-				ZYNQ_QSPI_CONFIG_PCS) &
+-				ZYNQ_QSPI_CONFIG_SSCTRL_MASK);
+-	} else {
+-		config_reg |= ZYNQ_QSPI_CONFIG_SSCTRL_MASK;
+-	}
++	if (assert)
++		config_reg &= ~ZYNQ_QSPI_CONFIG_PCS;
++	else
++		config_reg |= ZYNQ_QSPI_CONFIG_PCS;
+ 
+ 	zynq_qspi_write(xqspi, ZYNQ_QSPI_CONFIG_OFFSET, config_reg);
+ }
 -- 
 2.20.1

@@ -1,9 +1,9 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: zynq-qspi: Clarify the select chip function" to the spi
- tree
+Subject: Applied "spi: zynq-qspi: Do the actual hardware initialization later
+ in the probe" to the spi tree
 Date: Fri,  8 Nov 2019 17:45:43 +0000 (GMT)
-Message-ID: <20191108174543.7A0102741703@ypsilon.sirena.org.uk>
-References: <20191108140744.1734-6-miquel.raynal@bootlin.com>
+Message-ID: <20191108174543.40D712741702@ypsilon.sirena.org.uk>
+References: <20191108140744.1734-7-miquel.raynal@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -15,7 +15,7 @@ Cc: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>,
  linux-arm-kernel@lists.infradead.org
 To: Miquel Raynal <miquel.raynal@bootlin.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20191108140744.1734-6-miquel.raynal@bootlin.com>
+In-Reply-To: <20191108140744.1734-7-miquel.raynal@bootlin.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -29,7 +29,7 @@ List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: zynq-qspi: Clarify the select chip function
+   spi: zynq-qspi: Do the actual hardware initialization later in the probe
 
 has been applied to the spi tree at
 
@@ -54,68 +54,55 @@ to this mail.
 Thanks,
 Mark
 
->From dffaf7439979e6dbb820633bb4f44dcadcac847e Mon Sep 17 00:00:00 2001
+>From 8f16292d8b492ca6b0d58ac0769de1c1a7bbb544 Mon Sep 17 00:00:00 2001
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Fri, 8 Nov 2019 15:07:42 +0100
-Subject: [PATCH] spi: zynq-qspi: Clarify the select chip function
+Date: Fri, 8 Nov 2019 15:07:43 +0100
+Subject: [PATCH] spi: zynq-qspi: Do the actual hardware initialization later
+ in the probe
 
-The code used to assert and de-assert a chip select line is very
-complicated for no reason. Simplify the logic by either setting or
-resetting the concerned bit, which actually only changes an electrical
-state.
+Supporting more than one CS will need some tweaking of the linear
+configuration register which is (rightfully) initialized in the
+hardware initialization helper. The extra initialization needs the
+knowledge of the actual number of CS, which is retrieved by reading
+the value of the num-cs DT property.
 
-Update the comment to reflect that there is no possibility to actually
-choose a CS as the default (CS0) will be driven in any case.
+As the initialization helper is called pretty early and might be
+called much later in the probe without side effect, let's delay it a
+bit so that the number of CS will be available when running this
+helper. This way, adding support for multiple CS lines in a next patch
+will be eased.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20191108140744.1734-6-miquel.raynal@bootlin.com
+Link: https://lore.kernel.org/r/20191108140744.1734-7-miquel.raynal@bootlin.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-zynq-qspi.c | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ drivers/spi/spi-zynq-qspi.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index 70ecefd817f7..80e51c894eaa 100644
+index 80e51c894eaa..e76f9c9738f0 100644
 --- a/drivers/spi/spi-zynq-qspi.c
 +++ b/drivers/spi/spi-zynq-qspi.c
-@@ -50,7 +50,6 @@
- #define ZYNQ_QSPI_CONFIG_BDRATE_MASK	GENMASK(5, 3) /* Baud Rate Mask */
- #define ZYNQ_QSPI_CONFIG_CPHA_MASK	BIT(2) /* Clock Phase Control */
- #define ZYNQ_QSPI_CONFIG_CPOL_MASK	BIT(1) /* Clock Polarity Control */
--#define ZYNQ_QSPI_CONFIG_SSCTRL_MASK	BIT(10) /* Slave Select Mask */
- #define ZYNQ_QSPI_CONFIG_FWIDTH_MASK	GENMASK(7, 6) /* FIFO width */
- #define ZYNQ_QSPI_CONFIG_MSTREN_MASK	BIT(0) /* Master Mode */
+@@ -657,9 +657,6 @@ static int zynq_qspi_probe(struct platform_device *pdev)
+ 		goto clk_dis_pclk;
+ 	}
  
-@@ -62,7 +61,7 @@
-  */
- #define ZYNQ_QSPI_CONFIG_BAUD_DIV_MAX	GENMASK(2, 0) /* Baud rate maximum */
- #define ZYNQ_QSPI_CONFIG_BAUD_DIV_SHIFT	3 /* Baud rate divisor shift */
--#define ZYNQ_QSPI_CONFIG_PCS		10 /* Peripheral Chip Select */
-+#define ZYNQ_QSPI_CONFIG_PCS		BIT(10) /* Peripheral Chip Select */
- 
- /*
-  * QSPI Interrupt Registers bit Masks
-@@ -287,16 +286,12 @@ static void zynq_qspi_chipselect(struct spi_device *spi, bool assert)
- 	struct zynq_qspi *xqspi = spi_controller_get_devdata(ctlr);
- 	u32 config_reg;
- 
-+	/* Ground the line to assert the CS */
- 	config_reg = zynq_qspi_read(xqspi, ZYNQ_QSPI_CONFIG_OFFSET);
--	if (assert) {
--		/* Select the slave */
--		config_reg &= ~ZYNQ_QSPI_CONFIG_SSCTRL_MASK;
--		config_reg |= (((~(BIT(spi->chip_select))) <<
--				ZYNQ_QSPI_CONFIG_PCS) &
--				ZYNQ_QSPI_CONFIG_SSCTRL_MASK);
--	} else {
--		config_reg |= ZYNQ_QSPI_CONFIG_SSCTRL_MASK;
--	}
-+	if (assert)
-+		config_reg &= ~ZYNQ_QSPI_CONFIG_PCS;
-+	else
-+		config_reg |= ZYNQ_QSPI_CONFIG_PCS;
- 
- 	zynq_qspi_write(xqspi, ZYNQ_QSPI_CONFIG_OFFSET, config_reg);
- }
+-	/* QSPI controller initializations */
+-	zynq_qspi_init_hw(xqspi);
+-
+ 	xqspi->irq = platform_get_irq(pdev, 0);
+ 	if (xqspi->irq <= 0) {
+ 		ret = -ENXIO;
+@@ -690,6 +687,10 @@ static int zynq_qspi_probe(struct platform_device *pdev)
+ 	ctlr->setup = zynq_qspi_setup_op;
+ 	ctlr->max_speed_hz = clk_get_rate(xqspi->refclk) / 2;
+ 	ctlr->dev.of_node = np;
++
++	/* QSPI controller initializations */
++	zynq_qspi_init_hw(xqspi);
++
+ 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "spi_register_master failed\n");
 -- 
 2.20.1

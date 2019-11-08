@@ -1,8 +1,8 @@
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 2/7] spi: zynq-qspi: Keep the naming consistent across the
- driver
-Date: Fri,  8 Nov 2019 11:59:15 +0100
-Message-ID: <20191108105920.19014-3-miquel.raynal@bootlin.com>
+Subject: [PATCH 6/7] spi: zynq-qspi: Do the actual hardware initialization
+ later in the probe
+Date: Fri,  8 Nov 2019 11:59:19 +0100
+Message-ID: <20191108105920.19014-7-miquel.raynal@bootlin.com>
 References: <20191108105920.19014-1-miquel.raynal@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -26,44 +26,47 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-In this driver (and also in a lot of other drivers in drivers/spi/),
-the spi_controller structure is sometimes referred as 'ctlr' and
-sometimes as 'ctrl'. Grepping there shows that 'ctlr' seems to be more
-common so keep the naming consistent in this driver and s/ctrl/ctlr/.
+Supporting more than one CS will need some tweaking of the linear
+configuration register which is (rightfully) initialized in the
+hardware initialization helper. The extra initialization needs the
+knowledge of the actual number of CS, which is retrieved by reading
+the value of the num-cs DT property.
+
+As the initialization helper is called pretty early and might be
+called much later in the probe without side effect, let's delay it a
+bit so that the number of CS will be available when running this
+helper. This way, adding support for multiple CS lines in a next patch
+will be eased.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/spi/spi-zynq-qspi.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/spi/spi-zynq-qspi.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index 8098b5087708..399c3ca33abb 100644
+index 1ea9a4c2eceb..68e0515e1791 100644
 --- a/drivers/spi/spi-zynq-qspi.c
 +++ b/drivers/spi/spi-zynq-qspi.c
-@@ -309,8 +309,8 @@ static void zynq_qspi_txfifo_op(struct zynq_qspi *xqspi, unsigned int size)
-  */
- static void zynq_qspi_chipselect(struct spi_device *spi, bool assert)
- {
--	struct spi_controller *ctrl = spi->master;
--	struct zynq_qspi *xqspi = spi_controller_get_devdata(ctrl);
-+	struct spi_controller *ctlr = spi->master;
-+	struct zynq_qspi *xqspi = spi_controller_get_devdata(ctlr);
- 	u32 config_reg;
+@@ -680,9 +680,6 @@ static int zynq_qspi_probe(struct platform_device *pdev)
+ 		goto clk_dis_pclk;
+ 	}
  
- 	config_reg = zynq_qspi_read(xqspi, ZYNQ_QSPI_CONFIG_OFFSET);
-@@ -381,10 +381,10 @@ static int zynq_qspi_config_op(struct zynq_qspi *xqspi, struct spi_device *spi)
-  */
- static int zynq_qspi_setup_op(struct spi_device *spi)
- {
--	struct spi_controller *ctrl = spi->master;
--	struct zynq_qspi *qspi = spi_controller_get_devdata(ctrl);
-+	struct spi_controller *ctlr = spi->master;
-+	struct zynq_qspi *qspi = spi_controller_get_devdata(ctlr);
- 
--	if (ctrl->busy)
-+	if (ctlr->busy)
- 		return -EBUSY;
- 
- 	clk_enable(qspi->refclk);
+-	/* QSPI controller initializations */
+-	zynq_qspi_init_hw(xqspi);
+-
+ 	xqspi->irq = platform_get_irq(pdev, 0);
+ 	if (xqspi->irq <= 0) {
+ 		ret = -ENXIO;
+@@ -714,6 +711,10 @@ static int zynq_qspi_probe(struct platform_device *pdev)
+ 	ctlr->setup = zynq_qspi_setup_op;
+ 	ctlr->max_speed_hz = clk_get_rate(xqspi->refclk) / 2;
+ 	ctlr->dev.of_node = np;
++
++	/* QSPI controller initializations */
++	zynq_qspi_init_hw(xqspi);
++
+ 	ret = spi_register_controller(ctlr);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "spi_register_master failed\n");
 -- 
 2.20.1

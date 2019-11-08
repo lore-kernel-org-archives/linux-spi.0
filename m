@@ -1,8 +1,7 @@
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH v2 2/7] spi: zynq-qspi: Keep the naming consistent across the
- driver
-Date: Fri,  8 Nov 2019 15:07:39 +0100
-Message-ID: <20191108140744.1734-3-miquel.raynal@bootlin.com>
+Subject: [PATCH v2 4/7] spi: zynq-qspi: Enhance the Linear CFG bit definitions
+Date: Fri,  8 Nov 2019 15:07:41 +0100
+Message-ID: <20191108140744.1734-5-miquel.raynal@bootlin.com>
 References: <20191108140744.1734-1-miquel.raynal@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -26,44 +25,32 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-In this driver (and also in a lot of other drivers in drivers/spi/),
-the spi_controller structure is sometimes referred as 'ctlr' and
-sometimes as 'ctrl'. Grepping there shows that 'ctlr' seems to be more
-common so keep the naming consistent in this driver and s/ctrl/ctlr/.
+Using masks makes sense when manipulating fields of several bits. When
+only one bit is involved, it is usual to just use the BIT() macro but
+in this case using the term mask is abusive. Fix the #define macros
+and their comments.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/spi/spi-zynq-qspi.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/spi/spi-zynq-qspi.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index 713f9a03a40a..641691f5dedf 100644
+index 78711fe955f4..1151443ec830 100644
 --- a/drivers/spi/spi-zynq-qspi.c
 +++ b/drivers/spi/spi-zynq-qspi.c
-@@ -284,8 +284,8 @@ static void zynq_qspi_txfifo_op(struct zynq_qspi *xqspi, unsigned int size)
+@@ -99,9 +99,9 @@
+  * It is named Linear Configuration but it controls other modes when not in
+  * linear mode also.
   */
- static void zynq_qspi_chipselect(struct spi_device *spi, bool assert)
- {
--	struct spi_controller *ctrl = spi->master;
--	struct zynq_qspi *xqspi = spi_controller_get_devdata(ctrl);
-+	struct spi_controller *ctlr = spi->master;
-+	struct zynq_qspi *xqspi = spi_controller_get_devdata(ctlr);
- 	u32 config_reg;
+-#define ZYNQ_QSPI_LCFG_TWO_MEM_MASK	BIT(30) /* LQSPI Two memories Mask */
+-#define ZYNQ_QSPI_LCFG_SEP_BUS_MASK	BIT(29) /* LQSPI Separate bus Mask */
+-#define ZYNQ_QSPI_LCFG_U_PAGE_MASK	BIT(28) /* LQSPI Upper Page Mask */
++#define ZYNQ_QSPI_LCFG_TWO_MEM		BIT(30) /* LQSPI Two memories */
++#define ZYNQ_QSPI_LCFG_SEP_BUS		BIT(29) /* LQSPI Separate bus */
++#define ZYNQ_QSPI_LCFG_U_PAGE		BIT(28) /* LQSPI Upper Page */
  
- 	config_reg = zynq_qspi_read(xqspi, ZYNQ_QSPI_CONFIG_OFFSET);
-@@ -365,10 +365,10 @@ static int zynq_qspi_config_op(struct zynq_qspi *xqspi, struct spi_device *spi)
-  */
- static int zynq_qspi_setup_op(struct spi_device *spi)
- {
--	struct spi_controller *ctrl = spi->master;
--	struct zynq_qspi *qspi = spi_controller_get_devdata(ctrl);
-+	struct spi_controller *ctlr = spi->master;
-+	struct zynq_qspi *qspi = spi_controller_get_devdata(ctlr);
+ #define ZYNQ_QSPI_LCFG_DUMMY_SHIFT	8
  
--	if (ctrl->busy)
-+	if (ctlr->busy)
- 		return -EBUSY;
- 
- 	clk_enable(qspi->refclk);
 -- 
 2.20.1

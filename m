@@ -1,21 +1,22 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: zynq-qspi: Keep the naming consistent across the
- driver" to the spi tree
-Date: Fri,  8 Nov 2019 12:08:00 +0000 (GMT)
-Message-ID: <20191108120800.88C022740C6C@ypsilon.sirena.org.uk>
-References: <20191108105920.19014-3-miquel.raynal@bootlin.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: Re: [PATCH 1/7] spi: zynq-qspi: Anything else than CS0 is not
+ supported yet
+Date: Fri, 8 Nov 2019 14:31:34 +0100
+Message-ID: <20191108143134.1490f092@xps13>
+References: <20191108105920.19014-1-miquel.raynal@bootlin.com>
+ <20191108105920.19014-2-miquel.raynal@bootlin.com>
+ <20191108120732.GB5532@sirena.co.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>,
  Tudor Ambarus <Tudor.Ambarus@microchip.com>,
  Michal Simek <michal.simek@xilinx.com>, linux-spi@vger.kernel.org,
- Mark Brown <broonie@kernel.org>,
  Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
  linux-arm-kernel@lists.infradead.org
-To: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20191108105920.19014-3-miquel.raynal@bootlin.com>
+In-Reply-To: <20191108120732.GB5532@sirena.co.uk>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -27,78 +28,16 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
-
-   spi: zynq-qspi: Keep the naming consistent across the driver
-
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 9b10fa363baf3a506b089f3df3a5afd5e2f244db Mon Sep 17 00:00:00 2001
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Fri, 8 Nov 2019 11:59:15 +0100
-Subject: [PATCH] spi: zynq-qspi: Keep the naming consistent across the driver
-
-In this driver (and also in a lot of other drivers in drivers/spi/),
-the spi_controller structure is sometimes referred as 'ctlr' and
-sometimes as 'ctrl'. Grepping there shows that 'ctlr' seems to be more
-common so keep the naming consistent in this driver and s/ctrl/ctlr/.
-
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20191108105920.19014-3-miquel.raynal@bootlin.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-zynq-qspi.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index 8786054f4869..b1c56e9d7c94 100644
---- a/drivers/spi/spi-zynq-qspi.c
-+++ b/drivers/spi/spi-zynq-qspi.c
-@@ -283,8 +283,8 @@ static void zynq_qspi_txfifo_op(struct zynq_qspi *xqspi, unsigned int size)
-  */
- static void zynq_qspi_chipselect(struct spi_device *spi, bool assert)
- {
--	struct spi_controller *ctrl = spi->master;
--	struct zynq_qspi *xqspi = spi_controller_get_devdata(ctrl);
-+	struct spi_controller *ctlr = spi->master;
-+	struct zynq_qspi *xqspi = spi_controller_get_devdata(ctlr);
- 	u32 config_reg;
- 
- 	config_reg = zynq_qspi_read(xqspi, ZYNQ_QSPI_CONFIG_OFFSET);
-@@ -364,10 +364,10 @@ static int zynq_qspi_config_op(struct zynq_qspi *xqspi, struct spi_device *spi)
-  */
- static int zynq_qspi_setup_op(struct spi_device *spi)
- {
--	struct spi_controller *ctrl = spi->master;
--	struct zynq_qspi *qspi = spi_controller_get_devdata(ctrl);
-+	struct spi_controller *ctlr = spi->master;
-+	struct zynq_qspi *qspi = spi_controller_get_devdata(ctlr);
- 
--	if (ctrl->busy)
-+	if (ctlr->busy)
- 		return -EBUSY;
- 
- 	clk_enable(qspi->refclk);
--- 
-2.20.1
+SGkgTWFyaywKCk1hcmsgQnJvd24gPGJyb29uaWVAa2VybmVsLm9yZz4gd3JvdGUgb24gRnJpLCA4
+IE5vdiAyMDE5IDEyOjA3OjMyICswMDAwOgoKPiBPbiBGcmksIE5vdiAwOCwgMjAxOSBhdCAxMTo1
+OToxNEFNICswMTAwLCBNaXF1ZWwgUmF5bmFsIHdyb3RlOgo+ID4gVW5saWtlIHdoYXQgdGhlIGRy
+aXZlciBpcyBjdXJyZW50bHkgYWR2ZXJ0aXppbmcsIENTMCBvbmx5IGNhbiBiZSB1c2VkLAo+ID4g
+Q1MxIGlzIG5vdCBzdXBwb3J0ZWQgYXQgYWxsLiBQcmV2ZW50IHBlb3BsZSB0byB1c2UgQ1MxLiAg
+Cj4gCj4gVGhpcyAoYW5kIHRoZSByZXN0IG9mIHRoZSBzZXJpZXMpIGRvZXNuJ3QgYXBwbHkgYWdh
+aW5zdCBjdXJyZW50IGNvZGUsCj4gcGxlYXNlIGNoZWNrIGFuZCByZXNlbmQuCgpNeSBiYWQsIEkg
+dGhvdWdodCBJIHdhcyB3b3JraW5nIG9uIGEgdjUuMyB3aGlsZSBJIHdhcyBvbiBhIHY1LjEuIExl
+dCBtZQpyZWJhc2UgYW5kIHJlc2VuZCB0aGUgd2hvbGUgcGF0Y2hzZXQuIFNvcnJ5IGZvciB0aGUg
+bWlzdGFrZS4KClRoYW5rcywKTWlxdcOobAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KbGludXgtYXJtLWtlcm5lbCBtYWlsaW5nIGxpc3QKbGludXgtYXJt
+LWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
+aWxtYW4vbGlzdGluZm8vbGludXgtYXJtLWtlcm5lbAo=

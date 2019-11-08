@@ -1,90 +1,46 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: bcm-qspi: Convert to use CS GPIO descriptors" to the spi tree
-Date: Thu,  7 Nov 2019 13:13:40 +0000 (GMT)
-Message-ID: <20191107131340.3F28427431C3@ypsilon.sirena.org.uk>
-References: <20191107044235.4864-2-chris.packham@alliedtelesis.co.nz>
-Cc: bcm-kernel-feedback-list@broadcom.com, broonie@kernel.org,
-        kdasu.kdev@gmail.com, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
-To: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191107044235.4864-2-chris.packham@alliedtelesis.co.nz>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 0/7] spi: zynq-qspi: Clarify and fix the chip selection
+Date: Fri,  8 Nov 2019 11:59:13 +0100
+Message-ID: <20191108105920.19014-1-miquel.raynal@bootlin.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
+ Tudor Ambarus <Tudor.Ambarus@microchip.com>,
+ linux-arm-kernel@lists.infradead.org,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-spi@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>, Michal Simek <michal.simek@xilinx.com>,
+ Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
-
-   spi: bcm-qspi: Convert to use CS GPIO descriptors
-
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 27fb2313f28d8c82adace68bf49f12fe810ba58c Mon Sep 17 00:00:00 2001
-From: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Date: Thu, 7 Nov 2019 17:42:34 +1300
-Subject: [PATCH] spi: bcm-qspi: Convert to use CS GPIO descriptors
-
-Set use_gpio_descriptors to true and avoid asserting the native chip
-select if the spi core has done it for us.
-
-Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Link: https://lore.kernel.org/r/20191107044235.4864-2-chris.packham@alliedtelesis.co.nz
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-bcm-qspi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
-index 7a3531856491..85bad70f59e3 100644
---- a/drivers/spi/spi-bcm-qspi.c
-+++ b/drivers/spi/spi-bcm-qspi.c
-@@ -803,7 +803,8 @@ static int bcm_qspi_bspi_exec_mem_op(struct spi_device *spi,
- 			return -EIO;
- 
- 	from = op->addr.val;
--	bcm_qspi_chip_select(qspi, spi->chip_select);
-+	if (!spi->cs_gpiod)
-+		bcm_qspi_chip_select(qspi, spi->chip_select);
- 	bcm_qspi_write(qspi, MSPI, MSPI_WRITE_LOCK, 0);
- 
- 	/*
-@@ -882,7 +883,8 @@ static int bcm_qspi_transfer_one(struct spi_master *master,
- 	int slots;
- 	unsigned long timeo = msecs_to_jiffies(100);
- 
--	bcm_qspi_chip_select(qspi, spi->chip_select);
-+	if (!spi->cs_gpiod)
-+		bcm_qspi_chip_select(qspi, spi->chip_select);
- 	qspi->trans_pos.trans = trans;
- 	qspi->trans_pos.byte = 0;
- 
-@@ -1234,6 +1236,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
- 	master->cleanup = bcm_qspi_cleanup;
- 	master->dev.of_node = dev->of_node;
- 	master->num_chipselect = NUM_CHIPSELECT;
-+	master->use_gpio_descriptors = true;
- 
- 	qspi->big_endian = of_device_is_big_endian(dev->of_node);
- 
--- 
-2.20.1
+SGVsbG8sCgpXaGlsZSB3b3JraW5nIG9uIFNQSS1OT1Igc3VwcG9ydCBJIGZpZ3VyZWQgdGhlIGNo
+aXAgc2VsZWN0IGhhbmRsaW5nIG9mCnRoZSBaeW5xIDcwMDAgUVNQSSBkcml2ZXIgd2FzIG5vdCBi
+ZWhhdmluZyBhcyBJIHdvdWxkIGhhdmUKZXhwZWN0ZWQuIFdoaWxlIGNoZWtpbmcgb3V0IHdoYXQg
+d2FzIHdyb25nIEkgZGVjaWRlZCB0byBjbGFyaWZ5IHRoaW5ncwphcm91bmQgc28gSSBkaWQgYSBi
+aXQgb2YgY2xlYW5pbmcuIFRoZSBzdGVwLWJ5LXN0ZXAgY2hhbmdlcyBhcmUgdGhlCnJlYXNvbiBm
+b3IgcGF0Y2hlcyBbMS02XS4gVGhpcyB3YXksIHRoZSBsYXN0IHBhdGNoIGFjdHVhbGx5IGFkZGlu
+ZwpzdXBwb3J0IGZvciBib3RoIENTIGlzIG11Y2ggbW9yZSB1bmRlcnN0YW5kYWJsZS4KClRoYW5r
+cywKTWlxdcOobAoKTWlxdWVsIFJheW5hbCAoNyk6CiAgc3BpOiB6eW5xLXFzcGk6IEFueXRoaW5n
+IGVsc2UgdGhhbiBDUzAgaXMgbm90IHN1cHBvcnRlZCB5ZXQKICBzcGk6IHp5bnEtcXNwaTogS2Vl
+cCB0aGUgbmFtaW5nIGNvbnNpc3RlbnQgYWNyb3NzIHRoZSBkcml2ZXIKICBzcGk6IHp5bnEtcXNw
+aTogS2VlcCB0aGUgYml0ZmllbGRzIG5hbWluZyBjb25zaXN0ZW50CiAgc3BpOiB6eW5xLXFzcGk6
+IEVuaGFuY2UgdGhlIExpbmVhciBDRkcgYml0IGRlZmluaXRpb25zCiAgc3BpOiB6eW5xLXFzcGk6
+IENsYXJpZnkgdGhlIHNlbGVjdCBjaGlwIGZ1bmN0aW9uCiAgc3BpOiB6eW5xLXFzcGk6IERvIHRo
+ZSBhY3R1YWwgaGFyZHdhcmUgaW5pdGlhbGl6YXRpb24gbGF0ZXIgaW4gdGhlCiAgICBwcm9iZQog
+IHNwaTogenlucS1xc3BpOiBTdXBwb3J0IHR3byBjaGlwIHNlbGVjdHMKCiBkcml2ZXJzL3NwaS9z
+cGktenlucS1xc3BpLmMgfCA4NCArKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0t
+CiAxIGZpbGUgY2hhbmdlZCwgNTEgaW5zZXJ0aW9ucygrKSwgMzMgZGVsZXRpb25zKC0pCgotLSAK
+Mi4yMC4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+bGludXgtYXJtLWtlcm5lbCBtYWlsaW5nIGxpc3QKbGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZy
+YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vbGlu
+dXgtYXJtLWtlcm5lbAo=

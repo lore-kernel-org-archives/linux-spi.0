@@ -1,7 +1,8 @@
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH v2 4/7] spi: zynq-qspi: Enhance the Linear CFG bit definitions
-Date: Fri,  8 Nov 2019 15:07:41 +0100
-Message-ID: <20191108140744.1734-5-miquel.raynal@bootlin.com>
+Subject: [PATCH v2 6/7] spi: zynq-qspi: Do the actual hardware initialization
+ later in the probe
+Date: Fri,  8 Nov 2019 15:07:43 +0100
+Message-ID: <20191108140744.1734-7-miquel.raynal@bootlin.com>
 References: <20191108140744.1734-1-miquel.raynal@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -25,32 +26,47 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Using masks makes sense when manipulating fields of several bits. When
-only one bit is involved, it is usual to just use the BIT() macro but
-in this case using the term mask is abusive. Fix the #define macros
-and their comments.
+Supporting more than one CS will need some tweaking of the linear
+configuration register which is (rightfully) initialized in the
+hardware initialization helper. The extra initialization needs the
+knowledge of the actual number of CS, which is retrieved by reading
+the value of the num-cs DT property.
+
+As the initialization helper is called pretty early and might be
+called much later in the probe without side effect, let's delay it a
+bit so that the number of CS will be available when running this
+helper. This way, adding support for multiple CS lines in a next patch
+will be eased.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/spi/spi-zynq-qspi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-zynq-qspi.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index 78711fe955f4..1151443ec830 100644
+index 9adfcc66b02b..07d361501aa0 100644
 --- a/drivers/spi/spi-zynq-qspi.c
 +++ b/drivers/spi/spi-zynq-qspi.c
-@@ -99,9 +99,9 @@
-  * It is named Linear Configuration but it controls other modes when not in
-  * linear mode also.
-  */
--#define ZYNQ_QSPI_LCFG_TWO_MEM_MASK	BIT(30) /* LQSPI Two memories Mask */
--#define ZYNQ_QSPI_LCFG_SEP_BUS_MASK	BIT(29) /* LQSPI Separate bus Mask */
--#define ZYNQ_QSPI_LCFG_U_PAGE_MASK	BIT(28) /* LQSPI Upper Page Mask */
-+#define ZYNQ_QSPI_LCFG_TWO_MEM		BIT(30) /* LQSPI Two memories */
-+#define ZYNQ_QSPI_LCFG_SEP_BUS		BIT(29) /* LQSPI Separate bus */
-+#define ZYNQ_QSPI_LCFG_U_PAGE		BIT(28) /* LQSPI Upper Page */
+@@ -658,9 +658,6 @@ static int zynq_qspi_probe(struct platform_device *pdev)
+ 		goto clk_dis_pclk;
+ 	}
  
- #define ZYNQ_QSPI_LCFG_DUMMY_SHIFT	8
- 
+-	/* QSPI controller initializations */
+-	zynq_qspi_init_hw(xqspi);
+-
+ 	xqspi->irq = platform_get_irq(pdev, 0);
+ 	if (xqspi->irq <= 0) {
+ 		ret = -ENXIO;
+@@ -691,6 +688,10 @@ static int zynq_qspi_probe(struct platform_device *pdev)
+ 	ctlr->setup = zynq_qspi_setup_op;
+ 	ctlr->max_speed_hz = clk_get_rate(xqspi->refclk) / 2;
+ 	ctlr->dev.of_node = np;
++
++	/* QSPI controller initializations */
++	zynq_qspi_init_hw(xqspi);
++
+ 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "spi_register_master failed\n");
 -- 
 2.20.1

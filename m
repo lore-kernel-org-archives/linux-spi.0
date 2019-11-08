@@ -1,85 +1,59 @@
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 3/7] spi: zynq-qspi: Keep the bitfields naming consistent
-Date: Fri,  8 Nov 2019 11:59:16 +0100
-Message-ID: <20191108105920.19014-4-miquel.raynal@bootlin.com>
-References: <20191108105920.19014-1-miquel.raynal@bootlin.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH AUTOSEL 4.19 124/205] gpio: of: Handle SPI chipselect
+ legacy bindings
+Date: Fri, 8 Nov 2019 12:05:49 +0000
+Message-ID: <20191108120549.GA5532@sirena.co.uk>
+References: <20191108113752.12502-1-sashal@kernel.org>
+ <20191108113752.12502-124-sashal@kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
- Tudor Ambarus <Tudor.Ambarus@microchip.com>,
- linux-arm-kernel@lists.infradead.org,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>, Michal Simek <michal.simek@xilinx.com>,
- Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20191108105920.19014-1-miquel.raynal@bootlin.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="/9DWx/yDrRhgMJTb"
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-spi@vger.kernel.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-gpio@vger.kernel.org
+To: Sasha Levin <sashal@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20191108113752.12502-124-sashal@kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Most of the bits/bitfields #define'd in this driver are composed with:
-1/ the driver prefix
-2/ the name of the register they apply to
 
-Keep the naming consistent by applying this rule to the CONFIG register
-internals. These definitions will be used in a following change set.
+--/9DWx/yDrRhgMJTb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
----
- drivers/spi/spi-zynq-qspi.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+On Fri, Nov 08, 2019 at 06:36:31AM -0500, Sasha Levin wrote:
+> From: Linus Walleij <linus.walleij@linaro.org>
+>=20
+> [ Upstream commit 6953c57ab1721ce57914fc5741d0ce0568756bb0 ]
+>=20
+> The SPI chipselects are assumed to be active low in the current
+> binding, so when we want to use GPIO descriptors and handle
+> the active low/high semantics in gpiolib, we need a special
+> parsing quirk to deal with this.
 
-diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index 399c3ca33abb..11a484aa3186 100644
---- a/drivers/spi/spi-zynq-qspi.c
-+++ b/drivers/spi/spi-zynq-qspi.c
-@@ -61,9 +61,9 @@
-  * These are the values used in the calculation of baud rate divisor and
-  * setting the slave select.
-  */
--#define ZYNQ_QSPI_BAUD_DIV_MAX		7 /* Baud rate divisor maximum */
--#define ZYNQ_QSPI_BAUD_DIV_SHIFT	3 /* Baud rate divisor shift in CR */
--#define ZYNQ_QSPI_SS_SHIFT		10 /* Slave Select field shift in CR */
-+#define ZYNQ_QSPI_CONFIG_BAUD_DIV_MAX	7 /* Baud rate divisor maximum */
-+#define ZYNQ_QSPI_CONFIG_BAUD_DIV_SHIFT	3 /* Baud rate divisor shift */
-+#define ZYNQ_QSPI_CONFIG_PCS		10 /* Peripheral Chip Select */
- 
- /*
-  * QSPI Interrupt Registers bit Masks
-@@ -318,7 +318,7 @@ static void zynq_qspi_chipselect(struct spi_device *spi, bool assert)
- 		/* Select the slave */
- 		config_reg &= ~ZYNQ_QSPI_CONFIG_SSCTRL_MASK;
- 		config_reg |= (((~(BIT(spi->chip_select))) <<
--				ZYNQ_QSPI_SS_SHIFT) &
-+				ZYNQ_QSPI_CONFIG_PCS) &
- 				ZYNQ_QSPI_CONFIG_SSCTRL_MASK);
- 	} else {
- 		config_reg |= ZYNQ_QSPI_CONFIG_SSCTRL_MASK;
-@@ -349,7 +349,7 @@ static int zynq_qspi_config_op(struct zynq_qspi *xqspi, struct spi_device *spi)
- 	u32 config_reg, baud_rate_val = 0;
- 
- 	/* Set the clock frequency */
--	while ((baud_rate_val < ZYNQ_QSPI_BAUD_DIV_MAX)  &&
-+	while ((baud_rate_val < ZYNQ_QSPI_CONFIG_BAUD_DIV_MAX)  &&
- 	       (clk_get_rate(xqspi->refclk) / (2 << baud_rate_val)) >
- 		spi->max_speed_hz)
- 		baud_rate_val++;
-@@ -364,7 +364,7 @@ static int zynq_qspi_config_op(struct zynq_qspi *xqspi, struct spi_device *spi)
- 		config_reg |= ZYNQ_QSPI_CONFIG_CPOL_MASK;
- 
- 	config_reg &= ~ZYNQ_QSPI_CONFIG_BDRATE_MASK;
--	config_reg |= (baud_rate_val << ZYNQ_QSPI_BAUD_DIV_SHIFT);
-+	config_reg |= (baud_rate_val << ZYNQ_QSPI_CONFIG_BAUD_DIV_SHIFT);
- 	zynq_qspi_write(xqspi, ZYNQ_QSPI_CONFIG_OFFSET, config_reg);
- 
- 	return 0;
--- 
-2.20.1
+This stuff is *incredibly* fragile, are we sure this isn't manifiesting
+in later kernels as a result of some other fix or cleanup exposing
+issues and won't break without that fixup?  I loose track of all the
+GPIO stuff.
+
+--/9DWx/yDrRhgMJTb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl3FWhwACgkQJNaLcl1U
+h9D6VAf/aQvUCk5KwmYDafiih+sMdQS5rdG1M0qIchk9PsPJfHsAk/+c+Alwdcq5
+VFhvlX/FDZspFImn1yh2S+YblDxd084LRo3bC/aLlzt5BC3hLBRQoqR3np12R/6B
+sE1WLP9j1G85zUpvCluxCodf5QUPeijr5ByW+L7q70Dmovx8YI8EsNMG7ady8drc
+9sdnO+kpoLizkvJDPsSY67RcxSHmD3gdxq28Bsnc8q2HuHq545Ypip8EicHP1ptX
+Mt+D5+kjLIztZssCVjpYK8Vssqm6kSiz8Acaq7MShBSAo6pVvdDU2cNoLmGXyezg
+R4EkfCZITRI4doWFNGv5hshc54GSng==
+=lio8
+-----END PGP SIGNATURE-----
+
+--/9DWx/yDrRhgMJTb--

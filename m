@@ -1,9 +1,9 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: zynq-qspi: Keep the bitfields naming consistent" to the
- spi tree
-Date: Fri,  8 Nov 2019 17:45:43 +0000 (GMT)
-Message-ID: <20191108174543.F28452741702@ypsilon.sirena.org.uk>
-References: <20191108140744.1734-4-miquel.raynal@bootlin.com>
+Subject: Applied "spi: zynq-qspi: Anything else than CS0 is not supported yet"
+ to the spi tree
+Date: Fri,  8 Nov 2019 17:45:44 +0000 (GMT)
+Message-ID: <20191108174544.3BA1A2741460@ypsilon.sirena.org.uk>
+References: <20191108140744.1734-2-miquel.raynal@bootlin.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -15,7 +15,7 @@ Cc: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>,
  linux-arm-kernel@lists.infradead.org
 To: Miquel Raynal <miquel.raynal@bootlin.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20191108140744.1734-4-miquel.raynal@bootlin.com>
+In-Reply-To: <20191108140744.1734-2-miquel.raynal@bootlin.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -29,7 +29,7 @@ List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: zynq-qspi: Keep the bitfields naming consistent
+   spi: zynq-qspi: Anything else than CS0 is not supported yet
 
 has been applied to the spi tree at
 
@@ -54,68 +54,41 @@ to this mail.
 Thanks,
 Mark
 
->From 941be723735113028361c4664cd10134d3d27006 Mon Sep 17 00:00:00 2001
+>From 087622d09472f96f1f5d6ced36ca75c92e86af21 Mon Sep 17 00:00:00 2001
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Fri, 8 Nov 2019 15:07:40 +0100
-Subject: [PATCH] spi: zynq-qspi: Keep the bitfields naming consistent
+Date: Fri, 8 Nov 2019 15:07:38 +0100
+Subject: [PATCH] spi: zynq-qspi: Anything else than CS0 is not supported yet
 
-Most of the bits/bitfields #define'd in this driver are composed with:
-1/ the driver prefix
-2/ the name of the register they apply to
-
-Keep the naming consistent by applying this rule to the CONFIG register
-internals. These definitions will be used in a following change set.
+Unlike what the driver is currently advertizing, CS0 only can be used,
+CS1 is not supported at all. Prevent people to use CS1.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20191108140744.1734-4-miquel.raynal@bootlin.com
+Link: https://lore.kernel.org/r/20191108140744.1734-2-miquel.raynal@bootlin.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-zynq-qspi.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/spi/spi-zynq-qspi.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index 9f53ea08adf7..530533b6c974 100644
+index b1c56e9d7c94..9f53ea08adf7 100644
 --- a/drivers/spi/spi-zynq-qspi.c
 +++ b/drivers/spi/spi-zynq-qspi.c
-@@ -60,9 +60,9 @@
-  * These are the values used in the calculation of baud rate divisor and
-  * setting the slave select.
-  */
--#define ZYNQ_QSPI_BAUD_DIV_MAX		GENMASK(2, 0) /* Baud rate maximum */
--#define ZYNQ_QSPI_BAUD_DIV_SHIFT	3 /* Baud rate divisor shift in CR */
--#define ZYNQ_QSPI_SS_SHIFT		10 /* Slave Select field shift in CR */
-+#define ZYNQ_QSPI_CONFIG_BAUD_DIV_MAX	GENMASK(2, 0) /* Baud rate maximum */
-+#define ZYNQ_QSPI_CONFIG_BAUD_DIV_SHIFT	3 /* Baud rate divisor shift */
-+#define ZYNQ_QSPI_CONFIG_PCS		10 /* Peripheral Chip Select */
+@@ -680,10 +680,14 @@ static int zynq_qspi_probe(struct platform_device *pdev)
  
- /*
-  * QSPI Interrupt Registers bit Masks
-@@ -292,7 +292,7 @@ static void zynq_qspi_chipselect(struct spi_device *spi, bool assert)
- 		/* Select the slave */
- 		config_reg &= ~ZYNQ_QSPI_CONFIG_SSCTRL_MASK;
- 		config_reg |= (((~(BIT(spi->chip_select))) <<
--				ZYNQ_QSPI_SS_SHIFT) &
-+				ZYNQ_QSPI_CONFIG_PCS) &
- 				ZYNQ_QSPI_CONFIG_SSCTRL_MASK);
- 	} else {
- 		config_reg |= ZYNQ_QSPI_CONFIG_SSCTRL_MASK;
-@@ -331,7 +331,7 @@ static int zynq_qspi_config_op(struct zynq_qspi *xqspi, struct spi_device *spi)
- 	 *      ----------------
- 	 *      111 - divide by 256
- 	 */
--	while ((baud_rate_val < ZYNQ_QSPI_BAUD_DIV_MAX)  &&
-+	while ((baud_rate_val < ZYNQ_QSPI_CONFIG_BAUD_DIV_MAX)  &&
- 	       (clk_get_rate(xqspi->refclk) / (2 << baud_rate_val)) >
- 		spi->max_speed_hz)
- 		baud_rate_val++;
-@@ -347,7 +347,7 @@ static int zynq_qspi_config_op(struct zynq_qspi *xqspi, struct spi_device *spi)
- 		config_reg |= ZYNQ_QSPI_CONFIG_CPOL_MASK;
+ 	ret = of_property_read_u32(np, "num-cs",
+ 				   &num_cs);
+-	if (ret < 0)
++	if (ret < 0) {
+ 		ctlr->num_chipselect = ZYNQ_QSPI_DEFAULT_NUM_CS;
+-	else
++	} else if (num_cs > ZYNQ_QSPI_DEFAULT_NUM_CS) {
++		dev_err(&pdev->dev, "anything but CS0 is not yet supported\n");
++		goto remove_master;
++	} else {
+ 		ctlr->num_chipselect = num_cs;
++	}
  
- 	config_reg &= ~ZYNQ_QSPI_CONFIG_BDRATE_MASK;
--	config_reg |= (baud_rate_val << ZYNQ_QSPI_BAUD_DIV_SHIFT);
-+	config_reg |= (baud_rate_val << ZYNQ_QSPI_CONFIG_BAUD_DIV_SHIFT);
- 	zynq_qspi_write(xqspi, ZYNQ_QSPI_CONFIG_OFFSET, config_reg);
- 
- 	return 0;
+ 	ctlr->mode_bits =  SPI_RX_DUAL | SPI_RX_QUAD |
+ 			    SPI_TX_DUAL | SPI_TX_QUAD;
 -- 
 2.20.1

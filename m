@@ -1,166 +1,174 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: zynq-qspi: Support two chip selects" to the spi tree
-Date: Fri,  8 Nov 2019 17:45:42 +0000 (GMT)
-Message-ID: <20191108174543.0D58E2741460@ypsilon.sirena.org.uk>
-References: <20191108140744.1734-8-miquel.raynal@bootlin.com>
+From: Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH] spi: omap2-mcspi: Remove redundant checks
+Date: Sat, 9 Nov 2019 09:48:27 +0530
+Message-ID: <20191109041827.26934-1-vigneshr@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>,
- Tudor Ambarus <Tudor.Ambarus@microchip.com>,
- Michal Simek <michal.simek@xilinx.com>, linux-spi@vger.kernel.org,
- Mark Brown <broonie@kernel.org>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- linux-arm-kernel@lists.infradead.org
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20191108140744.1734-8-miquel.raynal@bootlin.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+Cc: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>, Vignesh Raghavendra <vigneshr@ti.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+Both omap2_mcspi_tx_dma() and omap2_mcspi_rx_dma() are only called from
+omap2_mcspi_txrx_dma() and omap2_mcspi_txrx_dma() is always called after
+making sure that mcspi_dma->dma_rx and mcspi_dma->dma_tx are not NULL
+(see omap2_mcspi_transfer_one()).
+Therefore remove redundant NULL checks for omap2_mcspi->dma_tx and
+omap2_mcspi->dma_rx pointers in omap2_mcspi_tx_dma() and
+omap2_mcspi_rx_dma() respectively.
 
-   spi: zynq-qspi: Support two chip selects
-
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From d575c9b7c8b4c5ddfb1aa75ac91fdcc20ce328c4 Mon Sep 17 00:00:00 2001
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Fri, 8 Nov 2019 15:07:44 +0100
-Subject: [PATCH] spi: zynq-qspi: Support two chip selects
-
-The Zynq QSPI controller features 2 CS. When the num-cs DT property
-is set to 2, the hardware will be initialized to support having two
-devices connected over each CS.
-
-In this case, both CS lines are driven by the state of the U_PAGE
-(upper page) bit. When unset, the lower page (CS0) is selected,
-otherwise it is the upper page (CS1).
-
-Change tested on a custom design featuring two SPI-NORs with different
-CS on the Zynq-7000 QSPI bus.
-
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20191108140744.1734-8-miquel.raynal@bootlin.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 ---
- drivers/spi/spi-zynq-qspi.c | 33 +++++++++++++++++++++++++--------
- 1 file changed, 25 insertions(+), 8 deletions(-)
+ drivers/spi/spi-omap2-mcspi.c | 105 +++++++++++++++-------------------
+ 1 file changed, 47 insertions(+), 58 deletions(-)
 
-diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index e76f9c9738f0..17641157354d 100644
---- a/drivers/spi/spi-zynq-qspi.c
-+++ b/drivers/spi/spi-zynq-qspi.c
-@@ -114,8 +114,8 @@
-  */
- #define ZYNQ_QSPI_MODEBITS			(SPI_CPOL | SPI_CPHA)
- 
--/* Default number of chip selects */
--#define ZYNQ_QSPI_DEFAULT_NUM_CS	1
-+/* Maximum number of chip selects */
-+#define ZYNQ_QSPI_MAX_NUM_CS		2
- 
- /**
-  * struct zynq_qspi - Defines qspi driver instance
-@@ -159,6 +159,7 @@ static inline void zynq_qspi_write(struct zynq_qspi *xqspi, u32 offset,
- /**
-  * zynq_qspi_init_hw - Initialize the hardware
-  * @xqspi:	Pointer to the zynq_qspi structure
-+ * @num_cs:	Number of connected CS (to enable dual memories if needed)
-  *
-  * The default settings of the QSPI controller's configurable parameters on
-  * reset are
-@@ -176,7 +177,7 @@ static inline void zynq_qspi_write(struct zynq_qspi *xqspi, u32 offset,
-  *	- Set the little endian mode of TX FIFO and
-  *	- Enable the QSPI controller
-  */
--static void zynq_qspi_init_hw(struct zynq_qspi *xqspi)
-+static void zynq_qspi_init_hw(struct zynq_qspi *xqspi, unsigned int num_cs)
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 848e03e5f42d..7e2292c11d12 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -397,30 +397,26 @@ static void omap2_mcspi_tx_dma(struct spi_device *spi,
  {
- 	u32 config_reg;
+ 	struct omap2_mcspi	*mcspi;
+ 	struct omap2_mcspi_dma  *mcspi_dma;
++	struct dma_async_tx_descriptor *tx;
  
-@@ -184,7 +185,12 @@ static void zynq_qspi_init_hw(struct zynq_qspi *xqspi)
- 	zynq_qspi_write(xqspi, ZYNQ_QSPI_IDIS_OFFSET, ZYNQ_QSPI_IXR_ALL_MASK);
+ 	mcspi = spi_master_get_devdata(spi->master);
+ 	mcspi_dma = &mcspi->dma_channels[spi->chip_select];
  
- 	/* Disable linear mode as the boot loader may have used it */
--	zynq_qspi_write(xqspi, ZYNQ_QSPI_LINEAR_CFG_OFFSET, 0);
-+	config_reg = 0;
-+	/* At the same time, enable dual mode if more than 1 CS is available */
-+	if (num_cs > 1)
-+		config_reg |= ZYNQ_QSPI_LCFG_TWO_MEM;
+-	if (mcspi_dma->dma_tx) {
+-		struct dma_async_tx_descriptor *tx;
++	dmaengine_slave_config(mcspi_dma->dma_tx, &cfg);
+ 
+-		dmaengine_slave_config(mcspi_dma->dma_tx, &cfg);
+-
+-		tx = dmaengine_prep_slave_sg(mcspi_dma->dma_tx, xfer->tx_sg.sgl,
+-					     xfer->tx_sg.nents,
+-					     DMA_MEM_TO_DEV,
+-					     DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+-		if (tx) {
+-			tx->callback = omap2_mcspi_tx_callback;
+-			tx->callback_param = spi;
+-			dmaengine_submit(tx);
+-		} else {
+-			/* FIXME: fall back to PIO? */
+-		}
++	tx = dmaengine_prep_slave_sg(mcspi_dma->dma_tx, xfer->tx_sg.sgl,
++				     xfer->tx_sg.nents,
++				     DMA_MEM_TO_DEV,
++				     DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
++	if (tx) {
++		tx->callback = omap2_mcspi_tx_callback;
++		tx->callback_param = spi;
++		dmaengine_submit(tx);
++	} else {
++		/* FIXME: fall back to PIO? */
+ 	}
+ 	dma_async_issue_pending(mcspi_dma->dma_tx);
+ 	omap2_mcspi_set_dma_req(spi, 0, 1);
+-
+ }
+ 
+ static unsigned
+@@ -439,6 +435,7 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 	int			word_len, element_count;
+ 	struct omap2_mcspi_cs	*cs = spi->controller_state;
+ 	void __iomem		*chstat_reg = cs->base + OMAP2_MCSPI_CHSTAT0;
++	struct dma_async_tx_descriptor *tx;
+ 
+ 	mcspi = spi_master_get_devdata(spi->master);
+ 	mcspi_dma = &mcspi->dma_channels[spi->chip_select];
+@@ -462,55 +459,47 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 	else /* word_len <= 32 */
+ 		element_count = count >> 2;
+ 
+-	if (mcspi_dma->dma_rx) {
+-		struct dma_async_tx_descriptor *tx;
+ 
+-		dmaengine_slave_config(mcspi_dma->dma_rx, &cfg);
++	dmaengine_slave_config(mcspi_dma->dma_rx, &cfg);
+ 
++	/*
++	 *  Reduce DMA transfer length by one more if McSPI is
++	 *  configured in turbo mode.
++	 */
++	if ((l & OMAP2_MCSPI_CHCONF_TURBO) && mcspi->fifo_depth == 0)
++		transfer_reduction += es;
 +
-+	zynq_qspi_write(xqspi, ZYNQ_QSPI_LINEAR_CFG_OFFSET, config_reg);
- 
- 	/* Clear the RX FIFO */
- 	while (zynq_qspi_read(xqspi, ZYNQ_QSPI_STATUS_OFFSET) &
-@@ -286,6 +292,17 @@ static void zynq_qspi_chipselect(struct spi_device *spi, bool assert)
- 	struct zynq_qspi *xqspi = spi_controller_get_devdata(ctlr);
- 	u32 config_reg;
- 
-+	/* Select the lower (CS0) or upper (CS1) memory */
-+	if (ctlr->num_chipselect > 1) {
-+		config_reg = zynq_qspi_read(xqspi, ZYNQ_QSPI_LINEAR_CFG_OFFSET);
-+		if (!spi->chip_select)
-+			config_reg &= ~ZYNQ_QSPI_LCFG_U_PAGE;
-+		else
-+			config_reg |= ZYNQ_QSPI_LCFG_U_PAGE;
-+
-+		zynq_qspi_write(xqspi, ZYNQ_QSPI_LINEAR_CFG_OFFSET, config_reg);
++	if (transfer_reduction) {
++		/* Split sgl into two. The second sgl won't be used. */
++		sizes[0] = count - transfer_reduction;
++		sizes[1] = transfer_reduction;
++		nb_sizes = 2;
++	} else {
+ 		/*
+-		 *  Reduce DMA transfer length by one more if McSPI is
+-		 *  configured in turbo mode.
++		 * Don't bother splitting the sgl. This essentially
++		 * clones the original sgl.
+ 		 */
+-		if ((l & OMAP2_MCSPI_CHCONF_TURBO) && mcspi->fifo_depth == 0)
+-			transfer_reduction += es;
+-
+-		if (transfer_reduction) {
+-			/* Split sgl into two. The second sgl won't be used. */
+-			sizes[0] = count - transfer_reduction;
+-			sizes[1] = transfer_reduction;
+-			nb_sizes = 2;
+-		} else {
+-			/*
+-			 * Don't bother splitting the sgl. This essentially
+-			 * clones the original sgl.
+-			 */
+-			sizes[0] = count;
+-			nb_sizes = 1;
+-		}
++		sizes[0] = count;
++		nb_sizes = 1;
 +	}
-+
- 	/* Ground the line to assert the CS */
- 	config_reg = zynq_qspi_read(xqspi, ZYNQ_QSPI_CONFIG_OFFSET);
- 	if (assert)
-@@ -673,9 +690,9 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 	ret = of_property_read_u32(np, "num-cs",
- 				   &num_cs);
- 	if (ret < 0) {
--		ctlr->num_chipselect = ZYNQ_QSPI_DEFAULT_NUM_CS;
--	} else if (num_cs > ZYNQ_QSPI_DEFAULT_NUM_CS) {
--		dev_err(&pdev->dev, "anything but CS0 is not yet supported\n");
-+		ctlr->num_chipselect = 1;
-+	} else if (num_cs > ZYNQ_QSPI_MAX_NUM_CS) {
-+		dev_err(&pdev->dev, "only 2 chip selects are available\n");
- 		goto remove_master;
- 	} else {
- 		ctlr->num_chipselect = num_cs;
-@@ -689,7 +706,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 	ctlr->dev.of_node = np;
  
- 	/* QSPI controller initializations */
--	zynq_qspi_init_hw(xqspi);
-+	zynq_qspi_init_hw(xqspi, ctlr->num_chipselect);
+-		ret = sg_split(xfer->rx_sg.sgl, xfer->rx_sg.nents,
+-			       0, nb_sizes,
+-			       sizes,
+-			       sg_out, out_mapped_nents,
+-			       GFP_KERNEL);
++	ret = sg_split(xfer->rx_sg.sgl, xfer->rx_sg.nents, 0, nb_sizes,
++		       sizes, sg_out, out_mapped_nents, GFP_KERNEL);
  
- 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
- 	if (ret) {
+-		if (ret < 0) {
+-			dev_err(&spi->dev, "sg_split failed\n");
+-			return 0;
+-		}
++	if (ret < 0) {
++		dev_err(&spi->dev, "sg_split failed\n");
++		return 0;
++	}
+ 
+-		tx = dmaengine_prep_slave_sg(mcspi_dma->dma_rx,
+-					     sg_out[0],
+-					     out_mapped_nents[0],
+-					     DMA_DEV_TO_MEM,
+-					     DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+-		if (tx) {
+-			tx->callback = omap2_mcspi_rx_callback;
+-			tx->callback_param = spi;
+-			dmaengine_submit(tx);
+-		} else {
+-				/* FIXME: fall back to PIO? */
+-		}
++	tx = dmaengine_prep_slave_sg(mcspi_dma->dma_rx, sg_out[0],
++				     out_mapped_nents[0], DMA_DEV_TO_MEM,
++				     DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
++	if (tx) {
++		tx->callback = omap2_mcspi_rx_callback;
++		tx->callback_param = spi;
++		dmaengine_submit(tx);
++	} else {
++		/* FIXME: fall back to PIO? */
+ 	}
+ 
+ 	dma_async_issue_pending(mcspi_dma->dma_rx);
 -- 
-2.20.1
+2.24.0

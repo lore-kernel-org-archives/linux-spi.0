@@ -1,52 +1,125 @@
-From: Chuhong Yuan <hslester96@gmail.com>
-Subject: [PATCH v2] spi: pxa2xx: Add missed security checks
-Date: Sat,  9 Nov 2019 16:09:43 +0800
-Message-ID: <20191109080943.30428-1-hslester96@gmail.com>
+From: Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 016/191] spi/bcm63xx-hsspi: keep pll clk enabled
+Date: Sat,  9 Nov 2019 21:37:18 -0500
+Message-ID: <20191110024013.29782-16-sashal@kernel.org>
+References: <20191110024013.29782-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
+Cc: Jonas Gorski <jonas.gorski@gmail.com>,
         Mark Brown <broonie@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
-To: unlisted-recipients:; (no To-header on input)
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
+To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20191110024013.29782-1-sashal@kernel.org>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-pxa2xx_spi_init_pdata misses checks for devm_clk_get and
-platform_get_irq.
-Add checks for them to fix the bugs.
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-Since ssp->clk and ssp->irq are used in probe, they are mandatory here.
-So we cannot use _optional() for devm_clk_get and platform_get_irq.
+[ Upstream commit 0fd85869c2a9c8723a98bc1f56a876e8383649f4 ]
 
-Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+If the pll clock needs to be enabled to get its rate, it will also need
+to be enabled to provide it. So ensure it is kept enabled through the
+lifetime of the device.
+
+Fixes: 0d7412ed1f5dc ("spi/bcm63xx-hspi: Enable the clock before calling clk_get_rate().")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-Changes in v2:
-  - Modify commit message.
+ drivers/spi/spi-bcm63xx-hsspi.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
- drivers/spi/spi-pxa2xx.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index bb6a14d1ab0f..2e73d75a6ac5 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1565,7 +1565,13 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
- #endif
+diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
+index c23849f7aa7bc..9a06ffdb73b88 100644
+--- a/drivers/spi/spi-bcm63xx-hsspi.c
++++ b/drivers/spi/spi-bcm63xx-hsspi.c
+@@ -101,6 +101,7 @@ struct bcm63xx_hsspi {
  
- 	ssp->clk = devm_clk_get(&pdev->dev, NULL);
-+	if (IS_ERR(ssp->clk))
-+		return NULL;
+ 	struct platform_device *pdev;
+ 	struct clk *clk;
++	struct clk *pll_clk;
+ 	void __iomem *regs;
+ 	u8 __iomem *fifo;
+ 
+@@ -332,7 +333,7 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 	struct resource *res_mem;
+ 	void __iomem *regs;
+ 	struct device *dev = &pdev->dev;
+-	struct clk *clk;
++	struct clk *clk, *pll_clk = NULL;
+ 	int irq, ret;
+ 	u32 reg, rate, num_cs = HSSPI_SPI_MAX_CS;
+ 
+@@ -358,7 +359,7 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 
+ 	rate = clk_get_rate(clk);
+ 	if (!rate) {
+-		struct clk *pll_clk = devm_clk_get(dev, "pll");
++		pll_clk = devm_clk_get(dev, "pll");
+ 
+ 		if (IS_ERR(pll_clk)) {
+ 			ret = PTR_ERR(pll_clk);
+@@ -373,19 +374,20 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 		clk_disable_unprepare(pll_clk);
+ 		if (!rate) {
+ 			ret = -EINVAL;
+-			goto out_disable_clk;
++			goto out_disable_pll_clk;
+ 		}
+ 	}
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*bs));
+ 	if (!master) {
+ 		ret = -ENOMEM;
+-		goto out_disable_clk;
++		goto out_disable_pll_clk;
+ 	}
+ 
+ 	bs = spi_master_get_devdata(master);
+ 	bs->pdev = pdev;
+ 	bs->clk = clk;
++	bs->pll_clk = pll_clk;
+ 	bs->regs = regs;
+ 	bs->speed_hz = rate;
+ 	bs->fifo = (u8 __iomem *)(bs->regs + HSSPI_FIFO_REG(0));
+@@ -440,6 +442,8 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 
+ out_put_master:
+ 	spi_master_put(master);
++out_disable_pll_clk:
++	clk_disable_unprepare(pll_clk);
+ out_disable_clk:
+ 	clk_disable_unprepare(clk);
+ 	return ret;
+@@ -453,6 +457,7 @@ static int bcm63xx_hsspi_remove(struct platform_device *pdev)
+ 
+ 	/* reset the hardware and block queue progress */
+ 	__raw_writel(0, bs->regs + HSSPI_INT_MASK_REG);
++	clk_disable_unprepare(bs->pll_clk);
+ 	clk_disable_unprepare(bs->clk);
+ 
+ 	return 0;
+@@ -465,6 +470,7 @@ static int bcm63xx_hsspi_suspend(struct device *dev)
+ 	struct bcm63xx_hsspi *bs = spi_master_get_devdata(master);
+ 
+ 	spi_master_suspend(master);
++	clk_disable_unprepare(bs->pll_clk);
+ 	clk_disable_unprepare(bs->clk);
+ 
+ 	return 0;
+@@ -480,6 +486,12 @@ static int bcm63xx_hsspi_resume(struct device *dev)
+ 	if (ret)
+ 		return ret;
+ 
++	if (bs->pll_clk) {
++		ret = clk_prepare_enable(bs->pll_clk);
++		if (ret)
++			return ret;
++	}
 +
- 	ssp->irq = platform_get_irq(pdev, 0);
-+	if (ssp->irq < 0)
-+		return NULL;
-+
- 	ssp->type = type;
- 	ssp->pdev = pdev;
- 	ssp->port_id = pxa2xx_spi_get_port_id(adev);
+ 	spi_master_resume(master);
+ 
+ 	return 0;
 -- 
-2.23.0
+2.20.1

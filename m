@@ -1,8 +1,8 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.9 23/66] spi: pic32: Use proper enum in dmaengine_prep_slave_rg
-Date: Sat,  9 Nov 2019 21:48:02 -0500
-Message-ID: <20191110024846.32598-23-sashal@kernel.org>
-References: <20191110024846.32598-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 035/109] spi: pic32: Use proper enum in dmaengine_prep_slave_rg
+Date: Sat,  9 Nov 2019 21:44:27 -0500
+Message-ID: <20191110024541.31567-35-sashal@kernel.org>
+References: <20191110024541.31567-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Cc: Nathan Chancellor <natechancellor@gmail.com>,
@@ -10,9 +10,9 @@ Cc: Nathan Chancellor <natechancellor@gmail.com>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org,
         clang-built-linux@googlegroups.com
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191110024846.32598-1-sashal@kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20191110024541.31567-1-sashal@kernel.org>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Nathan Chancellor <natechancellor@gmail.com>
@@ -45,7 +45,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-pic32.c b/drivers/spi/spi-pic32.c
-index fefb688a34328..2f4df804c4d80 100644
+index f8a45af1fa9f2..288002f6c613e 100644
 --- a/drivers/spi/spi-pic32.c
 +++ b/drivers/spi/spi-pic32.c
 @@ -320,7 +320,7 @@ static int pic32_spi_dma_transfer(struct pic32_spi *pic32s,

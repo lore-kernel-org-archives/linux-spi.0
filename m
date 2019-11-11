@@ -1,132 +1,73 @@
-From: "Ramuthevar, Vadivel MuruganX"
-        <vadivel.muruganx.ramuthevar@linux.intel.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: spi: Add schema for Cadence QSPI
- Controller driver
-Date: Mon, 11 Nov 2019 15:35:00 +0800
-Message-ID: <51fa7c46-20d0-2712-8690-1d6a885cb98b@linux.intel.com>
-References: <20191030081155.29947-1-vadivel.muruganx.ramuthevar@linux.intel.com>
- <20191030081155.29947-2-vadivel.muruganx.ramuthevar@linux.intel.com>
- <b553b1e8-1c35-fd7c-6855-75a4c1c943fe@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: broonie@kernel.org, robh+dt@kernel.org, cheol.yong.kim@intel.com,
-        qi-ming.wu@intel.com
-To: Vignesh Raghavendra <vigneshr@ti.com>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: nxp-fspi: Use devm API to fix missed unregistration of controller" to the spi tree
+Date: Mon, 11 Nov 2019 19:49:08 +0000 (GMT)
+Message-ID: <20191111194908.D98532742C8A@ypsilon.sirena.org.uk>
+References: <20191109075517.29988-1-hslester96@gmail.com>
+Cc: Ashish Kumar <ashish.kumar@nxp.com>, "Cc:"@sirena.co.uk,
+        "Cc:"@sirena.co.uk, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        Yogesh Gaur <yogeshgaur.83@gmail.com>
+To: Chuhong Yuan <hslester96@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <b553b1e8-1c35-fd7c-6855-75a4c1c943fe@ti.com>
-Content-Language: en-US
+In-Reply-To: <20191109075517.29988-1-hslester96@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Vignesh,
+The patch
 
-On 5/11/2019 12:30 PM, Vignesh Raghavendra wrote:
-> Hi,
->
-> On 30/10/19 1:41 PM, Ramuthevar,Vadivel MuruganX wrote:
->> From: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
->>
->> Add dt-bindings documentation for Cadence-QSPI controller to support
->> spi based flash memories.
->>
-> The new driver being added in patch 2/2 is supposed to replace
-> drivers/mtd/spi-nor/cadence-quadspi.c. Therefore the bindings should be
-> exactly same as
-> Documentation/devicetree/bindings/mtd/cadence-quadspi.txt. Otherwise, it
-> breaks DT backward compatibility. There cannot be two different sets of
-> bindings for same HW IP.
->
-> Therefore please rewrite yaml schema to match existing bindings at
-> Documentation/devicetree/bindings/mtd/cadence-quadspi.txt.
-> And then include a patch dropping older bindings.
-sure, I will create dt-schema for the below file
+   spi: nxp-fspi: Use devm API to fix missed unregistration of controller
 
-Documentation/devicetree/bindings/mtd/cadence-quadspi.txt
+has been applied to the spi tree at
 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 69c23dbf5f695c219008257b3bd86cff63edbe0b Mon Sep 17 00:00:00 2001
+From: Chuhong Yuan <hslester96@gmail.com>
+Date: Sat, 9 Nov 2019 15:55:17 +0800
+Subject: [PATCH] spi: nxp-fspi: Use devm API to fix missed unregistration of
+ controller
+
+This driver forgets to unregister controller when remove.
+Use devm API to unregister it automatically to fix it.
+
+Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+Link: https://lore.kernel.org/r/20191109075517.29988-1-hslester96@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
-With Best Regards
-Vadivel
+ drivers/spi/spi-nxp-fspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->
->> Signed-off-by: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
->> ---
->>   .../devicetree/bindings/spi/cadence,qspi.yaml      | 65 ++++++++++++++++++++++
->>   1 file changed, 65 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/spi/cadence,qspi.yaml
->>
->> diff --git a/Documentation/devicetree/bindings/spi/cadence,qspi.yaml b/Documentation/devicetree/bindings/spi/cadence,qspi.yaml
->> new file mode 100644
->> index 000000000000..295501f01e5e
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/spi/cadence,qspi.yaml
->> @@ -0,0 +1,65 @@
->> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: "http://devicetree.org/schemas/spi/cadence,qspi.yaml#"
->> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
->> +
->> +title: Cadence QSPI Flash Controller support
->> +
->> +maintainers:
->> +  - Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
->> +
->> +allOf:
->> +  - $ref: "spi-controller.yaml#"
->> +
->> +description: |
->> +  Add support for the Cadence QSPI controller,This controller is
->> +  present in the Intel LGM, Altera SoCFPGA and TI SoCs and this driver
->> +  has been tested On Intel's LGM SoC.
->> +
->> +properties:
->> +  compatible:
->> +    const: cadence,qspi
->> +
->> +  reg:
->> +    maxItems: 1
->> +
->> +  clocks:
->> +    maxItems: 1
->> +
->> +  clocks-names:
->> +    maxItems: 1
->> +
->> +  resets:
->> +    maxItems: 1
->> +
->> +  reset-names:
->> +    maxItems: 1
->> +
->> +required:
->> +  - compatible
->> +  - reg
->> +  - clocks
->> +  - clock-names
->> +  - resets
->> +  - reset-names
->> +
->> +examples:
->> +  - |
->> +    spi@ec000000 {
->> +          compatible = "cadence,qspi";
->> +          reg = <0xec000000 0x100>;
->> +          clocks = <&cgu0 LGM_CLK_QSPI>, <&cgu0 LGM_GCLK_QSPI>;
->> +          clock-names = "qspi";
->> +          resets = <&rcu0 0x10 1>;
->> +          reset-names = "qspi";
->> +          #address-cells = <1>;
->> +          #size-cells = <0>;
->> +
->> +          flash: flash@1 {
->> +              compatible = "spi-nand", "jedec, spi-nor";
-> s/"jedec, spi-nor"/"jedec,spi-nor" (i.e no space after comma)
->
->> +              reg = <1>;
->> +              spi-max-frequency = <10000000>;
->> +          };
->> +    };
->> +
->>
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index 501b923f2c27..c36bb1bb464e 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -1027,7 +1027,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 
+ 	ctlr->dev.of_node = np;
+ 
+-	ret = spi_register_controller(ctlr);
++	ret = devm_spi_register_controller(&pdev->dev, ctlr);
+ 	if (ret)
+ 		goto err_destroy_mutex;
+ 
+-- 
+2.20.1

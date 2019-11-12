@@ -1,41 +1,86 @@
-From: Tony Lindgren <tony@atomide.com>
-Subject: Re: Applied "spi: add power control when set_cs" to the spi tree
-Date: Mon, 11 Nov 2019 11:54:35 -0800
-Message-ID: <20191111195435.GW5610@atomide.com>
-References: <1572426234-30019-1-git-send-email-luhua.xu@mediatek.com>
- <20191031132342.100F1D020AA@fitzroy.sirena.org.uk>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 2/2] spi: wire up wakeup-source/wakeirq handling
+Date: Mon, 11 Nov 2019 21:54:11 -0800
+Message-ID: <20191112055412.192675-3-dmitry.torokhov@gmail.com>
+References: <20191112055412.192675-1-dmitry.torokhov@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Luhua Xu <luhua.xu@mediatek.com>, wsd_upstream@mediatek.com,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-arm-kernel@lists.infradead.org
+Content-Transfer-Encoding: 8bit
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
 To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20191031132342.100F1D020AA@fitzroy.sirena.org.uk>
+In-Reply-To: <20191112055412.192675-1-dmitry.torokhov@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+Many SPI drivers need to configure their devices for waking up the
+system. Instead of forcing them to reimplement wakeup handling, let's
+mirror what I2C core is doing and handle "wakeup-source" device property
+in SPI core.
 
-* Mark Brown <broonie@kernel.org> [191031 13:24]:
-> The patch
-> 
->    spi: add power control when set_cs
-> 
-> has been applied to the spi tree at
-> 
->    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
+Also, let's allow naming device's interrupt lines as "irq" and "wakeup"
+and automatically configure the right one as wakeirq when device is
+supposed to be a wakeup source.
 
-This patch causes a regression for many SPI devices as they
-assume spi_setup() return 0 on success and not a positive value.
+Implementing this is very helpful for drivers that use both I2C and SPI
+for transport, such as tsc2004/tsc2005.
 
-I've sent a fix for this as:
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-spi: Fix regression to return zero on success instead of positive value
+---
 
-Regards,
+ drivers/spi/spi.c | 27 ++++++++++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
 
-Tony
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 50769a8475d66..baa7aac300d9f 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -22,6 +22,7 @@
+ #include <linux/gpio/consumer.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/pm_domain.h>
++#include <linux/pm_wakeirq.h>
+ #include <linux/property.h>
+ #include <linux/export.h>
+ #include <linux/sched/rt.h>
+@@ -394,13 +395,37 @@ static int spi_drv_probe(struct device *dev)
+ 		return ret;
+ 
+ 	if (dev->of_node) {
+-		spi->irq = of_irq_get(dev->of_node, 0);
++		spi->irq = of_irq_get_byname(dev->of_node, "irq");
++		if (spi->irq == -EINVAL || spi->irq == -ENODATA)
++			spi->irq = of_irq_get(dev->of_node, 0);
+ 		if (spi->irq == -EPROBE_DEFER)
+ 			return -EPROBE_DEFER;
+ 		if (spi->irq < 0)
+ 			spi->irq = 0;
+ 	}
+ 
++	if (device_property_read_bool(dev, "wakeup-source")) {
++		int wakeirq = -ENOENT;
++
++		if (dev->of_node) {
++			wakeirq = of_irq_get_byname(dev->of_node, "wakeup");
++			if (wakeirq == -EPROBE_DEFER)
++				return wakeirq;
++		}
++
++		device_init_wakeup(dev, true);
++
++		if (wakeirq > 0 && wakeirq != spi->irq)
++			ret = dev_pm_set_dedicated_wake_irq(dev, wakeirq);
++		else if (spi->irq > 0)
++			ret = dev_pm_set_wake_irq(dev, spi->irq);
++		else
++			ret = 0;
++
++		if (ret)
++			dev_warn(dev, "failed to set up wakeup irq: %d\n", ret);
++	}
++
+ 	ret = dev_pm_domain_attach(dev, true);
+ 	if (ret)
+ 		return ret;
+-- 
+2.24.0.rc1.363.gb1bccd3e3d-goog

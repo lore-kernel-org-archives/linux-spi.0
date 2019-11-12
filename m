@@ -1,7 +1,8 @@
 From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 0/2] spi: add wakeup handling to SPI core
-Date: Mon, 11 Nov 2019 21:54:09 -0800
-Message-ID: <20191112055412.192675-1-dmitry.torokhov@gmail.com>
+Subject: [PATCH 1/2] spi: dt-bindings: spi-controller: add wakeup-source and interrupts
+Date: Mon, 11 Nov 2019 21:54:10 -0800
+Message-ID: <20191112055412.192675-2-dmitry.torokhov@gmail.com>
+References: <20191112055412.192675-1-dmitry.torokhov@gmail.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
@@ -9,24 +10,54 @@ Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
         Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
 To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20191112055412.192675-1-dmitry.torokhov@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-These patches add wakeup handling for SPI devices to SPI core, mirroring
-I2C subsystem. Users can mark devices as "wakeup-source" in device tree
-(or using static device properties) and SPI core will mark the primary
-interrupt line as wakeirq and mark the device as wakeup enabled.
+This change adds bindings for wakeup-source and
+interrupts/interrupt-names properties that can be used to configure
+device as wakeup source on the system.
 
-There is also an option to define a dedicated wake irq.
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
+---
 
-Dmitry Torokhov (2):
-  spi: dt-bindings: spi-controller: add wakeup-source and interrupts
-  spi: wire up wakeup-source/wakeirq handling
+ .../bindings/spi/spi-controller.yaml          | 23 +++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
- .../bindings/spi/spi-controller.yaml          | 23 ++++++++++++++++
- drivers/spi/spi.c                             | 27 ++++++++++++++++++-
- 2 files changed, 49 insertions(+), 1 deletion(-)
-
+diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+index 732339275848c..4e31a4bf6851c 100644
+--- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+@@ -78,6 +78,29 @@ patternProperties:
+         description:
+           Chip select used by the device.
+ 
++      interrupts:
++        items:
++          - description: main interrupt (attention) line.
++          - description: dedicated wakeup interrupt.
++        minItems: 1 # The wakeup interrupt is optional.
++        description:
++          Specifies interrupt lines a device is connected to. Typically a
++          device is wired to a single interrupt line that is used as
++          "attention" signal and also to wake up system when device is
++          set up as wakeup source. However on some systems a dedicated
++          wakeup line might be used.
++
++      interrupt-names:
++        items:
++          - const: irq
++          - const: wakeup
++        minItems: 1
++
++      wakeup-source:
++        description:
++          Device is capable of waking up the system.
++        type: boolean
++
+       spi-3wire:
+         $ref: /schemas/types.yaml#/definitions/flag
+         description:
 -- 
 2.24.0.rc1.363.gb1bccd3e3d-goog

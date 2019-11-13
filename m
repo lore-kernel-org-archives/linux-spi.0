@@ -1,54 +1,59 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/2] spi: dt-bindings: spi-controller: add wakeup-source
- and interrupts
-Date: Tue, 12 Nov 2019 19:42:23 +0000
-Message-ID: <20191112194223.GM5195@sirena.co.uk>
-References: <20191112055412.192675-1-dmitry.torokhov@gmail.com>
- <20191112055412.192675-2-dmitry.torokhov@gmail.com>
- <20191112120307.GB5195@sirena.co.uk>
- <20191112190328.GA199853@dtor-ws>
- <20191112191547.GK5195@sirena.co.uk>
- <20191112193653.GB13374@dtor-ws>
+From: Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [PATCH AUTOSEL 4.19 200/209] spi: rockchip: initialize
+ dma_slave_config properly
+Date: Tue, 12 Nov 2019 20:50:16 -0500
+Message-ID: <20191113015025.9685-200-sashal@kernel.org>
+References: <20191113015025.9685-1-sashal@kernel.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="pFpMklMRdxwSC3Yi"
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20191112193653.GB13374@dtor-ws>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Emil Renner Berthing <kernel-sKpHZLTYfq0@public.gmane.org>,
+ Huibin Hong <huibin.hong-TNX95d0MmH7DzftRWevZcw@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <20191113015025.9685-1-sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
+ <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
+List-Post: <mailto:linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rockchip>,
+ <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "Linux-rockchip" <linux-rockchip-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+From: Huibin Hong <huibin.hong-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 
---pFpMklMRdxwSC3Yi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+[ Upstream commit dd8fd2cbc73f8650f651da71fc61a6e4f30c1566 ]
 
-On Tue, Nov 12, 2019 at 11:36:53AM -0800, Dmitry Torokhov wrote:
+The rxconf and txconf structs are allocated on the
+stack, so make sure we zero them before filling out
+the relevant fields.
 
-> As far as scheme goes - I hope that Rob could confirm that we can
-> override number of interrupts and names in consumers of the binding, as
-> needed.
+Signed-off-by: Huibin Hong <huibin.hong-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Signed-off-by: Emil Renner Berthing <kernel-sKpHZLTYfq0@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-rockchip.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Yes, I think that's the main worry here - if there's issue with the
-framework bit we should be able to sort that.
-
---pFpMklMRdxwSC3Yi
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl3LCx8ACgkQJNaLcl1U
-h9CsMQf9EiGfHZdWSXq6DKiXomGkOIZ+BC27XAQ9dHxneP99B19i4vn584IKaeok
-EcBi6YqjpD1oIf2KBBixy/vaTlJuA07QV5NoORICvMR75gWy4XvWYt0UCZxGs1vY
-BNduo6rLmePAoRKjoBVT4e3H07cLkDxkZ6V4r0jZJIwleLZOsi5mDXlS8Rwd0C0k
-p8YLQBgmFFqiVqiJae/WgxzWuYCU0PgX93YXIGlLZgyDav2SQ62nyYcK5iMEwU4q
-15Y6cdvRZd4iRiMZJOaAW6cLdj607FKp7fj4Hh/uZKs7FzNnskcL0b+YpxNaRDIr
-g1kjE11Jqb1i/tG8C42S5ylH7HdDiQ==
-=MTTr
------END PGP SIGNATURE-----
-
---pFpMklMRdxwSC3Yi--
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index fdcf3076681b5..185bbdce62b14 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -445,6 +445,9 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ 	struct dma_slave_config rxconf, txconf;
+ 	struct dma_async_tx_descriptor *rxdesc, *txdesc;
+ 
++	memset(&rxconf, 0, sizeof(rxconf));
++	memset(&txconf, 0, sizeof(txconf));
++
+ 	spin_lock_irqsave(&rs->lock, flags);
+ 	rs->state &= ~RXBUSY;
+ 	rs->state &= ~TXBUSY;
+-- 
+2.20.1

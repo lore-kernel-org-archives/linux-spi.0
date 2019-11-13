@@ -1,7 +1,7 @@
 From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Subject: [PATCH 4/9] spi: imx: Use dma_request_chan() directly for channel request
-Date: Wed, 13 Nov 2019 11:42:51 +0200
-Message-ID: <20191113094256.1108-5-peter.ujfalusi@ti.com>
+Subject: [PATCH 7/9] spi: s3c64xx: Use dma_request_chan() directly for channel request
+Date: Wed, 13 Nov 2019 11:42:54 +0200
+Message-ID: <20191113094256.1108-8-peter.ujfalusi@ti.com>
 References: <20191113094256.1108-1-peter.ujfalusi@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -28,31 +28,31 @@ dma_request_slave_channel_reason() is:
 
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
 ---
- drivers/spi/spi-imx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-s3c64xx.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 09c9a1edb2c6..49f0099db0cb 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1272,7 +1272,7 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
- 	spi_imx->wml = spi_imx->devtype_data->fifo_size / 2;
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 7b7151ec14c8..cf67ea60dc0e 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -1154,15 +1154,13 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
  
- 	/* Prepare for TX DMA: */
--	master->dma_tx = dma_request_slave_channel_reason(dev, "tx");
-+	master->dma_tx = dma_request_chan(dev, "tx");
- 	if (IS_ERR(master->dma_tx)) {
- 		ret = PTR_ERR(master->dma_tx);
- 		dev_dbg(dev, "can't get the TX DMA channel, error %d!\n", ret);
-@@ -1281,7 +1281,7 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
- 	}
- 
- 	/* Prepare for RX : */
--	master->dma_rx = dma_request_slave_channel_reason(dev, "rx");
-+	master->dma_rx = dma_request_chan(dev, "rx");
- 	if (IS_ERR(master->dma_rx)) {
- 		ret = PTR_ERR(master->dma_rx);
- 		dev_dbg(dev, "can't get the RX DMA channel, error %d\n", ret);
+ 	if (!is_polling(sdd)) {
+ 		/* Acquire DMA channels */
+-		sdd->rx_dma.ch = dma_request_slave_channel_reason(&pdev->dev,
+-								  "rx");
++		sdd->rx_dma.ch = dma_request_chan(&pdev->dev, "rx");
+ 		if (IS_ERR(sdd->rx_dma.ch)) {
+ 			dev_err(&pdev->dev, "Failed to get RX DMA channel\n");
+ 			ret = PTR_ERR(sdd->rx_dma.ch);
+ 			goto err_disable_io_clk;
+ 		}
+-		sdd->tx_dma.ch = dma_request_slave_channel_reason(&pdev->dev,
+-								  "tx");
++		sdd->tx_dma.ch = dma_request_chan(&pdev->dev, "tx");
+ 		if (IS_ERR(sdd->tx_dma.ch)) {
+ 			dev_err(&pdev->dev, "Failed to get TX DMA channel\n");
+ 			ret = PTR_ERR(sdd->tx_dma.ch);
 -- 
 Peter
 

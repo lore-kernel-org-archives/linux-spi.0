@@ -1,7 +1,7 @@
 From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Subject: [PATCH 7/9] spi: s3c64xx: Use dma_request_chan() directly for channel request
-Date: Wed, 13 Nov 2019 11:42:54 +0200
-Message-ID: <20191113094256.1108-8-peter.ujfalusi@ti.com>
+Subject: [PATCH 9/9] spi: tegra20-slink: Use dma_request_chan() directly for channel request
+Date: Wed, 13 Nov 2019 11:42:56 +0200
+Message-ID: <20191113094256.1108-10-peter.ujfalusi@ti.com>
 References: <20191113094256.1108-1-peter.ujfalusi@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -28,31 +28,23 @@ dma_request_slave_channel_reason() is:
 
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
 ---
- drivers/spi/spi-s3c64xx.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/spi/spi-tegra20-slink.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 7b7151ec14c8..cf67ea60dc0e 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1154,15 +1154,13 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index 111fffc91435..51573f41ed12 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -599,8 +599,7 @@ static int tegra_slink_init_dma_param(struct tegra_slink_data *tspi,
+ 	int ret;
+ 	struct dma_slave_config dma_sconfig;
  
- 	if (!is_polling(sdd)) {
- 		/* Acquire DMA channels */
--		sdd->rx_dma.ch = dma_request_slave_channel_reason(&pdev->dev,
--								  "rx");
-+		sdd->rx_dma.ch = dma_request_chan(&pdev->dev, "rx");
- 		if (IS_ERR(sdd->rx_dma.ch)) {
- 			dev_err(&pdev->dev, "Failed to get RX DMA channel\n");
- 			ret = PTR_ERR(sdd->rx_dma.ch);
- 			goto err_disable_io_clk;
- 		}
--		sdd->tx_dma.ch = dma_request_slave_channel_reason(&pdev->dev,
--								  "tx");
-+		sdd->tx_dma.ch = dma_request_chan(&pdev->dev, "tx");
- 		if (IS_ERR(sdd->tx_dma.ch)) {
- 			dev_err(&pdev->dev, "Failed to get TX DMA channel\n");
- 			ret = PTR_ERR(sdd->tx_dma.ch);
+-	dma_chan = dma_request_slave_channel_reason(tspi->dev,
+-						dma_to_memory ? "rx" : "tx");
++	dma_chan = dma_request_chan(tspi->dev, dma_to_memory ? "rx" : "tx");
+ 	if (IS_ERR(dma_chan)) {
+ 		ret = PTR_ERR(dma_chan);
+ 		if (ret != -EPROBE_DEFER)
 -- 
 Peter
 

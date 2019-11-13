@@ -1,49 +1,65 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 180/209] spi: fsl-lpspi: Prevent FIFO under/overrun by default
-Date: Tue, 12 Nov 2019 20:49:56 -0500
-Message-ID: <20191113015025.9685-180-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 182/209] spi: spidev: Fix OF tree warning logic
+Date: Tue, 12 Nov 2019 20:49:58 -0500
+Message-ID: <20191113015025.9685-182-sashal@kernel.org>
 References: <20191113015025.9685-1-sashal@kernel.org>
 Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Cc: Hieu Tran Dang <dangtranhieu2012@gmail.com>,
+Cc: Trent Piepho <tpiepho@impinj.com>,
+        =?UTF-8?q?Jan=20Kundr=C3=83=C2=A1t?= <jan.kundrat@cesnet.cz>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Return-path: <stable-owner@vger.kernel.org>
 In-Reply-To: <20191113015025.9685-1-sashal@kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Hieu Tran Dang <dangtranhieu2012@gmail.com>
+From: Trent Piepho <tpiepho@impinj.com>
 
-[ Upstream commit de8978c388c66b8fca192213ec9f0727e964c652 ]
+[ Upstream commit 605b3bec73cbd74b4ac937b580cd0b47d1300484 ]
 
-Certain devices don't work well when a transmit FIFO underrun or
-receive FIFO overrun occurs. Example is the SAF400x radio chip when
-running at high speed which leads to garbage being sent to/received from
-the chip. In which case, it should stall waiting for further data to be
-available before proceeding. This patch unset the NOSTALL bit in CFGR1
-by default to prevent this issue.
+spidev will make a big fuss if a device tree node binds a device by
+using "spidev" as the node's compatible property.
 
-Signed-off-by: Hieu Tran Dang <dangtranhieu2012@gmail.com>
+However, the logic for this isn't looking for "spidev" in the
+compatible, but rather checking that the device is NOT compatible with
+spidev's list of devices.
+
+This causes a false positive if a device not named "rohm,dh2228fv", etc.
+binds to spidev, even if a means other than putting "spidev" in the
+device tree was used.  E.g., the sysfs driver_override attribute.
+
+Signed-off-by: Trent Piepho <tpiepho@impinj.com>
+Reviewed-by: Jan KundrÃ¡t <jan.kundrat@cesnet.cz>
+Tested-by: Jan KundrÃ¡t <jan.kundrat@cesnet.cz>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spidev.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index e6d5cc6ab108b..51670976faa35 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -276,7 +276,7 @@ static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index cda10719d1d1b..c5fe08bc34a0a 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -724,11 +724,9 @@ static int spidev_probe(struct spi_device *spi)
+ 	 * compatible string, it is a Linux implementation thing
+ 	 * rather than a description of the hardware.
+ 	 */
+-	if (spi->dev.of_node && !of_match_device(spidev_dt_ids, &spi->dev)) {
+-		dev_err(&spi->dev, "buggy DT: spidev listed directly in DT\n");
+-		WARN_ON(spi->dev.of_node &&
+-			!of_match_device(spidev_dt_ids, &spi->dev));
+-	}
++	WARN(spi->dev.of_node &&
++	     of_device_is_compatible(spi->dev.of_node, "spidev"),
++	     "%pOF: buggy DT: spidev listed directly in DT\n", spi->dev.of_node);
  
- 	fsl_lpspi_set_watermark(fsl_lpspi);
+ 	spidev_probe_acpi(spi);
  
--	temp = CFGR1_PCSCFG | CFGR1_MASTER | CFGR1_NOSTALL;
-+	temp = CFGR1_PCSCFG | CFGR1_MASTER;
- 	if (fsl_lpspi->config.mode & SPI_CS_HIGH)
- 		temp |= CFGR1_PCSPOL;
- 	writel(temp, fsl_lpspi->base + IMX7ULP_CFGR1);
 -- 
 2.20.1

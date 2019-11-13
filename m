@@ -1,7 +1,7 @@
 From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Subject: [PATCH 2/9] spi: atmel: Use dma_request_chan() directly for channel request
-Date: Wed, 13 Nov 2019 11:42:49 +0200
-Message-ID: <20191113094256.1108-3-peter.ujfalusi@ti.com>
+Subject: [PATCH 3/9] spi: fsl-lpspi: Use dma_request_chan() directly for channel request
+Date: Wed, 13 Nov 2019 11:42:50 +0200
+Message-ID: <20191113094256.1108-4-peter.ujfalusi@ti.com>
 References: <20191113094256.1108-1-peter.ujfalusi@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -28,22 +28,31 @@ dma_request_slave_channel_reason() is:
 
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
 ---
- drivers/spi/spi-atmel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-fsl-lpspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 9e84a93083bc..56f0ca361deb 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -511,7 +511,7 @@ static int atmel_spi_configure_dma(struct spi_master *master,
- 	dma_cap_zero(mask);
- 	dma_cap_set(DMA_SLAVE, mask);
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 6f4769a53f8a..2cc0ddb4a988 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -675,7 +675,7 @@ static int fsl_lpspi_dma_init(struct device *dev,
+ 	int ret;
  
--	master->dma_tx = dma_request_slave_channel_reason(dev, "tx");
-+	master->dma_tx = dma_request_chan(dev, "tx");
- 	if (IS_ERR(master->dma_tx)) {
- 		err = PTR_ERR(master->dma_tx);
- 		if (err == -EPROBE_DEFER) {
+ 	/* Prepare for TX DMA: */
+-	controller->dma_tx = dma_request_slave_channel_reason(dev, "tx");
++	controller->dma_tx = dma_request_chan(dev, "tx");
+ 	if (IS_ERR(controller->dma_tx)) {
+ 		ret = PTR_ERR(controller->dma_tx);
+ 		dev_dbg(dev, "can't get the TX DMA channel, error %d!\n", ret);
+@@ -684,7 +684,7 @@ static int fsl_lpspi_dma_init(struct device *dev,
+ 	}
+ 
+ 	/* Prepare for RX DMA: */
+-	controller->dma_rx = dma_request_slave_channel_reason(dev, "rx");
++	controller->dma_rx = dma_request_chan(dev, "rx");
+ 	if (IS_ERR(controller->dma_rx)) {
+ 		ret = PTR_ERR(controller->dma_rx);
+ 		dev_dbg(dev, "can't get the RX DMA channel, error %d\n", ret);
 -- 
 Peter
 

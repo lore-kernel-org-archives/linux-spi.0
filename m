@@ -1,9 +1,9 @@
 From: Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH AUTOSEL 4.9 67/68] spi: rockchip: initialize dma_slave_config
+Subject: [PATCH AUTOSEL 4.4 47/48] spi: rockchip: initialize dma_slave_config
  properly
-Date: Tue, 12 Nov 2019 20:59:31 -0500
-Message-ID: <20191113015932.12655-67-sashal@kernel.org>
-References: <20191113015932.12655-1-sashal@kernel.org>
+Date: Tue, 12 Nov 2019 21:01:30 -0500
+Message-ID: <20191113020131.13356-47-sashal@kernel.org>
+References: <20191113020131.13356-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -13,7 +13,7 @@ Cc: Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Emil Renner Be
 To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-rockchip-bounces+glpar-linux-rockchip=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <20191113015932.12655-1-sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+In-Reply-To: <20191113020131.13356-1-sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rockchip>,
  <mailto:linux-rockchip-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-rockchip/>
@@ -42,10 +42,10 @@ Signed-off-by: Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
  1 file changed, 3 insertions(+)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 0f89c2169c244..3a94f465e8e05 100644
+index 035767c020720..f42ae9efb255c 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -443,6 +443,9 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+@@ -444,6 +444,9 @@ static void rockchip_spi_prepare_dma(struct rockchip_spi *rs)
  	struct dma_slave_config rxconf, txconf;
  	struct dma_async_tx_descriptor *rxdesc, *txdesc;
  

@@ -1,65 +1,65 @@
-From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 182/209] spi: spidev: Fix OF tree warning logic
-Date: Tue, 12 Nov 2019 20:49:58 -0500
-Message-ID: <20191113015025.9685-182-sashal@kernel.org>
-References: <20191113015025.9685-1-sashal@kernel.org>
+From: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Subject: [PATCH 0/9] spi: Use dma_request_chan() directly for channel request
+Date: Wed, 13 Nov 2019 11:42:47 +0200
+Message-ID: <20191113094256.1108-1-peter.ujfalusi@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Cc: Trent Piepho <tpiepho@impinj.com>,
-        =?UTF-8?q?Jan=20Kundr=C3=83=C2=A1t?= <jan.kundrat@cesnet.cz>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <20191113015025.9685-1-sashal@kernel.org>
-Sender: stable-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: alexandre.belloni@bootlin.com, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, krzk@kernel.org, linux-spi@vger.kernel.org,
+ vkoul@kernel.org, kgene@kernel.org, linux-tegra@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+To: <broonie@kernel.org>, <radu_nicolae.pirea@upb.ro>, <shawnguo@kernel.org>,
+ <s.hauer@pengutronix.de>, <linus.walleij@linaro.org>,
+ <agross@kernel.org>, <bjorn.andersson@linaro.org>, <andi@etezian.org>,
+ <ldewangan@nvidia.com>, <thierry.reding@gmail.com>, <jonathanh@nvidia.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Trent Piepho <tpiepho@impinj.com>
+Hi,
 
-[ Upstream commit 605b3bec73cbd74b4ac937b580cd0b47d1300484 ]
+I'm going through the tree to remove dma_request_slave_channel_reason() as it
+is just:
+#define dma_request_slave_channel_reason(dev, name) \
+	dma_request_chan(dev, name)
 
-spidev will make a big fuss if a device tree node binds a device by
-using "spidev" as the node's compatible property.
-
-However, the logic for this isn't looking for "spidev" in the
-compatible, but rather checking that the device is NOT compatible with
-spidev's list of devices.
-
-This causes a false positive if a device not named "rohm,dh2228fv", etc.
-binds to spidev, even if a means other than putting "spidev" in the
-device tree was used.  E.g., the sysfs driver_override attribute.
-
-Signed-off-by: Trent Piepho <tpiepho@impinj.com>
-Reviewed-by: Jan KundrÃ¡t <jan.kundrat@cesnet.cz>
-Tested-by: Jan KundrÃ¡t <jan.kundrat@cesnet.cz>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Regards,
+Peter
 ---
- drivers/spi/spidev.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+Peter Ujfalusi (9):
+  spi: at91-usart: Use dma_request_chan() directly for channel request
+  spi: atmel: Use dma_request_chan() directly for channel request
+  spi: fsl-lpspi: Use dma_request_chan() directly for channel request
+  spi: imx: Use dma_request_chan() directly for channel request
+  spi: pl022: Use dma_request_chan() directly for channel request
+  spi: qup: Use dma_request_chan() directly for channel request
+  spi: s3c64xx: Use dma_request_chan() directly for channel request
+  spi: tegra114: Use dma_request_chan() directly for channel request
+  spi: tegra20-slink: Use dma_request_chan() directly for channel
+    request
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index cda10719d1d1b..c5fe08bc34a0a 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -724,11 +724,9 @@ static int spidev_probe(struct spi_device *spi)
- 	 * compatible string, it is a Linux implementation thing
- 	 * rather than a description of the hardware.
- 	 */
--	if (spi->dev.of_node && !of_match_device(spidev_dt_ids, &spi->dev)) {
--		dev_err(&spi->dev, "buggy DT: spidev listed directly in DT\n");
--		WARN_ON(spi->dev.of_node &&
--			!of_match_device(spidev_dt_ids, &spi->dev));
--	}
-+	WARN(spi->dev.of_node &&
-+	     of_device_is_compatible(spi->dev.of_node, "spidev"),
-+	     "%pOF: buggy DT: spidev listed directly in DT\n", spi->dev.of_node);
- 
- 	spidev_probe_acpi(spi);
- 
+ drivers/spi/spi-at91-usart.c    | 4 ++--
+ drivers/spi/spi-atmel.c         | 2 +-
+ drivers/spi/spi-fsl-lpspi.c     | 4 ++--
+ drivers/spi/spi-imx.c           | 4 ++--
+ drivers/spi/spi-pl022.c         | 4 ++--
+ drivers/spi/spi-qup.c           | 4 ++--
+ drivers/spi/spi-s3c64xx.c       | 6 ++----
+ drivers/spi/spi-tegra114.c      | 3 +--
+ drivers/spi/spi-tegra20-slink.c | 3 +--
+ 9 files changed, 15 insertions(+), 19 deletions(-)
+
 -- 
-2.20.1
+Peter
+
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki

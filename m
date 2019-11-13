@@ -1,7 +1,7 @@
 From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Subject: [PATCH 9/9] spi: tegra20-slink: Use dma_request_chan() directly for channel request
-Date: Wed, 13 Nov 2019 11:42:56 +0200
-Message-ID: <20191113094256.1108-10-peter.ujfalusi@ti.com>
+Subject: [PATCH 8/9] spi: tegra114: Use dma_request_chan() directly for channel request
+Date: Wed, 13 Nov 2019 11:42:55 +0200
+Message-ID: <20191113094256.1108-9-peter.ujfalusi@ti.com>
 References: <20191113094256.1108-1-peter.ujfalusi@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -28,19 +28,19 @@ dma_request_slave_channel_reason() is:
 
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
 ---
- drivers/spi/spi-tegra20-slink.c | 3 +--
+ drivers/spi/spi-tegra114.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index 111fffc91435..51573f41ed12 100644
---- a/drivers/spi/spi-tegra20-slink.c
-+++ b/drivers/spi/spi-tegra20-slink.c
-@@ -599,8 +599,7 @@ static int tegra_slink_init_dma_param(struct tegra_slink_data *tspi,
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index e6a450d9b4f0..fc40ab146c86 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -666,8 +666,7 @@ static int tegra_spi_init_dma_param(struct tegra_spi_data *tspi,
+ 	dma_addr_t dma_phys;
  	int ret;
- 	struct dma_slave_config dma_sconfig;
  
 -	dma_chan = dma_request_slave_channel_reason(tspi->dev,
--						dma_to_memory ? "rx" : "tx");
+-					dma_to_memory ? "rx" : "tx");
 +	dma_chan = dma_request_chan(tspi->dev, dma_to_memory ? "rx" : "tx");
  	if (IS_ERR(dma_chan)) {
  		ret = PTR_ERR(dma_chan);

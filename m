@@ -1,49 +1,50 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.14 097/115] spi: fsl-lpspi: Prevent FIFO under/overrun by default
-Date: Tue, 12 Nov 2019 20:56:04 -0500
-Message-ID: <20191113015622.11592-97-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 110/115] spi: rockchip: initialize dma_slave_config properly
+Date: Tue, 12 Nov 2019 20:56:17 -0500
+Message-ID: <20191113015622.11592-110-sashal@kernel.org>
 References: <20191113015622.11592-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Hieu Tran Dang <dangtranhieu2012@gmail.com>,
+Cc: Huibin Hong <huibin.hong@rock-chips.com>,
+        Emil Renner Berthing <kernel@esmil.dk>,
         Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org,
+        linux-rockchip@lists.infradead.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Return-path: <stable-owner@vger.kernel.org>
 In-Reply-To: <20191113015622.11592-1-sashal@kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Hieu Tran Dang <dangtranhieu2012@gmail.com>
+From: Huibin Hong <huibin.hong@rock-chips.com>
 
-[ Upstream commit de8978c388c66b8fca192213ec9f0727e964c652 ]
+[ Upstream commit dd8fd2cbc73f8650f651da71fc61a6e4f30c1566 ]
 
-Certain devices don't work well when a transmit FIFO underrun or
-receive FIFO overrun occurs. Example is the SAF400x radio chip when
-running at high speed which leads to garbage being sent to/received from
-the chip. In which case, it should stall waiting for further data to be
-available before proceeding. This patch unset the NOSTALL bit in CFGR1
-by default to prevent this issue.
+The rxconf and txconf structs are allocated on the
+stack, so make sure we zero them before filling out
+the relevant fields.
 
-Signed-off-by: Hieu Tran Dang <dangtranhieu2012@gmail.com>
+Signed-off-by: Huibin Hong <huibin.hong@rock-chips.com>
+Signed-off-by: Emil Renner Berthing <kernel@esmil.dk>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-rockchip.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index cb3c73007ca15..8fe51f7541bb3 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -287,7 +287,7 @@ static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index fdcf3076681b5..185bbdce62b14 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -445,6 +445,9 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs)
+ 	struct dma_slave_config rxconf, txconf;
+ 	struct dma_async_tx_descriptor *rxdesc, *txdesc;
  
- 	fsl_lpspi_set_watermark(fsl_lpspi);
- 
--	temp = CFGR1_PCSCFG | CFGR1_MASTER | CFGR1_NOSTALL;
-+	temp = CFGR1_PCSCFG | CFGR1_MASTER;
- 	if (fsl_lpspi->config.mode & SPI_CS_HIGH)
- 		temp |= CFGR1_PCSPOL;
- 	writel(temp, fsl_lpspi->base + IMX7ULP_CFGR1);
++	memset(&rxconf, 0, sizeof(rxconf));
++	memset(&txconf, 0, sizeof(txconf));
++
+ 	spin_lock_irqsave(&rs->lock, flags);
+ 	rs->state &= ~RXBUSY;
+ 	rs->state &= ~TXBUSY;
 -- 
 2.20.1

@@ -1,7 +1,9 @@
 From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Subject: [PATCH 0/9] spi: Use dma_request_chan() directly for channel request
-Date: Wed, 13 Nov 2019 11:42:47 +0200
-Message-ID: <20191113094256.1108-1-peter.ujfalusi@ti.com>
+Subject: [PATCH 1/9] spi: at91-usart: Use dma_request_chan() directly for
+ channel request
+Date: Wed, 13 Nov 2019 11:42:48 +0200
+Message-ID: <20191113094256.1108-2-peter.ujfalusi@ti.com>
+References: <20191113094256.1108-1-peter.ujfalusi@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -14,6 +16,7 @@ To: <broonie@kernel.org>, <radu_nicolae.pirea@upb.ro>, <shawnguo@kernel.org>,
  <agross@kernel.org>, <bjorn.andersson@linaro.org>, <andi@etezian.org>,
  <ldewangan@nvidia.com>, <thierry.reding@gmail.com>, <jonathanh@nvidia.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20191113094256.1108-1-peter.ujfalusi@ti.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -25,39 +28,37 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
-
-I'm going through the tree to remove dma_request_slave_channel_reason() as it
-is just:
+dma_request_slave_channel_reason() is:
 #define dma_request_slave_channel_reason(dev, name) \
 	dma_request_chan(dev, name)
 
-Regards,
-Peter
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
 ---
-Peter Ujfalusi (9):
-  spi: at91-usart: Use dma_request_chan() directly for channel request
-  spi: atmel: Use dma_request_chan() directly for channel request
-  spi: fsl-lpspi: Use dma_request_chan() directly for channel request
-  spi: imx: Use dma_request_chan() directly for channel request
-  spi: pl022: Use dma_request_chan() directly for channel request
-  spi: qup: Use dma_request_chan() directly for channel request
-  spi: s3c64xx: Use dma_request_chan() directly for channel request
-  spi: tegra114: Use dma_request_chan() directly for channel request
-  spi: tegra20-slink: Use dma_request_chan() directly for channel
-    request
+ drivers/spi/spi-at91-usart.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- drivers/spi/spi-at91-usart.c    | 4 ++--
- drivers/spi/spi-atmel.c         | 2 +-
- drivers/spi/spi-fsl-lpspi.c     | 4 ++--
- drivers/spi/spi-imx.c           | 4 ++--
- drivers/spi/spi-pl022.c         | 4 ++--
- drivers/spi/spi-qup.c           | 4 ++--
- drivers/spi/spi-s3c64xx.c       | 6 ++----
- drivers/spi/spi-tegra114.c      | 3 +--
- drivers/spi/spi-tegra20-slink.c | 3 +--
- 9 files changed, 15 insertions(+), 19 deletions(-)
-
+diff --git a/drivers/spi/spi-at91-usart.c b/drivers/spi/spi-at91-usart.c
+index a40bb2ef89dc..88033422a42a 100644
+--- a/drivers/spi/spi-at91-usart.c
++++ b/drivers/spi/spi-at91-usart.c
+@@ -132,7 +132,7 @@ static int at91_usart_spi_configure_dma(struct spi_controller *ctlr,
+ 	dma_cap_zero(mask);
+ 	dma_cap_set(DMA_SLAVE, mask);
+ 
+-	ctlr->dma_tx = dma_request_slave_channel_reason(dev, "tx");
++	ctlr->dma_tx = dma_request_chan(dev, "tx");
+ 	if (IS_ERR_OR_NULL(ctlr->dma_tx)) {
+ 		if (IS_ERR(ctlr->dma_tx)) {
+ 			err = PTR_ERR(ctlr->dma_tx);
+@@ -145,7 +145,7 @@ static int at91_usart_spi_configure_dma(struct spi_controller *ctlr,
+ 		goto at91_usart_spi_error_clear;
+ 	}
+ 
+-	ctlr->dma_rx = dma_request_slave_channel_reason(dev, "rx");
++	ctlr->dma_rx = dma_request_chan(dev, "rx");
+ 	if (IS_ERR_OR_NULL(ctlr->dma_rx)) {
+ 		if (IS_ERR(ctlr->dma_rx)) {
+ 			err = PTR_ERR(ctlr->dma_rx);
 -- 
 Peter
 

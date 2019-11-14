@@ -1,60 +1,78 @@
-From: Andi Shyti <andi@etezian.org>
-Subject: Re: [PATCH 7/9] spi: s3c64xx: Use dma_request_chan() directly for
- channel request
-Date: Thu, 14 Nov 2019 11:12:30 +0200
-Message-ID: <20191114091230.GB1249@jack.zhora.eu>
-References: <20191113094256.1108-1-peter.ujfalusi@ti.com>
- <20191113094256.1108-8-peter.ujfalusi@ti.com>
- <20191113234049.GA1249@jack.zhora.eu>
- <e453c716-7658-a9fd-324d-4d95ff1aa29c@ti.com>
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH 1/2] spi: dt-bindings: spi-controller: add wakeup-source
+ and interrupts
+Date: Thu, 14 Nov 2019 16:26:52 -0600
+Message-ID: <20191114222652.GA7517@bogus>
+References: <20191112055412.192675-1-dmitry.torokhov@gmail.com>
+ <20191112055412.192675-2-dmitry.torokhov@gmail.com>
+ <20191112120307.GB5195@sirena.co.uk>
+ <20191112190328.GA199853@dtor-ws>
+ <20191112191547.GK5195@sirena.co.uk>
+ <20191112193653.GB13374@dtor-ws>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: jonathanh@nvidia.com, alexandre.belloni@bootlin.com, s.hauer@pengutronix.de,
- linux-arm-msm@vger.kernel.org, radu_nicolae.pirea@upb.ro, broonie@kernel.org,
- linux-kernel@vger.kernel.org, krzk@kernel.org, linux-spi@vger.kernel.org,
- vkoul@kernel.org, kgene@kernel.org, ldewangan@nvidia.com, agross@kernel.org,
- Andi Shyti <andi@etezian.org>, linux-tegra@vger.kernel.org,
- thierry.reding@gmail.com, bjorn.andersson@linaro.org, shawnguo@kernel.org,
- linus.walleij@linaro.org, linux-arm-kernel@lists.infradead.org
-To: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
+        devicetree@vger.kernel.org
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <e453c716-7658-a9fd-324d-4d95ff1aa29c@ti.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+In-Reply-To: <20191112193653.GB13374@dtor-ws>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Peter,
-
-> >>  	if (!is_polling(sdd)) {
-> >>  		/* Acquire DMA channels */
-> >> -		sdd->rx_dma.ch = dma_request_slave_channel_reason(&pdev->dev,
-> >> -								  "rx");
-> >> +		sdd->rx_dma.ch = dma_request_chan(&pdev->dev, "rx");
+On Tue, Nov 12, 2019 at 11:36:53AM -0800, Dmitry Torokhov wrote:
+> On Tue, Nov 12, 2019 at 07:15:47PM +0000, Mark Brown wrote:
+> > On Tue, Nov 12, 2019 at 11:03:28AM -0800, Dmitry Torokhov wrote:
+> > > On Tue, Nov 12, 2019 at 12:03:07PM +0000, Mark Brown wrote:
+> > > > On Mon, Nov 11, 2019 at 09:54:10PM -0800, Dmitry Torokhov wrote:
 > > 
-> > I have a little concern here. We have two funcions
-> > 'dma_request_chan' and  'dma_request_channel' don't we end up
-> > making some confusion here?
+> > > > > +      interrupts:
+> > > > > +        items:
+> > > > > +          - description: main interrupt (attention) line.
+> > > > > +          - description: dedicated wakeup interrupt.
+> > > > > +        minItems: 1 # The wakeup interrupt is optional.
 > > 
-> > Wouldn't it make more sense renaming 'dma_request_chan' to
-> > 'dma_request_slave_channel_reason'?
+> > > > > +      interrupt-names:
+> > > > > +        items:
+> > > > > +          - const: irq
+> > > > > +          - const: wakeup
+> > > > > +        minItems: 1
+> > 
+> > > > How will this interact with a SPI device that defines interrupts at the
+> > > > device level, possibly more than one of them?  Especially if the device
+> > > > has its own idea what the interrupts should be called.
+> > 
+> > > My understanding that individual drivers should be able to override
+> > > whatever the default behavior core has configured, and the device can
+> > > establish their own mapping. We have this in I2C and I believe this
+> > > works well.
+> > 
+> > > Is the concern about the device tree scheme or SPI core handling?
+> > 
+> > Both really.
 > 
-> The dma_request_channel() should go away. It was the old API before we
-> got the dma_slave_map for non DT (and non ACPI) platforms so we can get
-> rid of the filter function exports from DMA drivers to clients all over
-> the place.
+> So as I mentioned, the driver is not forced to use the interrupt
+> supplied by the SPI core, and the worst thing is that the core
+> configures the main IRQ as wakeirq and driver would need to call
+> dev_pm_clear_wake_irq() before switching to correct one. I expect there
+> will be just a few drivers needing that and many more would benefit from
+> the default behavior and not needing to repeat the same boilerplate
+> code.
+> 
+> As far as scheme goes - I hope that Rob could confirm that we can
+> override number of interrupts and names in consumers of the binding, as
+> needed.
 
-Yes, I agree... thanks!
+This won't work. A device schema doesn't override what's defined here, 
+but just further constrains this schema.
 
-Acked-by: Andi Shyti <andi@etezian.org>
+You could define a "spi irq" schema which devices can include if they 
+want to, but I don't think this pattern is that common to SPI devices. 
+There's not any spec behind compared to say alert irq for SMBus. 
 
-Thanks,
-Andi
+The 'wakeup' irq name is standardized (for DT), but that's not SPI 
+specific. About all we could define there is 'wakeup-source' is boolean 
+and if there is more than one interrupt, one should be named 'wakeup'.
+
+Rob

@@ -1,13 +1,14 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: tegra20-slink: Use dma_request_chan() directly for channel request" to the spi tree
-Date: Fri, 15 Nov 2019 12:25:14 +0000 (GMT)
-Message-ID: <20191115122514.40CB92741609@ypsilon.sirena.org.uk>
-References: <20191113094256.1108-10-peter.ujfalusi@ti.com>
+Subject: Applied "spi: pl022: Use dma_request_chan() directly for channel request" to the spi tree
+Date: Fri, 15 Nov 2019 12:25:15 +0000 (GMT)
+Message-ID: <20191115122515.78769274162A@ypsilon.sirena.org.uk>
+References: <20191113094256.1108-6-peter.ujfalusi@ti.com>
 Cc: agross@kernel.org, alexandre.belloni@bootlin.com, andi@etezian.org,
         bjorn.andersson@linaro.org, broonie@kernel.org,
-        jonathanh@nvidia.com, Jon Hunter <jonathanh@nvidia.com>,
-        kgene@kernel.org, krzk@kernel.org, ldewangan@nvidia.com,
-        linus.walleij@linaro.org, linux-arm-kernel@lists.infradead.org,
+        jonathanh@nvidia.com, kgene@kernel.org, krzk@kernel.org,
+        ldewangan@nvidia.com, linus.walleij@linaro.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-arm-kernel@lists.infradead.org,
         linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
         Mark Brown <broonie@kernel.org>, radu_nicolae.pirea@upb.ro,
@@ -15,13 +16,13 @@ Cc: agross@kernel.org, alexandre.belloni@bootlin.com, andi@etezian.org,
         thierry.reding@gmail.com, vkoul@kernel.org
 To: Peter Ujfalusi <peter.ujfalusi@ti.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191113094256.1108-10-peter.ujfalusi@ti.com>
+In-Reply-To: <20191113094256.1108-6-peter.ujfalusi@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: tegra20-slink: Use dma_request_chan() directly for channel request
+   spi: pl022: Use dma_request_chan() directly for channel request
 
 has been applied to the spi tree at
 
@@ -46,37 +47,45 @@ to this mail.
 Thanks,
 Mark
 
->From 912a7df474d2cb22fc99a1fcf77997f2cea7d85e Mon Sep 17 00:00:00 2001
+>From c1008957ff1aee0ac92c28c55947173fb68cd451 Mon Sep 17 00:00:00 2001
 From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Date: Wed, 13 Nov 2019 11:42:56 +0200
-Subject: [PATCH] spi: tegra20-slink: Use dma_request_chan() directly for
- channel request
+Date: Wed, 13 Nov 2019 11:42:52 +0200
+Subject: [PATCH] spi: pl022: Use dma_request_chan() directly for channel
+ request
 
 dma_request_slave_channel_reason() is:
 #define dma_request_slave_channel_reason(dev, name) \
 	dma_request_chan(dev, name)
 
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Acked-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://lore.kernel.org/r/20191113094256.1108-10-peter.ujfalusi@ti.com
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20191113094256.1108-6-peter.ujfalusi@ti.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-tegra20-slink.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/spi/spi-pl022.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index 111fffc91435..51573f41ed12 100644
---- a/drivers/spi/spi-tegra20-slink.c
-+++ b/drivers/spi/spi-tegra20-slink.c
-@@ -599,8 +599,7 @@ static int tegra_slink_init_dma_param(struct tegra_slink_data *tspi,
- 	int ret;
- 	struct dma_slave_config dma_sconfig;
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 3024c30e7f2e..66028ebbc336 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -1158,7 +1158,7 @@ static int pl022_dma_autoprobe(struct pl022 *pl022)
+ 	int err;
  
--	dma_chan = dma_request_slave_channel_reason(tspi->dev,
--						dma_to_memory ? "rx" : "tx");
-+	dma_chan = dma_request_chan(tspi->dev, dma_to_memory ? "rx" : "tx");
- 	if (IS_ERR(dma_chan)) {
- 		ret = PTR_ERR(dma_chan);
- 		if (ret != -EPROBE_DEFER)
+ 	/* automatically configure DMA channels from platform, normally using DT */
+-	chan = dma_request_slave_channel_reason(dev, "rx");
++	chan = dma_request_chan(dev, "rx");
+ 	if (IS_ERR(chan)) {
+ 		err = PTR_ERR(chan);
+ 		goto err_no_rxchan;
+@@ -1166,7 +1166,7 @@ static int pl022_dma_autoprobe(struct pl022 *pl022)
+ 
+ 	pl022->dma_rx_channel = chan;
+ 
+-	chan = dma_request_slave_channel_reason(dev, "tx");
++	chan = dma_request_chan(dev, "tx");
+ 	if (IS_ERR(chan)) {
+ 		err = PTR_ERR(chan);
+ 		goto err_no_txchan;
 -- 
 2.20.1

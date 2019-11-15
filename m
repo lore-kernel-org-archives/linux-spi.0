@@ -1,57 +1,70 @@
-From: Chuhong Yuan <hslester96@gmail.com>
-Subject: [PATCH] spi: tegra20-slink: add missed clk_unprepare
-Date: Fri, 15 Nov 2019 16:31:22 +0800
-Message-ID: <20191115083122.12278-1-hslester96@gmail.com>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: Laxman Dewangan <ldewangan@nvidia.com>,
-        Mark Brown <broonie@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
-To: unlisted-recipients:; (no To-header on input)
+From: Mason Yang <masonccyang@mxic.com.tw>
+Subject: [PATCH 0/4] mtd: spi-nor: Add support for Octal 8D-8D-8D mode
+Date: Fri, 15 Nov 2019 16:58:04 +0800
+Message-ID: <1573808288-19365-1-git-send-email-masonccyang@mxic.com.tw>
+Cc: juliensu@mxic.com.tw, linux-kernel@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        Mason Yang <masonccyang@mxic.com.tw>
+To: broonie@kernel.org, miquel.raynal@bootlin.com, richard@nod.at,
+        marek.vasut@gmail.com, dwmw2@infradead.org,
+        computersforpeace@gmail.com, vigneshr@ti.com,
+        bbrezillon@kernel.org, tudor.ambarus@microchip.com
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The driver misses calling clk_unprepare in probe failure and remove.
-Add the calls to fix it.
+Hello,
 
-Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
----
- drivers/spi/spi-tegra20-slink.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+This is repost of patchset from Boris Brezillon's
+[RFC,00/18] mtd: spi-nor: Proposal for 8-8-8 mode support [1].
 
-diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index 111fffc91435..374a2a32edcd 100644
---- a/drivers/spi/spi-tegra20-slink.c
-+++ b/drivers/spi/spi-tegra20-slink.c
-@@ -1073,7 +1073,7 @@ static int tegra_slink_probe(struct platform_device *pdev)
- 	ret = clk_enable(tspi->clk);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Clock enable failed %d\n", ret);
--		goto exit_free_master;
-+		goto exit_clk_unprepare;
- 	}
- 
- 	spi_irq = platform_get_irq(pdev, 0);
-@@ -1146,6 +1146,8 @@ static int tegra_slink_probe(struct platform_device *pdev)
- 	free_irq(spi_irq, tspi);
- exit_clk_disable:
- 	clk_disable(tspi->clk);
-+exit_clk_unprepare:
-+	clk_unprepare(tspi->clk);
- exit_free_master:
- 	spi_master_put(master);
- 	return ret;
-@@ -1159,6 +1161,7 @@ static int tegra_slink_remove(struct platform_device *pdev)
- 	free_irq(tspi->irq, tspi);
- 
- 	clk_disable(tspi->clk);
-+	clk_unprepare(tspi->clk);
- 
- 	if (tspi->tx_dma_chan)
- 		tegra_slink_deinit_dma_param(tspi, false);
+Background from cover letter for RFC[1].
+
+The trend has been around Octal NOR Flash lately and the latest mainline
+already supports 1-1-8 and 1-8-8 modes.
+
+Boris opened a discussion on how we should support stateful modes (X-X-X
+and XD-XD-XD, where X is the bus width and D means Double Transfer Rate).
+
+JESD216C has defined specification for Octal 8-8-8 and 8D-8D-8D.
+It defined command and command extension in
+JEDEC Basic Flash Parameter Table(18th DWORD) as well as how to
+enable 8-8-8/8D-8D-8D mode sequences (Write CFG Reg 2).
+
+The first set of patches is according to JESD216C adding Double Transfer
+Rate(DTR) fields, extension command and command bytes number to the
+spi_mem_op struct.
+
+The second set of patches define the relevant macrons and enum in spi-nor
+layer for Octal 8-8-8 and 8D-8D-8D mode operation.
+
+The last set of patches in the series are modifying spi_nor_fixups hook to
+tweak flash parameters for spi_nor_read/pp_setting() and then in a
+chip-specific way to enter 8-8-8 or 8D-8D-8D modes on a Macronix chip.
+
+Also patched spi-mxic driver for testing on Macronix's Zynq PicoZed board
+with Macronix's SPI controller (spi-mxic.c) and mx25uw51245g Octal flash.
+
+[1] https://patchwork.ozlabs.org/cover/982926/
+
+thnaks for your time and review.
+best regards,
+Mason
+
+
+Mason Yang (4):
+  spi: spi-mem: Add support for Octal 8D-8D-8D mode
+  mtd: spi-nor: Add support for Octal 8D-8D-8D mode
+  mtd: spi-nor: Add Octal 8D-8D-8D mode support for Macronix
+    mx25uw51245g
+  spi: mxic: Add support for Octal 8D-8D-8D mode
+
+ drivers/mtd/spi-nor/spi-nor.c | 273 +++++++++++++++++++++++++++++++++++++++++-
+ drivers/spi/spi-mem.c         |   8 +-
+ drivers/spi/spi-mxic.c        |  98 ++++++++++-----
+ include/linux/mtd/spi-nor.h   |  61 +++++++++-
+ include/linux/spi/spi-mem.h   |  13 ++
+ 5 files changed, 410 insertions(+), 43 deletions(-)
+
 -- 
-2.24.0
+1.9.1

@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: imx: Use dma_request_chan() directly for channel request" to the spi tree
+Subject: Applied "spi: qup: Use dma_request_chan() directly for channel request" to the spi tree
 Date: Fri, 15 Nov 2019 12:25:15 +0000 (GMT)
-Message-ID: <20191115122516.02B9127415A7@ypsilon.sirena.org.uk>
-References: <20191113094256.1108-5-peter.ujfalusi@ti.com>
+Message-ID: <20191115122515.3521B27415A7@ypsilon.sirena.org.uk>
+References: <20191113094256.1108-7-peter.ujfalusi@ti.com>
 Cc: agross@kernel.org, alexandre.belloni@bootlin.com, andi@etezian.org,
         bjorn.andersson@linaro.org, broonie@kernel.org,
         jonathanh@nvidia.com, kgene@kernel.org, krzk@kernel.org,
@@ -15,13 +15,13 @@ Cc: agross@kernel.org, alexandre.belloni@bootlin.com, andi@etezian.org,
         thierry.reding@gmail.com, vkoul@kernel.org
 To: Peter Ujfalusi <peter.ujfalusi@ti.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191113094256.1108-5-peter.ujfalusi@ti.com>
+In-Reply-To: <20191113094256.1108-7-peter.ujfalusi@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: imx: Use dma_request_chan() directly for channel request
+   spi: qup: Use dma_request_chan() directly for channel request
 
 has been applied to the spi tree at
 
@@ -46,43 +46,39 @@ to this mail.
 Thanks,
 Mark
 
->From 5d3aa9ccf40cdc9b94d1a708d11de9062e2d9eed Mon Sep 17 00:00:00 2001
+>From 194e1d4bc262c2d23ba9a8a5c03855c372ea1b5c Mon Sep 17 00:00:00 2001
 From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Date: Wed, 13 Nov 2019 11:42:51 +0200
-Subject: [PATCH] spi: imx: Use dma_request_chan() directly for channel request
+Date: Wed, 13 Nov 2019 11:42:53 +0200
+Subject: [PATCH] spi: qup: Use dma_request_chan() directly for channel request
 
 dma_request_slave_channel_reason() is:
 #define dma_request_slave_channel_reason(dev, name) \
 	dma_request_chan(dev, name)
 
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Link: https://lore.kernel.org/r/20191113094256.1108-5-peter.ujfalusi@ti.com
+Link: https://lore.kernel.org/r/20191113094256.1108-7-peter.ujfalusi@ti.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-imx.c | 4 ++--
+ drivers/spi/spi-qup.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 09c9a1edb2c6..49f0099db0cb 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1272,7 +1272,7 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
- 	spi_imx->wml = spi_imx->devtype_data->fifo_size / 2;
+diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+index 2f559e531100..dd3434a407ea 100644
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -932,11 +932,11 @@ static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
+ 	int ret;
  
- 	/* Prepare for TX DMA: */
+ 	/* allocate dma resources, if available */
+-	master->dma_rx = dma_request_slave_channel_reason(dev, "rx");
++	master->dma_rx = dma_request_chan(dev, "rx");
+ 	if (IS_ERR(master->dma_rx))
+ 		return PTR_ERR(master->dma_rx);
+ 
 -	master->dma_tx = dma_request_slave_channel_reason(dev, "tx");
 +	master->dma_tx = dma_request_chan(dev, "tx");
  	if (IS_ERR(master->dma_tx)) {
  		ret = PTR_ERR(master->dma_tx);
- 		dev_dbg(dev, "can't get the TX DMA channel, error %d!\n", ret);
-@@ -1281,7 +1281,7 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
- 	}
- 
- 	/* Prepare for RX : */
--	master->dma_rx = dma_request_slave_channel_reason(dev, "rx");
-+	master->dma_rx = dma_request_chan(dev, "rx");
- 	if (IS_ERR(master->dma_rx)) {
- 		ret = PTR_ERR(master->dma_rx);
- 		dev_dbg(dev, "can't get the RX DMA channel, error %d\n", ret);
+ 		goto err_tx;
 -- 
 2.20.1

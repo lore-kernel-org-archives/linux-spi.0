@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: atmel: Use dma_request_chan() directly for channel request" to the spi tree
-Date: Fri, 15 Nov 2019 12:25:16 +0000 (GMT)
-Message-ID: <20191115122516.A60F627415A7@ypsilon.sirena.org.uk>
-References: <20191113094256.1108-3-peter.ujfalusi@ti.com>
+Subject: Applied "spi: imx: Use dma_request_chan() directly for channel request" to the spi tree
+Date: Fri, 15 Nov 2019 12:25:15 +0000 (GMT)
+Message-ID: <20191115122516.02B9127415A7@ypsilon.sirena.org.uk>
+References: <20191113094256.1108-5-peter.ujfalusi@ti.com>
 Cc: agross@kernel.org, alexandre.belloni@bootlin.com, andi@etezian.org,
         bjorn.andersson@linaro.org, broonie@kernel.org,
         jonathanh@nvidia.com, kgene@kernel.org, krzk@kernel.org,
@@ -10,19 +10,18 @@ Cc: agross@kernel.org, alexandre.belloni@bootlin.com, andi@etezian.org,
         linux-arm-kernel@lists.infradead.org,
         linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        radu_nicolae.pirea@upb.ro, s.hauer@pengutronix.de,
-        shawnguo@kernel.org, thierry.reding@gmail.com, vkoul@kernel.org
+        Mark Brown <broonie@kernel.org>, radu_nicolae.pirea@upb.ro,
+        s.hauer@pengutronix.de, shawnguo@kernel.org,
+        thierry.reding@gmail.com, vkoul@kernel.org
 To: Peter Ujfalusi <peter.ujfalusi@ti.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191113094256.1108-3-peter.ujfalusi@ti.com>
+In-Reply-To: <20191113094256.1108-5-peter.ujfalusi@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: atmel: Use dma_request_chan() directly for channel request
+   spi: imx: Use dma_request_chan() directly for channel request
 
 has been applied to the spi tree at
 
@@ -47,36 +46,43 @@ to this mail.
 Thanks,
 Mark
 
->From bef1e0c8f74c87e7427cb98b2e76caf046c7b65a Mon Sep 17 00:00:00 2001
+>From 5d3aa9ccf40cdc9b94d1a708d11de9062e2d9eed Mon Sep 17 00:00:00 2001
 From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Date: Wed, 13 Nov 2019 11:42:49 +0200
-Subject: [PATCH] spi: atmel: Use dma_request_chan() directly for channel
- request
+Date: Wed, 13 Nov 2019 11:42:51 +0200
+Subject: [PATCH] spi: imx: Use dma_request_chan() directly for channel request
 
 dma_request_slave_channel_reason() is:
 #define dma_request_slave_channel_reason(dev, name) \
 	dma_request_chan(dev, name)
 
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Link: https://lore.kernel.org/r/20191113094256.1108-3-peter.ujfalusi@ti.com
+Link: https://lore.kernel.org/r/20191113094256.1108-5-peter.ujfalusi@ti.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-atmel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-imx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index d88e2aa64839..d692cc388126 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -512,7 +512,7 @@ static int atmel_spi_configure_dma(struct spi_master *master,
- 	dma_cap_zero(mask);
- 	dma_cap_set(DMA_SLAVE, mask);
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 09c9a1edb2c6..49f0099db0cb 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1272,7 +1272,7 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+ 	spi_imx->wml = spi_imx->devtype_data->fifo_size / 2;
  
+ 	/* Prepare for TX DMA: */
 -	master->dma_tx = dma_request_slave_channel_reason(dev, "tx");
 +	master->dma_tx = dma_request_chan(dev, "tx");
  	if (IS_ERR(master->dma_tx)) {
- 		err = PTR_ERR(master->dma_tx);
- 		if (err == -EPROBE_DEFER) {
+ 		ret = PTR_ERR(master->dma_tx);
+ 		dev_dbg(dev, "can't get the TX DMA channel, error %d!\n", ret);
+@@ -1281,7 +1281,7 @@ static int spi_imx_sdma_init(struct device *dev, struct spi_imx_data *spi_imx,
+ 	}
+ 
+ 	/* Prepare for RX : */
+-	master->dma_rx = dma_request_slave_channel_reason(dev, "rx");
++	master->dma_rx = dma_request_chan(dev, "rx");
+ 	if (IS_ERR(master->dma_rx)) {
+ 		ret = PTR_ERR(master->dma_rx);
+ 		dev_dbg(dev, "can't get the RX DMA channel, error %d\n", ret);
 -- 
 2.20.1

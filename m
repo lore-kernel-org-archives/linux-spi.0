@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: qup: Use dma_request_chan() directly for channel request" to the spi tree
-Date: Fri, 15 Nov 2019 12:25:15 +0000 (GMT)
-Message-ID: <20191115122515.3521B27415A7@ypsilon.sirena.org.uk>
-References: <20191113094256.1108-7-peter.ujfalusi@ti.com>
+Subject: Applied "spi: at91-usart: Use dma_request_chan() directly for channel request" to the spi tree
+Date: Fri, 15 Nov 2019 12:25:16 +0000 (GMT)
+Message-ID: <20191115122517.11B732741609@ypsilon.sirena.org.uk>
+References: <20191113094256.1108-2-peter.ujfalusi@ti.com>
 Cc: agross@kernel.org, alexandre.belloni@bootlin.com, andi@etezian.org,
         bjorn.andersson@linaro.org, broonie@kernel.org,
         jonathanh@nvidia.com, kgene@kernel.org, krzk@kernel.org,
@@ -10,18 +10,19 @@ Cc: agross@kernel.org, alexandre.belloni@bootlin.com, andi@etezian.org,
         linux-arm-kernel@lists.infradead.org,
         linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, radu_nicolae.pirea@upb.ro,
-        s.hauer@pengutronix.de, shawnguo@kernel.org,
-        thierry.reding@gmail.com, vkoul@kernel.org
+        Mark Brown <broonie@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        radu_nicolae.pirea@upb.ro, s.hauer@pengutronix.de,
+        shawnguo@kernel.org, thierry.reding@gmail.com, vkoul@kernel.org
 To: Peter Ujfalusi <peter.ujfalusi@ti.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191113094256.1108-7-peter.ujfalusi@ti.com>
+In-Reply-To: <20191113094256.1108-2-peter.ujfalusi@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: qup: Use dma_request_chan() directly for channel request
+   spi: at91-usart: Use dma_request_chan() directly for channel request
 
 has been applied to the spi tree at
 
@@ -46,39 +47,45 @@ to this mail.
 Thanks,
 Mark
 
->From 194e1d4bc262c2d23ba9a8a5c03855c372ea1b5c Mon Sep 17 00:00:00 2001
+>From cef76e5ace759848e78323a14df0dcd66b8de13d Mon Sep 17 00:00:00 2001
 From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Date: Wed, 13 Nov 2019 11:42:53 +0200
-Subject: [PATCH] spi: qup: Use dma_request_chan() directly for channel request
+Date: Wed, 13 Nov 2019 11:42:48 +0200
+Subject: [PATCH] spi: at91-usart: Use dma_request_chan() directly for channel
+ request
 
 dma_request_slave_channel_reason() is:
 #define dma_request_slave_channel_reason(dev, name) \
 	dma_request_chan(dev, name)
 
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Link: https://lore.kernel.org/r/20191113094256.1108-7-peter.ujfalusi@ti.com
+Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Link: https://lore.kernel.org/r/20191113094256.1108-2-peter.ujfalusi@ti.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-qup.c | 4 ++--
+ drivers/spi/spi-at91-usart.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index 2f559e531100..dd3434a407ea 100644
---- a/drivers/spi/spi-qup.c
-+++ b/drivers/spi/spi-qup.c
-@@ -932,11 +932,11 @@ static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
- 	int ret;
+diff --git a/drivers/spi/spi-at91-usart.c b/drivers/spi/spi-at91-usart.c
+index a40bb2ef89dc..88033422a42a 100644
+--- a/drivers/spi/spi-at91-usart.c
++++ b/drivers/spi/spi-at91-usart.c
+@@ -132,7 +132,7 @@ static int at91_usart_spi_configure_dma(struct spi_controller *ctlr,
+ 	dma_cap_zero(mask);
+ 	dma_cap_set(DMA_SLAVE, mask);
  
- 	/* allocate dma resources, if available */
--	master->dma_rx = dma_request_slave_channel_reason(dev, "rx");
-+	master->dma_rx = dma_request_chan(dev, "rx");
- 	if (IS_ERR(master->dma_rx))
- 		return PTR_ERR(master->dma_rx);
+-	ctlr->dma_tx = dma_request_slave_channel_reason(dev, "tx");
++	ctlr->dma_tx = dma_request_chan(dev, "tx");
+ 	if (IS_ERR_OR_NULL(ctlr->dma_tx)) {
+ 		if (IS_ERR(ctlr->dma_tx)) {
+ 			err = PTR_ERR(ctlr->dma_tx);
+@@ -145,7 +145,7 @@ static int at91_usart_spi_configure_dma(struct spi_controller *ctlr,
+ 		goto at91_usart_spi_error_clear;
+ 	}
  
--	master->dma_tx = dma_request_slave_channel_reason(dev, "tx");
-+	master->dma_tx = dma_request_chan(dev, "tx");
- 	if (IS_ERR(master->dma_tx)) {
- 		ret = PTR_ERR(master->dma_tx);
- 		goto err_tx;
+-	ctlr->dma_rx = dma_request_slave_channel_reason(dev, "rx");
++	ctlr->dma_rx = dma_request_chan(dev, "rx");
+ 	if (IS_ERR_OR_NULL(ctlr->dma_rx)) {
+ 		if (IS_ERR(ctlr->dma_rx)) {
+ 			err = PTR_ERR(ctlr->dma_rx);
 -- 
 2.20.1

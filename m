@@ -1,120 +1,187 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH 1/2] spi: dt-bindings: spi-controller: add wakeup-source
- and interrupts
-Date: Fri, 15 Nov 2019 07:52:22 -0600
-Message-ID: <CAL_JsqKUXPTC-fmUowpaHQpuKTfgfQ6D2n7kOZgkYt+MS7OfaA@mail.gmail.com>
-References: <20191112055412.192675-1-dmitry.torokhov@gmail.com>
- <20191112055412.192675-2-dmitry.torokhov@gmail.com> <20191112120307.GB5195@sirena.co.uk>
- <20191112190328.GA199853@dtor-ws> <20191112191547.GK5195@sirena.co.uk>
- <20191112193653.GB13374@dtor-ws> <20191114222652.GA7517@bogus> <CAKdAkRQBrKOUTW8puakA26ODYW9=0H4VhwFhGQAqMs-cMmj3CQ@mail.gmail.com>
+From: Benjamin Gaignard <benjamin.gaignard@st.com>
+Subject: [PATCH] dt-bindings: crypto: Convert stm32 QSPI bindings to
+ json-schema
+Date: Fri, 15 Nov 2019 15:23:18 +0100
+Message-ID: <20191115142318.2909-1-benjamin.gaignard@st.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        DTML <devicetree@vger.kernel.org>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAKdAkRQBrKOUTW8puakA26ODYW9=0H4VhwFhGQAqMs-cMmj3CQ@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: devicetree@vger.kernel.org, Benjamin Gaignard <benjamin.gaignard@st.com>,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org
+To: <broonie@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+ <alexandre.torgue@st.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Nov 14, 2019 at 5:09 PM Dmitry Torokhov
-<dmitry.torokhov@gmail.com> wrote:
->
-> On Thu, Nov 14, 2019 at 2:26 PM Rob Herring <robh@kernel.org> wrote:
-> >
-> > On Tue, Nov 12, 2019 at 11:36:53AM -0800, Dmitry Torokhov wrote:
-> > > On Tue, Nov 12, 2019 at 07:15:47PM +0000, Mark Brown wrote:
-> > > > On Tue, Nov 12, 2019 at 11:03:28AM -0800, Dmitry Torokhov wrote:
-> > > > > On Tue, Nov 12, 2019 at 12:03:07PM +0000, Mark Brown wrote:
-> > > > > > On Mon, Nov 11, 2019 at 09:54:10PM -0800, Dmitry Torokhov wrote:
-> > > >
-> > > > > > > +      interrupts:
-> > > > > > > +        items:
-> > > > > > > +          - description: main interrupt (attention) line.
-> > > > > > > +          - description: dedicated wakeup interrupt.
-> > > > > > > +        minItems: 1 # The wakeup interrupt is optional.
-> > > >
-> > > > > > > +      interrupt-names:
-> > > > > > > +        items:
-> > > > > > > +          - const: irq
-> > > > > > > +          - const: wakeup
-> > > > > > > +        minItems: 1
-> > > >
-> > > > > > How will this interact with a SPI device that defines interrupts at the
-> > > > > > device level, possibly more than one of them?  Especially if the device
-> > > > > > has its own idea what the interrupts should be called.
-> > > >
-> > > > > My understanding that individual drivers should be able to override
-> > > > > whatever the default behavior core has configured, and the device can
-> > > > > establish their own mapping. We have this in I2C and I believe this
-> > > > > works well.
-> > > >
-> > > > > Is the concern about the device tree scheme or SPI core handling?
-> > > >
-> > > > Both really.
-> > >
-> > > So as I mentioned, the driver is not forced to use the interrupt
-> > > supplied by the SPI core, and the worst thing is that the core
-> > > configures the main IRQ as wakeirq and driver would need to call
-> > > dev_pm_clear_wake_irq() before switching to correct one. I expect there
-> > > will be just a few drivers needing that and many more would benefit from
-> > > the default behavior and not needing to repeat the same boilerplate
-> > > code.
-> > >
-> > > As far as scheme goes - I hope that Rob could confirm that we can
-> > > override number of interrupts and names in consumers of the binding, as
-> > > needed.
-> >
-> > This won't work. A device schema doesn't override what's defined here,
-> > but just further constrains this schema.
-> >
-> > You could define a "spi irq" schema which devices can include if they
-> > want to, but I don't think this pattern is that common to SPI devices.
-> > There's not any spec behind compared to say alert irq for SMBus.
-> >
-> > The 'wakeup' irq name is standardized (for DT), but that's not SPI
-> > specific. About all we could define there is 'wakeup-source' is boolean
-> > and if there is more than one interrupt, one should be named 'wakeup'.
->
-> OK, so what I am hearing is "interrupt"/"interrupt-names" properties
-> should be defined in individual device's bindings, and wakeup-source
-> can stay in spi-controller.yaml, right?
+Convert the STM32 QSPI binding to DT schema format using json-schema
 
-It could, but it's not SPI specific. I think we should convert
-bindings/power/wakeup-source.txt instead. Something like this:
+Signed-off-by: Benjamin Gaignard <benjamin.gaignard@st.com>
+---
+ .../devicetree/bindings/spi/spi-stm32-qspi.txt     | 47 -----------
+ .../devicetree/bindings/spi/st,stm32-qspi.yaml     | 91 ++++++++++++++++++++++
+ 2 files changed, 91 insertions(+), 47 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/spi/spi-stm32-qspi.txt
+ create mode 100644 Documentation/devicetree/bindings/spi/st,stm32-qspi.yaml
 
-select: true
-
-properties:
-  wakeup-source:
-    type: boolean
-    description: ...
-
-if:
-  properties:
-    interrupt-names:
-      contains:
-        const: wakeup
-  required:
-    - interrupt-names
-then:
-  required:
-    - wakeup-source
-
-dependencies:
-  wakeup-source: [ interrupts ]
-
-
-Rob
-
-> And as far as SPI core goes, we can still do what I proposed, because
-> we already handle "first" interrupt as the default one and the drivers
-> can override as needed anyway...
->
-> Thanks.
->
-> --
-> Dmitry
+diff --git a/Documentation/devicetree/bindings/spi/spi-stm32-qspi.txt b/Documentation/devicetree/bindings/spi/spi-stm32-qspi.txt
+deleted file mode 100644
+index bfc038b9478d..000000000000
+--- a/Documentation/devicetree/bindings/spi/spi-stm32-qspi.txt
++++ /dev/null
+@@ -1,47 +0,0 @@
+-* STMicroelectronics Quad Serial Peripheral Interface(QSPI)
+-
+-Required properties:
+-- compatible: should be "st,stm32f469-qspi"
+-- reg: the first contains the register location and length.
+-       the second contains the memory mapping address and length
+-- reg-names: should contain the reg names "qspi" "qspi_mm"
+-- interrupts: should contain the interrupt for the device
+-- clocks: the phandle of the clock needed by the QSPI controller
+-- A pinctrl must be defined to set pins in mode of operation for QSPI transfer
+-
+-Optional properties:
+-- resets: must contain the phandle to the reset controller.
+-
+-A spi flash (NOR/NAND) must be a child of spi node and could have some
+-properties. Also see jedec,spi-nor.txt.
+-
+-Required properties:
+-- reg: chip-Select number (QSPI controller may connect 2 flashes)
+-- spi-max-frequency: max frequency of spi bus
+-
+-Optional properties:
+-- spi-rx-bus-width: see ./spi-bus.txt for the description
+-- dmas: DMA specifiers for tx and rx dma. See the DMA client binding,
+-Documentation/devicetree/bindings/dma/dma.txt.
+-- dma-names: DMA request names should include "tx" and "rx" if present.
+-
+-Example:
+-
+-qspi: spi@a0001000 {
+-	compatible = "st,stm32f469-qspi";
+-	reg = <0xa0001000 0x1000>, <0x90000000 0x10000000>;
+-	reg-names = "qspi", "qspi_mm";
+-	interrupts = <91>;
+-	resets = <&rcc STM32F4_AHB3_RESET(QSPI)>;
+-	clocks = <&rcc 0 STM32F4_AHB3_CLOCK(QSPI)>;
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_qspi0>;
+-
+-	flash@0 {
+-		compatible = "jedec,spi-nor";
+-		reg = <0>;
+-		spi-rx-bus-width = <4>;
+-		spi-max-frequency = <108000000>;
+-		...
+-	};
+-};
+diff --git a/Documentation/devicetree/bindings/spi/st,stm32-qspi.yaml b/Documentation/devicetree/bindings/spi/st,stm32-qspi.yaml
+new file mode 100644
+index 000000000000..955405d39966
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/st,stm32-qspi.yaml
+@@ -0,0 +1,91 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/st,stm32-qspi.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: STMicroelectronics STM32 Quad Serial Peripheral Interface (QSPI) bindings
++
++maintainers:
++  - Christophe Kerello <christophe.kerello@st.com>
++  - Patrice Chotard <patrice.chotard@st.com>
++
++allOf:
++  - $ref: "spi-controller.yaml#"
++
++properties:
++  compatible:
++    const: st,stm32f469-qspi
++
++  reg:
++    items:
++      - description: registers
++      - description: memory mapping
++    minItems: 2
++    maxItems: 2
++
++  reg-names:
++    items:
++     - const: qspi
++     - const: qspi_mm
++    minItems: 2
++    maxItems: 2
++
++  clocks:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  resets:
++    maxItems: 1
++
++  dmas:
++    items:
++      - description: tx DMA channel
++      - description: rx DMA channel
++    minItems: 2
++    maxItems: 2
++
++  dma-names:
++    items:
++      - const: tx
++      - const: rx
++    minItems: 2
++    maxItems: 2
++
++required:
++  - compatible
++  - reg
++  - reg-names
++  - clocks
++  - interrupts
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++    #include <dt-bindings/clock/stm32mp1-clks.h>
++    #include <dt-bindings/reset/stm32mp1-resets.h>
++    spi@58003000 {
++      compatible = "st,stm32f469-qspi";
++      reg = <0x58003000 0x1000>, <0x70000000 0x10000000>;
++      reg-names = "qspi", "qspi_mm";
++      interrupts = <GIC_SPI 92 IRQ_TYPE_LEVEL_HIGH>;
++      dmas = <&mdma1 22 0x10 0x100002 0x0 0x0>,
++             <&mdma1 22 0x10 0x100008 0x0 0x0>;
++      dma-names = "tx", "rx";
++      clocks = <&rcc QSPI_K>;
++      resets = <&rcc QSPI_R>;
++
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      flash@0 {
++        compatible = "jedec,spi-nor";
++        reg = <0>;
++        spi-rx-bus-width = <4>;
++        spi-max-frequency = <108000000>;
++      };
++    };
++
++...
+-- 
+2.15.0

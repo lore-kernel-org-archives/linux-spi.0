@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: at91-usart: Use dma_request_chan() directly for channel request" to the spi tree
+Subject: Applied "spi: fsl-lpspi: Use dma_request_chan() directly for channel request" to the spi tree
 Date: Fri, 15 Nov 2019 12:25:16 +0000 (GMT)
-Message-ID: <20191115122517.11B732741609@ypsilon.sirena.org.uk>
-References: <20191113094256.1108-2-peter.ujfalusi@ti.com>
+Message-ID: <20191115122516.462CA2741609@ypsilon.sirena.org.uk>
+References: <20191113094256.1108-4-peter.ujfalusi@ti.com>
 Cc: agross@kernel.org, alexandre.belloni@bootlin.com, andi@etezian.org,
         bjorn.andersson@linaro.org, broonie@kernel.org,
         jonathanh@nvidia.com, kgene@kernel.org, krzk@kernel.org,
@@ -10,19 +10,18 @@ Cc: agross@kernel.org, alexandre.belloni@bootlin.com, andi@etezian.org,
         linux-arm-kernel@lists.infradead.org,
         linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        radu_nicolae.pirea@upb.ro, s.hauer@pengutronix.de,
-        shawnguo@kernel.org, thierry.reding@gmail.com, vkoul@kernel.org
+        Mark Brown <broonie@kernel.org>, radu_nicolae.pirea@upb.ro,
+        s.hauer@pengutronix.de, shawnguo@kernel.org,
+        thierry.reding@gmail.com, vkoul@kernel.org
 To: Peter Ujfalusi <peter.ujfalusi@ti.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191113094256.1108-2-peter.ujfalusi@ti.com>
+In-Reply-To: <20191113094256.1108-4-peter.ujfalusi@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: at91-usart: Use dma_request_chan() directly for channel request
+   spi: fsl-lpspi: Use dma_request_chan() directly for channel request
 
 has been applied to the spi tree at
 
@@ -47,10 +46,10 @@ to this mail.
 Thanks,
 Mark
 
->From cef76e5ace759848e78323a14df0dcd66b8de13d Mon Sep 17 00:00:00 2001
+>From 2e33f310dcfbceb7492d7e88baa9ca4f056f7c40 Mon Sep 17 00:00:00 2001
 From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Date: Wed, 13 Nov 2019 11:42:48 +0200
-Subject: [PATCH] spi: at91-usart: Use dma_request_chan() directly for channel
+Date: Wed, 13 Nov 2019 11:42:50 +0200
+Subject: [PATCH] spi: fsl-lpspi: Use dma_request_chan() directly for channel
  request
 
 dma_request_slave_channel_reason() is:
@@ -58,34 +57,33 @@ dma_request_slave_channel_reason() is:
 	dma_request_chan(dev, name)
 
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Link: https://lore.kernel.org/r/20191113094256.1108-2-peter.ujfalusi@ti.com
+Link: https://lore.kernel.org/r/20191113094256.1108-4-peter.ujfalusi@ti.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-at91-usart.c | 4 ++--
+ drivers/spi/spi-fsl-lpspi.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-at91-usart.c b/drivers/spi/spi-at91-usart.c
-index a40bb2ef89dc..88033422a42a 100644
---- a/drivers/spi/spi-at91-usart.c
-+++ b/drivers/spi/spi-at91-usart.c
-@@ -132,7 +132,7 @@ static int at91_usart_spi_configure_dma(struct spi_controller *ctlr,
- 	dma_cap_zero(mask);
- 	dma_cap_set(DMA_SLAVE, mask);
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 6f4769a53f8a..2cc0ddb4a988 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -675,7 +675,7 @@ static int fsl_lpspi_dma_init(struct device *dev,
+ 	int ret;
  
--	ctlr->dma_tx = dma_request_slave_channel_reason(dev, "tx");
-+	ctlr->dma_tx = dma_request_chan(dev, "tx");
- 	if (IS_ERR_OR_NULL(ctlr->dma_tx)) {
- 		if (IS_ERR(ctlr->dma_tx)) {
- 			err = PTR_ERR(ctlr->dma_tx);
-@@ -145,7 +145,7 @@ static int at91_usart_spi_configure_dma(struct spi_controller *ctlr,
- 		goto at91_usart_spi_error_clear;
+ 	/* Prepare for TX DMA: */
+-	controller->dma_tx = dma_request_slave_channel_reason(dev, "tx");
++	controller->dma_tx = dma_request_chan(dev, "tx");
+ 	if (IS_ERR(controller->dma_tx)) {
+ 		ret = PTR_ERR(controller->dma_tx);
+ 		dev_dbg(dev, "can't get the TX DMA channel, error %d!\n", ret);
+@@ -684,7 +684,7 @@ static int fsl_lpspi_dma_init(struct device *dev,
  	}
  
--	ctlr->dma_rx = dma_request_slave_channel_reason(dev, "rx");
-+	ctlr->dma_rx = dma_request_chan(dev, "rx");
- 	if (IS_ERR_OR_NULL(ctlr->dma_rx)) {
- 		if (IS_ERR(ctlr->dma_rx)) {
- 			err = PTR_ERR(ctlr->dma_rx);
+ 	/* Prepare for RX DMA: */
+-	controller->dma_rx = dma_request_slave_channel_reason(dev, "rx");
++	controller->dma_rx = dma_request_chan(dev, "rx");
+ 	if (IS_ERR(controller->dma_rx)) {
+ 		ret = PTR_ERR(controller->dma_rx);
+ 		dev_dbg(dev, "can't get the RX DMA channel, error %d\n", ret);
 -- 
 2.20.1

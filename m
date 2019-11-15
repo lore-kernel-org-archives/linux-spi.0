@@ -1,28 +1,28 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: pl022: Use dma_request_chan() directly for channel request" to the spi tree
-Date: Fri, 15 Nov 2019 12:25:15 +0000 (GMT)
-Message-ID: <20191115122515.78769274162A@ypsilon.sirena.org.uk>
-References: <20191113094256.1108-6-peter.ujfalusi@ti.com>
+Subject: Applied "spi: atmel: Use dma_request_chan() directly for channel request" to the spi tree
+Date: Fri, 15 Nov 2019 12:25:16 +0000 (GMT)
+Message-ID: <20191115122516.A60F627415A7@ypsilon.sirena.org.uk>
+References: <20191113094256.1108-3-peter.ujfalusi@ti.com>
 Cc: agross@kernel.org, alexandre.belloni@bootlin.com, andi@etezian.org,
         bjorn.andersson@linaro.org, broonie@kernel.org,
         jonathanh@nvidia.com, kgene@kernel.org, krzk@kernel.org,
         ldewangan@nvidia.com, linus.walleij@linaro.org,
-        Linus Walleij <linus.walleij@linaro.org>,
         linux-arm-kernel@lists.infradead.org,
         linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, radu_nicolae.pirea@upb.ro,
-        s.hauer@pengutronix.de, shawnguo@kernel.org,
-        thierry.reding@gmail.com, vkoul@kernel.org
+        Mark Brown <broonie@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        radu_nicolae.pirea@upb.ro, s.hauer@pengutronix.de,
+        shawnguo@kernel.org, thierry.reding@gmail.com, vkoul@kernel.org
 To: Peter Ujfalusi <peter.ujfalusi@ti.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191113094256.1108-6-peter.ujfalusi@ti.com>
+In-Reply-To: <20191113094256.1108-3-peter.ujfalusi@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: pl022: Use dma_request_chan() directly for channel request
+   spi: atmel: Use dma_request_chan() directly for channel request
 
 has been applied to the spi tree at
 
@@ -47,10 +47,10 @@ to this mail.
 Thanks,
 Mark
 
->From c1008957ff1aee0ac92c28c55947173fb68cd451 Mon Sep 17 00:00:00 2001
+>From bef1e0c8f74c87e7427cb98b2e76caf046c7b65a Mon Sep 17 00:00:00 2001
 From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Date: Wed, 13 Nov 2019 11:42:52 +0200
-Subject: [PATCH] spi: pl022: Use dma_request_chan() directly for channel
+Date: Wed, 13 Nov 2019 11:42:49 +0200
+Subject: [PATCH] spi: atmel: Use dma_request_chan() directly for channel
  request
 
 dma_request_slave_channel_reason() is:
@@ -58,34 +58,25 @@ dma_request_slave_channel_reason() is:
 	dma_request_chan(dev, name)
 
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20191113094256.1108-6-peter.ujfalusi@ti.com
+Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Link: https://lore.kernel.org/r/20191113094256.1108-3-peter.ujfalusi@ti.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-pl022.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-atmel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 3024c30e7f2e..66028ebbc336 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -1158,7 +1158,7 @@ static int pl022_dma_autoprobe(struct pl022 *pl022)
- 	int err;
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index d88e2aa64839..d692cc388126 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -512,7 +512,7 @@ static int atmel_spi_configure_dma(struct spi_master *master,
+ 	dma_cap_zero(mask);
+ 	dma_cap_set(DMA_SLAVE, mask);
  
- 	/* automatically configure DMA channels from platform, normally using DT */
--	chan = dma_request_slave_channel_reason(dev, "rx");
-+	chan = dma_request_chan(dev, "rx");
- 	if (IS_ERR(chan)) {
- 		err = PTR_ERR(chan);
- 		goto err_no_rxchan;
-@@ -1166,7 +1166,7 @@ static int pl022_dma_autoprobe(struct pl022 *pl022)
- 
- 	pl022->dma_rx_channel = chan;
- 
--	chan = dma_request_slave_channel_reason(dev, "tx");
-+	chan = dma_request_chan(dev, "tx");
- 	if (IS_ERR(chan)) {
- 		err = PTR_ERR(chan);
- 		goto err_no_txchan;
+-	master->dma_tx = dma_request_slave_channel_reason(dev, "tx");
++	master->dma_tx = dma_request_chan(dev, "tx");
+ 	if (IS_ERR(master->dma_tx)) {
+ 		err = PTR_ERR(master->dma_tx);
+ 		if (err == -EPROBE_DEFER) {
 -- 
 2.20.1

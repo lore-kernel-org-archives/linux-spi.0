@@ -1,28 +1,23 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: s3c64xx: Use dma_request_chan() directly for channel request" to the spi tree
-Date: Fri, 15 Nov 2019 12:25:14 +0000 (GMT)
-Message-ID: <20191115122514.E3EF42741609@ypsilon.sirena.org.uk>
-References: <20191113094256.1108-8-peter.ujfalusi@ti.com>
-Cc: agross@kernel.org, alexandre.belloni@bootlin.com, andi@etezian.org,
-        Andi Shyti <andi@etezian.org>, bjorn.andersson@linaro.org,
-        broonie@kernel.org, jonathanh@nvidia.com, kgene@kernel.org,
-        krzk@kernel.org, Krzysztof Kozlowski <krzk@kernel.org>,
-        ldewangan@nvidia.com, linus.walleij@linaro.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, radu_nicolae.pirea@upb.ro,
-        s.hauer@pengutronix.de, shawnguo@kernel.org,
-        thierry.reding@gmail.com, vkoul@kernel.org
-To: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Subject: Applied "spi: tegra20-slink: add missed clk_unprepare" to the spi tree
+Date: Fri, 15 Nov 2019 12:25:13 +0000 (GMT)
+Message-ID: <20191115122513.EF8D427415A7@ypsilon.sirena.org.uk>
+References: <20191115083122.12278-1-hslester96@gmail.com>
+Cc: "Cc:"@sirena.co.uk, "Cc:"@sirena.co.uk,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-tegra@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>
+To: Chuhong Yuan <hslester96@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191113094256.1108-8-peter.ujfalusi@ti.com>
+In-Reply-To: <20191115083122.12278-1-hslester96@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: s3c64xx: Use dma_request_chan() directly for channel request
+   spi: tegra20-slink: add missed clk_unprepare
 
 has been applied to the spi tree at
 
@@ -47,46 +42,50 @@ to this mail.
 Thanks,
 Mark
 
->From df1b0141788527c032a9851c0589a1712d7e46b8 Mon Sep 17 00:00:00 2001
-From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Date: Wed, 13 Nov 2019 11:42:54 +0200
-Subject: [PATCH] spi: s3c64xx: Use dma_request_chan() directly for channel
- request
+>From 04358e40ba96d687c0811c21d9dede73f5244a98 Mon Sep 17 00:00:00 2001
+From: Chuhong Yuan <hslester96@gmail.com>
+Date: Fri, 15 Nov 2019 16:31:22 +0800
+Subject: [PATCH] spi: tegra20-slink: add missed clk_unprepare
 
-dma_request_slave_channel_reason() is:
-#define dma_request_slave_channel_reason(dev, name) \
-	dma_request_chan(dev, name)
+The driver misses calling clk_unprepare in probe failure and remove.
+Add the calls to fix it.
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
-Acked-by: Andi Shyti <andi@etezian.org>
-Link: https://lore.kernel.org/r/20191113094256.1108-8-peter.ujfalusi@ti.com
+Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+Link: https://lore.kernel.org/r/20191115083122.12278-1-hslester96@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-s3c64xx.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/spi/spi-tegra20-slink.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 7b7151ec14c8..cf67ea60dc0e 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1154,15 +1154,13 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index 51573f41ed12..7f4d932dade7 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -1072,7 +1072,7 @@ static int tegra_slink_probe(struct platform_device *pdev)
+ 	ret = clk_enable(tspi->clk);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Clock enable failed %d\n", ret);
+-		goto exit_free_master;
++		goto exit_clk_unprepare;
+ 	}
  
- 	if (!is_polling(sdd)) {
- 		/* Acquire DMA channels */
--		sdd->rx_dma.ch = dma_request_slave_channel_reason(&pdev->dev,
--								  "rx");
-+		sdd->rx_dma.ch = dma_request_chan(&pdev->dev, "rx");
- 		if (IS_ERR(sdd->rx_dma.ch)) {
- 			dev_err(&pdev->dev, "Failed to get RX DMA channel\n");
- 			ret = PTR_ERR(sdd->rx_dma.ch);
- 			goto err_disable_io_clk;
- 		}
--		sdd->tx_dma.ch = dma_request_slave_channel_reason(&pdev->dev,
--								  "tx");
-+		sdd->tx_dma.ch = dma_request_chan(&pdev->dev, "tx");
- 		if (IS_ERR(sdd->tx_dma.ch)) {
- 			dev_err(&pdev->dev, "Failed to get TX DMA channel\n");
- 			ret = PTR_ERR(sdd->tx_dma.ch);
+ 	spi_irq = platform_get_irq(pdev, 0);
+@@ -1145,6 +1145,8 @@ static int tegra_slink_probe(struct platform_device *pdev)
+ 	free_irq(spi_irq, tspi);
+ exit_clk_disable:
+ 	clk_disable(tspi->clk);
++exit_clk_unprepare:
++	clk_unprepare(tspi->clk);
+ exit_free_master:
+ 	spi_master_put(master);
+ 	return ret;
+@@ -1158,6 +1160,7 @@ static int tegra_slink_remove(struct platform_device *pdev)
+ 	free_irq(tspi->irq, tspi);
+ 
+ 	clk_disable(tspi->clk);
++	clk_unprepare(tspi->clk);
+ 
+ 	if (tspi->tx_dma_chan)
+ 		tegra_slink_deinit_dma_param(tspi, false);
 -- 
 2.20.1

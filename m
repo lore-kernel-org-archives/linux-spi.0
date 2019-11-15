@@ -1,187 +1,82 @@
-From: Mason Yang <masonccyang@mxic.com.tw>
-Subject: [PATCH 4/4] spi: mxic: Add support for Octal 8D-8D-8D mode
-Date: Fri, 15 Nov 2019 16:58:08 +0800
-Message-ID: <1573808288-19365-5-git-send-email-masonccyang@mxic.com.tw>
-References: <1573808288-19365-1-git-send-email-masonccyang@mxic.com.tw>
-Cc: juliensu@mxic.com.tw, linux-kernel@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
-        Mason Yang <masonccyang@mxic.com.tw>
-To: broonie@kernel.org, miquel.raynal@bootlin.com, richard@nod.at,
-        marek.vasut@gmail.com, dwmw2@infradead.org,
-        computersforpeace@gmail.com, vigneshr@ti.com,
-        bbrezillon@kernel.org, tudor.ambarus@microchip.com
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: tegra20-slink: Use dma_request_chan() directly for channel request" to the spi tree
+Date: Fri, 15 Nov 2019 12:25:14 +0000 (GMT)
+Message-ID: <20191115122514.40CB92741609@ypsilon.sirena.org.uk>
+References: <20191113094256.1108-10-peter.ujfalusi@ti.com>
+Cc: agross@kernel.org, alexandre.belloni@bootlin.com, andi@etezian.org,
+        bjorn.andersson@linaro.org, broonie@kernel.org,
+        jonathanh@nvidia.com, Jon Hunter <jonathanh@nvidia.com>,
+        kgene@kernel.org, krzk@kernel.org, ldewangan@nvidia.com,
+        linus.walleij@linaro.org, linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>, radu_nicolae.pirea@upb.ro,
+        s.hauer@pengutronix.de, shawnguo@kernel.org,
+        thierry.reding@gmail.com, vkoul@kernel.org
+To: Peter Ujfalusi <peter.ujfalusi@ti.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1573808288-19365-1-git-send-email-masonccyang@mxic.com.tw>
+In-Reply-To: <20191113094256.1108-10-peter.ujfalusi@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-patch driver for 8-8-8 and 8D-8D-8D mode support.
+The patch
 
-Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+   spi: tegra20-slink: Use dma_request_chan() directly for channel request
+
+has been applied to the spi tree at
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 912a7df474d2cb22fc99a1fcf77997f2cea7d85e Mon Sep 17 00:00:00 2001
+From: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Date: Wed, 13 Nov 2019 11:42:56 +0200
+Subject: [PATCH] spi: tegra20-slink: Use dma_request_chan() directly for
+ channel request
+
+dma_request_slave_channel_reason() is:
+#define dma_request_slave_channel_reason(dev, name) \
+	dma_request_chan(dev, name)
+
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Acked-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20191113094256.1108-10-peter.ujfalusi@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-mxic.c | 98 ++++++++++++++++++++++++++++++++++----------------
- 1 file changed, 67 insertions(+), 31 deletions(-)
+ drivers/spi/spi-tegra20-slink.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
-index f48563c..50e2055 100644
---- a/drivers/spi/spi-mxic.c
-+++ b/drivers/spi/spi-mxic.c
-@@ -280,10 +280,58 @@ static void mxic_spi_hw_init(struct mxic_spi *mxic)
- 	       mxic->regs + HC_CFG);
- }
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index 111fffc91435..51573f41ed12 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -599,8 +599,7 @@ static int tegra_slink_init_dma_param(struct tegra_slink_data *tspi,
+ 	int ret;
+ 	struct dma_slave_config dma_sconfig;
  
-+static u32 mxic_spi_mem_prep_op_cfg(const struct spi_mem_op *op)
-+{
-+	u32 cfg =  OP_CMD_BYTES(op->cmd.nbytes) |
-+		   OP_CMD_BUSW(fls(op->cmd.buswidth) - 1) |
-+		   (op->cmd.dtr ? OP_CMD_DDR : 0);
-+
-+	if (op->addr.nbytes)
-+		cfg |= OP_ADDR_BYTES(op->addr.nbytes) |
-+		       OP_ADDR_BUSW(fls(op->addr.buswidth) - 1) |
-+		       (op->addr.dtr ? OP_ADDR_DDR : 0);
-+
-+	if (op->dummy.nbytes)
-+		cfg |= OP_DUMMY_CYC(op->dummy.nbytes);
-+
-+	if (op->data.nbytes) {
-+		cfg |= OP_DATA_BUSW(fls(op->data.buswidth) - 1) |
-+		      (op->data.dtr ? OP_DATA_DDR : 0);
-+		if (op->data.dir == SPI_MEM_DATA_IN) {
-+			cfg |= OP_READ;
-+			if (op->data.dtr == OP_DATA_DDR)
-+				cfg |= OP_DQS_EN;
-+		}
-+	}
-+
-+	return cfg;
-+}
-+
-+static void mxic_spi_set_hc_cfg(struct spi_device *spi, u32 flags)
-+{
-+	struct mxic_spi *mxic = spi_master_get_devdata(spi->master);
-+	int nio = 1;
-+
-+	if (spi->mode & (SPI_RX_OCTAL | SPI_TX_OCTAL))
-+		nio = 8;
-+	else if (spi->mode & (SPI_TX_QUAD | SPI_RX_QUAD))
-+		nio = 4;
-+	else if (spi->mode & (SPI_TX_DUAL | SPI_RX_DUAL))
-+		nio = 2;
-+
-+	writel(flags | HC_CFG_NIO(nio) |
-+	       HC_CFG_TYPE(spi->chip_select, HC_CFG_TYPE_SPI_NOR) |
-+	       HC_CFG_SLV_ACT(spi->chip_select) | HC_CFG_IDLE_SIO_LVL(1),
-+	       mxic->regs + HC_CFG);
-+}
-+
- static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
- 			      void *rxbuf, unsigned int len)
- {
- 	unsigned int pos = 0;
-+	bool dtr_enabled;
-+
-+	dtr_enabled = (readl(mxic->regs + SS_CTRL(0)) & OP_DATA_DDR);
- 
- 	while (pos < len) {
- 		unsigned int nbytes = len - pos;
-@@ -302,6 +350,9 @@ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
- 		if (ret)
- 			return ret;
- 
-+		if (dtr_enabled && len & 0x1)
-+			nbytes++;
-+
- 		writel(data, mxic->regs + TXD(nbytes % 4));
- 
- 		if (rxbuf) {
-@@ -319,6 +370,8 @@ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
- 
- 			data = readl(mxic->regs + RXD);
- 			data >>= (8 * (4 - nbytes));
-+			if (dtr_enabled && len & 0x1)
-+				nbytes++;
- 			memcpy(rxbuf + pos, &data, nbytes);
- 			WARN_ON(readl(mxic->regs + INT_STS) & INT_RX_NOT_EMPTY);
- 		} else {
-@@ -335,8 +388,8 @@ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
- static bool mxic_spi_mem_supports_op(struct spi_mem *mem,
- 				     const struct spi_mem_op *op)
- {
--	if (op->data.buswidth > 4 || op->addr.buswidth > 4 ||
--	    op->dummy.buswidth > 4 || op->cmd.buswidth > 4)
-+	if (op->data.buswidth > 8 || op->addr.buswidth > 8 ||
-+	    op->dummy.buswidth > 8 || op->cmd.buswidth > 8)
- 		return false;
- 
- 	if (op->data.nbytes && op->dummy.nbytes &&
-@@ -353,47 +406,29 @@ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
- 				const struct spi_mem_op *op)
- {
- 	struct mxic_spi *mxic = spi_master_get_devdata(mem->spi->master);
--	int nio = 1, i, ret;
--	u32 ss_ctrl;
-+	int i, ret;
- 	u8 addr[8];
-+	u8 cmd[2];
- 
- 	ret = mxic_spi_set_freq(mxic, mem->spi->max_speed_hz);
- 	if (ret)
- 		return ret;
- 
--	if (mem->spi->mode & (SPI_TX_QUAD | SPI_RX_QUAD))
--		nio = 4;
--	else if (mem->spi->mode & (SPI_TX_DUAL | SPI_RX_DUAL))
--		nio = 2;
-+	mxic_spi_set_hc_cfg(mem->spi, HC_CFG_MAN_CS_EN);
- 
--	writel(HC_CFG_NIO(nio) |
--	       HC_CFG_TYPE(mem->spi->chip_select, HC_CFG_TYPE_SPI_NOR) |
--	       HC_CFG_SLV_ACT(mem->spi->chip_select) | HC_CFG_IDLE_SIO_LVL(1) |
--	       HC_CFG_MAN_CS_EN,
--	       mxic->regs + HC_CFG);
- 	writel(HC_EN_BIT, mxic->regs + HC_EN);
- 
--	ss_ctrl = OP_CMD_BYTES(1) | OP_CMD_BUSW(fls(op->cmd.buswidth) - 1);
--
--	if (op->addr.nbytes)
--		ss_ctrl |= OP_ADDR_BYTES(op->addr.nbytes) |
--			   OP_ADDR_BUSW(fls(op->addr.buswidth) - 1);
--
--	if (op->dummy.nbytes)
--		ss_ctrl |= OP_DUMMY_CYC(op->dummy.nbytes);
--
--	if (op->data.nbytes) {
--		ss_ctrl |= OP_DATA_BUSW(fls(op->data.buswidth) - 1);
--		if (op->data.dir == SPI_MEM_DATA_IN)
--			ss_ctrl |= OP_READ;
--	}
--
--	writel(ss_ctrl, mxic->regs + SS_CTRL(mem->spi->chip_select));
-+	writel(mxic_spi_mem_prep_op_cfg(op),
-+	       mxic->regs + SS_CTRL(mem->spi->chip_select));
- 
- 	writel(readl(mxic->regs + HC_CFG) | HC_CFG_MAN_CS_ASSERT,
- 	       mxic->regs + HC_CFG);
- 
--	ret = mxic_spi_data_xfer(mxic, &op->cmd.opcode, NULL, 1);
-+	cmd[0] = op->cmd.opcode;
-+	if (op->cmd.nbytes == 2)
-+		cmd[1] = op->cmd.ext_opcode;
-+
-+	ret = mxic_spi_data_xfer(mxic, cmd, NULL, op->cmd.nbytes);
- 	if (ret)
- 		goto out;
- 
-@@ -566,7 +601,8 @@ static int mxic_spi_probe(struct platform_device *pdev)
- 	master->bits_per_word_mask = SPI_BPW_MASK(8);
- 	master->mode_bits = SPI_CPOL | SPI_CPHA |
- 			SPI_RX_DUAL | SPI_TX_DUAL |
--			SPI_RX_QUAD | SPI_TX_QUAD;
-+			SPI_RX_QUAD | SPI_TX_QUAD |
-+			SPI_RX_OCTAL | SPI_TX_OCTAL;
- 
- 	mxic_spi_hw_init(mxic);
- 
+-	dma_chan = dma_request_slave_channel_reason(tspi->dev,
+-						dma_to_memory ? "rx" : "tx");
++	dma_chan = dma_request_chan(tspi->dev, dma_to_memory ? "rx" : "tx");
+ 	if (IS_ERR(dma_chan)) {
+ 		ret = PTR_ERR(dma_chan);
+ 		if (ret != -EPROBE_DEFER)
 -- 
-1.9.1
+2.20.1

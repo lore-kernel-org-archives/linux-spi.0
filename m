@@ -1,8 +1,8 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.14 146/150] spi: omap2-mcspi: Fix DMA and FIFO event trigger size mismatch
-Date: Sat, 16 Nov 2019 10:47:24 -0500
-Message-ID: <20191116154729.9573-146-sashal@kernel.org>
-References: <20191116154729.9573-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 233/237] spi: omap2-mcspi: Fix DMA and FIFO event trigger size mismatch
+Date: Sat, 16 Nov 2019 10:41:08 -0500
+Message-ID: <20191116154113.7417-233-sashal@kernel.org>
+References: <20191116154113.7417-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Cc: Vignesh R <vigneshr@ti.com>, David Lechner <david@lechnology.com>,
@@ -10,7 +10,7 @@ Cc: Vignesh R <vigneshr@ti.com>, David Lechner <david@lechnology.com>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191116154729.9573-1-sashal@kernel.org>
+In-Reply-To: <20191116154113.7417-1-sashal@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
@@ -41,10 +41,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 517d0ade586bd..1db4d3c1d2bfa 100644
+index f50cb8a4b4138..eb2d2de172af3 100644
 --- a/drivers/spi/spi-omap2-mcspi.c
 +++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -625,8 +625,8 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
+@@ -607,8 +607,8 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
  	cfg.dst_addr = cs->phys + OMAP2_MCSPI_TX0;
  	cfg.src_addr_width = width;
  	cfg.dst_addr_width = width;

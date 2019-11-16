@@ -1,59 +1,67 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 233/237] spi: omap2-mcspi: Fix DMA and FIFO event trigger size mismatch
-Date: Sat, 16 Nov 2019 10:41:08 -0500
-Message-ID: <20191116154113.7417-233-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 115/237] spi: uniphier: fix incorrect property items
+Date: Sat, 16 Nov 2019 10:39:10 -0500
+Message-ID: <20191116154113.7417-115-sashal@kernel.org>
 References: <20191116154113.7417-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Vignesh R <vigneshr@ti.com>, David Lechner <david@lechnology.com>,
+Cc: Keiji Hayashibara <hayashibara.keiji@socionext.com>,
         Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Return-path: <stable-owner@vger.kernel.org>
 In-Reply-To: <20191116154113.7417-1-sashal@kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Vignesh R <vigneshr@ti.com>
+From: Keiji Hayashibara <hayashibara.keiji@socionext.com>
 
-[ Upstream commit baf8b9f8d260c55a86405f70a384c29cda888476 ]
+[ Upstream commit 3511ba7d4ca6f39e2d060bb94e42a41ad1fee7bf ]
 
-Commit b682cffa3ac6 ("spi: omap2-mcspi: Set FIFO DMA trigger level to word length")
-broke SPI transfers where bits_per_word != 8. This is because of
-mimsatch between McSPI FIFO level event trigger size (SPI word length) and
-DMA request size(word length * maxburst). This leads to data
-corruption, lockup and errors like:
+This commit fixes incorrect property because it was different
+from the actual.
+The parameters of '#address-cells' and '#size-cells' were removed,
+and 'interrupts', 'pinctrl-names' and 'pinctrl-0' were added.
 
-	spi1.0: EOW timed out
-
-Fix this by setting DMA maxburst size to 1 so that
-McSPI FIFO level event trigger size matches DMA request size.
-
-Fixes: b682cffa3ac6 ("spi: omap2-mcspi: Set FIFO DMA trigger level to word length")
-Cc: stable@vger.kernel.org
-Reported-by: David Lechner <david@lechnology.com>
-Tested-by: David Lechner <david@lechnology.com>
-Signed-off-by: Vignesh R <vigneshr@ti.com>
+Fixes: 4dcd5c2781f3 ("spi: add DT bindings for UniPhier SPI controller")
+Signed-off-by: Keiji Hayashibara <hayashibara.keiji@socionext.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-omap2-mcspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../devicetree/bindings/spi/spi-uniphier.txt       | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index f50cb8a4b4138..eb2d2de172af3 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -607,8 +607,8 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
- 	cfg.dst_addr = cs->phys + OMAP2_MCSPI_TX0;
- 	cfg.src_addr_width = width;
- 	cfg.dst_addr_width = width;
--	cfg.src_maxburst = es;
--	cfg.dst_maxburst = es;
-+	cfg.src_maxburst = 1;
-+	cfg.dst_maxburst = 1;
+diff --git a/Documentation/devicetree/bindings/spi/spi-uniphier.txt b/Documentation/devicetree/bindings/spi/spi-uniphier.txt
+index 504a4ecfc7b16..b04e66a52de5d 100644
+--- a/Documentation/devicetree/bindings/spi/spi-uniphier.txt
++++ b/Documentation/devicetree/bindings/spi/spi-uniphier.txt
+@@ -5,18 +5,20 @@ UniPhier SoCs have SCSSI which supports SPI single channel.
+ Required properties:
+  - compatible: should be "socionext,uniphier-scssi"
+  - reg: address and length of the spi master registers
+- - #address-cells: must be <1>, see spi-bus.txt
+- - #size-cells: must be <0>, see spi-bus.txt
+- - clocks: A phandle to the clock for the device.
+- - resets: A phandle to the reset control for the device.
++ - interrupts: a single interrupt specifier
++ - pinctrl-names: should be "default"
++ - pinctrl-0: pin control state for the default mode
++ - clocks: a phandle to the clock for the device
++ - resets: a phandle to the reset control for the device
  
- 	rx = xfer->rx_buf;
- 	tx = xfer->tx_buf;
+ Example:
+ 
+ spi0: spi@54006000 {
+ 	compatible = "socionext,uniphier-scssi";
+ 	reg = <0x54006000 0x100>;
+-	#address-cells = <1>;
+-	#size-cells = <0>;
++	interrupts = <0 39 4>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_spi0>;
+ 	clocks = <&peri_clk 11>;
+ 	resets = <&peri_rst 11>;
+ };
 -- 
 2.20.1

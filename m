@@ -1,51 +1,45 @@
-From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 023/237] spi: sh-msiof: fix deferred probing
-Date: Sat, 16 Nov 2019 10:37:38 -0500
-Message-ID: <20191116154113.7417-23-sashal@kernel.org>
-References: <20191116154113.7417-1-sashal@kernel.org>
+From: Chuhong Yuan <hslester96@gmail.com>
+Subject: [PATCH] spi: st-ssc4: add missed pm_runtime_disable
+Date: Mon, 18 Nov 2019 10:48:48 +0800
+Message-ID: <20191118024848.21645-1-hslester96@gmail.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <20191116154113.7417-1-sashal@kernel.org>
-Sender: stable-owner@vger.kernel.org
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
+To: unlisted-recipients:; (no To-header on input)
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+The driver forgets to call pm_runtime_disable in probe failure
+and remove.
+Add the missed calls to fix it.
 
-[ Upstream commit f34c6e6257aa477cdfe7e9bbbecd3c5648ecda69 ]
-
-Since commit 9ec36cafe43b ("of/irq: do irq resolution in platform_get_irq")
-platform_get_irq() can return -EPROBE_DEFER. However, the driver overrides
-an error returned by that function with -ENOENT which breaks the deferred
-probing. Propagate upstream an error code returned by platform_get_irq()
-and remove the bogus "platform" from the error message, while at it...
-
-Fixes: 9ec36cafe43b ("of/irq: do irq resolution in platform_get_irq")
-Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
 ---
- drivers/spi/spi-sh-msiof.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-st-ssc4.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 101cd6aae2ea5..30ea0a2068e09 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -1343,8 +1343,8 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-st-ssc4.c b/drivers/spi/spi-st-ssc4.c
+index 0c24c494f386..77d26d64541a 100644
+--- a/drivers/spi/spi-st-ssc4.c
++++ b/drivers/spi/spi-st-ssc4.c
+@@ -381,6 +381,7 @@ static int spi_st_probe(struct platform_device *pdev)
+ 	return 0;
  
- 	i = platform_get_irq(pdev, 0);
- 	if (i < 0) {
--		dev_err(&pdev->dev, "cannot get platform IRQ\n");
--		ret = -ENOENT;
-+		dev_err(&pdev->dev, "cannot get IRQ\n");
-+		ret = i;
- 		goto err1;
- 	}
+ clk_disable:
++	pm_runtime_disable(&pdev->dev);
+ 	clk_disable_unprepare(spi_st->clk);
+ put_master:
+ 	spi_master_put(master);
+@@ -392,6 +393,8 @@ static int spi_st_remove(struct platform_device *pdev)
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+ 	struct spi_st *spi_st = spi_master_get_devdata(master);
  
++	pm_runtime_disable(&pdev->dev);
++
+ 	clk_disable_unprepare(spi_st->clk);
+ 
+ 	pinctrl_pm_select_sleep_state(&pdev->dev);
 -- 
-2.20.1
+2.24.0

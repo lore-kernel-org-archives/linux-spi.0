@@ -1,14 +1,15 @@
 From: Luhua Xu <luhua.xu@mediatek.com>
-Subject: [PATCH 0/2] spi CS customization support
-Date: Mon, 18 Nov 2019 12:57:15 +0800
-Message-ID: <1574053037-26721-1-git-send-email-luhua.xu@mediatek.com>
+Subject: [PATCH 1/2] spi: mediatek: add SPI_CS_HIGH support
+Date: Mon, 18 Nov 2019 12:57:16 +0800
+Message-ID: <1574053037-26721-2-git-send-email-luhua.xu@mediatek.com>
+References: <1574053037-26721-1-git-send-email-luhua.xu@mediatek.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: base64
 Cc: <linux-spi@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
+        <linux-kernel@vger.kernel.org>, Luhua Xu <luhua.xu@mediatek.com>
 To: Mark Brown <broonie@kernel.org>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         Allison Randal <allison@lohutok.net>,
@@ -17,13 +18,44 @@ To: Mark Brown <broonie@kernel.org>,
         Leilk Liu <leilk.liu@mediatek.com>,
         Thomas Gleixner <tglx@linutronix.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1574053037-26721-1-git-send-email-luhua.xu@mediatek.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-VGhlc2UgcGF0Y2ggc2VyaWVzIGFkZCBTUEkgQ1MgcG9sYXJpdHkgYW5kIENTIHNldHVwL2hvbGQv
-aWRsZQ0KdGltZSBjdXN0b21pemF0aW9uIHN1cHBvcnQuDQoNCkx1aHVhIFh1ICgyKToNCiAgc3Bp
-OiBtZWRpYXRlazogYWRkIFNQSV9DU19ISUdIIHN1cHBvcnQNCiAgc3BpOiBtZWRpYXRlazogYWRk
-IGNzIHRpbWluZyBjb25maWd1cmF0aW9uIHN1cHBvcnQNCg0KIGRyaXZlcnMvc3BpL3NwaS1tdDY1
-eHguYyAgICAgICAgICAgICAgICAgfCA1MyArKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0t
-LQ0KIGluY2x1ZGUvbGludXgvcGxhdGZvcm1fZGF0YS9zcGktbXQ2NXh4LmggfCAgNiArKystDQog
-MiBmaWxlcyBjaGFuZ2VkLCA0NyBpbnNlcnRpb25zKCspLCAxMiBkZWxldGlvbnMoLSkNCg0KDQo=
+Q2hhbmdlIHRvIHVzZSBTUElfQ1NfSElHSCB0byBzdXBwb3J0IHNwaSBDUyBwb2xhcml0eSBzZXR0
+aW5nDQpmb3IgY2hpcHMgc3VwcG9ydCBlbmhhbmNlX3RpbWluZy4NCg0KU2lnbmVkLW9mZi1ieTog
+THVodWEgWHUgPGx1aHVhLnh1QG1lZGlhdGVrLmNvbT4NCi0tLQ0KIGRyaXZlcnMvc3BpL3NwaS1t
+dDY1eHguYyAgICAgICAgICAgICAgICAgfCAxMiArKysrKysrKysrLS0NCiBpbmNsdWRlL2xpbnV4
+L3BsYXRmb3JtX2RhdGEvc3BpLW10NjV4eC5oIHwgIDEgLQ0KIDIgZmlsZXMgY2hhbmdlZCwgMTAg
+aW5zZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMoLSkNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3Bp
+L3NwaS1tdDY1eHguYyBiL2RyaXZlcnMvc3BpL3NwaS1tdDY1eHguYw0KaW5kZXggNjg4OGE0ZC4u
+ZjU5OWNjZSAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvc3BpL3NwaS1tdDY1eHguYw0KKysrIGIvZHJp
+dmVycy9zcGkvc3BpLW10NjV4eC5jDQpAQCAtMTM5LDcgKzEzOSw2IEBAIHN0YXRpYyBjb25zdCBz
+dHJ1Y3QgbXRrX3NwaV9jb21wYXRpYmxlIG10ODE4M19jb21wYXQgPSB7DQogICogc3VwcGxpZXMg
+aXQuDQogICovDQogc3RhdGljIGNvbnN0IHN0cnVjdCBtdGtfY2hpcF9jb25maWcgbXRrX2RlZmF1
+bHRfY2hpcF9pbmZvID0gew0KLQkuY3NfcG9sID0gMCwNCiAJLnNhbXBsZV9zZWwgPSAwLA0KIH07
+DQogDQpAQCAtMjMwLDEwICsyMjksMTIgQEAgc3RhdGljIGludCBtdGtfc3BpX3ByZXBhcmVfbWVz
+c2FnZShzdHJ1Y3Qgc3BpX21hc3RlciAqbWFzdGVyLA0KICNlbmRpZg0KIA0KIAlpZiAobWRhdGEt
+PmRldl9jb21wLT5lbmhhbmNlX3RpbWluZykgew0KLQkJaWYgKGNoaXBfY29uZmlnLT5jc19wb2wp
+DQorCQkvKiBzZXQgQ1MgcG9sYXJpdHkgKi8NCisJCWlmIChzcGktPm1vZGUgJiBTUElfQ1NfSElH
+SCkNCiAJCQlyZWdfdmFsIHw9IFNQSV9DTURfQ1NfUE9MOw0KIAkJZWxzZQ0KIAkJCXJlZ192YWwg
+Jj0gflNQSV9DTURfQ1NfUE9MOw0KKw0KIAkJaWYgKGNoaXBfY29uZmlnLT5zYW1wbGVfc2VsKQ0K
+IAkJCXJlZ192YWwgfD0gU1BJX0NNRF9TQU1QTEVfU0VMOw0KIAkJZWxzZQ0KQEAgLTI2NCw2ICsy
+NjUsOSBAQCBzdGF0aWMgdm9pZCBtdGtfc3BpX3NldF9jcyhzdHJ1Y3Qgc3BpX2RldmljZSAqc3Bp
+LCBib29sIGVuYWJsZSkNCiAJdTMyIHJlZ192YWw7DQogCXN0cnVjdCBtdGtfc3BpICptZGF0YSA9
+IHNwaV9tYXN0ZXJfZ2V0X2RldmRhdGEoc3BpLT5tYXN0ZXIpOw0KIA0KKwlpZiAoc3BpLT5tb2Rl
+ICYgU1BJX0NTX0hJR0gpDQorCQllbmFibGUgPSAhZW5hYmxlOw0KKw0KIAlyZWdfdmFsID0gcmVh
+ZGwobWRhdGEtPmJhc2UgKyBTUElfQ01EX1JFRyk7DQogCWlmICghZW5hYmxlKSB7DQogCQlyZWdf
+dmFsIHw9IFNQSV9DTURfUEFVU0VfRU47DQpAQCAtNjQ3LDYgKzY1MSwxMCBAQCBzdGF0aWMgaW50
+IG10a19zcGlfcHJvYmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldikNCiANCiAJbWRhdGEg
+PSBzcGlfbWFzdGVyX2dldF9kZXZkYXRhKG1hc3Rlcik7DQogCW1kYXRhLT5kZXZfY29tcCA9IG9m
+X2lkLT5kYXRhOw0KKw0KKwlpZiAobWRhdGEtPmRldl9jb21wLT5lbmhhbmNlX3RpbWluZykNCisJ
+CW1hc3Rlci0+bW9kZV9iaXRzIHw9IFNQSV9DU19ISUdIOw0KKw0KIAlpZiAobWRhdGEtPmRldl9j
+b21wLT5tdXN0X3R4KQ0KIAkJbWFzdGVyLT5mbGFncyA9IFNQSV9NQVNURVJfTVVTVF9UWDsNCiAN
+CmRpZmYgLS1naXQgYS9pbmNsdWRlL2xpbnV4L3BsYXRmb3JtX2RhdGEvc3BpLW10NjV4eC5oIGIv
+aW5jbHVkZS9saW51eC9wbGF0Zm9ybV9kYXRhL3NwaS1tdDY1eHguaA0KaW5kZXggZjBlNmQ2NC4u
+NjVmZDVmZmQyIDEwMDY0NA0KLS0tIGEvaW5jbHVkZS9saW51eC9wbGF0Zm9ybV9kYXRhL3NwaS1t
+dDY1eHguaA0KKysrIGIvaW5jbHVkZS9saW51eC9wbGF0Zm9ybV9kYXRhL3NwaS1tdDY1eHguaA0K
+QEAgLTExLDcgKzExLDYgQEANCiANCiAvKiBCb2FyZCBzcGVjaWZpYyBwbGF0Zm9ybV9kYXRhICov
+DQogc3RydWN0IG10a19jaGlwX2NvbmZpZyB7DQotCXUzMiBjc19wb2w7DQogCXUzMiBzYW1wbGVf
+c2VsOw0KIH07DQogI2VuZGlmDQotLSANCjIuNi40DQo=

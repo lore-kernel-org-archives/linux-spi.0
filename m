@@ -1,102 +1,147 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: Fix Kconfig indentation" to the spi tree
-Date: Wed, 20 Nov 2019 17:18:43 +0000
-Message-ID: <applied-20191120133916.13595-1-krzk@kernel.org>
-References: <20191120133916.13595-1-krzk@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH] dt-bindings: crypto: Convert stm32 QSPI bindings to
+ json-schema
+Date: Wed, 20 Nov 2019 12:04:03 -0600
+Message-ID: <20191120180403.GA11687@bogus>
+References: <20191115142318.2909-1-benjamin.gaignard@st.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: broonie@kernel.org, mark.rutland@arm.com, alexandre.torgue@st.com,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+To: Benjamin Gaignard <benjamin.gaignard@st.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191120133916.13595-1-krzk@kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20191115142318.2909-1-benjamin.gaignard@st.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+On Fri, Nov 15, 2019 at 03:23:18PM +0100, Benjamin Gaignard wrote:
+> Convert the STM32 QSPI binding to DT schema format using json-schema
 
-   spi: Fix Kconfig indentation
+Leftover 'crypto' in the subject.
 
-has been applied to the spi tree at
+> 
+> Signed-off-by: Benjamin Gaignard <benjamin.gaignard@st.com>
+> ---
+>  .../devicetree/bindings/spi/spi-stm32-qspi.txt     | 47 -----------
+>  .../devicetree/bindings/spi/st,stm32-qspi.yaml     | 91 ++++++++++++++++++++++
+>  2 files changed, 91 insertions(+), 47 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/spi/spi-stm32-qspi.txt
+>  create mode 100644 Documentation/devicetree/bindings/spi/st,stm32-qspi.yaml
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
+[...]
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> diff --git a/Documentation/devicetree/bindings/spi/st,stm32-qspi.yaml b/Documentation/devicetree/bindings/spi/st,stm32-qspi.yaml
+> new file mode 100644
+> index 000000000000..955405d39966
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/st,stm32-qspi.yaml
+> @@ -0,0 +1,91 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/spi/st,stm32-qspi.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: STMicroelectronics STM32 Quad Serial Peripheral Interface (QSPI) bindings
+> +
+> +maintainers:
+> +  - Christophe Kerello <christophe.kerello@st.com>
+> +  - Patrice Chotard <patrice.chotard@st.com>
+> +
+> +allOf:
+> +  - $ref: "spi-controller.yaml#"
+> +
+> +properties:
+> +  compatible:
+> +    const: st,stm32f469-qspi
+> +
+> +  reg:
+> +    items:
+> +      - description: registers
+> +      - description: memory mapping
+> +    minItems: 2
+> +    maxItems: 2
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Implied by the 'items' length.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+> +
+> +  reg-names:
+> +    items:
+> +     - const: qspi
+> +     - const: qspi_mm
+> +    minItems: 2
+> +    maxItems: 2
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Implied by the 'items' length.
 
-Thanks,
-Mark
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  resets:
+> +    maxItems: 1
+> +
+> +  dmas:
+> +    items:
+> +      - description: tx DMA channel
+> +      - description: rx DMA channel
+> +    minItems: 2
+> +    maxItems: 2
 
->From 554bbe726ce0ef692cd95fedd5730c69c1189138 Mon Sep 17 00:00:00 2001
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Date: Wed, 20 Nov 2019 21:39:16 +0800
-Subject: [PATCH] spi: Fix Kconfig indentation
+Implied by the 'items' length.
 
-Adjust indentation from spaces to tab (+optional two spaces) as in
-coding style with command like:
-	$ sed -e 's/^        /\t/' -i */Kconfig
+> +
+> +  dma-names:
+> +    items:
+> +      - const: tx
+> +      - const: rx
+> +    minItems: 2
+> +    maxItems: 2
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Link: https://lore.kernel.org/r/20191120133916.13595-1-krzk@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/Kconfig | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+Implied by the 'items' length.
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 6c0c1f55bd71..870f7797b56b 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -144,7 +144,7 @@ config SPI_BCM63XX
- 	tristate "Broadcom BCM63xx SPI controller"
- 	depends on BCM63XX || COMPILE_TEST
- 	help
--          Enable support for the SPI controller on the Broadcom BCM63xx SoCs.
-+	  Enable support for the SPI controller on the Broadcom BCM63xx SoCs.
- 
- config SPI_BCM63XX_HSSPI
- 	tristate "Broadcom BCM63XX HS SPI controller driver"
-@@ -235,11 +235,11 @@ config SPI_DLN2
-        tristate "Diolan DLN-2 USB SPI adapter"
-        depends on MFD_DLN2
-        help
--         If you say yes to this option, support will be included for Diolan
--         DLN2, a USB to SPI interface.
-+	 If you say yes to this option, support will be included for Diolan
-+	 DLN2, a USB to SPI interface.
- 
--         This driver can also be built as a module.  If so, the module
--         will be called spi-dln2.
-+	 This driver can also be built as a module.  If so, the module
-+	 will be called spi-dln2.
- 
- config SPI_EFM32
- 	tristate "EFM32 SPI controller"
-@@ -748,10 +748,10 @@ config SPI_SYNQUACER
- 	  It also supports the new dual-bit and quad-bit SPI protocol.
- 
- config SPI_MXIC
--        tristate "Macronix MX25F0A SPI controller"
--        depends on SPI_MASTER
--        help
--          This selects the Macronix MX25F0A SPI controller driver.
-+	tristate "Macronix MX25F0A SPI controller"
-+	depends on SPI_MASTER
-+	help
-+	  This selects the Macronix MX25F0A SPI controller driver.
- 
- config SPI_MXS
- 	tristate "Freescale MXS SPI controller"
--- 
-2.20.1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reg-names
+> +  - clocks
+> +  - interrupts
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +    #include <dt-bindings/clock/stm32mp1-clks.h>
+> +    #include <dt-bindings/reset/stm32mp1-resets.h>
+> +    spi@58003000 {
+> +      compatible = "st,stm32f469-qspi";
+> +      reg = <0x58003000 0x1000>, <0x70000000 0x10000000>;
+> +      reg-names = "qspi", "qspi_mm";
+> +      interrupts = <GIC_SPI 92 IRQ_TYPE_LEVEL_HIGH>;
+> +      dmas = <&mdma1 22 0x10 0x100002 0x0 0x0>,
+> +             <&mdma1 22 0x10 0x100008 0x0 0x0>;
+> +      dma-names = "tx", "rx";
+> +      clocks = <&rcc QSPI_K>;
+> +      resets = <&rcc QSPI_R>;
+> +
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      flash@0 {
+> +        compatible = "jedec,spi-nor";
+> +        reg = <0>;
+> +        spi-rx-bus-width = <4>;
+> +        spi-max-frequency = <108000000>;
+> +      };
+> +    };
+> +
+> +...
+> -- 
+> 2.15.0
+> 

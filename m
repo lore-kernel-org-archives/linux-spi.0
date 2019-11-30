@@ -1,101 +1,46 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: cadence: Correct handling of native chipselect" to the spi tree
-Date: Thu, 28 Nov 2019 13:19:05 +0000
-Message-ID: <applied-20191126164140.6240-1-ckeepax@opensource.cirrus.com>
-References: <20191126164140.6240-1-ckeepax@opensource.cirrus.com>
-Cc: broonie@kernel.org, gregory.clement@bootlin.com,
-        linus.walleij@linaro.org, Linus Walleij <linus.walleij@linaro.org>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>
-To: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: YueHaibing <yuehaibing@huawei.com>
+Subject: [PATCH v2 -next] gpiolib: of: Make of_gpio_spi_cs_get_count static
+Date: Sat, 30 Nov 2019 09:28:28 +0800
+Message-ID: <20191130012828.14504-1-yuehaibing@huawei.com>
+References: <CACRpkdbeKdEAEtoPZH8+fWcZEOqJ6cdGTRSkrKx8L9avxnPQQg@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: <linux-gpio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
+To: <linus.walleij@linaro.org>, <bgolaszewski@baylibre.com>,
+        <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191126164140.6240-1-ckeepax@opensource.cirrus.com>
+In-Reply-To: <CACRpkdbeKdEAEtoPZH8+fWcZEOqJ6cdGTRSkrKx8L9avxnPQQg@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+Fix sparse warning:
 
-   spi: cadence: Correct handling of native chipselect
+drivers/gpio/gpiolib-of.c:35:5: warning:
+ symbol 'of_gpio_spi_cs_get_count' was not declared. Should it be static?
 
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 61acd19f9c56fa0809285346bd0bd4a926ab0da0 Mon Sep 17 00:00:00 2001
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
-Date: Tue, 26 Nov 2019 16:41:40 +0000
-Subject: [PATCH] spi: cadence: Correct handling of native chipselect
-
-To fix a regression on the Cadence SPI driver, this patch reverts
-commit 6046f5407ff0 ("spi: cadence: Fix default polarity of native
-chipselect").
-
-This patch was not the correct fix for the issue. The SPI framework
-calls the set_cs line with the logic level it desires on the chip select
-line, as such the old is_high handling was correct. However, this was
-broken by the fact that before commit 3e5ec1db8bfe ("spi: Fix SPI_CS_HIGH
-setting when using native and GPIO CS") all controllers that offered
-the use of a GPIO chip select had SPI_CS_HIGH applied, even for hardware
-chip selects. This caused the value passed into the driver to be inverted.
-Which unfortunately makes it look like a logical enable the chip select
-value.
-
-Since the core was corrected to not unconditionally apply SPI_CS_HIGH,
-the Cadence driver, whilst using the hardware chip select, will deselect
-the chip select every time we attempt to communicate with the device,
-which results in failed communications.
-
-Fixes: 3e5ec1db8bfe ("spi: Fix SPI_CS_HIGH setting when using native and GPIO CS")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20191126164140.6240-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/spi/spi-cadence.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+v2: This is caused by commit 71b8f600b034 ("gpio: Handle counting of Freescale chipselects"),
+	should be applied to spi tree.
+---
+ drivers/gpio/gpiolib-of.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index c36587b42e95..82a0ee09cbe1 100644
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -168,16 +168,16 @@ static void cdns_spi_init_hw(struct cdns_spi *xspi)
- /**
-  * cdns_spi_chipselect - Select or deselect the chip select line
-  * @spi:	Pointer to the spi_device structure
-- * @enable:	Select (1) or deselect (0) the chip select line
-+ * @is_high:	Select(0) or deselect (1) the chip select line
+diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
+index 610c6622f62d..b696e4598a24 100644
+--- a/drivers/gpio/gpiolib-of.c
++++ b/drivers/gpio/gpiolib-of.c
+@@ -32,7 +32,7 @@
+  * the counting of "cs-gpios" to count "gpios" transparent to the
+  * driver.
   */
--static void cdns_spi_chipselect(struct spi_device *spi, bool enable)
-+static void cdns_spi_chipselect(struct spi_device *spi, bool is_high)
+-int of_gpio_spi_cs_get_count(struct device *dev, const char *con_id)
++static int of_gpio_spi_cs_get_count(struct device *dev, const char *con_id)
  {
- 	struct cdns_spi *xspi = spi_master_get_devdata(spi->master);
- 	u32 ctrl_reg;
+ 	struct device_node *np = dev->of_node;
  
- 	ctrl_reg = cdns_spi_read(xspi, CDNS_SPI_CR);
- 
--	if (!enable) {
-+	if (is_high) {
- 		/* Deselect the slave */
- 		ctrl_reg |= CDNS_SPI_CR_SSCTRL;
- 	} else {
 -- 
 2.20.1

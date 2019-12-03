@@ -1,76 +1,116 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "gpiolib: of: Make of_gpio_spi_cs_get_count static" to the spi tree
-Date: Tue,  3 Dec 2019 13:59:44 +0000 (GMT)
-Message-ID: <applied-20191130012828.14504-1-yuehaibing@huawei.com>
-References: <20191130012828.14504-1-yuehaibing@huawei.com>
-Cc: bgolaszewski@baylibre.com, broonie@kernel.org,
-        Hulk Robot <hulkci@huawei.com>, linus.walleij@linaro.org,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
-To: YueHaibing <yuehaibing@huawei.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191130012828.14504-1-yuehaibing@huawei.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: Side effect of SPI GPIO descriptor usage
+Date: Tue, 3 Dec 2019 16:35:21 +0000
+Message-ID: <20191203163521.GM1998@sirena.org.uk>
+References: <db6a1e17-49a3-e3ed-7713-56b7763713d6@raspberrypi.org>
+ <20191202134344.GE1998@sirena.org.uk>
+ <1e0b7cd6-cf9e-2b68-f875-8015c8ffc326@raspberrypi.org>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============7081898801320142191=="
+Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+ linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Phil Elwell <phil-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org>
+Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <1e0b7cd6-cf9e-2b68-f875-8015c8ffc326-FnsA7b+Nu9XbIbC87yuRow@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
+List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   gpiolib: of: Make of_gpio_spi_cs_get_count static
+--===============7081898801320142191==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="zHDeOHGDnzKksZSU"
+Content-Disposition: inline
 
-has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
+--zHDeOHGDnzKksZSU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+On Mon, Dec 02, 2019 at 02:11:51PM +0000, Phil Elwell wrote:
+> On 02/12/2019 13:43, Mark Brown wrote:
+> > On Mon, Dec 02, 2019 at 12:10:11PM +0000, Phil Elwell wrote:
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> > I
+> > can't see anything in that change which sets the flag, can you be
+> > more specific?
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+> bcm2835_spi_probe in spi-bcm2835.c sets ctrl->use_gpio_descriptors to true,
+> and of_spi_parse_dt in spi.c includes the following:
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+> /*
+>  * For descriptors associated with the device, polarity inversion is
+>  * handled in the gpiolib, so all gpio chip selects are "active high"
+>  * in the logical sense, the gpiolib will invert the line if need be.
+>  */
+> if ((ctlr->use_gpio_descriptors) && ctlr->cs_gpiods &&
+>     ctlr->cs_gpiods[spi->chip_select])
+> 	spi->mode |= SPI_CS_HIGH;
 
-Thanks,
-Mark
+Right, I see what you're saying now.
 
->From a1f4c96b799b80118b50bd47320deb9013b7ff40 Mon Sep 17 00:00:00 2001
-From: YueHaibing <yuehaibing@huawei.com>
-Date: Sat, 30 Nov 2019 09:28:28 +0800
-Subject: [PATCH] gpiolib: of: Make of_gpio_spi_cs_get_count static
+> > In general it's a bad idea to modify mode at runtime, and it's a
+> > bad idea to mix multiple means of configuring the polarity of the
+> > chip select (eg, mixing DT configuration with other means).
 
-Fix sparse warning:
+> Applications using spidev to implement user-space drivers need to be able to
+> set SPI mode, CS polarity etc. at run time. I agree that there
 
-drivers/gpio/gpiolib-of.c:35:5: warning:
- symbol 'of_gpio_spi_cs_get_count' was not declared. Should it be static?
+I'm nervous of spidev user doing stuff like that with the chip
+selects, with DT even spidev devices should be registered
+normally, you will get a complaint if you register a raw spidev.
+There's no free pass for "oh, spidev can do anything we don't
+care" here - the DT should describe the hardware, if some of the
+hardware happens to be implemented by spidev then fine.
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20191130012828.14504-1-yuehaibing@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/gpio/gpiolib-of.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+That said we do have other in kernel users that do change modes
+at runtime, though I'm not convinced many of them have GPIO chip
+selects.  Linus?
 
-diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
-index 4b19e7e26b90..f90a161ca97a 100644
---- a/drivers/gpio/gpiolib-of.c
-+++ b/drivers/gpio/gpiolib-of.c
-@@ -32,7 +32,7 @@
-  * the counting of "cs-gpios" to count "gpios" transparent to the
-  * driver.
-  */
--int of_gpio_spi_cs_get_count(struct device *dev, const char *con_id)
-+static int of_gpio_spi_cs_get_count(struct device *dev, const char *con_id)
- {
- 	struct device_node *np = dev->of_node;
- 
--- 
-2.20.1
+> are many ways to set the polarity of a chip select, and it may be that
+> too many are being used with GPIO CSs declared by DT, but I don't think that
+> completely explains the connection between use_gpio_descriptors
+> and the automatic setting of SPI_CS_HIGH.
+
+That's the result of there being too many places where the
+polarity of the chip select is set so the code is pushing to at
+least only implement this in one place so things are clearer and
+more consistent.
+
+--zHDeOHGDnzKksZSU
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl3mjscACgkQJNaLcl1U
+h9A5nAf+KL/EMG9AeIeRv8/4LbT1CbXUDlGeuE6JyVP6WkAZaVRqab2gbl4rUOAI
+vuIKIOJ76vkvjOG9deGsO2N+rIRmXfKt+U0Nz1z92Qg4OjkAybQbiv0ObJU2C5QJ
+HUoMtPJ4HlGgOoct0EXfz/MlwLC3CtXaAM9j6rwE+kZCfLAgJ2I4N6yK4H6/030Q
+dw/Q+opbvHM2AFKfLPOCInDryDmQrwcstyPHmWKfsrkoJdyZ8QS1G9EydnQQIBYR
+31IsXVzDWE8ziAuc5gF5+FN4/cBbdQxtcIHCx3mDVYcB3F6xEKDRPd0aDglAMP1J
+51pDSdVPkHYzoUB7PiuvqGH9KtFr1w==
+=h29l
+-----END PGP SIGNATURE-----
+
+--zHDeOHGDnzKksZSU--
+
+
+--===============7081898801320142191==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-rpi-kernel mailing list
+linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel
+
+--===============7081898801320142191==--

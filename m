@@ -1,102 +1,109 @@
-From: Philippe Schenker <philippe.schenker@toradex.com>
-Subject: [PATCH] spi: fsl-lpspi: fix only one cs-gpio working
-Date: Wed, 4 Dec 2019 14:13:33 +0000
-Message-ID: <20191204141312.1411251-1-philippe.schenker@toradex.com>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: Side effect of SPI GPIO descriptor usage
+Date: Wed, 4 Dec 2019 15:46:56 +0100
+Message-ID: <CACRpkdbqNw+h6MphF7kLAwym-F3G+ZebMDB2BMt0bzA6DfM0OA@mail.gmail.com>
+References: <db6a1e17-49a3-e3ed-7713-56b7763713d6@raspberrypi.org>
+ <20191202134344.GE1998@sirena.org.uk>
+ <1e0b7cd6-cf9e-2b68-f875-8015c8ffc326@raspberrypi.org>
+ <20191203163521.GM1998@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Clark Wang <xiaoning.wang@nxp.com>,
-        Philippe Schenker <philippe.schenker@toradex.com>
-To: Mark Brown <broonie@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+ linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <20191203163521.GM1998-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
+List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Why it does not work at the moment:
-- num_chipselect sets the number of cs-gpios that are in the DT.
-  This comes from drivers/spi/spi.c
-- num_chipselect gets set with devm_spi_register_controller, that is
-  called in drivers/spi/spi.c
-- devm_spi_register_controller got called after num_chipselect has
-  been used.
+On Tue, Dec 3, 2019 at 5:35 PM Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Mon, Dec 02, 2019 at 02:11:51PM +0000, Phil Elwell wrote:
 
-How this commit fixes the issue:
-- devm_spi_register_controller gets called before num_chipselect is
-  being used.
+> > Applications using spidev to implement user-space drivers need to be able to
+> > set SPI mode, CS polarity etc. at run time. I agree that there
+>
+> I'm nervous of spidev user doing stuff like that with the chip
+> selects, with DT even spidev devices should be registered
+> normally, you will get a complaint if you register a raw spidev.
+> There's no free pass for "oh, spidev can do anything we don't
+> care" here - the DT should describe the hardware, if some of the
+> hardware happens to be implemented by spidev then fine.
 
-Fixes: c7a402599504 ("spi: lpspi: use the core way to implement cs-gpio fun=
-ction")
-Signed-off-by: Philippe Schenker <philippe.schenker@toradex.com>
+I agree with this. In 99 cases out of 100 it turns out that the
+userspace driver is a substandard version of a driver that should
+actually be in a place such as drivers/iio and what we end up
+supporting is offended userspace driver authors who are acting
+against the interests of the kernel community.
 
----
+I have come to accept the usecase of userspace GPIO for things
+like industrial automation one-offs, random hackerspace projects,
+and prototypes all highly custom, and with such high friction with
+kernel internals and pain to carry forward should be expected.
 
- drivers/spi/spi-fsl-lpspi.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+With devices on SPI and I2C I get really sceptic. What are those
+hardware devices, and what makes them so fantastic that they
+cannot use a kernel driver like everyone else?
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 2cc0ddb4a988..1375bdfc587b 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -862,6 +862,22 @@ static int fsl_lpspi_probe(struct platform_device *pde=
-v)
- 	fsl_lpspi->dev =3D &pdev->dev;
- 	fsl_lpspi->is_slave =3D is_slave;
-=20
-+	controller->bits_per_word_mask =3D SPI_BPW_RANGE_MASK(8, 32);
-+	controller->transfer_one =3D fsl_lpspi_transfer_one;
-+	controller->prepare_transfer_hardware =3D lpspi_prepare_xfer_hardware;
-+	controller->unprepare_transfer_hardware =3D lpspi_unprepare_xfer_hardware=
-;
-+	controller->mode_bits =3D SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
-+	controller->flags =3D SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX;
-+	controller->dev.of_node =3D pdev->dev.of_node;
-+	controller->bus_num =3D pdev->id;
-+	controller->slave_abort =3D fsl_lpspi_slave_abort;
-+
-+	ret =3D devm_spi_register_controller(&pdev->dev, controller);
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "spi_register_controller error.\n");
-+		goto out_controller_put;
-+	}
-+
- 	if (!fsl_lpspi->is_slave) {
- 		for (i =3D 0; i < controller->num_chipselect; i++) {
- 			int cs_gpio =3D of_get_named_gpio(np, "cs-gpios", i);
-@@ -885,16 +901,6 @@ static int fsl_lpspi_probe(struct platform_device *pde=
-v)
- 		controller->prepare_message =3D fsl_lpspi_prepare_message;
- 	}
-=20
--	controller->bits_per_word_mask =3D SPI_BPW_RANGE_MASK(8, 32);
--	controller->transfer_one =3D fsl_lpspi_transfer_one;
--	controller->prepare_transfer_hardware =3D lpspi_prepare_xfer_hardware;
--	controller->unprepare_transfer_hardware =3D lpspi_unprepare_xfer_hardware=
-;
--	controller->mode_bits =3D SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
--	controller->flags =3D SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX;
--	controller->dev.of_node =3D pdev->dev.of_node;
--	controller->bus_num =3D pdev->id;
--	controller->slave_abort =3D fsl_lpspi_slave_abort;
--
- 	init_completion(&fsl_lpspi->xfer_done);
-=20
- 	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-@@ -952,12 +958,6 @@ static int fsl_lpspi_probe(struct platform_device *pde=
-v)
- 	if (ret < 0)
- 		dev_err(&pdev->dev, "dma setup error %d, use pio\n", ret);
-=20
--	ret =3D devm_spi_register_controller(&pdev->dev, controller);
--	if (ret < 0) {
--		dev_err(&pdev->dev, "spi_register_controller error.\n");
--		goto out_controller_put;
--	}
--
- 	return 0;
-=20
- out_controller_put:
---=20
-2.24.0
+> That said we do have other in kernel users that do change modes
+> at runtime, though I'm not convinced many of them have GPIO chip
+> selects.  Linus?
+
+I looked it over and most are devices like board files and RTC
+clocks that enforce SPI_CS_HIGH. They seem to be native
+chip selects so it will work as expected but I will look it over so
+I haven't broken any of them.
+
+and I can find one more outlier:
+
+drivers/mmc/host/mmc_spi.c, function mmc_spi_initsequence()
+
+This very clearly want the inverse polarity of whatever was the default,
+but the code assumes that SPI_CS_HIGH implies that this is the
+actual physical level and forces it high, then low. I will send
+a patch for this: what they want to achieve is the inverse of
+whatever was configured.
+
+The driver drivers/net/wireless/ti/wlcore/spi.c does exactly
+this already.
+
+I am a bit sorry about the semantics of "HIGH" here when the right
+word should rather be "asserted": it's named like this for historical
+reasons.
+
+An alternative would be to let SPI use gpiod_set_raw_value()
+to steamroll all the inversion semantics in the GPIO library,
+and SPI_CS_HIGH would literally mean to drive the physical
+line high.
+
+This may seem like an intuitively correct solution but
+it has implications for everything using device tree to define
+SPI clients: spi-cs-high in a device tree means that the
+CS is active high, which gpiolib currently detects and
+handles by way of disabling internal inversion (the default
+for SPI devices is active low). Previously the SPI core would
+set SPI_CS_HIGH and we would then just double-assign
+that in the SPI core and then again in some drivers, it doesn't
+seem much better to me.
+
+So I will look these over, but if people (and especially the SPI
+maintainer) prefer the semantic that SPI_CS_HIGH does not
+mean "asserted" but takes direct control of the physical
+level of the CS line, I can do that instead.
+
+I could also additionally patch the whole kernel to rename
+SPI_CS_HIGH into SPI_CS_ASSERTED if this makes things
+better. (Would be a two-step patch rocket adding the additional
+define and switching everyone over before deleting the
+SPI_CS_HIGH.)
+
+Yours,
+Linus Walleij

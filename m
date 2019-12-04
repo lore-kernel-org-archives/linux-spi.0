@@ -1,239 +1,102 @@
-From: Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Re: [PATCH 3/4] mtd: spi-nor: Add Octal 8D-8D-8D mode support for
- Macronix mx25uw51245g
-Date: Wed, 4 Dec 2019 18:33:49 +0530
-Message-ID: <1f1a368a-e3d3-4e58-819e-b4dffc3212ef@ti.com>
-References: <1573808288-19365-1-git-send-email-masonccyang@mxic.com.tw>
- <1573808288-19365-4-git-send-email-masonccyang@mxic.com.tw>
+From: Philippe Schenker <philippe.schenker@toradex.com>
+Subject: [PATCH] spi: fsl-lpspi: fix only one cs-gpio working
+Date: Wed, 4 Dec 2019 14:13:33 +0000
+Message-ID: <20191204141312.1411251-1-philippe.schenker@toradex.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: juliensu@mxic.com.tw, Boris Brezillon <boris.brezillon@bootlin.com>,
- linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org
-To: Mason Yang <masonccyang@mxic.com.tw>, <broonie@kernel.org>,
- <miquel.raynal@bootlin.com>, <richard@nod.at>, <marek.vasut@gmail.com>,
- <dwmw2@infradead.org>, <computersforpeace@gmail.com>,
- <bbrezillon@kernel.org>, <tudor.ambarus@microchip.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <1573808288-19365-4-git-send-email-masonccyang@mxic.com.tw>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Clark Wang <xiaoning.wang@nxp.com>,
+        Philippe Schenker <philippe.schenker@toradex.com>
+To: Mark Brown <broonie@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Why it does not work at the moment:
+- num_chipselect sets the number of cs-gpios that are in the DT.
+  This comes from drivers/spi/spi.c
+- num_chipselect gets set with devm_spi_register_controller, that is
+  called in drivers/spi/spi.c
+- devm_spi_register_controller got called after num_chipselect has
+  been used.
 
+How this commit fixes the issue:
+- devm_spi_register_controller gets called before num_chipselect is
+  being used.
 
-On 15/11/19 2:28 pm, Mason Yang wrote:
-> mx25uw51245g is a SPI NOR that supports 1-1-1/8-8-8 mode and the SFDPRD
-> command but returns an empty SFDP page. This forces us to add a new entry
-> in the flash_info table and patch spi_nor_fixups hooks to tweak flash
-> parameters for spi_nor_read/pp_setting() and then to enter
-> Octal 8D-8D-8D modes.
-> 
-> Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
-> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
-> ---
->  drivers/mtd/spi-nor/spi-nor.c | 114 ++++++++++++++++++++++++++++++++++++++++++
->  include/linux/mtd/spi-nor.h   |   3 ++
->  2 files changed, 117 insertions(+)
-> 
-> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-> index 4cdf52d..9013590 100644
-> --- a/drivers/mtd/spi-nor/spi-nor.c
-> +++ b/drivers/mtd/spi-nor/spi-nor.c
-> @@ -615,6 +615,56 @@ static int write_disable(struct spi_nor *nor)
->  }
->  
->  /*
-> + * Read configuration register 2, returning its value in the
-> + * location. Return the configuration register 2 value.
-> + * Returns negative if error occurred.
-> + */
-> +static int read_cr2(struct spi_nor *nor, u32 addr)
+Fixes: c7a402599504 ("spi: lpspi: use the core way to implement cs-gpio fun=
+ction")
+Signed-off-by: Philippe Schenker <philippe.schenker@toradex.com>
 
-Please prefix spi_nor_* for all new functions. 
-Also, include manf name if its vendor specific.
+---
 
-> +{
-> +	int ret;
-> +
-> +	if (nor->spimem) {
-> +		struct spi_mem_op op =
-> +			SPI_MEM_OP(SPI_MEM_OP_CMD(SPINOR_OP_RDCR2, 1),
-> +				   SPI_MEM_OP_ADDR(4, addr, 1),
-> +				   SPI_MEM_OP_DUMMY(4, 1),
-> +				   SPI_MEM_OP_DATA_IN(1, nor->bouncebuf, 1));
-> +
-> +		if (spi_nor_protocol_is_8_8_8(nor->read_proto)) {
-> +			op.cmd.buswidth = 8;
-> +			op.addr.buswidth = 8;
-> +			op.dummy.buswidth = 8;
-> +			op.data.buswidth = 8;
-> +			op.cmd.nbytes = 2;
-> +
-> +			if (spi_nor_protocol_is_8D_8D_8D(nor->read_proto)) {
-> +				op.dummy.nbytes *= 2;
-> +				op.cmd.dtr = true;
-> +				op.addr.dtr = true;
-> +				op.dummy.dtr = true;
-> +				op.data.dtr = true;
-> +			}
-> +
-> +			if (nor->ext_cmd_mode == EXT_CMD_IS_INVERSE)
-> +				op.cmd.ext_opcode = ~SPINOR_OP_RDCR2;
-> +			else
-> +				op.cmd.ext_opcode = SPINOR_OP_RDCR2;
-> +		}
-> +
-> +		ret = spi_mem_exec_op(nor->spimem, &op);
-> +	} else {
-> +		ret = -ENOTSUPP;
-> +	}
-> +
-> +	if (ret < 0) {
-> +		dev_err(nor->dev, "error %d reading CR\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	return nor->bouncebuf[0];
-> +}
-> +
-> +/*
->   * Write configuration register 2 one byte
->   * Returns negative if error occurred.
->   */
-> @@ -2275,10 +2325,72 @@ static int spi_nor_spansion_clear_sr_bp(struct spi_nor *nor)
->  	return 0;
->  }
->  
-> +static void
-> +spi_nor_set_read_settings(struct spi_nor_read_command *read,
-> +			  u8 num_mode_clocks,
-> +			  u8 num_wait_states,
-> +			  u8 opcode,
-> +			  enum spi_nor_protocol proto);
-> +
-> +static void
-> +spi_nor_set_pp_settings(struct spi_nor_pp_command *pp,
-> +			u8 opcode,
-> +			enum spi_nor_protocol proto);
-> +
-> +static void
-> +mx25uw51245g_default_init(struct spi_nor *nor)
-> +{
-> +	struct spi_nor_flash_parameter *params = &nor->params;
-> +
-> +	if (!(nor->spimem->spi->mode & (SPI_RX_OCTAL | SPI_TX_OCTAL)))
-> +		return;
-> +
-> +	/* Octal 8S-8S-8S mode */
-> +	params->hwcaps.mask |= SNOR_HWCAPS_OPI_FULL_STR;
-> +	spi_nor_set_read_settings(&params->reads[SNOR_CMD_READ_8_8_8],
-> +				  0, 20, SPINOR_OP_READ_8_8_8,
-> +				  SNOR_PROTO_8_8_8);
-> +
-> +	spi_nor_set_pp_settings(&params->page_programs[SNOR_CMD_PP_8_8_8],
-> +				SPINOR_OP_PP_8_8_8, SNOR_PROTO_8_8_8);
-> +
-> +	/* Octal 8D-8D-8D mode */
-> +	params->hwcaps.mask |= SNOR_HWCAPS_OPI_FULL_DTR;
-> +	spi_nor_set_read_settings(&params->reads[SNOR_CMD_READ_8D_8D_8D],
-> +				  0, 20, SPINOR_OP_READ_8D_8D_8D,
-> +				  SNOR_PROTO_8_8_8_DTR);
-> +
-> +	spi_nor_set_pp_settings(&params->page_programs[SNOR_CMD_PP_8D_8D_8D],
-> +				SPINOR_OP_PP_8D_8D_8D, SNOR_PROTO_8_8_8_DTR);
-> +
-> +	nor->ext_cmd_mode = EXT_CMD_IS_INVERSE;
-> +}
+ drivers/spi/spi-fsl-lpspi.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-I don't see anything that is macronix specific here.. Can this be moved to
-generic code with information parsed from SFDP table?
-
-> +
-> +static void
-> +mx25uw51245g_post_sfdp_fixups(struct spi_nor *nor)
-> +{
-> +	struct spi_nor_flash_parameter *params = &nor->params;
-> +	u8 cr2;
-> +
-> +	cr2 = read_cr2(nor, CR2_REG0) & CR2_REG0_MODE_MASK;
-> +
-> +	if (params->hwcaps.mask & SNOR_HWCAPS_OPI_FULL_DTR)
-> +		cr2 |= CR2_REG0_MODE_OPI_DTR;
-> +	else if (params->hwcaps.mask & SNOR_HWCAPS_OPI_FULL_STR)
-> +		cr2 |= CR2_REG0_MODE_OPI_STR;
-> +
-> +	write_cr2(nor, CR2_REG0, cr2);
-> +}
-> +
-
-I see this as a misuse of sfdp_fixups hook:
-
- * @post_sfdp: called after SFDP has been parsed (is also called for SPI NORs
- *             that do not support RDSFDP). Typically used to tweak various
- *             parameters that could not be extracted by other means (i.e.
- *             when information provided by the SFDP/flash_info tables are
- *             incomplete or wrong).
- *
-
-
-This should only tweak options parsed by SFDP and not be used to
-configure flash to a different mode. Please add a separate function 
-to do so. See https://patchwork.kernel.org/patch/10638085/
-
-Also, I guess JESD216C provides a way to discover command sequence 
-to enter OPI mode?
-
->  static struct spi_nor_fixups mx25l25635_fixups = {
->  	.post_bfpt = mx25l25635_post_bfpt_fixups,
->  };
->  
-> +static struct spi_nor_fixups mx25uw51245g_fixups = {
-> +	.default_init = mx25uw51245g_default_init,
-> +	.post_sfdp = mx25uw51245g_post_sfdp_fixups,
-> +};
-> +
->  static void gd25q256_default_init(struct spi_nor *nor)
->  {
->  	/*
-> @@ -2442,6 +2554,8 @@ static void gd25q256_default_init(struct spi_nor *nor)
->  			 SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ)
->  			 .fixups = &mx25l25635_fixups },
->  	{ "mx25u25635f", INFO(0xc22539, 0, 64 * 1024, 512, SECT_4K | SPI_NOR_4B_OPCODES) },
-> +	{ "mx25uw51245g", INFO(0xc2813a, 0, 64 * 1024, 1024, SECT_4K | SPI_NOR_4B_OPCODES)
-> +				.fixups = &mx25uw51245g_fixups},
->  	{ "mx25v8035f",  INFO(0xc22314, 0, 64 * 1024,  16,
->  			 SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
->  	{ "mx25l25655e", INFO(0xc22619, 0, 64 * 1024, 512, 0) },
-> diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-> index 2e720ca..3aa54dd 100644
-> --- a/include/linux/mtd/spi-nor.h
-> +++ b/include/linux/mtd/spi-nor.h
-> @@ -114,6 +114,9 @@
->  /* Write CFG Reg 2 - defined in JEDEC JESD216C. */
->  #define SPINOR_OP_WRCR2		0x72	/* Write configuration register 2 */
->  
-> +/* Used for Macronix flashes only */
-> +#define SPINOR_OP_RDCR2		0x71	/* Read configuration register 2 */
-> +
->  /* Used for Macronix and Winbond flashes. */
->  #define SPINOR_OP_EN4B		0xb7	/* Enter 4-byte mode */
->  #define SPINOR_OP_EX4B		0xe9	/* Exit 4-byte mode */
-> 
-
--- 
-Regards
-Vignesh
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 2cc0ddb4a988..1375bdfc587b 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -862,6 +862,22 @@ static int fsl_lpspi_probe(struct platform_device *pde=
+v)
+ 	fsl_lpspi->dev =3D &pdev->dev;
+ 	fsl_lpspi->is_slave =3D is_slave;
+=20
++	controller->bits_per_word_mask =3D SPI_BPW_RANGE_MASK(8, 32);
++	controller->transfer_one =3D fsl_lpspi_transfer_one;
++	controller->prepare_transfer_hardware =3D lpspi_prepare_xfer_hardware;
++	controller->unprepare_transfer_hardware =3D lpspi_unprepare_xfer_hardware=
+;
++	controller->mode_bits =3D SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
++	controller->flags =3D SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX;
++	controller->dev.of_node =3D pdev->dev.of_node;
++	controller->bus_num =3D pdev->id;
++	controller->slave_abort =3D fsl_lpspi_slave_abort;
++
++	ret =3D devm_spi_register_controller(&pdev->dev, controller);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "spi_register_controller error.\n");
++		goto out_controller_put;
++	}
++
+ 	if (!fsl_lpspi->is_slave) {
+ 		for (i =3D 0; i < controller->num_chipselect; i++) {
+ 			int cs_gpio =3D of_get_named_gpio(np, "cs-gpios", i);
+@@ -885,16 +901,6 @@ static int fsl_lpspi_probe(struct platform_device *pde=
+v)
+ 		controller->prepare_message =3D fsl_lpspi_prepare_message;
+ 	}
+=20
+-	controller->bits_per_word_mask =3D SPI_BPW_RANGE_MASK(8, 32);
+-	controller->transfer_one =3D fsl_lpspi_transfer_one;
+-	controller->prepare_transfer_hardware =3D lpspi_prepare_xfer_hardware;
+-	controller->unprepare_transfer_hardware =3D lpspi_unprepare_xfer_hardware=
+;
+-	controller->mode_bits =3D SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+-	controller->flags =3D SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX;
+-	controller->dev.of_node =3D pdev->dev.of_node;
+-	controller->bus_num =3D pdev->id;
+-	controller->slave_abort =3D fsl_lpspi_slave_abort;
+-
+ 	init_completion(&fsl_lpspi->xfer_done);
+=20
+ 	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+@@ -952,12 +958,6 @@ static int fsl_lpspi_probe(struct platform_device *pde=
+v)
+ 	if (ret < 0)
+ 		dev_err(&pdev->dev, "dma setup error %d, use pio\n", ret);
+=20
+-	ret =3D devm_spi_register_controller(&pdev->dev, controller);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "spi_register_controller error.\n");
+-		goto out_controller_put;
+-	}
+-
+ 	return 0;
+=20
+ out_controller_put:
+--=20
+2.24.0

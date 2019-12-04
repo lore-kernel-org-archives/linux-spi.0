@@ -1,214 +1,73 @@
-From: Benjamin Gaignard <benjamin.gaignard@st.com>
-Subject: [PATCH] dt-bindings: spi: Convert stm32 spi bindings to json-schema
-Date: Wed, 4 Dec 2019 16:32:33 +0100
-Message-ID: <20191204153233.791-1-benjamin.gaignard@st.com>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: Side effect of SPI GPIO descriptor usage
+Date: Thu, 5 Dec 2019 00:27:40 +0100
+Message-ID: <CACRpkdaxXKMqL4Y8yFu+U7WhpXgq6Yr+hx4rYd3aDzc+-dLDFw@mail.gmail.com>
+References: <db6a1e17-49a3-e3ed-7713-56b7763713d6@raspberrypi.org>
+ <20191202134344.GE1998@sirena.org.uk>
+ <1e0b7cd6-cf9e-2b68-f875-8015c8ffc326@raspberrypi.org>
+ <20191203163521.GM1998@sirena.org.uk>
+ <CACRpkdbqNw+h6MphF7kLAwym-F3G+ZebMDB2BMt0bzA6DfM0OA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Benjamin Gaignard <benjamin.gaignard@st.com>,
-        Erwan Leray <erwan.leray@st.com>,
-        Fabrice Gasnier <fabrice.gasnier@st.com>,
-        Amelie Delaunay <amelie.delaunay@st.com>
-To: <broonie@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
-        <alexandre.torgue@st.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+ linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <CACRpkdbqNw+h6MphF7kLAwym-F3G+ZebMDB2BMt0bzA6DfM0OA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
+List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Convert the STM32 spi binding to DT schema format using json-schema
+On Wed, Dec 4, 2019 at 3:46 PM Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
 
-Signed-off-by: Benjamin Gaignard <benjamin.gaignard@st.com>
-CC: Erwan Leray <erwan.leray@st.com>
-CC: Fabrice Gasnier <fabrice.gasnier@st.com>
-CC: Amelie Delaunay <amelie.delaunay@st.com>
----
- .../devicetree/bindings/spi/spi-stm32.txt          |  62 ------------
- .../devicetree/bindings/spi/st,stm32-spi.yaml      | 105 +++++++++++++++++++++
- 2 files changed, 105 insertions(+), 62 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/spi/spi-stm32.txt
- create mode 100644 Documentation/devicetree/bindings/spi/st,stm32-spi.yaml
+> I looked it over and most are devices like board files and RTC
+> clocks that enforce SPI_CS_HIGH. They seem to be native
+> chip selects so it will work as expected but I will look it over so
+> I haven't broken any of them.
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-stm32.txt b/Documentation/devicetree/bindings/spi/spi-stm32.txt
-deleted file mode 100644
-index d82755c63eaf..000000000000
---- a/Documentation/devicetree/bindings/spi/spi-stm32.txt
-+++ /dev/null
-@@ -1,62 +0,0 @@
--STMicroelectronics STM32 SPI Controller
--
--The STM32 SPI controller is used to communicate with external devices using
--the Serial Peripheral Interface. It supports full-duplex, half-duplex and
--simplex synchronous serial communication with external devices. It supports
--from 4 to 32-bit data size. Although it can be configured as master or slave,
--only master is supported by the driver.
--
--Required properties:
--- compatible: Should be one of:
--  "st,stm32h7-spi"
--  "st,stm32f4-spi"
--- reg: Offset and length of the device's register set.
--- interrupts: Must contain the interrupt id.
--- clocks: Must contain an entry for spiclk (which feeds the internal clock
--	  generator).
--- #address-cells:  Number of cells required to define a chip select address.
--- #size-cells: Should be zero.
--
--Optional properties:
--- resets: Must contain the phandle to the reset controller.
--- A pinctrl state named "default" may be defined to set pins in mode of
--  operation for SPI transfer.
--- dmas: DMA specifiers for tx and rx dma. DMA fifo mode must be used. See the
--  STM32 DMA bindings, Documentation/devicetree/bindings/dma/stm32-dma.txt.
--- dma-names: DMA request names should include "tx" and "rx" if present.
--- cs-gpios: list of GPIO chip selects. See the SPI bus bindings,
--  Documentation/devicetree/bindings/spi/spi-bus.txt
--
--
--Child nodes represent devices on the SPI bus
--  See ../spi/spi-bus.txt
--
--Optional properties:
--- st,spi-midi-ns: Only for STM32H7, (Master Inter-Data Idleness) minimum time
--		  delay in nanoseconds inserted between two consecutive data
--		  frames.
--
--
--Example:
--	spi2: spi@40003800 {
--		#address-cells = <1>;
--		#size-cells = <0>;
--		compatible = "st,stm32h7-spi";
--		reg = <0x40003800 0x400>;
--		interrupts = <36>;
--		clocks = <&rcc SPI2_CK>;
--		resets = <&rcc 1166>;
--		dmas = <&dmamux1 0 39 0x400 0x01>,
--		       <&dmamux1 1 40 0x400 0x01>;
--		dma-names = "rx", "tx";
--		pinctrl-0 = <&spi2_pins_b>;
--		pinctrl-names = "default";
--		cs-gpios = <&gpioa 11 0>;
--
--		aardvark@0 {
--			compatible = "totalphase,aardvark";
--			reg = <0>;
--			spi-max-frequency = <4000000>;
--			st,spi-midi-ns = <4000>;
--		};
--	};
-diff --git a/Documentation/devicetree/bindings/spi/st,stm32-spi.yaml b/Documentation/devicetree/bindings/spi/st,stm32-spi.yaml
-new file mode 100644
-index 000000000000..57ef3a0f57e0
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/st,stm32-spi.yaml
-@@ -0,0 +1,105 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/st,stm32-spi.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: STMicroelectronics STM32 SPI Controller bindings
-+
-+description: |
-+  The STM32 SPI controller is used to communicate with external devices using
-+  the Serial Peripheral Interface. It supports full-duplex, half-duplex and
-+  simplex synchronous serial communication with external devices. It supports
-+  from 4 to 32-bit data size.
-+
-+maintainers:
-+  - Erwan Leray <erwan.leray@st.com>
-+  - Fabrice Gasnier <fabrice.gasnier@st.com>
-+
-+allOf:
-+  - $ref: "spi-controller.yaml#"
-+  - if:
-+      properties:
-+        comptatible:
-+          constains:
-+            st,stm32f4-spi
-+    then:
-+      properties:
-+        st,spi-midi-ns: false
-+
-+properties:
-+  compatible:
-+    enum:
-+      - st,stm32f4-spi
-+      - st,stm32h7-spi
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  resets:
-+    maxItems: 1
-+
-+  dmas:
-+    description: |
-+      DMA specifiers for tx and rx dma. DMA fifo mode must be used. See
-+      the STM32 DMA bindings Documentation/devicetree/bindings/dma/stm32-dma.txt.
-+    items:
-+      - description: rx DMA channel
-+      - description: tx DMA channel
-+
-+  dma-names:
-+    items:
-+      - const: rx
-+      - const: tx
-+
-+patternProperties:
-+  "^[a-zA-Z][a-zA-Z0-9,+\\-._]{0,63}@[0-9a-f]+$":
-+    type: object
-+    # SPI slave nodes must be children of the SPI master node and can
-+    # contain the following properties.
-+    properties:
-+      st,spi-midi-ns:
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+        description: |
-+          Only for STM32H7, (Master Inter-Data Idleness) minimum time
-+          delay in nanoseconds inserted between two consecutive data frames.
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - interrupts
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    #include <dt-bindings/clock/stm32mp1-clks.h>
-+    #include <dt-bindings/reset/stm32mp1-resets.h>
-+    spi@4000b000 {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+      compatible = "st,stm32h7-spi";
-+      reg = <0x4000b000 0x400>;
-+      interrupts = <GIC_SPI 36 IRQ_TYPE_LEVEL_HIGH>;
-+      clocks = <&rcc SPI2_K>;
-+      resets = <&rcc SPI2_R>;
-+      dmas = <&dmamux1 0 39 0x400 0x05>,
-+             <&dmamux1 1 40 0x400 0x05>;
-+      dma-names = "rx", "tx";
-+      cs-gpios = <&gpioa 11 0>;
-+
-+      aardvark@0 {
-+        compatible = "totalphase,aardvark";
-+        reg = <0>;
-+        spi-max-frequency = <4000000>;
-+        st,spi-midi-ns = <4000>;
-+      };
-+    };
-+
-+...
--- 
-2.15.0
+I looked all over:
+
+drivers/mfd/ezx-pcap.c
+Enforces SPI_CS_HIGH if platform data PCAP_CS_AH is
+set. Nothing (no board file) in the kernel sets it.
+No action.
+
+drivers/mfd/mc13xxx-spi.c
+drivers/mfd/motorola-cpcap.c
+Hardcodes both SPI_MODE_0 and SPI_CS_HIGH.
+Should be patched to |= SPI_MODE_0 and
+^= SPI_CS_HIGH. I sent patches.
+
+drivers/rtc/rts-ds1302.c
+drivers/rtc/rts-ds1305.c
+drivers/rtc/rtc-pcf2123.c
+These just have some text comments on the importance of using
+an active high chip select. That then gets defined in the boardfile or
+the device tree which is fine. Any GPIO lines used for this can be
+flagged as active high or low appropriately.
+
+drivers/rtc/rtc-ds1343.c:
+Hardcodes SPI_CS_HIGH, has no in-tree users (bo board files
+refer to it), does not support device tree. So there is no way
+to break it. Sent a patch anyways.
+
+drivers/rtc/rtc-rx6110.c
+Prints a warning if not flagged SPI_CS_HIGH, wil print
+that warning if used with a GPIO chip select from device
+tree. No regression, also no in-tree users.
+
+drivers/staging/fb_uc1611.c
+drivers/staging/fb_watterott.c
+A staging driver hardcoding SPI_CS_HIGH, sent a patch
+for this too so we don't gain any bad examples.
+
+Yours,
+Linus Walleij

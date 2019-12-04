@@ -1,122 +1,214 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: Side effect of SPI GPIO descriptor usage
-Date: Wed, 4 Dec 2019 15:15:43 +0000
-Message-ID: <20191204151543.GV1998@sirena.org.uk>
-References: <db6a1e17-49a3-e3ed-7713-56b7763713d6@raspberrypi.org>
- <20191202134344.GE1998@sirena.org.uk>
- <1e0b7cd6-cf9e-2b68-f875-8015c8ffc326@raspberrypi.org>
- <20191203163521.GM1998@sirena.org.uk>
- <CACRpkdbqNw+h6MphF7kLAwym-F3G+ZebMDB2BMt0bzA6DfM0OA@mail.gmail.com>
+From: Benjamin Gaignard <benjamin.gaignard@st.com>
+Subject: [PATCH] dt-bindings: spi: Convert stm32 spi bindings to json-schema
+Date: Wed, 4 Dec 2019 16:32:33 +0100
+Message-ID: <20191204153233.791-1-benjamin.gaignard@st.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5218009039338748058=="
-Cc: linux-rpi-kernel <linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
- linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <CACRpkdbqNw+h6MphF7kLAwym-F3G+ZebMDB2BMt0bzA6DfM0OA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
-List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Type: text/plain
+Cc: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        Benjamin Gaignard <benjamin.gaignard@st.com>,
+        Erwan Leray <erwan.leray@st.com>,
+        Fabrice Gasnier <fabrice.gasnier@st.com>,
+        Amelie Delaunay <amelie.delaunay@st.com>
+To: <broonie@kernel.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+        <alexandre.torgue@st.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Convert the STM32 spi binding to DT schema format using json-schema
 
---===============5218009039338748058==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="oAjj1ZwgLg4oRN9q"
-Content-Disposition: inline
+Signed-off-by: Benjamin Gaignard <benjamin.gaignard@st.com>
+CC: Erwan Leray <erwan.leray@st.com>
+CC: Fabrice Gasnier <fabrice.gasnier@st.com>
+CC: Amelie Delaunay <amelie.delaunay@st.com>
+---
+ .../devicetree/bindings/spi/spi-stm32.txt          |  62 ------------
+ .../devicetree/bindings/spi/st,stm32-spi.yaml      | 105 +++++++++++++++++++++
+ 2 files changed, 105 insertions(+), 62 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/spi/spi-stm32.txt
+ create mode 100644 Documentation/devicetree/bindings/spi/st,stm32-spi.yaml
 
-
---oAjj1ZwgLg4oRN9q
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Wed, Dec 04, 2019 at 03:46:56PM +0100, Linus Walleij wrote:
-
-> and I can find one more outlier:
-
-> drivers/mmc/host/mmc_spi.c, function mmc_spi_initsequence()
-
-> This very clearly want the inverse polarity of whatever was the default,
-> but the code assumes that SPI_CS_HIGH implies that this is the
-> actual physical level and forces it high, then low. I will send
-> a patch for this: what they want to achieve is the inverse of
-> whatever was configured.
-
-Yes, that's the first one I looked at when I was poking around
-and I agree with that analysis.
-
-> I am a bit sorry about the semantics of "HIGH" here when the right
-> word should rather be "asserted": it's named like this for historical
-> reasons.
-
-There's quite a few things I'd do differently if I were designing
-the API.
-
-> An alternative would be to let SPI use gpiod_set_raw_value()
-> to steamroll all the inversion semantics in the GPIO library,
-> and SPI_CS_HIGH would literally mean to drive the physical
-> line high.
-
-> This may seem like an intuitively correct solution but
-> it has implications for everything using device tree to define
-> SPI clients: spi-cs-high in a device tree means that the
-> CS is active high, which gpiolib currently detects and
-> handles by way of disabling internal inversion (the default
-> for SPI devices is active low). Previously the SPI core would
-> set SPI_CS_HIGH and we would then just double-assign
-> that in the SPI core and then again in some drivers, it doesn't
-> seem much better to me.
-
-Yeah, my general thought is that trying to do anything other than
-making a new interface for this and actively deleting all the old
-ones is probably just going to be pushing the problem around and
-not actually any better.
-
-> I could also additionally patch the whole kernel to rename
-> SPI_CS_HIGH into SPI_CS_ASSERTED if this makes things
-> better. (Would be a two-step patch rocket adding the additional
-> define and switching everyone over before deleting the
-> SPI_CS_HIGH.)
-
-I think that's probably worth it mainly in the context of also
-auditing all the users and possibly making a bigger change which
-makes it harder for users to trigger problems.  That's a lot more
-work though and needs more thought about what a better interface
-would be.
-
---oAjj1ZwgLg4oRN9q
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl3nzZ8ACgkQJNaLcl1U
-h9Dzfwf/bpA6+7EWaEVCm94apDxJdxpI/9Mq6ANh+9+2NtoxQnn2bm7uiOPM8LLL
-U4GqU5zR7wht6CcoTd7iU7Z2UO06dwUZdAJBLvvVPAJQO+AYaHhTuzoADN5NgrLy
-BLeTydYtRuCZSUhF6mkClLtthjB9ecMA21FHwNS8sRGCWPqIEgvwSNxGWJqDKlIr
-Tg3ElLH4pb0iXm1z0ElHewWoZiVjmvjmawrEiDQAEd9JbFjQWO4LmQEIF4nVYERQ
-XRtpc3paFLbIyUjnmKzOFXgYaWrv0Eh4Q8nLi0GJ7SsCTgCV6XrN3EYOYRjVSM21
-LQa7hSBaAG4qEeF3aGBoYlxsSVvkDg==
-=foD7
------END PGP SIGNATURE-----
-
---oAjj1ZwgLg4oRN9q--
-
-
---===============5218009039338748058==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-rpi-kernel mailing list
-linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel
-
---===============5218009039338748058==--
+diff --git a/Documentation/devicetree/bindings/spi/spi-stm32.txt b/Documentation/devicetree/bindings/spi/spi-stm32.txt
+deleted file mode 100644
+index d82755c63eaf..000000000000
+--- a/Documentation/devicetree/bindings/spi/spi-stm32.txt
++++ /dev/null
+@@ -1,62 +0,0 @@
+-STMicroelectronics STM32 SPI Controller
+-
+-The STM32 SPI controller is used to communicate with external devices using
+-the Serial Peripheral Interface. It supports full-duplex, half-duplex and
+-simplex synchronous serial communication with external devices. It supports
+-from 4 to 32-bit data size. Although it can be configured as master or slave,
+-only master is supported by the driver.
+-
+-Required properties:
+-- compatible: Should be one of:
+-  "st,stm32h7-spi"
+-  "st,stm32f4-spi"
+-- reg: Offset and length of the device's register set.
+-- interrupts: Must contain the interrupt id.
+-- clocks: Must contain an entry for spiclk (which feeds the internal clock
+-	  generator).
+-- #address-cells:  Number of cells required to define a chip select address.
+-- #size-cells: Should be zero.
+-
+-Optional properties:
+-- resets: Must contain the phandle to the reset controller.
+-- A pinctrl state named "default" may be defined to set pins in mode of
+-  operation for SPI transfer.
+-- dmas: DMA specifiers for tx and rx dma. DMA fifo mode must be used. See the
+-  STM32 DMA bindings, Documentation/devicetree/bindings/dma/stm32-dma.txt.
+-- dma-names: DMA request names should include "tx" and "rx" if present.
+-- cs-gpios: list of GPIO chip selects. See the SPI bus bindings,
+-  Documentation/devicetree/bindings/spi/spi-bus.txt
+-
+-
+-Child nodes represent devices on the SPI bus
+-  See ../spi/spi-bus.txt
+-
+-Optional properties:
+-- st,spi-midi-ns: Only for STM32H7, (Master Inter-Data Idleness) minimum time
+-		  delay in nanoseconds inserted between two consecutive data
+-		  frames.
+-
+-
+-Example:
+-	spi2: spi@40003800 {
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		compatible = "st,stm32h7-spi";
+-		reg = <0x40003800 0x400>;
+-		interrupts = <36>;
+-		clocks = <&rcc SPI2_CK>;
+-		resets = <&rcc 1166>;
+-		dmas = <&dmamux1 0 39 0x400 0x01>,
+-		       <&dmamux1 1 40 0x400 0x01>;
+-		dma-names = "rx", "tx";
+-		pinctrl-0 = <&spi2_pins_b>;
+-		pinctrl-names = "default";
+-		cs-gpios = <&gpioa 11 0>;
+-
+-		aardvark@0 {
+-			compatible = "totalphase,aardvark";
+-			reg = <0>;
+-			spi-max-frequency = <4000000>;
+-			st,spi-midi-ns = <4000>;
+-		};
+-	};
+diff --git a/Documentation/devicetree/bindings/spi/st,stm32-spi.yaml b/Documentation/devicetree/bindings/spi/st,stm32-spi.yaml
+new file mode 100644
+index 000000000000..57ef3a0f57e0
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/st,stm32-spi.yaml
+@@ -0,0 +1,105 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/st,stm32-spi.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: STMicroelectronics STM32 SPI Controller bindings
++
++description: |
++  The STM32 SPI controller is used to communicate with external devices using
++  the Serial Peripheral Interface. It supports full-duplex, half-duplex and
++  simplex synchronous serial communication with external devices. It supports
++  from 4 to 32-bit data size.
++
++maintainers:
++  - Erwan Leray <erwan.leray@st.com>
++  - Fabrice Gasnier <fabrice.gasnier@st.com>
++
++allOf:
++  - $ref: "spi-controller.yaml#"
++  - if:
++      properties:
++        comptatible:
++          constains:
++            st,stm32f4-spi
++    then:
++      properties:
++        st,spi-midi-ns: false
++
++properties:
++  compatible:
++    enum:
++      - st,stm32f4-spi
++      - st,stm32h7-spi
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  resets:
++    maxItems: 1
++
++  dmas:
++    description: |
++      DMA specifiers for tx and rx dma. DMA fifo mode must be used. See
++      the STM32 DMA bindings Documentation/devicetree/bindings/dma/stm32-dma.txt.
++    items:
++      - description: rx DMA channel
++      - description: tx DMA channel
++
++  dma-names:
++    items:
++      - const: rx
++      - const: tx
++
++patternProperties:
++  "^[a-zA-Z][a-zA-Z0-9,+\\-._]{0,63}@[0-9a-f]+$":
++    type: object
++    # SPI slave nodes must be children of the SPI master node and can
++    # contain the following properties.
++    properties:
++      st,spi-midi-ns:
++        $ref: /schemas/types.yaml#/definitions/uint32
++        description: |
++          Only for STM32H7, (Master Inter-Data Idleness) minimum time
++          delay in nanoseconds inserted between two consecutive data frames.
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - interrupts
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++    #include <dt-bindings/clock/stm32mp1-clks.h>
++    #include <dt-bindings/reset/stm32mp1-resets.h>
++    spi@4000b000 {
++      #address-cells = <1>;
++      #size-cells = <0>;
++      compatible = "st,stm32h7-spi";
++      reg = <0x4000b000 0x400>;
++      interrupts = <GIC_SPI 36 IRQ_TYPE_LEVEL_HIGH>;
++      clocks = <&rcc SPI2_K>;
++      resets = <&rcc SPI2_R>;
++      dmas = <&dmamux1 0 39 0x400 0x05>,
++             <&dmamux1 1 40 0x400 0x05>;
++      dma-names = "rx", "tx";
++      cs-gpios = <&gpioa 11 0>;
++
++      aardvark@0 {
++        compatible = "totalphase,aardvark";
++        reg = <0>;
++        spi-max-frequency = <4000000>;
++        st,spi-midi-ns = <4000>;
++      };
++    };
++
++...
+-- 
+2.15.0

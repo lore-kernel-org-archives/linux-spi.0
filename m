@@ -1,36 +1,44 @@
-From: Aditya Pakki <pakki001@umn.edu>
-Subject: [PATCH] spi: dw: Avoid BUG_ON() in case of host failure
-Date: Thu,  5 Dec 2019 17:14:21 -0600
-Message-ID: <20191205231421.9333-1-pakki001@umn.edu>
-Cc: kjlu@umn.edu, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: pakki001@umn.edu
+From: Chuhong Yuan <hslester96@gmail.com>
+Subject: [PATCH] spi: spi-cavium-thunderx: Add missing pci_release_regions()
+Date: Fri,  6 Dec 2019 15:55:00 +0800
+Message-ID: <20191206075500.18525-1-hslester96@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
+To: unlisted-recipients:; (no To-header on input)
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-If dws is NULL in dw_spi_host_add(), we return the error to the
-upper callers instead of crashing. The patch replaces BUG_ON by
-returning -EINVAL to the caller.
+The driver forgets to call pci_release_regions() in probe failure
+and remove.
+Add the missed calls to fix it.
 
-Signed-off-by: Aditya Pakki <pakki001@umn.edu>
+Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
 ---
- drivers/spi/spi-dw.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-cavium-thunderx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index a92aa5cd4fbe..a160d9a141ea 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -460,7 +460,8 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 	struct spi_controller *master;
- 	int ret;
+diff --git a/drivers/spi/spi-cavium-thunderx.c b/drivers/spi/spi-cavium-thunderx.c
+index d12e149f1a41..fd6b9caffaf0 100644
+--- a/drivers/spi/spi-cavium-thunderx.c
++++ b/drivers/spi/spi-cavium-thunderx.c
+@@ -82,6 +82,7 @@ static int thunderx_spi_probe(struct pci_dev *pdev,
  
--	BUG_ON(dws == NULL);
-+	if (!dws)
-+		return -EINVAL;
+ error:
+ 	clk_disable_unprepare(p->clk);
++	pci_release_regions(pdev);
+ 	spi_master_put(master);
+ 	return ret;
+ }
+@@ -96,6 +97,7 @@ static void thunderx_spi_remove(struct pci_dev *pdev)
+ 		return;
  
- 	master = spi_alloc_master(dev, 0);
- 	if (!master)
+ 	clk_disable_unprepare(p->clk);
++	pci_release_regions(pdev);
+ 	/* Put everything in a known state. */
+ 	writeq(0, p->register_base + OCTEON_SPI_CFG(p));
+ }
 -- 
-2.17.1
+2.24.0

@@ -1,199 +1,170 @@
 From: masonccyang@mxic.com.tw
-Subject: Re: [PATCH 3/4] mtd: spi-nor: Add Octal 8D-8D-8D mode support for
- Macronix mx25uw51245g
-Date: Mon, 9 Dec 2019 14:38:25 +0800
-Message-ID: <OF5C924A21.8A6464DD-ON482584CB.00232656-482584CB.002479DE@mxic.com.tw>
-References: <1573808288-19365-1-git-send-email-masonccyang@mxic.com.tw>
- <1573808288-19365-4-git-send-email-masonccyang@mxic.com.tw>
- <1f1a368a-e3d3-4e58-819e-b4dffc3212ef@ti.com>
+Subject: Re: [PATCH 2/4] mtd: spi-nor: Add support for Octal 8D-8D-8D mode
+Date: Mon, 9 Dec 2019 15:56:57 +0800
+Message-ID: <OFFE6363DF.95763BC3-ON482584CB.002A47E5-482584CB.002BAA8C@mxic.com.tw>
+References: <1573808288-19365-1-git-send-email-masonccyang@mxic.com.tw> <1573808288-19365-3-git-send-email-masonccyang@mxic.com.tw> <3f514579-d3a4-1319-a55a-265a3f1ce00e@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: bbrezillon@kernel.org, juliensu@mxic.com.tw, richard@nod.at,
- tudor.ambarus@microchip.com, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, Boris Brezillon <boris.brezillon@bootlin.com>,
- broonie@kernel.org, linux-mtd@lists.infradead.org, miquel.raynal@bootlin.com,
- computersforpeace@gmail.com, dwmw2@infradead.org, marek.vasut@gmail.com
+Content-Type: text/plain; charset="US-ASCII"
+Cc: bbrezillon@kernel.org, broonie@kernel.org,
+        computersforpeace@gmail.com, dwmw2@infradead.org,
+        juliensu@mxic.com.tw, linux-kernel@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        marek.vasut@gmail.com, miquel.raynal@bootlin.com, richard@nod.at,
+        tudor.ambarus@microchip.com
 To: "Vignesh Raghavendra" <vigneshr@ti.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <1f1a368a-e3d3-4e58-819e-b4dffc3212ef@ti.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <3f514579-d3a4-1319-a55a-265a3f1ce00e@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
 Hi Vignesh,
 
-> > 
-> >  /*
-> > + * Read configuration register 2, returning its value in the
-> > + * location. Return the configuration register 2 value.
-> > + * Returns negative if error occurred.
-> > + */
-> > +static int read_cr2(struct spi_nor *nor, u32 addr)
 > 
-> Please prefix spi_nor_* for all new functions. 
-> Also, include manf name if its vendor specific.
+> On 15/11/19 2:28 pm, Mason Yang wrote:
+> > According to JESD216C (JEDEC Basic Flash Parameter Table 18th DWORD)
+> > Octal DTR(8D-8D-8D) command and command extension (00b: same, 01b: 
+inverse)
+> > to add extension command mode in spi_nor struct and to add write_cr2
+> > (Write CFG Reg 2) for 8-8-8/8D-8D-8D mode sequences enable.
+> > 
+> 
+> But I don't see any code setting "nor->ext_cmd_mode" based on BFPT?
+> 
+> Any new feature that we add to spi-nor should make use of autodiscovery
+> feature made possible by SFDP tables. Could you modify the patch to
+> discover capabilities supported by flash and opcodes to be used from
+> SFDP table?
+
+Got it but our device will return a empty SFDP table.
+
+> 
+> 
+> > Define the relevant macrons and enum to add such modes and make sure
+> > op->xxx.dtr fields, command nbytes and extension command are properly
+> > filled and unmask DTR and X-X-X modes in 
+spi_nor_spimem_adjust_hwcaps()
+> > so that DTR and X-X-X support detection is done through
+> > spi_mem_supports_op().
+> > 
+> > Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
+> > Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+> > ---
+> >  drivers/mtd/spi-nor/spi-nor.c | 159 
+++++++++++++++++++++++++++++++++++++++++--
+> >  include/linux/mtd/spi-nor.h   |  58 +++++++++++++--
+> >  2 files changed, 206 insertions(+), 11 deletions(-)
+> > 
+> > diff --git a/drivers/mtd/spi-nor/spi-nor.c 
+b/drivers/mtd/spi-nor/spi-nor.c
+> > index 7acf4a9..4cdf52d 100644
+> > --- a/drivers/mtd/spi-nor/spi-nor.c
+> > +++ b/drivers/mtd/spi-nor/spi-nor.c
+> > @@ -320,6 +320,23 @@ static ssize_t spi_nor_spimem_read_data(struct 
+spi_nor 
+> *nor, loff_t from,
+> >     /* convert the dummy cycles to the number of bytes */
+> >     op.dummy.nbytes = (nor->read_dummy * op.dummy.buswidth) / 8;
+> > 
+> > +   if (spi_nor_protocol_is_8_8_8(nor->read_proto)) {
+> > +      op.cmd.nbytes = 2;
+> 
+> Can we get this info from SFDP too?
+> 
+> > +
+> > +      if (nor->ext_cmd_mode == EXT_CMD_IS_INVERSE)
+> > +         op.cmd.ext_opcode = ~nor->read_opcode;
+> > +      else
+> > +         op.cmd.ext_opcode = nor->read_opcode;
+> > +
+> > +      if (spi_nor_protocol_is_8D_8D_8D(nor->read_proto)) {
+> > +         op.dummy.nbytes *= 2;
+> 
+> > +         op.cmd.dtr = true;
+> > +         op.addr.dtr = true;
+> > +         op.dummy.dtr = true;
+> > +         op.data.dtr = true;
+> 
+> Can we have a macro for this initialization?
 
 okay, will fix it.
 
 > 
-> > +{
-> > +   int ret;
+> 
+> > +      }
+> > +   }
 > > +
-> > +   if (nor->spimem) {
-> > +      struct spi_mem_op op =
-> > +         SPI_MEM_OP(SPI_MEM_OP_CMD(SPINOR_OP_RDCR2, 1),
-> > +               SPI_MEM_OP_ADDR(4, addr, 1),
-> > +               SPI_MEM_OP_DUMMY(4, 1),
-> > +               SPI_MEM_OP_DATA_IN(1, nor->bouncebuf, 1));
+> >     return spi_nor_spimem_xfer_data(nor, &op);
+> >  }
+> > 
+> > @@ -367,6 +384,21 @@ static ssize_t spi_nor_spimem_write_data(struct 
+spi_nor
+> *nor, loff_t to,
+> >     if (nor->program_opcode == SPINOR_OP_AAI_WP && 
+nor->sst_write_second)
+> >        op.addr.nbytes = 0;
+> > 
+> > +   if (spi_nor_protocol_is_8_8_8(nor->write_proto)) {
+> > +      op.cmd.nbytes = 2;
 > > +
+> > +      if (nor->ext_cmd_mode == EXT_CMD_IS_INVERSE)
+> > +         op.cmd.ext_opcode = ~nor->program_opcode;
+> > +      else
+> > +         op.cmd.ext_opcode = nor->program_opcode;
+> > +
+> > +      if (spi_nor_protocol_is_8D_8D_8D(nor->write_proto)) {
+> > +         op.cmd.dtr = true;
+> > +         op.addr.dtr = true;
+> > +         op.data.dtr = true;
+> > +      }
+> > +   }
+> > +
+> >     return spi_nor_spimem_xfer_data(nor, &op);
+> >  }
+> > 
+> > @@ -404,6 +436,30 @@ static int read_sr(struct spi_nor *nor)
+> >                 SPI_MEM_OP_NO_DUMMY,
+> >                 SPI_MEM_OP_DATA_IN(1, nor->bouncebuf, 1));
+> > 
+> 
+> This is not based on the latest tree.
+> 
 > > +      if (spi_nor_protocol_is_8_8_8(nor->read_proto)) {
 > > +         op.cmd.buswidth = 8;
 > > +         op.addr.buswidth = 8;
 > > +         op.dummy.buswidth = 8;
 > > +         op.data.buswidth = 8;
 > > +         op.cmd.nbytes = 2;
-> > +
-> > +         if (spi_nor_protocol_is_8D_8D_8D(nor->read_proto)) {
-> > +            op.dummy.nbytes *= 2;
-> > +            op.cmd.dtr = true;
-> > +            op.addr.dtr = true;
-> > +            op.dummy.dtr = true;
-> > +            op.data.dtr = true;
-> > +         }
-> > +
-> > +         if (nor->ext_cmd_mode == EXT_CMD_IS_INVERSE)
-> > +            op.cmd.ext_opcode = ~SPINOR_OP_RDCR2;
-> > +         else
-> > +            op.cmd.ext_opcode = SPINOR_OP_RDCR2;
-> > +      }
-> > +
-> > +      ret = spi_mem_exec_op(nor->spimem, &op);
-> > +   } else {
-> > +      ret = -ENOTSUPP;
-> > +   }
-> > +
-> > +   if (ret < 0) {
-> > +      dev_err(nor->dev, "error %d reading CR\n", ret);
-> > +      return ret;
-> > +   }
-> > +
-> > +   return nor->bouncebuf[0];
-> > +}
-> > +
-> > +/*
-> >   * Write configuration register 2 one byte
-> >   * Returns negative if error occurred.
-> >   */
-> > @@ -2275,10 +2325,72 @@ static int spi_nor_spansion_clear_sr_bp(struct 
-spi_nor *nor)
-> >     return 0;
-> >  }
-> > 
-> > +static void
-> > +spi_nor_set_read_settings(struct spi_nor_read_command *read,
-> > +           u8 num_mode_clocks,
-> > +           u8 num_wait_states,
-> > +           u8 opcode,
-> > +           enum spi_nor_protocol proto);
-> > +
-> > +static void
-> > +spi_nor_set_pp_settings(struct spi_nor_pp_command *pp,
-> > +         u8 opcode,
-> > +         enum spi_nor_protocol proto);
-> > +
-> > +static void
-> > +mx25uw51245g_default_init(struct spi_nor *nor)
-> > +{
-> > +   struct spi_nor_flash_parameter *params = &nor->params;
-> > +
-> > +   if (!(nor->spimem->spi->mode & (SPI_RX_OCTAL | SPI_TX_OCTAL)))
-> > +      return;
-> > +
-> > +   /* Octal 8S-8S-8S mode */
-> > +   params->hwcaps.mask |= SNOR_HWCAPS_OPI_FULL_STR;
-> > +   spi_nor_set_read_settings(&params->reads[SNOR_CMD_READ_8_8_8],
-> > +              0, 20, SPINOR_OP_READ_8_8_8,
-> > +              SNOR_PROTO_8_8_8);
-> > +
-> > +   spi_nor_set_pp_settings(&params->page_programs[SNOR_CMD_PP_8_8_8],
-> > +            SPINOR_OP_PP_8_8_8, SNOR_PROTO_8_8_8);
-> > +
-> > +   /* Octal 8D-8D-8D mode */
-> > +   params->hwcaps.mask |= SNOR_HWCAPS_OPI_FULL_DTR;
-> > +   spi_nor_set_read_settings(&params->reads[SNOR_CMD_READ_8D_8D_8D],
-> > +              0, 20, SPINOR_OP_READ_8D_8D_8D,
-> > +              SNOR_PROTO_8_8_8_DTR);
-> > +
-> > + 
-spi_nor_set_pp_settings(&params->page_programs[SNOR_CMD_PP_8D_8D_8D],
-> > +            SPINOR_OP_PP_8D_8D_8D, SNOR_PROTO_8_8_8_DTR);
-> > +
-> > +   nor->ext_cmd_mode = EXT_CMD_IS_INVERSE;
-> > +}
+> > +         op.addr.nbytes = 4;
+> > +         op.dummy.nbytes = 4;
+> > +         op.addr.val = 0;
 > 
-> I don't see anything that is macronix specific here.. Can this be moved 
-to
-> generic code with information parsed from SFDP table?
-
-This mx25uw51245g device support SFDP command but returns an empty SFDP 
-page.
-
-> 
-> > +
-> > +static void
-> > +mx25uw51245g_post_sfdp_fixups(struct spi_nor *nor)
-> > +{
-> > +   struct spi_nor_flash_parameter *params = &nor->params;
-> > +   u8 cr2;
-> > +
-> > +   cr2 = read_cr2(nor, CR2_REG0) & CR2_REG0_MODE_MASK;
-> > +
-> > +   if (params->hwcaps.mask & SNOR_HWCAPS_OPI_FULL_DTR)
-> > +      cr2 |= CR2_REG0_MODE_OPI_DTR;
-> > +   else if (params->hwcaps.mask & SNOR_HWCAPS_OPI_FULL_STR)
-> > +      cr2 |= CR2_REG0_MODE_OPI_STR;
-> > +
-> > +   write_cr2(nor, CR2_REG0, cr2);
-> > +}
-> > +
-> 
-> I see this as a misuse of sfdp_fixups hook:
-> 
->  * @post_sfdp: called after SFDP has been parsed (is also called for SPI 
-NORs
->  *             that do not support RDSFDP). Typically used to tweak 
-various
->  *             parameters that could not be extracted by other means 
-(i.e.
->  *             when information provided by the SFDP/flash_info tables 
-are
->  *             incomplete or wrong).
->  *
-> 
-> 
-> This should only tweak options parsed by SFDP and not be used to
-> configure flash to a different mode. Please add a separate function 
-> to do so. See https://patchwork.kernel.org/patch/10638085/
+> This is not scalable... There will be bunch of if...else ladders when we
+> want to support other X-X-X modes... Can't these be derived from
+> nor->reg_proto? And then borrow the logic from 
+spi_nor_spimem_read_data()?
 > 
 
-okay.
-My idea is that device changed to 8D-8D-8D stateful mode after SFDP 
-parsed. 
-But if SFDP page table is broken in device and driver will just configure 
-the device into 8D-8D-8D mode directly.
+Got it !
 
+> 
+> Could you have a look at Boris's initial submission to add 8-8-8 mode at
+> https://patchwork.kernel.org/cover/10638055/ ?
+> You could use that series as the base for your changes/additions.
+
+Got it.
+My idea is to support 8D-8D-8D mode with a minimum patches because 
+there is no define for 1D-1D-1D, 2D-2D-2D and 4D-4D-4D mode in JEDEC 
+if I am right.
+
+> 
+> I am fine if you want to call 2nd byte of opcode as ext_opcode
+> 
+> Regards
+> Vignesh
+> 
 
 thanks for your time & comments.
-
 Mason
 
 CONFIDENTIALITY NOTE:
@@ -223,8 +194,3 @@ This e-mail and any attachments may contain confidential information and/or pers
 Macronix International Co., Ltd.
 
 =====================================================================
-
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/

@@ -1,7 +1,7 @@
 From: John Garry <john.garry@huawei.com>
-Subject: [PATCH v2 3/3] MAINTAINERS: Add a maintainer for the HiSilicon v3xx SFC driver
-Date: Mon, 9 Dec 2019 22:08:10 +0800
-Message-ID: <1575900490-74467-4-git-send-email-john.garry@huawei.com>
+Subject: [PATCH v2 1/3] mtd: spi-nor: hisi-sfc: Try to provide some clarity on which SFC we are
+Date: Mon, 9 Dec 2019 22:08:08 +0800
+Message-ID: <1575900490-74467-2-git-send-email-john.garry@huawei.com>
 References: <1575900490-74467-1-git-send-email-john.garry@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -16,29 +16,52 @@ In-Reply-To: <1575900490-74467-1-git-send-email-john.garry@huawei.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Set John Garry @ Huawei as the maintainer.
+The driver is for the HiSilicon FMC (Flash Memory Controller), which
+supports SPI NOR in addition other memory technologies, like SPI NAND.
+
+Indeed, the naming in the driver is a little inappropriate, especially
+considering that there is already another HiSilicon SPI NOR flash
+controller (which I believe the FMC is derived from).
+
+Since we now want to provide software support for this other HiSilicon
+controller, update code comments to at least try to make it clear that
+this driver is for the FMC.
 
 Signed-off-by: John Garry <john.garry@huawei.com>
 ---
- MAINTAINERS | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/mtd/spi-nor/Kconfig    | 4 ++--
+ drivers/mtd/spi-nor/hisi-sfc.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index bd5847e802de..8c119bd4f687 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7492,6 +7492,12 @@ S:	Supported
- F:	drivers/scsi/hisi_sas/
- F:	Documentation/devicetree/bindings/scsi/hisilicon-sas.txt
+diff --git a/drivers/mtd/spi-nor/Kconfig b/drivers/mtd/spi-nor/Kconfig
+index f237fcdf7f86..c1eda67d1ad2 100644
+--- a/drivers/mtd/spi-nor/Kconfig
++++ b/drivers/mtd/spi-nor/Kconfig
+@@ -46,11 +46,11 @@ config SPI_CADENCE_QUADSPI
+ 	  Flash as an MTD device.
  
-+HISILICON V3XX SPI NOR FLASH Controller Driver
-+M:	John Garry <john.garry@huawei.com>
-+W:	http://www.hisilicon.com
-+S:	Maintained
-+F:	drivers/spi/spi-hisi-sfc-v3xx.c
-+
- HISILICON QM AND ZIP Controller DRIVER
- M:	Zhou Wang <wangzhou1@hisilicon.com>
- L:	linux-crypto@vger.kernel.org
+ config SPI_HISI_SFC
+-	tristate "Hisilicon SPI-NOR Flash Controller(SFC)"
++	tristate "Hisilicon FMC SPI-NOR Flash Controller(SFC)"
+ 	depends on ARCH_HISI || COMPILE_TEST
+ 	depends on HAS_IOMEM
+ 	help
+-	  This enables support for hisilicon SPI-NOR flash controller.
++	  This enables support for HiSilicon FMC SPI-NOR flash controller.
+ 
+ config SPI_MTK_QUADSPI
+ 	tristate "MediaTek Quad SPI controller"
+diff --git a/drivers/mtd/spi-nor/hisi-sfc.c b/drivers/mtd/spi-nor/hisi-sfc.c
+index a1258216f89d..6db964bf3b0e 100644
+--- a/drivers/mtd/spi-nor/hisi-sfc.c
++++ b/drivers/mtd/spi-nor/hisi-sfc.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
+ /*
+- * HiSilicon SPI Nor Flash Controller Driver
++ * HiSilicon FMC SPI-NOR flash controller driver
+  *
+  * Copyright (c) 2015-2016 HiSilicon Technologies Co., Ltd.
+  */
 -- 
 2.17.1

@@ -1,196 +1,125 @@
-From: masonccyang@mxic.com.tw
-Subject: Re: [PATCH 2/4] mtd: spi-nor: Add support for Octal 8D-8D-8D mode
-Date: Mon, 9 Dec 2019 15:56:57 +0800
-Message-ID: <OFFE6363DF.95763BC3-ON482584CB.002A47E5-482584CB.002BAA8C@mxic.com.tw>
-References: <1573808288-19365-1-git-send-email-masonccyang@mxic.com.tw> <1573808288-19365-3-git-send-email-masonccyang@mxic.com.tw> <3f514579-d3a4-1319-a55a-265a3f1ce00e@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Cc: bbrezillon@kernel.org, broonie@kernel.org,
-        computersforpeace@gmail.com, dwmw2@infradead.org,
-        juliensu@mxic.com.tw, linux-kernel@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
-        marek.vasut@gmail.com, miquel.raynal@bootlin.com, richard@nod.at,
-        tudor.ambarus@microchip.com
-To: "Vignesh Raghavendra" <vigneshr@ti.com>
+From: "Ramuthevar,Vadivel MuruganX"
+        <vadivel.muruganx.ramuthevar@linux.intel.com>
+Subject: [PATCH v3 0/2] spi: cadence-quadpsi: Add support for the Cadence QSPI controller
+Date: Mon,  9 Dec 2019 16:40:33 +0800
+Message-ID: <20191209084035.55603-1-vadivel.muruganx.ramuthevar@linux.intel.com>
+Cc: broonie@kernel.org, vigneshr@ti.com, robh+dt@kernel.org,
+        cheol.yong.kim@intel.com, qi-ming.wu@intel.com,
+        "Ramuthevar Vadivel Muruganx"
+        <vadivel.muruganx.ramuthevar@linux.intel.com>
+To: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <3f514579-d3a4-1319-a55a-265a3f1ce00e@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+From: "Ramuthevar Vadivel Muruganx" <vadivel.muruganx.ramuthevar@linux.intel.com>
 
-Hi Vignesh,
+Add support for the Cadence QSPI controller. This controller is
+present in the Intel Lightning Mountain(LGM) SoCs, Altera and TI SoCs.
+This driver has been tested on the Intel LGM SoCs.
 
-> 
-> On 15/11/19 2:28 pm, Mason Yang wrote:
-> > According to JESD216C (JEDEC Basic Flash Parameter Table 18th DWORD)
-> > Octal DTR(8D-8D-8D) command and command extension (00b: same, 01b: 
-inverse)
-> > to add extension command mode in spi_nor struct and to add write_cr2
-> > (Write CFG Reg 2) for 8-8-8/8D-8D-8D mode sequences enable.
-> > 
-> 
-> But I don't see any code setting "nor->ext_cmd_mode" based on BFPT?
-> 
-> Any new feature that we add to spi-nor should make use of autodiscovery
-> feature made possible by SFDP tables. Could you modify the patch to
-> discover capabilities supported by flash and opcodes to be used from
-> SFDP table?
+This driver does not support generic SPI and also the implementation
+only supports spi-mem interface to replace the existing driver in
+mtd/spi-nor/cadence-quadspi.c, the existing driver only support SPI-NOR
+flash memory.
 
-Got it but our device will return a empty SFDP table.
+Thank you Vignesh for the valuable review comments and guidance,
+sorry for the delay since waitting for the merge window to rebase
+and send it now by one-shot.
 
-> 
-> 
-> > Define the relevant macrons and enum to add such modes and make sure
-> > op->xxx.dtr fields, command nbytes and extension command are properly
-> > filled and unmask DTR and X-X-X modes in 
-spi_nor_spimem_adjust_hwcaps()
-> > so that DTR and X-X-X support detection is done through
-> > spi_mem_supports_op().
-> > 
-> > Signed-off-by: Boris Brezillon <boris.brezillon@bootlin.com>
-> > Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
-> > ---
-> >  drivers/mtd/spi-nor/spi-nor.c | 159 
-++++++++++++++++++++++++++++++++++++++++--
-> >  include/linux/mtd/spi-nor.h   |  58 +++++++++++++--
-> >  2 files changed, 206 insertions(+), 11 deletions(-)
-> > 
-> > diff --git a/drivers/mtd/spi-nor/spi-nor.c 
-b/drivers/mtd/spi-nor/spi-nor.c
-> > index 7acf4a9..4cdf52d 100644
-> > --- a/drivers/mtd/spi-nor/spi-nor.c
-> > +++ b/drivers/mtd/spi-nor/spi-nor.c
-> > @@ -320,6 +320,23 @@ static ssize_t spi_nor_spimem_read_data(struct 
-spi_nor 
-> *nor, loff_t from,
-> >     /* convert the dummy cycles to the number of bytes */
-> >     op.dummy.nbytes = (nor->read_dummy * op.dummy.buswidth) / 8;
-> > 
-> > +   if (spi_nor_protocol_is_8_8_8(nor->read_proto)) {
-> > +      op.cmd.nbytes = 2;
-> 
-> Can we get this info from SFDP too?
-> 
-> > +
-> > +      if (nor->ext_cmd_mode == EXT_CMD_IS_INVERSE)
-> > +         op.cmd.ext_opcode = ~nor->read_opcode;
-> > +      else
-> > +         op.cmd.ext_opcode = nor->read_opcode;
-> > +
-> > +      if (spi_nor_protocol_is_8D_8D_8D(nor->read_proto)) {
-> > +         op.dummy.nbytes *= 2;
-> 
-> > +         op.cmd.dtr = true;
-> > +         op.addr.dtr = true;
-> > +         op.dummy.dtr = true;
-> > +         op.data.dtr = true;
-> 
-> Can we have a macro for this initialization?
+changes from V2:
+1. Supports Octal mode as well. So its 1/2/4/8-bit wide                                       
 
-okay, will fix it.
+2. Please be consistent with function names. Start all functions with 
+   cadence_qspi_. If need you could have a shorter function prefix like cqspi_ 
 
-> 
-> 
-> > +      }
-> > +   }
-> > +
-> >     return spi_nor_spimem_xfer_data(nor, &op);
-> >  }
-> > 
-> > @@ -367,6 +384,21 @@ static ssize_t spi_nor_spimem_write_data(struct 
-spi_nor
-> *nor, loff_t to,
-> >     if (nor->program_opcode == SPINOR_OP_AAI_WP && 
-nor->sst_write_second)
-> >        op.addr.nbytes = 0;
-> > 
-> > +   if (spi_nor_protocol_is_8_8_8(nor->write_proto)) {
-> > +      op.cmd.nbytes = 2;
-> > +
-> > +      if (nor->ext_cmd_mode == EXT_CMD_IS_INVERSE)
-> > +         op.cmd.ext_opcode = ~nor->program_opcode;
-> > +      else
-> > +         op.cmd.ext_opcode = nor->program_opcode;
-> > +
-> > +      if (spi_nor_protocol_is_8D_8D_8D(nor->write_proto)) {
-> > +         op.cmd.dtr = true;
-> > +         op.addr.dtr = true;
-> > +         op.data.dtr = true;
-> > +      }
-> > +   }
-> > +
-> >     return spi_nor_spimem_xfer_data(nor, &op);
-> >  }
-> > 
-> > @@ -404,6 +436,30 @@ static int read_sr(struct spi_nor *nor)
-> >                 SPI_MEM_OP_NO_DUMMY,
-> >                 SPI_MEM_OP_DATA_IN(1, nor->bouncebuf, 1));
-> > 
-> 
-> This is not based on the latest tree.
-> 
-> > +      if (spi_nor_protocol_is_8_8_8(nor->read_proto)) {
-> > +         op.cmd.buswidth = 8;
-> > +         op.addr.buswidth = 8;
-> > +         op.dummy.buswidth = 8;
-> > +         op.data.buswidth = 8;
-> > +         op.cmd.nbytes = 2;
-> > +         op.addr.nbytes = 4;
-> > +         op.dummy.nbytes = 4;
-> > +         op.addr.val = 0;
-> 
-> This is not scalable... There will be bunch of if...else ladders when we
-> want to support other X-X-X modes... Can't these be derived from
-> nor->reg_proto? And then borrow the logic from 
-spi_nor_spimem_read_data()?
-> 
+   Also, this and few other functions below can be static and they are not 
+   used outside of this module.                                                                                             
 
-Got it !
+3. Could you please keep polling routines from original driver 
+  (drivers/mtd/spi-nor/cadence-quadspi.c). If you really want to improve 
+   these helpers, please do those changes in a separate patch later on in 
+   the series. This will greatly help in reviewing the code. 
 
-> 
-> Could you have a look at Boris's initial submission to add 8-8-8 mode at
-> https://patchwork.kernel.org/cover/10638055/ ?
-> You could use that series as the base for your changes/additions.
+   Also, I see that you have dropped many inline comments in the code. 
+   These comments are quite important and I suggest not to drop them unless 
+   they are no longer applicable                                                                                        
 
-Got it.
-My idea is to support 8D-8D-8D mode with a minimum patches because 
-there is no define for 1D-1D-1D, 2D-2D-2D and 4D-4D-4D mode in JEDEC 
-if I am right.
+3. s/docoder/decoder
 
-> 
-> I am fine if you want to call 2nd byte of opcode as ext_opcode
-> 
-> Regards
-> Vignesh
-> 
+4. Please use cqspi_wait_for_bit() that uses readl_relaxed_poll_timeout()    
+    here. There are couple corner cases that above code does not take care of.
 
-thanks for your time & comments.
-Mason
+5. Why do we need flash type specific handling here? Does not spi-nand 
+   driver provide appropriate dummy_clk values? Why is the driver always 
+   adding 8 dummy clks always?                                                                                       
 
-CONFIDENTIALITY NOTE:
+6. Nope, no custom handling or interpreting of opcodes in driver. 
+   Just set addrwidth to quad in CQSPI_REG_WR_INSTR when op->addr.buswidth 
+   is 4.
 
-This e-mail and any attachments may contain confidential information 
-and/or personal data, which is protected by applicable laws. Please be 
-reminded that duplication, disclosure, distribution, or use of this e-mail 
-(and/or its attachments) or any part thereof is prohibited. If you receive 
-this e-mail in error, please notify us immediately and delete this mail as 
-well as its attachment(s) from your system. In addition, please be 
-informed that collection, processing, and/or use of personal data is 
-prohibited unless expressly permitted by personal data protection laws. 
-Thank you for your attention and cooperation.
+7. This was wait_for_completion_timeout() previously. Have you tested 
+    interrupting the sleep and verified that driver handles this case correctly?  
 
-Macronix International Co., Ltd.
+8  rdid_length harcoded values are changed as generic                       
 
-=====================================================================
+9. Please get ride of all flash type specific handling... There should be 
+   no need for it. IF there are gaps in then lets discuss and fix it in 
+   spi-nand and spi-nor frameworks and not in the driver. 
+
+   spi-mem user should just take spi_mem_op template passed by the core and 
+   execute it. No assumptions wrt flash type or opcode should be done.   
 
 
+10. Decision to use STIG was INDAC mode can be done using: 
 
-============================================================================
+if (op->data.dir == SPI_MEM_DATA_IN && op->data.buf.in) { 
+	if (!op->addr.nbytes) 
+		mode = CQSPI_STIG_READ; 
+	else 
+		mode = IDC_READ_MODE; 
+	} else { 
+	if (!op->addr.nbytes || !op->data.buf.out) 
+		 mode = CQSPI_STIG_WRITE; 
+	else 
+		mode = IDC_WRITE_MODE; 
+	} 
 
-CONFIDENTIALITY NOTE:
+   No need for rdid_length etc.                                                                                                                     
 
-This e-mail and any attachments may contain confidential information and/or personal data, which is protected by applicable laws. Please be reminded that duplication, disclosure, distribution, or use of this e-mail (and/or its attachments) or any part thereof is prohibited. If you receive this e-mail in error, please notify us immediately and delete this mail as well as its attachment(s) from your system. In addition, please be informed that collection, processing, and/or use of personal data is prohibited unless expressly permitted by personal data protection laws. Thank you for your attention and cooperation.
+11. This is a big gap and there is lot of code sharing that can be done b/w 
+   INDAC and DAC mode. 
 
-Macronix International Co., Ltd.
+   Looks like driver isn't quite close to being ready. I suggest you also 
+   take a look at patches for spi-mem conversion of cadence-quadspi driver 
+   in U-Boot as well: 
 
-=====================================================================
+   https://patchwork.ozlabs.org/cover/1176362/                                           
+
+
+12. Please dont add any new DT properties, there is no need for them. See 
+    how this was handled in existing driver and reuse it                                      
+
+13. Slave DMA was never supported and is not needed.                              
+
+14. Octal? 
+
+15. NACK, should be GPLv2 and no need for boilerplate text below when SPDX 
+    Identifier is present.
+
+Ramuthevar Vadivel Murugan (2):
+  dt-bindings: spi: Add schema for Cadence QSPI Controller driver
+  spi: cadence-quadpsi: Add support for the Cadence QSPI controller
+
+ .../devicetree/bindings/spi/cadence,qspi.yaml      |  162 +++
+ drivers/spi/Kconfig                                |    8 +
+ drivers/spi/Makefile                               |    1 +
+ drivers/spi/spi-cadence-quadspi.c                  | 1228 ++++++++++++++++++++
+ drivers/spi/spi-cadence-quadspi.h                  |  254 ++++
+ 5 files changed, 1653 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/cadence,qspi.yaml
+ create mode 100644 drivers/spi/spi-cadence-quadspi.c
+ create mode 100644 drivers/spi/spi-cadence-quadspi.h
+
+-- 
+2.11.0

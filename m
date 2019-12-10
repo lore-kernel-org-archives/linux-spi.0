@@ -1,131 +1,150 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: fsl: don't map irq during probe" to the spi tree
-Date: Mon, 09 Dec 2019 19:00:23 +0000
-Message-ID: <applied-518cfb83347d5372748e7fe72f94e2e9443d0d4a.1575905123.git.christophe.leroy@c-s.fr>
-References: <518cfb83347d5372748e7fe72f94e2e9443d0d4a.1575905123.git.christophe.leroy@c-s.fr>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
-To: Christophe Leroy <christophe.leroy@c-s.fr>
+From: masonccyang@mxic.com.tw
+Subject: Re: [PATCH 2/4] mtd: spi-nor: Add support for Octal 8D-8D-8D mode
+Date: Tue, 10 Dec 2019 15:21:18 +0800
+Message-ID: <OF5ED38CB6.65E10D03-ON482584CC.002846EC-482584CC.00286710@mxic.com.tw>
+References: <1573808288-19365-1-git-send-email-masonccyang@mxic.com.tw> <1573808288-19365-3-git-send-email-masonccyang@mxic.com.tw> <3f514579-d3a4-1319-a55a-265a3f1ce00e@ti.com> <OFFE6363DF.95763BC3-ON482584CB.002A47E5-482584CB.002BAA8C@mxic.com.tw> <20f3873f-66eb-3af9-c50d-1321a859093d@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Cc: bbrezillon@kernel.org, broonie@kernel.org,
+        computersforpeace@gmail.com, dwmw2@infradead.org,
+        juliensu@mxic.com.tw, linux-kernel@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        marek.vasut@gmail.com, miquel.raynal@bootlin.com, richard@nod.at,
+        tudor.ambarus@microchip.com
+To: "Vignesh Raghavendra" <vigneshr@ti.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <518cfb83347d5372748e7fe72f94e2e9443d0d4a.1575905123.git.christophe.leroy@c-s.fr>
+In-Reply-To: <20f3873f-66eb-3af9-c50d-1321a859093d@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
 
-   spi: fsl: don't map irq during probe
+Hi Vignesh,
 
-has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
+> >> On 15/11/19 2:28 pm, Mason Yang wrote:
+> >>> According to JESD216C (JEDEC Basic Flash Parameter Table 18th DWORD)
+> >>> Octal DTR(8D-8D-8D) command and command extension (00b: same, 01b: 
+> > inverse)
+> >>> to add extension command mode in spi_nor struct and to add write_cr2
+> >>> (Write CFG Reg 2) for 8-8-8/8D-8D-8D mode sequences enable.
+> >>>
+> >>
+> >> But I don't see any code setting "nor->ext_cmd_mode" based on BFPT?
+> >>
+> >> Any new feature that we add to spi-nor should make use of 
+autodiscovery
+> >> feature made possible by SFDP tables. Could you modify the patch to
+> >> discover capabilities supported by flash and opcodes to be used from
+> >> SFDP table?
+> > 
+> > Got it but our device will return a empty SFDP table.
+> > 
+> 
+> If flash you tested on does not support JEDEC 216C then don't mention
+> about it. Above commit message gives an impression that flash in JEDEC
+> 216C compliant.
+> 
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+okay, got it.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> >>
+> >>
+> >>> Define the relevant macrons and enum to add such modes and make sure
+> >>> op->xxx.dtr fields, command nbytes and extension command are 
+properly
+> >>> filled and unmask DTR and X-X-X modes in 
+> > spi_nor_spimem_adjust_hwcaps()
+> >>> so that DTR and X-X-X support detection is done through
+> >>> spi_mem_supports_op().
+> >>>
+> [...]
+> >>> @@ -404,6 +436,30 @@ static int read_sr(struct spi_nor *nor)
+> >>>                 SPI_MEM_OP_NO_DUMMY,
+> >>>                 SPI_MEM_OP_DATA_IN(1, nor->bouncebuf, 1));
+> >>>
+> >>
+> >> This is not based on the latest tree.
+> >>
+> >>> +      if (spi_nor_protocol_is_8_8_8(nor->read_proto)) {
+> >>> +         op.cmd.buswidth = 8;
+> >>> +         op.addr.buswidth = 8;
+> >>> +         op.dummy.buswidth = 8;
+> >>> +         op.data.buswidth = 8;
+> >>> +         op.cmd.nbytes = 2;
+> >>> +         op.addr.nbytes = 4;
+> >>> +         op.dummy.nbytes = 4;
+> >>> +         op.addr.val = 0;
+> >>
+> >> This is not scalable... There will be bunch of if...else ladders when 
+we
+> >> want to support other X-X-X modes... Can't these be derived from
+> >> nor->reg_proto? And then borrow the logic from 
+> > spi_nor_spimem_read_data()?
+> >>
+> > 
+> > Got it !
+> > 
+> >>
+> >> Could you have a look at Boris's initial submission to add 8-8-8 mode 
+at
+> >> https://patchwork.kernel.org/cover/10638055/ ?
+> >> You could use that series as the base for your changes/additions.
+> > 
+> > Got it.
+> > My idea is to support 8D-8D-8D mode with a minimum patches because 
+> > there is no define for 1D-1D-1D, 2D-2D-2D and 4D-4D-4D mode in JEDEC 
+> > if I am right.
+> > 
+> 
+> JESD251-A1 does talk about 4S-4D-4D right? Also none of the JEDEC
+> standards prohibit flash vendors from supporting other X-X-X modes.
+> 
+> I think you haven't thought about bigger picture here. Flash devices
+> that support other mode exist today and we would need the framework to
+> be built such that these modes can be added in future.
+> 
+> I suggest you start with Boris's series [1] as base and port it to
+> latest kernel. Isn't that series alone enough to support Macronix Octal
+> flashes at least?
+> If required, you could also always include additional patches adding new
+> features.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+okay.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+> 
+> [1] https://patchwork.kernel.org/cover/10638055/
+> 
+> -- 
+> Regards
+> Vignesh
 
-Thanks,
-Mark
+thanks for your time & comments.
+Mason
 
->From 3194d2533efffae8b815d84729ecc58b6a9000ab Mon Sep 17 00:00:00 2001
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Date: Mon, 9 Dec 2019 15:27:27 +0000
-Subject: [PATCH] spi: fsl: don't map irq during probe
+CONFIDENTIALITY NOTE:
 
-With lastest kernel, the following warning is observed at startup:
+This e-mail and any attachments may contain confidential information 
+and/or personal data, which is protected by applicable laws. Please be 
+reminded that duplication, disclosure, distribution, or use of this e-mail 
+(and/or its attachments) or any part thereof is prohibited. If you receive 
+this e-mail in error, please notify us immediately and delete this mail as 
+well as its attachment(s) from your system. In addition, please be 
+informed that collection, processing, and/or use of personal data is 
+prohibited unless expressly permitted by personal data protection laws. 
+Thank you for your attention and cooperation.
 
-[    1.500609] ------------[ cut here ]------------
-[    1.505225] remove_proc_entry: removing non-empty directory 'irq/22', leaking at least 'fsl_spi'
-[    1.514234] WARNING: CPU: 0 PID: 1 at fs/proc/generic.c:682 remove_proc_entry+0x198/0x1c0
-[    1.522403] CPU: 0 PID: 1 Comm: swapper Not tainted 5.4.0-s3k-dev-02248-g93532430a4ff #2564
-[    1.530724] NIP:  c0197694 LR: c0197694 CTR: c0050d80
-[    1.535762] REGS: df4a5af0 TRAP: 0700   Not tainted  (5.4.0-02248-g93532430a4ff)
-[    1.543818] MSR:  00029032 <EE,ME,IR,DR,RI>  CR: 22028222  XER: 00000000
-[    1.550524]
-[    1.550524] GPR00: c0197694 df4a5ba8 df4a0000 00000054 00000000 00000000 00004a38 00000010
-[    1.550524] GPR08: c07c5a30 00000800 00000000 00001032 22000208 00000000 c0004b14 00000000
-[    1.550524] GPR16: 00000000 00000000 00000000 00000000 00000000 00000000 c0830000 c07fc078
-[    1.550524] GPR24: c08e8ca0 df665d10 df60ea98 c07c9db8 00000001 df5d5ae3 df5d5a80 df43f8e3
-[    1.585327] NIP [c0197694] remove_proc_entry+0x198/0x1c0
-[    1.590628] LR [c0197694] remove_proc_entry+0x198/0x1c0
-[    1.595829] Call Trace:
-[    1.598280] [df4a5ba8] [c0197694] remove_proc_entry+0x198/0x1c0 (unreliable)
-[    1.605321] [df4a5bd8] [c0067acc] unregister_irq_proc+0x5c/0x70
-[    1.611238] [df4a5bf8] [c005fbc4] free_desc+0x3c/0x80
-[    1.616286] [df4a5c18] [c005fe2c] irq_free_descs+0x70/0xa8
-[    1.621778] [df4a5c38] [c033d3fc] of_fsl_spi_probe+0xdc/0x3cc
-[    1.627525] [df4a5c88] [c02f0f64] platform_drv_probe+0x44/0xa4
-[    1.633350] [df4a5c98] [c02eee44] really_probe+0x1ac/0x418
-[    1.638829] [df4a5cc8] [c02ed3e8] bus_for_each_drv+0x64/0xb0
-[    1.644481] [df4a5cf8] [c02ef950] __device_attach+0xd4/0x128
-[    1.650132] [df4a5d28] [c02ed61c] bus_probe_device+0xa0/0xbc
-[    1.655783] [df4a5d48] [c02ebbe8] device_add+0x544/0x74c
-[    1.661096] [df4a5d88] [c0382b78] of_platform_device_create_pdata+0xa4/0x100
-[    1.668131] [df4a5da8] [c0382cf4] of_platform_bus_create+0x120/0x20c
-[    1.674474] [df4a5df8] [c0382d50] of_platform_bus_create+0x17c/0x20c
-[    1.680818] [df4a5e48] [c0382e88] of_platform_bus_probe+0x9c/0xf0
-[    1.686907] [df4a5e68] [c0751404] __machine_initcall_cmpcpro_cmpcpro_declare_of_platform_devices+0x74/0x1a4
-[    1.696629] [df4a5e98] [c072a4cc] do_one_initcall+0x8c/0x1d4
-[    1.702282] [df4a5ef8] [c072a768] kernel_init_freeable+0x154/0x204
-[    1.708455] [df4a5f28] [c0004b2c] kernel_init+0x18/0x110
-[    1.713769] [df4a5f38] [c00122ac] ret_from_kernel_thread+0x14/0x1c
-[    1.719926] Instruction dump:
-[    1.722889] 2c030000 4182004c 3863ffb0 3c80c05f 80e3005c 388436a0 3c60c06d 7fa6eb78
-[    1.730630] 7fe5fb78 38840280 38634178 4be8c611 <0fe00000> 4bffff6c 3c60c071 7fe4fb78
-[    1.738556] ---[ end trace 05d0720bf2e352e2 ]---
+Macronix International Co., Ltd.
 
-The problem comes from the error path which calls
-irq_dispose_mapping() while the IRQ has been requested with
-devm_request_irq().
+=====================================================================
 
-IRQ doesn't need to be mapped with irq_of_parse_and_map(). The only
-need is to get the IRQ virtual number. For that, use
-of_irq_to_resource() instead of the
-irq_of_parse_and_map()/irq_dispose_mapping() pair.
 
-Fixes: 500a32abaf81 ("spi: fsl: Call irq_dispose_mapping in err path")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-Link: https://lore.kernel.org/r/518cfb83347d5372748e7fe72f94e2e9443d0d4a.1575905123.git.christophe.leroy@c-s.fr
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-fsl-spi.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index 4b70887cf443..d0ad9709f4a6 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -746,8 +746,8 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
- 	if (ret)
- 		goto err;
- 
--	irq = irq_of_parse_and_map(np, 0);
--	if (!irq) {
-+	irq = of_irq_to_resource(np, 0, NULL);
-+	if (irq <= 0) {
- 		ret = -EINVAL;
- 		goto err;
- 	}
-@@ -761,7 +761,6 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
- 	return 0;
- 
- err:
--	irq_dispose_mapping(irq);
- 	return ret;
- }
- 
--- 
-2.20.1
+============================================================================
+
+CONFIDENTIALITY NOTE:
+
+This e-mail and any attachments may contain confidential information and/or personal data, which is protected by applicable laws. Please be reminded that duplication, disclosure, distribution, or use of this e-mail (and/or its attachments) or any part thereof is prohibited. If you receive this e-mail in error, please notify us immediately and delete this mail as well as its attachment(s) from your system. In addition, please be informed that collection, processing, and/or use of personal data is prohibited unless expressly permitted by personal data protection laws. Thank you for your attention and cooperation.
+
+Macronix International Co., Ltd.
+
+=====================================================================

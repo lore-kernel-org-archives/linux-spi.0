@@ -1,12 +1,11 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.4 303/350] spi: st-ssc4: add missed pm_runtime_disable
-Date: Tue, 10 Dec 2019 16:06:48 -0500
-Message-ID: <20191210210735.9077-264-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 213/350] spi: img-spfi: fix potential double release
+Date: Tue, 10 Dec 2019 16:05:18 -0500
+Message-ID: <20191210210735.9077-174-sashal@kernel.org>
 References: <20191210210735.9077-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Chuhong Yuan <hslester96@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
+Cc: Pan Bian <bianpan2016@163.com>, Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
@@ -14,42 +13,36 @@ In-Reply-To: <20191210210735.9077-1-sashal@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Chuhong Yuan <hslester96@gmail.com>
+From: Pan Bian <bianpan2016@163.com>
 
-[ Upstream commit cd050abeba2a95fe5374eec28ad2244617bcbab6 ]
+[ Upstream commit e9a8ba9769a0e354341bc6cc01b98aadcea1dfe9 ]
 
-The driver forgets to call pm_runtime_disable in probe failure
-and remove.
-Add the missed calls to fix it.
+The channels spfi->tx_ch and spfi->rx_ch are not set to NULL after they
+are released. As a result, they will be released again, either on the
+error handling branch in the same function or in the corresponding
+remove function, i.e. img_spfi_remove(). This patch fixes the bug by
+setting the two members to NULL.
 
-Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
-Link: https://lore.kernel.org/r/20191118024848.21645-1-hslester96@gmail.com
+Signed-off-by: Pan Bian <bianpan2016@163.com>
+Link: https://lore.kernel.org/r/1573007769-20131-1-git-send-email-bianpan2016@163.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-st-ssc4.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-img-spfi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-st-ssc4.c b/drivers/spi/spi-st-ssc4.c
-index 0c24c494f3865..77d26d64541a5 100644
---- a/drivers/spi/spi-st-ssc4.c
-+++ b/drivers/spi/spi-st-ssc4.c
-@@ -381,6 +381,7 @@ static int spi_st_probe(struct platform_device *pdev)
- 	return 0;
- 
- clk_disable:
-+	pm_runtime_disable(&pdev->dev);
- 	clk_disable_unprepare(spi_st->clk);
- put_master:
- 	spi_master_put(master);
-@@ -392,6 +393,8 @@ static int spi_st_remove(struct platform_device *pdev)
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct spi_st *spi_st = spi_master_get_devdata(master);
- 
-+	pm_runtime_disable(&pdev->dev);
-+
- 	clk_disable_unprepare(spi_st->clk);
- 
- 	pinctrl_pm_select_sleep_state(&pdev->dev);
+diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
+index 439b01e4a2c8d..f4a8f470aecc2 100644
+--- a/drivers/spi/spi-img-spfi.c
++++ b/drivers/spi/spi-img-spfi.c
+@@ -673,6 +673,8 @@ static int img_spfi_probe(struct platform_device *pdev)
+ 			dma_release_channel(spfi->tx_ch);
+ 		if (spfi->rx_ch)
+ 			dma_release_channel(spfi->rx_ch);
++		spfi->tx_ch = NULL;
++		spfi->rx_ch = NULL;
+ 		dev_warn(spfi->dev, "Failed to get DMA channels, falling back to PIO mode\n");
+ 	} else {
+ 		master->dma_tx = spfi->tx_ch;
 -- 
 2.20.1

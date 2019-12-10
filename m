@@ -1,59 +1,65 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.14 005/130] spi: Add call to spi_slave_abort() function when spidev driver is released
-Date: Tue, 10 Dec 2019 17:00:56 -0500
-Message-ID: <20191210220301.13262-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 102/130] spi: pxa2xx: Add missed security checks
+Date: Tue, 10 Dec 2019 17:02:33 -0500
+Message-ID: <20191210220301.13262-102-sashal@kernel.org>
 References: <20191210220301.13262-1-sashal@kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: Lukasz Majewski <lukma@denx.de>, Mark Brown <broonie@kernel.org>,
-        kbuild test robot <lkp@intel.com>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Sasha Levin <sashal@kernel.org>, Mark Brown <broonie@kernel.org>,
+ Chuhong Yuan <hslester96@gmail.com>, linux-arm-kernel@lists.infradead.org,
+ linux-spi@vger.kernel.org
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 In-Reply-To: <20191210220301.13262-1-sashal@kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Lukasz Majewski <lukma@denx.de>
+From: Chuhong Yuan <hslester96@gmail.com>
 
-[ Upstream commit 9f918a728cf86b2757b6a7025e1f46824bfe3155 ]
+[ Upstream commit 5eb263ef08b5014cfc2539a838f39d2fd3531423 ]
 
-This change is necessary for spidev devices (e.g. /dev/spidev3.0) working
-in the slave mode (like NXP's dspi driver for Vybrid SoC).
+pxa2xx_spi_init_pdata misses checks for devm_clk_get and
+platform_get_irq.
+Add checks for them to fix the bugs.
 
-When SPI HW works in this mode - the master is responsible for providing
-CS and CLK signals. However, when some fault happens - like for example
-distortion on SPI lines - the SPI Linux driver needs a chance to recover
-from this abnormal situation and prepare itself for next (correct)
-transmission.
+Since ssp->clk and ssp->irq are used in probe, they are mandatory here.
+So we cannot use _optional() for devm_clk_get and platform_get_irq.
 
-This change doesn't pose any threat on drivers working in master mode as
-spi_slave_abort() function checks if SPI slave mode is supported.
-
-Signed-off-by: Lukasz Majewski <lukma@denx.de>
-Link: https://lore.kernel.org/r/20190924110547.14770-2-lukma@denx.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Reported-by: kbuild test robot <lkp@intel.com>
-Link: https://lore.kernel.org/r/20190925091143.15468-2-lukma@denx.de
+Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+Link: https://lore.kernel.org/r/20191109080943.30428-1-hslester96@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spidev.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-pxa2xx.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index c5fe08bc34a0a..028725573e632 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -634,6 +634,9 @@ static int spidev_release(struct inode *inode, struct file *filp)
- 		if (dofree)
- 			kfree(spidev);
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 9bf3e5f945c75..b2245cdce230b 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1559,7 +1559,13 @@ pxa2xx_spi_init_pdata(struct platform_device *pdev)
  	}
-+#ifdef CONFIG_SPI_SLAVE
-+	spi_slave_abort(spidev->spi);
-+#endif
- 	mutex_unlock(&device_list_lock);
  
- 	return 0;
+ 	ssp->clk = devm_clk_get(&pdev->dev, NULL);
++	if (IS_ERR(ssp->clk))
++		return NULL;
++
+ 	ssp->irq = platform_get_irq(pdev, 0);
++	if (ssp->irq < 0)
++		return NULL;
++
+ 	ssp->type = type;
+ 	ssp->pdev = pdev;
+ 	ssp->port_id = pxa2xx_spi_get_port_id(adev);
 -- 
 2.20.1

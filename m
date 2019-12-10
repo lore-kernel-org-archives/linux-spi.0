@@ -1,64 +1,59 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.9 77/91] spi: tegra20-slink: add missed clk_unprepare
-Date: Tue, 10 Dec 2019 17:30:21 -0500
-Message-ID: <20191210223035.14270-77-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 05/91] spi: Add call to spi_slave_abort() function when spidev driver is released
+Date: Tue, 10 Dec 2019 17:29:09 -0500
+Message-ID: <20191210223035.14270-5-sashal@kernel.org>
 References: <20191210223035.14270-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Chuhong Yuan <hslester96@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org,
-        linux-tegra@vger.kernel.org
+Cc: Lukasz Majewski <lukma@denx.de>, Mark Brown <broonie@kernel.org>,
+        kbuild test robot <lkp@intel.com>,
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20191210223035.14270-1-sashal@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Chuhong Yuan <hslester96@gmail.com>
+From: Lukasz Majewski <lukma@denx.de>
 
-[ Upstream commit 04358e40ba96d687c0811c21d9dede73f5244a98 ]
+[ Upstream commit 9f918a728cf86b2757b6a7025e1f46824bfe3155 ]
 
-The driver misses calling clk_unprepare in probe failure and remove.
-Add the calls to fix it.
+This change is necessary for spidev devices (e.g. /dev/spidev3.0) working
+in the slave mode (like NXP's dspi driver for Vybrid SoC).
 
-Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
-Link: https://lore.kernel.org/r/20191115083122.12278-1-hslester96@gmail.com
+When SPI HW works in this mode - the master is responsible for providing
+CS and CLK signals. However, when some fault happens - like for example
+distortion on SPI lines - the SPI Linux driver needs a chance to recover
+from this abnormal situation and prepare itself for next (correct)
+transmission.
+
+This change doesn't pose any threat on drivers working in master mode as
+spi_slave_abort() function checks if SPI slave mode is supported.
+
+Signed-off-by: Lukasz Majewski <lukma@denx.de>
+Link: https://lore.kernel.org/r/20190924110547.14770-2-lukma@denx.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: kbuild test robot <lkp@intel.com>
+Link: https://lore.kernel.org/r/20190925091143.15468-2-lukma@denx.de
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-tegra20-slink.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/spi/spidev.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index af2880d0c1126..cf2a329fd8958 100644
---- a/drivers/spi/spi-tegra20-slink.c
-+++ b/drivers/spi/spi-tegra20-slink.c
-@@ -1078,7 +1078,7 @@ static int tegra_slink_probe(struct platform_device *pdev)
- 	ret = clk_enable(tspi->clk);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Clock enable failed %d\n", ret);
--		goto exit_free_master;
-+		goto exit_clk_unprepare;
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index f4ea286b0121e..a685c6114a8d5 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -663,6 +663,9 @@ static int spidev_release(struct inode *inode, struct file *filp)
+ 		if (dofree)
+ 			kfree(spidev);
  	}
++#ifdef CONFIG_SPI_SLAVE
++	spi_slave_abort(spidev->spi);
++#endif
+ 	mutex_unlock(&device_list_lock);
  
- 	spi_irq = platform_get_irq(pdev, 0);
-@@ -1151,6 +1151,8 @@ static int tegra_slink_probe(struct platform_device *pdev)
- 	free_irq(spi_irq, tspi);
- exit_clk_disable:
- 	clk_disable(tspi->clk);
-+exit_clk_unprepare:
-+	clk_unprepare(tspi->clk);
- exit_free_master:
- 	spi_master_put(master);
- 	return ret;
-@@ -1164,6 +1166,7 @@ static int tegra_slink_remove(struct platform_device *pdev)
- 	free_irq(tspi->irq, tspi);
- 
- 	clk_disable(tspi->clk);
-+	clk_unprepare(tspi->clk);
- 
- 	if (tspi->tx_dma_chan)
- 		tegra_slink_deinit_dma_param(tspi, false);
+ 	return 0;
 -- 
 2.20.1

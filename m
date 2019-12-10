@@ -1,64 +1,48 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 152/177] spi: tegra20-slink: add missed clk_unprepare
-Date: Tue, 10 Dec 2019 16:31:56 -0500
-Message-ID: <20191210213221.11921-152-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 105/177] spi: img-spfi: fix potential double release
+Date: Tue, 10 Dec 2019 16:31:09 -0500
+Message-ID: <20191210213221.11921-105-sashal@kernel.org>
 References: <20191210213221.11921-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Chuhong Yuan <hslester96@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org,
-        linux-tegra@vger.kernel.org
+Cc: Pan Bian <bianpan2016@163.com>, Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20191210213221.11921-1-sashal@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Chuhong Yuan <hslester96@gmail.com>
+From: Pan Bian <bianpan2016@163.com>
 
-[ Upstream commit 04358e40ba96d687c0811c21d9dede73f5244a98 ]
+[ Upstream commit e9a8ba9769a0e354341bc6cc01b98aadcea1dfe9 ]
 
-The driver misses calling clk_unprepare in probe failure and remove.
-Add the calls to fix it.
+The channels spfi->tx_ch and spfi->rx_ch are not set to NULL after they
+are released. As a result, they will be released again, either on the
+error handling branch in the same function or in the corresponding
+remove function, i.e. img_spfi_remove(). This patch fixes the bug by
+setting the two members to NULL.
 
-Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
-Link: https://lore.kernel.org/r/20191115083122.12278-1-hslester96@gmail.com
+Signed-off-by: Pan Bian <bianpan2016@163.com>
+Link: https://lore.kernel.org/r/1573007769-20131-1-git-send-email-bianpan2016@163.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-tegra20-slink.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/spi/spi-img-spfi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index 1427f343b39a3..d1187317bb5d7 100644
---- a/drivers/spi/spi-tegra20-slink.c
-+++ b/drivers/spi/spi-tegra20-slink.c
-@@ -1078,7 +1078,7 @@ static int tegra_slink_probe(struct platform_device *pdev)
- 	ret = clk_enable(tspi->clk);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Clock enable failed %d\n", ret);
--		goto exit_free_master;
-+		goto exit_clk_unprepare;
- 	}
- 
- 	spi_irq = platform_get_irq(pdev, 0);
-@@ -1151,6 +1151,8 @@ static int tegra_slink_probe(struct platform_device *pdev)
- 	free_irq(spi_irq, tspi);
- exit_clk_disable:
- 	clk_disable(tspi->clk);
-+exit_clk_unprepare:
-+	clk_unprepare(tspi->clk);
- exit_free_master:
- 	spi_master_put(master);
- 	return ret;
-@@ -1164,6 +1166,7 @@ static int tegra_slink_remove(struct platform_device *pdev)
- 	free_irq(tspi->irq, tspi);
- 
- 	clk_disable(tspi->clk);
-+	clk_unprepare(tspi->clk);
- 
- 	if (tspi->tx_dma_chan)
- 		tegra_slink_deinit_dma_param(tspi, false);
+diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
+index e6eb979f1b8a0..e4b31d6e6e33e 100644
+--- a/drivers/spi/spi-img-spfi.c
++++ b/drivers/spi/spi-img-spfi.c
+@@ -676,6 +676,8 @@ static int img_spfi_probe(struct platform_device *pdev)
+ 			dma_release_channel(spfi->tx_ch);
+ 		if (spfi->rx_ch)
+ 			dma_release_channel(spfi->rx_ch);
++		spfi->tx_ch = NULL;
++		spfi->rx_ch = NULL;
+ 		dev_warn(spfi->dev, "Failed to get DMA channels, falling back to PIO mode\n");
+ 	} else {
+ 		master->dma_tx = spfi->tx_ch;
 -- 
 2.20.1

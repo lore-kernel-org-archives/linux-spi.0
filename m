@@ -1,8 +1,8 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.4 168/350] spi: sprd: adi: Add missing lock protection when rebooting
-Date: Tue, 10 Dec 2019 16:04:33 -0500
-Message-ID: <20191210210735.9077-129-sashal@kernel.org>
-References: <20191210210735.9077-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 080/177] spi: sprd: adi: Add missing lock protection when rebooting
+Date: Tue, 10 Dec 2019 16:30:44 -0500
+Message-ID: <20191210213221.11921-80-sashal@kernel.org>
+References: <20191210213221.11921-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Cc: Lingling Xu <ling_ling.xu@unisoc.com>,
@@ -10,9 +10,9 @@ Cc: Lingling Xu <ling_ling.xu@unisoc.com>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191210210735.9077-1-sashal@kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20191210213221.11921-1-sashal@kernel.org>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Lingling Xu <ling_ling.xu@unisoc.com>
@@ -33,10 +33,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+)
 
 diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
-index 9a051286f1207..9613cfe3c0a25 100644
+index df5960bddfe61..f1fc2bde6ef30 100644
 --- a/drivers/spi/spi-sprd-adi.c
 +++ b/drivers/spi/spi-sprd-adi.c
-@@ -393,6 +393,9 @@ static int sprd_adi_restart_handler(struct notifier_block *this,
+@@ -367,6 +367,9 @@ static int sprd_adi_restart_handler(struct notifier_block *this,
  	val |= BIT_WDG_RUN | BIT_WDG_RST;
  	sprd_adi_write(sadi, sadi->slave_pbase + REG_WDG_CTRL, val);
  

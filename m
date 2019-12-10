@@ -1,83 +1,31 @@
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v2 2/2] spi: fsl: simplify error path in of_fsl_spi_probe()
-Date: Tue, 10 Dec 2019 15:17:16 +0000 (UTC)
-Message-ID: <539a3b82463f64e8055f166c915f0e90f752c7b0.1575990944.git.christophe.leroy@c-s.fr>
-References: <1cdd0a26d7e1545f32c8bc4dc7458ebecdd6aaed.1575990944.git.christophe.leroy@c-s.fr>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        kbuild test robot <lkp@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-To: Mark Brown <broonie@kernel.org>
+From: <Tudor.Ambarus@microchip.com>
+Subject: Re: [PATCH 0/4] mtd: spi-nor: Add support for Octal 8D-8D-8D mode
+Date: Tue, 10 Dec 2019 17:00:45 +0000
+Message-ID: <8f2908ec-6e17-dad1-7f2a-ec22647caecb@microchip.com>
+References: <1573808288-19365-1-git-send-email-masonccyang@mxic.com.tw>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: <juliensu@mxic.com.tw>, <linux-kernel@vger.kernel.org>,
+        <linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>
+To: <masonccyang@mxic.com.tw>, <broonie@kernel.org>,
+        <miquel.raynal@bootlin.com>, <richard@nod.at>,
+        <marek.vasut@gmail.com>, <dwmw2@infradead.org>,
+        <computersforpeace@gmail.com>, <vigneshr@ti.com>,
+        <bbrezillon@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1cdd0a26d7e1545f32c8bc4dc7458ebecdd6aaed.1575990944.git.christophe.leroy@c-s.fr>
+In-Reply-To: <1573808288-19365-1-git-send-email-masonccyang@mxic.com.tw>
+Content-Language: en-US
+Content-ID: <3898D962452FFD4FA513E1098B602C40@namprd11.prod.outlook.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-No need to 'goto err;' for just doing a return.
-return directly from where the error happens.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- drivers/spi/spi-fsl-spi.c | 27 +++++++++------------------
- 1 file changed, 9 insertions(+), 18 deletions(-)
-
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index 2d85c81983b1..e991c6ff4e7a 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -725,8 +725,8 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
- 	struct device_node *np = ofdev->dev.of_node;
- 	struct spi_master *master;
- 	struct resource mem;
--	int irq = 0, type;
--	int ret = -ENOMEM;
-+	int irq, type;
-+	int ret;
- 
- 	ret = of_mpc8xxx_spi_probe(ofdev);
- 	if (ret)
-@@ -741,10 +741,8 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
- 
- 		if (spisel_boot) {
- 			pinfo->immr_spi_cs = ioremap(get_immrbase() + IMMR_SPI_CS_OFFSET, 4);
--			if (!pinfo->immr_spi_cs) {
--				ret = -ENOMEM;
--				goto err;
--			}
-+			if (!pinfo->immr_spi_cs)
-+				return -ENOMEM;
- 		}
- #endif
- 		/*
-@@ -763,24 +761,17 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
- 
- 	ret = of_address_to_resource(np, 0, &mem);
- 	if (ret)
--		goto err;
-+		return ret;
- 
- 	irq = of_irq_to_resource(np, 0, NULL);
--	if (irq <= 0) {
--		ret = -EINVAL;
--		goto err;
--	}
-+	if (irq <= 0)
-+		return -EINVAL;
- 
- 	master = fsl_spi_probe(dev, &mem, irq);
--	if (IS_ERR(master)) {
--		ret = PTR_ERR(master);
--		goto err;
--	}
-+	if (IS_ERR(master))
-+		return PTR_ERR(master);
- 
- 	return 0;
--
--err:
--	return ret;
- }
- 
- static int of_fsl_spi_remove(struct platform_device *ofdev)
--- 
-2.13.3
+SGksIE1hc29uLA0KDQpGcm9tIHRoZSBkaXNjdXNzaW9uIHlvdSBoYWQgd2l0aCBWaWduZXNoLCBJ
+IHVuZGVyc3RhbmQgdGhhdCBhIHYyIHdpbGwgZm9sbG93LiBBDQpuaXQgYmVsb3cuDQoNCk9uIDEx
+LzE1LzE5IDEwOjU4IEFNLCBNYXNvbiBZYW5nIHdyb3RlOg0KPiBIZWxsbywNCj4gDQo+IFRoaXMg
+aXMgcmVwb3N0IG9mIHBhdGNoc2V0IGZyb20gQm9yaXMgQnJlemlsbG9uJ3MNCj4gW1JGQywwMC8x
+OF0gbXRkOiBzcGktbm9yOiBQcm9wb3NhbCBmb3IgOC04LTggbW9kZSBzdXBwb3J0IFsxXS4NCj4g
+DQoNCltjdXRdDQoNCj4gTWFzb24gWWFuZyAoNCk6DQoNCkRpZCB5b3UgaW50ZW50aW9uYWxseSBv
+dmVyd3JpdGUgQm9yaXMncyBhdXRob3JzaGlwPyBJZiB5ZXMsIHdvdWxkIHlvdSBwbGVhc2UNCmRl
+c2NyaWJlIHdoYXQgY2hhbmdlZCBmcm9tIEJvcmlzJ3MgcGF0Y2ggc2V0Pw0KDQpDaGVlcnMsDQp0
+YQ0K

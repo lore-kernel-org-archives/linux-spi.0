@@ -1,80 +1,98 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.4 128/350] spi: pxa2xx: Set
- controller->max_transfer_size in dma mode
-Date: Tue, 10 Dec 2019 16:03:53 -0500
-Message-ID: <20191210210735.9077-89-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 196/350] spi: sifive: disable clk when probe fails
+ and remove
+Date: Tue, 10 Dec 2019 16:05:01 -0500
+Message-ID: <20191210210735.9077-157-sashal@kernel.org>
 References: <20191210210735.9077-1-sashal@kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: linux-arm-kernel@lists.infradead.org, Sasha Levin <sashal@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@intel.com>,
- Daniel Vetter <daniel.vetter@ffwll.ch>,
- Robert Jarzmik <robert.jarzmik@free.fr>,
- Haojian Zhuang <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org,
- =?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
- Mark Brown <broonie@kernel.org>, Sam Ravnborg <sam@ravnborg.org>,
- Daniel Mack <daniel@zonque.org>
+Content-Transfer-Encoding: 8bit
+Cc: Sasha Levin <sashal@kernel.org>, Chuhong Yuan <hslester96@gmail.com>,
+ linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, linux-riscv@lists.infradead.org
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Return-path: <linux-riscv-bounces+glpr-linux-riscv=m.gmane.org@lists.infradead.org>
 In-Reply-To: <20191210210735.9077-1-sashal@kernel.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-riscv>,
+ <mailto:linux-riscv-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-riscv/>
+List-Post: <mailto:linux-riscv@lists.infradead.org>
+List-Help: <mailto:linux-riscv-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-riscv>,
+ <mailto:linux-riscv-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-riscv" <linux-riscv-bounces@lists.infradead.org>
+Errors-To: linux-riscv-bounces+glpr-linux-riscv=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-RnJvbTogRGFuaWVsIFZldHRlciA8ZGFuaWVsLnZldHRlckBmZndsbC5jaD4KClsgVXBzdHJlYW0g
-Y29tbWl0IGIyNjYyYTE2NGY5ZGM0OGRhODgyMmU1NjYwMDY4NmQ2MzkwNTYyODIgXQoKSW4gRE1B
-IG1vZGUgd2UgaGF2ZSBhIG1heGltdW0gdHJhbnNmZXIgc2l6ZSwgcGFzdCB0aGF0IHRoZSBkcml2
-ZXIKZmFsbHMgYmFjayB0byBQSU8gKHNlZSB0aGUgY2hlY2sgYXQgdGhlIHRvcCBvZiBweGEyeHhf
-c3BpX3RyYW5zZmVyX29uZSkuCkZhbGxpbmcgYmFjayB0byBQSU8gZm9yIGJpZyB0cmFuc2ZlcnMg
-ZGVmZWF0cyB0aGUgcG9pbnQgb2YgYSBkbWEgZW5naW5lLApoZW5jZSBzZXQgdGhlIG1heCB0cmFu
-c2ZlciBzaXplIHRvIGluZm9ybSBzcGkgY2xpZW50cyB0aGF0IHRoZXkgbmVlZAp0byBkbyBzb21l
-dGhpbmcgc21hcnRlci4KClRoaXMgd2FzIHVuY292ZXJlZCBieSB0aGUgZHJtX21pcGlfZGJpIHNw
-aSBwYW5lbCBjb2RlLCB3aGljaCBkb2VzCmxhcmdlIHNwaSB0cmFuc2ZlcnMsIGJ1dCBzdG9wcGVk
-IHNwbGl0dGluZyB0aGVtIGFmdGVyOgoKY29tbWl0IGUxNDMzNjRiNGMxNzc0ZjY4ZTkyM2E1YTBi
-YjBmY2EyOGFjMjU4ODgKQXV0aG9yOiBOb3JhbGYgVHLDuG5uZXMgPG5vcmFsZkB0cm9ubmVzLm9y
-Zz4KRGF0ZTogICBGcmkgSnVsIDE5IDE3OjU5OjEwIDIwMTkgKzAyMDAKCiAgICBkcm0vdGlueWRy
-bTogUmVtb3ZlIHRpbnlkcm1fc3BpX21heF90cmFuc2Zlcl9zaXplKCkKCkFmdGVyIHRoaXMgY29t
-bWl0IHRoZSBjb2RlIHJlbGllZCBvbiB0aGUgc3BpIGNvcmUgdG8gc3BsaXQgdHJhbnNmZXJzCmlu
-dG8gbWF4IGRtYS1hYmxlIGJsb2Nrcywgd2hpY2ggYWxzbyBwYXBlcmVkIG92ZXIgdGhlIFBJTyBm
-YWxsYmFjayBpc3N1ZS4KCkZpeCB0aGlzIGJ5IHNldHRpbmcgdGhlIG92ZXJhbGwgbWF4IHRyYW5z
-ZmVyIHNpemUgdG8gdGhlIERNQSBsaW1pdCwKYnV0IG9ubHkgd2hlbiB0aGUgY29udHJvbGxlciBy
-dW5zIGluIERNQSBtb2RlLgoKRml4ZXM6IGUxNDMzNjRiNGMxNyAoImRybS90aW55ZHJtOiBSZW1v
-dmUgdGlueWRybV9zcGlfbWF4X3RyYW5zZmVyX3NpemUoKSIpCkNjOiBTYW0gUmF2bmJvcmcgPHNh
-bUByYXZuYm9yZy5vcmc+CkNjOiBOb3JhbGYgVHLDuG5uZXMgPG5vcmFsZkB0cm9ubmVzLm9yZz4K
-Q2M6IEFuZHkgU2hldmNoZW5rbyA8YW5kcml5LnNoZXZjaGVua29AaW50ZWwuY29tPgpSZXBvcnRl
-ZC1hbmQtdGVzdGVkLWJ5OiBBbmR5IFNoZXZjaGVua28gPGFuZHJpeS5zaGV2Y2hlbmtvQGludGVs
-LmNvbT4KQ2M6IERhbmllbCBNYWNrIDxkYW5pZWxAem9ucXVlLm9yZz4KQ2M6IEhhb2ppYW4gWmh1
-YW5nIDxoYW9qaWFuLnpodWFuZ0BnbWFpbC5jb20+CkNjOiBSb2JlcnQgSmFyem1payA8cm9iZXJ0
-LmphcnptaWtAZnJlZS5mcj4KQ2M6IE1hcmsgQnJvd24gPGJyb29uaWVAa2VybmVsLm9yZz4KQ2M6
-IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwpDYzogbGludXgtc3BpQHZnZXIu
-a2VybmVsLm9yZwpTaWduZWQtb2ZmLWJ5OiBEYW5pZWwgVmV0dGVyIDxkYW5pZWwudmV0dGVyQGZm
-d2xsLmNoPgpMaW5rOiBodHRwczovL2xvcmUua2VybmVsLm9yZy9yLzIwMTkxMDE3MDY0NDI2LjMw
-ODE0LTEtZGFuaWVsLnZldHRlckBmZndsbC5jaApTaWduZWQtb2ZmLWJ5OiBNYXJrIEJyb3duIDxi
-cm9vbmllQGtlcm5lbC5vcmc+ClNpZ25lZC1vZmYtYnk6IFNhc2hhIExldmluIDxzYXNoYWxAa2Vy
-bmVsLm9yZz4KLS0tCiBkcml2ZXJzL3NwaS9zcGktcHhhMnh4LmMgfCA3ICsrKysrKysKIDEgZmls
-ZSBjaGFuZ2VkLCA3IGluc2VydGlvbnMoKykKCmRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGkt
-cHhhMnh4LmMgYi9kcml2ZXJzL3NwaS9zcGktcHhhMnh4LmMKaW5kZXggYmI2YTE0ZDFhYjBmOS4u
-MDY4YzIxMDM3Njc5OSAxMDA2NDQKLS0tIGEvZHJpdmVycy9zcGkvc3BpLXB4YTJ4eC5jCisrKyBi
-L2RyaXZlcnMvc3BpL3NwaS1weGEyeHguYwpAQCAtMTYwMiw2ICsxNjAyLDExIEBAIHN0YXRpYyBp
-bnQgcHhhMnh4X3NwaV9md190cmFuc2xhdGVfY3Moc3RydWN0IHNwaV9jb250cm9sbGVyICpjb250
-cm9sbGVyLAogCXJldHVybiBjczsKIH0KIAorc3RhdGljIHNpemVfdCBweGEyeHhfc3BpX21heF9k
-bWFfdHJhbnNmZXJfc2l6ZShzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpKQoreworCXJldHVybiBNQVhf
-RE1BX0xFTjsKK30KKwogc3RhdGljIGludCBweGEyeHhfc3BpX3Byb2JlKHN0cnVjdCBwbGF0Zm9y
-bV9kZXZpY2UgKnBkZXYpCiB7CiAJc3RydWN0IGRldmljZSAqZGV2ID0gJnBkZXYtPmRldjsKQEAg
-LTE3MDcsNiArMTcxMiw4IEBAIHN0YXRpYyBpbnQgcHhhMnh4X3NwaV9wcm9iZShzdHJ1Y3QgcGxh
-dGZvcm1fZGV2aWNlICpwZGV2KQogCQl9IGVsc2UgewogCQkJY29udHJvbGxlci0+Y2FuX2RtYSA9
-IHB4YTJ4eF9zcGlfY2FuX2RtYTsKIAkJCWNvbnRyb2xsZXItPm1heF9kbWFfbGVuID0gTUFYX0RN
-QV9MRU47CisJCQljb250cm9sbGVyLT5tYXhfdHJhbnNmZXJfc2l6ZSA9CisJCQkJcHhhMnh4X3Nw
-aV9tYXhfZG1hX3RyYW5zZmVyX3NpemU7CiAJCX0KIAl9CiAKLS0gCjIuMjAuMQoKCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmxpbnV4LWFybS1rZXJuZWwg
-bWFpbGluZyBsaXN0CmxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
-bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LWFybS1rZXJuZWwK
+From: Chuhong Yuan <hslester96@gmail.com>
+
+[ Upstream commit a725272bda77e61c1b4de85c7b0c875b2ea639b6 ]
+
+The driver forgets to disable and unprepare clk when probe fails and
+remove.
+Add the calls to fix the problem.
+
+Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+Reviewed-by: Palmer Dabbelt <palmer@dabbelt.com>
+Link: https://lore.kernel.org/r/20191101121745.13413-1-hslester96@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi-sifive.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
+index 35254bdc42c48..f7c1e20432e07 100644
+--- a/drivers/spi/spi-sifive.c
++++ b/drivers/spi/spi-sifive.c
+@@ -357,14 +357,14 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 	if (!cs_bits) {
+ 		dev_err(&pdev->dev, "Could not auto probe CS lines\n");
+ 		ret = -EINVAL;
+-		goto put_master;
++		goto disable_clk;
+ 	}
+ 
+ 	num_cs = ilog2(cs_bits) + 1;
+ 	if (num_cs > SIFIVE_SPI_MAX_CS) {
+ 		dev_err(&pdev->dev, "Invalid number of spi slaves\n");
+ 		ret = -EINVAL;
+-		goto put_master;
++		goto disable_clk;
+ 	}
+ 
+ 	/* Define our master */
+@@ -393,7 +393,7 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 			       dev_name(&pdev->dev), spi);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Unable to bind to interrupt\n");
+-		goto put_master;
++		goto disable_clk;
+ 	}
+ 
+ 	dev_info(&pdev->dev, "mapped; irq=%d, cs=%d\n",
+@@ -402,11 +402,13 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 	ret = devm_spi_register_master(&pdev->dev, master);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "spi_register_master failed\n");
+-		goto put_master;
++		goto disable_clk;
+ 	}
+ 
+ 	return 0;
+ 
++disable_clk:
++	clk_disable_unprepare(spi->clk);
+ put_master:
+ 	spi_master_put(master);
+ 
+@@ -420,6 +422,7 @@ static int sifive_spi_remove(struct platform_device *pdev)
+ 
+ 	/* Disable all the interrupts just in case */
+ 	sifive_spi_write(spi, SIFIVE_SPI_REG_IE, 0);
++	clk_disable_unprepare(spi->clk);
+ 
+ 	return 0;
+ }
+-- 
+2.20.1

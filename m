@@ -1,59 +1,50 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.3 016/292] spi: Add call to spi_slave_abort() function when spidev driver is released
-Date: Tue, 10 Dec 2019 16:20:35 -0500
-Message-ID: <20191210212511.11392-16-sashal@kernel.org>
-References: <20191210212511.11392-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 168/350] spi: sprd: adi: Add missing lock protection when rebooting
+Date: Tue, 10 Dec 2019 16:04:33 -0500
+Message-ID: <20191210210735.9077-129-sashal@kernel.org>
+References: <20191210210735.9077-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Lukasz Majewski <lukma@denx.de>, Mark Brown <broonie@kernel.org>,
-        kbuild test robot <lkp@intel.com>,
+Cc: Lingling Xu <ling_ling.xu@unisoc.com>,
+        Baolin Wang <baolin.wang@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191210212511.11392-1-sashal@kernel.org>
+In-Reply-To: <20191210210735.9077-1-sashal@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Lukasz Majewski <lukma@denx.de>
+From: Lingling Xu <ling_ling.xu@unisoc.com>
 
-[ Upstream commit 9f918a728cf86b2757b6a7025e1f46824bfe3155 ]
+[ Upstream commit 91ea1d70607e374b014b4b9bea771ce661f9f64b ]
 
-This change is necessary for spidev devices (e.g. /dev/spidev3.0) working
-in the slave mode (like NXP's dspi driver for Vybrid SoC).
+When rebooting the system, we should lock the watchdog after
+configuration to make sure the watchdog can reboot the system
+successfully.
 
-When SPI HW works in this mode - the master is responsible for providing
-CS and CLK signals. However, when some fault happens - like for example
-distortion on SPI lines - the SPI Linux driver needs a chance to recover
-from this abnormal situation and prepare itself for next (correct)
-transmission.
-
-This change doesn't pose any threat on drivers working in master mode as
-spi_slave_abort() function checks if SPI slave mode is supported.
-
-Signed-off-by: Lukasz Majewski <lukma@denx.de>
-Link: https://lore.kernel.org/r/20190924110547.14770-2-lukma@denx.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Reported-by: kbuild test robot <lkp@intel.com>
-Link: https://lore.kernel.org/r/20190925091143.15468-2-lukma@denx.de
+Signed-off-by: Lingling Xu <ling_ling.xu@unisoc.com>
+Signed-off-by: Baolin Wang <baolin.wang@linaro.org>
+Link: https://lore.kernel.org/r/7b04711127434555e3a1a86bc6be99860cd86668.1572257085.git.baolin.wang@linaro.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spidev.c | 3 +++
+ drivers/spi/spi-sprd-adi.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 255786f2e8447..3ea9d8a3e6e89 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -627,6 +627,9 @@ static int spidev_release(struct inode *inode, struct file *filp)
- 		if (dofree)
- 			kfree(spidev);
- 	}
-+#ifdef CONFIG_SPI_SLAVE
-+	spi_slave_abort(spidev->spi);
-+#endif
- 	mutex_unlock(&device_list_lock);
+diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
+index 9a051286f1207..9613cfe3c0a25 100644
+--- a/drivers/spi/spi-sprd-adi.c
++++ b/drivers/spi/spi-sprd-adi.c
+@@ -393,6 +393,9 @@ static int sprd_adi_restart_handler(struct notifier_block *this,
+ 	val |= BIT_WDG_RUN | BIT_WDG_RST;
+ 	sprd_adi_write(sadi, sadi->slave_pbase + REG_WDG_CTRL, val);
  
- 	return 0;
++	/* Lock the watchdog */
++	sprd_adi_write(sadi, sadi->slave_pbase + REG_WDG_LOCK, ~WDG_UNLOCK_KEY);
++
+ 	mdelay(1000);
+ 
+ 	dev_emerg(sadi->dev, "Unable to restart system\n");
 -- 
 2.20.1

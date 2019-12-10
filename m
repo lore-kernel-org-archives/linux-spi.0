@@ -1,52 +1,59 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.4 033/350] spi: gpio: prevent memory leak in spi_gpio_probe
-Date: Tue, 10 Dec 2019 15:58:45 -0500
-Message-ID: <20191210210402.8367-33-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 021/350] spi: Add call to spi_slave_abort() function when spidev driver is released
+Date: Tue, 10 Dec 2019 15:58:33 -0500
+Message-ID: <20191210210402.8367-21-sashal@kernel.org>
 References: <20191210210402.8367-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Navid Emamdoost <navid.emamdoost@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
+Cc: Lukasz Majewski <lukma@denx.de>, Mark Brown <broonie@kernel.org>,
+        kbuild test robot <lkp@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Return-path: <stable-owner@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20191210210402.8367-1-sashal@kernel.org>
-Sender: stable-owner@vger.kernel.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Navid Emamdoost <navid.emamdoost@gmail.com>
+From: Lukasz Majewski <lukma@denx.de>
 
-[ Upstream commit d3b0ffa1d75d5305ebe34735598993afbb8a869d ]
+[ Upstream commit 9f918a728cf86b2757b6a7025e1f46824bfe3155 ]
 
-In spi_gpio_probe an SPI master is allocated via spi_alloc_master, but
-this controller should be released if devm_add_action_or_reset fails,
-otherwise memory leaks. In order to avoid leak spi_contriller_put must
-be called in case of failure for devm_add_action_or_reset.
+This change is necessary for spidev devices (e.g. /dev/spidev3.0) working
+in the slave mode (like NXP's dspi driver for Vybrid SoC).
 
-Fixes: 8b797490b4db ("spi: gpio: Make sure spi_master_put() is called in every error path")
-Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
-Link: https://lore.kernel.org/r/20190930205241.5483-1-navid.emamdoost@gmail.com
+When SPI HW works in this mode - the master is responsible for providing
+CS and CLK signals. However, when some fault happens - like for example
+distortion on SPI lines - the SPI Linux driver needs a chance to recover
+from this abnormal situation and prepare itself for next (correct)
+transmission.
+
+This change doesn't pose any threat on drivers working in master mode as
+spi_slave_abort() function checks if SPI slave mode is supported.
+
+Signed-off-by: Lukasz Majewski <lukma@denx.de>
+Link: https://lore.kernel.org/r/20190924110547.14770-2-lukma@denx.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: kbuild test robot <lkp@intel.com>
+Link: https://lore.kernel.org/r/20190925091143.15468-2-lukma@denx.de
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-gpio.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spidev.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index 1d3e23ec20a61..f9c5bbb747142 100644
---- a/drivers/spi/spi-gpio.c
-+++ b/drivers/spi/spi-gpio.c
-@@ -371,8 +371,10 @@ static int spi_gpio_probe(struct platform_device *pdev)
- 		return -ENOMEM;
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 255786f2e8447..3ea9d8a3e6e89 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -627,6 +627,9 @@ static int spidev_release(struct inode *inode, struct file *filp)
+ 		if (dofree)
+ 			kfree(spidev);
+ 	}
++#ifdef CONFIG_SPI_SLAVE
++	spi_slave_abort(spidev->spi);
++#endif
+ 	mutex_unlock(&device_list_lock);
  
- 	status = devm_add_action_or_reset(&pdev->dev, spi_gpio_put, master);
--	if (status)
-+	if (status) {
-+		spi_master_put(master);
- 		return status;
-+	}
- 
- 	if (of_id)
- 		status = spi_gpio_probe_dt(pdev, master);
+ 	return 0;
 -- 
 2.20.1

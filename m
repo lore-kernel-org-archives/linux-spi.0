@@ -1,48 +1,59 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.4 38/71] spi: img-spfi: fix potential double release
-Date: Tue, 10 Dec 2019 17:32:43 -0500
-Message-ID: <20191210223316.14988-38-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 04/71] spi: Add call to spi_slave_abort() function when spidev driver is released
+Date: Tue, 10 Dec 2019 17:32:09 -0500
+Message-ID: <20191210223316.14988-4-sashal@kernel.org>
 References: <20191210223316.14988-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Pan Bian <bianpan2016@163.com>, Mark Brown <broonie@kernel.org>,
+Cc: Lukasz Majewski <lukma@denx.de>, Mark Brown <broonie@kernel.org>,
+        kbuild test robot <lkp@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Return-path: <stable-owner@vger.kernel.org>
 In-Reply-To: <20191210223316.14988-1-sashal@kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Pan Bian <bianpan2016@163.com>
+From: Lukasz Majewski <lukma@denx.de>
 
-[ Upstream commit e9a8ba9769a0e354341bc6cc01b98aadcea1dfe9 ]
+[ Upstream commit 9f918a728cf86b2757b6a7025e1f46824bfe3155 ]
 
-The channels spfi->tx_ch and spfi->rx_ch are not set to NULL after they
-are released. As a result, they will be released again, either on the
-error handling branch in the same function or in the corresponding
-remove function, i.e. img_spfi_remove(). This patch fixes the bug by
-setting the two members to NULL.
+This change is necessary for spidev devices (e.g. /dev/spidev3.0) working
+in the slave mode (like NXP's dspi driver for Vybrid SoC).
 
-Signed-off-by: Pan Bian <bianpan2016@163.com>
-Link: https://lore.kernel.org/r/1573007769-20131-1-git-send-email-bianpan2016@163.com
+When SPI HW works in this mode - the master is responsible for providing
+CS and CLK signals. However, when some fault happens - like for example
+distortion on SPI lines - the SPI Linux driver needs a chance to recover
+from this abnormal situation and prepare itself for next (correct)
+transmission.
+
+This change doesn't pose any threat on drivers working in master mode as
+spi_slave_abort() function checks if SPI slave mode is supported.
+
+Signed-off-by: Lukasz Majewski <lukma@denx.de>
+Link: https://lore.kernel.org/r/20190924110547.14770-2-lukma@denx.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: kbuild test robot <lkp@intel.com>
+Link: https://lore.kernel.org/r/20190925091143.15468-2-lukma@denx.de
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-img-spfi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spidev.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
-index 823cbc92d1e75..c46c0738c7340 100644
---- a/drivers/spi/spi-img-spfi.c
-+++ b/drivers/spi/spi-img-spfi.c
-@@ -673,6 +673,8 @@ static int img_spfi_probe(struct platform_device *pdev)
- 			dma_release_channel(spfi->tx_ch);
- 		if (spfi->rx_ch)
- 			dma_release_channel(spfi->rx_ch);
-+		spfi->tx_ch = NULL;
-+		spfi->rx_ch = NULL;
- 		dev_warn(spfi->dev, "Failed to get DMA channels, falling back to PIO mode\n");
- 	} else {
- 		master->dma_tx = spfi->tx_ch;
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index c5f1045561acc..3709088d4d244 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -662,6 +662,9 @@ static int spidev_release(struct inode *inode, struct file *filp)
+ 		if (dofree)
+ 			kfree(spidev);
+ 	}
++#ifdef CONFIG_SPI_SLAVE
++	spi_slave_abort(spidev->spi);
++#endif
+ 	mutex_unlock(&device_list_lock);
+ 
+ 	return 0;
 -- 
 2.20.1

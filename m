@@ -1,8 +1,8 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 007/177] spi: Add call to spi_slave_abort() function when spidev driver is released
-Date: Tue, 10 Dec 2019 16:29:31 -0500
-Message-ID: <20191210213221.11921-7-sashal@kernel.org>
-References: <20191210213221.11921-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 005/130] spi: Add call to spi_slave_abort() function when spidev driver is released
+Date: Tue, 10 Dec 2019 17:00:56 -0500
+Message-ID: <20191210220301.13262-5-sashal@kernel.org>
+References: <20191210220301.13262-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Cc: Lukasz Majewski <lukma@denx.de>, Mark Brown <broonie@kernel.org>,
@@ -10,7 +10,7 @@ Cc: Lukasz Majewski <lukma@denx.de>, Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191210213221.11921-1-sashal@kernel.org>
+In-Reply-To: <20191210220301.13262-1-sashal@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 

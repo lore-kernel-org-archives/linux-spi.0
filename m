@@ -1,31 +1,49 @@
-From: <Tudor.Ambarus@microchip.com>
-Subject: Re: [PATCH 0/4] mtd: spi-nor: Add support for Octal 8D-8D-8D mode
-Date: Tue, 10 Dec 2019 17:00:45 +0000
-Message-ID: <8f2908ec-6e17-dad1-7f2a-ec22647caecb@microchip.com>
-References: <1573808288-19365-1-git-send-email-masonccyang@mxic.com.tw>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 1/2] spi: fsl: don't map irq during probe
+Date: Tue, 10 Dec 2019 19:20:10 +0000
+Message-ID: <20191210192010.GK6110@sirena.org.uk>
+References: <1cdd0a26d7e1545f32c8bc4dc7458ebecdd6aaed.1575990944.git.christophe.leroy@c-s.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: <juliensu@mxic.com.tw>, <linux-kernel@vger.kernel.org>,
-        <linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>
-To: <masonccyang@mxic.com.tw>, <broonie@kernel.org>,
-        <miquel.raynal@bootlin.com>, <richard@nod.at>,
-        <marek.vasut@gmail.com>, <dwmw2@infradead.org>,
-        <computersforpeace@gmail.com>, <vigneshr@ti.com>,
-        <bbrezillon@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="HcXnUX77nabWBLF4"
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        kbuild test robot <lkp@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1573808288-19365-1-git-send-email-masonccyang@mxic.com.tw>
-Content-Language: en-US
-Content-ID: <3898D962452FFD4FA513E1098B602C40@namprd11.prod.outlook.com>
+Content-Disposition: inline
+In-Reply-To: <1cdd0a26d7e1545f32c8bc4dc7458ebecdd6aaed.1575990944.git.christophe.leroy@c-s.fr>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGksIE1hc29uLA0KDQpGcm9tIHRoZSBkaXNjdXNzaW9uIHlvdSBoYWQgd2l0aCBWaWduZXNoLCBJ
-IHVuZGVyc3RhbmQgdGhhdCBhIHYyIHdpbGwgZm9sbG93LiBBDQpuaXQgYmVsb3cuDQoNCk9uIDEx
-LzE1LzE5IDEwOjU4IEFNLCBNYXNvbiBZYW5nIHdyb3RlOg0KPiBIZWxsbywNCj4gDQo+IFRoaXMg
-aXMgcmVwb3N0IG9mIHBhdGNoc2V0IGZyb20gQm9yaXMgQnJlemlsbG9uJ3MNCj4gW1JGQywwMC8x
-OF0gbXRkOiBzcGktbm9yOiBQcm9wb3NhbCBmb3IgOC04LTggbW9kZSBzdXBwb3J0IFsxXS4NCj4g
-DQoNCltjdXRdDQoNCj4gTWFzb24gWWFuZyAoNCk6DQoNCkRpZCB5b3UgaW50ZW50aW9uYWxseSBv
-dmVyd3JpdGUgQm9yaXMncyBhdXRob3JzaGlwPyBJZiB5ZXMsIHdvdWxkIHlvdSBwbGVhc2UNCmRl
-c2NyaWJlIHdoYXQgY2hhbmdlZCBmcm9tIEJvcmlzJ3MgcGF0Y2ggc2V0Pw0KDQpDaGVlcnMsDQp0
-YQ0K
+
+--HcXnUX77nabWBLF4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, Dec 10, 2019 at 03:17:15PM +0000, Christophe Leroy wrote:
+> With lastest kernel, the following warning is observed at startup:
+
+Please do not submit new versions of already applied patches, please
+submit incremental updates to the existing code.  Modifying existing
+commits creates problems for other users building on top of those
+commits so it's best practice to only change pubished git commits if
+absolutely essential.
+
+--HcXnUX77nabWBLF4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl3v7+oACgkQJNaLcl1U
+h9COMAf/atE1JYdFEaDVfUE6vUZQPvvELAUglONPvpzbC2FySvV79fZw5WQj1B1d
+bJA23l3E1GBhegHF1bWLzSYE8WtQCrgr9Jh+TNamNySK/Ob/k2xBwubsuJEWg6rF
+iV4ELtr7vBD+yqCH/a7QJ4O7HQcqYjpUTezWpUDZw/6Yn5nd3CtPyFgrCmaR4Eiu
+IB1pYoLnYJTJnJClH8JGLs25ezTXpigIeEZ4pcuAW2Sk4kC3R1GwdWK8BMI4cEur
+mCN9zWv7+09q1JLnvkc7lqwJA1vFwdPKgeSXhBGf9P37GpPH2hnqDnY8bdFTgXIO
+khEdKooQ1FU1cNpViuHqHNORPRR21g==
+=cg4Q
+-----END PGP SIGNATURE-----
+
+--HcXnUX77nabWBLF4--

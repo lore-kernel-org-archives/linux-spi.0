@@ -1,13 +1,14 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.14 117/130] spi: st-ssc4: add missed pm_runtime_disable
-Date: Tue, 10 Dec 2019 17:02:48 -0500
-Message-ID: <20191210220301.13262-117-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 112/130] spi: tegra20-slink: add missed clk_unprepare
+Date: Tue, 10 Dec 2019 17:02:43 -0500
+Message-ID: <20191210220301.13262-112-sashal@kernel.org>
 References: <20191210220301.13262-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Cc: Chuhong Yuan <hslester96@gmail.com>,
         Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org,
+        linux-tegra@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20191210220301.13262-1-sashal@kernel.org>
@@ -16,40 +17,48 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Chuhong Yuan <hslester96@gmail.com>
 
-[ Upstream commit cd050abeba2a95fe5374eec28ad2244617bcbab6 ]
+[ Upstream commit 04358e40ba96d687c0811c21d9dede73f5244a98 ]
 
-The driver forgets to call pm_runtime_disable in probe failure
-and remove.
-Add the missed calls to fix it.
+The driver misses calling clk_unprepare in probe failure and remove.
+Add the calls to fix it.
 
 Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
-Link: https://lore.kernel.org/r/20191118024848.21645-1-hslester96@gmail.com
+Link: https://lore.kernel.org/r/20191115083122.12278-1-hslester96@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-st-ssc4.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-tegra20-slink.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-st-ssc4.c b/drivers/spi/spi-st-ssc4.c
-index a4e43fc19ece5..5df01ffdef468 100644
---- a/drivers/spi/spi-st-ssc4.c
-+++ b/drivers/spi/spi-st-ssc4.c
-@@ -385,6 +385,7 @@ static int spi_st_probe(struct platform_device *pdev)
- 	return 0;
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index 9831c1106945e..62b074b167a9a 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -1078,7 +1078,7 @@ static int tegra_slink_probe(struct platform_device *pdev)
+ 	ret = clk_enable(tspi->clk);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Clock enable failed %d\n", ret);
+-		goto exit_free_master;
++		goto exit_clk_unprepare;
+ 	}
  
- clk_disable:
-+	pm_runtime_disable(&pdev->dev);
- 	clk_disable_unprepare(spi_st->clk);
- put_master:
+ 	spi_irq = platform_get_irq(pdev, 0);
+@@ -1151,6 +1151,8 @@ static int tegra_slink_probe(struct platform_device *pdev)
+ 	free_irq(spi_irq, tspi);
+ exit_clk_disable:
+ 	clk_disable(tspi->clk);
++exit_clk_unprepare:
++	clk_unprepare(tspi->clk);
+ exit_free_master:
  	spi_master_put(master);
-@@ -396,6 +397,8 @@ static int spi_st_remove(struct platform_device *pdev)
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct spi_st *spi_st = spi_master_get_devdata(master);
+ 	return ret;
+@@ -1164,6 +1166,7 @@ static int tegra_slink_remove(struct platform_device *pdev)
+ 	free_irq(tspi->irq, tspi);
  
-+	pm_runtime_disable(&pdev->dev);
-+
- 	clk_disable_unprepare(spi_st->clk);
+ 	clk_disable(tspi->clk);
++	clk_unprepare(tspi->clk);
  
- 	pinctrl_pm_select_sleep_state(&pdev->dev);
+ 	if (tspi->tx_dma_chan)
+ 		tegra_slink_deinit_dma_param(tspi, false);
 -- 
 2.20.1

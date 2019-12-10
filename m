@@ -1,15 +1,15 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.14 079/130] spi: img-spfi: fix potential double release
-Date: Tue, 10 Dec 2019 17:02:10 -0500
-Message-ID: <20191210220301.13262-79-sashal@kernel.org>
-References: <20191210220301.13262-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 49/91] spi: img-spfi: fix potential double release
+Date: Tue, 10 Dec 2019 17:29:53 -0500
+Message-ID: <20191210223035.14270-49-sashal@kernel.org>
+References: <20191210223035.14270-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Cc: Pan Bian <bianpan2016@163.com>, Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <20191210220301.13262-1-sashal@kernel.org>
+In-Reply-To: <20191210223035.14270-1-sashal@kernel.org>
 Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 

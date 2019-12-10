@@ -1,49 +1,33 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 1/2] spi: fsl: don't map irq during probe
-Date: Tue, 10 Dec 2019 19:20:10 +0000
-Message-ID: <20191210192010.GK6110@sirena.org.uk>
-References: <1cdd0a26d7e1545f32c8bc4dc7458ebecdd6aaed.1575990944.git.christophe.leroy@c-s.fr>
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Subject: [PATCH RFC 0/2] Add Renesas RPC-IF support
+Date: Tue, 10 Dec 2019 22:34:56 +0300
+Message-ID: <cb7022c9-0059-4eb2-7910-aab42124fa1c@cogentembedded.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="HcXnUX77nabWBLF4"
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        kbuild test robot <lkp@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-kernel@vger.kernel.org,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Mason Yang <masonccyang@mxic.com.tw>,
+        linux-spi@vger.kernel.org, Chris Brandt <chris.brandt@renesas.com>
+To: Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1cdd0a26d7e1545f32c8bc4dc7458ebecdd6aaed.1575990944.git.christophe.leroy@c-s.fr>
+Content-Language: en-MW
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hello!
 
---HcXnUX77nabWBLF4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Here's a set of 2 patches against Linus' repo. Renesas Reduced Pin Count
+Interface (RPC-IF) allows a SPI flash or HyperFlash connected to the SoC
+to be accessed via the external address space read mode or the manual mode.
+The memory controller driver for RPC-IF registers either the SPI or HyperFLash
+subdevice, depending on the contents of the device tree subnode; it also
+provides the abstract "back end" API that can be used by the "front end"
+SPI/MTD drivers to talk to the real hardware...
 
-On Tue, Dec 10, 2019 at 03:17:15PM +0000, Christophe Leroy wrote:
-> With lastest kernel, the following warning is observed at startup:
+Based on the original patch by Mason Yang <masonccyang@mxic.com.tw>.
 
-Please do not submit new versions of already applied patches, please
-submit incremental updates to the existing code.  Modifying existing
-commits creates problems for other users building on top of those
-commits so it's best practice to only change pubished git commits if
-absolutely essential.
+[1/2] dt-bindings: memory: document Renesas RPC-IF bindings
+[2/2] memory: add Renesas RPC-IF driver
 
---HcXnUX77nabWBLF4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl3v7+oACgkQJNaLcl1U
-h9COMAf/atE1JYdFEaDVfUE6vUZQPvvELAUglONPvpzbC2FySvV79fZw5WQj1B1d
-bJA23l3E1GBhegHF1bWLzSYE8WtQCrgr9Jh+TNamNySK/Ob/k2xBwubsuJEWg6rF
-iV4ELtr7vBD+yqCH/a7QJ4O7HQcqYjpUTezWpUDZw/6Yn5nd3CtPyFgrCmaR4Eiu
-IB1pYoLnYJTJnJClH8JGLs25ezTXpigIeEZ4pcuAW2Sk4kC3R1GwdWK8BMI4cEur
-mCN9zWv7+09q1JLnvkc7lqwJA1vFwdPKgeSXhBGf9P37GpPH2hnqDnY8bdFTgXIO
-khEdKooQ1FU1cNpViuHqHNORPRR21g==
-=cg4Q
------END PGP SIGNATURE-----
-
---HcXnUX77nabWBLF4--
+MBR, Sergei

@@ -1,75 +1,73 @@
-From: Vignesh Raghavendra <vigneshr@ti.com>
-Subject: [PATCH] spi: spi-ti-qspi: Fix a bug when accessing non default CS
-Date: Wed, 11 Dec 2019 21:22:16 +0530
-Message-ID: <20191211155216.30212-1-vigneshr@ti.com>
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Subject: Re: [PATCH RFC 0/2] Add Renesas RPC-IF support
+Date: Wed, 11 Dec 2019 19:08:51 +0300
+Message-ID: <03a630e2-280f-98b7-a9c8-6533716720e5@cogentembedded.com>
+References: <cb7022c9-0059-4eb2-7910-aab42124fa1c@cogentembedded.com>
+ <TY1PR01MB156234F5B44BB43D3DCA98128A5A0@TY1PR01MB1562.jpnprd01.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-Cc: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>, <dannenberg@ti.com>,
-        <linux-omap@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: Mark Rutland <mark.rutland@arm.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Mason Yang <masonccyang@mxic.com.tw>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+To: Chris Brandt <Chris.Brandt@renesas.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <TY1PR01MB156234F5B44BB43D3DCA98128A5A0@TY1PR01MB1562.jpnprd01.prod.outlook.com>
+Content-Language: en-MW
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-When switching ChipSelect from default CS0 to any other CS, driver fails
-to update the bits in system control module register that control which
-CS is mapped for MMIO access. This causes reads to fail when driver
-tries to access QSPI flash on CS1/2/3.
+HEllo
 
-Fix this by updating appropriate bits whenever active CS changes.
+On 12/11/2019 05:33 PM, Chris Brandt wrote:
 
-Reported-by: Andreas Dannenberg <dannenberg@ti.com>
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
----
- drivers/spi/spi-ti-qspi.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+>> Here's a set of 2 patches against Linus' repo. Renesas Reduced Pin Count
+>> Interface (RPC-IF) allows a SPI flash or HyperFlash connected to the SoC to
+>> be accessed via the external address space read mode or the manual mode.
+> 
+> Looking at this driver, all it is are APIs. Meaning another driver is 
+> needed to sit in between the MTD layer and this HW driver layer.
 
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index 3cb65371ae3b..66dcb6128539 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -62,6 +62,7 @@ struct ti_qspi {
- 	u32 dc;
- 
- 	bool mmap_enabled;
-+	int current_cs;
- };
- 
- #define QSPI_PID			(0x0)
-@@ -487,6 +488,7 @@ static void ti_qspi_enable_memory_map(struct spi_device *spi)
- 				   MEM_CS_EN(spi->chip_select));
- 	}
- 	qspi->mmap_enabled = true;
-+	qspi->current_cs = spi->chip_select;
- }
- 
- static void ti_qspi_disable_memory_map(struct spi_device *spi)
-@@ -498,6 +500,7 @@ static void ti_qspi_disable_memory_map(struct spi_device *spi)
- 		regmap_update_bits(qspi->ctrl_base, qspi->ctrl_reg,
- 				   MEM_CS_MASK, 0);
- 	qspi->mmap_enabled = false;
-+	qspi->current_cs = -1;
- }
- 
- static void ti_qspi_setup_mmap_read(struct spi_device *spi, u8 opcode,
-@@ -543,7 +546,7 @@ static int ti_qspi_exec_mem_op(struct spi_mem *mem,
- 
- 	mutex_lock(&qspi->list_lock);
- 
--	if (!qspi->mmap_enabled)
-+	if (!qspi->mmap_enabled || qspi->current_cs != mem->spi->chip_select)
- 		ti_qspi_enable_memory_map(mem->spi);
- 	ti_qspi_setup_mmap_read(mem->spi, op->cmd.opcode, op->data.buswidth,
- 				op->addr.nbytes, op->dummy.nbytes);
-@@ -799,6 +802,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
- 		}
- 	}
- 	qspi->mmap_enabled = false;
-+	qspi->current_cs = -1;
- 
- 	ret = devm_spi_register_master(&pdev->dev, master);
- 	if (!ret)
--- 
-2.24.0
+   Between the hardware and SPI, and between the hardware and HyperFlash
+infrastructure. There's a lot of the common hardware code common between
+these 2 driver areas.
+
+> In the driver that I did, if the "RPC" HW is going to be used to control
+> a SPI Flash device, it registered a spi controller and then the MTD 
+> layer could access the device just like any other SPI controller driver. No
+> additional drivers are needed.
+
+   We're already been thru that with Mason's patch -- I don't want the code
+duplicated between 2 drivers.
+
+> Looking at the hyperbus driver that is in drivers/mtd/hyperbus/, it 
+> seems that if the "RPC" HW is going to be used to control HyperFlash, then 
+
+   Sure. But the code controlling RPC hardware is largely the same b/w 2 cases.
+
+> all you would need to do is register a hyperbus controller using 
+> hyperbus_register_device(). Then the MTD layer could read/write the flash using 
+> normal MTD CFI interface.
+
+   That's what I do (the current realization makes too many assumptions about
+the HF hardware (both direct read and write). 
+
+> Why do you think you need another layer in between the HW driver and the
+> MTD layer?
+
+   Because we don't want any duplicated code. Also, think about DT -- it
+describes the hardware, not the driver configuration.
+
+> Is your goal to make a multi-layered system where the HW jumps back and forth
+> in between operating modes at runtime? I'm not sure of the use case for all of
+> this.
+
+   My goal is to prevent the code duplication (and keep DT sane too).
+
+> Chris
+
+MBR, Sergei

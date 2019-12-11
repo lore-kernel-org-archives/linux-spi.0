@@ -1,108 +1,43 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-ti-qspi: Fix a bug when accessing non default CS" to the spi tree
-Date: Wed, 11 Dec 2019 16:55:15 +0000
-Message-ID: <applied-20191211155216.30212-1-vigneshr@ti.com>
-References: <20191211155216.30212-1-vigneshr@ti.com>
-Cc: Andreas Dannenberg <dannenberg@ti.com>, dannenberg@ti.com,
-        linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
-To: Vignesh Raghavendra <vigneshr@ti.com>
+From: Michael Walle <michael@walle.cc>
+Subject: [PATCH] spi: nxp-fspi: Ensure width is respected in spi-mem operations
+Date: Wed, 11 Dec 2019 20:57:30 +0100
+Message-ID: <20191211195730.26794-1-michael@walle.cc>
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Cc: Yogesh Gaur <yogeshgaur.83@gmail.com>,
+        Ashish Kumar <ashish.kumar@nxp.com>,
+        Mark Brown <broonie@kernel.org>,
+        Michael Walle <michael@walle.cc>
+To: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191211155216.30212-1-vigneshr@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+Make use of a core helper to ensure the desired width is respected
+when calling spi-mem operators.
 
-   spi: spi-ti-qspi: Fix a bug when accessing non default CS
+Otherwise only the SPI controller will be matched with the flash chip,
+which might lead to wrong widths. Also consider the width specified by
+the user in the device tree.
 
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From c52c91bb9aa6bd8c38dbf9776158e33038aedd43 Mon Sep 17 00:00:00 2001
-From: Vignesh Raghavendra <vigneshr@ti.com>
-Date: Wed, 11 Dec 2019 21:22:16 +0530
-Subject: [PATCH] spi: spi-ti-qspi: Fix a bug when accessing non default CS
-
-When switching ChipSelect from default CS0 to any other CS, driver fails
-to update the bits in system control module register that control which
-CS is mapped for MMIO access. This causes reads to fail when driver
-tries to access QSPI flash on CS1/2/3.
-
-Fix this by updating appropriate bits whenever active CS changes.
-
-Reported-by: Andreas Dannenberg <dannenberg@ti.com>
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Link: https://lore.kernel.org/r/20191211155216.30212-1-vigneshr@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: a5356aef6a90 ("spi: spi-mem: Add driver for NXP FlexSPI controller")
+Signed-off-by: Michael Walle <michael@walle.cc>
 ---
- drivers/spi/spi-ti-qspi.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/spi/spi-nxp-fspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index 3cb65371ae3b..66dcb6128539 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -62,6 +62,7 @@ struct ti_qspi {
- 	u32 dc;
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index c36bb1bb464e..8c5084a3a617 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -439,7 +439,7 @@ static bool nxp_fspi_supports_op(struct spi_mem *mem,
+ 	    op->data.nbytes > f->devtype_data->txfifo)
+ 		return false;
  
- 	bool mmap_enabled;
-+	int current_cs;
- };
- 
- #define QSPI_PID			(0x0)
-@@ -487,6 +488,7 @@ static void ti_qspi_enable_memory_map(struct spi_device *spi)
- 				   MEM_CS_EN(spi->chip_select));
- 	}
- 	qspi->mmap_enabled = true;
-+	qspi->current_cs = spi->chip_select;
+-	return true;
++	return spi_mem_default_supports_op(mem, op);
  }
  
- static void ti_qspi_disable_memory_map(struct spi_device *spi)
-@@ -498,6 +500,7 @@ static void ti_qspi_disable_memory_map(struct spi_device *spi)
- 		regmap_update_bits(qspi->ctrl_base, qspi->ctrl_reg,
- 				   MEM_CS_MASK, 0);
- 	qspi->mmap_enabled = false;
-+	qspi->current_cs = -1;
- }
- 
- static void ti_qspi_setup_mmap_read(struct spi_device *spi, u8 opcode,
-@@ -543,7 +546,7 @@ static int ti_qspi_exec_mem_op(struct spi_mem *mem,
- 
- 	mutex_lock(&qspi->list_lock);
- 
--	if (!qspi->mmap_enabled)
-+	if (!qspi->mmap_enabled || qspi->current_cs != mem->spi->chip_select)
- 		ti_qspi_enable_memory_map(mem->spi);
- 	ti_qspi_setup_mmap_read(mem->spi, op->cmd.opcode, op->data.buswidth,
- 				op->addr.nbytes, op->dummy.nbytes);
-@@ -799,6 +802,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
- 		}
- 	}
- 	qspi->mmap_enabled = false;
-+	qspi->current_cs = -1;
- 
- 	ret = devm_spi_register_master(&pdev->dev, master);
- 	if (!ret)
+ /* Instead of busy looping invoke readl_poll_timeout functionality. */
 -- 
 2.20.1

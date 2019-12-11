@@ -1,57 +1,62 @@
-From: Philipp Zabel <p.zabel@pengutronix.de>
-Subject: Re: [PATCH RFC 2/2] memory: add Renesas RPC-IF driver
-Date: Wed, 11 Dec 2019 10:58:53 +0100
-Message-ID: <60952c5ac36510ff5be0733b15352828e0f2e41f.camel@pengutronix.de>
-References: <cb7022c9-0059-4eb2-7910-aab42124fa1c@cogentembedded.com>
-         <4db876ed-1ccc-e3be-311d-30cd52f40259@cogentembedded.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH AUTOSEL 5.4 128/350] spi: pxa2xx: Set
+ controller->max_transfer_size in dma mode
+Date: Wed, 11 Dec 2019 10:47:38 +0000
+Message-ID: <20191211104738.GA3870@sirena.org.uk>
+References: <20191210210735.9077-1-sashal@kernel.org>
+ <20191210210735.9077-89-sashal@kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mason Yang <masonccyang@mxic.com.tw>,
-        linux-spi@vger.kernel.org, Chris Brandt <chris.brandt@renesas.com>,
-        linux-renesas-soc@vger.kernel.org
-To: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="qDbXVdCdHGoSgWSk"
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf@tronnes.org>,
+        Andy Shevchenko <andriy.shevchenko@intel.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+To: Sasha Levin <sashal@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <4db876ed-1ccc-e3be-311d-30cd52f40259@cogentembedded.com>
+Content-Disposition: inline
+In-Reply-To: <20191210210735.9077-89-sashal@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Sergei,
 
-On Tue, 2019-12-10 at 22:39 +0300, Sergei Shtylyov wrote:
-[...]
-> --- /dev/null
-> +++ linux/drivers/memory/renesas-rpc-if.c
-> @@ -0,0 +1,590 @@
-[...]
-> +int rpcif_io_xfer(struct rpcif *rpc)
-> +{
-[...]
-> +	default:
-> +		regmap_write(rpc->regmap, RPCIF_SMENR, rpc->enable);
-> +		regmap_write(rpc->regmap, RPCIF_SMCR,
-> +			     rpc->smcr | RPCIF_SMCR_SPIE);
-> +		ret = wait_msg_xfer_end(rpc);
-> +		if (ret)
-> +			goto err_out;
-> +	}
-> +
-> +exit:
-> +	pm_runtime_put(rpc->dev);
-> +	return ret;
-> +
-> +err_out:
-> +	ret = reset_control_reset(rpc->rstc);
+--qDbXVdCdHGoSgWSk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-If wait_msg_xfer_end() returned an error, but the reset succeeds, this
-will cause rpcif_io_xfer() to report success as well. I suspect you do
-not want to overwrite ret at this point.
+On Tue, Dec 10, 2019 at 04:03:53PM -0500, Sasha Levin wrote:
+> From: Daniel Vetter <daniel.vetter@ffwll.ch>
+>=20
+> [ Upstream commit b2662a164f9dc48da8822e56600686d639056282 ]
+>=20
+> In DMA mode we have a maximum transfer size, past that the driver
+> falls back to PIO (see the check at the top of pxa2xx_spi_transfer_one).
+> Falling back to PIO for big transfers defeats the point of a dma engine,
+> hence set the max transfer size to inform spi clients that they need
+> to do something smarter.
 
-> +	rpcif_hw_init(rpc, rpc->bus_size == 2);
-> +	goto exit;
-> +}
-> +EXPORT_SYMBOL(rpcif_io_xfer);
+This won't fix anything by itself, this asks other code to change how it
+behaves which may or may not work in older kernels.
 
-regards
-Philipp
+--qDbXVdCdHGoSgWSk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl3wyUcACgkQJNaLcl1U
+h9B1owf/c2+Di9MxB58DRS++wONQSVLBDBAzhSYBzUcKxUidr6Yieo8WKOq5RnZa
+Xfw5SuLTDnTe7S4iXTo0Gn3ejpU1Eb63YvCGs9+6bM4z3lfcU3wIzXUhW7OsmIxY
+HVSTa7iqOjusoR7WpboRgWRyFUdvcK4Y6jBUxh5roUD5IIojLGuVmk2QQVLlLaSq
+Mpw15lKs5DGIjq5AHQA0vmNDtjAhVdr/mFw3XSqeviIvfQ3H0CTbz6B8RIgiwGZ8
+V9HDm7EeEHvb4H1nbeK9ileA1+Sor/2iGHt1Lwrb1xzKZJ+twuU6dB0NAkWcPv5A
+JCBMe73eK3vBVARzxfKmxEApfO37rQ==
+=C+Pn
+-----END PGP SIGNATURE-----
+
+--qDbXVdCdHGoSgWSk--

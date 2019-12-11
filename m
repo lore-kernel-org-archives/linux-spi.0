@@ -1,45 +1,75 @@
-From: Chris Brandt <Chris.Brandt@renesas.com>
-Subject: RE: [PATCH RFC 0/2] Add Renesas RPC-IF support
-Date: Wed, 11 Dec 2019 14:33:42 +0000
-Message-ID: <TY1PR01MB156234F5B44BB43D3DCA98128A5A0@TY1PR01MB1562.jpnprd01.prod.outlook.com>
-References: <cb7022c9-0059-4eb2-7910-aab42124fa1c@cogentembedded.com>
+From: Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH] spi: spi-ti-qspi: Fix a bug when accessing non default CS
+Date: Wed, 11 Dec 2019 21:22:16 +0530
+Message-ID: <20191211155216.30212-1-vigneshr@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Mark Rutland <mark.rutland@arm.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Mason Yang <masonccyang@mxic.com.tw>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-To: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+Cc: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>, <dannenberg@ti.com>,
+        <linux-omap@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <cb7022c9-0059-4eb2-7910-aab42124fa1c@cogentembedded.com>
-Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGVsbG8gU2VyZ2VpLA0KDQpPbiBUdWUsIERlYyAxMCwgMjAxOSwgU2VyZ2VpIFNodHlseW92IHdy
-b3RlOg0KPiBIZXJlJ3MgYSBzZXQgb2YgMiBwYXRjaGVzIGFnYWluc3QgTGludXMnIHJlcG8uIFJl
-bmVzYXMgUmVkdWNlZCBQaW4gQ291bnQNCj4gSW50ZXJmYWNlIChSUEMtSUYpIGFsbG93cyBhIFNQ
-SSBmbGFzaCBvciBIeXBlckZsYXNoIGNvbm5lY3RlZCB0byB0aGUgU29DIHRvDQo+IGJlIGFjY2Vz
-c2VkIHZpYSB0aGUgZXh0ZXJuYWwgYWRkcmVzcyBzcGFjZSByZWFkIG1vZGUgb3IgdGhlIG1hbnVh
-bCBtb2RlLg0KDQpMb29raW5nIGF0IHRoaXMgZHJpdmVyLCBhbGwgaXQgaXMgYXJlIEFQSXMuIE1l
-YW5pbmcgYW5vdGhlciBkcml2ZXIgaXMgDQpuZWVkZWQgdG8gc2l0IGluIGJldHdlZW4gdGhlIE1U
-RCBsYXllciBhbmQgdGhpcyBIVyBkcml2ZXIgbGF5ZXIuDQoNCkluIHRoZSBkcml2ZXIgdGhhdCBJ
-IGRpZCwgaWYgdGhlICJSUEMiIEhXIGlzIGdvaW5nIHRvIGJlIHVzZWQgdG8gY29udHJvbA0KYSBT
-UEkgRmxhc2ggZGV2aWNlLCBpdCByZWdpc3RlcmVkIGEgc3BpIGNvbnRyb2xsZXIgYW5kIHRoZW4g
-dGhlIE1URCANCmxheWVyIGNvdWxkIGFjY2VzcyB0aGUgZGV2aWNlIGp1c3QgbGlrZSBhbnkgb3Ro
-ZXIgU1BJIGNvbnRyb2xsZXIgZHJpdmVyLiBObw0KYWRkaXRpb25hbCBkcml2ZXJzIGFyZSBuZWVk
-ZWQuDQoNCkxvb2tpbmcgYXQgdGhlIGh5cGVyYnVzIGRyaXZlciB0aGF0IGlzIGluIGRyaXZlcnMv
-bXRkL2h5cGVyYnVzLywgaXQgDQpzZWVtcyB0aGF0IGlmIHRoZSAiUlBDIiBIVyBpcyBnb2luZyB0
-byBiZSB1c2VkIHRvIGNvbnRyb2wgSHlwZXJGbGFzaCwgdGhlbiANCmFsbCB5b3Ugd291bGQgbmVl
-ZCB0byBkbyBpcyByZWdpc3RlciBhIGh5cGVyYnVzIGNvbnRyb2xsZXIgdXNpbmcgDQpoeXBlcmJ1
-c19yZWdpc3Rlcl9kZXZpY2UoKS4gVGhlbiB0aGUgTVREIGxheWVyIGNvdWxkIHJlYWQvd3JpdGUg
-dGhlIGZsYXNoIHVzaW5nIA0Kbm9ybWFsIE1URCBDRkkgaW50ZXJmYWNlLg0KDQpXaHkgZG8geW91
-IHRoaW5rIHlvdSBuZWVkIGFub3RoZXIgbGF5ZXIgaW4gYmV0d2VlbiB0aGUgSFcgZHJpdmVyIGFu
-ZCB0aGUNCk1URCBsYXllcj8NCklzIHlvdXIgZ29hbCB0byBtYWtlIGEgbXVsdGktbGF5ZXJlZCBz
-eXN0ZW0gd2hlcmUgdGhlIEhXIGp1bXBzIGJhY2sgYW5kIGZvcnRoDQppbiBiZXR3ZWVuIG9wZXJh
-dGluZyBtb2RlcyBhdCBydW50aW1lPyBJJ20gbm90IHN1cmUgb2YgdGhlIHVzZSBjYXNlIGZvciBh
-bGwgb2YNCnRoaXMuDQoNCkNocmlzDQoNCg==
+When switching ChipSelect from default CS0 to any other CS, driver fails
+to update the bits in system control module register that control which
+CS is mapped for MMIO access. This causes reads to fail when driver
+tries to access QSPI flash on CS1/2/3.
+
+Fix this by updating appropriate bits whenever active CS changes.
+
+Reported-by: Andreas Dannenberg <dannenberg@ti.com>
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+---
+ drivers/spi/spi-ti-qspi.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index 3cb65371ae3b..66dcb6128539 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -62,6 +62,7 @@ struct ti_qspi {
+ 	u32 dc;
+ 
+ 	bool mmap_enabled;
++	int current_cs;
+ };
+ 
+ #define QSPI_PID			(0x0)
+@@ -487,6 +488,7 @@ static void ti_qspi_enable_memory_map(struct spi_device *spi)
+ 				   MEM_CS_EN(spi->chip_select));
+ 	}
+ 	qspi->mmap_enabled = true;
++	qspi->current_cs = spi->chip_select;
+ }
+ 
+ static void ti_qspi_disable_memory_map(struct spi_device *spi)
+@@ -498,6 +500,7 @@ static void ti_qspi_disable_memory_map(struct spi_device *spi)
+ 		regmap_update_bits(qspi->ctrl_base, qspi->ctrl_reg,
+ 				   MEM_CS_MASK, 0);
+ 	qspi->mmap_enabled = false;
++	qspi->current_cs = -1;
+ }
+ 
+ static void ti_qspi_setup_mmap_read(struct spi_device *spi, u8 opcode,
+@@ -543,7 +546,7 @@ static int ti_qspi_exec_mem_op(struct spi_mem *mem,
+ 
+ 	mutex_lock(&qspi->list_lock);
+ 
+-	if (!qspi->mmap_enabled)
++	if (!qspi->mmap_enabled || qspi->current_cs != mem->spi->chip_select)
+ 		ti_qspi_enable_memory_map(mem->spi);
+ 	ti_qspi_setup_mmap_read(mem->spi, op->cmd.opcode, op->data.buswidth,
+ 				op->addr.nbytes, op->dummy.nbytes);
+@@ -799,6 +802,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 	qspi->mmap_enabled = false;
++	qspi->current_cs = -1;
+ 
+ 	ret = devm_spi_register_master(&pdev->dev, master);
+ 	if (!ret)
+-- 
+2.24.0

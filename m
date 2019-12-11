@@ -1,62 +1,45 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH AUTOSEL 5.4 128/350] spi: pxa2xx: Set
- controller->max_transfer_size in dma mode
-Date: Wed, 11 Dec 2019 10:47:38 +0000
-Message-ID: <20191211104738.GA3870@sirena.org.uk>
-References: <20191210210735.9077-1-sashal@kernel.org>
- <20191210210735.9077-89-sashal@kernel.org>
+From: Chris Brandt <Chris.Brandt@renesas.com>
+Subject: RE: [PATCH RFC 0/2] Add Renesas RPC-IF support
+Date: Wed, 11 Dec 2019 14:33:42 +0000
+Message-ID: <TY1PR01MB156234F5B44BB43D3DCA98128A5A0@TY1PR01MB1562.jpnprd01.prod.outlook.com>
+References: <cb7022c9-0059-4eb2-7910-aab42124fa1c@cogentembedded.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="qDbXVdCdHGoSgWSk"
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf@tronnes.org>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: Sasha Levin <sashal@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Mark Rutland <mark.rutland@arm.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Mason Yang <masonccyang@mxic.com.tw>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+To: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20191210210735.9077-89-sashal@kernel.org>
+In-Reply-To: <cb7022c9-0059-4eb2-7910-aab42124fa1c@cogentembedded.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-
---qDbXVdCdHGoSgWSk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Dec 10, 2019 at 04:03:53PM -0500, Sasha Levin wrote:
-> From: Daniel Vetter <daniel.vetter@ffwll.ch>
->=20
-> [ Upstream commit b2662a164f9dc48da8822e56600686d639056282 ]
->=20
-> In DMA mode we have a maximum transfer size, past that the driver
-> falls back to PIO (see the check at the top of pxa2xx_spi_transfer_one).
-> Falling back to PIO for big transfers defeats the point of a dma engine,
-> hence set the max transfer size to inform spi clients that they need
-> to do something smarter.
-
-This won't fix anything by itself, this asks other code to change how it
-behaves which may or may not work in older kernels.
-
---qDbXVdCdHGoSgWSk
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl3wyUcACgkQJNaLcl1U
-h9B1owf/c2+Di9MxB58DRS++wONQSVLBDBAzhSYBzUcKxUidr6Yieo8WKOq5RnZa
-Xfw5SuLTDnTe7S4iXTo0Gn3ejpU1Eb63YvCGs9+6bM4z3lfcU3wIzXUhW7OsmIxY
-HVSTa7iqOjusoR7WpboRgWRyFUdvcK4Y6jBUxh5roUD5IIojLGuVmk2QQVLlLaSq
-Mpw15lKs5DGIjq5AHQA0vmNDtjAhVdr/mFw3XSqeviIvfQ3H0CTbz6B8RIgiwGZ8
-V9HDm7EeEHvb4H1nbeK9ileA1+Sor/2iGHt1Lwrb1xzKZJ+twuU6dB0NAkWcPv5A
-JCBMe73eK3vBVARzxfKmxEApfO37rQ==
-=C+Pn
------END PGP SIGNATURE-----
-
---qDbXVdCdHGoSgWSk--
+SGVsbG8gU2VyZ2VpLA0KDQpPbiBUdWUsIERlYyAxMCwgMjAxOSwgU2VyZ2VpIFNodHlseW92IHdy
+b3RlOg0KPiBIZXJlJ3MgYSBzZXQgb2YgMiBwYXRjaGVzIGFnYWluc3QgTGludXMnIHJlcG8uIFJl
+bmVzYXMgUmVkdWNlZCBQaW4gQ291bnQNCj4gSW50ZXJmYWNlIChSUEMtSUYpIGFsbG93cyBhIFNQ
+SSBmbGFzaCBvciBIeXBlckZsYXNoIGNvbm5lY3RlZCB0byB0aGUgU29DIHRvDQo+IGJlIGFjY2Vz
+c2VkIHZpYSB0aGUgZXh0ZXJuYWwgYWRkcmVzcyBzcGFjZSByZWFkIG1vZGUgb3IgdGhlIG1hbnVh
+bCBtb2RlLg0KDQpMb29raW5nIGF0IHRoaXMgZHJpdmVyLCBhbGwgaXQgaXMgYXJlIEFQSXMuIE1l
+YW5pbmcgYW5vdGhlciBkcml2ZXIgaXMgDQpuZWVkZWQgdG8gc2l0IGluIGJldHdlZW4gdGhlIE1U
+RCBsYXllciBhbmQgdGhpcyBIVyBkcml2ZXIgbGF5ZXIuDQoNCkluIHRoZSBkcml2ZXIgdGhhdCBJ
+IGRpZCwgaWYgdGhlICJSUEMiIEhXIGlzIGdvaW5nIHRvIGJlIHVzZWQgdG8gY29udHJvbA0KYSBT
+UEkgRmxhc2ggZGV2aWNlLCBpdCByZWdpc3RlcmVkIGEgc3BpIGNvbnRyb2xsZXIgYW5kIHRoZW4g
+dGhlIE1URCANCmxheWVyIGNvdWxkIGFjY2VzcyB0aGUgZGV2aWNlIGp1c3QgbGlrZSBhbnkgb3Ro
+ZXIgU1BJIGNvbnRyb2xsZXIgZHJpdmVyLiBObw0KYWRkaXRpb25hbCBkcml2ZXJzIGFyZSBuZWVk
+ZWQuDQoNCkxvb2tpbmcgYXQgdGhlIGh5cGVyYnVzIGRyaXZlciB0aGF0IGlzIGluIGRyaXZlcnMv
+bXRkL2h5cGVyYnVzLywgaXQgDQpzZWVtcyB0aGF0IGlmIHRoZSAiUlBDIiBIVyBpcyBnb2luZyB0
+byBiZSB1c2VkIHRvIGNvbnRyb2wgSHlwZXJGbGFzaCwgdGhlbiANCmFsbCB5b3Ugd291bGQgbmVl
+ZCB0byBkbyBpcyByZWdpc3RlciBhIGh5cGVyYnVzIGNvbnRyb2xsZXIgdXNpbmcgDQpoeXBlcmJ1
+c19yZWdpc3Rlcl9kZXZpY2UoKS4gVGhlbiB0aGUgTVREIGxheWVyIGNvdWxkIHJlYWQvd3JpdGUg
+dGhlIGZsYXNoIHVzaW5nIA0Kbm9ybWFsIE1URCBDRkkgaW50ZXJmYWNlLg0KDQpXaHkgZG8geW91
+IHRoaW5rIHlvdSBuZWVkIGFub3RoZXIgbGF5ZXIgaW4gYmV0d2VlbiB0aGUgSFcgZHJpdmVyIGFu
+ZCB0aGUNCk1URCBsYXllcj8NCklzIHlvdXIgZ29hbCB0byBtYWtlIGEgbXVsdGktbGF5ZXJlZCBz
+eXN0ZW0gd2hlcmUgdGhlIEhXIGp1bXBzIGJhY2sgYW5kIGZvcnRoDQppbiBiZXR3ZWVuIG9wZXJh
+dGluZyBtb2RlcyBhdCBydW50aW1lPyBJJ20gbm90IHN1cmUgb2YgdGhlIHVzZSBjYXNlIGZvciBh
+bGwgb2YNCnRoaXMuDQoNCkNocmlzDQoNCg==

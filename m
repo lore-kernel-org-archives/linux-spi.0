@@ -1,7 +1,7 @@
 From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Subject: [PATCH 1/9] spi: atmel: Use dma_request_chan() instead dma_request_slave_channel()
-Date: Thu, 12 Dec 2019 15:55:42 +0200
-Message-ID: <20191212135550.4634-2-peter.ujfalusi@ti.com>
+Subject: [PATCH 2/9] spi: bcm2835: Release the DMA channel if probe fails after dma_init
+Date: Thu, 12 Dec 2019 15:55:43 +0200
+Message-ID: <20191212135550.4634-3-peter.ujfalusi@ti.com>
 References: <20191212135550.4634-1-peter.ujfalusi@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -21,67 +21,43 @@ In-Reply-To: <20191212135550.4634-1-peter.ujfalusi@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-dma_request_slave_channel() is a wrapper on top of dma_request_chan()
-eating up the error code.
-
-By using dma_request_chan() directly the driver can support deferred
-probing against DMA.
+The DMA channel was not released if either devm_request_irq() or
+devm_spi_register_controller() failed.
 
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
 ---
- drivers/spi/spi-atmel.c | 29 +++++++++++------------------
- 1 file changed, 11 insertions(+), 18 deletions(-)
+ drivers/spi/spi-bcm2835.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 56f0ca361deb..013458cabe3c 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -514,26 +514,19 @@ static int atmel_spi_configure_dma(struct spi_master *master,
- 	master->dma_tx = dma_request_chan(dev, "tx");
- 	if (IS_ERR(master->dma_tx)) {
- 		err = PTR_ERR(master->dma_tx);
--		if (err == -EPROBE_DEFER) {
--			dev_warn(dev, "no DMA channel available at the moment\n");
--			goto error_clear;
--		}
--		dev_err(dev,
--			"DMA TX channel not available, SPI unable to use DMA\n");
--		err = -EBUSY;
-+		if (err != -EPROBE_DEFER)
-+			dev_err(dev, "No TX DMA channel, DMA is disabled\n");
- 		goto error_clear;
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index fb61a620effc..662d55e9f21d 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -1327,20 +1327,22 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
+ 			       dev_name(&pdev->dev), ctlr);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "could not request IRQ: %d\n", err);
+-		goto out_clk_disable;
++		goto out_dma_release;
  	}
  
--	/*
--	 * No reason to check EPROBE_DEFER here since we have already requested
--	 * tx channel. If it fails here, it's for another reason.
--	 */
--	master->dma_rx = dma_request_slave_channel(dev, "rx");
--
--	if (!master->dma_rx) {
--		dev_err(dev,
--			"DMA RX channel not available, SPI unable to use DMA\n");
--		err = -EBUSY;
-+	master->dma_rx = dma_request_chan(dev, "rx");
-+	if (IS_ERR(master->dma_rx)) {
-+		err = PTR_ERR(master->dma_rx);
-+		/*
-+		 * No reason to check EPROBE_DEFER here since we have already
-+		 * requested tx channel.
-+		 */
-+		dev_err(dev, "No RX DMA channel, DMA is disabled\n");
- 		goto error;
+ 	err = devm_spi_register_controller(&pdev->dev, ctlr);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "could not register SPI controller: %d\n",
+ 			err);
+-		goto out_clk_disable;
++		goto out_dma_release;
  	}
  
-@@ -548,7 +541,7 @@ static int atmel_spi_configure_dma(struct spi_master *master,
+ 	bcm2835_debugfs_create(bs, dev_name(&pdev->dev));
  
  	return 0;
- error:
--	if (master->dma_rx)
-+	if (!IS_ERR(master->dma_rx))
- 		dma_release_channel(master->dma_rx);
- 	if (!IS_ERR(master->dma_tx))
- 		dma_release_channel(master->dma_tx);
+ 
++out_dma_release:
++	bcm2835_dma_release(ctlr, bs);
+ out_clk_disable:
+ 	clk_disable_unprepare(bs->clk);
+ out_controller_put:
 -- 
 Peter
 

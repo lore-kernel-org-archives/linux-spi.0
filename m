@@ -1,112 +1,104 @@
-From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Subject: [PATCH 8/9] spi: stm32-qspi: Use dma_request_chan() instead dma_request_slave_channel()
-Date: Thu, 12 Dec 2019 15:55:49 +0200
-Message-ID: <20191212135550.4634-9-peter.ujfalusi@ti.com>
-References: <20191212135550.4634-1-peter.ujfalusi@ti.com>
+From: =?UTF-8?Q?Andreas_F=c3=a4rber?= <afaerber@suse.de>
+Subject: Re: [RFC 04/25] spi: gpio: Implement LSB First bitbang support
+Date: Thu, 12 Dec 2019 16:14:59 +0100
+Message-ID: <9b4b6287-c1d9-1b41-88a8-7ac9fe222642@suse.de>
+References: <20191212033952.5967-1-afaerber@suse.de>
+ <20191212033952.5967-5-afaerber@suse.de>
+ <CAMuHMdWdxJ9AaWhyCW-u8fCpXSDCPd-D6Dx129SF5nRssZsK=g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Cc: <vkoul@kernel.org>, <linux-spi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-rpi-kernel@lists.infradead.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>
-To: <broonie@kernel.org>, <nsaenzjulienne@suse.de>,
-        <f.fainelli@gmail.com>, <rjui@broadcom.com>,
-        <sbranden@broadcom.com>, <shawnguo@kernel.org>,
-        <s.hauer@pengutronix.de>, <baohua@kernel.org>,
-        <mcoquelin.stm32@gmail.com>, <alexandre.torgue@st.com>
+Cc: linux-realtek-soc@lists.infradead.org, linux-leds@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Dan Murphy <dmurphy@ti.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191212135550.4634-1-peter.ujfalusi@ti.com>
+In-Reply-To: <CAMuHMdWdxJ9AaWhyCW-u8fCpXSDCPd-D6Dx129SF5nRssZsK=g@mail.gmail.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-dma_request_slave_channel() is a wrapper on top of dma_request_chan()
-eating up the error code.
+Hi Geert,
 
-By using dma_request_chan() directly the driver can support deferred
-probing against DMA.
+Am 12.12.19 um 09:40 schrieb Geert Uytterhoeven:
+> On Thu, Dec 12, 2019 at 4:41 AM Andreas Färber <afaerber@suse.de> wrote:
+>> Add support for slave DT property spi-lsb-first, i.e., SPI_LSB_FIRST mode.
+>>
+>> Duplicate the inline helpers bitbang_txrx_be_cpha{0,1} as LE versions.
+>> Make checkpatch.pl happy by changing "unsigned" to "unsigned int".
+>>
+>> Conditionally call them from all the spi-gpio txrx_word callbacks.
+>>
+>> Signed-off-by: Andreas Färber <afaerber@suse.de>
+> 
+> Thanks for your patch!
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
----
- drivers/spi/spi-stm32-qspi.c | 30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
+NP. I prefer fixing issues at the source over awkward workarounds. :)
 
-diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
-index 4e726929bb4f..4ef569b47aa6 100644
---- a/drivers/spi/spi-stm32-qspi.c
-+++ b/drivers/spi/spi-stm32-qspi.c
-@@ -470,10 +470,11 @@ static int stm32_qspi_setup(struct spi_device *spi)
- 	return 0;
- }
- 
--static void stm32_qspi_dma_setup(struct stm32_qspi *qspi)
-+static int stm32_qspi_dma_setup(struct stm32_qspi *qspi)
- {
- 	struct dma_slave_config dma_cfg;
- 	struct device *dev = qspi->dev;
-+	int ret = 0;
- 
- 	memset(&dma_cfg, 0, sizeof(dma_cfg));
- 
-@@ -484,8 +485,13 @@ static void stm32_qspi_dma_setup(struct stm32_qspi *qspi)
- 	dma_cfg.src_maxburst = 4;
- 	dma_cfg.dst_maxburst = 4;
- 
--	qspi->dma_chrx = dma_request_slave_channel(dev, "rx");
--	if (qspi->dma_chrx) {
-+	qspi->dma_chrx = dma_request_chan(dev, "rx");
-+	if (IS_ERR(qspi->dma_chrx)) {
-+		ret = PTR_ERR(qspi->dma_chrx);
-+		qspi->dma_chrx = NULL;
-+		if (ret == -EPROBE_DEFER)
-+			goto out;
-+	} else {
- 		if (dmaengine_slave_config(qspi->dma_chrx, &dma_cfg)) {
- 			dev_err(dev, "dma rx config failed\n");
- 			dma_release_channel(qspi->dma_chrx);
-@@ -493,8 +499,11 @@ static void stm32_qspi_dma_setup(struct stm32_qspi *qspi)
- 		}
- 	}
- 
--	qspi->dma_chtx = dma_request_slave_channel(dev, "tx");
--	if (qspi->dma_chtx) {
-+	qspi->dma_chtx = dma_request_chan(dev, "tx");
-+	if (IS_ERR(qspi->dma_chtx)) {
-+		ret = PTR_ERR(qspi->dma_chtx);
-+		qspi->dma_chtx = NULL;
-+	} else {
- 		if (dmaengine_slave_config(qspi->dma_chtx, &dma_cfg)) {
- 			dev_err(dev, "dma tx config failed\n");
- 			dma_release_channel(qspi->dma_chtx);
-@@ -502,7 +511,13 @@ static void stm32_qspi_dma_setup(struct stm32_qspi *qspi)
- 		}
- 	}
- 
-+out:
- 	init_completion(&qspi->dma_completion);
-+
-+	if (ret != -EPROBE_DEFER)
-+		ret = 0;
-+
-+	return ret;
- }
- 
- static void stm32_qspi_dma_free(struct stm32_qspi *qspi)
-@@ -608,7 +623,10 @@ static int stm32_qspi_probe(struct platform_device *pdev)
- 
- 	qspi->dev = dev;
- 	platform_set_drvdata(pdev, qspi);
--	stm32_qspi_dma_setup(qspi);
-+	ret = stm32_qspi_dma_setup(qspi);
-+	if (ret)
-+		goto err;
-+
- 	mutex_init(&qspi->lock);
- 
- 	ctrl->mode_bits = SPI_RX_DUAL | SPI_RX_QUAD
+>> --- a/drivers/spi/spi-gpio.c
+>> +++ b/drivers/spi/spi-gpio.c
+>> @@ -135,25 +135,37 @@ static inline int getmiso(const struct spi_device *spi)
+>>  static u32 spi_gpio_txrx_word_mode0(struct spi_device *spi,
+>>                 unsigned nsecs, u32 word, u8 bits, unsigned flags)
+>>  {
+>> -       return bitbang_txrx_be_cpha0(spi, nsecs, 0, flags, word, bits);
+>> +       if (unlikely(spi->mode & SPI_LSB_FIRST))
+>> +               return bitbang_txrx_le_cpha0(spi, nsecs, 0, flags, word, bits);
+>> +       else
+>> +               return bitbang_txrx_be_cpha0(spi, nsecs, 0, flags, word, bits);
+>>  }
+> 
+> Duplicating all functions sounds a bit wasteful to me.
+
+Two functions duplicated, eight function calls duplicated.
+
+> What about reverting the word first, and calling the normal functions?
+> 
+>     if (unlikely(spi->mode & SPI_LSB_FIRST)) {
+>             if (bits <= 8)
+>                     word = bitrev8(word) >> (bits - 8);
+>             else if (bits <= 16)
+>                     word = bitrev16(word) >> (bits - 16);
+>             else
+>                     word = bitrev32(word) >> (bits - 32);
+>     }
+>     return bitbang_txrx_be_cpha0(spi, nsecs, 0, flags, word, bits);
+
+Hm, wasn't aware of those helpers, so I opted not to loop over the bits
+for reversing myself, as Thomas Gleixner disliked bit loops in irqchip.
+Performance appeared to be a concern here, too.
+
+Eight functions duplicated then. I don't like that - at least we should
+pack that into an inline helper or macro, to not copy&paste even more
+lines around. Who knows, maybe we'll get 64-bit support at one point?
+
+Do you think it would be acceptable to instead encapsulate this inside
+the _be inline helpers? That would lead the name ad absurdum, of course,
+but we would then need to do it only twice, not eight times.
+
+However, either way would seem to make the LSB code path slower than MSB
+due to the prepended reversal.
+
+Delays are already stubbed out, with open TODOs for further inlining
+functions that are being dispatched today.
+
+So from that angle I don't see a better way than either duplicating the
+functions or using some macro magic to #include the header twice. If we
+wanted to go down that path, we could probably de-duplicate the existing
+two functions, too, but I was trying to err on the cautious side, since
+I don't have setups to test all four code paths myself (and a ton of
+more relevant but less fun patches to flush out ;)).
+
+Regards,
+Andreas
+
 -- 
-Peter
-
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+SUSE Software Solutions Germany GmbH
+Maxfeldstr. 5, 90409 Nürnberg, Germany
+GF: Felix Imendörffer
+HRB 36809 (AG Nürnberg)

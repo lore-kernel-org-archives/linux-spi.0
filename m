@@ -1,222 +1,151 @@
 From: =?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>
-Subject: [RFC 00/25] arm64: realtek: Add Xnano X5 and implement TM1628/FD628/AiP1618 LED controllers
-Date: Thu, 12 Dec 2019 04:39:27 +0100
-Message-ID: <20191212033952.5967-1-afaerber@suse.de>
+Subject: [RFC 04/25] spi: gpio: Implement LSB First bitbang support
+Date: Thu, 12 Dec 2019 04:39:31 +0100
+Message-ID: <20191212033952.5967-5-afaerber@suse.de>
+References: <20191212033952.5967-1-afaerber@suse.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Cc: Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        =?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>,
-        linux-rtc@vger.kernel.org, Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        linux-amlogic@lists.infradead.org, Roc He <hepeng@zidoo.tv>,
-        zypeng@titanmec.com, sales@fdhisi.com, csd@princeton.com.tw
-To: linux-realtek-soc@lists.infradead.org, linux-leds@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+ Pavel Machek <pavel@ucw.cz>,
+ =?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>,
+ linux-arm-kernel@lists.infradead.org, Dan Murphy <dmurphy@ti.com>
+To: linux-realtek-soc@lists.infradead.org,
+	linux-leds@vger.kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20191212033952.5967-1-afaerber@suse.de>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
-
-This patch series implements the LED controllers found in some RTD1295 based
-TV set-top boxes.
-
-Ever since I've had mainline Linux kernels booting on my Zidoo X9S TV box,
-it's been bugging me that it kept displaying "boot" on its front display.
-A hot lead was a TM1628 chip on the front display's daughterboard, which
-English and Chinese datasheets were available for. The biggest hurdle
-to overcome was whether and how this chip was connected to the SoC.
-Confusingly the datasheet talks about "Serial Interface" and shows pins
-DIO, SCLK and STB; whereas neither UART nor SPI DT nodes seemed to be in use
-for this, no mention of such chipset in the binary vendor DT, and only one
-seemingly unrelated exported GPIO. Sadly Zidoo have refused to share GPL
-sourcecode with me, and the public GPL code drops from NAS and SBC vendors
-didn't seem to include drivers for this chip. Last weekend, review of vendor
-DT pinctrl nodes revealed a "spi@1" pinctrl node in use by the pinctrl node
-itself, despite there being only one GSPI block on the SoC. debugfs under
-Android revealed GPIO pins named "fp_stb", "fp_data" and "fp_clk" (on X5:
-3x "vfdtest", unhelpfully). So I hereby present my first 3-wire SPI slave,
-using standard spi-gpio driver.
-
-This required to extend the spi-gpio driver with Little Endian support.
-
-TM1628 and related chipsets have an internal Display RAM, from which they
-control a two-dimensional array of LED components, often used for
-seven-segment displays, i.e. clock display, but also for indicators.
-Individual LEDs can be turned on/off, but brightness is applied globally.
-Some chipsets also support polling a two-dimensional key pad.
-
-This initial RFC implements a SPI slave driver within Linux leds subsystem
-and lets DT expose individual LED components as two-state LEDs, allowing
-to assign standard Linux LED triggers and to control them via sysfs.
-
-It goes on to add a "text" attribute to the driver that enables DT-configured
-seven-segment displays; I was expecting to find precedence in auxdisplay
-subsystem but came up empty. So my driver currently integrates its own
-generic (but incomplete) character-to-8-segments mapping, as well as in a
-second step a combined-characters-to-8-segments mapping, which then gets
-mapped to the chipset's available output lines. Doing this as sysfs device
-attribute had the advantage of being able to test it quickly; it also leaves
-timezone management to userspace and lets it choose between wall clock and
-playback time as needed. LED triggers appeared to be per-LED; otherwise an
-RTC-implemented interrupt based LED trigger would've been nice for RTD1195+,
-since my pending irqchip driver exposes interrupts down to half-second that
-would seem ideal for accurately driving such a display, with blinking colon.
-
-Finally, it sketches how keypad handling could be integrated into the leds
-driver, but I am lacking a test case for that functionality.
-Distinguishing LEDs and key inputs in DT may get difficult...
-
-For brightness control I am still investigating the backlight API and
-defaulting to the chipset's default (lowest) brightness.
-
-Prepended is a new DT for Xnano X5 OTT TV Box, featuring an FD628 display.
-
-Displays connected to these controllers didn't have any model or vendor
-usually, and for the lengthy numbers from my X9S, Google found no hits.
-Therefore I've been unable to come up with compatible strings for those
-displays and need to configure it per .dts, even though some may be using
-the same, e.g., "88:88" type display model.
-Whereas the same display might be connected to different LED controllers,
-thus is orthogonal to the controller's compatible string.
-
-Another aspect here is that the leds binding expects to have child nodes
-per LED directly on the LED controller node. So I've gone to lengths to
-shoehorn my display child node into that scheme via wildcard reg property.
-
-The alternative would be to define some special child node, as done for the
-SPI controller's "slave" node, to use as display. But in theory there might
-be multiple displays connected to one controller (which is neglected here).
-And in theory the same display might be wired up differently, so at most
-the display model could tell us about layout and availability of LEDs, but
-we'd still need a mapping from the LED controller's to the display's pins.
-So far neither of the two displays tested actually use the segment lines
-for the segments, but rather switch segment and grid lines.
-
-So in theory we might consider the display as LED controller and implement
-binding/driver on that level (moving it to DT root node like gpio-leds),
-if we can hook it up to the actual LED controller in this case on SPI bus?
-Assuming we can actually identify the display with some compatible string,
-that is.
-However, update efficiency has been a concern, with clock display in mind.
-Thus, forcing two SPI commands (three SPI transfers) per LED segment, as the
-the current LED API would entail, should better be avoided. This led to the
-current design of having everything in tm1628 driver, so that we can easily
-determine the scope of an update operation there (one per LED; all for text,
-to be optimized through bit field of dirtied bytes).
-
-Locking is completely missing still. We'll need at least a mutex to avoid,
-e.g., a heartbeat LED trigger and a text update conflicting on SPI bus or
-"hazards" becoming visible on the display during conflicting byte updates.
-
-Module remove support is missing, too.
-
-We may also need to revisit my error checking and either inline functions
-or drop checks on the LED bit level, if it becomes a performance bottleneck.
-
-On the cosmetic side, some lines are still beyond 80 characters.
-
-Some more notes:
-* Public TM1628 V1.1 datasheet is in Chinese only and differs from the
-  unversioned English version found elsewhere on datasheet sites by
-  documenting more display modes, included here (guessed from Arabic numbers).
-* Public FD628 datasheet is Chinese only (guesses based on Arabic numbers).
-  FD623 appears to have more output lines, which would fit current data types.
-* AiP1618 links were all broken (404); try Google "site:szfdwdz.com" search
-  to actually find the documents available on their site.
-* Princeton PT6964 is another related LED controller with public datasheet
-  that I did not encounter in my TV boxes yet, thus not included here.
-  Datasheets are linked only for PT6959 and PT6967, but PT6964 V1.3 and V1.4
-  are available elsewhere. PT6967 has more output lines, which my current
-  data types could barely hold. Maybe bump them all to u32 type right away?
-* TM1628 is also found on MeLE V9 TV box, to be tested.
-* FD628 is also found on Amlogic S905X2 based Vontar X96 Max TV box,
-  to be tested (once UART is soldered).
-* AiP1618 was found on Ava and Lake I TV boxes, to be tested.
-* It remained unclear to me which of these many similar chipsets was first.
-  My driver name is therefore based on the chip I encountered first.
-
-This series is based on my not-yet-posted RTD1295 pinctrl and GPIO drivers.
-
-Latest experimental patches at:
-https://github.com/afaerber/linux/commits/rtd1295-next
-
-Have a lot of fun!
-
-Cheers,
-Andreas
-
-Cc: linux-leds@vger.kernel.org
-Cc: Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Dan Murphy <dmurphy@ti.com>
-
-Cc: linux-rtc@vger.kernel.org
-Cc: Alessandro Zummo <a.zummo@towertech.it>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-
-Cc: devicetree@vger.kernel.org
-Cc: Rob Herring <robh+dt@kernel.org>
-
-Cc: linux-spi@vger.kernel.org
-Cc: Mark Brown <broonie@kernel.org>
-
-Cc: linux-amlogic@lists.infradead.org
-
-Cc: Roc He <hepeng@zidoo.tv>
-# No email for Xnano
-
-Cc: zypeng@titanmec.com
-Cc: sales@fdhisi.com
-# No email for szfdwdz.com
-Cc: csd@princeton.com.tw
-
-Andreas Färber (25):
-  dt-bindings: vendor-prefixes: Add Xnano
-  dt-bindings: arm: realtek: Add Xnano X5
-  arm64: dts: realtek: rtd1295: Add Xnano X5
-  spi: gpio: Implement LSB First bitbang support
-  dt-bindings: vendor-prefixes: Add Titan Micro Electronics
-  dt-bindings: leds: Add Titan Micro Electronics TM1628
-  leds: Add Titan Micro Electronics TM1628
-  arm64: dts: realtek: rtd129x-zidoo-x9s: Add TM1628 LED controller
-  arm64: dts: realtek: rtd1295-zidoo-x9s: Add regular LEDs to TM1628
-  dt-bindings: vendor-prefixes: Add Fuda Hisi Microelectronics
-  dt-bindings: leds: tm1628: Add Fuda Hisi Microelectronics FD628
-  leds: tm1628: Add Fuda Hisi Microelectronics FD628
-  arm64: dts: realtek: rtd1295-xnano-x5: Add FD628 LED controller
-  arm64: dts: realtek: rtd1295-xnano-x5: Add regular LEDs to FD628
-  dt-bindings: vendor-prefixes: Add Fude Microelectronics
-  dt-bindings: leds: tm1628: Add Fude Microelectronics AiP1618
-  leds: tm1628: Prepare Fude Microelectronics AiP1618
-  dt-bindings: leds: tm1628: Define display child nodes
-  leds: tm1628: Add 7-segment display support
-  arm64: dts: realtek: rtd1295-zidoo-x9s: Add display to TM1628
-  arm64: dts: realtek: rtd1295-xnano-x5: Add display to FD628
-  leds: tm1826: Add combined glyph support
-  WIP: leds: tm1628: Prepare TM1628 keys
-  WIP: leds: tm1628: Prepare FD628 keys
-  WIP: leds: tm1628: Prepare AiP1618 keys
-
- Documentation/devicetree/bindings/arm/realtek.yaml |   1 +
- .../devicetree/bindings/leds/titanmec,tm1628.yaml  | 134 ++++
- .../devicetree/bindings/vendor-prefixes.yaml       |   8 +
- arch/arm64/boot/dts/realtek/Makefile               |   1 +
- arch/arm64/boot/dts/realtek/rtd1295-xnano-x5.dts   | 108 +++
- arch/arm64/boot/dts/realtek/rtd1295-zidoo-x9s.dts  |  36 +-
- drivers/leds/Kconfig                               |  12 +
- drivers/leds/Makefile                              |   1 +
- drivers/leds/leds-tm1628.c                         | 727 +++++++++++++++++++++
- drivers/spi/spi-bitbang-txrx.h                     |  68 +-
- drivers/spi/spi-gpio.c                             |  42 +-
- 11 files changed, 1126 insertions(+), 12 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/leds/titanmec,tm1628.yaml
- create mode 100644 arch/arm64/boot/dts/realtek/rtd1295-xnano-x5.dts
- create mode 100644 drivers/leds/leds-tm1628.c
-
--- 
-2.16.4
+QWRkIHN1cHBvcnQgZm9yIHNsYXZlIERUIHByb3BlcnR5IHNwaS1sc2ItZmlyc3QsIGkuZS4sIFNQ
+SV9MU0JfRklSU1QgbW9kZS4KCkR1cGxpY2F0ZSB0aGUgaW5saW5lIGhlbHBlcnMgYml0YmFuZ190
+eHJ4X2JlX2NwaGF7MCwxfSBhcyBMRSB2ZXJzaW9ucy4KTWFrZSBjaGVja3BhdGNoLnBsIGhhcHB5
+IGJ5IGNoYW5naW5nICJ1bnNpZ25lZCIgdG8gInVuc2lnbmVkIGludCIuCgpDb25kaXRpb25hbGx5
+IGNhbGwgdGhlbSBmcm9tIGFsbCB0aGUgc3BpLWdwaW8gdHhyeF93b3JkIGNhbGxiYWNrcy4KClNp
+Z25lZC1vZmYtYnk6IEFuZHJlYXMgRsOkcmJlciA8YWZhZXJiZXJAc3VzZS5kZT4KLS0tCiBkcml2
+ZXJzL3NwaS9zcGktYml0YmFuZy10eHJ4LmggfCA2OCArKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrLS0KIGRyaXZlcnMvc3BpL3NwaS1ncGlvLmMgICAgICAgICB8IDQyICsr
+KysrKysrKysrKysrKysrKysrLS0tLS0tCiAyIGZpbGVzIGNoYW5nZWQsIDk5IGluc2VydGlvbnMo
+KyksIDExIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL3NwaS1iaXRiYW5n
+LXR4cnguaCBiL2RyaXZlcnMvc3BpL3NwaS1iaXRiYW5nLXR4cnguaAppbmRleCBhZTYxZDcyYzdk
+MjguLjk5OWE4OTMyNTMyNSAxMDA2NDQKLS0tIGEvZHJpdmVycy9zcGkvc3BpLWJpdGJhbmctdHhy
+eC5oCisrKyBiL2RyaXZlcnMvc3BpL3NwaS1iaXRiYW5nLXR4cnguaApAQCAtNDUsNyArNDUsNyBA
+QAogCiBzdGF0aWMgaW5saW5lIHUzMgogYml0YmFuZ190eHJ4X2JlX2NwaGEwKHN0cnVjdCBzcGlf
+ZGV2aWNlICpzcGksCi0JCXVuc2lnbmVkIG5zZWNzLCB1bnNpZ25lZCBjcG9sLCB1bnNpZ25lZCBm
+bGFncywKKwkJdW5zaWduZWQgaW50IG5zZWNzLCB1bnNpZ25lZCBpbnQgY3BvbCwgdW5zaWduZWQg
+aW50IGZsYWdzLAogCQl1MzIgd29yZCwgdTggYml0cykKIHsKIAkvKiBpZiAoY3BvbCA9PSAwKSB0
+aGlzIGlzIFNQSV9NT0RFXzA7IGVsc2UgdGhpcyBpcyBTUElfTU9ERV8yICovCkBAIC03Nyw3ICs3
+Nyw3IEBAIGJpdGJhbmdfdHhyeF9iZV9jcGhhMChzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpLAogCiBz
+dGF0aWMgaW5saW5lIHUzMgogYml0YmFuZ190eHJ4X2JlX2NwaGExKHN0cnVjdCBzcGlfZGV2aWNl
+ICpzcGksCi0JCXVuc2lnbmVkIG5zZWNzLCB1bnNpZ25lZCBjcG9sLCB1bnNpZ25lZCBmbGFncywK
+KwkJdW5zaWduZWQgaW50IG5zZWNzLCB1bnNpZ25lZCBpbnQgY3BvbCwgdW5zaWduZWQgaW50IGZs
+YWdzLAogCQl1MzIgd29yZCwgdTggYml0cykKIHsKIAkvKiBpZiAoY3BvbCA9PSAwKSB0aGlzIGlz
+IFNQSV9NT0RFXzE7IGVsc2UgdGhpcyBpcyBTUElfTU9ERV8zICovCkBAIC0xMDYsMyArMTA2LDY3
+IEBAIGJpdGJhbmdfdHhyeF9iZV9jcGhhMShzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpLAogCX0KIAly
+ZXR1cm4gd29yZDsKIH0KKworc3RhdGljIGlubGluZSB1MzIKK2JpdGJhbmdfdHhyeF9sZV9jcGhh
+MChzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpLAorCQl1bnNpZ25lZCBpbnQgbnNlY3MsIHVuc2lnbmVk
+IGludCBjcG9sLCB1bnNpZ25lZCBpbnQgZmxhZ3MsCisJCXUzMiB3b3JkLCB1OCBiaXRzKQorewor
+CS8qIGlmIChjcG9sID09IDApIHRoaXMgaXMgU1BJX01PREVfMDsgZWxzZSB0aGlzIGlzIFNQSV9N
+T0RFXzIgKi8KKworCXUzMiBvbGRiaXQgPSAhKHdvcmQgJiAxKTsKKwkvKiBjbG9jayBzdGFydHMg
+YXQgaW5hY3RpdmUgcG9sYXJpdHkgKi8KKwlmb3IgKDsgbGlrZWx5KGJpdHMpOyBiaXRzLS0pIHsK
+KworCQkvKiBzZXR1cCBMU0IgKHRvIHNsYXZlKSBvbiB0cmFpbGluZyBlZGdlICovCisJCWlmICgo
+ZmxhZ3MgJiBTUElfTUFTVEVSX05PX1RYKSA9PSAwKSB7CisJCQlpZiAoKHdvcmQgJiAxKSAhPSBv
+bGRiaXQpIHsKKwkJCQlzZXRtb3NpKHNwaSwgd29yZCAmIDEpOworCQkJCW9sZGJpdCA9IHdvcmQg
+JiAxOworCQkJfQorCQl9CisJCXNwaWRlbGF5KG5zZWNzKTsJLyogVChzZXR1cCkgKi8KKworCQlz
+ZXRzY2soc3BpLCAhY3BvbCk7CisJCXNwaWRlbGF5KG5zZWNzKTsKKworCQkvKiBzYW1wbGUgTFNC
+IChmcm9tIHNsYXZlKSBvbiBsZWFkaW5nIGVkZ2UgKi8KKwkJd29yZCA+Pj0gMTsKKwkJaWYgKChm
+bGFncyAmIFNQSV9NQVNURVJfTk9fUlgpID09IDApCisJCQl3b3JkIHw9IGdldG1pc28oc3BpKSA8
+PCAoYml0cyAtIDEpOworCQlzZXRzY2soc3BpLCBjcG9sKTsKKwl9CisJcmV0dXJuIHdvcmQ7Cit9
+CisKK3N0YXRpYyBpbmxpbmUgdTMyCitiaXRiYW5nX3R4cnhfbGVfY3BoYTEoc3RydWN0IHNwaV9k
+ZXZpY2UgKnNwaSwKKwkJdW5zaWduZWQgaW50IG5zZWNzLCB1bnNpZ25lZCBpbnQgY3BvbCwgdW5z
+aWduZWQgaW50IGZsYWdzLAorCQl1MzIgd29yZCwgdTggYml0cykKK3sKKwkvKiBpZiAoY3BvbCA9
+PSAwKSB0aGlzIGlzIFNQSV9NT0RFXzE7IGVsc2UgdGhpcyBpcyBTUElfTU9ERV8zICovCisKKwl1
+MzIgb2xkYml0ID0gISh3b3JkICYgMSk7CisJLyogY2xvY2sgc3RhcnRzIGF0IGluYWN0aXZlIHBv
+bGFyaXR5ICovCisJZm9yICg7IGxpa2VseShiaXRzKTsgYml0cy0tKSB7CisKKwkJLyogc2V0dXAg
+TFNCICh0byBzbGF2ZSkgb24gbGVhZGluZyBlZGdlICovCisJCXNldHNjayhzcGksICFjcG9sKTsK
+KwkJaWYgKChmbGFncyAmIFNQSV9NQVNURVJfTk9fVFgpID09IDApIHsKKwkJCWlmICgod29yZCAm
+IDEpICE9IG9sZGJpdCkgeworCQkJCXNldG1vc2koc3BpLCB3b3JkICYgMSk7CisJCQkJb2xkYml0
+ID0gd29yZCAmIDE7CisJCQl9CisJCX0KKwkJc3BpZGVsYXkobnNlY3MpOyAvKiBUKHNldHVwKSAq
+LworCisJCXNldHNjayhzcGksIGNwb2wpOworCQlzcGlkZWxheShuc2Vjcyk7CisKKwkJLyogc2Ft
+cGxlIExTQiAoZnJvbSBzbGF2ZSkgb24gdHJhaWxpbmcgZWRnZSAqLworCQl3b3JkID4+PSAxOwor
+CQlpZiAoKGZsYWdzICYgU1BJX01BU1RFUl9OT19SWCkgPT0gMCkKKwkJCXdvcmQgfD0gZ2V0bWlz
+byhzcGkpIDw8IChiaXRzIC0gMSk7CisJfQorCXJldHVybiB3b3JkOworfQpkaWZmIC0tZ2l0IGEv
+ZHJpdmVycy9zcGkvc3BpLWdwaW8uYyBiL2RyaXZlcnMvc3BpL3NwaS1ncGlvLmMKaW5kZXggN2Nl
+YjBiYTI3Yjc1Li40OTM3MjNlZGE4NDQgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvc3BpL3NwaS1ncGlv
+LmMKKysrIGIvZHJpdmVycy9zcGkvc3BpLWdwaW8uYwpAQCAtMTM1LDI1ICsxMzUsMzcgQEAgc3Rh
+dGljIGlubGluZSBpbnQgZ2V0bWlzbyhjb25zdCBzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpKQogc3Rh
+dGljIHUzMiBzcGlfZ3Bpb190eHJ4X3dvcmRfbW9kZTAoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSwK
+IAkJdW5zaWduZWQgbnNlY3MsIHUzMiB3b3JkLCB1OCBiaXRzLCB1bnNpZ25lZCBmbGFncykKIHsK
+LQlyZXR1cm4gYml0YmFuZ190eHJ4X2JlX2NwaGEwKHNwaSwgbnNlY3MsIDAsIGZsYWdzLCB3b3Jk
+LCBiaXRzKTsKKwlpZiAodW5saWtlbHkoc3BpLT5tb2RlICYgU1BJX0xTQl9GSVJTVCkpCisJCXJl
+dHVybiBiaXRiYW5nX3R4cnhfbGVfY3BoYTAoc3BpLCBuc2VjcywgMCwgZmxhZ3MsIHdvcmQsIGJp
+dHMpOworCWVsc2UKKwkJcmV0dXJuIGJpdGJhbmdfdHhyeF9iZV9jcGhhMChzcGksIG5zZWNzLCAw
+LCBmbGFncywgd29yZCwgYml0cyk7CiB9CiAKIHN0YXRpYyB1MzIgc3BpX2dwaW9fdHhyeF93b3Jk
+X21vZGUxKHN0cnVjdCBzcGlfZGV2aWNlICpzcGksCiAJCXVuc2lnbmVkIG5zZWNzLCB1MzIgd29y
+ZCwgdTggYml0cywgdW5zaWduZWQgZmxhZ3MpCiB7Ci0JcmV0dXJuIGJpdGJhbmdfdHhyeF9iZV9j
+cGhhMShzcGksIG5zZWNzLCAwLCBmbGFncywgd29yZCwgYml0cyk7CisJaWYgKHVubGlrZWx5KHNw
+aS0+bW9kZSAmIFNQSV9MU0JfRklSU1QpKQorCQlyZXR1cm4gYml0YmFuZ190eHJ4X2xlX2NwaGEx
+KHNwaSwgbnNlY3MsIDAsIGZsYWdzLCB3b3JkLCBiaXRzKTsKKwllbHNlCisJCXJldHVybiBiaXRi
+YW5nX3R4cnhfYmVfY3BoYTEoc3BpLCBuc2VjcywgMCwgZmxhZ3MsIHdvcmQsIGJpdHMpOwogfQog
+CiBzdGF0aWMgdTMyIHNwaV9ncGlvX3R4cnhfd29yZF9tb2RlMihzdHJ1Y3Qgc3BpX2RldmljZSAq
+c3BpLAogCQl1bnNpZ25lZCBuc2VjcywgdTMyIHdvcmQsIHU4IGJpdHMsIHVuc2lnbmVkIGZsYWdz
+KQogewotCXJldHVybiBiaXRiYW5nX3R4cnhfYmVfY3BoYTAoc3BpLCBuc2VjcywgMSwgZmxhZ3Ms
+IHdvcmQsIGJpdHMpOworCWlmICh1bmxpa2VseShzcGktPm1vZGUgJiBTUElfTFNCX0ZJUlNUKSkK
+KwkJcmV0dXJuIGJpdGJhbmdfdHhyeF9sZV9jcGhhMChzcGksIG5zZWNzLCAxLCBmbGFncywgd29y
+ZCwgYml0cyk7CisJZWxzZQorCQlyZXR1cm4gYml0YmFuZ190eHJ4X2JlX2NwaGEwKHNwaSwgbnNl
+Y3MsIDEsIGZsYWdzLCB3b3JkLCBiaXRzKTsKIH0KIAogc3RhdGljIHUzMiBzcGlfZ3Bpb190eHJ4
+X3dvcmRfbW9kZTMoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSwKIAkJdW5zaWduZWQgbnNlY3MsIHUz
+MiB3b3JkLCB1OCBiaXRzLCB1bnNpZ25lZCBmbGFncykKIHsKLQlyZXR1cm4gYml0YmFuZ190eHJ4
+X2JlX2NwaGExKHNwaSwgbnNlY3MsIDEsIGZsYWdzLCB3b3JkLCBiaXRzKTsKKwlpZiAodW5saWtl
+bHkoc3BpLT5tb2RlICYgU1BJX0xTQl9GSVJTVCkpCisJCXJldHVybiBiaXRiYW5nX3R4cnhfbGVf
+Y3BoYTEoc3BpLCBuc2VjcywgMSwgZmxhZ3MsIHdvcmQsIGJpdHMpOworCWVsc2UKKwkJcmV0dXJu
+IGJpdGJhbmdfdHhyeF9iZV9jcGhhMShzcGksIG5zZWNzLCAxLCBmbGFncywgd29yZCwgYml0cyk7
+CiB9CiAKIC8qCkBAIC0xNzAsMjggKzE4Miw0MCBAQCBzdGF0aWMgdTMyIHNwaV9ncGlvX3NwZWNf
+dHhyeF93b3JkX21vZGUwKHN0cnVjdCBzcGlfZGV2aWNlICpzcGksCiAJCXVuc2lnbmVkIG5zZWNz
+LCB1MzIgd29yZCwgdTggYml0cywgdW5zaWduZWQgZmxhZ3MpCiB7CiAJZmxhZ3MgPSBzcGktPm1h
+c3Rlci0+ZmxhZ3M7Ci0JcmV0dXJuIGJpdGJhbmdfdHhyeF9iZV9jcGhhMChzcGksIG5zZWNzLCAw
+LCBmbGFncywgd29yZCwgYml0cyk7CisJaWYgKHVubGlrZWx5KHNwaS0+bW9kZSAmIFNQSV9MU0Jf
+RklSU1QpKQorCQlyZXR1cm4gYml0YmFuZ190eHJ4X2xlX2NwaGEwKHNwaSwgbnNlY3MsIDAsIGZs
+YWdzLCB3b3JkLCBiaXRzKTsKKwllbHNlCisJCXJldHVybiBiaXRiYW5nX3R4cnhfYmVfY3BoYTAo
+c3BpLCBuc2VjcywgMCwgZmxhZ3MsIHdvcmQsIGJpdHMpOwogfQogCiBzdGF0aWMgdTMyIHNwaV9n
+cGlvX3NwZWNfdHhyeF93b3JkX21vZGUxKHN0cnVjdCBzcGlfZGV2aWNlICpzcGksCiAJCXVuc2ln
+bmVkIG5zZWNzLCB1MzIgd29yZCwgdTggYml0cywgdW5zaWduZWQgZmxhZ3MpCiB7CiAJZmxhZ3Mg
+PSBzcGktPm1hc3Rlci0+ZmxhZ3M7Ci0JcmV0dXJuIGJpdGJhbmdfdHhyeF9iZV9jcGhhMShzcGks
+IG5zZWNzLCAwLCBmbGFncywgd29yZCwgYml0cyk7CisJaWYgKHVubGlrZWx5KHNwaS0+bW9kZSAm
+IFNQSV9MU0JfRklSU1QpKQorCQlyZXR1cm4gYml0YmFuZ190eHJ4X2xlX2NwaGExKHNwaSwgbnNl
+Y3MsIDAsIGZsYWdzLCB3b3JkLCBiaXRzKTsKKwllbHNlCisJCXJldHVybiBiaXRiYW5nX3R4cnhf
+YmVfY3BoYTEoc3BpLCBuc2VjcywgMCwgZmxhZ3MsIHdvcmQsIGJpdHMpOwogfQogCiBzdGF0aWMg
+dTMyIHNwaV9ncGlvX3NwZWNfdHhyeF93b3JkX21vZGUyKHN0cnVjdCBzcGlfZGV2aWNlICpzcGks
+CiAJCXVuc2lnbmVkIG5zZWNzLCB1MzIgd29yZCwgdTggYml0cywgdW5zaWduZWQgZmxhZ3MpCiB7
+CiAJZmxhZ3MgPSBzcGktPm1hc3Rlci0+ZmxhZ3M7Ci0JcmV0dXJuIGJpdGJhbmdfdHhyeF9iZV9j
+cGhhMChzcGksIG5zZWNzLCAxLCBmbGFncywgd29yZCwgYml0cyk7CisJaWYgKHVubGlrZWx5KHNw
+aS0+bW9kZSAmIFNQSV9MU0JfRklSU1QpKQorCQlyZXR1cm4gYml0YmFuZ190eHJ4X2xlX2NwaGEw
+KHNwaSwgbnNlY3MsIDEsIGZsYWdzLCB3b3JkLCBiaXRzKTsKKwllbHNlCisJCXJldHVybiBiaXRi
+YW5nX3R4cnhfYmVfY3BoYTAoc3BpLCBuc2VjcywgMSwgZmxhZ3MsIHdvcmQsIGJpdHMpOwogfQog
+CiBzdGF0aWMgdTMyIHNwaV9ncGlvX3NwZWNfdHhyeF93b3JkX21vZGUzKHN0cnVjdCBzcGlfZGV2
+aWNlICpzcGksCiAJCXVuc2lnbmVkIG5zZWNzLCB1MzIgd29yZCwgdTggYml0cywgdW5zaWduZWQg
+ZmxhZ3MpCiB7CiAJZmxhZ3MgPSBzcGktPm1hc3Rlci0+ZmxhZ3M7Ci0JcmV0dXJuIGJpdGJhbmdf
+dHhyeF9iZV9jcGhhMShzcGksIG5zZWNzLCAxLCBmbGFncywgd29yZCwgYml0cyk7CisJaWYgKHVu
+bGlrZWx5KHNwaS0+bW9kZSAmIFNQSV9MU0JfRklSU1QpKQorCQlyZXR1cm4gYml0YmFuZ190eHJ4
+X2xlX2NwaGExKHNwaSwgbnNlY3MsIDEsIGZsYWdzLCB3b3JkLCBiaXRzKTsKKwllbHNlCisJCXJl
+dHVybiBiaXRiYW5nX3R4cnhfYmVfY3BoYTEoc3BpLCBuc2VjcywgMSwgZmxhZ3MsIHdvcmQsIGJp
+dHMpOwogfQogCiAvKi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0qLwpAQCAtMzg5LDcgKzQxMyw3IEBAIHN0YXRpYyBp
+bnQgc3BpX2dwaW9fcHJvYmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldikKIAogCW1hc3Rl
+ci0+Yml0c19wZXJfd29yZF9tYXNrID0gU1BJX0JQV19SQU5HRV9NQVNLKDEsIDMyKTsKIAltYXN0
+ZXItPm1vZGVfYml0cyA9IFNQSV8zV0lSRSB8IFNQSV8zV0lSRV9ISVogfCBTUElfQ1BIQSB8IFNQ
+SV9DUE9MIHwKLQkJCSAgICBTUElfQ1NfSElHSDsKKwkJCSAgICBTUElfQ1NfSElHSCB8IFNQSV9M
+U0JfRklSU1Q7CiAJaWYgKCFzcGlfZ3Bpby0+bW9zaSkgewogCQkvKiBIVyBjb25maWd1cmF0aW9u
+IHdpdGhvdXQgTU9TSSBwaW4KIAkJICoKLS0gCjIuMTYuNAoKCl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCmxpbnV4LWFybS1rZXJuZWwgbWFpbGluZyBsaXN0
+CmxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
+ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LWFybS1rZXJuZWwK

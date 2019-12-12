@@ -1,61 +1,51 @@
-From: =?UTF-8?Q?Andreas_F=c3=a4rber?= <afaerber@suse.de>
-Subject: Re: [RFC 04/25] spi: gpio: Implement LSB First bitbang support
-Date: Thu, 12 Dec 2019 22:08:24 +0100
-Message-ID: <70bf4954-d7ab-e300-017c-c743a40162a4@suse.de>
-References: <20191212033952.5967-1-afaerber@suse.de>
- <20191212033952.5967-5-afaerber@suse.de>
- <CAMuHMdWdxJ9AaWhyCW-u8fCpXSDCPd-D6Dx129SF5nRssZsK=g@mail.gmail.com>
- <9b4b6287-c1d9-1b41-88a8-7ac9fe222642@suse.de>
- <20191212171922.GM4310@sirena.org.uk>
+From: Jim Quinlan <james.quinlan@broadcom.com>
+Subject: [PATCH] spi: bcm2835: don't print error on clk_get() DEFER
+Date: Thu, 12 Dec 2019 18:12:13 -0500
+Message-ID: <20191212231213.29061-1-jquinlan@broadcom.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 8bit
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-realtek-soc@lists.infradead.org, linux-leds@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Dan Murphy <dmurphy@ti.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191212171922.GM4310@sirena.org.uk>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-arm-kernel@lists.infradead.org,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ Scott Branden <scott.branden@broadcom.com>, linux-kernel@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, bcm-kernel-feedback-list@broadcom.com,
+ linux-rpi-kernel@lists.infradead.org, Jim Quinlan <james.quinlan@broadcom.com>,
+ Ray Jui <ray.jui@broadcom.com>,
+ Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+To: linux-spi@vger.kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Am 12.12.19 um 18:19 schrieb Mark Brown:
-> On Thu, Dec 12, 2019 at 04:14:59PM +0100, Andreas Färber wrote:
->> Am 12.12.19 um 09:40 schrieb Geert Uytterhoeven:
->>> On Thu, Dec 12, 2019 at 4:41 AM Andreas Färber <afaerber@suse.de> wrote:
->>>> Add support for slave DT property spi-lsb-first, i.e., SPI_LSB_FIRST mode.
-> 
->>>> Duplicate the inline helpers bitbang_txrx_be_cpha{0,1} as LE versions.
->>>> Make checkpatch.pl happy by changing "unsigned" to "unsigned int".
-> 
-> Separate patch for this?
+Otherwise one may get multiple error messages for normal
+operation of a clock provider.
 
-For the checkpatch cleanup? Or helpers preparation vs. spi-gpio.c usage?
+Signed-off-by: Jim Quinlan <jquinlan@broadcom.com>
+---
+ drivers/spi/spi-bcm2835.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
->> So from that angle I don't see a better way than either duplicating the
->> functions or using some macro magic to #include the header twice. If we
->> wanted to go down that path, we could probably de-duplicate the existing
->> two functions, too, but I was trying to err on the cautious side, since
->> I don't have setups to test all four code paths myself (and a ton of
->> more relevant but less fun patches to flush out ;)).
-> 
-> Yeah, I don't think there's any great options here with the potential
-> performance issues - probably the nicest thing would be to autogenerate
-> lots of variants but I think that's far more trouble than it's worth.
-
-Maybe add another code comment to revisit that idea later then?
-
-Thanks,
-Andreas
-
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index fb61a620effc..6c9addc9f276 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -1305,7 +1305,8 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
+ 	bs->clk = devm_clk_get(&pdev->dev, NULL);
+ 	if (IS_ERR(bs->clk)) {
+ 		err = PTR_ERR(bs->clk);
+-		dev_err(&pdev->dev, "could not get clk: %d\n", err);
++		if (err != -EPROBE_DEFER)
++			dev_err(&pdev->dev, "could not get clk: %d\n", err);
+ 		goto out_controller_put;
+ 	}
+ 
 -- 
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5, 90409 Nürnberg, Germany
-GF: Felix Imendörffer
-HRB 36809 (AG Nürnberg)
+2.17.1

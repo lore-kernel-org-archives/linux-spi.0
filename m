@@ -1,71 +1,45 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [RFC 04/25] spi: gpio: Implement LSB First bitbang support
-Date: Thu, 12 Dec 2019 17:19:22 +0000
-Message-ID: <20191212171922.GM4310@sirena.org.uk>
-References: <20191212033952.5967-1-afaerber@suse.de>
- <20191212033952.5967-5-afaerber@suse.de>
- <CAMuHMdWdxJ9AaWhyCW-u8fCpXSDCPd-D6Dx129SF5nRssZsK=g@mail.gmail.com>
- <9b4b6287-c1d9-1b41-88a8-7ac9fe222642@suse.de>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="EOHJn1TVIJfeVXv2"
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-realtek-soc@lists.infradead.org, linux-leds@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Dan Murphy <dmurphy@ti.com>
-To: Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH] spi: fsl: use platform_get_irq() instead of
+ of_irq_to_resource()
+Date: Thu, 12 Dec 2019 17:47:24 +0000 (UTC)
+Message-ID: <091a277fd0b3356dca1e29858c1c96983fc9cb25.1576172743.git.christophe.leroy@c-s.fr>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <9b4b6287-c1d9-1b41-88a8-7ac9fe222642@suse.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Unlike irq_of_parse_and_map() which has a dummy definition on SPARC,
+of_irq_to_resource() hasn't.
 
---EOHJn1TVIJfeVXv2
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+But as platform_get_irq() can be used instead and is generic, use it.
 
-On Thu, Dec 12, 2019 at 04:14:59PM +0100, Andreas F=E4rber wrote:
-> Am 12.12.19 um 09:40 schrieb Geert Uytterhoeven:
-> > On Thu, Dec 12, 2019 at 4:41 AM Andreas F=E4rber <afaerber@suse.de> wro=
-te:
-> >> Add support for slave DT property spi-lsb-first, i.e., SPI_LSB_FIRST m=
-ode.
+Reported-by: kbuild test robot <lkp@intel.com>
+Suggested-by: Mark Brown <broonie@kernel.org>
+Fixes: 	3194d2533eff ("spi: fsl: don't map irq during probe")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ drivers/spi/spi-fsl-spi.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-> >> Duplicate the inline helpers bitbang_txrx_be_cpha{0,1} as LE versions.
-> >> Make checkpatch.pl happy by changing "unsigned" to "unsigned int".
-
-Separate patch for this?
-
-> So from that angle I don't see a better way than either duplicating the
-> functions or using some macro magic to #include the header twice. If we
-> wanted to go down that path, we could probably de-duplicate the existing
-> two functions, too, but I was trying to err on the cautious side, since
-> I don't have setups to test all four code paths myself (and a ton of
-> more relevant but less fun patches to flush out ;)).
-
-Yeah, I don't think there's any great options here with the potential
-performance issues - probably the nicest thing would be to autogenerate
-lots of variants but I think that's far more trouble than it's worth.
-
---EOHJn1TVIJfeVXv2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl3ydpkACgkQJNaLcl1U
-h9Crxwf9Hh/o+0lRcCax6Pd2t3iPgF+uG4xJ6LUUNfzNsOdYWHhRoEJC3NQAdbh+
-erqhW4a1HuHtkFy9hM1gCLsfRyr9eA3x0+xVgj9WsbOe11mebr08oS+BaPHU2yUT
-4XgXr/Fyi1s2x6q3R9C48jEGRyKy6nCKC9Lkh8dXitfznpmufSAEKzkYxZLo8hPs
-At9L7La3QdwGjOTgHJ0DZD9Q6gQpsjhzWA8fkgHwzwjGsaw6pZair0XkaBPcg3/q
-xyZyIzQejgHy5DhWRg9m+WSsoARvtMwSGv+061AOmafWOPBgAWM2z1wCH/+F0jqM
-q/B0X6vyCHo7spdDxq+dhgsXrkrcBQ==
-=OqPq
------END PGP SIGNATURE-----
-
---EOHJn1TVIJfeVXv2--
+diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+index 2d85c81983b1..c76128cadf0c 100644
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -765,9 +765,9 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
+ 	if (ret)
+ 		goto err;
+ 
+-	irq = of_irq_to_resource(np, 0, NULL);
+-	if (irq <= 0) {
+-		ret = -EINVAL;
++	irq = platform_get_irq(ofdev, 0);
++	if (irq < 0) {
++		ret = irq;
+ 		goto err;
+ 	}
+ 
+-- 
+2.13.3

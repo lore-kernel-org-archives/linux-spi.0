@@ -1,7 +1,7 @@
 From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Subject: [PATCH 7/9] spi: spi-fsl-dspi: Use dma_request_chan() instead dma_request_slave_channel()
-Date: Thu, 12 Dec 2019 15:55:48 +0200
-Message-ID: <20191212135550.4634-8-peter.ujfalusi@ti.com>
+Subject: [PATCH 6/9] spi: sirf: Use dma_request_chan() instead dma_request_slave_channel()
+Date: Thu, 12 Dec 2019 15:55:47 +0200
+Message-ID: <20191212135550.4634-7-peter.ujfalusi@ti.com>
 References: <20191212135550.4634-1-peter.ujfalusi@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -29,35 +29,34 @@ probing against DMA.
 
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
 ---
- drivers/spi/spi-fsl-dspi.c | 12 ++++++------
+ drivers/spi/spi-sirf.c | 12 ++++++------
  1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 442cff71a0d2..52ccd8397c35 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -395,17 +395,17 @@ static int dspi_request_dma(struct fsl_dspi *dspi, phys_addr_t phy_addr)
- 	if (!dma)
- 		return -ENOMEM;
+diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
+index e1e639191557..8419e6722e17 100644
+--- a/drivers/spi/spi-sirf.c
++++ b/drivers/spi/spi-sirf.c
+@@ -1126,16 +1126,16 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
+ 	sspi->bitbang.master->dev.of_node = pdev->dev.of_node;
  
--	dma->chan_rx = dma_request_slave_channel(dev, "rx");
--	if (!dma->chan_rx) {
-+	dma->chan_rx = dma_request_chan(dev, "rx");
-+	if (IS_ERR(dma->chan_rx)) {
- 		dev_err(dev, "rx dma channel not available\n");
+ 	/* request DMA channels */
+-	sspi->rx_chan = dma_request_slave_channel(&pdev->dev, "rx");
+-	if (!sspi->rx_chan) {
++	sspi->rx_chan = dma_request_chan(&pdev->dev, "rx");
++	if (IS_ERR(sspi->rx_chan)) {
+ 		dev_err(&pdev->dev, "can not allocate rx dma channel\n");
 -		ret = -ENODEV;
-+		ret = PTR_ERR(dma->chan_rx);
- 		return ret;
++		ret = PTR_ERR(sspi->rx_chan);
+ 		goto free_master;
  	}
- 
--	dma->chan_tx = dma_request_slave_channel(dev, "tx");
--	if (!dma->chan_tx) {
-+	dma->chan_tx = dma_request_chan(dev, "tx");
-+	if (IS_ERR(dma->chan_tx)) {
- 		dev_err(dev, "tx dma channel not available\n");
+-	sspi->tx_chan = dma_request_slave_channel(&pdev->dev, "tx");
+-	if (!sspi->tx_chan) {
++	sspi->tx_chan = dma_request_chan(&pdev->dev, "tx");
++	if (IS_ERR(sspi->tx_chan)) {
+ 		dev_err(&pdev->dev, "can not allocate tx dma channel\n");
 -		ret = -ENODEV;
-+		ret = PTR_ERR(dma->chan_tx);
- 		goto err_tx_channel;
++		ret = PTR_ERR(sspi->tx_chan);
+ 		goto free_rx_dma;
  	}
  
 -- 

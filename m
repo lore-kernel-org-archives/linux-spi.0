@@ -1,7 +1,7 @@
 From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Subject: [PATCH 6/9] spi: sirf: Use dma_request_chan() instead dma_request_slave_channel()
-Date: Thu, 12 Dec 2019 15:55:47 +0200
-Message-ID: <20191212135550.4634-7-peter.ujfalusi@ti.com>
+Subject: [PATCH 9/9] spi: stm32: Use dma_request_chan() instead dma_request_slave_channel()
+Date: Thu, 12 Dec 2019 15:55:50 +0200
+Message-ID: <20191212135550.4634-10-peter.ujfalusi@ti.com>
 References: <20191212135550.4634-1-peter.ujfalusi@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -29,36 +29,80 @@ probing against DMA.
 
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
 ---
- drivers/spi/spi-sirf.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/spi/spi-stm32.c | 32 ++++++++++++++++++++++----------
+ 1 file changed, 22 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
-index e1e639191557..8419e6722e17 100644
---- a/drivers/spi/spi-sirf.c
-+++ b/drivers/spi/spi-sirf.c
-@@ -1126,16 +1126,16 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
- 	sspi->bitbang.master->dev.of_node = pdev->dev.of_node;
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index 7d75632c4151..e041f9c4ec47 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -1879,17 +1879,29 @@ static int stm32_spi_probe(struct platform_device *pdev)
+ 	master->transfer_one = stm32_spi_transfer_one;
+ 	master->unprepare_message = stm32_spi_unprepare_msg;
  
- 	/* request DMA channels */
--	sspi->rx_chan = dma_request_slave_channel(&pdev->dev, "rx");
--	if (!sspi->rx_chan) {
-+	sspi->rx_chan = dma_request_chan(&pdev->dev, "rx");
-+	if (IS_ERR(sspi->rx_chan)) {
- 		dev_err(&pdev->dev, "can not allocate rx dma channel\n");
--		ret = -ENODEV;
-+		ret = PTR_ERR(sspi->rx_chan);
- 		goto free_master;
- 	}
--	sspi->tx_chan = dma_request_slave_channel(&pdev->dev, "tx");
--	if (!sspi->tx_chan) {
-+	sspi->tx_chan = dma_request_chan(&pdev->dev, "tx");
-+	if (IS_ERR(sspi->tx_chan)) {
- 		dev_err(&pdev->dev, "can not allocate tx dma channel\n");
--		ret = -ENODEV;
-+		ret = PTR_ERR(sspi->tx_chan);
- 		goto free_rx_dma;
+-	spi->dma_tx = dma_request_slave_channel(spi->dev, "tx");
+-	if (!spi->dma_tx)
++	spi->dma_tx = dma_request_chan(spi->dev, "tx");
++	if (IS_ERR(spi->dma_tx)) {
++		ret = PTR_ERR(spi->dma_tx);
++		spi->dma_tx = NULL;
++		if (ret == -EPROBE_DEFER)
++			goto err_clk_disable;
++
+ 		dev_warn(&pdev->dev, "failed to request tx dma channel\n");
+-	else
++	} else {
+ 		master->dma_tx = spi->dma_tx;
++	}
++
++	spi->dma_rx = dma_request_chan(spi->dev, "rx");
++	if (IS_ERR(spi->dma_rx)) {
++		ret = PTR_ERR(spi->dma_rx);
++		spi->dma_rx = NULL;
++		if (ret == -EPROBE_DEFER)
++			goto err_dma_release;
+ 
+-	spi->dma_rx = dma_request_slave_channel(spi->dev, "rx");
+-	if (!spi->dma_rx)
+ 		dev_warn(&pdev->dev, "failed to request rx dma channel\n");
+-	else
++	} else {
+ 		master->dma_rx = spi->dma_rx;
++	}
+ 
+ 	if (spi->dma_tx || spi->dma_rx)
+ 		master->can_dma = stm32_spi_can_dma;
+@@ -1901,26 +1913,26 @@ static int stm32_spi_probe(struct platform_device *pdev)
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "spi master registration failed: %d\n",
+ 			ret);
+-		goto err_dma_release;
++		goto err_pm_disable;
  	}
  
+ 	if (!master->cs_gpiods) {
+ 		dev_err(&pdev->dev, "no CS gpios available\n");
+ 		ret = -EINVAL;
+-		goto err_dma_release;
++		goto err_pm_disable;
+ 	}
+ 
+ 	dev_info(&pdev->dev, "driver initialized\n");
+ 
+ 	return 0;
+ 
++err_pm_disable:
++	pm_runtime_disable(&pdev->dev);
+ err_dma_release:
+ 	if (spi->dma_tx)
+ 		dma_release_channel(spi->dma_tx);
+ 	if (spi->dma_rx)
+ 		dma_release_channel(spi->dma_rx);
+-
+-	pm_runtime_disable(&pdev->dev);
+ err_clk_disable:
+ 	clk_disable_unprepare(spi->clk);
+ err_master_put:
 -- 
 Peter
 

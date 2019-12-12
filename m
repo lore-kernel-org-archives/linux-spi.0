@@ -1,7 +1,7 @@
 From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Subject: [PATCH 4/9] spi: img-spfi: Use dma_request_chan() instead dma_request_slave_channel()
-Date: Thu, 12 Dec 2019 15:55:45 +0200
-Message-ID: <20191212135550.4634-5-peter.ujfalusi@ti.com>
+Subject: [PATCH 5/9] spi: mxs: Use dma_request_chan() instead dma_request_slave_channel()
+Date: Thu, 12 Dec 2019 15:55:46 +0200
+Message-ID: <20191212135550.4634-6-peter.ujfalusi@ti.com>
 References: <20191212135550.4634-1-peter.ujfalusi@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -29,38 +29,27 @@ probing against DMA.
 
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
 ---
- drivers/spi/spi-img-spfi.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/spi/spi-mxs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
-index f4a8f470aecc..8543f5ed1099 100644
---- a/drivers/spi/spi-img-spfi.c
-+++ b/drivers/spi/spi-img-spfi.c
-@@ -666,8 +666,22 @@ static int img_spfi_probe(struct platform_device *pdev)
- 	master->unprepare_message = img_spfi_unprepare;
- 	master->handle_err = img_spfi_handle_err;
+diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
+index 996c1c8a9c71..dce85ee07cd0 100644
+--- a/drivers/spi/spi-mxs.c
++++ b/drivers/spi/spi-mxs.c
+@@ -590,10 +590,10 @@ static int mxs_spi_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto out_master_free;
  
--	spfi->tx_ch = dma_request_slave_channel(spfi->dev, "tx");
--	spfi->rx_ch = dma_request_slave_channel(spfi->dev, "rx");
-+	spfi->tx_ch = dma_request_chan(spfi->dev, "tx");
-+	if (IS_ERR(spfi->tx_ch)) {
-+		ret = PTR_ERR(spfi->tx_ch);
-+		spfi->tx_ch = NULL;
-+		if (ret == -EPROBE_DEFER)
-+			goto disable_pm;
-+	}
-+
-+	spfi->rx_ch = dma_request_chan(spfi->dev, "rx");
-+	if (IS_ERR(spfi->rx_ch)) {
-+		ret = PTR_ERR(spfi->rx_ch);
-+		spfi->rx_ch = NULL;
-+		if (ret == -EPROBE_DEFER)
-+			goto disable_pm;
-+	}
-+
- 	if (!spfi->tx_ch || !spfi->rx_ch) {
- 		if (spfi->tx_ch)
- 			dma_release_channel(spfi->tx_ch);
+-	ssp->dmach = dma_request_slave_channel(&pdev->dev, "rx-tx");
+-	if (!ssp->dmach) {
++	ssp->dmach = dma_request_chan(&pdev->dev, "rx-tx");
++	if (IS_ERR(ssp->dmach)) {
+ 		dev_err(ssp->dev, "Failed to request DMA\n");
+-		ret = -ENODEV;
++		ret = PTR_ERR(ssp->dmach);
+ 		goto out_master_free;
+ 	}
+ 
 -- 
 Peter
 

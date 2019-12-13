@@ -1,38 +1,41 @@
-From: Jim Quinlan <james.quinlan@broadcom.com>
-Subject: Re: [PATCH] spi: bcm2835: don't print error on clk_get() DEFER
-Date: Fri, 13 Dec 2019 10:33:41 -0500
-Message-ID: <CA+-6iNz4WVJzfntJ5CUXBYvqQG4kEj8g8g_HOxZN5rFWTUvv3g@mail.gmail.com>
-References: <20191212231213.29061-1-jquinlan@broadcom.com> <20191213114138.GB4644@sirena.org.uk>
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH] powerpc/devicetrees: Change 'gpios' to 'cs-gpios' on
+ fsl,spi nodes
+Date: Fri, 13 Dec 2019 15:34:18 -0600
+Message-ID: <20191213213418.GA17361@bogus>
+References: <7556683b57d8ce100855857f03d1cd3d2903d045.1574943062.git.christophe.leroy@c-s.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: linux-spi@vger.kernel.org, Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <ray.jui@broadcom.com>,
-        Scott Branden <scott.branden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, devicetree@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-spi@vger.kernel.org
+To: Christophe Leroy <christophe.leroy@c-s.fr>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191213114138.GB4644@sirena.org.uk>
+Content-Disposition: inline
+In-Reply-To: <7556683b57d8ce100855857f03d1cd3d2903d045.1574943062.git.christophe.leroy@c-s.fr>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Dec 13, 2019 at 6:41 AM Mark Brown <broonie@kernel.org> wrote:
->
-> On Thu, Dec 12, 2019 at 06:12:13PM -0500, Jim Quinlan wrote:
-> > Otherwise one may get multiple error messages for normal
-> > operation of a clock provider.
->
-> >       if (IS_ERR(bs->clk)) {
-> >               err = PTR_ERR(bs->clk);
-> > -             dev_err(&pdev->dev, "could not get clk: %d\n", err);
-> > +             if (err != -EPROBE_DEFER)
-> > +                     dev_err(&pdev->dev, "could not get clk: %d\n", err);
->
-> On the other hand if the clock isn't there and never appears then there
-> won't be anything saying why the driver isn't loading which won't be
-> helpful when trying to figure out what's going on.
+On Thu, Nov 28, 2019 at 12:16:35PM +0000, Christophe Leroy wrote:
+> Since commit 0f0581b24bd0 ("spi: fsl: Convert to use CS GPIO
+> descriptors"), the prefered way to define chipselect GPIOs is using
+> 'cs-gpios' property instead of the legacy 'gpios' property.
 
-Understood; I could do a dev_dbg() on -EPROBE_DEFER and dev_err() on
-all other errors -- would that work for you?
+This will break using a new dtb on a kernel without the above commit. Or 
+with any OS that never made the change.
+
+I'm fine with the doc change, but you should keep 'gpios' as deprecated.
+
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> ---
+>  Documentation/devicetree/bindings/spi/fsl-spi.txt | 8 ++++----
+>  arch/powerpc/boot/dts/mgcoge.dts                  | 2 +-
+>  arch/powerpc/boot/dts/mpc832x_rdb.dts             | 2 +-
+>  arch/powerpc/boot/dts/mpc8610_hpcd.dts            | 2 +-
+>  4 files changed, 7 insertions(+), 7 deletions(-)

@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: stm32: Use dma_request_chan() instead dma_request_slave_channel()" to the spi tree
-Date: Mon, 16 Dec 2019 12:05:59 +0000
-Message-ID: <applied-20191212135550.4634-10-peter.ujfalusi@ti.com>
-References: <20191212135550.4634-10-peter.ujfalusi@ti.com>
+Subject: Applied "spi: spi-fsl-dspi: Use dma_request_chan() instead dma_request_slave_channel()" to the spi tree
+Date: Mon, 16 Dec 2019 12:06:04 +0000
+Message-ID: <applied-20191212135550.4634-8-peter.ujfalusi@ti.com>
+References: <20191212135550.4634-8-peter.ujfalusi@ti.com>
 Cc: alexandre.torgue@st.com, baohua@kernel.org, broonie@kernel.org,
         f.fainelli@gmail.com, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
@@ -13,13 +13,13 @@ Cc: alexandre.torgue@st.com, baohua@kernel.org, broonie@kernel.org,
         s.hauer@pengutronix.de, shawnguo@kernel.org, vkoul@kernel.org
 To: Peter Ujfalusi <peter.ujfalusi@ti.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191212135550.4634-10-peter.ujfalusi@ti.com>
+In-Reply-To: <20191212135550.4634-8-peter.ujfalusi@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: stm32: Use dma_request_chan() instead dma_request_slave_channel()
+   spi: spi-fsl-dspi: Use dma_request_chan() instead dma_request_slave_channel()
 
 has been applied to the spi tree at
 
@@ -44,10 +44,10 @@ to this mail.
 Thanks,
 Mark
 
->From 0a454258febb73e4c60d7f5d9a02d1a8c64fdfb8 Mon Sep 17 00:00:00 2001
+>From b5756b777472eceaa84bc180f458f8eaec65da9a Mon Sep 17 00:00:00 2001
 From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Date: Thu, 12 Dec 2019 15:55:50 +0200
-Subject: [PATCH] spi: stm32: Use dma_request_chan() instead
+Date: Thu, 12 Dec 2019 15:55:48 +0200
+Subject: [PATCH] spi: spi-fsl-dspi: Use dma_request_chan() instead
  dma_request_slave_channel()
 
 dma_request_slave_channel() is a wrapper on top of dma_request_chan()
@@ -57,82 +57,39 @@ By using dma_request_chan() directly the driver can support deferred
 probing against DMA.
 
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Link: https://lore.kernel.org/r/20191212135550.4634-10-peter.ujfalusi@ti.com
+Link: https://lore.kernel.org/r/20191212135550.4634-8-peter.ujfalusi@ti.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-stm32.c | 32 ++++++++++++++++++++++----------
- 1 file changed, 22 insertions(+), 10 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index 7d75632c4151..e041f9c4ec47 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -1879,17 +1879,29 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 	master->transfer_one = stm32_spi_transfer_one;
- 	master->unprepare_message = stm32_spi_unprepare_msg;
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 442cff71a0d2..52ccd8397c35 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -395,17 +395,17 @@ static int dspi_request_dma(struct fsl_dspi *dspi, phys_addr_t phy_addr)
+ 	if (!dma)
+ 		return -ENOMEM;
  
--	spi->dma_tx = dma_request_slave_channel(spi->dev, "tx");
--	if (!spi->dma_tx)
-+	spi->dma_tx = dma_request_chan(spi->dev, "tx");
-+	if (IS_ERR(spi->dma_tx)) {
-+		ret = PTR_ERR(spi->dma_tx);
-+		spi->dma_tx = NULL;
-+		if (ret == -EPROBE_DEFER)
-+			goto err_clk_disable;
-+
- 		dev_warn(&pdev->dev, "failed to request tx dma channel\n");
--	else
-+	} else {
- 		master->dma_tx = spi->dma_tx;
-+	}
-+
-+	spi->dma_rx = dma_request_chan(spi->dev, "rx");
-+	if (IS_ERR(spi->dma_rx)) {
-+		ret = PTR_ERR(spi->dma_rx);
-+		spi->dma_rx = NULL;
-+		if (ret == -EPROBE_DEFER)
-+			goto err_dma_release;
- 
--	spi->dma_rx = dma_request_slave_channel(spi->dev, "rx");
--	if (!spi->dma_rx)
- 		dev_warn(&pdev->dev, "failed to request rx dma channel\n");
--	else
-+	} else {
- 		master->dma_rx = spi->dma_rx;
-+	}
- 
- 	if (spi->dma_tx || spi->dma_rx)
- 		master->can_dma = stm32_spi_can_dma;
-@@ -1901,26 +1913,26 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 	if (ret) {
- 		dev_err(&pdev->dev, "spi master registration failed: %d\n",
- 			ret);
--		goto err_dma_release;
-+		goto err_pm_disable;
+-	dma->chan_rx = dma_request_slave_channel(dev, "rx");
+-	if (!dma->chan_rx) {
++	dma->chan_rx = dma_request_chan(dev, "rx");
++	if (IS_ERR(dma->chan_rx)) {
+ 		dev_err(dev, "rx dma channel not available\n");
+-		ret = -ENODEV;
++		ret = PTR_ERR(dma->chan_rx);
+ 		return ret;
  	}
  
- 	if (!master->cs_gpiods) {
- 		dev_err(&pdev->dev, "no CS gpios available\n");
- 		ret = -EINVAL;
--		goto err_dma_release;
-+		goto err_pm_disable;
+-	dma->chan_tx = dma_request_slave_channel(dev, "tx");
+-	if (!dma->chan_tx) {
++	dma->chan_tx = dma_request_chan(dev, "tx");
++	if (IS_ERR(dma->chan_tx)) {
+ 		dev_err(dev, "tx dma channel not available\n");
+-		ret = -ENODEV;
++		ret = PTR_ERR(dma->chan_tx);
+ 		goto err_tx_channel;
  	}
  
- 	dev_info(&pdev->dev, "driver initialized\n");
- 
- 	return 0;
- 
-+err_pm_disable:
-+	pm_runtime_disable(&pdev->dev);
- err_dma_release:
- 	if (spi->dma_tx)
- 		dma_release_channel(spi->dma_tx);
- 	if (spi->dma_rx)
- 		dma_release_channel(spi->dma_rx);
--
--	pm_runtime_disable(&pdev->dev);
- err_clk_disable:
- 	clk_disable_unprepare(spi->clk);
- err_master_put:
 -- 
 2.20.1

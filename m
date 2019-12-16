@@ -1,25 +1,29 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: fsl: use platform_get_irq() instead of of_irq_to_resource()" to the spi tree
-Date: Mon, 16 Dec 2019 12:06:21 +0000
-Message-ID: <applied-091a277fd0b3356dca1e29858c1c96983fc9cb25.1576172743.git.christophe.leroy@c-s.fr>
-References: <091a277fd0b3356dca1e29858c1c96983fc9cb25.1576172743.git.christophe.leroy@c-s.fr>
-Cc: devicetree@vger.kernel.org, kbuild test robot <lkp@intel.com>,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        stable@vger.kernel.org
-To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Applied "spi: img-spfi: Use dma_request_chan() instead dma_request_slave_channel()" to the spi tree
+Date: Mon, 16 Dec 2019 12:06:12 +0000
+Message-ID: <applied-20191212135550.4634-5-peter.ujfalusi@ti.com>
+References: <20191212135550.4634-5-peter.ujfalusi@ti.com>
+Cc: alexandre.torgue@st.com, baohua@kernel.org, broonie@kernel.org,
+        f.fainelli@gmail.com, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+        linux-spi@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        Mark Brown <broonie@kernel.org>, mcoquelin.stm32@gmail.com,
+        nsaenzjulienne@suse.de, rjui@broadcom.com, sbranden@broadcom.com,
+        s.hauer@pengutronix.de, shawnguo@kernel.org, vkoul@kernel.org
+To: Peter Ujfalusi <peter.ujfalusi@ti.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <091a277fd0b3356dca1e29858c1c96983fc9cb25.1576172743.git.christophe.leroy@c-s.fr>
+In-Reply-To: <20191212135550.4634-5-peter.ujfalusi@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: fsl: use platform_get_irq() instead of of_irq_to_resource()
+   spi: img-spfi: Use dma_request_chan() instead dma_request_slave_channel()
 
 has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.6
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
@@ -40,44 +44,53 @@ to this mail.
 Thanks,
 Mark
 
->From 63aa6a692595d47a0785297b481072086b9272d2 Mon Sep 17 00:00:00 2001
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Date: Thu, 12 Dec 2019 17:47:24 +0000
-Subject: [PATCH] spi: fsl: use platform_get_irq() instead of
- of_irq_to_resource()
+>From 6bfbf4d0aa0c5ebfd4442e1200b21565703e90ed Mon Sep 17 00:00:00 2001
+From: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Date: Thu, 12 Dec 2019 15:55:45 +0200
+Subject: [PATCH] spi: img-spfi: Use dma_request_chan() instead
+ dma_request_slave_channel()
 
-Unlike irq_of_parse_and_map() which has a dummy definition on SPARC,
-of_irq_to_resource() hasn't.
+dma_request_slave_channel() is a wrapper on top of dma_request_chan()
+eating up the error code.
 
-But as platform_get_irq() can be used instead and is generic, use it.
+By using dma_request_chan() directly the driver can support deferred
+probing against DMA.
 
-Reported-by: kbuild test robot <lkp@intel.com>
-Suggested-by: Mark Brown <broonie@kernel.org>
-Fixes: 	3194d2533eff ("spi: fsl: don't map irq during probe")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-Link: https://lore.kernel.org/r/091a277fd0b3356dca1e29858c1c96983fc9cb25.1576172743.git.christophe.leroy@c-s.fr
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Link: https://lore.kernel.org/r/20191212135550.4634-5-peter.ujfalusi@ti.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-fsl-spi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-img-spfi.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index d0ad9709f4a6..fb4159ad6bf6 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -746,9 +746,9 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
- 	if (ret)
- 		goto err;
+diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
+index f4a8f470aecc..8543f5ed1099 100644
+--- a/drivers/spi/spi-img-spfi.c
++++ b/drivers/spi/spi-img-spfi.c
+@@ -666,8 +666,22 @@ static int img_spfi_probe(struct platform_device *pdev)
+ 	master->unprepare_message = img_spfi_unprepare;
+ 	master->handle_err = img_spfi_handle_err;
  
--	irq = of_irq_to_resource(np, 0, NULL);
--	if (irq <= 0) {
--		ret = -EINVAL;
-+	irq = platform_get_irq(ofdev, 0);
-+	if (irq < 0) {
-+		ret = irq;
- 		goto err;
- 	}
- 
+-	spfi->tx_ch = dma_request_slave_channel(spfi->dev, "tx");
+-	spfi->rx_ch = dma_request_slave_channel(spfi->dev, "rx");
++	spfi->tx_ch = dma_request_chan(spfi->dev, "tx");
++	if (IS_ERR(spfi->tx_ch)) {
++		ret = PTR_ERR(spfi->tx_ch);
++		spfi->tx_ch = NULL;
++		if (ret == -EPROBE_DEFER)
++			goto disable_pm;
++	}
++
++	spfi->rx_ch = dma_request_chan(spfi->dev, "rx");
++	if (IS_ERR(spfi->rx_ch)) {
++		ret = PTR_ERR(spfi->rx_ch);
++		spfi->rx_ch = NULL;
++		if (ret == -EPROBE_DEFER)
++			goto disable_pm;
++	}
++
+ 	if (!spfi->tx_ch || !spfi->rx_ch) {
+ 		if (spfi->tx_ch)
+ 			dma_release_channel(spfi->tx_ch);
 -- 
 2.20.1

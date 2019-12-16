@@ -1,85 +1,265 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: mxs: Use dma_request_chan() instead dma_request_slave_channel()" to the spi tree
-Date: Mon, 16 Dec 2019 12:06:09 +0000
-Message-ID: <applied-20191212135550.4634-6-peter.ujfalusi@ti.com>
-References: <20191212135550.4634-6-peter.ujfalusi@ti.com>
-Cc: alexandre.torgue@st.com, baohua@kernel.org, broonie@kernel.org,
-        f.fainelli@gmail.com, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
-        linux-spi@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        Mark Brown <broonie@kernel.org>, mcoquelin.stm32@gmail.com,
-        nsaenzjulienne@suse.de, rjui@broadcom.com, sbranden@broadcom.com,
-        s.hauer@pengutronix.de, shawnguo@kernel.org, vkoul@kernel.org
-To: Peter Ujfalusi <peter.ujfalusi@ti.com>
+From: Vignesh Raghavendra <vigneshr@ti.com>
+Subject: Re: [PATCH v3 1/2] dt-bindings: spi: Add schema for Cadence QSPI
+ Controller driver
+Date: Mon, 16 Dec 2019 18:20:30 +0530
+Message-ID: <8d71f459-96a2-4b09-05e1-5f905e9bb3af@ti.com>
+References: <20191209084035.55603-1-vadivel.muruganx.ramuthevar@linux.intel.com>
+ <20191209084035.55603-2-vadivel.muruganx.ramuthevar@linux.intel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Cc: <broonie@kernel.org>, <robh+dt@kernel.org>,
+        <cheol.yong.kim@intel.com>, <qi-ming.wu@intel.com>
+To: "Ramuthevar,Vadivel MuruganX"
+        <vadivel.muruganx.ramuthevar@linux.intel.com>,
+        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191212135550.4634-6-peter.ujfalusi@ti.com>
+In-Reply-To: <20191209084035.55603-2-vadivel.muruganx.ramuthevar@linux.intel.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+Hi,
 
-   spi: mxs: Use dma_request_chan() instead dma_request_slave_channel()
+On 09/12/19 2:10 pm, Ramuthevar,Vadivel MuruganX wrote:
+> From: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
+> 
+> Add dt-bindings documentation for Cadence-QSPI controller to support
+> spi based flash memories.
+> 
+> Signed-off-by: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
+> ---
+>  .../devicetree/bindings/spi/cadence,qspi.yaml      | 162 +++++++++++++++++++++
+>  1 file changed, 162 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/cadence,qspi.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/cadence,qspi.yaml b/Documentation/devicetree/bindings/spi/cadence,qspi.yaml
+> new file mode 100644
+> index 000000000000..7756c34bb453
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/cadence,qspi.yaml
+> @@ -0,0 +1,162 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: "http://devicetree.org/schemas/spi/cadence,qspi.yaml#"
+> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
+> +
+> +title: Cadence QSPI Flash Controller support
+> +
+> +maintainers:
+> +  - Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
+> +
+> +allOf:
+> +  - $ref: "spi-controller.yaml#"
+> +
+> +description: |
+> +  Add support for the Cadence QSPI controller,This controller is
+> +  present in the Intel LGM, Altera SoCFPGA and TI SoCs and this driver
+> +  has been tested On Intel's LGM SoC.
+> +
 
-has been applied to the spi tree at
+This looks like a commit message. Description should probably says
+something like "Binding Documentation for Cadence QSPI controller..."
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.6
+> +  - compatible : should be one of the following:
+> +        Generic default - "cdns,qspi-nor".
+> +        For TI 66AK2G SoC - "ti,k2g-qspi", "cdns,qspi-nor".
+> +        For TI AM654 SoC  - "ti,am654-ospi", "cdns,qspi-nor".
+> +        For Intel LGM SoC - "intel,lgm-qspi", "cdns,qspi-nor".
+> +
+> +properties:
+> +  compatible:
+> +    enum:
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+This should be:
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+  compatible:
+    oneOf:
+      - items:
+        - enum:
+           - ti,k2g-qspi
+        - const: cdns,qspi-nor
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+      - items:
+        - enum:
+           - ti,am654-ospi
+        - const: cdns,qspi-nor
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+      - items:
+        - enum:
+           - intel,lgm-qspi
+        - const: cdns,qspi-nor
 
-Thanks,
-Mark
+      - items:
+        - const: cdns,qspi-nor
 
->From 7ccffd41b2d4d180dcdcc03c54c446621e34bca5 Mon Sep 17 00:00:00 2001
-From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Date: Thu, 12 Dec 2019 15:55:46 +0200
-Subject: [PATCH] spi: mxs: Use dma_request_chan() instead
- dma_request_slave_channel()
+> +      - cadence,qspi
 
-dma_request_slave_channel() is a wrapper on top of dma_request_chan()
-eating up the error code.
+This wrong and does not match what you is there in description above.
+"cadence" is not a valid vendor prefix... It should be "cdns" as per
+Documentation/devicetree/bindings/vendor-prefixes.yaml
 
-By using dma_request_chan() directly the driver can support deferred
-probing against DMA.
+Have you verified this yaml schema? I see bunch of errors for my platform
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Link: https://lore.kernel.org/r/20191212135550.4634-6-peter.ujfalusi@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-mxs.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> +      - cdns,qspi-nor
+> +      - ti,k2g-qspi
+> +      - ti,am654-ospi
+> +      - intel,lgm-qspi
+> +
+> +  reg:
+> +    description: |
+> +      Contains two entries, each of which is a tuple consisting of a
+> +      Physical address and length. The first entry is the address and
+> +      length of the controller register set. The second entry is the
+> +      address and length of the QSPI Controller data area.
 
-diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-index 996c1c8a9c71..dce85ee07cd0 100644
---- a/drivers/spi/spi-mxs.c
-+++ b/drivers/spi/spi-mxs.c
-@@ -590,10 +590,10 @@ static int mxs_spi_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto out_master_free;
- 
--	ssp->dmach = dma_request_slave_channel(&pdev->dev, "rx-tx");
--	if (!ssp->dmach) {
-+	ssp->dmach = dma_request_chan(&pdev->dev, "rx-tx");
-+	if (IS_ERR(ssp->dmach)) {
- 		dev_err(ssp->dev, "Failed to request DMA\n");
--		ret = -ENODEV;
-+		ret = PTR_ERR(ssp->dmach);
- 		goto out_master_free;
- 	}
- 
+Don't you need to put a constraint here, like:
+
+maxItems: 2
+
+> +
+> +  interrupts:
+> +    description:
+> +      Unit interrupt specifier for the controller interrupt.
+> +
+
+maxItems: 1??
+
+> +  clocks:
+> +    description:
+> +      phandle to the Quad SPI clock.
+> +
+
+maxItems: 1??
+
+> +  cdns,fifo-depth:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      Size of the data FIFO in words.
+> +
+> +  cdns,fifo-width:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      Bus width of the data FIFO in bytes.
+> +
+> +  cdns,trigger-address:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      32-bit indirect AHB trigger address.
+> +
+> +  cdns,is-decoded-cs:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      Flag to indicate whether decoder is used or not.
+> +
+> +  cdns,rclk-en:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: |
+> +      Flag to indicate that QSPI return clock is used to latch the read data
+> +      rather than the QSPI clock. Make sure that QSPI return clock is populated
+> +      on the board before using this property.
+> +
+> +  resets:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+> +  reset-names:
+> +    minItems: 1
+> +    maxItems: 2
+> +    items:
+> +      - const: qspi
+> +      - const: qspi-ocp
+> +
+> +# subnode's properties
+> +patternProperties:
+> +  "^.*@[0-9a-fA-F]+$":
+> +    type: object
+> +    description:
+> +      flash device uses the subnodes below defined properties.
+> +
+> +  cdns,read-delay:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      Delay for read capture logic, in clock cycles.
+> +
+> +  cdns,tshsl-ns:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: |
+> +      Delay in nanoseconds for the length that the master mode chip select
+> +      outputs are de-asserted between transactions.
+> +
+> +  cdns,tsd2d-ns:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: |
+> +      Delay in nanoseconds between one chip select being de-activated
+> +      and the activation of another.
+> +
+> +  cdns,tchsh-ns:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: |
+> +      Delay in nanoseconds between last bit of current transaction and
+> +      deasserting the device chip select (qspi_n_ss_out).
+> +
+> +  cdns,tslch-ns:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: |
+> +      Delay in nanoseconds between setting qspi_n_ss_out low and
+> +      first bit transfer.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - clocks
+
+> +  - cdns,is-decoded-cs
+
+Not a required property as per existing DT bindings
+
+
+> +  - cdns,fifo-depth
+> +  - cdns,fifo-width
+> +  - cdns,trigger-address
+
+
+> +  - resets
+> +  - reset-names
+
+Again optional properties
+
+> +
+> +examples:
+> +  - |
+> +    qspi: spi@ff705000 {
+> +          compatible = "cadence,qspi", "cdns,qspi-nor";
+> +          #address-cells = <1>;
+> +          #size-cells = <0>;
+> +          reg = <0xff705000 0x1000>,
+> +                <0xffa00000 0x1000>;
+> +          interrupts = <0 151 4>;
+> +          clocks = <&qspi_clk>;
+> +          cdns,is-decoded-cs;
+> +          cdns,fifo-depth = <128>;
+> +          cdns,fifo-width = <4>;
+> +          cdns,trigger-address = <0x00000000>;
+> +          resets = <&rst QSPI_RESET>, <&rst QSPI_OCP_RESET>;
+> +          reset-names = "qspi", "qspi-ocp";
+> +
+> +          flash0: n25q00@0 {
+> +              ...
+> +              cdns,read-delay = <4>;
+> +              cdns,tshsl-ns = <50>;
+> +              cdns,tsd2d-ns = <50>;
+> +              cdns,tchsh-ns = <4>;
+> +              cdns,tslch-ns = <4>;
+> +          };
+> +    };
+> +
+> 
+
+No blank line before EOF, please
+
 -- 
-2.20.1
+Regards
+Vignesh

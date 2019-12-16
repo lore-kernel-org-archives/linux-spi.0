@@ -1,265 +1,68 @@
-From: Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Re: [PATCH v3 1/2] dt-bindings: spi: Add schema for Cadence QSPI
- Controller driver
-Date: Mon, 16 Dec 2019 18:20:30 +0530
-Message-ID: <8d71f459-96a2-4b09-05e1-5f905e9bb3af@ti.com>
-References: <20191209084035.55603-1-vadivel.muruganx.ramuthevar@linux.intel.com>
- <20191209084035.55603-2-vadivel.muruganx.ramuthevar@linux.intel.com>
+From: John Garry <john.garry@huawei.com>
+Subject: Re: [PATCH v2 0/3] HiSilicon v3xx SFC driver
+Date: Mon, 16 Dec 2019 14:52:23 +0000
+Message-ID: <65a6d94b-95b7-b11b-2234-c091ba3f671e@huawei.com>
+References: <1575900490-74467-1-git-send-email-john.garry@huawei.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: <broonie@kernel.org>, <robh+dt@kernel.org>,
-        <cheol.yong.kim@intel.com>, <qi-ming.wu@intel.com>
-To: "Ramuthevar,Vadivel MuruganX"
-        <vadivel.muruganx.ramuthevar@linux.intel.com>,
-        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Cc: <linuxarm@huawei.com>, <linux-kernel@vger.kernel.org>,
+        <linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>,
+        <xuejiancheng@hisilicon.com>, <fengsheng5@huawei.com>,
+        <chenxiang66@hisilicon.com>
+To: <broonie@kernel.org>, <marek.vasut@gmail.com>,
+        <tudor.ambarus@microchip.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191209084035.55603-2-vadivel.muruganx.ramuthevar@linux.intel.com>
+In-Reply-To: <1575900490-74467-1-git-send-email-john.garry@huawei.com>
 Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
-
-On 09/12/19 2:10 pm, Ramuthevar,Vadivel MuruganX wrote:
-> From: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
-> 
-> Add dt-bindings documentation for Cadence-QSPI controller to support
-> spi based flash memories.
-> 
-> Signed-off-by: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
-> ---
->  .../devicetree/bindings/spi/cadence,qspi.yaml      | 162 +++++++++++++++++++++
->  1 file changed, 162 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/cadence,qspi.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/cadence,qspi.yaml b/Documentation/devicetree/bindings/spi/cadence,qspi.yaml
-> new file mode 100644
-> index 000000000000..7756c34bb453
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/cadence,qspi.yaml
-> @@ -0,0 +1,162 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: "http://devicetree.org/schemas/spi/cadence,qspi.yaml#"
-> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-> +
-> +title: Cadence QSPI Flash Controller support
-> +
-> +maintainers:
-> +  - Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
-> +
-> +allOf:
-> +  - $ref: "spi-controller.yaml#"
-> +
-> +description: |
-> +  Add support for the Cadence QSPI controller,This controller is
-> +  present in the Intel LGM, Altera SoCFPGA and TI SoCs and this driver
-> +  has been tested On Intel's LGM SoC.
-> +
-
-This looks like a commit message. Description should probably says
-something like "Binding Documentation for Cadence QSPI controller..."
-
-> +  - compatible : should be one of the following:
-> +        Generic default - "cdns,qspi-nor".
-> +        For TI 66AK2G SoC - "ti,k2g-qspi", "cdns,qspi-nor".
-> +        For TI AM654 SoC  - "ti,am654-ospi", "cdns,qspi-nor".
-> +        For Intel LGM SoC - "intel,lgm-qspi", "cdns,qspi-nor".
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-
-This should be:
-
-  compatible:
-    oneOf:
-      - items:
-        - enum:
-           - ti,k2g-qspi
-        - const: cdns,qspi-nor
-
-      - items:
-        - enum:
-           - ti,am654-ospi
-        - const: cdns,qspi-nor
-
-      - items:
-        - enum:
-           - intel,lgm-qspi
-        - const: cdns,qspi-nor
-
-      - items:
-        - const: cdns,qspi-nor
-
-> +      - cadence,qspi
-
-This wrong and does not match what you is there in description above.
-"cadence" is not a valid vendor prefix... It should be "cdns" as per
-Documentation/devicetree/bindings/vendor-prefixes.yaml
-
-Have you verified this yaml schema? I see bunch of errors for my platform
-
-> +      - cdns,qspi-nor
-> +      - ti,k2g-qspi
-> +      - ti,am654-ospi
-> +      - intel,lgm-qspi
-> +
-> +  reg:
-> +    description: |
-> +      Contains two entries, each of which is a tuple consisting of a
-> +      Physical address and length. The first entry is the address and
-> +      length of the controller register set. The second entry is the
-> +      address and length of the QSPI Controller data area.
-
-Don't you need to put a constraint here, like:
-
-maxItems: 2
-
-> +
-> +  interrupts:
-> +    description:
-> +      Unit interrupt specifier for the controller interrupt.
-> +
-
-maxItems: 1??
-
-> +  clocks:
-> +    description:
-> +      phandle to the Quad SPI clock.
-> +
-
-maxItems: 1??
-
-> +  cdns,fifo-depth:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      Size of the data FIFO in words.
-> +
-> +  cdns,fifo-width:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      Bus width of the data FIFO in bytes.
-> +
-> +  cdns,trigger-address:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      32-bit indirect AHB trigger address.
-> +
-> +  cdns,is-decoded-cs:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      Flag to indicate whether decoder is used or not.
-> +
-> +  cdns,rclk-en:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      Flag to indicate that QSPI return clock is used to latch the read data
-> +      rather than the QSPI clock. Make sure that QSPI return clock is populated
-> +      on the board before using this property.
-> +
-> +  resets:
-> +    minItems: 1
-> +    maxItems: 2
-> +
-> +  reset-names:
-> +    minItems: 1
-> +    maxItems: 2
-> +    items:
-> +      - const: qspi
-> +      - const: qspi-ocp
-> +
-> +# subnode's properties
-> +patternProperties:
-> +  "^.*@[0-9a-fA-F]+$":
-> +    type: object
-> +    description:
-> +      flash device uses the subnodes below defined properties.
-> +
-> +  cdns,read-delay:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      Delay for read capture logic, in clock cycles.
-> +
-> +  cdns,tshsl-ns:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      Delay in nanoseconds for the length that the master mode chip select
-> +      outputs are de-asserted between transactions.
-> +
-> +  cdns,tsd2d-ns:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      Delay in nanoseconds between one chip select being de-activated
-> +      and the activation of another.
-> +
-> +  cdns,tchsh-ns:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      Delay in nanoseconds between last bit of current transaction and
-> +      deasserting the device chip select (qspi_n_ss_out).
-> +
-> +  cdns,tslch-ns:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      Delay in nanoseconds between setting qspi_n_ss_out low and
-> +      first bit transfer.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - clocks
-
-> +  - cdns,is-decoded-cs
-
-Not a required property as per existing DT bindings
-
-
-> +  - cdns,fifo-depth
-> +  - cdns,fifo-width
-> +  - cdns,trigger-address
-
-
-> +  - resets
-> +  - reset-names
-
-Again optional properties
-
-> +
-> +examples:
-> +  - |
-> +    qspi: spi@ff705000 {
-> +          compatible = "cadence,qspi", "cdns,qspi-nor";
-> +          #address-cells = <1>;
-> +          #size-cells = <0>;
-> +          reg = <0xff705000 0x1000>,
-> +                <0xffa00000 0x1000>;
-> +          interrupts = <0 151 4>;
-> +          clocks = <&qspi_clk>;
-> +          cdns,is-decoded-cs;
-> +          cdns,fifo-depth = <128>;
-> +          cdns,fifo-width = <4>;
-> +          cdns,trigger-address = <0x00000000>;
-> +          resets = <&rst QSPI_RESET>, <&rst QSPI_OCP_RESET>;
-> +          reset-names = "qspi", "qspi-ocp";
-> +
-> +          flash0: n25q00@0 {
-> +              ...
-> +              cdns,read-delay = <4>;
-> +              cdns,tshsl-ns = <50>;
-> +              cdns,tsd2d-ns = <50>;
-> +              cdns,tchsh-ns = <4>;
-> +              cdns,tslch-ns = <4>;
-> +          };
-> +    };
-> +
+On 09/12/2019 14:08, John Garry wrote:
+> This patchset introduces support for the HiSilicon SFC V3XX driver.
 > 
 
-No blank line before EOF, please
+Hi guys,
 
--- 
-Regards
-Vignesh
+Just a friendly reminder on this series.
+
+Thanks,
+John
+
+> Whilst the kernel tree already includes support for a "HiSilicon SFC
+> driver", that is for different HW. Indeed, as mentioned in patch #1, the
+> naming for that driver could be better, as it should support more memory
+> technologies than SPI NOR (as I have been told), and it is actually known
+> internally as FMC. As such, maybe "hisi-fmc" would have been better, but
+> we can't change that now.
+> 
+> I used V3XX in this driver name, as that is the unique versioning for
+> this HW.
+> 
+> As for the driver itself, it is quite simple. Only ACPI firmware is
+> supported, and we assume m25p80 compatible SPI NOR part will be used.
+> 
+> DMA is not supported, and we just use polling mode for operation
+> completion notification. The driver uses the SPI MEM OPs.
+> 
+> Changes from v1:
+> - Add ACPI kconfig dependency
+> - Fix up header comment style
+> - Change macros naming style
+> - Try to enforce aligned accesses in hisi_sfc_v3xx_adjust_op_size()
+> 
+> John Garry (3):
+>    mtd: spi-nor: hisi-sfc: Try to provide some clarity on which SFC we
+>      are
+>    spi: Add HiSilicon v3xx SPI NOR flash controller driver
+>    MAINTAINERS: Add a maintainer for the HiSilicon v3xx SFC driver
+> 
+>   MAINTAINERS                     |   6 +
+>   drivers/mtd/spi-nor/Kconfig     |   4 +-
+>   drivers/mtd/spi-nor/hisi-sfc.c  |   2 +-
+>   drivers/spi/Kconfig             |   9 +
+>   drivers/spi/Makefile            |   1 +
+>   drivers/spi/spi-hisi-sfc-v3xx.c | 284 ++++++++++++++++++++++++++++++++
+>   6 files changed, 303 insertions(+), 3 deletions(-)
+>   create mode 100644 drivers/spi/spi-hisi-sfc-v3xx.c
+> 

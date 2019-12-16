@@ -1,51 +1,52 @@
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH] powerpc/devicetrees: Change 'gpios' to 'cs-gpios' on
- fsl,spi nodes
-Date: Sat, 14 Dec 2019 08:30:11 +0100
-Message-ID: <678cdcce-9bad-519a-68a5-a43414c15f94@c-s.fr>
-References: <7556683b57d8ce100855857f03d1cd3d2903d045.1574943062.git.christophe.leroy@c-s.fr>
- <20191213213418.GA17361@bogus>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: bcm2835: don't print error on clk_get() DEFER
+Date: Mon, 16 Dec 2019 11:20:36 +0000
+Message-ID: <20191216112036.GA4161@sirena.org.uk>
+References: <20191212231213.29061-1-jquinlan@broadcom.com>
+ <20191213114138.GB4644@sirena.org.uk>
+ <CA+-6iNz4WVJzfntJ5CUXBYvqQG4kEj8g8g_HOxZN5rFWTUvv3g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, devicetree@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-spi@vger.kernel.org
-To: Rob Herring <robh@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="TB36FDmn/VVEgNH/"
+Cc: linux-spi@vger.kernel.org, Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <ray.jui@broadcom.com>,
+        Scott Branden <scott.branden@broadcom.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+To: Jim Quinlan <james.quinlan@broadcom.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191213213418.GA17361@bogus>
-Content-Language: fr
+Content-Disposition: inline
+In-Reply-To: <CA+-6iNz4WVJzfntJ5CUXBYvqQG4kEj8g8g_HOxZN5rFWTUvv3g@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
+--TB36FDmn/VVEgNH/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Le 13/12/2019 à 22:34, Rob Herring a écrit :
-> On Thu, Nov 28, 2019 at 12:16:35PM +0000, Christophe Leroy wrote:
->> Since commit 0f0581b24bd0 ("spi: fsl: Convert to use CS GPIO
->> descriptors"), the prefered way to define chipselect GPIOs is using
->> 'cs-gpios' property instead of the legacy 'gpios' property.
-> 
-> This will break using a new dtb on a kernel without the above commit. Or
-> with any OS that never made the change.
+On Fri, Dec 13, 2019 at 10:33:41AM -0500, Jim Quinlan wrote:
 
-Why would anybody use a new dtb on an old kernel ? I have not tagged 
-this change for stable, it will only apply to DTBs in new kernels, won't 
-it ?
+> Understood; I could do a dev_dbg() on -EPROBE_DEFER and dev_err() on
+> all other errors -- would that work for you?
 
-That's not the first time DTS have to change for new kernels. For 
-instance, some time ago I had to replace all 'gpios' property by a set 
-of 'rdy-gpio', 'nce-gpio', 'ale-gpio' and 'cle-gpio' properties to 
-continue using 'gpio-control-nand' driver.
+Yes, that sounds good.
 
-> 
-> I'm fine with the doc change, but you should keep 'gpios' as deprecated.
+--TB36FDmn/VVEgNH/
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Ok
+-----BEGIN PGP SIGNATURE-----
 
-Christophe
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl33aIEACgkQJNaLcl1U
+h9AC6wf/R5j2jqumwfRVO/ylQSKn8tJJydGHwHAhVQa0OkQU0O+BqOeMBYdKfgJO
+bN4q07uuvPEXt/IAhHh3RGvlQmVjCjmsh4fi+cErbP94Vq4RQKk0C8Oz43mYDAdd
+N0L0RT3ZaL3Lx8VB9zpBOcoVIlnvxp5NsadklXFomNw0jPODBmZigQ2JozKGrQJg
+JNPxPpJZbSm2CIiX+mov8XYMYY65n5RGj2VN2EfN2vlkoLyCG5KG81OwC+dfj0UN
++5pC/lfxyOh7mLgdPOpbN8JyGBp+ZmZQCMVMI9VXohBg3O38xiKoc/VX3kmhxGER
+diLze8h6JB5EC49xjFrPPHxauD0IQw==
+=rvrz
+-----END PGP SIGNATURE-----
+
+--TB36FDmn/VVEgNH/--

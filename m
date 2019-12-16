@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: bcm2835: Use dma_request_chan() instead dma_request_slave_channel()" to the spi tree
-Date: Mon, 16 Dec 2019 12:06:14 +0000
-Message-ID: <applied-20191212135550.4634-4-peter.ujfalusi@ti.com>
-References: <20191212135550.4634-4-peter.ujfalusi@ti.com>
+Subject: Applied "spi: bcm2835: Release the DMA channel if probe fails after dma_init" to the spi tree
+Date: Mon, 16 Dec 2019 12:06:17 +0000
+Message-ID: <applied-20191212135550.4634-3-peter.ujfalusi@ti.com>
+References: <20191212135550.4634-3-peter.ujfalusi@ti.com>
 Cc: alexandre.torgue@st.com, baohua@kernel.org, broonie@kernel.org,
         f.fainelli@gmail.com, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
@@ -13,13 +13,13 @@ Cc: alexandre.torgue@st.com, baohua@kernel.org, broonie@kernel.org,
         s.hauer@pengutronix.de, shawnguo@kernel.org, vkoul@kernel.org
 To: Peter Ujfalusi <peter.ujfalusi@ti.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191212135550.4634-4-peter.ujfalusi@ti.com>
+In-Reply-To: <20191212135550.4634-3-peter.ujfalusi@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: bcm2835: Use dma_request_chan() instead dma_request_slave_channel()
+   spi: bcm2835: Release the DMA channel if probe fails after dma_init
 
 has been applied to the spi tree at
 
@@ -44,105 +44,51 @@ to this mail.
 Thanks,
 Mark
 
->From 6133fed0539bc5c059d3a661b61704159ba448a6 Mon Sep 17 00:00:00 2001
+>From 666224b43b4bd4612ce3b758c038f9bc5c5e3fcb Mon Sep 17 00:00:00 2001
 From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Date: Thu, 12 Dec 2019 15:55:44 +0200
-Subject: [PATCH] spi: bcm2835: Use dma_request_chan() instead
- dma_request_slave_channel()
+Date: Thu, 12 Dec 2019 15:55:43 +0200
+Subject: [PATCH] spi: bcm2835: Release the DMA channel if probe fails after
+ dma_init
 
-dma_request_slave_channel() is a wrapper on top of dma_request_chan()
-eating up the error code.
-
-By using dma_request_chan() directly the driver can support deferred
-probing against DMA.
+The DMA channel was not released if either devm_request_irq() or
+devm_spi_register_controller() failed.
 
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Link: https://lore.kernel.org/r/20191212135550.4634-4-peter.ujfalusi@ti.com
+Reviewed-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Link: https://lore.kernel.org/r/20191212135550.4634-3-peter.ujfalusi@ti.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-bcm2835.c | 34 ++++++++++++++++++++++++----------
- 1 file changed, 24 insertions(+), 10 deletions(-)
+ drivers/spi/spi-bcm2835.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index 662d55e9f21d..69df79914504 100644
+index fb61a620effc..662d55e9f21d 100644
 --- a/drivers/spi/spi-bcm2835.c
 +++ b/drivers/spi/spi-bcm2835.c
-@@ -888,8 +888,8 @@ static void bcm2835_dma_release(struct spi_controller *ctlr,
- 	}
- }
- 
--static void bcm2835_dma_init(struct spi_controller *ctlr, struct device *dev,
--			     struct bcm2835_spi *bs)
-+static int bcm2835_dma_init(struct spi_controller *ctlr, struct device *dev,
-+			    struct bcm2835_spi *bs)
- {
- 	struct dma_slave_config slave_config;
- 	const __be32 *addr;
-@@ -900,19 +900,24 @@ static void bcm2835_dma_init(struct spi_controller *ctlr, struct device *dev,
- 	addr = of_get_address(ctlr->dev.of_node, 0, NULL, NULL);
- 	if (!addr) {
- 		dev_err(dev, "could not get DMA-register address - not using dma mode\n");
--		goto err;
-+		/* Fall back to interrupt mode */
-+		return 0;
- 	}
- 	dma_reg_base = be32_to_cpup(addr);
- 
- 	/* get tx/rx dma */
--	ctlr->dma_tx = dma_request_slave_channel(dev, "tx");
--	if (!ctlr->dma_tx) {
-+	ctlr->dma_tx = dma_request_chan(dev, "tx");
-+	if (IS_ERR(ctlr->dma_tx)) {
- 		dev_err(dev, "no tx-dma configuration found - not using dma mode\n");
-+		ret = PTR_ERR(ctlr->dma_tx);
-+		ctlr->dma_tx = NULL;
- 		goto err;
- 	}
--	ctlr->dma_rx = dma_request_slave_channel(dev, "rx");
--	if (!ctlr->dma_rx) {
-+	ctlr->dma_rx = dma_request_chan(dev, "rx");
-+	if (IS_ERR(ctlr->dma_rx)) {
- 		dev_err(dev, "no rx-dma configuration found - not using dma mode\n");
-+		ret = PTR_ERR(ctlr->dma_rx);
-+		ctlr->dma_rx = NULL;
- 		goto err_release;
+@@ -1327,20 +1327,22 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
+ 			       dev_name(&pdev->dev), ctlr);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "could not request IRQ: %d\n", err);
+-		goto out_clk_disable;
++		goto out_dma_release;
  	}
  
-@@ -997,7 +1002,7 @@ static void bcm2835_dma_init(struct spi_controller *ctlr, struct device *dev,
- 	/* all went well, so set can_dma */
- 	ctlr->can_dma = bcm2835_spi_can_dma;
+ 	err = devm_spi_register_controller(&pdev->dev, ctlr);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "could not register SPI controller: %d\n",
+ 			err);
+-		goto out_clk_disable;
++		goto out_dma_release;
+ 	}
  
--	return;
-+	return 0;
+ 	bcm2835_debugfs_create(bs, dev_name(&pdev->dev));
  
- err_config:
- 	dev_err(dev, "issue configuring dma: %d - not using DMA mode\n",
-@@ -1005,7 +1010,14 @@ static void bcm2835_dma_init(struct spi_controller *ctlr, struct device *dev,
- err_release:
- 	bcm2835_dma_release(ctlr, bs);
- err:
--	return;
-+	/*
-+	 * Only report error for deferred probing, otherwise fall back to
-+	 * interrupt mode
-+	 */
-+	if (ret != -EPROBE_DEFER)
-+		ret = 0;
-+
-+	return ret;
- }
+ 	return 0;
  
- static int bcm2835_spi_transfer_one_poll(struct spi_controller *ctlr,
-@@ -1317,7 +1329,9 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
- 
- 	clk_prepare_enable(bs->clk);
- 
--	bcm2835_dma_init(ctlr, &pdev->dev, bs);
-+	err = bcm2835_dma_init(ctlr, &pdev->dev, bs);
-+	if (err)
-+		goto out_clk_disable;
- 
- 	/* initialise the hardware with the default polarities */
- 	bcm2835_wr(bs, BCM2835_SPI_CS,
++out_dma_release:
++	bcm2835_dma_release(ctlr, bs);
+ out_clk_disable:
+ 	clk_disable_unprepare(bs->clk);
+ out_controller_put:
 -- 
 2.20.1

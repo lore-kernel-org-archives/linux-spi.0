@@ -1,29 +1,24 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: bcm2835: Release the DMA channel if probe fails after dma_init" to the spi tree
-Date: Mon, 16 Dec 2019 12:06:17 +0000
-Message-ID: <applied-20191212135550.4634-3-peter.ujfalusi@ti.com>
-References: <20191212135550.4634-3-peter.ujfalusi@ti.com>
-Cc: alexandre.torgue@st.com, baohua@kernel.org, broonie@kernel.org,
-        f.fainelli@gmail.com, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
-        linux-spi@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        Mark Brown <broonie@kernel.org>, mcoquelin.stm32@gmail.com,
-        nsaenzjulienne@suse.de, rjui@broadcom.com, sbranden@broadcom.com,
-        s.hauer@pengutronix.de, shawnguo@kernel.org, vkoul@kernel.org
-To: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Subject: Applied "spi: nxp-fspi: Ensure width is respected in spi-mem operations" to the spi tree
+Date: Mon, 16 Dec 2019 12:06:24 +0000
+Message-ID: <applied-20191211195730.26794-1-michael@walle.cc>
+References: <20191211195730.26794-1-michael@walle.cc>
+Cc: Ashish Kumar <ashish.kumar@nxp.com>, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        Yogesh Gaur <yogeshgaur.83@gmail.com>
+To: Michael Walle <michael@walle.cc>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191212135550.4634-3-peter.ujfalusi@ti.com>
+In-Reply-To: <20191211195730.26794-1-michael@walle.cc>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: bcm2835: Release the DMA channel if probe fails after dma_init
+   spi: nxp-fspi: Ensure width is respected in spi-mem operations
 
 has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.6
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
@@ -44,51 +39,39 @@ to this mail.
 Thanks,
 Mark
 
->From 666224b43b4bd4612ce3b758c038f9bc5c5e3fcb Mon Sep 17 00:00:00 2001
-From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Date: Thu, 12 Dec 2019 15:55:43 +0200
-Subject: [PATCH] spi: bcm2835: Release the DMA channel if probe fails after
- dma_init
+>From 007773e16a6f3f49d1439554078c3ba8af131998 Mon Sep 17 00:00:00 2001
+From: Michael Walle <michael@walle.cc>
+Date: Wed, 11 Dec 2019 20:57:30 +0100
+Subject: [PATCH] spi: nxp-fspi: Ensure width is respected in spi-mem
+ operations
 
-The DMA channel was not released if either devm_request_irq() or
-devm_spi_register_controller() failed.
+Make use of a core helper to ensure the desired width is respected
+when calling spi-mem operators.
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Reviewed-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-Link: https://lore.kernel.org/r/20191212135550.4634-3-peter.ujfalusi@ti.com
+Otherwise only the SPI controller will be matched with the flash chip,
+which might lead to wrong widths. Also consider the width specified by
+the user in the device tree.
+
+Fixes: a5356aef6a90 ("spi: spi-mem: Add driver for NXP FlexSPI controller")
+Signed-off-by: Michael Walle <michael@walle.cc>
+Link: https://lore.kernel.org/r/20191211195730.26794-1-michael@walle.cc
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-bcm2835.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/spi/spi-nxp-fspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index fb61a620effc..662d55e9f21d 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -1327,20 +1327,22 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
- 			       dev_name(&pdev->dev), ctlr);
- 	if (err) {
- 		dev_err(&pdev->dev, "could not request IRQ: %d\n", err);
--		goto out_clk_disable;
-+		goto out_dma_release;
- 	}
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index c36bb1bb464e..8c5084a3a617 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -439,7 +439,7 @@ static bool nxp_fspi_supports_op(struct spi_mem *mem,
+ 	    op->data.nbytes > f->devtype_data->txfifo)
+ 		return false;
  
- 	err = devm_spi_register_controller(&pdev->dev, ctlr);
- 	if (err) {
- 		dev_err(&pdev->dev, "could not register SPI controller: %d\n",
- 			err);
--		goto out_clk_disable;
-+		goto out_dma_release;
- 	}
+-	return true;
++	return spi_mem_default_supports_op(mem, op);
+ }
  
- 	bcm2835_debugfs_create(bs, dev_name(&pdev->dev));
- 
- 	return 0;
- 
-+out_dma_release:
-+	bcm2835_dma_release(ctlr, bs);
- out_clk_disable:
- 	clk_disable_unprepare(bs->clk);
- out_controller_put:
+ /* Instead of busy looping invoke readl_poll_timeout functionality. */
 -- 
 2.20.1

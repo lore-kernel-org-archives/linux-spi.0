@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: sirf: Use dma_request_chan() instead dma_request_slave_channel()" to the spi tree
-Date: Mon, 16 Dec 2019 12:06:06 +0000
-Message-ID: <applied-20191212135550.4634-7-peter.ujfalusi@ti.com>
-References: <20191212135550.4634-7-peter.ujfalusi@ti.com>
+Subject: Applied "spi: bcm2835: Use dma_request_chan() instead dma_request_slave_channel()" to the spi tree
+Date: Mon, 16 Dec 2019 12:06:14 +0000
+Message-ID: <applied-20191212135550.4634-4-peter.ujfalusi@ti.com>
+References: <20191212135550.4634-4-peter.ujfalusi@ti.com>
 Cc: alexandre.torgue@st.com, baohua@kernel.org, broonie@kernel.org,
         f.fainelli@gmail.com, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
@@ -13,13 +13,13 @@ Cc: alexandre.torgue@st.com, baohua@kernel.org, broonie@kernel.org,
         s.hauer@pengutronix.de, shawnguo@kernel.org, vkoul@kernel.org
 To: Peter Ujfalusi <peter.ujfalusi@ti.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191212135550.4634-7-peter.ujfalusi@ti.com>
+In-Reply-To: <20191212135550.4634-4-peter.ujfalusi@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: sirf: Use dma_request_chan() instead dma_request_slave_channel()
+   spi: bcm2835: Use dma_request_chan() instead dma_request_slave_channel()
 
 has been applied to the spi tree at
 
@@ -44,10 +44,10 @@ to this mail.
 Thanks,
 Mark
 
->From 401abb764abb6e42f539528e02127457eb0c5b32 Mon Sep 17 00:00:00 2001
+>From 6133fed0539bc5c059d3a661b61704159ba448a6 Mon Sep 17 00:00:00 2001
 From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Date: Thu, 12 Dec 2019 15:55:47 +0200
-Subject: [PATCH] spi: sirf: Use dma_request_chan() instead
+Date: Thu, 12 Dec 2019 15:55:44 +0200
+Subject: [PATCH] spi: bcm2835: Use dma_request_chan() instead
  dma_request_slave_channel()
 
 dma_request_slave_channel() is a wrapper on top of dma_request_chan()
@@ -57,38 +57,92 @@ By using dma_request_chan() directly the driver can support deferred
 probing against DMA.
 
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Link: https://lore.kernel.org/r/20191212135550.4634-7-peter.ujfalusi@ti.com
+Link: https://lore.kernel.org/r/20191212135550.4634-4-peter.ujfalusi@ti.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-sirf.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/spi/spi-bcm2835.c | 34 ++++++++++++++++++++++++----------
+ 1 file changed, 24 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
-index e1e639191557..8419e6722e17 100644
---- a/drivers/spi/spi-sirf.c
-+++ b/drivers/spi/spi-sirf.c
-@@ -1126,16 +1126,16 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
- 	sspi->bitbang.master->dev.of_node = pdev->dev.of_node;
- 
- 	/* request DMA channels */
--	sspi->rx_chan = dma_request_slave_channel(&pdev->dev, "rx");
--	if (!sspi->rx_chan) {
-+	sspi->rx_chan = dma_request_chan(&pdev->dev, "rx");
-+	if (IS_ERR(sspi->rx_chan)) {
- 		dev_err(&pdev->dev, "can not allocate rx dma channel\n");
--		ret = -ENODEV;
-+		ret = PTR_ERR(sspi->rx_chan);
- 		goto free_master;
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index 662d55e9f21d..69df79914504 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -888,8 +888,8 @@ static void bcm2835_dma_release(struct spi_controller *ctlr,
  	}
--	sspi->tx_chan = dma_request_slave_channel(&pdev->dev, "tx");
--	if (!sspi->tx_chan) {
-+	sspi->tx_chan = dma_request_chan(&pdev->dev, "tx");
-+	if (IS_ERR(sspi->tx_chan)) {
- 		dev_err(&pdev->dev, "can not allocate tx dma channel\n");
--		ret = -ENODEV;
-+		ret = PTR_ERR(sspi->tx_chan);
- 		goto free_rx_dma;
+ }
+ 
+-static void bcm2835_dma_init(struct spi_controller *ctlr, struct device *dev,
+-			     struct bcm2835_spi *bs)
++static int bcm2835_dma_init(struct spi_controller *ctlr, struct device *dev,
++			    struct bcm2835_spi *bs)
+ {
+ 	struct dma_slave_config slave_config;
+ 	const __be32 *addr;
+@@ -900,19 +900,24 @@ static void bcm2835_dma_init(struct spi_controller *ctlr, struct device *dev,
+ 	addr = of_get_address(ctlr->dev.of_node, 0, NULL, NULL);
+ 	if (!addr) {
+ 		dev_err(dev, "could not get DMA-register address - not using dma mode\n");
+-		goto err;
++		/* Fall back to interrupt mode */
++		return 0;
+ 	}
+ 	dma_reg_base = be32_to_cpup(addr);
+ 
+ 	/* get tx/rx dma */
+-	ctlr->dma_tx = dma_request_slave_channel(dev, "tx");
+-	if (!ctlr->dma_tx) {
++	ctlr->dma_tx = dma_request_chan(dev, "tx");
++	if (IS_ERR(ctlr->dma_tx)) {
+ 		dev_err(dev, "no tx-dma configuration found - not using dma mode\n");
++		ret = PTR_ERR(ctlr->dma_tx);
++		ctlr->dma_tx = NULL;
+ 		goto err;
+ 	}
+-	ctlr->dma_rx = dma_request_slave_channel(dev, "rx");
+-	if (!ctlr->dma_rx) {
++	ctlr->dma_rx = dma_request_chan(dev, "rx");
++	if (IS_ERR(ctlr->dma_rx)) {
+ 		dev_err(dev, "no rx-dma configuration found - not using dma mode\n");
++		ret = PTR_ERR(ctlr->dma_rx);
++		ctlr->dma_rx = NULL;
+ 		goto err_release;
  	}
  
+@@ -997,7 +1002,7 @@ static void bcm2835_dma_init(struct spi_controller *ctlr, struct device *dev,
+ 	/* all went well, so set can_dma */
+ 	ctlr->can_dma = bcm2835_spi_can_dma;
+ 
+-	return;
++	return 0;
+ 
+ err_config:
+ 	dev_err(dev, "issue configuring dma: %d - not using DMA mode\n",
+@@ -1005,7 +1010,14 @@ static void bcm2835_dma_init(struct spi_controller *ctlr, struct device *dev,
+ err_release:
+ 	bcm2835_dma_release(ctlr, bs);
+ err:
+-	return;
++	/*
++	 * Only report error for deferred probing, otherwise fall back to
++	 * interrupt mode
++	 */
++	if (ret != -EPROBE_DEFER)
++		ret = 0;
++
++	return ret;
+ }
+ 
+ static int bcm2835_spi_transfer_one_poll(struct spi_controller *ctlr,
+@@ -1317,7 +1329,9 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
+ 
+ 	clk_prepare_enable(bs->clk);
+ 
+-	bcm2835_dma_init(ctlr, &pdev->dev, bs);
++	err = bcm2835_dma_init(ctlr, &pdev->dev, bs);
++	if (err)
++		goto out_clk_disable;
+ 
+ 	/* initialise the hardware with the default polarities */
+ 	bcm2835_wr(bs, BCM2835_SPI_CS,
 -- 
 2.20.1

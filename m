@@ -1,68 +1,65 @@
-From: John Garry <john.garry@huawei.com>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH v2 0/3] HiSilicon v3xx SFC driver
-Date: Mon, 16 Dec 2019 14:52:23 +0000
-Message-ID: <65a6d94b-95b7-b11b-2234-c091ba3f671e@huawei.com>
+Date: Mon, 16 Dec 2019 14:56:25 +0000
+Message-ID: <20191216145625.GF4161@sirena.org.uk>
 References: <1575900490-74467-1-git-send-email-john.garry@huawei.com>
+ <65a6d94b-95b7-b11b-2234-c091ba3f671e@huawei.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: <linuxarm@huawei.com>, <linux-kernel@vger.kernel.org>,
-        <linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>,
-        <xuejiancheng@hisilicon.com>, <fengsheng5@huawei.com>,
-        <chenxiang66@hisilicon.com>
-To: <broonie@kernel.org>, <marek.vasut@gmail.com>,
-        <tudor.ambarus@microchip.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="yH1ZJFh+qWm+VodA"
+Cc: marek.vasut@gmail.com, tudor.ambarus@microchip.com,
+        linuxarm@huawei.com, linux-kernel@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        xuejiancheng@hisilicon.com, fengsheng5@huawei.com,
+        chenxiang66@hisilicon.com
+To: John Garry <john.garry@huawei.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1575900490-74467-1-git-send-email-john.garry@huawei.com>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <65a6d94b-95b7-b11b-2234-c091ba3f671e@huawei.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 09/12/2019 14:08, John Garry wrote:
-> This patchset introduces support for the HiSilicon SFC V3XX driver.
-> 
 
-Hi guys,
+--yH1ZJFh+qWm+VodA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Just a friendly reminder on this series.
+On Mon, Dec 16, 2019 at 02:52:23PM +0000, John Garry wrote:
+> On 09/12/2019 14:08, John Garry wrote:
+> > This patchset introduces support for the HiSilicon SFC V3XX driver.
+> >=20
+>=20
+> Hi guys,
+>=20
+> Just a friendly reminder on this series.
 
-Thanks,
-John
+Please don't send content free pings and please allow a reasonable time
+for review.  People get busy, go on holiday, attend conferences and so=20
+on so unless there is some reason for urgency (like critical bug fixes)
+please allow at least a couple of weeks for review.  If there have been
+review comments then people may be waiting for those to be addressed.
 
-> Whilst the kernel tree already includes support for a "HiSilicon SFC
-> driver", that is for different HW. Indeed, as mentioned in patch #1, the
-> naming for that driver could be better, as it should support more memory
-> technologies than SPI NOR (as I have been told), and it is actually known
-> internally as FMC. As such, maybe "hisi-fmc" would have been better, but
-> we can't change that now.
-> 
-> I used V3XX in this driver name, as that is the unique versioning for
-> this HW.
-> 
-> As for the driver itself, it is quite simple. Only ACPI firmware is
-> supported, and we assume m25p80 compatible SPI NOR part will be used.
-> 
-> DMA is not supported, and we just use polling mode for operation
-> completion notification. The driver uses the SPI MEM OPs.
-> 
-> Changes from v1:
-> - Add ACPI kconfig dependency
-> - Fix up header comment style
-> - Change macros naming style
-> - Try to enforce aligned accesses in hisi_sfc_v3xx_adjust_op_size()
-> 
-> John Garry (3):
->    mtd: spi-nor: hisi-sfc: Try to provide some clarity on which SFC we
->      are
->    spi: Add HiSilicon v3xx SPI NOR flash controller driver
->    MAINTAINERS: Add a maintainer for the HiSilicon v3xx SFC driver
-> 
->   MAINTAINERS                     |   6 +
->   drivers/mtd/spi-nor/Kconfig     |   4 +-
->   drivers/mtd/spi-nor/hisi-sfc.c  |   2 +-
->   drivers/spi/Kconfig             |   9 +
->   drivers/spi/Makefile            |   1 +
->   drivers/spi/spi-hisi-sfc-v3xx.c | 284 ++++++++++++++++++++++++++++++++
->   6 files changed, 303 insertions(+), 3 deletions(-)
->   create mode 100644 drivers/spi/spi-hisi-sfc-v3xx.c
-> 
+Sending content free pings adds to the mail volume (if they are seen at
+all) which is often the problem and since they can't be reviewed
+directly if something has gone wrong you'll have to resend the patches
+anyway, so sending again is generally a better approach though there are
+some other maintainers who like them - if in doubt look at how patches
+for the subsystem are normally handled.
+
+--yH1ZJFh+qWm+VodA
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl33mxgACgkQJNaLcl1U
+h9BkyAf9ERzOEHkj4pm1zcqytpYhQyLc/XjXH3fGYXrtycjyRGjH0+FOGFxRKFKz
+fSKqN7QBU2dWuPvKqvB43G/eIMrD0FR7Dg+SkbzW1761xgy0r3TWVF8Fgt+WtMki
+MpZisGQmpcWjVkYkwsd7FqMPhSxSNkpSQjYDGvuvJfJ+DALzTjwawoDDVECeNuRj
+P4gZscc2m79ff/24eTtmktjjzIIwT+Zv6qrjSx2e0LCqueLNzudNgL6ToP5QppU7
+zRgzI6MefT64/ffpcGa6yr7kBBWX9I33uuOAcgmY3NIQrFvDc8cxCfZZ9346e1wK
+Nrp6zKYgFjmfO3gYYW1cP8XJqd3OgQ==
+=JPvu
+-----END PGP SIGNATURE-----
+
+--yH1ZJFh+qWm+VodA--

@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: img-spfi: Use dma_request_chan() instead dma_request_slave_channel()" to the spi tree
-Date: Mon, 16 Dec 2019 12:06:12 +0000
-Message-ID: <applied-20191212135550.4634-5-peter.ujfalusi@ti.com>
-References: <20191212135550.4634-5-peter.ujfalusi@ti.com>
+Subject: Applied "spi: mxs: Use dma_request_chan() instead dma_request_slave_channel()" to the spi tree
+Date: Mon, 16 Dec 2019 12:06:09 +0000
+Message-ID: <applied-20191212135550.4634-6-peter.ujfalusi@ti.com>
+References: <20191212135550.4634-6-peter.ujfalusi@ti.com>
 Cc: alexandre.torgue@st.com, baohua@kernel.org, broonie@kernel.org,
         f.fainelli@gmail.com, linux-arm-kernel@lists.infradead.org,
         linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
@@ -13,13 +13,13 @@ Cc: alexandre.torgue@st.com, baohua@kernel.org, broonie@kernel.org,
         s.hauer@pengutronix.de, shawnguo@kernel.org, vkoul@kernel.org
 To: Peter Ujfalusi <peter.ujfalusi@ti.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191212135550.4634-5-peter.ujfalusi@ti.com>
+In-Reply-To: <20191212135550.4634-6-peter.ujfalusi@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: img-spfi: Use dma_request_chan() instead dma_request_slave_channel()
+   spi: mxs: Use dma_request_chan() instead dma_request_slave_channel()
 
 has been applied to the spi tree at
 
@@ -44,10 +44,10 @@ to this mail.
 Thanks,
 Mark
 
->From 6bfbf4d0aa0c5ebfd4442e1200b21565703e90ed Mon Sep 17 00:00:00 2001
+>From 7ccffd41b2d4d180dcdcc03c54c446621e34bca5 Mon Sep 17 00:00:00 2001
 From: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Date: Thu, 12 Dec 2019 15:55:45 +0200
-Subject: [PATCH] spi: img-spfi: Use dma_request_chan() instead
+Date: Thu, 12 Dec 2019 15:55:46 +0200
+Subject: [PATCH] spi: mxs: Use dma_request_chan() instead
  dma_request_slave_channel()
 
 dma_request_slave_channel() is a wrapper on top of dma_request_chan()
@@ -57,40 +57,29 @@ By using dma_request_chan() directly the driver can support deferred
 probing against DMA.
 
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Link: https://lore.kernel.org/r/20191212135550.4634-5-peter.ujfalusi@ti.com
+Link: https://lore.kernel.org/r/20191212135550.4634-6-peter.ujfalusi@ti.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-img-spfi.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/spi/spi-mxs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
-index f4a8f470aecc..8543f5ed1099 100644
---- a/drivers/spi/spi-img-spfi.c
-+++ b/drivers/spi/spi-img-spfi.c
-@@ -666,8 +666,22 @@ static int img_spfi_probe(struct platform_device *pdev)
- 	master->unprepare_message = img_spfi_unprepare;
- 	master->handle_err = img_spfi_handle_err;
+diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
+index 996c1c8a9c71..dce85ee07cd0 100644
+--- a/drivers/spi/spi-mxs.c
++++ b/drivers/spi/spi-mxs.c
+@@ -590,10 +590,10 @@ static int mxs_spi_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto out_master_free;
  
--	spfi->tx_ch = dma_request_slave_channel(spfi->dev, "tx");
--	spfi->rx_ch = dma_request_slave_channel(spfi->dev, "rx");
-+	spfi->tx_ch = dma_request_chan(spfi->dev, "tx");
-+	if (IS_ERR(spfi->tx_ch)) {
-+		ret = PTR_ERR(spfi->tx_ch);
-+		spfi->tx_ch = NULL;
-+		if (ret == -EPROBE_DEFER)
-+			goto disable_pm;
-+	}
-+
-+	spfi->rx_ch = dma_request_chan(spfi->dev, "rx");
-+	if (IS_ERR(spfi->rx_ch)) {
-+		ret = PTR_ERR(spfi->rx_ch);
-+		spfi->rx_ch = NULL;
-+		if (ret == -EPROBE_DEFER)
-+			goto disable_pm;
-+	}
-+
- 	if (!spfi->tx_ch || !spfi->rx_ch) {
- 		if (spfi->tx_ch)
- 			dma_release_channel(spfi->tx_ch);
+-	ssp->dmach = dma_request_slave_channel(&pdev->dev, "rx-tx");
+-	if (!ssp->dmach) {
++	ssp->dmach = dma_request_chan(&pdev->dev, "rx-tx");
++	if (IS_ERR(ssp->dmach)) {
+ 		dev_err(ssp->dev, "Failed to request DMA\n");
+-		ret = -ENODEV;
++		ret = PTR_ERR(ssp->dmach);
+ 		goto out_master_free;
+ 	}
+ 
 -- 
 2.20.1

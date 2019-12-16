@@ -1,24 +1,29 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: nxp-fspi: Ensure width is respected in spi-mem operations" to the spi tree
-Date: Mon, 16 Dec 2019 12:06:24 +0000
-Message-ID: <applied-20191211195730.26794-1-michael@walle.cc>
-References: <20191211195730.26794-1-michael@walle.cc>
-Cc: Ashish Kumar <ashish.kumar@nxp.com>, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Yogesh Gaur <yogeshgaur.83@gmail.com>
-To: Michael Walle <michael@walle.cc>
+Subject: Applied "spi: atmel: Use dma_request_chan() instead dma_request_slave_channel()" to the spi tree
+Date: Mon, 16 Dec 2019 12:06:19 +0000
+Message-ID: <applied-20191212135550.4634-2-peter.ujfalusi@ti.com>
+References: <20191212135550.4634-2-peter.ujfalusi@ti.com>
+Cc: alexandre.torgue@st.com, baohua@kernel.org, broonie@kernel.org,
+        f.fainelli@gmail.com, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+        linux-spi@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        Mark Brown <broonie@kernel.org>, mcoquelin.stm32@gmail.com,
+        nsaenzjulienne@suse.de, rjui@broadcom.com, sbranden@broadcom.com,
+        s.hauer@pengutronix.de, shawnguo@kernel.org, vkoul@kernel.org
+To: Peter Ujfalusi <peter.ujfalusi@ti.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191211195730.26794-1-michael@walle.cc>
+In-Reply-To: <20191212135550.4634-2-peter.ujfalusi@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: nxp-fspi: Ensure width is respected in spi-mem operations
+   spi: atmel: Use dma_request_chan() instead dma_request_slave_channel()
 
 has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.6
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
@@ -39,39 +44,74 @@ to this mail.
 Thanks,
 Mark
 
->From 007773e16a6f3f49d1439554078c3ba8af131998 Mon Sep 17 00:00:00 2001
-From: Michael Walle <michael@walle.cc>
-Date: Wed, 11 Dec 2019 20:57:30 +0100
-Subject: [PATCH] spi: nxp-fspi: Ensure width is respected in spi-mem
- operations
+>From d947c9d26c2381cc10067e76e71bf9ddb0fedb8b Mon Sep 17 00:00:00 2001
+From: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Date: Thu, 12 Dec 2019 15:55:42 +0200
+Subject: [PATCH] spi: atmel: Use dma_request_chan() instead
+ dma_request_slave_channel()
 
-Make use of a core helper to ensure the desired width is respected
-when calling spi-mem operators.
+dma_request_slave_channel() is a wrapper on top of dma_request_chan()
+eating up the error code.
 
-Otherwise only the SPI controller will be matched with the flash chip,
-which might lead to wrong widths. Also consider the width specified by
-the user in the device tree.
+By using dma_request_chan() directly the driver can support deferred
+probing against DMA.
 
-Fixes: a5356aef6a90 ("spi: spi-mem: Add driver for NXP FlexSPI controller")
-Signed-off-by: Michael Walle <michael@walle.cc>
-Link: https://lore.kernel.org/r/20191211195730.26794-1-michael@walle.cc
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Link: https://lore.kernel.org/r/20191212135550.4634-2-peter.ujfalusi@ti.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-nxp-fspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-atmel.c | 29 +++++++++++------------------
+ 1 file changed, 11 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index c36bb1bb464e..8c5084a3a617 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -439,7 +439,7 @@ static bool nxp_fspi_supports_op(struct spi_mem *mem,
- 	    op->data.nbytes > f->devtype_data->txfifo)
- 		return false;
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 56f0ca361deb..013458cabe3c 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -514,26 +514,19 @@ static int atmel_spi_configure_dma(struct spi_master *master,
+ 	master->dma_tx = dma_request_chan(dev, "tx");
+ 	if (IS_ERR(master->dma_tx)) {
+ 		err = PTR_ERR(master->dma_tx);
+-		if (err == -EPROBE_DEFER) {
+-			dev_warn(dev, "no DMA channel available at the moment\n");
+-			goto error_clear;
+-		}
+-		dev_err(dev,
+-			"DMA TX channel not available, SPI unable to use DMA\n");
+-		err = -EBUSY;
++		if (err != -EPROBE_DEFER)
++			dev_err(dev, "No TX DMA channel, DMA is disabled\n");
+ 		goto error_clear;
+ 	}
  
--	return true;
-+	return spi_mem_default_supports_op(mem, op);
- }
+-	/*
+-	 * No reason to check EPROBE_DEFER here since we have already requested
+-	 * tx channel. If it fails here, it's for another reason.
+-	 */
+-	master->dma_rx = dma_request_slave_channel(dev, "rx");
+-
+-	if (!master->dma_rx) {
+-		dev_err(dev,
+-			"DMA RX channel not available, SPI unable to use DMA\n");
+-		err = -EBUSY;
++	master->dma_rx = dma_request_chan(dev, "rx");
++	if (IS_ERR(master->dma_rx)) {
++		err = PTR_ERR(master->dma_rx);
++		/*
++		 * No reason to check EPROBE_DEFER here since we have already
++		 * requested tx channel.
++		 */
++		dev_err(dev, "No RX DMA channel, DMA is disabled\n");
+ 		goto error;
+ 	}
  
- /* Instead of busy looping invoke readl_poll_timeout functionality. */
+@@ -548,7 +541,7 @@ static int atmel_spi_configure_dma(struct spi_master *master,
+ 
+ 	return 0;
+ error:
+-	if (master->dma_rx)
++	if (!IS_ERR(master->dma_rx))
+ 		dma_release_channel(master->dma_rx);
+ 	if (!IS_ERR(master->dma_tx))
+ 		dma_release_channel(master->dma_tx);
 -- 
 2.20.1

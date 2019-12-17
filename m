@@ -1,82 +1,25 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: bcm2835: no dev_err() on clk_get() -EPROBE_DEFER" to the spi tree
-Date: Tue, 17 Dec 2019 12:39:33 +0000
-Message-ID: <applied-20191216230802.45715-2-jquinlan@broadcom.com>
-References: <20191216230802.45715-2-jquinlan@broadcom.com>
-Cc: bcm-kernel-feedback-list@broadcom.com,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Jim Quinlan <jquinlan@broadcom.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-rpi-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Ray Jui <ray.jui@broadcom.com>,
-        Scott Branden <scott.branden@broadcom.com>
-To: Jim Quinlan <james.quinlan@broadcom.com>
+From: pr-tracker-bot@kernel.org
+Subject: Re: [GIT PULL] SPI fixes for v5.5
+Date: Tue, 17 Dec 2019 21:15:13 +0000
+Message-ID: <157661731374.2643.8035727650650933097.pr-tracker-bot@kernel.org>
+References: <20191217121932.GD4755@sirena.org.uk>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191216230802.45715-2-jquinlan@broadcom.com>
+In-Reply-To: <20191217121932.GD4755@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+The pull request you sent on Tue, 17 Dec 2019 12:19:32 +0000:
 
-   spi: bcm2835: no dev_err() on clk_get() -EPROBE_DEFER
+> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v5.5-rc2
 
-has been applied to the spi tree at
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/a922f1a9aec1102a94505622290c0ecf4ef79cec
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.6
+Thank you!
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From f4dc4abdce4cc290555604107c04854a911b9441 Mon Sep 17 00:00:00 2001
-From: Jim Quinlan <james.quinlan@broadcom.com>
-Date: Mon, 16 Dec 2019 18:08:02 -0500
-Subject: [PATCH] spi: bcm2835: no dev_err() on clk_get() -EPROBE_DEFER
-
-Use dev_dbg() on -EPROBE_DEFER and dev_err() on all
-other errors.
-
-Signed-off-by: Jim Quinlan <jquinlan@broadcom.com>
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
-Reviewed-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
-Link: https://lore.kernel.org/r/20191216230802.45715-2-jquinlan@broadcom.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-bcm2835.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index 69df79914504..b784c9fdf9ec 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -1317,7 +1317,10 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
- 	bs->clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(bs->clk)) {
- 		err = PTR_ERR(bs->clk);
--		dev_err(&pdev->dev, "could not get clk: %d\n", err);
-+		if (err == -EPROBE_DEFER)
-+			dev_dbg(&pdev->dev, "could not get clk: %d\n", err);
-+		else
-+			dev_err(&pdev->dev, "could not get clk: %d\n", err);
- 		goto out_controller_put;
- 	}
- 
 -- 
-2.20.1
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker

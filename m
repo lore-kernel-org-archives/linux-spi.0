@@ -1,46 +1,95 @@
-From: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH AUTOSEL 5.4 128/350] spi: pxa2xx: Set
- controller->max_transfer_size in dma mode
-Date: Thu, 19 Dec 2019 12:35:04 -0500
-Message-ID: <20191219173504.GN17708@sasha-vm>
-References: <20191210210735.9077-1-sashal@kernel.org>
- <20191210210735.9077-89-sashal@kernel.org>
- <20191211104738.GA3870@sirena.org.uk>
+From: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH RFC 1/2] dt-bindings: memory: document Renesas RPC-IF
+ bindings
+Date: Thu, 19 Dec 2019 14:38:09 -0600
+Message-ID: <20191219203742.GA27539@bogus>
+References: <cb7022c9-0059-4eb2-7910-aab42124fa1c@cogentembedded.com>
+ <bd2c82fa-b0f0-9274-8c69-d13f7cddefc5@cogentembedded.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf@tronnes.org>,
-        Andy Shevchenko <andriy.shevchenko@intel.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <stable-owner@vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: devicetree@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
+        linux-kernel@vger.kernel.org, Mason Yang <masonccyang@mxic.com.tw>,
+        linux-spi@vger.kernel.org, Chris Brandt <chris.brandt@renesas.com>
+To: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20191211104738.GA3870@sirena.org.uk>
-Sender: stable-owner@vger.kernel.org
+In-Reply-To: <bd2c82fa-b0f0-9274-8c69-d13f7cddefc5@cogentembedded.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Dec 11, 2019 at 10:47:38AM +0000, Mark Brown wrote:
->On Tue, Dec 10, 2019 at 04:03:53PM -0500, Sasha Levin wrote:
->> From: Daniel Vetter <daniel.vetter@ffwll.ch>
->>
->> [ Upstream commit b2662a164f9dc48da8822e56600686d639056282 ]
->>
->> In DMA mode we have a maximum transfer size, past that the driver
->> falls back to PIO (see the check at the top of pxa2xx_spi_transfer_one).
->> Falling back to PIO for big transfers defeats the point of a dma engine,
->> hence set the max transfer size to inform spi clients that they need
->> to do something smarter.
->
->This won't fix anything by itself, this asks other code to change how it
->behaves which may or may not work in older kernels.
+On Tue, Dec 10, 2019 at 10:37:34PM +0300, Sergei Shtylyov wrote:
+> Renesas Reduced Pin Count Interface (RPC-IF) allows a SPI flash or
+> HyperFlash connected to the SoC to be accessed via the external address
+> space read mode or the manual mode.
+> 
+> Document the device tree bindings for the Renesas RPC-IF found in the R-Car
+> gen3 SoCs.
+> 
+> Based on the original patch by Mason Yang <masonccyang@mxic.com.tw>.
+> 
+> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+> 
+> ---
+>  Documentation/devicetree/bindings/memory-controllers/renesas,rpc-if.txt |   52 ++++++++++
+>  1 file changed, 52 insertions(+)
 
-I'll drop it then, thanks!
+Please convert to DT schema.
 
--- 
-Thanks,
-Sasha
+> 
+> Index: linux/Documentation/devicetree/bindings/memory-controllers/renesas,rpc-if.txt
+> ===================================================================
+> --- /dev/null
+> +++ linux/Documentation/devicetree/bindings/memory-controllers/renesas,rpc-if.txt
+> @@ -0,0 +1,52 @@
+> +Renesas Reduced Pin Count Interface (RPC-IF)
+> +--------------------------------------------
+> +
+> +Renesas RPC-IF allows a SPI flash or HyperFlash connected to the SoC to
+> +be accessed via the external address space read mode or the manual mode.
+> +
+> +Required properties:
+> +- compatible: should be an SoC-specific compatible value, followed by
+> +		"renesas,rcar-gen3-rpc-if" as a fallback.
+> +		supported SoC-specific values are:
+> +		"renesas,r8a77980-rpc-if" (R-Car V3H),
+> +		"renesas,r8a77995-rpc-if" (R-Car D3).
+> +- reg: should list 3 register areas:
+> +	1st for the RPC-IF registers,
+> +	2nd for the direct mapping read mode,
+> +	3rd for the write buffer area.
+> +- reg-names: should contain "regs", "dirmap", and "wbuf".
+> +- clocks: should contain the clock phandle/specifier pair for the module clock.
+> +- power-domains: should contain the power domain phandle/specifier pair.
+> +- resets: should contain the reset controller phandle/specifier pair.
+> +- #address-cells: should be 1.
+> +- #size-cells: should be 0.
+> +
+> +The flash chip itself should be represented by a subnode of the RPC-IF node.
+> +The flash interface is selected based on the "compatible" property of this
+> +subnode:
+> +- if it contains "jedec,spi-nor", then SPI is used;
+> +- if it contains "cfi-flash", then HyperFlash is used.
+> +
+> +Example:
+> +
+> +	rpc: spi@ee200000 {
+> +		compatible = "renesas,r8a77995-rpc-if",
+> +			     "renesas,rcar-gen3-rpc-if";
+> +		reg = <0 0xee200000 0 0x200>,
+> +		      <0 0x08000000 0 0x4000000>,
+> +		      <0 0xee208000 0 0x100>;
+> +		reg-names = "regs", "dirmap", "wbuf";
+> +		clocks = <&cpg CPG_MOD 917>;
+> +		power-domains = <&sysc R8A77995_PD_ALWAYS_ON>;
+> +		resets = <&cpg 917>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		flash@0 {
+> +			compatible = "jedec,spi-nor";
+> +			reg = <0>;
+> +			spi-max-frequency = <40000000>;
+> +			spi-tx-bus-width = <1>;
+> +			spi-rx-bus-width = <1>;
+> +		};
+> +	};

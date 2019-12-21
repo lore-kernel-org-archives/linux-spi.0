@@ -1,95 +1,85 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH RFC 1/2] dt-bindings: memory: document Renesas RPC-IF
- bindings
-Date: Thu, 19 Dec 2019 14:38:09 -0600
-Message-ID: <20191219203742.GA27539@bogus>
-References: <cb7022c9-0059-4eb2-7910-aab42124fa1c@cogentembedded.com>
- <bd2c82fa-b0f0-9274-8c69-d13f7cddefc5@cogentembedded.com>
+From: Pavel Machek <pavel@ucw.cz>
+Subject: Re: [RFC 00/25] arm64: realtek: Add Xnano X5 and implement
+ TM1628/FD628/AiP1618 LED controllers
+Date: Sat, 21 Dec 2019 19:20:57 +0100
+Message-ID: <20191221182057.GA32732@amd>
+References: <20191212033952.5967-1-afaerber@suse.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: devicetree@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
-        linux-kernel@vger.kernel.org, Mason Yang <masonccyang@mxic.com.tw>,
-        linux-spi@vger.kernel.org, Chris Brandt <chris.brandt@renesas.com>
-To: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="opJtzjQTFsWo+cga"
+Cc: linux-realtek-soc@lists.infradead.org, linux-leds@vger.kernel.org,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Dan Murphy <dmurphy@ti.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-rtc@vger.kernel.org, Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        linux-amlogic@lists.infradead.org, Roc He <hepeng@zidoo.tv>,
+        zypeng@titanmec.com, sales@fdhisi.com, csd@princeton.com.tw
+To: Andreas =?iso-8859-1?Q?F=E4rber?= <afaerber@suse.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <bd2c82fa-b0f0-9274-8c69-d13f7cddefc5@cogentembedded.com>
+In-Reply-To: <20191212033952.5967-1-afaerber@suse.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Dec 10, 2019 at 10:37:34PM +0300, Sergei Shtylyov wrote:
-> Renesas Reduced Pin Count Interface (RPC-IF) allows a SPI flash or
-> HyperFlash connected to the SoC to be accessed via the external address
-> space read mode or the manual mode.
-> 
-> Document the device tree bindings for the Renesas RPC-IF found in the R-Car
-> gen3 SoCs.
-> 
-> Based on the original patch by Mason Yang <masonccyang@mxic.com.tw>.
-> 
-> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-> 
-> ---
->  Documentation/devicetree/bindings/memory-controllers/renesas,rpc-if.txt |   52 ++++++++++
->  1 file changed, 52 insertions(+)
 
-Please convert to DT schema.
+--opJtzjQTFsWo+cga
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> Index: linux/Documentation/devicetree/bindings/memory-controllers/renesas,rpc-if.txt
-> ===================================================================
-> --- /dev/null
-> +++ linux/Documentation/devicetree/bindings/memory-controllers/renesas,rpc-if.txt
-> @@ -0,0 +1,52 @@
-> +Renesas Reduced Pin Count Interface (RPC-IF)
-> +--------------------------------------------
-> +
-> +Renesas RPC-IF allows a SPI flash or HyperFlash connected to the SoC to
-> +be accessed via the external address space read mode or the manual mode.
-> +
-> +Required properties:
-> +- compatible: should be an SoC-specific compatible value, followed by
-> +		"renesas,rcar-gen3-rpc-if" as a fallback.
-> +		supported SoC-specific values are:
-> +		"renesas,r8a77980-rpc-if" (R-Car V3H),
-> +		"renesas,r8a77995-rpc-if" (R-Car D3).
-> +- reg: should list 3 register areas:
-> +	1st for the RPC-IF registers,
-> +	2nd for the direct mapping read mode,
-> +	3rd for the write buffer area.
-> +- reg-names: should contain "regs", "dirmap", and "wbuf".
-> +- clocks: should contain the clock phandle/specifier pair for the module clock.
-> +- power-domains: should contain the power domain phandle/specifier pair.
-> +- resets: should contain the reset controller phandle/specifier pair.
-> +- #address-cells: should be 1.
-> +- #size-cells: should be 0.
-> +
-> +The flash chip itself should be represented by a subnode of the RPC-IF node.
-> +The flash interface is selected based on the "compatible" property of this
-> +subnode:
-> +- if it contains "jedec,spi-nor", then SPI is used;
-> +- if it contains "cfi-flash", then HyperFlash is used.
-> +
-> +Example:
-> +
-> +	rpc: spi@ee200000 {
-> +		compatible = "renesas,r8a77995-rpc-if",
-> +			     "renesas,rcar-gen3-rpc-if";
-> +		reg = <0 0xee200000 0 0x200>,
-> +		      <0 0x08000000 0 0x4000000>,
-> +		      <0 0xee208000 0 0x100>;
-> +		reg-names = "regs", "dirmap", "wbuf";
-> +		clocks = <&cpg CPG_MOD 917>;
-> +		power-domains = <&sysc R8A77995_PD_ALWAYS_ON>;
-> +		resets = <&cpg 917>;
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		flash@0 {
-> +			compatible = "jedec,spi-nor";
-> +			reg = <0>;
-> +			spi-max-frequency = <40000000>;
-> +			spi-tx-bus-width = <1>;
-> +			spi-rx-bus-width = <1>;
-> +		};
-> +	};
+Hi!
+
+> This patch series implements the LED controllers found in some RTD1295 ba=
+sed
+> TV set-top boxes.
+>=20
+> Ever since I've had mainline Linux kernels booting on my Zidoo X9S TV box,
+> it's been bugging me that it kept displaying "boot" on its front display.
+> A hot lead was a TM1628 chip on the front display's daughterboard, which
+> English and Chinese datasheets were available for. The biggest
+> hurdle
+
+Fun :-).
+
+> It goes on to add a "text" attribute to the driver that enables DT-config=
+ured
+> seven-segment displays; I was expecting to find precedence in auxdisplay
+> subsystem but came up empty. So my driver currently integrates its own
+> generic (but incomplete) character-to-8-segments mapping, as well as in a
+> second step a combined-characters-to-8-segments mapping, which then gets
+> mapped to the chipset's available output lines. Doing this as sysfs
+> device
+
+I did not investigate this in great detail; but if it is displaying
+characters, auxdisplay is probably right subsystem to handle that. I
+guess LEDs can still take the low-level parts...
+
+Oh, and common dimming for many LEDs is seen on other hardware, too
+(Turris routers). Not sure how to handle that, either :-(.
+
+Best regards,
+									Pavel
+
+
+
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
+
+--opJtzjQTFsWo+cga
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAl3+YokACgkQMOfwapXb+vJoqgCfY5/dzSIdT0c0DWaA1+WWkFdQ
+6wkAoIzd/X2VTQwW3tq7WApoawbDjUdO
+=xFhp
+-----END PGP SIGNATURE-----
+
+--opJtzjQTFsWo+cga--

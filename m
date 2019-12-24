@@ -1,128 +1,104 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH v17 1/2] spi: Add Renesas R-Car Gen3 RPC-IF SPI controller
- driver
-Date: Mon, 23 Dec 2019 23:07:12 +0300
-Message-ID: <0e65db61-00e5-73cc-347a-023abfd138ba@cogentembedded.com>
-References: <1565060061-11588-1-git-send-email-masonccyang@mxic.com.tw>
- <1565060061-11588-2-git-send-email-masonccyang@mxic.com.tw>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: juliensu@mxic.com.tw, Simon Horman <horms@verge.net.au>,
-        lee.jones@linaro.org, marek.vasut@gmail.com,
-        miquel.raynal@bootlin.com
-To: Mason Yang <masonccyang@mxic.com.tw>, broonie@kernel.org,
-        robh+dt@kernel.org, mark.rutland@arm.com,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        devicetree@vger.kernel.org
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Subject: [PATCH 1/5] spi: uniphier: Fix FIFO threshold
+Date: Tue, 24 Dec 2019 09:58:23 +0900
+Message-ID: <1577149107-30670-2-git-send-email-hayashi.kunihiko@socionext.com>
+References: <1577149107-30670-1-git-send-email-hayashi.kunihiko@socionext.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Keiji Hayashibara <hayashibara.keiji@socionext.com>,
+        Masami Hiramatsu <masami.hiramatsu@linaro.org>,
+        Jassi Brar <jaswinder.singh@linaro.org>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1565060061-11588-2-git-send-email-masonccyang@mxic.com.tw>
-Content-Language: en-MW
+In-Reply-To: <1577149107-30670-1-git-send-email-hayashi.kunihiko@socionext.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello!
+Rx threshold means the value to inform the receiver when the number of words
+in Rx FIFO is equal to or more than the value. Similarly, Tx threshold means
+the value to inform the sender when the number of words in Tx FIFO is equal
+to or less than the value. The controller triggers the driver to start
+the transfer.
 
-On 08/06/2019 05:54 AM, Mason Yang wrote:
+In case of Rx, the driver wants to detect that the specified number of words
+N are in Rx FIFO, so the value of Rx threshold should be N. In case of Tx,
+the driver wants to detect that the same number of spaces as Rx are in
+Tx FIFO, so the value of Tx threshold should be (FIFO size - N).
 
-> Add a driver for Renesas R-Car Gen3 RPC-IF SPI controller.
-> 
-> Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
-> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+For example, in order for the driver to receive at least 3 words from
+Rx FIFO, set 3 to Rx threshold.
+   +-+-+-+-+-+-+-+-+
+   | | | | | |*|*|*|
+   +-+-+-+-+-+-+-+-+
 
-   Mark Brown did have some comments to my variant of the RPC-IF SPI driver,
-which didn't get addressed in your SPI driver... Relaying his comments to you,
-I'd appreciate if you could reply to them...
+In order for the driver to send at least 3 words to Tx FIFO, because
+it needs at least 3 spaces, set 8(FIFO size) - 3 = 5 to Tx threshold.
+   +-+-+-+-+-+-+-+-+
+   |*|*|*|*|*| | | |
+   +-+-+-+-+-+-+-+-+
 
-[...]
-> diff --git a/drivers/spi/spi-renesas-rpc.c b/drivers/spi/spi-renesas-rpc.c
-> new file mode 100644
-> index 0000000..52537b7
-> --- /dev/null
-> +++ b/drivers/spi/spi-renesas-rpc.c
-> @@ -0,0 +1,756 @@
-[...]
-> +static void rpc_spi_transfer_setup(struct rpc_spi *rpc,
-> +				   struct spi_message *msg)
-> +{
-> +	struct spi_transfer *t, xfer[4] = { };
+This adds new function uniphier_spi_set_fifo_threshold() to set
+threshold value to the register.
 
-Don't mix initialized and non-initialized declarations in a single line
-(as per coding style).
+And more, FIFO counts by 'words', so this renames 'fill_bytes' with
+'fill_words', and fixes the calculation using bytes_per_words.
 
-> +	u32 i, xfercnt, xferpos = 0;
-> +
-> +	rpc->totalxferlen = 0;
-> +	rpc->xfer_dir = SPI_MEM_NO_DATA;
-> +
-> +	list_for_each_entry(t, &msg->transfers, transfer_list) {
-> +		if (t->tx_buf) {
-> +			xfer[xferpos].tx_buf = t->tx_buf;
-> +			xfer[xferpos].tx_nbits = t->tx_nbits;
+Fixes: 37ffab817098 ("spi: uniphier: introduce polling mode")
+Cc: Keiji Hayashibara <hayashibara.keiji@socionext.com>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+---
+ drivers/spi/spi-uniphier.c | 31 +++++++++++++++++++------------
+ 1 file changed, 19 insertions(+), 12 deletions(-)
 
-xfer is hard coded to 4 elements but I'm not seeing any validation that
-we don't have more transfers than that in the message, and there's lots
-of assumptions later on about the number of transfers.
-
-[...]
-> +		if (list_is_last(&t->transfer_list, &msg->transfers)) {
-> +			if (xferpos > 1) {
-> +				if (t->rx_buf) {
-> +					rpc->xfer_dir = SPI_MEM_DATA_IN;
-> +					rpc->smcr = RPC_SMCR_SPIRE;
-> +				} else if (t->tx_buf) {
-> +					rpc->xfer_dir = SPI_MEM_DATA_OUT;
-> +					rpc->smcr = RPC_SMCR_SPIWE;
-> +				}
-> +			}
-
-Transfers can be bidirectional...  if the device can't support that it
-should set SPI_CONTROLLER_HALF_DUPLEX.
-
-[...]
-> +static inline int rpc_spi_xfer_message(struct rpc_spi *rpc,
-> +				       struct spi_transfer *data_xfer)
-
-This has exactly one caller and contains a single statement - why have a
-separate function?
-
-> +{
-> +	int ret;
-> +
-> +	ret = rpc_spi_set_freq(rpc, data_xfer->speed_hz);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = rpc_spi_io_xfer(rpc,
-> +			      rpc->xfer_dir == SPI_MEM_DATA_OUT ?
-> +			      data_xfer->tx_buf : NULL,
-> +			      rpc->xfer_dir == SPI_MEM_DATA_IN ?
-> +			      data_xfer->rx_buf : NULL);
-
-This is really hard to read.  Why are we abusing the ternery operator
-here, especially when there's other places where we already set things
-up based on the direction?
-
-[...]
-[...]
-> +static int rpc_spi_remove(struct platform_device *pdev)
-> +{
-> +	struct spi_controller *ctlr = platform_get_drvdata(pdev);
-> +
-> +	pm_runtime_disable(&pdev->dev);
-> +	spi_unregister_controller(ctlr);
-> +
-> +	return 0;
-> +}
-> +
-
-Shouldn't we unregister the controller before we disable the RPM?  The
-probe was the other way around and this means that we might still be
-processing messages while the hardware is disabled which doesn't seem
-good.
-
-[...]
-
-MBR, Sergei
+diff --git a/drivers/spi/spi-uniphier.c b/drivers/spi/spi-uniphier.c
+index 47cde186..ce9b301 100644
+--- a/drivers/spi/spi-uniphier.c
++++ b/drivers/spi/spi-uniphier.c
+@@ -290,25 +290,32 @@ static void uniphier_spi_recv(struct uniphier_spi_priv *priv)
+ 	}
+ }
+ 
+-static void uniphier_spi_fill_tx_fifo(struct uniphier_spi_priv *priv)
++static void uniphier_spi_set_fifo_threshold(struct uniphier_spi_priv *priv,
++					    unsigned int threshold)
+ {
+-	unsigned int fifo_threshold, fill_bytes;
+ 	u32 val;
+ 
+-	fifo_threshold = DIV_ROUND_UP(priv->rx_bytes,
+-				bytes_per_word(priv->bits_per_word));
+-	fifo_threshold = min(fifo_threshold, SSI_FIFO_DEPTH);
+-
+-	fill_bytes = fifo_threshold - (priv->rx_bytes - priv->tx_bytes);
+-
+-	/* set fifo threshold */
+ 	val = readl(priv->base + SSI_FC);
+ 	val &= ~(SSI_FC_TXFTH_MASK | SSI_FC_RXFTH_MASK);
+-	val |= FIELD_PREP(SSI_FC_TXFTH_MASK, fifo_threshold);
+-	val |= FIELD_PREP(SSI_FC_RXFTH_MASK, fifo_threshold);
++	val |= FIELD_PREP(SSI_FC_TXFTH_MASK, SSI_FIFO_DEPTH - threshold);
++	val |= FIELD_PREP(SSI_FC_RXFTH_MASK, threshold);
+ 	writel(val, priv->base + SSI_FC);
++}
++
++static void uniphier_spi_fill_tx_fifo(struct uniphier_spi_priv *priv)
++{
++	unsigned int fifo_threshold, fill_words;
++	unsigned int bpw = bytes_per_word(priv->bits_per_word);
++
++	fifo_threshold = DIV_ROUND_UP(priv->rx_bytes, bpw);
++	fifo_threshold = min(fifo_threshold, SSI_FIFO_DEPTH);
++
++	uniphier_spi_set_fifo_threshold(priv, fifo_threshold);
++
++	fill_words = fifo_threshold -
++		DIV_ROUND_UP(priv->rx_bytes - priv->tx_bytes, bpw);
+ 
+-	while (fill_bytes--)
++	while (fill_words--)
+ 		uniphier_spi_send(priv);
+ }
+ 
+-- 
+2.7.4

@@ -1,8 +1,7 @@
 From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Subject: [PATCH 4/5] spi: uniphier: Add SPI_LOOP to the capabilities
-Date: Tue, 24 Dec 2019 09:58:26 +0900
-Message-ID: <1577149107-30670-5-git-send-email-hayashi.kunihiko@socionext.com>
-References: <1577149107-30670-1-git-send-email-hayashi.kunihiko@socionext.com>
+Subject: [PATCH 0/5] spi: uniphier: Introduce DMA transfer mode
+Date: Tue, 24 Dec 2019 09:58:22 +0900
+Message-ID: <1577149107-30670-1-git-send-email-hayashi.kunihiko@socionext.com>
 Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         Masahiro Yamada <yamada.masahiro@socionext.com>,
         Keiji Hayashibara <hayashibara.keiji@socionext.com>,
@@ -11,30 +10,25 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1577149107-30670-1-git-send-email-hayashi.kunihiko@socionext.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add SPI_LOOP to the capabilities to support loopback mode.
+This series introduces DMA transfer mode into UniPhier SPI driver.
+This only supports UniPhier XDMAC implemented in the SoC.
 
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
----
- drivers/spi/spi-uniphier.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+The DMA transfer mode uses FIFO threshold as a trigger to start DMA transfer,
+however, the FIFO is limited to one word width due to alignment restiction
+of the DMA controller.
 
-diff --git a/drivers/spi/spi-uniphier.c b/drivers/spi/spi-uniphier.c
-index c4e3b96..caf0446 100644
---- a/drivers/spi/spi-uniphier.c
-+++ b/drivers/spi/spi-uniphier.c
-@@ -543,7 +543,8 @@ static int uniphier_spi_probe(struct platform_device *pdev)
- 
- 	master->max_speed_hz = DIV_ROUND_UP(clk_rate, SSI_MIN_CLK_DIVIDER);
- 	master->min_speed_hz = DIV_ROUND_UP(clk_rate, SSI_MAX_CLK_DIVIDER);
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
-+	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST |
-+			    SPI_LOOP;
- 	master->dev.of_node = pdev->dev.of_node;
- 	master->bus_num = pdev->id;
- 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
+Kunihiko Hayashi (5):
+  spi: uniphier: Fix FIFO threshold
+  spi: uniphier: Change argument of irq functions to private structure
+  spi: uniphier: Add handle_err callback function
+  spi: uniphier: Add SPI_LOOP to the capabilities
+  spi: uniphier: Add DMA transfer mode support
+
+ drivers/spi/spi-uniphier.c | 261 +++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 241 insertions(+), 20 deletions(-)
+
 -- 
 2.7.4

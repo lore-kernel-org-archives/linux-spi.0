@@ -1,59 +1,76 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.4 002/187] spi: pxa2xx: Add support for Intel Jasper
- Lake
-Date: Fri, 27 Dec 2019 12:37:50 -0500
-Message-ID: <20191227174055.4923-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 012/187] spi: fsl: Handle the single hardwired chipselect case
+Date: Fri, 27 Dec 2019 12:38:00 -0500
+Message-ID: <20191227174055.4923-12-sashal@kernel.org>
 References: <20191227174055.4923-1-sashal@kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Sasha Levin <sashal@kernel.org>, Mark Brown <broonie@kernel.org>,
- Jarkko Nikula <jarkko.nikula@linux.intel.com>,
- linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Transfer-Encoding: 8bit
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
+To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20191227174055.4923-1-sashal@kernel.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 9c7315c9fca5de203538163cf42699bb10328902 ]
+[ Upstream commit 7251953d784baf7e5416afabe030a0e81de1a938 ]
 
-LPSS SPI on Intel Jasper Lake is compatible with Intel Ice Lake which
-follows Intel Cannon Lake. Add PCI IDs of Jasper Lake.
+The Freescale MPC8xxx had a special quirk for handling a
+single hardwired chipselect, the case when we're using neither
+GPIO nor native chip select: when inspecting the device tree
+and finding zero "cs-gpios" on the device node the code would
+assume we have a single hardwired chipselect that leaves the
+device always selected.
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Link: https://lore.kernel.org/r/20191125125159.15404-1-jarkko.nikula@linux.intel.com
+This quirk is not handled by the new core code, so we need
+to check the "cs-gpios" explicitly in the driver and set
+pdata->max_chipselect = 1 which will later fall through to
+the SPI master ->num_chipselect.
+
+Make sure not to assign the chip select handler in this
+case: there is no handling needed since the chip is always
+selected, and this is what the old code did as well.
+
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+Reported-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Fixes: 0f0581b24bd0 ("spi: fsl: Convert to use CS GPIO descriptors")
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Tested-by: Christophe Leroy <christophe.leroy@c-s.fr> (No tested the
+Link: https://lore.kernel.org/r/20191128083718.39177-3-linus.walleij@linaro.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-pxa2xx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/spi/spi-fsl-spi.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index bb6a14d1ab0f..3580a551c038 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1441,6 +1441,10 @@ static const struct pci_device_id pxa2xx_spi_pci_compound_match[] = {
- 	{ PCI_VDEVICE(INTEL, 0x4b2a), LPSS_BXT_SSP },
- 	{ PCI_VDEVICE(INTEL, 0x4b2b), LPSS_BXT_SSP },
- 	{ PCI_VDEVICE(INTEL, 0x4b37), LPSS_BXT_SSP },
-+	/* JSL */
-+	{ PCI_VDEVICE(INTEL, 0x4daa), LPSS_CNL_SSP },
-+	{ PCI_VDEVICE(INTEL, 0x4dab), LPSS_CNL_SSP },
-+	{ PCI_VDEVICE(INTEL, 0x4dfb), LPSS_CNL_SSP },
- 	/* APL */
- 	{ PCI_VDEVICE(INTEL, 0x5ac2), LPSS_BXT_SSP },
- 	{ PCI_VDEVICE(INTEL, 0x5ac4), LPSS_BXT_SSP },
+diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+index 75b765f97df5..2155294eaaeb 100644
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -729,8 +729,18 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
+ 			}
+ 		}
+ #endif
+-
+-		pdata->cs_control = fsl_spi_cs_control;
++		/*
++		 * Handle the case where we have one hardwired (always selected)
++		 * device on the first "chipselect". Else we let the core code
++		 * handle any GPIOs or native chip selects and assign the
++		 * appropriate callback for dealing with the CS lines. This isn't
++		 * supported on the GRLIB variant.
++		 */
++		ret = gpiod_count(dev, "cs");
++		if (ret <= 0)
++			pdata->max_chipselect = 1;
++		else
++			pdata->cs_control = fsl_spi_cs_control;
+ 	}
+ 
+ 	ret = of_address_to_resource(np, 0, &mem);
 -- 
 2.20.1

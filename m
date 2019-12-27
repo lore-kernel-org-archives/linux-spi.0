@@ -1,76 +1,84 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.4 012/187] spi: fsl: Handle the single hardwired chipselect case
-Date: Fri, 27 Dec 2019 12:38:00 -0500
-Message-ID: <20191227174055.4923-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 076/187] spi: spi-ti-qspi: Fix a bug when accessing non default CS
+Date: Fri, 27 Dec 2019 12:39:04 -0500
+Message-ID: <20191227174055.4923-76-sashal@kernel.org>
 References: <20191227174055.4923-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
+Cc: Vignesh Raghavendra <vigneshr@ti.com>,
+        Andreas Dannenberg <dannenberg@ti.com>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Return-path: <stable-owner@vger.kernel.org>
 In-Reply-To: <20191227174055.4923-1-sashal@kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Vignesh Raghavendra <vigneshr@ti.com>
 
-[ Upstream commit 7251953d784baf7e5416afabe030a0e81de1a938 ]
+[ Upstream commit c52c91bb9aa6bd8c38dbf9776158e33038aedd43 ]
 
-The Freescale MPC8xxx had a special quirk for handling a
-single hardwired chipselect, the case when we're using neither
-GPIO nor native chip select: when inspecting the device tree
-and finding zero "cs-gpios" on the device node the code would
-assume we have a single hardwired chipselect that leaves the
-device always selected.
+When switching ChipSelect from default CS0 to any other CS, driver fails
+to update the bits in system control module register that control which
+CS is mapped for MMIO access. This causes reads to fail when driver
+tries to access QSPI flash on CS1/2/3.
 
-This quirk is not handled by the new core code, so we need
-to check the "cs-gpios" explicitly in the driver and set
-pdata->max_chipselect = 1 which will later fall through to
-the SPI master ->num_chipselect.
+Fix this by updating appropriate bits whenever active CS changes.
 
-Make sure not to assign the chip select handler in this
-case: there is no handling needed since the chip is always
-selected, and this is what the old code did as well.
-
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-Reported-by: Christophe Leroy <christophe.leroy@c-s.fr>
-Fixes: 0f0581b24bd0 ("spi: fsl: Convert to use CS GPIO descriptors")
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Tested-by: Christophe Leroy <christophe.leroy@c-s.fr> (No tested the
-Link: https://lore.kernel.org/r/20191128083718.39177-3-linus.walleij@linaro.org
+Reported-by: Andreas Dannenberg <dannenberg@ti.com>
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Link: https://lore.kernel.org/r/20191211155216.30212-1-vigneshr@ti.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-spi.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/spi/spi-ti-qspi.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index 75b765f97df5..2155294eaaeb 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -729,8 +729,18 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
- 			}
- 		}
- #endif
--
--		pdata->cs_control = fsl_spi_cs_control;
-+		/*
-+		 * Handle the case where we have one hardwired (always selected)
-+		 * device on the first "chipselect". Else we let the core code
-+		 * handle any GPIOs or native chip selects and assign the
-+		 * appropriate callback for dealing with the CS lines. This isn't
-+		 * supported on the GRLIB variant.
-+		 */
-+		ret = gpiod_count(dev, "cs");
-+		if (ret <= 0)
-+			pdata->max_chipselect = 1;
-+		else
-+			pdata->cs_control = fsl_spi_cs_control;
- 	}
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index 3cb65371ae3b..66dcb6128539 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -62,6 +62,7 @@ struct ti_qspi {
+ 	u32 dc;
  
- 	ret = of_address_to_resource(np, 0, &mem);
+ 	bool mmap_enabled;
++	int current_cs;
+ };
+ 
+ #define QSPI_PID			(0x0)
+@@ -487,6 +488,7 @@ static void ti_qspi_enable_memory_map(struct spi_device *spi)
+ 				   MEM_CS_EN(spi->chip_select));
+ 	}
+ 	qspi->mmap_enabled = true;
++	qspi->current_cs = spi->chip_select;
+ }
+ 
+ static void ti_qspi_disable_memory_map(struct spi_device *spi)
+@@ -498,6 +500,7 @@ static void ti_qspi_disable_memory_map(struct spi_device *spi)
+ 		regmap_update_bits(qspi->ctrl_base, qspi->ctrl_reg,
+ 				   MEM_CS_MASK, 0);
+ 	qspi->mmap_enabled = false;
++	qspi->current_cs = -1;
+ }
+ 
+ static void ti_qspi_setup_mmap_read(struct spi_device *spi, u8 opcode,
+@@ -543,7 +546,7 @@ static int ti_qspi_exec_mem_op(struct spi_mem *mem,
+ 
+ 	mutex_lock(&qspi->list_lock);
+ 
+-	if (!qspi->mmap_enabled)
++	if (!qspi->mmap_enabled || qspi->current_cs != mem->spi->chip_select)
+ 		ti_qspi_enable_memory_map(mem->spi);
+ 	ti_qspi_setup_mmap_read(mem->spi, op->cmd.opcode, op->data.buswidth,
+ 				op->addr.nbytes, op->dummy.nbytes);
+@@ -799,6 +802,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 	qspi->mmap_enabled = false;
++	qspi->current_cs = -1;
+ 
+ 	ret = devm_spi_register_master(&pdev->dev, master);
+ 	if (!ret)
 -- 
 2.20.1

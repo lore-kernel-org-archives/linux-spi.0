@@ -1,8 +1,8 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.14 16/57] spi: spi-cavium-thunderx: Add missing pci_release_regions()
-Date: Fri, 27 Dec 2019 13:01:41 -0500
-Message-ID: <20191227180222.7076-16-sashal@kernel.org>
-References: <20191227180222.7076-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 10/38] spi: spi-cavium-thunderx: Add missing pci_release_regions()
+Date: Fri, 27 Dec 2019 13:14:07 -0500
+Message-ID: <20191227181435.7644-10-sashal@kernel.org>
+References: <20191227181435.7644-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Cc: Chuhong Yuan <hslester96@gmail.com>,
@@ -10,7 +10,7 @@ Cc: Chuhong Yuan <hslester96@gmail.com>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20191227180222.7076-1-sashal@kernel.org>
+In-Reply-To: <20191227181435.7644-1-sashal@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 

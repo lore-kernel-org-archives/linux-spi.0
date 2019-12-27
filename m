@@ -1,8 +1,8 @@
 From: Vladimir Oltean <olteanv@gmail.com>
 Subject: [PATCH spi] spi: Don't look at TX buffer for PTP system timestamping
-Date: Fri, 27 Dec 2019 03:21:00 +0200
-Message-ID: <20191227012100.32316-1-olteanv@gmail.com>
-Cc: linux-spi@vget.kernel.org, netdev@vger.kernel.org,
+Date: Fri, 27 Dec 2019 03:24:17 +0200
+Message-ID: <20191227012417.1057-1-olteanv@gmail.com>
+Cc: linux-spi@vger.kernel.org, netdev@vger.kernel.org,
         Vladimir Oltean <olteanv@gmail.com>
 To: broonie@kernel.org
 Return-path: <netdev-owner@vger.kernel.org>
@@ -25,6 +25,9 @@ Fixes: b42faeee718c ("spi: Add a PTP system timestamp to the transfer structure"
 Fixes: d6b71dfaeeba ("spi: spi-fsl-dspi: Implement the PTP system timestamping for TCFQ mode")
 Signed-off-by: Vladimir Oltean <olteanv@gmail.com>
 ---
+Sorry, resent because I had a typo in the address of the mailing list
+the first time.
+
  drivers/spi/spi-fsl-dspi.c |  9 ++++++---
  drivers/spi/spi.c          | 22 ++++++++--------------
  include/linux/spi/spi.h    |  4 ++--

@@ -1,76 +1,54 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.4 004/187] spi: cadence: Correct handling of native chipselect
-Date: Fri, 27 Dec 2019 12:37:52 -0500
-Message-ID: <20191227174055.4923-4-sashal@kernel.org>
-References: <20191227174055.4923-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 16/57] spi: spi-cavium-thunderx: Add missing pci_release_regions()
+Date: Fri, 27 Dec 2019 13:01:41 -0500
+Message-ID: <20191227180222.7076-16-sashal@kernel.org>
+References: <20191227180222.7076-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
+Cc: Chuhong Yuan <hslester96@gmail.com>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <20191227174055.4923-1-sashal@kernel.org>
-Sender: stable-owner@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20191227180222.7076-1-sashal@kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Chuhong Yuan <hslester96@gmail.com>
 
-[ Upstream commit 61acd19f9c56fa0809285346bd0bd4a926ab0da0 ]
+[ Upstream commit a841e2853e1afecc2ee692b8cc5bff606bc84e4c ]
 
-To fix a regression on the Cadence SPI driver, this patch reverts
-commit 6046f5407ff0 ("spi: cadence: Fix default polarity of native
-chipselect").
+The driver forgets to call pci_release_regions() in probe failure
+and remove.
+Add the missed calls to fix it.
 
-This patch was not the correct fix for the issue. The SPI framework
-calls the set_cs line with the logic level it desires on the chip select
-line, as such the old is_high handling was correct. However, this was
-broken by the fact that before commit 3e5ec1db8bfe ("spi: Fix SPI_CS_HIGH
-setting when using native and GPIO CS") all controllers that offered
-the use of a GPIO chip select had SPI_CS_HIGH applied, even for hardware
-chip selects. This caused the value passed into the driver to be inverted.
-Which unfortunately makes it look like a logical enable the chip select
-value.
-
-Since the core was corrected to not unconditionally apply SPI_CS_HIGH,
-the Cadence driver, whilst using the hardware chip select, will deselect
-the chip select every time we attempt to communicate with the device,
-which results in failed communications.
-
-Fixes: 3e5ec1db8bfe ("spi: Fix SPI_CS_HIGH setting when using native and GPIO CS")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20191126164140.6240-1-ckeepax@opensource.cirrus.com
+Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+Link: https://lore.kernel.org/r/20191206075500.18525-1-hslester96@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-cavium-thunderx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index c36587b42e95..82a0ee09cbe1 100644
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -168,16 +168,16 @@ static void cdns_spi_init_hw(struct cdns_spi *xspi)
- /**
-  * cdns_spi_chipselect - Select or deselect the chip select line
-  * @spi:	Pointer to the spi_device structure
-- * @enable:	Select (1) or deselect (0) the chip select line
-+ * @is_high:	Select(0) or deselect (1) the chip select line
-  */
--static void cdns_spi_chipselect(struct spi_device *spi, bool enable)
-+static void cdns_spi_chipselect(struct spi_device *spi, bool is_high)
- {
- 	struct cdns_spi *xspi = spi_master_get_devdata(spi->master);
- 	u32 ctrl_reg;
+diff --git a/drivers/spi/spi-cavium-thunderx.c b/drivers/spi/spi-cavium-thunderx.c
+index 877937706240..828fbbebc3c4 100644
+--- a/drivers/spi/spi-cavium-thunderx.c
++++ b/drivers/spi/spi-cavium-thunderx.c
+@@ -81,6 +81,7 @@ static int thunderx_spi_probe(struct pci_dev *pdev,
  
- 	ctrl_reg = cdns_spi_read(xspi, CDNS_SPI_CR);
+ error:
+ 	clk_disable_unprepare(p->clk);
++	pci_release_regions(pdev);
+ 	spi_master_put(master);
+ 	return ret;
+ }
+@@ -95,6 +96,7 @@ static void thunderx_spi_remove(struct pci_dev *pdev)
+ 		return;
  
--	if (!enable) {
-+	if (is_high) {
- 		/* Deselect the slave */
- 		ctrl_reg |= CDNS_SPI_CR_SSCTRL;
- 	} else {
+ 	clk_disable_unprepare(p->clk);
++	pci_release_regions(pdev);
+ 	/* Put everything in a known state. */
+ 	writeq(0, p->register_base + OCTEON_SPI_CFG(p));
+ }
 -- 
 2.20.1

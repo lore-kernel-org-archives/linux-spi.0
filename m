@@ -1,11 +1,12 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.4 125/187] spi: nxp-fspi: Ensure width is respected in spi-mem operations
-Date: Fri, 27 Dec 2019 12:39:53 -0500
-Message-ID: <20191227174055.4923-125-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 051/187] spi: spi-cavium-thunderx: Add missing pci_release_regions()
+Date: Fri, 27 Dec 2019 12:38:39 -0500
+Message-ID: <20191227174055.4923-51-sashal@kernel.org>
 References: <20191227174055.4923-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Michael Walle <michael@walle.cc>, Mark Brown <broonie@kernel.org>,
+Cc: Chuhong Yuan <hslester96@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
@@ -13,38 +14,41 @@ In-Reply-To: <20191227174055.4923-1-sashal@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Michael Walle <michael@walle.cc>
+From: Chuhong Yuan <hslester96@gmail.com>
 
-[ Upstream commit 007773e16a6f3f49d1439554078c3ba8af131998 ]
+[ Upstream commit a841e2853e1afecc2ee692b8cc5bff606bc84e4c ]
 
-Make use of a core helper to ensure the desired width is respected
-when calling spi-mem operators.
+The driver forgets to call pci_release_regions() in probe failure
+and remove.
+Add the missed calls to fix it.
 
-Otherwise only the SPI controller will be matched with the flash chip,
-which might lead to wrong widths. Also consider the width specified by
-the user in the device tree.
-
-Fixes: a5356aef6a90 ("spi: spi-mem: Add driver for NXP FlexSPI controller")
-Signed-off-by: Michael Walle <michael@walle.cc>
-Link: https://lore.kernel.org/r/20191211195730.26794-1-michael@walle.cc
+Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+Link: https://lore.kernel.org/r/20191206075500.18525-1-hslester96@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-nxp-fspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-cavium-thunderx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index 501b923f2c27..28ae5229f889 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -439,7 +439,7 @@ static bool nxp_fspi_supports_op(struct spi_mem *mem,
- 	    op->data.nbytes > f->devtype_data->txfifo)
- 		return false;
+diff --git a/drivers/spi/spi-cavium-thunderx.c b/drivers/spi/spi-cavium-thunderx.c
+index d12e149f1a41..fd6b9caffaf0 100644
+--- a/drivers/spi/spi-cavium-thunderx.c
++++ b/drivers/spi/spi-cavium-thunderx.c
+@@ -82,6 +82,7 @@ static int thunderx_spi_probe(struct pci_dev *pdev,
  
--	return true;
-+	return spi_mem_default_supports_op(mem, op);
+ error:
+ 	clk_disable_unprepare(p->clk);
++	pci_release_regions(pdev);
+ 	spi_master_put(master);
+ 	return ret;
  }
+@@ -96,6 +97,7 @@ static void thunderx_spi_remove(struct pci_dev *pdev)
+ 		return;
  
- /* Instead of busy looping invoke readl_poll_timeout functionality. */
+ 	clk_disable_unprepare(p->clk);
++	pci_release_regions(pdev);
+ 	/* Put everything in a known state. */
+ 	writeq(0, p->register_base + OCTEON_SPI_CFG(p));
+ }
 -- 
 2.20.1

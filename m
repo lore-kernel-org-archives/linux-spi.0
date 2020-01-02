@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 5/6] spi: rspi: Add support for multiple native chip selects
-Date: Thu,  2 Jan 2020 14:38:21 +0100
-Message-ID: <20200102133822.29346-6-geert+renesas@glider.be>
+Subject: [PATCH 6/6] spi: rspi: Add support for GPIO chip selects
+Date: Thu,  2 Jan 2020 14:38:22 +0100
+Message-ID: <20200102133822.29346-7-geert+renesas@glider.be>
 References: <20200102133822.29346-1-geert+renesas@glider.be>
 Cc: Chris Brandt <chris.brandt@renesas.com>,
         =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>,
@@ -13,37 +13,69 @@ In-Reply-To: <20200102133822.29346-1-geert+renesas@glider.be>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-RSPI variants on some SuperH or R-Mobile SoCs support multiple native
-chip selects. Add support for this by configuring the SSL Assert Signal
-Setting.
+Add support for GPIO chip selects using GPIO descriptors.  As the RSPI
+controller always drives a native chip select when performing a
+transfer, at least one native chip select must be left unused.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- drivers/spi/spi-rspi.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/spi/spi-rspi.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 9eabef3d6cc478ff..2f5a856a93192702 100644
+index 2f5a856a93192702..85575d45901cee1b 100644
 --- a/drivers/spi/spi-rspi.c
 +++ b/drivers/spi/spi-rspi.c
-@@ -159,7 +159,7 @@
- #define SPCMD_SPIMOD_DUAL	SPCMD_SPIMOD0
- #define SPCMD_SPIMOD_QUAD	SPCMD_SPIMOD1
- #define SPCMD_SPRW		0x0010	/* SPI Read/Write Access (Dual/Quad) */
--#define SPCMD_SSLA_MASK		0x0030	/* SSL Assert Signal Setting (RSPI) */
-+#define SPCMD_SSLA(i)		((i) << 4)	/* SSL Assert Signal Setting */
- #define SPCMD_BRDV_MASK		0x000c	/* Bit Rate Division Setting */
- #define SPCMD_CPOL		0x0002	/* Clock Polarity Setting */
- #define SPCMD_CPHA		0x0001	/* Clock Phase Setting */
-@@ -933,6 +933,9 @@ static int rspi_prepare_message(struct spi_controller *ctlr,
- 	if (spi->mode & SPI_CPHA)
+@@ -242,6 +242,7 @@ struct spi_ops {
+ 	u16 mode_bits;
+ 	u16 flags;
+ 	u16 fifo_size;
++	u8 num_hw_ss;
+ };
+ 
+ /*
+@@ -934,7 +935,8 @@ static int rspi_prepare_message(struct spi_controller *ctlr,
  		rspi->spcmd |= SPCMD_CPHA;
  
-+	/* Configure slave signal to assert */
-+	rspi->spcmd |= SPCMD_SSLA(spi->chip_select);
-+
+ 	/* Configure slave signal to assert */
+-	rspi->spcmd |= SPCMD_SSLA(spi->chip_select);
++	rspi->spcmd |= SPCMD_SSLA(spi->cs_gpiod ? rspi->ctlr->unused_native_cs
++						: spi->chip_select);
+ 
  	/* CMOS output mode and MOSI signal from previous transfer */
  	rspi->sppcr = 0;
- 	if (spi->mode & SPI_LOOP)
+@@ -1123,6 +1125,7 @@ static const struct spi_ops rspi_ops = {
+ 	.mode_bits =		SPI_CPHA | SPI_CPOL | SPI_LOOP,
+ 	.flags =		SPI_CONTROLLER_MUST_TX,
+ 	.fifo_size =		8,
++	.num_hw_ss =		2,
+ };
+ 
+ static const struct spi_ops rspi_rz_ops = {
+@@ -1131,6 +1134,7 @@ static const struct spi_ops rspi_rz_ops = {
+ 	.mode_bits =		SPI_CPHA | SPI_CPOL | SPI_LOOP,
+ 	.flags =		SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_MUST_TX,
+ 	.fifo_size =		8,	/* 8 for TX, 32 for RX */
++	.num_hw_ss =		1,
+ };
+ 
+ static const struct spi_ops qspi_ops = {
+@@ -1141,6 +1145,7 @@ static const struct spi_ops qspi_ops = {
+ 				SPI_RX_DUAL | SPI_RX_QUAD,
+ 	.flags =		SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_MUST_TX,
+ 	.fifo_size =		32,
++	.num_hw_ss =		1,
+ };
+ 
+ #ifdef CONFIG_OF
+@@ -1256,6 +1261,8 @@ static int rspi_probe(struct platform_device *pdev)
+ 	ctlr->mode_bits = ops->mode_bits;
+ 	ctlr->flags = ops->flags;
+ 	ctlr->dev.of_node = pdev->dev.of_node;
++	ctlr->use_gpio_descriptors = true;
++	ctlr->max_native_cs = rspi->ops->num_hw_ss;
+ 
+ 	ret = platform_get_irq_byname_optional(pdev, "rx");
+ 	if (ret < 0) {
 -- 
 2.17.1

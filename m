@@ -1,129 +1,48 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-fsl-dspi: Fix 16-bit word order in 32-bit XSPI mode" to the spi tree
-Date: Tue, 31 Dec 2019 00:30:41 +0000 (GMT)
-Message-ID: <applied-20191228135536.14284-1-olteanv@gmail.com>
-References: <20191228135536.14284-1-olteanv@gmail.com>
-Cc: broonie@kernel.org, Chuanhua Han <chuanhua.han@nxp.com>,
-        Esben Haabendal <eha@deif.com>, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
-To: Vladimir Oltean <olteanv@gmail.com>
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <20191228135536.14284-1-olteanv@gmail.com>
-Sender: stable-owner@vger.kernel.org
+From: Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH] spi: Document Octal mode as valid SPI bus width
+Date: Thu, 2 Jan 2020 15:51:18 +0530
+Message-ID: <20200102102118.23318-1-vigneshr@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+Cc: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+To: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+SPI core supports Octal SPI controllers which have 8 IO lines.
+Therefore document 8 as a valid option for spi-tx{rx}-bus-width
 
-   spi: spi-fsl-dspi: Fix 16-bit word order in 32-bit XSPI mode
-
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From ca59d5a51690d5b9340343dc36792a252e9414ae Mon Sep 17 00:00:00 2001
-From: Vladimir Oltean <olteanv@gmail.com>
-Date: Sat, 28 Dec 2019 15:55:36 +0200
-Subject: [PATCH] spi: spi-fsl-dspi: Fix 16-bit word order in 32-bit XSPI mode
-
-When used in Extended SPI mode on LS1021A, the DSPI controller wants to
-have the least significant 16-bit word written first to the TX FIFO.
-
-In fact, the LS1021A reference manual says:
-
-33.5.2.4.2 Draining the TX FIFO
-
-When Extended SPI Mode (DSPIx_MCR[XSPI]) is enabled, if the frame size
-of SPI Data to be transmitted is more than 16 bits, then it causes two
-Data entries to be popped from TX FIFO simultaneously which are
-transferred to the shift register. The first of the two popped entries
-forms the 16 least significant bits of the SPI frame to be transmitted.
-
-So given the following TX buffer:
-
- +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
- | 0x0 | 0x1 | 0x2 | 0x3 | 0x4 | 0x5 | 0x6 | 0x7 | 0x8 | 0x9 | 0xa | 0xb |
- +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
- |     32-bit word 1     |     32-bit word 2     |     32-bit word 3     |
- +-----------------------+-----------------------+-----------------------+
-
-The correct way that a little-endian system should transmit it on the
-wire when bits_per_word is 32 is:
-
-0x03020100
-0x07060504
-0x0b0a0908
-
-But it is actually transmitted as following, as seen with a scope:
-
-0x01000302
-0x05040706
-0x09080b0a
-
-It appears that this patch has been submitted at least once before:
-https://lkml.org/lkml/2018/9/21/286
-but in that case Chuanhua Han did not manage to explain the problem
-clearly enough and the patch did not get merged, leaving XSPI mode
-broken.
-
-Fixes: 8fcd151d2619 ("spi: spi-fsl-dspi: XSPI FIFO handling (in TCFQ mode)")
-Cc: Esben Haabendal <eha@deif.com>
-Cc: Chuanhua Han <chuanhua.han@nxp.com>
-Signed-off-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://lore.kernel.org/r/20191228135536.14284-1-olteanv@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 ---
- drivers/spi/spi-fsl-dspi.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ Documentation/devicetree/bindings/spi/spi-controller.yaml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 9c3934efe2b1..8428b69c858b 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -587,21 +587,14 @@ static void dspi_tcfq_write(struct fsl_dspi *dspi)
- 	dspi->tx_cmd |= SPI_PUSHR_CMD_CTCNT;
- 
- 	if (dspi->devtype_data->xspi_mode && dspi->bits_per_word > 16) {
--		/* Write two TX FIFO entries first, and then the corresponding
--		 * CMD FIFO entry.
-+		/* Write the CMD FIFO entry first, and then the two
-+		 * corresponding TX FIFO entries.
- 		 */
- 		u32 data = dspi_pop_tx(dspi);
- 
--		if (dspi->cur_chip->ctar_val & SPI_CTAR_LSBFE) {
--			/* LSB */
--			tx_fifo_write(dspi, data & 0xFFFF);
--			tx_fifo_write(dspi, data >> 16);
--		} else {
--			/* MSB */
--			tx_fifo_write(dspi, data >> 16);
--			tx_fifo_write(dspi, data & 0xFFFF);
--		}
- 		cmd_fifo_write(dspi);
-+		tx_fifo_write(dspi, data & 0xFFFF);
-+		tx_fifo_write(dspi, data >> 16);
- 	} else {
- 		/* Write one entry to both TX FIFO and CMD FIFO
- 		 * simultaneously.
+diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+index 732339275848..1e0ca6ccf64b 100644
+--- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+@@ -111,7 +111,7 @@ patternProperties:
+       spi-rx-bus-width:
+         allOf:
+           - $ref: /schemas/types.yaml#/definitions/uint32
+-          - enum: [ 1, 2, 4 ]
++          - enum: [ 1, 2, 4, 8 ]
+           - default: 1
+         description:
+           Bus width to the SPI bus used for MISO.
+@@ -123,7 +123,7 @@ patternProperties:
+       spi-tx-bus-width:
+         allOf:
+           - $ref: /schemas/types.yaml#/definitions/uint32
+-          - enum: [ 1, 2, 4 ]
++          - enum: [ 1, 2, 4, 8 ]
+           - default: 1
+         description:
+           Bus width to the SPI bus used for MOSI.
 -- 
-2.20.1
+2.24.1

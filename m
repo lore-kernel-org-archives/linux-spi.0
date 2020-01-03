@@ -1,58 +1,81 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: dw: use "smp_mb()" to avoid sending spi data error
-Date: Fri, 3 Jan 2020 01:04:09 +0000
-Message-ID: <20200103010409.GG3897@sirena.org.uk>
-References: <1577352088-35856-1-git-send-email-kong.kongxinwei@hisilicon.com>
- <20191227002239.GH27497@sirena.org.uk>
- <afad8a97-6159-bf7e-466a-fdbaf0a07d4a@hisilicon.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="1giRMj6yz/+FOIRq"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linuxarm@huawei.com, fengsheng <fengsheng5@huawei.com>
-To: kongxinwei <kong.kongxinwei@hisilicon.com>
+Subject: Applied "spi: Document Octal mode as valid SPI bus width" to the spi tree
+Date: Fri,  3 Jan 2020 01:05:52 +0000 (GMT)
+Message-ID: <applied-20200102102118.23318-1-vigneshr@ti.com>
+References: <20200102102118.23318-1-vigneshr@ti.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>
+To: Vignesh Raghavendra <vigneshr@ti.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <afad8a97-6159-bf7e-466a-fdbaf0a07d4a@hisilicon.com>
+In-Reply-To: <20200102102118.23318-1-vigneshr@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---1giRMj6yz/+FOIRq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: Document Octal mode as valid SPI bus width
 
-On Sat, Dec 28, 2019 at 04:31:53PM +0800, kongxinwei wrote:
+has been applied to the spi tree at
 
-> > I'd be much more comfortable here if I understood what this was
-> > supposed to be syncing - what exactly gets flushed here and why
-> > is a memory barrier enough to ensure it's synced?  A comment in
-> > the code would be especially good so anyone modifying the code
-> > understands this in future.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
 
-> Because of out-of-order execution about some CPU architecture,
-> In this debug stage we find Completing spi interrupt enable ->
-> prodrucing TXEI interrupt -> running "interrupt_transfer" function
-> will prior to set "dw->rx and dws->rx_end" data, so it will result
-> in SPI sending error
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-Could you update the commit message to say that, and ideally also
-add a comment saying something like "Ensure dw->rx and dw->rx_end
-are visible" please?
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---1giRMj6yz/+FOIRq
-Content-Type: application/pgp-signature; name="signature.asc"
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl4OkwgACgkQJNaLcl1U
-h9AkFgf/fypiFJ4eRlJVOmkAYnGY01lAChSELOS/91cDAaOXJSQhz/hwB/cdeHjq
-2KYpCiICZDeG8FB6y6dvAWUMCkVxGH0WVGS9/OlnmI+aDoPjqyiyJ5R1a+bRBAcE
-YAaX12ARLr0uj9l9Fh6hhZxScRgit+ZKRB12T77pdyFFcoCh4kJLSD58D+78OmEO
-YUXkkBxX7cayLE5CKvl2UrQp8K18T4EKZ4YX7jDCUuY4wXkoScvm7G3ik25DhEJR
-jenBxAnbnw0De745jFhdI5VJygGUOF3caiWT3wc2tOIQwI1LJThI0cp4d3DRbphU
-XpWJcoIuRXqY+TfLjulA4WjTtGsDew==
-=Xa85
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---1giRMj6yz/+FOIRq--
+>From 09b6636cea4f8e419d7cca4155e8695e462535a6 Mon Sep 17 00:00:00 2001
+From: Vignesh Raghavendra <vigneshr@ti.com>
+Date: Thu, 2 Jan 2020 15:51:18 +0530
+Subject: [PATCH] spi: Document Octal mode as valid SPI bus width
+
+SPI core supports Octal SPI controllers which have 8 IO lines.
+Therefore document 8 as a valid option for spi-tx{rx}-bus-width
+
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Link: https://lore.kernel.org/r/20200102102118.23318-1-vigneshr@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ Documentation/devicetree/bindings/spi/spi-controller.yaml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+index 732339275848..1e0ca6ccf64b 100644
+--- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+@@ -111,7 +111,7 @@ patternProperties:
+       spi-rx-bus-width:
+         allOf:
+           - $ref: /schemas/types.yaml#/definitions/uint32
+-          - enum: [ 1, 2, 4 ]
++          - enum: [ 1, 2, 4, 8 ]
+           - default: 1
+         description:
+           Bus width to the SPI bus used for MISO.
+@@ -123,7 +123,7 @@ patternProperties:
+       spi-tx-bus-width:
+         allOf:
+           - $ref: /schemas/types.yaml#/definitions/uint32
+-          - enum: [ 1, 2, 4 ]
++          - enum: [ 1, 2, 4, 8 ]
+           - default: 1
+         description:
+           Bus width to the SPI bus used for MOSI.
+-- 
+2.20.1

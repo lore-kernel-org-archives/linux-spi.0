@@ -1,83 +1,25 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: dw: use "smp_mb()" to avoid sending spi data error" to the spi tree
-Date: Mon, 06 Jan 2020 20:51:19 +0000
-Message-ID: <applied-1578019930-55858-1-git-send-email-kong.kongxinwei@hisilicon.com>
-References: <1578019930-55858-1-git-send-email-kong.kongxinwei@hisilicon.com>
-Cc: broonie@kernel.org, fengsheng <fengsheng5@huawei.com>,
-        linuxarm@huawei.com, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
-To: Xinwei Kong <kong.kongxinwei@hisilicon.com>
+From: pr-tracker-bot@kernel.org
+Subject: Re: [GIT PULL] spi fixes for v5.5
+Date: Mon, 06 Jan 2020 21:05:09 +0000
+Message-ID: <157834470942.27503.4619949117616234858.pr-tracker-bot@kernel.org>
+References: <20200106131232.GC6448@sirena.org.uk>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Mark Brown <broonie@kerenl.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1578019930-55858-1-git-send-email-kong.kongxinwei@hisilicon.com>
+In-Reply-To: <20200106131232.GC6448@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+The pull request you sent on Mon, 6 Jan 2020 13:12:32 +0000:
 
-   spi: dw: use "smp_mb()" to avoid sending spi data error
+> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v5.5-rc5
 
-has been applied to the spi tree at
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/ec7b3f5372e2f674ce19c23ca8f5a2c103025264
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
+Thank you!
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From bfda044533b213985bc62bd7ca96f2b984d21b80 Mon Sep 17 00:00:00 2001
-From: Xinwei Kong <kong.kongxinwei@hisilicon.com>
-Date: Fri, 3 Jan 2020 10:52:10 +0800
-Subject: [PATCH] spi: dw: use "smp_mb()" to avoid sending spi data error
-
-Because of out-of-order execution about some CPU architecture,
-In this debug stage we find Completing spi interrupt enable ->
-prodrucing TXEI interrupt -> running "interrupt_transfer" function
-will prior to set "dw->rx and dws->rx_end" data, so this patch add
-memory barrier to enable dw->rx and dw->rx_end to be visible and
-solve to send SPI data error.
-eg:
-it will fix to this following low possibility error in testing environment
-which using SPI control to connect TPM Modules
-
-kernel: tpm tpm0: Operation Timed out
-kernel: tpm tpm0: tpm_relinquish_locality: : error -1
-
-Signed-off-by: fengsheng <fengsheng5@huawei.com>
-Signed-off-by: Xinwei Kong <kong.kongxinwei@hisilicon.com>
-Link: https://lore.kernel.org/r/1578019930-55858-1-git-send-email-kong.kongxinwei@hisilicon.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-dw.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index c547ae38ed69..310492e21b33 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -297,6 +297,9 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 	dws->len = transfer->len;
- 	spin_unlock_irqrestore(&dws->buf_lock, flags);
- 
-+	/* Ensure dw->rx and dw->rx_end are visible */
-+	smp_mb();
-+
- 	spi_enable_chip(dws, 0);
- 
- 	/* Handle per transfer options for bpw and speed */
 -- 
-2.20.1
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker

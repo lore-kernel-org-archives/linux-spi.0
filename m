@@ -1,49 +1,77 @@
-From: Xinwei Kong <kong.kongxinwei@hisilicon.com>
-Subject: [PATCH V2] spi: dw: use "smp_mb()" to avoid sending spi data error
-Date: Fri, 3 Jan 2020 10:52:10 +0800
-Message-ID: <1578019930-55858-1-git-send-email-kong.kongxinwei@hisilicon.com>
+From: Vignesh Raghavendra <vigneshr@ti.com>
+Subject: Re: [PATCH v6 2/2] spi: cadence-quadpsi: Add support for the Cadence
+ QSPI controller
+Date: Mon, 6 Jan 2020 16:10:39 +0530
+Message-ID: <e89cf037-217b-cd61-79ee-a11e2a118c01@ti.com>
+References: <20191230074102.50982-1-vadivel.muruganx.ramuthevar@linux.intel.com>
+ <20191230074102.50982-3-vadivel.muruganx.ramuthevar@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linuxarm@huawei.com>, Xinwei Kong <kong.kongxinwei@hisilicon.com>,
-        fengsheng <fengsheng5@huawei.com>
-To: <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Cc: <robh+dt@kernel.org>, <dan.carpenter@oracle.com>,
+        <cheol.yong.kim@intel.com>, <qi-ming.wu@intel.com>
+To: "Ramuthevar,Vadivel MuruganX"
+        <vadivel.muruganx.ramuthevar@linux.intel.com>,
+        <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20191230074102.50982-3-vadivel.muruganx.ramuthevar@linux.intel.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Because of out-of-order execution about some CPU architecture,
-In this debug stage we find Completing spi interrupt enable ->
-prodrucing TXEI interrupt -> running "interrupt_transfer" function
-will prior to set "dw->rx and dws->rx_end" data, so this patch add
-memory barrier to enable dw->rx and dw->rx_end to be visible and
-solve to send SPI data error.
-eg:
-it will fix to this following low possibility error in testing environment
-which using SPI control to connect TPM Modules
+Hi,
 
-kernel: tpm tpm0: Operation Timed out
-kernel: tpm tpm0: tpm_relinquish_locality: : error -1
+On 30/12/19 1:11 pm, Ramuthevar,Vadivel MuruganX wrote:
+[...]
+> +static u32 cqspi_cmd2addr(const unsigned char *addr_buf, u32 addr_width)
+> +{
+> +	unsigned int addr = 0;
+> +	int i;
+> +
+> +	/* Invalid address return zero. */
+> +	if (addr_width > 4)
+> +		return 0;
+> +
+> +	for (i = 0; i < addr_width; i++) {
+> +		addr = addr << 8;
+> +		addr |= addr_buf[i];
+> +	}
+> +
+> +	return addr;
+> +}
+> +
+[...]
+> +static int cqspi_apb_read_setup(struct struct_cqspi *cqspi,
+> +				const struct spi_mem_op *op,
+> +				const u8 *addrbuf)
+> +{
+> +	void __iomem *reg_base = cqspi->iobase;
+> +	size_t addrlen = op->addr.nbytes;
+> +	size_t dummy_bytes = op->dummy.nbytes;
+> +	unsigned int addr_value, dummy_clk, reg;
+> +
+> +	if (addrlen) {
+> +		addr_value = cqspi_cmd2addr(&addrbuf[0], addrlen);
+> +		writel(addr_value, reg_base + CQSPI_REG_INDIRECTRDSTARTADDR);
+> +	}
+> +
 
-Signed-off-by: fengsheng <fengsheng5@huawei.com>
-Signed-off-by: Xinwei Kong <kong.kongxinwei@hisilicon.com>
----
- drivers/spi/spi-dw.c | 3 +++
- 1 file changed, 3 insertions(+)
+Why do you need to swap the address bytes to SPI bus order? You are
+writing to a controller register that accepts 24 bit or 32 bit address.
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index a92aa5c..9396eb5 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -288,6 +288,9 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 	dws->rx_end = dws->rx + transfer->len;
- 	dws->len = transfer->len;
- 
-+	/* Ensure dw->rx and dw->rx_end are visible */
-+	smp_mb();
-+
- 	spi_enable_chip(dws, 0);
- 
- 	/* Handle per transfer options for bpw and speed */
+> +	reg = op->cmd.opcode << CQSPI_REG_RD_INSTR_OPCODE_LSB;
+> +	reg |= (op->data.buswidth & CQSPI_REG_RD_INSTR_TYPE_DATA_MASK) <<
+> +		CQSPI_REG_RD_INSTR_TYPE_DATA_LSB;
+> +
+
+This is wrong... op->data.buswidth's range is 1 to 8 whereas
+CQSPI_REG_RD_INSTR_TYPE range is 0 to 3. I wonder whether you tested
+dual/quad mode with this driver?
+
+I am still unable to get this series to work on my platform. Will
+continue to debug...
+
 -- 
-2.7.4
+Regards
+Vignesh

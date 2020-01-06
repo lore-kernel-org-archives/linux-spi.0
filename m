@@ -1,96 +1,73 @@
-From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: Multiplex SPI Chip Selects
-Date: Mon, 6 Jan 2020 22:44:15 +0000
-Message-ID: <2db6a1c2463ca5cf41795b5348e17cfbd7de5fe3.camel@alliedtelesis.co.nz>
+Date: Mon, 6 Jan 2020 22:51:38 +0000
+Message-ID: <20200106225138.GE6448@sirena.org.uk>
 References: <CAB595VxuL+iOQD3Re1PbjP50GD51XuMML8_R6Ku2ywAAHcOcdw@mail.gmail.com>
-         <a0171241162171ffac6429d29edfaa83fbd9a2ba.camel@alliedtelesis.co.nz>
-         <CAB595VzfMRU4Pejuzi0jODvu9p_mh473-cdK92jxSxk3yPHtqw@mail.gmail.com>
+ <a0171241162171ffac6429d29edfaa83fbd9a2ba.camel@alliedtelesis.co.nz>
+ <CAB595VzfMRU4Pejuzi0jODvu9p_mh473-cdK92jxSxk3yPHtqw@mail.gmail.com>
+ <2db6a1c2463ca5cf41795b5348e17cfbd7de5fe3.camel@alliedtelesis.co.nz>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="xA/XKXTdy9G3iaIz"
+Cc: "dries.vanpuymbroeck@dekimo.com" <dries.vanpuymbroeck@dekimo.com>,
+        "anthony.derosa@syscall7.com" <anthony.derosa@syscall7.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: "dries.vanpuymbroeck@dekimo.com" <dries.vanpuymbroeck@dekimo.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "anthony.derosa@syscall7.com" <anthony.derosa@syscall7.com>
+To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAB595VzfMRU4Pejuzi0jODvu9p_mh473-cdK92jxSxk3yPHtqw@mail.gmail.com>
-Content-Language: en-US
-Content-ID: <CDC42EFBF9BF2346A0738A1FFAA48CB3@atlnz.lc>
+Content-Disposition: inline
+In-Reply-To: <2db6a1c2463ca5cf41795b5348e17cfbd7de5fe3.camel@alliedtelesis.co.nz>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gTW9uLCAyMDIwLTAxLTA2IGF0IDA4OjI3IC0wNTAwLCBBbnRob255IERlUm9zYSB3cm90ZToN
-Cj4gSGkgQ2hyaXMsDQo+IA0KPiBPbiBTdW4sIEphbiA1LCAyMDIwIGF0IDM6NDcgUE0gQ2hyaXMg
-UGFja2hhbQ0KPiA8Q2hyaXMuUGFja2hhbUBhbGxpZWR0ZWxlc2lzLmNvLm56PiB3cm90ZToNCj4g
-PiANCj4gPiBIaSBBbnRob255LA0KPiA+IA0KPiA+ID4gT24gV2VkLCAyMDIwLTAxLTAxIGF0IDA5
-OjIxIC0wNTAwLCBBbnRob255IERlUm9zYSB3cm90ZToNCj4gPiA+IEhpIENocmlzLA0KPiA+ID4g
-DQo+ID4gPiBJIHNhdyB5b3VyIHRocmVhZFsxXSBhYm91dCBtdWx0aXBsZXhpbmcgY2hpcCBzZWxl
-Y3RzIG9uIHRoZSBTUEkgYnVzDQo+ID4gPiBhbmQgd29uZGVyZWQgd2hhdCBzb2x1dGlvbiB5b3Ug
-c2V0dGxlZCBvbiBpbiB0aGUgZW5kLiBMb29rcyBsaWtlIHlvdXINCj4gPiA+IHBhdGNoIHdhcyBu
-b3QgaW50ZWdyYXRlZCBpbnRvIHRoZSBrZXJuZWwsIGlzIHRoYXQgcmlnaHQ/IEkgaGF2ZSBhDQo+
-ID4gPiBzaW1pbGFyIHByb2JsZW0gd2hlcmUgSSBuZWVkIHRvIHVzZSBHUElPcyB0byBtdWx0aXBs
-ZXggdGhlIENTMCBwaW4gb24NCj4gPiA+IGEgcmFzcGJlcnJ5IHBpLiBBbnkgaW5zaWdodHMgd291
-bGQgYmUgYXBwcmVjaWF0ZWQuDQo+ID4gPiANCj4gPiANCj4gPiBGb3IgdGhlIHNpbXBsZSBjYXNl
-IHRoZSBleGlzdGluZyBjcy1ncGlvcyBzdXBwb3J0IHdvcmtzIHdlbGwuIFNvIHVzaW5nDQo+ID4g
-dGhhdCBpZiB5b3UgY2FuIGlzIG15IHJlY29tbWVuZGF0aW9uLg0KPiA+IA0KPiA+IFVuZm9ydHVu
-YXRlbHkgZm9yIG1lIGl0J3Mgbm90IHRoYXQgc2ltcGxlIGJlY2F1c2UgSSBoYXZlIDIgcGxhdGZv
-cm1zDQo+ID4gd2hpY2ggbmVlZCBib3RoIHRoZSBncGlvIENTIGFuZCB0aGUgbmF0aXZlIENTMC4g
-VGhpcyBpcyB3aGVyZSB0aGluZ3MNCj4gPiBnZXQgYSBiaXQgdHJpY2t5Lg0KPiA+IA0KPiA+IFRo
-ZSBleGlzdGluZyBjb2RlIHdpbGwgaW52ZXJ0IHRoZSBuYXRpdmUgQ1MwIChiZWNhdXNlIFNQSV9D
-U19ISUdIIGlzDQo+ID4gc2V0KSBJIHRoaW5rIHRoaXMgaXMgYSBzdHJhaWdodCBjb3JuZXItY2Fz
-ZSBidWcgYW5kIHdlIHNob3VsZCBlaXRoZXINCj4gPiBub3QgaW52ZXJ0IHRoZSBuYXRpdmUgQ1Mw
-IG9yIGhhdmUgYSBzZXBhcmF0ZSBmbGFnIHRvIGluZGljYXRlIHdoZW4gdGhlDQo+ID4gbmF0aXZl
-IENTMCBuZWVkcyBpbnZlcnRpbmcuDQo+ID4gDQo+ID4gRm9yIHRoZSAyIHBsYXRmb3JtcyBJJ20g
-ZGVhbGluZyB3aXRoIEkgaGF2ZSBhIGNvbXBsaWNhdGlvbiBpbiB0aGUgSFcNCj4gPiBkZXNpZ24g
-d2hlcmUgdGhlIGdwaW8gaXMgdXNlZCB0byBzdGVlciB0aGUgbmF0aXZlIENTMCAoYXMgb3Bwb3Nl
-ZCB0bw0KPiA+IHJlcGxhY2luZyBpdCkgd2hpY2ggaXMgd2hhdCBteSBvcmlnaW5hbCBzZXJpZXMg
-YXR0ZW1wdGVkIHRvIGRlYWwgd2l0aC4NCj4gPiBJIGVuZGVkIHVwIGltcGxlbWVudGluZyBhIGdw
-aW8tb3Zlci1ncGlvIGNvbnRyb2xsZXIgdGhhdCBwcmVzZW50ZWQgMg0KPiA+IHZpcnR1YWwgZ3Bp
-b3Mgd2hpY2ggcmVmbGVjdGVkIHRoZSBoaWdoLWxvdyBzdGF0ZSBvZiBhIHNpbmdsZSBwaHlzaWNh
-bA0KPiA+IGdwaW8gKGJhc2ljYWxseSBpbXBsZW1lbnRlZCBNYXJrJ3Mgc3VnZ2VzdGlvbiBmcm9t
-IHRoZSB0aHJlYWQpLiBJDQo+ID4gaGF2ZW4ndCBhdHRlbXB0ZWQgdG8gdXBzdHJlYW0gdGhlIGRy
-aXZlciBiZWNhdXNlIEkgY29uc2lkZXIgaXQgYSBTVyBmaXgNCj4gPiBmb3IgcXVpcmsgb2Ygb3Vy
-IEhXIGRlc2lnbnMsIGJ1dCBpZiB0aGVyZSBpcyBpbnRlcmVzdCBJIGNvdWxkIGF0IGxlYXN0DQo+
-ID4gc2VuZCBpdCBvdXQuDQo+DQo+IFRoYW5rcyBmb3IgeW91ciByZXNwb25zZS4gVGhlIGNzLWdw
-aW9zIGFyZSBub3Qgc3VmZmljaWVudCBmb3IgbWUsDQo+IGJlY2F1c2UgdGhlIGNzLWdwaW9zIHBy
-b3ZpZGUgTiBtb3JlIGNoaXAgc2VsZWN0cywgYnV0IHdlIG5lZWQgMl5OIG1vcmUNCj4gY2hpcCBz
-ZWxlY3RzLiBXZSBhcmUgdXNpbmcgYSA0OjE2IGFkZHJlc3MgZGVjb2RlciB0aGF0IGlzIGNvbnRy
-b2xsZWQNCj4gYnkgR1BJT3MgdG8gZXh0ZW5kIHRoZSBudW1iZXIgb2YgY2hpcCBzZWxlY3RzIGF2
-YWlsYWJsZSBsaWtlIHRoaXMNCj4gKHJlcXVpcmVzIGZpeGVkLXdpZHRoIGZvbnQgdG8gdmlldyk6
-DQo+IA0KPiArICAgICAgTU9TSSAvLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0rLS0t
-LS0tLS0rLS0tLS0tLS0rLS0tLS0tLS1cDQo+ICsgICAgICBNSVNPIHwvLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tK3wtLS0tLS0tK3wtLS0tLS0tK3wtLS0tLS0tXHwNCj4gKyAgICAgICBT
-Q0wgfHwvLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSt8fC0tLS0tLSt8fC0tLS0tLSt8fC0t
-LS0tLVx8fA0KPiArICAgICAgICAgICB8fHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgfHx8
-ICAgICAgfHx8ICAgICAgfHx8ICAgICAgfHx8DQo+ICsgICAgKy0tLS0tLS0tLS0tLSsgICAgICAg
-ICAgICAgICAgICAgICAgICB8fHwgICAgICB8fHwgICAgICB8fHwgICAgICB8fHwNCj4gKyAgICB8
-IFNvQyAgfHx8ICAgfCAgICAgICAgICAgICAgICAgICAgICArLSsrKy0rICArLSsrKy0rICArLSsr
-Ky0rICArLSsrKy0rDQo+ICsgICAgfCAgICAgIHx8fCAgIHwgICAgICAgICAgICAgICAgICAgICAg
-fCBkZXYgfCAgfCBkZXYgfCAgfCBkZXYgfCAgfCBkZXYgfA0KPiArICAgIHwgICArLS0rKystKyB8
-IENTLVggICstLS0tLS0rXCAgICAgICstLSstLSsgICstLSstLSsgICstLSstLSsgICstLSstLSsN
-Cj4gKyAgICB8ICAgfCBTUEkgICstfC0tLS0tLS0rIE11eCAgfFxcICAgQ1MtMCB8ICAgICAgICB8
-ICAgICAgICB8ICAgICAgICB8DQo+ICsgICAgfCAgICstLS0tLS0rIHwgICAgICAgKy0tKystLStc
-XFwtLS0tLS0tLyAgIENTLTEgfCAgICAgICAgfCAgICAgICAgfA0KPiArICAgIHwgICAgICAgICAg
-ICB8ICAgICAgICAgIHx8ICAgXFxcLS0tLS0tLS0tLS0tLS0tLS8gICBDUy0yIHwgICAgICAgIHwN
-Cj4gKyAgICB8ICAgKy0tLS0tLSsgfCAgICAgICAgICB8fCAgICBcXC0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0vICAgQ1MtMyB8DQo+ICsgICAgfCAgIHwgR1BJTyArLXwtLS0tLS0tLS0tL3wgICAg
-IFwtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLw0KPiArICAgIHwgICB8ICAgICAg
-Ky18LS0tLS0tLS0tLS0vDQo+ICsgICAgfCAgICstLS0tLS0rIHwNCj4gKyAgICArLS0tLS0tLS0t
-LS0tKw0KPiANCj4gVGhpcyBwcm9wb3NlZCBwYXRjaCBkb2VzIGV4YWN0bHkgd2hhdCBJIG5lZWQg
-dG8gZG86DQo+IGh0dHBzOi8vcGF0Y2h3b3JrLmtlcm5lbC5vcmcvcGF0Y2gvMjcwNjE1MS8sIGJ1
-dCBJIHdhcyB3b25kZXJpbmcgd2h5DQo+IG5vdGhpbmcgbGlrZSB0aGlzIGFscmVhZHkgZXhpc3Rz
-IG9yIHdoeSB0aGF0IHBhdGNoIGhhZCBub3QgYmVlbg0KPiBpbmNsdWRlZCBpbiB0aGUgbWFpbmxp
-bmUga2VybmVsLg0KDQpZZWFoIHRoYXQncyB0aGUga2luZCBvZiB0aGluZyBJIGhhZCBpbiBtaW5k
-IGluIHRoZSB0aHJlYWQgSSBzdGFydGVkLg0KTm93IHRoYXQgbXV4LWNvbnRyb2xzIGlzIGEgdGhp
-bmcgaXQnZCBwcm9iYWJseSBiZSBldmVuIGVhc2llciB0byBkbw0Kc29tZXRoaW5nIGxpa2UgdGhp
-cy4NCg0KSSBkb24ndCBrbm93IHdoeSBEcmllcycgcGF0Y2ggc2VyaWVzIGRpZG4ndCBsYW5kLiBU
-aGUgcmVhc29uIG15IG9uZQ0KZGlkbid0IGxhbmQgd2FzIGR1ZSB0byBzb21lIGltcGxlbWVudGF0
-aW9uIGRldGFpbHMgYW5kIHRoZSBhYmlsaXR5IHRvDQpkbyBzb21ldGhpbmcgc2ltcGxlciB3aXRo
-IGEgZmFrZSBncGlvLg0KDQpJIHByb2JhYmx5IHdvbid0IGdldCB0byBhbnl0aGluZyBmb3IgdGhl
-IG5leHQgY291cGxlIG9mIHdlZWtzIGJ1dCBhZnRlcg0KdGhhdCBJIGNhbiBoYXZlIGEgdHJ5IGF0
-IHJlc3VycmVjdGluZyB0aGUgY29kZSBmcm9tIHRoZSBvbGQgdGhyZWFkLiBJDQpoYXZlIGEgaGFy
-ZHdhcmUgcGxhdGZvcm0gc3VpdGFibGUgZm9yIHRlc3RpbmcuDQoNCj4gDQo+ID4gDQo+ID4gUmVn
-YXJkcywNCj4gPiBDaHJpcw0KPiA+IA0KPiA+IC0tDQo+ID4gWzFdIC0NCj4gPiBodHRwczovL2x3
-bi5uZXQvbWwvZGV2aWNldHJlZS8yMDE5MDQxMjA1MDIxMy4xNzY5OC0xLWNocmlzLnBhY2toYW1A
-YWxsaWVkdGVsZXNpcy5jby5uei8NCg==
+
+--xA/XKXTdy9G3iaIz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Jan 06, 2020 at 10:44:15PM +0000, Chris Packham wrote:
+> On Mon, 2020-01-06 at 08:27 -0500, Anthony DeRosa wrote:
+
+As documented in submitting-patches.rst please send patches to the=20
+maintainers for the code you would like to change.  The normal kernel
+workflow is that people apply patches from their inboxes, if they aren't
+copied they are likely to not see the patch at all and it is much more
+difficult to apply patches.
+
+> > This proposed patch does exactly what I need to do:
+> > https://patchwork.kernel.org/patch/2706151/, but I was wondering why
+> > nothing like this already exists or why that patch had not been
+> > included in the mainline kernel.
+
+> I don't know why Dries' patch series didn't land. The reason my one
+> didn't land was due to some implementation details and the ability to
+> do something simpler with a fake gpio.
+
+If you want me to review something you'l need to submit it; that patch
+was from 2013 so predates me maintaining the subsystem so I've never
+seen a copy.
+
+My general instinct with this stuff is that it's likely to be more
+sensible to describe this with GPIO chip selects, the state of
+controller chip selects is such that a lot of devices use them anyway
+even when the controller supports native chip selects as the controller
+chip selects often suffer from unfortunate limitations that mean they're
+not actually useful.
+
+--xA/XKXTdy9G3iaIz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl4TufkACgkQJNaLcl1U
+h9DY5gf9Ey9Cx3vviBl/VgE4d7KdqgHAeFFQId61b91GhZyC2lYi0zADQfViUXGp
+yXS01T4rA97hOYcGej7ryr63OdR8goERMtCz3Cxxwgcx92JSlyU0jDsmF+HQ1CC6
+tQypSMSeduWrUx7ETJlK7jIruU4QrlKV234fg8hmpd2ar9NbUcnp66wsMkETd8p/
+Bpl2J7eBVGVLn2xIc3x8htgLHHluSDDaVKXzEbzS+knUhilfk0GzMWJCWQIWLYHw
+IxiOzb4wTcKwcXa0qOe+KOLW56SHv+t5Z5FQ+tNb+j70rqNEKJbpMpakCunUWuT0
+oajV8VNGug+3e7YrPM2A1q6yxqL7BA==
+=cNh2
+-----END PGP SIGNATURE-----
+
+--xA/XKXTdy9G3iaIz--

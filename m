@@ -1,77 +1,83 @@
-From: Mark Brown <broonie@kerenl.org>
-Subject: [GIT PULL] spi fixes for v5.5
-Date: Mon, 6 Jan 2020 13:12:32 +0000
-Message-ID: <20200106131232.GC6448@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="jy6Sn24JjFx/iggw"
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-To: Linus Torvalds <torvalds@linux-foundation.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: dw: use "smp_mb()" to avoid sending spi data error" to the spi tree
+Date: Mon, 06 Jan 2020 20:51:19 +0000
+Message-ID: <applied-1578019930-55858-1-git-send-email-kong.kongxinwei@hisilicon.com>
+References: <1578019930-55858-1-git-send-email-kong.kongxinwei@hisilicon.com>
+Cc: broonie@kernel.org, fengsheng <fengsheng5@huawei.com>,
+        linuxarm@huawei.com, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
+To: Xinwei Kong <kong.kongxinwei@hisilicon.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
+In-Reply-To: <1578019930-55858-1-git-send-email-kong.kongxinwei@hisilicon.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The patch
 
---jy6Sn24JjFx/iggw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   spi: dw: use "smp_mb()" to avoid sending spi data error
 
-The following changes since commit 63aa6a692595d47a0785297b481072086b9272d2:
+has been applied to the spi tree at
 
-  spi: fsl: use platform_get_irq() instead of of_irq_to_resource() (2019-12-16 11:54:55 +0000)
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
 
-are available in the Git repository at:
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v5.5-rc5
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-for you to fetch changes up to 09b6636cea4f8e419d7cca4155e8695e462535a6:
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-  spi: Document Octal mode as valid SPI bus width (2020-01-03 01:02:11 +0000)
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-----------------------------------------------------------------
-spi: Fixes for v5.5
+Thanks,
+Mark
 
-A small collection of fixes here, one to make the newly added PTP
-timestamping code more accurate, a few driver fixes and a fix for the
-core DT binding to document the fact that we support eight wire buses.
+>From bfda044533b213985bc62bd7ca96f2b984d21b80 Mon Sep 17 00:00:00 2001
+From: Xinwei Kong <kong.kongxinwei@hisilicon.com>
+Date: Fri, 3 Jan 2020 10:52:10 +0800
+Subject: [PATCH] spi: dw: use "smp_mb()" to avoid sending spi data error
 
-----------------------------------------------------------------
-Kunihiko Hayashi (1):
-      spi: uniphier: Fix FIFO threshold
+Because of out-of-order execution about some CPU architecture,
+In this debug stage we find Completing spi interrupt enable ->
+prodrucing TXEI interrupt -> running "interrupt_transfer" function
+will prior to set "dw->rx and dws->rx_end" data, so this patch add
+memory barrier to enable dw->rx and dw->rx_end to be visible and
+solve to send SPI data error.
+eg:
+it will fix to this following low possibility error in testing environment
+which using SPI control to connect TPM Modules
 
-Vignesh Raghavendra (1):
-      spi: Document Octal mode as valid SPI bus width
+kernel: tpm tpm0: Operation Timed out
+kernel: tpm tpm0: tpm_relinquish_locality: : error -1
 
-Vladimir Oltean (2):
-      spi: Don't look at TX buffer for PTP system timestamping
-      spi: spi-fsl-dspi: Fix 16-bit word order in 32-bit XSPI mode
+Signed-off-by: fengsheng <fengsheng5@huawei.com>
+Signed-off-by: Xinwei Kong <kong.kongxinwei@hisilicon.com>
+Link: https://lore.kernel.org/r/1578019930-55858-1-git-send-email-kong.kongxinwei@hisilicon.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-dw.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-wuxu.wu (1):
-      spi: spi-dw: Add lock protect dw_spi rx/tx to prevent concurrent calls
-
- .../devicetree/bindings/spi/spi-controller.yaml    |  4 +--
- drivers/spi/spi-dw.c                               | 15 ++++++++---
- drivers/spi/spi-dw.h                               |  1 +
- drivers/spi/spi-fsl-dspi.c                         | 24 +++++++----------
- drivers/spi/spi-uniphier.c                         | 31 +++++++++++++---------
- drivers/spi/spi.c                                  | 22 ++++++---------
- include/linux/spi/spi.h                            |  4 +--
- 7 files changed, 54 insertions(+), 47 deletions(-)
-
---jy6Sn24JjFx/iggw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl4TMkAACgkQJNaLcl1U
-h9Avjgf9GlqKPfiuEc9tJ7BwdeCWC5muNQl/ME0FOwxBZr1pmup24A5ZiL+/6r+G
-dpdWZbGeiM90jsbcGqSDVjsg+v8brmKM0G6WJH8YQiZEBFzbrZ5kOqC8xYXoKaOi
-LX9yvAQKrIfl+eKltGZ4Mspnu+fUfF4Xa5ZiK5nXkbfZPN/B0zaPH8NvnjoQnwro
-oQnsKixrp3Q1A9MHZi4HgUrBha1wHZwjpS3Z9u2QmKRGXjuyxJHPSb57VoYXtb42
-hDVd/5BWreHe4z2LeIQVsvQPXx4fgmZCi25nEOdfYDzkBT30zJA15c1GtmkW6j5J
-9fSTGiOc2oRuLFG+itKtwSkx/stKcg==
-=OS15
------END PGP SIGNATURE-----
-
---jy6Sn24JjFx/iggw--
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index c547ae38ed69..310492e21b33 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -297,6 +297,9 @@ static int dw_spi_transfer_one(struct spi_controller *master,
+ 	dws->len = transfer->len;
+ 	spin_unlock_irqrestore(&dws->buf_lock, flags);
+ 
++	/* Ensure dw->rx and dw->rx_end are visible */
++	smp_mb();
++
+ 	spi_enable_chip(dws, 0);
+ 
+ 	/* Handle per transfer options for bpw and speed */
+-- 
+2.20.1

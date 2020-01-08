@@ -1,93 +1,105 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH] spi: sh-msiof: Do not redefine STR while compile testing
-Date: Tue, 7 Jan 2020 21:10:37 +0100
-Message-ID: <CAMuHMdXZGqqu+rWmemzxYtSNXofeCwLwerCeb-hEoubTvBqwXw@mail.gmail.com>
-References: <1578416218-11112-1-git-send-email-krzk@kernel.org>
+From: Vignesh Raghavendra <vigneshr@ti.com>
+Subject: Re: [PATCH v6 2/2] spi: cadence-quadpsi: Add support for the Cadence
+ QSPI controller
+Date: Wed, 8 Jan 2020 10:44:26 +0530
+Message-ID: <9b95a30f-6d2d-2202-248a-24186d5ddb2a@ti.com>
+References: <20191230074102.50982-1-vadivel.muruganx.ramuthevar@linux.intel.com>
+ <20191230074102.50982-3-vadivel.muruganx.ramuthevar@linux.intel.com>
+ <e89cf037-217b-cd61-79ee-a11e2a118c01@ti.com>
+ <66b9f427-83c2-f56c-3d38-fa955429118d@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Cc: <robh+dt@kernel.org>, <dan.carpenter@oracle.com>,
+        <cheol.yong.kim@intel.com>, <qi-ming.wu@intel.com>
+To: "Ramuthevar, Vadivel MuruganX"
+        <vadivel.muruganx.ramuthevar@linux.intel.com>,
+        <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1578416218-11112-1-git-send-email-krzk@kernel.org>
+In-Reply-To: <66b9f427-83c2-f56c-3d38-fa955429118d@linux.intel.com>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Krzysztof,
 
-On Tue, Jan 7, 2020 at 5:57 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> STR is a well-known stringify macro so it should be avoided in drivers
-> to avoid warnings like this (MIPS architecture while compile testing):
->
->     drivers/spi/spi-sh-msiof.c:76:0: warning: "STR" redefined
->      #define STR 0x40 /* Status Register */
->     arch/mips/include/asm/mipsregs.h:30:0: note: this is the location of the previous definition
->      #define STR(x) __STR(x)
->
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Thanks for your patch!
+On 06/01/20 4:49 pm, Ramuthevar, Vadivel MuruganX wrote:
+> Hi,
+> 
+> Thank you for the review comments.
+> 
+> On 6/1/2020 6:40 PM, Vignesh Raghavendra wrote:
+>> Hi,
+>>
+>> On 30/12/19 1:11 pm, Ramuthevar,Vadivel MuruganX wrote:
+>> [...]
+>>> +static u32 cqspi_cmd2addr(const unsigned char *addr_buf, u32
+>>> addr_width)
+>>> +{
+>>> +    unsigned int addr = 0;
+>>> +    int i;
+>>> +
+>>> +    /* Invalid address return zero. */
+>>> +    if (addr_width > 4)
+>>> +        return 0;
+>>> +
+>>> +    for (i = 0; i < addr_width; i++) {
+>>> +        addr = addr << 8;
+>>> +        addr |= addr_buf[i];
+>>> +    }
+>>> +
+>>> +    return addr;
+>>> +}
+>>> +
+>> [...]
+>>> +static int cqspi_apb_read_setup(struct struct_cqspi *cqspi,
+>>> +                const struct spi_mem_op *op,
+>>> +                const u8 *addrbuf)
+>>> +{
+>>> +    void __iomem *reg_base = cqspi->iobase;
+>>> +    size_t addrlen = op->addr.nbytes;
+>>> +    size_t dummy_bytes = op->dummy.nbytes;
+>>> +    unsigned int addr_value, dummy_clk, reg;
+>>> +
+>>> +    if (addrlen) {
+>>> +        addr_value = cqspi_cmd2addr(&addrbuf[0], addrlen);
+>>> +        writel(addr_value, reg_base + CQSPI_REG_INDIRECTRDSTARTADDR);
+>>> +    }
+>>> +
+>> Why do you need to swap the address bytes to SPI bus order?
+> Yes , you are right to align with spi bus order swap is done .
+>>   You are
+>> writing to a controller register that accepts 24 bit or 32 bit address.
+> 32bit address.
 
-> --- a/drivers/spi/spi-sh-msiof.c
-> +++ b/drivers/spi/spi-sh-msiof.c
-> @@ -73,7 +73,7 @@ struct sh_msiof_spi_priv {
->  #define RSCR   0x22    /* Receive Clock Select Register (SH, A1, APE6) */
->  #define CTR    0x28    /* Control Register */
->  #define FCTR   0x30    /* FIFO Control Register */
-> -#define STR    0x40    /* Status Register */
-> +#define STATR  0x40    /* Status Register */
+There is no need to swap the address bytes. The current driver
+(drivers/mtd/spi-nor/cadence-quadspi.c) does not swap the address to SPI
+bus order, why does the new driver required to do so?
 
-The datasheets call this register "SISTR", so I prefer to use that instead.
-Actually all registers have this "SI" ("Serial Interface"?) prefix.
-Shall I add this to my TODO-list?
+>>> +    reg = op->cmd.opcode << CQSPI_REG_RD_INSTR_OPCODE_LSB;
+>>> +    reg |= (op->data.buswidth & CQSPI_REG_RD_INSTR_TYPE_DATA_MASK) <<
+>>> +        CQSPI_REG_RD_INSTR_TYPE_DATA_LSB;
+>>> +
+>> This is wrong... op->data.buswidth's range is 1 to 8 whereas
+>> CQSPI_REG_RD_INSTR_TYPE range is 0 to 3. I wonder whether you tested
+>> dual/quad mode with this driver?
+> Yes I have tested with Quad mode since Cadence-IP supports dual/quad on
+> my platform, used to validate
+> before sending the patch that's  standard procedure here.
+> please let me know if you have any further queries.
+> 
 
->  #define IER    0x44    /* Interrupt Enable Register */
->  #define TDR1   0x48    /* Transmit Control Data Register 1 (SH, A1) */
->  #define TDR2   0x4c    /* Transmit Control Data Register 2 (SH, A1) */
-> @@ -161,19 +161,19 @@ struct sh_msiof_spi_priv {
->  #define FCTR_RFUA_SHIFT        4
->  #define FCTR_RFUA(i)   ((i) << FCTR_RFUA_SHIFT)
->
-> -/* STR */
-> -#define STR_TFEMP      BIT(29) /* Transmit FIFO Empty */
-> -#define STR_TDREQ      BIT(28) /* Transmit Data Transfer Request */
-> -#define STR_TEOF       BIT(23) /* Frame Transmission End */
-> -#define STR_TFSERR     BIT(21) /* Transmit Frame Synchronization Error */
-> -#define STR_TFOVF      BIT(20) /* Transmit FIFO Overflow */
-> -#define STR_TFUDF      BIT(19) /* Transmit FIFO Underflow */
-> -#define STR_RFFUL      BIT(13) /* Receive FIFO Full */
-> -#define STR_RDREQ      BIT(12) /* Receive Data Transfer Request */
-> -#define STR_REOF       BIT(7)  /* Frame Reception End */
-> -#define STR_RFSERR     BIT(5)  /* Receive Frame Synchronization Error */
-> -#define STR_RFUDF      BIT(4)  /* Receive FIFO Underflow */
-> -#define STR_RFOVF      BIT(3)  /* Receive FIFO Overflow */
-> +/* STATR */
-> +#define STATR_TFEMP    BIT(29) /* Transmit FIFO Empty */
-> +#define STATR_TDREQ    BIT(28) /* Transmit Data Transfer Request */
-> +#define STATR_TEOF     BIT(23) /* Frame Transmission End */
-> +#define STATR_TFSERR   BIT(21) /* Transmit Frame Synchronization Error */
-> +#define STATR_TFOVF    BIT(20) /* Transmit FIFO Overflow */
-> +#define STATR_TFUDF    BIT(19) /* Transmit FIFO Underflow */
-> +#define STATR_RFFUL    BIT(13) /* Receive FIFO Full */
-> +#define STATR_RDREQ    BIT(12) /* Receive Data Transfer Request */
-> +#define STATR_REOF     BIT(7)  /* Frame Reception End */
-> +#define STATR_RFSERR   BIT(5)  /* Receive Frame Synchronization Error */
-> +#define STATR_RFUDF    BIT(4)  /* Receive FIFO Underflow */
-> +#define STATR_RFOVF    BIT(3)  /* Receive FIFO Overflow */
+Then I have no idea how it works on your platform.. What you are
+programming above overflows the assigned bit fields for bus width, right?
 
-[...]
-
-Gr{oetje,eeting}s,
-
-                        Geert
+> ---
+> Best Regards
+> Vadivel
+>> I am still unable to get this series to work on my platform. Will
+>> continue to debug...
+>>
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Regards
+Vignesh

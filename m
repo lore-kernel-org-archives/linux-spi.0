@@ -1,22 +1,21 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: bcm-qspi: Use platform_get_irq_byname_optional() to avoid error message" to the spi tree
-Date: Wed, 08 Jan 2020 15:59:22 +0000
-Message-ID: <applied-20200107040912.16426-1-rayagonda.kokatanur@broadcom.com>
-References: <20200107040912.16426-1-rayagonda.kokatanur@broadcom.com>
-Cc: bcm-kernel-feedback-list@broadcom.com,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
+Subject: Applied "spi: Add generic support for unused native cs with cs-gpios" to the spi tree
+Date: Wed, 08 Jan 2020 15:59:20 +0000
+Message-ID: <applied-20200102133822.29346-2-geert+renesas@glider.be>
+References: <20200102133822.29346-2-geert+renesas@glider.be>
+Cc: Chris Brandt <chris.brandt@renesas.com>,
         linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>
-To: Rayagonda Kokatanur <rayagonda.kokatanur@broadcom.com>
+        Mark Brown <broonie@kernel.org>,
+        =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200107040912.16426-1-rayagonda.kokatanur@broadcom.com>
+In-Reply-To: <20200102133822.29346-2-geert+renesas@glider.be>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: bcm-qspi: Use platform_get_irq_byname_optional() to avoid error message
+   spi: Add generic support for unused native cs with cs-gpios
 
 has been applied to the spi tree at
 
@@ -41,41 +40,98 @@ to this mail.
 Thanks,
 Mark
 
->From e9aa3b851428282d5e5151a49d4bf0bfdcd72bfe Mon Sep 17 00:00:00 2001
-From: Rayagonda Kokatanur <rayagonda.kokatanur@broadcom.com>
-Date: Tue, 7 Jan 2020 09:39:12 +0530
-Subject: [PATCH] spi: bcm-qspi: Use platform_get_irq_byname_optional() to
- avoid error message
+>From 7d93aecdb58d47e8ed90b4a44c0fc9ffb8de941c Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Date: Thu, 2 Jan 2020 14:38:17 +0100
+Subject: [PATCH] spi: Add generic support for unused native cs with cs-gpios
 
-Use platform_get_irq_byname_optional() instead of platform_get_irq_byname()
-to avoid below error message during probe:
+Some SPI master controllers always drive a native chip select when
+performing a transfer.  Hence when using both native and GPIO chip
+selects, at least one native chip select must be left unused, to be
+driven when performing transfers with slave devices using GPIO chip
+selects.
 
-[3.265115] bcm_iproc 68c70200.spi: IRQ spi_lr_fullness_reached not found
-[3.272121] bcm_iproc 68c70200.spi: IRQ spi_lr_session_aborted not found
-[3.284965] bcm_iproc 68c70200.spi: IRQ spi_lr_impatient not found
-[3.291344] bcm_iproc 68c70200.spi: IRQ spi_lr_session_done not found
-[3.297992] bcm_iproc 68c70200.spi: IRQ mspi_done not found
-[3.303742] bcm_iproc 68c70200.spi: IRQ mspi_halted not found
+Currently, to find an unused native chip select, SPI controller drivers
+need to parse and process cs-gpios theirselves.  This is not only
+duplicated in each driver that needs it, but also duplicates part of the
+work done later at SPI controller registration time.  Note that this
+cannot be done after spi_register_controller() returns, as at that time,
+slave devices may have been probed already.
 
-Signed-off-by: Rayagonda Kokatanur <rayagonda.kokatanur@broadcom.com>
-Link: https://lore.kernel.org/r/20200107040912.16426-1-rayagonda.kokatanur@broadcom.com
+Hence add generic support to the SPI subsystem for finding an unused
+native chip select.  Optionally, this unused native chip select, and all
+other in-use native chip selects, can be validated against the maximum
+number of native chip selects available on the controller hardware.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20200102133822.29346-2-geert+renesas@glider.be
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-bcm-qspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi.c       | 17 +++++++++++++++++
+ include/linux/spi/spi.h |  8 ++++++++
+ 2 files changed, 25 insertions(+)
 
-diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
-index 85bad70f59e3..23d295f36c80 100644
---- a/drivers/spi/spi-bcm-qspi.c
-+++ b/drivers/spi/spi-bcm-qspi.c
-@@ -1293,7 +1293,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
- 		name = qspi_irq_tab[val].irq_name;
- 		if (qspi_irq_tab[val].irq_source == SINGLE_L2) {
- 			/* get the l2 interrupts */
--			irq = platform_get_irq_byname(pdev, name);
-+			irq = platform_get_irq_byname_optional(pdev, name);
- 		} else if (!num_ints && soc_intc) {
- 			/* all mspi, bspi intrs muxed to one L1 intr */
- 			irq = platform_get_irq(pdev, 0);
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 5485ef89197c..197c9e0ac2a6 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2464,6 +2464,8 @@ static int spi_get_gpio_descs(struct spi_controller *ctlr)
+ 	int nb, i;
+ 	struct gpio_desc **cs;
+ 	struct device *dev = &ctlr->dev;
++	unsigned long native_cs_mask = 0;
++	unsigned int num_cs_gpios = 0;
+ 
+ 	nb = gpiod_count(dev, "cs");
+ 	ctlr->num_chipselect = max_t(int, nb, ctlr->num_chipselect);
+@@ -2505,7 +2507,22 @@ static int spi_get_gpio_descs(struct spi_controller *ctlr)
+ 			if (!gpioname)
+ 				return -ENOMEM;
+ 			gpiod_set_consumer_name(cs[i], gpioname);
++			num_cs_gpios++;
++			continue;
++		}
++
++		if (ctlr->max_native_cs && i >= ctlr->max_native_cs) {
++			dev_err(dev, "Invalid native chip select %d\n", i);
++			return -EINVAL;
+ 		}
++		native_cs_mask |= BIT(i);
++	}
++
++	ctlr->unused_native_cs = ffz(native_cs_mask);
++	if (num_cs_gpios && ctlr->max_native_cs &&
++	    ctlr->unused_native_cs >= ctlr->max_native_cs) {
++		dev_err(dev, "No unused native chip select available\n");
++		return -EINVAL;
+ 	}
+ 
+ 	return 0;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 98fe8663033a..e4011b852fc3 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -423,6 +423,12 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  *	GPIO descriptors rather than using global GPIO numbers grabbed by the
+  *	driver. This will fill in @cs_gpiods and @cs_gpios should not be used,
+  *	and SPI devices will have the cs_gpiod assigned rather than cs_gpio.
++ * @unused_native_cs: When cs_gpiods is used, spi_register_controller() will
++ *	fill in this field with the first unused native CS, to be used by SPI
++ *	controller drivers that need to drive a native CS when using GPIO CS.
++ * @max_native_cs: When cs_gpiods is used, and this field is filled in,
++ *	spi_register_controller() will validate all native CS (including the
++ *	unused native CS) against this value.
+  * @statistics: statistics for the spi_controller
+  * @dma_tx: DMA transmit channel
+  * @dma_rx: DMA receive channel
+@@ -624,6 +630,8 @@ struct spi_controller {
+ 	int			*cs_gpios;
+ 	struct gpio_desc	**cs_gpiods;
+ 	bool			use_gpio_descriptors;
++	u8			unused_native_cs;
++	u8			max_native_cs;
+ 
+ 	/* statistics */
+ 	struct spi_statistics	statistics;
 -- 
 2.20.1

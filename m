@@ -1,21 +1,21 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: Add generic support for unused native cs with cs-gpios" to the spi tree
-Date: Wed, 08 Jan 2020 15:59:20 +0000
-Message-ID: <applied-20200102133822.29346-2-geert+renesas@glider.be>
-References: <20200102133822.29346-2-geert+renesas@glider.be>
+Subject: Applied "spi: rspi: Remove set_config_register() macro" to the spi tree
+Date: Wed, 08 Jan 2020 15:59:13 +0000
+Message-ID: <applied-20200102133822.29346-5-geert+renesas@glider.be>
+References: <20200102133822.29346-5-geert+renesas@glider.be>
 Cc: Chris Brandt <chris.brandt@renesas.com>,
         linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
         Mark Brown <broonie@kernel.org>,
         =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>
 To: Geert Uytterhoeven <geert+renesas@glider.be>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200102133822.29346-2-geert+renesas@glider.be>
+In-Reply-To: <20200102133822.29346-5-geert+renesas@glider.be>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: Add generic support for unused native cs with cs-gpios
+   spi: rspi: Remove set_config_register() macro
 
 has been applied to the spi tree at
 
@@ -40,98 +40,42 @@ to this mail.
 Thanks,
 Mark
 
->From 7d93aecdb58d47e8ed90b4a44c0fc9ffb8de941c Mon Sep 17 00:00:00 2001
+>From 8f2344fa7f54382eeaf4b65d70c74b0b44df7a6b Mon Sep 17 00:00:00 2001
 From: Geert Uytterhoeven <geert+renesas@glider.be>
-Date: Thu, 2 Jan 2020 14:38:17 +0100
-Subject: [PATCH] spi: Add generic support for unused native cs with cs-gpios
+Date: Thu, 2 Jan 2020 14:38:20 +0100
+Subject: [PATCH] spi: rspi: Remove set_config_register() macro
 
-Some SPI master controllers always drive a native chip select when
-performing a transfer.  Hence when using both native and GPIO chip
-selects, at least one native chip select must be left unused, to be
-driven when performing transfers with slave devices using GPIO chip
-selects.
-
-Currently, to find an unused native chip select, SPI controller drivers
-need to parse and process cs-gpios theirselves.  This is not only
-duplicated in each driver that needs it, but also duplicates part of the
-work done later at SPI controller registration time.  Note that this
-cannot be done after spi_register_controller() returns, as at that time,
-slave devices may have been probed already.
-
-Hence add generic support to the SPI subsystem for finding an unused
-native chip select.  Optionally, this unused native chip select, and all
-other in-use native chip selects, can be validated against the maximum
-number of native chip selects available on the controller hardware.
+The set_config_register() macro is used in a single place.
+Make the code easier to read by just removing it.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20200102133822.29346-2-geert+renesas@glider.be
+Link: https://lore.kernel.org/r/20200102133822.29346-5-geert+renesas@glider.be
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi.c       | 17 +++++++++++++++++
- include/linux/spi/spi.h |  8 ++++++++
- 2 files changed, 25 insertions(+)
+ drivers/spi/spi-rspi.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 5485ef89197c..197c9e0ac2a6 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2464,6 +2464,8 @@ static int spi_get_gpio_descs(struct spi_controller *ctlr)
- 	int nb, i;
- 	struct gpio_desc **cs;
- 	struct device *dev = &ctlr->dev;
-+	unsigned long native_cs_mask = 0;
-+	unsigned int num_cs_gpios = 0;
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index e54a25f848ea..9eabef3d6cc4 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -426,8 +426,6 @@ static int qspi_set_receive_trigger(struct rspi_data *rspi, unsigned int len)
+ 	return n;
+ }
  
- 	nb = gpiod_count(dev, "cs");
- 	ctlr->num_chipselect = max_t(int, nb, ctlr->num_chipselect);
-@@ -2505,7 +2507,22 @@ static int spi_get_gpio_descs(struct spi_controller *ctlr)
- 			if (!gpioname)
- 				return -ENOMEM;
- 			gpiod_set_consumer_name(cs[i], gpioname);
-+			num_cs_gpios++;
-+			continue;
-+		}
-+
-+		if (ctlr->max_native_cs && i >= ctlr->max_native_cs) {
-+			dev_err(dev, "Invalid native chip select %d\n", i);
-+			return -EINVAL;
- 		}
-+		native_cs_mask |= BIT(i);
-+	}
-+
-+	ctlr->unused_native_cs = ffz(native_cs_mask);
-+	if (num_cs_gpios && ctlr->max_native_cs &&
-+	    ctlr->unused_native_cs >= ctlr->max_native_cs) {
-+		dev_err(dev, "No unused native chip select available\n");
-+		return -EINVAL;
- 	}
+-#define set_config_register(spi, n) spi->ops->set_config_register(spi, n)
+-
+ static void rspi_enable_irq(const struct rspi_data *rspi, u8 enable)
+ {
+ 	rspi_write8(rspi, rspi_read8(rspi, RSPI_SPCR) | enable, RSPI_SPCR);
+@@ -940,7 +938,7 @@ static int rspi_prepare_message(struct spi_controller *ctlr,
+ 	if (spi->mode & SPI_LOOP)
+ 		rspi->sppcr |= SPPCR_SPLP;
  
- 	return 0;
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 98fe8663033a..e4011b852fc3 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -423,6 +423,12 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
-  *	GPIO descriptors rather than using global GPIO numbers grabbed by the
-  *	driver. This will fill in @cs_gpiods and @cs_gpios should not be used,
-  *	and SPI devices will have the cs_gpiod assigned rather than cs_gpio.
-+ * @unused_native_cs: When cs_gpiods is used, spi_register_controller() will
-+ *	fill in this field with the first unused native CS, to be used by SPI
-+ *	controller drivers that need to drive a native CS when using GPIO CS.
-+ * @max_native_cs: When cs_gpiods is used, and this field is filled in,
-+ *	spi_register_controller() will validate all native CS (including the
-+ *	unused native CS) against this value.
-  * @statistics: statistics for the spi_controller
-  * @dma_tx: DMA transmit channel
-  * @dma_rx: DMA receive channel
-@@ -624,6 +630,8 @@ struct spi_controller {
- 	int			*cs_gpios;
- 	struct gpio_desc	**cs_gpiods;
- 	bool			use_gpio_descriptors;
-+	u8			unused_native_cs;
-+	u8			max_native_cs;
+-	set_config_register(rspi, 8);
++	rspi->ops->set_config_register(rspi, 8);
  
- 	/* statistics */
- 	struct spi_statistics	statistics;
+ 	if (msg->spi->mode &
+ 	    (SPI_TX_DUAL | SPI_TX_QUAD | SPI_RX_DUAL | SPI_RX_QUAD)) {
 -- 
 2.20.1

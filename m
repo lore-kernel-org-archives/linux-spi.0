@@ -1,144 +1,76 @@
-From: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Subject: Re: [PATCH 1/2] arm64: dts: sun50i: H6: Add SPI
- controllers nodes and pinmuxes
-Date: Wed, 8 Jan 2020 11:47:06 +0000
-Message-ID: <20200108114706.5f27a9b2@donnerap.cambridge.arm.com>
-References: <20200108101006.150706-1-andre.przywara@arm.com>
-	<20200108101006.150706-2-andre.przywara@arm.com>
-	<20200108123448.26286186e74f899caaf5ad35@bidouilliste.com>
-Reply-To: andre.przywara-5wv7dgnIgG8@public.gmane.org
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
+Subject: [PATCH 00/16] add device tree for SAM9X60 SoC and SAM9X60-EK board
+Date: Wed, 8 Jan 2020 14:55:07 +0200
+Message-ID: <1578488123-26127-1-git-send-email-claudiu.beznea@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Maxime Ripard <mripard-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>, Mark
- Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring
- <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Icenowy
- Zheng <icenowy-ymACFijhrKM@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Emmanuel Vadot <manu-xXdDKFdH5B3kFDPD4ZthVA@public.gmane.org>
-Return-path: <linux-sunxi+bncBDNZNK75ZIKRBTMC27YAKGQEJBOBF7A-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-In-Reply-To: <20200108123448.26286186e74f899caaf5ad35-xXdDKFdH5B3kFDPD4ZthVA@public.gmane.org>
-List-Post: <https://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <https://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <https://groups.google.com/group/linux-sunxi
-List-Subscribe: <https://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>,
- <https://groups.google.com/group/linux-sunxi/subscribe>
+Content-Type: text/plain
+Cc: <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <linux-media@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+        <linux-can@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-rtc@vger.kernel.org>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>
+To: <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+        <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+        <ludovic.desroches@microchip.com>, <vkoul@kernel.org>,
+        <eugen.hristev@microchip.com>, <jic23@kernel.org>,
+        <knaack.h@gmx.de>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
+        <mchehab@kernel.org>, <lee.jones@linaro.org>,
+        <richard.genoud@gmail.com>, <radu_nicolae.pirea@upb.ro>,
+        <tudor.ambarus@microchip.com>, <miquel.raynal@bootlin.com>,
+        <richard@nod.at>, <vigneshr@ti.com>, <wg@grandegger.com>,
+        <mkl@pengutronix.de>, <a.zummo@towertech.it>, <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 8 Jan 2020 12:34:48 +0100
-Emmanuel Vadot <manu-xXdDKFdH5B3kFDPD4ZthVA@public.gmane.org> wrote:
+This series add device tree for SAM9X60 SoC and SAM9X60-EK board.
+Allong with these, there are patches that documents some compatibles
+for SAM9X60's IPs.
 
-Hi Emmanuel,
+Claudiu Beznea (15):
+  dt-bindings: at_xdmac: add entry for microchip compatibles
+  dt-bindings: atmel-can: add microchip,sam9x60-can
+  dt-bindings: atmel-tcb: add microchip,<chip>-tcb
+  dt-bindings: atmel-isi: add microchip,sam9x60-isi
+  dt-bindings: at91-sama5d2_adc: add microchip,sam9x60-adc
+  dt-bindings: atmel-matrix: add microchip,sam9x60-matrix
+  dt-bindings: atmel-nand: add microchip,sam9x60-pmecc
+  dt-bindings: atmel-sysreg: add microchip,sam9x60-ddramc
+  dt-bindings: atmel-smc: add microchip,sam9x60-smc
+  dt-bindings: atmel-gpbr: add microchip,sam9x60-gpbr
+  dt-bindings: atmel,at91rm9200-rtc: add microchip,sam9x60-rtc
+  dt-bindings: spi_atmel: add microchip,sam9x60-spi
+  dt-bindings: atmel-usart: add microchip,<chip>-usart
+  dt-bindings: arm: add sam9x60-ek board
+  ARM: at91/defconfig: enable MMC_SDHCI_OF_AT91 and MICROCHIP_PIT64B
 
-> On Wed,  8 Jan 2020 10:10:05 +0000
-> Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org> wrote:
-> 
-> > The Allwinner H6 SoC contains two SPI controllers similar to the H3/A64,
-> > but with the added capability of 3-wire and 4-wire operation modes.
-> > For now the driver does not support those, but the SPI registers are
-> > fully backwards-compatible, just adding bits and registers which were
-> > formerly reserved. So we can use the existing driver for the "normal" SPI
-> > modes, for instance to access the SPI NOR flash soldered on the PineH64
-> > board.
-> > We use an H6 specific compatible string in addition to the existing H3
-> > string, so when the driver later gains Quad SPI support, it should work
-> > automatically without any DT changes.
-> > 
-> > Tested by accessing the SPI flash on a Pine H64 board (SPI0), also
-> > connecting another SPI flash to the SPI1 header pins.
-> > 
-> > Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-> > ---
-> >  arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi | 54 ++++++++++++++++++++
-> >  1 file changed, 54 insertions(+)
-> > 
-> > diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi
-> > index 3329283e38ab..40835850893e 100644
-> > --- a/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi
-> > +++ b/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi
-> > @@ -338,6 +338,30 @@
-> >  				bias-pull-up;
-> >  			};
-> >  
-> > +			/omit-if-no-ref/  
-> 
->  That would prevent users to use an overlay and use those pins, is that
-> something that we want ? I'm not sure that the space saved by those are
-> useful.
+Sandeep Sheriker Mallikarjun (1):
+  ARM: dts: at91: sam9x60: add device tree for soc and board
 
-Me neither ;-), but Maxime asked for it before, and it doesn't really hurt.
+ .../devicetree/bindings/arm/atmel-at91.yaml        |   6 +
+ .../devicetree/bindings/arm/atmel-sysregs.txt      |   1 +
+ .../devicetree/bindings/dma/atmel-xdma.txt         |   3 +-
+ .../bindings/iio/adc/at91-sama5d2_adc.txt          |   2 +-
+ .../devicetree/bindings/media/atmel-isi.txt        |   2 +-
+ .../devicetree/bindings/mfd/atmel-gpbr.txt         |   4 +-
+ .../devicetree/bindings/mfd/atmel-matrix.txt       |   1 +
+ .../devicetree/bindings/mfd/atmel-smc.txt          |   1 +
+ .../devicetree/bindings/mfd/atmel-tcb.txt          |   5 +-
+ .../devicetree/bindings/mfd/atmel-usart.txt        |   6 +-
+ .../devicetree/bindings/mtd/atmel-nand.txt         |   1 +
+ .../devicetree/bindings/net/can/atmel-can.txt      |   3 +-
+ .../bindings/rtc/atmel,at91rm9200-rtc.txt          |   3 +-
+ .../devicetree/bindings/spi/spi_atmel.txt          |   2 +-
+ arch/arm/boot/dts/Makefile                         |   2 +
+ arch/arm/boot/dts/at91-sam9x60ek.dts               | 647 +++++++++++++++++++
+ arch/arm/boot/dts/sam9x60.dtsi                     | 691 +++++++++++++++++++++
+ arch/arm/configs/at91_dt_defconfig                 |   4 +
+ 18 files changed, 1373 insertions(+), 11 deletions(-)
+ create mode 100644 arch/arm/boot/dts/at91-sam9x60ek.dts
+ create mode 100644 arch/arm/boot/dts/sam9x60.dtsi
 
-For overlays: if a .dtb is compiled with support for overlays (-@ to generate symbols), this tag is ignored, and the nodes stay in the .dtb, regardless of being referenced or not. Just confirmed by trying this.
-
-Cheers,
-Andre.
-
-> 
->  Cheers,
-> 
-> > +			spi0_pins: spi0-pins {
-> > +				pins = "PC0", "PC2", "PC3";
-> > +				function = "spi0";
-> > +			};
-> > +
-> > +			/omit-if-no-ref/
-> > +			spi0_cs_pin: spi0-cs-pin {
-> > +				pins = "PC5";
-> > +				function = "spi0";
-> > +			};
-> > +
-> > +			/omit-if-no-ref/
-> > +			spi1_pins: spi1-pins {
-> > +				pins = "PH4", "PH5", "PH6";
-> > +				function = "spi1";
-> > +			};
-> > +
-> > +			/omit-if-no-ref/
-> > +			spi1_cs_pin: spi1-cs-pin {
-> > +				pins = "PH3";
-> > +				function = "spi1";
-> > +			};
-> > +
-> >  			spdif_tx_pin: spdif-tx-pin {
-> >  				pins = "PH7";
-> >  				function = "spdif";
-> > @@ -504,6 +528,36 @@
-> >  			#size-cells = <0>;
-> >  		};
-> >  
-> > +		spi0: spi@5010000 {
-> > +			compatible = "allwinner,sun50i-h6-spi",
-> > +				     "allwinner,sun8i-h3-spi";
-> > +			reg = <0x05010000 0x1000>;
-> > +			interrupts = <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>;
-> > +			clocks = <&ccu CLK_BUS_SPI0>, <&ccu CLK_SPI0>;
-> > +			clock-names = "ahb", "mod";
-> > +			dmas = <&dma 22>, <&dma 22>;
-> > +			dma-names = "rx", "tx";
-> > +			resets = <&ccu RST_BUS_SPI0>;
-> > +			status = "disabled";
-> > +			#address-cells = <1>;
-> > +			#size-cells = <0>;
-> > +		};
-> > +
-> > +		spi1: spi@5011000 {
-> > +			compatible = "allwinner,sun50i-h6-spi",
-> > +				     "allwinner,sun8i-h3-spi";
-> > +			reg = <0x05011000 0x1000>;
-> > +			interrupts = <GIC_SPI 11 IRQ_TYPE_LEVEL_HIGH>;
-> > +			clocks = <&ccu CLK_BUS_SPI1>, <&ccu CLK_SPI1>;
-> > +			clock-names = "ahb", "mod";
-> > +			dmas = <&dma 23>, <&dma 23>;
-> > +			dma-names = "rx", "tx";
-> > +			resets = <&ccu RST_BUS_SPI1>;
-> > +			status = "disabled";
-> > +			#address-cells = <1>;
-> > +			#size-cells = <0>;
-> > +		};
-> > +
-> >  		emac: ethernet@5020000 {
-> >  			compatible = "allwinner,sun50i-h6-emac",
-> >  				     "allwinner,sun50i-a64-emac";
-> > -- 
-> > 2.17.1
+-- 
+2.7.4

@@ -1,21 +1,22 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: rspi: Use dev_warn_once() instead of open-coding" to the spi tree
-Date: Wed, 08 Jan 2020 15:59:15 +0000
-Message-ID: <applied-20200102133822.29346-4-geert+renesas@glider.be>
-References: <20200102133822.29346-4-geert+renesas@glider.be>
-Cc: Chris Brandt <chris.brandt@renesas.com>,
+Subject: Applied "spi: bcm-qspi: Use platform_get_irq_byname_optional() to avoid error message" to the spi tree
+Date: Wed, 08 Jan 2020 15:59:22 +0000
+Message-ID: <applied-20200107040912.16426-1-rayagonda.kokatanur@broadcom.com>
+References: <20200107040912.16426-1-rayagonda.kokatanur@broadcom.com>
+Cc: bcm-kernel-feedback-list@broadcom.com,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Kamal Dasu <kdasu.kdev@gmail.com>,
         linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>
-To: Geert Uytterhoeven <geert+renesas@glider.be>
+        Mark Brown <broonie@kernel.org>
+To: Rayagonda Kokatanur <rayagonda.kokatanur@broadcom.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200102133822.29346-4-geert+renesas@glider.be>
+In-Reply-To: <20200107040912.16426-1-rayagonda.kokatanur@broadcom.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: rspi: Use dev_warn_once() instead of open-coding
+   spi: bcm-qspi: Use platform_get_irq_byname_optional() to avoid error message
 
 has been applied to the spi tree at
 
@@ -40,36 +41,41 @@ to this mail.
 Thanks,
 Mark
 
->From 1bec84ddd85ae7a2b1df5fef3a5c7e5c44cbe36e Mon Sep 17 00:00:00 2001
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-Date: Thu, 2 Jan 2020 14:38:19 +0100
-Subject: [PATCH] spi: rspi: Use dev_warn_once() instead of open-coding
+>From e9aa3b851428282d5e5151a49d4bf0bfdcd72bfe Mon Sep 17 00:00:00 2001
+From: Rayagonda Kokatanur <rayagonda.kokatanur@broadcom.com>
+Date: Tue, 7 Jan 2020 09:39:12 +0530
+Subject: [PATCH] spi: bcm-qspi: Use platform_get_irq_byname_optional() to
+ avoid error message
 
-Use the helper introduced by commit e135303bd5bebcd2 ("device: Add
-dev_<level>_once variants") instead of open-coding the same operation.
+Use platform_get_irq_byname_optional() instead of platform_get_irq_byname()
+to avoid below error message during probe:
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20200102133822.29346-4-geert+renesas@glider.be
+[3.265115] bcm_iproc 68c70200.spi: IRQ spi_lr_fullness_reached not found
+[3.272121] bcm_iproc 68c70200.spi: IRQ spi_lr_session_aborted not found
+[3.284965] bcm_iproc 68c70200.spi: IRQ spi_lr_impatient not found
+[3.291344] bcm_iproc 68c70200.spi: IRQ spi_lr_session_done not found
+[3.297992] bcm_iproc 68c70200.spi: IRQ mspi_done not found
+[3.303742] bcm_iproc 68c70200.spi: IRQ mspi_halted not found
+
+Signed-off-by: Rayagonda Kokatanur <rayagonda.kokatanur@broadcom.com>
+Link: https://lore.kernel.org/r/20200107040912.16426-1-rayagonda.kokatanur@broadcom.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-rspi.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/spi/spi-bcm-qspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 74a12f4dee84..e54a25f848ea 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -620,9 +620,8 @@ static int rspi_dma_transfer(struct rspi_data *rspi, struct sg_table *tx,
- 		dmaengine_terminate_all(rspi->ctlr->dma_rx);
- no_dma_rx:
- 	if (ret == -EAGAIN) {
--		pr_warn_once("%s %s: DMA not available, falling back to PIO\n",
--			     dev_driver_string(&rspi->ctlr->dev),
--			     dev_name(&rspi->ctlr->dev));
-+		dev_warn_once(&rspi->ctlr->dev,
-+			      "DMA not available, falling back to PIO\n");
- 	}
- 	return ret;
- }
+diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
+index 85bad70f59e3..23d295f36c80 100644
+--- a/drivers/spi/spi-bcm-qspi.c
++++ b/drivers/spi/spi-bcm-qspi.c
+@@ -1293,7 +1293,7 @@ int bcm_qspi_probe(struct platform_device *pdev,
+ 		name = qspi_irq_tab[val].irq_name;
+ 		if (qspi_irq_tab[val].irq_source == SINGLE_L2) {
+ 			/* get the l2 interrupts */
+-			irq = platform_get_irq_byname(pdev, name);
++			irq = platform_get_irq_byname_optional(pdev, name);
+ 		} else if (!num_ints && soc_intc) {
+ 			/* all mspi, bspi intrs muxed to one L1 intr */
+ 			irq = platform_get_irq(pdev, 0);
 -- 
 2.20.1

@@ -1,21 +1,21 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: rspi: Add support for GPIO chip selects" to the spi tree
-Date: Wed, 08 Jan 2020 15:59:08 +0000
-Message-ID: <applied-20200102133822.29346-7-geert+renesas@glider.be>
-References: <20200102133822.29346-7-geert+renesas@glider.be>
+Subject: Applied "spi: rspi: Use dev_warn_once() instead of open-coding" to the spi tree
+Date: Wed, 08 Jan 2020 15:59:15 +0000
+Message-ID: <applied-20200102133822.29346-4-geert+renesas@glider.be>
+References: <20200102133822.29346-4-geert+renesas@glider.be>
 Cc: Chris Brandt <chris.brandt@renesas.com>,
         linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
         Mark Brown <broonie@kernel.org>,
         =?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>
 To: Geert Uytterhoeven <geert+renesas@glider.be>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200102133822.29346-7-geert+renesas@glider.be>
+In-Reply-To: <20200102133822.29346-4-geert+renesas@glider.be>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: rspi: Add support for GPIO chip selects
+   spi: rspi: Use dev_warn_once() instead of open-coding
 
 has been applied to the spi tree at
 
@@ -40,76 +40,36 @@ to this mail.
 Thanks,
 Mark
 
->From 144d8f9781e60d89dfd614210d2cedbefbba8885 Mon Sep 17 00:00:00 2001
+>From 1bec84ddd85ae7a2b1df5fef3a5c7e5c44cbe36e Mon Sep 17 00:00:00 2001
 From: Geert Uytterhoeven <geert+renesas@glider.be>
-Date: Thu, 2 Jan 2020 14:38:22 +0100
-Subject: [PATCH] spi: rspi: Add support for GPIO chip selects
+Date: Thu, 2 Jan 2020 14:38:19 +0100
+Subject: [PATCH] spi: rspi: Use dev_warn_once() instead of open-coding
 
-Add support for GPIO chip selects using GPIO descriptors.  As the RSPI
-controller always drives a native chip select when performing a
-transfer, at least one native chip select must be left unused.
+Use the helper introduced by commit e135303bd5bebcd2 ("device: Add
+dev_<level>_once variants") instead of open-coding the same operation.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20200102133822.29346-7-geert+renesas@glider.be
+Link: https://lore.kernel.org/r/20200102133822.29346-4-geert+renesas@glider.be
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-rspi.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/spi/spi-rspi.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 2f5a856a9319..85575d45901c 100644
+index 74a12f4dee84..e54a25f848ea 100644
 --- a/drivers/spi/spi-rspi.c
 +++ b/drivers/spi/spi-rspi.c
-@@ -242,6 +242,7 @@ struct spi_ops {
- 	u16 mode_bits;
- 	u16 flags;
- 	u16 fifo_size;
-+	u8 num_hw_ss;
- };
- 
- /*
-@@ -934,7 +935,8 @@ static int rspi_prepare_message(struct spi_controller *ctlr,
- 		rspi->spcmd |= SPCMD_CPHA;
- 
- 	/* Configure slave signal to assert */
--	rspi->spcmd |= SPCMD_SSLA(spi->chip_select);
-+	rspi->spcmd |= SPCMD_SSLA(spi->cs_gpiod ? rspi->ctlr->unused_native_cs
-+						: spi->chip_select);
- 
- 	/* CMOS output mode and MOSI signal from previous transfer */
- 	rspi->sppcr = 0;
-@@ -1123,6 +1125,7 @@ static const struct spi_ops rspi_ops = {
- 	.mode_bits =		SPI_CPHA | SPI_CPOL | SPI_LOOP,
- 	.flags =		SPI_CONTROLLER_MUST_TX,
- 	.fifo_size =		8,
-+	.num_hw_ss =		2,
- };
- 
- static const struct spi_ops rspi_rz_ops = {
-@@ -1131,6 +1134,7 @@ static const struct spi_ops rspi_rz_ops = {
- 	.mode_bits =		SPI_CPHA | SPI_CPOL | SPI_LOOP,
- 	.flags =		SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_MUST_TX,
- 	.fifo_size =		8,	/* 8 for TX, 32 for RX */
-+	.num_hw_ss =		1,
- };
- 
- static const struct spi_ops qspi_ops = {
-@@ -1141,6 +1145,7 @@ static const struct spi_ops qspi_ops = {
- 				SPI_RX_DUAL | SPI_RX_QUAD,
- 	.flags =		SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_MUST_TX,
- 	.fifo_size =		32,
-+	.num_hw_ss =		1,
- };
- 
- #ifdef CONFIG_OF
-@@ -1256,6 +1261,8 @@ static int rspi_probe(struct platform_device *pdev)
- 	ctlr->mode_bits = ops->mode_bits;
- 	ctlr->flags = ops->flags;
- 	ctlr->dev.of_node = pdev->dev.of_node;
-+	ctlr->use_gpio_descriptors = true;
-+	ctlr->max_native_cs = rspi->ops->num_hw_ss;
- 
- 	ret = platform_get_irq_byname_optional(pdev, "rx");
- 	if (ret < 0) {
+@@ -620,9 +620,8 @@ static int rspi_dma_transfer(struct rspi_data *rspi, struct sg_table *tx,
+ 		dmaengine_terminate_all(rspi->ctlr->dma_rx);
+ no_dma_rx:
+ 	if (ret == -EAGAIN) {
+-		pr_warn_once("%s %s: DMA not available, falling back to PIO\n",
+-			     dev_driver_string(&rspi->ctlr->dev),
+-			     dev_name(&rspi->ctlr->dev));
++		dev_warn_once(&rspi->ctlr->dev,
++			      "DMA not available, falling back to PIO\n");
+ 	}
+ 	return ret;
+ }
 -- 
 2.20.1

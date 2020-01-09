@@ -1,94 +1,59 @@
-From: John Garry <john.garry@huawei.com>
-Subject: Re: [PATCH v2 2/3] spi: Add HiSilicon v3xx SPI NOR flash controller
- driver
-Date: Thu, 9 Jan 2020 15:54:00 +0000
-Message-ID: <0dc5cb2e-b765-9e13-b05e-9e3c835c5985@huawei.com>
-References: <1575900490-74467-1-git-send-email-john.garry@huawei.com>
- <1575900490-74467-3-git-send-email-john.garry@huawei.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: Re: [PATCH 07/16] dt-bindings: atmel-nand: add
+ microchip,sam9x60-pmecc
+Date: Thu, 9 Jan 2020 20:16:44 +0100
+Message-ID: <20200109201644.34c6b936@xps13>
+References: <1578488123-26127-1-git-send-email-claudiu.beznea@microchip.com>
+        <1578488123-26127-8-git-send-email-claudiu.beznea@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: <linuxarm@huawei.com>, <linux-kernel@vger.kernel.org>,
-        <linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>,
-        <xuejiancheng@hisilicon.com>, <fengsheng5@huawei.com>,
-        <chenxiang66@hisilicon.com>
-To: <broonie@kernel.org>, <marek.vasut@gmail.com>,
-        <tudor.ambarus@microchip.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1575900490-74467-3-git-send-email-john.garry@huawei.com>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Cc: <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+        <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+        <ludovic.desroches@microchip.com>, <vkoul@kernel.org>,
+        <eugen.hristev@microchip.com>, <jic23@kernel.org>,
+        <knaack.h@gmx.de>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
+        <mchehab@kernel.org>, <lee.jones@linaro.org>,
+        <richard.genoud@gmail.com>, <radu_nicolae.pirea@upb.ro>,
+        <tudor.ambarus@microchip.com>, <richard@nod.at>, <vigneshr@ti.com>,
+        <wg@grandegger.com>, <mkl@pengutronix.de>, <a.zummo@towertech.it>,
+        <broonie@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <linux-media@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+To: Claudiu Beznea <claudiu.beznea@microchip.com>
+Return-path: <netdev-owner@vger.kernel.org>
+In-Reply-To: <1578488123-26127-8-git-send-email-claudiu.beznea@microchip.com>
+Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 09/12/2019 14:08, John Garry wrote:
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (op->data.dir == SPI_MEM_DATA_IN)
-> +		hisi_sfc_v3xx_read_databuf(host, op->data.buf.in, len);
-> +
-> +	return 0;
-> +}
-> +
-> +static int hisi_sfc_v3xx_exec_op(struct spi_mem *mem,
-> +				 const struct spi_mem_op *op)
-> +{
-> +	struct hisi_sfc_v3xx_host *host;
-> +	struct spi_device *spi = mem->spi;
-> +	u8 chip_select = spi->chip_select;
-> +
-> +	host = spi_controller_get_devdata(spi->master);
-> +
-> +	return hisi_sfc_v3xx_generic_exec_op(host, op, chip_select);
-> +}
-> +
-> +static const struct spi_controller_mem_ops hisi_sfc_v3xx_mem_ops = {
-> +	.adjust_op_size = hisi_sfc_v3xx_adjust_op_size,
-> +	.exec_op = hisi_sfc_v3xx_exec_op,
-> +};
-> +
-> +static int hisi_sfc_v3xx_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct hisi_sfc_v3xx_host *host;
-> +	struct spi_controller *ctlr;
-> +	u32 version;
-> +	int ret;
-> +
-> +	ctlr = spi_alloc_master(&pdev->dev, sizeof(*host));
-> +	if (!ctlr)
-> +		return -ENOMEM;
-> +
+Hi Claudiu,
 
+Claudiu Beznea <claudiu.beznea@microchip.com> wrote on Wed, 8 Jan 2020
+14:55:14 +0200:
 
-Hi Mark,
+> Add microchip,sam9x60-pmecc to DT bindings documentation.
+> 
+> Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+> ---
+>  Documentation/devicetree/bindings/mtd/atmel-nand.txt | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/mtd/atmel-nand.txt b/Documentation/devicetree/bindings/mtd/atmel-nand.txt
+> index 68b51dc58816..3aa297c97ab6 100644
+> --- a/Documentation/devicetree/bindings/mtd/atmel-nand.txt
+> +++ b/Documentation/devicetree/bindings/mtd/atmel-nand.txt
+> @@ -57,6 +57,7 @@ Required properties:
+>  	"atmel,at91sam9g45-pmecc"
+>  	"atmel,sama5d4-pmecc"
+>  	"atmel,sama5d2-pmecc"
+> +	"microchip,sam9x60-pmecc"
+>  - reg: should contain 2 register ranges. The first one is pointing to the PMECC
+>         block, and the second one to the PMECC_ERRLOC block.
+>  
 
-> +	ctlr->mode_bits = SPI_RX_DUAL | SPI_RX_QUAD |
-> +			  SPI_TX_DUAL | SPI_TX_QUAD;
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
-I have an issue with dual/quad support. I naively thought that setting 
-these bits would give me the highest protocol available.
-
-However, now I notice that spi_device.mode needs to be set for supported 
-protocols for the slave - I'm using the generic spi mem ops to check if 
-protocols are supported based on this value.
-
- From checking acpi_spi_add_resource() or anywhere else, I cannot see 
-how SPI_RX_DUAL or the others are set for spi_device.mode. What am I 
-missing? Are these just not supported yet for ACPI? Or should the 
-spi-nor code not be relying on this since we should be able to get this 
-info from the SPI NOR part?
-
-Cheers,
-John
-
-> +
-> +	host = spi_controller_get_devdata(ctlr);
-> +	host->dev = dev;
-> +
-> +	platform_set_drvdata(pdev, host);
-> +
-> +	host->regbase = devm_platform_ioremap_resource(pdev, 0);
-> +	if (IS_ERR(host->regbase)) {
-> +		ret = PTR_ERR(host->regbase);
-> +		goto err_put_master;
+Thanks,
+Miquèl

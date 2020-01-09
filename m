@@ -1,32 +1,20 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "dt-bindings: spi_atmel: add microchip,sam9x60-spi" to the spi tree
-Date: Thu, 09 Jan 2020 21:31:05 +0000
-Message-ID: <applied-1578488123-26127-13-git-send-email-claudiu.beznea@microchip.com>
-References: <1578488123-26127-13-git-send-email-claudiu.beznea@microchip.com>
-Cc: alexandre.belloni@bootlin.com, a.zummo@towertech.it,
-        broonie@kernel.org, devicetree@vger.kernel.org,
-        dmaengine@vger.kernel.org, eugen.hristev@microchip.com,
-        jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        lee.jones@linaro.org, linux-arm-kernel@lists.infradead.org,
-        linux-can@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-rtc@vger.kernel.org,
-        linux-spi@vger.kernel.org, ludovic.desroches@microchip.com,
-        Mark Brown <broonie@kernel.org>, mark.rutland@arm.com,
-        mchehab@kernel.org, miquel.raynal@bootlin.com, mkl@pengutronix.de,
-        netdev@vger.kernel.org, nicolas.ferre@microchip.com,
-        pmeerw@pmeerw.net, radu_nicolae.pirea@upb.ro,
-        richard.genoud@gmail.com, richard@nod.at, robh+dt@kernel.org,
-        t
-To: Claudiu Beznea <claudiu.beznea@microchip.com>
-Return-path: <netdev-owner@vger.kernel.org>
-In-Reply-To: <1578488123-26127-13-git-send-email-claudiu.beznea@microchip.com>
-Sender: netdev-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: bcm2835: Raise maximum number of slaves to 4" to the spi tree
+Date: Thu, 09 Jan 2020 21:31:07 +0000
+Message-ID: <applied-01453fd062de2d49bd74a847e13a0781cbf8143d.1578572268.git.lukas@wunner.de>
+References: <01453fd062de2d49bd74a847e13a0781cbf8143d.1578572268.git.lukas@wunner.de>
+Cc: linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Nicolas Saenz Julienne <nsaenzjulienne-l3A5Bk7waGM@public.gmane.org>
+To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <01453fd062de2d49bd74a847e13a0781cbf8143d.1578572268.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   dt-bindings: spi_atmel: add microchip,sam9x60-spi
+   spi: bcm2835: Raise maximum number of slaves to 4
 
 has been applied to the spi tree at
 
@@ -51,32 +39,35 @@ to this mail.
 Thanks,
 Mark
 
->From 0a1eb761ff30cdc089bcc94e1bd540b6956487c5 Mon Sep 17 00:00:00 2001
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
-Date: Wed, 8 Jan 2020 14:55:19 +0200
-Subject: [PATCH] dt-bindings: spi_atmel: add microchip,sam9x60-spi
+>From 603e92ff10a81b965ac41dc9fb3d287408e834fb Mon Sep 17 00:00:00 2001
+From: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Date: Thu, 9 Jan 2020 13:23:41 +0100
+Subject: [PATCH] spi: bcm2835: Raise maximum number of slaves to 4
 
-Add microchip,sam9x60-spi to DT bindings documentation.
+The "RevPi Connect Flat" PLC offered by KUNBUS has 4 slaves attached
+to the BCM2835 SPI master.  Raise the maximum number of slaves in the
+driver accordingly.
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Link: https://lore.kernel.org/r/1578488123-26127-13-git-send-email-claudiu.beznea@microchip.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Reviewed-by: Nicolas Saenz Julienne <nsaenzjulienne-l3A5Bk7waGM@public.gmane.org>
+Link: https://lore.kernel.org/r/01453fd062de2d49bd74a847e13a0781cbf8143d.1578572268.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- Documentation/devicetree/bindings/spi/spi_atmel.txt | 2 +-
+ drivers/spi/spi-bcm2835.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi_atmel.txt b/Documentation/devicetree/bindings/spi/spi_atmel.txt
-index f99c733d75c1..5bb4a8f1df7a 100644
---- a/Documentation/devicetree/bindings/spi/spi_atmel.txt
-+++ b/Documentation/devicetree/bindings/spi/spi_atmel.txt
-@@ -1,7 +1,7 @@
- Atmel SPI device
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index b784c9fdf9ec..11c235879bb7 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -68,7 +68,7 @@
+ #define BCM2835_SPI_FIFO_SIZE		64
+ #define BCM2835_SPI_FIFO_SIZE_3_4	48
+ #define BCM2835_SPI_DMA_MIN_LENGTH	96
+-#define BCM2835_SPI_NUM_CS		3   /* raise as necessary */
++#define BCM2835_SPI_NUM_CS		4   /* raise as necessary */
+ #define BCM2835_SPI_MODE_BITS	(SPI_CPOL | SPI_CPHA | SPI_CS_HIGH \
+ 				| SPI_NO_CS | SPI_3WIRE)
  
- Required properties:
--- compatible : should be "atmel,at91rm9200-spi".
-+- compatible : should be "atmel,at91rm9200-spi" or "microchip,sam9x60-spi".
- - reg: Address and length of the register set for the device
- - interrupts: Should contain spi interrupt
- - cs-gpios: chipselects (optional for SPI controller version >= 2 with the
 -- 
 2.20.1

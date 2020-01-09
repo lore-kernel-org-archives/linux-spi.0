@@ -1,59 +1,62 @@
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: Re: [PATCH 07/16] dt-bindings: atmel-nand: add
- microchip,sam9x60-pmecc
-Date: Thu, 9 Jan 2020 20:16:44 +0100
-Message-ID: <20200109201644.34c6b936@xps13>
-References: <1578488123-26127-1-git-send-email-claudiu.beznea@microchip.com>
-        <1578488123-26127-8-git-send-email-claudiu.beznea@microchip.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 2/3] spi: Add HiSilicon v3xx SPI NOR flash controller
+ driver
+Date: Thu, 9 Jan 2020 21:28:42 +0000
+Message-ID: <20200109212842.GK3702@sirena.org.uk>
+References: <1575900490-74467-1-git-send-email-john.garry@huawei.com>
+ <1575900490-74467-3-git-send-email-john.garry@huawei.com>
+ <0dc5cb2e-b765-9e13-b05e-9e3c835c5985@huawei.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Cc: <robh+dt@kernel.org>, <mark.rutland@arm.com>,
-        <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
-        <ludovic.desroches@microchip.com>, <vkoul@kernel.org>,
-        <eugen.hristev@microchip.com>, <jic23@kernel.org>,
-        <knaack.h@gmx.de>, <lars@metafoo.de>, <pmeerw@pmeerw.net>,
-        <mchehab@kernel.org>, <lee.jones@linaro.org>,
-        <richard.genoud@gmail.com>, <radu_nicolae.pirea@upb.ro>,
-        <tudor.ambarus@microchip.com>, <richard@nod.at>, <vigneshr@ti.com>,
-        <wg@grandegger.com>, <mkl@pengutronix.de>, <a.zummo@towertech.it>,
-        <broonie@kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-media@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
-To: Claudiu Beznea <claudiu.beznea@microchip.com>
-Return-path: <netdev-owner@vger.kernel.org>
-In-Reply-To: <1578488123-26127-8-git-send-email-claudiu.beznea@microchip.com>
-Sender: netdev-owner@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="yiup30KVCQiHUZFC"
+Cc: marek.vasut@gmail.com, tudor.ambarus@microchip.com,
+        linuxarm@huawei.com, linux-kernel@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        xuejiancheng@hisilicon.com, fengsheng5@huawei.com,
+        chenxiang66@hisilicon.com
+To: John Garry <john.garry@huawei.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <0dc5cb2e-b765-9e13-b05e-9e3c835c5985@huawei.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Claudiu,
 
-Claudiu Beznea <claudiu.beznea@microchip.com> wrote on Wed, 8 Jan 2020
-14:55:14 +0200:
+--yiup30KVCQiHUZFC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> Add microchip,sam9x60-pmecc to DT bindings documentation.
-> 
-> Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-> ---
->  Documentation/devicetree/bindings/mtd/atmel-nand.txt | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/mtd/atmel-nand.txt b/Documentation/devicetree/bindings/mtd/atmel-nand.txt
-> index 68b51dc58816..3aa297c97ab6 100644
-> --- a/Documentation/devicetree/bindings/mtd/atmel-nand.txt
-> +++ b/Documentation/devicetree/bindings/mtd/atmel-nand.txt
-> @@ -57,6 +57,7 @@ Required properties:
->  	"atmel,at91sam9g45-pmecc"
->  	"atmel,sama5d4-pmecc"
->  	"atmel,sama5d2-pmecc"
-> +	"microchip,sam9x60-pmecc"
->  - reg: should contain 2 register ranges. The first one is pointing to the PMECC
->         block, and the second one to the PMECC_ERRLOC block.
->  
+On Thu, Jan 09, 2020 at 03:54:00PM +0000, John Garry wrote:
 
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> From checking acpi_spi_add_resource() or anywhere else, I cannot see how
+> SPI_RX_DUAL or the others are set for spi_device.mode. What am I missing?
+> Are these just not supported yet for ACPI? Or should the spi-nor code not be
+> relying on this since we should be able to get this info from the SPI NOR
+> part?
 
-Thanks,
-Miquèl
+I'm not aware of any work on integrating this sort of stuff into ACPI
+platforms so I think it's just not yet supported in ACPI.  I'm not
+really sure what would be idiomatic for ACPI, figuring it out from what
+the part supports might well be idiomatic there though I don't know how
+common it is for people not to wire up all the data lines even if both
+controller and device support wider transfers.  I've got a horrible
+feeling that the idiomatic thing is a combination of that and a bunch of
+per-device quirks.  There may be a spec I'm not aware of though I'd be a
+bit surprised.
+
+--yiup30KVCQiHUZFC
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl4XmwkACgkQJNaLcl1U
+h9DSmwf/cxqR58GjrThK9SdQjRi/lDgE2Zvu+klgcyq4qaE5CzctPqfdcJvyMn3D
+8dnuZ0QZ/u4P/6nbc1FfGXfqeV7B0KeZ7yZbzklrjD1ehohvg3H46K52oVsVjF4H
+xsjPdJDNeTtFBIgHGy1M4AIYVC58nRYX/6S7qLRKdyE5OOL4uHv/ZXSzBfhh+XPe
+UtVTZNNfcXxdkWOTsmFo3qo0hnb8FxD/K0Rg++9C6XHLftNqmsXJcpzLaYKEBkor
+FuQEwWTfDc4x3bq3cjsBqEURrEBAhUSMwZlfwgBJgX4GZfgR7pBv1IDZvXCwff0W
+o8LOG/PgA593X83a55IjHs2w5oIGoQ==
+=Vjtj
+-----END PGP SIGNATURE-----
+
+--yiup30KVCQiHUZFC--

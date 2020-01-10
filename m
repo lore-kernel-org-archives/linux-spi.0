@@ -1,57 +1,62 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 2/3] spi: Add HiSilicon v3xx SPI NOR flash controller
- driver
-Date: Fri, 10 Jan 2020 14:07:26 +0000
-Message-ID: <20200110140726.GB5889@sirena.org.uk>
-References: <1575900490-74467-1-git-send-email-john.garry@huawei.com>
- <1575900490-74467-3-git-send-email-john.garry@huawei.com>
- <0dc5cb2e-b765-9e13-b05e-9e3c835c5985@huawei.com>
- <20200109212842.GK3702@sirena.org.uk>
- <df67b562-7d82-19f6-7581-680190a7772d@huawei.com>
+From: <Claudiu.Beznea@microchip.com>
+Subject: Re: [PATCH 03/16] dt-bindings: atmel-tcb: add microchip,<chip>-tcb
+Date: Fri, 10 Jan 2020 14:29:27 +0000
+Message-ID: <da99fbce-8341-19d2-12c9-144564d70726@microchip.com>
+References: <1578488123-26127-1-git-send-email-claudiu.beznea@microchip.com>
+ <1578488123-26127-4-git-send-email-claudiu.beznea@microchip.com>
+ <20200110134001.GD1027187@piout.net>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="QKdGvSO+nmPlgiQ/"
-Cc: marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, tudor.ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org,
-        linuxarm-hv44wF8Li93QT0dZR+AlfA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        xuejiancheng-C8/M+/jPZTeaMJb+Lgu22Q@public.gmane.org, fengsheng5-hv44wF8Li93QT0dZR+AlfA@public.gmane.org,
-        chenxiang66-C8/M+/jPZTeaMJb+Lgu22Q@public.gmane.org
-To: John Garry <john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <df67b562-7d82-19f6-7581-680190a7772d-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+        <Nicolas.Ferre@microchip.com>, <Ludovic.Desroches@microchip.com>,
+        <vkoul@kernel.org>, <Eugen.Hristev@microchip.com>,
+        <jic23@kernel.org>, <knaack.h@gmx.de>, <lars@metafoo.de>,
+        <pmeerw@pmeerw.net>, <mchehab@kernel.org>, <lee.jones@linaro.org>,
+        <richard.genoud@gmail.com>, <radu_nicolae.pirea@upb.ro>,
+        <Tudor.Ambarus@microchip.com>, <miquel.raynal@bootlin.com>,
+        <richard@nod.at>, <vigneshr@ti.com>, <wg@grandegger.com>,
+        <mkl@pengutronix.de>, <a.zummo@towertech.it>, <broonie@kernel.org>,
+        <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <linux-media@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+To: <alexandre.belloni@bootlin.com>
+Return-path: <linux-media-owner@vger.kernel.org>
+In-Reply-To: <20200110134001.GD1027187@piout.net>
+Content-Language: en-US
+Content-ID: <88CA889BDD9DA749BF1403CE9B9231D5@namprd11.prod.outlook.com>
+Sender: linux-media-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-
---QKdGvSO+nmPlgiQ/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Fri, Jan 10, 2020 at 11:55:37AM +0000, John Garry wrote:
-
-> I will note that PRP0001+"jedec,spi-nor" compatible DSD seems to be the
-> defacto method to describe the SPI NOR-compat part for ACPI - that's what
-> I'm using. We could add properties there, but that seems improper.
-
-OK, so that's just reusing the DT binding in which case everything
-that's valid for the DT binding should also be valid for ACPI - I
-thought that actually worked automatically without you having to do
-anything in the code but ICBW.
-
---QKdGvSO+nmPlgiQ/
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl4YhR0ACgkQJNaLcl1U
-h9CHqQf/fT6tkZc5rjRON7HtRrGsmNaUJN8ElUARXmp+zfbAka7ozgwC4DENqjOK
-I9Of3xZsrE2VlGeIpXS7KAkjdbCOvoRmMhChM1VH7yF5lxz+AEOjWwKZlfXpurjM
-RxElFm6u7Z9iiP0PDww9K+yEXS91EbxPFi7UvRL783aV3VJORsP9aY7ewmXSb9UP
-E3SLtAQQMhQrwrMS7jGd3tex9ik6YdXOqChEsaScE7GDjvGUDNS54yYXK1lfCPHi
-yKq7WymCtC2pgoVQxmQloHBzk82z6wMSwVp+DowO1eM3qbdevM6UVKniyJLDT5pN
-EEDzuxOjUXvHls2lGkGX9YdKUFFLhw==
-=lFqO
------END PGP SIGNATURE-----
-
---QKdGvSO+nmPlgiQ/--
+DQoNCk9uIDEwLjAxLjIwMjAgMTU6NDAsIEFsZXhhbmRyZSBCZWxsb25pIHdyb3RlOg0KPiBFWFRF
+Uk5BTCBFTUFJTDogRG8gbm90IGNsaWNrIGxpbmtzIG9yIG9wZW4gYXR0YWNobWVudHMgdW5sZXNz
+IHlvdSBrbm93IHRoZSBjb250ZW50IGlzIHNhZmUNCj4gDQo+IE9uIDA4LzAxLzIwMjAgMTQ6NTU6
+MTArMDIwMCwgQ2xhdWRpdSBCZXpuZWEgd3JvdGU6DQo+PiBBZGQgbWljcm9jaGlwLDxjaGlwPi10
+Y2IgdG8gRFQgYmluZGluZ3MgZG9jdW1lbnRhdGlvbi4gVGhpcyBpcyBmb3INCj4+IG1pY3JvY2hp
+cCxzYW05eDYwLXRjYi4NCj4+DQo+PiBTaWduZWQtb2ZmLWJ5OiBDbGF1ZGl1IEJlem5lYSA8Y2xh
+dWRpdS5iZXpuZWFAbWljcm9jaGlwLmNvbT4NCj4+IC0tLQ0KPj4gIERvY3VtZW50YXRpb24vZGV2
+aWNldHJlZS9iaW5kaW5ncy9tZmQvYXRtZWwtdGNiLnR4dCB8IDUgKysrLS0NCj4+ICAxIGZpbGUg
+Y2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQ0KPj4NCj4+IGRpZmYgLS1n
+aXQgYS9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvbWZkL2F0bWVsLXRjYi50eHQg
+Yi9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvbWZkL2F0bWVsLXRjYi50eHQNCj4+
+IGluZGV4IGM0YTgzZTM2NGNiNi4uZTE3MTNlNDFmNmUwIDEwMDY0NA0KPj4gLS0tIGEvRG9jdW1l
+bnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL21mZC9hdG1lbC10Y2IudHh0DQo+PiArKysgYi9E
+b2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvbWZkL2F0bWVsLXRjYi50eHQNCj4+IEBA
+IC0xLDYgKzEsNyBAQA0KPj4gICogRGV2aWNlIHRyZWUgYmluZGluZ3MgZm9yIEF0bWVsIFRpbWVy
+IENvdW50ZXIgQmxvY2tzDQo+PiAtLSBjb21wYXRpYmxlOiBTaG91bGQgYmUgImF0bWVsLDxjaGlw
+Pi10Y2IiLCAic2ltcGxlLW1mZCIsICJzeXNjb24iLg0KPj4gLSAgPGNoaXA+IGNhbiBiZSAiYXQ5
+MXJtOTIwMCIgb3IgImF0OTFzYW05eDUiDQo+PiArLSBjb21wYXRpYmxlOiBTaG91bGQgYmUgImF0
+bWVsLDxjaGlwPi10Y2IiLCAibWljcm9jaGlwLDxjaGlwPi10Y2IiLA0KPj4gKyAgInNpbXBsZS1t
+ZmQiLCAic3lzY29uIi4NCj4+ICsgIDxjaGlwPiBjYW4gYmUgImF0OTFybTkyMDAiLCAiYXQ5MXNh
+bTl4NSIgb3IgInNhbTl4NjAiDQo+IA0KPiBhdG1lbCxzYW05eDYwLXRjYiwgbWljcm9jaGlwLGF0
+OTFybTkyMDAtdGNiIGFuZCBtaWNyb2NoaXAsYXQ5MXNhbTl4NS10Y2INCj4gYXJlIG5vdCBhbGxv
+d2VkIGFuZCB0aGUgZG9jdW1lbnRhdGlvbiBzaG91bGQgcmVmbGVjdCB0aGF0Lg0KDQpPSyEgSSds
+bCBkb3VibGUgY2hlY2sgaXQuDQoNCj4gDQo+IEl0IHdvdWxkIHByb2JhYmx5IGJlIGVhc2llciB0
+byBkbyB0aGF0IG9uIHRvcCBvZiB0aGUgeWFtbCBjb252ZXJzaW9uDQo+IGhlcmU6DQo+IGh0dHBz
+Oi8vbG9yZS5rZXJuZWwub3JnL2xrbWwvMjAxOTEwMDkyMjQwMDYuNTAyMS0yLWFsZXhhbmRyZS5i
+ZWxsb25pQGJvb3RsaW4uY29tLw0KDQpJIGRvbid0IHNlZSB0aGlzIGludGVncmF0ZWQgaW4gbmV4
+dC0yMDIwMDExMC4gQW0gSSBsb29raW5nIGF0IHRoZSB3cm9uZyBicmFuY2g/DQoNCj4gDQo+IC0t
+DQo+IEFsZXhhbmRyZSBCZWxsb25pLCBCb290bGluDQo+IEVtYmVkZGVkIExpbnV4IGFuZCBLZXJu
+ZWwgZW5naW5lZXJpbmcNCj4gaHR0cHM6Ly9ib290bGluLmNvbQ0KPiA=

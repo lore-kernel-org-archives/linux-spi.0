@@ -1,62 +1,103 @@
-From: <Claudiu.Beznea@microchip.com>
-Subject: Re: [PATCH 11/16] dt-bindings: atmel,at91rm9200-rtc: add
- microchip,sam9x60-rtc
-Date: Fri, 10 Jan 2020 15:02:55 +0000
-Message-ID: <cd8ecfb1-b88a-88c4-205f-45ac7e25c5cc@microchip.com>
-References: <1578488123-26127-1-git-send-email-claudiu.beznea@microchip.com>
- <1578488123-26127-12-git-send-email-claudiu.beznea@microchip.com>
- <20200110143001.GE1027187@piout.net>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 2/3] spi: Add HiSilicon v3xx SPI NOR flash controller
+ driver
+Date: Fri, 10 Jan 2020 15:12:20 +0000
+Message-ID: <20200110151220.GC5889@sirena.org.uk>
+References: <1575900490-74467-1-git-send-email-john.garry@huawei.com>
+ <1575900490-74467-3-git-send-email-john.garry@huawei.com>
+ <0dc5cb2e-b765-9e13-b05e-9e3c835c5985@huawei.com>
+ <20200109212842.GK3702@sirena.org.uk>
+ <df67b562-7d82-19f6-7581-680190a7772d@huawei.com>
+ <20200110140726.GB5889@sirena.org.uk>
+ <6db83881-927c-d11c-9c77-23a45892ddab@huawei.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: <robh+dt@kernel.org>, <mark.rutland@arm.com>,
-        <Nicolas.Ferre@microchip.com>, <Ludovic.Desroches@microchip.com>,
-        <vkoul@kernel.org>, <Eugen.Hristev@microchip.com>,
-        <jic23@kernel.org>, <knaack.h@gmx.de>, <lars@metafoo.de>,
-        <pmeerw@pmeerw.net>, <mchehab@kernel.org>, <lee.jones@linaro.org>,
-        <richard.genoud@gmail.com>, <radu_nicolae.pirea@upb.ro>,
-        <Tudor.Ambarus@microchip.com>, <miquel.raynal@bootlin.com>,
-        <richard@nod.at>, <vigneshr@ti.com>, <wg@grandegger.com>,
-        <mkl@pengutronix.de>, <a.zummo@towertech.it>, <broonie@kernel.org>,
-        <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-media@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
-To: <alexandre.belloni@bootlin.com>
-Return-path: <linux-media-owner@vger.kernel.org>
-In-Reply-To: <20200110143001.GE1027187@piout.net>
-Content-Language: en-US
-Content-ID: <AE39BBAE4DFACA498B36344FFFF2868E@namprd11.prod.outlook.com>
-Sender: linux-media-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============4660710561426883816=="
+Cc: chenxiang66@hisilicon.com, linux-kernel@vger.kernel.org,
+ tudor.ambarus@microchip.com, liusimin4@huawei.com, linuxarm@huawei.com,
+ linux-spi@vger.kernel.org, marek.vasut@gmail.com,
+ linux-mtd@lists.infradead.org, xuejiancheng@hisilicon.com,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ wanghuiqiang <wanghuiqiang@huawei.com>, fengsheng5@huawei.com
+To: John Garry <john.garry@huawei.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=m.gmane-mx.org@lists.infradead.org>
+In-Reply-To: <6db83881-927c-d11c-9c77-23a45892ddab@huawei.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=m.gmane-mx.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-DQoNCk9uIDEwLjAxLjIwMjAgMTY6MzAsIEFsZXhhbmRyZSBCZWxsb25pIHdyb3RlOg0KPiBFWFRF
-Uk5BTCBFTUFJTDogRG8gbm90IGNsaWNrIGxpbmtzIG9yIG9wZW4gYXR0YWNobWVudHMgdW5sZXNz
-IHlvdSBrbm93IHRoZSBjb250ZW50IGlzIHNhZmUNCj4gDQo+IEhpLA0KPiANCj4gT24gMDgvMDEv
-MjAyMCAxNDo1NToxOCswMjAwLCBDbGF1ZGl1IEJlem5lYSB3cm90ZToNCj4+IEFkZCBtaWNyb2No
-aXAsc2FtOXg2MC1ydGMgdG8gRFQgYmluZGluZ3MgZG9jdW1lbnRhdGlvbi4NCj4gDQo+IFRoaXMg
-d2lsbCBoYXZlIHRvIGJlIHJlYmFzZWQgb24gdG9wIG9mDQo+IGh0dHBzOi8vbG9yZS5rZXJuZWwu
-b3JnL2xpbnV4LXJ0Yy8yMDE5MTIyOTIwNDQyMS4zMzc2MTItMi1hbGV4YW5kcmUuYmVsbG9uaUBi
-b290bGluLmNvbS8NCg0KVGhpcyBpcyBhbHNvIG5vdCBpbnRlZ3JhdGVkIGluIGxhdGVzdCBuZXh0
-LiBXaWxsIHRoaXMgcG9zdHBvbmUgdGhlDQphY2NlcHRhbmNlIG9mIHRoZSBkZXZpY2UgdHJlZSwg
-dW50aWwgdGhlIHlhbWwgY29udmVyc2lvbiBpcyBhY2NlcHRlZD8NCg0KPiANCj4+DQo+PiBTaWdu
-ZWQtb2ZmLWJ5OiBDbGF1ZGl1IEJlem5lYSA8Y2xhdWRpdS5iZXpuZWFAbWljcm9jaGlwLmNvbT4N
-Cj4+IC0tLQ0KPj4gIERvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9ydGMvYXRtZWws
-YXQ5MXJtOTIwMC1ydGMudHh0IHwgMyArKy0NCj4+ICAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRp
-b25zKCspLCAxIGRlbGV0aW9uKC0pDQo+Pg0KPj4gZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRpb24v
-ZGV2aWNldHJlZS9iaW5kaW5ncy9ydGMvYXRtZWwsYXQ5MXJtOTIwMC1ydGMudHh0IGIvRG9jdW1l
-bnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL3J0Yy9hdG1lbCxhdDkxcm05MjAwLXJ0Yy50eHQN
-Cj4+IGluZGV4IDVkMzc5MWU3ODljNi4uMzVlYWI5MTM4ZDBiIDEwMDY0NA0KPj4gLS0tIGEvRG9j
-dW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL3J0Yy9hdG1lbCxhdDkxcm05MjAwLXJ0Yy50
-eHQNCj4+ICsrKyBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9ydGMvYXRtZWws
-YXQ5MXJtOTIwMC1ydGMudHh0DQo+PiBAQCAtMSw3ICsxLDggQEANCj4+ICBBdG1lbCBBVDkxUk05
-MjAwIFJlYWwgVGltZSBDbG9jaw0KPj4NCj4+ICBSZXF1aXJlZCBwcm9wZXJ0aWVzOg0KPj4gLS0g
-Y29tcGF0aWJsZTogc2hvdWxkIGJlOiAiYXRtZWwsYXQ5MXJtOTIwMC1ydGMiIG9yICJhdG1lbCxh
-dDkxc2FtOXg1LXJ0YyINCj4+ICstIGNvbXBhdGlibGU6IHNob3VsZCBiZTogImF0bWVsLGF0OTFy
-bTkyMDAtcnRjIiwgImF0bWVsLGF0OTFzYW05eDUtcnRjIiBvcg0KPj4gKyAgIm1pY3JvY2hpcCxz
-YW05eDYwLXJ0YyINCj4+ICAtIHJlZzogcGh5c2ljYWwgYmFzZSBhZGRyZXNzIG9mIHRoZSBjb250
-cm9sbGVyIGFuZCBsZW5ndGggb2YgbWVtb3J5IG1hcHBlZA0KPj4gICAgcmVnaW9uLg0KPj4gIC0g
-aW50ZXJydXB0czogcnRjIGFsYXJtL2V2ZW50IGludGVycnVwdA0KPj4gLS0NCj4+IDIuNy40DQo+
-Pg0KPiANCj4gLS0NCj4gQWxleGFuZHJlIEJlbGxvbmksIEJvb3RsaW4NCj4gRW1iZWRkZWQgTGlu
-dXggYW5kIEtlcm5lbCBlbmdpbmVlcmluZw0KPiBodHRwczovL2Jvb3RsaW4uY29tDQo+IA==
+
+--===============4660710561426883816==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="IpbVkmxF4tDyP/Kb"
+Content-Disposition: inline
+
+
+--IpbVkmxF4tDyP/Kb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Fri, Jan 10, 2020 at 02:58:54PM +0000, John Garry wrote:
+> On 10/01/2020 14:07, Mark Brown wrote:
+> > On Fri, Jan 10, 2020 at 11:55:37AM +0000, John Garry wrote: >
+
+> > OK, so that's just reusing the DT binding in which case everything
+> > that's valid for the DT binding should also be valid for ACPI - I
+> > thought that actually worked automatically without you having to do
+> > anything in the code but ICBW.
+
+> I thought that it would be improper as we could be mixing ACPI methods to
+> describe the serial bus (SPI Serial Bus Connection Resource Descriptor) and
+> also DT properties which could conflict, like CS active high.
+
+Yes, that's one of the issues with importing bits of DT into ACPI
+unfortunately - you will get conflicts, it's not clear it's a good idea
+to be using PRP0001 for SPI stuff given that there's bus level bindings
+for both ACPI and SPI and they don't line up exactly.
+
+> However I do see extra properties than "compatible" being added in DSD for
+> PRP0001:
+> https://patchwork.ozlabs.org/patch/662813/ (see EEPROM part)
+
+> And if we were to do this, I think that we would need to add some
+> device_property_read_u32("spi-rx-bus-width", ...), etc calls in the SPI FW
+> parsing for ACPI path - I couldn't see that.
+
+You'd need parsing code, yes.
+
+--IpbVkmxF4tDyP/Kb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl4YlFQACgkQJNaLcl1U
+h9DU0wf/cpuyMTPeqHgaoFffl4krOOM3hfXblBAMhK6+GSCaI+NHD9p+xBGAaDgh
+u5+Q4+l4lI6IRJ2N5oJNKdQ/GY4B9H05yQuk2ary3bjM5qqMlWgeZq5aHVVCmti5
+mgR3LyAbd93rRX17hhiA7uS04pnikKJYuaS5XHcCZq7uodBz5NZYpt6mskG9uLPA
+MySZb/aJ0otKvk0VFNqD1OhEgvEUz//uxDi/WUdfxtW9salpX/iWRQdmfLGM9k0x
+JIbDUSkGGygpk5mezausd0nIAhkMifXJcfxffl8l2YomnBq8pQdQtYc3rW+CfFKf
+DFTps48PEHxHBrozpUOjXESU39kRpQ==
+=9PoE
+-----END PGP SIGNATURE-----
+
+--IpbVkmxF4tDyP/Kb--
+
+
+--===============4660710561426883816==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/
+
+--===============4660710561426883816==--

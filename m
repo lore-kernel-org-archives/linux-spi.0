@@ -1,78 +1,66 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "MAINTAINERS: Add a maintainer for the HiSilicon v3xx SFC driver" to the spi tree
-Date: Fri, 10 Jan 2020 19:59:02 +0000
-Message-ID: <applied-1575900490-74467-4-git-send-email-john.garry@huawei.com>
-References: <1575900490-74467-4-git-send-email-john.garry@huawei.com>
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, chenxiang66-C8/M+/jPZTeaMJb+Lgu22Q@public.gmane.org,
-        fengsheng5-hv44wF8Li93QT0dZR+AlfA@public.gmane.org, linuxarm-hv44wF8Li93QT0dZR+AlfA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, tudor.ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org,
-        xuejiancheng-C8/M+/jPZTeaMJb+Lgu22Q@public.gmane.org
-To: John Garry <john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1575900490-74467-4-git-send-email-john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH v2 06/17] dt-bindings: at91-sama5d2_adc: add
+ microchip,sam9x60-adc
+Date: Sat, 11 Jan 2020 10:16:38 +0000
+Message-ID: <20200111101638.7920f26c@archlinux>
+References: <1578673089-3484-1-git-send-email-claudiu.beznea@microchip.com>
+        <1578673089-3484-7-git-send-email-claudiu.beznea@microchip.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+        <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+        <ludovic.desroches@microchip.com>, <vkoul@kernel.org>,
+        <eugen.hristev@microchip.com>, <knaack.h@gmx.de>,
+        <lars@metafoo.de>, <pmeerw@pmeerw.net>, <mchehab@kernel.org>,
+        <lee.jones@linaro.org>, <radu_nicolae.pirea@upb.ro>,
+        <richard.genoud@gmail.com>, <tudor.ambarus@microchip.com>,
+        <miquel.raynal@bootlin.com>, <richard@nod.at>, <vigneshr@ti.com>,
+        <wg@grandegger.com>, <mkl@pengutronix.de>, <a.zummo@towertech.it>,
+        <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <linux-media@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+        <linux-ca
+To: Claudiu Beznea <claudiu.beznea@microchip.com>
+Return-path: <linux-media-owner@vger.kernel.org>
+In-Reply-To: <1578673089-3484-7-git-send-email-claudiu.beznea@microchip.com>
+Sender: linux-media-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The patch
+On Fri, 10 Jan 2020 18:17:58 +0200
+Claudiu Beznea <claudiu.beznea@microchip.com> wrote:
 
-   MAINTAINERS: Add a maintainer for the HiSilicon v3xx SFC driver
+> Add microchip,sam9x60-adc to DT bindings documentation.
+> 
+> Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-has been applied to the spi tree at
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.6
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+I'm assuming this lot of binding changes will all go via Rob.
+Let me know if you are expecting it to go via the various
+individual trees.
 
 Thanks,
-Mark
 
->From 99eb0a1221ac1083b8c87932c438ef016abdaa05 Mon Sep 17 00:00:00 2001
-From: John Garry <john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-Date: Mon, 9 Dec 2019 22:08:10 +0800
-Subject: [PATCH] MAINTAINERS: Add a maintainer for the HiSilicon v3xx SFC
- driver
+Jonathan
 
-Set John Garry @ Huawei as the maintainer.
 
-Signed-off-by: John Garry <john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-Link: https://lore.kernel.org/r/1575900490-74467-4-git-send-email-john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- MAINTAINERS | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index bd5847e802de..8c119bd4f687 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7492,6 +7492,12 @@ S:	Supported
- F:	drivers/scsi/hisi_sas/
- F:	Documentation/devicetree/bindings/scsi/hisilicon-sas.txt
- 
-+HISILICON V3XX SPI NOR FLASH Controller Driver
-+M:	John Garry <john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-+W:	http://www.hisilicon.com
-+S:	Maintained
-+F:	drivers/spi/spi-hisi-sfc-v3xx.c
-+
- HISILICON QM AND ZIP Controller DRIVER
- M:	Zhou Wang <wangzhou1-C8/M+/jPZTeaMJb+Lgu22Q@public.gmane.org>
- L:	linux-crypto-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
--- 
-2.20.1
+> ---
+>  Documentation/devicetree/bindings/iio/adc/at91-sama5d2_adc.txt | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/at91-sama5d2_adc.txt b/Documentation/devicetree/bindings/iio/adc/at91-sama5d2_adc.txt
+> index 4a3c1d496e1a..07c59f301b31 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/at91-sama5d2_adc.txt
+> +++ b/Documentation/devicetree/bindings/iio/adc/at91-sama5d2_adc.txt
+> @@ -1,7 +1,7 @@
+>  * AT91 SAMA5D2 Analog to Digital Converter (ADC)
+>  
+>  Required properties:
+> -  - compatible: Should be "atmel,sama5d2-adc".
+> +  - compatible: Should be "atmel,sama5d2-adc" or "microchip,sam9x60-adc".
+>    - reg: Should contain ADC registers location and length.
+>    - interrupts: Should contain the IRQ line for the ADC.
+>    - clocks: phandle to device clock.

@@ -1,98 +1,79 @@
-From: =?UTF-8?Q?Andr=c3=a9_Przywara?= <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Subject: Re: [PATCH 1/2] arm64: dts: sun50i: H6: Add SPI controllers nodes and
- pinmuxes
-Date: Sun, 12 Jan 2020 15:12:19 +0000
-Message-ID: <cea0a8ed-fcf7-53c8-daf9-cf27408d83f9@arm.com>
-References: <20200108101006.150706-1-andre.przywara@arm.com>
- <20200108101006.150706-2-andre.przywara@arm.com>
- <20200111172639.to3lhzros6ca5hj2@gilmour.lan>
+From: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+Subject: Re: [PATCH 1/3] dt-bindings: spi: Add spi-mux-gpio
+Date: Mon, 13 Jan 2020 03:43:39 +0000
+Message-ID: <58e3dcf5cf69fa5fda6f887dc442fec4d9901ffd.camel@alliedtelesis.co.nz>
+References: <20190412050213.17698-1-chris.packham@alliedtelesis.co.nz>
+         <20190412050213.17698-2-chris.packham@alliedtelesis.co.nz>
+         <20190429213740.GA29098@bogus>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, Icenowy Zheng <icenowy-ymACFijhrKM@public.gmane.org>,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
-To: Maxime Ripard <mripard-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200111172639.to3lhzros6ca5hj2-2DbqMqoCcjvhXIiyNabO3w@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "anthony.derosa@syscall7.com" <anthony.derosa@syscall7.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+To: "robh@kernel.org" <robh@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20190429213740.GA29098@bogus>
 Content-Language: en-US
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-ID: <C8595220A5D21948B7B8DF3BEB85C8AB@atlnz.lc>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 11/01/2020 17:26, Maxime Ripard wrote:
-
-Hi Maxime,
-
-> On Wed, Jan 08, 2020 at 10:10:05AM +0000, Andre Przywara wrote:
->> The Allwinner H6 SoC contains two SPI controllers similar to the H3/A64,
->> but with the added capability of 3-wire and 4-wire operation modes.
->> For now the driver does not support those, but the SPI registers are
->> fully backwards-compatible, just adding bits and registers which were
->> formerly reserved. So we can use the existing driver for the "normal" SPI
->> modes, for instance to access the SPI NOR flash soldered on the PineH64
->> board.
->> We use an H6 specific compatible string in addition to the existing H3
->> string, so when the driver later gains Quad SPI support, it should work
->> automatically without any DT changes.
->>
->> Tested by accessing the SPI flash on a Pine H64 board (SPI0), also
->> connecting another SPI flash to the SPI1 header pins.
->>
->> Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
->> ---
->>  arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi | 54 ++++++++++++++++++++
->>  1 file changed, 54 insertions(+)
->>
->> diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi
->> index 3329283e38ab..40835850893e 100644
->> --- a/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi
->> +++ b/arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi
->> @@ -338,6 +338,30 @@
->>  				bias-pull-up;
->>  			};
->>
->> +			/omit-if-no-ref/
->> +			spi0_pins: spi0-pins {
->> +				pins = "PC0", "PC2", "PC3";
->> +				function = "spi0";
->> +			};
->> +
->> +			/omit-if-no-ref/
->> +			spi0_cs_pin: spi0-cs-pin {
->> +				pins = "PC5";
->> +				function = "spi0";
->> +			};
-> 
-> It seems suspicious to use it in the Pine H64, since PC5 is also used
-> by the eMMC (and this prevents either the SPI or the emmc controller
-> to probe, depending on which probed first).
-
-Argh, good catch! I saw that AW changed the pin sharing between SPI and
-MMC2 slightly, but didn't actually check that they made it worse :-(
-Because this time it's the MMC CMD pin affected, and not the somewhat
-optional DS pin as in the A64.
-So I see we can't really have both at the same time. So what about this:
-
-We keep the SPI flash chip described as in patch 2/2 (as it's soldered
-on every board), but mark it as disabled and explain this in a comment.
-This way we can't access it under Linux, but keep a potential eMMC chip
-accessible.
-
-In U-Boot's DT copy we could deviate and mark it as "okay", as U-Boot
-doesn't use both eMMC and SPI at the same time. I need to check whether
-this works or we would need to move the pinmux setup out of the probe
-routine into something later.
-
-And we could go one step further: If U-Boot detects an eMMC connected
-(it's on a socket and so optional), it changes the SPI flash status to
-"disabled", to allow EFI apps and kernels using this DT to access the
-eMMC - which is far more useful than the SPI flash.
-Otherwise (no eMMC connected) it can stay at "okay", as there would be
-no conflict.
-
-Does this make sense?
-
-Cheers,
-Andre.
+SGkgUm9iLA0KDQpPbiBNb24sIDIwMTktMDQtMjkgYXQgMTY6MzcgLTA1MDAsIFJvYiBIZXJyaW5n
+IHdyb3RlOg0KPiBPbiBGcmksIEFwciAxMiwgMjAxOSBhdCAwNTowMjoxMVBNICsxMjAwLCBDaHJp
+cyBQYWNraGFtIHdyb3RlOg0KPiA+IEFkZCBiaW5kaW5nIGRvY3VtZW50YXRpb24gZm9yIHNwaS1t
+dXgtZ3BpbyB3aGljaCBpcyBhIHNsaWdodGx5IG1vcmUNCj4gPiBjb21wbGljYXRlZCBoYXJkd2Fy
+ZSBpbXBsZW1lbnRhdGlvbiBvZiB1c2luZyBncGlvcyB0byBzdGVlciBTUEkgY2hpcA0KPiA+IHNl
+bGVjdHMuDQo+ID4gDQo+ID4gU2lnbmVkLW9mZi1ieTogQ2hyaXMgUGFja2hhbSA8Y2hyaXMucGFj
+a2hhbUBhbGxpZWR0ZWxlc2lzLmNvLm56Pg0KPiA+IC0tLQ0KPiA+ICAuLi4vZGV2aWNldHJlZS9i
+aW5kaW5ncy9zcGkvc3BpLW11eC1ncGlvLnR4dCAgfCA0NSArKysrKysrKysrKysrKysrKysrDQo+
+ID4gIDEgZmlsZSBjaGFuZ2VkLCA0NSBpbnNlcnRpb25zKCspDQo+ID4gIGNyZWF0ZSBtb2RlIDEw
+MDY0NCBEb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3Mvc3BpL3NwaS1tdXgtZ3Bpby50
+eHQNCj4gPiANCj4gPiBkaWZmIC0tZ2l0IGEvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRp
+bmdzL3NwaS9zcGktbXV4LWdwaW8udHh0IGIvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRp
+bmdzL3NwaS9zcGktbXV4LWdwaW8udHh0DQo+ID4gbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4gPiBp
+bmRleCAwMDAwMDAwMDAwMDAuLmEzMmYyNTMyMWQzNw0KPiA+IC0tLSAvZGV2L251bGwNCj4gPiAr
+KysgYi9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3Mvc3BpL3NwaS1tdXgtZ3Bpby50
+eHQNCj4gPiBAQCAtMCwwICsxLDQ1IEBADQo+ID4gK1NQSSBidXMgZ3BpbyBtdWx0aXBsZXhlcg0K
+PiA+ICsNCj4gPiArVGhlIFNQSSBidXMgZ3BpbyBtdWx0aXBsZXhlciBjYW4gYmUgdXNlZCB0byBp
+bXBsZW1lbnQgbW9yZSBjb21wbGljYXRlZCBhY2Nlc3MNCj4gPiArbG9naWMgdGhhbiBjYW4gYmUg
+c3VwcG9ydGVkIHdpdGggdGhlIGNzLWdwaW9zIHByb3BlcnR5IG9mIGEgU1BJIGJ1cy4NCj4gPiAr
+DQo+ID4gK0luIHRoZSBleGFtcGxlIGJlbG93IHdlIGhhdmUgYSBTb0Mgd2l0aCBhIHNpbmdsZSBT
+UEkgQ1MgdGhhdCBpcyBnYXRlZCBieSB0aGUNCj4gPiArc3RhdGUgb2YgYSBncGlvIHRvIHNlbGVj
+dCB0aGUgZGVzaXJlZCBTUEkgZGV2aWNlLg0KPiA+ICsNCj4gPiArICAgICArLS0tLS0tLS0tLSsg
+IENTICAgICstLS0tLSsgQ1MwICArLS0tLSsNCj4gPiArICAgICB8ICAgICAgICAgIHwtLS0tLS0t
+LXwgICAgIHwtLS0tLS18ICAgIHwNCj4gPiArICAgICB8ICAgICAgICAgIHwgICAgICAgIHwgXCAv
+IHwgICAgICArLS0tLSsNCj4gPiArICAgICB8ICAgU29DICAgIHwgICAgICAgIHwgICsgIHwNCj4g
+PiArICAgICB8ICAgICAgICAgIHwgIEdQSU8gIHwgLyBcIHwgQ1MxICArLS0tLSsNCj4gPiArICAg
+ICB8ICAgICAgICAgIHwtLS0tLS0tLXwgICAgIHwtLS0tLS18ICAgIHwNCj4gPiArICAgICArLS0t
+LS0tLS0tLSsgICAgICAgICstLS0tLSsgICAgICArLS0tLSsNCj4gPiArDQo+ID4gK1JlcXVpcmVk
+IHByb3BlcnRpZXM6DQo+ID4gKy0gY29tcGF0aWJsZQktIG11c3QgYmUgInNwaS1tdXgtZ3BpbyIN
+Cj4gPiArLSBncGlvcwkJLSBncGlvcyB1c2VkIHRvIGltcGxlbWVudCB0aGUgbXVsdGlwbGV4aW5n
+IGxvZ2ljDQo+ID4gKy0gc3BpLXBhcmVudC1idXMgLSBwYXJlbnQgc3BpIGJ1cyB0byB1c2UNCj4g
+PiArDQo+ID4gK09wdGlvbmFsIHByb3BlcnRpZXM6DQo+ID4gKy0gc3BpLXBhcmVudC1jcyAtIGNo
+aXAgc2VsZWN0IG9uIHBhcmVudCBidXMgdG8gdXNlLiBEZWZhdWx0cyB0byAwIGlmIG5vdA0KPiA+
+ICsgICAgICAgICAgICAgICAgICBzcGVjaWZpZWQuDQo+ID4gKw0KPiA+ICtFeGFtcGxlIGZvciBh
+IG11bHRpcGxleGVyIHdpdGggYSBzaW5nbGUgZ3BpbzoNCj4gPiArDQo+ID4gKwlzcGktbXV4IHsN
+Cj4gPiArCQljb21wYXRpYmxlID0gInNwaS1tdXgtZ3BpbyI7DQo+ID4gKwkJI2FkZHJlc3MtY2Vs
+bHMgPSA8MT47DQo+ID4gKwkJI3NpemUtY2VsbHMgPSA8MD47DQo+ID4gKwkJZ3Bpb3MgPSA8Jmdw
+aW8wIDEgMD47DQo+ID4gKwkJc3BpLXBhcmVudC1idXMgPSA8JnNwaTA+Ow0KPiA+ICsJCXNwaS1w
+YXJlbnQtY3MgPSA8MD47DQo+IA0KPiBXaHkgaXMgdGhpcyBvdXQgb2YgYmFuZD8gV2UgY2FuIGRv
+IHNvbWV0aGluZyBzaW1pbGFyIHRvIEkyQyBhbmQgdXNlIHRoZSANCj4gbXV4LWNvbnRyb2wgYmlu
+ZGluZzoNCj4gDQo+IHNwaSB7DQo+IAltdXhAMCB7DQo+IAkJY29tcGF0aWJsZSA9ICJzcGktbXV4
+IjsNCj4gCQlyZWcgIjAiOyANCj4gCQltdXgtY29udHJvbHMgPSAuLi47DQo+IA0KPiAJCXNwaS1k
+ZXZAMCB7fTsNCj4gCQlzcGktZGV2QDEge307DQo+IAl9Ow0KPiANCj4gCXNwaS1kZXZAMSB7fTsN
+Cj4gDQo+IH07DQoNCkkndmUgYmVlbiByZS12aXNpdGluZyB0aGlzIHRocmVhZCBhbmQgYW4gb2xk
+ZXIgb25lWzFdIHdpdGggYW4gZXllIG9uDQppbXBsZW1lbnRpbmcgYSBzb2x1dGlvbiB3aXRoIG11
+eC1jb250cm9scy4NCg0KT25lIHRoaW5nIEknbSBjb25mdXNlZCBhYm91dCBpcyB5b3VyIGNvbW1l
+bnQgdGhhdCB0aGUgbXV4IHNob3VsZCBiZSBpbi0NCmJhbmQgbGlrZSBpMmMuIExvb2tpbmcgYXQg
+dGhlIG9uZSB1c2VyIG9mIGkyYy1tdXggKGF0OTEtbmF0dGUuZHRzaSkgaXQNCmFsc28gYXBwZWFy
+cyBvdXQgb2YgYmFuZCBhbmQgZGV0ZXJtaW5lIHRoZSBwYXJlbnQgYnVzIHdpdGggYSBpMmMtcGFy
+ZW50IA0KcHJvcGVydHkgKHNpbWlsYXIgdG8gaG93IEkgZGlkIGl0IGluIG15IG9yaWdpbmFsIHN1
+Ym1pc3Npb24pLiBJIGFsc28NCmNhbid0IHNlZSBob3cgdGhlIG11eCB3b3VsZCB3b3JrIGluLWJh
+bmQgc2luY2UgaXQgbGFja3MgdGhlIGNvcnJlY3QNCiNhZGRyZXNzLWNlbGxzIGV0YyBmb3IgYSBz
+cGkgZGV2aWNlLg0KDQpJJ20gd29uZGVyaW5nIGlmIEkndmUgbWlzc2VkIHNvbWV0aGluZyBvYnZp
+b3VzLg0KDQotLQ0KWzFdIC0gaHR0cHM6Ly9wYXRjaHdvcmsua2VybmVsLm9yZy9wYXRjaC8yNzA2
+MTUxLw0K

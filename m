@@ -1,47 +1,47 @@
-From: Anson Huang <Anson.Huang-3arQi8VN3Tc@public.gmane.org>
-Subject: [PATCH V2 2/7] dt-bindings: mmc: fsl-imx-esdhc: add i.MX8MP compatible string
-Date: Mon, 13 Jan 2020 13:33:17 +0800
-Message-ID: <1578893602-14395-2-git-send-email-Anson.Huang@nxp.com>
-References: <1578893602-14395-1-git-send-email-Anson.Huang@nxp.com>
-Cc: Linux-imx-3arQi8VN3Tc@public.gmane.org
-To: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org, vkoul-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
-        festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-        srinivas.kandagatla-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        manivannan.sadhasivam-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        rjones-UMMOYl/HMS+akBO8gow8eQ@public.gmane.org, marcel.ziswiler-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org,
-        sebastien.szymanski-d2DlULPkwbNWk0Htik3J/w@public.gmane.org, aisheng.dong-3arQi8VN3Tc@public.gmane.org,
-        richard.hu-Ynyd8CyeeRDSUeElwK9/Pw@public.gmane.org, angus-HsWYs6tNinE@public.gmane.org, cosmin.stoica-3arQi8VN3Tc@public.gmane.org,
-        l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, rabeeh-UBr1pzP51AyaMJb+Lgu22Q@public.gmane.org,
-        leonard.crestez-3arQi8VN3Tc@public.gmane.org, daniel.baluta-3arQi8VN3Tc@public.gmane.org, jun.li-3arQi8VN3Tc@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1578893602-14395-1-git-send-email-Anson.Huang-3arQi8VN3Tc@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Anson Huang <Anson.Huang@nxp.com>
+Subject: [PATCH V2 1/7] dt-bindings: fsl-imx-sdma: Add i.MX8MM/i.MX8MN/i.MX8MP compatible string
+Date: Mon, 13 Jan 2020 13:33:16 +0800
+Message-ID: <1578893602-14395-1-git-send-email-Anson.Huang@nxp.com>
+Cc: Linux-imx@nxp.com
+To: robh+dt@kernel.org, mark.rutland@arm.com, vkoul@kernel.org,
+        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+        festevam@gmail.com, ulf.hansson@linaro.org,
+        srinivas.kandagatla@linaro.org, broonie@kernel.org,
+        manivannan.sadhasivam@linaro.org, andrew.smirnov@gmail.com,
+        rjones@gateworks.com, marcel.ziswiler@toradex.com,
+        sebastien.szymanski@armadeus.com, aisheng.dong@nxp.com,
+        richard.hu@technexion.com, angus@akkea.ca, cosmin.stoica@nxp.com,
+        l.stach@pengutronix.de, rabeeh@solid-run.com,
+        leonard.crestez@nxp.com, daniel.baluta@nxp.com, jun.li@nxp.com,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dmaengine@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mmc@vger.kernel.org, linux-spi@vger.kernel.org
+Return-path: <linux-mmc-owner@vger.kernel.org>
+Sender: linux-mmc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Add compatible string for imx8mp
+Add imx8mm/imx8mn/imx8mp sdma support.
 
-Signed-off-by: Anson Huang <Anson.Huang-3arQi8VN3Tc@public.gmane.org>
+Signed-off-by: Anson Huang <Anson.Huang@nxp.com>
 ---
 New patch
 ---
- Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.txt | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/devicetree/bindings/dma/fsl-imx-sdma.txt | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.txt b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.txt
-index 2fb466c..c93643f 100644
---- a/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.txt
-+++ b/Documentation/devicetree/bindings/mmc/fsl-imx-esdhc.txt
-@@ -21,6 +21,7 @@ Required properties:
- 	       "fsl,imx8mq-usdhc"
- 	       "fsl,imx8mm-usdhc"
- 	       "fsl,imx8mn-usdhc"
-+	       "fsl,imx8mp-usdhc"
- 	       "fsl,imx8qxp-usdhc"
- 
- Optional properties:
+diff --git a/Documentation/devicetree/bindings/dma/fsl-imx-sdma.txt b/Documentation/devicetree/bindings/dma/fsl-imx-sdma.txt
+index 9d8bbac..c9e9740 100644
+--- a/Documentation/devicetree/bindings/dma/fsl-imx-sdma.txt
++++ b/Documentation/devicetree/bindings/dma/fsl-imx-sdma.txt
+@@ -10,6 +10,9 @@ Required properties:
+       "fsl,imx6q-sdma"
+       "fsl,imx7d-sdma"
+       "fsl,imx8mq-sdma"
++      "fsl,imx8mm-sdma"
++      "fsl,imx8mn-sdma"
++      "fsl,imx8mp-sdma"
+   The -to variants should be preferred since they allow to determine the
+   correct ROM script addresses needed for the driver to work without additional
+   firmware.
 -- 
 2.7.4

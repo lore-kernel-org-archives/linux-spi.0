@@ -1,9 +1,10 @@
 From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v2 01/17] dt-bindings: at_xdmac: remove wildcard
-Date: Mon, 13 Jan 2020 17:22:57 -0600
-Message-ID: <20200113232257.GA30124@bogus>
+Subject: Re: [PATCH v2 03/17] dt-bindings: atmel-can: add
+ microchip,sam9x60-can
+Date: Mon, 13 Jan 2020 17:23:23 -0600
+Message-ID: <20200113232323.GA31125@bogus>
 References: <1578673089-3484-1-git-send-email-claudiu.beznea@microchip.com>
- <1578673089-3484-2-git-send-email-claudiu.beznea@microchip.com>
+ <1578673089-3484-4-git-send-email-claudiu.beznea@microchip.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: robh+dt@kernel.org, mark.rutland@arm.com,
@@ -21,19 +22,19 @@ Cc: robh+dt@kernel.org, mark.rutland@arm.com,
         linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org,
         linux-can@vger.kernel.org, linux-rtc@vger.kernel.org,
 To: Claudiu Beznea <claudiu.beznea@microchip.com>
-Return-path: <linux-can-owner@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1578673089-3484-2-git-send-email-claudiu.beznea@microchip.com>
-Sender: linux-can-owner@vger.kernel.org
+In-Reply-To: <1578673089-3484-4-git-send-email-claudiu.beznea@microchip.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 10 Jan 2020 18:17:53 +0200, Claudiu Beznea wrote:
-> Remove wildcard and use the available compatible.
+On Fri, 10 Jan 2020 18:17:55 +0200, Claudiu Beznea wrote:
+> Add microchip,sam9x60-can to DT bindings documentation.
 > 
 > Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
 > ---
->  Documentation/devicetree/bindings/dma/atmel-xdma.txt | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+>  Documentation/devicetree/bindings/net/can/atmel-can.txt | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
 
 Acked-by: Rob Herring <robh@kernel.org>

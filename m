@@ -1,101 +1,58 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spi-qcom-qspi: Use device managed memory for clk_bulk_data" to the spi tree
-Date: Mon, 13 Jan 2020 15:13:27 +0000 (GMT)
-Message-ID: <applied-20200108133948.1.I35ceb4db3ad8cfab78f7cd51494aeff4891339f5@changeid>
-References: <20200108133948.1.I35ceb4db3ad8cfab78f7cd51494aeff4891339f5@changeid>
-Cc: Andy Gross <agross-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Bjorn Andersson <bjorn.andersson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        Douglas Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-        Girish Mahadevan <girishm-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-        linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Stephen Boyd <swboyd-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-To: Matthias Kaehlcke <mka-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+From: "Mrs. Anna H. Bruun" <mrsanna.h.bruun119-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: My Greetings
+Date: Mon, 13 Jan 2020 13:21:52 -0800
+Message-ID: <CAEv_75a3rq65fdm=kAmcgVfwsaASntdBv6-YFC2YYLg4EOGa9A__34605.1349000604$1578950544$gmane$org@mail.gmail.com>
+Reply-To: mrsanna.h.bruun119-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+To: undisclosed-recipients:;
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200108133948.1.I35ceb4db3ad8cfab78f7cd51494aeff4891339f5@changeid>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+My Dear
 
-   spi: spi-qcom-qspi: Use device managed memory for clk_bulk_data
+My Name is Mrs. Anna H. Bruun, from Norway. I know that this message
+will be a surprise to you. Firstly, I am married to Mr. Patrick Bruun,
+A gold merchant who owns a small gold Mine in Burkina Faso; He died of
+Cardiovascular Disease in mid-March 2011. During his life time he
+deposited the sum of =E2=82=AC 8.5 Million Euro) Eight million, Five hundre=
+d
+thousand Euros in a bank in Ouagadougou the capital city of Burkina
+Faso. The deposited money was from the sale of the shares, death
+benefits payment and entitlements of my deceased husband by his
+company.
 
-has been applied to the spi tree at
+I am sending this message to you praying that it will reach you in
+good health, since I am not in good health condition in which I sleep
+every night without knowing if I may be alive to see the next day. I
+am suffering from long time cancer and presently i am partially
+suffering from a stroke illness which has become almost impossible for
+me to move around. I am married to my late husband for over 4 years
+before he died and is unfortunately that we don't have a child, my
+doctor confided in me that i have less chance to live. Having known my
+health condition, I decided to contact you to claim the fund since I
+don't have any relation I grew up from the orphanage home,
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.6
+I have decided to donate what I have to you for the support of helping
+Motherless babies/Less privileged/Widows' because I am dying and
+diagnosed of cancer for about 2 years ago. I have been touched by God
+Almighty to donate from what I have inherited from my late husband to
+you for good work of God Almighty. I have asked Almighty God to
+forgive me and believe he has, because He is a Merciful God I will be
+going in for an operation surgery soon
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+This is the reason i need your services to stand as my next of kin or
+an executor to claim the funds for charity purposes. If this money
+remains unclaimed after my death, the bank executives or the
+government will take the money as unclaimed fund and maybe use it for
+selfish and worthless ventures, I need a very honest person who can
+claim this money and use it for Charity works, for orphanages, widows
+and also build schools for less privilege that will be named after my
+late husband and my name; I need your urgent answer to know if you
+will be able to execute this project, and I will give you more
+Information on how the fund will be transferred to your bank account.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From b8d40d7712f10475effc4552eda96b9d44822cfb Mon Sep 17 00:00:00 2001
-From: Matthias Kaehlcke <mka-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Date: Wed, 8 Jan 2020 13:40:32 -0800
-Subject: [PATCH] spi: spi-qcom-qspi: Use device managed memory for
- clk_bulk_data
-
-Currrently the memory for the clk_bulk_data of the QSPI controller
-is allocated with spi_alloc_master(). The bulk data pointer is passed
-to devm_clk_bulk_get() which saves it in clk_bulk_devres->clks. When
-the device is removed later devm_clk_bulk_release() is called and
-uses the bulk data referenced by the pointer to release the clocks.
-For this driver this results in accessing memory that has already
-been freed, since the memory allocated with spi_alloc_master() is
-released by spi_controller_release(), which is called before the
-managed resources are released.
-
-Use device managed memory for the clock bulk data to fix the issue
-described above.
-
-Signed-off-by: Matthias Kaehlcke <mka-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Reviewed-by: Douglas Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Link: https://lore.kernel.org/r/20200108133948.1.I35ceb4db3ad8cfab78f7cd51494aeff4891339f5@changeid
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-qcom-qspi.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-qcom-qspi.c b/drivers/spi/spi-qcom-qspi.c
-index 250fd60e1678..3c4f83bf7084 100644
---- a/drivers/spi/spi-qcom-qspi.c
-+++ b/drivers/spi/spi-qcom-qspi.c
-@@ -137,7 +137,7 @@ enum qspi_clocks {
- struct qcom_qspi {
- 	void __iomem *base;
- 	struct device *dev;
--	struct clk_bulk_data clks[QSPI_NUM_CLKS];
-+	struct clk_bulk_data *clks;
- 	struct qspi_xfer xfer;
- 	/* Lock to protect xfer and IRQ accessed registers */
- 	spinlock_t lock;
-@@ -445,6 +445,13 @@ static int qcom_qspi_probe(struct platform_device *pdev)
- 		goto exit_probe_master_put;
- 	}
- 
-+	ctrl->clks = devm_kcalloc(dev, QSPI_NUM_CLKS,
-+				  sizeof(*ctrl->clks), GFP_KERNEL);
-+	if (!ctrl->clks) {
-+		ret = -ENOMEM;
-+		goto exit_probe_master_put;
-+	}
-+
- 	ctrl->clks[QSPI_CLK_CORE].id = "core";
- 	ctrl->clks[QSPI_CLK_IFACE].id = "iface";
- 	ret = devm_clk_bulk_get(dev, QSPI_NUM_CLKS, ctrl->clks);
--- 
-2.20.1
+Thanks
+Mrs. Anna H.

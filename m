@@ -1,10 +1,9 @@
-From: John Garry <john.garry@huawei.com>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH v2 2/3] spi: Add HiSilicon v3xx SPI NOR flash controller
  driver
-Date: Mon, 13 Jan 2020 13:01:06 +0000
-Message-ID: <6dd45da9-9ccf-45f7-ed12-8f1406a0a56b@huawei.com>
-References: <1575900490-74467-1-git-send-email-john.garry@huawei.com>
- <1575900490-74467-3-git-send-email-john.garry@huawei.com>
+Date: Mon, 13 Jan 2020 14:06:27 +0000
+Message-ID: <20200113140627.GJ3897@sirena.org.uk>
+References: <1575900490-74467-3-git-send-email-john.garry@huawei.com>
  <0dc5cb2e-b765-9e13-b05e-9e3c835c5985@huawei.com>
  <20200109212842.GK3702@sirena.org.uk>
  <df67b562-7d82-19f6-7581-680190a7772d@huawei.com>
@@ -13,72 +12,70 @@ References: <1575900490-74467-1-git-send-email-john.garry@huawei.com>
  <20200110193119.GI32742@smile.fi.intel.com>
  <612a3c5d-69a4-af6b-5c79-c3fb853193ab@huawei.com>
  <20200113114256.GH3897@sirena.org.uk>
+ <6dd45da9-9ccf-45f7-ed12-8f1406a0a56b@huawei.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Content-Transfer-Encoding: 7bit
-Cc: chenxiang66@hisilicon.com, linux-kernel@vger.kernel.org,
- tudor.ambarus@microchip.com, liusimin4@huawei.com, linuxarm@huawei.com,
- linux-spi@vger.kernel.org, marek.vasut@gmail.com,
- linux-mtd@lists.infradead.org, xuejiancheng@hisilicon.com,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- wanghuiqiang <wanghuiqiang@huawei.com>, fengsheng5@huawei.com
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=m.gmane-mx.org@lists.infradead.org>
-In-Reply-To: <20200113114256.GH3897@sirena.org.uk>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=m.gmane-mx.org@lists.infradead.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="cN519qCC4CN1mUcX"
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        tudor.ambarus@microchip.com, linux-kernel@vger.kernel.org,
+        chenxiang66@hisilicon.com, linuxarm@huawei.com,
+        linux-spi@vger.kernel.org, marek.vasut@gmail.com,
+        linux-mtd@lists.infradead.org, xuejiancheng@hisilicon.com,
+        fengsheng5@huawei.com,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        wanghuiqiang <wanghuiqiang@huawei.com>, liusimin4@huawei.com
+To: John Garry <john.garry@huawei.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <6dd45da9-9ccf-45f7-ed12-8f1406a0a56b@huawei.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 13/01/2020 11:42, Mark Brown wrote:
-> On Mon, Jan 13, 2020 at 10:09:27AM +0000, John Garry wrote:
->> On 10/01/2020 19:31, Andy Shevchenko wrote:
-> 
->>> PRP method is only for vendors to *test* the hardware in ACPI environment.
->>> The proper method is to allocate correct ACPI ID.
-> 
->> Yes, that would seem the proper thing to do. So the SPI NOR driver is based
->> on micron m25p80 and compatible string is "jedec,spi-nor", so I don't know
->> who should or would do this registration.
-> 
 
-Hi Mark,
+--cN519qCC4CN1mUcX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> The idiomatic approach appears to be for individual board vendors
-> to allocate IDs, you do end up with multiple IDs from multiple
-> vendors for the same thing.
+On Mon, Jan 13, 2020 at 01:01:06PM +0000, John Garry wrote:
+> On 13/01/2020 11:42, Mark Brown wrote:
 
-So we see sort of approach a lot when vendors integrate 3rd party IP 
-into a SoC and then assign some vendor specific ID for that.
+> > The idiomatic approach appears to be for individual board vendors
+> > to allocate IDs, you do end up with multiple IDs from multiple
+> > vendors for the same thing.
 
-But I am not sure how appropriate that same approach would be for some 
-3rd party memory part which we're simply wiring up on our board. Maybe 
-it is.
+> But I am not sure how appropriate that same approach would be for some 3rd
+> party memory part which we're simply wiring up on our board. Maybe it is.
 
-> 
->> BTW, Do any of these sensors you mention have any ACPI standardization?
-> 
-> In general there's not really much standardizaiton for devices,
-> the bindings that do exist aren't really centrally documented and
-> the Windows standard is just to have the basic device
-> registration in the firmware and do all properties based on
-> quirking based on DMI information.
-> 
+It seems to be quite common for Intel reference designs to assign
+Intel IDs to non-Intel parts on the board (which is where I
+became aware of this practice). =20
 
-OK, so there is always DMI. I hoped to avoid this sort of thing in the 
-linux driver :)
+> > In general there's not really much standardizaiton for devices,
+> > the bindings that do exist aren't really centrally documented and
+> > the Windows standard is just to have the basic device
+> > registration in the firmware and do all properties based on
+> > quirking based on DMI information.
 
-Cheers,
-John
+> OK, so there is always DMI. I hoped to avoid this sort of thing in the li=
+nux
+> driver :)
 
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+Yes, there are some merits to an approach like that.
+
+--cN519qCC4CN1mUcX
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl4ceWIACgkQJNaLcl1U
+h9BaSQgAhHJyOShaR9eNX0h/1w/gPwom3WJq37NV0iDGPxwM7bufN6CmYlEn2VT5
+14DC0ypUzhgmLxSy/+4YjpVoqHfK24ubjJmdQOaYHBDXtUv7C/R+Yg5Rs+SVwwNb
+dAL9mO11neDUCRVlJP4Lw3tx8feN0SZeUjX6P0pdx3NQSa/pQSww3ZSwG+PoBgWF
+cdwu0JWwvx5k2X5O27NehGYxWXo+alYY3AcVcEsEStyhwpQHYcy8jmE6tP14UI/P
+26/o3Nmt4G8zM605sRu9AIJb5eFWtIPOzrisnK0KLkxtbHJfrd/cRrJ2ANSCjVAX
+L7YeVR4vNDZ98Wz0z/eg21M6wsb8Vg==
+=Mq70
+-----END PGP SIGNATURE-----
+
+--cN519qCC4CN1mUcX--

@@ -1,69 +1,51 @@
-From: Joakim Tjernlund <Joakim.Tjernlund-27rvihrghlNWk0Htik3J/w@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH v3] spi: fsl: simplify error path in of_fsl_spi_probe()
-Date: Tue, 14 Jan 2020 16:26:18 +0000
-Message-ID: <b6d01fa02e659db911df63a79d825080f03dfcb8.camel@infinera.com>
+Date: Tue, 14 Jan 2020 16:57:39 +0000
+Message-ID: <20200114165739.GC3897@sirena.org.uk>
 References: <2a4a7e11b37cfa0558d68f0d35e90d6da858b059.1579017697.git.christophe.leroy@c-s.fr>
+ <b6d01fa02e659db911df63a79d825080f03dfcb8.camel@infinera.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="avNtfD0ffNO6L/9g"
+Cc: "christophe.leroy-GgN8y9CXRhA@public.gmane.org" <christophe.leroy-GgN8y9CXRhA@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
         "linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org" <linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
         "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
         "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
         "lkp-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org" <lkp-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
         "geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org" <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-To: "christophe.leroy-GgN8y9CXRhA@public.gmane.org" <christophe.leroy-GgN8y9CXRhA@public.gmane.org>,
-        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <2a4a7e11b37cfa0558d68f0d35e90d6da858b059.1579017697.git.christophe.leroy-GgN8y9CXRhA@public.gmane.org>
-Content-Language: en-US
-Content-ID: <75EE43E45520CF4BBC8B477E9A2C63F7-/lLhaHw4Y5CcE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+To: Joakim Tjernlund <Joakim.Tjernlund-27rvihrghlNWk0Htik3J/w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <b6d01fa02e659db911df63a79d825080f03dfcb8.camel-27rvihrghlNWk0Htik3J/w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-T24gVHVlLCAyMDIwLTAxLTE0IGF0IDE2OjAyICswMDAwLCBDaHJpc3RvcGhlIExlcm95IHdyb3Rl
-Og0KPiBDQVVUSU9OOiBUaGlzIGVtYWlsIG9yaWdpbmF0ZWQgZnJvbSBvdXRzaWRlIG9mIHRoZSBv
-cmdhbml6YXRpb24uIERvIG5vdCBjbGljayBsaW5rcyBvciBvcGVuIGF0dGFjaG1lbnRzIHVubGVz
-cyB5b3UgcmVjb2duaXplIHRoZSBzZW5kZXIgYW5kIGtub3cgdGhlIGNvbnRlbnQgaXMgc2FmZS4N
-Cj4gDQo+IA0KPiBObyBuZWVkIHRvICdnb3RvIGVycjsnIGZvciBqdXN0IGRvaW5nIGEgcmV0dXJu
-Lg0KPiByZXR1cm4gZGlyZWN0bHkgZnJvbSB3aGVyZSB0aGUgZXJyb3IgaGFwcGVucy4NCj4gDQo+
-IFNpZ25lZC1vZmYtYnk6IENocmlzdG9waGUgTGVyb3kgPGNocmlzdG9waGUubGVyb3lAYy1zLmZy
-Pg0KPiAtLS0NCj4gdjM6IHJlYmFzZSBvbiB0b2RheSdzIHNwaS9mb3ItbmV4dCBhbmQgdXNpbmcg
-UFRSX0VSUl9PUl9aRVJPKCkgaW4gb25lIHBsYWNlLg0KPiAtLS0NCj4gIGRyaXZlcnMvc3BpL3Nw
-aS1mc2wtc3BpLmMgfCAyNyArKysrKysrKy0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gIDEgZmlsZSBj
-aGFuZ2VkLCA4IGluc2VydGlvbnMoKyksIDE5IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdp
-dCBhL2RyaXZlcnMvc3BpL3NwaS1mc2wtc3BpLmMgYi9kcml2ZXJzL3NwaS9zcGktZnNsLXNwaS5j
-DQo+IGluZGV4IGZiNDE1OWFkNmJmNi4uM2I4MTc3MmZlYTBkIDEwMDY0NA0KPiAtLS0gYS9kcml2
-ZXJzL3NwaS9zcGktZnNsLXNwaS5jDQo+ICsrKyBiL2RyaXZlcnMvc3BpL3NwaS1mc2wtc3BpLmMN
-Cj4gQEAgLTcwNiw4ICs3MDYsOCBAQCBzdGF0aWMgaW50IG9mX2ZzbF9zcGlfcHJvYmUoc3RydWN0
-IHBsYXRmb3JtX2RldmljZSAqb2ZkZXYpDQo+ICAgICAgICAgc3RydWN0IGRldmljZV9ub2RlICpu
-cCA9IG9mZGV2LT5kZXYub2Zfbm9kZTsNCj4gICAgICAgICBzdHJ1Y3Qgc3BpX21hc3RlciAqbWFz
-dGVyOw0KPiAgICAgICAgIHN0cnVjdCByZXNvdXJjZSBtZW07DQo+IC0gICAgICAgaW50IGlycSA9
-IDAsIHR5cGU7DQo+IC0gICAgICAgaW50IHJldCA9IC1FTk9NRU07DQo+ICsgICAgICAgaW50IGly
-cSwgdHlwZTsNCj4gKyAgICAgICBpbnQgcmV0Ow0KPiANCj4gICAgICAgICByZXQgPSBvZl9tcGM4
-eHh4X3NwaV9wcm9iZShvZmRldik7DQo+ICAgICAgICAgaWYgKHJldCkNCj4gQEAgLTcyMiwxMCAr
-NzIyLDggQEAgc3RhdGljIGludCBvZl9mc2xfc3BpX3Byb2JlKHN0cnVjdCBwbGF0Zm9ybV9kZXZp
-Y2UgKm9mZGV2KQ0KPiANCj4gICAgICAgICAgICAgICAgIGlmIChzcGlzZWxfYm9vdCkgew0KPiAg
-ICAgICAgICAgICAgICAgICAgICAgICBwaW5mby0+aW1tcl9zcGlfY3MgPSBpb3JlbWFwKGdldF9p
-bW1yYmFzZSgpICsgSU1NUl9TUElfQ1NfT0ZGU0VULCA0KTsNCj4gLSAgICAgICAgICAgICAgICAg
-ICAgICAgaWYgKCFwaW5mby0+aW1tcl9zcGlfY3MpIHsNCj4gLSAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICByZXQgPSAtRU5PTUVNOw0KPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIGdvdG8gZXJyOw0KPiAtICAgICAgICAgICAgICAgICAgICAgICB9DQo+ICsgICAgICAgICAg
-ICAgICAgICAgICAgIGlmICghcGluZm8tPmltbXJfc3BpX2NzKQ0KPiArICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHJldHVybiAtRU5PTUVNOw0KPiAgICAgICAgICAgICAgICAgfQ0KPiAg
-I2VuZGlmDQo+ICAgICAgICAgICAgICAgICAvKg0KPiBAQCAtNzQ0LDI0ICs3NDIsMTUgQEAgc3Rh
-dGljIGludCBvZl9mc2xfc3BpX3Byb2JlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKm9mZGV2KQ0K
-PiANCj4gICAgICAgICByZXQgPSBvZl9hZGRyZXNzX3RvX3Jlc291cmNlKG5wLCAwLCAmbWVtKTsN
-Cj4gICAgICAgICBpZiAocmV0KQ0KPiAtICAgICAgICAgICAgICAgZ290byBlcnI7DQo+ICsgICAg
-ICAgICAgICAgICByZXR1cm4gcmV0Ow0KPiANCj4gICAgICAgICBpcnEgPSBwbGF0Zm9ybV9nZXRf
-aXJxKG9mZGV2LCAwKTsNCj4gLSAgICAgICBpZiAoaXJxIDwgMCkgew0KPiAtICAgICAgICAgICAg
-ICAgcmV0ID0gaXJxOw0KPiAtICAgICAgICAgICAgICAgZ290byBlcnI7DQo+IC0gICAgICAgfQ0K
-PiArICAgICAgIGlmIChpcnEgPCAwKQ0KPiArICAgICAgICAgICAgICAgcmV0dXJuIGlycTsNCj4g
-DQo+ICAgICAgICAgbWFzdGVyID0gZnNsX3NwaV9wcm9iZShkZXYsICZtZW0sIGlycSk7DQo+IC0g
-ICAgICAgaWYgKElTX0VSUihtYXN0ZXIpKSB7DQo+IC0gICAgICAgICAgICAgICByZXQgPSBQVFJf
-RVJSKG1hc3Rlcik7DQo+IC0gICAgICAgICAgICAgICBnb3RvIGVycjsNCj4gLSAgICAgICB9DQo+
-IC0NCg0KRG9uJ3QgeW91IG5lZWQgdG8gInVuZG8iIGlvcmVtYXAsIGlycSBldGMuIGluIGNhc2Ug
-b2YgbGF0ZXIgZXJyb3JzPw0KDQo+IC0gICAgICAgcmV0dXJuIDA7DQo+IA0KPiAtZXJyOg0KPiAt
-ICAgICAgIHJldHVybiByZXQ7DQo+ICsgICAgICAgcmV0dXJuIFBUUl9FUlJfT1JfWkVSTyhtYXN0
-ZXIpOw0KPiAgfQ0KPiANCj4gIHN0YXRpYyBpbnQgb2ZfZnNsX3NwaV9yZW1vdmUoc3RydWN0IHBs
-YXRmb3JtX2RldmljZSAqb2ZkZXYpDQo+IC0tDQo+IDIuMTMuMw0KPiANCg0K
+
+--avNtfD0ffNO6L/9g
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Jan 14, 2020 at 04:26:18PM +0000, Joakim Tjernlund wrote:
+
+> Don't you need to "undo" ioremap, irq etc. in case of later errors?
+
+Better, convert to devm_=20
+
+--avNtfD0ffNO6L/9g
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl4d8wIACgkQJNaLcl1U
+h9DBpgf/ZMWk7TuStHKbaJC0YfEaWwp2D/yVzYAISxxSeNvL25vQlQlFJe6YGYR0
+2KK5vLMxNaH1Vf6vhet00ClpsdinZt7Jx91tzaplblsKxlPbraf4tSs6USCdy5Iq
+kSgUDnJvxiQSMnoTjJOkMh/ee/2LJQtVnYB+XirIqI9YWfqAZLrgm/PfqUnNq5vG
++g9nCJ3/RKsLQGb9VmbmXwMy5gVCj3u41aMoX9XDDgoayy1IZPWRIsBTIzUmmCLZ
+A5OhXxnxucHDkAMXjiHE+jmgPEC1LUV+JIBydgN7Z+ryBNvTeLXDTFbnavabBb3Q
+RaQCF+kEphOgL9A5QfgIkwmkUwtCtg==
+=SVwD
+-----END PGP SIGNATURE-----
+
+--avNtfD0ffNO6L/9g--

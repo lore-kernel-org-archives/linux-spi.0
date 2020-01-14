@@ -1,57 +1,49 @@
-From: Claudiu Beznea <claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Subject: [PATCH v3 3/7] dt-bindings: atmel,at91rm9200-rtc: add microchip,sam9x60-rtc
-Date: Tue, 14 Jan 2020 12:23:13 +0200
-Message-ID: <1578997397-23165-4-git-send-email-claudiu.beznea@microchip.com>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
+Subject: [PATCH v3 4/7] dt-bindings: atmel-usart: remove wildcard
+Date: Tue, 14 Jan 2020 12:23:14 +0200
+Message-ID: <1578997397-23165-5-git-send-email-claudiu.beznea@microchip.com>
 References: <1578997397-23165-1-git-send-email-claudiu.beznea@microchip.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <linux-rtc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Claudiu Beznea <claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-To: <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        <mark.rutland-5wv7dgnIgG8@public.gmane.org>, <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-        <alexandre.belloni-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>, <ludovic.desroches-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-        <radu_nicolae.pirea-8LCfxC+Vs8U@public.gmane.org>, <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        <a.zummo-BfzFCNDTiLLj+vYz1yj4TQ@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1578997397-23165-1-git-send-email-claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <linux-rtc@vger.kernel.org>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>
+To: <robh+dt@kernel.org>, <lee.jones@linaro.org>,
+        <mark.rutland@arm.com>, <nicolas.ferre@microchip.com>,
+        <alexandre.belloni@bootlin.com>, <ludovic.desroches@microchip.com>,
+        <radu_nicolae.pirea@upb.ro>, <richard.genoud@gmail.com>,
+        <a.zummo@towertech.it>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1578997397-23165-1-git-send-email-claudiu.beznea@microchip.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add microchip,sam9x60-rtc to DT bindings documentation.
+Remove chip whildcard and introduce the list of compatibles instead.
 
-Cc: Alexandre Belloni <alexandre.belloni-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
-Signed-off-by: Claudiu Beznea <claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
 ---
+ Documentation/devicetree/bindings/mfd/atmel-usart.txt | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-Hi Alexandre,
-
-I kept this patch as in v1 (same for patch
-"dt-bindings: atmel-tcb: add microchip,sam9x60-tcb").
-I'm waiting your response to this version and take an action aftewards.
-
-Thank you,
-Claudiu Beznea
-
- Documentation/devicetree/bindings/rtc/atmel,at91rm9200-rtc.txt | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/devicetree/bindings/rtc/atmel,at91rm9200-rtc.txt b/Documentation/devicetree/bindings/rtc/atmel,at91rm9200-rtc.txt
-index 5d3791e789c6..35eab9138d0b 100644
---- a/Documentation/devicetree/bindings/rtc/atmel,at91rm9200-rtc.txt
-+++ b/Documentation/devicetree/bindings/rtc/atmel,at91rm9200-rtc.txt
-@@ -1,7 +1,8 @@
- Atmel AT91RM9200 Real Time Clock
+diff --git a/Documentation/devicetree/bindings/mfd/atmel-usart.txt b/Documentation/devicetree/bindings/mfd/atmel-usart.txt
+index 699fd3c9ace8..778e8310606a 100644
+--- a/Documentation/devicetree/bindings/mfd/atmel-usart.txt
++++ b/Documentation/devicetree/bindings/mfd/atmel-usart.txt
+@@ -1,10 +1,9 @@
+ * Atmel Universal Synchronous Asynchronous Receiver/Transmitter (USART)
  
- Required properties:
--- compatible: should be: "atmel,at91rm9200-rtc" or "atmel,at91sam9x5-rtc"
-+- compatible: should be: "atmel,at91rm9200-rtc", "atmel,at91sam9x5-rtc" or
-+  "microchip,sam9x60-rtc"
- - reg: physical base address of the controller and length of memory mapped
-   region.
- - interrupts: rtc alarm/event interrupt
+ Required properties for USART:
+-- compatible: Should be "atmel,<chip>-usart" or "atmel,<chip>-dbgu"
+-  The compatible <chip> indicated will be the first SoC to support an
+-  additional mode or an USART new feature.
+-  For the dbgu UART, use "atmel,<chip>-dbgu", "atmel,<chip>-usart"
++- compatible: Should be one of the following:
++	- "atmel,at91rm9200-dbgu", "atmel,at91rm9200-usart"
++	- "atmel,at91sam9260-dbgu", "atmel,at91sam9260-usart"
+ - reg: Should contain registers location and length
+ - interrupts: Should contain interrupt
+ - clock-names: tuple listing input clock names.
 -- 
 2.7.4

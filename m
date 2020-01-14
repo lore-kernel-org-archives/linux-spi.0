@@ -1,10 +1,10 @@
 From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: Re: [PATCH v2 03/17] dt-bindings: atmel-can: add
- microchip,sam9x60-can
-Date: Tue, 14 Jan 2020 10:51:16 +0100
-Message-ID: <20200114095116.GD3137@piout.net>
+Subject: Re: [PATCH v2 05/17] dt-bindings: atmel-isi: add
+ microchip,sam9x60-isi
+Date: Tue, 14 Jan 2020 10:51:55 +0100
+Message-ID: <20200114095155.GE3137@piout.net>
 References: <1578673089-3484-1-git-send-email-claudiu.beznea@microchip.com>
- <1578673089-3484-4-git-send-email-claudiu.beznea@microchip.com>
+ <1578673089-3484-6-git-send-email-claudiu.beznea@microchip.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: robh+dt@kernel.org, mark.rutland@arm.com,
@@ -22,20 +22,19 @@ Cc: robh+dt@kernel.org, mark.rutland@arm.com,
         linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org,
         linux-can@vger.kernel.org, linux-rtc@vger.kernel.org
 To: Claudiu Beznea <claudiu.beznea@microchip.com>
-Return-path: <linux-media-owner@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1578673089-3484-4-git-send-email-claudiu.beznea@microchip.com>
-Sender: linux-media-owner@vger.kernel.org
+In-Reply-To: <1578673089-3484-6-git-send-email-claudiu.beznea@microchip.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 10/01/2020 18:17:55+0200, Claudiu Beznea wrote:
-> Add microchip,sam9x60-can to DT bindings documentation.
+On 10/01/2020 18:17:57+0200, Claudiu Beznea wrote:
+> Add microchip,sam9x60-isi to DT bindings documentation.
 > 
 > Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
 > ---
->  Documentation/devicetree/bindings/net/can/atmel-can.txt | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
+>  Documentation/devicetree/bindings/media/atmel-isi.txt | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 Applied, thanks.
 
 -- 

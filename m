@@ -1,65 +1,64 @@
-From: Alexandre Belloni <alexandre.belloni-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
+From: <Claudiu.Beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
 Subject: Re: [PATCH v3 4/7] dt-bindings: atmel-usart: remove wildcard
-Date: Tue, 14 Jan 2020 11:42:37 +0100
-Message-ID: <20200114104237.GM3137@piout.net>
+Date: Tue, 14 Jan 2020 11:10:14 +0000
+Message-ID: <f3c4d460-cff6-2e14-428a-a732a6bffe38@microchip.com>
 References: <1578997397-23165-1-git-send-email-claudiu.beznea@microchip.com>
  <1578997397-23165-5-git-send-email-claudiu.beznea@microchip.com>
+ <20200114104237.GM3137@piout.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-        nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org, ludovic.desroches-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org,
-        radu_nicolae.pirea-8LCfxC+Vs8U@public.gmane.org, richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        a.zummo-BfzFCNDTiLLj+vYz1yj4TQ@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rtc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Claudiu Beznea <claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1578997397-23165-5-git-send-email-claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        <mark.rutland-5wv7dgnIgG8@public.gmane.org>, <Nicolas.Ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
+        <Ludovic.Desroches-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>, <radu_nicolae.pirea-8LCfxC+Vs8U@public.gmane.org>,
+        <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <a.zummo-BfzFCNDTiLLj+vYz1yj4TQ@public.gmane.org>,
+        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-rtc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: <alexandre.belloni-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200114104237.GM3137-m++hUPXGwpdeoWH0uzbU5w@public.gmane.org>
+Content-Language: en-US
+Content-ID: <B3E5FBED8BFF834FA0DF10EA00CB34FA-Hry67jCOGbCcE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On 14/01/2020 12:23:14+0200, Claudiu Beznea wrote:
-> Remove chip whildcard and introduce the list of compatibles instead.
-> 
-> Signed-off-by: Claudiu Beznea <claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-> ---
->  Documentation/devicetree/bindings/mfd/atmel-usart.txt | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/mfd/atmel-usart.txt b/Documentation/devicetree/bindings/mfd/atmel-usart.txt
-> index 699fd3c9ace8..778e8310606a 100644
-> --- a/Documentation/devicetree/bindings/mfd/atmel-usart.txt
-> +++ b/Documentation/devicetree/bindings/mfd/atmel-usart.txt
-> @@ -1,10 +1,9 @@
->  * Atmel Universal Synchronous Asynchronous Receiver/Transmitter (USART)
->  
->  Required properties for USART:
-> -- compatible: Should be "atmel,<chip>-usart" or "atmel,<chip>-dbgu"
-> -  The compatible <chip> indicated will be the first SoC to support an
-> -  additional mode or an USART new feature.
-> -  For the dbgu UART, use "atmel,<chip>-dbgu", "atmel,<chip>-usart"
-> +- compatible: Should be one of the following:
-> +	- "atmel,at91rm9200-dbgu", "atmel,at91rm9200-usart"
-> +	- "atmel,at91sam9260-dbgu", "atmel,at91sam9260-usart"
-
-All the uarts are not dbgus, so this need to be:
-
- - "atmel,at91rm9200-usart"
- - "atmel,at91sam9260-usart"
- - "atmel,at91rm9200-dbgu", "atmel,at91rm9200-usart"
- - "atmel,at91sam9260-dbgu", "atmel,at91sam9260-usart"
-
-Also, you need to update drivers/soc/atmel/soc.c
-
->  - reg: Should contain registers location and length
->  - interrupts: Should contain interrupt
->  - clock-names: tuple listing input clock names.
-> -- 
-> 2.7.4
-> 
-
--- 
-Alexandre Belloni, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+DQoNCk9uIDE0LjAxLjIwMjAgMTI6NDIsIEFsZXhhbmRyZSBCZWxsb25pIHdyb3RlOg0KPiBFWFRF
+Uk5BTCBFTUFJTDogRG8gbm90IGNsaWNrIGxpbmtzIG9yIG9wZW4gYXR0YWNobWVudHMgdW5sZXNz
+IHlvdSBrbm93IHRoZSBjb250ZW50IGlzIHNhZmUNCj4gDQo+IE9uIDE0LzAxLzIwMjAgMTI6MjM6
+MTQrMDIwMCwgQ2xhdWRpdSBCZXpuZWEgd3JvdGU6DQo+PiBSZW1vdmUgY2hpcCB3aGlsZGNhcmQg
+YW5kIGludHJvZHVjZSB0aGUgbGlzdCBvZiBjb21wYXRpYmxlcyBpbnN0ZWFkLg0KPj4NCj4+IFNp
+Z25lZC1vZmYtYnk6IENsYXVkaXUgQmV6bmVhIDxjbGF1ZGl1LmJlem5lYUBtaWNyb2NoaXAuY29t
+Pg0KPj4gLS0tDQo+PiAgRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL21mZC9hdG1l
+bC11c2FydC50eHQgfCA3ICsrKy0tLS0NCj4+ICAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25z
+KCspLCA0IGRlbGV0aW9ucygtKQ0KPj4NCj4+IGRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL2Rl
+dmljZXRyZWUvYmluZGluZ3MvbWZkL2F0bWVsLXVzYXJ0LnR4dCBiL0RvY3VtZW50YXRpb24vZGV2
+aWNldHJlZS9iaW5kaW5ncy9tZmQvYXRtZWwtdXNhcnQudHh0DQo+PiBpbmRleCA2OTlmZDNjOWFj
+ZTguLjc3OGU4MzEwNjA2YSAxMDA2NDQNCj4+IC0tLSBhL0RvY3VtZW50YXRpb24vZGV2aWNldHJl
+ZS9iaW5kaW5ncy9tZmQvYXRtZWwtdXNhcnQudHh0DQo+PiArKysgYi9Eb2N1bWVudGF0aW9uL2Rl
+dmljZXRyZWUvYmluZGluZ3MvbWZkL2F0bWVsLXVzYXJ0LnR4dA0KPj4gQEAgLTEsMTAgKzEsOSBA
+QA0KPj4gICogQXRtZWwgVW5pdmVyc2FsIFN5bmNocm9ub3VzIEFzeW5jaHJvbm91cyBSZWNlaXZl
+ci9UcmFuc21pdHRlciAoVVNBUlQpDQo+Pg0KPj4gIFJlcXVpcmVkIHByb3BlcnRpZXMgZm9yIFVT
+QVJUOg0KPj4gLS0gY29tcGF0aWJsZTogU2hvdWxkIGJlICJhdG1lbCw8Y2hpcD4tdXNhcnQiIG9y
+ICJhdG1lbCw8Y2hpcD4tZGJndSINCj4+IC0gIFRoZSBjb21wYXRpYmxlIDxjaGlwPiBpbmRpY2F0
+ZWQgd2lsbCBiZSB0aGUgZmlyc3QgU29DIHRvIHN1cHBvcnQgYW4NCj4+IC0gIGFkZGl0aW9uYWwg
+bW9kZSBvciBhbiBVU0FSVCBuZXcgZmVhdHVyZS4NCj4+IC0gIEZvciB0aGUgZGJndSBVQVJULCB1
+c2UgImF0bWVsLDxjaGlwPi1kYmd1IiwgImF0bWVsLDxjaGlwPi11c2FydCINCj4+ICstIGNvbXBh
+dGlibGU6IFNob3VsZCBiZSBvbmUgb2YgdGhlIGZvbGxvd2luZzoNCj4+ICsgICAgIC0gImF0bWVs
+LGF0OTFybTkyMDAtZGJndSIsICJhdG1lbCxhdDkxcm05MjAwLXVzYXJ0Ig0KPj4gKyAgICAgLSAi
+YXRtZWwsYXQ5MXNhbTkyNjAtZGJndSIsICJhdG1lbCxhdDkxc2FtOTI2MC11c2FydCINCj4gDQo+
+IEFsbCB0aGUgdWFydHMgYXJlIG5vdCBkYmd1cywgc28gdGhpcyBuZWVkIHRvIGJlOg0KPiANCj4g
+IC0gImF0bWVsLGF0OTFybTkyMDAtdXNhcnQiDQo+ICAtICJhdG1lbCxhdDkxc2FtOTI2MC11c2Fy
+dCINCj4gIC0gImF0bWVsLGF0OTFybTkyMDAtZGJndSIsICJhdG1lbCxhdDkxcm05MjAwLXVzYXJ0
+Ig0KPiAgLSAiYXRtZWwsYXQ5MXNhbTkyNjAtZGJndSIsICJhdG1lbCxhdDkxc2FtOTI2MC11c2Fy
+dCINCg0KT2shDQoNCj4gDQo+IEFsc28sIHlvdSBuZWVkIHRvIHVwZGF0ZSBkcml2ZXJzL3NvYy9h
+dG1lbC9zb2MuYw0KDQpPSy4gRGlkIHlvdSByZWZlciB0byBDSURSLCBFWElEIHJlZ2lzdGVycz8g
+VGhleSBhcmUgYXQgdGhlIHNhbWUgb2Zmc2V0cyBhcw0KZm9yIHRoZSBvbGQgcHJvZHVjdHMuIFNv
+IHdlIGNhbiByZWx5IG9uIG9sZCBjb21wYXRpYmxlIGZvciB0aGVtLiBJcyB0aGlzIE9LPw0KDQpU
+aGFuayB5b3UsDQpDbGF1ZGl1IEJlem5lYQ0KDQo+IA0KPj4gIC0gcmVnOiBTaG91bGQgY29udGFp
+biByZWdpc3RlcnMgbG9jYXRpb24gYW5kIGxlbmd0aA0KPj4gIC0gaW50ZXJydXB0czogU2hvdWxk
+IGNvbnRhaW4gaW50ZXJydXB0DQo+PiAgLSBjbG9jay1uYW1lczogdHVwbGUgbGlzdGluZyBpbnB1
+dCBjbG9jayBuYW1lcy4NCj4+IC0tDQo+PiAyLjcuNA0KPj4NCj4gDQo+IC0tDQo+IEFsZXhhbmRy
+ZSBCZWxsb25pLCBCb290bGluDQo+IEVtYmVkZGVkIExpbnV4IGFuZCBLZXJuZWwgZW5naW5lZXJp
+bmcNCj4gaHR0cHM6Ly9ib290bGluLmNvbQ0KPiA=

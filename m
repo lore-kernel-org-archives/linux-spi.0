@@ -1,44 +1,82 @@
-From: Michael Walle <michael@walle.cc>
-Subject: [PATCH] spi: spi-fsl-qspi: Ensure width is respected in spi-mem operations
-Date: Tue, 14 Jan 2020 16:46:13 +0100
-Message-ID: <20200114154613.8195-1-michael@walle.cc>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: Han Xu <han.xu@nxp.com>, Mark Brown <broonie@kernel.org>,
-        Yogesh Gaur <yogeshnarayan.gaur@nxp.com>,
-        Boris Brezillon <bbrezillon@kernel.org>,
-        Frieder Schrempf <frieder.schrempf@kontron.de>,
-        Michael Walle <michael@walle.cc>
-To: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
+Subject: [PATCH v3] spi: fsl: simplify error path in of_fsl_spi_probe()
+Date: Tue, 14 Jan 2020 16:02:40 +0000 (UTC)
+Message-ID: <2a4a7e11b37cfa0558d68f0d35e90d6da858b059.1579017697.git.christophe.leroy@c-s.fr>
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        kbuild test robot <lkp-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+        Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Make use of a core helper to ensure the desired width is respected
-when calling spi-mem operators.
+No need to 'goto err;' for just doing a return.
+return directly from where the error happens.
 
-Otherwise only the SPI controller will be matched with the flash chip,
-which might lead to wrong widths. Also consider the width specified by
-the user in the device tree.
-
-Fixes: 84d043185dbe ("spi: Add a driver for the Freescale/NXP QuadSPI controller")
-Signed-off-by: Michael Walle <michael@walle.cc>
+Signed-off-by: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
 ---
- drivers/spi/spi-fsl-qspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v3: rebase on today's spi/for-next and using PTR_ERR_OR_ZERO() in one place.
+---
+ drivers/spi/spi-fsl-spi.c | 27 ++++++++-------------------
+ 1 file changed, 8 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
-index 79b1558b74b8..e8a499cd1f13 100644
---- a/drivers/spi/spi-fsl-qspi.c
-+++ b/drivers/spi/spi-fsl-qspi.c
-@@ -410,7 +410,7 @@ static bool fsl_qspi_supports_op(struct spi_mem *mem,
- 	    op->data.nbytes > q->devtype_data->txfifo)
- 		return false;
+diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+index fb4159ad6bf6..3b81772fea0d 100644
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -706,8 +706,8 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
+ 	struct device_node *np = ofdev->dev.of_node;
+ 	struct spi_master *master;
+ 	struct resource mem;
+-	int irq = 0, type;
+-	int ret = -ENOMEM;
++	int irq, type;
++	int ret;
  
--	return true;
-+	return spi_mem_default_supports_op(mem, op);
+ 	ret = of_mpc8xxx_spi_probe(ofdev);
+ 	if (ret)
+@@ -722,10 +722,8 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
+ 
+ 		if (spisel_boot) {
+ 			pinfo->immr_spi_cs = ioremap(get_immrbase() + IMMR_SPI_CS_OFFSET, 4);
+-			if (!pinfo->immr_spi_cs) {
+-				ret = -ENOMEM;
+-				goto err;
+-			}
++			if (!pinfo->immr_spi_cs)
++				return -ENOMEM;
+ 		}
+ #endif
+ 		/*
+@@ -744,24 +742,15 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
+ 
+ 	ret = of_address_to_resource(np, 0, &mem);
+ 	if (ret)
+-		goto err;
++		return ret;
+ 
+ 	irq = platform_get_irq(ofdev, 0);
+-	if (irq < 0) {
+-		ret = irq;
+-		goto err;
+-	}
++	if (irq < 0)
++		return irq;
+ 
+ 	master = fsl_spi_probe(dev, &mem, irq);
+-	if (IS_ERR(master)) {
+-		ret = PTR_ERR(master);
+-		goto err;
+-	}
+-
+-	return 0;
+ 
+-err:
+-	return ret;
++	return PTR_ERR_OR_ZERO(master);
  }
  
- static void fsl_qspi_prepare_lut(struct fsl_qspi *q,
+ static int of_fsl_spi_remove(struct platform_device *ofdev)
 -- 
-2.20.1
+2.13.3

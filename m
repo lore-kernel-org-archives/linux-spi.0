@@ -1,22 +1,73 @@
-From: patchwork-bot+linux-spi-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Subject: Patchwork housekeeping for: spi-devel-general
-Date: Tue, 14 Jan 2020 13:00:09 +0000
-Message-ID: <157900680992.30563.18176270881554904282.git-patchwork-housekeeping@kernel.org>
+From: <Claudiu.Beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+Subject: Re: [PATCH v3 4/7] dt-bindings: atmel-usart: remove wildcard
+Date: Tue, 14 Jan 2020 14:58:23 +0000
+Message-ID: <a7f9f8c6-7636-6c1d-ecd8-39e5a956b85a@microchip.com>
+References: <1578997397-23165-1-git-send-email-claudiu.beznea@microchip.com>
+ <1578997397-23165-5-git-send-email-claudiu.beznea@microchip.com>
+ <20200114104237.GM3137@piout.net>
+ <f3c4d460-cff6-2e14-428a-a732a6bffe38@microchip.com>
+ <20200114111704.GN3137@piout.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Transfer-Encoding: base64
+Cc: <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        <mark.rutland-5wv7dgnIgG8@public.gmane.org>, <Nicolas.Ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
+        <Ludovic.Desroches-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>, <radu_nicolae.pirea-8LCfxC+Vs8U@public.gmane.org>,
+        <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <a.zummo-BfzFCNDTiLLj+vYz1yj4TQ@public.gmane.org>,
+        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-rtc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: <alexandre.belloni-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200114111704.GN3137-m++hUPXGwpdeoWH0uzbU5w@public.gmane.org>
+Content-Language: en-US
+Content-ID: <CD33279CEB73A84684BB56835DC9D6F8-Hry67jCOGbCcE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Latest series: [v1] spi: spi-ti-qspi: Support large NOR SPI flash (2020-01-14T12:41:23)
-  Superseding: [v1] spi: spi-ti-qspi: Support large NOR SPI flash (2019-12-11T19:39:51):
-    [1/3] spi: spi-ti-qspi: Remove unused macro for fclk frequency
-    [2/3] spi: spi-ti-qspi: support large flash devices
-    [3/3] spi: spi-ti-qspi: optimize byte-transfers
-
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/pwbot
+DQoNCk9uIDE0LjAxLjIwMjAgMTM6MTcsIEFsZXhhbmRyZSBCZWxsb25pIHdyb3RlOg0KPiBFWFRF
+Uk5BTCBFTUFJTDogRG8gbm90IGNsaWNrIGxpbmtzIG9yIG9wZW4gYXR0YWNobWVudHMgdW5sZXNz
+IHlvdSBrbm93IHRoZSBjb250ZW50IGlzIHNhZmUNCj4gDQo+IE9uIDE0LzAxLzIwMjAgMTE6MTA6
+MTQrMDAwMCwgQ2xhdWRpdS5CZXpuZWFAbWljcm9jaGlwLmNvbSB3cm90ZToNCj4+DQo+Pg0KPj4g
+T24gMTQuMDEuMjAyMCAxMjo0MiwgQWxleGFuZHJlIEJlbGxvbmkgd3JvdGU6DQo+Pj4gRVhURVJO
+QUwgRU1BSUw6IERvIG5vdCBjbGljayBsaW5rcyBvciBvcGVuIGF0dGFjaG1lbnRzIHVubGVzcyB5
+b3Uga25vdyB0aGUgY29udGVudCBpcyBzYWZlDQo+Pj4NCj4+PiBPbiAxNC8wMS8yMDIwIDEyOjIz
+OjE0KzAyMDAsIENsYXVkaXUgQmV6bmVhIHdyb3RlOg0KPj4+PiBSZW1vdmUgY2hpcCB3aGlsZGNh
+cmQgYW5kIGludHJvZHVjZSB0aGUgbGlzdCBvZiBjb21wYXRpYmxlcyBpbnN0ZWFkLg0KPj4+Pg0K
+Pj4+PiBTaWduZWQtb2ZmLWJ5OiBDbGF1ZGl1IEJlem5lYSA8Y2xhdWRpdS5iZXpuZWFAbWljcm9j
+aGlwLmNvbT4NCj4+Pj4gLS0tDQo+Pj4+ICBEb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGlu
+Z3MvbWZkL2F0bWVsLXVzYXJ0LnR4dCB8IDcgKysrLS0tLQ0KPj4+PiAgMSBmaWxlIGNoYW5nZWQs
+IDMgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkNCj4+Pj4NCj4+Pj4gZGlmZiAtLWdpdCBh
+L0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9tZmQvYXRtZWwtdXNhcnQudHh0IGIv
+RG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL21mZC9hdG1lbC11c2FydC50eHQNCj4+
+Pj4gaW5kZXggNjk5ZmQzYzlhY2U4Li43NzhlODMxMDYwNmEgMTAwNjQ0DQo+Pj4+IC0tLSBhL0Rv
+Y3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9tZmQvYXRtZWwtdXNhcnQudHh0DQo+Pj4+
+ICsrKyBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9tZmQvYXRtZWwtdXNhcnQu
+dHh0DQo+Pj4+IEBAIC0xLDEwICsxLDkgQEANCj4+Pj4gICogQXRtZWwgVW5pdmVyc2FsIFN5bmNo
+cm9ub3VzIEFzeW5jaHJvbm91cyBSZWNlaXZlci9UcmFuc21pdHRlciAoVVNBUlQpDQo+Pj4+DQo+
+Pj4+ICBSZXF1aXJlZCBwcm9wZXJ0aWVzIGZvciBVU0FSVDoNCj4+Pj4gLS0gY29tcGF0aWJsZTog
+U2hvdWxkIGJlICJhdG1lbCw8Y2hpcD4tdXNhcnQiIG9yICJhdG1lbCw8Y2hpcD4tZGJndSINCj4+
+Pj4gLSAgVGhlIGNvbXBhdGlibGUgPGNoaXA+IGluZGljYXRlZCB3aWxsIGJlIHRoZSBmaXJzdCBT
+b0MgdG8gc3VwcG9ydCBhbg0KPj4+PiAtICBhZGRpdGlvbmFsIG1vZGUgb3IgYW4gVVNBUlQgbmV3
+IGZlYXR1cmUuDQo+Pj4+IC0gIEZvciB0aGUgZGJndSBVQVJULCB1c2UgImF0bWVsLDxjaGlwPi1k
+Ymd1IiwgImF0bWVsLDxjaGlwPi11c2FydCINCj4+Pj4gKy0gY29tcGF0aWJsZTogU2hvdWxkIGJl
+IG9uZSBvZiB0aGUgZm9sbG93aW5nOg0KPj4+PiArICAgICAtICJhdG1lbCxhdDkxcm05MjAwLWRi
+Z3UiLCAiYXRtZWwsYXQ5MXJtOTIwMC11c2FydCINCj4+Pj4gKyAgICAgLSAiYXRtZWwsYXQ5MXNh
+bTkyNjAtZGJndSIsICJhdG1lbCxhdDkxc2FtOTI2MC11c2FydCINCj4+Pg0KPj4+IEFsbCB0aGUg
+dWFydHMgYXJlIG5vdCBkYmd1cywgc28gdGhpcyBuZWVkIHRvIGJlOg0KPj4+DQo+Pj4gIC0gImF0
+bWVsLGF0OTFybTkyMDAtdXNhcnQiDQo+Pj4gIC0gImF0bWVsLGF0OTFzYW05MjYwLXVzYXJ0Ig0K
+Pj4+ICAtICJhdG1lbCxhdDkxcm05MjAwLWRiZ3UiLCAiYXRtZWwsYXQ5MXJtOTIwMC11c2FydCIN
+Cj4+PiAgLSAiYXRtZWwsYXQ5MXNhbTkyNjAtZGJndSIsICJhdG1lbCxhdDkxc2FtOTI2MC11c2Fy
+dCINCj4+DQo+PiBPayENCj4+DQo+Pj4NCj4+PiBBbHNvLCB5b3UgbmVlZCB0byB1cGRhdGUgZHJp
+dmVycy9zb2MvYXRtZWwvc29jLmMNCj4+DQo+PiBPSy4gRGlkIHlvdSByZWZlciB0byBDSURSLCBF
+WElEIHJlZ2lzdGVycz8gVGhleSBhcmUgYXQgdGhlIHNhbWUgb2Zmc2V0cyBhcw0KPj4gZm9yIHRo
+ZSBvbGQgcHJvZHVjdHMuIFNvIHdlIGNhbiByZWx5IG9uIG9sZCBjb21wYXRpYmxlIGZvciB0aGVt
+LiBJcyB0aGlzIE9LPw0KPj4NCj4gDQo+IFRoZW4sIHdoYXQgaXMgdGhlIHBvaW50IG9mIGFkZGlu
+ZyBtaWNyb2NoaXAsc2FtOXg2MC1kYmd1ID8NCg0KRGlmZmVyZW50IG1lYW5pbmcgZm9yIENJRFIg
+cmVnaXN0ZXIgYml0cy4gVmVyc2lvbiBpcyBrZXB0IG9uIGJpdHMgNCB0byAwDQpidXQgbm90IGRv
+Y3VtZW50ZWQgaW4gcHVibGljIGRhdGFzaGVldCwgc28gdmVyc2lvbiBkaXNwbGF5ZWQgYnkNCmRy
+aXZlcnMvc29jL2F0bWVsL3NvYy5jIHNob3VsZCB3b3JrLg0KDQpUaGFuayB5b3UsDQpDbGF1ZGl1
+IEJlem5lYQ0KDQo+IA0KPiANCj4gLS0NCj4gQWxleGFuZHJlIEJlbGxvbmksIEJvb3RsaW4NCj4g
+RW1iZWRkZWQgTGludXggYW5kIEtlcm5lbCBlbmdpbmVlcmluZw0KPiBodHRwczovL2Jvb3RsaW4u
+Y29tDQo+IA==

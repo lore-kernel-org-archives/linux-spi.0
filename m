@@ -1,22 +1,24 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: fsl: simplify error path in of_fsl_spi_probe()" to the spi tree
-Date: Tue, 14 Jan 2020 16:09:24 +0000 (GMT)
-Message-ID: <applied-2a4a7e11b37cfa0558d68f0d35e90d6da858b059.1579017697.git.christophe.leroy@c-s.fr>
-References: <2a4a7e11b37cfa0558d68f0d35e90d6da858b059.1579017697.git.christophe.leroy@c-s.fr>
-Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-        kbuild test robot <lkp-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <2a4a7e11b37cfa0558d68f0d35e90d6da858b059.1579017697.git.christophe.leroy-GgN8y9CXRhA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: spi-ti-qspi: support large flash devices" to the spi tree
+Date: Tue, 14 Jan 2020 16:09:25 +0000 (GMT)
+Message-ID: <applied-20200114124125.361429-2-jean.pihet@newoldbits.com>
+References: <20200114124125.361429-2-jean.pihet@newoldbits.com>
+Cc: Arnout Vandecappelle <arnout.vandecappelle@essensium.com>,
+        Conrad Ratschan <conrad.ratschan@rockwellcollins.com>,
+        linux-omap@vger.kernel.org, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        Ryan Barnett <ryan.barnett@rockwellcollins.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+To: Jean Pihet <jean.pihet@newoldbits.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <20200114124125.361429-2-jean.pihet@newoldbits.com>
+Sender: linux-omap-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: fsl: simplify error path in of_fsl_spi_probe()
+   spi: spi-ti-qspi: support large flash devices
 
 has been applied to the spi tree at
 
@@ -41,77 +43,76 @@ to this mail.
 Thanks,
 Mark
 
->From 2f3d8035b0f7a8e781b60e0884551dd8a1173a75 Mon Sep 17 00:00:00 2001
-From: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
-Date: Tue, 14 Jan 2020 16:02:40 +0000
-Subject: [PATCH] spi: fsl: simplify error path in of_fsl_spi_probe()
+>From e97f491450805fe6cbfd482b97b5427b21dec575 Mon Sep 17 00:00:00 2001
+From: Jean Pihet <jean.pihet@newoldbits.com>
+Date: Tue, 14 Jan 2020 13:41:24 +0100
+Subject: [PATCH] spi: spi-ti-qspi: support large flash devices
 
-No need to 'goto err;' for just doing a return.
-return directly from where the error happens.
+The TI QSPI IP has limitations:
+- the MMIO region is 64MB in size
+- in non-MMIO mode, the transfer can handle 4096 words max.
 
-Signed-off-by: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
-Link: https://lore.kernel.org/r/2a4a7e11b37cfa0558d68f0d35e90d6da858b059.1579017697.git.christophe.leroy-GgN8y9CXRhA@public.gmane.org
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Add support for bigger devices.
+Use MMIO and DMA transfers below the 64MB boundary, use
+software generated transfers above.
+
+Signed-off-by: Jean Pihet <jean.pihet@newoldbits.com>
+Cc: Ryan Barnett <ryan.barnett@rockwellcollins.com>
+Cc: Conrad Ratschan <conrad.ratschan@rockwellcollins.com>
+Cc: Arnout Vandecappelle <arnout.vandecappelle@essensium.com>
+Link: https://lore.kernel.org/r/20200114124125.361429-2-jean.pihet@newoldbits.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-fsl-spi.c | 27 ++++++++-------------------
- 1 file changed, 8 insertions(+), 19 deletions(-)
+ drivers/spi/spi-ti-qspi.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index fb4159ad6bf6..3b81772fea0d 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -706,8 +706,8 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
- 	struct device_node *np = ofdev->dev.of_node;
- 	struct spi_master *master;
- 	struct resource mem;
--	int irq = 0, type;
--	int ret = -ENOMEM;
-+	int irq, type;
-+	int ret;
- 
- 	ret = of_mpc8xxx_spi_probe(ofdev);
- 	if (ret)
-@@ -722,10 +722,8 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
- 
- 		if (spisel_boot) {
- 			pinfo->immr_spi_cs = ioremap(get_immrbase() + IMMR_SPI_CS_OFFSET, 4);
--			if (!pinfo->immr_spi_cs) {
--				ret = -ENOMEM;
--				goto err;
--			}
-+			if (!pinfo->immr_spi_cs)
-+				return -ENOMEM;
- 		}
- #endif
- 		/*
-@@ -744,24 +742,15 @@ static int of_fsl_spi_probe(struct platform_device *ofdev)
- 
- 	ret = of_address_to_resource(np, 0, &mem);
- 	if (ret)
--		goto err;
-+		return ret;
- 
- 	irq = platform_get_irq(ofdev, 0);
--	if (irq < 0) {
--		ret = irq;
--		goto err;
--	}
-+	if (irq < 0)
-+		return irq;
- 
- 	master = fsl_spi_probe(dev, &mem, irq);
--	if (IS_ERR(master)) {
--		ret = PTR_ERR(master);
--		goto err;
--	}
--
--	return 0;
- 
--err:
--	return ret;
-+	return PTR_ERR_OR_ZERO(master);
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index ad2942b3d0a9..0334e2926998 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -525,6 +525,35 @@ static void ti_qspi_setup_mmap_read(struct spi_device *spi, u8 opcode,
+ 		      QSPI_SPI_SETUP_REG(spi->chip_select));
  }
  
- static int of_fsl_spi_remove(struct platform_device *ofdev)
++static int ti_qspi_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
++{
++	struct ti_qspi *qspi = spi_controller_get_devdata(mem->spi->master);
++	size_t max_len;
++
++	if (op->data.dir == SPI_MEM_DATA_IN) {
++		if (op->addr.val < qspi->mmap_size) {
++			/* Limit MMIO to the mmaped region */
++			if (op->addr.val + op->data.nbytes > qspi->mmap_size) {
++				max_len = qspi->mmap_size - op->addr.val;
++				op->data.nbytes = min((size_t) op->data.nbytes,
++						      max_len);
++			}
++		} else {
++			/*
++			 * Use fallback mode (SW generated transfers) above the
++			 * mmaped region.
++			 * Adjust size to comply with the QSPI max frame length.
++			 */
++			max_len = QSPI_FRAME;
++			max_len -= 1 + op->addr.nbytes + op->dummy.nbytes;
++			op->data.nbytes = min((size_t) op->data.nbytes,
++					      max_len);
++		}
++	}
++
++	return 0;
++}
++
+ static int ti_qspi_exec_mem_op(struct spi_mem *mem,
+ 			       const struct spi_mem_op *op)
+ {
+@@ -575,6 +604,7 @@ static int ti_qspi_exec_mem_op(struct spi_mem *mem,
+ 
+ static const struct spi_controller_mem_ops ti_qspi_mem_ops = {
+ 	.exec_op = ti_qspi_exec_mem_op,
++	.adjust_op_size = ti_qspi_adjust_op_size,
+ };
+ 
+ static int ti_qspi_start_transfer_one(struct spi_master *master,
 -- 
 2.20.1

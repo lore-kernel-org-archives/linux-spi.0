@@ -1,10 +1,10 @@
 From: Alexandre Belloni <alexandre.belloni-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH v2 06/17] dt-bindings: at91-sama5d2_adc: add
- microchip,sam9x60-adc
-Date: Tue, 14 Jan 2020 10:52:18 +0100
-Message-ID: <20200114095218.GF3137@piout.net>
+Subject: Re: [PATCH v2 07/17] dt-bindings: atmel-matrix: add
+ microchip,sam9x60-matrix
+Date: Tue, 14 Jan 2020 10:53:15 +0100
+Message-ID: <20200114095315.GG3137@piout.net>
 References: <1578673089-3484-1-git-send-email-claudiu.beznea@microchip.com>
- <1578673089-3484-7-git-send-email-claudiu.beznea@microchip.com>
+ <1578673089-3484-8-git-send-email-claudiu.beznea@microchip.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
@@ -22,19 +22,19 @@ Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@pu
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
         linux-can-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rtc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Claudiu Beznea <claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <linux-iio-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1578673089-3484-7-git-send-email-claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+In-Reply-To: <1578673089-3484-8-git-send-email-claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+Sender: linux-iio-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 10/01/2020 18:17:58+0200, Claudiu Beznea wrote:
-> Add microchip,sam9x60-adc to DT bindings documentation.
+On 10/01/2020 18:17:59+0200, Claudiu Beznea wrote:
+> Add microchip,sam9x60-matrix to DT bindings documentation.
 > 
 > Signed-off-by: Claudiu Beznea <claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
 > ---
->  Documentation/devicetree/bindings/iio/adc/at91-sama5d2_adc.txt | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  Documentation/devicetree/bindings/mfd/atmel-matrix.txt | 1 +
+>  1 file changed, 1 insertion(+)
 Applied, thanks.
 
 -- 

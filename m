@@ -1,7 +1,7 @@
 From: Claudiu Beznea <claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Subject: [PATCH v3 5/7] dt-bindings: atmel-usart: add microchip,sam9x60-{usart, dbgu}
-Date: Tue, 14 Jan 2020 12:23:15 +0200
-Message-ID: <1578997397-23165-6-git-send-email-claudiu.beznea@microchip.com>
+Subject: [PATCH v3 6/7] ARM: at91/defconfig: enable MMC_SDHCI_OF_AT91 and MICROCHIP_PIT64B
+Date: Tue, 14 Jan 2020 12:23:16 +0200
+Message-ID: <1578997397-23165-7-git-send-email-claudiu.beznea@microchip.com>
 References: <1578997397-23165-1-git-send-email-claudiu.beznea@microchip.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -20,25 +20,35 @@ In-Reply-To: <1578997397-23165-1-git-send-email-claudiu.beznea-UWL1GkI3JZL3oGB3h
 Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Add microchip,sam9x60-usart and add microchip,sam9x60-dbgu to DT
-bindings documentation.
+Enable MMC_SDHCI_OF_AT91 and MICROCHIP_PIT64B. These are necessary
+for SAM9X60.
 
 Signed-off-by: Claudiu Beznea <claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
 ---
- Documentation/devicetree/bindings/mfd/atmel-usart.txt | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/configs/at91_dt_defconfig | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/mfd/atmel-usart.txt b/Documentation/devicetree/bindings/mfd/atmel-usart.txt
-index 778e8310606a..851b406c18b6 100644
---- a/Documentation/devicetree/bindings/mfd/atmel-usart.txt
-+++ b/Documentation/devicetree/bindings/mfd/atmel-usart.txt
-@@ -4,6 +4,7 @@ Required properties for USART:
- - compatible: Should be one of the following:
- 	- "atmel,at91rm9200-dbgu", "atmel,at91rm9200-usart"
- 	- "atmel,at91sam9260-dbgu", "atmel,at91sam9260-usart"
-+	- "microchip,sam9x60-dbgu", "microchip,sam9x60-usart"
- - reg: Should contain registers location and length
- - interrupts: Should contain interrupt
- - clock-names: tuple listing input clock names.
+diff --git a/arch/arm/configs/at91_dt_defconfig b/arch/arm/configs/at91_dt_defconfig
+index 5c5df8bc0074..f66bb98a5cce 100644
+--- a/arch/arm/configs/at91_dt_defconfig
++++ b/arch/arm/configs/at91_dt_defconfig
+@@ -160,6 +160,9 @@ CONFIG_USB_AT91=y
+ CONFIG_USB_ATMEL_USBA=y
+ CONFIG_USB_G_SERIAL=y
+ CONFIG_MMC=y
++CONFIG_MMC_SDHCI=y
++CONFIG_MMC_SDHCI_PLTFM=y
++CONFIG_MMC_SDHCI_OF_AT91=y
+ CONFIG_MMC_ATMELMCI=y
+ CONFIG_MMC_SPI=y
+ CONFIG_NEW_LEDS=y
+@@ -177,6 +180,7 @@ CONFIG_RTC_DRV_AT91SAM9=y
+ CONFIG_DMADEVICES=y
+ CONFIG_AT_HDMAC=y
+ CONFIG_AT_XDMAC=y
++CONFIG_MICROCHIP_PIT64B=y
+ # CONFIG_IOMMU_SUPPORT is not set
+ CONFIG_IIO=y
+ CONFIG_AT91_ADC=y
 -- 
 2.7.4

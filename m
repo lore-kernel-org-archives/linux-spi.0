@@ -1,7 +1,7 @@
 From: Claudiu Beznea <claudiu.beznea@microchip.com>
-Subject: [PATCH v3 2/7] dt-bindings: atmel-tcb: add microchip,sam9x60-tcb
-Date: Tue, 14 Jan 2020 12:23:12 +0200
-Message-ID: <1578997397-23165-3-git-send-email-claudiu.beznea@microchip.com>
+Subject: [PATCH v3 1/7] dt-bindings: atmel-tcb: remove wildcard
+Date: Tue, 14 Jan 2020 12:23:11 +0200
+Message-ID: <1578997397-23165-2-git-send-email-claudiu.beznea@microchip.com>
 References: <1578997397-23165-1-git-send-email-claudiu.beznea@microchip.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -20,24 +20,27 @@ In-Reply-To: <1578997397-23165-1-git-send-email-claudiu.beznea@microchip.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add microchip,sam9x60-tcb to DT bindings documentation.
+Remove wildcard and use the available compatibles.
 
 Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
 ---
- Documentation/devicetree/bindings/mfd/atmel-tcb.txt | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/devicetree/bindings/mfd/atmel-tcb.txt | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/Documentation/devicetree/bindings/mfd/atmel-tcb.txt b/Documentation/devicetree/bindings/mfd/atmel-tcb.txt
-index 8b197db8a3c3..5c78f46ff204 100644
+index c4a83e364cb6..8b197db8a3c3 100644
 --- a/Documentation/devicetree/bindings/mfd/atmel-tcb.txt
 +++ b/Documentation/devicetree/bindings/mfd/atmel-tcb.txt
-@@ -2,6 +2,7 @@
- - compatible: Should be one of the following:
- 	- "atmel,at91rm9200-tcb"
- 	- "atmel,at91sam9x5-tcb"
-+	- "microchip,sam9x60-tcb"
-   followed by: "simple-mfd", "syscon"
+@@ -1,6 +1,8 @@
+ * Device tree bindings for Atmel Timer Counter Blocks
+-- compatible: Should be "atmel,<chip>-tcb", "simple-mfd", "syscon".
+-  <chip> can be "at91rm9200" or "at91sam9x5"
++- compatible: Should be one of the following:
++	- "atmel,at91rm9200-tcb"
++	- "atmel,at91sam9x5-tcb"
++  followed by: "simple-mfd", "syscon"
  - reg: Should contain registers location and length
  - #address-cells: has to be 1
+ - #size-cells: has to be 0
 -- 
 2.7.4

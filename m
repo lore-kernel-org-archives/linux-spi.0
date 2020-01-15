@@ -1,41 +1,41 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH V2 1/7] dt-bindings: fsl-imx-sdma: Add
- i.MX8MM/i.MX8MN/i.MX8MP compatible string
-Date: Wed, 15 Jan 2020 09:40:22 -0600
-Message-ID: <20200115154022.GA10946@bogus>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH V2 3/7] dt-bindings: imx-ocotp: Add i.MX8MP compatible
+Date: Wed, 15 Jan 2020 09:42:50 -0600
+Message-ID: <20200115154249.GA15419@bogus>
 References: <1578893602-14395-1-git-send-email-Anson.Huang@nxp.com>
+ <1578893602-14395-3-git-send-email-Anson.Huang@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: robh+dt@kernel.org, mark.rutland@arm.com, vkoul@kernel.org,
-        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-        festevam@gmail.com, ulf.hansson@linaro.org,
-        srinivas.kandagatla@linaro.org, broonie@kernel.org,
-        manivannan.sadhasivam@linaro.org, andrew.smirnov@gmail.com,
-        rjones@gateworks.com, marcel.ziswiler@toradex.com,
-        sebastien.szymanski@armadeus.com, aisheng.dong@nxp.com,
-        richard.hu@technexion.com, angus@akkea.ca, cosmin.stoica@nxp.com,
-        l.stach@pengutronix.de, rabeeh@solid-run.com,
-        leonard.crestez@nxp.com, daniel.baluta@nxp.com, jun.li@nxp.com,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dmaengine@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mmc@vger.kernel.org, linux-spi@vger.kernel.org,
-        Linux-imx@nxp.com
-To: Anson Huang <Anson.Huang@nxp.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org, vkoul-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+        festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+        srinivas.kandagatla-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        manivannan.sadhasivam-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        rjones-UMMOYl/HMS+akBO8gow8eQ@public.gmane.org, marcel.ziswiler-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org,
+        sebastien.szymanski-d2DlULPkwbNWk0Htik3J/w@public.gmane.org, aisheng.dong-3arQi8VN3Tc@public.gmane.org,
+        richard.hu-Ynyd8CyeeRDSUeElwK9/Pw@public.gmane.org, angus-HsWYs6tNinE@public.gmane.org, cosmin.stoica-3arQi8VN3Tc@public.gmane.org,
+        l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, rabeeh-UBr1pzP51AyaMJb+Lgu22Q@public.gmane.org,
+        leonard.crestez-3arQi8VN3Tc@public.gmane.org, daniel.baluta-3arQi8VN3Tc@public.gmane.org, jun.li-3arQi8VN3Tc@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Linux-imx-3arQi8VN3Tc@public.gmane.org
+To: Anson Huang <Anson.Huang-3arQi8VN3Tc@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1578893602-14395-1-git-send-email-Anson.Huang@nxp.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1578893602-14395-3-git-send-email-Anson.Huang-3arQi8VN3Tc@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, 13 Jan 2020 13:33:16 +0800, Anson Huang wrote:
-> Add imx8mm/imx8mn/imx8mp sdma support.
+On Mon, 13 Jan 2020 13:33:18 +0800, Anson Huang wrote:
+> Add compatible and description for i.MX8MP.
 > 
-> Signed-off-by: Anson Huang <Anson.Huang@nxp.com>
+> Signed-off-by: Anson Huang <Anson.Huang-3arQi8VN3Tc@public.gmane.org>
 > ---
 > New patch
 > ---
->  Documentation/devicetree/bindings/dma/fsl-imx-sdma.txt | 3 +++
->  1 file changed, 3 insertions(+)
+>  Documentation/devicetree/bindings/nvmem/imx-ocotp.txt | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
 
-Acked-by: Rob Herring <robh@kernel.org>
+Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>

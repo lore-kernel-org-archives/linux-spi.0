@@ -1,49 +1,58 @@
-From: Jean Pihet <jean.pihet@newoldbits.com>
-Subject: [PATCH] spi: spi-ti-qspi: fix warning
-Date: Wed, 15 Jan 2020 11:07:00 +0100
-Message-ID: <20200115100700.3357-1-jean.pihet@newoldbits.com>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
+Subject: [PATCH v4 2/5] dt-bindings: atmel-usart: remove wildcard
+Date: Wed, 15 Jan 2020 12:59:44 +0200
+Message-ID: <1579085987-13976-3-git-send-email-claudiu.beznea@microchip.com>
+References: <1579085987-13976-1-git-send-email-claudiu.beznea@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Cc: Vignesh Raghavendra <vigneshr@ti.com>, linux-omap@vger.kernel.org,
-        linux-spi@vger.kernel.org,
-        Ryan Barnett <ryan.barnett@rockwellcollins.com>,
-        Conrad Ratschan <conrad.ratschan@rockwellcollins.com>,
-        Arnout Vandecappelle <arnout.vandecappelle@essensium.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Jean Pihet <jean.pihet@newoldbits.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-rtc@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+ Claudiu Beznea <claudiu.beznea@microchip.com>,
+ linux-arm-kernel@lists.infradead.org
+To: <richard.genoud@gmail.com>, <radu_nicolae.pirea@upb.ro>,
+ <lee.jones@linaro.org>, <robh+dt@kernel.org>, <mark.rutland@arm.com>,
+ <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+ <ludovic.desroches@microchip.com>, <a.zummo@towertech.it>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane-mx.org@lists.infradead.org>
+In-Reply-To: <1579085987-13976-1-git-send-email-claudiu.beznea@microchip.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane-mx.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-drivers/spi/spi-ti-qspi.c: In function ‘ti_qspi_start_transfer_one’:
-drivers/spi/spi-ti-qspi.c:392:8: warning: ‘rx_wlen’ may be used uninitialized in this function [-Wmaybe-uninitialized]
-  392 |     if (rx_wlen >= 32)
-      |        ^
-drivers/spi/spi-ti-qspi.c:318:12: note: ‘rx_wlen’ was declared here
-  318 |  u8 rxlen, rx_wlen;
-      |            ^~~~~~~
+Remove chip whildcard and introduce the list of compatibles instead.
 
-The warning is a false positive; it is not thrown by all compiler versions, e.g.
-Red Hat Cross 9.2.1-1 but not Linaro GCC 7.5-2019.12.
-
-Signed-off-by: Jean Pihet <jean.pihet@newoldbits.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
 ---
- drivers/spi/spi-ti-qspi.c | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/devicetree/bindings/mfd/atmel-usart.txt | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index 858fda8ac73e..366a3e5cca6b 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -332,6 +332,7 @@ static int qspi_read_msg(struct ti_qspi *qspi, struct spi_transfer *t,
- 		break;
- 	}
- 	wlen = t->bits_per_word >> 3;	/* in bytes */
-+	rx_wlen = wlen;
+diff --git a/Documentation/devicetree/bindings/mfd/atmel-usart.txt b/Documentation/devicetree/bindings/mfd/atmel-usart.txt
+index 699fd3c9ace8..614a14b5d205 100644
+--- a/Documentation/devicetree/bindings/mfd/atmel-usart.txt
++++ b/Documentation/devicetree/bindings/mfd/atmel-usart.txt
+@@ -1,10 +1,11 @@
+ * Atmel Universal Synchronous Asynchronous Receiver/Transmitter (USART)
  
- 	while (count) {
- 		dev_dbg(qspi->dev, "rx cmd %08x dc %08x\n", cmd, qspi->dc);
+ Required properties for USART:
+-- compatible: Should be "atmel,<chip>-usart" or "atmel,<chip>-dbgu"
+-  The compatible <chip> indicated will be the first SoC to support an
+-  additional mode or an USART new feature.
+-  For the dbgu UART, use "atmel,<chip>-dbgu", "atmel,<chip>-usart"
++- compatible: Should be one of the following:
++	- "atmel,at91rm9200-usart"
++	- "atmel,at91sam9260-usart"
++	- "atmel,at91rm9200-dbgu", "atmel,at91rm9200-usart"
++	- "atmel,at91sam9260-dbgu", "atmel,at91sam9260-usart"
+ - reg: Should contain registers location and length
+ - interrupts: Should contain interrupt
+ - clock-names: tuple listing input clock names.
 -- 
-2.24.1
+2.7.4

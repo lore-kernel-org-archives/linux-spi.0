@@ -1,35 +1,47 @@
-From: Alexandre Belloni <alexandre.belloni-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH v3 1/7] dt-bindings: atmel-tcb: remove wildcard
-Date: Wed, 15 Jan 2020 11:29:12 +0100
-Message-ID: <20200115102912.GB100374@piout.net>
-References: <1578997397-23165-1-git-send-email-claudiu.beznea@microchip.com>
- <1578997397-23165-2-git-send-email-claudiu.beznea@microchip.com>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
+Subject: [PATCH v4 3/5] dt-bindings: atmel-usart: add microchip,sam9x60-{usart, dbgu}
+Date: Wed, 15 Jan 2020 12:59:45 +0200
+Message-ID: <1579085987-13976-4-git-send-email-claudiu.beznea@microchip.com>
+References: <1579085987-13976-1-git-send-email-claudiu.beznea@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-        nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org, ludovic.desroches-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org,
-        radu_nicolae.pirea-8LCfxC+Vs8U@public.gmane.org, richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        a.zummo-BfzFCNDTiLLj+vYz1yj4TQ@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-rtc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Claudiu Beznea <claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1578997397-23165-2-git-send-email-claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain
+Cc: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-rtc@vger.kernel.org>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>
+To: <richard.genoud@gmail.com>, <radu_nicolae.pirea@upb.ro>,
+        <lee.jones@linaro.org>, <robh+dt@kernel.org>,
+        <mark.rutland@arm.com>, <nicolas.ferre@microchip.com>,
+        <alexandre.belloni@bootlin.com>, <ludovic.desroches@microchip.com>,
+        <a.zummo@towertech.it>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1579085987-13976-1-git-send-email-claudiu.beznea@microchip.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 14/01/2020 12:23:11+0200, Claudiu Beznea wrote:
-> Remove wildcard and use the available compatibles.
-> 
-> Signed-off-by: Claudiu Beznea <claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-> ---
->  Documentation/devicetree/bindings/mfd/atmel-tcb.txt | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-Applied, thanks.
+Add microchip,sam9x60-usart and add microchip,sam9x60-dbgu to DT
+bindings documentation.
 
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+---
+ Documentation/devicetree/bindings/mfd/atmel-usart.txt | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/mfd/atmel-usart.txt b/Documentation/devicetree/bindings/mfd/atmel-usart.txt
+index 614a14b5d205..a09133066aff 100644
+--- a/Documentation/devicetree/bindings/mfd/atmel-usart.txt
++++ b/Documentation/devicetree/bindings/mfd/atmel-usart.txt
+@@ -4,8 +4,10 @@ Required properties for USART:
+ - compatible: Should be one of the following:
+ 	- "atmel,at91rm9200-usart"
+ 	- "atmel,at91sam9260-usart"
++	- "microchip,sam9x60-usart"
+ 	- "atmel,at91rm9200-dbgu", "atmel,at91rm9200-usart"
+ 	- "atmel,at91sam9260-dbgu", "atmel,at91sam9260-usart"
++	- "microchip,sam9x60-dbgu", "microchip,sam9x60-usart"
+ - reg: Should contain registers location and length
+ - interrupts: Should contain interrupt
+ - clock-names: tuple listing input clock names.
 -- 
-Alexandre Belloni, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.7.4

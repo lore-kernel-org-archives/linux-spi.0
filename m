@@ -1,57 +1,58 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.14 065/371] spi/topcliff_pch: Fix potential NULL dereference on allocation error
-Date: Thu, 16 Jan 2020 12:18:57 -0500
-Message-ID: <20200116172403.18149-8-sashal@kernel.org>
-References: <20200116172403.18149-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 484/671] spi: bcm-qspi: Fix BSPI QUAD and DUAL mode support when using flex mode
+Date: Thu, 16 Jan 2020 12:02:02 -0500
+Message-ID: <20200116170509.12787-221-sashal@kernel.org>
+References: <20200116170509.12787-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: YueHaibing <yuehaibing@huawei.com>,
+Cc: Rayagonda Kokatanur <rayagonda.kokatanur@broadcom.com>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <20200116172403.18149-1-sashal@kernel.org>
-Sender: stable-owner@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20200116170509.12787-1-sashal@kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: YueHaibing <yuehaibing@huawei.com>
+From: Rayagonda Kokatanur <rayagonda.kokatanur@broadcom.com>
 
-[ Upstream commit e902cdcb5112b89ee445588147964723fd69ffb4 ]
+[ Upstream commit 79629d0f7ce5b38515c1716911a0181f01b91102 ]
 
-In pch_spi_handle_dma, it doesn't check for NULL returns of kcalloc
-so it would result in an Oops.
+Fix data transfer width settings based on DT field 'spi-rx-bus-width'
+to configure BSPI in single, dual or quad mode by using data width
+and not the command width.
 
-Fixes: c37f3c2749b5 ("spi/topcliff_pch: DMA support")
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Fixes: 5f195ee7d830c ("spi: bcm-qspi: Implement the spi_mem interface")
+
+Signed-off-by: Rayagonda Kokatanur <rayagonda.kokatanur@broadcom.com>
+Link: https://lore.kernel.org/r/1565086070-28451-1-git-send-email-rayagonda.kokatanur@broadcom.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-topcliff-pch.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/spi/spi-bcm-qspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index 4389ab80c23e..fa730a871d25 100644
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1008,6 +1008,9 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
+diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
+index 584bcb018a62..285a6f463013 100644
+--- a/drivers/spi/spi-bcm-qspi.c
++++ b/drivers/spi/spi-bcm-qspi.c
+@@ -354,7 +354,7 @@ static int bcm_qspi_bspi_set_flex_mode(struct bcm_qspi *qspi,
+ {
+ 	int bpc = 0, bpp = 0;
+ 	u8 command = op->cmd.opcode;
+-	int width  = op->cmd.buswidth ? op->cmd.buswidth : SPI_NBITS_SINGLE;
++	int width = op->data.buswidth ? op->data.buswidth : SPI_NBITS_SINGLE;
+ 	int addrlen = op->addr.nbytes;
+ 	int flex_mode = 1;
  
- 	/* RX */
- 	dma->sg_rx_p = kcalloc(num, sizeof(*dma->sg_rx_p), GFP_ATOMIC);
-+	if (!dma->sg_rx_p)
-+		return;
-+
- 	sg_init_table(dma->sg_rx_p, num); /* Initialize SG table */
- 	/* offset, length setting */
- 	sg = dma->sg_rx_p;
-@@ -1068,6 +1071,9 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
- 	}
+@@ -992,7 +992,7 @@ static int bcm_qspi_exec_mem_op(struct spi_mem *mem,
+ 	if (mspi_read)
+ 		return bcm_qspi_mspi_exec_mem_op(spi, op);
  
- 	dma->sg_tx_p = kcalloc(num, sizeof(*dma->sg_tx_p), GFP_ATOMIC);
-+	if (!dma->sg_tx_p)
-+		return;
-+
- 	sg_init_table(dma->sg_tx_p, num); /* Initialize SG table */
- 	/* offset, length setting */
- 	sg = dma->sg_tx_p;
+-	ret = bcm_qspi_bspi_set_mode(qspi, op, -1);
++	ret = bcm_qspi_bspi_set_mode(qspi, op, 0);
+ 
+ 	if (!ret)
+ 		ret = bcm_qspi_bspi_exec_mem_op(spi, op);
 -- 
 2.20.1

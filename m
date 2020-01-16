@@ -1,49 +1,83 @@
-From: Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH AUTOSEL 4.4 067/174] spi: tegra114: clear packed bit for unpacked mode
-Date: Thu, 16 Jan 2020 12:41:04 -0500
-Message-ID: <20200116174251.24326-67-sashal@kernel.org>
-References: <20200116174251.24326-1-sashal@kernel.org>
+From: Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 156/371] spi: bcm2835aux: fix driver to not allow
+ 65535 (=-1) cs-gpios
+Date: Thu, 16 Jan 2020 12:20:28 -0500
+Message-ID: <20200116172403.18149-99-sashal@kernel.org>
+References: <20200116172403.18149-1-sashal@kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: Sowjanya Komatineni <skomatineni-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200116174251.24326-1-sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Stefan Wahren <stefan.wahren@i2se.com>, Sasha Levin <sashal@kernel.org>,
+ linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+ bcm-kernel-feedback-list@broadcom.com, linux-rpi-kernel@lists.infradead.org,
+ Martin Sperl <kernel@martin.sperl.org>, linux-arm-kernel@lists.infradead.org
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane-mx.org@lists.infradead.org>
+In-Reply-To: <20200116172403.18149-1-sashal@kernel.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane-mx.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Sowjanya Komatineni <skomatineni-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+From: Martin Sperl <kernel@martin.sperl.org>
 
-[ Upstream commit 7b3d10cdf54b8bc1dc0da21faed9789ac4da3684 ]
+[ Upstream commit 509c583620e9053e43d611bf1614fc3d3abafa96 ]
 
-Fixes: Clear packed bit when not using packed mode.
+The original driver by default defines num_chipselects as -1.
+This actually allicates an array of 65535 entries in
+of_spi_register_master.
 
-Packed bit is not cleared when not using packed mode. This results
-in transfer timeouts for the unpacked mode transfers followed by the
-packed mode transfers.
+There is a side-effect for buggy device trees that (contrary to
+dt-binding documentation) have no cs-gpio defined.
 
-Signed-off-by: Sowjanya Komatineni <skomatineni-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Signed-off-by: Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+This mode was never supported by the driver due to limitations
+of native cs and additional code complexity and is explicitly
+not stated to be implemented.
+
+To keep backwards compatibility with such buggy DTs we limit
+the number of chip_selects to 1, as for all practical purposes
+it is only ever realistic to use a single chip select in
+native cs mode without negative side-effects.
+
+Fixes: 1ea29b39f4c812ec ("spi: bcm2835aux: add bcm2835 auxiliary spi device...")
+Signed-off-by: Martin Sperl <kernel@martin.sperl.org>
+Acked-by: Stefan Wahren <stefan.wahren@i2se.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-tegra114.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-bcm2835aux.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index 705f515863d4..d98c502a9c47 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -730,6 +730,8 @@ static int tegra_spi_start_transfer_one(struct spi_device *spi,
- 
- 	if (tspi->is_packed)
- 		command1 |= SPI_PACKED;
-+	else
-+		command1 &= ~SPI_PACKED;
- 
- 	command1 &= ~(SPI_CS_SEL_MASK | SPI_TX_EN | SPI_RX_EN);
- 	tspi->cur_direction = 0;
+diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+index 5c89bbb05441..e075712c501e 100644
+--- a/drivers/spi/spi-bcm2835aux.c
++++ b/drivers/spi/spi-bcm2835aux.c
+@@ -416,7 +416,18 @@ static int bcm2835aux_spi_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, master);
+ 	master->mode_bits = (SPI_CPOL | SPI_CS_HIGH | SPI_NO_CS);
+ 	master->bits_per_word_mask = SPI_BPW_MASK(8);
+-	master->num_chipselect = -1;
++	/* even though the driver never officially supported native CS
++	 * allow a single native CS for legacy DT support purposes when
++	 * no cs-gpio is configured.
++	 * Known limitations for native cs are:
++	 * * multiple chip-selects: cs0-cs2 are all simultaniously asserted
++	 *     whenever there is a transfer -  this even includes SPI_NO_CS
++	 * * SPI_CS_HIGH: is ignores - cs are always asserted low
++	 * * cs_change: cs is deasserted after each spi_transfer
++	 * * cs_delay_usec: cs is always deasserted one SCK cycle after
++	 *     a spi_transfer
++	 */
++	master->num_chipselect = 1;
+ 	master->transfer_one = bcm2835aux_spi_transfer_one;
+ 	master->handle_err = bcm2835aux_spi_handle_err;
+ 	master->prepare_message = bcm2835aux_spi_prepare_message;
 -- 
 2.20.1

@@ -1,52 +1,38 @@
-From: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Subject: [PATCH v2 3/3] dt-bindings: spi: sunxi: Document new compatible strings
-Date: Thu, 16 Jan 2020 00:56:54 +0000
-Message-ID: <20200116005654.27672-4-andre.przywara@arm.com>
-References: <20200116005654.27672-1-andre.przywara@arm.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Icenowy Zheng <icenowy-ymACFijhrKM@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Maxime Ripard <mripard-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200116005654.27672-1-andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH] spi: pxa2xx: Add support for Intel Comet Lake PCH-V
+Date: Thu, 16 Jan 2020 11:10:35 +0200
+Message-ID: <20200116091035.575175-1-jarkko.nikula@linux.intel.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
+        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+        Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The Allwinner H6 SPI controller has advanced features over the H3
-version, but remains compatible with it.
-Document the usual "specific", "fallback" compatible string pair.
-Also add the R40 version while at it.
+Add support for Intel Comet Lake PCH-V which has the same LPSS than on
+Intel Kaby lake unlike other Intel Comet Lake PCH variants that are based
+on Intel Cannon Lake PCH LPSS.
 
-Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
----
- .../devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml     | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 
-diff --git a/Documentation/devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml b/Documentation/devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml
-index f36c46d236d7..c19dfbe42d90 100644
---- a/Documentation/devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml
-+++ b/Documentation/devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml
-@@ -18,9 +18,15 @@ properties:
-   "#size-cells": true
- 
-   compatible:
--    enum:
--      - allwinner,sun6i-a31-spi
--      - allwinner,sun8i-h3-spi
-+    oneOf:
-+      - const: allwinner,sun6i-a31-spi
-+      - const: allwinner,sun8i-h3-spi
-+      - items:
-+          - const: allwinner,sun8i-r40-spi
-+          - const: allwinner,sun8i-h3-spi
-+      - items:
-+          - const: allwinner,sun50i-h6-spi
-+          - const: allwinner,sun8i-h3-spi
- 
-   reg:
-     maxItems: 1
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 9071333ebdd8..7289fb3302d5 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1423,6 +1423,9 @@ static const struct pci_device_id pxa2xx_spi_pci_compound_match[] = {
+ 	/* KBL-H */
+ 	{ PCI_VDEVICE(INTEL, 0xa2a9), LPSS_SPT_SSP },
+ 	{ PCI_VDEVICE(INTEL, 0xa2aa), LPSS_SPT_SSP },
++	/* CML-V */
++	{ PCI_VDEVICE(INTEL, 0xa3a9), LPSS_SPT_SSP },
++	{ PCI_VDEVICE(INTEL, 0xa3aa), LPSS_SPT_SSP },
+ 	/* BXT A-Step */
+ 	{ PCI_VDEVICE(INTEL, 0x0ac2), LPSS_BXT_SSP },
+ 	{ PCI_VDEVICE(INTEL, 0x0ac4), LPSS_BXT_SSP },
 -- 
-2.14.5
+2.24.1

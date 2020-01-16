@@ -1,54 +1,80 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.4 094/174] spi: spi-fsl-spi: call spi_finalize_current_message() at the end
-Date: Thu, 16 Jan 2020 12:41:31 -0500
-Message-ID: <20200116174251.24326-94-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 156/174] spi: atmel: fix handling of cs_change set on non-last xfer
+Date: Thu, 16 Jan 2020 12:42:33 -0500
+Message-ID: <20200116174251.24326-156-sashal@kernel.org>
 References: <20200116174251.24326-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
+Cc: Mans Rullgard <mans@mansr.com>,
+        Nicolas Ferre <nicolas.ferre@atmel.com>,
+        Gregory CLEMENT <gregory.clement@bootlin.com>,
         Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Return-path: <stable-owner@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20200116174251.24326-1-sashal@kernel.org>
-Sender: stable-owner@vger.kernel.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Christophe Leroy <christophe.leroy@c-s.fr>
+From: Mans Rullgard <mans@mansr.com>
 
-[ Upstream commit 44a042182cb1e9f7916e015c836967bf638b33c4 ]
+[ Upstream commit fed8d8c7a6dc2a76d7764842853d81c770b0788e ]
 
-spi_finalize_current_message() shall be called once all
-actions are finished, otherwise the last actions might
-step over a newly started transfer.
+The driver does the wrong thing when cs_change is set on a non-last
+xfer in a message.  When cs_change is set, the driver deactivates the
+CS and leaves it off until a later xfer again has cs_change set whereas
+it should be briefly toggling CS off and on again.
 
-Fixes: c592becbe704 ("spi: fsl-(e)spi: migrate to generic master queueing")
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+This patch brings the behaviour of the driver back in line with the
+documentation and common sense.  The delay of 10 us is the same as is
+used by the default spi_transfer_one_message() function in spi.c.
+[gregory: rebased on for-5.5 from spi tree]
+Fixes: 8090d6d1a415 ("spi: atmel: Refactor spi-atmel to use SPI framework queue")
+Signed-off-by: Mans Rullgard <mans@mansr.com>
+Acked-by: Nicolas Ferre <nicolas.ferre@atmel.com>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Link: https://lore.kernel.org/r/20191018153504.4249-1-gregory.clement@bootlin.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-atmel.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index 8b290d9d7935..5419de19859a 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -408,7 +408,6 @@ static int fsl_spi_do_one_msg(struct spi_master *master,
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 691c04b3e5b6..938840af9c50 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -315,7 +315,6 @@ struct atmel_spi {
+ 	struct atmel_spi_dma	dma;
+ 
+ 	bool			keep_cs;
+-	bool			cs_active;
+ 
+ 	u32			fifo_size;
+ };
+@@ -1404,11 +1403,9 @@ static int atmel_spi_one_transfer(struct spi_master *master,
+ 				 &msg->transfers)) {
+ 			as->keep_cs = true;
+ 		} else {
+-			as->cs_active = !as->cs_active;
+-			if (as->cs_active)
+-				cs_activate(as, msg->spi);
+-			else
+-				cs_deactivate(as, msg->spi);
++			cs_deactivate(as, msg->spi);
++			udelay(10);
++			cs_activate(as, msg->spi);
+ 		}
  	}
  
- 	m->status = status;
--	spi_finalize_current_message(master);
+@@ -1431,7 +1428,6 @@ static int atmel_spi_transfer_one_message(struct spi_master *master,
+ 	atmel_spi_lock(as);
+ 	cs_activate(as, spi);
  
- 	if (status || !cs_change) {
- 		ndelay(nsecs);
-@@ -416,6 +415,7 @@ static int fsl_spi_do_one_msg(struct spi_master *master,
- 	}
+-	as->cs_active = true;
+ 	as->keep_cs = false;
  
- 	fsl_spi_setup_transfer(spi, NULL);
-+	spi_finalize_current_message(master);
- 	return 0;
- }
- 
+ 	msg->status = 0;
 -- 
 2.20.1

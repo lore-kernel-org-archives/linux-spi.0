@@ -1,73 +1,49 @@
-From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.14 055/371] spi: cadence: Correct initialisation of runtime PM
-Date: Thu, 16 Jan 2020 12:12:03 -0500
-Message-ID: <20200116171719.16965-55-sashal@kernel.org>
-References: <20200116171719.16965-1-sashal@kernel.org>
+From: Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [PATCH AUTOSEL 4.14 149/371] spi: tegra114: clear packed bit for unpacked mode
+Date: Thu, 16 Jan 2020 12:20:21 -0500
+Message-ID: <20200116172403.18149-92-sashal@kernel.org>
+References: <20200116172403.18149-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <20200116171719.16965-1-sashal@kernel.org>
-Sender: stable-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Sowjanya Komatineni <skomatineni-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200116172403.18149-1-sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Sowjanya Komatineni <skomatineni-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
-[ Upstream commit 734882a8bf984c2ac8a57d8ac3ee53230bd0bed8 ]
+[ Upstream commit 7b3d10cdf54b8bc1dc0da21faed9789ac4da3684 ]
 
-Currently the driver calls pm_runtime_put_autosuspend but without ever
-having done a pm_runtime_get, this causes the reference count in the pm
-runtime core to become -1. The bad reference count causes the core to
-sometimes suspend whilst an active SPI transfer is in progress.
+Fixes: Clear packed bit when not using packed mode.
 
-arizona spi0.1: SPI transfer timed out
-spi_master spi0: failed to transfer one message from queue
+Packed bit is not cleared when not using packed mode. This results
+in transfer timeouts for the unpacked mode transfers followed by the
+packed mode transfers.
 
-The correct proceedure is to do all the initialisation that requires the
-hardware to be powered up before enabling the PM runtime, then enable
-the PM runtime having called pm_runtime_set_active to inform it that the
-hardware is currently powered up. The core will then power it down at
-it's leisure and no explicit pm_runtime_put is required.
-
-Fixes: d36ccd9f7ea4 ("spi: cadence: Runtime pm adaptation")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sowjanya Komatineni <skomatineni-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-cadence.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ drivers/spi/spi-tegra114.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index 02bd1eba045b..d08ad93d97a1 100644
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -584,11 +584,6 @@ static int cdns_spi_probe(struct platform_device *pdev)
- 		goto clk_dis_apb;
- 	}
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index 2ad04796ef29..3a6b202dfffe 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -730,6 +730,8 @@ static int tegra_spi_start_transfer_one(struct spi_device *spi,
  
--	pm_runtime_use_autosuspend(&pdev->dev);
--	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
--	pm_runtime_set_active(&pdev->dev);
--	pm_runtime_enable(&pdev->dev);
--
- 	ret = of_property_read_u32(pdev->dev.of_node, "num-cs", &num_cs);
- 	if (ret < 0)
- 		master->num_chipselect = CDNS_SPI_DEFAULT_NUM_CS;
-@@ -603,8 +598,10 @@ static int cdns_spi_probe(struct platform_device *pdev)
- 	/* SPI controller initializations */
- 	cdns_spi_init_hw(xspi);
+ 	if (tspi->is_packed)
+ 		command1 |= SPI_PACKED;
++	else
++		command1 &= ~SPI_PACKED;
  
--	pm_runtime_mark_last_busy(&pdev->dev);
--	pm_runtime_put_autosuspend(&pdev->dev);
-+	pm_runtime_set_active(&pdev->dev);
-+	pm_runtime_enable(&pdev->dev);
-+	pm_runtime_use_autosuspend(&pdev->dev);
-+	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
- 
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq <= 0) {
+ 	command1 &= ~(SPI_CS_SEL_MASK | SPI_TX_EN | SPI_RX_EN);
+ 	tspi->cur_direction = 0;
 -- 
 2.20.1

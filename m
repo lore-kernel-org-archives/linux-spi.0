@@ -1,120 +1,55 @@
-From: Chris Packham <Chris.Packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-Subject: Re: [PATCH 1/2] dt-bindings: spi: Document binding for generic SPI
- multiplexer
-Date: Wed, 15 Jan 2020 20:49:59 +0000
-Message-ID: <ee0c179e6c41699e2ee70c8acd2b5c29712955a1.camel@alliedtelesis.co.nz>
-References: <20200114233857.25933-1-chris.packham@alliedtelesis.co.nz>
-         <20200114233857.25933-2-chris.packham@alliedtelesis.co.nz>
-         <CAL_Jsq+AOiFV4Kcu=r3-kz42ZqSVR_0ZuKtnz8ak_sksW0D0wQ@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "mark.rutland-5wv7dgnIgG8@public.gmane.org" <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "anthony.derosa-ZdkzgDXte25Wk0Htik3J/w@public.gmane.org" <anthony.derosa-ZdkzgDXte25Wk0Htik3J/w@public.gmane.org>,
-        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: "robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAL_Jsq+AOiFV4Kcu=r3-kz42ZqSVR_0ZuKtnz8ak_sksW0D0wQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Language: en-US
-Content-ID: <B7F08148EF61BC438044039C31D7A680-aR5bhbO/t7M@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+From: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
+Subject: [PATCH v2 0/3] arm64: dts: sun50i: H6: Enable SPI controller
+Date: Thu, 16 Jan 2020 00:56:51 +0000
+Message-ID: <20200116005654.27672-1-andre.przywara@arm.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Icenowy Zheng <icenowy-ymACFijhrKM@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Maxime Ripard <mripard-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-SGkgUm9iLA0KDQpPbiBXZWQsIDIwMjAtMDEtMTUgYXQgMTI6NDUgLTA2MDAsIFJvYiBIZXJyaW5n
-IHdyb3RlOg0KPiBPbiBUdWUsIEphbiAxNCwgMjAyMCBhdCA1OjM5IFBNIENocmlzIFBhY2toYW0N
-Cj4gPGNocmlzLnBhY2toYW1AYWxsaWVkdGVsZXNpcy5jby5uej4gd3JvdGU6DQo+ID4gDQo+ID4g
-QWRkIGJpbmRpbmcgZG9jdW1lbnRhdGlvbiBmb3IgdGhlIHNwaS1tdXggZHJpdmVyLiBUaGlzIGFs
-bG93cyBhDQo+ID4gZ2VuZXJpYw0KPiA+IG11bHRpcGxleGVyIHRvIGJlIHVzZWQgdG8gcHJvdmlk
-ZSBhY2Nlc3MgdG8gbXVsdGlwbGUgU1BJIGRldmljZXMuDQo+ID4gDQo+ID4gU2lnbmVkLW9mZi1i
-eTogQ2hyaXMgUGFja2hhbSA8Y2hyaXMucGFja2hhbUBhbGxpZWR0ZWxlc2lzLmNvLm56Pg0KPiA+
-IC0tLQ0KPiA+ICAuLi4vZGV2aWNldHJlZS9iaW5kaW5ncy9zcGkvc3BpLW11eC55YW1sICAgICAg
-fCA4Mg0KPiA+ICsrKysrKysrKysrKysrKysrKysNCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDgyIGlu
-c2VydGlvbnMoKykNCj4gPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IERvY3VtZW50YXRpb24vZGV2aWNl
-dHJlZS9iaW5kaW5ncy9zcGkvc3BpLQ0KPiA+IG11eC55YW1sDQo+IA0KPiBCZSBzdXJlIHRvIHJ1
-biAnbWFrZSBkdF9iaW5kaW5nX2NoZWNrJy4NCj4gDQoNCldpbGwgZG8uDQoNCj4gPiANCj4gPiBk
-aWZmIC0tZ2l0IGEvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL3NwaS9zcGktbXV4
-LnlhbWwNCj4gPiBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9zcGkvc3BpLW11
-eC55YW1sDQo+ID4gbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4gPiBpbmRleCAwMDAwMDAwMDAwMDAu
-LjEwMjZkMDNhNjljNw0KPiA+IC0tLSAvZGV2L251bGwNCj4gPiArKysgYi9Eb2N1bWVudGF0aW9u
-L2RldmljZXRyZWUvYmluZGluZ3Mvc3BpL3NwaS1tdXgueWFtbA0KPiA+IEBAIC0wLDAgKzEsODIg
-QEANCj4gPiArIyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMA0KPiANCj4gRHVhbCBs
-aWNlbnNlIG5ldyBiaW5kaW5ncyBwbGVhc2U6DQo+IA0KPiAoR1BMLTIuMC1vbmx5IE9SIEJTRC0y
-LUNsYXVzZSkNCj4gDQoNCkRvbmUNCg0KPiA+ICslWUFNTCAxLjINCj4gPiArLS0tDQo+ID4gKyRp
-ZDogaHR0cDovL2RldmljZXRyZWUub3JnL3NjaGVtYXMvc3BpL3NwaS1tdXgueWFtbCMNCj4gPiAr
-JHNjaGVtYTogaHR0cDovL2RldmljZXRyZWUub3JnL21ldGEtc2NoZW1hcy9jb3JlLnlhbWwjDQo+
-ID4gKw0KPiA+ICt0aXRsZTogR2VuZXJpYyBTUEkgTXVsdGlwbGV4ZXINCj4gPiArDQo+ID4gK2Rl
-c2NyaXB0aW9uOiB8DQo+ID4gKyAgVGhpcyBiaW5kaW5nIGRlc2NyaWJlcyBhIFNQSSBidXMgbXVs
-dGlwbGV4ZXIgdG8gcm91dGUgdGhlIFNQSQ0KPiA+IGNoaXAgc2VsZWN0DQo+ID4gKyAgc2lnbmFs
-cy4gVGhpcyBjYW4gYmUgdXNlZCB3aGVuIHlvdSBuZWVkIG1vcmUgZGV2aWNlcyB0aGFuIHRoZQ0K
-PiA+IFNQSSBjb250cm9sbGVyDQo+ID4gKyAgaGFzIGNoaXAgc2VsZWN0cyBhdmFpbGFibGUuIEFu
-IGV4YW1wbGUgc2V0dXAgaXMgc2hvd24gaW4gQVNDSUkNCj4gPiBhcnQ7IHRoZSBhY3R1YWwNCj4g
-PiArICBzZXR0aW5nIG9mIHRoZSBtdWx0aXBsZXhlciB0byBhIGNoYW5uZWwgbmVlZHMgdG8gYmUg
-ZG9uZSBieSBhDQo+ID4gc3BlY2lmaWMgU1BJIG11eA0KPiA+ICsgIGRyaXZlci4NCj4gPiArDQo+
-ID4gKyAgICAgICAgTU9TSSAvLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0rLS0tLS0t
-LS0rLS0tLS0tLS0rLQ0KPiA+IC0tLS0tLS1cDQo+ID4gKyAgICAgICAgTUlTTyB8Ly0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLSt8LS0tLS0tLSt8LS0tLS0tLSt8LQ0KPiA+IC0tLS0tLVx8
-DQo+ID4gKyAgICAgICAgIFNDTCB8fC8tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tK3x8LS0t
-LS0tK3x8LS0tLS0tK3x8LQ0KPiA+IC0tLS0tXHx8DQo+ID4gKyAgICAgICAgICAgICB8fHwgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgfHx8ICAgICAgfHx8ICAgICAgfHx8IA0KPiA+ICAgICAg
-fHx8DQo+ID4gKyAgICAgICstLS0tLS0tLS0tDQo+ID4gLS0rICAgICAgICAgICAgICAgICAgICAg
-ICAgfHx8ICAgICAgfHx8ICAgICAgfHx8ICAgICAgfHx8DQo+ID4gKyAgICAgIHwgU29DICB8fHwg
-ICB8ICAgICAgICAgICAgICAgICAgICAgICstKysrLSsgICstKysrLSsgICstKysrLQ0KPiA+ICsg
-ICstKysrLSsNCj4gPiArICAgICAgfCAgICAgIHx8fCAgIHwgICAgICAgICAgICAgICAgICAgICAg
-fCBkZXYgfCAgfCBkZXYgfCAgfCBkZXYNCj4gPiB8ICB8IGRldiB8DQo+ID4gKyAgICAgIHwgICAr
-LS0rKystKyB8IENTLVggICstLS0tLS0rXCAgICAgICstLSstLSsgICstLSstLSsgICstLSsNCj4g
-PiAtLSsgICstLSstLSsNCj4gPiArICAgICAgfCAgIHwgU1BJICArLXwtLS0tLS0tKyBNdXggIHxc
-XCAgIENTLTANCj4gPiB8ICAgICAgICB8ICAgICAgICB8ICAgICAgICB8DQo+ID4gKyAgICAgIHwg
-ICArLS0tLS0tKyB8ICAgICAgICstLSstLS0rXFxcLS0tLS0tLS8gICBDUy0xDQo+ID4gfCAgICAg
-ICAgfCAgICAgICAgfA0KPiA+ICsgICAgICB8ICAgICAgICAgICAgfCAgICAgICAgICB8ICAgIFxc
-XC0tLS0tLS0tLS0tLS0tLS0vICAgQ1MtMg0KPiA+IHwgICAgICAgIHwNCj4gPiArICAgICAgfCAg
-ICstLS0tLS0rIHwgICAgICAgICAgfCAgICAgXFwtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQo+
-ID4gLyAgIENTLTMgfA0KPiA+ICsgICAgICB8ICAgfCA/ICAgICstfC0tLS0tLS0tLS0vICAgICAg
-XC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQo+ID4gLS0tLS0tLS0vDQo+ID4gKyAgICAgIHwg
-ICArLS0tLS0tKyB8DQo+ID4gKyAgICAgICstLS0tLS0tLS0tLS0rDQo+ID4gKw0KPiA+ICthbGxP
-ZjoNCj4gPiArICAtICRyZWY6ICIvc2NoZW1hcy9zcGkvc3BpLWNvbnRyb2xsZXIueWFtbCMiDQo+
-ID4gKw0KPiA+ICtwcm9wZXJ0aWVzOg0KPiA+ICsgIGNvbXBhdGlibGU6DQo+ID4gKyAgICBjb25z
-dDogc3BpLW11eA0KPiA+ICsNCj4gPiArICBtdXgtY29udHJvbDoNCj4gPiArICAgICRyZWY6ICIv
-c2NoZW1hcy9tdXgvbXV4LWNvbnRyb2xsZXIueWFtbCMiDQo+IA0KPiBUaGF0IGZpbGUgZG9lc24n
-dCBleGlzdC4gSWYgaXQgZGlkLCBpdCB3b3VsZCBzdGlsbCBiZSB3cm9uZyBhcyB0aGF0DQo+IHdv
-dWxkIGJlIHRoZSBwcm92aWRlciBzaWRlIGFuZCB0aGlzIGlzIHRoZSBjbGllbnQuDQo+IA0KPiBU
-aGUgY29ycmVjdCBuYW1lIGlzIGFsc28gJ211eC1jb250cm9scycuDQo+IA0KPiBZb3UgY2FuIGFz
-c3VtZSBpdCBoYXMgYSBzY2hlbWEgYWxyZWFkeSBhbmQgeW91IGp1c3QgbmVlZCB0byBkZWZpbmUN
-Cj4gaG93DQo+IG1hbnkgZW50cmllcyBpdCBoYXMgKG1heEl0ZW1zOiAxKS4NCg0KSSBtaWdodCBu
-ZWVkIGEgbGl0dGxlIGhhbmQgaG9sZGluZyBvbiB0aGlzLiBTaG91bGQgSSBhc3N1bWUgdGhhdCB0
-aGVyZQ0KaXMgYSBzZXBhcmF0ZSBzY2hlbWEgZm9yIHRoZSBjb25zdW1lcj8gT3IgbGVhdmUgb3V0
-IHRoZSAkcmVmIGVudGlyZWx5Pw0KDQo+ID4gKw0KPiA+ICtyZXF1aXJlZDoNCj4gPiArICAgLSBj
-b21wYXRpYmxlDQo+ID4gKyAgIC0gcmVnDQo+ID4gKyAgIC0gc3BpLW1heC1mcmVxdWVuY3kNCj4g
-PiArICAgLSBtdXgtY29udHJvbA0KPiA+ICsNCj4gPiArZXhhbXBsZXM6DQo+ID4gKyAgIC0gfA0K
-PiA+ICsgICAgIG11eDogbXV4LWNvbnRyb2xsZXIgew0KPiA+ICsgICAgICAgY29tcGF0aWJsZSA9
-ICJncGlvLW11eCI7DQo+ID4gKyAgICAgICAjbXV4LWNvbnRyb2wtY2VsbHMgPSA8MD47DQo+ID4g
-Kw0KPiA+ICsgICAgICAgbXV4LWdwaW9zID0gPCZncGlvMCAzIEdQSU9fQUNUSVZFX0hJR0g+Ow0K
-PiA+ICsgICAgIH07DQo+ID4gKw0KPiA+ICsgICAgIHNwaSB7DQo+ID4gKyAgICAgICBzcGktbXV4
-IHsNCj4gDQo+IHNwaS1tdXhAMA0KPiANCg0KRG9uZS4NCg0KPiA+ICsgICAgICAgICBjb21wYXRp
-YmxlID0gInNwaS1tdXgiOw0KPiA+ICsgICAgICAgICAjYWRkcmVzcy1jZWxscyA9IDwxPjsNCj4g
-PiArICAgICAgICAgI3NpemUtY2VsbHMgPSA8MD47DQo+ID4gKyAgICAgICAgIHJlZyA9IDwwPjsN
-Cj4gPiArICAgICAgICAgc3BpLW1heC1mcmVxdWVuY3kgPSA8MTAwMDAwMDAwPjsNCj4gDQo+IEkg
-ZG9uJ3QgdGhpbmsgdGhpcyBtYWtlcyBzZW5zZSBoZXJlLiBUaGUgbXV4IGRvZXNuJ3QgcmVhbGx5
-IGhhdmUgYW55DQo+IGZyZXF1ZW5jeSBnaXZlbiB0aGUgY2xvY2sgYW5kIGRhdGEgbGluZXMgYXJl
-bid0IHJvdXRlZCB0aHJ1IHRoZSBtdXgNCj4gKHRob3VnaCBtYXliZSB0aGF0J3MgcG9zc2libGUg
-aWYgc29tZSBpc29sYXRpb24gaXMgbmVlZGVkKS4NCj4gDQoNCkl0J3MgbmVlZGVkIHRvIHNhdGlz
-Znkgb2Zfc3BpX3BhcnNlX2R0KCkuVG8gcmVtb3ZlIGl0IEknZCBuZWVkIHRvIGFkZA0KYW4gZXNj
-YXBlIGhhdGNoIHRvIGFsbG93IHRoaXMgcHJvcGVydHkgdG8gYmUgb21pdHRlZCBmb3Igc3BpLW11
-eGVzLiBPcg0KY2hhbmdlIGl0IHRvIGJlIGEgcGxhdGZvcm0gZGV2aWNlIGFuZCB0YWtlIHRoZSBw
-YXJlbnQgc3BpIGJ1cyBhcyBhDQpwaGFuZGxlLg0KDQo+ID4gKw0KPiA+ICsgICAgICAgICBtdXgt
-Y29udHJvbCA9IDwmbXV4Pg0KPiA+ICsgICAgICAgICBtdXgtY29udHJvbC1uYW1lcyA9ICJzcGki
-Ow0KPiANCj4gTm90IGRvY3VtZW50ZWQuIERyb3AgaXQgYXMgaXQncyBub3QgYWxsIHRoYXQgdXNl
-ZnVsIHdoZW4gdGhlcmUncyBvbmx5DQo+IDEgZW50cnkuDQoNCkRvbmUuIEFsc28gdXBkYXRlZCBt
-dXgtY29udHJvbCAtPiBtdXgtY29udHJvbHMNCg0KPiA+ICsNCj4gPiArICAgICAgICAgc3BpLWZs
-YXNoQDAgew0KPiA+ICsgICAgICAgICAgIGNvbXBhdGlibGUgPSAiamVkZWMsc3BpLW5vciI7DQo+
-ID4gKyAgICAgICAgICAgI2FkZHJlc3MtY2VsbHMgPSA8MT47DQo+ID4gKyAgICAgICAgICAgI3Np
-emUtY2VsbHMgPSA8MT47DQo+ID4gKyAgICAgICAgICAgcmVnID0gPDA+Ow0KPiA+ICsgICAgICAg
-ICAgIHNwaS1tYXgtZnJlcXVlbmN5ID0gPDQwMDAwMDAwPjsNCj4gPiArICAgICAgICAgfTsNCj4g
-PiArDQo+ID4gKyAgICAgICAgIHNwaS1kZXZpY2VAMSB7DQo+ID4gKyAgICAgICAgICAgY29tcGF0
-aWJsZSA9ICJzcGlkZXYiOw0KPiANCj4gTm90IGEgdmFsaWQgY29tcGF0aWJsZS4NCj4gDQoNClBp
-Y2tlZCBhIGRpZmZlcmVudCBvbmUuDQoNCj4gPiArICAgICAgICAgICByZWcgPSA8MT47DQo+ID4g
-KyAgICAgICAgICAgc3BpLW1heC1mcmVxdWVuY3kgPSA8MTAwMDAwMDA+Ow0KPiA+ICsgICAgICAg
-ICB9Ow0KPiA+ICsgICAgICAgfTsNCj4gPiArICAgICB9Ow0KPiA+IC0tDQo+ID4gMi4yNS4wDQo+
-ID4gDQo=
+Even though the SPI controller in the Allwinner H6 SoC is more advanced
+than in the previous generations (it supports 3-wire and 4-wire mode),
+the register set stays backwards-compatible. So we can use the existing
+driver to use the "normal" SPI mode, for instance to access the SPI
+flash soldered on the Pine H64 board.
+
+These two patches allow this by adding the SPI controller nodes to the
+DT. The compatible strings include an H6 specific name, so that any
+future 4-wire enhancements for instance would be automatically usable
+once the driver learns this new trick. For now we use the H3 fallback
+name to bind the current driver.
+
+This time I tested this actual branch  (on top of sunxi/dt-for-5.6),
+on a Pine H64, both the internal SPI flash as well with SPI flash
+connected to the other SPI controller available on the GPIO headers.
+
+As the SPI0-CS0 pin clashes with the eMMC CMD pin, we keep this
+node disabled by default, to avoid losing the eMMC if it probes last.
+People (or U-Boot) can enable it if needed.
+
+Cheers,
+Andre.
+
+Changelog v1 ... v2:
+- comment on pinmux clash between eMMC and SPI
+- disable Pine H64 SPI flash node by default
+- add binding doc for the new compatible string
+
+Andre Przywara (3):
+  arm64: dts: sun50i: H6: Add SPI controllers nodes and pinmuxes
+  arm64: dts: allwinner: h6: Pine H64: Add SPI flash node
+  dt-bindings: spi: sunxi: Document new compatible strings
+
+ .../bindings/spi/allwinner,sun6i-a31-spi.yaml      | 12 +++--
+ .../boot/dts/allwinner/sun50i-h6-pine-h64.dts      | 19 ++++++++
+ arch/arm64/boot/dts/allwinner/sun50i-h6.dtsi       | 55 ++++++++++++++++++++++
+ 3 files changed, 83 insertions(+), 3 deletions(-)
+
+-- 
+2.14.5

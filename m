@@ -1,39 +1,50 @@
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: Re: [PATCH V2 3/7] dt-bindings: imx-ocotp: Add i.MX8MP compatible
-Date: Thu, 16 Jan 2020 16:11:54 +0000
-Message-ID: <c2c3d925-a69a-d7f8-a58a-5f4abe46960b@linaro.org>
-References: <1578893602-14395-1-git-send-email-Anson.Huang@nxp.com>
- <1578893602-14395-3-git-send-email-Anson.Huang@nxp.com>
+From: Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 012/205] spi: lpspi: fix memory leak in fsl_lpspi_probe
+Date: Thu, 16 Jan 2020 11:39:47 -0500
+Message-ID: <20200116164300.6705-12-sashal@kernel.org>
+References: <20200116164300.6705-1-sashal@kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Linux-imx@nxp.com
-To: Anson Huang <Anson.Huang@nxp.com>, robh+dt@kernel.org,
-        mark.rutland@arm.com, vkoul@kernel.org, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-        ulf.hansson@linaro.org, broonie@kernel.org,
-        manivannan.sadhasivam@linaro.org, andrew.smirnov@gmail.com,
-        rjones@gateworks.com, marcel.ziswiler@toradex.com,
-        sebastien.szymanski@armadeus.com, aisheng.dong@nxp.com,
-        richard.hu@technexion.com, angus@akkea.ca, cosmin.stoica@nxp.com,
-        l.stach@pengutronix.de, rabeeh@solid-run.com,
-        leonard.crestez@nxp.com, daniel.baluta@nxp.com, jun.li@nxp.com,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dmaengine@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mmc@vger.kernel.org, linux-spi@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1578893602-14395-3-git-send-email-Anson.Huang@nxp.com>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Transfer-Encoding: 8bit
+Cc: Navid Emamdoost <navid.emamdoost@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
+To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20200116164300.6705-1-sashal@kernel.org>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+From: Navid Emamdoost <navid.emamdoost@gmail.com>
 
+[ Upstream commit 057b8945f78f76d0b04eeb5c27cd9225e5e7ad86 ]
 
-On 13/01/2020 05:33, Anson Huang wrote:
-> Add compatible and description for i.MX8MP.
-> 
-> Signed-off-by: Anson Huang <Anson.Huang@nxp.com>
+In fsl_lpspi_probe an SPI controller is allocated either via
+spi_alloc_slave or spi_alloc_master. In all but one error cases this
+controller is put by going to error handling code. This commit fixes the
+case when pm_runtime_get_sync fails and it should go to the error
+handling path.
 
-Applied Thanks,
+Fixes: 944c01a889d9 ("spi: lpspi: enable runtime pm for lpspi")
+Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
+Link: https://lore.kernel.org/r/20190930034602.1467-1-navid.emamdoost@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi-fsl-lpspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---srini
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index d08e9324140e..3528ed5eea9b 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -938,7 +938,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 	ret = pm_runtime_get_sync(fsl_lpspi->dev);
+ 	if (ret < 0) {
+ 		dev_err(fsl_lpspi->dev, "failed to enable clock\n");
+-		return ret;
++		goto out_controller_put;
+ 	}
+ 
+ 	temp = readl(fsl_lpspi->base + IMX7ULP_PARAM);
+-- 
+2.20.1

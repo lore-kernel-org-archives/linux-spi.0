@@ -1,73 +1,57 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 113/671] spi: cadence: Correct initialisation of runtime PM
-Date: Thu, 16 Jan 2020 11:45:44 -0500
-Message-ID: <20200116165502.8838-113-sashal@kernel.org>
-References: <20200116165502.8838-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 128/671] spi/topcliff_pch: Fix potential NULL dereference on allocation error
+Date: Thu, 16 Jan 2020 11:50:37 -0500
+Message-ID: <20200116165940.10720-11-sashal@kernel.org>
+References: <20200116165940.10720-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Charles Keepax <ckeepax@opensource.cirrus.com>,
+Cc: YueHaibing <yuehaibing@huawei.com>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <20200116165502.8838-1-sashal@kernel.org>
+In-Reply-To: <20200116165940.10720-1-sashal@kernel.org>
 Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: YueHaibing <yuehaibing@huawei.com>
 
-[ Upstream commit 734882a8bf984c2ac8a57d8ac3ee53230bd0bed8 ]
+[ Upstream commit e902cdcb5112b89ee445588147964723fd69ffb4 ]
 
-Currently the driver calls pm_runtime_put_autosuspend but without ever
-having done a pm_runtime_get, this causes the reference count in the pm
-runtime core to become -1. The bad reference count causes the core to
-sometimes suspend whilst an active SPI transfer is in progress.
+In pch_spi_handle_dma, it doesn't check for NULL returns of kcalloc
+so it would result in an Oops.
 
-arizona spi0.1: SPI transfer timed out
-spi_master spi0: failed to transfer one message from queue
-
-The correct proceedure is to do all the initialisation that requires the
-hardware to be powered up before enabling the PM runtime, then enable
-the PM runtime having called pm_runtime_set_active to inform it that the
-hardware is currently powered up. The core will then power it down at
-it's leisure and no explicit pm_runtime_put is required.
-
-Fixes: d36ccd9f7ea4 ("spi: cadence: Runtime pm adaptation")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Fixes: c37f3c2749b5 ("spi/topcliff_pch: DMA support")
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ drivers/spi/spi-topcliff-pch.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index 7c88f74f7f47..94cc0a152449 100644
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -584,11 +584,6 @@ static int cdns_spi_probe(struct platform_device *pdev)
- 		goto clk_dis_apb;
+diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
+index 4389ab80c23e..fa730a871d25 100644
+--- a/drivers/spi/spi-topcliff-pch.c
++++ b/drivers/spi/spi-topcliff-pch.c
+@@ -1008,6 +1008,9 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
+ 
+ 	/* RX */
+ 	dma->sg_rx_p = kcalloc(num, sizeof(*dma->sg_rx_p), GFP_ATOMIC);
++	if (!dma->sg_rx_p)
++		return;
++
+ 	sg_init_table(dma->sg_rx_p, num); /* Initialize SG table */
+ 	/* offset, length setting */
+ 	sg = dma->sg_rx_p;
+@@ -1068,6 +1071,9 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
  	}
  
--	pm_runtime_use_autosuspend(&pdev->dev);
--	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
--	pm_runtime_set_active(&pdev->dev);
--	pm_runtime_enable(&pdev->dev);
--
- 	ret = of_property_read_u32(pdev->dev.of_node, "num-cs", &num_cs);
- 	if (ret < 0)
- 		master->num_chipselect = CDNS_SPI_DEFAULT_NUM_CS;
-@@ -603,8 +598,10 @@ static int cdns_spi_probe(struct platform_device *pdev)
- 	/* SPI controller initializations */
- 	cdns_spi_init_hw(xspi);
- 
--	pm_runtime_mark_last_busy(&pdev->dev);
--	pm_runtime_put_autosuspend(&pdev->dev);
-+	pm_runtime_set_active(&pdev->dev);
-+	pm_runtime_enable(&pdev->dev);
-+	pm_runtime_use_autosuspend(&pdev->dev);
-+	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
- 
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq <= 0) {
+ 	dma->sg_tx_p = kcalloc(num, sizeof(*dma->sg_tx_p), GFP_ATOMIC);
++	if (!dma->sg_tx_p)
++		return;
++
+ 	sg_init_table(dma->sg_tx_p, num); /* Initialize SG table */
+ 	/* offset, length setting */
+ 	sg = dma->sg_tx_p;
 -- 
 2.20.1

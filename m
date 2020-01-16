@@ -1,7 +1,7 @@
 From: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Subject: [PATCH v2 2/3] arm64: dts: allwinner: h6: Pine H64: Add SPI flash node
-Date: Thu, 16 Jan 2020 00:56:53 +0000
-Message-ID: <20200116005654.27672-3-andre.przywara@arm.com>
+Subject: [PATCH v2 3/3] dt-bindings: spi: sunxi: Document new compatible strings
+Date: Thu, 16 Jan 2020 00:56:54 +0000
+Message-ID: <20200116005654.27672-4-andre.przywara@arm.com>
 References: <20200116005654.27672-1-andre.przywara@arm.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         Icenowy Zheng <icenowy-ymACFijhrKM@public.gmane.org>,
@@ -10,65 +10,43 @@ Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT
         linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
         devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Maxime Ripard <mripard-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200116005654.27672-1-andre.przywara-5wv7dgnIgG8@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-The Pine H64 board comes with SPI flash soldered on the board, connected
-to the SPI0 pins (so it can also boot from there).
-
-Add the required SPI flash DT node to describe this.
-
-Unfortunately the SPI CS0 pin collides with the eMMC CMD pin, so we can't
-use both eMMC and SPI flash at the same time (the first to claim the pin
-would win, the other's probe routine would then fail).
-
-To avoid losing the more useful eMMC device by chance, mark the SPI
-device as "disabled" for now. A user or some U-Boot code could fix this
-up if needed, for instance if no eMMC has been detected (it's socketed).
+The Allwinner H6 SPI controller has advanced features over the H3
+version, but remains compatible with it.
+Document the usual "specific", "fallback" compatible string pair.
+Also add the R40 version while at it.
 
 Signed-off-by: Andre Przywara <andre.przywara-5wv7dgnIgG8@public.gmane.org>
 ---
- arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ .../devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml     | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
-index d1c2aa5b3a20..3c9dd0d69754 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-pine-h64.dts
-@@ -14,6 +14,7 @@
- 	aliases {
- 		ethernet0 = &emac;
- 		serial0 = &uart0;
-+		spi0 = &spi0;
- 	};
+diff --git a/Documentation/devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml b/Documentation/devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml
+index f36c46d236d7..c19dfbe42d90 100644
+--- a/Documentation/devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml
++++ b/Documentation/devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml
+@@ -18,9 +18,15 @@ properties:
+   "#size-cells": true
  
- 	chosen {
-@@ -278,6 +279,24 @@
- 	vcc-pm-supply = <&reg_aldo1>;
- };
+   compatible:
+-    enum:
+-      - allwinner,sun6i-a31-spi
+-      - allwinner,sun8i-h3-spi
++    oneOf:
++      - const: allwinner,sun6i-a31-spi
++      - const: allwinner,sun8i-h3-spi
++      - items:
++          - const: allwinner,sun8i-r40-spi
++          - const: allwinner,sun8i-h3-spi
++      - items:
++          - const: allwinner,sun50i-h6-spi
++          - const: allwinner,sun8i-h3-spi
  
-+/*
-+ * The CS pin is shared with the MMC2 CMD pin, so we cannot have the SPI
-+ * flash and eMMC at the same time, as one of them would fail probing.
-+ * Disable SPI0 in here, to prefer the more useful eMMC. U-Boot can
-+ * fix this up in no eMMC is connected.
-+ */
-+&spi0 {
-+	pinctrl-0 = <&spi0_pins>, <&spi0_cs_pin>;
-+	pinctrl-names = "default";
-+	status = "disabled";
-+
-+	flash@0 {
-+		compatible = "winbond,w25q128", "jedec,spi-nor";
-+		reg = <0>;
-+		spi-max-frequency = <4000000>;
-+	};
-+};
-+
- &uart0 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&uart0_ph_pins>;
+   reg:
+     maxItems: 1
 -- 
 2.14.5

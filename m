@@ -1,46 +1,40 @@
-From: <Tudor.Ambarus@microchip.com>
-Subject: Re: [PATCH v2 1/3] mtd: spi-nor: hisi-sfc: Try to provide some
- clarity on which SFC we are
-Date: Thu, 16 Jan 2020 11:03:40 +0000
-Message-ID: <38021504.DDLjaa3fGf@localhost.localdomain>
-References: <1575900490-74467-1-git-send-email-john.garry@huawei.com>
- <1575900490-74467-2-git-send-email-john.garry@huawei.com>
+From: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v3 2/7] dt-bindings: atmel-tcb: add microchip,sam9x60-tcb
+Date: Thu, 16 Jan 2020 13:30:25 +0000
+Message-ID: <20200116133025.GN325@dell>
+References: <1578997397-23165-1-git-send-email-claudiu.beznea@microchip.com>
+ <1578997397-23165-3-git-send-email-claudiu.beznea@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-Cc: <broonie@kernel.org>, <marek.vasut@gmail.com>,
-        <linuxarm@huawei.com>, <linux-kernel@vger.kernel.org>,
-        <linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>,
-        <xuejiancheng@hisilicon.com>, <fengsheng5@huawei.com>,
-        <chenxiang66@hisilicon.com>
-To: <john.garry@huawei.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1575900490-74467-2-git-send-email-john.garry@huawei.com>
-Content-Language: en-US
-Content-ID: <62518802EC87D140AEBB9D9B17F20A25@namprd11.prod.outlook.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
+        nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org, alexandre.belloni-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org,
+        ludovic.desroches-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org, radu_nicolae.pirea-8LCfxC+Vs8U@public.gmane.org,
+        richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, a.zummo-BfzFCNDTiLLj+vYz1yj4TQ@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-rtc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Claudiu Beznea <claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1578997397-23165-3-git-send-email-claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Monday, December 9, 2019 4:08:08 PM EET John Garry wrote:
-> The driver is for the HiSilicon FMC (Flash Memory Controller), which
-> supports SPI NOR in addition other memory technologies, like SPI NAND.
->=20
-> Indeed, the naming in the driver is a little inappropriate, especially
-> considering that there is already another HiSilicon SPI NOR flash
-> controller (which I believe the FMC is derived from).
->=20
-> Since we now want to provide software support for this other HiSilicon
-> controller, update code comments to at least try to make it clear that
-> this driver is for the FMC.
->=20
-> Signed-off-by: John Garry <john.garry@huawei.com>
+On Tue, 14 Jan 2020, Claudiu Beznea wrote:
+
+> Add microchip,sam9x60-tcb to DT bindings documentation.
+> 
+> Signed-off-by: Claudiu Beznea <claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
 > ---
->  drivers/mtd/spi-nor/Kconfig    | 4 ++--
->  drivers/mtd/spi-nor/hisi-sfc.c | 2 +-
->  2 files changed, 3 insertions(+), 3 deletions(-)
->=20
+>  Documentation/devicetree/bindings/mfd/atmel-tcb.txt | 1 +
+>  1 file changed, 1 insertion(+)
 
-Applied to spi-nor/next.
+For my own reference:
+  Acked-for-MFD-by: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
-Thanks,
-ta
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

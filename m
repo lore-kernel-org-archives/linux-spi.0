@@ -1,175 +1,75 @@
-From: Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH AUTOSEL 4.9 108/251] spi: tegra114: fix for unpacked mode transfers
-Date: Thu, 16 Jan 2020 12:34:17 -0500
-Message-ID: <20200116173641.22137-68-sashal@kernel.org>
+From: Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 111/251] spi: bcm2835aux: fix driver to not allow 65535 (=-1) cs-gpios
+Date: Thu, 16 Jan 2020 12:34:20 -0500
+Message-ID: <20200116173641.22137-71-sashal@kernel.org>
 References: <20200116173641.22137-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Sowjanya Komatineni <skomatineni-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200116173641.22137-1-sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Martin Sperl <kernel@martin.sperl.org>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org,
+        bcm-kernel-feedback-list@broadcom.com,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org
+To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20200116173641.22137-1-sashal@kernel.org>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Sowjanya Komatineni <skomatineni-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+From: Martin Sperl <kernel@martin.sperl.org>
 
-[ Upstream commit 1a89ac5b91895127f7c586ec5075c3753ca25501 ]
+[ Upstream commit 509c583620e9053e43d611bf1614fc3d3abafa96 ]
 
-Fixes: computation of actual bytes to fill/receive in/from FIFO in unpacked
-mode when transfer length is not a multiple of requested bits per word.
+The original driver by default defines num_chipselects as -1.
+This actually allicates an array of 65535 entries in
+of_spi_register_master.
 
-unpacked mode transfers fails when the transfer includes partial bytes in
-the last word.
+There is a side-effect for buggy device trees that (contrary to
+dt-binding documentation) have no cs-gpio defined.
 
-Total words to be written/read to/from FIFO is computed based on transfer
-length and bits per word. Unpacked mode includes 0 padding bytes for partial
-words to align with bits per word and these extra bytes are also accounted
-for calculating bytes left to transfer in the current driver.
+This mode was never supported by the driver due to limitations
+of native cs and additional code complexity and is explicitly
+not stated to be implemented.
 
-This causes extra bytes access of tx/rx buffers along with buffer index
-position crossing actual length where remain_len becomes negative and due to
-unsigned type, negative value is a 32 bit representation of signed value
-and transferred bytes never meets the actual transfer length resulting in
-transfer timeout and a hang.
+To keep backwards compatibility with such buggy DTs we limit
+the number of chip_selects to 1, as for all practical purposes
+it is only ever realistic to use a single chip select in
+native cs mode without negative side-effects.
 
-This patch fixes this with proper computation of the actual bytes to fill in
-FIFO during transmit and the actual bytes to read from FIFO during receive
-ignoring 0 padded bytes.
-
-Signed-off-by: Sowjanya Komatineni <skomatineni-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Signed-off-by: Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Fixes: 1ea29b39f4c812ec ("spi: bcm2835aux: add bcm2835 auxiliary spi device...")
+Signed-off-by: Martin Sperl <kernel@martin.sperl.org>
+Acked-by: Stefan Wahren <stefan.wahren@i2se.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-tegra114.c | 43 +++++++++++++++++++++++++++++++-------
- 1 file changed, 36 insertions(+), 7 deletions(-)
+ drivers/spi/spi-bcm2835aux.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index d98c502a9c47..e37712bed0b2 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -307,10 +307,16 @@ static unsigned tegra_spi_fill_tx_fifo_from_client_txbuf(
- 				x |= (u32)(*tx_buf++) << (i * 8);
- 			tegra_spi_writel(tspi, x, SPI_TX_FIFO);
- 		}
-+
-+		tspi->cur_tx_pos += written_words * tspi->bytes_per_word;
- 	} else {
-+		unsigned int write_bytes;
- 		max_n_32bit = min(tspi->curr_dma_words,  tx_empty_count);
- 		written_words = max_n_32bit;
- 		nbytes = written_words * tspi->bytes_per_word;
-+		if (nbytes > t->len - tspi->cur_pos)
-+			nbytes = t->len - tspi->cur_pos;
-+		write_bytes = nbytes;
- 		for (count = 0; count < max_n_32bit; count++) {
- 			u32 x = 0;
- 
-@@ -319,8 +325,10 @@ static unsigned tegra_spi_fill_tx_fifo_from_client_txbuf(
- 				x |= (u32)(*tx_buf++) << (i * 8);
- 			tegra_spi_writel(tspi, x, SPI_TX_FIFO);
- 		}
-+
-+		tspi->cur_tx_pos += write_bytes;
- 	}
--	tspi->cur_tx_pos += written_words * tspi->bytes_per_word;
-+
- 	return written_words;
- }
- 
-@@ -344,20 +352,27 @@ static unsigned int tegra_spi_read_rx_fifo_to_client_rxbuf(
- 			for (i = 0; len && (i < 4); i++, len--)
- 				*rx_buf++ = (x >> i*8) & 0xFF;
- 		}
--		tspi->cur_rx_pos += tspi->curr_dma_words * tspi->bytes_per_word;
- 		read_words += tspi->curr_dma_words;
-+		tspi->cur_rx_pos += tspi->curr_dma_words * tspi->bytes_per_word;
- 	} else {
- 		u32 rx_mask = ((u32)1 << t->bits_per_word) - 1;
-+		u8 bytes_per_word = tspi->bytes_per_word;
-+		unsigned int read_bytes;
- 
-+		len = rx_full_count * bytes_per_word;
-+		if (len > t->len - tspi->cur_pos)
-+			len = t->len - tspi->cur_pos;
-+		read_bytes = len;
- 		for (count = 0; count < rx_full_count; count++) {
- 			u32 x = tegra_spi_readl(tspi, SPI_RX_FIFO) & rx_mask;
- 
--			for (i = 0; (i < tspi->bytes_per_word); i++)
-+			for (i = 0; len && (i < bytes_per_word); i++, len--)
- 				*rx_buf++ = (x >> (i*8)) & 0xFF;
- 		}
--		tspi->cur_rx_pos += rx_full_count * tspi->bytes_per_word;
- 		read_words += rx_full_count;
-+		tspi->cur_rx_pos += read_bytes;
- 	}
-+
- 	return read_words;
- }
- 
-@@ -372,12 +387,17 @@ static void tegra_spi_copy_client_txbuf_to_spi_txbuf(
- 		unsigned len = tspi->curr_dma_words * tspi->bytes_per_word;
- 
- 		memcpy(tspi->tx_dma_buf, t->tx_buf + tspi->cur_pos, len);
-+		tspi->cur_tx_pos += tspi->curr_dma_words * tspi->bytes_per_word;
- 	} else {
- 		unsigned int i;
- 		unsigned int count;
- 		u8 *tx_buf = (u8 *)t->tx_buf + tspi->cur_tx_pos;
- 		unsigned consume = tspi->curr_dma_words * tspi->bytes_per_word;
-+		unsigned int write_bytes;
- 
-+		if (consume > t->len - tspi->cur_pos)
-+			consume = t->len - tspi->cur_pos;
-+		write_bytes = consume;
- 		for (count = 0; count < tspi->curr_dma_words; count++) {
- 			u32 x = 0;
- 
-@@ -386,8 +406,9 @@ static void tegra_spi_copy_client_txbuf_to_spi_txbuf(
- 				x |= (u32)(*tx_buf++) << (i * 8);
- 			tspi->tx_dma_buf[count] = x;
- 		}
-+
-+		tspi->cur_tx_pos += write_bytes;
- 	}
--	tspi->cur_tx_pos += tspi->curr_dma_words * tspi->bytes_per_word;
- 
- 	/* Make the dma buffer to read by dma */
- 	dma_sync_single_for_device(tspi->dev, tspi->tx_dma_phys,
-@@ -405,20 +426,28 @@ static void tegra_spi_copy_spi_rxbuf_to_client_rxbuf(
- 		unsigned len = tspi->curr_dma_words * tspi->bytes_per_word;
- 
- 		memcpy(t->rx_buf + tspi->cur_rx_pos, tspi->rx_dma_buf, len);
-+		tspi->cur_rx_pos += tspi->curr_dma_words * tspi->bytes_per_word;
- 	} else {
- 		unsigned int i;
- 		unsigned int count;
- 		unsigned char *rx_buf = t->rx_buf + tspi->cur_rx_pos;
- 		u32 rx_mask = ((u32)1 << t->bits_per_word) - 1;
-+		unsigned consume = tspi->curr_dma_words * tspi->bytes_per_word;
-+		unsigned int read_bytes;
- 
-+		if (consume > t->len - tspi->cur_pos)
-+			consume = t->len - tspi->cur_pos;
-+		read_bytes = consume;
- 		for (count = 0; count < tspi->curr_dma_words; count++) {
- 			u32 x = tspi->rx_dma_buf[count] & rx_mask;
- 
--			for (i = 0; (i < tspi->bytes_per_word); i++)
-+			for (i = 0; consume && (i < tspi->bytes_per_word);
-+							i++, consume--)
- 				*rx_buf++ = (x >> (i*8)) & 0xFF;
- 		}
-+
-+		tspi->cur_rx_pos += read_bytes;
- 	}
--	tspi->cur_rx_pos += tspi->curr_dma_words * tspi->bytes_per_word;
- 
- 	/* Make the dma buffer to read by dma */
- 	dma_sync_single_for_device(tspi->dev, tspi->rx_dma_phys,
+diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+index 5c89bbb05441..e075712c501e 100644
+--- a/drivers/spi/spi-bcm2835aux.c
++++ b/drivers/spi/spi-bcm2835aux.c
+@@ -416,7 +416,18 @@ static int bcm2835aux_spi_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, master);
+ 	master->mode_bits = (SPI_CPOL | SPI_CS_HIGH | SPI_NO_CS);
+ 	master->bits_per_word_mask = SPI_BPW_MASK(8);
+-	master->num_chipselect = -1;
++	/* even though the driver never officially supported native CS
++	 * allow a single native CS for legacy DT support purposes when
++	 * no cs-gpio is configured.
++	 * Known limitations for native cs are:
++	 * * multiple chip-selects: cs0-cs2 are all simultaniously asserted
++	 *     whenever there is a transfer -  this even includes SPI_NO_CS
++	 * * SPI_CS_HIGH: is ignores - cs are always asserted low
++	 * * cs_change: cs is deasserted after each spi_transfer
++	 * * cs_delay_usec: cs is always deasserted one SCK cycle after
++	 *     a spi_transfer
++	 */
++	master->num_chipselect = 1;
+ 	master->transfer_one = bcm2835aux_spi_transfer_one;
+ 	master->handle_err = bcm2835aux_spi_handle_err;
+ 	master->prepare_message = bcm2835aux_spi_prepare_message;
 -- 
 2.20.1

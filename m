@@ -1,58 +1,54 @@
-From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 484/671] spi: bcm-qspi: Fix BSPI QUAD and DUAL mode support when using flex mode
-Date: Thu, 16 Jan 2020 12:02:02 -0500
-Message-ID: <20200116170509.12787-221-sashal@kernel.org>
+From: Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [PATCH AUTOSEL 4.19 370/671] spi: spi-fsl-spi: call spi_finalize_current_message() at the end
+Date: Thu, 16 Jan 2020 12:00:08 -0500
+Message-ID: <20200116170509.12787-107-sashal@kernel.org>
 References: <20200116170509.12787-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Rayagonda Kokatanur <rayagonda.kokatanur@broadcom.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200116170509.12787-1-sashal@kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200116170509.12787-1-sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Rayagonda Kokatanur <rayagonda.kokatanur@broadcom.com>
+From: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
 
-[ Upstream commit 79629d0f7ce5b38515c1716911a0181f01b91102 ]
+[ Upstream commit 44a042182cb1e9f7916e015c836967bf638b33c4 ]
 
-Fix data transfer width settings based on DT field 'spi-rx-bus-width'
-to configure BSPI in single, dual or quad mode by using data width
-and not the command width.
+spi_finalize_current_message() shall be called once all
+actions are finished, otherwise the last actions might
+step over a newly started transfer.
 
-Fixes: 5f195ee7d830c ("spi: bcm-qspi: Implement the spi_mem interface")
-
-Signed-off-by: Rayagonda Kokatanur <rayagonda.kokatanur@broadcom.com>
-Link: https://lore.kernel.org/r/1565086070-28451-1-git-send-email-rayagonda.kokatanur@broadcom.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c592becbe704 ("spi: fsl-(e)spi: migrate to generic master queueing")
+Signed-off-by: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-bcm-qspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-fsl-spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
-index 584bcb018a62..285a6f463013 100644
---- a/drivers/spi/spi-bcm-qspi.c
-+++ b/drivers/spi/spi-bcm-qspi.c
-@@ -354,7 +354,7 @@ static int bcm_qspi_bspi_set_flex_mode(struct bcm_qspi *qspi,
- {
- 	int bpc = 0, bpp = 0;
- 	u8 command = op->cmd.opcode;
--	int width  = op->cmd.buswidth ? op->cmd.buswidth : SPI_NBITS_SINGLE;
-+	int width = op->data.buswidth ? op->data.buswidth : SPI_NBITS_SINGLE;
- 	int addrlen = op->addr.nbytes;
- 	int flex_mode = 1;
+diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+index 8b79e36fab21..cd784552de7f 100644
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -407,7 +407,6 @@ static int fsl_spi_do_one_msg(struct spi_master *master,
+ 	}
  
-@@ -992,7 +992,7 @@ static int bcm_qspi_exec_mem_op(struct spi_mem *mem,
- 	if (mspi_read)
- 		return bcm_qspi_mspi_exec_mem_op(spi, op);
+ 	m->status = status;
+-	spi_finalize_current_message(master);
  
--	ret = bcm_qspi_bspi_set_mode(qspi, op, -1);
-+	ret = bcm_qspi_bspi_set_mode(qspi, op, 0);
+ 	if (status || !cs_change) {
+ 		ndelay(nsecs);
+@@ -415,6 +414,7 @@ static int fsl_spi_do_one_msg(struct spi_master *master,
+ 	}
  
- 	if (!ret)
- 		ret = bcm_qspi_bspi_exec_mem_op(spi, op);
+ 	fsl_spi_setup_transfer(spi, NULL);
++	spi_finalize_current_message(master);
+ 	return 0;
+ }
+ 
 -- 
 2.20.1

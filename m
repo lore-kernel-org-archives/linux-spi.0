@@ -1,7 +1,8 @@
 From: Claudiu Beznea <claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Subject: [PATCH v5 0/2] add device tree for SAM9X60 SoC and SAM9X60-EK board
-Date: Fri, 17 Jan 2020 13:58:27 +0200
-Message-ID: <1579262309-6542-1-git-send-email-claudiu.beznea@microchip.com>
+Subject: [PATCH v5 1/2] dt-bindings: atmel-usart: remove wildcard
+Date: Fri, 17 Jan 2020 13:58:28 +0200
+Message-ID: <1579262309-6542-2-git-send-email-claudiu.beznea@microchip.com>
+References: <1579262309-6542-1-git-send-email-claudiu.beznea@microchip.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Cc: <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
@@ -12,66 +13,37 @@ To: <radu_nicolae.pirea-8LCfxC+Vs8U@public.gmane.org>, <richard.genoud-Re5JQEeQq
         <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         <mark.rutland-5wv7dgnIgG8@public.gmane.org>, <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
         <alexandre.belloni-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>, <ludovic.desroches-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1579262309-6542-1-git-send-email-claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi,
+Remove chip whildcard and introduce the list of compatibles instead.
 
-This series contains only DT binding documentation for
-microchip,sam9x60-usart and add microchip,sam9x60-dbgu. I kept its
-title and versioning for reference. Only these 2 patches in this
-version left. The other were applied by Alexandre.
+Signed-off-by: Claudiu Beznea <claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+---
+ Documentation/devicetree/bindings/mfd/atmel-usart.txt | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-Thank you,
-Claudiu Beznea
-
-Changes in v5:
-- remove patches:
-	- dt-bindings: atmel,at91rm9200-rtc: add microchip,sam9x60-rtc
-	- ARM: at91/defconfig: enable MMC_SDHCI_OF_AT91 and MICROCHIP_PIT64B
-	- ARM: dts: at91: sam9x60: add device tree for soc and board
-  as they were applied.
-- collected Acked-for-mfd-by
-
-Changes in v4:
-- remove patches:
-	- dt-bindings: atmel-tcb: remove wildcard
-	- dt-bindings: atmel-tcb: add microchip,sam9x60-tcb
-  since they were applied
-- address review comments
-- fix compatible list for dbug in sam9x60.dtsi
-
-Changes in v3:
-- remove applied patches from series
-- split patch "dt-bindings: atmel-tcb: add microchip,sam9x60-tcb" in two patches:
-	- dt-bindings: atmel-tcb: add microchip,sam9x60-tcb
-	- dt-bindings: atmel-tcb: remove wildcard
-- split patch "dt-bindings: atmel-usart: remove wildcard" in two patches:
-	- dt-bindings: atmel-usart: add microchip,sam9x60-{usart, dbgu}
-	- dt-bindings: atmel-usart: remove wildcard
-  and adapt them as per review comments
-- collect acked-by tags
-
-Changes in v2:
-- replace patch "dt-bindings: at_xdmac: add entry for microchip compatibles"
-  by patches:
-	- dt-bindings: at_xdmac: add microchip,sam9x60-dma
-	- dt-bindings: at_xdmac: remove wildcard.
-- replace patch "dt-bindings: atmel-usart: add microchip,<chip>-usart"
-  by patches:
-	- dt-bindings: atmel-usart: add microchip,sam9x60-{usart, dbgu}
-	- dt-bindings: atmel-usart: remove wildcard
-- remove patch "dt-bindings: spi_atmel: add microchip,sam9x60-spi"
-  as it was accepted
-- collect reviewed-by tags
-
-Claudiu Beznea (2):
-  dt-bindings: atmel-usart: remove wildcard
-  dt-bindings: atmel-usart: add microchip,sam9x60-{usart, dbgu}
-
- Documentation/devicetree/bindings/mfd/atmel-usart.txt | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/mfd/atmel-usart.txt b/Documentation/devicetree/bindings/mfd/atmel-usart.txt
+index 699fd3c9ace8..614a14b5d205 100644
+--- a/Documentation/devicetree/bindings/mfd/atmel-usart.txt
++++ b/Documentation/devicetree/bindings/mfd/atmel-usart.txt
+@@ -1,10 +1,11 @@
+ * Atmel Universal Synchronous Asynchronous Receiver/Transmitter (USART)
+ 
+ Required properties for USART:
+-- compatible: Should be "atmel,<chip>-usart" or "atmel,<chip>-dbgu"
+-  The compatible <chip> indicated will be the first SoC to support an
+-  additional mode or an USART new feature.
+-  For the dbgu UART, use "atmel,<chip>-dbgu", "atmel,<chip>-usart"
++- compatible: Should be one of the following:
++	- "atmel,at91rm9200-usart"
++	- "atmel,at91sam9260-usart"
++	- "atmel,at91rm9200-dbgu", "atmel,at91rm9200-usart"
++	- "atmel,at91sam9260-dbgu", "atmel,at91sam9260-usart"
+ - reg: Should contain registers location and length
+ - interrupts: Should contain interrupt
+ - clock-names: tuple listing input clock names.
 -- 
 2.7.4

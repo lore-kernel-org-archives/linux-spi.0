@@ -1,25 +1,28 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx: Add support for Intel Comet Lake PCH-V" to the spi tree
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: spi-ti-qspi: fix warning" to the spi tree
 Date: Fri, 17 Jan 2020 15:44:24 +0000 (GMT)
-Message-ID: <applied-20200116091035.575175-1-jarkko.nikula@linux.intel.com>
-References: <20200116091035.575175-1-jarkko.nikula@linux.intel.com>
-Cc: Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200116091035.575175-1-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Message-ID: <applied-20200115100700.3357-1-jean.pihet@newoldbits.com>
+References: <20200115100700.3357-1-jean.pihet@newoldbits.com>
+Cc: Arnout Vandecappelle <arnout.vandecappelle@essensium.com>,
+        Conrad Ratschan <conrad.ratschan@rockwellcollins.com>,
+        linux-omap@vger.kernel.org, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        Ryan Barnett <ryan.barnett@rockwellcollins.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+To: Jean Pihet <jean.pihet@newoldbits.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <20200115100700.3357-1-jean.pihet@newoldbits.com>
+Sender: linux-omap-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: pxa2xx: Add support for Intel Comet Lake PCH-V
+   spi: spi-ti-qspi: fix warning
 
 has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.6
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
@@ -40,36 +43,43 @@ to this mail.
 Thanks,
 Mark
 
->From 6157d4c255609da28f5a271ec1d56d74beb4c8be Mon Sep 17 00:00:00 2001
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Date: Thu, 16 Jan 2020 11:10:35 +0200
-Subject: [PATCH] spi: pxa2xx: Add support for Intel Comet Lake PCH-V
+>From 6925212f328bf2abde0c8f0d037fddd36751d489 Mon Sep 17 00:00:00 2001
+From: Jean Pihet <jean.pihet@newoldbits.com>
+Date: Wed, 15 Jan 2020 11:07:00 +0100
+Subject: [PATCH] spi: spi-ti-qspi: fix warning
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Add support for Intel Comet Lake PCH-V which has the same LPSS than on
-Intel Kaby lake unlike other Intel Comet Lake PCH variants that are based
-on Intel Cannon Lake PCH LPSS.
+drivers/spi/spi-ti-qspi.c: In function ‘ti_qspi_start_transfer_one’:
+drivers/spi/spi-ti-qspi.c:392:8: warning: ‘rx_wlen’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+  392 |     if (rx_wlen >= 32)
+      |        ^
+drivers/spi/spi-ti-qspi.c:318:12: note: ‘rx_wlen’ was declared here
+  318 |  u8 rxlen, rx_wlen;
+      |            ^~~~~~~
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+The warning is a false positive; it is not thrown by all compiler versions, e.g.
+Red Hat Cross 9.2.1-1 but not Linaro GCC 7.5-2019.12.
 
-Link: https://lore.kernel.org/r/20200116091035.575175-1-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Jean Pihet <jean.pihet@newoldbits.com>
+Link: https://lore.kernel.org/r/20200115100700.3357-1-jean.pihet@newoldbits.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-pxa2xx.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-ti-qspi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index d58791d92c73..8114d3289fdc 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1423,6 +1423,9 @@ static const struct pci_device_id pxa2xx_spi_pci_compound_match[] = {
- 	/* KBL-H */
- 	{ PCI_VDEVICE(INTEL, 0xa2a9), LPSS_SPT_SSP },
- 	{ PCI_VDEVICE(INTEL, 0xa2aa), LPSS_SPT_SSP },
-+	/* CML-V */
-+	{ PCI_VDEVICE(INTEL, 0xa3a9), LPSS_SPT_SSP },
-+	{ PCI_VDEVICE(INTEL, 0xa3aa), LPSS_SPT_SSP },
- 	/* BXT A-Step */
- 	{ PCI_VDEVICE(INTEL, 0x0ac2), LPSS_BXT_SSP },
- 	{ PCI_VDEVICE(INTEL, 0x0ac4), LPSS_BXT_SSP },
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index 858fda8ac73e..366a3e5cca6b 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -332,6 +332,7 @@ static int qspi_read_msg(struct ti_qspi *qspi, struct spi_transfer *t,
+ 		break;
+ 	}
+ 	wlen = t->bits_per_word >> 3;	/* in bytes */
++	rx_wlen = wlen;
+ 
+ 	while (count) {
+ 		dev_dbg(qspi->dev, "rx cmd %08x dc %08x\n", cmd, qspi->dc);
 -- 
 2.20.1

@@ -1,24 +1,23 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-ti-qspi: fix warning" to the spi tree
-Date: Fri, 17 Jan 2020 15:44:24 +0000 (GMT)
-Message-ID: <applied-20200115100700.3357-1-jean.pihet@newoldbits.com>
-References: <20200115100700.3357-1-jean.pihet@newoldbits.com>
-Cc: Arnout Vandecappelle <arnout.vandecappelle@essensium.com>,
-        Conrad Ratschan <conrad.ratschan@rockwellcollins.com>,
-        linux-omap@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Ryan Barnett <ryan.barnett@rockwellcollins.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-To: Jean Pihet <jean.pihet@newoldbits.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <20200115100700.3357-1-jean.pihet@newoldbits.com>
-Sender: linux-omap-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: npcm-pspi: modify reset support" to the spi tree
+Date: Fri, 17 Jan 2020 15:44:23 +0000 (GMT)
+Message-ID: <applied-20200115162301.235926-5-tmaimon77@gmail.com>
+References: <20200115162301.235926-5-tmaimon77@gmail.com>
+Cc: avifishman70-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, benjaminfair-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org,
+        broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, mark.rutland-5wv7dgnIgG8@public.gmane.org,
+        openbmc-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        tali.perry1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, venture-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org, yuenn-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org
+To: Tomer Maimon <tmaimon77-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200115162301.235926-5-tmaimon77-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: spi-ti-qspi: fix warning
+   spi: npcm-pspi: modify reset support
 
 has been applied to the spi tree at
 
@@ -43,43 +42,120 @@ to this mail.
 Thanks,
 Mark
 
->From 6925212f328bf2abde0c8f0d037fddd36751d489 Mon Sep 17 00:00:00 2001
-From: Jean Pihet <jean.pihet@newoldbits.com>
-Date: Wed, 15 Jan 2020 11:07:00 +0100
-Subject: [PATCH] spi: spi-ti-qspi: fix warning
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+>From b5df0b2ee2ee6b5bdeb55d76c17f695a1aa5388f Mon Sep 17 00:00:00 2001
+From: Tomer Maimon <tmaimon77-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Wed, 15 Jan 2020 18:23:01 +0200
+Subject: [PATCH] spi: npcm-pspi: modify reset support
 
-drivers/spi/spi-ti-qspi.c: In function ‘ti_qspi_start_transfer_one’:
-drivers/spi/spi-ti-qspi.c:392:8: warning: ‘rx_wlen’ may be used uninitialized in this function [-Wmaybe-uninitialized]
-  392 |     if (rx_wlen >= 32)
-      |        ^
-drivers/spi/spi-ti-qspi.c:318:12: note: ‘rx_wlen’ was declared here
-  318 |  u8 rxlen, rx_wlen;
-      |            ^~~~~~~
+Modify NPCM perphiral SPI reset support from
+direct register access to reset controller support.
 
-The warning is a false positive; it is not thrown by all compiler versions, e.g.
-Red Hat Cross 9.2.1-1 but not Linaro GCC 7.5-2019.12.
-
-Signed-off-by: Jean Pihet <jean.pihet@newoldbits.com>
-Link: https://lore.kernel.org/r/20200115100700.3357-1-jean.pihet@newoldbits.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Tomer Maimon <tmaimon77-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Link: https://lore.kernel.org/r/20200115162301.235926-5-tmaimon77-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-ti-qspi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-npcm-pspi.c | 33 +++++++++++----------------------
+ 1 file changed, 11 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index 858fda8ac73e..366a3e5cca6b 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -332,6 +332,7 @@ static int qspi_read_msg(struct ti_qspi *qspi, struct spi_transfer *t,
- 		break;
- 	}
- 	wlen = t->bits_per_word >> 3;	/* in bytes */
-+	rx_wlen = wlen;
+diff --git a/drivers/spi/spi-npcm-pspi.c b/drivers/spi/spi-npcm-pspi.c
+index d224aa63dbce..7e9e747b5626 100644
+--- a/drivers/spi/spi-npcm-pspi.c
++++ b/drivers/spi/spi-npcm-pspi.c
+@@ -12,6 +12,7 @@
+ #include <linux/spi/spi.h>
+ #include <linux/gpio.h>
+ #include <linux/of_gpio.h>
++#include <linux/reset.h>
  
- 	while (count) {
- 		dev_dbg(qspi->dev, "rx cmd %08x dc %08x\n", cmd, qspi->dc);
+ #include <asm/unaligned.h>
+ 
+@@ -20,7 +21,7 @@
+ 
+ struct npcm_pspi {
+ 	struct completion xfer_done;
+-	struct regmap *rst_regmap;
++	struct reset_control *reset;
+ 	struct spi_master *master;
+ 	unsigned int tx_bytes;
+ 	unsigned int rx_bytes;
+@@ -59,12 +60,6 @@ struct npcm_pspi {
+ #define NPCM_PSPI_MIN_CLK_DIVIDER	4
+ #define NPCM_PSPI_DEFAULT_CLK		25000000
+ 
+-/* reset register */
+-#define NPCM7XX_IPSRST2_OFFSET	0x24
+-
+-#define NPCM7XX_PSPI1_RESET	BIT(22)
+-#define NPCM7XX_PSPI2_RESET	BIT(23)
+-
+ static inline unsigned int bytes_per_word(unsigned int bits)
+ {
+ 	return bits <= 8 ? 1 : 2;
+@@ -292,9 +287,9 @@ static int npcm_pspi_unprepare_transfer_hardware(struct spi_master *master)
+ 
+ static void npcm_pspi_reset_hw(struct npcm_pspi *priv)
+ {
+-	regmap_write(priv->rst_regmap, NPCM7XX_IPSRST2_OFFSET,
+-		     NPCM7XX_PSPI1_RESET << priv->id);
+-	regmap_write(priv->rst_regmap, NPCM7XX_IPSRST2_OFFSET, 0x0);
++	reset_control_assert(priv->reset);
++	udelay(5);
++	reset_control_deassert(priv->reset);
+ }
+ 
+ static irqreturn_t npcm_pspi_handler(int irq, void *dev_id)
+@@ -358,10 +353,6 @@ static int npcm_pspi_probe(struct platform_device *pdev)
+ 	if (num_cs < 0)
+ 		return num_cs;
+ 
+-	pdev->id = of_alias_get_id(np, "spi");
+-	if (pdev->id < 0)
+-		pdev->id = 0;
+-
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*priv));
+ 	if (!master)
+ 		return -ENOMEM;
+@@ -371,7 +362,6 @@ static int npcm_pspi_probe(struct platform_device *pdev)
+ 	priv = spi_master_get_devdata(master);
+ 	priv->master = master;
+ 	priv->is_save_param = false;
+-	priv->id = pdev->id;
+ 
+ 	priv->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(priv->base)) {
+@@ -396,11 +386,10 @@ static int npcm_pspi_probe(struct platform_device *pdev)
+ 		goto out_disable_clk;
+ 	}
+ 
+-	priv->rst_regmap =
+-		syscon_regmap_lookup_by_compatible("nuvoton,npcm750-rst");
+-	if (IS_ERR(priv->rst_regmap)) {
+-		dev_err(&pdev->dev, "failed to find nuvoton,npcm750-rst\n");
+-		return PTR_ERR(priv->rst_regmap);
++	priv->reset = devm_reset_control_get(&pdev->dev, NULL);
++	if (IS_ERR(priv->reset)) {
++		ret = PTR_ERR(priv->reset);
++		goto out_disable_clk;
+ 	}
+ 
+ 	/* reset SPI-HW block */
+@@ -421,7 +410,7 @@ static int npcm_pspi_probe(struct platform_device *pdev)
+ 	master->min_speed_hz = DIV_ROUND_UP(clk_hz, NPCM_PSPI_MAX_CLK_DIVIDER);
+ 	master->mode_bits = SPI_CPHA | SPI_CPOL;
+ 	master->dev.of_node = pdev->dev.of_node;
+-	master->bus_num = pdev->id;
++	master->bus_num = -1;
+ 	master->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16);
+ 	master->transfer_one = npcm_pspi_transfer_one;
+ 	master->prepare_transfer_hardware =
+@@ -454,7 +443,7 @@ static int npcm_pspi_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto out_disable_clk;
+ 
+-	pr_info("NPCM Peripheral SPI %d probed\n", pdev->id);
++	pr_info("NPCM Peripheral SPI %d probed\n", master->bus_num);
+ 
+ 	return 0;
+ 
 -- 
 2.20.1

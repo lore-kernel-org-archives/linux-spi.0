@@ -1,8 +1,8 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: npcm-pspi: fix 16 bit send and receive support" to the spi tree
+Subject: Applied "spi: npcm-pspi: improve spi transfer performance" to the spi tree
 Date: Fri, 17 Jan 2020 15:44:24 +0000 (GMT)
-Message-ID: <applied-20200115162301.235926-2-tmaimon77@gmail.com>
-References: <20200115162301.235926-2-tmaimon77@gmail.com>
+Message-ID: <applied-20200115162301.235926-3-tmaimon77@gmail.com>
+References: <20200115162301.235926-3-tmaimon77@gmail.com>
 Cc: avifishman70-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, benjaminfair-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org,
         broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -10,18 +10,18 @@ Cc: avifishman70-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, benjaminfair-hpIqsD4AK
         openbmc-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
         tali.perry1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, venture-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org, yuenn-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org
 To: Tomer Maimon <tmaimon77-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200115162301.235926-2-tmaimon77-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200115162301.235926-3-tmaimon77-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: npcm-pspi: fix 16 bit send and receive support
+   spi: npcm-pspi: improve spi transfer performance
 
 has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.6
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
@@ -42,78 +42,39 @@ to this mail.
 Thanks,
 Mark
 
->From 47416a5f27be0a0e815ef5f9f2f06618ae5e0470 Mon Sep 17 00:00:00 2001
+>From b4adf5b27d59cdefff1e6fcba99151edea65a9f7 Mon Sep 17 00:00:00 2001
 From: Tomer Maimon <tmaimon77-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Wed, 15 Jan 2020 18:22:58 +0200
-Subject: [PATCH] spi: npcm-pspi: fix 16 bit send and receive support
+Date: Wed, 15 Jan 2020 18:22:59 +0200
+Subject: [PATCH] spi: npcm-pspi: improve spi transfer performance
 
-Fixing NPCM BMC Peripheral SPI controller 16 bit
-send and receive support by writing and reading
-the SPI data in the right order.
+Improving spi 8 bit per word mode transfer performance
+by using 16 bit per word transfer and receive when the data
+length is even and larger than one.
 
 Signed-off-by: Tomer Maimon <tmaimon77-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Link: https://lore.kernel.org/r/20200115162301.235926-2-tmaimon77-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Link: https://lore.kernel.org/r/20200115162301.235926-3-tmaimon77-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-npcm-pspi.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/spi/spi-npcm-pspi.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/drivers/spi/spi-npcm-pspi.c b/drivers/spi/spi-npcm-pspi.c
-index fe624731c74c..c74611abe2a9 100644
+index fe624731c74c..d224aa63dbce 100644
 --- a/drivers/spi/spi-npcm-pspi.c
 +++ b/drivers/spi/spi-npcm-pspi.c
-@@ -195,6 +195,7 @@ static void npcm_pspi_setup_transfer(struct spi_device *spi,
- static void npcm_pspi_send(struct npcm_pspi *priv)
- {
- 	int wsize;
-+	u16 val;
- 
- 	wsize = min(bytes_per_word(priv->bits_per_word), priv->tx_bytes);
- 	priv->tx_bytes -= wsize;
-@@ -204,17 +205,18 @@ static void npcm_pspi_send(struct npcm_pspi *priv)
- 
- 	switch (wsize) {
- 	case 1:
--		iowrite8(*priv->tx_buf, NPCM_PSPI_DATA + priv->base);
-+		val = *priv->tx_buf++;
-+		iowrite8(val, NPCM_PSPI_DATA + priv->base);
- 		break;
- 	case 2:
--		iowrite16(*priv->tx_buf, NPCM_PSPI_DATA + priv->base);
-+		val = *priv->tx_buf++;
-+		val = *priv->tx_buf++ | (val << 8);
-+		iowrite16(val, NPCM_PSPI_DATA + priv->base);
- 		break;
- 	default:
- 		WARN_ON_ONCE(1);
- 		return;
+@@ -178,6 +178,13 @@ static void npcm_pspi_setup_transfer(struct spi_device *spi,
+ 		priv->mode = spi->mode;
  	}
--
--	priv->tx_buf += wsize;
- }
  
- static void npcm_pspi_recv(struct npcm_pspi *priv)
-@@ -230,18 +232,17 @@ static void npcm_pspi_recv(struct npcm_pspi *priv)
- 
- 	switch (rsize) {
- 	case 1:
--		val = ioread8(priv->base + NPCM_PSPI_DATA);
-+		*priv->rx_buf++ = ioread8(priv->base + NPCM_PSPI_DATA);
- 		break;
- 	case 2:
- 		val = ioread16(priv->base + NPCM_PSPI_DATA);
-+		*priv->rx_buf++ = (val >> 8);
-+		*priv->rx_buf++ = val & 0xff;
- 		break;
- 	default:
- 		WARN_ON_ONCE(1);
- 		return;
- 	}
--
--	*priv->rx_buf = val;
--	priv->rx_buf += rsize;
- }
- 
- static int npcm_pspi_transfer_one(struct spi_master *master,
++	/*
++	 * If transfer is even length, and 8 bits per word transfer,
++	 * then implement 16 bits-per-word transfer.
++	 */
++	if (priv->bits_per_word == 8 && !(t->len & 0x1))
++		t->bits_per_word = 16;
++
+ 	if (!priv->is_save_param || priv->bits_per_word != t->bits_per_word) {
+ 		npcm_pspi_set_transfer_size(priv, t->bits_per_word);
+ 		priv->bits_per_word = t->bits_per_word;
 -- 
 2.20.1

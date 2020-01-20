@@ -1,9 +1,10 @@
 From: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v5 1/2] dt-bindings: atmel-usart: remove wildcard
-Date: Mon, 20 Jan 2020 08:39:08 +0000
-Message-ID: <20200120083908.GT15507@dell>
+Subject: Re: [PATCH v5 2/2] dt-bindings: atmel-usart: add
+ microchip,sam9x60-{usart, dbgu}
+Date: Mon, 20 Jan 2020 08:39:42 +0000
+Message-ID: <20200120083942.GU15507@dell>
 References: <1579262309-6542-1-git-send-email-claudiu.beznea@microchip.com>
- <1579262309-6542-2-git-send-email-claudiu.beznea@microchip.com>
+ <1579262309-6542-3-git-send-email-claudiu.beznea@microchip.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
@@ -16,18 +17,34 @@ Cc: radu_nicolae.pirea-8LCfxC+Vs8U@public.gmane.org, richard.genoud-Re5JQEeQqe8A
 To: Claudiu Beznea <claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1579262309-6542-2-git-send-email-claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+In-Reply-To: <1579262309-6542-3-git-send-email-claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 On Fri, 17 Jan 2020, Claudiu Beznea wrote:
 
-> Remove chip whildcard and introduce the list of compatibles instead.
+> Add microchip,sam9x60-usart and add microchip,sam9x60-dbgu to DT
+> bindings documentation.
 > 
 > Signed-off-by: Claudiu Beznea <claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+> Acked-for-MFD-by: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 > ---
->  Documentation/devicetree/bindings/mfd/atmel-usart.txt | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
+> 
+> Hi Lee,
+> 
+> Between version 3 (that you Acked-for-MFD-by) and this one, there is a
+> new line introduced in this patch:
+> 
+> +       - "microchip,sam9x60-usart"
+> 
+> I kept your Acked-for-MFD-by in this version (with the extra line).
+> Tell me if you consider otherwise.
+> 
+> Thank you,
+> Claudiu Beznea
+> 
+>  Documentation/devicetree/bindings/mfd/atmel-usart.txt | 2 ++
+>  1 file changed, 2 insertions(+)
 
 Applied, thanks.
 

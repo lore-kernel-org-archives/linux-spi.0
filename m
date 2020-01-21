@@ -1,41 +1,32 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH 1/2] spi: Add dt-bindings schema for Cadence XSPI
- controller driver
-Date: Tue, 21 Jan 2020 12:01:58 -0600
-Message-ID: <20200121180158.GA2461@bogus>
-References: <20200120125443.9523-1-konrad@cadence.com>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v1 3/4] dt-binding: spi: add NPCM PSPI reset binding
+Date: Tue, 21 Jan 2020 17:13:52 -0600
+Message-ID: <20200121231352.GA18418@bogus>
+References: <20200115162301.235926-1-tmaimon77@gmail.com>
+ <20200115162301.235926-4-tmaimon77@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Konrad Kociolek <konrad@cadence.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Konrad Kociolek <konrad@cadence.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
+        avifishman70-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, tali.perry1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, venture-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org,
+        yuenn-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org, benjaminfair-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, openbmc-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+        Tomer Maimon <tmaimon77-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Tomer Maimon <tmaimon77-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20200120125443.9523-1-konrad@cadence.com>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <20200115162301.235926-4-tmaimon77-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 20 Jan 2020 13:54:31 +0100, Konrad Kociolek wrote:
-> Add dt-bindings documentation for Cadence XSPI controller to support
-> SPI based flash memories.
+On Wed, 15 Jan 2020 18:23:00 +0200, Tomer Maimon wrote:
+> Add NPCM Peripheral SPI reset binding documentation,
+> Removing unnecessary aliases use.
 > 
-> Signed-off-by: Konrad Kociolek <konrad@cadence.com>
+> Signed-off-by: Tomer Maimon <tmaimon77-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 > ---
->  .../devicetree/bindings/spi/cdns,xspi.yaml         | 164 +++++++++++++++++++++
->  1 file changed, 164 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/cdns,xspi.yaml
+>  .../devicetree/bindings/spi/nuvoton,npcm-pspi.txt    | 12 ++----------
+>  1 file changed, 2 insertions(+), 10 deletions(-)
 > 
 
-My bot found errors running 'make dt_binding_check' on your patch:
-
-Documentation/devicetree/bindings/spi/cdns,xspi.yaml: $id: path/filename 'spi/cadence,xspi.yaml' doesn't match actual filename
-Documentation/devicetree/bindings/Makefile:12: recipe for target 'Documentation/devicetree/bindings/spi/cdns,xspi.example.dts' failed
-make[1]: *** [Documentation/devicetree/bindings/spi/cdns,xspi.example.dts] Error 1
-Makefile:1263: recipe for target 'dt_binding_check' failed
-make: *** [dt_binding_check] Error 2
-
-See https://patchwork.ozlabs.org/patch/1225933
-Please check and re-submit.
+Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>

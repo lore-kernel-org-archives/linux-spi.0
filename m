@@ -2,8 +2,8 @@ From: "Ramuthevar, Vadivel MuruganX"
         <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Subject: Re: [PATCH v7 2/2] spi: cadence-quadpsi: Add support for the Cadence
  QSPI controller
-Date: Thu, 23 Jan 2020 10:16:31 +0800
-Message-ID: <197d5054-f595-02ab-a987-7f47ebcf278f@linux.intel.com>
+Date: Thu, 23 Jan 2020 10:32:42 +0800
+Message-ID: <d0d80059-00d5-f5d3-830f-84a6620af1eb@linux.intel.com>
 References: <20200122091340.43986-1-vadivel.muruganx.ramuthevar@linux.intel.com>
  <20200122091340.43986-3-vadivel.muruganx.ramuthevar@linux.intel.com>
  <CAAh8qswkbD2bc2QBzt=pHd5OyT00sYqffoEYe4Aiij_vMWxZZw@mail.gmail.com>
@@ -13,7 +13,8 @@ Content-Transfer-Encoding: 8bit
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org, cheol.yong.kim-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-        "qi-ming.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org; ley.foon.tan-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org; grmoore"@opensource.altera.com
+        qi-ming.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, grmoore-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org,
+        lftan-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
 To: Simon Goldschmidt <simon.k.r.goldschmidt-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <CAAh8qswkbD2bc2QBzt=pHd5OyT00sYqffoEYe4Aiij_vMWxZZw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
@@ -59,7 +60,6 @@ Thanks! a lot for Query
 
 Regards
 Vadivel
->
 > Regards,
 > Simon
 >

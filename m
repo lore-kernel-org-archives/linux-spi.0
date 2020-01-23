@@ -1,110 +1,99 @@
-From: Kuldeep Singh <kuldeep.singh@nxp.com>
-Subject: RE: [EXT] Re: [PATCH v6 0/2] spi: cadence-quadpsi: Add support for
- the Cadence QSPI controller
-Date: Thu, 23 Jan 2020 11:37:09 +0000
-Message-ID: <AM6PR0402MB35573B2313C7FB81D747ABA6E00F0@AM6PR0402MB3557.eurprd04.prod.outlook.com>
-References: <20191230074102.50982-1-vadivel.muruganx.ramuthevar@linux.intel.com>
- <860aecbc-22d3-c9ce-3570-44115d6e81b2@ti.com>
- <AM0PR0402MB355668F205AD711D2059CDB5E00F0@AM0PR0402MB3556.eurprd04.prod.outlook.com>
- <40ee10f1-0b30-155c-c165-1baa57a22109@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
-        "cheol.yong.kim@intel.com" <cheol.yong.kim@intel.com>,
-        "qi-ming.wu@intel.com" <qi-ming.wu@intel.com>
-To: Vignesh Raghavendra <vigneshr@ti.com>,
-        "Ramuthevar,Vadivel MuruganX"
-        <vadivel.muruganx.ramuthevar@linux.intel.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "dt-binding: spi: add NPCM PSPI reset binding" to the spi tree
+Date: Thu, 23 Jan 2020 12:36:29 +0000
+Message-ID: <applied-20200115162301.235926-4-tmaimon77@gmail.com>
+References: <20200115162301.235926-4-tmaimon77@gmail.com>
+Cc: avifishman70@gmail.com, benjaminfair@google.com,
+        broonie@kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>, mark.rutland@arm.com,
+        openbmc@lists.ozlabs.org, robh+dt@kernel.org,
+        Rob Herring <robh@kernel.org>, tali.perry1@gmail.com,
+        venture@google.com, yuenn@google.com
+To: Tomer Maimon <tmaimon77@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <40ee10f1-0b30-155c-c165-1baa57a22109@ti.com>
-Content-Language: en-US
+In-Reply-To: <20200115162301.235926-4-tmaimon77@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgVmlnbmVzaCwNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBWaWdu
-ZXNoIFJhZ2hhdmVuZHJhIDx2aWduZXNockB0aS5jb20+DQo+IFNlbnQ6IFRodXJzZGF5LCBKYW51
-YXJ5IDIzLCAyMDIwIDE6MTcgUE0NCj4gVG86IEt1bGRlZXAgU2luZ2ggPGt1bGRlZXAuc2luZ2hA
-bnhwLmNvbT47IFJhbXV0aGV2YXIsVmFkaXZlbCBNdXJ1Z2FuWA0KPiA8dmFkaXZlbC5tdXJ1Z2Fu
-eC5yYW11dGhldmFyQGxpbnV4LmludGVsLmNvbT47IGJyb29uaWVAa2VybmVsLm9yZzsgbGludXgt
-DQo+IHNwaUB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcNCj4g
-Q2M6IHJvYmgrZHRAa2VybmVsLm9yZzsgZGFuLmNhcnBlbnRlckBvcmFjbGUuY29tOw0KPiBjaGVv
-bC55b25nLmtpbUBpbnRlbC5jb207IHFpLW1pbmcud3VAaW50ZWwuY29tDQo+IFN1YmplY3Q6IFJl
-OiBbRVhUXSBSZTogW1BBVENIIHY2IDAvMl0gc3BpOiBjYWRlbmNlLXF1YWRwc2k6IEFkZCBzdXBw
-b3J0IGZvcg0KPiB0aGUgQ2FkZW5jZSBRU1BJIGNvbnRyb2xsZXINCj4gDQo+IENhdXRpb246IEVY
-VCBFbWFpbA0KPiANCj4gT24gMjMvMDEvMjAgMTI6NTQgcG0sIEt1bGRlZXAgU2luZ2ggd3JvdGU6
-DQo+ID4gSGkgVmlnbmVzaCwNCj4gPg0KPiA+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0K
-PiA+PiBGcm9tOiBsaW51eC1rZXJuZWwtb3duZXJAdmdlci5rZXJuZWwub3JnIDxsaW51eC1rZXJu
-ZWwtDQo+ID4+IG93bmVyQHZnZXIua2VybmVsLm9yZz4gT24gQmVoYWxmIE9mIFZpZ25lc2ggUmFn
-aGF2ZW5kcmENCj4gPj4gU2VudDogV2VkbmVzZGF5LCBKYW51YXJ5IDE1LCAyMDIwIDExOjQzIEFN
-DQo+ID4+IFRvOiBSYW11dGhldmFyLFZhZGl2ZWwgTXVydWdhblgNCj4gPj4gPHZhZGl2ZWwubXVy
-dWdhbngucmFtdXRoZXZhckBsaW51eC5pbnRlbC5jb20+OyBicm9vbmllQGtlcm5lbC5vcmc7DQo+
-ID4+IGxpbnV4LSBzcGlAdmdlci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwu
-b3JnDQo+ID4+IENjOiByb2JoK2R0QGtlcm5lbC5vcmc7IGRhbi5jYXJwZW50ZXJAb3JhY2xlLmNv
-bTsNCj4gPj4gY2hlb2wueW9uZy5raW1AaW50ZWwuY29tOyBxaS1taW5nLnd1QGludGVsLmNvbQ0K
-PiA+PiBTdWJqZWN0OiBbRVhUXSBSZTogW1BBVENIIHY2IDAvMl0gc3BpOiBjYWRlbmNlLXF1YWRw
-c2k6IEFkZCBzdXBwb3J0DQo+ID4+IGZvciB0aGUgQ2FkZW5jZSBRU1BJIGNvbnRyb2xsZXINCj4g
-Pj4NCj4gPj4gQ2F1dGlvbjogRVhUIEVtYWlsDQo+ID4+DQo+ID4+IEhpLA0KPiA+Pg0KPiA+PiBP
-biAxMi8zMC8yMDE5IDE6MTEgUE0sIFJhbXV0aGV2YXIsVmFkaXZlbCBNdXJ1Z2FuWCB3cm90ZToN
-Cj4gPj4+IEFkZCBzdXBwb3J0IGZvciB0aGUgQ2FkZW5jZSBRU1BJIGNvbnRyb2xsZXIuIFRoaXMg
-Y29udHJvbGxlciBpcw0KPiA+Pj4gcHJlc2VudCBpbiB0aGUgSW50ZWwgTGlnaHRuaW5nIE1vdW50
-YWluKExHTSkgU29DcywgQWx0ZXJhIGFuZCBUSSBTb0NzLg0KPiA+Pj4gVGhpcyBkcml2ZXIgaGFz
-IGJlZW4gdGVzdGVkIG9uIHRoZSBJbnRlbCBMR00gU29Dcy4NCj4gPj4+DQo+ID4+PiBUaGlzIGRy
-aXZlciBkb2VzIG5vdCBzdXBwb3J0IGdlbmVyaWMgU1BJIGFuZCBhbHNvIHRoZSBpbXBsZW1lbnRh
-dGlvbg0KPiA+Pj4gb25seSBzdXBwb3J0cyBzcGktbWVtIGludGVyZmFjZSB0byByZXBsYWNlIHRo
-ZSBleGlzdGluZyBkcml2ZXIgaW4NCj4gPj4+IG10ZC9zcGktbm9yL2NhZGVuY2UtcXVhZHNwaS5j
-LCB0aGUgZXhpc3RpbmcgZHJpdmVyIG9ubHkgc3VwcG9ydA0KPiA+Pj4gU1BJLU5PUiBmbGFzaCBt
-ZW1vcnkuDQo+ID4+Pg0KPiA+Pg0KPiA+Pg0KPiA+Pg0KPiA+PiBJIGFtIGZpbmFsbHkgYWJsZSB0
-byBnZXQgc3BpLW1lbSBiYXNlZCBjYWRlbmNlLXF1YXNwaSBkcml2ZXIgd29ya2luZw0KPiA+PiBv
-biBUSSBwbGF0Zm9ybXMgd2l0aCBETUEgYW5kIERBQyBtb2RlLiBJIGhhdmUgYWxzbyBpbmNvcnBv
-cmF0ZWQNCj4gPj4gY2hhbmdlcyB0byBkaXNhYmxlIERBQyBhbmQgYXV0b3BvbGxpbmcgZm9yIHlv
-dXIgaW50ZWwgU29DOg0KPiA+Pg0KPiA+PiBodHRwczovL2V1cjAxLnNhZmVsaW5rcy5wcm90ZWN0
-aW9uLm91dGxvb2suY29tLz91cmw9aHR0cHMlM0ElMkYlMkZnaXQNCj4gPj4gaHViLmNvDQo+ID4+
-IG0lMkZyLQ0KPiA+Pg0KPiB2aWduZXNoJTJGbGludXglMkZjb21taXRzJTJGcXNwaSZhbXA7ZGF0
-YT0wMiU3QzAxJTdDa3VsZGVlcC5zaW5naCUNCj4gPj4NCj4gNDBueHAuY29tJTdDY2JkMTRhYzUy
-N2FlNDI5OGEyODgwOGQ3OTk4MjE5ZTYlN0M2ODZlYTFkM2JjMmI0YzZmYQ0KPiA+Pg0KPiA5MmNk
-OTljNWMzMDE2MzUlN0MwJTdDMCU3QzYzNzE0NjY1NjM2NTg3MjYzOCZhbXA7c2RhdGE9akFSN2xt
-cnkNCj4gPj4gUjlmZHFGM2U0QTJkUXpGMFEwZll4TXZNN3NOaHg4bHZveTAlM0QmYW1wO3Jlc2Vy
-dmVkPTANCj4gPj4NCj4gPj4gKFRvcCB0d28gcGF0Y2hlcyBhcmUgb2YgaW50ZXJlc3QpDQo+ID4+
-DQo+ID4+IEkgaGF2ZSB0ZXN0ZWQgYm90aCBEQUMgYW5kIElOREFDIG1vZGUgd2l0aCBzMjVmbCBm
-bGFzaCBhbmQgZXZlcnl0aGluZw0KPiA+PiBzZWVtcyB0byBiZSBmaW5lLiBDb3VsZCB5b3UgcmUg
-dGVzdCB0aGUgZHJpdmVyIG9uIHlvdXIgU29DPyBGZWVsIGZyZWUNCj4gPj4gdG8gZm9sZCBpdCBp
-bnRvIHlvdXIgc2VyaWVzIGlmIGV2ZXJ5dGhpbmcgd29ya3MuDQo+ID4NCj4gPiBJcyBKRkZTMi9V
-QklGUyBhIHZhbGlkIHVzZSBjYXNlIGhlcmU/IEFuZCB3ZXJlIHlvdSBhYmxlIHRvIHRlc3QgdGhl
-IHNhbWU/DQo+ID4gSSBzZWUgZmV3IGlzc3VlcyB3aXRoIFNwYW5zaW9uIGZsYXNoZXMgKHMyNWZz
-KSBpbiBmcmFtZXdvcmsgYW5kIGNvdWxkbuKAmXQNCj4gbWFrZSBGUyB1dGlsaXRpZXMgcnVuLg0K
-PiA+IE9uIHRoZSBvdGhlciBoYW5kLCBmaWxlIHN5c3RlbXMgb24gb3RoZXIgZmxhc2hlcyAoZXg6
-IG1pY3JvbiwgbXQyNXF1KSBhcmUNCj4gc2hvd2luZyBwb3NpdGl2ZSByZXN1bHRzLg0KPiA+DQo+
-IA0KPiBJIGRpZCB0ZXN0IHdpdGggczI1Zmw1MTJzIHdpdGggVUJJRlMgYW5kIGRpZCBub3Qgc2Vl
-IGFueSBpc3N1ZS4gDQoNClRoYW5rcyBWaWduZXNoIGZvciB0aGlzIGNvbmZpcm1hdGlvbi4NCg0K
-PkNvdWxkIHlvdSB0cnkgd2l0aCBsYXRlc3QgbGludXggbWFzdGVyIG9yIGxpbnV4IG5leHQ/IFRo
-ZXJlIHdlcmUgY291cGxlIG9mIGZpeGVzIGluIHRoZSBsYXN0IC1yYw0KPiByZWxhdGVkIHRvIHNw
-YW5zaW9uIGZsYXNoZXM/DQoNClllcywgSSBoYXZlIGFscmVhZHkgYXBwbGllZCB0aG9zZSBwYXRj
-aGVzIGFuZCBzdGlsbCBmYWNpbmcgdGhpcyBpc3N1ZS4NCkkgYW0gdGVzdGluZyB3aXRoIHMyNWZz
-NTEycyBhbmQgb25seSBhYmxlIHRvIG1ha2UgaXQgd29yayBvbiAxYml0IG1vZGUgYW5kIHRoYXQg
-dG9vIGJ5IHNraXBwaW5nIFNGRFAuDQpCYXNpYyByZWFkL3dyaXRlIHdvcmtzIG9uIG90aGVyIG1v
-ZGVzIGJ1dCBub3QgRlMgdXRpbGl0aWVzLg0KQ291bGQgeW91IHBsZWFzZSBzaGFyZSBhbnkgcG9p
-bnRlciB0byBsb29rIGludG8gd2hpY2ggZGlyZWN0aW9uLiBUaGFua3MgaW4gYWR2YW5jZS4NCg0K
-VGhhbmtzDQpLdWxkZWVwDQoNCj4gDQo+IFsxXQ0KPiBodHRwczovL2V1cjAxLnNhZmVsaW5rcy5w
-cm90ZWN0aW9uLm91dGxvb2suY29tLz91cmw9aHR0cHMlM0ElMkYlMkZnaXQua2VybmUNCj4gbC5v
-cmclMkZwdWIlMkZzY20lMkZsaW51eCUyRmtlcm5lbCUyRmdpdCUyRm10ZCUyRmxpbnV4LmdpdCUy
-RmNvbW1pdA0KPiAlMkYlM0ZoJTNEbXRkJTJGZml4ZXMlMjZpZCUzRDQ0MGI2ZDUwMjU0YmRiZDg0
-YzJhNjY1YzdmNTNlYzY5ZGQNCj4gNzQxYTRmJmFtcDtkYXRhPTAyJTdDMDElN0NrdWxkZWVwLnNp
-bmdoJTQwbnhwLmNvbSU3Q2VlMzQ1YmRmOWY2NTQNCj4gNGFjOWY0NTA4ZDc5ZmQ4NjNkOSU3QzY4
-NmVhMWQzYmMyYjRjNmZhOTJjZDk5YzVjMzAxNjM1JTdDMCU3QzAlNw0KPiBDNjM3MTUzNjI0MDQx
-MzMwNzc0JmFtcDtzZGF0YT1PeUtHbDJqbjVKRHE1S0NhVnJ4QW5VaDRxU3lubUFoUyUNCj4gMkZl
-RmlPeEpTS3RVJTNEJmFtcDtyZXNlcnZlZD0wDQo+IFsyXWh0dHBzOi8vZXVyMDEuc2FmZWxpbmtz
-LnByb3RlY3Rpb24ub3V0bG9vay5jb20vP3VybD1odHRwcyUzQSUyRiUyRmdpdC5rZXINCj4gbmVs
-Lm9yZyUyRnB1YiUyRnNjbSUyRmxpbnV4JTJGa2VybmVsJTJGZ2l0JTJGbXRkJTJGbGludXguZ2l0
-JTJGY29tbQ0KPiBpdCUyRiUzRmglM0RtdGQlMkZmaXhlcyUyNmlkJTNEZGEyZWY4MTI0ZjIwYjRj
-ZTE4ZDFkM2QyNGZjN2I4OGU2OA0KPiA3ZTEwYmImYW1wO2RhdGE9MDIlN0MwMSU3Q2t1bGRlZXAu
-c2luZ2glNDBueHAuY29tJTdDZWUzNDViZGY5ZjY1DQo+IDQ0YWM5ZjQ1MDhkNzlmZDg2M2Q5JTdD
-Njg2ZWExZDNiYzJiNGM2ZmE5MmNkOTljNWMzMDE2MzUlN0MwJTdDMCUNCj4gN0M2MzcxNTM2MjQw
-NDEzMzA3NzQmYW1wO3NkYXRhPUJUUnpXV1kyejZuWm5jeWt0RERJZEpGd1lUcDQxUyUyDQo+IEJ1
-aDk5UWFKNjBlMU0lM0QmYW1wO3Jlc2VydmVkPTANCj4gDQo+ID4gVGhhbmtzDQo+ID4gS3VsZGVl
-cA0KPiA+DQo+ID4+DQo+ID4+IFJlZ2FyZHMNCj4gPj4gVmlnbmVzaA0KPiA+Pg0KPiA+Pg0KPiA+
-DQo+IA0KPiAtLQ0KPiBSZWdhcmRzDQo+IFZpZ25lc2gNCg==
+The patch
+
+   dt-binding: spi: add NPCM PSPI reset binding
+
+has been applied to the spi tree at
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.6
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From a5362b84bdff1def10c136e36ef2126f7f545b2c Mon Sep 17 00:00:00 2001
+From: Tomer Maimon <tmaimon77@gmail.com>
+Date: Wed, 15 Jan 2020 18:23:00 +0200
+Subject: [PATCH] dt-binding: spi: add NPCM PSPI reset binding
+
+Add NPCM Peripheral SPI reset binding documentation,
+Removing unnecessary aliases use.
+
+Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
+Acked-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/20200115162301.235926-4-tmaimon77@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ .../devicetree/bindings/spi/nuvoton,npcm-pspi.txt    | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/spi/nuvoton,npcm-pspi.txt b/Documentation/devicetree/bindings/spi/nuvoton,npcm-pspi.txt
+index 1fd9a4406a1d..b98203ca656d 100644
+--- a/Documentation/devicetree/bindings/spi/nuvoton,npcm-pspi.txt
++++ b/Documentation/devicetree/bindings/spi/nuvoton,npcm-pspi.txt
+@@ -12,6 +12,7 @@ Required properties:
+  - clock-names: Should be "clk_apb5".
+  - pinctrl-names : a pinctrl state named "default" must be defined.
+  - pinctrl-0 : phandle referencing pin configuration of the device.
++ - resets : phandle to the reset control for this device.
+  - cs-gpios: Specifies the gpio pins to be used for chipselects.
+             See: Documentation/devicetree/bindings/spi/spi-bus.txt
+ 
+@@ -19,16 +20,6 @@ Optional properties:
+ - clock-frequency : Input clock frequency to the PSPI block in Hz.
+ 		    Default is 25000000 Hz.
+ 
+-Aliases:
+-- All the SPI controller nodes should be represented in the aliases node using
+-  the following format 'spi{n}' withe the correct numbered in "aliases" node.
+-
+-Example:
+-
+-aliases {
+-	spi0 = &spi0;
+-};
+-
+ spi0: spi@f0200000 {
+ 	compatible = "nuvoton,npcm750-pspi";
+ 	reg = <0xf0200000 0x1000>;
+@@ -39,5 +30,6 @@ spi0: spi@f0200000 {
+ 	interrupts = <GIC_SPI 31 IRQ_TYPE_LEVEL_HIGH>;
+ 	clocks = <&clk NPCM7XX_CLK_APB5>;
+ 	clock-names = "clk_apb5";
++	resets = <&rstc NPCM7XX_RESET_IPSRST2 NPCM7XX_RESET_PSPI1>
+ 	cs-gpios = <&gpio6 11 GPIO_ACTIVE_LOW>;
+ };
+-- 
+2.20.1

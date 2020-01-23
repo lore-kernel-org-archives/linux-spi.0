@@ -2,8 +2,8 @@ From: "Ramuthevar, Vadivel MuruganX"
         <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Subject: Re: [PATCH v7 2/2] spi: cadence-quadpsi: Add support for the Cadence
  QSPI controller
-Date: Thu, 23 Jan 2020 18:05:22 +0800
-Message-ID: <e0e7470a-c40e-9431-d88c-221c4741d4a0@linux.intel.com>
+Date: Thu, 23 Jan 2020 18:06:59 +0800
+Message-ID: <99ab6210-c9d3-c332-336a-a3d4877c8d6f@linux.intel.com>
 References: <20200122091340.43986-1-vadivel.muruganx.ramuthevar@linux.intel.com>
  <20200122091340.43986-3-vadivel.muruganx.ramuthevar@linux.intel.com>
  <617ec5c7-59a0-1e09-bdd7-126a5792889d@ti.com>
@@ -50,9 +50,8 @@ On 23/1/2020 5:58 PM, Vignesh Raghavendra wrote:
 >
 > tx_buf aliases to addrbuf which can be easily derived from op->addr.val
 >
-Sure, I will derive it.
-Thank you
-
+Yes, I have already derived, only placing the correct function to be 
+checked and added.
 Regards
 Vadivel
 >

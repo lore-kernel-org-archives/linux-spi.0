@@ -1,67 +1,104 @@
-From: Kuldeep Singh <kuldeep.singh-3arQi8VN3Tc@public.gmane.org>
-Subject: RE: [EXT] Re: [PATCH v6 0/2] spi: cadence-quadpsi: Add support for
+From: Vignesh Raghavendra <vigneshr@ti.com>
+Subject: Re: [EXT] Re: [PATCH v6 0/2] spi: cadence-quadpsi: Add support for
  the Cadence QSPI controller
-Date: Thu, 23 Jan 2020 07:24:26 +0000
-Message-ID: <AM0PR0402MB355668F205AD711D2059CDB5E00F0@AM0PR0402MB3556.eurprd04.prod.outlook.com>
+Date: Thu, 23 Jan 2020 13:17:02 +0530
+Message-ID: <40ee10f1-0b30-155c-c165-1baa57a22109@ti.com>
 References: <20191230074102.50982-1-vadivel.muruganx.ramuthevar@linux.intel.com>
  <860aecbc-22d3-c9ce-3570-44115d6e81b2@ti.com>
+ <AM0PR0402MB355668F205AD711D2059CDB5E00F0@AM0PR0402MB3556.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org" <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>,
-        "cheol.yong.kim-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org" <cheol.yong.kim-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        "qi-ming.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org" <qi-ming.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: Vignesh Raghavendra <vigneshr-l0cyMroinI0@public.gmane.org>,
+Content-Transfer-Encoding: 8bit
+Cc: "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
+        "cheol.yong.kim@intel.com" <cheol.yong.kim@intel.com>,
+        "qi-ming.wu@intel.com" <qi-ming.wu@intel.com>
+To: Kuldeep Singh <kuldeep.singh@nxp.com>,
         "Ramuthevar,Vadivel MuruganX"
-        <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <860aecbc-22d3-c9ce-3570-44115d6e81b2-l0cyMroinI0@public.gmane.org>
+        <vadivel.muruganx.ramuthevar@linux.intel.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <AM0PR0402MB355668F205AD711D2059CDB5E00F0@AM0PR0402MB3556.eurprd04.prod.outlook.com>
 Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-SGkgVmlnbmVzaCwNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBsaW51
-eC1rZXJuZWwtb3duZXJAdmdlci5rZXJuZWwub3JnIDxsaW51eC1rZXJuZWwtDQo+IG93bmVyQHZn
-ZXIua2VybmVsLm9yZz4gT24gQmVoYWxmIE9mIFZpZ25lc2ggUmFnaGF2ZW5kcmENCj4gU2VudDog
-V2VkbmVzZGF5LCBKYW51YXJ5IDE1LCAyMDIwIDExOjQzIEFNDQo+IFRvOiBSYW11dGhldmFyLFZh
-ZGl2ZWwgTXVydWdhblgNCj4gPHZhZGl2ZWwubXVydWdhbngucmFtdXRoZXZhckBsaW51eC5pbnRl
-bC5jb20+OyBicm9vbmllQGtlcm5lbC5vcmc7IGxpbnV4LQ0KPiBzcGlAdmdlci5rZXJuZWwub3Jn
-OyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnDQo+IENjOiByb2JoK2R0QGtlcm5lbC5vcmc7
-IGRhbi5jYXJwZW50ZXJAb3JhY2xlLmNvbTsNCj4gY2hlb2wueW9uZy5raW1AaW50ZWwuY29tOyBx
-aS1taW5nLnd1QGludGVsLmNvbQ0KPiBTdWJqZWN0OiBbRVhUXSBSZTogW1BBVENIIHY2IDAvMl0g
-c3BpOiBjYWRlbmNlLXF1YWRwc2k6IEFkZCBzdXBwb3J0IGZvciB0aGUNCj4gQ2FkZW5jZSBRU1BJ
-IGNvbnRyb2xsZXINCj4gDQo+IENhdXRpb246IEVYVCBFbWFpbA0KPiANCj4gSGksDQo+IA0KPiBP
-biAxMi8zMC8yMDE5IDE6MTEgUE0sIFJhbXV0aGV2YXIsVmFkaXZlbCBNdXJ1Z2FuWCB3cm90ZToN
-Cj4gPiBBZGQgc3VwcG9ydCBmb3IgdGhlIENhZGVuY2UgUVNQSSBjb250cm9sbGVyLiBUaGlzIGNv
-bnRyb2xsZXIgaXMNCj4gPiBwcmVzZW50IGluIHRoZSBJbnRlbCBMaWdodG5pbmcgTW91bnRhaW4o
-TEdNKSBTb0NzLCBBbHRlcmEgYW5kIFRJIFNvQ3MuDQo+ID4gVGhpcyBkcml2ZXIgaGFzIGJlZW4g
-dGVzdGVkIG9uIHRoZSBJbnRlbCBMR00gU29Dcy4NCj4gPg0KPiA+IFRoaXMgZHJpdmVyIGRvZXMg
-bm90IHN1cHBvcnQgZ2VuZXJpYyBTUEkgYW5kIGFsc28gdGhlIGltcGxlbWVudGF0aW9uDQo+ID4g
-b25seSBzdXBwb3J0cyBzcGktbWVtIGludGVyZmFjZSB0byByZXBsYWNlIHRoZSBleGlzdGluZyBk
-cml2ZXIgaW4NCj4gPiBtdGQvc3BpLW5vci9jYWRlbmNlLXF1YWRzcGkuYywgdGhlIGV4aXN0aW5n
-IGRyaXZlciBvbmx5IHN1cHBvcnQNCj4gPiBTUEktTk9SIGZsYXNoIG1lbW9yeS4NCj4gPg0KPiAN
-Cj4gDQo+IA0KPiBJIGFtIGZpbmFsbHkgYWJsZSB0byBnZXQgc3BpLW1lbSBiYXNlZCBjYWRlbmNl
-LXF1YXNwaSBkcml2ZXIgd29ya2luZyBvbiBUSQ0KPiBwbGF0Zm9ybXMgd2l0aCBETUEgYW5kIERB
-QyBtb2RlLiBJIGhhdmUgYWxzbyBpbmNvcnBvcmF0ZWQgY2hhbmdlcyB0bw0KPiBkaXNhYmxlIERB
-QyBhbmQgYXV0b3BvbGxpbmcgZm9yIHlvdXIgaW50ZWwgU29DOg0KPiANCj4gaHR0cHM6Ly9ldXIw
-MS5zYWZlbGlua3MucHJvdGVjdGlvbi5vdXRsb29rLmNvbS8/dXJsPWh0dHBzJTNBJTJGJTJGZ2l0
-aHViLmNvDQo+IG0lMkZyLQ0KPiB2aWduZXNoJTJGbGludXglMkZjb21taXRzJTJGcXNwaSZhbXA7
-ZGF0YT0wMiU3QzAxJTdDa3VsZGVlcC5zaW5naCUNCj4gNDBueHAuY29tJTdDY2JkMTRhYzUyN2Fl
-NDI5OGEyODgwOGQ3OTk4MjE5ZTYlN0M2ODZlYTFkM2JjMmI0YzZmYQ0KPiA5MmNkOTljNWMzMDE2
-MzUlN0MwJTdDMCU3QzYzNzE0NjY1NjM2NTg3MjYzOCZhbXA7c2RhdGE9akFSN2xtcnkNCj4gUjlm
-ZHFGM2U0QTJkUXpGMFEwZll4TXZNN3NOaHg4bHZveTAlM0QmYW1wO3Jlc2VydmVkPTANCj4gDQo+
-IChUb3AgdHdvIHBhdGNoZXMgYXJlIG9mIGludGVyZXN0KQ0KPiANCj4gSSBoYXZlIHRlc3RlZCBi
-b3RoIERBQyBhbmQgSU5EQUMgbW9kZSB3aXRoIHMyNWZsIGZsYXNoIGFuZCBldmVyeXRoaW5nIHNl
-ZW1zDQo+IHRvIGJlIGZpbmUuIENvdWxkIHlvdSByZSB0ZXN0IHRoZSBkcml2ZXIgb24geW91ciBT
-b0M/IEZlZWwgZnJlZSB0byBmb2xkIGl0IGludG8NCj4geW91ciBzZXJpZXMgaWYgZXZlcnl0aGlu
-ZyB3b3Jrcy4NCg0KSXMgSkZGUzIvVUJJRlMgYSB2YWxpZCB1c2UgY2FzZSBoZXJlPyBBbmQgd2Vy
-ZSB5b3UgYWJsZSB0byB0ZXN0IHRoZSBzYW1lPw0KSSBzZWUgZmV3IGlzc3VlcyB3aXRoIFNwYW5z
-aW9uIGZsYXNoZXMgKHMyNWZzKSBpbiBmcmFtZXdvcmsgYW5kIGNvdWxkbuKAmXQgbWFrZSBGUyB1
-dGlsaXRpZXMgcnVuLg0KT24gdGhlIG90aGVyIGhhbmQsIGZpbGUgc3lzdGVtcyBvbiBvdGhlciBm
-bGFzaGVzIChleDogbWljcm9uLCBtdDI1cXUpIGFyZSBzaG93aW5nIHBvc2l0aXZlIHJlc3VsdHMu
-DQoNClRoYW5rcw0KS3VsZGVlcA0KDQo+IA0KPiBSZWdhcmRzDQo+IFZpZ25lc2gNCj4gDQo+IA0K
-DQo=
+
+
+On 23/01/20 12:54 pm, Kuldeep Singh wrote:
+> Hi Vignesh,
+> 
+>> -----Original Message-----
+>> From: linux-kernel-owner@vger.kernel.org <linux-kernel-
+>> owner@vger.kernel.org> On Behalf Of Vignesh Raghavendra
+>> Sent: Wednesday, January 15, 2020 11:43 AM
+>> To: Ramuthevar,Vadivel MuruganX
+>> <vadivel.muruganx.ramuthevar@linux.intel.com>; broonie@kernel.org; linux-
+>> spi@vger.kernel.org; linux-kernel@vger.kernel.org
+>> Cc: robh+dt@kernel.org; dan.carpenter@oracle.com;
+>> cheol.yong.kim@intel.com; qi-ming.wu@intel.com
+>> Subject: [EXT] Re: [PATCH v6 0/2] spi: cadence-quadpsi: Add support for the
+>> Cadence QSPI controller
+>>
+>> Caution: EXT Email
+>>
+>> Hi,
+>>
+>> On 12/30/2019 1:11 PM, Ramuthevar,Vadivel MuruganX wrote:
+>>> Add support for the Cadence QSPI controller. This controller is
+>>> present in the Intel Lightning Mountain(LGM) SoCs, Altera and TI SoCs.
+>>> This driver has been tested on the Intel LGM SoCs.
+>>>
+>>> This driver does not support generic SPI and also the implementation
+>>> only supports spi-mem interface to replace the existing driver in
+>>> mtd/spi-nor/cadence-quadspi.c, the existing driver only support
+>>> SPI-NOR flash memory.
+>>>
+>>
+>>
+>>
+>> I am finally able to get spi-mem based cadence-quaspi driver working on TI
+>> platforms with DMA and DAC mode. I have also incorporated changes to
+>> disable DAC and autopolling for your intel SoC:
+>>
+>> https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgithub.co
+>> m%2Fr-
+>> vignesh%2Flinux%2Fcommits%2Fqspi&amp;data=02%7C01%7Ckuldeep.singh%
+>> 40nxp.com%7Ccbd14ac527ae4298a28808d7998219e6%7C686ea1d3bc2b4c6fa
+>> 92cd99c5c301635%7C0%7C0%7C637146656365872638&amp;sdata=jAR7lmry
+>> R9fdqF3e4A2dQzF0Q0fYxMvM7sNhx8lvoy0%3D&amp;reserved=0
+>>
+>> (Top two patches are of interest)
+>>
+>> I have tested both DAC and INDAC mode with s25fl flash and everything seems
+>> to be fine. Could you re test the driver on your SoC? Feel free to fold it into
+>> your series if everything works.
+> 
+> Is JFFS2/UBIFS a valid use case here? And were you able to test the same?
+> I see few issues with Spansion flashes (s25fs) in framework and couldn’t make FS utilities run.
+> On the other hand, file systems on other flashes (ex: micron, mt25qu) are showing positive results.
+> 
+
+I did test with s25fl512s with UBIFS and did not see any issue. Could
+you try with latest linux master or linux next? There were couple of
+fixes in the last -rc related to spansion flashes?
+
+[1]
+https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git/commit/?h=mtd/fixes&id=440b6d50254bdbd84c2a665c7f53ec69dd741a4f
+[2]https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git/commit/?h=mtd/fixes&id=da2ef8124f20b4ce18d1d3d24fc7b88e687e10bb
+
+> Thanks
+> Kuldeep
+> 
+>>
+>> Regards
+>> Vignesh
+>>
+>>
+> 
+
+-- 
+Regards
+Vignesh

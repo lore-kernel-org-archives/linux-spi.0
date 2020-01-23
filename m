@@ -1,58 +1,110 @@
-From: "Ramuthevar, Vadivel MuruganX"
-        <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH v7 2/2] spi: cadence-quadpsi: Add support for the Cadence
- QSPI controller
-Date: Thu, 23 Jan 2020 18:06:59 +0800
-Message-ID: <99ab6210-c9d3-c332-336a-a3d4877c8d6f@linux.intel.com>
-References: <20200122091340.43986-1-vadivel.muruganx.ramuthevar@linux.intel.com>
- <20200122091340.43986-3-vadivel.muruganx.ramuthevar@linux.intel.com>
- <617ec5c7-59a0-1e09-bdd7-126a5792889d@ti.com>
- <1aedd2ad-5795-2500-286f-fb55209991f8@linux.intel.com>
- <a4b33129-5ac3-d4d1-c8ba-f170f0f9ee03@ti.com>
+From: Kuldeep Singh <kuldeep.singh@nxp.com>
+Subject: RE: [EXT] Re: [PATCH v6 0/2] spi: cadence-quadpsi: Add support for
+ the Cadence QSPI controller
+Date: Thu, 23 Jan 2020 11:37:09 +0000
+Message-ID: <AM6PR0402MB35573B2313C7FB81D747ABA6E00F0@AM6PR0402MB3557.eurprd04.prod.outlook.com>
+References: <20191230074102.50982-1-vadivel.muruganx.ramuthevar@linux.intel.com>
+ <860aecbc-22d3-c9ce-3570-44115d6e81b2@ti.com>
+ <AM0PR0402MB355668F205AD711D2059CDB5E00F0@AM0PR0402MB3556.eurprd04.prod.outlook.com>
+ <40ee10f1-0b30-155c-c165-1baa57a22109@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org,
-        cheol.yong.kim-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, qi-ming.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
-To: Vignesh Raghavendra <vigneshr-l0cyMroinI0@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <a4b33129-5ac3-d4d1-c8ba-f170f0f9ee03-l0cyMroinI0@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
+        "cheol.yong.kim@intel.com" <cheol.yong.kim@intel.com>,
+        "qi-ming.wu@intel.com" <qi-ming.wu@intel.com>
+To: Vignesh Raghavendra <vigneshr@ti.com>,
+        "Ramuthevar,Vadivel MuruganX"
+        <vadivel.muruganx.ramuthevar@linux.intel.com>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <40ee10f1-0b30-155c-c165-1baa57a22109@ti.com>
 Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi,
-
-On 23/1/2020 5:58 PM, Vignesh Raghavendra wrote:
->
-> On 23/01/20 3:14 pm, Ramuthevar, Vadivel MuruganX wrote:
->>>> +};
->>>> +
->>>> +struct spi_mem_op_cadence {
->>>> +    const void    *tx_buf;
->>>> +    void        *rx_buf;
->>>> +    u32        len;
->>>> +    u32        tx_nbits:3;
->>>> +    u32        rx_nbits:3;
->>>> +};
->>>> +
->>> Please drop thesee.. See further below for more info.
->> it's required for qspi-nand.
-> I don't see a need to mimic fields of spi_mem_op inside this driver. Why
-> not use them directly where needed?
->
-> Looking at the patch:
->
-> rx_nbits is never used.
-> tx_nbits is assigned value but never used
-> rx_buf is never used
->
-> tx_buf aliases to addrbuf which can be easily derived from op->addr.val
->
-Yes, I have already derived, only placing the correct function to be 
-checked and added.
-Regards
-Vadivel
->
->
+SGkgVmlnbmVzaCwNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBWaWdu
+ZXNoIFJhZ2hhdmVuZHJhIDx2aWduZXNockB0aS5jb20+DQo+IFNlbnQ6IFRodXJzZGF5LCBKYW51
+YXJ5IDIzLCAyMDIwIDE6MTcgUE0NCj4gVG86IEt1bGRlZXAgU2luZ2ggPGt1bGRlZXAuc2luZ2hA
+bnhwLmNvbT47IFJhbXV0aGV2YXIsVmFkaXZlbCBNdXJ1Z2FuWA0KPiA8dmFkaXZlbC5tdXJ1Z2Fu
+eC5yYW11dGhldmFyQGxpbnV4LmludGVsLmNvbT47IGJyb29uaWVAa2VybmVsLm9yZzsgbGludXgt
+DQo+IHNwaUB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcNCj4g
+Q2M6IHJvYmgrZHRAa2VybmVsLm9yZzsgZGFuLmNhcnBlbnRlckBvcmFjbGUuY29tOw0KPiBjaGVv
+bC55b25nLmtpbUBpbnRlbC5jb207IHFpLW1pbmcud3VAaW50ZWwuY29tDQo+IFN1YmplY3Q6IFJl
+OiBbRVhUXSBSZTogW1BBVENIIHY2IDAvMl0gc3BpOiBjYWRlbmNlLXF1YWRwc2k6IEFkZCBzdXBw
+b3J0IGZvcg0KPiB0aGUgQ2FkZW5jZSBRU1BJIGNvbnRyb2xsZXINCj4gDQo+IENhdXRpb246IEVY
+VCBFbWFpbA0KPiANCj4gT24gMjMvMDEvMjAgMTI6NTQgcG0sIEt1bGRlZXAgU2luZ2ggd3JvdGU6
+DQo+ID4gSGkgVmlnbmVzaCwNCj4gPg0KPiA+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0K
+PiA+PiBGcm9tOiBsaW51eC1rZXJuZWwtb3duZXJAdmdlci5rZXJuZWwub3JnIDxsaW51eC1rZXJu
+ZWwtDQo+ID4+IG93bmVyQHZnZXIua2VybmVsLm9yZz4gT24gQmVoYWxmIE9mIFZpZ25lc2ggUmFn
+aGF2ZW5kcmENCj4gPj4gU2VudDogV2VkbmVzZGF5LCBKYW51YXJ5IDE1LCAyMDIwIDExOjQzIEFN
+DQo+ID4+IFRvOiBSYW11dGhldmFyLFZhZGl2ZWwgTXVydWdhblgNCj4gPj4gPHZhZGl2ZWwubXVy
+dWdhbngucmFtdXRoZXZhckBsaW51eC5pbnRlbC5jb20+OyBicm9vbmllQGtlcm5lbC5vcmc7DQo+
+ID4+IGxpbnV4LSBzcGlAdmdlci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwu
+b3JnDQo+ID4+IENjOiByb2JoK2R0QGtlcm5lbC5vcmc7IGRhbi5jYXJwZW50ZXJAb3JhY2xlLmNv
+bTsNCj4gPj4gY2hlb2wueW9uZy5raW1AaW50ZWwuY29tOyBxaS1taW5nLnd1QGludGVsLmNvbQ0K
+PiA+PiBTdWJqZWN0OiBbRVhUXSBSZTogW1BBVENIIHY2IDAvMl0gc3BpOiBjYWRlbmNlLXF1YWRw
+c2k6IEFkZCBzdXBwb3J0DQo+ID4+IGZvciB0aGUgQ2FkZW5jZSBRU1BJIGNvbnRyb2xsZXINCj4g
+Pj4NCj4gPj4gQ2F1dGlvbjogRVhUIEVtYWlsDQo+ID4+DQo+ID4+IEhpLA0KPiA+Pg0KPiA+PiBP
+biAxMi8zMC8yMDE5IDE6MTEgUE0sIFJhbXV0aGV2YXIsVmFkaXZlbCBNdXJ1Z2FuWCB3cm90ZToN
+Cj4gPj4+IEFkZCBzdXBwb3J0IGZvciB0aGUgQ2FkZW5jZSBRU1BJIGNvbnRyb2xsZXIuIFRoaXMg
+Y29udHJvbGxlciBpcw0KPiA+Pj4gcHJlc2VudCBpbiB0aGUgSW50ZWwgTGlnaHRuaW5nIE1vdW50
+YWluKExHTSkgU29DcywgQWx0ZXJhIGFuZCBUSSBTb0NzLg0KPiA+Pj4gVGhpcyBkcml2ZXIgaGFz
+IGJlZW4gdGVzdGVkIG9uIHRoZSBJbnRlbCBMR00gU29Dcy4NCj4gPj4+DQo+ID4+PiBUaGlzIGRy
+aXZlciBkb2VzIG5vdCBzdXBwb3J0IGdlbmVyaWMgU1BJIGFuZCBhbHNvIHRoZSBpbXBsZW1lbnRh
+dGlvbg0KPiA+Pj4gb25seSBzdXBwb3J0cyBzcGktbWVtIGludGVyZmFjZSB0byByZXBsYWNlIHRo
+ZSBleGlzdGluZyBkcml2ZXIgaW4NCj4gPj4+IG10ZC9zcGktbm9yL2NhZGVuY2UtcXVhZHNwaS5j
+LCB0aGUgZXhpc3RpbmcgZHJpdmVyIG9ubHkgc3VwcG9ydA0KPiA+Pj4gU1BJLU5PUiBmbGFzaCBt
+ZW1vcnkuDQo+ID4+Pg0KPiA+Pg0KPiA+Pg0KPiA+Pg0KPiA+PiBJIGFtIGZpbmFsbHkgYWJsZSB0
+byBnZXQgc3BpLW1lbSBiYXNlZCBjYWRlbmNlLXF1YXNwaSBkcml2ZXIgd29ya2luZw0KPiA+PiBv
+biBUSSBwbGF0Zm9ybXMgd2l0aCBETUEgYW5kIERBQyBtb2RlLiBJIGhhdmUgYWxzbyBpbmNvcnBv
+cmF0ZWQNCj4gPj4gY2hhbmdlcyB0byBkaXNhYmxlIERBQyBhbmQgYXV0b3BvbGxpbmcgZm9yIHlv
+dXIgaW50ZWwgU29DOg0KPiA+Pg0KPiA+PiBodHRwczovL2V1cjAxLnNhZmVsaW5rcy5wcm90ZWN0
+aW9uLm91dGxvb2suY29tLz91cmw9aHR0cHMlM0ElMkYlMkZnaXQNCj4gPj4gaHViLmNvDQo+ID4+
+IG0lMkZyLQ0KPiA+Pg0KPiB2aWduZXNoJTJGbGludXglMkZjb21taXRzJTJGcXNwaSZhbXA7ZGF0
+YT0wMiU3QzAxJTdDa3VsZGVlcC5zaW5naCUNCj4gPj4NCj4gNDBueHAuY29tJTdDY2JkMTRhYzUy
+N2FlNDI5OGEyODgwOGQ3OTk4MjE5ZTYlN0M2ODZlYTFkM2JjMmI0YzZmYQ0KPiA+Pg0KPiA5MmNk
+OTljNWMzMDE2MzUlN0MwJTdDMCU3QzYzNzE0NjY1NjM2NTg3MjYzOCZhbXA7c2RhdGE9akFSN2xt
+cnkNCj4gPj4gUjlmZHFGM2U0QTJkUXpGMFEwZll4TXZNN3NOaHg4bHZveTAlM0QmYW1wO3Jlc2Vy
+dmVkPTANCj4gPj4NCj4gPj4gKFRvcCB0d28gcGF0Y2hlcyBhcmUgb2YgaW50ZXJlc3QpDQo+ID4+
+DQo+ID4+IEkgaGF2ZSB0ZXN0ZWQgYm90aCBEQUMgYW5kIElOREFDIG1vZGUgd2l0aCBzMjVmbCBm
+bGFzaCBhbmQgZXZlcnl0aGluZw0KPiA+PiBzZWVtcyB0byBiZSBmaW5lLiBDb3VsZCB5b3UgcmUg
+dGVzdCB0aGUgZHJpdmVyIG9uIHlvdXIgU29DPyBGZWVsIGZyZWUNCj4gPj4gdG8gZm9sZCBpdCBp
+bnRvIHlvdXIgc2VyaWVzIGlmIGV2ZXJ5dGhpbmcgd29ya3MuDQo+ID4NCj4gPiBJcyBKRkZTMi9V
+QklGUyBhIHZhbGlkIHVzZSBjYXNlIGhlcmU/IEFuZCB3ZXJlIHlvdSBhYmxlIHRvIHRlc3QgdGhl
+IHNhbWU/DQo+ID4gSSBzZWUgZmV3IGlzc3VlcyB3aXRoIFNwYW5zaW9uIGZsYXNoZXMgKHMyNWZz
+KSBpbiBmcmFtZXdvcmsgYW5kIGNvdWxkbuKAmXQNCj4gbWFrZSBGUyB1dGlsaXRpZXMgcnVuLg0K
+PiA+IE9uIHRoZSBvdGhlciBoYW5kLCBmaWxlIHN5c3RlbXMgb24gb3RoZXIgZmxhc2hlcyAoZXg6
+IG1pY3JvbiwgbXQyNXF1KSBhcmUNCj4gc2hvd2luZyBwb3NpdGl2ZSByZXN1bHRzLg0KPiA+DQo+
+IA0KPiBJIGRpZCB0ZXN0IHdpdGggczI1Zmw1MTJzIHdpdGggVUJJRlMgYW5kIGRpZCBub3Qgc2Vl
+IGFueSBpc3N1ZS4gDQoNClRoYW5rcyBWaWduZXNoIGZvciB0aGlzIGNvbmZpcm1hdGlvbi4NCg0K
+PkNvdWxkIHlvdSB0cnkgd2l0aCBsYXRlc3QgbGludXggbWFzdGVyIG9yIGxpbnV4IG5leHQ/IFRo
+ZXJlIHdlcmUgY291cGxlIG9mIGZpeGVzIGluIHRoZSBsYXN0IC1yYw0KPiByZWxhdGVkIHRvIHNw
+YW5zaW9uIGZsYXNoZXM/DQoNClllcywgSSBoYXZlIGFscmVhZHkgYXBwbGllZCB0aG9zZSBwYXRj
+aGVzIGFuZCBzdGlsbCBmYWNpbmcgdGhpcyBpc3N1ZS4NCkkgYW0gdGVzdGluZyB3aXRoIHMyNWZz
+NTEycyBhbmQgb25seSBhYmxlIHRvIG1ha2UgaXQgd29yayBvbiAxYml0IG1vZGUgYW5kIHRoYXQg
+dG9vIGJ5IHNraXBwaW5nIFNGRFAuDQpCYXNpYyByZWFkL3dyaXRlIHdvcmtzIG9uIG90aGVyIG1v
+ZGVzIGJ1dCBub3QgRlMgdXRpbGl0aWVzLg0KQ291bGQgeW91IHBsZWFzZSBzaGFyZSBhbnkgcG9p
+bnRlciB0byBsb29rIGludG8gd2hpY2ggZGlyZWN0aW9uLiBUaGFua3MgaW4gYWR2YW5jZS4NCg0K
+VGhhbmtzDQpLdWxkZWVwDQoNCj4gDQo+IFsxXQ0KPiBodHRwczovL2V1cjAxLnNhZmVsaW5rcy5w
+cm90ZWN0aW9uLm91dGxvb2suY29tLz91cmw9aHR0cHMlM0ElMkYlMkZnaXQua2VybmUNCj4gbC5v
+cmclMkZwdWIlMkZzY20lMkZsaW51eCUyRmtlcm5lbCUyRmdpdCUyRm10ZCUyRmxpbnV4LmdpdCUy
+RmNvbW1pdA0KPiAlMkYlM0ZoJTNEbXRkJTJGZml4ZXMlMjZpZCUzRDQ0MGI2ZDUwMjU0YmRiZDg0
+YzJhNjY1YzdmNTNlYzY5ZGQNCj4gNzQxYTRmJmFtcDtkYXRhPTAyJTdDMDElN0NrdWxkZWVwLnNp
+bmdoJTQwbnhwLmNvbSU3Q2VlMzQ1YmRmOWY2NTQNCj4gNGFjOWY0NTA4ZDc5ZmQ4NjNkOSU3QzY4
+NmVhMWQzYmMyYjRjNmZhOTJjZDk5YzVjMzAxNjM1JTdDMCU3QzAlNw0KPiBDNjM3MTUzNjI0MDQx
+MzMwNzc0JmFtcDtzZGF0YT1PeUtHbDJqbjVKRHE1S0NhVnJ4QW5VaDRxU3lubUFoUyUNCj4gMkZl
+RmlPeEpTS3RVJTNEJmFtcDtyZXNlcnZlZD0wDQo+IFsyXWh0dHBzOi8vZXVyMDEuc2FmZWxpbmtz
+LnByb3RlY3Rpb24ub3V0bG9vay5jb20vP3VybD1odHRwcyUzQSUyRiUyRmdpdC5rZXINCj4gbmVs
+Lm9yZyUyRnB1YiUyRnNjbSUyRmxpbnV4JTJGa2VybmVsJTJGZ2l0JTJGbXRkJTJGbGludXguZ2l0
+JTJGY29tbQ0KPiBpdCUyRiUzRmglM0RtdGQlMkZmaXhlcyUyNmlkJTNEZGEyZWY4MTI0ZjIwYjRj
+ZTE4ZDFkM2QyNGZjN2I4OGU2OA0KPiA3ZTEwYmImYW1wO2RhdGE9MDIlN0MwMSU3Q2t1bGRlZXAu
+c2luZ2glNDBueHAuY29tJTdDZWUzNDViZGY5ZjY1DQo+IDQ0YWM5ZjQ1MDhkNzlmZDg2M2Q5JTdD
+Njg2ZWExZDNiYzJiNGM2ZmE5MmNkOTljNWMzMDE2MzUlN0MwJTdDMCUNCj4gN0M2MzcxNTM2MjQw
+NDEzMzA3NzQmYW1wO3NkYXRhPUJUUnpXV1kyejZuWm5jeWt0RERJZEpGd1lUcDQxUyUyDQo+IEJ1
+aDk5UWFKNjBlMU0lM0QmYW1wO3Jlc2VydmVkPTANCj4gDQo+ID4gVGhhbmtzDQo+ID4gS3VsZGVl
+cA0KPiA+DQo+ID4+DQo+ID4+IFJlZ2FyZHMNCj4gPj4gVmlnbmVzaA0KPiA+Pg0KPiA+Pg0KPiA+
+DQo+IA0KPiAtLQ0KPiBSZWdhcmRzDQo+IFZpZ25lc2gNCg==

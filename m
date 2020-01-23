@@ -1,22 +1,45 @@
-From: patchwork-bot+linux-spi-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Subject: Patchwork housekeeping for: spi-devel-general
-Date: Wed, 22 Jan 2020 23:00:12 +0000
-Message-ID: <157973401211.21053.4337557708112394617.git-patchwork-housekeeping@kernel.org>
+From: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+Subject: [PATCH v2 0/2] SPI bus multiplexing
+Date: Thu, 23 Jan 2020 14:23:15 +1300
+Message-ID: <20200123012317.14808-1-chris.packham@alliedtelesis.co.nz>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Content-Transfer-Encoding: quoted-printable
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Latest series: [v2] dt-bindings: spi: convert rockchip spi bindings to yaml (2020-01-22T22:45:54)
-  Superseding: [v1] dt-bindings: spi: convert rockchip spi bindings to yaml (2020-01-18T23:08:47):
-    [RFC,v1,1/3] dt-bindings: spi: convert rockchip spi bindings to yaml
-    [RFC,v1,2/3] dt-bindings: spi: spi-rockchip: add description for rk3308
-    [RFC,v1,3/3] dt-bindings: spi: spi-rockchip: add description for rk3328
+This is a revisit of two earlier efforts to add more complex mutliplexing=
+ to
+SPI busses.
 
+https://patchwork.kernel.org/patch/2706151/
+https://patchwork.kernel.org/patch/10897255/
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/pwbot
+This version makes use of the general purpose mux controller which simpli=
+fies
+things greatly.
+
+One outstanding problem is the need for the spi-max-frequency on the mux
+device. This is not used for anything and is just needed to satisfy the s=
+pi
+driver infrastructure which expects all spi devices to have this property=
+.
+
+Chris Packham (2):
+  dt-bindings: spi: Document binding for generic SPI multiplexer
+  spi: Add generic SPI multiplexer
+
+ .../devicetree/bindings/spi/spi-mux.yaml      |  84 ++++++++
+ drivers/spi/Kconfig                           |  12 ++
+ drivers/spi/Makefile                          |   1 +
+ drivers/spi/spi-mux.c                         | 189 ++++++++++++++++++
+ 4 files changed, 286 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-mux.yaml
+ create mode 100644 drivers/spi/spi-mux.c
+
+--=20
+2.25.0

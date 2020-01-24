@@ -1,135 +1,58 @@
-From: Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v2 1/2] dt-bindings: spi: Document binding for generic SPI multiplexer
-Date: Thu, 23 Jan 2020 07:51:37 -0600
-Message-ID: <CAL_JsqLvM34WSBE29beBgJj0jLA6P_UwQUbTuEQcYJgrkg3v1A@mail.gmail.com>
-References: <20200123012317.14808-1-chris.packham@alliedtelesis.co.nz> <20200123012317.14808-2-chris.packham@alliedtelesis.co.nz>
+From: Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 12/33] spi: pxa2xx: Add support for Intel Comet
+ Lake-H
+Date: Thu, 23 Jan 2020 20:16:47 -0500
+Message-ID: <20200124011708.18232-12-sashal@kernel.org>
+References: <20200124011708.18232-1-sashal@kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200123012317.14808-2-chris.packham@alliedtelesis.co.nz>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Sasha Levin <sashal@kernel.org>, Mark Brown <broonie@kernel.org>,
+ Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+ linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane-mx.org@lists.infradead.org>
+In-Reply-To: <20200124011708.18232-1-sashal@kernel.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane-mx.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jan 22, 2020 at 7:24 PM Chris Packham
-<chris.packham@alliedtelesis.co.nz> wrote:
->
-> Add binding documentation for the spi-mux driver. This allows a generic
-> multiplexer to be used to provide access to multiple SPI devices.
->
-> Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
-> ---
->
-> Notes:
->     Changes in v2:
->     - update license
->     - make dt_binding_check clean
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 
-Sure about that?
+[ Upstream commit f0cf17ed76cffa365001d263ced1f130ec794917 ]
 
->
->  .../devicetree/bindings/spi/spi-mux.yaml      | 84 +++++++++++++++++++
->  1 file changed, 84 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-mux.yaml
->
-> diff --git a/Documentation/devicetree/bindings/spi/spi-mux.yaml b/Documentation/devicetree/bindings/spi/spi-mux.yaml
-> new file mode 100644
-> index 000000000000..4bdb31e2257e
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/spi-mux.yaml
-> @@ -0,0 +1,84 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/spi/spi-mux.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Generic SPI Multiplexer
-> +
-> +description: |
-> +  This binding describes a SPI bus multiplexer to route the SPI chip select
-> +  signals. This can be used when you need more devices than the SPI controller
-> +  has chip selects available. An example setup is shown in ASCII art; the actual
-> +  setting of the multiplexer to a channel needs to be done by a specific SPI mux
-> +  driver.
-> +
-> +        MOSI /--------------------------------+--------+--------+--------\
-> +        MISO |/------------------------------+|-------+|-------+|-------\|
-> +         SCL ||/----------------------------+||------+||------+||------\||
-> +             |||                            |||      |||      |||      |||
-> +      +------------+                        |||      |||      |||      |||
-> +      | SoC  |||   |                      +-+++-+  +-+++-+  +-+++-+  +-+++-+
-> +      |      |||   |                      | dev |  | dev |  | dev |  | dev |
-> +      |   +--+++-+ | CS-X  +------+\      +--+--+  +--+--+  +--+--+  +--+--+
-> +      |   | SPI  +-|-------+ Mux  |\\   CS-0 |        |        |        |
-> +      |   +------+ |       +--+---+\\\-------/   CS-1 |        |        |
-> +      |            |          |    \\\----------------/   CS-2 |        |
-> +      |   +------+ |          |     \\-------------------------/   CS-3 |
-> +      |   | ?    +-|----------/      \----------------------------------/
-> +      |   +------+ |
-> +      +------------+
-> +
-> +allOf:
-> +  - $ref: "/schemas/spi/spi-controller.yaml#"
-> +
-> +maintainers:
-> +  - Chris Packham <chris.packham@alliedtelesis.co.nz>
-> +
-> +properties:
-> +  compatible:
-> +    const: spi-mux
-> +
-> +  mux-controls:
-> +    maxItems: 1
-> +
-> +required:
-> +   - compatible
-> +   - reg
-> +   - spi-max-frequency
-> +   - mux-controls
-> +
-> +examples:
-> +   - |
-> +     mux: mux-controller {
-> +       compatible = "gpio-mux";
-> +       #mux-control-cells = <0>;
-> +
-> +       mux-gpios = <&gpio0 3 GPIO_ACTIVE_HIGH>;
-> +     };
-> +
-> +     spi {
-> +       spi-mux@0 {
-> +         compatible = "spi-mux";
-> +         #address-cells = <1>;
-> +         #size-cells = <0>;
-> +         reg = <0>;
-> +         spi-max-frequency = <100000000>;
-> +
-> +         mux-controls = <&mux>
+Add Intel Comet Lake-H LPSS SPI PCI IDs.
 
-Missing semicolon.
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Link: https://lore.kernel.org/r/20191029115802.6779-1-jarkko.nikula@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi-pxa2xx.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-> +
-> +         spi-flash@0 {
-> +           compatible = "jedec,spi-nor";
-> +           #address-cells = <1>;
-> +           #size-cells = <1>;
-> +           reg = <0>;
-> +           spi-max-frequency = <40000000>;
-> +         };
-> +
-> +         spi-device@1 {
-> +           compatible = "lineartechnology,ltc2488";
-> +           reg = <1>;
-> +           spi-max-frequency = <10000000>;
-> +         };
-> +       };
-> +     };
-> --
-> 2.25.0
->
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 9f92165fe09f8..2fd843b18297d 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1461,6 +1461,10 @@ static const struct pci_device_id pxa2xx_spi_pci_compound_match[] = {
+ 	{ PCI_VDEVICE(INTEL, 0x02aa), LPSS_CNL_SSP },
+ 	{ PCI_VDEVICE(INTEL, 0x02ab), LPSS_CNL_SSP },
+ 	{ PCI_VDEVICE(INTEL, 0x02fb), LPSS_CNL_SSP },
++	/* CML-H */
++	{ PCI_VDEVICE(INTEL, 0x06aa), LPSS_CNL_SSP },
++	{ PCI_VDEVICE(INTEL, 0x06ab), LPSS_CNL_SSP },
++	{ PCI_VDEVICE(INTEL, 0x06fb), LPSS_CNL_SSP },
+ 	/* TGL-LP */
+ 	{ PCI_VDEVICE(INTEL, 0xa0aa), LPSS_CNL_SSP },
+ 	{ PCI_VDEVICE(INTEL, 0xa0ab), LPSS_CNL_SSP },
+-- 
+2.20.1

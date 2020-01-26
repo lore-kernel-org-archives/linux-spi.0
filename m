@@ -1,61 +1,126 @@
-From: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 5/5] arm64: dts: enable fspi in imx8mm dts
-Date: Sun, 26 Jan 2020 08:09:12 -0600
-Message-ID: <20200126140913.2139260-5-aford173@gmail.com>
+From: Adam Ford <aford173@gmail.com>
+Subject: [PATCH 2/5] spi: fspi: dynamically alloc AHB memory
+Date: Sun, 26 Jan 2020 08:09:09 -0600
+Message-ID: <20200126140913.2139260-2-aford173@gmail.com>
 References: <20200126140913.2139260-1-aford173@gmail.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: han.xu-3arQi8VN3Tc@public.gmane.org, Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Yogesh Gaur <yogeshgaur.83-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Ashish Kumar <ashish.kumar-3arQi8VN3Tc@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        Pengutronix Kernel Team <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        NXP Linux Team <linux-imx-3arQi8VN3Tc@public.gmane.org>,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200126140913.2139260-1-aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: han.xu@nxp.com, Adam Ford <aford173@gmail.com>,
+        Yogesh Gaur <yogeshgaur.83@gmail.com>,
+        Ashish Kumar <ashish.kumar@nxp.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+To: linux-spi@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20200126140913.2139260-1-aford173@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Pull in upstream patch from NXP repo to:
-enable fspi in imx8mm DT file
+From: Han Xu <han.xu@nxp.com>
 
-Signed-off-by: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Han Xu <han.xu-3arQi8VN3Tc@public.gmane.org>
+Apply patch from NXP upstream repo to
+dynamically allocate AHB memory as needed.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm.dtsi b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-index 1e5e11592f7b..679769fe6cab 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-@@ -558,7 +558,21 @@ aips3: bus@30800000 {
- 			compatible = "simple-bus";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
--			ranges = <0x30800000 0x30800000 0x400000>;
-+			ranges = <0x30800000 0x30800000 0x400000>,
-+				 <0x8000000 0x8000000 0x10000000>;
-+
-+			flexspi: spi@30bb0000 {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				compatible = "nxp,imx8mm-fspi";
-+				reg = <0x30bb0000 0x10000>, <0x8000000 0x10000000>;
-+				reg-names = "fspi_base", "fspi_mmap";
-+				interrupts = <GIC_SPI 107 IRQ_TYPE_LEVEL_HIGH>;
-+				clocks = <&clk IMX8MM_CLK_QSPI_ROOT>,
-+					 <&clk IMX8MM_CLK_QSPI_ROOT>;
-+				clock-names = "fspi", "fspi_en";
-+				status = "disabled";
-+			};
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Signed-off-by: Han Xu <han.xu@nxp.com>
+
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index 00c7899428a1..23abf5ae318e 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -307,6 +307,7 @@
  
- 			ecspi1: spi@30820000 {
- 				compatible = "fsl,imx8mm-ecspi", "fsl,imx51-ecspi";
+ #define POLL_TOUT		5000
+ #define NXP_FSPI_MAX_CHIPSELECT		4
++#define NXP_FSPI_MIN_IOMAP	SZ_4M
+ 
+ struct nxp_fspi_devtype_data {
+ 	unsigned int rxfifo;
+@@ -345,6 +346,8 @@ struct nxp_fspi {
+ 	void __iomem *ahb_addr;
+ 	u32 memmap_phy;
+ 	u32 memmap_phy_size;
++	u32 memmap_start;
++	u32 memmap_len;
+ 	struct clk *clk, *clk_en;
+ 	struct device *dev;
+ 	struct completion c;
+@@ -657,12 +660,35 @@ static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi)
+ 	f->selected = spi->chip_select;
+ }
+ 
+-static void nxp_fspi_read_ahb(struct nxp_fspi *f, const struct spi_mem_op *op)
++static int nxp_fspi_read_ahb(struct nxp_fspi *f, const struct spi_mem_op *op)
+ {
++	u32 start = op->addr.val;
+ 	u32 len = op->data.nbytes;
+ 
++	/* if necessary, ioremap before AHB read */
++	if ((!f->ahb_addr) || start < f->memmap_start ||
++	     start + len > f->memmap_start + f->memmap_len) {
++		if (f->ahb_addr)
++			iounmap(f->ahb_addr);
++
++		f->memmap_start = start;
++		f->memmap_len = len > NXP_FSPI_MIN_IOMAP ?
++				len : NXP_FSPI_MIN_IOMAP;
++
++		f->ahb_addr = ioremap_wc(f->memmap_phy + f->memmap_start,
++					 f->memmap_len);
++
++		if (!f->ahb_addr) {
++			dev_err(f->dev, "failed to alloc memory\n");
++			return -ENOMEM;
++		}
++	}
++
+ 	/* Read out the data directly from the AHB buffer. */
+-	memcpy_fromio(op->data.buf.in, (f->ahb_addr + op->addr.val), len);
++	memcpy_fromio(op->data.buf.in,
++		      f->ahb_addr + start - f->memmap_start, len);
++
++	return 0;
+ }
+ 
+ static void nxp_fspi_fill_txfifo(struct nxp_fspi *f,
+@@ -822,7 +848,7 @@ static int nxp_fspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	 */
+ 	if (op->data.nbytes > (f->devtype_data->rxfifo - 4) &&
+ 	    op->data.dir == SPI_MEM_DATA_IN) {
+-		nxp_fspi_read_ahb(f, op);
++		err = nxp_fspi_read_ahb(f, op);
+ 	} else {
+ 		if (op->data.nbytes && op->data.dir == SPI_MEM_DATA_OUT)
+ 			nxp_fspi_fill_txfifo(f, op);
+@@ -992,9 +1018,8 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 
+ 	/* find the resources - controller memory mapped space */
+ 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "fspi_mmap");
+-	f->ahb_addr = devm_ioremap_resource(dev, res);
+-	if (IS_ERR(f->ahb_addr)) {
+-		ret = PTR_ERR(f->ahb_addr);
++	if (IS_ERR(res)) {
++		ret = PTR_ERR(res);
+ 		goto err_put_ctrl;
+ 	}
+ 
+@@ -1073,6 +1098,9 @@ static int nxp_fspi_remove(struct platform_device *pdev)
+ 
+ 	mutex_destroy(&f->lock);
+ 
++	if (f->ahb_addr)
++		iounmap(f->ahb_addr);
++
+ 	return 0;
+ }
+ 
 -- 
 2.24.0

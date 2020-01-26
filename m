@@ -1,47 +1,109 @@
-From: Adam Ford <aford173@gmail.com>
-Subject: [PATCH 4/5] dt-bindings: spi: spi-nxp-fspi: Add support for imx8mm, imx8qxp
-Date: Sun, 26 Jan 2020 08:09:11 -0600
-Message-ID: <20200126140913.2139260-4-aford173@gmail.com>
-References: <20200126140913.2139260-1-aford173@gmail.com>
+From: Chris Packham <Chris.Packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
+Subject: Re: [PATCH v2 1/2] dt-bindings: spi: Document binding for generic SPI
+ multiplexer
+Date: Sun, 26 Jan 2020 20:23:58 +0000
+Message-ID: <651803fbdea412ecde7cd352b080d41d9f0a2a33.camel@alliedtelesis.co.nz>
+References: <20200123012317.14808-1-chris.packham@alliedtelesis.co.nz>
+         <20200123012317.14808-2-chris.packham@alliedtelesis.co.nz>
+         <CAL_JsqLvM34WSBE29beBgJj0jLA6P_UwQUbTuEQcYJgrkg3v1A@mail.gmail.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: han.xu@nxp.com, Adam Ford <aford173@gmail.com>,
-        Yogesh Gaur <yogeshgaur.83@gmail.com>,
-        Ashish Kumar <ashish.kumar@nxp.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-To: linux-spi@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200126140913.2139260-1-aford173@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "mark.rutland-5wv7dgnIgG8@public.gmane.org" <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: "robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAL_JsqLvM34WSBE29beBgJj0jLA6P_UwQUbTuEQcYJgrkg3v1A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Language: en-US
+Content-ID: <AB389E764116794CA5C5D03E7E553173-aR5bhbO/t7M@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Add support for nxp,imx8qxp-fspi and nxp,imx8mm-fspi do the bindings
-document.
-
-Signed-off-by: Adam Ford <aford173@gmail.com>
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
-index 2cd67eb727d4..7ac60d9fe357 100644
---- a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
-@@ -2,6 +2,9 @@
- 
- Required properties:
-   - compatible : Should be "nxp,lx2160a-fspi"
-+			    "nxp,imx8qxp-fspi"
-+			    "nxp,imx8mm-fspi"
-+
-   - reg :        First contains the register location and length,
-                  Second contains the memory mapping address and length
-   - reg-names :  Should contain the resource reg names:
--- 
-2.24.0
+T24gVGh1LCAyMDIwLTAxLTIzIGF0IDA3OjUxIC0wNjAwLCBSb2IgSGVycmluZyB3cm90ZToNCj4g
+T24gV2VkLCBKYW4gMjIsIDIwMjAgYXQgNzoyNCBQTSBDaHJpcyBQYWNraGFtDQo+IDxjaHJpcy5w
+YWNraGFtQGFsbGllZHRlbGVzaXMuY28ubno+IHdyb3RlOg0KPiA+IA0KPiA+IEFkZCBiaW5kaW5n
+IGRvY3VtZW50YXRpb24gZm9yIHRoZSBzcGktbXV4IGRyaXZlci4gVGhpcyBhbGxvd3MgYSBnZW5l
+cmljDQo+ID4gbXVsdGlwbGV4ZXIgdG8gYmUgdXNlZCB0byBwcm92aWRlIGFjY2VzcyB0byBtdWx0
+aXBsZSBTUEkgZGV2aWNlcy4NCj4gPiANCj4gPiBTaWduZWQtb2ZmLWJ5OiBDaHJpcyBQYWNraGFt
+IDxjaHJpcy5wYWNraGFtQGFsbGllZHRlbGVzaXMuY28ubno+DQo+ID4gLS0tDQo+ID4gDQo+ID4g
+Tm90ZXM6DQo+ID4gICAgIENoYW5nZXMgaW4gdjI6DQo+ID4gICAgIC0gdXBkYXRlIGxpY2Vuc2UN
+Cj4gPiAgICAgLSBtYWtlIGR0X2JpbmRpbmdfY2hlY2sgY2xlYW4NCj4gDQo+IFN1cmUgYWJvdXQg
+dGhhdD8NCj4gDQoNCkkgd2FzIHdoZW4gSSB3cm90ZSB0aGF0LCBidXQgbm93IEkgdGhpbmsgSSBu
+ZWVkIHRvIGNvbnN1bHQgbXkgc3BlbGwNCmJvb2suDQoNCkl0IGFwcGVhcnMgdGhlIGluY2FudGF0
+aW9uIEkgc2hvdWxkIGJlIHVzaW5nIGlzDQoNCiAgbWFrZSBBUkNIPWFybSBkZWZjb25maWcNCiAg
+bWFrZSBBUkNIPWFybSBkdF9iaW5kaW5nX2NoZWNrIFwNCiAgICAgRFRfU0NIRU1BX0ZJTEVTPURv
+Y3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9zcGkvc3BpLW11eC55YW1sDQoNCkkgY2Fu
+IHNlZSB0aGUgc2ltcGxlIGZhaWx1cmVzIChub3Qgc3VyZSBob3cgSSBtaXNzZWQgdGhlbSkuIEJ1
+dCBvbmUNCnRoYXQgcmVtYWlucyBpczoNCg0KV2FybmluZyAoc3BpX2J1c19icmlkZ2UpOiAvZXhh
+bXBsZS0wL3NwaS9zcGktbXV4QDA6IG5vZGUgbmFtZSBmb3IgU1BJDQpidXNlcyBzaG91bGQgYmUg
+J3NwaScNCg0KSSBjb3VsZCBmaXggdGhhdCBieSBoYXZpbmcNCg0KIHNwaSB7DQogICAgc3BpQDAg
+ew0KICAgICAgIGNvbXBhdGlibGUgPSAic3BpLW11eCI7DQogICAgfTsNCiB9Ow0KDQpJcyB0aGF0
+IHdoYXQgd2Ugd2FudD8gT3Igc2hvdWxkIEkgYmUgYWRkaW5nIGF3YXJlbmVzcyBvZiBzcGktbXV4
+ZXMgdG8NCmR0Yz8NCg0KPiA+IA0KPiA+ICAuLi4vZGV2aWNldHJlZS9iaW5kaW5ncy9zcGkvc3Bp
+LW11eC55YW1sICAgICAgfCA4NCArKysrKysrKysrKysrKysrKysrDQo+ID4gIDEgZmlsZSBjaGFu
+Z2VkLCA4NCBpbnNlcnRpb25zKCspDQo+ID4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBEb2N1bWVudGF0
+aW9uL2RldmljZXRyZWUvYmluZGluZ3Mvc3BpL3NwaS1tdXgueWFtbA0KPiA+IA0KPiA+IGRpZmYg
+LS1naXQgYS9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3Mvc3BpL3NwaS1tdXgueWFt
+bCBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9zcGkvc3BpLW11eC55YW1sDQo+
+ID4gbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4gPiBpbmRleCAwMDAwMDAwMDAwMDAuLjRiZGIzMWUy
+MjU3ZQ0KPiA+IC0tLSAvZGV2L251bGwNCj4gPiArKysgYi9Eb2N1bWVudGF0aW9uL2RldmljZXRy
+ZWUvYmluZGluZ3Mvc3BpL3NwaS1tdXgueWFtbA0KPiA+IEBAIC0wLDAgKzEsODQgQEANCj4gPiAr
+IyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogKEdQTC0yLjAgT1IgQlNELTItQ2xhdXNlKQ0KPiA+
+ICslWUFNTCAxLjINCj4gPiArLS0tDQo+ID4gKyRpZDogaHR0cDovL2RldmljZXRyZWUub3JnL3Nj
+aGVtYXMvc3BpL3NwaS1tdXgueWFtbCMNCj4gPiArJHNjaGVtYTogaHR0cDovL2RldmljZXRyZWUu
+b3JnL21ldGEtc2NoZW1hcy9jb3JlLnlhbWwjDQo+ID4gKw0KPiA+ICt0aXRsZTogR2VuZXJpYyBT
+UEkgTXVsdGlwbGV4ZXINCj4gPiArDQo+ID4gK2Rlc2NyaXB0aW9uOiB8DQo+ID4gKyAgVGhpcyBi
+aW5kaW5nIGRlc2NyaWJlcyBhIFNQSSBidXMgbXVsdGlwbGV4ZXIgdG8gcm91dGUgdGhlIFNQSSBj
+aGlwIHNlbGVjdA0KPiA+ICsgIHNpZ25hbHMuIFRoaXMgY2FuIGJlIHVzZWQgd2hlbiB5b3UgbmVl
+ZCBtb3JlIGRldmljZXMgdGhhbiB0aGUgU1BJIGNvbnRyb2xsZXINCj4gPiArICBoYXMgY2hpcCBz
+ZWxlY3RzIGF2YWlsYWJsZS4gQW4gZXhhbXBsZSBzZXR1cCBpcyBzaG93biBpbiBBU0NJSSBhcnQ7
+IHRoZSBhY3R1YWwNCj4gPiArICBzZXR0aW5nIG9mIHRoZSBtdWx0aXBsZXhlciB0byBhIGNoYW5u
+ZWwgbmVlZHMgdG8gYmUgZG9uZSBieSBhIHNwZWNpZmljIFNQSSBtdXgNCj4gPiArICBkcml2ZXIu
+DQo+ID4gKw0KPiA+ICsgICAgICAgIE1PU0kgLy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tKy0tLS0tLS0tKy0tLS0tLS0tKy0tLS0tLS0tXA0KPiA+ICsgICAgICAgIE1JU08gfC8tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0rfC0tLS0tLS0rfC0tLS0tLS0rfC0tLS0tLS1cfA0K
+PiA+ICsgICAgICAgICBTQ0wgfHwvLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSt8fC0tLS0t
+LSt8fC0tLS0tLSt8fC0tLS0tLVx8fA0KPiA+ICsgICAgICAgICAgICAgfHx8ICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIHx8fCAgICAgIHx8fCAgICAgIHx8fCAgICAgIHx8fA0KPiA+ICsgICAg
+ICArLS0tLS0tLS0tLS0tKyAgICAgICAgICAgICAgICAgICAgICAgIHx8fCAgICAgIHx8fCAgICAg
+IHx8fCAgICAgIHx8fA0KPiA+ICsgICAgICB8IFNvQyAgfHx8ICAgfCAgICAgICAgICAgICAgICAg
+ICAgICArLSsrKy0rICArLSsrKy0rICArLSsrKy0rICArLSsrKy0rDQo+ID4gKyAgICAgIHwgICAg
+ICB8fHwgICB8ICAgICAgICAgICAgICAgICAgICAgIHwgZGV2IHwgIHwgZGV2IHwgIHwgZGV2IHwg
+IHwgZGV2IHwNCj4gPiArICAgICAgfCAgICstLSsrKy0rIHwgQ1MtWCAgKy0tLS0tLStcICAgICAg
+Ky0tKy0tKyAgKy0tKy0tKyAgKy0tKy0tKyAgKy0tKy0tKw0KPiA+ICsgICAgICB8ICAgfCBTUEkg
+ICstfC0tLS0tLS0rIE11eCAgfFxcICAgQ1MtMCB8ICAgICAgICB8ICAgICAgICB8ICAgICAgICB8
+DQo+ID4gKyAgICAgIHwgICArLS0tLS0tKyB8ICAgICAgICstLSstLS0rXFxcLS0tLS0tLS8gICBD
+Uy0xIHwgICAgICAgIHwgICAgICAgIHwNCj4gPiArICAgICAgfCAgICAgICAgICAgIHwgICAgICAg
+ICAgfCAgICBcXFwtLS0tLS0tLS0tLS0tLS0tLyAgIENTLTIgfCAgICAgICAgfA0KPiA+ICsgICAg
+ICB8ICAgKy0tLS0tLSsgfCAgICAgICAgICB8ICAgICBcXC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0vICAgQ1MtMyB8DQo+ID4gKyAgICAgIHwgICB8ID8gICAgKy18LS0tLS0tLS0tLS8gICAgICBc
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS8NCj4gPiArICAgICAgfCAgICstLS0t
+LS0rIHwNCj4gPiArICAgICAgKy0tLS0tLS0tLS0tLSsNCj4gPiArDQo+ID4gK2FsbE9mOg0KPiA+
+ICsgIC0gJHJlZjogIi9zY2hlbWFzL3NwaS9zcGktY29udHJvbGxlci55YW1sIyINCj4gPiArDQo+
+ID4gK21haW50YWluZXJzOg0KPiA+ICsgIC0gQ2hyaXMgUGFja2hhbSA8Y2hyaXMucGFja2hhbUBh
+bGxpZWR0ZWxlc2lzLmNvLm56Pg0KPiA+ICsNCj4gPiArcHJvcGVydGllczoNCj4gPiArICBjb21w
+YXRpYmxlOg0KPiA+ICsgICAgY29uc3Q6IHNwaS1tdXgNCj4gPiArDQo+ID4gKyAgbXV4LWNvbnRy
+b2xzOg0KPiA+ICsgICAgbWF4SXRlbXM6IDENCj4gPiArDQo+ID4gK3JlcXVpcmVkOg0KPiA+ICsg
+ICAtIGNvbXBhdGlibGUNCj4gPiArICAgLSByZWcNCj4gPiArICAgLSBzcGktbWF4LWZyZXF1ZW5j
+eQ0KPiA+ICsgICAtIG11eC1jb250cm9scw0KPiA+ICsNCj4gPiArZXhhbXBsZXM6DQo+ID4gKyAg
+IC0gfA0KPiA+ICsgICAgIG11eDogbXV4LWNvbnRyb2xsZXIgew0KPiA+ICsgICAgICAgY29tcGF0
+aWJsZSA9ICJncGlvLW11eCI7DQo+ID4gKyAgICAgICAjbXV4LWNvbnRyb2wtY2VsbHMgPSA8MD47
+DQo+ID4gKw0KPiA+ICsgICAgICAgbXV4LWdwaW9zID0gPCZncGlvMCAzIEdQSU9fQUNUSVZFX0hJ
+R0g+Ow0KPiA+ICsgICAgIH07DQo+ID4gKw0KPiA+ICsgICAgIHNwaSB7DQo+ID4gKyAgICAgICBz
+cGktbXV4QDAgew0KPiA+ICsgICAgICAgICBjb21wYXRpYmxlID0gInNwaS1tdXgiOw0KPiA+ICsg
+ICAgICAgICAjYWRkcmVzcy1jZWxscyA9IDwxPjsNCj4gPiArICAgICAgICAgI3NpemUtY2VsbHMg
+PSA8MD47DQo+ID4gKyAgICAgICAgIHJlZyA9IDwwPjsNCj4gPiArICAgICAgICAgc3BpLW1heC1m
+cmVxdWVuY3kgPSA8MTAwMDAwMDAwPjsNCj4gPiArDQo+ID4gKyAgICAgICAgIG11eC1jb250cm9s
+cyA9IDwmbXV4Pg0KPiANCj4gTWlzc2luZyBzZW1pY29sb24uDQo+IA0KPiA+ICsNCj4gPiArICAg
+ICAgICAgc3BpLWZsYXNoQDAgew0KPiA+ICsgICAgICAgICAgIGNvbXBhdGlibGUgPSAiamVkZWMs
+c3BpLW5vciI7DQo+ID4gKyAgICAgICAgICAgI2FkZHJlc3MtY2VsbHMgPSA8MT47DQo+ID4gKyAg
+ICAgICAgICAgI3NpemUtY2VsbHMgPSA8MT47DQo+ID4gKyAgICAgICAgICAgcmVnID0gPDA+Ow0K
+PiA+ICsgICAgICAgICAgIHNwaS1tYXgtZnJlcXVlbmN5ID0gPDQwMDAwMDAwPjsNCj4gPiArICAg
+ICAgICAgfTsNCj4gPiArDQo+ID4gKyAgICAgICAgIHNwaS1kZXZpY2VAMSB7DQo+ID4gKyAgICAg
+ICAgICAgY29tcGF0aWJsZSA9ICJsaW5lYXJ0ZWNobm9sb2d5LGx0YzI0ODgiOw0KPiA+ICsgICAg
+ICAgICAgIHJlZyA9IDwxPjsNCj4gPiArICAgICAgICAgICBzcGktbWF4LWZyZXF1ZW5jeSA9IDwx
+MDAwMDAwMD47DQo+ID4gKyAgICAgICAgIH07DQo+ID4gKyAgICAgICB9Ow0KPiA+ICsgICAgIH07
+DQo+ID4gLS0NCj4gPiAyLjI1LjANCj4gPiANCg==

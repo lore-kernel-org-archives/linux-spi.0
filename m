@@ -1,70 +1,52 @@
-From: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 1/5] spi: fspi: enable fspi on imx8qxp and imx8mm
-Date: Sun, 26 Jan 2020 08:09:08 -0600
-Message-ID: <20200126140913.2139260-1-aford173@gmail.com>
+From: Adam Ford <aford173@gmail.com>
+Subject: [PATCH 3/5] spi: spi-nxp-fspi: Enable the Octal Mode in MCR0
+Date: Sun, 26 Jan 2020 08:09:10 -0600
+Message-ID: <20200126140913.2139260-3-aford173@gmail.com>
+References: <20200126140913.2139260-1-aford173@gmail.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: han.xu-3arQi8VN3Tc@public.gmane.org, Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Yogesh Gaur <yogeshgaur.83-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Ashish Kumar <ashish.kumar-3arQi8VN3Tc@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        Pengutronix Kernel Team <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        NXP Linux Team <linux-imx-3arQi8VN3Tc@public.gmane.org>,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: han.xu@nxp.com, Adam Ford <aford173@gmail.com>,
+        Yogesh Gaur <yogeshgaur.83@gmail.com>,
+        Ashish Kumar <ashish.kumar@nxp.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+To: linux-spi@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20200126140913.2139260-1-aford173@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Han Xu <han.xu-3arQi8VN3Tc@public.gmane.org>
+From: Han Xu <han.xu@nxp.com>
 
-Pull in this patch from NXP's upstream repo to
-enable fspi on imx8qxp and imx8mm
+Apply patch from NXP upstream repo to
+Enable the octal combination mode in MCR0
 
-Signed-off-by: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Han Xu <han.xu-3arQi8VN3Tc@public.gmane.org>
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Signed-off-by: Han Xu <han.xu@nxp.com>
 
 diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index 8c5084a3a617..00c7899428a1 100644
+index 23abf5ae318e..019f40e2917c 100644
 --- a/drivers/spi/spi-nxp-fspi.c
 +++ b/drivers/spi/spi-nxp-fspi.c
-@@ -324,6 +324,22 @@ static const struct nxp_fspi_devtype_data lx2160a_data = {
- 	.little_endian = true,  /* little-endian    */
- };
+@@ -913,8 +913,9 @@ static int nxp_fspi_default_setup(struct nxp_fspi *f)
+ 	fspi_writel(f, FSPI_DLLBCR_OVRDEN, base + FSPI_DLLBCR);
  
-+static const struct nxp_fspi_devtype_data imx8mm_data = {
-+	.rxfifo = SZ_512,       /* (64  * 64 bits)  */
-+	.txfifo = SZ_1K,        /* (128 * 64 bits)  */
-+	.ahb_buf_size = SZ_2K,  /* (256 * 64 bits)  */
-+	.quirks = 0,
-+	.little_endian = true,  /* little-endian    */
-+};
-+
-+static const struct nxp_fspi_devtype_data imx8qxp_data = {
-+	.rxfifo = SZ_512,       /* (64  * 64 bits)  */
-+	.txfifo = SZ_1K,        /* (128 * 64 bits)  */
-+	.ahb_buf_size = SZ_2K,  /* (256 * 64 bits)  */
-+	.quirks = 0,
-+	.little_endian = true,  /* little-endian    */
-+};
-+
- struct nxp_fspi {
- 	void __iomem *iobase;
- 	void __iomem *ahb_addr;
-@@ -1076,6 +1092,8 @@ static int nxp_fspi_resume(struct device *dev)
+ 	/* enable module */
+-	fspi_writel(f, FSPI_MCR0_AHB_TIMEOUT(0xFF) | FSPI_MCR0_IP_TIMEOUT(0xFF),
+-		 base + FSPI_MCR0);
++	fspi_writel(f, FSPI_MCR0_AHB_TIMEOUT(0xFF) |
++		    FSPI_MCR0_IP_TIMEOUT(0xFF) | (u32) FSPI_MCR0_OCTCOMB_EN,
++		    base + FSPI_MCR0);
  
- static const struct of_device_id nxp_fspi_dt_ids[] = {
- 	{ .compatible = "nxp,lx2160a-fspi", .data = (void *)&lx2160a_data, },
-+	{ .compatible = "nxp,imx8mm-fspi", .data = (void *)&imx8mm_data, },
-+	{ .compatible = "nxp,imx8qxp-fspi", .data = (void *)&imx8qxp_data, },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, nxp_fspi_dt_ids);
+ 	/*
+ 	 * Disable same device enable bit and configure all slave devices
 -- 
 2.24.0

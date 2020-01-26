@@ -1,58 +1,70 @@
-From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.4 12/33] spi: pxa2xx: Add support for Intel Comet
- Lake-H
-Date: Thu, 23 Jan 2020 20:16:47 -0500
-Message-ID: <20200124011708.18232-12-sashal@kernel.org>
-References: <20200124011708.18232-1-sashal@kernel.org>
+From: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 1/5] spi: fspi: enable fspi on imx8qxp and imx8mm
+Date: Sun, 26 Jan 2020 08:09:08 -0600
+Message-ID: <20200126140913.2139260-1-aford173@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Sasha Levin <sashal@kernel.org>, Mark Brown <broonie@kernel.org>,
- Jarkko Nikula <jarkko.nikula@linux.intel.com>,
- linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane-mx.org@lists.infradead.org>
-In-Reply-To: <20200124011708.18232-1-sashal@kernel.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane-mx.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Content-Transfer-Encoding: 8bit
+Cc: han.xu-3arQi8VN3Tc@public.gmane.org, Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Yogesh Gaur <yogeshgaur.83-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Ashish Kumar <ashish.kumar-3arQi8VN3Tc@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        Pengutronix Kernel Team <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        NXP Linux Team <linux-imx-3arQi8VN3Tc@public.gmane.org>,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+From: Han Xu <han.xu-3arQi8VN3Tc@public.gmane.org>
 
-[ Upstream commit f0cf17ed76cffa365001d263ced1f130ec794917 ]
+Pull in this patch from NXP's upstream repo to
+enable fspi on imx8qxp and imx8mm
 
-Add Intel Comet Lake-H LPSS SPI PCI IDs.
+Signed-off-by: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Han Xu <han.xu-3arQi8VN3Tc@public.gmane.org>
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Link: https://lore.kernel.org/r/20191029115802.6779-1-jarkko.nikula@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/spi/spi-pxa2xx.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 9f92165fe09f8..2fd843b18297d 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1461,6 +1461,10 @@ static const struct pci_device_id pxa2xx_spi_pci_compound_match[] = {
- 	{ PCI_VDEVICE(INTEL, 0x02aa), LPSS_CNL_SSP },
- 	{ PCI_VDEVICE(INTEL, 0x02ab), LPSS_CNL_SSP },
- 	{ PCI_VDEVICE(INTEL, 0x02fb), LPSS_CNL_SSP },
-+	/* CML-H */
-+	{ PCI_VDEVICE(INTEL, 0x06aa), LPSS_CNL_SSP },
-+	{ PCI_VDEVICE(INTEL, 0x06ab), LPSS_CNL_SSP },
-+	{ PCI_VDEVICE(INTEL, 0x06fb), LPSS_CNL_SSP },
- 	/* TGL-LP */
- 	{ PCI_VDEVICE(INTEL, 0xa0aa), LPSS_CNL_SSP },
- 	{ PCI_VDEVICE(INTEL, 0xa0ab), LPSS_CNL_SSP },
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index 8c5084a3a617..00c7899428a1 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -324,6 +324,22 @@ static const struct nxp_fspi_devtype_data lx2160a_data = {
+ 	.little_endian = true,  /* little-endian    */
+ };
+ 
++static const struct nxp_fspi_devtype_data imx8mm_data = {
++	.rxfifo = SZ_512,       /* (64  * 64 bits)  */
++	.txfifo = SZ_1K,        /* (128 * 64 bits)  */
++	.ahb_buf_size = SZ_2K,  /* (256 * 64 bits)  */
++	.quirks = 0,
++	.little_endian = true,  /* little-endian    */
++};
++
++static const struct nxp_fspi_devtype_data imx8qxp_data = {
++	.rxfifo = SZ_512,       /* (64  * 64 bits)  */
++	.txfifo = SZ_1K,        /* (128 * 64 bits)  */
++	.ahb_buf_size = SZ_2K,  /* (256 * 64 bits)  */
++	.quirks = 0,
++	.little_endian = true,  /* little-endian    */
++};
++
+ struct nxp_fspi {
+ 	void __iomem *iobase;
+ 	void __iomem *ahb_addr;
+@@ -1076,6 +1092,8 @@ static int nxp_fspi_resume(struct device *dev)
+ 
+ static const struct of_device_id nxp_fspi_dt_ids[] = {
+ 	{ .compatible = "nxp,lx2160a-fspi", .data = (void *)&lx2160a_data, },
++	{ .compatible = "nxp,imx8mm-fspi", .data = (void *)&imx8mm_data, },
++	{ .compatible = "nxp,imx8qxp-fspi", .data = (void *)&imx8qxp_data, },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, nxp_fspi_dt_ids);
 -- 
-2.20.1
+2.24.0

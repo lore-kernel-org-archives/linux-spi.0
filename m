@@ -1,78 +1,43 @@
-From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v3 2/2] spi: Add generic SPI multiplexer
-Date: Thu, 30 Jan 2020 18:43:52 +0200
-Message-ID: <CAHp75Vd1i2rDwVcK54tox_5=q3b5HHjTa2dcsQqK_UE5ODcsVQ@mail.gmail.com>
-References: <20200127210415.5708-1-chris.packham@alliedtelesis.co.nz> <20200127210415.5708-3-chris.packham@alliedtelesis.co.nz>
+From: Mr Mark Donald <glenbrian25-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: I am expecting your urgent response
+Date: Thu, 30 Jan 2020 23:25:19 +0100
+Message-ID: <CAD39S0=LcYtO1Q9Dq384xSZ_3ny8A9_zWfV7UTNR5vh_50N4BQ@mail.gmail.com>
+Reply-To: markdonald265-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200127210415.5708-3-chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
-
-On Mon, Jan 27, 2020 at 11:04 PM Chris Packham
-<chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org> wrote:
->
-> Add a SPI device driver that sits in-band and provides a SPI controller
-> which supports chip selects via a mux-control. This enables extra SPI
-> devices to be connected with limited native chip selects.
-
-...
-
->  obj-$(CONFIG_SPI_MEM)                  += spi-mem.o
->  obj-$(CONFIG_SPI_SPIDEV)               += spidev.o
->  obj-$(CONFIG_SPI_LOOPBACK_TEST)                += spi-loopback-test.o
-> +obj-$(CONFIG_SPI_MUX)                  += spi-mux.o
-
-Maybe after SPI_MEM ?
-
-...
-
-> +struct spi_mux_priv {
-> +       struct spi_device       *spi;
-> +       unsigned int            current_cs;
-> +
-
-> +       void                    (*child_mesg_complete)(void *context);
-> +       void                    *child_mesg_context;
-> +       struct spi_device       *child_mesg_dev;
-
-mesg -> msg ?
-
-> +       struct mux_control      *mux;
-> +};
-
-...
-
-> +static int spi_mux_select(struct spi_device *spi)
-> +{
-> +       struct spi_mux_priv *priv = spi_controller_get_devdata(spi->controller);
-
-> +       int ret = 0;
-
-Drop this assignment...
-
-> +       if (priv->current_cs != spi->chip_select) {
-
-...convert this to
- if (cs == chip_select)
-    return 0;
-
-> +               dev_dbg(&priv->spi->dev,
-> +                       "setting up the mux for cs %d\n",
-> +                       spi->chip_select);
-
-After above changes this perhaps fits one line (now it fits two, by
-the way, not three).
-
-> +}
+To: undisclosed-recipients:;
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Dear Friend,
+
+I know that this message will come to you as a surprise. I am the
+Auditing and Accounting section manager with African Development
+Bank,Ouagadougou Burkina Faso. I Hope that you will not expose or
+betray this trust and confident that I am about to repose on you for
+the mutual benefit of our both families.
+
+I need your urgent assistance in transferring the sum of($39.5)million
+to your account within 10 or 14 banking days. This money has been
+dormant for years in our Bank without claim.I want the bank to release
+the money to you as the nearest person to our deceased customer late
+Engr. George Granfre who died with his wife and two children on the
+21st day of April 2010 in car clash.
+
+I don't want the money to go into government treasury as an abandoned
+fund. So this is the reason why I am contacting you so that the bank
+can release the money to you as the next of kin to the deceased
+customer. Please I would like you to keep this proposal as atop secret
+and delete it if you are not interested.
+
+Upon receipt of your reply, I will give you full details on how the
+business will be executed and also note that you will have 40% of the
+above mentioned sum if you agree to handle this business with me.
+
+I am expecting your urgent response as soon as you receive my message
+
+Best Regard,
+
+Mr Mark Donald

@@ -1,41 +1,84 @@
-From: Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v4 1/2] dt-bindings: spi: Document binding for generic SPI multiplexer
-Date: Fri, 31 Jan 2020 08:12:03 -0600
-Message-ID: <CAL_JsqLO4DT1s-q_5n23pLJw7PgnVNC6W3aAwkLFB_QdtV721w@mail.gmail.com>
-References: <20200131023433.12133-1-chris.packham@alliedtelesis.co.nz> <20200131023433.12133-2-chris.packham@alliedtelesis.co.nz>
+From: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2 2/3] spi: Add HiSilicon v3xx SPI NOR flash controller driver
+Date: Fri, 31 Jan 2020 17:46:39 +0200
+Message-ID: <CAHp75Vd=TY0tPfSHMSLTh1Pgg-E7MCP5Gym1yjpLgH0Tx-2xSg@mail.gmail.com>
+References: <df67b562-7d82-19f6-7581-680190a7772d@huawei.com>
+ <20200110140726.GB5889@sirena.org.uk> <6db83881-927c-d11c-9c77-23a45892ddab@huawei.com>
+ <20200110193119.GI32742@smile.fi.intel.com> <612a3c5d-69a4-af6b-5c79-c3fb853193ab@huawei.com>
+ <20200113114256.GH3897@sirena.org.uk> <6dd45da9-9ccf-45f7-ed12-8f1406a0a56b@huawei.com>
+ <20200113140627.GJ3897@sirena.org.uk> <CAHp75VfepiiVFLLmCwdBS0Z6tmR+XKBaOLg1qPPuz1McLjS=4Q@mail.gmail.com>
+ <20200113142754.GL3897@sirena.org.uk> <20200113143403.GQ32742@smile.fi.intel.com>
+ <0252a76d-7e2b-2c70-8b1b-0d041d972098@huawei.com> <CAHp75Ve=ZwJe2XV8Y1UN6sMe1ZHOBwUtRUD=aGqhR4Gc7BNUcg@mail.gmail.com>
+ <136bd652-dcb9-3efa-a92f-2263cbf840ad@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200131023433.12133-2-chris.packham@alliedtelesis.co.nz>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, chenxiang66-C8/M+/jPZTeaMJb+Lgu22Q@public.gmane.org,
+        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        liusimin4-hv44wF8Li93QT0dZR+AlfA@public.gmane.org, Linuxarm <linuxarm-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        "open list:MEMORY TECHNOLOGY..." <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        tudor.ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org,
+        Jiancheng Xue <xuejiancheng-C8/M+/jPZTeaMJb+Lgu22Q@public.gmane.org>,
+        Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        wanghuiqiang <wanghuiqiang-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>, fengsheng5-hv44wF8Li93QT0dZR+AlfA@public.gmane.org
+To: John Garry <john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <136bd652-dcb9-3efa-a92f-2263cbf840ad-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Jan 30, 2020 at 8:34 PM Chris Packham
-<chris.packham@alliedtelesis.co.nz> wrote:
->
-> Add binding documentation for the spi-mux driver. This allows a generic
-> multiplexer to be used to provide access to multiple SPI devices.
->
-> Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
-> ---
->
-> Notes:
->     Changes in v3:
->     - make dt_binding_check clean (properly this time)
->
->     Changes in v2:
->     - update license
->     - make dt_binding_check clean
->
->  .../devicetree/bindings/spi/spi-mux.yaml      | 89 +++++++++++++++++++
->  1 file changed, 89 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-mux.yaml
+On Fri, Jan 31, 2020 at 2:03 PM John Garry <john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org> wrote:
+> On 31/01/2020 11:39, Andy Shevchenko wrote:
+> > On Fri, Jan 31, 2020 at 12:08 PM John Garry <john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org> wrote:
+> >> On 13/01/2020 14:34, Andy Shevchenko wrote:
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+...
+
+> >> About this topic of ACPI having no method to describe device buswidth in
+> >> the resource descriptor, it may be an idea for me to raise a Tianocore
+> >> feature request @ https://bugzilla.tianocore.org/
+> >>
+> >
+> > The 19.6.126 describes the SPI resource, in particular:
+> >
+> > ---8<---8<---
+> > DataBitLength is the size, in bits, of the smallest transfer unit for
+> > this connection. _LEN is automatically
+> > created to refer to this portion of the resource descriptor.
+> > ---8<---8<---
+> >
+> > Is it what you are looking for? (As far as I know most of the
+> > firmwares simple abuse this field among others)
+>
+> I didn't think so - I thought that there was a distinction between width
+> and length in SPI terms.
+
+My interpretation of this field is a data width of the slave.
+Basically what we have as transfer->size inside SPI in the Linux
+kernel.
+
+> So how do you find that most firmwares abuse this field? AFAICS, linux
+> kernel doesn't interpret this field at all.
+
+>From all tables I have this is the result of appearance (some of the
+tables are like 10x times present in my data base, but nevertheless)
+
+    140 SpiSerialBusV2(0x0000,PolarityHigh,FourWireMode,0x08,
+   411 SpiSerialBusV2(0x0000,PolarityLow,FourWireMode,0x08,
+     1 SpiSerialBusV2(0x0000,PolarityLow,FourWireMode,0x08,
+    36 SpiSerialBusV2(0x0000,PolarityLow,FourWireMode,0x10,
+    35 SpiSerialBusV2(0x0000,PolarityLow,FourWireMode,0x18,
+    35 SpiSerialBusV2(0x0000,PolarityLow,FourWireMode,0x20,
+     1 SpiSerialBusV2(0x0000,PolarityLow,ThreeWireMode,0x10,
+     8 SpiSerialBusV2(0x0001,PolarityLow,FourWireMode,0x08,
+     1 SpiSerialBusV2(0x0001,PolarityLow,FourWireMode,0x10,
+
+So, it seems I stand corrected, the field is in right use, although
+cases like 0x10 and 0x20 should be carefully checked.
+
+We may teach kernel to get something meaningful out of it.
+
+-- 
+With Best Regards,
+Andy Shevchenko

@@ -1,49 +1,24 @@
-From: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH V2 4/5] dt-bindings: spi: spi-nxp-fspi: Add support for imx8mm, imx8qxp
-Date: Sun,  2 Feb 2020 06:59:49 -0600
-Message-ID: <20200202125950.1825013-4-aford173@gmail.com>
-References: <20200202125950.1825013-1-aford173@gmail.com>
+From: patchwork-bot+linux-spi-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Subject: Patchwork housekeeping for: spi-devel-general
+Date: Sun, 02 Feb 2020 13:20:10 +0000
+Message-ID: <158064961077.29711.16906860151963082273.git-patchwork-housekeeping@kernel.org>
 Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Cc: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Yogesh Gaur <yogeshgaur.83-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Ashish Kumar <ashish.kumar-3arQi8VN3Tc@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        Pengutronix Kernel Team <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        NXP Linux Team <linux-imx-3arQi8VN3Tc@public.gmane.org>,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200202125950.1825013-1-aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Add support for nxp,imx8qxp-fspi and nxp,imx8mm-fspi do the bindings
-document.
+Latest series: [v2] spi: fspi: enable fspi on imx8qxp and imx8mm (2020-02-02T12:59:46)
+  Superseding: [v1] spi: fspi: enable fspi on imx8qxp and imx8mm (2020-01-26T14:09:08):
+    [1/5] spi: fspi: enable fspi on imx8qxp and imx8mm
+    [2/5] spi: fspi: dynamically alloc AHB memory
+    [3/5] spi: spi-nxp-fspi: Enable the Octal Mode in MCR0
+    [4/5] dt-bindings: spi: spi-nxp-fspi: Add support for imx8mm, imx8qxp
+    [5/5] arm64: dts: enable fspi in imx8mm dts
 
-Signed-off-by: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
-V2: No change
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
-index 2cd67eb727d4..7ac60d9fe357 100644
---- a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
-@@ -2,6 +2,9 @@
- 
- Required properties:
-   - compatible : Should be "nxp,lx2160a-fspi"
-+			    "nxp,imx8qxp-fspi"
-+			    "nxp,imx8mm-fspi"
-+
-   - reg :        First contains the register location and length,
-                  Second contains the memory mapping address and length
-   - reg-names :  Should contain the resource reg names:
 -- 
-2.24.0
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/pwbot

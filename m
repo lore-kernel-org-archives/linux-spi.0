@@ -1,11 +1,11 @@
 From: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH V2 5/5] arm64: dts: enable fspi in imx8mm dts
-Date: Sun,  2 Feb 2020 06:59:50 -0600
-Message-ID: <20200202125950.1825013-5-aford173@gmail.com>
+Subject: [PATCH V2 4/5] dt-bindings: spi: spi-nxp-fspi: Add support for imx8mm, imx8qxp
+Date: Sun,  2 Feb 2020 06:59:49 -0600
+Message-ID: <20200202125950.1825013-4-aford173@gmail.com>
 References: <20200202125950.1825013-1-aford173@gmail.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Han Xu <han.xu-3arQi8VN3Tc@public.gmane.org>,
+Cc: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         Yogesh Gaur <yogeshgaur.83-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         Ashish Kumar <ashish.kumar-3arQi8VN3Tc@public.gmane.org>,
         Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -19,45 +19,31 @@ Cc: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Han Xu <han.xu
         devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200202125950.1825013-1-aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Pull in upstream patch from NXP repo to:
-enable fspi in imx8mm DT file
+Add support for nxp,imx8qxp-fspi and nxp,imx8mm-fspi do the bindings
+document.
 
-Signed-off-by: Han Xu <han.xu-3arQi8VN3Tc@public.gmane.org>
 Signed-off-by: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
-V2: Reorder s-o-b lines to give credit in proper order.
+V2: No change
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm.dtsi b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-index 1e5e11592f7b..679769fe6cab 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-@@ -558,7 +558,21 @@ aips3: bus@30800000 {
- 			compatible = "simple-bus";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
--			ranges = <0x30800000 0x30800000 0x400000>;
-+			ranges = <0x30800000 0x30800000 0x400000>,
-+				 <0x8000000 0x8000000 0x10000000>;
-+
-+			flexspi: spi@30bb0000 {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				compatible = "nxp,imx8mm-fspi";
-+				reg = <0x30bb0000 0x10000>, <0x8000000 0x10000000>;
-+				reg-names = "fspi_base", "fspi_mmap";
-+				interrupts = <GIC_SPI 107 IRQ_TYPE_LEVEL_HIGH>;
-+				clocks = <&clk IMX8MM_CLK_QSPI_ROOT>,
-+					 <&clk IMX8MM_CLK_QSPI_ROOT>;
-+				clock-names = "fspi", "fspi_en";
-+				status = "disabled";
-+			};
+diff --git a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
+index 2cd67eb727d4..7ac60d9fe357 100644
+--- a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
++++ b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
+@@ -2,6 +2,9 @@
  
- 			ecspi1: spi@30820000 {
- 				compatible = "fsl,imx8mm-ecspi", "fsl,imx51-ecspi";
+ Required properties:
+   - compatible : Should be "nxp,lx2160a-fspi"
++			    "nxp,imx8qxp-fspi"
++			    "nxp,imx8mm-fspi"
++
+   - reg :        First contains the register location and length,
+                  Second contains the memory mapping address and length
+   - reg-names :  Should contain the resource reg names:
 -- 
 2.24.0

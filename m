@@ -1,52 +1,317 @@
-From: <patrice.chotard-qxv4g6HH51o@public.gmane.org>
-Subject: [PATCH 1/2] spi: stm32-qspi: defer probe for reset controller
-Date: Mon, 3 Feb 2020 14:50:47 +0100
-Message-ID: <20200203135048.1299-2-patrice.chotard@st.com>
-References: <20200203135048.1299-1-patrice.chotard@st.com>
+From: Eddie James <eajames@linux.vnet.ibm.com>
+Subject: Re: [PATCH] spi: Add FSI-attached SPI controller driver
+Date: Mon, 3 Feb 2020 14:33:11 -0600
+Message-ID: <29f6cc86-69ca-bc88-b6ae-2b1a24c0dae3@linux.vnet.ibm.com>
+References: <1580328504-436-1-git-send-email-eajames@linux.ibm.com>
+ <CAHp75VeNs9Zr1vayO8TwVq6=B8fwvv0chOt0in6Dw+WLCezL2g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <patrice.chotard-qxv4g6HH51o@public.gmane.org>, <christophe.kerello-qxv4g6HH51o@public.gmane.org>,
-        Etienne Carriere <etienne.carriere-qxv4g6HH51o@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Maxime Coquelin <mcoquelin.stm32-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Alexandre Torgue <alexandre.torgue-qxv4g6HH51o@public.gmane.org>,
-        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <linux-stm32-XDFAJ8BFU24N7RejjzZ/Li2xQDfSxrLKVpNB7YpNyf8@public.gmane.org>,
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200203135048.1299-1-patrice.chotard-qxv4g6HH51o@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi <linux-spi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Mark Brown <broonie@kernel.org>, Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@aj.id.au>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Eddie James <eajames@linux.ibm.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <CAHp75VeNs9Zr1vayO8TwVq6=B8fwvv0chOt0in6Dw+WLCezL2g@mail.gmail.com>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Etienne Carriere <etienne.carriere-qxv4g6HH51o@public.gmane.org>
 
-Changes stm32 QSPI driver to defer its probe operation when a reset
-controller device have not yet probed but is registered in the
-system.
+On 1/30/20 10:37 AM, Andy Shevchenko wrote:
+> On Wed, Jan 29, 2020 at 10:09 PM Eddie James <eajames@linux.ibm.com> wrote:
+>> There exists a set of SPI controllers on some POWER processors that may
+>> be accessed through the FSI bus. Add a driver to traverse the FSI CFAM
+>> engine that can access and drive the SPI controllers. This driver would
+>> typically be used by a baseboard management controller (BMC).
+> ...
+>
+>> +#include <linux/bitfield.h>
+>> +#include <linux/bits.h>
+>> +#include <linux/of.h>
+> ...
+>
+>> +struct fsi_spi {
+>> +       struct device *dev;
+> Isn't fsl->dev the same?
+> Perhaps kernel doc to explain the difference?
 
-Signed-off-by: Etienne Carriere <etienne.carriere-qxv4g6HH51o@public.gmane.org>
-Signed-off-by: Patrice Chotard <patrice.chotard-qxv4g6HH51o@public.gmane.org>
----
- drivers/spi/spi-stm32-qspi.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
-index 4ef569b47aa6..13bb64bf4c8f 100644
---- a/drivers/spi/spi-stm32-qspi.c
-+++ b/drivers/spi/spi-stm32-qspi.c
-@@ -615,7 +615,11 @@ static int stm32_qspi_probe(struct platform_device *pdev)
- 	}
- 
- 	rstc = devm_reset_control_get_exclusive(dev, NULL);
--	if (!IS_ERR(rstc)) {
-+	if (IS_ERR(rstc)) {
-+		ret = PTR_ERR(rstc);
-+		if (ret == -EPROBE_DEFER)
-+			goto err;
-+	} else {
- 		reset_control_assert(rstc);
- 		udelay(2);
- 		reset_control_deassert(rstc);
--- 
-2.17.1
+No, it's not the same, as dev here is the SPI controller. I'll add a 
+comment.
+
+
+>
+>> +       struct fsi_device *fsi;
+>> +       u32 base;
+>> +};
+> ...
+>
+>> +static int fsi_spi_read_reg(struct fsi_spi *ctx, u32 offset, u64 *value)
+>> +{
+>> +       int rc;
+>> +       __be32 cmd_be;
+>> +       __be32 data_be;
+>> +       *value = 0ULL;
+> Usually the pattern is don't pollute output on error condition. Any
+> reason why you zeroing output beforehand?
+
+
+Well otherwise I have to store another 64 bit int and do another 
+assignment at the end. This is an internal function and all the users 
+below know what's happening.
+
+
+>
+>> +       cmd_be = cpu_to_be32(offset + ctx->base);
+>> +       rc = fsi_device_write(ctx->fsi, FSI2SPI_CMD, &cmd_be, sizeof(cmd_be));
+>> +       if (rc)
+>> +               return rc;
+>> +       return 0;
+>> +}
+> ...
+>
+>> +       data_be = cpu_to_be32((value >> 32) & 0xFFFFFFFF);
+> Redundant & 0xff... part.
+>
+>> +       data_be = cpu_to_be32(value & 0xFFFFFFFF);
+> Ditto.
+>
+> You may use upper_32_bits() / lower_32_bits() instead.
+
+
+OK, thanks.
+
+
+>
+> ...
+>
+>> +static int fsi_spi_data_in(u64 in, u8 *rx, int len)
+>> +{
+>> +       int i;
+>> +       int num_bytes = len > 8 ? 8 : len;
+> min(len, 8);
+
+
+Sure.
+
+
+>
+>> +       for (i = 0; i < num_bytes; ++i)
+>> +               rx[i] = (u8)((in >> (8 * ((num_bytes - 1) - i))) & 0xffULL);
+> Redundant & 0xffULL part.
+>
+> Isn't it NIH of get_unalinged_be64 / le64 or something similar?
+
+
+No, these are shift in/out operations. The read register will also have 
+previous operations data in them and must be extracted with only the 
+correct number of bytes.
+
+
+>
+>> +       return num_bytes;
+>> +}
+>> +static int fsi_spi_data_out(u64 *out, const u8 *tx, int len)
+>> +{
+> Ditto as for above function. (put_unaligned ...)
+>
+>> +}
+> ...
+>
+>> +       dev_info(ctx->dev, "Resetting SPI controller.\n");
+> info?! Why?
+>
+>> +       rc = fsi_spi_write_reg(ctx, SPI_FSI_CLOCK_CFG,
+>> +                              SPI_FSI_CLOCK_CFG_RESET2);
+>> +       return rc;
+> return fsi_spi_write_reg();
+>
+> ...
+>
+>> +       return ((64 - seq->bit) / 8) - 2;
+> Too many parentheses.
+
+
+I prefer using 2 extra characters to make it much clearer at a glance.
+
+
+>
+> ...
+>
+>> +static int fsi_spi_sequence_transfer(struct fsi_spi *ctx,
+>> +                                    struct fsi_spi_sequence *seq,
+>> +                                    struct spi_transfer *transfer)
+>> +{
+>> +       int loops = 1;
+>> +       int idx = 0;
+>> +       int rc;
+>> +       u8 len;
+>> +       u8 rem = 0;
+>> +       if (transfer->len > 8) {
+>> +               loops = transfer->len / 8;
+>> +               rem = transfer->len - (loops * 8);
+>> +               len = 8;
+>> +       } else {
+>> +               len = transfer->len;
+>> +       }
+> len = min(transfer->len, 8);
+>
+> loops = transfer->len / len;
+> rem = transfer->len % len;
+
+
+Sure.
+
+
+>
+> (I think compiler is clever enough to find out that the division can be avoided)
+>
+> ...and drop assignments in definition block.
+>
+> I didn't look carefully in the implementation, but I believe there is
+> still room for improvement / optimization.
+>
+>> +       if (loops > 1) {
+>> +               rc = fsi_spi_write_reg(ctx, SPI_FSI_COUNTER_CFG,
+>> +                                      SPI_FSI_COUNTER_CFG_LOOPS(loops - 1));
+>> +               if (rc) {
+>> +                       /* Ensure error returns < 0 in this case. */
+> I didn't get why this case is special? Why not to be consistent with
+> return value?
+
+
+Sure, will fix, this was leftover from some testing.
+
+
+>
+>> +                       if (rc > 0)
+>> +                               rc = -rc;
+>> +
+>> +                       return rc;
+>> +               }
+>> +               return loops;
+> If we return here the amount of loops...
+>
+>> +       }
+>> +
+>> +       return 0;
+> ...why here is 0?
+>
+> I think more consistency is required.
+
+
+Will refactor.
+
+
+>
+>> +}
+> ...
+>
+>> +static int fsi_spi_transfer_data(struct fsi_spi *ctx,
+>> +                                struct spi_transfer *transfer)
+>> +{
+> Can you refactor to tx and rx parts?
+
+
+Why?
+
+
+>
+>> +       return 0;
+>> +}
+> ...
+>
+>> +       do {
+>> +               rc = fsi_spi_read_reg(ctx, SPI_FSI_STATUS, &status);
+>> +               if (rc)
+>> +                       return rc;
+>> +
+>> +               if (status & (SPI_FSI_STATUS_ANY_ERROR |
+>> +                             SPI_FSI_STATUS_TDR_FULL |
+>> +                             SPI_FSI_STATUS_RDR_FULL)) {
+>> +                       rc = fsi_spi_reset(ctx);
+>> +                       if (rc)
+>> +                               return rc;
+>> +
+>> +                       continue;
+> I forgot if this to be infinite loop or if it's going to check
+> previous seq_state value. In any case this code is a bit fishy. Needs
+> comments / refactoring.
+
+
+I'll add a timeout.
+
+
+>
+>> +               }
+>> +
+>> +               seq_state = status & SPI_FSI_STATUS_SEQ_STATE;
+>> +       } while (seq_state && (seq_state != SPI_FSI_STATUS_SEQ_STATE_IDLE));
+> ...
+>
+>> +       if ((clock_cfg & (SPI_FSI_CLOCK_CFG_MM_ENABLE |
+>> +                         SPI_FSI_CLOCK_CFG_ECC_DISABLE |
+>> +                         SPI_FSI_CLOCK_CFG_MODE |
+>> +                         SPI_FSI_CLOCK_CFG_SCK_RECV_DEL |
+>> +                         SPI_FSI_CLOCK_CFG_SCK_DIV)) != wanted_clock_cfg)
+>> +               rc = fsi_spi_write_reg(ctx, SPI_FSI_CLOCK_CFG,
+>> +                                      wanted_clock_cfg);
+> Missed {} ?
+
+
+No? It's one line under the if.
+
+
+>
+>> +
+>> +       return rc;
+>> +}
+> ...
+>
+>> +       rc = fsi_slave_read(fsi->slave, 0x2860, &root_ctrl_8,
+> What is this magic for?
+
+
+Added comment.
+
+
+>
+>> +                           sizeof(root_ctrl_8));
+>> +       if (rc)
+>> +               return rc;
+> ...
+>
+>> +static int fsi_spi_remove(struct device *dev)
+>> +{
+>> +       return 0;
+>> +}
+> Why do you need this?
+
+
+Will drop it.
+
+
+Thanks for the review!
+
+Eddie
+
+
+>
+> ...
+>
+>> +static struct fsi_driver fsi_spi_driver = {
+>> +       .id_table = fsi_spi_ids,
+>> +       .drv = {
+>> +               .name = "spi-fsi",
+>> +               .bus = &fsi_bus_type,
+> Why is it not in the module_fsi_driver() macro?
+>
+>> +               .probe = fsi_spi_probe,
+>> +               .remove = fsi_spi_remove,
+>> +       },
+>> +};
+>> +
+>> +module_fsi_driver(fsi_spi_driver);

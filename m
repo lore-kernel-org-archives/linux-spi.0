@@ -1,113 +1,134 @@
-From: Dinh Nguyen <dinguyen-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v8 2/2] spi: cadence-quadpsi: Add support for the Cadence
- QSPI controller
-Date: Tue, 4 Feb 2020 09:57:40 -0600
-Message-ID: <d938fcc6-3e9b-2b5d-bf6c-1de7c8649798@kernel.org>
-References: <20200129072455.35807-1-vadivel.muruganx.ramuthevar@linux.intel.com>
- <20200129072455.35807-3-vadivel.muruganx.ramuthevar@linux.intel.com>
- <CAAh8qszwQ5sJw4G_fM5vKjYu24xs03CuW371gyFE4G0hNJHdXw@mail.gmail.com>
- <abaae0fa-c2b8-bbe0-b64d-0ee4c95c1479@linux.intel.com>
- <CAAh8qsxRPx8KDyqvp=8zcrGCE82YJ_9O9cJXrgKdH7VwXeGQgg@mail.gmail.com>
- <0f079cf6-c146-8941-5bdd-f978ff3455ab@linux.intel.com>
+From: Eddie James <eajames-tEXmvtCZX7AybS5Ee8rs3A@public.gmane.org>
+Subject: Re: [PATCH] spi: Add FSI-attached SPI controller driver
+Date: Tue, 4 Feb 2020 10:06:22 -0600
+Message-ID: <744f0019-8656-eec1-cb9a-7e70cd042587@linux.ibm.com>
+References: <1580328504-436-1-git-send-email-eajames@linux.ibm.com>
+ <CAHp75VeNs9Zr1vayO8TwVq6=B8fwvv0chOt0in6Dw+WLCezL2g@mail.gmail.com>
+ <29f6cc86-69ca-bc88-b6ae-2b1a24c0dae3@linux.vnet.ibm.com>
+ <CAHp75Vf3NCkbw39E+d_nf+AyViG2o-u5HxrCjXXmbGk4LaFLog@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org,
-        cheol.yong.kim-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, qi-ming.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
-To: "Ramuthevar, Vadivel MuruganX"
-        <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Simon Goldschmidt <simon.k.r.goldschmidt-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Tien-Fong Chee <tien.fong.chee-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Joel Stanley <joel-U3u1mxZcP9KHXe+LvDLADg@public.gmane.org>,
+        Andrew Jeffery <andrew-zrmu5oMJ5Fs@public.gmane.org>
+To: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Eddie James <eajames-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <0f079cf6-c146-8941-5bdd-f978ff3455ab-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <CAHp75Vf3NCkbw39E+d_nf+AyViG2o-u5HxrCjXXmbGk4LaFLog-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi
 
-On 1/29/20 9:41 PM, Ramuthevar, Vadivel MuruganX wrote:
-> Hi Simon,
-> 
-> On 29/1/2020 8:01 PM, Simon Goldschmidt wrote:
->> + some people possibly interested in this for the Altera platforms
->> (see below)
+On 2/4/20 5:02 AM, Andy Shevchenko wrote:
+> On Mon, Feb 3, 2020 at 10:33 PM Eddie James <eajames-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org> wrote:
+>> On 1/30/20 10:37 AM, Andy Shevchenko wrote:
+>>> On Wed, Jan 29, 2020 at 10:09 PM Eddie James <eajames-tEXmvtCZX7AybS5Ee8rs3A@public.gmane.org> wrote:
+> ...
+>
+>>>> +       struct device *dev;
+>>> Isn't fsl->dev the same?
+>>> Perhaps kernel doc to explain the difference?
 >>
->> Hi all,
->>
->> This is about moving the cadence qspi driver (which is used on TI,
->> Altera FPGAs
->> and a new Intel SoC) to spi-mem.Vadivel asked me to include some
->> Altera people
->> in the loop (see below), as this is the only platform currently untested,
->> I think.
->>
->> Right now, I'm not in the position to test this myself as we're
->> currently stuck
->> on an older RT kernel, so I cannot test with HEAD.
->>
->> Feel free to involve other Intel/Altera if you're interested in that
->> peripheral
->> not being broke for socfpga in one of the next releases :-)
->>
->> On Wed, Jan 29, 2020 at 10:18 AM Ramuthevar, Vadivel MuruganX
->> <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org> wrote:
->>> Hi,
->>>
->>>    Thank you for the query and confirmation.
->>>
->>> On 29/1/2020 4:31 PM, Simon Goldschmidt wrote:
->>>
->>> On Wed, Jan 29, 2020 at 8:25 AM Ramuthevar,Vadivel MuruganX
->>> <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org> wrote:
->>>
->>> From: Ramuthevar Vadivel Murugan
->>> <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
->>>
->>> Add support for the Cadence QSPI controller. This controller is
->>> present in the Intel Lightning Mountain(LGM) SoCs, Altera and TI SoCs.
->>> This driver has been tested on the Intel LGM SoCs.
->>>
->>> So it has been tested on LGM and Vignesh gave his ok for TI. Is there
->>> anyone
->>> in the loop by now checking that this is valid for the 3rd platform
->>> using this
->>> (Altera)?
->>>
->>> Or am I wrong in thinking that this driver is meant to replace
->>> drivers/mtd/spi-nor/cadence-quadspi.c used on that platform?
->>>
->>> Absolutely , You are right, this driver is meant to replace to
->>> drivers/mtd/spi-nor/cadence-quadspi.c
->>> for Intel, TI and Altera SoC's using Cadence-QSPI IP.
->>>
->>> Meanwhile we have adapted to spi-mem framework (to support
->>> spi-nor/nand)and also didn't change the existing
->>> functionalities of spi-nor flash operations like
->>> hw_init/read/write/erase in drivers/mtd/spi-nor/cadence-quadspi.c,
->>> so it works fine (might be in Altera as well).
->>>
->>> Already I checked that Graham Moore <grmoore-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
->>> who has submitted the existing driver patches to upstream,
->>> His mail-id is bouncing back, then I decided that you are the right
->>> person to ask, could you please add them in loop if you know the team
->>> (socfpga platform engineers).
+>> No, it's not the same, as dev here is the SPI controller. I'll add a
+>> comment.
+> Why to have duplication then?
 
-Thanks for including Graham, but he's moved on to a different career
-that no longer includes Linux.
 
->> OK, done that. I mainly know them from U-Boot development, so I'm not
->> sure
->> who's responsible for the Linux drivers...
-> Thank you for adding the team and respective members, let's see.
-> 
+Nothing is being duplicated, the two variables are storing entirely 
+different information, both of which are necessary for each SPI 
+controller that this driver is driving.
 
-I don't have the original patch series, but will monitor going forward.
-As long as the new driver does not break legacy SoCFPGA products that
-use the cadence-quadspi driver then it should be ok.
 
-Dinh
+>
+>>>> +       struct fsi_device *fsi;
+> ...
+>
+>>>> +       for (i = 0; i < num_bytes; ++i)
+>>>> +               rx[i] = (u8)((in >> (8 * ((num_bytes - 1) - i))) & 0xffULL);
+>>> Redundant & 0xffULL part.
+>>>
+>>> Isn't it NIH of get_unalinged_be64 / le64 or something similar?
+>>
+>> No, these are shift in/out operations. The read register will also have
+>> previous operations data in them and must be extracted with only the
+>> correct number of bytes.
+> Why not to call put_unaligned() how the tail in this case (it's 0 or
+> can be easily made to be 0) will affect the result?
+
+
+The shift-in is not the same as any byte-swap or unaligned operation. 
+For however many bytes we've read, we start at that many bytes 
+left-shifted in the register and copy out to our buffer, moving right 
+for each next byte... I don't think there is an existing function for 
+this operation.
+
+
+>
+>>>> +       return num_bytes;
+>>>> +}
+>>>> +static int fsi_spi_data_out(u64 *out, const u8 *tx, int len)
+>>>> +{
+>>> Ditto as for above function. (put_unaligned ...)
+> Ditto.
+
+
+I don't understand how this could work for transfers of less than 8 
+bytes, any put_unaligned would access memory that it doesn't own.
+
+
+>
+>>>> +}
+> ...
+>
+>>>> +static int fsi_spi_transfer_data(struct fsi_spi *ctx,
+>>>> +                                struct spi_transfer *transfer)
+>>>> +{
+>>> Can you refactor to tx and rx parts?
+>>
+>> Why?
+> It's way too long function to read. Indentation level also can improve
+> readability.
+> That's basically what refactoring is for.
+
+
+The body is 65 lines, I don't think it is too long.
+
+Since the function is used multiple times I think it makes more sense to 
+encapsulate the check for tx/rx in the function rather than split it and 
+have to check each time the functions are used.
+
+
+>
+>>>> +       return 0;
+>>>> +}
+> ...
+>
+>>>> +       if ((clock_cfg & (SPI_FSI_CLOCK_CFG_MM_ENABLE |
+>>>> +                         SPI_FSI_CLOCK_CFG_ECC_DISABLE |
+>>>> +                         SPI_FSI_CLOCK_CFG_MODE |
+>>>> +                         SPI_FSI_CLOCK_CFG_SCK_RECV_DEL |
+>>>> +                         SPI_FSI_CLOCK_CFG_SCK_DIV)) != wanted_clock_cfg)
+>>>> +               rc = fsi_spi_write_reg(ctx, SPI_FSI_CLOCK_CFG,
+>>>> +                                      wanted_clock_cfg);
+>>> Missed {} ?
+>>
+>> No? It's one line under the if.
+> One statement, but *two* lines.
+> What does checkpatch.pl tell you about this?
+
+
+Right.
+
+checkpatch.pl says nothing about this, I think it meets the coding 
+standards as is.
+
+
+Thanks for the review,
+
+Eddie
+
+
+>

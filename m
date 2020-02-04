@@ -1,46 +1,21 @@
-From: Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-Subject: [PATCH v5 0/2] SPI bus multiplexing
-Date: Tue,  4 Feb 2020 16:28:36 +1300
-Message-ID: <20200204032838.20739-1-chris.packham@alliedtelesis.co.nz>
+From: patchwork-bot+linux-spi-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Subject: Patchwork housekeeping for: spi-devel-general
+Date: Tue, 04 Feb 2020 03:40:10 +0000
+Message-ID: <158078761009.17146.4636887958601064500.git-patchwork-housekeeping@kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Chris Packham <chris.packham-6g8wRflRTwXFdCa3tKVlE6U/zSkkHjvu@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-        Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-This is a revisit of two earlier efforts to add more complex mutliplexing=
- to
-SPI busses.
+Latest series: [v5] SPI bus multiplexing (2020-02-04T03:28:38)
+  Superseding: [v4] SPI bus multiplexing (2020-01-31T02:34:31):
+    [v4,1/2] dt-bindings: spi: Document binding for generic SPI multiplexer
+    [v4,2/2] spi: Add generic SPI multiplexer
 
-https://patchwork.kernel.org/patch/2706151/
-https://patchwork.kernel.org/patch/10897255/
 
-This version makes use of the general purpose mux controller which simpli=
-fies
-things greatly.
-
-One outstanding problem is the need for the spi-max-frequency on the mux
-device. This is not used for anything and is just needed to satisfy the s=
-pi
-driver infrastructure which expects all spi devices to have this property=
-.
-
-Chris Packham (2):
-  dt-bindings: spi: Document binding for generic SPI multiplexer
-  spi: Add generic SPI multiplexer
-
- .../devicetree/bindings/spi/spi-mux.yaml      |  89 +++++++++
- drivers/spi/Kconfig                           |  11 ++
- drivers/spi/Makefile                          |   1 +
- drivers/spi/spi-mux.c                         | 187 ++++++++++++++++++
- 4 files changed, 288 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-mux.yaml
- create mode 100644 drivers/spi/spi-mux.c
-
---=20
-2.25.0
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/pwbot

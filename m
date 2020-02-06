@@ -1,86 +1,212 @@
 From: Schrempf Frieder <frieder.schrempf@kontron.de>
-Subject: Re: [PATCH v5 11/15] dmaengine: imx-sdma: fix ecspi1 rx dma not work
- on i.mx8mm
-Date: Thu, 6 Feb 2020 10:17:15 +0000
-Message-ID: <862c498f-3c15-fac4-4f17-a30c2e11bb3e@kontron.de>
-References: <20190610081753.11422-12-yibin.gong@nxp.com>
- <29cf9f29-bdb4-94db-00b0-56ec36386f7a@kontron.de>
- <VE1PR04MB6638639EF4F580E04689538E89870@VE1PR04MB6638.eurprd04.prod.outlook.com>
- <1307d229-4c49-80e3-04ba-377c0caeae9c@kontron.de>
- <VE1PR04MB6638B066EE28781A3C21973D89810@VE1PR04MB6638.eurprd04.prod.outlook.com>
+Subject: Re: [PATCH v2] clk: imx8mm: Switch to platform driver
+Date: Thu, 6 Feb 2020 10:34:23 +0000
+Message-ID: <2df024c3-ab46-4e33-f961-5ef994aea145@kontron.de>
+References: <1562682003-20951-1-git-send-email-abel.vesa@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "vkoul@kernel.org" <vkoul@kernel.org>,
-        "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-To: Robin Gong <yibin.gong@nxp.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <VE1PR04MB6638B066EE28781A3C21973D89810@VE1PR04MB6638.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Peng Fan <peng.fan@nxp.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ NXP Linux Team <linux-imx@nxp.com>,
+ "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+To: Abel Vesa <abel.vesa@nxp.com>, Mike Turquette <mturquette@baylibre.com>,
+ Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>, "Sascha
+ Hauer" <kernel@pengutronix.de>, Fabio Estevam <fabio.estevam@nxp.com>, "Anson
+ Huang" <anson.huang@nxp.com>, Jacky Bai <ping.bai@nxp.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane-mx.org@lists.infradead.org>
+In-Reply-To: <1562682003-20951-1-git-send-email-abel.vesa@nxp.com>
 Content-Language: en-US
-Content-ID: <D04AC711B1A41C4A8E13C635F1736633@snt-world.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-ID: <76976B4AC74DF04DBC03208EA1B541AE@snt-world.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane-mx.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-SGksDQoNCk9uIDI3LjA5LjE5IDAzOjU1LCBSb2JpbiBHb25nIHdyb3RlOg0KPiBPbiAyMDE5LTkt
-MjUgMjI6NTMgU2NocmVtcGYgRnJpZWRlciA8ZnJpZWRlci5zY2hyZW1wZkBrb250cm9uLmRlPiB3
-cm90ZToNCj4+IE9uIDI1LjA5LjE5IDEzOjI2LCBSb2JpbiBHb25nIHdyb3RlOg0KPj4+IE9uIDIw
-MTktOS0yNCAyMToyOCBTY2hyZW1wZiBGcmllZGVyIDxmcmllZGVyLnNjaHJlbXBmQGtvbnRyb24u
-ZGU+DQo+PiB3cm90ZToNCj4+Pj4NCj4+Pj4gSGkgUm9iaW4sDQo+Pj4+DQo+Pj4+PiBGcm9tOiBS
-b2JpbiBHb25nIDx5aWJpbi5nb25nIGF0IG54cC5jb20+DQo+Pj4+Pg0KPj4+Pj4gQmVjYXVzZSB0
-aGUgbnVtYmVyIG9mIGVjc3BpMSByeCBldmVudCBvbiBpLm14OG1tIGlzIDAsIHRoZSBjb25kaXRp
-b24NCj4+Pj4+IGNoZWNrIGlnbm9yZSBzdWNoIHNwZWNpYWwgY2FzZSB3aXRob3V0IGRtYSBjaGFu
-bmVsIGVuYWJsZWQsIHdoaWNoDQo+Pj4+PiBjYXVzZWQNCj4+Pj4+IGVjc3BpMSByeCB3b3JrcyBm
-YWlsZWQuIEFjdHVhbGx5LCBubyBuZWVkIHRvIGNoZWNrDQo+Pj4+PiBldmVudF9pZDAvZXZlbnRf
-aWQxIGFuZCByZXBsYWNlIGNoZWNraW5nICdldmVudF9pZDEnIHdpdGgNCj4+Pj4+ICdETUFfREVW
-X1RPX0RFVicsIHNvIHRoYXQgY29uZmlndXJlDQo+Pj4+PiBldmVudF9pZDEgb25seSBpbiBjYXNl
-IERFVl9UT19ERVYuDQo+Pj4+Pg0KPj4+Pj4gU2lnbmVkLW9mZi1ieTogUm9iaW4gR29uZyA8eWli
-aW4uZ29uZyBhdCBueHAuY29tPg0KPj4+Pj4gQWNrZWQtYnk6IFZpbm9kIEtvdWwgPHZrb3VsIGF0
-IGtlcm5lbC5vcmc+DQo+Pj4+DQo+Pj4+IEkgaGF2ZSBhIGN1c3RvbSBib2FyZCB3aXRoIGkuTVg4
-TU0gYW5kIFNQSSBmbGFzaCBvbiBlY3NwaTEuIEknbQ0KPj4+PiBjdXJyZW50bHkgdGVzdGluZyB3
-aXRoIHY1LjMgYW5kIGFzIFNQSSBkaWRuJ3Qgd29yaywgSSB0cmllZCB0d28gZGlmZmVyZW50DQo+
-PiB0aGluZ3M6DQo+Pj4+DQo+Pj4+IDEuIFJlbW92aW5nICdkbWFzJyBhbmQgJ2RtYS1uYW1lcycg
-ZnJvbSB0aGUgZWNzcGkxIG5vZGUgaW4NCj4+IGlteDhtbS5kdHNpLA0KPj4+PiAgICAgICB0byB1
-c2UgUElPIGluc3RlYWQgb2YgRE1BLiBUaGlzIHdvcmtzIGFzIGV4cGVjdGVkIGFuZCB0aGUgZHJp
-dmVyDQo+Pj4+ICAgICAgIGJvb3RzIHdpdGggdGhlIGZvbGxvd2luZyBtZXNzYWdlczoNCj4+Pj4N
-Cj4+Pj4gICAgICAgICAgIHNwaV9pbXggMzA4MjAwMDAuc3BpOiBkbWEgc2V0dXAgZXJyb3IgLTE5
-LCB1c2UgcGlvDQo+Pj4+ICAgICAgICAgICBtMjVwODAgc3BpMC4wOiBteDI1djgwMzVmICgxMDI0
-IEtieXRlcykNCj4+Pj4gICAgICAgICAgIHNwaV9pbXggMzA4MjAwMDAuc3BpOiBwcm9iZWQNCj4+
-Pj4NCj4+Pj4gMi4gQXBwbHlpbmcgeW91ciBwYXRjaHNldCBhbmQgdXNlIERNQS4gSW4gdGhpcyBj
-YXNlLCB0aGUgZmxhc2ggYWxzbw0KPj4+PiAgICAgICB3b3JrcyBmaW5lLCBidXQgdGhlcmUgYXJl
-IHNvbWUgZXJyb3IgbWVzc2FnZXMgcHJpbnRlZCB3aGlsZQ0KPj4gYm9vdGluZzoNCj4+Pj4NCj4+
-Pj4gICAgICAgICAgIHNwaV9tYXN0ZXIgc3BpMDogSS9PIEVycm9yIGluIERNQSBSWA0KPj4+PiAg
-ICAgICAgICAgbTI1cDgwIHNwaTAuMDogU1BJIHRyYW5zZmVyIGZhaWxlZDogLTExMA0KPj4+PiAg
-ICAgICAgICAgc3BpX21hc3RlciBzcGkwOiBmYWlsZWQgdG8gdHJhbnNmZXIgb25lIG1lc3NhZ2Ug
-ZnJvbSBxdWV1ZQ0KPj4+PiAgICAgICAgICAgbTI1cDgwIHNwaTAuMDogbXgyNXY4MDM1ZiAoMTAy
-NCBLYnl0ZXMpDQo+Pj4+ICAgICAgICAgICBzcGlfaW14IDMwODIwMDAwLnNwaTogcHJvYmVkDQo+
-Pj4+DQo+Pj4+IEl0IHdvdWxkIGJlIGdyZWF0IHRvIGdldCB5b3VyIHBhdGNoZXMgbWVyZ2VkIGFu
-ZCBmaXggU1BJICsgRE1BLCBidXQNCj4+Pj4gZm9yIGkuTVg4TU0sIHdlIG5lZWQgdG8gZ2V0IHJp
-ZCBvZiB0aGUgZXJyb3IgbWVzc2FnZXMuIERvIHlvdSBoYXZlIGFuDQo+Pj4+IGlkZWEsIHdoYXQn
-cyB3cm9uZz8NCj4+DQo+Pj4gQ291bGQgeW91IGNoZWNrIGlmIHRoZSBsZW5ndGggb2Ygc3BpIG1l
-c3NhZ2UgaXMgYmlnZ2VyIHRoYW4gZmlmb19zaXplDQo+Pj4gZHVyaW5nIHNwaV9ub3IgcHJvYmU/
-IElmIHllcywgYXQgdGhhdCB0aW1lIG1heWJlIHNkbWEgZmlybXdhcmUgbm90IGxvYWRlZC4NCj4+
-PiBpZiAodHJhbnNmZXItPmxlbiA8IHNwaV9pbXgtPmRldnR5cGVfZGF0YS0+Zmlmb19zaXplKQ0K
-Pj4NCj4+IEluZGVlZCwgbW9zdCBvZiB0aGUgdHJhbnNmZXJzIHRyaWdnZXJlZCBieSB0aGUgU1BJ
-IE5PUiBkaXJ2ZXIgYXJlIGJlbG93DQo+PiBmaWZvX3NpemUgYW5kIHdvcmsgZmluZSwgYnV0IHNv
-bWUgYXJlIGJpZ2dlci4gVGhlIHRyYW5zZmVycyB0aGVyZWZvcmUgdHJ5IHRvDQo+PiB1c2UgRE1B
-LCBidXQgdGhlIGZpcm13YXJlIGlzIG5vdCBsb2FkZWQgeWV0Lg0KPj4NCj4+IEhvdyBpcyB0aGlz
-IHN1cHBvc2VkIHRvIHdvcms/IFNob3VsZG4ndCBhbGwgdHJhbnNmZXJzIHVzZSBQSU8gYXMgbG9u
-ZyBhcyB0aGUNCj4+IFNETUEgZmlybXdhcmUgaXMgbm90IGxvYWRlZCB5ZXQ/DQo+IFllcywgZm9y
-IGVjc3BpIHNob3VsZCB3b3JrIHdpdGggcmFtIHNjcmlwdCwgaXQncyBiZXR0ZXIgY2hlY2sgaWYg
-c2RtYSBmaXJtd2FyZQ0KPiBpcyByZWFkeSBpbiBzcGlfaW14X2RtYV9jb25maWd1cmUoKSwgbmVl
-ZCBtb2RpZmljYXRpb24gaW4gc2RtYSBkcml2ZXIgdG9vLg0KPiBJJ2xsIGNyZWF0ZSBhbm90aGVy
-IHBhdGNoIGFmdGVyIHRoaXMgcGF0Y2ggc2V0IGFjY2VwdGVkLg0KDQpUaGlzIHN0aWxsIHNlZW1z
-IHRvIGJlIGJyb2tlbiB1cHN0cmVhbS4gSXMgYW55b25lIHdvcmtpbmcgb24gZml4aW5nIFNQSSAN
-CisgRE1BIGZvciBpLk1YOE1NPyBPdGhlcndpc2UgSSB3aWxsIHNlbmQgYSBwYXRjaCB0aGF0IHJl
-bW92ZXMgdGhlIERNQSANCmZyb20gdGhlIGVjc3BpIG5vZGVzIGluIHRoZSBkZXZpY2V0cmVlLg0K
-DQpUaGFua3MsDQpGcmllZGVy
+Hi,
+
+On 09.07.19 16:20, Abel Vesa wrote:
+> There is no strong reason for this to use CLK_OF_DECLARE instead
+> of being a platform driver. Plus, this will now be aligned with the
+> other i.MX8M clock drivers which are platform drivers.
+> 
+> In order to make the clock provider a platform driver
+> all the data and code needs to be outside of .init section.
+> 
+> Signed-off-by: Abel Vesa <abel.vesa@nxp.com>
+> Acked-by: Stephen Boyd <sboyd@kernel.org>
+
+This has been upstream for quite some time now, but somehow I have an 
+issue with SPI on the i.MX8MM that gets resolved when I revert this patch.
+
+When I try to probe an SPI NOR flash with latest 5.4 or even 5.5:
+
+	spi_imx 30820000.spi: dma setup error -19, use pio
+	spi-nor spi0.0: unrecognized JEDEC id bytes: 00 00 00 00 00 00
+	spi_imx 30820000.spi: probed
+
+When I revert this patch:
+
+	spi_imx 30820000.spi: dma setup error -19, use pio
+	spi-nor spi0.0: mx25r1635f (2048 Kbytes)
+	spi_imx 30820000.spi: probed
+
+Please note, that in both cases I have disabled DMA, as this causes even 
+more trouble (see [1]). But even with DMA enabled and ignoring the DMA 
+errors, the issue described above occurs.
+
+Does someone have an idea what's wrong?
+Am I the only user of SPI on i.MX8MM as this issue seems to exist 
+upstream since v5.4-rc1?
+
+Thanks,
+Frieder
+
+> ---
+> 
+> Changes since v1:
+>   * Switched to platform driver memory mapping API
+>   * Removed extra newline
+>   * Added an explanation of why this change is done
+>     in the commit message
+> 
+>   drivers/clk/imx/clk-imx8mm.c | 57 ++++++++++++++++++++++++++++----------------
+>   1 file changed, 36 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/clk/imx/clk-imx8mm.c b/drivers/clk/imx/clk-imx8mm.c
+> index 6b8e75d..7a8e713 100644
+> --- a/drivers/clk/imx/clk-imx8mm.c
+> +++ b/drivers/clk/imx/clk-imx8mm.c
+> @@ -68,43 +68,43 @@ static const struct imx_pll14xx_rate_table imx8mm_drampll_tbl[] = {
+>   	PLL_1443X_RATE(650000000U, 325, 3, 2, 0),
+>   };
+>   
+> -static struct imx_pll14xx_clk imx8mm_audio_pll __initdata = {
+> +static struct imx_pll14xx_clk imx8mm_audio_pll = {
+>   		.type = PLL_1443X,
+>   		.rate_table = imx8mm_audiopll_tbl,
+>   		.rate_count = ARRAY_SIZE(imx8mm_audiopll_tbl),
+>   };
+>   
+> -static struct imx_pll14xx_clk imx8mm_video_pll __initdata = {
+> +static struct imx_pll14xx_clk imx8mm_video_pll = {
+>   		.type = PLL_1443X,
+>   		.rate_table = imx8mm_videopll_tbl,
+>   		.rate_count = ARRAY_SIZE(imx8mm_videopll_tbl),
+>   };
+>   
+> -static struct imx_pll14xx_clk imx8mm_dram_pll __initdata = {
+> +static struct imx_pll14xx_clk imx8mm_dram_pll = {
+>   		.type = PLL_1443X,
+>   		.rate_table = imx8mm_drampll_tbl,
+>   		.rate_count = ARRAY_SIZE(imx8mm_drampll_tbl),
+>   };
+>   
+> -static struct imx_pll14xx_clk imx8mm_arm_pll __initdata = {
+> +static struct imx_pll14xx_clk imx8mm_arm_pll = {
+>   		.type = PLL_1416X,
+>   		.rate_table = imx8mm_pll1416x_tbl,
+>   		.rate_count = ARRAY_SIZE(imx8mm_pll1416x_tbl),
+>   };
+>   
+> -static struct imx_pll14xx_clk imx8mm_gpu_pll __initdata = {
+> +static struct imx_pll14xx_clk imx8mm_gpu_pll = {
+>   		.type = PLL_1416X,
+>   		.rate_table = imx8mm_pll1416x_tbl,
+>   		.rate_count = ARRAY_SIZE(imx8mm_pll1416x_tbl),
+>   };
+>   
+> -static struct imx_pll14xx_clk imx8mm_vpu_pll __initdata = {
+> +static struct imx_pll14xx_clk imx8mm_vpu_pll = {
+>   		.type = PLL_1416X,
+>   		.rate_table = imx8mm_pll1416x_tbl,
+>   		.rate_count = ARRAY_SIZE(imx8mm_pll1416x_tbl),
+>   };
+>   
+> -static struct imx_pll14xx_clk imx8mm_sys_pll __initdata = {
+> +static struct imx_pll14xx_clk imx8mm_sys_pll = {
+>   		.type = PLL_1416X,
+>   		.rate_table = imx8mm_pll1416x_tbl,
+>   		.rate_count = ARRAY_SIZE(imx8mm_pll1416x_tbl),
+> @@ -374,7 +374,7 @@ static const char *imx8mm_clko1_sels[] = {"osc_24m", "sys_pll1_800m", "osc_27m",
+>   static struct clk *clks[IMX8MM_CLK_END];
+>   static struct clk_onecell_data clk_data;
+>   
+> -static struct clk ** const uart_clks[] __initconst = {
+> +static struct clk ** const uart_clks[] = {
+>   	&clks[IMX8MM_CLK_UART1_ROOT],
+>   	&clks[IMX8MM_CLK_UART2_ROOT],
+>   	&clks[IMX8MM_CLK_UART3_ROOT],
+> @@ -382,19 +382,20 @@ static struct clk ** const uart_clks[] __initconst = {
+>   	NULL
+>   };
+>   
+> -static int __init imx8mm_clocks_init(struct device_node *ccm_node)
+> +static int imx8mm_clocks_probe(struct platform_device *pdev)
+>   {
+> -	struct device_node *np;
+> +	struct device *dev = &pdev->dev;
+> +	struct device_node *np = dev->of_node;
+>   	void __iomem *base;
+>   	int ret;
+>   
+>   	clks[IMX8MM_CLK_DUMMY] = imx_clk_fixed("dummy", 0);
+> -	clks[IMX8MM_CLK_24M] = of_clk_get_by_name(ccm_node, "osc_24m");
+> -	clks[IMX8MM_CLK_32K] = of_clk_get_by_name(ccm_node, "osc_32k");
+> -	clks[IMX8MM_CLK_EXT1] = of_clk_get_by_name(ccm_node, "clk_ext1");
+> -	clks[IMX8MM_CLK_EXT2] = of_clk_get_by_name(ccm_node, "clk_ext2");
+> -	clks[IMX8MM_CLK_EXT3] = of_clk_get_by_name(ccm_node, "clk_ext3");
+> -	clks[IMX8MM_CLK_EXT4] = of_clk_get_by_name(ccm_node, "clk_ext4");
+> +	clks[IMX8MM_CLK_24M] = of_clk_get_by_name(np, "osc_24m");
+> +	clks[IMX8MM_CLK_32K] = of_clk_get_by_name(np, "osc_32k");
+> +	clks[IMX8MM_CLK_EXT1] = of_clk_get_by_name(np, "clk_ext1");
+> +	clks[IMX8MM_CLK_EXT2] = of_clk_get_by_name(np, "clk_ext2");
+> +	clks[IMX8MM_CLK_EXT3] = of_clk_get_by_name(np, "clk_ext3");
+> +	clks[IMX8MM_CLK_EXT4] = of_clk_get_by_name(np, "clk_ext4");
+>   
+>   	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mm-anatop");
+>   	base = of_iomap(np, 0);
+> @@ -480,10 +481,10 @@ static int __init imx8mm_clocks_init(struct device_node *ccm_node)
+>   	clks[IMX8MM_SYS_PLL2_500M] = imx_clk_fixed_factor("sys_pll2_500m", "sys_pll2_out", 1, 2);
+>   	clks[IMX8MM_SYS_PLL2_1000M] = imx_clk_fixed_factor("sys_pll2_1000m", "sys_pll2_out", 1, 1);
+>   
+> -	np = ccm_node;
+> -	base = of_iomap(np, 0);
+> -	if (WARN_ON(!base))
+> -		return -ENOMEM;
+> +	np = dev->of_node;
+> +	base = devm_platform_ioremap_resource(pdev, 0);
+> +	if (WARN_ON(IS_ERR(base)))
+> +		return PTR_ERR(base);
+>   
+>   	/* Core Slice */
+>   	clks[IMX8MM_CLK_A53_SRC] = imx_clk_mux2("arm_a53_src", base + 0x8000, 24, 3, imx8mm_a53_sels, ARRAY_SIZE(imx8mm_a53_sels));
+> @@ -682,4 +683,18 @@ static int __init imx8mm_clocks_init(struct device_node *ccm_node)
+>   
+>   	return 0;
+>   }
+> -CLK_OF_DECLARE_DRIVER(imx8mm, "fsl,imx8mm-ccm", imx8mm_clocks_init);
+> +
+> +static const struct of_device_id imx8mm_clk_of_match[] = {
+> +	{ .compatible = "fsl,imx8mm-ccm" },
+> +	{ /* Sentinel */ },
+> +};
+> +MODULE_DEVICE_TABLE(of, imx8mm_clk_of_match);
+> +
+> +static struct platform_driver imx8mm_clk_driver = {
+> +	.probe = imx8mm_clocks_probe,
+> +	.driver = {
+> +		.name = "imx8mm-ccm",
+> +		.of_match_table = of_match_ptr(imx8mm_clk_of_match),
+> +	},
+> +};
+> +module_platform_driver(imx8mm_clk_driver);
+> 

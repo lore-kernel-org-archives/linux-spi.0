@@ -1,26 +1,34 @@
-From: Viviane Jose Pereira <vjpereira-OYJKVMiTe90IdKJ7tpkyPg@public.gmane.org>
-Subject: Re:
-Date: Thu, 6 Feb 2020 03:36:53 -0300 (BRT)
-Message-ID: <1037973316.1008141.1580971013841.JavaMail.zimbra@tjgo.jus.br>
-Reply-To: Tom Crist <cristtom063-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Chuanhong Guo <gch981213-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 0/2] spi: add driver for ar934x spi controller
+Date: Thu,  6 Feb 2020 16:38:20 +0800
+Message-ID: <20200206083822.204534-1-gch981213@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-To: unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Chuanhong Guo <gch981213-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+This controller is a superset of the already supported qca,ar7100-spi.
+Besides the bit-bang mode in spi-ath79.c, this new controller added
+a new "shift register" mode, allowing faster spi operations.
+This mode doesn't need all the bit-bang code in spi-ath79.c and needs
+a different clock setup, so I decided to write a new driver for it
+instead of extending current spi-ath79 driver.
 
+Chuanhong Guo (2):
+  spi: add driver for ar934x spi controller
+  dt-binding: spi: add bindings for spi-ar934x
 
---=20
-Hallo, ich entschuldige mich daf=C3=BCr, dass ich deine Privatsph=C3=A4re g=
-est=C3=B6rt habe. Ich kontaktiere Sie f=C3=BCr eine =C3=A4u=C3=9Ferst dring=
-ende und vertrauliche Angelegenheit.
+ .../bindings/spi/qca,ar934x-spi.yaml          |  40 +++
+ drivers/spi/Kconfig                           |   7 +
+ drivers/spi/Makefile                          |   1 +
+ drivers/spi/spi-ar934x.c                      | 230 ++++++++++++++++++
+ 4 files changed, 278 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/qca,ar934x-spi.yaml
+ create mode 100644 drivers/spi/spi-ar934x.c
 
-Ihnen wurde eine Spende von 15.000.000,00 EUR angeboten Kontakt: cristtom06=
-3@gmail.com f=C3=BCr weitere Informationen.
-
-Dies ist keine Spam-Nachricht, sondern eine wichtige Mitteilung an Sie. Ant=
-worten Sie auf die obige E-Mail, um immer mehr Informationen =C3=BCber die =
-Spende und den Erhalt von Geldern zu erhalten.
+-- 
+2.24.1

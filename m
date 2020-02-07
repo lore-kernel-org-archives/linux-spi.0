@@ -1,41 +1,58 @@
-From: Chris Brandt <Chris.Brandt-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-Subject: RE: [PATCH v2] spi: add Renesas RPC-IF driver
-Date: Fri, 7 Feb 2020 22:36:42 +0000
-Message-ID: <TY1PR01MB1562509AEBD0B4460D3FEC798A1C0@TY1PR01MB1562.jpnprd01.prod.outlook.com>
-References: <ad503d6e-4739-9744-64b4-fd13f44ea6fe@cogentembedded.com>
- <6515c5ec-8432-0b20-426d-0428bbdf3712@cogentembedded.com>
+From: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2 2/2] dt-binding: spi: add bindings for spi-ar934x
+Date: Fri, 7 Feb 2020 15:54:45 -0800
+Message-ID: <7f53a397-0237-4c68-e284-d92adf19c368@gmail.com>
+References: <20200206150626.708649-1-gch981213@gmail.com>
+ <20200206150626.708649-3-gch981213@gmail.com> <20200206205551.GA15172@bogus>
+ <CAJsYDVKXvAkQawwayX8JVrjvEKPuTyQXE8rw=BRiyVROKrdWrg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Mason Yang <masonccyang-I/i+R0kf0WFNUHwG+Fw1Kw@public.gmane.org>
-To: Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <6515c5ec-8432-0b20-426d-0428bbdf3712-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        open list <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Chuanhong Guo <gch981213-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAJsYDVKXvAkQawwayX8JVrjvEKPuTyQXE8rw=BRiyVROKrdWrg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-T24gV2VkLCBKYW4gMTUsIDIwMjAsIFNlcmdlaSBTaHR5bHlvdiB3cm90ZToNCj4gQWRkIHRoZSBT
-UEkgZHJpdmVyIGZvciB0aGUgUmVuZXNhcyBSUEMtSUYuICBJdCdzIHRoZSAiZnJvbnQgZW5kIiBk
-cml2ZXINCj4gdXNpbmcgdGhlICJiYWNrIGVuZCIgQVBJcyBpbiB0aGUgbWFpbiBkcml2ZXIgdG8g
-dGFsayB0byB0aGUgcmVhbCBoYXJkd2FyZS4NCj4gV2Ugb25seSBpbXBsZW1lbnQgdGhlICdzcGkt
-bWVtJyBpbnRlcmZhY2UgLS0gdGhlcmUncyBubyBuZWVkIHRvIGltcGxlbWVidA0KPiB0aGUgdXN1
-YWwgU1BJIGRyaXZlciBtZXRob2RzLi4uDQoNCkkgdHJpZWQgdGhlc2UgcGF0Y2hlcyBvbiBhbiBS
-Wi9BMUggUlNLIGJvYXJkLg0KDQpBdCBmaXJzdCwgdGhpbmdzIHdlcmUgbG9va2luZyBnb29kLiBJ
-dCB3b3VsZCBwcm9iZSB0aGUgU1BJIGZsYXNoIGNvcnJlY3RseQ0KYW5kIEkgY291bGQgcmVhZCBv
-dXQgZGF0YS4NCg0KQnV0LCB3aGVuIEkgd2VudCB0byB0cnkgYW5kIGRvIGFuIGVyYXNlLCBpdCBh
-bGwgd2VudCBiYWQuDQpMb29raW5nIGF0IHRoZSBhY3R1YWwgU1BJIGxpbmVzLCB0aGUgY29tbWFu
-ZHMgY29taW5nIG91dCBkb24ndCBsb29rIGxpa2Ugd2hhdA0KSSB3b3VsZCBleHBlY3QgZnJvbSBh
-biBNVEQgZGV2aWNlLg0KDQpGb3IgZXhhbXBsZSwgSSBkbyBhIA0KICAkIGZsYXNoX2VyYXNlYWxs
-IC9kZXYvbXRkMw0KYW5kIGFsbCB0aGF0IGNvbWVzIG91dCBhcmUgUmVhZCBTdGF0dXMgY29tbWFu
-ZHMgKDB4MDUpLg0KQWxsIHRoZSB3cml0ZSBlbmFibGVzIGFuZCBlcmFzZSBjb21tYW5kcyBhcmUg
-bWlzc2luZy4NCg0KU28sIGl0IGxvb2tzIGxpa2UgYW55IGNvbW1hbmQgdGhhdCBpcyBhIHdyaXRl
-LW9ubHkgbmV2ZXIgYWN0dWFsbHkgc2VuZHMNCmFueXRoaW5nLg0KDQpJIGRpZCB0cnkgYW5kIGRv
-IGEgcGFnZSBwcm9ncmFtIGNvbW1hbmQ6DQogICQgZWNobyBoZWxsbyA+ICAvZGV2L210ZDMNCkl0
-IHNlbnQgdGhlIHBhZ2UgcHJvZ3JhbSBjb21tYW5kICgweDEyKSwgYnV0IGluIHRoaXMgY2FzZSwg
-aXQgc3RpbGwgZGlkbid0IHdvcmsNCmJlY2F1c2UgYSB3cml0ZSBlbmFibGUgY29tbWFuZCB3YXMg
-bm90IHNlbnQgZmlyc3QuDQpJIGFzc3VtZSB0aGUgTVREIGxheWVyIGlzIHJlcXVlc3RpbmcgdGhl
-IGNvcnJlY3Qgc2VxdWVuY2Ugb2YgY29tbWFuZHMsIGJ1dA0KU29tZWhvdyB0aGlzIG5ldyBkcml2
-ZXIgaXMgZHJvcHBpbmcgb2YgdGhlbS4NCg0KQ2hyaXMNCg0KDQo=
+On 2/6/20 9:55 PM, Chuanhong Guo wrote:
+> On Fri, Feb 7, 2020 at 4:55 AM Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+>>
+>> On Thu,  6 Feb 2020 23:06:26 +0800, Chuanhong Guo wrote:
+>>> Add binding documentation for SPI controller in Qualcomm Atheros
+>>> AR934x/QCA95xx SoCs.
+>>>
+>>> Signed-off-by: Chuanhong Guo <gch981213-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+>>> ---
+>>> Changes since v1: none
+>>>  .../bindings/spi/qca,ar934x-spi.yaml          | 40 +++++++++++++++++++
+>>>  1 file changed, 40 insertions(+)
+>>>  create mode 100644 Documentation/devicetree/bindings/spi/qca,ar934x-spi.yaml
+>>>
+>>
+>> My bot found errors running 'make dt_binding_check' on your patch:
+>>
+>> Documentation/devicetree/bindings/display/simple-framebuffer.example.dts:21.16-37.11: Warning (chosen_node_is_root): /example-0/chosen: chosen node must be at root node
+>> Error: Documentation/devicetree/bindings/spi/qca,ar934x-spi.example.dts:20.28-29 syntax error
+>> FATAL ERROR: Unable to parse input tree
+>> scripts/Makefile.lib:300: recipe for target 'Documentation/devicetree/bindings/spi/qca,ar934x-spi.example.dt.yaml' failed
+>> make[1]: *** [Documentation/devicetree/bindings/spi/qca,ar934x-spi.example.dt.yaml] Error 1
+>> Makefile:1263: recipe for target 'dt_binding_check' failed
+>> make: *** [dt_binding_check] Error 2
+>>
+>> See https://patchwork.ozlabs.org/patch/1234394
+>> Please check and re-submit.
+> 
+> It's caused by "clocks = <&pll ATH79_CLK_AHB>" where ATH79_CLK_AHB
+> isn't defined without a include of dt-bindings/clock/ath79-clk.h
+> I'll replace this with a bogus "clocks = <&spi_clock>" instead in v3.
+
+You can include ath79-clk.h in your example, see for instance
+Documentation/devicetree/bindings/pci/intel-gw-pcie.yaml
+-- 
+Florian

@@ -1,38 +1,49 @@
-From: Chuanhong Guo <gch981213@gmail.com>
-Subject: Re: [PATCH v2 2/2] dt-binding: spi: add bindings for spi-ar934x
-Date: Sat, 8 Feb 2020 17:36:57 +0800
-Message-ID: <CAJsYDVJ3RfMh9MrMGsS=9=XayJjkatwnVa6DRjf6KmYp8JS9SQ@mail.gmail.com>
-References: <20200206150626.708649-1-gch981213@gmail.com> <20200206150626.708649-3-gch981213@gmail.com>
- <20200206205551.GA15172@bogus> <CAJsYDVKXvAkQawwayX8JVrjvEKPuTyQXE8rw=BRiyVROKrdWrg@mail.gmail.com>
- <7f53a397-0237-4c68-e284-d92adf19c368@gmail.com>
+From: Chuanhong Guo <gch981213-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v4 0/2] spi: add driver for ar934x spi controller
+Date: Mon, 10 Feb 2020 11:41:50 +0800
+Message-ID: <20200210034152.49063-1-gch981213@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Rob Herring <robh@kernel.org>, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree@vger.kernel.org>
-To: Florian Fainelli <f.fainelli@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <7f53a397-0237-4c68-e284-d92adf19c368@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Transfer-Encoding: 8bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Chuanhong Guo <gch981213-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, Feb 8, 2020 at 7:54 AM Florian Fainelli <f.fainelli@gmail.com> wrote:
-> On 2/6/20 9:55 PM, Chuanhong Guo wrote:
-> > It's caused by "clocks = <&pll ATH79_CLK_AHB>" where ATH79_CLK_AHB
-> > isn't defined without a include of dt-bindings/clock/ath79-clk.h
-> > I'll replace this with a bogus "clocks = <&spi_clock>" instead in v3.
->
-> You can include ath79-clk.h in your example, see for instance
-> Documentation/devicetree/bindings/pci/intel-gw-pcie.yaml
+This controller is a superset of the already supported qca,ar7100-spi.
+Besides the bit-bang mode in spi-ath79.c, this new controller added
+a new "shift register" mode, allowing faster spi operations.
+This mode doesn't need all the bit-bang code in spi-ath79.c and needs
+a different clock setup, so I decided to write a new driver for it
+instead of extending current spi-ath79 driver.
 
-Oh. But I've already sent v3 out yesterday :(
+Changes since v3:
+1. restore pin state in probe to terminate unfinished SPI transfer
+   done by bootloader.
+2. replace clock binding with ath79 pll as this is the actual
+   clock binding used in all SoC supported by this driver.
 
-I think this is just cosmetic changes and doesn't make much difference
-so I'd like to keep v3 as-is now and if there are other comments for
-me to send a v4 I'll change this one as well.
+Change since v2:
+fix binding documentation check.
 
-Regards,
-Chuanhong Guo
+Changes since v1:
+1. change comment at the beginning to C++ style
+2. rename ar934x_spi_transfer_one to ar934x_spi_transfer_one_message
+
+Chuanhong Guo (2):
+  spi: add driver for ar934x spi controller
+  dt-binding: spi: add bindings for spi-ar934x
+
+ .../bindings/spi/qca,ar934x-spi.yaml          |  41 +++
+ drivers/spi/Kconfig                           |   7 +
+ drivers/spi/Makefile                          |   1 +
+ drivers/spi/spi-ar934x.c                      | 235 ++++++++++++++++++
+ 4 files changed, 284 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/qca,ar934x-spi.yaml
+ create mode 100644 drivers/spi/spi-ar934x.c
+
+-- 
+2.24.1

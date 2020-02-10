@@ -1,95 +1,34 @@
-From: Robin Gong <yibin.gong@nxp.com>
-Subject: RE: [PATCH v5 11/15] dmaengine: imx-sdma: fix ecspi1 rx dma not work
- on i.mx8mm
-Date: Mon, 10 Feb 2020 12:28:43 +0000
-Message-ID: <VE1PR04MB6638D7886CBADAFF47E5497C89190@VE1PR04MB6638.eurprd04.prod.outlook.com>
-References: <20190610081753.11422-12-yibin.gong@nxp.com>
- <29cf9f29-bdb4-94db-00b0-56ec36386f7a@kontron.de>
- <VE1PR04MB6638639EF4F580E04689538E89870@VE1PR04MB6638.eurprd04.prod.outlook.com>
- <1307d229-4c49-80e3-04ba-377c0caeae9c@kontron.de>
- <VE1PR04MB6638B066EE28781A3C21973D89810@VE1PR04MB6638.eurprd04.prod.outlook.com>
- <862c498f-3c15-fac4-4f17-a30c2e11bb3e@kontron.de>
+From: patchwork-bot+linux-spi-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Subject: Patchwork summary for: spi-devel-general
+Date: Mon, 10 Feb 2020 14:25:58 +0000
+Message-ID: <158134475828.15893.14885047881847079218.git-patchwork-summary@kernel.org>
+References: <1579262309-6542-1-git-send-email-claudiu.beznea@microchip.com>,
+ <7556683b57d8ce100855857f03d1cd3d2903d045.1574943062.git.christophe.leroy@c-s.fr>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "vkoul@kernel.org" <vkoul@kernel.org>,
-        "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-To: Schrempf Frieder <frieder.schrempf@kontron.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <862c498f-3c15-fac4-4f17-a30c2e11bb3e@kontron.de>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Transfer-Encoding: 8bit
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-T24gMjAyMC8wMi8wNiBTY2hyZW1wZiBGcmllZGVyIDxmcmllZGVyLnNjaHJlbXBmQGtvbnRyb24u
-ZGU+IHdyb3RlOg0KPiANCj4gSGksDQo+IE9uIDI3LjA5LjE5IDAzOjU1LCBSb2JpbiBHb25nIHdy
-b3RlOg0KPiA+IE9uIDIwMTktOS0yNSAyMjo1MyBTY2hyZW1wZiBGcmllZGVyIDxmcmllZGVyLnNj
-aHJlbXBmQGtvbnRyb24uZGU+IHdyb3RlOg0KPiA+PiBPbiAyNS4wOS4xOSAxMzoyNiwgUm9iaW4g
-R29uZyB3cm90ZToNCj4gPj4+IE9uIDIwMTktOS0yNCAyMToyOCBTY2hyZW1wZiBGcmllZGVyIDxm
-cmllZGVyLnNjaHJlbXBmQGtvbnRyb24uZGU+DQo+ID4+IHdyb3RlOg0KPiA+Pj4+DQo+ID4+Pj4g
-SGkgUm9iaW4sDQo+ID4+Pj4NCj4gPj4+Pj4gRnJvbTogUm9iaW4gR29uZyA8eWliaW4uZ29uZyBh
-dCBueHAuY29tPg0KPiA+Pj4+Pg0KPiA+Pj4+PiBCZWNhdXNlIHRoZSBudW1iZXIgb2YgZWNzcGkx
-IHJ4IGV2ZW50IG9uIGkubXg4bW0gaXMgMCwgdGhlDQo+ID4+Pj4+IGNvbmRpdGlvbiBjaGVjayBp
-Z25vcmUgc3VjaCBzcGVjaWFsIGNhc2Ugd2l0aG91dCBkbWEgY2hhbm5lbA0KPiA+Pj4+PiBlbmFi
-bGVkLCB3aGljaCBjYXVzZWQNCj4gPj4+Pj4gZWNzcGkxIHJ4IHdvcmtzIGZhaWxlZC4gQWN0dWFs
-bHksIG5vIG5lZWQgdG8gY2hlY2sNCj4gPj4+Pj4gZXZlbnRfaWQwL2V2ZW50X2lkMSBhbmQgcmVw
-bGFjZSBjaGVja2luZyAnZXZlbnRfaWQxJyB3aXRoDQo+ID4+Pj4+ICdETUFfREVWX1RPX0RFVics
-IHNvIHRoYXQgY29uZmlndXJlDQo+ID4+Pj4+IGV2ZW50X2lkMSBvbmx5IGluIGNhc2UgREVWX1RP
-X0RFVi4NCj4gPj4+Pj4NCj4gPj4+Pj4gU2lnbmVkLW9mZi1ieTogUm9iaW4gR29uZyA8eWliaW4u
-Z29uZyBhdCBueHAuY29tPg0KPiA+Pj4+PiBBY2tlZC1ieTogVmlub2QgS291bCA8dmtvdWwgYXQg
-a2VybmVsLm9yZz4NCj4gPj4+Pg0KPiA+Pj4+IEkgaGF2ZSBhIGN1c3RvbSBib2FyZCB3aXRoIGku
-TVg4TU0gYW5kIFNQSSBmbGFzaCBvbiBlY3NwaTEuIEknbQ0KPiA+Pj4+IGN1cnJlbnRseSB0ZXN0
-aW5nIHdpdGggdjUuMyBhbmQgYXMgU1BJIGRpZG4ndCB3b3JrLCBJIHRyaWVkIHR3bw0KPiA+Pj4+
-IGRpZmZlcmVudA0KPiA+PiB0aGluZ3M6DQo+ID4+Pj4NCj4gPj4+PiAxLiBSZW1vdmluZyAnZG1h
-cycgYW5kICdkbWEtbmFtZXMnIGZyb20gdGhlIGVjc3BpMSBub2RlIGluDQo+ID4+IGlteDhtbS5k
-dHNpLA0KPiA+Pj4+ICAgICAgIHRvIHVzZSBQSU8gaW5zdGVhZCBvZiBETUEuIFRoaXMgd29ya3Mg
-YXMgZXhwZWN0ZWQgYW5kIHRoZSBkcml2ZXINCj4gPj4+PiAgICAgICBib290cyB3aXRoIHRoZSBm
-b2xsb3dpbmcgbWVzc2FnZXM6DQo+ID4+Pj4NCj4gPj4+PiAgICAgICAgICAgc3BpX2lteCAzMDgy
-MDAwMC5zcGk6IGRtYSBzZXR1cCBlcnJvciAtMTksIHVzZSBwaW8NCj4gPj4+PiAgICAgICAgICAg
-bTI1cDgwIHNwaTAuMDogbXgyNXY4MDM1ZiAoMTAyNCBLYnl0ZXMpDQo+ID4+Pj4gICAgICAgICAg
-IHNwaV9pbXggMzA4MjAwMDAuc3BpOiBwcm9iZWQNCj4gPj4+Pg0KPiA+Pj4+IDIuIEFwcGx5aW5n
-IHlvdXIgcGF0Y2hzZXQgYW5kIHVzZSBETUEuIEluIHRoaXMgY2FzZSwgdGhlIGZsYXNoIGFsc28N
-Cj4gPj4+PiAgICAgICB3b3JrcyBmaW5lLCBidXQgdGhlcmUgYXJlIHNvbWUgZXJyb3IgbWVzc2Fn
-ZXMgcHJpbnRlZCB3aGlsZQ0KPiA+PiBib290aW5nOg0KPiA+Pj4+DQo+ID4+Pj4gICAgICAgICAg
-IHNwaV9tYXN0ZXIgc3BpMDogSS9PIEVycm9yIGluIERNQSBSWA0KPiA+Pj4+ICAgICAgICAgICBt
-MjVwODAgc3BpMC4wOiBTUEkgdHJhbnNmZXIgZmFpbGVkOiAtMTEwDQo+ID4+Pj4gICAgICAgICAg
-IHNwaV9tYXN0ZXIgc3BpMDogZmFpbGVkIHRvIHRyYW5zZmVyIG9uZSBtZXNzYWdlIGZyb20gcXVl
-dWUNCj4gPj4+PiAgICAgICAgICAgbTI1cDgwIHNwaTAuMDogbXgyNXY4MDM1ZiAoMTAyNCBLYnl0
-ZXMpDQo+ID4+Pj4gICAgICAgICAgIHNwaV9pbXggMzA4MjAwMDAuc3BpOiBwcm9iZWQNCj4gPj4+
-Pg0KPiA+Pj4+IEl0IHdvdWxkIGJlIGdyZWF0IHRvIGdldCB5b3VyIHBhdGNoZXMgbWVyZ2VkIGFu
-ZCBmaXggU1BJICsgRE1BLCBidXQNCj4gPj4+PiBmb3IgaS5NWDhNTSwgd2UgbmVlZCB0byBnZXQg
-cmlkIG9mIHRoZSBlcnJvciBtZXNzYWdlcy4gRG8geW91IGhhdmUNCj4gPj4+PiBhbiBpZGVhLCB3
-aGF0J3Mgd3Jvbmc/DQo+ID4+DQo+ID4+PiBDb3VsZCB5b3UgY2hlY2sgaWYgdGhlIGxlbmd0aCBv
-ZiBzcGkgbWVzc2FnZSBpcyBiaWdnZXIgdGhhbg0KPiA+Pj4gZmlmb19zaXplIGR1cmluZyBzcGlf
-bm9yIHByb2JlPyBJZiB5ZXMsIGF0IHRoYXQgdGltZSBtYXliZSBzZG1hIGZpcm13YXJlDQo+IG5v
-dCBsb2FkZWQuDQo+ID4+PiBpZiAodHJhbnNmZXItPmxlbiA8IHNwaV9pbXgtPmRldnR5cGVfZGF0
-YS0+Zmlmb19zaXplKQ0KPiA+Pg0KPiA+PiBJbmRlZWQsIG1vc3Qgb2YgdGhlIHRyYW5zZmVycyB0
-cmlnZ2VyZWQgYnkgdGhlIFNQSSBOT1IgZGlydmVyIGFyZQ0KPiA+PiBiZWxvdyBmaWZvX3NpemUg
-YW5kIHdvcmsgZmluZSwgYnV0IHNvbWUgYXJlIGJpZ2dlci4gVGhlIHRyYW5zZmVycw0KPiA+PiB0
-aGVyZWZvcmUgdHJ5IHRvIHVzZSBETUEsIGJ1dCB0aGUgZmlybXdhcmUgaXMgbm90IGxvYWRlZCB5
-ZXQuDQo+ID4+DQo+ID4+IEhvdyBpcyB0aGlzIHN1cHBvc2VkIHRvIHdvcms/IFNob3VsZG4ndCBh
-bGwgdHJhbnNmZXJzIHVzZSBQSU8gYXMgbG9uZw0KPiA+PiBhcyB0aGUgU0RNQSBmaXJtd2FyZSBp
-cyBub3QgbG9hZGVkIHlldD8NCj4gPiBZZXMsIGZvciBlY3NwaSBzaG91bGQgd29yayB3aXRoIHJh
-bSBzY3JpcHQsIGl0J3MgYmV0dGVyIGNoZWNrIGlmIHNkbWENCj4gPiBmaXJtd2FyZSBpcyByZWFk
-eSBpbiBzcGlfaW14X2RtYV9jb25maWd1cmUoKSwgbmVlZCBtb2RpZmljYXRpb24gaW4gc2RtYQ0K
-PiBkcml2ZXIgdG9vLg0KPiA+IEknbGwgY3JlYXRlIGFub3RoZXIgcGF0Y2ggYWZ0ZXIgdGhpcyBw
-YXRjaCBzZXQgYWNjZXB0ZWQuDQo+IA0KPiBUaGlzIHN0aWxsIHNlZW1zIHRvIGJlIGJyb2tlbiB1
-cHN0cmVhbS4gSXMgYW55b25lIHdvcmtpbmcgb24gZml4aW5nIFNQSQ0KPiArIERNQSBmb3IgaS5N
-WDhNTT8gT3RoZXJ3aXNlIEkgd2lsbCBzZW5kIGEgcGF0Y2ggdGhhdCByZW1vdmVzIHRoZSBETUEN
-Cj4gZnJvbSB0aGUgZWNzcGkgbm9kZXMgaW4gdGhlIGRldmljZXRyZWUuDQpTb3JyeSwgRnJpZWRl
-ciwgbXkgcGF0Y2ggc2V0IGhhcyBiZWVuIGJsb2NrZWQgZm9yIHNvIGxvbmcgdGltZSBiZWNhdXNl
-IEkgcmV2ZXJ0DQpzb21lIHBhdGNoZXMgYW5kIG5lZWQgZ2V0IGNvbW1pdCBmcm9tIHBhdGNoIG93
-bmVyLCB1bmZvcnR1bmF0ZWx5LCBJIGRpZG4ndA0KZ2V0IGFueSBmZWVkYmFjayBmcm9tIHRoZW0g
-YWx0aG91Z2ggSSBnb3QgQUNLIGZyb20gbWFpbnRhaW5lci4gSSdsbCBwaWNrIHVwDQp0aGVtLCBy
-ZWJhc2UgYW5kIHJlc2VuZCBpdCB0aGVzZSBkYXlzLCB0aGVuIGNvdWxkIGFkZHJlc3MgeW91ciBp
-c3N1ZSBsYXRlci4gIA0K
+Hello:
+
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (refs/heads/for-next):
+
+Series: add device tree for SAM9X60 SoC and SAM9X60-EK board
+  Submitter: Claudiu Beznea <claudiu.beznea-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=229897
+    Patches: [v5,1/2] dt-bindings: atmel-usart: remove wildcard
+             [v5,2/2] dt-bindings: atmel-usart: add microchip,sam9x60-{usart, dbgu}
+
+Patch: powerpc/devicetrees: Change 'gpios' to 'cs-gpios' on fsl,spi nodes
+  Submitter: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=209489
+
+Total patches: 3
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/pwbot

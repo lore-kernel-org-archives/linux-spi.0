@@ -1,63 +1,50 @@
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Subject: Re: [alsa-devel] [PATCH] spi: pxa2xx: Enable support for
- compile-testing
-Date: Mon, 10 Feb 2020 08:21:18 -0600
-Message-ID: <abf31c4f-638c-0732-6dc3-957a903e8d56@linux.intel.com>
-References: <20200210093027.6672-1-geert@linux-m68k.org>
+From: Chris Brandt <Chris.Brandt-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+Subject: RE: [PATCH v2] spi: add Renesas RPC-IF driver
+Date: Mon, 10 Feb 2020 18:06:37 +0000
+Message-ID: <TYXPR01MB1568E8BCB6B80A77C91D98998A190@TYXPR01MB1568.jpnprd01.prod.outlook.com>
+References: <ad503d6e-4739-9744-64b4-fd13f44ea6fe@cogentembedded.com>
+ <6515c5ec-8432-0b20-426d-0428bbdf3712@cogentembedded.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Cezary Rojewski <cezary.rojewski@intel.com>,
-        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
-        Jie Yang <yang.jie@linux.intel.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, linux-spi@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org
-To: Geert Uytterhoeven <geert@linux-m68k.org>,
-        Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200210093027.6672-1-geert@linux-m68k.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Mason Yang <masonccyang-I/i+R0kf0WFNUHwG+Fw1Kw@public.gmane.org>
+To: Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <6515c5ec-8432-0b20-426d-0428bbdf3712-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
 Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-
-
-On 2/10/20 3:30 AM, Geert Uytterhoeven wrote:
-> m68k/allmodconfig:
-> 
->      WARNING: unmet direct dependencies detected for SPI_PXA2XX
->        Depends on [n]: SPI [=y] && SPI_MASTER [=y] && (ARCH_PXA || ARCH_MMP || PCI [=n] || ACPI)
->        Selected by [m]:
->        - SND_SOC_INTEL_BDW_RT5677_MACH [=m] && SOUND [=m] && !UML && SND [=m] && SND_SOC [=m] && SND_SOC_INTEL_MACH [=y] && (SND_SOC_INTEL_HASWELL [=n] || SND_SOC_SOF_BROADWELL [=m]) && I2C [=m] && (I2C_DESIGNWARE_PLATFORM [=m] || COMPILE_TEST [=y]) && (GPIOLIB [=y] || COMPILE_TEST [=y]) && (X86_INTEL_LPSS || COMPILE_TEST [=y]) && SPI_MASTER [=y]
-> 
-> This happens because SND_SOC_INTEL_BDW_RT5677_MACH selects SPI_PXA2XX,
-> and the former depends on COMPILE_TEST, while the latter does not.
-> 
-> Fix this by enabling compile-testing for SPI_PXA2XX.
-> 
-> Fixes: 630db1549356f644 ("ASoC: Intel: bdw-rt5677: fix Kconfig dependencies")
-> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-
-Makes sense.
-
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-
-> ---
->   drivers/spi/Kconfig | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index ee96708aa3a77156..2e1c3a575f7a6cc3 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -557,7 +557,7 @@ config SPI_PPC4xx
->   
->   config SPI_PXA2XX
->   	tristate "PXA2xx SSP SPI master"
-> -	depends on (ARCH_PXA || ARCH_MMP || PCI || ACPI)
-> +	depends on ARCH_PXA || ARCH_MMP || PCI || ACPI || COMPILE_TEST
->   	select PXA_SSP if ARCH_PXA || ARCH_MMP
->   	help
->   	  This enables using a PXA2xx or Sodaville SSP port as a SPI master
-> 
+SGkgU2VyZ2VpLA0KDQpBcyBJIG1lbnRpb25lZCwgd2hlbiB0ZXN0aW5nIG9uIFJaL0ExLCBzb21l
+IGNvbW1hbmRzIGFyZSBub3QgdHJhbnNtaXR0ZWQuDQoNCkJhc2ljYWxseSBhbmQgU1BJIGNvbW1h
+bmQgdGhhdCBkaWQgbm90IGhhdmUgJ2RhdGEnIHBheWxvYWQ6DQoJMHgwNjogV3JpdGUgRW5hYmxl
+DQoJMHhEQzogRXJhc2UgMjU2IGtCICg0LWJ5dGUgYWRkcmVzcykNCgkweDA0OiBXcml0ZSBEaXNh
+YmxlDQoNClRoZSByZWFzb24gc2VlbXMgdG8gYmUgdGhlcmUgaXMgbm8gY2FzZSB0byBzZXQgcnBj
+LT5kaXIgd2hlbiB0aGVyZSBpcyBubyBkYXRhLg0KU28sIGl0IGp1c3QgZ2V0cyBsZWZ0IGF0IHdo
+YXRldmVyIHRoZSBsYXN0IHRyYW5zZmVyIHdhcy4NCg0KSSBhZGRlZCB0aGlzIGZpeCBhbmQgbm93
+IGl0IHNlZW1zIHRvIHdvcmsgZmluZS4NCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL3NwaS1y
+cGMtaWYuYyBiL2RyaXZlcnMvc3BpL3NwaS1ycGMtaWYuYw0KaW5kZXggMGZmMWE1MzhiYmQ1Li4y
+MTY1YTA3NjE4NDQgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL3NwaS9zcGktcnBjLWlmLmMNCisrKyBi
+L2RyaXZlcnMvc3BpL3NwaS1ycGMtaWYuYw0KQEAgLTUzLDYgKzU0LDkgQEAgc3RhdGljIHZvaWQg
+cnBjaWZfc3BpX21lbV9wcmVwYXJlKHN0cnVjdCBzcGlfZGV2aWNlICpzcGlfZGV2LA0KICAgICAg
+ICAgICAgICAgIGRlZmF1bHQ6DQogICAgICAgICAgICAgICAgICAgICAgICBicmVhazsNCiAgICAg
+ICAgICAgICAgICB9DQorICAgICAgIH0gZWxzZSB7DQorICAgICAgICAgICAgICAgcnBjX29wLmRh
+dGEuZGlyID0gUlBDSUZfTk9fREFUQTsNCisgICAgICAgICAgICAgICBycGMtPmRpciA9IFJQQ0lG
+X05PX0RBVEE7DQogICAgICAgIH0NCiANCiAgICAgICAgcnBjaWZfcHJlcGFyZShycGMsICZycGNf
+b3AsIG9mZnMsIGxlbik7DQoNCg0KVGhpcyBzZWVtcyBsaWtlIGEgYnVnIHRoYXQgd291bGQgZWZm
+ZWN0IGFkZCBkZXZpY2VzLCBub3QganVzdCB0aGUgUlovQTEuDQoNCg0KDQpTaWRlIG5vdGUsIGVy
+YXNlIHNlZW1zIE9LLi4uYnV0IHdyaXRpbmcgZGF0YSBzZWVtcyB0byBnZXQgbWVzc2VkIHVwLg0K
+QXMgeW91IGNhbiBzZWUgYmVsb3csIGl0J3MgYWRkaW5nIDIgYnl0ZXMgb2YgMDAgaW50byB0aGUg
+d3JpdGUgc3RyZWFtLg0KDQokIGZsYXNoX2VyYXNlYWxsIC9kZXYvbXRkMw0KRXJhc2luZyAyNTYg
+S2lieXRlIEAgMTAwMDAwMCAtIDEwMCUgY29tcGxldGUuDQokIGhleGR1bXAgLUMgLW4xMDAgL2Rl
+di9tdGQzDQowMDAwMDAwMCAgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgIGZmIGZmIGZmIGZmIGZm
+IGZmIGZmIGZmICB8Li4uLi4uLi4uLi4uLi4uLnwNCioNCjAwMDAwMDYwDQokIGhleGR1bXAgLUMg
+LW4xMDAgL2Rldi9tdGQzDQowMDAwMDAwMCAgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgIGZmIGZm
+IGZmIGZmIGZmIGZmIGZmIGZmICB8Li4uLi4uLi4uLi4uLi4uLnwNCioNCjAwMDAwMDYwDQokIGVj
+aG8gImhlbGxvIiA+IC9kZXYvbXRkMw0KJCBoZXhkdW1wIC1DIC1uMTAwIC9kZXYvbXRkMw0KMDAw
+MDAwMDAgIDY4IDY1IDZjIDZjIDAwIDAwIDZmIDBhICBmZiBmZiBmZiBmZiBmZiBmZiBmZiBmZiAg
+fGhlbGwuLm8uLi4uLi4uLi58DQowMDAwMDAxMCAgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgIGZm
+IGZmIGZmIGZmIGZmIGZmIGZmIGZmICB8Li4uLi4uLi4uLi4uLi4uLnwNCioNCjAwMDAwMDYwDQoN
+Cg0KQ2hyaXMNCg==

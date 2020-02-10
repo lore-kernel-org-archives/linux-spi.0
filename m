@@ -1,180 +1,95 @@
-From: "Behme Dirk (CM/ESO2)" <dirk.behme@de.bosch.com>
-Subject: Re: [PATCH RFC 2/2] memory: add Renesas RPC-IF driver
-Date: Mon, 10 Feb 2020 11:21:26 +0100
-Message-ID: <5760bcdb-e44b-6f18-7262-9526684e5780@de.bosch.com>
-References: <cb7022c9-0059-4eb2-7910-aab42124fa1c@cogentembedded.com>
- <4db876ed-1ccc-e3be-311d-30cd52f40259@cogentembedded.com>
+From: Robin Gong <yibin.gong@nxp.com>
+Subject: RE: [PATCH v5 11/15] dmaengine: imx-sdma: fix ecspi1 rx dma not work
+ on i.mx8mm
+Date: Mon, 10 Feb 2020 12:28:43 +0000
+Message-ID: <VE1PR04MB6638D7886CBADAFF47E5497C89190@VE1PR04MB6638.eurprd04.prod.outlook.com>
+References: <20190610081753.11422-12-yibin.gong@nxp.com>
+ <29cf9f29-bdb4-94db-00b0-56ec36386f7a@kontron.de>
+ <VE1PR04MB6638639EF4F580E04689538E89870@VE1PR04MB6638.eurprd04.prod.outlook.com>
+ <1307d229-4c49-80e3-04ba-377c0caeae9c@kontron.de>
+ <VE1PR04MB6638B066EE28781A3C21973D89810@VE1PR04MB6638.eurprd04.prod.outlook.com>
+ <862c498f-3c15-fac4-4f17-a30c2e11bb3e@kontron.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Mason Yang <masonccyang@mxic.com.tw>,
-        <linux-spi@vger.kernel.org>,
-        Chris Brandt <chris.brandt@renesas.com>,
-        <linux-renesas-soc@vger.kernel.org>
-To: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Return-path: <linux-renesas-soc-owner@vger.kernel.org>
-In-Reply-To: <4db876ed-1ccc-e3be-311d-30cd52f40259@cogentembedded.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "vkoul@kernel.org" <vkoul@kernel.org>,
+        "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+To: Schrempf Frieder <frieder.schrempf@kontron.de>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <862c498f-3c15-fac4-4f17-a30c2e11bb3e@kontron.de>
 Content-Language: en-US
-Sender: linux-renesas-soc-owner@vger.kernel.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Sergei,
-
-On 10.12.2019 20:39, Sergei Shtylyov wrote:
-> Add the memory driver for Renesas RPC-IF which registers either SPI or
-> HyperFLash device depending on the contents of the device tree subnode.
-> It also provides the absract "back end" device APIs that can be used by
-> the "front end" SPI/MTD drivers to talk to the real hardware.
-> 
-> Based on the original patch by Mason Yang <masonccyang@mxic.com.tw>.
-> 
-> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-
-
-FYI, please find below [1] the changes I did locally on this driver. It 
-seems to read & write successfully on my custom M3 (R8A7796) device, now.
-
-Best regards
-
-Dirk
-
-[1]
-
- From d72b805cc461ab1e9747c973e9be84e7abb8f828 Mon Sep 17 00:00:00 2001
-From: Dirk Behme <dirk.behme@de.bosch.com>
-Date: Tue, 4 Feb 2020 08:39:31 +0100
-Subject: [PATCH] memory: renesas-rpc-if: Correct the STRTIM and some other
-  clean up
-
-This is required to make the driver work correctly in my M3 environment.
-
-Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
----
-  drivers/memory/renesas-rpc-if.c | 42 ++++++++++++++++++++-------------
-  1 file changed, 25 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/memory/renesas-rpc-if.c 
-b/drivers/memory/renesas-rpc-if.c
-index 04be92b64bfa..f4356b066384 100644
---- a/drivers/memory/renesas-rpc-if.c
-+++ b/drivers/memory/renesas-rpc-if.c
-@@ -129,10 +129,11 @@
-
-  #define RPCIF_PHYCNT		0x007C	/* R/W */
-  #define RPCIF_PHYCNT_CAL	BIT(31)
--#define RPCIF_PHYCNT_OCTA_AA	BIT(22)
--#define RPCIF_PHYCNT_OCTA_SA	BIT(23)
-+#define RPCIF_PHYCNT_OCTA(v)	(((v) & 0x3) << 22)
-  #define RPCIF_PHYCNT_EXDS	BIT(21)
-  #define RPCIF_PHYCNT_OCT	BIT(20)
-+#define RPCIF_PHYCNT_DDRCAL	BIT(19)
-+#define RPCIF_PHYCNT_HS		BIT(18)
-  #define RPCIF_PHYCNT_STRTIM(v)	(((v) & 0x7) << 15)
-  #define RPCIF_PHYCNT_WBUF2	BIT(4)
-  #define RPCIF_PHYCNT_WBUF	BIT(2)
-@@ -219,6 +220,8 @@ EXPORT_SYMBOL(rpcif_disable_rpm);
-
-  void rpcif_hw_init(struct rpcif *rpc, bool hyperflash)
-  {
-+	u32 dummy;
-+
-  	pm_runtime_get_sync(rpc->dev);
-
-  	/*
-@@ -227,9 +230,9 @@ void rpcif_hw_init(struct rpcif *rpc, bool hyperflash)
-  	 *	 0x0 : the delay is biggest,
-  	 *	 0x1 : the delay is 2nd biggest,
-  	 *	 On H3 ES1.x, the value should be 0, while on others,
--	 *	 the value should be 6.
-+	 *	 the value should be 7.
-  	 */
--	regmap_write(rpc->regmap, RPCIF_PHYCNT, /* RPCIF_PHYCNT_STRTIM(6) | */
-+	regmap_write(rpc->regmap, RPCIF_PHYCNT, RPCIF_PHYCNT_STRTIM(7) |
-  		     RPCIF_PHYCNT_PHYMEM(hyperflash ? 3 : 0) | 0x260);
-
-  	/*
-@@ -250,6 +253,10 @@ void rpcif_hw_init(struct rpcif *rpc, bool hyperflash)
-  	regmap_write(rpc->regmap, RPCIF_CMNCR, RPCIF_CMNCR_SFDE |
-  		     RPCIF_CMNCR_MOIIO_HIZ | RPCIF_CMNCR_IOFV_HIZ |
-  		     RPCIF_CMNCR_BSZ(hyperflash ? 1 : 0));
-+	/* Set RCF after BSZ update */
-+	regmap_write(rpc->regmap, RPCIF_DRCR, RPCIF_DRCR_RCF);
-+	/* Dummy read according to spec */
-+	regmap_read(rpc->regmap, RPCIF_DRCR, &dummy);
-  	regmap_write(rpc->regmap, RPCIF_SSLDR, RPCIF_SSLDR_SPNDL(7) |
-  		     RPCIF_SSLDR_SLNDL(7) | RPCIF_SSLDR_SCKDL(7));
-
-@@ -291,11 +298,11 @@ void rpcif_prepare(struct rpcif *rpc, const struct 
-rpcif_op *op, u64 *offs,
-  	rpc->xferlen = 0;
-
-  	if (op->cmd.buswidth) {
--		rpc->enable  |= RPCIF_SMENR_CDE |
-+		rpc->enable  = RPCIF_SMENR_CDE |
-  			RPCIF_SMENR_CDB(rpcif_bit_size(op->cmd.buswidth));
--		rpc->command |= RPCIF_SMCMR_CMD(op->cmd.opcode);
-+		rpc->command = RPCIF_SMCMR_CMD(op->cmd.opcode);
-  		if (op->cmd.ddr)
--			rpc->ddr |= RPCIF_SMDRENR_HYPE(0x5);
-+			rpc->ddr = RPCIF_SMDRENR_HYPE(0x5);
-  	}
-  	if (op->ocmd.buswidth) {
-  		rpc->enable  |= RPCIF_SMENR_OCDE |
-@@ -432,6 +439,8 @@ int rpcif_io_xfer(struct rpcif *rpc)
-  		 * mode instead.
-  		 */
-  		if (!(smenr & RPCIF_SMENR_ADE(0xf)) && rpc->dirmap) {
-+			u32 dummy;
-+
-  			regmap_update_bits(rpc->regmap, RPCIF_CMNCR,
-  					   RPCIF_CMNCR_MD, 0);
-  			regmap_write(rpc->regmap, RPCIF_DRCR,
-@@ -446,6 +455,8 @@ int rpcif_io_xfer(struct rpcif *rpc)
-  			regmap_write(rpc->regmap, RPCIF_DRDRENR, rpc->ddr);
-  			memcpy_fromio(rpc->buffer, rpc->dirmap, rpc->xferlen);
-  			regmap_write(rpc->regmap, RPCIF_DRCR, RPCIF_DRCR_RCF);
-+			/* Dummy read according to spec */
-+			regmap_read(rpc->regmap, RPCIF_DRCR, &dummy);
-  			break;
-  		}
-  		while (pos < rpc->xferlen) {
-@@ -506,6 +517,7 @@ ssize_t rpcif_dirmap_read(struct rpcif *rpc, u64 
-offs, size_t len, void *buf)
-  {
-  	loff_t from = offs & (RPCIF_DIRMAP_SIZE - 1);
-  	size_t size = RPCIF_DIRMAP_SIZE - from;
-+	u32 ret;
-
-  	if (len > size)
-  		len = size;
-@@ -513,19 +525,15 @@ ssize_t rpcif_dirmap_read(struct rpcif *rpc, u64 
-offs, size_t len, void *buf)
-  	pm_runtime_get_sync(rpc->dev);
-
-  	regmap_update_bits(rpc->regmap, RPCIF_CMNCR, RPCIF_CMNCR_MD, 0);
--	regmap_write(rpc->regmap, RPCIF_DRCR,
--		     RPCIF_DRCR_RBURST(32) | RPCIF_DRCR_RBE);
--	regmap_write(rpc->regmap, RPCIF_DRCMR, rpc->command);
--	regmap_write(rpc->regmap, RPCIF_DREAR,
--		     RPCIF_DREAR_EAV(offs >> 25) | RPCIF_DREAR_EAC(1));
--	regmap_write(rpc->regmap, RPCIF_DROPR, rpc->option);
--	regmap_write(rpc->regmap, RPCIF_DRENR,
--		     rpc->enable & ~RPCIF_SMENR_SPIDE(0xF));
--	regmap_write(rpc->regmap, RPCIF_DRDMCR, rpc->dummy);
--	regmap_write(rpc->regmap, RPCIF_DRDRENR, rpc->ddr);
-+	ret = wait_msg_xfer_end(rpc);
-+	if (ret) {
-+		len = 0;
-+		goto err_out;
-+	}
-
-  	memcpy_fromio(buf, rpc->dirmap + from, len);
-
-+err_out:
-  	pm_runtime_put(rpc->dev);
-
-  	return len;
--- 
-2.20.0
+T24gMjAyMC8wMi8wNiBTY2hyZW1wZiBGcmllZGVyIDxmcmllZGVyLnNjaHJlbXBmQGtvbnRyb24u
+ZGU+IHdyb3RlOg0KPiANCj4gSGksDQo+IE9uIDI3LjA5LjE5IDAzOjU1LCBSb2JpbiBHb25nIHdy
+b3RlOg0KPiA+IE9uIDIwMTktOS0yNSAyMjo1MyBTY2hyZW1wZiBGcmllZGVyIDxmcmllZGVyLnNj
+aHJlbXBmQGtvbnRyb24uZGU+IHdyb3RlOg0KPiA+PiBPbiAyNS4wOS4xOSAxMzoyNiwgUm9iaW4g
+R29uZyB3cm90ZToNCj4gPj4+IE9uIDIwMTktOS0yNCAyMToyOCBTY2hyZW1wZiBGcmllZGVyIDxm
+cmllZGVyLnNjaHJlbXBmQGtvbnRyb24uZGU+DQo+ID4+IHdyb3RlOg0KPiA+Pj4+DQo+ID4+Pj4g
+SGkgUm9iaW4sDQo+ID4+Pj4NCj4gPj4+Pj4gRnJvbTogUm9iaW4gR29uZyA8eWliaW4uZ29uZyBh
+dCBueHAuY29tPg0KPiA+Pj4+Pg0KPiA+Pj4+PiBCZWNhdXNlIHRoZSBudW1iZXIgb2YgZWNzcGkx
+IHJ4IGV2ZW50IG9uIGkubXg4bW0gaXMgMCwgdGhlDQo+ID4+Pj4+IGNvbmRpdGlvbiBjaGVjayBp
+Z25vcmUgc3VjaCBzcGVjaWFsIGNhc2Ugd2l0aG91dCBkbWEgY2hhbm5lbA0KPiA+Pj4+PiBlbmFi
+bGVkLCB3aGljaCBjYXVzZWQNCj4gPj4+Pj4gZWNzcGkxIHJ4IHdvcmtzIGZhaWxlZC4gQWN0dWFs
+bHksIG5vIG5lZWQgdG8gY2hlY2sNCj4gPj4+Pj4gZXZlbnRfaWQwL2V2ZW50X2lkMSBhbmQgcmVw
+bGFjZSBjaGVja2luZyAnZXZlbnRfaWQxJyB3aXRoDQo+ID4+Pj4+ICdETUFfREVWX1RPX0RFVics
+IHNvIHRoYXQgY29uZmlndXJlDQo+ID4+Pj4+IGV2ZW50X2lkMSBvbmx5IGluIGNhc2UgREVWX1RP
+X0RFVi4NCj4gPj4+Pj4NCj4gPj4+Pj4gU2lnbmVkLW9mZi1ieTogUm9iaW4gR29uZyA8eWliaW4u
+Z29uZyBhdCBueHAuY29tPg0KPiA+Pj4+PiBBY2tlZC1ieTogVmlub2QgS291bCA8dmtvdWwgYXQg
+a2VybmVsLm9yZz4NCj4gPj4+Pg0KPiA+Pj4+IEkgaGF2ZSBhIGN1c3RvbSBib2FyZCB3aXRoIGku
+TVg4TU0gYW5kIFNQSSBmbGFzaCBvbiBlY3NwaTEuIEknbQ0KPiA+Pj4+IGN1cnJlbnRseSB0ZXN0
+aW5nIHdpdGggdjUuMyBhbmQgYXMgU1BJIGRpZG4ndCB3b3JrLCBJIHRyaWVkIHR3bw0KPiA+Pj4+
+IGRpZmZlcmVudA0KPiA+PiB0aGluZ3M6DQo+ID4+Pj4NCj4gPj4+PiAxLiBSZW1vdmluZyAnZG1h
+cycgYW5kICdkbWEtbmFtZXMnIGZyb20gdGhlIGVjc3BpMSBub2RlIGluDQo+ID4+IGlteDhtbS5k
+dHNpLA0KPiA+Pj4+ICAgICAgIHRvIHVzZSBQSU8gaW5zdGVhZCBvZiBETUEuIFRoaXMgd29ya3Mg
+YXMgZXhwZWN0ZWQgYW5kIHRoZSBkcml2ZXINCj4gPj4+PiAgICAgICBib290cyB3aXRoIHRoZSBm
+b2xsb3dpbmcgbWVzc2FnZXM6DQo+ID4+Pj4NCj4gPj4+PiAgICAgICAgICAgc3BpX2lteCAzMDgy
+MDAwMC5zcGk6IGRtYSBzZXR1cCBlcnJvciAtMTksIHVzZSBwaW8NCj4gPj4+PiAgICAgICAgICAg
+bTI1cDgwIHNwaTAuMDogbXgyNXY4MDM1ZiAoMTAyNCBLYnl0ZXMpDQo+ID4+Pj4gICAgICAgICAg
+IHNwaV9pbXggMzA4MjAwMDAuc3BpOiBwcm9iZWQNCj4gPj4+Pg0KPiA+Pj4+IDIuIEFwcGx5aW5n
+IHlvdXIgcGF0Y2hzZXQgYW5kIHVzZSBETUEuIEluIHRoaXMgY2FzZSwgdGhlIGZsYXNoIGFsc28N
+Cj4gPj4+PiAgICAgICB3b3JrcyBmaW5lLCBidXQgdGhlcmUgYXJlIHNvbWUgZXJyb3IgbWVzc2Fn
+ZXMgcHJpbnRlZCB3aGlsZQ0KPiA+PiBib290aW5nOg0KPiA+Pj4+DQo+ID4+Pj4gICAgICAgICAg
+IHNwaV9tYXN0ZXIgc3BpMDogSS9PIEVycm9yIGluIERNQSBSWA0KPiA+Pj4+ICAgICAgICAgICBt
+MjVwODAgc3BpMC4wOiBTUEkgdHJhbnNmZXIgZmFpbGVkOiAtMTEwDQo+ID4+Pj4gICAgICAgICAg
+IHNwaV9tYXN0ZXIgc3BpMDogZmFpbGVkIHRvIHRyYW5zZmVyIG9uZSBtZXNzYWdlIGZyb20gcXVl
+dWUNCj4gPj4+PiAgICAgICAgICAgbTI1cDgwIHNwaTAuMDogbXgyNXY4MDM1ZiAoMTAyNCBLYnl0
+ZXMpDQo+ID4+Pj4gICAgICAgICAgIHNwaV9pbXggMzA4MjAwMDAuc3BpOiBwcm9iZWQNCj4gPj4+
+Pg0KPiA+Pj4+IEl0IHdvdWxkIGJlIGdyZWF0IHRvIGdldCB5b3VyIHBhdGNoZXMgbWVyZ2VkIGFu
+ZCBmaXggU1BJICsgRE1BLCBidXQNCj4gPj4+PiBmb3IgaS5NWDhNTSwgd2UgbmVlZCB0byBnZXQg
+cmlkIG9mIHRoZSBlcnJvciBtZXNzYWdlcy4gRG8geW91IGhhdmUNCj4gPj4+PiBhbiBpZGVhLCB3
+aGF0J3Mgd3Jvbmc/DQo+ID4+DQo+ID4+PiBDb3VsZCB5b3UgY2hlY2sgaWYgdGhlIGxlbmd0aCBv
+ZiBzcGkgbWVzc2FnZSBpcyBiaWdnZXIgdGhhbg0KPiA+Pj4gZmlmb19zaXplIGR1cmluZyBzcGlf
+bm9yIHByb2JlPyBJZiB5ZXMsIGF0IHRoYXQgdGltZSBtYXliZSBzZG1hIGZpcm13YXJlDQo+IG5v
+dCBsb2FkZWQuDQo+ID4+PiBpZiAodHJhbnNmZXItPmxlbiA8IHNwaV9pbXgtPmRldnR5cGVfZGF0
+YS0+Zmlmb19zaXplKQ0KPiA+Pg0KPiA+PiBJbmRlZWQsIG1vc3Qgb2YgdGhlIHRyYW5zZmVycyB0
+cmlnZ2VyZWQgYnkgdGhlIFNQSSBOT1IgZGlydmVyIGFyZQ0KPiA+PiBiZWxvdyBmaWZvX3NpemUg
+YW5kIHdvcmsgZmluZSwgYnV0IHNvbWUgYXJlIGJpZ2dlci4gVGhlIHRyYW5zZmVycw0KPiA+PiB0
+aGVyZWZvcmUgdHJ5IHRvIHVzZSBETUEsIGJ1dCB0aGUgZmlybXdhcmUgaXMgbm90IGxvYWRlZCB5
+ZXQuDQo+ID4+DQo+ID4+IEhvdyBpcyB0aGlzIHN1cHBvc2VkIHRvIHdvcms/IFNob3VsZG4ndCBh
+bGwgdHJhbnNmZXJzIHVzZSBQSU8gYXMgbG9uZw0KPiA+PiBhcyB0aGUgU0RNQSBmaXJtd2FyZSBp
+cyBub3QgbG9hZGVkIHlldD8NCj4gPiBZZXMsIGZvciBlY3NwaSBzaG91bGQgd29yayB3aXRoIHJh
+bSBzY3JpcHQsIGl0J3MgYmV0dGVyIGNoZWNrIGlmIHNkbWENCj4gPiBmaXJtd2FyZSBpcyByZWFk
+eSBpbiBzcGlfaW14X2RtYV9jb25maWd1cmUoKSwgbmVlZCBtb2RpZmljYXRpb24gaW4gc2RtYQ0K
+PiBkcml2ZXIgdG9vLg0KPiA+IEknbGwgY3JlYXRlIGFub3RoZXIgcGF0Y2ggYWZ0ZXIgdGhpcyBw
+YXRjaCBzZXQgYWNjZXB0ZWQuDQo+IA0KPiBUaGlzIHN0aWxsIHNlZW1zIHRvIGJlIGJyb2tlbiB1
+cHN0cmVhbS4gSXMgYW55b25lIHdvcmtpbmcgb24gZml4aW5nIFNQSQ0KPiArIERNQSBmb3IgaS5N
+WDhNTT8gT3RoZXJ3aXNlIEkgd2lsbCBzZW5kIGEgcGF0Y2ggdGhhdCByZW1vdmVzIHRoZSBETUEN
+Cj4gZnJvbSB0aGUgZWNzcGkgbm9kZXMgaW4gdGhlIGRldmljZXRyZWUuDQpTb3JyeSwgRnJpZWRl
+ciwgbXkgcGF0Y2ggc2V0IGhhcyBiZWVuIGJsb2NrZWQgZm9yIHNvIGxvbmcgdGltZSBiZWNhdXNl
+IEkgcmV2ZXJ0DQpzb21lIHBhdGNoZXMgYW5kIG5lZWQgZ2V0IGNvbW1pdCBmcm9tIHBhdGNoIG93
+bmVyLCB1bmZvcnR1bmF0ZWx5LCBJIGRpZG4ndA0KZ2V0IGFueSBmZWVkYmFjayBmcm9tIHRoZW0g
+YWx0aG91Z2ggSSBnb3QgQUNLIGZyb20gbWFpbnRhaW5lci4gSSdsbCBwaWNrIHVwDQp0aGVtLCBy
+ZWJhc2UgYW5kIHJlc2VuZCBpdCB0aGVzZSBkYXlzLCB0aGVuIGNvdWxkIGFkZHJlc3MgeW91ciBp
+c3N1ZSBsYXRlci4gIA0K

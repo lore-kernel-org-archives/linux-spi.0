@@ -1,60 +1,130 @@
-From: Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH v2] spi: add Renesas RPC-IF driver
-Date: Mon, 10 Feb 2020 21:43:48 +0300
-Message-ID: <30c1fc59-cae6-8993-bbb1-13a5385123ee@cogentembedded.com>
-References: <ad503d6e-4739-9744-64b4-fd13f44ea6fe@cogentembedded.com>
- <6515c5ec-8432-0b20-426d-0428bbdf3712@cogentembedded.com>
- <TY1PR01MB1562509AEBD0B4460D3FEC798A1C0@TY1PR01MB1562.jpnprd01.prod.outlook.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2 1/2] Add Cadence XSPI driver
+Date: Mon, 10 Feb 2020 19:16:20 +0000
+Message-ID: <20200210191620.GE14166@sirena.org.uk>
+References: <20200128124212.12298-1-konrad@cadence.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: Mason Yang <masonccyang-I/i+R0kf0WFNUHwG+Fw1Kw@public.gmane.org>
-To: Chris Brandt <Chris.Brandt-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="KlAEzMkarCnErv5Q"
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Konrad Kociolek <konrad-vna1KIf7WgpBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <TY1PR01MB1562509AEBD0B4460D3FEC798A1C0-5SGCI54O2uKy/kJTUOSl63colHNk5qUtvxpqHgZTriW3zl9H0oFU5g@public.gmane.org>
-Content-Language: en-MW
+Content-Disposition: inline
+In-Reply-To: <20200128124212.12298-1-konrad-vna1KIf7WgpBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hello!
 
-On 02/08/2020 01:36 AM, Chris Brandt wrote:
+--KlAEzMkarCnErv5Q
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->> Add the SPI driver for the Renesas RPC-IF.  It's the "front end" driver
->> using the "back end" APIs in the main driver to talk to the real hardware.
->> We only implement the 'spi-mem' interface -- there's no need to implemebt
->> the usual SPI driver methods...
-> 
-> I tried these patches on an RZ/A1H RSK board.
-> 
-> At first, things were looking good. It would probe the SPI flash correctly
-> and I could read out data.
-> 
-> But, when I went to try and do an erase, it all went bad.
-> Looking at the actual SPI lines, the commands coming out don't look like what
-> I would expect from an MTD device.
-> 
-> For example, I do a 
->   $ flash_eraseall /dev/mtd3
-> and all that comes out are Read Status commands (0x05).
-> All the write enables and erase commands are missing.
+On Tue, Jan 28, 2020 at 01:41:57PM +0100, Konrad Kociolek wrote:
 
-   Well, I have warned that writes don't work.
+>  	  Enables Xilinx GQSPI controller driver for Zynq UltraScale+ MPSoC.
+> =20
+> +config SPI_CADENCE_XSPI
+> +	tristate "Cadence XSPI controller"
+> +	depends on (OF || COMPILE_TEST) && HAS_IOMEM
+> +	help
+> +	  Enable support for the Cadence XSPI Flash controller.
+> +
+> +	  Cadence XSPI is a specialized controller for connecting an SPI
+> +	  Flash over upto 8bit wide bus. Enable this option if you have a
+> +	  device with a Cadence XSPI controller and want to access the
+> +	  Flash as an MTD device.
+> +
+>  #
+>  # Add new SPI master controllers in alphabetical order above this line
+>  #
 
-> So, it looks like any command that is a write-only never actually sends
-> anything.
-> 
-> I did try and do a page program command:
->   $ echo hello >  /dev/mtd3
-> It sent the page program command (0x12), but in this case, it still didn't work
-> because a write enable command was not sent first.
-> I assume the MTD layer is requesting the correct sequence of commands, but
-> Somehow this new driver is dropping of them.
+Please keep Kconfig and Makefile alphabetically sorted as the comment in
+the context from the diff says.  :/
 
-   Would explain what I saw (writes not surviving a JFFS2 remount)...
+> --- /dev/null
+> +++ b/drivers/spi/spi-cadence-xspi.c
+> @@ -0,0 +1,895 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Cadence XSPI flash controller driver
 
-> Chris
+Please make the entire comment a C++ so things look more intentional.
 
-MBR, Sergei
+> +	dev_info(cdns_xspi->dev,
+> +		"Running PHY training for read_dqs_delay parameter\n");
+
+This print is just noise, please remove it.
+
+> +static int cdns_xspi_setup(struct spi_device *spi_dev)
+> +{
+> +	if (spi_dev->chip_select > spi_dev->master->num_chipselect) {
+> +		dev_err(&spi_dev->dev,
+> +			"%d chip-select is out of range\n",
+> +			spi_dev->chip_select);
+> +		return -EINVAL;
+> +	}
+
+If this isn't already being validated by the core it should be and this
+function can be removed.
+
+> +	irq_status =3D readl(cdns_xspi->iobase + CDNS_XSPI_INTR_STATUS_REG);
+> +	if (irq_status) {
+> +		writel(irq_status,
+> +			cdns_xspi->iobase + CDNS_XSPI_INTR_STATUS_REG);
+
+This unconditionally acknowledges everything, even things we don't
+understand.  If the hardware is generating unexpected interrupt statuses
+we should probably warn.
+
+> +static void cdns_xspi_print_phy_config(struct cdns_xspi_dev *cdns_xspi)
+> +{
+> +	struct device *dev =3D cdns_xspi->dev;
+> +
+> +	dev_info(dev, "PHY configuration\n");
+> +	dev_info(dev, "   * xspi_dll_phy_ctrl: %08x\n",
+> +		readl(cdns_xspi->iobase + CDNS_XSPI_DLL_PHY_CTRL));
+> +	dev_info(dev, "   * phy_dq_timing: %08x\n",
+> +		readl(cdns_xspi->auxbase + CDNS_XSPI_CCP_PHY_DQ_TIMING));
+> +	dev_info(dev, "   * phy_dqs_timing: %08x\n",
+> +		readl(cdns_xspi->auxbase + CDNS_XSPI_CCP_PHY_DQS_TIMING));
+> +	dev_info(dev, "   * phy_gate_loopback_ctrl: %08x\n",
+> +		readl(cdns_xspi->auxbase + CDNS_XSPI_CCP_PHY_GATE_LPBCK_CTRL));
+> +	dev_info(dev, "   * phy_dll_slave_ctrl: %08x\n",
+> +		readl(cdns_xspi->auxbase + CDNS_XSPI_CCP_PHY_DLL_SLAVE_CTRL));
+> +}
+
+This seems pretty verbose for an individual device...  If this is needed
+for diagnostics perhaps put it in sysfs or debugfs where it'll be
+accessible even if the log wraps?
+
+> +err_no_mem:
+> +	dev_err(dev, "Failed to probe Cadence XSPI controller driver\n");
+
+Not sure this is adding anything over the individual error messages on
+specific failures.
+
+> +#ifdef CONFIG_OF
+> +static const struct of_device_id cdns_xspi_of_match[] =3D {
+> +	{
+> +		.compatible =3D "cdns,xspi-nor-fpga",
+> +	},
+
+Why -fpga?
+
+--KlAEzMkarCnErv5Q
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl5BrAQACgkQJNaLcl1U
+h9A6LQf/UrbTnsfpM4lH00Lpeib7qpGynQclD/2ULSlyAy5O9lqqjlEhNqjPAxkI
+bQYFW3mUqokT4aRwnSNFvLp4XnPnqgJHr6j7BrElfBTyYMTkC3PwAyuWCIRtyy8f
+hJ7NQEW+JWLbk7r0rSwJMpLEAdY+080r1w/MH053rxw2CazYnveKGUML/d6Va7zx
+fw4LPswxMJDqL3Mb1lfe+i5C/OtHqyG0pOXrSqnLSoyYOV6Xi5gAvxTwm/chm/IU
+MAPcjCammNo3ryR2jzytSGYBWwKuDh8loAw1fFo0KXf+FOhCMFMQ/WRgQqUM+7sH
+S5Cqk6+GSZroF0hFuVNCiqMR0hW7OQ==
+=aLYf
+-----END PGP SIGNATURE-----
+
+--KlAEzMkarCnErv5Q--

@@ -1,70 +1,101 @@
-From: Chris Brandt <Chris.Brandt-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-Subject: RE: [PATCH v2] spi: add Renesas RPC-IF driver
-Date: Mon, 10 Feb 2020 19:34:55 +0000
-Message-ID: <TY1PR01MB1562DB6771C35293B59836828A190@TY1PR01MB1562.jpnprd01.prod.outlook.com>
-References: <ad503d6e-4739-9744-64b4-fd13f44ea6fe@cogentembedded.com>
- <6515c5ec-8432-0b20-426d-0428bbdf3712@cogentembedded.com>
- <TYXPR01MB1568E8BCB6B80A77C91D98998A190@TYXPR01MB1568.jpnprd01.prod.outlook.com>
+From: Eddie James <eajames-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH] spi: Add FSI-attached SPI controller driver
+Date: Mon, 10 Feb 2020 14:05:17 -0600
+Message-ID: <3bbc98a7-838d-f57f-0478-a632ba68f500@linux.vnet.ibm.com>
+References: <1580328504-436-1-git-send-email-eajames@linux.ibm.com>
+ <CAHp75VeNs9Zr1vayO8TwVq6=B8fwvv0chOt0in6Dw+WLCezL2g@mail.gmail.com>
+ <29f6cc86-69ca-bc88-b6ae-2b1a24c0dae3@linux.vnet.ibm.com>
+ <CAHp75Vf3NCkbw39E+d_nf+AyViG2o-u5HxrCjXXmbGk4LaFLog@mail.gmail.com>
+ <744f0019-8656-eec1-cb9a-7e70cd042587@linux.ibm.com>
+ <CAHp75VfOM5Rd3LRBtvyT96G=+J4KxTRoSVUcQTj+RxrGyZMMnQ@mail.gmail.com>
+ <90973143-bd0a-33cf-9eb8-a83be1a9b415@linux.vnet.ibm.com>
+ <CAHp75Vf6HJw=SpK9_HUgcMaaabs5pZEybP4SS-gc1wz5GRcqeg@mail.gmail.com>
+ <cd8a7279-beb2-39e6-58e6-6ea505665547@linux.vnet.ibm.com>
+ <CAHp75VdO2+Kkgo1Nv3EJXTMqP6Y7XgLVXtRvURk6Zz0p=R9zNQ@mail.gmail.com>
+ <ca8a832e-ceeb-3ce1-9807-96ee41e0f166@linux.vnet.ibm.com>
+ <CAHp75VduJn=kMuriGNAGk1ZrL4b2LpqEn5c8AC=PHFKrgoz=vg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Mason Yang <masonccyang-I/i+R0kf0WFNUHwG+Fw1Kw@public.gmane.org>
-To: Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Eddie James <eajames-tEXmvtCZX7AybS5Ee8rs3A@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Joel Stanley <joel-U3u1mxZcP9KHXe+LvDLADg@public.gmane.org>,
+        Andrew Jeffery <andrew-zrmu5oMJ5Fs@public.gmane.org>
+To: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <TYXPR01MB1568E8BCB6B80A77C91D98998A190-enDngAEzY3rnUoU5SHyUhXcolHNk5qUtvxpqHgZTriW3zl9H0oFU5g@public.gmane.org>
+In-Reply-To: <CAHp75VduJn=kMuriGNAGk1ZrL4b2LpqEn5c8AC=PHFKrgoz=vg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-SGVsbG8gU2VyZ2VpLA0KDQpPbiBGZWIgMTAsIDIwMjAsIENocmlzIEJyYW5kdCB3cm90ZToNCj4g
-U2lkZSBub3RlLCBlcmFzZSBzZWVtcyBPSy4uLmJ1dCB3cml0aW5nIGRhdGEgc2VlbXMgdG8gZ2V0
-IG1lc3NlZCB1cC4NCj4gQXMgeW91IGNhbiBzZWUgYmVsb3csIGl0J3MgYWRkaW5nIDIgYnl0ZXMg
-b2YgMDAgaW50byB0aGUgd3JpdGUgc3RyZWFtLg0KPiANCj4gJCBmbGFzaF9lcmFzZWFsbCAvZGV2
-L210ZDMNCj4gRXJhc2luZyAyNTYgS2lieXRlIEAgMTAwMDAwMCAtIDEwMCUgY29tcGxldGUuDQo+
-ICQgaGV4ZHVtcCAtQyAtbjEwMCAvZGV2L210ZDMNCj4gMDAwMDAwMDAgIGZmIGZmIGZmIGZmIGZm
-IGZmIGZmIGZmICBmZiBmZiBmZiBmZiBmZiBmZiBmZiBmZg0KPiB8Li4uLi4uLi4uLi4uLi4uLnwN
-Cj4gKg0KPiAwMDAwMDA2MA0KPiAkIGhleGR1bXAgLUMgLW4xMDAgL2Rldi9tdGQzDQo+IDAwMDAw
-MDAwICBmZiBmZiBmZiBmZiBmZiBmZiBmZiBmZiAgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYNCj4g
-fC4uLi4uLi4uLi4uLi4uLi58DQo+ICoNCj4gMDAwMDAwNjANCj4gJCBlY2hvICJoZWxsbyIgPiAv
-ZGV2L210ZDMNCj4gJCBoZXhkdW1wIC1DIC1uMTAwIC9kZXYvbXRkMw0KPiAwMDAwMDAwMCAgNjgg
-NjUgNmMgNmMgMDAgMDAgNmYgMGEgIGZmIGZmIGZmIGZmIGZmIGZmIGZmIGZmDQo+IHxoZWxsLi5v
-Li4uLi4uLi4ufA0KPiAwMDAwMDAxMCAgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgIGZmIGZmIGZm
-IGZmIGZmIGZmIGZmIGZmDQo+IHwuLi4uLi4uLi4uLi4uLi4ufA0KPiAqDQo+IDAwMDAwMDYwDQoN
-Cg0KSSB0aGluayBoZXJlIGlzIHRoZSBpc3N1ZSBvZiB0aGUgZXh0cmEgMDBzIGluIHRoZSB3cml0
-ZSBieXRlIHN0cmVhbS4NCg0KRm9yIHlvdXIgY29kZSwgeW91IGhhdmUgdGhpcyBpbiBmdW5jdGlv
-biBycGNpZl9pb194ZmVyKCk6DQoNCgkJCW1lbWNweShkYXRhLCBycGMtPmJ1ZmZlciArIHBvcywg
-bmJ5dGVzKTsNCgkJCWlmIChuYnl0ZXMgPiA0KSB7DQoJCQkJcmVnbWFwX3dyaXRlKHJwYy0+cmVn
-bWFwLCBSUENJRl9TTVdEUjEsDQoJCQkJCSAgICAgZGF0YVswXSk7DQoJCQkJcmVnbWFwX3dyaXRl
-KHJwYy0+cmVnbWFwLCBSUENJRl9TTVdEUjAsDQoJCQkJCSAgICAgZGF0YVsxXSk7DQoJCQl9IGVs
-c2UgaWYgKG5ieXRlcyA+IDIpIHsNCgkJCQlyZWdtYXBfd3JpdGUocnBjLT5yZWdtYXAsIFJQQ0lG
-X1NNV0RSMCwNCgkJCQkJICAgICBkYXRhWzBdKTsNCgkJCX0gZWxzZQl7DQoJCQkJcmVnbWFwX3dy
-aXRlKHJwYy0+cmVnbWFwLCBSUENJRl9TTVdEUjAsDQoJCQkJCSAgICAgZGF0YVswXSA8PCAxNik7
-DQoJCQl9DQoNCg0KQnV0LCB5b3UgY2Fubm90IGRvIGEgMzItYml0IHJlZ2lzdGVyIHdyaXRlIHdo
-ZW4geW91IGhhdmUgbGVzcyB0aGFuIDMyLWJpdHMgb2YgZGF0YS4NCg0KSWYgeW91IG9ubHkgaGF2
-ZSAyIGJ5dGVzIG9mIGRhdGEgbGVmdCB0byB3cml0ZSwgeW91IGhhdmUgdG8gZG8gYSAxNi1iaXQg
-d3JpdGUgdG8gdGhlIFNNV0RSMCByZWdpc3Rlci4NCklmIHlvdSBvbmx5IGhhdmUgMSBieXRlIG9m
-IGRhdGEgbGVmdCB0byB3cml0ZSwgeW91IGhhdmUgdG8gZG8gYSA4LWJpdCB3cml0ZSB0byB0aGUg
-U01XRFIwIHJlZ2lzdGVyLg0KDQpJZiB5b3Ugb25seSBoYXZlIDMgYnl0ZXMgb2YgZGF0YSBsZWZ0
-IHRvIHdyaXRlLCB5b3UgZmlyc3Qgc2VuZCAyIGJ5dGVzLCB0aGVuIHNlbmQgdGhlIGxhc3QgYnl0
-ZS4NCg0KWW91ciByZWdtYXAgaXMgb25seSBzZXQgdXAgdG8gZG8gMzItYml0IHdyaXRlcywgc28g
-eW91J2xsIGhhdmUgdG8gdXNlIHNvbWV0aGluZyBsaWtlIGlvd3JpdGUxNiBhbmQgaW93cml0ZTgu
-DQpUaGlzIGlzIHdoeSBJIGRpZCBub3QgdXNlIHJlZ21hcCBpbiBteSBTUEktQlNDIGRyaXZlci4N
-Cg0KRm9yIGV4YW1wbGUsIGhlcmUgaXMgdGhlIGNvZGUgZnJvbSBteSBTUEktQlNDIGRyaXZlcjoN
-Cg0KCXdoaWxlIChsZW4gPiAwKSB7DQoJCWlmIChsZW4gPj0gNCkgew0KCQkJdW5pdCA9IDQ7DQoJ
-CQlzbWVuciA9IFNNRU5SX1NQSURFKFNQSURFXzMyQklUUyk7DQoJCX0gZWxzZSB7DQoJCQl1bml0
-ID0gbGVuOw0KCQkJaWYgKHVuaXQgPT0gMykNCgkJCQl1bml0ID0gMjsNCg0KCQkJaWYgKHVuaXQg
-Pj0gMikNCgkJCQlzbWVuciA9IFNNRU5SX1NQSURFKFNQSURFXzE2QklUUyk7DQoJCQllbHNlDQoJ
-CQkJc21lbnIgPSBTTUVOUl9TUElERShTUElERV84QklUUyk7DQoJCX0NCg0KCQkvKiBzZXQgNGJ5
-dGVzIGRhdGEsIGJpdCBzdHJlYW0gKi8NCgkJc213ZHIwID0gKmRhdGErKzsNCgkJaWYgKHVuaXQg
-Pj0gMikNCgkJCXNtd2RyMCB8PSAodTMyKSgqZGF0YSsrIDw8IDgpOw0KCQlpZiAodW5pdCA+PSAz
-KQ0KCQkJc213ZHIwIHw9ICh1MzIpKCpkYXRhKysgPDwgMTYpOw0KCQlpZiAodW5pdCA+PSA0KQ0K
-CQkJc213ZHIwIHw9ICh1MzIpKCpkYXRhKysgPDwgMjQpOw0KDQoJCS8qIG1hc2sgdW53cml0ZSBh
-cmVhICovDQoJCWlmICh1bml0ID09IDMpDQoJCQlzbXdkcjAgfD0gMHhGRjAwMDAwMDsNCgkJZWxz
-ZSBpZiAodW5pdCA9PSAyKQ0KCQkJc213ZHIwIHw9IDB4RkZGRjAwMDA7DQoJCWVsc2UgaWYgKHVu
-aXQgPT0gMSkNCgkJCXNtd2RyMCB8PSAweEZGRkZGRjAwOw0KDQoJCS8qIHdyaXRlIHNlbmQgZGF0
-YS4gKi8NCgkJaWYgKHVuaXQgPT0gMikNCgkJCXNwaWJzY193cml0ZTE2KHNic2MsIFNNV0RSMCwg
-KHUxNilzbXdkcjApOw0KCQllbHNlIGlmICh1bml0ID09IDEpDQoJCQlzcGlic2Nfd3JpdGU4KHNi
-c2MsIFNNV0RSMCwgKHU4KXNtd2RyMCk7DQoJCWVsc2UNCgkJCXNwaWJzY193cml0ZShzYnNjLCBT
-TVdEUjAsIHNtd2RyMCk7DQoNCg0KQ2hyaXMNCg0KDQoNCg==
+
+On 2/7/20 4:04 PM, Andy Shevchenko wrote:
+> On Fri, Feb 7, 2020 at 11:04 PM Eddie James <eajames-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org> wrote:
+>> On 2/7/20 2:34 PM, Andy Shevchenko wrote:
+>>> On Fri, Feb 7, 2020 at 10:04 PM Eddie James <eajames-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org> wrote:
+>>>> On 2/7/20 1:39 PM, Andy Shevchenko wrote:
+>>>>> On Fri, Feb 7, 2020 at 9:28 PM Eddie James <eajames-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org> wrote:
+>>>>>> On 2/5/20 9:51 AM, Andy Shevchenko wrote:
+>>>>>>> On Tue, Feb 4, 2020 at 6:06 PM Eddie James <eajames-tEXmvtCZX7AybS5Ee8rs3A@public.gmane.org> wrote:
+>>>>>>>> On 2/4/20 5:02 AM, Andy Shevchenko wrote:
+>>>>>>>>> On Mon, Feb 3, 2020 at 10:33 PM Eddie James <eajames-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org> wrote:
+>>>>>>>>>> On 1/30/20 10:37 AM, Andy Shevchenko wrote:
+>>>>>>>>>>>> +       for (i = 0; i < num_bytes; ++i)
+>>>>>>>>>>>> +               rx[i] = (u8)((in >> (8 * ((num_bytes - 1) - i))) & 0xffULL);
+>>>>>>>>>>> Redundant & 0xffULL part.
+>>>>>>> For me it looks like
+>>>>>>>
+>>>>>>>       u8 tmp[8];
+>>>>>>>
+>>>>>>>       put_unaligned_be64(in, tmp);
+>>>>>>>       memcpy(rx, tmp, num_bytes);
+>>>>>>>
+>>>>>>> put_unaligned*() is just a method to unroll the value to the u8 buffer.
+>>>>>>> See, for example, linux/unaligned/be_byteshift.h implementation.
+>>>>>> Unforunately it is not the same. put_unaligned_be64 will take the
+>>>>>> highest 8 bits (0xff00000000000000) and move it into tmp[0]. Then
+>>>>>> 0x00ff000000000000 into tmp[1], etc. This is only correct for this
+>>>>>> driver IF my transfer is 8 bytes. If, for example, I transfer 5 bytes,
+>>>>>> then I need 0x000000ff00000000 into tmp[0], 0x00000000ff000000 into
+>>>>>> tmp[1], etc. So I think my current implementation is correct.
+>>>>> Yes, I missed correction of the start address in memcpy(). Otherwise
+>>>>> it's still the same what I was talking about.
+>>>> I see now, yes, thanks.
+>>>>
+>>>> Do you think this is worth a v3? Perhaps put_unaligned is slightly more
+>>>> optimized than the loop but there is more memory copy with that way too.
+>>> I already forgot the entire context when this has been called. Can you
+>>> summarize what the sequence(s) of num_bytes are expected usually.
+>>>
+>>> IIUC if packets small, less than 8 bytes, than num_bytes will be that value.
+>>> Otherwise it will be something like 8 + 8 + 8 ... + tail. Is it
+>>> correct assumption?
+>>
+>> Yes, it will typically be 8 + 8 +... remainder. Basically, on any RX,
+>> the driver polls for the rx register full. Once full, it will read
+>> however much data is left to be transferred. Since we use min(len, 8)
+>> then we read 8 usually, until we get to the end.
+> I asked that because we might have a better optimization, i.e, call
+> directly put_unaligned_be64() when we know that length is 8 bytes. For
+> the rest your approach might be simpler. Similar for the TX case.
+
+
+I just tried to implement as you suggested but I realized something: The 
+value is already swapped from BE to CPU when the register is read in 
+fsi_spi_read_reg. It happens to work out correctly to use 
+put_unaligned_be64 on a LE CPU to flip the bytes here. But on a BE CPU, 
+this wouldn't be correct I think. Now I don't anticipate this driver 
+running on a BE CPU, but I think it is weird to flip it twice, and 
+better to do it manually here.
+
+What do you think Andy?
+
+Thanks,
+
+Eddie
+
+
+>
+>>>>>>>>>>>> +       return num_bytes;
+>>>>>>>>>>>> +}

@@ -1,130 +1,70 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 1/2] Add Cadence XSPI driver
-Date: Mon, 10 Feb 2020 19:16:20 +0000
-Message-ID: <20200210191620.GE14166@sirena.org.uk>
-References: <20200128124212.12298-1-konrad@cadence.com>
+From: Chris Brandt <Chris.Brandt-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+Subject: RE: [PATCH v2] spi: add Renesas RPC-IF driver
+Date: Mon, 10 Feb 2020 19:34:55 +0000
+Message-ID: <TY1PR01MB1562DB6771C35293B59836828A190@TY1PR01MB1562.jpnprd01.prod.outlook.com>
+References: <ad503d6e-4739-9744-64b4-fd13f44ea6fe@cogentembedded.com>
+ <6515c5ec-8432-0b20-426d-0428bbdf3712@cogentembedded.com>
+ <TYXPR01MB1568E8BCB6B80A77C91D98998A190@TYXPR01MB1568.jpnprd01.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="KlAEzMkarCnErv5Q"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Konrad Kociolek <konrad-vna1KIf7WgpBDgjK7y7TUQ@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Mason Yang <masonccyang-I/i+R0kf0WFNUHwG+Fw1Kw@public.gmane.org>
+To: Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>,
+        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20200128124212.12298-1-konrad-vna1KIf7WgpBDgjK7y7TUQ@public.gmane.org>
+In-Reply-To: <TYXPR01MB1568E8BCB6B80A77C91D98998A190-enDngAEzY3rnUoU5SHyUhXcolHNk5qUtvxpqHgZTriW3zl9H0oFU5g@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-
---KlAEzMkarCnErv5Q
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Jan 28, 2020 at 01:41:57PM +0100, Konrad Kociolek wrote:
-
->  	  Enables Xilinx GQSPI controller driver for Zynq UltraScale+ MPSoC.
-> =20
-> +config SPI_CADENCE_XSPI
-> +	tristate "Cadence XSPI controller"
-> +	depends on (OF || COMPILE_TEST) && HAS_IOMEM
-> +	help
-> +	  Enable support for the Cadence XSPI Flash controller.
-> +
-> +	  Cadence XSPI is a specialized controller for connecting an SPI
-> +	  Flash over upto 8bit wide bus. Enable this option if you have a
-> +	  device with a Cadence XSPI controller and want to access the
-> +	  Flash as an MTD device.
-> +
->  #
->  # Add new SPI master controllers in alphabetical order above this line
->  #
-
-Please keep Kconfig and Makefile alphabetically sorted as the comment in
-the context from the diff says.  :/
-
-> --- /dev/null
-> +++ b/drivers/spi/spi-cadence-xspi.c
-> @@ -0,0 +1,895 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Cadence XSPI flash controller driver
-
-Please make the entire comment a C++ so things look more intentional.
-
-> +	dev_info(cdns_xspi->dev,
-> +		"Running PHY training for read_dqs_delay parameter\n");
-
-This print is just noise, please remove it.
-
-> +static int cdns_xspi_setup(struct spi_device *spi_dev)
-> +{
-> +	if (spi_dev->chip_select > spi_dev->master->num_chipselect) {
-> +		dev_err(&spi_dev->dev,
-> +			"%d chip-select is out of range\n",
-> +			spi_dev->chip_select);
-> +		return -EINVAL;
-> +	}
-
-If this isn't already being validated by the core it should be and this
-function can be removed.
-
-> +	irq_status =3D readl(cdns_xspi->iobase + CDNS_XSPI_INTR_STATUS_REG);
-> +	if (irq_status) {
-> +		writel(irq_status,
-> +			cdns_xspi->iobase + CDNS_XSPI_INTR_STATUS_REG);
-
-This unconditionally acknowledges everything, even things we don't
-understand.  If the hardware is generating unexpected interrupt statuses
-we should probably warn.
-
-> +static void cdns_xspi_print_phy_config(struct cdns_xspi_dev *cdns_xspi)
-> +{
-> +	struct device *dev =3D cdns_xspi->dev;
-> +
-> +	dev_info(dev, "PHY configuration\n");
-> +	dev_info(dev, "   * xspi_dll_phy_ctrl: %08x\n",
-> +		readl(cdns_xspi->iobase + CDNS_XSPI_DLL_PHY_CTRL));
-> +	dev_info(dev, "   * phy_dq_timing: %08x\n",
-> +		readl(cdns_xspi->auxbase + CDNS_XSPI_CCP_PHY_DQ_TIMING));
-> +	dev_info(dev, "   * phy_dqs_timing: %08x\n",
-> +		readl(cdns_xspi->auxbase + CDNS_XSPI_CCP_PHY_DQS_TIMING));
-> +	dev_info(dev, "   * phy_gate_loopback_ctrl: %08x\n",
-> +		readl(cdns_xspi->auxbase + CDNS_XSPI_CCP_PHY_GATE_LPBCK_CTRL));
-> +	dev_info(dev, "   * phy_dll_slave_ctrl: %08x\n",
-> +		readl(cdns_xspi->auxbase + CDNS_XSPI_CCP_PHY_DLL_SLAVE_CTRL));
-> +}
-
-This seems pretty verbose for an individual device...  If this is needed
-for diagnostics perhaps put it in sysfs or debugfs where it'll be
-accessible even if the log wraps?
-
-> +err_no_mem:
-> +	dev_err(dev, "Failed to probe Cadence XSPI controller driver\n");
-
-Not sure this is adding anything over the individual error messages on
-specific failures.
-
-> +#ifdef CONFIG_OF
-> +static const struct of_device_id cdns_xspi_of_match[] =3D {
-> +	{
-> +		.compatible =3D "cdns,xspi-nor-fpga",
-> +	},
-
-Why -fpga?
-
---KlAEzMkarCnErv5Q
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl5BrAQACgkQJNaLcl1U
-h9A6LQf/UrbTnsfpM4lH00Lpeib7qpGynQclD/2ULSlyAy5O9lqqjlEhNqjPAxkI
-bQYFW3mUqokT4aRwnSNFvLp4XnPnqgJHr6j7BrElfBTyYMTkC3PwAyuWCIRtyy8f
-hJ7NQEW+JWLbk7r0rSwJMpLEAdY+080r1w/MH053rxw2CazYnveKGUML/d6Va7zx
-fw4LPswxMJDqL3Mb1lfe+i5C/OtHqyG0pOXrSqnLSoyYOV6Xi5gAvxTwm/chm/IU
-MAPcjCammNo3ryR2jzytSGYBWwKuDh8loAw1fFo0KXf+FOhCMFMQ/WRgQqUM+7sH
-S5Cqk6+GSZroF0hFuVNCiqMR0hW7OQ==
-=aLYf
------END PGP SIGNATURE-----
-
---KlAEzMkarCnErv5Q--
+SGVsbG8gU2VyZ2VpLA0KDQpPbiBGZWIgMTAsIDIwMjAsIENocmlzIEJyYW5kdCB3cm90ZToNCj4g
+U2lkZSBub3RlLCBlcmFzZSBzZWVtcyBPSy4uLmJ1dCB3cml0aW5nIGRhdGEgc2VlbXMgdG8gZ2V0
+IG1lc3NlZCB1cC4NCj4gQXMgeW91IGNhbiBzZWUgYmVsb3csIGl0J3MgYWRkaW5nIDIgYnl0ZXMg
+b2YgMDAgaW50byB0aGUgd3JpdGUgc3RyZWFtLg0KPiANCj4gJCBmbGFzaF9lcmFzZWFsbCAvZGV2
+L210ZDMNCj4gRXJhc2luZyAyNTYgS2lieXRlIEAgMTAwMDAwMCAtIDEwMCUgY29tcGxldGUuDQo+
+ICQgaGV4ZHVtcCAtQyAtbjEwMCAvZGV2L210ZDMNCj4gMDAwMDAwMDAgIGZmIGZmIGZmIGZmIGZm
+IGZmIGZmIGZmICBmZiBmZiBmZiBmZiBmZiBmZiBmZiBmZg0KPiB8Li4uLi4uLi4uLi4uLi4uLnwN
+Cj4gKg0KPiAwMDAwMDA2MA0KPiAkIGhleGR1bXAgLUMgLW4xMDAgL2Rldi9tdGQzDQo+IDAwMDAw
+MDAwICBmZiBmZiBmZiBmZiBmZiBmZiBmZiBmZiAgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYNCj4g
+fC4uLi4uLi4uLi4uLi4uLi58DQo+ICoNCj4gMDAwMDAwNjANCj4gJCBlY2hvICJoZWxsbyIgPiAv
+ZGV2L210ZDMNCj4gJCBoZXhkdW1wIC1DIC1uMTAwIC9kZXYvbXRkMw0KPiAwMDAwMDAwMCAgNjgg
+NjUgNmMgNmMgMDAgMDAgNmYgMGEgIGZmIGZmIGZmIGZmIGZmIGZmIGZmIGZmDQo+IHxoZWxsLi5v
+Li4uLi4uLi4ufA0KPiAwMDAwMDAxMCAgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgIGZmIGZmIGZm
+IGZmIGZmIGZmIGZmIGZmDQo+IHwuLi4uLi4uLi4uLi4uLi4ufA0KPiAqDQo+IDAwMDAwMDYwDQoN
+Cg0KSSB0aGluayBoZXJlIGlzIHRoZSBpc3N1ZSBvZiB0aGUgZXh0cmEgMDBzIGluIHRoZSB3cml0
+ZSBieXRlIHN0cmVhbS4NCg0KRm9yIHlvdXIgY29kZSwgeW91IGhhdmUgdGhpcyBpbiBmdW5jdGlv
+biBycGNpZl9pb194ZmVyKCk6DQoNCgkJCW1lbWNweShkYXRhLCBycGMtPmJ1ZmZlciArIHBvcywg
+bmJ5dGVzKTsNCgkJCWlmIChuYnl0ZXMgPiA0KSB7DQoJCQkJcmVnbWFwX3dyaXRlKHJwYy0+cmVn
+bWFwLCBSUENJRl9TTVdEUjEsDQoJCQkJCSAgICAgZGF0YVswXSk7DQoJCQkJcmVnbWFwX3dyaXRl
+KHJwYy0+cmVnbWFwLCBSUENJRl9TTVdEUjAsDQoJCQkJCSAgICAgZGF0YVsxXSk7DQoJCQl9IGVs
+c2UgaWYgKG5ieXRlcyA+IDIpIHsNCgkJCQlyZWdtYXBfd3JpdGUocnBjLT5yZWdtYXAsIFJQQ0lG
+X1NNV0RSMCwNCgkJCQkJICAgICBkYXRhWzBdKTsNCgkJCX0gZWxzZQl7DQoJCQkJcmVnbWFwX3dy
+aXRlKHJwYy0+cmVnbWFwLCBSUENJRl9TTVdEUjAsDQoJCQkJCSAgICAgZGF0YVswXSA8PCAxNik7
+DQoJCQl9DQoNCg0KQnV0LCB5b3UgY2Fubm90IGRvIGEgMzItYml0IHJlZ2lzdGVyIHdyaXRlIHdo
+ZW4geW91IGhhdmUgbGVzcyB0aGFuIDMyLWJpdHMgb2YgZGF0YS4NCg0KSWYgeW91IG9ubHkgaGF2
+ZSAyIGJ5dGVzIG9mIGRhdGEgbGVmdCB0byB3cml0ZSwgeW91IGhhdmUgdG8gZG8gYSAxNi1iaXQg
+d3JpdGUgdG8gdGhlIFNNV0RSMCByZWdpc3Rlci4NCklmIHlvdSBvbmx5IGhhdmUgMSBieXRlIG9m
+IGRhdGEgbGVmdCB0byB3cml0ZSwgeW91IGhhdmUgdG8gZG8gYSA4LWJpdCB3cml0ZSB0byB0aGUg
+U01XRFIwIHJlZ2lzdGVyLg0KDQpJZiB5b3Ugb25seSBoYXZlIDMgYnl0ZXMgb2YgZGF0YSBsZWZ0
+IHRvIHdyaXRlLCB5b3UgZmlyc3Qgc2VuZCAyIGJ5dGVzLCB0aGVuIHNlbmQgdGhlIGxhc3QgYnl0
+ZS4NCg0KWW91ciByZWdtYXAgaXMgb25seSBzZXQgdXAgdG8gZG8gMzItYml0IHdyaXRlcywgc28g
+eW91J2xsIGhhdmUgdG8gdXNlIHNvbWV0aGluZyBsaWtlIGlvd3JpdGUxNiBhbmQgaW93cml0ZTgu
+DQpUaGlzIGlzIHdoeSBJIGRpZCBub3QgdXNlIHJlZ21hcCBpbiBteSBTUEktQlNDIGRyaXZlci4N
+Cg0KRm9yIGV4YW1wbGUsIGhlcmUgaXMgdGhlIGNvZGUgZnJvbSBteSBTUEktQlNDIGRyaXZlcjoN
+Cg0KCXdoaWxlIChsZW4gPiAwKSB7DQoJCWlmIChsZW4gPj0gNCkgew0KCQkJdW5pdCA9IDQ7DQoJ
+CQlzbWVuciA9IFNNRU5SX1NQSURFKFNQSURFXzMyQklUUyk7DQoJCX0gZWxzZSB7DQoJCQl1bml0
+ID0gbGVuOw0KCQkJaWYgKHVuaXQgPT0gMykNCgkJCQl1bml0ID0gMjsNCg0KCQkJaWYgKHVuaXQg
+Pj0gMikNCgkJCQlzbWVuciA9IFNNRU5SX1NQSURFKFNQSURFXzE2QklUUyk7DQoJCQllbHNlDQoJ
+CQkJc21lbnIgPSBTTUVOUl9TUElERShTUElERV84QklUUyk7DQoJCX0NCg0KCQkvKiBzZXQgNGJ5
+dGVzIGRhdGEsIGJpdCBzdHJlYW0gKi8NCgkJc213ZHIwID0gKmRhdGErKzsNCgkJaWYgKHVuaXQg
+Pj0gMikNCgkJCXNtd2RyMCB8PSAodTMyKSgqZGF0YSsrIDw8IDgpOw0KCQlpZiAodW5pdCA+PSAz
+KQ0KCQkJc213ZHIwIHw9ICh1MzIpKCpkYXRhKysgPDwgMTYpOw0KCQlpZiAodW5pdCA+PSA0KQ0K
+CQkJc213ZHIwIHw9ICh1MzIpKCpkYXRhKysgPDwgMjQpOw0KDQoJCS8qIG1hc2sgdW53cml0ZSBh
+cmVhICovDQoJCWlmICh1bml0ID09IDMpDQoJCQlzbXdkcjAgfD0gMHhGRjAwMDAwMDsNCgkJZWxz
+ZSBpZiAodW5pdCA9PSAyKQ0KCQkJc213ZHIwIHw9IDB4RkZGRjAwMDA7DQoJCWVsc2UgaWYgKHVu
+aXQgPT0gMSkNCgkJCXNtd2RyMCB8PSAweEZGRkZGRjAwOw0KDQoJCS8qIHdyaXRlIHNlbmQgZGF0
+YS4gKi8NCgkJaWYgKHVuaXQgPT0gMikNCgkJCXNwaWJzY193cml0ZTE2KHNic2MsIFNNV0RSMCwg
+KHUxNilzbXdkcjApOw0KCQllbHNlIGlmICh1bml0ID09IDEpDQoJCQlzcGlic2Nfd3JpdGU4KHNi
+c2MsIFNNV0RSMCwgKHU4KXNtd2RyMCk7DQoJCWVsc2UNCgkJCXNwaWJzY193cml0ZShzYnNjLCBT
+TVdEUjAsIHNtd2RyMCk7DQoNCg0KQ2hyaXMNCg0KDQoNCg==

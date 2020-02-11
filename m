@@ -1,30 +1,35 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: pxa2xx: Enable support for compile-testing" to the asoc tree
-Date: Tue, 11 Feb 2020 15:49:22 +0000
-Message-ID: <applied-20200210093027.6672-1-geert@linux-m68k.org>
-References: <20200210093027.6672-1-geert@linux-m68k.org>
-Cc: alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
-        Cezary Rojewski <cezary.rojewski-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        Jaroslav Kysela <perex-/Fr2/VpizcU@public.gmane.org>,
-        Jie Yang <yang.jie-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Liam Girdwood <liam.r.girdwood-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+Subject: Applied "dt-bindings: spi: imx: Add i.MX8MM/i.MX8MN/i.MX8MP compatible" to the spi tree
+Date: Tue, 11 Feb 2020 15:51:39 +0000
+Message-ID: <applied-1581425307-18567-1-git-send-email-Anson.Huang@nxp.com>
+References: <1581425307-18567-1-git-send-email-Anson.Huang@nxp.com>
+Cc: aisheng.dong-3arQi8VN3Tc@public.gmane.org, andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, angus-HsWYs6tNinE@public.gmane.org,
+        broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, cosmin.stoica-3arQi8VN3Tc@public.gmane.org, daniel.baluta-3arQi8VN3Tc@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        gary.bisson-Q5RJGjKts06CY9SHAMCTRUEOCMrvLtNR@public.gmane.org, jun.li-3arQi8VN3Tc@public.gmane.org,
+        kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, leonard.crestez-3arQi8VN3Tc@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Linux-imx-3arQi8VN3Tc@public.gmane.org,
         linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Pierre-Louis Bossart <pierre-louis.bossart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Takashi Iwai <tiwai-IBi9RG/b67k@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+        l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, manivannan.sadhasivam-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+        marcel.ziswiler-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        mark.rutland-5wv7dgnIgG8@public.gmane.org, pramod.kumar_1-3arQi8VN3Tc@public.gmane.org, rabeeh-UBr1pzP51AyaMJb+Lgu22Q@public.gmane.org,
+        rjones-UMMOYl/HMS+akBO8gow8eQ@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        sebastien.szymanski-d2DlULPkwbNWk0Htik3J/w@public.gmane.org, s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+        shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+To: Anson Huang <Anson.Huang-3arQi8VN3Tc@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200210093027.6672-1-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+In-Reply-To: <1581425307-18567-1-git-send-email-Anson.Huang-3arQi8VN3Tc@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: pxa2xx: Enable support for compile-testing
+   dt-bindings: spi: imx: Add i.MX8MM/i.MX8MN/i.MX8MP compatible
 
-has been applied to the asoc tree at
+has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.7
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.7
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
@@ -45,44 +50,36 @@ to this mail.
 Thanks,
 Mark
 
->From 0d4416446897a91bb19ba837b97b607caea59a8f Mon Sep 17 00:00:00 2001
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Date: Mon, 10 Feb 2020 10:30:27 +0100
-Subject: [PATCH] spi: pxa2xx: Enable support for compile-testing
+>From 1565e8e8ef0bbccabf62152b93c6505b8041b1e5 Mon Sep 17 00:00:00 2001
+From: Anson Huang <Anson.Huang-3arQi8VN3Tc@public.gmane.org>
+Date: Tue, 11 Feb 2020 20:48:24 +0800
+Subject: [PATCH] dt-bindings: spi: imx: Add i.MX8MM/i.MX8MN/i.MX8MP compatible
 
-m68k/allmodconfig:
+Add compatible for imx8mm/imx8mn/imx8mp.
 
-    WARNING: unmet direct dependencies detected for SPI_PXA2XX
-      Depends on [n]: SPI [=y] && SPI_MASTER [=y] && (ARCH_PXA || ARCH_MMP || PCI [=n] || ACPI)
-      Selected by [m]:
-      - SND_SOC_INTEL_BDW_RT5677_MACH [=m] && SOUND [=m] && !UML && SND [=m] && SND_SOC [=m] && SND_SOC_INTEL_MACH [=y] && (SND_SOC_INTEL_HASWELL [=n] || SND_SOC_SOF_BROADWELL [=m]) && I2C [=m] && (I2C_DESIGNWARE_PLATFORM [=m] || COMPILE_TEST [=y]) && (GPIOLIB [=y] || COMPILE_TEST [=y]) && (X86_INTEL_LPSS || COMPILE_TEST [=y]) && SPI_MASTER [=y]
-
-This happens because SND_SOC_INTEL_BDW_RT5677_MACH selects SPI_PXA2XX,
-and the former depends on COMPILE_TEST, while the latter does not.
-
-Fix this by enabling compile-testing for SPI_PXA2XX.
-
-Fixes: 630db1549356f644 ("ASoC: Intel: bdw-rt5677: fix Kconfig dependencies")
-Signed-off-by: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Link: https://lore.kernel.org/r/20200210093027.6672-1-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+Signed-off-by: Anson Huang <Anson.Huang-3arQi8VN3Tc@public.gmane.org>
+Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Link: https://lore.kernel.org/r/1581425307-18567-1-git-send-email-Anson.Huang-3arQi8VN3Tc@public.gmane.org
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index d6ed0c355954..912cd6e35726 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -551,7 +551,7 @@ config SPI_PPC4xx
- 
- config SPI_PXA2XX
- 	tristate "PXA2xx SSP SPI master"
--	depends on (ARCH_PXA || ARCH_MMP || PCI || ACPI)
-+	depends on ARCH_PXA || ARCH_MMP || PCI || ACPI || COMPILE_TEST
- 	select PXA_SSP if ARCH_PXA || ARCH_MMP
- 	help
- 	  This enables using a PXA2xx or Sodaville SSP port as a SPI master
+diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+index 2d3264140cc5..33bc58f4cf4b 100644
+--- a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
++++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+@@ -10,7 +10,10 @@ Required properties:
+   - "fsl,imx35-cspi" for SPI compatible with the one integrated on i.MX35
+   - "fsl,imx51-ecspi" for SPI compatible with the one integrated on i.MX51
+   - "fsl,imx53-ecspi" for SPI compatible with the one integrated on i.MX53 and later Soc
+-  - "fsl,imx8mq-ecspi" for SPI compatible with the one integrated on i.MX8M
++  - "fsl,imx8mq-ecspi" for SPI compatible with the one integrated on i.MX8MQ
++  - "fsl,imx8mm-ecspi" for SPI compatible with the one integrated on i.MX8MM
++  - "fsl,imx8mn-ecspi" for SPI compatible with the one integrated on i.MX8MN
++  - "fsl,imx8mp-ecspi" for SPI compatible with the one integrated on i.MX8MP
+ - reg : Offset and length of the register set for the device
+ - interrupts : Should contain CSPI/eCSPI interrupt
+ - clocks : Clock specifiers for both ipg and per clocks.
 -- 
 2.20.1

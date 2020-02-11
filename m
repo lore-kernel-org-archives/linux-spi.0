@@ -1,84 +1,49 @@
-From: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH V2 4/5] dt-bindings: spi: spi-nxp-fspi: Add support for
- imx8mm, imx8qxp
-Date: Tue, 11 Feb 2020 04:49:39 -0600
-Message-ID: <CAHCN7x+uCwyJ60ZG_0m5SgNmqUAyEwxqXVTL7nQzJLXxXrh+Tw@mail.gmail.com>
-References: <20200202125950.1825013-1-aford173@gmail.com> <20200202125950.1825013-4-aford173@gmail.com>
- <20200206184030.GA11381@bogus>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Yogesh Gaur <yogeshgaur.83-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Ashish Kumar <ashish.kumar-3arQi8VN3Tc@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        Pengutronix Kernel Team <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        NXP Linux Team <linux-imx-3arQi8VN3Tc@public.gmane.org>,
-        devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        arm-soc <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Anson Huang <Anson.Huang-3arQi8VN3Tc@public.gmane.org>
+Subject: [PATCH V3 1/4] dt-bindings: spi: imx: Add i.MX8MM/i.MX8MN/i.MX8MP compatible
+Date: Tue, 11 Feb 2020 20:48:24 +0800
+Message-ID: <1581425307-18567-1-git-send-email-Anson.Huang@nxp.com>
+Cc: Linux-imx-3arQi8VN3Tc@public.gmane.org
+To: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+        festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        manivannan.sadhasivam-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, marcel.ziswiler-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org,
+        rjones-UMMOYl/HMS+akBO8gow8eQ@public.gmane.org, sebastien.szymanski-d2DlULPkwbNWk0Htik3J/w@public.gmane.org,
+        aisheng.dong-3arQi8VN3Tc@public.gmane.org, gary.bisson-Q5RJGjKts06CY9SHAMCTRUEOCMrvLtNR@public.gmane.org,
+        angus-HsWYs6tNinE@public.gmane.org, pramod.kumar_1-3arQi8VN3Tc@public.gmane.org, rabeeh-UBr1pzP51AyaMJb+Lgu22Q@public.gmane.org,
+        cosmin.stoica-3arQi8VN3Tc@public.gmane.org, l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+        leonard.crestez-3arQi8VN3Tc@public.gmane.org, daniel.baluta-3arQi8VN3Tc@public.gmane.org, jun.li-3arQi8VN3Tc@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200206184030.GA11381@bogus>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Feb 6, 2020 at 2:46 PM Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->
-> On Sun, Feb 02, 2020 at 06:59:49AM -0600, Adam Ford wrote:
-> > Add support for nxp,imx8qxp-fspi and nxp,imx8mm-fspi do the bindings
->
-> s/do/to/
+Add compatible for imx8mm/imx8mn/imx8mp.
 
-Oops.  Thanks for catching that.
+Signed-off-by: Anson Huang <Anson.Huang-3arQi8VN3Tc@public.gmane.org>
+Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+Changes since V2:
+	- fix typo in commit message, compatbile -> compatible.
+---
+ Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
->
-> > document.
-> >
-> > Signed-off-by: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> > ---
-> > V2: No change
-> >
-> > diff --git a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
-> > index 2cd67eb727d4..7ac60d9fe357 100644
-> > --- a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
-> > +++ b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
-> > @@ -2,6 +2,9 @@
-> >
-> >  Required properties:
-> >    - compatible : Should be "nxp,lx2160a-fspi"
-> > +                         "nxp,imx8qxp-fspi"
-> > +                         "nxp,imx8mm-fspi"
->
-> All 3 are different and no compatibility?
-
-This was all based on a series from NXP's repo where they have some
-data tables all associated to the various compatible entries, and they
-created a place holder for quirks.  Based on an older NXP repo, it
-seems like there might be some quirks associated to the different
-families, but the newer repo where I got this patch series didn't
-implement them, however, it's possible the quirks may enhance
-functionality later. If that's true, I think this is the best solution
-for future enhancements without having to change the compatibility
-names down the road.  Maybe someone from NXP can comment?  I am just
-trying to help push things upstream so we can support QSPI flash.  I
-would prefer to keep them separate for now, because we might have
-these improvements later. However, I'll do what you request.  Do you
-want me to drop the additional compatible flags and just use the
-original, or create a new one that's a bit more generic?
-
-adam
-
-
-adam
->
-> > +
-> >    - reg :        First contains the register location and length,
-> >                   Second contains the memory mapping address and length
-> >    - reg-names :  Should contain the resource reg names:
-> > --
-> > 2.24.0
-> >
+diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+index 2d32641..33bc58f 100644
+--- a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
++++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+@@ -10,7 +10,10 @@ Required properties:
+   - "fsl,imx35-cspi" for SPI compatible with the one integrated on i.MX35
+   - "fsl,imx51-ecspi" for SPI compatible with the one integrated on i.MX51
+   - "fsl,imx53-ecspi" for SPI compatible with the one integrated on i.MX53 and later Soc
+-  - "fsl,imx8mq-ecspi" for SPI compatible with the one integrated on i.MX8M
++  - "fsl,imx8mq-ecspi" for SPI compatible with the one integrated on i.MX8MQ
++  - "fsl,imx8mm-ecspi" for SPI compatible with the one integrated on i.MX8MM
++  - "fsl,imx8mn-ecspi" for SPI compatible with the one integrated on i.MX8MN
++  - "fsl,imx8mp-ecspi" for SPI compatible with the one integrated on i.MX8MP
+ - reg : Offset and length of the register set for the device
+ - interrupts : Should contain CSPI/eCSPI interrupt
+ - clocks : Clock specifiers for both ipg and per clocks.
+-- 
+2.7.4

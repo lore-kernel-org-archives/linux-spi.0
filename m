@@ -1,26 +1,23 @@
-From: Rajat Jain <rajatja-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
-Subject: (unknown)
-Date: Tue, 11 Feb 2020 14:34:00 -0800
-Message-ID: <20200211223400.107604-1-rajatja@google.com>
+From: Rajat Jain <rajatja@google.com>
+Subject: [PATCH] spi: pxa2xx: Add CS control clock quirk
+Date: Tue, 11 Feb 2020 14:37:00 -0800
+Message-ID: <20200211223700.110252-1-rajatja@google.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Cc: Evan Green <evgreen-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, rajatja-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org,
-        rajatxjain-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, evgreen-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org,
-        shobhit.srivastava-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, porselvan.muthukrishnan-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
-To: Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Evan Green <evgreen@chromium.org>, rajatja@google.com,
+        rajatxjain@gmail.com, evgreen@google.com,
+        shobhit.srivastava@intel.com, porselvan.muthukrishnan@intel.com
+To: Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Mark Brown <broonie@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Evan Green <evgreen-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-
-Date: Wed, 29 Jan 2020 13:54:16 -0800
-Subject: [PATCH] spi: pxa2xx: Add CS control clock quirk
+From: Evan Green <evgreen@chromium.org>
 
 In some circumstances on Intel LPSS controllers, toggling the LPSS
 CS control register doesn't actually cause the CS line to toggle.
@@ -33,8 +30,8 @@ sending data.
 Whenever CS is toggled, momentarily set the clock gating register
 to "Force On" to poke the controller into acting on CS.
 
-Signed-off-by: Evan Green <evgreen-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Signed-off-by: Rajat Jain <rajatja-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Evan Green <evgreen@chromium.org>
+Signed-off-by: Rajat Jain <rajatja@google.com>
 ---
  drivers/spi/spi-pxa2xx.c | 23 +++++++++++++++++++++++
  1 file changed, 23 insertions(+)

@@ -1,69 +1,58 @@
-From: Pratyush Yadav <p.yadav-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH 7/9] mtd: spi-nor: use dummy cycle and address width info from SFDP
-Date: Tue, 11 Feb 2020 19:03:46 +0530
-Message-ID: <20200211133348.15558-8-p.yadav@ti.com>
-References: <20200211133348.15558-1-p.yadav@ti.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH V3 1/4] dt-bindings: spi: imx: Add
+ i.MX8MM/i.MX8MN/i.MX8MP compatible
+Date: Tue, 11 Feb 2020 15:39:13 +0000
+Message-ID: <20200211153913.GL4543@sirena.org.uk>
+References: <1581425307-18567-1-git-send-email-Anson.Huang@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-Cc: <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>,
-        Pratyush Yadav <p.yadav-l0cyMroinI0@public.gmane.org>
-To: Tudor Ambarus <tudor.ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-        Miquel Raynal <miquel.raynal-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>,
-        Richard Weinberger <richard-/L3Ra7n9ekc@public.gmane.org>,
-        Vignesh Raghavendra <vigneshr-l0cyMroinI0@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="xjamM5M9kpPM/bcu"
+Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org, shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, manivannan.sadhasivam-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+        marcel.ziswiler-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org, rjones-UMMOYl/HMS+akBO8gow8eQ@public.gmane.org,
+        sebastien.szymanski-d2DlULPkwbNWk0Htik3J/w@public.gmane.org, aisheng.dong-3arQi8VN3Tc@public.gmane.org,
+        gary.bisson-Q5RJGjKts06CY9SHAMCTRUEOCMrvLtNR@public.gmane.org, angus-HsWYs6tNinE@public.gmane.org,
+        pramod.kumar_1-3arQi8VN3Tc@public.gmane.org, rabeeh-UBr1pzP51AyaMJb+Lgu22Q@public.gmane.org,
+        cosmin.stoica-3arQi8VN3Tc@public.gmane.org, l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+        leonard.crestez-3arQi8VN3Tc@public.gmane.org, daniel.baluta-3arQi8VN3Tc@public.gmane.org, jun.li-3arQi8VN3Tc@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        Linux-imx-3arQi8VN3Tc@public.gmane.org
+To: Anson Huang <Anson.Huang-3arQi8VN3Tc@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200211133348.15558-1-p.yadav-l0cyMroinI0@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1581425307-18567-1-git-send-email-Anson.Huang-3arQi8VN3Tc@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The xSPI Profile 1.0 table specifies how many dummy cycles and address
-bytes are needed for the Read Status Register command in octal DTR mode.
-Use that information to send the correct Read SR command.
 
-Signed-off-by: Pratyush Yadav <p.yadav-l0cyMroinI0@public.gmane.org>
----
- drivers/mtd/spi-nor/spi-nor.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+--xjamM5M9kpPM/bcu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index eefde5abff8a..8c5d7bfa4f16 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -525,6 +525,8 @@ static int spi_nor_write_disable(struct spi_nor *nor)
- static int spi_nor_read_sr(struct spi_nor *nor, u8 *sr)
- {
- 	int ret;
-+	u8 addr_bytes = nor->params.rdsr_addr_nbytes;
-+	u8 dummy = nor->params.rdsr_dummy;
- 
- 	if (nor->spimem) {
- 		struct spi_mem_op op =
-@@ -533,10 +535,21 @@ static int spi_nor_read_sr(struct spi_nor *nor, u8 *sr)
- 				   SPI_MEM_OP_NO_DUMMY,
- 				   SPI_MEM_OP_DATA_IN(1, sr, 1));
- 
-+		if (spi_nor_protocol_is_dtr(nor->reg_proto)) {
-+			op.addr.nbytes = addr_bytes;
-+			op.addr.val = 0;
-+			op.dummy.nbytes = dummy;
-+		}
-+
-+		spi_nor_spimem_setup_op(nor, &op, nor->reg_proto);
-+
- 		ret = spi_mem_exec_op(nor->spimem, &op);
- 	} else {
--		ret = nor->controller_ops->read_reg(nor, SPINOR_OP_RDSR,
--						    sr, 1);
-+		if (spi_nor_protocol_is_dtr(nor->reg_proto))
-+			ret = -ENOTSUPP;
-+		else
-+			ret = nor->controller_ops->read_reg(nor, SPINOR_OP_RDSR,
-+							    sr, 1);
- 	}
- 
- 	if (ret)
--- 
-2.25.0
+On Tue, Feb 11, 2020 at 08:48:24PM +0800, Anson Huang wrote:
+> Add compatible for imx8mm/imx8mn/imx8mp.
+
+Please submit patches using subject lines reflecting the style for the
+subsystem, this makes it easier for people to identify relevant patches.
+Look at what existing commits in the area you're changing are doing and
+make sure your subject lines visually resemble what they're doing.
+There's no need to resubmit to fix this alone.
+
+--xjamM5M9kpPM/bcu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl5CyqAACgkQJNaLcl1U
+h9DOwwf9FtG/iaQJVuAEOHRrJ9sfIJHvcKeiEzx4CbvNw5x48fs24VzAWO2rg7+t
+iyze1NRFVPS9oH0RLhrQ7jTj+W2t/2Ab8aF6SdK7GhHrIHPRnISNg9Gw15CpTNhv
+G28a9MR8eOddt9JprJ9GE37oyZyaBrFKCojNYlCIRDUxWVQH9RLjh4WjEy2RXxFi
+/OY2G513MX3vivd/04F+9O3KtfOqYdMjgeZ5gi0wbmK4MauyjdMGdrkMbrFcWwKC
+HdoAfGE9ounM1hYtYgAJRoGl20p6Z1n5MQ8HUHeEQkViPA+x4hiFgnRfV3xxtMiu
+rMm3Cu+06Jk9hh/fqB6Qlc92m6Up0Q==
+=TZK0
+-----END PGP SIGNATURE-----
+
+--xjamM5M9kpPM/bcu--

@@ -1,112 +1,84 @@
-From: Eddie James <eajames-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH] spi: Add FSI-attached SPI controller driver
-Date: Mon, 10 Feb 2020 14:50:17 -0600
-Message-ID: <e9d8ebd0-85da-307a-1e80-8cc25bd9454c@linux.vnet.ibm.com>
-References: <1580328504-436-1-git-send-email-eajames@linux.ibm.com>
- <CAHp75VeNs9Zr1vayO8TwVq6=B8fwvv0chOt0in6Dw+WLCezL2g@mail.gmail.com>
- <29f6cc86-69ca-bc88-b6ae-2b1a24c0dae3@linux.vnet.ibm.com>
- <CAHp75Vf3NCkbw39E+d_nf+AyViG2o-u5HxrCjXXmbGk4LaFLog@mail.gmail.com>
- <744f0019-8656-eec1-cb9a-7e70cd042587@linux.ibm.com>
- <CAHp75VfOM5Rd3LRBtvyT96G=+J4KxTRoSVUcQTj+RxrGyZMMnQ@mail.gmail.com>
- <90973143-bd0a-33cf-9eb8-a83be1a9b415@linux.vnet.ibm.com>
- <CAHp75Vf6HJw=SpK9_HUgcMaaabs5pZEybP4SS-gc1wz5GRcqeg@mail.gmail.com>
- <cd8a7279-beb2-39e6-58e6-6ea505665547@linux.vnet.ibm.com>
- <CAHp75VdO2+Kkgo1Nv3EJXTMqP6Y7XgLVXtRvURk6Zz0p=R9zNQ@mail.gmail.com>
- <ca8a832e-ceeb-3ce1-9807-96ee41e0f166@linux.vnet.ibm.com>
- <CAHp75VduJn=kMuriGNAGk1ZrL4b2LpqEn5c8AC=PHFKrgoz=vg@mail.gmail.com>
- <3bbc98a7-838d-f57f-0478-a632ba68f500@linux.vnet.ibm.com>
- <CAHp75VfpRV7UDMpPKo8Vu1PaOfLjUG24yUdkg8ip9=923cwarA@mail.gmail.com>
+From: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH V2 4/5] dt-bindings: spi: spi-nxp-fspi: Add support for
+ imx8mm, imx8qxp
+Date: Tue, 11 Feb 2020 04:49:39 -0600
+Message-ID: <CAHCN7x+uCwyJ60ZG_0m5SgNmqUAyEwxqXVTL7nQzJLXxXrh+Tw@mail.gmail.com>
+References: <20200202125950.1825013-1-aford173@gmail.com> <20200202125950.1825013-4-aford173@gmail.com>
+ <20200206184030.GA11381@bogus>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Eddie James <eajames-tEXmvtCZX7AybS5Ee8rs3A@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+Content-Type: text/plain; charset="UTF-8"
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Yogesh Gaur <yogeshgaur.83-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Ashish Kumar <ashish.kumar-3arQi8VN3Tc@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        Pengutronix Kernel Team <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        NXP Linux Team <linux-imx-3arQi8VN3Tc@public.gmane.org>,
+        devicetree <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
         Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Joel Stanley <joel-U3u1mxZcP9KHXe+LvDLADg@public.gmane.org>,
-        Andrew Jeffery <andrew-zrmu5oMJ5Fs@public.gmane.org>
-To: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+        arm-soc <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAHp75VfpRV7UDMpPKo8Vu1PaOfLjUG24yUdkg8ip9=923cwarA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Language: en-US
+In-Reply-To: <20200206184030.GA11381@bogus>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Thu, Feb 6, 2020 at 2:46 PM Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+>
+> On Sun, Feb 02, 2020 at 06:59:49AM -0600, Adam Ford wrote:
+> > Add support for nxp,imx8qxp-fspi and nxp,imx8mm-fspi do the bindings
+>
+> s/do/to/
 
-On 2/10/20 2:33 PM, Andy Shevchenko wrote:
-> On Mon, Feb 10, 2020 at 10:05 PM Eddie James <eajames-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org> wrote:
->> On 2/7/20 4:04 PM, Andy Shevchenko wrote:
->>> On Fri, Feb 7, 2020 at 11:04 PM Eddie James <eajames-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org> wrote:
->>>> On 2/7/20 2:34 PM, Andy Shevchenko wrote:
->>>>> On Fri, Feb 7, 2020 at 10:04 PM Eddie James <eajames-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org> wrote:
->>>>>> On 2/7/20 1:39 PM, Andy Shevchenko wrote:
->>>>>>> On Fri, Feb 7, 2020 at 9:28 PM Eddie James <eajames-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org> wrote:
->>>>>>>> On 2/5/20 9:51 AM, Andy Shevchenko wrote:
->>>>>>>>> On Tue, Feb 4, 2020 at 6:06 PM Eddie James <eajames-tEXmvtCZX7AybS5Ee8rs3A@public.gmane.org> wrote:
->>>>>>>>>> On 2/4/20 5:02 AM, Andy Shevchenko wrote:
->>>>>>>>>>> On Mon, Feb 3, 2020 at 10:33 PM Eddie James <eajames-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org> wrote:
->>>>>>>>>>>> On 1/30/20 10:37 AM, Andy Shevchenko wrote:
->>>>>>>>>>>>>> +       for (i = 0; i < num_bytes; ++i)
->>>>>>>>>>>>>> +               rx[i] = (u8)((in >> (8 * ((num_bytes - 1) - i))) & 0xffULL);
->>>>>>>>>>>>> Redundant & 0xffULL part.
->>>>>>>>> For me it looks like
->>>>>>>>>
->>>>>>>>>        u8 tmp[8];
->>>>>>>>>
->>>>>>>>>        put_unaligned_be64(in, tmp);
->>>>>>>>>        memcpy(rx, tmp, num_bytes);
->>>>>>>>>
->>>>>>>>> put_unaligned*() is just a method to unroll the value to the u8 buffer.
->>>>>>>>> See, for example, linux/unaligned/be_byteshift.h implementation.
->>>>>>>> Unforunately it is not the same. put_unaligned_be64 will take the
->>>>>>>> highest 8 bits (0xff00000000000000) and move it into tmp[0]. Then
->>>>>>>> 0x00ff000000000000 into tmp[1], etc. This is only correct for this
->>>>>>>> driver IF my transfer is 8 bytes. If, for example, I transfer 5 bytes,
->>>>>>>> then I need 0x000000ff00000000 into tmp[0], 0x00000000ff000000 into
->>>>>>>> tmp[1], etc. So I think my current implementation is correct.
->>>>>>> Yes, I missed correction of the start address in memcpy(). Otherwise
->>>>>>> it's still the same what I was talking about.
->>>>>> I see now, yes, thanks.
->>>>>>
->>>>>> Do you think this is worth a v3? Perhaps put_unaligned is slightly more
->>>>>> optimized than the loop but there is more memory copy with that way too.
->>>>> I already forgot the entire context when this has been called. Can you
->>>>> summarize what the sequence(s) of num_bytes are expected usually.
->>>>>
->>>>> IIUC if packets small, less than 8 bytes, than num_bytes will be that value.
->>>>> Otherwise it will be something like 8 + 8 + 8 ... + tail. Is it
->>>>> correct assumption?
->>>> Yes, it will typically be 8 + 8 +... remainder. Basically, on any RX,
->>>> the driver polls for the rx register full. Once full, it will read
->>>> however much data is left to be transferred. Since we use min(len, 8)
->>>> then we read 8 usually, until we get to the end.
->>> I asked that because we might have a better optimization, i.e, call
->>> directly put_unaligned_be64() when we know that length is 8 bytes. For
->>> the rest your approach might be simpler. Similar for the TX case.
->>
->> I just tried to implement as you suggested but I realized something: The
->> value is already swapped from BE to CPU when the register is read in
->> fsi_spi_read_reg. It happens to work out correctly to use
->> put_unaligned_be64 on a LE CPU to flip the bytes here. But on a BE CPU,
->> this wouldn't be correct I think.
-> Hmm... Any BE conversion op on BE architecture is no-op.
-> Same for LE on LE.
-
-
-Right. So regardless of architecture, by the time we get to 
-fsi_spi_data_in, the data is in the correct endianness. But on a BE 
-architecture, it would still need to get flipped because that's what the 
-specification indicates. So doing it manually seems correct to me.
-
+Oops.  Thanks for catching that.
 
 >
->> Now I don't anticipate this driver
->> running on a BE CPU, but I think it is weird to flip it twice, and
->> better to do it manually here.
->>
->> What do you think Andy?
+> > document.
+> >
+> > Signed-off-by: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> > ---
+> > V2: No change
+> >
+> > diff --git a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
+> > index 2cd67eb727d4..7ac60d9fe357 100644
+> > --- a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
+> > +++ b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.txt
+> > @@ -2,6 +2,9 @@
+> >
+> >  Required properties:
+> >    - compatible : Should be "nxp,lx2160a-fspi"
+> > +                         "nxp,imx8qxp-fspi"
+> > +                         "nxp,imx8mm-fspi"
 >
+> All 3 are different and no compatibility?
+
+This was all based on a series from NXP's repo where they have some
+data tables all associated to the various compatible entries, and they
+created a place holder for quirks.  Based on an older NXP repo, it
+seems like there might be some quirks associated to the different
+families, but the newer repo where I got this patch series didn't
+implement them, however, it's possible the quirks may enhance
+functionality later. If that's true, I think this is the best solution
+for future enhancements without having to change the compatibility
+names down the road.  Maybe someone from NXP can comment?  I am just
+trying to help push things upstream so we can support QSPI flash.  I
+would prefer to keep them separate for now, because we might have
+these improvements later. However, I'll do what you request.  Do you
+want me to drop the additional compatible flags and just use the
+original, or create a new one that's a bit more generic?
+
+adam
+
+
+adam
 >
->>>>>>>>>>>>>> +       return num_bytes;
->>>>>>>>>>>>>> +}
->
->
+> > +
+> >    - reg :        First contains the register location and length,
+> >                   Second contains the memory mapping address and length
+> >    - reg-names :  Should contain the resource reg names:
+> > --
+> > 2.24.0
+> >

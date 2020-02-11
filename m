@@ -1,8 +1,8 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-geni-qcom: Let firmware specify irq trigger flags" to the spi tree
-Date: Tue, 11 Feb 2020 15:51:55 +0000
-Message-ID: <applied-20200204191206.97036-2-swboyd@chromium.org>
-References: <20200204191206.97036-2-swboyd@chromium.org>
+Subject: Applied "spi: spi-geni-qcom: Drop of.h include" to the spi tree
+Date: Tue, 11 Feb 2020 15:51:48 +0000
+Message-ID: <applied-20200204191206.97036-4-swboyd@chromium.org>
+References: <20200204191206.97036-4-swboyd@chromium.org>
 Cc: Alok Chauhan <alokc@codeaurora.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
@@ -13,13 +13,13 @@ Cc: Alok Chauhan <alokc@codeaurora.org>,
         Mark Brown <broonie@kernel.org>
 To: Stephen Boyd <swboyd@chromium.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200204191206.97036-2-swboyd@chromium.org>
+In-Reply-To: <20200204191206.97036-4-swboyd@chromium.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spi-geni-qcom: Let firmware specify irq trigger flags
+   spi: spi-geni-qcom: Drop of.h include
 
 has been applied to the spi tree at
 
@@ -44,14 +44,13 @@ to this mail.
 Thanks,
 Mark
 
->From ece9ef3b60cbc36237138af456b236d3d1d9b771 Mon Sep 17 00:00:00 2001
+>From 875014cb79ea4251e8800994640be1a8012b4133 Mon Sep 17 00:00:00 2001
 From: Stephen Boyd <swboyd@chromium.org>
-Date: Tue, 4 Feb 2020 11:12:04 -0800
-Subject: [PATCH] spi: spi-geni-qcom: Let firmware specify irq trigger flags
+Date: Tue, 4 Feb 2020 11:12:06 -0800
+Subject: [PATCH] spi: spi-geni-qcom: Drop of.h include
 
-We don't need to force IRQF_TRIGGER_HIGH here as the DT or ACPI tables
-should take care of this for us. Just use 0 instead so that we use the
-flags from the firmware.
+This driver doesn't call any DT functions like of_get_property(). Remove
+the of.h include as it isn't used.
 
 Cc: Girish Mahadevan <girishm@codeaurora.org>
 Cc: Dilip Kota <dkota@codeaurora.org>
@@ -59,25 +58,23 @@ Cc: Alok Chauhan <alokc@codeaurora.org>
 Cc: Douglas Anderson <dianders@chromium.org>
 Signed-off-by: Stephen Boyd <swboyd@chromium.org>
 Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20200204191206.97036-2-swboyd@chromium.org
+Link: https://lore.kernel.org/r/20200204191206.97036-4-swboyd@chromium.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-geni-qcom.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/spi/spi-geni-qcom.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index 6f3d64a1a2b3..46e501fc87f3 100644
+index f0ca7f5ae714..c3972424af71 100644
 --- a/drivers/spi/spi-geni-qcom.c
 +++ b/drivers/spi/spi-geni-qcom.c
-@@ -585,8 +585,7 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto spi_geni_probe_runtime_disable;
- 
--	ret = request_irq(mas->irq, geni_spi_isr,
--			IRQF_TRIGGER_HIGH, "spi_geni", spi);
-+	ret = request_irq(mas->irq, geni_spi_isr, 0, dev_name(&pdev->dev), spi);
- 	if (ret)
- 		goto spi_geni_probe_runtime_disable;
- 
+@@ -6,7 +6,6 @@
+ #include <linux/io.h>
+ #include <linux/log2.h>
+ #include <linux/module.h>
+-#include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/qcom-geni-se.h>
 -- 
 2.20.1

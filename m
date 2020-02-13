@@ -1,19 +1,19 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spidev_test: Check input_tx and input_file first after parse options" to the spi tree
-Date: Thu, 13 Feb 2020 13:32:31 +0000
-Message-ID: <applied-1581567368-8055-2-git-send-email-yangtiezhu@loongson.cn>
-References: <1581567368-8055-2-git-send-email-yangtiezhu@loongson.cn>
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>
-To: Tiezhu Yang <yangtiezhu@loongson.cn>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1581567368-8055-2-git-send-email-yangtiezhu@loongson.cn>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: spidev_test: Remove break after exit statement" to the spi tree
+Date: Thu, 13 Feb 2020 13:32:33 +0000
+Message-ID: <applied-1581567368-8055-1-git-send-email-yangtiezhu@loongson.cn>
+References: <1581567368-8055-1-git-send-email-yangtiezhu@loongson.cn>
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Tiezhu Yang <yangtiezhu-cXZgJK919ebM1kAEIRd3EQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1581567368-8055-1-git-send-email-yangtiezhu-cXZgJK919ebM1kAEIRd3EQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: spidev_test: Check input_tx and input_file first after parse options
+   spi: spidev_test: Remove break after exit statement
 
 has been applied to the spi tree at
 
@@ -38,47 +38,33 @@ to this mail.
 Thanks,
 Mark
 
->From 1f3c36328a487059beebd1f7be042e3b7abf7d34 Mon Sep 17 00:00:00 2001
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-Date: Thu, 13 Feb 2020 12:16:06 +0800
-Subject: [PATCH] spi: spidev_test: Check input_tx and input_file first after
- parse options
+>From 020bd6c48ebd864d42b5b551a87a323e443918a6 Mon Sep 17 00:00:00 2001
+From: Tiezhu Yang <yangtiezhu-cXZgJK919ebM1kAEIRd3EQ@public.gmane.org>
+Date: Thu, 13 Feb 2020 12:16:05 +0800
+Subject: [PATCH] spi: spidev_test: Remove break after exit statement
 
-It is better to check input_tx and input_file first after parse options.
-Otherwise, it will do some useless operations when both -p and --input
-are selected.
+When call print_usage() in parse_opts(), it will exit directly.
+Since break is not useful after exit statement, remove it.
 
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/1581567368-8055-2-git-send-email-yangtiezhu@loongson.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Tiezhu Yang <yangtiezhu-cXZgJK919ebM1kAEIRd3EQ@public.gmane.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Link: https://lore.kernel.org/r/1581567368-8055-1-git-send-email-yangtiezhu-cXZgJK919ebM1kAEIRd3EQ@public.gmane.org
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- tools/spi/spidev_test.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/spi/spidev_test.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/tools/spi/spidev_test.c b/tools/spi/spidev_test.c
-index 113b1e1d62ca..5866178cdcc9 100644
+index 3559e7646256..113b1e1d62ca 100644
 --- a/tools/spi/spidev_test.c
 +++ b/tools/spi/spidev_test.c
-@@ -404,6 +404,9 @@ int main(int argc, char *argv[])
- 
- 	parse_opts(argc, argv);
- 
-+	if (input_tx && input_file)
-+		pabort("only one of -p and --input may be selected");
-+
- 	fd = open(device, O_RDWR);
- 	if (fd < 0)
- 		pabort("can't open device");
-@@ -445,9 +448,6 @@ int main(int argc, char *argv[])
- 	printf("bits per word: %d\n", bits);
- 	printf("max speed: %d Hz (%d KHz)\n", speed, speed/1000);
- 
--	if (input_tx && input_file)
--		pabort("only one of -p and --input may be selected");
--
- 	if (input_tx)
- 		transfer_escaped_string(fd, input_tx);
- 	else if (input_file)
+@@ -283,7 +283,6 @@ static void parse_opts(int argc, char *argv[])
+ 			break;
+ 		default:
+ 			print_usage(argv[0]);
+-			break;
+ 		}
+ 	}
+ 	if (mode & SPI_LOOP) {
 -- 
 2.20.1

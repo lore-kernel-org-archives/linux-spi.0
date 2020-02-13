@@ -1,59 +1,68 @@
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: Re: [PATCH] spi: pxa2xx: Add CS control clock quirk
-Date: Thu, 13 Feb 2020 19:18:36 +0200
-Message-ID: <20200213171836.GD10400@smile.fi.intel.com>
-References: <CB4ED07B85D6BB40B8B44F6D5442E4F6572C1523@BGSMSX101.gar.corp.intel.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH V2 2/5] spi: fspi: dynamically alloc AHB memory
+Date: Thu, 13 Feb 2020 18:46:25 +0000
+Message-ID: <20200213184624.GK4333@sirena.org.uk>
+References: <20200202125950.1825013-1-aford173@gmail.com>
+ <20200202125950.1825013-2-aford173@gmail.com>
+ <CAOMZO5D3emrAk84wDS04qJC-3AyvFnqodhoMsXO-ukHnYsU+PQ@mail.gmail.com>
+ <CAHCN7xJyZRwJhnWW2mAbOeGyrMsB7Au_e6AvwiNmNS8gFUfSyw@mail.gmail.com>
+ <20200212120753.GF4028@sirena.org.uk>
+ <CAHCN7x+5bACfYVX49Lib+fmNq-dEOkcyi0gXt7rtYxrGaYbH1Q@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        Rajat Jain <rajatja-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
-        Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Evan Green <evgreen-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-        "rajatxjain-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <rajatxjain-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        "evgreen-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org" <evgreen-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
-        "Muthukrishnan, Porselvan" <porselvan.muthukrishnan-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: "Srivastava, Shobhit" <shobhit.srivastava-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="Ah40dssYA/cDqAW1"
+Cc: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Han Xu <han.xu-3arQi8VN3Tc@public.gmane.org>,
+        Yogesh Gaur <yogeshgaur.83-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Ashish Kumar <ashish.kumar-3arQi8VN3Tc@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        Pengutronix Kernel Team <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        NXP Linux Team <linux-imx-3arQi8VN3Tc@public.gmane.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CB4ED07B85D6BB40B8B44F6D5442E4F6572C1523-yHIBzpp8AekElmVAvsQTrbfspsVTdybXVpNB7YpNyf8@public.gmane.org>
+In-Reply-To: <CAHCN7x+5bACfYVX49Lib+fmNq-dEOkcyi0gXt7rtYxrGaYbH1Q-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Feb 13, 2020 at 04:57:24PM +0000, Srivastava, Shobhit wrote:
-> > On 2/12/20 12:34 AM, Rajat Jain wrote:
 
-...
+--Ah40dssYA/cDqAW1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> > I wonder is it enough to have this quick toggling only or is time or actually
-> > number of clock cycles dependent? Now there is no delay between but I'm
-> > thinking if it needs certain number cycles does this still work when using low
-> > ssp_clk rates similar than in commit d0283eb2dbc1 ("spi:
-> > pxa2xx: Add output control for multiple Intel LPSS chip selects").
-> > 
-> > I'm thinking can this be done only once after resume and may other LPSS
-> > blocks need the same? I.e. should this be done in drivers/mfd/intel-lpss.c?
+On Wed, Feb 12, 2020 at 07:08:49AM -0600, Adam Ford wrote:
 
-> This behavior is seen after S0ix resume, but it is not seen after S3 resume.
+> The original author was copied on the initial commit.  I literally
+> generated the patch from NXP's branch,  added my notes, and pushed
+> them to the mailing lists after testing them on the  the Linux master
+> branch.   I am a bit disappointed that NXP's author hasn't responded
+> to any of the comments or feedback.  NXP knows their hardware and
 
-I already commented in the other thread about this.
+Bear in mind that it's been the spring festival and there's been quite a
+bit of delay in getting back to work in China resulting from coronavirus
+stuff so hopefully it's just a delay in replying.
 
-Have you checked what's going on in intel_lpss_suspend() and
-intel_lpss_resume() for your case?
+--Ah40dssYA/cDqAW1
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Is intel_lpss_prepare() called during S0ix exit?
+-----BEGIN PGP SIGNATURE-----
 
-> I am thinking that it happens because we are not enabling the SSP after resume. 
-> It is deferred until we need to send data. By enabling the SSP in resume, I don’t see the issue.
-> For S3, I think BIOS re-enables the SSP in resume flow.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl5FmYAACgkQJNaLcl1U
+h9BIJQf/YCuS+PbvoZjpzEq+oZbCnmY0R0BkFrp7Sc1PV9zHgjKqGmQAr9RVSeSI
+kfalZEPSUkUEpxgouX+I3VVvKPpQhDEhj46+y+IXYWH/Y0QA58bDv7ctWOhIBn+Q
+vW7iTl/+CHsJdTptylbI5K0TiVP3D5wDGbiym/rvAjIGpe7FXzd9WUteXNKeLJMy
+QmhJg6z+gAVwf/mYiyM03MRx1Gn1c5C/cMkan6s189g77et3avP4nEfKb6UyApgi
+FY+BqvQCyBK7OSErmJ7H+NpqM9Rq0b7xJLknFwbfOLTpqvG8iRhGzvQyNg3uPAqt
+aAm0o3dppPZAbuc4HFV4OF5n2YoGBA==
+=r4u7
+-----END PGP SIGNATURE-----
 
--- 
-With Best Regards,
-Andy Shevchenko
+--Ah40dssYA/cDqAW1--

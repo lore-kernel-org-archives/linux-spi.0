@@ -1,19 +1,19 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spidev_test: Remove the whole "include" directory when make clean" to the spi tree
-Date: Thu, 13 Feb 2020 13:32:26 +0000
-Message-ID: <applied-1581567368-8055-4-git-send-email-yangtiezhu@loongson.cn>
-References: <1581567368-8055-4-git-send-email-yangtiezhu@loongson.cn>
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Tiezhu Yang <yangtiezhu-cXZgJK919ebM1kAEIRd3EQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1581567368-8055-4-git-send-email-yangtiezhu-cXZgJK919ebM1kAEIRd3EQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: spidev_test: Use perror() only if errno is not 0" to the spi tree
+Date: Thu, 13 Feb 2020 13:32:29 +0000
+Message-ID: <applied-1581567368-8055-3-git-send-email-yangtiezhu@loongson.cn>
+References: <1581567368-8055-3-git-send-email-yangtiezhu@loongson.cn>
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>
+To: Tiezhu Yang <yangtiezhu@loongson.cn>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1581567368-8055-3-git-send-email-yangtiezhu@loongson.cn>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spidev_test: Remove the whole "include" directory when make clean
+   spi: spidev_test: Use perror() only if errno is not 0
 
 has been applied to the spi tree at
 
@@ -38,35 +38,58 @@ to this mail.
 Thanks,
 Mark
 
->From aea7afd9079f2e43b05790241d748ff0537ec917 Mon Sep 17 00:00:00 2001
-From: Tiezhu Yang <yangtiezhu-cXZgJK919ebM1kAEIRd3EQ@public.gmane.org>
-Date: Thu, 13 Feb 2020 12:16:08 +0800
-Subject: [PATCH] spi: spidev_test: Remove the whole "include" directory when
- make clean
+>From 470a072e12200576788dc622d58894609feae2d7 Mon Sep 17 00:00:00 2001
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+Date: Thu, 13 Feb 2020 12:16:07 +0800
+Subject: [PATCH] spi: spidev_test: Use perror() only if errno is not 0
 
-In the current code, it only removes "include/linux/spi/spidev.h" file
-when make clean and there still exists useless "include/linux/spi/"
-directory, just remove it.
+It is better to use perror() only if errno is not 0, it should use printf()
+when errno is 0, otherwise there exists redudant ": Success".
 
-Signed-off-by: Tiezhu Yang <yangtiezhu-cXZgJK919ebM1kAEIRd3EQ@public.gmane.org>
-Link: https://lore.kernel.org/r/1581567368-8055-4-git-send-email-yangtiezhu-cXZgJK919ebM1kAEIRd3EQ@public.gmane.org
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+E.g. without this patch:
+
+$ ./spidev_test -p 1234 --input test.bin
+only one of -p and --input may be selected: Success
+Aborted (core dumped)
+
+With this patch:
+
+$ ./spidev_test -p 1234 --input test.bin
+only one of -p and --input may be selected
+Aborted (core dumped)
+
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/1581567368-8055-3-git-send-email-yangtiezhu@loongson.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- tools/spi/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/spi/spidev_test.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tools/spi/Makefile b/tools/spi/Makefile
-index 5c342e655e55..2249a1546cc1 100644
---- a/tools/spi/Makefile
-+++ b/tools/spi/Makefile
-@@ -51,7 +51,7 @@ $(OUTPUT)spidev_fdx: $(SPIDEV_FDX_IN)
+diff --git a/tools/spi/spidev_test.c b/tools/spi/spidev_test.c
+index 5866178cdcc9..27967dd90f8f 100644
+--- a/tools/spi/spidev_test.c
++++ b/tools/spi/spidev_test.c
+@@ -13,6 +13,7 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <errno.h>
+ #include <getopt.h>
+ #include <fcntl.h>
+ #include <time.h>
+@@ -26,7 +27,11 @@
  
- clean:
- 	rm -f $(ALL_PROGRAMS)
--	rm -f $(OUTPUT)include/linux/spi/spidev.h
-+	rm -rf $(OUTPUT)include/
- 	find $(if $(OUTPUT),$(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete
+ static void pabort(const char *s)
+ {
+-	perror(s);
++	if (errno != 0)
++		perror(s);
++	else
++		printf("%s\n", s);
++
+ 	abort();
+ }
  
- install: $(ALL_PROGRAMS)
 -- 
 2.20.1

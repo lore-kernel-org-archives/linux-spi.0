@@ -1,19 +1,19 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spidev_test: Use perror() only if errno is not 0" to the spi tree
-Date: Thu, 13 Feb 2020 13:32:29 +0000
-Message-ID: <applied-1581567368-8055-3-git-send-email-yangtiezhu@loongson.cn>
-References: <1581567368-8055-3-git-send-email-yangtiezhu@loongson.cn>
+Subject: Applied "spi: spidev_test: Check input_tx and input_file first after parse options" to the spi tree
+Date: Thu, 13 Feb 2020 13:32:31 +0000
+Message-ID: <applied-1581567368-8055-2-git-send-email-yangtiezhu@loongson.cn>
+References: <1581567368-8055-2-git-send-email-yangtiezhu@loongson.cn>
 Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
         Mark Brown <broonie@kernel.org>
 To: Tiezhu Yang <yangtiezhu@loongson.cn>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1581567368-8055-3-git-send-email-yangtiezhu@loongson.cn>
+In-Reply-To: <1581567368-8055-2-git-send-email-yangtiezhu@loongson.cn>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spidev_test: Use perror() only if errno is not 0
+   spi: spidev_test: Check input_tx and input_file first after parse options
 
 has been applied to the spi tree at
 
@@ -38,58 +38,47 @@ to this mail.
 Thanks,
 Mark
 
->From 470a072e12200576788dc622d58894609feae2d7 Mon Sep 17 00:00:00 2001
+>From 1f3c36328a487059beebd1f7be042e3b7abf7d34 Mon Sep 17 00:00:00 2001
 From: Tiezhu Yang <yangtiezhu@loongson.cn>
-Date: Thu, 13 Feb 2020 12:16:07 +0800
-Subject: [PATCH] spi: spidev_test: Use perror() only if errno is not 0
+Date: Thu, 13 Feb 2020 12:16:06 +0800
+Subject: [PATCH] spi: spidev_test: Check input_tx and input_file first after
+ parse options
 
-It is better to use perror() only if errno is not 0, it should use printf()
-when errno is 0, otherwise there exists redudant ": Success".
-
-E.g. without this patch:
-
-$ ./spidev_test -p 1234 --input test.bin
-only one of -p and --input may be selected: Success
-Aborted (core dumped)
-
-With this patch:
-
-$ ./spidev_test -p 1234 --input test.bin
-only one of -p and --input may be selected
-Aborted (core dumped)
+It is better to check input_tx and input_file first after parse options.
+Otherwise, it will do some useless operations when both -p and --input
+are selected.
 
 Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
 Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/1581567368-8055-3-git-send-email-yangtiezhu@loongson.cn
+Link: https://lore.kernel.org/r/1581567368-8055-2-git-send-email-yangtiezhu@loongson.cn
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- tools/spi/spidev_test.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tools/spi/spidev_test.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/tools/spi/spidev_test.c b/tools/spi/spidev_test.c
-index 5866178cdcc9..27967dd90f8f 100644
+index 113b1e1d62ca..5866178cdcc9 100644
 --- a/tools/spi/spidev_test.c
 +++ b/tools/spi/spidev_test.c
-@@ -13,6 +13,7 @@
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
-+#include <errno.h>
- #include <getopt.h>
- #include <fcntl.h>
- #include <time.h>
-@@ -26,7 +27,11 @@
+@@ -404,6 +404,9 @@ int main(int argc, char *argv[])
  
- static void pabort(const char *s)
- {
--	perror(s);
-+	if (errno != 0)
-+		perror(s);
-+	else
-+		printf("%s\n", s);
+ 	parse_opts(argc, argv);
+ 
++	if (input_tx && input_file)
++		pabort("only one of -p and --input may be selected");
 +
- 	abort();
- }
+ 	fd = open(device, O_RDWR);
+ 	if (fd < 0)
+ 		pabort("can't open device");
+@@ -445,9 +448,6 @@ int main(int argc, char *argv[])
+ 	printf("bits per word: %d\n", bits);
+ 	printf("max speed: %d Hz (%d KHz)\n", speed, speed/1000);
  
+-	if (input_tx && input_file)
+-		pabort("only one of -p and --input may be selected");
+-
+ 	if (input_tx)
+ 		transfer_escaped_string(fd, input_tx);
+ 	else if (input_file)
 -- 
 2.20.1

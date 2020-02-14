@@ -1,100 +1,50 @@
-From: Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH AUTOSEL 5.4 062/459] spi: fsl-lpspi: fix only one cs-gpio working
-Date: Fri, 14 Feb 2020 10:55:12 -0500
-Message-ID: <20200214160149.11681-62-sashal@kernel.org>
-References: <20200214160149.11681-1-sashal@kernel.org>
+From: Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.5 428/542] spi: spi-fsl-qspi: Ensure width is respected in spi-mem operations
+Date: Fri, 14 Feb 2020 10:47:00 -0500
+Message-ID: <20200214154854.6746-428-sashal@kernel.org>
+References: <20200214154854.6746-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Philippe Schenker <philippe.schenker-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200214160149.11681-1-sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Michael Walle <michael@walle.cc>, Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
+To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20200214154854.6746-1-sashal@kernel.org>
+Sender: stable-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Philippe Schenker <philippe.schenker-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+From: Michael Walle <michael@walle.cc>
 
-[ Upstream commit bc3a8b295e5bca9d1ec2622a6ba38289f9fd3d8a ]
+[ Upstream commit b0177aca7aea7e8917d4e463334b51facb293d02 ]
 
-Why it does not work at the moment:
-- num_chipselect sets the number of cs-gpios that are in the DT.
-  This comes from drivers/spi/spi.c
-- num_chipselect gets set with devm_spi_register_controller, that is
-  called in drivers/spi/spi.c
-- devm_spi_register_controller got called after num_chipselect has
-  been used.
+Make use of a core helper to ensure the desired width is respected
+when calling spi-mem operators.
 
-How this commit fixes the issue:
-- devm_spi_register_controller gets called before num_chipselect is
-  being used.
+Otherwise only the SPI controller will be matched with the flash chip,
+which might lead to wrong widths. Also consider the width specified by
+the user in the device tree.
 
-Fixes: c7a402599504 ("spi: lpspi: use the core way to implement cs-gpio function")
-Signed-off-by: Philippe Schenker <philippe.schenker-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
-Link: https://lore.kernel.org/r/20191204141312.1411251-1-philippe.schenker-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Signed-off-by: Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Fixes: 84d043185dbe ("spi: Add a driver for the Freescale/NXP QuadSPI controller")
+Signed-off-by: Michael Walle <michael@walle.cc>
+Link: https://lore.kernel.org/r/20200114154613.8195-1-michael@walle.cc
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ drivers/spi/spi-fsl-qspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 3528ed5eea9b5..92e460d4f3d10 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -862,6 +862,22 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	fsl_lpspi->dev = &pdev->dev;
- 	fsl_lpspi->is_slave = is_slave;
+diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
+index 79b1558b74b8a..e8a499cd1f135 100644
+--- a/drivers/spi/spi-fsl-qspi.c
++++ b/drivers/spi/spi-fsl-qspi.c
+@@ -410,7 +410,7 @@ static bool fsl_qspi_supports_op(struct spi_mem *mem,
+ 	    op->data.nbytes > q->devtype_data->txfifo)
+ 		return false;
  
-+	controller->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32);
-+	controller->transfer_one = fsl_lpspi_transfer_one;
-+	controller->prepare_transfer_hardware = lpspi_prepare_xfer_hardware;
-+	controller->unprepare_transfer_hardware = lpspi_unprepare_xfer_hardware;
-+	controller->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
-+	controller->flags = SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX;
-+	controller->dev.of_node = pdev->dev.of_node;
-+	controller->bus_num = pdev->id;
-+	controller->slave_abort = fsl_lpspi_slave_abort;
-+
-+	ret = devm_spi_register_controller(&pdev->dev, controller);
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "spi_register_controller error.\n");
-+		goto out_controller_put;
-+	}
-+
- 	if (!fsl_lpspi->is_slave) {
- 		for (i = 0; i < controller->num_chipselect; i++) {
- 			int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
-@@ -885,16 +901,6 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 		controller->prepare_message = fsl_lpspi_prepare_message;
- 	}
+-	return true;
++	return spi_mem_default_supports_op(mem, op);
+ }
  
--	controller->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32);
--	controller->transfer_one = fsl_lpspi_transfer_one;
--	controller->prepare_transfer_hardware = lpspi_prepare_xfer_hardware;
--	controller->unprepare_transfer_hardware = lpspi_unprepare_xfer_hardware;
--	controller->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
--	controller->flags = SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX;
--	controller->dev.of_node = pdev->dev.of_node;
--	controller->bus_num = pdev->id;
--	controller->slave_abort = fsl_lpspi_slave_abort;
--
- 	init_completion(&fsl_lpspi->xfer_done);
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-@@ -952,12 +958,6 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	if (ret < 0)
- 		dev_err(&pdev->dev, "dma setup error %d, use pio\n", ret);
- 
--	ret = devm_spi_register_controller(&pdev->dev, controller);
--	if (ret < 0) {
--		dev_err(&pdev->dev, "spi_register_controller error.\n");
--		goto out_controller_put;
--	}
--
- 	return 0;
- 
- out_controller_put:
+ static void fsl_qspi_prepare_lut(struct fsl_qspi *q,
 -- 
 2.20.1

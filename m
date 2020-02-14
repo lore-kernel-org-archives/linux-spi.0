@@ -1,57 +1,56 @@
-From: Simon Goldschmidt <simon.k.r.goldschmidt-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v9 0/2] spi: cadence-quadpsi: Add support for the Cadence
- QSPI controller
-Date: Fri, 14 Feb 2020 14:49:48 +0100
-Message-ID: <CAAh8qswA0TLY73URB8eUYm+nFK9q08Ep4wamz3rAE_5g3fd51g@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v9 1/2] dt-bindings: spi: Add schema for Cadence QSPI
+ Controller driver
+Date: Fri, 14 Feb 2020 14:08:44 +0000
+Message-ID: <20200214140844.GL4827@sirena.org.uk>
 References: <20200214114618.29704-1-vadivel.muruganx.ramuthevar@linux.intel.com>
- <CAAh8qsxnRSwonuEPrriuS=gUMTjt8ddUVy5HxegmoCk-FoE4qg@mail.gmail.com>
- <20200214121145.GF4827@sirena.org.uk> <CAAh8qsxmYmpyAg-FQJLnEwvKKFZYg6VQenKf83_TJ4oF0GyMsA@mail.gmail.com>
- <20200214131518.GJ4827@sirena.org.uk>
+ <20200214114618.29704-2-vadivel.muruganx.ramuthevar@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: "Ramuthevar,Vadivel MuruganX"
-        <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Vignesh R <vigneshr-l0cyMroinI0@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="cy9Nn4fUvYST66Pl"
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        vigneshr-l0cyMroinI0@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org,
         cheol.yong.kim-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, qi-ming.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200214131518.GJ4827-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+To: "Ramuthevar,Vadivel MuruganX"
+        <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20200214114618.29704-2-vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On Fri, Feb 14, 2020 at 2:15 PM Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->
-> On Fri, Feb 14, 2020 at 01:50:44PM +0100, Simon Goldschmidt wrote:
->
-> > So please correct me if I'm wrong, but to me it seems like if this driver won't
-> > work on altera, and after merging it the currently working driver will be
-> > removed, altera will be broken.
->
-> I'm not seeing anything in the driver that removes whatever the current
-> support is?  Unless it's just adding a duplicate driver for the same
-> compatible strings which is obviously a bad idea but at least means that
-> unless people enable the driver there's no risk of it colliding with the
-> existing one.
 
-It does add a duplicate driver for the same compatible strings. The current
-working driver is in 'drivers/mtd/spi-nor/cadence-quadspi.c'.
+--cy9Nn4fUvYST66Pl
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-In fact, the compatible string "cdns,qspi-nor" copied from the old driver to
-this new driver is *only* used for altera. TI has its own compatible string,
-the new Intel platform adds its own as well.
+On Fri, Feb 14, 2020 at 07:46:17PM +0800, Ramuthevar,Vadivel MuruganX wrote:
 
-As long as that one doesn't get removed, I have nothing against this driver
-here. I'm only concerned that this will get forgotten. And given that I added
-altera guys to the loop in one of the previous versions, I just was surprised
-they aren't on CC in this version.
+> +  - compatible : should be one of the following:
+> +        Generic default - "cdns,qspi-nor".
+> +        For TI 66AK2G SoC - "ti,k2g-qspi", "cdns,qspi-nor".
+> +        For TI AM654 SoC  - "ti,am654-ospi", "cdns,qspi-nor".
+> +        For Intel LGM SoC - "intel,lgm-qspi", "cdns,qspi-nor".
 
-I'm not familiar with whom to CC for Linux drivers, so sorry for the noise
-if I'm overreacting here, just tell me.
+There are already existing bindings for several of these compatibles,
+we should not be adding a second binding for something which already has
+a binding but rather continuing to use the same binding.  This is the
+whole point of documenting a binding that's separate to the implementation.
 
-Regards,
-Simon
+--cy9Nn4fUvYST66Pl
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl5GqewACgkQJNaLcl1U
+h9DtBgf/by0nSMwRQT7XWPBJkgVJC41aPF/FnRROHTeX4+E/Wdd1YhmtwwI88q9Q
+ys4i+8ZXPV4Nmh0M/L6iX/dgdITH+DGML2hnJijnqyIcAcDElu9QzOge9K+TcpcC
+OVDMxxls194MmBJkbe6iRmC9PaPQAucCPHTVBSEzqOsSwLTrKv7ouBPVzvaF8qp7
+jjqLoMGhoJa/Y0XcoOqTsAHkSDRldoDx8q8SBcYpraw4o3SkW3Pgvz8uCixh2w3n
+f96xeZn42peC559j0dTk/ey1g2oJ6drHxF01G3rpDk9T7EJZogrQXJAJdYre5iIP
+lFfsgWm4mmXgMF4nDNp70tZD8dRuog==
+=vocF
+-----END PGP SIGNATURE-----
+
+--cy9Nn4fUvYST66Pl--

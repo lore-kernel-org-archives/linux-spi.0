@@ -1,58 +1,60 @@
-From: "Srivastava, Shobhit" <shobhit.srivastava@intel.com>
-Subject: RE: Re: [PATCH] spi: pxa2xx: Add CS control clock quirk
-Date: Fri, 14 Feb 2020 06:26:42 +0000
-Message-ID: <CB4ED07B85D6BB40B8B44F6D5442E4F6572C38D7@BGSMSX101.gar.corp.intel.com>
-References: <CB4ED07B85D6BB40B8B44F6D5442E4F6572C1523@BGSMSX101.gar.corp.intel.com>
- <20200213171836.GD10400@smile.fi.intel.com>
+From: Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH] spi: qup: call spi_qup_pm_resume_runtime before suspending
+Date: Fri, 14 Feb 2020 13:13:40 +0530
+Message-ID: <20200214074340.2286170-1-vkoul@kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Rajat Jain <rajatja@google.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        "Mark Brown" <broonie@kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Evan Green <evgreen@chromium.org>,
-        "rajatxjain@gmail.com" <rajatxjain@gmail.com>,
-        "evgreen@google.com" <evgreen@google.com>,
-        "Muthukrishnan, Porselvan" <porselvan.muthukrishnan@intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200213171836.GD10400@smile.fi.intel.com>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Transfer-Encoding: 8bit
+Cc: linux-arm-msm@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Yuji Sasaki <sasakiy@chromium.org>,
+        Andy Gross <agross@kernel.org>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Vinod Koul <vkoul@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-arm-msm-owner@vger.kernel.org>
+Sender: linux-arm-msm-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-PiANCj4gT24gVGh1LCBGZWIgMTMsIDIwMjAgYXQgMDQ6NTc6MjRQTSArMDAwMCwgU3JpdmFzdGF2
-YSwgU2hvYmhpdCB3cm90ZToNCj4gPiA+IE9uIDIvMTIvMjAgMTI6MzQgQU0sIFJhamF0IEphaW4g
-d3JvdGU6DQo+IA0KPiAuLi4NCj4gDQo+ID4gPiBJIHdvbmRlciBpcyBpdCBlbm91Z2ggdG8gaGF2
-ZSB0aGlzIHF1aWNrIHRvZ2dsaW5nIG9ubHkgb3IgaXMgdGltZSBvcg0KPiA+ID4gYWN0dWFsbHkg
-bnVtYmVyIG9mIGNsb2NrIGN5Y2xlcyBkZXBlbmRlbnQ/IE5vdyB0aGVyZSBpcyBubyBkZWxheQ0K
-PiA+ID4gYmV0d2VlbiBidXQgSSdtIHRoaW5raW5nIGlmIGl0IG5lZWRzIGNlcnRhaW4gbnVtYmVy
-IGN5Y2xlcyBkb2VzIHRoaXMNCj4gPiA+IHN0aWxsIHdvcmsgd2hlbiB1c2luZyBsb3cgc3NwX2Ns
-ayByYXRlcyBzaW1pbGFyIHRoYW4gaW4gY29tbWl0DQo+IGQwMjgzZWIyZGJjMSAoInNwaToNCj4g
-PiA+IHB4YTJ4eDogQWRkIG91dHB1dCBjb250cm9sIGZvciBtdWx0aXBsZSBJbnRlbCBMUFNTIGNo
-aXAgc2VsZWN0cyIpLg0KPiA+ID4NCj4gPiA+IEknbSB0aGlua2luZyBjYW4gdGhpcyBiZSBkb25l
-IG9ubHkgb25jZSBhZnRlciByZXN1bWUgYW5kIG1heSBvdGhlcg0KPiA+ID4gTFBTUyBibG9ja3Mg
-bmVlZCB0aGUgc2FtZT8gSS5lLiBzaG91bGQgdGhpcyBiZSBkb25lIGluIGRyaXZlcnMvbWZkL2lu
-dGVsLQ0KPiBscHNzLmM/DQo+IA0KPiA+IFRoaXMgYmVoYXZpb3IgaXMgc2VlbiBhZnRlciBTMGl4
-IHJlc3VtZSwgYnV0IGl0IGlzIG5vdCBzZWVuIGFmdGVyIFMzIHJlc3VtZS4NCj4gDQo+IEkgYWxy
-ZWFkeSBjb21tZW50ZWQgaW4gdGhlIG90aGVyIHRocmVhZCBhYm91dCB0aGlzLg0KPiANCj4gSGF2
-ZSB5b3UgY2hlY2tlZCB3aGF0J3MgZ29pbmcgb24gaW4gaW50ZWxfbHBzc19zdXNwZW5kKCkgYW5k
-DQo+IGludGVsX2xwc3NfcmVzdW1lKCkgZm9yIHlvdXIgY2FzZT8NClllcywgSSBjaGVja2VkIHRo
-b3NlIGZ1bmN0aW9ucyBhbmQgdGhleSBsb29rIGZpbmUuDQpJIGV2ZW4gZHVtcGVkIGFsbCB0aGUg
-cmVsZXZhbnQgcmVnaXN0ZXJzIGZvciBib3RoIFMzIHJlc3VtZSAmIFMwaXggcmVzdW1lIGNhc2Uu
-DQpBbGwgcmVnaXN0ZXJzIHdlcmUgc2FtZSBleGNlcHQgdGhlIFNTQ1IwLg0KDQo+IElzIGludGVs
-X2xwc3NfcHJlcGFyZSgpIGNhbGxlZCBkdXJpbmcgUzBpeCBleGl0Pw0KWWVzLCBpdCBpcyBjYWxs
-ZWQgZHVyaW5nIFMwaXggZW50cnksIGJlZm9yZSB0aGUgc3VzcGVuZCBjYWxsYmFjay4NCg0KPiA+
-IEkgYW0gdGhpbmtpbmcgdGhhdCBpdCBoYXBwZW5zIGJlY2F1c2Ugd2UgYXJlIG5vdCBlbmFibGlu
-ZyB0aGUgU1NQIGFmdGVyDQo+IHJlc3VtZS4NCj4gPiBJdCBpcyBkZWZlcnJlZCB1bnRpbCB3ZSBu
-ZWVkIHRvIHNlbmQgZGF0YS4gQnkgZW5hYmxpbmcgdGhlIFNTUCBpbiByZXN1bWUsIEkNCj4gZG9u
-4oCZdCBzZWUgdGhlIGlzc3VlLg0KPiA+IEZvciBTMywgSSB0aGluayBCSU9TIHJlLWVuYWJsZXMg
-dGhlIFNTUCBpbiByZXN1bWUgZmxvdy4NCj4gDQo+IC0tDQo+IFdpdGggQmVzdCBSZWdhcmRzLA0K
-PiBBbmR5IFNoZXZjaGVua28NCj4gDQoNCg==
+From: Yuji Sasaki <sasakiy@chromium.org>
+
+spi_qup_suspend() will cause synchronous external abort when
+runtime suspend is enabled and applied, as it tries to
+access SPI controller register while clock is already disabled
+in spi_qup_pm_suspend_runtime().
+
+Signed-off-by: Yuji sasaki <sasakiy@chromium.org>
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+---
+ drivers/spi/spi-qup.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+index dd3434a407ea..a364b99497e2 100644
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -1217,6 +1217,11 @@ static int spi_qup_suspend(struct device *device)
+ 	struct spi_qup *controller = spi_master_get_devdata(master);
+ 	int ret;
+ 
++	if (pm_runtime_suspended(device)) {
++		ret = spi_qup_pm_resume_runtime(device);
++		if (ret)
++			return ret;
++	}
+ 	ret = spi_master_suspend(master);
+ 	if (ret)
+ 		return ret;
+@@ -1225,10 +1230,8 @@ static int spi_qup_suspend(struct device *device)
+ 	if (ret)
+ 		return ret;
+ 
+-	if (!pm_runtime_suspended(device)) {
+-		clk_disable_unprepare(controller->cclk);
+-		clk_disable_unprepare(controller->iclk);
+-	}
++	clk_disable_unprepare(controller->cclk);
++	clk_disable_unprepare(controller->iclk);
+ 	return 0;
+ }
+ 
+-- 
+2.24.1

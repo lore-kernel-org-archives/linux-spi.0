@@ -1,100 +1,52 @@
-From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.5 071/542] spi: fsl-lpspi: fix only one cs-gpio working
-Date: Fri, 14 Feb 2020 10:41:03 -0500
-Message-ID: <20200214154854.6746-71-sashal@kernel.org>
-References: <20200214154854.6746-1-sashal@kernel.org>
+From: Chuanhong Guo <gch981213-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 0/2] rewrite mtk-quadspi spi-nor driver with spi-mem
+Date: Sat, 15 Feb 2020 14:58:24 +0800
+Message-ID: <20200215065826.739102-1-gch981213@gmail.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Philippe Schenker <philippe.schenker@toradex.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200214154854.6746-1-sashal@kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Miquel Raynal <miquel.raynal-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>,
+        Richard Weinberger <richard-/L3Ra7n9ekc@public.gmane.org>,
+        Vignesh Raghavendra <vigneshr-l0cyMroinI0@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Chuanhong Guo <gch981213-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Philippe Schenker <philippe.schenker@toradex.com>
+This patchset adds a spi-mem driver for Mediatek SPI-NOR controller,
+which already has limited support by mtk-quadspi. For benefits of
+this replacement, please check commit message of the 1st patch.
 
-[ Upstream commit bc3a8b295e5bca9d1ec2622a6ba38289f9fd3d8a ]
+To keep patchset small for easier reviewing, there will be 3 patchsets
+including this one.
+1. add the new driver, which is this patchset.
+2. update existing dts for the new driver:
+   spi-max-frequency is missing in current mtk-quadspi binding. Old
+   driver parses child node manually so it doesn't need this, but
+   new spi-mem driver is probed via spi subsystem which requires the
+   presence of spi-max-frequency. Since this doesn't break old driver
+   support, I'll send this separately as a standalone patch.
+3. removing the old driver. I'll create this commit after 1 and 2 are
+   applied to avoid possible rebasing due to any changes in the old
+   driver.
 
-Why it does not work at the moment:
-- num_chipselect sets the number of cs-gpios that are in the DT.
-  This comes from drivers/spi/spi.c
-- num_chipselect gets set with devm_spi_register_controller, that is
-  called in drivers/spi/spi.c
-- devm_spi_register_controller got called after num_chipselect has
-  been used.
+Chuanhong Guo (2):
+  spi: add support for mediatek spi-nor controller
+  dt-bindings: convert mtk-quadspi binding doc for spi-mtk-nor
 
-How this commit fixes the issue:
-- devm_spi_register_controller gets called before num_chipselect is
-  being used.
+ .../mtk-quadspi.txt => spi/spi-mtk-nor.txt}   |  34 +-
+ drivers/spi/Kconfig                           |  10 +
+ drivers/spi/Makefile                          |   1 +
+ drivers/spi/spi-mtk-nor.c                     | 689 ++++++++++++++++++
+ 4 files changed, 715 insertions(+), 19 deletions(-)
+ rename Documentation/devicetree/bindings/{mtd/mtk-quadspi.txt => spi/spi-mtk-nor.txt} (62%)
+ create mode 100644 drivers/spi/spi-mtk-nor.c
 
-Fixes: c7a402599504 ("spi: lpspi: use the core way to implement cs-gpio function")
-Signed-off-by: Philippe Schenker <philippe.schenker@toradex.com>
-Link: https://lore.kernel.org/r/20191204141312.1411251-1-philippe.schenker@toradex.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/spi/spi-fsl-lpspi.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 2cc0ddb4a9889..1375bdfc587bf 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -862,6 +862,22 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	fsl_lpspi->dev = &pdev->dev;
- 	fsl_lpspi->is_slave = is_slave;
- 
-+	controller->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32);
-+	controller->transfer_one = fsl_lpspi_transfer_one;
-+	controller->prepare_transfer_hardware = lpspi_prepare_xfer_hardware;
-+	controller->unprepare_transfer_hardware = lpspi_unprepare_xfer_hardware;
-+	controller->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
-+	controller->flags = SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX;
-+	controller->dev.of_node = pdev->dev.of_node;
-+	controller->bus_num = pdev->id;
-+	controller->slave_abort = fsl_lpspi_slave_abort;
-+
-+	ret = devm_spi_register_controller(&pdev->dev, controller);
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "spi_register_controller error.\n");
-+		goto out_controller_put;
-+	}
-+
- 	if (!fsl_lpspi->is_slave) {
- 		for (i = 0; i < controller->num_chipselect; i++) {
- 			int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
-@@ -885,16 +901,6 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 		controller->prepare_message = fsl_lpspi_prepare_message;
- 	}
- 
--	controller->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32);
--	controller->transfer_one = fsl_lpspi_transfer_one;
--	controller->prepare_transfer_hardware = lpspi_prepare_xfer_hardware;
--	controller->unprepare_transfer_hardware = lpspi_unprepare_xfer_hardware;
--	controller->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
--	controller->flags = SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX;
--	controller->dev.of_node = pdev->dev.of_node;
--	controller->bus_num = pdev->id;
--	controller->slave_abort = fsl_lpspi_slave_abort;
--
- 	init_completion(&fsl_lpspi->xfer_done);
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-@@ -952,12 +958,6 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	if (ret < 0)
- 		dev_err(&pdev->dev, "dma setup error %d, use pio\n", ret);
- 
--	ret = devm_spi_register_controller(&pdev->dev, controller);
--	if (ret < 0) {
--		dev_err(&pdev->dev, "spi_register_controller error.\n");
--		goto out_controller_put;
--	}
--
- 	return 0;
- 
- out_controller_put:
 -- 
-2.20.1
+2.24.1

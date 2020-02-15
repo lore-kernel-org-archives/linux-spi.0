@@ -1,108 +1,73 @@
-From: Chuanhong Guo <gch981213@gmail.com>
-Subject: [PATCH 2/2] dt-bindings: convert mtk-quadspi binding doc for spi-mtk-nor
-Date: Sat, 15 Feb 2020 14:58:26 +0800
-Message-ID: <20200215065826.739102-3-gch981213@gmail.com>
-References: <20200215065826.739102-1-gch981213@gmail.com>
+From: Han Xu <han.xu-3arQi8VN3Tc@public.gmane.org>
+Subject: RE: [EXT] Re: [PATCH V2 2/5] spi: fspi: dynamically alloc AHB memory
+Date: Sat, 15 Feb 2020 16:14:31 +0000
+Message-ID: <AM6PR04MB4967BE79DAAC140162B3D22497140@AM6PR04MB4967.eurprd04.prod.outlook.com>
+References: <20200202125950.1825013-1-aford173@gmail.com>
+ <20200202125950.1825013-2-aford173@gmail.com>
+ <CAOMZO5D3emrAk84wDS04qJC-3AyvFnqodhoMsXO-ukHnYsU+PQ@mail.gmail.com>
+ <CAHCN7xJyZRwJhnWW2mAbOeGyrMsB7Au_e6AvwiNmNS8gFUfSyw@mail.gmail.com>
+ <20200212120753.GF4028@sirena.org.uk>
+ <CAHCN7x+5bACfYVX49Lib+fmNq-dEOkcyi0gXt7rtYxrGaYbH1Q@mail.gmail.com>
+ <20200213184624.GK4333@sirena.org.uk>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Chuanhong Guo <gch981213@gmail.com>
-To: linux-mediatek@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-mtd@lists.infradead.org, devicetree@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200215065826.739102-1-gch981213@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Cc: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Yogesh Gaur <yogeshgaur.83-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Ashish Kumar <ashish.kumar-3arQi8VN3Tc@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        Pengutronix Kernel Team <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+        dl-linux-imx <linux-imx-3arQi8VN3Tc@public.gmane.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200213184624.GK4333-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Language: en-US
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-spi-mtk-nor is a driver to replace mtk-quadspi and they have almost
-the same device-tree bindings. Reuse this binding documentation and
-convert it for new driver:
 
-1. "Mediatek SoCs" -> "Mediatek ARM SoCs" because MTK MIPS SoCs
-   use different controllers.
-2. document "interrupts" as a required property because it's
-   available on all SoCs with this controller and new driver takes
-   advantages of it. It's implemented as optional only to maintain
-   backward compatibility.
-3. replace binding example with a mt7629 one because this is the
-   only one I know the interrupt assignment.
 
-Signed-off-by: Chuanhong Guo <gch981213@gmail.com>
----
- .../mtk-quadspi.txt => spi/spi-mtk-nor.txt}   | 34 ++++++++-----------
- 1 file changed, 15 insertions(+), 19 deletions(-)
- rename Documentation/devicetree/bindings/{mtd/mtk-quadspi.txt => spi/spi-mtk-nor.txt} (62%)
+> -----Original Message-----
+> From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> Sent: Thursday, February 13, 2020 12:46 PM
+> To: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> Cc: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>; linux-spi <linux-spi-u79uwXL29TasMV2rI37PzA@public.gmane.org=
+org>;
+> Han Xu <han.xu-3arQi8VN3Tc@public.gmane.org>; Yogesh Gaur <yogeshgaur.83-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>; Ashish
+> Kumar <ashish.kumar-3arQi8VN3Tc@public.gmane.org>; Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>; Mark
+> Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>; Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>; Sascha
+> Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>; Pengutronix Kernel Team
+> <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>; dl-linux-imx <linux-imx-3arQi8VN3Tc@public.gmane.org>; open list:OPEN
+> FIRMWARE AND FLATTENED DEVICE TREE BINDINGS
+> <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>; linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>=
+;
+> moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE <linux-arm-
+> kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+> Subject: [EXT] Re: [PATCH V2 2/5] spi: fspi: dynamically alloc AHB memory
+>=20
+> On Wed, Feb 12, 2020 at 07:08:49AM -0600, Adam Ford wrote:
+>=20
+> > The original author was copied on the initial commit.  I literally
+> > generated the patch from NXP's branch,  added my notes, and pushed
+> > them to the mailing lists after testing them on the  the Linux master
+> > branch.   I am a bit disappointed that NXP's author hasn't responded
+> > to any of the comments or feedback.  NXP knows their hardware and
+>=20
+> Bear in mind that it's been the spring festival and there's been quite a =
+bit of delay
+> in getting back to work in China resulting from coronavirus stuff so hope=
+fully it's
+> just a delay in replying.
 
-diff --git a/Documentation/devicetree/bindings/mtd/mtk-quadspi.txt b/Documentation/devicetree/bindings/spi/spi-mtk-nor.txt
-similarity index 62%
-rename from Documentation/devicetree/bindings/mtd/mtk-quadspi.txt
-rename to Documentation/devicetree/bindings/spi/spi-mtk-nor.txt
-index a12e3b5c495d..829da480b9a9 100644
---- a/Documentation/devicetree/bindings/mtd/mtk-quadspi.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-mtk-nor.txt
-@@ -1,4 +1,4 @@
--* Serial NOR flash controller for MediaTek SoCs
-+* SPI NOR flash controller for MediaTek ARM SoCs
- 
- Required properties:
- - compatible: 	  For mt8173, compatible should be "mediatek,mt8173-nor",
-@@ -13,6 +13,7 @@ Required properties:
- 		  "mediatek,mt7629-nor", "mediatek,mt8173-nor"
- 		  "mediatek,mt8173-nor"
- - reg: 		  physical base address and length of the controller's register
-+- interrupts:	  Interrupt number used by the controller.
- - clocks: 	  the phandle of the clocks needed by the nor controller
- - clock-names: 	  the names of the clocks
- 		  the clocks should be named "spi" and "sf". "spi" is used for spi bus,
-@@ -22,29 +23,24 @@ Required properties:
- - #address-cells: should be <1>
- - #size-cells:	  should be <0>
- 
--The SPI flash must be a child of the nor_flash node and must have a
--compatible property. Also see jedec,spi-nor.txt.
--
--Required properties:
--- compatible:	  May include a device-specific string consisting of the manufacturer
--		  and name of the chip. Must also include "jedec,spi-nor" for any
--		  SPI NOR flash that can be identified by the JEDEC READ ID opcode (0x9F).
--- reg :		  Chip-Select number
-+There should be only one spi slave device following generic spi bindings.
-+It's not recommended to use this controller for devices other than SPI NOR
-+flash due to limited transfer capability of this controller.
- 
- Example:
-+#include <dt-bindings/interrupt-controller/irq.h>
-+#include <dt-bindings/interrupt-controller/arm-gic.h>
-+#include <dt-bindings/clock/mt7629-clk.h>
- 
--nor_flash: spi@1100d000 {
--	compatible = "mediatek,mt8173-nor";
--	reg = <0 0x1100d000 0 0xe0>;
--	clocks = <&pericfg CLK_PERI_SPI>,
--		 <&topckgen CLK_TOP_SPINFI_IFR_SEL>;
-+spi_nor: spi@11014000 {
-+	compatible = "mediatek,mt7629-nor",
-+		     "mediatek,mt8173-nor";
-+	reg = <0x11014000 0xe0>;
-+	interrupts = <GIC_SPI 88 IRQ_TYPE_LEVEL_LOW>;
-+	clocks = <&pericfg CLK_PERI_FLASH_PD>,
-+		 <&topckgen CLK_TOP_FLASH_SEL>;
- 	clock-names = "spi", "sf";
- 	#address-cells = <1>;
- 	#size-cells = <0>;
--
--	flash@0 {
--		compatible = "jedec,spi-nor";
--		reg = <0>;
--	};
- };
- 
--- 
-2.24.1
+The FSPI is a shared IP with other NXP BU. We are debugging an issue may re=
+lated to this patch. I will resend the patch set after the root cause found=
+.

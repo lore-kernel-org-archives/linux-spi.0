@@ -1,73 +1,46 @@
-From: Han Xu <han.xu-3arQi8VN3Tc@public.gmane.org>
-Subject: RE: [EXT] Re: [PATCH V2 2/5] spi: fspi: dynamically alloc AHB memory
-Date: Sat, 15 Feb 2020 16:14:31 +0000
-Message-ID: <AM6PR04MB4967BE79DAAC140162B3D22497140@AM6PR04MB4967.eurprd04.prod.outlook.com>
-References: <20200202125950.1825013-1-aford173@gmail.com>
- <20200202125950.1825013-2-aford173@gmail.com>
- <CAOMZO5D3emrAk84wDS04qJC-3AyvFnqodhoMsXO-ukHnYsU+PQ@mail.gmail.com>
- <CAHCN7xJyZRwJhnWW2mAbOeGyrMsB7Au_e6AvwiNmNS8gFUfSyw@mail.gmail.com>
- <20200212120753.GF4028@sirena.org.uk>
- <CAHCN7x+5bACfYVX49Lib+fmNq-dEOkcyi0gXt7rtYxrGaYbH1Q@mail.gmail.com>
- <20200213184624.GK4333@sirena.org.uk>
+From: <Tudor.Ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+Subject: [PATCH trivial] spi: spi-mem: Fix typo, s/fallback/falls back
+Date: Sun, 16 Feb 2020 21:40:17 +0000
+Message-ID: <20200216214012.1106658-1-tudor.ambarus@microchip.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Cc: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Yogesh Gaur <yogeshgaur.83-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Ashish Kumar <ashish.kumar-3arQi8VN3Tc@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        Pengutronix Kernel Team <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        dl-linux-imx <linux-imx-3arQi8VN3Tc@public.gmane.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200213184624.GK4333-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <Tudor.Ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Language: en-US
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+From: Tudor Ambarus <tudor.ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
 
+"Fallback" in one word is a noun. "Fall back" is two separate words,
+a verb and an adverb. Use the latter.
 
-> -----Original Message-----
-> From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> Sent: Thursday, February 13, 2020 12:46 PM
-> To: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> Cc: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>; linux-spi <linux-spi-u79uwXL29TasMV2rI37PzA@public.gmane.org=
-org>;
-> Han Xu <han.xu-3arQi8VN3Tc@public.gmane.org>; Yogesh Gaur <yogeshgaur.83-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>; Ashish
-> Kumar <ashish.kumar-3arQi8VN3Tc@public.gmane.org>; Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>; Mark
-> Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>; Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>; Sascha
-> Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>; Pengutronix Kernel Team
-> <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>; dl-linux-imx <linux-imx-3arQi8VN3Tc@public.gmane.org>; open list:OPEN
-> FIRMWARE AND FLATTENED DEVICE TREE BINDINGS
-> <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>; linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>=
-;
-> moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE <linux-arm-
-> kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-> Subject: [EXT] Re: [PATCH V2 2/5] spi: fspi: dynamically alloc AHB memory
->=20
-> On Wed, Feb 12, 2020 at 07:08:49AM -0600, Adam Ford wrote:
->=20
-> > The original author was copied on the initial commit.  I literally
-> > generated the patch from NXP's branch,  added my notes, and pushed
-> > them to the mailing lists after testing them on the  the Linux master
-> > branch.   I am a bit disappointed that NXP's author hasn't responded
-> > to any of the comments or feedback.  NXP knows their hardware and
->=20
-> Bear in mind that it's been the spring festival and there's been quite a =
-bit of delay
-> in getting back to work in China resulting from coronavirus stuff so hope=
-fully it's
-> just a delay in replying.
+Signed-off-by: Tudor Ambarus <tudor.ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+---
+ drivers/spi/spi-mem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The FSPI is a shared IP with other NXP BU. We are debugging an issue may re=
-lated to this patch. I will resend the patch set after the root cause found=
-.
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index e5a46f0eb93b..3c46747bacb1 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -487,7 +487,7 @@ static ssize_t spi_mem_no_dirmap_write(struct spi_mem_d=
+irmap_desc *desc,
+  * This function is creating a direct mapping descriptor which can then be=
+ used
+  * to access the memory using spi_mem_dirmap_read() or spi_mem_dirmap_writ=
+e().
+  * If the SPI controller driver does not support direct mapping, this func=
+tion
+- * fallback to an implementation using spi_mem_exec_op(), so that the call=
+er
++ * falls back to an implementation using spi_mem_exec_op(), so that the ca=
+ller
+  * doesn't have to bother implementing a fallback on his own.
+  *
+  * Return: a valid pointer in case of success, and ERR_PTR() otherwise.
+--=20
+2.23.0

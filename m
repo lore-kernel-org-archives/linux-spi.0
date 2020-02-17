@@ -1,65 +1,42 @@
-From: Vignesh Raghavendra <vigneshr-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH v9 0/2] spi: cadence-quadpsi: Add support for the Cadence
- QSPI controller
-Date: Mon, 17 Feb 2020 17:48:02 +0530
-Message-ID: <f5f868e5-a977-7487-9395-a76dd5e7c963@ti.com>
-References: <20200214114618.29704-1-vadivel.muruganx.ramuthevar@linux.intel.com>
- <CAAh8qsxnRSwonuEPrriuS=gUMTjt8ddUVy5HxegmoCk-FoE4qg@mail.gmail.com>
- <20200214121145.GF4827@sirena.org.uk>
- <4712cdc4-34cd-990b-3d53-3d394ae1250b@linux.intel.com>
- <20200217115213.GA9304@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 8bit
-Cc: Simon Goldschmidt <simon.k.r.goldschmidt-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>,
-        <cheol.yong.kim-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, <qi-ming.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        <dinguyen-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <tien.fong.chee-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "Ramuthevar, Vadivel MuruganX"
-        <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200217115213.GA9304-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Akash Asthana <akashast-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Subject: [PATCH 0/6] Add interconnect support to UART, I2C, SPI and QSPI
+Date: Mon, 17 Feb 2020 18:59:59 +0530
+Message-ID: <1581946205-27189-1-git-send-email-akashast@codeaurora.org>
+Cc: linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, swboyd-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+        mgautam-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org, linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, mka-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+        dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, Akash Asthana <akashast-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+To: gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org, agross-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        bjorn.andersson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        mark.rutland-5wv7dgnIgG8@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Vadivel,
+dt-binding patch for UART, I2C and SPI.
+ - https://patchwork.kernel.org/patch/11385965/ [Convert QUP bindings
+	to YAML and add ICC, pin swap doc]
 
-On 17/02/20 5:22 pm, Mark Brown wrote:
-> On Mon, Feb 17, 2020 at 05:28:38PM +0800, Ramuthevar, Vadivel MuruganX wrote:
->> On 14/2/2020 8:11 PM, Mark Brown wrote:
-> 
->>> Given that this is a new driver I'd be very surprised if it broke other
->>> users?  I can imagine it might not work for them and it would definitely
->>> be much better to get their review but it shouldn't be any worse than
->>> the current lack of support.
-> 
->> *[Vignesh]*  The legacy driver under drivers/mtd/spi-nor will be removed as
->> we cannot
->> support both SPI NOR and SPI NAND with single driver if its under
->> spi-nor. New driver should be functionally equivalent to existing one.
->> So I suggest you test this driver on legcay SoCFPGA products.
-> 
-> You're not actually removing the driver here, you're adding another
-> driver for the same thing.
-> 
+dt-binding patch for QSPI.
+ - https://patchwork.kernel.org/cover/11386003/ [Convert QSPI binding
+	to YAML and add interconnect doc]
 
-I agree with Mark here.
+Akash Asthana (6):
+  soc: qcom: geni: Support for ICC voting
+  tty: serial: qcom_geni_serial: Add interconnect support
+  i2c: i2c-qcom-geni: Add interconnect support
+  spi: spi-geni-qcom: Add interconnect support
+  spi: spi-qcom-qspi: Add interconnect support
+  arm64: dts: sc7180: Add interconnect for QUP and QSPI
 
-I realized that you are using same CONFIG option as the old one to build
-this driver. This causes new driver to fail to probe as old driver would
-bind to the node instead (both drivers will be built into the kernel and
-both drivers have same compatible).
-
-So, you should remove the old driver. Could you also include patches
-removing old driver? New driver and bindings are anyways backward
-compatible with existing one
+ arch/arm64/boot/dts/qcom/sc7180.dtsi  | 199 ++++++++++++++++++++++++++++++++++
+ drivers/i2c/busses/i2c-qcom-geni.c    |  84 +++++++++++++-
+ drivers/spi/spi-geni-qcom.c           |  65 ++++++++++-
+ drivers/spi/spi-qcom-qspi.c           |  38 ++++++-
+ drivers/tty/serial/qcom_geni_serial.c |  84 ++++++++++++--
+ include/linux/qcom-geni-se.h          |  31 ++++++
+ 6 files changed, 481 insertions(+), 20 deletions(-)
 
 -- 
-Regards
-Vignesh
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,\na Linux Foundation Collaborative Project

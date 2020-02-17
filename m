@@ -1,7 +1,7 @@
 From: Akash Asthana <akashast-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Subject: [PATCH 1/6] soc: qcom: geni: Support for ICC voting
-Date: Mon, 17 Feb 2020 19:00:00 +0530
-Message-ID: <1581946205-27189-2-git-send-email-akashast@codeaurora.org>
+Subject: [PATCH 2/6] tty: serial: qcom_geni_serial: Add interconnect support
+Date: Mon, 17 Feb 2020 19:00:01 +0530
+Message-ID: <1581946205-27189-3-git-send-email-akashast@codeaurora.org>
 References: <1581946205-27189-1-git-send-email-akashast@codeaurora.org>
 Cc: linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, swboyd-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
@@ -16,83 +16,168 @@ In-Reply-To: <1581946205-27189-1-git-send-email-akashast-sgV2jX0FEOL9JmXXK+q4OQ@
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Add necessary enums, macros and structure variables to support ICC BW
-voting from individual SE drivers.
+Get the interconnect paths for Uart based Serial Engine device
+and vote according to the baud rate requirement of the driver.
 
 Signed-off-by: Akash Asthana <akashast-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 ---
- include/linux/qcom-geni-se.h | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ drivers/tty/serial/qcom_geni_serial.c | 84 ++++++++++++++++++++++++++++++-----
+ 1 file changed, 74 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/qcom-geni-se.h b/include/linux/qcom-geni-se.h
-index dd46494..b0adbfb 100644
---- a/include/linux/qcom-geni-se.h
-+++ b/include/linux/qcom-geni-se.h
-@@ -6,6 +6,8 @@
- #ifndef _LINUX_QCOM_GENI_SE
- #define _LINUX_QCOM_GENI_SE
- 
-+#include <linux/interconnect.h>
-+
- /* Transfer mode supported by GENI Serial Engines */
- enum geni_se_xfer_mode {
- 	GENI_SE_INVALID,
-@@ -22,6 +24,13 @@ enum geni_se_protocol_type {
- 	GENI_SE_I3C,
+diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
+index 191abb1..a8fb2b7 100644
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -174,6 +174,35 @@ static struct qcom_geni_serial_port qcom_geni_console_port = {
+ 	},
  };
  
-+/* Interconnect paths for GENI */
-+enum geni_se_icc_path {
-+	GENI_TO_CORE,
-+	CPU_TO_GENI,
-+	GENI_TO_DDR
-+};
++static int geni_serial_icc_get(struct geni_se *se)
++{
++	if (!se)
++		return -EINVAL;
 +
- struct geni_wrapper;
- struct clk;
- 
-@@ -33,6 +42,13 @@ struct clk;
-  * @clk:		Handle to the core serial engine clock
-  * @num_clk_levels:	Number of valid clock levels in clk_perf_tbl
-  * @clk_perf_tbl:	Table of clock frequency input to serial engine clock
-+ * @icc_path:		Array of interconnect path handles
-+ * @avg_bw_core:	Average bus bandwidth value for QUP core 2x clock
-+ * @peak_bw_core:	Peak bus bandwidth value for QUP core 2x clock
-+ * @avg_bw_cpu:		Average bus bandwidth value for CPU
-+ * @peak_bw_cpu:	Peak bus bandwidth value for CPU
-+ * @avg_bw_ddr:		Average bus bandwidth value for DDR
-+ * @peak_bw_ddr:	Peak bus bandwidth value for DDR
-  */
- struct geni_se {
- 	void __iomem *base;
-@@ -41,6 +57,13 @@ struct geni_se {
- 	struct clk *clk;
- 	unsigned int num_clk_levels;
- 	unsigned long *clk_perf_tbl;
-+	struct icc_path *icc_path[3];
-+	unsigned int avg_bw_core;
-+	unsigned int peak_bw_core;
-+	unsigned int avg_bw_cpu;
-+	unsigned int peak_bw_cpu;
-+	unsigned int avg_bw_ddr;
-+	unsigned int peak_bw_ddr;
- };
- 
- /* Common SE registers */
-@@ -229,6 +252,14 @@ struct geni_se {
- #define GENI_SE_VERSION_MINOR(ver) ((ver & HW_VER_MINOR_MASK) >> HW_VER_MINOR_SHFT)
- #define GENI_SE_VERSION_STEP(ver) (ver & HW_VER_STEP_MASK)
- 
-+/* Core 2X clock frequency to BCM threshold mapping */
-+#define CORE_2X_19_2_MHZ		960
-+#define CORE_2X_50_MHZ			2500
-+#define CORE_2X_100_MHZ			5000
-+#define CORE_2X_150_MHZ			7500
-+#define CORE_2X_200_MHZ			10000
-+#define CORE_2X_236_MHZ			16383
++	se->icc_path[GENI_TO_CORE] = of_icc_get(se->dev, "qup-core");
++	if (IS_ERR(se->icc_path[GENI_TO_CORE]))
++		return PTR_ERR(se->icc_path[GENI_TO_CORE]);
 +
- #if IS_ENABLED(CONFIG_QCOM_GENI_SE)
++	se->icc_path[CPU_TO_GENI] = of_icc_get(se->dev, "qup-config");
++	if (IS_ERR(se->icc_path[CPU_TO_GENI])) {
++		icc_put(se->icc_path[GENI_TO_CORE]);
++		se->icc_path[GENI_TO_CORE] = NULL;
++		return PTR_ERR(se->icc_path[CPU_TO_GENI]);
++	}
++
++	return 0;
++}
++
++void geni_serial_icc_put(struct geni_se *se)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(se->icc_path); i++) {
++		icc_put(se->icc_path[i]);
++		se->icc_path[i] = NULL;
++	}
++}
++
+ static int qcom_geni_serial_request_port(struct uart_port *uport)
+ {
+ 	struct platform_device *pdev = to_platform_device(uport->dev);
+@@ -949,6 +978,12 @@ static void qcom_geni_serial_set_termios(struct uart_port *uport,
+ 	ser_clk_cfg = SER_CLK_EN;
+ 	ser_clk_cfg |= clk_div << CLK_DIV_SHFT;
  
- u32 geni_se_get_qup_hw_version(struct geni_se *se);
++	/* Put BW vote only on CPU path as driver supports FIFO mode only */
++	port->se.avg_bw_cpu = Bps_to_icc(baud);
++	port->se.peak_bw_cpu = Bps_to_icc(2 * baud);
++	icc_set_bw(port->se.icc_path[CPU_TO_GENI], port->se.avg_bw_cpu,
++			port->se.peak_bw_cpu);
++
+ 	/* parity */
+ 	tx_trans_cfg = readl(uport->membase + SE_UART_TX_TRANS_CFG);
+ 	tx_parity_cfg = readl(uport->membase + SE_UART_TX_PARITY_CFG);
+@@ -1179,11 +1214,20 @@ static void qcom_geni_serial_pm(struct uart_port *uport,
+ 	if (old_state == UART_PM_STATE_UNDEFINED)
+ 		old_state = UART_PM_STATE_OFF;
+ 
+-	if (new_state == UART_PM_STATE_ON && old_state == UART_PM_STATE_OFF)
++	if (new_state == UART_PM_STATE_ON && old_state == UART_PM_STATE_OFF) {
++		/* Put BW vote for core clocks and CPU */
++		icc_set_bw(port->se.icc_path[GENI_TO_CORE],
++			port->se.avg_bw_core, port->se.peak_bw_core);
++		icc_set_bw(port->se.icc_path[CPU_TO_GENI], port->se.avg_bw_cpu,
++			port->se.peak_bw_cpu);
+ 		geni_se_resources_on(&port->se);
+-	else if (new_state == UART_PM_STATE_OFF &&
+-			old_state == UART_PM_STATE_ON)
++	} else if (new_state == UART_PM_STATE_OFF &&
++			old_state == UART_PM_STATE_ON) {
+ 		geni_se_resources_off(&port->se);
++		/* Remove BW vote from core clocks and CPU */
++		icc_set_bw(port->se.icc_path[GENI_TO_CORE], 0, 0);
++		icc_set_bw(port->se.icc_path[CPU_TO_GENI], 0, 0);
++	}
+ }
+ 
+ static const struct uart_ops qcom_geni_console_pops = {
+@@ -1274,15 +1318,30 @@ static int qcom_geni_serial_probe(struct platform_device *pdev)
+ 	port->rx_fifo_depth = DEF_FIFO_DEPTH_WORDS;
+ 	port->tx_fifo_width = DEF_FIFO_WIDTH_BITS;
+ 
++	ret = geni_serial_icc_get(&port->se);
++	if (ret)
++		return ret;
++	/* Set the bus quota to a reasonable value */
++	port->se.avg_bw_core = console ? Bps_to_icc(1000) :
++		Bps_to_icc(CORE_2X_50_MHZ);
++	port->se.peak_bw_core = console ? Bps_to_icc(1000) :
++		Bps_to_icc(CORE_2X_100_MHZ);
++	port->se.avg_bw_cpu = Bps_to_icc(1000);
++	port->se.avg_bw_cpu = Bps_to_icc(1000);
++
+ 	port->name = devm_kasprintf(uport->dev, GFP_KERNEL,
+ 			"qcom_geni_serial_%s%d",
+ 			uart_console(uport) ? "console" : "uart", uport->line);
+-	if (!port->name)
+-		return -ENOMEM;
++	if (!port->name) {
++		ret = -ENOMEM;
++		goto geni_serial_put_icc;
++	}
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0)
+-		return irq;
++	if (irq < 0) {
++		ret = irq;
++		goto geni_serial_put_icc;
++	}
+ 	uport->irq = irq;
+ 	uport->has_sysrq = IS_ENABLED(CONFIG_SERIAL_QCOM_GENI_CONSOLE);
+ 
+@@ -1295,7 +1354,7 @@ static int qcom_geni_serial_probe(struct platform_device *pdev)
+ 
+ 	ret = uart_add_one_port(drv, uport);
+ 	if (ret)
+-		return ret;
++		goto geni_serial_put_icc;
+ 
+ 	irq_set_status_flags(uport->irq, IRQ_NOAUTOEN);
+ 	ret = devm_request_irq(uport->dev, uport->irq, qcom_geni_serial_isr,
+@@ -1303,7 +1362,7 @@ static int qcom_geni_serial_probe(struct platform_device *pdev)
+ 	if (ret) {
+ 		dev_err(uport->dev, "Failed to get IRQ ret %d\n", ret);
+ 		uart_remove_one_port(drv, uport);
+-		return ret;
++		goto geni_serial_put_icc;
+ 	}
+ 
+ 	/*
+@@ -1320,11 +1379,15 @@ static int qcom_geni_serial_probe(struct platform_device *pdev)
+ 		if (ret) {
+ 			device_init_wakeup(&pdev->dev, false);
+ 			uart_remove_one_port(drv, uport);
+-			return ret;
++			goto geni_serial_put_icc;
+ 		}
+ 	}
+ 
+ 	return 0;
++
++geni_serial_put_icc:
++	geni_serial_icc_put(&port->se);
++	return ret;
+ }
+ 
+ static int qcom_geni_serial_remove(struct platform_device *pdev)
+@@ -1335,6 +1398,7 @@ static int qcom_geni_serial_remove(struct platform_device *pdev)
+ 	dev_pm_clear_wake_irq(&pdev->dev);
+ 	device_init_wakeup(&pdev->dev, false);
+ 	uart_remove_one_port(drv, &port->uport);
++	geni_serial_icc_put(&port->se);
+ 
+ 	return 0;
+ }
 -- 
 The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,\na Linux Foundation Collaborative Project

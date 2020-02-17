@@ -1,46 +1,42 @@
-From: <Tudor.Ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Subject: [PATCH trivial] spi: spi-mem: Fix typo, s/fallback/falls back
-Date: Sun, 16 Feb 2020 21:40:17 +0000
-Message-ID: <20200216214012.1106658-1-tudor.ambarus@microchip.com>
+From: Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH V3 2/4] arm64: dts: freescale: Add i.MX8MP dtsi support
+Date: Mon, 17 Feb 2020 14:16:33 +0800
+Message-ID: <20200217061629.GA6659@dragon>
+References: <1581425307-18567-1-git-send-email-Anson.Huang@nxp.com>
+ <1581425307-18567-2-git-send-email-Anson.Huang@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <Tudor.Ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, manivannan.sadhasivam-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+        marcel.ziswiler-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org, rjones-UMMOYl/HMS+akBO8gow8eQ@public.gmane.org,
+        sebastien.szymanski-d2DlULPkwbNWk0Htik3J/w@public.gmane.org, aisheng.dong-3arQi8VN3Tc@public.gmane.org,
+        gary.bisson-Q5RJGjKts06CY9SHAMCTRUEOCMrvLtNR@public.gmane.org, angus-HsWYs6tNinE@public.gmane.org,
+        pramod.kumar_1-3arQi8VN3Tc@public.gmane.org, rabeeh-UBr1pzP51AyaMJb+Lgu22Q@public.gmane.org,
+        cosmin.stoica-3arQi8VN3Tc@public.gmane.org, l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+        leonard.crestez-3arQi8VN3Tc@public.gmane.org, daniel.baluta-3arQi8VN3Tc@public.gmane.org, jun.li-3arQi8VN3Tc@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        Linux-imx-3arQi8VN3Tc@public.gmane.org
+To: Anson Huang <Anson.Huang-3arQi8VN3Tc@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1581425307-18567-2-git-send-email-Anson.Huang-3arQi8VN3Tc@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Tudor Ambarus <tudor.ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+On Tue, Feb 11, 2020 at 08:48:25PM +0800, Anson Huang wrote:
+> The i.MX8M Plus Media Applications Processor is part of the growing
+> mScale family targeting the consumer and industrial market. It brings
+> an effective Machine Learning and AI accelerator that enables a new
+> class of applications. It is built in Samsung 14LPP to achieve both
+> high performance and low power consumption and relies on a powerful
+> fully coherent core complex based on a quad core ARM Cortex-A53 cluster
+> and Cortex-M7 low-power coprocessor, audio digital signal processor,
+> machine learning and graphics accelerators.
+> 
+> Add the basic dtsi support for i.MX8MP.
+> 
+> Signed-off-by: Anson Huang <Anson.Huang-3arQi8VN3Tc@public.gmane.org>
 
-"Fallback" in one word is a noun. "Fall back" is two separate words,
-a verb and an adverb. Use the latter.
-
-Signed-off-by: Tudor Ambarus <tudor.ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
----
- drivers/spi/spi-mem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index e5a46f0eb93b..3c46747bacb1 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -487,7 +487,7 @@ static ssize_t spi_mem_no_dirmap_write(struct spi_mem_d=
-irmap_desc *desc,
-  * This function is creating a direct mapping descriptor which can then be=
- used
-  * to access the memory using spi_mem_dirmap_read() or spi_mem_dirmap_writ=
-e().
-  * If the SPI controller driver does not support direct mapping, this func=
-tion
-- * fallback to an implementation using spi_mem_exec_op(), so that the call=
-er
-+ * falls back to an implementation using spi_mem_exec_op(), so that the ca=
-ller
-  * doesn't have to bother implementing a fallback on his own.
-  *
-  * Return: a valid pointer in case of success, and ERR_PTR() otherwise.
---=20
-2.23.0
+Applied 2 ~ 4, thanks.

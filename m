@@ -1,50 +1,57 @@
-From: "Ramuthevar, Vadivel MuruganX"
-        <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH v9 2/2] spi: cadence-quadpsi: Add support for the Cadence
- QSPI controller
-Date: Tue, 18 Feb 2020 11:17:11 +0800
-Message-ID: <debe614e-e5fe-edd4-8890-1b993d605f85@linux.intel.com>
-References: <20200214114618.29704-1-vadivel.muruganx.ramuthevar@linux.intel.com>
- <20200214114618.29704-3-vadivel.muruganx.ramuthevar@linux.intel.com>
- <20200214130952.GI4827@sirena.org.uk>
- <3530edcd-eb67-8ea5-0fce-89c83400441c@linux.intel.com>
- <20200217170901.GS9304@sirena.org.uk>
+From: Bjorn Andersson <bjorn.andersson@linaro.org>
+Subject: Re: [PATCH 6/6] arm64: dts: sc7180: Add interconnect for QUP and QSPI
+Date: Mon, 17 Feb 2020 19:18:30 -0800
+Message-ID: <20200218031830.GX955802@ripper>
+References: <1581946205-27189-1-git-send-email-akashast@codeaurora.org>
+ <1581946205-27189-7-git-send-email-akashast@codeaurora.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 8bit
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        vigneshr-l0cyMroinI0@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org,
-        cheol.yong.kim-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, qi-ming.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200217170901.GS9304-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: gregkh@linuxfoundation.org, agross@kernel.org, wsa@the-dreams.de,
+        broonie@kernel.org, mark.rutland@arm.com, robh+dt@kernel.org,
+        linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, swboyd@chromium.org,
+        mgautam@codeaurora.org, linux-arm-msm@vger.kernel.org,
+        linux-serial@vger.kernel.org, mka@chromium.org,
+        dianders@chromium.org
+To: Akash Asthana <akashast@codeaurora.org>
+Return-path: <linux-i2c-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1581946205-27189-7-git-send-email-akashast@codeaurora.org>
+Sender: linux-i2c-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+On Mon 17 Feb 05:30 PST 2020, Akash Asthana wrote:
 
-On 18/2/2020 1:09 AM, Mark Brown wrote:
-> On Mon, Feb 17, 2020 at 05:18:10PM +0800, Ramuthevar, Vadivel MuruganX wrote:
->> On 14/2/2020 9:09 PM, Mark Brown wrote:
->>> This will unconditionally handle the interrupt regardless of if the
->>> hardware was actually flagging an interrupt which will break shared
->>> interrupts and the fault handling code in genirq.
->> Yes, you're correct, it doesn't check unconditionally, will update the
->> INT flag in the INT_STATUS register after successful completion of
->> read/write operation.
->> but in this case it is dedicated to qspi-interrupt,not shared with any other
->> HW/SW interrupts.
-> Currently, on the system you're looking at.  Given that this is already
-> a widely reused IP there's no guarantee that this will always be the
-> case, and like I say even without sharing it also defeats the fault
-> handling code.
-Got it, Thanks! a lot
-will take care of it, even though it is not present in the system 
-current,  to avoid future conflicts.
-Flagging and check to be added  to avoid  if the interrupt raises from 
-shared  devices.
+> Add interconnect ports for GENI QUPs and QSPI to set bus capabilities.
+> 
+> Signed-off-by: Akash Asthana <akashast@codeaurora.org>
+> ---
+> Note:
+>  - This patch depends on series https://patchwork.kernel.org/cover/11313817/
+>    [Add SC7180 interconnect provider driver]. It won't compile without that.
+> 
+>  arch/arm64/boot/dts/qcom/sc7180.dtsi | 199 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 199 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+> index cc5a94f..04569c9 100644
+> --- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+> @@ -352,6 +352,14 @@
+>  				interrupts = <GIC_SPI 601 IRQ_TYPE_LEVEL_HIGH>;
+>  				#address-cells = <1>;
+>  				#size-cells = <0>;
+> +				interconnects = <&qup_virt MASTER_QUP_CORE_0
+> +						&qup_virt SLAVE_QUP_CORE_0>,
+> +						<&gem_noc MASTER_APPSS_PROC
+> +						&config_noc SLAVE_QUP_0>,
+> +						<&aggre1_noc MASTER_QUP_0
+> +						&mc_virt SLAVE_EBI1>;
 
-Regards
-Vadivel
+Please ignore the 80-char "limit" and write this as:
+				interconnects = <&qup_virt MASTER_QUP_CORE_0 &qup_virt SLAVE_QUP_CORE_0>,
+						<&gem_noc ...>,
+						<&aggre1_noc ...>;
+
+Regards,
+Bjorn

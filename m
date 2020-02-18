@@ -1,65 +1,59 @@
-From: "Ramuthevar, Vadivel MuruganX"
-        <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH v9 0/2] spi: cadence-quadpsi: Add support for the Cadence
- QSPI controller
-Date: Tue, 18 Feb 2020 16:56:31 +0800
-Message-ID: <49bc16bc-297f-d58c-5b93-6397edf1fbda@linux.intel.com>
-References: <20200214114618.29704-1-vadivel.muruganx.ramuthevar@linux.intel.com>
- <CAAh8qsxnRSwonuEPrriuS=gUMTjt8ddUVy5HxegmoCk-FoE4qg@mail.gmail.com>
- <20200214121145.GF4827@sirena.org.uk>
- <4712cdc4-34cd-990b-3d53-3d394ae1250b@linux.intel.com>
- <20200217115213.GA9304@sirena.org.uk>
- <f5f868e5-a977-7487-9395-a76dd5e7c963@ti.com>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH] spi: rspi: Add configuration for LSB/MSB
+Date: Tue, 18 Feb 2020 11:56:52 +0100
+Message-ID: <CAMuHMdXQvjWDNh+qogw+3a4=U97rq_GPnYYJNqHiDZNPWJU4sA@mail.gmail.com>
+References: <1554282541-8952-1-git-send-email-na-hoan@jinso.co.jp>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 8bit
-Cc: Simon Goldschmidt <simon.k.r.goldschmidt-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org,
-        cheol.yong.kim-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, qi-ming.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-        dinguyen-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, tien.fong.chee-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
-To: Vignesh Raghavendra <vigneshr-l0cyMroinI0@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Linux-Renesas <linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+        =?UTF-8?B?56iy5ZCJ?= <h-inayoshi-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>,
+        =?UTF-8?B?44Kr44Kq44O744O044Kh44Oz44O744OJ44Oz?=
+        <cv-dong-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
+To: Nguyen An Hoan <na-hoan-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <f5f868e5-a977-7487-9395-a76dd5e7c963-l0cyMroinI0@public.gmane.org>
-Content-Language: en-US
+In-Reply-To: <1554282541-8952-1-git-send-email-na-hoan-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Vignesh,
+Hi Hoan-san,
 
-On 17/2/2020 8:18 PM, Vignesh Raghavendra wrote:
-> Hi Vadivel,
+On Wed, Apr 3, 2019 at 11:09 AM Nguyen An Hoan <na-hoan-HEF513clHfp3+QwDJ9on6Q@public.gmane.org> wrote:
+> From: Hoan Nguyen An <na-hoan-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
 >
-> On 17/02/20 5:22 pm, Mark Brown wrote:
->> On Mon, Feb 17, 2020 at 05:28:38PM +0800, Ramuthevar, Vadivel MuruganX wrote:
->>> On 14/2/2020 8:11 PM, Mark Brown wrote:
->>>> Given that this is a new driver I'd be very surprised if it broke other
->>>> users?  I can imagine it might not work for them and it would definitely
->>>> be much better to get their review but it shouldn't be any worse than
->>>> the current lack of support.
->>> *[Vignesh]*  The legacy driver under drivers/mtd/spi-nor will be removed as
->>> we cannot
->>> support both SPI NOR and SPI NAND with single driver if its under
->>> spi-nor. New driver should be functionally equivalent to existing one.
->>> So I suggest you test this driver on legcay SoCFPGA products.
->> You're not actually removing the driver here, you're adding another
->> driver for the same thing.
->>
-> I agree with Mark here.
+> SPI controllers can support LSB or MSB depending on
+> the structure of the message that Slave requires,
+> Add support.
 >
-> I realized that you are using same CONFIG option as the old one to build
-> this driver. This causes new driver to fail to probe as old driver would
-> bind to the node instead (both drivers will be built into the kernel and
-> both drivers have same compatible).
->
-> So, you should remove the old driver. Could you also include patches
-> removing old driver? New driver and bindings are anyways backward
-> compatible with existing one
-Sure , will remove the existing driver and sending single patch, Thanks!
+> Signed-off-by: Hoan Nguyen An <na-hoan-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>
 
-Regards
-Vadivel
+Thanks for your patch!
+
+> --- a/drivers/spi/spi-rspi.c
+> +++ b/drivers/spi/spi-rspi.c
+> @@ -950,6 +950,8 @@ static int rspi_prepare_message(struct spi_controller *ctlr,
+>                 rspi->spcmd |= SPCMD_CPOL;
+>         if (spi->mode & SPI_CPHA)
+>                 rspi->spcmd |= SPCMD_CPHA;
+> +       if (spi->mode & SPI_LSB_FIRST)
+> +               rspi->spcmd |= SPCMD_LSBF;
+>
+>         /* CMOS output mode and MOSI signal from previous transfer */
+>         rspi->sppcr = 0;
+
+Unfortunately this is not sufficient.  The driver should also inform the
+SPI core that it supports this flag. Will fix.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

@@ -1,42 +1,47 @@
-From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH 0/2] spi: rspi: Add support for configuring word order
-Date: Tue, 18 Feb 2020 11:58:07 +0100
-Message-ID: <20200218105810.902-1-geert+renesas@glider.be>
-Cc: Hoan Nguyen An <na-hoan-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 2/2] spi: rspi: Add support for LSB-first word order
+Date: Tue, 18 Feb 2020 11:58:09 +0100
+Message-ID: <20200218105810.902-3-geert+renesas@glider.be>
+References: <20200218105810.902-1-geert+renesas@glider.be>
+Cc: Hoan Nguyen An <na-hoan@jinso.co.jp>, linux-spi@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+In-Reply-To: <20200218105810.902-1-geert+renesas@glider.be>
+Sender: linux-renesas-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-	Hi Mark,
+All RSPI variants support selecting the word order.
+Advertize support for LSB-first order, and act upon the flag being set.
 
-This patch series adds support for configuring the word order on Renesas
-"RSPI" SPI controllers.
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+ drivers/spi/spi-rspi.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-This has been tested on RSK+RZA1 using spidev_test (with/without -L
-option).
-
-Thanks!
-
-Geert Uytterhoeven (2):
-  spi: rspi: Factor out handling of common mode bits
-  spi: rspi: Add support for LSB-first word order
-
- drivers/spi/spi-rspi.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index 7a1e6d524f34a416..aef05f2ac749c21d 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -933,6 +933,8 @@ static int rspi_prepare_message(struct spi_controller *ctlr,
+ 		rspi->spcmd |= SPCMD_CPOL;
+ 	if (spi->mode & SPI_CPHA)
+ 		rspi->spcmd |= SPCMD_CPHA;
++	if (spi->mode & SPI_LSB_FIRST)
++		rspi->spcmd |= SPCMD_LSBF;
+ 
+ 	/* Configure slave signal to assert */
+ 	rspi->spcmd |= SPCMD_SSLA(spi->cs_gpiod ? rspi->ctlr->unused_native_cs
+@@ -1255,7 +1257,8 @@ static int rspi_probe(struct platform_device *pdev)
+ 	ctlr->transfer_one = ops->transfer_one;
+ 	ctlr->prepare_message = rspi_prepare_message;
+ 	ctlr->unprepare_message = rspi_unprepare_message;
+-	ctlr->mode_bits = SPI_CPHA | SPI_CPOL | SPI_LOOP | ops->extra_mode_bits;
++	ctlr->mode_bits = SPI_CPHA | SPI_CPOL | SPI_LSB_FIRST | SPI_LOOP |
++			  ops->extra_mode_bits;
+ 	ctlr->flags = ops->flags;
+ 	ctlr->dev.of_node = pdev->dev.of_node;
+ 	ctlr->use_gpio_descriptors = true;
 -- 
 2.17.1
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds

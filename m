@@ -1,72 +1,57 @@
-From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH 1/2] spi: rspi: Factor out handling of common mode bits
-Date: Tue, 18 Feb 2020 11:58:08 +0100
-Message-ID: <20200218105810.902-2-geert+renesas@glider.be>
-References: <20200218105810.902-1-geert+renesas@glider.be>
-Cc: Hoan Nguyen An <na-hoan-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH] spi: spidev: Fix CS polarity if GPIO descriptors are used
+Date: Tue, 18 Feb 2020 13:08:00 +0100
+Message-ID: <fca3ba7cdc930cd36854666ceac4fbcf01b89028.1582027457.git.lukas@wunner.de>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Simon Han <z.han-pnUOlEj4XnTQT0dZR+AlfA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200218105810.902-1-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Basic SPI features like clock phase/polarity and loopback mode are
-common to all RSPI variants.  Factor them out to reduce duplication.
+Commit f3186dd87669 ("spi: Optionally use GPIO descriptors for CS GPIOs")
+amended of_spi_parse_dt() to always set SPI_CS_HIGH for SPI slaves whose
+Chip Select is defined by a "cs-gpios" devicetree property.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+This change broke userspace applications which issue an SPI_IOC_WR_MODE
+ioctl() to an spidev:  Chip Select polarity will be incorrect unless the
+application is changed to set SPI_CS_HIGH.  And once changed, it will be
+incompatible with kernels not containing the commit.
+
+Fix by setting SPI_CS_HIGH in spidev_ioctl() (under the same conditions
+as in of_spi_parse_dt()).
+
+Fixes: f3186dd87669 ("spi: Optionally use GPIO descriptors for CS GPIOs")
+Reported-by: Simon Han <z.han-pnUOlEj4XnTQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Cc: stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org # v5.1+
+Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-rspi.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/spi/spidev.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 85575d45901cee1b..7a1e6d524f34a416 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -239,7 +239,7 @@ struct spi_ops {
- 	int (*set_config_register)(struct rspi_data *rspi, int access_size);
- 	int (*transfer_one)(struct spi_controller *ctlr,
- 			    struct spi_device *spi, struct spi_transfer *xfer);
--	u16 mode_bits;
-+	u16 extra_mode_bits;
- 	u16 flags;
- 	u16 fifo_size;
- 	u8 num_hw_ss;
-@@ -1122,7 +1122,6 @@ static int rspi_remove(struct platform_device *pdev)
- static const struct spi_ops rspi_ops = {
- 	.set_config_register =	rspi_set_config_register,
- 	.transfer_one =		rspi_transfer_one,
--	.mode_bits =		SPI_CPHA | SPI_CPOL | SPI_LOOP,
- 	.flags =		SPI_CONTROLLER_MUST_TX,
- 	.fifo_size =		8,
- 	.num_hw_ss =		2,
-@@ -1131,7 +1130,6 @@ static const struct spi_ops rspi_ops = {
- static const struct spi_ops rspi_rz_ops = {
- 	.set_config_register =	rspi_rz_set_config_register,
- 	.transfer_one =		rspi_rz_transfer_one,
--	.mode_bits =		SPI_CPHA | SPI_CPOL | SPI_LOOP,
- 	.flags =		SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_MUST_TX,
- 	.fifo_size =		8,	/* 8 for TX, 32 for RX */
- 	.num_hw_ss =		1,
-@@ -1140,8 +1138,7 @@ static const struct spi_ops rspi_rz_ops = {
- static const struct spi_ops qspi_ops = {
- 	.set_config_register =	qspi_set_config_register,
- 	.transfer_one =		qspi_transfer_one,
--	.mode_bits =		SPI_CPHA | SPI_CPOL | SPI_LOOP |
--				SPI_TX_DUAL | SPI_TX_QUAD |
-+	.extra_mode_bits =	SPI_TX_DUAL | SPI_TX_QUAD |
- 				SPI_RX_DUAL | SPI_RX_QUAD,
- 	.flags =		SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_MUST_TX,
- 	.fifo_size =		32,
-@@ -1258,7 +1255,7 @@ static int rspi_probe(struct platform_device *pdev)
- 	ctlr->transfer_one = ops->transfer_one;
- 	ctlr->prepare_message = rspi_prepare_message;
- 	ctlr->unprepare_message = rspi_unprepare_message;
--	ctlr->mode_bits = ops->mode_bits;
-+	ctlr->mode_bits = SPI_CPHA | SPI_CPOL | SPI_LOOP | ops->extra_mode_bits;
- 	ctlr->flags = ops->flags;
- 	ctlr->dev.of_node = pdev->dev.of_node;
- 	ctlr->use_gpio_descriptors = true;
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 1e217e3e9486..2ab6e782f14c 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -396,6 +396,7 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 		else
+ 			retval = get_user(tmp, (u32 __user *)arg);
+ 		if (retval == 0) {
++			struct spi_controller *ctlr = spi->controller;
+ 			u32	save = spi->mode;
+ 
+ 			if (tmp & ~SPI_MODE_MASK) {
+@@ -403,6 +404,10 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 				break;
+ 			}
+ 
++			if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
++			    ctlr->cs_gpiods[spi->chip_select])
++				tmp |= SPI_CS_HIGH;
++
+ 			tmp |= spi->mode & ~SPI_MODE_MASK;
+ 			spi->mode = (u16)tmp;
+ 			retval = spi_setup(spi);
 -- 
-2.17.1
+2.24.0

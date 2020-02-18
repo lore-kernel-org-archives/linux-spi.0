@@ -1,57 +1,65 @@
-From: Bjorn Andersson <bjorn.andersson@linaro.org>
-Subject: Re: [PATCH 6/6] arm64: dts: sc7180: Add interconnect for QUP and QSPI
-Date: Mon, 17 Feb 2020 19:18:30 -0800
-Message-ID: <20200218031830.GX955802@ripper>
-References: <1581946205-27189-1-git-send-email-akashast@codeaurora.org>
- <1581946205-27189-7-git-send-email-akashast@codeaurora.org>
+From: "Ramuthevar, Vadivel MuruganX"
+        <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH v9 0/2] spi: cadence-quadpsi: Add support for the Cadence
+ QSPI controller
+Date: Tue, 18 Feb 2020 16:56:31 +0800
+Message-ID: <49bc16bc-297f-d58c-5b93-6397edf1fbda@linux.intel.com>
+References: <20200214114618.29704-1-vadivel.muruganx.ramuthevar@linux.intel.com>
+ <CAAh8qsxnRSwonuEPrriuS=gUMTjt8ddUVy5HxegmoCk-FoE4qg@mail.gmail.com>
+ <20200214121145.GF4827@sirena.org.uk>
+ <4712cdc4-34cd-990b-3d53-3d394ae1250b@linux.intel.com>
+ <20200217115213.GA9304@sirena.org.uk>
+ <f5f868e5-a977-7487-9395-a76dd5e7c963@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: gregkh@linuxfoundation.org, agross@kernel.org, wsa@the-dreams.de,
-        broonie@kernel.org, mark.rutland@arm.com, robh+dt@kernel.org,
-        linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, swboyd@chromium.org,
-        mgautam@codeaurora.org, linux-arm-msm@vger.kernel.org,
-        linux-serial@vger.kernel.org, mka@chromium.org,
-        dianders@chromium.org
-To: Akash Asthana <akashast@codeaurora.org>
-Return-path: <linux-i2c-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1581946205-27189-7-git-send-email-akashast@codeaurora.org>
-Sender: linux-i2c-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 8bit
+Cc: Simon Goldschmidt <simon.k.r.goldschmidt-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org,
+        cheol.yong.kim-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, qi-ming.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+        dinguyen-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, tien.fong.chee-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
+To: Vignesh Raghavendra <vigneshr-l0cyMroinI0@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <f5f868e5-a977-7487-9395-a76dd5e7c963-l0cyMroinI0@public.gmane.org>
+Content-Language: en-US
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon 17 Feb 05:30 PST 2020, Akash Asthana wrote:
+Hi Vignesh,
 
-> Add interconnect ports for GENI QUPs and QSPI to set bus capabilities.
-> 
-> Signed-off-by: Akash Asthana <akashast@codeaurora.org>
-> ---
-> Note:
->  - This patch depends on series https://patchwork.kernel.org/cover/11313817/
->    [Add SC7180 interconnect provider driver]. It won't compile without that.
-> 
->  arch/arm64/boot/dts/qcom/sc7180.dtsi | 199 +++++++++++++++++++++++++++++++++++
->  1 file changed, 199 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-> index cc5a94f..04569c9 100644
-> --- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-> @@ -352,6 +352,14 @@
->  				interrupts = <GIC_SPI 601 IRQ_TYPE_LEVEL_HIGH>;
->  				#address-cells = <1>;
->  				#size-cells = <0>;
-> +				interconnects = <&qup_virt MASTER_QUP_CORE_0
-> +						&qup_virt SLAVE_QUP_CORE_0>,
-> +						<&gem_noc MASTER_APPSS_PROC
-> +						&config_noc SLAVE_QUP_0>,
-> +						<&aggre1_noc MASTER_QUP_0
-> +						&mc_virt SLAVE_EBI1>;
+On 17/2/2020 8:18 PM, Vignesh Raghavendra wrote:
+> Hi Vadivel,
+>
+> On 17/02/20 5:22 pm, Mark Brown wrote:
+>> On Mon, Feb 17, 2020 at 05:28:38PM +0800, Ramuthevar, Vadivel MuruganX wrote:
+>>> On 14/2/2020 8:11 PM, Mark Brown wrote:
+>>>> Given that this is a new driver I'd be very surprised if it broke other
+>>>> users?  I can imagine it might not work for them and it would definitely
+>>>> be much better to get their review but it shouldn't be any worse than
+>>>> the current lack of support.
+>>> *[Vignesh]*  The legacy driver under drivers/mtd/spi-nor will be removed as
+>>> we cannot
+>>> support both SPI NOR and SPI NAND with single driver if its under
+>>> spi-nor. New driver should be functionally equivalent to existing one.
+>>> So I suggest you test this driver on legcay SoCFPGA products.
+>> You're not actually removing the driver here, you're adding another
+>> driver for the same thing.
+>>
+> I agree with Mark here.
+>
+> I realized that you are using same CONFIG option as the old one to build
+> this driver. This causes new driver to fail to probe as old driver would
+> bind to the node instead (both drivers will be built into the kernel and
+> both drivers have same compatible).
+>
+> So, you should remove the old driver. Could you also include patches
+> removing old driver? New driver and bindings are anyways backward
+> compatible with existing one
+Sure , will remove the existing driver and sending single patch, Thanks!
 
-Please ignore the 80-char "limit" and write this as:
-				interconnects = <&qup_virt MASTER_QUP_CORE_0 &qup_virt SLAVE_QUP_CORE_0>,
-						<&gem_noc ...>,
-						<&aggre1_noc ...>;
-
-Regards,
-Bjorn
+Regards
+Vadivel

@@ -1,68 +1,41 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 0/2] rewrite mtk-quadspi spi-nor driver with spi-mem
-Date: Tue, 18 Feb 2020 12:55:57 +0000
-Message-ID: <20200218125557.GD4232@sirena.org.uk>
-References: <20200215065826.739102-1-gch981213@gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="/3yNEOqWowh/8j+e"
-Cc: linux-mediatek@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-To: Chuanhong Guo <gch981213@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20200215065826.739102-1-gch981213@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Shobhit Srivastava <shobhit.srivastava-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 0/1] Enable SSP controller for CS toggle
+Date: Tue, 18 Feb 2020 19:19:05 +0530
+Message-ID: <20200218134906.25458-1-shobhit.srivastava@intel.com>
+Cc: furquan-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org, rajatja-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org, evgreen-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org,
+        andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
+To: daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org, haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        robert.jarzmik-GANU6spQydw@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---/3yNEOqWowh/8j+e
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+SPI CS assert may not always be accompanied by data. There are cases
+where we want to assert CS, wait and then deassert CS. There is no
+clocking or reading required. On Intel CNL LPSS controller, it was
+observed that the above flow is broken after an S0ix cycle. There
+is no issue after S3 flow.
+https://patchwork.kernel.org/patch/11377019/ is an attempt to fix
+this and it does fix the issue. However we are unsure if that is
+the actual rootcause for the issue. As per the LPSS spec, to
+propagate the retained CS to output,  SPI controller needs to be
+enabled. The below patch tries to do the same and it fixes the issue.
+The reason why there is no issue after S3 flow is because during
+resume, BIOS re-initializes and enables SPI before doing kernel hand-off.
+To test this issue we are probing the SPI_CS line on CRO. This is
+because, even though the mmio writes to CS_CONTROL register sticks,
+it doesnt toggle the CS line. Physically probing is the best way
+to identify the fix.
 
-On Sat, Feb 15, 2020 at 02:58:24PM +0800, Chuanhong Guo wrote:
 
-> To keep patchset small for easier reviewing, there will be 3 patchsets
-> including this one.
-> 1. add the new driver, which is this patchset.
-> 2. update existing dts for the new driver:
->    spi-max-frequency is missing in current mtk-quadspi binding. Old
->    driver parses child node manually so it doesn't need this, but
->    new spi-mem driver is probed via spi subsystem which requires the
->    presence of spi-max-frequency. Since this doesn't break old driver
->    support, I'll send this separately as a standalone patch.
+Shobhit Srivastava (1):
+  spi: pxa2xx: Enable SSP controller for CS toggle
 
-This is an ABI break so you shouldn't be doing this, if the existing
-binding works it should continue to work.
+ drivers/spi/spi-pxa2xx.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-> 3. removing the old driver. I'll create this commit after 1 and 2 are
->    applied to avoid possible rebasing due to any changes in the old
->    driver.
-
-This isn't great as it means we have a period with two drivers for the
-same thing in tree which is at best going to be confusing.  There's no
-advantage to splitting this out.
-
---/3yNEOqWowh/8j+e
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl5L3twACgkQJNaLcl1U
-h9CQ0Af/bCSGtGQh9O/SezBLGjZ59DSJjcG/kJ2CB/e5Ub3WkveUKq3prcIpbWRZ
-j7LZ1+3P0+IQJC2b4wWFTf6xOOoucP4Qb1qVBc1HyBt9SrqrrZ3SdEXzhbsYJ1Zq
-tLGrQ37qdRhfSpspLm1N3FN+EBZuVW3tYPclxUjkHTE50mu0wmMAk4OXtrbyBKp7
-H046klgqVPBXzTlP8mFTtp0/E/hYhrBUTqcEcUBTAw3nCMBMiVxUjdxRx+tB41CR
-TBBlM9+VwbxRbrzZC9IL5S+l+Bi9EW2axbZ2zFG7vOTc+AoCIT/PxwyZBshr8Xoh
-A7hM2b6D+BSbpRcPwjpZLi3E11d0ug==
-=CyQ7
------END PGP SIGNATURE-----
-
---/3yNEOqWowh/8j+e--
+-- 
+2.17.1

@@ -1,51 +1,66 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: spidev: Fix CS polarity if GPIO descriptors are used
-Date: Wed, 19 Feb 2020 16:47:50 +0100
-Message-ID: <CACRpkdZmzL_bDRuiBehmd-QC93K_xJ5VHM0HaypCFXLU6sZvkQ@mail.gmail.com>
-References: <fca3ba7cdc930cd36854666ceac4fbcf01b89028.1582027457.git.lukas@wunner.de>
+From: Matthias Kaehlcke <mka@chromium.org>
+Subject: Re: [PATCH 4/6] spi: spi-geni-qcom: Add interconnect support
+Date: Wed, 19 Feb 2020 10:09:50 -0800
+Message-ID: <20200219180950.GA24720@google.com>
+References: <1581946205-27189-1-git-send-email-akashast@codeaurora.org>
+ <1581946205-27189-5-git-send-email-akashast@codeaurora.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Simon Han <z.han-pnUOlEj4XnTQT0dZR+AlfA@public.gmane.org>
-To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <fca3ba7cdc930cd36854666ceac4fbcf01b89028.1582027457.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=utf-8
+Cc: gregkh@linuxfoundation.org, agross@kernel.org,
+        bjorn.andersson@linaro.org, wsa@the-dreams.de, broonie@kernel.org,
+        mark.rutland@arm.com, robh+dt@kernel.org,
+        linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, swboyd@chromium.org,
+        mgautam@codeaurora.org, linux-arm-msm@vger.kernel.org,
+        linux-serial@vger.kernel.org, dianders@chromium.org
+To: Akash Asthana <akashast@codeaurora.org>
+Return-path: <linux-serial-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1581946205-27189-5-git-send-email-akashast@codeaurora.org>
+Sender: linux-serial-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Tue, Feb 18, 2020 at 1:08 PM Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org> wrote:
+On Mon, Feb 17, 2020 at 07:00:03PM +0530, Akash Asthana wrote:
+> Get the interconnect paths for SPI based Serial Engine device
+> and vote according to the current bus speed of the driver.
+> 
+> Signed-off-by: Akash Asthana <akashast@codeaurora.org>
+> ---
+>  drivers/spi/spi-geni-qcom.c | 65 ++++++++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 62 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+> index c397242..a066ef26 100644
+> --- a/drivers/spi/spi-geni-qcom.c
+> +++ b/drivers/spi/spi-geni-qcom.c
+> @@ -608,16 +653,25 @@ static int spi_geni_remove(struct platform_device *pdev)
+>  	spi_unregister_master(spi);
+>  
+>  	free_irq(mas->irq, spi);
+> +	geni_spi_icc_put(&mas->se);
+>  	pm_runtime_disable(&pdev->dev);
+>  	return 0;
+>  }
+>  
+>  static int __maybe_unused spi_geni_runtime_suspend(struct device *dev)
+>  {
+> +	int ret;
+>  	struct spi_master *spi = dev_get_drvdata(dev);
+>  	struct spi_geni_master *mas = spi_master_get_devdata(spi);
+>  
+> -	return geni_se_resources_off(&mas->se);
+> +	ret = geni_se_resources_off(&mas->se);
+> +	if (ret)
+> +		return ret;
+> +
+> +	icc_set_bw(mas->se.icc_path[GENI_TO_CORE], 0, 0);
 
-> Commit f3186dd87669 ("spi: Optionally use GPIO descriptors for CS GPIOs")
-> amended of_spi_parse_dt() to always set SPI_CS_HIGH for SPI slaves whose
-> Chip Select is defined by a "cs-gpios" devicetree property.
->
-> This change broke userspace applications which issue an SPI_IOC_WR_MODE
-> ioctl() to an spidev:  Chip Select polarity will be incorrect unless the
-> application is changed to set SPI_CS_HIGH.  And once changed, it will be
-> incompatible with kernels not containing the commit.
->
-> Fix by setting SPI_CS_HIGH in spidev_ioctl() (under the same conditions
-> as in of_spi_parse_dt()).
->
-> Fixes: f3186dd87669 ("spi: Optionally use GPIO descriptors for CS GPIOs")
-> Reported-by: Simon Han <z.han-pnUOlEj4XnTQT0dZR+AlfA@public.gmane.org>
-> Signed-off-by: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-> Cc: stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org # v5.1+
-> Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-(...)
+This causes my SC7180 system to reset at boot time:
 
-Nit: I would also insert a comment in the code to tell what is going on.
+[    3.509652] qcom-qmp-phy 88e9000.phy-wrapper: Registered Qcom-QMP phy
+[    3.516956] qcom-qusb2-phy 88e3000.phy: Registered Qcom-QUSB2 phy
+[    3.524450] geni_se_qup 8c0000.geniqup: Adding to iommu group 4
+[    3.533896] spi_master spi0: will run message pump with realtime priority
+<reset>
 
-> +                       if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
-> +                           ctlr->cs_gpiods[spi->chip_select])
-> +                               tmp |= SPI_CS_HIGH;
-
-Should this be tmp ^= SPI_CS_HIGH?
-
-If the device tree node for cs-gpios is actually active high, which
-happens, then you probably want the opposite of what was
-requested, right?
-
-Yours,
-Linus Walleij
+The system does not reset when passing 'Bps_to_icc(1000)' (=> 1) instead of 0.

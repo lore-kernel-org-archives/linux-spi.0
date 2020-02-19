@@ -1,48 +1,51 @@
-From: Akash Asthana <akashast@codeaurora.org>
-Subject: Re: [PATCH 6/6] arm64: dts: sc7180: Add interconnect for QUP and QSPI
-Date: Wed, 19 Feb 2020 19:19:11 +0530
-Message-ID: <f82a28c7-63a4-b0e8-3902-5614dfed0f78@codeaurora.org>
-References: <1581946205-27189-1-git-send-email-akashast@codeaurora.org>
- <1581946205-27189-7-git-send-email-akashast@codeaurora.org>
- <20200218031830.GX955802@ripper>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: spidev: Fix CS polarity if GPIO descriptors are used
+Date: Wed, 19 Feb 2020 16:47:50 +0100
+Message-ID: <CACRpkdZmzL_bDRuiBehmd-QC93K_xJ5VHM0HaypCFXLU6sZvkQ@mail.gmail.com>
+References: <fca3ba7cdc930cd36854666ceac4fbcf01b89028.1582027457.git.lukas@wunner.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: gregkh@linuxfoundation.org, agross@kernel.org, wsa@the-dreams.de,
-        broonie@kernel.org, mark.rutland@arm.com, robh+dt@kernel.org,
-        linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, swboyd@chromium.org,
-        mgautam@codeaurora.org, linux-arm-msm@vger.kernel.org,
-        linux-serial@vger.kernel.org, mka@chromium.org,
-        dianders@chromium.org
-To: Bjorn Andersson <bjorn.andersson@linaro.org>
-Return-path: <linux-i2c-owner@vger.kernel.org>
-In-Reply-To: <20200218031830.GX955802@ripper>
-Content-Language: en-US
-Sender: linux-i2c-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Simon Han <z.han-pnUOlEj4XnTQT0dZR+AlfA@public.gmane.org>
+To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <fca3ba7cdc930cd36854666ceac4fbcf01b89028.1582027457.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Bjorn,
+On Tue, Feb 18, 2020 at 1:08 PM Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org> wrote:
 
->> +				interconnects = <&qup_virt MASTER_QUP_CORE_0
->> +						&qup_virt SLAVE_QUP_CORE_0>,
->> +						<&gem_noc MASTER_APPSS_PROC
->> +						&config_noc SLAVE_QUP_0>,
->> +						<&aggre1_noc MASTER_QUP_0
->> +						&mc_virt SLAVE_EBI1>;
-> Please ignore the 80-char "limit" and write this as:
-> 				interconnects = <&qup_virt MASTER_QUP_CORE_0 &qup_virt SLAVE_QUP_CORE_0>,
-> 						<&gem_noc ...>,
-> 						<&aggre1_noc ...>;
+> Commit f3186dd87669 ("spi: Optionally use GPIO descriptors for CS GPIOs")
+> amended of_spi_parse_dt() to always set SPI_CS_HIGH for SPI slaves whose
+> Chip Select is defined by a "cs-gpios" devicetree property.
 >
-> Regards,
-> Bjorn
+> This change broke userspace applications which issue an SPI_IOC_WR_MODE
+> ioctl() to an spidev:  Chip Select polarity will be incorrect unless the
+> application is changed to set SPI_CS_HIGH.  And once changed, it will be
+> incompatible with kernels not containing the commit.
+>
+> Fix by setting SPI_CS_HIGH in spidev_ioctl() (under the same conditions
+> as in of_spi_parse_dt()).
+>
+> Fixes: f3186dd87669 ("spi: Optionally use GPIO descriptors for CS GPIOs")
+> Reported-by: Simon Han <z.han-pnUOlEj4XnTQT0dZR+AlfA@public.gmane.org>
+> Signed-off-by: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+> Cc: stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org # v5.1+
+> Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+(...)
 
-ok
+Nit: I would also insert a comment in the code to tell what is going on.
 
-Regards,
+> +                       if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
+> +                           ctlr->cs_gpiods[spi->chip_select])
+> +                               tmp |= SPI_CS_HIGH;
 
-Akash
+Should this be tmp ^= SPI_CS_HIGH?
 
--- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,\na Linux Foundation Collaborative Project
+If the device tree node for cs-gpios is actually active high, which
+happens, then you probably want the opposite of what was
+requested, right?
+
+Yours,
+Linus Walleij

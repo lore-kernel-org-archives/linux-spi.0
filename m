@@ -1,106 +1,115 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: rspi: Factor out handling of common mode bits" to the spi tree
-Date: Wed, 19 Feb 2020 00:11:31 +0000
-Message-ID: <applied-20200218105810.902-2-geert+renesas@glider.be>
-References: <20200218105810.902-2-geert+renesas@glider.be>
-Cc: Hoan Nguyen An <na-hoan@jinso.co.jp>,
-        linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Return-path: <linux-renesas-soc-owner@vger.kernel.org>
-In-Reply-To: <20200218105810.902-2-geert+renesas@glider.be>
-Sender: linux-renesas-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: "Ramuthevar,Vadivel MuruganX"
+        <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH v10 0/2] spi: cadence-quadpsi: Add support for the Cadence QSPI controller
+Date: Wed, 19 Feb 2020 10:28:50 +0800
+Message-ID: <20200219022852.28065-1-vadivel.muruganx.ramuthevar@linux.intel.com>
+Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, simon.k.r.goldschmidt-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        dinguyen-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, tien.fong.chee-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, marex-ynQEQJNshbs@public.gmane.org,
+        cheol.yong.kim-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, qi-ming.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+        "Ramuthevar,Vadivel MuruganX"
+        <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, vigneshr-l0cyMroinI0@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Add support for the Cadence QSPI controller. This controller is
+present in the Intel Lightning Mountain(LGM) SoCs, Altera and TI SoCs.
+This driver has been tested on the Intel LGM SoCs.
 
-   spi: rspi: Factor out handling of common mode bits
+This driver does not support generic SPI and also the implementation
+only supports spi-mem interface to replace the existing driver in
+mtd/spi-nor/cadence-quadspi.c, the existing driver only support SPI-NOR
+flash memory.
 
-has been applied to the spi tree at
+Thanks Mark and Vignesh for the review, suggestion to optimize the patch.
+Tested with mx25u12835f on LGM platform.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+changes from v9:
+ -- Mark's review comments address
+ -- add check to shared interrupt handler
+ -- add check decoder if present
+ -- add error check for quirks capability data
+ -- remove the existing cadence_quadspi.c from drivers/mtd/spi-nor path
+ -- remove CONFIG macro from Kconfig in the above path
+ -- remove cadence_quadspi.o build option from Makefile in the above path
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+changes from v8:
+ -- remove the depends MTD macro
+ -- comment into C++ style
+ -- remove spaces and tabs where not applicable.
+ -- align the macro string as same as existing one.
+ -- replace QUAD to op->data.buswidth variable.
+ -- add CQSPI_NEEDS_ADDR_SWAP instead of soc_selection variable
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+changes from v7:
+ -- remove addr_buf kept like as original
+ -- drop bus-num, chipselect variable
+ -- add soc_selection varible to differetiate the features
+ -- replace dev->ddev in dma function
+ -- add seperate function to handle the 24bit slave device address
+    translation for lgm soc
+ -- correct sentence seems incomplete in Kconfig
+ -- add cqspi->soc_selection check to keep the original TI platform
+    working code.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+changes from v6:
+ -- Add the Signed-off-by Vignesh in commit message
+ -- bus_num, num_chipselect added to avoid the garbage bus number
+    during the probe and spi_register.
+ -- master mode bits updated
+ -- address sequence is different from TI and Intel SoC Ip handling
+    so modified as per Intel and differentiating by use_dac_mode variable.
+ -- dummy cycles also different b/w two platforms, so keeping separate check
+ -- checkpatch errors which are intentional left as is for better readability
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+changes from v5:
+ -- kbuild test robot warnings fixed
+ -- Add Reported-By: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
 
-Thanks,
-Mark
+changes from v4:
+ -- kbuild test robot warnings fixed
+ -- Add Reborted-by: tag
 
->From cd982e6c44a7265e1c7e92de4f696c3b3b376e93 Mon Sep 17 00:00:00 2001
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-Date: Tue, 18 Feb 2020 11:58:08 +0100
-Subject: [PATCH] spi: rspi: Factor out handling of common mode bits
+changes from v3:
+spi-cadence-quadspi.c
+ -- static to all functions wrt to local to the file.
+ -- Prefix cqspi_ and make the function static
+ -- cmd_ops, data_ops and dummy_ops dropped
+ -- addr_ops kept since it is required for address calculation.
+ -- devm_ used for supported functions , removed legacy API's
+ -- removed "indirect" name from functions
+ -- replaced by master->mode_bits = SPI_RX_QUAD | SPI_TX_DUAL | SPI_RX_DUAL | SPI_RX_OCTAL;
+    as per Vignesh susggestion
+ -- removed free functions since devm_ handles automatically.
+ -- dropped all unused Macros
 
-Basic SPI features like clock phase/polarity and loopback mode are
-common to all RSPI variants.  Factor them out to reduce duplication.
+YAML file update:
+ -- cadence,qspi.yaml file name replace by cdns,qspi-nor.yaml
+ -- compatible string updated as per Vignesh suggestion
+ -- for single entry, removed descriptions
+ -- removed optional parameters
+  Build Result:
+   linux$ make DT_SCHEMA_FILES=Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml dt_binding_check
+    CHKDT   Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
+    SCHEMA  Documentation/devicetree/bindings/processed-schema.yaml
+    DTC     Documentation/devicetree/bindings/spi/cdns,qspi-nor.example.dt.yaml
+    CHECK   Documentation/devicetree/bindings/spi/cdns,qspi-nor.example.dt.yaml
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20200218105810.902-2-geert+renesas@glider.be
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-rspi.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+Ramuthevar Vadivel Murugan (2):
+  dt-bindings: spi: Add schema for Cadence QSPI Controller driver
+  spi: cadence-quadpsi: Add support for the Cadence QSPI controller
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 85575d45901c..7a1e6d524f34 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -239,7 +239,7 @@ struct spi_ops {
- 	int (*set_config_register)(struct rspi_data *rspi, int access_size);
- 	int (*transfer_one)(struct spi_controller *ctlr,
- 			    struct spi_device *spi, struct spi_transfer *xfer);
--	u16 mode_bits;
-+	u16 extra_mode_bits;
- 	u16 flags;
- 	u16 fifo_size;
- 	u8 num_hw_ss;
-@@ -1122,7 +1122,6 @@ static int rspi_remove(struct platform_device *pdev)
- static const struct spi_ops rspi_ops = {
- 	.set_config_register =	rspi_set_config_register,
- 	.transfer_one =		rspi_transfer_one,
--	.mode_bits =		SPI_CPHA | SPI_CPOL | SPI_LOOP,
- 	.flags =		SPI_CONTROLLER_MUST_TX,
- 	.fifo_size =		8,
- 	.num_hw_ss =		2,
-@@ -1131,7 +1130,6 @@ static const struct spi_ops rspi_ops = {
- static const struct spi_ops rspi_rz_ops = {
- 	.set_config_register =	rspi_rz_set_config_register,
- 	.transfer_one =		rspi_rz_transfer_one,
--	.mode_bits =		SPI_CPHA | SPI_CPOL | SPI_LOOP,
- 	.flags =		SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_MUST_TX,
- 	.fifo_size =		8,	/* 8 for TX, 32 for RX */
- 	.num_hw_ss =		1,
-@@ -1140,8 +1138,7 @@ static const struct spi_ops rspi_rz_ops = {
- static const struct spi_ops qspi_ops = {
- 	.set_config_register =	qspi_set_config_register,
- 	.transfer_one =		qspi_transfer_one,
--	.mode_bits =		SPI_CPHA | SPI_CPOL | SPI_LOOP |
--				SPI_TX_DUAL | SPI_TX_QUAD |
-+	.extra_mode_bits =	SPI_TX_DUAL | SPI_TX_QUAD |
- 				SPI_RX_DUAL | SPI_RX_QUAD,
- 	.flags =		SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_MUST_TX,
- 	.fifo_size =		32,
-@@ -1258,7 +1255,7 @@ static int rspi_probe(struct platform_device *pdev)
- 	ctlr->transfer_one = ops->transfer_one;
- 	ctlr->prepare_message = rspi_prepare_message;
- 	ctlr->unprepare_message = rspi_unprepare_message;
--	ctlr->mode_bits = ops->mode_bits;
-+	ctlr->mode_bits = SPI_CPHA | SPI_CPOL | SPI_LOOP | ops->extra_mode_bits;
- 	ctlr->flags = ops->flags;
- 	ctlr->dev.of_node = pdev->dev.of_node;
- 	ctlr->use_gpio_descriptors = true;
+ .../devicetree/bindings/spi/cdns,qspi-nor.yaml     | 147 +++++
+ drivers/mtd/spi-nor/Kconfig                        |  11 -
+ drivers/mtd/spi-nor/Makefile                       |   1 -
+ drivers/spi/Kconfig                                |   8 +
+ drivers/spi/Makefile                               |   1 +
+ .../spi-cadence-quadspi.c}                         | 641 ++++++++++-----------
+ 6 files changed, 459 insertions(+), 350 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
+ rename drivers/{mtd/spi-nor/cadence-quadspi.c => spi/spi-cadence-quadspi.c} (73%)
+
 -- 
-2.20.1
+2.11.0

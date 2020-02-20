@@ -1,65 +1,59 @@
-From: Oleksandr Suvorov <oleksandr.suvorov-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 1/2] spi: fsl-lpspi: remove unneeded array
-Date: Thu, 20 Feb 2020 14:11:48 +0000
-Message-ID: <20200220141143.3902922-2-oleksandr.suvorov@toradex.com>
+From: Oleksandr Suvorov <oleksandr.suvorov@toradex.com>
+Subject: [PATCH 2/2] spi: spidev: fix a max speed setting
+Date: Thu, 20 Feb 2020 14:11:51 +0000
+Message-ID: <20200220141143.3902922-3-oleksandr.suvorov@toradex.com>
 References: <20200220141143.3902922-1-oleksandr.suvorov@toradex.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Cc: Oleksandr Suvorov <oleksandr.suvorov-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>,
-        Oleksandr Suvorov <cryosay-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Marcel Ziswiler <marcel.ziswiler-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>,
-        Igor Opanyuk <igor.opanyuk-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>,
-        Philippe Schenker <philippe.schenker-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200220141143.3902922-1-oleksandr.suvorov-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+Cc: Oleksandr Suvorov <oleksandr.suvorov@toradex.com>,
+        Oleksandr Suvorov <cryosay@gmail.com>,
+        Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+        Igor Opanyuk <igor.opanyuk@toradex.com>,
+        Philippe Schenker <philippe.schenker@toradex.com>,
+        Mark Brown <broonie@kernel.org>
+To: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20200220141143.3902922-1-oleksandr.suvorov@toradex.com>
 Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-- replace the array with the shift operation
-- remove the extra comparing operation.
+SPI_IOC_WR_MAX_SPEED_HZ command always sets spi->max_speed_hz
+to the initial value come from DT.
+It leads to set a wrong max speed with IOCTL call.
 
-Signed-off-by: Oleksandr Suvorov <oleksandr.suvorov-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+Fix the logic of a max speed assignment.
+
+Signed-off-by: Oleksandr Suvorov <oleksandr.suvorov@toradex.com>
 ---
 
- drivers/spi/spi-fsl-lpspi.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/spi/spidev.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index d0b8cc741a24..298329b781d2 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -86,8 +86,6 @@
- #define TCR_RXMSK	BIT(19)
- #define TCR_TXMSK	BIT(18)
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 1e217e3e9486..b9b3ac70eb18 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -449,11 +449,13 @@ spidev_ioctl(struct file *filp, unsigned int cmd, uns=
+igned long arg)
 =20
--static int clkdivs[] =3D {1, 2, 4, 8, 16, 32, 64, 128};
--
- struct lpspi_config {
- 	u8 bpw;
- 	u8 chip_select;
-@@ -331,15 +329,14 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_dat=
-a *fsl_lpspi)
- 	}
-=20
- 	for (prescale =3D 0; prescale < 8; prescale++) {
--		scldiv =3D perclk_rate /
--			 (clkdivs[prescale] * config.speed_hz) - 2;
-+		scldiv =3D perclk_rate / config.speed_hz / (1 << prescale) - 2;
- 		if (scldiv < 256) {
- 			fsl_lpspi->config.prescale =3D prescale;
- 			break;
+ 			spi->max_speed_hz =3D tmp;
+ 			retval =3D spi_setup(spi);
+-			if (retval >=3D 0)
++			if (retval) {
++				spi->max_speed_hz =3D save;
++			} else {
+ 				spidev->speed_hz =3D tmp;
+-			else
+-				dev_dbg(&spi->dev, "%d Hz (max)\n", tmp);
+-			spi->max_speed_hz =3D save;
++				dev_dbg(&spi->dev, "%d Hz (max)\n",
++					spidev->speed_hz);
++			}
  		}
- 	}
+ 		break;
 =20
--	if (prescale =3D=3D 8 && scldiv >=3D 256)
-+	if (scldiv >=3D 256)
- 		return -EINVAL;
-=20
- 	writel(scldiv | (scldiv << 8) | ((scldiv >> 1) << 16),
 --=20
 2.24.1

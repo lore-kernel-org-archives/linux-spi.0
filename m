@@ -1,59 +1,52 @@
-From: Oleksandr Suvorov <oleksandr.suvorov@toradex.com>
-Subject: [PATCH 2/2] spi: spidev: fix a max speed setting
-Date: Thu, 20 Feb 2020 14:11:51 +0000
-Message-ID: <20200220141143.3902922-3-oleksandr.suvorov@toradex.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 0/2] trivial fixes for fsl-spi and spidev
+Date: Thu, 20 Feb 2020 16:47:52 +0000
+Message-ID: <20200220164752.GC3926@sirena.org.uk>
 References: <20200220141143.3902922-1-oleksandr.suvorov@toradex.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: Oleksandr Suvorov <oleksandr.suvorov@toradex.com>,
-        Oleksandr Suvorov <cryosay@gmail.com>,
-        Marcel Ziswiler <marcel.ziswiler@toradex.com>,
-        Igor Opanyuk <igor.opanyuk@toradex.com>,
-        Philippe Schenker <philippe.schenker@toradex.com>,
-        Mark Brown <broonie@kernel.org>
-To: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200220141143.3902922-1-oleksandr.suvorov@toradex.com>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="Pk6IbRAofICFmK5e"
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Oleksandr Suvorov <cryosay-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Marcel Ziswiler <marcel.ziswiler-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>,
+        Igor Opanyuk <igor.opanyuk-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>,
+        Philippe Schenker <philippe.schenker-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+To: Oleksandr Suvorov <oleksandr.suvorov-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20200220141143.3902922-1-oleksandr.suvorov-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-SPI_IOC_WR_MAX_SPEED_HZ command always sets spi->max_speed_hz
-to the initial value come from DT.
-It leads to set a wrong max speed with IOCTL call.
 
-Fix the logic of a max speed assignment.
+--Pk6IbRAofICFmK5e
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Signed-off-by: Oleksandr Suvorov <oleksandr.suvorov@toradex.com>
----
+On Thu, Feb 20, 2020 at 02:11:46PM +0000, Oleksandr Suvorov wrote:
 
- drivers/spi/spidev.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+> Oleksandr Suvorov (2):
+>   spi: fsl-lpspi: remove unneeded array
+>   spi: spidev: fix a max speed setting
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 1e217e3e9486..b9b3ac70eb18 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -449,11 +449,13 @@ spidev_ioctl(struct file *filp, unsigned int cmd, uns=
-igned long arg)
-=20
- 			spi->max_speed_hz =3D tmp;
- 			retval =3D spi_setup(spi);
--			if (retval >=3D 0)
-+			if (retval) {
-+				spi->max_speed_hz =3D save;
-+			} else {
- 				spidev->speed_hz =3D tmp;
--			else
--				dev_dbg(&spi->dev, "%d Hz (max)\n", tmp);
--			spi->max_speed_hz =3D save;
-+				dev_dbg(&spi->dev, "%d Hz (max)\n",
-+					spidev->speed_hz);
-+			}
- 		}
- 		break;
-=20
---=20
-2.24.1
+Please don't merge unrelated changes into a patch series, at best it's
+confusing at worst it can result in unrelated patches holding each other
+up.
+
+--Pk6IbRAofICFmK5e
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl5OuDcACgkQJNaLcl1U
+h9B54wf8ChnpYtAo6GZoBiIyPR6xHM0A2f44wKWo1bk/+lN39rm75kZ2Y4c1iypV
+stZLFnvLr6TnHyWlkj9oVczi+RkqaNQw7aksUnJPCi6fQkIl/2Cc9VwD1ur0Af5u
+Oj+pZtQRnOsLkUdQY9rVSd8KRD1bJK8m2p30FpaHSv3Zj/TYvEwl9hoH6MEq6uuL
+dbvWSiiIi0OArO1WEniGx0nOiwSYP6GMWLZXCy3vjp0QxLYc636VT2IkOuRdAwDf
+CE4uRGHjmvry4CeZx2m0vus18GmiqMQwML+Q2QNFiu3wTb2tTYxbtBCmN6QMT2p+
+6EEKD76g9d03RuDF5bsYmcHfCZWaJg==
+=znQo
+-----END PGP SIGNATURE-----
+
+--Pk6IbRAofICFmK5e--

@@ -1,64 +1,86 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 0/2] rewrite mtk-quadspi spi-nor driver with spi-mem
-Date: Thu, 20 Feb 2020 19:51:22 +0000
-Message-ID: <20200220195122.GL3926@sirena.org.uk>
-References: <20200215065826.739102-1-gch981213@gmail.com>
- <20200218125557.GD4232@sirena.org.uk>
- <CAJsYDVL03KJv7eewGekBPCfpbOuTX0tJ6qZaydvJnBDzZ5vEwg@mail.gmail.com>
+From: Matthias Kaehlcke <mka@chromium.org>
+Subject: Re: [PATCH 3/6] i2c: i2c-qcom-geni: Add interconnect support
+Date: Thu, 20 Feb 2020 16:24:00 -0800
+Message-ID: <20200221002400.GD24720@google.com>
+References: <1581946205-27189-1-git-send-email-akashast@codeaurora.org>
+ <1581946205-27189-4-git-send-email-akashast@codeaurora.org>
+ <20200218224709.GF15781@google.com>
+ <84a7d97a-4e10-5509-9c87-af8a545c7385@codeaurora.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="kaF1vgn83Aa7CiXN"
-Cc: linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Miquel Raynal <miquel.raynal-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>,
-        Richard Weinberger <richard-/L3Ra7n9ekc@public.gmane.org>,
-        Vignesh Raghavendra <vigneshr-l0cyMroinI0@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        open list <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Chuanhong Guo <gch981213-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Cc: gregkh@linuxfoundation.org, agross@kernel.org,
+        bjorn.andersson@linaro.org, wsa@the-dreams.de, broonie@kernel.org,
+        mark.rutland@arm.com, robh+dt@kernel.org,
+        linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, swboyd@chromium.org,
+        mgautam@codeaurora.org, linux-arm-msm@vger.kernel.org,
+        linux-serial@vger.kernel.org, dianders@chromium.org
+To: Akash Asthana <akashast@codeaurora.org>
+Return-path: <linux-serial-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAJsYDVL03KJv7eewGekBPCfpbOuTX0tJ6qZaydvJnBDzZ5vEwg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <84a7d97a-4e10-5509-9c87-af8a545c7385@codeaurora.org>
+Sender: linux-serial-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+Hi Akash,
 
---kaF1vgn83Aa7CiXN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Wed, Feb 19, 2020 at 07:17:44PM +0530, Akash Asthana wrote:
+> Hi Matthias,
+> 
+> On 2/19/2020 4:17 AM, Matthias Kaehlcke wrote:
+> > On Mon, Feb 17, 2020 at 07:00:02PM +0530, Akash Asthana wrote:
+> > > Get the interconnect paths for I2C based Serial Engine device
+> > > and vote according to the bus speed of the driver.
+> > > 
+> > > Signed-off-by: Akash Asthana <akashast@codeaurora.org>
+> > > ---
+> > >   drivers/i2c/busses/i2c-qcom-geni.c | 84 ++++++++++++++++++++++++++++++++++++--
+> > >   1 file changed, 80 insertions(+), 4 deletions(-)
+> > > 
+> > > diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c-qcom-geni.c
+> > > index 17abf60c..5de10a1 100644
+> > > --- a/drivers/i2c/busses/i2c-qcom-geni.c
+> > > +++ b/drivers/i2c/busses/i2c-qcom-geni.c
+> > >
+> > >   static void geni_i2c_err_misc(struct geni_i2c_dev *gi2c)
+> > >   {
+> > >   	u32 m_cmd = readl_relaxed(gi2c->se.base + SE_GENI_M_CMD0);
+> > > @@ -563,17 +601,34 @@ static int geni_i2c_probe(struct platform_device *pdev)
+> > >   	gi2c->adap.dev.of_node = pdev->dev.of_node;
+> > >   	strlcpy(gi2c->adap.name, "Geni-I2C", sizeof(gi2c->adap.name));
+> > > +	ret = geni_i2c_icc_get(&gi2c->se);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +	/* Set the bus quota to a reasonable value */
+> > > +	gi2c->se.avg_bw_core = Bps_to_icc(1000);
+> > > +	gi2c->se.peak_bw_core = Bps_to_icc(CORE_2X_100_MHZ);
+> > > +	gi2c->se.avg_bw_cpu = Bps_to_icc(1000);
+> > > +	gi2c->se.peak_bw_cpu = Bps_to_icc(1000);
+> > > +	gi2c->se.avg_bw_ddr = Bps_to_icc(gi2c->clk_freq_out);
+> > > +	gi2c->se.peak_bw_ddr = Bps_to_icc(2 * gi2c->clk_freq_out);
+> > > +
+> > > +	/* Vote for core clocks and CPU for register access */
+> > > +	icc_set_bw(gi2c->se.icc_path[GENI_TO_CORE], gi2c->se.avg_bw_core,
+> > > +				gi2c->se.peak_bw_core);
+> > > +	icc_set_bw(gi2c->se.icc_path[CPU_TO_GENI], gi2c->se.avg_bw_cpu,
+> > > +				gi2c->se.peak_bw_cpu);
+> > error handling needed?
+> 
+> I will add error handling for GENI_TO_CORE path in all the drivers. Will it
+> be okay if we don't handle errors for CPU_TO_GENI and GENI_TO_DDR path
+> 
+> as CPU and DDR will be running at much higher frequency?
 
-On Thu, Feb 20, 2020 at 07:58:06AM +0800, Chuanhong Guo wrote:
-> On Tue, Feb 18, 2020 at 8:55 PM Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+It may still work, but you might never know that there was a problem. I
+would be inclined to check the return value of all invocations of icc_set_bw()
+- including runtime suspend/resume - and log a message if a problem is
+detected. For runtime suspend/resume it would probably be wise to use
+dev_err_ratelimited(), to avoid spamming the system log too much in case of
+a persistent problem.
 
-> > This is an ABI break so you shouldn't be doing this, if the existing
-> > binding works it should continue to work.
+If others think that error checking all icc_set_bw() calls is overkill
+please speak up :)
 
-> The missing spi-max-frequency is the only part preventing old
-> device tree to work with this driver.
-> If the goal is to make existing dt binding work, I could patch dt using
-> of_add_property in v2. I saw similar device tree patching for legacy
-> bindings in pinctrl-single driver.
+Thanks
 
-That's fine I think, so long as old DTs continue to work.
-
---kaF1vgn83Aa7CiXN
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl5O4zkACgkQJNaLcl1U
-h9CnhQf/csTFVBvPtYuq5Xz1OdgQcpPuRzKFr7JAXvgpfAUv5qPV/34M4juJxze6
-ei2b2s9UlxK2Naa8GFKqAEKOK79jnk5HrI7QkELb2UpQPSJQKubjc8iHzDsQ8rgC
-V7Qf/2Lv2J/NW4R2XzC0ZXMeSnEMBQepx/pUCQnwXOqReWiy/l2X7pLEJsI4J4pR
-ba9BzEWWAXYoP4SYj/cVlqhWrBh807h6owmwTlV86VrwRRh2cxosTUZVMx6nRNq6
-MBFLZ/vayfFd9LF7BQ5r2isKv+BUrZZ8bd06Gt8vZrrLBoH4YiGhXDLL3CGWvFhk
-6M/bBGLDrkTKwSBb6zMaLOsygszigQ==
-=rZ8a
------END PGP SIGNATURE-----
-
---kaF1vgn83Aa7CiXN--
+Matthias

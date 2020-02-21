@@ -1,72 +1,74 @@
-From: Oleksandr Suvorov <oleksandr.suvorov-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: spidev: fix a max speed setting
-Date: Fri, 21 Feb 2020 12:43:20 +0000
-Message-ID: <CAGgjyvGQ3edNcBUUpcBmTaaNcYA3yvx19m+6MVyKMWgWPVabKQ@mail.gmail.com>
-References: <20200220141143.3902922-1-oleksandr.suvorov@toradex.com>
- <20200220141143.3902922-3-oleksandr.suvorov@toradex.com>
- <20200220184201.GE3926@sirena.org.uk>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: spidev: Fix CS polarity if GPIO descriptors are used
+Date: Fri, 21 Feb 2020 14:20:41 +0100
+Message-ID: <CACRpkdbz1b0W8oP2+tZVnRZgexe17tS6OT_FEVO1KderOAqbxA@mail.gmail.com>
+References: <fca3ba7cdc930cd36854666ceac4fbcf01b89028.1582027457.git.lukas@wunner.de>
+ <CACRpkdZmzL_bDRuiBehmd-QC93K_xJ5VHM0HaypCFXLU6sZvkQ@mail.gmail.com> <20200220061122.srkb663imntm4c6a@wunner.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Marcel Ziswiler <marcel.ziswiler-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>,
-        Igor Opanyuk <igor.opanyuk-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>,
-        Philippe Schenker <philippe.schenker-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Simon Han <z.han-pnUOlEj4XnTQT0dZR+AlfA@public.gmane.org>
+To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200220184201.GE3926-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Content-Language: en-US
-Content-ID: <6BD65D70FEA0414785663F93A5CC5F7B-wNKe6lTLrGecE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
+In-Reply-To: <20200220061122.srkb663imntm4c6a-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-SGkgTWFyaywNCg0KT24gVGh1LCBGZWIgMjAsIDIwMjAgYXQgODo0MiBQTSBNYXJrIEJyb3duIDxi
-cm9vbmllQGtlcm5lbC5vcmc+IHdyb3RlOg0KPg0KPiBPbiBUaHUsIEZlYiAyMCwgMjAyMCBhdCAw
-MjoxMTo1MVBNICswMDAwLCBPbGVrc2FuZHIgU3V2b3JvdiB3cm90ZToNCj4gPiBTUElfSU9DX1dS
-X01BWF9TUEVFRF9IWiBjb21tYW5kIGFsd2F5cyBzZXRzIHNwaS0+bWF4X3NwZWVkX2h6DQo+ID4g
-dGhlIGluaXRpYWwgdmFsdWUgY29tZSBmcm9tIERULg0KPg0KPiBUaGlzIGlzIGludGVudGlvbmFs
-LiAgSXQncyBkb2luZyBhIGNhbGwgdG8gc3BpX3NldHVwKCkgdGhlbiByZXN0b3JpbmcNCj4gdGhl
-IG9yaWdpbmFsIHZhbHVlLCB0aGUgZ29hbCBiZWluZyBqdXN0IHRvIHJ1biBzcGlfc2V0dXAoKSB3
-aXRoIHRoZSBuZXcNCj4gdmFsdWUgLSBpdCdzIG5vdCByZWFsbHkgYSBnb29kIGlkZWEgdG8gY2hh
-bmdlIHRoZSBtYXhpbXVtIHNwZWVkIGluIHRoZQ0KPiBmaXJzdCBwbGFjZS4NCg0KTm93IEkgc2Vl
-IGl0Lg0KPg0KPiA+IEl0IGxlYWRzIHRvIHNldCBhIHdyb25nIG1heCBzcGVlZCB3aXRoIElPQ1RM
-IGNhbGwuDQo+IEluIHdoYXQgd2F5IGRvZXMgaXQgbGVhZCB0byB0aGUgd3Jvbmcgc3BlZWQgYmVp
-bmcgc2V0Pw0KDQpBZnRlciBhbGwsIEkgcmV2aWV3ZWQgdGhlIGNvZGUgYW5kIGZvdW5kIG91dCB0
-aGF0IHRoZSBwcm9ibGVtIGlzIG5vdA0KaW4gc3BpZGV2X2lvY3RsLA0KdGhlIHByb2JsZW0gaXMg
-aW4gc3BpZGV2X21lc3NhZ2UoKSdzIGRlYnVnIG1lc3NhZ2UgOikNClRoZSByZWFsIGNvZGUgaXMg
-b2s6DQoNCmRyaXZlcnMvc3BpL3NwaWRldi5jOiBzcGlkZXZfbWVzc2FnZSgpOg0KLi4uDQogICAg
-ICAgICAgICAgICAgIGtfdG1wLT5zcGVlZF9oeiA9IHVfdG1wLT5zcGVlZF9oejsNCiAgICAgICAg
-ICAgICAgICAgaWYgKCFrX3RtcC0+c3BlZWRfaHopDQogICAgICAgICAgICAgICAgICAgICAgICBr
-X3RtcC0+c3BlZWRfaHogPSBzcGlkZXYtPnNwZWVkX2h6Ow0KLi4uDQoNCmJ1dCB0aGUgZGVidWcg
-bWVzc2FnZSB0YWtlcyB3cm9uZyB2YWx1ZToNCmRyaXZlcnMvc3BpL3NwaWRldi5jOiBzcGlkZXZf
-bWVzc2FnZSgpOg0KLi4uDQogICAgICAgICAgICAgIGRldl9pbmZvKCZzcGlkZXYtPnNwaS0+ZGV2
-LA0KICAgICAgICAgICAgICAgICAgICAgICIgIHhmZXIgbGVuICV1ICVzJXMlcyVkYml0cyAldSB1
-c2VjICV1SHoNCihzcGVlZF9oej0lZCBtYXhfc3BlZWRfaHo9JWQpXG4iLA0KICAgICAgICAgICAg
-ICAgICAgICAgICAgdV90bXAtPmxlbiwNCiAgICAgICAgICAgICAgICAgICAgICAgIHVfdG1wLT5y
-eF9idWYgPyAicnggIiA6ICIiLA0KICAgICAgICAgICAgICAgICAgICAgICAgdV90bXAtPnR4X2J1
-ZiA/ICJ0eCAiIDogIiIsDQogICAgICAgICAgICAgICAgICAgICAgICB1X3RtcC0+Y3NfY2hhbmdl
-ID8gImNzICIgOiAiIiwNCiAgICAgICAgICAgICAgICAgICAgICAgIHVfdG1wLT5iaXRzX3Blcl93
-b3JkID8gOiBzcGlkZXYtPnNwaS0+Yml0c19wZXJfd29yZCwNCiAgICAgICAgICAgICAgICAgICAg
-ICAgIHVfdG1wLT5kZWxheV91c2VjcywNCj4+PiAgICAgICAgICAgICAgICAgICAgICAgIHVfdG1w
-LT5zcGVlZF9oeiA/IDogc3BpZGV2LT5zcGktPm1heF9zcGVlZF9oeik7DQouLi4NCkl0IGxlYWRz
-IHRvIGRlYnVnIG1lc3NhZ2VzIGxpa2U6DQoNClsgMTIyNy41MTI4MDZdIHNwaWRldiBzcGkwLjA6
-IHNldHVwIG1vZGUgMCwgMzIgYml0cy93LCAxMDAwMDAwIEh6IG1heCAtLT4gMA0KWyAxMjI3LjU0
-MTc0OV0gc3BpZGV2IHNwaTAuMDogICB4ZmVyIGxlbiA0MDk2IHR4IDMyYml0cyAwIHVzZWMgMTAw
-MDAwMDBIeg0KLi4NClsgMTIyNy42MTYxNjVdIHNwaWRldiBzcGkwLjA6IHNldHVwIG1vZGUgMCwg
-MzIgYml0cy93LCAyMDAwMDAwIEh6IG1heCAtLT4gMA0KWyAxMjI3LjY0NTA5NV0gc3BpZGV2IHNw
-aTAuMDogICB4ZmVyIGxlbiA0MDk2IHR4IDMyYml0cyAwIHVzZWMgMTAwMDAwMDBIeg0KLi4uDQpb
-IDEyMjcuNzAyNzE0XSBzcGlkZXYgc3BpMC4wOiBzZXR1cCBtb2RlIDAsIDMyIGJpdHMvdywgMjAw
-MDAwMDAgSHogbWF4IC0tPiAwDQpbIDEyMjcuNzMxODAxXSBzcGlkZXYgc3BpMC4wOiAgIHhmZXIg
-bGVuIDQwOTYgdHggMzJiaXRzIDAgdXNlYyAxMDAwMDAwMEh6DQouLi4NClNvIGlmIG9uZSBwYXNz
-ZXMgdGhlIG1lc3NhZ2UgKHVzaW5nIGlvY3RsIGluc3RlYWQgb2Ygd3JpdGUgdG8gZmQpIHdpdGgN
-CmVtcHR5IHNwZWVkX2h6LA0KdGhlIGRlYnVnIG1lc3NhZ2UgdGVsbHMgdGhlIHdyb25nIHJlYWwg
-c3BlZWQuIEl0IGZvcmNlZCBtZSB0byB0aGluayBpbg0KdGhlIHdyb25nIGRpcmVjdGlvbi4NCg0K
-PiA+IEZpeCB0aGUgbG9naWMgb2YgYSBtYXggc3BlZWQgYXNzaWdubWVudC4NCj4NCj4gSWYgdGhl
-IGV4cGVjdGF0aW9uIGlzIHRoYXQgdGhlIGRlZmF1bHQgc3BlZWQgc2hvdWxkIGJlIGNoYW5nZWQg
-Zm9yIHRoZQ0KPiBkZXZpY2UgdGhpcyBzaG91bGQgYmUgaGFuZGxlZCBhdCB0aGUgc3BpZGV2IGxl
-dmVsIHJhdGhlciB0aGFuIGluIHRoZQ0KPiBjb3JlLg0KDQpBZ3JlZS4gSSBmaXhlZCB0aGUgd3Jv
-bmcgcGxhY2UgOikNCkknbGwgcmVwbGFjZSB0aGlzIHBhdGNoIHdpdGggYmV0dGVyIG9uZS4NCg0K
-VGhhbnghDQoNCi0tIA0KQmVzdCByZWdhcmRzDQpPbGVrc2FuZHIgU3V2b3Jvdg0KDQpUb3JhZGV4
-IEFHDQpBbHRzYWdlbnN0cmFzc2UgNSB8IDYwNDggSG9ydy9MdXplcm4gfCBTd2l0emVybGFuZCB8
-IFQ6ICs0MSA0MSA1MDANCjQ4MDAgKG1haW4gbGluZSkNCg==
+On Thu, Feb 20, 2020 at 7:11 AM Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org> wrote:
+> On Wed, Feb 19, 2020 at 04:47:50PM +0100, Linus Walleij wrote:
+
+> > > +                       if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
+> > > +                           ctlr->cs_gpiods[spi->chip_select])
+> > > +                               tmp |= SPI_CS_HIGH;
+> >
+> > Should this be tmp ^= SPI_CS_HIGH?
+> >
+> > If the device tree node for cs-gpios is actually active high, which
+> > happens, then you probably want the opposite of what was
+> > requested, right?
+>
+> I don't quite follow.  Using an XOR here would seem to be inconsistent
+> with what you added to of_spi_parse_dt():  In that function, you
+> *always* set SPI_CS_HIGH if gpio_descs are used.  So if the polarity
+> is specified in the cs-gpios property, anything else is considered
+> irrelevant and ignored.
+
+It's not just cs-gpios though: if you look in drivers/gpio/gpiolib-of.c
+in the function of_gpio_flags_quirks() you see that the bool property
+spi-cs-high in the consumer node will take precedence over the
+cs-gpios property and that will also be handled transparently by gpiolib.
+(commit 6953c57ab1721 with fixes on top).
+
+But I guess that is what you mean.
+
+Yes as far as I can see this solves the problem of double-specifying
+(both in device tree and from userspace) that we want CS high,
+so after some thinking:
+Reviewed-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+
+> TBH the way commit f3186dd87669 abuses SPI_CS_HIGH seems clumsy to me.
+
+Clumsy programmer, that's me, yeah sometimes :/
+
+> Would it not have been possible to just amend spi_set_cs() like this:
+>
+> -       if (spi->mode & SPI_CS_HIGH)
+> +       if (spi->mode & SPI_CS_HIGH || (ctlr->use_gpio_descriptors &&
+> +                                        ctlr->cs_gpiods &&
+> +                                        ctlr->cs_gpiods[spi->chip_select]))
+>                 enable = !enable;
+>
+> This would have avoided the regression fixed by my patch.
+
+There is way too much double inversion going on for sure (some
+of it dating back before any attempts to use gpiolib for polarity
+handling and I just feel partially responsible) but I just haven't
+figured out how to properly fix the problem. Maybe it was just
+stupid of me to try to move polarity inversion semantics over to
+gpiolib before fixing that though.
+
+Patches like the above are also welcome!
+
+Yours,
+Linus Walleij

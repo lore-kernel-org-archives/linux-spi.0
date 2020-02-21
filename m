@@ -1,86 +1,72 @@
-From: Matthias Kaehlcke <mka@chromium.org>
-Subject: Re: [PATCH 3/6] i2c: i2c-qcom-geni: Add interconnect support
-Date: Thu, 20 Feb 2020 16:24:00 -0800
-Message-ID: <20200221002400.GD24720@google.com>
-References: <1581946205-27189-1-git-send-email-akashast@codeaurora.org>
- <1581946205-27189-4-git-send-email-akashast@codeaurora.org>
- <20200218224709.GF15781@google.com>
- <84a7d97a-4e10-5509-9c87-af8a545c7385@codeaurora.org>
+From: Oleksandr Suvorov <oleksandr.suvorov-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: spidev: fix a max speed setting
+Date: Fri, 21 Feb 2020 12:43:20 +0000
+Message-ID: <CAGgjyvGQ3edNcBUUpcBmTaaNcYA3yvx19m+6MVyKMWgWPVabKQ@mail.gmail.com>
+References: <20200220141143.3902922-1-oleksandr.suvorov@toradex.com>
+ <20200220141143.3902922-3-oleksandr.suvorov@toradex.com>
+ <20200220184201.GE3926@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Cc: gregkh@linuxfoundation.org, agross@kernel.org,
-        bjorn.andersson@linaro.org, wsa@the-dreams.de, broonie@kernel.org,
-        mark.rutland@arm.com, robh+dt@kernel.org,
-        linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, swboyd@chromium.org,
-        mgautam@codeaurora.org, linux-arm-msm@vger.kernel.org,
-        linux-serial@vger.kernel.org, dianders@chromium.org
-To: Akash Asthana <akashast@codeaurora.org>
-Return-path: <linux-serial-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <84a7d97a-4e10-5509-9c87-af8a545c7385@codeaurora.org>
-Sender: linux-serial-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Marcel Ziswiler <marcel.ziswiler-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>,
+        Igor Opanyuk <igor.opanyuk-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>,
+        Philippe Schenker <philippe.schenker-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200220184201.GE3926-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Language: en-US
+Content-ID: <6BD65D70FEA0414785663F93A5CC5F7B-wNKe6lTLrGecE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Akash,
-
-On Wed, Feb 19, 2020 at 07:17:44PM +0530, Akash Asthana wrote:
-> Hi Matthias,
-> 
-> On 2/19/2020 4:17 AM, Matthias Kaehlcke wrote:
-> > On Mon, Feb 17, 2020 at 07:00:02PM +0530, Akash Asthana wrote:
-> > > Get the interconnect paths for I2C based Serial Engine device
-> > > and vote according to the bus speed of the driver.
-> > > 
-> > > Signed-off-by: Akash Asthana <akashast@codeaurora.org>
-> > > ---
-> > >   drivers/i2c/busses/i2c-qcom-geni.c | 84 ++++++++++++++++++++++++++++++++++++--
-> > >   1 file changed, 80 insertions(+), 4 deletions(-)
-> > > 
-> > > diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c-qcom-geni.c
-> > > index 17abf60c..5de10a1 100644
-> > > --- a/drivers/i2c/busses/i2c-qcom-geni.c
-> > > +++ b/drivers/i2c/busses/i2c-qcom-geni.c
-> > >
-> > >   static void geni_i2c_err_misc(struct geni_i2c_dev *gi2c)
-> > >   {
-> > >   	u32 m_cmd = readl_relaxed(gi2c->se.base + SE_GENI_M_CMD0);
-> > > @@ -563,17 +601,34 @@ static int geni_i2c_probe(struct platform_device *pdev)
-> > >   	gi2c->adap.dev.of_node = pdev->dev.of_node;
-> > >   	strlcpy(gi2c->adap.name, "Geni-I2C", sizeof(gi2c->adap.name));
-> > > +	ret = geni_i2c_icc_get(&gi2c->se);
-> > > +	if (ret)
-> > > +		return ret;
-> > > +	/* Set the bus quota to a reasonable value */
-> > > +	gi2c->se.avg_bw_core = Bps_to_icc(1000);
-> > > +	gi2c->se.peak_bw_core = Bps_to_icc(CORE_2X_100_MHZ);
-> > > +	gi2c->se.avg_bw_cpu = Bps_to_icc(1000);
-> > > +	gi2c->se.peak_bw_cpu = Bps_to_icc(1000);
-> > > +	gi2c->se.avg_bw_ddr = Bps_to_icc(gi2c->clk_freq_out);
-> > > +	gi2c->se.peak_bw_ddr = Bps_to_icc(2 * gi2c->clk_freq_out);
-> > > +
-> > > +	/* Vote for core clocks and CPU for register access */
-> > > +	icc_set_bw(gi2c->se.icc_path[GENI_TO_CORE], gi2c->se.avg_bw_core,
-> > > +				gi2c->se.peak_bw_core);
-> > > +	icc_set_bw(gi2c->se.icc_path[CPU_TO_GENI], gi2c->se.avg_bw_cpu,
-> > > +				gi2c->se.peak_bw_cpu);
-> > error handling needed?
-> 
-> I will add error handling for GENI_TO_CORE path in all the drivers. Will it
-> be okay if we don't handle errors for CPU_TO_GENI and GENI_TO_DDR path
-> 
-> as CPU and DDR will be running at much higher frequency?
-
-It may still work, but you might never know that there was a problem. I
-would be inclined to check the return value of all invocations of icc_set_bw()
-- including runtime suspend/resume - and log a message if a problem is
-detected. For runtime suspend/resume it would probably be wise to use
-dev_err_ratelimited(), to avoid spamming the system log too much in case of
-a persistent problem.
-
-If others think that error checking all icc_set_bw() calls is overkill
-please speak up :)
-
-Thanks
-
-Matthias
+SGkgTWFyaywNCg0KT24gVGh1LCBGZWIgMjAsIDIwMjAgYXQgODo0MiBQTSBNYXJrIEJyb3duIDxi
+cm9vbmllQGtlcm5lbC5vcmc+IHdyb3RlOg0KPg0KPiBPbiBUaHUsIEZlYiAyMCwgMjAyMCBhdCAw
+MjoxMTo1MVBNICswMDAwLCBPbGVrc2FuZHIgU3V2b3JvdiB3cm90ZToNCj4gPiBTUElfSU9DX1dS
+X01BWF9TUEVFRF9IWiBjb21tYW5kIGFsd2F5cyBzZXRzIHNwaS0+bWF4X3NwZWVkX2h6DQo+ID4g
+dGhlIGluaXRpYWwgdmFsdWUgY29tZSBmcm9tIERULg0KPg0KPiBUaGlzIGlzIGludGVudGlvbmFs
+LiAgSXQncyBkb2luZyBhIGNhbGwgdG8gc3BpX3NldHVwKCkgdGhlbiByZXN0b3JpbmcNCj4gdGhl
+IG9yaWdpbmFsIHZhbHVlLCB0aGUgZ29hbCBiZWluZyBqdXN0IHRvIHJ1biBzcGlfc2V0dXAoKSB3
+aXRoIHRoZSBuZXcNCj4gdmFsdWUgLSBpdCdzIG5vdCByZWFsbHkgYSBnb29kIGlkZWEgdG8gY2hh
+bmdlIHRoZSBtYXhpbXVtIHNwZWVkIGluIHRoZQ0KPiBmaXJzdCBwbGFjZS4NCg0KTm93IEkgc2Vl
+IGl0Lg0KPg0KPiA+IEl0IGxlYWRzIHRvIHNldCBhIHdyb25nIG1heCBzcGVlZCB3aXRoIElPQ1RM
+IGNhbGwuDQo+IEluIHdoYXQgd2F5IGRvZXMgaXQgbGVhZCB0byB0aGUgd3Jvbmcgc3BlZWQgYmVp
+bmcgc2V0Pw0KDQpBZnRlciBhbGwsIEkgcmV2aWV3ZWQgdGhlIGNvZGUgYW5kIGZvdW5kIG91dCB0
+aGF0IHRoZSBwcm9ibGVtIGlzIG5vdA0KaW4gc3BpZGV2X2lvY3RsLA0KdGhlIHByb2JsZW0gaXMg
+aW4gc3BpZGV2X21lc3NhZ2UoKSdzIGRlYnVnIG1lc3NhZ2UgOikNClRoZSByZWFsIGNvZGUgaXMg
+b2s6DQoNCmRyaXZlcnMvc3BpL3NwaWRldi5jOiBzcGlkZXZfbWVzc2FnZSgpOg0KLi4uDQogICAg
+ICAgICAgICAgICAgIGtfdG1wLT5zcGVlZF9oeiA9IHVfdG1wLT5zcGVlZF9oejsNCiAgICAgICAg
+ICAgICAgICAgaWYgKCFrX3RtcC0+c3BlZWRfaHopDQogICAgICAgICAgICAgICAgICAgICAgICBr
+X3RtcC0+c3BlZWRfaHogPSBzcGlkZXYtPnNwZWVkX2h6Ow0KLi4uDQoNCmJ1dCB0aGUgZGVidWcg
+bWVzc2FnZSB0YWtlcyB3cm9uZyB2YWx1ZToNCmRyaXZlcnMvc3BpL3NwaWRldi5jOiBzcGlkZXZf
+bWVzc2FnZSgpOg0KLi4uDQogICAgICAgICAgICAgIGRldl9pbmZvKCZzcGlkZXYtPnNwaS0+ZGV2
+LA0KICAgICAgICAgICAgICAgICAgICAgICIgIHhmZXIgbGVuICV1ICVzJXMlcyVkYml0cyAldSB1
+c2VjICV1SHoNCihzcGVlZF9oej0lZCBtYXhfc3BlZWRfaHo9JWQpXG4iLA0KICAgICAgICAgICAg
+ICAgICAgICAgICAgdV90bXAtPmxlbiwNCiAgICAgICAgICAgICAgICAgICAgICAgIHVfdG1wLT5y
+eF9idWYgPyAicnggIiA6ICIiLA0KICAgICAgICAgICAgICAgICAgICAgICAgdV90bXAtPnR4X2J1
+ZiA/ICJ0eCAiIDogIiIsDQogICAgICAgICAgICAgICAgICAgICAgICB1X3RtcC0+Y3NfY2hhbmdl
+ID8gImNzICIgOiAiIiwNCiAgICAgICAgICAgICAgICAgICAgICAgIHVfdG1wLT5iaXRzX3Blcl93
+b3JkID8gOiBzcGlkZXYtPnNwaS0+Yml0c19wZXJfd29yZCwNCiAgICAgICAgICAgICAgICAgICAg
+ICAgIHVfdG1wLT5kZWxheV91c2VjcywNCj4+PiAgICAgICAgICAgICAgICAgICAgICAgIHVfdG1w
+LT5zcGVlZF9oeiA/IDogc3BpZGV2LT5zcGktPm1heF9zcGVlZF9oeik7DQouLi4NCkl0IGxlYWRz
+IHRvIGRlYnVnIG1lc3NhZ2VzIGxpa2U6DQoNClsgMTIyNy41MTI4MDZdIHNwaWRldiBzcGkwLjA6
+IHNldHVwIG1vZGUgMCwgMzIgYml0cy93LCAxMDAwMDAwIEh6IG1heCAtLT4gMA0KWyAxMjI3LjU0
+MTc0OV0gc3BpZGV2IHNwaTAuMDogICB4ZmVyIGxlbiA0MDk2IHR4IDMyYml0cyAwIHVzZWMgMTAw
+MDAwMDBIeg0KLi4NClsgMTIyNy42MTYxNjVdIHNwaWRldiBzcGkwLjA6IHNldHVwIG1vZGUgMCwg
+MzIgYml0cy93LCAyMDAwMDAwIEh6IG1heCAtLT4gMA0KWyAxMjI3LjY0NTA5NV0gc3BpZGV2IHNw
+aTAuMDogICB4ZmVyIGxlbiA0MDk2IHR4IDMyYml0cyAwIHVzZWMgMTAwMDAwMDBIeg0KLi4uDQpb
+IDEyMjcuNzAyNzE0XSBzcGlkZXYgc3BpMC4wOiBzZXR1cCBtb2RlIDAsIDMyIGJpdHMvdywgMjAw
+MDAwMDAgSHogbWF4IC0tPiAwDQpbIDEyMjcuNzMxODAxXSBzcGlkZXYgc3BpMC4wOiAgIHhmZXIg
+bGVuIDQwOTYgdHggMzJiaXRzIDAgdXNlYyAxMDAwMDAwMEh6DQouLi4NClNvIGlmIG9uZSBwYXNz
+ZXMgdGhlIG1lc3NhZ2UgKHVzaW5nIGlvY3RsIGluc3RlYWQgb2Ygd3JpdGUgdG8gZmQpIHdpdGgN
+CmVtcHR5IHNwZWVkX2h6LA0KdGhlIGRlYnVnIG1lc3NhZ2UgdGVsbHMgdGhlIHdyb25nIHJlYWwg
+c3BlZWQuIEl0IGZvcmNlZCBtZSB0byB0aGluayBpbg0KdGhlIHdyb25nIGRpcmVjdGlvbi4NCg0K
+PiA+IEZpeCB0aGUgbG9naWMgb2YgYSBtYXggc3BlZWQgYXNzaWdubWVudC4NCj4NCj4gSWYgdGhl
+IGV4cGVjdGF0aW9uIGlzIHRoYXQgdGhlIGRlZmF1bHQgc3BlZWQgc2hvdWxkIGJlIGNoYW5nZWQg
+Zm9yIHRoZQ0KPiBkZXZpY2UgdGhpcyBzaG91bGQgYmUgaGFuZGxlZCBhdCB0aGUgc3BpZGV2IGxl
+dmVsIHJhdGhlciB0aGFuIGluIHRoZQ0KPiBjb3JlLg0KDQpBZ3JlZS4gSSBmaXhlZCB0aGUgd3Jv
+bmcgcGxhY2UgOikNCkknbGwgcmVwbGFjZSB0aGlzIHBhdGNoIHdpdGggYmV0dGVyIG9uZS4NCg0K
+VGhhbnghDQoNCi0tIA0KQmVzdCByZWdhcmRzDQpPbGVrc2FuZHIgU3V2b3Jvdg0KDQpUb3JhZGV4
+IEFHDQpBbHRzYWdlbnN0cmFzc2UgNSB8IDYwNDggSG9ydy9MdXplcm4gfCBTd2l0emVybGFuZCB8
+IFQ6ICs0MSA0MSA1MDANCjQ4MDAgKG1haW4gbGluZSkNCg==

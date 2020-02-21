@@ -1,93 +1,82 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: qup: call spi_qup_pm_resume_runtime before suspending" to the spi tree
-Date: Fri, 21 Feb 2020 14:21:17 +0000
-Message-ID: <applied-20200214074340.2286170-1-vkoul@kernel.org>
-References: <20200214074340.2286170-1-vkoul@kernel.org>
-Cc: Andy Gross <agross-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Bjorn Andersson <bjorn.andersson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Vinod Koul <vkoul-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Yuji sasaki <sasakiy-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-To: Yuji Sasaki <sasakiy-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+From: Matthias Kaehlcke <mka-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH 4/6] spi: spi-geni-qcom: Add interconnect support
+Date: Fri, 21 Feb 2020 10:55:00 -0800
+Message-ID: <20200221185500.GE24720@google.com>
+References: <1581946205-27189-1-git-send-email-akashast@codeaurora.org>
+ <1581946205-27189-5-git-send-email-akashast@codeaurora.org>
+ <20200219180950.GA24720@google.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Cc: gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org, agross-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        bjorn.andersson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        mark.rutland-5wv7dgnIgG8@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, swboyd-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+        mgautam-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org, linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org
+To: Akash Asthana <akashast-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200214074340.2286170-1-vkoul-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20200219180950.GA24720-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+On Wed, Feb 19, 2020 at 10:09:50AM -0800, Matthias Kaehlcke wrote:
+> On Mon, Feb 17, 2020 at 07:00:03PM +0530, Akash Asthana wrote:
+> > Get the interconnect paths for SPI based Serial Engine device
+> > and vote according to the current bus speed of the driver.
+> > 
+> > Signed-off-by: Akash Asthana <akashast-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+> > ---
+> >  drivers/spi/spi-geni-qcom.c | 65 ++++++++++++++++++++++++++++++++++++++++++---
+> >  1 file changed, 62 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+> > index c397242..a066ef26 100644
+> > --- a/drivers/spi/spi-geni-qcom.c
+> > +++ b/drivers/spi/spi-geni-qcom.c
+> > @@ -608,16 +653,25 @@ static int spi_geni_remove(struct platform_device *pdev)
+> >  	spi_unregister_master(spi);
+> >  
+> >  	free_irq(mas->irq, spi);
+> > +	geni_spi_icc_put(&mas->se);
+> >  	pm_runtime_disable(&pdev->dev);
+> >  	return 0;
+> >  }
+> >  
+> >  static int __maybe_unused spi_geni_runtime_suspend(struct device *dev)
+> >  {
+> > +	int ret;
+> >  	struct spi_master *spi = dev_get_drvdata(dev);
+> >  	struct spi_geni_master *mas = spi_master_get_devdata(spi);
+> >  
+> > -	return geni_se_resources_off(&mas->se);
+> > +	ret = geni_se_resources_off(&mas->se);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	icc_set_bw(mas->se.icc_path[GENI_TO_CORE], 0, 0);
+> 
+> This causes my SC7180 system to reset at boot time:
+> 
+> [    3.509652] qcom-qmp-phy 88e9000.phy-wrapper: Registered Qcom-QMP phy
+> [    3.516956] qcom-qusb2-phy 88e3000.phy: Registered Qcom-QUSB2 phy
+> [    3.524450] geni_se_qup 8c0000.geniqup: Adding to iommu group 4
+> [    3.533896] spi_master spi0: will run message pump with realtime priority
+> <reset>
+> 
+> The system does not reset when passing 'Bps_to_icc(1000)' (=> 1) instead of 0.
 
-   spi: qup: call spi_qup_pm_resume_runtime before suspending
+I found this is related with the use of 'earlycon'.
 
-has been applied to the spi tree at
+There is a short window where the early console and the 'real' console coexist:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.6
+[    3.858122] printk: console [ttyMSM0] enabled
+[    3.875692] printk: bootconsole [qcom_geni0] disabled
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+The reset probably occurs when the early console tries to write, but the ICC is
+effectively disabled because ttyMSM0 and the other geni ports are runtime
+suspended.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 136b5cd2e2f97581ae560cff0db2a3b5369112da Mon Sep 17 00:00:00 2001
-From: Yuji Sasaki <sasakiy-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Date: Fri, 14 Feb 2020 13:13:40 +0530
-Subject: [PATCH] spi: qup: call spi_qup_pm_resume_runtime before suspending
-
-spi_qup_suspend() will cause synchronous external abort when
-runtime suspend is enabled and applied, as it tries to
-access SPI controller register while clock is already disabled
-in spi_qup_pm_suspend_runtime().
-
-Signed-off-by: Yuji sasaki <sasakiy-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Signed-off-by: Vinod Koul <vkoul-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Link: https://lore.kernel.org/r/20200214074340.2286170-1-vkoul-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-qup.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index dd3434a407ea..a364b99497e2 100644
---- a/drivers/spi/spi-qup.c
-+++ b/drivers/spi/spi-qup.c
-@@ -1217,6 +1217,11 @@ static int spi_qup_suspend(struct device *device)
- 	struct spi_qup *controller = spi_master_get_devdata(master);
- 	int ret;
- 
-+	if (pm_runtime_suspended(device)) {
-+		ret = spi_qup_pm_resume_runtime(device);
-+		if (ret)
-+			return ret;
-+	}
- 	ret = spi_master_suspend(master);
- 	if (ret)
- 		return ret;
-@@ -1225,10 +1230,8 @@ static int spi_qup_suspend(struct device *device)
- 	if (ret)
- 		return ret;
- 
--	if (!pm_runtime_suspended(device)) {
--		clk_disable_unprepare(controller->cclk);
--		clk_disable_unprepare(controller->iclk);
--	}
-+	clk_disable_unprepare(controller->cclk);
-+	clk_disable_unprepare(controller->iclk);
- 	return 0;
- }
- 
--- 
-2.20.1
+In any case that's not an issue of the SPI driver, but needs to be addressed
+somewhere in the console/UART code.

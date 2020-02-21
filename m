@@ -1,20 +1,23 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spidev: Fix CS polarity if GPIO descriptors are used" to the spi tree
-Date: Fri, 21 Feb 2020 14:21:15 +0000
-Message-ID: <applied-fca3ba7cdc930cd36854666ceac4fbcf01b89028.1582027457.git.lukas@wunner.de>
-References: <fca3ba7cdc930cd36854666ceac4fbcf01b89028.1582027457.git.lukas@wunner.de>
-Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+Subject: Applied "spi: qup: call spi_qup_pm_resume_runtime before suspending" to the spi tree
+Date: Fri, 21 Feb 2020 14:21:17 +0000
+Message-ID: <applied-20200214074340.2286170-1-vkoul@kernel.org>
+References: <20200214074340.2286170-1-vkoul@kernel.org>
+Cc: Andy Gross <agross-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Bjorn Andersson <bjorn.andersson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Simon Han <z.han-pnUOlEj4XnTQT0dZR+AlfA@public.gmane.org>, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+        Vinod Koul <vkoul-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Yuji sasaki <sasakiy-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+To: Yuji Sasaki <sasakiy-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <fca3ba7cdc930cd36854666ceac4fbcf01b89028.1582027457.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
+In-Reply-To: <20200214074340.2286170-1-vkoul-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: spidev: Fix CS polarity if GPIO descriptors are used
+   spi: qup: call spi_qup_pm_resume_runtime before suspending
 
 has been applied to the spi tree at
 
@@ -39,56 +42,52 @@ to this mail.
 Thanks,
 Mark
 
->From 138c9c32f090894614899eca15e0bb7279f59865 Mon Sep 17 00:00:00 2001
-From: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-Date: Tue, 18 Feb 2020 13:08:00 +0100
-Subject: [PATCH] spi: spidev: Fix CS polarity if GPIO descriptors are used
+>From 136b5cd2e2f97581ae560cff0db2a3b5369112da Mon Sep 17 00:00:00 2001
+From: Yuji Sasaki <sasakiy-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Date: Fri, 14 Feb 2020 13:13:40 +0530
+Subject: [PATCH] spi: qup: call spi_qup_pm_resume_runtime before suspending
 
-Commit f3186dd87669 ("spi: Optionally use GPIO descriptors for CS GPIOs")
-amended of_spi_parse_dt() to always set SPI_CS_HIGH for SPI slaves whose
-Chip Select is defined by a "cs-gpios" devicetree property.
+spi_qup_suspend() will cause synchronous external abort when
+runtime suspend is enabled and applied, as it tries to
+access SPI controller register while clock is already disabled
+in spi_qup_pm_suspend_runtime().
 
-This change broke userspace applications which issue an SPI_IOC_WR_MODE
-ioctl() to an spidev:  Chip Select polarity will be incorrect unless the
-application is changed to set SPI_CS_HIGH.  And once changed, it will be
-incompatible with kernels not containing the commit.
-
-Fix by setting SPI_CS_HIGH in spidev_ioctl() (under the same conditions
-as in of_spi_parse_dt()).
-
-Fixes: f3186dd87669 ("spi: Optionally use GPIO descriptors for CS GPIOs")
-Reported-by: Simon Han <z.han-pnUOlEj4XnTQT0dZR+AlfA@public.gmane.org>
-Signed-off-by: Lukas Wunner <lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org>
-Reviewed-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Link: https://lore.kernel.org/r/fca3ba7cdc930cd36854666ceac4fbcf01b89028.1582027457.git.lukas-JFq808J9C/izQB+pC5nmwQ@public.gmane.org
+Signed-off-by: Yuji sasaki <sasakiy-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Signed-off-by: Vinod Koul <vkoul-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Link: https://lore.kernel.org/r/20200214074340.2286170-1-vkoul-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org # v5.1+
 ---
- drivers/spi/spidev.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/spi/spi-qup.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 1e217e3e9486..2ab6e782f14c 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -396,6 +396,7 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
- 		else
- 			retval = get_user(tmp, (u32 __user *)arg);
- 		if (retval == 0) {
-+			struct spi_controller *ctlr = spi->controller;
- 			u32	save = spi->mode;
+diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+index dd3434a407ea..a364b99497e2 100644
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -1217,6 +1217,11 @@ static int spi_qup_suspend(struct device *device)
+ 	struct spi_qup *controller = spi_master_get_devdata(master);
+ 	int ret;
  
- 			if (tmp & ~SPI_MODE_MASK) {
-@@ -403,6 +404,10 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
- 				break;
- 			}
++	if (pm_runtime_suspended(device)) {
++		ret = spi_qup_pm_resume_runtime(device);
++		if (ret)
++			return ret;
++	}
+ 	ret = spi_master_suspend(master);
+ 	if (ret)
+ 		return ret;
+@@ -1225,10 +1230,8 @@ static int spi_qup_suspend(struct device *device)
+ 	if (ret)
+ 		return ret;
  
-+			if (ctlr->use_gpio_descriptors && ctlr->cs_gpiods &&
-+			    ctlr->cs_gpiods[spi->chip_select])
-+				tmp |= SPI_CS_HIGH;
-+
- 			tmp |= spi->mode & ~SPI_MODE_MASK;
- 			spi->mode = (u16)tmp;
- 			retval = spi_setup(spi);
+-	if (!pm_runtime_suspended(device)) {
+-		clk_disable_unprepare(controller->cclk);
+-		clk_disable_unprepare(controller->iclk);
+-	}
++	clk_disable_unprepare(controller->cclk);
++	clk_disable_unprepare(controller->iclk);
+ 	return 0;
+ }
+ 
 -- 
 2.20.1

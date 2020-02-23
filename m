@@ -1,96 +1,148 @@
-From: Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH RFC 2/2] memory: add Renesas RPC-IF driver
-Date: Sat, 22 Feb 2020 23:42:26 +0300
-Message-ID: <5603f393-554d-e2a8-c2d8-6bafc20f4169@cogentembedded.com>
-References: <cb7022c9-0059-4eb2-7910-aab42124fa1c@cogentembedded.com>
- <4db876ed-1ccc-e3be-311d-30cd52f40259@cogentembedded.com>
- <5760bcdb-e44b-6f18-7262-9526684e5780@de.bosch.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH] docs: dt: fix several broken doc references
+Date: Sun, 23 Feb 2020 09:59:53 +0100
+Message-ID: <0e530494349b37eb2eab4a8eccf56626e0b18e6d.1582448388.git.mchehab+huawei@kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Philipp Zabel <p.zabel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        Mason Yang <masonccyang-I/i+R0kf0WFNUHwG+Fw1Kw@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Chris Brandt <chris.brandt-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-        linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: "Behme Dirk (CM/ESO2)" <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <5760bcdb-e44b-6f18-7262-9526684e5780-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
-Content-Language: en-MW
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Transfer-Encoding: 8bit
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Piotr Sroka <piotrs@cadence.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Olivier Moysan <olivier.moysan@st.com>,
+        Arnaud Pouliquen <arnaud.pouliquen@st.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?=
+        <jerome.pouiller@silabs.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
+        netdev@vger.kerne
+To: Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Return-path: <linux-doc-owner@vger.kernel.org>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 02/10/2020 01:21 PM, Behme Dirk (CM/ESO2) wrote:
+There are several DT doc references that require manual fixes.
+I found 3 cases fixed on this patch:
 
->> Add the memory driver for Renesas RPC-IF which registers either SPI or
->> HyperFLash device depending on the contents of the device tree subnode.
->> It also provides the absract "back end" device APIs that can be used by
->> the "front end" SPI/MTD drivers to talk to the real hardware.
->>
->> Based on the original patch by Mason Yang <masonccyang-I/i+R0kf0WFNUHwG+Fw1Kw@public.gmane.org>.
->>
->> Signed-off-by: Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
-> 
-> 
-> FYI, please find below [1] the changes I did locally on this driver. It seems to read & write successfully on my custom M3 (R8A7796) device, now.
+	- directory named "binding/" instead of "bindings/";
+	- .txt to .yaml renames;
+	- file renames (still on txt format);
 
-   Not for me...
-   BTW, your patch had whitespace ruined, I had to apply it by hand, you'd better
-attach the patches, not paste. :-/
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+---
+ .../devicetree/bindings/mtd/cadence-nand-controller.txt       | 2 +-
+ .../devicetree/bindings/net/brcm,bcm7445-switch-v4.0.txt      | 2 +-
+ Documentation/devicetree/bindings/sound/st,stm32-sai.txt      | 2 +-
+ Documentation/devicetree/bindings/sound/st,stm32-spdifrx.txt  | 2 +-
+ Documentation/devicetree/bindings/spi/st,stm32-spi.yaml       | 2 +-
+ MAINTAINERS                                                   | 4 ++--
+ .../devicetree/bindings/net/wireless/siliabs,wfx.txt          | 2 +-
+ 7 files changed, 8 insertions(+), 8 deletions(-)
 
-> Best regards
-> 
-> Dirk
-> 
-> [1]
-> 
-> From d72b805cc461ab1e9747c973e9be84e7abb8f828 Mon Sep 17 00:00:00 2001
-> From: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
-> Date: Tue, 4 Feb 2020 08:39:31 +0100
-> Subject: [PATCH] memory: renesas-rpc-if: Correct the STRTIM and some other
->  clean up
-> 
-> This is required to make the driver work correctly in my M3 environment.
-> 
-> Signed-off-by: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
-> ---
->  drivers/memory/renesas-rpc-if.c | 42 ++++++++++++++++++++-------------
->  1 file changed, 25 insertions(+), 17 deletions(-)
-> 
-> diff --git a/drivers/memory/renesas-rpc-if.c b/drivers/memory/renesas-rpc-if.c
-> index 04be92b64bfa..f4356b066384 100644
-> --- a/drivers/memory/renesas-rpc-if.c
-> +++ b/drivers/memory/renesas-rpc-if.c
-[...]
-> @@ -513,19 +525,15 @@ ssize_t rpcif_dirmap_read(struct rpcif *rpc, u64 offs, size_t len, void *buf)
->      pm_runtime_get_sync(rpc->dev);
-> 
->      regmap_update_bits(rpc->regmap, RPCIF_CMNCR, RPCIF_CMNCR_MD, 0);
-> -    regmap_write(rpc->regmap, RPCIF_DRCR,
-> -             RPCIF_DRCR_RBURST(32) | RPCIF_DRCR_RBE);
-> -    regmap_write(rpc->regmap, RPCIF_DRCMR, rpc->command);
-> -    regmap_write(rpc->regmap, RPCIF_DREAR,
-> -             RPCIF_DREAR_EAV(offs >> 25) | RPCIF_DREAR_EAC(1));
-> -    regmap_write(rpc->regmap, RPCIF_DROPR, rpc->option);
-> -    regmap_write(rpc->regmap, RPCIF_DRENR,
-> -             rpc->enable & ~RPCIF_SMENR_SPIDE(0xF));
-> -    regmap_write(rpc->regmap, RPCIF_DRDMCR, rpc->dummy);
-> -    regmap_write(rpc->regmap, RPCIF_DRDRENR, rpc->ddr);
-
-   The driver somehow works only with this left in place (with 2 bytes eaten
-as before), otherwise all the flash reads all 0xff (via dirmap).
-
-> +    ret = wait_msg_xfer_end(rpc);
-> +    if (ret) {
-> +        len = 0;
-> +        goto err_out;
-> +    }
-> 
->      memcpy_fromio(buf, rpc->dirmap + from, len);
-> 
-> +err_out:
->      pm_runtime_put(rpc->dev);
-> 
->      return len;
-
-MBR, Sergei
+diff --git a/Documentation/devicetree/bindings/mtd/cadence-nand-controller.txt b/Documentation/devicetree/bindings/mtd/cadence-nand-controller.txt
+index f3893c4d3c6a..d2eada5044b2 100644
+--- a/Documentation/devicetree/bindings/mtd/cadence-nand-controller.txt
++++ b/Documentation/devicetree/bindings/mtd/cadence-nand-controller.txt
+@@ -27,7 +27,7 @@ Required properties of NAND chips:
+   - reg: shall contain the native Chip Select ids from 0 to max supported by
+     the cadence nand flash controller
+ 
+-See Documentation/devicetree/bindings/mtd/nand.txt for more details on
++See Documentation/devicetree/bindings/mtd/nand-controller.yaml for more details on
+ generic bindings.
+ 
+ Example:
+diff --git a/Documentation/devicetree/bindings/net/brcm,bcm7445-switch-v4.0.txt b/Documentation/devicetree/bindings/net/brcm,bcm7445-switch-v4.0.txt
+index 48a7f916c5e4..88b57b0ca1f4 100644
+--- a/Documentation/devicetree/bindings/net/brcm,bcm7445-switch-v4.0.txt
++++ b/Documentation/devicetree/bindings/net/brcm,bcm7445-switch-v4.0.txt
+@@ -45,7 +45,7 @@ Optional properties:
+   switch queue
+ 
+ - resets: a single phandle and reset identifier pair. See
+-  Documentation/devicetree/binding/reset/reset.txt for details.
++  Documentation/devicetree/bindings/reset/reset.txt for details.
+ 
+ - reset-names: If the "reset" property is specified, this property should have
+   the value "switch" to denote the switch reset line.
+diff --git a/Documentation/devicetree/bindings/sound/st,stm32-sai.txt b/Documentation/devicetree/bindings/sound/st,stm32-sai.txt
+index 944743dd9212..c42b91e525fa 100644
+--- a/Documentation/devicetree/bindings/sound/st,stm32-sai.txt
++++ b/Documentation/devicetree/bindings/sound/st,stm32-sai.txt
+@@ -36,7 +36,7 @@ SAI subnodes required properties:
+   - clock-names: Must contain "sai_ck".
+ 	Must also contain "MCLK", if SAI shares a master clock,
+ 	with a SAI set as MCLK clock provider.
+-  - dmas: see Documentation/devicetree/bindings/dma/stm32-dma.txt
++  - dmas: see Documentation/devicetree/bindings/dma/st,stm32-dma.yaml
+   - dma-names: identifier string for each DMA request line
+ 	"tx": if sai sub-block is configured as playback DAI
+ 	"rx": if sai sub-block is configured as capture DAI
+diff --git a/Documentation/devicetree/bindings/sound/st,stm32-spdifrx.txt b/Documentation/devicetree/bindings/sound/st,stm32-spdifrx.txt
+index 33826f2459fa..ca9101777c44 100644
+--- a/Documentation/devicetree/bindings/sound/st,stm32-spdifrx.txt
++++ b/Documentation/devicetree/bindings/sound/st,stm32-spdifrx.txt
+@@ -10,7 +10,7 @@ Required properties:
+   - clock-names: must contain "kclk"
+   - interrupts: cpu DAI interrupt line
+   - dmas: DMA specifiers for audio data DMA and iec control flow DMA
+-    See STM32 DMA bindings, Documentation/devicetree/bindings/dma/stm32-dma.txt
++    See STM32 DMA bindings, Documentation/devicetree/bindings/dma/st,stm32-dma.yaml
+   - dma-names: two dmas have to be defined, "rx" and "rx-ctrl"
+ 
+ Optional properties:
+diff --git a/Documentation/devicetree/bindings/spi/st,stm32-spi.yaml b/Documentation/devicetree/bindings/spi/st,stm32-spi.yaml
+index f0d979664f07..e49ecbf715ba 100644
+--- a/Documentation/devicetree/bindings/spi/st,stm32-spi.yaml
++++ b/Documentation/devicetree/bindings/spi/st,stm32-spi.yaml
+@@ -49,7 +49,7 @@ properties:
+   dmas:
+     description: |
+       DMA specifiers for tx and rx dma. DMA fifo mode must be used. See
+-      the STM32 DMA bindings Documentation/devicetree/bindings/dma/stm32-dma.txt.
++      the STM32 DMA bindings Documentation/devicetree/bindings/dma/st,stm32-dma.yaml.
+     items:
+       - description: rx DMA channel
+       - description: tx DMA channel
+diff --git a/MAINTAINERS b/MAINTAINERS
+index d81701ea3336..6b30a58bd77b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4480,7 +4480,7 @@ L:	linux-media@vger.kernel.org
+ T:	git git://linuxtv.org/media_tree.git
+ S:	Maintained
+ F:	drivers/media/platform/sunxi/sun6i-csi/
+-F:	Documentation/devicetree/bindings/media/sun6i-csi.txt
++F:	Documentation/devicetree/bindings/media/allwinner,sun6i-a31-csi.yaml
+ 
+ CW1200 WLAN driver
+ M:	Solomon Peachy <pizza@shaftnet.org>
+@@ -15955,7 +15955,7 @@ F:	drivers/*/stm32-*timer*
+ F:	drivers/pwm/pwm-stm32*
+ F:	include/linux/*/stm32-*tim*
+ F:	Documentation/ABI/testing/*timer-stm32
+-F:	Documentation/devicetree/bindings/*/stm32-*timer*
++F:	Documentation/devicetree/bindings/*/*stm32-*timer*
+ F:	Documentation/devicetree/bindings/pwm/pwm-stm32*
+ 
+ STMMAC ETHERNET DRIVER
+diff --git a/drivers/staging/wfx/Documentation/devicetree/bindings/net/wireless/siliabs,wfx.txt b/drivers/staging/wfx/Documentation/devicetree/bindings/net/wireless/siliabs,wfx.txt
+index ffec79c14786..17db67559f5e 100644
+--- a/drivers/staging/wfx/Documentation/devicetree/bindings/net/wireless/siliabs,wfx.txt
++++ b/drivers/staging/wfx/Documentation/devicetree/bindings/net/wireless/siliabs,wfx.txt
+@@ -94,5 +94,5 @@ Some properties are recognized either by SPI and SDIO versions:
+    Must contains 64 hexadecimal digits. Not supported in current version.
+ 
+ WFx driver also supports `mac-address` and `local-mac-address` as described in
+-Documentation/devicetree/binding/net/ethernet.txt
++Documentation/devicetree/bindings/net/ethernet.txt
+ 
+-- 
+2.24.1

@@ -1,54 +1,46 @@
-From: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH] docs: dt: fix several broken doc references
-Date: Mon, 24 Feb 2020 12:27:55 -0600
-Message-ID: <20200224182755.GB27161@bogus>
-References: <0e530494349b37eb2eab4a8eccf56626e0b18e6d.1582448388.git.mchehab+huawei@kernel.org>
+From: Eddie James <eajames-23VcF4HTsmIX0ybBhKVfKdBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH v2] spi: Add FSI-attached SPI controller driver
+Date: Mon, 24 Feb 2020 12:54:09 -0600
+Message-ID: <fab0fdf2-6ce7-7635-178e-9bd090d03dc0@linux.vnet.ibm.com>
+References: <20200203223003.4567-1-eajames@linux.ibm.com>
+ <CAHp75VfHAS46-kMyg7Ky4jn7zmkht6wd9ayCfn+rrO0R6aNr6A@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Piotr Sroka <piotrs@cadence.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Olivier Moysan <olivier.moysan@st.com>,
-        Arnaud Pouliquen <arnaud.pouliquen@st.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        =?iso-8859-1?B?Suly9G1l?= Pouiller <jerome.pouiller@silabs.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
-        netdev@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-stm32
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Return-path: <linux-doc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <0e530494349b37eb2eab4a8eccf56626e0b18e6d.1582448388.git.mchehab+huawei@kernel.org>
-Sender: linux-doc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Joel Stanley <joel-U3u1mxZcP9KHXe+LvDLADg@public.gmane.org>,
+        Andrew Jeffery <andrew-zrmu5oMJ5Fs@public.gmane.org>
+To: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Eddie James <eajames-tEXmvtCZX7AybS5Ee8rs3A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAHp75VfHAS46-kMyg7Ky4jn7zmkht6wd9ayCfn+rrO0R6aNr6A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Language: en-US
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Sun, Feb 23, 2020 at 09:59:53AM +0100, Mauro Carvalho Chehab wrote:
-> There are several DT doc references that require manual fixes.
-> I found 3 cases fixed on this patch:
-> 
-> 	- directory named "binding/" instead of "bindings/";
-> 	- .txt to .yaml renames;
-> 	- file renames (still on txt format);
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> ---
->  .../devicetree/bindings/mtd/cadence-nand-controller.txt       | 2 +-
->  .../devicetree/bindings/net/brcm,bcm7445-switch-v4.0.txt      | 2 +-
->  Documentation/devicetree/bindings/sound/st,stm32-sai.txt      | 2 +-
->  Documentation/devicetree/bindings/sound/st,stm32-spdifrx.txt  | 2 +-
->  Documentation/devicetree/bindings/spi/st,stm32-spi.yaml       | 2 +-
->  MAINTAINERS                                                   | 4 ++--
->  .../devicetree/bindings/net/wireless/siliabs,wfx.txt          | 2 +-
->  7 files changed, 8 insertions(+), 8 deletions(-)
 
-Applied.
+On 2/4/20 5:05 AM, Andy Shevchenko wrote:
+> On Tue, Feb 4, 2020 at 12:30 AM Eddie James <eajames-tEXmvtCZX7AybS5Ee8rs3A@public.gmane.org> wrote:
+>> There exists a set of SPI controllers on some POWER processors that may
+>> be accessed through the FSI bus. Add a driver to traverse the FSI CFAM
+>> engine that can access and drive the SPI controllers. This driver would
+>> typically be used by a baseboard management controller (BMC).
+>>
+>> The SPI controllers operate by means of programming a sequencing engine
+>> which automatically manages the usual SPI protocol buses. The driver
+>> programs each transfer into the sequencer as various operations
+>> specifying the slave chip and shifting data in and out on the lines.
+> Some comments left unsettled in v1, thus applicable here.
 
-Rob
+
+I think I addressed all of Andy's comments on v1 now, if Andy agreed 
+about leaving the byte shifting as-is in fsi_spi_data_in/out.
+
+
+Thanks,
+
+Eddie
+
+
+>

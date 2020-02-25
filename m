@@ -1,31 +1,52 @@
-From: "eberechukwu00-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <eberechukwu00-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: RE: BUSINESS ENQUIRY
-Date: Tue, 25 Feb 2020 14:40:25 +0000
-Message-ID: <CADt9OyPpWvAdfOP__70wDNhfzn_mT8D5pr6BV08WnbNdZHAQjQ__29155.997901556$1582641634$gmane$org@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: Execute spi transfers inside FIQ (NMI) or panic
+Date: Tue, 25 Feb 2020 15:53:54 +0000
+Message-ID: <20200225155354.GF4633@sirena.org.uk>
+References: <b22800b8-9c03-63a5-7ade-d8b63c562580@weidmueller.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-To: undisclosed-recipients:;
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="z+pzSjdB7cqptWpS"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: "Herbrechtsmeier Dr.-Ing. , Stefan"
+        <stefan.herbrechtsmeier-oss-2t/0UIm1CeVDOHtkgc7UlQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <b22800b8-9c03-63a5-7ade-d8b63c562580-2t/0UIm1CeVDOHtkgc7UlQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-RE: BUSINESS ENQUIRY
 
-We have mandate of our client to source for credible/trustworthy
-investment partnership to manage funds for offshore investment under
-Joint Venture partnership for the period of 10 years on Return on
-Investment (ROI) of 5-10% annually.
+--z+pzSjdB7cqptWpS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-We are open for face-to-face live meeting with you/groups for both
-parties to further our discussion, for you/groups to layout your full
-detailed plans and advice on areas of the investment plans and to
-establishing trust/confidence to remove all kinds of skepticism that
-may hinder the realization of this investment partnership.
+On Tue, Feb 25, 2020 at 02:27:27PM +0100, Herbrechtsmeier Dr.-Ing. , Stefan wrote:
 
-More details shall be available once I have your interest confirmed in
-your return mail
+> would it be acceptable to add an additional function to the struct
+> spi_controller which handle a transfer inside a NMI context or a panic? The
+> new function will transfer data via register polling without any lock.
 
-Yours Sincerely
-Mike John
-Office: DFCU House, 26 Kyaddondo Road
-Kampala, Uganda
+That would need to happen as part of a wider change that made it
+possible to use such an interface safely and did so, off the top of my
+head it's not immediately obvious how one would do that.  You'd need to
+get the hardware into a sensible state and then do whatever needs doing
+with some cooperation from the client driver in all this which is a bit
+of an ask.  It's not a trivial bit of work, but I do see the use case
+and it's absolutely valid.
+
+--z+pzSjdB7cqptWpS
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl5VQxEACgkQJNaLcl1U
+h9BInAf/QelYi6vedS0fjXl7PL92uXstsOeFOuEGEl/vYzP803jTtV9R0y9+kmoX
+eeKw19ZFzYETL46DA/qGVExWzl4QX2Gx/fE47+v6Fg0G+Cp9hvWztHmXzP+hGAWF
+fPYSkkHON5jwV7vk0kw0WsPJs5dhtghRVWtHv2IY2VoA6582rPJzJ/y1ZLcMrFDv
+JDQJ1hF/vDDZ5SLp5/9VLhVOypzC67KeVYqA/FLlM842afPApvG6K++dPHEosRzg
+L+BzEPP7xSBh3zTNbJghvwSwiHFYFvNTadJ85pFcBLi+nsPebkpmPhzuH3UBkOfp
+H4TNpg+SjABi7ZtHh2MBiBnO2kGj0w==
+=Er1+
+-----END PGP SIGNATURE-----
+
+--z+pzSjdB7cqptWpS--

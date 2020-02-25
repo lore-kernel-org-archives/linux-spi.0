@@ -1,32 +1,31 @@
-From: "Herbrechtsmeier Dr.-Ing. , Stefan"
-        <stefan.herbrechtsmeier-oss-2t/0UIm1CeVDOHtkgc7UlQ@public.gmane.org>
-Subject: Execute spi transfers inside FIQ (NMI) or panic
-Date: Tue, 25 Feb 2020 14:27:27 +0100
-Message-ID: <b22800b8-9c03-63a5-7ade-d8b63c562580@weidmueller.com>
+From: "eberechukwu00-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <eberechukwu00-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: RE: BUSINESS ENQUIRY
+Date: Tue, 25 Feb 2020 14:40:25 +0000
+Message-ID: <CADt9OyPpWvAdfOP__70wDNhfzn_mT8D5pr6BV08WnbNdZHAQjQ__29155.997901556$1582641634$gmane$org@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+To: undisclosed-recipients:;
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi,
+RE: BUSINESS ENQUIRY
 
-would it be acceptable to add an additional function to the struct 
-spi_controller which handle a transfer inside a NMI context or a panic? 
-The new function will transfer data via register polling without any lock.
+We have mandate of our client to source for credible/trustworthy
+investment partnership to manage funds for offshore investment under
+Joint Venture partnership for the period of 10 years on Return on
+Investment (ROI) of 5-10% annually.
 
-I must execute an SPI transfer inside a fast interrupt request (FIQ) 
-handler or a panic. The FIQ is handled as a non-maskable interrupt 
-(NMI). Both the panic and the NMI doesn't support any interrupts.
+We are open for face-to-face live meeting with you/groups for both
+parties to further our discussion, for you/groups to layout your full
+detailed plans and advice on areas of the investment plans and to
+establishing trust/confidence to remove all kinds of skepticism that
+may hinder the realization of this investment partnership.
 
-The background of the request is a non-volatile SPI memory with cached 
-date in system memory. The cache must be synchronized back to the SPI 
-memory after a power failure or panic.
+More details shall be available once I have your interest confirmed in
+your return mail
 
-Regards
-   Stefan Herbrechtsmeier
-
-**
+Yours Sincerely
+Mike John
+Office: DFCU House, 26 Kyaddondo Road
+Kampala, Uganda

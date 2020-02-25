@@ -1,140 +1,53 @@
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v2] spi: Add FSI-attached SPI controller driver
-Date: Tue, 25 Feb 2020 11:38:40 +0200
-Message-ID: <CAHp75VciUDKqxEQw_1bHDmVx19qTZWWjHdfgcJmm4iBwmyFJnA@mail.gmail.com>
-References: <20200203223003.4567-1-eajames@linux.ibm.com> <CACPK8XdmdksFctYk96x46XJcxe3yQD3HfAzC8gdF_GXWJHeu2A@mail.gmail.com>
+From: Vignesh Raghavendra <vigneshr-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH v10 1/2] dt-bindings: spi: Add schema for Cadence QSPI
+ Controller driver
+Date: Tue, 25 Feb 2020 16:30:21 +0530
+Message-ID: <8c329860-84fd-463b-782f-83a788998878@ti.com>
+References: <20200219022852.28065-1-vadivel.muruganx.ramuthevar@linux.intel.com>
+ <20200219022852.28065-2-vadivel.muruganx.ramuthevar@linux.intel.com>
+ <CAL_JsqKJky=y4nhECUFVzTYvEpjFoOH_6UY9uZG5bvBVWq=SYQ@mail.gmail.com>
+ <64b7ab12-0c11-df25-95e7-ee62227ec7ec@linux.intel.com>
+ <85178128-4906-8b1a-e3f1-ab7a36ff8c23@ti.com>
+ <c119a70d-b7ef-ab1b-4590-7ac77395297f@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Cc: Eddie James <eajames@linux.ibm.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Andrew Jeffery <andrew@aj.id.au>, linux-fsi@lists.ozlabs.org
-To: Joel Stanley <joel@jms.id.au>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CACPK8XdmdksFctYk96x46XJcxe3yQD3HfAzC8gdF_GXWJHeu2A@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Cc: "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        <simon.k.r.goldschmidt-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Dinh Nguyen <dinguyen-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <tien.fong.chee-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+        =?UTF-8?Q?Marek_Va=c5=a1ut?= <marex-ynQEQJNshbs@public.gmane.org>,
+        <cheol.yong.kim-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, <qi-ming.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: "Ramuthevar, Vadivel MuruganX"
+        <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <c119a70d-b7ef-ab1b-4590-7ac77395297f-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Content-Language: en-US
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Feb 25, 2020 at 7:08 AM Joel Stanley <joel@jms.id.au> wrote:
-> On Mon, 3 Feb 2020 at 22:30, Eddie James <eajames@linux.ibm.com> wrote:
 
-...
 
-> > +static int fsi_spi_data_in(u64 in, u8 *rx, int len)
-> > +{
-> > +       int i;
-> > +       int num_bytes =3D min(len, 8);
-> > +
-> > +       for (i =3D 0; i < num_bytes; ++i)
-> > +               rx[i] =3D (u8)(in >> (8 * ((num_bytes - 1) - i)));
-> > +
-> > +       return num_bytes;
-> > +}
-> > +
-> > +static int fsi_spi_data_out(u64 *out, const u8 *tx, int len)
-> > +{
-> > +       int i;
-> > +       int num_bytes =3D min(len, 8);
-> > +
-> > +       *out =3D 0ULL;
-> > +
-> > +       for (i =3D 0; i < num_bytes; ++i)
-> > +               *out |=3D (u64)tx[i] << (8 * (8 - (i + 1)));
->
-> Did this work with non-8 byte transfers? I think the second 8 should
-> be num_bytes.
->
-> The loop requires careful reading to check. I wonder if we could do
-> this instead, which eliminates a lot duplicated loads and stores and
-> is easier to read:
->
->        uint8_t *outp =3D (uint8_t *)out;
->
->        for (i =3D 0; i < num_bytes; ++i) {
->                outp[num_bytes - (i + 1)] =3D tx[i];
->        }
+On 25/02/20 1:08 pm, Ramuthevar, Vadivel MuruganX wrote:
+>>>>> +
+>>>>> +  cdns,fifo-depth:
+>>>>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>>>>> +    description:
+>>>>> +      Size of the data FIFO in words.
+>>>> A 4GB fifo is valid? Add some constraints.
+>>> 128 is valid, will update.
+>> Nope, the width of this field is 8bits -> 256 bytes 
+> 
+> correct me if I am wrong, the width of this field is 4bits -> 128 bytes
+> (based on QUAD mode) .
 
-Have you had a chance to read my review of this? What do you think
-about put_unaligned*()/get_unaligned*() instead of above?
+This has nothing to do with quad-mode. Its about how much SRAM amount of
+SRAM is present to buffer INDAC mode data. For TI platforms this is 256
+bytes.
+See CQSPI_REG_SRAMPARTITION definition in your datasheet.
 
-> > +       return num_bytes;
-> > +}
-
-...
-
-> > +static int fsi_spi_transfer_init(struct fsi_spi *ctx)
-> > +{
-> > +       int rc;
-> > +       bool reset =3D false;
-> > +       unsigned long end;
-> > +       u64 seq_state;
-> > +       u64 clock_cfg =3D 0ULL;
-> > +       u64 status =3D 0ULL;
-> > +       u64 wanted_clock_cfg =3D SPI_FSI_CLOCK_CFG_ECC_DISABLE |
-> > +               SPI_FSI_CLOCK_CFG_SCK_NO_DEL |
-> > +               FIELD_PREP(SPI_FSI_CLOCK_CFG_SCK_DIV, 4);
-> > +
-> > +       end =3D jiffies + msecs_to_jiffies(SPI_FSI_INIT_TIMEOUT_MS);
-> > +       do {
-> > +               if (time_after(jiffies, end))
-> > +                       return -ETIMEDOUT;
->
-> How tightly does this loop spin?
->
-> Should there be a delay inside of it?
->
-> > +
-> > +               rc =3D fsi_spi_read_reg(ctx, SPI_FSI_STATUS, &status);
-> > +               if (rc)
-> > +                       return rc;
-> > +
-> > +               if (status & (SPI_FSI_STATUS_ANY_ERROR |
-> > +                             SPI_FSI_STATUS_TDR_FULL |
-> > +                             SPI_FSI_STATUS_RDR_FULL)) {
-> > +                       if (reset)
-> > +                               return -EIO;
-> > +
-> > +                       rc =3D fsi_spi_reset(ctx);
-> > +                       if (rc)
-> > +                               return rc;
-> > +
-> > +                       reset =3D true;
-> > +                       continue;
-> > +               }
-> > +
-> > +               seq_state =3D status & SPI_FSI_STATUS_SEQ_STATE;
-> > +       } while (seq_state && (seq_state !=3D SPI_FSI_STATUS_SEQ_STATE_=
-IDLE));
->
-> ../drivers/spi/spi-fsi.c: In function =E2=80=98fsi_spi_transfer_one_messa=
-ge=E2=80=99:
-> ../drivers/spi/spi-fsi.c:363:11: warning: =E2=80=98seq_state=E2=80=99 may=
- be used
-> uninitialized in this function [-Wmaybe-uninitialized]
->   363 |  } while (seq_state && (seq_state !=3D SPI_FSI_STATUS_SEQ_STATE_I=
-DLE));
->       |           ^~~~~~~~~
-
-It's bogus warning, though, I think, easy to fix by reshuffling loop body.
-
-> > +       rc =3D fsi_spi_read_reg(ctx, SPI_FSI_CLOCK_CFG, &clock_cfg);
-> > +       if (rc)
-> > +               return rc;
-> > +
-> > +       if ((clock_cfg & (SPI_FSI_CLOCK_CFG_MM_ENABLE |
-> > +                         SPI_FSI_CLOCK_CFG_ECC_DISABLE |
-> > +                         SPI_FSI_CLOCK_CFG_MODE |
-> > +                         SPI_FSI_CLOCK_CFG_SCK_RECV_DEL |
-> > +                         SPI_FSI_CLOCK_CFG_SCK_DIV)) !=3D wanted_clock=
-_cfg)
-> > +               rc =3D fsi_spi_write_reg(ctx, SPI_FSI_CLOCK_CFG,
-> > +                                      wanted_clock_cfg);
-> > +
-> > +       return rc;
-> > +}
-
---=20
-With Best Regards,
-Andy Shevchenko
+-- 
+Regards
+Vignesh

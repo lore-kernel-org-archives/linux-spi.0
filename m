@@ -1,48 +1,71 @@
-From: "Herbrechtsmeier Dr.-Ing. , Stefan"
-        <stefan.herbrechtsmeier-oss-2t/0UIm1CeVDOHtkgc7UlQ@public.gmane.org>
-Subject: Re: Execute spi transfers inside FIQ (NMI) or panic
-Date: Wed, 26 Feb 2020 08:36:37 +0100
-Message-ID: <d07a46e6-6c8f-c4eb-0ed1-d57b7604a5be@weidmueller.com>
-References: <b22800b8-9c03-63a5-7ade-d8b63c562580@weidmueller.com>
- <20200225155354.GF4633@sirena.org.uk>
+From: Pratyush Yadav <p.yadav@ti.com>
+Subject: [PATCH v2 01/11] dt-bindings: spi: allow expressing DTR capability
+Date: Wed, 26 Feb 2020 15:06:53 +0530
+Message-ID: <20200226093703.19765-2-p.yadav@ti.com>
+References: <20200226093703.19765-1-p.yadav@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 8bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200225155354.GF4633-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: devicetree@vger.kernel.org, Sekhar Nori <nsekhar@ti.com>,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-mtd@lists.infradead.org, Pratyush Yadav <p.yadav@ti.com>
+To: Tudor Ambarus <tudor.ambarus@microchip.com>, Miquel Raynal
+ <miquel.raynal@bootlin.com>, Richard Weinberger <richard@nod.at>, Vignesh
+ Raghavendra <vigneshr@ti.com>, Mark Brown <broonie@kernel.org>, Rob Herring
+ <robh+dt@kernel.org>, Mark Rutland <mark.rutland@arm.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=m.gmane-mx.org@lists.infradead.org>
+In-Reply-To: <20200226093703.19765-1-p.yadav@ti.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=m.gmane-mx.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-Am 25.02.2020 um 16:53 schrieb Mark Brown:
-> On Tue, Feb 25, 2020 at 02:27:27PM +0100, Herbrechtsmeier Dr.-Ing. , Stefan wrote:
->
->> would it be acceptable to add an additional function to the struct
->> spi_controller which handle a transfer inside a NMI context or a panic? The
->> new function will transfer data via register polling without any lock.
-> That would need to happen as part of a wider change that made it
-> possible to use such an interface safely and did so, off the top of my
-> head it's not immediately obvious how one would do that.  You'd need to
-> get the hardware into a sensible state and then do whatever needs doing
-> with some cooperation from the client driver in all this which is a bit
-> of an ask.  It's not a trivial bit of work, but I do see the use case
-> and it's absolutely valid.
+Allow spi devices to express DTR receive and transmit capabilities via
+the properties "spi-rx-dtr" and "spi-tx-dtr".
 
-I see two possible solutions.
-a) The complexity is handled inside the client. The client uses the 
-controller exclusive and isn’t allowed to use the new panic transfer 
-during a normal transfer.
-b) The complexity is handled inside the controller. The controller is 
-shared between multiple slaves and a panic transfer must abort a running 
-transfer.
+Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+---
+ .../devicetree/bindings/spi/spi-controller.yaml        | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-The first solution keeps the controller driver simple because only a new 
-polled transfer is needed. But the prepare and unprepare functions must 
-be lock free and power management must be handled lock free to be reused.
+diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+index 1e0ca6ccf64b..7a84debed213 100644
+--- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+@@ -120,6 +120,11 @@ patternProperties:
+         description:
+           Delay, in microseconds, after a read transfer.
+ 
++      spi-rx-dtr:
++        $ref: /schemas/types.yaml#/definitions/flag
++        description:
++          Device supports receiving in DTR mode.
++
+       spi-tx-bus-width:
+         allOf:
+           - $ref: /schemas/types.yaml#/definitions/uint32
+@@ -132,6 +137,11 @@ patternProperties:
+         description:
+           Delay, in microseconds, after a write transfer.
+ 
++      spi-tx-dtr:
++        $ref: /schemas/types.yaml#/definitions/flag
++        description:
++          Device supports transmitting in DTR mode.
++
+     required:
+       - compatible
+       - reg
+-- 
+2.25.0
 
-The second solution could lead to code duplication because an addition 
-panic prepare function must setup the controller from any state and must 
-abort a running transfer. Especially the abort could be complex and 
-difficult to test. Otherwise the new functionality could be used without 
-any constraints.
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

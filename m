@@ -1,103 +1,126 @@
-From: Pratyush Yadav <p.yadav-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH v2 10/11] mtd: spi-nor: enable octal DTR mode when possible
-Date: Wed, 26 Feb 2020 15:07:02 +0530
-Message-ID: <20200226093703.19765-11-p.yadav@ti.com>
+From: Pratyush Yadav <p.yadav@ti.com>
+Subject: [PATCH v2 04/11] spi: spi-mem: allow specifying a command's extension
+Date: Wed, 26 Feb 2020 15:06:56 +0530
+Message-ID: <20200226093703.19765-5-p.yadav@ti.com>
 References: <20200226093703.19765-1-p.yadav@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
-Cc: Pratyush Yadav <p.yadav-l0cyMroinI0@public.gmane.org>, <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-To: Tudor Ambarus <tudor.ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-        Miquel Raynal <miquel.raynal-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>,
-        Richard Weinberger <richard-/L3Ra7n9ekc@public.gmane.org>,
-        Vignesh Raghavendra <vigneshr-l0cyMroinI0@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200226093703.19765-1-p.yadav-l0cyMroinI0@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Pratyush Yadav <p.yadav@ti.com>, <linux-mtd@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, Sekhar Nori <nsekhar@ti.com>
+To: Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20200226093703.19765-1-p.yadav@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Allow flashes to specify a hook to enable octal DTR mode. Use this hook
-whenever possible to get optimal transfer speeds.
+In xSPI mode, flashes expect 2-byte opcodes. The second byte is called
+the "command extension". There can be 3 types of extensions in xSPI:
+repeat, invert, and hex. When the extension type is "repeat", the same
+opcode is sent twice. When it is "invert", the second byte is the
+inverse of the opcode. When it is "hex" an additional opcode byte based
+is sent with the command whose value can be anything.
 
-Signed-off-by: Pratyush Yadav <p.yadav-l0cyMroinI0@public.gmane.org>
+Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
 ---
- drivers/mtd/spi-nor/spi-nor.c | 31 +++++++++++++++++++++++++++++++
- include/linux/mtd/spi-nor.h   |  2 ++
- 2 files changed, 33 insertions(+)
+ drivers/spi/spi-mem.c       | 23 +++++++++++++++++++++++
+ include/linux/spi/spi-mem.h | 24 ++++++++++++++++++++++++
+ 2 files changed, 47 insertions(+)
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 06cfc525260c..fdcc1b4abc3f 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -5184,6 +5184,31 @@ static void spi_nor_init_params(struct spi_nor *nor)
- 	spi_nor_late_init_params(nor);
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index cb13e0878b95..3838ddc9aeec 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -462,6 +462,29 @@ int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
  }
+ EXPORT_SYMBOL_GPL(spi_mem_adjust_op_size);
  
-+/** spi_nor_octal_dtr_enable() - enable Octal DTR I/O if needed
-+ * @nor:                 pointer to a 'struct spi_nor'
-+ *
-+ * Return: 0 on success, -errno otherwise.
-+ */
-+static int spi_nor_octal_dtr_enable(struct spi_nor *nor)
++int spi_mem_get_cmd_ext(const struct spi_mem_op *op, u8 *ext)
 +{
-+	int ret;
++	switch (op->cmd.ext_type) {
++	case SPI_MEM_EXT_INVERT:
++		*ext = ~op->cmd.opcode;
++		break;
 +
-+	if (!nor->params.octal_dtr_enable)
-+		return 0;
++	case SPI_MEM_EXT_REPEAT:
++		*ext = op->cmd.opcode;
++		break;
 +
-+	if (!(spi_nor_get_protocol_width(nor->read_proto) == 8 ||
-+	      spi_nor_get_protocol_width(nor->write_proto) == 8))
-+		return 0;
++	case SPI_MEM_EXT_HEX:
++		*ext = op->cmd.ext;
++		break;
 +
-+	ret = nor->params.octal_dtr_enable(nor);
-+	if (ret)
-+		return ret;
-+
-+	nor->reg_proto = SNOR_PROTO_8_8_8_DTR;
++	default:
++		return -EINVAL;
++	}
 +
 +	return 0;
 +}
++EXPORT_SYMBOL_GPL(spi_mem_get_cmd_ext);
++
+ static ssize_t spi_mem_no_dirmap_read(struct spi_mem_dirmap_desc *desc,
+ 				      u64 offs, size_t len, void *buf)
+ {
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index 4669082b4e3b..06ccab17e4d0 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -67,11 +67,31 @@ enum spi_mem_data_dir {
+ 	SPI_MEM_DATA_OUT,
+ };
+ 
++/**
++ * enum spi_mem_cmd_ext - describes the command opcode extension in DTR mode
++ * @SPI_MEM_EXT_NONE: no extension. This is the default, and is used in Legacy
++ *		      SPI mode
++ * @SPI_MEM_EXT_REPEAT: the extension is same as the opcode
++ * @SPI_MEM_EXT_INVERT: the extension is the bitwise inverse of the opcode
++ * @SPI_MEM_EXT_HEX: the extension is any hex value. The command and opcode
++ *		     combine to form a 16-bit opcode.
++ */
++enum spi_mem_cmd_ext {
++	SPI_MEM_EXT_NONE = 0,
++	SPI_MEM_EXT_REPEAT,
++	SPI_MEM_EXT_INVERT,
++	SPI_MEM_EXT_HEX,
++};
 +
  /**
-  * spi_nor_quad_enable() - enable Quad I/O if needed.
-  * @nor:                pointer to a 'struct spi_nor'
-@@ -5223,6 +5248,12 @@ static int spi_nor_init(struct spi_nor *nor)
- {
- 	int err;
+  * struct spi_mem_op - describes a SPI memory operation
+  * @cmd.buswidth: number of IO lines used to transmit the command
+  * @cmd.opcode: operation opcode
+  * @cmd.is_dtr: whether the command opcode should be sent in DTR mode or not
++ * @cmd.ext_type: type of the command opcode extension in DTR mode
++ * @cmd.ext: value of the command opcode extension in DTR mode. It is
++ *	     only set when 'ext_type' is 'SPI_MEM_EXT_HEX'. In all other
++ *	     cases, the extension can be directly derived from the opcode.
+  * @addr.nbytes: number of address bytes to send. Can be zero if the operation
+  *		 does not need to send an address
+  * @addr.buswidth: number of IO lines used to transmit the address cycles
+@@ -97,6 +117,8 @@ struct spi_mem_op {
+ 		u8 buswidth;
+ 		u8 opcode;
+ 		bool is_dtr;
++		enum spi_mem_cmd_ext ext_type;
++		u8 ext;
+ 	} cmd;
  
-+	err = spi_nor_octal_dtr_enable(nor);
-+	if (err) {
-+		dev_dbg(nor->dev, "octal mode not supported\n");
-+		return err;
-+	}
+ 	struct {
+@@ -361,6 +383,8 @@ int spi_mem_driver_register_with_owner(struct spi_mem_driver *drv,
+ 
+ void spi_mem_driver_unregister(struct spi_mem_driver *drv);
+ 
++int spi_mem_get_cmd_ext(const struct spi_mem_op *op, u8 *ext);
 +
- 	err = spi_nor_quad_enable(nor);
- 	if (err) {
- 		dev_dbg(nor->dev, "quad mode not supported\n");
-diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-index f54dbd0f86ab..c653f6713cfc 100644
---- a/include/linux/mtd/spi-nor.h
-+++ b/include/linux/mtd/spi-nor.h
-@@ -526,6 +526,7 @@ struct spi_nor_locking_ops {
-  *                      higher index in the array, the higher priority.
-  * @erase_map:		the erase map parsed from the SFDP Sector Map Parameter
-  *                      Table.
-+ * @octal_dtr_enable:	enables SPI NOR octal DTR mode.
-  * @quad_enable:	enables SPI NOR quad mode.
-  * @set_4byte:		puts the SPI NOR in 4 byte addressing mode.
-  * @convert_addr:	converts an absolute address into something the flash
-@@ -549,6 +550,7 @@ struct spi_nor_flash_parameter {
+ #define spi_mem_driver_register(__drv)                                  \
+ 	spi_mem_driver_register_with_owner(__drv, THIS_MODULE)
  
- 	struct spi_nor_erase_map        erase_map;
- 
-+	int (*octal_dtr_enable)(struct spi_nor *nor);
- 	int (*quad_enable)(struct spi_nor *nor);
- 	int (*set_4byte)(struct spi_nor *nor, bool enable);
- 	u32 (*convert_addr)(struct spi_nor *nor, u32 addr);
 -- 
 2.25.0

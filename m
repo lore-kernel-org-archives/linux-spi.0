@@ -1,7 +1,7 @@
 From: Pratyush Yadav <p.yadav-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH v2 09/11] mtd: spi-nor: use dummy cycle and address width info from SFDP
-Date: Wed, 26 Feb 2020 15:07:01 +0530
-Message-ID: <20200226093703.19765-10-p.yadav@ti.com>
+Subject: [PATCH v2 10/11] mtd: spi-nor: enable octal DTR mode when possible
+Date: Wed, 26 Feb 2020 15:07:02 +0530
+Message-ID: <20200226093703.19765-11-p.yadav@ti.com>
 References: <20200226093703.19765-1-p.yadav@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -21,51 +21,83 @@ In-Reply-To: <20200226093703.19765-1-p.yadav-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The xSPI Profile 1.0 table specifies how many dummy cycles and address
-bytes are needed for the Read Status Register command in octal DTR mode.
-Use that information to send the correct Read SR command.
+Allow flashes to specify a hook to enable octal DTR mode. Use this hook
+whenever possible to get optimal transfer speeds.
 
 Signed-off-by: Pratyush Yadav <p.yadav-l0cyMroinI0@public.gmane.org>
 ---
- drivers/mtd/spi-nor/spi-nor.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ drivers/mtd/spi-nor/spi-nor.c | 31 +++++++++++++++++++++++++++++++
+ include/linux/mtd/spi-nor.h   |  2 ++
+ 2 files changed, 33 insertions(+)
 
 diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 22784c403d77..06cfc525260c 100644
+index 06cfc525260c..fdcc1b4abc3f 100644
 --- a/drivers/mtd/spi-nor/spi-nor.c
 +++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -525,6 +525,8 @@ static int spi_nor_write_disable(struct spi_nor *nor)
- static int spi_nor_read_sr(struct spi_nor *nor, u8 *sr)
+@@ -5184,6 +5184,31 @@ static void spi_nor_init_params(struct spi_nor *nor)
+ 	spi_nor_late_init_params(nor);
+ }
+ 
++/** spi_nor_octal_dtr_enable() - enable Octal DTR I/O if needed
++ * @nor:                 pointer to a 'struct spi_nor'
++ *
++ * Return: 0 on success, -errno otherwise.
++ */
++static int spi_nor_octal_dtr_enable(struct spi_nor *nor)
++{
++	int ret;
++
++	if (!nor->params.octal_dtr_enable)
++		return 0;
++
++	if (!(spi_nor_get_protocol_width(nor->read_proto) == 8 ||
++	      spi_nor_get_protocol_width(nor->write_proto) == 8))
++		return 0;
++
++	ret = nor->params.octal_dtr_enable(nor);
++	if (ret)
++		return ret;
++
++	nor->reg_proto = SNOR_PROTO_8_8_8_DTR;
++
++	return 0;
++}
++
+ /**
+  * spi_nor_quad_enable() - enable Quad I/O if needed.
+  * @nor:                pointer to a 'struct spi_nor'
+@@ -5223,6 +5248,12 @@ static int spi_nor_init(struct spi_nor *nor)
  {
- 	int ret;
-+	u8 addr_bytes = nor->params.rdsr_addr_nbytes;
-+	u8 dummy = nor->params.rdsr_dummy;
+ 	int err;
  
- 	if (nor->spimem) {
- 		struct spi_mem_op op =
-@@ -533,10 +535,21 @@ static int spi_nor_read_sr(struct spi_nor *nor, u8 *sr)
- 				   SPI_MEM_OP_NO_DUMMY,
- 				   SPI_MEM_OP_DATA_IN(1, sr, 1));
- 
-+		if (spi_nor_protocol_is_dtr(nor->reg_proto)) {
-+			op.addr.nbytes = addr_bytes;
-+			op.addr.val = 0;
-+			op.dummy.nbytes = dummy;
-+		}
++	err = spi_nor_octal_dtr_enable(nor);
++	if (err) {
++		dev_dbg(nor->dev, "octal mode not supported\n");
++		return err;
++	}
 +
-+		spi_nor_spimem_setup_op(nor, &op, nor->reg_proto);
-+
- 		ret = spi_mem_exec_op(nor->spimem, &op);
- 	} else {
--		ret = nor->controller_ops->read_reg(nor, SPINOR_OP_RDSR,
--						    sr, 1);
-+		if (spi_nor_protocol_is_dtr(nor->reg_proto))
-+			ret = -ENOTSUPP;
-+		else
-+			ret = nor->controller_ops->read_reg(nor, SPINOR_OP_RDSR,
-+							    sr, 1);
- 	}
+ 	err = spi_nor_quad_enable(nor);
+ 	if (err) {
+ 		dev_dbg(nor->dev, "quad mode not supported\n");
+diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
+index f54dbd0f86ab..c653f6713cfc 100644
+--- a/include/linux/mtd/spi-nor.h
++++ b/include/linux/mtd/spi-nor.h
+@@ -526,6 +526,7 @@ struct spi_nor_locking_ops {
+  *                      higher index in the array, the higher priority.
+  * @erase_map:		the erase map parsed from the SFDP Sector Map Parameter
+  *                      Table.
++ * @octal_dtr_enable:	enables SPI NOR octal DTR mode.
+  * @quad_enable:	enables SPI NOR quad mode.
+  * @set_4byte:		puts the SPI NOR in 4 byte addressing mode.
+  * @convert_addr:	converts an absolute address into something the flash
+@@ -549,6 +550,7 @@ struct spi_nor_flash_parameter {
  
- 	if (ret)
+ 	struct spi_nor_erase_map        erase_map;
+ 
++	int (*octal_dtr_enable)(struct spi_nor *nor);
+ 	int (*quad_enable)(struct spi_nor *nor);
+ 	int (*set_4byte)(struct spi_nor *nor, bool enable);
+ 	u32 (*convert_addr)(struct spi_nor *nor, u32 addr);
 -- 
 2.25.0

@@ -1,190 +1,71 @@
-From: Pratyush Yadav <p.yadav@ti.com>
-Subject: [PATCH v2 08/11] mtd: spi-nor: parse xSPI Profile 1.0 table
-Date: Wed, 26 Feb 2020 15:07:00 +0530
-Message-ID: <20200226093703.19765-9-p.yadav@ti.com>
+From: Pratyush Yadav <p.yadav-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH v2 09/11] mtd: spi-nor: use dummy cycle and address width info from SFDP
+Date: Wed, 26 Feb 2020 15:07:01 +0530
+Message-ID: <20200226093703.19765-10-p.yadav@ti.com>
 References: <20200226093703.19765-1-p.yadav@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
-Cc: Pratyush Yadav <p.yadav@ti.com>, <linux-mtd@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, Sekhar Nori <nsekhar@ti.com>
-To: Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200226093703.19765-1-p.yadav@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Pratyush Yadav <p.yadav-l0cyMroinI0@public.gmane.org>, <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
+To: Tudor Ambarus <tudor.ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
+        Miquel Raynal <miquel.raynal-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>,
+        Richard Weinberger <richard-/L3Ra7n9ekc@public.gmane.org>,
+        Vignesh Raghavendra <vigneshr-l0cyMroinI0@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200226093703.19765-1-p.yadav-l0cyMroinI0@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-This table is indication that the flash is xSPI compliant and hence
-supports octal DTR mode. Extract information like the fast read opcode,
-the number of dummy cycles needed for a Read Status Register command,
-and the number of address bytes needed for a Read Status Register
-command.
+The xSPI Profile 1.0 table specifies how many dummy cycles and address
+bytes are needed for the Read Status Register command in octal DTR mode.
+Use that information to send the correct Read SR command.
 
-The default dummy cycles for a fast octal DTR read are set to 20. Since
-there is no simple way of determining the dummy cycles needed for the
-fast read command, flashes that use a different value should update it
-in their flash-specific hooks.
-
-Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+Signed-off-by: Pratyush Yadav <p.yadav-l0cyMroinI0@public.gmane.org>
 ---
- drivers/mtd/spi-nor/spi-nor.c | 80 +++++++++++++++++++++++++++++++++++
- include/linux/mtd/spi-nor.h   |  5 +++
- 2 files changed, 85 insertions(+)
+ drivers/mtd/spi-nor/spi-nor.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index c86c1537f76e..22784c403d77 100644
+index 22784c403d77..06cfc525260c 100644
 --- a/drivers/mtd/spi-nor/spi-nor.c
 +++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -16,6 +16,7 @@
- #include <linux/sizes.h>
- #include <linux/slab.h>
- #include <linux/sort.h>
-+#include <linux/bitfield.h>
+@@ -525,6 +525,8 @@ static int spi_nor_write_disable(struct spi_nor *nor)
+ static int spi_nor_read_sr(struct spi_nor *nor, u8 *sr)
+ {
+ 	int ret;
++	u8 addr_bytes = nor->params.rdsr_addr_nbytes;
++	u8 dummy = nor->params.rdsr_dummy;
  
- #include <linux/mtd/mtd.h>
- #include <linux/of_platform.h>
-@@ -58,12 +59,14 @@ struct sfdp_parameter_header {
- #define SFDP_BFPT_ID		0xff00	/* Basic Flash Parameter Table */
- #define SFDP_SECTOR_MAP_ID	0xff81	/* Sector Map Table */
- #define SFDP_4BAIT_ID		0xff84  /* 4-byte Address Instruction Table */
-+#define SFDP_PROFILE1_ID	0xff05	/* xSPI Profile 1.0 table. */
+ 	if (nor->spimem) {
+ 		struct spi_mem_op op =
+@@ -533,10 +535,21 @@ static int spi_nor_read_sr(struct spi_nor *nor, u8 *sr)
+ 				   SPI_MEM_OP_NO_DUMMY,
+ 				   SPI_MEM_OP_DATA_IN(1, sr, 1));
  
- #define SFDP_SIGNATURE		0x50444653U
- #define SFDP_JESD216_MAJOR	1
- #define SFDP_JESD216_MINOR	0
- #define SFDP_JESD216A_MINOR	5
- #define SFDP_JESD216B_MINOR	6
-+#define SFDP_JESD216D_MINOR	8
++		if (spi_nor_protocol_is_dtr(nor->reg_proto)) {
++			op.addr.nbytes = addr_bytes;
++			op.addr.val = 0;
++			op.dummy.nbytes = dummy;
++		}
++
++		spi_nor_spimem_setup_op(nor, &op, nor->reg_proto);
++
+ 		ret = spi_mem_exec_op(nor->spimem, &op);
+ 	} else {
+-		ret = nor->controller_ops->read_reg(nor, SPINOR_OP_RDSR,
+-						    sr, 1);
++		if (spi_nor_protocol_is_dtr(nor->reg_proto))
++			ret = -ENOTSUPP;
++		else
++			ret = nor->controller_ops->read_reg(nor, SPINOR_OP_RDSR,
++							    sr, 1);
+ 	}
  
- struct sfdp_header {
- 	u32		signature; /* Ox50444653U <=> "SFDP" */
-@@ -158,6 +161,11 @@ struct sfdp_bfpt {
- 	u32	dwords[BFPT_DWORD_MAX];
- };
- 
-+/* xSPI Profile 1.0 table (from JESD216D.01). */
-+#define PROFILE1_DWORD1_RD_FAST_CMD		GENMASK(15, 8)
-+#define PROFILE1_DWORD1_RDSR_DUMMY		BIT(28)
-+#define PROFILE1_DWORD1_RDSR_ADDR_BYTES		BIT(29)
-+
- /**
-  * struct spi_nor_fixups - SPI NOR fixup hooks
-  * @default_init: called after default flash parameters init. Used to tweak
-@@ -4426,6 +4434,74 @@ static int spi_nor_parse_4bait(struct spi_nor *nor,
- 	return ret;
- }
- 
-+/**
-+ * spi_nor_parse_profile1() - parse the xSPI Profile 1.0 table
-+ * @nor:		pointer to a 'struct spi_nor'
-+ * @param_header:	pointer to the 'struct sfdp_parameter_header' describing
-+ *			the 4-Byte Address Instruction Table length and version.
-+ * @params:		pointer to the 'struct spi_nor_flash_parameter' to be.
-+ *
-+ * Return: 0 on success, -errno otherwise.
-+ */
-+static int spi_nor_parse_profile1(struct spi_nor *nor,
-+				  const struct sfdp_parameter_header *profile1_header,
-+				  struct spi_nor_flash_parameter *params)
-+{
-+	u32 *table, opcode, addr;
-+	size_t len;
-+	int ret, i;
-+
-+	len = profile1_header->length * sizeof(*table);
-+	table = kmalloc(len, GFP_KERNEL);
-+	if (!table)
-+		return -ENOMEM;
-+
-+	addr = SFDP_PARAM_HEADER_PTP(profile1_header);
-+	ret = spi_nor_read_sfdp(nor, addr, len, table);
-+	if (ret)
-+		goto out;
-+
-+	/* Fix endianness of the table DWORDs. */
-+	for (i = 0; i < profile1_header->length; i++)
-+		table[i] = le32_to_cpu(table[i]);
-+
-+	/* Get 8D-8D-8D fast read opcode and dummy cycles. */
-+	opcode = FIELD_GET(PROFILE1_DWORD1_RD_FAST_CMD, table[0]);
-+
-+	/*
-+	 * Update the fast read settings. We set the default dummy cycles to 20
-+	 * here. Flashes can change this value if they need to when enabling
-+	 * octal mode.
-+	 */
-+	params->hwcaps.mask |= SNOR_HWCAPS_READ_8_8_8_DTR;
-+	spi_nor_set_read_settings(&params->reads[SNOR_CMD_READ_8_8_8_DTR],
-+				  0, 20, opcode,
-+				  SNOR_PROTO_8_8_8_DTR);
-+
-+	/*
-+	 * Since the flash supports xSPI DTR reads, it should also support DTR
-+	 * Page Program opcodes.
-+	 */
-+	params->hwcaps.mask |= SNOR_HWCAPS_PP_8_8_8_DTR;
-+
-+	/*
-+	 * Set the Read Status Register dummy cycles and dummy address bytes.
-+	 */
-+	if (table[0] & PROFILE1_DWORD1_RDSR_DUMMY)
-+		params->rdsr_dummy = 8;
-+	else
-+		params->rdsr_dummy = 4;
-+
-+	if (table[0] & PROFILE1_DWORD1_RDSR_ADDR_BYTES)
-+		params->rdsr_addr_nbytes = 4;
-+	else
-+		params->rdsr_addr_nbytes = 0;
-+
-+out:
-+	kfree(table);
-+	return ret;
-+}
-+
- /**
-  * spi_nor_parse_sfdp() - parse the Serial Flash Discoverable Parameters.
-  * @nor:		pointer to a 'struct spi_nor'
-@@ -4527,6 +4603,10 @@ static int spi_nor_parse_sfdp(struct spi_nor *nor,
- 			err = spi_nor_parse_4bait(nor, param_header, params);
- 			break;
- 
-+		case SFDP_PROFILE1_ID:
-+			err = spi_nor_parse_profile1(nor, param_header, params);
-+			break;
-+
- 		default:
- 			break;
- 		}
-diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-index 364f37276d78..f54dbd0f86ab 100644
---- a/include/linux/mtd/spi-nor.h
-+++ b/include/linux/mtd/spi-nor.h
-@@ -515,6 +515,9 @@ struct spi_nor_locking_ops {
-  *
-  * @size:		the flash memory density in bytes.
-  * @page_size:		the page size of the SPI NOR flash memory.
-+ * @rdsr_dummy:		dummy cycles needed for Read Status Register command.
-+ * @rdsr_addr_nbytes:	dummy address bytes needed for Read Status Register
-+ *			command.
-  * @hwcaps:		describes the read and page program hardware
-  *			capabilities.
-  * @reads:		read capabilities ordered by priority: the higher index
-@@ -537,6 +540,8 @@ struct spi_nor_locking_ops {
- struct spi_nor_flash_parameter {
- 	u64				size;
- 	u32				page_size;
-+	u8				rdsr_dummy;
-+	u8				rdsr_addr_nbytes;
- 
- 	struct spi_nor_hwcaps		hwcaps;
- 	struct spi_nor_read_command	reads[SNOR_CMD_READ_MAX];
+ 	if (ret)
 -- 
 2.25.0

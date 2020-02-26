@@ -1,89 +1,91 @@
 From: Pratyush Yadav <p.yadav@ti.com>
-Subject: [PATCH v2 02/11] spi: set mode bits for "spi-rx-dtr" and "spi-tx-dtr"
-Date: Wed, 26 Feb 2020 15:06:54 +0530
-Message-ID: <20200226093703.19765-3-p.yadav@ti.com>
-References: <20200226093703.19765-1-p.yadav@ti.com>
+Subject: [PATCH v2 00/11] mtd: spi-nor: add xSPI Octal DTR support
+Date: Wed, 26 Feb 2020 15:06:52 +0530
+Message-ID: <20200226093703.19765-1-p.yadav@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: devicetree@vger.kernel.org, Sekhar Nori <nsekhar@ti.com>,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-mtd@lists.infradead.org, Pratyush Yadav <p.yadav@ti.com>
-To: Tudor Ambarus <tudor.ambarus@microchip.com>, Miquel Raynal
- <miquel.raynal@bootlin.com>, Richard Weinberger <richard@nod.at>, Vignesh
- Raghavendra <vigneshr@ti.com>, Mark Brown <broonie@kernel.org>, Rob Herring
- <robh+dt@kernel.org>, Mark Rutland <mark.rutland@arm.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=m.gmane-mx.org@lists.infradead.org>
-In-Reply-To: <20200226093703.19765-1-p.yadav@ti.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=m.gmane-mx.org@lists.infradead.org
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+Cc: Pratyush Yadav <p.yadav@ti.com>, <linux-mtd@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, Sekhar Nori <nsekhar@ti.com>
+To: Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-These two DT properties express DTR receive and transmit capabilities of
-a SPI flash and controller. Introduce two new mode bits: SPI_RX_DTR and
-SPI_TX_DTR which correspond to the new DT properties. Set these bits
-when the two corresponding properties are present in the device tree.
-Also update the detection of unsupported mode bits to include the new
-bits.
+Hi,
 
-Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
----
- drivers/spi/spi.c       | 10 +++++++++-
- include/linux/spi/spi.h |  2 ++
- 2 files changed, 11 insertions(+), 1 deletion(-)
+This series adds support for octal DTR flashes in the spi-nor framework,
+and then adds hooks for the Cypress Semper flash which is an xSPI
+compliant Octal DTR flash.
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 38b4c78df506..25c8ed9343f9 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1927,6 +1927,13 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
- 		}
- 	}
- 
-+	/* Device DTR mode. */
-+	if (of_property_read_bool(nc, "spi-tx-dtr"))
-+		spi->mode |= SPI_TX_DTR;
-+
-+	if (of_property_read_bool(nc, "spi-rx-dtr"))
-+		spi->mode |= SPI_RX_DTR;
-+
- 	if (spi_controller_is_slave(ctlr)) {
- 		if (!of_node_name_eq(nc, "slave")) {
- 			dev_err(&ctlr->dev, "%pOF is not called 'slave'\n",
-@@ -3252,7 +3259,8 @@ int spi_setup(struct spi_device *spi)
- 		bad_bits &= ~SPI_CS_HIGH;
- 	ugly_bits = bad_bits &
- 		    (SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTAL |
--		     SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTAL);
-+		     SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTAL |
-+		     SPI_TX_DTR  | SPI_RX_DTR);
- 	if (ugly_bits) {
- 		dev_warn(&spi->dev,
- 			 "setup: ignoring unsupported mode bits %x\n",
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 6d16ba01ff5a..bf1108318389 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -183,6 +183,8 @@ struct spi_device {
- #define	SPI_TX_OCTAL	0x2000			/* transmit with 8 wires */
- #define	SPI_RX_OCTAL	0x4000			/* receive with 8 wires */
- #define	SPI_3WIRE_HIZ	0x8000			/* high impedance turnaround */
-+#define SPI_RX_DTR	0x10000			/* receive in DTR mode */
-+#define SPI_TX_DTR	0x20000			/* transmit in DTR mode */
- 	int			irq;
- 	void			*controller_state;
- 	void			*controller_data;
--- 
+The Cadence QSPI controller driver is also updated to run in Octal DTR
+mode.
+
+Tested on TI J721e EVM with 1-bit ECC on the Cypress flash.
+
+This series depends on [0]. v1 can be found at [1].
+
+[0] https://patchwork.kernel.org/patch/11355593/
+[1] https://lore.kernel.org/linux-mtd/20200211133348.15558-1-p.yadav@ti.com/
+
+Changes in v2:
+- Add DT properties "spi-rx-dtr" and "spi-tx-dtr" to allow expressing
+  DTR capabilities.
+
+- Set the mode bits SPI_RX_DTR and SPI_TX_DTR when we discover the DT
+  properties "spi-rx-dtr" and spi-tx-dtr".
+
+- spi_nor_cypress_octal_enable() was updating nor->params.read[] with
+  the intention of setting the correct number of dummy cycles. But this
+  function is called _after_ selecting the read so setting
+  nor->params.read[] will have no effect. So, update nor->read_dummy
+  directly.
+
+- Fix spi_nor_spimem_check_readop() and spi_nor_spimem_check_pp()
+  passing nor->read_proto and nor->write_proto to
+  spi_nor_spimem_setup_op() instead of read->proto and pp->proto
+  respectively.
+
+- Move the call to cqspi_setup_opcode_ext() inside cqspi_enable_dtr().
+  This avoids repeating the 'if (f_pdata->is_dtr)
+  cqspi_setup_opcode_ext()...` snippet multiple times.
+
+- Call the default 'supports_op()' from cqspi_supports_mem_op(). This
+  makes sure the buswidth requirements are also enforced along with the
+  DTR requirements.
+
+- Drop the 'is_dtr' argument from spi_check_dtr_req(). We only call it
+  when a phase is DTR so it is redundant.
+
+Pratyush Yadav (11):
+  dt-bindings: spi: allow expressing DTR capability
+  spi: set mode bits for "spi-rx-dtr" and "spi-tx-dtr"
+  spi: spi-mem: allow specifying whether an op is DTR or not
+  spi: spi-mem: allow specifying a command's extension
+  spi: cadence-quadspi: Add support for octal DTR flashes
+  mtd: spi-nor: add support for DTR protocol
+  mtd: spi-nor: get command opcode extension type from BFPT
+  mtd: spi-nor: parse xSPI Profile 1.0 table
+  mtd: spi-nor: use dummy cycle and address width info from SFDP
+  mtd: spi-nor: enable octal DTR mode when possible
+  mtd: spi-nor: add support for Cypress Semper flash
+
+ .../bindings/spi/spi-controller.yaml          |  10 +
+ drivers/mtd/spi-nor/spi-nor.c                 | 594 ++++++++++++++++--
+ drivers/spi/spi-cadence-quadspi.c             | 247 +++++++-
+ drivers/spi/spi-mem.c                         |  46 ++
+ drivers/spi/spi.c                             |  10 +-
+ include/linux/mtd/spi-nor.h                   |  55 +-
+ include/linux/spi/spi-mem.h                   |  32 +
+ include/linux/spi/spi.h                       |   2 +
+ 8 files changed, 891 insertions(+), 105 deletions(-)
+
+--
 2.25.0
-
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/

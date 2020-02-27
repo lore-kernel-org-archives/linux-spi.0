@@ -1,102 +1,45 @@
-From: Maxime Ripard <maxime@cerno.tech>
-Subject: Re: [PATCH] spi: dt-bindings: spi-controller: Fix #address-cells for
- slave mode
-Date: Thu, 27 Feb 2020 15:16:49 +0100
-Message-ID: <20200227141649.ji6js7vhlrltpn6z@gilmour.lan>
-References: <20200227130323.15327-1-geert+renesas@glider.be>
- <20200227130937.qvrjyxcwim7rfum7@gilmour.lan>
- <CAMuHMdUVW_51dqMK=ziz_JVT3LuXX7vOF3-Ei-aHiiBuSepGpg@mail.gmail.com>
- <20200227135109.l2oal55nwhm5un2c@gilmour.lan>
- <CAMuHMdWYF9RrLdkuK_PxfVqocUMHVKPpjnyc4FR+N69A_htdyQ@mail.gmail.com>
+From: Sergiu Cuciurean <sergiu.cuciurean-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: spi-mpc52xx: Use new structure for SPI transfer delays
+Date: Thu, 27 Feb 2020 16:21:31 +0200
+Message-ID: <20200227142131.14940-1-sergiu.cuciurean@analog.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="4ikzzwflzmxk3qkj"
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree@vger.kernel.org>,
-        Linux-renesas <linux-renesas-soc@vger.kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-renesas-soc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdWYF9RrLdkuK_PxfVqocUMHVKPpjnyc4FR+N69A_htdyQ@mail.gmail.com>
-Sender: linux-renesas-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain
+Cc: Sergiu Cuciurean <sergiu.cuciurean-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+In a recent change to the SPI subsystem [1], a new `delay` struct was added
+to replace the `delay_usecs`. This change replaces the current
+`delay_usecs` with `delay` for this driver.
 
---4ikzzwflzmxk3qkj
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The `spi_transfer_delay_exec()` function [in the SPI framework] makes sure
+that both `delay_usecs` & `delay` are used (in this order to preserve
+backwards compatibility).
 
-On Thu, Feb 27, 2020 at 03:05:56PM +0100, Geert Uytterhoeven wrote:
-> Hi Maxime,
->
-> On Thu, Feb 27, 2020 at 2:51 PM Maxime Ripard <maxime@cerno.tech> wrote:
-> > On Thu, Feb 27, 2020 at 02:19:08PM +0100, Geert Uytterhoeven wrote:
-> > > On Thu, Feb 27, 2020 at 2:09 PM Maxime Ripard <maxime@cerno.tech> wrote:
-> > > > On Thu, Feb 27, 2020 at 02:03:23PM +0100, Geert Uytterhoeven wrote:
-> > > > > Currently, the DT bindings for an SPI controller specify that
-> > > > > "#address-cells" must be fixed to one.  However, that applies to an SPI
-> > > > > controller in master mode only.  When running in SPI slave mode,
-> > > > > "#address-cells" should be zero.
-> > > > >
-> > > > > Fix this making the value of "#address-cells" dependent on the presence
-> > > > > of "spi-slave".
-> > > > >
-> > > > > Fixes: 0a1b929356830257 ("spi: Add YAML schemas for the generic SPI options")
-> > > > > Reported-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-> > > > > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> > >
-> > > > > --- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
-> > > > > +++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-> > >
-> > > > > @@ -52,6 +53,18 @@ properties:
-> > > > >      description:
-> > > > >        The SPI controller acts as a slave, instead of a master.
-> > > > >
-> > > > > +if:
-> > > > > +  required:
-> > > > > +    [ spi-slave ]
-> > > >
-> > > > Nit: Usually, that notation is when you would do it on the same line,
-> > > > if you want to go to a new line, it would make more sense to use -
-> > >
-> > > Sorry, being a poor yaml-by-example programmer, I don't understand what
-> > > you mean.  Which part do you refer to by "that notation"?
-> >
-> > I meant that usually the [] notation is used over a single line.
-> >
-> > If you want to have a list over multiple lines, usually you would have
-> >
-> > required:
-> >   - spi-slave
->
-> IC. So I can also write:
->
->     if:
->       required: [ spi-slave ]
->     else:
->       ...
->
-> which is even shorter ;-)
->
-> Both seem to work fine.
+[1] commit bebcfd272df6 ("spi: introduce `delay` field for
+`spi_transfer` + spi_transfer_delay_exec()")
+Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-mpc52xx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-The rest of the file uses the multi-line syntax, so I wouldn't do it
-for consistency, but yeah, they are equivalent.
-
-Maxime
-
---4ikzzwflzmxk3qkj
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXlfPUQAKCRDj7w1vZxhR
-xY1qAP9+J6ACEBSld2cNlgZ1np5JgE8toqkBz6bP/lxYW++O/gD+PkQQrYz3Ck0E
-pEtc4jLlxTZ04DThtUQDRRkGaY5KMgA=
-=hUDK
------END PGP SIGNATURE-----
-
---4ikzzwflzmxk3qkj--
+diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
+index ef2f24420460..d1ea402555ca 100644
+--- a/drivers/spi/spi-mpc52xx.c
++++ b/drivers/spi/spi-mpc52xx.c
+@@ -248,7 +248,9 @@ static int mpc52xx_spi_fsmstate_transfer(int irq, struct mpc52xx_spi *ms,
+ 	ms->len--;
+ 	if (ms->len == 0) {
+ 		ms->timestamp = get_tbl();
+-		ms->timestamp += ms->transfer->delay_usecs * tb_ticks_per_usec;
++		ms->timestamp += spi_delay_to_ns(&ms->transfer->delay,
++						 ms->transfer) *
++				 tb_ticks_per_usec;
+ 		ms->state = mpc52xx_spi_fsmstate_wait;
+ 		return FSM_CONTINUE;
+ 	}
+-- 
+2.17.1

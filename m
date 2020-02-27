@@ -1,10 +1,10 @@
 From: Boris Brezillon <boris.brezillon-ZGY8ohtN/8qB+jHODAdFcQ@public.gmane.org>
-Subject: Re: [PATCH v2 01/11] dt-bindings: spi: allow expressing DTR
- capability
-Date: Thu, 27 Feb 2020 17:11:47 +0100
-Message-ID: <20200227171147.32cc6fcf@collabora.com>
+Subject: Re: [PATCH v2 02/11] spi: set mode bits for "spi-rx-dtr" and
+ "spi-tx-dtr"
+Date: Thu, 27 Feb 2020 17:23:04 +0100
+Message-ID: <20200227172247.0e8ec459@collabora.com>
 References: <20200226093703.19765-1-p.yadav@ti.com>
-        <20200226093703.19765-2-p.yadav@ti.com>
+        <20200226093703.19765-3-p.yadav@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
@@ -20,49 +20,73 @@ Cc: Tudor Ambarus <tudor.ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
         linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: Pratyush Yadav <p.yadav-l0cyMroinI0@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200226093703.19765-2-p.yadav-l0cyMroinI0@public.gmane.org>
+In-Reply-To: <20200226093703.19765-3-p.yadav-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, 26 Feb 2020 15:06:53 +0530
+On Wed, 26 Feb 2020 15:06:54 +0530
 Pratyush Yadav <p.yadav-l0cyMroinI0@public.gmane.org> wrote:
 
-> Allow spi devices to express DTR receive and transmit capabilities via
-> the properties "spi-rx-dtr" and "spi-tx-dtr".
-
-Is the RX/TX granularity really useful?
-
+> These two DT properties express DTR receive and transmit capabilities of
+> a SPI flash and controller. Introduce two new mode bits: SPI_RX_DTR and
+> SPI_TX_DTR which correspond to the new DT properties. Set these bits
+> when the two corresponding properties are present in the device tree.
+> Also update the detection of unsupported mode bits to include the new
+> bits.
 > 
 > Signed-off-by: Pratyush Yadav <p.yadav-l0cyMroinI0@public.gmane.org>
 > ---
->  .../devicetree/bindings/spi/spi-controller.yaml        | 10 ++++++++++
->  1 file changed, 10 insertions(+)
+>  drivers/spi/spi.c       | 10 +++++++++-
+>  include/linux/spi/spi.h |  2 ++
+>  2 files changed, 11 insertions(+), 1 deletion(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-> index 1e0ca6ccf64b..7a84debed213 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
-> +++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-> @@ -120,6 +120,11 @@ patternProperties:
->          description:
->            Delay, in microseconds, after a read transfer.
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 38b4c78df506..25c8ed9343f9 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -1927,6 +1927,13 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+>  		}
+>  	}
 >  
-> +      spi-rx-dtr:
-> +        $ref: /schemas/types.yaml#/definitions/flag
-> +        description:
-> +          Device supports receiving in DTR mode.
+> +	/* Device DTR mode. */
+> +	if (of_property_read_bool(nc, "spi-tx-dtr"))
+> +		spi->mode |= SPI_TX_DTR;
 > +
->        spi-tx-bus-width:
->          allOf:
->            - $ref: /schemas/types.yaml#/definitions/uint32
-> @@ -132,6 +137,11 @@ patternProperties:
->          description:
->            Delay, in microseconds, after a write transfer.
->  
-> +      spi-tx-dtr:
-> +        $ref: /schemas/types.yaml#/definitions/flag
-> +        description:
-> +          Device supports transmitting in DTR mode.
+> +	if (of_property_read_bool(nc, "spi-rx-dtr"))
+> +		spi->mode |= SPI_RX_DTR;
 > +
->      required:
->        - compatible
->        - reg
+
+If this DTR mode is only used in spi-mem, maybe we shouldn't add those
+flags. SPI mem devices are usually smart enough to advertise what they
+support, and the subsystem in charge of those devices (in this specific
+case, spi-nor) will check what the controller supports
+using spi_mem_supports_op(). The only case we might have to deal with
+at some point is board level limitations (disabling DTR because the
+routing prevents using this mode).
+
+>  	if (spi_controller_is_slave(ctlr)) {
+>  		if (!of_node_name_eq(nc, "slave")) {
+>  			dev_err(&ctlr->dev, "%pOF is not called 'slave'\n",
+> @@ -3252,7 +3259,8 @@ int spi_setup(struct spi_device *spi)
+>  		bad_bits &= ~SPI_CS_HIGH;
+>  	ugly_bits = bad_bits &
+>  		    (SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTAL |
+> -		     SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTAL);
+> +		     SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTAL |
+> +		     SPI_TX_DTR  | SPI_RX_DTR);
+>  	if (ugly_bits) {
+>  		dev_warn(&spi->dev,
+>  			 "setup: ignoring unsupported mode bits %x\n",
+> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+> index 6d16ba01ff5a..bf1108318389 100644
+> --- a/include/linux/spi/spi.h
+> +++ b/include/linux/spi/spi.h
+> @@ -183,6 +183,8 @@ struct spi_device {
+>  #define	SPI_TX_OCTAL	0x2000			/* transmit with 8 wires */
+>  #define	SPI_RX_OCTAL	0x4000			/* receive with 8 wires */
+>  #define	SPI_3WIRE_HIZ	0x8000			/* high impedance turnaround */
+> +#define SPI_RX_DTR	0x10000			/* receive in DTR mode */
+> +#define SPI_TX_DTR	0x20000			/* transmit in DTR mode */
+>  	int			irq;
+>  	void			*controller_state;
+>  	void			*controller_data;

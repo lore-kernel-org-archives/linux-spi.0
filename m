@@ -1,8 +1,9 @@
-From: Vignesh Raghavendra <vigneshr@ti.com>
+From: "Ramuthevar, Vadivel MuruganX"
+        <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Subject: Re: [PATCH v10 1/2] dt-bindings: spi: Add schema for Cadence QSPI
  Controller driver
-Date: Thu, 27 Feb 2020 10:53:58 +0530
-Message-ID: <22bb0c6c-db03-dee5-eccf-84b00216308f@ti.com>
+Date: Thu, 27 Feb 2020 13:59:16 +0800
+Message-ID: <d00e82c8-a8b2-6cb3-520b-7e78f81d0c41@linux.intel.com>
 References: <20200219022852.28065-1-vadivel.muruganx.ramuthevar@linux.intel.com>
  <20200219022852.28065-2-vadivel.muruganx.ramuthevar@linux.intel.com>
  <CAL_JsqKJky=y4nhECUFVzTYvEpjFoOH_6UY9uZG5bvBVWq=SYQ@mail.gmail.com>
@@ -11,63 +12,64 @@ References: <20200219022852.28065-1-vadivel.muruganx.ramuthevar@linux.intel.com>
  <c119a70d-b7ef-ab1b-4590-7ac77395297f@linux.intel.com>
  <8c329860-84fd-463b-782f-83a788998878@ti.com>
  <98c90f35-297b-a13c-61ad-ce7a7f1d650f@linux.intel.com>
+ <22bb0c6c-db03-dee5-eccf-84b00216308f@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        <simon.k.r.goldschmidt@gmail.com>,
-        Dinh Nguyen <dinguyen@kernel.org>, <tien.fong.chee@intel.com>,
-        =?UTF-8?Q?Marek_Va=c5=a1ut?= <marex@denx.de>,
-        <cheol.yong.kim@intel.com>, <qi-ming.wu@intel.com>
-To: "Ramuthevar, Vadivel MuruganX"
-        <vadivel.muruganx.ramuthevar@linux.intel.com>,
-        Rob Herring <robh+dt@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <98c90f35-297b-a13c-61ad-ce7a7f1d650f@linux.intel.com>
+Cc: "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        simon.k.r.goldschmidt-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, Dinh Nguyen <dinguyen-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        tien.fong.chee-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+        =?UTF-8?Q?Marek_Va=c5=a1ut?= <marex-ynQEQJNshbs@public.gmane.org>,
+        cheol.yong.kim-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, qi-ming.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
+To: Vignesh Raghavendra <vigneshr-l0cyMroinI0@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <22bb0c6c-db03-dee5-eccf-84b00216308f-l0cyMroinI0@public.gmane.org>
 Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+Hi,
 
-
-On 26/02/20 7:02 am, Ramuthevar, Vadivel MuruganX wrote:
-> Hi,
-> 
-> On 25/2/2020 7:00 PM, Vignesh Raghavendra wrote:
+On 27/2/2020 1:23 PM, Vignesh Raghavendra wrote:
+>
+> On 26/02/20 7:02 am, Ramuthevar, Vadivel MuruganX wrote:
+>> Hi,
 >>
->> On 25/02/20 1:08 pm, Ramuthevar, Vadivel MuruganX wrote:
->>>>>>> +
->>>>>>> +  cdns,fifo-depth:
->>>>>>> +    $ref: /schemas/types.yaml#/definitions/uint32
->>>>>>> +    description:
->>>>>>> +      Size of the data FIFO in words.
->>>>>> A 4GB fifo is valid? Add some constraints.
->>>>> 128 is valid, will update.
->>>> Nope, the width of this field is 8bits -> 256 bytes
->>> correct me if I am wrong, the width of this field is 4bits -> 128 bytes
->>> (based on QUAD mode) .
->> This has nothing to do with quad-mode. Its about how much SRAM amount of
->> SRAM is present to buffer INDAC mode data. For TI platforms this is 256
->> bytes.
->> See CQSPI_REG_SRAMPARTITION definition in your datasheet.
-> Agreed, Thanks!
-> Yes , I have gone through it , Intel and Altera SoC's SRAM(act as
-> FIFO)size is 128 bytes and TI has 256 .
-> BTW old legacy DT binding mentioned size is 128, as per your earlier
-> suggestion you have mention that
-> keep the contents from old dt bindings as it is, so shall I keep 128/256?
+>> On 25/2/2020 7:00 PM, Vignesh Raghavendra wrote:
+>>> On 25/02/20 1:08 pm, Ramuthevar, Vadivel MuruganX wrote:
+>>>>>>>> +
+>>>>>>>> +  cdns,fifo-depth:
+>>>>>>>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>>>>>>>> +    description:
+>>>>>>>> +      Size of the data FIFO in words.
+>>>>>>> A 4GB fifo is valid? Add some constraints.
+>>>>>> 128 is valid, will update.
+>>>>> Nope, the width of this field is 8bits -> 256 bytes
+>>>> correct me if I am wrong, the width of this field is 4bits -> 128 bytes
+>>>> (based on QUAD mode) .
+>>> This has nothing to do with quad-mode. Its about how much SRAM amount of
+>>> SRAM is present to buffer INDAC mode data. For TI platforms this is 256
+>>> bytes.
+>>> See CQSPI_REG_SRAMPARTITION definition in your datasheet.
+>> Agreed, Thanks!
+>> Yes , I have gone through it , Intel and Altera SoC's SRAM(act as
+>> FIFO)size is 128 bytes and TI has 256 .
+>> BTW old legacy DT binding mentioned size is 128, as per your earlier
+>> suggestion you have mention that
+>> keep the contents from old dt bindings as it is, so shall I keep 128/256?
+> Old bindings does not impose a restriction that this needs to be 128
+> bytes always (Its just the example that shows this property to be set to
+> 128)
+>
+> What Rob is asking for is to add range of values that is valid for this
+> field and not single value. So, both 128 and 256 bytes should be allowed
+> as valid values for this property.
 
-Old bindings does not impose a restriction that this needs to be 128
-bytes always (Its just the example that shows this property to be set to
-128)
+Thank you Vignesh, will add both.
 
-What Rob is asking for is to add range of values that is valid for this
-field and not single value. So, both 128 and 256 bytes should be allowed
-as valid values for this property.
-
-
--- 
 Regards
-Vignesh
+Vadivel
+>

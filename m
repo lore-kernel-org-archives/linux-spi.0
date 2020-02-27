@@ -1,84 +1,53 @@
-From: Maxime Ripard <maxime-R63rPqgGiG5yDzI6CaY1VQ@public.gmane.org>
-Subject: Re: [PATCH] spi: dt-bindings: spi-controller: Fix #address-cells for
- slave mode
-Date: Thu, 27 Feb 2020 14:51:09 +0100
-Message-ID: <20200227135109.l2oal55nwhm5un2c@gilmour.lan>
-References: <20200227130323.15327-1-geert+renesas@glider.be>
- <20200227130937.qvrjyxcwim7rfum7@gilmour.lan>
- <CAMuHMdUVW_51dqMK=ziz_JVT3LuXX7vOF3-Ei-aHiiBuSepGpg@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: spi-bcm-qspi: Use new structure for SPI transfer
+ delays
+Date: Thu, 27 Feb 2020 15:29:06 +0000
+Message-ID: <20200227152906.GD4062@sirena.org.uk>
+References: <20200227141050.10969-1-sergiu.cuciurean@analog.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="z6z2joa2jqig3ppp"
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux-renesas <linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="DrWhICOqskFTAXiy"
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org, kdasu.kdev-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+To: Sergiu Cuciurean <sergiu.cuciurean-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdUVW_51dqMK=ziz_JVT3LuXX7vOF3-Ei-aHiiBuSepGpg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <20200227141050.10969-1-sergiu.cuciurean-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---z6z2joa2jqig3ppp
+--DrWhICOqskFTAXiy
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Feb 27, 2020 at 02:19:08PM +0100, Geert Uytterhoeven wrote:
-> Hi Maxime,
->
-> On Thu, Feb 27, 2020 at 2:09 PM Maxime Ripard <maxime-R63rPqgGiG5yDzI6CaY1VQ@public.gmane.org> wrote:
-> > On Thu, Feb 27, 2020 at 02:03:23PM +0100, Geert Uytterhoeven wrote:
-> > > Currently, the DT bindings for an SPI controller specify that
-> > > "#address-cells" must be fixed to one.  However, that applies to an SPI
-> > > controller in master mode only.  When running in SPI slave mode,
-> > > "#address-cells" should be zero.
-> > >
-> > > Fix this making the value of "#address-cells" dependent on the presence
-> > > of "spi-slave".
-> > >
-> > > Fixes: 0a1b929356830257 ("spi: Add YAML schemas for the generic SPI options")
-> > > Reported-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-> > > Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
->
-> > > --- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
-> > > +++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
->
-> > > @@ -52,6 +53,18 @@ properties:
-> > >      description:
-> > >        The SPI controller acts as a slave, instead of a master.
-> > >
-> > > +if:
-> > > +  required:
-> > > +    [ spi-slave ]
-> >
-> > Nit: Usually, that notation is when you would do it on the same line,
-> > if you want to go to a new line, it would make more sense to use -
->
-> Sorry, being a poor yaml-by-example programmer, I don't understand what
-> you mean.  Which part do you refer to by "that notation"?
+On Thu, Feb 27, 2020 at 04:10:50PM +0200, Sergiu Cuciurean wrote:
 
-I meant that usually the [] notation is used over a single line.
+>  	if (qt->byte >= qt->trans->len) {
+>  		/* we're at the end of the spi_transfer */
+>  		/* in TX mode, need to pause for a delay or CS change */
+> -		if (qt->trans->delay_usecs &&
+> +		if (qt->trans->delay.value &&
+> +		    (qt->trans->delay.unit == SPI_DELAY_UNIT_USECS) &&
 
-If you want to have a list over multiple lines, usually you would have
+It doesn't seem ideal that if the delay ends up specified in a unit over
+microseconds that we end up just ignoring the delay entirely.  This
+probably needs fixing in the core though, for example allowing the
+driver to say what range of delays it can actually implement.
 
-required:
-  - spi-slave
-
-Maxime
-
---z6z2joa2jqig3ppp
+--DrWhICOqskFTAXiy
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXlfJTQAKCRDj7w1vZxhR
-xSoKAQCMi6BKOxFBB0uhTTAvap1MsvS6SQ4ndibeVqk1uZYQrAD/So9dwDrZrPz1
-Tqt3wtZE3K5zNiD+3QvSqGsynf+04AM=
-=64J/
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl5X4EEACgkQJNaLcl1U
+h9AuKQf/VwDsH35+efmI58edDRHc3b1P9SXWdUTz+6yZOMfKofhGJlhnhkoHheqt
+kfVUG2SxvNDzDpmoZLW5KscTW0WcY3Le/15dLQoXpbRyshvNOiP7y4K/GJrlHCr/
+fic/79xluk+5b+abPXyARC/wjaVN2lNgl1dPVuvXvIN7Regl45EbWX53gFPybxiF
+lIQkR0ZA64jgUsDMF+ogiqW05kE6/rWo4OkMgqKKvkIAHeFoxSFmpxUxQYXDencr
+w8tCW4F86F5FifuAhHOmXv95ZvuIaG8Lyu9MCOOI+EBUj062yM3D0FXbWkdy+umU
+qKF0F3Y/cCMHZdzA4LIri/M8lk23VA==
+=qSJi
 -----END PGP SIGNATURE-----
 
---z6z2joa2jqig3ppp--
+--DrWhICOqskFTAXiy--

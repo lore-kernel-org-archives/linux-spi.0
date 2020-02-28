@@ -1,48 +1,53 @@
-From: <Tudor.Ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Subject: [PATCH] spi: spi-mem: Compute length only when needed
-Date: Fri, 28 Feb 2020 16:07:44 +0000
-Message-ID: <20200228160735.1565047-1-tudor.ambarus@microchip.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH RFC 3/3] spi: HiSilicon v3xx: Use DMI quirk to set
+ controller buswidth override bits
+Date: Fri, 28 Feb 2020 16:20:57 +0000
+Message-ID: <20200228162057.GC4956@sirena.org.uk>
+References: <1582903131-160033-1-git-send-email-john.garry@huawei.com>
+ <1582903131-160033-4-git-send-email-john.garry@huawei.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: <Tudor.Ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="DSayHWYpDlRfCAAQ"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+        linuxarm-hv44wF8Li93QT0dZR+AlfA@public.gmane.org
+To: John Garry <john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <1582903131-160033-4-git-send-email-john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Tudor Ambarus <tudor.ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
 
-When adjust_op_size is defined, len is never used. Move the len
-computation where it's actually used.
+--DSayHWYpDlRfCAAQ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Tudor Ambarus <tudor.ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
----
- drivers/spi/spi-mem.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+On Fri, Feb 28, 2020 at 11:18:51PM +0800, John Garry wrote:
+> The Huawei D06 board (and variants) can support Quad mode of operation.
+>=20
+> Since we have no current method in ACPI SPI bus device resource descripti=
+on
+> to describe this information, use DMI to detect the board, and set the
+> controller buswidth override bits.
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index 3c46747bacb1..adaa0c49f966 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -418,12 +418,13 @@ int spi_mem_adjust_op_size(struct spi_mem *mem, struc=
-t spi_mem_op *op)
- 	struct spi_controller *ctlr =3D mem->spi->controller;
- 	size_t len;
-=20
--	len =3D sizeof(op->cmd.opcode) + op->addr.nbytes + op->dummy.nbytes;
--
- 	if (ctlr->mem_ops && ctlr->mem_ops->adjust_op_size)
- 		return ctlr->mem_ops->adjust_op_size(mem, op);
-=20
- 	if (!ctlr->mem_ops || !ctlr->mem_ops->exec_op) {
-+		len =3D sizeof(op->cmd.opcode) + op->addr.nbytes +
-+		      op->dummy.nbytes;
-+
- 		if (len > spi_max_transfer_size(mem->spi))
- 			return -EINVAL;
-=20
---=20
-2.23.0
+Hopefully this is something that the ACPI people will be looking to
+address going forwards :/
+
+--DSayHWYpDlRfCAAQ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl5ZPekACgkQJNaLcl1U
+h9BxUwf/TDuNgCXr7WDgjO72Sd8M518jpCW63B2SJ/nhlOul+uSQtPp38AvFbOKG
+xdPHKVoh82UV1cn6w79H71fMVmDy3y9uPlIB+GTxvnGze9F03HHo0ybJuAD6pvmb
+gW4TsG3xZ9TatTMfM5n3sc0APvcfxXe3DjqWOhsdw9zlGddgfpObtyTApRiScQWK
+UBZQnih2B8Fkgfbb5QSCjMEuxd4Hwp6lz/EkxKbBvgG3m8H41ONev6XKRkPCNagd
+8tS65tJb0nhEuP6X8F0NpkkyQaDwsWSybWp06Zo8X1f5E2yxdhgc0qCbPThGFnil
+f30KtWcvkDjZRu0eymnJ+Zab1jvEHQ==
+=T+F5
+-----END PGP SIGNATURE-----
+
+--DSayHWYpDlRfCAAQ--

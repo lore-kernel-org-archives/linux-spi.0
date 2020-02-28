@@ -1,52 +1,118 @@
-From: John Garry <john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH RFC 0/3] spi/HiSilicon v3xx: Support dual and quad mode through DMI quirks
-Date: Fri, 28 Feb 2020 23:18:48 +0800
-Message-ID: <1582903131-160033-1-git-send-email-john.garry@huawei.com>
+From: John Garry <john.garry@huawei.com>
+Subject: [PATCH RFC 3/3] spi: HiSilicon v3xx: Use DMI quirk to set controller buswidth override bits
+Date: Fri, 28 Feb 2020 23:18:51 +0800
+Message-ID: <1582903131-160033-4-git-send-email-john.garry@huawei.com>
+References: <1582903131-160033-1-git-send-email-john.garry@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, <linuxarm-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>,
-        John Garry <john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mtd@lists.infradead.org>,
+        <andriy.shevchenko@linux.intel.com>, <linuxarm@huawei.com>,
+        John Garry <john.garry@huawei.com>
+To: <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1582903131-160033-1-git-send-email-john.garry@huawei.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-As discussed during the original HiSilicon v3xx SPI driver upstreaming,
-currently there is no method for the ACPI SPI Serial Bus Connection
-Resource Descriptor to define the data buswidth [0], [1].
+The Huawei D06 board (and variants) can support Quad mode of operation.
 
-So we can look to get the ACPI spec updated for this, and I have
-submitted a proposal for a new feature here:
-https://bugzilla.tianocore.org/show_bug.cgi?id=2557
+Since we have no current method in ACPI SPI bus device resource description
+to describe this information, use DMI to detect the board, and set the
+controller buswidth override bits.
 
-However I am not sure how successful that will be.
+Signed-off-by: John Garry <john.garry@huawei.com>
+---
+ drivers/spi/spi-hisi-sfc-v3xx.c | 56 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 55 insertions(+), 1 deletion(-)
 
-In the meantime, as an alternate approach, this RFC proposes to allow the
-SPI controller driver override the device buswidth. In this example,
-the driver uses DMI quirks to discover the host machine and set the 
-buswidth override accordingly when the machine is known to support
-dual or quad mode of operation.
-
-I also have included a fix for dual and quad modes in the driver.
-
-Comments welcome. thanks.
-
-[0] https://lore.kernel.org/linux-mtd/20200109212842.GK3702-GFdadSzt00ze9xe1eoZjHA@public.gmane.org/
-[1] https://uefi.org/sites/default/files/resources/ACPI_6_3_final_Jan30.pdf, 
-     19.6.126
-
-John Garry (3):
-  spi: Allow SPI controller override device buswidth
-  spi: HiSilicon v3xx: Properly set CMD_CONFIG for Dual/Quad modes
-  spi: HiSilicon v3xx: Use DMI quirk to set controller buswidth override
-    bits
-
- drivers/spi/spi-hisi-sfc-v3xx.c | 99 ++++++++++++++++++++++++++++++++-
- drivers/spi/spi.c               |  4 +-
- include/linux/spi/spi.h         |  3 +
- 3 files changed, 104 insertions(+), 2 deletions(-)
-
+diff --git a/drivers/spi/spi-hisi-sfc-v3xx.c b/drivers/spi/spi-hisi-sfc-v3xx.c
+index 45d906110ed1..e3b57252d075 100644
+--- a/drivers/spi/spi-hisi-sfc-v3xx.c
++++ b/drivers/spi/spi-hisi-sfc-v3xx.c
+@@ -7,6 +7,7 @@
+ 
+ #include <linux/acpi.h>
+ #include <linux/bitops.h>
++#include <linux/dmi.h>
+ #include <linux/iopoll.h>
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+@@ -250,6 +251,44 @@ static const struct spi_controller_mem_ops hisi_sfc_v3xx_mem_ops = {
+ 	.exec_op = hisi_sfc_v3xx_exec_op,
+ };
+ 
++static int hisi_sfc_v3xx_buswidth_override_bits;
++
++/*
++ * ACPI FW does not allow us to currently set the device buswidth, so quirk it
++ * depending on the board.
++ */
++static int __init hisi_sfc_v3xx_dmi_quirk(const struct dmi_system_id *d)
++{
++	hisi_sfc_v3xx_buswidth_override_bits = SPI_RX_QUAD | SPI_TX_QUAD;
++
++	return 0;
++}
++
++static const struct dmi_system_id hisi_sfc_v3xx_dmi_quirk_table[]  = {
++	{
++	.callback = hisi_sfc_v3xx_dmi_quirk,
++	.matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "Huawei"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "D06"),
++	},
++	},
++	{
++	.callback = hisi_sfc_v3xx_dmi_quirk,
++	.matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "Huawei"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "TaiShan 2280 V2"),
++	},
++	},
++	{
++	.callback = hisi_sfc_v3xx_dmi_quirk,
++	.matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "Huawei"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "TaiShan 200 (Model 2280)"),
++	},
++	},
++	{}
++};
++
+ static int hisi_sfc_v3xx_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -265,6 +304,8 @@ static int hisi_sfc_v3xx_probe(struct platform_device *pdev)
+ 	ctlr->mode_bits = SPI_RX_DUAL | SPI_RX_QUAD |
+ 			  SPI_TX_DUAL | SPI_TX_QUAD;
+ 
++	ctlr->buswidth_override_bits = hisi_sfc_v3xx_buswidth_override_bits;
++
+ 	host = spi_controller_get_devdata(ctlr);
+ 	host->dev = dev;
+ 
+@@ -320,7 +361,20 @@ static struct platform_driver hisi_sfc_v3xx_spi_driver = {
+ 	.probe	= hisi_sfc_v3xx_probe,
+ };
+ 
+-module_platform_driver(hisi_sfc_v3xx_spi_driver);
++static int __init hisi_sfc_v3xx_spi_init(void)
++{
++	dmi_check_system(hisi_sfc_v3xx_dmi_quirk_table);
++
++	return platform_driver_register(&hisi_sfc_v3xx_spi_driver);
++}
++
++static void __exit hisi_sfc_v3xx_spi_exit(void)
++{
++	platform_driver_unregister(&hisi_sfc_v3xx_spi_driver);
++}
++
++module_init(hisi_sfc_v3xx_spi_init);
++module_exit(hisi_sfc_v3xx_spi_exit);
+ 
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("John Garry <john.garry@huawei.com>");
 -- 
 2.17.1

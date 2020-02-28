@@ -1,81 +1,91 @@
-From: Boris Brezillon <boris.brezillon-ZGY8ohtN/8qB+jHODAdFcQ@public.gmane.org>
-Subject: Re: [PATCH v2 06/11] mtd: spi-nor: add support for DTR protocol
-Date: Fri, 28 Feb 2020 14:18:14 +0100
-Message-ID: <20200228141814.633c7195@collabora.com>
-References: <20200226093703.19765-1-p.yadav@ti.com>
-        <20200226093703.19765-7-p.yadav@ti.com>
-        <20200227175841.51435e3f@collabora.com>
-        <20200228093658.zc3uifqg4zruokq3@ti.com>
-        <20200228115355.5033798f@collabora.com>
-        <20200228120750.hstohetdnqja2g2p@ti.com>
+From: John Garry <john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH RFC 2/3] spi: HiSilicon v3xx: Properly set CMD_CONFIG for Dual/Quad modes
+Date: Fri, 28 Feb 2020 23:18:50 +0800
+Message-ID: <1582903131-160033-3-git-send-email-john.garry@huawei.com>
+References: <1582903131-160033-1-git-send-email-john.garry@huawei.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Vignesh Raghavendra <vigneshr-l0cyMroinI0@public.gmane.org>,
-        Tudor Ambarus <tudor.ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
-        Richard Weinberger <richard-/L3Ra7n9ekc@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        Miquel Raynal <miquel.raynal-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
-To: Pratyush Yadav <p.yadav-l0cyMroinI0@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200228120750.hstohetdnqja2g2p-l0cyMroinI0@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, <linuxarm-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>,
+        John Garry <john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1582903131-160033-1-git-send-email-john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, 28 Feb 2020 17:37:50 +0530
-Pratyush Yadav <p.yadav-l0cyMroinI0@public.gmane.org> wrote:
+The CMD_CONFIG register memory interface type field is not set configured
+for Dual and Quad modes, so set appropriately.
 
+This was not detected previously as we only ever operated in standard SPI
+mode.
+
+Signed-off-by: John Garry <john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-hisi-sfc-v3xx.c | 43 +++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
+
+diff --git a/drivers/spi/spi-hisi-sfc-v3xx.c b/drivers/spi/spi-hisi-sfc-v3xx.c
+index 4cf8fc80a7b7..45d906110ed1 100644
+--- a/drivers/spi/spi-hisi-sfc-v3xx.c
++++ b/drivers/spi/spi-hisi-sfc-v3xx.c
+@@ -17,6 +17,12 @@
+ #define HISI_SFC_V3XX_VERSION (0x1f8)
  
-> > Isn't there an EXIT sequence that allows NORs to return to a single 
-> > SPI state?  
-> 
-> Yes there is, but it comes with a lot of strings attached. There is a 
-> hardware reset pin on some flashes that puts the flash in Power-on-Reset 
-> (POR) mode. But that pin is not mandatory. It also might not be 
-> connected on a given board.
-> 
-> The other option is a "Soft Reset" (also optional), which puts the flash 
-> in POR mode after it is given the soft reset command. But to send the 
-> command you need to know the mode the device is in. On top of that, the 
-> Soft Reset opcode differs between flashes. According to the xSPI spec, 
-> some flashes can have the opcode as 0xF0 and some others can have it as 
-> a two command sequence of 0x66 and 0x99.
-> 
-> And the cherry on top is the fact that these reset operations return to 
-> a state based on the value of the non-volatile bits. So, if the 
-> non-volatile configuration is 8D-8D-8D mode, then all these resets 
-> achieve nothing.
-
-Looks like flash vendors don't learn from their mistakes, they keep
-adding more features without really thinking about backward
-compatibility :-(.
-
-> >   
-> > > 
-> > >     So, the only solution I can now think of is having the flash name in 
-> > >     its compatible string in the device tree. This way we can skip all 
-> > >     the Read ID ugliness and can have flash-specific hooks to make it 
-> > >     easier to detect the mode it is in (though I wonder if it is even 
-> > >     possible to detect the mode in a flash that doesn't have SFDP in 
-> > >     8D-8D-8D).  
-> > 
-> > Hm, I'd really like to avoid that if possible.  
-> 
-> Unfortunately, I don't really see a better alternative. Just so I 
-> understand this better, why do you think it is something worth avoiding?
-
-There are 2 main reasons:
-
-1/ board manufacturers usually source their flashes from different
-vendors so they're not tied to one of them. That means you can't really
-make the compatible too specific or you'd have to deal with DT variants
-(one variant per-flash).
-
-2/ I feel like once we start accepting specific compats, people will
-try to abuse it and decide that they need one for their flash too,
-before even trying to see if there's not a different way to detect the
-flash.
+ #define HISI_SFC_V3XX_CMD_CFG (0x300)
++#define HISI_SFC_V3XX_CMD_CFG_DUAL_IN_DUAL_OUT (1 << 17)
++#define HISI_SFC_V3XX_CMD_CFG_DUAL_IO (2 << 17)
++#define HISI_SFC_V3XX_CMD_CFG_FULL_DIO (3 << 17)
++#define HISI_SFC_V3XX_CMD_CFG_QUAD_IN_QUAD_OUT (5 << 17)
++#define HISI_SFC_V3XX_CMD_CFG_QUAD_IO (6 << 17)
++#define HISI_SFC_V3XX_CMD_CFG_FULL_QIO (7 << 17)
+ #define HISI_SFC_V3XX_CMD_CFG_DATA_CNT_OFF 9
+ #define HISI_SFC_V3XX_CMD_CFG_RW_MSK BIT(8)
+ #define HISI_SFC_V3XX_CMD_CFG_DATA_EN_MSK BIT(7)
+@@ -161,6 +167,43 @@ static int hisi_sfc_v3xx_generic_exec_op(struct hisi_sfc_v3xx_host *host,
+ 	if (op->addr.nbytes)
+ 		config |= HISI_SFC_V3XX_CMD_CFG_ADDR_EN_MSK;
+ 
++	switch (op->data.buswidth) {
++	case 0 ... 1:
++		break;
++	case 2:
++		if (op->addr.buswidth <= 1) {
++			config |= HISI_SFC_V3XX_CMD_CFG_DUAL_IN_DUAL_OUT;
++		} else if (op->addr.buswidth == 2) {
++			if (op->cmd.buswidth <= 1) {
++				config |= HISI_SFC_V3XX_CMD_CFG_DUAL_IO;
++			} else if (op->cmd.buswidth == 2) {
++				config |= HISI_SFC_V3XX_CMD_CFG_FULL_DIO;
++			} else {
++				return -EIO;
++			}
++		} else {
++			return -EIO;
++		}
++		break;
++	case 4:
++		if (op->addr.buswidth <= 1) {
++			config |= HISI_SFC_V3XX_CMD_CFG_QUAD_IN_QUAD_OUT;
++		} else if (op->addr.buswidth == 4) {
++			if (op->cmd.buswidth <= 1) {
++				config |= HISI_SFC_V3XX_CMD_CFG_QUAD_IO;
++			} else if (op->cmd.buswidth == 4) {
++				config |= HISI_SFC_V3XX_CMD_CFG_FULL_QIO;
++			} else {
++				return -EIO;
++			}
++		} else {
++			return -EIO;
++		}
++		break;
++	default:
++		return -EOPNOTSUPP;
++	}
++
+ 	if (op->data.dir != SPI_MEM_NO_DATA) {
+ 		config |= (len - 1) << HISI_SFC_V3XX_CMD_CFG_DATA_CNT_OFF;
+ 		config |= HISI_SFC_V3XX_CMD_CFG_DATA_EN_MSK;
+-- 
+2.17.1

@@ -1,7 +1,7 @@
 From: John Garry <john.garry@huawei.com>
-Subject: [PATCH RFC 3/3] spi: HiSilicon v3xx: Use DMI quirk to set controller buswidth override bits
-Date: Fri, 28 Feb 2020 23:18:51 +0800
-Message-ID: <1582903131-160033-4-git-send-email-john.garry@huawei.com>
+Subject: [PATCH RFC 1/3] spi: Allow SPI controller override device buswidth
+Date: Fri, 28 Feb 2020 23:18:49 +0800
+Message-ID: <1582903131-160033-2-git-send-email-john.garry@huawei.com>
 References: <1582903131-160033-1-git-send-email-john.garry@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -15,104 +15,62 @@ In-Reply-To: <1582903131-160033-1-git-send-email-john.garry@huawei.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The Huawei D06 board (and variants) can support Quad mode of operation.
+Currently ACPI firmware description for a SPI device does not have any
+method to describe the data buswidth on the board.
 
-Since we have no current method in ACPI SPI bus device resource description
-to describe this information, use DMI to detect the board, and set the
-controller buswidth override bits.
+So even through the controller and device may support higher modes than
+standard SPI, it cannot be assumed that the board does - as such, that
+device is limited to standard SPI in such a circumstance.
+
+As a workaround, allow the controller driver supply buswidth override bits,
+which are used inform the core code that the controller driver knows the
+buswidth supported on that board for that device.
+
+A host controller driver might know this info from DMI tables, for example.
 
 Signed-off-by: John Garry <john.garry@huawei.com>
 ---
- drivers/spi/spi-hisi-sfc-v3xx.c | 56 ++++++++++++++++++++++++++++++++-
- 1 file changed, 55 insertions(+), 1 deletion(-)
+ drivers/spi/spi.c       | 4 +++-
+ include/linux/spi/spi.h | 3 +++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-hisi-sfc-v3xx.c b/drivers/spi/spi-hisi-sfc-v3xx.c
-index 45d906110ed1..e3b57252d075 100644
---- a/drivers/spi/spi-hisi-sfc-v3xx.c
-+++ b/drivers/spi/spi-hisi-sfc-v3xx.c
-@@ -7,6 +7,7 @@
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 38b4c78df506..292f26807b41 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -510,6 +510,7 @@ struct spi_device *spi_alloc_device(struct spi_controller *ctlr)
+ 	spi->dev.bus = &spi_bus_type;
+ 	spi->dev.release = spidev_release;
+ 	spi->cs_gpio = -ENOENT;
++	spi->mode = ctlr->buswidth_override_bits;
  
- #include <linux/acpi.h>
- #include <linux/bitops.h>
-+#include <linux/dmi.h>
- #include <linux/iopoll.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
-@@ -250,6 +251,44 @@ static const struct spi_controller_mem_ops hisi_sfc_v3xx_mem_ops = {
- 	.exec_op = hisi_sfc_v3xx_exec_op,
- };
+ 	spin_lock_init(&spi->statistics.lock);
  
-+static int hisi_sfc_v3xx_buswidth_override_bits;
-+
-+/*
-+ * ACPI FW does not allow us to currently set the device buswidth, so quirk it
-+ * depending on the board.
-+ */
-+static int __init hisi_sfc_v3xx_dmi_quirk(const struct dmi_system_id *d)
-+{
-+	hisi_sfc_v3xx_buswidth_override_bits = SPI_RX_QUAD | SPI_TX_QUAD;
-+
-+	return 0;
-+}
-+
-+static const struct dmi_system_id hisi_sfc_v3xx_dmi_quirk_table[]  = {
-+	{
-+	.callback = hisi_sfc_v3xx_dmi_quirk,
-+	.matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Huawei"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "D06"),
-+	},
-+	},
-+	{
-+	.callback = hisi_sfc_v3xx_dmi_quirk,
-+	.matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Huawei"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "TaiShan 2280 V2"),
-+	},
-+	},
-+	{
-+	.callback = hisi_sfc_v3xx_dmi_quirk,
-+	.matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Huawei"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "TaiShan 200 (Model 2280)"),
-+	},
-+	},
-+	{}
-+};
-+
- static int hisi_sfc_v3xx_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -265,6 +304,8 @@ static int hisi_sfc_v3xx_probe(struct platform_device *pdev)
- 	ctlr->mode_bits = SPI_RX_DUAL | SPI_RX_QUAD |
- 			  SPI_TX_DUAL | SPI_TX_QUAD;
+@@ -2181,9 +2182,10 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+ 		return AE_NO_MEMORY;
+ 	}
  
-+	ctlr->buswidth_override_bits = hisi_sfc_v3xx_buswidth_override_bits;
 +
- 	host = spi_controller_get_devdata(ctlr);
- 	host->dev = dev;
+ 	ACPI_COMPANION_SET(&spi->dev, adev);
+ 	spi->max_speed_hz	= lookup.max_speed_hz;
+-	spi->mode		= lookup.mode;
++	spi->mode		|= lookup.mode;
+ 	spi->irq		= lookup.irq;
+ 	spi->bits_per_word	= lookup.bits_per_word;
+ 	spi->chip_select	= lookup.chip_select;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 6d16ba01ff5a..600e3793303e 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -481,6 +481,9 @@ struct spi_controller {
+ 	/* spi_device.mode flags understood by this controller driver */
+ 	u32			mode_bits;
  
-@@ -320,7 +361,20 @@ static struct platform_driver hisi_sfc_v3xx_spi_driver = {
- 	.probe	= hisi_sfc_v3xx_probe,
- };
- 
--module_platform_driver(hisi_sfc_v3xx_spi_driver);
-+static int __init hisi_sfc_v3xx_spi_init(void)
-+{
-+	dmi_check_system(hisi_sfc_v3xx_dmi_quirk_table);
++	/* spi_device.mode flags override flags for this controller */
++	u32			buswidth_override_bits;
 +
-+	return platform_driver_register(&hisi_sfc_v3xx_spi_driver);
-+}
-+
-+static void __exit hisi_sfc_v3xx_spi_exit(void)
-+{
-+	platform_driver_unregister(&hisi_sfc_v3xx_spi_driver);
-+}
-+
-+module_init(hisi_sfc_v3xx_spi_init);
-+module_exit(hisi_sfc_v3xx_spi_exit);
- 
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("John Garry <john.garry@huawei.com>");
+ 	/* bitmask of supported bits_per_word for transfers */
+ 	u32			bits_per_word_mask;
+ #define SPI_BPW_MASK(bits) BIT((bits) - 1)
 -- 
 2.17.1

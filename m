@@ -1,55 +1,104 @@
-From: John Garry <john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH RFC 3/3] spi: HiSilicon v3xx: Use DMI quirk to set
- controller buswidth override bits
-Date: Fri, 28 Feb 2020 17:17:18 +0000
-Message-ID: <a3b1711b-ed70-59d0-3326-991f1531db2b@huawei.com>
-References: <1582903131-160033-1-git-send-email-john.garry@huawei.com>
- <1582903131-160033-4-git-send-email-john.garry@huawei.com>
- <20200228162057.GC4956@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: <linuxarm-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>, <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: pxa2xx: Introduce is_mmp2_ssp() helper" to the spi tree
+Date: Fri, 28 Feb 2020 18:25:19 +0000
+Message-ID: <applied-20200227162556.3152-1-andriy.shevchenko@linux.intel.com>
+References: <20200227162556.3152-1-andriy.shevchenko@linux.intel.com>
+Cc: Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
+        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200228162057.GC4956-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Content-Language: en-US
+In-Reply-To: <20200227162556.3152-1-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 28/02/2020 16:20, Mark Brown wrote:
-> On Fri, Feb 28, 2020 at 11:18:51PM +0800, John Garry wrote:
->> The Huawei D06 board (and variants) can support Quad mode of operation.
->>
->> Since we have no current method in ACPI SPI bus device resource description
->> to describe this information, use DMI to detect the board, and set the
->> controller buswidth override bits.
-> 
-> Hopefully this is something that the ACPI people will be looking to
-> address going forwards :/
-> 
+The patch
 
-Yeah, well I did mention the bugzilla [0] I raised for this in the cover 
-letter; but I think that the new process workflows to raise feature 
-requests in this way still needs to be formalized, so this may be 
-blocked for now [1].
+   spi: pxa2xx: Introduce is_mmp2_ssp() helper
 
-And unfortunately I can't actively participate in relevant standards WGs 
-either, so if anyone else would like to assist, then that would great...
+has been applied to the spi tree at
 
-BTW, I think that it might also be good to request a generic 
-jedec-compatible SPI NOR part ACPI HID/CID here also.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.7
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
 Thanks,
-John
+Mark
 
-[0] https://bugzilla.tianocore.org/show_bug.cgi?id=2557
-[1] https://edk2.groups.io/g/devel/message/53420
+>From 41c9884170c54013edd2481978cae917f94d40b4 Mon Sep 17 00:00:00 2001
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Date: Thu, 27 Feb 2020 18:25:56 +0200
+Subject: [PATCH] spi: pxa2xx: Introduce is_mmp2_ssp() helper
 
-> 
-> ______________________________________________________
-> Linux MTD discussion mailing list
-> http://lists.infradead.org/mailman/listinfo/linux-mtd/
-> 
+Introduce is_mmp2_ssp() helper to be consistent with the rest
+helper function to distinguish SSP type.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Link: https://lore.kernel.org/r/20200227162556.3152-1-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 8e8e18023ded..aa93bbf0e1d4 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -185,6 +185,11 @@ static bool is_quark_x1000_ssp(const struct driver_data *drv_data)
+ 	return drv_data->ssp_type == QUARK_X1000_SSP;
+ }
+ 
++static bool is_mmp2_ssp(const struct driver_data *drv_data)
++{
++	return drv_data->ssp_type == MMP2_SSP;
++}
++
+ static u32 pxa2xx_spi_get_ssrc1_change_mask(const struct driver_data *drv_data)
+ {
+ 	switch (drv_data->ssp_type) {
+@@ -463,8 +468,8 @@ int pxa2xx_spi_flush(struct driver_data *drv_data)
+ 
+ static void pxa2xx_spi_off(struct driver_data *drv_data)
+ {
+-	/* On MMP, disabling SSE seems to corrupt the rx fifo */
+-	if (drv_data->ssp_type == MMP2_SSP)
++	/* On MMP, disabling SSE seems to corrupt the Rx FIFO */
++	if (is_mmp2_ssp(drv_data))
+ 		return;
+ 
+ 	pxa2xx_spi_write(drv_data, SSCR0,
+@@ -1070,7 +1075,7 @@ static int pxa2xx_spi_transfer_one(struct spi_controller *controller,
+ 	    || (pxa2xx_spi_read(drv_data, SSCR1) & change_mask)
+ 	    != (cr1 & change_mask)) {
+ 		/* stop the SSP, and update the other bits */
+-		if (drv_data->ssp_type != MMP2_SSP)
++		if (!is_mmp2_ssp(drv_data))
+ 			pxa2xx_spi_write(drv_data, SSCR0, cr0 & ~SSCR0_SSE);
+ 		if (!pxa25x_ssp_comp(drv_data))
+ 			pxa2xx_spi_write(drv_data, SSTO, chip->timeout);
+@@ -1084,7 +1089,7 @@ static int pxa2xx_spi_transfer_one(struct spi_controller *controller,
+ 			pxa2xx_spi_write(drv_data, SSTO, chip->timeout);
+ 	}
+ 
+-	if (drv_data->ssp_type == MMP2_SSP) {
++	if (is_mmp2_ssp(drv_data)) {
+ 		u8 tx_level = (pxa2xx_spi_read(drv_data, SSSR)
+ 					& SSSR_TFL_MASK) >> 8;
+ 
+-- 
+2.20.1

@@ -1,21 +1,21 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: HiSilicon v3xx: Properly set CMD_CONFIG for Dual/Quad modes" to the spi tree
-Date: Fri, 28 Feb 2020 18:25:33 +0000
-Message-ID: <applied-1582903131-160033-3-git-send-email-john.garry@huawei.com>
-References: <1582903131-160033-3-git-send-email-john.garry@huawei.com>
+Subject: Applied "spi: Allow SPI controller override device buswidth" to the spi tree
+Date: Fri, 28 Feb 2020 18:25:37 +0000
+Message-ID: <applied-1582903131-160033-2-git-send-email-john.garry@huawei.com>
+References: <1582903131-160033-2-git-send-email-john.garry@huawei.com>
 Cc: andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
         linuxarm-hv44wF8Li93QT0dZR+AlfA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 To: John Garry <john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1582903131-160033-3-git-send-email-john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <1582903131-160033-2-git-send-email-john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: HiSilicon v3xx: Properly set CMD_CONFIG for Dual/Quad modes
+   spi: Allow SPI controller override device buswidth
 
 has been applied to the spi tree at
 
@@ -40,85 +40,69 @@ to this mail.
 Thanks,
 Mark
 
->From 8fe21d6b347247227c349c9b2f7c462fae362af4 Mon Sep 17 00:00:00 2001
+>From ea23578611dce2eeaf31dcfe12cd7130cf3d1411 Mon Sep 17 00:00:00 2001
 From: John Garry <john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-Date: Fri, 28 Feb 2020 23:18:50 +0800
-Subject: [PATCH] spi: HiSilicon v3xx: Properly set CMD_CONFIG for Dual/Quad
- modes
+Date: Fri, 28 Feb 2020 23:18:49 +0800
+Subject: [PATCH] spi: Allow SPI controller override device buswidth
 
-The CMD_CONFIG register memory interface type field is not set configured
-for Dual and Quad modes, so set appropriately.
+Currently ACPI firmware description for a SPI device does not have any
+method to describe the data buswidth on the board.
 
-This was not detected previously as we only ever operated in standard SPI
-mode.
+So even through the controller and device may support higher modes than
+standard SPI, it cannot be assumed that the board does - as such, that
+device is limited to standard SPI in such a circumstance.
+
+As a workaround, allow the controller driver supply buswidth override bits,
+which are used inform the core code that the controller driver knows the
+buswidth supported on that board for that device.
+
+A host controller driver might know this info from DMI tables, for example.
 
 Signed-off-by: John Garry <john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
-Link: https://lore.kernel.org/r/1582903131-160033-3-git-send-email-john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org
+Link: https://lore.kernel.org/r/1582903131-160033-2-git-send-email-john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-hisi-sfc-v3xx.c | 43 +++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+ drivers/spi/spi.c       | 4 +++-
+ include/linux/spi/spi.h | 3 +++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-hisi-sfc-v3xx.c b/drivers/spi/spi-hisi-sfc-v3xx.c
-index 4cf8fc80a7b7..45d906110ed1 100644
---- a/drivers/spi/spi-hisi-sfc-v3xx.c
-+++ b/drivers/spi/spi-hisi-sfc-v3xx.c
-@@ -17,6 +17,12 @@
- #define HISI_SFC_V3XX_VERSION (0x1f8)
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 38b4c78df506..292f26807b41 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -510,6 +510,7 @@ struct spi_device *spi_alloc_device(struct spi_controller *ctlr)
+ 	spi->dev.bus = &spi_bus_type;
+ 	spi->dev.release = spidev_release;
+ 	spi->cs_gpio = -ENOENT;
++	spi->mode = ctlr->buswidth_override_bits;
  
- #define HISI_SFC_V3XX_CMD_CFG (0x300)
-+#define HISI_SFC_V3XX_CMD_CFG_DUAL_IN_DUAL_OUT (1 << 17)
-+#define HISI_SFC_V3XX_CMD_CFG_DUAL_IO (2 << 17)
-+#define HISI_SFC_V3XX_CMD_CFG_FULL_DIO (3 << 17)
-+#define HISI_SFC_V3XX_CMD_CFG_QUAD_IN_QUAD_OUT (5 << 17)
-+#define HISI_SFC_V3XX_CMD_CFG_QUAD_IO (6 << 17)
-+#define HISI_SFC_V3XX_CMD_CFG_FULL_QIO (7 << 17)
- #define HISI_SFC_V3XX_CMD_CFG_DATA_CNT_OFF 9
- #define HISI_SFC_V3XX_CMD_CFG_RW_MSK BIT(8)
- #define HISI_SFC_V3XX_CMD_CFG_DATA_EN_MSK BIT(7)
-@@ -161,6 +167,43 @@ static int hisi_sfc_v3xx_generic_exec_op(struct hisi_sfc_v3xx_host *host,
- 	if (op->addr.nbytes)
- 		config |= HISI_SFC_V3XX_CMD_CFG_ADDR_EN_MSK;
+ 	spin_lock_init(&spi->statistics.lock);
  
-+	switch (op->data.buswidth) {
-+	case 0 ... 1:
-+		break;
-+	case 2:
-+		if (op->addr.buswidth <= 1) {
-+			config |= HISI_SFC_V3XX_CMD_CFG_DUAL_IN_DUAL_OUT;
-+		} else if (op->addr.buswidth == 2) {
-+			if (op->cmd.buswidth <= 1) {
-+				config |= HISI_SFC_V3XX_CMD_CFG_DUAL_IO;
-+			} else if (op->cmd.buswidth == 2) {
-+				config |= HISI_SFC_V3XX_CMD_CFG_FULL_DIO;
-+			} else {
-+				return -EIO;
-+			}
-+		} else {
-+			return -EIO;
-+		}
-+		break;
-+	case 4:
-+		if (op->addr.buswidth <= 1) {
-+			config |= HISI_SFC_V3XX_CMD_CFG_QUAD_IN_QUAD_OUT;
-+		} else if (op->addr.buswidth == 4) {
-+			if (op->cmd.buswidth <= 1) {
-+				config |= HISI_SFC_V3XX_CMD_CFG_QUAD_IO;
-+			} else if (op->cmd.buswidth == 4) {
-+				config |= HISI_SFC_V3XX_CMD_CFG_FULL_QIO;
-+			} else {
-+				return -EIO;
-+			}
-+		} else {
-+			return -EIO;
-+		}
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
+@@ -2181,9 +2182,10 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+ 		return AE_NO_MEMORY;
+ 	}
+ 
 +
- 	if (op->data.dir != SPI_MEM_NO_DATA) {
- 		config |= (len - 1) << HISI_SFC_V3XX_CMD_CFG_DATA_CNT_OFF;
- 		config |= HISI_SFC_V3XX_CMD_CFG_DATA_EN_MSK;
+ 	ACPI_COMPANION_SET(&spi->dev, adev);
+ 	spi->max_speed_hz	= lookup.max_speed_hz;
+-	spi->mode		= lookup.mode;
++	spi->mode		|= lookup.mode;
+ 	spi->irq		= lookup.irq;
+ 	spi->bits_per_word	= lookup.bits_per_word;
+ 	spi->chip_select	= lookup.chip_select;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 6d16ba01ff5a..600e3793303e 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -481,6 +481,9 @@ struct spi_controller {
+ 	/* spi_device.mode flags understood by this controller driver */
+ 	u32			mode_bits;
+ 
++	/* spi_device.mode flags override flags for this controller */
++	u32			buswidth_override_bits;
++
+ 	/* bitmask of supported bits_per_word for transfers */
+ 	u32			bits_per_word_mask;
+ #define SPI_BPW_MASK(bits) BIT((bits) - 1)
 -- 
 2.20.1

@@ -1,15 +1,17 @@
-From: Boris Brezillon <boris.brezillon-ZGY8ohtN/8qB+jHODAdFcQ@public.gmane.org>
-Subject: Re: [PATCH v11 2/2] spi: cadence-quadspi: Add support for the
- Cadence QSPI controller
-Date: Fri, 28 Feb 2020 08:46:51 +0100
-Message-ID: <20200228084651.1ad0e334@collabora.com>
+From: "Ramuthevar, Vadivel MuruganX"
+        <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH v11 2/2] spi: cadence-quadspi: Add support for the Cadence
+ QSPI controller
+Date: Fri, 28 Feb 2020 15:53:37 +0800
+Message-ID: <10c5ec3f-8f1e-3f6f-a9cc-c8a3f8f2be75@linux.intel.com>
 References: <20200227062708.21544-1-vadivel.muruganx.ramuthevar@linux.intel.com>
-        <20200227062708.21544-3-vadivel.muruganx.ramuthevar@linux.intel.com>
-        <20200227183032.77ef0795@collabora.com>
-        <f82e4964-f030-9aac-5895-a715921ed6db@linux.intel.com>
+ <20200227062708.21544-3-vadivel.muruganx.ramuthevar@linux.intel.com>
+ <20200227183032.77ef0795@collabora.com>
+ <f82e4964-f030-9aac-5895-a715921ed6db@linux.intel.com>
+ <20200228084651.1ad0e334@collabora.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, vigneshr-l0cyMroinI0@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
         marex-ynQEQJNshbs@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -21,48 +23,56 @@ Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY7
         cheol.yong.kim-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
         computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org,
         cyrille.pitchen-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org
-To: "Ramuthevar, Vadivel MuruganX"
-        <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Boris Brezillon <boris.brezillon-ZGY8ohtN/8qB+jHODAdFcQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <f82e4964-f030-9aac-5895-a715921ed6db-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <20200228084651.1ad0e334-ZGY8ohtN/8qB+jHODAdFcQ@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, 28 Feb 2020 12:11:09 +0800
-"Ramuthevar, Vadivel MuruganX"
-<vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org> wrote:
+Hi Boris,
 
-> Hi Boris,
-> 
->       Thank you so much for the review comments...
-> 
-> On 28/2/2020 1:30 AM, Boris Brezillon wrote:
-> > On Thu, 27 Feb 2020 14:27:08 +0800
-> > "Ramuthevar, Vadivel MuruganX"
-> > <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org> wrote:
-> >  
-> >> From: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-> >>
-> >> Add support for the Cadence QSPI controller. This controller is
-> >> present in the Intel Lightning Mountain(LGM) SoCs, Altera and TI SoCs.
-> >> This driver has been tested on the Intel LGM SoCs.
-> >>
-> >> This driver does not support generic SPI and also the implementation
-> >> only supports spi-mem interface to replace the existing driver in
-> >> mtd/spi-nor/cadence-quadspi.c, the existing driver only support SPI-NOR
-> >> flash memory  
-> > Is it really supporting SPI NORs only, or is it just that you only
-> > tested it with a spi-nor?  
-> 
-> The existing drivers/mtd/spi-nor/cadence-quadspi.c supports SPI-NORs 
-> only, because the driver is developed
-> 
-> such a way that it does not support other SPI based flash memories, also 
-> never uses SPI/SPI-MEM based framework.
-> 
-> So we Vignesh suggested me to  develop the new driver which supports 
-> both SPI-NOR and SPI-NAND based on the SPI-MEM framework.
+On 28/2/2020 3:46 PM, Boris Brezillon wrote:
+> On Fri, 28 Feb 2020 12:11:09 +0800
+> "Ramuthevar, Vadivel MuruganX"
+> <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org> wrote:
+>
+>> Hi Boris,
+>>
+>>        Thank you so much for the review comments...
+>>
+>> On 28/2/2020 1:30 AM, Boris Brezillon wrote:
+>>> On Thu, 27 Feb 2020 14:27:08 +0800
+>>> "Ramuthevar, Vadivel MuruganX"
+>>> <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org> wrote:
+>>>   
+>>>> From: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+>>>>
+>>>> Add support for the Cadence QSPI controller. This controller is
+>>>> present in the Intel Lightning Mountain(LGM) SoCs, Altera and TI SoCs.
+>>>> This driver has been tested on the Intel LGM SoCs.
+>>>>
+>>>> This driver does not support generic SPI and also the implementation
+>>>> only supports spi-mem interface to replace the existing driver in
+>>>> mtd/spi-nor/cadence-quadspi.c, the existing driver only support SPI-NOR
+>>>> flash memory
+>>> Is it really supporting SPI NORs only, or is it just that you only
+>>> tested it with a spi-nor?
+>> The existing drivers/mtd/spi-nor/cadence-quadspi.c supports SPI-NORs
+>> only, because the driver is developed
+>>
+>> such a way that it does not support other SPI based flash memories, also
+>> never uses SPI/SPI-MEM based framework.
+>>
+>> So we Vignesh suggested me to  develop the new driver which supports
+>> both SPI-NOR and SPI-NAND based on the SPI-MEM framework.
+> Hm, your commit message makes it sound like even the new driver isn't
+> generic enough to support SPI NANDs. Maybe there's something to improve
+> to clarify the fact that this new version is not limited to SPI NORs.
 
-Hm, your commit message makes it sound like even the new driver isn't
-generic enough to support SPI NANDs. Maybe there's something to improve
-to clarify the fact that this new version is not limited to SPI NORs.
+Thanks! for the suggestions to remind me to add.
+
+sure, I will add more information about supporting SPI-NOR and SPI-NAND
+
+Regards
+Vadivel

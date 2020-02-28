@@ -1,7 +1,8 @@
 From: Chuanhong Guo <gch981213-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2 0/4] rewrite mtk-quadspi spi-nor driver with spi-mem
-Date: Fri, 28 Feb 2020 12:36:32 +0800
-Message-ID: <20200228043636.559915-1-gch981213@gmail.com>
+Subject: [PATCH v2 1/4] spi: make spi-max-frequency optional
+Date: Fri, 28 Feb 2020 12:36:33 +0800
+Message-ID: <20200228043636.559915-2-gch981213@gmail.com>
+References: <20200228043636.559915-1-gch981213@gmail.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Cc: Chuanhong Guo <gch981213-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
@@ -16,39 +17,46 @@ Cc: Chuanhong Guo <gch981213-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         support), linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org (open list)
 To: linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200228043636.559915-1-gch981213-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-This patchset adds a spi-mem driver for Mediatek SPI-NOR controller,
-which already has limited support by mtk-quadspi. This new driver can
-make use of full quadspi capability of this controller.
+We only need a spi-max-frequency when we specifically request a
+spi frequency lower than the max speed of spi host.
+This property is already documented as optional property and current
+host drivers are implemented to operate at highest speed possible
+when spi->max_speed_hz is 0.
+This patch makes spi-max-frequency an optional property so that
+we could just omit it to use max controller speed.
 
-1st new commit makes spi-max-frequency optional to match current
-binding doc and make this new driver compatible with old driver dt
-bindings.
+Signed-off-by: Chuanhong Guo <gch981213-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+Change since v1:
+ new commit
 
-Changes since v1:
- two new commits.
+ drivers/spi/spi.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-Chuanhong Guo (4):
-  spi: make spi-max-frequency optional
-  spi: add support for mediatek spi-nor controller
-  dt-bindings: convert mtk-quadspi binding doc for spi-mtk-nor
-  mtd: spi-nor: remove mtk-quadspi driver
-
- .../mtk-quadspi.txt => spi/spi-mtk-nor.txt}   |  34 +-
- drivers/mtd/spi-nor/Kconfig                   |   8 -
- drivers/mtd/spi-nor/Makefile                  |   1 -
- drivers/mtd/spi-nor/mtk-quadspi.c             | 565 --------------
- drivers/spi/Kconfig                           |  10 +
- drivers/spi/Makefile                          |   1 +
- drivers/spi/spi-mtk-nor.c                     | 689 ++++++++++++++++++
- drivers/spi/spi.c                             |   9 +-
- 8 files changed, 717 insertions(+), 600 deletions(-)
- rename Documentation/devicetree/bindings/{mtd/mtk-quadspi.txt => spi/spi-mtk-nor.txt} (62%)
- delete mode 100644 drivers/mtd/spi-nor/mtk-quadspi.c
- create mode 100644 drivers/spi/spi-mtk-nor.c
-
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 38b4c78df506..c0c55dc79972 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1955,13 +1955,8 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+ 		spi->mode |= SPI_CS_HIGH;
+ 
+ 	/* Device speed */
+-	rc = of_property_read_u32(nc, "spi-max-frequency", &value);
+-	if (rc) {
+-		dev_err(&ctlr->dev,
+-			"%pOF has no valid 'spi-max-frequency' property (%d)\n", nc, rc);
+-		return rc;
+-	}
+-	spi->max_speed_hz = value;
++	if (!of_property_read_u32(nc, "spi-max-frequency", &value))
++		spi->max_speed_hz = value;
+ 
+ 	return 0;
+ }
 -- 
 2.24.1

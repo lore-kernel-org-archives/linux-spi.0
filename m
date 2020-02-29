@@ -1,68 +1,75 @@
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] spi: bcm63xx-hsspi: Really keep pll clk enabled
-Date: Fri, 28 Feb 2020 22:38:38 +0100
-Message-ID: <20200228213838.7124-1-christophe.jaillet@wanadoo.fr>
+From: Oleksandr Suvorov <oleksandr.suvorov-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCH 1/2] spi: spidev: fix a debug message value
+Date: Sat, 29 Feb 2020 18:18:40 +0200
+Message-ID: <20200229161841.89144-2-oleksandr.suvorov@toradex.com>
+References: <20200229161841.89144-1-oleksandr.suvorov@toradex.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: broonie@kernel.org, f.fainelli@gmail.com,
- bcm-kernel-feedback-list@broadcom.com, jonas.gorski@gmail.com
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane-mx.org@lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane-mx.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+Cc: Oleksandr Suvorov <oleksandr.suvorov-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>,
+        Oleksandr Suvorov <cryosay-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Marcel Ziswiler <marcel.ziswiler-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>,
+        Igor Opaniuk <igor.opaniuk-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>,
+        Philippe Schenker <philippe.schenker-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200229161841.89144-1-oleksandr.suvorov-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The purpose of commit 0fd85869c2a9 ("spi/bcm63xx-hsspi: keep pll clk enabled")
-was to keep the pll clk enabled through the lifetime of the device.
+The debug message in spidev_message() can show wrong xfer speed.
+It happens if the initial (came from DT) and set with ioctl call spidev
+speeds are different (spidev->speed_hz != spi->max_speed_hz) and one
+sends a message with ioctl call and the field of speed is uninitialized
+(u_tmp->speed_hz == 0).
 
-In order to do that, some 'clk_prepare_enable()'/'clk_disable_unprepare()'
-calls have been added in the error handling path of the probe function, in
-the remove function and in the suspend and resume functions.
+In this case the kernel shows the spi->max_speed_hz value instead of
+correct spidev->speed_hz.
+...
+set the max speed with an ioctl call:
+[ 1227.702714] spidev spi0.0: setup mode 0, 32 bits/w, 20000000 Hz max --> 0
+(real speed sets to 20000000Hz)
+send a message with an ioctl call:
+[ 1227.731801] spidev spi0.0:   xfer len 4096 tx 32bits 0 usec 10000000Hz
+(debug message shows 10000000Hz that is the original max speed of this
+spidev came from DT)
+...
 
-However, a 'clk_disable_unprepare()' call has been unfortunately left in
-the probe function. So the commit seems to be more or less a no-op.
+Fix the data source for the debug message.
 
-Axe it now, so that the pll clk is left enabled through the lifetime of
-the device, as described in the commit.
-
-Fixes: 0fd85869c2a9 ("spi/bcm63xx-hsspi: keep pll clk enabled")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Oleksandr Suvorov <oleksandr.suvorov-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
 ---
-To be honest, I don't see why we need to keep pll clk, or hsspi clk
-enabled during the lifetime of the driver. My understanding of the code is
-that it is only used to get the 'speed_hz' value in the probe function.
-This value is never refreshed afterwards.
-I don't see the point in enabling/disabling the clks. I think that they
-both could be disabled in the probe function, without the need to keep
-track in the bcm63xx_hsspi structure, neither during pm cycles or the
-remove fucntion.
 
-However, my knowledge on drivers is limited and I may be completly wrong :)
----
- drivers/spi/spi-bcm63xx-hsspi.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/spi/spidev.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-index 7327309ea3d5..6c235306c0e4 100644
---- a/drivers/spi/spi-bcm63xx-hsspi.c
-+++ b/drivers/spi/spi-bcm63xx-hsspi.c
-@@ -366,7 +366,6 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
- 			goto out_disable_clk;
- 
- 		rate = clk_get_rate(pll_clk);
--		clk_disable_unprepare(pll_clk);
- 		if (!rate) {
- 			ret = -EINVAL;
- 			goto out_disable_pll_clk;
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 2ab6e782f14c..c97e853dbf5c 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -275,14 +275,14 @@ static int spidev_message(struct spidev_data *spidev,
+ #ifdef VERBOSE
+ 		dev_dbg(&spidev->spi->dev,
+ 			"  xfer len %u %s%s%s%dbits %u usec %u usec %uHz\n",
+-			u_tmp->len,
+-			u_tmp->rx_buf ? "rx " : "",
+-			u_tmp->tx_buf ? "tx " : "",
+-			u_tmp->cs_change ? "cs " : "",
+-			u_tmp->bits_per_word ? : spidev->spi->bits_per_word,
+-			u_tmp->delay_usecs,
+-			u_tmp->word_delay_usecs,
+-			u_tmp->speed_hz ? : spidev->spi->max_speed_hz);
++			k_tmp->len,
++			k_tmp->rx_buf ? "rx " : "",
++			k_tmp->tx_buf ? "tx " : "",
++			k_tmp->cs_change ? "cs " : "",
++			k_tmp->bits_per_word ? : spidev->spi->bits_per_word,
++			k_tmp->delay.value,
++			k_tmp->word_delay.value,
++			k_tmp->speed_hz ? : spidev->spi->max_speed_hz);
+ #endif
+ 		spi_message_add_tail(k_tmp, &msg);
+ 	}
 -- 
-2.20.1
+2.24.1

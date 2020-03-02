@@ -1,23 +1,23 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spidev: fix speed setting message" to the spi tree
-Date: Mon, 02 Mar 2020 16:05:14 +0000
-Message-ID: <applied-20200229161841.89144-3-oleksandr.suvorov@toradex.com>
-References: <20200229161841.89144-3-oleksandr.suvorov@toradex.com>
-Cc: Igor Opaniuk <igor.opaniuk-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Marcel Ziswiler <marcel.ziswiler-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Oleksandr Suvorov <cryosay-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Philippe Schenker <philippe.schenker-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
-To: Oleksandr Suvorov <oleksandr.suvorov-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200229161841.89144-3-oleksandr.suvorov-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: spidev: fix a debug message value" to the spi tree
+Date: Mon, 02 Mar 2020 16:05:19 +0000
+Message-ID: <applied-20200229161841.89144-2-oleksandr.suvorov@toradex.com>
+References: <20200229161841.89144-2-oleksandr.suvorov@toradex.com>
+Cc: Igor Opaniuk <igor.opaniuk@toradex.com>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+        Mark Brown <broonie@kernel.org>,
+        Oleksandr Suvorov <cryosay@gmail.com>,
+        Philippe Schenker <philippe.schenker@toradex.com>
+To: Oleksandr Suvorov <oleksandr.suvorov@toradex.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20200229161841.89144-2-oleksandr.suvorov@toradex.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: spidev: fix speed setting message
+   spi: spidev: fix a debug message value
 
 has been applied to the spi tree at
 
@@ -42,40 +42,64 @@ to this mail.
 Thanks,
 Mark
 
->From 4276fc82fc5d1aa24c6ad1a16fbaccf11fa61e02 Mon Sep 17 00:00:00 2001
-From: Oleksandr Suvorov <oleksandr.suvorov-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
-Date: Sat, 29 Feb 2020 18:18:41 +0200
-Subject: [PATCH] spi: spidev: fix speed setting message
+>From ea70fb5b3e8b795730ab5716592bb573648434bb Mon Sep 17 00:00:00 2001
+From: Oleksandr Suvorov <oleksandr.suvorov@toradex.com>
+Date: Sat, 29 Feb 2020 18:18:40 +0200
+Subject: [PATCH] spi: spidev: fix a debug message value
 
-The message of max device speed setting is shown when
-an error in spi_setup() occurs.
-Instead, it should be shown when the setup call succeeds.
+The debug message in spidev_message() can show wrong xfer speed.
+It happens if the initial (came from DT) and set with ioctl call spidev
+speeds are different (spidev->speed_hz != spi->max_speed_hz) and one
+sends a message with ioctl call and the field of speed is uninitialized
+(u_tmp->speed_hz == 0).
 
-Signed-off-by: Oleksandr Suvorov <oleksandr.suvorov-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
-Link: https://lore.kernel.org/r/20200229161841.89144-3-oleksandr.suvorov-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+In this case the kernel shows the spi->max_speed_hz value instead of
+correct spidev->speed_hz.
+...
+set the max speed with an ioctl call:
+[ 1227.702714] spidev spi0.0: setup mode 0, 32 bits/w, 20000000 Hz max --> 0
+(real speed sets to 20000000Hz)
+send a message with an ioctl call:
+[ 1227.731801] spidev spi0.0:   xfer len 4096 tx 32bits 0 usec 10000000Hz
+(debug message shows 10000000Hz that is the original max speed of this
+spidev came from DT)
+...
+
+Fix the data source for the debug message.
+
+Signed-off-by: Oleksandr Suvorov <oleksandr.suvorov@toradex.com>
+Link: https://lore.kernel.org/r/20200229161841.89144-2-oleksandr.suvorov@toradex.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spidev.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/spi/spidev.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index c97e853dbf5c..80dd1025b953 100644
+index 2ab6e782f14c..c97e853dbf5c 100644
 --- a/drivers/spi/spidev.c
 +++ b/drivers/spi/spidev.c
-@@ -454,10 +454,11 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
- 
- 			spi->max_speed_hz = tmp;
- 			retval = spi_setup(spi);
--			if (retval >= 0)
-+			if (retval == 0) {
- 				spidev->speed_hz = tmp;
--			else
--				dev_dbg(&spi->dev, "%d Hz (max)\n", tmp);
-+				dev_dbg(&spi->dev, "%d Hz (max)\n",
-+					spidev->speed_hz);
-+			}
- 			spi->max_speed_hz = save;
- 		}
- 		break;
+@@ -275,14 +275,14 @@ static int spidev_message(struct spidev_data *spidev,
+ #ifdef VERBOSE
+ 		dev_dbg(&spidev->spi->dev,
+ 			"  xfer len %u %s%s%s%dbits %u usec %u usec %uHz\n",
+-			u_tmp->len,
+-			u_tmp->rx_buf ? "rx " : "",
+-			u_tmp->tx_buf ? "tx " : "",
+-			u_tmp->cs_change ? "cs " : "",
+-			u_tmp->bits_per_word ? : spidev->spi->bits_per_word,
+-			u_tmp->delay_usecs,
+-			u_tmp->word_delay_usecs,
+-			u_tmp->speed_hz ? : spidev->spi->max_speed_hz);
++			k_tmp->len,
++			k_tmp->rx_buf ? "rx " : "",
++			k_tmp->tx_buf ? "tx " : "",
++			k_tmp->cs_change ? "cs " : "",
++			k_tmp->bits_per_word ? : spidev->spi->bits_per_word,
++			k_tmp->delay.value,
++			k_tmp->word_delay.value,
++			k_tmp->speed_hz ? : spidev->spi->max_speed_hz);
+ #endif
+ 		spi_message_add_tail(k_tmp, &msg);
+ 	}
 -- 
 2.20.1

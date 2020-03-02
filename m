@@ -1,85 +1,99 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: bcm63xx-hsspi: Really keep pll clk enabled" to the spi tree
-Date: Mon, 02 Mar 2020 16:05:23 +0000
-Message-ID: <applied-20200228213838.7124-1-christophe.jaillet@wanadoo.fr>
-References: <20200228213838.7124-1-christophe.jaillet@wanadoo.fr>
-Cc: bcm-kernel-feedback-list@broadcom.com, broonie@kernel.org,
-        f.fainelli@gmail.com, jonas.gorski@gmail.com,
-        Jonas Gorski <jonas.gorski@gmail.com>,
-        kernel-janitors@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH RFC 1/3] spi: Allow SPI controller override device buswidth
+Date: Mon, 2 Mar 2020 17:12:05 +0100
+Message-ID: <CAMuHMdV9v-7eRqi3JjcNaOBpRrC2-gLDCizYOJwhQCjZiLr5dA@mail.gmail.com>
+References: <1582903131-160033-1-git-send-email-john.garry@huawei.com> <1582903131-160033-2-git-send-email-john.garry@huawei.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Linuxarm <linuxarm@huawei.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        MTD Maling List <linux-mtd@lists.infradead.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: John Garry <john.garry@huawei.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200228213838.7124-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <1582903131-160033-2-git-send-email-john.garry@huawei.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch
+Hi John,
 
-   spi: bcm63xx-hsspi: Really keep pll clk enabled
+Thanks for your patch!
 
-has been applied to the spi tree at
+On Fri, Feb 28, 2020 at 4:23 PM John Garry <john.garry@huawei.com> wrote:
+> Currently ACPI firmware description for a SPI device does not have any
+> method to describe the data buswidth on the board.
+>
+> So even through the controller and device may support higher modes than
+> standard SPI, it cannot be assumed that the board does - as such, that
+> device is limited to standard SPI in such a circumstance.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Indeed.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+> As a workaround, allow the controller driver supply buswidth override bits,
+> which are used inform the core code that the controller driver knows the
+> buswidth supported on that board for that device.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+I feel this is a bit dangerous, and might bite us one day.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+> A host controller driver might know this info from DMI tables, for example.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Can't acpi_register_spi_device() obtain that info from DMI tables,
+to avoid contaminating the generic code?
 
-Thanks,
-Mark
+> Signed-off-by: John Garry <john.garry@huawei.com>
 
->From 51bddd4501bc414b8b1e8f4d096b4a5304068169 Mon Sep 17 00:00:00 2001
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Date: Fri, 28 Feb 2020 22:38:38 +0100
-Subject: [PATCH] spi: bcm63xx-hsspi: Really keep pll clk enabled
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -510,6 +510,7 @@ struct spi_device *spi_alloc_device(struct spi_controller *ctlr)
+>         spi->dev.bus = &spi_bus_type;
+>         spi->dev.release = spidev_release;
+>         spi->cs_gpio = -ENOENT;
+> +       spi->mode = ctlr->buswidth_override_bits;
 
-The purpose of commit 0fd85869c2a9 ("spi/bcm63xx-hsspi: keep pll clk enabled")
-was to keep the pll clk enabled through the lifetime of the device.
+This could just be moved to acpi_register_spi_device(), right?
 
-In order to do that, some 'clk_prepare_enable()'/'clk_disable_unprepare()'
-calls have been added in the error handling path of the probe function, in
-the remove function and in the suspend and resume functions.
+>
+>         spin_lock_init(&spi->statistics.lock);
+>
+> @@ -2181,9 +2182,10 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+>                 return AE_NO_MEMORY;
+>         }
+>
+> +
+>         ACPI_COMPANION_SET(&spi->dev, adev);
+>         spi->max_speed_hz       = lookup.max_speed_hz;
+> -       spi->mode               = lookup.mode;
+> +       spi->mode               |= lookup.mode;
+>         spi->irq                = lookup.irq;
+>         spi->bits_per_word      = lookup.bits_per_word;
+>         spi->chip_select        = lookup.chip_select;
+> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+> index 6d16ba01ff5a..600e3793303e 100644
+> --- a/include/linux/spi/spi.h
+> +++ b/include/linux/spi/spi.h
+> @@ -481,6 +481,9 @@ struct spi_controller {
+>         /* spi_device.mode flags understood by this controller driver */
+>         u32                     mode_bits;
+>
+> +       /* spi_device.mode flags override flags for this controller */
+> +       u32                     buswidth_override_bits;
 
-However, a 'clk_disable_unprepare()' call has been unfortunately left in
-the probe function. So the commit seems to be more or less a no-op.
+And I'd be happy if we could avoid adding this here ;-)
 
-Axe it now, so that the pll clk is left enabled through the lifetime of
-the device, as described in the commit.
+> +
+>         /* bitmask of supported bits_per_word for transfers */
+>         u32                     bits_per_word_mask;
+>  #define SPI_BPW_MASK(bits) BIT((bits) - 1)
 
-Fixes: 0fd85869c2a9 ("spi/bcm63xx-hsspi: keep pll clk enabled")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://lore.kernel.org/r/20200228213838.7124-1-christophe.jaillet@wanadoo.fr
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/spi/spi-bcm63xx-hsspi.c | 1 -
- 1 file changed, 1 deletion(-)
+Gr{oetje,eeting}s,
 
-diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-index 7327309ea3d5..6c235306c0e4 100644
---- a/drivers/spi/spi-bcm63xx-hsspi.c
-+++ b/drivers/spi/spi-bcm63xx-hsspi.c
-@@ -366,7 +366,6 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
- 			goto out_disable_clk;
- 
- 		rate = clk_get_rate(pll_clk);
--		clk_disable_unprepare(pll_clk);
- 		if (!rate) {
- 			ret = -EINVAL;
- 			goto out_disable_pll_clk;
+                        Geert
+
 -- 
-2.20.1
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

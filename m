@@ -1,71 +1,81 @@
-From: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: bcm63xx-hsspi: Really keep pll clk enabled
-Date: Mon, 2 Mar 2020 14:03:04 +0100
-Message-ID: <CAOiHx=me0H6xjz__bJthvF0=MGJfTcRyxd8mM1SD0fwjXpVERw@mail.gmail.com>
-References: <20200228213838.7124-1-christophe.jaillet@wanadoo.fr>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Christophe JAILLET <christophe.jaillet-39ZsbGIQGT5GWvitb5QawA@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: spidev: fix speed setting message" to the spi tree
+Date: Mon, 02 Mar 2020 16:05:14 +0000
+Message-ID: <applied-20200229161841.89144-3-oleksandr.suvorov@toradex.com>
+References: <20200229161841.89144-3-oleksandr.suvorov@toradex.com>
+Cc: Igor Opaniuk <igor.opaniuk-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Marcel Ziswiler <marcel.ziswiler-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Oleksandr Suvorov <cryosay-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Philippe Schenker <philippe.schenker-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+To: Oleksandr Suvorov <oleksandr.suvorov-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200228213838.7124-1-christophe.jaillet-39ZsbGIQGT5GWvitb5QawA@public.gmane.org>
+In-Reply-To: <20200229161841.89144-3-oleksandr.suvorov-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, 28 Feb 2020 at 22:38, Christophe JAILLET
-<christophe.jaillet-39ZsbGIQGT5GWvitb5QawA@public.gmane.org> wrote:
->
-> The purpose of commit 0fd85869c2a9 ("spi/bcm63xx-hsspi: keep pll clk enabled")
-> was to keep the pll clk enabled through the lifetime of the device.
->
-> In order to do that, some 'clk_prepare_enable()'/'clk_disable_unprepare()'
-> calls have been added in the error handling path of the probe function, in
-> the remove function and in the suspend and resume functions.
->
-> However, a 'clk_disable_unprepare()' call has been unfortunately left in
-> the probe function. So the commit seems to be more or less a no-op.
->
-> Axe it now, so that the pll clk is left enabled through the lifetime of
-> the device, as described in the commit.
+The patch
 
-Good catch!
+   spi: spidev: fix speed setting message
 
-Acked-by: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+has been applied to the spi tree at
 
->
-> Fixes: 0fd85869c2a9 ("spi/bcm63xx-hsspi: keep pll clk enabled")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet-39ZsbGIQGT5GWvitb5QawA@public.gmane.org>
-> ---
-> To be honest, I don't see why we need to keep pll clk, or hsspi clk
-> enabled during the lifetime of the driver. My understanding of the code is
-> that it is only used to get the 'speed_hz' value in the probe function.
-> This value is never refreshed afterwards.
-> I don't see the point in enabling/disabling the clks. I think that they
-> both could be disabled in the probe function, without the need to keep
-> track in the bcm63xx_hsspi structure, neither during pm cycles or the
-> remove fucntion.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-The hsspi clock is actually gated, so it needs to stay on during use.
-The pll clock is only used to convey the rate, but is not gate-able.
-These used to be the same (that's why it checks for the rate of the
-hsspi clock first), but were split to make it easier to move to common
-clock framework (since we can just use the generic gated and
-fixed-rate clock implementations).
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-Incidentally these are AFAIK also two inputs, so it even happens to
-match the hardware more closely.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Since the pll clock isn't gated, we don't need to keep it enabled - we
-don't even need to enable it in theory, but IIRC the common clock
-system will complain if you try to get the rate of a non-enabled
-clock. And if we do enable it, then we can also just keep it enabled
-over the lifetime of the device.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-Regards
-Jonas
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 4276fc82fc5d1aa24c6ad1a16fbaccf11fa61e02 Mon Sep 17 00:00:00 2001
+From: Oleksandr Suvorov <oleksandr.suvorov-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+Date: Sat, 29 Feb 2020 18:18:41 +0200
+Subject: [PATCH] spi: spidev: fix speed setting message
+
+The message of max device speed setting is shown when
+an error in spi_setup() occurs.
+Instead, it should be shown when the setup call succeeds.
+
+Signed-off-by: Oleksandr Suvorov <oleksandr.suvorov-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org>
+Link: https://lore.kernel.org/r/20200229161841.89144-3-oleksandr.suvorov-2KBjVHiyJgBBDgjK7y7TUQ@public.gmane.org
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spidev.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index c97e853dbf5c..80dd1025b953 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -454,10 +454,11 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 
+ 			spi->max_speed_hz = tmp;
+ 			retval = spi_setup(spi);
+-			if (retval >= 0)
++			if (retval == 0) {
+ 				spidev->speed_hz = tmp;
+-			else
+-				dev_dbg(&spi->dev, "%d Hz (max)\n", tmp);
++				dev_dbg(&spi->dev, "%d Hz (max)\n",
++					spidev->speed_hz);
++			}
+ 			spi->max_speed_hz = save;
+ 		}
+ 		break;
+-- 
+2.20.1

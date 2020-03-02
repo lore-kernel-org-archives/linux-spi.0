@@ -1,84 +1,108 @@
-From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 6/6] spi: spi-fsl-dspi: Convert the instantiations that support it to DMA
-Date: Mon,  2 Mar 2020 02:19:58 +0200
-Message-ID: <20200302001958.11105-7-olteanv@gmail.com>
-References: <20200302001958.11105-1-olteanv@gmail.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200302001958.11105-1-olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: John Garry <john.garry@huawei.com>
+Subject: Re: [PATCH RFC 1/3] spi: Allow SPI controller override device
+ buswidth
+Date: Mon, 2 Mar 2020 09:30:08 +0000
+Message-ID: <07bb2213-5543-0ef0-9585-be83026c1199@huawei.com>
+References: <1582903131-160033-1-git-send-email-john.garry@huawei.com>
+ <1582903131-160033-2-git-send-email-john.garry@huawei.com>
+ <52ecb988-d842-c04b-a0e8-93e8850009c4@cogentembedded.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+Cc: <linux-kernel@vger.kernel.org>,
+        <andriy.shevchenko@linux.intel.com>,
+        <linux-mtd@lists.infradead.org>, <linuxarm@huawei.com>,
+        <linux-spi@vger.kernel.org>
+To: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <52ecb988-d842-c04b-a0e8-93e8850009c4@cogentembedded.com>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
+On 01/03/2020 10:04, Sergei Shtylyov wrote:
+> Hello!
+> 
 
-The A-011218 eDMA/DSPI erratum affects most of the older Layerscape SoCs
-with DSPI, and its workaround is a bit intrusive.
+Hi Sergei,
 
-After this patch, there are no users of TCFQ mode that don't also
-support XSPI (previously there was LS2085A).
+> On 28.02.2020 18:18, John Garry wrote:
+> 
+>> Currently ACPI firmware description for a SPI device does not have any
+>> method to describe the data buswidth on the board.
+>>
+>> So even through the controller and device may support higher modes than
+>            ^^^^^^^
+>     Though?
+> 
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
----
- drivers/spi/spi-fsl-dspi.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+right
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index c26a42f8ecbc..c357c3247232 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -147,42 +147,49 @@ static const struct fsl_dspi_devtype_data devtype_data[] = {
- 		.fifo_size		= 4,
- 	},
- 	[LS1021A] = {
-+		/* Has A-011218 DMA erratum */
- 		.trans_mode		= DSPI_TCFQ_MODE,
- 		.max_clock_factor	= 8,
- 		.xspi_mode		= true,
- 		.fifo_size		= 4,
- 	},
- 	[LS1012A] = {
-+		/* Has A-011218 DMA erratum */
- 		.trans_mode		= DSPI_TCFQ_MODE,
- 		.max_clock_factor	= 8,
- 		.xspi_mode		= true,
- 		.fifo_size		= 16,
- 	},
- 	[LS1043A] = {
-+		/* Has A-011218 DMA erratum */
- 		.trans_mode		= DSPI_TCFQ_MODE,
- 		.max_clock_factor	= 8,
- 		.xspi_mode		= true,
- 		.fifo_size		= 16,
- 	},
- 	[LS1046A] = {
-+		/* Has A-011218 DMA erratum */
- 		.trans_mode		= DSPI_TCFQ_MODE,
- 		.max_clock_factor	= 8,
- 		.xspi_mode		= true,
- 		.fifo_size		= 16,
- 	},
- 	[LS2080A] = {
--		.trans_mode		= DSPI_TCFQ_MODE,
-+		.trans_mode		= DSPI_DMA_MODE,
-+		.dma_bufsize		= 8,
- 		.max_clock_factor	= 8,
- 		.xspi_mode		= true,
- 		.fifo_size		= 4,
- 	},
- 	[LS2085A] = {
--		.trans_mode		= DSPI_TCFQ_MODE,
-+		.trans_mode		= DSPI_DMA_MODE,
-+		.dma_bufsize		= 8,
- 		.max_clock_factor	= 8,
- 		.fifo_size		= 4,
- 	},
- 	[LX2160A] = {
--		.trans_mode		= DSPI_TCFQ_MODE,
-+		.trans_mode		= DSPI_DMA_MODE,
-+		.dma_bufsize		= 8,
- 		.max_clock_factor	= 8,
- 		.xspi_mode		= true,
- 		.fifo_size		= 4,
--- 
-2.17.1
+>> standard SPI, it cannot be assumed that the board does - as such, that
+>> device is limited to standard SPI in such a circumstance.
+>>
+>> As a workaround, allow the controller driver supply buswidth override 
+>> bits,
+>> which are used inform the core code that the controller driver knows the
+>> buswidth supported on that board for that device.
+>>
+>> A host controller driver might know this info from DMI tables, for 
+>> example.
+>>
+>> Signed-off-by: John Garry <john.garry@huawei.com>
+>> ---
+>>   drivers/spi/spi.c       | 4 +++-
+>>   include/linux/spi/spi.h | 3 +++
+>>   2 files changed, 6 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+>> index 38b4c78df506..292f26807b41 100644
+>> --- a/drivers/spi/spi.c
+>> +++ b/drivers/spi/spi.c
+>> @@ -510,6 +510,7 @@ struct spi_device *spi_alloc_device(struct 
+>> spi_controller *ctlr)
+>>       spi->dev.bus = &spi_bus_type;
+>>       spi->dev.release = spidev_release;
+>>       spi->cs_gpio = -ENOENT;
+>> +    spi->mode = ctlr->buswidth_override_bits;
+>>       spin_lock_init(&spi->statistics.lock);
+>> @@ -2181,9 +2182,10 @@ static acpi_status 
+>> acpi_register_spi_device(struct spi_controller *ctlr,
+>>           return AE_NO_MEMORY;
+>>       }
+>> +
+> 
+>     What for?
+
+slipped through the net
+
+> 
+>>       ACPI_COMPANION_SET(&spi->dev, adev);
+>>       spi->max_speed_hz    = lookup.max_speed_hz;
+>> -    spi->mode        = lookup.mode;
+>> +    spi->mode        |= lookup.mode;
+>>       spi->irq        = lookup.irq;
+>>       spi->bits_per_word    = lookup.bits_per_word;
+>>       spi->chip_select    = lookup.chip_select;
+> [...]
+
+TBH, I did not think that this series would be applied since I tagged it 
+as RFC, hence the typos which would have been caught. Indeed, this also 
+exposes an issue with enabling quad SPI for a spansion SPI NOR part, 
+which I need to debug now in the SPI NOR driver.
+
+Hi Mark,
+
+Do you want me to do anything about the above superfluous newline?
+
+Thanks,
+John
+
+> 
+> MBR, Sergei
+> 
+> ______________________________________________________
+> Linux MTD discussion mailing list
+> http://lists.infradead.org/mailman/listinfo/linux-mtd/
+> .

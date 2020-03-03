@@ -1,53 +1,39 @@
-From: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 1/2] spi: dt-bindings: spi-controller: Fix
- #address-cells for slave mode
-Date: Tue, 3 Mar 2020 15:05:10 -0600
-Message-ID: <CAL_JsqL+9Tcqm_bsorRwqvWZyJXAZmJhXb=EmJ+nZ44kCFp6Kg@mail.gmail.com>
-References: <20200303094522.23180-1-geert+renesas@glider.be> <20200303094522.23180-2-geert+renesas@glider.be>
+From: David Bauer <mail-YgwEh8z+B+JYon68uE86FQ@public.gmane.org>
+Subject: [PATCH] spi: ath79: remove spi-master setup and cleanup assignment
+Date: Tue,  3 Mar 2020 22:56:18 +0100
+Message-ID: <20200303215618.21255-1-mail@david-bauer.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Maxime Ripard <mripard-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        "open list:MEDIA DRIVERS FOR RENESAS - FCP"
-        <linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Content-Transfer-Encoding: 8bit
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200303094522.23180-2-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Mar 3, 2020 at 3:45 AM Geert Uytterhoeven
-<geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org> wrote:
->
-> Currently, the DT bindings for an SPI controller specify that
-> "#address-cells" must be fixed to one.  However, that applies to an SPI
-> controller in master mode only.  When running in SPI slave mode,
-> "#address-cells" should be zero.
->
-> Fix this making the value of "#address-cells" dependent on the presence
-> of "spi-slave".
->
-> Fixes: 0a1b929356830257 ("spi: Add YAML schemas for the generic SPI options")
-> Reported-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-> Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-> ---
-> v2:
->   - Use "enum: [0, 1]" instead of min/max limit,
->   - use "- spi-slave" instead of "[ spi-slave ]".
->
-> As of dtc commit 403cc79f06a135ae ("checks: Update SPI bus check for
-> 'spi-slave'") and Linux commit c2e7075ca8303631 ("scripts/dtc: Update to
-> upstream version v1.4.7-57-gf267e674d145"), dtc knows about SPI slave.
->
-> However, when using "#address-cells = <0>" with W=1:
->
->     Warning (avoid_unnecessary_addr_size): /soc/spi@e6e10000: unnecessary #address-cells/#size-cells without "ranges" or child "reg" property
+This removes the assignment of setup and cleanup functions for the ath79
+target. Assigning the setup-method will lead to 'setup_transfer' not
+being assigned in spi_bitbang_init. Because of this, performing any
+TX/RX operation will lead to a kernel oops.
 
-What was the point in having #address-cells in the first place for
-slaves? Seems like we should make it mutually exclusive with
-'spi-slave'.
+Also drop the redundant cleanup assignment, as it's also assigned in
+spi_bitbang_init.
 
-Rob
+Signed-off-by: David Bauer <mail-YgwEh8z+B+JYon68uE86FQ@public.gmane.org>
+---
+ drivers/spi/spi-ath79.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
+index eb9a243e9526..ae6baaba8a07 100644
+--- a/drivers/spi/spi-ath79.c
++++ b/drivers/spi/spi-ath79.c
+@@ -156,8 +156,6 @@ static int ath79_spi_probe(struct platform_device *pdev)
+ 
+ 	master->use_gpio_descriptors = true;
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
+-	master->setup = spi_bitbang_setup;
+-	master->cleanup = spi_bitbang_cleanup;
+ 	if (pdata) {
+ 		master->bus_num = pdata->bus_num;
+ 		master->num_chipselect = pdata->num_chipselect;
+-- 
+2.25.1

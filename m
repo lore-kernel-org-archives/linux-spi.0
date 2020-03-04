@@ -1,110 +1,107 @@
-From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 11/12] spi: spi-fsl-dspi: Use EOQ for last word in buffer even for XSPI mode
-Date: Thu,  5 Mar 2020 00:00:43 +0200
-Message-ID: <20200304220044.11193-12-olteanv@gmail.com>
+From: Vladimir Oltean <olteanv@gmail.com>
+Subject: [PATCH 10/12] spi: spi-fsl-dspi: Optimize dspi_setup_accel for lowest interrupt count
+Date: Thu,  5 Mar 2020 00:00:42 +0200
+Message-ID: <20200304220044.11193-11-olteanv@gmail.com>
 References: <20200304220044.11193-1-olteanv@gmail.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        eha-/iRVSOupHO4@public.gmane.org, angelo-BIYBQhTR83Y@public.gmane.org, andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org, weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org, mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200304220044.11193-1-olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        eha@deif.com, angelo@sysam.it, andrew.smirnov@gmail.com,
+        gustavo@embeddedor.com, weic@nvidia.com, mhosny@nvidia.com
+To: broonie@kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20200304220044.11193-1-olteanv@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-The EOQ mode has a hardware limitation in that it stops the transmission
-(including the deassertion of the chip select signal) once the host CPU
-requests end-of-queue for a particular word in the TX FIFO.
+Currently, a SPI transfer that is not multiple of the highest supported
+word width (e.g. 4 bytes) will be transmitted as follows (assume a
+30-byte buffer transmitted through a 32-bit wide FIFO that is 32 bytes
+deep):
 
-And XSPI mode has a limitation in that we need a separate CMD FIFO entry
-for the last byte in the buffer, where the chip select signal needs to
-be deasserted. It's not a functional limitation, but it's rather clunky
-and the fact that we need to halt the pipeline and write a single entry
-to the TX FIFO whenever a buffer ends brings the throughput down when
-transmitting small buffers.
+ - First 28 bytes are sent as 7 words of 32 bits each
+ - Last 2 bytes are sent as 1 word of 16 bits size
 
-So the idea here is to use EOQ's limitation in our favor when using XSPI
-mode. Stop special-casing that final word in the buffer, and just kill
-the chip select signal by issuing an EOQ for that last word. Now it can
-be mixed in with all the other words in the current TX FIFO train.
+But if the dspi_setup_accel function had decided to use a lower
+oper_bits_per_word value (16 instead of 32), there would have been
+enough space in the TX FIFO to fit the entire buffer in one go (15 words
+of 16 bits each).
 
-A small trick here is that we still keep using the XSPI-specific
-signaling via the CMDTCFQ interrupt in RSER, and not enabling the EOQ
-interrupt, in order to avoid hardware weirdness (potential races with
-separate interrupts being raised for CMDTCFQ and EOQ for what is in fact
-the end of the same transmission). That is just theoretical, but it's
-good to be cautious, and the EOQ interrupt isn't needed.
+What we're actually trying to avoid is mixing word sizes within the same
+run with the TX FIFO, since there is an erratum surrounding this, and
+invalid data might get transmitted.
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
+So this patch adds special cases for when the remaining length of the
+buffer can be sent in one go as 8-bit or 16-bit words, otherwise it
+falls back to the standard logic of sending as many bytes as possible at
+the highest oper_bits_per_word value possible.
+
+The benefit is that there will be one less CMDFQ/EOQ interrupt to
+service when the entire buffer is transmitted during a single go, and
+that will improve the overall latency of the transfer.
+
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
- drivers/spi/spi-fsl-dspi.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 36 +++++++++++++++++++++++++-----------
+ 1 file changed, 25 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index df4944353ed5..d5983be32180 100644
+index f5b802070d29..df4944353ed5 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -656,10 +656,8 @@ static void dspi_pushr_write(struct fsl_dspi *dspi)
- 	regmap_write(dspi->regmap, SPI_PUSHR, dspi_pop_tx_pushr(dspi));
- }
- 
--static void dspi_pushr_cmd_write(struct fsl_dspi *dspi)
-+static void dspi_pushr_cmd_write(struct fsl_dspi *dspi, u16 cmd)
+@@ -775,20 +775,34 @@ static void dspi_fifo_read(struct fsl_dspi *dspi)
+ static void dspi_setup_accel(struct fsl_dspi *dspi)
  {
--	u16 cmd = dspi->tx_cmd;
--
- 	/*
- 	 * The only time when the PCS doesn't need continuation after this word
- 	 * is when it's last. We need to look ahead, because we actually call
-@@ -680,8 +678,13 @@ static void dspi_pushr_txdata_write(struct fsl_dspi *dspi, u16 txdata)
- 	regmap_write(dspi->regmap_pushr, PUSHR_TX, txdata);
- }
+ 	struct spi_transfer *xfer = dspi->cur_transfer;
++	bool odd = !!(dspi->len & 1);
  
--static void dspi_xspi_write(struct fsl_dspi *dspi, int cnt)
-+static void dspi_xspi_write(struct fsl_dspi *dspi, int cnt, bool eoq)
- {
-+	u16 tx_cmd = dspi->tx_cmd;
+-	/* Start off with maximum supported by hardware */
+-	if (dspi->devtype_data->trans_mode == DSPI_XSPI_MODE)
+-		dspi->oper_bits_per_word = 32;
+-	else
++	/* No accel for frames not multiple of 8 bits at the moment */
++	if (xfer->bits_per_word % 8)
++		goto no_accel;
 +
-+	if (eoq)
-+		tx_cmd |= SPI_PUSHR_CMD_EOQ;
-+
- 	/* Update CTARE */
- 	regmap_write(dspi->regmap, SPI_CTARE(0),
- 		     SPI_FRAME_EBITS(dspi->oper_bits_per_word) |
-@@ -691,7 +694,7 @@ static void dspi_xspi_write(struct fsl_dspi *dspi, int cnt)
- 	 * Write the CMD FIFO entry first, and then the two
- 	 * corresponding TX FIFO entries (or one...).
- 	 */
--	dspi_pushr_cmd_write(dspi);
-+	dspi_pushr_cmd_write(dspi, tx_cmd);
++	if (!odd && dspi->len <= dspi->devtype_data->fifo_size * 2) {
+ 		dspi->oper_bits_per_word = 16;
++	} else if (odd && dspi->len <= dspi->devtype_data->fifo_size) {
++		dspi->oper_bits_per_word = 8;
++	} else {
++		/* Start off with maximum supported by hardware */
++		if (dspi->devtype_data->trans_mode == DSPI_XSPI_MODE)
++			dspi->oper_bits_per_word = 32;
++		else
++			dspi->oper_bits_per_word = 16;
  
- 	/* Fill TX FIFO with as many transfers as possible */
- 	while (cnt--) {
-@@ -707,6 +710,7 @@ static void dspi_xspi_fifo_write(struct fsl_dspi *dspi)
- {
- 	int num_fifo_entries = dspi->devtype_data->fifo_size;
- 	int bytes_in_flight;
-+	bool eoq = false;
+-	/* And go down only if the buffer can't be sent with words this big */
+-	do {
+-		if (dspi->len >= DIV_ROUND_UP(dspi->oper_bits_per_word, 8))
+-			break;
++		/*
++		 * And go down only if the buffer can't be sent with
++		 * words this big
++		 */
++		do {
++			if (dspi->len >= DIV_ROUND_UP(dspi->oper_bits_per_word, 8))
++				break;
  
- 	/* In XSPI mode each 32-bit word occupies 2 TX FIFO entries */
- 	if (dspi->oper_word_size == 4)
-@@ -732,11 +736,11 @@ static void dspi_xspi_fifo_write(struct fsl_dspi *dspi)
- 	 * So send one word less during this go, to force a split and a command
- 	 * with a single word next time, when CONT will be unset.
- 	 */
--	if (bytes_in_flight == dspi->len && dspi->words_in_flight > 1 &&
--	    !(dspi->tx_cmd & SPI_PUSHR_CMD_CONT))
--		dspi->words_in_flight--;
-+	if (!(dspi->tx_cmd & SPI_PUSHR_CMD_CONT) &&
-+	    bytes_in_flight == dspi->len)
-+		eoq = true;
+-		dspi->oper_bits_per_word /= 2;
+-	} while (dspi->oper_bits_per_word > 8);
++			dspi->oper_bits_per_word /= 2;
++		} while (dspi->oper_bits_per_word > 8);
++	}
  
--	dspi_xspi_write(dspi, dspi->words_in_flight);
-+	dspi_xspi_write(dspi, dspi->words_in_flight, eoq);
- }
- 
- static void dspi_eoq_fifo_write(struct fsl_dspi *dspi)
+ 	if (xfer->bits_per_word == 8 && dspi->oper_bits_per_word == 32) {
+ 		dspi->dev_to_host = dspi_8on32_dev_to_host;
+@@ -800,7 +814,7 @@ static void dspi_setup_accel(struct fsl_dspi *dspi)
+ 		dspi->dev_to_host = dspi_16on32_dev_to_host;
+ 		dspi->host_to_dev = dspi_16on32_host_to_dev;
+ 	} else {
+-		/* No acceleration needed (8<N<=16 on 16, 16<N<=32 on 32) */
++no_accel:
+ 		dspi->dev_to_host = dspi_native_dev_to_host;
+ 		dspi->host_to_dev = dspi_native_host_to_dev;
+ 		dspi->oper_bits_per_word = xfer->bits_per_word;
 -- 
 2.17.1

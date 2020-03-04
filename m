@@ -1,107 +1,87 @@
-From: Vladimir Oltean <olteanv@gmail.com>
-Subject: [PATCH 10/12] spi: spi-fsl-dspi: Optimize dspi_setup_accel for lowest interrupt count
-Date: Thu,  5 Mar 2020 00:00:42 +0200
-Message-ID: <20200304220044.11193-11-olteanv@gmail.com>
+From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 12/12] spi: spi-fsl-dspi: Take software timestamp in dspi_fifo_write
+Date: Thu,  5 Mar 2020 00:00:44 +0200
+Message-ID: <20200304220044.11193-13-olteanv@gmail.com>
 References: <20200304220044.11193-1-olteanv@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        eha@deif.com, angelo@sysam.it, andrew.smirnov@gmail.com,
-        gustavo@embeddedor.com, weic@nvidia.com, mhosny@nvidia.com
-To: broonie@kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200304220044.11193-1-olteanv@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        eha-/iRVSOupHO4@public.gmane.org, angelo-BIYBQhTR83Y@public.gmane.org, andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org, weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org, mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200304220044.11193-1-olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 
-Currently, a SPI transfer that is not multiple of the highest supported
-word width (e.g. 4 bytes) will be transmitted as follows (assume a
-30-byte buffer transmitted through a 32-bit wide FIFO that is 32 bytes
-deep):
+Although the SPI system timestamps are supposed to reflect the moment
+that the peripheral has received a word rather than the moment when the
+CPU has enqueued that word to the FIFO, in practice it is easier to just
+record the latter time than the former (with a smaller error).
 
- - First 28 bytes are sent as 7 words of 32 bits each
- - Last 2 bytes are sent as 1 word of 16 bits size
+With the recent migration of TCFQ users from poll back to interrupt mode
+(this time for XSPI FIFO), it's wiser to keep the interrupt latency
+outside of the measurement of the PTP system timestamp itself. If there
+proves to be any constant offset that requires static compensation, that
+can always be added later. So far that does not appear to be the case at
+least on the LS1021A-TSN board, where testing shows that the phc2sys
+offset is able to remain within +/- 200 ns even after 68 hours of
+testing.
 
-But if the dspi_setup_accel function had decided to use a lower
-oper_bits_per_word value (16 instead of 32), there would have been
-enough space in the TX FIFO to fit the entire buffer in one go (15 words
-of 16 bits each).
-
-What we're actually trying to avoid is mixing word sizes within the same
-run with the TX FIFO, since there is an erratum surrounding this, and
-invalid data might get transmitted.
-
-So this patch adds special cases for when the remaining length of the
-buffer can be sent in one go as 8-bit or 16-bit words, otherwise it
-falls back to the standard logic of sending as many bytes as possible at
-the highest oper_bits_per_word value possible.
-
-The benefit is that there will be one less CMDFQ/EOQ interrupt to
-service when the entire buffer is transmitted during a single go, and
-that will improve the overall latency of the transfer.
-
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 36 +++++++++++++++++++++++++-----------
- 1 file changed, 25 insertions(+), 11 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index f5b802070d29..df4944353ed5 100644
+index d5983be32180..b5ab0afbfa26 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -775,20 +775,34 @@ static void dspi_fifo_read(struct fsl_dspi *dspi)
- static void dspi_setup_accel(struct fsl_dspi *dspi)
+@@ -838,19 +838,18 @@ static void dspi_setup_accel(struct fsl_dspi *dspi)
+ 
+ static void dspi_fifo_write(struct fsl_dspi *dspi)
  {
- 	struct spi_transfer *xfer = dspi->cur_transfer;
-+	bool odd = !!(dspi->len & 1);
- 
--	/* Start off with maximum supported by hardware */
--	if (dspi->devtype_data->trans_mode == DSPI_XSPI_MODE)
--		dspi->oper_bits_per_word = 32;
--	else
-+	/* No accel for frames not multiple of 8 bits at the moment */
-+	if (xfer->bits_per_word % 8)
-+		goto no_accel;
++	struct spi_transfer *xfer = dspi->cur_transfer;
++	struct spi_message *msg = dspi->cur_msg;
++	int bytes_sent;
 +
-+	if (!odd && dspi->len <= dspi->devtype_data->fifo_size * 2) {
- 		dspi->oper_bits_per_word = 16;
-+	} else if (odd && dspi->len <= dspi->devtype_data->fifo_size) {
-+		dspi->oper_bits_per_word = 8;
-+	} else {
-+		/* Start off with maximum supported by hardware */
-+		if (dspi->devtype_data->trans_mode == DSPI_XSPI_MODE)
-+			dspi->oper_bits_per_word = 32;
-+		else
-+			dspi->oper_bits_per_word = 16;
+ 	dspi_setup_accel(dspi);
  
--	/* And go down only if the buffer can't be sent with words this big */
--	do {
--		if (dspi->len >= DIV_ROUND_UP(dspi->oper_bits_per_word, 8))
--			break;
-+		/*
-+		 * And go down only if the buffer can't be sent with
-+		 * words this big
-+		 */
-+		do {
-+			if (dspi->len >= DIV_ROUND_UP(dspi->oper_bits_per_word, 8))
-+				break;
++	spi_take_timestamp_pre(dspi->ctlr, xfer, dspi->progress, !dspi->irq);
++
+ 	if (dspi->devtype_data->trans_mode == DSPI_EOQ_MODE)
+ 		dspi_eoq_fifo_write(dspi);
+ 	else
+ 		dspi_xspi_fifo_write(dspi);
+-}
+-
+-static int dspi_rxtx(struct fsl_dspi *dspi)
+-{
+-	struct spi_transfer *xfer = dspi->cur_transfer;
+-	struct spi_message *msg = dspi->cur_msg;
+-	int bytes_sent;
  
--		dspi->oper_bits_per_word /= 2;
--	} while (dspi->oper_bits_per_word > 8);
-+			dspi->oper_bits_per_word /= 2;
-+		} while (dspi->oper_bits_per_word > 8);
-+	}
+ 	/* Update total number of bytes that were transferred */
+ 	bytes_sent = dspi->words_in_flight * dspi->oper_word_size;
+@@ -859,16 +858,16 @@ static int dspi_rxtx(struct fsl_dspi *dspi)
  
- 	if (xfer->bits_per_word == 8 && dspi->oper_bits_per_word == 32) {
- 		dspi->dev_to_host = dspi_8on32_dev_to_host;
-@@ -800,7 +814,7 @@ static void dspi_setup_accel(struct fsl_dspi *dspi)
- 		dspi->dev_to_host = dspi_16on32_dev_to_host;
- 		dspi->host_to_dev = dspi_16on32_host_to_dev;
- 	} else {
--		/* No acceleration needed (8<N<=16 on 16, 16<N<=32 on 32) */
-+no_accel:
- 		dspi->dev_to_host = dspi_native_dev_to_host;
- 		dspi->host_to_dev = dspi_native_host_to_dev;
- 		dspi->oper_bits_per_word = xfer->bits_per_word;
+ 	spi_take_timestamp_post(dspi->ctlr, dspi->cur_transfer,
+ 				dspi->progress, !dspi->irq);
++}
+ 
++static int dspi_rxtx(struct fsl_dspi *dspi)
++{
+ 	dspi_fifo_read(dspi);
+ 
+ 	if (!dspi->len)
+ 		/* Success! */
+ 		return 0;
+ 
+-	spi_take_timestamp_pre(dspi->ctlr, dspi->cur_transfer,
+-			       dspi->progress, !dspi->irq);
+-
+ 	dspi_fifo_write(dspi);
+ 
+ 	return -EINPROGRESS;
 -- 
 2.17.1

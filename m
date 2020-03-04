@@ -1,222 +1,234 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: spi-fsl-dspi: Use specific compatible strings for all SoC instantiations" to the spi tree
-Date: Wed, 04 Mar 2020 18:29:32 +0000
-Message-ID: <applied-20200302001958.11105-3-olteanv@gmail.com>
-References: <20200302001958.11105-3-olteanv@gmail.com>
-Cc: broonie@kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200302001958.11105-3-olteanv@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Johan Jonker <jbx6244-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v3 1/3] dt-bindings: spi: convert rockchip spi bindings to yaml
+Date: Wed,  4 Mar 2020 19:42:01 +0100
+Message-ID: <20200304184203.9548-1-jbx6244@gmail.com>
+Cc: heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Current dts files with 'spi' nodes are manually verified.
+In order to automate this process spi-rockchip.txt
+has to be converted to yaml. In the new setup
+spi-rockchip.yaml will inherit properties from
+spi-controller.yaml.
 
-   spi: spi-fsl-dspi: Use specific compatible strings for all SoC instantiations
+Add document to MAINTAINERS.
 
-has been applied to the spi tree at
+Also rk3188.dtsi, rk3288.dtsi, rk3368.dtsi and rk3399.dtsi
+use an extra fallback string, so change this in the documentation.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+Changed:
+"rockchip,rk3188-spi", "rockchip,rk3066-spi"
+"rockchip,rk3288-spi", "rockchip,rk3066-spi"
+"rockchip,rk3368-spi", "rockchip,rk3066-spi"
+"rockchip,rk3399-spi", "rockchip,rk3066-spi"
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From d35054010b571486596f9da159f798fc38628683 Mon Sep 17 00:00:00 2001
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-Date: Mon, 2 Mar 2020 02:19:54 +0200
-Subject: [PATCH] spi: spi-fsl-dspi: Use specific compatible strings for all
- SoC instantiations
-
-Currently, the device tree bindings submitted in mainline for Layerscape
-SoCs look like this:
-
-LS1021A:
-compatible = "fsl,ls1021a-v1.0-dspi";
-
-LS1012A:
-compatible = "fsl,ls1012a-dspi", "fsl,ls1021a-v1.0-dspi";
-
-LS2085A:
-compatible = "fsl,ls2085a-dspi";
-
-LS2088A:
-compatible = "fsl,ls2080a-dspi", "fsl,ls2085a-dspi";
-
-LX2160A:
-compatible = "fsl,lx2160a-dspi", "fsl,ls2085a-dspi";
-
-LS1043A:
-compatible = "fsl,ls1043a-dspi", "fsl,ls1021a-v1.0-dspi";
-
-LS1046A:
-compatible = "fsl,ls1021a-v1.0-dspi";
-
-Due to a lack of a more specific compatible string, LS1012A, LS1043A and
-LS1046A will fall under the LS1021A umbrella, and LS2088A and LX2160A
-under the LS2085A umbrella.
-
-They do work in those modes, but there are slight differences in the
-hardware instantiations, mostly related to FIFO sizes (with the more
-specific compatible strings, the FIFO size can be increased properly).
-
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Message-Id: <20200302001958.11105-3-olteanv@gmail.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Johan Jonker <jbx6244-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 108 +++++++++++++++++++++++++++++--------
- 1 file changed, 85 insertions(+), 23 deletions(-)
+Changes v3:
+  fix compile for latest linux-next
+  remove some comments
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 6ec2dcb8c57a..021c658886d4 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -133,27 +133,66 @@ struct fsl_dspi_devtype_data {
- 	bool			xspi_mode;
- };
- 
--static const struct fsl_dspi_devtype_data vf610_data = {
--	.trans_mode		= DSPI_DMA_MODE,
--	.max_clock_factor	= 2,
-+enum {
-+	LS1021A,
-+	LS1012A,
-+	LS1043A,
-+	LS1046A,
-+	LS2080A,
-+	LS2085A,
-+	LX2160A,
-+	MCF5441X,
-+	VF610,
- };
- 
--static const struct fsl_dspi_devtype_data ls1021a_v1_data = {
--	.trans_mode		= DSPI_TCFQ_MODE,
--	.max_clock_factor	= 8,
--	.ptp_sts_supported	= true,
--	.xspi_mode		= true,
--};
+Changes v2:
+  include suggestions by robh
+---
+ .../devicetree/bindings/spi/spi-rockchip.txt       |  58 ------------
+ .../devicetree/bindings/spi/spi-rockchip.yaml      | 105 +++++++++++++++++++++
+ MAINTAINERS                                        |   1 +
+ 3 files changed, 106 insertions(+), 58 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/spi/spi-rockchip.txt
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-rockchip.yaml
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-rockchip.txt b/Documentation/devicetree/bindings/spi/spi-rockchip.txt
+deleted file mode 100644
+index a0edac12d..000000000
+--- a/Documentation/devicetree/bindings/spi/spi-rockchip.txt
++++ /dev/null
+@@ -1,58 +0,0 @@
+-* Rockchip SPI Controller
 -
--static const struct fsl_dspi_devtype_data ls2085a_data = {
--	.trans_mode		= DSPI_TCFQ_MODE,
--	.max_clock_factor	= 8,
--	.ptp_sts_supported	= true,
--};
+-The Rockchip SPI controller is used to interface with various devices such as flash
+-and display controllers using the SPI communication interface.
 -
--static const struct fsl_dspi_devtype_data coldfire_data = {
--	.trans_mode		= DSPI_EOQ_MODE,
--	.max_clock_factor	= 8,
-+static const struct fsl_dspi_devtype_data devtype_data[] = {
-+	[VF610] = {
-+		.trans_mode		= DSPI_DMA_MODE,
-+		.max_clock_factor	= 2,
-+	},
-+	[LS1021A] = {
-+		.trans_mode		= DSPI_TCFQ_MODE,
-+		.max_clock_factor	= 8,
-+		.ptp_sts_supported	= true,
-+		.xspi_mode		= true,
-+	},
-+	[LS1012A] = {
-+		.trans_mode		= DSPI_TCFQ_MODE,
-+		.max_clock_factor	= 8,
-+		.ptp_sts_supported	= true,
-+		.xspi_mode		= true,
-+	},
-+	[LS1043A] = {
-+		.trans_mode		= DSPI_TCFQ_MODE,
-+		.max_clock_factor	= 8,
-+		.ptp_sts_supported	= true,
-+		.xspi_mode		= true,
-+	},
-+	[LS1046A] = {
-+		.trans_mode		= DSPI_TCFQ_MODE,
-+		.max_clock_factor	= 8,
-+		.ptp_sts_supported	= true,
-+		.xspi_mode		= true,
-+	},
-+	[LS2080A] = {
-+		.trans_mode		= DSPI_TCFQ_MODE,
-+		.max_clock_factor	= 8,
-+		.ptp_sts_supported	= true,
-+	},
-+	[LS2085A] = {
-+		.trans_mode		= DSPI_TCFQ_MODE,
-+		.max_clock_factor	= 8,
-+		.ptp_sts_supported	= true,
-+	},
-+	[LX2160A] = {
-+		.trans_mode		= DSPI_TCFQ_MODE,
-+		.max_clock_factor	= 8,
-+		.ptp_sts_supported	= true,
-+	},
-+	[MCF5441X] = {
-+		.trans_mode		= DSPI_EOQ_MODE,
-+		.max_clock_factor	= 8,
-+	},
- };
- 
- struct fsl_dspi_dma {
-@@ -909,9 +948,31 @@ static void dspi_cleanup(struct spi_device *spi)
- }
- 
- static const struct of_device_id fsl_dspi_dt_ids[] = {
--	{ .compatible = "fsl,vf610-dspi", .data = &vf610_data, },
--	{ .compatible = "fsl,ls1021a-v1.0-dspi", .data = &ls1021a_v1_data, },
--	{ .compatible = "fsl,ls2085a-dspi", .data = &ls2085a_data, },
-+	{
-+		.compatible = "fsl,vf610-dspi",
-+		.data = &devtype_data[VF610],
-+	}, {
-+		.compatible = "fsl,ls1021a-v1.0-dspi",
-+		.data = &devtype_data[LS1021A],
-+	}, {
-+		.compatible = "fsl,ls1012a-dspi",
-+		.data = &devtype_data[LS1012A],
-+	}, {
-+		.compatible = "fsl,ls1043a-dspi",
-+		.data = &devtype_data[LS1043A],
-+	}, {
-+		.compatible = "fsl,ls1046a-dspi",
-+		.data = &devtype_data[LS1046A],
-+	}, {
-+		.compatible = "fsl,ls2080a-dspi",
-+		.data = &devtype_data[LS2080A],
-+	}, {
-+		.compatible = "fsl,ls2085a-dspi",
-+		.data = &devtype_data[LS2085A],
-+	}, {
-+		.compatible = "fsl,lx2160a-dspi",
-+		.data = &devtype_data[LX2160A],
-+	},
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, fsl_dspi_dt_ids);
-@@ -1064,7 +1125,8 @@ static int dspi_probe(struct platform_device *pdev)
- 		ctlr->num_chipselect = pdata->cs_num;
- 		ctlr->bus_num = pdata->bus_num;
- 
--		dspi->devtype_data = &coldfire_data;
-+		/* Only Coldfire uses platform data */
-+		dspi->devtype_data = &devtype_data[MCF5441X];
- 	} else {
- 
- 		ret = of_property_read_u32(np, "spi-num-chipselects", &cs_num);
+-Required Properties:
+-
+-- compatible: should be one of the following.
+-    "rockchip,rv1108-spi" for rv1108 SoCs.
+-    "rockchip,px30-spi", "rockchip,rk3066-spi" for px30 SoCs.
+-    "rockchip,rk3036-spi" for rk3036 SoCS.
+-    "rockchip,rk3066-spi" for rk3066 SoCs.
+-    "rockchip,rk3188-spi" for rk3188 SoCs.
+-    "rockchip,rk3228-spi" for rk3228 SoCS.
+-    "rockchip,rk3288-spi" for rk3288 SoCs.
+-    "rockchip,rk3368-spi" for rk3368 SoCs.
+-    "rockchip,rk3399-spi" for rk3399 SoCs.
+-- reg: physical base address of the controller and length of memory mapped
+-       region.
+-- interrupts: The interrupt number to the cpu. The interrupt specifier format
+-              depends on the interrupt controller.
+-- clocks: Must contain an entry for each entry in clock-names.
+-- clock-names: Shall be "spiclk" for the transfer-clock, and "apb_pclk" for
+-			   the peripheral clock.
+-- #address-cells: should be 1.
+-- #size-cells: should be 0.
+-
+-Optional Properties:
+-
+-- dmas: DMA specifiers for tx and rx dma. See the DMA client binding,
+-		Documentation/devicetree/bindings/dma/dma.txt
+-- dma-names: DMA request names should include "tx" and "rx" if present.
+-- rx-sample-delay-ns: nanoseconds to delay after the SCLK edge before sampling
+-		Rx data (may need to be fine tuned for high capacitance lines).
+-		No delay (0) by default.
+-- pinctrl-names: Names for the pin configuration(s); may be "default" or
+-		"sleep", where the "sleep" configuration may describe the state
+-		the pins should be in during system suspend. See also
+-		pinctrl/pinctrl-bindings.txt.
+-
+-
+-Example:
+-
+-	spi0: spi@ff110000 {
+-		compatible = "rockchip,rk3066-spi";
+-		reg = <0xff110000 0x1000>;
+-		dmas = <&pdma1 11>, <&pdma1 12>;
+-		dma-names = "tx", "rx";
+-		rx-sample-delay-ns = <10>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		interrupts = <GIC_SPI 44 IRQ_TYPE_LEVEL_HIGH>;
+-		clocks = <&cru SCLK_SPI0>, <&cru PCLK_SPI0>;
+-		clock-names = "spiclk", "apb_pclk";
+-		pinctrl-0 = <&spi1_pins>;
+-		pinctrl-1 = <&spi1_sleep>;
+-		pinctrl-names = "default", "sleep";
+-	};
+diff --git a/Documentation/devicetree/bindings/spi/spi-rockchip.yaml b/Documentation/devicetree/bindings/spi/spi-rockchip.yaml
+new file mode 100644
+index 000000000..bd1450c12
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-rockchip.yaml
+@@ -0,0 +1,105 @@
++# SPDX-License-Identifier: GPL-2.0
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/spi-rockchip.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Rockchip SPI Controller
++
++description:
++  The Rockchip SPI controller is used to interface with various devices such
++  as flash and display controllers using the SPI communication interface.
++
++allOf:
++  - $ref: "spi-controller.yaml#"
++
++maintainers:
++  - Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
++
++# Everything else is described in the common file
++properties:
++  compatible:
++    oneOf:
++      - const: rockchip,rk3036-spi
++      - const: rockchip,rk3066-spi
++      - const: rockchip,rk3228-spi
++      - const: rockchip,rv1108-spi
++      - items:
++          - enum:
++            - rockchip,px30-spi
++            - rockchip,rk3188-spi
++            - rockchip,rk3288-spi
++            - rockchip,rk3368-spi
++            - rockchip,rk3399-spi
++          - const: rockchip,rk3066-spi
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    items:
++      - description: transfer-clock
++      - description: peripheral clock
++
++  clock-names:
++    items:
++      - const: spiclk
++      - const: apb_pclk
++
++  dmas:
++    items:
++      - description: TX DMA Channel
++      - description: RX DMA Channel
++
++  dma-names:
++    items:
++      - const: tx
++      - const: rx
++
++  rx-sample-delay-ns:
++    default: 0
++    description:
++      Nano seconds to delay after the SCLK edge before sampling Rx data
++      (may need to be fine tuned for high capacitance lines).
++      If not specified 0 will be used.
++
++  pinctrl-names:
++    minItems: 1
++    items:
++      - const: default
++      - const: sleep
++    description:
++      Names for the pin configuration(s); may be "default" or "sleep",
++      where the "sleep" configuration may describe the state
++      the pins should be in during system suspend.
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++  - clock-names
++
++examples:
++  - |
++    #include <dt-bindings/clock/rk3188-cru-common.h>
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++    spi0: spi@ff110000 {
++      compatible = "rockchip,rk3066-spi";
++      reg = <0xff110000 0x1000>;
++      interrupts = <GIC_SPI 44 IRQ_TYPE_LEVEL_HIGH>;
++      clocks = <&cru SCLK_SPI0>, <&cru PCLK_SPI0>;
++      clock-names = "spiclk", "apb_pclk";
++      dmas = <&pdma1 11>, <&pdma1 12>;
++      dma-names = "tx", "rx";
++      pinctrl-0 = <&spi1_pins>;
++      pinctrl-1 = <&spi1_sleep>;
++      pinctrl-names = "default", "sleep";
++      rx-sample-delay-ns = <10>;
++      #address-cells = <1>;
++      #size-cells = <0>;
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 3bd372323..42c21184d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2281,6 +2281,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mmind/linux-rockchip.git
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/i2c/i2c-rk3x.txt
+ F:	Documentation/devicetree/bindings/mmc/rockchip-dw-mshc.yaml
++F:	Documentation/devicetree/bindings/spi/spi-rockchip.yaml
+ F:	arch/arm/boot/dts/rk3*
+ F:	arch/arm/boot/dts/rv1108*
+ F:	arch/arm/mach-rockchip/
 -- 
-2.20.1
+2.11.0

@@ -1,7 +1,7 @@
 From: Vladimir Oltean <olteanv@gmail.com>
-Subject: [PATCH 05/12] spi: spi-fsl-dspi: Rename fifo_{read,write} and {tx,cmd}_fifo_write
-Date: Thu,  5 Mar 2020 00:00:37 +0200
-Message-ID: <20200304220044.11193-6-olteanv@gmail.com>
+Subject: [PATCH 07/12] spi: Do spi_take_timestamp_pre for as many times as necessary
+Date: Thu,  5 Mar 2020 00:00:39 +0200
+Message-ID: <20200304220044.11193-8-olteanv@gmail.com>
 References: <20200304220044.11193-1-olteanv@gmail.com>
 Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         eha@deif.com, angelo@sysam.it, andrew.smirnov@gmail.com,
@@ -14,92 +14,99 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-These function names are very generic and it is easy to get confused.
-Rename them after the hardware register that they are accessing.
+When dealing with a SPI controller driver that is sending more than 1
+byte at once (or the entire buffer at once), and the SPI peripheral
+driver has requested timestamping for a byte in the middle of the
+buffer, we find that spi_take_timestamp_pre never records a "pre"
+timestamp.
+
+This happens because the function currently expects to be called with
+the "progress" argument >= to what the peripheral has requested to be
+timestamped. But clearly there are cases when that isn't going to fly.
+
+And since we can't change the past when we realize that the opportunity
+to take a "pre" timestamp has just passed and there isn't going to be
+another one, the approach taken is to keep recording the "pre" timestamp
+on each call, overwriting the previously recorded one until the "post"
+timestamp is also taken.
 
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
- drivers/spi/spi-fsl-dspi.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/spi/spi.c       | 19 +++++++------------
+ include/linux/spi/spi.h |  3 +--
+ 2 files changed, 8 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index a8077d4903c7..f37090ad7ad1 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -601,12 +601,12 @@ static void ns_delay_scale(char *psc, char *sc, int delay_ns,
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index a8495fd3bb47..22baf204a09d 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1515,17 +1515,15 @@ void spi_take_timestamp_pre(struct spi_controller *ctlr,
+ 	if (!xfer->ptp_sts)
+ 		return;
+ 
+-	if (xfer->timestamped_pre)
++	if (xfer->timestamped)
+ 		return;
+ 
+-	if (progress < xfer->ptp_sts_word_pre)
++	if (progress > xfer->ptp_sts_word_pre)
+ 		return;
+ 
+ 	/* Capture the resolution of the timestamp */
+ 	xfer->ptp_sts_word_pre = progress;
+ 
+-	xfer->timestamped_pre = true;
+-
+ 	if (irqs_off) {
+ 		local_irq_save(ctlr->irq_flags);
+ 		preempt_disable();
+@@ -1554,7 +1552,7 @@ void spi_take_timestamp_post(struct spi_controller *ctlr,
+ 	if (!xfer->ptp_sts)
+ 		return;
+ 
+-	if (xfer->timestamped_post)
++	if (xfer->timestamped)
+ 		return;
+ 
+ 	if (progress < xfer->ptp_sts_word_post)
+@@ -1570,7 +1568,7 @@ void spi_take_timestamp_post(struct spi_controller *ctlr,
+ 	/* Capture the resolution of the timestamp */
+ 	xfer->ptp_sts_word_post = progress;
+ 
+-	xfer->timestamped_post = true;
++	xfer->timestamped = true;
+ }
+ EXPORT_SYMBOL_GPL(spi_take_timestamp_post);
+ 
+@@ -1675,12 +1673,9 @@ void spi_finalize_current_message(struct spi_controller *ctlr)
+ 		}
  	}
- }
  
--static void fifo_write(struct fsl_dspi *dspi)
-+static void dspi_pushr_write(struct fsl_dspi *dspi)
- {
- 	regmap_write(dspi->regmap, SPI_PUSHR, dspi_pop_tx_pushr(dspi));
- }
+-	if (unlikely(ctlr->ptp_sts_supported)) {
+-		list_for_each_entry(xfer, &mesg->transfers, transfer_list) {
+-			WARN_ON_ONCE(xfer->ptp_sts && !xfer->timestamped_pre);
+-			WARN_ON_ONCE(xfer->ptp_sts && !xfer->timestamped_post);
+-		}
+-	}
++	if (unlikely(ctlr->ptp_sts_supported))
++		list_for_each_entry(xfer, &mesg->transfers, transfer_list)
++			WARN_ON_ONCE(xfer->ptp_sts && !xfer->timestamped);
  
--static void cmd_fifo_write(struct fsl_dspi *dspi)
-+static void dspi_pushr_cmd_write(struct fsl_dspi *dspi)
- {
- 	u16 cmd = dspi->tx_cmd;
+ 	spi_unmap_msg(ctlr, mesg);
  
-@@ -615,7 +615,7 @@ static void cmd_fifo_write(struct fsl_dspi *dspi)
- 	regmap_write(dspi->regmap_pushr, PUSHR_CMD, cmd);
- }
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 600e3793303e..87105272879b 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -933,8 +933,7 @@ struct spi_transfer {
  
--static void tx_fifo_write(struct fsl_dspi *dspi, u16 txdata)
-+static void dspi_pushr_txdata_write(struct fsl_dspi *dspi, u16 txdata)
- {
- 	regmap_write(dspi->regmap_pushr, PUSHR_TX, txdata);
- }
-@@ -631,18 +631,18 @@ static void dspi_tcfq_write(struct fsl_dspi *dspi)
- 		 */
- 		u32 data = dspi_pop_tx(dspi);
+ 	struct ptp_system_timestamp *ptp_sts;
  
--		cmd_fifo_write(dspi);
--		tx_fifo_write(dspi, data & 0xFFFF);
--		tx_fifo_write(dspi, data >> 16);
-+		dspi_pushr_cmd_write(dspi);
-+		dspi_pushr_txdata_write(dspi, data & 0xFFFF);
-+		dspi_pushr_txdata_write(dspi, data >> 16);
- 	} else {
- 		/* Write one entry to both TX FIFO and CMD FIFO
- 		 * simultaneously.
- 		 */
--		fifo_write(dspi);
-+		dspi_pushr_write(dspi);
- 	}
- }
+-	bool		timestamped_pre;
+-	bool		timestamped_post;
++	bool		timestamped;
  
--static u32 fifo_read(struct fsl_dspi *dspi)
-+static u32 dspi_popr_read(struct fsl_dspi *dspi)
- {
- 	u32 rxdata = 0;
- 
-@@ -652,7 +652,7 @@ static u32 fifo_read(struct fsl_dspi *dspi)
- 
- static void dspi_tcfq_read(struct fsl_dspi *dspi)
- {
--	dspi_push_rx(dspi, fifo_read(dspi));
-+	dspi_push_rx(dspi, dspi_popr_read(dspi));
- }
- 
- static void dspi_eoq_write(struct fsl_dspi *dspi)
-@@ -670,7 +670,7 @@ static void dspi_eoq_write(struct fsl_dspi *dspi)
- 		if (fifo_size == (dspi->devtype_data->fifo_size - 1))
- 			dspi->tx_cmd |= SPI_PUSHR_CMD_CTCNT;
- 		/* Write combined TX FIFO and CMD FIFO entry */
--		fifo_write(dspi);
-+		dspi_pushr_write(dspi);
- 	}
- }
- 
-@@ -680,7 +680,7 @@ static void dspi_eoq_read(struct fsl_dspi *dspi)
- 
- 	/* Read one FIFO entry and push to rx buffer */
- 	while ((dspi->rx < dspi->rx_end) && fifo_size--)
--		dspi_push_rx(dspi, fifo_read(dspi));
-+		dspi_push_rx(dspi, dspi_popr_read(dspi));
- }
- 
- static int dspi_rxtx(struct fsl_dspi *dspi)
+ 	struct list_head transfer_list;
+ };
 -- 
 2.17.1

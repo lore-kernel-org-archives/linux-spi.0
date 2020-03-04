@@ -1,7 +1,7 @@
 From: Vladimir Oltean <olteanv@gmail.com>
-Subject: [PATCH 04/12] spi: spi-fsl-dspi: Add comments around dspi_pop_tx and dspi_push_rx functions
-Date: Thu,  5 Mar 2020 00:00:36 +0200
-Message-ID: <20200304220044.11193-5-olteanv@gmail.com>
+Subject: [PATCH 03/12] spi: spi-fsl-dspi: Don't mask off undefined bits
+Date: Thu,  5 Mar 2020 00:00:35 +0200
+Message-ID: <20200304220044.11193-4-olteanv@gmail.com>
 References: <20200304220044.11193-1-olteanv@gmail.com>
 Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         eha@deif.com, angelo@sysam.it, andrew.smirnov@gmail.com,
@@ -14,45 +14,27 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-Their names are confusing, since dspi_pop_tx prepares a word to be
-written to the PUSHR register, and dspi_push_rx gets a word from the
-POPR register.
+This is a useless operation, and if the driver needs to do that, there's
+something deeply wrong going on.
 
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
- drivers/spi/spi-fsl-dspi.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/spi/spi-fsl-dspi.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index b92c2b84a94b..a8077d4903c7 100644
+index 63ec1d634d08..b92c2b84a94b 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -245,6 +245,10 @@ struct fsl_dspi {
- 	struct fsl_dspi_dma			*dma;
- };
- 
-+/*
-+ * Pop one word from the TX buffer for pushing into the
-+ * PUSHR register (TX FIFO)
-+ */
- static u32 dspi_pop_tx(struct fsl_dspi *dspi)
- {
- 	u32 txdata = 0;
-@@ -257,6 +261,7 @@ static u32 dspi_pop_tx(struct fsl_dspi *dspi)
- 	return txdata;
- }
- 
-+/* Prepare one TX FIFO entry (txdata plus cmd) */
- static u32 dspi_pop_tx_pushr(struct fsl_dspi *dspi)
- {
- 	u16 cmd = dspi->tx_cmd, data = dspi_pop_tx(dspi);
-@@ -269,6 +274,7 @@ static u32 dspi_pop_tx_pushr(struct fsl_dspi *dspi)
- 	return cmd << 16 | data;
- }
- 
-+/* Push one word to the RX buffer from the POPR register (RX FIFO) */
- static void dspi_push_rx(struct fsl_dspi *dspi, u32 rxdata)
- {
+@@ -274,9 +274,6 @@ static void dspi_push_rx(struct fsl_dspi *dspi, u32 rxdata)
  	if (!dspi->rx)
+ 		return;
+ 
+-	/* Mask off undefined bits */
+-	rxdata &= (1 << dspi->bits_per_word) - 1;
+-
+ 	memcpy(dspi->rx, &rxdata, dspi->bytes_per_word);
+ 	dspi->rx += dspi->bytes_per_word;
+ }
 -- 
 2.17.1

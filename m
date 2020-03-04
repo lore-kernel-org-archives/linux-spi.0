@@ -1,78 +1,53 @@
-From: Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v2 1/2] spi: dt-bindings: spi-controller: Fix
- #address-cells for slave mode
-Date: Wed, 4 Mar 2020 09:12:55 -0600
-Message-ID: <CAL_JsqLw4yvkmU+imifQX4XSwd21ofaDVm=0LawH9oK-_ym8ng@mail.gmail.com>
-References: <20200303094522.23180-1-geert+renesas@glider.be>
- <20200303094522.23180-2-geert+renesas@glider.be> <CAL_JsqL+9Tcqm_bsorRwqvWZyJXAZmJhXb=EmJ+nZ44kCFp6Kg@mail.gmail.com>
- <CAMuHMdUBTVZGNtdc0dhUz5d+P2_Fr89MvBCz8=9oQK1EOi7s2w@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2 1/3] dt-bindings: spi: convert rockchip spi bindings
+ to yaml
+Date: Wed, 4 Mar 2020 17:10:47 +0000
+Message-ID: <20200304171047.GD5646@sirena.org.uk>
+References: <20200122224555.6845-1-jbx6244@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-        Mark Brown <broonie@kernel.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree@vger.kernel.org>,
-        "open list:MEDIA DRIVERS FOR RENESAS - FCP"
-        <linux-renesas-soc@vger.kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-renesas-soc-owner@vger.kernel.org>
-In-Reply-To: <CAMuHMdUBTVZGNtdc0dhUz5d+P2_Fr89MvBCz8=9oQK1EOi7s2w@mail.gmail.com>
-Sender: linux-renesas-soc-owner@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="kvUQC+jR9YzypDnK"
+Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org, heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Johan Jonker <jbx6244-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20200122224555.6845-1-jbx6244-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Mar 4, 2020 at 6:50 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
->
-> Hi Rob,
->
-> On Tue, Mar 3, 2020 at 10:05 PM Rob Herring <robh+dt@kernel.org> wrote:
-> > On Tue, Mar 3, 2020 at 3:45 AM Geert Uytterhoeven
-> > <geert+renesas@glider.be> wrote:
-> > > Currently, the DT bindings for an SPI controller specify that
-> > > "#address-cells" must be fixed to one.  However, that applies to an SPI
-> > > controller in master mode only.  When running in SPI slave mode,
-> > > "#address-cells" should be zero.
-> > >
-> > > Fix this making the value of "#address-cells" dependent on the presence
-> > > of "spi-slave".
-> > >
-> > > Fixes: 0a1b929356830257 ("spi: Add YAML schemas for the generic SPI options")
-> > > Reported-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-> > > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> > > ---
-> > > v2:
-> > >   - Use "enum: [0, 1]" instead of min/max limit,
-> > >   - use "- spi-slave" instead of "[ spi-slave ]".
-> > >
-> > > As of dtc commit 403cc79f06a135ae ("checks: Update SPI bus check for
-> > > 'spi-slave'") and Linux commit c2e7075ca8303631 ("scripts/dtc: Update to
-> > > upstream version v1.4.7-57-gf267e674d145"), dtc knows about SPI slave.
-> > >
-> > > However, when using "#address-cells = <0>" with W=1:
-> > >
-> > >     Warning (avoid_unnecessary_addr_size): /soc/spi@e6e10000: unnecessary #address-cells/#size-cells without "ranges" or child "reg" property
-> >
-> > What was the point in having #address-cells in the first place for
-> > slaves?
->
-> I don't know, commit a8830cb19cfea04e ("spi: Document DT bindings for
-> SPI controllers in slave mode") doesn't require any #address-cells for
-> slave mode.
->
-> Perhaps because node_addr_cells() in dtc defaults to 2?
-> Or because of_bus_n_addr_cells() walks up the parent chain and thus
-> defaults to the first found parent value?
->
-> > Seems like we should make it mutually exclusive with 'spi-slave'.
->
-> Sounds like a good idea. How to express that in yaml?
 
-oneOf:
-  - required:
-      - "#address-cells"
-  - required:
-      - spi-slave
+--kvUQC+jR9YzypDnK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Rob
+On Wed, Jan 22, 2020 at 11:45:53PM +0100, Johan Jonker wrote:
+> Current dts files with 'spi' nodes are manually verified.
+> In order to automate this process spi-rockchip.txt
+> has to be converted to yaml. In the new setup
+> spi-rockchip.yaml will inherit properties from
+> spi-controller.yaml.
+>=20
+> Add document to MAINTAINERS.
+
+This doesn't apply against current code, please check and resend.
+
+--kvUQC+jR9YzypDnK
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl5f4RYACgkQJNaLcl1U
+h9AUJQf+NIBVp/NuXcA8ap1DTnZKngd1ChQwtZBK7j45Ck2jg/rcwmKK8WT3Dd89
+tlhn7yP8Ad1Bx7jxd7w76jpBVuPE3K9z0EjZeI6nnxxMdv15bW5+Rcrp8QetP0qA
+Yn5L8jNUSpFS97y7ACecT98AkKB8C6mExQ84U4s9qxjl5rZqzzlPmJBJASt9rgF4
+Ox/eSAEqdiv85KsmMGzqc5171uhicslVUvjCw5YFB0RVhm+fZw8G3PFpdJdQGt1w
+KRQkMrkEyLUU/znr92Ggk6ehIdMu4gzoLSk3Qe6DihtXVQPyE9LuY5PUZi81RpVZ
+GyDX0FN7FIBIO0xBFkF+V1cPyGtWPA==
+=JWON
+-----END PGP SIGNATURE-----
+
+--kvUQC+jR9YzypDnK--

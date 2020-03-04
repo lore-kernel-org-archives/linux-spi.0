@@ -1,7 +1,7 @@
 From: Vladimir Oltean <olteanv@gmail.com>
-Subject: [PATCH 02/12] spi: spi-fsl-dspi: Remove unused chip->void_write_data
-Date: Thu,  5 Mar 2020 00:00:34 +0200
-Message-ID: <20200304220044.11193-3-olteanv@gmail.com>
+Subject: [PATCH 01/12] spi: spi-fsl-dspi: Simplify bytes_per_word gymnastics
+Date: Thu,  5 Mar 2020 00:00:33 +0200
+Message-ID: <20200304220044.11193-2-olteanv@gmail.com>
 References: <20200304220044.11193-1-olteanv@gmail.com>
 Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         eha@deif.com, angelo@sysam.it, andrew.smirnov@gmail.com,
@@ -14,54 +14,62 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-This variable has been present since the initial submission of the
-driver, and held, for some reason, the value of zero, to be sent on the
-wire in the case there wasn't any TX buffer for the current transfer.
-
-Since quite a while now, however, it isn't doing anything at all.
+Reduce the if-then-else-if-then-else sequence to:
+ - a simple division in the case of bytes_per_word calculation
+ - a memcpy command with a variable size. The semantics of larger-than-8
+   xfer->bits_per_word is that those words are to be interpreted and
+   transmitted in CPU native endianness.
 
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
- drivers/spi/spi-fsl-dspi.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 21 +++------------------
+ 1 file changed, 3 insertions(+), 18 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 896d7a0f45b0..63ec1d634d08 100644
+index c357c3247232..896d7a0f45b0 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -110,7 +110,6 @@
+@@ -252,12 +252,7 @@ static u32 dspi_pop_tx(struct fsl_dspi *dspi)
+ 	u32 txdata = 0;
  
- struct chip_data {
- 	u32			ctar_val;
--	u16			void_write_data;
- };
- 
- enum dspi_trans_mode {
-@@ -235,7 +234,6 @@ struct fsl_dspi {
- 	const void				*tx;
- 	void					*rx;
- 	void					*rx_end;
--	u16					void_write_data;
- 	u16					tx_cmd;
- 	u8					bits_per_word;
- 	u8					bytes_per_word;
-@@ -795,8 +793,6 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 				dspi->tx_cmd |= SPI_PUSHR_CMD_CONT;
- 		}
- 
--		dspi->void_write_data = dspi->cur_chip->void_write_data;
--
- 		dspi->tx = transfer->tx_buf;
- 		dspi->rx = transfer->rx_buf;
- 		dspi->rx_end = dspi->rx + transfer->len;
-@@ -897,8 +893,6 @@ static int dspi_setup(struct spi_device *spi)
- 		sck_cs_delay = pdata->sck_cs_delay;
+ 	if (dspi->tx) {
+-		if (dspi->bytes_per_word == 1)
+-			txdata = *(u8 *)dspi->tx;
+-		else if (dspi->bytes_per_word == 2)
+-			txdata = *(u16 *)dspi->tx;
+-		else  /* dspi->bytes_per_word == 4 */
+-			txdata = *(u32 *)dspi->tx;
++		memcpy(&txdata, dspi->tx, dspi->bytes_per_word);
+ 		dspi->tx += dspi->bytes_per_word;
  	}
+ 	dspi->len -= dspi->bytes_per_word;
+@@ -284,12 +279,7 @@ static void dspi_push_rx(struct fsl_dspi *dspi, u32 rxdata)
+ 	/* Mask off undefined bits */
+ 	rxdata &= (1 << dspi->bits_per_word) - 1;
  
--	chip->void_write_data = 0;
--
- 	clkrate = clk_get_rate(dspi->clk);
- 	hz_to_spi_baud(&pbr, &br, spi->max_speed_hz, clkrate);
+-	if (dspi->bytes_per_word == 1)
+-		*(u8 *)dspi->rx = rxdata;
+-	else if (dspi->bytes_per_word == 2)
+-		*(u16 *)dspi->rx = rxdata;
+-	else /* dspi->bytes_per_word == 4 */
+-		*(u32 *)dspi->rx = rxdata;
++	memcpy(dspi->rx, &rxdata, dspi->bytes_per_word);
+ 	dspi->rx += dspi->bytes_per_word;
+ }
  
+@@ -814,12 +804,7 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 		dspi->progress = 0;
+ 		/* Validated transfer specific frame size (defaults applied) */
+ 		dspi->bits_per_word = transfer->bits_per_word;
+-		if (transfer->bits_per_word <= 8)
+-			dspi->bytes_per_word = 1;
+-		else if (transfer->bits_per_word <= 16)
+-			dspi->bytes_per_word = 2;
+-		else
+-			dspi->bytes_per_word = 4;
++		dspi->bytes_per_word = DIV_ROUND_UP(dspi->bits_per_word, 8);
+ 
+ 		regmap_update_bits(dspi->regmap, SPI_MCR,
+ 				   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF,
 -- 
 2.17.1

@@ -1,22 +1,22 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "dt-bindings: spi: spi-rockchip: add description for rk3328" to the spi tree
-Date: Thu, 05 Mar 2020 14:36:37 +0000
-Message-ID: <applied-20200304184203.9548-3-jbx6244@gmail.com>
-References: <20200304184203.9548-3-jbx6244@gmail.com>
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Johan Jonker <jbx6244-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200304184203.9548-3-jbx6244-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "dt-bindings: spi: spi-rockchip: add description for rk3308" to the spi tree
+Date: Thu, 05 Mar 2020 14:36:42 +0000
+Message-ID: <applied-20200304184203.9548-2-jbx6244@gmail.com>
+References: <20200304184203.9548-2-jbx6244@gmail.com>
+Cc: broonie@kernel.org, devicetree@vger.kernel.org, heiko@sntech.de,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-rockchip@lists.infradead.org, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>, robh+dt@kernel.org,
+        Rob Herring <robh@kernel.org>
+To: Johan Jonker <jbx6244@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20200304184203.9548-2-jbx6244@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   dt-bindings: spi: spi-rockchip: add description for rk3328
+   dt-bindings: spi: spi-rockchip: add description for rk3308
 
 has been applied to the spi tree at
 
@@ -41,33 +41,33 @@ to this mail.
 Thanks,
 Mark
 
->From 6ac12131699b4ec1d8f339e40528bdd474542075 Mon Sep 17 00:00:00 2001
-From: Johan Jonker <jbx6244-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Date: Wed, 4 Mar 2020 19:42:03 +0100
-Subject: [PATCH] dt-bindings: spi: spi-rockchip: add description for rk3328
+>From db7dd939acf369b3e9bfac2ae75307639785de9e Mon Sep 17 00:00:00 2001
+From: Johan Jonker <jbx6244@gmail.com>
+Date: Wed, 4 Mar 2020 19:42:02 +0100
+Subject: [PATCH] dt-bindings: spi: spi-rockchip: add description for rk3308
 
-The description below is already in use for rk3328.dtsi,
+The description below is already in use for rk3308.dtsi,
 but was somehow never added to a document, so add
-"rockchip,rk3328-spi", "rockchip,rk3066-spi"
-for spi nodes on a rk3328 platform to spi-rockchip.yaml.
+"rockchip,rk3308-spi", "rockchip,rk3066-spi"
+for spi nodes on a rk3308 platform to spi-rockchip.yaml.
 
-Signed-off-by: Johan Jonker <jbx6244-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Link: https://lore.kernel.org/r/20200304184203.9548-3-jbx6244-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Acked-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/20200304184203.9548-2-jbx6244@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
  Documentation/devicetree/bindings/spi/spi-rockchip.yaml | 1 +
  1 file changed, 1 insertion(+)
 
 diff --git a/Documentation/devicetree/bindings/spi/spi-rockchip.yaml b/Documentation/devicetree/bindings/spi/spi-rockchip.yaml
-index 456896e2d514..81ad4b761502 100644
+index bd1450c1274c..456896e2d514 100644
 --- a/Documentation/devicetree/bindings/spi/spi-rockchip.yaml
 +++ b/Documentation/devicetree/bindings/spi/spi-rockchip.yaml
-@@ -30,6 +30,7 @@ properties:
+@@ -29,6 +29,7 @@ properties:
+             - rockchip,px30-spi
              - rockchip,rk3188-spi
              - rockchip,rk3288-spi
-             - rockchip,rk3308-spi
-+            - rockchip,rk3328-spi
++            - rockchip,rk3308-spi
              - rockchip,rk3368-spi
              - rockchip,rk3399-spi
            - const: rockchip,rk3066-spi

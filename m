@@ -1,40 +1,67 @@
-From: Vladimir Oltean <olteanv@gmail.com>
-Subject: [PATCH 03/12] spi: spi-fsl-dspi: Don't mask off undefined bits
-Date: Thu,  5 Mar 2020 00:00:35 +0200
-Message-ID: <20200304220044.11193-4-olteanv@gmail.com>
-References: <20200304220044.11193-1-olteanv@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        eha@deif.com, angelo@sysam.it, andrew.smirnov@gmail.com,
-        gustavo@embeddedor.com, weic@nvidia.com, mhosny@nvidia.com
-To: broonie@kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200304220044.11193-1-olteanv@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: [PATCH] spi: spi-fsl-dspi: Make bus-num property optional
+Date: Thu,  5 Mar 2020 12:55:46 +0100
+Message-ID: <20200305115546.31814-1-s.hauer@pengutronix.de>
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+The SPI bus number is completely optional to Linux, so make the
+corresponding device tree property optional as well.
 
-This is a useless operation, and if the driver needs to do that, there's
-something deeply wrong going on.
-
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 3 ---
- 1 file changed, 3 deletions(-)
+ Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt | 2 +-
+ drivers/spi/spi-fsl-dspi.c                             | 8 ++------
+ 2 files changed, 3 insertions(+), 7 deletions(-)
 
+diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt b/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
+index 162e024b95a0..5c7817c8341c 100644
+--- a/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
++++ b/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
+@@ -14,11 +14,11 @@ Required properties:
+ - pinctrl-0: pin control group to be used for this controller.
+ - pinctrl-names: must contain a "default" entry.
+ - spi-num-chipselects : the number of the chipselect signals.
+-- bus-num : the slave chip chipselect signal number.
+ 
+ Optional property:
+ - big-endian: If present the dspi device's registers are implemented
+   in big endian mode.
++- bus-num : the slave chip chipselect signal number.
+ 
+ Optional SPI slave node properties:
+ - fsl,spi-cs-sck-delay: a delay in nanoseconds between activating chip
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 63ec1d634d08..b92c2b84a94b 100644
+index 6ec2dcb8c57a..8187dd4a3ec4 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -274,9 +274,6 @@ static void dspi_push_rx(struct fsl_dspi *dspi, u32 rxdata)
- 	if (!dspi->rx)
- 		return;
+@@ -1038,7 +1038,7 @@ static int dspi_probe(struct platform_device *pdev)
+ 	const struct regmap_config *regmap_config;
+ 	struct fsl_dspi_platform_data *pdata;
+ 	struct spi_controller *ctlr;
+-	int ret, cs_num, bus_num;
++	int ret, cs_num, bus_num = -1;
+ 	struct fsl_dspi *dspi;
+ 	struct resource *res;
+ 	void __iomem *base;
+@@ -1074,11 +1074,7 @@ static int dspi_probe(struct platform_device *pdev)
+ 		}
+ 		ctlr->num_chipselect = cs_num;
  
--	/* Mask off undefined bits */
--	rxdata &= (1 << dspi->bits_per_word) - 1;
--
- 	memcpy(dspi->rx, &rxdata, dspi->bytes_per_word);
- 	dspi->rx += dspi->bytes_per_word;
- }
+-		ret = of_property_read_u32(np, "bus-num", &bus_num);
+-		if (ret < 0) {
+-			dev_err(&pdev->dev, "can't get bus-num\n");
+-			goto out_ctlr_put;
+-		}
++		of_property_read_u32(np, "bus-num", &bus_num);
+ 		ctlr->bus_num = bus_num;
+ 
+ 		if (of_property_read_bool(np, "spi-slave"))
 -- 
-2.17.1
+2.25.1

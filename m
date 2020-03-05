@@ -1,58 +1,75 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 07/12] spi: Do spi_take_timestamp_pre for as many times
- as necessary
-Date: Thu, 5 Mar 2020 13:16:34 +0000
-Message-ID: <20200305131634.GD4046@sirena.org.uk>
-References: <20200304220044.11193-1-olteanv@gmail.com>
- <20200304220044.11193-8-olteanv@gmail.com>
- <20200305121202.GB4046@sirena.org.uk>
- <CA+h21hq8c50AjuzgpxyPQDCFiAdezJuqgY0+u26qBRx9FnYnig@mail.gmail.com>
- <20200305130448.GC4046@sirena.org.uk>
- <CA+h21hrSe-jT_R9jCW1XA6aZ=vjMX=b7HLq3KJdfxi9OOFW5ag@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="T7mxYSe680VjQnyC"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Esben Haabendal <eha-/iRVSOupHO4@public.gmane.org>, angelo-BIYBQhTR83Y@public.gmane.org,
-        andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        "Gustavo A. R. Silva" <gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org>,
-        Wei Chen <weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, Mohamed Hosny <mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-To: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Applied "dt-bindings: spi: spi-rockchip: add description for rk3328" to the spi tree
+Date: Thu, 05 Mar 2020 14:36:37 +0000
+Message-ID: <applied-20200304184203.9548-3-jbx6244@gmail.com>
+References: <20200304184203.9548-3-jbx6244@gmail.com>
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Johan Jonker <jbx6244-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CA+h21hrSe-jT_R9jCW1XA6aZ=vjMX=b7HLq3KJdfxi9OOFW5ag-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20200304184203.9548-3-jbx6244-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The patch
 
---T7mxYSe680VjQnyC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+   dt-bindings: spi: spi-rockchip: add description for rk3328
 
-On Thu, Mar 05, 2020 at 03:13:53PM +0200, Vladimir Oltean wrote:
-> On Thu, 5 Mar 2020 at 15:04, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+has been applied to the spi tree at
 
-> > That's mostly all true but it's still better to pull fixes like this (or
-> > the patch limiting the size) forwards and not have to think if it's safe
-> > to not apply them as a fix, it's less effort all round.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> So do you want me to do something about it now?
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-No, it's fine for now but please bear this in mind in future.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---T7mxYSe680VjQnyC
-Content-Type: application/pgp-signature; name="signature.asc"
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl5g+7EACgkQJNaLcl1U
-h9CuIgf8CPmhlqhfcee9Ci1AvSvSQ6xlsVV5/vgUDE46caYf+o0lvc3iJNPqnLvK
-a0ZXaSs9mpkONPWpmXfsgk+BVbAb+4ykuipEHVp0G9py+KOxkzcXQRXiyjCGlqn/
-PTGIhIq/gjJaN1CwSELFoL2MTNWWh64H+yCISBRIKMU6ttcKKpQ830LTWbdpTohP
-Fgai52ynNFsOKA/JwfLrUcgjSNWXXSm+Bec2UcBWPWjrgYGkdQafoyjGCjfzSFL4
-Ezrm3ye7do1VRFf/UJ6v02miFG4o+lEZv+FyVvCI/SWD2nu8m3yAVBdnWcZM5LVV
-+E0vjsXEtwJu/XSCCQ2g2ao20+oveA==
-=Ct73
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---T7mxYSe680VjQnyC--
+>From 6ac12131699b4ec1d8f339e40528bdd474542075 Mon Sep 17 00:00:00 2001
+From: Johan Jonker <jbx6244-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Wed, 4 Mar 2020 19:42:03 +0100
+Subject: [PATCH] dt-bindings: spi: spi-rockchip: add description for rk3328
+
+The description below is already in use for rk3328.dtsi,
+but was somehow never added to a document, so add
+"rockchip,rk3328-spi", "rockchip,rk3066-spi"
+for spi nodes on a rk3328 platform to spi-rockchip.yaml.
+
+Signed-off-by: Johan Jonker <jbx6244-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Link: https://lore.kernel.org/r/20200304184203.9548-3-jbx6244-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ Documentation/devicetree/bindings/spi/spi-rockchip.yaml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-rockchip.yaml b/Documentation/devicetree/bindings/spi/spi-rockchip.yaml
+index 456896e2d514..81ad4b761502 100644
+--- a/Documentation/devicetree/bindings/spi/spi-rockchip.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-rockchip.yaml
+@@ -30,6 +30,7 @@ properties:
+             - rockchip,rk3188-spi
+             - rockchip,rk3288-spi
+             - rockchip,rk3308-spi
++            - rockchip,rk3328-spi
+             - rockchip,rk3368-spi
+             - rockchip,rk3399-spi
+           - const: rockchip,rk3066-spi
+-- 
+2.20.1

@@ -1,21 +1,21 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spi-fsl-dspi: Rename fifo_{read,write} and {tx,cmd}_fifo_write" to the spi tree
-Date: Thu, 05 Mar 2020 14:37:44 +0000
-Message-ID: <applied-20200304220044.11193-6-olteanv@gmail.com>
-References: <20200304220044.11193-6-olteanv@gmail.com>
+Subject: Applied "spi: spi-fsl-dspi: Add comments around dspi_pop_tx and dspi_push_rx functions" to the spi tree
+Date: Thu, 05 Mar 2020 14:37:48 +0000
+Message-ID: <applied-20200304220044.11193-5-olteanv@gmail.com>
+References: <20200304220044.11193-5-olteanv@gmail.com>
 Cc: andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, angelo-BIYBQhTR83Y@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
         eha-/iRVSOupHO4@public.gmane.org, gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org, weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org
 To: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200304220044.11193-6-olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <20200304220044.11193-5-olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: spi-fsl-dspi: Rename fifo_{read,write} and {tx,cmd}_fifo_write
+   spi: spi-fsl-dspi: Add comments around dspi_pop_tx and dspi_push_rx functions
 
 has been applied to the spi tree at
 
@@ -40,100 +40,53 @@ to this mail.
 Thanks,
 Mark
 
->From 547248fbed23f3cd2f6a5937b44fad60993640c4 Mon Sep 17 00:00:00 2001
+>From 8f8303ee05857e1b3084c467dde8bb31c58464bd Mon Sep 17 00:00:00 2001
 From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
-Date: Thu, 5 Mar 2020 00:00:37 +0200
-Subject: [PATCH] spi: spi-fsl-dspi: Rename fifo_{read,write} and
- {tx,cmd}_fifo_write
+Date: Thu, 5 Mar 2020 00:00:36 +0200
+Subject: [PATCH] spi: spi-fsl-dspi: Add comments around dspi_pop_tx and
+ dspi_push_rx functions
 
-These function names are very generic and it is easy to get confused.
-Rename them after the hardware register that they are accessing.
+Their names are confusing, since dspi_pop_tx prepares a word to be
+written to the PUSHR register, and dspi_push_rx gets a word from the
+POPR register.
 
 Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
-Link: https://lore.kernel.org/r/20200304220044.11193-6-olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Link: https://lore.kernel.org/r/20200304220044.11193-5-olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index a8077d4903c7..f37090ad7ad1 100644
+index b92c2b84a94b..a8077d4903c7 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -601,12 +601,12 @@ static void ns_delay_scale(char *psc, char *sc, int delay_ns,
- 	}
- }
+@@ -245,6 +245,10 @@ struct fsl_dspi {
+ 	struct fsl_dspi_dma			*dma;
+ };
  
--static void fifo_write(struct fsl_dspi *dspi)
-+static void dspi_pushr_write(struct fsl_dspi *dspi)
++/*
++ * Pop one word from the TX buffer for pushing into the
++ * PUSHR register (TX FIFO)
++ */
+ static u32 dspi_pop_tx(struct fsl_dspi *dspi)
  {
- 	regmap_write(dspi->regmap, SPI_PUSHR, dspi_pop_tx_pushr(dspi));
+ 	u32 txdata = 0;
+@@ -257,6 +261,7 @@ static u32 dspi_pop_tx(struct fsl_dspi *dspi)
+ 	return txdata;
  }
  
--static void cmd_fifo_write(struct fsl_dspi *dspi)
-+static void dspi_pushr_cmd_write(struct fsl_dspi *dspi)
++/* Prepare one TX FIFO entry (txdata plus cmd) */
+ static u32 dspi_pop_tx_pushr(struct fsl_dspi *dspi)
  {
- 	u16 cmd = dspi->tx_cmd;
- 
-@@ -615,7 +615,7 @@ static void cmd_fifo_write(struct fsl_dspi *dspi)
- 	regmap_write(dspi->regmap_pushr, PUSHR_CMD, cmd);
+ 	u16 cmd = dspi->tx_cmd, data = dspi_pop_tx(dspi);
+@@ -269,6 +274,7 @@ static u32 dspi_pop_tx_pushr(struct fsl_dspi *dspi)
+ 	return cmd << 16 | data;
  }
  
--static void tx_fifo_write(struct fsl_dspi *dspi, u16 txdata)
-+static void dspi_pushr_txdata_write(struct fsl_dspi *dspi, u16 txdata)
++/* Push one word to the RX buffer from the POPR register (RX FIFO) */
+ static void dspi_push_rx(struct fsl_dspi *dspi, u32 rxdata)
  {
- 	regmap_write(dspi->regmap_pushr, PUSHR_TX, txdata);
- }
-@@ -631,18 +631,18 @@ static void dspi_tcfq_write(struct fsl_dspi *dspi)
- 		 */
- 		u32 data = dspi_pop_tx(dspi);
- 
--		cmd_fifo_write(dspi);
--		tx_fifo_write(dspi, data & 0xFFFF);
--		tx_fifo_write(dspi, data >> 16);
-+		dspi_pushr_cmd_write(dspi);
-+		dspi_pushr_txdata_write(dspi, data & 0xFFFF);
-+		dspi_pushr_txdata_write(dspi, data >> 16);
- 	} else {
- 		/* Write one entry to both TX FIFO and CMD FIFO
- 		 * simultaneously.
- 		 */
--		fifo_write(dspi);
-+		dspi_pushr_write(dspi);
- 	}
- }
- 
--static u32 fifo_read(struct fsl_dspi *dspi)
-+static u32 dspi_popr_read(struct fsl_dspi *dspi)
- {
- 	u32 rxdata = 0;
- 
-@@ -652,7 +652,7 @@ static u32 fifo_read(struct fsl_dspi *dspi)
- 
- static void dspi_tcfq_read(struct fsl_dspi *dspi)
- {
--	dspi_push_rx(dspi, fifo_read(dspi));
-+	dspi_push_rx(dspi, dspi_popr_read(dspi));
- }
- 
- static void dspi_eoq_write(struct fsl_dspi *dspi)
-@@ -670,7 +670,7 @@ static void dspi_eoq_write(struct fsl_dspi *dspi)
- 		if (fifo_size == (dspi->devtype_data->fifo_size - 1))
- 			dspi->tx_cmd |= SPI_PUSHR_CMD_CTCNT;
- 		/* Write combined TX FIFO and CMD FIFO entry */
--		fifo_write(dspi);
-+		dspi_pushr_write(dspi);
- 	}
- }
- 
-@@ -680,7 +680,7 @@ static void dspi_eoq_read(struct fsl_dspi *dspi)
- 
- 	/* Read one FIFO entry and push to rx buffer */
- 	while ((dspi->rx < dspi->rx_end) && fifo_size--)
--		dspi_push_rx(dspi, fifo_read(dspi));
-+		dspi_push_rx(dspi, dspi_popr_read(dspi));
- }
- 
- static int dspi_rxtx(struct fsl_dspi *dspi)
+ 	if (!dspi->rx)
 -- 
 2.20.1

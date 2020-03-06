@@ -1,66 +1,53 @@
 From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH v3 2/2] spi: dt-bindings: spi-controller: Fix spi-[rt]x-bus-width for slave mode
-Date: Fri,  6 Mar 2020 09:50:38 +0100
-Message-ID: <20200306085038.8111-3-geert+renesas@glider.be>
-References: <20200306085038.8111-1-geert+renesas@glider.be>
+Subject: [PATCH v3 0/2] spi: dt-bindings: spi-controller: Slave mode fixes
+Date: Fri,  6 Mar 2020 09:50:36 +0100
+Message-ID: <20200306085038.8111-1-geert+renesas@glider.be>
 Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         Maxime Ripard <mripard-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200306085038.8111-1-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The descriptions for the spi-rx-bus-width and spi-tx-bus-width
-properties refer to "MISO" and "MOSI", which are not explained in the
-document.  While these abbreviations are fairly common when talking
-about SPI, and thus may not need an explanation, they are not entirely
-correct in this context, as the SPI controller may be used in slave mode
-instead of master mode.
+	Hi Mark, Rob, Maxime,
 
-Fix this by replacing them by "read transfers" resp. "write transfers",
-like is done for the spi-rx-delay-us and spi-tx-delay-us properties.
+This patch series contains two fixes for the SPI controller DT bindings
+regarding SPI controllers configured for slave mode.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
----
-v3:
-  - No changes,
+Changes compared to v2[1]:
+  - Make #address-cells mutually-exclusive with spi-slave,
 
-v2:
-  - New.
+Changes compared to v1[2]:
+  - Use "enum: [0, 1]" instead of min/max limit,
+  - use "- spi-slave" instead of "[ spi-slave ]".
+  - New fix for spi-[rt]x-bus-width.
 
-This issue was present in the .txt version of the bindings, too, so
-technically it needs
-Fixes: a8830cb19cfea04e ("spi: Document DT bindings for SPI controllers in slave mode")
-but of course it won't apply to that version.
----
- Documentation/devicetree/bindings/spi/spi-controller.yaml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Thanks!
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-index 0ebaf6677ac4f68d..d8e5509a70816df5 100644
---- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
-+++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-@@ -120,7 +120,7 @@ patternProperties:
-           - enum: [ 1, 2, 4, 8 ]
-           - default: 1
-         description:
--          Bus width to the SPI bus used for MISO.
-+          Bus width to the SPI bus used for read transfers.
- 
-       spi-rx-delay-us:
-         description:
-@@ -132,7 +132,7 @@ patternProperties:
-           - enum: [ 1, 2, 4, 8 ]
-           - default: 1
-         description:
--          Bus width to the SPI bus used for MOSI.
-+          Bus width to the SPI bus used for write transfers.
- 
-       spi-tx-delay-us:
-         description:
+[1] https://lore.kernel.org/linux-devicetree/20200303094522.23180-1-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org/
+[2] https://lore.kernel.org/linux-devicetree/20200227130323.15327-1-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org/
+
+Geert Uytterhoeven (2):
+  spi: dt-bindings: spi-controller: Fix #address-cells for slave mode
+  spi: dt-bindings: spi-controller: Fix spi-[rt]x-bus-width for slave
+    mode
+
+ .../devicetree/bindings/spi/spi-controller.yaml        | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
 -- 
 2.17.1
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

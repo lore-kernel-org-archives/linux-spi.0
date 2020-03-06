@@ -1,49 +1,56 @@
-From: Chuanhong Guo <gch981213@gmail.com>
-Subject: Re: [PATCH v2 3/4] dt-bindings: convert mtk-quadspi binding doc for spi-mtk-nor
-Date: Fri, 6 Mar 2020 16:38:57 +0800
-Message-ID: <CAJsYDVK62jqkLimdZWbLE2wgEAuVi5HdY231nR_wPj4TiMtX9w@mail.gmail.com>
-References: <20200228043636.559915-1-gch981213@gmail.com> <20200228043636.559915-4-gch981213@gmail.com>
- <20200303224706.GA22867@bogus>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: linux-mediatek@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-mtd@lists.infradead.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree@vger.kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
-        "moderated list:ARM/Mediatek SoC support"
-        <linux-arm-kernel@lists.infradead.org>,
-        open list <linux-kernel@vger.kernel.org>
-To: Rob Herring <robh@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200303224706.GA22867@bogus>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH v3 1/2] spi: dt-bindings: spi-controller: Fix #address-cells for slave mode
+Date: Fri,  6 Mar 2020 09:50:37 +0100
+Message-ID: <20200306085038.8111-2-geert+renesas@glider.be>
+References: <20200306085038.8111-1-geert+renesas@glider.be>
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+To: Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>
+Return-path: <linux-renesas-soc-owner@vger.kernel.org>
+In-Reply-To: <20200306085038.8111-1-geert+renesas@glider.be>
+Sender: linux-renesas-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Mar 4, 2020 at 6:47 AM Rob Herring <robh@kernel.org> wrote:
-> > 3. replace binding example with a mt7629 one because this is the
-> >    only one I know the interrupt assignment.
->
-> That doesn't really matter. It would be less churn without that change
-> and examples are just examples.
-> [...]
-> > -
-> > -     flash@0 {
-> > -             compatible = "jedec,spi-nor";
-> > -             reg = <0>;
-> > -     };
->
-> Better to leave this in the example IMO.
->
-> Rob
+Currently, the DT bindings for an SPI controller specify that
+"#address-cells" must be fixed to one.  However, that applies to an SPI
+controller in master mode only.  When running in SPI slave mode,
+"#address-cells" should not be specified.
 
-I'll revert example changes and add a dummy interrupt binding instead in v3.
+Fix this making "#address-cells" mutually-exclusive with "spi-slave".
 
+Fixes: 0a1b929356830257 ("spi: Add YAML schemas for the generic SPI options")
+Reported-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+v3:
+  - Make #address-cells mutually-exclusive with spi-slave,
+
+v2:
+  - Use "enum: [0, 1]" instead of min/max limit,
+  - use "- spi-slave" instead of "[ spi-slave ]".
+---
+ Documentation/devicetree/bindings/spi/spi-controller.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+index 1e0ca6ccf64bbd0a..0ebaf6677ac4f68d 100644
+--- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+@@ -52,6 +52,12 @@ properties:
+     description:
+       The SPI controller acts as a slave, instead of a master.
+ 
++oneOf:
++  - required:
++      - "#address-cells"
++  - required:
++      - spi-slave
++
+ patternProperties:
+   "^slave$":
+     type: object
 -- 
-Regards,
-Chuanhong Guo
+2.17.1

@@ -1,25 +1,21 @@
-From: pr-tracker-bot@kernel.org
-Subject: Re: [GIT PULL] spi fixes for v5.6
-Date: Fri, 06 Mar 2020 20:55:09 +0000
-Message-ID: <158352810930.1815.5403175202221783247.pr-tracker-bot@kernel.org>
-References: <20200306174101.GE4114@sirena.org.uk>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200306174101.GE4114@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: postmaster-AeTISad5cPflJcrss56ZlyuJdK5jnXTV@public.gmane.org
+Subject: BUSINESS PROPOSAL
+Date: Mon, 09 Mar 2020 00:56:29 +0900
+Message-ID: <202003081556.028FuTri062469__7170.96666792116$1583688126$gmane$org@www752.sakura.ne.jp>
+Reply-To: abulkareem461-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset="ISO-2022-JP"
+Content-Transfer-Encoding: 7bit
+To: herton-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The pull request you sent on Fri, 6 Mar 2020 17:41:01 +0000:
+Dearest Friend
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v5.6-rc4
-
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/ae24a21bbd96a7a4a3e82890285255d7e86540f0
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+I am Mr Abdul Kareem working with Emirate NBD Bank Dubai,United Arab Emirate as Finance Manager.
+I have a very profitable Business that concerns you and will benefit both of us after completion.
+Kindly get back to me for more details.
+Awaiting your response.
+Regards
+Abdul Kareem

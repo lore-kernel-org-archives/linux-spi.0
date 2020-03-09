@@ -1,78 +1,25 @@
-From: Vladimir Oltean <olteanv@gmail.com>
-Subject: [PATCH v2 4/6] spi: spi-fsl-dspi: Add support for LS1028A
-Date: Mon,  9 Mar 2020 23:07:53 +0200
-Message-ID: <20200309210755.6759-5-olteanv@gmail.com>
-References: <20200309210755.6759-1-olteanv@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        shawnguo@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        devicetree@vger.kernel.org, eha@deif.com, angelo@sysam.it,
-        andrew.smirnov@gmail.com, gustavo@embeddedor.com, weic@nvidia.com,
-        mhosny@nvidia.com, michael@walle.cc, peng.ma@nxp.com
-To: broonie@kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200309210755.6759-1-olteanv@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: patchwork-bot+linux-spi-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Subject: Patchwork housekeeping for: spi-devel-general
+Date: Mon, 09 Mar 2020 21:20:14 +0000
+Message-ID: <158378881434.15796.13751522925264385935.git-patchwork-housekeeping@kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+Latest series: [v2] NXP DSPI bugfixes and support for LS1028A (2020-03-09T21:07:49)
+  Superseding: [v1] NXP DSPI bugfixes and support for LS1028A (2020-03-09T14:56:18):
+    [1/6] spi: spi-fsl-dspi: Don't access reserved fields in SPI_MCR
+    [2/6] spi: spi-fsl-dspi: Fix little endian access to PUSHR CMD and TXDATA
+    [3/6] spi: spi-fsl-dspi: Fix oper_word_size of zero for DMA mode
+    [4/6] spi: spi-fsl-dspi: Add support for LS1028A
+    [5/6] arm64: dts: ls1028a: Specify the DMA channels for the DSPI controllers
+    [6/6] arm64: dts: ls1028a-rdb: Add a spidev node for the mikroBUS
 
-This is similar to the DSPI instantiation on LS1028A, except that:
- - The A-011218 erratum has been fixed, so DMA works
- - The endianness is different, which has implications on XSPI mode
 
-Some benchmarking with the following command:
-
-spidev_test --device /dev/spidev2.0 --bpw 8 --size 256 --cpha --iter 10000000 --speed 20000000
-
-shows that in DMA mode, it can achieve around 2400 kbps, and in XSPI
-mode, the same command goes up to 4700 kbps. This is somewhat to be
-expected, since the DMA buffer size is extremely small at 8 bytes, the
-winner becomes whomever can prepare the buffers for transmission
-quicker, and DMA mode has higher overhead there. So XSPI FIFO mode has
-been chosen as the operating mode for this chip.
-
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
----
-Changes in v2:
-Switch to DSPI_XSPI_MODE.
-
- drivers/spi/spi-fsl-dspi.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 43d2d9fc8b92..cf8a141bbaf2 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -125,6 +125,7 @@ struct fsl_dspi_devtype_data {
- enum {
- 	LS1021A,
- 	LS1012A,
-+	LS1028A,
- 	LS1043A,
- 	LS1046A,
- 	LS2080A,
-@@ -153,6 +154,12 @@ static const struct fsl_dspi_devtype_data devtype_data[] = {
- 		.max_clock_factor	= 8,
- 		.fifo_size		= 16,
- 	},
-+	[LS1028A] = {
-+		.trans_mode		= DSPI_XSPI_MODE,
-+		.dma_bufsize		= 8,
-+		.max_clock_factor	= 8,
-+		.fifo_size		= 4,
-+	},
- 	[LS1043A] = {
- 		/* Has A-011218 DMA erratum */
- 		.trans_mode		= DSPI_XSPI_MODE,
-@@ -1100,6 +1107,9 @@ static const struct of_device_id fsl_dspi_dt_ids[] = {
- 	}, {
- 		.compatible = "fsl,ls1012a-dspi",
- 		.data = &devtype_data[LS1012A],
-+	}, {
-+		.compatible = "fsl,ls1028a-dspi",
-+		.data = &devtype_data[LS1028A],
- 	}, {
- 		.compatible = "fsl,ls1043a-dspi",
- 		.data = &devtype_data[LS1043A],
 -- 
-2.17.1
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/pwbot

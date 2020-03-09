@@ -1,90 +1,122 @@
-From: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>
-Subject: Re: [PATCH 4/6] spi: spi-fsl-dspi: Add support for LS1028A
-Date: Mon, 09 Mar 2020 19:38:48 +0100
-Message-ID: <02a2816d2f39bf621dfee543ed612ae0@walle.cc>
-References: <20200309145624.10026-1-olteanv@gmail.com>
- <20200309145624.10026-5-olteanv@gmail.com>
+From: Vladimir Oltean <olteanv@gmail.com>
+Subject: Re: [PATCH 0/6] NXP DSPI bugfixes and support for LS1028A
+Date: Mon, 9 Mar 2020 20:48:34 +0200
+Message-ID: <CA+h21hopP2XTx55iu_pG=xBx-TSPRBbdmoU7T2F0Gc9Qt=CsSQ@mail.gmail.com>
+References: <20200309145624.10026-1-olteanv@gmail.com> <f530a0740f34b2cf26a8055d4eae2527@walle.cc>
+ <CA+h21hrSezjwKJDCd1wN8qk5koWfPmwT0Mx+sR7fHxo1sCGcjw@mail.gmail.com> <6da04c9a17fa9e6259a462cb52312930@walle.cc>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, eha-/iRVSOupHO4@public.gmane.org, angelo-BIYBQhTR83Y@public.gmane.org,
-        andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org, weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org,
-        mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org, peng.ma-3arQi8VN3Tc@public.gmane.org
-To: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200309145624.10026-5-olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        lkml <linux-kernel@vger.kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        devicetree@vger.kernel.org, Esben Haabendal <eha@deif.com>,
+        angelo@sysam.it, andrew.smirnov@gmail.com,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        Wei Chen <weic@nvidia.com>, Mohamed Hosny <mhosny@nvidia.com>,
+        peng.ma@nxp.com
+To: Michael Walle <michael@walle.cc>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <6da04c9a17fa9e6259a462cb52312930@walle.cc>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Am 2020-03-09 15:56, schrieb Vladimir Oltean:
-> From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
-> 
-> This is similar to the DSPI instantiation on LS1028A, except that:
->  - The A-011218 erratum has been fixed, so DMA works
->  - The endianness is different, which has implications on XSPI mode
-> 
-> Some benchmarking with the following command:
-> 
-> spidev_test --device /dev/spidev2.0 --bpw 8 --size 256 --cpha --iter
-> 10000000 --speed 20000000
-> 
-> shows that in DMA mode, it can achieve around 2400 kbps, and in XSPI
-> mode, the same command goes up to 4700 kbps. This is somewhat to be
-> expected, since the DMA buffer size is extremely small at 8 bytes, the
-> winner becomes whomever can prepare the buffers for transmission
-> quicker, and DMA mode has higher overhead there. So XSPI FIFO mode has
-> been chosen as the operating mode for this chip.
-> 
-> Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
-> ---
->  drivers/spi/spi-fsl-dspi.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-> index 5624b9ee77db..264d184e7296 100644
-> --- a/drivers/spi/spi-fsl-dspi.c
-> +++ b/drivers/spi/spi-fsl-dspi.c
-> @@ -131,6 +131,7 @@ struct fsl_dspi_devtype_data {
->  enum {
->  	LS1021A,
->  	LS1012A,
-> +	LS1028A,
->  	LS1043A,
->  	LS1046A,
->  	LS2080A,
-> @@ -163,6 +164,14 @@ static const struct fsl_dspi_devtype_data
-> devtype_data[] = {
->  		.pushr_cmd		= 0,
->  		.pushr_tx		= 2,
->  	},
-> +	[LS1028A] = {
-> +		.trans_mode		= DSPI_DMA_MODE,
+On Mon, 9 Mar 2020 at 20:31, Michael Walle <michael@walle.cc> wrote:
+>
+> Am 2020-03-09 19:14, schrieb Vladimir Oltean:
+> > On Mon, 9 Mar 2020 at 20:03, Michael Walle <michael@walle.cc> wrote:
+> >> Am 2020-03-09 15:56, schrieb Vladimir Oltean:
+> >> > From: Vladimir Oltean <vladimir.oltean@nxp.com>
+> >> >
+> >> > This series addresses a few issues that were missed during the previous
+> >> > series "[PATCH 00/12] TCFQ to XSPI migration for NXP DSPI driver", on
+> >> > SoCs other than LS1021A and LS1043A. DMA mode has been completely
+> >> > broken
+> >> > by that series, and XSPI mode never worked on little-endian
+> >> > controllers.
+> >> >
+> >> > Then it introduces support for the LS1028A chip, whose compatible has
+> >> > recently been documented here:
+> >> >
+> >> > https://lore.kernel.org/linux-devicetree/20200218171418.18297-1-michael@walle.cc/
+> >>
+> >> If it is not compatible with the LS1021A the second compatible string
+> >> should be removed. Depending on the other remark about the endianess,
+> >> it might still be compatible, though.
+> >>
+> >
+> > Please feel free to remove it. I wasn't actually planning to add it in
+> > the first place, but now it that it's there it doesn't really bother
+> > anybody either.
+>
+> But it won't work if the endianess depends on the compatible string ;)
+>
 
-shouldn't this be DSPI_XSPI_MODE according to your cover letter?
+True.
 
--michael
+> >>
+> >> > The device tree for the LS1028A SoC is extended with DMA channels
+> >> > definition, such that even though the default operating mode is XSPI,
+> >> > one can simply change DSPI_XSPI_MODE to DSPI_DMA_MODE in the
+> >> > devtype_data structure of the driver and use that instead.
+> >>
+> >> wouldn't it make more sense, to use DMA is the dma node is present
+> >> in the device tree? otherwise use XSPI mode? I don't think it is
+> >> really handy to change the mode inside the driver.
+> >>
+> >
+> > Let's keep it simple. The driver should configure the hardware in the
+> > most efficient and least buggy mode available. Right now that is XSPI.
+> > The hardware description (aka the device tree) is a separate topic. If
+> > there ever arises any situation where there are corner cases with XSPI
+> > mode, it's good to have a fallback in the form of DMA mode, and not
+> > have to worry about yet another problem (which is that there are 2
+> > sets of device tree blobs in deployment).
+>
+> Point taken. But this is not how other drivers behave, which uses the
+> DMA if its given in the device node.
+>
 
-> +		.dma_bufsize		= 8,
-> +		.max_clock_factor	= 8,
-> +		.fifo_size		= 4,
-> +		.pushr_cmd		= 2,
-> +		.pushr_tx		= 0,
-> +	},
->  	[LS1043A] = {
->  		/* Has A-011218 DMA erratum */
->  		.trans_mode		= DSPI_XSPI_MODE,
-> @@ -1113,6 +1122,9 @@ static const struct of_device_id 
-> fsl_dspi_dt_ids[] = {
->  	}, {
->  		.compatible = "fsl,ls1012a-dspi",
->  		.data = &devtype_data[LS1012A],
-> +	}, {
-> +		.compatible = "fsl,ls1028a-dspi",
-> +		.data = &devtype_data[LS1028A],
->  	}, {
->  		.compatible = "fsl,ls1043a-dspi",
->  		.data = &devtype_data[LS1043A],
+Also true.
+
+> Btw. do other SoCs perform better with DMA?
+>
+
+Not that I know of.
+My general rule of thumb for this controller is: if it supports XSPI
+then use that, otherwise use DMA. Luckily there is just one controller
+that supports none of those, and that would be Coldfire, which uses
+the braindead EOQ mode. I don't have the hardware to do testing on
+that, but in principle if I did, I would have converted that as well
+to the more functional but less efficient TCFQ mode (now removed).
+
+> -michael
+>
+> > TL;DR: These DMA channels don't really bother anybody but you never
+> > know when they might come in handy.
+> >
+> >> -michael
+> >>
+> >> >
+> >> > For testing, benchmarking and debugging, the mikroBUS connector on the
+> >> > LS1028A-RDB is made available via spidev.
+> >> >
+> >> > Vladimir Oltean (6):
+> >> >   spi: spi-fsl-dspi: Don't access reserved fields in SPI_MCR
+> >> >   spi: spi-fsl-dspi: Fix little endian access to PUSHR CMD and TXDATA
+> >> >   spi: spi-fsl-dspi: Fix oper_word_size of zero for DMA mode
+> >> >   spi: spi-fsl-dspi: Add support for LS1028A
+> >> >   arm64: dts: ls1028a: Specify the DMA channels for the DSPI
+> >> > controllers
+> >> >   arm64: dts: ls1028a-rdb: Add a spidev node for the mikroBUS
+> >> >
+> >> >  .../boot/dts/freescale/fsl-ls1028a-rdb.dts    | 14 +++++
+> >> >  .../arm64/boot/dts/freescale/fsl-ls1028a.dtsi |  6 +++
+> >> >  drivers/spi/spi-fsl-dspi.c                    | 54 +++++++++++++++----
+> >> >  3 files changed, 64 insertions(+), 10 deletions(-)
+> >
+> > Thanks,
+> > -Vladimir
+
+-Vladimir

@@ -1,113 +1,41 @@
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] spi: rspi: Add support for active-high chip selects
-Date: Mon,  9 Mar 2020 18:15:37 +0100
-Message-ID: <20200309171537.21551-1-geert+renesas@glider.be>
-Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Chris Brandt <Chris.Brandt@renesas.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-sh@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Qiujun Huang <hqjagain-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: update the structure documentation
+Date: Tue, 10 Mar 2020 01:16:19 +0800
+Message-ID: <1583774179-30736-1-git-send-email-hqjagain@gmail.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Qiujun Huang <hqjagain-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-All RSPI variants support setting the polarity of the SSL signal.
-Advertize support for active-high chip selects, and configure polarity
-according to the state of the flag.
+some members were not described in documentation.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Qiujun Huang <hqjagain-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
-Tested on r8a7791/koelsch using spidev_test and a logic analyzer.
----
- drivers/spi/spi-rspi.c | 36 ++++++++++++++++++++++++++++++++----
- 1 file changed, 32 insertions(+), 4 deletions(-)
+ include/linux/spi/spi.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index aef05f2ac749c21d..06192c9ea8132911 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -24,6 +24,7 @@
- #include <linux/sh_dma.h>
- #include <linux/spi/spi.h>
- #include <linux/spi/rspi.h>
-+#include <linux/spinlock.h>
- 
- #define RSPI_SPCR		0x00	/* Control Register */
- #define RSPI_SSLP		0x01	/* Slave Select Polarity Register */
-@@ -79,8 +80,7 @@
- #define SPCR_BSWAP		0x01	/* Byte Swap of read-data for DMAC */
- 
- /* SSLP - Slave Select Polarity Register */
--#define SSLP_SSL1P		0x02	/* SSL1 Signal Polarity Setting */
--#define SSLP_SSL0P		0x01	/* SSL0 Signal Polarity Setting */
-+#define SSLP_SSLP(i)		BIT(i)	/* SSLi Signal Polarity Setting */
- 
- /* SPPCR - Pin Control Register */
- #define SPPCR_MOIFE		0x20	/* MOSI Idle Value Fixing Enable */
-@@ -181,7 +181,9 @@ struct rspi_data {
- 	void __iomem *addr;
- 	u32 max_speed_hz;
- 	struct spi_controller *ctlr;
-+	struct platform_device *pdev;
- 	wait_queue_head_t wait;
-+	spinlock_t lock;		/* Protects RMW-access to RSPI_SSLP */
- 	struct clk *clk;
- 	u16 spcmd;
- 	u8 spsr;
-@@ -919,6 +921,29 @@ static int qspi_setup_sequencer(struct rspi_data *rspi,
- 	return 0;
- }
- 
-+static int rspi_setup(struct spi_device *spi)
-+{
-+	struct rspi_data *rspi = spi_controller_get_devdata(spi->controller);
-+	u8 sslp;
-+
-+	if (spi->cs_gpiod)
-+		return 0;
-+
-+	pm_runtime_get_sync(&rspi->pdev->dev);
-+	spin_lock_irq(&rspi->lock);
-+
-+	sslp = rspi_read8(rspi, RSPI_SSLP);
-+	if (spi->mode & SPI_CS_HIGH)
-+		sslp |= SSLP_SSLP(spi->chip_select);
-+	else
-+		sslp &= ~SSLP_SSLP(spi->chip_select);
-+	rspi_write8(rspi, sslp, RSPI_SSLP);
-+
-+	spin_unlock_irq(&rspi->lock);
-+	pm_runtime_put(&rspi->pdev->dev);
-+	return 0;
-+}
-+
- static int rspi_prepare_message(struct spi_controller *ctlr,
- 				struct spi_message *msg)
- {
-@@ -1248,17 +1273,20 @@ static int rspi_probe(struct platform_device *pdev)
- 		goto error1;
- 	}
- 
-+	rspi->pdev = pdev;
- 	pm_runtime_enable(&pdev->dev);
- 
- 	init_waitqueue_head(&rspi->wait);
-+	spin_lock_init(&rspi->lock);
- 
- 	ctlr->bus_num = pdev->id;
-+	ctlr->setup = rspi_setup;
- 	ctlr->auto_runtime_pm = true;
- 	ctlr->transfer_one = ops->transfer_one;
- 	ctlr->prepare_message = rspi_prepare_message;
- 	ctlr->unprepare_message = rspi_unprepare_message;
--	ctlr->mode_bits = SPI_CPHA | SPI_CPOL | SPI_LSB_FIRST | SPI_LOOP |
--			  ops->extra_mode_bits;
-+	ctlr->mode_bits = SPI_CPHA | SPI_CPOL | SPI_CS_HIGH | SPI_LSB_FIRST |
-+			  SPI_LOOP | ops->extra_mode_bits;
- 	ctlr->flags = ops->flags;
- 	ctlr->dev.of_node = pdev->dev.of_node;
- 	ctlr->use_gpio_descriptors = true;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 6d16ba0..2f28692 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -135,6 +135,8 @@ struct spi_delay {
+  * @modalias: Name of the driver to use with this device, or an alias
+  *	for that name.  This appears in the sysfs "modalias" attribute
+  *	for driver coldplugging, and in uevents used for hotplugging
++ * @driver_override: If the name of a driver is written to this attribute, then
++ *	the device will bind to the named driver and only the named driver.
+  * @cs_gpio: LEGACY: gpio number of the chipselect line (optional, -ENOENT when
+  *	not using a GPIO line) use cs_gpiod in new drivers by opting in on
+  *	the spi_master.
+@@ -443,6 +445,7 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  *	@spi_transfer->ptp_sts_word_post were transmitted.
+  *	If the driver does not set this, the SPI core takes the snapshot as
+  *	close to the driver hand-over as possible.
++ * @irq_flags: Interrupt enable state during PTP system timestamping
+  *
+  * Each SPI controller can communicate with one or more @spi_device
+  * children.  These make a small bus, sharing MOSI, MISO and SCK signals
 -- 
-2.17.1
+1.8.3.1

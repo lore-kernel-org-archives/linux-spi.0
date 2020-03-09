@@ -1,46 +1,113 @@
-From: Johan Jonker <jbx6244-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: rockchip: add compatible string for px30 rk3308 rk3328
-Date: Mon,  9 Mar 2020 16:10:03 +0100
-Message-ID: <20200309151004.7780-1-jbx6244@gmail.com>
-Cc: heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH] spi: rspi: Add support for active-high chip selects
+Date: Mon,  9 Mar 2020 18:15:37 +0100
+Message-ID: <20200309171537.21551-1-geert+renesas@glider.be>
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Chris Brandt <Chris.Brandt@renesas.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-sh@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The Rockchip spi binding is updated to yaml and new models
-were added. The spi on px30,rk3308 and rk3328 are the same as
-other Rockchip based SoCs, so add compatible string for it.
+All RSPI variants support setting the polarity of the SSL signal.
+Advertize support for active-high chip selects, and configure polarity
+according to the state of the flag.
 
-Signed-off-by: Johan Jonker <jbx6244-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- drivers/spi/spi-rockchip.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Tested on r8a7791/koelsch using spidev_test and a logic analyzer.
+---
+ drivers/spi/spi-rspi.c | 36 ++++++++++++++++++++++++++++++++----
+ 1 file changed, 32 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 2cc6d9951..70ef63e0b 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -843,14 +843,17 @@ static const struct dev_pm_ops rockchip_spi_pm = {
- };
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index aef05f2ac749c21d..06192c9ea8132911 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -24,6 +24,7 @@
+ #include <linux/sh_dma.h>
+ #include <linux/spi/spi.h>
+ #include <linux/spi/rspi.h>
++#include <linux/spinlock.h>
  
- static const struct of_device_id rockchip_spi_dt_match[] = {
--	{ .compatible = "rockchip,rv1108-spi", },
-+	{ .compatible = "rockchip,px30-spi", },
- 	{ .compatible = "rockchip,rk3036-spi", },
- 	{ .compatible = "rockchip,rk3066-spi", },
- 	{ .compatible = "rockchip,rk3188-spi", },
- 	{ .compatible = "rockchip,rk3228-spi", },
- 	{ .compatible = "rockchip,rk3288-spi", },
-+	{ .compatible = "rockchip,rk3308-spi", },
-+	{ .compatible = "rockchip,rk3328-spi", },
- 	{ .compatible = "rockchip,rk3368-spi", },
- 	{ .compatible = "rockchip,rk3399-spi", },
-+	{ .compatible = "rockchip,rv1108-spi", },
- 	{ },
- };
- MODULE_DEVICE_TABLE(of, rockchip_spi_dt_match);
+ #define RSPI_SPCR		0x00	/* Control Register */
+ #define RSPI_SSLP		0x01	/* Slave Select Polarity Register */
+@@ -79,8 +80,7 @@
+ #define SPCR_BSWAP		0x01	/* Byte Swap of read-data for DMAC */
+ 
+ /* SSLP - Slave Select Polarity Register */
+-#define SSLP_SSL1P		0x02	/* SSL1 Signal Polarity Setting */
+-#define SSLP_SSL0P		0x01	/* SSL0 Signal Polarity Setting */
++#define SSLP_SSLP(i)		BIT(i)	/* SSLi Signal Polarity Setting */
+ 
+ /* SPPCR - Pin Control Register */
+ #define SPPCR_MOIFE		0x20	/* MOSI Idle Value Fixing Enable */
+@@ -181,7 +181,9 @@ struct rspi_data {
+ 	void __iomem *addr;
+ 	u32 max_speed_hz;
+ 	struct spi_controller *ctlr;
++	struct platform_device *pdev;
+ 	wait_queue_head_t wait;
++	spinlock_t lock;		/* Protects RMW-access to RSPI_SSLP */
+ 	struct clk *clk;
+ 	u16 spcmd;
+ 	u8 spsr;
+@@ -919,6 +921,29 @@ static int qspi_setup_sequencer(struct rspi_data *rspi,
+ 	return 0;
+ }
+ 
++static int rspi_setup(struct spi_device *spi)
++{
++	struct rspi_data *rspi = spi_controller_get_devdata(spi->controller);
++	u8 sslp;
++
++	if (spi->cs_gpiod)
++		return 0;
++
++	pm_runtime_get_sync(&rspi->pdev->dev);
++	spin_lock_irq(&rspi->lock);
++
++	sslp = rspi_read8(rspi, RSPI_SSLP);
++	if (spi->mode & SPI_CS_HIGH)
++		sslp |= SSLP_SSLP(spi->chip_select);
++	else
++		sslp &= ~SSLP_SSLP(spi->chip_select);
++	rspi_write8(rspi, sslp, RSPI_SSLP);
++
++	spin_unlock_irq(&rspi->lock);
++	pm_runtime_put(&rspi->pdev->dev);
++	return 0;
++}
++
+ static int rspi_prepare_message(struct spi_controller *ctlr,
+ 				struct spi_message *msg)
+ {
+@@ -1248,17 +1273,20 @@ static int rspi_probe(struct platform_device *pdev)
+ 		goto error1;
+ 	}
+ 
++	rspi->pdev = pdev;
+ 	pm_runtime_enable(&pdev->dev);
+ 
+ 	init_waitqueue_head(&rspi->wait);
++	spin_lock_init(&rspi->lock);
+ 
+ 	ctlr->bus_num = pdev->id;
++	ctlr->setup = rspi_setup;
+ 	ctlr->auto_runtime_pm = true;
+ 	ctlr->transfer_one = ops->transfer_one;
+ 	ctlr->prepare_message = rspi_prepare_message;
+ 	ctlr->unprepare_message = rspi_unprepare_message;
+-	ctlr->mode_bits = SPI_CPHA | SPI_CPOL | SPI_LSB_FIRST | SPI_LOOP |
+-			  ops->extra_mode_bits;
++	ctlr->mode_bits = SPI_CPHA | SPI_CPOL | SPI_CS_HIGH | SPI_LSB_FIRST |
++			  SPI_LOOP | ops->extra_mode_bits;
+ 	ctlr->flags = ops->flags;
+ 	ctlr->dev.of_node = pdev->dev.of_node;
+ 	ctlr->use_gpio_descriptors = true;
 -- 
-2.11.0
+2.17.1

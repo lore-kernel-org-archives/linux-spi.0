@@ -1,9 +1,9 @@
 From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 6/6] arm64: dts: ls1028a-rdb: Add a spidev node for the mikroBUS
-Date: Mon, 9 Mar 2020 20:50:36 +0200
-Message-ID: <CA+h21hqOhM9+k9cKXoA8coYpxNFWpgD+FjETeB6uWLbsfrx0uw@mail.gmail.com>
-References: <20200309145624.10026-1-olteanv@gmail.com> <20200309145624.10026-7-olteanv@gmail.com>
- <f213388d924b63d0fe265a2d731647be@walle.cc>
+Subject: Re: [PATCH 4/6] spi: spi-fsl-dspi: Add support for LS1028A
+Date: Mon, 9 Mar 2020 20:51:09 +0200
+Message-ID: <CA+h21hoqmXfBdhGBg6TLLqLeXJTE3wZKzQpsZJRsOhqWCO9gJQ@mail.gmail.com>
+References: <20200309145624.10026-1-olteanv@gmail.com> <20200309145624.10026-5-olteanv@gmail.com>
+ <02a2816d2f39bf621dfee543ed612ae0@walle.cc>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -18,65 +18,80 @@ Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79u
         peng.ma-3arQi8VN3Tc@public.gmane.org
 To: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <f213388d924b63d0fe265a2d731647be-QKn5cuLxLXY@public.gmane.org>
+In-Reply-To: <02a2816d2f39bf621dfee543ed612ae0-QKn5cuLxLXY@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, 9 Mar 2020 at 20:35, Michael Walle <michael-QKn5cuLxLXY@public.gmane.org> wrote:
+On Mon, 9 Mar 2020 at 20:38, Michael Walle <michael-QKn5cuLxLXY@public.gmane.org> wrote:
 >
 > Am 2020-03-09 15:56, schrieb Vladimir Oltean:
 > > From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 > >
-> > For debugging, it is useful to have access to the DSPI controller
-> > signals. On the reference design board, these are exported to either
-> > the
-> > mikroBUS1 or mikroBUS2 connector (according to the CPLD register
-> > BRDCFG3[SPI3]).
+> > This is similar to the DSPI instantiation on LS1028A, except that:
+> >  - The A-011218 erratum has been fixed, so DMA works
+> >  - The endianness is different, which has implications on XSPI mode
+> >
+> > Some benchmarking with the following command:
+> >
+> > spidev_test --device /dev/spidev2.0 --bpw 8 --size 256 --cpha --iter
+> > 10000000 --speed 20000000
+> >
+> > shows that in DMA mode, it can achieve around 2400 kbps, and in XSPI
+> > mode, the same command goes up to 4700 kbps. This is somewhat to be
+> > expected, since the DMA buffer size is extremely small at 8 bytes, the
+> > winner becomes whomever can prepare the buffers for transmission
+> > quicker, and DMA mode has higher overhead there. So XSPI FIFO mode has
+> > been chosen as the operating mode for this chip.
 > >
 > > Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 > > ---
-> >  arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts | 14 ++++++++++++++
-> >  1 file changed, 14 insertions(+)
+> >  drivers/spi/spi-fsl-dspi.c | 12 ++++++++++++
+> >  1 file changed, 12 insertions(+)
 > >
-> > diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
-> > b/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
-> > index bb7ba3bcbe56..43f403b30dae 100644
-> > --- a/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
-> > +++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
-> > @@ -83,6 +83,20 @@
-> >       };
-> >  };
-> >
-> > +&dspi2 {
-> > +     bus-num = <2>;
-> > +     status = "okay";
-> > +
-> > +     /* mikroBUS1 */
-> > +     spidev@0 {
-> > +             compatible = "spidev";
+> > diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+> > index 5624b9ee77db..264d184e7296 100644
+> > --- a/drivers/spi/spi-fsl-dspi.c
+> > +++ b/drivers/spi/spi-fsl-dspi.c
+> > @@ -131,6 +131,7 @@ struct fsl_dspi_devtype_data {
+> >  enum {
+> >       LS1021A,
+> >       LS1012A,
+> > +     LS1028A,
+> >       LS1043A,
+> >       LS1046A,
+> >       LS2080A,
+> > @@ -163,6 +164,14 @@ static const struct fsl_dspi_devtype_data
+> > devtype_data[] = {
+> >               .pushr_cmd              = 0,
+> >               .pushr_tx               = 2,
+> >       },
+> > +     [LS1028A] = {
+> > +             .trans_mode             = DSPI_DMA_MODE,
 >
-> As far as I know this throws a warning at boot that you
-> shouldn't use the compatible = "spidev", doesn't it?
+> shouldn't this be DSPI_XSPI_MODE according to your cover letter?
 >
-> /*
->   * spidev should never be referenced in DT without a specific
->   * compatible string, it is a Linux implementation thing
->   * rather than a description of the hardware.
->   */
->
-
-If this is supposed to mean that the "spidev" string is less
-adequate/expressive than "rohm,dh2228fv", then ok, I'll use that.
-
 > -michael
 >
-> > +             reg = <0>;
-> > +             spi-max-frequency = <20000000>;
-> > +             fsl,spi-cs-sck-delay = <100>;
-> > +             fsl,spi-sck-cs-delay = <100>;
-> > +     };
-> > +};
-> > +
-> >  &esdhc {
-> >       sd-uhs-sdr104;
-> >       sd-uhs-sdr50;
+
+Yes, sorry, I forgot to change it back after testing it both ways.
+
+> > +             .dma_bufsize            = 8,
+> > +             .max_clock_factor       = 8,
+> > +             .fifo_size              = 4,
+> > +             .pushr_cmd              = 2,
+> > +             .pushr_tx               = 0,
+> > +     },
+> >       [LS1043A] = {
+> >               /* Has A-011218 DMA erratum */
+> >               .trans_mode             = DSPI_XSPI_MODE,
+> > @@ -1113,6 +1122,9 @@ static const struct of_device_id
+> > fsl_dspi_dt_ids[] = {
+> >       }, {
+> >               .compatible = "fsl,ls1012a-dspi",
+> >               .data = &devtype_data[LS1012A],
+> > +     }, {
+> > +             .compatible = "fsl,ls1028a-dspi",
+> > +             .data = &devtype_data[LS1028A],
+> >       }, {
+> >               .compatible = "fsl,ls1043a-dspi",
+> >               .data = &devtype_data[LS1043A],

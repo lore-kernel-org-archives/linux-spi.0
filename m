@@ -1,7 +1,7 @@
 From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2 5/6] arm64: dts: ls1028a: Specify the DMA channels for the DSPI controllers
-Date: Mon,  9 Mar 2020 23:07:54 +0200
-Message-ID: <20200309210755.6759-6-olteanv@gmail.com>
+Subject: [PATCH v2 6/6] arm64: dts: ls1028a-rdb: Add a spidev node for the mikroBUS
+Date: Mon,  9 Mar 2020 23:07:55 +0200
+Message-ID: <20200309210755.6759-7-olteanv@gmail.com>
 References: <20200309210755.6759-1-olteanv@gmail.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
@@ -16,49 +16,43 @@ List-ID: <linux-spi.vger.kernel.org>
 
 From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 
-LS1028A has a functional connection to the eDMA module. Even if the
-spi-fsl-dspi.c driver is not using DMA for LS1028A now, define the slots
-in the DMAMUX for connecting the eDMA channels to the 3 DSPI
-controllers.
+For debugging, it is useful to have access to the DSPI controller
+signals. On the reference design board, these are exported to either the
+mikroBUS1 or mikroBUS2 connector (according to the CPLD register
+BRDCFG3[SPI3]).
 
 Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 ---
 Changes in v2:
-None.
+Change compatible string for spidev node.
 
- arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-index 515e0a1b934f..18155273a46e 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-@@ -298,6 +298,8 @@
- 			interrupts = <GIC_SPI 26 IRQ_TYPE_LEVEL_HIGH>;
- 			clock-names = "dspi";
- 			clocks = <&clockgen 4 1>;
-+			dmas = <&edma0 0 62>, <&edma0 0 60>;
-+			dma-names = "tx", "rx";
- 			spi-num-chipselects = <4>;
- 			little-endian;
- 			status = "disabled";
-@@ -311,6 +313,8 @@
- 			interrupts = <GIC_SPI 26 IRQ_TYPE_LEVEL_HIGH>;
- 			clock-names = "dspi";
- 			clocks = <&clockgen 4 1>;
-+			dmas = <&edma0 0 58>, <&edma0 0 56>;
-+			dma-names = "tx", "rx";
- 			spi-num-chipselects = <4>;
- 			little-endian;
- 			status = "disabled";
-@@ -324,6 +328,8 @@
- 			interrupts = <GIC_SPI 26 IRQ_TYPE_LEVEL_HIGH>;
- 			clock-names = "dspi";
- 			clocks = <&clockgen 4 1>;
-+			dmas = <&edma0 0 54>, <&edma0 0 2>;
-+			dma-names = "tx", "rx";
- 			spi-num-chipselects = <3>;
- 			little-endian;
- 			status = "disabled";
+diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts b/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
+index bb7ba3bcbe56..13555ed52b89 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
++++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
+@@ -83,6 +83,20 @@
+ 	};
+ };
+ 
++&dspi2 {
++	bus-num = <2>;
++	status = "okay";
++
++	/* mikroBUS1 */
++	spidev@0 {
++		compatible = "rohm,dh2228fv";
++		spi-max-frequency = <20000000>;
++		fsl,spi-cs-sck-delay = <100>;
++		fsl,spi-sck-cs-delay = <100>;
++		reg = <0>;
++	};
++};
++
+ &esdhc {
+ 	sd-uhs-sdr104;
+ 	sd-uhs-sdr50;
 -- 
 2.17.1

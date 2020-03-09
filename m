@@ -1,159 +1,106 @@
-From: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>
-Subject: Re: [PATCH 2/6] spi: spi-fsl-dspi: Fix little endian access to PUSHR
- CMD and TXDATA
-Date: Mon, 09 Mar 2020 19:19:17 +0100
-Message-ID: <a709dc91aac9124ed37ac1e7fcb7e105@walle.cc>
+From: Michael Walle <michael@walle.cc>
+Subject: Re: [PATCH 0/6] NXP DSPI bugfixes and support for LS1028A
+Date: Mon, 09 Mar 2020 19:31:03 +0100
+Message-ID: <6da04c9a17fa9e6259a462cb52312930@walle.cc>
 References: <20200309145624.10026-1-olteanv@gmail.com>
- <20200309145624.10026-3-olteanv@gmail.com>
- <d8e39e402328b962cdbc25316a27eac8@walle.cc>
- <CA+h21hp4vC1c00rCgZo_hwQz3cE4dLBHjcgTHvf-+fS9a9VfxQ@mail.gmail.com>
+ <f530a0740f34b2cf26a8055d4eae2527@walle.cc>
+ <CA+h21hrSezjwKJDCd1wN8qk5koWfPmwT0Mx+sR7fHxo1sCGcjw@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII;
  format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Esben Haabendal <eha-/iRVSOupHO4@public.gmane.org>,
-        angelo-BIYBQhTR83Y@public.gmane.org, andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        "Gustavo A. R. Silva" <gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org>,
-        Wei Chen <weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, Mohamed Hosny <mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-        peng.ma-3arQi8VN3Tc@public.gmane.org
-To: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CA+h21hp4vC1c00rCgZo_hwQz3cE4dLBHjcgTHvf-+fS9a9VfxQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        lkml <linux-kernel@vger.kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        devicetree@vger.kernel.org, Esben Haabendal <eha@deif.com>,
+        angelo@sysam.it, andrew.smirnov@gmail.com,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        Wei Chen <weic@nvidia.com>, Mohamed Hosny <mhosny@nvidia.com>,
+        peng.ma@nxp.com
+To: Vladimir Oltean <olteanv@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <CA+h21hrSezjwKJDCd1wN8qk5koWfPmwT0Mx+sR7fHxo1sCGcjw@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Am 2020-03-09 19:07, schrieb Vladimir Oltean:
-> Hi Michael,
-> 
-> On Mon, 9 Mar 2020 at 19:59, Michael Walle <michael-QKn5cuLxLXY@public.gmane.org> wrote:
->> 
+Am 2020-03-09 19:14, schrieb Vladimir Oltean:
+> On Mon, 9 Mar 2020 at 20:03, Michael Walle <michael@walle.cc> wrote:
 >> Am 2020-03-09 15:56, schrieb Vladimir Oltean:
->> > From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
+>> > From: Vladimir Oltean <vladimir.oltean@nxp.com>
 >> >
->> > In XSPI mode, the 32-bit PUSHR register can be written to separately:
->> > the higher 16 bits are for commands and the lower 16 bits are for data.
+>> > This series addresses a few issues that were missed during the previous
+>> > series "[PATCH 00/12] TCFQ to XSPI migration for NXP DSPI driver", on
+>> > SoCs other than LS1021A and LS1043A. DMA mode has been completely
+>> > broken
+>> > by that series, and XSPI mode never worked on little-endian
+>> > controllers.
 >> >
->> > This has nicely been hacked around, by defining a second regmap with a
->> > width of 16 bits, and effectively splitting a 32-bit register into 2
->> > 16-bit ones, from the perspective of this regmap_pushr.
+>> > Then it introduces support for the LS1028A chip, whose compatible has
+>> > recently been documented here:
 >> >
->> > The problem is the assumption about the controller's endianness. If the
->> > controller is little endian (such as anything post-LS1046A), then the
->> > first 2 bytes, in the order imposed by memory layout, will actually
->> > hold
->> > the TXDATA, and the last 2 bytes will hold the CMD.
->> >
->> > So take the controller's endianness into account when performing split
->> > writes to PUSHR. The obvious and simple solution would have been to
->> > call
->> > regmap_get_val_endian(), but that is an internal regmap function and we
->> > don't want to change regmap just for this. Therefore, we define the
->> > offsets per-instantiation, in the devtype_data structure. This means
->> > that we have to know from the driver which controllers are big- and
->> > which are little-endian (which is fine, we do, but it makes the device
->> > tree binding itself a little redundant except for regmap_config).
->> >
->> > This patch does not apply cleanly to stable trees, and a punctual fix
->> > to
->> > the commit cannot be provided given this constraint of lack of access
->> > to
->> > regmap_get_val_endian(). The per-SoC devtype_data structures (and
->> > therefore the premises to fix this bug) have been introduced only a few
->> > commits ago, in commit d35054010b57 ("spi: spi-fsl-dspi: Use specific
->> > compatible strings for all SoC instantiations")
->> >
->> > Fixes: 58ba07ec79e6 ("spi: spi-fsl-dspi: Add support for XSPI mode
->> > registers")
->> > Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
->> > ---
->> >  drivers/spi/spi-fsl-dspi.c | 28 ++++++++++++++++++++++------
->> >  1 file changed, 22 insertions(+), 6 deletions(-)
->> >
->> > diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
->> > index 0ce26c1cbf62..a8e56abe20ac 100644
->> > --- a/drivers/spi/spi-fsl-dspi.c
->> > +++ b/drivers/spi/spi-fsl-dspi.c
->> > @@ -103,10 +103,6 @@
->> >  #define SPI_FRAME_BITS(bits)         SPI_CTAR_FMSZ((bits) - 1)
->> >  #define SPI_FRAME_EBITS(bits)                SPI_CTARE_FMSZE(((bits) - 1) >> 4)
->> >
->> > -/* Register offsets for regmap_pushr */
->> > -#define PUSHR_CMD                    0x0
->> > -#define PUSHR_TX                     0x2
->> > -
->> >  #define DMA_COMPLETION_TIMEOUT               msecs_to_jiffies(3000)
->> >
->> >  struct chip_data {
->> > @@ -124,6 +120,12 @@ struct fsl_dspi_devtype_data {
->> >       u8                      max_clock_factor;
->> >       int                     fifo_size;
->> >       int                     dma_bufsize;
->> > +     /*
->> > +      * Offsets for CMD and TXDATA within SPI_PUSHR when accessed
->> > +      * individually (in XSPI mode)
->> > +      */
->> > +     int                     pushr_cmd;
->> > +     int                     pushr_tx;
->> >  };
+>> > https://lore.kernel.org/linux-devicetree/20200218171418.18297-1-michael@walle.cc/
 >> 
->> Shouldn't this just read the "little-endian" property of the
->> device tree node?
-> 
-> This is exactly what the driver did prior to this commit from 2014:
-> https://patchwork.kernel.org/patch/4732711/
-> Since then, "little-endian" and "big-endian" became generic regmap 
-> properties.
-> 
->> Like it worked before with regmap, which takes
->> the little-endian/big-endian property into account.
+>> If it is not compatible with the LS1021A the second compatible string
+>> should be removed. Depending on the other remark about the endianess,
+>> it might still be compatible, though.
 >> 
 > 
-> So XSPI mode allows you, among other things, to send 32 bits words at a 
-> time.
-> In my opinion this was tested only the big-endian DSPI controllers
-> (LS1021A, LS1043A etc).
-> On the little-endian controllers (LS2, LX2, LS1028A) I suspect this
-> was actually never tested.
-> The reason why we see it now is because we're "accelerating" even
-> 8-bit words to 32-bit.
-> So it is incorrect to say "like it worked before": it never worked 
-> before.
+> Please feel free to remove it. I wasn't actually planning to add it in
+> the first place, but now it that it's there it doesn't really bother
+> anybody either.
 
-I just meant how the endianess is figured out ;) Like by using the
-endianess property in the device tree. Not by also taking the compatible
-string into account.
+But it won't work if the endianess depends on the compatible string ;)
 
-
->> If I understand this correctly, this solution would mix the methods
->> how the IP endianess is determined. Eg. regmap_xx uses the
->> little-endian property and this driver then also uses the compatible
->> string to also distinguish between the endianess.
+>> 
+>> > The device tree for the LS1028A SoC is extended with DMA channels
+>> > definition, such that even though the default operating mode is XSPI,
+>> > one can simply change DSPI_XSPI_MODE to DSPI_DMA_MODE in the
+>> > devtype_data structure of the driver and use that instead.
+>> 
+>> wouldn't it make more sense, to use DMA is the dma node is present
+>> in the device tree? otherwise use XSPI mode? I don't think it is
+>> really handy to change the mode inside the driver.
 >> 
 > 
-> Yup. Otherwise we effectively have to duplicate the logic from the
-> internal regmap_get_val_endian function. I found no other way to
-> figure out what endianness the regmap_config has. Suggestions welcome.
+> Let's keep it simple. The driver should configure the hardware in the
+> most efficient and least buggy mode available. Right now that is XSPI.
+> The hardware description (aka the device tree) is a separate topic. If
+> there ever arises any situation where there are corner cases with XSPI
+> mode, it's good to have a fallback in the form of DMA mode, and not
+> have to worry about yet another problem (which is that there are 2
+> sets of device tree blobs in deployment).
 
-If there is no way in determining that, you could just use the
-of_property_read_bool(). there is also of_device_is_big_endian()
-although I don't know if this is consistent with how the regmap uses it.
-Eg. is it big-endian or little-endian if there is no property at all?
+Point taken. But this is not how other drivers behave, which uses the
+DMA if its given in the device node.
 
-I mean something like:
-
-if (little_endian)
-     regmap_write(regmap, PUSHR_CMD_LE, cmd)
-else
-     regmap_write(regmap, PUSHR_CMD_BE, cmd)
-
-Eg. if one would add another SoC to the DSPI driver, you would also need
-to specify the cmd/tx offset. But actually its already known because it
-just depend on the endianess which is already specified in the device 
-tree.
+Btw. do other SoCs perform better with DMA?
 
 -michael
+
+> TL;DR: These DMA channels don't really bother anybody but you never
+> know when they might come in handy.
+> 
+>> -michael
+>> 
+>> >
+>> > For testing, benchmarking and debugging, the mikroBUS connector on the
+>> > LS1028A-RDB is made available via spidev.
+>> >
+>> > Vladimir Oltean (6):
+>> >   spi: spi-fsl-dspi: Don't access reserved fields in SPI_MCR
+>> >   spi: spi-fsl-dspi: Fix little endian access to PUSHR CMD and TXDATA
+>> >   spi: spi-fsl-dspi: Fix oper_word_size of zero for DMA mode
+>> >   spi: spi-fsl-dspi: Add support for LS1028A
+>> >   arm64: dts: ls1028a: Specify the DMA channels for the DSPI
+>> > controllers
+>> >   arm64: dts: ls1028a-rdb: Add a spidev node for the mikroBUS
+>> >
+>> >  .../boot/dts/freescale/fsl-ls1028a-rdb.dts    | 14 +++++
+>> >  .../arm64/boot/dts/freescale/fsl-ls1028a.dtsi |  6 +++
+>> >  drivers/spi/spi-fsl-dspi.c                    | 54 +++++++++++++++----
+>> >  3 files changed, 64 insertions(+), 10 deletions(-)
+> 
+> Thanks,
+> -Vladimir

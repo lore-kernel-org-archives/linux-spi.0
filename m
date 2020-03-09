@@ -1,7 +1,7 @@
 From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2 3/6] spi: spi-fsl-dspi: Fix oper_word_size of zero for DMA mode
-Date: Mon,  9 Mar 2020 23:07:52 +0200
-Message-ID: <20200309210755.6759-4-olteanv@gmail.com>
+Subject: [PATCH v2 1/6] spi: spi-fsl-dspi: Don't access reserved fields in SPI_MCR
+Date: Mon,  9 Mar 2020 23:07:50 +0200
+Message-ID: <20200309210755.6759-2-olteanv@gmail.com>
 References: <20200309210755.6759-1-olteanv@gmail.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
@@ -16,51 +16,47 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 
-In DMA mode, dspi_setup_accel does not get called, which results in the
-dspi->oper_word_size variable (which is used by dspi_dma_xfer) to not be
-initialized properly.
+The SPI_MCR_PCSIS macro assumes that the controller has a number of chip
+select signals equal to 6. That is not always the case, but actually is
+described through the driver-specific "spi-num-chipselects" device tree
+binding. LS1028A for example only has 4 chip selects.
 
-Because oper_word_size is zero, a few calculations end up being
-incorrect, and the DMA transfer eventually times out instead of sending
-anything on the wire.
+Don't write to the upper bits of the PCSIS field, which are reserved in
+the reference manual.
 
-Set up native transfers (or 8-on-16 acceleration) using dspi_setup_accel
-for DMA mode too.
-
-Fixes: 6c1c26ecd9a3 ("spi: spi-fsl-dspi: Accelerate transfers using larger word size if possible")
+Fixes: 349ad66c0ab0 ("spi:Add Freescale DSPI driver for Vybrid VF610 platform")
 Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 ---
 Changes in v2:
-None.
+Remove duplicate phrase in commit message.
 
  drivers/spi/spi-fsl-dspi.c | 7 +++++--
  1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 0483abd403a4..43d2d9fc8b92 100644
+index 0683a3fbd48c..0ce26c1cbf62 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -359,6 +359,8 @@ static void dspi_rx_dma_callback(void *arg)
- 	complete(&dma->cmd_rx_complete);
- }
+@@ -22,7 +22,7 @@
  
-+static void dspi_setup_accel(struct fsl_dspi *dspi);
-+
- static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
+ #define SPI_MCR				0x00
+ #define SPI_MCR_MASTER			BIT(31)
+-#define SPI_MCR_PCSIS			(0x3F << 16)
++#define SPI_MCR_PCSIS(x)		((x) << 16)
+ #define SPI_MCR_CLR_TXF			BIT(11)
+ #define SPI_MCR_CLR_RXF			BIT(10)
+ #define SPI_MCR_XSPI			BIT(3)
+@@ -1197,7 +1197,10 @@ static const struct regmap_config dspi_xspi_regmap_config[] = {
+ 
+ static void dspi_init(struct fsl_dspi *dspi)
  {
- 	struct device *dev = &dspi->pdev->dev;
-@@ -446,9 +448,10 @@ static int dspi_dma_xfer(struct fsl_dspi *dspi)
- 	int bytes_per_buffer;
- 	int ret = 0;
- 
-+	dspi_setup_accel(dspi);
+-	unsigned int mcr = SPI_MCR_PCSIS;
++	unsigned int mcr;
 +
- 	curr_remaining_bytes = dspi->len;
--	bytes_per_buffer = dspi->devtype_data->dma_bufsize /
--			   dspi->devtype_data->fifo_size;
-+	bytes_per_buffer = dspi->devtype_data->dma_bufsize;
- 	while (curr_remaining_bytes) {
- 		/* Check if current transfer fits the DMA buffer */
- 		dma->curr_xfer_len = curr_remaining_bytes /
++	/* Set idle states for all chip select signals to high */
++	mcr = SPI_MCR_PCSIS(GENMASK(dspi->ctlr->num_chipselect - 1, 0));
+ 
+ 	if (dspi->devtype_data->trans_mode == DSPI_XSPI_MODE)
+ 		mcr |= SPI_MCR_XSPI;
 -- 
 2.17.1

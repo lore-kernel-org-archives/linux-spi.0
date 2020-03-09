@@ -1,7 +1,7 @@
 From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2 2/6] spi: spi-fsl-dspi: Fix little endian access to PUSHR CMD and TXDATA
-Date: Mon,  9 Mar 2020 23:07:51 +0200
-Message-ID: <20200309210755.6759-3-olteanv@gmail.com>
+Subject: [PATCH v2 3/6] spi: spi-fsl-dspi: Fix oper_word_size of zero for DMA mode
+Date: Mon,  9 Mar 2020 23:07:52 +0200
+Message-ID: <20200309210755.6759-4-olteanv@gmail.com>
 References: <20200309210755.6759-1-olteanv@gmail.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
@@ -16,109 +16,51 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 
-In XSPI mode, the 32-bit PUSHR register can be written to separately:
-the higher 16 bits are for commands and the lower 16 bits are for data.
+In DMA mode, dspi_setup_accel does not get called, which results in the
+dspi->oper_word_size variable (which is used by dspi_dma_xfer) to not be
+initialized properly.
 
-This has nicely been hacked around, by defining a second regmap with a
-width of 16 bits, and effectively splitting a 32-bit register into 2
-16-bit ones, from the perspective of this regmap_pushr.
+Because oper_word_size is zero, a few calculations end up being
+incorrect, and the DMA transfer eventually times out instead of sending
+anything on the wire.
 
-The problem is the assumption about the controller's endianness. If the
-controller is little endian (such as anything post-LS1046A), then the
-first 2 bytes, in the order imposed by memory layout, will actually hold
-the TXDATA, and the last 2 bytes will hold the CMD.
+Set up native transfers (or 8-on-16 acceleration) using dspi_setup_accel
+for DMA mode too.
 
-So take the controller's endianness into account when performing split
-writes to PUSHR. The obvious and simple solution would have been to call
-regmap_get_val_endian(), but that is an internal regmap function and we
-don't want to change regmap just for this. Therefore, we just re-read
-the "big-endian" device tree property.
-
-Fixes: 58ba07ec79e6 ("spi: spi-fsl-dspi: Add support for XSPI mode registers")
+Fixes: 6c1c26ecd9a3 ("spi: spi-fsl-dspi: Accelerate transfers using larger word size if possible")
 Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 ---
 Changes in v2:
-Parse "big-endian" device tree bindings instead of taking the decision
-based on compatible SoC.
+None.
 
- drivers/spi/spi-fsl-dspi.c | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 0ce26c1cbf62..0483abd403a4 100644
+index 0483abd403a4..43d2d9fc8b92 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -103,10 +103,6 @@
- #define SPI_FRAME_BITS(bits)		SPI_CTAR_FMSZ((bits) - 1)
- #define SPI_FRAME_EBITS(bits)		SPI_CTARE_FMSZE(((bits) - 1) >> 4)
- 
--/* Register offsets for regmap_pushr */
--#define PUSHR_CMD			0x0
--#define PUSHR_TX			0x2
--
- #define DMA_COMPLETION_TIMEOUT		msecs_to_jiffies(3000)
- 
- struct chip_data {
-@@ -240,6 +236,13 @@ struct fsl_dspi {
- 
- 	int					words_in_flight;
- 
-+	/*
-+	 * Offsets for CMD and TXDATA within SPI_PUSHR when accessed
-+	 * individually (in XSPI mode)
-+	 */
-+	int					pushr_cmd;
-+	int					pushr_tx;
-+
- 	void (*host_to_dev)(struct fsl_dspi *dspi, u32 *txdata);
- 	void (*dev_to_host)(struct fsl_dspi *dspi, u32 rxdata);
- };
-@@ -670,12 +673,12 @@ static void dspi_pushr_cmd_write(struct fsl_dspi *dspi, u16 cmd)
- 	 */
- 	if (dspi->len > dspi->oper_word_size)
- 		cmd |= SPI_PUSHR_CMD_CONT;
--	regmap_write(dspi->regmap_pushr, PUSHR_CMD, cmd);
-+	regmap_write(dspi->regmap_pushr, dspi->pushr_cmd, cmd);
+@@ -359,6 +359,8 @@ static void dspi_rx_dma_callback(void *arg)
+ 	complete(&dma->cmd_rx_complete);
  }
  
- static void dspi_pushr_txdata_write(struct fsl_dspi *dspi, u16 txdata)
++static void dspi_setup_accel(struct fsl_dspi *dspi);
++
+ static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
  {
--	regmap_write(dspi->regmap_pushr, PUSHR_TX, txdata);
-+	regmap_write(dspi->regmap_pushr, dspi->pushr_tx, txdata);
- }
+ 	struct device *dev = &dspi->pdev->dev;
+@@ -446,9 +448,10 @@ static int dspi_dma_xfer(struct fsl_dspi *dspi)
+ 	int bytes_per_buffer;
+ 	int ret = 0;
  
- static void dspi_xspi_write(struct fsl_dspi *dspi, int cnt, bool eoq)
-@@ -1256,6 +1259,7 @@ static int dspi_probe(struct platform_device *pdev)
- 	struct fsl_dspi *dspi;
- 	struct resource *res;
- 	void __iomem *base;
-+	bool big_endian;
- 
- 	ctlr = spi_alloc_master(&pdev->dev, sizeof(struct fsl_dspi));
- 	if (!ctlr)
-@@ -1281,6 +1285,7 @@ static int dspi_probe(struct platform_device *pdev)
- 
- 		/* Only Coldfire uses platform data */
- 		dspi->devtype_data = &devtype_data[MCF5441X];
-+		big_endian = true;
- 	} else {
- 
- 		ret = of_property_read_u32(np, "spi-num-chipselects", &cs_num);
-@@ -1302,6 +1307,15 @@ static int dspi_probe(struct platform_device *pdev)
- 			ret = -EFAULT;
- 			goto out_ctlr_put;
- 		}
++	dspi_setup_accel(dspi);
 +
-+		big_endian = of_device_is_big_endian(np);
-+	}
-+	if (big_endian) {
-+		dspi->pushr_cmd = 0;
-+		dspi->pushr_tx = 2;
-+	} else {
-+		dspi->pushr_cmd = 2;
-+		dspi->pushr_tx = 0;
- 	}
- 
- 	if (dspi->devtype_data->trans_mode == DSPI_XSPI_MODE)
+ 	curr_remaining_bytes = dspi->len;
+-	bytes_per_buffer = dspi->devtype_data->dma_bufsize /
+-			   dspi->devtype_data->fifo_size;
++	bytes_per_buffer = dspi->devtype_data->dma_bufsize;
+ 	while (curr_remaining_bytes) {
+ 		/* Check if current transfer fits the DMA buffer */
+ 		dma->curr_xfer_len = curr_remaining_bytes /
 -- 
 2.17.1

@@ -1,97 +1,45 @@
-From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 4/6] spi: spi-fsl-dspi: Add support for LS1028A
-Date: Mon, 9 Mar 2020 20:51:09 +0200
-Message-ID: <CA+h21hoqmXfBdhGBg6TLLqLeXJTE3wZKzQpsZJRsOhqWCO9gJQ@mail.gmail.com>
-References: <20200309145624.10026-1-olteanv@gmail.com> <20200309145624.10026-5-olteanv@gmail.com>
- <02a2816d2f39bf621dfee543ed612ae0@walle.cc>
+From: Otavio Salvador <otavio.salvador-fKevB0iiKLMBZ+LybsDmbA@public.gmane.org>
+Subject: SPI irq regression
+Date: Mon, 9 Mar 2020 15:54:20 -0300
+Message-ID: <CAP9ODKpW=h6SVtsn-uuDQ4+TgR0NnjBW==8vwyQD4+x_dbFzRQ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Esben Haabendal <eha-/iRVSOupHO4@public.gmane.org>,
-        angelo-BIYBQhTR83Y@public.gmane.org, andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        "Gustavo A. R. Silva" <gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org>,
-        Wei Chen <weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, Mohamed Hosny <mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-        peng.ma-3arQi8VN3Tc@public.gmane.org
-To: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>
+To: kernel-sKpHZLTYfq0@public.gmane.org, Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <02a2816d2f39bf621dfee543ed612ae0-QKn5cuLxLXY@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, 9 Mar 2020 at 20:38, Michael Walle <michael-QKn5cuLxLXY@public.gmane.org> wrote:
->
-> Am 2020-03-09 15:56, schrieb Vladimir Oltean:
-> > From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
-> >
-> > This is similar to the DSPI instantiation on LS1028A, except that:
-> >  - The A-011218 erratum has been fixed, so DMA works
-> >  - The endianness is different, which has implications on XSPI mode
-> >
-> > Some benchmarking with the following command:
-> >
-> > spidev_test --device /dev/spidev2.0 --bpw 8 --size 256 --cpha --iter
-> > 10000000 --speed 20000000
-> >
-> > shows that in DMA mode, it can achieve around 2400 kbps, and in XSPI
-> > mode, the same command goes up to 4700 kbps. This is somewhat to be
-> > expected, since the DMA buffer size is extremely small at 8 bytes, the
-> > winner becomes whomever can prepare the buffers for transmission
-> > quicker, and DMA mode has higher overhead there. So XSPI FIFO mode has
-> > been chosen as the operating mode for this chip.
-> >
-> > Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
-> > ---
-> >  drivers/spi/spi-fsl-dspi.c | 12 ++++++++++++
-> >  1 file changed, 12 insertions(+)
-> >
-> > diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-> > index 5624b9ee77db..264d184e7296 100644
-> > --- a/drivers/spi/spi-fsl-dspi.c
-> > +++ b/drivers/spi/spi-fsl-dspi.c
-> > @@ -131,6 +131,7 @@ struct fsl_dspi_devtype_data {
-> >  enum {
-> >       LS1021A,
-> >       LS1012A,
-> > +     LS1028A,
-> >       LS1043A,
-> >       LS1046A,
-> >       LS2080A,
-> > @@ -163,6 +164,14 @@ static const struct fsl_dspi_devtype_data
-> > devtype_data[] = {
-> >               .pushr_cmd              = 0,
-> >               .pushr_tx               = 2,
-> >       },
-> > +     [LS1028A] = {
-> > +             .trans_mode             = DSPI_DMA_MODE,
->
-> shouldn't this be DSPI_XSPI_MODE according to your cover letter?
->
-> -michael
->
+Hi,
 
-Yes, sorry, I forgot to change it back after testing it both ways.
+Since commit:
 
-> > +             .dma_bufsize            = 8,
-> > +             .max_clock_factor       = 8,
-> > +             .fifo_size              = 4,
-> > +             .pushr_cmd              = 2,
-> > +             .pushr_tx               = 0,
-> > +     },
-> >       [LS1043A] = {
-> >               /* Has A-011218 DMA erratum */
-> >               .trans_mode             = DSPI_XSPI_MODE,
-> > @@ -1113,6 +1122,9 @@ static const struct of_device_id
-> > fsl_dspi_dt_ids[] = {
-> >       }, {
-> >               .compatible = "fsl,ls1012a-dspi",
-> >               .data = &devtype_data[LS1012A],
-> > +     }, {
-> > +             .compatible = "fsl,ls1028a-dspi",
-> > +             .data = &devtype_data[LS1028A],
-> >       }, {
-> >               .compatible = "fsl,ls1043a-dspi",
-> >               .data = &devtype_data[LS1043A],
+commit 01b59ce5dac856323a0c13c1d51d99a819f32efe
+Author: Emil Renner Berthing <kernel-sKpHZLTYfq0@public.gmane.org>
+Date:   Wed Oct 31 11:57:09 2018 +0100
+
+    spi: rockchip: use irq rather than polling
+
+    Register an interrupt handler to fill/empty the
+    tx and rx fifos rather than busy-looping.
+
+    Signed-off-by: Emil Renner Berthing <kernel-sKpHZLTYfq0@public.gmane.org>
+    Tested-by: Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
+    Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+
+SPI is no longer functional on a RV1108 Elgin board.
+
+The error messages are:
+
+[   46.186916] spidev spi0.0: SPI transfer timed out
+[   46.187435] spi_master spi0: failed to transfer one message from queue
+
+Reverting this commit makes SPI to work again.
+
+Any ideas on how we can properly fix this regression?
+
+-- 
+Otavio Salvador                             O.S. Systems
+http://www.ossystems.com.br        http://code.ossystems.com.br
+Mobile: +55 (53) 9 9981-7854          Mobile: +1 (347) 903-9750

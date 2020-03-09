@@ -1,45 +1,95 @@
-From: Otavio Salvador <otavio.salvador-fKevB0iiKLMBZ+LybsDmbA@public.gmane.org>
-Subject: SPI irq regression
-Date: Mon, 9 Mar 2020 15:54:20 -0300
-Message-ID: <CAP9ODKpW=h6SVtsn-uuDQ4+TgR0NnjBW==8vwyQD4+x_dbFzRQ@mail.gmail.com>
+From: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>
+Subject: Re: [PATCH 6/6] arm64: dts: ls1028a-rdb: Add a spidev node for the
+ mikroBUS
+Date: Mon, 09 Mar 2020 19:58:04 +0100
+Message-ID: <0700435a8355c9a53049d571d41da222@walle.cc>
+References: <20200309145624.10026-1-olteanv@gmail.com>
+ <20200309145624.10026-7-olteanv@gmail.com>
+ <f213388d924b63d0fe265a2d731647be@walle.cc>
+ <CA+h21hqOhM9+k9cKXoA8coYpxNFWpgD+FjETeB6uWLbsfrx0uw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-To: kernel-sKpHZLTYfq0@public.gmane.org, Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Esben Haabendal <eha-/iRVSOupHO4@public.gmane.org>,
+        angelo-BIYBQhTR83Y@public.gmane.org, andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        "Gustavo A. R. Silva" <gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org>,
+        Wei Chen <weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, Mohamed Hosny <mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+        peng.ma-3arQi8VN3Tc@public.gmane.org
+To: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CA+h21hqOhM9+k9cKXoA8coYpxNFWpgD+FjETeB6uWLbsfrx0uw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi,
+Am 2020-03-09 19:50, schrieb Vladimir Oltean:
+> On Mon, 9 Mar 2020 at 20:35, Michael Walle <michael-QKn5cuLxLXY@public.gmane.org> wrote:
+>> 
+>> Am 2020-03-09 15:56, schrieb Vladimir Oltean:
+>> > From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
+>> >
+>> > For debugging, it is useful to have access to the DSPI controller
+>> > signals. On the reference design board, these are exported to either
+>> > the
+>> > mikroBUS1 or mikroBUS2 connector (according to the CPLD register
+>> > BRDCFG3[SPI3]).
+>> >
+>> > Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
+>> > ---
+>> >  arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts | 14 ++++++++++++++
+>> >  1 file changed, 14 insertions(+)
+>> >
+>> > diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
+>> > b/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
+>> > index bb7ba3bcbe56..43f403b30dae 100644
+>> > --- a/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
+>> > +++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
+>> > @@ -83,6 +83,20 @@
+>> >       };
+>> >  };
+>> >
+>> > +&dspi2 {
+>> > +     bus-num = <2>;
+>> > +     status = "okay";
+>> > +
+>> > +     /* mikroBUS1 */
+>> > +     spidev@0 {
+>> > +             compatible = "spidev";
+>> 
+>> As far as I know this throws a warning at boot that you
+>> shouldn't use the compatible = "spidev", doesn't it?
+>> 
+>> /*
+>>   * spidev should never be referenced in DT without a specific
+>>   * compatible string, it is a Linux implementation thing
+>>   * rather than a description of the hardware.
+>>   */
+>> 
+> 
+> If this is supposed to mean that the "spidev" string is less
+> adequate/expressive than "rohm,dh2228fv", then ok, I'll use that.
 
-Since commit:
+TBH I don't care, its your board ;) But I suppose that there is no
+Rohm DH2228FV on the (pluggable) mikroBUS board. I just noticed
+that compatible string. Don't shoot the messenger ;)
 
-commit 01b59ce5dac856323a0c13c1d51d99a819f32efe
-Author: Emil Renner Berthing <kernel-sKpHZLTYfq0@public.gmane.org>
-Date:   Wed Oct 31 11:57:09 2018 +0100
+-michael
 
-    spi: rockchip: use irq rather than polling
-
-    Register an interrupt handler to fill/empty the
-    tx and rx fifos rather than busy-looping.
-
-    Signed-off-by: Emil Renner Berthing <kernel-sKpHZLTYfq0@public.gmane.org>
-    Tested-by: Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
-    Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-
-SPI is no longer functional on a RV1108 Elgin board.
-
-The error messages are:
-
-[   46.186916] spidev spi0.0: SPI transfer timed out
-[   46.187435] spi_master spi0: failed to transfer one message from queue
-
-Reverting this commit makes SPI to work again.
-
-Any ideas on how we can properly fix this regression?
-
--- 
-Otavio Salvador                             O.S. Systems
-http://www.ossystems.com.br        http://code.ossystems.com.br
-Mobile: +55 (53) 9 9981-7854          Mobile: +1 (347) 903-9750
+> 
+>> -michael
+>> 
+>> > +             reg = <0>;
+>> > +             spi-max-frequency = <20000000>;
+>> > +             fsl,spi-cs-sck-delay = <100>;
+>> > +             fsl,spi-sck-cs-delay = <100>;
+>> > +     };
+>> > +};
+>> > +
+>> >  &esdhc {
+>> >       sd-uhs-sdr104;
+>> >       sd-uhs-sdr50;

@@ -1,48 +1,125 @@
-From: <Tudor.Ambarus@microchip.com>
-Subject: Re: [PATCH v3 4/4] mtd: spi-nor: remove mtk-quadspi driver
-Date: Tue, 10 Mar 2020 07:41:26 +0000
-Message-ID: <2471214.x7VzW1FXlQ@localhost.localdomain>
-References: <20200306085052.28258-1-gch981213@gmail.com>
- <20200306085052.28258-5-gch981213@gmail.com>
- <20200309121020.GD4101@sirena.org.uk>
+From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [RESEND v6  07/13] spi: imx: remove ERR009165 workaround on
+ i.mx6ul
+Date: Tue, 10 Mar 2020 09:02:41 +0100
+Message-ID: <20200310080240.GS3335@pengutronix.de>
+References: <1583839922-22699-1-git-send-email-yibin.gong@nxp.com>
+ <1583839922-22699-8-git-send-email-yibin.gong@nxp.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-Cc: <gch981213@gmail.com>, <linux-mediatek@lists.infradead.org>,
-        <linux-spi@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
-        <devicetree@vger.kernel.org>, <miquel.raynal@bootlin.com>,
-        <richard@nod.at>, <vigneshr@ti.com>, <robh+dt@kernel.org>,
-        <matthias.bgg@gmail.com>, <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-To: <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200309121020.GD4101@sirena.org.uk>
-Content-Language: en-US
-Content-ID: <6A321634F4832945827FEDE57CD2E761@namprd11.prod.outlook.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: vkoul-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+        mark.rutland-5wv7dgnIgG8@public.gmane.org, catalin.marinas-5wv7dgnIgG8@public.gmane.org, will.deacon-5wv7dgnIgG8@public.gmane.org,
+        l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, martin.fuzzey-X8SyT9posyX3d/wEbhiU/g@public.gmane.org,
+        kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-imx-3arQi8VN3Tc@public.gmane.org, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Robin Gong <yibin.gong-3arQi8VN3Tc@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1583839922-22699-8-git-send-email-yibin.gong-3arQi8VN3Tc@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi, Mark,
+On Tue, Mar 10, 2020 at 07:31:56PM +0800, Robin Gong wrote:
+> ERR009165 fixed on i.mx6ul/6ull/6sll. All other i.mx6/7 and
+> i.mx8m/8mm still need this errata. Please refer to nxp official
+> errata document from https://www.nxp.com/ .
+> 
+> For removing workaround on those chips. Add new i.mx6ul type.
+> 
+> Signed-off-by: Robin Gong <yibin.gong-3arQi8VN3Tc@public.gmane.org>
+> Acked-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> ---
+>  drivers/spi/spi-imx.c | 50 +++++++++++++++++++++++++++++++++++++++++++++-----
+>  1 file changed, 45 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+> index 842a86e..f7ee2ec 100644
+> --- a/drivers/spi/spi-imx.c
+> +++ b/drivers/spi/spi-imx.c
+> @@ -57,6 +57,7 @@ enum spi_imx_devtype {
+>  	IMX35_CSPI,	/* CSPI on all i.mx except above */
+>  	IMX51_ECSPI,	/* ECSPI on i.mx51 */
+>  	IMX53_ECSPI,	/* ECSPI on i.mx53 and later */
+> +	IMX6UL_ECSPI,	/* ERR009165 fix from i.mx6ul */
+>  };
+>  
+>  struct spi_imx_data;
+> @@ -75,6 +76,11 @@ struct spi_imx_devtype_data {
+>  	bool has_slavemode;
+>  	unsigned int fifo_size;
+>  	bool dynamic_burst;
+> +	/*
+> +	 * ERR009165 fixed or not:
+> +	 * https://www.nxp.com/docs/en/errata/IMX6DQCE.pdf
+> +	 */
+> +	bool tx_glitch_fixed;
+>  	enum spi_imx_devtype devtype;
+>  };
+>  
+> @@ -128,7 +134,8 @@ static inline int is_imx35_cspi(struct spi_imx_data *d)
+>  
+>  static inline int is_imx51_ecspi(struct spi_imx_data *d)
+>  {
+> -	return d->devtype_data->devtype == IMX51_ECSPI;
+> +	return d->devtype_data->devtype == IMX51_ECSPI ||
+> +	       d->devtype_data->devtype == IMX6UL_ECSPI;
+>  }
 
-On Monday, March 9, 2020 2:10:20 PM EET Mark Brown wrote:
-> > This driver is superseded by the new spi-mtk-nor driver.
-> >=20
-> > Signed-off-by: Chuanhong Guo <gch981213@gmail.com>
->=20
-> Is this move OK from a MTD point of view - should I apply this when the
-> rest goes in?  The patch was in prior versions too and is obviously
-> straightforward.
+Erm, no. A i.MX51 ECSPI is a i.MX51 ECSPI and not a i.MX6UL ECSPI. If
+you want to handle them equally somewhere then explicitly test for
+i.MX6ul *and* i.MX51 there.
 
-If you find the rest of the patches ok, this can go through the spi tree, f=
-eel=20
-free to add my
-Acked-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+>  
+>  static inline int is_imx53_ecspi(struct spi_imx_data *d)
+> @@ -585,9 +592,16 @@ static int mx51_ecspi_prepare_transfer(struct spi_imx_data *spi_imx,
+>  	ctrl |= mx51_ecspi_clkdiv(spi_imx, t->speed_hz, &clk);
+>  	spi_imx->spi_bus_clk = clk;
+>  
+> -	/* ERR009165: work in XHC mode as PIO */
+> -	if (spi_imx->usedma)
+> -		ctrl &= ~MX51_ECSPI_CTRL_SMC;
+> +	/*
+> +	 * ERR009165: work in XHC mode instead of SMC as PIO on the chips
+> +	 * before i.mx6ul.
+> +	 */
+> +	if (spi_imx->usedma) {
+> +		if (spi_imx->devtype_data->tx_glitch_fixed)
+> +			ctrl |= MX51_ECSPI_CTRL_SMC;
+> +		else
+> +			ctrl &= ~MX51_ECSPI_CTRL_SMC;
+> +	}
 
-There will be a conflict with the following patch https://
-patchwork.ozlabs.org/patch/1247791/, but nothing that we can't handle.
-I'll try to allocate time for reviewing the remaining patches in this set i=
-n=20
-the following days.
+Changed again, but the PIO case still not honoured. This should look
+like
+	if (spi_imx->usedma && spi_imx->devtype_data->tx_glitch_fixed)
+		ctrl |= MX51_ECSPI_CTRL_SMC;
+	else
+		ctrl &= ~MX51_ECSPI_CTRL_SMC;
 
-Cheers,
-ta
+>  
+>  	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
+>  
+> @@ -615,6 +629,8 @@ static void mx51_setup_wml(struct spi_imx_data *spi_imx)
+>  {
+>  	u32 tx_wml = 0;
+>  
+> +	if (spi_imx->devtype_data->tx_glitch_fixed)
+> +		tx_wml = spi_imx->wml;
+
+That explains the variable introduced in the last patch, ok.
+
+I have the impression that splitting up 06/13 and 07/13 into two patches
+doesn't make it easier to review.
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |

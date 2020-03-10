@@ -1,46 +1,51 @@
-From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: spi-fsl-dspi: fix DMA mapping
-Date: Tue, 10 Mar 2020 19:26:41 +0200
-Message-ID: <CA+h21hqLxMREixud3Mh8p4q6J7rvJzRH+aFVgYLTZ9aNmkZBww@mail.gmail.com>
-References: <20200310073313.21277-1-michael@walle.cc> <4beb5200a76f2d817be7276444543de4@walle.cc>
- <ea6ffa30ddc2459d07935e5e61a41172@walle.cc> <CA+h21hqMoPhbq8YG0UeV1kP0iXApYsJvb9MZjPGX54dm2U-KnQ@mail.gmail.com>
- <76923af394f334337a3cac125c270087@walle.cc> <20200310171403.GL4106@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: SPI irq regression
+Date: Tue, 10 Mar 2020 17:31:30 +0000
+Message-ID: <20200310173130.GN4106@sirena.org.uk>
+References: <CAP9ODKpW=h6SVtsn-uuDQ4+TgR0NnjBW==8vwyQD4+x_dbFzRQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org, linaro-mm-sig-cunTk1MwBs8s++Sfvej+rw@public.gmane.org,
-        Sumit Semwal <sumit.semwal-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="TN8pJM9vJMHHFgJc"
+Cc: kernel-sKpHZLTYfq0@public.gmane.org, Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Otavio Salvador <otavio.salvador-fKevB0iiKLMBZ+LybsDmbA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200310171403.GL4106-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAP9ODKpW=h6SVtsn-uuDQ4+TgR0NnjBW==8vwyQD4+x_dbFzRQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, 10 Mar 2020 at 19:14, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->
-> On Tue, Mar 10, 2020 at 03:12:45PM +0100, Michael Walle wrote:
-> > Am 2020-03-10 14:02, schrieb Vladimir Oltean:
->
-> > > I'm testing LS1028A with IOMMU_DEFAULT_PASSTHROUGH=y and I didn't have
-> > > time to change my setup now. I've also sent a v3 to my patch series
-> > > which is going to conflict with this one, sorry.
->
-> > No worries, its easy enough to rebase.
->
-> > > I would have picked
-> > > your patch up with my series but I didn't have the right environment
-> > > to test it.
->
-> > I'll resend a v2 once your series is working.
->
-> Since it looks like your series might need another spin anyway I'm
-> thinking it's sensible to apply this now and you rebase instead?  Cuts
-> down on the number of pending patches if nothing else (unless the
-> testing stuff gets sorted out of course).
 
-Sure, go ahead.
+--TN8pJM9vJMHHFgJc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thanks,
--Vladimir
+On Mon, Mar 09, 2020 at 03:54:20PM -0300, Otavio Salvador wrote:
+
+> [   46.186916] spidev spi0.0: SPI transfer timed out
+> [   46.187435] spi_master spi0: failed to transfer one message from queue
+
+> Reverting this commit makes SPI to work again.
+
+> Any ideas on how we can properly fix this regression?
+
+Does the interrupt ever fire?  I'm wondering if the DT is wired up
+correctly for the particular SoC you have, or if it's even wired up at
+all in the hardware.
+
+--TN8pJM9vJMHHFgJc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl5nzvIACgkQJNaLcl1U
+h9ABYAf6AgPrfiW0av9gNqZxLk4dWqC5oYRZeRAbDPi3S87jWIw46KQjnNvkBwTQ
+Tx5gTJGr7SlHLj4XskYbMsAipmYxY++Q/t63Jt5ICVavbAAi0WDw0x1blnxHRoMq
+/Mt1kjlOFXMwMyJGcx7kXMQZDCE/YetifA3xBhUCnzWcIuau3D0JEmMxIsAig7tt
+mSCaUQdpVhdA+AgIFVg0XQjgPZa8tZ2rWhD29mLg7EILVc+y6BaAKWLbQlZjZIm5
+/OZmPZ9SC4Ro67Byb+Jedj1zGVU1yv62aaqrH0EOvPWj5Hfl3QFjWPVMBXuc+ucL
+2XiZ8E4ea73h59Lrp5wIaOJVcZncQw==
+=zCzy
+-----END PGP SIGNATURE-----
+
+--TN8pJM9vJMHHFgJc--

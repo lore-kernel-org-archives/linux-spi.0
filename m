@@ -1,56 +1,80 @@
-From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: spi-fsl-dspi: fix DMA mapping
-Date: Tue, 10 Mar 2020 15:02:50 +0200
-Message-ID: <CA+h21hqMoPhbq8YG0UeV1kP0iXApYsJvb9MZjPGX54dm2U-KnQ@mail.gmail.com>
-References: <20200310073313.21277-1-michael@walle.cc> <4beb5200a76f2d817be7276444543de4@walle.cc>
- <ea6ffa30ddc2459d07935e5e61a41172@walle.cc>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org,
-        linaro-mm-sig-cunTk1MwBs8s++Sfvej+rw@public.gmane.org,
-        Sumit Semwal <sumit.semwal-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
-To: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <ea6ffa30ddc2459d07935e5e61a41172-QKn5cuLxLXY@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Vladimir Oltean <olteanv@gmail.com>
+Subject: [PATCH v3 5/7] spi: spi-fsl-dspi: Add support for LS1028A
+Date: Tue, 10 Mar 2020 14:55:40 +0200
+Message-ID: <20200310125542.5939-6-olteanv@gmail.com>
+References: <20200310125542.5939-1-olteanv@gmail.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        shawnguo@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        devicetree@vger.kernel.org, eha@deif.com, angelo@sysam.it,
+        andrew.smirnov@gmail.com, gustavo@embeddedor.com, weic@nvidia.com,
+        mhosny@nvidia.com, michael@walle.cc, peng.ma@nxp.com
+To: broonie@kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20200310125542.5939-1-olteanv@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Tue, 10 Mar 2020 at 10:12, Michael Walle <michael-QKn5cuLxLXY@public.gmane.org> wrote:
->
-> Am 2020-03-10 08:40, schrieb Michael Walle:
-> > Am 2020-03-10 08:33, schrieb Michael Walle:
-> >> Use the correct device to request the DMA mapping. Otherwise the IOMMU
-> >> doesn't get the mapping and it will generate a page fault.
-> >>
-> >> The error messages look like:
-> >> [    3.008452] arm-smmu 5000000.iommu: Unhandled context fault:
-> >> fsr=0x402, iova=0xf9800000, fsynr=0x3f0022, cbfrsynra=0x828, cb=8
-> >> [    3.020123] arm-smmu 5000000.iommu: Unhandled context fault:
-> >> fsr=0x402, iova=0xf9800000, fsynr=0x3f0022, cbfrsynra=0x828, cb=8
-> >>
-> >> This was tested on a custom board with a LS1028A SoC.
-> >
-> > Oh fu.. please disregard this patch. DMA mapping still isn't working.
-> > Somehow I missed that the transfer mode was turned back to its default
-> > XSPI mode.
->
-> Damn. I need more coffee.. this patch IS working. Only the first probe
-> fails due to EPROBE_DEFER.
->
-> [    2.539706] fsl-dspi 2120000.spi: rx dma channel not available (-517)
-> [    2.546200] fsl-dspi 2120000.spi: can't get dma channels
-> [    3.622774] spi-nor spi1.0: w25q128fw (16384 Kbytes)
->
-> -michael
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-I'm testing LS1028A with IOMMU_DEFAULT_PASSTHROUGH=y and I didn't have
-time to change my setup now. I've also sent a v3 to my patch series
-which is going to conflict with this one, sorry. I would have picked
-your patch up with my series but I didn't have the right environment
-to test it.
+This is similar to the DSPI instantiation on LS1028A, except that:
+ - The A-011218 erratum has been fixed, so DMA works
+ - The endianness is different, which has implications on XSPI mode
 
-Thanks,
--Vladimir
+Some benchmarking with the following command:
+
+spidev_test --device /dev/spidev2.0 --bpw 8 --size 256 --cpha --iter 10000000 --speed 20000000
+
+shows that in DMA mode, it can achieve around 2400 kbps, and in XSPI
+mode, the same command goes up to 4700 kbps. This is somewhat to be
+expected, since the DMA buffer size is extremely small at 8 bytes, the
+winner becomes whomever can prepare the buffers for transmission
+quicker, and DMA mode has higher overhead there. So XSPI FIFO mode has
+been chosen as the operating mode for this chip.
+
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+---
+Changes in v3:
+Removed the dma_bufsize variable (obsoleted by 4/7).
+
+Changes in v2:
+Switch to DSPI_XSPI_MODE.
+
+ drivers/spi/spi-fsl-dspi.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 8f5d18dc78d5..fd1f04b996f7 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -124,6 +124,7 @@ struct fsl_dspi_devtype_data {
+ enum {
+ 	LS1021A,
+ 	LS1012A,
++	LS1028A,
+ 	LS1043A,
+ 	LS1046A,
+ 	LS2080A,
+@@ -151,6 +152,11 @@ static const struct fsl_dspi_devtype_data devtype_data[] = {
+ 		.max_clock_factor	= 8,
+ 		.fifo_size		= 16,
+ 	},
++	[LS1028A] = {
++		.trans_mode		= DSPI_XSPI_MODE,
++		.max_clock_factor	= 8,
++		.fifo_size		= 4,
++	},
+ 	[LS1043A] = {
+ 		/* Has A-011218 DMA erratum */
+ 		.trans_mode		= DSPI_XSPI_MODE,
+@@ -1112,6 +1118,9 @@ static const struct of_device_id fsl_dspi_dt_ids[] = {
+ 	}, {
+ 		.compatible = "fsl,ls1012a-dspi",
+ 		.data = &devtype_data[LS1012A],
++	}, {
++		.compatible = "fsl,ls1028a-dspi",
++		.data = &devtype_data[LS1028A],
+ 	}, {
+ 		.compatible = "fsl,ls1043a-dspi",
+ 		.data = &devtype_data[LS1043A],
+-- 
+2.17.1

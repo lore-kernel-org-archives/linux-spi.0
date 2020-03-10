@@ -1,22 +1,22 @@
-From: Robin Gong <yibin.gong-3arQi8VN3Tc@public.gmane.org>
-Subject: [RESEND v6  01/13] Revert "ARM: dts: imx6q: Use correct SDMA script for SPI5 core"
-Date: Tue, 10 Mar 2020 19:31:50 +0800
-Message-ID: <1583839922-22699-2-git-send-email-yibin.gong@nxp.com>
+From: Robin Gong <yibin.gong@nxp.com>
+Subject: [RESEND v6  02/13] Revert "ARM: dts: imx6: Use correct SDMA script for SPI cores"
+Date: Tue, 10 Mar 2020 19:31:51 +0800
+Message-ID: <1583839922-22699-3-git-send-email-yibin.gong@nxp.com>
 References: <1583839922-22699-1-git-send-email-yibin.gong@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-imx-3arQi8VN3Tc@public.gmane.org, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, vkoul-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-        mark.rutland-5wv7dgnIgG8@public.gmane.org, catalin.marinas-5wv7dgnIgG8@public.gmane.org, will.deacon-5wv7dgnIgG8@public.gmane.org,
-        l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, martin.fuzzey-X8SyT9posyX3d/wEbhiU/g@public.gmane.org
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1583839922-22699-1-git-send-email-yibin.gong-3arQi8VN3Tc@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: kernel@pengutronix.de, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-imx@nxp.com, dmaengine@vger.kernel.org,
+        devicetree@vger.kernel.org
+To: s.hauer@pengutronix.de, vkoul@kernel.org, shawnguo@kernel.org,
+        u.kleine-koenig@pengutronix.de, broonie@kernel.org,
+        robh+dt@kernel.org, festevam@gmail.com, dan.j.williams@intel.com,
+        mark.rutland@arm.com, catalin.marinas@arm.com, will.deacon@arm.com,
+        l.stach@pengutronix.de, martin.fuzzey@flowbird.group
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1583839922-22699-1-git-send-email-yibin.gong@nxp.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 There are two ways for SDMA accessing SPBA devices: one is SDMA->AIPS
@@ -29,24 +29,51 @@ script sounds not solide.
 The issue is more likely as the ecspi errata
 ERR009165(http://www.nxp.com/docs/en/errata/IMX6DQCE.pdf):
 eCSPI: TXFIFO empty flag glitch can cause the current FIFO transfer to
-       be sent twice
-So revert commit 'df07101e1c4a' firstly.
+           be sent twice
+So revert commit 'dd4b487b32a3' firstly.
 
-Signed-off-by: Robin Gong <yibin.gong-3arQi8VN3Tc@public.gmane.org>
+Signed-off-by: Robin Gong <yibin.gong@nxp.com>
 ---
- arch/arm/boot/dts/imx6q.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/imx6qdl.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx6q.dtsi b/arch/arm/boot/dts/imx6q.dtsi
-index 0fad13f..81f693e 100644
---- a/arch/arm/boot/dts/imx6q.dtsi
-+++ b/arch/arm/boot/dts/imx6q.dtsi
-@@ -175,7 +175,7 @@
- 					clocks = <&clks IMX6Q_CLK_ECSPI5>,
- 						 <&clks IMX6Q_CLK_ECSPI5>;
+diff --git a/arch/arm/boot/dts/imx6qdl.dtsi b/arch/arm/boot/dts/imx6qdl.dtsi
+index 70fb8b5..ff197b5 100644
+--- a/arch/arm/boot/dts/imx6qdl.dtsi
++++ b/arch/arm/boot/dts/imx6qdl.dtsi
+@@ -337,7 +337,7 @@
+ 					clocks = <&clks IMX6QDL_CLK_ECSPI1>,
+ 						 <&clks IMX6QDL_CLK_ECSPI1>;
  					clock-names = "ipg", "per";
--					dmas = <&sdma 11 8 1>, <&sdma 12 8 2>;
-+					dmas = <&sdma 11 7 1>, <&sdma 12 7 2>;
+-					dmas = <&sdma 3 8 1>, <&sdma 4 8 2>;
++					dmas = <&sdma 3 7 1>, <&sdma 4 7 2>;
+ 					dma-names = "rx", "tx";
+ 					status = "disabled";
+ 				};
+@@ -351,7 +351,7 @@
+ 					clocks = <&clks IMX6QDL_CLK_ECSPI2>,
+ 						 <&clks IMX6QDL_CLK_ECSPI2>;
+ 					clock-names = "ipg", "per";
+-					dmas = <&sdma 5 8 1>, <&sdma 6 8 2>;
++					dmas = <&sdma 5 7 1>, <&sdma 6 7 2>;
+ 					dma-names = "rx", "tx";
+ 					status = "disabled";
+ 				};
+@@ -365,7 +365,7 @@
+ 					clocks = <&clks IMX6QDL_CLK_ECSPI3>,
+ 						 <&clks IMX6QDL_CLK_ECSPI3>;
+ 					clock-names = "ipg", "per";
+-					dmas = <&sdma 7 8 1>, <&sdma 8 8 2>;
++					dmas = <&sdma 7 7 1>, <&sdma 8 7 2>;
+ 					dma-names = "rx", "tx";
+ 					status = "disabled";
+ 				};
+@@ -379,7 +379,7 @@
+ 					clocks = <&clks IMX6QDL_CLK_ECSPI4>,
+ 						 <&clks IMX6QDL_CLK_ECSPI4>;
+ 					clock-names = "ipg", "per";
+-					dmas = <&sdma 9 8 1>, <&sdma 10 8 2>;
++					dmas = <&sdma 9 7 1>, <&sdma 10 7 2>;
  					dma-names = "rx", "tx";
  					status = "disabled";
  				};

@@ -1,67 +1,127 @@
-From: Vladimir Oltean <olteanv@gmail.com>
-Subject: [PATCH v3 6/7] arm64: dts: ls1028a: Specify the DMA channels for the DSPI controllers
-Date: Tue, 10 Mar 2020 14:55:41 +0200
-Message-ID: <20200310125542.5939-7-olteanv@gmail.com>
+From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v3 3/7] spi: spi-fsl-dspi: Fix little endian access to PUSHR CMD and TXDATA
+Date: Tue, 10 Mar 2020 14:55:38 +0200
+Message-ID: <20200310125542.5939-4-olteanv@gmail.com>
 References: <20200310125542.5939-1-olteanv@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        shawnguo@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        devicetree@vger.kernel.org, eha@deif.com, angelo@sysam.it,
-        andrew.smirnov@gmail.com, gustavo@embeddedor.com, weic@nvidia.com,
-        mhosny@nvidia.com, michael@walle.cc, peng.ma@nxp.com
-To: broonie@kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200310125542.5939-1-olteanv@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, eha-/iRVSOupHO4@public.gmane.org, angelo-BIYBQhTR83Y@public.gmane.org,
+        andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org, weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org,
+        mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org, michael-QKn5cuLxLXY@public.gmane.org, peng.ma-3arQi8VN3Tc@public.gmane.org
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200310125542.5939-1-olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 
-LS1028A has a functional connection to the eDMA module. Even if the
-spi-fsl-dspi.c driver is not using DMA for LS1028A now, define the slots
-in the DMAMUX for connecting the eDMA channels to the 3 DSPI
-controllers.
+In XSPI mode, the 32-bit PUSHR register can be written to separately:
+the higher 16 bits are for commands and the lower 16 bits are for data.
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+This has nicely been hacked around, by defining a second regmap with a
+width of 16 bits, and effectively splitting a 32-bit register into 2
+16-bit ones, from the perspective of this regmap_pushr.
+
+The problem is the assumption about the controller's endianness. If the
+controller is little endian (such as anything post-LS1046A), then the
+first 2 bytes, in the order imposed by memory layout, will actually hold
+the TXDATA, and the last 2 bytes will hold the CMD.
+
+So take the controller's endianness into account when performing split
+writes to PUSHR. The obvious and simple solution would have been to call
+regmap_get_val_endian(), but that is an internal regmap function and we
+don't want to change regmap just for this. Therefore, we just re-read
+the "big-endian" device tree property.
+
+Fixes: 58ba07ec79e6 ("spi: spi-fsl-dspi: Add support for XSPI mode registers")
+Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 ---
 Changes in v3:
 None.
 
 Changes in v2:
-None.
+Parse "big-endian" device tree bindings instead of taking the decision
+based on compatible SoC.
 
- arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/spi/spi-fsl-dspi.c | 26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-index 515e0a1b934f..18155273a46e 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-@@ -298,6 +298,8 @@
- 			interrupts = <GIC_SPI 26 IRQ_TYPE_LEVEL_HIGH>;
- 			clock-names = "dspi";
- 			clocks = <&clockgen 4 1>;
-+			dmas = <&edma0 0 62>, <&edma0 0 60>;
-+			dma-names = "tx", "rx";
- 			spi-num-chipselects = <4>;
- 			little-endian;
- 			status = "disabled";
-@@ -311,6 +313,8 @@
- 			interrupts = <GIC_SPI 26 IRQ_TYPE_LEVEL_HIGH>;
- 			clock-names = "dspi";
- 			clocks = <&clockgen 4 1>;
-+			dmas = <&edma0 0 58>, <&edma0 0 56>;
-+			dma-names = "tx", "rx";
- 			spi-num-chipselects = <4>;
- 			little-endian;
- 			status = "disabled";
-@@ -324,6 +328,8 @@
- 			interrupts = <GIC_SPI 26 IRQ_TYPE_LEVEL_HIGH>;
- 			clock-names = "dspi";
- 			clocks = <&clockgen 4 1>;
-+			dmas = <&edma0 0 54>, <&edma0 0 2>;
-+			dma-names = "tx", "rx";
- 			spi-num-chipselects = <3>;
- 			little-endian;
- 			status = "disabled";
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index f2ba0731aebe..c59b68592283 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -103,10 +103,6 @@
+ #define SPI_FRAME_BITS(bits)		SPI_CTAR_FMSZ((bits) - 1)
+ #define SPI_FRAME_EBITS(bits)		SPI_CTARE_FMSZE(((bits) - 1) >> 4)
+ 
+-/* Register offsets for regmap_pushr */
+-#define PUSHR_CMD			0x0
+-#define PUSHR_TX			0x2
+-
+ #define DMA_COMPLETION_TIMEOUT		msecs_to_jiffies(3000)
+ 
+ struct chip_data {
+@@ -240,6 +236,13 @@ struct fsl_dspi {
+ 
+ 	int					words_in_flight;
+ 
++	/*
++	 * Offsets for CMD and TXDATA within SPI_PUSHR when accessed
++	 * individually (in XSPI mode)
++	 */
++	int					pushr_cmd;
++	int					pushr_tx;
++
+ 	void (*host_to_dev)(struct fsl_dspi *dspi, u32 *txdata);
+ 	void (*dev_to_host)(struct fsl_dspi *dspi, u32 rxdata);
+ };
+@@ -670,12 +673,12 @@ static void dspi_pushr_cmd_write(struct fsl_dspi *dspi, u16 cmd)
+ 	 */
+ 	if (dspi->len > dspi->oper_word_size)
+ 		cmd |= SPI_PUSHR_CMD_CONT;
+-	regmap_write(dspi->regmap_pushr, PUSHR_CMD, cmd);
++	regmap_write(dspi->regmap_pushr, dspi->pushr_cmd, cmd);
+ }
+ 
+ static void dspi_pushr_txdata_write(struct fsl_dspi *dspi, u16 txdata)
+ {
+-	regmap_write(dspi->regmap_pushr, PUSHR_TX, txdata);
++	regmap_write(dspi->regmap_pushr, dspi->pushr_tx, txdata);
+ }
+ 
+ static void dspi_xspi_write(struct fsl_dspi *dspi, int cnt, bool eoq)
+@@ -1269,6 +1272,7 @@ static int dspi_probe(struct platform_device *pdev)
+ 	struct fsl_dspi *dspi;
+ 	struct resource *res;
+ 	void __iomem *base;
++	bool big_endian;
+ 
+ 	ctlr = spi_alloc_master(&pdev->dev, sizeof(struct fsl_dspi));
+ 	if (!ctlr)
+@@ -1294,6 +1298,7 @@ static int dspi_probe(struct platform_device *pdev)
+ 
+ 		/* Only Coldfire uses platform data */
+ 		dspi->devtype_data = &devtype_data[MCF5441X];
++		big_endian = true;
+ 	} else {
+ 
+ 		ret = of_property_read_u32(np, "spi-num-chipselects", &cs_num);
+@@ -1315,6 +1320,15 @@ static int dspi_probe(struct platform_device *pdev)
+ 			ret = -EFAULT;
+ 			goto out_ctlr_put;
+ 		}
++
++		big_endian = of_device_is_big_endian(np);
++	}
++	if (big_endian) {
++		dspi->pushr_cmd = 0;
++		dspi->pushr_tx = 2;
++	} else {
++		dspi->pushr_cmd = 2;
++		dspi->pushr_tx = 0;
+ 	}
+ 
+ 	if (dspi->devtype_data->trans_mode == DSPI_XSPI_MODE)
 -- 
 2.17.1

@@ -1,12 +1,12 @@
 From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [RESEND v6  07/13] spi: imx: remove ERR009165 workaround on
+Subject: Re: [RESEND v6  09/13] dmaengine: imx-sdma: remove ERR009165 on
  i.mx6ul
-Date: Tue, 10 Mar 2020 10:25:33 +0100
-Message-ID: <20200310092533.GV3335@pengutronix.de>
+Date: Tue, 10 Mar 2020 10:28:03 +0100
+Message-ID: <20200310092803.GW3335@pengutronix.de>
 References: <1583839922-22699-1-git-send-email-yibin.gong@nxp.com>
- <1583839922-22699-8-git-send-email-yibin.gong@nxp.com>
- <20200310080240.GS3335@pengutronix.de>
- <VE1PR04MB66384342F94C7B789C980F7A89FF0@VE1PR04MB6638.eurprd04.prod.outlook.com>
+ <1583839922-22699-10-git-send-email-yibin.gong@nxp.com>
+ <20200310081925.GT3335@pengutronix.de>
+ <VE1PR04MB6638029458AFDE3005C6E4A489FF0@VE1PR04MB6638.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: "vkoul-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <vkoul-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -28,78 +28,101 @@ Cc: "vkoul-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <vkoul-DgEjT+Ai2ygdnm+yROfE0
 To: Robin Gong <yibin.gong-3arQi8VN3Tc@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <VE1PR04MB66384342F94C7B789C980F7A89FF0-FtZFDU4e6kFwQYrqkif2Oc9NdZoXdze2vxpqHgZTriW3zl9H0oFU5g@public.gmane.org>
+In-Reply-To: <VE1PR04MB6638029458AFDE3005C6E4A489FF0-FtZFDU4e6kFwQYrqkif2Oc9NdZoXdze2vxpqHgZTriW3zl9H0oFU5g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Mar 10, 2020 at 08:43:10AM +0000, Robin Gong wrote:
-> On 2020/03/10 Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org> wrote:
-> > On Tue, Mar 10, 2020 at 07:31:56PM +0800, Robin Gong wrote:
-> > > ERR009165 fixed on i.mx6ul/6ull/6sll. All other i.mx6/7 and i.mx8m/8mm
-> > > still need this errata. Please refer to nxp official errata document
-> > > from
-> > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwww.nx
-> > p.com%2F&amp;data=02%7C01%7Cyibin.gong%40nxp.com%7Cf73bfc11a68c4
-> > 2f5f6d308d7c4c96efa%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C1%7C
-> > 637194241755109112&amp;sdata=xzIUP8qZkrlDXX0yjTcUNZB6zDrevTdHFg1o4
-> > PZZd8E%3D&amp;reserved=0 .
-> > >
-> > > For removing workaround on those chips. Add new i.mx6ul type.
+On Tue, Mar 10, 2020 at 08:59:03AM +0000, Robin Gong wrote:
+> On 2020/03/10 Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org> wrote: 
+> > On Tue, Mar 10, 2020 at 07:31:58PM +0800, Robin Gong wrote:
+> > > ECSPI issue fixed from i.mx6ul at hardware level, no need
+> > > ERR009165 anymore on those chips such as i.mx8mq. Add i.mx6sx from
+> > > where i.mx6ul source.
 > > >
 > > > Signed-off-by: Robin Gong <yibin.gong-3arQi8VN3Tc@public.gmane.org>
-> > > Acked-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> > > Acked-by: Vinod Koul <vkoul-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 > > > ---
-> > >  drivers/spi/spi-imx.c | 50
-> > > +++++++++++++++++++++++++++++++++++++++++++++-----
-> > >  1 file changed, 45 insertions(+), 5 deletions(-)
+> > >  drivers/dma/imx-sdma.c | 51
+> > > +++++++++++++++++++++++++++++++++++++++++++++++++-
+> > >  1 file changed, 50 insertions(+), 1 deletion(-)
 > > >
-> > > diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c index
-> > > 842a86e..f7ee2ec 100644
-> > > --- a/drivers/spi/spi-imx.c
-> > > +++ b/drivers/spi/spi-imx.c
-> > > @@ -57,6 +57,7 @@ enum spi_imx_devtype {
-> > >  	IMX35_CSPI,	/* CSPI on all i.mx except above */
-> > >  	IMX51_ECSPI,	/* ECSPI on i.mx51 */
-> > >  	IMX53_ECSPI,	/* ECSPI on i.mx53 and later */
-> > > +	IMX6UL_ECSPI,	/* ERR009165 fix from i.mx6ul */
-> > >  };
-> > >
-> > >  struct spi_imx_data;
-> > > @@ -75,6 +76,11 @@ struct spi_imx_devtype_data {
-> > >  	bool has_slavemode;
-> > >  	unsigned int fifo_size;
-> > >  	bool dynamic_burst;
+> > > diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c index
+> > > 56288d8..5ae7237 100644
+> > > --- a/drivers/dma/imx-sdma.c
+> > > +++ b/drivers/dma/imx-sdma.c
+> > > @@ -419,6 +419,13 @@ struct sdma_driver_data {
+> > >  	int num_events;
+> > >  	struct sdma_script_start_addrs	*script_addrs;
+> > >  	bool check_ratio;
 > > > +	/*
-> > > +	 * ERR009165 fixed or not:
+> > > +	 * ecspi ERR009165 fixed should be done in sdma script
+> > > +	 * and it has been fixed in soc from i.mx6ul.
+> > > +	 * please get more information from the below link:
 > > > +	 *
 > > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwww.nx
 > > p.com%2Fdocs%2Fen%2Ferrata%2FIMX6DQCE.pdf&amp;data=02%7C01%7Cyi
-> > bin.gong%40nxp.com%7Cf73bfc11a68c42f5f6d308d7c4c96efa%7C686ea1d3bc
-> > 2b4c6fa92cd99c5c301635%7C0%7C1%7C637194241755109112&amp;sdata=m
-> > uw4HL5nMDjREJwVd885Wrxka0moMaaZ%2BhJgsAgY3eo%3D&amp;reserved=
-> > 0
+> > bin.gong%40nxp.com%7C91d42046e6894501d48508d7c4cbcae2%7C686ea1d3
+> > bc2b4c6fa92cd99c5c301635%7C0%7C1%7C637194251876090170&amp;sdata=
+> > T6LA4xz9CUFlNpnyjHSThEQb8i1rhbY9e1nUyxIGD5Q%3D&amp;reserved=0
 > > > +	 */
-> > > +	bool tx_glitch_fixed;
-> > >  	enum spi_imx_devtype devtype;
+> > > +	bool ecspi_fixed;
 > > >  };
 > > >
-> > > @@ -128,7 +134,8 @@ static inline int is_imx35_cspi(struct
-> > > spi_imx_data *d)
+> > >  struct sdma_engine {
+> > > @@ -539,6 +546,31 @@ static struct sdma_driver_data sdma_imx6q = {
+> > >  	.script_addrs = &sdma_script_imx6q,
+> > >  };
 > > >
-> > >  static inline int is_imx51_ecspi(struct spi_imx_data *d)  {
-> > > -	return d->devtype_data->devtype == IMX51_ECSPI;
-> > > +	return d->devtype_data->devtype == IMX51_ECSPI ||
-> > > +	       d->devtype_data->devtype == IMX6UL_ECSPI;
-> > >  }
+> > > +static struct sdma_script_start_addrs sdma_script_imx6sx = {
+> > > +	.ap_2_ap_addr = 642,
+> > > +	.uart_2_mcu_addr = 817,
+> > > +	.mcu_2_app_addr = 747,
+> > > +	.uartsh_2_mcu_addr = 1032,
+> > > +	.mcu_2_shp_addr = 960,
+> > > +	.app_2_mcu_addr = 683,
+> > > +	.shp_2_mcu_addr = 891,
+> > > +	.spdif_2_mcu_addr = 1100,
+> > > +	.mcu_2_spdif_addr = 1134,
+> > > +};
+> > > +
+> > > +static struct sdma_driver_data sdma_imx6sx = {
+> > > +	.chnenbl0 = SDMA_CHNENBL0_IMX35,
+> > > +	.num_events = 48,
+> > > +	.script_addrs = &sdma_script_imx6sx, };
+> > > +
+> > > +static struct sdma_driver_data sdma_imx6ul = {
+> > > +	.chnenbl0 = SDMA_CHNENBL0_IMX35,
+> > > +	.num_events = 48,
+> > > +	.script_addrs = &sdma_script_imx6sx,
+> > > +	.ecspi_fixed = true,
+> > > +};
+> > > +
+> > >  static struct sdma_script_start_addrs sdma_script_imx7d = {
+> > >  	.ap_2_ap_addr = 644,
+> > >  	.uart_2_mcu_addr = 819,
+> > > @@ -584,9 +616,15 @@ static const struct platform_device_id
+> > sdma_devtypes[] = {
+> > >  		.name = "imx6q-sdma",
+> > >  		.driver_data = (unsigned long)&sdma_imx6q,
+> > >  	}, {
+> > > +		.name = "imx6sx-sdma",
+> > > +		.driver_data = (unsigned long)&sdma_imx6sx,
+> > > +	}, {
 > > 
-> > Erm, no. A i.MX51 ECSPI is a i.MX51 ECSPI and not a i.MX6UL ECSPI. If you want
-> > to handle them equally somewhere then explicitly test for i.MX6ul *and*
-> > i.MX51 there.
-> But all i.mx6 chips including i.MX53 ECSPI are almost same as i.MX51 ECSPI, and ERR00915 is fixed from i.mx6ul....
+> > Now the i.MX6sx uses a new sdma_script_start_addrs entry which is the same
+> > as the i.MX6q one we used before with one exception: it lacks the
+> > per_2_per_addr = 6331 entry. This is only used for IMX_DMATYPE_ASRC and
+> Totally same script for i.mx6 chips whatever i.MX6sx, i.MX6q or i.MX6ul. 
 
-You introduce .devtype = IMX6UL_ECSPI in this series, so apparently it
-is *not* the same as IMX51_ECSPI, then please also don't introduce a
-function which claims they are the same.
+When it's the same then use it.
+
+> > IMX_DMATYPE_ASRC_SP, both are entirely unused in the mainline kernel. So
+> > why must the i.MX6sx changed here and what has this to do with ECSPI?
+> i.MX6ul is based on i.MX6sx, so adding i.MX6sx could keep good shape on our i.MX family evolution.
+
+My point is that there is no difference between i.MX6q and i.MX6sx here,
+so do not artificially introduce i.MX6sx support when all you do is
+copying the i.MX6q support.
 
 Sascha
 

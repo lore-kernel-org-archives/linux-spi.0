@@ -1,11 +1,11 @@
 From: Robin Gong <yibin.gong-3arQi8VN3Tc@public.gmane.org>
-Subject: RE: [RESEND v6  07/13] spi: imx: remove ERR009165 workaround on
+Subject: RE: [RESEND v6  09/13] dmaengine: imx-sdma: remove ERR009165 on
  i.mx6ul
-Date: Tue, 10 Mar 2020 08:43:10 +0000
-Message-ID: <VE1PR04MB66384342F94C7B789C980F7A89FF0@VE1PR04MB6638.eurprd04.prod.outlook.com>
+Date: Tue, 10 Mar 2020 08:59:03 +0000
+Message-ID: <VE1PR04MB6638029458AFDE3005C6E4A489FF0@VE1PR04MB6638.eurprd04.prod.outlook.com>
 References: <1583839922-22699-1-git-send-email-yibin.gong@nxp.com>
- <1583839922-22699-8-git-send-email-yibin.gong@nxp.com>
- <20200310080240.GS3335@pengutronix.de>
+ <1583839922-22699-10-git-send-email-yibin.gong@nxp.com>
+ <20200310081925.GT3335@pengutronix.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
@@ -26,138 +26,155 @@ Cc: "vkoul-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <vkoul-DgEjT+Ai2ygdnm+yROfE0
         "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
         <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XcXa4x6EXUF0@public.gmane.org
 To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200310080240.GS3335-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200310081925.GT3335-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On 2020/03/10 Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org> wrote:
-> On Tue, Mar 10, 2020 at 07:31:56PM +0800, Robin Gong wrote:
-> > ERR009165 fixed on i.mx6ul/6ull/6sll. All other i.mx6/7 and i.mx8m/8mm
-> > still need this errata. Please refer to nxp official errata document
-> > from
-> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwww.n=
-x
-> p.com%2F&amp;data=3D02%7C01%7Cyibin.gong%40nxp.com%7Cf73bfc11a68c4
-> 2f5f6d308d7c4c96efa%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C1%7C
-> 637194241755109112&amp;sdata=3DxzIUP8qZkrlDXX0yjTcUNZB6zDrevTdHFg1o4
-> PZZd8E%3D&amp;reserved=3D0 .
-> >
-> > For removing workaround on those chips. Add new i.mx6ul type.
+On 2020/03/10 Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org> wrote:=20
+> On Tue, Mar 10, 2020 at 07:31:58PM +0800, Robin Gong wrote:
+> > ECSPI issue fixed from i.mx6ul at hardware level, no need
+> > ERR009165 anymore on those chips such as i.mx8mq. Add i.mx6sx from
+> > where i.mx6ul source.
 > >
 > > Signed-off-by: Robin Gong <yibin.gong-3arQi8VN3Tc@public.gmane.org>
-> > Acked-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> > Acked-by: Vinod Koul <vkoul-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 > > ---
-> >  drivers/spi/spi-imx.c | 50
-> > +++++++++++++++++++++++++++++++++++++++++++++-----
-> >  1 file changed, 45 insertions(+), 5 deletions(-)
+> >  drivers/dma/imx-sdma.c | 51
+> > +++++++++++++++++++++++++++++++++++++++++++++++++-
+> >  1 file changed, 50 insertions(+), 1 deletion(-)
 > >
-> > diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c index
-> > 842a86e..f7ee2ec 100644
-> > --- a/drivers/spi/spi-imx.c
-> > +++ b/drivers/spi/spi-imx.c
-> > @@ -57,6 +57,7 @@ enum spi_imx_devtype {
-> >  	IMX35_CSPI,	/* CSPI on all i.mx except above */
-> >  	IMX51_ECSPI,	/* ECSPI on i.mx51 */
-> >  	IMX53_ECSPI,	/* ECSPI on i.mx53 and later */
-> > +	IMX6UL_ECSPI,	/* ERR009165 fix from i.mx6ul */
-> >  };
-> >
-> >  struct spi_imx_data;
-> > @@ -75,6 +76,11 @@ struct spi_imx_devtype_data {
-> >  	bool has_slavemode;
-> >  	unsigned int fifo_size;
-> >  	bool dynamic_burst;
+> > diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c index
+> > 56288d8..5ae7237 100644
+> > --- a/drivers/dma/imx-sdma.c
+> > +++ b/drivers/dma/imx-sdma.c
+> > @@ -419,6 +419,13 @@ struct sdma_driver_data {
+> >  	int num_events;
+> >  	struct sdma_script_start_addrs	*script_addrs;
+> >  	bool check_ratio;
 > > +	/*
-> > +	 * ERR009165 fixed or not:
+> > +	 * ecspi ERR009165 fixed should be done in sdma script
+> > +	 * and it has been fixed in soc from i.mx6ul.
+> > +	 * please get more information from the below link:
 > > +	 *
 > https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwww.n=
 x
 > p.com%2Fdocs%2Fen%2Ferrata%2FIMX6DQCE.pdf&amp;data=3D02%7C01%7Cyi
-> bin.gong%40nxp.com%7Cf73bfc11a68c42f5f6d308d7c4c96efa%7C686ea1d3bc
-> 2b4c6fa92cd99c5c301635%7C0%7C1%7C637194241755109112&amp;sdata=3Dm
-> uw4HL5nMDjREJwVd885Wrxka0moMaaZ%2BhJgsAgY3eo%3D&amp;reserved=3D
-> 0
+> bin.gong%40nxp.com%7C91d42046e6894501d48508d7c4cbcae2%7C686ea1d3
+> bc2b4c6fa92cd99c5c301635%7C0%7C1%7C637194251876090170&amp;sdata=3D
+> T6LA4xz9CUFlNpnyjHSThEQb8i1rhbY9e1nUyxIGD5Q%3D&amp;reserved=3D0
 > > +	 */
-> > +	bool tx_glitch_fixed;
-> >  	enum spi_imx_devtype devtype;
+> > +	bool ecspi_fixed;
 > >  };
 > >
-> > @@ -128,7 +134,8 @@ static inline int is_imx35_cspi(struct
-> > spi_imx_data *d)
+> >  struct sdma_engine {
+> > @@ -539,6 +546,31 @@ static struct sdma_driver_data sdma_imx6q =3D {
+> >  	.script_addrs =3D &sdma_script_imx6q,
+> >  };
 > >
-> >  static inline int is_imx51_ecspi(struct spi_imx_data *d)  {
-> > -	return d->devtype_data->devtype =3D=3D IMX51_ECSPI;
-> > +	return d->devtype_data->devtype =3D=3D IMX51_ECSPI ||
-> > +	       d->devtype_data->devtype =3D=3D IMX6UL_ECSPI;
-> >  }
+> > +static struct sdma_script_start_addrs sdma_script_imx6sx =3D {
+> > +	.ap_2_ap_addr =3D 642,
+> > +	.uart_2_mcu_addr =3D 817,
+> > +	.mcu_2_app_addr =3D 747,
+> > +	.uartsh_2_mcu_addr =3D 1032,
+> > +	.mcu_2_shp_addr =3D 960,
+> > +	.app_2_mcu_addr =3D 683,
+> > +	.shp_2_mcu_addr =3D 891,
+> > +	.spdif_2_mcu_addr =3D 1100,
+> > +	.mcu_2_spdif_addr =3D 1134,
+> > +};
+> > +
+> > +static struct sdma_driver_data sdma_imx6sx =3D {
+> > +	.chnenbl0 =3D SDMA_CHNENBL0_IMX35,
+> > +	.num_events =3D 48,
+> > +	.script_addrs =3D &sdma_script_imx6sx, };
+> > +
+> > +static struct sdma_driver_data sdma_imx6ul =3D {
+> > +	.chnenbl0 =3D SDMA_CHNENBL0_IMX35,
+> > +	.num_events =3D 48,
+> > +	.script_addrs =3D &sdma_script_imx6sx,
+> > +	.ecspi_fixed =3D true,
+> > +};
+> > +
+> >  static struct sdma_script_start_addrs sdma_script_imx7d =3D {
+> >  	.ap_2_ap_addr =3D 644,
+> >  	.uart_2_mcu_addr =3D 819,
+> > @@ -584,9 +616,15 @@ static const struct platform_device_id
+> sdma_devtypes[] =3D {
+> >  		.name =3D "imx6q-sdma",
+> >  		.driver_data =3D (unsigned long)&sdma_imx6q,
+> >  	}, {
+> > +		.name =3D "imx6sx-sdma",
+> > +		.driver_data =3D (unsigned long)&sdma_imx6sx,
+> > +	}, {
 >=20
-> Erm, no. A i.MX51 ECSPI is a i.MX51 ECSPI and not a i.MX6UL ECSPI. If you=
- want
-> to handle them equally somewhere then explicitly test for i.MX6ul *and*
-> i.MX51 there.
-But all i.mx6 chips including i.MX53 ECSPI are almost same as i.MX51 ECSPI,=
- and ERR00915 is fixed from i.mx6ul....
->=20
-> >
-> >  static inline int is_imx53_ecspi(struct spi_imx_data *d) @@ -585,9
-> > +592,16 @@ static int mx51_ecspi_prepare_transfer(struct spi_imx_data
-> *spi_imx,
-> >  	ctrl |=3D mx51_ecspi_clkdiv(spi_imx, t->speed_hz, &clk);
-> >  	spi_imx->spi_bus_clk =3D clk;
-> >
-> > -	/* ERR009165: work in XHC mode as PIO */
-> > -	if (spi_imx->usedma)
-> > -		ctrl &=3D ~MX51_ECSPI_CTRL_SMC;
-> > +	/*
-> > +	 * ERR009165: work in XHC mode instead of SMC as PIO on the chips
-> > +	 * before i.mx6ul.
-> > +	 */
-> > +	if (spi_imx->usedma) {
-> > +		if (spi_imx->devtype_data->tx_glitch_fixed)
-> > +			ctrl |=3D MX51_ECSPI_CTRL_SMC;
-> > +		else
-> > +			ctrl &=3D ~MX51_ECSPI_CTRL_SMC;
-> > +	}
->=20
-> Changed again, but the PIO case still not honoured. This should look like
-> 	if (spi_imx->usedma && spi_imx->devtype_data->tx_glitch_fixed)
-> 		ctrl |=3D MX51_ECSPI_CTRL_SMC;
-> 	else
-> 		ctrl &=3D ~MX51_ECSPI_CTRL_SMC;
->=20
-Okay, will fix in v7.
-> >
-> >  	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
-> >
-> > @@ -615,6 +629,8 @@ static void mx51_setup_wml(struct spi_imx_data
-> > *spi_imx)  {
-> >  	u32 tx_wml =3D 0;
-> >
-> > +	if (spi_imx->devtype_data->tx_glitch_fixed)
-> > +		tx_wml =3D spi_imx->wml;
->=20
-> That explains the variable introduced in the last patch, ok.
->=20
-> I have the impression that splitting up 06/13 and 07/13 into two patches
-> doesn't make it easier to review.
-But 06 is a errata for all i.mx6 legacy chips, while 07 is for i.mx6ul and =
-newer chips which have been already fixed the HW issue. I think two patches=
- are better. =20
+> Now the i.MX6sx uses a new sdma_script_start_addrs entry which is the sam=
+e
+> as the i.MX6q one we used before with one exception: it lacks the
+> per_2_per_addr =3D 6331 entry. This is only used for IMX_DMATYPE_ASRC and
+Totally same script for i.mx6 chips whatever i.MX6sx, i.MX6q or i.MX6ul.=20
+> IMX_DMATYPE_ASRC_SP, both are entirely unused in the mainline kernel. So
+> why must the i.MX6sx changed here and what has this to do with ECSPI?
+i.MX6ul is based on i.MX6sx, so adding i.MX6sx could keep good shape on our=
+ i.MX family evolution.
 >=20
 > Sascha
 >=20
+> >  		.name =3D "imx7d-sdma",
+> >  		.driver_data =3D (unsigned long)&sdma_imx7d,
+> >  	}, {
+> > +		.name =3D "imx6ul-sdma",
+> > +		.driver_data =3D (unsigned long)&sdma_imx6ul,
+> > +	}, {
+> >  		.name =3D "imx8mq-sdma",
+> >  		.driver_data =3D (unsigned long)&sdma_imx8mq,
+> >  	}, {
+> > @@ -602,7 +640,9 @@ static const struct of_device_id sdma_dt_ids[] =3D =
+{
+> >  	{ .compatible =3D "fsl,imx35-sdma", .data =3D &sdma_imx35, },
+> >  	{ .compatible =3D "fsl,imx31-sdma", .data =3D &sdma_imx31, },
+> >  	{ .compatible =3D "fsl,imx25-sdma", .data =3D &sdma_imx25, },
+> > +	{ .compatible =3D "fsl,imx6sx-sdma", .data =3D &sdma_imx6sx, },
+> >  	{ .compatible =3D "fsl,imx7d-sdma", .data =3D &sdma_imx7d, },
+> > +	{ .compatible =3D "fsl,imx6ul-sdma", .data =3D &sdma_imx6ul, },
+> >  	{ .compatible =3D "fsl,imx8mq-sdma", .data =3D &sdma_imx8mq, },
+> >  	{ /* sentinel */ }
+> >  };
+> > @@ -1169,8 +1209,17 @@ static int sdma_config_channel(struct dma_chan
+> *chan)
+> >  			if (sdmac->peripheral_type =3D=3D IMX_DMATYPE_ASRC_SP ||
+> >  			    sdmac->peripheral_type =3D=3D IMX_DMATYPE_ASRC)
+> >  				sdma_set_watermarklevel_for_p2p(sdmac);
+> > -		} else
+> > +		} else {
+> > +			/*
+> > +			 * ERR009165 fixed from i.mx6ul, no errata need,
+> > +			 * set bit31 to let sdma script skip the errata.
+> > +			 */
+> > +			if (sdmac->peripheral_type =3D=3D IMX_DMATYPE_CSPI &&
+> > +			    sdmac->direction =3D=3D DMA_MEM_TO_DEV &&
+> > +			    sdmac->sdma->drvdata->ecspi_fixed)
+> > +				__set_bit(31, &sdmac->watermark_level);
+> >  			__set_bit(sdmac->event_id0, sdmac->event_mask);
+> > +		}
+> >
+> >  		/* Address */
+> >  		sdmac->shp_addr =3D sdmac->per_address;
+> > --
+> > 2.7.4
+> >
+> >
 >=20
 > --
 > Pengutronix e.K.                           |
 > |
 > Steuerwalder Str. 21                       |
 > https://eur01.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2Fwww.pe
-> ngutronix.de%2F&amp;data=3D02%7C01%7Cyibin.gong%40nxp.com%7Cf73bfc11
-> a68c42f5f6d308d7c4c96efa%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7
-> C1%7C637194241755114106&amp;sdata=3DDKe%2B2SynMv%2Be3rMBrO79ou6
-> 5ADTwO03KRT%2FqsDbCWjc%3D&amp;reserved=3D0  |
+> ngutronix.de%2F&amp;data=3D02%7C01%7Cyibin.gong%40nxp.com%7C91d4204
+> 6e6894501d48508d7c4cbcae2%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0
+> %7C1%7C637194251876090170&amp;sdata=3Dd0X1DBm%2Fc0lwcHVUtTW0ITw
+> o5qW3SKtVd5Va0EVVw3E%3D&amp;reserved=3D0  |
 > 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0
 > |
 > Amtsgericht Hildesheim, HRA 2686           | Fax:

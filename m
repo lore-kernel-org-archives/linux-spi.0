@@ -1,79 +1,48 @@
-From: Robin Gong <yibin.gong@nxp.com>
-Subject: RE: [RESEND v6  06/13] spi: imx: fix ERR009165
-Date: Tue, 10 Mar 2020 09:02:08 +0000
-Message-ID: <VE1PR04MB6638B911F4767D238B16279289FF0@VE1PR04MB6638.eurprd04.prod.outlook.com>
-References: <1583839922-22699-1-git-send-email-yibin.gong@nxp.com>
- <1583839922-22699-7-git-send-email-yibin.gong@nxp.com>
- <20200310073920.GR3335@pengutronix.de>
- <VE1PR04MB66384DA6732A840FE1D80C1989FF0@VE1PR04MB6638.eurprd04.prod.outlook.com>
- <20200310083725.sb6cufp5wznvxcji@pengutronix.de>
+From: <Tudor.Ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+Subject: Re: [PATCH v3 4/4] mtd: spi-nor: remove mtk-quadspi driver
+Date: Tue, 10 Mar 2020 09:11:29 +0000
+Message-ID: <4427171.IzkiAjLLdB@localhost.localdomain>
+References: <20200306085052.28258-1-gch981213@gmail.com>
+ <20200309121020.GD4101@sirena.org.uk>
+ <2471214.x7VzW1FXlQ@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
-        "vkoul@kernel.org" <vkoul@kernel.org>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "festevam@gmail.com" <festevam@gmail.com>,
-        "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will.deacon@arm.com" <will.deacon@arm.com>,
-        "l.stach@pengutronix.de" <l.stach@pengutronix.de>,
-        "martin.fuzzey@flowbird.group" <martin.fuzzey@flowbird.group>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vg
-To: =?iso-8859-1?Q?Uwe_Kleine-K=F6nig?=
-        <u.kleine-koenig@pengutronix.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200310083725.sb6cufp5wznvxcji@pengutronix.de>
+Cc: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <vigneshr-l0cyMroinI0@public.gmane.org>, <richard-/L3Ra7n9ekc@public.gmane.org>,
+        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        <miquel.raynal-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>, <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        <gch981213-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <2471214.x7VzW1FXlQ-bi+AKbBUZKY6gyzm1THtWbp2dZbC/Bob@public.gmane.org>
 Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-ID: <854A8A8A2CF8664186B41C8FB21DB83F-Hry67jCOGbCcE4WynfumptQqCkab/8FMAL8bYrjMMd8@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 2020/03/10 Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de> wrote:
+On Tuesday, March 10, 2020 9:41:26 AM EET Tudor.Ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org wrote=
+:
+> Hi, Mark,
 >=20
-> Hello,
+> On Monday, March 9, 2020 2:10:20 PM EET Mark Brown wrote:
+> > > This driver is superseded by the new spi-mtk-nor driver.
+> > >=20
+> > > Signed-off-by: Chuanhong Guo <gch981213-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> >=20
+> > Is this move OK from a MTD point of view - should I apply this when the
+> > rest goes in?  The patch was in prior versions too and is obviously
+> > straightforward.
 >=20
-> On Tue, Mar 10, 2020 at 08:27:41AM +0000, Robin Gong wrote:
-> > On 2020/03/10 Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > > On Tue, Mar 10, 2020 at 07:31:55PM +0800, Robin Gong wrote:
-> > > >  	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
-> > > >
-> > > > @@ -612,12 +613,14 @@ static int mx51_ecspi_prepare_transfer(struct
-> > > > spi_imx_data *spi_imx,
-> > > >
-> > > >  static void mx51_setup_wml(struct spi_imx_data *spi_imx)  {
-> > > > +	u32 tx_wml =3D 0;
-> > > > +
-> > > >  	/*
-> > > >  	 * Configure the DMA register: setup the watermark
-> > > >  	 * and enable DMA request.
-> > > >  	 */
-> > > >  	writel(MX51_ECSPI_DMA_RX_WML(spi_imx->wml - 1) |
-> > > > -		MX51_ECSPI_DMA_TX_WML(spi_imx->wml) |
-> > > > +		MX51_ECSPI_DMA_TX_WML(tx_wml) |
-> > >
-> > > tx_wml is never assigned any other value than 0. Drop the variable.
-> > That's prepared for 07/13 patch which may assign spi_imx->wml to tx_wml=
-.
+> If you find the rest of the patches ok, this can go through the spi tree,
+> feel free to add my
+> Acked-by: Tudor Ambarus <tudor.ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
 >=20
-> Then this belongs into patch 7, right?
-Okay, understood your concern. Then I'll drop tx_wml to make it clear.
->=20
-> Best regards
-> Uwe
->=20
-> --
-> Pengutronix e.K.                           | Uwe Kleine-K=F6nig
-> |
-> Industrial Linux Solutions                 |
-> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwww.p
-> engutronix.de%2F&amp;data=3D02%7C01%7Cyibin.gong%40nxp.com%7Cca6f14
-> 28f4224fa79f1d08d7c4ce4a41%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0
-> %7C0%7C637194262606339591&amp;sdata=3DkI9HAyC%2FG3qmrIrLmfUDJ7dac
-> %2FOEDBtDm4oeRyak1xE%3D&amp;reserved=3D0 |
+> There will be a conflict with the following patch https://
+> patchwork.ozlabs.org/patch/1247791/, but nothing that we can't handle.
+
+You can also create an immutable tag that I can merge in my spi-nor/next=20
+branch, so that Linus doesn't have to deal with the conflict.
+
+ta

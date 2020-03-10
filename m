@@ -1,37 +1,48 @@
-From: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>
-Subject: Re: [PATCH] spi: spi-fsl-dspi: fix DMA mapping
-Date: Tue, 10 Mar 2020 08:40:28 +0100
-Message-ID: <4beb5200a76f2d817be7276444543de4@walle.cc>
-References: <20200310073313.21277-1-michael@walle.cc>
+From: <Tudor.Ambarus@microchip.com>
+Subject: Re: [PATCH v3 4/4] mtd: spi-nor: remove mtk-quadspi driver
+Date: Tue, 10 Mar 2020 07:41:26 +0000
+Message-ID: <2471214.x7VzW1FXlQ@localhost.localdomain>
+References: <20200306085052.28258-1-gch981213@gmail.com>
+ <20200306085052.28258-5-gch981213@gmail.com>
+ <20200309121020.GD4101@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Sumit Semwal <sumit.semwal-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org,
-        linaro-mm-sig-cunTk1MwBs8s++Sfvej+rw@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200310073313.21277-1-michael-QKn5cuLxLXY@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Cc: <gch981213@gmail.com>, <linux-mediatek@lists.infradead.org>,
+        <linux-spi@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+        <devicetree@vger.kernel.org>, <miquel.raynal@bootlin.com>,
+        <richard@nod.at>, <vigneshr@ti.com>, <robh+dt@kernel.org>,
+        <matthias.bgg@gmail.com>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+To: <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20200309121020.GD4101@sirena.org.uk>
+Content-Language: en-US
+Content-ID: <6A321634F4832945827FEDE57CD2E761@namprd11.prod.outlook.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Am 2020-03-10 08:33, schrieb Michael Walle:
-> Use the correct device to request the DMA mapping. Otherwise the IOMMU
-> doesn't get the mapping and it will generate a page fault.
-> 
-> The error messages look like:
-> [    3.008452] arm-smmu 5000000.iommu: Unhandled context fault:
-> fsr=0x402, iova=0xf9800000, fsynr=0x3f0022, cbfrsynra=0x828, cb=8
-> [    3.020123] arm-smmu 5000000.iommu: Unhandled context fault:
-> fsr=0x402, iova=0xf9800000, fsynr=0x3f0022, cbfrsynra=0x828, cb=8
-> 
-> This was tested on a custom board with a LS1028A SoC.
+Hi, Mark,
 
-Oh fu.. please disregard this patch. DMA mapping still isn't working.
-Somehow I missed that the transfer mode was turned back to its default
-XSPI mode.
+On Monday, March 9, 2020 2:10:20 PM EET Mark Brown wrote:
+> > This driver is superseded by the new spi-mtk-nor driver.
+> >=20
+> > Signed-off-by: Chuanhong Guo <gch981213@gmail.com>
+>=20
+> Is this move OK from a MTD point of view - should I apply this when the
+> rest goes in?  The patch was in prior versions too and is obviously
+> straightforward.
 
--michael
+If you find the rest of the patches ok, this can go through the spi tree, f=
+eel=20
+free to add my
+Acked-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+
+There will be a conflict with the following patch https://
+patchwork.ozlabs.org/patch/1247791/, but nothing that we can't handle.
+I'll try to allocate time for reviewing the remaining patches in this set i=
+n=20
+the following days.
+
+Cheers,
+ta

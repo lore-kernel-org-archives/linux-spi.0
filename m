@@ -1,67 +1,77 @@
-From: Michael Walle <michael@walle.cc>
-Subject: Re: [PATCH] spi: spi-fsl-dspi: fix DMA mapping
-Date: Tue, 10 Mar 2020 15:12:45 +0100
-Message-ID: <76923af394f334337a3cac125c270087@walle.cc>
-References: <20200310073313.21277-1-michael@walle.cc>
- <4beb5200a76f2d817be7276444543de4@walle.cc>
- <ea6ffa30ddc2459d07935e5e61a41172@walle.cc>
- <CA+h21hqMoPhbq8YG0UeV1kP0iXApYsJvb9MZjPGX54dm2U-KnQ@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>,
-        linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linaro-mm-sig@lists.linaro.org,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Vladimir Oltean <olteanv@gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: update the structure documentation" to the spi tree
+Date: Tue, 10 Mar 2020 14:31:07 +0000
+Message-ID: <applied-1583774179-30736-1-git-send-email-hqjagain@gmail.com>
+References: <1583774179-30736-1-git-send-email-hqjagain@gmail.com>
+Cc: broonie@kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
+To: Qiujun Huang <hqjagain@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CA+h21hqMoPhbq8YG0UeV1kP0iXApYsJvb9MZjPGX54dm2U-KnQ@mail.gmail.com>
+In-Reply-To: <1583774179-30736-1-git-send-email-hqjagain@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Am 2020-03-10 14:02, schrieb Vladimir Oltean:
-> On Tue, 10 Mar 2020 at 10:12, Michael Walle <michael@walle.cc> wrote:
->> 
->> Am 2020-03-10 08:40, schrieb Michael Walle:
->> > Am 2020-03-10 08:33, schrieb Michael Walle:
->> >> Use the correct device to request the DMA mapping. Otherwise the IOMMU
->> >> doesn't get the mapping and it will generate a page fault.
->> >>
->> >> The error messages look like:
->> >> [    3.008452] arm-smmu 5000000.iommu: Unhandled context fault:
->> >> fsr=0x402, iova=0xf9800000, fsynr=0x3f0022, cbfrsynra=0x828, cb=8
->> >> [    3.020123] arm-smmu 5000000.iommu: Unhandled context fault:
->> >> fsr=0x402, iova=0xf9800000, fsynr=0x3f0022, cbfrsynra=0x828, cb=8
->> >>
->> >> This was tested on a custom board with a LS1028A SoC.
->> >
->> > Oh fu.. please disregard this patch. DMA mapping still isn't working.
->> > Somehow I missed that the transfer mode was turned back to its default
->> > XSPI mode.
->> 
->> Damn. I need more coffee.. this patch IS working. Only the first probe
->> fails due to EPROBE_DEFER.
->> 
->> [    2.539706] fsl-dspi 2120000.spi: rx dma channel not available 
->> (-517)
->> [    2.546200] fsl-dspi 2120000.spi: can't get dma channels
->> [    3.622774] spi-nor spi1.0: w25q128fw (16384 Kbytes)
->> 
->> -michael
-> 
-> I'm testing LS1028A with IOMMU_DEFAULT_PASSTHROUGH=y and I didn't have
-> time to change my setup now. I've also sent a v3 to my patch series
-> which is going to conflict with this one, sorry.
+The patch
 
-No worries, its easy enough to rebase.
+   spi: update the structure documentation
 
-> I would have picked
-> your patch up with my series but I didn't have the right environment
-> to test it.
+has been applied to the spi tree at
 
-I'll resend a v2 once your series is working.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
--michael
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 7a86a419ff62c69f91544ea95f4ae6ef83880dcc Mon Sep 17 00:00:00 2001
+From: Qiujun Huang <hqjagain@gmail.com>
+Date: Tue, 10 Mar 2020 01:16:19 +0800
+Subject: [PATCH] spi: update the structure documentation
+
+some members were not described in documentation.
+
+Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
+Link: https://lore.kernel.org/r/1583774179-30736-1-git-send-email-hqjagain@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ include/linux/spi/spi.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 87105272879b..38286de779e3 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -135,6 +135,8 @@ extern int spi_delay_exec(struct spi_delay *_delay, struct spi_transfer *xfer);
+  * @modalias: Name of the driver to use with this device, or an alias
+  *	for that name.  This appears in the sysfs "modalias" attribute
+  *	for driver coldplugging, and in uevents used for hotplugging
++ * @driver_override: If the name of a driver is written to this attribute, then
++ *	the device will bind to the named driver and only the named driver.
+  * @cs_gpio: LEGACY: gpio number of the chipselect line (optional, -ENOENT when
+  *	not using a GPIO line) use cs_gpiod in new drivers by opting in on
+  *	the spi_master.
+@@ -443,6 +445,7 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  *	@spi_transfer->ptp_sts_word_post were transmitted.
+  *	If the driver does not set this, the SPI core takes the snapshot as
+  *	close to the driver hand-over as possible.
++ * @irq_flags: Interrupt enable state during PTP system timestamping
+  *
+  * Each SPI controller can communicate with one or more @spi_device
+  * children.  These make a small bus, sharing MOSI, MISO and SCK signals
+-- 
+2.20.1

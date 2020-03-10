@@ -1,147 +1,188 @@
-From: Robin Gong <yibin.gong-3arQi8VN3Tc@public.gmane.org>
-Subject: RE: [RESEND v6  06/13] spi: imx: fix ERR009165
-Date: Tue, 10 Mar 2020 08:27:41 +0000
-Message-ID: <VE1PR04MB66384DA6732A840FE1D80C1989FF0@VE1PR04MB6638.eurprd04.prod.outlook.com>
-References: <1583839922-22699-1-git-send-email-yibin.gong@nxp.com>
- <1583839922-22699-7-git-send-email-yibin.gong@nxp.com>
- <20200310073920.GR3335@pengutronix.de>
+From: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>
+Subject: Re: [PATCH v2 0/6] NXP DSPI bugfixes and support for LS1028A
+Date: Tue, 10 Mar 2020 09:34:30 +0100
+Message-ID: <2194d93de3870940148de58606dcb6ef@walle.cc>
+References: <20200309210755.6759-1-olteanv@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-Cc: "vkoul-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <vkoul-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        "dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org" <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        "mark.rutland-5wv7dgnIgG8@public.gmane.org" <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        "catalin.marinas-5wv7dgnIgG8@public.gmane.org" <catalin.marinas-5wv7dgnIgG8@public.gmane.org>,
-        "will.deacon-5wv7dgnIgG8@public.gmane.org" <will.deacon-5wv7dgnIgG8@public.gmane.org>,
-        "l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        "martin.fuzzey-X8SyT9posyX3d/wEbhiU/g@public.gmane.org" <martin.fuzzey-X8SyT9posyX3d/wEbhiU/g@public.gmane.org>,
-        "kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org" <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-        "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XcXa4x6EXUF0@public.gmane.org
-To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200310073920.GR3335-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Content-Language: en-US
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, eha-/iRVSOupHO4@public.gmane.org, angelo-BIYBQhTR83Y@public.gmane.org,
+        andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org, weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org,
+        mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org, peng.ma-3arQi8VN3Tc@public.gmane.org
+To: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200309210755.6759-1-olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 2020/03/10 Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org> wrote:
-> On Tue, Mar 10, 2020 at 07:31:55PM +0800, Robin Gong wrote:
-> > Change to XCH  mode even in dma mode, please refer to the below
-> > errata:
-> > https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwww=
-.
-> >
-> nxp.com%2Fdocs%2Fen%2Ferrata%2FIMX6DQCE.pdf&amp;data=3D02%7C01%7C
-> yibin.g
-> >
-> ong%40nxp.com%7Ccbabce268dfd4b0a0e2a08d7c4c62ff6%7C686ea1d3bc2b4c
-> 6fa92
-> >
-> cd99c5c301635%7C0%7C1%7C637194227793913712&amp;sdata=3DQ5N49T4jgX
-> TcdTzsB
-> > 3D0saK2%2Fzj0R4gnJcGR%2Bd70Fm4%3D&amp;reserved=3D0
-> >
-> > Signed-off-by: Robin Gong <yibin.gong-3arQi8VN3Tc@public.gmane.org>
-> > Acked-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> > ---
-> >  drivers/spi/spi-imx.c | 17 ++++++++++-------
-> >  1 file changed, 10 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c index
-> > f4f28a4..842a86e 100644
-> > --- a/drivers/spi/spi-imx.c
-> > +++ b/drivers/spi/spi-imx.c
-> > @@ -585,8 +585,9 @@ static int mx51_ecspi_prepare_transfer(struct
-> spi_imx_data *spi_imx,
-> >  	ctrl |=3D mx51_ecspi_clkdiv(spi_imx, t->speed_hz, &clk);
-> >  	spi_imx->spi_bus_clk =3D clk;
-> >
-> > +	/* ERR009165: work in XHC mode as PIO */
-> >  	if (spi_imx->usedma)
-> > -		ctrl |=3D MX51_ECSPI_CTRL_SMC;
-> > +		ctrl &=3D ~MX51_ECSPI_CTRL_SMC;
->=20
-> 'ctrl' was read from the hardware. In the dma case it was set explicitly,=
- but it
-> was never cleared for a PIO transfer. This looked wrong before this patch=
-. Now
-> with this patch it looks even more wrong:
-> We clear a bit that has never been set and we only do this for DMA, when =
-for
-> the PIO case it definitly must be cleared. Drop the if clause.
-Good point, ACK.
->=20
-> >
-> >  	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
-> >
-> > @@ -612,12 +613,14 @@ static int mx51_ecspi_prepare_transfer(struct
-> > spi_imx_data *spi_imx,
-> >
-> >  static void mx51_setup_wml(struct spi_imx_data *spi_imx)  {
-> > +	u32 tx_wml =3D 0;
-> > +
-> >  	/*
-> >  	 * Configure the DMA register: setup the watermark
-> >  	 * and enable DMA request.
-> >  	 */
-> >  	writel(MX51_ECSPI_DMA_RX_WML(spi_imx->wml - 1) |
-> > -		MX51_ECSPI_DMA_TX_WML(spi_imx->wml) |
-> > +		MX51_ECSPI_DMA_TX_WML(tx_wml) |
->=20
-> tx_wml is never assigned any other value than 0. Drop the variable.
-That's prepared for 07/13 patch which may assign spi_imx->wml to tx_wml.
->=20
-> >  		MX51_ECSPI_DMA_RXT_WML(spi_imx->wml) |
-> >  		MX51_ECSPI_DMA_TEDEN | MX51_ECSPI_DMA_RXDEN |
-> >  		MX51_ECSPI_DMA_RXTDEN, spi_imx->base + MX51_ECSPI_DMA);
-> @@ -1171,7
-> > +1174,11 @@ static int spi_imx_dma_configure(struct spi_master *master)
-> >  	tx.direction =3D DMA_MEM_TO_DEV;
-> >  	tx.dst_addr =3D spi_imx->base_phys + MXC_CSPITXDATA;
-> >  	tx.dst_addr_width =3D buswidth;
-> > -	tx.dst_maxburst =3D spi_imx->wml;
-> > +	/*
-> > +	 * For ERR009165 with tx_wml =3D 0 could enlarge burst size to fifo s=
-ize
-> > +	 * to speed up fifo filling as possible.
-> > +	 */
-> > +	tx.dst_maxburst =3D spi_imx->devtype_data->fifo_size;
-> >  	ret =3D dmaengine_slave_config(master->dma_tx, &tx);
-> >  	if (ret) {
-> >  		dev_err(spi_imx->dev, "TX dma configuration failed with %d\n",
-> > ret); @@ -1265,10 +1272,6 @@ static int spi_imx_sdma_init(struct
-> > device *dev, struct spi_imx_data *spi_imx,  {
-> >  	int ret;
-> >
-> > -	/* use pio mode for i.mx6dl chip TKT238285 */
-> > -	if (of_machine_is_compatible("fsl,imx6dl"))
-> > -		return 0;
->=20
-> So with this patch it becomes possible to do DMA on i.MX6dl, but it is
-> mentioned nowhere.
-That's a common IP issue but caught on i.mx6dl at that time, so this time I=
- didn't mention
-i.mx6dl.
->=20
-> Sascha
->=20
-> --
-> Pengutronix e.K.                           |
-> |
-> Steuerwalder Str. 21                       |
-> https://eur01.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2Fwww.pe
-> ngutronix.de%2F&amp;data=3D02%7C01%7Cyibin.gong%40nxp.com%7Ccbabce2
-> 68dfd4b0a0e2a08d7c4c62ff6%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%
-> 7C1%7C637194227793913712&amp;sdata=3DTL%2BheiNsYVPld3qyzWjF6yQZgH2
-> HLdVFxzFeK3MupTc%3D&amp;reserved=3D0  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0
-> |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:
-> +49-5121-206917-5555 |
+Am 2020-03-09 22:07, schrieb Vladimir Oltean:
+> This series addresses a few issues that were missed during the previous
+> series "[PATCH 00/12] TCFQ to XSPI migration for NXP DSPI driver", on
+> SoCs other than LS1021A and LS1043A. DMA mode has been completely 
+> broken
+> by that series, and XSPI mode never worked on little-endian 
+> controllers.
+> 
+> Then it introduces support for the LS1028A chip, whose compatible has
+> recently been documented here:
+> 
+> https://lore.kernel.org/linux-devicetree/20200218171418.18297-1-michael-QKn5cuLxLXY@public.gmane.org/
+> 
+> The device tree for the LS1028A SoC is extended with DMA channels
+> definition, such that even though the default operating mode is XSPI,
+> one can simply change DSPI_XSPI_MODE to DSPI_DMA_MODE in the
+> devtype_data structure of the driver and use that instead.
+> 
+> For testing, benchmarking and debugging, the mikroBUS connector on the
+> LS1028A-RDB is made available via spidev.
+
+
+
+Let me start with the positive things... something is working, both in
+XSPI mode and DMA mode ;) At least the SPI flash is detected.
+
+And please note, that I have my patch applied:
+   https://lore.kernel.org/lkml/20200310073313.21277-1-michael-QKn5cuLxLXY@public.gmane.org/
+
+Further note, that the mtd device is either mtd0 in XSPI mode or mtd10
+in DMA mode, because the first probe fails due to EPROBE_DEFER.
+
+So starting with XSPI, if you have a big flash and cancel the readout
+strange things happen.
+
+# hexdump -C /dev/mtd0
+00000000  00 75 68 75 0a ff ff ff  ff ff ff ff ff ff ff ff  
+|.uhu............|
+00000010  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff  
+|................|
+*
+^C[   35.487948] fsl-dspi 2120000.spi: Waiting for transfer to complete 
+failed!
+[   35.495038] spi_master spi2: failed to transfer one message from 
+queue
+
+# hexdump -C /dev/mtd0
+00000000  00 75 68 75 0a ff ff ff  ff ff ff ff ff ff ff ff  
+|.uhu............|
+00000010  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff  
+|................|
+*
+^C[   38.495955] fsl-dspi 2120000.spi: Waiting for transfer to complete 
+failed!
+[   38.503097] spi_master spi2: failed to transfer one message from 
+queue
+[   38.509729] Unable to handle kernel paging request at virtual address 
+ffff800095ab3377
+[   38.517676] Mem abort info:
+[   38.520474]   ESR = 0x96000045
+[   38.523533]   EC = 0x25: DABT (current EL), IL = 32 bits
+[   38.528861]   SET = 0, FnV = 0
+[   38.531921]   EA = 0, S1PTW = 0
+[   38.535067] Data abort info:
+[   38.537952]   ISV = 0, ISS = 0x00000045
+[   38.541797]   CM = 0, WnR = 1
+[   38.544771] swapper pgtable: 4k pages, 48-bit VAs, 
+pgdp=0000000082621000
+[   38.551494] [ffff800095ab3377] pgd=00000020fffff003, 
+p4d=00000020fffff003, pud=0000000000000000
+[   38.560229] Internal error: Oops: 96000045 [#1] PREEMPT SMP
+[   38.565819] Modules linked in:
+[   38.568882] CPU: 0 PID: 2729 Comm: hexdump Not tainted 
+5.6.0-rc4-next-20200306-00052-gd8730cdc8a0b-dirty #193
+[   38.578834] Hardware name: Kontron SMARC-sAL28 (Single PHY) on SMARC 
+Eval 2.0 carrier (DT)
+[   38.587129] pstate: 20000085 (nzCv daIf -PAN -UAO)
+[   38.591941] pc : ktime_get_real_ts64+0x3c/0x110
+[   38.596487] lr : spi_take_timestamp_pre+0x40/0x90
+[   38.601203] sp : ffff800010003d90
+[   38.604525] x29: ffff800010003d90 x28: ffff80001200e000
+[   38.609854] x27: ffff800011da9000 x26: ffff002079c40400
+[   38.615184] x25: ffff8000117fe018 x24: ffff800011daa1a0
+[   38.620513] x23: ffff800015ab3860 x22: ffff800095ab3377
+[   38.625841] x21: 000000000000146e x20: ffff8000120c3000
+[   38.631170] x19: ffff0020795f6e80 x18: ffff800011da9948
+[   38.636498] x17: 0000000000000000 x16: 0000000000000000
+[   38.641826] x15: ffff800095ab3377 x14: 0720072007200720
+[   38.647155] x13: 0720072007200765 x12: 0775076507750771
+[   38.652483] x11: 0720076d076f0772 x10: 0000000000000040
+[   38.657812] x9 : ffff8000108e2100 x8 : ffff800011dcabe8
+[   38.663139] x7 : 0000000000000000 x6 : ffff800015ab3a60
+[   38.668468] x5 : 0000000007200720 x4 : ffff800095ab3377
+[   38.673796] x3 : 0000000000000000 x2 : 0000000000000ab0
+[   38.679125] x1 : ffff800011daa000 x0 : 0000000000000026
+[   38.684454] Call trace:
+[   38.686905]  ktime_get_real_ts64+0x3c/0x110
+[   38.691100]  spi_take_timestamp_pre+0x40/0x90
+[   38.695470]  dspi_fifo_write+0x58/0x2c0
+[   38.699315]  dspi_interrupt+0xbc/0xd0
+[   38.702987]  __handle_irq_event_percpu+0x78/0x2c0
+[   38.707706]  handle_irq_event_percpu+0x3c/0x90
+[   38.712161]  handle_irq_event+0x4c/0xd0
+[   38.716008]  handle_fasteoi_irq+0xbc/0x170
+[   38.720115]  generic_handle_irq+0x2c/0x40
+[   38.724135]  __handle_domain_irq+0x68/0xc0
+[   38.728243]  gic_handle_irq+0xc8/0x160
+[   38.732000]  el1_irq+0xb8/0x180
+[   38.735149]  spi_nor_spimem_read_data+0xe0/0x140
+[   38.739779]  spi_nor_read+0xc4/0x120
+[   38.743364]  mtd_read_oob+0xa8/0xc0
+[   38.746860]  mtd_read+0x4c/0x80
+[   38.750007]  mtdchar_read+0x108/0x2a0
+[   38.753679]  __vfs_read+0x20/0x50
+[   38.757002]  vfs_read+0xa4/0x190
+[   38.760237]  ksys_read+0x6c/0xf0
+[   38.763471]  __arm64_sys_read+0x20/0x30
+[   38.767319]  el0_svc_common.constprop.3+0x90/0x160
+[   38.772125]  do_el0_svc+0x28/0x90
+[   38.775449]  el0_sync_handler+0x118/0x190
+[   38.779468]  el0_sync+0x140/0x180
+[   38.782793] Code: 91000294 1400000f d50339bf f9405e80 (f90002c0)
+[   38.788910] ---[ end trace 55da560db4d6bef7 ]---
+[   38.793540] Kernel panic - not syncing: Fatal exception in interrupt
+[   38.799914] SMP: stopping secondary CPUs
+[   38.803849] Kernel Offset: disabled
+[   38.807344] CPU features: 0x10002,20006008
+[   38.811451] Memory Limit: none
+[   38.814513] ---[ end Kernel panic - not syncing: Fatal exception in 
+interrupt ]---
+
+
+
+In DMA mode one byte writes seem to work. But at least 5 byte writes do 
+not:
+
+# echo -ne '\x00' > /dev/mtd10
+# echo 'huhu' > /dev/mtd10
+[   34.275383] fsl-dspi 2120000.spi: DMA tx timeout
+[   34.280035] fsl-dspi 2120000.spi: DMA transfer failed
+[   34.285116] fsl-dspi 2120000.spi: Waiting for transfer to complete 
+failed!
+[   34.292029] spi_master spi2: failed to transfer one message from 
+queue
+sh: write error: Connection timed out
+#
+
+Vladimir, what kind of SPI device do you have to test?
+
+-michael
+
+
+
+> 
+> Vladimir Oltean (6):
+>   spi: spi-fsl-dspi: Don't access reserved fields in SPI_MCR
+>   spi: spi-fsl-dspi: Fix little endian access to PUSHR CMD and TXDATA
+>   spi: spi-fsl-dspi: Fix oper_word_size of zero for DMA mode
+>   spi: spi-fsl-dspi: Add support for LS1028A
+>   arm64: dts: ls1028a: Specify the DMA channels for the DSPI 
+> controllers
+>   arm64: dts: ls1028a-rdb: Add a spidev node for the mikroBUS
+> 
+>  .../boot/dts/freescale/fsl-ls1028a-rdb.dts    | 14 ++++++
+>  .../arm64/boot/dts/freescale/fsl-ls1028a.dtsi |  6 +++
+>  drivers/spi/spi-fsl-dspi.c                    | 50 +++++++++++++++----
+>  3 files changed, 60 insertions(+), 10 deletions(-)

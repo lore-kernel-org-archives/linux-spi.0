@@ -1,7 +1,7 @@
 From: Vladimir Oltean <olteanv@gmail.com>
-Subject: [PATCH v3 5/7] spi: spi-fsl-dspi: Add support for LS1028A
-Date: Tue, 10 Mar 2020 14:55:40 +0200
-Message-ID: <20200310125542.5939-6-olteanv@gmail.com>
+Subject: [PATCH v3 6/7] arm64: dts: ls1028a: Specify the DMA channels for the DSPI controllers
+Date: Tue, 10 Mar 2020 14:55:41 +0200
+Message-ID: <20200310125542.5939-7-olteanv@gmail.com>
 References: <20200310125542.5939-1-olteanv@gmail.com>
 Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         shawnguo@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
@@ -16,65 +16,52 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-This is similar to the DSPI instantiation on LS1028A, except that:
- - The A-011218 erratum has been fixed, so DMA works
- - The endianness is different, which has implications on XSPI mode
-
-Some benchmarking with the following command:
-
-spidev_test --device /dev/spidev2.0 --bpw 8 --size 256 --cpha --iter 10000000 --speed 20000000
-
-shows that in DMA mode, it can achieve around 2400 kbps, and in XSPI
-mode, the same command goes up to 4700 kbps. This is somewhat to be
-expected, since the DMA buffer size is extremely small at 8 bytes, the
-winner becomes whomever can prepare the buffers for transmission
-quicker, and DMA mode has higher overhead there. So XSPI FIFO mode has
-been chosen as the operating mode for this chip.
+LS1028A has a functional connection to the eDMA module. Even if the
+spi-fsl-dspi.c driver is not using DMA for LS1028A now, define the slots
+in the DMAMUX for connecting the eDMA channels to the 3 DSPI
+controllers.
 
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
 Changes in v3:
-Removed the dma_bufsize variable (obsoleted by 4/7).
+None.
 
 Changes in v2:
-Switch to DSPI_XSPI_MODE.
+None.
 
- drivers/spi/spi-fsl-dspi.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 8f5d18dc78d5..fd1f04b996f7 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -124,6 +124,7 @@ struct fsl_dspi_devtype_data {
- enum {
- 	LS1021A,
- 	LS1012A,
-+	LS1028A,
- 	LS1043A,
- 	LS1046A,
- 	LS2080A,
-@@ -151,6 +152,11 @@ static const struct fsl_dspi_devtype_data devtype_data[] = {
- 		.max_clock_factor	= 8,
- 		.fifo_size		= 16,
- 	},
-+	[LS1028A] = {
-+		.trans_mode		= DSPI_XSPI_MODE,
-+		.max_clock_factor	= 8,
-+		.fifo_size		= 4,
-+	},
- 	[LS1043A] = {
- 		/* Has A-011218 DMA erratum */
- 		.trans_mode		= DSPI_XSPI_MODE,
-@@ -1112,6 +1118,9 @@ static const struct of_device_id fsl_dspi_dt_ids[] = {
- 	}, {
- 		.compatible = "fsl,ls1012a-dspi",
- 		.data = &devtype_data[LS1012A],
-+	}, {
-+		.compatible = "fsl,ls1028a-dspi",
-+		.data = &devtype_data[LS1028A],
- 	}, {
- 		.compatible = "fsl,ls1043a-dspi",
- 		.data = &devtype_data[LS1043A],
+diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
+index 515e0a1b934f..18155273a46e 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
++++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
+@@ -298,6 +298,8 @@
+ 			interrupts = <GIC_SPI 26 IRQ_TYPE_LEVEL_HIGH>;
+ 			clock-names = "dspi";
+ 			clocks = <&clockgen 4 1>;
++			dmas = <&edma0 0 62>, <&edma0 0 60>;
++			dma-names = "tx", "rx";
+ 			spi-num-chipselects = <4>;
+ 			little-endian;
+ 			status = "disabled";
+@@ -311,6 +313,8 @@
+ 			interrupts = <GIC_SPI 26 IRQ_TYPE_LEVEL_HIGH>;
+ 			clock-names = "dspi";
+ 			clocks = <&clockgen 4 1>;
++			dmas = <&edma0 0 58>, <&edma0 0 56>;
++			dma-names = "tx", "rx";
+ 			spi-num-chipselects = <4>;
+ 			little-endian;
+ 			status = "disabled";
+@@ -324,6 +328,8 @@
+ 			interrupts = <GIC_SPI 26 IRQ_TYPE_LEVEL_HIGH>;
+ 			clock-names = "dspi";
+ 			clocks = <&clockgen 4 1>;
++			dmas = <&edma0 0 54>, <&edma0 0 2>;
++			dma-names = "tx", "rx";
+ 			spi-num-chipselects = <3>;
+ 			little-endian;
+ 			status = "disabled";
 -- 
 2.17.1

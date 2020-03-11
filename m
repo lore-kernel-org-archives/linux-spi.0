@@ -1,7 +1,7 @@
 From: Robin Gong <yibin.gong-3arQi8VN3Tc@public.gmane.org>
-Subject: [PATCH v7 03/13] Revert "dmaengine: imx-sdma: fix context cache"
-Date: Thu, 12 Mar 2020 00:36:26 +0800
-Message-ID: <1583944596-23410-4-git-send-email-yibin.gong@nxp.com>
+Subject: [PATCH v7 04/13] Revert "dmaengine: imx-sdma: refine to load context only once"
+Date: Thu, 12 Mar 2020 00:36:27 +0800
+Message-ID: <1583944596-23410-5-git-send-email-yibin.gong@nxp.com>
 References: <1583944596-23410-1-git-send-email-yibin.gong@nxp.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -19,25 +19,52 @@ In-Reply-To: <1583944596-23410-1-git-send-email-yibin.gong-3arQi8VN3Tc@public.gm
 Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This reverts commit d288bddd8374e0a043ac9dde64a1ae6a09411d74, since
-'context_loaded' finally removed.
+This reverts commit ad0d92d7ba6aecbe2705907c38ff8d8be4da1e9c, because
+in spi-imx case, burst length may be changed dynamically.
 
 Signed-off-by: Robin Gong <yibin.gong-3arQi8VN3Tc@public.gmane.org>
 ---
- drivers/dma/imx-sdma.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/dma/imx-sdma.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
 diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
-index 4d4477d..3d4aac9 100644
+index 3d4aac9..397f11d 100644
 --- a/drivers/dma/imx-sdma.c
 +++ b/drivers/dma/imx-sdma.c
-@@ -1338,7 +1338,6 @@ static void sdma_free_chan_resources(struct dma_chan *chan)
+@@ -377,7 +377,6 @@ struct sdma_channel {
+ 	unsigned long			watermark_level;
+ 	u32				shp_addr, per_addr;
+ 	enum dma_status			status;
+-	bool				context_loaded;
+ 	struct imx_dma_data		data;
+ 	struct work_struct		terminate_worker;
+ };
+@@ -984,9 +983,6 @@ static int sdma_load_context(struct sdma_channel *sdmac)
+ 	int ret;
+ 	unsigned long flags;
  
- 	sdmac->event_id0 = 0;
- 	sdmac->event_id1 = 0;
+-	if (sdmac->context_loaded)
+-		return 0;
+-
+ 	if (sdmac->direction == DMA_DEV_TO_MEM)
+ 		load_address = sdmac->pc_from_device;
+ 	else if (sdmac->direction == DMA_DEV_TO_DEV)
+@@ -1029,8 +1025,6 @@ static int sdma_load_context(struct sdma_channel *sdmac)
+ 
+ 	spin_unlock_irqrestore(&sdma->channel_0_lock, flags);
+ 
+-	sdmac->context_loaded = true;
+-
+ 	return ret;
+ }
+ 
+@@ -1069,7 +1063,6 @@ static void sdma_channel_terminate_work(struct work_struct *work)
+ 	vchan_get_all_descriptors(&sdmac->vc, &head);
+ 	spin_unlock_irqrestore(&sdmac->vc.lock, flags);
+ 	vchan_dma_desc_free_list(&sdmac->vc, &head);
 -	sdmac->context_loaded = false;
+ }
  
- 	sdma_set_channel_priority(sdmac, 0);
- 
+ static int sdma_terminate_all(struct dma_chan *chan)
 -- 
 2.7.4

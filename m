@@ -1,40 +1,52 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [RESEND v6  08/13] spi: imx: add new i.mx6ul compatible name in
+From: Robin Gong <yibin.gong@nxp.com>
+Subject: RE: [RESEND v6  08/13] spi: imx: add new i.mx6ul compatible name in
  binding doc
-Date: Tue, 10 Mar 2020 13:41:03 -0500
-Message-ID: <20200310184103.GA2192@bogus>
+Date: Wed, 11 Mar 2020 03:22:33 +0000
+Message-ID: <VE1PR04MB6638FF9C3ED1A93FD5A6C2C289FC0@VE1PR04MB6638.eurprd04.prod.outlook.com>
 References: <1583839922-22699-1-git-send-email-yibin.gong@nxp.com>
  <1583839922-22699-9-git-send-email-yibin.gong@nxp.com>
+ <20200310184103.GA2192@bogus>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, vkoul-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-        mark.rutland-5wv7dgnIgG8@public.gmane.org, catalin.marinas-5wv7dgnIgG8@public.gmane.org, will.deacon-5wv7dgnIgG8@public.gmane.org,
-        l.stach-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, martin.fuzzey-X8SyT9posyX3d/wEbhiU/g@public.gmane.org,
-        kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-imx-3arQi8VN3Tc@public.gmane.org, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Robin Gong <yibin.gong-3arQi8VN3Tc@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1583839922-22699-9-git-send-email-yibin.gong-3arQi8VN3Tc@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Cc: "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "vkoul@kernel.org" <vkoul@kernel.org>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "festevam@gmail.com" <festevam@gmail.com>,
+        "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "will.deacon@arm.com" <will.deacon@arm.com>,
+        "l.stach@pengutronix.de" <l.stach@pengutronix.de>,
+        "martin.fuzzey@flowbird.group" <martin.fuzzey@flowbird.group>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-arm-kernel@lists.i
+To: Rob Herring <robh@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20200310184103.GA2192@bogus>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 10 Mar 2020 19:31:57 +0800, Robin Gong wrote:
-> ERR009165 fixed from i.mx6ul, add its compatible name in binding doc.
-> 
-> Signed-off-by: Robin Gong <yibin.gong-3arQi8VN3Tc@public.gmane.org>
-> Acked-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> ---
->  Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt | 1 +
->  1 file changed, 1 insertion(+)
-> 
-
-Please add Acked-by/Reviewed-by tags when posting new versions. However,
-there's no need to repost patches *only* to add the tags. The upstream
-maintainer will do that for acks received on the version they apply.
-
-If a tag was not added on purpose, please state why and what changed.
+On 2020/03/11 Rob Herring <robh@kernel.org> wrote:
+> On Tue, 10 Mar 2020 19:31:57 +0800, Robin Gong wrote:
+> > ERR009165 fixed from i.mx6ul, add its compatible name in binding doc.
+> >
+> > Signed-off-by: Robin Gong <yibin.gong@nxp.com>
+> > Acked-by: Mark Brown <broonie@kernel.org>
+> > ---
+> >  Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+>=20
+> Please add Acked-by/Reviewed-by tags when posting new versions. However,
+> there's no need to repost patches *only* to add the tags. The upstream
+> maintainer will do that for acks received on the version they apply.
+>=20
+> If a tag was not added on purpose, please state why and what changed.
+Sorry, Rob, I forgot to add your reviewed tag on v5, will add it back incid=
+entally in v7.

@@ -1,22 +1,28 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: Stop selecting MTD_SPI_NOR for SPI_HISI_SFC_V3XX" to the spi tree
-Date: Wed, 11 Mar 2020 18:35:31 +0000
-Message-ID: <applied-1583948115-239907-1-git-send-email-john.garry@huawei.com>
-References: <1583948115-239907-1-git-send-email-john.garry@huawei.com>
-Cc: broonie@kernel.org, chenxiang66@hisilicon.com, joe@perches.com,
-        linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-next@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, rdunlap@infradead.org,
-        sfr@canb.auug.org.au, Tudor.Ambarus@microchip.com
-To: John Garry <john.garry@huawei.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1583948115-239907-1-git-send-email-john.garry@huawei.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "dt-bindings: convert mtk-quadspi binding doc for spi-mtk-nor" to the spi tree
+Date: Wed, 11 Mar 2020 18:35:40 +0000
+Message-ID: <applied-20200306085052.28258-4-gch981213@gmail.com>
+References: <20200306085052.28258-4-gch981213@gmail.com>
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mediatek-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Miquel Raynal <miquel.raynal-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>,
+        "moderated list:ARM/Mediatek SoC, open list
+        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Richard Weinberger <richard-/L3Ra7n9ekc@public.gmane.org>, Rob
+        Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, support"
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        Tudor Ambarus <tudor.ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
+        Vignesh Raghavendra <vigneshr-l0cyMroinI0@public.gmane.org>
+To: Chuanhong Guo <gch981213-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200306085052.28258-4-gch981213-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 The patch
 
-   spi: Stop selecting MTD_SPI_NOR for SPI_HISI_SFC_V3XX
+   dt-bindings: convert mtk-quadspi binding doc for spi-mtk-nor
 
 has been applied to the spi tree at
 
@@ -41,42 +47,76 @@ to this mail.
 Thanks,
 Mark
 
->From caef2df1137adcea48b0902f310f4639b846e3a1 Mon Sep 17 00:00:00 2001
-From: John Garry <john.garry@huawei.com>
-Date: Thu, 12 Mar 2020 01:35:15 +0800
-Subject: [PATCH] spi: Stop selecting MTD_SPI_NOR for SPI_HISI_SFC_V3XX
+>From efe72129f32cac0dee5a221399813b620e310b32 Mon Sep 17 00:00:00 2001
+From: Chuanhong Guo <gch981213-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Date: Fri, 6 Mar 2020 16:50:51 +0800
+Subject: [PATCH] dt-bindings: convert mtk-quadspi binding doc for spi-mtk-nor
 
-By selecting MTD_SPI_NOR for SPI_HISI_SFC_V3XX, we may introduce unmet
-dependencies:
+spi-mtk-nor is a driver to replace mtk-quadspi and they have almost
+the same device-tree bindings. Reuse this binding documentation and
+convert it for new driver:
 
-WARNING: unmet direct dependencies detected for MTD_SPI_NOR
-  Depends on [m]: MTD [=m] && SPI_MASTER [=y]
-  Selected by [y]:
-  - SPI_HISI_SFC_V3XX [=y] && SPI [=y] && SPI_MASTER [=y] && (ARM64 && ACPI [=y] || COMPILE_TEST [=y]) && HAS_IOMEM [=y]
+1. "Mediatek SoCs" -> "Mediatek ARM SoCs" because MTK MIPS SoCs
+   use different controllers.
+2. document "interrupts" as a required property because it's
+   available on all SoCs with this controller and new driver takes
+   advantages of it. It's implemented as optional only to maintain
+   backward compatibility.
+3. add a dummy interrupt binding in example.
 
-Since MTD_SPI_NOR is only selected by SPI_HISI_SFC_V3XX for practical
-reasons - slave devices use the spi-nor driver, enabled by MTD_SPI_NOR -
-just drop it.
-
-Signed-off-by: John Garry <john.garry@huawei.com>
-
-Link: https://lore.kernel.org/r/1583948115-239907-1-git-send-email-john.garry@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Chuanhong Guo <gch981213-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Link: https://lore.kernel.org/r/20200306085052.28258-4-gch981213-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+ .../{mtd/mtk-quadspi.txt => spi/spi-mtk-nor.txt}  | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
+ rename Documentation/devicetree/bindings/{mtd/mtk-quadspi.txt => spi/spi-mtk-nor.txt} (75%)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 8ad267cb15cd..ad79454d8584 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -299,7 +299,6 @@ config SPI_HISI_SFC_V3XX
- 	tristate "HiSilicon SPI-NOR Flash Controller for Hi16XX chipsets"
- 	depends on (ARM64 && ACPI) || COMPILE_TEST
- 	depends on HAS_IOMEM
--	select MTD_SPI_NOR
- 	help
- 	  This enables support for HiSilicon v3xx SPI-NOR flash controller
- 	  found in hi16xx chipsets.
+diff --git a/Documentation/devicetree/bindings/mtd/mtk-quadspi.txt b/Documentation/devicetree/bindings/spi/spi-mtk-nor.txt
+similarity index 75%
+rename from Documentation/devicetree/bindings/mtd/mtk-quadspi.txt
+rename to Documentation/devicetree/bindings/spi/spi-mtk-nor.txt
+index a12e3b5c495d..984ae7fd4f94 100644
+--- a/Documentation/devicetree/bindings/mtd/mtk-quadspi.txt
++++ b/Documentation/devicetree/bindings/spi/spi-mtk-nor.txt
+@@ -1,4 +1,4 @@
+-* Serial NOR flash controller for MediaTek SoCs
++* Serial NOR flash controller for MediaTek ARM SoCs
+ 
+ Required properties:
+ - compatible: 	  For mt8173, compatible should be "mediatek,mt8173-nor",
+@@ -13,6 +13,7 @@ Required properties:
+ 		  "mediatek,mt7629-nor", "mediatek,mt8173-nor"
+ 		  "mediatek,mt8173-nor"
+ - reg: 		  physical base address and length of the controller's register
++- interrupts:	  Interrupt number used by the controller.
+ - clocks: 	  the phandle of the clocks needed by the nor controller
+ - clock-names: 	  the names of the clocks
+ 		  the clocks should be named "spi" and "sf". "spi" is used for spi bus,
+@@ -22,20 +23,16 @@ Required properties:
+ - #address-cells: should be <1>
+ - #size-cells:	  should be <0>
+ 
+-The SPI flash must be a child of the nor_flash node and must have a
+-compatible property. Also see jedec,spi-nor.txt.
+-
+-Required properties:
+-- compatible:	  May include a device-specific string consisting of the manufacturer
+-		  and name of the chip. Must also include "jedec,spi-nor" for any
+-		  SPI NOR flash that can be identified by the JEDEC READ ID opcode (0x9F).
+-- reg :		  Chip-Select number
++There should be only one spi slave device following generic spi bindings.
++It's not recommended to use this controller for devices other than SPI NOR
++flash due to limited transfer capability of this controller.
+ 
+ Example:
+ 
+ nor_flash: spi@1100d000 {
+ 	compatible = "mediatek,mt8173-nor";
+ 	reg = <0 0x1100d000 0 0xe0>;
++	interrupts = <&spi_flash_irq>;
+ 	clocks = <&pericfg CLK_PERI_SPI>,
+ 		 <&topckgen CLK_TOP_SPINFI_IFR_SEL>;
+ 	clock-names = "spi", "sf";
 -- 
 2.20.1

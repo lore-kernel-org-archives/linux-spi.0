@@ -1,73 +1,44 @@
-From: Akash Asthana <akashast@codeaurora.org>
-Subject: Re: [PATCH 0/6] Add interconnect support to UART, I2C, SPI and QSPI
-Date: Wed, 11 Mar 2020 18:32:44 +0530
-Message-ID: <9e0afe90-5480-2db5-48fb-39cd8db6e8d1@codeaurora.org>
-References: <1581946205-27189-1-git-send-email-akashast@codeaurora.org>
- <20200309175954.GX24720@google.com>
+From: John Garry <john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: Stop selecting MTD_SPI_NOR for SPI_HISI_SFC_V3XX
+Date: Thu, 12 Mar 2020 01:35:15 +0800
+Message-ID: <1583948115-239907-1-git-send-email-john.garry@huawei.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Cc: gregkh@linuxfoundation.org, agross@kernel.org,
-        bjorn.andersson@linaro.org, wsa@the-dreams.de, broonie@kernel.org,
-        mark.rutland@arm.com, robh+dt@kernel.org,
-        linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, swboyd@chromium.org,
-        mgautam@codeaurora.org, linux-arm-msm@vger.kernel.org,
-        linux-serial@vger.kernel.org, dianders@chromium.org,
-        evgreen@chromium.org
-To: Matthias Kaehlcke <mka@chromium.org>
-Return-path: <linux-serial-owner@vger.kernel.org>
-In-Reply-To: <20200309175954.GX24720@google.com>
-Content-Language: en-US
-Sender: linux-serial-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+        <linux-next-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <joe-6d6DIl74uiNBDgjK7y7TUQ@public.gmane.org>,
+        <Tudor.Ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>, <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>,
+        <chenxiang66-C8/M+/jPZTeaMJb+Lgu22Q@public.gmane.org>, John Garry <john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+By selecting MTD_SPI_NOR for SPI_HISI_SFC_V3XX, we may introduce unmet
+dependencies:
 
-On 3/9/2020 11:29 PM, Matthias Kaehlcke wrote:
-> Hi Akash,
->
-> do you plan to re-spin this series in the near future?
->
-> Thanks
->
-> Matthias
+WARNING: unmet direct dependencies detected for MTD_SPI_NOR
+  Depends on [m]: MTD [=m] && SPI_MASTER [=y]
+  Selected by [y]:
+  - SPI_HISI_SFC_V3XX [=y] && SPI [=y] && SPI_MASTER [=y] && (ARM64 && ACPI [=y] || COMPILE_TEST [=y]) && HAS_IOMEM [=y]
 
-Hi  Matthias,
+Since MTD_SPI_NOR is only selected by SPI_HISI_SFC_V3XX for practical
+reasons - slave devices use the spi-nor driver, enabled by MTD_SPI_NOR -
+just drop it.
 
-I will re-spin the series by 3/13.
+Signed-off-by: John Garry <john.garry-hv44wF8Li93QT0dZR+AlfA@public.gmane.org>
 
-Regards,
-
-Akash
-
->
-> On Mon, Feb 17, 2020 at 06:59:59PM +0530, Akash Asthana wrote:
->> dt-binding patch for UART, I2C and SPI.
->>   - https://patchwork.kernel.org/patch/11385965/ [Convert QUP bindings
->> 	to YAML and add ICC, pin swap doc]
->>
->> dt-binding patch for QSPI.
->>   - https://patchwork.kernel.org/cover/11386003/ [Convert QSPI binding
->> 	to YAML and add interconnect doc]
->>
->> Akash Asthana (6):
->>    soc: qcom: geni: Support for ICC voting
->>    tty: serial: qcom_geni_serial: Add interconnect support
->>    i2c: i2c-qcom-geni: Add interconnect support
->>    spi: spi-geni-qcom: Add interconnect support
->>    spi: spi-qcom-qspi: Add interconnect support
->>    arm64: dts: sc7180: Add interconnect for QUP and QSPI
->>
->>   arch/arm64/boot/dts/qcom/sc7180.dtsi  | 199 ++++++++++++++++++++++++++++++++++
->>   drivers/i2c/busses/i2c-qcom-geni.c    |  84 +++++++++++++-
->>   drivers/spi/spi-geni-qcom.c           |  65 ++++++++++-
->>   drivers/spi/spi-qcom-qspi.c           |  38 ++++++-
->>   drivers/tty/serial/qcom_geni_serial.c |  84 ++++++++++++--
->>   include/linux/qcom-geni-se.h          |  31 ++++++
->>   6 files changed, 481 insertions(+), 20 deletions(-)
->>
->> -- 
->> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,\na Linux Foundation Collaborative Project
-
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 66c6c0d77ea7..ad1a2547a414 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -299,7 +299,6 @@ config SPI_HISI_SFC_V3XX
+ 	tristate "HiSilicon SPI-NOR Flash Controller for Hi16XX chipsets"
+ 	depends on (ARM64 && ACPI) || COMPILE_TEST
+ 	depends on HAS_IOMEM
+-	select MTD_SPI_NOR
+ 	help
+ 	  This enables support for HiSilicon v3xx SPI-NOR flash controller
+ 	  found in hi16xx chipsets.
 -- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,\na Linux Foundation Collaborative Project
+2.17.1

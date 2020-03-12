@@ -1,19 +1,21 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: acpi: remove superfluous parameter check" to the spi tree
-Date: Thu, 12 Mar 2020 17:38:51 +0000
-Message-ID: <applied-20200312134507.10000-1-wsa@the-dreams.de>
-References: <20200312134507.10000-1-wsa@the-dreams.de>
-Cc: linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200312134507.10000-1-wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Subject: Applied "spi: dt-bindings: amlogic, meson-gx-spicc: add Amlogic G12A compatible" to the spi tree
+Date: Thu, 12 Mar 2020 17:38:55 +0000
+Message-ID: <applied-20200312133131.26430-9-narmstrong@baylibre.com>
+References: <20200312133131.26430-9-narmstrong@baylibre.com>
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-amlogic-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200312133131.26430-9-narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
 The patch
 
-   spi: acpi: remove superfluous parameter check
+   spi: dt-bindings: amlogic, meson-gx-spicc: add Amlogic G12A compatible
 
 has been applied to the spi tree at
 
@@ -38,38 +40,61 @@ to this mail.
 Thanks,
 Mark
 
->From 5b16668e638c61a9cd4dffaa41d8b3b6f53f6b3a Mon Sep 17 00:00:00 2001
-From: Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>
-Date: Thu, 12 Mar 2020 14:45:07 +0100
-Subject: [PATCH] spi: acpi: remove superfluous parameter check
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+>From 9ea7db818d9dcbbde581925b82bbe259e1926e20 Mon Sep 17 00:00:00 2001
+From: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Date: Thu, 12 Mar 2020 14:31:30 +0100
+Subject: [PATCH] spi: dt-bindings: amlogic, meson-gx-spicc: add Amlogic G12A
+ compatible
 
-to_spi_device() already checks 'dev'. No need to do it before calling
-it.
+The Amlogic G12A SPICC controllers uses a secondary clock used to feed the
+baud rate generator and the delay control logic.
 
-Signed-off-by: Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>
-Reviewed-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas-1zkq55x86MTxsAP9Fp7wbw@public.gmane.org>
-Link: https://lore.kernel.org/r/20200312134507.10000-1-wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org
+Signed-off-by: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Link: https://lore.kernel.org/r/20200312133131.26430-9-narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org
 Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../bindings/spi/amlogic,meson-gx-spicc.yaml  | 22 +++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index f6f6b2a0c81c..0996d238f61e 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -4028,7 +4028,7 @@ static struct spi_device *acpi_spi_find_device_by_adev(struct acpi_device *adev)
- 	struct device *dev;
+diff --git a/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml b/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
+index 49b617c98ae7..9147df29022a 100644
+--- a/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
++++ b/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
+@@ -22,6 +22,7 @@ properties:
+     enum:
+       - amlogic,meson-gx-spicc # SPICC controller on Amlogic GX and compatible SoCs
+       - amlogic,meson-axg-spicc # SPICC controller on Amlogic AXG and compatible SoCs
++      - amlogic,meson-g12a-spicc # SPICC controller on Amlogic G12A and compatible SoCs
  
- 	dev = bus_find_device_by_acpi_dev(&spi_bus_type, adev);
--	return dev ? to_spi_device(dev) : NULL;
-+	return to_spi_device(dev);
- }
+   interrupts:
+     maxItems: 1
+@@ -40,6 +41,27 @@ properties:
+     items:
+       - const: core
  
- static int acpi_spi_notify(struct notifier_block *nb, unsigned long value,
++if:
++  properties:
++    compatible:
++      contains:
++        enum:
++          - amlogic,meson-g12a-spicc
++
++then:
++  properties:
++    clocks:
++      contains:
++        items:
++          - description: controller register bus clock
++          - description: baud rate generator and delay control clock
++
++    clock-names:
++      minItems: 2
++      items:
++        - const: core
++        - const: pclk
++
+ required:
+   - compatible
+   - reg
 -- 
 2.20.1

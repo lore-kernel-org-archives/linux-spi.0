@@ -1,61 +1,76 @@
-From: Niklas =?iso-8859-1?Q?S=F6derlund?=
-        <niklas.soderlund-1zkq55x86MTxsAP9Fp7wbw@public.gmane.org>
-Subject: Re: [PATCH] spi: acpi: remove superfluous parameter check
-Date: Thu, 12 Mar 2020 15:28:41 +0100
-Message-ID: <20200312142841.GC791432@oden.dyn.berto.se>
-References: <20200312134507.10000-1-wsa@the-dreams.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: spi-nxp-fspi: Fix a NULL vs IS_ERR() check in probe" to the spi tree
+Date: Thu, 12 Mar 2020 16:52:37 +0000
+Message-ID: <applied-20200312113154.GC20562@mwanda>
+References: <20200312113154.GC20562@mwanda>
+Cc: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Ashish Kumar <ashish.kumar-3arQi8VN3Tc@public.gmane.org>, Han Xu <han.xu-3arQi8VN3Tc@public.gmane.org>,
+        kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>
-To: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+        Yogesh Gaur <yogeshgaur.83-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20200312134507.10000-1-wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+In-Reply-To: <20200312113154.GC20562@mwanda>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Wolfram,
+The patch
 
-Thanks for your work.
+   spi: spi-nxp-fspi: Fix a NULL vs IS_ERR() check in probe
 
-On 2020-03-12 14:45:07 +0100, Wolfram Sang wrote:
-> From: Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>
-> 
-> to_spi_device() already checks 'dev'. No need to do it before calling
-> it.
-> 
-> Signed-off-by: Wolfram Sang <wsa+renesas-jBu1N2QxHDJrcw3mvpCnnVaTQe2KTcn/@public.gmane.org>
+has been applied to the spi tree at
 
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas-1zkq55x86MTxsAP9Fp7wbw@public.gmane.org>
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
 
-> ---
-> 
-> Found while fiddling with bus_find_device_by_acpi_dev() in the I2C
-> subsystem.
-> 
->  drivers/spi/spi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 755221bc3745..75978b6c5834 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -4034,7 +4034,7 @@ static struct spi_device *acpi_spi_find_device_by_adev(struct acpi_device *adev)
->  	struct device *dev;
->  
->  	dev = bus_find_device_by_acpi_dev(&spi_bus_type, adev);
-> -	return dev ? to_spi_device(dev) : NULL;
-> +	return to_spi_device(dev);
->  }
->  
->  static int acpi_spi_notify(struct notifier_block *nb, unsigned long value,
-> -- 
-> 2.20.1
-> 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 1a421ebab6bb5bf65001743ba9fef48e94fb345a Mon Sep 17 00:00:00 2001
+From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Date: Thu, 12 Mar 2020 14:31:54 +0300
+Subject: [PATCH] spi: spi-nxp-fspi: Fix a NULL vs IS_ERR() check in probe
+
+The platform_get_resource_byname() function returns NULL on error, it
+doesn't return error pointers.
+
+Fixes: d166a73503ef ("spi: fspi: dynamically alloc AHB memory")
+Signed-off-by: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Link: https://lore.kernel.org/r/20200312113154.GC20562@mwanda
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-nxp-fspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index 019f40e2917c..1ccda82da206 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -1019,8 +1019,8 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 
+ 	/* find the resources - controller memory mapped space */
+ 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "fspi_mmap");
+-	if (IS_ERR(res)) {
+-		ret = PTR_ERR(res);
++	if (!res) {
++		ret = -ENODEV;
+ 		goto err_put_ctrl;
+ 	}
+ 
 -- 
-Regards,
-Niklas Söderlund
+2.20.1

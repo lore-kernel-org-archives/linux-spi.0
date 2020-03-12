@@ -1,71 +1,45 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: meson-spicc: remove unused variables" to the spi tree
-Date: Thu, 12 Mar 2020 17:39:31 +0000
-Message-ID: <applied-20200312133131.26430-2-narmstrong@baylibre.com>
-References: <20200312133131.26430-2-narmstrong@baylibre.com>
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-amlogic-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH] spi: spi-nxp-fspi: Fix a NULL vs IS_ERR() check in probe
+Date: Thu, 12 Mar 2020 20:47:41 +0300
+Message-ID: <20200312125016.GF11583@kadam>
+References: <20200312113154.GC20562@mwanda>
+ <CAHCN7xKSc7spZyq=mySWHDmSrGMkQo8FYRbn-NzYRa7iB-0BoQ@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Yogesh Gaur <yogeshgaur.83-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Han Xu <han.xu-3arQi8VN3Tc@public.gmane.org>,
+        Ashish Kumar <ashish.kumar-3arQi8VN3Tc@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200312133131.26430-2-narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAHCN7xKSc7spZyq=mySWHDmSrGMkQo8FYRbn-NzYRa7iB-0BoQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+On Thu, Mar 12, 2020 at 06:58:31AM -0500, Adam Ford wrote:
+> On Thu, Mar 12, 2020 at 6:32 AM Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org> wrote:
+> >
+> > The platform_get_resource_byname() function returns NULL on error, it
+> > doesn't return error pointers.
+> >
+> > Fixes: d166a73503ef ("spi: fspi: dynamically alloc AHB memory")
+> > Signed-off-by: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+> > ---
+> > The commit message for commit d166a73503ef ("spi: fspi: dynamically
+> > alloc AHB memory") is not very good.  Why is it necessary to allocate
+> > the AHB memory dynamically instead of during probe?  Also I suspect that
+> > Adam should have recieved authorship credit for that patch.
+> 
+> It wasn't my patch, I just pulled it in from NXP's repo.  The true
+> author is Han Xu.  When I pulled in the series from NXP, I found the
+> flexSPI on the i.MX8MM to become functional, and my company has a
+> board with a qspi flash on it.
 
-   spi: meson-spicc: remove unused variables
+You should have put your Signed-off-by after Han Xu's.  They should be
+in chronological order so whoever handles a patch adds their S-o-b to
+the end.
 
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From b9dfb20eed5c7dab37d6267a985dbe16df9e4293 Mon Sep 17 00:00:00 2001
-From: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Date: Thu, 12 Mar 2020 14:31:23 +0100
-Subject: [PATCH] spi: meson-spicc: remove unused variables
-
-Remove unused variables from spicc data struct.
-
-Signed-off-by: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Link: https://lore.kernel.org/r/20200312133131.26430-2-narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-meson-spicc.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
-index 7f5680fe2568..8425e5ae1273 100644
---- a/drivers/spi/spi-meson-spicc.c
-+++ b/drivers/spi/spi-meson-spicc.c
-@@ -130,9 +130,7 @@ struct meson_spicc_device {
- 	u8				*rx_buf;
- 	unsigned int			bytes_per_word;
- 	unsigned long			tx_remain;
--	unsigned long			txb_remain;
- 	unsigned long			rx_remain;
--	unsigned long			rxb_remain;
- 	unsigned long			xfer_remain;
- 	bool				is_burst_end;
- 	bool				is_last_burst;
--- 
-2.20.1
+regards,
+dan carpenter

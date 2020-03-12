@@ -1,45 +1,45 @@
-From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH] spi: spi-nxp-fspi: Fix a NULL vs IS_ERR() check in probe
-Date: Thu, 12 Mar 2020 20:47:41 +0300
-Message-ID: <20200312125016.GF11583@kadam>
-References: <20200312113154.GC20562@mwanda>
- <CAHCN7xKSc7spZyq=mySWHDmSrGMkQo8FYRbn-NzYRa7iB-0BoQ@mail.gmail.com>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v3 1/2] spi: dt-bindings: spi-controller: Fix
+ #address-cells for slave mode
+Date: Thu, 12 Mar 2020 14:16:52 -0500
+Message-ID: <20200312191652.GA14819@bogus>
+References: <20200306085038.8111-1-geert+renesas@glider.be>
+ <20200306085038.8111-2-geert+renesas@glider.be>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Yogesh Gaur <yogeshgaur.83-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Han Xu <han.xu-3arQi8VN3Tc@public.gmane.org>,
-        Ashish Kumar <ashish.kumar-3arQi8VN3Tc@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Adam Ford <aford173-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAHCN7xKSc7spZyq=mySWHDmSrGMkQo8FYRbn-NzYRa7iB-0BoQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20200306085038.8111-2-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Mar 12, 2020 at 06:58:31AM -0500, Adam Ford wrote:
-> On Thu, Mar 12, 2020 at 6:32 AM Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org> wrote:
-> >
-> > The platform_get_resource_byname() function returns NULL on error, it
-> > doesn't return error pointers.
-> >
-> > Fixes: d166a73503ef ("spi: fspi: dynamically alloc AHB memory")
-> > Signed-off-by: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
-> > ---
-> > The commit message for commit d166a73503ef ("spi: fspi: dynamically
-> > alloc AHB memory") is not very good.  Why is it necessary to allocate
-> > the AHB memory dynamically instead of during probe?  Also I suspect that
-> > Adam should have recieved authorship credit for that patch.
+On Fri,  6 Mar 2020 09:50:37 +0100, Geert Uytterhoeven wrote:
+> Currently, the DT bindings for an SPI controller specify that
+> "#address-cells" must be fixed to one.  However, that applies to an SPI
+> controller in master mode only.  When running in SPI slave mode,
+> "#address-cells" should not be specified.
 > 
-> It wasn't my patch, I just pulled it in from NXP's repo.  The true
-> author is Han Xu.  When I pulled in the series from NXP, I found the
-> flexSPI on the i.MX8MM to become functional, and my company has a
-> board with a qspi flash on it.
+> Fix this making "#address-cells" mutually-exclusive with "spi-slave".
+> 
+> Fixes: 0a1b929356830257 ("spi: Add YAML schemas for the generic SPI options")
+> Reported-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+> Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+> ---
+> v3:
+>   - Make #address-cells mutually-exclusive with spi-slave,
+> 
+> v2:
+>   - Use "enum: [0, 1]" instead of min/max limit,
+>   - use "- spi-slave" instead of "[ spi-slave ]".
+> ---
+>  Documentation/devicetree/bindings/spi/spi-controller.yaml | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
 
-You should have put your Signed-off-by after Han Xu's.  They should be
-in chronological order so whoever handles a patch adds their S-o-b to
-the end.
-
-regards,
-dan carpenter
+Reviewed-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>

@@ -1,56 +1,50 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: spi-nxp-fspi: Fix a NULL vs IS_ERR() check in probe
-Date: Thu, 12 Mar 2020 12:18:16 +0000
-Message-ID: <20200312121816.GC4038@sirena.org.uk>
-References: <20200312113154.GC20562@mwanda>
- <CAOMZO5CJ7G7yJZEEPfsm1P2SnrJ7kmOPmZCWiKwrvDZjPNOnWw@mail.gmail.com>
+From: Neil Armstrong <narmstrong@baylibre.com>
+Subject: [PATCH 0/9] spi: meson-spicc: add support for AXG and G12A variants
+Date: Thu, 12 Mar 2020 14:31:22 +0100
+Message-ID: <20200312133131.26430-1-narmstrong@baylibre.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="QRj9sO5tAVLaXnSD"
-Cc: Dan Carpenter <dan.carpenter@oracle.com>,
-        Yogesh Gaur <yogeshgaur.83@gmail.com>, Han Xu <han.xu@nxp.com>,
-        Adam Ford <aford173@gmail.com>,
-        Ashish Kumar <ashish.kumar@nxp.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-To: Fabio Estevam <festevam@gmail.com>
-Return-path: <kernel-janitors-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAOMZO5CJ7G7yJZEEPfsm1P2SnrJ7kmOPmZCWiKwrvDZjPNOnWw@mail.gmail.com>
-Sender: kernel-janitors-owner@vger.kernel.org
+Content-Transfer-Encoding: 8bit
+Cc: Neil Armstrong <narmstrong@baylibre.com>,
+        linux-spi@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+To: broonie@kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+The SPICC controller in Amlogic AXG & G12A is capable of driving the
+CLK/MOSI/SS signal lines through the idle state which avoid the signals
+floating in unexpected state, is capable of using linear clock divider
+to reach a much fine tuned range of clocks, while the old controller only
+uses a power of two clock divider, result at a more coarse clock range and
+finally is capable of running at 80M clock.
 
---QRj9sO5tAVLaXnSD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The SPICC controller in Amlogic G12A takes the source clock from a specific
+clock instead of the bus clock and has a different FIFO size and doesn't
+handle the RX Half interrupt the same way as GXL & AXG variants. Thus
+the burst management is simplified and takes in account a variable FIFO
+size.
 
-On Thu, Mar 12, 2020 at 09:11:44AM -0300, Fabio Estevam wrote:
-> On Thu, Mar 12, 2020 at 8:33 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+Now the controller can support frequencies higher than 30MHz, we need
+the setup the I/O line delays in regard of the SPI clock frequency.
 
-> > The commit message for commit d166a73503ef ("spi: fspi: dynamically
-> > alloc AHB memory") is not very good.  Why is it necessary to allocate
-> > the AHB memory dynamically instead of during probe?  Also I suspect that
+Neil Armstrong (7):
+  spi: meson-spicc: remove unused variables
+  spi: meson-spicc: support max 80MHz clock
+  spi: meson-spicc: add min sclk for each compatible
+  spi: meson-spicc: setup IO line delay
+  spi: meson-spicc: adapt burst handling for G12A support
+  dt-bindings: spi: amlogic,meson-gx-spicc: add Amlogic G12A compatible
+  spi: meson-spicc: add support for Amlogic G12A
 
-> Agreed and I made the same comment during review:
-> https://patchwork.kernel.org/patch/11361581/
+Sunny Luo (2):
+  spi: meson-spicc: enhance output enable feature
+  spi: meson-spicc: add a linear clock divider support
 
-Indeed.  There had been an earlier discussion of what it was doing IIRC
-but it didn't make it's way into the changelog.
+ .../bindings/spi/amlogic,meson-gx-spicc.yaml  |  22 +
+ drivers/spi/Kconfig                           |   1 +
+ drivers/spi/spi-meson-spicc.c                 | 496 +++++++++++++-----
+ 3 files changed, 392 insertions(+), 127 deletions(-)
 
---QRj9sO5tAVLaXnSD
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl5qKIcACgkQJNaLcl1U
-h9BqVAgAhEVYC3gX7h7lG4zaL2N7m2EahKxIbHvpVFZF1cfdBiKQgF8Mj7ARC9Ll
-rHHP0vQkgrHYVy5tmZJtF278eNq/QWAfgNOD17NDPiyd0HfL+tdnTmefLkSvzroE
-E2cVcXprfYn6sasUvW2EF5iufc3XSKBSV4UrSKFjGSiie+lNxIzFj765PQXvS9gt
-Va99+r5e5nTRRp3YUO/8cKTALx69BhK3qBFTAqG3HC9dWOxaftL3lxo8ppiKrrIO
-+D2/CSOPqU+3kLlqrMWXxVs/oJVWg2QneYZP8DU4AOLQ6HjFXnYlkETS4V6uXBKH
-0RcRBTtnwURqpgHOrIFN1ZcdlEmbAg==
-=oAWz
------END PGP SIGNATURE-----
-
---QRj9sO5tAVLaXnSD--
+-- 
+2.22.0

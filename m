@@ -1,76 +1,267 @@
-From: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH 4/9] spi: meson-spicc: support max 80MHz clock
-Date: Thu, 12 Mar 2020 14:31:26 +0100
-Message-ID: <20200312133131.26430-5-narmstrong@baylibre.com>
+From: Neil Armstrong <narmstrong@baylibre.com>
+Subject: [PATCH 7/9] spi: meson-spicc: adapt burst handling for G12A support
+Date: Thu, 12 Mar 2020 14:31:29 +0100
+Message-ID: <20200312133131.26430-8-narmstrong@baylibre.com>
 References: <20200312133131.26430-1-narmstrong@baylibre.com>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-amlogic-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Sunny Luo <sunny.luo-LpR1jeaWuhtBDgjK7y7TUQ@public.gmane.org>,
-        Yixun Lan <yixun.lan-LpR1jeaWuhtBDgjK7y7TUQ@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200312133131.26430-1-narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Neil Armstrong <narmstrong@baylibre.com>,
+        linux-spi@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+To: broonie@kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20200312133131.26430-1-narmstrong@baylibre.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The SPICC controller in Meson-AXG is capable of running at 80M clock.
-The ASIC IP is improved and the clock is actually running higher than
-previous old SoCs.
+The G12A SPICC controller variant has a different FIFO size and doesn't
+handle the RX Half interrupt the same way as GXL & AXG variants.
 
-Signed-off-by: Sunny Luo <sunny.luo-LpR1jeaWuhtBDgjK7y7TUQ@public.gmane.org>
-Signed-off-by: Yixun Lan <yixun.lan-LpR1jeaWuhtBDgjK7y7TUQ@public.gmane.org>
-Signed-off-by: Neil Armstrong <narmstrong-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+Thus simplify the burst management and take in account a variable FIFO
+size.
+
+Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
 ---
- drivers/spi/spi-meson-spicc.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/spi/spi-meson-spicc.c | 129 +++++++++++++---------------------
+ 1 file changed, 50 insertions(+), 79 deletions(-)
 
 diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
-index bd434d9055d9..710b4e780daa 100644
+index 4494a791f4a7..351ccd8dd2c2 100644
 --- a/drivers/spi/spi-meson-spicc.c
 +++ b/drivers/spi/spi-meson-spicc.c
-@@ -35,7 +35,6 @@
-  *   to have a CS go down over the full transfer
-  */
+@@ -141,12 +141,10 @@
+ #define writel_bits_relaxed(mask, val, addr) \
+ 	writel_relaxed((readl_relaxed(addr) & ~(mask)) | (val), addr)
  
--#define SPICC_MAX_FREQ	30000000
- #define SPICC_MAX_BURST	128
- 
- /* Register Map */
-@@ -132,6 +131,7 @@
- #define SPICC_FIFO_HALF 10
- 
+-#define SPICC_BURST_MAX	16
+-#define SPICC_FIFO_HALF 10
+-
  struct meson_spicc_data {
-+	unsigned int			max_speed_hz;
+ 	unsigned int			max_speed_hz;
+ 	unsigned int			min_speed_hz;
++	unsigned int			fifo_size;
  	bool				has_oen;
  	bool				has_enhance_clk_div;
  };
-@@ -693,11 +693,9 @@ static int meson_spicc_probe(struct platform_device *pdev)
- 	master->transfer_one = meson_spicc_transfer_one;
- 	master->use_gpio_descriptors = true;
+@@ -166,8 +164,6 @@ struct meson_spicc_device {
+ 	unsigned long			tx_remain;
+ 	unsigned long			rx_remain;
+ 	unsigned long			xfer_remain;
+-	bool				is_burst_end;
+-	bool				is_last_burst;
+ };
  
--	/* Setup max rate according to the Meson GX datasheet */
--	if ((rate >> 2) > SPICC_MAX_FREQ)
--		master->max_speed_hz = SPICC_MAX_FREQ;
--	else
--		master->max_speed_hz = rate >> 2;
-+	/* Setup max rate according to the Meson datasheet */
-+	master->max_speed_hz = min_t(unsigned int, rate >> 1,
-+				     spicc->data->max_speed_hz);
+ static void meson_spicc_oen_enable(struct meson_spicc_device *spicc)
+@@ -191,7 +187,7 @@ static inline bool meson_spicc_txfull(struct meson_spicc_device *spicc)
  
- 	meson_spicc_oen_enable(spicc);
- 
-@@ -737,9 +735,11 @@ static int meson_spicc_remove(struct platform_device *pdev)
+ static inline bool meson_spicc_rxready(struct meson_spicc_device *spicc)
+ {
+-	return FIELD_GET(SPICC_RH | SPICC_RR | SPICC_RF_EN,
++	return FIELD_GET(SPICC_RH | SPICC_RR | SPICC_RF,
+ 			 readl_relaxed(spicc->base + SPICC_STATREG));
  }
  
+@@ -246,34 +242,22 @@ static inline void meson_spicc_tx(struct meson_spicc_device *spicc)
+ 			       spicc->base + SPICC_TXDATA);
+ }
+ 
+-static inline u32 meson_spicc_setup_rx_irq(struct meson_spicc_device *spicc,
+-					   u32 irq_ctrl)
++static inline void meson_spicc_setup_burst(struct meson_spicc_device *spicc)
+ {
+-	if (spicc->rx_remain > SPICC_FIFO_HALF)
+-		irq_ctrl |= SPICC_RH_EN;
+-	else
+-		irq_ctrl |= SPICC_RR_EN;
+-
+-	return irq_ctrl;
+-}
+ 
+-static inline void meson_spicc_setup_burst(struct meson_spicc_device *spicc,
+-					   unsigned int burst_len)
+-{
++	unsigned int burst_len = min_t(unsigned int,
++				       spicc->xfer_remain /
++				       spicc->bytes_per_word,
++				       spicc->data->fifo_size);
+ 	/* Setup Xfer variables */
+ 	spicc->tx_remain = burst_len;
+ 	spicc->rx_remain = burst_len;
+ 	spicc->xfer_remain -= burst_len * spicc->bytes_per_word;
+-	spicc->is_burst_end = false;
+-	if (burst_len < SPICC_BURST_MAX || !spicc->xfer_remain)
+-		spicc->is_last_burst = true;
+-	else
+-		spicc->is_last_burst = false;
+ 
+ 	/* Setup burst length */
+ 	writel_bits_relaxed(SPICC_BURSTLENGTH_MASK,
+ 			FIELD_PREP(SPICC_BURSTLENGTH_MASK,
+-				burst_len),
++				burst_len - 1),
+ 			spicc->base + SPICC_CONREG);
+ 
+ 	/* Fill TX FIFO */
+@@ -283,61 +267,26 @@ static inline void meson_spicc_setup_burst(struct meson_spicc_device *spicc,
+ static irqreturn_t meson_spicc_irq(int irq, void *data)
+ {
+ 	struct meson_spicc_device *spicc = (void *) data;
+-	u32 ctrl = readl_relaxed(spicc->base + SPICC_INTREG);
+-	u32 stat = readl_relaxed(spicc->base + SPICC_STATREG) & ctrl;
+ 
+-	ctrl &= ~(SPICC_RH_EN | SPICC_RR_EN);
++	writel_bits_relaxed(SPICC_TC, SPICC_TC, spicc->base + SPICC_STATREG);
+ 
+ 	/* Empty RX FIFO */
+ 	meson_spicc_rx(spicc);
+ 
+-	/* Enable TC interrupt since we transferred everything */
+-	if (!spicc->tx_remain && !spicc->rx_remain) {
+-		spicc->is_burst_end = true;
+-
+-		/* Enable TC interrupt */
+-		ctrl |= SPICC_TC_EN;
+-
+-		/* Reload IRQ status */
+-		stat = readl_relaxed(spicc->base + SPICC_STATREG) & ctrl;
+-	}
+-
+-	/* Check transfer complete */
+-	if ((stat & SPICC_TC) && spicc->is_burst_end) {
+-		unsigned int burst_len;
+-
+-		/* Clear TC bit */
+-		writel_relaxed(SPICC_TC, spicc->base + SPICC_STATREG);
+-
+-		/* Disable TC interrupt */
+-		ctrl &= ~SPICC_TC_EN;
+-
+-		if (spicc->is_last_burst) {
+-			/* Disable all IRQs */
+-			writel(0, spicc->base + SPICC_INTREG);
+-
+-			spi_finalize_current_transfer(spicc->master);
++	if (!spicc->xfer_remain) {
++		/* Disable all IRQs */
++		writel(0, spicc->base + SPICC_INTREG);
+ 
+-			return IRQ_HANDLED;
+-		}
++		spi_finalize_current_transfer(spicc->master);
+ 
+-		burst_len = min_t(unsigned int,
+-				  spicc->xfer_remain / spicc->bytes_per_word,
+-				  SPICC_BURST_MAX);
+-
+-		/* Setup burst */
+-		meson_spicc_setup_burst(spicc, burst_len);
+-
+-		/* Restart burst */
+-		writel_bits_relaxed(SPICC_XCH, SPICC_XCH,
+-				    spicc->base + SPICC_CONREG);
++		return IRQ_HANDLED;
+ 	}
+ 
+-	/* Setup RX interrupt trigger */
+-	ctrl = meson_spicc_setup_rx_irq(spicc, ctrl);
++	/* Setup burst */
++	meson_spicc_setup_burst(spicc);
+ 
+-	/* Reconfigure interrupts */
+-	writel(ctrl, spicc->base + SPICC_INTREG);
++	/* Start burst */
++	writel_bits_relaxed(SPICC_XCH, SPICC_XCH, spicc->base + SPICC_CONREG);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -405,6 +354,28 @@ static void meson_spicc_setup_xfer(struct meson_spicc_device *spicc,
+ 	clk_set_rate(spicc->clk, xfer->speed_hz);
+ 
+ 	meson_spicc_auto_io_delay(spicc);
++
++	writel_relaxed(0, spicc->base + SPICC_DMAREG);
++}
++
++static void meson_spicc_reset_fifo(struct meson_spicc_device *spicc)
++{
++	u32 data;
++
++	if (spicc->data->has_oen)
++		writel_bits_relaxed(SPICC_ENH_MAIN_CLK_AO,
++				    SPICC_ENH_MAIN_CLK_AO,
++				    spicc->base + SPICC_ENH_CTL0);
++
++	writel_bits_relaxed(SPICC_FIFORST_W1_MASK, SPICC_FIFORST_W1_MASK,
++			    spicc->base + SPICC_TESTREG);
++
++	while (meson_spicc_rxready(spicc))
++		data = readl_relaxed(spicc->base + SPICC_RXDATA);
++
++	if (spicc->data->has_oen)
++		writel_bits_relaxed(SPICC_ENH_MAIN_CLK_AO, 0,
++				    spicc->base + SPICC_ENH_CTL0);
+ }
+ 
+ static int meson_spicc_transfer_one(struct spi_master *master,
+@@ -412,8 +383,6 @@ static int meson_spicc_transfer_one(struct spi_master *master,
+ 				    struct spi_transfer *xfer)
+ {
+ 	struct meson_spicc_device *spicc = spi_master_get_devdata(master);
+-	unsigned int burst_len;
+-	u32 irq = 0;
+ 
+ 	/* Store current transfer */
+ 	spicc->xfer = xfer;
+@@ -427,22 +396,22 @@ static int meson_spicc_transfer_one(struct spi_master *master,
+ 	spicc->bytes_per_word =
+ 	   DIV_ROUND_UP(spicc->xfer->bits_per_word, 8);
+ 
++	if (xfer->len % spicc->bytes_per_word)
++		return -EINVAL;
++
+ 	/* Setup transfer parameters */
+ 	meson_spicc_setup_xfer(spicc, xfer);
+ 
+-	burst_len = min_t(unsigned int,
+-			  spicc->xfer_remain / spicc->bytes_per_word,
+-			  SPICC_BURST_MAX);
+-
+-	meson_spicc_setup_burst(spicc, burst_len);
++	meson_spicc_reset_fifo(spicc);
+ 
+-	irq = meson_spicc_setup_rx_irq(spicc, irq);
++	/* Setup burst */
++	meson_spicc_setup_burst(spicc);
+ 
+ 	/* Start burst */
+ 	writel_bits_relaxed(SPICC_XCH, SPICC_XCH, spicc->base + SPICC_CONREG);
+ 
+ 	/* Enable interrupts */
+-	writel_relaxed(irq, spicc->base + SPICC_INTREG);
++	writel_relaxed(SPICC_TC_EN, spicc->base + SPICC_INTREG);
+ 
+ 	return 1;
+ }
+@@ -499,7 +468,7 @@ static int meson_spicc_prepare_message(struct spi_master *master,
+ 	/* Setup no wait cycles by default */
+ 	writel_relaxed(0, spicc->base + SPICC_PERIODREG);
+ 
+-	writel_bits_relaxed(BIT(24), BIT(24), spicc->base + SPICC_TESTREG);
++	writel_bits_relaxed(SPICC_LBC_W1, 0, spicc->base + SPICC_TESTREG);
+ 
+ 	return 0;
+ }
+@@ -797,11 +766,13 @@ static int meson_spicc_remove(struct platform_device *pdev)
  static const struct meson_spicc_data meson_spicc_gx_data = {
-+	.max_speed_hz		= 30000000,
+ 	.max_speed_hz		= 30000000,
+ 	.min_speed_hz		= 325000,
++	.fifo_size		= 16,
  };
  
  static const struct meson_spicc_data meson_spicc_axg_data = {
-+	.max_speed_hz		= 80000000,
+ 	.max_speed_hz		= 80000000,
+ 	.min_speed_hz		= 325000,
++	.fifo_size		= 16,
  	.has_oen		= true,
  	.has_enhance_clk_div	= true,
  };

@@ -1,50 +1,61 @@
-From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 2/2] spi: dt-bindings: spi-controller: Fix
- spi-[rt]x-bus-width for slave mode
-Date: Thu, 12 Mar 2020 14:17:36 -0500
-Message-ID: <20200312191736.GA15869@bogus>
-References: <20200306085038.8111-1-geert+renesas@glider.be>
- <20200306085038.8111-3-geert+renesas@glider.be>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [EXT] Re: [PATCH] spi: spi-nxp-fspi: Fix a NULL vs IS_ERR()
+ check in probe
+Date: Fri, 13 Mar 2020 11:54:31 +0000
+Message-ID: <20200313115431.GB5528@sirena.org.uk>
+References: <20200312113154.GC20562@mwanda>
+ <CAOMZO5CJ7G7yJZEEPfsm1P2SnrJ7kmOPmZCWiKwrvDZjPNOnWw@mail.gmail.com>
+ <20200312121816.GC4038@sirena.org.uk>
+ <VI1PR04MB4015D509DC78B0C7EA649CC995FA0@VI1PR04MB4015.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-renesas-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="IrhDeMKUP4DT/M7F"
+Cc: Fabio Estevam <festevam@gmail.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Yogesh Gaur <yogeshgaur.83@gmail.com>, Han Xu <han.xu@nxp.com>,
+        Adam Ford <aford173@gmail.com>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+To: Ashish Kumar <ashish.kumar@nxp.com>
+Return-path: <kernel-janitors-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20200306085038.8111-3-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <VI1PR04MB4015D509DC78B0C7EA649CC995FA0@VI1PR04MB4015.eurprd04.prod.outlook.com>
+Sender: kernel-janitors-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Fri,  6 Mar 2020 09:50:38 +0100, Geert Uytterhoeven wrote:
-> The descriptions for the spi-rx-bus-width and spi-tx-bus-width
-> properties refer to "MISO" and "MOSI", which are not explained in the
-> document.  While these abbreviations are fairly common when talking
-> about SPI, and thus may not need an explanation, they are not entirely
-> correct in this context, as the SPI controller may be used in slave mode
-> instead of master mode.
-> 
-> Fix this by replacing them by "read transfers" resp. "write transfers",
-> like is done for the spi-rx-delay-us and spi-tx-delay-us properties.
-> 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-> ---
-> v3:
->   - No changes,
-> 
-> v2:
->   - New.
-> 
-> This issue was present in the .txt version of the bindings, too, so
-> technically it needs
-> Fixes: a8830cb19cfea04e ("spi: Document DT bindings for SPI controllers in slave mode")
-> but of course it won't apply to that version.
-> ---
->  Documentation/devicetree/bindings/spi/spi-controller.yaml | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
 
-Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+--IrhDeMKUP4DT/M7F
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Fri, Mar 13, 2020 at 04:16:44AM +0000, Ashish Kumar wrote:
+
+> This patch needs to drop, until further debugged, since flexspi is
+> shared ip it is not having desired result on few boards, but it is
+> needed for i.mx series, This is one of the comments from han xu. I
+> believe further modifications will be needed, if not commit msg and
+> other things can be update.
+
+Please send a patch doing the revert with a changelog explaining why
+it's needed.
+
+Please fix your mail client to word wrap within paragraphs at something
+substantially less than 80 columns.  Doing this makes your messages much
+easier to read and reply to.
+
+--IrhDeMKUP4DT/M7F
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl5rdHYACgkQJNaLcl1U
+h9DFCQf/UPqYCaPsBLcZEOTW72elTQpFxi4KP6BJ+mTkTETBkeHVQOP/U3FWwdDM
+THoABWIEq+t24rOwkNaro3dl6b85fkI513FBNy1vqqRA/VrjpkCRTgHAAKD/D7+g
+HQp3R/3GX5FkGJYNnmoOOQodhmR9UxklAfUASOtpiTS6wpzQw9puswv/eQO9Yumg
+526+cxrq0hePl72ZsmZlV9EkxMCkuW7X01JTLwmmC0EaFHp0E8LMU/hvAPxO9RCZ
+I9uT4S8tjPzEUZiwCm7sryHvnZePMK/8/BOv+IiZeQDXqwiW0JW6GGLK56MWH4SQ
+AwPhEnuNRd+LD/dUU6vWSvmAgMJ66A==
+=AmBc
+-----END PGP SIGNATURE-----
+
+--IrhDeMKUP4DT/M7F--

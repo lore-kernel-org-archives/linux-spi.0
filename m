@@ -1,67 +1,55 @@
-From: Pratyush Yadav <p.yadav@ti.com>
-Subject: [PATCH v3 03/12] spi: spi-mem: allow specifying a command's extension
-Date: Fri, 13 Mar 2020 21:16:36 +0530
-Message-ID: <20200313154645.29293-4-p.yadav@ti.com>
+From: Pratyush Yadav <p.yadav-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH v3 05/12] mtd: spi-nor: default to address width of 3 for configurable widths
+Date: Fri, 13 Mar 2020 21:16:38 +0530
+Message-ID: <20200313154645.29293-6-p.yadav@ti.com>
 References: <20200313154645.29293-1-p.yadav@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
-Cc: Pratyush Yadav <p.yadav@ti.com>, <linux-mtd@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Sekhar Nori <nsekhar@ti.com>
-To: Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Mark Brown <broonie@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200313154645.29293-1-p.yadav@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Pratyush Yadav <p.yadav-l0cyMroinI0@public.gmane.org>, <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
+To: Tudor Ambarus <tudor.ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
+        Miquel Raynal <miquel.raynal-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>,
+        Richard Weinberger <richard-/L3Ra7n9ekc@public.gmane.org>,
+        Vignesh Raghavendra <vigneshr-l0cyMroinI0@public.gmane.org>,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Nicolas Ferre <nicolas.ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>,
+        Alexandre Belloni <alexandre.belloni-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>,
+        Ludovic Desroches <ludovic.desroches-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200313154645.29293-1-p.yadav-l0cyMroinI0@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-In xSPI mode, flashes expect 2-byte opcodes. The second byte is called
-the "command extension". There can be 3 types of extensions in xSPI:
-repeat, invert, and hex. When the extension type is "repeat", the same
-opcode is sent twice. When it is "invert", the second byte is the
-inverse of the opcode. When it is "hex" an additional opcode byte based
-is sent with the command whose value can be anything.
+JESD216D.01 says that when the address width can be 3 or 4, it defaults
+to 3 and enters 4-byte mode when given the appropriate command. So, when
+we see a configurable width, default to 3 and let flash that default to
+4 change it in a post-bfpt fixup.
 
-So, make opcode a 16-bit value and add a 'nbytes', similar to how
-multiple address widths are handled.
+This fixes SMPT parsing for flashes with configurable address width. If
+the SMPT descriptor advertises variable address width, we use
+nor->addr_width as the address width. But since it was not set to any
+value from the SFDP table, the read command uses an address width of 0,
+resulting in an incorrect read being issued.
 
-Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+Signed-off-by: Pratyush Yadav <p.yadav-l0cyMroinI0@public.gmane.org>
 ---
- include/linux/spi/spi-mem.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/mtd/spi-nor/spi-nor.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index e3dcb956bf61..731bb64c6ba6 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -69,6 +69,8 @@ enum spi_mem_data_dir {
+diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+index 9e0724f2a825..9335692e9bcb 100644
+--- a/drivers/mtd/spi-nor/spi-nor.c
++++ b/drivers/mtd/spi-nor/spi-nor.c
+@@ -3772,6 +3772,7 @@ static int spi_nor_parse_bfpt(struct spi_nor *nor,
+ 	/* Number of address bytes. */
+ 	switch (bfpt.dwords[BFPT_DWORD(1)] & BFPT_DWORD1_ADDRESS_BYTES_MASK) {
+ 	case BFPT_DWORD1_ADDRESS_BYTES_3_ONLY:
++	case BFPT_DWORD1_ADDRESS_BYTES_3_OR_4:
+ 		nor->addr_width = 3;
+ 		break;
  
- /**
-  * struct spi_mem_op - describes a SPI memory operation
-+ * @cmd.nbytes: number of opcode bytes (only 1 or 2 are valid). The opcode is
-+ *		sent MSB-first.
-  * @cmd.buswidth: number of IO lines used to transmit the command
-  * @cmd.opcode: operation opcode
-  * @cmd.dtr: whether the command opcode should be sent in DTR mode or not
-@@ -94,9 +96,10 @@ enum spi_mem_data_dir {
-  */
- struct spi_mem_op {
- 	struct {
-+		u8 nbytes;
- 		u8 buswidth;
- 		u8 dtr : 1;
--		u8 opcode;
-+		u16 opcode;
- 	} cmd;
- 
- 	struct {
 -- 
 2.25.0

@@ -1,127 +1,163 @@
-From: Matthias Kaehlcke <mka@chromium.org>
-Subject: Re: [PATCH V2 3/8] soc: qcom-geni-se: Add interconnect support to
- fix earlycon crash
-Date: Fri, 13 Mar 2020 13:44:41 -0700
-Message-ID: <20200313204441.GJ144492@google.com>
+From: Matthias Kaehlcke <mka-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH V2 4/8] tty: serial: qcom_geni_serial: Add interconnect
+ support
+Date: Fri, 13 Mar 2020 14:28:33 -0700
+Message-ID: <20200313212833.GK144492@google.com>
 References: <1584105134-13583-1-git-send-email-akashast@codeaurora.org>
- <1584105134-13583-4-git-send-email-akashast@codeaurora.org>
+ <1584105134-13583-5-git-send-email-akashast@codeaurora.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Cc: gregkh@linuxfoundation.org, agross@kernel.org,
-        bjorn.andersson@linaro.org, wsa@the-dreams.de, broonie@kernel.org,
-        mark.rutland@arm.com, robh+dt@kernel.org,
-        linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, swboyd@chromium.org,
-        mgautam@codeaurora.org, linux-arm-msm@vger.kernel.org,
-        linux-serial@vger.kernel.org, dianders@chromium.org,
-        evgreen@chromium.org
-To: Akash Asthana <akashast@codeaurora.org>
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
+Cc: gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org, agross-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        bjorn.andersson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        mark.rutland-5wv7dgnIgG8@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+        linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, swboyd-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+        mgautam-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org, linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
+        evgreen-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org
+To: Akash Asthana <akashast-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1584105134-13583-4-git-send-email-akashast@codeaurora.org>
-Sender: linux-arm-msm-owner@vger.kernel.org
+In-Reply-To: <1584105134-13583-5-git-send-email-akashast-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 Hi Akash,
 
-On Fri, Mar 13, 2020 at 06:42:09PM +0530, Akash Asthana wrote:
-> V1 patch@https://patchwork.kernel.org/patch/11386469/ caused SC7180 system
-> to reset at boot time.
-
-The v1 patch isn't relevant in the commit message, please just describe the
-problem. Also the crash only occurs when earlycon is used.
-
-> As QUP core clock is shared among all the SE drivers present on particular
-> QUP wrapper, the reset seen is due to earlycon usage after QUP core clock
-> is put to 0 from other SE drivers before real console comes up.
+On Fri, Mar 13, 2020 at 06:42:10PM +0530, Akash Asthana wrote:
+> Get the interconnect paths for Uart based Serial Engine device
+> and vote according to the baud rate requirement of the driver.
 > 
-> As earlycon can't vote for it's QUP core need, to fix this add ICC
-> support to common/QUP wrapper driver and put vote for QUP core from
-> probe on behalf of earlycon and remove vote during sys suspend.
-
-Only removing the vote on suspend isn't ideal, the system might never get
-suspended. That said I don't have a really good alternative suggestion.
-
-One thing you could possibly do is to launch a delayed work, check
-console_device() every second or so and remove the vote when it returns
-non-NULL. Not claiming this would be a great solution ...
-
-The cleanest solution might be a notifier when the early console is
-unregistered, it seems somewhat over-engineered though ... Then again
-other (future) uart drivers with interconnect support might run into
-the same problem.
-
-> Signed-off-by: Akash Asthana <akashast@codeaurora.org>
-> Reported-by: Matthias Kaehlcke <mka@chromium.org>
+> Signed-off-by: Akash Asthana <akashast-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 > ---
->  drivers/soc/qcom/qcom-geni-se.c | 41 +++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 41 insertions(+)
+> Changes in V2:
+>  - As per Bjorn's comment, removed se == NULL check from geni_serial_icc_get
+>  - As per Bjorn's comment, removed code to set se->icc_path* to NULL in failure
+>  - As per Bjorn's comment, introduced and using devm_of_icc_get API for getting
+>    path handle
+>  - As per Matthias comment, added error handling for icc_set_bw call
 > 
-> diff --git a/drivers/soc/qcom/qcom-geni-se.c b/drivers/soc/qcom/qcom-geni-se.c
-> index 7d622ea..d244dfc 100644
-> --- a/drivers/soc/qcom/qcom-geni-se.c
-> +++ b/drivers/soc/qcom/qcom-geni-se.c
-> @@ -90,6 +90,7 @@ struct geni_wrapper {
->  	struct device *dev;
->  	void __iomem *base;
->  	struct clk_bulk_data ahb_clks[NUM_AHB_CLKS];
-> +	struct icc_path *icc_path_geni_to_core;
+>  drivers/tty/serial/qcom_geni_serial.c | 69 +++++++++++++++++++++++++++++++++--
+>  1 file changed, 65 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
+> index 272bae0..c8ad7e9 100644
+> --- a/drivers/tty/serial/qcom_geni_serial.c
+> +++ b/drivers/tty/serial/qcom_geni_serial.c
+> @@ -184,6 +184,19 @@ static struct qcom_geni_serial_port qcom_geni_console_port = {
+>  	},
 >  };
 >  
->  #define QUP_HW_VER_REG			0x4
-> @@ -747,11 +748,50 @@ static int geni_se_probe(struct platform_device *pdev)
->  		}
->  	}
->  
-> +#ifdef CONFIG_SERIAL_EARLYCON
-> +	wrapper->icc_path_geni_to_core = devm_of_icc_get(dev, "qup-core");
-> +	if (IS_ERR(wrapper->icc_path_geni_to_core))
-> +		return PTR_ERR(wrapper->icc_path_geni_to_core);
-> +	/*
-> +	 * Put minmal BW request on core clocks on behalf of early console.
-> +	 * The vote will be removed in suspend call.
-> +	 */
-> +	ret = icc_set_bw(wrapper->icc_path_geni_to_core, Bps_to_icc(1000),
-> +			Bps_to_icc(1000));
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "%s: ICC BW voting failed for core\n",
-> +			__func__);
-> +		return ret;
-> +	}
-
-What is ugly about this is that it's done for every QUP, not only the one
-with the early console. Again, I don't have a good solution for it, maybe
-it's a limitation we have to live with :(
-
-> +#endif
+> +static int geni_serial_icc_get(struct geni_se *se)
+> +{
+> +	se->icc_path_geni_to_core = devm_of_icc_get(se->dev, "qup-core");
+> +	if (IS_ERR(se->icc_path_geni_to_core))
+> +		return PTR_ERR(se->icc_path_geni_to_core);
 > +
->  	dev_set_drvdata(dev, wrapper);
->  	dev_dbg(dev, "GENI SE Driver probed\n");
->  	return devm_of_platform_populate(dev);
+> +	se->icc_path_cpu_to_geni = devm_of_icc_get(se->dev, "qup-config");
+> +	if (IS_ERR(se->icc_path_cpu_to_geni))
+> +		return PTR_ERR(se->icc_path_cpu_to_geni);
+> +
+> +	return 0;
+> +}
+> +
+>  static int qcom_geni_serial_request_port(struct uart_port *uport)
+>  {
+>  	struct platform_device *pdev = to_platform_device(uport->dev);
+> @@ -962,6 +975,7 @@ static void qcom_geni_serial_set_termios(struct uart_port *uport,
+>  	struct qcom_geni_serial_port *port = to_dev_port(uport, uport);
+>  	unsigned long clk_rate;
+>  	u32 ver, sampling_rate;
+> +	int ret;
+>  
+>  	qcom_geni_serial_stop_rx(uport);
+>  	/* baud rate */
+> @@ -983,6 +997,18 @@ static void qcom_geni_serial_set_termios(struct uart_port *uport,
+>  	ser_clk_cfg = SER_CLK_EN;
+>  	ser_clk_cfg |= clk_div << CLK_DIV_SHFT;
+>  
+> +	/*
+> +	 * Put BW vote only on CPU path as driver supports FIFO mode only.
+> +	 * Assume peak_bw as twice of avg_bw.
+> +	 */
+> +	port->se.avg_bw_cpu = Bps_to_icc(baud);
+> +	port->se.peak_bw_cpu = Bps_to_icc(2 * baud);
+> +	ret = icc_set_bw(port->se.icc_path_cpu_to_geni, port->se.avg_bw_cpu,
+> +			port->se.peak_bw_cpu);
+> +	if (ret)
+> +		dev_err(uport->dev, "%s: ICC BW voting failed for cpu\n",
+> +			__func__);
+
+Should this return an error? The port might not operate properly if the ICC
+bandwidth couldn't be configured
+
+
+> +
+>  	/* parity */
+>  	tx_trans_cfg = readl(uport->membase + SE_UART_TX_TRANS_CFG);
+>  	tx_parity_cfg = readl(uport->membase + SE_UART_TX_PARITY_CFG);
+> @@ -1208,16 +1234,40 @@ static void qcom_geni_serial_pm(struct uart_port *uport,
+>  		unsigned int new_state, unsigned int old_state)
+>  {
+>  	struct qcom_geni_serial_port *port = to_dev_port(uport, uport);
+> -
+> +	int ret;
+>  	/* If we've never been called, treat it as off */
+>  	if (old_state == UART_PM_STATE_UNDEFINED)
+>  		old_state = UART_PM_STATE_OFF;
+>  
+> -	if (new_state == UART_PM_STATE_ON && old_state == UART_PM_STATE_OFF)
+> +	if (new_state == UART_PM_STATE_ON && old_state == UART_PM_STATE_OFF) {
+> +		/* Put BW vote for core clocks and CPU */
+> +		ret = icc_set_bw(port->se.icc_path_geni_to_core,
+> +			port->se.avg_bw_core, port->se.peak_bw_core);
+> +		if (ret)
+> +			dev_err(uport->dev, "%s: ICC BW voting failed for core\n",
+> +				__func__);
+> +
+> +		ret = icc_set_bw(port->se.icc_path_cpu_to_geni,
+> +			port->se.avg_bw_cpu, port->se.peak_bw_cpu);
+> +		if (ret)
+> +			dev_err(uport->dev, "%s: ICC BW voting failed for cpu\n",
+> +				__func__);
+> +
+>  		geni_se_resources_on(&port->se);
+> -	else if (new_state == UART_PM_STATE_OFF &&
+> -			old_state == UART_PM_STATE_ON)
+> +	} else if (new_state == UART_PM_STATE_OFF &&
+> +			old_state == UART_PM_STATE_ON) {
+>  		geni_se_resources_off(&port->se);
+> +		/* Remove BW vote from core clocks and CPU */
+> +		ret = icc_set_bw(port->se.icc_path_geni_to_core, 0, 0);
+> +		if (ret)
+> +			dev_err(uport->dev, "%s: ICC BW remove failed for core\n",
+> +				__func__);
+> +
+> +		ret = icc_set_bw(port->se.icc_path_cpu_to_geni, 0, 0);
+> +		if (ret)
+> +			dev_err(uport->dev, "%s: ICC BW remove failed for cpu\n",
+> +				__func__);
+> +	}
 >  }
 >  
-> +static int __maybe_unused geni_se_sys_suspend(struct device *dev)
-> +{
-> +	struct geni_wrapper *wrapper = dev_get_drvdata(dev);
-> +	int ret;
-> +
-> +#ifdef CONFIG_SERIAL_EARLYCON
-> +	ret = icc_set_bw(wrapper->icc_path_geni_to_core, 0, 0);
-
-I think you only want to do this on the first suspend.
-
-Do we need to handle the case where no 'real' console is configured?
-In this case the early console would be active forever and setting
-the bandwidths to 0 might cause a similar crash than the one you are
-trying to fix. Not sure if that's a real world use case, but wanted to
-mention it. Maybe this is an argument of the notifier approach?
-
-> +	if (ret) {
-> +		dev_err(dev, "%s: ICC BW remove failed for core\n",
-> +			__func__);
+>  static const struct uart_ops qcom_geni_console_pops = {
+> @@ -1308,6 +1358,17 @@ static int qcom_geni_serial_probe(struct platform_device *pdev)
+>  	port->rx_fifo_depth = DEF_FIFO_DEPTH_WORDS;
+>  	port->tx_fifo_width = DEF_FIFO_WIDTH_BITS;
+>  
+> +	ret = geni_serial_icc_get(&port->se);
+> +	if (ret)
 > +		return ret;
+> +	/* Set the bus quota to a reasonable value */
+> +	port->se.avg_bw_core = console ? Bps_to_icc(1000) :
+> +		Bps_to_icc(CORE_2X_50_MHZ);
 
-Aborting suspend seems too harsh since the QUP should still be fully
-functional unless there is a general problem with the interconnects.
+Why different settings for console vs. non-console?
 
-I would suggest to change the log to dev_warn() and return 0.
+> +	port->se.peak_bw_core = console ? Bps_to_icc(1000) :
+> +		Bps_to_icc(CORE_2X_100_MHZ);
+> +	port->se.avg_bw_cpu = Bps_to_icc(1000);
+> +	port->se.peak_bw_cpu = Bps_to_icc(1000);
+
+'Bps_to_icc(1000)' is a recurring theme in this series, could it be worth
+to have a constant for that? Could be GENI_DEFAULT_BW or similar.

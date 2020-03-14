@@ -1,26 +1,25 @@
-From: patchwork-bot+linux-spi-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Subject: Patchwork housekeeping for: spi-devel-general
-Date: Sun, 15 Mar 2020 03:00:14 +0000
-Message-ID: <158424121418.16197.10554870167974805258.git-patchwork-housekeeping@kernel.org>
+From: Omar Ousman <omarousman25-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: You received my last mail,,,,
+Date: Sat, 14 Mar 2020 18:20:28 +0100
+Message-ID: <CAOdk3H=iqtzP9LMZSea9eyACfmkiPiG9wKD-_H9R1g2DpwKnkg__19878.9070172765$1584242997$gmane$org@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Content-Type: text/plain; charset="UTF-8"
+To: undisclosed-recipients:;
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Latest series: [v3] NXP DSPI bugfixes and support for LS1028A (2020-03-14T22:43:28)
-  Superseding: [v3] NXP DSPI bugfixes and support for LS1028A (2020-03-10T12:55:42):
-    [v3,1/7] spi: spi-fsl-dspi: Don't access reserved fields in SPI_MCR
-    [v3,2/7] spi: spi-fsl-dspi: Avoid use-after-free in interrupt mode
-    [v3,3/7] spi: spi-fsl-dspi: Fix little endian access to PUSHR CMD and TXDATA
-    [v3,4/7] spi: spi-fsl-dspi: Fix bits-per-word acceleration in DMA mode
-    [v3,5/7] spi: spi-fsl-dspi: Add support for LS1028A
-    [v3,6/7] arm64: dts: ls1028a: Specify the DMA channels for the DSPI controllers
-    [v3,7/7] arm64: dts: ls1028a-rdb: Add a spidev node for the mikroBUS
+I am Mr.Omar Ousman, a regional managing director (CORIS BANK
+INTERNATIONAL) Ouagadougou Burkina Faso, in my department we have
+US$9,500.0000 million united state dollars, to transfer into your
+account as a dormant fund.If you are interested to use this fund to
+help the orphans around the world contact and send me your personal
+information for more details to my email omarousman25-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 
+Your full names..........
+Your country of origin..........
+Your occupation..........
+Your Age..........
+Your Mobile Number..........
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/pwbot
+Best Regards,

@@ -1,7 +1,7 @@
 From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v3 08/12] spi: spi-fsl-dspi: Fix interrupt-less DMA mode taking an XSPI code path
-Date: Sun, 15 Mar 2020 00:43:36 +0200
-Message-ID: <20200314224340.1544-9-olteanv@gmail.com>
+Subject: [PATCH v3 05/12] spi: spi-fsl-dspi: Protect against races on dspi->words_in_flight
+Date: Sun, 15 Mar 2020 00:43:33 +0200
+Message-ID: <20200314224340.1544-6-olteanv@gmail.com>
 References: <20200314224340.1544-1-olteanv@gmail.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
@@ -16,48 +16,45 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 
-Interrupts are not necessary for DMA functionality, since the completion
-event is provided by the DMA driver.
+dspi->words_in_flight is a variable populated in the *_write functions
+and used in the dspi_fifo_read function. It is also used in
+dspi_fifo_write, immediately after transmission, to update the
+message->actual_length variable used by higher layers such as spi-mem
+for integrity checking.
 
-But if the driver fails to request the IRQ defined in the device tree,
-it will call dspi_poll which would make the driver hang waiting for data
-to become available in the RX FIFO.
+But it may happen that the IRQ which calls dspi_fifo_read to be
+triggered before the updating of message->actual_length takes place. In
+that case, dspi_fifo_read will decrement dspi->words_in_flight to -1,
+and that will cause an invalid modification of message->actual_length.
 
-Fixes: c55be3059159 ("spi: spi-fsl-dspi: Use poll mode in case the platform IRQ is missing")
+Make the simplest fix possible: don't decrement the actual shared
+variable in dspi->words_in_flight from dspi_fifo_read, but actually a
+copy of it which is on stack.
+
+Suggested-by: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>
 Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 ---
 Changes in v4:
 Patch is new.
 
- drivers/spi/spi-fsl-dspi.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index a8aef5690c5d..eab4929330e1 100644
+index 51224b772680..3ac004aa2abd 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -974,13 +974,15 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 			goto out;
- 		}
+@@ -765,8 +765,10 @@ static u32 dspi_popr_read(struct fsl_dspi *dspi)
  
--		if (!dspi->irq) {
--			do {
--				status = dspi_poll(dspi);
--			} while (status == -EINPROGRESS);
--		} else if (trans_mode != DSPI_DMA_MODE) {
--			wait_for_completion(&dspi->xfer_done);
--			reinit_completion(&dspi->xfer_done);
-+		if (trans_mode != DSPI_DMA_MODE) {
-+			if (dspi->irq) {
-+				wait_for_completion(&dspi->xfer_done);
-+				reinit_completion(&dspi->xfer_done);
-+			} else {
-+				do {
-+					status = dspi_poll(dspi);
-+				} while (status == -EINPROGRESS);
-+			}
- 		}
+ static void dspi_fifo_read(struct fsl_dspi *dspi)
+ {
++	int num_fifo_entries = dspi->words_in_flight;
++
+ 	/* Read one FIFO entry and push to rx buffer */
+-	while (dspi->words_in_flight--)
++	while (num_fifo_entries--)
+ 		dspi_push_rx(dspi, dspi_popr_read(dspi));
+ }
  
- 		spi_transfer_delay_exec(transfer);
 -- 
 2.17.1

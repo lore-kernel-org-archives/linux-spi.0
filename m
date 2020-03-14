@@ -1,60 +1,68 @@
-From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v3 05/12] spi: spi-fsl-dspi: Protect against races on dspi->words_in_flight
-Date: Sun, 15 Mar 2020 00:43:33 +0200
-Message-ID: <20200314224340.1544-6-olteanv@gmail.com>
+From: Vladimir Oltean <olteanv@gmail.com>
+Subject: [PATCH v3 01/12] spi: spi-fsl-dspi: Don't access reserved fields in SPI_MCR
+Date: Sun, 15 Mar 2020 00:43:29 +0200
+Message-ID: <20200314224340.1544-2-olteanv@gmail.com>
 References: <20200314224340.1544-1-olteanv@gmail.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, eha-/iRVSOupHO4@public.gmane.org, angelo-BIYBQhTR83Y@public.gmane.org,
-        andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org, weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org,
-        mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org, michael-QKn5cuLxLXY@public.gmane.org, peng.ma-3arQi8VN3Tc@public.gmane.org
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200314224340.1544-1-olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        shawnguo@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        devicetree@vger.kernel.org, eha@deif.com, angelo@sysam.it,
+        andrew.smirnov@gmail.com, gustavo@embeddedor.com, weic@nvidia.com,
+        mhosny@nvidia.com, michael@walle.cc, peng.ma@nxp.com
+To: broonie@kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20200314224340.1544-1-olteanv@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-dspi->words_in_flight is a variable populated in the *_write functions
-and used in the dspi_fifo_read function. It is also used in
-dspi_fifo_write, immediately after transmission, to update the
-message->actual_length variable used by higher layers such as spi-mem
-for integrity checking.
+The SPI_MCR_PCSIS macro assumes that the controller has a number of chip
+select signals equal to 6. That is not always the case, but actually is
+described through the driver-specific "spi-num-chipselects" device tree
+binding. LS1028A for example only has 4 chip selects.
 
-But it may happen that the IRQ which calls dspi_fifo_read to be
-triggered before the updating of message->actual_length takes place. In
-that case, dspi_fifo_read will decrement dspi->words_in_flight to -1,
-and that will cause an invalid modification of message->actual_length.
+Don't write to the upper bits of the PCSIS field, which are reserved in
+the reference manual.
 
-Make the simplest fix possible: don't decrement the actual shared
-variable in dspi->words_in_flight from dspi_fifo_read, but actually a
-copy of it which is on stack.
-
-Suggested-by: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>
-Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
+Fixes: 349ad66c0ab0 ("spi:Add Freescale DSPI driver for Vybrid VF610 platform")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
 Changes in v4:
-Patch is new.
+None.
 
- drivers/spi/spi-fsl-dspi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Changes in v3:
+None.
+
+Changes in v2:
+Remove duplicate phrase in commit message.
+
+ drivers/spi/spi-fsl-dspi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 51224b772680..3ac004aa2abd 100644
+index 50e3382f0c50..6ca35881881b 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -765,8 +765,10 @@ static u32 dspi_popr_read(struct fsl_dspi *dspi)
+@@ -22,7 +22,7 @@
  
- static void dspi_fifo_read(struct fsl_dspi *dspi)
+ #define SPI_MCR				0x00
+ #define SPI_MCR_MASTER			BIT(31)
+-#define SPI_MCR_PCSIS			(0x3F << 16)
++#define SPI_MCR_PCSIS(x)		((x) << 16)
+ #define SPI_MCR_CLR_TXF			BIT(11)
+ #define SPI_MCR_CLR_RXF			BIT(10)
+ #define SPI_MCR_XSPI			BIT(3)
+@@ -1200,7 +1200,10 @@ static const struct regmap_config dspi_xspi_regmap_config[] = {
+ 
+ static void dspi_init(struct fsl_dspi *dspi)
  {
-+	int num_fifo_entries = dspi->words_in_flight;
+-	unsigned int mcr = SPI_MCR_PCSIS;
++	unsigned int mcr;
 +
- 	/* Read one FIFO entry and push to rx buffer */
--	while (dspi->words_in_flight--)
-+	while (num_fifo_entries--)
- 		dspi_push_rx(dspi, dspi_popr_read(dspi));
- }
++	/* Set idle states for all chip select signals to high */
++	mcr = SPI_MCR_PCSIS(GENMASK(dspi->ctlr->num_chipselect - 1, 0));
  
+ 	if (dspi->devtype_data->trans_mode == DSPI_XSPI_MODE)
+ 		mcr |= SPI_MCR_XSPI;
 -- 
 2.17.1

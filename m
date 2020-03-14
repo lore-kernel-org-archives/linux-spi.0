@@ -1,7 +1,7 @@
 From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v3 10/12] spi: spi-fsl-dspi: Add support for LS1028A
-Date: Sun, 15 Mar 2020 00:43:38 +0200
-Message-ID: <20200314224340.1544-11-olteanv@gmail.com>
+Subject: [PATCH v3 02/12] spi: spi-fsl-dspi: Fix little endian access to PUSHR CMD and TXDATA
+Date: Sun, 15 Mar 2020 00:43:30 +0200
+Message-ID: <20200314224340.1544-3-olteanv@gmail.com>
 References: <20200314224340.1544-1-olteanv@gmail.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
@@ -9,75 +9,122 @@ Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY7
         andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org, weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org,
         mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org, michael-QKn5cuLxLXY@public.gmane.org, peng.ma-3arQi8VN3Tc@public.gmane.org
 To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200314224340.1544-1-olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 
-This is similar to the DSPI instantiation on LS1028A, except that:
- - The A-011218 erratum has been fixed, so DMA works
- - The endianness is different, which has implications on XSPI mode
+In XSPI mode, the 32-bit PUSHR register can be written to separately:
+the higher 16 bits are for commands and the lower 16 bits are for data.
 
-Some benchmarking with the following command:
+This has nicely been hacked around, by defining a second regmap with a
+width of 16 bits, and effectively splitting a 32-bit register into 2
+16-bit ones, from the perspective of this regmap_pushr.
 
-spidev_test --device /dev/spidev2.0 --bpw 8 --size 256 --cpha --iter 10000000 --speed 20000000
+The problem is the assumption about the controller's endianness. If the
+controller is little endian (such as anything post-LS1046A), then the
+first 2 bytes, in the order imposed by memory layout, will actually hold
+the TXDATA, and the last 2 bytes will hold the CMD.
 
-shows that in DMA mode, it can achieve around 2400 kbps, and in XSPI
-mode, the same command goes up to 4700 kbps. This is somewhat to be
-expected, since the DMA buffer size is extremely small at 8 bytes, the
-winner becomes whomever can prepare the buffers for transmission
-quicker, and DMA mode has higher overhead there. So XSPI FIFO mode has
-been chosen as the operating mode for this chip.
+So take the controller's endianness into account when performing split
+writes to PUSHR. The obvious and simple solution would have been to call
+regmap_get_val_endian(), but that is an internal regmap function and we
+don't want to change regmap just for this. Therefore, we just re-read
+the "big-endian" device tree property.
 
+Fixes: 58ba07ec79e6 ("spi: spi-fsl-dspi: Add support for XSPI mode registers")
 Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 ---
 Changes in v4:
 None.
 
 Changes in v3:
-Removed the dma_bufsize variable (obsoleted by 03/12).
+None.
 
 Changes in v2:
-Switch to DSPI_XSPI_MODE.
+Parse "big-endian" device tree bindings instead of taking the decision
+based on compatible SoC.
 
- drivers/spi/spi-fsl-dspi.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/spi/spi-fsl-dspi.c | 26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 86255d38ffcf..b6d7e6f383ec 100644
+index 6ca35881881b..be717776dd98 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -124,6 +124,7 @@ struct fsl_dspi_devtype_data {
- enum {
- 	LS1021A,
- 	LS1012A,
-+	LS1028A,
- 	LS1043A,
- 	LS1046A,
- 	LS2080A,
-@@ -151,6 +152,11 @@ static const struct fsl_dspi_devtype_data devtype_data[] = {
- 		.max_clock_factor	= 8,
- 		.fifo_size		= 16,
- 	},
-+	[LS1028A] = {
-+		.trans_mode		= DSPI_XSPI_MODE,
-+		.max_clock_factor	= 8,
-+		.fifo_size		= 4,
-+	},
- 	[LS1043A] = {
- 		/* Has A-011218 DMA erratum */
- 		.trans_mode		= DSPI_XSPI_MODE,
-@@ -1059,6 +1065,9 @@ static const struct of_device_id fsl_dspi_dt_ids[] = {
- 	}, {
- 		.compatible = "fsl,ls1012a-dspi",
- 		.data = &devtype_data[LS1012A],
-+	}, {
-+		.compatible = "fsl,ls1028a-dspi",
-+		.data = &devtype_data[LS1028A],
- 	}, {
- 		.compatible = "fsl,ls1043a-dspi",
- 		.data = &devtype_data[LS1043A],
+@@ -103,10 +103,6 @@
+ #define SPI_FRAME_BITS(bits)		SPI_CTAR_FMSZ((bits) - 1)
+ #define SPI_FRAME_EBITS(bits)		SPI_CTARE_FMSZE(((bits) - 1) >> 4)
+ 
+-/* Register offsets for regmap_pushr */
+-#define PUSHR_CMD			0x0
+-#define PUSHR_TX			0x2
+-
+ #define DMA_COMPLETION_TIMEOUT		msecs_to_jiffies(3000)
+ 
+ struct chip_data {
+@@ -240,6 +236,13 @@ struct fsl_dspi {
+ 
+ 	int					words_in_flight;
+ 
++	/*
++	 * Offsets for CMD and TXDATA within SPI_PUSHR when accessed
++	 * individually (in XSPI mode)
++	 */
++	int					pushr_cmd;
++	int					pushr_tx;
++
+ 	void (*host_to_dev)(struct fsl_dspi *dspi, u32 *txdata);
+ 	void (*dev_to_host)(struct fsl_dspi *dspi, u32 rxdata);
+ };
+@@ -673,12 +676,12 @@ static void dspi_pushr_cmd_write(struct fsl_dspi *dspi, u16 cmd)
+ 	 */
+ 	if (dspi->len > dspi->oper_word_size)
+ 		cmd |= SPI_PUSHR_CMD_CONT;
+-	regmap_write(dspi->regmap_pushr, PUSHR_CMD, cmd);
++	regmap_write(dspi->regmap_pushr, dspi->pushr_cmd, cmd);
+ }
+ 
+ static void dspi_pushr_txdata_write(struct fsl_dspi *dspi, u16 txdata)
+ {
+-	regmap_write(dspi->regmap_pushr, PUSHR_TX, txdata);
++	regmap_write(dspi->regmap_pushr, dspi->pushr_tx, txdata);
+ }
+ 
+ static void dspi_xspi_write(struct fsl_dspi *dspi, int cnt, bool eoq)
+@@ -1259,6 +1262,7 @@ static int dspi_probe(struct platform_device *pdev)
+ 	struct fsl_dspi *dspi;
+ 	struct resource *res;
+ 	void __iomem *base;
++	bool big_endian;
+ 
+ 	ctlr = spi_alloc_master(&pdev->dev, sizeof(struct fsl_dspi));
+ 	if (!ctlr)
+@@ -1284,6 +1288,7 @@ static int dspi_probe(struct platform_device *pdev)
+ 
+ 		/* Only Coldfire uses platform data */
+ 		dspi->devtype_data = &devtype_data[MCF5441X];
++		big_endian = true;
+ 	} else {
+ 
+ 		ret = of_property_read_u32(np, "spi-num-chipselects", &cs_num);
+@@ -1305,6 +1310,15 @@ static int dspi_probe(struct platform_device *pdev)
+ 			ret = -EFAULT;
+ 			goto out_ctlr_put;
+ 		}
++
++		big_endian = of_device_is_big_endian(np);
++	}
++	if (big_endian) {
++		dspi->pushr_cmd = 0;
++		dspi->pushr_tx = 2;
++	} else {
++		dspi->pushr_cmd = 2;
++		dspi->pushr_tx = 0;
+ 	}
+ 
+ 	if (dspi->devtype_data->trans_mode == DSPI_XSPI_MODE)
 -- 
 2.17.1

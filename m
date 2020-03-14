@@ -1,7 +1,7 @@
 From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v3 04/12] spi: spi-fsl-dspi: Avoid reading more data than written in EOQ mode
-Date: Sun, 15 Mar 2020 00:43:32 +0200
-Message-ID: <20200314224340.1544-5-olteanv@gmail.com>
+Subject: [PATCH v3 03/12] spi: spi-fsl-dspi: Fix bits-per-word acceleration in DMA mode
+Date: Sun, 15 Mar 2020 00:43:31 +0200
+Message-ID: <20200314224340.1544-4-olteanv@gmail.com>
 References: <20200314224340.1544-1-olteanv@gmail.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
@@ -9,52 +9,279 @@ Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY7
         andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org, weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org,
         mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org, michael-QKn5cuLxLXY@public.gmane.org, peng.ma-3arQi8VN3Tc@public.gmane.org
 To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200314224340.1544-1-olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 
-If dspi->words_in_flight is populated with the hardware FIFO size,
-then in dspi_fifo_read it will attempt to read more data at the end of a
-buffer that is not a multiple of 16 bytes in length. It will probably
-time out attempting to do so.
+In DMA mode, dspi_setup_accel does not get called, which results in the
+dspi->oper_word_size variable (which is used by dspi_dma_xfer) to not be
+initialized properly.
 
-So limit the num_fifo_entries variable to the actual number of FIFO
-entries that is going to be used.
+Because oper_word_size is zero, a few calculations end up being
+incorrect, and the DMA transfer eventually times out instead of sending
+anything on the wire.
 
-Fixes: d59c90a2400f ("spi: spi-fsl-dspi: Convert TCFQ users to XSPI FIFO mode")
+Set up native transfers (or 8-on-16 acceleration) using dspi_setup_accel
+for DMA mode too.
+
+Also take the opportunity and simplify the DMA buffer handling a little
+bit.
+
+Fixes: 6c1c26ecd9a3 ("spi: spi-fsl-dspi: Accelerate transfers using larger word size if possible")
 Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 ---
 Changes in v4:
-Patch is new.
+Rebased on top of "spi: spi-fsl-dspi: fix DMA mapping".
+Stopped uselessly writing to SPI_CTAR in dspi_transfer_one_message,
+since we already do that in dspi_setup_accel which we now call.
+Update message->actual_length before submitting the DMA transfer.
 
- drivers/spi/spi-fsl-dspi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Changes in v3:
+Pretty much re-did the patch. Before, dspi_setup_accel was called just
+once at the beginning of dspi_dma_xfer. Now it is called in the while
+loop. Everything else is just refactoring that follows along.
+
+Changes in v2:
+None.
+
+ drivers/spi/spi-fsl-dspi.c | 86 ++++++++++++++------------------------
+ 1 file changed, 32 insertions(+), 54 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 8f2b73cc6ed7..51224b772680 100644
+index be717776dd98..8f2b73cc6ed7 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -739,13 +739,16 @@ static void dspi_eoq_fifo_write(struct fsl_dspi *dspi)
- 	int num_fifo_entries = dspi->devtype_data->fifo_size;
- 	u16 xfer_cmd = dspi->tx_cmd;
+@@ -119,7 +119,6 @@ struct fsl_dspi_devtype_data {
+ 	enum dspi_trans_mode	trans_mode;
+ 	u8			max_clock_factor;
+ 	int			fifo_size;
+-	int			dma_bufsize;
+ };
  
-+	if (num_fifo_entries * dspi->oper_word_size > dspi->len)
-+		num_fifo_entries = dspi->len / dspi->oper_word_size;
+ enum {
+@@ -138,7 +137,6 @@ static const struct fsl_dspi_devtype_data devtype_data[] = {
+ 	[VF610] = {
+ 		.trans_mode		= DSPI_DMA_MODE,
+ 		.max_clock_factor	= 2,
+-		.dma_bufsize		= 4096,
+ 		.fifo_size		= 4,
+ 	},
+ 	[LS1021A] = {
+@@ -167,19 +165,16 @@ static const struct fsl_dspi_devtype_data devtype_data[] = {
+ 	},
+ 	[LS2080A] = {
+ 		.trans_mode		= DSPI_DMA_MODE,
+-		.dma_bufsize		= 8,
+ 		.max_clock_factor	= 8,
+ 		.fifo_size		= 4,
+ 	},
+ 	[LS2085A] = {
+ 		.trans_mode		= DSPI_DMA_MODE,
+-		.dma_bufsize		= 8,
+ 		.max_clock_factor	= 8,
+ 		.fifo_size		= 4,
+ 	},
+ 	[LX2160A] = {
+ 		.trans_mode		= DSPI_DMA_MODE,
+-		.dma_bufsize		= 8,
+ 		.max_clock_factor	= 8,
+ 		.fifo_size		= 4,
+ 	},
+@@ -191,9 +186,6 @@ static const struct fsl_dspi_devtype_data devtype_data[] = {
+ };
+ 
+ struct fsl_dspi_dma {
+-	/* Length of transfer in words of dspi->fifo_size */
+-	u32					curr_xfer_len;
+-
+ 	u32					*tx_dma_buf;
+ 	struct dma_chan				*chan_tx;
+ 	dma_addr_t				tx_dma_phys;
+@@ -352,7 +344,7 @@ static void dspi_rx_dma_callback(void *arg)
+ 	int i;
+ 
+ 	if (dspi->rx) {
+-		for (i = 0; i < dma->curr_xfer_len; i++)
++		for (i = 0; i < dspi->words_in_flight; i++)
+ 			dspi_push_rx(dspi, dspi->dma->rx_dma_buf[i]);
+ 	}
+ 
+@@ -366,12 +358,12 @@ static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
+ 	int time_left;
+ 	int i;
+ 
+-	for (i = 0; i < dma->curr_xfer_len; i++)
++	for (i = 0; i < dspi->words_in_flight; i++)
+ 		dspi->dma->tx_dma_buf[i] = dspi_pop_tx_pushr(dspi);
+ 
+ 	dma->tx_desc = dmaengine_prep_slave_single(dma->chan_tx,
+ 					dma->tx_dma_phys,
+-					dma->curr_xfer_len *
++					dspi->words_in_flight *
+ 					DMA_SLAVE_BUSWIDTH_4_BYTES,
+ 					DMA_MEM_TO_DEV,
+ 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+@@ -389,7 +381,7 @@ static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
+ 
+ 	dma->rx_desc = dmaengine_prep_slave_single(dma->chan_rx,
+ 					dma->rx_dma_phys,
+-					dma->curr_xfer_len *
++					dspi->words_in_flight *
+ 					DMA_SLAVE_BUSWIDTH_4_BYTES,
+ 					DMA_DEV_TO_MEM,
+ 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+@@ -437,46 +429,42 @@ static int dspi_next_xfer_dma_submit(struct fsl_dspi *dspi)
+ 	return 0;
+ }
+ 
++static void dspi_setup_accel(struct fsl_dspi *dspi);
 +
- 	dspi->words_in_flight = num_fifo_entries;
+ static int dspi_dma_xfer(struct fsl_dspi *dspi)
+ {
+ 	struct spi_message *message = dspi->cur_msg;
+ 	struct device *dev = &dspi->pdev->dev;
+-	struct fsl_dspi_dma *dma = dspi->dma;
+-	int curr_remaining_bytes;
+-	int bytes_per_buffer;
+ 	int ret = 0;
  
- 	/* Fill TX FIFO with as many transfers as possible */
--	while (dspi->len && num_fifo_entries--) {
-+	while (num_fifo_entries--) {
- 		dspi->tx_cmd = xfer_cmd;
- 		/* Request EOQF for last transfer in FIFO */
--		if (dspi->len == dspi->oper_word_size || num_fifo_entries == 0)
-+		if (num_fifo_entries == 0)
- 			dspi->tx_cmd |= SPI_PUSHR_CMD_EOQ;
- 		/* Write combined TX FIFO and CMD FIFO entry */
- 		dspi_pushr_write(dspi);
+-	curr_remaining_bytes = dspi->len;
+-	bytes_per_buffer = dspi->devtype_data->dma_bufsize /
+-			   dspi->devtype_data->fifo_size;
+-	while (curr_remaining_bytes) {
+-		/* Check if current transfer fits the DMA buffer */
+-		dma->curr_xfer_len = curr_remaining_bytes /
+-				     dspi->oper_word_size;
+-		if (dma->curr_xfer_len > bytes_per_buffer)
+-			dma->curr_xfer_len = bytes_per_buffer;
++	/*
++	 * dspi->len gets decremented by dspi_pop_tx_pushr in
++	 * dspi_next_xfer_dma_submit
++	 */
++	while (dspi->len) {
++		/* Figure out operational bits-per-word for this chunk */
++		dspi_setup_accel(dspi);
++
++		dspi->words_in_flight = dspi->len / dspi->oper_word_size;
++		if (dspi->words_in_flight > dspi->devtype_data->fifo_size)
++			dspi->words_in_flight = dspi->devtype_data->fifo_size;
++
++		message->actual_length += dspi->words_in_flight *
++					  dspi->oper_word_size;
+ 
+ 		ret = dspi_next_xfer_dma_submit(dspi);
+ 		if (ret) {
+ 			dev_err(dev, "DMA transfer failed\n");
+-			goto exit;
+-
+-		} else {
+-			const int len = dma->curr_xfer_len *
+-					dspi->oper_word_size;
+-			curr_remaining_bytes -= len;
+-			message->actual_length += len;
+-			if (curr_remaining_bytes < 0)
+-				curr_remaining_bytes = 0;
++			break;
+ 		}
+ 	}
+ 
+-exit:
+ 	return ret;
+ }
+ 
+ static int dspi_request_dma(struct fsl_dspi *dspi, phys_addr_t phy_addr)
+ {
++	int dma_bufsize = dspi->devtype_data->fifo_size * 2;
+ 	struct device *dev = &dspi->pdev->dev;
+ 	struct dma_slave_config cfg;
+ 	struct fsl_dspi_dma *dma;
+@@ -501,16 +489,16 @@ static int dspi_request_dma(struct fsl_dspi *dspi, phys_addr_t phy_addr)
+ 	}
+ 
+ 	dma->tx_dma_buf = dma_alloc_coherent(dma->chan_tx->device->dev,
+-					     dspi->devtype_data->dma_bufsize,
+-					     &dma->tx_dma_phys, GFP_KERNEL);
++					     dma_bufsize, &dma->tx_dma_phys,
++					     GFP_KERNEL);
+ 	if (!dma->tx_dma_buf) {
+ 		ret = -ENOMEM;
+ 		goto err_tx_dma_buf;
+ 	}
+ 
+ 	dma->rx_dma_buf = dma_alloc_coherent(dma->chan_rx->device->dev,
+-					     dspi->devtype_data->dma_bufsize,
+-					     &dma->rx_dma_phys, GFP_KERNEL);
++					     dma_bufsize, &dma->rx_dma_phys,
++					     GFP_KERNEL);
+ 	if (!dma->rx_dma_buf) {
+ 		ret = -ENOMEM;
+ 		goto err_rx_dma_buf;
+@@ -547,12 +535,10 @@ static int dspi_request_dma(struct fsl_dspi *dspi, phys_addr_t phy_addr)
+ 
+ err_slave_config:
+ 	dma_free_coherent(dma->chan_rx->device->dev,
+-			  dspi->devtype_data->dma_bufsize,
+-			  dma->rx_dma_buf, dma->rx_dma_phys);
++			  dma_bufsize, dma->rx_dma_buf, dma->rx_dma_phys);
+ err_rx_dma_buf:
+ 	dma_free_coherent(dma->chan_tx->device->dev,
+-			  dspi->devtype_data->dma_bufsize,
+-			  dma->tx_dma_buf, dma->tx_dma_phys);
++			  dma_bufsize, dma->tx_dma_buf, dma->tx_dma_phys);
+ err_tx_dma_buf:
+ 	dma_release_channel(dma->chan_tx);
+ err_tx_channel:
+@@ -566,6 +552,7 @@ static int dspi_request_dma(struct fsl_dspi *dspi, phys_addr_t phy_addr)
+ 
+ static void dspi_release_dma(struct fsl_dspi *dspi)
+ {
++	int dma_bufsize = dspi->devtype_data->fifo_size * 2;
+ 	struct fsl_dspi_dma *dma = dspi->dma;
+ 
+ 	if (!dma)
+@@ -573,15 +560,13 @@ static void dspi_release_dma(struct fsl_dspi *dspi)
+ 
+ 	if (dma->chan_tx) {
+ 		dma_unmap_single(dma->chan_tx->device->dev, dma->tx_dma_phys,
+-				 dspi->devtype_data->dma_bufsize,
+-				 DMA_TO_DEVICE);
++				 dma_bufsize, DMA_TO_DEVICE);
+ 		dma_release_channel(dma->chan_tx);
+ 	}
+ 
+ 	if (dma->chan_rx) {
+ 		dma_unmap_single(dma->chan_rx->device->dev, dma->rx_dma_phys,
+-				 dspi->devtype_data->dma_bufsize,
+-				 DMA_FROM_DEVICE);
++				 dma_bufsize, DMA_FROM_DEVICE);
+ 		dma_release_channel(dma->chan_rx);
+ 	}
+ }
+@@ -833,7 +818,7 @@ static void dspi_setup_accel(struct fsl_dspi *dspi)
+ 	dspi->oper_word_size = DIV_ROUND_UP(dspi->oper_bits_per_word, 8);
+ 
+ 	/*
+-	 * Update CTAR here (code is common for both EOQ and XSPI modes).
++	 * Update CTAR here (code is common for EOQ, XSPI and DMA modes).
+ 	 * We will update CTARE in the portion specific to XSPI, when we
+ 	 * also know the preload value (DTCP).
+ 	 */
+@@ -960,13 +945,6 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 		regmap_update_bits(dspi->regmap, SPI_MCR,
+ 				   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF,
+ 				   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF);
+-		/*
+-		 * Static CTAR setup for modes that don't dynamically adjust it
+-		 * via dspi_setup_accel (aka for DMA)
+-		 */
+-		regmap_write(dspi->regmap, SPI_CTAR(0),
+-			     dspi->cur_chip->ctar_val |
+-			     SPI_FRAME_BITS(transfer->bits_per_word));
+ 
+ 		spi_take_timestamp_pre(dspi->ctlr, dspi->cur_transfer,
+ 				       dspi->progress, !dspi->irq);
 -- 
 2.17.1

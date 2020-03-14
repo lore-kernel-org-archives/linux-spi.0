@@ -1,70 +1,49 @@
-From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v3 11/12] arm64: dts: ls1028a: Specify the DMA channels for the DSPI controllers
-Date: Sun, 15 Mar 2020 00:43:39 +0200
-Message-ID: <20200314224340.1544-12-olteanv@gmail.com>
+From: Vladimir Oltean <olteanv@gmail.com>
+Subject: [PATCH v3 07/12] spi: spi-fsl-dspi: Avoid NULL pointer in dspi_slave_abort for non-DMA mode
+Date: Sun, 15 Mar 2020 00:43:35 +0200
+Message-ID: <20200314224340.1544-8-olteanv@gmail.com>
 References: <20200314224340.1544-1-olteanv@gmail.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, eha-/iRVSOupHO4@public.gmane.org, angelo-BIYBQhTR83Y@public.gmane.org,
-        andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org, weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org,
-        mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org, michael-QKn5cuLxLXY@public.gmane.org, peng.ma-3arQi8VN3Tc@public.gmane.org
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200314224340.1544-1-olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        shawnguo@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
+        devicetree@vger.kernel.org, eha@deif.com, angelo@sysam.it,
+        andrew.smirnov@gmail.com, gustavo@embeddedor.com, weic@nvidia.com,
+        mhosny@nvidia.com, michael@walle.cc, peng.ma@nxp.com
+To: broonie@kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20200314224340.1544-1-olteanv@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-LS1028A has a functional connection to the eDMA module. Even if the
-spi-fsl-dspi.c driver is not using DMA for LS1028A now, define the slots
-in the DMAMUX for connecting the eDMA channels to the 3 DSPI
-controllers.
+The driver does not create the dspi->dma structure unless operating in
+DSPI_DMA_MODE, so it makes sense to check for that.
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
+Fixes: f4b323905d8b ("spi: Introduce dspi_slave_abort() function for NXP's dspi SPI driver")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
 Changes in v4:
-None.
+Patch is new.
 
-Changes in v3:
-None.
+ drivers/spi/spi-fsl-dspi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Changes in v2:
-None.
-
- arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-index 515e0a1b934f..18155273a46e 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a.dtsi
-@@ -298,6 +298,8 @@
- 			interrupts = <GIC_SPI 26 IRQ_TYPE_LEVEL_HIGH>;
- 			clock-names = "dspi";
- 			clocks = <&clockgen 4 1>;
-+			dmas = <&edma0 0 62>, <&edma0 0 60>;
-+			dma-names = "tx", "rx";
- 			spi-num-chipselects = <4>;
- 			little-endian;
- 			status = "disabled";
-@@ -311,6 +313,8 @@
- 			interrupts = <GIC_SPI 26 IRQ_TYPE_LEVEL_HIGH>;
- 			clock-names = "dspi";
- 			clocks = <&clockgen 4 1>;
-+			dmas = <&edma0 0 58>, <&edma0 0 56>;
-+			dma-names = "tx", "rx";
- 			spi-num-chipselects = <4>;
- 			little-endian;
- 			status = "disabled";
-@@ -324,6 +328,8 @@
- 			interrupts = <GIC_SPI 26 IRQ_TYPE_LEVEL_HIGH>;
- 			clock-names = "dspi";
- 			clocks = <&clockgen 4 1>;
-+			dmas = <&edma0 0 54>, <&edma0 0 2>;
-+			dma-names = "tx", "rx";
- 			spi-num-chipselects = <3>;
- 			little-endian;
- 			status = "disabled";
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 78c891e441cd..a8aef5690c5d 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -1201,8 +1201,10 @@ static int dspi_slave_abort(struct spi_master *master)
+ 	 * Terminate all pending DMA transactions for the SPI working
+ 	 * in SLAVE mode.
+ 	 */
+-	dmaengine_terminate_sync(dspi->dma->chan_rx);
+-	dmaengine_terminate_sync(dspi->dma->chan_tx);
++	if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
++		dmaengine_terminate_sync(dspi->dma->chan_rx);
++		dmaengine_terminate_sync(dspi->dma->chan_tx);
++	}
+ 
+ 	/* Clear the internal DSPI RX and TX FIFO buffers */
+ 	regmap_update_bits(dspi->regmap, SPI_MCR,
 -- 
 2.17.1

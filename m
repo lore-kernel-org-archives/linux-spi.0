@@ -1,7 +1,7 @@
 From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v3 09/12] spi: spi-fsl-dspi: Move invariant configs out of dspi_transfer_one_message
-Date: Sun, 15 Mar 2020 00:43:37 +0200
-Message-ID: <20200314224340.1544-10-olteanv@gmail.com>
+Subject: [PATCH v3 04/12] spi: spi-fsl-dspi: Avoid reading more data than written in EOQ mode
+Date: Sun, 15 Mar 2020 00:43:32 +0200
+Message-ID: <20200314224340.1544-5-olteanv@gmail.com>
 References: <20200314224340.1544-1-olteanv@gmail.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
@@ -16,124 +16,45 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 
-The operating mode (DMA, XSPI, EOQ) is not going to change across the
-lifetime of the device. So it makes no sense to keep writing to SPI_RSER
-on each message. Move this configuration to dspi_init instead.
+If dspi->words_in_flight is populated with the hardware FIFO size,
+then in dspi_fifo_read it will attempt to read more data at the end of a
+buffer that is not a multiple of 16 bytes in length. It will probably
+time out attempting to do so.
 
+So limit the num_fifo_entries variable to the actual number of FIFO
+entries that is going to be used.
+
+Fixes: d59c90a2400f ("spi: spi-fsl-dspi: Convert TCFQ users to XSPI FIFO mode")
 Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 ---
 Changes in v4:
 Patch is new.
 
- drivers/spi/spi-fsl-dspi.c | 55 ++++++++++++++++++++------------------
- 1 file changed, 29 insertions(+), 26 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index eab4929330e1..86255d38ffcf 100644
+index 8f2b73cc6ed7..51224b772680 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -909,7 +909,6 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- {
- 	struct fsl_dspi *dspi = spi_controller_get_devdata(ctlr);
- 	struct spi_device *spi = message->spi;
--	enum dspi_trans_mode trans_mode;
- 	struct spi_transfer *transfer;
- 	int status = 0;
+@@ -739,13 +739,16 @@ static void dspi_eoq_fifo_write(struct fsl_dspi *dspi)
+ 	int num_fifo_entries = dspi->devtype_data->fifo_size;
+ 	u16 xfer_cmd = dspi->tx_cmd;
  
-@@ -951,30 +950,11 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 		spi_take_timestamp_pre(dspi->ctlr, dspi->cur_transfer,
- 				       dspi->progress, !dspi->irq);
- 
--		trans_mode = dspi->devtype_data->trans_mode;
--		switch (trans_mode) {
--		case DSPI_EOQ_MODE:
--			regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_EOQFE);
--			dspi_fifo_write(dspi);
--			break;
--		case DSPI_XSPI_MODE:
--			regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_CMDTCFE);
--			dspi_fifo_write(dspi);
--			break;
--		case DSPI_DMA_MODE:
--			regmap_write(dspi->regmap, SPI_RSER,
--				     SPI_RSER_TFFFE | SPI_RSER_TFFFD |
--				     SPI_RSER_RFDFE | SPI_RSER_RFDFD);
-+		if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
- 			status = dspi_dma_xfer(dspi);
--			break;
--		default:
--			dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
--				trans_mode);
--			status = -EINVAL;
--			goto out;
--		}
-+		} else {
-+			dspi_fifo_write(dspi);
- 
--		if (trans_mode != DSPI_DMA_MODE) {
- 			if (dspi->irq) {
- 				wait_for_completion(&dspi->xfer_done);
- 				reinit_completion(&dspi->xfer_done);
-@@ -984,11 +964,12 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 				} while (status == -EINPROGRESS);
- 			}
- 		}
-+		if (status)
-+			break;
- 
- 		spi_transfer_delay_exec(transfer);
- 	}
- 
--out:
- 	message->status = status;
- 	spi_finalize_current_message(ctlr);
- 
-@@ -1179,7 +1160,7 @@ static const struct regmap_config dspi_xspi_regmap_config[] = {
- 	},
- };
- 
--static void dspi_init(struct fsl_dspi *dspi)
-+static int dspi_init(struct fsl_dspi *dspi)
- {
- 	unsigned int mcr;
- 
-@@ -1193,6 +1174,26 @@ static void dspi_init(struct fsl_dspi *dspi)
- 
- 	regmap_write(dspi->regmap, SPI_MCR, mcr);
- 	regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
++	if (num_fifo_entries * dspi->oper_word_size > dspi->len)
++		num_fifo_entries = dspi->len / dspi->oper_word_size;
 +
-+	switch (dspi->devtype_data->trans_mode) {
-+	case DSPI_EOQ_MODE:
-+		regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_EOQFE);
-+		break;
-+	case DSPI_XSPI_MODE:
-+		regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_CMDTCFE);
-+		break;
-+	case DSPI_DMA_MODE:
-+		regmap_write(dspi->regmap, SPI_RSER,
-+			     SPI_RSER_TFFFE | SPI_RSER_TFFFD |
-+			     SPI_RSER_RFDFE | SPI_RSER_RFDFD);
-+		break;
-+	default:
-+		dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
-+			dspi->devtype_data->trans_mode);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
- }
+ 	dspi->words_in_flight = num_fifo_entries;
  
- static int dspi_slave_abort(struct spi_master *master)
-@@ -1348,7 +1349,9 @@ static int dspi_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto out_ctlr_put;
- 
--	dspi_init(dspi);
-+	ret = dspi_init(dspi);
-+	if (ret)
-+		goto out_clk_put;
- 
- 	dspi->irq = platform_get_irq(pdev, 0);
- 	if (dspi->irq <= 0) {
+ 	/* Fill TX FIFO with as many transfers as possible */
+-	while (dspi->len && num_fifo_entries--) {
++	while (num_fifo_entries--) {
+ 		dspi->tx_cmd = xfer_cmd;
+ 		/* Request EOQF for last transfer in FIFO */
+-		if (dspi->len == dspi->oper_word_size || num_fifo_entries == 0)
++		if (num_fifo_entries == 0)
+ 			dspi->tx_cmd |= SPI_PUSHR_CMD_EOQ;
+ 		/* Write combined TX FIFO and CMD FIFO entry */
+ 		dspi_pushr_write(dspi);
 -- 
 2.17.1

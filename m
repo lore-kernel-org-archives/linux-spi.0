@@ -1,7 +1,7 @@
 From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v1 03/36] dt-bindings: display: convert samsung,s6e63m0 to DT Schema
-Date: Sun, 15 Mar 2020 14:43:43 +0100
-Message-ID: <20200315134416.16527-4-sam@ravnborg.org>
+Subject: [PATCH v1 04/36] dt-bindings: display: convert arm,versatile-tft-panel to DT Schema
+Date: Sun, 15 Mar 2020 14:43:44 +0100
+Message-ID: <20200315134416.16527-5-sam@ravnborg.org>
 References: <20200315134416.16527-1-sam@ravnborg.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -31,118 +31,105 @@ In-Reply-To: <20200315134416.16527-1-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The binding for this panel is a SPI slave.
-Reference spi-slave.yaml
-to avoid duplicating all properties.
-
 Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Cc: Jonathan Bakker <xc-racer2-kt+e9JA1QaI@public.gmane.org>
+Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 ---
- .../display/panel/samsung,s6e63m0.txt         | 33 -----------
- .../display/panel/samsung,s6e63m0.yaml        | 58 +++++++++++++++++++
- 2 files changed, 58 insertions(+), 33 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.txt
- create mode 100644 Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.yaml
+ .../display/panel/arm,versatile-tft-panel.txt | 31 -----------
+ .../panel/arm,versatile-tft-panel.yaml        | 51 +++++++++++++++++++
+ 2 files changed, 51 insertions(+), 31 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/display/panel/arm,versatile-tft-panel.txt
+ create mode 100644 Documentation/devicetree/bindings/display/panel/arm,versatile-tft-panel.yaml
 
-diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.txt b/Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.txt
+diff --git a/Documentation/devicetree/bindings/display/panel/arm,versatile-tft-panel.txt b/Documentation/devicetree/bindings/display/panel/arm,versatile-tft-panel.txt
 deleted file mode 100644
-index 9fb9ebeef8e4..000000000000
---- a/Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.txt
+index 0601a9e34703..000000000000
+--- a/Documentation/devicetree/bindings/display/panel/arm,versatile-tft-panel.txt
 +++ /dev/null
-@@ -1,33 +0,0 @@
--Samsung s6e63m0 AMOLED LCD panel
+@@ -1,31 +0,0 @@
+-ARM Versatile TFT Panels
+-
+-These panels are connected to the daughterboards found on the
+-ARM Versatile reference designs.
+-
+-This device node must appear as a child to a "syscon"-compatible
+-node.
 -
 -Required properties:
--  - compatible: "samsung,s6e63m0"
--  - reset-gpios: GPIO spec for reset pin
--  - vdd3-supply: VDD regulator
--  - vci-supply: VCI regulator
+-- compatible: should be "arm,versatile-tft-panel"
 -
--The panel must obey rules for SPI slave device specified in document [1].
+-Required subnodes:
+-- port: see display/panel/panel-common.yaml, graph.txt
 -
--The device node can contain one 'port' child node with one child
--'endpoint' node, according to the bindings defined in [2]. This
--node should describe panel's video bus.
--
--[1]: Documentation/devicetree/bindings/spi/spi-bus.txt
--[2]: Documentation/devicetree/bindings/media/video-interfaces.txt
 -
 -Example:
 -
--		s6e63m0: display@0 {
--			compatible = "samsung,s6e63m0";
--			reg = <0>;
--			reset-gpio = <&mp05 5 1>;
--			vdd3-supply = <&ldo12_reg>;
--			vci-supply = <&ldo11_reg>;
--			spi-max-frequency = <1200000>;
+-sysreg@0 {
+-	compatible = "arm,versatile-sysreg", "syscon", "simple-mfd";
+-	reg = <0x00000 0x1000>;
 -
--			port {
--				lcd_ep: endpoint {
--					remote-endpoint = <&fimd_ep>;
--				};
+-	panel: display@0 {
+-		compatible = "arm,versatile-tft-panel";
+-
+-		port {
+-			panel_in: endpoint {
+-				remote-endpoint = <&foo>;
 -			};
 -		};
-diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.yaml b/Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.yaml
+-	};
+-};
+diff --git a/Documentation/devicetree/bindings/display/panel/arm,versatile-tft-panel.yaml b/Documentation/devicetree/bindings/display/panel/arm,versatile-tft-panel.yaml
 new file mode 100644
-index 000000000000..204ed76da84d
+index 000000000000..8ad7305887b4
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.yaml
-@@ -0,0 +1,58 @@
++++ b/Documentation/devicetree/bindings/display/panel/arm,versatile-tft-panel.yaml
+@@ -0,0 +1,51 @@
 +# SPDX-License-Identifier: GPL-2.0
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/display/panel/samsung,s6e63m0.yaml#
++$id: http://devicetree.org/schemas/display/panel/arm,versatile-tft-panel.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Samsung s6e63m0 AMOLED LCD panel
++title: ARM Versatile TFT Panels
 +
 +maintainers:
-+  - Jonathan Bakker <xc-racer2-kt+e9JA1QaI@public.gmane.org>
++  - Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
++
++description: |
++  These panels are connected to the daughterboards found on the
++  ARM Versatile reference designs.
++
++  This device node must appear as a child to a "syscon"-compatible
++  node.
 +
 +allOf:
-+  - $ref: ../../spi/spi-slave.yaml#
 +  - $ref: panel-common.yaml#
 +
 +properties:
 +  compatible:
-+    const: samsung,s6e63m0
++    const: arm,versatile-tft-panel
 +
-+  reg: true
-+  reset-gpios: true
 +  port: true
-+
-+  vdd3-supply:
-+    description: VDD regulator
-+
-+  vci-supply:
-+    description: VCI regulator
 +
 +required:
 +  - compatible
-+  - reset-gpios
-+  - vdd3-supply
-+  - vci-supply
++  - port
++
++additionalProperties: false
 +
 +examples:
 +  - |
-+    spi {
-+        reg = <0xf00 0x20>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        display@0 {
-+            compatible = "samsung,s6e63m0";
-+            reg = <0>;
-+            reset-gpios = <&mp05 5 1>;
-+            vdd3-supply = <&ldo12_reg>;
-+            vci-supply = <&ldo11_reg>;
-+            spi-max-frequency = <1200000>;
++    sysreg {
++        compatible = "arm,versatile-sysreg", "syscon", "simple-mfd";
++        reg = <0x00000 0x1000>;
++
++        panel: display@0 {
++            compatible = "arm,versatile-tft-panel";
 +
 +            port {
-+                lcd_ep: endpoint {
-+                    remote-endpoint = <&fimd_ep>;
++                panel_in: endpoint {
++                    remote-endpoint = <&foo>;
 +                };
 +            };
 +        };

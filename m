@@ -1,64 +1,26 @@
-From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v3 12/12] arm64: dts: ls1028a-rdb: Add a spidev node for the mikroBUS
-Date: Sun, 15 Mar 2020 00:43:40 +0200
-Message-ID: <20200314224340.1544-13-olteanv@gmail.com>
-References: <20200314224340.1544-1-olteanv@gmail.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, eha-/iRVSOupHO4@public.gmane.org, angelo-BIYBQhTR83Y@public.gmane.org,
-        andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org, weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org,
-        mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org, michael-QKn5cuLxLXY@public.gmane.org, peng.ma-3arQi8VN3Tc@public.gmane.org
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: patchwork-bot+linux-spi-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Subject: Patchwork housekeeping for: spi-devel-general
+Date: Sun, 15 Mar 2020 03:00:14 +0000
+Message-ID: <158424121418.16197.10554870167974805258.git-patchwork-housekeeping@kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200314224340.1544-1-olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
+Latest series: [v3] NXP DSPI bugfixes and support for LS1028A (2020-03-14T22:43:28)
+  Superseding: [v3] NXP DSPI bugfixes and support for LS1028A (2020-03-10T12:55:42):
+    [v3,1/7] spi: spi-fsl-dspi: Don't access reserved fields in SPI_MCR
+    [v3,2/7] spi: spi-fsl-dspi: Avoid use-after-free in interrupt mode
+    [v3,3/7] spi: spi-fsl-dspi: Fix little endian access to PUSHR CMD and TXDATA
+    [v3,4/7] spi: spi-fsl-dspi: Fix bits-per-word acceleration in DMA mode
+    [v3,5/7] spi: spi-fsl-dspi: Add support for LS1028A
+    [v3,6/7] arm64: dts: ls1028a: Specify the DMA channels for the DSPI controllers
+    [v3,7/7] arm64: dts: ls1028a-rdb: Add a spidev node for the mikroBUS
 
-For debugging, it is useful to have access to the DSPI controller
-signals. On the reference design board, these are exported to either the
-mikroBUS1 or mikroBUS2 connector (according to the CPLD register
-BRDCFG3[SPI3]).
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
----
-Changes in v4:
-None.
-
-Changes in v3:
-None.
-
-Changes in v2:
-Change compatible string for spidev node.
-
- arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts b/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
-index 6d05b76c2c7a..0d27b5667b8c 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
-@@ -83,6 +83,20 @@
- 	};
- };
- 
-+&dspi2 {
-+	bus-num = <2>;
-+	status = "okay";
-+
-+	/* mikroBUS1 */
-+	spidev@0 {
-+		compatible = "rohm,dh2228fv";
-+		spi-max-frequency = <20000000>;
-+		fsl,spi-cs-sck-delay = <100>;
-+		fsl,spi-sck-cs-delay = <100>;
-+		reg = <0>;
-+	};
-+};
-+
- &esdhc {
- 	sd-uhs-sdr104;
- 	sd-uhs-sdr50;
 -- 
-2.17.1
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/pwbot

@@ -1,45 +1,48 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v1 04/36] dt-bindings: display: convert
- arm,versatile-tft-panel to DT Schema
-Date: Sun, 15 Mar 2020 17:25:47 +0100
-Message-ID: <CACRpkda6Vve_oNZ+o0A-dUy35ktgqshTE8DyEqmBD=DWry7n_w@mail.gmail.com>
-References: <20200315134416.16527-1-sam@ravnborg.org> <20200315134416.16527-5-sam@ravnborg.org>
+From: =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux-CoA6ZxLDdyEEUmgCuDUIdw@public.gmane.org>
+Subject: [PATCH] spi: fix cs_change for last transfer
+Date: Sun, 15 Mar 2020 18:08:53 +0100
+Message-ID: <45912ba25c34a63b8098f471c3c8ebf8857a4716.1584292056.git.mirq-linux@rere.qmqm.pl>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: "open list:DRM PANEL DRIVERS" <dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org>,
-        Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-        Andrzej Hajda <a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-        Brian Masney <masneyb-1iNe0GrtECGEi8DpZVb4nw@public.gmane.org>,
-        Chris Zhong <zyw-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-        Douglas Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-        Guido Gunther <agx-wGvLLbajjwFAfugRpC6u6w@public.gmane.org>, Heiko Schocher <hs-ynQEQJNshbs@public.gmane.org>,
-        Nikolaus Schaller <hns-xXXSsgcRVICgSpxsJD1C4w@public.gmane.org>,
-        Hoegeun Kwon <hoegeun.kwon-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-        Jagan Teki <jagan-dyjBcgdgk7Pe9wHmmfpqLFaTQe2KTcn/@public.gmane.org>,
-        Jerry Han <hanxu5-dyavHbARFqWrZjcNGxgArdPArS5jOdiE2SarAXORi/o@public.gmane.org>,
-        Jonathan Bakker <xc-racer2-kt+e9JA1QaI@public.gmane.org>,
-        Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
-        Lin Huang <h
-To: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200315134416.16527-5-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Sun, Mar 15, 2020 at 2:44 PM Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org> wrote:
+Generic spi_transfer_one_message() implementation introduced in
+commit b158935f70b9 has a bug in cs_change handling: it keeps CS
+asserted when cs_change is set. Fix it.
 
-> Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-> Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
+Cc: stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Fixes: b158935f70b9 ("spi: Provide common spi_message processing loop")
+Signed-off-by: Michał Mirosław <mirq-linux-CoA6ZxLDdyEEUmgCuDUIdw@public.gmane.org>
+---
+ drivers/spi/spi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks! :D
-
-Reviewed-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-
-Yours,
-Linus Walleij
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 8994545367a2..5012eabde468 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1206,7 +1206,7 @@ static int spi_transfer_one_message(struct spi_controller *ctlr,
+ 				    struct spi_message *msg)
+ {
+ 	struct spi_transfer *xfer;
+-	bool keep_cs = false;
++	bool keep_cs = true;
+ 	int ret = 0;
+ 	struct spi_statistics *statm = &ctlr->statistics;
+ 	struct spi_statistics *stats = &msg->spi->statistics;
+@@ -1268,7 +1268,7 @@ static int spi_transfer_one_message(struct spi_controller *ctlr,
+ 		if (xfer->cs_change) {
+ 			if (list_is_last(&xfer->transfer_list,
+ 					 &msg->transfers)) {
+-				keep_cs = true;
++				keep_cs = false;
+ 			} else {
+ 				spi_set_cs(msg->spi, false);
+ 				_spi_transfer_cs_change_delay(msg, xfer);
+-- 
+2.20.1

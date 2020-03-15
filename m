@@ -1,9 +1,10 @@
 From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v1 18/36] dt-bindings: display: convert raydium,rm67191 to DT Schema
-Date: Sun, 15 Mar 2020 14:43:58 +0100
-Message-ID: <20200315134416.16527-19-sam@ravnborg.org>
+Subject: [PATCH v1 19/36] dt-bindings: display: convert rocktech,jh057n00900 to DT Schema
+Date: Sun, 15 Mar 2020 14:43:59 +0100
+Message-ID: <20200315134416.16527-20-sam@ravnborg.org>
 References: <20200315134416.16527-1-sam@ravnborg.org>
 Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Cc: Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
         Andrzej Hajda <a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
@@ -32,115 +33,87 @@ Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Cc: Robert Chiras <robert.chiras-3arQi8VN3Tc@public.gmane.org>
+Cc: "Guido Günther" <agx-wGvLLbajjwFAfugRpC6u6w@public.gmane.org>
+Cc: Purism Kernel Team <kernel-3G+769LDiQ0@public.gmane.org>
 Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 ---
- .../display/panel/raydium,rm67191.txt         | 41 ----------
- .../display/panel/raydium,rm67191.yaml        | 75 +++++++++++++++++++
- 2 files changed, 75 insertions(+), 41 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/display/panel/raydium,rm67191.txt
- create mode 100644 Documentation/devicetree/bindings/display/panel/raydium,rm67191.yaml
+ .../display/panel/rocktech,jh057n00900.txt    | 23 --------
+ .../display/panel/rocktech,jh057n00900.yaml   | 57 +++++++++++++++++++
+ 2 files changed, 57 insertions(+), 23 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.txt
+ create mode 100644 Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.yaml
 
-diff --git a/Documentation/devicetree/bindings/display/panel/raydium,rm67191.txt b/Documentation/devicetree/bindings/display/panel/raydium,rm67191.txt
+diff --git a/Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.txt b/Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.txt
 deleted file mode 100644
-index 10424695aa02..000000000000
---- a/Documentation/devicetree/bindings/display/panel/raydium,rm67191.txt
+index a372c5d84695..000000000000
+--- a/Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.txt
 +++ /dev/null
-@@ -1,41 +0,0 @@
--Raydium RM67171 OLED LCD panel with MIPI-DSI protocol
+@@ -1,23 +0,0 @@
+-Rocktech jh057n00900 5.5" 720x1440 TFT LCD panel
 -
 -Required properties:
--- compatible: 		"raydium,rm67191"
--- reg:			virtual channel for MIPI-DSI protocol
--			must be <0>
--- dsi-lanes:		number of DSI lanes to be used
--			must be <3> or <4>
--- port: 		input port node with endpoint definition as
--			defined in Documentation/devicetree/bindings/graph.txt;
--			the input port should be connected to a MIPI-DSI device
--			driver
--
--Optional properties:
--- reset-gpios:		a GPIO spec for the RST_B GPIO pin
--- v3p3-supply:		phandle to 3.3V regulator that powers the VDD_3V3 pin
--- v1p8-supply:		phandle to 1.8V regulator that powers the VDD_1V8 pin
--- width-mm:		see panel-common.txt
--- height-mm:		see panel-common.txt
--- video-mode:		0 - burst-mode
--			1 - non-burst with sync event
--			2 - non-burst with sync pulse
+-- compatible: should be "rocktech,jh057n00900"
+-- reg: DSI virtual channel of the peripheral
+-- reset-gpios: panel reset gpio
+-- backlight: phandle of the backlight device attached to the panel
+-- vcc-supply: phandle of the regulator that provides the vcc supply voltage.
+-- iovcc-supply: phandle of the regulator that provides the iovcc supply
+-  voltage.
 -
 -Example:
 -
--	panel@0 {
--		compatible = "raydium,rm67191";
--		reg = <0>;
--		pinctrl-0 = <&pinctrl_mipi_dsi_0_1_en>;
--		pinctrl-names = "default";
--		reset-gpios = <&gpio1 7 GPIO_ACTIVE_LOW>;
--		dsi-lanes = <4>;
--		width-mm = <68>;
--		height-mm = <121>;
--
--		port {
--			panel_in: endpoint {
--				remote-endpoint = <&mipi_out>;
--			};
+-	&mipi_dsi {
+-		panel@0 {
+-			compatible = "rocktech,jh057n00900";
+-			reg = <0>;
+-			backlight = <&backlight>;
+-			reset-gpios = <&gpio3 13 GPIO_ACTIVE_LOW>;
+-			vcc-supply = <&reg_2v8_p>;
+-			iovcc-supply = <&reg_1v8_p>;
 -		};
 -	};
-diff --git a/Documentation/devicetree/bindings/display/panel/raydium,rm67191.yaml b/Documentation/devicetree/bindings/display/panel/raydium,rm67191.yaml
+diff --git a/Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.yaml b/Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.yaml
 new file mode 100644
-index 000000000000..b78b66a4336f
+index 000000000000..827417bbff63
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/raydium,rm67191.yaml
-@@ -0,0 +1,75 @@
++++ b/Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.yaml
+@@ -0,0 +1,57 @@
 +# SPDX-License-Identifier: GPL-2.0
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/display/panel/raydium,rm67191.yaml#
++$id: http://devicetree.org/schemas/display/panel/rocktech,jh057n00900.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Raydium RM67171 OLED LCD panel with MIPI-DSI protocol
++title: Rocktech jh057n00900 5.5" 720x1440 TFT LCD panel
 +
 +maintainers:
-+  - Robert Chiras <robert.chiras-3arQi8VN3Tc@public.gmane.org>
++  - Guido Günther <agx-wGvLLbajjwFAfugRpC6u6w@public.gmane.org>
 +
 +allOf:
 +  - $ref: panel-common.yaml#
 +
 +properties:
 +  compatible:
-+    const: raydium,rm67191
++    const: rocktech,jh057n00900
 +
 +  reg: true
-+  port: true
 +  reset-gpios: true
-+  width-mm: true
-+  height-mm: true
-+ 
-+  dsi-lanes:
-+    description: Number of DSI lanes to be used must be <3> or <4>
-+    enum: [3, 4]
++  backlight: true
 +
-+  v3p3-supply:
-+    description: phandle to 3.3V regulator that powers the VDD_3V3 pin
++  vcc-supply:
++    description: The regulator that provides the vcc supply voltage
 +
-+  v1p8-supply:
-+    description: phandle to 1.8V regulator that powers the VDD_1V8 pin
-+
-+  video-mode:
-+    description: |
-+      0 - burst-mode
-+      1 - non-burst with sync event
-+      2 - non-burst with sync pulse
-+    enum: [0, 1, 2]
++  iovcc-supply:
++    description: The regulator that provides the iovcc supply voltage
 +
 +required:
 +  - compatible
 +  - reg
-+  - dsi-lanes
-+  - port
++  - reset-gpios
++  - backlight
++  - vcc-supply
++  - iovcc-supply
 +
 +additionalProperties: false
 +
@@ -152,20 +125,13 @@ index 000000000000..b78b66a4336f
 +        #address-cells = <1>;
 +        #size-cells = <0>;
 +
-+        panel {
-+            compatible = "raydium,rm67191";
++        panel@0 {
++            compatible = "rocktech,jh057n00900";
 +            reg = <0>;
-+            reset-gpios = <&gpio1 7 GPIO_ACTIVE_LOW>;
-+            dsi-lanes = <4>;
-+            width-mm = <68>;
-+            height-mm = <121>;
-+            video-mode = <1>;
-+
-+            port {
-+                panel_in: endpoint {
-+                    remote-endpoint = <&mipi_out>;
-+                };
-+            };
++            backlight = <&backlight>;
++            reset-gpios = <&gpio3 13 GPIO_ACTIVE_LOW>;
++            vcc-supply = <&reg_2v8_p>;
++            iovcc-supply = <&reg_1v8_p>;
 +        };
 +    };
 +

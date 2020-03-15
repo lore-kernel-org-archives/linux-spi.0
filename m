@@ -1,7 +1,7 @@
 From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v1 26/36] dt-bindings: display: convert sony,acx565akm to DT Schema
-Date: Sun, 15 Mar 2020 14:44:06 +0100
-Message-ID: <20200315134416.16527-27-sam@ravnborg.org>
+Subject: [PATCH v1 22/36] dt-bindings: display: convert samsung,ld9040 to DT Schema
+Date: Sun, 15 Mar 2020 14:44:02 +0100
+Message-ID: <20200315134416.16527-23-sam@ravnborg.org>
 References: <20200315134416.16527-1-sam@ravnborg.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -32,105 +32,188 @@ Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Cc: Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>
+Cc: Andrzej Hajda <a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 ---
- .../bindings/display/panel/sony,acx565akm.txt | 30 -----------
- .../display/panel/sony,acx565akm.yaml         | 53 +++++++++++++++++++
- 2 files changed, 53 insertions(+), 30 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/display/panel/sony,acx565akm.txt
- create mode 100644 Documentation/devicetree/bindings/display/panel/sony,acx565akm.yaml
+ .../bindings/display/panel/samsung,ld9040.txt |  66 ------------
+ .../display/panel/samsung,ld9040.yaml         | 100 ++++++++++++++++++
+ 2 files changed, 100 insertions(+), 66 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/display/panel/samsung,ld9040.txt
+ create mode 100644 Documentation/devicetree/bindings/display/panel/samsung,ld9040.yaml
 
-diff --git a/Documentation/devicetree/bindings/display/panel/sony,acx565akm.txt b/Documentation/devicetree/bindings/display/panel/sony,acx565akm.txt
+diff --git a/Documentation/devicetree/bindings/display/panel/samsung,ld9040.txt b/Documentation/devicetree/bindings/display/panel/samsung,ld9040.txt
 deleted file mode 100644
-index e12333280749..000000000000
---- a/Documentation/devicetree/bindings/display/panel/sony,acx565akm.txt
+index 354d4d1df4ff..000000000000
+--- a/Documentation/devicetree/bindings/display/panel/samsung,ld9040.txt
 +++ /dev/null
-@@ -1,30 +0,0 @@
--Sony ACX565AKM SDI Panel
--========================
+@@ -1,66 +0,0 @@
+-Samsung LD9040 AMOLED LCD parallel RGB panel with SPI control bus
 -
 -Required properties:
--- compatible: "sony,acx565akm"
+-  - compatible: "samsung,ld9040"
+-  - reg: address of the panel on SPI bus
+-  - vdd3-supply: core voltage supply
+-  - vci-supply: voltage supply for analog circuits
+-  - reset-gpios: a GPIO spec for the reset pin
+-  - display-timings: timings for the connected panel according to [1]
+-
+-The panel must obey rules for SPI slave device specified in document [2].
 -
 -Optional properties:
--- label: a symbolic name for the panel
--- reset-gpios: panel reset gpio
+-  - power-on-delay: delay after turning regulators on [ms]
+-  - reset-delay: delay after reset sequence [ms]
+-  - panel-width-mm: physical panel width [mm]
+-  - panel-height-mm: physical panel height [mm]
 -
--Required nodes:
--- Video port for SDI input
+-The device node can contain one 'port' child node with one child
+-'endpoint' node, according to the bindings defined in [3]. This
+-node should describe panel's video bus.
 -
--Example
---------
+-[1]: Documentation/devicetree/bindings/display/panel/display-timing.txt
+-[2]: Documentation/devicetree/bindings/spi/spi-bus.txt
+-[3]: Documentation/devicetree/bindings/media/video-interfaces.txt
 -
--acx565akm@2 {
--	compatible = "sony,acx565akm";
--	spi-max-frequency = <6000000>;
--	reg = <2>;
+-Example:
 -
--	label = "lcd";
--	reset-gpios = <&gpio3 26 GPIO_ACTIVE_HIGH>; /* 90 */
+-	lcd@0 {
+-		compatible = "samsung,ld9040";
+-		reg = <0>;
+-		vdd3-supply = <&ldo7_reg>;
+-		vci-supply = <&ldo17_reg>;
+-		reset-gpios = <&gpy4 5 0>;
+-		spi-max-frequency = <1200000>;
+-		spi-cpol;
+-		spi-cpha;
+-		power-on-delay = <10>;
+-		reset-delay = <10>;
+-		panel-width-mm = <90>;
+-		panel-height-mm = <154>;
 -
--	port {
--		lcd_in: endpoint {
--			remote-endpoint = <&sdi_out>;
+-		display-timings {
+-			timing {
+-				clock-frequency = <23492370>;
+-				hactive = <480>;
+-				vactive = <800>;
+-				hback-porch = <16>;
+-				hfront-porch = <16>;
+-				vback-porch = <2>;
+-				vfront-porch = <28>;
+-				hsync-len = <2>;
+-				vsync-len = <1>;
+-				hsync-active = <0>;
+-				vsync-active = <0>;
+-				de-active = <0>;
+-				pixelclk-active = <0>;
+-			};
+-		};
+-
+-		port {
+-			lcd_ep: endpoint {
+-				remote-endpoint = <&fimd_dpi_ep>;
+-			};
 -		};
 -	};
--};
-diff --git a/Documentation/devicetree/bindings/display/panel/sony,acx565akm.yaml b/Documentation/devicetree/bindings/display/panel/sony,acx565akm.yaml
+diff --git a/Documentation/devicetree/bindings/display/panel/samsung,ld9040.yaml b/Documentation/devicetree/bindings/display/panel/samsung,ld9040.yaml
 new file mode 100644
-index 000000000000..a0b1abb9f33d
+index 000000000000..b6e7e87411e8
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/sony,acx565akm.yaml
-@@ -0,0 +1,53 @@
++++ b/Documentation/devicetree/bindings/display/panel/samsung,ld9040.yaml
+@@ -0,0 +1,100 @@
 +# SPDX-License-Identifier: GPL-2.0
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/display/panel/sony,acx565akm.yaml#
++$id: http://devicetree.org/schemas/display/panel/samsung,ld9040.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Sony ACX565AKM SDI Panel
++title: Samsung LD9040 AMOLED LCD parallel RGB panel with SPI control bus
 +
 +maintainers:
-+  - Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>
++  - Andrzej Hajda <a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 +
 +allOf:
-+  - $ref: panel-common.yaml#
 +  - $ref: ../../spi/spi-slave.yaml#
++  - $ref: panel-common.yaml#
 +
 +properties:
 +  compatible:
-+    const: sony,acx565akm
++    const: samsung,ld9040
 +
-+  label: true
-+  reset-gpios: true
++  display-timings: true
 +  port: true
++  reg: true
++  reset-gpios: true
++
++  vdd3-supply:
++    description: core voltage supply
++
++  vci-supply:
++    description: voltage supply for analog circuits
++
++  power-on-delay:
++    description: delay after turning regulators on [ms]
++
++  reset-delay:
++    description: delay after reset sequence [ms]
++
++  panel-width-mm:
++    description: physical panel width [mm]
++
++  panel-height-mm:
++    description: physical panel height [mm]
 +
 +required:
 +  - compatible
-+  - port
-+
++  - reg
++  - vdd3-supply
++  - vci-supply
++  - reset-gpios
++  - display-timings
 +
 +examples:
 +  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
 +    spi {
 +        #address-cells = <1>;
 +        #size-cells = <0>;
 +
-+        acx565akm@2 {
-+            compatible = "sony,acx565akm";
-+            spi-max-frequency = <6000000>;
-+            reg = <2>;
++        lcd@0 {
++            compatible = "samsung,ld9040";
++            #address-cells = <1>;
++            #size-cells = <0>;
 +
-+            label = "lcd";
-+            reset-gpios = <&gpio3 26 GPIO_ACTIVE_HIGH>; /* 90 */
++            reg = <0>;
++            vdd3-supply = <&ldo7_reg>;
++            vci-supply = <&ldo17_reg>;
++            reset-gpios = <&gpy4 5 0>;
++            spi-max-frequency = <1200000>;
++            spi-cpol;
++            spi-cpha;
++            power-on-delay = <10>;
++            reset-delay = <10>;
++            panel-width-mm = <90>;
++            panel-height-mm = <154>;
++
++            display-timings {
++                timing {
++                    clock-frequency = <23492370>;
++                    hactive = <480>;
++                    vactive = <800>;
++                    hback-porch = <16>;
++                    hfront-porch = <16>;
++                    vback-porch = <2>;
++                    vfront-porch = <28>;
++                    hsync-len = <2>;
++                    vsync-len = <1>;
++                    hsync-active = <0>;
++                    vsync-active = <0>;
++                    de-active = <0>;
++                    pixelclk-active = <0>;
++                };
++            };
 +
 +            port {
-+                lcd_in: endpoint {
-+                    remote-endpoint = <&sdi_out>;
++                lcd_ep: endpoint {
++                    remote-endpoint = <&fimd_dpi_ep>;
 +                };
 +            };
 +        };

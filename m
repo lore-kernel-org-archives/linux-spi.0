@@ -1,10 +1,9 @@
 From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v1 19/36] dt-bindings: display: convert rocktech,jh057n00900 to DT Schema
-Date: Sun, 15 Mar 2020 14:43:59 +0100
-Message-ID: <20200315134416.16527-20-sam@ravnborg.org>
+Subject: [PATCH v1 21/36] dt-bindings: display: convert samsung,s6d16d0 to DT Schema
+Date: Sun, 15 Mar 2020 14:44:01 +0100
+Message-ID: <20200315134416.16527-22-sam@ravnborg.org>
 References: <20200315134416.16527-1-sam@ravnborg.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Cc: Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
         Andrzej Hajda <a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
@@ -33,87 +32,88 @@ Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Cc: "Guido Günther" <agx-wGvLLbajjwFAfugRpC6u6w@public.gmane.org>
-Cc: Purism Kernel Team <kernel-3G+769LDiQ0@public.gmane.org>
+Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 ---
- .../display/panel/rocktech,jh057n00900.txt    | 23 --------
- .../display/panel/rocktech,jh057n00900.yaml   | 57 +++++++++++++++++++
- 2 files changed, 57 insertions(+), 23 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.txt
- create mode 100644 Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.yaml
+ .../display/panel/samsung,s6d16d0.txt         | 30 ----------
+ .../display/panel/samsung,s6d16d0.yaml        | 56 +++++++++++++++++++
+ 2 files changed, 56 insertions(+), 30 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/display/panel/samsung,s6d16d0.txt
+ create mode 100644 Documentation/devicetree/bindings/display/panel/samsung,s6d16d0.yaml
 
-diff --git a/Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.txt b/Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.txt
+diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6d16d0.txt b/Documentation/devicetree/bindings/display/panel/samsung,s6d16d0.txt
 deleted file mode 100644
-index a372c5d84695..000000000000
---- a/Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.txt
+index b94e366f451b..000000000000
+--- a/Documentation/devicetree/bindings/display/panel/samsung,s6d16d0.txt
 +++ /dev/null
-@@ -1,23 +0,0 @@
--Rocktech jh057n00900 5.5" 720x1440 TFT LCD panel
+@@ -1,30 +0,0 @@
+-Samsung S6D16D0 4" 864x480 AMOLED panel
 -
 -Required properties:
--- compatible: should be "rocktech,jh057n00900"
--- reg: DSI virtual channel of the peripheral
--- reset-gpios: panel reset gpio
--- backlight: phandle of the backlight device attached to the panel
--- vcc-supply: phandle of the regulator that provides the vcc supply voltage.
--- iovcc-supply: phandle of the regulator that provides the iovcc supply
--  voltage.
+-  - compatible: should be:
+-    "samsung,s6d16d0",
+-  - reg: the virtual channel number of a DSI peripheral
+-  - vdd1-supply: I/O voltage supply
+-  - reset-gpios: a GPIO spec for the reset pin (active low)
+-
+-The device node can contain one 'port' child node with one child
+-'endpoint' node, according to the bindings defined in
+-media/video-interfaces.txt. This node should describe panel's video bus.
 -
 -Example:
+-&dsi {
+-	...
 -
--	&mipi_dsi {
--		panel@0 {
--			compatible = "rocktech,jh057n00900";
--			reg = <0>;
--			backlight = <&backlight>;
--			reset-gpios = <&gpio3 13 GPIO_ACTIVE_LOW>;
--			vcc-supply = <&reg_2v8_p>;
--			iovcc-supply = <&reg_1v8_p>;
+-	panel@0 {
+-		compatible = "samsung,s6d16d0";
+-		reg = <0>;
+-		vdd1-supply = <&foo>;
+-		reset-gpios = <&foo_gpio 0 GPIO_ACTIVE_LOW>;
+-
+-		port {
+-			panel_in: endpoint {
+-				remote-endpoint = <&dsi_out>;
+-			};
 -		};
 -	};
-diff --git a/Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.yaml b/Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.yaml
+-};
+diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6d16d0.yaml b/Documentation/devicetree/bindings/display/panel/samsung,s6d16d0.yaml
 new file mode 100644
-index 000000000000..827417bbff63
+index 000000000000..66d147496bc3
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/rocktech,jh057n00900.yaml
-@@ -0,0 +1,57 @@
++++ b/Documentation/devicetree/bindings/display/panel/samsung,s6d16d0.yaml
+@@ -0,0 +1,56 @@
 +# SPDX-License-Identifier: GPL-2.0
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/display/panel/rocktech,jh057n00900.yaml#
++$id: http://devicetree.org/schemas/display/panel/samsung,s6d16d0.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Rocktech jh057n00900 5.5" 720x1440 TFT LCD panel
++title: Samsung S6D16D0 4" 864x480 AMOLED panel
 +
 +maintainers:
-+  - Guido Günther <agx-wGvLLbajjwFAfugRpC6u6w@public.gmane.org>
++  - Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 +
 +allOf:
 +  - $ref: panel-common.yaml#
 +
 +properties:
 +  compatible:
-+    const: rocktech,jh057n00900
++    const: samsung,s6d16d0
 +
++  port: true
 +  reg: true
 +  reset-gpios: true
-+  backlight: true
 +
-+  vcc-supply:
-+    description: The regulator that provides the vcc supply voltage
-+
-+  iovcc-supply:
-+    description: The regulator that provides the iovcc supply voltage
++  vdd1-supply:
++    description: I/O voltage supply
 +
 +required:
 +  - compatible
 +  - reg
++  - vdd1-supply
 +  - reset-gpios
-+  - backlight
-+  - vcc-supply
-+  - iovcc-supply
 +
 +additionalProperties: false
 +
@@ -126,12 +126,16 @@ index 000000000000..827417bbff63
 +        #size-cells = <0>;
 +
 +        panel@0 {
-+            compatible = "rocktech,jh057n00900";
++            compatible = "samsung,s6d16d0";
 +            reg = <0>;
-+            backlight = <&backlight>;
-+            reset-gpios = <&gpio3 13 GPIO_ACTIVE_LOW>;
-+            vcc-supply = <&reg_2v8_p>;
-+            iovcc-supply = <&reg_1v8_p>;
++            vdd1-supply = <&foo>;
++            reset-gpios = <&foo_gpio 0 GPIO_ACTIVE_LOW>;
++
++            port {
++                panel_in: endpoint {
++                    remote-endpoint = <&dsi_out>;
++                };
++            };
 +        };
 +    };
 +

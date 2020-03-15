@@ -1,7 +1,7 @@
 From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v1 09/36] dt-bindings: display: convert innolux,p079zca to DT Schema
-Date: Sun, 15 Mar 2020 14:43:49 +0100
-Message-ID: <20200315134416.16527-10-sam@ravnborg.org>
+Subject: [PATCH v1 10/36] dt-bindings: display: convert innolux,p097pfg to DT Schema
+Date: Sun, 15 Mar 2020 14:43:50 +0100
+Message-ID: <20200315134416.16527-11-sam@ravnborg.org>
 References: <20200315134416.16527-1-sam@ravnborg.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -26,37 +26,35 @@ Cc: Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
 To: dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org,
         Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200315134416.16527-1-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
-
-As the binding matches panel-simple, added the compatible to the
-panel-simple list.
-With this change enable-gpios is now optional.
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Cc: Chris Zhong <zyw-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Cc: Lin Huang <hl-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 ---
- .../display/panel/innolux,p079zca.txt         | 22 -------------------
- .../bindings/display/panel/panel-simple.yaml  |  2 ++
- 2 files changed, 2 insertions(+), 22 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/display/panel/innolux,p079zca.txt
+ .../display/panel/innolux,p097pfg.txt         | 24 --------
+ .../display/panel/innolux,p097pfg.yaml        | 56 +++++++++++++++++++
+ 2 files changed, 56 insertions(+), 24 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/display/panel/innolux,p097pfg.txt
+ create mode 100644 Documentation/devicetree/bindings/display/panel/innolux,p097pfg.yaml
 
-diff --git a/Documentation/devicetree/bindings/display/panel/innolux,p079zca.txt b/Documentation/devicetree/bindings/display/panel/innolux,p079zca.txt
+diff --git a/Documentation/devicetree/bindings/display/panel/innolux,p097pfg.txt b/Documentation/devicetree/bindings/display/panel/innolux,p097pfg.txt
 deleted file mode 100644
-index 3ab8c7412cf6..000000000000
---- a/Documentation/devicetree/bindings/display/panel/innolux,p079zca.txt
+index d1cab3a8f0fb..000000000000
+--- a/Documentation/devicetree/bindings/display/panel/innolux,p097pfg.txt
 +++ /dev/null
-@@ -1,22 +0,0 @@
--Innolux P079ZCA 7.85" 768x1024 TFT LCD panel
+@@ -1,24 +0,0 @@
+-Innolux P097PFG 9.7" 1536x2048 TFT LCD panel
 -
 -Required properties:
--- compatible: should be "innolux,p079zca"
+-- compatible: should be "innolux,p097pfg"
 -- reg: DSI virtual channel of the peripheral
--- power-supply: phandle of the regulator that provides the supply voltage
+-- avdd-supply: phandle of the regulator that provides positive voltage
+-- avee-supply: phandle of the regulator that provides negative voltage
 -- enable-gpios: panel enable gpio
 -
 -Optional properties:
@@ -68,23 +66,73 @@ index 3ab8c7412cf6..000000000000
 -		panel@0 {
 -			compatible = "innolux,p079zca";
 -			reg = <0>;
--			power-supply = <...>;
+-			avdd-supply = <...>;
+-			avee-supply = <...>;
 -			backlight = <&backlight>;
 -			enable-gpios = <&gpio1 13 GPIO_ACTIVE_HIGH>;
 -		};
 -	};
-diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-index 393ffc6acbba..5088fe81d025 100644
---- a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-+++ b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-@@ -143,6 +143,8 @@ properties:
-       - innolux,n116bge
-         # InnoLux 15.6" WXGA TFT LCD panel
-       - innolux,n156bge-l21
-+        # Innolux P079ZCA 7.85" 768x1024 TFT LCD panel
-+      - innolux,p079zca
-         # Innolux Corporation 7.0" WSVGA (1024x600) TFT LCD panel
-       - innolux,zj070na-01p
-         # Kaohsiung Opto-Electronics Inc. 5.7" QVGA (320 x 240) TFT LCD panel
+diff --git a/Documentation/devicetree/bindings/display/panel/innolux,p097pfg.yaml b/Documentation/devicetree/bindings/display/panel/innolux,p097pfg.yaml
+new file mode 100644
+index 000000000000..5a5f071627fb
+--- /dev/null
++++ b/Documentation/devicetree/bindings/display/panel/innolux,p097pfg.yaml
+@@ -0,0 +1,56 @@
++# SPDX-License-Identifier: GPL-2.0
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/display/panel/innolux,p097pfg.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Innolux P097PFG 9.7" 1536x2048 TFT LCD panel
++
++maintainers:
++  - Lin Huang <hl-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
++
++allOf:
++  - $ref: panel-common.yaml#
++
++properties:
++  compatible:
++    const: innolux,p097pfg
++
++  backlight: true
++  enable-gpios: true
++  reg: true
++
++  avdd-supply:
++    description: The regulator that provides positive voltage
++
++  avee-supply:
++    description: The regulator that provides negative voltage
++
++required:
++  - compatible
++  - reg
++  - avdd-supply
++  - avee-supply
++  - enable-gpios
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    dsi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        panel@0 {
++            compatible = "innolux,p097pfg";
++            reg = <0>;
++            avdd-supply = <&avdd>;
++            avee-supply = <&avee>;
++            backlight = <&backlight>;
++            enable-gpios = <&gpio1 13 GPIO_ACTIVE_HIGH>;
++        };
++    };
++
++...
 -- 
 2.20.1

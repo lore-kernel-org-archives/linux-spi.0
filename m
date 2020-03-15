@@ -1,7 +1,7 @@
 From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v1 11/36] dt-bindings: display: convert innolux,p120zdg-bf1 to DT Schema
-Date: Sun, 15 Mar 2020 14:43:51 +0100
-Message-ID: <20200315134416.16527-12-sam@ravnborg.org>
+Subject: [PATCH v1 13/36] dt-bindings: display: convert kingdisplay,kd035g6-54nt to DT Schema
+Date: Sun, 15 Mar 2020 14:43:53 +0100
+Message-ID: <20200315134416.16527-14-sam@ravnborg.org>
 References: <20200315134416.16527-1-sam@ravnborg.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -32,91 +32,127 @@ Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Cc: Sandeep Panda <spanda-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Cc: Douglas Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Cc: Paul Cercueil <paul-icTtO2rgO2OTuSrc4Mpeew@public.gmane.org>
 Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 ---
- .../display/panel/innolux,p120zdg-bf1.txt     | 22 ----------
- .../display/panel/innolux,p120zdg-bf1.yaml    | 43 +++++++++++++++++++
- 2 files changed, 43 insertions(+), 22 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/display/panel/innolux,p120zdg-bf1.txt
- create mode 100644 Documentation/devicetree/bindings/display/panel/innolux,p120zdg-bf1.yaml
+ .../panel/kingdisplay,kd035g6-54nt.txt        | 42 -------------
+ .../panel/kingdisplay,kd035g6-54nt.yaml       | 60 +++++++++++++++++++
+ 2 files changed, 60 insertions(+), 42 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/display/panel/kingdisplay,kd035g6-54nt.txt
+ create mode 100644 Documentation/devicetree/bindings/display/panel/kingdisplay,kd035g6-54nt.yaml
 
-diff --git a/Documentation/devicetree/bindings/display/panel/innolux,p120zdg-bf1.txt b/Documentation/devicetree/bindings/display/panel/innolux,p120zdg-bf1.txt
+diff --git a/Documentation/devicetree/bindings/display/panel/kingdisplay,kd035g6-54nt.txt b/Documentation/devicetree/bindings/display/panel/kingdisplay,kd035g6-54nt.txt
 deleted file mode 100644
-index 513f03466aba..000000000000
---- a/Documentation/devicetree/bindings/display/panel/innolux,p120zdg-bf1.txt
+index fa9596082e44..000000000000
+--- a/Documentation/devicetree/bindings/display/panel/kingdisplay,kd035g6-54nt.txt
 +++ /dev/null
-@@ -1,22 +0,0 @@
--Innolux P120ZDG-BF1 12.02 inch eDP 2K display panel
--
--This binding is compatible with the simple-panel binding, which is specified
--in simple-panel.txt in this directory.
+@@ -1,42 +0,0 @@
+-King Display KD035G6-54NT 3.5" (320x240 pixels) 24-bit TFT LCD panel
 -
 -Required properties:
--- compatible: should be "innolux,p120zdg-bf1"
--- power-supply: regulator to provide the supply voltage
+-- compatible: should be "kingdisplay,kd035g6-54nt"
+-- power-supply: See panel-common.txt
+-- reset-gpios: See panel-common.txt
 -
 -Optional properties:
--- enable-gpios: GPIO pin to enable or disable the panel
--- backlight: phandle of the backlight device attached to the panel
--- no-hpd: If HPD isn't hooked up; add this property.
+-- backlight: see panel-common.txt
+-
+-The generic bindings for the SPI slaves documented in [1] also apply.
+-
+-The device node can contain one 'port' child node with one child
+-'endpoint' node, according to the bindings defined in [2]. This
+-node should describe panel's video bus.
+-
+-[1]: Documentation/devicetree/bindings/spi/spi-bus.txt
+-[2]: Documentation/devicetree/bindings/graph.txt
 -
 -Example:
--	panel_edp: panel-edp {
--		compatible = "innolux,p120zdg-bf1";
--		enable-gpios = <&msmgpio 31 GPIO_ACTIVE_LOW>;
--		power-supply = <&pm8916_l2>;
+-
+-&spi {
+-	panel@0 {
+-		compatible = "kingdisplay,kd035g6-54nt";
+-		reg = <0>;
+-
+-		spi-max-frequency = <3125000>;
+-		spi-3wire;
+-		spi-cs-high;
+-
+-		reset-gpios = <&gpe 2 GPIO_ACTIVE_LOW>;
+-
 -		backlight = <&backlight>;
--		no-hpd;
+-		power-supply = <&ldo6>;
+-
+-		port {
+-			panel_input: endpoint {
+-				remote-endpoint = <&panel_output>;
+-			};
+-		};
 -	};
-diff --git a/Documentation/devicetree/bindings/display/panel/innolux,p120zdg-bf1.yaml b/Documentation/devicetree/bindings/display/panel/innolux,p120zdg-bf1.yaml
+-};
+diff --git a/Documentation/devicetree/bindings/display/panel/kingdisplay,kd035g6-54nt.yaml b/Documentation/devicetree/bindings/display/panel/kingdisplay,kd035g6-54nt.yaml
 new file mode 100644
-index 000000000000..42f97b7b86b2
+index 000000000000..31fc63294a9f
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/innolux,p120zdg-bf1.yaml
-@@ -0,0 +1,43 @@
++++ b/Documentation/devicetree/bindings/display/panel/kingdisplay,kd035g6-54nt.yaml
+@@ -0,0 +1,60 @@
 +# SPDX-License-Identifier: GPL-2.0
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/display/panel/innolux,p120zdg-bf1.yaml#
++$id: http://devicetree.org/schemas/display/panel/kingdisplay,kd035g6-54nt.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Innolux P120ZDG-BF1 12.02 inch eDP 2K display panel
++title: King Display KD035G6-54NT 3.5" (320x240 pixels) 24-bit TFT LCD panel
 +
 +maintainers:
-+  - Sandeep Panda <spanda-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-+  - Douglas Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
++  - Paul Cercueil <paul-icTtO2rgO2OTuSrc4Mpeew@public.gmane.org>
 +
 +allOf:
++  - $ref: ../../spi/spi-slave.yaml#
 +  - $ref: panel-common.yaml#
 +
 +properties:
 +  compatible:
-+    const: innolux,p120zdg-bf1
++    const: kingdisplay,kd035g6-54nt
 +
-+  enable-gpios: true
-+  power-supply: true
 +  backlight: true
-+  no-hpd: true
++  port: true
++  power-supply: true
++  reg: true
++  reset-gpios: true
 +
 +required:
 +  - compatible
 +  - power-supply
-+        
-+additionalProperties: false
++  - reset-gpios
 +
 +examples:
 +  - |
 +    #include <dt-bindings/gpio/gpio.h>
 +
-+    panel_edp: panel-edp {
-+        compatible = "innolux,p120zdg-bf1";
-+        enable-gpios = <&msmgpio 31 GPIO_ACTIVE_LOW>;
-+        power-supply = <&pm8916_l2>;
-+        backlight = <&backlight>;
-+        no-hpd;
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        panel@0 {
++            compatible = "kingdisplay,kd035g6-54nt";
++            reg = <0>;
++
++            spi-max-frequency = <3125000>;
++            spi-3wire;
++            spi-cs-high;
++
++            reset-gpios = <&gpe 2 GPIO_ACTIVE_LOW>;
++
++            backlight = <&backlight>;
++            power-supply = <&ldo6>;
++
++            port {
++                panel_input: endpoint {
++                    remote-endpoint = <&panel_output>;
++                };
++            };
++        };
 +    };
 +
 +...

@@ -1,7 +1,7 @@
 From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v1 08/36] dt-bindings: display: convert feiyang,fy07024di26a30d to DT Schema
-Date: Sun, 15 Mar 2020 14:43:48 +0100
-Message-ID: <20200315134416.16527-9-sam@ravnborg.org>
+Subject: [PATCH v1 09/36] dt-bindings: display: convert innolux,p079zca to DT Schema
+Date: Sun, 15 Mar 2020 14:43:49 +0100
+Message-ID: <20200315134416.16527-10-sam@ravnborg.org>
 References: <20200315134416.16527-1-sam@ravnborg.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -31,104 +31,60 @@ In-Reply-To: <20200315134416.16527-1-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org
 Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+As the binding matches panel-simple, added the compatible to the
+panel-simple list.
+With this change enable-gpios is now optional.
+
 Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Cc: Jagan Teki <jagan-dyjBcgdgk7Pe9wHmmfpqLFaTQe2KTcn/@public.gmane.org>
+Cc: Chris Zhong <zyw-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 ---
- .../display/panel/feiyang,fy07024di26a30d.txt | 20 -------
- .../panel/feiyang,fy07024di26a30d.yaml        | 56 +++++++++++++++++++
- 2 files changed, 56 insertions(+), 20 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/display/panel/feiyang,fy07024di26a30d.txt
- create mode 100644 Documentation/devicetree/bindings/display/panel/feiyang,fy07024di26a30d.yaml
+ .../display/panel/innolux,p079zca.txt         | 22 -------------------
+ .../bindings/display/panel/panel-simple.yaml  |  2 ++
+ 2 files changed, 2 insertions(+), 22 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/display/panel/innolux,p079zca.txt
 
-diff --git a/Documentation/devicetree/bindings/display/panel/feiyang,fy07024di26a30d.txt b/Documentation/devicetree/bindings/display/panel/feiyang,fy07024di26a30d.txt
+diff --git a/Documentation/devicetree/bindings/display/panel/innolux,p079zca.txt b/Documentation/devicetree/bindings/display/panel/innolux,p079zca.txt
 deleted file mode 100644
-index 82caa7b65ae8..000000000000
---- a/Documentation/devicetree/bindings/display/panel/feiyang,fy07024di26a30d.txt
+index 3ab8c7412cf6..000000000000
+--- a/Documentation/devicetree/bindings/display/panel/innolux,p079zca.txt
 +++ /dev/null
-@@ -1,20 +0,0 @@
--Feiyang FY07024DI26A30-D 7" MIPI-DSI LCD Panel
+@@ -1,22 +0,0 @@
+-Innolux P079ZCA 7.85" 768x1024 TFT LCD panel
 -
 -Required properties:
--- compatible: must be "feiyang,fy07024di26a30d"
--- reg: DSI virtual channel used by that screen
--- avdd-supply: analog regulator dc1 switch
--- dvdd-supply: 3v3 digital regulator
--- reset-gpios: a GPIO phandle for the reset pin
+-- compatible: should be "innolux,p079zca"
+-- reg: DSI virtual channel of the peripheral
+-- power-supply: phandle of the regulator that provides the supply voltage
+-- enable-gpios: panel enable gpio
 -
 -Optional properties:
--- backlight: phandle for the backlight control.
+-- backlight: phandle of the backlight device attached to the panel
 -
--panel@0 {
--	compatible = "feiyang,fy07024di26a30d";
--	reg = <0>;
--	avdd-supply = <&reg_dc1sw>;
--	dvdd-supply = <&reg_dldo2>;
--	reset-gpios = <&pio 3 24 GPIO_ACTIVE_HIGH>; /* LCD-RST: PD24 */
--	backlight = <&backlight>;
--};
-diff --git a/Documentation/devicetree/bindings/display/panel/feiyang,fy07024di26a30d.yaml b/Documentation/devicetree/bindings/display/panel/feiyang,fy07024di26a30d.yaml
-new file mode 100644
-index 000000000000..4bf4498d007a
---- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/feiyang,fy07024di26a30d.yaml
-@@ -0,0 +1,56 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/display/panel/feiyang,fy07024di26a30d.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Feiyang FY07024DI26A30-D 7" MIPI-DSI LCD Panel
-+
-+maintainers:
-+  - Jagan Teki <jagan-dyjBcgdgk7Pe9wHmmfpqLFaTQe2KTcn/@public.gmane.org>
-+
-+allOf:
-+  - $ref: panel-common.yaml#
-+
-+properties:
-+  compatible:
-+    const: feiyang,fy07024di26a30d
-+
-+  backlight: true
-+  reg : true
-+  reset-gpios: true
-+
-+  avdd-supply:
-+    description: analog regulator dc1 switch
-+
-+  dvdd-supply:
-+    description: 3v3 digital regulator
-+
-+required:
-+ - compatible
-+ - reg
-+ - reset-gpios
-+ - avdd-supply
-+ - dvdd-supply
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
-+    dsi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        panel@0 {
-+            compatible = "feiyang,fy07024di26a30d";
-+            reg = <0>;
-+            avdd-supply = <&reg_dc1sw>;
-+            dvdd-supply = <&reg_dldo2>;
-+            reset-gpios = <&pio 3 24 GPIO_ACTIVE_HIGH>; /* LCD-RST: PD24 */
-+            backlight = <&backlight>;
-+        };
-+    };
-+
-+...
+-Example:
+-
+-	&mipi_dsi {
+-		panel@0 {
+-			compatible = "innolux,p079zca";
+-			reg = <0>;
+-			power-supply = <...>;
+-			backlight = <&backlight>;
+-			enable-gpios = <&gpio1 13 GPIO_ACTIVE_HIGH>;
+-		};
+-	};
+diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
+index 393ffc6acbba..5088fe81d025 100644
+--- a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
++++ b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
+@@ -143,6 +143,8 @@ properties:
+       - innolux,n116bge
+         # InnoLux 15.6" WXGA TFT LCD panel
+       - innolux,n156bge-l21
++        # Innolux P079ZCA 7.85" 768x1024 TFT LCD panel
++      - innolux,p079zca
+         # Innolux Corporation 7.0" WSVGA (1024x600) TFT LCD panel
+       - innolux,zj070na-01p
+         # Kaohsiung Opto-Electronics Inc. 5.7" QVGA (320 x 240) TFT LCD panel
 -- 
 2.20.1

@@ -1,7 +1,7 @@
 From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v1 35/36] dt-bindings: display: convert lgphilips,lb035q02 to DT Schema
-Date: Sun, 15 Mar 2020 14:44:15 +0100
-Message-ID: <20200315134416.16527-36-sam@ravnborg.org>
+Subject: [PATCH v1 30/36] dt-bindings: display: convert sharp,ls043t1le01 to DT Schema
+Date: Sun, 15 Mar 2020 14:44:10 +0100
+Message-ID: <20200315134416.16527-31-sam@ravnborg.org>
 References: <20200315134416.16527-1-sam@ravnborg.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -26,117 +26,110 @@ Cc: Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
 To: dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org,
         Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200315134416.16527-1-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
+
+The txt binding specified the property "power-supply".
+But the example and the actual implementation in the linux-kernel
+uses "avdd-supply".
+So the binding is adjusted to use avdd-supply as this seems
+to be the correct choice.
+There are no DT files in the linux kernel to check.
 
 Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Cc: Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>
+Cc: Werner Johansson <werner.johansson-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
 Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 ---
- .../display/panel/lgphilips,lb035q02.txt      | 33 ------------
- .../display/panel/lgphilips,lb035q02.yaml     | 54 +++++++++++++++++++
- 2 files changed, 54 insertions(+), 33 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.txt
- create mode 100644 Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.yaml
+ .../display/panel/sharp,ls043t1le01.txt       | 22 --------
+ .../display/panel/sharp,ls043t1le01.yaml      | 51 +++++++++++++++++++
+ 2 files changed, 51 insertions(+), 22 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/display/panel/sharp,ls043t1le01.txt
+ create mode 100644 Documentation/devicetree/bindings/display/panel/sharp,ls043t1le01.yaml
 
-diff --git a/Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.txt b/Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.txt
+diff --git a/Documentation/devicetree/bindings/display/panel/sharp,ls043t1le01.txt b/Documentation/devicetree/bindings/display/panel/sharp,ls043t1le01.txt
 deleted file mode 100644
-index 1a1e653e5407..000000000000
---- a/Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.txt
+index 3770a111968b..000000000000
+--- a/Documentation/devicetree/bindings/display/panel/sharp,ls043t1le01.txt
 +++ /dev/null
-@@ -1,33 +0,0 @@
--LG.Philips LB035Q02 Panel
--=========================
+@@ -1,22 +0,0 @@
+-Sharp Microelectronics 4.3" qHD TFT LCD panel
 -
 -Required properties:
--- compatible: "lgphilips,lb035q02"
--- enable-gpios: panel enable gpio
+-- compatible: should be "sharp,ls043t1le01-qhd"
+-- reg: DSI virtual channel of the peripheral
+-- power-supply: phandle of the regulator that provides the supply voltage
 -
 -Optional properties:
--- label: a symbolic name for the panel
+-- backlight: phandle of the backlight device attached to the panel
+-- reset-gpios: a GPIO spec for the reset pin
 -
--Required nodes:
--- Video port for DPI input
+-Example:
 -
--Example
---------
--
--lcd-panel: panel@0 {
--	compatible = "lgphilips,lb035q02";
--	reg = <0>;
--	spi-max-frequency = <100000>;
--	spi-cpol;
--	spi-cpha;
--
--	label = "lcd";
--
--	enable-gpios = <&gpio7 7 0>;
--
--	port {
--		lcd_in: endpoint {
--			remote-endpoint = <&dpi_out>;
+-	mdss_dsi@fd922800 {
+-		panel@0 {
+-			compatible = "sharp,ls043t1le01-qhd";
+-			reg = <0>;
+-			avdd-supply = <&pm8941_l22>;
+-			backlight = <&pm8941_wled>;
+-			reset-gpios = <&pm8941_gpios 19 GPIO_ACTIVE_HIGH>;
 -		};
 -	};
--};
-diff --git a/Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.yaml b/Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.yaml
+diff --git a/Documentation/devicetree/bindings/display/panel/sharp,ls043t1le01.yaml b/Documentation/devicetree/bindings/display/panel/sharp,ls043t1le01.yaml
 new file mode 100644
-index 000000000000..09eba4090736
+index 000000000000..a90d0d8bf7c9
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.yaml
-@@ -0,0 +1,54 @@
++++ b/Documentation/devicetree/bindings/display/panel/sharp,ls043t1le01.yaml
+@@ -0,0 +1,51 @@
 +# SPDX-License-Identifier: GPL-2.0
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/display/panel/lgphilips,lb035q02.yaml#
++$id: http://devicetree.org/schemas/display/panel/sharp,ls043t1le01.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: LG.Philips LB035Q02 Panel
++title: Sharp Microelectronics 4.3" qHD TFT LCD panel
 +
 +maintainers:
-+  - Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>
++  - Werner Johansson <werner.johansson-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
 +
 +allOf:
 +  - $ref: panel-common.yaml#
-+  - $ref: ../../spi/spi-slave.yaml#
 +
 +properties:
 +  compatible:
-+    const: lgphilips,lb035q02
++    const: sharp,ls043t1le01-qhd
 +
-+  label: true
-+  enable-gpios: true
++  reg: true
++  backlight: true
++  reset-gpios: true
 +  port: true
++
++  avdd-supply:
++    description: handle of the regulator that provides the supply voltage
 +
 +required:
 +  - compatible
-+  - enable-gpios
-+  - port
++  - reg
++  - avdd-supply
++
++additionalProperties: false
 +
 +examples:
 +  - |
-+    spi {
++    #include <dt-bindings/gpio/gpio.h>
++
++    dsi {
 +        #address-cells = <1>;
 +        #size-cells = <0>;
 +
-+        panel: panel@0 {
-+            compatible = "lgphilips,lb035q02";
++        panel@0 {
++            compatible = "sharp,ls043t1le01-qhd";
 +            reg = <0>;
-+            spi-max-frequency = <100000>;
-+            spi-cpol;
-+            spi-cpha;
-+
-+            label = "lcd";
-+
-+            enable-gpios = <&gpio7 7 0>;
-+
-+            port {
-+                lcd_in: endpoint {
-+                    remote-endpoint = <&dpi_out>;
-+                };
-+            };
++            avdd-supply = <&pm8941_l22>;
++            backlight = <&pm8941_wled>;
++            reset-gpios = <&pm8941_gpios 19 GPIO_ACTIVE_HIGH>;
 +        };
 +    };
 +

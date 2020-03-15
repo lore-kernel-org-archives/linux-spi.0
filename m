@@ -1,7 +1,7 @@
 From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v1 04/36] dt-bindings: display: convert arm,versatile-tft-panel to DT Schema
-Date: Sun, 15 Mar 2020 14:43:44 +0100
-Message-ID: <20200315134416.16527-5-sam@ravnborg.org>
+Subject: [PATCH v1 05/36] dt-bindings: display: convert boe,himax8279d to DT Schema
+Date: Sun, 15 Mar 2020 14:43:45 +0100
+Message-ID: <20200315134416.16527-6-sam@ravnborg.org>
 References: <20200315134416.16527-1-sam@ravnborg.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -32,106 +32,107 @@ Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: Jerry Han <hanxu5-dyavHbARFqWrZjcNGxgArdPArS5jOdiE2SarAXORi/o@public.gmane.org>
 Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 ---
- .../display/panel/arm,versatile-tft-panel.txt | 31 -----------
- .../panel/arm,versatile-tft-panel.yaml        | 51 +++++++++++++++++++
- 2 files changed, 51 insertions(+), 31 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/display/panel/arm,versatile-tft-panel.txt
- create mode 100644 Documentation/devicetree/bindings/display/panel/arm,versatile-tft-panel.yaml
+ .../bindings/display/panel/boe,himax8279d.txt | 24 --------
+ .../display/panel/boe,himax8279d.yaml         | 59 +++++++++++++++++++
+ 2 files changed, 59 insertions(+), 24 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/display/panel/boe,himax8279d.txt
+ create mode 100644 Documentation/devicetree/bindings/display/panel/boe,himax8279d.yaml
 
-diff --git a/Documentation/devicetree/bindings/display/panel/arm,versatile-tft-panel.txt b/Documentation/devicetree/bindings/display/panel/arm,versatile-tft-panel.txt
+diff --git a/Documentation/devicetree/bindings/display/panel/boe,himax8279d.txt b/Documentation/devicetree/bindings/display/panel/boe,himax8279d.txt
 deleted file mode 100644
-index 0601a9e34703..000000000000
---- a/Documentation/devicetree/bindings/display/panel/arm,versatile-tft-panel.txt
+index 3caea2172b1b..000000000000
+--- a/Documentation/devicetree/bindings/display/panel/boe,himax8279d.txt
 +++ /dev/null
-@@ -1,31 +0,0 @@
--ARM Versatile TFT Panels
--
--These panels are connected to the daughterboards found on the
--ARM Versatile reference designs.
--
--This device node must appear as a child to a "syscon"-compatible
--node.
+@@ -1,24 +0,0 @@
+-Boe Himax8279d 1200x1920 TFT LCD panel
 -
 -Required properties:
--- compatible: should be "arm,versatile-tft-panel"
+-- compatible: should be "boe,himax8279d8p" and one of: "boe,himax8279d10p"
+-- reg: DSI virtual channel of the peripheral
+-- enable-gpios: panel enable gpio
+-- pp33-gpios: a GPIO phandle for the 3.3v pin that provides the supply voltage
+-- pp18-gpios: a GPIO phandle for the 1.8v pin that provides the supply voltage
 -
--Required subnodes:
--- port: see display/panel/panel-common.yaml, graph.txt
--
+-Optional properties:
+-- backlight: phandle of the backlight device attached to the panel
 -
 -Example:
 -
--sysreg@0 {
--	compatible = "arm,versatile-sysreg", "syscon", "simple-mfd";
--	reg = <0x00000 0x1000>;
--
--	panel: display@0 {
--		compatible = "arm,versatile-tft-panel";
--
--		port {
--			panel_in: endpoint {
--				remote-endpoint = <&foo>;
--			};
+-	&mipi_dsi {
+-		panel {
+-			compatible = "boe,himax8279d8p", "boe,himax8279d10p";
+-			reg = <0>;
+-			backlight = <&backlight>;
+-			enable-gpios = <&gpio 45 GPIO_ACTIVE_HIGH>;
+-			pp33-gpios = <&gpio 35 GPIO_ACTIVE_HIGH>;
+-			pp18-gpios = <&gpio 36 GPIO_ACTIVE_HIGH>;
 -		};
 -	};
--};
-diff --git a/Documentation/devicetree/bindings/display/panel/arm,versatile-tft-panel.yaml b/Documentation/devicetree/bindings/display/panel/arm,versatile-tft-panel.yaml
+diff --git a/Documentation/devicetree/bindings/display/panel/boe,himax8279d.yaml b/Documentation/devicetree/bindings/display/panel/boe,himax8279d.yaml
 new file mode 100644
-index 000000000000..8ad7305887b4
+index 000000000000..e42b6a8ae176
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/arm,versatile-tft-panel.yaml
-@@ -0,0 +1,51 @@
++++ b/Documentation/devicetree/bindings/display/panel/boe,himax8279d.yaml
+@@ -0,0 +1,59 @@
 +# SPDX-License-Identifier: GPL-2.0
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/display/panel/arm,versatile-tft-panel.yaml#
++$id: http://devicetree.org/schemas/display/panel/boe,himax8279d.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: ARM Versatile TFT Panels
++title: Boe Himax8279d 1200x1920 TFT LCD panel
 +
 +maintainers:
-+  - Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-+
-+description: |
-+  These panels are connected to the daughterboards found on the
-+  ARM Versatile reference designs.
-+
-+  This device node must appear as a child to a "syscon"-compatible
-+  node.
++  - Jerry Han <jerry.han.hq-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 +
 +allOf:
 +  - $ref: panel-common.yaml#
 +
 +properties:
 +  compatible:
-+    const: arm,versatile-tft-panel
++    items:
++      - const: boe,himax8279d8p
++      - const: boe,himax8279d10p
 +
-+  port: true
++  backlight: true
++  enable-gpios: true
++  reg: true
++
++  pp33-gpios:
++    maxItems: 1
++    description: GPIO for the 3.3v pin that provides the supply voltage
++
++  pp18-gpios:
++    maxItems: 1
++    description: GPIO for the 1.8v pin that provides the supply voltage
 +
 +required:
 +  - compatible
-+  - port
++  - reg
++  - enable-gpios
++  - pp33-gpios
++  - pp18-gpios
 +
 +additionalProperties: false
 +
 +examples:
 +  - |
-+    sysreg {
-+        compatible = "arm,versatile-sysreg", "syscon", "simple-mfd";
-+        reg = <0x00000 0x1000>;
++    #include <dt-bindings/gpio/gpio.h>
 +
-+        panel: display@0 {
-+            compatible = "arm,versatile-tft-panel";
-+
-+            port {
-+                panel_in: endpoint {
-+                    remote-endpoint = <&foo>;
-+                };
-+            };
++    dsi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        panel {
++            compatible = "boe,himax8279d8p", "boe,himax8279d10p";
++            reg = <0>;
++            backlight = <&backlight>;
++            enable-gpios = <&gpio 45 GPIO_ACTIVE_HIGH>;
++            pp33-gpios = <&gpio 35 GPIO_ACTIVE_HIGH>;
++            pp18-gpios = <&gpio 36 GPIO_ACTIVE_HIGH>;
 +        };
 +    };
 +

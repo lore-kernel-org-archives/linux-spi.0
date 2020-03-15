@@ -1,9 +1,10 @@
 From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v1 16/36] dt-bindings: display: convert lg,lg4573 to DT Schema
-Date: Sun, 15 Mar 2020 14:43:56 +0100
-Message-ID: <20200315134416.16527-17-sam@ravnborg.org>
+Subject: [PATCH v1 15/36] dt-bindings: display: convert simple lg panels to DT Schema
+Date: Sun, 15 Mar 2020 14:43:55 +0100
+Message-ID: <20200315134416.16527-16-sam@ravnborg.org>
 References: <20200315134416.16527-1-sam@ravnborg.org>
 Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Cc: Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
         Andrzej Hajda <a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
@@ -26,93 +27,86 @@ Cc: Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
 To: dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org,
         Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200315134416.16527-1-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
+
+Add the lg panels that matches the panel-simple binding to
+panel-simple.yaml
 
 Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Cc: Heiko Schocher <hs-ynQEQJNshbs@public.gmane.org>
+Cc: Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Cc: Brian Masney <masneyb-1iNe0GrtECGEi8DpZVb4nw@public.gmane.org>
 Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 ---
- .../bindings/display/panel/lg,lg4573.txt      | 19 ---------
- .../bindings/display/panel/lg,lg4573.yaml     | 41 +++++++++++++++++++
- 2 files changed, 41 insertions(+), 19 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/display/panel/lg,lg4573.txt
- create mode 100644 Documentation/devicetree/bindings/display/panel/lg,lg4573.yaml
+ .../devicetree/bindings/display/panel/lg,acx467akm-7.txt   | 7 -------
+ .../devicetree/bindings/display/panel/lg,ld070wx3-sl01.txt | 7 -------
+ .../devicetree/bindings/display/panel/lg,lh500wx1-sd03.txt | 7 -------
+ .../devicetree/bindings/display/panel/panel-simple.yaml    | 6 ++++++
+ 4 files changed, 6 insertions(+), 21 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/display/panel/lg,acx467akm-7.txt
+ delete mode 100644 Documentation/devicetree/bindings/display/panel/lg,ld070wx3-sl01.txt
+ delete mode 100644 Documentation/devicetree/bindings/display/panel/lg,lh500wx1-sd03.txt
 
-diff --git a/Documentation/devicetree/bindings/display/panel/lg,lg4573.txt b/Documentation/devicetree/bindings/display/panel/lg,lg4573.txt
+diff --git a/Documentation/devicetree/bindings/display/panel/lg,acx467akm-7.txt b/Documentation/devicetree/bindings/display/panel/lg,acx467akm-7.txt
 deleted file mode 100644
-index 824441f4e95a..000000000000
---- a/Documentation/devicetree/bindings/display/panel/lg,lg4573.txt
+index fc1e1b325e49..000000000000
+--- a/Documentation/devicetree/bindings/display/panel/lg,acx467akm-7.txt
 +++ /dev/null
-@@ -1,19 +0,0 @@
--LG LG4573 TFT Liquid Crystal Display with SPI control bus
+@@ -1,7 +0,0 @@
+-LG ACX467AKM-7 4.95" 1080×1920 LCD Panel
 -
 -Required properties:
--  - compatible: "lg,lg4573"
--  - reg: address of the panel on the SPI bus
+-- compatible: must be "lg,acx467akm-7"
 -
--The panel must obey rules for SPI slave device specified in document [1].
+-This binding is compatible with the simple-panel binding, which is specified
+-in simple-panel.txt in this directory.
+diff --git a/Documentation/devicetree/bindings/display/panel/lg,ld070wx3-sl01.txt b/Documentation/devicetree/bindings/display/panel/lg,ld070wx3-sl01.txt
+deleted file mode 100644
+index 5e649cb9aa1a..000000000000
+--- a/Documentation/devicetree/bindings/display/panel/lg,ld070wx3-sl01.txt
++++ /dev/null
+@@ -1,7 +0,0 @@
+-LG Corporation 7" WXGA TFT LCD panel
 -
--[1]: Documentation/devicetree/bindings/spi/spi-bus.txt
+-Required properties:
+-- compatible: should be "lg,ld070wx3-sl01"
 -
--Example:
+-This binding is compatible with the simple-panel binding, which is specified
+-in simple-panel.txt in this directory.
+diff --git a/Documentation/devicetree/bindings/display/panel/lg,lh500wx1-sd03.txt b/Documentation/devicetree/bindings/display/panel/lg,lh500wx1-sd03.txt
+deleted file mode 100644
+index a04fd2b2e73d..000000000000
+--- a/Documentation/devicetree/bindings/display/panel/lg,lh500wx1-sd03.txt
++++ /dev/null
+@@ -1,7 +0,0 @@
+-LG Corporation 5" HD TFT LCD panel
 -
--	lcd_panel: display@0 {
--		#address-cells = <1>;
--		#size-cells = <1>;
--		compatible = "lg,lg4573";
--		spi-max-frequency = <10000000>;
--		reg = <0>;
--	};
-diff --git a/Documentation/devicetree/bindings/display/panel/lg,lg4573.yaml b/Documentation/devicetree/bindings/display/panel/lg,lg4573.yaml
-new file mode 100644
-index 000000000000..b5b475cf8406
---- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/lg,lg4573.yaml
-@@ -0,0 +1,41 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/display/panel/lg,lg4573.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: LG LG4573 TFT Liquid Crystal Display with SPI control bus
-+
-+maintainers:
-+  - Heiko Schocher <hs-ynQEQJNshbs@public.gmane.org>
-+
-+allOf:
-+  - $ref: ../../spi/spi-slave.yaml#
-+  - $ref: panel-common.yaml#
-+
-+properties:
-+  compatible:
-+    const: lg,lg4573
-+
-+  reg: true
-+  spi-max-frequency: true
-+
-+required:
-+  - compatible
-+  - reg
-+
-+examples:
-+  - |
-+    spi {
-+        compatible = "fsl,imx6q-ecspi", "fsl,imx51-ecspi";
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        lcd_panel: display@0 {
-+            compatible = "lg,lg4573";
-+            spi-max-frequency = <10000000>;
-+            reg = <0>;
-+        };
-+    };
-+
-+...
+-Required properties:
+-- compatible: should be "lg,lh500wx1-sd03"
+-
+-This binding is compatible with the simple-panel binding, which is specified
+-in simple-panel.txt in this directory.
+diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
+index 5088fe81d025..b1b8d0edadef 100644
+--- a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
++++ b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
+@@ -155,8 +155,14 @@ properties:
+       - kyo,tcg121xglp
+         # LeMaker BL035-RGB-002 3.5" QVGA TFT LCD panel
+       - lemaker,bl035-rgb-002
++        # LG ACX467AKM-7 4.95" 1080×1920 LCD Panel
++      - lg,acx467akm-7
+         # LG 7" (800x480 pixels) TFT LCD panel
+       - lg,lb070wv8
++        # LG Corporation 7" WXGA TFT LCD panel
++      - lg,ld070wx3-sl01
++        # LG Corporation 5" HD TFT LCD panel
++      - lg,lh500wx1-sd03
+         # LG LP079QX1-SP0V 7.9" (1536x2048 pixels) TFT LCD panel
+       - lg,lp079qx1-sp0v
+         # LG 9.7" (2048x1536 pixels) TFT LCD panel
 -- 
 2.20.1

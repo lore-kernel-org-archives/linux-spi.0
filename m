@@ -1,7 +1,7 @@
 From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v1 29/36] dt-bindings: display: drop unused simple-panel.txt
-Date: Sun, 15 Mar 2020 14:44:09 +0100
-Message-ID: <20200315134416.16527-30-sam@ravnborg.org>
+Subject: [PATCH v1 25/36] dt-bindings: display: convert startek,startek-kd050c to DT Schema
+Date: Sun, 15 Mar 2020 14:44:05 +0100
+Message-ID: <20200315134416.16527-26-sam@ravnborg.org>
 References: <20200315134416.16527-1-sam@ravnborg.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -31,23 +31,65 @@ In-Reply-To: <20200315134416.16527-1-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-There are no more references to simple-panel.txt.
-Delete it.
-
 Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
+Cc: Marek Belisko <marek-xXXSsgcRVICgSpxsJD1C4w@public.gmane.org>
 Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 ---
- Documentation/devicetree/bindings/display/panel/simple-panel.txt | 1 -
- 1 file changed, 1 deletion(-)
- delete mode 100644 Documentation/devicetree/bindings/display/panel/simple-panel.txt
+ .../display/panel/startek,startek-kd050c.txt  |  4 ---
+ .../display/panel/startek,startek-kd050c.yaml | 33 +++++++++++++++++++
+ 2 files changed, 33 insertions(+), 4 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/display/panel/startek,startek-kd050c.txt
+ create mode 100644 Documentation/devicetree/bindings/display/panel/startek,startek-kd050c.yaml
 
-diff --git a/Documentation/devicetree/bindings/display/panel/simple-panel.txt b/Documentation/devicetree/bindings/display/panel/simple-panel.txt
+diff --git a/Documentation/devicetree/bindings/display/panel/startek,startek-kd050c.txt b/Documentation/devicetree/bindings/display/panel/startek,startek-kd050c.txt
 deleted file mode 100644
-index e11208fb7da8..000000000000
---- a/Documentation/devicetree/bindings/display/panel/simple-panel.txt
+index 70cd8d18d841..000000000000
+--- a/Documentation/devicetree/bindings/display/panel/startek,startek-kd050c.txt
 +++ /dev/null
-@@ -1 +0,0 @@
--See panel-common.yaml in this directory.
+@@ -1,4 +0,0 @@
+-Startek Electronic Technology Co. KD050C 5.0" WVGA TFT LCD panel
+-
+-Required properties:
+-- compatible: should be "startek,startek-kd050c"
+diff --git a/Documentation/devicetree/bindings/display/panel/startek,startek-kd050c.yaml b/Documentation/devicetree/bindings/display/panel/startek,startek-kd050c.yaml
+new file mode 100644
+index 000000000000..fd668640afd1
+--- /dev/null
++++ b/Documentation/devicetree/bindings/display/panel/startek,startek-kd050c.yaml
+@@ -0,0 +1,33 @@
++# SPDX-License-Identifier: GPL-2.0
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/display/panel/startek,startek-kd050c.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Startek Electronic Technology Co. KD050C 5.0" WVGA TFT LCD panel
++
++maintainers:
++  - Nikita Kiryanov <nikita-UTxiZqZC01RS1MOuV/RT9w@public.gmane.org>
++
++allOf:
++  - $ref: panel-dpi.yaml#
++
++properties:
++  compatible:
++    items:
++      - const: startek,startek-kd050c
++      - {} # panel-dpi, but not listed here to avoid false select
++
++  backlight: true
++  enable-gpios: true
++  height-mm: true
++  label: true
++  panel-timing: true
++  port: true
++  power-supply: true
++  reset-gpios: true
++  width-mm: true
++
++additionalProperties: false
++
++...
 -- 
 2.20.1

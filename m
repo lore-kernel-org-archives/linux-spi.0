@@ -1,7 +1,7 @@
 From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v1 02/36] dt-bindings: spi: support non-spi bindings as SPI slaves
-Date: Sun, 15 Mar 2020 14:43:42 +0100
-Message-ID: <20200315134416.16527-3-sam@ravnborg.org>
+Subject: [PATCH v1 03/36] dt-bindings: display: convert samsung,s6e63m0 to DT Schema
+Date: Sun, 15 Mar 2020 14:43:43 +0100
+Message-ID: <20200315134416.16527-4-sam@ravnborg.org>
 References: <20200315134416.16527-1-sam@ravnborg.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -31,190 +31,122 @@ In-Reply-To: <20200315134416.16527-1-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Independent bindings can be SPI slaves which for example is
-the case for several panel bindings.
-
-Move SPI slave properties to spi-slave.yaml so the independent
-SPI slave bindings can include spi-slave.yaml rather than
-duplicating the properties.
+The binding for this panel is a SPI slave.
+Reference spi-slave.yaml
+to avoid duplicating all properties.
 
 Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Cc: Maxime Ripard <maxime.ripard-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
-Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Jonathan Bakker <xc-racer2-kt+e9JA1QaI@public.gmane.org>
+Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 ---
- .../bindings/spi/spi-controller.yaml          | 63 +-------------
- .../devicetree/bindings/spi/spi-slave.yaml    | 83 +++++++++++++++++++
- 2 files changed, 86 insertions(+), 60 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-slave.yaml
+ .../display/panel/samsung,s6e63m0.txt         | 33 -----------
+ .../display/panel/samsung,s6e63m0.yaml        | 58 +++++++++++++++++++
+ 2 files changed, 58 insertions(+), 33 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.txt
+ create mode 100644 Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.yaml
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-index 1e0ca6ccf64b..99531c8d10dd 100644
---- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
-+++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-@@ -67,71 +67,14 @@ patternProperties:
-   "^.*@[0-9a-f]+$":
-     type: object
- 
-+    allOf:
-+      - $ref: spi-slave.yaml#
-+
-     properties:
-       compatible:
-         description:
-           Compatible of the SPI device.
- 
--      reg:
--        minimum: 0
--        maximum: 256
--        description:
--          Chip select used by the device.
+diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.txt b/Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.txt
+deleted file mode 100644
+index 9fb9ebeef8e4..000000000000
+--- a/Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.txt
++++ /dev/null
+@@ -1,33 +0,0 @@
+-Samsung s6e63m0 AMOLED LCD panel
 -
--      spi-3wire:
--        $ref: /schemas/types.yaml#/definitions/flag
--        description:
--          The device requires 3-wire mode.
+-Required properties:
+-  - compatible: "samsung,s6e63m0"
+-  - reset-gpios: GPIO spec for reset pin
+-  - vdd3-supply: VDD regulator
+-  - vci-supply: VCI regulator
 -
--      spi-cpha:
--        $ref: /schemas/types.yaml#/definitions/flag
--        description:
--          The device requires shifted clock phase (CPHA) mode.
+-The panel must obey rules for SPI slave device specified in document [1].
 -
--      spi-cpol:
--        $ref: /schemas/types.yaml#/definitions/flag
--        description:
--          The device requires inverse clock polarity (CPOL) mode.
+-The device node can contain one 'port' child node with one child
+-'endpoint' node, according to the bindings defined in [2]. This
+-node should describe panel's video bus.
 -
--      spi-cs-high:
--        $ref: /schemas/types.yaml#/definitions/flag
--        description:
--          The device requires the chip select active high.
+-[1]: Documentation/devicetree/bindings/spi/spi-bus.txt
+-[2]: Documentation/devicetree/bindings/media/video-interfaces.txt
 -
--      spi-lsb-first:
--        $ref: /schemas/types.yaml#/definitions/flag
--        description:
--          The device requires the LSB first mode.
+-Example:
 -
--      spi-max-frequency:
--        $ref: /schemas/types.yaml#/definitions/uint32
--        description:
--          Maximum SPI clocking speed of the device in Hz.
+-		s6e63m0: display@0 {
+-			compatible = "samsung,s6e63m0";
+-			reg = <0>;
+-			reset-gpio = <&mp05 5 1>;
+-			vdd3-supply = <&ldo12_reg>;
+-			vci-supply = <&ldo11_reg>;
+-			spi-max-frequency = <1200000>;
 -
--      spi-rx-bus-width:
--        allOf:
--          - $ref: /schemas/types.yaml#/definitions/uint32
--          - enum: [ 1, 2, 4, 8 ]
--          - default: 1
--        description:
--          Bus width to the SPI bus used for MISO.
--
--      spi-rx-delay-us:
--        description:
--          Delay, in microseconds, after a read transfer.
--
--      spi-tx-bus-width:
--        allOf:
--          - $ref: /schemas/types.yaml#/definitions/uint32
--          - enum: [ 1, 2, 4, 8 ]
--          - default: 1
--        description:
--          Bus width to the SPI bus used for MOSI.
--
--      spi-tx-delay-us:
--        description:
--          Delay, in microseconds, after a write transfer.
--
-     required:
-       - compatible
-       - reg
-diff --git a/Documentation/devicetree/bindings/spi/spi-slave.yaml b/Documentation/devicetree/bindings/spi/spi-slave.yaml
+-			port {
+-				lcd_ep: endpoint {
+-					remote-endpoint = <&fimd_ep>;
+-				};
+-			};
+-		};
+diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.yaml b/Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.yaml
 new file mode 100644
-index 000000000000..fa50d9dfab41
+index 000000000000..204ed76da84d
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-slave.yaml
-@@ -0,0 +1,83 @@
++++ b/Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.yaml
+@@ -0,0 +1,58 @@
 +# SPDX-License-Identifier: GPL-2.0
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/spi/spi-slave.yaml#
++$id: http://devicetree.org/schemas/display/panel/samsung,s6e63m0.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: SPI slave generic binding
++title: Samsung s6e63m0 AMOLED LCD panel
 +
 +maintainers:
-+  - Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
++  - Jonathan Bakker <xc-racer2-kt+e9JA1QaI@public.gmane.org>
 +
-+description: |
-+  This document defines device tree properties common to SPI slaves.
-+  It doesn't constitue a device tree binding specification by
-+  itself but is meant to be referenced by device tree bindings.
-+
-+  When referenced from device tree bindings the properties defined in this
-+  document are defined as follows. The device tree bindings are responsible
-+  for defining whether each property is required or optional.
++allOf:
++  - $ref: ../../spi/spi-slave.yaml#
++  - $ref: panel-common.yaml#
 +
 +properties:
++  compatible:
++    const: samsung,s6e63m0
 +
-+  reg:
-+    minimum: 0
-+    maximum: 256
-+    description:
-+      Chip select used by the device.
++  reg: true
++  reset-gpios: true
++  port: true
 +
-+  spi-3wire:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      The device requires 3-wire mode.
++  vdd3-supply:
++    description: VDD regulator
 +
-+  spi-cpha:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      The device requires shifted clock phase (CPHA) mode.
++  vci-supply:
++    description: VCI regulator
 +
-+  spi-cpol:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      The device requires inverse clock polarity (CPOL) mode.
++required:
++  - compatible
++  - reset-gpios
++  - vdd3-supply
++  - vci-supply
 +
-+  spi-cs-high:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      The device requires the chip select active high.
++examples:
++  - |
++    spi {
++        reg = <0xf00 0x20>;
++        #address-cells = <1>;
++        #size-cells = <0>;
++        display@0 {
++            compatible = "samsung,s6e63m0";
++            reg = <0>;
++            reset-gpios = <&mp05 5 1>;
++            vdd3-supply = <&ldo12_reg>;
++            vci-supply = <&ldo11_reg>;
++            spi-max-frequency = <1200000>;
 +
-+  spi-lsb-first:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      The device requires the LSB first mode.
-+
-+  spi-max-frequency:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description:
-+      Maximum SPI clocking speed of the device in Hz.
-+
-+  spi-rx-bus-width:
-+    allOf:
-+      - $ref: /schemas/types.yaml#/definitions/uint32
-+      - enum: [ 1, 2, 4, 8 ]
-+      - default: 1
-+    description:
-+      Bus width to the SPI bus used for MISO.
-+
-+  spi-rx-delay-us:
-+    description:
-+      Delay, in microseconds, after a read transfer.
-+
-+  spi-tx-bus-width:
-+    allOf:
-+      - $ref: /schemas/types.yaml#/definitions/uint32
-+      - enum: [ 1, 2, 4, 8 ]
-+      - default: 1
-+    description:
-+      Bus width to the SPI bus used for MOSI.
-+
-+  spi-tx-delay-us:
-+    description:
-+      Delay, in microseconds, after a write transfer.
++            port {
++                lcd_ep: endpoint {
++                    remote-endpoint = <&fimd_ep>;
++                };
++            };
++        };
++    };
 +
 +...
 -- 

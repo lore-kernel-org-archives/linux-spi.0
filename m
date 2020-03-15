@@ -1,9 +1,9 @@
 From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v1 06/36] dt-bindings: display: convert ilitek,ili9322 to
+Subject: Re: [PATCH v1 21/36] dt-bindings: display: convert samsung,s6d16d0 to
  DT Schema
-Date: Sun, 15 Mar 2020 19:54:38 +0100
-Message-ID: <CACRpkdYVrTBKxuHSGpd9=03oD4=JVxzJf8fOcQ8uu5eRt9PgAg@mail.gmail.com>
-References: <20200315134416.16527-1-sam@ravnborg.org> <20200315134416.16527-7-sam@ravnborg.org>
+Date: Sun, 15 Mar 2020 19:56:15 +0100
+Message-ID: <CACRpkdZF8fx2RtHKivAkn+aQiC8B27Lzwk69S0RS5QUcfj1uVw@mail.gmail.com>
+References: <20200315134416.16527-1-sam@ravnborg.org> <20200315134416.16527-22-sam@ravnborg.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Cc: "open list:DRM PANEL DRIVERS" <dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org>,
@@ -26,38 +26,12 @@ Cc: "open list:DRM PANEL DRIVERS" <dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@pu
         Lin Huang <h
 To: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200315134416.16527-7-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <20200315134416.16527-22-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Sun, Mar 15, 2020 at 2:44 PM Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org> wrote:
+On Sun, Mar 15, 2020 at 2:45 PM Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org> wrote:
 
-> The .txt binding explains:
->
-> "
->     The following optional properties only apply to
->     RGB and YUV input modes and
->     can be omitted for BT.656 input modes:
-> "
->
-> This constraint is not implmented in the DT Schema.
->
-> The original binding from the .txt file referenced
-> properties that is included in panel-timing.yaml.
-> These properties are kept here as we want as close to a 1:1
-> conversion as we can. If the properties should be dropped
-> from the binding then this is a follow-up patch.
->
-> The properties in question are:
->   - pixelclk-active
->   - de-active
->   - hsync-active
->   - vsync-active
-
-Sorry about that. They should be dropped, but certainly it
-is fine to do with a follow up patch.
-
->
 > Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 > Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 > Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>

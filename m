@@ -1,11 +1,17 @@
-From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v1 34/36] dt-bindings: display: convert seiko,43wvf1g to DT Schema
-Date: Sun, 15 Mar 2020 14:44:14 +0100
-Message-ID: <20200315134416.16527-35-sam@ravnborg.org>
-References: <20200315134416.16527-1-sam@ravnborg.org>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v1 02/36] dt-bindings: spi: support non-spi bindings as
+ SPI slaves
+Date: Sun, 15 Mar 2020 17:24:52 +0100
+Message-ID: <CACRpkdZszEA+-KVrgALx3NdtVi86ExnEHB3p0EwxMeCCvHxD5A@mail.gmail.com>
+References: <20200315134416.16527-1-sam@ravnborg.org> <20200315134416.16527-3-sam@ravnborg.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc: Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+Content-Type: text/plain; charset="UTF-8"
+Cc: "open list:DRM PANEL DRIVERS" <dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org>,
+        Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
         Andrzej Hajda <a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
         Brian Masney <masneyb-1iNe0GrtECGEi8DpZVb4nw@public.gmane.org>,
         Chris Zhong <zyw-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
@@ -17,114 +23,32 @@ Cc: Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
         Jerry Han <hanxu5-dyavHbARFqWrZjcNGxgArdPArS5jOdiE2SarAXORi/o@public.gmane.org>,
         Jonathan Bakker <xc-racer2-kt+e9JA1QaI@public.gmane.org>,
         Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
-        Lin Huang <hl-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-        Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Marco Franchi <marco.franchi-3arQi8VN3Tc@public.gmane.org>,
-        Marek Belisko <marek-xXXSsgcRVICgSpxsJD1C4w@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Maxime Ripard <maxime.ripard@bootl
-To: dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org,
-        Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+        Lin Huang <h
+To: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200315134416.16527-1-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <20200315134416.16527-3-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Cc: Marco Franchi <marco.franchi-3arQi8VN3Tc@public.gmane.org>
-Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
----
- .../bindings/display/panel/seiko,43wvf1g.txt  | 23 ---------
- .../bindings/display/panel/seiko,43wvf1g.yaml | 49 +++++++++++++++++++
- 2 files changed, 49 insertions(+), 23 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/display/panel/seiko,43wvf1g.txt
- create mode 100644 Documentation/devicetree/bindings/display/panel/seiko,43wvf1g.yaml
+On Sun, Mar 15, 2020 at 2:44 PM Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org> wrote:
 
-diff --git a/Documentation/devicetree/bindings/display/panel/seiko,43wvf1g.txt b/Documentation/devicetree/bindings/display/panel/seiko,43wvf1g.txt
-deleted file mode 100644
-index aae57ef36cdd..000000000000
---- a/Documentation/devicetree/bindings/display/panel/seiko,43wvf1g.txt
-+++ /dev/null
-@@ -1,23 +0,0 @@
--Seiko Instruments Inc. 4.3" WVGA (800 x RGB x 480) TFT with Touch-Panel
--
--Required properties:
--- compatible: should be "sii,43wvf1g".
--- "dvdd-supply": 3v3 digital regulator.
--- "avdd-supply": 5v analog regulator.
--
--Optional properties:
--- backlight: phandle for the backlight control.
--
--Example:
--
--	panel {
--		compatible = "sii,43wvf1g";
--		backlight = <&backlight_display>;
--		dvdd-supply = <&reg_lcd_3v3>;
--		avdd-supply = <&reg_lcd_5v>;
--		port {
--			panel_in: endpoint {
--				remote-endpoint = <&display_out>;
--			};
--		};
--	};
-diff --git a/Documentation/devicetree/bindings/display/panel/seiko,43wvf1g.yaml b/Documentation/devicetree/bindings/display/panel/seiko,43wvf1g.yaml
-new file mode 100644
-index 000000000000..9195de40b21b
---- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/seiko,43wvf1g.yaml
-@@ -0,0 +1,49 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/display/panel/seiko,43wvf1g.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Seiko Instruments Inc. 4.3" WVGA (800 x RGB x 480) TFT with Touch-Panel
-+
-+maintainers:
-+  - Marco Franchi <marco.franchi-3arQi8VN3Tc@public.gmane.org>
-+
-+allOf:
-+  - $ref: panel-common.yaml#
-+
-+properties:
-+  compatible:
-+    const: sii,43wvf1g
-+
-+  backlight: true
-+  port: true
-+
-+  dvdd-supply:
-+    description: 3v3 digital regulator
-+
-+  avdd-supply:
-+    description: 5v analog regulator
-+
-+required:
-+  - compatible
-+  - dvdd-supply
-+  - avdd-supply
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    panel {
-+        compatible = "sii,43wvf1g";
-+        backlight = <&backlight_display>;
-+        dvdd-supply = <&reg_lcd_3v3>;
-+        avdd-supply = <&reg_lcd_5v>;
-+        port {
-+            panel_in: endpoint {
-+                remote-endpoint = <&display_out>;
-+            };
-+        };
-+    };
-+
-+...
--- 
-2.20.1
+> Independent bindings can be SPI slaves which for example is
+> the case for several panel bindings.
+>
+> Move SPI slave properties to spi-slave.yaml so the independent
+> SPI slave bindings can include spi-slave.yaml rather than
+> duplicating the properties.
+
+To me it seems like you are creating the common SPI slave
+bindings? Maybe the commit message should be about that.
+
+> +  reg:
+> +    minimum: 0
+> +    maximum: 256
+
+255? Or am I wrong?
+
+Apart from that it looks good to me.
+
+Yours,
+Linus Walleij

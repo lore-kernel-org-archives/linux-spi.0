@@ -1,7 +1,7 @@
 From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v1 17/36] dt-bindings: display: convert osddisplays,osd101t2587-53ts to DT Schema
-Date: Sun, 15 Mar 2020 14:43:57 +0100
-Message-ID: <20200315134416.16527-18-sam@ravnborg.org>
+Subject: [PATCH v1 20/36] dt-bindings: display: convert samsung AMOLED to DT Schema
+Date: Sun, 15 Mar 2020 14:44:00 +0100
+Message-ID: <20200315134416.16527-21-sam@ravnborg.org>
 References: <20200315134416.16527-1-sam@ravnborg.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -26,56 +26,165 @@ Cc: Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
 To: dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org,
         Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200315134416.16527-1-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-osddisplays,osd101t2587-53ts is compatible with panel-simple binding,
-so list the compatible in the panel-simple binding file.
+For samsung there was two AMOLED panels with the same
+description.
+Collect them in one binding file.
 
 Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Cc: Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>
+Cc: Hoegeun Kwon <hoegeun.kwon-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 ---
- .../display/panel/osddisplays,osd101t2587-53ts.txt | 14 --------------
- .../bindings/display/panel/panel-simple.yaml       |  2 ++
- 2 files changed, 2 insertions(+), 14 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/display/panel/osddisplays,osd101t2587-53ts.txt
+ .../panel/samsung,amoled-mipi-dsi.yaml        | 65 +++++++++++++++++++
+ .../display/panel/samsung,s6e3ha2.txt         | 31 ---------
+ .../display/panel/samsung,s6e63j0x03.txt      | 24 -------
+ 3 files changed, 65 insertions(+), 55 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/display/panel/samsung,amoled-mipi-dsi.yaml
+ delete mode 100644 Documentation/devicetree/bindings/display/panel/samsung,s6e3ha2.txt
+ delete mode 100644 Documentation/devicetree/bindings/display/panel/samsung,s6e63j0x03.txt
 
-diff --git a/Documentation/devicetree/bindings/display/panel/osddisplays,osd101t2587-53ts.txt b/Documentation/devicetree/bindings/display/panel/osddisplays,osd101t2587-53ts.txt
+diff --git a/Documentation/devicetree/bindings/display/panel/samsung,amoled-mipi-dsi.yaml b/Documentation/devicetree/bindings/display/panel/samsung,amoled-mipi-dsi.yaml
+new file mode 100644
+index 000000000000..96bdde9298e0
+--- /dev/null
++++ b/Documentation/devicetree/bindings/display/panel/samsung,amoled-mipi-dsi.yaml
+@@ -0,0 +1,65 @@
++# SPDX-License-Identifier: GPL-2.0
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/display/panel/samsung,amoled-mipi-dsi.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Samsung AMOLED MIPI-DSI panels
++
++maintainers:
++  - Hoegeun Kwon <hoegeun.kwon-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
++
++allOf:
++  - $ref: panel-common.yaml#
++
++properties:
++  compatible:
++    enum:
++        # Samsung S6E63J0X03 1.63" 320x320 AMOLED panel
++      - samsung,s6e63j0x03
++        # Samsung S6E3HA2 5.7" 1440x2560 AMOLED panel
++      - samsung,s6e3ha2
++        # Samsung S6E3HF2 5.65" 1600x2560 AMOLED panel
++      - samsung,s6e3hf2
++
++  reg: true
++  reset-gpios: true
++  enable-gpios: true
++  te-gpios: true
++
++  vdd3-supply:
++    description: I/O voltage supply
++
++  vci-supply:
++    description: voltage supply for analog circuits
++
++required:
++  - compatible
++  - reg
++  - vdd3-supply
++  - vci-supply
++  - reset-gpios
++  - enable-gpios
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    dsi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        panel@0 {
++            compatible = "samsung,s6e3ha2";
++            reg = <0>;
++            vdd3-supply = <&ldo27_reg>;
++            vci-supply = <&ldo28_reg>;
++            reset-gpios = <&gpg0 0 GPIO_ACTIVE_LOW>;
++            enable-gpios = <&gpf1 5 GPIO_ACTIVE_HIGH>;
++            te-gpios = <&gpf1 3 GPIO_ACTIVE_HIGH>;
++        };
++    };
++
++...
+diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha2.txt b/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha2.txt
 deleted file mode 100644
-index 9d88e96003fc..000000000000
---- a/Documentation/devicetree/bindings/display/panel/osddisplays,osd101t2587-53ts.txt
+index 4acea25c244b..000000000000
+--- a/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha2.txt
 +++ /dev/null
-@@ -1,14 +0,0 @@
--One Stop Displays OSD101T2587-53TS 10.1" 1920x1200 panel
--
--The panel is similar to OSD101T2045-53TS, but it needs additional
--MIPI_DSI_TURN_ON_PERIPHERAL message from the host.
+@@ -1,31 +0,0 @@
+-Samsung S6E3HA2 5.7" 1440x2560 AMOLED panel
+-Samsung S6E3HF2 5.65" 1600x2560 AMOLED panel
 -
 -Required properties:
--- compatible: should be "osddisplays,osd101t2587-53ts"
--- power-supply: as specified in the base binding
+-  - compatible: should be one of:
+-    "samsung,s6e3ha2",
+-    "samsung,s6e3hf2".
+-  - reg: the virtual channel number of a DSI peripheral
+-  - vdd3-supply: I/O voltage supply
+-  - vci-supply: voltage supply for analog circuits
+-  - reset-gpios: a GPIO spec for the reset pin (active low)
+-  - enable-gpios: a GPIO spec for the panel enable pin (active high)
 -
 -Optional properties:
--- backlight: as specified in the base binding
+-  - te-gpios: a GPIO spec for the tearing effect synchronization signal
+-    gpio pin (active high)
 -
--This binding is compatible with the simple-panel binding, which is specified
--in simple-panel.txt in this directory.
-diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-index b1b8d0edadef..70c290f7df30 100644
---- a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-+++ b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
-@@ -209,6 +209,8 @@ properties:
-       - osddisplays,osd070t1718-19ts
-         # One Stop Displays OSD101T2045-53TS 10.1" 1920x1200 panel
-       - osddisplays,osd101t2045-53ts
-+        # One Stop Displays OSD101T2587-53TS 10.1" 1920x1200 panel
-+      - osddisplays,osd101t2587-53ts
-         # QiaoDian XianShi Corporation 4"3 TFT LCD panel
-       - qiaodian,qd43003c0-40
-         # Rocktech Displays Ltd. RK101II01D-CT 10.1" TFT 1280x800
+-Example:
+-&dsi {
+-	...
+-
+-	panel@0 {
+-		compatible = "samsung,s6e3ha2";
+-		reg = <0>;
+-		vdd3-supply = <&ldo27_reg>;
+-		vci-supply = <&ldo28_reg>;
+-		reset-gpios = <&gpg0 0 GPIO_ACTIVE_LOW>;
+-		enable-gpios = <&gpf1 5 GPIO_ACTIVE_HIGH>;
+-		te-gpios = <&gpf1 3 GPIO_ACTIVE_HIGH>;
+-	};
+-};
+diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6e63j0x03.txt b/Documentation/devicetree/bindings/display/panel/samsung,s6e63j0x03.txt
+deleted file mode 100644
+index 3f1a8392af7f..000000000000
+--- a/Documentation/devicetree/bindings/display/panel/samsung,s6e63j0x03.txt
++++ /dev/null
+@@ -1,24 +0,0 @@
+-Samsung S6E63J0X03 1.63" 320x320 AMOLED panel (interface: MIPI-DSI command mode)
+-
+-Required properties:
+-  - compatible: "samsung,s6e63j0x03"
+-  - reg: the virtual channel number of a DSI peripheral
+-  - vdd3-supply: I/O voltage supply
+-  - vci-supply: voltage supply for analog circuits
+-  - reset-gpios: a GPIO spec for the reset pin (active low)
+-  - te-gpios: a GPIO spec for the tearing effect synchronization signal
+-    gpio pin (active high)
+-
+-Example:
+-&dsi {
+-	...
+-
+-	panel@0 {
+-		compatible = "samsung,s6e63j0x03";
+-		reg = <0>;
+-		vdd3-supply = <&ldo16_reg>;
+-		vci-supply = <&ldo20_reg>;
+-		reset-gpios = <&gpe0 1 GPIO_ACTIVE_LOW>;
+-		te-gpios = <&gpx0 6 GPIO_ACTIVE_HIGH>;
+-	};
+-};
 -- 
 2.20.1

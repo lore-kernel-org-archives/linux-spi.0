@@ -1,7 +1,7 @@
 From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v1 33/36] dt-bindings: display: convert sharp,lq150x1lg11 to DT Schema
-Date: Sun, 15 Mar 2020 14:44:13 +0100
-Message-ID: <20200315134416.16527-34-sam@ravnborg.org>
+Subject: [PATCH v1 34/36] dt-bindings: display: convert seiko,43wvf1g to DT Schema
+Date: Sun, 15 Mar 2020 14:44:14 +0100
+Message-ID: <20200315134416.16527-35-sam@ravnborg.org>
 References: <20200315134416.16527-1-sam@ravnborg.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -26,125 +26,103 @@ Cc: Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
 To: dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org,
         Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200315134416.16527-1-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
 Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Cc: Peter Rosin <peda-koto5C5qi+TLoDKTGw+V6w@public.gmane.org>
+Cc: Marco Franchi <marco.franchi-3arQi8VN3Tc@public.gmane.org>
 Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 ---
- .../display/panel/sharp,lq150x1lg11.txt       | 36 ------------
- .../display/panel/sharp,lq150x1lg11.yaml      | 58 +++++++++++++++++++
- 2 files changed, 58 insertions(+), 36 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/display/panel/sharp,lq150x1lg11.txt
- create mode 100644 Documentation/devicetree/bindings/display/panel/sharp,lq150x1lg11.yaml
+ .../bindings/display/panel/seiko,43wvf1g.txt  | 23 ---------
+ .../bindings/display/panel/seiko,43wvf1g.yaml | 49 +++++++++++++++++++
+ 2 files changed, 49 insertions(+), 23 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/display/panel/seiko,43wvf1g.txt
+ create mode 100644 Documentation/devicetree/bindings/display/panel/seiko,43wvf1g.yaml
 
-diff --git a/Documentation/devicetree/bindings/display/panel/sharp,lq150x1lg11.txt b/Documentation/devicetree/bindings/display/panel/sharp,lq150x1lg11.txt
+diff --git a/Documentation/devicetree/bindings/display/panel/seiko,43wvf1g.txt b/Documentation/devicetree/bindings/display/panel/seiko,43wvf1g.txt
 deleted file mode 100644
-index 0f57c3143506..000000000000
---- a/Documentation/devicetree/bindings/display/panel/sharp,lq150x1lg11.txt
+index aae57ef36cdd..000000000000
+--- a/Documentation/devicetree/bindings/display/panel/seiko,43wvf1g.txt
 +++ /dev/null
-@@ -1,36 +0,0 @@
--Sharp 15" LQ150X1LG11 XGA TFT LCD panel
+@@ -1,23 +0,0 @@
+-Seiko Instruments Inc. 4.3" WVGA (800 x RGB x 480) TFT with Touch-Panel
 -
 -Required properties:
--- compatible: should be "sharp,lq150x1lg11"
--- power-supply: regulator to provide the VCC supply voltage (3.3 volts)
+-- compatible: should be "sii,43wvf1g".
+-- "dvdd-supply": 3v3 digital regulator.
+-- "avdd-supply": 5v analog regulator.
 -
 -Optional properties:
--- backlight: phandle of the backlight device
--- rlud-gpios: a single GPIO for the RL/UD (rotate 180 degrees) pin.
--- sellvds-gpios: a single GPIO for the SELLVDS pin.
--
--If rlud-gpios and/or sellvds-gpios are not specified, the RL/UD and/or SELLVDS
--pins are assumed to be handled appropriately by the hardware.
+-- backlight: phandle for the backlight control.
 -
 -Example:
 -
--	backlight: backlight {
--		compatible = "pwm-backlight";
--		pwms = <&pwm 0 100000>;                      /* VBR */
--
--		brightness-levels = <0 20 40 60 80 100>;
--		default-brightness-level = <2>;
--
--		power-supply = <&vdd_12v_reg>;               /* VDD */
--		enable-gpios = <&gpio 42 GPIO_ACTIVE_HIGH>;  /* XSTABY */
--	};
--
 -	panel {
--		compatible = "sharp,lq150x1lg11";
--
--		power-supply = <&vcc_3v3_reg>;               /* VCC */
--
--		backlight = <&backlight>;
--		rlud-gpios = <&gpio 17 GPIO_ACTIVE_HIGH>;    /* RL/UD */
--		sellvds-gpios = <&gpio 18 GPIO_ACTIVE_HIGH>; /* SELLVDS */
+-		compatible = "sii,43wvf1g";
+-		backlight = <&backlight_display>;
+-		dvdd-supply = <&reg_lcd_3v3>;
+-		avdd-supply = <&reg_lcd_5v>;
+-		port {
+-			panel_in: endpoint {
+-				remote-endpoint = <&display_out>;
+-			};
+-		};
 -	};
-diff --git a/Documentation/devicetree/bindings/display/panel/sharp,lq150x1lg11.yaml b/Documentation/devicetree/bindings/display/panel/sharp,lq150x1lg11.yaml
+diff --git a/Documentation/devicetree/bindings/display/panel/seiko,43wvf1g.yaml b/Documentation/devicetree/bindings/display/panel/seiko,43wvf1g.yaml
 new file mode 100644
-index 000000000000..92f2d12f4f4c
+index 000000000000..9195de40b21b
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/sharp,lq150x1lg11.yaml
-@@ -0,0 +1,58 @@
++++ b/Documentation/devicetree/bindings/display/panel/seiko,43wvf1g.yaml
+@@ -0,0 +1,49 @@
 +# SPDX-License-Identifier: GPL-2.0
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/display/panel/sharp,lq150x1lg11.yaml#
++$id: http://devicetree.org/schemas/display/panel/seiko,43wvf1g.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Sharp 15" LQ150X1LG11 XGA TFT LCD panel
++title: Seiko Instruments Inc. 4.3" WVGA (800 x RGB x 480) TFT with Touch-Panel
 +
 +maintainers:
-+  - Peter Rosin <peda-koto5C5qi+TLoDKTGw+V6w@public.gmane.org>
++  - Marco Franchi <marco.franchi-3arQi8VN3Tc@public.gmane.org>
 +
 +allOf:
 +  - $ref: panel-common.yaml#
 +
 +properties:
 +  compatible:
-+    const: sharp,lq150x1lg11
++    const: sii,43wvf1g
 +
-+  power-supply: true
 +  backlight: true
++  port: true
 +
-+  rlud-gpios:
-+    maxItems: 1
-+    description: |
-+      GPIO for the RL/UD (rotate 180 degrees) pin.
-+      If rlud-gpios and/or sellvds-gpios are not specified,
-+      the RL/UD and/or SELLVDS pins are assumed to be handled
-+      appropriately by the hardware.
++  dvdd-supply:
++    description: 3v3 digital regulator
 +
-+  sellvds-gpios:
-+    maxItems: 1
-+    description: |
-+      GPIO for the SELLVDS pin.
-+      If rlud-gpios and/or sellvds-gpios are not specified,
-+      the RL/UD and/or SELLVDS pins are assumed to be handled
-+      appropriately by the hardware.
++  avdd-supply:
++    description: 5v analog regulator
 +
 +required:
 +  - compatible
-+  - power-supply
++  - dvdd-supply
++  - avdd-supply
 +
 +additionalProperties: false
 +
 +examples:
 +  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
 +    panel {
-+        compatible = "sharp,lq150x1lg11";
-+
-+        power-supply = <&vcc_3v3_reg>;               /* VCC */
-+
-+        backlight = <&backlight>;
-+        rlud-gpios = <&gpio 17 GPIO_ACTIVE_HIGH>;    /* RL/UD */
-+        sellvds-gpios = <&gpio 18 GPIO_ACTIVE_HIGH>; /* SELLVDS */
++        compatible = "sii,43wvf1g";
++        backlight = <&backlight_display>;
++        dvdd-supply = <&reg_lcd_3v3>;
++        avdd-supply = <&reg_lcd_5v>;
++        port {
++            panel_in: endpoint {
++                remote-endpoint = <&display_out>;
++            };
++        };
 +    };
 +
 +...

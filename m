@@ -1,7 +1,7 @@
 From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v1 36/36] dt-bindings: display: convert olimex,lcd-olinuxino to DT Schema
-Date: Sun, 15 Mar 2020 14:44:16 +0100
-Message-ID: <20200315134416.16527-37-sam@ravnborg.org>
+Subject: [PATCH v1 33/36] dt-bindings: display: convert sharp,lq150x1lg11 to DT Schema
+Date: Sun, 15 Mar 2020 14:44:13 +0100
+Message-ID: <20200315134416.16527-34-sam@ravnborg.org>
 References: <20200315134416.16527-1-sam@ravnborg.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -32,118 +32,103 @@ Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Cc: Stefan Mavrodiev <stefan-kyXcfZUBQGPQT0dZR+AlfA@public.gmane.org>
+Cc: Peter Rosin <peda-koto5C5qi+TLoDKTGw+V6w@public.gmane.org>
 Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 ---
- .../display/panel/olimex,lcd-olinuxino.txt    | 42 -----------
- .../display/panel/olimex,lcd-olinuxino.yaml   | 70 +++++++++++++++++++
- 2 files changed, 70 insertions(+), 42 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/display/panel/olimex,lcd-olinuxino.txt
- create mode 100644 Documentation/devicetree/bindings/display/panel/olimex,lcd-olinuxino.yaml
+ .../display/panel/sharp,lq150x1lg11.txt       | 36 ------------
+ .../display/panel/sharp,lq150x1lg11.yaml      | 58 +++++++++++++++++++
+ 2 files changed, 58 insertions(+), 36 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/display/panel/sharp,lq150x1lg11.txt
+ create mode 100644 Documentation/devicetree/bindings/display/panel/sharp,lq150x1lg11.yaml
 
-diff --git a/Documentation/devicetree/bindings/display/panel/olimex,lcd-olinuxino.txt b/Documentation/devicetree/bindings/display/panel/olimex,lcd-olinuxino.txt
+diff --git a/Documentation/devicetree/bindings/display/panel/sharp,lq150x1lg11.txt b/Documentation/devicetree/bindings/display/panel/sharp,lq150x1lg11.txt
 deleted file mode 100644
-index a89f9c830a85..000000000000
---- a/Documentation/devicetree/bindings/display/panel/olimex,lcd-olinuxino.txt
+index 0f57c3143506..000000000000
+--- a/Documentation/devicetree/bindings/display/panel/sharp,lq150x1lg11.txt
 +++ /dev/null
-@@ -1,42 +0,0 @@
--Binding for Olimex Ltd. LCD-OLinuXino bridge panel.
--
--This device can be used as bridge between a host controller and LCD panels.
--Currently supported LCDs are:
--  - LCD-OLinuXino-4.3TS
--  - LCD-OLinuXino-5
--  - LCD-OLinuXino-7
--  - LCD-OLinuXino-10
--
--The panel itself contains:
--  - AT24C16C EEPROM holding panel identification and timing requirements
--  - AR1021 resistive touch screen controller (optional)
--  - FT5x6 capacitive touch screnn controller (optional)
--  - GT911/GT928 capacitive touch screen controller (optional)
--
--The above chips share same I2C bus. The EEPROM is factory preprogrammed with
--device information (id, serial, etc.) and timing requirements.
--
--Touchscreen bingings can be found in these files:
--  - input/touchscreen/goodix.txt
--  - input/touchscreen/edt-ft5x06.txt
--  - input/touchscreen/ar1021.txt
+@@ -1,36 +0,0 @@
+-Sharp 15" LQ150X1LG11 XGA TFT LCD panel
 -
 -Required properties:
--  - compatible: should be "olimex,lcd-olinuxino"
--  - reg: address of the configuration EEPROM, should be <0x50>
--  - power-supply: phandle of the regulator that provides the supply voltage
+-- compatible: should be "sharp,lq150x1lg11"
+-- power-supply: regulator to provide the VCC supply voltage (3.3 volts)
 -
 -Optional properties:
--  - enable-gpios: GPIO pin to enable or disable the panel
--  - backlight: phandle of the backlight device attacked to the panel
+-- backlight: phandle of the backlight device
+-- rlud-gpios: a single GPIO for the RL/UD (rotate 180 degrees) pin.
+-- sellvds-gpios: a single GPIO for the SELLVDS pin.
+-
+-If rlud-gpios and/or sellvds-gpios are not specified, the RL/UD and/or SELLVDS
+-pins are assumed to be handled appropriately by the hardware.
 -
 -Example:
--&i2c2 {
--	panel@50 {
--		compatible = "olimex,lcd-olinuxino";
--		reg = <0x50>;
--		power-supply = <&reg_vcc5v0>;
--		enable-gpios = <&pio 7 8 GPIO_ACTIVE_HIGH>;
--		backlight = <&backlight>;
+-
+-	backlight: backlight {
+-		compatible = "pwm-backlight";
+-		pwms = <&pwm 0 100000>;                      /* VBR */
+-
+-		brightness-levels = <0 20 40 60 80 100>;
+-		default-brightness-level = <2>;
+-
+-		power-supply = <&vdd_12v_reg>;               /* VDD */
+-		enable-gpios = <&gpio 42 GPIO_ACTIVE_HIGH>;  /* XSTABY */
 -	};
--};
-diff --git a/Documentation/devicetree/bindings/display/panel/olimex,lcd-olinuxino.yaml b/Documentation/devicetree/bindings/display/panel/olimex,lcd-olinuxino.yaml
+-
+-	panel {
+-		compatible = "sharp,lq150x1lg11";
+-
+-		power-supply = <&vcc_3v3_reg>;               /* VCC */
+-
+-		backlight = <&backlight>;
+-		rlud-gpios = <&gpio 17 GPIO_ACTIVE_HIGH>;    /* RL/UD */
+-		sellvds-gpios = <&gpio 18 GPIO_ACTIVE_HIGH>; /* SELLVDS */
+-	};
+diff --git a/Documentation/devicetree/bindings/display/panel/sharp,lq150x1lg11.yaml b/Documentation/devicetree/bindings/display/panel/sharp,lq150x1lg11.yaml
 new file mode 100644
-index 000000000000..22d664abd552
+index 000000000000..92f2d12f4f4c
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/olimex,lcd-olinuxino.yaml
-@@ -0,0 +1,70 @@
++++ b/Documentation/devicetree/bindings/display/panel/sharp,lq150x1lg11.yaml
+@@ -0,0 +1,58 @@
 +# SPDX-License-Identifier: GPL-2.0
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/display/panel/olimex,lcd-olinuxino.yaml#
++$id: http://devicetree.org/schemas/display/panel/sharp,lq150x1lg11.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Binding for Olimex Ltd. LCD-OLinuXino bridge panel.
++title: Sharp 15" LQ150X1LG11 XGA TFT LCD panel
 +
 +maintainers:
-+  - Stefan Mavrodiev <stefan-kyXcfZUBQGPQT0dZR+AlfA@public.gmane.org>
-+
-+description: |
-+  This device can be used as bridge between a host controller and LCD panels.
-+  Currently supported LCDs are:
-+    - LCD-OLinuXino-4.3TS
-+    - LCD-OLinuXino-5
-+    - LCD-OLinuXino-7
-+    - LCD-OLinuXino-10
-+
-+  The panel itself contains:
-+    - AT24C16C EEPROM holding panel identification and timing requirements
-+    - AR1021 resistive touch screen controller (optional)
-+    - FT5x6 capacitive touch screnn controller (optional)
-+    - GT911/GT928 capacitive touch screen controller (optional)
-+
-+  The above chips share same I2C bus. The EEPROM is factory preprogrammed with
-+  device information (id, serial, etc.) and timing requirements.
-+
-+  Touchscreen bingings can be found in these files:
-+    - input/touchscreen/goodix.yaml
-+    - input/touchscreen/edt-ft5x06.txt
-+    - input/touchscreen/ar1021.txt
++  - Peter Rosin <peda-koto5C5qi+TLoDKTGw+V6w@public.gmane.org>
 +
 +allOf:
 +  - $ref: panel-common.yaml#
 +
 +properties:
 +  compatible:
-+    const: olimex,lcd-olinuxino
++    const: sharp,lq150x1lg11
 +
-+  backlight: true
-+  enable-gpios: true
 +  power-supply: true
-+  reg: true
++  backlight: true
++
++  rlud-gpios:
++    maxItems: 1
++    description: |
++      GPIO for the RL/UD (rotate 180 degrees) pin.
++      If rlud-gpios and/or sellvds-gpios are not specified,
++      the RL/UD and/or SELLVDS pins are assumed to be handled
++      appropriately by the hardware.
++
++  sellvds-gpios:
++    maxItems: 1
++    description: |
++      GPIO for the SELLVDS pin.
++      If rlud-gpios and/or sellvds-gpios are not specified,
++      the RL/UD and/or SELLVDS pins are assumed to be handled
++      appropriately by the hardware.
 +
 +required:
 +  - compatible
-+  - reg
 +  - power-supply
 +
 +additionalProperties: false
@@ -152,17 +137,14 @@ index 000000000000..22d664abd552
 +  - |
 +    #include <dt-bindings/gpio/gpio.h>
 +
-+    i2c2 {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
++    panel {
++        compatible = "sharp,lq150x1lg11";
 +
-+        panel@50 {
-+            compatible = "olimex,lcd-olinuxino";
-+            reg = <0x50>;
-+            power-supply = <&reg_vcc5v0>;
-+            enable-gpios = <&pio 7 8 GPIO_ACTIVE_HIGH>;
-+            backlight = <&backlight>;
-+        };
++        power-supply = <&vcc_3v3_reg>;               /* VCC */
++
++        backlight = <&backlight>;
++        rlud-gpios = <&gpio 17 GPIO_ACTIVE_HIGH>;    /* RL/UD */
++        sellvds-gpios = <&gpio 18 GPIO_ACTIVE_HIGH>; /* SELLVDS */
 +    };
 +
 +...

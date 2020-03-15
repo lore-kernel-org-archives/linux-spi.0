@@ -1,9 +1,9 @@
 From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v1 02/36] dt-bindings: spi: support non-spi bindings as
- SPI slaves
-Date: Sun, 15 Mar 2020 17:24:52 +0100
-Message-ID: <CACRpkdZszEA+-KVrgALx3NdtVi86ExnEHB3p0EwxMeCCvHxD5A@mail.gmail.com>
-References: <20200315134416.16527-1-sam@ravnborg.org> <20200315134416.16527-3-sam@ravnborg.org>
+Subject: Re: [PATCH v1 04/36] dt-bindings: display: convert
+ arm,versatile-tft-panel to DT Schema
+Date: Sun, 15 Mar 2020 17:25:47 +0100
+Message-ID: <CACRpkda6Vve_oNZ+o0A-dUy35ktgqshTE8DyEqmBD=DWry7n_w@mail.gmail.com>
+References: <20200315134416.16527-1-sam@ravnborg.org> <20200315134416.16527-5-sam@ravnborg.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Cc: "open list:DRM PANEL DRIVERS" <dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org>,
@@ -25,30 +25,21 @@ Cc: "open list:DRM PANEL DRIVERS" <dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@pu
         Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
         Lin Huang <h
 To: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200315134416.16527-3-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200315134416.16527-5-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 On Sun, Mar 15, 2020 at 2:44 PM Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org> wrote:
 
-> Independent bindings can be SPI slaves which for example is
-> the case for several panel bindings.
->
-> Move SPI slave properties to spi-slave.yaml so the independent
-> SPI slave bindings can include spi-slave.yaml rather than
-> duplicating the properties.
+> Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
+> Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 
-To me it seems like you are creating the common SPI slave
-bindings? Maybe the commit message should be about that.
+Thanks! :D
 
-> +  reg:
-> +    minimum: 0
-> +    maximum: 256
-
-255? Or am I wrong?
-
-Apart from that it looks good to me.
+Reviewed-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
 Yours,
 Linus Walleij

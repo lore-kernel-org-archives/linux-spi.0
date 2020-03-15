@@ -1,7 +1,7 @@
 From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v1 13/36] dt-bindings: display: convert kingdisplay,kd035g6-54nt to DT Schema
-Date: Sun, 15 Mar 2020 14:43:53 +0100
-Message-ID: <20200315134416.16527-14-sam@ravnborg.org>
+Subject: [PATCH v1 14/36] dt-bindings: display: convert kingdisplay,kd097d04 to DT Schema
+Date: Sun, 15 Mar 2020 14:43:54 +0100
+Message-ID: <20200315134416.16527-15-sam@ravnborg.org>
 References: <20200315134416.16527-1-sam@ravnborg.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -26,135 +26,65 @@ Cc: Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
 To: dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org,
         Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200315134416.16527-1-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
+
+kingdisplay,kd097d04 matches the panel-simple-dsi binding.
+The only difference is that enable-gpios is now an optional
+property.
 
 Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Cc: Paul Cercueil <paul-icTtO2rgO2OTuSrc4Mpeew@public.gmane.org>
+Cc: Nickey Yang <nickey.yang-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
 Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 ---
- .../panel/kingdisplay,kd035g6-54nt.txt        | 42 -------------
- .../panel/kingdisplay,kd035g6-54nt.yaml       | 60 +++++++++++++++++++
- 2 files changed, 60 insertions(+), 42 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/display/panel/kingdisplay,kd035g6-54nt.txt
- create mode 100644 Documentation/devicetree/bindings/display/panel/kingdisplay,kd035g6-54nt.yaml
+ .../display/panel/kingdisplay,kd097d04.txt    | 22 -------------------
+ .../display/panel/panel-simple-dsi.yaml       |  2 ++
+ 2 files changed, 2 insertions(+), 22 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/display/panel/kingdisplay,kd097d04.txt
 
-diff --git a/Documentation/devicetree/bindings/display/panel/kingdisplay,kd035g6-54nt.txt b/Documentation/devicetree/bindings/display/panel/kingdisplay,kd035g6-54nt.txt
+diff --git a/Documentation/devicetree/bindings/display/panel/kingdisplay,kd097d04.txt b/Documentation/devicetree/bindings/display/panel/kingdisplay,kd097d04.txt
 deleted file mode 100644
-index fa9596082e44..000000000000
---- a/Documentation/devicetree/bindings/display/panel/kingdisplay,kd035g6-54nt.txt
+index cfefff688614..000000000000
+--- a/Documentation/devicetree/bindings/display/panel/kingdisplay,kd097d04.txt
 +++ /dev/null
-@@ -1,42 +0,0 @@
--King Display KD035G6-54NT 3.5" (320x240 pixels) 24-bit TFT LCD panel
+@@ -1,22 +0,0 @@
+-Kingdisplay KD097D04 9.7" 1536x2048 TFT LCD panel
 -
 -Required properties:
--- compatible: should be "kingdisplay,kd035g6-54nt"
--- power-supply: See panel-common.txt
--- reset-gpios: See panel-common.txt
+-- compatible: should be "kingdisplay,kd097d04"
+-- reg: DSI virtual channel of the peripheral
+-- power-supply: phandle of the regulator that provides the supply voltage
+-- enable-gpios: panel enable gpio
 -
 -Optional properties:
--- backlight: see panel-common.txt
--
--The generic bindings for the SPI slaves documented in [1] also apply.
--
--The device node can contain one 'port' child node with one child
--'endpoint' node, according to the bindings defined in [2]. This
--node should describe panel's video bus.
--
--[1]: Documentation/devicetree/bindings/spi/spi-bus.txt
--[2]: Documentation/devicetree/bindings/graph.txt
+-- backlight: phandle of the backlight device attached to the panel
 -
 -Example:
 -
--&spi {
--	panel@0 {
--		compatible = "kingdisplay,kd035g6-54nt";
--		reg = <0>;
--
--		spi-max-frequency = <3125000>;
--		spi-3wire;
--		spi-cs-high;
--
--		reset-gpios = <&gpe 2 GPIO_ACTIVE_LOW>;
--
--		backlight = <&backlight>;
--		power-supply = <&ldo6>;
--
--		port {
--			panel_input: endpoint {
--				remote-endpoint = <&panel_output>;
--			};
+-	&mipi_dsi {
+-		panel@0 {
+-			compatible = "kingdisplay,kd097d04";
+-			reg = <0>;
+-			power-supply = <...>;
+-			backlight = <&backlight>;
+-			enable-gpios = <&gpio1 13 GPIO_ACTIVE_HIGH>;
 -		};
 -	};
--};
-diff --git a/Documentation/devicetree/bindings/display/panel/kingdisplay,kd035g6-54nt.yaml b/Documentation/devicetree/bindings/display/panel/kingdisplay,kd035g6-54nt.yaml
-new file mode 100644
-index 000000000000..31fc63294a9f
---- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/kingdisplay,kd035g6-54nt.yaml
-@@ -0,0 +1,60 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/display/panel/kingdisplay,kd035g6-54nt.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: King Display KD035G6-54NT 3.5" (320x240 pixels) 24-bit TFT LCD panel
-+
-+maintainers:
-+  - Paul Cercueil <paul-icTtO2rgO2OTuSrc4Mpeew@public.gmane.org>
-+
-+allOf:
-+  - $ref: ../../spi/spi-slave.yaml#
-+  - $ref: panel-common.yaml#
-+
-+properties:
-+  compatible:
-+    const: kingdisplay,kd035g6-54nt
-+
-+  backlight: true
-+  port: true
-+  power-supply: true
-+  reg: true
-+  reset-gpios: true
-+
-+required:
-+  - compatible
-+  - power-supply
-+  - reset-gpios
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        panel@0 {
-+            compatible = "kingdisplay,kd035g6-54nt";
-+            reg = <0>;
-+
-+            spi-max-frequency = <3125000>;
-+            spi-3wire;
-+            spi-cs-high;
-+
-+            reset-gpios = <&gpe 2 GPIO_ACTIVE_LOW>;
-+
-+            backlight = <&backlight>;
-+            power-supply = <&ldo6>;
-+
-+            port {
-+                panel_input: endpoint {
-+                    remote-endpoint = <&panel_output>;
-+                };
-+            };
-+        };
-+    };
-+
-+...
+diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple-dsi.yaml b/Documentation/devicetree/bindings/display/panel/panel-simple-dsi.yaml
+index b2e8742fd6af..949371db0a16 100644
+--- a/Documentation/devicetree/bindings/display/panel/panel-simple-dsi.yaml
++++ b/Documentation/devicetree/bindings/display/panel/panel-simple-dsi.yaml
+@@ -29,6 +29,8 @@ properties:
+       # compatible must be listed in alphabetical order, ordered by compatible.
+       # The description in the comment is mandatory for each compatible.
+ 
++        # Kingdisplay KD097D04 9.7" 1536x2048 TFT LCD panel
++      - kingdisplay,kd097d04
+         # Panasonic 10" WUXGA TFT LCD panel
+       - panasonic,vvx10f034n00
+ 
 -- 
 2.20.1

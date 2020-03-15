@@ -1,7 +1,7 @@
 From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v1 21/36] dt-bindings: display: convert samsung,s6d16d0 to DT Schema
-Date: Sun, 15 Mar 2020 14:44:01 +0100
-Message-ID: <20200315134416.16527-22-sam@ravnborg.org>
+Subject: [PATCH v1 17/36] dt-bindings: display: convert osddisplays,osd101t2587-53ts to DT Schema
+Date: Sun, 15 Mar 2020 14:43:57 +0100
+Message-ID: <20200315134416.16527-18-sam@ravnborg.org>
 References: <20200315134416.16527-1-sam@ravnborg.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -26,119 +26,56 @@ Cc: Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
 To: dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org,
         Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200315134416.16527-1-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
+
+osddisplays,osd101t2587-53ts is compatible with panel-simple binding,
+so list the compatible in the panel-simple binding file.
 
 Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>
 Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 ---
- .../display/panel/samsung,s6d16d0.txt         | 30 ----------
- .../display/panel/samsung,s6d16d0.yaml        | 56 +++++++++++++++++++
- 2 files changed, 56 insertions(+), 30 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/display/panel/samsung,s6d16d0.txt
- create mode 100644 Documentation/devicetree/bindings/display/panel/samsung,s6d16d0.yaml
+ .../display/panel/osddisplays,osd101t2587-53ts.txt | 14 --------------
+ .../bindings/display/panel/panel-simple.yaml       |  2 ++
+ 2 files changed, 2 insertions(+), 14 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/display/panel/osddisplays,osd101t2587-53ts.txt
 
-diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6d16d0.txt b/Documentation/devicetree/bindings/display/panel/samsung,s6d16d0.txt
+diff --git a/Documentation/devicetree/bindings/display/panel/osddisplays,osd101t2587-53ts.txt b/Documentation/devicetree/bindings/display/panel/osddisplays,osd101t2587-53ts.txt
 deleted file mode 100644
-index b94e366f451b..000000000000
---- a/Documentation/devicetree/bindings/display/panel/samsung,s6d16d0.txt
+index 9d88e96003fc..000000000000
+--- a/Documentation/devicetree/bindings/display/panel/osddisplays,osd101t2587-53ts.txt
 +++ /dev/null
-@@ -1,30 +0,0 @@
--Samsung S6D16D0 4" 864x480 AMOLED panel
+@@ -1,14 +0,0 @@
+-One Stop Displays OSD101T2587-53TS 10.1" 1920x1200 panel
+-
+-The panel is similar to OSD101T2045-53TS, but it needs additional
+-MIPI_DSI_TURN_ON_PERIPHERAL message from the host.
 -
 -Required properties:
--  - compatible: should be:
--    "samsung,s6d16d0",
--  - reg: the virtual channel number of a DSI peripheral
--  - vdd1-supply: I/O voltage supply
--  - reset-gpios: a GPIO spec for the reset pin (active low)
+-- compatible: should be "osddisplays,osd101t2587-53ts"
+-- power-supply: as specified in the base binding
 -
--The device node can contain one 'port' child node with one child
--'endpoint' node, according to the bindings defined in
--media/video-interfaces.txt. This node should describe panel's video bus.
+-Optional properties:
+-- backlight: as specified in the base binding
 -
--Example:
--&dsi {
--	...
--
--	panel@0 {
--		compatible = "samsung,s6d16d0";
--		reg = <0>;
--		vdd1-supply = <&foo>;
--		reset-gpios = <&foo_gpio 0 GPIO_ACTIVE_LOW>;
--
--		port {
--			panel_in: endpoint {
--				remote-endpoint = <&dsi_out>;
--			};
--		};
--	};
--};
-diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6d16d0.yaml b/Documentation/devicetree/bindings/display/panel/samsung,s6d16d0.yaml
-new file mode 100644
-index 000000000000..66d147496bc3
---- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/samsung,s6d16d0.yaml
-@@ -0,0 +1,56 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/display/panel/samsung,s6d16d0.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Samsung S6D16D0 4" 864x480 AMOLED panel
-+
-+maintainers:
-+  - Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-+
-+allOf:
-+  - $ref: panel-common.yaml#
-+
-+properties:
-+  compatible:
-+    const: samsung,s6d16d0
-+
-+  port: true
-+  reg: true
-+  reset-gpios: true
-+
-+  vdd1-supply:
-+    description: I/O voltage supply
-+
-+required:
-+  - compatible
-+  - reg
-+  - vdd1-supply
-+  - reset-gpios
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
-+    dsi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        panel@0 {
-+            compatible = "samsung,s6d16d0";
-+            reg = <0>;
-+            vdd1-supply = <&foo>;
-+            reset-gpios = <&foo_gpio 0 GPIO_ACTIVE_LOW>;
-+
-+            port {
-+                panel_in: endpoint {
-+                    remote-endpoint = <&dsi_out>;
-+                };
-+            };
-+        };
-+    };
-+
-+...
+-This binding is compatible with the simple-panel binding, which is specified
+-in simple-panel.txt in this directory.
+diff --git a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
+index b1b8d0edadef..70c290f7df30 100644
+--- a/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
++++ b/Documentation/devicetree/bindings/display/panel/panel-simple.yaml
+@@ -209,6 +209,8 @@ properties:
+       - osddisplays,osd070t1718-19ts
+         # One Stop Displays OSD101T2045-53TS 10.1" 1920x1200 panel
+       - osddisplays,osd101t2045-53ts
++        # One Stop Displays OSD101T2587-53TS 10.1" 1920x1200 panel
++      - osddisplays,osd101t2587-53ts
+         # QiaoDian XianShi Corporation 4"3 TFT LCD panel
+       - qiaodian,qd43003c0-40
+         # Rocktech Displays Ltd. RK101II01D-CT 10.1" TFT 1280x800
 -- 
 2.20.1

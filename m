@@ -1,7 +1,7 @@
 From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH v1 28/36] dt-bindings: display: convert sitronix,st7789v to DT Schema
-Date: Sun, 15 Mar 2020 14:44:08 +0100
-Message-ID: <20200315134416.16527-29-sam@ravnborg.org>
+Subject: [PATCH v1 29/36] dt-bindings: display: drop unused simple-panel.txt
+Date: Sun, 15 Mar 2020 14:44:09 +0100
+Message-ID: <20200315134416.16527-30-sam@ravnborg.org>
 References: <20200315134416.16527-1-sam@ravnborg.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -31,123 +31,23 @@ In-Reply-To: <20200315134416.16527-1-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+There are no more references to simple-panel.txt.
+Delete it.
+
 Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Cc: Maxime Ripard <mripard-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 ---
- .../display/panel/sitronix,st7789v.txt        | 37 ------------
- .../display/panel/sitronix,st7789v.yaml       | 58 +++++++++++++++++++
- 2 files changed, 58 insertions(+), 37 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/display/panel/sitronix,st7789v.txt
- create mode 100644 Documentation/devicetree/bindings/display/panel/sitronix,st7789v.yaml
+ Documentation/devicetree/bindings/display/panel/simple-panel.txt | 1 -
+ 1 file changed, 1 deletion(-)
+ delete mode 100644 Documentation/devicetree/bindings/display/panel/simple-panel.txt
 
-diff --git a/Documentation/devicetree/bindings/display/panel/sitronix,st7789v.txt b/Documentation/devicetree/bindings/display/panel/sitronix,st7789v.txt
+diff --git a/Documentation/devicetree/bindings/display/panel/simple-panel.txt b/Documentation/devicetree/bindings/display/panel/simple-panel.txt
 deleted file mode 100644
-index c6995dde641b..000000000000
---- a/Documentation/devicetree/bindings/display/panel/sitronix,st7789v.txt
+index e11208fb7da8..000000000000
+--- a/Documentation/devicetree/bindings/display/panel/simple-panel.txt
 +++ /dev/null
-@@ -1,37 +0,0 @@
--Sitronix ST7789V RGB panel with SPI control bus
--
--Required properties:
--  - compatible: "sitronix,st7789v"
--  - reg: Chip select of the panel on the SPI bus
--  - reset-gpios: a GPIO phandle for the reset pin
--  - power-supply: phandle of the regulator that provides the supply voltage
--
--Optional properties:
--  - backlight: phandle to the backlight used
--
--The generic bindings for the SPI slaves documented in [1] also applies
--
--The device node can contain one 'port' child node with one child
--'endpoint' node, according to the bindings defined in [2]. This
--node should describe panel's video bus.
--
--[1]: Documentation/devicetree/bindings/spi/spi-bus.txt
--[2]: Documentation/devicetree/bindings/graph.txt
--
--Example:
--
--panel@0 {
--	compatible = "sitronix,st7789v";
--	reg = <0>;
--	reset-gpios = <&pio 6 11 GPIO_ACTIVE_LOW>;
--	backlight = <&pwm_bl>;
--	spi-max-frequency = <100000>;
--	spi-cpol;
--	spi-cpha;
--
--	port {
--		panel_input: endpoint {
--			remote-endpoint = <&tcon0_out_panel>;
--		};
--	};
--};
-diff --git a/Documentation/devicetree/bindings/display/panel/sitronix,st7789v.yaml b/Documentation/devicetree/bindings/display/panel/sitronix,st7789v.yaml
-new file mode 100644
-index 000000000000..493006a52c5e
---- /dev/null
-+++ b/Documentation/devicetree/bindings/display/panel/sitronix,st7789v.yaml
-@@ -0,0 +1,58 @@
-+# SPDX-License-Identifier: GPL-2.0
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/display/panel/sitronix,st7789v.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Sitronix ST7789V RGB panel with SPI control bus
-+
-+maintainers:
-+  - Maxime Ripard <mripard-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-+
-+allOf:
-+  - $ref: panel-common.yaml#
-+  - $ref: ../../spi/spi-slave.yaml#
-+
-+properties:
-+  compatible:
-+    const: sitronix,st7789v
-+
-+  reg: true
-+  reset-gpios: true
-+  power-supply: true
-+  backlight: true
-+  port: true
-+
-+required:
-+  - compatible
-+  - reg
-+  - reset-gpios
-+  - power-supply
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        panel@0 {
-+            compatible = "sitronix,st7789v";
-+            reg = <0>;
-+            reset-gpios = <&pio 6 11 GPIO_ACTIVE_LOW>;
-+            backlight = <&pwm_bl>;
-+            power-supply = <&power>;
-+            spi-max-frequency = <100000>;
-+            spi-cpol;
-+            spi-cpha;
-+
-+            port {
-+                panel_input: endpoint {
-+                    remote-endpoint = <&tcon0_out_panel>;
-+                };
-+            };
-+        };
-+    };
-+
-+...
+@@ -1 +0,0 @@
+-See panel-common.yaml in this directory.
 -- 
 2.20.1

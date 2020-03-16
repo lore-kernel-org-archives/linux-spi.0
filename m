@@ -1,202 +1,66 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.4 02/35] spi: spi-omap2-mcspi: Support probe deferral for DMA channels
-Date: Sun, 15 Mar 2020 22:33:38 -0400
-Message-ID: <20200316023411.1263-2-sashal@kernel.org>
-References: <20200316023411.1263-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.5 10/41] spi: qup: call spi_qup_pm_resume_runtime before suspending
+Date: Sun, 15 Mar 2020 22:32:48 -0400
+Message-ID: <20200316023319.749-10-sashal@kernel.org>
+References: <20200316023319.749-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Vignesh Raghavendra <vigneshr@ti.com>,
+Cc: Yuji Sasaki <sasakiy@chromium.org>, Vinod Koul <vkoul@kernel.org>,
         Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
+        Sasha Levin <sashal@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200316023411.1263-1-sashal@kernel.org>
+In-Reply-To: <20200316023319.749-1-sashal@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Vignesh Raghavendra <vigneshr@ti.com>
+From: Yuji Sasaki <sasakiy@chromium.org>
 
-[ Upstream commit 32f2fc5dc3992b4b60cc6b1a6a31be605cc9c3a2 ]
+[ Upstream commit 136b5cd2e2f97581ae560cff0db2a3b5369112da ]
 
-dma_request_channel() can return -EPROBE_DEFER, if DMA driver is not
-ready. Currently driver just falls back to PIO mode on probe deferral.
-Fix this by requesting all required channels during probe and
-propagating EPROBE_DEFER error code.
+spi_qup_suspend() will cause synchronous external abort when
+runtime suspend is enabled and applied, as it tries to
+access SPI controller register while clock is already disabled
+in spi_qup_pm_suspend_runtime().
 
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Link: https://lore.kernel.org/r/20200204124816.16735-3-vigneshr@ti.com
+Signed-off-by: Yuji sasaki <sasakiy@chromium.org>
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Link: https://lore.kernel.org/r/20200214074340.2286170-1-vkoul@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-omap2-mcspi.c | 77 +++++++++++++++++------------------
- 1 file changed, 38 insertions(+), 39 deletions(-)
+ drivers/spi/spi-qup.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 8e435da730996..cfb64e5a7d45d 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -986,20 +986,12 @@ static int omap2_mcspi_setup_transfer(struct spi_device *spi,
-  * Note that we currently allow DMA only if we get a channel
-  * for both rx and tx. Otherwise we'll do PIO for both rx and tx.
-  */
--static int omap2_mcspi_request_dma(struct spi_device *spi)
-+static int omap2_mcspi_request_dma(struct omap2_mcspi *mcspi,
-+				   struct omap2_mcspi_dma *mcspi_dma)
- {
--	struct spi_master	*master = spi->master;
--	struct omap2_mcspi	*mcspi;
--	struct omap2_mcspi_dma	*mcspi_dma;
- 	int ret = 0;
+diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+index dd3434a407ea6..a364b99497e26 100644
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -1217,6 +1217,11 @@ static int spi_qup_suspend(struct device *device)
+ 	struct spi_qup *controller = spi_master_get_devdata(master);
+ 	int ret;
  
--	mcspi = spi_master_get_devdata(master);
--	mcspi_dma = mcspi->dma_channels + spi->chip_select;
--
--	init_completion(&mcspi_dma->dma_rx_completion);
--	init_completion(&mcspi_dma->dma_tx_completion);
--
--	mcspi_dma->dma_rx = dma_request_chan(&master->dev,
-+	mcspi_dma->dma_rx = dma_request_chan(mcspi->dev,
- 					     mcspi_dma->dma_rx_ch_name);
- 	if (IS_ERR(mcspi_dma->dma_rx)) {
- 		ret = PTR_ERR(mcspi_dma->dma_rx);
-@@ -1007,7 +999,7 @@ static int omap2_mcspi_request_dma(struct spi_device *spi)
- 		goto no_dma;
- 	}
- 
--	mcspi_dma->dma_tx = dma_request_chan(&master->dev,
-+	mcspi_dma->dma_tx = dma_request_chan(mcspi->dev,
- 					     mcspi_dma->dma_tx_ch_name);
- 	if (IS_ERR(mcspi_dma->dma_tx)) {
- 		ret = PTR_ERR(mcspi_dma->dma_tx);
-@@ -1016,20 +1008,40 @@ static int omap2_mcspi_request_dma(struct spi_device *spi)
- 		mcspi_dma->dma_rx = NULL;
- 	}
- 
-+	init_completion(&mcspi_dma->dma_rx_completion);
-+	init_completion(&mcspi_dma->dma_tx_completion);
-+
- no_dma:
- 	return ret;
- }
- 
-+static void omap2_mcspi_release_dma(struct spi_master *master)
-+{
-+	struct omap2_mcspi *mcspi = spi_master_get_devdata(master);
-+	struct omap2_mcspi_dma	*mcspi_dma;
-+	int i;
-+
-+	for (i = 0; i < master->num_chipselect; i++) {
-+		mcspi_dma = &mcspi->dma_channels[i];
-+
-+		if (mcspi_dma->dma_rx) {
-+			dma_release_channel(mcspi_dma->dma_rx);
-+			mcspi_dma->dma_rx = NULL;
-+		}
-+		if (mcspi_dma->dma_tx) {
-+			dma_release_channel(mcspi_dma->dma_tx);
-+			mcspi_dma->dma_tx = NULL;
-+		}
++	if (pm_runtime_suspended(device)) {
++		ret = spi_qup_pm_resume_runtime(device);
++		if (ret)
++			return ret;
 +	}
-+}
-+
- static int omap2_mcspi_setup(struct spi_device *spi)
- {
- 	int			ret;
- 	struct omap2_mcspi	*mcspi = spi_master_get_devdata(spi->master);
- 	struct omap2_mcspi_regs	*ctx = &mcspi->ctx;
--	struct omap2_mcspi_dma	*mcspi_dma;
- 	struct omap2_mcspi_cs	*cs = spi->controller_state;
+ 	ret = spi_master_suspend(master);
+ 	if (ret)
+ 		return ret;
+@@ -1225,10 +1230,8 @@ static int spi_qup_suspend(struct device *device)
+ 	if (ret)
+ 		return ret;
  
--	mcspi_dma = &mcspi->dma_channels[spi->chip_select];
--
- 	if (!cs) {
- 		cs = kzalloc(sizeof *cs, GFP_KERNEL);
- 		if (!cs)
-@@ -1054,13 +1066,6 @@ static int omap2_mcspi_setup(struct spi_device *spi)
- 		}
- 	}
- 
--	if (!mcspi_dma->dma_rx || !mcspi_dma->dma_tx) {
--		ret = omap2_mcspi_request_dma(spi);
--		if (ret)
--			dev_warn(&spi->dev, "not using DMA for McSPI (%d)\n",
--				 ret);
+-	if (!pm_runtime_suspended(device)) {
+-		clk_disable_unprepare(controller->cclk);
+-		clk_disable_unprepare(controller->iclk);
 -	}
--
- 	ret = pm_runtime_get_sync(mcspi->dev);
- 	if (ret < 0) {
- 		pm_runtime_put_noidle(mcspi->dev);
-@@ -1077,12 +1082,8 @@ static int omap2_mcspi_setup(struct spi_device *spi)
- 
- static void omap2_mcspi_cleanup(struct spi_device *spi)
- {
--	struct omap2_mcspi	*mcspi;
--	struct omap2_mcspi_dma	*mcspi_dma;
- 	struct omap2_mcspi_cs	*cs;
- 
--	mcspi = spi_master_get_devdata(spi->master);
--
- 	if (spi->controller_state) {
- 		/* Unlink controller state from context save list */
- 		cs = spi->controller_state;
-@@ -1091,19 +1092,6 @@ static void omap2_mcspi_cleanup(struct spi_device *spi)
- 		kfree(cs);
- 	}
- 
--	if (spi->chip_select < spi->master->num_chipselect) {
--		mcspi_dma = &mcspi->dma_channels[spi->chip_select];
--
--		if (mcspi_dma->dma_rx) {
--			dma_release_channel(mcspi_dma->dma_rx);
--			mcspi_dma->dma_rx = NULL;
--		}
--		if (mcspi_dma->dma_tx) {
--			dma_release_channel(mcspi_dma->dma_tx);
--			mcspi_dma->dma_tx = NULL;
--		}
--	}
--
- 	if (gpio_is_valid(spi->cs_gpio))
- 		gpio_free(spi->cs_gpio);
- }
-@@ -1314,6 +1302,9 @@ static bool omap2_mcspi_can_dma(struct spi_master *master,
- 	if (spi_controller_is_slave(master))
- 		return true;
- 
-+	master->dma_rx = mcspi_dma->dma_rx;
-+	master->dma_tx = mcspi_dma->dma_tx;
-+
- 	return (xfer->len >= DMA_MIN_BYTES);
++	clk_disable_unprepare(controller->cclk);
++	clk_disable_unprepare(controller->iclk);
+ 	return 0;
  }
  
-@@ -1501,6 +1492,11 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
- 	for (i = 0; i < master->num_chipselect; i++) {
- 		sprintf(mcspi->dma_channels[i].dma_rx_ch_name, "rx%d", i);
- 		sprintf(mcspi->dma_channels[i].dma_tx_ch_name, "tx%d", i);
-+
-+		status = omap2_mcspi_request_dma(mcspi,
-+						 &mcspi->dma_channels[i]);
-+		if (status == -EPROBE_DEFER)
-+			goto free_master;
- 	}
- 
- 	status = platform_get_irq(pdev, 0);
-@@ -1538,6 +1534,7 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
- 	pm_runtime_put_sync(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- free_master:
-+	omap2_mcspi_release_dma(master);
- 	spi_master_put(master);
- 	return status;
- }
-@@ -1547,6 +1544,8 @@ static int omap2_mcspi_remove(struct platform_device *pdev)
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct omap2_mcspi *mcspi = spi_master_get_devdata(master);
- 
-+	omap2_mcspi_release_dma(master);
-+
- 	pm_runtime_dont_use_autosuspend(mcspi->dev);
- 	pm_runtime_put_sync(mcspi->dev);
- 	pm_runtime_disable(&pdev->dev);
 -- 
 2.20.1

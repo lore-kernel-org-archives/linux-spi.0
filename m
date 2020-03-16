@@ -1,121 +1,105 @@
-From: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>
-Subject: Re: [PATCH v3 06/12] spi: spi-fsl-dspi: Replace interruptible wait
- queue with a simple completion
-Date: Mon, 16 Mar 2020 18:15:48 +0100
-Message-ID: <8c22cb70b7c0acb6769e0c68540ab523@walle.cc>
-References: <20200314224340.1544-1-olteanv@gmail.com>
- <20200314224340.1544-7-olteanv@gmail.com>
- <20200316122613.GE5010@sirena.org.uk>
- <CA+h21hqRV+HmAz4QGyH9ZtcFWzeCKczitcn+mfTdwAC7ZobdDw@mail.gmail.com>
- <20200316124945.GF5010@sirena.org.uk>
- <CA+h21hpoHGuDwpOqtWJFO7+0mQVUrmcBLW7nnGq6dt3QU5axfw@mail.gmail.com>
- <d05fda0e119405343e540b9768db534f@walle.cc>
- <CA+h21hqt7Xe1LrSDsCVS8zqunQp2tKGhmHDraMirxL595go4nA@mail.gmail.com>
+From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH v1 02/36] dt-bindings: spi: support non-spi bindings as
+ SPI slaves
+Date: Mon, 16 Mar 2020 19:57:33 +0100
+Message-ID: <20200316185733.GA18307@ravnborg.org>
+References: <20200315134416.16527-1-sam@ravnborg.org>
+ <20200315134416.16527-3-sam@ravnborg.org>
+ <20200316120239.GC5010@sirena.org.uk>
+ <20200316132844.GA22822@ravnborg.org>
+ <20200316163538.GJ5010@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Esben Haabendal <eha-/iRVSOupHO4@public.gmane.org>,
-        angelo-BIYBQhTR83Y@public.gmane.org, andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        "Gustavo A. R. Silva" <gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org>,
-        Wei Chen <weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, Mohamed Hosny <mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-        peng.ma-3arQi8VN3Tc@public.gmane.org
-To: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org,
+        Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+        Andrzej Hajda <a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+        Brian Masney <masneyb-1iNe0GrtECGEi8DpZVb4nw@public.gmane.org>,
+        Chris Zhong <zyw-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
+        Douglas Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+        Guido Gunther <agx-wGvLLbajjwFAfugRpC6u6w@public.gmane.org>, Heiko Schocher <hs-ynQEQJNshbs@public.gmane.org>,
+        Nikolaus Schaller <hns-xXXSsgcRVICgSpxsJD1C4w@public.gmane.org>,
+        Hoegeun Kwon <hoegeun.kwon-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+        Jagan Teki <jagan-dyjBcgdgk7Pe9wHmmfpqLFaTQe2KTcn/@public.gmane.org>,
+        Jerry Han <hanxu5-dyavHbARFqWrZjcNGxgArdPArS5jOdiE2SarAXORi/o@public.gmane.org>,
+        Jonathan Bakker <xc-racer2-kt+e9JA1QaI@public.gmane.org>,
+        Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
+        Lin Huang <hl-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
+        Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Marco Fr
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CA+h21hqt7Xe1LrSDsCVS8zqunQp2tKGhmHDraMirxL595go4nA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20200316163538.GJ5010-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Am 2020-03-16 17:23, schrieb Vladimir Oltean:
-> On Mon, 16 Mar 2020 at 15:25, Michael Walle <michael-QKn5cuLxLXY@public.gmane.org> wrote:
->> 
->> Am 2020-03-16 14:00, schrieb Vladimir Oltean:
->> > On Mon, 16 Mar 2020 at 14:49, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->> >>
->> >> On Mon, Mar 16, 2020 at 02:29:09PM +0200, Vladimir Oltean wrote:
->> >>
->> >> > Correct, the real problem is that I forgot to add a Fixes: tag for
->> >> > patch 5. I'll do that now.
->> >>
->> >> OK.  The series otherwise looked fine but I'll wait for testing.
->> >> Michael, if there's issues remaining it might be good to get some
->> >> Tested-bys for the patches prior to whatever's broken so we can get
->> >> those fixes in (but obviously verifying that is work so only if you
->> >> have time).
->> 
->> I'm just about to test it. While my former "cat /dev/mtdN > /dev/null"
->> is working. I had the impression that it was slower, so I tried to 
->> test
->> it with dd now and a known chunk size.. only to find out that it is
->> still not working:
->> 
->> # dmesg|grep spi
->> [    1.894891] spi-nor spi1.0: w25q128fw (16384 Kbytes)
->> ..
->> # time cat /dev/mtd0 > /dev/null
->> real    0m 30.73s
->> user    0m 0.00s
->> sys     0m 1.02s
->> # dd if=/dev/mtd0 of=/dev/null bs=64
->> 262144+0 records in
->> 262144+0 records out
->> # dd if=/dev/mtd0 of=/dev/null bs=64
->> 262144+0 records in
->> 262144+0 records out
->> # dd if=/dev/mtd0 of=/dev/null bs=64
->> dd: /dev/mtd0: Input/output error
+Hi Mark.
+
+On Mon, Mar 16, 2020 at 04:35:38PM +0000, Mark Brown wrote:
+> On Mon, Mar 16, 2020 at 02:28:44PM +0100, Sam Ravnborg wrote:
+> > On Mon, Mar 16, 2020 at 12:02:41PM +0000, Mark Brown wrote:
+> > > On Sun, Mar 15, 2020 at 02:43:42PM +0100, Sam Ravnborg wrote:
 > 
-> I don't really have a SPI flash connected to DSPI on any LS1028A board.
-
-I'm already debugging it again.
-
-> Is this DMA or XSPI mode?
-
-XSPI mode. DMA mode looked good for now.
-
->> 
->> I also wanted to test how it behaves if there are multiple processes
->> access the /dev/mtdN device. I haven't found the time to dig into
->> the call chain if see if there is any locking. Because what happens
->> if transfer_one_message() is called twice at the same time from two
->> different processes?
->> 
+> > > > Independent bindings can be SPI slaves which for example is
+> > > > the case for several panel bindings.
 > 
-> There is a mutex on the SPI bus, and therefore all variants of the
-> .transfer() call are operating under this lock protection, which
-> simplifies things quite a bit.
-
-Ok, thanks.
-
--michael
-
->> >
->> > This time I verified with a protocol analyzer all transfer lengths
->> > from 1 all the way to 256, with this script:
->> >
->> > #!/bin/bash
->> >
->> > buf=''
->> >
->> > for i in $(seq 0 255); do
->> > »       buf="${buf}\x$(printf '%02x' ${i})"
->> > »       spidev_test --device /dev/spidev2.0 --bpw 8 --cpha --speed
->> > 5000000 -p "${buf}"
->> > done
->> >
->> > It looked fine as far as I could tell, and also the problems
->> > surrounding Ctrl-C are no longer present. Nonetheless it would be good
->> > if Michael could confirm, but I know that he's very busy too so it's
->> > understandable if he can no longer spend time on this.
->> 
->> I'm working on it ;)
->> 
->> -michael
+> > > What is an "independent binding"?
 > 
-> Thanks,
-> -Vladimir
+> > For several panels we have device trees that looks like this:
+> 
+> So what you're trying to do is define a generic class for SPI slaves
+> which are just normal children of SPI nodes?  I really can't get to
+> there from your changelog so we need some work there - in particular
+> "non-spi bindings" is *very* confusing as as far as I can see these are
+> bindings for SPI devices.
+> 
+> > The bindings are child of the spi controller node, but not specified
+> > in the same binding file as the spi controller node.
+> 
+> Of course not, this how all buses work isn't it?
+> 
+> > So SPI slaves can now reference spi-slave.yaml to get access to
+> > the SPI slave properties - and the copies can be avoided.
+> > Likewise spi-controller.yml now references spi-slave.yaml.
+> 
+> > This was the best way I saw it could be done.
+> 
+> Rob didn't do the binding conversion but he did review it - I'm a bit
+> surprised that there's issues here?
+
+For panels we have panel-common.yaml that list all the
+typical properties used by a panel - so the individual
+panel bindings shall not repeat them.
+This is also aligned with the principle of re-using properties rather
+than inventing new properties all over.
+
+And with a number of bindings describing HW that is SPI slaves
+the idea is to do something like we do for panels.
+
+I look forward for Rob's feedback - but as he is on vacation this week
+we may have to wait a week for that.
+
+The simple way forward had been to do like we do in many other places
+and include a few SPI properties and be done with it.
+This is an attempt to do something better.
+If there is push-back or a nack, then we can always do like we do in
+other places and just duplicate the properties.
+
+> Also shouldn't there be some constraint that these devices have to be
+> the child of a SPI controller or something?  Just including a file
+> doesn't look right for something like class definition.
+
+It was the best I could come up with - and this patch was called out
+for review in the hope there is a better way than this patch.
+
+We have similar examples like:
+  - pincfg-node.yaml
+  - regulatro.yaml
+  - dma-common.yaml
+
+They are not exactly 1:1 to what we do with spi-slave.yaml, but they
+served as inspiration.
+
+	Sam

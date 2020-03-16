@@ -1,16 +1,20 @@
-From: Vinay Simha B N <simhavcs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v1 12/36] dt-bindings: display: convert jdi,lt070me05000
+From: Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH v1 35/36] dt-bindings: display: convert lgphilips,lb035q02
  to DT Schema
-Date: Mon, 16 Mar 2020 14:29:56 +0530
-Message-ID: <CAGWqDJ7jiFoSxmQtKEVcQkTeKUKChAzU71f7V0nCrJYgO2n7ew@mail.gmail.com>
-References: <20200315134416.16527-1-sam@ravnborg.org> <20200315134416.16527-13-sam@ravnborg.org>
+Date: Mon, 16 Mar 2020 11:11:15 +0200
+Message-ID: <3bf96f0e-90a8-1513-800f-0168d912fd9f@ti.com>
+References: <20200315134416.16527-1-sam@ravnborg.org>
+ <20200315134416.16527-36-sam@ravnborg.org>
+ <a73da9d3-43b2-3ce7-85e9-8135dbf48e98@ti.com>
+ <20200316082607.GA18510@ravnborg.org>
+ <a634d733-4b88-9d5a-09a1-c9551d8a077a@ti.com>
+ <20200316085311.GA19201@ravnborg.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: "open list:DRM PANEL DRIVERS" <dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org>,
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: <dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org>,
         Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
         Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
         Andrzej Hajda <a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
         Brian Masney <masneyb-1iNe0GrtECGEi8DpZVb4nw@public.gmane.org>,
@@ -23,149 +27,46 @@ Cc: "open list:DRM PANEL DRIVERS" <dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@pu
         Jerry Han <hanxu5-dyavHbARFqWrZjcNGxgArdPArS5jOdiE2SarAXORi/o@public.gmane.org>,
         Jonathan Bakker <xc-racer2-kt+e9JA1QaI@public.gmane.org>,
         Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
-        Lin Huang <h
+        Lin Huang <hl-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
+        Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Ma
 To: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200315134416.16527-13-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
+In-Reply-To: <20200316085311.GA19201-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-sam,
+On 16/03/2020 10:53, Sam Ravnborg wrote:
 
-Reviewed-by: Vinay Simha BN <simhavcs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> We have panel-simple-dsi for DSI simple based panels.
+> This binding includes the reg property.
+> 
+> If we have included DSI panels in panel-simple.yaml, and we likely have
+> by accident, then they should be moved to panel-simple-dsi.yaml.
+> 
+> If they requires anything else then they shall have their
+> own binding.
+> 
+> panel-simple.yaml and panel-simple.dsi.yaml are on purpose
+> only for the simple panels and they have:
+> "additionalProperties: false" to avoid that a lot
+> of extra sneaks in.
+> 
+> I actually considered shortly a panel-simple-spi.yaml,
+> but the few panels I looked at had different names
+> for the power-supply so that did not fly.
+> I did not check them all - we have today (with this patch-set)
+> 9 bindings that references spi-slave.yaml.
 
-Thanks.
+Okay, I understand now. Makes sense.
 
-On Sun, Mar 15, 2020 at 7:14 PM Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org> wrote:
->
-> Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-> Cc: Vinay Simha BN <simhavcs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-> ---
->  .../display/panel/jdi,lt070me05000.txt        | 31 ---------
->  .../display/panel/jdi,lt070me05000.yaml       | 69 +++++++++++++++++++
->  2 files changed, 69 insertions(+), 31 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/display/panel/jdi,lt070me05000.txt
->  create mode 100644 Documentation/devicetree/bindings/display/panel/jdi,lt070me05000.yaml
->
-> diff --git a/Documentation/devicetree/bindings/display/panel/jdi,lt070me05000.txt b/Documentation/devicetree/bindings/display/panel/jdi,lt070me05000.txt
-> deleted file mode 100644
-> index 4989c91d505f..000000000000
-> --- a/Documentation/devicetree/bindings/display/panel/jdi,lt070me05000.txt
-> +++ /dev/null
-> @@ -1,31 +0,0 @@
-> -JDI model LT070ME05000 1200x1920 7" DSI Panel
-> -
-> -Required properties:
-> -- compatible: should be "jdi,lt070me05000"
-> -- vddp-supply: phandle of the regulator that provides the supply voltage
-> -  Power IC supply (3-5V)
-> -- iovcc-supply: phandle of the regulator that provides the supply voltage
-> -  IOVCC , power supply for LCM (1.8V)
-> -- enable-gpios: phandle of gpio for enable line
-> -  LED_EN, LED backlight enable, High active
-> -- reset-gpios: phandle of gpio for reset line
-> -  This should be 8mA, gpio can be configured using mux, pinctrl, pinctrl-names
-> -  XRES, Reset, Low active
-> -- dcdc-en-gpios: phandle of the gpio for power ic line
-> -  Power IC supply enable, High active
-> -
-> -Example:
-> -
-> -       dsi0: qcom,mdss_dsi@4700000 {
-> -               panel@0 {
-> -                       compatible = "jdi,lt070me05000";
-> -                       reg = <0>;
-> -
-> -                       vddp-supply = <&pm8921_l17>;
-> -                       iovcc-supply = <&pm8921_lvs7>;
-> -
-> -                       enable-gpios = <&pm8921_gpio 36 GPIO_ACTIVE_HIGH>;
-> -                       reset-gpios = <&tlmm_pinmux 54 GPIO_ACTIVE_LOW>;
-> -                       dcdc-en-gpios = <&pm8921_gpio 23 GPIO_ACTIVE_HIGH>;
-> -               };
-> -       };
-> diff --git a/Documentation/devicetree/bindings/display/panel/jdi,lt070me05000.yaml b/Documentation/devicetree/bindings/display/panel/jdi,lt070me05000.yaml
-> new file mode 100644
-> index 000000000000..e0abf68ecb19
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/display/panel/jdi,lt070me05000.yaml
-> @@ -0,0 +1,69 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/display/panel/jdi,lt070me05000.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: JDI model LT070ME05000 1200x1920 7" DSI Panel
-> +
-> +maintainers:
-> +  - Vinay Simha BN <simhavcs-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> +
-> +allOf:
-> +  - $ref: panel-common.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    const: jdi,lt070me05000
-> +
-> +  enable-gpios: true
-> +  reg: true
-> +  reset-gpios: true
-> +
-> +  vddp-supply:
-> +    description: |
-> +      The regulator that provides the supply voltage Power IC supply (3-5V)
-> +
-> +  iovcc-supply:
-> +    description: |
-> +      The regulator that provides the supply voltage IOVCC,
-> +      power supply for LCM (1.8V)
-> +
-> +  dcdc-en-gpios:
-> +    description: |
-> +      phandle of the gpio for power ic line
-> +      Power IC supply enable, High active
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - vddp-supply
-> +  - iovcc-supply
-> +  - enable-gpios
-> +  - reset-gpios
-> +  - dcdc-en-gpios
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +
-> +    dsi: qcom,mdss_dsi@4700000 {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        panel@0 {
-> +            compatible = "jdi,lt070me05000";
-> +            reg = <0>;
-> +
-> +            vddp-supply = <&pm8921_l17>;
-> +            iovcc-supply = <&pm8921_lvs7>;
-> +
-> +            enable-gpios = <&pm8921_gpio 36 GPIO_ACTIVE_HIGH>;
-> +            reset-gpios = <&tlmm_pinmux 54 GPIO_ACTIVE_LOW>;
-> +            dcdc-en-gpios = <&pm8921_gpio 23 GPIO_ACTIVE_HIGH>;
-> +        };
-> +    };
-> +
-> +...
-> --
-> 2.20.1
->
+panel-simple.c has dsi_of_match, which lists DSI panels. I was looking at that when I said 
+panel-simple binding has DSI panels. At least auo,b080uan01 and osddisplays,osd101t2045-53ts are 
+there, and earlier in this series you moved osddisplays,osd101t2587-53ts to panel-simple bindings.
 
+  Tomi
 
 -- 
-regards,
-vinaysimha
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki

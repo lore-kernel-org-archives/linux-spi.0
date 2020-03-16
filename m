@@ -1,107 +1,98 @@
-From: Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH AUTOSEL 5.4 26/35] spi: spi_register_controller(): free bus id on error paths
-Date: Sun, 15 Mar 2020 22:34:02 -0400
-Message-ID: <20200316023411.1263-26-sashal@kernel.org>
-References: <20200316023411.1263-1-sashal@kernel.org>
+From: Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 06/20] spi: pxa2xx: Add CS control clock quirk
+Date: Sun, 15 Mar 2020 22:34:39 -0400
+Message-ID: <20200316023453.1800-6-sashal@kernel.org>
+References: <20200316023453.1800-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Aaro Koskinen <aaro.koskinen-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200316023411.1263-1-sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Evan Green <evgreen@chromium.org>, Rajat Jain <rajatja@google.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20200316023453.1800-1-sashal@kernel.org>
+Sender: stable-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Aaro Koskinen <aaro.koskinen-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
+From: Evan Green <evgreen@chromium.org>
 
-[ Upstream commit f9981d4f50b475d7dbb70f3022b87a3c8bba9fd6 ]
+[ Upstream commit 683f65ded66a9a7ff01ed7280804d2132ebfdf7e ]
 
-Some error paths leave the bus id allocated. As a result the IDR
-allocation will fail after a deferred probe. Fix by freeing the bus id
-always on error.
+In some circumstances on Intel LPSS controllers, toggling the LPSS
+CS control register doesn't actually cause the CS line to toggle.
+This seems to be failure of dynamic clock gating that occurs after
+going through a suspend/resume transition, where the controller
+is sent through a reset transition. This ruins SPI transactions
+that either rely on delay_usecs, or toggle the CS line without
+sending data.
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
-Message-Id: <20200304111740.27915-1-aaro.koskinen-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Signed-off-by: Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Whenever CS is toggled, momentarily set the clock gating register
+to "Force On" to poke the controller into acting on CS.
+
+Signed-off-by: Rajat Jain <rajatja@google.com>
+Signed-off-by: Evan Green <evgreen@chromium.org>
+Link: https://lore.kernel.org/r/20200211223700.110252-1-rajatja@google.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi.c | 32 +++++++++++++++-----------------
- 1 file changed, 15 insertions(+), 17 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 26b91ee0855dc..c186d3a944cd0 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2452,7 +2452,7 @@ int spi_register_controller(struct spi_controller *ctlr)
- 		if (ctlr->use_gpio_descriptors) {
- 			status = spi_get_gpio_descs(ctlr);
- 			if (status)
--				return status;
-+				goto free_bus_id;
- 			/*
- 			 * A controller using GPIO descriptors always
- 			 * supports SPI_CS_HIGH if need be.
-@@ -2462,7 +2462,7 @@ int spi_register_controller(struct spi_controller *ctlr)
- 			/* Legacy code path for GPIOs from DT */
- 			status = of_spi_get_gpio_numbers(ctlr);
- 			if (status)
--				return status;
-+				goto free_bus_id;
- 		}
- 	}
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 525388126e260..e4482823d8d75 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -76,6 +76,10 @@ MODULE_ALIAS("platform:pxa2xx-spi");
+ #define LPSS_CAPS_CS_EN_SHIFT			9
+ #define LPSS_CAPS_CS_EN_MASK			(0xf << LPSS_CAPS_CS_EN_SHIFT)
  
-@@ -2470,17 +2470,14 @@ int spi_register_controller(struct spi_controller *ctlr)
- 	 * Even if it's just one always-selected device, there must
- 	 * be at least one chipselect.
- 	 */
--	if (!ctlr->num_chipselect)
--		return -EINVAL;
-+	if (!ctlr->num_chipselect) {
-+		status = -EINVAL;
-+		goto free_bus_id;
-+	}
- 
- 	status = device_add(&ctlr->dev);
--	if (status < 0) {
--		/* free bus id */
--		mutex_lock(&board_lock);
--		idr_remove(&spi_master_idr, ctlr->bus_num);
--		mutex_unlock(&board_lock);
--		goto done;
--	}
-+	if (status < 0)
-+		goto free_bus_id;
- 	dev_dbg(dev, "registered %s %s\n",
- 			spi_controller_is_slave(ctlr) ? "slave" : "master",
- 			dev_name(&ctlr->dev));
-@@ -2496,11 +2493,7 @@ int spi_register_controller(struct spi_controller *ctlr)
- 		status = spi_controller_initialize_queue(ctlr);
- 		if (status) {
- 			device_del(&ctlr->dev);
--			/* free bus id */
--			mutex_lock(&board_lock);
--			idr_remove(&spi_master_idr, ctlr->bus_num);
--			mutex_unlock(&board_lock);
--			goto done;
-+			goto free_bus_id;
- 		}
- 	}
- 	/* add statistics */
-@@ -2515,7 +2508,12 @@ int spi_register_controller(struct spi_controller *ctlr)
- 	/* Register devices from the device tree and ACPI */
- 	of_register_spi_devices(ctlr);
- 	acpi_register_spi_devices(ctlr);
--done:
-+	return status;
++#define LPSS_PRIV_CLOCK_GATE 0x38
++#define LPSS_PRIV_CLOCK_GATE_CLK_CTL_MASK 0x3
++#define LPSS_PRIV_CLOCK_GATE_CLK_CTL_FORCE_ON 0x3
 +
-+free_bus_id:
-+	mutex_lock(&board_lock);
-+	idr_remove(&spi_master_idr, ctlr->bus_num);
-+	mutex_unlock(&board_lock);
- 	return status;
+ struct lpss_config {
+ 	/* LPSS offset from drv_data->ioaddr */
+ 	unsigned offset;
+@@ -92,6 +96,8 @@ struct lpss_config {
+ 	unsigned cs_sel_shift;
+ 	unsigned cs_sel_mask;
+ 	unsigned cs_num;
++	/* Quirks */
++	unsigned cs_clk_stays_gated : 1;
+ };
+ 
+ /* Keep these sorted with enum pxa_ssp_type */
+@@ -162,6 +168,7 @@ static const struct lpss_config lpss_platforms[] = {
+ 		.tx_threshold_hi = 56,
+ 		.cs_sel_shift = 8,
+ 		.cs_sel_mask = 3 << 8,
++		.cs_clk_stays_gated = true,
+ 	},
+ };
+ 
+@@ -389,6 +396,22 @@ static void lpss_ssp_cs_control(struct spi_device *spi, bool enable)
+ 	else
+ 		value |= LPSS_CS_CONTROL_CS_HIGH;
+ 	__lpss_ssp_write_priv(drv_data, config->reg_cs_ctrl, value);
++	if (config->cs_clk_stays_gated) {
++		u32 clkgate;
++
++		/*
++		 * Changing CS alone when dynamic clock gating is on won't
++		 * actually flip CS at that time. This ruins SPI transfers
++		 * that specify delays, or have no data. Toggle the clock mode
++		 * to force on briefly to poke the CS pin to move.
++		 */
++		clkgate = __lpss_ssp_read_priv(drv_data, LPSS_PRIV_CLOCK_GATE);
++		value = (clkgate & ~LPSS_PRIV_CLOCK_GATE_CLK_CTL_MASK) |
++			LPSS_PRIV_CLOCK_GATE_CLK_CTL_FORCE_ON;
++
++		__lpss_ssp_write_priv(drv_data, LPSS_PRIV_CLOCK_GATE, value);
++		__lpss_ssp_write_priv(drv_data, LPSS_PRIV_CLOCK_GATE, clkgate);
++	}
  }
- EXPORT_SYMBOL_GPL(spi_register_controller);
+ 
+ static void cs_assert(struct spi_device *spi)
 -- 
 2.20.1

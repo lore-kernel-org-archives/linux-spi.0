@@ -1,10 +1,10 @@
 From: Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH v1 17/36] dt-bindings: display: convert
- osddisplays,osd101t2587-53ts to DT Schema
-Date: Mon, 16 Mar 2020 09:51:22 +0200
-Message-ID: <9c5cba3a-ff9e-dad9-fbdf-d6a9a4431aa6@ti.com>
+Subject: Re: [PATCH v1 35/36] dt-bindings: display: convert lgphilips,lb035q02
+ to DT Schema
+Date: Mon, 16 Mar 2020 09:57:57 +0200
+Message-ID: <a73da9d3-43b2-3ce7-85e9-8135dbf48e98@ti.com>
 References: <20200315134416.16527-1-sam@ravnborg.org>
- <20200315134416.16527-18-sam@ravnborg.org>
+ <20200315134416.16527-36-sam@ravnborg.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 7bit
@@ -29,27 +29,47 @@ Cc: Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
 To: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>, <dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org>,
         Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200315134416.16527-18-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200315134416.16527-36-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On 15/03/2020 15:43, Sam Ravnborg wrote:
-> osddisplays,osd101t2587-53ts is compatible with panel-simple binding,
-> so list the compatible in the panel-simple binding file.
-> 
+Hi Sam,
+
+On 15/03/2020 15:44, Sam Ravnborg wrote:
 > Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-> Cc: Peter Ujfalusi <peter.ujfalusi-l0cyMroinI0@public.gmane.org>
+> Cc: Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>
 > Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 > Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 > ---
->   .../display/panel/osddisplays,osd101t2587-53ts.txt | 14 --------------
->   .../bindings/display/panel/panel-simple.yaml       |  2 ++
->   2 files changed, 2 insertions(+), 14 deletions(-)
->   delete mode 100644 Documentation/devicetree/bindings/display/panel/osddisplays,osd101t2587-53ts.txt
+>   .../display/panel/lgphilips,lb035q02.txt      | 33 ------------
+>   .../display/panel/lgphilips,lb035q02.yaml     | 54 +++++++++++++++++++
+>   2 files changed, 54 insertions(+), 33 deletions(-)
+>   delete mode 100644 Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.txt
+>   create mode 100644 Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.txt b/Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.txt
+> deleted file mode 100644
+> index 1a1e653e5407..000000000000
+> --- a/Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.txt
+> +++ /dev/null
+> @@ -1,33 +0,0 @@
+> -LG.Philips LB035Q02 Panel
+> -=========================
+> -
+> -Required properties:
+> -- compatible: "lgphilips,lb035q02"
+> -- enable-gpios: panel enable gpio
+> -
+> -Optional properties:
+> -- label: a symbolic name for the panel
+> -
+> -Required nodes:
+> -- Video port for DPI input
 
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>
+Isn't this also compatible with panel-simple bindings? 'label' is the only one not in panel-simple, 
+but that's optional and has never been used by the panel driver.
 
   Tomi
 

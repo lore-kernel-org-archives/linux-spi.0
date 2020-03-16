@@ -1,7 +1,7 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.9 1/7] spi: qup: call spi_qup_pm_resume_runtime before suspending
-Date: Sun, 15 Mar 2020 22:35:32 -0400
-Message-ID: <20200316023538.2232-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 1/7] spi: qup: call spi_qup_pm_resume_runtime before suspending
+Date: Sun, 15 Mar 2020 22:35:41 -0400
+Message-ID: <20200316023548.2347-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Cc: Yuji Sasaki <sasakiy@chromium.org>, Vinod Koul <vkoul@kernel.org>,
@@ -9,8 +9,8 @@ Cc: Yuji Sasaki <sasakiy@chromium.org>, Vinod Koul <vkoul@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-arm-msm@vger.kernel.org,
         linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Return-path: <linux-arm-msm-owner@vger.kernel.org>
+Sender: linux-arm-msm-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Yuji Sasaki <sasakiy@chromium.org>
@@ -28,14 +28,14 @@ Link: https://lore.kernel.org/r/20200214074340.2286170-1-vkoul@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-qup.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/spi/spi-qup.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index 1bfa889b8427a..88b108e1c85fe 100644
+index 810a7fae34798..2487a91c4cfdb 100644
 --- a/drivers/spi/spi-qup.c
 +++ b/drivers/spi/spi-qup.c
-@@ -974,6 +974,11 @@ static int spi_qup_suspend(struct device *device)
+@@ -961,6 +961,11 @@ static int spi_qup_suspend(struct device *device)
  	struct spi_qup *controller = spi_master_get_devdata(master);
  	int ret;
  
@@ -47,18 +47,5 @@ index 1bfa889b8427a..88b108e1c85fe 100644
  	ret = spi_master_suspend(master);
  	if (ret)
  		return ret;
-@@ -982,10 +987,8 @@ static int spi_qup_suspend(struct device *device)
- 	if (ret)
- 		return ret;
- 
--	if (!pm_runtime_suspended(device)) {
--		clk_disable_unprepare(controller->cclk);
--		clk_disable_unprepare(controller->iclk);
--	}
-+	clk_disable_unprepare(controller->cclk);
-+	clk_disable_unprepare(controller->iclk);
- 	return 0;
- }
- 
 -- 
 2.20.1

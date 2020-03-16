@@ -1,79 +1,51 @@
-From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH v1 02/36] dt-bindings: spi: support non-spi bindings as
- SPI slaves
-Date: Mon, 16 Mar 2020 14:28:44 +0100
-Message-ID: <20200316132844.GA22822@ravnborg.org>
-References: <20200315134416.16527-1-sam@ravnborg.org>
- <20200315134416.16527-3-sam@ravnborg.org>
- <20200316120239.GC5010@sirena.org.uk>
+From: =?iso-8859-2?Q?Micha=B3_Miros=B3aw?= <mirq-linux@rere.qmqm.pl>
+Subject: Re: [PATCH] spi: fix cs_change for last transfer
+Date: Mon, 16 Mar 2020 15:34:55 +0100
+Message-ID: <20200316143455.GA19141@qmqm.qmqm.pl>
+References: <45912ba25c34a63b8098f471c3c8ebf8857a4716.1584292056.git.mirq-linux@rere.qmqm.pl>
+ <20200316121750.GD5010@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org,
-        Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-        Andrzej Hajda <a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-        Brian Masney <masneyb-1iNe0GrtECGEi8DpZVb4nw@public.gmane.org>,
-        Chris Zhong <zyw-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-        Douglas Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-        Guido Gunther <agx-wGvLLbajjwFAfugRpC6u6w@public.gmane.org>, Heiko Schocher <hs-ynQEQJNshbs@public.gmane.org>,
-        Nikolaus Schaller <hns-xXXSsgcRVICgSpxsJD1C4w@public.gmane.org>,
-        Hoegeun Kwon <hoegeun.kwon-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-        Jagan Teki <jagan-dyjBcgdgk7Pe9wHmmfpqLFaTQe2KTcn/@public.gmane.org>,
-        Jerry Han <hanxu5-dyavHbARFqWrZjcNGxgArdPArS5jOdiE2SarAXORi/o@public.gmane.org>,
-        Jonathan Bakker <xc-racer2-kt+e9JA1QaI@public.gmane.org>,
-        Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
-        Lin Huang <hl-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-        Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Marco Fr
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset=iso-8859-2
+Content-Transfer-Encoding: 8bit
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20200316120239.GC5010-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20200316121750.GD5010@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Mark.
-
-On Mon, Mar 16, 2020 at 12:02:41PM +0000, Mark Brown wrote:
-> On Sun, Mar 15, 2020 at 02:43:42PM +0100, Sam Ravnborg wrote:
+On Mon, Mar 16, 2020 at 12:17:50PM +0000, Mark Brown wrote:
+> On Sun, Mar 15, 2020 at 06:08:53PM +0100, Micha³ Miros³aw wrote:
+> > Generic spi_transfer_one_message() implementation introduced in
+> > commit b158935f70b9 has a bug in cs_change handling: it keeps CS
+> > asserted when cs_change is set. Fix it.
 > 
-> > Independent bindings can be SPI slaves which for example is
-> > the case for several panel bindings.
+> >  	struct spi_transfer *xfer;
+> > -	bool keep_cs = false;
+> > +	bool keep_cs = true;
+> >  	int ret = 0;
+> >  	struct spi_statistics *statm = &ctlr->statistics;
+> >  	struct spi_statistics *stats = &msg->spi->statistics;
+> > @@ -1268,7 +1268,7 @@ static int spi_transfer_one_message(struct spi_controller *ctlr,
+> >  		if (xfer->cs_change) {
+> >  			if (list_is_last(&xfer->transfer_list,
+> >  					 &msg->transfers)) {
+> > -				keep_cs = true;
+> > +				keep_cs = false;
+> >  			} else {
 > 
-> What is an "independent binding"?
+> This is the opposite of the intended behaviour - we want to deassert
+> chip select at the end of the message unless cs_change is set on the
+> last transfer.  If this were broken I would expect to see widespread
+> problems being reported.
 
-For several panels we have device trees that looks like this:
+This is unfortunate naming I suppose. I reread the spi.h comments
+a few more times and it seems indeed, that .cs_change == 1 on last
+transfer means to a driver: "you may leave CS unchanged" - quite the
+reverse compared to non-last transfers.
 
-spi {
-    #address-cells = <1>;
-    #size-cells = <0>;
+Please drop this patch then.
 
-    panel@0 {
-        compatible = "kingdisplay,kd035g6-54nt";
-        reg = <0>;
-
-        spi-max-frequency = <3125000>;
-        spi-3wire;
-        spi-cs-high;
-	...
-
-
-The bindings are child of the spi controller node, but not specified
-in the same binding file as the spi controller node.
-
-A lot of bindings repeats the descriptions of (some of) the
-pi-slave properties.
-To avoid introducing yet another set of redundant and maybe incomplete
-SPI slave property descriptions I moved the relevant properties
-from spi-controller.yaml to spi-slave.yaml.
-
-So SPI slaves can now reference spi-slave.yaml to get access to
-the SPI slave properties - and the copies can be avoided.
-Likewise spi-controller.yml now references spi-slave.yaml.
-
-This was the best way I saw it could be done.
-
-This approach is used in several bindings in this patch set.
-
-	Sam
+Best Regards
+Micha³ Miros³aw

@@ -1,8 +1,8 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.4 4/7] spi/zynqmp: remove entry that causes a cs glitch
-Date: Sun, 15 Mar 2020 22:35:44 -0400
-Message-ID: <20200316023548.2347-4-sashal@kernel.org>
-References: <20200316023548.2347-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 4/7] spi/zynqmp: remove entry that causes a cs glitch
+Date: Sun, 15 Mar 2020 22:35:35 -0400
+Message-ID: <20200316023538.2232-4-sashal@kernel.org>
+References: <20200316023538.2232-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Cc: Thommy Jakobsson <thommyj@gmail.com>,
@@ -12,7 +12,7 @@ Cc: Thommy Jakobsson <thommyj@gmail.com>,
         linux-arm-kernel@lists.infradead.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200316023548.2347-1-sashal@kernel.org>
+In-Reply-To: <20200316023538.2232-1-sashal@kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
@@ -53,10 +53,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 deletions(-)
 
 diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index f23f36ebaf3dc..bd3945a5660a5 100644
+index 18aeaceee2862..d26c0eda2d9ea 100644
 --- a/drivers/spi/spi-zynqmp-gqspi.c
 +++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -414,9 +414,6 @@ static void zynqmp_qspi_chipselect(struct spi_device *qspi, bool is_high)
+@@ -415,9 +415,6 @@ static void zynqmp_qspi_chipselect(struct spi_device *qspi, bool is_high)
  
  	zynqmp_gqspi_write(xqspi, GQSPI_GEN_FIFO_OFST, genfifoentry);
  

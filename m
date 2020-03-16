@@ -1,174 +1,134 @@
-From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH v1 02/36] dt-bindings: spi: support non-spi bindings as
- SPI slaves
-Date: Mon, 16 Mar 2020 22:43:46 +0100
-Message-ID: <20200316214346.GA23637@ravnborg.org>
-References: <20200315134416.16527-1-sam@ravnborg.org>
- <20200315134416.16527-3-sam@ravnborg.org>
- <20200316204850.gggeyjulgiy53i7x@gilmour.lan>
+From: Douglas Anderson <dianders@chromium.org>
+Subject: [PATCH] spi: spi-geni-qcom: Speculative fix of "nobody cared" about interrupt
+Date: Mon, 16 Mar 2020 15:20:01 -0700
+Message-ID: <20200316151939.1.I752ebdcfd5e8bf0de06d66e767b8974932b3620e@changeid>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org,
-        Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-        Andrzej Hajda <a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-        Brian Masney <masneyb-1iNe0GrtECGEi8DpZVb4nw@public.gmane.org>,
-        Chris Zhong <zyw-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-        Douglas Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-        Guido Gunther <agx-wGvLLbajjwFAfugRpC6u6w@public.gmane.org>, Heiko Schocher <hs-ynQEQJNshbs@public.gmane.org>,
-        Nikolaus Schaller <hns-xXXSsgcRVICgSpxsJD1C4w@public.gmane.org>,
-        Hoegeun Kwon <hoegeun.kwon-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-        Jagan Teki <jagan-dyjBcgdgk7Pe9wHmmfpqLFaTQe2KTcn/@public.gmane.org>,
-        Jerry Han <hanxu5-dyavHbARFqWrZjcNGxgArdPArS5jOdiE2SarAXORi/o@public.gmane.org>,
-        Jonathan Bakker <xc-racer2-kt+e9JA1QaI@public.gmane.org>,
-        Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
-        Lin Huang <hl-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-        Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Marco Fr
-To: Maxime Ripard <maxime-R63rPqgGiG5yDzI6CaY1VQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20200316204850.gggeyjulgiy53i7x-2DbqMqoCcjvhXIiyNabO3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Transfer-Encoding: 8bit
+Cc: Alok Chauhan <alokc@codeaurora.org>,
+        Dilip Kota <dkota@codeaurora.org>, skakit@codeaurora.org,
+        Girish Mahadevan <girishm@codeaurora.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-arm-msm-owner@vger.kernel.org>
+Sender: linux-arm-msm-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Maxime.
+Every once in a while (like once in a few months on a device) people
+have seen warnings on devices using spi-geni-qcom like:
 
-On Mon, Mar 16, 2020 at 09:48:50PM +0100, Maxime Ripard wrote:
-> Hi Sam,
-> 
-> On Sun, Mar 15, 2020 at 02:43:42PM +0100, Sam Ravnborg wrote:
-> > Independent bindings can be SPI slaves which for example is
-> > the case for several panel bindings.
-> >
-> > Move SPI slave properties to spi-slave.yaml so the independent
-> > SPI slave bindings can include spi-slave.yaml rather than
-> > duplicating the properties.
-> >
-> > Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-> > Cc: Maxime Ripard <maxime.ripard-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
-> > Cc: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> > Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> > Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> > ---
-> >  .../bindings/spi/spi-controller.yaml          | 63 +-------------
-> >  .../devicetree/bindings/spi/spi-slave.yaml    | 83 +++++++++++++++++++
-> >  2 files changed, 86 insertions(+), 60 deletions(-)
-> >  create mode 100644 Documentation/devicetree/bindings/spi/spi-slave.yaml
-> >
-> > diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-> > index 1e0ca6ccf64b..99531c8d10dd 100644
-> > --- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
-> > +++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-> > @@ -67,71 +67,14 @@ patternProperties:
-> >    "^.*@[0-9a-f]+$":
-> >      type: object
-> >
-> > +    allOf:
-> > +      - $ref: spi-slave.yaml#
-> > +
-> >      properties:
-> >        compatible:
-> >          description:
-> >            Compatible of the SPI device.
-> >
-> > -      reg:
-> > -        minimum: 0
-> > -        maximum: 256
-> > -        description:
-> > -          Chip select used by the device.
-> > -
-> > -      spi-3wire:
-> > -        $ref: /schemas/types.yaml#/definitions/flag
-> > -        description:
-> > -          The device requires 3-wire mode.
-> > -
-> > -      spi-cpha:
-> > -        $ref: /schemas/types.yaml#/definitions/flag
-> > -        description:
-> > -          The device requires shifted clock phase (CPHA) mode.
-> > -
-> > -      spi-cpol:
-> > -        $ref: /schemas/types.yaml#/definitions/flag
-> > -        description:
-> > -          The device requires inverse clock polarity (CPOL) mode.
-> > -
-> > -      spi-cs-high:
-> > -        $ref: /schemas/types.yaml#/definitions/flag
-> > -        description:
-> > -          The device requires the chip select active high.
-> > -
-> > -      spi-lsb-first:
-> > -        $ref: /schemas/types.yaml#/definitions/flag
-> > -        description:
-> > -          The device requires the LSB first mode.
-> > -
-> > -      spi-max-frequency:
-> > -        $ref: /schemas/types.yaml#/definitions/uint32
-> > -        description:
-> > -          Maximum SPI clocking speed of the device in Hz.
-> > -
-> > -      spi-rx-bus-width:
-> > -        allOf:
-> > -          - $ref: /schemas/types.yaml#/definitions/uint32
-> > -          - enum: [ 1, 2, 4, 8 ]
-> > -          - default: 1
-> > -        description:
-> > -          Bus width to the SPI bus used for MISO.
-> > -
-> > -      spi-rx-delay-us:
-> > -        description:
-> > -          Delay, in microseconds, after a read transfer.
-> > -
-> > -      spi-tx-bus-width:
-> > -        allOf:
-> > -          - $ref: /schemas/types.yaml#/definitions/uint32
-> > -          - enum: [ 1, 2, 4, 8 ]
-> > -          - default: 1
-> > -        description:
-> > -          Bus width to the SPI bus used for MOSI.
-> > -
-> > -      spi-tx-delay-us:
-> > -        description:
-> > -          Delay, in microseconds, after a write transfer.
-> > -
-> 
-> I can see what you're trying to do, but you don't really need to.
-> 
-> All the SPI devices will be declared under a spi controller node that
-> will validate its child nodes (and thus the devices) already.
+  irq ...: nobody cared (try booting with the "irqpoll" option)
 
-This was the missing piece - thanks.
-And as Mark put it "why is this suddenly an issue"?
-Turns out this is already properly handled and I made up an issue.
-Maybe Mark tried to explian it to me already...
+...where the interrupt number listed matches up with "spi_geni" in
+/proc/interrupts.
 
-> 
-> Doing it this way would actually make all the checks happen twice,
-> once as part of the SPI controller, once as part of the SPI device
-> binding, without any good reason.
+You can get "nobody cared" if the interrupt handler returns IRQ_NONE.
+Once you get into this state the driver will just stop working.
 
-I had focus on validating the example in the binding
-file and not the full picture.
+Auditing the code makes me believe that it's probably not so good
+checking "cur_mcmd" in the interrupt handler not under spinlock.
+Let's move it to be under spinlock.  While we're at it, let's not
+return IRQ_NONE.  IRQ_NONE is supposed to check the _hardware_ status
+registers and only be returned if your hardware says that there's no
+interrupt present.  It's not supposed to check software state.  In any
+case, the whole point of IRQ_NONE is if two separate devices are
+trying to share an interrupt line, which just isn't true for anyone
+using geni.
 
-One thing I do not see properly addressed, but maybe I just miss it.
-What triggers that we catch properties that are not supposed to be
-present?
+Looking more closely at the code, it looks as if there are some other
+places that could be under spinlock, so let's add.  It looks as if the
+original code was assuming that by the time that the interrupt handler
+got called that the write to "cur_mcmd" (to make it not CMD_NONE
+anymore) would make it to the processor handling the interrupt.
+Perhaps with weakly ordered memory this sometimes (though very rarely)
+happened.
 
-If we see a unsupported property "foobar":
+Patch is marked "speculative" because I have no way to reproduce this
+problem, so I'm just hoping this fixes it.  Weakly ordered memory
+makes my brain hurt.
 
-spi {
-    ...
-    panel {
-       ....
-       foobar = <1>;
-    };
-};
+Fixes: 561de45f72bd ("spi: spi-geni-qcom: Add SPI driver support for GENI based QUP")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+---
 
-somewhere in a SPI slave binding we should catch this.
-If for no other reasons that it could be a simple spelling mistake
-that otherwise could go undetected for a long time.
-But maybe this is really not feasible to do?
+ drivers/spi/spi-geni-qcom.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-	Sam
+diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+index c3972424af71..51290a3fd203 100644
+--- a/drivers/spi/spi-geni-qcom.c
++++ b/drivers/spi/spi-geni-qcom.c
+@@ -151,16 +151,19 @@ static void spi_geni_set_cs(struct spi_device *slv, bool set_flag)
+ 	struct geni_se *se = &mas->se;
+ 	unsigned long time_left;
+ 
+-	reinit_completion(&mas->xfer_done);
+ 	pm_runtime_get_sync(mas->dev);
+ 	if (!(slv->mode & SPI_CS_HIGH))
+ 		set_flag = !set_flag;
+ 
++	spin_lock_irq(&mas->lock);
++	reinit_completion(&mas->xfer_done);
++
+ 	mas->cur_mcmd = CMD_CS;
+ 	if (set_flag)
+ 		geni_se_setup_m_cmd(se, SPI_CS_ASSERT, 0);
+ 	else
+ 		geni_se_setup_m_cmd(se, SPI_CS_DEASSERT, 0);
++	spin_unlock_irq(&mas->lock);
+ 
+ 	time_left = wait_for_completion_timeout(&mas->xfer_done, HZ);
+ 	if (!time_left)
+@@ -307,6 +310,8 @@ static void setup_fifo_xfer(struct spi_transfer *xfer,
+ 	u32 spi_tx_cfg, len;
+ 	struct geni_se *se = &mas->se;
+ 
++	spin_lock_irq(&mas->lock);
++
+ 	spi_tx_cfg = readl(se->base + SE_SPI_TRANS_CFG);
+ 	if (xfer->bits_per_word != mas->cur_bits_per_word) {
+ 		spi_setup_word_len(mas, mode, xfer->bits_per_word);
+@@ -376,6 +381,8 @@ static void setup_fifo_xfer(struct spi_transfer *xfer,
+ 	 */
+ 	if (m_cmd & SPI_TX_ONLY)
+ 		writel(mas->tx_wm, se->base + SE_GENI_TX_WATERMARK_REG);
++
++	spin_unlock_irq(&mas->lock);
+ }
+ 
+ static int spi_geni_transfer_one(struct spi_master *spi,
+@@ -479,12 +486,17 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
+ 	u32 m_irq;
+ 	unsigned long flags;
+ 
+-	if (mas->cur_mcmd == CMD_NONE)
+-		return IRQ_NONE;
+-
+ 	spin_lock_irqsave(&mas->lock, flags);
+ 	m_irq = readl(se->base + SE_GENI_M_IRQ_STATUS);
+ 
++	/*
++	 * We don't expect to hit this, but if we do we should try our best
++	 * to clear the interrupts and return so we don't just get called
++	 * again.
++	 */
++	if (mas->cur_mcmd == CMD_NONE)
++		goto exit;
++
+ 	if ((m_irq & M_RX_FIFO_WATERMARK_EN) || (m_irq & M_RX_FIFO_LAST_EN))
+ 		geni_spi_handle_rx(mas);
+ 
+@@ -523,6 +535,7 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
+ 		complete(&mas->xfer_done);
+ 	}
+ 
++exit:
+ 	writel(m_irq, se->base + SE_GENI_M_IRQ_CLEAR);
+ 	spin_unlock_irqrestore(&mas->lock, flags);
+ 	return IRQ_HANDLED;
+-- 
+2.25.1.481.gfbce0eb801-goog

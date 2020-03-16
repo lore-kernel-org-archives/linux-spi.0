@@ -1,8 +1,7 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.14 02/15] spi: qup: call spi_qup_pm_resume_runtime before suspending
-Date: Sun, 15 Mar 2020 22:35:06 -0400
-Message-ID: <20200316023519.2050-2-sashal@kernel.org>
-References: <20200316023519.2050-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 1/7] spi: qup: call spi_qup_pm_resume_runtime before suspending
+Date: Sun, 15 Mar 2020 22:35:32 -0400
+Message-ID: <20200316023538.2232-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Cc: Yuji Sasaki <sasakiy@chromium.org>, Vinod Koul <vkoul@kernel.org>,
@@ -10,9 +9,8 @@ Cc: Yuji Sasaki <sasakiy@chromium.org>, Vinod Koul <vkoul@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-arm-msm@vger.kernel.org,
         linux-spi@vger.kernel.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <20200316023519.2050-1-sashal@kernel.org>
-Sender: stable-owner@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Yuji Sasaki <sasakiy@chromium.org>
@@ -34,10 +32,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index 974a8ce58b68b..cb74fd1af2053 100644
+index 1bfa889b8427a..88b108e1c85fe 100644
 --- a/drivers/spi/spi-qup.c
 +++ b/drivers/spi/spi-qup.c
-@@ -1190,6 +1190,11 @@ static int spi_qup_suspend(struct device *device)
+@@ -974,6 +974,11 @@ static int spi_qup_suspend(struct device *device)
  	struct spi_qup *controller = spi_master_get_devdata(master);
  	int ret;
  
@@ -49,7 +47,7 @@ index 974a8ce58b68b..cb74fd1af2053 100644
  	ret = spi_master_suspend(master);
  	if (ret)
  		return ret;
-@@ -1198,10 +1203,8 @@ static int spi_qup_suspend(struct device *device)
+@@ -982,10 +987,8 @@ static int spi_qup_suspend(struct device *device)
  	if (ret)
  		return ret;
  

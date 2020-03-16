@@ -1,202 +1,70 @@
 From: Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.5 02/41] spi: spi-omap2-mcspi: Support probe deferral for DMA channels
-Date: Sun, 15 Mar 2020 22:32:40 -0400
-Message-ID: <20200316023319.749-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.5 16/41] spi/zynqmp: remove entry that causes a cs glitch
+Date: Sun, 15 Mar 2020 22:32:54 -0400
+Message-ID: <20200316023319.749-16-sashal@kernel.org>
 References: <20200316023319.749-1-sashal@kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Vignesh Raghavendra <vigneshr@ti.com>,
+Cc: Thommy Jakobsson <thommyj@gmail.com>,
+        Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>,
         Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
 To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Return-path: <stable-owner@vger.kernel.org>
 In-Reply-To: <20200316023319.749-1-sashal@kernel.org>
 Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Vignesh Raghavendra <vigneshr@ti.com>
+From: Thommy Jakobsson <thommyj@gmail.com>
 
-[ Upstream commit 32f2fc5dc3992b4b60cc6b1a6a31be605cc9c3a2 ]
+[ Upstream commit 5dd8304981ecffa77bb72b1c57c4be5dfe6cfae9 ]
 
-dma_request_channel() can return -EPROBE_DEFER, if DMA driver is not
-ready. Currently driver just falls back to PIO mode on probe deferral.
-Fix this by requesting all required channels during probe and
-propagating EPROBE_DEFER error code.
+In the public interface for chipselect, there is always an entry
+commented as "Dummy generic FIFO entry" pushed down to the fifo right
+after the activate/deactivate command. The dummy entry is 0x0,
+irregardless if the intention was to activate or deactive the cs. This
+causes the cs line to glitch rather than beeing activated in the case
+when there was an activate command.
 
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Link: https://lore.kernel.org/r/20200204124816.16735-3-vigneshr@ti.com
+This has been observed on oscilloscope, and have caused problems for at
+least one specific flash device type connected to the qspi port. After
+the change the glitch is gone and cs goes active when intended.
+
+The reason why this worked before (except for the glitch) was because
+when sending the actual data, the CS bits are once again set. Since
+most flashes uses mode 0, there is always a half clk period anyway for
+cs to clk active setup time. If someone would rely on timing from a
+chip_select call to a transfer_one, it would fail though.
+
+It is unknown why the dummy entry was there in the first place, git log
+seems to be of no help in this case. The reference manual gives no
+indication of the necessity of this. In fact the lower 8 bits are a
+setup (or hold in case of deactivate) time expressed in cycles. So this
+should not be needed to fulfill any setup/hold timings.
+
+Signed-off-by: Thommy Jakobsson <thommyj@gmail.com>
+Reviewed-by: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+Link: https://lore.kernel.org/r/20200224162643.29102-1-thommyj@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-omap2-mcspi.c | 77 +++++++++++++++++------------------
- 1 file changed, 38 insertions(+), 39 deletions(-)
+ drivers/spi/spi-zynqmp-gqspi.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index e9bc9cf984d60..e9e256718ef4a 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -975,20 +975,12 @@ static int omap2_mcspi_setup_transfer(struct spi_device *spi,
-  * Note that we currently allow DMA only if we get a channel
-  * for both rx and tx. Otherwise we'll do PIO for both rx and tx.
-  */
--static int omap2_mcspi_request_dma(struct spi_device *spi)
-+static int omap2_mcspi_request_dma(struct omap2_mcspi *mcspi,
-+				   struct omap2_mcspi_dma *mcspi_dma)
- {
--	struct spi_master	*master = spi->master;
--	struct omap2_mcspi	*mcspi;
--	struct omap2_mcspi_dma	*mcspi_dma;
- 	int ret = 0;
+diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
+index 60c4de4e44856..7412a3042a8d2 100644
+--- a/drivers/spi/spi-zynqmp-gqspi.c
++++ b/drivers/spi/spi-zynqmp-gqspi.c
+@@ -401,9 +401,6 @@ static void zynqmp_qspi_chipselect(struct spi_device *qspi, bool is_high)
  
--	mcspi = spi_master_get_devdata(master);
--	mcspi_dma = mcspi->dma_channels + spi->chip_select;
+ 	zynqmp_gqspi_write(xqspi, GQSPI_GEN_FIFO_OFST, genfifoentry);
+ 
+-	/* Dummy generic FIFO entry */
+-	zynqmp_gqspi_write(xqspi, GQSPI_GEN_FIFO_OFST, 0x0);
 -
--	init_completion(&mcspi_dma->dma_rx_completion);
--	init_completion(&mcspi_dma->dma_tx_completion);
--
--	mcspi_dma->dma_rx = dma_request_chan(&master->dev,
-+	mcspi_dma->dma_rx = dma_request_chan(mcspi->dev,
- 					     mcspi_dma->dma_rx_ch_name);
- 	if (IS_ERR(mcspi_dma->dma_rx)) {
- 		ret = PTR_ERR(mcspi_dma->dma_rx);
-@@ -996,7 +988,7 @@ static int omap2_mcspi_request_dma(struct spi_device *spi)
- 		goto no_dma;
- 	}
- 
--	mcspi_dma->dma_tx = dma_request_chan(&master->dev,
-+	mcspi_dma->dma_tx = dma_request_chan(mcspi->dev,
- 					     mcspi_dma->dma_tx_ch_name);
- 	if (IS_ERR(mcspi_dma->dma_tx)) {
- 		ret = PTR_ERR(mcspi_dma->dma_tx);
-@@ -1005,20 +997,40 @@ static int omap2_mcspi_request_dma(struct spi_device *spi)
- 		mcspi_dma->dma_rx = NULL;
- 	}
- 
-+	init_completion(&mcspi_dma->dma_rx_completion);
-+	init_completion(&mcspi_dma->dma_tx_completion);
-+
- no_dma:
- 	return ret;
- }
- 
-+static void omap2_mcspi_release_dma(struct spi_master *master)
-+{
-+	struct omap2_mcspi *mcspi = spi_master_get_devdata(master);
-+	struct omap2_mcspi_dma	*mcspi_dma;
-+	int i;
-+
-+	for (i = 0; i < master->num_chipselect; i++) {
-+		mcspi_dma = &mcspi->dma_channels[i];
-+
-+		if (mcspi_dma->dma_rx) {
-+			dma_release_channel(mcspi_dma->dma_rx);
-+			mcspi_dma->dma_rx = NULL;
-+		}
-+		if (mcspi_dma->dma_tx) {
-+			dma_release_channel(mcspi_dma->dma_tx);
-+			mcspi_dma->dma_tx = NULL;
-+		}
-+	}
-+}
-+
- static int omap2_mcspi_setup(struct spi_device *spi)
- {
- 	int			ret;
- 	struct omap2_mcspi	*mcspi = spi_master_get_devdata(spi->master);
- 	struct omap2_mcspi_regs	*ctx = &mcspi->ctx;
--	struct omap2_mcspi_dma	*mcspi_dma;
- 	struct omap2_mcspi_cs	*cs = spi->controller_state;
- 
--	mcspi_dma = &mcspi->dma_channels[spi->chip_select];
--
- 	if (!cs) {
- 		cs = kzalloc(sizeof *cs, GFP_KERNEL);
- 		if (!cs)
-@@ -1043,13 +1055,6 @@ static int omap2_mcspi_setup(struct spi_device *spi)
- 		}
- 	}
- 
--	if (!mcspi_dma->dma_rx || !mcspi_dma->dma_tx) {
--		ret = omap2_mcspi_request_dma(spi);
--		if (ret)
--			dev_warn(&spi->dev, "not using DMA for McSPI (%d)\n",
--				 ret);
--	}
--
- 	ret = pm_runtime_get_sync(mcspi->dev);
- 	if (ret < 0) {
- 		pm_runtime_put_noidle(mcspi->dev);
-@@ -1066,12 +1071,8 @@ static int omap2_mcspi_setup(struct spi_device *spi)
- 
- static void omap2_mcspi_cleanup(struct spi_device *spi)
- {
--	struct omap2_mcspi	*mcspi;
--	struct omap2_mcspi_dma	*mcspi_dma;
- 	struct omap2_mcspi_cs	*cs;
- 
--	mcspi = spi_master_get_devdata(spi->master);
--
- 	if (spi->controller_state) {
- 		/* Unlink controller state from context save list */
- 		cs = spi->controller_state;
-@@ -1080,19 +1081,6 @@ static void omap2_mcspi_cleanup(struct spi_device *spi)
- 		kfree(cs);
- 	}
- 
--	if (spi->chip_select < spi->master->num_chipselect) {
--		mcspi_dma = &mcspi->dma_channels[spi->chip_select];
--
--		if (mcspi_dma->dma_rx) {
--			dma_release_channel(mcspi_dma->dma_rx);
--			mcspi_dma->dma_rx = NULL;
--		}
--		if (mcspi_dma->dma_tx) {
--			dma_release_channel(mcspi_dma->dma_tx);
--			mcspi_dma->dma_tx = NULL;
--		}
--	}
--
- 	if (gpio_is_valid(spi->cs_gpio))
- 		gpio_free(spi->cs_gpio);
- }
-@@ -1303,6 +1291,9 @@ static bool omap2_mcspi_can_dma(struct spi_master *master,
- 	if (spi_controller_is_slave(master))
- 		return true;
- 
-+	master->dma_rx = mcspi_dma->dma_rx;
-+	master->dma_tx = mcspi_dma->dma_tx;
-+
- 	return (xfer->len >= DMA_MIN_BYTES);
- }
- 
-@@ -1490,6 +1481,11 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
- 	for (i = 0; i < master->num_chipselect; i++) {
- 		sprintf(mcspi->dma_channels[i].dma_rx_ch_name, "rx%d", i);
- 		sprintf(mcspi->dma_channels[i].dma_tx_ch_name, "tx%d", i);
-+
-+		status = omap2_mcspi_request_dma(mcspi,
-+						 &mcspi->dma_channels[i]);
-+		if (status == -EPROBE_DEFER)
-+			goto free_master;
- 	}
- 
- 	status = platform_get_irq(pdev, 0);
-@@ -1527,6 +1523,7 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
- 	pm_runtime_put_sync(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- free_master:
-+	omap2_mcspi_release_dma(master);
- 	spi_master_put(master);
- 	return status;
- }
-@@ -1536,6 +1533,8 @@ static int omap2_mcspi_remove(struct platform_device *pdev)
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct omap2_mcspi *mcspi = spi_master_get_devdata(master);
- 
-+	omap2_mcspi_release_dma(master);
-+
- 	pm_runtime_dont_use_autosuspend(mcspi->dev);
- 	pm_runtime_put_sync(mcspi->dev);
- 	pm_runtime_disable(&pdev->dev);
+ 	/* Manually start the generic FIFO command */
+ 	zynqmp_gqspi_write(xqspi, GQSPI_CONFIG_OFST,
+ 			zynqmp_gqspi_read(xqspi, GQSPI_CONFIG_OFST) |
 -- 
 2.20.1

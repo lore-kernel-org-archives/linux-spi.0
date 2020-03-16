@@ -1,75 +1,61 @@
-From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v3 05/12] spi: spi-fsl-dspi: Protect against races on
- dspi->words_in_flight
-Date: Mon, 16 Mar 2020 12:35:04 +0000 (UTC)
-Message-ID: <0ed0f4c8-5901-4d0f-b6e0-d641b3299e64@localhost>
-References: <20200314224340.1544-1-olteanv@gmail.com> <20200314224340.1544-6-olteanv@gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v3 06/12] spi: spi-fsl-dspi: Replace interruptible wait
+ queue with a simple completion
+Date: Mon, 16 Mar 2020 12:49:45 +0000
+Message-ID: <20200316124945.GF5010@sirena.org.uk>
+References: <20200314224340.1544-1-olteanv@gmail.com>
+ <20200314224340.1544-7-olteanv@gmail.com>
+ <20200316122613.GE5010@sirena.org.uk>
+ <CA+h21hqRV+HmAz4QGyH9ZtcFWzeCKczitcn+mfTdwAC7ZobdDw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, eha-/iRVSOupHO4@public.gmane.org, angelo-BIYBQhTR83Y@public.gmane.org,
-        andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org, weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org,
-        mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org, michael-QKn5cuLxLXY@public.gmane.org, peng.ma-3arQi8VN3Tc@public.gmane.org
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200314224340.1544-6-olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="w3uUfsyyY1Pqa/ej"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Esben Haabendal <eha-/iRVSOupHO4@public.gmane.org>,
+        angelo-BIYBQhTR83Y@public.gmane.org, andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        "Gustavo A. R. Silva" <gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org>,
+        Wei Chen <weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, Mohamed Hosny <mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+        Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>, peng.ma-3arQi8VN3Tc@public.gmane.org
+To: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CA+h21hqRV+HmAz4QGyH9ZtcFWzeCKczitcn+mfTdwAC7ZobdDw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Mar 15, 2020 12:44:02 AM Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
 
-> From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
->
-> dspi->words_in_flight is a variable populated in the *_write functions
-> and used in the dspi_fifo_read function. It is also used in
-> dspi_fifo_write, immediately after transmission, to update the
-> message->actual_length variable used by higher layers such as spi-mem
-> for integrity checking.
->
-> But it may happen that the IRQ which calls dspi_fifo_read to be
-> triggered before the updating of message->actual_length takes place. In
-> that case, dspi_fifo_read will decrement dspi->words_in_flight to -1,
-> and that will cause an invalid modification of message->actual_length.
->
-> Make the simplest fix possible: don't decrement the actual shared
-> variable in dspi->words_in_flight from dspi_fifo_read, but actually a
-> copy of it which is on stack.
->
-> Suggested-by: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>
-> Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
-> ---
-> Changes in v4:
-> Patch is new.
->
-> drivers/spi/spi-fsl-dspi.c | 4 +++-
-> 1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-> index 51224b772680..3ac004aa2abd 100644
-> --- a/drivers/spi/spi-fsl-dspi.c
-> +++ b/drivers/spi/spi-fsl-dspi.c
-> @@ -765,8 +765,10 @@ static u32 dspi_popr_read(struct fsl_dspi *dspi)
->
-> static void dspi_fifo_read(struct fsl_dspi *dspi)
-> {
-> + int num_fifo_entries = dspi->words_in_flight;
-> +
-> /* Read one FIFO entry and push to rx buffer */
-> - while (dspi->words_in_flight--)
-> + while (num_fifo_entries--)
-> dspi_push_rx(dspi, dspi_popr_read(dspi));
-> }
->
-> --
-> 2.17.1
->
->
+--w3uUfsyyY1Pqa/ej
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: d59c90a2400f ("spi: spi-fsl-dspi: Convert TCFQ users to XSPI FIFO mode")
+On Mon, Mar 16, 2020 at 02:29:09PM +0200, Vladimir Oltean wrote:
 
-Patchwork should know to pick up this tag.
+> Correct, the real problem is that I forgot to add a Fixes: tag for
+> patch 5. I'll do that now.
 
-Thanks,
--Vladimir
+OK.  The series otherwise looked fine but I'll wait for testing.
+Michael, if there's issues remaining it might be good to get some
+Tested-bys for the patches prior to whatever's broken so we can get
+those fixes in (but obviously verifying that is work so only if you=20
+have time).
+
+--w3uUfsyyY1Pqa/ej
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl5vdekACgkQJNaLcl1U
+h9AveQf+LOqJCuZK/In2NusDJBny94rpuyf/MG3uFk4SGh94eJKbw08H9ChimU5Q
+c+Coa95XkLCJzoVX6rdw1yjTgAP0n/YfaG3R4rTr24IfwqmZ/ggVl5WVQfdGTk2+
+AZKXqBmHiNgK7zizWDT6cH+1fMWbLoJS2mAz3imnwdpiLypTai/zwvb5SH6N0oyS
+FhIshW56cRhYj8UNpxwUm7Zr5C8L41rb4Isda5R3fUzaXwT20DdJ3tpYgsaL0NtE
+FkEvdxQjg4o3ssNJ15Mdt4yRGHEXVH7cnguTLZhqOogdWLs6NXvPjwtGJt0WVH24
+vudvOfP8tvVP1BjdzkMaPg3Go3Y/Jw==
+=NXWG
+-----END PGP SIGNATURE-----
+
+--w3uUfsyyY1Pqa/ej--

@@ -1,44 +1,75 @@
 From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v3 06/12] spi: spi-fsl-dspi: Replace interruptible wait
- queue with a simple completion
-Date: Mon, 16 Mar 2020 14:29:09 +0200
-Message-ID: <CA+h21hqRV+HmAz4QGyH9ZtcFWzeCKczitcn+mfTdwAC7ZobdDw@mail.gmail.com>
-References: <20200314224340.1544-1-olteanv@gmail.com> <20200314224340.1544-7-olteanv@gmail.com>
- <20200316122613.GE5010@sirena.org.uk>
+Subject: Re: [PATCH v3 05/12] spi: spi-fsl-dspi: Protect against races on
+ dspi->words_in_flight
+Date: Mon, 16 Mar 2020 12:35:04 +0000 (UTC)
+Message-ID: <0ed0f4c8-5901-4d0f-b6e0-d641b3299e64@localhost>
+References: <20200314224340.1544-1-olteanv@gmail.com> <20200314224340.1544-6-olteanv@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Esben Haabendal <eha-/iRVSOupHO4@public.gmane.org>,
-        angelo-BIYBQhTR83Y@public.gmane.org, andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        "Gustavo A. R. Silva" <gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org>,
-        Wei Chen <weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, Mohamed Hosny <mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-        Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>, peng.ma-3arQi8VN3Tc@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, eha-/iRVSOupHO4@public.gmane.org, angelo-BIYBQhTR83Y@public.gmane.org,
+        andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org, weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org,
+        mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org, michael-QKn5cuLxLXY@public.gmane.org, peng.ma-3arQi8VN3Tc@public.gmane.org
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200316122613.GE5010-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20200314224340.1544-6-olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mark,
+Mar 15, 2020 12:44:02 AM Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
 
-On Mon, 16 Mar 2020 at 14:26, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 >
-> On Sun, Mar 15, 2020 at 12:43:34AM +0200, Vladimir Oltean wrote:
+> dspi->words_in_flight is a variable populated in the *_write functions
+> and used in the dspi_fifo_read function. It is also used in
+> dspi_fifo_write, immediately after transmission, to update the
+> message->actual_length variable used by higher layers such as spi-mem
+> for integrity checking.
 >
-> > The wait queue was actually restructured as a completion, after polling
-> > other drivers for the most "popular" approach.
+> But it may happen that the IRQ which calls dspi_fifo_read to be
+> triggered before the updating of message->actual_length takes place. In
+> that case, dspi_fifo_read will decrement dspi->words_in_flight to -1,
+> and that will cause an invalid modification of message->actual_length.
 >
-> > Fixes: 349ad66c0ab0 ("spi:Add Freescale DSPI driver for Vybrid VF610 platform")
+> Make the simplest fix possible: don't decrement the actual shared
+> variable in dspi->words_in_flight from dspi_fifo_read, but actually a
+> copy of it which is on stack.
 >
-> Fixes should generally go at the start of the series to make sure that
-> they can be applied without any dependencies on the rest of the series
-> and sent to mainline before the merge window.
+> Suggested-by: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>
+> Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
+> ---
+> Changes in v4:
+> Patch is new.
+>
+> drivers/spi/spi-fsl-dspi.c | 4 +++-
+> 1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+> index 51224b772680..3ac004aa2abd 100644
+> --- a/drivers/spi/spi-fsl-dspi.c
+> +++ b/drivers/spi/spi-fsl-dspi.c
+> @@ -765,8 +765,10 @@ static u32 dspi_popr_read(struct fsl_dspi *dspi)
+>
+> static void dspi_fifo_read(struct fsl_dspi *dspi)
+> {
+> + int num_fifo_entries = dspi->words_in_flight;
+> +
+> /* Read one FIFO entry and push to rx buffer */
+> - while (dspi->words_in_flight--)
+> + while (num_fifo_entries--)
+> dspi_push_rx(dspi, dspi_popr_read(dspi));
+> }
+>
+> --
+> 2.17.1
+>
+>
 
-Correct, the real problem is that I forgot to add a Fixes: tag for
-patch 5. I'll do that now.
+Fixes: d59c90a2400f ("spi: spi-fsl-dspi: Convert TCFQ users to XSPI FIFO mode")
+
+Patchwork should know to pick up this tag.
 
 Thanks,
 -Vladimir

@@ -1,7 +1,7 @@
 From: Lubomir Rintel <lkundrak@v3.sk>
-Subject: [PATCH 08/28] ARM: dts: mmp*: Fix up encoding of the /rtc interrupts property
-Date: Tue, 17 Mar 2020 10:39:02 +0100
-Message-ID: <20200317093922.20785-9-lkundrak@v3.sk>
+Subject: [PATCH 10/28] ARM: dts: mmp3: fix USB & USB PHY node names
+Date: Tue, 17 Mar 2020 10:39:04 +0100
+Message-ID: <20200317093922.20785-11-lkundrak@v3.sk>
 References: <20200317093922.20785-1-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -25,47 +25,80 @@ Cc: Linus Walleij <linus.walleij@linaro.org>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         devicetree@vger.kerne
 To: Rob Herring <robh+dt@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Return-path: <linux-i2c-owner@vger.kernel.org>
 In-Reply-To: <20200317093922.20785-1-lkundrak@v3.sk>
-Sender: linux-kernel-owner@vger.kernel.org
+Sender: linux-i2c-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This way the device tree validator learns that each cell of the property
-constitutes a separate item. Otherwise it gets unnecessairly upset:
+There are better generic ones and the validation is going to complain:
 
-  mmp3-dell-ariel.dt.yaml: rtc@d4010000: interrupts: [[1, 0]] is too short
+  mmp3-dell-ariel.dt.yaml: hsic@f0001000: $nodename:0: 'hsic@f0001000'
+      does not match '^usb(@.*)?'
+  mmp3-dell-ariel.dt.yaml: hsic@f0002000: $nodename:0: 'hsic@f0002000'
+      does not match '^usb(@.*)?'
+  ...
 
 Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
 ---
- arch/arm/boot/dts/mmp2.dtsi | 2 +-
- arch/arm/boot/dts/mmp3.dtsi | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/mmp3.dtsi | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/boot/dts/mmp2.dtsi b/arch/arm/boot/dts/mmp2.dtsi
-index 6a2f072c1d0a8..173ee68e877fd 100644
---- a/arch/arm/boot/dts/mmp2.dtsi
-+++ b/arch/arm/boot/dts/mmp2.dtsi
-@@ -364,7 +364,7 @@ twsi6: i2c@d4034000 {
- 			rtc: rtc@d4010000 {
- 				compatible = "mrvl,mmp-rtc";
- 				reg = <0xd4010000 0x1000>;
--				interrupts = <1 0>;
-+				interrupts = <1>, <0>;
- 				interrupt-names = "rtc 1Hz", "rtc alarm";
- 				interrupt-parent = <&intcmux5>;
- 				clocks = <&soc_clocks MMP2_CLK_RTC>;
 diff --git a/arch/arm/boot/dts/mmp3.dtsi b/arch/arm/boot/dts/mmp3.dtsi
-index 59a108e49b41e..649aa74851257 100644
+index eaff9b1bc1d9f..fc75f96106351 100644
 --- a/arch/arm/boot/dts/mmp3.dtsi
 +++ b/arch/arm/boot/dts/mmp3.dtsi
-@@ -474,7 +474,7 @@ twsi6: i2c@d4034000 {
- 			rtc: rtc@d4010000 {
- 				compatible = "mrvl,mmp-rtc";
- 				reg = <0xd4010000 0x1000>;
--				interrupts = <1 0>;
-+				interrupts = <1>, <0>;
- 				interrupt-names = "rtc 1Hz", "rtc alarm";
- 				interrupt-parent = <&rtc_mux>;
- 				clocks = <&soc_clocks MMP2_CLK_RTC>;
+@@ -183,14 +183,14 @@ hsi0_mux: interrupt-controller@d42821d0 {
+ 				mrvl,intc-nr-irqs = <5>;
+ 			};
+ 
+-			usb_otg_phy0: usb-otg-phy@d4207000 {
++			usb_otg_phy0: usb-phy@d4207000 {
+ 				compatible = "marvell,mmp3-usb-phy";
+ 				reg = <0xd4207000 0x40>;
+ 				#phy-cells = <0>;
+ 				status = "disabled";
+ 			};
+ 
+-			usb_otg0: usb-otg@d4208000 {
++			usb_otg0: usb@d4208000 {
+ 				compatible = "marvell,pxau2o-ehci";
+ 				reg = <0xd4208000 0x200>;
+ 				interrupts = <GIC_SPI 44 IRQ_TYPE_LEVEL_HIGH>;
+@@ -201,7 +201,7 @@ usb_otg0: usb-otg@d4208000 {
+ 				status = "disabled";
+ 			};
+ 
+-			hsic_phy0: hsic-phy@f0001800 {
++			hsic_phy0: usb-phy@f0001800 {
+ 				compatible = "marvell,mmp3-hsic-phy",
+ 					     "usb-nop-xceiv";
+ 				reg = <0xf0001800 0x40>;
+@@ -209,7 +209,7 @@ hsic_phy0: hsic-phy@f0001800 {
+ 				status = "disabled";
+ 			};
+ 
+-			hsic0: hsic@f0001000 {
++			hsic0: usb@f0001000 {
+ 				compatible = "marvell,pxau2o-ehci";
+ 				reg = <0xf0001000 0x200>;
+ 				interrupts = <GIC_SPI 22 IRQ_TYPE_LEVEL_HIGH>;
+@@ -223,7 +223,7 @@ hsic0: hsic@f0001000 {
+ 				status = "disabled";
+ 			};
+ 
+-			hsic_phy1: hsic-phy@f0002800 {
++			hsic_phy1: usb-phy@f0002800 {
+ 				compatible = "marvell,mmp3-hsic-phy",
+ 					     "usb-nop-xceiv";
+ 				reg = <0xf0002800 0x40>;
+@@ -231,7 +231,7 @@ hsic_phy1: hsic-phy@f0002800 {
+ 				status = "disabled";
+ 			};
+ 
+-			hsic1: hsic@f0002000 {
++			hsic1: usb@f0002000 {
+ 				compatible = "marvell,pxau2o-ehci";
+ 				reg = <0xf0002000 0x200>;
+ 				interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
 -- 
 2.25.1

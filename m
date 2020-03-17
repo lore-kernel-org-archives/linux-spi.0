@@ -1,9 +1,9 @@
 From: Andrew Lunn <andrew@lunn.ch>
-Subject: Re: [PATCH 09/28] ARM: dts: mmp3: fix L2 cache controller node name
-Date: Tue, 17 Mar 2020 14:31:10 +0100
-Message-ID: <20200317133110.GK24270@lunn.ch>
+Subject: Re: [PATCH 10/28] ARM: dts: mmp3: fix USB & USB PHY node names
+Date: Tue, 17 Mar 2020 14:32:22 +0100
+Message-ID: <20200317133222.GL24270@lunn.ch>
 References: <20200317093922.20785-1-lkundrak@v3.sk>
- <20200317093922.20785-10-lkundrak@v3.sk>
+ <20200317093922.20785-11-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: Rob Herring <robh+dt@kernel.org>,
@@ -26,18 +26,20 @@ Cc: Rob Herring <robh+dt@kernel.org>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         devicetree@vger.k
 To: Lubomir Rintel <lkundrak@v3.sk>
-Return-path: <linux-i2c-owner@vger.kernel.org>
+Return-path: <linux-gpio-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20200317093922.20785-10-lkundrak@v3.sk>
-Sender: linux-i2c-owner@vger.kernel.org
+In-Reply-To: <20200317093922.20785-11-lkundrak@v3.sk>
+Sender: linux-gpio-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Mar 17, 2020 at 10:39:03AM +0100, Lubomir Rintel wrote:
-> The current one makes validation unhappy:
+On Tue, Mar 17, 2020 at 10:39:04AM +0100, Lubomir Rintel wrote:
+> There are better generic ones and the validation is going to complain:
 > 
->   mmp3-dell-ariel.dt.yaml: l2-cache-controller@d0020000: $nodename:0:
->       'l2-cache-controller@d0020000' does not match
->       '^(cache-controller|cpu)(@[0-9a-f,]+)*$'
+>   mmp3-dell-ariel.dt.yaml: hsic@f0001000: $nodename:0: 'hsic@f0001000'
+>       does not match '^usb(@.*)?'
+>   mmp3-dell-ariel.dt.yaml: hsic@f0002000: $nodename:0: 'hsic@f0002000'
+>       does not match '^usb(@.*)?'
+>   ...
 > 
 > Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
 

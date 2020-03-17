@@ -1,173 +1,196 @@
-From: Akash Asthana <akashast-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Subject: Re: [PATCH V2 3/8] soc: qcom-geni-se: Add interconnect support to fix
- earlycon crash
-Date: Tue, 17 Mar 2020 16:27:47 +0530
-Message-ID: <1f86fdf0-df7c-4e4a-d4d8-8b0162e52cb4@codeaurora.org>
-References: <1584105134-13583-1-git-send-email-akashast@codeaurora.org>
- <1584105134-13583-4-git-send-email-akashast@codeaurora.org>
- <20200313204441.GJ144492@google.com>
+From: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>
+Subject: Re: [PATCH v3 06/12] spi: spi-fsl-dspi: Replace interruptible wait
+ queue with a simple completion
+Date: Tue, 17 Mar 2020 12:24:49 +0100
+Message-ID: <52ce52ed4f045c4276dfb885ed29e835@walle.cc>
+References: <20200314224340.1544-1-olteanv@gmail.com>
+ <20200314224340.1544-7-olteanv@gmail.com>
+ <20200316122613.GE5010@sirena.org.uk>
+ <CA+h21hqRV+HmAz4QGyH9ZtcFWzeCKczitcn+mfTdwAC7ZobdDw@mail.gmail.com>
+ <20200316124945.GF5010@sirena.org.uk>
+ <CA+h21hpoHGuDwpOqtWJFO7+0mQVUrmcBLW7nnGq6dt3QU5axfw@mail.gmail.com>
+ <d05fda0e119405343e540b9768db534f@walle.cc>
+ <CA+h21hqt7Xe1LrSDsCVS8zqunQp2tKGhmHDraMirxL595go4nA@mail.gmail.com>
+ <8c22cb70b7c0acb6769e0c68540ab523@walle.cc>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org, agross-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        bjorn.andersson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        mark.rutland-5wv7dgnIgG8@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, swboyd-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
-        mgautam-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org, linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
-        evgreen-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org
-To: Matthias Kaehlcke <mka-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200313204441.GJ144492-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Esben Haabendal <eha-/iRVSOupHO4@public.gmane.org>,
+        angelo-BIYBQhTR83Y@public.gmane.org, andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+        "Gustavo A. R. Silva" <gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org>,
+        Wei Chen <weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, Mohamed Hosny <mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+        peng.ma-3arQi8VN3Tc@public.gmane.org
+To: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <8c22cb70b7c0acb6769e0c68540ab523-QKn5cuLxLXY@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Matthias,
+Am 2020-03-16 18:15, schrieb Michael Walle:
+>>> dd: /dev/mtd0: Input/output error
+>> 
+>> I don't really have a SPI flash connected to DSPI on any LS1028A 
+>> board.
+> 
+> I'm already debugging it again.
 
-On 3/14/2020 2:14 AM, Matthias Kaehlcke wrote:
-> Hi Akash,
->
-> On Fri, Mar 13, 2020 at 06:42:09PM +0530, Akash Asthana wrote:
->> V1 patch@https://patchwork.kernel.org/patch/11386469/ caused SC7180 system
->> to reset at boot time.
-> The v1 patch isn't relevant in the commit message, please just describe the
-> problem. Also the crash only occurs when earlycon is used.
-ok
->
->> As QUP core clock is shared among all the SE drivers present on particular
->> QUP wrapper, the reset seen is due to earlycon usage after QUP core clock
->> is put to 0 from other SE drivers before real console comes up.
->>
->> As earlycon can't vote for it's QUP core need, to fix this add ICC
->> support to common/QUP wrapper driver and put vote for QUP core from
->> probe on behalf of earlycon and remove vote during sys suspend.
-> Only removing the vote on suspend isn't ideal, the system might never get
-> suspended. That said I don't have a really good alternative suggestion.
->
-> One thing you could possibly do is to launch a delayed work, check
-> console_device() every second or so and remove the vote when it returns
-> non-NULL. Not claiming this would be a great solution ...
->
-> The cleanest solution might be a notifier when the early console is
-> unregistered, it seems somewhat over-engineered though ... Then again
-> other (future) uart drivers with interconnect support might run into
-> the same problem.
+Ok now maybe a more experienced kernel developer could have a look at 
+this.
 
-We are hitting this problem because QUP core clocks are shared among all 
-the SE driver present in particular QUP wrapper, if other HW controllers 
-has similar architecture we will hit this issue.
+(1) the error is EIO because the actual_length doesn't match the 
+expected
+     length
+(2) I've put trace_printk() where the actual_length is modified:
+     in dspi_fifo_write()
 
-How about if we expose an API from common driver(geni-se) for putting 
-QUP core BW vote to 0.
+         /* Update total number of bytes that were transferred */
+         bytes_sent = dspi->words_in_flight * dspi->oper_word_size;
+         msg->actual_length += bytes_sent;
+         trace_printk("msg=%px actual_length=%d bytes_sent=%d 
+word_in_flight=%d oper_word_size=%d\n",
+                         msg, msg->actual_length,
+                         bytes_sent, dspi->words_in_flight,
+                         dspi->oper_word_size);
+         dspi->progress += bytes_sent / DIV_ROUND_UP(xfer->bits_per_word, 
+8);
 
-We call this from console probe just after uart_add_one_port call 
-(console resources are enabled as part of this call) to put core quota 
-to 0 on behalf of earlyconsole?
+    At the start of the foreach transfer loop in 
+dspi_transfer_one_message():
 
->
->> Signed-off-by: Akash Asthana <akashast-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
->> Reported-by: Matthias Kaehlcke <mka-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
->> ---
->>   drivers/soc/qcom/qcom-geni-se.c | 41 +++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 41 insertions(+)
->>
->> diff --git a/drivers/soc/qcom/qcom-geni-se.c b/drivers/soc/qcom/qcom-geni-se.c
->> index 7d622ea..d244dfc 100644
->> --- a/drivers/soc/qcom/qcom-geni-se.c
->> +++ b/drivers/soc/qcom/qcom-geni-se.c
->> @@ -90,6 +90,7 @@ struct geni_wrapper {
->>   	struct device *dev;
->>   	void __iomem *base;
->>   	struct clk_bulk_data ahb_clks[NUM_AHB_CLKS];
->> +	struct icc_path *icc_path_geni_to_core;
->>   };
->>   
->>   #define QUP_HW_VER_REG			0x4
->> @@ -747,11 +748,50 @@ static int geni_se_probe(struct platform_device *pdev)
->>   		}
->>   	}
->>   
->> +#ifdef CONFIG_SERIAL_EARLYCON
->> +	wrapper->icc_path_geni_to_core = devm_of_icc_get(dev, "qup-core");
->> +	if (IS_ERR(wrapper->icc_path_geni_to_core))
->> +		return PTR_ERR(wrapper->icc_path_geni_to_core);
->> +	/*
->> +	 * Put minmal BW request on core clocks on behalf of early console.
->> +	 * The vote will be removed in suspend call.
->> +	 */
->> +	ret = icc_set_bw(wrapper->icc_path_geni_to_core, Bps_to_icc(1000),
->> +			Bps_to_icc(1000));
->> +	if (ret) {
->> +		dev_err(&pdev->dev, "%s: ICC BW voting failed for core\n",
->> +			__func__);
->> +		return ret;
->> +	}
-> What is ugly about this is that it's done for every QUP, not only the one
-> with the early console. Again, I don't have a good solution for it, maybe
-> it's a limitation we have to live with :(
+         list_for_each_entry(transfer, &message->transfers, 
+transfer_list) {
+                 trace_printk("%d transfer->length=%d\n", i++, 
+transfer->len);
+                 dspi->cur_transfer = transfer;
 
-There is one more limitation from QUP core side. Core clocks for both 
-the QUP wrapper runs at same speed.
-
-core2x_1 = core2x_2 = max(core2x_1, core2x_2);
-
-So with above limitation and if we are removing early con vote from Core 
-when real console comes up. It doesn't matter whether it's done for 
-every QUP or the only with early console.
-
->
->> +#endif
->> +
->>   	dev_set_drvdata(dev, wrapper);
->>   	dev_dbg(dev, "GENI SE Driver probed\n");
->>   	return devm_of_platform_populate(dev);
->>   }
->>   
->> +static int __maybe_unused geni_se_sys_suspend(struct device *dev)
->> +{
->> +	struct geni_wrapper *wrapper = dev_get_drvdata(dev);
->> +	int ret;
->> +
->> +#ifdef CONFIG_SERIAL_EARLYCON
->> +	ret = icc_set_bw(wrapper->icc_path_geni_to_core, 0, 0);
-> I think you only want to do this on the first suspend.
-Ok, I can add that logic using global variable.
->
-> Do we need to handle the case where no 'real' console is configured?
-> In this case the early console would be active forever and setting
-> the bandwidths to 0 might cause a similar crash than the one you are
-> trying to fix. Not sure if that's a real world use case, but wanted to
-> mention it. Maybe this is an argument of the notifier approach?
-We can't support earlycon without real console.
-
-As earlyconsole doesn't do any kind of resource enablement(SE clocks, 
-pinctrl, etc) it assumes that resources are already enabled from 
-previous stages.
-
-So if real console doesn't come up no one will vote for that SE clock, 
-and it will be disabled from clk late_init call which will result into 
-un-clocked access.
+    And at the end of this function:
 
 
->
->> +	if (ret) {
->> +		dev_err(dev, "%s: ICC BW remove failed for core\n",
->> +			__func__);
->> +		return ret;
-> Aborting suspend seems too harsh since the QUP should still be fully
-> functional unless there is a general problem with the interconnects.
->
-> I would suggest to change the log to dev_warn() and return 0.
+         }
+         trace_printk("returning actual_length=%d\n", 
+message->actual_length);
 
-Ok
+         message->status = status;
+         spi_finalize_current_message(ctlr);
 
-Thanks for reviewing the patch.
+         return status;
 
-regards,
+(3) The trace is attached at the end of this mail. There is a good case 
+and the
+     bad one. What I've noticed (besides returning the wrong count, eg 
+13, which
+     seems to be the first one) is the preempt-depth which is always none 
+in the
+     bad case. In all transfers before, the preempt-depth is 1. The flags 
+are
+     usually "d.h1", sometimes "d.H1" and in case of the error "d.H.".
+     I also don't know why the fifo_write() with actual_length=13 is 
+traced after
+     all the ones printed inside the interrupt handler. Also something 
+seems to
+     be off with the words_in_flight and oper_word_size in the bad case.
 
-Akash
+     So besides the flags.. I still think there is a race between the
+     dspi_fifo_write() call in transfer_one_message and the interrupt 
+handler
+     for the shared data like words_in_flight and oper_word_size.
 
--- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,\na Linux Foundation Collaborative Project
+
+good one:
+               dd-1259  [000] ....  3383.499863: 
+dspi_transfer_one_message: 0 transfer->length=1
+               dd-1259  [000] ....  3383.499886: dspi_fifo_write: 
+msg=ffff800011973840 actual_length=1 bytes_sent=1 word_in_flight=1 
+oper_word_size=1
+               dd-1259  [000] ....  3383.499891: 
+dspi_transfer_one_message: 1 transfer->length=3
+               dd-1259  [000] ....  3383.499915: dspi_fifo_write: 
+msg=ffff800011973840 actual_length=4 bytes_sent=3 word_in_flight=3 
+oper_word_size=1
+               dd-1259  [000] ....  3383.499920: 
+dspi_transfer_one_message: 2 transfer->length=1
+               dd-1259  [000] ....  3383.499940: dspi_fifo_write: 
+msg=ffff800011973840 actual_length=5 bytes_sent=1 word_in_flight=1 
+oper_word_size=1
+               dd-1259  [000] ....  3383.499946: 
+dspi_transfer_one_message: 3 transfer->length=64
+               dd-1259  [000] d.h1  3383.499973: dspi_fifo_write: 
+msg=ffff800011973840 actual_length=21 bytes_sent=8 word_in_flight=2 
+oper_word_size=4
+               dd-1259  [000] d.h1  3383.499993: dspi_fifo_write: 
+msg=ffff800011973840 actual_length=29 bytes_sent=8 word_in_flight=2 
+oper_word_size=4
+               dd-1259  [000] d.h1  3383.500013: dspi_fifo_write: 
+msg=ffff800011973840 actual_length=37 bytes_sent=8 word_in_flight=2 
+oper_word_size=4
+               dd-1259  [000] d.h1  3383.500032: dspi_fifo_write: 
+msg=ffff800011973840 actual_length=45 bytes_sent=8 word_in_flight=2 
+oper_word_size=4
+               dd-1259  [000] d.h1  3383.500051: dspi_fifo_write: 
+msg=ffff800011973840 actual_length=53 bytes_sent=8 word_in_flight=2 
+oper_word_size=4
+               dd-1259  [000] d.h1  3383.500070: dspi_fifo_write: 
+msg=ffff800011973840 actual_length=61 bytes_sent=8 word_in_flight=2 
+oper_word_size=4
+               dd-1259  [000] d.h1  3383.500089: dspi_fifo_write: 
+msg=ffff800011973840 actual_length=69 bytes_sent=8 word_in_flight=4 
+oper_word_size=2
+               dd-1259  [000] ....  3383.500107: dspi_fifo_write: 
+msg=ffff800011973840 actual_length=13 bytes_sent=8 word_in_flight=2 
+oper_word_size=4
+               dd-1259  [000] ....  3383.500111: 
+dspi_transfer_one_message: returning actual_length=69
+
+bad one:
+               dd-1259  [000] ....  3383.500149: 
+dspi_transfer_one_message: 0 transfer->length=1
+               dd-1259  [000] ....  3383.500172: dspi_fifo_write: 
+msg=ffff800011973840 actual_length=1 bytes_sent=1 word_in_flight=1 
+oper_word_size=1
+               dd-1259  [000] ....  3383.500178: 
+dspi_transfer_one_message: 1 transfer->length=3
+               dd-1259  [000] ....  3383.500202: dspi_fifo_write: 
+msg=ffff800011973840 actual_length=4 bytes_sent=3 word_in_flight=3 
+oper_word_size=1
+               dd-1259  [000] ....  3383.500207: 
+dspi_transfer_one_message: 2 transfer->length=1
+               dd-1259  [000] ....  3383.500227: dspi_fifo_write: 
+msg=ffff800011973840 actual_length=5 bytes_sent=1 word_in_flight=1 
+oper_word_size=1
+               dd-1259  [000] ....  3383.500232: 
+dspi_transfer_one_message: 3 transfer->length=64
+               dd-1259  [000] d.H.  3383.500286: dspi_fifo_write: 
+msg=ffff800011973840 actual_length=13 bytes_sent=8 word_in_flight=2 
+oper_word_size=4
+               dd-1259  [000] d.H.  3383.500307: dspi_fifo_write: 
+msg=ffff800011973840 actual_length=21 bytes_sent=8 word_in_flight=2 
+oper_word_size=4
+               dd-1259  [000] d.H.  3383.500327: dspi_fifo_write: 
+msg=ffff800011973840 actual_length=29 bytes_sent=8 word_in_flight=2 
+oper_word_size=4
+               dd-1259  [000] d.H.  3383.500347: dspi_fifo_write: 
+msg=ffff800011973840 actual_length=37 bytes_sent=8 word_in_flight=2 
+oper_word_size=4
+               dd-1259  [000] d.H.  3383.500366: dspi_fifo_write: 
+msg=ffff800011973840 actual_length=45 bytes_sent=8 word_in_flight=2 
+oper_word_size=4
+               dd-1259  [000] d.H.  3383.500385: dspi_fifo_write: 
+msg=ffff800011973840 actual_length=53 bytes_sent=8 word_in_flight=2 
+oper_word_size=4
+               dd-1259  [000] d.H.  3383.500404: dspi_fifo_write: 
+msg=ffff800011973840 actual_length=61 bytes_sent=8 word_in_flight=4 
+oper_word_size=2
+               dd-1259  [000] ....  3383.500436: dspi_fifo_write: 
+msg=ffff800011973840 actual_length=13 bytes_sent=8 word_in_flight=4 
+oper_word_size=2
+               dd-1259  [000] ....  3383.500441: 
+dspi_transfer_one_message: returning actual_length=13
+
+
+-michael

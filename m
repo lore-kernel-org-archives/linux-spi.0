@@ -1,9 +1,10 @@
-From: Alexandre Belloni <alexandre.belloni-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
+From: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
 Subject: Re: [PATCH 00/28] DT: Improve validation for Marvell SoCs
-Date: Tue, 17 Mar 2020 14:55:59 +0100
-Message-ID: <20200317135551.GE3448@piout.net>
+Date: Tue, 17 Mar 2020 14:59:56 +0100
+Message-ID: <20200317135956.GQ24270@lunn.ch>
 References: <20200317093922.20785-1-lkundrak@v3.sk>
  <20200317134609.GN24270@lunn.ch>
+ <20200317135551.GE3448@piout.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: Lubomir Rintel <lkundrak-NGH9Lh4a5iE@public.gmane.org>, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -24,27 +25,32 @@ Cc: Lubomir Rintel <lkundrak-NGH9Lh4a5iE@public.gmane.org>, Rob Herring <robh+dt
         Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
         Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
         devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel@vg
-To: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Alexandre Belloni <alexandre.belloni-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20200317134609.GN24270-g2DYL2Zd6BY@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <20200317135551.GE3448-m++hUPXGwpdeoWH0uzbU5w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 17/03/2020 14:46:09+0100, Andrew Lunn wrote:
-> On Tue, Mar 17, 2020 at 10:38:54AM +0100, Lubomir Rintel wrote:
-> > Hello World,
+On Tue, Mar 17, 2020 at 02:55:59PM +0100, Alexandre Belloni wrote:
+> On 17/03/2020 14:46:09+0100, Andrew Lunn wrote:
+> > On Tue, Mar 17, 2020 at 10:38:54AM +0100, Lubomir Rintel wrote:
+> > > Hello World,
+> > 
+> > Yah, that is an issue here. Marvell have a few different SoC families,
+> > each with there own maintainers. Gregory and I tend to look after
+> > 'mvebu', aka orion5x, kirkwood, dove, berlin and a few others. All the
+> > others are 'Somebody elses' problem'.
+> > 
 > 
-> Yah, that is an issue here. Marvell have a few different SoC families,
-> each with there own maintainers. Gregory and I tend to look after
-> 'mvebu', aka orion5x, kirkwood, dove, berlin and a few others. All the
-> others are 'Somebody elses' problem'.
-> 
+> Hum, berlin is not mvebu, it was the same BU as the MMP and it has been
+> sold to synopsys a while ago.
 
-Hum, berlin is not mvebu, it was the same BU as the MMP and it has been
-sold to synopsys a while ago.
+Yes, the boundaries are a bit fluffy. At least the early work by
+Sebastian was merged via the mvebu maintainers, even if it is not
+technically part of mvebu.
 
--- 
-Alexandre Belloni, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+This is also part of the discussion about how this lot actually gets
+merged.
+
+	   Andrew

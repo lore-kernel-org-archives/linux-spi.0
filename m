@@ -1,171 +1,105 @@
-From: Matthias Kaehlcke <mka-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH V2 3/8] soc: qcom-geni-se: Add interconnect support to
- fix earlycon crash
-Date: Tue, 17 Mar 2020 11:29:10 -0700
-Message-ID: <20200317182910.GR144492@google.com>
-References: <1584105134-13583-1-git-send-email-akashast@codeaurora.org>
- <1584105134-13583-4-git-send-email-akashast@codeaurora.org>
- <20200313204441.GJ144492@google.com>
- <1f86fdf0-df7c-4e4a-d4d8-8b0162e52cb4@codeaurora.org>
+From: Evan Green <evgreen@chromium.org>
+Subject: Re: [PATCH V2 2/8] soc: qcom: geni: Support for ICC voting
+Date: Tue, 17 Mar 2020 12:06:31 -0700
+Message-ID: <CAE=gft4_Su4+SXWAW_HWy5BF1mH7QaDHCiwAAhrNaekTeU57rA@mail.gmail.com>
+References: <1584105134-13583-1-git-send-email-akashast@codeaurora.org> <1584105134-13583-3-git-send-email-akashast@codeaurora.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Cc: gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org, agross-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        bjorn.andersson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        mark.rutland-5wv7dgnIgG8@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, swboyd-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
-        mgautam-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org, linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
-        evgreen-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org
-To: Akash Asthana <akashast-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1f86fdf0-df7c-4e4a-d4d8-8b0162e52cb4-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="UTF-8"
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        wsa@the-dreams.de, Mark Brown <broonie@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-i2c@vger.kernel.org,
+        linux-spi@vger.kernel.org,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+        <devicetree@vger.kernel.org>, Stephen Boyd <swboyd@chromium.org>,
+        Manu Gautam <mgautam@codeaurora.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        linux-serial@vger.kernel.org, Matthias Kaehlcke <mka@chromium.org>,
+        Doug Anderson <dianders@chromium.org>
+To: Akash Asthana <akashast@codeaurora.org>
+Return-path: <linux-arm-msm-owner@vger.kernel.org>
+In-Reply-To: <1584105134-13583-3-git-send-email-akashast@codeaurora.org>
+Sender: linux-arm-msm-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Akash,
+On Fri, Mar 13, 2020 at 6:12 AM Akash Asthana <akashast@codeaurora.org> wrote:
+>
+> Add necessary macros and structure variables to support ICC BW
+> voting from individual SE drivers.
+>
+> Signed-off-by: Akash Asthana <akashast@codeaurora.org>
+> ---
+> Changes in V2:
+>  - As per Bjorn's comment dropped enums for ICC paths, given the three
+>    paths individual members
+>
+>  include/linux/qcom-geni-se.h | 28 ++++++++++++++++++++++++++++
+>  1 file changed, 28 insertions(+)
+>
+> diff --git a/include/linux/qcom-geni-se.h b/include/linux/qcom-geni-se.h
+> index dd46494..eaae16e 100644
+> --- a/include/linux/qcom-geni-se.h
+> +++ b/include/linux/qcom-geni-se.h
+> @@ -6,6 +6,8 @@
+>  #ifndef _LINUX_QCOM_GENI_SE
+>  #define _LINUX_QCOM_GENI_SE
+>
+> +#include <linux/interconnect.h>
+> +
+>  /* Transfer mode supported by GENI Serial Engines */
+>  enum geni_se_xfer_mode {
+>         GENI_SE_INVALID,
+> @@ -33,6 +35,15 @@ struct clk;
+>   * @clk:               Handle to the core serial engine clock
+>   * @num_clk_levels:    Number of valid clock levels in clk_perf_tbl
+>   * @clk_perf_tbl:      Table of clock frequency input to serial engine clock
+> + * @icc_path_geni_to_core:     ICC path handle for geni to core
+> + * @icc_path_cpu_to_geni:      ICC path handle for cpu to geni
+> + * @icc_path_geni_to_ddr:      ICC path handle for geni to ddr
+> + * @avg_bw_core:       Average bus bandwidth value for QUP core 2x clock
+> + * @peak_bw_core:      Peak bus bandwidth value for QUP core 2x clock
+> + * @avg_bw_cpu:                Average bus bandwidth value for CPU
+> + * @peak_bw_cpu:       Peak bus bandwidth value for CPU
+> + * @avg_bw_ddr:                Average bus bandwidth value for DDR
+> + * @peak_bw_ddr:       Peak bus bandwidth value for DDR
+>   */
+>  struct geni_se {
+>         void __iomem *base;
+> @@ -41,6 +52,15 @@ struct geni_se {
+>         struct clk *clk;
+>         unsigned int num_clk_levels;
+>         unsigned long *clk_perf_tbl;
+> +       struct icc_path *icc_path_geni_to_core;
+> +       struct icc_path *icc_path_cpu_to_geni;
+> +       struct icc_path *icc_path_geni_to_ddr;
+> +       unsigned int avg_bw_core;
+> +       unsigned int peak_bw_core;
+> +       unsigned int avg_bw_cpu;
+> +       unsigned int peak_bw_cpu;
+> +       unsigned int avg_bw_ddr;
+> +       unsigned int peak_bw_ddr;
+>  };
+>
+>  /* Common SE registers */
+> @@ -229,6 +249,14 @@ struct geni_se {
+>  #define GENI_SE_VERSION_MINOR(ver) ((ver & HW_VER_MINOR_MASK) >> HW_VER_MINOR_SHFT)
+>  #define GENI_SE_VERSION_STEP(ver) (ver & HW_VER_STEP_MASK)
+>
+> +/* Core 2X clock frequency to BCM threshold mapping */
+> +#define CORE_2X_19_2_MHZ               960
+> +#define CORE_2X_50_MHZ                 2500
+> +#define CORE_2X_100_MHZ                        5000
+> +#define CORE_2X_150_MHZ                        7500
+> +#define CORE_2X_200_MHZ                        10000
+> +#define CORE_2X_236_MHZ                        16383
 
-On Tue, Mar 17, 2020 at 04:27:47PM +0530, Akash Asthana wrote:
-> Hi Matthias,
-> 
-> On 3/14/2020 2:14 AM, Matthias Kaehlcke wrote:
-> > Hi Akash,
-> > 
-> > On Fri, Mar 13, 2020 at 06:42:09PM +0530, Akash Asthana wrote:
-> > > V1 patch@https://patchwork.kernel.org/patch/11386469/ caused SC7180 system
-> > > to reset at boot time.
-> > The v1 patch isn't relevant in the commit message, please just describe the
-> > problem. Also the crash only occurs when earlycon is used.
-> ok
-> > 
-> > > As QUP core clock is shared among all the SE drivers present on particular
-> > > QUP wrapper, the reset seen is due to earlycon usage after QUP core clock
-> > > is put to 0 from other SE drivers before real console comes up.
-> > > 
-> > > As earlycon can't vote for it's QUP core need, to fix this add ICC
-> > > support to common/QUP wrapper driver and put vote for QUP core from
-> > > probe on behalf of earlycon and remove vote during sys suspend.
-> > Only removing the vote on suspend isn't ideal, the system might never get
-> > suspended. That said I don't have a really good alternative suggestion.
-> > 
-> > One thing you could possibly do is to launch a delayed work, check
-> > console_device() every second or so and remove the vote when it returns
-> > non-NULL. Not claiming this would be a great solution ...
-> > 
-> > The cleanest solution might be a notifier when the early console is
-> > unregistered, it seems somewhat over-engineered though ... Then again
-> > other (future) uart drivers with interconnect support might run into
-> > the same problem.
-> 
-> We are hitting this problem because QUP core clocks are shared among all the
-> SE driver present in particular QUP wrapper, if other HW controllers has
-> similar architecture we will hit this issue.
-> 
-> How about if we expose an API from common driver(geni-se) for putting QUP
-> core BW vote to 0.
-> 
-> We call this from console probe just after uart_add_one_port call (console
-> resources are enabled as part of this call) to put core quota to 0 on behalf
-> of earlyconsole?
+These are all just 50 * clock_rate. Can you instead specify that one
+define of CLK_TO_BW_RATIO 50, and then use clk_get_rate() to get the
+input clock frequency. That way, if these end up getting clocked at a
+different rate, the bandwidth also scales appropriately. Also, can you
+enumerate why 50 is an appropriate ratio?
+-Evan
 
->From my notes from earlier debugging I have doubts this would work:
-
-  There is a short window where the early console and the 'real' console coexist:
-
-  [    3.858122] printk: console [ttyMSM0] enabled
-  [    3.875692] printk: bootconsole [qcom_geni0] disabled
-
-  The reset probably occurs when the early console tries to write, but the ICC
-  is effectively disabled because ttyMSM0 and the other geni ports are runtime
-  suspended.
-
-> > > Signed-off-by: Akash Asthana <akashast-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-> > > Reported-by: Matthias Kaehlcke <mka-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-> > > ---
-> > >   drivers/soc/qcom/qcom-geni-se.c | 41 +++++++++++++++++++++++++++++++++++++++++
-> > >   1 file changed, 41 insertions(+)
-> > > 
-> > > diff --git a/drivers/soc/qcom/qcom-geni-se.c b/drivers/soc/qcom/qcom-geni-se.c
-> > > index 7d622ea..d244dfc 100644
-> > > --- a/drivers/soc/qcom/qcom-geni-se.c
-> > > +++ b/drivers/soc/qcom/qcom-geni-se.c
-> > > @@ -90,6 +90,7 @@ struct geni_wrapper {
-> > >   	struct device *dev;
-> > >   	void __iomem *base;
-> > >   	struct clk_bulk_data ahb_clks[NUM_AHB_CLKS];
-> > > +	struct icc_path *icc_path_geni_to_core;
-> > >   };
-> > >   #define QUP_HW_VER_REG			0x4
-> > > @@ -747,11 +748,50 @@ static int geni_se_probe(struct platform_device *pdev)
-> > >   		}
-> > >   	}
-> > > +#ifdef CONFIG_SERIAL_EARLYCON
-> > > +	wrapper->icc_path_geni_to_core = devm_of_icc_get(dev, "qup-core");
-> > > +	if (IS_ERR(wrapper->icc_path_geni_to_core))
-> > > +		return PTR_ERR(wrapper->icc_path_geni_to_core);
-> > > +	/*
-> > > +	 * Put minmal BW request on core clocks on behalf of early console.
-> > > +	 * The vote will be removed in suspend call.
-> > > +	 */
-> > > +	ret = icc_set_bw(wrapper->icc_path_geni_to_core, Bps_to_icc(1000),
-> > > +			Bps_to_icc(1000));
-> > > +	if (ret) {
-> > > +		dev_err(&pdev->dev, "%s: ICC BW voting failed for core\n",
-> > > +			__func__);
-> > > +		return ret;
-> > > +	}
-> > What is ugly about this is that it's done for every QUP, not only the one
-> > with the early console. Again, I don't have a good solution for it, maybe
-> > it's a limitation we have to live with :(
-> 
-> There is one more limitation from QUP core side. Core clocks for both the
-> QUP wrapper runs at same speed.
-> 
-> core2x_1 = core2x_2 = max(core2x_1, core2x_2);
-> 
-> So with above limitation and if we are removing early con vote from Core
-> when real console comes up. It doesn't matter whether it's done for every
-> QUP or the only with early console.
-
-it's still sorta ugly at an abstraction level, but it seem we have to be
-pragmatic here.
-
-> > > +#endif
-> > > +
-> > >   	dev_set_drvdata(dev, wrapper);
-> > >   	dev_dbg(dev, "GENI SE Driver probed\n");
-> > >   	return devm_of_platform_populate(dev);
-> > >   }
-> > > +static int __maybe_unused geni_se_sys_suspend(struct device *dev)
-> > > +{
-> > > +	struct geni_wrapper *wrapper = dev_get_drvdata(dev);
-> > > +	int ret;
-> > > +
-> > > +#ifdef CONFIG_SERIAL_EARLYCON
-> > > +	ret = icc_set_bw(wrapper->icc_path_geni_to_core, 0, 0);
-> > I think you only want to do this on the first suspend.
-> Ok, I can add that logic using global variable.
-> > 
-> > Do we need to handle the case where no 'real' console is configured?
-> > In this case the early console would be active forever and setting
-> > the bandwidths to 0 might cause a similar crash than the one you are
-> > trying to fix. Not sure if that's a real world use case, but wanted to
-> > mention it. Maybe this is an argument of the notifier approach?
-> We can't support earlycon without real console.
-> 
-> As earlyconsole doesn't do any kind of resource enablement(SE clocks,
-> pinctrl, etc) it assumes that resources are already enabled from previous
-> stages.
-> 
-> So if real console doesn't come up no one will vote for that SE clock, and
-> it will be disabled from clk late_init call which will result into
-> un-clocked access.
-
-Ok, IIUC what you are saying is that earlycon can't work on its own after geni
-initialization. Because it clearly can work before (otherwise what would be
-its purpose?), supposedly because the bootloader configures the necessary
-bits.
-
-In any case the bottom line is that earlycon requires a real console to be
-configured and there is no need to handle the corner case I brought up.
+-Evan

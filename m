@@ -1,59 +1,82 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: Re: [PATCH 17/28] dt-bindings: mmc: Fix up clk-phase-sd-hs in an
- example
-Date: Tue, 17 Mar 2020 13:04:55 +0300
-Message-ID: <d7ccf5c1-4bfa-2fd2-b32d-a520e96bdd1e@cogentembedded.com>
-References: <20200317093922.20785-1-lkundrak@v3.sk>
- <20200317093922.20785-18-lkundrak@v3.sk>
+From: Schrempf Frieder <frieder.schrempf@kontron.de>
+Subject: Re: [PATCH v2] clk: imx8mm: Switch to platform driver
+Date: Tue, 17 Mar 2020 10:45:40 +0000
+Message-ID: <4cdbd500-2199-762c-43d9-2a49bd8e2414@kontron.de>
+References: <1562682003-20951-1-git-send-email-abel.vesa@nxp.com>
+ <2df024c3-ab46-4e33-f961-5ef994aea145@kontron.de>
+ <c2a9d048-6a33-f357-ac88-4eb81002fe93@kontron.de>
+ <9dae8bb7-b1da-28b5-a6e9-42102a5c3be3@kontron.de>
+ <AM0PR04MB4481780CEA5A8A7DB87C7D9F88F60@AM0PR04MB4481.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mark Brown <broonie@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        devicetree@vger.kerne
-To: Lubomir Rintel <lkundrak@v3.sk>, Rob Herring <robh+dt@kernel.org>
-Return-path: <linux-serial-owner@vger.kernel.org>
-In-Reply-To: <20200317093922.20785-18-lkundrak@v3.sk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: dl-linux-imx <linux-imx@nxp.com>,
+        "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+To: Peng Fan <peng.fan@nxp.com>, Abel Vesa <abel.vesa@nxp.com>,
+        Mike Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        Fabio Estevam <fabio.estevam@nxp.com>,
+        Anson Huang <anson.huang@nxp.com>, Jacky Bai <ping.bai@nxp.com>
+Return-path: <linux-clk-owner@vger.kernel.org>
+In-Reply-To: <AM0PR04MB4481780CEA5A8A7DB87C7D9F88F60@AM0PR04MB4481.eurprd04.prod.outlook.com>
 Content-Language: en-US
-Sender: linux-serial-owner@vger.kernel.org
+Content-ID: <1172F57047C547449EA5A455818DC942@snt-world.com>
+Sender: linux-clk-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello!
-
-On 17.03.2020 12:39, Lubomir Rintel wrote:
-
-> This way the validator can know that the two cells constitute a singlej
-
-    Single?
-
-> pair of clock phase degrees value, not separate items Otherwise it is
-
-    Forgot a period after "items"?
-
-> unhappy:
-> 
->    mmc-controller.example.dt.yaml: mmc@ab000000: clk-phase-sd-hs:0:
->        [63] is too short
->    mmc-controller.example.dt.yaml: mmc@ab000000: clk-phase-sd-hs:1:
->        [72] is too short
-> 
-> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
-[...]
-
-MBR, Sergei
+SGkgUGVuZywNCg0KT24gMTcuMDMuMjAgMDQ6NTYsIFBlbmcgRmFuIHdyb3RlOg0KPj4gU3ViamVj
+dDogUmU6IFtQQVRDSCB2Ml0gY2xrOiBpbXg4bW06IFN3aXRjaCB0byBwbGF0Zm9ybSBkcml2ZXIN
+Cj4+DQo+PiBPbiAwNi4wMi4yMCAxMTozNywgRnJpZWRlciBTY2hyZW1wZiB3cm90ZToNCj4+PiBP
+biAwNi4wMi4yMCAxMTozNCwgU2NocmVtcGYgRnJpZWRlciB3cm90ZToNCj4+Pj4gSGksDQo+Pj4+
+DQo+Pj4+IE9uIDA5LjA3LjE5IDE2OjIwLCBBYmVsIFZlc2Egd3JvdGU6DQo+Pj4+PiBUaGVyZSBp
+cyBubyBzdHJvbmcgcmVhc29uIGZvciB0aGlzIHRvIHVzZSBDTEtfT0ZfREVDTEFSRSBpbnN0ZWFk
+IG9mDQo+Pj4+PiBiZWluZyBhIHBsYXRmb3JtIGRyaXZlci4gUGx1cywgdGhpcyB3aWxsIG5vdyBi
+ZSBhbGlnbmVkIHdpdGggdGhlDQo+Pj4+PiBvdGhlciBpLk1YOE0gY2xvY2sgZHJpdmVycyB3aGlj
+aCBhcmUgcGxhdGZvcm0gZHJpdmVycy4NCj4+Pj4+DQo+Pj4+PiBJbiBvcmRlciB0byBtYWtlIHRo
+ZSBjbG9jayBwcm92aWRlciBhIHBsYXRmb3JtIGRyaXZlciBhbGwgdGhlIGRhdGENCj4+Pj4+IGFu
+ZCBjb2RlIG5lZWRzIHRvIGJlIG91dHNpZGUgb2YgLmluaXQgc2VjdGlvbi4NCj4+Pj4+DQo+Pj4+
+PiBTaWduZWQtb2ZmLWJ5OiBBYmVsIFZlc2EgPGFiZWwudmVzYUBueHAuY29tPg0KPj4+Pj4gQWNr
+ZWQtYnk6IFN0ZXBoZW4gQm95ZCA8c2JveWRAa2VybmVsLm9yZz4NCj4+Pj4NCj4+Pj4gVGhpcyBo
+YXMgYmVlbiB1cHN0cmVhbSBmb3IgcXVpdGUgc29tZSB0aW1lIG5vdywgYnV0IHNvbWVob3cgSSBo
+YXZlIGFuDQo+Pj4+IGlzc3VlIHdpdGggU1BJIG9uIHRoZSBpLk1YOE1NIHRoYXQgZ2V0cyByZXNv
+bHZlZCB3aGVuIEkgcmV2ZXJ0IHRoaXMNCj4+Pj4gcGF0Y2guDQo+Pj4+DQo+Pj4+IFdoZW4gSSB0
+cnkgdG8gcHJvYmUgYW4gU1BJIE5PUiBmbGFzaCB3aXRoIGxhdGVzdCA1LjQgb3IgZXZlbiA1LjU6
+DQo+Pj4+DQo+Pj4+ICDCoMKgwqDCoHNwaV9pbXggMzA4MjAwMDAuc3BpOiBkbWEgc2V0dXAgZXJy
+b3IgLTE5LCB1c2UgcGlvDQo+Pj4+ICDCoMKgwqDCoHNwaS1ub3Igc3BpMC4wOiB1bnJlY29nbml6
+ZWQgSkVERUMgaWQgYnl0ZXM6IDAwIDAwIDAwIDAwIDAwIDAwDQo+Pj4+ICDCoMKgwqDCoHNwaV9p
+bXggMzA4MjAwMDAuc3BpOiBwcm9iZWQNCj4+Pj4NCj4+Pj4gV2hlbiBJIHJldmVydCB0aGlzIHBh
+dGNoOg0KPj4+Pg0KPj4+PiAgwqDCoMKgwqBzcGlfaW14IDMwODIwMDAwLnNwaTogZG1hIHNldHVw
+IGVycm9yIC0xOSwgdXNlIHBpbw0KPj4+PiAgwqDCoMKgwqBzcGktbm9yIHNwaTAuMDogbXgyNXIx
+NjM1ZiAoMjA0OCBLYnl0ZXMpDQo+Pj4+ICDCoMKgwqDCoHNwaV9pbXggMzA4MjAwMDAuc3BpOiBw
+cm9iZWQNCj4+Pj4NCj4+Pj4gUGxlYXNlIG5vdGUsIHRoYXQgaW4gYm90aCBjYXNlcyBJIGhhdmUg
+ZGlzYWJsZWQgRE1BLCBhcyB0aGlzIGNhdXNlcw0KPj4+PiBldmVuIG1vcmUgdHJvdWJsZSAoc2Vl
+IFsxXSkuIEJ1dCBldmVuIHdpdGggRE1BIGVuYWJsZWQgYW5kIGlnbm9yaW5nDQo+Pj4+IHRoZSBE
+TUEgZXJyb3JzLCB0aGUgaXNzdWUgZGVzY3JpYmVkIGFib3ZlIG9jY3Vycy4NCj4+Pj4NCj4+Pj4g
+RG9lcyBzb21lb25lIGhhdmUgYW4gaWRlYSB3aGF0J3Mgd3Jvbmc/DQo+Pj4+IEFtIEkgdGhlIG9u
+bHkgdXNlciBvZiBTUEkgb24gaS5NWDhNTSBhcyB0aGlzIGlzc3VlIHNlZW1zIHRvIGV4aXN0DQo+
+Pj4+IHVwc3RyZWFtIHNpbmNlIHY1LjQtcmMxPw0KPj4NCj4+IFRoaXMgaXNzdWUgc3RpbGwgcGVy
+c2lzdHMgaW4gdjUuNi1yYzYuIENhbiBzb21lb25lIHBsZWFzZSBoYXZlIGEgbG9vaz8NCj4gDQo+
+IFdvdWxkIHlvdSBwb3N0IHlvdXIgZnVsbCBib290IGxvZyBzb21ld2hlcmU/DQoNClN1cmUsIHRo
+ZSB0d28gYm9vdGxvZ3MgYXJlIGhlcmU6IGh0dHBzOi8vcGFzdGUuZWUvcC84dUR3ZC4NClRoZSBv
+bmx5IGRpZmZlcmVuY2UgaXMgdGhhdCBpbiB0aGUgT0sgY2FzZSB0aGlzIHBhdGNoIGlzIGFwcGxp
+ZWQ6IA0KaHR0cHM6Ly9wYXN0ZS5lZS9wL3hVQnJPDQoNCj4gDQo+IFdpdGggc3VjY2Vzcy9mYWls
+IGNhc2UsIGFyZSB0aGVyZSBhbnkgZGlmZmVyZW5jZXMgaW4gc3BpIGNvbnRyb2xsZXIgcmVnaXN0
+ZXJzPw0KPiBJIHN1cHBvc2Ugbm8uDQoNCk5vLCB0aGV5IGFyZSB0aGUgc2FtZSwgZXhjZXB0IGZv
+ciBCVVJTVF9MRU5HVEggaW4gRUNTUEkxX0NPTlJFRywgd2hpY2ggDQppcyAweDJGIGluIGNhc2Ug
+b2YgZmFpbHVyZSBhbmQgMHgzRiBpbiBjYXNlIGl0IGlzIHdvcmtpbmcuIEJ1dCBJIGd1ZXNzIA0K
+dGhhdCdzIGEgcmVzdWx0IG9mIHRoZSBmYWlsZWQvc3VjY2Vzc2Z1bCB0cmFuc2ZlcnMuDQoNCj4g
+DQo+IERpZCB5b3UgbWVhc3VyZSB0aGUgc2lnbmFsIHNheWluZyBkYXRhIGluIHdoZW4gY3MgaXMg
+bG93Pw0KDQpJdCdzIGEgYml0IGRpZmZpY3VsdCB0byBhY2Nlc3MgdGhlIHNpZ25hbHMgb24gdGhl
+IGJvYXJkIHNvIEkgZGlkbid0IA0KY2hlY2sgdGhlIHNpZ25hbHMsIHlldC4NCg0KPiANCj4gQW55
+d2F5IGl0IGlzIGEgYml0IHdpcmVkIHNpbmNlIHRoaXMgcGF0Y2gganVzdCBkZWxheWVkIHRoZSBw
+cm9iZSBmb3IgYSB3aGlsZS4NCg0KWWVzLCBpdCdzIHJlYWxseSB3ZWlyZCBhbmQgaXQncyB2ZXJ5
+IHVuZm9ydHVuYXRlIHRoYXQgdGhlIEVWSyBkb2VzIG5vdCANCmhhdmUgYSBTUEkgZGV2aWNlIG9u
+Ym9hcmQuIEkgZ3Vlc3MgdGhhdCB3b3VsZCBoYXZlIGhlbHBlZCB0byBwcmV2ZW50IA0KcmVncmVz
+c2lvbnMgZHVlIHRvIGJldHRlciB0ZXN0aW5nLg0KDQpJZiB5b3UgaGF2ZSBhbnkgc3VnZ2VzdGlv
+bnMsIHBsZWFzZSBsZXQgbWUga25vdy4NCg0KVGhhbmtzLA0KRnJpZWRlcg==

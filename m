@@ -1,110 +1,264 @@
-From: Lubomir Rintel <lkundrak-NGH9Lh4a5iE@public.gmane.org>
-Subject: [PATCH 20/28] dt-bindings: phy: Convert phy-mmp3-usb to json-schema
-Date: Tue, 17 Mar 2020 10:39:14 +0100
-Message-ID: <20200317093922.20785-21-lkundrak@v3.sk>
+From: Lubomir Rintel <lkundrak@v3.sk>
+Subject: [PATCH 23/28] dt-bindings: interrupt-controller: Convert mrvl,intc to json-schema
+Date: Tue, 17 Mar 2020 10:39:17 +0100
+Message-ID: <20200317093922.20785-24-lkundrak@v3.sk>
 References: <20200317093922.20785-1-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        Bartosz Golaszewski <bgolaszewski-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>,
-        Thomas Gleixner <tglx-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>,
-        Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
-        Marc Zyngier <maz-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mauro Carvalho Chehab <mchehab-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        Kishon Vijay Abraham I <kishon-l0cyMroinI0@public.gmane.org>,
-        Alessandro Zummo <a.zummo-BfzFCNDTiLLj+vYz1yj4TQ@public.gmane.org>,
-        Alexandre Belloni <alexandre.belloni-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>,
-        Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Daniel Lezcano <daniel.lezcano-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
-        Gregory Clement <gregory.clement-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org>,
-        Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-        Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-        devicetree-u79uwXL29TZNg+MwTxZMZA@public.gmane.org
-To: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200317093922.20785-1-lkundrak-NGH9Lh4a5iE@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <maz@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Brown <broonie@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        devicetree@vger.kerne
+To: Rob Herring <robh+dt@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20200317093922.20785-1-lkundrak@v3.sk>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-A rather straightforward conversion of the phy-mmp3-usb binding to DT
-schema format using json-schema.
+Convert the mrvl,intc binding to DT schema format using json-schema.
 
-Signed-off-by: Lubomir Rintel <lkundrak-NGH9Lh4a5iE@public.gmane.org>
+Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
 ---
- .../bindings/phy/marvell,mmp3-usb-phy.yaml    | 40 +++++++++++++++++++
- .../devicetree/bindings/phy/phy-mmp3-usb.txt  | 13 ------
- 2 files changed, 40 insertions(+), 13 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/phy/marvell,mmp3-usb-phy.yaml
- delete mode 100644 Documentation/devicetree/bindings/phy/phy-mmp3-usb.txt
+ .../interrupt-controller/mrvl,intc.txt        |  64 --------
+ .../interrupt-controller/mrvl,intc.yaml       | 144 ++++++++++++++++++
+ 2 files changed, 144 insertions(+), 64 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/interrupt-controller/mrvl,intc.txt
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/mrvl,intc.yaml
 
-diff --git a/Documentation/devicetree/bindings/phy/marvell,mmp3-usb-phy.yaml b/Documentation/devicetree/bindings/phy/marvell,mmp3-usb-phy.yaml
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/mrvl,intc.txt b/Documentation/devicetree/bindings/interrupt-controller/mrvl,intc.txt
+deleted file mode 100644
+index a0ed02725a9d7..0000000000000
+--- a/Documentation/devicetree/bindings/interrupt-controller/mrvl,intc.txt
++++ /dev/null
+@@ -1,64 +0,0 @@
+-* Marvell MMP Interrupt controller
+-
+-Required properties:
+-- compatible : Should be
+-               "mrvl,mmp-intc" on Marvel MMP,
+-               "mrvl,mmp2-intc" along with "mrvl,mmp2-mux-intc" on MMP2 or
+-               "marvell,mmp3-intc" with "mrvl,mmp2-mux-intc" on MMP3
+-- reg : Address and length of the register set of the interrupt controller.
+-  If the interrupt controller is intc, address and length means the range
+-  of the whole interrupt controller. The "marvell,mmp3-intc" controller
+-  also has a secondary range for the second CPU core.  If the interrupt
+-  controller is mux-intc, address and length means one register. Since
+-  address of mux-intc is in the range of intc. mux-intc is secondary
+-  interrupt controller.
+-- reg-names : Name of the register set of the interrupt controller. It's
+-  only required in mux-intc interrupt controller.
+-- interrupts : Should be the port interrupt shared by mux interrupts. It's
+-  only required in mux-intc interrupt controller.
+-- interrupt-controller : Identifies the node as an interrupt controller.
+-- #interrupt-cells : Specifies the number of cells needed to encode an
+-  interrupt source.
+-- mrvl,intc-nr-irqs : Specifies the number of interrupts in the interrupt
+-  controller.
+-- mrvl,clr-mfp-irq : Specifies the interrupt that needs to clear MFP edge
+-  detection first.
+-
+-Example:
+-	intc: interrupt-controller@d4282000 {
+-		compatible = "mrvl,mmp2-intc";
+-		interrupt-controller;
+-		#interrupt-cells = <1>;
+-		reg = <0xd4282000 0x1000>;
+-		mrvl,intc-nr-irqs = <64>;
+-	};
+-
+-	intcmux4@d4282150 {
+-		compatible = "mrvl,mmp2-mux-intc";
+-		interrupts = <4>;
+-		interrupt-controller;
+-		#interrupt-cells = <1>;
+-		reg = <0x150 0x4>, <0x168 0x4>;
+-		reg-names = "mux status", "mux mask";
+-		mrvl,intc-nr-irqs = <2>;
+-	};
+-
+-* Marvell Orion Interrupt controller
+-
+-Required properties
+-- compatible :  Should be "marvell,orion-intc".
+-- #interrupt-cells: Specifies the number of cells needed to encode an
+-  interrupt source. Supported value is <1>.
+-- interrupt-controller : Declare this node to be an interrupt controller.
+-- reg : Interrupt mask address. A list of 4 byte ranges, one per controller.
+-        One entry in the list represents 32 interrupts.
+-
+-Example:
+-
+-	intc: interrupt-controller {
+-        	compatible = "marvell,orion-intc", "marvell,intc";
+-		interrupt-controller;
+-		#interrupt-cells = <1>;
+-                reg = <0xfed20204 0x04>,
+-		      <0xfed20214 0x04>;
+-        };
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/mrvl,intc.yaml b/Documentation/devicetree/bindings/interrupt-controller/mrvl,intc.yaml
 new file mode 100644
-index 0000000000000..1307703d9b627
+index 0000000000000..f0644f7d7e1d2
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/phy/marvell,mmp3-usb-phy.yaml
-@@ -0,0 +1,40 @@
-+# SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
-+# Copyright 2019,2020 Lubomir Rintel <lkundrak-NGH9Lh4a5iE@public.gmane.org>
++++ b/Documentation/devicetree/bindings/interrupt-controller/mrvl,intc.yaml
+@@ -0,0 +1,144 @@
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/phy/marvell,mmp3-usb-phy.yaml#
++$id: http://devicetree.org/schemas/interrupt-controller/mrvl,intc.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Marvell MMP3 USB PHY bindings
++title: Marvell MMP/Orion Interrupt controller bindings
 +
 +maintainers:
-+  - Lubomir Rintel <lkundrak-NGH9Lh4a5iE@public.gmane.org>
++  - devicetree@vger.kernel.org
++
++allOf:
++  - $ref: /schemas/interrupt-controller.yaml#
++  - if:
++      properties:
++        compatible:
++          not:
++            contains:
++              const: marvell,orion-intc
++    then:
++      required:
++        - mrvl,intc-nr-irqs
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - mrvl,mmp-intc
++              - mrvl,mmp2-intc
++    then:
++      properties:
++        reg:
++          minItems: 1
++          maxItems: 1
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - marvell,mmp3-intc
++              - mrvl,mmp2-mux-intc
++    then:
++      properties:
++        reg:
++          minItems: 2
++          maxItems: 2
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: marvell,orion-intc
++    then:
++      properties:
++        reg:
++          minItems: 1
++          maxItems: 2
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: mrvl,mmp2-mux-intc
++    then:
++      properties:
++        interrupts:
++          minItems: 1
++          maxItems: 1
++        reg-names:
++          minItems: 2
++          maxItems: 2
++          items:
++            - const: 'mux status'
++            - const: 'mux mask'
++      required:
++        - interrupts
++    else:
++      properties:
++        interrupts: false
 +
 +properties:
-+  $nodename:
-+    pattern: '^usb-phy@[a-f0-9]+$'
++  '#interrupt-cells':
++    const: 1
 +
 +  compatible:
-+    const: marvell,mmp3-usb-phy
++    enum:
++      - mrvl,mmp-intc
++      - mrvl,mmp2-intc
++      - marvell,mmp3-intc
++      - marvell,orion-intc
++      - mrvl,mmp2-mux-intc
 +
-+  reg:
-+    maxItems: 1
-+    description: base address of the device
++  reg: true
 +
-+  '#phy-cells':
-+    const: 0
++  reg-names: true
++
++  interrupts: true
++
++  interrupt-controller: true
++
++  mrvl,intc-nr-irqs:
++    description: |
++      Specifies the number of interrupts in the interrupt controller.
++    $ref: /schemas/types.yaml#/definitions/uint32
++
++  mrvl,clr-mfp-irq:
++    description: |
++      Specifies the interrupt that needs to clear MFP edge detection first.
++    $ref: /schemas/types.yaml#/definitions/uint32
 +
 +required:
++  - '#interrupt-cells'
 +  - compatible
 +  - reg
-+  - '#phy-cells'
++  - interrupt-controller
++
++additionalProperties: false
 +
 +examples:
 +  - |
-+    usb-phy@d4207000 {
-+      compatible = "marvell,mmp3-usb-phy";
-+      reg = <0xd4207000 0x40>;
-+      #phy-cells = <0>;
++    interrupt-controller@d4282000 {
++        compatible = "mrvl,mmp2-intc";
++        interrupt-controller;
++        #interrupt-cells = <1>;
++        reg = <0xd4282000 0x1000>;
++        mrvl,intc-nr-irqs = <64>;
++    };
++
++    interrupt-controller@d4282150 {
++        compatible = "mrvl,mmp2-mux-intc";
++        interrupts = <4>;
++        interrupt-controller;
++        #interrupt-cells = <1>;
++        reg = <0x150 0x4>, <0x168 0x4>;
++        reg-names = "mux status", "mux mask";
++        mrvl,intc-nr-irqs = <2>;
++    };
++  - |
++    interrupt-controller@fed20204 {
++        compatible = "marvell,orion-intc";
++        interrupt-controller;
++        #interrupt-cells = <1>;
++        reg = <0xfed20204 0x04>,
++              <0xfed20214 0x04>;
 +    };
 +
 +...
-diff --git a/Documentation/devicetree/bindings/phy/phy-mmp3-usb.txt b/Documentation/devicetree/bindings/phy/phy-mmp3-usb.txt
-deleted file mode 100644
-index 7183b9102f917..0000000000000
---- a/Documentation/devicetree/bindings/phy/phy-mmp3-usb.txt
-+++ /dev/null
-@@ -1,13 +0,0 @@
--Marvell MMP3 USB PHY
----------------------
--
--Required properties:
--- compatible: must be "marvell,mmp3-usb-phy"
--- #phy-cells: must be 0
--
--Example:
--	usb-phy: usb-phy@d4207000 {
--		compatible = "marvell,mmp3-usb-phy";
--		reg = <0xd4207000 0x40>;
--		#phy-cells = <0>;
--	};
 -- 
 2.25.1

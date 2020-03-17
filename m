@@ -1,7 +1,7 @@
 From: Lubomir Rintel <lkundrak-NGH9Lh4a5iE@public.gmane.org>
-Subject: [PATCH 05/28] ARM: dts: pxa3xx: Fix up encoding of the /gpio interrupts property
-Date: Tue, 17 Mar 2020 10:38:59 +0100
-Message-ID: <20200317093922.20785-6-lkundrak@v3.sk>
+Subject: [PATCH 07/28] ARM: dts: pxa*: Fix up encoding of the /rtc interrupts property
+Date: Tue, 17 Mar 2020 10:39:01 +0100
+Message-ID: <20200317093922.20785-8-lkundrak@v3.sk>
 References: <20200317093922.20785-1-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -33,26 +33,40 @@ List-Id: linux-spi.vger.kernel.org
 This way the device tree validator learns that each cell of the property
 constitutes a separate item. Otherwise it gets unnecessairly upset:
 
-  pxa300-raumfeld-speaker-s.dt.yaml: gpio@40e00000: interrupts:
-      [[8, 9, 10]] is too short
+  pxa168-aspenite.dt.yaml: rtc@d4010000: interrupts: [[5, 6]] is too short
+  pxa910-dkb.dt.yaml: rtc@d4010000: interrupts: [[5, 6]] is too short
 
 Signed-off-by: Lubomir Rintel <lkundrak-NGH9Lh4a5iE@public.gmane.org>
 ---
- arch/arm/boot/dts/pxa3xx.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/pxa168.dtsi | 2 +-
+ arch/arm/boot/dts/pxa910.dtsi | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/pxa3xx.dtsi b/arch/arm/boot/dts/pxa3xx.dtsi
-index c237a0e4b12ae..d19674812cd2d 100644
---- a/arch/arm/boot/dts/pxa3xx.dtsi
-+++ b/arch/arm/boot/dts/pxa3xx.dtsi
-@@ -170,7 +170,7 @@ gpio: gpio@40e00000 {
- 			clocks = <&clks CLK_GPIO>;
- 			gpio-ranges = <&pinctrl 0 0 128>;
- 			interrupt-names = "gpio0", "gpio1", "gpio_mux";
--			interrupts = <8 9 10>;
-+			interrupts = <8>, <9>, <10>;
- 			gpio-controller;
- 			#gpio-cells = <0x2>;
- 			interrupt-controller;
+diff --git a/arch/arm/boot/dts/pxa168.dtsi b/arch/arm/boot/dts/pxa168.dtsi
+index c6ac85e362d8a..ae2221a3f825f 100644
+--- a/arch/arm/boot/dts/pxa168.dtsi
++++ b/arch/arm/boot/dts/pxa168.dtsi
+@@ -140,7 +140,7 @@ twsi2: i2c@d4025000 {
+ 			rtc: rtc@d4010000 {
+ 				compatible = "mrvl,mmp-rtc";
+ 				reg = <0xd4010000 0x1000>;
+-				interrupts = <5 6>;
++				interrupts = <5>, <6>;
+ 				interrupt-names = "rtc 1Hz", "rtc alarm";
+ 				clocks = <&soc_clocks PXA168_CLK_RTC>;
+ 				resets = <&soc_clocks PXA168_CLK_RTC>;
+diff --git a/arch/arm/boot/dts/pxa910.dtsi b/arch/arm/boot/dts/pxa910.dtsi
+index 5f8e208916b31..774e8e9730924 100644
+--- a/arch/arm/boot/dts/pxa910.dtsi
++++ b/arch/arm/boot/dts/pxa910.dtsi
+@@ -152,7 +152,7 @@ twsi2: i2c@d4037000 {
+ 			rtc: rtc@d4010000 {
+ 				compatible = "mrvl,mmp-rtc";
+ 				reg = <0xd4010000 0x1000>;
+-				interrupts = <5 6>;
++				interrupts = <5>, <6>;
+ 				interrupt-names = "rtc 1Hz", "rtc alarm";
+ 				clocks = <&soc_clocks PXA910_CLK_RTC>;
+ 				resets = <&soc_clocks PXA910_CLK_RTC>;
 -- 
 2.25.1

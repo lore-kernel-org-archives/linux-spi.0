@@ -1,14 +1,21 @@
-From: Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH v1 26/36] dt-bindings: display: convert sony,acx565akm to
- DT Schema
-Date: Tue, 17 Mar 2020 08:23:47 +0200
-Message-ID: <b2cdb376-c283-fe06-14f3-a9e1a3ee3f4c@ti.com>
+From: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH v1 35/36] dt-bindings: display: convert
+ lgphilips,lb035q02 to DT Schema
+Date: Tue, 17 Mar 2020 07:45:58 +0100
+Message-ID: <20200317064558.GA30986@ravnborg.org>
 References: <20200315134416.16527-1-sam@ravnborg.org>
- <20200315134416.16527-27-sam@ravnborg.org>
+ <20200315134416.16527-36-sam@ravnborg.org>
+ <a73da9d3-43b2-3ce7-85e9-8135dbf48e98@ti.com>
+ <20200316082607.GA18510@ravnborg.org>
+ <a634d733-4b88-9d5a-09a1-c9551d8a077a@ti.com>
+ <20200316085311.GA19201@ravnborg.org>
+ <3bf96f0e-90a8-1513-800f-0168d912fd9f@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+Content-Type: text/plain; charset=us-ascii
+Cc: dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org,
+        Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
         Andrzej Hajda <a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
         Brian Masney <masneyb-1iNe0GrtECGEi8DpZVb4nw@public.gmane.org>,
         Chris Zhong <zyw-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
@@ -22,132 +29,32 @@ Cc: Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
         Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
         Lin Huang <hl-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
         Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Marco Franchi <marco.franchi-3arQi8VN3Tc@public.gmane.org>,
-        Marek Belisko <marek-xXXSsgcRVICgSpxsJD1C4w@public.gmane.org>,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Maxime Ripard <maxime.ripard@boo
-To: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>, <dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org>,
-        Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200315134416.16527-27-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Marco Fr
+To: Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <3bf96f0e-90a8-1513-800f-0168d912fd9f-l0cyMroinI0@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On 15/03/2020 15:44, Sam Ravnborg wrote:
-> Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-> Cc: Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>
-> Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-> ---
->   .../bindings/display/panel/sony,acx565akm.txt | 30 -----------
->   .../display/panel/sony,acx565akm.yaml         | 53 +++++++++++++++++++
->   2 files changed, 53 insertions(+), 30 deletions(-)
->   delete mode 100644 Documentation/devicetree/bindings/display/panel/sony,acx565akm.txt
->   create mode 100644 Documentation/devicetree/bindings/display/panel/sony,acx565akm.yaml
+Hi Tomi.
+
+On Mon, Mar 16, 2020 at 11:11:15AM +0200, Tomi Valkeinen wrote:
+> On 16/03/2020 10:53, Sam Ravnborg wrote:
 > 
-> diff --git a/Documentation/devicetree/bindings/display/panel/sony,acx565akm.txt b/Documentation/devicetree/bindings/display/panel/sony,acx565akm.txt
-> deleted file mode 100644
-> index e12333280749..000000000000
-> --- a/Documentation/devicetree/bindings/display/panel/sony,acx565akm.txt
-> +++ /dev/null
-> @@ -1,30 +0,0 @@
-> -Sony ACX565AKM SDI Panel
-> -========================
-> -
-> -Required properties:
-> -- compatible: "sony,acx565akm"
-> -
-> -Optional properties:
-> -- label: a symbolic name for the panel
-> -- reset-gpios: panel reset gpio
-> -
-> -Required nodes:
-> -- Video port for SDI input
-> -
-> -Example
-> --------
-> -
-> -acx565akm@2 {
-> -	compatible = "sony,acx565akm";
-> -	spi-max-frequency = <6000000>;
-> -	reg = <2>;
-> -
-> -	label = "lcd";
-> -	reset-gpios = <&gpio3 26 GPIO_ACTIVE_HIGH>; /* 90 */
-> -
-> -	port {
-> -		lcd_in: endpoint {
-> -			remote-endpoint = <&sdi_out>;
-> -		};
-> -	};
-> -};
-> diff --git a/Documentation/devicetree/bindings/display/panel/sony,acx565akm.yaml b/Documentation/devicetree/bindings/display/panel/sony,acx565akm.yaml
-> new file mode 100644
-> index 000000000000..a0b1abb9f33d
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/display/panel/sony,acx565akm.yaml
-> @@ -0,0 +1,53 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/display/panel/sony,acx565akm.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Sony ACX565AKM SDI Panel
-> +
-> +maintainers:
-> +  - Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>
-> +
-> +allOf:
-> +  - $ref: panel-common.yaml#
-> +  - $ref: ../../spi/spi-slave.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    const: sony,acx565akm
-> +
-> +  label: true
-> +  reset-gpios: true
-> +  port: true
-> +
-> +required:
-> +  - compatible
-> +  - port
-> +
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        acx565akm@2 {
-> +            compatible = "sony,acx565akm";
-> +            spi-max-frequency = <6000000>;
-> +            reg = <2>;
-> +
-> +            label = "lcd";
-> +            reset-gpios = <&gpio3 26 GPIO_ACTIVE_HIGH>; /* 90 */
-> +
-> +            port {
-> +                lcd_in: endpoint {
-> +                    remote-endpoint = <&sdi_out>;
-> +                };
-> +            };
-> +        };
-> +    };
-> +
-> +...
-> 
+> > We have panel-simple-dsi for DSI simple based panels.
+> > This binding includes the reg property.
+> > 
+> > If we have included DSI panels in panel-simple.yaml, and we likely have
+> > by accident, then they should be moved to panel-simple-dsi.yaml.
+> > 
 
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>
+> panel-simple.c has dsi_of_match, which lists DSI panels. I was looking at
+> that when I said panel-simple binding has DSI panels. At least auo,b080uan01
+> and osddisplays,osd101t2045-53ts are there, and earlier in this series you
+> moved osddisplays,osd101t2587-53ts to panel-simple bindings.
 
-  Tomi
+I will clean this up as part of v2.
+Thanks.
 
--- 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki
+	Sam

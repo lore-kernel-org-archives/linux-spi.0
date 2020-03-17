@@ -1,7 +1,7 @@
 From: Lubomir Rintel <lkundrak@v3.sk>
-Subject: [PATCH 23/28] dt-bindings: interrupt-controller: Convert mrvl,intc to json-schema
-Date: Tue, 17 Mar 2020 10:39:17 +0100
-Message-ID: <20200317093922.20785-24-lkundrak@v3.sk>
+Subject: [PATCH 21/28] dt-bindings: gpio: Convert mrvl-gpio to json-schema
+Date: Tue, 17 Mar 2020 10:39:15 +0100
+Message-ID: <20200317093922.20785-22-lkundrak@v3.sk>
 References: <20200317093922.20785-1-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -25,239 +25,266 @@ Cc: Linus Walleij <linus.walleij@linaro.org>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         devicetree@vger.kerne
 To: Rob Herring <robh+dt@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Return-path: <linux-mmc-owner@vger.kernel.org>
 In-Reply-To: <20200317093922.20785-1-lkundrak@v3.sk>
-Sender: linux-kernel-owner@vger.kernel.org
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Convert the mrvl,intc binding to DT schema format using json-schema.
+This converts the mrvl-gpio binding to DT schema format using json-schema.
+
+Various fixes were done during the conversion, such as adding more
+properties that are in fact mandatory or extending the examples to
+include child nodes with extra GPIO blocks.
+
+The compatible strings are a mess. It is not clear why so many of them
+are needed; the driver doesn't really seem to differentiate between the
+models. Some of them, like marvell,pxa93x-gpio and marvell,pxa1928-gpio
+are not used at all, so it's not known how many interrupts they utilize.
+On the other hand, mrvl,pxa-gpio has been seen in the tree, but it
+doesn't end up in any actual DTB file.
+
+In any case -- the schema merely copies whatever was in the original
+binding document, so it's hopefully no more wrong that the original.
 
 Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
 ---
- .../interrupt-controller/mrvl,intc.txt        |  64 --------
- .../interrupt-controller/mrvl,intc.yaml       | 144 ++++++++++++++++++
- 2 files changed, 144 insertions(+), 64 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/interrupt-controller/mrvl,intc.txt
- create mode 100644 Documentation/devicetree/bindings/interrupt-controller/mrvl,intc.yaml
+ .../devicetree/bindings/gpio/mrvl-gpio.txt    |  48 -----
+ .../devicetree/bindings/gpio/mrvl-gpio.yaml   | 173 ++++++++++++++++++
+ 2 files changed, 173 insertions(+), 48 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/gpio/mrvl-gpio.txt
+ create mode 100644 Documentation/devicetree/bindings/gpio/mrvl-gpio.yaml
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/mrvl,intc.txt b/Documentation/devicetree/bindings/interrupt-controller/mrvl,intc.txt
+diff --git a/Documentation/devicetree/bindings/gpio/mrvl-gpio.txt b/Documentation/devicetree/bindings/gpio/mrvl-gpio.txt
 deleted file mode 100644
-index a0ed02725a9d7..0000000000000
---- a/Documentation/devicetree/bindings/interrupt-controller/mrvl,intc.txt
+index 30fd2201b3d4c..0000000000000
+--- a/Documentation/devicetree/bindings/gpio/mrvl-gpio.txt
 +++ /dev/null
-@@ -1,64 +0,0 @@
--* Marvell MMP Interrupt controller
+@@ -1,48 +0,0 @@
+-* Marvell PXA GPIO controller
 -
 -Required properties:
--- compatible : Should be
--               "mrvl,mmp-intc" on Marvel MMP,
--               "mrvl,mmp2-intc" along with "mrvl,mmp2-mux-intc" on MMP2 or
--               "marvell,mmp3-intc" with "mrvl,mmp2-mux-intc" on MMP3
--- reg : Address and length of the register set of the interrupt controller.
--  If the interrupt controller is intc, address and length means the range
--  of the whole interrupt controller. The "marvell,mmp3-intc" controller
--  also has a secondary range for the second CPU core.  If the interrupt
--  controller is mux-intc, address and length means one register. Since
--  address of mux-intc is in the range of intc. mux-intc is secondary
--  interrupt controller.
--- reg-names : Name of the register set of the interrupt controller. It's
--  only required in mux-intc interrupt controller.
--- interrupts : Should be the port interrupt shared by mux interrupts. It's
--  only required in mux-intc interrupt controller.
+-- compatible : Should be "intel,pxa25x-gpio", "intel,pxa26x-gpio",
+-		"intel,pxa27x-gpio", "intel,pxa3xx-gpio",
+-		"marvell,pxa93x-gpio", "marvell,mmp-gpio",
+-		"marvell,mmp2-gpio" or marvell,pxa1928-gpio.
+-- reg : Address and length of the register set for the device
+-- interrupts : Should be the port interrupt shared by all gpio pins.
+-  There're three gpio interrupts in arch-pxa, and they're gpio0,
+-  gpio1 and gpio_mux. There're only one gpio interrupt in arch-mmp,
+-  gpio_mux.
+-- interrupt-names : Should be the names of irq resources. Each interrupt
+-  uses its own interrupt name, so there should be as many interrupt names
+-  as referenced interrupts.
 -- interrupt-controller : Identifies the node as an interrupt controller.
--- #interrupt-cells : Specifies the number of cells needed to encode an
--  interrupt source.
--- mrvl,intc-nr-irqs : Specifies the number of interrupts in the interrupt
--  controller.
--- mrvl,clr-mfp-irq : Specifies the interrupt that needs to clear MFP edge
--  detection first.
--
--Example:
--	intc: interrupt-controller@d4282000 {
--		compatible = "mrvl,mmp2-intc";
--		interrupt-controller;
--		#interrupt-cells = <1>;
--		reg = <0xd4282000 0x1000>;
--		mrvl,intc-nr-irqs = <64>;
--	};
--
--	intcmux4@d4282150 {
--		compatible = "mrvl,mmp2-mux-intc";
--		interrupts = <4>;
--		interrupt-controller;
--		#interrupt-cells = <1>;
--		reg = <0x150 0x4>, <0x168 0x4>;
--		reg-names = "mux status", "mux mask";
--		mrvl,intc-nr-irqs = <2>;
--	};
--
--* Marvell Orion Interrupt controller
--
--Required properties
--- compatible :  Should be "marvell,orion-intc".
 -- #interrupt-cells: Specifies the number of cells needed to encode an
--  interrupt source. Supported value is <1>.
--- interrupt-controller : Declare this node to be an interrupt controller.
--- reg : Interrupt mask address. A list of 4 byte ranges, one per controller.
--        One entry in the list represents 32 interrupts.
+-  interrupt source.
+-- gpio-controller : Marks the device node as a gpio controller.
+-- #gpio-cells : Should be two.  The first cell is the pin number and
+-  the second cell is used to specify flags. See gpio.txt for possible
+-  values.
 -
--Example:
+-Example for a MMP platform:
 -
--	intc: interrupt-controller {
--        	compatible = "marvell,orion-intc", "marvell,intc";
+-	gpio: gpio@d4019000 {
+-		compatible = "marvell,mmp-gpio";
+-		reg = <0xd4019000 0x1000>;
+-		interrupts = <49>;
+-		interrupt-names = "gpio_mux";
+-		gpio-controller;
+-		#gpio-cells = <2>;
 -		interrupt-controller;
 -		#interrupt-cells = <1>;
--                reg = <0xfed20204 0x04>,
--		      <0xfed20214 0x04>;
--        };
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/mrvl,intc.yaml b/Documentation/devicetree/bindings/interrupt-controller/mrvl,intc.yaml
+-      };
+-
+-Example for a PXA3xx platform:
+-
+-	gpio: gpio@40e00000 {
+-		compatible = "intel,pxa3xx-gpio";
+-		reg = <0x40e00000 0x10000>;
+-		interrupt-names = "gpio0", "gpio1", "gpio_mux";
+-		interrupts = <8 9 10>;
+-		gpio-controller;
+-		#gpio-cells = <0x2>;
+-		interrupt-controller;
+-		#interrupt-cells = <0x2>;
+-	};
+diff --git a/Documentation/devicetree/bindings/gpio/mrvl-gpio.yaml b/Documentation/devicetree/bindings/gpio/mrvl-gpio.yaml
 new file mode 100644
-index 0000000000000..f0644f7d7e1d2
+index 0000000000000..5c713bf59b06d
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/interrupt-controller/mrvl,intc.yaml
-@@ -0,0 +1,144 @@
++++ b/Documentation/devicetree/bindings/gpio/mrvl-gpio.yaml
+@@ -0,0 +1,173 @@
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/interrupt-controller/mrvl,intc.yaml#
++$id: http://devicetree.org/schemas/gpio/mrvl-gpio.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Marvell MMP/Orion Interrupt controller bindings
++title: Marvell PXA GPIO controller
 +
 +maintainers:
 +  - devicetree@vger.kernel.org
 +
 +allOf:
-+  - $ref: /schemas/interrupt-controller.yaml#
-+  - if:
-+      properties:
-+        compatible:
-+          not:
-+            contains:
-+              const: marvell,orion-intc
-+    then:
-+      required:
-+        - mrvl,intc-nr-irqs
 +  - if:
 +      properties:
 +        compatible:
 +          contains:
 +            enum:
-+              - mrvl,mmp-intc
-+              - mrvl,mmp2-intc
-+    then:
-+      properties:
-+        reg:
-+          minItems: 1
-+          maxItems: 1
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - marvell,mmp3-intc
-+              - mrvl,mmp2-mux-intc
-+    then:
-+      properties:
-+        reg:
-+          minItems: 2
-+          maxItems: 2
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: marvell,orion-intc
-+    then:
-+      properties:
-+        reg:
-+          minItems: 1
-+          maxItems: 2
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: mrvl,mmp2-mux-intc
++              - intel,pxa25x-gpio
++              - intel,pxa26x-gpio
++              - intel,pxa27x-gpio
++              - intel,pxa3xx-gpio
 +    then:
 +      properties:
 +        interrupts:
-+          minItems: 1
-+          maxItems: 1
-+        reg-names:
-+          minItems: 2
-+          maxItems: 2
++          minItems: 3
++          maxItems: 3
++        interrupt-names:
 +          items:
-+            - const: 'mux status'
-+            - const: 'mux mask'
-+      required:
-+        - interrupts
-+    else:
++            - const: gpio0
++            - const: gpio1
++            - const: gpio_mux
++  - if:
 +      properties:
-+        interrupts: false
++        compatible:
++          contains:
++            enum:
++              - marvell,mmp-gpio
++              - marvell,mmp2-gpio
++    then:
++      properties:
++        interrupts:
++          maxItems: 1
++        interrupt-names:
++          items:
++            - const: gpio_mux
 +
 +properties:
-+  '#interrupt-cells':
-+    const: 1
++  $nodename:
++    pattern: '^gpio@[0-9a-f]+$'
 +
 +  compatible:
 +    enum:
-+      - mrvl,mmp-intc
-+      - mrvl,mmp2-intc
-+      - marvell,mmp3-intc
-+      - marvell,orion-intc
-+      - mrvl,mmp2-mux-intc
++      - intel,pxa25x-gpio
++      - intel,pxa26x-gpio
++      - intel,pxa27x-gpio
++      - intel,pxa3xx-gpio
++      - marvell,mmp-gpio
++      - marvell,mmp2-gpio
++      - marvell,pxa93x-gpio
++      - marvell,pxa1928-gpio
 +
-+  reg: true
++  reg:
++    maxItems: 1
 +
-+  reg-names: true
++  clocks:
++    maxItems: 1
++
++  resets:
++    maxItems: 1
++
++  ranges: true
++
++  '#address-cells':
++    const: 1
++
++  '#size-cells':
++    const: 1
++
++  gpio-controller: true
++
++  '#gpio-cells':
++    const: 2
++
++  gpio-ranges:
++    maxItems: 1
 +
 +  interrupts: true
 +
++  interrupt-names: true
++
 +  interrupt-controller: true
 +
-+  mrvl,intc-nr-irqs:
-+    description: |
-+      Specifies the number of interrupts in the interrupt controller.
-+    $ref: /schemas/types.yaml#/definitions/uint32
++  '#interrupt-cells':
++    const: 2
 +
-+  mrvl,clr-mfp-irq:
-+    description: |
-+      Specifies the interrupt that needs to clear MFP edge detection first.
-+    $ref: /schemas/types.yaml#/definitions/uint32
++patternProperties:
++  '^gpio@[0-9a-f]*$':
++    type: object
++    properties:
++      reg:
++        maxItems: 1
++
++    required:
++      - reg
++
++    additionalProperties: false
 +
 +required:
-+  - '#interrupt-cells'
 +  - compatible
++  - '#address-cells'
++  - '#size-cells'
 +  - reg
++  - gpio-controller
++  - '#gpio-cells'
++  - interrupts
++  - interrupt-names
 +  - interrupt-controller
++  - '#interrupt-cells'
++  - ranges
 +
 +additionalProperties: false
 +
 +examples:
 +  - |
-+    interrupt-controller@d4282000 {
-+        compatible = "mrvl,mmp2-intc";
++    #include <dt-bindings/clock/pxa-clock.h>
++    gpio@40e00000 {
++        compatible = "intel,pxa3xx-gpio";
++        #address-cells = <1>;
++        #size-cells = <1>;
++        reg = <0x40e00000 0x10000>;
++        gpio-controller;
++        #gpio-cells = <2>;
++        interrupts = <8>, <9>, <10>;
++        interrupt-names = "gpio0", "gpio1", "gpio_mux";
++        clocks = <&clks CLK_GPIO>;
 +        interrupt-controller;
-+        #interrupt-cells = <1>;
-+        reg = <0xd4282000 0x1000>;
-+        mrvl,intc-nr-irqs = <64>;
-+    };
-+
-+    interrupt-controller@d4282150 {
-+        compatible = "mrvl,mmp2-mux-intc";
-+        interrupts = <4>;
-+        interrupt-controller;
-+        #interrupt-cells = <1>;
-+        reg = <0x150 0x4>, <0x168 0x4>;
-+        reg-names = "mux status", "mux mask";
-+        mrvl,intc-nr-irqs = <2>;
++        #interrupt-cells = <2>;
++        ranges;
 +    };
 +  - |
-+    interrupt-controller@fed20204 {
-+        compatible = "marvell,orion-intc";
++    #include <dt-bindings/clock/marvell,pxa910.h>
++    gpio@d4019000 {
++        compatible = "marvell,mmp-gpio";
++        #address-cells = <1>;
++        #size-cells = <1>;
++        reg = <0xd4019000 0x1000>;
++        gpio-controller;
++        #gpio-cells = <2>;
++        interrupts = <49>;
++        interrupt-names = "gpio_mux";
++        clocks = <&soc_clocks PXA910_CLK_GPIO>;
++        resets = <&soc_clocks PXA910_CLK_GPIO>;
 +        interrupt-controller;
-+        #interrupt-cells = <1>;
-+        reg = <0xfed20204 0x04>,
-+              <0xfed20214 0x04>;
-+    };
++        #interrupt-cells = <2>;
++        ranges;
++
++        gpio@d4019000 {
++            reg = <0xd4019000 0x4>;
++        };
++
++        gpio@d4019004 {
++            reg = <0xd4019004 0x4>;
++        };
++
++        gpio@d4019008 {
++            reg = <0xd4019008 0x4>;
++        };
++
++        gpio@d4019100 {
++            reg = <0xd4019100 0x4>;
++        };
++     };
 +
 +...
 -- 

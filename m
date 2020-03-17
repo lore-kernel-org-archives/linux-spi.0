@@ -1,7 +1,7 @@
 From: Lubomir Rintel <lkundrak@v3.sk>
-Subject: [PATCH 12/28] spi: dt-bindings: spi-controller: Slaves have no address cells
-Date: Tue, 17 Mar 2020 10:39:06 +0100
-Message-ID: <20200317093922.20785-13-lkundrak@v3.sk>
+Subject: [PATCH 13/28] dt-bindings: serial: move Marvell compatible string to 8250 binding doc
+Date: Tue, 17 Mar 2020 10:39:07 +0100
+Message-ID: <20200317093922.20785-14-lkundrak@v3.sk>
 References: <20200317093922.20785-1-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -25,57 +25,44 @@ Cc: Linus Walleij <linus.walleij@linaro.org>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         devicetree@vger.kerne
 To: Rob Herring <robh+dt@kernel.org>
-Return-path: <linux-serial-owner@vger.kernel.org>
+Return-path: <linux-i2c-owner@vger.kernel.org>
 In-Reply-To: <20200317093922.20785-1-lkundrak@v3.sk>
-Sender: linux-serial-owner@vger.kernel.org
+Sender: linux-i2c-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SPI controllers in slave mode have a single child node that has no
-address. Enforce #address-cells of zero instead of one.
+These ports are compatible with NS8250 and handled by the same driver.
+Get rid of the extra document that fails to document the properties that
+are actually supported.
 
-Fixes: 0a1b929356830 ("spi: Add YAML schemas for the generic SPI options")
 Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
 ---
- .../bindings/spi/spi-controller.yaml          | 23 ++++++++++++++-----
- 1 file changed, 17 insertions(+), 6 deletions(-)
+ Documentation/devicetree/bindings/serial/8250.txt        | 2 ++
+ Documentation/devicetree/bindings/serial/mrvl-serial.txt | 4 ----
+ 2 files changed, 2 insertions(+), 4 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/serial/mrvl-serial.txt
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-index d8e5509a70816..30d774cf6cc95 100644
---- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
-+++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-@@ -15,16 +15,27 @@ description: |
-   controller may be described for use in SPI master mode or in SPI slave mode,
-   but not for both at the same time.
- 
-+allOf:
-+  - if:
-+      required:
-+        - spi-slave
-+    then:
-+      properties:
-+        "#address-cells":
-+          const: 0
-+        "#size-cells":
-+          const: 0
-+    else:
-+      properties:
-+        "#address-cells":
-+          const: 1
-+        "#size-cells":
-+          const: 0
-+
- properties:
-   $nodename:
-     pattern: "^spi(@.*|-[0-9a-f])*$"
- 
--  "#address-cells":
--    const: 1
+diff --git a/Documentation/devicetree/bindings/serial/8250.txt b/Documentation/devicetree/bindings/serial/8250.txt
+index 55700f20f6ee8..a543702859e2f 100644
+--- a/Documentation/devicetree/bindings/serial/8250.txt
++++ b/Documentation/devicetree/bindings/serial/8250.txt
+@@ -26,6 +26,8 @@ Required properties:
+ 	- "aspeed,ast2400-vuart"
+ 	- "aspeed,ast2500-vuart"
+ 	- "nuvoton,npcm750-uart"
++	- "mrvl,mmp-uart"
++	- "mrvl,pxa-uart"
+ 	- "serial" if the port type is unknown.
+ - reg : offset and length of the register set for the device.
+ - interrupts : should contain uart interrupt.
+diff --git a/Documentation/devicetree/bindings/serial/mrvl-serial.txt b/Documentation/devicetree/bindings/serial/mrvl-serial.txt
+deleted file mode 100644
+index d744340de887c..0000000000000
+--- a/Documentation/devicetree/bindings/serial/mrvl-serial.txt
++++ /dev/null
+@@ -1,4 +0,0 @@
+-PXA UART controller
 -
--  "#size-cells":
--    const: 0
--
-   cs-gpios:
-     description: |
-       GPIOs used as chip selects.
+-Required properties:
+-- compatible : should be "mrvl,mmp-uart" or "mrvl,pxa-uart".
 -- 
 2.25.1

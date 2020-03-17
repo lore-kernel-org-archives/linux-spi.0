@@ -1,7 +1,7 @@
 From: Lubomir Rintel <lkundrak@v3.sk>
-Subject: [PATCH 25/28] dt-bindings: rtc: Convert sa1100-rtc to json-schema
-Date: Tue, 17 Mar 2020 10:39:19 +0100
-Message-ID: <20200317093922.20785-26-lkundrak@v3.sk>
+Subject: [PATCH 27/28] dt-bindings: timer: Convert mrvl,mmp-timer to json-schema
+Date: Tue, 17 Mar 2020 10:39:21 +0100
+Message-ID: <20200317093922.20785-28-lkundrak@v3.sk>
 References: <20200317093922.20785-1-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -25,102 +25,91 @@ Cc: Linus Walleij <linus.walleij@linaro.org>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         devicetree@vger.kerne
 To: Rob Herring <robh+dt@kernel.org>
-Return-path: <linux-serial-owner@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <20200317093922.20785-1-lkundrak@v3.sk>
-Sender: linux-serial-owner@vger.kernel.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Convert the sa1100-rtc binding to DT schema format using json-schema.
+A straightforward conversion of the mrvl,mmp-timer binding to DT schema
+format using json-schema.
 
 Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
 ---
- .../devicetree/bindings/rtc/sa1100-rtc.txt    | 17 ------
- .../devicetree/bindings/rtc/sa1100-rtc.yaml   | 55 +++++++++++++++++++
- 2 files changed, 55 insertions(+), 17 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/rtc/sa1100-rtc.txt
- create mode 100644 Documentation/devicetree/bindings/rtc/sa1100-rtc.yaml
+ .../bindings/timer/mrvl,mmp-timer.txt         | 17 --------
+ .../bindings/timer/mrvl,mmp-timer.yaml        | 43 +++++++++++++++++++
+ 2 files changed, 43 insertions(+), 17 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/timer/mrvl,mmp-timer.txt
+ create mode 100644 Documentation/devicetree/bindings/timer/mrvl,mmp-timer.yaml
 
-diff --git a/Documentation/devicetree/bindings/rtc/sa1100-rtc.txt b/Documentation/devicetree/bindings/rtc/sa1100-rtc.txt
+diff --git a/Documentation/devicetree/bindings/timer/mrvl,mmp-timer.txt b/Documentation/devicetree/bindings/timer/mrvl,mmp-timer.txt
 deleted file mode 100644
-index 968ac820254bb..0000000000000
---- a/Documentation/devicetree/bindings/rtc/sa1100-rtc.txt
+index b8f02c6635219..0000000000000
+--- a/Documentation/devicetree/bindings/timer/mrvl,mmp-timer.txt
 +++ /dev/null
 @@ -1,17 +0,0 @@
--* Marvell Real Time Clock controller
+-* Marvell MMP Timer controller
 -
 -Required properties:
--- compatible: should be "mrvl,sa1100-rtc"
--- reg: physical base address of the controller and length of memory mapped
--  region.
--- interrupts: Should be two. The first interrupt number is the rtc alarm
--  interrupt and the second interrupt number is the rtc hz interrupt.
--- interrupt-names: Assign name of irq resource.
+-- compatible : Should be "mrvl,mmp-timer".
+-- reg : Address and length of the register set of timer controller.
+-- interrupts : Should be the interrupt number.
+-
+-Optional properties:
+-- clocks : Should contain a single entry describing the clock input.
 -
 -Example:
--	rtc: rtc@d4010000 {
--		compatible = "mrvl,mmp-rtc";
--		reg = <0xd4010000 0x1000>;
--		interrupts = <5>, <6>;
--		interrupt-names = "rtc 1Hz", "rtc alarm";
+-	timer0: timer@d4014000 {
+-		compatible = "mrvl,mmp-timer";
+-		reg = <0xd4014000 0x100>;
+-		interrupts = <13>;
+-		clocks = <&coreclk 2>;
 -	};
-diff --git a/Documentation/devicetree/bindings/rtc/sa1100-rtc.yaml b/Documentation/devicetree/bindings/rtc/sa1100-rtc.yaml
+diff --git a/Documentation/devicetree/bindings/timer/mrvl,mmp-timer.yaml b/Documentation/devicetree/bindings/timer/mrvl,mmp-timer.yaml
 new file mode 100644
-index 0000000000000..53a8b72df9f34
+index 0000000000000..ebee0b862d493
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/rtc/sa1100-rtc.yaml
-@@ -0,0 +1,55 @@
++++ b/Documentation/devicetree/bindings/timer/mrvl,mmp-timer.yaml
+@@ -0,0 +1,43 @@
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/rtc/sa1100-rtc.yaml#
++$id: http://devicetree.org/schemas/timer/mrvl,mmp-timer.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Marvell Real Time Clock controller bindings
-+
-+allOf:
-+  - $ref: rtc.yaml#
++title: Marvell MMP Timer bindings
 +
 +maintainers:
 +  - devicetree@vger.kernel.org
 +
 +properties:
++  $nodename:
++    pattern: '^timer@[a-f0-9]+$'
++
 +  compatible:
-+    enum:
-+      - mrvl,sa1100-rtc
-+      - mrvl,mmp-rtc
++    const: mrvl,mmp-timer
 +
 +  reg:
++    maxItems: 1
++
++  interrupts:
 +    maxItems: 1
 +
 +  clocks:
 +    maxItems: 1
 +
-+  resets:
-+    maxItems: 1
-+
-+  interrupts:
-+    minItems: 2
-+    maxItems: 2
-+
-+  interrupt-names:
-+    items:
-+      - const: 'rtc 1Hz'
-+      - const: 'rtc alarm'
-+
 +required:
 +  - compatible
 +  - reg
 +  - interrupts
-+  - interrupt-names
 +
 +additionalProperties: false
 +
 +examples:
 +  - |
-+    rtc: rtc@d4010000 {
-+        compatible = "mrvl,mmp-rtc";
-+        reg = <0xd4010000 0x1000>;
-+        interrupts = <5>, <6>;
-+        interrupt-names = "rtc 1Hz", "rtc alarm";
++    timer@d4014000 {
++        compatible = "mrvl,mmp-timer";
++        reg = <0xd4014000 0x100>;
++        interrupts = <13>;
++        clocks = <&coreclk 2>;
 +    };
 +
 +...

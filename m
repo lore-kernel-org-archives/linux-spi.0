@@ -1,7 +1,7 @@
 From: Lubomir Rintel <lkundrak@v3.sk>
-Subject: [PATCH 13/28] dt-bindings: serial: move Marvell compatible string to 8250 binding doc
-Date: Tue, 17 Mar 2020 10:39:07 +0100
-Message-ID: <20200317093922.20785-14-lkundrak@v3.sk>
+Subject: [PATCH 15/28] dt-bindings: arm: mrvl: Add missing compatible strings
+Date: Tue, 17 Mar 2020 10:39:09 +0100
+Message-ID: <20200317093922.20785-16-lkundrak@v3.sk>
 References: <20200317093922.20785-1-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -25,44 +25,38 @@ Cc: Linus Walleij <linus.walleij@linaro.org>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         devicetree@vger.kerne
 To: Rob Herring <robh+dt@kernel.org>
-Return-path: <linux-i2c-owner@vger.kernel.org>
+Return-path: <linux-mmc-owner@vger.kernel.org>
 In-Reply-To: <20200317093922.20785-1-lkundrak@v3.sk>
-Sender: linux-i2c-owner@vger.kernel.org
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-These ports are compatible with NS8250 and handled by the same driver.
-Get rid of the extra document that fails to document the properties that
-are actually supported.
+Add compatible strings for the boards we have in tree. At the same time,
+fix the MMP3 compatible string: the preferred vendor name for Marvell is
+"marvell", not "mrvl", and indeed "marvell,mmp3" has been actively used,
+not "mrvl,mmp3".
 
+Fixes: 95aecb71b84e ("dt-bindings: arm: mrvl: Document MMP3 compatible string")
 Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
 ---
- Documentation/devicetree/bindings/serial/8250.txt        | 2 ++
- Documentation/devicetree/bindings/serial/mrvl-serial.txt | 4 ----
- 2 files changed, 2 insertions(+), 4 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/serial/mrvl-serial.txt
+ Documentation/devicetree/bindings/arm/mrvl/mrvl.yaml | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/serial/8250.txt b/Documentation/devicetree/bindings/serial/8250.txt
-index 55700f20f6ee8..a543702859e2f 100644
---- a/Documentation/devicetree/bindings/serial/8250.txt
-+++ b/Documentation/devicetree/bindings/serial/8250.txt
-@@ -26,6 +26,8 @@ Required properties:
- 	- "aspeed,ast2400-vuart"
- 	- "aspeed,ast2500-vuart"
- 	- "nuvoton,npcm750-uart"
-+	- "mrvl,mmp-uart"
-+	- "mrvl,pxa-uart"
- 	- "serial" if the port type is unknown.
- - reg : offset and length of the register set for the device.
- - interrupts : should contain uart interrupt.
-diff --git a/Documentation/devicetree/bindings/serial/mrvl-serial.txt b/Documentation/devicetree/bindings/serial/mrvl-serial.txt
-deleted file mode 100644
-index d744340de887c..0000000000000
---- a/Documentation/devicetree/bindings/serial/mrvl-serial.txt
-+++ /dev/null
-@@ -1,4 +0,0 @@
--PXA UART controller
--
--Required properties:
--- compatible : should be "mrvl,mmp-uart" or "mrvl,pxa-uart".
+diff --git a/Documentation/devicetree/bindings/arm/mrvl/mrvl.yaml b/Documentation/devicetree/bindings/arm/mrvl/mrvl.yaml
+index 818dfe6de5120..3235ec9e9bad1 100644
+--- a/Documentation/devicetree/bindings/arm/mrvl/mrvl.yaml
++++ b/Documentation/devicetree/bindings/arm/mrvl/mrvl.yaml
+@@ -28,8 +28,11 @@ properties:
+         items:
+           - enum:
+               - mrvl,mmp2-brownstone
++              - olpc,xo-1.75
+           - const: mrvl,mmp2
+       - description: MMP3 based boards
+         items:
+-          - const: mrvl,mmp3
++          - enum:
++              - dell,wyse-ariel
++          - const: marvell,mmp3
+ ...
 -- 
 2.25.1

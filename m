@@ -1,8 +1,8 @@
 From: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
 Subject: Re: [PATCH 08/28] ARM: dts: mmp*: Fix up encoding of the /rtc
  interrupts property
-Date: Tue, 17 Mar 2020 14:30:05 +0100
-Message-ID: <20200317133005.GI24270@lunn.ch>
+Date: Tue, 17 Mar 2020 14:30:48 +0100
+Message-ID: <20200317133048.GJ24270@lunn.ch>
 References: <20200317093922.20785-1-lkundrak@v3.sk>
  <20200317093922.20785-9-lkundrak@v3.sk>
 Mime-Version: 1.0
@@ -27,10 +27,10 @@ Cc: Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
         Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
         devicetree@vger.k
 To: Lubomir Rintel <lkundrak-NGH9Lh4a5iE@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <linux-usb-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
 In-Reply-To: <20200317093922.20785-9-lkundrak-NGH9Lh4a5iE@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Sender: linux-usb-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 On Tue, Mar 17, 2020 at 10:39:02AM +0100, Lubomir Rintel wrote:

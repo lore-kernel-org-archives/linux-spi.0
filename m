@@ -1,7 +1,7 @@
 From: Lubomir Rintel <lkundrak@v3.sk>
-Subject: [PATCH 28/28] dt-bindings: usb: Convert ehci-mv to json-schema
-Date: Tue, 17 Mar 2020 10:39:22 +0100
-Message-ID: <20200317093922.20785-29-lkundrak@v3.sk>
+Subject: [PATCH 11/28] ARM: dts: berlin*: Fix up the SDHCI node names
+Date: Tue, 17 Mar 2020 10:39:05 +0100
+Message-ID: <20200317093922.20785-12-lkundrak@v3.sk>
 References: <20200317093922.20785-1-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -30,111 +30,106 @@ In-Reply-To: <20200317093922.20785-1-lkundrak@v3.sk>
 Sender: linux-media-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-A straightforward conversion of the ehci-mv binding to DT schema format
-using json-schema.
+The node name preferred by mmc-controller.yaml binding spec is "mmc":
+
+  berlin2-sony-nsz-gs7.dt.yaml: sdhci@ab0000: $nodename:0:
+      'sdhci@ab0000' does not match '^mmc(@.*)?$'
+  berlin2-sony-nsz-gs7.dt.yaml: sdhci@ab0800: $nodename:0:
+      'sdhci@ab0800' does not match '^mmc(@.*)?$'
+  berlin2-sony-nsz-gs7.dt.yaml: sdhci@ab1000: $nodename:0:
+      'sdhci@ab1000' does not match '^mmc(@.*)?$'
+  berlin2cd-google-chromecast.dt.yaml: sdhci@ab0000: $nodename:0:
+      'sdhci@ab0000' does not match '^mmc(@.*)?$'
+  berlin2cd-valve-steamlink.dt.yaml: sdhci@ab0000: $nodename:0:
+      'sdhci@ab0000' does not match '^mmc(@.*)?$'
+  berlin2q-marvell-dmp.dt.yaml: sdhci@ab0000: $nodename:0:
+      'sdhci@ab0000' does not match '^mmc(@.*)?$'
+  berlin2q-marvell-dmp.dt.yaml: sdhci@ab0800: $nodename:0:
+      'sdhci@ab0800' does not match '^mmc(@.*)?$'
+  berlin2q-marvell-dmp.dt.yaml: sdhci@ab1000: $nodename:0:
+      'sdhci@ab1000' does not match '^mmc(@.*)?$'
 
 Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
 ---
- .../devicetree/bindings/usb/ehci-mv.txt       | 23 -------
- .../bindings/usb/marvell,pxau2o-ehci.yaml     | 60 +++++++++++++++++++
- 2 files changed, 60 insertions(+), 23 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/usb/ehci-mv.txt
- create mode 100644 Documentation/devicetree/bindings/usb/marvell,pxau2o-ehci.yaml
+ arch/arm/boot/dts/berlin2.dtsi   | 6 +++---
+ arch/arm/boot/dts/berlin2cd.dtsi | 2 +-
+ arch/arm/boot/dts/berlin2q.dtsi  | 6 +++---
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/usb/ehci-mv.txt b/Documentation/devicetree/bindings/usb/ehci-mv.txt
-deleted file mode 100644
-index 335589895763e..0000000000000
---- a/Documentation/devicetree/bindings/usb/ehci-mv.txt
-+++ /dev/null
-@@ -1,23 +0,0 @@
--* Marvell PXA/MMP EHCI controller.
--
--Required properties:
--
--- compatible: must be "marvell,pxau2o-ehci"
--- reg: physical base addresses of the controller and length of memory mapped region
--- interrupts: one EHCI controller interrupt should be described here
--- clocks: phandle list of usb clocks
--- clock-names: should be "USBCLK"
--- phys: phandle for the PHY device
--- phy-names: should be "usb"
--
--Example:
--
--	ehci0: usb-ehci@d4208000 {
--		compatible = "marvell,pxau2o-ehci";
--		reg = <0xd4208000 0x200>;
--		interrupts = <44>;
--		clocks = <&soc_clocks MMP2_CLK_USB>;
--		clock-names = "USBCLK";
--		phys = <&usb_otg_phy>;
--		phy-names = "usb";
--	};
-diff --git a/Documentation/devicetree/bindings/usb/marvell,pxau2o-ehci.yaml b/Documentation/devicetree/bindings/usb/marvell,pxau2o-ehci.yaml
-new file mode 100644
-index 0000000000000..189025ef1e92e
---- /dev/null
-+++ b/Documentation/devicetree/bindings/usb/marvell,pxau2o-ehci.yaml
-@@ -0,0 +1,60 @@
-+# SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
-+# Copyright 2019,2020 Lubomir Rintel <lkundrak@v3.sk>
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/usb/marvell,pxau2o-ehci.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Marvell PXA/MMP EHCI bindings
-+
-+maintainers:
-+  - Lubomir Rintel <lkundrak@v3.sk>
-+
-+allOf:
-+  - $ref: usb-hcd.yaml#
-+
-+properties:
-+  compatible:
-+    const: marvell,pxau2o-ehci
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  clock-names:
-+    const: USBCLK
-+
-+  phys:
-+    maxItems: 1
-+
-+  phy-names:
-+    const: usb
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
-+  - clock-names
-+  - phys
-+  - phy-names
-+
-+examples:
-+  - |
-+    #include <dt-bindings/clock/marvell,mmp2.h>
-+    usb@d4208000 {
-+        compatible = "marvell,pxau2o-ehci";
-+        reg = <0xd4208000 0x200>;
-+        interrupts = <44>;
-+        clocks = <&soc_clocks MMP2_CLK_USB>;
-+        clock-names = "USBCLK";
-+        phys = <&usb_otg_phy>;
-+        phy-names = "usb";
-+    };
-+
-+...
+diff --git a/arch/arm/boot/dts/berlin2.dtsi b/arch/arm/boot/dts/berlin2.dtsi
+index d2f7d984bba5c..3ab3cd250da70 100644
+--- a/arch/arm/boot/dts/berlin2.dtsi
++++ b/arch/arm/boot/dts/berlin2.dtsi
+@@ -77,7 +77,7 @@ soc@f7000000 {
+ 
+ 		ranges = <0 0xf7000000 0x1000000>;
+ 
+-		sdhci0: sdhci@ab0000 {
++		sdhci0: mmc@ab0000 {
+ 			compatible = "mrvl,pxav3-mmc";
+ 			reg = <0xab0000 0x200>;
+ 			clocks = <&chip_clk CLKID_SDIO0XIN>, <&chip_clk CLKID_SDIO0>;
+@@ -86,7 +86,7 @@ sdhci0: sdhci@ab0000 {
+ 			status = "disabled";
+ 		};
+ 
+-		sdhci1: sdhci@ab0800 {
++		sdhci1: mmc@ab0800 {
+ 			compatible = "mrvl,pxav3-mmc";
+ 			reg = <0xab0800 0x200>;
+ 			clocks = <&chip_clk CLKID_SDIO1XIN>, <&chip_clk CLKID_SDIO1>;
+@@ -95,7 +95,7 @@ sdhci1: sdhci@ab0800 {
+ 			status = "disabled";
+ 		};
+ 
+-		sdhci2: sdhci@ab1000 {
++		sdhci2: mmc@ab1000 {
+ 			compatible = "mrvl,pxav3-mmc";
+ 			reg = <0xab1000 0x200>;
+ 			interrupts = <GIC_SPI 28 IRQ_TYPE_LEVEL_HIGH>;
+diff --git a/arch/arm/boot/dts/berlin2cd.dtsi b/arch/arm/boot/dts/berlin2cd.dtsi
+index e5c1f4213ff90..7cf3e6302d75c 100644
+--- a/arch/arm/boot/dts/berlin2cd.dtsi
++++ b/arch/arm/boot/dts/berlin2cd.dtsi
+@@ -62,7 +62,7 @@ soc@f7000000 {
+ 
+ 		ranges = <0 0xf7000000 0x1000000>;
+ 
+-		sdhci0: sdhci@ab0000 {
++		sdhci0: mmc@ab0000 {
+ 			compatible = "mrvl,pxav3-mmc";
+ 			reg = <0xab0000 0x200>;
+ 			clocks = <&chip_clk CLKID_SDIO0XIN>, <&chip_clk CLKID_SDIO0>;
+diff --git a/arch/arm/boot/dts/berlin2q.dtsi b/arch/arm/boot/dts/berlin2q.dtsi
+index 99d6872a6dfcc..c44a32e873f44 100644
+--- a/arch/arm/boot/dts/berlin2q.dtsi
++++ b/arch/arm/boot/dts/berlin2q.dtsi
+@@ -122,7 +122,7 @@ soc@f7000000 {
+ 		ranges = <0 0xf7000000 0x1000000>;
+ 		interrupt-parent = <&gic>;
+ 
+-		sdhci0: sdhci@ab0000 {
++		sdhci0: mmc@ab0000 {
+ 			compatible = "mrvl,pxav3-mmc";
+ 			reg = <0xab0000 0x200>;
+ 			clocks = <&chip_clk CLKID_SDIO1XIN>, <&chip_clk CLKID_SDIO>;
+@@ -131,7 +131,7 @@ sdhci0: sdhci@ab0000 {
+ 			status = "disabled";
+ 		};
+ 
+-		sdhci1: sdhci@ab0800 {
++		sdhci1: mmc@ab0800 {
+ 			compatible = "mrvl,pxav3-mmc";
+ 			reg = <0xab0800 0x200>;
+ 			clocks = <&chip_clk CLKID_SDIO1XIN>, <&chip_clk CLKID_SDIO>;
+@@ -140,7 +140,7 @@ sdhci1: sdhci@ab0800 {
+ 			status = "disabled";
+ 		};
+ 
+-		sdhci2: sdhci@ab1000 {
++		sdhci2: mmc@ab1000 {
+ 			compatible = "mrvl,pxav3-mmc";
+ 			reg = <0xab1000 0x200>;
+ 			interrupts = <GIC_SPI 28 IRQ_TYPE_LEVEL_HIGH>;
 -- 
 2.25.1

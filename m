@@ -1,7 +1,7 @@
 From: Lubomir Rintel <lkundrak@v3.sk>
-Subject: [PATCH 27/28] dt-bindings: timer: Convert mrvl,mmp-timer to json-schema
-Date: Tue, 17 Mar 2020 10:39:21 +0100
-Message-ID: <20200317093922.20785-28-lkundrak@v3.sk>
+Subject: [PATCH 26/28] dt-bindings: spi: Convert spi-pxa2xx to json-schema
+Date: Tue, 17 Mar 2020 10:39:20 +0100
+Message-ID: <20200317093922.20785-27-lkundrak@v3.sk>
 References: <20200317093922.20785-1-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -30,88 +30,113 @@ In-Reply-To: <20200317093922.20785-1-lkundrak@v3.sk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-A straightforward conversion of the mrvl,mmp-timer binding to DT schema
+A straightforward conversion of the the spi-pxa2xx binding to DT schema
 format using json-schema.
 
 Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
 ---
- .../bindings/timer/mrvl,mmp-timer.txt         | 17 --------
- .../bindings/timer/mrvl,mmp-timer.yaml        | 43 +++++++++++++++++++
- 2 files changed, 43 insertions(+), 17 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/timer/mrvl,mmp-timer.txt
- create mode 100644 Documentation/devicetree/bindings/timer/mrvl,mmp-timer.yaml
+ .../bindings/spi/marvell,mmp2-ssp.yaml        | 58 +++++++++++++++++++
+ .../devicetree/bindings/spi/spi-pxa2xx.txt    | 27 ---------
+ 2 files changed, 58 insertions(+), 27 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/marvell,mmp2-ssp.yaml
+ delete mode 100644 Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
 
-diff --git a/Documentation/devicetree/bindings/timer/mrvl,mmp-timer.txt b/Documentation/devicetree/bindings/timer/mrvl,mmp-timer.txt
-deleted file mode 100644
-index b8f02c6635219..0000000000000
---- a/Documentation/devicetree/bindings/timer/mrvl,mmp-timer.txt
-+++ /dev/null
-@@ -1,17 +0,0 @@
--* Marvell MMP Timer controller
--
--Required properties:
--- compatible : Should be "mrvl,mmp-timer".
--- reg : Address and length of the register set of timer controller.
--- interrupts : Should be the interrupt number.
--
--Optional properties:
--- clocks : Should contain a single entry describing the clock input.
--
--Example:
--	timer0: timer@d4014000 {
--		compatible = "mrvl,mmp-timer";
--		reg = <0xd4014000 0x100>;
--		interrupts = <13>;
--		clocks = <&coreclk 2>;
--	};
-diff --git a/Documentation/devicetree/bindings/timer/mrvl,mmp-timer.yaml b/Documentation/devicetree/bindings/timer/mrvl,mmp-timer.yaml
+diff --git a/Documentation/devicetree/bindings/spi/marvell,mmp2-ssp.yaml b/Documentation/devicetree/bindings/spi/marvell,mmp2-ssp.yaml
 new file mode 100644
-index 0000000000000..ebee0b862d493
+index 0000000000000..de6b6a53b70d8
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/timer/mrvl,mmp-timer.yaml
-@@ -0,0 +1,43 @@
++++ b/Documentation/devicetree/bindings/spi/marvell,mmp2-ssp.yaml
+@@ -0,0 +1,58 @@
++# SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause)
++# Copyright 2019,2020 Lubomir Rintel <lkundrak@v3.sk>
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/timer/mrvl,mmp-timer.yaml#
++$id: http://devicetree.org/schemas/spi/marvell,mmp2-ssp.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Marvell MMP Timer bindings
++title: PXA2xx SSP SPI Controller bindings
 +
 +maintainers:
-+  - devicetree@vger.kernel.org
++  - Lubomir Rintel <lkundrak@v3.sk>
++
++allOf:
++  - $ref: spi-controller.yaml#
 +
 +properties:
-+  $nodename:
-+    pattern: '^timer@[a-f0-9]+$'
-+
 +  compatible:
-+    const: mrvl,mmp-timer
-+
-+  reg:
-+    maxItems: 1
++    const: marvell,mmp2-ssp
 +
 +  interrupts:
 +    maxItems: 1
 +
++  reg:
++    maxItems: 1
++
 +  clocks:
++    maxItems: 1
++
++  ready-gpios:
++    description: |
++      GPIO used to signal a SPI master that the FIFO is filled and we're
++      ready to service a transfer. Only useful in slave mode.
 +    maxItems: 1
 +
 +required:
 +  - compatible
 +  - reg
 +  - interrupts
++  - clocks
++  - '#address-cells'
++  - '#size-cells'
 +
-+additionalProperties: false
++dependencies:
++  ready-gpios: [ spi-slave ]
 +
 +examples:
 +  - |
-+    timer@d4014000 {
-+        compatible = "mrvl,mmp-timer";
-+        reg = <0xd4014000 0x100>;
-+        interrupts = <13>;
-+        clocks = <&coreclk 2>;
++    #include <dt-bindings/clock/marvell,mmp2.h>
++    spi@d4035000 {
++        compatible = "marvell,mmp2-ssp";
++        #address-cells = <1>;
++        #size-cells = <0>;
++        reg = <0xd4035000 0x1000>;
++        clocks = <&soc_clocks MMP2_CLK_SSP0>;
++        interrupts = <0>;
 +    };
 +
 +...
+diff --git a/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt b/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
+deleted file mode 100644
+index e30e0c2a4bce1..0000000000000
+--- a/Documentation/devicetree/bindings/spi/spi-pxa2xx.txt
++++ /dev/null
+@@ -1,27 +0,0 @@
+-PXA2xx SSP SPI Controller
+-
+-Required properties:
+-- compatible: Must be "marvell,mmp2-ssp".
+-- reg: Offset and length of the device's register set.
+-- interrupts: Should be the interrupt number.
+-- clocks: Should contain a single entry describing the clock input.
+-- #address-cells:  Number of cells required to define a chip select address.
+-- #size-cells: Should be zero.
+-
+-Optional properties:
+-- cs-gpios: list of GPIO chip selects. See the SPI bus bindings,
+-  Documentation/devicetree/bindings/spi/spi-bus.txt
+-- spi-slave: Empty property indicating the SPI controller is used in slave mode.
+-- ready-gpios: GPIO used to signal a SPI master that the FIFO is filled
+-  and we're ready to service a transfer. Only useful in slave mode.
+-
+-Child nodes represent devices on the SPI bus
+-  See ../spi/spi-bus.txt
+-
+-Example:
+-	ssp1: spi@d4035000 {
+-		compatible = "marvell,mmp2-ssp";
+-		reg = <0xd4035000 0x1000>;
+-		clocks = <&soc_clocks MMP2_CLK_SSP0>;
+-		interrupts = <0>;
+-	};
 -- 
 2.25.1

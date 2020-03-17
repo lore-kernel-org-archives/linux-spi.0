@@ -1,7 +1,7 @@
 From: Lubomir Rintel <lkundrak@v3.sk>
-Subject: [PATCH 14/28] dt-bindings: arm: l2x0: Tauros 3 is PL310 compatible
-Date: Tue, 17 Mar 2020 10:39:08 +0100
-Message-ID: <20200317093922.20785-15-lkundrak@v3.sk>
+Subject: [PATCH 16/28] dt-bindings: Add "mrvl", a legacy vendor prefix for Marvell
+Date: Tue, 17 Mar 2020 10:39:10 +0100
+Message-ID: <20200317093922.20785-17-lkundrak@v3.sk>
 References: <20200317093922.20785-1-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -25,81 +25,32 @@ Cc: Linus Walleij <linus.walleij@linaro.org>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         devicetree@vger.kerne
 To: Rob Herring <robh+dt@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Return-path: <linux-i2c-owner@vger.kernel.org>
 In-Reply-To: <20200317093922.20785-1-lkundrak@v3.sk>
-Sender: linux-kernel-owner@vger.kernel.org
+Sender: linux-i2c-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The validation is unhappy about mmp3-dell-ariel declaring its
-marvell,tauros3-cache node to be compatible with arm,pl310-cache:
-
-  mmp3-dell-ariel.dt.yaml: cache-controller@d0020000: compatible:
-       Additional items are not allowed ('arm,pl310-cache' was unexpected)
-  mmp3-dell-ariel.dt.yaml: cache-controller@d0020000: compatible:
-       ['marvell,tauros3-cache', 'arm,pl310-cache'] is too long
-
-Let's allow this -- Tauros 3 is designed to be compatible with PL310.
+While the preferred vendor prefix is "marvell", "mrvl" is used by many
+older bindings already. Add it, while also marking it deprecated.
 
 Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
 ---
- .../devicetree/bindings/arm/l2c2x0.yaml       | 45 ++++++++++---------
- 1 file changed, 24 insertions(+), 21 deletions(-)
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/arm/l2c2x0.yaml b/Documentation/devicetree/bindings/arm/l2c2x0.yaml
-index 913a8cd8b2c00..7e39088a9bed2 100644
---- a/Documentation/devicetree/bindings/arm/l2c2x0.yaml
-+++ b/Documentation/devicetree/bindings/arm/l2c2x0.yaml
-@@ -29,27 +29,30 @@ allOf:
- 
- properties:
-   compatible:
--    enum:
--      - arm,pl310-cache
--      - arm,l220-cache
--      - arm,l210-cache
--        # DEPRECATED by "brcm,bcm11351-a2-pl310-cache"
--      - bcm,bcm11351-a2-pl310-cache
--        # For Broadcom bcm11351 chipset where an
--        # offset needs to be added to the address before passing down to the L2
--        # cache controller
--      - brcm,bcm11351-a2-pl310-cache
--        # Marvell Controller designed to be
--        # compatible with the ARM one, with system cache mode (meaning
--        # maintenance operations on L1 are broadcasted to the L2 and L2
--        # performs the same operation).
--      - marvell,aurora-system-cache
--        # Marvell Controller designed to be
--        # compatible with the ARM one with outer cache mode.
--      - marvell,aurora-outer-cache
--        # Marvell Tauros3 cache controller, compatible
--        # with arm,pl310-cache controller.
--      - marvell,tauros3-cache
-+    oneOf:
-+      - enum:
-+        - arm,pl310-cache
-+        - arm,l220-cache
-+        - arm,l210-cache
-+          # DEPRECATED by "brcm,bcm11351-a2-pl310-cache"
-+        - bcm,bcm11351-a2-pl310-cache
-+          # For Broadcom bcm11351 chipset where an
-+          # offset needs to be added to the address before passing down to the L2
-+          # cache controller
-+        - brcm,bcm11351-a2-pl310-cache
-+          # Marvell Controller designed to be
-+          # compatible with the ARM one, with system cache mode (meaning
-+          # maintenance operations on L1 are broadcasted to the L2 and L2
-+          # performs the same operation).
-+        - marvell,aurora-system-cache
-+          # Marvell Controller designed to be
-+          # compatible with the ARM one with outer cache mode.
-+        - marvell,aurora-outer-cache
-+      - items:
-+         # Marvell Tauros3 cache controller, compatible
-+         # with arm,pl310-cache controller.
-+        - const: marvell,tauros3-cache
-+        - const: arm,pl310-cache
- 
-   cache-level:
-     const: 2
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index 23ca95bee2985..1653de506db1a 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -645,6 +645,9 @@ patternProperties:
+     description: Monolithic Power Systems Inc.
+   "^mqmaker,.*":
+     description: mqmaker Inc.
++  "^mrvl,.*":
++    description: Marvell Technology Group Ltd.
++    deprecated: true
+   "^mscc,.*":
+     description: Microsemi Corporation
+   "^msi,.*":
 -- 
 2.25.1

@@ -1,10 +1,10 @@
 From: Andrew Lunn <andrew@lunn.ch>
-Subject: Re: [PATCH 13/28] dt-bindings: serial: move Marvell compatible
- string to 8250 binding doc
-Date: Tue, 17 Mar 2020 14:48:05 +0100
-Message-ID: <20200317134805.GO24270@lunn.ch>
+Subject: Re: [PATCH 15/28] dt-bindings: arm: mrvl: Add missing compatible
+ strings
+Date: Tue, 17 Mar 2020 14:54:35 +0100
+Message-ID: <20200317135435.GP24270@lunn.ch>
 References: <20200317093922.20785-1-lkundrak@v3.sk>
- <20200317093922.20785-14-lkundrak@v3.sk>
+ <20200317093922.20785-16-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: Rob Herring <robh+dt@kernel.org>,
@@ -27,21 +27,26 @@ Cc: Rob Herring <robh+dt@kernel.org>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         devicetree@vger.k
 To: Lubomir Rintel <lkundrak@v3.sk>
-Return-path: <linux-gpio-owner@vger.kernel.org>
+Return-path: <linux-serial-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20200317093922.20785-14-lkundrak@v3.sk>
-Sender: linux-gpio-owner@vger.kernel.org
+In-Reply-To: <20200317093922.20785-16-lkundrak@v3.sk>
+Sender: linux-serial-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Mar 17, 2020 at 10:39:07AM +0100, Lubomir Rintel wrote:
-> These ports are compatible with NS8250 and handled by the same driver.
-> Get rid of the extra document that fails to document the properties that
-> are actually supported.
+On Tue, Mar 17, 2020 at 10:39:09AM +0100, Lubomir Rintel wrote:
+> Add compatible strings for the boards we have in tree. At the same time,
+> fix the MMP3 compatible string: the preferred vendor name for Marvell is
+> "marvell", not "mrvl", and indeed "marvell,mmp3" has been actively used,
+> not "mrvl,mmp3".
+> 
+> Fixes: 95aecb71b84e ("dt-bindings: arm: mrvl: Document MMP3 compatible string")
+> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
 
-Hi Lubmir
+What is implied by the Fixes: tag? Do you expect this to be
+back ported? Is anything actually broken here?
 
-This is needs a bit closer examination. By the PXA maintainers. It
-appears there are two serial drivers, the 8250 and a PXA specific
-driver.
+Apart from that:
 
-	Andrew
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+
+    Andrew

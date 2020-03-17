@@ -1,7 +1,7 @@
 From: Lubomir Rintel <lkundrak-NGH9Lh4a5iE@public.gmane.org>
-Subject: [PATCH 02/28] ARM: dts: dove: Fix interrupt controller node name
-Date: Tue, 17 Mar 2020 10:38:56 +0100
-Message-ID: <20200317093922.20785-3-lkundrak@v3.sk>
+Subject: [PATCH 04/28] ARM: dts: pxa168: Fix the gpio interrupt cell number
+Date: Tue, 17 Mar 2020 10:38:58 +0100
+Message-ID: <20200317093922.20785-5-lkundrak@v3.sk>
 References: <20200317093922.20785-1-lkundrak@v3.sk>
 Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -30,29 +30,26 @@ In-Reply-To: <20200317093922.20785-1-lkundrak-NGH9Lh4a5iE@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The current ones makes validation unhappy:
-
-  dove-d3plug.dt.yaml: main-interrupt-ctrl@20200: $nodename:0:
-      'main-interrupt-ctrl@20200' does not match
-      '^interrupt-controller(@[0-9a-f,]+)*$'
+gpio-pxa uses two cell to encode the interrupt source: the pin number
+and the trigger type. Adjust the device node accordingly.
 
 Signed-off-by: Lubomir Rintel <lkundrak-NGH9Lh4a5iE@public.gmane.org>
 ---
- arch/arm/boot/dts/dove.dtsi | 2 +-
+ arch/arm/boot/dts/pxa168.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/dove.dtsi b/arch/arm/boot/dts/dove.dtsi
-index 3081b04e8c08f..ddd4653f52811 100644
---- a/arch/arm/boot/dts/dove.dtsi
-+++ b/arch/arm/boot/dts/dove.dtsi
-@@ -248,7 +248,7 @@ bridge_intc: bridge-interrupt-ctrl@20110 {
- 				marvell,#interrupts = <5>;
- 			};
- 
--			intc: main-interrupt-ctrl@20200 {
-+			intc: interrupt-controller@20200 {
- 				compatible = "marvell,orion-intc";
+diff --git a/arch/arm/boot/dts/pxa168.dtsi b/arch/arm/boot/dts/pxa168.dtsi
+index c39d00fe07982..c6ac85e362d8a 100644
+--- a/arch/arm/boot/dts/pxa168.dtsi
++++ b/arch/arm/boot/dts/pxa168.dtsi
+@@ -94,7 +94,7 @@ gpio@d4019000 {
+ 				resets = <&soc_clocks PXA168_CLK_GPIO>;
+ 				interrupt-names = "gpio_mux";
  				interrupt-controller;
- 				#interrupt-cells = <1>;
+-				#interrupt-cells = <1>;
++				#interrupt-cells = <2>;
+ 				ranges;
+ 
+ 				gcb0: gpio@d4019000 {
 -- 
 2.25.1

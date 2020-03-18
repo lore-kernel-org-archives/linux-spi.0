@@ -1,91 +1,82 @@
-From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v5 00/12] NXP DSPI bugfixes and support for LS1028A
-Date: Wed, 18 Mar 2020 21:05:02 +0200
-Message-ID: <CA+h21hrd9CduD-Gw17HjALdP2u8b+iXnpdQadM+jra-zsidYjA@mail.gmail.com>
-References: <20200318001603.9650-1-olteanv@gmail.com> <d37b6e0f8a35ae61bbfe147cd5809ec2@walle.cc>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Shawn Guo <shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Esben Haabendal <eha-/iRVSOupHO4@public.gmane.org>,
-        angelo-BIYBQhTR83Y@public.gmane.org, andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-        "Gustavo A. R. Silva" <gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org>,
-        Wei Chen <weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, Mohamed Hosny <mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-        peng.ma-3arQi8VN3Tc@public.gmane.org
-To: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Applied "spi: mxs: Drop GPIO includes" to the spi tree
+Date: Wed, 18 Mar 2020 19:08:06 +0000
+Message-ID: <applied-20200317092457.264055-1-linus.walleij@linaro.org>
+References: <20200317092457.264055-1-linus.walleij@linaro.org>
+Cc: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <d37b6e0f8a35ae61bbfe147cd5809ec2-QKn5cuLxLXY@public.gmane.org>
+In-Reply-To: <20200317092457.264055-1-linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, 18 Mar 2020 at 21:03, Michael Walle <michael-QKn5cuLxLXY@public.gmane.org> wrote:
->
-> Am 2020-03-18 01:15, schrieb Vladimir Oltean:
-> > From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
-> >
-> > This series addresses a few issues that were missed during the previous
-> > series "[PATCH 00/12] TCFQ to XSPI migration for NXP DSPI driver", on
-> > SoCs other than LS1021A and LS1043A. DMA mode has been completely
-> > broken
-> > by that series, and XSPI mode never worked on little-endian
-> > controllers.
-> >
-> > Then it introduces support for the LS1028A chip, whose compatible has
-> > recently been documented here:
-> >
-> > https://lore.kernel.org/linux-devicetree/20200218171418.18297-1-michael-QKn5cuLxLXY@public.gmane.org/
-> >
-> > The device tree for the LS1028A SoC is extended with DMA channels
-> > definition, such that even though the default operating mode is XSPI,
-> > one can simply change DSPI_XSPI_MODE to DSPI_DMA_MODE in the
-> > devtype_data structure of the driver and use that instead.
-> >
-> > Compared to earlier v4, the only change is in patch 05/12 to fix a race
-> > condition signaled by Michael Walle here:
-> > https://lkml.org/lkml/2020/3/17/740
-> >
-> > I don't expect the "fixes" patches to reach very far down the stable
-> > pipe, since there has been pretty heavy refactoring in this driver.
-> >
-> > For testing, benchmarking and debugging, the mikroBUS connector on the
-> > LS1028A-RDB is made available via spidev.
->
-> Patches 1-11:
-> Tested-by: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>
->
-> Thanks Vladimir for the great work.
->
+The patch
 
-Excellent! Thanks Michael for the patience!
+   spi: mxs: Drop GPIO includes
 
-> -michael
->
-> >
-> > Vladimir Oltean (12):
-> >   spi: spi-fsl-dspi: Don't access reserved fields in SPI_MCR
-> >   spi: spi-fsl-dspi: Fix little endian access to PUSHR CMD and TXDATA
-> >   spi: spi-fsl-dspi: Fix bits-per-word acceleration in DMA mode
-> >   spi: spi-fsl-dspi: Avoid reading more data than written in EOQ mode
-> >   spi: spi-fsl-dspi: Protect against races on dspi->words_in_flight
-> >   spi: spi-fsl-dspi: Replace interruptible wait queue with a simple
-> >     completion
-> >   spi: spi-fsl-dspi: Avoid NULL pointer in dspi_slave_abort for non-DMA
-> >     mode
-> >   spi: spi-fsl-dspi: Fix interrupt-less DMA mode taking an XSPI code
-> >     path
-> >   spi: spi-fsl-dspi: Move invariant configs out of
-> >     dspi_transfer_one_message
-> >   spi: spi-fsl-dspi: Add support for LS1028A
-> >   arm64: dts: ls1028a: Specify the DMA channels for the DSPI
-> > controllers
-> >   arm64: dts: ls1028a-rdb: Add a spidev node for the mikroBUS
-> >
-> >  .../boot/dts/freescale/fsl-ls1028a-rdb.dts    |  14 +
-> >  .../arm64/boot/dts/freescale/fsl-ls1028a.dtsi |   6 +
-> >  drivers/spi/spi-fsl-dspi.c                    | 324 +++++++++---------
-> >  3 files changed, 182 insertions(+), 162 deletions(-)
+has been applied to the spi tree at
 
--Vladimir
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.7
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+>From 85dadb718cc23492ef6edbc9af6c765a0c0aca66 Mon Sep 17 00:00:00 2001
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Date: Tue, 17 Mar 2020 10:24:57 +0100
+Subject: [PATCH] spi: mxs: Drop GPIO includes
+
+This driver is not using any symbols from the GPIO .h files
+so drop them.
+
+It was however implicitly using <linux/pinctrl/consumer.h>
+so include that instead.
+
+Cc: Fabio Estevam <fabio.estevam-3arQi8VN3Tc@public.gmane.org>
+Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Link: https://lore.kernel.org/r/20200317092457.264055-1-linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
+Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-mxs.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
+index dce85ee07cd0..918918a9e049 100644
+--- a/drivers/spi/spi-mxs.c
++++ b/drivers/spi/spi-mxs.c
+@@ -22,7 +22,6 @@
+ #include <linux/ioport.h>
+ #include <linux/of.h>
+ #include <linux/of_device.h>
+-#include <linux/of_gpio.h>
+ #include <linux/platform_device.h>
+ #include <linux/delay.h>
+ #include <linux/interrupt.h>
+@@ -32,7 +31,7 @@
+ #include <linux/clk.h>
+ #include <linux/err.h>
+ #include <linux/completion.h>
+-#include <linux/gpio.h>
++#include <linux/pinctrl/consumer.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/module.h>
+-- 
+2.20.1

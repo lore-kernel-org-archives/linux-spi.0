@@ -1,7 +1,8 @@
 From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v5 00/12] NXP DSPI bugfixes and support for LS1028A
-Date: Wed, 18 Mar 2020 02:15:51 +0200
-Message-ID: <20200318001603.9650-1-olteanv@gmail.com>
+Subject: [PATCH v5 01/12] spi: spi-fsl-dspi: Don't access reserved fields in SPI_MCR
+Date: Wed, 18 Mar 2020 02:15:52 +0200
+Message-ID: <20200318001603.9650-2-olteanv@gmail.com>
+References: <20200318001603.9650-1-olteanv@gmail.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
         devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, eha-/iRVSOupHO4@public.gmane.org, angelo-BIYBQhTR83Y@public.gmane.org,
@@ -9,58 +10,62 @@ Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY7
         mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org, michael-QKn5cuLxLXY@public.gmane.org, peng.ma-3arQi8VN3Tc@public.gmane.org
 To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200318001603.9650-1-olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 
-This series addresses a few issues that were missed during the previous
-series "[PATCH 00/12] TCFQ to XSPI migration for NXP DSPI driver", on
-SoCs other than LS1021A and LS1043A. DMA mode has been completely broken
-by that series, and XSPI mode never worked on little-endian controllers.
+The SPI_MCR_PCSIS macro assumes that the controller has a number of chip
+select signals equal to 6. That is not always the case, but actually is
+described through the driver-specific "spi-num-chipselects" device tree
+binding. LS1028A for example only has 4 chip selects.
 
-Then it introduces support for the LS1028A chip, whose compatible has
-recently been documented here:
+Don't write to the upper bits of the PCSIS field, which are reserved in
+the reference manual.
 
-https://lore.kernel.org/linux-devicetree/20200218171418.18297-1-michael-QKn5cuLxLXY@public.gmane.org/
+Fixes: 349ad66c0ab0 ("spi:Add Freescale DSPI driver for Vybrid VF610 platform")
+Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
+---
+Changes in v5:
+None.
 
-The device tree for the LS1028A SoC is extended with DMA channels
-definition, such that even though the default operating mode is XSPI,
-one can simply change DSPI_XSPI_MODE to DSPI_DMA_MODE in the
-devtype_data structure of the driver and use that instead.
+Changes in v4:
+None.
 
-Compared to earlier v4, the only change is in patch 05/12 to fix a race
-condition signaled by Michael Walle here:
-https://lkml.org/lkml/2020/3/17/740
+Changes in v3:
+None.
 
-I don't expect the "fixes" patches to reach very far down the stable
-pipe, since there has been pretty heavy refactoring in this driver.
+Changes in v2:
+Remove duplicate phrase in commit message.
 
-For testing, benchmarking and debugging, the mikroBUS connector on the
-LS1028A-RDB is made available via spidev.
+ drivers/spi/spi-fsl-dspi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Vladimir Oltean (12):
-  spi: spi-fsl-dspi: Don't access reserved fields in SPI_MCR
-  spi: spi-fsl-dspi: Fix little endian access to PUSHR CMD and TXDATA
-  spi: spi-fsl-dspi: Fix bits-per-word acceleration in DMA mode
-  spi: spi-fsl-dspi: Avoid reading more data than written in EOQ mode
-  spi: spi-fsl-dspi: Protect against races on dspi->words_in_flight
-  spi: spi-fsl-dspi: Replace interruptible wait queue with a simple
-    completion
-  spi: spi-fsl-dspi: Avoid NULL pointer in dspi_slave_abort for non-DMA
-    mode
-  spi: spi-fsl-dspi: Fix interrupt-less DMA mode taking an XSPI code
-    path
-  spi: spi-fsl-dspi: Move invariant configs out of
-    dspi_transfer_one_message
-  spi: spi-fsl-dspi: Add support for LS1028A
-  arm64: dts: ls1028a: Specify the DMA channels for the DSPI controllers
-  arm64: dts: ls1028a-rdb: Add a spidev node for the mikroBUS
-
- .../boot/dts/freescale/fsl-ls1028a-rdb.dts    |  14 +
- .../arm64/boot/dts/freescale/fsl-ls1028a.dtsi |   6 +
- drivers/spi/spi-fsl-dspi.c                    | 324 +++++++++---------
- 3 files changed, 182 insertions(+), 162 deletions(-)
-
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 50e3382f0c50..6ca35881881b 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -22,7 +22,7 @@
+ 
+ #define SPI_MCR				0x00
+ #define SPI_MCR_MASTER			BIT(31)
+-#define SPI_MCR_PCSIS			(0x3F << 16)
++#define SPI_MCR_PCSIS(x)		((x) << 16)
+ #define SPI_MCR_CLR_TXF			BIT(11)
+ #define SPI_MCR_CLR_RXF			BIT(10)
+ #define SPI_MCR_XSPI			BIT(3)
+@@ -1200,7 +1200,10 @@ static const struct regmap_config dspi_xspi_regmap_config[] = {
+ 
+ static void dspi_init(struct fsl_dspi *dspi)
+ {
+-	unsigned int mcr = SPI_MCR_PCSIS;
++	unsigned int mcr;
++
++	/* Set idle states for all chip select signals to high */
++	mcr = SPI_MCR_PCSIS(GENMASK(dspi->ctlr->num_chipselect - 1, 0));
+ 
+ 	if (dspi->devtype_data->trans_mode == DSPI_XSPI_MODE)
+ 		mcr |= SPI_MCR_XSPI;
 -- 
 2.17.1

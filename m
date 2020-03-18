@@ -1,7 +1,7 @@
 From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v5 01/12] spi: spi-fsl-dspi: Don't access reserved fields in SPI_MCR
-Date: Wed, 18 Mar 2020 02:15:52 +0200
-Message-ID: <20200318001603.9650-2-olteanv@gmail.com>
+Subject: [PATCH v5 04/12] spi: spi-fsl-dspi: Avoid reading more data than written in EOQ mode
+Date: Wed, 18 Mar 2020 02:15:55 +0200
+Message-ID: <20200318001603.9650-5-olteanv@gmail.com>
 References: <20200318001603.9650-1-olteanv@gmail.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
@@ -9,63 +9,55 @@ Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY7
         andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org, weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org,
         mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org, michael-QKn5cuLxLXY@public.gmane.org, peng.ma-3arQi8VN3Tc@public.gmane.org
 To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <20200318001603.9650-1-olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 
-The SPI_MCR_PCSIS macro assumes that the controller has a number of chip
-select signals equal to 6. That is not always the case, but actually is
-described through the driver-specific "spi-num-chipselects" device tree
-binding. LS1028A for example only has 4 chip selects.
+If dspi->words_in_flight is populated with the hardware FIFO size,
+then in dspi_fifo_read it will attempt to read more data at the end of a
+buffer that is not a multiple of 16 bytes in length. It will probably
+time out attempting to do so.
 
-Don't write to the upper bits of the PCSIS field, which are reserved in
-the reference manual.
+So limit the num_fifo_entries variable to the actual number of FIFO
+entries that is going to be used.
 
-Fixes: 349ad66c0ab0 ("spi:Add Freescale DSPI driver for Vybrid VF610 platform")
+Fixes: d59c90a2400f ("spi: spi-fsl-dspi: Convert TCFQ users to XSPI FIFO mode")
 Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 ---
 Changes in v5:
 None.
 
 Changes in v4:
-None.
-
-Changes in v3:
-None.
-
-Changes in v2:
-Remove duplicate phrase in commit message.
+Patch is new.
 
  drivers/spi/spi-fsl-dspi.c | 7 +++++--
  1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 50e3382f0c50..6ca35881881b 100644
+index 8f2b73cc6ed7..51224b772680 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -22,7 +22,7 @@
+@@ -739,13 +739,16 @@ static void dspi_eoq_fifo_write(struct fsl_dspi *dspi)
+ 	int num_fifo_entries = dspi->devtype_data->fifo_size;
+ 	u16 xfer_cmd = dspi->tx_cmd;
  
- #define SPI_MCR				0x00
- #define SPI_MCR_MASTER			BIT(31)
--#define SPI_MCR_PCSIS			(0x3F << 16)
-+#define SPI_MCR_PCSIS(x)		((x) << 16)
- #define SPI_MCR_CLR_TXF			BIT(11)
- #define SPI_MCR_CLR_RXF			BIT(10)
- #define SPI_MCR_XSPI			BIT(3)
-@@ -1200,7 +1200,10 @@ static const struct regmap_config dspi_xspi_regmap_config[] = {
- 
- static void dspi_init(struct fsl_dspi *dspi)
- {
--	unsigned int mcr = SPI_MCR_PCSIS;
-+	unsigned int mcr;
++	if (num_fifo_entries * dspi->oper_word_size > dspi->len)
++		num_fifo_entries = dspi->len / dspi->oper_word_size;
 +
-+	/* Set idle states for all chip select signals to high */
-+	mcr = SPI_MCR_PCSIS(GENMASK(dspi->ctlr->num_chipselect - 1, 0));
+ 	dspi->words_in_flight = num_fifo_entries;
  
- 	if (dspi->devtype_data->trans_mode == DSPI_XSPI_MODE)
- 		mcr |= SPI_MCR_XSPI;
+ 	/* Fill TX FIFO with as many transfers as possible */
+-	while (dspi->len && num_fifo_entries--) {
++	while (num_fifo_entries--) {
+ 		dspi->tx_cmd = xfer_cmd;
+ 		/* Request EOQF for last transfer in FIFO */
+-		if (dspi->len == dspi->oper_word_size || num_fifo_entries == 0)
++		if (num_fifo_entries == 0)
+ 			dspi->tx_cmd |= SPI_PUSHR_CMD_EOQ;
+ 		/* Write combined TX FIFO and CMD FIFO entry */
+ 		dspi_pushr_write(dspi);
 -- 
 2.17.1

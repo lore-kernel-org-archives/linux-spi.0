@@ -1,7 +1,7 @@
 From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v5 07/12] spi: spi-fsl-dspi: Avoid NULL pointer in dspi_slave_abort for non-DMA mode
-Date: Wed, 18 Mar 2020 02:15:58 +0200
-Message-ID: <20200318001603.9650-8-olteanv@gmail.com>
+Subject: [PATCH v5 09/12] spi: spi-fsl-dspi: Move invariant configs out of dspi_transfer_one_message
+Date: Wed, 18 Mar 2020 02:16:00 +0200
+Message-ID: <20200318001603.9650-10-olteanv@gmail.com>
 References: <20200318001603.9650-1-olteanv@gmail.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
@@ -16,10 +16,10 @@ List-ID: <linux-spi.vger.kernel.org>
 
 From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 
-The driver does not create the dspi->dma structure unless operating in
-DSPI_DMA_MODE, so it makes sense to check for that.
+The operating mode (DMA, XSPI, EOQ) is not going to change across the
+lifetime of the device. So it makes no sense to keep writing to SPI_RSER
+on each message. Move this configuration to dspi_init instead.
 
-Fixes: f4b323905d8b ("spi: Introduce dspi_slave_abort() function for NXP's dspi SPI driver")
 Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 ---
 Changes in v5:
@@ -28,25 +28,115 @@ None.
 Changes in v4:
 Patch is new.
 
- drivers/spi/spi-fsl-dspi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 55 ++++++++++++++++++++------------------
+ 1 file changed, 29 insertions(+), 26 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index b65c21d048f9..81e22b6eadc7 100644
+index fcc6f20b6631..5873752a091e 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -1192,8 +1192,10 @@ static int dspi_slave_abort(struct spi_master *master)
- 	 * Terminate all pending DMA transactions for the SPI working
- 	 * in SLAVE mode.
- 	 */
--	dmaengine_terminate_sync(dspi->dma->chan_rx);
--	dmaengine_terminate_sync(dspi->dma->chan_tx);
-+	if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
-+		dmaengine_terminate_sync(dspi->dma->chan_rx);
-+		dmaengine_terminate_sync(dspi->dma->chan_tx);
-+	}
+@@ -900,7 +900,6 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ {
+ 	struct fsl_dspi *dspi = spi_controller_get_devdata(ctlr);
+ 	struct spi_device *spi = message->spi;
+-	enum dspi_trans_mode trans_mode;
+ 	struct spi_transfer *transfer;
+ 	int status = 0;
  
- 	/* Clear the internal DSPI RX and TX FIFO buffers */
- 	regmap_update_bits(dspi->regmap, SPI_MCR,
+@@ -942,30 +941,11 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 		spi_take_timestamp_pre(dspi->ctlr, dspi->cur_transfer,
+ 				       dspi->progress, !dspi->irq);
+ 
+-		trans_mode = dspi->devtype_data->trans_mode;
+-		switch (trans_mode) {
+-		case DSPI_EOQ_MODE:
+-			regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_EOQFE);
+-			dspi_fifo_write(dspi);
+-			break;
+-		case DSPI_XSPI_MODE:
+-			regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_CMDTCFE);
+-			dspi_fifo_write(dspi);
+-			break;
+-		case DSPI_DMA_MODE:
+-			regmap_write(dspi->regmap, SPI_RSER,
+-				     SPI_RSER_TFFFE | SPI_RSER_TFFFD |
+-				     SPI_RSER_RFDFE | SPI_RSER_RFDFD);
++		if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
+ 			status = dspi_dma_xfer(dspi);
+-			break;
+-		default:
+-			dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
+-				trans_mode);
+-			status = -EINVAL;
+-			goto out;
+-		}
++		} else {
++			dspi_fifo_write(dspi);
+ 
+-		if (trans_mode != DSPI_DMA_MODE) {
+ 			if (dspi->irq) {
+ 				wait_for_completion(&dspi->xfer_done);
+ 				reinit_completion(&dspi->xfer_done);
+@@ -975,11 +955,12 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 				} while (status == -EINPROGRESS);
+ 			}
+ 		}
++		if (status)
++			break;
+ 
+ 		spi_transfer_delay_exec(transfer);
+ 	}
+ 
+-out:
+ 	message->status = status;
+ 	spi_finalize_current_message(ctlr);
+ 
+@@ -1170,7 +1151,7 @@ static const struct regmap_config dspi_xspi_regmap_config[] = {
+ 	},
+ };
+ 
+-static void dspi_init(struct fsl_dspi *dspi)
++static int dspi_init(struct fsl_dspi *dspi)
+ {
+ 	unsigned int mcr;
+ 
+@@ -1184,6 +1165,26 @@ static void dspi_init(struct fsl_dspi *dspi)
+ 
+ 	regmap_write(dspi->regmap, SPI_MCR, mcr);
+ 	regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
++
++	switch (dspi->devtype_data->trans_mode) {
++	case DSPI_EOQ_MODE:
++		regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_EOQFE);
++		break;
++	case DSPI_XSPI_MODE:
++		regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_CMDTCFE);
++		break;
++	case DSPI_DMA_MODE:
++		regmap_write(dspi->regmap, SPI_RSER,
++			     SPI_RSER_TFFFE | SPI_RSER_TFFFD |
++			     SPI_RSER_RFDFE | SPI_RSER_RFDFD);
++		break;
++	default:
++		dev_err(&dspi->pdev->dev, "unsupported trans_mode %u\n",
++			dspi->devtype_data->trans_mode);
++		return -EINVAL;
++	}
++
++	return 0;
+ }
+ 
+ static int dspi_slave_abort(struct spi_master *master)
+@@ -1339,7 +1340,9 @@ static int dspi_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto out_ctlr_put;
+ 
+-	dspi_init(dspi);
++	ret = dspi_init(dspi);
++	if (ret)
++		goto out_clk_put;
+ 
+ 	dspi->irq = platform_get_irq(pdev, 0);
+ 	if (dspi->irq <= 0) {
 -- 
 2.17.1

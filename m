@@ -1,7 +1,7 @@
 From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v5 04/12] spi: spi-fsl-dspi: Avoid reading more data than written in EOQ mode
-Date: Wed, 18 Mar 2020 02:15:55 +0200
-Message-ID: <20200318001603.9650-5-olteanv@gmail.com>
+Subject: [PATCH v5 05/12] spi: spi-fsl-dspi: Protect against races on dspi->words_in_flight
+Date: Wed, 18 Mar 2020 02:15:56 +0200
+Message-ID: <20200318001603.9650-6-olteanv@gmail.com>
 References: <20200318001603.9650-1-olteanv@gmail.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
@@ -16,48 +16,253 @@ List-ID: <linux-spi.vger.kernel.org>
 
 From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 
-If dspi->words_in_flight is populated with the hardware FIFO size,
-then in dspi_fifo_read it will attempt to read more data at the end of a
-buffer that is not a multiple of 16 bytes in length. It will probably
-time out attempting to do so.
+dspi->words_in_flight is a variable populated in the *_write functions
+and used in the dspi_fifo_read function. It is also used in
+dspi_fifo_write, immediately after transmission, to update the
+message->actual_length variable used by higher layers such as spi-mem
+for integrity checking.
 
-So limit the num_fifo_entries variable to the actual number of FIFO
-entries that is going to be used.
+But it may happen that the IRQ which calls dspi_fifo_read to be
+triggered before the updating of message->actual_length takes place. In
+that case, dspi_fifo_read will decrement dspi->words_in_flight to -1,
+and that will cause an invalid modification of message->actual_length.
+
+For that, we make the simplest fix possible: to not decrement the actual
+shared variable in dspi->words_in_flight from dspi_fifo_read, but
+actually a copy of it which is on stack.
+
+But even if dspi_fifo_read from the next IRQ does not interfere with the
+dspi_fifo_write of the current chunk, the *next* dspi_fifo_write still
+can. So we must assume that everything after the last write to the TX
+FIFO can be preempted by the "TX complete" IRQ, and the dspi_fifo_write
+function must be safe against that. This means refactoring the 2
+flavours of FIFO writes (for EOQ and XSPI) such that the calculation of
+the number of words to be written is common and happens a priori. This
+way, the code for updating the message->actual_length variable works
+with a copy and not with the volatile dspi->words_in_flight.
+
+After some interior debate, the dspi->progress variable used for
+software timestamping was *not* backed up against preemption in a copy
+on stack. Because if preemption does occur between
+spi_take_timestamp_pre and spi_take_timestamp_post, there's really no
+point in trying to save anything. The first-in-time
+spi_take_timestamp_post call with a dspi->progress higher than the
+requested xfer->ptp_sts_word_post will trigger xfer->timestamped = true
+anyway and will close the deal.
+
+To understand the above a bit better, consider a transfer with
+xfer->ptp_sts_word_pre = xfer->ptp_sts_word_post = 3, and
+xfer->bits_per_words = 8 (so byte 3 needs to be timestamped). The DSPI
+controller timestamps in chunks of 4 bytes at a time, and preemption
+occurs in the middle of timestamping the first chunk:
+
+  spi_take_timestamp_pre(0)
+    .
+    . (preemption)
+    .
+    . spi_take_timestamp_pre(4)
+    .
+    . spi_take_timestamp_post(7)
+    .
+  spi_take_timestamp_post(3)
+
+So the reason I'm not bothering to back up dspi->progress for that
+spi_take_timestamp_post(3) is that spi_take_timestamp_post(7) is going
+to (a) be more honest, (b) provide better accuracy and (c) already
+render the spi_take_timestamp_post(3) into a noop by setting
+xfer->timestamped = true anyway.
 
 Fixes: d59c90a2400f ("spi: spi-fsl-dspi: Convert TCFQ users to XSPI FIFO mode")
+Reported-by: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>
 Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 ---
 Changes in v5:
-None.
+Enhanced the patch such that dspi->words_in_flight is protected against
+races with the next dspi_fifo_write too. This implied rather major
+refactoring of dspi_xspi_fifo_write and dspi_eoq_fifo_write
+unfortunately. Perhaps the good side of things is that the
+dspi_xspi_write function has now disappeared (has merged with
+dspi_xspi_fifo_write).
 
 Changes in v4:
 Patch is new.
 
- drivers/spi/spi-fsl-dspi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 111 +++++++++++++++++--------------------
+ 1 file changed, 52 insertions(+), 59 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 8f2b73cc6ed7..51224b772680 100644
+index 51224b772680..f7e1e7085e31 100644
 --- a/drivers/spi/spi-fsl-dspi.c
 +++ b/drivers/spi/spi-fsl-dspi.c
-@@ -739,13 +739,16 @@ static void dspi_eoq_fifo_write(struct fsl_dspi *dspi)
- 	int num_fifo_entries = dspi->devtype_data->fifo_size;
- 	u16 xfer_cmd = dspi->tx_cmd;
+@@ -669,17 +669,26 @@ static void dspi_pushr_txdata_write(struct fsl_dspi *dspi, u16 txdata)
+ 	regmap_write(dspi->regmap_pushr, dspi->pushr_tx, txdata);
+ }
  
-+	if (num_fifo_entries * dspi->oper_word_size > dspi->len)
-+		num_fifo_entries = dspi->len / dspi->oper_word_size;
-+
- 	dspi->words_in_flight = num_fifo_entries;
+-static void dspi_xspi_write(struct fsl_dspi *dspi, int cnt, bool eoq)
++static void dspi_xspi_fifo_write(struct fsl_dspi *dspi, int num_words)
+ {
++	int num_bytes = num_words * dspi->oper_word_size;
+ 	u16 tx_cmd = dspi->tx_cmd;
+ 
+-	if (eoq)
++	/*
++	 * If the PCS needs to de-assert (i.e. we're at the end of the buffer
++	 * and cs_change does not want the PCS to stay on), then we need a new
++	 * PUSHR command, since this one (for the body of the buffer)
++	 * necessarily has the CONT bit set.
++	 * So send one word less during this go, to force a split and a command
++	 * with a single word next time, when CONT will be unset.
++	 */
++	if (!(dspi->tx_cmd & SPI_PUSHR_CMD_CONT) && num_bytes == dspi->len)
+ 		tx_cmd |= SPI_PUSHR_CMD_EOQ;
+ 
+ 	/* Update CTARE */
+ 	regmap_write(dspi->regmap, SPI_CTARE(0),
+ 		     SPI_FRAME_EBITS(dspi->oper_bits_per_word) |
+-		     SPI_CTARE_DTCP(cnt));
++		     SPI_CTARE_DTCP(num_words));
+ 
+ 	/*
+ 	 * Write the CMD FIFO entry first, and then the two
+@@ -688,7 +697,7 @@ static void dspi_xspi_write(struct fsl_dspi *dspi, int cnt, bool eoq)
+ 	dspi_pushr_cmd_write(dspi, tx_cmd);
  
  	/* Fill TX FIFO with as many transfers as possible */
--	while (dspi->len && num_fifo_entries--) {
-+	while (num_fifo_entries--) {
+-	while (cnt--) {
++	while (num_words--) {
+ 		u32 data = dspi_pop_tx(dspi);
+ 
+ 		dspi_pushr_txdata_write(dspi, data & 0xFFFF);
+@@ -697,58 +706,15 @@ static void dspi_xspi_write(struct fsl_dspi *dspi, int cnt, bool eoq)
+ 	}
+ }
+ 
+-static void dspi_xspi_fifo_write(struct fsl_dspi *dspi)
+-{
+-	int num_fifo_entries = dspi->devtype_data->fifo_size;
+-	int bytes_in_flight;
+-	bool eoq = false;
+-
+-	/* In XSPI mode each 32-bit word occupies 2 TX FIFO entries */
+-	if (dspi->oper_word_size == 4)
+-		num_fifo_entries /= 2;
+-
+-	/*
+-	 * Integer division intentionally trims off odd (or non-multiple of 4)
+-	 * numbers of bytes at the end of the buffer, which will be sent next
+-	 * time using a smaller oper_word_size.
+-	 */
+-	dspi->words_in_flight = dspi->len / dspi->oper_word_size;
+-
+-	if (dspi->words_in_flight > num_fifo_entries)
+-		dspi->words_in_flight = num_fifo_entries;
+-
+-	bytes_in_flight = dspi->words_in_flight * dspi->oper_word_size;
+-
+-	/*
+-	 * If the PCS needs to de-assert (i.e. we're at the end of the buffer
+-	 * and cs_change does not want the PCS to stay on), then we need a new
+-	 * PUSHR command, since this one (for the body of the buffer)
+-	 * necessarily has the CONT bit set.
+-	 * So send one word less during this go, to force a split and a command
+-	 * with a single word next time, when CONT will be unset.
+-	 */
+-	if (!(dspi->tx_cmd & SPI_PUSHR_CMD_CONT) &&
+-	    bytes_in_flight == dspi->len)
+-		eoq = true;
+-
+-	dspi_xspi_write(dspi, dspi->words_in_flight, eoq);
+-}
+-
+-static void dspi_eoq_fifo_write(struct fsl_dspi *dspi)
++static void dspi_eoq_fifo_write(struct fsl_dspi *dspi, int num_words)
+ {
+-	int num_fifo_entries = dspi->devtype_data->fifo_size;
+ 	u16 xfer_cmd = dspi->tx_cmd;
+ 
+-	if (num_fifo_entries * dspi->oper_word_size > dspi->len)
+-		num_fifo_entries = dspi->len / dspi->oper_word_size;
+-
+-	dspi->words_in_flight = num_fifo_entries;
+-
+ 	/* Fill TX FIFO with as many transfers as possible */
+-	while (num_fifo_entries--) {
++	while (num_words--) {
  		dspi->tx_cmd = xfer_cmd;
  		/* Request EOQF for last transfer in FIFO */
--		if (dspi->len == dspi->oper_word_size || num_fifo_entries == 0)
-+		if (num_fifo_entries == 0)
+-		if (num_fifo_entries == 0)
++		if (num_words == 0)
  			dspi->tx_cmd |= SPI_PUSHR_CMD_EOQ;
  		/* Write combined TX FIFO and CMD FIFO entry */
  		dspi_pushr_write(dspi);
+@@ -765,8 +731,10 @@ static u32 dspi_popr_read(struct fsl_dspi *dspi)
+ 
+ static void dspi_fifo_read(struct fsl_dspi *dspi)
+ {
++	int num_fifo_entries = dspi->words_in_flight;
++
+ 	/* Read one FIFO entry and push to rx buffer */
+-	while (dspi->words_in_flight--)
++	while (num_fifo_entries--)
+ 		dspi_push_rx(dspi, dspi_popr_read(dspi));
+ }
+ 
+@@ -832,23 +800,48 @@ static void dspi_setup_accel(struct fsl_dspi *dspi)
+ 
+ static void dspi_fifo_write(struct fsl_dspi *dspi)
+ {
++	int num_fifo_entries = dspi->devtype_data->fifo_size;
+ 	struct spi_transfer *xfer = dspi->cur_transfer;
+ 	struct spi_message *msg = dspi->cur_msg;
+-	int bytes_sent;
++	int num_words, num_bytes;
+ 
+ 	dspi_setup_accel(dspi);
+ 
++	/* In XSPI mode each 32-bit word occupies 2 TX FIFO entries */
++	if (dspi->oper_word_size == 4)
++		num_fifo_entries /= 2;
++
++	/*
++	 * Integer division intentionally trims off odd (or non-multiple of 4)
++	 * numbers of bytes at the end of the buffer, which will be sent next
++	 * time using a smaller oper_word_size.
++	 */
++	num_words = dspi->len / dspi->oper_word_size;
++	if (num_words > num_fifo_entries)
++		num_words = num_fifo_entries;
++
++	/* Update total number of bytes that were transferred */
++	num_bytes = num_words * dspi->oper_word_size;
++	msg->actual_length += num_bytes;
++	dspi->progress += num_bytes / DIV_ROUND_UP(xfer->bits_per_word, 8);
++
++	/*
++	 * Update shared variable for use in the next interrupt (both in
++	 * dspi_fifo_read and in dspi_fifo_write).
++	 */
++	dspi->words_in_flight = num_words;
++
+ 	spi_take_timestamp_pre(dspi->ctlr, xfer, dspi->progress, !dspi->irq);
+ 
+ 	if (dspi->devtype_data->trans_mode == DSPI_EOQ_MODE)
+-		dspi_eoq_fifo_write(dspi);
++		dspi_eoq_fifo_write(dspi, num_words);
+ 	else
+-		dspi_xspi_fifo_write(dspi);
+-
+-	/* Update total number of bytes that were transferred */
+-	bytes_sent = dspi->words_in_flight * dspi->oper_word_size;
+-	msg->actual_length += bytes_sent;
+-	dspi->progress += bytes_sent / DIV_ROUND_UP(xfer->bits_per_word, 8);
++		dspi_xspi_fifo_write(dspi, num_words);
++	/*
++	 * Everything after this point is in a potential race with the next
++	 * interrupt, so we must never use dspi->words_in_flight again since it
++	 * might already be modified by the next dspi_fifo_write.
++	 */
+ 
+ 	spi_take_timestamp_post(dspi->ctlr, dspi->cur_transfer,
+ 				dspi->progress, !dspi->irq);
 -- 
 2.17.1

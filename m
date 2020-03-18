@@ -1,130 +1,100 @@
-From: Evan Green <evgreen@chromium.org>
-Subject: Re: [PATCH V2 3/8] soc: qcom-geni-se: Add interconnect support to fix
- earlycon crash
-Date: Wed, 18 Mar 2020 09:22:23 -0700
-Message-ID: <CAE=gft6=rziOr+-mwHZO+ebQBDDMXMqvCFyuHwOoWjhuK8kaUg@mail.gmail.com>
+From: Evan Green <evgreen-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH V2 7/8] spi: spi-qcom-qspi: Add interconnect support
+Date: Wed, 18 Mar 2020 09:30:31 -0700
+Message-ID: <CAE=gft4xL9+GN2NrM9ewyPg0Fog3pnf_sLGjWRNOg7KynNh-Dg@mail.gmail.com>
 References: <1584105134-13583-1-git-send-email-akashast@codeaurora.org>
- <1584105134-13583-4-git-send-email-akashast@codeaurora.org>
- <20200313204441.GJ144492@google.com> <1f86fdf0-df7c-4e4a-d4d8-8b0162e52cb4@codeaurora.org>
- <CAE=gft5GcOeQ5kh1bGen_P0J98g2XaAJ7NrDsxkirDoLtL4GWg@mail.gmail.com> <0c7c4316-e93a-537c-871a-b7207dbad5c2@codeaurora.org>
+ <1584105134-13583-8-git-send-email-akashast@codeaurora.org>
+ <20200314005817.GN144492@google.com> <3aeb3083-2a31-b269-510d-eb608ff14ce5@codeaurora.org>
+ <CAE=gft58QsgTCUHMHKJhcM9ZxAeMiY16CrbNv2HaTCRqwtmt7A@mail.gmail.com> <e2ee1a60-a379-5c78-355a-64aad451a944@codeaurora.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Cc: Matthias Kaehlcke <mka@chromium.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        wsa@the-dreams.de, Mark Brown <broonie@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-i2c@vger.kernel.org,
-        linux-spi@vger.kernel.org,
+Cc: Matthias Kaehlcke <mka-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+        Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
+        Andy Gross <agross-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Bjorn Andersson <bjorn.andersson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
         "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree@vger.kernel.org>, Stephen Boyd <swboyd@chromium.org>,
-        Manu Gautam <mgautam@codeaurora.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        linux-serial@vger.kernel.org,
-        Doug Anderson <dianders@chromium.org>,
-        Georgi Djakov <georgi.djakov@linaro.org>
-To: Akash Asthana <akashast@codeaurora.org>
-Return-path: <linux-serial-owner@vger.kernel.org>
-In-Reply-To: <0c7c4316-e93a-537c-871a-b7207dbad5c2@codeaurora.org>
-Sender: linux-serial-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+        <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Stephen Boyd <swboyd-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+        Manu Gautam <mgautam-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+        linux-arm-msm <linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+        Georgi Djakov <georgi.djakov-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Akash Asthana <akashast-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <e2ee1a60-a379-5c78-355a-64aad451a944-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Mar 18, 2020 at 3:57 AM Akash Asthana <akashast@codeaurora.org> wrote:
+On Wed, Mar 18, 2020 at 6:48 AM Akash Asthana <akashast-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org> wrote:
 >
-> Hi Evan
+> Hi Evan,
 >
 > On 3/18/2020 12:38 AM, Evan Green wrote:
-> > On Tue, Mar 17, 2020 at 3:58 AM Akash Asthana <akashast@codeaurora.org> wrote:
+> > On Tue, Mar 17, 2020 at 5:13 AM Akash Asthana <akashast-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org> wrote:
 > >> Hi Matthias,
 > >>
-> >> On 3/14/2020 2:14 AM, Matthias Kaehlcke wrote:
-> >>> Hi Akash,
+> >> On 3/14/2020 6:28 AM, Matthias Kaehlcke wrote:
+> >>> Hi,
 > >>>
-> >>> On Fri, Mar 13, 2020 at 06:42:09PM +0530, Akash Asthana wrote:
-> >>>> V1 patch@https://patchwork.kernel.org/patch/11386469/ caused SC7180 system
-> >>>> to reset at boot time.
-> >>> The v1 patch isn't relevant in the commit message, please just describe the
-> >>> problem. Also the crash only occurs when earlycon is used.
-> >> ok
-> >>>> As QUP core clock is shared among all the SE drivers present on particular
-> >>>> QUP wrapper, the reset seen is due to earlycon usage after QUP core clock
-> >>>> is put to 0 from other SE drivers before real console comes up.
+> >>> On Fri, Mar 13, 2020 at 06:42:13PM +0530, Akash Asthana wrote:
+> >>>> Get the interconnect paths for QSPI device and vote according to the
+> >>>> current bus speed of the driver.
 > >>>>
-> >>>> As earlycon can't vote for it's QUP core need, to fix this add ICC
-> >>>> support to common/QUP wrapper driver and put vote for QUP core from
-> >>>> probe on behalf of earlycon and remove vote during sys suspend.
-> >>> Only removing the vote on suspend isn't ideal, the system might never get
-> >>> suspended. That said I don't have a really good alternative suggestion.
+> >>>> Signed-off-by: Akash Asthana <akashast-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+> >>>> ---
+> >>>>    - As per Bjorn's comment, introduced and using devm_of_icc_get API for getting
+> >>>>      path handle
+> >>>>    - As per Matthias comment, added error handling for icc_set_bw call
+> >>>>
+> >>>>    drivers/spi/spi-qcom-qspi.c | 46 ++++++++++++++++++++++++++++++++++++++++++++-
+> >>>>    1 file changed, 45 insertions(+), 1 deletion(-)
+> >>>>
+> >>>> diff --git a/drivers/spi/spi-qcom-qspi.c b/drivers/spi/spi-qcom-qspi.c
+> >>>> index 3c4f83b..ad48f43 100644
+> >>>> --- a/drivers/spi/spi-qcom-qspi.c
+> >>>> +++ b/drivers/spi/spi-qcom-qspi.c
+> >>>> @@ -2,6 +2,7 @@
+> >>>>    // Copyright (c) 2017-2018, The Linux foundation. All rights reserved.
+> >>>>
+> >>>>    #include <linux/clk.h>
+> >>>> +#include <linux/interconnect.h>
+> >>>>    #include <linux/interrupt.h>
+> >>>>    #include <linux/io.h>
+> >>>>    #include <linux/module.h>
+> >>>> @@ -139,7 +140,10 @@ struct qcom_qspi {
+> >>>>       struct device *dev;
+> >>>>       struct clk_bulk_data *clks;
+> >>>>       struct qspi_xfer xfer;
+> >>>> -    /* Lock to protect xfer and IRQ accessed registers */
+> >>>> +    struct icc_path *icc_path_cpu_to_qspi;
+> >>>> +    unsigned int avg_bw_cpu;
+> >>>> +    unsigned int peak_bw_cpu;
+> >>> This triplet is a recurring pattern, and is probably not limited to geni SE/QSPI.
+> >>> On https://patchwork.kernel.org/patch/11436889/#23221925 I suggested the creation
+> >>> of a geni SE specific struct, however adding a generic convenience struct to
+> >>> 'linux/interconnect.h' might be the better solution:
 > >>>
-> >>> One thing you could possibly do is to launch a delayed work, check
-> >>> console_device() every second or so and remove the vote when it returns
-> >>> non-NULL. Not claiming this would be a great solution ...
+> >>> struct icc_client {
+> >>>        struct icc_path *path;
+> >>>        unsigned int avg_bw;
+> >>>        unsigned int peak_bw;
+> >>> };
 > >>>
-> >>> The cleanest solution might be a notifier when the early console is
-> >>> unregistered, it seems somewhat over-engineered though ... Then again
-> >>> other (future) uart drivers with interconnect support might run into
-> >>> the same problem.
-> >> We are hitting this problem because QUP core clocks are shared among all
-> >> the SE driver present in particular QUP wrapper, if other HW controllers
-> >> has similar architecture we will hit this issue.
-> >>
-> >> How about if we expose an API from common driver(geni-se) for putting
-> >> QUP core BW vote to 0.
-> >>
-> >> We call this from console probe just after uart_add_one_port call
-> >> (console resources are enabled as part of this call) to put core quota
-> >> to 0 on behalf of earlyconsole?
+> >>> I'm sure there are better names for it, but this would be the idea.
+> >> Yeah, I think introducing this to ICC header would be better solution.
 > > +Georgi
 > >
-> > Hm, these boot proxy votes are annoying, since the whole house of
-> > cards comes down if you replace these votes in the wrong order.
-> >
-> > I believe consensus in the other patches was to consolidate most of
-> > the interconnect support into the common SE code, right?
->
-> I think what Matthias suggested is to maintain ICC functions defined
-> across I2C, SPI and UART as a library in common SE code.
->
-> Still every SE driver will interact with ICC framework individually
-> rather than using common SE driver as a bridge.
+> > I'm not as convinced this structure is generally useful and belongs in
+> > the interconnect core. The thing that strikes me as weird with putting
+> > it in the core is now we're saving these values both inside and
+> > outside the interconnect core.
+> IIUC, you meant to say struct icc_req(inside icc_path) will be saving
+> avg_bw and peak_bw so no need to save it outside icc_path?
 
-Right, I'm sort of proposing a blend here, where the individual
-drivers pass through the SE library, which looks at some shared state,
-and may defer sending the votes during boot time. I was thinking
-consolidating this into SE engine library code may make it easier for
-you to peek at that shared state.
-
->
-> >   Would that
-> > help you with these boot proxy votes? What I'm thinking is something
-> > along the lines of:
-> >   * SPI, I2C, UART all call into the new common geni_se_icc_on/off()
-> > (or whatever it's called)
-> >   * If geni_se_icc_off() sees that console UART hasn't voted yet, save
-> > the votes but don't actually call icc_set(0) now.
-> >   * Once uart votes for the first time, call icc_set() on all of SPI,
-> > I2C, UART to get things back in sync.
->
-> IIUC, you are suggesting to enhancing ICC
-> design@https://patchwork.kernel.org/patch/10774897/ [The very first ICC
-> patch posted during sdm845 timeframe].
->
-> Where common SE driver aggregate real time BW requirement from all the
-> SE driver and put net request to ICC framework.
->
-> We received comments on that version of ICC to move voting to individual
-> SE driver from common driver. Hence we updated the design accordingly.
-
-I think most of the reaction to that original series came from the
-fact that the common SE code was doing aggregation work, which is
-something the interconnect core was designed to do. In the solution
-I'm proposing, the SE library either passes through votes as-is, or
-delays them until the console UART has voted, at which time it passes
-them all down as they were.
-
-You could still make the case this is something the interconnect core
-should help us with, which is why I was brainstorming about the
-provider propping up votes until some probe-finished deadline, maybe
-just a 30 second timer :)
+Correct, it seems silly to store the same set of values twice in the
+framework, but with different semantics about who's watching it.
 -Evan

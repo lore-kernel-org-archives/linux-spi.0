@@ -1,66 +1,67 @@
-From: Vladimir Oltean <olteanv@gmail.com>
-Subject: [PATCH v5 08/12] spi: spi-fsl-dspi: Fix interrupt-less DMA mode taking an XSPI code path
-Date: Wed, 18 Mar 2020 02:15:59 +0200
-Message-ID: <20200318001603.9650-9-olteanv@gmail.com>
+From: Vladimir Oltean <olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v5 12/12] arm64: dts: ls1028a-rdb: Add a spidev node for the mikroBUS
+Date: Wed, 18 Mar 2020 02:16:03 +0200
+Message-ID: <20200318001603.9650-13-olteanv@gmail.com>
 References: <20200318001603.9650-1-olteanv@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        shawnguo@kernel.org, robh+dt@kernel.org, mark.rutland@arm.com,
-        devicetree@vger.kernel.org, eha@deif.com, angelo@sysam.it,
-        andrew.smirnov@gmail.com, gustavo@embeddedor.com, weic@nvidia.com,
-        mhosny@nvidia.com, michael@walle.cc, peng.ma@nxp.com
-To: broonie@kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200318001603.9650-1-olteanv@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, eha-/iRVSOupHO4@public.gmane.org, angelo-BIYBQhTR83Y@public.gmane.org,
+        andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org, weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org,
+        mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org, michael-QKn5cuLxLXY@public.gmane.org, peng.ma-3arQi8VN3Tc@public.gmane.org
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20200318001603.9650-1-olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 
-Interrupts are not necessary for DMA functionality, since the completion
-event is provided by the DMA driver.
+For debugging, it is useful to have access to the DSPI controller
+signals. On the reference design board, these are exported to either the
+mikroBUS1 or mikroBUS2 connector (according to the CPLD register
+BRDCFG3[SPI3]).
 
-But if the driver fails to request the IRQ defined in the device tree,
-it will call dspi_poll which would make the driver hang waiting for data
-to become available in the RX FIFO.
-
-Fixes: c55be3059159 ("spi: spi-fsl-dspi: Use poll mode in case the platform IRQ is missing")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
 ---
 Changes in v5:
 None.
 
 Changes in v4:
-Patch is new.
+None.
 
- drivers/spi/spi-fsl-dspi.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+Changes in v3:
+None.
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 81e22b6eadc7..fcc6f20b6631 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -965,13 +965,15 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 			goto out;
- 		}
+Changes in v2:
+Change compatible string for spidev node.
+
+ arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts b/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
+index 6d05b76c2c7a..0d27b5667b8c 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
++++ b/arch/arm64/boot/dts/freescale/fsl-ls1028a-rdb.dts
+@@ -83,6 +83,20 @@
+ 	};
+ };
  
--		if (!dspi->irq) {
--			do {
--				status = dspi_poll(dspi);
--			} while (status == -EINPROGRESS);
--		} else if (trans_mode != DSPI_DMA_MODE) {
--			wait_for_completion(&dspi->xfer_done);
--			reinit_completion(&dspi->xfer_done);
-+		if (trans_mode != DSPI_DMA_MODE) {
-+			if (dspi->irq) {
-+				wait_for_completion(&dspi->xfer_done);
-+				reinit_completion(&dspi->xfer_done);
-+			} else {
-+				do {
-+					status = dspi_poll(dspi);
-+				} while (status == -EINPROGRESS);
-+			}
- 		}
- 
- 		spi_transfer_delay_exec(transfer);
++&dspi2 {
++	bus-num = <2>;
++	status = "okay";
++
++	/* mikroBUS1 */
++	spidev@0 {
++		compatible = "rohm,dh2228fv";
++		spi-max-frequency = <20000000>;
++		fsl,spi-cs-sck-delay = <100>;
++		fsl,spi-sck-cs-delay = <100>;
++		reg = <0>;
++	};
++};
++
+ &esdhc {
+ 	sd-uhs-sdr104;
+ 	sd-uhs-sdr50;
 -- 
 2.17.1

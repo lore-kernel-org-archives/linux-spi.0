@@ -1,10 +1,10 @@
 From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v1 26/36] dt-bindings: display: convert sony,acx565akm to
- DT Schema
-Date: Wed, 18 Mar 2020 21:03:45 -0600
-Message-ID: <20200319030345.GG29911@bogus>
+Subject: Re: [PATCH v1 32/36] dt-bindings: display: convert sharp,ls037v7dw01
+ to DT Schema
+Date: Wed, 18 Mar 2020 21:07:34 -0600
+Message-ID: <20200319030734.GH29911@bogus>
 References: <20200315134416.16527-1-sam@ravnborg.org>
- <20200315134416.16527-27-sam@ravnborg.org>
+ <20200315134416.16527-33-sam@ravnborg.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org,
@@ -26,117 +26,150 @@ Cc: dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org,
         Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Marco Franchi <marco.franchi-3arQi8VN3Tc@public.gmane.org>,
 To: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20200315134416.16527-27-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20200315134416.16527-33-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On Sun, Mar 15, 2020 at 02:44:06PM +0100, Sam Ravnborg wrote:
+On Sun, Mar 15, 2020 at 02:44:12PM +0100, Sam Ravnborg wrote:
 > Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-> Cc: Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>
+> Cc: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>
 > Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 > Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 > ---
->  .../bindings/display/panel/sony,acx565akm.txt | 30 -----------
->  .../display/panel/sony,acx565akm.yaml         | 53 +++++++++++++++++++
->  2 files changed, 53 insertions(+), 30 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/display/panel/sony,acx565akm.txt
->  create mode 100644 Documentation/devicetree/bindings/display/panel/sony,acx565akm.yaml
+>  .../display/panel/sharp,ls037v7dw01.txt       | 43 ------------
+>  .../display/panel/sharp,ls037v7dw01.yaml      | 66 +++++++++++++++++++
+>  2 files changed, 66 insertions(+), 43 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/display/panel/sharp,ls037v7dw01.txt
+>  create mode 100644 Documentation/devicetree/bindings/display/panel/sharp,ls037v7dw01.yaml
 > 
-> diff --git a/Documentation/devicetree/bindings/display/panel/sony,acx565akm.txt b/Documentation/devicetree/bindings/display/panel/sony,acx565akm.txt
+> diff --git a/Documentation/devicetree/bindings/display/panel/sharp,ls037v7dw01.txt b/Documentation/devicetree/bindings/display/panel/sharp,ls037v7dw01.txt
 > deleted file mode 100644
-> index e12333280749..000000000000
-> --- a/Documentation/devicetree/bindings/display/panel/sony,acx565akm.txt
+> index 0cc8981e9d49..000000000000
+> --- a/Documentation/devicetree/bindings/display/panel/sharp,ls037v7dw01.txt
 > +++ /dev/null
-> @@ -1,30 +0,0 @@
-> -Sony ACX565AKM SDI Panel
-> -========================
+> @@ -1,43 +0,0 @@
+> -SHARP LS037V7DW01 TFT-LCD panel
+> -===================================
 > -
 > -Required properties:
-> -- compatible: "sony,acx565akm"
+> -- compatible: "sharp,ls037v7dw01"
 > -
 > -Optional properties:
 > -- label: a symbolic name for the panel
-> -- reset-gpios: panel reset gpio
+> -- enable-gpios: a GPIO spec for the optional enable pin.
+> -  This pin is the INI pin as specified in the LS037V7DW01.pdf file.
+> -- reset-gpios: a GPIO spec for the optional reset pin.
+> -  This pin is the RESB pin as specified in the LS037V7DW01.pdf file.
+> -- mode-gpios: a GPIO
+> -  ordered MO, LR, and UD as specified in the LS037V7DW01.pdf file.
 > -
 > -Required nodes:
-> -- Video port for SDI input
+> -- Video port for DPI input
+> -
+> -This panel can have zero to five GPIOs to configure to change configuration
+> -between QVGA and VGA mode and the scan direction. As these pins can be also
+> -configured with external pulls, all the GPIOs are considered optional with holes
+> -in the array.
 > -
 > -Example
 > --------
 > -
-> -acx565akm@2 {
-> -	compatible = "sony,acx565akm";
-> -	spi-max-frequency = <6000000>;
-> -	reg = <2>;
+> -Example when connected to a omap2+ based device:
 > -
-> -	label = "lcd";
-> -	reset-gpios = <&gpio3 26 GPIO_ACTIVE_HIGH>; /* 90 */
+> -lcd0: display {
+> -	compatible = "sharp,ls037v7dw01";
+> -	power-supply = <&lcd_3v3>;
+> -	enable-gpios = <&gpio5 24 GPIO_ACTIVE_HIGH>;	/* gpio152, lcd INI */
+> -	reset-gpios = <&gpio5 27 GPIO_ACTIVE_HIGH>;	/* gpio155, lcd RESB */
+> -	mode-gpios = <&gpio5 26 GPIO_ACTIVE_HIGH	/* gpio154, lcd MO */
+> -		      &gpio1 2 GPIO_ACTIVE_HIGH		/* gpio2, lcd LR */
+> -		      &gpio1 3 GPIO_ACTIVE_HIGH>;	/* gpio3, lcd UD */
 > -
 > -	port {
 > -		lcd_in: endpoint {
-> -			remote-endpoint = <&sdi_out>;
+> -			remote-endpoint = <&dpi_out>;
 > -		};
 > -	};
 > -};
-> diff --git a/Documentation/devicetree/bindings/display/panel/sony,acx565akm.yaml b/Documentation/devicetree/bindings/display/panel/sony,acx565akm.yaml
+> diff --git a/Documentation/devicetree/bindings/display/panel/sharp,ls037v7dw01.yaml b/Documentation/devicetree/bindings/display/panel/sharp,ls037v7dw01.yaml
 > new file mode 100644
-> index 000000000000..a0b1abb9f33d
+> index 000000000000..56bd510ae398
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/display/panel/sony,acx565akm.yaml
-> @@ -0,0 +1,53 @@
+> +++ b/Documentation/devicetree/bindings/display/panel/sharp,ls037v7dw01.yaml
+> @@ -0,0 +1,66 @@
 > +# SPDX-License-Identifier: GPL-2.0
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/display/panel/sony,acx565akm.yaml#
+> +$id: http://devicetree.org/schemas/display/panel/sharp,ls037v7dw01.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: Sony ACX565AKM SDI Panel
+> +title: SHARP LS037V7DW01 TFT-LCD panel
+> +
+> +description: |
+> +  This panel can have zero to five GPIOs to configure to change configuration
+> +  between QVGA and VGA mode and the scan direction. As these pins can be also
+> +  configured with external pulls, all the GPIOs are considered optional with holes
+> +  in the array.
 > +
 > +maintainers:
-> +  - Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>
+> +  - Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>
 > +
 > +allOf:
 > +  - $ref: panel-common.yaml#
-> +  - $ref: ../../spi/spi-slave.yaml#
 > +
 > +properties:
 > +  compatible:
-> +    const: sony,acx565akm
+> +    const: sharp,ls037v7dw01
 > +
 > +  label: true
+> +  enable-gpios: true
 > +  reset-gpios: true
 > +  port: true
+> +  power-supply: true
+> +
+> +  mode-gpios:
+> +    description: |
+> +      GPIO ordered MO, LR, and UD as specified in LS037V7DW01.pdf
+
+3 or...
+
+> +      This panel can have zero to five GPIOs to configure to
+
+5?
+
+> +      change configuration between QVGA and VGA mode and the
+> +      scan direction. As these pins can be also configured
+> +      with external pulls, all the GPIOs are considered
+> +      optional with holes in the array.
+
+minItems: 3
+maxItems: 5
+
 > +
 > +required:
 > +  - compatible
 > +  - port
 > +
+> +additionalProperties: false
 > +
 > +examples:
 > +  - |
 > +    #include <dt-bindings/gpio/gpio.h>
 > +
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
+> +    lcd0: display {
+> +        compatible = "sharp,ls037v7dw01";
+> +        power-supply = <&lcd_3v3>;
+> +        enable-gpios = <&gpio5 24 GPIO_ACTIVE_HIGH>;    /* gpio152, lcd INI */
+> +        reset-gpios = <&gpio5 27 GPIO_ACTIVE_HIGH>;     /* gpio155, lcd RESB */
+> +        mode-gpios = <&gpio5 26 GPIO_ACTIVE_HIGH        /* gpio154, lcd MO */
+> +                      &gpio1 2 GPIO_ACTIVE_HIGH         /* gpio2, lcd LR */
+> +                      &gpio1 3 GPIO_ACTIVE_HIGH>;       /* gpio3, lcd UD */
 > +
-> +        acx565akm@2 {
-
-panel@2
-
-> +            compatible = "sony,acx565akm";
-> +            spi-max-frequency = <6000000>;
-> +            reg = <2>;
-> +
-> +            label = "lcd";
-> +            reset-gpios = <&gpio3 26 GPIO_ACTIVE_HIGH>; /* 90 */
-> +
-> +            port {
-> +                lcd_in: endpoint {
-> +                    remote-endpoint = <&sdi_out>;
-> +                };
+> +        port {
+> +            lcd_in: endpoint {
+> +                remote-endpoint = <&dpi_out>;
 > +            };
 > +        };
 > +    };

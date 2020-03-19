@@ -1,10 +1,10 @@
 From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v1 36/36] dt-bindings: display: convert
- olimex,lcd-olinuxino to DT Schema
-Date: Wed, 18 Mar 2020 21:11:06 -0600
-Message-ID: <20200319031106.GI29911@bogus>
+Subject: Re: [PATCH v1 31/36] dt-bindings: display: convert sharp,lq101r1sx01
+ to DT Schema
+Date: Wed, 18 Mar 2020 21:19:29 -0600
+Message-ID: <20200319031929.GJ29911@bogus>
 References: <20200315134416.16527-1-sam@ravnborg.org>
- <20200315134416.16527-37-sam@ravnborg.org>
+ <20200315134416.16527-32-sam@ravnborg.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org,
@@ -26,151 +26,31 @@ Cc: dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org,
         Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
         linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Marco Franchi <marco.franchi-3arQi8VN3Tc@public.gmane.org>,
 To: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20200315134416.16527-37-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20200315134416.16527-32-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On Sun, Mar 15, 2020 at 02:44:16PM +0100, Sam Ravnborg wrote:
-> Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-> Cc: Stefan Mavrodiev <stefan-kyXcfZUBQGPQT0dZR+AlfA@public.gmane.org>
-> Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
-> ---
->  .../display/panel/olimex,lcd-olinuxino.txt    | 42 -----------
->  .../display/panel/olimex,lcd-olinuxino.yaml   | 70 +++++++++++++++++++
->  2 files changed, 70 insertions(+), 42 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/display/panel/olimex,lcd-olinuxino.txt
->  create mode 100644 Documentation/devicetree/bindings/display/panel/olimex,lcd-olinuxino.yaml
+On Sun, Mar 15, 2020 at 02:44:11PM +0100, Sam Ravnborg wrote:
+> This bindings describes a panel with a secondary channel.
 > 
-> diff --git a/Documentation/devicetree/bindings/display/panel/olimex,lcd-olinuxino.txt b/Documentation/devicetree/bindings/display/panel/olimex,lcd-olinuxino.txt
-> deleted file mode 100644
-> index a89f9c830a85..000000000000
-> --- a/Documentation/devicetree/bindings/display/panel/olimex,lcd-olinuxino.txt
-> +++ /dev/null
-> @@ -1,42 +0,0 @@
-> -Binding for Olimex Ltd. LCD-OLinuXino bridge panel.
-> -
-> -This device can be used as bridge between a host controller and LCD panels.
-> -Currently supported LCDs are:
-> -  - LCD-OLinuXino-4.3TS
-> -  - LCD-OLinuXino-5
-> -  - LCD-OLinuXino-7
-> -  - LCD-OLinuXino-10
-> -
-> -The panel itself contains:
-> -  - AT24C16C EEPROM holding panel identification and timing requirements
-> -  - AR1021 resistive touch screen controller (optional)
-> -  - FT5x6 capacitive touch screnn controller (optional)
-> -  - GT911/GT928 capacitive touch screen controller (optional)
-> -
-> -The above chips share same I2C bus. The EEPROM is factory preprogrammed with
-> -device information (id, serial, etc.) and timing requirements.
-> -
-> -Touchscreen bingings can be found in these files:
-> -  - input/touchscreen/goodix.txt
-> -  - input/touchscreen/edt-ft5x06.txt
-> -  - input/touchscreen/ar1021.txt
-> -
-> -Required properties:
-> -  - compatible: should be "olimex,lcd-olinuxino"
-> -  - reg: address of the configuration EEPROM, should be <0x50>
-> -  - power-supply: phandle of the regulator that provides the supply voltage
-> -
-> -Optional properties:
-> -  - enable-gpios: GPIO pin to enable or disable the panel
-> -  - backlight: phandle of the backlight device attacked to the panel
-> -
-> -Example:
-> -&i2c2 {
-> -	panel@50 {
-> -		compatible = "olimex,lcd-olinuxino";
-> -		reg = <0x50>;
-> -		power-supply = <&reg_vcc5v0>;
-> -		enable-gpios = <&pio 7 8 GPIO_ACTIVE_HIGH>;
-> -		backlight = <&backlight>;
-> -	};
-> -};
-> diff --git a/Documentation/devicetree/bindings/display/panel/olimex,lcd-olinuxino.yaml b/Documentation/devicetree/bindings/display/panel/olimex,lcd-olinuxino.yaml
-> new file mode 100644
-> index 000000000000..22d664abd552
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/display/panel/olimex,lcd-olinuxino.yaml
-> @@ -0,0 +1,70 @@
-> +# SPDX-License-Identifier: GPL-2.0
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/display/panel/olimex,lcd-olinuxino.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Binding for Olimex Ltd. LCD-OLinuXino bridge panel.
-> +
-> +maintainers:
-> +  - Stefan Mavrodiev <stefan-kyXcfZUBQGPQT0dZR+AlfA@public.gmane.org>
-> +
-> +description: |
-> +  This device can be used as bridge between a host controller and LCD panels.
-> +  Currently supported LCDs are:
-> +    - LCD-OLinuXino-4.3TS
-> +    - LCD-OLinuXino-5
-> +    - LCD-OLinuXino-7
-> +    - LCD-OLinuXino-10
-> +
-> +  The panel itself contains:
-> +    - AT24C16C EEPROM holding panel identification and timing requirements
-> +    - AR1021 resistive touch screen controller (optional)
-> +    - FT5x6 capacitive touch screnn controller (optional)
-> +    - GT911/GT928 capacitive touch screen controller (optional)
-> +
-> +  The above chips share same I2C bus. The EEPROM is factory preprogrammed with
-> +  device information (id, serial, etc.) and timing requirements.
-> +
-> +  Touchscreen bingings can be found in these files:
-> +    - input/touchscreen/goodix.yaml
-> +    - input/touchscreen/edt-ft5x06.txt
-> +    - input/touchscreen/ar1021.txt
-> +
-> +allOf:
-> +  - $ref: panel-common.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    const: olimex,lcd-olinuxino
-> +
-> +  backlight: true
-> +  enable-gpios: true
-> +  power-supply: true
-> +  reg: true
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - power-supply
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +
-> +    i2c2 {
-
-i2c {
-
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        panel@50 {
-> +            compatible = "olimex,lcd-olinuxino";
-> +            reg = <0x50>;
-> +            power-supply = <&reg_vcc5v0>;
-> +            enable-gpios = <&pio 7 8 GPIO_ACTIVE_HIGH>;
-> +            backlight = <&backlight>;
-> +        };
-> +    };
-> +
-> +...
-> -- 
-> 2.20.1
+> A few of the properties are only required for the
+> main (non-secondary) node.
+> This is properly described in the binding.
 > 
+> A few properties are only valid for the main node,
+> this is not described in the binding.
+> I failed to find a way to describe it.
+
+if:
+  required:
+    - link2
+then:
+  not:
+    required:
+      - power-supply
+
+Test that though as sometimes I still write crap for json-schema.
+
+Rob

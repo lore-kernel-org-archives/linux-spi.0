@@ -1,293 +1,166 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: spi-fsl-dspi: Protect against races on dspi->words_in_flight" to the spi tree
-Date: Wed, 18 Mar 2020 22:45:33 +0000
-Message-ID: <applied-20200318001603.9650-6-olteanv@gmail.com>
-References: <20200318001603.9650-6-olteanv@gmail.com>
-Cc: andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, angelo-BIYBQhTR83Y@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, eha-/iRVSOupHO4@public.gmane.org, gustavo-L1vi/lXTdts+Va1GwOuvDg@public.gmane.org,
-        linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-        mhosny-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org, michael-QKn5cuLxLXY@public.gmane.org,
-        Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>, peng.ma-3arQi8VN3Tc@public.gmane.org,
-        robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, shawnguo-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, weic-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org
-To: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
+From: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v1 03/36] dt-bindings: display: convert samsung,s6e63m0
+ to DT Schema
+Date: Wed, 18 Mar 2020 20:47:11 -0600
+Message-ID: <20200319024711.GA29911@bogus>
+References: <20200315134416.16527-1-sam@ravnborg.org>
+ <20200315134416.16527-4-sam@ravnborg.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: dri-devel-PD4FTy7X32lNgt0PjOBp9y5qC8QIuHrW@public.gmane.org,
+        Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Alexandre Courbot <acourbot-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+        Andrzej Hajda <a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+        Brian Masney <masneyb-1iNe0GrtECGEi8DpZVb4nw@public.gmane.org>,
+        Chris Zhong <zyw-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
+        Douglas Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+        Guido Gunther <agx-wGvLLbajjwFAfugRpC6u6w@public.gmane.org>, Heiko Schocher <hs-ynQEQJNshbs@public.gmane.org>,
+        Nikolaus Schaller <hns-xXXSsgcRVICgSpxsJD1C4w@public.gmane.org>,
+        Hoegeun Kwon <hoegeun.kwon-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+        Jagan Teki <jagan-dyjBcgdgk7Pe9wHmmfpqLFaTQe2KTcn/@public.gmane.org>,
+        Jerry Han <hanxu5-dyavHbARFqWrZjcNGxgArdPArS5jOdiE2SarAXORi/o@public.gmane.org>,
+        Jonathan Bakker <xc-racer2-kt+e9JA1QaI@public.gmane.org>,
+        Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
+        Lin Huang <hl-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
+        Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Marco Franchi <marco.franchi-3arQi8VN3Tc@public.gmane.org>,
+To: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200318001603.9650-6-olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20200315134416.16527-4-sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+On Sun, Mar 15, 2020 at 02:43:43PM +0100, Sam Ravnborg wrote:
+> The binding for this panel is a SPI slave.
+> Reference spi-slave.yaml
+> to avoid duplicating all properties.
+> 
+> Signed-off-by: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
+> Cc: Jonathan Bakker <xc-racer2-kt+e9JA1QaI@public.gmane.org>
+> Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> Cc: Sam Ravnborg <sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org>
+> ---
+>  .../display/panel/samsung,s6e63m0.txt         | 33 -----------
+>  .../display/panel/samsung,s6e63m0.yaml        | 58 +++++++++++++++++++
+>  2 files changed, 58 insertions(+), 33 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.txt
+>  create mode 100644 Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.txt b/Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.txt
+> deleted file mode 100644
+> index 9fb9ebeef8e4..000000000000
+> --- a/Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.txt
+> +++ /dev/null
+> @@ -1,33 +0,0 @@
+> -Samsung s6e63m0 AMOLED LCD panel
+> -
+> -Required properties:
+> -  - compatible: "samsung,s6e63m0"
+> -  - reset-gpios: GPIO spec for reset pin
+> -  - vdd3-supply: VDD regulator
+> -  - vci-supply: VCI regulator
+> -
+> -The panel must obey rules for SPI slave device specified in document [1].
+> -
+> -The device node can contain one 'port' child node with one child
+> -'endpoint' node, according to the bindings defined in [2]. This
+> -node should describe panel's video bus.
+> -
+> -[1]: Documentation/devicetree/bindings/spi/spi-bus.txt
+> -[2]: Documentation/devicetree/bindings/media/video-interfaces.txt
+> -
+> -Example:
+> -
+> -		s6e63m0: display@0 {
+> -			compatible = "samsung,s6e63m0";
+> -			reg = <0>;
+> -			reset-gpio = <&mp05 5 1>;
+> -			vdd3-supply = <&ldo12_reg>;
+> -			vci-supply = <&ldo11_reg>;
+> -			spi-max-frequency = <1200000>;
+> -
+> -			port {
+> -				lcd_ep: endpoint {
+> -					remote-endpoint = <&fimd_ep>;
+> -				};
+> -			};
+> -		};
+> diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.yaml b/Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.yaml
+> new file mode 100644
+> index 000000000000..204ed76da84d
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/display/panel/samsung,s6e63m0.yaml
+> @@ -0,0 +1,58 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/display/panel/samsung,s6e63m0.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Samsung s6e63m0 AMOLED LCD panel
+> +
+> +maintainers:
+> +  - Jonathan Bakker <xc-racer2-kt+e9JA1QaI@public.gmane.org>
+> +
+> +allOf:
+> +  - $ref: ../../spi/spi-slave.yaml#
+> +  - $ref: panel-common.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    const: samsung,s6e63m0
+> +
+> +  reg: true
+> +  reset-gpios: true
+> +  port: true
+> +
+> +  vdd3-supply:
+> +    description: VDD regulator
+> +
+> +  vci-supply:
+> +    description: VCI regulator
+> +
+> +required:
+> +  - compatible
+> +  - reset-gpios
+> +  - vdd3-supply
+> +  - vci-supply
 
-   spi: spi-fsl-dspi: Protect against races on dspi->words_in_flight
+Shouldn't port be required? Not really clear in the binding doc, but in 
+the driver it doesn't look like display data goes over spi.
 
-has been applied to the spi tree at
+Rob
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
+> +
+> +examples:
+> +  - |
+> +    spi {
+> +        reg = <0xf00 0x20>;
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+Drop this or do 'spi@f00'. If it doesn't warn with W=1, it's only a 
+matter of time.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From 0dedf901078074d6c5b41c297fac12c02c6dc41f Mon Sep 17 00:00:00 2001
-From: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
-Date: Wed, 18 Mar 2020 02:15:56 +0200
-Subject: [PATCH] spi: spi-fsl-dspi: Protect against races on
- dspi->words_in_flight
-
-dspi->words_in_flight is a variable populated in the *_write functions
-and used in the dspi_fifo_read function. It is also used in
-dspi_fifo_write, immediately after transmission, to update the
-message->actual_length variable used by higher layers such as spi-mem
-for integrity checking.
-
-But it may happen that the IRQ which calls dspi_fifo_read to be
-triggered before the updating of message->actual_length takes place. In
-that case, dspi_fifo_read will decrement dspi->words_in_flight to -1,
-and that will cause an invalid modification of message->actual_length.
-
-For that, we make the simplest fix possible: to not decrement the actual
-shared variable in dspi->words_in_flight from dspi_fifo_read, but
-actually a copy of it which is on stack.
-
-But even if dspi_fifo_read from the next IRQ does not interfere with the
-dspi_fifo_write of the current chunk, the *next* dspi_fifo_write still
-can. So we must assume that everything after the last write to the TX
-FIFO can be preempted by the "TX complete" IRQ, and the dspi_fifo_write
-function must be safe against that. This means refactoring the 2
-flavours of FIFO writes (for EOQ and XSPI) such that the calculation of
-the number of words to be written is common and happens a priori. This
-way, the code for updating the message->actual_length variable works
-with a copy and not with the volatile dspi->words_in_flight.
-
-After some interior debate, the dspi->progress variable used for
-software timestamping was *not* backed up against preemption in a copy
-on stack. Because if preemption does occur between
-spi_take_timestamp_pre and spi_take_timestamp_post, there's really no
-point in trying to save anything. The first-in-time
-spi_take_timestamp_post call with a dspi->progress higher than the
-requested xfer->ptp_sts_word_post will trigger xfer->timestamped = true
-anyway and will close the deal.
-
-To understand the above a bit better, consider a transfer with
-xfer->ptp_sts_word_pre = xfer->ptp_sts_word_post = 3, and
-xfer->bits_per_words = 8 (so byte 3 needs to be timestamped). The DSPI
-controller timestamps in chunks of 4 bytes at a time, and preemption
-occurs in the middle of timestamping the first chunk:
-
-  spi_take_timestamp_pre(0)
-    .
-    . (preemption)
-    .
-    . spi_take_timestamp_pre(4)
-    .
-    . spi_take_timestamp_post(7)
-    .
-  spi_take_timestamp_post(3)
-
-So the reason I'm not bothering to back up dspi->progress for that
-spi_take_timestamp_post(3) is that spi_take_timestamp_post(7) is going
-to (a) be more honest, (b) provide better accuracy and (c) already
-render the spi_take_timestamp_post(3) into a noop by setting
-xfer->timestamped = true anyway.
-
-Fixes: d59c90a2400f ("spi: spi-fsl-dspi: Convert TCFQ users to XSPI FIFO mode")
-Reported-by: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>
-Signed-off-by: Vladimir Oltean <vladimir.oltean-3arQi8VN3Tc@public.gmane.org>
-Tested-by: Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>
-Link: https://lore.kernel.org/r/20200318001603.9650-6-olteanv-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-fsl-dspi.c | 111 +++++++++++++++++--------------------
- 1 file changed, 52 insertions(+), 59 deletions(-)
-
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 51224b772680..f7e1e7085e31 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -669,17 +669,26 @@ static void dspi_pushr_txdata_write(struct fsl_dspi *dspi, u16 txdata)
- 	regmap_write(dspi->regmap_pushr, dspi->pushr_tx, txdata);
- }
- 
--static void dspi_xspi_write(struct fsl_dspi *dspi, int cnt, bool eoq)
-+static void dspi_xspi_fifo_write(struct fsl_dspi *dspi, int num_words)
- {
-+	int num_bytes = num_words * dspi->oper_word_size;
- 	u16 tx_cmd = dspi->tx_cmd;
- 
--	if (eoq)
-+	/*
-+	 * If the PCS needs to de-assert (i.e. we're at the end of the buffer
-+	 * and cs_change does not want the PCS to stay on), then we need a new
-+	 * PUSHR command, since this one (for the body of the buffer)
-+	 * necessarily has the CONT bit set.
-+	 * So send one word less during this go, to force a split and a command
-+	 * with a single word next time, when CONT will be unset.
-+	 */
-+	if (!(dspi->tx_cmd & SPI_PUSHR_CMD_CONT) && num_bytes == dspi->len)
- 		tx_cmd |= SPI_PUSHR_CMD_EOQ;
- 
- 	/* Update CTARE */
- 	regmap_write(dspi->regmap, SPI_CTARE(0),
- 		     SPI_FRAME_EBITS(dspi->oper_bits_per_word) |
--		     SPI_CTARE_DTCP(cnt));
-+		     SPI_CTARE_DTCP(num_words));
- 
- 	/*
- 	 * Write the CMD FIFO entry first, and then the two
-@@ -688,7 +697,7 @@ static void dspi_xspi_write(struct fsl_dspi *dspi, int cnt, bool eoq)
- 	dspi_pushr_cmd_write(dspi, tx_cmd);
- 
- 	/* Fill TX FIFO with as many transfers as possible */
--	while (cnt--) {
-+	while (num_words--) {
- 		u32 data = dspi_pop_tx(dspi);
- 
- 		dspi_pushr_txdata_write(dspi, data & 0xFFFF);
-@@ -697,58 +706,15 @@ static void dspi_xspi_write(struct fsl_dspi *dspi, int cnt, bool eoq)
- 	}
- }
- 
--static void dspi_xspi_fifo_write(struct fsl_dspi *dspi)
--{
--	int num_fifo_entries = dspi->devtype_data->fifo_size;
--	int bytes_in_flight;
--	bool eoq = false;
--
--	/* In XSPI mode each 32-bit word occupies 2 TX FIFO entries */
--	if (dspi->oper_word_size == 4)
--		num_fifo_entries /= 2;
--
--	/*
--	 * Integer division intentionally trims off odd (or non-multiple of 4)
--	 * numbers of bytes at the end of the buffer, which will be sent next
--	 * time using a smaller oper_word_size.
--	 */
--	dspi->words_in_flight = dspi->len / dspi->oper_word_size;
--
--	if (dspi->words_in_flight > num_fifo_entries)
--		dspi->words_in_flight = num_fifo_entries;
--
--	bytes_in_flight = dspi->words_in_flight * dspi->oper_word_size;
--
--	/*
--	 * If the PCS needs to de-assert (i.e. we're at the end of the buffer
--	 * and cs_change does not want the PCS to stay on), then we need a new
--	 * PUSHR command, since this one (for the body of the buffer)
--	 * necessarily has the CONT bit set.
--	 * So send one word less during this go, to force a split and a command
--	 * with a single word next time, when CONT will be unset.
--	 */
--	if (!(dspi->tx_cmd & SPI_PUSHR_CMD_CONT) &&
--	    bytes_in_flight == dspi->len)
--		eoq = true;
--
--	dspi_xspi_write(dspi, dspi->words_in_flight, eoq);
--}
--
--static void dspi_eoq_fifo_write(struct fsl_dspi *dspi)
-+static void dspi_eoq_fifo_write(struct fsl_dspi *dspi, int num_words)
- {
--	int num_fifo_entries = dspi->devtype_data->fifo_size;
- 	u16 xfer_cmd = dspi->tx_cmd;
- 
--	if (num_fifo_entries * dspi->oper_word_size > dspi->len)
--		num_fifo_entries = dspi->len / dspi->oper_word_size;
--
--	dspi->words_in_flight = num_fifo_entries;
--
- 	/* Fill TX FIFO with as many transfers as possible */
--	while (num_fifo_entries--) {
-+	while (num_words--) {
- 		dspi->tx_cmd = xfer_cmd;
- 		/* Request EOQF for last transfer in FIFO */
--		if (num_fifo_entries == 0)
-+		if (num_words == 0)
- 			dspi->tx_cmd |= SPI_PUSHR_CMD_EOQ;
- 		/* Write combined TX FIFO and CMD FIFO entry */
- 		dspi_pushr_write(dspi);
-@@ -765,8 +731,10 @@ static u32 dspi_popr_read(struct fsl_dspi *dspi)
- 
- static void dspi_fifo_read(struct fsl_dspi *dspi)
- {
-+	int num_fifo_entries = dspi->words_in_flight;
-+
- 	/* Read one FIFO entry and push to rx buffer */
--	while (dspi->words_in_flight--)
-+	while (num_fifo_entries--)
- 		dspi_push_rx(dspi, dspi_popr_read(dspi));
- }
- 
-@@ -832,23 +800,48 @@ static void dspi_setup_accel(struct fsl_dspi *dspi)
- 
- static void dspi_fifo_write(struct fsl_dspi *dspi)
- {
-+	int num_fifo_entries = dspi->devtype_data->fifo_size;
- 	struct spi_transfer *xfer = dspi->cur_transfer;
- 	struct spi_message *msg = dspi->cur_msg;
--	int bytes_sent;
-+	int num_words, num_bytes;
- 
- 	dspi_setup_accel(dspi);
- 
-+	/* In XSPI mode each 32-bit word occupies 2 TX FIFO entries */
-+	if (dspi->oper_word_size == 4)
-+		num_fifo_entries /= 2;
-+
-+	/*
-+	 * Integer division intentionally trims off odd (or non-multiple of 4)
-+	 * numbers of bytes at the end of the buffer, which will be sent next
-+	 * time using a smaller oper_word_size.
-+	 */
-+	num_words = dspi->len / dspi->oper_word_size;
-+	if (num_words > num_fifo_entries)
-+		num_words = num_fifo_entries;
-+
-+	/* Update total number of bytes that were transferred */
-+	num_bytes = num_words * dspi->oper_word_size;
-+	msg->actual_length += num_bytes;
-+	dspi->progress += num_bytes / DIV_ROUND_UP(xfer->bits_per_word, 8);
-+
-+	/*
-+	 * Update shared variable for use in the next interrupt (both in
-+	 * dspi_fifo_read and in dspi_fifo_write).
-+	 */
-+	dspi->words_in_flight = num_words;
-+
- 	spi_take_timestamp_pre(dspi->ctlr, xfer, dspi->progress, !dspi->irq);
- 
- 	if (dspi->devtype_data->trans_mode == DSPI_EOQ_MODE)
--		dspi_eoq_fifo_write(dspi);
-+		dspi_eoq_fifo_write(dspi, num_words);
- 	else
--		dspi_xspi_fifo_write(dspi);
--
--	/* Update total number of bytes that were transferred */
--	bytes_sent = dspi->words_in_flight * dspi->oper_word_size;
--	msg->actual_length += bytes_sent;
--	dspi->progress += bytes_sent / DIV_ROUND_UP(xfer->bits_per_word, 8);
-+		dspi_xspi_fifo_write(dspi, num_words);
-+	/*
-+	 * Everything after this point is in a potential race with the next
-+	 * interrupt, so we must never use dspi->words_in_flight again since it
-+	 * might already be modified by the next dspi_fifo_write.
-+	 */
- 
- 	spi_take_timestamp_post(dspi->ctlr, dspi->cur_transfer,
- 				dspi->progress, !dspi->irq);
--- 
-2.20.1
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +        display@0 {
+> +            compatible = "samsung,s6e63m0";
+> +            reg = <0>;
+> +            reset-gpios = <&mp05 5 1>;
+> +            vdd3-supply = <&ldo12_reg>;
+> +            vci-supply = <&ldo11_reg>;
+> +            spi-max-frequency = <1200000>;
+> +
+> +            port {
+> +                lcd_ep: endpoint {
+> +                    remote-endpoint = <&fimd_ep>;
+> +                };
+> +            };
+> +        };
+> +    };
+> +
+> +...
+> -- 
+> 2.20.1
+> 

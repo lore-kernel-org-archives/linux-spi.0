@@ -1,283 +1,258 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Applied "spi: atmel-quadspi: Add verbose debug facilities to monitor register accesses" to the spi tree
-Date: Fri, 20 Mar 2020 13:05:52 +0000
-Message-ID: <applied-20200320065058.891221-1-tudor.ambarus@microchip.com>
-References: <20200320065058.891221-1-tudor.ambarus@microchip.com>
-Cc: alexandre.belloni-LDxbnhwyfcJBDgjK7y7TUQ@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-        Ludovic.Desroches-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        Nicolas.Ferre-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org, Tudor.Ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org
-To: Tudor Ambarus <tudor.ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
+From: Alain Volmat <alain.volmat-qxv4g6HH51o@public.gmane.org>
+Subject: [PATCH] spi: stm32: Fix comments compilation warnings
+Date: Fri, 20 Mar 2020 14:44:17 +0100
+Message-ID: <1584711857-9162-1-git-send-email-alain.volmat@st.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: <mcoquelin.stm32-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <alexandre.torgue-qxv4g6HH51o@public.gmane.org>,
+        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <linux-stm32-XDFAJ8BFU24N7RejjzZ/Li2xQDfSxrLKVpNB7YpNyf8@public.gmane.org>,
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <fabrice.gasnier-qxv4g6HH51o@public.gmane.org>,
+        <alain.volmat-qxv4g6HH51o@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <amelie.delaunay-qxv4g6HH51o@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20200320065058.891221-1-tudor.ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The patch
+Fix all functions and structure descriptions to have the driver
+warning free when built with W=1.
 
-   spi: atmel-quadspi: Add verbose debug facilities to monitor register accesses
-
-has been applied to the spi tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git 
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
->From c528ecfbef040ba0d6672d843e7502cb326bcb4d Mon Sep 17 00:00:00 2001
-From: Tudor Ambarus <tudor.ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Date: Fri, 20 Mar 2020 06:51:01 +0000
-Subject: [PATCH] spi: atmel-quadspi: Add verbose debug facilities to monitor
- register accesses
-
-This feature should not be enabled in release but can be useful for
-developers who need to monitor register accesses at some specific places.
-
-Helped me identify a bug in u-boot, by comparing the register accesses
-from the linux driver with the ones from its u-boot variant.
-
-Signed-off-by: Tudor Ambarus <tudor.ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org>
-Link: https://lore.kernel.org/r/20200320065058.891221-1-tudor.ambarus-UWL1GkI3JZL3oGB3hsPCZA@public.gmane.org
-Signed-off-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Alain Volmat <alain.volmat-qxv4g6HH51o@public.gmane.org>
 ---
- drivers/spi/atmel-quadspi.c | 119 +++++++++++++++++++++++++++++-------
- 1 file changed, 97 insertions(+), 22 deletions(-)
+ drivers/spi/spi-stm32.c | 62 +++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 45 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index 13def7f78b9e..cb44d1e169aa 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -173,6 +173,81 @@ static const struct atmel_qspi_mode atmel_qspi_modes[] = {
- 	{ 4, 4, 4, QSPI_IFR_WIDTH_QUAD_CMD },
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index e041f9c4ec47..44ac6eb3298d 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -175,7 +175,7 @@
+ #define SPI_DMA_MIN_BYTES	16
+ 
+ /**
+- * stm32_spi_reg - stm32 SPI register & bitfield desc
++ * struct stm32_spi_reg - stm32 SPI register & bitfield desc
+  * @reg:		register offset
+  * @mask:		bitfield mask
+  * @shift:		left shift
+@@ -187,16 +187,16 @@ struct stm32_spi_reg {
  };
  
-+#ifdef VERBOSE_DEBUG
-+static const char *atmel_qspi_reg_name(u32 offset, char *tmp, size_t sz)
-+{
-+	switch (offset) {
-+	case QSPI_CR:
-+		return "CR";
-+	case QSPI_MR:
-+		return "MR";
-+	case QSPI_RD:
-+		return "MR";
-+	case QSPI_TD:
-+		return "TD";
-+	case QSPI_SR:
-+		return "SR";
-+	case QSPI_IER:
-+		return "IER";
-+	case QSPI_IDR:
-+		return "IDR";
-+	case QSPI_IMR:
-+		return "IMR";
-+	case QSPI_SCR:
-+		return "SCR";
-+	case QSPI_IAR:
-+		return "IAR";
-+	case QSPI_ICR:
-+		return "ICR/WICR";
-+	case QSPI_IFR:
-+		return "IFR";
-+	case QSPI_RICR:
-+		return "RICR";
-+	case QSPI_SMR:
-+		return "SMR";
-+	case QSPI_SKR:
-+		return "SKR";
-+	case QSPI_WPMR:
-+		return "WPMR";
-+	case QSPI_WPSR:
-+		return "WPSR";
-+	case QSPI_VERSION:
-+		return "VERSION";
-+	default:
-+		snprintf(tmp, sz, "0x%02x", offset);
-+		break;
-+	}
-+
-+	return tmp;
-+}
-+#endif /* VERBOSE_DEBUG */
-+
-+static u32 atmel_qspi_read(struct atmel_qspi *aq, u32 offset)
-+{
-+	u32 value = readl_relaxed(aq->regs + offset);
-+
-+#ifdef VERBOSE_DEBUG
-+	char tmp[8];
-+
-+	dev_vdbg(&aq->pdev->dev, "read 0x%08x from %s\n", value,
-+		 atmel_qspi_reg_name(offset, tmp, sizeof(tmp)));
-+#endif /* VERBOSE_DEBUG */
-+
-+	return value;
-+}
-+
-+static void atmel_qspi_write(u32 value, struct atmel_qspi *aq, u32 offset)
-+{
-+#ifdef VERBOSE_DEBUG
-+	char tmp[8];
-+
-+	dev_vdbg(&aq->pdev->dev, "write 0x%08x into %s\n", value,
-+		 atmel_qspi_reg_name(offset, tmp, sizeof(tmp)));
-+#endif /* VERBOSE_DEBUG */
-+
-+	writel_relaxed(value, aq->regs + offset);
-+}
-+
- static inline bool atmel_qspi_is_compatible(const struct spi_mem_op *op,
- 					    const struct atmel_qspi_mode *mode)
+ /**
+- * stm32_spi_regspec - stm32 registers definition, compatible dependent data
+- * en: enable register and SPI enable bit
+- * dma_rx_en: SPI DMA RX enable register end SPI DMA RX enable bit
+- * dma_tx_en: SPI DMA TX enable register end SPI DMA TX enable bit
+- * cpol: clock polarity register and polarity bit
+- * cpha: clock phase register and phase bit
+- * lsb_first: LSB transmitted first register and bit
+- * br: baud rate register and bitfields
+- * rx: SPI RX data register
+- * tx: SPI TX data register
++ * struct stm32_spi_regspec - stm32 registers definition, compatible dependent data
++ * @en: enable register and SPI enable bit
++ * @dma_rx_en: SPI DMA RX enable register end SPI DMA RX enable bit
++ * @dma_tx_en: SPI DMA TX enable register end SPI DMA TX enable bit
++ * @cpol: clock polarity register and polarity bit
++ * @cpha: clock phase register and phase bit
++ * @lsb_first: LSB transmitted first register and bit
++ * @br: baud rate register and bitfields
++ * @rx: SPI RX data register
++ * @tx: SPI TX data register
+  */
+ struct stm32_spi_regspec {
+ 	const struct stm32_spi_reg en;
+@@ -213,7 +213,7 @@ struct stm32_spi_regspec {
+ struct stm32_spi;
+ 
+ /**
+- * stm32_spi_cfg - stm32 compatible configuration data
++ * struct stm32_spi_cfg - stm32 compatible configuration data
+  * @regs: registers descriptions
+  * @get_fifo_size: routine to get fifo size
+  * @get_bpw_mask: routine to get bits per word mask
+@@ -223,13 +223,13 @@ struct stm32_spi;
+  * @set_mode: routine to configure registers to desired mode
+  * @set_data_idleness: optional routine to configure registers to desired idle
+  * time between frames (if driver has this functionality)
+- * set_number_of_data: optional routine to configure registers to desired
++ * @set_number_of_data: optional routine to configure registers to desired
+  * number of data (if driver has this functionality)
+  * @can_dma: routine to determine if the transfer is eligible for DMA use
+  * @transfer_one_dma_start: routine to start transfer a single spi_transfer
+  * using DMA
+- * @dma_rx cb: routine to call after DMA RX channel operation is complete
+- * @dma_tx cb: routine to call after DMA TX channel operation is complete
++ * @dma_rx_cb: routine to call after DMA RX channel operation is complete
++ * @dma_tx_cb: routine to call after DMA TX channel operation is complete
+  * @transfer_one_irq: routine to configure interrupts for driver
+  * @irq_handler_event: Interrupt handler for SPI controller events
+  * @irq_handler_thread: thread of interrupt handler for SPI controller
+@@ -587,6 +587,7 @@ static void stm32f4_spi_read_rx(struct stm32_spi *spi)
+ /**
+  * stm32h7_spi_read_rxfifo - Read bytes in Receive Data Register
+  * @spi: pointer to the spi controller data structure
++ * @flush: boolean indicating that FIFO should be flushed
+  *
+  * Write in rx_buf depends on remaining bytes to avoid to write beyond
+  * rx_buf end.
+@@ -756,6 +757,9 @@ static void stm32h7_spi_disable(struct stm32_spi *spi)
+ 
+ /**
+  * stm32_spi_can_dma - Determine if the transfer is eligible for DMA use
++ * @master: controller master interface
++ * @spi_dev: pointer to the spi device
++ * @transfer: pointer to spi transfer
+  *
+  * If driver has fifo and the current transfer size is greater than fifo size,
+  * use DMA. Otherwise use DMA for transfer longer than defined DMA min bytes.
+@@ -974,6 +978,8 @@ static irqreturn_t stm32h7_spi_irq_thread(int irq, void *dev_id)
+ 
+ /**
+  * stm32_spi_prepare_msg - set up the controller to transfer a single message
++ * @master: controller master interface
++ * @msg: pointer to spi message
+  */
+ static int stm32_spi_prepare_msg(struct spi_master *master,
+ 				 struct spi_message *msg)
+@@ -1026,6 +1032,7 @@ static int stm32_spi_prepare_msg(struct spi_master *master,
+ 
+ /**
+  * stm32f4_spi_dma_tx_cb - dma callback
++ * @data: pointer to the spi controller data structure
+  *
+  * DMA callback is called when the transfer is complete for DMA TX channel.
+  */
+@@ -1041,6 +1048,7 @@ static void stm32f4_spi_dma_tx_cb(void *data)
+ 
+ /**
+  * stm32f4_spi_dma_rx_cb - dma callback
++ * @data: pointer to the spi controller data structure
+  *
+  * DMA callback is called when the transfer is complete for DMA RX channel.
+  */
+@@ -1054,6 +1062,7 @@ static void stm32f4_spi_dma_rx_cb(void *data)
+ 
+ /**
+  * stm32h7_spi_dma_cb - dma callback
++ * @data: pointer to the spi controller data structure
+  *
+  * DMA callback is called when the transfer is complete or when an error
+  * occurs. If the transfer is complete, EOT flag is raised.
+@@ -1079,6 +1088,9 @@ static void stm32h7_spi_dma_cb(void *data)
+ /**
+  * stm32_spi_dma_config - configure dma slave channel depending on current
+  *			  transfer bits_per_word.
++ * @spi: pointer to the spi controller data structure
++ * @dma_conf: pointer to the dma_slave_config structure
++ * @dir: direction of the dma transfer
+  */
+ static void stm32_spi_dma_config(struct stm32_spi *spi,
+ 				 struct dma_slave_config *dma_conf,
+@@ -1126,6 +1138,7 @@ static void stm32_spi_dma_config(struct stm32_spi *spi,
+ /**
+  * stm32f4_spi_transfer_one_irq - transfer a single spi_transfer using
+  *				  interrupts
++ * @spi: pointer to the spi controller data structure
+  *
+  * It must returns 0 if the transfer is finished or 1 if the transfer is still
+  * in progress.
+@@ -1166,6 +1179,7 @@ static int stm32f4_spi_transfer_one_irq(struct stm32_spi *spi)
+ /**
+  * stm32h7_spi_transfer_one_irq - transfer a single spi_transfer using
+  *				  interrupts
++ * @spi: pointer to the spi controller data structure
+  *
+  * It must returns 0 if the transfer is finished or 1 if the transfer is still
+  * in progress.
+@@ -1207,6 +1221,7 @@ static int stm32h7_spi_transfer_one_irq(struct stm32_spi *spi)
+ /**
+  * stm32f4_spi_transfer_one_dma_start - Set SPI driver registers to start
+  *					transfer using DMA
++ * @spi: pointer to the spi controller data structure
+  */
+ static void stm32f4_spi_transfer_one_dma_start(struct stm32_spi *spi)
  {
-@@ -293,32 +368,32 @@ static int atmel_qspi_set_cfg(struct atmel_qspi *aq,
- 	 * Serial Memory Mode (SMM).
- 	 */
- 	if (aq->mr != QSPI_MR_SMM) {
--		writel_relaxed(QSPI_MR_SMM, aq->regs + QSPI_MR);
-+		atmel_qspi_write(QSPI_MR_SMM, aq, QSPI_MR);
- 		aq->mr = QSPI_MR_SMM;
- 	}
- 
- 	/* Clear pending interrupts */
--	(void)readl_relaxed(aq->regs + QSPI_SR);
-+	(void)atmel_qspi_read(aq, QSPI_SR);
- 
- 	if (aq->caps->has_ricr) {
- 		if (!op->addr.nbytes && op->data.dir == SPI_MEM_DATA_IN)
- 			ifr |= QSPI_IFR_APBTFRTYP_READ;
- 
- 		/* Set QSPI Instruction Frame registers */
--		writel_relaxed(iar, aq->regs + QSPI_IAR);
-+		atmel_qspi_write(iar, aq, QSPI_IAR);
- 		if (op->data.dir == SPI_MEM_DATA_IN)
--			writel_relaxed(icr, aq->regs + QSPI_RICR);
-+			atmel_qspi_write(icr, aq, QSPI_RICR);
- 		else
--			writel_relaxed(icr, aq->regs + QSPI_WICR);
--		writel_relaxed(ifr, aq->regs + QSPI_IFR);
-+			atmel_qspi_write(icr, aq, QSPI_WICR);
-+		atmel_qspi_write(ifr, aq, QSPI_IFR);
- 	} else {
- 		if (op->data.dir == SPI_MEM_DATA_OUT)
- 			ifr |= QSPI_IFR_SAMA5D2_WRITE_TRSFR;
- 
- 		/* Set QSPI Instruction Frame registers */
--		writel_relaxed(iar, aq->regs + QSPI_IAR);
--		writel_relaxed(icr, aq->regs + QSPI_ICR);
--		writel_relaxed(ifr, aq->regs + QSPI_IFR);
-+		atmel_qspi_write(iar, aq, QSPI_IAR);
-+		atmel_qspi_write(icr, aq, QSPI_ICR);
-+		atmel_qspi_write(ifr, aq, QSPI_IFR);
- 	}
- 
- 	return 0;
-@@ -345,7 +420,7 @@ static int atmel_qspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 	/* Skip to the final steps if there is no data */
- 	if (op->data.nbytes) {
- 		/* Dummy read of QSPI_IFR to synchronize APB and AHB accesses */
--		(void)readl_relaxed(aq->regs + QSPI_IFR);
-+		(void)atmel_qspi_read(aq, QSPI_IFR);
- 
- 		/* Send/Receive data */
- 		if (op->data.dir == SPI_MEM_DATA_IN)
-@@ -356,22 +431,22 @@ static int atmel_qspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 				     op->data.nbytes);
- 
- 		/* Release the chip-select */
--		writel_relaxed(QSPI_CR_LASTXFER, aq->regs + QSPI_CR);
-+		atmel_qspi_write(QSPI_CR_LASTXFER, aq, QSPI_CR);
- 	}
- 
- 	/* Poll INSTRuction End status */
--	sr = readl_relaxed(aq->regs + QSPI_SR);
-+	sr = atmel_qspi_read(aq, QSPI_SR);
- 	if ((sr & QSPI_SR_CMD_COMPLETED) == QSPI_SR_CMD_COMPLETED)
- 		return err;
- 
- 	/* Wait for INSTRuction End interrupt */
- 	reinit_completion(&aq->cmd_completion);
- 	aq->pending = sr & QSPI_SR_CMD_COMPLETED;
--	writel_relaxed(QSPI_SR_CMD_COMPLETED, aq->regs + QSPI_IER);
-+	atmel_qspi_write(QSPI_SR_CMD_COMPLETED, aq, QSPI_IER);
- 	if (!wait_for_completion_timeout(&aq->cmd_completion,
- 					 msecs_to_jiffies(1000)))
- 		err = -ETIMEDOUT;
--	writel_relaxed(QSPI_SR_CMD_COMPLETED, aq->regs + QSPI_IDR);
-+	atmel_qspi_write(QSPI_SR_CMD_COMPLETED, aq, QSPI_IDR);
- 
- 	return err;
- }
-@@ -410,7 +485,7 @@ static int atmel_qspi_setup(struct spi_device *spi)
- 		scbr--;
- 
- 	aq->scr = QSPI_SCR_SCBR(scbr);
--	writel_relaxed(aq->scr, aq->regs + QSPI_SCR);
-+	atmel_qspi_write(aq->scr, aq, QSPI_SCR);
- 
- 	return 0;
- }
-@@ -418,14 +493,14 @@ static int atmel_qspi_setup(struct spi_device *spi)
- static void atmel_qspi_init(struct atmel_qspi *aq)
+@@ -1227,6 +1242,7 @@ static void stm32f4_spi_transfer_one_dma_start(struct stm32_spi *spi)
+ /**
+  * stm32h7_spi_transfer_one_dma_start - Set SPI driver registers to start
+  *					transfer using DMA
++ * @spi: pointer to the spi controller data structure
+  */
+ static void stm32h7_spi_transfer_one_dma_start(struct stm32_spi *spi)
  {
- 	/* Reset the QSPI controller */
--	writel_relaxed(QSPI_CR_SWRST, aq->regs + QSPI_CR);
-+	atmel_qspi_write(QSPI_CR_SWRST, aq, QSPI_CR);
+@@ -1243,6 +1259,8 @@ static void stm32h7_spi_transfer_one_dma_start(struct stm32_spi *spi)
  
- 	/* Set the QSPI controller by default in Serial Memory Mode */
--	writel_relaxed(QSPI_MR_SMM, aq->regs + QSPI_MR);
-+	atmel_qspi_write(QSPI_MR_SMM, aq, QSPI_MR);
- 	aq->mr = QSPI_MR_SMM;
+ /**
+  * stm32_spi_transfer_one_dma - transfer a single spi_transfer using DMA
++ * @spi: pointer to the spi controller data structure
++ * @xfer: pointer to the spi_transfer structure
+  *
+  * It must returns 0 if the transfer is finished or 1 if the transfer is still
+  * in progress.
+@@ -1405,7 +1423,7 @@ static void stm32_spi_set_mbr(struct stm32_spi *spi, u32 mbrdiv)
+ /**
+  * stm32_spi_communication_type - return transfer communication type
+  * @spi_dev: pointer to the spi device
+- * transfer: pointer to spi transfer
++ * @transfer: pointer to spi transfer
+  */
+ static unsigned int stm32_spi_communication_type(struct spi_device *spi_dev,
+ 						 struct spi_transfer *transfer)
+@@ -1522,7 +1540,7 @@ static void stm32h7_spi_data_idleness(struct stm32_spi *spi, u32 len)
+ /**
+  * stm32h7_spi_number_of_data - configure number of data at current transfer
+  * @spi: pointer to the spi controller data structure
+- * @len: transfer length
++ * @nb_words: transfer length (in words)
+  */
+ static int stm32h7_spi_number_of_data(struct stm32_spi *spi, u32 nb_words)
+ {
+@@ -1546,6 +1564,9 @@ static int stm32h7_spi_number_of_data(struct stm32_spi *spi, u32 nb_words)
+  * stm32_spi_transfer_one_setup - common setup to transfer a single
+  *				  spi_transfer either using DMA or
+  *				  interrupts.
++ * @spi: pointer to the spi controller data structure
++ * @spi_dev: pointer to the spi device
++ * @transfer: pointer to spi transfer
+  */
+ static int stm32_spi_transfer_one_setup(struct stm32_spi *spi,
+ 					struct spi_device *spi_dev,
+@@ -1625,6 +1646,9 @@ static int stm32_spi_transfer_one_setup(struct stm32_spi *spi,
  
- 	/* Enable the QSPI controller */
--	writel_relaxed(QSPI_CR_QSPIEN, aq->regs + QSPI_CR);
-+	atmel_qspi_write(QSPI_CR_QSPIEN, aq, QSPI_CR);
- }
+ /**
+  * stm32_spi_transfer_one - transfer a single spi_transfer
++ * @master: controller master interface
++ * @spi_dev: pointer to the spi device
++ * @transfer: pointer to spi transfer
+  *
+  * It must return 0 if the transfer is finished or 1 if the transfer is still
+  * in progress.
+@@ -1658,6 +1682,8 @@ static int stm32_spi_transfer_one(struct spi_master *master,
  
- static irqreturn_t atmel_qspi_interrupt(int irq, void *dev_id)
-@@ -433,8 +508,8 @@ static irqreturn_t atmel_qspi_interrupt(int irq, void *dev_id)
- 	struct atmel_qspi *aq = dev_id;
- 	u32 status, mask, pending;
+ /**
+  * stm32_spi_unprepare_msg - relax the hardware
++ * @master: controller master interface
++ * @msg: pointer to the spi message
+  */
+ static int stm32_spi_unprepare_msg(struct spi_master *master,
+ 				   struct spi_message *msg)
+@@ -1671,6 +1697,7 @@ static int stm32_spi_unprepare_msg(struct spi_master *master,
  
--	status = readl_relaxed(aq->regs + QSPI_SR);
--	mask = readl_relaxed(aq->regs + QSPI_IMR);
-+	status = atmel_qspi_read(aq, QSPI_SR);
-+	mask = atmel_qspi_read(aq, QSPI_IMR);
- 	pending = status & mask;
+ /**
+  * stm32f4_spi_config - Configure SPI controller as SPI master
++ * @spi: pointer to the spi controller data structure
+  */
+ static int stm32f4_spi_config(struct stm32_spi *spi)
+ {
+@@ -1701,6 +1728,7 @@ static int stm32f4_spi_config(struct stm32_spi *spi)
  
- 	if (!pending)
-@@ -569,7 +644,7 @@ static int atmel_qspi_remove(struct platform_device *pdev)
- 	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
- 
- 	spi_unregister_controller(ctrl);
--	writel_relaxed(QSPI_CR_QSPIDIS, aq->regs + QSPI_CR);
-+	atmel_qspi_write(QSPI_CR_QSPIDIS, aq, QSPI_CR);
- 	clk_disable_unprepare(aq->qspick);
- 	clk_disable_unprepare(aq->pclk);
- 	return 0;
-@@ -596,7 +671,7 @@ static int __maybe_unused atmel_qspi_resume(struct device *dev)
- 
- 	atmel_qspi_init(aq);
- 
--	writel_relaxed(aq->scr, aq->regs + QSPI_SCR);
-+	atmel_qspi_write(aq->scr, aq, QSPI_SCR);
- 
- 	return 0;
- }
+ /**
+  * stm32h7_spi_config - Configure SPI controller as SPI master
++ * @spi: pointer to the spi controller data structure
+  */
+ static int stm32h7_spi_config(struct stm32_spi *spi)
+ {
 -- 
-2.20.1
+2.7.4

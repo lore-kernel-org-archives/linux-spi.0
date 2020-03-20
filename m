@@ -1,13 +1,17 @@
 From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: [PATCH][next] spi: spi-fsl-lpspi: Replace zero-length array with
+Subject: [PATCH][next] spi: spi-s3c24xx: Replace zero-length array with
  flexible-array member
-Date: Fri, 20 Mar 2020 18:25:15 -0500
-Message-ID: <20200320232515.GA24800@embeddedor.com>
+Date: Fri, 20 Mar 2020 18:25:56 -0500
+Message-ID: <20200320232556.GA24989@embeddedor.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+Cc: linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
         "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To: Mark Brown <broonie@kernel.org>
+To: Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
 Sender: linux-kernel-owner@vger.kernel.org
@@ -43,21 +47,21 @@ This issue was found with the help of Coccinelle.
 
 Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 ---
- drivers/spi/spi-fsl-lpspi.c | 2 +-
+ drivers/spi/spi-s3c24xx.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 298329b781d2..8b41b70f6f5c 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -123,7 +123,7 @@ struct fsl_lpspi_data {
- 	struct completion dma_rx_completion;
- 	struct completion dma_tx_completion;
- 
--	int chipselect[0];
-+	int chipselect[];
+diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
+index 2d6e37f25e2d..2cb3b611c294 100644
+--- a/drivers/spi/spi-s3c24xx.c
++++ b/drivers/spi/spi-s3c24xx.c
+@@ -227,7 +227,7 @@ static inline unsigned int hw_txbyte(struct s3c24xx_spi *hw, int count)
+ struct spi_fiq_code {
+ 	u32	length;
+ 	u32	ack_offset;
+-	u8	data[0];
++	u8	data[];
  };
  
- static const struct of_device_id fsl_lpspi_dt_ids[] = {
+ extern struct spi_fiq_code s3c24xx_spi_fiq_txrx;
 -- 
 2.23.0

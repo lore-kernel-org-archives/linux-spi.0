@@ -1,52 +1,126 @@
-From: Akash Asthana <akashast@codeaurora.org>
-Subject: Re: [PATCH V2 7/8] spi: spi-qcom-qspi: Add interconnect support
-Date: Fri, 20 Mar 2020 11:05:42 +0530
-Message-ID: <f8f7041b-c21e-2c2c-a6e7-b92e7cc3e90b@codeaurora.org>
-References: <1584105134-13583-1-git-send-email-akashast@codeaurora.org>
- <1584105134-13583-8-git-send-email-akashast@codeaurora.org>
- <20200314005817.GN144492@google.com>
- <3aeb3083-2a31-b269-510d-eb608ff14ce5@codeaurora.org>
- <CAE=gft58QsgTCUHMHKJhcM9ZxAeMiY16CrbNv2HaTCRqwtmt7A@mail.gmail.com>
- <e2ee1a60-a379-5c78-355a-64aad451a944@codeaurora.org>
- <CAE=gft4xL9+GN2NrM9ewyPg0Fog3pnf_sLGjWRNOg7KynNh-Dg@mail.gmail.com>
+From: Vignesh Raghavendra <vigneshr@ti.com>
+Subject: Re: [PATCH v12 1/4] dt-bindings: spi: Add schema for Cadence QSPI
+ Controller driver
+Date: Fri, 20 Mar 2020 11:35:57 +0530
+Message-ID: <c2ad909e-9042-6ba0-7213-83346c6b9908@ti.com>
+References: <20200310015213.1734-1-vadivel.muruganx.ramuthevar@linux.intel.com>
+ <20200310015213.1734-2-vadivel.muruganx.ramuthevar@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Matthias Kaehlcke <mka@chromium.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        wsa@the-dreams.de, Mark Brown <broonie@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-i2c@vger.kernel.org,
-        linux-spi@vger.kernel.org,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
-        <devicetree@vger.kernel.org>, Stephen Boyd <swboyd@chromium.org>,
-        Manu Gautam <mgautam@codeaurora.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        linux-serial@vger.kernel.org,
-        Doug Anderson <dianders@chromium.org>,
-        Georgi Djakov <georgi.djakov@linaro.org>
-To: Evan Green <evgreen@chromium.org>
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
-In-Reply-To: <CAE=gft4xL9+GN2NrM9ewyPg0Fog3pnf_sLGjWRNOg7KynNh-Dg@mail.gmail.com>
+Cc: marex@denx.de, devicetree@vger.kernel.org, tien.fong.chee@intel.com,
+ tudor.ambarus@gmail.com, boris.brezillon@free-electrons.com, richard@nod.at,
+ qi-ming.wu@intel.com, simon.k.r.goldschmidt@gmail.com, dinguyen@kernel.org,
+ linux-mtd@lists.infradead.org, miquel.raynal@bootlin.com,
+ cheol.yong.kim@intel.com, cyrille.pitchen@atmel.com,
+ computersforpeace@gmail.com, dwmw2@infradead.org,
+ david.oberhollenzer@sigma-star.at
+To: "Ramuthevar,Vadivel MuruganX"
+ <vadivel.muruganx.ramuthevar@linux.intel.com>,
+ <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+ <broonie@kernel.org>, <robh+dt@kernel.org>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=m.gmane-mx.org@lists.infradead.org>
+In-Reply-To: <20200310015213.1734-2-vadivel.muruganx.ramuthevar@linux.intel.com>
 Content-Language: en-US
-Sender: linux-arm-msm-owner@vger.kernel.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=m.gmane-mx.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Evan,
->> IIUC, you meant to say struct icc_req(inside icc_path) will be saving
->> avg_bw and peak_bw so no need to save it outside icc_path?
-> Correct, it seems silly to store the same set of values twice in the
-> framework, but with different semantics about who's watching it.
-> -Evan
 
-Thanks for clarification! Yeah make sense not to introduce the structure 
-in ICC framework
 
-Regards,
+On 10/03/20 7:22 am, Ramuthevar,Vadivel MuruganX wrote:
+> From: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
+> 
+> Add dt-bindings documentation for Cadence-QSPI controller to support
+> spi based flash memories.
+> 
+> Signed-off-by: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
+> ---
+>  .../devicetree/bindings/mtd/cadence-quadspi.txt    |  67 -----------
+>  .../devicetree/bindings/spi/cdns,qspi-nor.yaml     | 127 +++++++++++++++++++++
+>  2 files changed, 127 insertions(+), 67 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/mtd/cadence-quadspi.txt
+>  create mode 100644 Documentation/devicetree/bindings/spi/cdns,qspi-nor.yaml
+> 
+[...]
 
-Akash
+> +
+> +# subnode's properties
+> +patternProperties:
+> +  "^.*@[0-9a-fA-F]+$":
+> +    type: object
+> +    description:
+> +      flash device uses the subnodes below defined properties.
+> +
+> +  cdns,read-delay:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      Delay in 4 microseconds, read capture logic, in clock cycles.
 
--- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,\na Linux Foundation Collaborative Project
+
+Not its not... See the old binding description please:
+
+-- cdns,read-delay : Delay for read capture logic, in clock cycles
+
+There is no mention of 4us. Range is 0x0 - 0xF
+
+> +
+> +  cdns,tshsl-ns:
+> +    description: |
+> +      Delay in 50 nanoseconds, for the length that the master mode chip select
+> +      outputs are de-asserted between transactions.
+
+Again see the description in old binding file:
+
+ cdns,tshsl-ns : Delay in nanoseconds for the length that the master
+                  mode chip select outputs are de-asserted between
+	  	transactions.
+
+Need not be 50ns or its multiple
+
+> +
+> +  cdns,tsd2d-ns:
+> +    description: |
+> +      Delay in 50 nanoseconds, between one chip select being de-activated
+> +      and the activation of another.
+> +
+
+same here
+
+> +  cdns,tchsh-ns:
+> +    description: |
+> +      Delay in 4 nanoseconds, between last bit of current transaction and
+> +      deasserting the device chip select (qspi_n_ss_out).
+> +
+
+Same here... Need not be 4ns...
+
+> +  cdns,tslch-ns:
+> +    description: |
+> +      Delay in 4 nanoseconds, between setting qspi_n_ss_out low and
+> +      first bit transfer.
+
+
+Same here...
+
+Above four values ( cdns,*-ns) come directly from the flash datasheets.
+
+These values are converted appropriate number of cycles depending upon
+the QSPI ref_clk frequency. So, there is no easy way to express the
+constraint (or range) in DT schema. I would recommend to just stick with
+the description that is there in the old binding file without any
+modifications.
+
+Regards
+Vignesh
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

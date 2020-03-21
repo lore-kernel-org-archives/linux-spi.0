@@ -1,67 +1,50 @@
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: [PATCH][next] spi: spi-s3c24xx: Replace zero-length array with
- flexible-array member
-Date: Fri, 20 Mar 2020 18:25:56 -0500
-Message-ID: <20200320232556.GA24989@embeddedor.com>
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: Re: [PATCH 05/28] ARM: dts: pxa3xx: Fix up encoding of the /gpio interrupts property
+Date: Sat, 21 Mar 2020 08:36:10 +0100
+Message-ID: <87y2rudus5.fsf@belgarion.home>
+References: <20200317093922.20785-1-lkundrak@v3.sk>
+        <20200317093922.20785-6-lkundrak@v3.sk>
+        <20200317132854.GF24270@lunn.ch>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-To: Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>
+Content-Type: text/plain
+Cc: Lubomir Rintel <lkundrak@v3.sk>, Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Marc Zyngier <maz@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Brown <broonie@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        devicetree@vger.kernel.org, linux
+To: Andrew Lunn <andrew@lunn.ch>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
+In-Reply-To: <20200317132854.GF24270@lunn.ch> (Andrew Lunn's message of "Tue,
+        17 Mar 2020 14:28:54 +0100")
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The current codebase makes use of the zero-length array language
-extension to the C90 standard, but the preferred mechanism to declare
-variable-length types such as these ones is a flexible array member[1][2],
-introduced in C99:
+Andrew Lunn <andrew@lunn.ch> writes:
 
-struct foo {
-        int stuff;
-        struct boo array[];
-};
+> On Tue, Mar 17, 2020 at 10:38:59AM +0100, Lubomir Rintel wrote:
+>> This way the device tree validator learns that each cell of the property
+>> constitutes a separate item. Otherwise it gets unnecessairly upset:
+>> 
+>>   pxa300-raumfeld-speaker-s.dt.yaml: gpio@40e00000: interrupts:
+>>       [[8, 9, 10]] is too short
+>> 
+>> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+>
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Robert Jarzmik <robert.jarzmik@free.fr.>
 
-By making use of the mechanism above, we will get a compiler warning
-in case the flexible array does not occur last in the structure, which
-will help us prevent some kind of undefined behavior bugs from being
-inadvertently introduced[3] to the codebase from now on.
-
-Also, notice that, dynamic memory allocations won't be affected by
-this change:
-
-"Flexible array members have incomplete type, and so the sizeof operator
-may not be applied. As a quirk of the original implementation of
-zero-length arrays, sizeof evaluates to zero."[1]
-
-This issue was found with the help of Coccinelle.
-
-[1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
-[2] https://github.com/KSPP/linux/issues/21
-[3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
-
-Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
----
- drivers/spi/spi-s3c24xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
-index 2d6e37f25e2d..2cb3b611c294 100644
---- a/drivers/spi/spi-s3c24xx.c
-+++ b/drivers/spi/spi-s3c24xx.c
-@@ -227,7 +227,7 @@ static inline unsigned int hw_txbyte(struct s3c24xx_spi *hw, int count)
- struct spi_fiq_code {
- 	u32	length;
- 	u32	ack_offset;
--	u8	data[0];
-+	u8	data[];
- };
- 
- extern struct spi_fiq_code s3c24xx_spi_fiq_txrx;
 -- 
-2.23.0
+Robert

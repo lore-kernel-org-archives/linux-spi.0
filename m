@@ -1,50 +1,38 @@
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-Subject: Re: [PATCH 05/28] ARM: dts: pxa3xx: Fix up encoding of the /gpio interrupts property
-Date: Sat, 21 Mar 2020 08:36:10 +0100
-Message-ID: <87y2rudus5.fsf@belgarion.home>
-References: <20200317093922.20785-1-lkundrak@v3.sk>
-        <20200317093922.20785-6-lkundrak@v3.sk>
-        <20200317132854.GF24270@lunn.ch>
+From: Sasha Levin <sashal-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH AUTOSEL 5.5 01/41] spi: spi-omap2-mcspi: Handle DMA size
+ restriction on AM65x
+Date: Sun, 22 Mar 2020 15:37:39 -0400
+Message-ID: <20200322193739.GO4189@sasha-vm>
+References: <20200316023319.749-1-sashal@kernel.org>
+ <20200316115057.GB5010@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Lubomir Rintel <lkundrak@v3.sk>, Rob Herring <robh+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mark Brown <broonie@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        devicetree@vger.kernel.org, linux
-To: Andrew Lunn <andrew@lunn.ch>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20200317132854.GF24270@lunn.ch> (Andrew Lunn's message of "Tue,
-        17 Mar 2020 14:28:54 +0100")
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        Vignesh Raghavendra <vigneshr-l0cyMroinI0@public.gmane.org>,
+        linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20200316115057.GB5010-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Andrew Lunn <andrew@lunn.ch> writes:
-
-> On Tue, Mar 17, 2020 at 10:38:59AM +0100, Lubomir Rintel wrote:
->> This way the device tree validator learns that each cell of the property
->> constitutes a separate item. Otherwise it gets unnecessairly upset:
->> 
->>   pxa300-raumfeld-speaker-s.dt.yaml: gpio@40e00000: interrupts:
->>       [[8, 9, 10]] is too short
->> 
->> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+On Mon, Mar 16, 2020 at 11:50:57AM +0000, Mark Brown wrote:
+>On Sun, Mar 15, 2020 at 10:32:39PM -0400, Sasha Levin wrote:
+>> From: Vignesh Raghavendra <vigneshr-l0cyMroinI0@public.gmane.org>
+>>
+>> [ Upstream commit e4e8276a4f652be2c7bb783a0155d4adb85f5d7d ]
+>>
+>> On AM654, McSPI can only support 4K - 1 bytes per transfer when DMA is
+>> enabled. Therefore populate master->max_transfer_size callback to
+>> inform client drivers of this restriction when DMA channels are
+>> available.
 >
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Robert Jarzmik <robert.jarzmik@free.fr.>
+>As ever this only provides information to other drivers which may be
+>buggy.
+
+I'll drop it, thanks!
 
 -- 
-Robert
+Thanks,
+Sasha

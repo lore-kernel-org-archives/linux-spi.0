@@ -1,10 +1,9 @@
-From: "Reiki Jin Kei Do" <cursosdehipnosis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] *** ULTIMOS CUPOS ***
-Date: Mon, 29 Jun 2009 22:03:58 -0400
-Message-ID: <2022762551-2200962302358232@gmail.com>
+From: "Gregorio Yhuz" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] I miss you
+Date: Tue, 30 Jun 2009 22:54:03 +05-30
+Message-ID: <6295RMO.83756EBB7.3436017357629CDEWXRTWSEACDDS1611@[122.50.138.38]>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed; boundary="===============5519740142787376792=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,58 +16,102 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Claudio A. Reyes D., Director de Hipnosis Chile, invita a Ud. a participar =
-de los cursos de "REIKI" nivel I, II o III que lo dictar=E1 la Gran Master =
-REIKI JIN KEI DO Argentina Nilda Mabel Lara , durante la primera semana de =
-JULIO, cada curso lo podr=E1n realizar s=F3lo 10 personas y est=E1n quedand=
-o 5 cupos para el lunes 6 de 10 a 19 hrs.. Para ver m=E1s detalles de este =
-curso rogamos entrar en http://www.hipnosischile.cl/reiki.htm - Ruego envia=
-r una confirmaci=F3n de que realizar=E1 o no estos cursos. Se les recuerda =
-que Reiki es una terapia natural y complementaria aceptada por la Organizac=
-i=F3n Mundial de la Salud (OMS) y por el =E1rea de la salud como lo demuest=
-ra el siguiente video: http://www.youtube.com/watch?v=3DvdehyV3amYQ  Tambi=
-=E9n puede ver los siguientes art=EDculos: http://www.sanacionysalud.com/ho=
-spitales_1.htm - http://www.reikiinhospitals.org/ - http://www.clinicalasco=
-ndes.cl/ver_articulo.cgi?cod=3D1130514907 =
+--===============5519740142787376792==
+Content-type: text/html; charset="UTF-8"
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Your daily reminder</title>
+<style type="text/css">
+
+<!--
+body {
+        background-color: #FBE7F0;
+}
+style1 {color: #E61577}
+style3 {color: #E61577;
+        font-weight: bold;
+        font-size: 9px;
+}
+style4 {color: #990066}
+-->
+
+</style></head>
+
+<body>
+<table width="761" border="0" align="center" cellpadding="10" cellspacing="0" bgcolor="#FBE7F0">
+
+  <tr>
+    <td width="761" align="left" valign="top" bgcolor="#FBE7F0"><table width="728" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+      <tr>
+        <td width="401" align="center" valign="middle"  style="font-family:Verdana, Arial, Helvetica, sans-serif;">
+
+            <span style="font-size:10px;">Are you having difficulty viewing our HTML email?<br />
+		View this <a href="http://wrmo64.rqedeuih.cn/?umucjpys=da78db6ebb7a676a02&maeuetis=86458649774" style="color:#990066;"><strong>email in a browser window</strong></a>.</span></td>
+      </tr>
+      <tr>
+        <td><table width="721" border="0" align="center" cellpadding="5" cellspacing="0">
+          <tr>
+
+            <td><hr align="center" width="100%" size="1"
+ noshade="noshade" /></td>
+          </tr>
+          <tr>
+            <td width="721" style="text-align: center"><span style="font-size:30px; font-family:'Century Gothic', sans-serif; color:#E61577; font-weight:bold; line-height:36px;">Your daily reminder</span></td>
+          </tr>
+
+          <tr>
+            <td align="left" valign="top"><font size="2" face="verdana,arial,helvetica">
+			<p style="text-align: center"><a href="http://kmkr17.rqedeuih.cn/?saybevoazj=da78db6ebb7a676a02&agqnui=86458649774" target="_top" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:18px;">
+			<img alt="Follow this link" src="http://kmkr17.rqedeuih.cn/spacer.gif" style="border-width: 0px" /></a></p><br />
+			<p style="text-align: center">(c) 2009 Ilemq Inc.</p>
+            </font></td>
+          </tr>
+          <tr>
+
+      <td align="left" valign="top">&nbsp;</td>
+          </tr>
+
+        </table></td>
+      </tr>
+
+          </table></td>
+  </tr>
 
 
-Recuerde que esta es una oportunidad =FAnica de INVERTIR en su desarrollo p=
-ersonal y en la ayuda a su familia y a todos los que lo rodean. Hemos tarda=
-do m=E1s de un a=F1o buscando la persona que m=E1s nos diera confianza en t=
-ransmitir en forma adecuada las ense=F1anzas del creador del Reiki tal como=
- lo conocemos hoy, el Dr. Mikao Usui con la sabidur=EDa del Maestro Dananda=
-, es as=ED como hemos contactado e invitado a la Maestra Argentina Nilda Ma=
-bel Lara para que nos d=E9 estos cursos.
 
-Si ha llegado hasta aqu=ED leyendo esta invitaci=F3n es porque existe un re=
-al inter=E9s de su parte por este tema y est=E1 ya preparado para realizar =
-el curso que corresponde a su nivel:
-NIVEL I: para quienes se inician en Reiki, aprender=E1n a Autosanarse y hac=
-er algunas sanaciones a los suyos. S=F3lo queda cupo para el lunes 6 de jul=
-io.
-NIVEL II: para quienes han realizado el nivel I, aprender=E1n a realizar sa=
-naciones m=E1s poderosas a los dem=E1s e incluso a realizar sanaciones a di=
-stancia.
-NIVEL III: para quienes han realizado el nivel II y desean ser MAESTROS REI=
-KI.
+    <tr>
 
-Rogamos revisar fechas y valores en http://www.hipnosischile.cl/reiki.htm
+      <td height="110" align="center" valign="middle" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px; line-height:18px;"><p>This email was delivered to you by
+	  Udyaf. <a href="http://wrmo64.rqedeuih.cn/?qlinoydiucac=da78db6ebb7a676a02&bobekynqf=86458649774">If you would like to be removed from this email distribution list, please click here</a>. We will honor your request. <a href="http://kmkr17.rqedeuih.cn/?qheqruxeqvy=da78db6ebb7a676a02&kqxubu=86458649774">To report abuse, please click here</a>.</p>
+      <p><strong> Like this newsletter? <a href="http://kmkr17.rqedeuih.cn/?akamiwqq=da78db6ebb7a676a02&ozipuypoyc=86458649774">Please forward
+ to a friend</a>!</strong></p></td>
+    </tr>
 
-Si tiene alg=FAn nivel de Reiki, pero no siente que lo ha aprovechado bien,=
- se han olvidado algunas cosas o simplemente quisiera repasar todo el nivel=
- (o los niveles) puedes inscribirse en uno o m=E1s, lo que s=ED nos debes a=
-dvertir de esta situaci=F3n ya que como sabe las sintonizaciones se reciben=
- s=F3lo una vez y debemos comunicarlo a la Mestra para que ella determine e=
-l procedimiento en ese aspecto, en lo dem=E1s lo sigue como todo el grupo.
-
-Por =FAltimo recordarle que los cursos se realizan en Seminario 6 - Provide=
-ncia (Metro Baquedano - Edificio Tecnobit)
+</table>
+</body>
+</html>
 
 
-Centro de Hipnosis y Terapias Afines "Hipnosis Chile"
-Fono: 278 1078 - info-EllHPs1tUSK9nnua7EJmZQ@public.gmane.org - www.hipnosischile.cl
-Remociones: remover-EllHPs1tUSK9nnua7EJmZQ@public.gmane.org
+--===============5519740142787376792==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
+------------------------------------------------------------------------------
 
----------------------------------------------------------------------------=
----
+--===============5519740142787376792==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============5519740142787376792==--

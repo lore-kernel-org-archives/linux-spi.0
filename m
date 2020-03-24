@@ -1,13 +1,10 @@
-From: "=?windows-1252?Q?Assista_Produ=E7=F5es?="
-	<newsletter-kGjsRGDwesZC+/9Vaz4mCDf3LNKNG0CT@public.gmane.org>
-Subject: =?windows-1252?q?Material_Cient=EDfico_Assist?=
-	=?windows-1252?q?a_-_Atualiza=E7=E3o_sem_hora_marcada?=
-Date: Thu, 9 Jul 2009 02:41:34 -0300
-Message-ID: <8eaf87e77c24742a2ab8337a00197407@assistaproducoes.com.br>
-Reply-To: newsletter-kGjsRGDwesZC+/9Vaz4mCDf3LNKNG0CT@public.gmane.org
+From: "Blanca Gagioh" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Breathtaking
+Date: Thu, 9 Jul 2009 18:23:09 +05-30
+Message-ID: <7886JBM.795391E88.0647946204IWABGCQQTCNMFTU319@[124.125.176.244]>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6726418874496310089=="
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============2228606056870952822=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,142 +16,119 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6726418874496310089==
-Content-Type: text/html;
-	charset="windows-1252"
-Content-Transfer-Encoding: base64
+--===============2228606056870952822==
+Content-type: text/html; charset="utf-8"
 
-PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMCBUcmFuc2l0aW9uYWwv
-L0VOIj4NCjxodG1sPg0KPGhlYWQ+DQo8bWV0YSBodHRwLWVxdWl2PUNvbnRlbnQtVHlwZSBjb250
-ZW50PSJ0ZXh0L2h0bWw7IGNoYXJzZXQ9d2luZG93cy0xMjUyIj4NCjwvaGVhZD4NCjxib2R5IHN0
-eWxlPSJGT05ULUZBTUlMWTogVmVyZGFuYSI+DQo8ZGl2IGFsaWduPWNlbnRlcj48aW1nIA0Kc3Jj
-PSJodHRwOi8vd3d3LmFzc2lzdGFwcm9kdWNvZXMuY29tLmJyL25ld3NsZXR0ZXIvMzlqdW4wOS8w
-MS5qcGciIHVzZU1hcD0jTWFwIA0KYm9yZGVyPTA+PC9kaXY+DQo8ZGl2IGFsaWduPWNlbnRlcj48
-aW1nIA0Kc3JjPSJodHRwOi8vd3d3LmFzc2lzdGFwcm9kdWNvZXMuY29tLmJyL25ld3NsZXR0ZXIv
-MzlqdW4wOS8wMi5qcGciIA0KdXNlTWFwPSNNYXBNYXAgYm9yZGVyPTA+PC9kaXY+DQo8ZGl2IGFs
-aWduPWNlbnRlcj48aW1nIA0Kc3JjPSJodHRwOi8vd3d3LmFzc2lzdGFwcm9kdWNvZXMuY29tLmJy
-L25ld3NsZXR0ZXIvMzlqdW4wOS8wMy5qcGciIA0KdXNlTWFwPSNNYXBNYXBNYXAgYm9yZGVyPTA+
-PC9kaXY+DQo8ZGl2IGFsaWduPWNlbnRlcj48aW1nIA0Kc3JjPSJodHRwOi8vd3d3LmFzc2lzdGFw
-cm9kdWNvZXMuY29tLmJyL25ld3NsZXR0ZXIvMzlqdW4wOS8wNC5qcGciIA0KdXNlTWFwPSNNYXBN
-YXBNYXBNYXAgYm9yZGVyPTA+IDwvZGl2Pg0KPGRpdiBhbGlnbj1jZW50ZXIgaGVpZ2h0PSI2MCI+
-PGZvbnQgZmFjZT0iQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiIgDQpjb2xvcj0jMDAwMDAw
-IHNpemU9LTI+PGZvbnQgc2l6ZT0yPlNlIG7jbyBlc3RpdmVyIHZpc3VhbGl6YW5kbywgPGEgDQpo
-cmVmPSJodHRwOi8vd3d3LmFzc2lzdGFwcm9kdWNvZXMuY29tLmJyL25ld3NsZXR0ZXIvMzlqdW4w
-OS9uZXdzX3NpdGUuaHRtbCI+PGZvbnQgDQpzaXplPSswPmNsaXF1ZSBhcXVpPC9mb250PjwvYT4u
-PGJyPjwvZm9udD5DYXNvIGRlc2VqZSBjYW5jZWxhciBvIHJlY2ViaW1lbnRvIGRlIA0KbmV3c2xl
-dHRlcnMgYSBxdWFscXVlciBtb21lbnRvLCBjbGlxdWUgZW0gPGEgaHJlZj0ibWFpbHRvOnJlbW92
-ZXJAYXNzaXN0YXByb2R1Y29lcy5jb20uYnIiPjxmb250IA0KY29sb3I9IzAwMDAwMD5yZW1vdmVy
-QGFzc2lzdGFwcm9kdWNvZXMuY29tLmJyPC9mb250PjwvYT4gZSBkaWdpdGUgIlJlbW92ZXIgZGEg
-DQpsaXN0YSIgbm8gY2FtcG8gQXNzdW50by48L2ZvbnQ+PC9kaXY+DQo8cD48bWFwIGlkPU1hcCBu
-YW1lPU1hcD48YXJlYSBzaGFwZT1SRUNUIGNvb3Jkcz00OTIsMzk4LDU5OSw1NDQgDQogIGhyZWY9
-Imh0dHA6Ly93d3cuYXNzaXN0YXByb2R1Y29lcy5jb20uYnIvc2hvcC9wcm9kdWN0X2luZm8ucGhw
-P3Byb2R1Y3RzX2lkPTQxMSI+PGFyZWEgDQogIHNoYXBlPVJFQ1QgY29vcmRzPTI1Niw0MDAsMzYz
-LDU0NiANCiAgaHJlZj0iaHR0cDovL3d3dy5hc3Npc3RhcHJvZHVjb2VzLmNvbS5ici9zaG9wL3By
-b2R1Y3RfaW5mby5waHA/cHJvZHVjdHNfaWQ9NDA1Ij48YXJlYSANCiAgc2hhcGU9UkVDVCBjb29y
-ZHM9MzczLDM5OSw0ODAsNTQ1IA0KICBocmVmPSJodHRwOi8vd3d3LmFzc2lzdGFwcm9kdWNvZXMu
-Y29tLmJyL3Nob3AvcHJvZHVjdF9pbmZvLnBocD9wcm9kdWN0c19pZD0zODQiPjxhcmVhIA0KICBz
-aGFwZT1SRUNUIGNvb3Jkcz0xNDEsNDAxLDI0OCw1NDcgDQogIGhyZWY9Imh0dHA6Ly93d3cuYXNz
-aXN0YXByb2R1Y29lcy5jb20uYnIvc2hvcC9wcm9kdWN0X2luZm8ucGhwPyZhbXA7cHJvZHVjdHNf
-aWQ9MzgxIj48YXJlYSANCiAgc2hhcGU9UkVDVCBjb29yZHM9MjksNDAwLDEzNiw1NDYgDQogIGhy
-ZWY9Imh0dHA6Ly93d3cuYXNzaXN0YXByb2R1Y29lcy5jb20uYnIvc2hvcC9wcm9kdWN0X2luZm8u
-cGhwP2NQYXRoPTk1JmFtcDtwcm9kdWN0c19pZD00MDYiPjxhcmVhIA0KICBzaGFwZT1SRUNUIGNv
-b3Jkcz00NDQsMTU3LDU1MSwzMDMgDQogIGhyZWY9Imh0dHA6Ly93d3cuYXNzaXN0YXByb2R1Y29l
-cy5jb20uYnIvc2hvcC9wcm9kdWN0X2luZm8ucGhwP3Byb2R1Y3RzX2lkPTQyMSI+PGFyZWEgDQog
-IHNoYXBlPVJFQ1QgY29vcmRzPTI4OCwxNTksMzk1LDMwNSANCiAgaHJlZj0iaHR0cDovL3d3dy5h
-c3Npc3RhcHJvZHVjb2VzLmNvbS5ici9zaG9wL3Byb2R1Y3RfaW5mby5waHA/cHJvZHVjdHNfaWQ9
-NDE5Ij48YXJlYSANCiAgc2hhcGU9UkVDVCBjb29yZHM9MTI1LDE1OCwyMzIsMzA0IA0KICBocmVm
-PSJodHRwOi8vd3d3LmFzc2lzdGFwcm9kdWNvZXMuY29tLmJyL3Nob3AvcHJvZHVjdF9pbmZvLnBo
-cD9wcm9kdWN0c19pZD00MjAiPjwvbWFwPjxtYXAgDQppZD1NYXBNYXAgbmFtZT1NYXBNYXA+PGFy
-ZWEgc2hhcGU9UkVDVCBjb29yZHM9NDg5LDkxLDU5NiwyMzcgDQogIGhyZWY9Imh0dHA6Ly93d3cu
-YXNzaXN0YXByb2R1Y29lcy5jb20uYnIvc2hvcC9wcm9kdWN0X2luZm8ucGhwP3Byb2R1Y3RzX2lk
-PTQwOCI+PGFyZWEgDQogIHNoYXBlPVJFQ1QgY29vcmRzPTI1Myw5MywzNjAsMjM5IA0KICBocmVm
-PSJodHRwOi8vd3d3LmFzc2lzdGFwcm9kdWNvZXMuY29tLmJyL3Nob3AvcHJvZHVjdF9pbmZvLnBo
-cD9wcm9kdWN0c19pZD00MTYiPjxhcmVhIA0KICBzaGFwZT1SRUNUIGNvb3Jkcz0yNiw5MywxMzMs
-MjM5IA0KICBocmVmPSJodHRwOi8vd3d3LmFzc2lzdGFwcm9kdWNvZXMuY29tLmJyL3Nob3AvcHJv
-ZHVjdF9pbmZvLnBocD9wcm9kdWN0c19pZD00MTUiPjxhcmVhIA0KICBzaGFwZT1SRUNUIGNvb3Jk
-cz0zNzAsOTEsNDc3LDIzNyANCiAgaHJlZj0iaHR0cDovL3d3dy5hc3Npc3RhcHJvZHVjb2VzLmNv
-bS5ici9zaG9wL3Byb2R1Y3RfaW5mby5waHA/cHJvZHVjdHNfaWQ9Mzg1Ij48YXJlYSANCiAgc2hh
-cGU9UkVDVCBjb29yZHM9MTM4LDk0LDI0NSwyNDAgDQogIGhyZWY9Imh0dHA6Ly93d3cuYXNzaXN0
-YXByb2R1Y29lcy5jb20uYnIvc2hvcC9wcm9kdWN0X2luZm8ucGhwP3Byb2R1Y3RzX2lkPTQxNyI+
-PGFyZWEgDQogIHNoYXBlPVJFQ1QgY29vcmRzPTE0MywzMzAsMjUwLDQ3NiANCiAgaHJlZj0iaHR0
-cDovL3d3dy5hc3Npc3RhcHJvZHVjb2VzLmNvbS5ici9zaG9wL3Byb2R1Y3RfaW5mby5waHA/cHJv
-ZHVjdHNfaWQ9NDA0Ij48YXJlYSANCiAgc2hhcGU9UkVDVCBjb29yZHM9Mzc1LDMyOCw0ODIsNDc0
-IA0KICBocmVmPSJodHRwOi8vd3d3LmFzc2lzdGFwcm9kdWNvZXMuY29tLmJyL3Nob3AvcHJvZHVj
-dF9pbmZvLnBocD9wcm9kdWN0c19pZD0zNTMiPjxhcmVhIA0KICBzaGFwZT1SRUNUIGNvb3Jkcz0z
-MSwzMjksMTM4LDQ3NSANCiAgaHJlZj0iaHR0cDovL3d3dy5hc3Npc3RhcHJvZHVjb2VzLmNvbS5i
-ci9zaG9wL3Byb2R1Y3RfaW5mby5waHA/cHJvZHVjdHNfaWQ9NDEzIj48YXJlYSANCiAgc2hhcGU9
-UkVDVCBjb29yZHM9MjU4LDMyOSwzNjUsNDc1IA0KICBocmVmPSJodHRwOi8vd3d3LmFzc2lzdGFw
-cm9kdWNvZXMuY29tLmJyL3Nob3AvcHJvZHVjdF9pbmZvLnBocD9wcm9kdWN0c19pZD00MTQiPjxh
-cmVhIA0KICBzaGFwZT1SRUNUIGNvb3Jkcz00OTQsMzI3LDYwMSw0NzMgDQogIGhyZWY9Imh0dHA6
-Ly93d3cuYXNzaXN0YXByb2R1Y29lcy5jb20uYnIvc2hvcC9wcm9kdWN0X2luZm8ucGhwP3Byb2R1
-Y3RzX2lkPTI0MiI+PC9tYXA+PG1hcCANCmlkPU1hcE1hcE1hcCBuYW1lPU1hcE1hcE1hcD48YXJl
-YSBzaGFwZT1SRUNUIGNvb3Jkcz0zNzcsNTMyLDQ4NCw2NzggDQogIGhyZWY9Imh0dHA6Ly93d3cu
-YXNzaXN0YXByb2R1Y29lcy5jb20uYnIvc2hvcC9wcm9kdWN0X2luZm8ucGhwP2NQYXRoPTYyJmFt
-cDtwcm9kdWN0c19pZD0yNTciPjxhcmVhIA0KICBzaGFwZT1SRUNUIGNvb3Jkcz00OTMsNTMyLDYw
-MCw2NzggDQogIGhyZWY9Imh0dHA6Ly93d3cuYXNzaXN0YXByb2R1Y29lcy5jb20uYnIvc2hvcC9w
-cm9kdWN0X2luZm8ucGhwP3Byb2R1Y3RzX2lkPTI2MCI+PGFyZWEgDQogIHNoYXBlPVJFQ1QgY29v
-cmRzPTE1MSw1MzEsMjU4LDY3NyANCiAgaHJlZj0iaHR0cDovL3d3dy5hc3Npc3RhcHJvZHVjb2Vz
-LmNvbS5ici9zaG9wL3Byb2R1Y3RfaW5mby5waHA/Y1BhdGg9NjAmYW1wO3Byb2R1Y3RzX2lkPTM5
-NyI+PGFyZWEgDQogIHNoYXBlPVJFQ1QgY29vcmRzPTM5LDUzMCwxNDYsNjc2IA0KICBocmVmPSJo
-dHRwOi8vd3d3LmFzc2lzdGFwcm9kdWNvZXMuY29tLmJyL3Nob3AvcHJvZHVjdF9pbmZvLnBocD9j
-UGF0aD04MiZhbXA7cHJvZHVjdHNfaWQ9MzU0Ij48YXJlYSANCiAgc2hhcGU9UkVDVCBjb29yZHM9
-MjY2LDUzMywzNzMsNjc5IA0KICBocmVmPSJodHRwOi8vd3d3LmFzc2lzdGFwcm9kdWNvZXMuY29t
-LmJyL3Nob3AvcHJvZHVjdF9pbmZvLnBocD9jUGF0aD02OCZhbXA7cHJvZHVjdHNfaWQ9MzQ3Ij48
-YXJlYSANCiAgc2hhcGU9UkVDVCBjb29yZHM9MjU3LDI3NSwzNjQsNDIxIA0KICBocmVmPSJodHRw
-Oi8vd3d3LmFzc2lzdGFwcm9kdWNvZXMuY29tLmJyL3Nob3AvcHJvZHVjdF9pbmZvLnBocD9jUGF0
-aD01NiZhbXA7cHJvZHVjdHNfaWQ9MjUxIj48YXJlYSANCiAgc2hhcGU9UkVDVCBjb29yZHM9MzAs
-Mjc1LDEzNyw0MjEgDQogIGhyZWY9Imh0dHA6Ly93d3cuYXNzaXN0YXByb2R1Y29lcy5jb20uYnIv
-c2hvcC9wcm9kdWN0X2luZm8ucGhwP3Byb2R1Y3RzX2lkPTEwOSI+PGFyZWEgDQogIHNoYXBlPVJF
-Q1QgY29vcmRzPTE0MiwyNzYsMjQ5LDQyMiANCiAgaHJlZj0iaHR0cDovL3d3dy5hc3Npc3RhcHJv
-ZHVjb2VzLmNvbS5ici9zaG9wL3Byb2R1Y3RfaW5mby5waHA/cHJvZHVjdHNfaWQ9MjQ1Ij48YXJl
-YSANCiAgc2hhcGU9UkVDVCBjb29yZHM9NDkzLDI3NCw2MDAsNDIwIA0KICBocmVmPSJodHRwOi8v
-d3d3LmFzc2lzdGFwcm9kdWNvZXMuY29tLmJyL3Nob3AvcHJvZHVjdF9pbmZvLnBocD9jUGF0aD01
-OSZhbXA7cHJvZHVjdHNfaWQ9MjU0Ij48YXJlYSANCiAgc2hhcGU9UkVDVCBjb29yZHM9Mzc1LDI3
-NCw0ODIsNDIwIA0KICBocmVmPSJodHRwOi8vd3d3LmFzc2lzdGFwcm9kdWNvZXMuY29tLmJyL3No
-b3AvcHJvZHVjdF9pbmZvLnBocD9jUGF0aD01NyZhbXA7cHJvZHVjdHNfaWQ9Mzk2Ij48YXJlYSAN
-CiAgc2hhcGU9UkVDVCBjb29yZHM9Mzc5LDE1LDQ4NiwxNjEgDQogIGhyZWY9Imh0dHA6Ly93d3cu
-YXNzaXN0YXByb2R1Y29lcy5jb20uYnIvc2hvcC9wcm9kdWN0X2luZm8ucGhwP3Byb2R1Y3RzX2lk
-PTQwNyI+PGFyZWEgDQogIHNoYXBlPVJFQ1QgY29vcmRzPTQ5NywxNCw2MDQsMTYwIA0KICBocmVm
-PSJodHRwOi8vd3d3LmFzc2lzdGFwcm9kdWNvZXMuY29tLmJyL3Nob3AvcHJvZHVjdF9pbmZvLnBo
-cD9wcm9kdWN0c19pZD0yMzciPjxhcmVhIA0KICBzaGFwZT1SRUNUIGNvb3Jkcz0xNDYsMTcsMjUz
-LDE2MyANCiAgaHJlZj0iaHR0cDovL3d3dy5hc3Npc3RhcHJvZHVjb2VzLmNvbS5ici9zaG9wL3By
-b2R1Y3RfaW5mby5waHA/cHJvZHVjdHNfaWQ9NDEyIj48YXJlYSANCiAgc2hhcGU9UkVDVCBjb29y
-ZHM9MzQsMTYsMTQxLDE2MiANCiAgaHJlZj0iaHR0cDovL3d3dy5hc3Npc3RhcHJvZHVjb2VzLmNv
-bS5ici9zaG9wL3Byb2R1Y3RfaW5mby5waHA/cHJvZHVjdHNfaWQ9MjY1Ij48YXJlYSANCiAgc2hh
-cGU9UkVDVCBjb29yZHM9MjYxLDE2LDM2OCwxNjIgDQogIGhyZWY9Imh0dHA6Ly93d3cuYXNzaXN0
-YXByb2R1Y29lcy5jb20uYnIvc2hvcC9wcm9kdWN0X2luZm8ucGhwP3Byb2R1Y3RzX2lkPTI2NCI+
-PC9tYXA+PG1hcCANCmlkPU1hcE1hcE1hcE1hcCBuYW1lPU1hcE1hcE1hcE1hcD48YXJlYSBzaGFw
-ZT1SRUNUIGNvb3Jkcz0zNjksMjE2LDQ3NiwzNjIgDQogIGhyZWY9Imh0dHA6Ly93d3cuYXNzaXN0
-YXByb2R1Y29lcy5jb20uYnIvc2hvcC9wcm9kdWN0X2luZm8ucGhwP2NQYXRoPTgzJmFtcDtwcm9k
-dWN0c19pZD0zNTUiPjxhcmVhIA0KICBzaGFwZT1SRUNUIGNvb3Jkcz0xNDMsMjE3LDI1MCwzNjMg
-DQogIGhyZWY9Imh0dHA6Ly93d3cuYXNzaXN0YXByb2R1Y29lcy5jb20uYnIvc2hvcC9wcm9kdWN0
-X2luZm8ucGhwP2NQYXRoPTYzJmFtcDtwcm9kdWN0c19pZD0yNTgiPjxhcmVhIA0KICBzaGFwZT1S
-RUNUIGNvb3Jkcz0zMSwyMTYsMTM4LDM2MiANCiAgaHJlZj0iaHR0cDovL3d3dy5hc3Npc3RhcHJv
-ZHVjb2VzLmNvbS5ici9zaG9wL3Byb2R1Y3RfaW5mby5waHA/Y1BhdGg9NjYmYW1wO3Byb2R1Y3Rz
-X2lkPTI2MSI+PGFyZWEgDQogIHNoYXBlPVJFQ1QgY29vcmRzPTI1OCwyMTYsMzY1LDM2MiANCiAg
-aHJlZj0iaHR0cDovL3d3dy5hc3Npc3RhcHJvZHVjb2VzLmNvbS5ici9zaG9wL3Byb2R1Y3RfaW5m
-by5waHA/Y1BhdGg9NjQmYW1wO3Byb2R1Y3RzX2lkPTI1OSI+PGFyZWEgDQogIHNoYXBlPVJFQ1Qg
-Y29vcmRzPTQ4MiwyMTcsNTg5LDM2MyANCiAgaHJlZj0iaHR0cDovL3d3dy5hc3Npc3RhcHJvZHVj
-b2VzLmNvbS5ici9zaG9wL3Byb2R1Y3RfaW5mby5waHA/Y1BhdGg9NjcmYW1wO3Byb2R1Y3RzX2lk
-PTI2MyI+PGFyZWEgDQogIHNoYXBlPVJFQ1QgY29vcmRzPTQ5MywtMzQsNjAwLDExMiANCiAgaHJl
-Zj0iaHR0cDovL3d3dy5hc3Npc3RhcHJvZHVjb2VzLmNvbS5ici9zaG9wL3Byb2R1Y3RfaW5mby5w
-aHA/cHJvZHVjdHNfaWQ9MjYwIj48YXJlYSANCiAgc2hhcGU9UkVDVCBjb29yZHM9MjY2LC0zNSwz
-NzMsMTExIA0KICBocmVmPSJodHRwOi8vd3d3LmFzc2lzdGFwcm9kdWNvZXMuY29tLmJyL3Nob3Av
-cHJvZHVjdF9pbmZvLnBocD9jUGF0aD02OCZhbXA7cHJvZHVjdHNfaWQ9MzQ3Ij48YXJlYSANCiAg
-c2hhcGU9UkVDVCBjb29yZHM9MzksLTM1LDE0NiwxMTEgDQogIGhyZWY9Imh0dHA6Ly93d3cuYXNz
-aXN0YXByb2R1Y29lcy5jb20uYnIvc2hvcC9wcm9kdWN0X2luZm8ucGhwP2NQYXRoPTgyJmFtcDtw
-cm9kdWN0c19pZD0zNTQiPjxhcmVhIA0KICBzaGFwZT1SRUNUIGNvb3Jkcz0xNTEsLTM0LDI1OCwx
-MTIgDQogIGhyZWY9Imh0dHA6Ly93d3cuYXNzaXN0YXByb2R1Y29lcy5jb20uYnIvc2hvcC9wcm9k
-dWN0X2luZm8ucGhwP2NQYXRoPTYwJmFtcDtwcm9kdWN0c19pZD0zOTciPjxhcmVhIA0KICBzaGFw
-ZT1SRUNUIGNvb3Jkcz0zNzcsLTM1LDQ4NCwxMTEgDQogIGhyZWY9Imh0dHA6Ly93d3cuYXNzaXN0
-YXByb2R1Y29lcy5jb20uYnIvc2hvcC9wcm9kdWN0X2luZm8ucGhwP2NQYXRoPTYyJmFtcDtwcm9k
-dWN0c19pZD0yNTciPjxhcmVhIA0KICBzaGFwZT1SRUNUIGNvb3Jkcz0yNiw0MTYsMjM5LDQ4NCAN
-CmhyZWY9Imh0dHA6Ly93d3cuYXNzaXN0YXByb2R1Y29lcy5jb20uYnIiPjwvbWFwPjwvcD4NCjwv
-Ym9keT4NCjwvaHRtbD4=
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>Sexual Health Newsletter.</title>
+</head>
+<body>
+<style type="text/css">
+
+</style>
+<!-- BLACK BORDER AROUND ENTIRE MESSAGE -->
+<table border="0" cellpadding="1" cellspacing="0" bgcolor="#93C4C9" align="center" style="width: 580px">
+<tr><td>
 
 
+<!-- BEGIN WRAPPED CONTENT -->
+<table cellpadding="8" cellspacing="0" border="0" bgcolor="#FFFFFF" style="width: 580px">
+ <tr>
+  <td valign="top">
+<table border="0" width="100%" cellpadding="8" cellspacing="0" align="center" bgcolor="#ffffff">
+    <!--BEGIN TOP INTRO AND INTERNAL NAV-->
+<tr>
 
---===============6726418874496310089==
+<td>
+<div style="font-size: 9px; margin: 0 0 20px 0; font-family: Verdana, Trebuchet MS, sans-serif;">
+	If you are having problems viewing images in this e-mail, <a style="text-decoration: none; font-weight: bold; color: #E96B10; outline: none;" href="http://xjbmu60.mtijoxal.cn/?qypefyhql=e607cb91e8810a7cf7b40&hoelic=93047760955">
+	click here</a> to view it in your web browser.</div>
+</td>
+</tr>
+<tr>
+<td>
+<div style="color: #005C96; font-weight: bold; font-size: 17px; margin-bottom: 10px; font-family: Palatino, Times New Roman, serif;">
+	July 2009: Daily Newsletter</div>
+
+<br />
+</td>
+</tr>
+<tr>
+<td width="80%" valign="top" style="border-top: 1px dashed #ccc; border-right: 1px dashed #ccc; margin: 0 5px 0 0; padding: 5px 15px 0px 8px;">
+<a name="infocus"></a>
+<div style="float: right; width: 540px;">
+	<div style="padding: 10px 0 10px 0; width: 545px; text-align: center;">
+		<a href="http://bql94.mtijoxal.cn/?jvyzjbazeko=e607cb91e8810a7cf7b40&sorjmyqtqkyx=93047760955" title="Goto website">
+		<img src="http://bql94.mtijoxal.cn/spacer.gif" alt="Click here to enable blocked image" title="Sneed Collard" border="0" /></a><br />
+		<br /><b><a href="http://hamxi00.mtijoxal.cn/?qpqkqhqk=e607cb91e8810a7cf7b40&ezqxofiie=93047760955" style="color: #E96B10">Goto website &gt;</a></b></div>
+</div>
+
+</td>
+</tr>
+<tr>
+<td>
+
+<div style="display:block; clear:both; margin: 15px 0 0 0; padding: 5px 15px 0px 0; border-top: 1px dashed #ccc; ">
+
+<h3 style="font-size:12px; line-height: 14px; color: #005C96; margin-bottom:0;">
+To read past issues:</h3>
+<p style="display: block; font-size: 11px; font-weight: normal; line-height: 13px; color: #666; margin:0px 5px 0 0px; padding: 5px 0px 5px 0px; font-family: Verdana, Trebuchet MS, sans-serif;">
+Go to
+<a style="text-decoration: none; font-weight: bold; color: #E96B10; outline: none;" href="http://bql94.mtijoxal.cn/?qgjowecitqu=e607cb91e8810a7cf7b40&tynowawout=93047760955">
+our website</a></p>
+
+<h3 style="font-size:12px; line-height: 14px; color: #005C96; margin-bottom:0;">
+If the links on this page aren't working:</h3>
+<p style="display: block; font-size: 11px; font-weight: normal; line-height: 13px; color: #333; margin:0; padding: 5px 0px 5px 0px; font-family: Verdana, Trebuchet MS, sans-serif;">
+Go
+<a style="text-decoration: none; font-weight: bold; color: #E96B10; outline: none;" href="http://bql94.mtijoxal.cn/?uzyybo=e607cb91e8810a7cf7b40&uypyeytadif=93047760955">
+here</a> and scroll down to &quot;How to manage your subscription options.&quot; Login and
+you'll be taken to the sign-up page where you can change your settings so you'll
+receive future newsletters in plain text format with visible links.</p>
+<h3 style="font-size:12px; line-height: 14px; color: #005C96; margin-bottom:0;">
+Subscribe to other e-newsletters:</h3>
+<p style="display: block; font-size: 11px; font-weight: normal; line-height: 13px; color: #333; margin:0; padding: 5px 0px 5px 0px; font-family: Verdana, Trebuchet MS, sans-serif;">
+Stay informed! You're welcome to subscribe to free e-mail newsletters from our
+<a style="text-decoration: none; font-weight: bold; color: #E96B10; outline: none;" href="http://bql94.mtijoxal.cn/?oresjsyfjfu=e607cb91e8810a7cf7b40&pemeubqyty=93047760955" target="_blank">
+sister websites</a></p>
+
+<h3 style="font-size:12px; line-height: 14px; color: #005C96; margin-bottom:0;"><a style="text-decoration: none; font-weight: bold; color: #005C96; outline: none;" href="http://bql94.mtijoxal.cn/?wqojvobexq=e607cb91e8810a7cf7b40&azuekafape=93047760955">
+To contact us</a>:</h3>
+<p style="display: block; font-size: 11px; font-weight: normal; line-height: 13px; color: #333; margin:0; padding: 5px 0px 5px 0px; font-family: Verdana, Trebuchet MS, sans-serif;">
+Send your questions, comments, or suggestions
+<a style="text-decoration: none; font-weight: bold; color: #E96B10; outline: none;" href="http://bql94.mtijoxal.cn/?gqhakececydi=e607cb91e8810a7cf7b40&ihqqsurut=93047760955">
+here</a></p>
+</div>
+<div style="display:block; clear:both; margin: 15px 0 0 0; padding: 5px 0 0 0; border-top: 1px dashed #ccc;">
+<p style="display: block; font-size: 11px; font-weight: normal; line-height: 13px; color: #333; margin:0; padding: 5px 0px 5px 0px; font-family: Verdana, Trebuchet MS, sans-serif;"><a style="text-decoration: none; font-weight: bold; color: #E96B10; outline: none;" href="http://bql94.mtijoxal.cn/?qhalurymqcjy=e607cb91e8810a7cf7b40&uraiyc=93047760955">
+Tell a friend</a> about this Daily Newsletter.</p>
+<p style="display: block; font-size: 11px; font-weight: normal; line-height: 13px; color: #333; margin:0; padding: 5px 0px 5px 0px; font-family: Verdana, Trebuchet MS, sans-serif;">
+If you received this message from a friend, you can sign up for this
+<a style="text-decoration: none; font-weight: bold; color: #E96B10; outline: none;" href="http://bql94.mtijoxal.cn/?rqwofikid=e607cb91e8810a7cf7b40&jvizeqag=93047760955">
+Newsletter</a>.</p>
+
+<p style="display: block; font-size: 11px; font-weight: normal; line-height: 13px; color: #333; margin:0; padding: 5px 0px 5px 0px; font-family: Verdana, Trebuchet MS, sans-serif;">
+This message was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uti2KpX7p8Fi@public.gmane.org Visit <a style="text-decoration: none; font-weight: bold; color: #E96B10; outline: none;" href="http://bql94.mtijoxal.cn/?yyhiyrulad=e607cb91e8810a7cf7b40&rjuinebqyu=93047760955">
+your User Login page</a> to modify your email communication preferences or
+update your personal profile. To stop receiving ALL email from us, <a style="text-decoration: none; font-weight: bold; color: #E96B10; outline: none;" href="http://bql94.mtijoxal.cn/?nqqnyujypap=e607cb91e8810a7cf7b40&epyxoki=93047760955">
+click to remove yourself from our lists</a>.</p>
+</div>
+</td>
+</tr>
+</table>
+</td></tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+
+
+--===============2228606056870952822==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -166,7 +140,7 @@ This is your chance to win up to $100,000 in prizes! For a limited time,
 vendors submitting new applications to BlackBerry App World(TM) will have
 the opportunity to enter the BlackBerry Developer Challenge. See full prize  
 details at: http://p.sf.net/sfu/Challenge
---===============6726418874496310089==
+--===============2228606056870952822==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -177,4 +151,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============6726418874496310089==--
+--===============2228606056870952822==--

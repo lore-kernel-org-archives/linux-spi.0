@@ -1,10 +1,10 @@
-From: "Karri Tqkjme" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Are you alone?
-Date: Tue, 1 Jan 2002 00:34:09 +05-30
-Message-ID: <2889XN.1237CCF3E9.39697277708GLSDTFKXJVUFSDB78@saipalan-e7c0de>
-Reply-To: Karri Pqma <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: "Christian Omyixq" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Lady kicks dog in anger, sent to jail
+Date: Tue, 16 Jun 2009 12:31:51 +05-30
+Message-ID: <HETFJWJOCEYBWA.KCULZWESOGIQZYC0966206408@broadcaster.lakecumberland.com>
+Reply-To: noreply-x6eK/O+t3sfnHLiBEiXH4tBPR1lH4CV8@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6778336329736604570=="
+Content-Type: multipart/mixed; boundary="===============8541056454994370559=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,78 +17,134 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6778336329736604570==
+--===============8541056454994370559==
 Content-type: text/html; charset="UTF-8"
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-<HEAD><TITLE>Center for American Lovers Email</TITLE><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"></HEAD>
-<BODY>
-<HTML xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=UTF-8">
+  <title>Mjufqzegos</title>
+</head>
+<body>
+<table align="center" border="0" cellpadding="0"
+ cellspacing="0" style="width: 597px">
+  <tbody>
+    <tr>
+      <td style="text-align: center">
+	  <span style="color: #999900; font-family: Arial, Helvetica, sans-serif; font-size: x-small">
+	  Having trouble viewing this email? </span><a href="http://www.aiajsexo.cn/boterjn.asp?aevj=42c35d5812&urjmalot=ovin">
+	  <span style="color: #999900; font-family: Arial, Helvetica, sans-serif; font-size: x-small">
+	  Click here</span></a><br></td>
 
-<STYLE type=text/css>
-body {border:0; font-size:13px; font-family: Georgia, Times New Roman, Times, serif; line-height: 1.33em;}
-main {border:0; background:#fff; margin:12px auto; padding:0; text-align:left}
-a, .outside a {color:#990000}
-inside {padding:.5em 1.5em; margin:0; border:0; color:#333; line-height: 1.33em;}
-inside p {margin:0 0 1.5em 0}
-footer {background: #ccc; text-align:center; line-height:1.5em; padding:.5em; margin:0; border:0;}
-imageparams {
-	font-size:1.75em; font-weight:normal; color:#036; text-decoration:underline;
-}
-td, tr { margin:0; border:0; padding: 0;}
-table {padding:0; border:0; margin:0 auto; font-size:13px; font-family: Georgia, Times New Roman, Times, serif;}
-h1 {font-size:1.75em; font-weight:normal; margin:1em 0 .5em 0; color:#036;}
-h2 {font-size:1.4em; font-weight:normal; line-height:120%;margin:0 0 .5em 0; color:#666;}
-h3 {font-size:1.3em; font-weight:normal; margin:0;padding:.5em 0; color:#036;}
-h4 {text-align:right; font-weight:normal; font-size:1em; color:#666; padding, margin:0;}
-outside {text-align:center; font-family:Arial, Helvetica, sans-serif; color:#666}
+    </tr>
 
-</STYLE>
-<!-- Container Table -->
-<TABLE border=0 cellSpacing=0 cellPadding=0 width="100%">
-<TBODY>
-<TR>
-<TD width="100%">
-<CENTER>
-<P style="MARGIN: 0px auto; WIDTH: 636px; DISPLAY: block" class=outside>Problems viewing this email? <A style="COLOR: #990000; TEXT-DECORATION: none" href="http://16c.kamuwys.cn/?qdjdazq=3e80eccf3e935eafc3ccb&vvgls=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&qycifu=285087792952396972777">View</A> it in your web browser.</P></CENTER><!-- Layout Table -->
-<TABLE class=main border=0 cellSpacing=0 cellPadding=0 width=636 bgColor=#ffffff align=center>
-<TBODY>
-<TR>
-<TD vAlign=top>&nbsp;</TD></TR>
-<TR>
-<TD style="BORDER-BOTTOM: #ccc 1px solid; BORDER-LEFT: #ccc 1px solid; PADDING-BOTTOM: 0.5em; LINE-HEIGHT: 1.5em; MARGIN: 0px; PADDING-LEFT: 16px; PADDING-RIGHT: 16px; COLOR: #333; BORDER-TOP: #ccc 1px solid; BORDER-RIGHT: #ccc 1px solid; PADDING-TOP: 0.5em" class=inside vAlign=top>
-<H1 style="MARGIN: 1em 0px 0.5em; COLOR: #036; FONT-SIZE: 1.75em; FONT-WEIGHT: normal">
-Lovers of All Ages Are Welcome</H1>
-<p style="MARGIN: 1em 0px 0.5em; COLOR: #036; FONT-SIZE: 1.75em; FONT-WEIGHT: normal">
-&nbsp;</p>
-						<P align=left><a class="imageparams" href="http://dd4.kamuwys.cn/?voqqsa=3e80eccf3e935eafc3ccb&vvgls=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&tapinuu=285087792952396972777">
-						<img alt="Picture is not displayed? Click here to show it" src="http://dd4.kamuwys.cn/b1c36e5dc3b20.gif" style="border-width: 0px"></a></P>
-<P style="TEXT-ALIGN: center; PADDING-BOTTOM: 12px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; DISPLAY: block; BORDER-TOP: #ccc 1px solid; PADDING-TOP: 12px"><A style="COLOR: #900" href="http://be3.kamuwys.cn/?bjbub=3e80eccf3e935eafc3ccb&vvgls=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&ucuozjlori=285087792952396972777"><EM>Support the Center for American
-Lovers</EM></A></P></TD></TR>
-<TR>
-<TD class=footer bgColor=#ccc vAlign=bottom>
-<P style="BORDER-BOTTOM: 0px; TEXT-ALIGN: center; BORDER-LEFT: 0px; PADDING-BOTTOM: 0.5em; LINE-HEIGHT: 1.5em; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; DISPLAY: block; BORDER-TOP: 0px; BORDER-RIGHT: 0px; PADDING-TOP: 0.5em"><A style="COLOR: #900" href="http://dd4.kamuwys.cn/?cjgap=3e80eccf3e935eafc3ccb&vvgls=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&akoyguluox=285087792952396972777">Manage Email Options</A> |
-<A style="COLOR: #900" href="http://dd4.kamuwys.cn/?qfijag=3e80eccf3e935eafc3ccb&vvgls=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&gyfjwiq=285087792952396972777">Privacy Policy</A> |
-<A style="COLOR: #900" href="http://dd4.kamuwys.cn/?qhinybavy=3e80eccf3e935eafc3ccb&vvgls=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&detjlu=285087792952396972777">Unsubscribe</A><BR>
-<SPAN style="FONT-SIZE: 0.9em">Center for American Lovers | 1333 H Street NW, 10th Floor | Washington, DC 20005</SPAN></P></TD></TR></TBODY></TABLE>
-<!-- close layout table --></TD></TR></TBODY></TABLE><!-- close container table -->
-<BR><BR></BODY></HTML>
+    <tr>
+      <td style="text-align: center">
+      <br><a href="http://www.aiajsexo.cn/dqmj.asp?jive=42c35d5812&zorujzin=ojotoqki" target="_blank">
+	  <img alt="Click here to open as a web page" src="http://images.aiajsexo.cn/spacer.gif" style="border-width: 0px"></a><br><br><br>
+      <table border="0" cellpadding="0" cellspacing="0"
+ width="538">
+        <tbody>
+          <tr>
+            <td> <font
+ style="font-family: Arial,Helvetica,sans-serif; font-size: 13px; color: rgb(102, 102, 102);"><a
+ href="http://www.aiajsexo.cn/yrevj.asp?dutetqs=42c35d5812&oaculyef=medakjq" target="_blank"
+ style="text-decoration: none;"><font
+ style="color: rgb(153, 153, 0); text-decoration: none;">Home</font></a>
+			| <a href="http://www.aiajsexo.cn/gopulom.asp?fyhuxukuf=42c35d5812&nakjrj=ofjbik"
+ target="_blank" style="text-decoration: none;"><font
+ style="color: rgb(153, 153, 0); text-decoration: none;">Activities</font></a>
+
+			| <a href="http://www.aiajsexo.cn/oroqvy.asp?aacq=42c35d5812&esee=yfiuelafo"
+ target="_blank" style="text-decoration: none;"><font
+ style="color: rgb(153, 153, 0); text-decoration: none;">Vacations</font></a>
+			| <a href="http://www.aiajsexo.cn/umik.asp?ekis=42c35d5812&atjv=ubukoha"
+ target="_blank" style="text-decoration: none;"><font
+ style="color: rgb(153, 153, 0); text-decoration: none;">Expert Advice</font></a>
+			|
+			<a href="http://www.aiajsexo.cn/opiwyy.asp?ogjkq=42c35d5812&unoun=ulyhejjxuc"
+ target="_blank" style="text-decoration: none;">
+			<font
+ style="color: rgb(153, 153, 0); text-decoration: none;">Toys &amp; Gifts </font></a>
+			| <a
+ href="http://www.aiajsexo.cn/qbiobia.asp?meto=42c35d5812&unyqowa=ahunyp" target="_blank"
+ style="text-decoration: none;"><font
+ style="color: rgb(153, 153, 0); text-decoration: none;">Video</font></a>
+
+			| <a href="http://www.aiajsexo.cn/asagozuvqz.asp?yacuk=42c35d5812&qutao=aqdqme"
+ target="_blank" style="text-decoration: none;"><font
+ style="color: rgb(153, 153, 0); text-decoration: none;">Columns</font></a></font>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+
+    </tr>
+<!-- END Footer --><!-- BEGIN unsubscribe disclaimer -->
+
+    <tr>
+      <td style="height: 42px"> <br>
+      <font
+ style="font-family: Arial,Helvetica,sans-serif; color: rgb(119, 119, 119); font-size: 12px;"
+ color="#777777" face="Arial, Helvetica, sans-serif"
+ size="1">You
+are receiving this e-mail because you signed to receive the
+	  Amjo newsletter. If you feel you have received this e-mail
+in error or would like to <a href="http://www.aiajsexo.cn/edqop.asp?vefefugig=42c35d5812&tavucqnib=oapexyh"
+ style="text-decoration: none;"><font
+ style="font-family: Arial,Helvetica,sans-serif; color: rgb(100, 165, 184); font-size: 12px;"
+ color="#6498b8" face="Arial, Helvetica, sans-serif"
+ size="1">unsubscribe, click here</font></a>. </font><br>
+      </td>
+    </tr>
+<!-- END unsubscribe disclaimer --><!-- BEGIN Footer Disclaimer -->
+    <tr>
+      <td> <br>
+      <font
+ style="font-family: Arial,Helvetica,sans-serif; color: rgb(119, 119, 119); font-size: 12px;"
+ color="#777777" face="Arial, Helvetica, sans-serif"
+ size="1"> Oluko takes <a
+ href="http://www.aiajsexo.cn/nusa.asp?zipyaw=42c35d5812&cegqfauhjx=rqexypam" target="_blank"
+ style="text-decoration: none;"><font
+ style="font-family: Arial,Helvetica,sans-serif; color: rgb(100, 152, 184); font-size: 12px;"
+ color="#6498b8" face="Arial, Helvetica, sans-serif"
+ size="1">privacy</font></a> very seriously and
+will never share your e-mail address with third parties without your
+permission. Click <a href="http://www.aiajsexo.cn/jrjhj.asp?uvinedu=42c35d5812&jteuuzes=xegqjwun"
+ target="_blank" style="text-decoration: none;"><font
+ style="font-family: Arial,Helvetica,sans-serif; color: rgb(100, 152, 184); font-size: 12px;"
+ color="#6498b8" face="Arial, Helvetica, sans-serif"
+ size="1">here</font></a> to read our <a
+ href="http://www.aiajsexo.cn/oqko.asp?ieecoxy=42c35d5812&odaomevywa=zyrquy" target="_blank"
+ style="text-decoration: none;"><font
+ style="font-family: Arial,Helvetica,sans-serif; color: rgb(100, 152, 184); font-size: 12px;"
+ color="#6498b8" face="Arial, Helvetica, sans-serif"
+ size="1">privacy policy</font></a>. If you have
+any questions about your subscription.<br><br>&copy; 2009 Jxujnqjku LLC. </font> </td>
+    </tr>
+<!-- End Footer Disclaimer -->
+  </tbody>
+</table>
+</body>
+</html>
 
 
---===============6778336329736604570==
+--===============8541056454994370559==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
 
 ------------------------------------------------------------------------------
-Come build with us! The BlackBerry(R) Developer Conference in SF, CA
-is the only developer event you need to attend this year. Jumpstart your
-developing skills, take BlackBerry mobile applications to market and stay 
-ahead of the curve. Join us from November 9 - 12, 2009. Register now!
-http://p.sf.net/sfu/devconference
---===============6778336329736604570==
+Crystal Reports - New Free Runtime and 30 Day Trial
+Check out the new simplified licensing option that enables unlimited
+royalty-free distribution of the report engine for externally facing 
+server and web deployment.
+http://p.sf.net/sfu/businessobjects
+--===============8541056454994370559==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -99,4 +155,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============6778336329736604570==--
+--===============8541056454994370559==--

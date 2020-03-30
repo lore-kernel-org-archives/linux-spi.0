@@ -1,132 +1,52 @@
-Return-Path: <SRS0=xKm1=5O=vger.kernel.org=linux-spi-owner@kernel.org>
+Return-Path: <SRS0=a9U6=5P=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=no
+X-Spam-Level: **
+X-Spam-Status: No, score=2.5 required=3.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,FREEMAIL_REPLYTO_END_DIGIT,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,PRICE_CATALOG,SPF_HELO_NONE,SPF_PASS autolearn=no
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B5DECC43331
-	for <linux-spi@archiver.kernel.org>; Sun, 29 Mar 2020 19:04:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D742EC43331
+	for <linux-spi@archiver.kernel.org>; Mon, 30 Mar 2020 05:09:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 8E6E12073E
-	for <linux-spi@archiver.kernel.org>; Sun, 29 Mar 2020 19:04:05 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B45D7206F6
+	for <linux-spi@archiver.kernel.org>; Mon, 30 Mar 2020 05:09:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728316AbgC2TEE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 29 Mar 2020 15:04:04 -0400
-Received: from asavdk4.altibox.net ([109.247.116.15]:57418 "EHLO
-        asavdk4.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727370AbgC2TEE (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 29 Mar 2020 15:04:04 -0400
-Received: from ravnborg.org (unknown [158.248.194.18])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by asavdk4.altibox.net (Postfix) with ESMTPS id D9D85804FC;
-        Sun, 29 Mar 2020 21:03:53 +0200 (CEST)
-Date:   Sun, 29 Mar 2020 21:03:52 +0200
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     dri-devel@lists.freedesktop.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        devicetree@vger.kernel.org,
-        Alexandre Courbot <acourbot@nvidia.com>,
-        Andrzej Hajda <a.hajda@samsung.com>,
-        Brian Masney <masneyb@onstation.org>,
-        Chris Zhong <zyw@rock-chips.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Guido Gunther <agx@sigxcpu.org>, Heiko Schocher <hs@denx.de>,
-        Nikolaus Schaller <hns@goldelico.com>,
-        Hoegeun Kwon <hoegeun.kwon@samsung.com>,
-        Jagan Teki <jagan@amarulasolutions.com>,
-        Jerry Han <hanxu5@huaqin.corp-partner.google.com>,
-        Jonathan Bakker <xc-racer2@live.ca>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Lin Huang <hl@rock-chips.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-spi@vger.kernel.org, Marco Franchi <marco.franchi@nxp.com>,
-        Marek Belisko <marek@goldelico.com>,
-        Mark Brown <broonie@kernel.org>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Nickey Yang <nickey.yang@rock-chips.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Peter Rosin <peda@axentia.se>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Purism Kernel Team <kernel@puri.sm>,
-        Robert Chiras <robert.chiras@nxp.com>,
-        Sandeep Panda <spanda@codeaurora.org>,
-        Stefan Mavrodiev <stefan@olimex.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Vinay Simha BN <simhavcs@gmail.com>,
-        Werner Johansson <werner.johansson@sonymobile.com>
-Subject: Re: [PATCH v1 32/36] dt-bindings: display: convert sharp,ls037v7dw01
- to DT Schema
-Message-ID: <20200329190352.GA21479@ravnborg.org>
-References: <20200315134416.16527-1-sam@ravnborg.org>
- <20200315134416.16527-33-sam@ravnborg.org>
- <20200319030734.GH29911@bogus>
+        id S1728048AbgC3FJO (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 30 Mar 2020 01:09:14 -0400
+Received: from host201-96-61-217.static.arubacloud.com ([217.61.96.201]:40138
+        "EHLO mail.undorthemoure.gq" rhost-flags-OK-FAIL-OK-OK)
+        by vger.kernel.org with ESMTP id S1726085AbgC3FJO (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 30 Mar 2020 01:09:14 -0400
+X-Greylist: delayed 2566 seconds by postgrey-1.27 at vger.kernel.org; Mon, 30 Mar 2020 01:09:13 EDT
+Received: by mail.undorthemoure.gq (Postfix, from userid 48)
+        id 324D7FCB32; Mon, 30 Mar 2020 00:10:30 -0400 (EDT)
+To:     linux-spi@vger.kernel.org
+Subject: Request for catalog and price list
+X-PHP-Originating-Script: 0:dageds.php
+From:   Julian Smith <juliansmith2014@mail.ru>
+Reply-To: juliansmith2014@outlook.com
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200319030734.GH29911@bogus>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=XpTUx2N9 c=1 sm=1 tr=0
-        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
-        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10
-        a=8lPrDCVDlfZqt0RlNdoA:9 a=CjuIK1q_8ugA:10
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+Message-Id: <20200330041030.324D7FCB32@mail.undorthemoure.gq>
+Date:   Mon, 30 Mar 2020 00:10:30 -0400 (EDT)
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi Rob.
+Hello friend,
 
-> > +
-> > +  mode-gpios:
-> > +    description: |
-> > +      GPIO ordered MO, LR, and UD as specified in LS037V7DW01.pdf
-> 
-> 3 or...
-> 
-> > +      change configuration between QVGA and VGA mode and the
-> > +      scan direction. As these pins can be also configured
-> > +      with external pulls, all the GPIOs are considered
-> > +      optional with holes in the array.
-> 
-> minItems: 3
-> maxItems: 5
+This is Julian Smith and i am purchasing manager from Sinara Group Co.,LTD in Russia.
+We are glad to know about your company from the web and we are interested in your products.
+Could you kindly send us your Latest catalog and price list for our trial order.
 
-This binding can specify up to three GPIOs like this:
+Thanks and Best Regards,
+
+Ms. Julian Smith
+Purchasing Manager
+Sinara Group Co.,LTD
 
 
-> > +        mode-gpios = <&gpio5 26 GPIO_ACTIVE_HIGH        /* gpio154, lcd MO */
-> > +                      &gpio1 2 GPIO_ACTIVE_HIGH         /* gpio2, lcd LR */
-> > +                      &gpio1 3 GPIO_ACTIVE_HIGH>;       /* gpio3, lcd UD */
-
-They are in the linux kernel driver accessed like this:
-
-    devm_gpiod_get_index(&pdev->dev, "mode", 2, GPIOD_OUT_LOW);
-
-The following is OK in the DT file:
-
-    mode-gpios = <&gpio5 26 GPIO_ACTIVE_HIGH>;
-
-    mode-gpios = <&gpio5 26 GPIO_ACTIVE_HIGH
-                  &gpio1 2 GPIO_ACTIVE_HIGH>;
-		  
-    mode-gpios = <&gpio5 26 GPIO_ACTIVE_HIGH
-                  &gpio1 2 GPIO_ACTIVE_HIGH
-                  &gpio1 3 GPIO_ACTIVE_HIGH>;
-
-But the following is not OK:
-    mode-gpios = <&gpio5 26 GPIO_ACTIVE_HIGH>, <&gpio1 2 GPIO_ACTIVE_HIGH>;
-
-Any hints how to specify the binding to prevent the above?
-I have tried a few combinations - but they do not catch this.
-So my binding attempts are not restrictive enough.
-
-Any hints how to describe this properly?
-
-	Sam

@@ -2,135 +2,84 @@ Return-Path: <SRS0=cOMB=5Y=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.6 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
 	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DD5FC2BA2B
-	for <linux-spi@archiver.kernel.org>; Wed,  8 Apr 2020 13:48:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8488AC2BA2B
+	for <linux-spi@archiver.kernel.org>; Wed,  8 Apr 2020 15:46:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.kernel.org (Postfix) with ESMTP id 5F77B20753
-	for <linux-spi@archiver.kernel.org>; Wed,  8 Apr 2020 13:48:43 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=mg.codeaurora.org header.i=@mg.codeaurora.org header.b="GESuQDch"
+	by mail.kernel.org (Postfix) with ESMTP id 50BD62076D
+	for <linux-spi@archiver.kernel.org>; Wed,  8 Apr 2020 15:46:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1586360817;
+	bh=2dtxiXcqpLlxzQY41glPzfxzzobbNtue35byn94ocz8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=rhgYo+OATvMvuXhNYvQRVzAMZSCeuIKvj4C7nfXBivXvM1w8FHjQU15w7XZ0i6Qk3
+	 +V9JzVI4qUwvyghfszOTTjsBK567DNot/j24lQD810pZYqOf2tITB7zOR/eQDWABpx
+	 jsryYZbpgvd7dGOiBMGY0nAiQBJZuQltnY/48nqU=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729403AbgDHNsj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 8 Apr 2020 09:48:39 -0400
-Received: from mail27.static.mailgun.info ([104.130.122.27]:47569 "EHLO
-        mail27.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728792AbgDHNsi (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 8 Apr 2020 09:48:38 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1586353717; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=3LyFRqPl+hE6jhfR1grLHYkI2mGY6U5I71YbCiteW8s=; b=GESuQDchNXNH1Nj6Xv6I5enQm+yekUEHpf5K3E8AnCe/Muzgh33C6uHrVMU/h0cSqebujdFU
- 5altURLgxODK4FfhIEDlLl8XmqiUoFkJvbK3vHCpmIHNtBITrWDfZQZNvzrP/Cxk4O6BXORx
- x2x1Jy4120amKnZJnd4z3cykzLs=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyIzNzdmZSIsICJsaW51eC1zcGlAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e8dd628.7f77f6789d88-smtp-out-n01;
- Wed, 08 Apr 2020 13:48:24 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 16759C44793; Wed,  8 Apr 2020 13:48:23 +0000 (UTC)
-Received: from blr-ubuntu-173.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        id S1729727AbgDHPqe (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 8 Apr 2020 11:46:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49316 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729684AbgDHPqd (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 8 Apr 2020 11:46:33 -0400
+Received: from mail.kernel.org (ip5f5ad4d8.dynamic.kabel-deutschland.de [95.90.212.216])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: rnayak)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B0FB0C3856D;
-        Wed,  8 Apr 2020 13:48:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B0FB0C3856D
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=rnayak@codeaurora.org
-From:   Rajendra Nayak <rnayak@codeaurora.org>
-To:     viresh.kumar@linaro.org, sboyd@kernel.org,
-        bjorn.andersson@linaro.org, agross@kernel.org
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Rajendra Nayak <rnayak@codeaurora.org>,
-        Alok Chauhan <alokc@codeaurora.org>,
-        Akash Asthana <akashast@codeaurora.org>,
-        linux-spi@vger.kernel.org
-Subject: [PATCH 19/21] spi: spi-qcom-qspi: Use OPP API to set clk/perf state
-Date:   Wed,  8 Apr 2020 19:16:45 +0530
-Message-Id: <1586353607-32222-20-git-send-email-rnayak@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1586353607-32222-1-git-send-email-rnayak@codeaurora.org>
-References: <1586353607-32222-1-git-send-email-rnayak@codeaurora.org>
+        by mail.kernel.org (Postfix) with ESMTPSA id A7B2B21D79;
+        Wed,  8 Apr 2020 15:46:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586360791;
+        bh=2dtxiXcqpLlxzQY41glPzfxzzobbNtue35byn94ocz8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=kj8MextYAoIKsWvztzjCGcKAsGVM1/9pAq2gRfDT/NqG2fUo8IAcqV441T/vNl56C
+         9j4AscDetciOP4kRZGj/DcYvPvFhwG9zEusuROZCQJqbTf4AKV89pn+KzOJfzz6K7y
+         b33++rZUEOu+m8Yo1q1U9vVZTrdgUcaCXvab2CXo=
+Received: from mchehab by mail.kernel.org with local (Exim 4.92.3)
+        (envelope-from <mchehab@kernel.org>)
+        id 1jMCuL-000cBv-SA; Wed, 08 Apr 2020 17:46:29 +0200
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+Subject: [PATCH 21/35] docs: spi: spi.h: fix a doc building warning
+Date:   Wed,  8 Apr 2020 17:46:13 +0200
+Message-Id: <d62f3f3536c0da2062bad87524fb184ad5a9a5f2.1586359676.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.25.2
+In-Reply-To: <cover.1586359676.git.mchehab+huawei@kernel.org>
+References: <cover.1586359676.git.mchehab+huawei@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-QSPI needs to vote on a performance state of a power domain depending on
-the clock rate. Add support for it by specifying the perf state/clock rate
-as an OPP table in device tree.
+We need to add a blank line to avoid this warning:
 
-Signed-off-by: Rajendra Nayak <rnayak@codeaurora.org>
-Cc: Alok Chauhan <alokc@codeaurora.org>
-Cc: Akash Asthana <akashast@codeaurora.org>
-Cc: linux-spi@vger.kernel.org
+	./include/linux/spi/spi.h:401: WARNING: Unexpected indentation.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- drivers/spi/spi-qcom-qspi.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ include/linux/spi/spi.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-qcom-qspi.c b/drivers/spi/spi-qcom-qspi.c
-index 3c4f83b..42a9511 100644
---- a/drivers/spi/spi-qcom-qspi.c
-+++ b/drivers/spi/spi-qcom-qspi.c
-@@ -8,6 +8,7 @@
- #include <linux/of.h>
- #include <linux/of_platform.h>
- #include <linux/pm_runtime.h>
-+#include <linux/pm_opp.h>
- #include <linux/spi/spi.h>
- #include <linux/spi/spi-mem.h>
- 
-@@ -235,7 +236,7 @@ static int qcom_qspi_transfer_one(struct spi_master *master,
- 		speed_hz = xfer->speed_hz;
- 
- 	/* In regular operation (SBL_EN=1) core must be 4x transfer clock */
--	ret = clk_set_rate(ctrl->clks[QSPI_CLK_CORE].clk, speed_hz * 4);
-+	ret = dev_pm_opp_set_rate(ctrl->dev, speed_hz * 4);
- 	if (ret) {
- 		dev_err(ctrl->dev, "Failed to set core clk %d\n", ret);
- 		return ret;
-@@ -481,6 +482,9 @@ static int qcom_qspi_probe(struct platform_device *pdev)
- 	master->handle_err = qcom_qspi_handle_err;
- 	master->auto_runtime_pm = true;
- 
-+	dev_pm_opp_set_clkname(&pdev->dev, "core");
-+	dev_pm_opp_of_add_table(&pdev->dev);
-+
- 	pm_runtime_enable(dev);
- 
- 	ret = spi_register_master(master);
-@@ -490,6 +494,7 @@ static int qcom_qspi_probe(struct platform_device *pdev)
- 	pm_runtime_disable(dev);
- 
- exit_probe_master_put:
-+	dev_pm_opp_of_remove_table(&pdev->dev);
- 	spi_master_put(master);
- 
- 	return ret;
-@@ -499,6 +504,8 @@ static int qcom_qspi_remove(struct platform_device *pdev)
- {
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 
-+	dev_pm_opp_of_remove_table(&pdev->dev);
-+
- 	/* Unregister _before_ disabling pm_runtime() so we stop transfers */
- 	spi_unregister_master(master);
- 
-@@ -512,6 +519,7 @@ static int __maybe_unused qcom_qspi_runtime_suspend(struct device *dev)
- 	struct spi_master *master = dev_get_drvdata(dev);
- 	struct qcom_qspi *ctrl = spi_master_get_devdata(master);
- 
-+	dev_pm_opp_set_rate(dev, 0);
- 	clk_bulk_disable_unprepare(QSPI_NUM_CLKS, ctrl->clks);
- 
- 	return 0;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 38286de779e3..aac57b5b7c21 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -394,6 +394,7 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  *                   for example doing DMA mapping.  Called from threaded
+  *                   context.
+  * @transfer_one: transfer a single spi_transfer.
++ *
+  *                  - return 0 if the transfer is finished,
+  *                  - return 1 if the transfer is still in progress. When
+  *                    the driver is finished with this transfer it must
 -- 
-QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member
-of Code Aurora Forum, hosted by The Linux Foundation
+2.25.2
+

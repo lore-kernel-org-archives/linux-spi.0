@@ -4,49 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-12.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS autolearn=ham
-	autolearn_force=no version=3.4.0
+	MENTIONS_GIT_HOSTING,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AD888C2BA19
-	for <linux-spi@archiver.kernel.org>; Tue, 14 Apr 2020 11:40:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A9F03C2BB86
+	for <linux-spi@archiver.kernel.org>; Tue, 14 Apr 2020 11:40:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 86527206D5
-	for <linux-spi@archiver.kernel.org>; Tue, 14 Apr 2020 11:40:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7DFB3206D5
+	for <linux-spi@archiver.kernel.org>; Tue, 14 Apr 2020 11:40:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1586864419;
-	bh=debxG6bzDjQdxVdojohF7AMnypZ9G0PLFfnJmNnNq9A=;
+	s=default; t=1586864421;
+	bh=SaNMYuHrz/RvPIb18oFaTs9R29zuRVeA6bZlOmfD5hU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:List-ID:From;
-	b=aVEZtgskqe3bGiQuz8a2M+Br6UaqdILsb7n4I13k/HkZd3mLHBb8FUy78ECgiLD5h
-	 mAfGSsA8eMFMmMnCjBSkbWNYzVKkEccbIyFMhaIHKWk1t7VaUc3KqH+wOjjiEmKzYn
-	 crgqAACcUZiIqf4duhmST1vQ1UN4+VHot8Gjuf38=
+	b=kAsGSEC7Gg4iNqpQ2HyV8r+SbzOyPnDt/8QcVfDjSiMSYV4BXQmhhwwsemxZgJ/Kf
+	 IsN/ueRyU7xrOmDrxDX2TeaosWcfzTAWQojgiF96L6JYGVglbOux5MqazEprw9SBdy
+	 9tZXRs/YFQCowA7irFjPyHSctccLHtx2gnoxgCPY=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729841AbgDNLkP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 14 Apr 2020 07:40:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48946 "EHLO mail.kernel.org"
+        id S2439441AbgDNLkO (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 14 Apr 2020 07:40:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48518 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2439437AbgDNLkL (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 14 Apr 2020 07:40:11 -0400
+        id S1729841AbgDNLkF (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 14 Apr 2020 07:40:05 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AFF832076B;
-        Tue, 14 Apr 2020 11:40:10 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BF85720768;
+        Tue, 14 Apr 2020 11:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586864411;
-        bh=debxG6bzDjQdxVdojohF7AMnypZ9G0PLFfnJmNnNq9A=;
+        s=default; t=1586864405;
+        bh=SaNMYuHrz/RvPIb18oFaTs9R29zuRVeA6bZlOmfD5hU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=P7GiCHi8dZN63BaV9Rbh4ZE6dwEtsaWch+t43qdLhoVG3VCAcAxz2p44QsEIQmX3o
-         fZi152dqHCwKmDwhaq47wtn5mvomJp/bV/J5IJsG5drlplDOEYEU+bvlpi2vWP/J1+
-         NZRTWPK2OS/WnIkyTRtI1ha+slYPjnUpVacfDxN0=
-Date:   Tue, 14 Apr 2020 12:40:08 +0100
+        b=J7Ds1y8kxiHqwdoF+J4q2IdNfDIma7GNSFEUx4As/us7CdvINCH24oJbjskV5kjyU
+         mAlQYxNOmdq/No6kiuw3GCQdufc/WXXE2unX8wT4RG/PwwESk0Blg1qE3V9RpkbRkB
+         vh0hbLjfNkBvUc79iz/PjNt9qGUhWiAAQIYDP+sQ=
+Date:   Tue, 14 Apr 2020 12:40:02 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     broonie@kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>
-Subject: Applied "spi: sc18is602: Fix a typo in MODULE_DESCRIPTION" to the spi tree
-In-Reply-To:  <20200413154043.23064-1-christophe.jaillet@wanadoo.fr>
-Message-Id:  <applied-20200413154043.23064-1-christophe.jaillet@wanadoo.fr>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: Respect DataBitLength field of SpiSerialBusV2() ACPI resource" to the spi tree
+In-Reply-To:  <20200413180406.1826-1-andriy.shevchenko@linux.intel.com>
+Message-Id:  <applied-20200413180406.1826-1-andriy.shevchenko@linux.intel.com>
 X-Patchwork-Hint: ignore
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
@@ -55,7 +53,7 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 The patch
 
-   spi: sc18is602: Fix a typo in MODULE_DESCRIPTION
+   spi: Respect DataBitLength field of SpiSerialBusV2() ACPI resource
 
 has been applied to the spi tree at
 
@@ -80,32 +78,39 @@ to this mail.
 Thanks,
 Mark
 
-From 6d75145bf6b6558dea5ce3b4f83f3f66444bcac0 Mon Sep 17 00:00:00 2001
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Date: Mon, 13 Apr 2020 17:40:43 +0200
-Subject: [PATCH] spi: sc18is602: Fix a typo in MODULE_DESCRIPTION
+From 0dadde344d965566589cd82797893d5aa06557a3 Mon Sep 17 00:00:00 2001
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Date: Mon, 13 Apr 2020 21:04:06 +0300
+Subject: [PATCH] spi: Respect DataBitLength field of SpiSerialBusV2() ACPI
+ resource
 
-This should be 'SC18IS602', not 'SC18IC602'
+By unknown reason the commit 64bee4d28c9e
+  ("spi / ACPI: add ACPI enumeration support")
+missed the DataBitLength property to encounter when parse SPI slave
+device data from ACPI.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/20200413154043.23064-1-christophe.jaillet@wanadoo.fr
+Fill the gap here.
+
+Fixes: 64bee4d28c9e ("spi / ACPI: add ACPI enumeration support")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20200413180406.1826-1-andriy.shevchenko@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-sc18is602.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-sc18is602.c b/drivers/spi/spi-sc18is602.c
-index 5497eeb3bf3e..ee0f3edf49cd 100644
---- a/drivers/spi/spi-sc18is602.c
-+++ b/drivers/spi/spi-sc18is602.c
-@@ -345,6 +345,6 @@ static struct i2c_driver sc18is602_driver = {
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 0996d238f61e..531d1de85f7f 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2111,6 +2111,7 @@ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
+ 			}
  
- module_i2c_driver(sc18is602_driver);
+ 			lookup->max_speed_hz = sb->connection_speed;
++			lookup->bits_per_word = sb->data_bit_length;
  
--MODULE_DESCRIPTION("SC18IC602/603 SPI Master Driver");
-+MODULE_DESCRIPTION("SC18IS602/603 SPI Master Driver");
- MODULE_AUTHOR("Guenter Roeck");
- MODULE_LICENSE("GPL");
+ 			if (sb->clock_phase == ACPI_SPI_SECOND_PHASE)
+ 				lookup->mode |= SPI_CPHA;
 -- 
 2.20.1
 

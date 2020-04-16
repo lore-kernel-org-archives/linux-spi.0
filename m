@@ -4,38 +4,38 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 33BC1C2BB55
-	for <linux-spi@archiver.kernel.org>; Thu, 16 Apr 2020 11:41:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 37D5BC2BB85
+	for <linux-spi@archiver.kernel.org>; Thu, 16 Apr 2020 11:43:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0DF0F21D7F
-	for <linux-spi@archiver.kernel.org>; Thu, 16 Apr 2020 11:41:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0D9A2221EA
+	for <linux-spi@archiver.kernel.org>; Thu, 16 Apr 2020 11:43:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2506463AbgDPLlG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 16 Apr 2020 07:41:06 -0400
-Received: from inva021.nxp.com ([92.121.34.21]:45696 "EHLO inva021.nxp.com"
+        id S2633985AbgDPLng (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 16 Apr 2020 07:43:36 -0400
+Received: from inva021.nxp.com ([92.121.34.21]:53970 "EHLO inva021.nxp.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2505689AbgDPK6V (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 16 Apr 2020 06:58:21 -0400
+        id S2633981AbgDPLn3 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 16 Apr 2020 07:43:29 -0400
 Received: from inva021.nxp.com (localhost [127.0.0.1])
-        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id BB631200C92;
-        Thu, 16 Apr 2020 12:57:11 +0200 (CEST)
+        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id C6AF6200C9A;
+        Thu, 16 Apr 2020 13:43:27 +0200 (CEST)
 Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com [165.114.16.14])
-        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 9970C200C87;
-        Thu, 16 Apr 2020 12:57:08 +0200 (CEST)
+        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id AAE83200306;
+        Thu, 16 Apr 2020 13:43:24 +0200 (CEST)
 Received: from lsv03124.swis.in-blr01.nxp.com (lsv03124.swis.in-blr01.nxp.com [92.120.146.121])
-        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id A45DF402C4;
-        Thu, 16 Apr 2020 18:57:04 +0800 (SGT)
+        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 5DDF3402FB;
+        Thu, 16 Apr 2020 19:43:20 +0800 (SGT)
 From:   Ashish Kumar <Ashish.Kumar@nxp.com>
 To:     broonie@kernel.org, boris.brezillon@collabora.com,
         frieder.schrempf@kontron.de
 Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         Kuldeep Singh <kuldeep.singh@nxp.com>,
         Ashish Kumar <Ashish.kumar@nxp.com>
-Subject: [Patch v2] spi: spi-fsl-qspi: Reduce devm_ioremap size to 4 times AHB buffer size
-Date:   Thu, 16 Apr 2020 16:27:02 +0530
-Message-Id: <1587034622-16654-1-git-send-email-Ashish.Kumar@nxp.com>
+Subject: [PATCH v3] spi: spi-fsl-qspi: Reduce devm_ioremap size to 4 times AHB buffer size
+Date:   Thu, 16 Apr 2020 17:13:19 +0530
+Message-Id: <1587037399-18672-1-git-send-email-Ashish.Kumar@nxp.com>
 X-Mailer: git-send-email 2.7.4
 X-Virus-Scanned: ClamAV using ClamSMTP
 Sender: linux-spi-owner@vger.kernel.org
@@ -61,15 +61,16 @@ Suggested-by: Boris Brezillon <boris.brezillon@collabora.com>
 Signed-off-by: Kuldeep Singh <kuldeep.singh@nxp.com>
 Signed-off-by: Ashish Kumar <Ashish.kumar@nxp.com>
 ---
+v3: 
+Update comment
 v2:
 Add Suggested-by: Boris Brezillon <boris.brezillon@collabora.com>
 Incorrporate review comments from Frieder
-
  drivers/spi/spi-fsl-qspi.c | 7 ++++---
  1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
-index 63c9f7e..5f8aac9 100644
+index 63c9f7e..8b95e2f 100644
 --- a/drivers/spi/spi-fsl-qspi.c
 +++ b/drivers/spi/spi-fsl-qspi.c
 @@ -859,14 +859,15 @@ static int fsl_qspi_probe(struct platform_device *pdev)
@@ -78,7 +79,7 @@ index 63c9f7e..5f8aac9 100644
  					"QuadSPI-memory");
 -	q->ahb_addr = devm_ioremap_resource(dev, res);
 +	q->memmap_phy = res->start;
-+	/* Since there are 4 CS max MAP required is 4 time ahb_buf_size */
++	/* Since there are 4 cs, map size required is 4 times ahb_buf_size */
 +	q->ahb_addr = devm_ioremap(dev, q->memmap_phy,
 +				   (q->devtype_data->ahb_buf_size * 4));
  	if (IS_ERR(q->ahb_addr)) {

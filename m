@@ -2,71 +2,70 @@ Return-Path: <SRS0=ew3U=6A=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
-	SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D3FABC2BB55
-	for <linux-spi@archiver.kernel.org>; Thu, 16 Apr 2020 15:45:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EE9F1C2BB55
+	for <linux-spi@archiver.kernel.org>; Thu, 16 Apr 2020 15:45:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A3C5B214AF
-	for <linux-spi@archiver.kernel.org>; Thu, 16 Apr 2020 15:45:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BEFBD21927
+	for <linux-spi@archiver.kernel.org>; Thu, 16 Apr 2020 15:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1587051906;
-	bh=uEzT4afH5aAvqU9GRUEUOIDgK+mWSReRCNYeDa+GX54=;
+	s=default; t=1587051925;
+	bh=9ry9z5cPWT6b3qsfKrvwd1wOLF1JAP7Tyrk+39VbvE8=;
 	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=UDDd4GnNH6lYBZM4VGQHcP/L9XNaJybN0j4a+QSlFrebuW9EHrN0K3UTkdYakSGP3
-	 pfeFqtp345Cc0KDZdhXLUq/obk0Gld3dkCZbXHdG+qkyuuDEGxakNLmbnMBAdOGu7K
-	 73Tiu1n6DRTbdOw1ZOtivth6vQeNc+dO0+UuG6ek=
+	b=lnXbZJapJ+NCAAZbhwOer38UwGN8QppWiW0gRNoXt1sgyaxQ5mGTNqORgE+AHkurt
+	 ltIIShfP7S0Qe9yHSW/At8LKXrSrQ2I7fbVliSxlu/Z03viuRxnfLMVNbBHcO2Nga6
+	 EihxDlUvjIfu/6Fmh0Qk1fL1GFhEiAUI9CM5StN0=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2442540AbgDPPpF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 16 Apr 2020 11:45:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52430 "EHLO mail.kernel.org"
+        id S2404406AbgDPPpV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 16 Apr 2020 11:45:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52562 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2395512AbgDPPpE (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 16 Apr 2020 11:45:04 -0400
+        id S2409689AbgDPPpK (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 16 Apr 2020 11:45:10 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9E06521D91;
-        Thu, 16 Apr 2020 15:45:03 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C60F421D91;
+        Thu, 16 Apr 2020 15:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587051904;
-        bh=uEzT4afH5aAvqU9GRUEUOIDgK+mWSReRCNYeDa+GX54=;
+        s=default; t=1587051910;
+        bh=9ry9z5cPWT6b3qsfKrvwd1wOLF1JAP7Tyrk+39VbvE8=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=pcpz6ct4+maiiBtZd9rtrSScBUwuNgkpbamj//4pqaThgCwa0dSZd/zmWQvxvCsfV
-         RUQLLXo3E1W4BwlUALnGCD0TatfyNXlKArys+HNonhkcuogXDJYnW32hGvnB1VRJei
-         17ozwOeaEnJrH+S9jb9dJ176cvZXOo5GU7EQOPbU=
-Date:   Thu, 16 Apr 2020 16:45:01 +0100
+        b=i+W8m4d5EBX8ql5pApge80SNjO055BMgbvxSI7dv8kgwml5LUFY5/2iiEkoEe/OnE
+         8c/5xUi4O0ZwtTT3qirjMXXRiR9wKzo0HqVDDyeE9ATpp/Jm279hN3z4G+ZJO3bx0N
+         Ge6YHoMWFr4dTAeCpYFSxNset/qQnWJX3l6LgWiI=
+Date:   Thu, 16 Apr 2020 16:45:07 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Colin King <colin.king@canonical.com>, linux-spi@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-In-Reply-To: <20200410122315.17523-1-colin.king@canonical.com>
-References: <20200410122315.17523-1-colin.king@canonical.com>
-Subject: Re: [PATCH] spi: remove redundant assignment to variable ms
-Message-Id: <158705187474.53607.10568254080085770802.b4-ty@kernel.org>
+To:     Clement Leger <cleger@kalray.eu>
+Cc:     linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+In-Reply-To: <20200416110823.22565-1-cleger@kalray.eu>
+References: <20200416110823.22565-1-cleger@kalray.eu>
+Subject: Re: [PATCH 0/2] Cleanup chip info in spi-dw driver
+Message-Id: <158705187475.53607.4216901757113789779.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, 10 Apr 2020 13:23:15 +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On Thu, 16 Apr 2020 13:08:23 +0200, Clement Leger wrote:
+> Some mechanisms have no more user, and as such code paths are unused.
+> Remove these code paths and associated structs members.
 > 
-> The variable ms is being initialized with a value that is never read
-> and it is being updated later with a new value.  The initialization is
-> redundant and can be removed.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> Addresses-Coverity: ("Unused value")
+> Clement Leger (2):
+>   spi: dw: remove unused dw_spi_chip handling
+>   spi: dw: remove cs_control and poll_mode members from chip_data
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] spi: remove redundant assignment to variable ms
-      commit: 49686df5b874e5ed6249bc622b73ad9a9e71cd99
+[1/2] spi: dw: remove unused dw_spi_chip handling
+      commit: ae9e6ac4d8542d1b16fad4bd3c3e447632437623
+[2/2] spi: dw: remove cs_control and poll_mode members from chip_data
+      commit: 33e8fd4bfbd7eb0921eb55caceed54e51912a4e6
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

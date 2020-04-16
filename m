@@ -6,70 +6,84 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 68524C2D0EF
-	for <linux-spi@archiver.kernel.org>; Thu, 16 Apr 2020 10:19:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9DB4CC2BB85
+	for <linux-spi@archiver.kernel.org>; Thu, 16 Apr 2020 10:20:29 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4E7C921D91
-	for <linux-spi@archiver.kernel.org>; Thu, 16 Apr 2020 10:19:24 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 79367206D5
+	for <linux-spi@archiver.kernel.org>; Thu, 16 Apr 2020 10:20:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2504747AbgDPKTQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 16 Apr 2020 06:19:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54340 "EHLO
+        id S2504813AbgDPKTr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 16 Apr 2020 06:19:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2504744AbgDPKSq (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 16 Apr 2020 06:18:46 -0400
+        with ESMTP id S2504744AbgDPKTW (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 16 Apr 2020 06:19:22 -0400
 Received: from andre.telenet-ops.be (andre.telenet-ops.be [IPv6:2a02:1800:120:4::f00:15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7727C061A10
-        for <linux-spi@vger.kernel.org>; Thu, 16 Apr 2020 03:18:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FED9C061A0C
+        for <linux-spi@vger.kernel.org>; Thu, 16 Apr 2020 03:19:22 -0700 (PDT)
 Received: from ramsan ([IPv6:2a02:1810:ac12:ed60:fd83:81bb:c1d7:433d])
         by andre.telenet-ops.be with bizsmtp
-        id TNJh220024dKHqf01NJhiA; Thu, 16 Apr 2020 12:18:41 +0200
+        id TNEK2200D4dKHqf01NEKWv; Thu, 16 Apr 2020 12:14:19 +0200
 Received: from rox.of.borg ([192.168.97.57])
         by ramsan with esmtp (Exim 4.90_1)
         (envelope-from <geert@linux-m68k.org>)
-        id 1jP1bV-0001RZ-17; Thu, 16 Apr 2020 12:18:41 +0200
+        id 1jP1XH-0001My-9v; Thu, 16 Apr 2020 12:14:19 +0200
 Received: from geert by rox.of.borg with local (Exim 4.90_1)
         (envelope-from <geert@linux-m68k.org>)
-        id 1jP1bU-0003nv-Vu; Thu, 16 Apr 2020 12:18:41 +0200
+        id 1jP1XH-0003ke-7t; Thu, 16 Apr 2020 12:14:19 +0200
 From:   Geert Uytterhoeven <geert+renesas@glider.be>
 To:     Mark Brown <broonie@kernel.org>,
         Boris Brezillon <bbrezillon@kernel.org>,
         Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
-Cc:     linux-spi@vger.kernel.org,
+Cc:     linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org,
         Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 1/2] spi: spidev: Add support for Octal mode data transfers
-Date:   Thu, 16 Apr 2020 12:18:34 +0200
-Message-Id: <20200416101835.14573-2-geert+renesas@glider.be>
+Subject: [PATCH] spi: spi-mem: Fix Dual/Quad modes on Octal-capable devices
+Date:   Thu, 16 Apr 2020 12:14:18 +0200
+Message-Id: <20200416101418.14379-1-geert+renesas@glider.be>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200416101835.14573-1-geert+renesas@glider.be>
-References: <20200416101835.14573-1-geert+renesas@glider.be>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Include the flags for Octal mode data transfers in the mask, so
-userspace can set them.
+Currently buswidths 2 and 4 are rejected for a device that advertises
+Octal capabilities.  Allow these buswidths, just like is done for
+buswidth 2 and Quad-capable devices.
 
+Fixes: b12a084c8729ef42 ("spi: spi-mem: add support for octal mode I/O data transfer")
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- drivers/spi/spidev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Compile-tested only.
+---
+ drivers/spi/spi-mem.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 80dd1025b9530493..d753df700e9ea3cc 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -62,7 +62,8 @@ static DECLARE_BITMAP(minors, N_SPI_MINORS);
- #define SPI_MODE_MASK		(SPI_CPHA | SPI_CPOL | SPI_CS_HIGH \
- 				| SPI_LSB_FIRST | SPI_3WIRE | SPI_LOOP \
- 				| SPI_NO_CS | SPI_READY | SPI_TX_DUAL \
--				| SPI_TX_QUAD | SPI_RX_DUAL | SPI_RX_QUAD)
-+				| SPI_TX_QUAD | SPI_TX_OCTAL | SPI_RX_DUAL \
-+				| SPI_RX_QUAD | SPI_RX_OCTAL)
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index adaa0c49f966da97..9a86cc27fcc056bc 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -108,15 +108,17 @@ static int spi_check_buswidth_req(struct spi_mem *mem, u8 buswidth, bool tx)
+ 		return 0;
  
- struct spidev_data {
- 	dev_t			devt;
+ 	case 2:
+-		if ((tx && (mode & (SPI_TX_DUAL | SPI_TX_QUAD))) ||
+-		    (!tx && (mode & (SPI_RX_DUAL | SPI_RX_QUAD))))
++		if ((tx &&
++		     (mode & (SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTAL))) ||
++		    (!tx &&
++		     (mode & (SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTAL))))
+ 			return 0;
+ 
+ 		break;
+ 
+ 	case 4:
+-		if ((tx && (mode & SPI_TX_QUAD)) ||
+-		    (!tx && (mode & SPI_RX_QUAD)))
++		if ((tx && (mode & (SPI_TX_QUAD | SPI_TX_OCTAL))) ||
++		    (!tx && (mode & (SPI_RX_QUAD | SPI_RX_OCTAL))))
+ 			return 0;
+ 
+ 		break;
 -- 
 2.17.1
 

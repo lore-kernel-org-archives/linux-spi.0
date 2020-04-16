@@ -2,111 +2,91 @@ Return-Path: <SRS0=ew3U=6A=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.6 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-5.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8932CC2BB55
-	for <linux-spi@archiver.kernel.org>; Thu, 16 Apr 2020 17:44:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F994C2BB55
+	for <linux-spi@archiver.kernel.org>; Thu, 16 Apr 2020 17:49:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6AF172223D
-	for <linux-spi@archiver.kernel.org>; Thu, 16 Apr 2020 17:44:04 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="vLBQGd6K"
+	by mail.kernel.org (Postfix) with ESMTP id 59ED12223F
+	for <linux-spi@archiver.kernel.org>; Thu, 16 Apr 2020 17:49:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1587059377;
+	bh=BkIiYOu1Vu7EfNRs0GBJIMd9H0ATsB/nAoxMx8uYOmg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=wP2qNIoKnCgxNLaxZatikVgU+Gg/HiZ++gXgLdmHYcRwKm7kZWWiKiOyB9G2hOsQg
+	 4mbwmqLj59hsPG9xp5aqP6Db7maGqs0VdALm94v6Am89yAcWcRKqv0IWvsyIDdyjzH
+	 0XOgkTdWv2QDxeKUi6xQPLVbVCDeNJab8mS+V2Js=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732896AbgDPRoD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 16 Apr 2020 13:44:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39404 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2391931AbgDPRn6 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 16 Apr 2020 13:43:58 -0400
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 765EAC061A0C;
-        Thu, 16 Apr 2020 10:43:58 -0700 (PDT)
-Received: by mail-wm1-x342.google.com with SMTP id y24so5855448wma.4;
-        Thu, 16 Apr 2020 10:43:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=6hizQ9MDGHiTOD5MNnBXvIh1bEhJWtJMbrkJ0+RAhQw=;
-        b=vLBQGd6K1Gb+dgqEiU4e6EXjgP2FduFXCjYVdLb8N7HwpdX9d8EsNT1tyFW4sZFGkr
-         MYogMHjFFkiF9GlWIxRpSJ4QSd+jARn4WKMyfaFspWKYEebDxF8S71ZcLAs8/N+IEtmx
-         4/DROzndmb4nFulcAU7JoI+U3V2Jppkdr0SGtQ6Id+mGiq9Sfka4mQ7EYumoRXOphbw4
-         UV75XXknppFxyp7t+83DNVQ8CwWGzvGSQwH3GKUGouzpNtpFEC+G1CSzdfxja7jnKB0g
-         Qr6XwTiP3LsBSkrCaOi24hctRPmNzlj+Wa/4N5IU5AWWdIer/ND8qMtLO5ZbZsHgtRwH
-         MyFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=6hizQ9MDGHiTOD5MNnBXvIh1bEhJWtJMbrkJ0+RAhQw=;
-        b=A0YW128FTpXSuoe3dGis1MZCyoi2AjPYEX4NUY1f1Xx1l8cczdWSzUjSUUY2QHrkiw
-         1AFWoUOjL9zAgeHZ0UebrOwh0ZXW2sO99jjf7vvDVgP1rbv5VJRDqLO5C0AOA+pLZS+5
-         Js7JSyIVeisu5dCXkXRa8NQC82QBBpn3rUJgLm4d4hyYB6aOTynyhU9u82+rsjraKwOP
-         tNFf3qjB4rC+QeiQmvpTMBN1jvUh5FL8H8jtwOQyH7xNMNKxNkVW3inCYdzZqfNjIohb
-         3Tquok4uqMq4SOiufmciM3seg0RzdenYsSOYErhtlhLa47BzgW+ojwYNCz+XT9bFxtI+
-         qSfA==
-X-Gm-Message-State: AGi0PubFgEhKMXI5xYa8eLXC18Fb+HExt5YVJADD1JCjsL66EEqCS/67
-        bKbnfHlAdoQY4g1eur359fU=
-X-Google-Smtp-Source: APiQypJtA63SceSyBnECHaUA/PGqm3c/BBAkdkj36st7u2lNisEb+Ln9BVI75JKxjT6SuBDXqbgfIQ==
-X-Received: by 2002:a7b:c5d8:: with SMTP id n24mr5876000wmk.158.1587059037289;
-        Thu, 16 Apr 2020 10:43:57 -0700 (PDT)
-Received: from mail.broadcom.com ([192.19.231.250])
-        by smtp.gmail.com with ESMTPSA id p7sm28736296wrf.31.2020.04.16.10.43.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2020 10:43:56 -0700 (PDT)
-From:   Kamal Dasu <kdasu.kdev@gmail.com>
-To:     Kamal Dasu <kdasu.kdev@gmail.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Mark Brown <broonie@kernel.org>
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [Patch 9/9] spi: bcm-qspi: MSPI_SPCR0_MSB MSTR bit exists only on legacy controllers
-Date:   Thu, 16 Apr 2020 13:43:09 -0400
-Message-Id: <20200416174309.34044-9-kdasu.kdev@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200416174309.34044-1-kdasu.kdev@gmail.com>
+        id S1729033AbgDPRth (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 16 Apr 2020 13:49:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41390 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727817AbgDPRtf (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 16 Apr 2020 13:49:35 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id BB3FF221EB;
+        Thu, 16 Apr 2020 17:49:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1587059375;
+        bh=BkIiYOu1Vu7EfNRs0GBJIMd9H0ATsB/nAoxMx8uYOmg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=kZfbcQ//SCMfp4mqoQo4YfMqs8yyM80ZL7TXKn37X20PwC0Cmo8dF6RBuFEUqHv6Z
+         J9+oq1qxGTjaJRQXSOOxoOp0E0SF8L/fNQSvJMGUCnKJihl78qa7qpjOA1y0nVtLWS
+         7hBGIPAkBt+LNkGOBf0h9BiceJbC7bFdwOX059rA=
+Date:   Thu, 16 Apr 2020 18:49:32 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Kamal Dasu <kdasu.kdev@gmail.com>
+Cc:     bcm-kernel-feedback-list@broadcom.com,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [Patch 1/9] spi: bcm-qspi: Handle clock probe deferral
+Message-ID: <20200416174932.GP5354@sirena.org.uk>
 References: <20200416174309.34044-1-kdasu.kdev@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="THYEXwetZJOK3OLY"
+Content-Disposition: inline
+In-Reply-To: <20200416174309.34044-1-kdasu.kdev@gmail.com>
+X-Cookie: Tempt me with a spoon!
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Set MASTER bit on the MSPI_SPCR0_MSB only for legacy MSPI and HIF_MSPI
-controllers.
 
-refs #SWLINUX-5186
+--THYEXwetZJOK3OLY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: fa236a7ef240 ("spi: bcm-qspi: Add Broadcom MSPI driver")
-Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
----
- drivers/spi/spi-bcm-qspi.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+On Thu, Apr 16, 2020 at 01:43:01PM -0400, Kamal Dasu wrote:
+> The clock provider may not be ready by the time spi-bcm-qspi gets
+> probed, handle probe deferral using devm_clk_get_optional().
+>=20
+> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+> Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
 
-diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
-index 99f2cfcbb50c..681d09085175 100644
---- a/drivers/spi/spi-bcm-qspi.c
-+++ b/drivers/spi/spi-bcm-qspi.c
-@@ -576,11 +576,17 @@ static void bcm_qspi_hw_set_parms(struct bcm_qspi *qspi,
- 	spcr = clamp_val(spbr, bcm_qspi_spbr_min(qspi), QSPI_SPBR_MAX);
- 	bcm_qspi_write(qspi, MSPI, MSPI_SPCR0_LSB, spcr);
- 
--	spcr = MSPI_MASTER_BIT;
-+	if (!qspi->mspi_maj_rev)
-+		/* legacy controller */
-+		spcr = MSPI_MASTER_BIT;
-+	else
-+		spcr = 0;
-+
- 	/* for 16 bit the data should be zero */
- 	if (xp->bits_per_word != 16)
- 		spcr |= xp->bits_per_word << 2;
- 	spcr |= xp->mode & 3;
-+
- 	bcm_qspi_write(qspi, MSPI, MSPI_SPCR0_MSB, spcr);
- 
- 	if (bcm_qspi_has_fastbr(qspi)) {
--- 
-2.17.1
+Did Florian author this patch or you?  The signoffs look like it was
+him.
 
+--THYEXwetZJOK3OLY
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl6YmqsACgkQJNaLcl1U
+h9C+wQf/QFckkRzTU4FhkTKvuTAukrQpq3Cm/fZK+SW6HHTZjqN6M1Of3Awj8bbv
+wuPtmvGzDfLDSwXBMPIP1geBYMjeJSdwPZ9zCszePU4WjUqvIq1DSfYCm6ix4FWA
+Bku0MBsYrGlHL5hW1PhxRb8qo2/9od/moXRwVITavaUx8fW4PxdKaeFKUagAnzly
+3/TyCdQ+sQLI4oycHL95TtJJmrL2luK4D5H0T8LicG7tFyL2JO8nF6m6qSpVeYX8
+o5apHJ6wrWX01h3md6Q9C4Kl4vax5GoYA7OqFO8QZllrFU5BQGb6S1yEUXqwf/td
+V6q12nxW5p7mhQetqyR6sUFDs3F46A==
+=UmiJ
+-----END PGP SIGNATURE-----
+
+--THYEXwetZJOK3OLY--

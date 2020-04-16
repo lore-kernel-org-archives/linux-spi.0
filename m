@@ -2,113 +2,134 @@ Return-Path: <SRS0=ew3U=6A=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 91EB8C352BE
-	for <linux-spi@archiver.kernel.org>; Thu, 16 Apr 2020 09:36:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C2127C2BB85
+	for <linux-spi@archiver.kernel.org>; Thu, 16 Apr 2020 10:19:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 76B8621D7A
-	for <linux-spi@archiver.kernel.org>; Thu, 16 Apr 2020 09:36:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A9D8B21BE5
+	for <linux-spi@archiver.kernel.org>; Thu, 16 Apr 2020 10:19:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2503898AbgDPJgc (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 16 Apr 2020 05:36:32 -0400
-Received: from skedge04.snt-world.com ([91.208.41.69]:44108 "EHLO
-        skedge04.snt-world.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2503955AbgDPJga (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 16 Apr 2020 05:36:30 -0400
-Received: from sntmail11s.snt-is.com (unknown [10.203.32.181])
-        by skedge04.snt-world.com (Postfix) with ESMTP id F292267A88C;
-        Thu, 16 Apr 2020 11:36:20 +0200 (CEST)
-Received: from sntmail12r.snt-is.com (10.203.32.182) by sntmail11s.snt-is.com
- (10.203.32.181) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Thu, 16 Apr
- 2020 11:36:20 +0200
-Received: from sntmail12r.snt-is.com ([fe80::e551:8750:7bba:3305]) by
- sntmail12r.snt-is.com ([fe80::e551:8750:7bba:3305%3]) with mapi id
- 15.01.1913.007; Thu, 16 Apr 2020 11:36:20 +0200
-From:   Schrempf Frieder <frieder.schrempf@kontron.de>
-To:     Ashish Kumar <Ashish.Kumar@nxp.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "boris.brezillon@collabora.com" <boris.brezillon@collabora.com>
-CC:     "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Kuldeep Singh <kuldeep.singh@nxp.com>
-Subject: Re: [PATCH] spi: spi-fsl-qspi: Reduce devm_ioremap size to 4 times
- AHB buffer size
-Thread-Topic: [PATCH] spi: spi-fsl-qspi: Reduce devm_ioremap size to 4 times
- AHB buffer size
-Thread-Index: AQHWE8nPWwzel+dHH0GqZo96UrGKSqh7W90A
-Date:   Thu, 16 Apr 2020 09:36:20 +0000
-Message-ID: <95c90219-0fd9-c0b4-5c1a-6abb321ef2e3@kontron.de>
-References: <1587025984-5696-1-git-send-email-Ashish.Kumar@nxp.com>
-In-Reply-To: <1587025984-5696-1-git-send-email-Ashish.Kumar@nxp.com>
-Accept-Language: de-DE, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.25.9.193]
-x-c2processedorg: 51b406b7-48a2-4d03-b652-521f56ac89f3
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <409EE66D3830CE4B8F8730C222B272BF@snt-world.com>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-SnT-MailScanner-Information: Please contact the ISP for more information
-X-SnT-MailScanner-ID: F292267A88C.ADFEE
-X-SnT-MailScanner: Not scanned: please contact your Internet E-Mail Service Provider for details
-X-SnT-MailScanner-SpamCheck: 
-X-SnT-MailScanner-From: frieder.schrempf@kontron.de
-X-SnT-MailScanner-To: ashish.kumar@nxp.com, boris.brezillon@collabora.com,
-        broonie@kernel.org, kuldeep.singh@nxp.com,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+        id S2504736AbgDPKTB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 16 Apr 2020 06:19:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54352 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2504747AbgDPKSq (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 16 Apr 2020 06:18:46 -0400
+Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [IPv6:2a02:1800:120:4::f00:14])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CBE4C061A41
+        for <linux-spi@vger.kernel.org>; Thu, 16 Apr 2020 03:18:45 -0700 (PDT)
+Received: from ramsan ([IPv6:2a02:1810:ac12:ed60:fd83:81bb:c1d7:433d])
+        by xavier.telenet-ops.be with bizsmtp
+        id TNJj220064dKHqf01NJjeg; Thu, 16 Apr 2020 12:18:43 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan with esmtp (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1jP1bX-0001Rc-BQ; Thu, 16 Apr 2020 12:18:43 +0200
+Received: from geert by rox.of.borg with local (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1jP1bX-0003ny-A0; Thu, 16 Apr 2020 12:18:43 +0200
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Mark Brown <broonie@kernel.org>,
+        Boris Brezillon <bbrezillon@kernel.org>,
+        Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>
+Cc:     linux-spi@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 2/2] spi: spidev_test: Add support for Octal mode data transfers
+Date:   Thu, 16 Apr 2020 12:18:35 +0200
+Message-Id: <20200416101835.14573-3-geert+renesas@glider.be>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200416101835.14573-1-geert+renesas@glider.be>
+References: <20200416101835.14573-1-geert+renesas@glider.be>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-SGkgQXNoaXNoLA0KDQpPbiAxNi4wNC4yMCAxMDozMywgQXNoaXNoIEt1bWFyIHdyb3RlOg0KPiBS
-ZWR1Y2UgZGV2bV9pb3JlbWFwIHNpemUgdG8gKDQgKiBBSEJfQlVGRVJfU0laRSkgcmF0aGVyIHRo
-YW4gbWFwcGluZw0KPiBjb21wbGV0ZSBRU1BJLU1lbW1vcnkgYXMgZHJpdmVyIGlzIG5vdyBpbmRl
-cGVuZGVudCBvZiBmbGFzaCBzaXplLg0KPiBGbGFzaCBvZiBhbnkgc2l6ZSBjYW4gYmUgYWNjZXNz
-ZWQuDQo+IA0KPiBJc3N1ZSB3YXMgcmVwb3J0ZWQgb24gcGxhdGZvcm0gd2hlcmUgZGV2bV9pb3Jl
-bWFwIGZhaWx1cmUgaXMgb2JzZXJ2ZWQNCj4gd2l0aCBzaXplID4gMjU2TS4NCj4gRXJyb3IgbG9n
-IG9uIExTMTAyMUFUV1IgOg0KPiAgIGZzbC1xdWFkc3BpIDE1NTAwMDAuc3BpOiBpb3JlbWFwIGZh
-aWxlZCBmb3IgcmVzb3VyY2UgW21lbSAweDQwMDAwMDAwLTB4N2ZmZmZmZmZdDQo+ICAgZnNsLXF1
-YWRzcGkgMTU1MDAwMC5zcGk6IEZyZWVzY2FsZSBRdWFkU1BJIHByb2JlIGZhaWxlZA0KPiAgIGZz
-bC1xdWFkc3BpOiBwcm9iZSBvZiAxNTUwMDAwLnNwaSBmYWlsZWQgd2l0aCBlcnJvciAtMTINCj4g
-DQo+IFRoaXMgY2hhbmdlIHdhcyBhbHNvIHN1Z2dlc3RlZCBwcmV2aW91c2x5Og0KPiBodHRwczov
-L2V1cjA0LnNhZmVsaW5rcy5wcm90ZWN0aW9uLm91dGxvb2suY29tLz91cmw9aHR0cHMlM0ElMkYl
-MkZwYXRjaHdvcmsua2VybmVsLm9yZyUyRnBhdGNoJTJGMTA1MDg3NTMlMkYlMjMyMjE2NjM4NSZh
-bXA7ZGF0YT0wMiU3QzAxJTdDZnJpZWRlci5zY2hyZW1wZiU0MGtvbnRyb24uZGUlN0NiYTI2ODE3
-ZTc1OWI0NjA4MTlhNzA4ZDdlMWUwZDA4MyU3QzhjOWQzYzk3M2ZkOTQxYzhhMmIxNjQ2ZjM5NDJk
-YWYxJTdDMCU3QzAlN0M2MzcyMjYyMjg1NDMxMzIyNzImYW1wO3NkYXRhPXo3d2VrRFRnJTJGTjdD
-WlV5N2lrTSUyQlZIT0tUOTVZYkRKMGNyMkpFNjJXZ3p3JTNEJmFtcDtyZXNlcnZlZD0wDQoNClNv
-IGlmIHlvdSB3YW50IHlvdSBjb3VsZCBhZGQgYSAiU3VnZ2VzdGVkLWJ5IiB0YWcgcmVmZXJyaW5n
-IHRvIEJvcmlzLg0KDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBLdWxkZWVwIFNpbmdoIDxrdWxkZWVw
-LnNpbmdoQG54cC5jb20+DQo+IFNpZ25lZC1vZmYtYnk6IEFzaGlzaCBLdW1hciA8QXNoaXNoLmt1
-bWFyQG54cC5jb20+DQo+IC0tLQ0KPiAgIGRyaXZlcnMvc3BpL3NwaS1mc2wtcXNwaS5jIHwgMTAg
-KysrKysrKy0tLQ0KPiAgIDEgZmlsZSBjaGFuZ2VkLCA3IGluc2VydGlvbnMoKyksIDMgZGVsZXRp
-b25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvc3BpLWZzbC1xc3BpLmMgYi9k
-cml2ZXJzL3NwaS9zcGktZnNsLXFzcGkuYw0KPiBpbmRleCA2M2M5ZjdlLi5hNDFjZTgxIDEwMDY0
-NA0KPiAtLS0gYS9kcml2ZXJzL3NwaS9zcGktZnNsLXFzcGkuYw0KPiArKysgYi9kcml2ZXJzL3Nw
-aS9zcGktZnNsLXFzcGkuYw0KPiBAQCAtODU5LDE0ICs4NTksMTUgQEAgc3RhdGljIGludCBmc2xf
-cXNwaV9wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2KQ0KPiAgIA0KPiAgIAlyZXMg
-PSBwbGF0Zm9ybV9nZXRfcmVzb3VyY2VfYnluYW1lKHBkZXYsIElPUkVTT1VSQ0VfTUVNLA0KPiAg
-IAkJCQkJIlF1YWRTUEktbWVtb3J5Iik7DQo+IC0JcS0+YWhiX2FkZHIgPSBkZXZtX2lvcmVtYXBf
-cmVzb3VyY2UoZGV2LCByZXMpOw0KPiArCXEtPm1lbW1hcF9waHkgPSByZXMtPnN0YXJ0Ow0KPiAr
-CS8qIFNpbmNlIHRoZXJlIGFyZSA0IENTIG1heCBNQVAgcmVxdWlyZWQgaXMgNCB0aW1lIGFoYl9i
-dWZfc2l6ZSAqLw0KDQovKiBTaW5jZSB0aGVyZSBhcmUgNCBjcywgbWFwIHNpemUgcmVxdWlyZWQg
-aXMgNCB0aW1lcyBhaGJfYnVmX3NpemUgKi8NCg0KPiArCXEtPmFoYl9hZGRyID0gZGV2bV9pb3Jl
-bWFwKGRldiwgcS0+bWVtbWFwX3BoeSwNCj4gKwkJCQkgICAocS0+ZGV2dHlwZV9kYXRhLT5haGJf
-YnVmX3NpemUgKiA0KSk7DQo+ICAgCWlmIChJU19FUlIocS0+YWhiX2FkZHIpKSB7DQo+ICAgCQly
-ZXQgPSBQVFJfRVJSKHEtPmFoYl9hZGRyKTsNCj4gICAJCWdvdG8gZXJyX3B1dF9jdHJsOw0KPiAg
-IAl9DQo+ICAgDQo+IC0JcS0+bWVtbWFwX3BoeSA9IHJlcy0+c3RhcnQ7DQo+IC0NCj4gICAJLyog
-ZmluZCB0aGUgY2xvY2tzICovDQo+ICAgCXEtPmNsa19lbiA9IGRldm1fY2xrX2dldChkZXYsICJx
-c3BpX2VuIik7DQo+ICAgCWlmIChJU19FUlIocS0+Y2xrX2VuKSkgew0KPiBAQCAtOTM5LDYgKzk0
-MCw5IEBAIHN0YXRpYyBpbnQgZnNsX3FzcGlfcmVtb3ZlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2Ug
-KnBkZXYpDQo+ICAgDQo+ICAgCW11dGV4X2Rlc3Ryb3koJnEtPmxvY2spOw0KPiAgIA0KPiArCWlm
-IChxLT5haGJfYWRkcikNCj4gKwkJZGV2bV9pb3VubWFwKHEtPmRldiwgcS0+YWhiX2FkZHIpOw0K
-DQpZb3UgZG9uJ3QgbmVlZCB0byB1bm1hcCBleHBsaWNpdGx5LiBVc2luZyBkZXZtXyooKSwgbGlm
-ZXRpbWUgb2YgdGhlIA0KcmVzb3VyY2UgaXMgYWxyZWFkeSB0aWVkIHRvIHRoZSBkZXZpY2UuDQoN
-ClRoYW5rcywNCkZyaWVkZXINCg0KPiArDQo+ICAgCXJldHVybiAwOw0KPiAgIH0NCj4gICANCj4g
+Add support for octal transfers using the -8/--octal command line
+parameter.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+ tools/spi/spidev_test.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
+
+diff --git a/tools/spi/spidev_test.c b/tools/spi/spidev_test.c
+index 27967dd90f8f3f77..4d219daea2ebcfa2 100644
+--- a/tools/spi/spidev_test.c
++++ b/tools/spi/spidev_test.c
+@@ -128,18 +128,22 @@ static void transfer(int fd, uint8_t const *tx, uint8_t const *rx, size_t len)
+ 		.bits_per_word = bits,
+ 	};
+ 
+-	if (mode & SPI_TX_QUAD)
++	if (mode & SPI_TX_OCTAL)
++		tr.tx_nbits = 8;
++	else if (mode & SPI_TX_QUAD)
+ 		tr.tx_nbits = 4;
+ 	else if (mode & SPI_TX_DUAL)
+ 		tr.tx_nbits = 2;
+-	if (mode & SPI_RX_QUAD)
++	if (mode & SPI_RX_OCTAL)
++		tr.rx_nbits = 8;
++	else if (mode & SPI_RX_QUAD)
+ 		tr.rx_nbits = 4;
+ 	else if (mode & SPI_RX_DUAL)
+ 		tr.rx_nbits = 2;
+ 	if (!(mode & SPI_LOOP)) {
+-		if (mode & (SPI_TX_QUAD | SPI_TX_DUAL))
++		if (mode & (SPI_TX_OCTAL | SPI_TX_QUAD | SPI_TX_DUAL))
+ 			tr.rx_buf = 0;
+-		else if (mode & (SPI_RX_QUAD | SPI_RX_DUAL))
++		else if (mode & (SPI_RX_OCTAL | SPI_RX_QUAD | SPI_RX_DUAL))
+ 			tr.tx_buf = 0;
+ 	}
+ 
+@@ -187,6 +191,7 @@ static void print_usage(const char *prog)
+ 	     "  -R --ready    slave pulls low to pause\n"
+ 	     "  -2 --dual     dual transfer\n"
+ 	     "  -4 --quad     quad transfer\n"
++	     "  -8 --octal    octal transfer\n"
+ 	     "  -S --size     transfer size\n"
+ 	     "  -I --iter     iterations\n");
+ 	exit(1);
+@@ -213,13 +218,14 @@ static void parse_opts(int argc, char *argv[])
+ 			{ "dual",    0, 0, '2' },
+ 			{ "verbose", 0, 0, 'v' },
+ 			{ "quad",    0, 0, '4' },
++			{ "octal",   0, 0, '8' },
+ 			{ "size",    1, 0, 'S' },
+ 			{ "iter",    1, 0, 'I' },
+ 			{ NULL, 0, 0, 0 },
+ 		};
+ 		int c;
+ 
+-		c = getopt_long(argc, argv, "D:s:d:b:i:o:lHOLC3NR24p:vS:I:",
++		c = getopt_long(argc, argv, "D:s:d:b:i:o:lHOLC3NR248p:vS:I:",
+ 				lopts, NULL);
+ 
+ 		if (c == -1)
+@@ -280,6 +286,9 @@ static void parse_opts(int argc, char *argv[])
+ 		case '4':
+ 			mode |= SPI_TX_QUAD;
+ 			break;
++		case '8':
++			mode |= SPI_TX_OCTAL;
++			break;
+ 		case 'S':
+ 			transfer_size = atoi(optarg);
+ 			break;
+@@ -295,6 +304,8 @@ static void parse_opts(int argc, char *argv[])
+ 			mode |= SPI_RX_DUAL;
+ 		if (mode & SPI_TX_QUAD)
+ 			mode |= SPI_RX_QUAD;
++		if (mode & SPI_TX_OCTAL)
++			mode |= SPI_RX_OCTAL;
+ 	}
+ }
+ 
+-- 
+2.17.1
+

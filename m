@@ -8,64 +8,65 @@ X-Spam-Status: No, score=-9.6 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0ECD2C54FCF
-	for <linux-spi@archiver.kernel.org>; Mon, 20 Apr 2020 19:10:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E6076C54FD2
+	for <linux-spi@archiver.kernel.org>; Mon, 20 Apr 2020 19:09:59 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E37A52084D
+	by mail.kernel.org (Postfix) with ESMTP id C68A420736
 	for <linux-spi@archiver.kernel.org>; Mon, 20 Apr 2020 19:09:59 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G+XEOCZj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BKpBsOGS"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726294AbgDTTJc (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 20 Apr 2020 15:09:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37380 "EHLO
+        id S1727769AbgDTTJZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 20 Apr 2020 15:09:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727914AbgDTTJa (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 20 Apr 2020 15:09:30 -0400
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com [IPv6:2a00:1450:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB1B8C061A0F;
-        Mon, 20 Apr 2020 12:09:29 -0700 (PDT)
-Received: by mail-wr1-x442.google.com with SMTP id i10so13541264wrv.10;
-        Mon, 20 Apr 2020 12:09:29 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S1725896AbgDTTJY (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 20 Apr 2020 15:09:24 -0400
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE39FC061A0C;
+        Mon, 20 Apr 2020 12:09:23 -0700 (PDT)
+Received: by mail-wm1-x334.google.com with SMTP id u16so792352wmc.5;
+        Mon, 20 Apr 2020 12:09:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=ZyjxQT2w1tfyUymmhQNajH9/aDxm1dT9gvQiJybw7YI=;
-        b=G+XEOCZj6su1PzRZCtoH0nu5WMOzfz2daC0WPumyvY2vQ3IJQ+LjVeT794H6LNT+nV
-         Gg1eJCUkFYRgZKpVb+k3zG40YGui1Nlfs2wvXKpaaPU/Bqp5hrkg6n27afo884ZOE7DW
-         aEomaRd4jCRU92LEWHRhMLJqR+qjO463Q5enhyArFeXbgOWtjk4uODDJKlx4y+1OenRa
-         B+BkMAvWzINLz1nvaB/cUj2uBpd4cUdzicgLVE1BRHr95/v1gWyvbVIbZSqY4AybkI+0
-         L/AyVS2IcYgVUA+tYtbnJxbPrWhrSaVpycYZXelJEWvS2KdDwYzpZB0mFK3jmKSpb5td
-         kZ2Q==
+        bh=Xzp810wwKqNPBd/XxF90MmmQUKarKbudjOQw99K54mY=;
+        b=BKpBsOGSqwxLY0UVfFz6Sdzm+xjAmeskTWN4tZ7/S32XXeZC2UZPErViOuz4TLjbq+
+         xAeg4mHVTB4DQA+90ov65a/NkVPlHyTK5VSRQGCq33/j/GPZAi6r5uZZLLIl2qmMnvfy
+         rH9QZm+UowErjy7A8tuXbXbQfMeOL+QgvrntatJJ3P0k7Z5leTGr5ci8g31uHKgDrhmt
+         wyJF6URFCNpr02vTIN1iluN+Pj55gd7KYJoSoQCzRbqC+ZALdnyovCiBMeEOYX9JXX3X
+         DMpueO21D3K45Qbi/vPjN8urI9L+bX1PKD4Pw3vkIMhUxyonbodwDzItkxNXFU0Y5enu
+         aiaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=ZyjxQT2w1tfyUymmhQNajH9/aDxm1dT9gvQiJybw7YI=;
-        b=RzzGSuiFeP6C1j1vxn1V8gY5OBuFUSD5w51fL1IEuKC2Lv9YIGPR3RQdrHmiVpENeF
-         hZ5AIV0UmMtG5/QF6CchCQBDyqsw8aLPcwm+nKcloiq8f3PtX6j21WxpfY0LQAFIy147
-         bVwL1zgqUBrWony7LlBEfgfmLdnHtqnDLbqKCqdXA6n8dCjk8/K0w25JfjiNpXJ/cbb9
-         jd0xkmc6ylf3CeeV2DyEYKIiz0eKMe4kCIhVne6IhwSfzjM3DXTx19ncr/O6w5zK4WH4
-         vkv9mtnKA6Zt6zA8joLVenDx0LpXznRfMkS0QbI2MhNeMiI0BqtqQuodV2YmpiqpRixB
-         nn+w==
-X-Gm-Message-State: AGi0PuYzhuzCFd4zGglam0Lm7jRLXfsezikgaakjvtD6rxoMczwCwvP7
-        5liz1XWpKLNLtsWHcq1MxIbEAlpovoM=
-X-Google-Smtp-Source: APiQypI/JiQuMFWECgwhXvwdIgWcJ/osdqQG6/N2n1+wmdAVIYTADeOeMW5EsZDRr/gaT/vSX2twqQ==
-X-Received: by 2002:adf:cc8d:: with SMTP id p13mr21151345wrj.114.1587409768680;
-        Mon, 20 Apr 2020 12:09:28 -0700 (PDT)
+        bh=Xzp810wwKqNPBd/XxF90MmmQUKarKbudjOQw99K54mY=;
+        b=LkKRLd0Wu1heoJWMM7rBwNphmCVfe66pMR+Kl+DzQeRl0+5qkORfh7/SBGLO1eq13S
+         O4tXVjAAnezqcSOOTGpkDHJSflz9zJkwluLOGRmkEnQqcgI6t4yQYGnKDzPkZhiM71mH
+         Jf0ouLkVGJSu4sZcKwEFqy3PDTl5vpbIts3Wz/gWWI6YZCrjlEA9ZjEtUQFDCG57j/zR
+         OQOBhhOXljHrUWwFfIF/b3prnjeheb0NzX5fp5BxooTUZmRLgyBKH7wNMMf1uRWyzG03
+         W8aOry3qeycREZZAj0f7gNTXbG/AAPExyzcswROqpJOjAn3rbCaQKKxXX9JK87uvOC9R
+         FJnA==
+X-Gm-Message-State: AGi0PubMsaAwB4DJl+ZrtzHt3aVnxY14V3B9H4fz49tHywJ8oscMiJIq
+        txiFaLoZAzJMqO1sD0szchs=
+X-Google-Smtp-Source: APiQypIV5q8tu2hLBMNlxqmTyYAjVrwlBE5kxU4BRk6MEPWOjbXuLuwk9nFcF8a61yiVBWTjz2jcmA==
+X-Received: by 2002:a1c:9891:: with SMTP id a139mr893761wme.129.1587409762792;
+        Mon, 20 Apr 2020 12:09:22 -0700 (PDT)
 Received: from mail.broadcom.com ([192.19.231.250])
-        by smtp.gmail.com with ESMTPSA id y5sm621251wru.15.2020.04.20.12.09.27
+        by smtp.gmail.com with ESMTPSA id y5sm621251wru.15.2020.04.20.12.09.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Apr 2020 12:09:28 -0700 (PDT)
+        Mon, 20 Apr 2020 12:09:22 -0700 (PDT)
 From:   Kamal Dasu <kdasu.kdev@gmail.com>
 To:     Kamal Dasu <kdasu.kdev@gmail.com>,
         bcm-kernel-feedback-list@broadcom.com,
-        Mark Brown <broonie@kernel.org>
-Cc:     Justin Chen <justinpopo6@gmail.com>, linux-spi@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [Patch v3 5/9] spi: bcm-qspi: when tx/rx buffer is NULL set to 0
-Date:   Mon, 20 Apr 2020 15:08:49 -0400
-Message-Id: <20200420190853.45614-6-kdasu.kdev@gmail.com>
+Subject: [Patch v3 2/9] dt: bindings: spi: Add support for mspi on brcmstb SoCs
+Date:   Mon, 20 Apr 2020 15:08:46 -0400
+Message-Id: <20200420190853.45614-3-kdasu.kdev@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200420190853.45614-1-kdasu.kdev@gmail.com>
 References: <20200420190853.45614-1-kdasu.kdev@gmail.com>
@@ -74,58 +75,35 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Justin Chen <justinpopo6@gmail.com>
+Added documentation for compatibility for brcmstb SoCs :
+7425, 7429, 7435, 7216, 7278
 
-Currently we set the tx/rx buffer to 0xff when NULL. This causes
-problems with some spi slaves where 0xff is a valid command. Looking
-at other drivers, the tx/rx buffer is usually set to 0x00 when NULL.
-Following this convention solves the issue.
-
-Fixes: fa236a7ef240 ("spi: bcm-qspi: Add Broadcom MSPI driver")
-Signed-off-by: Justin Chen <justinpopo6@gmail.com>
 Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
 ---
- drivers/spi/spi-bcm-qspi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ .../devicetree/bindings/spi/brcm,spi-bcm-qspi.txt      | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
-index c48c399dce53..e00208801c8b 100644
---- a/drivers/spi/spi-bcm-qspi.c
-+++ b/drivers/spi/spi-bcm-qspi.c
-@@ -669,7 +669,7 @@ static void read_from_hw(struct bcm_qspi *qspi, int slots)
- 			if (buf)
- 				buf[tp.byte] = read_rxram_slot_u8(qspi, slot);
- 			dev_dbg(&qspi->pdev->dev, "RD %02x\n",
--				buf ? buf[tp.byte] : 0xff);
-+				buf ? buf[tp.byte] : 0x0);
- 		} else {
- 			u16 *buf = tp.trans->rx_buf;
+diff --git a/Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.txt b/Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.txt
+index ad7ac80a3841..f5e518d099f2 100644
+--- a/Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.txt
++++ b/Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.txt
+@@ -26,6 +26,16 @@ Required properties:
+     "brcm,spi-bcm-qspi", "brcm,spi-brcmstb-qspi" : MSPI+BSPI on BRCMSTB SoCs
+     "brcm,spi-bcm-qspi", "brcm,spi-brcmstb-mspi" : Second Instance of MSPI
+ 						   BRCMSTB  SoCs
++    "brcm,spi-bcm7425-qspi", "brcm,spi-bcm-qspi", "brcm,spi-brcmstb-mspi" : Second Instance of MSPI
++    			     			  			    BRCMSTB  SoCs
++    "brcm,spi-bcm7429-qspi", "brcm,spi-bcm-qspi", "brcm,spi-brcmstb-mspi" : Second Instance of MSPI
++    			     			  			    BRCMSTB  SoCs
++    "brcm,spi-bcm7435-qspi", "brcm,spi-bcm-qspi", "brcm,spi-brcmstb-mspi" : Second Instance of MSPI
++    			     			  			    BRCMSTB  SoCs
++    "brcm,spi-bcm7216-qspi", "brcm,spi-bcm-qspi", "brcm,spi-brcmstb-mspi" : Second Instance of MSPI
++    			     			  			    BRCMSTB  SoCs
++    "brcm,spi-bcm7278-qspi", "brcm,spi-bcm-qspi", "brcm,spi-brcmstb-mspi" : Second Instance of MSPI
++    			     			  			    BRCMSTB  SoCs
+     "brcm,spi-bcm-qspi", "brcm,spi-nsp-qspi"     : MSPI+BSPI on Cygnus, NSP
+     "brcm,spi-bcm-qspi", "brcm,spi-ns2-qspi"     : NS2 SoCs
  
-@@ -677,7 +677,7 @@ static void read_from_hw(struct bcm_qspi *qspi, int slots)
- 				buf[tp.byte / 2] = read_rxram_slot_u16(qspi,
- 								      slot);
- 			dev_dbg(&qspi->pdev->dev, "RD %04x\n",
--				buf ? buf[tp.byte] : 0xffff);
-+				buf ? buf[tp.byte / 2] : 0x0);
- 		}
- 
- 		update_qspi_trans_byte_count(qspi, &tp,
-@@ -732,13 +732,13 @@ static int write_to_hw(struct bcm_qspi *qspi, struct spi_device *spi)
- 	while (!tstatus && slot < MSPI_NUM_CDRAM) {
- 		if (tp.trans->bits_per_word <= 8) {
- 			const u8 *buf = tp.trans->tx_buf;
--			u8 val = buf ? buf[tp.byte] : 0xff;
-+			u8 val = buf ? buf[tp.byte] : 0x00;
- 
- 			write_txram_slot_u8(qspi, slot, val);
- 			dev_dbg(&qspi->pdev->dev, "WR %02x\n", val);
- 		} else {
- 			const u16 *buf = tp.trans->tx_buf;
--			u16 val = buf ? buf[tp.byte / 2] : 0xffff;
-+			u16 val = buf ? buf[tp.byte / 2] : 0x0000;
- 
- 			write_txram_slot_u16(qspi, slot, val);
- 			dev_dbg(&qspi->pdev->dev, "WR %04x\n", val);
 -- 
 2.17.1
 

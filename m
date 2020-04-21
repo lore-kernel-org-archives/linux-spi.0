@@ -2,30 +2,30 @@ Return-Path: <SRS0=+Wfy=6F=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 727AFC55181
-	for <linux-spi@archiver.kernel.org>; Tue, 21 Apr 2020 07:09:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 62FD0C54FC9
+	for <linux-spi@archiver.kernel.org>; Tue, 21 Apr 2020 07:09:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5BF9F206F4
-	for <linux-spi@archiver.kernel.org>; Tue, 21 Apr 2020 07:09:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 40454206F4
+	for <linux-spi@archiver.kernel.org>; Tue, 21 Apr 2020 07:09:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726052AbgDUHJH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 21 Apr 2020 03:09:07 -0400
-Received: from twhmllg3.macronix.com ([122.147.135.201]:50584 "EHLO
+        id S1726961AbgDUHJJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 21 Apr 2020 03:09:09 -0400
+Received: from twhmllg3.macronix.com ([122.147.135.201]:50586 "EHLO
         TWHMLLG3.macronix.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726600AbgDUHJH (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 21 Apr 2020 03:09:07 -0400
-X-Greylist: delayed 1705 seconds by postgrey-1.27 at vger.kernel.org; Tue, 21 Apr 2020 03:09:06 EDT
+        with ESMTP id S1726600AbgDUHJI (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 21 Apr 2020 03:09:08 -0400
 Received: from TWHMLLG3.macronix.com (localhost [127.0.0.2] (may be forged))
-        by TWHMLLG3.macronix.com with ESMTP id 03L6eeAQ046610
-        for <linux-spi@vger.kernel.org>; Tue, 21 Apr 2020 14:40:40 +0800 (GMT-8)
+        by TWHMLLG3.macronix.com with ESMTP id 03L6efsP046635
+        for <linux-spi@vger.kernel.org>; Tue, 21 Apr 2020 14:40:41 +0800 (GMT-8)
         (envelope-from masonccyang@mxic.com.tw)
 Received: from localhost.localdomain ([172.17.195.96])
-        by TWHMLLG3.macronix.com with ESMTP id 03L6dnMW045498;
-        Tue, 21 Apr 2020 14:39:49 +0800 (GMT-8)
+        by TWHMLLG3.macronix.com with ESMTP id 03L6dnMa045498;
+        Tue, 21 Apr 2020 14:39:53 +0800 (GMT-8)
         (envelope-from masonccyang@mxic.com.tw)
 From:   Mason Yang <masonccyang@mxic.com.tw>
 To:     broonie@kernel.org, tudor.ambarus@microchip.com,
@@ -34,100 +34,90 @@ To:     broonie@kernel.org, tudor.ambarus@microchip.com,
 Cc:     juliensu@mxic.com.tw, linux-kernel@vger.kernel.org,
         linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
         Mason Yang <masonccyang@mxic.com.tw>
-Subject: [PATCH v2 0/5] mtd: spi-nor: Add support for Octal 8D-8D-8D mode
-Date:   Tue, 21 Apr 2020 14:39:42 +0800
-Message-Id: <1587451187-6889-1-git-send-email-masonccyang@mxic.com.tw>
+Subject: [PATCH v2 4/5] mtd: spi-nor: macronix: Add Octal 8D-8D-8D supports for Macronix mx25uw51245g
+Date:   Tue, 21 Apr 2020 14:39:46 +0800
+Message-Id: <1587451187-6889-5-git-send-email-masonccyang@mxic.com.tw>
 X-Mailer: git-send-email 1.9.1
-X-MAIL: TWHMLLG3.macronix.com 03L6dnMW045498
+In-Reply-To: <1587451187-6889-1-git-send-email-masonccyang@mxic.com.tw>
+References: <1587451187-6889-1-git-send-email-masonccyang@mxic.com.tw>
+X-MAIL: TWHMLLG3.macronix.com 03L6dnMa045498
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello,
+Macronix mx25uw51245g is a SPI NOR that supports 1-1-1/8-8-8 mode and
+JEDEC216D spec. included BFPT DWORD-18,19, 20 and xSPI profile 1.0 table.
 
-This is repost of patchset from Boris Brezillon's
-[RFC,00/18] mtd: spi-nor: Proposal for 8-8-8 mode support [1].
+Correct the dummy cycles for various frequency after xSPI 1.0 table parsed.
 
-Background from cover letter for RFC[1].
+Enable mx25uw51245g to Octal 8D-8D-8D mode by writing CFG Reg2 in the
+late initialization of default flash parameters spi_nor_late_init_params();
 
-The trend has been around Octal NOR Flash lately and the latest mainline
-already supports 1-1-8 and 1-8-8 modes.
+Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+---
+ drivers/mtd/spi-nor/macronix.c | 41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-Boris opened a discussion on how we should support stateful modes (X-X-X
-and XD-XD-XD, where X is the bus width and D means Double Transfer Rate).
-
-JESD216C has defined specification for Octal 8S-8S-8S and 8D-8D-8D.
-Based on JEDEC216C Basic Flash Parameter Table (BFPT) driver extract:
-DWORD-18: command and command extension type.
-DWORD-19: enable 8S-8S-8S/8D-8D-8D mode sequences by two instructions or
-	  write CFG Reg 2.
-DWORD-20: Maximum operation speed of device in Octal mode.
-
-and xSPI profile 1.0 table:
-DWORD-1: Read Fast command, the number of dummy cycles and address nbytes
-	 for Read Status Register command.
-DWORD-2: Read/Write volatile Register command for CFG Reg2.
-DWORD-4 and DWORD-5: dummy cycles used for various frequencies.
-
-The first set of patches is according to JESD216C adding Double Transfer
-Rate(DTR) fields, extension command and command bytes number to the
-spi_mem_op struct. This is from Boris patchset.
-
-The second set of patches parse the xSPI profile 1.0 table for parameters
-needed in Octal 8D-8D-8D mode. 
-
-The third set of patches extract BFPT DWORD018,19,20 and define the 
-relevant macros and enum in spi-nor layer for Octal 8S-8S-8S and 
-8D-8D-8D mode operation. Parts of these are refer to Boris patchset but
-we enable Octal 8D-8D-8D mode in spi_nor_late_init_params() rather than
-Boris's adding a change_mode() call-back function.
-
-The last set of patches in the series support Macronix mx25uw51245g
-to tweak flash parameters a correct dummy cycles set for various frequency.
-
-Also patched spi-mxic driver for testing on Macronix's Zynq PicoZed board
-with Macronix's SPI controller (spi-mxic.c) and mx25uw51245g Octal flash.
-
-[1] https://patchwork.ozlabs.org/cover/982926/
-
-
-Summary of change log
----------------------
-v2: 
-Parse BFPT & xSPI table for Octal 8D-8D-8D mode parameters and enable Octal
-mode in spi_nor_late_init_params().
-Using Macros in spi_nor_spimem_read_data, spi_nor_spimem_write_data and
-so on by Vignesh comments.
-
-v1:
-Without parsing BFPT & xSPI profile 1.0 table and enter Octal 8D-8D-8D
-mode directly in spi_nor_fixups hooks.
-
-
-thnaks for your time and review.
-best regards,
-Mason
-
-Mason Yang (5):
-  mtd: spi-nor: Add support for Octal 8D-8D-8D mode
-  mtd: spi-nor: sfdp: Add support for xSPI profile 1.0 table
-  mtd: spi-nor: Parse BFPT DWORD-18,19 and 20 for Octal 8D-8D-8D mode
-  mtd: spi-nor: macronix: Add Octal 8D-8D-8D supports for Macronix
-    mx25uw51245g
-  spi: mxic: Patch for Octal 8D-8D-8D mode support
-
- drivers/mtd/spi-nor/core.c     | 220 ++++++++++++++++++++++++++++++++++++++--
- drivers/mtd/spi-nor/core.h     |  31 ++++++
- drivers/mtd/spi-nor/macronix.c |  41 ++++++++
- drivers/mtd/spi-nor/sfdp.c     | 222 ++++++++++++++++++++++++++++++++++++++++-
- drivers/mtd/spi-nor/sfdp.h     |  16 ++-
- drivers/spi/spi-mem.c          |   8 +-
- drivers/spi/spi-mxic.c         | 101 +++++++++++++------
- include/linux/mtd/spi-nor.h    |  51 +++++++++-
- include/linux/spi/spi-mem.h    |  13 +++
- 9 files changed, 654 insertions(+), 49 deletions(-)
-
+diff --git a/drivers/mtd/spi-nor/macronix.c b/drivers/mtd/spi-nor/macronix.c
+index ab0f963..46bcfe5 100644
+--- a/drivers/mtd/spi-nor/macronix.c
++++ b/drivers/mtd/spi-nor/macronix.c
+@@ -8,6 +8,43 @@
+ 
+ #include "core.h"
+ 
++#define MXIC_CR2_DUMMY_SET_ADDR 0x300
++
++/* Fixup the dummy cycles after SFDP xSPI 1.0 parsed */
++static void mx25uw51245g_post_sfdp_fixups(struct spi_nor *nor)
++{
++	struct spi_nor_flash_parameter *params = nor->params;
++	int ret;
++	u8 rdc, wdc;
++
++	ret = spi_nor_read_cr2(nor, MXIC_CR2_DUMMY_SET_ADDR, &rdc);
++	if (ret)
++		return;
++
++	/* Refer to dummy cycle and frequency table(MHz) */
++	switch (params->dummy_cycles) {
++	case 10:	/* 10 dummy cycles for 104 MHz */
++		wdc = 5;
++		break;
++	case 12:	/* 12 dummy cycles for 133 MHz */
++		wdc = 4;
++		break;
++	case 16:	/* 16 dummy cycles for 166 MHz */
++		wdc = 2;
++		break;
++	case 20:	/* 20 dummy cycles for 200 MHz */
++	default:
++		wdc = 0;
++	}
++
++	if (rdc != wdc)
++		spi_nor_write_cr2(nor, MXIC_CR2_DUMMY_SET_ADDR, &wdc);
++}
++
++static struct spi_nor_fixups mx25uw51245g_fixups = {
++	.post_sfdp = mx25uw51245g_post_sfdp_fixups,
++};
++
+ static int
+ mx25l25635_post_bfpt_fixups(struct spi_nor *nor,
+ 			    const struct sfdp_parameter_header *bfpt_header,
+@@ -78,6 +115,10 @@
+ 			      SPI_NOR_QUAD_READ) },
+ 	{ "mx66l1g55g",  INFO(0xc2261b, 0, 64 * 1024, 2048,
+ 			      SPI_NOR_QUAD_READ) },
++	{ "mx25uw51245g",  INFO(0xc2813a, 0, 64 * 1024, 1024,
++				SECT_4K | SPI_NOR_4B_OPCODES |
++				SPI_NOR_OCTAL_RD_WR)
++				.fixups = &mx25uw51245g_fixups },
+ };
+ 
+ static void macronix_default_init(struct spi_nor *nor)
 -- 
 1.9.1
 

@@ -5,46 +5,46 @@ X-Spam-Level:
 X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A0D2C54FD0
-	for <linux-spi@archiver.kernel.org>; Fri, 24 Apr 2020 18:44:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8EFA0C55197
+	for <linux-spi@archiver.kernel.org>; Fri, 24 Apr 2020 18:45:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 47A442075A
-	for <linux-spi@archiver.kernel.org>; Fri, 24 Apr 2020 18:44:41 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 694522075A
+	for <linux-spi@archiver.kernel.org>; Fri, 24 Apr 2020 18:45:00 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="xCYt3soB"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="BYNleABr"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727021AbgDXSok (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 24 Apr 2020 14:44:40 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:43918 "EHLO
+        id S1729303AbgDXSo7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 24 Apr 2020 14:44:59 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:43992 "EHLO
         fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726813AbgDXSok (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 24 Apr 2020 14:44:40 -0400
+        with ESMTP id S1729300AbgDXSo6 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 24 Apr 2020 14:44:58 -0400
 Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 03OIiJ9u102471;
-        Fri, 24 Apr 2020 13:44:19 -0500
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 03OIilT7102666;
+        Fri, 24 Apr 2020 13:44:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1587753859;
-        bh=hebJBVl54K4SuylgKSC5ysJ+B+gVpJf21C3rj/xF6u8=;
+        s=ti-com-17Q1; t=1587753887;
+        bh=69F4dRMldQSKW+wbNDslTjz9W8ku8kC6DCRh6+1zBvA=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=xCYt3soBlUOebXMrDm9ZQfm2BIv8tvvLTXk730wDi6vHRkIRPwca2yNQw30v992rs
-         hgrVEuqYHcZN1oZzI1X6ZefR/8a8noNpijxTmVVh42SgiWvpNUs7FQw2lJmvdDuTna
-         P8eRUGWwSygCo2SRoHxJQkFc5OIAGeisWFdAfd/U=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03OIiJaq085290;
-        Fri, 24 Apr 2020 13:44:19 -0500
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+        b=BYNleABrTPe5zZPa/S9z858dGyWOGThr3Iej/4PI7ltTlKy9uyuuqWQl7sPJ7/VXm
+         a8NnufMklWiQWQ7ru3SgR7mssEtuVJ8XrhKrrT/bDbjg9wExAj1fqX/fbgpLTBlK8B
+         L5FmkFKwwN5rlY1/b6UkKCoqzWtqeVX2Jm8SKWAg=
+Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03OIilrq085619;
+        Fri, 24 Apr 2020 13:44:47 -0500
+Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 24
- Apr 2020 13:44:19 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ Apr 2020 13:44:47 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 24 Apr 2020 13:44:19 -0500
+ Frontend Transport; Fri, 24 Apr 2020 13:44:47 -0500
 Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03OIiAa7047967;
-        Fri, 24 Apr 2020 13:44:15 -0500
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 03OIiAaE047967;
+        Fri, 24 Apr 2020 13:44:43 -0500
 From:   Pratyush Yadav <p.yadav@ti.com>
 To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
@@ -57,9 +57,9 @@ To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
         <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <linux-spi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
 CC:     Pratyush Yadav <p.yadav@ti.com>, Sekhar Nori <nsekhar@ti.com>
-Subject: [PATCH v4 01/16] spi: spi-mem: allow specifying whether an op is DTR or not
-Date:   Sat, 25 Apr 2020 00:13:55 +0530
-Message-ID: <20200424184410.8578-2-p.yadav@ti.com>
+Subject: [PATCH v4 08/16] mtd: spi-nor: parse xSPI Profile 1.0 table
+Date:   Sat, 25 Apr 2020 00:14:02 +0530
+Message-ID: <20200424184410.8578-9-p.yadav@ti.com>
 X-Mailer: git-send-email 2.25.0
 In-Reply-To: <20200424184410.8578-1-p.yadav@ti.com>
 References: <20200424184410.8578-1-p.yadav@ti.com>
@@ -72,82 +72,200 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Each phase is given a separate 'dtr' field so mixed protocols like
-4S-4D-4D can be supported.
+This table is indication that the flash is xSPI compliant and hence
+supports octal DTR mode. Extract information like the fast read opcode,
+the number of dummy cycles needed for a Read Status Register command,
+and the number of address bytes needed for a Read Status Register
+command.
+
+The default dummy cycles for a fast octal DTR read are set to 20. Since
+there is no simple way of determining the dummy cycles needed for the
+fast read command, flashes that use a different value should update it
+in their flash-specific hooks.
+
+Since we want to set read settings, expose spi_nor_set_read_settings()
+in core.h.
 
 Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
 ---
- drivers/spi/spi-mem.c       | 3 +++
- include/linux/spi/spi-mem.h | 8 ++++++++
- 2 files changed, 11 insertions(+)
+ drivers/mtd/spi-nor/core.c |  2 +-
+ drivers/mtd/spi-nor/core.h | 10 +++++
+ drivers/mtd/spi-nor/sfdp.c | 80 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 91 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index adaa0c49f966..d8905e023649 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -154,6 +154,9 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
- 				   op->data.dir == SPI_MEM_DATA_OUT))
- 		return false;
- 
-+	if (op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr)
-+		return false;
-+
- 	return true;
+diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+index c8c1a3260e91..9c92fc897fb4 100644
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -2355,7 +2355,7 @@ static int spi_nor_check(struct spi_nor *nor)
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(spi_mem_default_supports_op);
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index af9ff2f0f1b2..e3dcb956bf61 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -71,9 +71,11 @@ enum spi_mem_data_dir {
-  * struct spi_mem_op - describes a SPI memory operation
-  * @cmd.buswidth: number of IO lines used to transmit the command
-  * @cmd.opcode: operation opcode
-+ * @cmd.dtr: whether the command opcode should be sent in DTR mode or not
-  * @addr.nbytes: number of address bytes to send. Can be zero if the operation
-  *		 does not need to send an address
-  * @addr.buswidth: number of IO lines used to transmit the address cycles
-+ * @addr.dtr: whether the address should be sent in DTR mode or not
-  * @addr.val: address value. This value is always sent MSB first on the bus.
-  *	      Note that only @addr.nbytes are taken into account in this
-  *	      address value, so users should make sure the value fits in the
-@@ -81,7 +83,9 @@ enum spi_mem_data_dir {
-  * @dummy.nbytes: number of dummy bytes to send after an opcode or address. Can
-  *		  be zero if the operation does not require dummy bytes
-  * @dummy.buswidth: number of IO lanes used to transmit the dummy bytes
-+ * @dummy.dtr: whether the dummy bytes should be sent in DTR mode or not
-  * @data.buswidth: number of IO lanes used to send/receive the data
-+ * @data.dtr: whether the data should be sent in DTR mode or not
-  * @data.dir: direction of the transfer
-  * @data.nbytes: number of data bytes to send/receive. Can be zero if the
-  *		 operation does not involve transferring data
-@@ -91,22 +95,26 @@ enum spi_mem_data_dir {
- struct spi_mem_op {
- 	struct {
- 		u8 buswidth;
-+		u8 dtr : 1;
- 		u8 opcode;
- 	} cmd;
  
- 	struct {
- 		u8 nbytes;
- 		u8 buswidth;
-+		u8 dtr : 1;
- 		u64 val;
- 	} addr;
+-static void
++void
+ spi_nor_set_read_settings(struct spi_nor_read_command *read,
+ 			  u8 num_mode_clocks,
+ 			  u8 num_wait_states,
+diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
+index de1e3917889f..7e6df8322da0 100644
+--- a/drivers/mtd/spi-nor/core.h
++++ b/drivers/mtd/spi-nor/core.h
+@@ -192,6 +192,9 @@ struct spi_nor_locking_ops {
+  *
+  * @size:		the flash memory density in bytes.
+  * @page_size:		the page size of the SPI NOR flash memory.
++ * @rdsr_dummy:		dummy cycles needed for Read Status Register command.
++ * @rdsr_addr_nbytes:	dummy address bytes needed for Read Status Register
++ *			command.
+  * @hwcaps:		describes the read and page program hardware
+  *			capabilities.
+  * @reads:		read capabilities ordered by priority: the higher index
+@@ -214,6 +217,8 @@ struct spi_nor_locking_ops {
+ struct spi_nor_flash_parameter {
+ 	u64				size;
+ 	u32				page_size;
++	u8				rdsr_dummy;
++	u8				rdsr_addr_nbytes;
  
- 	struct {
- 		u8 nbytes;
- 		u8 buswidth;
-+		u8 dtr : 1;
- 	} dummy;
+ 	struct spi_nor_hwcaps		hwcaps;
+ 	struct spi_nor_read_command	reads[SNOR_CMD_READ_MAX];
+@@ -424,6 +429,11 @@ ssize_t spi_nor_write_data(struct spi_nor *nor, loff_t to, size_t len,
  
- 	struct {
- 		u8 buswidth;
-+		u8 dtr : 1;
- 		enum spi_mem_data_dir dir;
- 		unsigned int nbytes;
- 		union {
+ int spi_nor_hwcaps_read2cmd(u32 hwcaps);
+ u8 spi_nor_convert_3to4_read(u8 opcode);
++void spi_nor_set_read_settings(struct spi_nor_read_command *read,
++			      u8 num_mode_clocks,
++			      u8 num_wait_states,
++			      u8 opcode,
++			      enum spi_nor_protocol proto);
+ void spi_nor_set_pp_settings(struct spi_nor_pp_command *pp, u8 opcode,
+ 			     enum spi_nor_protocol proto);
+ 
+diff --git a/drivers/mtd/spi-nor/sfdp.c b/drivers/mtd/spi-nor/sfdp.c
+index ab086aa4746f..cef8554ada19 100644
+--- a/drivers/mtd/spi-nor/sfdp.c
++++ b/drivers/mtd/spi-nor/sfdp.c
+@@ -4,6 +4,7 @@
+  * Copyright (C) 2014, Freescale Semiconductor, Inc.
+  */
+ 
++#include <linux/bitfield.h>
+ #include <linux/slab.h>
+ #include <linux/sort.h>
+ #include <linux/mtd/spi-nor.h>
+@@ -19,12 +20,14 @@
+ #define SFDP_BFPT_ID		0xff00	/* Basic Flash Parameter Table */
+ #define SFDP_SECTOR_MAP_ID	0xff81	/* Sector Map Table */
+ #define SFDP_4BAIT_ID		0xff84  /* 4-byte Address Instruction Table */
++#define SFDP_PROFILE1_ID	0xff05	/* xSPI Profile 1.0 table. */
+ 
+ #define SFDP_SIGNATURE		0x50444653U
+ #define SFDP_JESD216_MAJOR	1
+ #define SFDP_JESD216_MINOR	0
+ #define SFDP_JESD216A_MINOR	5
+ #define SFDP_JESD216B_MINOR	6
++#define SFDP_JESD216D_MINOR	8
+ 
+ struct sfdp_header {
+ 	u32		signature; /* Ox50444653U <=> "SFDP" */
+@@ -70,6 +73,11 @@ struct sfdp_bfpt_erase {
+ 	u32			shift;
+ };
+ 
++/* xSPI Profile 1.0 table (from JESD216D.01). */
++#define PROFILE1_DWORD1_RD_FAST_CMD		GENMASK(15, 8)
++#define PROFILE1_DWORD1_RDSR_DUMMY		BIT(28)
++#define PROFILE1_DWORD1_RDSR_ADDR_BYTES		BIT(29)
++
+ #define SMPT_CMD_ADDRESS_LEN_MASK		GENMASK(23, 22)
+ #define SMPT_CMD_ADDRESS_LEN_0			(0x0UL << 22)
+ #define SMPT_CMD_ADDRESS_LEN_3			(0x1UL << 22)
+@@ -1110,6 +1118,74 @@ static int spi_nor_parse_4bait(struct spi_nor *nor,
+ 	return ret;
+ }
+ 
++/**
++ * spi_nor_parse_profile1() - parse the xSPI Profile 1.0 table
++ * @nor:		pointer to a 'struct spi_nor'
++ * @param_header:	pointer to the 'struct sfdp_parameter_header' describing
++ *			the 4-Byte Address Instruction Table length and version.
++ * @params:		pointer to the 'struct spi_nor_flash_parameter' to be.
++ *
++ * Return: 0 on success, -errno otherwise.
++ */
++static int spi_nor_parse_profile1(struct spi_nor *nor,
++				  const struct sfdp_parameter_header *profile1_header,
++				  struct spi_nor_flash_parameter *params)
++{
++	u32 *table, opcode, addr;
++	size_t len;
++	int ret, i;
++
++	len = profile1_header->length * sizeof(*table);
++	table = kmalloc(len, GFP_KERNEL);
++	if (!table)
++		return -ENOMEM;
++
++	addr = SFDP_PARAM_HEADER_PTP(profile1_header);
++	ret = spi_nor_read_sfdp(nor, addr, len, table);
++	if (ret)
++		goto out;
++
++	/* Fix endianness of the table DWORDs. */
++	for (i = 0; i < profile1_header->length; i++)
++		table[i] = le32_to_cpu(table[i]);
++
++	/* Get 8D-8D-8D fast read opcode and dummy cycles. */
++	opcode = FIELD_GET(PROFILE1_DWORD1_RD_FAST_CMD, table[0]);
++
++	/*
++	 * Update the fast read settings. We set the default dummy cycles to 20
++	 * here. Flashes can change this value if they need to when enabling
++	 * octal mode.
++	 */
++	params->hwcaps.mask |= SNOR_HWCAPS_READ_8_8_8_DTR;
++	spi_nor_set_read_settings(&params->reads[SNOR_CMD_READ_8_8_8_DTR],
++				  0, 20, opcode,
++				  SNOR_PROTO_8_8_8_DTR);
++
++	/*
++	 * Since the flash supports xSPI DTR reads, it should also support DTR
++	 * Page Program opcodes.
++	 */
++	params->hwcaps.mask |= SNOR_HWCAPS_PP_8_8_8_DTR;
++
++	/*
++	 * Set the Read Status Register dummy cycles and dummy address bytes.
++	 */
++	if (table[0] & PROFILE1_DWORD1_RDSR_DUMMY)
++		params->rdsr_dummy = 8;
++	else
++		params->rdsr_dummy = 4;
++
++	if (table[0] & PROFILE1_DWORD1_RDSR_ADDR_BYTES)
++		params->rdsr_addr_nbytes = 4;
++	else
++		params->rdsr_addr_nbytes = 0;
++
++out:
++	kfree(table);
++	return ret;
++}
++
+ /**
+  * spi_nor_parse_sfdp() - parse the Serial Flash Discoverable Parameters.
+  * @nor:		pointer to a 'struct spi_nor'
+@@ -1211,6 +1287,10 @@ int spi_nor_parse_sfdp(struct spi_nor *nor,
+ 			err = spi_nor_parse_4bait(nor, param_header, params);
+ 			break;
+ 
++		case SFDP_PROFILE1_ID:
++			err = spi_nor_parse_profile1(nor, param_header, params);
++			break;
++
+ 		default:
+ 			break;
+ 		}
 -- 
 2.25.0
 

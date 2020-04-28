@@ -2,144 +2,124 @@ Return-Path: <SRS0=vUkh=6M=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_2
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 630AEC83006
-	for <linux-spi@archiver.kernel.org>; Tue, 28 Apr 2020 06:03:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 01F58C83000
+	for <linux-spi@archiver.kernel.org>; Tue, 28 Apr 2020 06:34:29 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4A8B8206D8
-	for <linux-spi@archiver.kernel.org>; Tue, 28 Apr 2020 06:03:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D62712051A
+	for <linux-spi@archiver.kernel.org>; Tue, 28 Apr 2020 06:34:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726282AbgD1GDF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 28 Apr 2020 02:03:05 -0400
-Received: from mga02.intel.com ([134.134.136.20]:22916 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726276AbgD1GDF (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 28 Apr 2020 02:03:05 -0400
-IronPort-SDR: Wggo6RUXqFgr70xtfXqtBrrLJXq+++Yp8ZM/Ai2Yl6qSTya6VDj/huJoHdvrGb3QzYYKQSPHhH
- LDoaZVD/ZHhA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2020 23:03:04 -0700
-IronPort-SDR: +pp6cGsVEXqpd9ZqUu2n1YXyEU8algll4co6CQBi2HZI9B3qgTIh1Nwn7LkLSYWzkQcSnyD/OI
- htXcp8Sx7XgQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,327,1583222400"; 
-   d="scan'208";a="246403763"
-Received: from linux.intel.com ([10.54.29.200])
-  by orsmga007.jf.intel.com with ESMTP; 27 Apr 2020 23:03:04 -0700
-Received: from [10.215.240.200] (ekotax-mobl.gar.corp.intel.com [10.215.240.200])
-        by linux.intel.com (Postfix) with ESMTP id 40AA4580B9A;
-        Mon, 27 Apr 2020 23:03:01 -0700 (PDT)
-Subject: Re: [PATCH 1/4] spi: lantiq: Synchronize interrupt handlers and
- transfers
-To:     Hauke Mehrtens <hauke@hauke-m.de>, broonie@kernel.org,
-        robh@kernel.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, daniel.schwierzeck@gmail.com,
-        andriy.shevchenko@intel.com, cheol.yong.kim@intel.com,
-        chuanhua.lei@linux.intel.com, qi-ming.wu@intel.com
-References: <cover.1587702428.git.eswara.kota@linux.intel.com>
- <3bf88d24b9cad9f3df1da8ed65bf55c05693b0f2.1587702428.git.eswara.kota@linux.intel.com>
- <1536b752-13d1-128b-1393-80cf175df5e2@hauke-m.de>
-From:   Dilip Kota <eswara.kota@linux.intel.com>
-Message-ID: <4ba16d3e-0441-b3a7-11d3-7da40d630914@linux.intel.com>
-Date:   Tue, 28 Apr 2020 14:03:00 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        id S1726042AbgD1Ge2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 28 Apr 2020 02:34:28 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:45578 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726391AbgD1Ge2 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 28 Apr 2020 02:34:28 -0400
+Received: from localhost (unknown [IPv6:2a01:e0a:2c:6930:b93f:9fae:b276:a89a])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: bbrezillon)
+        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 5A18127E99E;
+        Tue, 28 Apr 2020 07:34:26 +0100 (BST)
+Date:   Tue, 28 Apr 2020 08:34:23 +0200
+From:   Boris Brezillon <boris.brezillon@collabora.com>
+To:     masonccyang@mxic.com.tw
+Cc:     "Pratyush Yadav" <me@yadavpratyush.com>, broonie@kernel.org,
+        juliensu@mxic.com.tw, linux-kernel@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        miquel.raynal@bootlin.com, "Pratyush Yadav" <p.yadav@ti.com>,
+        richard@nod.at, tudor.ambarus@microchip.com, vigneshr@ti.com
+Subject: Re: [PATCH v2 0/5] mtd: spi-nor: Add support for Octal 8D-8D-8D
+ mode
+Message-ID: <20200428083423.4fafd187@collabora.com>
+In-Reply-To: <OF18214CA5.6A9B2B30-ON48258558.001D894C-48258558.002249E0@mxic.com.tw>
+References: <1587451187-6889-1-git-send-email-masonccyang@mxic.com.tw>
+        <20200421092328.129308f6@collabora.com>
+        <20200427175536.2mmei2fy6f7bg6jm@yadavpratyush.com>
+        <OF18214CA5.6A9B2B30-ON48258558.001D894C-48258558.002249E0@mxic.com.tw>
+Organization: Collabora
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <1536b752-13d1-128b-1393-80cf175df5e2@hauke-m.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+On Tue, 28 Apr 2020 14:14:31 +0800
+masonccyang@mxic.com.tw wrote:
 
-On 4/28/2020 5:52 AM, Hauke Mehrtens wrote:
-> On 4/24/20 12:42 PM, Dilip Kota wrote:
->> Synchronize tx, rx and error interrupts by registering to the
->> same interrupt handler. Interrupt handler will recognize and process
->> the appropriate interrupt on the basis of interrupt status register.
->> Also, establish synchronization between the interrupt handler and
->> transfer operation by taking the locks and registering the interrupt
->> handler as thread IRQ which avoids the bottom half.
->> Fixes the wrongly populated interrupt register offsets too.
->>
->> Fixes: 17f84b793c01 ("spi: lantiq-ssc: add support for Lantiq SSC SPI controller")
->> Fixes: ad2fca0721d1 ("spi: lantiq-ssc: add LTQ_ prefix to defines")
->> Signed-off-by: Dilip Kota <eswara.kota@linux.intel.com>
->> ---
->>   drivers/spi/spi-lantiq-ssc.c | 89 ++++++++++++++++++++++----------------------
->>   1 file changed, 45 insertions(+), 44 deletions(-)
->>
-> Hi,
->
-> I tried this patch series on a TP-LINK TD-W8970 (VRX200 with SPI flash)
-> and the SPI controller is failing like this:
-> -----
-> [    6.947194] printk: bootconsole [early0] disabled
-> [    6.964210] spi-lantiq-ssc 1e100800.spi: Lantiq SSC SPI controller
-> (Rev 8, TXFS 8, RXFS 8, DMA 1)
-> [    7.175188] spi-nor spi0.4: SPI transfer timed out
-> [    7.178558] spi_master spi0: failed to transfer one message from queue
-> [    7.185120] spi-nor spi0.4: error -145 reading JEDEC ID
-> [    7.190378] spi-nor: probe of spi0.4 failed with error -2
-> [    7.199729] libphy: Fixed MDIO Bus: probed
-> ------
-> It already fails when applying this first patch only.
-This change is working successfully on Lightning Mountain SoC.(along 
-with other changes in the patch series, as this alone doesnt configure 
-SPI controller on LGM).
+> Hi Pratyush,
+> 
+> > > On Tue, 21 Apr 2020 14:39:42 +0800
+> > > Mason Yang <masonccyang@mxic.com.tw> wrote:
+> > >   
+> > > > Hello,
+> > > > 
+> > > > This is repost of patchset from Boris Brezillon's
+> > > > [RFC,00/18] mtd: spi-nor: Proposal for 8-8-8 mode support [1].  
+> > > 
+> > > I only quickly went through the patches you sent and saying it's a
+> > > repost of the RFC is a bit of a lie. You completely ignored the state
+> > > tracking I was trying to do to avoid leaving the flash in 8D mode when
+> > > suspending/resetting the board, and I think that part is crucial. If I
+> > > remember correctly, we already had this discussion so I must say I'm a
+> > > bit disappointed.
+> > > 
+> > > Can you sync with Pratyush? I think his series [1] is better in that   
+> it
+> > > tries to restore the flash in single-SPI mode before suspend (it's
+> > > missing the shutdown case, but that can be easily added I think). Of
+> > > course that'd be even better to have proper state tracking at the SPI
+> > > NOR level.  
+> > 
+> > Hi Mason,
+> > 
+> > I posted a re-roll of my series here [0]. Could you please base your 
+> > changes on top of it? Let me know if the series is missing something you   
+> 
+> > need.
+> > 
+> > [0]    
+> https://lore.kernel.org/linux-mtd/20200424184410.8578-1-p.yadav@ti.com/
+> 
+> 
+> Our mx25uw51245g supports BFPT DWORD-18,19 and 20 data and xSPI profile 
+> 1.0,
+> and it comply with BFPT DWORD-19, octal mode enable sequences by write CFG 
+> Reg2 
+> with instruction 0x72. Therefore, I can't apply your patches.
+> 
+> I quickly went through your patches but can't reply them in each your 
+> patches.
 
-The major changes this patch does is: Finding out the appropriate 
-interrupt by reading the LTQ_SPI_IRNCR register. So i think, this 
-failure could be at interrupt handling. And offsets of LTQ_SPI_IRNICR 
-and LTQ_SPI_IRNCR  registers also corrected.
-When i added you in the internal review of this patch, i remember you 
-are saying Interrupt controller on VR9/xrx200 is different and 
-acknowledges the interrupts inside the IP  automatically. Does this 
-leads to clearing the interrupt registers LTQ_SPI_IRNCR and 
-LTQ_SPI_IRNICR? If it is the case, the SPI driver cannot figure out the 
-cause of the interrupt and result in timeout.
+Why?!! Aren't you registered to the MTD mailing list? Sorry but having
+reviews outside of the original thread is far from ideal. Please find a
+way to reply to the original patchset.
 
-Could you please print the LTQ_SPI_IRNCR and LTQ_SPI_IRNICR register 
-values in the ISR and share the logs.
+> 
+> i.e,.
+> 1) [v4,03/16] spi: spi-mem: allow specifying a command's extension
+> 
+> -                                u8 opcode;
+> +                                u16 opcode;
+> 
+> big/little Endian issue, right?
 
-Regards,
-Dilip
+There's no endianness issue since it's SPI controller responsibility to
+interpret this field.
+ 
+> why not just u8 ext_opcode;
 
->
->
-> Without this patch is works like this:
-> -----
-> [    6.939498] printk: bootconsole [early0] disabled
-> [    6.954016] spi-lantiq-ssc 1e100800.spi: Lantiq SSC SPI controller
-> (Rev 8, TXFS 8, RXFS 8, DMA 1)
-> [    6.975465] spi-nor spi0.4: s25fl064k (8192 Kbytes)
-> [    6.979066] 4 fixed-partitions partitions found on MTD device spi0.4
-> [    6.985338] Creating 4 MTD partitions on "spi0.4":
-> [    6.990127] 0x000000000000-0x000000020000 : "u-boot"
-> [    6.997422] 0x000000020000-0x0000007c0000 : "firmware"
-> [    7.212304] random: crng init done
-> [    8.796128] 2 tplink-fw partitions found on MTD device firmware
-> [    8.800674] 0x000000020000-0x00000027878f : "kernel"
-> [    8.807776] 0x000000278790-0x0000007c0000 : "rootfs"
-> [    8.813611] mtd: device 3 (rootfs) set to be root filesystem
-> [    8.818268] 1 squashfs-split partitions found on MTD device rootfs
-> [    8.824123] 0x000000590000-0x0000007c0000 : "rootfs_data"
-> [    8.831772] 0x0000007c0000-0x0000007d0000 : "config"
-> [    8.837785] 0x0000007d0000-0x000000800000 : "boardconfig"
-> [    8.848193] libphy: Fixed MDIO Bus: probed
-> ------
->
-> This was done by applying your patches on top of kernel 5.4.35 and
-> adding this: "spi: lantiq-ssc: Use devm_platform_ioremap_resource() in
-> lantiq_ssc_probe()" in OpenWrt master.
->
-> Hauke
+Because I see the ext_ext_code comimg, and it's also more consistent
+with the addr field if we use an u16 and a number of cmd cycles.
+
+> No any impact for exist code and actually only xSPI device use extension 
+> command.
+
+And extending the opcode field to an u16 has no impact either.
+

@@ -2,65 +2,69 @@ Return-Path: <SRS0=jmqa=6N=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+X-Spam-Status: No, score=-6.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-	autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8270BC83004
-	for <linux-spi@archiver.kernel.org>; Wed, 29 Apr 2020 17:52:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 69FD9C83004
+	for <linux-spi@archiver.kernel.org>; Wed, 29 Apr 2020 17:52:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5A08322206
-	for <linux-spi@archiver.kernel.org>; Wed, 29 Apr 2020 17:52:35 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4077121BE5
+	for <linux-spi@archiver.kernel.org>; Wed, 29 Apr 2020 17:52:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1588182755;
-	bh=bV5BXMWOppA1Ct35TVp4vONDvDN+O7QcIfgw3X1rATk=;
+	s=default; t=1588182761;
+	bh=ES/AC49kG70DIeBoUFCj6k0/eXWr5dZhz6D6I3bt4SM=;
 	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=XAgRYdEPLyMqQAwZwB+sWfazzosPBlJsX7BRuZ2CVh2YP6PvljcmOcNXKYFZDW92C
-	 YlUO/iciLllasJ9RYzsN3Dod4VaMcJD7pW7NBXK97c5ddbDkN+6SyoGKKBc2DbbS09
-	 go7esgA+GQ5q2tWs7cmwA8hWrYtwxgCGZsjIL2Hs=
+	b=l4NxCfskBMSxaqPAx4kugJPXpBpOcXFCrRegHyeEy2cMWbwHizeelgp4PScJFJKpi
+	 HK5Igb8sxgEPuVYvNSHne7DjRSnmUQklhFyKlsDFsyJvYqAaMg0laIZgJtVVA/jjVB
+	 vLxXf28tpJ7Zga1pQyq8xnApgcfYtcFLvhK3Cucw=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726774AbgD2Rwf (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 29 Apr 2020 13:52:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34364 "EHLO mail.kernel.org"
+        id S1726780AbgD2Rwl (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 29 Apr 2020 13:52:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34442 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726481AbgD2Rwe (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 29 Apr 2020 13:52:34 -0400
+        id S1726481AbgD2Rwk (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 29 Apr 2020 13:52:40 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 06721214AF;
-        Wed, 29 Apr 2020 17:52:33 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 01343214AF;
+        Wed, 29 Apr 2020 17:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588182754;
-        bh=bV5BXMWOppA1Ct35TVp4vONDvDN+O7QcIfgw3X1rATk=;
+        s=default; t=1588182760;
+        bh=ES/AC49kG70DIeBoUFCj6k0/eXWr5dZhz6D6I3bt4SM=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=kUGN5hkdr9eBoiMGBaa6oiSMq5IACOH2MfpxYubC/sPULEAeacfYtwT6z2CJBmrYr
-         V3Nzhxa93eJ4Rmo0aMfJlNhvjmc/heEC0+rRwCTUazSxgZ0s8oebWy6MHuL9xepowx
-         izAJ+XgRXJPWRnYmGkXQnAeeMHFe8STIPJ5mFLzg=
-Date:   Wed, 29 Apr 2020 18:52:32 +0100
+        b=wRyAaHr5GrGTXM5UgLJZIGl01uLgXsmF67jImQIB4jOhTJmsonSizjobNcp41Ubsc
+         M/j/qsxZVe1RjDctWECoOEuEOm32HimXfyI/9cd6udD2f98MTRrMpZ97ss7wc2u8JY
+         zkjYThF72UP0xDNodhG0kqbJzuo7JIsBeXaezpLM=
+Date:   Wed, 29 Apr 2020 18:52:38 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc:     kernel-janitors@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-In-Reply-To: <20200429075855.104487-1-weiyongjun1@huawei.com>
-References: <20200429075855.104487-1-weiyongjun1@huawei.com>
-Subject: Re: [PATCH -next] spi: uniphier: fix error return code in uniphier_spi_probe()
-Message-Id: <158818274449.17408.17250948289514421453.b4-ty@kernel.org>
+To:     "patrice.chotard@st.com" <patrice.chotard@st.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>
+Cc:     linux-arm-kernel@lists.infradead.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        mcoquelin.stm32@gmail.com, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20200429102625.25974-1-patrice.chotard@st.com>
+References: <20200429102625.25974-1-patrice.chotard@st.com>
+Subject: Re: spi: stm32-qspi: Fix unbalanced pm_runtime_enable issue
+Message-Id: <158818274449.17408.18085895262432291085.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 29 Apr 2020 07:58:55 +0000, Wei Yongjun wrote:
-> Fix to return negative error code -EPROBE_DEFER from the DMA probe defer
-> error handling case instead of 0, as done elsewhere in this function.
+On Wed, 29 Apr 2020 12:26:25 +0200, patrice.chotard@st.com wrote:
+> From: Patrice Chotard <patrice.chotard@st.com>
 > 
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> ---
->  drivers/spi/spi-uniphier.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+> Issue detected by unbinding/binding the stm32 qspi driver as following:
+> 
+> root@stm32mp2:~# echo 40430000.spi > /sys/bus/platform/drivers/stm32-qspi/404300
+> 00.spi/driver/unbind
+> root@stm32mp2:~# echo 40430000.spi > /sys/bus/platform/drivers/stm32-qspi/bind
+> [  969.864021] stm32-qspi 40430000.spi: Unbalanced pm_runtime_enable!
+> [  970.225161] spi-nor spi0.0: mx66u51235f (65536 Kbytes)
+> [  970.935721] spi-nor spi0.1: mx66u51235f (65536 Kbytes)
 > 
 > [...]
 
@@ -70,8 +74,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: uniphier: fix error return code in uniphier_spi_probe()
-      commit: 18168291aa7dd48e9d9e3cbb1d4cd06e899357ca
+[1/1] spi: stm32-qspi: Fix unbalanced pm_runtime_enable issue
+      commit: be6ef160840f23d9723d9bd008ca08e864ce4745
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

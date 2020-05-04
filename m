@@ -2,80 +2,81 @@ Return-Path: <SRS0=rKwf=6S=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.5 required=3.0 tests=DKIM_ADSP_CUSTOM_MED,
-	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-6.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F251BC3A5A9
-	for <linux-spi@archiver.kernel.org>; Mon,  4 May 2020 10:42:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9DF9C3A5A9
+	for <linux-spi@archiver.kernel.org>; Mon,  4 May 2020 11:16:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C94FD2073E
-	for <linux-spi@archiver.kernel.org>; Mon,  4 May 2020 10:42:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BD71F2073E
+	for <linux-spi@archiver.kernel.org>; Mon,  4 May 2020 11:16:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726885AbgEDKmw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 4 May 2020 06:42:52 -0400
-Received: from mga18.intel.com ([134.134.136.126]:54863 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726445AbgEDKmw (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 4 May 2020 06:42:52 -0400
-IronPort-SDR: z8OwaJ5Z97ZaM1Mi6CMaX4YoWtZSnXJehwkguRm0EfJlBC77z28ZsHFH/F8JMXqauNWmJ+cXeO
- D6X3m9GpuBmw==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2020 03:42:50 -0700
-IronPort-SDR: YsyTN3XujNe4EH/d4h27FxTbwofavGyfETEfLF0Cea+JivViR5D1mUUgsVIGHKiPMZLpRnvBv9
- 2aH3IIZDn2EA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,351,1583222400"; 
-   d="scan'208";a="248182608"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga007.jf.intel.com with ESMTP; 04 May 2020 03:42:48 -0700
-Received: from andy by smile with local (Exim 4.93)
-        (envelope-from <andy.shevchenko@gmail.com>)
-        id 1jVYYl-004bJY-VT; Mon, 04 May 2020 13:42:51 +0300
-Date:   Mon, 4 May 2020 13:42:51 +0300
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Wan Ahmad Zainie <wan.ahmad.zainie.wan.mohamad@intel.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v2 0/7] spi: dw: Add support for Intel Keem Bay SPI
-Message-ID: <20200504104251.GC185537@smile.fi.intel.com>
-References: <20200422141142.25591-1-wan.ahmad.zainie.wan.mohamad@intel.com>
- <20200428141449.GV185537@smile.fi.intel.com>
- <20200428180720.GO5677@sirena.org.uk>
- <CAHp75Vf6OenGTz3Pvg9QQVEygK71E5j-2W-s+0G6dh=QDDfR2Q@mail.gmail.com>
- <20200429101611.GF4201@sirena.org.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200429101611.GF4201@sirena.org.uk>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+        id S1726756AbgEDLQ4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 4 May 2020 07:16:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50218 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726445AbgEDLQ4 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 4 May 2020 07:16:56 -0400
+X-Greylist: delayed 282 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 04 May 2020 04:16:55 PDT
+Received: from mailout1.hostsharing.net (mailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5fcc:0])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3696C061A0E
+        for <linux-spi@vger.kernel.org>; Mon,  4 May 2020 04:16:55 -0700 (PDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client CN "*.hostsharing.net", Issuer "COMODO RSA Domain Validation Secure Server CA" (not verified))
+        by mailout1.hostsharing.net (Postfix) with ESMTPS id C1DD610044AA5;
+        Mon,  4 May 2020 13:16:53 +0200 (CEST)
+Received: from localhost (unknown [87.130.102.138])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        by h08.hostsharing.net (Postfix) with ESMTPSA id 980B660F2900;
+        Mon,  4 May 2020 13:16:53 +0200 (CEST)
+X-Mailbox-Line: From 499f8ad4759c2ff0f586e0459fb9a293faecff6d Mon Sep 17 00:00:00 2001
+Message-Id: <499f8ad4759c2ff0f586e0459fb9a293faecff6d.1588590210.git.lukas@wunner.de>
+In-Reply-To: <cover.1588590210.git.lukas@wunner.de>
+References: <cover.1588590210.git.lukas@wunner.de>
+From:   Lukas Wunner <lukas@wunner.de>
+Date:   Mon, 4 May 2020 13:12:03 +0200
+Subject: [PATCH 3/5] spi: amd: Drop duplicate driver data assignments
+To:     Mark Brown <broonie@kernel.org>,
+        "Sanjay R Mehta" <sanju.mehta@amd.com>
+Cc:     linux-spi@vger.kernel.org
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, Apr 29, 2020 at 11:16:11AM +0100, Mark Brown wrote:
-> On Wed, Apr 29, 2020 at 01:14:48AM +0300, Andy Shevchenko wrote:
-> > On Tue, Apr 28, 2020 at 9:08 PM Mark Brown <broonie@kernel.org> wrote:
-> 
-> > > If there are problems with the DT binding conversion
-> 
-> > We don't know (yet) if there is any problem, that's why I'm asking Rob
-> > to have a look.
-> 
-> Yes, what I am saying is that in the event there are problems the
-> conversion should be split out and done separately.
+The AMD SPI driver calls platform_set_drvdata() on probe even though
+it's already been set by __spi_alloc_controller().  Likewise, it calls
+platform_set_drvdata() on remove even though it's going to be set by
+__device_release_driver().  Drop the duplicate assignments.
 
-Wan, please rebase the series in order that conversion patch goes last.
-Thanks!
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+---
+ drivers/spi/spi-amd.c | 2 --
+ 1 file changed, 2 deletions(-)
 
+diff --git a/drivers/spi/spi-amd.c b/drivers/spi/spi-amd.c
+index a4248b97b67e..d3e3516ef957 100644
+--- a/drivers/spi/spi-amd.c
++++ b/drivers/spi/spi-amd.c
+@@ -287,7 +287,6 @@ static int amd_spi_probe(struct platform_device *pdev)
+ 		dev_err(dev, "error %d registering SPI controller\n", err);
+ 		goto err_free_master;
+ 	}
+-	platform_set_drvdata(pdev, amd_spi);
+ 
+ 	return 0;
+ 
+@@ -303,7 +302,6 @@ static int amd_spi_remove(struct platform_device *pdev)
+ 
+ 	spi_unregister_master(amd_spi->master);
+ 	spi_master_put(amd_spi->master);
+-	platform_set_drvdata(pdev, NULL);
+ 
+ 	return 0;
+ }
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.26.2
 

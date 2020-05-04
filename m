@@ -6,39 +6,39 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 10CD2C47257
-	for <linux-spi@archiver.kernel.org>; Mon,  4 May 2020 12:13:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 70277C3A5A9
+	for <linux-spi@archiver.kernel.org>; Mon,  4 May 2020 12:13:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id EF0B5206A4
-	for <linux-spi@archiver.kernel.org>; Mon,  4 May 2020 12:13:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5A41E2073E
+	for <linux-spi@archiver.kernel.org>; Mon,  4 May 2020 12:13:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728629AbgEDMNG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 4 May 2020 08:13:06 -0400
-Received: from mga01.intel.com ([192.55.52.88]:41911 "EHLO mga01.intel.com"
+        id S1728693AbgEDMNJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 4 May 2020 08:13:09 -0400
+Received: from mga01.intel.com ([192.55.52.88]:41921 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728588AbgEDMNG (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 4 May 2020 08:13:06 -0400
-IronPort-SDR: 4buqlZbK8wNiZByIo4FOeKSrXTc2SokUtg6uN3TbjKuiianB/5hpg+56X0HwE3Tjz168sabg3m
- 9TLDNUGmD7AA==
+        id S1728592AbgEDMNI (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 4 May 2020 08:13:08 -0400
+IronPort-SDR: 9jIsepi9cvHhbwr0ZB2UcHUuwel3GQ+0f1GfSchwiUncNfq8UICMOGD6L1/kP253eyZwLpbiSN
+ W54FwgC+duuw==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2020 05:13:02 -0700
-IronPort-SDR: KRmGR1cggd+8Bef4S9CzWknWNrtGLT2rnumVTUdZtvwdqoi/qCoGxTDtfUmMr9jdug4Dmy7Cgd
- YiFolTAHmmaA==
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2020 05:13:08 -0700
+IronPort-SDR: ybfWWcV4n8PvxxcTQD5ow9AWspEpWdiRmp5hrJ/Ph5Co9kxX2FzXVKTfpiY60MV+gB2XxcDr+9
+ PV5Pp1r5ya0A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.73,351,1583222400"; 
-   d="scan'208";a="295480501"
+   d="scan'208";a="295480520"
 Received: from wwanmoha-ilbpg2.png.intel.com ([10.88.227.42])
-  by orsmga008.jf.intel.com with ESMTP; 04 May 2020 05:13:00 -0700
+  by orsmga008.jf.intel.com with ESMTP; 04 May 2020 05:13:06 -0700
 From:   Wan Ahmad Zainie <wan.ahmad.zainie.wan.mohamad@intel.com>
 To:     broonie@kernel.org, robh+dt@kernel.org
 Cc:     linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
         andriy.shevchenko@linux.intel.com,
         wan.ahmad.zainie.wan.mohamad@intel.com
-Subject: [PATCH v3 2/7] spi: dw: Add update_cr0() callback to update CTRLR0
-Date:   Mon,  4 May 2020 20:11:46 +0800
-Message-Id: <20200504121151.1085-3-wan.ahmad.zainie.wan.mohamad@intel.com>
+Subject: [PATCH v3 5/7] dt-bindings: spi: dw-apb-ssi: Convert bindings to json-schema
+Date:   Mon,  4 May 2020 20:11:49 +0800
+Message-Id: <20200504121151.1085-6-wan.ahmad.zainie.wan.mohamad@intel.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200504121151.1085-1-wan.ahmad.zainie.wan.mohamad@intel.com>
 References: <20200504121151.1085-1-wan.ahmad.zainie.wan.mohamad@intel.com>
@@ -47,196 +47,141 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This patch adds update_cr0() callback, in struct dw_spi.
-
-Existing code that configure register CTRLR0 is moved into a new
-function, dw_spi_update_cr0(), and this will be the default.
+Convert the Synopsis DesignWare dw-apb-ssi binding to DT schema format
+using json-schema.
 
 Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Wan Ahmad Zainie <wan.ahmad.zainie.wan.mohamad@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/spi/spi-dw-mid.c  |  4 +++
- drivers/spi/spi-dw-mmio.c | 21 +++++++++++--
- drivers/spi/spi-dw.c      | 66 +++++++++++++++++++++++++--------------
- drivers/spi/spi-dw.h      |  5 +++
- 4 files changed, 69 insertions(+), 27 deletions(-)
+ .../bindings/spi/snps,dw-apb-ssi.txt          | 41 -----------
+ .../bindings/spi/snps,dw-apb-ssi.yaml         | 70 +++++++++++++++++++
+ 2 files changed, 70 insertions(+), 41 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
+ create mode 100644 Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
 
-diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
-index 0d86c37e0aeb..9cc010e9737e 100644
---- a/drivers/spi/spi-dw-mid.c
-+++ b/drivers/spi/spi-dw-mid.c
-@@ -318,5 +318,9 @@ int dw_spi_mid_init(struct dw_spi *dws)
- 	dws->dma_rx = &mid_dma_rx;
- 	dws->dma_ops = &mid_dma_ops;
- #endif
-+
-+	/* Register hook to configure CTRLR0 */
-+	dws->update_cr0 = dw_spi_update_cr0;
-+
- 	return 0;
- }
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index 384a3ab6dc2d..a52f75e22109 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -106,6 +106,9 @@ static int dw_spi_mscc_init(struct platform_device *pdev,
- 	dwsmmio->dws.set_cs = dw_spi_mscc_set_cs;
- 	dwsmmio->priv = dwsmscc;
- 
-+	/* Register hook to configure CTRLR0 */
-+	dwsmmio->dws.update_cr0 = dw_spi_update_cr0;
-+
- 	return 0;
- }
- 
-@@ -128,6 +131,18 @@ static int dw_spi_alpine_init(struct platform_device *pdev,
- {
- 	dwsmmio->dws.cs_override = 1;
- 
-+	/* Register hook to configure CTRLR0 */
-+	dwsmmio->dws.update_cr0 = dw_spi_update_cr0;
-+
-+	return 0;
-+}
-+
-+static int dw_spi_dw_apb_init(struct platform_device *pdev,
-+			      struct dw_spi_mmio *dwsmmio)
-+{
-+	/* Register hook to configure CTRLR0 */
-+	dwsmmio->dws.update_cr0 = dw_spi_update_cr0;
-+
- 	return 0;
- }
- 
-@@ -224,17 +239,17 @@ static int dw_spi_mmio_remove(struct platform_device *pdev)
- }
- 
- static const struct of_device_id dw_spi_mmio_of_match[] = {
--	{ .compatible = "snps,dw-apb-ssi", },
-+	{ .compatible = "snps,dw-apb-ssi", .data = dw_spi_dw_apb_init},
- 	{ .compatible = "mscc,ocelot-spi", .data = dw_spi_mscc_ocelot_init},
- 	{ .compatible = "mscc,jaguar2-spi", .data = dw_spi_mscc_jaguar2_init},
- 	{ .compatible = "amazon,alpine-dw-apb-ssi", .data = dw_spi_alpine_init},
--	{ .compatible = "renesas,rzn1-spi", },
-+	{ .compatible = "renesas,rzn1-spi", .data = dw_spi_dw_apb_init},
- 	{ /* end of table */}
- };
- MODULE_DEVICE_TABLE(of, dw_spi_mmio_of_match);
- 
- static const struct acpi_device_id dw_spi_mmio_acpi_match[] = {
--	{"HISI0173", 0},
-+	{"HISI0173", (kernel_ulong_t)dw_spi_dw_apb_init},
- 	{},
- };
- MODULE_DEVICE_TABLE(acpi, dw_spi_mmio_acpi_match);
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index fbbafb099571..b475fd32f39a 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -277,6 +277,47 @@ static int poll_transfer(struct dw_spi *dws)
- 	return 0;
- }
- 
-+static u8 dw_spi_update_tmode(struct dw_spi *dws)
-+{
-+	if (!dws->tx)
-+		return SPI_TMOD_RO;
-+	if (!dws->rx)
-+		return SPI_TMOD_TO;
-+
-+	return SPI_TMOD_TR;
-+}
-+
-+/* Configure CTRLR0 for DW_apb_ssi */
-+u32 dw_spi_update_cr0(struct spi_controller *master, struct spi_device *spi,
-+		      struct spi_transfer *transfer)
-+{
-+	struct dw_spi *dws = spi_controller_get_devdata(master);
-+	struct chip_data *chip = spi_get_ctldata(spi);
-+	u32 cr0;
-+
-+	/* Default SPI mode is SCPOL = 0, SCPH = 0 */
-+	cr0 = (transfer->bits_per_word - 1)
-+		| (chip->type << SPI_FRF_OFFSET)
-+		| ((((spi->mode & SPI_CPOL) ? 1 : 0) << SPI_SCOL_OFFSET) |
-+		   (((spi->mode & SPI_CPHA) ? 1 : 0) << SPI_SCPH_OFFSET) |
-+		   (((spi->mode & SPI_LOOP) ? 1 : 0) << SPI_SRL_OFFSET))
-+		| (chip->tmode << SPI_TMOD_OFFSET);
-+
-+	/*
-+	 * Adjust transfer mode if necessary. Requires platform dependent
-+	 * chipselect mechanism.
-+	 */
-+	if (chip->cs_control) {
-+		chip->tmode = dw_spi_update_tmode(dws);
-+
-+		cr0 &= ~SPI_TMOD_MASK;
-+		cr0 |= (chip->tmode << SPI_TMOD_OFFSET);
-+	}
-+
-+	return cr0;
-+}
-+EXPORT_SYMBOL_GPL(dw_spi_update_cr0);
-+
- static int dw_spi_transfer_one(struct spi_controller *master,
- 		struct spi_device *spi, struct spi_transfer *transfer)
- {
-@@ -316,30 +357,7 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 	dws->n_bytes = DIV_ROUND_UP(transfer->bits_per_word, BITS_PER_BYTE);
- 	dws->dma_width = DIV_ROUND_UP(transfer->bits_per_word, BITS_PER_BYTE);
- 
--	/* Default SPI mode is SCPOL = 0, SCPH = 0 */
--	cr0 = (transfer->bits_per_word - 1)
--		| (chip->type << SPI_FRF_OFFSET)
--		| ((((spi->mode & SPI_CPOL) ? 1 : 0) << SPI_SCOL_OFFSET) |
--			(((spi->mode & SPI_CPHA) ? 1 : 0) << SPI_SCPH_OFFSET) |
--			(((spi->mode & SPI_LOOP) ? 1 : 0) << SPI_SRL_OFFSET))
--		| (chip->tmode << SPI_TMOD_OFFSET);
+diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
+deleted file mode 100644
+index 3ed08ee9feba..000000000000
+--- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
++++ /dev/null
+@@ -1,41 +0,0 @@
+-Synopsys DesignWare AMBA 2.0 Synchronous Serial Interface.
 -
--	/*
--	 * Adjust transfer mode if necessary. Requires platform dependent
--	 * chipselect mechanism.
--	 */
--	if (chip->cs_control) {
--		if (dws->rx && dws->tx)
--			chip->tmode = SPI_TMOD_TR;
--		else if (dws->rx)
--			chip->tmode = SPI_TMOD_RO;
--		else
--			chip->tmode = SPI_TMOD_TO;
+-Required properties:
+-- compatible : "snps,dw-apb-ssi" or "mscc,<soc>-spi", where soc is "ocelot" or
+-  "jaguar2", or "amazon,alpine-dw-apb-ssi"
+-- reg : The register base for the controller. For "mscc,<soc>-spi", a second
+-  register set is required (named ICPU_CFG:SPI_MST)
+-- interrupts : One interrupt, used by the controller.
+-- #address-cells : <1>, as required by generic SPI binding.
+-- #size-cells : <0>, also as required by generic SPI binding.
+-- clocks : phandles for the clocks, see the description of clock-names below.
+-   The phandle for the "ssi_clk" is required. The phandle for the "pclk" clock
+-   is optional. If a single clock is specified but no clock-name, it is the
+-   "ssi_clk" clock. If both clocks are listed, the "ssi_clk" must be first.
 -
--		cr0 &= ~SPI_TMOD_MASK;
--		cr0 |= (chip->tmode << SPI_TMOD_OFFSET);
--	}
+-Optional properties:
+-- clock-names : Contains the names of the clocks:
+-    "ssi_clk", for the core clock used to generate the external SPI clock.
+-    "pclk", the interface clock, required for register access. If a clock domain
+-     used to enable this clock then it should be named "pclk_clkdomain".
+-- cs-gpios : Specifies the gpio pins to be used for chipselects.
+-- num-cs : The number of chipselects. If omitted, this will default to 4.
+-- reg-io-width : The I/O register width (in bytes) implemented by this
+-  device.  Supported values are 2 or 4 (the default).
 -
-+	cr0 = dws->update_cr0(master, spi, transfer);
- 	dw_writel(dws, DW_SPI_CTRLR0, cr0);
- 
- 	/* Check if current transfer is a DMA transaction */
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 445362c23fde..d4d3b0b6f5d5 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -114,6 +114,8 @@ struct dw_spi {
- 	u16			bus_num;
- 	u16			num_cs;		/* supported slave numbers */
- 	void (*set_cs)(struct spi_device *spi, bool enable);
-+	u32 (*update_cr0)(struct spi_controller *master, struct spi_device *spi,
-+			  struct spi_transfer *transfer);
- 
- 	/* Current message transfer state info */
- 	size_t			len;
-@@ -252,6 +254,9 @@ extern int dw_spi_add_host(struct device *dev, struct dw_spi *dws);
- extern void dw_spi_remove_host(struct dw_spi *dws);
- extern int dw_spi_suspend_host(struct dw_spi *dws);
- extern int dw_spi_resume_host(struct dw_spi *dws);
-+extern u32 dw_spi_update_cr0(struct spi_controller *master,
-+			     struct spi_device *spi,
-+			     struct spi_transfer *transfer);
- 
- /* platform related setup */
- extern int dw_spi_mid_init(struct dw_spi *dws); /* Intel MID platforms */
+-Child nodes as per the generic SPI binding.
+-
+-Example:
+-
+-	spi@fff00000 {
+-		compatible = "snps,dw-apb-ssi";
+-		reg = <0xfff00000 0x1000>;
+-		interrupts = <0 154 4>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		clocks = <&spi_m_clk>;
+-		num-cs = <2>;
+-		cs-gpios = <&gpio0 13 0>,
+-			   <&gpio0 14 0>;
+-	};
+-
+diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+new file mode 100644
+index 000000000000..f72bb0e6f630
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+@@ -0,0 +1,70 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: "http://devicetree.org/schemas/spi/snps,dw-apb-ssi.yaml#"
++$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++
++title: Synopsys DesignWare AMBA 2.0 Synchronous Serial Interface
++
++maintainers:
++  - Wan Ahmad Zainie <wan.ahmad.zainie.wan.mohamad@intel.com>
++
++allOf:
++  - $ref: "spi-controller.yaml#"
++
++properties:
++  compatible:
++    enum:
++      - mscc,ocelot-spi
++      - mscc,jaguar2-spi
++      - amazon,alpine-dw-apb-ssi
++      - snps,dw-apb-ssi
++
++  reg:
++    minItems: 1
++    maxItems: 2
++    items:
++      - description: The register base for the controller.
++      - description: For "mscc,<soc>-spi", a second register set is required.
++
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    minItems: 1
++    maxItems: 2
++    items:
++      - description: The core clock used to generate the external SPI clock.
++      - description: The interface clock required for register access.
++
++  clock-names:
++    items:
++      - const: ssi_clk
++      - const: pclk
++
++  reg-io-width:
++    allOf:
++      - $ref: /schemas/types.yaml#/definitions/uint32
++      - enum: [ 2, 4 ]
++      - default: 4
++    description: The I/O register width (in bytes) implemented by this device.
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++
++examples:
++  - |
++    spi@fff00000 {
++          compatible = "snps,dw-apb-ssi";
++          reg = <0xfff00000 0x1000>;
++          interrupts = <0 154 4>;
++          #address-cells = <1>;
++          #size-cells = <0>;
++          clocks = <&spi_m_clk>;
++          num-cs = <2>;
++          cs-gpios = <&gpio0 13 0>,
++                     <&gpio0 14 0>;
++    };
 -- 
 2.17.1
 

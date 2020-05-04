@@ -2,99 +2,87 @@ Return-Path: <SRS0=rKwf=6S=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=no
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E714C3A5A9
-	for <linux-spi@archiver.kernel.org>; Mon,  4 May 2020 12:39:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 32606C3A5A9
+	for <linux-spi@archiver.kernel.org>; Mon,  4 May 2020 13:04:36 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E5B01206B9
-	for <linux-spi@archiver.kernel.org>; Mon,  4 May 2020 12:39:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1588595974;
-	bh=i4fiAeh4VhwmZB8llNY8Lh6OdtAPi+dy/P3OUnecCBU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=qhC51Rw+LZW8Xb6NZxJI5+BPFExiRsco9ETjMqQVrpDndvzlsgdstwU89LkxZieUc
-	 MTJzJK+q5hE6Q2mop6Jv6jFgZzYkGOEVH81e0GRKZF/g7eZUiSTpfICo7jdDHvwgca
-	 pVvJ10SFDBnrx6LTof4QJFNKaud6iXuYCgpVF0z4=
+	by mail.kernel.org (Postfix) with ESMTP id 006C72078E
+	for <linux-spi@archiver.kernel.org>; Mon,  4 May 2020 13:04:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728748AbgEDMjd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 4 May 2020 08:39:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51524 "EHLO mail.kernel.org"
+        id S1726445AbgEDNEf (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 4 May 2020 09:04:35 -0400
+Received: from mga05.intel.com ([192.55.52.43]:6156 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728746AbgEDMjd (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 4 May 2020 08:39:33 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2E022206B9;
-        Mon,  4 May 2020 12:39:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588595972;
-        bh=i4fiAeh4VhwmZB8llNY8Lh6OdtAPi+dy/P3OUnecCBU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Ku5fmRCL5YRVD2QTwxpGCU8d9ouFCtyGPUYSszI/gPxHdxjerjZibRoZH7s46Xc/x
-         bpnM8RMBWhbSY8orOvzHJdbzEORNRrN7ebtGPNnyuRwTO6Ye3j9PLg05H1Ht4DBNy5
-         gJWUTKqmB312TkhZL7C7FoMkO034/rztZNCOOFEA=
-Date:   Mon, 4 May 2020 13:39:30 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     "Wan Mohamad, Wan Ahmad Zainie" 
-        <wan.ahmad.zainie.wan.mohamad@intel.com>
-Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "andriy.shevchenko@linux.intel.com" 
-        <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v3 5/7] dt-bindings: spi: dw-apb-ssi: Convert bindings to
- json-schema
-Message-ID: <20200504123930.GF5491@sirena.org.uk>
-References: <20200504121151.1085-1-wan.ahmad.zainie.wan.mohamad@intel.com>
- <20200504121151.1085-6-wan.ahmad.zainie.wan.mohamad@intel.com>
- <20200504122614.GE5491@sirena.org.uk>
- <DM6PR11MB3721B4735D3250884A87BC69DDA60@DM6PR11MB3721.namprd11.prod.outlook.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="65ImJOski3p8EhYV"
-Content-Disposition: inline
-In-Reply-To: <DM6PR11MB3721B4735D3250884A87BC69DDA60@DM6PR11MB3721.namprd11.prod.outlook.com>
-X-Cookie: My life is a patio of fun!
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        id S1726351AbgEDNEf (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 4 May 2020 09:04:35 -0400
+IronPort-SDR: P3Ag4SCcv/w9wWphseukUI90fYpM9AlcJaMigI75FwbHReO0R9oajzcTNwdXDKJFYsZg3IIbJe
+ Bk/hVZlLnLNw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2020 06:03:53 -0700
+IronPort-SDR: SqD2jz1g8H7tjohWBdR0QpBITFwTOHGpD/CEL0sBgoMTJEB90XKm3m+kCEEdUa+vRyK2apcgge
+ gp5Ol4ersm+Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,352,1583222400"; 
+   d="scan'208";a="249169049"
+Received: from wwanmoha-ilbpg2.png.intel.com ([10.88.227.42])
+  by fmsmga007.fm.intel.com with ESMTP; 04 May 2020 06:03:51 -0700
+From:   Wan Ahmad Zainie <wan.ahmad.zainie.wan.mohamad@intel.com>
+To:     broonie@kernel.org, robh+dt@kernel.org
+Cc:     linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        andriy.shevchenko@linux.intel.com,
+        wan.ahmad.zainie.wan.mohamad@intel.com
+Subject: [PATCH v4 0/7] spi: dw: Add support for Intel Keem Bay SPI
+Date:   Mon,  4 May 2020 21:02:39 +0800
+Message-Id: <20200504130246.5135-1-wan.ahmad.zainie.wan.mohamad@intel.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+This patchset adds support for DesignWare DWC_ssi. This soft IP
+is an AMBA version 2.0-compliant AHB slave device. Existing driver
+already supports the older APB version.
 
---65ImJOski3p8EhYV
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Intel Keem Bay SPI controller is using this IP. This patchset is
+tested on Keem Bay evaluation module board.
 
-On Mon, May 04, 2020 at 12:37:34PM +0000, Wan Mohamad, Wan Ahmad Zainie wrote:
+Changes since v3:
+- DT changes for feature addition is done on snps,dw-apb-ssi.txt.
+- And then convert the updated snps,dw-apb-ssi.txt to DT schema format.
 
-> DT changes for the feature addition is added to snps,dw-apb-ssi.txt.
-> Then, I do the patch for conversion. Right?
+Changes since v2:
+- Rebased to v5.7-rc4.
+- Change the order of the patches i.e. dt-bindings patches go last.
 
-Yes, exactly.
+Changes since v1:
+- Rework the third patch based on Rob's feedback.
 
-> Should I send v4?
+Wan Ahmad Zainie (7):
+  spi: dw: Fix typo in few registers name
+  spi: dw: Add update_cr0() callback to update CTRLR0
+  spi: dw: Add support for DesignWare DWC_ssi
+  dt-bindings: spi: dw-apb-ssi: Add compatible string for DesignWare
+    DWC_ssi
+  spi: dw: Add support for Intel Keem Bay SPI
+  dt-bindings: spi: dw-apb-ssi: Add Intel Keem Bay support
+  dt-bindings: spi: dw-apb-ssi: Convert bindings to json-schema
 
-Please - the code changes seem good to go, they're just held up by the
-DT conversion patch.
+ .../bindings/spi/snps,dw-apb-ssi.txt          |  41 ------
+ .../bindings/spi/snps,dw-apb-ssi.yaml         |  72 ++++++++++
+ drivers/spi/spi-dw-mid.c                      |   4 +
+ drivers/spi/spi-dw-mmio.c                     |  57 +++++++-
+ drivers/spi/spi-dw.c                          | 125 +++++++++++++-----
+ drivers/spi/spi-dw.h                          |  25 +++-
+ 6 files changed, 243 insertions(+), 81 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
+ create mode 100644 Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
 
---65ImJOski3p8EhYV
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+2.17.1
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl6wDQEACgkQJNaLcl1U
-h9D8Kgf/Q1vAQeUow/L5PaWPMvxJ71KPWpIPEVh+uNgSJQ1rdY4SEYPdAeF9/WOA
-PzbrO+bo567Ii28N8pa5LSJDK77eQQ3TSkunZkIFQCtrZ5VzSjw5d8+MxeNsvTwr
-E+u66CDPCQLlmhBMRunN7/tRsvb77Kj0X/QSH4yUYb8lUnckSx3n6g0OC+Vy0TPK
-JiwusdqvsmZuYgxkxCHSSMw6lO6jQY9IJ91Jkfpb53yfAkf4Xu/HPuEBKZPtS0ul
-QRKf9HxOEBv4xRSdJCawoHXxJS4DBoiPwLVa8OHchlZGGuQV2ueXj7QCoDp2lgGI
-mQgdwkCSnuXTd/6PmeiyLLKEU0W4/w==
-=w7Eb
------END PGP SIGNATURE-----
-
---65ImJOski3p8EhYV--

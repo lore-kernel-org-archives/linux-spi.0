@@ -1,184 +1,175 @@
-Return-Path: <SRS0=Zlro=6V=vger.kernel.org=linux-spi-owner@kernel.org>
+Return-Path: <SRS0=g9eP=6T=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.0 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_SANE_2 autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 16822C38A24
-	for <linux-spi@archiver.kernel.org>; Thu,  7 May 2020 17:01:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 56042C47254
+	for <linux-spi@archiver.kernel.org>; Tue,  5 May 2020 10:01:29 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E64F3207DD
-	for <linux-spi@archiver.kernel.org>; Thu,  7 May 2020 17:01:17 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=mg.codeaurora.org header.i=@mg.codeaurora.org header.b="GjmF/yAM"
+	by mail.kernel.org (Postfix) with ESMTP id 37798206E6
+	for <linux-spi@archiver.kernel.org>; Tue,  5 May 2020 10:01:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726807AbgEGRBR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 7 May 2020 13:01:17 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:46331 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726636AbgEGRBR (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 7 May 2020 13:01:17 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1588870876; h=Content-Transfer-Encoding: Content-Type:
- In-Reply-To: MIME-Version: Date: Message-ID: From: References: Cc: To:
- Subject: Sender; bh=Q6e681XAMJUtZBJD87mrFbPc1YIIh9lR85Q2LRLTHXs=; b=GjmF/yAMIfLSKvZ37lQvaGg0PP5py7CqYRcmCbi2pJeLcbA7OJUgIiSV6O355nTELCKXrdm0
- PARE7r1pHq8gxezaGbM+XE5uJCAkY//Gz+onnik4FJx3IQYs1/1SYJvrKETnScY2Wm5x5cqM
- F80Ui+efOFAr6Y/lHF3T2WBR2iY=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyIzNzdmZSIsICJsaW51eC1zcGlAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eb43ec2.7fc2d7a710a0-smtp-out-n03;
- Thu, 07 May 2020 17:00:50 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id B138FC432C2; Thu,  7 May 2020 17:00:49 +0000 (UTC)
-Received: from [10.131.209.195] (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1728180AbgEEKB3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 5 May 2020 06:01:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37142 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727931AbgEEKB2 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 5 May 2020 06:01:28 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67FEEC061A0F;
+        Tue,  5 May 2020 03:01:28 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2a01:e0a:2c:6930:d3ea:1c7:41fd:3038])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: rnayak)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C5532C433D2;
-        Thu,  7 May 2020 17:00:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C5532C433D2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=rnayak@codeaurora.org
-Subject: Re: [PATCH v4 2/6] spi: spi-geni-qcom: Use OPP API to set clk/perf
- state
-To:     viresh.kumar@linaro.org, sboyd@kernel.org,
-        bjorn.andersson@linaro.org, agross@kernel.org,
-        Mark Brown <broonie@kernel.org>
-Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mka@chromium.org, Alok Chauhan <alokc@codeaurora.org>,
-        Akash Asthana <akashast@codeaurora.org>,
-        linux-spi@vger.kernel.org
-References: <1588507469-31889-1-git-send-email-rnayak@codeaurora.org>
- <1588507469-31889-3-git-send-email-rnayak@codeaurora.org>
-From:   Rajendra Nayak <rnayak@codeaurora.org>
-Message-ID: <acc7baf9-86a3-6c78-4d62-99d4b1baa12e@codeaurora.org>
-Date:   Thu, 7 May 2020 22:30:43 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        (Authenticated sender: bbrezillon)
+        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id B203B2A0982;
+        Tue,  5 May 2020 11:01:26 +0100 (BST)
+Date:   Tue, 5 May 2020 12:01:23 +0200
+From:   Boris Brezillon <boris.brezillon@collabora.com>
+To:     masonccyang@mxic.com.tw
+Cc:     "Pratyush Yadav" <me@yadavpratyush.com>, broonie@kernel.org,
+        juliensu@mxic.com.tw, linux-kernel@vger.kernel.org,
+        linux-mtd@lists.infradead.org, miquel.raynal@bootlin.com,
+        "Pratyush Yadav" <p.yadav@ti.com>, richard@nod.at,
+        tudor.ambarus@microchip.com, vigneshr@ti.com
+Subject: Re: [PATCH v2 0/5] mtd: spi-nor: Add support for Octal 8D-8D-8D
+ mode
+Message-ID: <20200505120123.24962338@collabora.com>
+In-Reply-To: <20200505114443.6ebd5d3c@collabora.com>
+References: <1587451187-6889-1-git-send-email-masonccyang@mxic.com.tw>
+        <20200421092328.129308f6@collabora.com>
+        <20200427175536.2mmei2fy6f7bg6jm@yadavpratyush.com>
+        <OF18214CA5.6A9B2B30-ON48258558.001D894C-48258558.002249E0@mxic.com.tw>
+        <20200428085401.574wmo6qddmumd7q@yadavpratyush.com>
+        <OF04289CE2.B346916F-ON48258559.002280BD-48258559.00295800@mxic.com.tw>
+        <20200429181856.kkavelcczylg4yxf@yadavpratyush.com>
+        <OF28AE0642.4F34D6BB-ON4825855F.002D6E58-4825855F.003458C9@mxic.com.tw>
+        <20200505114443.6ebd5d3c@collabora.com>
+Organization: Collabora
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <1588507469-31889-3-git-send-email-rnayak@codeaurora.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+On Tue, 5 May 2020 11:44:43 +0200
+Boris Brezillon <boris.brezillon@collabora.com> wrote:
 
-On 5/3/2020 5:34 PM, Rajendra Nayak wrote:
-> geni spi needs to express a perforamnce state requirement on CX
-> depending on the frequency of the clock rates. Use OPP table from
-> DT to register with OPP framework and use dev_pm_opp_set_rate() to
-> set the clk/perf state.
+> On Tue, 5 May 2020 17:31:45 +0800
+> masonccyang@mxic.com.tw wrote:
 > 
-> Signed-off-by: Rajendra Nayak <rnayak@codeaurora.org>
-> Reviewed-by: Matthias Kaehlcke <mka@chromium.org>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Alok Chauhan <alokc@codeaurora.org>
-> Cc: Akash Asthana <akashast@codeaurora.org>
-> Cc: linux-spi@vger.kernel.org
-> ---
-> This patch has a dependency on the 'PATCH 1/6' in this series,
-> due to the changes in include/linux/qcom-geni-se.h
-> Its ideal if this and the previous patch gets merged via the
-> msm tree (once reviewed and ack'ed)
-> Greg has already responded he is fine with it for serial.
+> 
+> > > > > > I quickly went through your patches but can't reply them in each     
+> > your   
+> > > > > > patches.
+> > > > > > 
+> > > > > > i.e,.
+> > > > > > 1) [v4,03/16] spi: spi-mem: allow specifying a command's extension
+> > > > > > 
+> > > > > > -                                u8 opcode;
+> > > > > > +                                u16 opcode;
+> > > > > > 
+> > > > > > big/little Endian issue, right? 
+> > > > > > why not just u8 ext_opcode;
+> > > > > > No any impact for exist code and actually only xSPI device use     
+> > > > extension     
+> > > > > > command.    
+> > > > > 
+> > > > > Boris already explained the reasoning behind it.    
+> > > > 
+> > > > yup, I got his point and please make sure CPU data access.
+> > > > 
+> > > > i.e,.
+> > > > Fix endianness of the BFPT DWORDs and xSPI in sfdp.c
+> > > > 
+> > > > and your patch,
+> > > > +                                ext = spi_nor_get_cmd_ext(nor, op);
+> > > > +                                op->cmd.opcode = (op->cmd.opcode <<     
+> > 8) |   
+> > > > ext;
+> > > > +                                op->cmd.nbytes = 2;
+> > > > 
+> > > > I think maybe using u8 opcode[2] could avoid endianness.    
+> > > 
+> > > Again, thanks Boris for answering this. FWIW, I don't see anything wrong     
+> >   
+> > > with his suggestion.
+> > > 
+> > > To clarify a bit more, the idea is that we transmit the opcode MSB 
+> > > first, just we do for the address. Assume we want to issue the command 
+> > > 0x05. In 1S mode, we set cmd.opcode to 0x05. Here cmd.nbytes == 1. Treat     
+> >   
+> > > is as a 1-byte value, so the MSB is the same as the LSB. We directly 
+> > > send 0x5 on the bus.    
+> > 
+> > There are many SPI controllers driver use "op->cmd.opcode" directly,
+> > so is spi-mxic.c.
+> > 
+> > i.e,.
+> > ret = mxic_spi_data_xfer(mxic, &op->cmd.opcode, NULL, op->cmd.nbytes);  
+> 
+> Just because you do it doesn't mean it's right. And most controllers use
+> the opcode value, they don't dereference the pointer as you do here.
+> 
+> >   
+> > > 
+> > > If cmd.nbytes == 2, then the opcode would be 0x05FA (assuming extension 
+> > > is invert of command). So we send the MSB (0x05) first, and LSB (0xFA) 
+> > > next.    
+> > 
+> > My platform is Xilinx Zynq platform which CPU is ARMv7 processor.
+> > 
+> > In 1-1-1 mode, it's OK to send 1 byte command by u16 opcode but
+> > in 8D-8D-8D mode, I need to patch
+> > 
+> > i.e.,
+> > op->cmd.opcode = op->cmd.opcode | (ext << 8);
+> > 
+> > rather than your patch.  
+> 
+> Seriously, how hard is it to extract each byte from the u16 if your
+> controller needs to pass things in a different order? I mean, that's
+> already how it's done for the address cycle, so why is it a problem
+> here? This sounds like bikeshedding to me. If the order is properly
+> documented in the kernel doc, I see no problem having it grouped in one
+> u16, with the first cmd cycle placed in the MSB and the second one in
+> the LSB.
 
-Mark, would you be able to review/ack this patch so it can be
-taken in via the msm tree? 'PATCH 1/6' is Ack'd by Greg, and its
-going to land via the msm tree as well.
+So, I gave it a try, and we're talking about something as simple as the
+below diff. And yes, the mxic controller needs to be patched before
+extending the cmd.opcode field, but we're talking about one driver here
+(all other drivers should be fine). Oh, and if you look a few lines below
+the changed lines, you'll notice that we do exactly the same for the
+address.
 
-> 
->   drivers/spi/spi-geni-qcom.c | 26 +++++++++++++++++++++++---
->   1 file changed, 23 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-> index c397242..bc2916f 100644
-> --- a/drivers/spi/spi-geni-qcom.c
-> +++ b/drivers/spi/spi-geni-qcom.c
-> @@ -7,6 +7,7 @@
->   #include <linux/log2.h>
->   #include <linux/module.h>
->   #include <linux/platform_device.h>
-> +#include <linux/pm_opp.h>
->   #include <linux/pm_runtime.h>
->   #include <linux/qcom-geni-se.h>
->   #include <linux/spi/spi.h>
-> @@ -95,7 +96,6 @@ static int get_spi_clk_cfg(unsigned int speed_hz,
->   {
->   	unsigned long sclk_freq;
->   	unsigned int actual_hz;
-> -	struct geni_se *se = &mas->se;
->   	int ret;
->   
->   	ret = geni_se_clk_freq_match(&mas->se,
-> @@ -112,9 +112,9 @@ static int get_spi_clk_cfg(unsigned int speed_hz,
->   
->   	dev_dbg(mas->dev, "req %u=>%u sclk %lu, idx %d, div %d\n", speed_hz,
->   				actual_hz, sclk_freq, *clk_idx, *clk_div);
-> -	ret = clk_set_rate(se->clk, sclk_freq);
-> +	ret = dev_pm_opp_set_rate(mas->dev, sclk_freq);
->   	if (ret)
-> -		dev_err(mas->dev, "clk_set_rate failed %d\n", ret);
-> +		dev_err(mas->dev, "dev_pm_opp_set_rate failed %d\n", ret);
->   	return ret;
->   }
->   
-> @@ -561,6 +561,17 @@ static int spi_geni_probe(struct platform_device *pdev)
->   	mas->se.wrapper = dev_get_drvdata(dev->parent);
->   	mas->se.base = base;
->   	mas->se.clk = clk;
-> +	mas->se.opp_table = dev_pm_opp_set_clkname(&pdev->dev, "se");
-> +	if (IS_ERR(mas->se.opp_table))
-> +		return PTR_ERR(mas->se.opp_table);
-> +	/* OPP table is optional */
-> +	ret = dev_pm_opp_of_add_table(&pdev->dev);
-> +	if (!ret) {
-> +		mas->se.has_opp_table = true;
-> +	} else if (ret != -ENODEV) {
-> +		dev_err(&pdev->dev, "invalid OPP table in device tree\n");
-> +		return ret;
-> +	}
->   
->   	spi->bus_num = -1;
->   	spi->dev.of_node = dev->of_node;
-> @@ -596,6 +607,9 @@ static int spi_geni_probe(struct platform_device *pdev)
->   spi_geni_probe_runtime_disable:
->   	pm_runtime_disable(dev);
->   	spi_master_put(spi);
-> +	if (mas->se.has_opp_table)
-> +		dev_pm_opp_of_remove_table(&pdev->dev);
-> +	dev_pm_opp_put_clkname(mas->se.opp_table);
->   	return ret;
->   }
->   
-> @@ -604,6 +618,9 @@ static int spi_geni_remove(struct platform_device *pdev)
->   	struct spi_master *spi = platform_get_drvdata(pdev);
->   	struct spi_geni_master *mas = spi_master_get_devdata(spi);
->   
-> +	if (mas->se.has_opp_table)
-> +		dev_pm_opp_of_remove_table(&pdev->dev);
-> +	dev_pm_opp_put_clkname(mas->se.opp_table);
->   	/* Unregister _before_ disabling pm_runtime() so we stop transfers */
->   	spi_unregister_master(spi);
->   
-> @@ -617,6 +634,9 @@ static int __maybe_unused spi_geni_runtime_suspend(struct device *dev)
->   	struct spi_master *spi = dev_get_drvdata(dev);
->   	struct spi_geni_master *mas = spi_master_get_devdata(spi);
->   
-> +	/* Drop the performance state vote */
-> +	dev_pm_opp_set_rate(dev, 0);
-> +
->   	return geni_se_resources_off(&mas->se);
->   }
->   
-> 
-
--- 
-QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member
-of Code Aurora Forum, hosted by The Linux Foundation
+--->8---
+diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
+index 69491f3a515d..c3f4136a7c1d 100644
+--- a/drivers/spi/spi-mxic.c
++++ b/drivers/spi/spi-mxic.c
+@@ -356,6 +356,7 @@ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
+        int nio = 1, i, ret;
+        u32 ss_ctrl;
+        u8 addr[8];
++       u8 cmd[2];
+ 
+        ret = mxic_spi_set_freq(mxic, mem->spi->max_speed_hz);
+        if (ret)
+@@ -393,7 +394,10 @@ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
+        writel(readl(mxic->regs + HC_CFG) | HC_CFG_MAN_CS_ASSERT,
+               mxic->regs + HC_CFG);
+ 
+-       ret = mxic_spi_data_xfer(mxic, &op->cmd.opcode, NULL, 1);
++       for (i = 0; i < op->cmd.nbytes; i++)
++               cmd[i] = op->cmd.opcode >> (8 * (op->cmd.nbytes - i - 1));
++
++       ret = mxic_spi_data_xfer(mxic, cmd, NULL, op->cmd.nbytes);
+        if (ret)
+                goto out;
+ 

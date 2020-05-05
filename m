@@ -2,96 +2,91 @@ Return-Path: <SRS0=g9eP=6T=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-3.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=no
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 20E98C47247
-	for <linux-spi@archiver.kernel.org>; Tue,  5 May 2020 12:50:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BAF0C47247
+	for <linux-spi@archiver.kernel.org>; Tue,  5 May 2020 13:07:28 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E28EB206FA
-	for <linux-spi@archiver.kernel.org>; Tue,  5 May 2020 12:50:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1588683032;
-	bh=QLn+uOYzl/cbRxyiEyBEun7Xm83d5G4JJgdYrFQ1mEM=;
-	h=Date:From:To:In-Reply-To:References:Subject:List-ID:From;
-	b=EZ+WSgHri6wk70VfdEB/ZnXmkGZ39RFAlmBh+qrAvHiWX9hI/SmpLLCUwT4d7E38t
-	 1wHRhZg1zu+yPsDyjMUw3VpGIbQJ1gDlvXbo+QXweEhUHntJXapVJaetOFufYQIP5D
-	 M24CNuZ9h5dE4LwF0yTeXDuuhwYH+R41AeONDhm0=
+	by mail.kernel.org (Postfix) with ESMTP id 1861120757
+	for <linux-spi@archiver.kernel.org>; Tue,  5 May 2020 13:07:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728798AbgEEMub (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 5 May 2020 08:50:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54490 "EHLO mail.kernel.org"
+        id S1728885AbgEENH1 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 5 May 2020 09:07:27 -0400
+Received: from mga02.intel.com ([134.134.136.20]:12710 "EHLO mga02.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728497AbgEEMub (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 5 May 2020 08:50:31 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 88A24206D7;
-        Tue,  5 May 2020 12:50:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588683031;
-        bh=QLn+uOYzl/cbRxyiEyBEun7Xm83d5G4JJgdYrFQ1mEM=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=LlydU9w3oIJGGcpoyZ0pzki1EndLuSQlFTvtvEWjo9UsVpbxJ0ukXp3YGq9LxhQ9C
-         btXFl9N+9sydEFBTK8xLhNSpEIPuzgQ+i3t+viO8J0u9gSTdvMvOVJ6Zbqwo7cQ9xH
-         V+mtntBtQKy+G2c5Y4juTV2mgMojTipJmPx2O3Pw=
-Date:   Tue, 05 May 2020 13:50:28 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     linux-spi@vger.kernel.org, Jacko Dirks <jdirks.linuxdev@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-rpi-kernel@lists.infradead.org,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20200503200033.GA3256@vasteMachine>
-References: <20200503200033.GA3256@vasteMachine>
-Subject: Re: [PATCH] spi: bcm2835: Fixes bare use of unsigned
-Message-Id: <158868302840.38681.2575208609097582325.b4-ty@kernel.org>
+        id S1728268AbgEENH1 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 5 May 2020 09:07:27 -0400
+IronPort-SDR: T7pEg2wD4zRVMn6cfBNSvjhmml6tTNiEmd7T1hYZKyw2a891+ih8hgRIz/RwMZktX6XBQs+Z+q
+ IC+wcvIbF40Q==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2020 06:07:26 -0700
+IronPort-SDR: +rPDXpGUI38tUzBpWnYAvMP6ljMhEHus6kHMEcBIKAONu7I9akXF2/OAZfiDIfqcP+SHF8B4zW
+ 8XCLipjgfNzw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,355,1583222400"; 
+   d="scan'208";a="277868825"
+Received: from wwanmoha-ilbpg2.png.intel.com ([10.88.227.42])
+  by orsmga002.jf.intel.com with ESMTP; 05 May 2020 06:07:25 -0700
+From:   Wan Ahmad Zainie <wan.ahmad.zainie.wan.mohamad@intel.com>
+To:     broonie@kernel.org, robh+dt@kernel.org
+Cc:     linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        andriy.shevchenko@linux.intel.com,
+        wan.ahmad.zainie.wan.mohamad@intel.com
+Subject: [PATCH v5 0/7] spi: dw: Add support for Intel Keem Bay SPI
+Date:   Tue,  5 May 2020 21:06:11 +0800
+Message-Id: <20200505130618.554-1-wan.ahmad.zainie.wan.mohamad@intel.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sun, 3 May 2020 22:00:33 +0200, Jacko Dirks wrote:
-> Signed-off-by: Jacko Dirks <jdirks.linuxdev@gmail.com>
-> ---
->  drivers/spi/spi-bcm2835.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-> index 11c235879bb7..e10b8f3b4bab 100644
-> 
-> [...]
+This patchset adds support for DesignWare DWC_ssi. This soft IP
+is an AMBA version 2.0-compliant AHB slave device. Existing driver
+already supports the older APB version.
 
-Applied to
+Intel Keem Bay SPI controller is using this IP. This patchset is
+tested on Keem Bay evaluation module board.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.8
+Changes since v4:
+- Rebased to latest linux-next, since v4 does not apply cleanly.
 
-Thanks!
+Changes since v3:
+- DT changes for feature addition is done on snps,dw-apb-ssi.txt.
+- And then convert the updated snps,dw-apb-ssi.txt to DT schema format.
 
-[1/1] spi: bcm2835: Fixes bare use of unsigned
-      commit: e37687c98ab9ee5872e672b81c44932cf5356d58
+Changes since v2:
+- Rebased to v5.7-rc4.
+- Change the order of the patches i.e. dt-bindings patches go last.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Changes since v1:
+- Rework the third patch based on Rob's feedback.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Wan Ahmad Zainie (7):
+  spi: dw: Fix typo in few registers name
+  spi: dw: Add update_cr0() callback to update CTRLR0
+  spi: dw: Add support for DesignWare DWC_ssi
+  dt-bindings: spi: dw-apb-ssi: Add compatible string for DesignWare
+    DWC_ssi
+  spi: dw: Add support for Intel Keem Bay SPI
+  dt-bindings: spi: dw-apb-ssi: Add Intel Keem Bay support
+  dt-bindings: spi: dw-apb-ssi: Convert bindings to json-schema
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+ .../bindings/spi/snps,dw-apb-ssi.txt          | 41 ----------
+ .../bindings/spi/snps,dw-apb-ssi.yaml         | 72 +++++++++++++++++
+ drivers/spi/spi-dw-mid.c                      |  4 +
+ drivers/spi/spi-dw-mmio.c                     | 57 ++++++++++++-
+ drivers/spi/spi-dw.c                          | 80 +++++++++++++++----
+ drivers/spi/spi-dw.h                          | 25 +++++-
+ 6 files changed, 214 insertions(+), 65 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
+ create mode 100644 Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
 
-Thanks,
-Mark
+-- 
+2.17.1
+

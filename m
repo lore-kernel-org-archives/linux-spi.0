@@ -6,40 +6,39 @@ X-Spam-Status: No, score=-9.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
 	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2752DC4724C
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E7ECC47257
 	for <linux-spi@archiver.kernel.org>; Wed,  6 May 2020 15:30:32 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1070821841
+	by mail.kernel.org (Postfix) with ESMTP id 37EC721841
 	for <linux-spi@archiver.kernel.org>; Wed,  6 May 2020 15:30:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729774AbgEFPab (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 6 May 2020 11:30:31 -0400
-Received: from mga02.intel.com ([134.134.136.20]:43731 "EHLO mga02.intel.com"
+        id S1729689AbgEFPac (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 6 May 2020 11:30:32 -0400
+Received: from mga03.intel.com ([134.134.136.65]:9527 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729689AbgEFPab (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        id S1729668AbgEFPab (ORCPT <rfc822;linux-spi@vger.kernel.org>);
         Wed, 6 May 2020 11:30:31 -0400
-IronPort-SDR: Z12sUx3Ub3QGM285ugPJw3AvTvRxPT5C/ERQd2y5YIHZgT64/KyjyIOYMGjFh2Jy89+6TGX90A
- 7Gpt/tV/OA3A==
+IronPort-SDR: 1oDv/lzNBdqCrzKhbppXbO34hYdPupXvKGR8O7uiQ8Ua249V80YDb1tOq/cBuALuLwj8n6GBd0
+ CdtiMWuJ9rOA==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2020 08:30:30 -0700
-IronPort-SDR: dbDjZ5tdBvMH84rh2DcT7ue04oB2zKwuBv75B40t0VNq/KS+Jw2F+ueUGn/RuMawiXvRS5DBJy
- ym+0vs0K73qQ==
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2020 08:30:30 -0700
+IronPort-SDR: rnJA6flkWUD0UeEYr/RyFqWF3hkjWGMkBLwXQYF1DC6JsP/dRwuxxKbxj0FhTRj1HZowjg5d8+
+ fhqUshUEvK/g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.73,359,1583222400"; 
-   d="scan'208";a="296217417"
+   d="scan'208";a="278263127"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga008.jf.intel.com with ESMTP; 06 May 2020 08:30:29 -0700
+  by orsmga002.jf.intel.com with ESMTP; 06 May 2020 08:30:29 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 8CC67869; Wed,  6 May 2020 18:30:26 +0300 (EEST)
+        id 77A833BA; Wed,  6 May 2020 18:30:26 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
-Cc:     Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 8/8] spi: dw: Add Elkhart Lake PSE DMA support
-Date:   Wed,  6 May 2020 18:30:25 +0300
-Message-Id: <20200506153025.21441-8-andriy.shevchenko@linux.intel.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 6/8] spi: dw: Add 'mfld' suffix to Intel Medfield related routines
+Date:   Wed,  6 May 2020 18:30:23 +0300
+Message-Id: <20200506153025.21441-6-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200506153025.21441-1-andriy.shevchenko@linux.intel.com>
 References: <20200506153025.21441-1-andriy.shevchenko@linux.intel.com>
@@ -50,112 +49,116 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+In order to prepare driver for the extension to support newer hardware,
+add 'mfld' suffix to some related functions.
 
-Elkhart Lake PSE SPI is capable to utilize PSE DMA engine which is described
-in ACPI. With help of acpi-dma module the support becomes a generic one.
+While here, move DMA parameters assignment under existing #ifdef
+CONFIG_SPI_DW_MID_DMA.
 
-Thus, add Elkhart Lake PSE DMA support and generic DMA hooks in SPI DesignWare
-driver.
+There is no functional change intended.
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/spi/spi-dw-mid.c | 44 ++++++++++++++++++++++++++++++++++++++++
- drivers/spi/spi-dw-pci.c |  1 +
- drivers/spi/spi-dw.h     |  1 +
- 3 files changed, 46 insertions(+)
+ drivers/spi/spi-dw-mid.c | 24 ++++++++++++++----------
+ drivers/spi/spi-dw-pci.c |  4 ++--
+ drivers/spi/spi-dw.h     |  3 ++-
+ 3 files changed, 18 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
-index d73aa4ae644d5..f3c85f92ef12c 100644
+index 64523e68490d7..13b548915c8f0 100644
 --- a/drivers/spi/spi-dw-mid.c
 +++ b/drivers/spi/spi-dw-mid.c
-@@ -75,6 +75,24 @@ static int mid_spi_dma_init_mfld(struct device *dev, struct dw_spi *dws)
- 	return -EBUSY;
+@@ -34,7 +34,7 @@ static bool mid_spi_dma_chan_filter(struct dma_chan *chan, void *param)
+ 	return true;
  }
  
-+static int mid_spi_dma_init_generic(struct device *dev, struct dw_spi *dws)
-+{
-+	dws->rxchan = dma_request_slave_channel(dev, "rx");
-+	if (!dws->rxchan)
-+		return -ENODEV;
-+	dws->master->dma_rx = dws->rxchan;
-+
-+	dws->txchan = dma_request_slave_channel(dev, "tx");
-+	if (!dws->txchan) {
-+		dma_release_channel(dws->rxchan);
-+		return -ENODEV;
-+	}
-+	dws->master->dma_tx = dws->txchan;
-+
-+	dws->dma_inited = 1;
-+	return 0;
-+}
-+
- static void mid_spi_dma_exit(struct dw_spi *dws)
+-static int mid_spi_dma_init(struct dw_spi *dws)
++static int mid_spi_dma_init_mfld(struct dw_spi *dws)
  {
- 	if (!dws->dma_inited)
-@@ -291,8 +309,25 @@ static void dw_spi_mid_setup_dma_mfld(struct dw_spi *dws)
- 	dws->dma_rx = &mid_dma_rx;
- 	dws->dma_ops = &mfld_dma_ops;
+ 	struct pci_dev *dma_dev;
+ 	struct dw_dma_slave *tx = dws->dma_tx;
+@@ -276,14 +276,23 @@ static void mid_spi_dma_stop(struct dw_spi *dws)
+ 	}
  }
+ 
+-static const struct dw_spi_dma_ops mid_dma_ops = {
+-	.dma_init	= mid_spi_dma_init,
++static const struct dw_spi_dma_ops mfld_dma_ops = {
++	.dma_init	= mid_spi_dma_init_mfld,
+ 	.dma_exit	= mid_spi_dma_exit,
+ 	.dma_setup	= mid_spi_dma_setup,
+ 	.can_dma	= mid_spi_can_dma,
+ 	.dma_transfer	= mid_spi_dma_transfer,
+ 	.dma_stop	= mid_spi_dma_stop,
+ };
 +
-+static const struct dw_spi_dma_ops generic_dma_ops = {
-+	.dma_init	= mid_spi_dma_init_generic,
-+	.dma_exit	= mid_spi_dma_exit,
-+	.dma_setup	= mid_spi_dma_setup,
-+	.can_dma	= mid_spi_can_dma,
-+	.dma_transfer	= mid_spi_dma_transfer,
-+	.dma_stop	= mid_spi_dma_stop,
-+};
-+
-+static void dw_spi_mid_setup_dma_generic(struct dw_spi *dws)
++static void dw_spi_mid_setup_dma_mfld(struct dw_spi *dws)
 +{
 +	dws->dma_tx = &mid_dma_tx;
 +	dws->dma_rx = &mid_dma_rx;
-+	dws->dma_ops = &generic_dma_ops;
++	dws->dma_ops = &mfld_dma_ops;
 +}
- #else	/* CONFIG_SPI_DW_MID_DMA */
- static inline void dw_spi_mid_setup_dma_mfld(struct dw_spi *dws) {}
-+static inline void dw_spi_mid_setup_dma_generic(struct dw_spi *dws) {}
++#else	/* CONFIG_SPI_DW_MID_DMA */
++static inline void dw_spi_mid_setup_dma_mfld(struct dw_spi *dws) {}
  #endif
  
  /* Some specific info for SPI0 controller on Intel MID */
-@@ -329,3 +364,12 @@ int dw_spi_mid_init_mfld(struct dw_spi *dws)
- 	dw_spi_mid_setup_dma_mfld(dws);
+@@ -297,7 +306,7 @@ static const struct dw_spi_dma_ops mid_dma_ops = {
+ #define CLK_SPI_CDIV_MASK	0x00000e00
+ #define CLK_SPI_DISABLE_OFFSET	8
+ 
+-int dw_spi_mid_init(struct dw_spi *dws)
++int dw_spi_mid_init_mfld(struct dw_spi *dws)
+ {
+ 	void __iomem *clk_reg;
+ 	u32 clk_cdiv;
+@@ -314,14 +323,9 @@ int dw_spi_mid_init(struct dw_spi *dws)
+ 
+ 	iounmap(clk_reg);
+ 
+-#ifdef CONFIG_SPI_DW_MID_DMA
+-	dws->dma_tx = &mid_dma_tx;
+-	dws->dma_rx = &mid_dma_rx;
+-	dws->dma_ops = &mid_dma_ops;
+-#endif
+-
+ 	/* Register hook to configure CTRLR0 */
+ 	dws->update_cr0 = dw_spi_update_cr0;
+ 
++	dw_spi_mid_setup_dma_mfld(dws);
  	return 0;
  }
-+
-+int dw_spi_mid_init_generic(struct dw_spi *dws)
-+{
-+	/* Register hook to configure CTRLR0 */
-+	dws->update_cr0 = dw_spi_update_cr0;
-+
-+	dw_spi_mid_setup_dma_generic(dws);
-+	return 0;
-+}
 diff --git a/drivers/spi/spi-dw-pci.c b/drivers/spi/spi-dw-pci.c
-index dd59df5122ee7..dde54a918b5d2 100644
+index 172a9f2996316..dd59df5122ee7 100644
 --- a/drivers/spi/spi-dw-pci.c
 +++ b/drivers/spi/spi-dw-pci.c
-@@ -35,6 +35,7 @@ static struct spi_pci_desc spi_pci_mid_desc_2 = {
+@@ -23,13 +23,13 @@ struct spi_pci_desc {
  };
  
- static struct spi_pci_desc spi_pci_ehl_desc = {
-+	.setup = dw_spi_mid_init_generic,
+ static struct spi_pci_desc spi_pci_mid_desc_1 = {
+-	.setup = dw_spi_mid_init,
++	.setup = dw_spi_mid_init_mfld,
+ 	.num_cs = 5,
+ 	.bus_num = 0,
+ };
+ 
+ static struct spi_pci_desc spi_pci_mid_desc_2 = {
+-	.setup = dw_spi_mid_init,
++	.setup = dw_spi_mid_init_mfld,
  	.num_cs = 2,
- 	.bus_num = -1,
- 	.max_freq = 100000000,
+ 	.bus_num = 1,
+ };
 diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 642f0be642e56..490cff260a3eb 100644
+index 5e1e78210d8d4..b7e3f0ebba44f 100644
 --- a/drivers/spi/spi-dw.h
 +++ b/drivers/spi/spi-dw.h
-@@ -261,5 +261,6 @@ extern u32 dw_spi_update_cr0_v1_01a(struct spi_controller *master,
+@@ -260,5 +260,6 @@ extern u32 dw_spi_update_cr0_v1_01a(struct spi_controller *master,
+ 				    struct spi_transfer *transfer);
  
  /* platform related setup */
- extern int dw_spi_mid_init_mfld(struct dw_spi *dws);
-+extern int dw_spi_mid_init_generic(struct dw_spi *dws);
- 
+-extern int dw_spi_mid_init(struct dw_spi *dws); /* Intel MID platforms */
++extern int dw_spi_mid_init_mfld(struct dw_spi *dws);
++
  #endif /* DW_SPI_HEADER_H */
 -- 
 2.26.2

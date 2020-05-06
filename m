@@ -2,99 +2,91 @@ Return-Path: <SRS0=wOBr=6U=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-8.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D76ACC47256
-	for <linux-spi@archiver.kernel.org>; Wed,  6 May 2020 15:30:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E0CDC28CBC
+	for <linux-spi@archiver.kernel.org>; Wed,  6 May 2020 15:38:59 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B5CE621835
-	for <linux-spi@archiver.kernel.org>; Wed,  6 May 2020 15:30:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 83FA520836
+	for <linux-spi@archiver.kernel.org>; Wed,  6 May 2020 15:38:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729871AbgEFPad (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 6 May 2020 11:30:33 -0400
-Received: from mga06.intel.com ([134.134.136.31]:59816 "EHLO mga06.intel.com"
+        id S1729458AbgEFPi7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 6 May 2020 11:38:59 -0400
+Received: from mga17.intel.com ([192.55.52.151]:42845 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729776AbgEFPad (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 6 May 2020 11:30:33 -0400
-IronPort-SDR: stPsDCmSVnyFvaX5IgyZqqUe5hYBlJjKMjbIrBdEfr8HK56k47Blg8j0KXyw9LR1TVoODlKr8B
- C+5KGerodn6g==
+        id S1725887AbgEFPi7 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 6 May 2020 11:38:59 -0400
+IronPort-SDR: V9zniGRxmzr/N0rEupUrGTsCjC46QGjdhFLy3uZLcZnLtF20zBBNrJMW6aYAkbGpcWUoY9+sEG
+ sElxceRrfT1w==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2020 08:30:31 -0700
-IronPort-SDR: vv8MJzdTIMzt1vgmKUSEyCXLDWpvQUr++RoJmvAs+IGSPQw7tThZcIDJjyTI3wM1hczKyQg9ug
- usjpOQonVe6A==
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2020 08:38:57 -0700
+IronPort-SDR: 55aG4GQ4XHRfy5uFkJgDfxV+hAnt3plcUTnk9dQ1WcbY+d9hZUSqbsWTWb4HIiiEu6DnIZ60kD
+ dROYJ2wuKgrA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.73,359,1583222400"; 
-   d="scan'208";a="434925810"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga005.jf.intel.com with ESMTP; 06 May 2020 08:30:27 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 56609109; Wed,  6 May 2020 18:30:26 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 3/8] spi: dw: Move interrupt.h to spi-dw.h who is user of it
-Date:   Wed,  6 May 2020 18:30:20 +0300
-Message-Id: <20200506153025.21441-3-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200506153025.21441-1-andriy.shevchenko@linux.intel.com>
+   d="scan'208";a="407280476"
+Received: from shbuild999.sh.intel.com (HELO localhost) ([10.239.147.136])
+  by orsmga004.jf.intel.com with ESMTP; 06 May 2020 08:38:56 -0700
+Date:   Wed, 6 May 2020 23:38:55 +0800
+From:   Feng Tang <feng.tang@intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+Subject: Re: [PATCH v1 1/8] spi: dw: Zero DMA Tx and Rx configurations on
+ stack
+Message-ID: <20200506153855.GA18389@shbuild999.sh.intel.com>
 References: <20200506153025.21441-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200506153025.21441-1-andriy.shevchenko@linux.intel.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The actual user of interrupt.h is spi-dw.h and not bus drivers.
-Move header there.
+On Wed, May 06, 2020 at 06:30:18PM +0300, Andy Shevchenko wrote:
+> Some DMA controller drivers do not tolerate non-zero values in
+> the DMA configuration structures. Zero them to avoid issues with
+> such DMA controller drivers. Even despite above this is a good
+> practice per se.
+> 
+> Fixes: 7063c0d942a1 ("spi/dw_spi: add DMA support")
+> Cc: Feng Tang <feng.tang@intel.com>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/spi/spi-dw-mmio.c | 1 -
- drivers/spi/spi-dw-pci.c  | 1 -
- drivers/spi/spi-dw.h      | 1 +
- 3 files changed, 1 insertion(+), 2 deletions(-)
+Acked-by: Feng Tang <feng.tang@intel.com>
 
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index abd3bb5e52dba..fc3577b07a1ee 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -7,7 +7,6 @@
- 
- #include <linux/clk.h>
- #include <linux/err.h>
--#include <linux/interrupt.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/slab.h>
-diff --git a/drivers/spi/spi-dw-pci.c b/drivers/spi/spi-dw-pci.c
-index 12c131b5fb4ec..172a9f2996316 100644
---- a/drivers/spi/spi-dw-pci.c
-+++ b/drivers/spi/spi-dw-pci.c
-@@ -5,7 +5,6 @@
-  * Copyright (c) 2009, 2014 Intel Corporation.
-  */
- 
--#include <linux/interrupt.h>
- #include <linux/pci.h>
- #include <linux/pm_runtime.h>
- #include <linux/slab.h>
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 8fe724279d158..aeed49b4a444a 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -2,6 +2,7 @@
- #ifndef DW_SPI_HEADER_H
- #define DW_SPI_HEADER_H
- 
-+#include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/scatterlist.h>
- 
--- 
-2.26.2
+Thanks,
+Feng
 
+> ---
+>  drivers/spi/spi-dw-mid.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
+> index 9cc010e9737e8..86d9f79267f05 100644
+> --- a/drivers/spi/spi-dw-mid.c
+> +++ b/drivers/spi/spi-dw-mid.c
+> @@ -147,6 +147,7 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_tx(struct dw_spi *dws,
+>  	if (!xfer->tx_buf)
+>  		return NULL;
+>  
+> +	memset(&txconf, 0, sizeof(txconf));
+>  	txconf.direction = DMA_MEM_TO_DEV;
+>  	txconf.dst_addr = dws->dma_addr;
+>  	txconf.dst_maxburst = 16;
+> @@ -193,6 +194,7 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_rx(struct dw_spi *dws,
+>  	if (!xfer->rx_buf)
+>  		return NULL;
+>  
+> +	memset(&rxconf, 0, sizeof(rxconf));
+>  	rxconf.direction = DMA_DEV_TO_MEM;
+>  	rxconf.src_addr = dws->dma_addr;
+>  	rxconf.src_maxburst = 16;
+> -- 
+> 2.26.2

@@ -2,70 +2,73 @@ Return-Path: <SRS0=Zlro=6V=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-9.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 81393C38A24
-	for <linux-spi@archiver.kernel.org>; Thu,  7 May 2020 11:52:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F3219C38A2A
+	for <linux-spi@archiver.kernel.org>; Thu,  7 May 2020 11:54:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6337220735
-	for <linux-spi@archiver.kernel.org>; Thu,  7 May 2020 11:52:00 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DC4A32075E
+	for <linux-spi@archiver.kernel.org>; Thu,  7 May 2020 11:54:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726308AbgEGLv7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 7 May 2020 07:51:59 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3890 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725949AbgEGLv7 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 7 May 2020 07:51:59 -0400
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id E6D67E114F2976A781C1;
-        Thu,  7 May 2020 19:51:55 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
- 14.3.487.0; Thu, 7 May 2020 19:51:47 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Sanjay R Mehta <sanju.mehta@amd.com>,
-        Mark Brown <broonie@kernel.org>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-spi@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] spi: spi-amd: Remove spi_master_put in amd_spi_remove()
-Date:   Thu, 7 May 2020 11:55:50 +0000
-Message-ID: <20200507115550.139457-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726267AbgEGLyz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 7 May 2020 07:54:55 -0400
+Received: from mga07.intel.com ([134.134.136.100]:16074 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725809AbgEGLyz (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 7 May 2020 07:54:55 -0400
+IronPort-SDR: NvJEts7Nwow8FllK3zVnRyoSF9f2QwVDosy45+aFteJ/C291zG4Cj5LEnBFdw3npTyOklzRGod
+ lFvYQw9n4Fkg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2020 04:54:54 -0700
+IronPort-SDR: I22wjVu6ESLu2ZriRuLau1+PzO74TYb5DV8GinzVwMQPiftQJmnExq+RmnY8HVvxetPh50io2n
+ mDcoup40NGBg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,363,1583222400"; 
+   d="scan'208";a="284970016"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga004.fm.intel.com with ESMTP; 07 May 2020 04:54:53 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id B6EF3119; Thu,  7 May 2020 14:54:52 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        Wan Ahmad Zainie <wan.ahmad.zainie.wan.mohamad@intel.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/2] spi: dw: Avoid useless assignments in generic DMA setup
+Date:   Thu,  7 May 2020 14:54:48 +0300
+Message-Id: <20200507115449.8093-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The call to spi_master_put() in amd_spi_remove() is redundant and
-may causes user after free since the master have been freed by
-spi_unregister_master(), so remove it.
+Generic DMA setup doesn't rely on certain type of DMA controller and thus
+shouldn't use Intel Medfield settings, although it's harmless in this case.
 
-Fixes: bbb336f39efc ("spi: spi-amd: Add AMD SPI controller driver support")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/spi/spi-amd.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/spi/spi-dw-mid.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/spi/spi-amd.c b/drivers/spi/spi-amd.c
-index c7cfc3dc20b1..e5e767ba5823 100644
---- a/drivers/spi/spi-amd.c
-+++ b/drivers/spi/spi-amd.c
-@@ -304,7 +304,6 @@ static int amd_spi_remove(struct platform_device *pdev)
- 	struct amd_spi *amd_spi = platform_get_drvdata(pdev);
+diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
+index f3c85f92ef12c..8b7b94c5a9ccf 100644
+--- a/drivers/spi/spi-dw-mid.c
++++ b/drivers/spi/spi-dw-mid.c
+@@ -321,8 +321,6 @@ static const struct dw_spi_dma_ops generic_dma_ops = {
  
- 	spi_unregister_master(amd_spi->master);
--	spi_master_put(amd_spi->master);
- 	platform_set_drvdata(pdev, NULL);
- 
- 	return 0;
-
-
+ static void dw_spi_mid_setup_dma_generic(struct dw_spi *dws)
+ {
+-	dws->dma_tx = &mid_dma_tx;
+-	dws->dma_rx = &mid_dma_rx;
+ 	dws->dma_ops = &generic_dma_ops;
+ }
+ #else	/* CONFIG_SPI_DW_MID_DMA */
+-- 
+2.26.2
 

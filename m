@@ -5,47 +5,47 @@ X-Spam-Level:
 X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 94024C47255
-	for <linux-spi@archiver.kernel.org>; Fri,  8 May 2020 18:55:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A0FEC38A2A
+	for <linux-spi@archiver.kernel.org>; Fri,  8 May 2020 18:55:29 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 66A9521974
-	for <linux-spi@archiver.kernel.org>; Fri,  8 May 2020 18:55:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E8E3F2083B
+	for <linux-spi@archiver.kernel.org>; Fri,  8 May 2020 18:55:28 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="YPf/qtfB"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="vkE5/F26"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727108AbgEHSzA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 8 May 2020 14:55:00 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:52968 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727819AbgEHSy4 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 8 May 2020 14:54:56 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 048IsfLP054662;
-        Fri, 8 May 2020 13:54:41 -0500
+        id S1726811AbgEHSz2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 8 May 2020 14:55:28 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:56330 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726767AbgEHSz2 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 8 May 2020 14:55:28 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 048Isok9041770;
+        Fri, 8 May 2020 13:54:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1588964081;
-        bh=nEbscNX33RKbq+zFcQZwVu/alXuHc+8pSIbituzNk2U=;
+        s=ti-com-17Q1; t=1588964090;
+        bh=5+AXR5SrX42+acbZCSDv1ai6NbQTlDljtTfawPkCDCs=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=YPf/qtfBOPqSSxs07alqxbOcnDU/LuYK5LEzzfr3mfCwHTyTrt041c51ah7IbB8o9
-         sS5TZ8IWNydtR2Mu1EtQBw0w+bnZscWz6Nu6OrIkT8paj5p3aS2JFkZAQ/WlSOdExp
-         sE/fCcuJDxxGq3EwPoUYtFVDcQ7WcV2iRa8F6XeU=
-Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 048IsfeV097209
+        b=vkE5/F26rfmlS1cg/GH+baBHHaCOxfMa2hkB25bNA3KCHpS1JPMBXFh/cfWcd/2t/
+         T9dB0cyVjHCERe2f6iKx+vAshUlnCB1+OXzZw/8H3ce9isq2uznYSdyjwh/qi2zGMG
+         gnGUjde9LNuKCUWHKVq3Upf2EfnB38CPApA+toE0=
+Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 048Iso5A013748
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 8 May 2020 13:54:41 -0500
-Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+        Fri, 8 May 2020 13:54:50 -0500
+Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 8 May
- 2020 13:54:40 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ 2020 13:54:50 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 8 May 2020 13:54:40 -0500
+ Frontend Transport; Fri, 8 May 2020 13:54:50 -0500
 Received: from ula0132425.ent.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 048IsGpW077355;
-        Fri, 8 May 2020 13:54:36 -0500
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 048IsGpY077355;
+        Fri, 8 May 2020 13:54:46 -0500
 From:   Vignesh Raghavendra <vigneshr@ti.com>
 To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
         Mark Brown <broonie@kernel.org>
@@ -56,9 +56,9 @@ CC:     Vignesh Raghavendra <vigneshr@ti.com>,
         <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <linux-spi@vger.kernel.org>, <simon.k.r.goldschmidt@gmail.com>,
         <dinguyen@kernel.org>, <marex@denx.de>
-Subject: [PATCH 4/6] mtd: spi-nor: cadence-quadspi: Fix error path on failure to acquire reset lines
-Date:   Sat, 9 May 2020 00:24:09 +0530
-Message-ID: <20200508185411.487-5-vigneshr@ti.com>
+Subject: [PATCH 6/6] spi: Move cadence-quadspi driver to drivers/spi/
+Date:   Sat, 9 May 2020 00:24:11 +0530
+Message-ID: <20200508185411.487-7-vigneshr@ti.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200508185411.487-1-vigneshr@ti.com>
 References: <20200508185411.487-1-vigneshr@ti.com>
@@ -71,52 +71,117 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Make sure to undo the prior changes done by the driver when exiting due
-to failure to acquire reset lines.
+From: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
 
+Now that cadence-quadspi has been converted to use spi-mem framework,
+move it under drivers/spi/
+
+Update license header to match SPI subsystem style
+
+Signed-off-by: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
 Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 ---
- drivers/mtd/spi-nor/controllers/cadence-quadspi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/mtd/spi-nor/controllers/Kconfig            | 11 -----------
+ drivers/mtd/spi-nor/controllers/Makefile           |  1 -
+ drivers/spi/Kconfig                                | 11 +++++++++++
+ drivers/spi/Makefile                               |  1 +
+ .../spi-cadence-quadspi.c}                         | 14 +++++++-------
+ 5 files changed, 19 insertions(+), 19 deletions(-)
+ rename drivers/{mtd/spi-nor/controllers/cadence-quadspi.c => spi/spi-cadence-quadspi.c} (99%)
 
-diff --git a/drivers/mtd/spi-nor/controllers/cadence-quadspi.c b/drivers/mtd/spi-nor/controllers/cadence-quadspi.c
-index 6feb94a38dff..51ed644f58c5 100644
+diff --git a/drivers/mtd/spi-nor/controllers/Kconfig b/drivers/mtd/spi-nor/controllers/Kconfig
+index 10b86660b821..95fcd4b435be 100644
+--- a/drivers/mtd/spi-nor/controllers/Kconfig
++++ b/drivers/mtd/spi-nor/controllers/Kconfig
+@@ -9,17 +9,6 @@ config SPI_ASPEED_SMC
+ 	  and support for the SPI flash memory controller (SPI) for
+ 	  the host firmware. The implementation only supports SPI NOR.
+ 
+-config SPI_CADENCE_QUADSPI
+-	tristate "Cadence Quad SPI controller"
+-	depends on OF && (ARM || ARM64 || COMPILE_TEST)
+-	help
+-	  Enable support for the Cadence Quad SPI Flash controller.
+-
+-	  Cadence QSPI is a specialized controller for connecting an SPI
+-	  Flash over 1/2/4-bit wide bus. Enable this option if you have a
+-	  device with a Cadence QSPI controller and want to access the
+-	  Flash as an MTD device.
+-
+ config SPI_HISI_SFC
+ 	tristate "Hisilicon FMC SPI-NOR Flash Controller(SFC)"
+ 	depends on ARCH_HISI || COMPILE_TEST
+diff --git a/drivers/mtd/spi-nor/controllers/Makefile b/drivers/mtd/spi-nor/controllers/Makefile
+index 46e6fbe586e3..e7abba491d98 100644
+--- a/drivers/mtd/spi-nor/controllers/Makefile
++++ b/drivers/mtd/spi-nor/controllers/Makefile
+@@ -1,6 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0
+ obj-$(CONFIG_SPI_ASPEED_SMC)	+= aspeed-smc.o
+-obj-$(CONFIG_SPI_CADENCE_QUADSPI)	+= cadence-quadspi.o
+ obj-$(CONFIG_SPI_HISI_SFC)	+= hisi-sfc.o
+ obj-$(CONFIG_SPI_NXP_SPIFI)	+= nxp-spifi.o
+ obj-$(CONFIG_SPI_INTEL_SPI)	+= intel-spi.o
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 17e7e4afc0fc..15f308571163 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -200,6 +200,17 @@ config SPI_CADENCE
+ 	  This selects the Cadence SPI controller master driver
+ 	  used by Xilinx Zynq and ZynqMP.
+ 
++config SPI_CADENCE_QUADSPI
++	tristate "Cadence Quad SPI controller"
++	depends on OF && (ARM || ARM64 || COMPILE_TEST)
++	help
++	  Enable support for the Cadence Quad SPI Flash controller.
++
++	  Cadence QSPI is a specialized controller for connecting an SPI
++	  Flash over 1/2/4-bit wide bus. Enable this option if you have a
++	  device with a Cadence QSPI controller and want to access the
++	  Flash as an MTD device.
++
+ config SPI_CLPS711X
+ 	tristate "CLPS711X host SPI controller"
+ 	depends on ARCH_CLPS711X || COMPILE_TEST
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 889368f4ad53..f03834d1d312 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -31,6 +31,7 @@ obj-$(CONFIG_SPI_BCM_QSPI)		+= spi-iproc-qspi.o spi-brcmstb-qspi.o spi-bcm-qspi.
+ obj-$(CONFIG_SPI_BITBANG)		+= spi-bitbang.o
+ obj-$(CONFIG_SPI_BUTTERFLY)		+= spi-butterfly.o
+ obj-$(CONFIG_SPI_CADENCE)		+= spi-cadence.o
++obj-$(CONFIG_SPI_CADENCE_QUADSPI)	+= spi-cadence-quadspi.o
+ obj-$(CONFIG_SPI_CLPS711X)		+= spi-clps711x.o
+ obj-$(CONFIG_SPI_COLDFIRE_QSPI)		+= spi-coldfire-qspi.o
+ obj-$(CONFIG_SPI_DAVINCI)		+= spi-davinci.o
+diff --git a/drivers/mtd/spi-nor/controllers/cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+similarity index 99%
+rename from drivers/mtd/spi-nor/controllers/cadence-quadspi.c
+rename to drivers/spi/spi-cadence-quadspi.c
+index d788692efc55..de009e44f2aa 100644
 --- a/drivers/mtd/spi-nor/controllers/cadence-quadspi.c
-+++ b/drivers/mtd/spi-nor/controllers/cadence-quadspi.c
-@@ -1352,13 +1352,13 @@ static int cqspi_probe(struct platform_device *pdev)
- 	rstc = devm_reset_control_get_optional_exclusive(dev, "qspi");
- 	if (IS_ERR(rstc)) {
- 		dev_err(dev, "Cannot get QSPI reset.\n");
--		return PTR_ERR(rstc);
-+		goto probe_reset_failed;
- 	}
- 
- 	rstc_ocp = devm_reset_control_get_optional_exclusive(dev, "qspi-ocp");
- 	if (IS_ERR(rstc_ocp)) {
- 		dev_err(dev, "Cannot get QSPI OCP reset.\n");
--		return PTR_ERR(rstc_ocp);
-+		goto probe_reset_failed;
- 	}
- 
- 	reset_control_assert(rstc);
-@@ -1377,7 +1377,7 @@ static int cqspi_probe(struct platform_device *pdev)
- 			       pdev->name, cqspi);
- 	if (ret) {
- 		dev_err(dev, "Cannot request IRQ.\n");
--		goto probe_irq_failed;
-+		goto probe_reset_failed;
- 	}
- 
- 	cqspi_wait_idle(cqspi);
-@@ -1394,7 +1394,7 @@ static int cqspi_probe(struct platform_device *pdev)
- 	return ret;
- probe_setup_failed:
- 	cqspi_controller_enable(cqspi, 0);
--probe_irq_failed:
-+probe_reset_failed:
- 	clk_disable_unprepare(cqspi->clk);
- probe_clk_failed:
- 	pm_runtime_put_sync(dev);
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1,11 +1,11 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * Driver for Cadence QSPI Controller
+- *
+- * Copyright Altera Corporation (C) 2012-2014. All rights reserved.
+- * Copyright Intel Corporation (C) 2019-2020. All rights reserved.
+- * Copyright (C) 2020 Texas Instruments Incorporated - http://www.ti.com
+- */
++//
++// Driver for Cadence QSPI Controller
++//
++// Copyright Altera Corporation (C) 2012-2014. All rights reserved.
++// Copyright Intel Corporation (C) 2019-2020. All rights reserved.
++// Copyright (C) 2020 Texas Instruments Incorporated - http://www.ti.com
++
+ #include <linux/clk.h>
+ #include <linux/completion.h>
+ #include <linux/delay.h>
 -- 
 2.26.2
 

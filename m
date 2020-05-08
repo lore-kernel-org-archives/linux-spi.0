@@ -2,36 +2,53 @@ Return-Path: <SRS0=3Cdz=6W=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 072D3C47247
-	for <linux-spi@archiver.kernel.org>; Fri,  8 May 2020 13:31:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BDA28C38A2A
+	for <linux-spi@archiver.kernel.org>; Fri,  8 May 2020 13:33:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E820B2495B
-	for <linux-spi@archiver.kernel.org>; Fri,  8 May 2020 13:31:35 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7F0ED208DB
+	for <linux-spi@archiver.kernel.org>; Fri,  8 May 2020 13:33:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1588944820;
+	bh=mONIV7U+kyBJ+32pgZbmybpjfg+r5T9JwvmQQECspjk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=cX+KxnW4OjnjuGNoriEr1ejH5XXEHjwK1zc4EvuVE4EOZwHFsejKOc1hkIKYfYky/
+	 X5wCmm5WteWn/KUYCG2vx77/2wAJeCygEVdwy2BGUZFXF2sgM5w5My5fO9CA9twneU
+	 lCeQIysiwP9YqEdGbTWSyRC1A/7Puu7tg6M0NG4U=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728436AbgEHNb2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 8 May 2020 09:31:28 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:43020 "EHLO
-        mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727911AbgEHNb2 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 8 May 2020 09:31:28 -0400
-Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 0A3FC8030779;
-        Fri,  8 May 2020 13:31:25 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at baikalelectronics.ru
-Received: from mail.baikalelectronics.ru ([127.0.0.1])
-        by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id DueTPKJSiyXw; Fri,  8 May 2020 16:31:24 +0300 (MSK)
-From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
-To:     Mark Brown <broonie@kernel.org>
-CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-        Serge Semin <fancer.lancer@gmail.com>,
+        id S1726904AbgEHNdk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 8 May 2020 09:33:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53656 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726736AbgEHNdj (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 8 May 2020 09:33:39 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id AC1B120708;
+        Fri,  8 May 2020 13:33:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1588944819;
+        bh=mONIV7U+kyBJ+32pgZbmybpjfg+r5T9JwvmQQECspjk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Nyn14izNbLw13+C8aRmGKLcZ3BwlQUuLEJ+wYP5GhFb2XP30lsbQM10NmgZC09Vk+
+         UckP1Oje+G2jOGzqWw2Ut/0r8k5jd+3UhDGOVWT+ssUTm6Cvxir3gVhiZHdxwzrl2M
+         ywV18wQajYEE9Ko/eynJhng+mXsz4m3l1ELplzdk=
+Date:   Fri, 8 May 2020 14:33:36 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Cc:     Serge Semin <fancer.lancer@gmail.com>,
         Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>,
         Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>,
         Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
+        Maxim Kaurkin <Maxim.Kaurkin@baikalelectronics.ru>,
+        Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
+        Ekaterina Skachko <Ekaterina.Skachko@baikalelectronics.ru>,
+        Vadim Vlasov <V.Vlasov@baikalelectronics.ru>,
+        Alexey Kolotnikov <Alexey.Kolotnikov@baikalelectronics.ru>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         Paul Burton <paulburton@kernel.org>,
         Ralf Baechle <ralf@linux-mips.org>,
@@ -39,71 +56,53 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         Allison Randal <allison@lohutok.net>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Gareth Williams <gareth.williams.jx@renesas.com>,
-        Rob Herring <robh+dt@kernel.org>, <linux-mips@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 12/17] spi: dw: Fix dma_slave_config used partly uninitialized
-Date:   Fri, 8 May 2020 16:29:37 +0300
-Message-ID: <20200508132943.9826-13-Sergey.Semin@baikalelectronics.ru>
-In-Reply-To: <20200508132943.9826-1-Sergey.Semin@baikalelectronics.ru>
+        Rob Herring <robh+dt@kernel.org>, linux-mips@vger.kernel.org,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 00/17] spi: dw: Add generic DW DMA controller support
+Message-ID: <20200508133336.GK4820@sirena.org.uk>
 References: <20200508132943.9826-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="HcXnUX77nabWBLF4"
+Content-Disposition: inline
+In-Reply-To: <20200508132943.9826-1-Sergey.Semin@baikalelectronics.ru>
+X-Cookie: Give him an evasive answer.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Since the TX and RX DMA-slave config structures are declared on the
-stack and only a part of their fields is initialized further in the
-prepare Tx/Rx methods, the next dmaengine_slave_config() calls may
-randomly perform an incorrect DMA channels setup depending on the
-stack initial values. Lets fix this by zeroing the config-structures
-before using them.
 
-Co-developed-by: Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>
-Signed-off-by: Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>
-Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Cc: Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>
-Cc: Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: Paul Burton <paulburton@kernel.org>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Allison Randal <allison@lohutok.net>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Gareth Williams <gareth.williams.jx@renesas.com>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: linux-mips@vger.kernel.org
-Cc: devicetree@vger.kernel.org
----
- drivers/spi/spi-dw-dma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+--HcXnUX77nabWBLF4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-dw-dma.c b/drivers/spi/spi-dw-dma.c
-index d89a00fb705e..3802d2cafe91 100644
---- a/drivers/spi/spi-dw-dma.c
-+++ b/drivers/spi/spi-dw-dma.c
-@@ -166,7 +166,7 @@ static void dw_spi_dma_tx_done(void *arg)
- static struct dma_async_tx_descriptor *dw_spi_dma_prepare_tx(struct dw_spi *dws,
- 		struct spi_transfer *xfer)
- {
--	struct dma_slave_config txconf;
-+	struct dma_slave_config txconf = {0};
- 	struct dma_async_tx_descriptor *txdesc;
- 
- 	if (!xfer->tx_buf)
-@@ -238,7 +238,7 @@ static void dw_spi_dma_rx_done(void *arg)
- static struct dma_async_tx_descriptor *dw_spi_dma_prepare_rx(struct dw_spi *dws,
- 		struct spi_transfer *xfer)
- {
--	struct dma_slave_config rxconf;
-+	struct dma_slave_config rxconf = {0};
- 	struct dma_async_tx_descriptor *rxdesc;
- 
- 	if (!xfer->rx_buf)
--- 
-2.25.1
+On Fri, May 08, 2020 at 04:29:25PM +0300, Serge Semin wrote:
 
+> Serge Semin (17):
+>   dt-bindings: spi: Convert DW SPI binding to DT schema
+
+Please don't make new feature development dependent on conversion to the
+new schema format, there's quite a backlog of reviews of schema
+conversions so it can slow things down.  It's good to do the conversions
+but please do them after adding any new stuff to the binding rather than
+before.
+
+--HcXnUX77nabWBLF4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl61X7AACgkQJNaLcl1U
+h9CLnAf+O/mkQGXZWskF1aU9ifA3WKCaGO7ENKOG2HlI7+/2BtDt7ImOkCrcBbKb
+K9yAjXfWqhx47uiQoeLJtmdZQVBhn73fL867tXqzbvo1IfIw8nAk7VNmePzIDMcL
+61DQCKjbmBvQd70xDDzjrOCZbMSJ5zzjWSBClVFZDi7VvB0Q7ngIRoWJkKy/mm8D
+joP8Y76nidk0LMvKgqhmCwxIXKTFgacy9ld8zckl1VgkzFAQ5AT1yKOOWZiCUHMt
+8dfJt0DwzuBEUKUDcGFXFg4duheda20SgYnFkrM19Nh/D39dqJ//xyCUhViWz/yB
+GaOwQ+OgauLqiTph56P0R/1rFek2/Q==
+=FjO8
+-----END PGP SIGNATURE-----
+
+--HcXnUX77nabWBLF4--

@@ -6,52 +6,55 @@ X-Spam-Status: No, score=-1.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
 	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BCBEC54E8D
-	for <linux-spi@archiver.kernel.org>; Mon, 11 May 2020 11:25:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 89954C47255
+	for <linux-spi@archiver.kernel.org>; Mon, 11 May 2020 11:28:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0BC6D208DB
-	for <linux-spi@archiver.kernel.org>; Mon, 11 May 2020 11:25:11 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 696E620736
+	for <linux-spi@archiver.kernel.org>; Mon, 11 May 2020 11:28:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1589196311;
-	bh=axzFcp862ivBEqBZfANOieja1Y9dpnhcBwtdnREXY+0=;
+	s=default; t=1589196511;
+	bh=iM8v+QfgxIMkd/ubDyYGJ/Lo+FpxBTAgrfwxnETDfBA=;
 	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=QHj1XEqdYPyUGQ/wYWLZY6yS7DEcv0KqDCsn7q3jF+fPZOLD3Sh8bWo9kyl3J934i
-	 vVNVBKAiRjLLhIwxNdVBweLd28UkWa9hiJMiGan7xXwcXycjJLZOvmUOz5k2+dT5W3
-	 p9EN8In5qiGG+2wJAuBUSSPIFWQEFT3pnrSpt/Rg=
+	b=P4tTRJZaCXvog1qMomABsrqtpWcCAw0eeiPEaSnGQe4cGqcupID3421Z5xce9YjLw
+	 GKvtD83Zf1xVaopH7DuldeKqoefYjmPpLYN+2rteIsc6frqe4wXV8R8PFXiNWZv56v
+	 seuCKvCQs/goG0R5i5wUckIE6VNPysF0JgG6F2Fg=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727873AbgEKLZJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 11 May 2020 07:25:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40304 "EHLO mail.kernel.org"
+        id S1729680AbgEKL23 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 11 May 2020 07:28:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41180 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726068AbgEKLZJ (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 11 May 2020 07:25:09 -0400
+        id S1729650AbgEKLZi (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 11 May 2020 07:25:38 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0AF6820736;
-        Mon, 11 May 2020 11:25:07 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 813C920736;
+        Mon, 11 May 2020 11:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589196308;
-        bh=axzFcp862ivBEqBZfANOieja1Y9dpnhcBwtdnREXY+0=;
+        s=default; t=1589196338;
+        bh=iM8v+QfgxIMkd/ubDyYGJ/Lo+FpxBTAgrfwxnETDfBA=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=mZVF+81kOc1WTLOhTagcWWBaji4NYGD2Of6t46KZM0fWLf5O4Dd1UYaMKal/aPcGY
-         tcgvnDn2vgtAxh26ax1oVFtZ9zBjL6AZnM1utDHVY6onLbkEVM/arln/PVEuAl3ROz
-         u0wfhf/s02X+20GVT0EsDR36IM85jg9ylwQVeniU=
-Date:   Mon, 11 May 2020 12:25:05 +0100
+        b=Y5SuKuX/7yPBXeDxkYtcbXQwgIhCYWiK7SRh6xG90AJ0YwUiByurS0ZviupWe1VH2
+         BV2ldz8nERLbCEWDPxHILaNt2Yyxcq5RK0sSyOkmiQMtJ2Zv90tIaP/cc1bCIDxndA
+         tN2uTKGTA+cQO/XhdoTX5+9mXeGxnotA8SJm1Bmo=
+Date:   Mon, 11 May 2020 12:25:35 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Jay Fang <f.fangjian@huawei.com>, linux-spi@vger.kernel.org
-Cc:     huangdaode@hisilicon.com, linuxarm@huawei.com
-In-Reply-To: <1588991392-24219-1-git-send-email-f.fangjian@huawei.com>
-References: <1588991392-24219-1-git-send-email-f.fangjian@huawei.com>
-Subject: Re: [PATCH] spi: dw-mmio: Do not add acpi modalias when CONFIG_ACPI is not enabled
-Message-Id: <158919630591.8372.13162390322267160286.b4-ty@kernel.org>
+To:     linux-spi@vger.kernel.org,
+        Alistair Francis <alistair@alistair23.me>
+Cc:     linux-kernel@vger.kernel.org, wens@csie.org, mripard@kernel.org,
+        linux-arm-kernel@lists.infradead.org, alistair23@gmail.com
+In-Reply-To: <20200511045330.690507-1-alistair@alistair23.me>
+References: <20200511045330.690507-1-alistair@alistair23.me>
+Subject: Re: [PATCH v2] spi: sun6i: Add support for GPIO chip select lines
+Message-Id: <158919630591.8372.404655401498379497.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sat, 9 May 2020 10:29:51 +0800, Jay Fang wrote:
-> Reduce unnecessary static memory allocation when CONFIG_ACPI is not enabled.
+On Sun, 10 May 2020 21:53:30 -0700, Alistair Francis wrote:
+> Set use_gpio_descriptors as true to support using generic GPIO
+> lines for the chip select.
 
 Applied to
 
@@ -59,7 +62,7 @@ Applied to
 
 Thanks!
 
-[1/1] spi: dw-mmio: Do not add acpi modalias when CONFIG_ACPI is not enabled
+[1/1] spi: sun6i: Add support for GPIO chip select lines
       (no commit info)
 
 All being well this means that it will be integrated into the linux-next

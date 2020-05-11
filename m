@@ -6,55 +6,56 @@ X-Spam-Status: No, score=-1.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
 	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 02A1CC47255
-	for <linux-spi@archiver.kernel.org>; Mon, 11 May 2020 17:21:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 84978C54E90
+	for <linux-spi@archiver.kernel.org>; Mon, 11 May 2020 17:21:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C825920752
-	for <linux-spi@archiver.kernel.org>; Mon, 11 May 2020 17:21:49 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6610C20722
+	for <linux-spi@archiver.kernel.org>; Mon, 11 May 2020 17:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1589217709;
-	bh=uLiY26Fl0HsdaY+0df8HTe/ulHJxBjmHpFvc/MQdxKo=;
+	s=default; t=1589217716;
+	bh=hbim+lK4kK4svUzZv9ph3jJIF+6ksgUNjk/EOsFRWqo=;
 	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=TkNhrpFlG27QbSPuT2tO/EBEl9xyCLBrO0BCixTK63e8o2ixgM4uG8PU1eYnJafzV
-	 nW3iGAdWVIwL+CwRau5BxTaFohkWbPufAotwe6ur0A9K7RhsQO1bN9T/LqL6i01KQE
-	 re7Hgz26gRVfBUKC1b/HGUg0sKjTPH1zPMKrI8sk=
+	b=2tCYxEH/3BDvWS9EaKB4lsskciURLcXmbm8ltBkrZ9C5C9uwZoJls9yDLkC6Vs8Wl
+	 7SmHVOFahLkDQQ+YidoPtoKjIRzpAh/7ZOG7nbIE65EnMv1E6X2a4QcJ2muyJ3FdVz
+	 3pkZRjW7IoyirYed7qReFjCm8ipuyQziEjq68NMU=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730951AbgEKRVt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 11 May 2020 13:21:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38816 "EHLO mail.kernel.org"
+        id S1730972AbgEKRVz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 11 May 2020 13:21:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39078 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730644AbgEKRVt (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 11 May 2020 13:21:49 -0400
+        id S1730966AbgEKRVy (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 11 May 2020 13:21:54 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6451E20746;
-        Mon, 11 May 2020 17:21:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2EB3F20746;
+        Mon, 11 May 2020 17:21:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589217708;
-        bh=uLiY26Fl0HsdaY+0df8HTe/ulHJxBjmHpFvc/MQdxKo=;
+        s=default; t=1589217714;
+        bh=hbim+lK4kK4svUzZv9ph3jJIF+6ksgUNjk/EOsFRWqo=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=D85ROROMtcdx6iqvyEY3chT8cRwx2acwED/ck89w9onUCiajphvGfrEaUuGOYC7ja
-         87qbsFodx/iGjXkelEMrwc0r+VX06FWesqsnMaF3dFTzFq/o4+v3KNJpaghu4zqI+8
-         kuSN6VvDWwH8O69xThbxxzSEvUhRK73ymiQ183F0=
-Date:   Mon, 11 May 2020 18:21:46 +0100
+        b=tDNYww2k6hQ4sYbnEEt/tR5lkW++TYhDRiTFmKPKb5MPvdhzdk/yfl7iHJlGyYgGB
+         AcpkbcqGB+aCE6il8WLv5xRKCJfbIzviLk/KjDiukRD+kaNl/nA9snN4hqUFDarks/
+         JtfkPYd5hGuoGgkryUFt0KjHDjO4eHCtBqVF+yEY=
+Date:   Mon, 11 May 2020 18:21:52 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-In-Reply-To: <1589185530-28170-1-git-send-email-hayashi.kunihiko@socionext.com>
-References: <1589185530-28170-1-git-send-email-hayashi.kunihiko@socionext.com>
-Subject: Re: [PATCH 1/2] spi: uniphier: Depend on HAS_IOMEM
-Message-Id: <158921769452.22432.4067237223059688972.b4-ty@kernel.org>
+To:     linux-spi@vger.kernel.org,
+        Alistair Francis <alistair@alistair23.me>
+Cc:     mripard@kernel.org, wens@csie.org,
+        linux-arm-kernel@lists.infradead.org, alistair23@gmail.com,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20200511045330.690507-1-alistair@alistair23.me>
+References: <20200511045330.690507-1-alistair@alistair23.me>
+Subject: Re: [PATCH v2] spi: sun6i: Add support for GPIO chip select lines
+Message-Id: <158921769452.22432.2126080919845661372.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 11 May 2020 17:25:29 +0900, Kunihiko Hayashi wrote:
-> The driver uses devm_ioremap_resource() which is only available when
-> CONFIG_HAS_IOMEM is set, so the driver depends on this option.
+On Sun, 10 May 2020 21:53:30 -0700, Alistair Francis wrote:
+> Set use_gpio_descriptors as true to support using generic GPIO
+> lines for the chip select.
 
 Applied to
 
@@ -62,9 +63,7 @@ Applied to
 
 Thanks!
 
-[1/2] spi: uniphier: Depend on HAS_IOMEM
-      (no commit info)
-[2/2] spi: uniphier: Use devm_platform_get_and_ioremap_resource() to simplify code
+[1/1] spi: sun6i: Add support for GPIO chip select lines
       (no commit info)
 
 All being well this means that it will be integrated into the linux-next

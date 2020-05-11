@@ -7,85 +7,80 @@ X-Spam-Status: No, score=-5.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 507B1C54E4A
-	for <linux-spi@archiver.kernel.org>; Mon, 11 May 2020 21:21:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 342A2C54E4A
+	for <linux-spi@archiver.kernel.org>; Mon, 11 May 2020 21:23:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 317652075E
-	for <linux-spi@archiver.kernel.org>; Mon, 11 May 2020 21:21:35 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 13FC120752
+	for <linux-spi@archiver.kernel.org>; Mon, 11 May 2020 21:23:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1589232095;
-	bh=cj+gY25YFYSlSakLvNyyvLbwApYrU33TjY+R4pY9Nxw=;
+	s=default; t=1589232182;
+	bh=CNeGzBWdZD1DH71TfAh0IYvOu2W40xVYRv1KD8eZjK0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=Pej2KAZAFt/Ncdg3LquAQyb10KdO64Q9zzXC6NyH9cAYwMpyvWe7LYivLhnI3MXdH
-	 ojDAl5epqHQ1U8KifNfmFTjYReMOBFifBwC0ClPgj81LsD3J2h6u8AnnNlxY/wt6kZ
-	 JN43fx/YSuY9b0IrkxtImB/tE+61H+T2Wi1jAdkI=
+	b=CJc4sp1Fb8L2ejLkWy3vDRL6baJUGIkb48LWA6Aoy79rGDxCVcv9zI+YXByGtwSu7
+	 pCXCW6J+EfJDuv5jsuIjBhIdeQCikOLNyKwjWqvGUcBFz8PmkfkQWa0MJ5/xlJvhLo
+	 K5xIA/dSXoIkvIyL82nWoplDMUua1b7IlGLq+8rw=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725987AbgEKVVc (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 11 May 2020 17:21:32 -0400
-Received: from mail-oo1-f66.google.com ([209.85.161.66]:39054 "EHLO
-        mail-oo1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725895AbgEKVVc (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 May 2020 17:21:32 -0400
-Received: by mail-oo1-f66.google.com with SMTP id c83so2265799oob.6;
-        Mon, 11 May 2020 14:21:31 -0700 (PDT)
+        id S1725904AbgEKVW7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 11 May 2020 17:22:59 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:35430 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725810AbgEKVW6 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 May 2020 17:22:58 -0400
+Received: by mail-oi1-f196.google.com with SMTP id o7so16439294oif.2;
+        Mon, 11 May 2020 14:22:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=BuN92xQKE1O2gCcfAoLZqAomgXd8adBPnCrmK9Ay5OI=;
-        b=LmI/i3qQU1bAxWt7iSzv/cMoueAmtftdbjh/4qyJNRujK48UhYsWNjn6R+75JM6e2s
-         wvQyaSzQ+p/XCLGeGkjh8SKn5y38sEOfYiAPEMzWpwbndqJZdLLKCogU3DHDILj/N5+u
-         b285AsjmUEBcvY8X9ljkcPYJVGzbqEgHkYsxDgsCWtR5VEE5jQxUIzpF2A8heDJAaf+j
-         T/hs63Hxe272MRuW1dYB+/TjHROS56mIF0ZBsNo5iQmZlxfuOsaLTjtp/j/hozXFYjPT
-         NAUXWyQtaThRN4QDU/rYbcOpQiZQr+Rq86udUeQeYTP6jflahm8gxs1haWRBDh03KaTO
-         HT0g==
-X-Gm-Message-State: AGi0PuZsZm46d3paUfrhERGap3i4iAEVhXJ/subgcGp7UyLX8BN8o5xc
-        KV/BnBpQgPw1qJL1sF9WRQ==
-X-Google-Smtp-Source: APiQypLnylkh5RtyKnJucQVNptDtrvSqg94sFVspZqr+nL1wlN/fvMFck/XbwCiTrWyJMEwAhkexgA==
-X-Received: by 2002:a4a:86cd:: with SMTP id y13mr6631353ooh.87.1589232090833;
-        Mon, 11 May 2020 14:21:30 -0700 (PDT)
+        bh=+Mkg8V+JoQWX2B1DM8yjs2lSLyhIKdykuN4gn3x5ifk=;
+        b=tpKfCEYznj6Qq2RnxAGFUf8YYJWQ+NHDIhi7Pyhp5mY2Ul2O28DGISEJkZMU4vQmE3
+         +o9xdtEhlr4p8IYYcWfbXG0au/N7xk0jropT5I7HbhholiYXEbq67NZHIW3K1XK+MBTz
+         bb6t+nWAkoRL5+/zg9J5uGT2E8nunjbOhf4lo0yRflwXkh+weABg/aWN3PMHL15xbCG5
+         Nt+/7P/UrXj0zIuKo9thtvZuL4GqmKsq4AYcS6IjXBz35YJX8SX/bEPHvmI9268GjC9T
+         rliU6jkf4WiJI2RjYgrMRUDP+ZXKBIm+dfQjxGzpao9LLLniUW5wdaB9ZCfIwuyBnSEM
+         1/wQ==
+X-Gm-Message-State: AGi0PuaT7VZf6ys+7ZXhAhOL/70g0yLi9v4VUeoX+RiWQ+JZ3It6UvB5
+        2hsdhPX9C9Dh8UrMGKwajg==
+X-Google-Smtp-Source: APiQypKK2ag6IZ/ioSiXyqFVnRS0KNl0xbPPl20EbtjPgyv/rgbjHbchQHheBVTK8FGO/hArALam1A==
+X-Received: by 2002:aca:ba05:: with SMTP id k5mr20580338oif.35.1589232177745;
+        Mon, 11 May 2020 14:22:57 -0700 (PDT)
 Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id 85sm4919969oie.17.2020.05.11.14.21.29
+        by smtp.gmail.com with ESMTPSA id x129sm4973259oia.50.2020.05.11.14.22.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2020 14:21:30 -0700 (PDT)
-Received: (nullmailer pid 32549 invoked by uid 1000);
-        Mon, 11 May 2020 21:21:29 -0000
-Date:   Mon, 11 May 2020 16:21:29 -0500
+        Mon, 11 May 2020 14:22:57 -0700 (PDT)
+Received: (nullmailer pid 2674 invoked by uid 1000);
+        Mon, 11 May 2020 21:22:56 -0000
+Date:   Mon, 11 May 2020 16:22:56 -0500
 From:   Rob Herring <robh@kernel.org>
-To:     Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Cc:     Mark Brown <broonie@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>, linux-spi@vger.kernel.org
-Subject: Re: [PATCH v2] dt-bindings: spi: Convert UniPhier SPI controller to
- json-schema
-Message-ID: <20200511212129.GA32453@bogus>
-References: <1587720562-15293-1-git-send-email-hayashi.kunihiko@socionext.com>
+To:     Dilip Kota <eswara.kota@linux.intel.com>
+Cc:     broonie@kernel.org, daniel.schwierzeck@gmail.com,
+        cheol.yong.kim@intel.com, linux-spi@vger.kernel.org,
+        chuanhua.lei@linux.intel.com, devicetree@vger.kernel.org,
+        qi-ming.wu@intel.com, linux-kernel@vger.kernel.org,
+        andriy.shevchenko@intel.com, hauke@hauke-m.de
+Subject: Re: [PATCH 3/4] dt-bindings: spi: Add support to Lightning Mountain
+ SoC
+Message-ID: <20200511212256.GA2510@bogus>
+References: <cover.1587702428.git.eswara.kota@linux.intel.com>
+ <1f447a5ab8fee5bc9116ba70b0344193c9c6cc06.1587702428.git.eswara.kota@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1587720562-15293-1-git-send-email-hayashi.kunihiko@socionext.com>
+In-Reply-To: <1f447a5ab8fee5bc9116ba70b0344193c9c6cc06.1587702428.git.eswara.kota@linux.intel.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, 24 Apr 2020 18:29:22 +0900, Kunihiko Hayashi wrote:
-> Convert UniPhier SPI controller binding to DT schema format.
+On Fri, 24 Apr 2020 18:42:32 +0800, Dilip Kota wrote:
+> Add support to SPI controller on Intel Atom based Lightning Mountain
+> SoC which reuses the Lantiq SPI controller IP.
 > 
-> Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+> Signed-off-by: Dilip Kota <eswara.kota@linux.intel.com>
 > ---
-> 
-> Changes since v1:
-> - Put "#address-cells" and "#size-cells" into the required list
-> 
->  .../bindings/spi/socionext,uniphier-spi.yaml       | 57 ++++++++++++++++++++++
->  .../devicetree/bindings/spi/spi-uniphier.txt       | 28 -----------
->  2 files changed, 57 insertions(+), 28 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/spi/socionext,uniphier-spi.yaml
->  delete mode 100644 Documentation/devicetree/bindings/spi/spi-uniphier.txt
+>  .../devicetree/bindings/spi/spi-lantiq-ssc.txt      | 21 +++++++++++++++++++--
+>  1 file changed, 19 insertions(+), 2 deletions(-)
 > 
 
 Reviewed-by: Rob Herring <robh@kernel.org>

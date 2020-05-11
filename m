@@ -2,528 +2,191 @@ Return-Path: <SRS0=csd4=6Z=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	UNWANTED_LANGUAGE_BODY,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FEBBC54E8F
-	for <linux-spi@archiver.kernel.org>; Mon, 11 May 2020 08:30:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2044DC47255
+	for <linux-spi@archiver.kernel.org>; Mon, 11 May 2020 09:00:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2800C2080C
-	for <linux-spi@archiver.kernel.org>; Mon, 11 May 2020 08:30:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id EBFC8207DD
+	for <linux-spi@archiver.kernel.org>; Mon, 11 May 2020 09:00:40 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="ypirCHRs";
+	dkim=pass (1024-bit key) header.d=microchiptechnology.onmicrosoft.com header.i=@microchiptechnology.onmicrosoft.com header.b="iali1JoD"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728702AbgEKIaq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 11 May 2020 04:30:46 -0400
-Received: from server-x.ipv4.hkg02.ds.network ([27.111.83.178]:58612 "EHLO
-        mail.gtsys.com.hk" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
-        with ESMTP id S1728556AbgEKIao (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 May 2020 04:30:44 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by mail.gtsys.com.hk (Postfix) with ESMTP id 0B5142003CA0;
-        Mon, 11 May 2020 16:30:41 +0800 (HKT)
-X-Virus-Scanned: Debian amavisd-new at gtsys.com.hk
-Received: from mail.gtsys.com.hk ([127.0.0.1])
-        by localhost (mail.gtsys.com.hk [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id npZglAGJzljb; Mon, 11 May 2020 16:30:40 +0800 (HKT)
-Received: from s01.gtsys.com.hk (unknown [10.128.4.2])
-        by mail.gtsys.com.hk (Postfix) with ESMTP id E407620020CB;
-        Mon, 11 May 2020 16:30:40 +0800 (HKT)
-Received: from armhf2.gtsys.com.hk (unknown [10.128.4.15])
-        by s01.gtsys.com.hk (Postfix) with ESMTP id E0D1DC01F94;
-        Mon, 11 May 2020 16:30:40 +0800 (HKT)
-Received: by armhf2.gtsys.com.hk (Postfix, from userid 1000)
-        id DADC92001DE; Mon, 11 May 2020 16:30:40 +0800 (HKT)
-From:   Chris Ruehl <chris.ruehl@gtsys.com.hk>
-To:     Chris Ruehl <chris.ruehl@gtsys.com.hk>,
-        Jack Lo <jack.lo@gtsys.com.hk>
-Cc:     Mark Brown <broonie@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v1 1/3] spi: spi-rockchip: cleanup use struct spi_controller
-Date:   Mon, 11 May 2020 16:30:20 +0800
-Message-Id: <20200511083022.23678-2-chris.ruehl@gtsys.com.hk>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200511083022.23678-1-chris.ruehl@gtsys.com.hk>
-References: <20200511083022.23678-1-chris.ruehl@gtsys.com.hk>
+        id S1728425AbgEKJAk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 11 May 2020 05:00:40 -0400
+Received: from esa5.microchip.iphmx.com ([216.71.150.166]:63347 "EHLO
+        esa5.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728309AbgEKJAk (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 May 2020 05:00:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1589187640; x=1620723640;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=Ps9HwEIgGRmWlYbSzXCQ2wypQT0gHrWrHPwwkkx9emk=;
+  b=ypirCHRsyOL3hVKZPJ+uIwNVoFMzuCcJJMXuutIJ+qBrSIdUMuhbejq+
+   WtLHuWmkvEoGBMuM6nTo6C4zwYND3SPU4I1Q+qCW7f3r2y0Yyh9LCNssS
+   R24vDpQAlQtU928iB9vP4q7WyKQVyv0ExA0jG6fkUvaFhRNXulM8i0NqT
+   6bIXdBGUNuRvmTGf0my0cUVUJKiLQOFeOYCJVSkyskIrM3dhSc39Edpn+
+   nupAt8MEIWXBDfGJhuS9mT5Q8zmOr1eQWHwdLtsJOjE3A9O7fKIlxoD/M
+   wkuQaQcMi+6R48jutrJv+gJZnjnfTEXYdaPpwAc5VmBWZpdHbRglJ+mDG
+   Q==;
+IronPort-SDR: W7v7F3fePcC79mASEJuRUi2aeRbMisK56hJ5pb8/Z0MEMXddV04zkxIM/DS0KkHCB8cwJbfKtZ
+ sOV1zFJ489f6rwxwBzRwXeU5BEf0c1MWhHj0M9HlXlZEbMgYq4KWEftTSfe7VvHAb9ZocR7E5A
+ vQK/iHjprASF+UGEF62XEegOINB0ZlYuJK5FXWActVloXTDt9vD8WVD6RbqSnRjOR2UPZ+wfYq
+ 0ohMZzy9hrKO+rWdOvx2zVfvj+6QA9kyAhupxS7/mCAz3p1ZGbQ8rDID9o3F6TF63jdg07D4lv
+ vM8=
+X-IronPort-AV: E=Sophos;i="5.73,379,1583218800"; 
+   d="scan'208";a="75456419"
+Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 11 May 2020 02:00:39 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Mon, 11 May 2020 02:00:37 -0700
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (10.10.215.89) by
+ email.microchip.com (10.10.87.72) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5 via Frontend
+ Transport; Mon, 11 May 2020 02:00:41 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hA0pEtvfQ1VBJDX983Fg3TU3zWHhrVJIjdAW+aBeU4LdZcU3LhWA5VCY8F0apAB7ekGJc8tNnQorDwGeXJx2hIBoGHH4uujvDbku6hMp7mG9ECz6w+Tgo7x0/vT/97lv7XQvMmiBGHb2RUb0vlYsN1+Td457R/unU8/YcNj1n/mYzGfG9DWxYAVweWITqxtF36vrqh0OB5ALG1ibvpXu98Qc/LYWIampkwSSew/Me4JpNkYKcOHo2SSz/l8Wa0aZ5HPpnaNbvVyt0zB7ddTNg6D03pbIZVcvVgNdmjehhAuVIwgEh2KOw7os0dFmQnPn9mqzrEHzXqLmt6LweftRcg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ps9HwEIgGRmWlYbSzXCQ2wypQT0gHrWrHPwwkkx9emk=;
+ b=SyuPPHvXklve8pqkEjYn6X/RL81mnQw08rVA6Ug+lomm/NnSqzrVosQi8WTXptN8UKyjFpPS387eF4mNPJDJOHmduDtAIgpgjpaDJUtu3iGtf1kDklG227ehk75E7TY4bhDlzf6fcMAikfFaA26QkTzZ7kVc0jG9BMvrWVYntU6+rxyfK2zz+NYx6RC19NfjxqO6LiTkb2QQXUtns3LX13vV/Bid7+NYkH3UtbG7zZein8XeAQ652Mz+BCEqPpeWPdhRl/ctVJeavPvqeGD4Z2aMmz75pobZpkE7KSQlGx63MyRXm494cxrTohp+oKku6mcEJ3wB5DlqH5OHJ7QAHA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=microchiptechnology.onmicrosoft.com;
+ s=selector2-microchiptechnology-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ps9HwEIgGRmWlYbSzXCQ2wypQT0gHrWrHPwwkkx9emk=;
+ b=iali1JoD7uZ/E722LD6/UB2g1aV8If9sAwbPbjidTw8ou2tI70eXhzmjcXKg4rbeNkX1BBik6Xee11Ret2v4DvKwgQ/BFRKVRt6b9IpsWUflPsPJ1wi1fXPZNUOlmMirQZz6rXfduQ1L/SSK+cm4aFGZK4tcRFgCsB2AhaiguRM=
+Received: from BY5PR11MB4419.namprd11.prod.outlook.com (2603:10b6:a03:1c8::13)
+ by BY5PR11MB3975.namprd11.prod.outlook.com (2603:10b6:a03:184::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2979.26; Mon, 11 May
+ 2020 09:00:35 +0000
+Received: from BY5PR11MB4419.namprd11.prod.outlook.com
+ ([fe80::d847:5d58:5325:c536]) by BY5PR11MB4419.namprd11.prod.outlook.com
+ ([fe80::d847:5d58:5325:c536%7]) with mapi id 15.20.2979.033; Mon, 11 May 2020
+ 09:00:35 +0000
+From:   <Tudor.Ambarus@microchip.com>
+To:     <p.yadav@ti.com>, <boris.brezillon@collabora.com>
+CC:     <miquel.raynal@bootlin.com>, <richard@nod.at>, <vigneshr@ti.com>,
+        <broonie@kernel.org>, <Nicolas.Ferre@microchip.com>,
+        <alexandre.belloni@bootlin.com>, <Ludovic.Desroches@microchip.com>,
+        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <nsekhar@ti.com>
+Subject: Re: [PATCH v4 00/16] mtd: spi-nor: add xSPI Octal DTR support
+Thread-Topic: [PATCH v4 00/16] mtd: spi-nor: add xSPI Octal DTR support
+Thread-Index: AQHWJ3Khn/aolf/mv0usqjltSIxTLg==
+Date:   Mon, 11 May 2020 09:00:35 +0000
+Message-ID: <3649933.zuh8VGJVCz@192.168.0.120>
+References: <20200424184410.8578-1-p.yadav@ti.com>
+In-Reply-To: <20200424184410.8578-1-p.yadav@ti.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: ti.com; dkim=none (message not signed)
+ header.d=none;ti.com; dmarc=none action=none header.from=microchip.com;
+x-originating-ip: [94.177.32.156]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 92a278c0-aece-4143-0505-08d7f589c47d
+x-ms-traffictypediagnostic: BY5PR11MB3975:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <BY5PR11MB397506D5434693BD7B9B9E4FF0A10@BY5PR11MB3975.namprd11.prod.outlook.com>
+x-bypassexternaltag: True
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-forefront-prvs: 04004D94E2
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: PUszZyRx7LcE2BjzcR/GjCjj/eYzbWgHZuuwW7HPlMLgV93zX9ntVFj1+k+rCSx6FzwPZGMSMMgcCArZmixOrwE0kPrIVf6wF+xrCgeO2C7aLnob6P0IHJ77bfk2G4xq9/Lqs2ju9V0p6PRyoxKit5auds9ABbIzLESL/0etR+9W6MY2ZwZE5sVMvnE+sVbuCBZYMGI1MoczUIlwj6ruO4loWmSkfsYW+g89AxWvVmmd6+cm8sGc5sX0WItZQJ3q6SkhOyVvs/x7MvYrpa/IeysVRX0GU8+HnfwdVKe6rvi0MzI6yD69zCv+iTgsOKgRnxQMkBLytVLaGQrs9gHja6fKweEKh4aDRnpxboVr1JQNoD31lIem2TBGsNm19SxNjmLkdl3hxFOm4TfU2kqS1aNZkN2Pwj+GoTZZi9Kr+VKPiscBr41RTOZ1HlTgjFCe7tEsATA3e/R/7J7PxJkBojrrYoHqvMk9ZAc58dgv/8DnhAcpnwedYamzX3fnDFE1jBfo+Ow22H0sxbtnuTOIFqp/RoyoDgSucMq7d3VJdjc7M3wU4IclaYHBf7YgA2v2
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR11MB4419.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(396003)(366004)(39860400002)(376002)(136003)(346002)(33430700001)(71200400001)(33440700001)(2906002)(86362001)(14286002)(6486002)(7416002)(64756008)(66556008)(66476007)(66446008)(9686003)(6512007)(8676002)(8936002)(54906003)(5660300002)(316002)(91956017)(76116006)(66946007)(6506007)(53546011)(4326008)(478600001)(26005)(110136005)(186003)(39026012);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: oAUyy0pW1NzoftWqj90QzDowXKm6CDEK02CRVS12jeO6mRV8ZRlSaK9nfWq3aMyADRV14oithkK6woSW4GFIJ+ZJza85l9T9wwCb1ZLNv7jUGF2rm/AwA2ImrAWy0DmPFQqBRxWSHzFZY7a4SrnsPON0x5WC/RauFd9Wh2TgAkywn+UPA5Yv23HIEXtYq/Au6p4JU0kFNNjOelhtlXRZ7zjRmOAO6YTe3hgBQiiNowfnpPSgS5npGuHKLz1ELBZntvMEYub1iDXTKz4DnuYpbl9Q3zvteZa2CyN0GDyPfiyoQHLgWFJH3PGX9pTUMlKD7Ku13mPtcjkqzcL1z2brHu/4/g5R2a4TYG0Lj433u0PUMrqtjptNTRR9E9R/xzXtzc9jokhG9DwFQLnc0NcJoM730ttzKnM4AbFBstVT0pKw9keADyN4j1p0gt3sOF7Pu2ikYoPjmn1MnF6exVbkSzpIFoIW0kYsbj7KMU8A0U0=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <FC1D03ED70AB18478EDAF0B070DEC3BA@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-Network-Message-Id: 92a278c0-aece-4143-0505-08d7f589c47d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 May 2020 09:00:35.0417
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: sPFMgUsS60Ng6GTw35EFXYBzZNSRfKeHnUj6l6W59l0y1Yc9YdPYG0V0t3vH6gWN6QgSz44LRUraa1s0LYN3xvqpqDOfFBuMCrWJlKLW15Q=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR11MB3975
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Cleanup, move from the compatibily layer struct spi_master over
-to struct spi_controller, and rename the related function calls.
+Hi, Pratyush, Boris,
 
-Signed-off-by: Chris Ruehl <chris.ruehl@gtsys.com.hk>
----
- drivers/spi/spi-rockchip.c | 182 ++++++++++++++++++-------------------
- 1 file changed, 91 insertions(+), 91 deletions(-)
+On Friday, April 24, 2020 9:43:54 PM EEST Pratyush Yadav wrote:
+> This series adds support for octal DTR flashes in the spi-nor framework,
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 70ef63e0b6b8..c501d8a84414 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -219,8 +219,8 @@ static u32 get_fifo_len(struct rockchip_spi *rs)
- 
- static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
- {
--	struct spi_master *master = spi->master;
--	struct rockchip_spi *rs = spi_master_get_devdata(master);
-+	struct spi_controller *ctlr = spi->controller;
-+	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
- 	bool cs_asserted = !enable;
- 
- 	/* Return immediately for no-op */
-@@ -244,10 +244,10 @@ static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
- 	rs->cs_asserted[spi->chip_select] = cs_asserted;
- }
- 
--static void rockchip_spi_handle_err(struct spi_master *master,
-+static void rockchip_spi_handle_err(struct spi_controller *ctlr,
- 				    struct spi_message *msg)
- {
--	struct rockchip_spi *rs = spi_master_get_devdata(master);
-+	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
- 
- 	/* stop running spi transfer
- 	 * this also flushes both rx and tx fifos
-@@ -258,10 +258,10 @@ static void rockchip_spi_handle_err(struct spi_master *master,
- 	writel_relaxed(0, rs->regs + ROCKCHIP_SPI_IMR);
- 
- 	if (atomic_read(&rs->state) & TXDMA)
--		dmaengine_terminate_async(master->dma_tx);
-+		dmaengine_terminate_async(ctlr->dma_tx);
- 
- 	if (atomic_read(&rs->state) & RXDMA)
--		dmaengine_terminate_async(master->dma_rx);
-+		dmaengine_terminate_async(ctlr->dma_rx);
- }
- 
- static void rockchip_spi_pio_writer(struct rockchip_spi *rs)
-@@ -319,8 +319,8 @@ static void rockchip_spi_pio_reader(struct rockchip_spi *rs)
- 
- static irqreturn_t rockchip_spi_isr(int irq, void *dev_id)
- {
--	struct spi_master *master = dev_id;
--	struct rockchip_spi *rs = spi_master_get_devdata(master);
-+	struct spi_controller *ctlr = dev_id;
-+	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
- 
- 	if (rs->tx_left)
- 		rockchip_spi_pio_writer(rs);
-@@ -329,7 +329,7 @@ static irqreturn_t rockchip_spi_isr(int irq, void *dev_id)
- 	if (!rs->rx_left) {
- 		spi_enable_chip(rs, false);
- 		writel_relaxed(0, rs->regs + ROCKCHIP_SPI_IMR);
--		spi_finalize_current_transfer(master);
-+		spi_finalize_current_transfer(ctlr);
- 	}
- 
- 	return IRQ_HANDLED;
-@@ -355,21 +355,21 @@ static int rockchip_spi_prepare_irq(struct rockchip_spi *rs,
- 
- static void rockchip_spi_dma_rxcb(void *data)
- {
--	struct spi_master *master = data;
--	struct rockchip_spi *rs = spi_master_get_devdata(master);
-+	struct spi_controller *ctlr = data;
-+	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
- 	int state = atomic_fetch_andnot(RXDMA, &rs->state);
- 
- 	if (state & TXDMA)
- 		return;
- 
- 	spi_enable_chip(rs, false);
--	spi_finalize_current_transfer(master);
-+	spi_finalize_current_transfer(ctlr);
- }
- 
- static void rockchip_spi_dma_txcb(void *data)
- {
--	struct spi_master *master = data;
--	struct rockchip_spi *rs = spi_master_get_devdata(master);
-+	struct spi_controller *ctlr = data;
-+	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
- 	int state = atomic_fetch_andnot(TXDMA, &rs->state);
- 
- 	if (state & RXDMA)
-@@ -379,11 +379,11 @@ static void rockchip_spi_dma_txcb(void *data)
- 	wait_for_idle(rs);
- 
- 	spi_enable_chip(rs, false);
--	spi_finalize_current_transfer(master);
-+	spi_finalize_current_transfer(ctlr);
- }
- 
- static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
--		struct spi_master *master, struct spi_transfer *xfer)
-+		struct spi_controller *ctlr, struct spi_transfer *xfer)
- {
- 	struct dma_async_tx_descriptor *rxdesc, *txdesc;
- 
-@@ -398,17 +398,17 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
- 			.src_maxburst = 1,
- 		};
- 
--		dmaengine_slave_config(master->dma_rx, &rxconf);
-+		dmaengine_slave_config(ctlr->dma_rx, &rxconf);
- 
- 		rxdesc = dmaengine_prep_slave_sg(
--				master->dma_rx,
-+				ctlr->dma_rx,
- 				xfer->rx_sg.sgl, xfer->rx_sg.nents,
- 				DMA_DEV_TO_MEM, DMA_PREP_INTERRUPT);
- 		if (!rxdesc)
- 			return -EINVAL;
- 
- 		rxdesc->callback = rockchip_spi_dma_rxcb;
--		rxdesc->callback_param = master;
-+		rxdesc->callback_param = ctlr;
- 	}
- 
- 	txdesc = NULL;
-@@ -420,27 +420,27 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
- 			.dst_maxburst = rs->fifo_len / 4,
- 		};
- 
--		dmaengine_slave_config(master->dma_tx, &txconf);
-+		dmaengine_slave_config(ctlr->dma_tx, &txconf);
- 
- 		txdesc = dmaengine_prep_slave_sg(
--				master->dma_tx,
-+				ctlr->dma_tx,
- 				xfer->tx_sg.sgl, xfer->tx_sg.nents,
- 				DMA_MEM_TO_DEV, DMA_PREP_INTERRUPT);
- 		if (!txdesc) {
- 			if (rxdesc)
--				dmaengine_terminate_sync(master->dma_rx);
-+				dmaengine_terminate_sync(ctlr->dma_rx);
- 			return -EINVAL;
- 		}
- 
- 		txdesc->callback = rockchip_spi_dma_txcb;
--		txdesc->callback_param = master;
-+		txdesc->callback_param = ctlr;
- 	}
- 
- 	/* rx must be started before tx due to spi instinct */
- 	if (rxdesc) {
- 		atomic_or(RXDMA, &rs->state);
- 		dmaengine_submit(rxdesc);
--		dma_async_issue_pending(master->dma_rx);
-+		dma_async_issue_pending(ctlr->dma_rx);
- 	}
- 
- 	spi_enable_chip(rs, true);
-@@ -448,7 +448,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
- 	if (txdesc) {
- 		atomic_or(TXDMA, &rs->state);
- 		dmaengine_submit(txdesc);
--		dma_async_issue_pending(master->dma_tx);
-+		dma_async_issue_pending(ctlr->dma_tx);
- 	}
- 
- 	/* 1 means the transfer is in progress */
-@@ -493,7 +493,7 @@ static void rockchip_spi_config(struct rockchip_spi *rs,
- 		break;
- 	default:
- 		/* we only whitelist 4, 8 and 16 bit words in
--		 * master->bits_per_word_mask, so this shouldn't
-+		 * ctlr->bits_per_word_mask, so this shouldn't
- 		 * happen
- 		 */
- 		unreachable();
-@@ -536,11 +536,11 @@ static size_t rockchip_spi_max_transfer_size(struct spi_device *spi)
- }
- 
- static int rockchip_spi_transfer_one(
--		struct spi_master *master,
-+		struct spi_controller *ctlr,
- 		struct spi_device *spi,
- 		struct spi_transfer *xfer)
- {
--	struct rockchip_spi *rs = spi_master_get_devdata(master);
-+	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
- 	bool use_dma;
- 
- 	WARN_ON(readl_relaxed(rs->regs + ROCKCHIP_SPI_SSIENR) &&
-@@ -558,21 +558,21 @@ static int rockchip_spi_transfer_one(
- 
- 	rs->n_bytes = xfer->bits_per_word <= 8 ? 1 : 2;
- 
--	use_dma = master->can_dma ? master->can_dma(master, spi, xfer) : false;
-+	use_dma = ctlr->can_dma ? ctlr->can_dma(ctlr, spi, xfer) : false;
- 
- 	rockchip_spi_config(rs, spi, xfer, use_dma);
- 
- 	if (use_dma)
--		return rockchip_spi_prepare_dma(rs, master, xfer);
-+		return rockchip_spi_prepare_dma(rs, ctlr, xfer);
- 
- 	return rockchip_spi_prepare_irq(rs, xfer);
- }
- 
--static bool rockchip_spi_can_dma(struct spi_master *master,
-+static bool rockchip_spi_can_dma(struct spi_controller *ctlr,
- 				 struct spi_device *spi,
- 				 struct spi_transfer *xfer)
- {
--	struct rockchip_spi *rs = spi_master_get_devdata(master);
-+	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
- 	unsigned int bytes_per_word = xfer->bits_per_word <= 8 ? 1 : 2;
- 
- 	/* if the numbor of spi words to transfer is less than the fifo
-@@ -586,44 +586,44 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- {
- 	int ret;
- 	struct rockchip_spi *rs;
--	struct spi_master *master;
-+	struct spi_controller *ctlr;
- 	struct resource *mem;
- 	u32 rsd_nsecs;
- 
--	master = spi_alloc_master(&pdev->dev, sizeof(struct rockchip_spi));
--	if (!master)
-+	ctlr = spi_alloc_master(&pdev->dev, sizeof(struct rockchip_spi));
-+	if (!ctlr)
- 		return -ENOMEM;
- 
--	platform_set_drvdata(pdev, master);
-+	platform_set_drvdata(pdev, ctlr);
- 
--	rs = spi_master_get_devdata(master);
-+	rs = spi_controller_get_devdata(ctlr);
- 
- 	/* Get basic io resource and map it */
- 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	rs->regs = devm_ioremap_resource(&pdev->dev, mem);
- 	if (IS_ERR(rs->regs)) {
- 		ret =  PTR_ERR(rs->regs);
--		goto err_put_master;
-+		goto err_put_ctlr;
- 	}
- 
- 	rs->apb_pclk = devm_clk_get(&pdev->dev, "apb_pclk");
- 	if (IS_ERR(rs->apb_pclk)) {
- 		dev_err(&pdev->dev, "Failed to get apb_pclk\n");
- 		ret = PTR_ERR(rs->apb_pclk);
--		goto err_put_master;
-+		goto err_put_ctlr;
- 	}
- 
- 	rs->spiclk = devm_clk_get(&pdev->dev, "spiclk");
- 	if (IS_ERR(rs->spiclk)) {
- 		dev_err(&pdev->dev, "Failed to get spi_pclk\n");
- 		ret = PTR_ERR(rs->spiclk);
--		goto err_put_master;
-+		goto err_put_ctlr;
- 	}
- 
- 	ret = clk_prepare_enable(rs->apb_pclk);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Failed to enable apb_pclk\n");
--		goto err_put_master;
-+		goto err_put_ctlr;
- 	}
- 
- 	ret = clk_prepare_enable(rs->spiclk);
-@@ -639,7 +639,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 		goto err_disable_spiclk;
- 
- 	ret = devm_request_threaded_irq(&pdev->dev, ret, rockchip_spi_isr, NULL,
--			IRQF_ONESHOT, dev_name(&pdev->dev), master);
-+			IRQF_ONESHOT, dev_name(&pdev->dev), ctlr);
- 	if (ret)
- 		goto err_disable_spiclk;
- 
-@@ -673,78 +673,78 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
- 
--	master->auto_runtime_pm = true;
--	master->bus_num = pdev->id;
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP | SPI_LSB_FIRST;
--	master->num_chipselect = ROCKCHIP_SPI_MAX_CS_NUM;
--	master->dev.of_node = pdev->dev.of_node;
--	master->bits_per_word_mask = SPI_BPW_MASK(16) | SPI_BPW_MASK(8) | SPI_BPW_MASK(4);
--	master->min_speed_hz = rs->freq / BAUDR_SCKDV_MAX;
--	master->max_speed_hz = min(rs->freq / BAUDR_SCKDV_MIN, MAX_SCLK_OUT);
+I'm still learning about this, but I can give you my 2 cents as of now, to=
+=20
+open the discussion. Enabling 2-2-2, 4-4-4, and 8-8-8 modes is dangerous=20
+because the flash may not recover from unexpected resets. Entering one of=20
+these modes can be:
+1/ volatile selectable, the device return to the 1-1-1 protocol after the n=
+ext=20
+power-on. I guess this is conditioned by the optional RESET pin, but I'll h=
+ave=20
+to check. Also the flash can return to the 1-1-1 mode using the software re=
+set=20
+or through writing to its Configuration Register, without power-on or power=
 -
--	master->set_cs = rockchip_spi_set_cs;
--	master->transfer_one = rockchip_spi_transfer_one;
--	master->max_transfer_size = rockchip_spi_max_transfer_size;
--	master->handle_err = rockchip_spi_handle_err;
--	master->flags = SPI_MASTER_GPIO_SS;
--
--	master->dma_tx = dma_request_chan(rs->dev, "tx");
--	if (IS_ERR(master->dma_tx)) {
-+	ctlr->auto_runtime_pm = true;
-+	ctlr->bus_num = pdev->id;
-+	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP | SPI_LSB_FIRST;
-+	ctlr->num_chipselect = ROCKCHIP_SPI_MAX_CS_NUM;
-+	ctlr->dev.of_node = pdev->dev.of_node;
-+	ctlr->bits_per_word_mask = SPI_BPW_MASK(16) | SPI_BPW_MASK(8) | SPI_BPW_MASK(4);
-+	ctlr->min_speed_hz = rs->freq / BAUDR_SCKDV_MAX;
-+	ctlr->max_speed_hz = min(rs->freq / BAUDR_SCKDV_MIN, MAX_SCLK_OUT);
-+
-+	ctlr->set_cs = rockchip_spi_set_cs;
-+	ctlr->transfer_one = rockchip_spi_transfer_one;
-+	ctlr->max_transfer_size = rockchip_spi_max_transfer_size;
-+	ctlr->handle_err = rockchip_spi_handle_err;
-+	ctlr->flags = SPI_MASTER_GPIO_SS;
-+
-+	ctlr->dma_tx = dma_request_chan(rs->dev, "tx");
-+	if (IS_ERR(ctlr->dma_tx)) {
- 		/* Check tx to see if we need defer probing driver */
--		if (PTR_ERR(master->dma_tx) == -EPROBE_DEFER) {
-+		if (PTR_ERR(ctlr->dma_tx) == -EPROBE_DEFER) {
- 			ret = -EPROBE_DEFER;
- 			goto err_disable_pm_runtime;
- 		}
- 		dev_warn(rs->dev, "Failed to request TX DMA channel\n");
--		master->dma_tx = NULL;
-+		ctlr->dma_tx = NULL;
- 	}
- 
--	master->dma_rx = dma_request_chan(rs->dev, "rx");
--	if (IS_ERR(master->dma_rx)) {
--		if (PTR_ERR(master->dma_rx) == -EPROBE_DEFER) {
-+	ctlr->dma_rx = dma_request_chan(rs->dev, "rx");
-+	if (IS_ERR(ctlr->dma_rx)) {
-+		if (PTR_ERR(ctlr->dma_rx) == -EPROBE_DEFER) {
- 			ret = -EPROBE_DEFER;
- 			goto err_free_dma_tx;
- 		}
- 		dev_warn(rs->dev, "Failed to request RX DMA channel\n");
--		master->dma_rx = NULL;
-+		ctlr->dma_rx = NULL;
- 	}
- 
--	if (master->dma_tx && master->dma_rx) {
-+	if (ctlr->dma_tx && ctlr->dma_rx) {
- 		rs->dma_addr_tx = mem->start + ROCKCHIP_SPI_TXDR;
- 		rs->dma_addr_rx = mem->start + ROCKCHIP_SPI_RXDR;
--		master->can_dma = rockchip_spi_can_dma;
-+		ctlr->can_dma = rockchip_spi_can_dma;
- 	}
- 
--	ret = devm_spi_register_master(&pdev->dev, master);
-+	ret = devm_spi_register_controller(&pdev->dev, ctlr);
- 	if (ret < 0) {
--		dev_err(&pdev->dev, "Failed to register master\n");
-+		dev_err(&pdev->dev, "Failed to register controller\n");
- 		goto err_free_dma_rx;
- 	}
- 
- 	return 0;
- 
- err_free_dma_rx:
--	if (master->dma_rx)
--		dma_release_channel(master->dma_rx);
-+	if (ctlr->dma_rx)
-+		dma_release_channel(ctlr->dma_rx);
- err_free_dma_tx:
--	if (master->dma_tx)
--		dma_release_channel(master->dma_tx);
-+	if (ctlr->dma_tx)
-+		dma_release_channel(ctlr->dma_tx);
- err_disable_pm_runtime:
- 	pm_runtime_disable(&pdev->dev);
- err_disable_spiclk:
- 	clk_disable_unprepare(rs->spiclk);
- err_disable_apbclk:
- 	clk_disable_unprepare(rs->apb_pclk);
--err_put_master:
--	spi_master_put(master);
-+err_put_ctlr:
-+	spi_controller_put(ctlr);
- 
- 	return ret;
- }
- 
- static int rockchip_spi_remove(struct platform_device *pdev)
- {
--	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
--	struct rockchip_spi *rs = spi_master_get_devdata(master);
-+	struct spi_controller *ctlr = spi_controller_get(platform_get_drvdata(pdev));
-+	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
- 
- 	pm_runtime_get_sync(&pdev->dev);
- 
-@@ -755,12 +755,12 @@ static int rockchip_spi_remove(struct platform_device *pdev)
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
- 
--	if (master->dma_tx)
--		dma_release_channel(master->dma_tx);
--	if (master->dma_rx)
--		dma_release_channel(master->dma_rx);
-+	if (ctlr->dma_tx)
-+		dma_release_channel(ctlr->dma_tx);
-+	if (ctlr->dma_rx)
-+		dma_release_channel(ctlr->dma_rx);
- 
--	spi_master_put(master);
-+	spi_controller_put(ctlr);
- 
- 	return 0;
- }
-@@ -769,9 +769,9 @@ static int rockchip_spi_remove(struct platform_device *pdev)
- static int rockchip_spi_suspend(struct device *dev)
- {
- 	int ret;
--	struct spi_master *master = dev_get_drvdata(dev);
-+	struct spi_controller *ctlr = dev_get_drvdata(dev);
- 
--	ret = spi_master_suspend(master);
-+	ret = spi_controller_suspend(ctlr);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -787,8 +787,8 @@ static int rockchip_spi_suspend(struct device *dev)
- static int rockchip_spi_resume(struct device *dev)
- {
- 	int ret;
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct rockchip_spi *rs = spi_master_get_devdata(master);
-+	struct spi_controller *ctlr = dev_get_drvdata(dev);
-+	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
- 
- 	pinctrl_pm_select_default_state(dev);
- 
-@@ -796,7 +796,7 @@ static int rockchip_spi_resume(struct device *dev)
- 	if (ret < 0)
- 		return ret;
- 
--	ret = spi_master_resume(master);
-+	ret = spi_controller_resume(ctlr);
- 	if (ret < 0) {
- 		clk_disable_unprepare(rs->spiclk);
- 		clk_disable_unprepare(rs->apb_pclk);
-@@ -809,8 +809,8 @@ static int rockchip_spi_resume(struct device *dev)
- #ifdef CONFIG_PM
- static int rockchip_spi_runtime_suspend(struct device *dev)
- {
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct rockchip_spi *rs = spi_master_get_devdata(master);
-+	struct spi_controller *ctlr = dev_get_drvdata(dev);
-+	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
- 
- 	clk_disable_unprepare(rs->spiclk);
- 	clk_disable_unprepare(rs->apb_pclk);
-@@ -821,8 +821,8 @@ static int rockchip_spi_runtime_suspend(struct device *dev)
- static int rockchip_spi_runtime_resume(struct device *dev)
- {
- 	int ret;
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct rockchip_spi *rs = spi_master_get_devdata(master);
-+	struct spi_controller *ctlr = dev_get_drvdata(dev);
-+	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
- 
- 	ret = clk_prepare_enable(rs->apb_pclk);
- 	if (ret < 0)
--- 
-2.20.1
+off.
+2/ non-volatile selectable in which RESET# and software reset are useless, =
+the=20
+flash defaults to the mode selected in the non volatile Configuration Regis=
+ter=20
+bits. The only way to get back to 1-1-1 is to write to the Configuration=20
+Register.
+
+Not recovering from unexpected resets is unacceptable. One should always=20
+prefer option 1/ and condition the entering in 2-2-2, 4-4-4 and 8-8-8 with =
+the=20
+presence of the optional RESET pin.
+
+For the unfortunate flashes that support just option 2/, we should not ente=
+r=20
+these modes on our own, just by discovering the capabilities from the SFDP=
+=20
+tables or by the flags in the flash_info struct. The best we can do for the=
+m=20
+is to move the responsibility to the user. Maybe to add a Kconfig option th=
+at=20
+is disabled by default with which we condition the entering in 2-2-2, 4-4-4=
+ or=20
+8-8-8 modes. Once entered in one of these modes, if an unexpected reset com=
+es,=20
+you most likely are doomed, because early stage bootloaders may not work in=
+=20
+these modes and you'll not be able to boot the board. Assuming that one use=
+s=20
+other environment to boot the board, we should at least make sure that the=
+=20
+flash works in linux after an unexpected reset. We should try to determine =
+in=20
+which mode we are at init, so maybe an extension of the default_init hook i=
+s=20
+needed. But all this looks like a BIG compromise, I'm not yet sure if we=20
+should adress 2/. Thoughts?
+
+I'm still looking into this.
+
+Cheers,
+ta
 

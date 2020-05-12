@@ -2,117 +2,107 @@ Return-Path: <SRS0=Nu9C=62=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-0.6 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F47BC2D0F7
-	for <linux-spi@archiver.kernel.org>; Tue, 12 May 2020 20:35:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 90F0BC2D0F8
+	for <linux-spi@archiver.kernel.org>; Tue, 12 May 2020 20:45:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DE53620740
-	for <linux-spi@archiver.kernel.org>; Tue, 12 May 2020 20:35:22 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PptOoIXp"
+	by mail.kernel.org (Postfix) with ESMTP id 642C820747
+	for <linux-spi@archiver.kernel.org>; Tue, 12 May 2020 20:45:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1589316355;
+	bh=NmG8SVoFCnlyWQ7xE7+NWsL3AT5FUgQLIAtoK3zjpqY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=X8fz/wcE1RdI/vIOx2l469aN3BTkP9FskftXQN87SJw3EabyyPUQXym6ipWJQr+qO
+	 HyX6EKzrOx+Syd4VUCpzzA+FwfnxHn2K8AuhsODg8BHHOq1/XI29GUPRCecnPTWV1U
+	 H2AL1DGqj9TmXYfE6yDLX+hjinrYTvN+v+krwKr8=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730576AbgELUfW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 12 May 2020 16:35:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38640 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728882AbgELUfW (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 12 May 2020 16:35:22 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F6D3C061A0C;
-        Tue, 12 May 2020 13:35:22 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id b8so6696767pgi.11;
-        Tue, 12 May 2020 13:35:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=YVFW6oIEuEyDeRl3Bg5H2zPOgggIm8lzWUpr4cAUXc0=;
-        b=PptOoIXpSNuFOhmHbdDkbkZyYo24SjYpZtgRf1eSccsXirEvsAvaVHBe5PebjyD+i6
-         ar7qmlFWqvhCtpiDskWezNkG9ip5bzSTdEW8V89Fn7sVEqtasX8OsWbDEPp28HCO4p13
-         XGD/UNskTpsPq5/jrdPV+QBNUAS4NZTfU3arve44f+h2YHCVHuOuwfHjl38bi6nbTDZZ
-         GoFzPRcCoGGun6jLZhXJ/4K9d8flLKu8E3wINm7DT2Cc8nwA9WJyyxzW1Vyc203nacpK
-         murxAbJ5Ijr7WpyaP6bIbzIBzl7UsbdlsVgol0WPQwmxVdK7hOzPyRDW5eggFpG1sFGe
-         ti2Q==
+        id S1731208AbgELUpu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 12 May 2020 16:45:50 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:33714 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731195AbgELUpt (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 12 May 2020 16:45:49 -0400
+Received: by mail-ot1-f66.google.com with SMTP id v17so3720943ote.0;
+        Tue, 12 May 2020 13:45:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=YVFW6oIEuEyDeRl3Bg5H2zPOgggIm8lzWUpr4cAUXc0=;
-        b=LjnWOLpY9ANHWepxXo3l8gkxJpD4yJYoGm4hS8dlhxoxHeLEZL9UrM4pSV5imRH0gn
-         vOoCNUWEWK6mz00jIORvkV9921uSnG/ORjvrkPLXcVwUEsiq/4LeaUccExr8Kkp1U9P0
-         GwXQa/KO0TPeIHtYdDmmXcC9va1vwzystGRl72P4MohOrSVQ0Cw2eBRQ/YnBFSSTwebq
-         zInf8geOb9h2iHUfs5l2Nl5xKY7SgMU7qGU7LTH3j/tBWLQaU7YmBkznxwVDDf1THpMx
-         /2laXZ++AxeHrrmZ8+9x7euRjjoQPlGYxyEI5Ycs6IpaykEYP76ZGWcyv8Mh8r9dYZBH
-         dWqw==
-X-Gm-Message-State: AGi0PuYg588xU1sXis7KbEpbB/UTknLdGBiKsv1X9GUKf9kpJpx2bmy/
-        XSun4wvXFbxfEg6X6kumb9l5PyCTVQ8wUrw6aHY=
-X-Google-Smtp-Source: APiQypJTLDvBe0FVtK0RKin5GJBBZUcW1n4ZDU2eps4uS029pWA8iLJCh5A9HjKGnTF4TEbKdT0ener6wvLDJk7Zn0E=
-X-Received: by 2002:a65:6251:: with SMTP id q17mr20697891pgv.4.1589315721498;
- Tue, 12 May 2020 13:35:21 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200508132943.9826-1-Sergey.Semin@baikalelectronics.ru>
- <20200508132943.9826-2-Sergey.Semin@baikalelectronics.ru> <20200508193934.GY185537@smile.fi.intel.com>
- <20200512202814.e6havutfpzu2gdfc@mobilestation>
-In-Reply-To: <20200512202814.e6havutfpzu2gdfc@mobilestation>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 12 May 2020 23:35:08 +0300
-Message-ID: <CAHp75VfUzx6F8QinUZf6P76ne_uG1mVitMaMZc2WREMspOAyZA@mail.gmail.com>
-Subject: Re: [PATCH 01/17] dt-bindings: spi: Convert DW SPI binding to DT schema
-To:     Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Wan Ahmad Zainie <wan.ahmad.zainie.wan.mohamad@intel.com>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=ROTQQRmdcUsStwRKkfy6Q00GnOxE+nfhmcwjzr4lDeg=;
+        b=PSfQn1GsFdfwL/0nn8vxHeBKvMQ2Sbs53Kqok4p4VuaafUo2CxSrYLCC2INpmcfR1t
+         lTMkZ/N99N52YFqDI/tVs5RA9CsTkAw9K0s8cF9pWIxutO4f+1+y2rOad/C2BfKgIE9h
+         Afkpjj7z3OJDxWNeEKAWuJ8gIKQ+6nbhJ8EYB9xB8AIXLMfc1ju3DDDAgw6oS9RpGRkf
+         MjlL6rBrtU7yffupoMNs232Mdg6wArVkAIZcB2wmvvt05C1NPbvaA8f6shdw+Mdo+pnE
+         LtdLjOxJ3dGdNJlyyx+h6c5g2cLnrEdvHM52uY+Md59YvKBS4tXCGyvqx8eyiQfDx66O
+         dCCg==
+X-Gm-Message-State: AGi0PuaOtEd62yIgJPmLYBx6t7wgshDDkoRY1gbGVVXPHgBJE5anw4Mk
+        w2w3t9yFqAwivQuqhBURKTj6V2k=
+X-Google-Smtp-Source: APiQypJ1PDF2eDVooFvjNgsHr+joxMhIx8+O1j7KXhZ9mhhvKW9kguaFARgq2V5ZkR7s7mNGKgdPkg==
+X-Received: by 2002:a05:6830:1241:: with SMTP id s1mr18607355otp.119.1589316348414;
+        Tue, 12 May 2020 13:45:48 -0700 (PDT)
+Received: from xps15.herring.priv (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.googlemail.com with ESMTPSA id k8sm3943792ood.24.2020.05.12.13.45.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2020 13:45:48 -0700 (PDT)
+From:   Rob Herring <robh@kernel.org>
+To:     devicetree@vger.kernel.org
+Cc:     linux-clk@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>,
-        Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>,
-        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Paul Burton <paulburton@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Allison Randal <allison@lohutok.net>,
-        Gareth Williams <gareth.williams.jx@renesas.com>,
-        linux-mips@vger.kernel.org, linux-spi <linux-spi@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH 4/5] dt-bindings: ufs: ti: Add missing 'additionalProperties: false'
+Date:   Tue, 12 May 2020 15:45:42 -0500
+Message-Id: <20200512204543.22090-4-robh@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200512204543.22090-1-robh@kernel.org>
+References: <20200512204543.22090-1-robh@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, May 12, 2020 at 11:29 PM Serge Semin
-<Sergey.Semin@baikalelectronics.ru> wrote:
->
-> +Cc: Wan Ahmad Zainie <wan.ahmad.zainie.wan.mohamad@intel.com>
->
-> On Fri, May 08, 2020 at 10:39:34PM +0300, Andy Shevchenko wrote:
-> > On Fri, May 08, 2020 at 04:29:26PM +0300, Serge Semin wrote:
-> > > Modern device tree bindings are supposed to be created as YAML-files
-> > > in accordance with dt-schema. This commit replaces two DW SPI legacy
-> > > bare text bindings with YAML file. As before the bindings file states
-> > > that the corresponding dts node is supposed to be compatible either
-> > > with generic DW APB SSI controller or with Microsemi/Amazon/Renesas
-> > > vendors-specific controllers, to have registers, interrupts and clocks
-> > > properties. Though in case of Microsemi version of the controller
-> > > there must be two registers resources specified. Properties like
-> > > clock-names, reg-io-width, cs-gpio, num-cs and SPI-specific sub-nodes
-> > > are optional.
-> >
-> > Can you incorporate work done here or agree with Wan how to proceed?
-> >
-> > https://lore.kernel.org/linux-spi/20200505191910.GA2970@bogus/T/#md626b5f6f2294b0ebd70995d5ed0e67a360e000b
->
-> Don't worry. I'll make sure the updates provided by Wan including the new IP
-> support are preserved after rebasing this series on top of the spi/for-next.
+The ti,j721e-ufs schema is missing an 'additionalProperties: false'. Add
+that and and the missing assigned-clock properties.
 
-Thanks!
+Cc: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+ Documentation/devicetree/bindings/ufs/ti,j721e-ufs.yaml | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
+diff --git a/Documentation/devicetree/bindings/ufs/ti,j721e-ufs.yaml b/Documentation/devicetree/bindings/ufs/ti,j721e-ufs.yaml
+index b503b1a918a5..4d13e6bc1c50 100644
+--- a/Documentation/devicetree/bindings/ufs/ti,j721e-ufs.yaml
++++ b/Documentation/devicetree/bindings/ufs/ti,j721e-ufs.yaml
+@@ -25,6 +25,12 @@ properties:
+   power-domains:
+     maxItems: 1
+ 
++  assigned-clocks:
++    maxItems: 1
++
++  assigned-clock-parents:
++    maxItems: 1
++
+   "#address-cells":
+     const: 2
+ 
+@@ -47,6 +53,8 @@ patternProperties:
+       Documentation/devicetree/bindings/ufs/cdns,ufshc.txt for binding
+       documentation of child node
+ 
++additionalProperties: false
++
+ examples:
+   - |
+     #include <dt-bindings/interrupt-controller/irq.h>
 -- 
-With Best Regards,
-Andy Shevchenko
+2.20.1
+

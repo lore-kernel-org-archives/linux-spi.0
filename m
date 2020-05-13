@@ -2,166 +2,135 @@ Return-Path: <SRS0=2MSj=63=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 569DBCA90AF
-	for <linux-spi@archiver.kernel.org>; Wed, 13 May 2020 11:14:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CCBC5CA90AF
+	for <linux-spi@archiver.kernel.org>; Wed, 13 May 2020 11:21:30 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3742C206E5
-	for <linux-spi@archiver.kernel.org>; Wed, 13 May 2020 11:14:18 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=mg.codeaurora.org header.i=@mg.codeaurora.org header.b="Rdk3xJfO"
+	by mail.kernel.org (Postfix) with ESMTP id AB9BF2176D
+	for <linux-spi@archiver.kernel.org>; Wed, 13 May 2020 11:21:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1589368890;
+	bh=1rM3FpjaWvSlq2GT/NFR1D7yxdKbGJ971Atj6aZc2yo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=2MtyV4GKuELtufEd+Ez2OBdktvycCYjr17Vb8A7SzDdhVF/crxMhfMBpvj64szGwc
+	 Px7+JVIM4srBiyEmknllxzFwsaURnFLejLrNiUeK/P8OyY8cDQl1DuFfuHuoz7QR2k
+	 GAhbmIA9RQNfNl7UcOfNheHsqEwukXtsbsKNyGWU=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731083AbgEMLOQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 13 May 2020 07:14:16 -0400
-Received: from mail26.static.mailgun.info ([104.130.122.26]:14813 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730567AbgEMLNh (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 13 May 2020 07:13:37 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1589368417; h=References: In-Reply-To: Message-Id: Date:
- Subject: Cc: To: From: Sender;
- bh=TcmWf7jLMjWChgrrwynlDq/nJxjlJJu4LKjErEFYyLE=; b=Rdk3xJfOWZ16EuKFTV23x/N2vHiuWTUZDiOwI3RmPDzatOqouA7Wa+U78d4X998vBk3NyLEf
- Mu9+OL4FM/w922P4YZ/qi4sDR/6EVHCLULfzDsCYQe0T6Rp7IXKOXVE+oAMInF8273DzYS/4
- FpoHXyo0eKF10MQbEcM3TjjYWPo=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyIzNzdmZSIsICJsaW51eC1zcGlAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5ebbd660.7fce97b2a730-smtp-out-n02;
- Wed, 13 May 2020 11:13:36 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 27A8CC4478F; Wed, 13 May 2020 11:13:36 +0000 (UTC)
-Received: from blr-ubuntu-173.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        id S1732791AbgEMLVU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 13 May 2020 07:21:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52160 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1732496AbgEMLVT (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 13 May 2020 07:21:19 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: rnayak)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id CF632C433F2;
-        Wed, 13 May 2020 11:13:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CF632C433F2
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=rnayak@codeaurora.org
-From:   Rajendra Nayak <rnayak@codeaurora.org>
-To:     viresh.kumar@linaro.org, sboyd@kernel.org,
-        bjorn.andersson@linaro.org, agross@kernel.org
-Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mka@chromium.org, Rajendra Nayak <rnayak@codeaurora.org>,
-        Mark Brown <broonie@kernel.org>,
-        Alok Chauhan <alokc@codeaurora.org>,
-        Akash Asthana <akashast@codeaurora.org>,
-        linux-spi@vger.kernel.org
-Subject: [PATCH v5 2/6] spi: spi-geni-qcom: Use OPP API to set clk/perf state
-Date:   Wed, 13 May 2020 16:42:58 +0530
-Message-Id: <1589368382-19607-3-git-send-email-rnayak@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1589368382-19607-1-git-send-email-rnayak@codeaurora.org>
-References: <1589368382-19607-1-git-send-email-rnayak@codeaurora.org>
+        by mail.kernel.org (Postfix) with ESMTPSA id 3573320753;
+        Wed, 13 May 2020 11:21:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589368878;
+        bh=1rM3FpjaWvSlq2GT/NFR1D7yxdKbGJ971Atj6aZc2yo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=VuhH0snCqTgyXK73vkjq4nWdUwTe8fMeut0GdsMCMiahxuPGfwDpOkR1/TB51yCiK
+         8qdbnMgMXleLVbKQosV+7fUXktbSL0TO/GUAbUlI237/y/oyXuQBo4bRuw4V1oLZC8
+         tkIqmZ2H1HwD0Cc2sMqkDuCh+TzFs6eWPt/hoPy8=
+Date:   Wed, 13 May 2020 12:21:16 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Cc:     Serge Semin <fancer.lancer@gmail.com>,
+        Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>,
+        Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>,
+        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
+        Maxim Kaurkin <Maxim.Kaurkin@baikalelectronics.ru>,
+        Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
+        Ekaterina Skachko <Ekaterina.Skachko@baikalelectronics.ru>,
+        Vadim Vlasov <V.Vlasov@baikalelectronics.ru>,
+        Alexey Kolotnikov <Alexey.Kolotnikov@baikalelectronics.ru>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Paul Burton <paulburton@kernel.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Allison Randal <allison@lohutok.net>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Gareth Williams <gareth.williams.jx@renesas.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-mips@vger.kernel.org,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 00/17] spi: dw: Add generic DW DMA controller support
+Message-ID: <20200513112116.GE4803@sirena.org.uk>
+References: <20200508132943.9826-1-Sergey.Semin@baikalelectronics.ru>
+ <20200508133336.GK4820@sirena.org.uk>
+ <20200512200733.bdbbhkjkwjd5yzqq@mobilestation>
+ <20200513102324.GB4803@sirena.org.uk>
+ <20200513110407.uaosfxebsgnllsf4@mobilestation>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="qFgkTsE6LiHkLPZw"
+Content-Disposition: inline
+In-Reply-To: <20200513110407.uaosfxebsgnllsf4@mobilestation>
+X-Cookie: Long life is in store for you.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-geni spi needs to express a perforamnce state requirement on CX
-depending on the frequency of the clock rates. Use OPP table from
-DT to register with OPP framework and use dev_pm_opp_set_rate() to
-set the clk/perf state.
 
-Signed-off-by: Rajendra Nayak <rnayak@codeaurora.org>
-Reviewed-by: Matthias Kaehlcke <mka@chromium.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Alok Chauhan <alokc@codeaurora.org>
-Cc: Akash Asthana <akashast@codeaurora.org>
-Cc: linux-spi@vger.kernel.org
----
-This patch will need to land via the msm tree because of a dependency
-with another change.
-Change in v5: OPP cleanup done as the last thing in spi_geni_remove()
+--qFgkTsE6LiHkLPZw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
- drivers/spi/spi-geni-qcom.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+On Wed, May 13, 2020 at 02:04:07PM +0300, Serge Semin wrote:
+> On Wed, May 13, 2020 at 11:23:24AM +0100, Mark Brown wrote:
 
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index c397242..0d7ead1 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -7,6 +7,7 @@
- #include <linux/log2.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
-+#include <linux/pm_opp.h>
- #include <linux/pm_runtime.h>
- #include <linux/qcom-geni-se.h>
- #include <linux/spi/spi.h>
-@@ -95,7 +96,6 @@ static int get_spi_clk_cfg(unsigned int speed_hz,
- {
- 	unsigned long sclk_freq;
- 	unsigned int actual_hz;
--	struct geni_se *se = &mas->se;
- 	int ret;
- 
- 	ret = geni_se_clk_freq_match(&mas->se,
-@@ -112,9 +112,9 @@ static int get_spi_clk_cfg(unsigned int speed_hz,
- 
- 	dev_dbg(mas->dev, "req %u=>%u sclk %lu, idx %d, div %d\n", speed_hz,
- 				actual_hz, sclk_freq, *clk_idx, *clk_div);
--	ret = clk_set_rate(se->clk, sclk_freq);
-+	ret = dev_pm_opp_set_rate(mas->dev, sclk_freq);
- 	if (ret)
--		dev_err(mas->dev, "clk_set_rate failed %d\n", ret);
-+		dev_err(mas->dev, "dev_pm_opp_set_rate failed %d\n", ret);
- 	return ret;
- }
- 
-@@ -561,6 +561,17 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	mas->se.wrapper = dev_get_drvdata(dev->parent);
- 	mas->se.base = base;
- 	mas->se.clk = clk;
-+	mas->se.opp_table = dev_pm_opp_set_clkname(&pdev->dev, "se");
-+	if (IS_ERR(mas->se.opp_table))
-+		return PTR_ERR(mas->se.opp_table);
-+	/* OPP table is optional */
-+	ret = dev_pm_opp_of_add_table(&pdev->dev);
-+	if (!ret) {
-+		mas->se.has_opp_table = true;
-+	} else if (ret != -ENODEV) {
-+		dev_err(&pdev->dev, "invalid OPP table in device tree\n");
-+		return ret;
-+	}
- 
- 	spi->bus_num = -1;
- 	spi->dev.of_node = dev->of_node;
-@@ -596,6 +607,9 @@ static int spi_geni_probe(struct platform_device *pdev)
- spi_geni_probe_runtime_disable:
- 	pm_runtime_disable(dev);
- 	spi_master_put(spi);
-+	if (mas->se.has_opp_table)
-+		dev_pm_opp_of_remove_table(&pdev->dev);
-+	dev_pm_opp_put_clkname(mas->se.opp_table);
- 	return ret;
- }
- 
-@@ -609,6 +623,9 @@ static int spi_geni_remove(struct platform_device *pdev)
- 
- 	free_irq(mas->irq, spi);
- 	pm_runtime_disable(&pdev->dev);
-+	if (mas->se.has_opp_table)
-+		dev_pm_opp_of_remove_table(&pdev->dev);
-+	dev_pm_opp_put_clkname(mas->se.opp_table);
- 	return 0;
- }
- 
-@@ -617,6 +634,9 @@ static int __maybe_unused spi_geni_runtime_suspend(struct device *dev)
- 	struct spi_master *spi = dev_get_drvdata(dev);
- 	struct spi_geni_master *mas = spi_master_get_devdata(spi);
- 
-+	/* Drop the performance state vote */
-+	dev_pm_opp_set_rate(dev, 0);
-+
- 	return geni_se_resources_off(&mas->se);
- }
- 
--- 
-QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member
-of Code Aurora Forum, hosted by The Linux Foundation
+> > The conversion to YAML format should be the very last thing in the patch
+> > series,
+
+> Hm, haven't heard about this requirement. Could you point me out to a doc or
+> some discussion concerning this for future reference? It's not a first DT
+> conversion patch I've submitted and non of them were addressed with such
+> request. I do understand that the order of DT concerning patches can be
+> important and agree to fix it by updating the original legacy binding first,
+> then perform a conversion. But placing the conversion in a tail of the series
+> just seems unnecessary. The patch can be dropped from any place of the series
+> if for some reason Rob would be late with review.
+
+This is a practical observation based on the fact that there is a huge
+backlog of reviews of DT binding conversions and that those conversions
+typically go through several review cycles and that not everyone who's
+sending patches to the kernel is fully up to speed on processes or has
+strong English.  By telling people (including other people who find
+instructions on the list) to put the conversion right at the end of the
+series I am avoiding any ambiguity or confusion about ordering with
+regard to any other patches to the DT, including any new patches that
+get added to the series.
+
+> Personally I prefer placing all DT changes in the head of the series, so Rob
+> wouldn't need to search through the whole patchset looking for the DT-related
+> patches.
+
+Ideally the YAML conversions would be done entirely separately to other
+development rather than as part of a bigger series, they're pretty much
+orthogonal anyway.  Sadly there's obvious content collisions with any
+new development that adds DT stuff so that's not always the most
+practical thing.
+
+--qFgkTsE6LiHkLPZw
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl672CsACgkQJNaLcl1U
+h9CvIgf8CclGE4F4cQcTkCuqaYdGr9ohJ2hjT7jc11cc7QMWD/qMRJp3MiooztOw
+uZbiDEGdSvfLq8OyAIQzKsbwaSp7JB9Fex40Xxw4YQwI0aKS3eGDoAjpbQ9pNaBX
+Lu2P43EHmVbsGqRB+FQ1eyRWK9mHCSMBRD4Vi+4eKgmajrP49rhKKgVEQLEv0TDB
+CUGxIaXw/hzzpcSMnibBRzU+0x7rXzxR/twRQyuRSGWtdWwdXs7StavwUtg/1Vzz
+8PzW69SHXfq51QITjsEsRQBiUwm9e5t1QOfxL6HPbjYPjzPnDNxRWcvJu+m3KITV
+7qkM0+jJ+R/al+sS+pG2410lS7ISTA==
+=n6l5
+-----END PGP SIGNATURE-----
+
+--qFgkTsE6LiHkLPZw--

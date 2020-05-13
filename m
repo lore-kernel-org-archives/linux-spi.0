@@ -2,99 +2,100 @@ Return-Path: <SRS0=2MSj=63=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.2 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 30763C2D0F8
-	for <linux-spi@archiver.kernel.org>; Wed, 13 May 2020 06:07:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EC204C2D0F9
+	for <linux-spi@archiver.kernel.org>; Wed, 13 May 2020 07:04:44 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 02EA9206D3
-	for <linux-spi@archiver.kernel.org>; Wed, 13 May 2020 06:07:22 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D4C2E206F5
+	for <linux-spi@archiver.kernel.org>; Wed, 13 May 2020 07:04:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728712AbgEMGHV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 13 May 2020 02:07:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42724 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728707AbgEMGHV (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 13 May 2020 02:07:21 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BA81C061A0C
-        for <linux-spi@vger.kernel.org>; Tue, 12 May 2020 23:07:21 -0700 (PDT)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1jYkWG-0000uB-3T; Wed, 13 May 2020 08:05:28 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1jYkWD-0003jr-LK; Wed, 13 May 2020 08:05:25 +0200
-Date:   Wed, 13 May 2020 08:05:25 +0200
-From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     Robin Gong <yibin.gong@nxp.com>
-Cc:     vkoul@kernel.org, shawnguo@kernel.org,
-        u.kleine-koenig@pengutronix.de, robh+dt@kernel.org,
-        festevam@gmail.com, dan.j.williams@intel.com, mark.rutland@arm.com,
-        catalin.marinas@arm.com, will.deacon@arm.com,
-        l.stach@pengutronix.de, martin.fuzzey@flowbird.group,
-        kernel@pengutronix.de, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-imx@nxp.com, dmaengine@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v7 RESEND 03/13] Revert "dmaengine: imx-sdma: fix context
- cache"
-Message-ID: <20200513060525.GJ5877@pengutronix.de>
-References: <1589218356-17475-1-git-send-email-yibin.gong@nxp.com>
- <1589218356-17475-4-git-send-email-yibin.gong@nxp.com>
+        id S1730331AbgEMHEm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 13 May 2020 03:04:42 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:43953 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729642AbgEMHEm (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 13 May 2020 03:04:42 -0400
+Received: by mail-oi1-f195.google.com with SMTP id i22so3966938oik.10;
+        Wed, 13 May 2020 00:04:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=sMqsXTZkQsUYXsgUW5SNfqYNzeikt2R+rOYAkqTmE5k=;
+        b=Qlo78ui8y08TBdBC1f87m+1ryXxVvJIB0Om7wNF+f5clbFdgRJkuZ+KV3ytof3yMzv
+         pM02R0CKD0jZQOggg78PwzYCICqcG2pqnWlJxECulifzUnEt9l855gTMvHK8AU9y91ts
+         /uQ9XkcsXgSYXTS2E0/JG62+VXh+H3y2256SXpcam2KItKvB51Ef8zoWWhXlmsWq6bgv
+         RLKfQsNJ1wZv/aYbLb16oD9ElcNCyaUn1NW+mNoOSonhUUqa8QBQvjhGKC2E9s9WZHR2
+         63gmIBtMFhzTCBuzEMmdiQyxcXTTohcGoM/8EZXUExFNtORXZDpi9p2ZZcQNWEyOb7LV
+         pMKA==
+X-Gm-Message-State: AGi0Puack8XJaENLTjvv1ed5B7u91qa0FqxGx8C9af530hSjD2PmLX0s
+        uidHH4s9Gs0xSRIp3B+eG53NviECbNhbEtanQUiqrw==
+X-Google-Smtp-Source: APiQypI2i3OcOk0fZSl5EaM/AtAYKVxaJffZ2UtQJdWMHY7G9eIbkNlIzli6zPVMpFnI38y49fid2zK+GkOq09gyGKs=
+X-Received: by 2002:aca:cd93:: with SMTP id d141mr3674965oig.148.1589353479660;
+ Wed, 13 May 2020 00:04:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1589218356-17475-4-git-send-email-yibin.gong@nxp.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-IRC:  #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 08:04:32 up 83 days, 13:35, 87 users,  load average: 0.05, 0.22,
- 0.17
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-spi@vger.kernel.org
+References: <20200512204543.22090-1-robh@kernel.org> <20200512204543.22090-5-robh@kernel.org>
+In-Reply-To: <20200512204543.22090-5-robh@kernel.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 13 May 2020 09:04:28 +0200
+Message-ID: <CAMuHMdWoh94eFvVKHt5si3LOX4Nwx0-JssxVOy=fXPMXxgndXg@mail.gmail.com>
+Subject: Re: [PATCH 5/5] dt-bindings: Fix incorrect 'reg' property sizes
+To:     Rob Herring <robh@kernel.org>
+Cc:     "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        USB list <linux-usb@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, May 12, 2020 at 01:32:26AM +0800, Robin Gong wrote:
-> This reverts commit d288bddd8374e0a043ac9dde64a1ae6a09411d74, since
-> 'context_loaded' finally removed.
-> 
-> Signed-off-by: Robin Gong <yibin.gong@nxp.com>
-> ---
->  drivers/dma/imx-sdma.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
-> index 4d4477d..3d4aac9 100644
-> --- a/drivers/dma/imx-sdma.c
-> +++ b/drivers/dma/imx-sdma.c
-> @@ -1338,7 +1338,6 @@ static void sdma_free_chan_resources(struct dma_chan *chan)
->  
->  	sdmac->event_id0 = 0;
->  	sdmac->event_id1 = 0;
-> -	sdmac->context_loaded = false;
->  
->  	sdma_set_channel_priority(sdmac, 0);
+Hi Rob,
 
-I think this can safely be folded into the next patch which makes it
-more clear what is happening.
+On Tue, May 12, 2020 at 10:46 PM Rob Herring <robh@kernel.org> wrote:
+> The examples template is a 'simple-bus' with a size of 1 cell for
+> #address-cells and #size-cells. The schema was only checking the entries
+> had between 2 and 4 cells which really only errors on I2C or SPI type
+> devices with a single cell.
+>
+> The easiest fix in most cases is to change the 'reg' property to for 1 cell
+> address and size. In some cases with child devices having 2 cells, that
+> doesn't make sense so a bus node is needed.
+>
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
-Sascha
+Thanks for your patch!
+
+>  .../devicetree/bindings/arm/renesas,prr.yaml  |  2 +-
+>  .../bindings/display/renesas,cmm.yaml         |  2 +-
+>  .../interrupt-controller/renesas,irqc.yaml    |  2 +-
+>  .../bindings/media/renesas,csi2.yaml          |  2 +-
+>  .../bindings/media/renesas,vin.yaml           |  6 +-
+>  .../bindings/net/renesas,ether.yaml           |  2 +-
+>  .../bindings/pwm/renesas,pwm-rcar.yaml        |  2 +-
+>  .../bindings/spi/renesas,sh-msiof.yaml        |  2 +-
+>  .../bindings/thermal/rcar-thermal.yaml        |  6 +-
+>  .../bindings/usb/renesas,usb3-peri.yaml       |  2 +-
+>  .../bindings/usb/renesas,usbhs.yaml           |  2 +-
+
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

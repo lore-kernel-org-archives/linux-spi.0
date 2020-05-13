@@ -2,147 +2,102 @@ Return-Path: <SRS0=2MSj=63=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C32AEC2D0FA
-	for <linux-spi@archiver.kernel.org>; Wed, 13 May 2020 14:01:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9143EC2D0FA
+	for <linux-spi@archiver.kernel.org>; Wed, 13 May 2020 14:03:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4A6AB20671
-	for <linux-spi@archiver.kernel.org>; Wed, 13 May 2020 14:01:27 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Z+QNjf30"
+	by mail.kernel.org (Postfix) with ESMTP id 12CCC206F5
+	for <linux-spi@archiver.kernel.org>; Wed, 13 May 2020 14:03:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1589378603;
+	bh=Eufhx3dlqqgouxXOOXWIHlrYL0mU5lBnSfOCmIEp3Fc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=wz/XxdvmRaGxI4iEdJ2AXgj43OfH3u/XTeb777vELBvMjNlQ+BdU0izAHBRwrSNfz
+	 DWtdUUHCFUo6kVvBD3+RCLcWf3O6atsOW20PBsCxSnTzwG/7mvSShLsPWATMy1gcFF
+	 XF67KFMsb0FmlDptmX4JQYejk1KCtxDxdh922HWo=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388740AbgEMOAp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 13 May 2020 10:00:45 -0400
-Received: from esa1.microchip.iphmx.com ([68.232.147.91]:48473 "EHLO
-        esa1.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387927AbgEMOAp (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 13 May 2020 10:00:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1589378444; x=1620914444;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=E2LeTrXG5USlLqv6CmJsbBQmCdfRXDqsQ0KDLdpn/wA=;
-  b=Z+QNjf30+ZDVzxmA8gpkDu2pxVVIKzyVmGSBOT/nBWfZ5ZOCa/fD8bPm
-   +qjIAd21fyvJ8h4LdhckvLEVkj6JuVP+dUyu4yCY+bO/d3CitxAxd/Itm
-   q/R4IyE9x/NJO4z6WxLZNvE7SiG6TzFtU/YtwD+bzzhNJRBjTy/fidgz8
-   5sZtY1ArYIOh0QoCgUEwO+Vja/ZYXa+ygqdy8P846wDPPyVbVT9wrOM95
-   6r6oCVTrbJeNiax99kbDxaJmYo7i038acylNitqRCuA90Rt8LRn90O4Gr
-   d8w/CQ35GXskR9lBoiBg/hm/h/m49Pda6pG4OM6OjEXYLd9Nw8Wi5k2yH
-   A==;
-IronPort-SDR: fnwxvPcGQmcXFxqzx53KJMTcVAUAw6CucJ/tFsnpig2jxsTO5+7WvUQWlnhFHUS/c2LTWCinxk
- Ccy0u6/nP64oHUmfXqSWqSqMeCVJGnUEo1dEh0BbjPWAtZeAXcEivImlBrGMGRS/HnEqtji1Jp
- yPRZuRc3ai+OFB6qQ7jEW7rwfSKDZpSS2eP7pbq72WEPmGcU4YTAc/cfO3pRaYbNvpzVW5uX9N
- /zCcOHOQr0mcR2Y26nPKaysX8AVwbrTX04V0gKn4mWzdreHR4Qs9EI9W+0R7kOtzeOo4Bo2Zzd
- PXg=
-X-IronPort-AV: E=Sophos;i="5.73,388,1583218800"; 
-   d="scan'208";a="79447442"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 13 May 2020 07:00:43 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Wed, 13 May 2020 07:00:46 -0700
-Received: from soft-dev15.microsemi.net (10.10.115.15) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.1713.5 via Frontend Transport; Wed, 13 May 2020 07:00:41 -0700
-From:   Lars Povlsen <lars.povlsen@microchip.com>
-List-Id: <soc.lore.kernel.org>
-To:     Mark Brown <broonie@kernel.org>, SoC Team <soc@kernel.org>
-CC:     Lars Povlsen <lars.povlsen@microchip.com>,
-        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
-        <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 01/10] spi: dw: Add support for polled operation via no IRQ specified in DT
-Date:   Wed, 13 May 2020 16:00:22 +0200
-Message-ID: <20200513140031.25633-2-lars.povlsen@microchip.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200513140031.25633-1-lars.povlsen@microchip.com>
-References: <20200513140031.25633-1-lars.povlsen@microchip.com>
+        id S2388800AbgEMODL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 13 May 2020 10:03:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55950 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387608AbgEMODL (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 13 May 2020 10:03:11 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A18692064E;
+        Wed, 13 May 2020 14:03:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589378590;
+        bh=Eufhx3dlqqgouxXOOXWIHlrYL0mU5lBnSfOCmIEp3Fc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=0MdU5zsTd7ve9RlyN3XfHy/AJ43Nj4J4J62DwwgSTzTcA8x8VxoDauR/tEsXmcv7q
+         NJ6UyyO4gjb2WaPXu01c6Y8jNGvZwZMdKq7Xhbg3rNxR6otHnF9G5IlB1aQ+fVnwxd
+         tuOOeeuhw+QHhj+kPL4w7M336rEi/oQ8bppMd8Qw=
+Date:   Wed, 13 May 2020 15:03:07 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     devicetree@vger.kernel.org,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Linux USB List <linux-usb@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        linux-clk <linux-clk@vger.kernel.org>
+Subject: Re: [PATCH 1/5] spi: dt-bindings: sifive: Add missing 2nd register
+ region
+Message-ID: <20200513140307.GG4803@sirena.org.uk>
+References: <20200512204543.22090-1-robh@kernel.org>
+ <158937185132.39109.17103954100758193517.b4-ty@kernel.org>
+ <CAL_Jsq+KfngSTEnP3eh6Zr9H4GUuSbyZCGXs=skbwQK0j4ZJnA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="ulDeV4rPMk/y39in"
+Content-Disposition: inline
+In-Reply-To: <CAL_Jsq+KfngSTEnP3eh6Zr9H4GUuSbyZCGXs=skbwQK0j4ZJnA@mail.gmail.com>
+X-Cookie: Long life is in store for you.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-With this change a SPI controller can be added without having a IRQ
-associated, and causing all transfers to be polled. For SPI controllers
-without DMA, this can significantly improve performance by less
-interrupt handling overhead.
 
-Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Lars Povlsen <lars.povlsen@microchip.com>
----
- drivers/spi/spi-dw.c | 21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+--ulDeV4rPMk/y39in
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 31e3f866d11a7..e572eb34a3c1a 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -19,6 +19,8 @@
- #include <linux/debugfs.h>
- #endif
+On Wed, May 13, 2020 at 08:02:14AM -0500, Rob Herring wrote:
+> On Wed, May 13, 2020 at 7:10 AM Mark Brown <broonie@kernel.org> wrote:
 
-+#define VALID_IRQ(i) (i >= 0)
-+
- /* Slave spi_dev related */
- struct chip_data {
- 	u8 tmode;		/* TR/TO/RO/EEPROM */
-@@ -359,7 +361,7 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 			spi_enable_chip(dws, 1);
- 			return ret;
- 		}
--	} else if (!chip->poll_mode) {
-+	} else if (!chip->poll_mode && VALID_IRQ(dws->irq)) {
- 		txlevel = min_t(u16, dws->fifo_len / 2, dws->len / dws->n_bytes);
- 		dw_writel(dws, DW_SPI_TXFLTR, txlevel);
+> > [1/1] spi: dt-bindings: sifive: Add missing 2nd register region
+> >       commit: b265b5a0ba15b6e00abce9bf162926e84b4323b4
 
-@@ -379,7 +381,7 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 			return ret;
- 	}
+> You missed my ask for an ack. This is a dependency for patch 5.
 
--	if (chip->poll_mode)
-+	if (chip->poll_mode || !VALID_IRQ(dws->irq))
- 		return poll_transfer(dws);
+Ah, there was no cover letter.=20
 
- 	return 1;
-@@ -487,11 +489,13 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+Acked-by: Mark Brown <broonie@kernel.org>
 
- 	spi_controller_set_devdata(master, dws);
+--ulDeV4rPMk/y39in
+Content-Type: application/pgp-signature; name="signature.asc"
 
--	ret = request_irq(dws->irq, dw_spi_irq, IRQF_SHARED, dev_name(dev),
--			  master);
--	if (ret < 0) {
--		dev_err(dev, "can not get IRQ\n");
--		goto err_free_master;
-+	if (VALID_IRQ(dws->irq)) {
-+		ret = request_irq(dws->irq, dw_spi_irq, IRQF_SHARED,
-+				  dev_name(dev), master);
-+		if (ret < 0) {
-+			dev_err(dev, "can not get IRQ\n");
-+			goto err_free_master;
-+		}
- 	}
+-----BEGIN PGP SIGNATURE-----
 
- 	master->use_gpio_descriptors = true;
-@@ -539,7 +543,8 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 	if (dws->dma_ops && dws->dma_ops->dma_exit)
- 		dws->dma_ops->dma_exit(dws);
- 	spi_enable_chip(dws, 0);
--	free_irq(dws->irq, master);
-+	if (VALID_IRQ(dws->irq))
-+		free_irq(dws->irq, master);
- err_free_master:
- 	spi_controller_put(master);
- 	return ret;
---
-2.26.2
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl67/hoACgkQJNaLcl1U
+h9AiNAf/VxSFKe5eGeiXNh8NQ9o1DuI+ryYYh8J5t4bHHaX/ukfZxOjzM1emHxVY
+dK91QCGiu/6HrZOrx7SNr/ZsJaSqIHg7le2mJWvu4g6uJ/SaPTKCGjUfL5gPeG28
+FHa34V2fwOUoRil6nEiHnvrbQTQQmtwMw13zeYi38ltLK6qchlfCmFT7gjiYHmtm
+netlxcnM2YKr/vblKt1hnDTffvAs2THEpNh8lJ0bA7IBEWsdRPH8PVROjIaBQpME
+JzEW1cFXZTEeuuiNkYS1GMk/ShIxSiD19aAhfOzbomVXqMjenusxBN1jAd5VfoA2
+9TnqOxwFFTKo84Gi3jhJlFaTkx5IRQ==
+=KsV3
+-----END PGP SIGNATURE-----
+
+--ulDeV4rPMk/y39in--

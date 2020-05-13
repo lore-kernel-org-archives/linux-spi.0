@@ -7,49 +7,49 @@ X-Spam-Status: No, score=-9.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EC1BDC2D0FF
-	for <linux-spi@archiver.kernel.org>; Wed, 13 May 2020 14:01:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C32AEC2D0FA
+	for <linux-spi@archiver.kernel.org>; Wed, 13 May 2020 14:01:27 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 71EA220671
-	for <linux-spi@archiver.kernel.org>; Wed, 13 May 2020 14:01:26 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4A6AB20671
+	for <linux-spi@archiver.kernel.org>; Wed, 13 May 2020 14:01:27 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="ssTtXH4W"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Z+QNjf30"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388777AbgEMOAs (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 13 May 2020 10:00:48 -0400
-Received: from esa5.microchip.iphmx.com ([216.71.150.166]:62324 "EHLO
-        esa5.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388776AbgEMOAr (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 13 May 2020 10:00:47 -0400
+        id S2388740AbgEMOAp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 13 May 2020 10:00:45 -0400
+Received: from esa1.microchip.iphmx.com ([68.232.147.91]:48473 "EHLO
+        esa1.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387927AbgEMOAp (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 13 May 2020 10:00:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1589378446; x=1620914446;
+  t=1589378444; x=1620914444;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=u/thRVYUM0XeOw/EsW4JAmGaBkslBy0kyoRiLscrOEs=;
-  b=ssTtXH4WHpCYDY1OZjtLyIMl+OWa7ktcyCSoFTGwNIkRl6FANV+NVnc3
-   rbWsBez/PaFRaKIMavO2Gk19a/AciCNbGIYuXrvtyIeYDZCFoVnURe5ng
-   Qe8EeSM/kHOtcjhS/urYlTPmQXnf9ORDd/FsNsoolUHiDlnopUGtEusXe
-   Ml/n+QvlHHGFS0n+dPlbYX3BrFBiykwIRcliezZzkYhfNi9/HA1tYL4bo
-   0kNt5l5renDa2/tX4wdwM5AH7LDXSHx5+ADyi4NABCAEfX6p3nu830gJ7
-   rMOBYsh404Mr+bUv3wWTlyKvCD89EbgDu2wlvD4slJUL4zkBQdAJmejZk
+  bh=E2LeTrXG5USlLqv6CmJsbBQmCdfRXDqsQ0KDLdpn/wA=;
+  b=Z+QNjf30+ZDVzxmA8gpkDu2pxVVIKzyVmGSBOT/nBWfZ5ZOCa/fD8bPm
+   +qjIAd21fyvJ8h4LdhckvLEVkj6JuVP+dUyu4yCY+bO/d3CitxAxd/Itm
+   q/R4IyE9x/NJO4z6WxLZNvE7SiG6TzFtU/YtwD+bzzhNJRBjTy/fidgz8
+   5sZtY1ArYIOh0QoCgUEwO+Vja/ZYXa+ygqdy8P846wDPPyVbVT9wrOM95
+   6r6oCVTrbJeNiax99kbDxaJmYo7i038acylNitqRCuA90Rt8LRn90O4Gr
+   d8w/CQ35GXskR9lBoiBg/hm/h/m49Pda6pG4OM6OjEXYLd9Nw8Wi5k2yH
    A==;
-IronPort-SDR: b4JIm4J9WSFX+Pq41qrUtq7qPwNcRI2DslfTJ6HN1XIhRrDlwjYQ6h+E0lYyGenGKe/280HFc5
- j+SD2DVQxlA7pxQFaQrgXpQCQoWC79Jh5osGxD5FTDf5V9+DZRRnwIsYqUpN9Xok3liQl4t4Ki
- Oqtp3Pxf+gbP1xfPuSkvMt3GWYoRuUlBKbBuQe75sbVn3IyGftyHam1KT83nZcPFBGx9w2p+Ee
- cpoqQs2+OiIgB+EQWj5JBRSl4sIHy7aDN7Bdb/RZzhdgo40+gArMhm+fFVdk2jtJg34EzfYhgc
- gSs=
+IronPort-SDR: fnwxvPcGQmcXFxqzx53KJMTcVAUAw6CucJ/tFsnpig2jxsTO5+7WvUQWlnhFHUS/c2LTWCinxk
+ Ccy0u6/nP64oHUmfXqSWqSqMeCVJGnUEo1dEh0BbjPWAtZeAXcEivImlBrGMGRS/HnEqtji1Jp
+ yPRZuRc3ai+OFB6qQ7jEW7rwfSKDZpSS2eP7pbq72WEPmGcU4YTAc/cfO3pRaYbNvpzVW5uX9N
+ /zCcOHOQr0mcR2Y26nPKaysX8AVwbrTX04V0gKn4mWzdreHR4Qs9EI9W+0R7kOtzeOo4Bo2Zzd
+ PXg=
 X-IronPort-AV: E=Sophos;i="5.73,388,1583218800"; 
-   d="scan'208";a="75774856"
+   d="scan'208";a="79447442"
 Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 13 May 2020 07:00:46 -0700
+  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 13 May 2020 07:00:43 -0700
 Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Wed, 13 May 2020 07:00:48 -0700
+ 15.1.1713.5; Wed, 13 May 2020 07:00:46 -0700
 Received: from soft-dev15.microsemi.net (10.10.115.15) by
  chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.1713.5 via Frontend Transport; Wed, 13 May 2020 07:00:43 -0700
+ 15.1.1713.5 via Frontend Transport; Wed, 13 May 2020 07:00:41 -0700
 From:   Lars Povlsen <lars.povlsen@microchip.com>
 List-Id: <soc.lore.kernel.org>
 To:     Mark Brown <broonie@kernel.org>, SoC Team <soc@kernel.org>
@@ -59,9 +59,9 @@ CC:     Lars Povlsen <lars.povlsen@microchip.com>,
         <linux-kernel@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 02/10] spi: dw: Add support for RX sample delay register
-Date:   Wed, 13 May 2020 16:00:23 +0200
-Message-ID: <20200513140031.25633-3-lars.povlsen@microchip.com>
+Subject: [PATCH 01/10] spi: dw: Add support for polled operation via no IRQ specified in DT
+Date:   Wed, 13 May 2020 16:00:22 +0200
+Message-ID: <20200513140031.25633-2-lars.povlsen@microchip.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200513140031.25633-1-lars.povlsen@microchip.com>
 References: <20200513140031.25633-1-lars.povlsen@microchip.com>
@@ -73,64 +73,76 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This add support for the RX_SAMPLE_DLY register. If enabled in the
-Designware IP, it allows tuning of the rx data signal by means of an
-internal rx sample fifo.
-
-The register is located at offset 0xf0, and if the option is not
-enabled in the IP, changing the register will have no effect.
+With this change a SPI controller can be added without having a IRQ
+associated, and causing all transfers to be polled. For SPI controllers
+without DMA, this can significantly improve performance by less
+interrupt handling overhead.
 
 Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Lars Povlsen <lars.povlsen@microchip.com>
 ---
- drivers/spi/spi-dw.c | 7 +++++++
- drivers/spi/spi-dw.h | 2 ++
- 2 files changed, 9 insertions(+)
+ drivers/spi/spi-dw.c | 21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index e572eb34a3c1a..32997f28fa5bb 100644
+index 31e3f866d11a7..e572eb34a3c1a 100644
 --- a/drivers/spi/spi-dw.c
 +++ b/drivers/spi/spi-dw.c
-@@ -81,6 +81,9 @@ static ssize_t dw_spi_show_regs(struct file *file, char __user *user_buf,
- 			"DMATDLR: \t0x%08x\n", dw_readl(dws, DW_SPI_DMATDLR));
- 	len += scnprintf(buf + len, SPI_REGS_BUFSIZE - len,
- 			"DMARDLR: \t0x%08x\n", dw_readl(dws, DW_SPI_DMARDLR));
-+	len += scnprintf(buf + len, SPI_REGS_BUFSIZE - len,
-+			 "RX_SAMPLE_DLY: \t0x%08x\n",
-+			 dw_readl(dws, DW_SPI_RX_SAMPLE_DLY));
- 	len += scnprintf(buf + len, SPI_REGS_BUFSIZE - len,
- 			"=================================\n");
+@@ -19,6 +19,8 @@
+ #include <linux/debugfs.h>
+ #endif
 
-@@ -315,6 +318,10 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 		spi_set_clk(dws, chip->clk_div);
++#define VALID_IRQ(i) (i >= 0)
++
+ /* Slave spi_dev related */
+ struct chip_data {
+ 	u8 tmode;		/* TR/TO/RO/EEPROM */
+@@ -359,7 +361,7 @@ static int dw_spi_transfer_one(struct spi_controller *master,
+ 			spi_enable_chip(dws, 1);
+ 			return ret;
+ 		}
+-	} else if (!chip->poll_mode) {
++	} else if (!chip->poll_mode && VALID_IRQ(dws->irq)) {
+ 		txlevel = min_t(u16, dws->fifo_len / 2, dws->len / dws->n_bytes);
+ 		dw_writel(dws, DW_SPI_TXFLTR, txlevel);
+
+@@ -379,7 +381,7 @@ static int dw_spi_transfer_one(struct spi_controller *master,
+ 			return ret;
  	}
 
-+	/* Apply RX sample delay, iff requested (nonzero) */
-+	if (dws->rx_sample_dly)
-+		dw_writel(dws, DW_SPI_RX_SAMPLE_DLY, dws->rx_sample_dly);
-+
- 	dws->n_bytes = DIV_ROUND_UP(transfer->bits_per_word, BITS_PER_BYTE);
- 	dws->dma_width = DIV_ROUND_UP(transfer->bits_per_word, BITS_PER_BYTE);
+-	if (chip->poll_mode)
++	if (chip->poll_mode || !VALID_IRQ(dws->irq))
+ 		return poll_transfer(dws);
 
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 1bf5713e047d3..ed6e47b3f50da 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -31,6 +31,7 @@
- #define DW_SPI_IDR			0x58
- #define DW_SPI_VERSION			0x5c
- #define DW_SPI_DR			0x60
-+#define DW_SPI_RX_SAMPLE_DLY		0xf0
- #define DW_SPI_CS_OVERRIDE		0xf4
+ 	return 1;
+@@ -487,11 +489,13 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
 
- /* Bit fields in CTRLR0 */
-@@ -111,6 +112,7 @@ struct dw_spi {
+ 	spi_controller_set_devdata(master, dws);
 
- 	int			cs_override;
- 	u32			reg_io_width;	/* DR I/O width in bytes */
-+	u8			rx_sample_dly;	/* RX fifo tuning (option) */
- 	u16			bus_num;
- 	u16			num_cs;		/* supported slave numbers */
- 	void (*set_cs)(struct spi_device *spi, bool enable);
+-	ret = request_irq(dws->irq, dw_spi_irq, IRQF_SHARED, dev_name(dev),
+-			  master);
+-	if (ret < 0) {
+-		dev_err(dev, "can not get IRQ\n");
+-		goto err_free_master;
++	if (VALID_IRQ(dws->irq)) {
++		ret = request_irq(dws->irq, dw_spi_irq, IRQF_SHARED,
++				  dev_name(dev), master);
++		if (ret < 0) {
++			dev_err(dev, "can not get IRQ\n");
++			goto err_free_master;
++		}
+ 	}
+
+ 	master->use_gpio_descriptors = true;
+@@ -539,7 +543,8 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+ 	if (dws->dma_ops && dws->dma_ops->dma_exit)
+ 		dws->dma_ops->dma_exit(dws);
+ 	spi_enable_chip(dws, 0);
+-	free_irq(dws->irq, master);
++	if (VALID_IRQ(dws->irq))
++		free_irq(dws->irq, master);
+ err_free_master:
+ 	spi_controller_put(master);
+ 	return ret;
 --
 2.26.2

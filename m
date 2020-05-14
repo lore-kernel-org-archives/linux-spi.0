@@ -2,132 +2,183 @@ Return-Path: <SRS0=RbB+=64=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.5 required=3.0 tests=DATE_IN_PAST_06_12,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DF5C2C433DF
-	for <linux-spi@archiver.kernel.org>; Thu, 14 May 2020 14:35:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DDAFC433DF
+	for <linux-spi@archiver.kernel.org>; Thu, 14 May 2020 15:08:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B2BAF20728
-	for <linux-spi@archiver.kernel.org>; Thu, 14 May 2020 14:35:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1589466941;
-	bh=48EwYvSwIgRzFWPGVtkj550AqOLgeUUnyv4LtyKi/pE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=tUW4d2LsYSM1jt1j52wpDsIBRBeOoYM7UG5vXTnSRd2tJbPQN7thJ+iQ9lQbhGMVl
-	 LYiciWNaE1wfxZqrLtEgpAIsz3AMN5y3IsAD9EizhYB5ERw8nuyLN4TocG9YlfaKda
-	 /ObS8gyZaucefBMNyj386sX/f88q8cgnTiLRE7rY=
+	by mail.kernel.org (Postfix) with ESMTP id 66A87205CB
+	for <linux-spi@archiver.kernel.org>; Thu, 14 May 2020 15:08:10 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FJPRMdQo"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726239AbgENOfl (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 14 May 2020 10:35:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43734 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726051AbgENOfk (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 14 May 2020 10:35:40 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9D4F7205CB;
-        Thu, 14 May 2020 14:35:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1589466940;
-        bh=48EwYvSwIgRzFWPGVtkj550AqOLgeUUnyv4LtyKi/pE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=tnKmJyCk1QIFgro/vw3QB05SDh5+ogBAdK18o1spkVK4RFF+Sxgqduez8FAymwQ4u
-         lacbo6x7gFlSmljLNO1A6hq2LFOrXGrDLgKqLV0am5LdghHhP9SFmCdz/fKXbCcNM0
-         LopKZfpYuy4FpSQq/UiRFgb1c8s7RhUC3qHkq6OI=
-Date:   Thu, 14 May 2020 15:35:37 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>,
-        Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>,
-        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Paul Burton <paulburton@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Allison Randal <allison@lohutok.net>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Gareth Williams <gareth.williams.jx@renesas.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-mips@vger.kernel.org,
+        id S1726667AbgENPIK (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 14 May 2020 11:08:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41464 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726240AbgENPII (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 14 May 2020 11:08:08 -0400
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72ECDC061A0C;
+        Thu, 14 May 2020 08:08:08 -0700 (PDT)
+Received: by mail-io1-xd41.google.com with SMTP id 79so3358454iou.2;
+        Thu, 14 May 2020 08:08:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=Gbex69XR4ZtBuJoqVeoYUx9nyFHm1kZR6S5jk554FrE=;
+        b=FJPRMdQokqht7U+y1ela4OESMPvwo+hnpZbq+e01yT4sc7YmX6KhRapTLoooJGnaer
+         no8q5/+yTTtmbVYURRxBEfQhhZ9J+LhKOFz0bqgGBx4PJ2Bw2ftahjLfUzXNEEvP8ccI
+         2pAP6Y2aYPKnolxMJQZEZL2TjJA9jwPSwcgeBX6VoDfVfbkeZdHE4f3iGkIRzsuBERI3
+         b0XGSa3ns7gvk1VcwnfVu1eKrphDamt+YQi9Z3l0nVtOAJFrtU66CW6UaoIx+NrhyDWG
+         bpqevwejD/G29RpG/FpMT46mNvKB9gZs0esEtTpKHnxOjUpQp/TrM51cnY7zblKAAa2T
+         Tr+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=Gbex69XR4ZtBuJoqVeoYUx9nyFHm1kZR6S5jk554FrE=;
+        b=M3wnIGSuqEf/qElsJ2WUpn2RRaXc3cntoA1CwXzU51tnS1ApY+QV+CVJDqaY0/SbaS
+         UeEGqmvBlTpzPbXxysWj5Xo0HEw5lzkMSDI1BcrkwkWDvWNAgyPp5nAO3lEJKnPBktOz
+         X3bZMiEtf+0RX5LRWSG57/+o9lgeDy+8DT9PPCea2lwKpMZ9CYxJEWEigp5rhVo6HUIO
+         vH1Y3uB76cV/FXU4ymPHjk1VipvTtH+rImpeOOGoddhgNtIwmPOZ8bejzzt5sErQnhld
+         YsIKFi4oJx7x6uIJQ92bNry1nRHlxBoS/8KUkf4oJreeKD8R5QWdpZh9HCilYIzigmHP
+         nozQ==
+X-Gm-Message-State: AOAM5300q5phDhsOdufNkig62F0I6Oz8vysH8qLAPGztnqR8yo7D4Gwf
+        LF8YfkYG3NGflJqKS5rerIUELXd5FAZCMTFLSeo=
+X-Google-Smtp-Source: ABdhPJxG7GXTkoxbTPKumJL1X0BkUdzHfDr7LxNY1mkd2t1RPi+rTYGSq8vStSCW40203NqyVRJ+wEEs4doBgLVXPhg=
+X-Received: by 2002:a5d:8b8e:: with SMTP id p14mr4506860iol.110.1589468887821;
+ Thu, 14 May 2020 08:08:07 -0700 (PDT)
+MIME-Version: 1.0
+References: <1589269010-18472-1-git-send-email-dillon.minfei@gmail.com>
+ <1589269010-18472-3-git-send-email-dillon.minfei@gmail.com> <da9fbb80-571d-1217-4028-e413a0c7db84@st.com>
+In-Reply-To: <da9fbb80-571d-1217-4028-e413a0c7db84@st.com>
+From:   dillon min <dillon.minfei@gmail.com>
+Date:   Thu, 14 May 2020 15:07:32 +0800
+Message-ID: <CAL9mu0KJ0j6Rxf7YjKxVWKz_d+B6vrwqqxJM-fmzG=NonLeDYQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] ARM: dts: stm32: enable l3gd20 on stm32429-disco board
+To:     Alexandre Torgue <alexandre.torgue@st.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Mark Brown <broonie@kernel.org>, p.zabel@pengutronix.de,
         "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
         <devicetree@vger.kernel.org>,
-        Phil Edworthy <phil.edworthy@renesas.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Alexios Zavras <alexios.zavras@intel.com>,
-        Thor Thayer <thor.thayer@linux.intel.com>,
-        "wuxu.wu" <wuxu.wu@huawei.com>,
-        Xinwei Kong <kong.kongxinwei@hisilicon.com>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 11/17] spi: dw: Fix native CS being unset
-Message-ID: <20200514143537.GH5127@sirena.org.uk>
-References: <20200508132943.9826-1-Sergey.Semin@baikalelectronics.ru>
- <20200508132943.9826-12-Sergey.Semin@baikalelectronics.ru>
- <CACRpkdY=wkgnYPcqSzyzNpS6ckJZs-9kXfTfdwa1E+POzOBQGA@mail.gmail.com>
- <20200513001347.dyt357erev7vzy3l@mobilestation>
- <CACRpkdZTH1DNHvi4r48nLNWp4rqyYDZTzT12hw0eTNcYmgSr3Q@mail.gmail.com>
- <20200514115558.e6cqnuxqyqkysfn7@mobilestation>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="KscVNZbUup0vZz0f"
-Content-Disposition: inline
-In-Reply-To: <20200514115558.e6cqnuxqyqkysfn7@mobilestation>
-X-Cookie: I think we're in trouble.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        Hua Dillon <dillonhua@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Hi Alexandre,
 
---KscVNZbUup0vZz0f
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Alexandre Torgue <alexandre.torgue@st.com> =E4=BA=8E2020=E5=B9=B45=E6=9C=88=
+14=E6=97=A5=E5=91=A8=E5=9B=9B =E4=B8=8B=E5=8D=8810:10=E5=86=99=E9=81=93=EF=
+=BC=9A
+>
+> Hi Dillon
+>
+> On 5/12/20 9:36 AM, dillon.minfei@gmail.com wrote:
+> > From: dillon min <dillon.minfei@gmail.com>
+> >
+> > L3gd20, st mems motion sensor, 3-axis digital output gyroscope,
+> > connect to stm32f429 via spi5
+> >
+> > Signed-off-by: dillon min <dillon.minfei@gmail.com>
+> > ---
+> >
+> > Hi Alexandre,
+> >
+> > V2:
+> >      1, insert blank line at stm32f420-disco.dts line 143
+> >      2, add more description about l3gd20 in commit message
+> >
+> > V1:
+> >      enable l3gd20 dts binding on stm32f429-disco
+> >
+> > thanks.
+> >
+> > dillon,
+> >
+> >   arch/arm/boot/dts/stm32f429-disco.dts | 25 +++++++++++++++++++++++++
+> >   1 file changed, 25 insertions(+)
+> >
+> > diff --git a/arch/arm/boot/dts/stm32f429-disco.dts b/arch/arm/boot/dts/=
+stm32f429-disco.dts
+> > index 30c0f67..1bfb903 100644
+> > --- a/arch/arm/boot/dts/stm32f429-disco.dts
+> > +++ b/arch/arm/boot/dts/stm32f429-disco.dts
+> > @@ -49,6 +49,8 @@
+> >   #include "stm32f429.dtsi"
+> >   #include "stm32f429-pinctrl.dtsi"
+> >   #include <dt-bindings/input/input.h>
+> > +#include <dt-bindings/interrupt-controller/irq.h>
+> > +#include <dt-bindings/gpio/gpio.h>
+> >
+> >   / {
+> >       model =3D "STMicroelectronics STM32F429i-DISCO board";
+> > @@ -127,3 +129,26 @@
+> >       pinctrl-names =3D "default";
+> >       status =3D "okay";
+> >   };
+> > +
+> > +&spi5 {
+> > +     status =3D "okay";
+> > +     pinctrl-0 =3D <&spi5_pins>;
+> > +     pinctrl-names =3D "default";
+> > +     #address-cells =3D <1>;
+> > +     #size-cells =3D <0>;
+> > +     cs-gpios =3D <&gpioc 1 GPIO_ACTIVE_LOW>;
+> > +     dmas =3D <&dma2 3 2 0x400 0x0>,
+> > +            <&dma2 4 2 0x400 0x0>;
+> > +     dma-names =3D "rx", "tx";
+> > +
+>
+> You added this spi5 node in this patch but also in the display series. I
+> will have issue to merge. Even if I could fix it easily, as you are
+> going to resend, the good practice could be to have several patches in
+> one series: one patch for spi5 controller, another for gyro and another
+> for display.
+>
+> And also same remark than Linus did in display series move DMA to soc
+> dtsi file please.
 
-On Thu, May 14, 2020 at 02:55:58PM +0300, Serge Semin wrote:
-> On Thu, May 14, 2020 at 10:31:13AM +0200, Linus Walleij wrote:
+Sure, how about this patch sequence:
+1 add spi5 dma to soc (stm32f429.dtsi)
+2 add pin map for spi5 (stm32f4-pinctrl.dtsi)
+3 add spi5 controller with gyro (stm32f429-disco.dts)
+4 add spi modification to support gyro (spi-stm32.c)
 
-> > We had some related discussion what to do with this case
-> > when a controller can support active high CS if and only if
-> > it is using a GPIO instead of the native CS. We didn't really
-> > figure it out, I suppose ideally we should use two flags in the
-> > master but that exercise is for another day.
+5 add ltdc pin map for stm32f429-disco board (stm32f4-pinctrl.dtsi)
+6 add ilitek-ili9341 dts bindings for disco (stm32f429-disco.dts,
+depends on above step 3)
+7 add yaml document about ilitek-ili9341 (ilitek,ili9341.yaml)
+8 add clk changes to support ltdc driver (clk-stm32f4.c)
 
-> Even though it might be painful, but as I see it the best way to generically fix
-> this problem would be to change the controller->set_cs() callback
-> semantics. SPI core should pass a CS activation flag to the set_cs()
-> callback instead of the CS pin logical level (just propagate the enable argument
-> passed to the spi_set_cs() SPI core method). So if an SPI controller supports
-> the Active-high native CS, during the set_cs() callback invocation it would
-> analyze the spi_device flags state to figure out whether the slave needs the
+so, i will combine gyro and display two patches to one patchset next
+time. right ?
 
-The idea with set_cs() is to support controllers that allow the chip
-select to be directly managed.  If the controller is interpreting or
-automatically managing chip select at all then set_cs() is not likely to
-be a good fit, if the controller does support unfiltered management then
-anything else is going to result in there being a bunch of duplicate
-code between drivers.
-
---KscVNZbUup0vZz0f
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEyBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl69VzgACgkQJNaLcl1U
-h9CkzQf4/uHBSzXTasSY03WgD1z9u+SSfFJAZ5Boxho3Qo6dz4aKF8l8h9suzNWq
-1WfAehSkgkhS85JHeNMcuTjr5P4sAjQW/yF7q1n2edDYpj8lbK3+imNpSrnfNp0z
-0GUhUfHJLQZ05l7DWFyeQ1S88u7obs7D3/RrRfznYcCFG8CsJczlnlBG8DPFPNtB
-ZidIShahKy/TZsdMm8jx+BpdglPnArIwvxd/0wOivwI69077MrigR5cH0GpL6rA9
-Pq5EkxK5W9UereSFPv+BsaTW4ou7mHITbCzjS9DDjYo4I5OVEUqKwaFD4yp9CoBc
-MTBnB9xxDydUKqJqUNnzksYrFpBO
-=ssDU
------END PGP SIGNATURE-----
-
---KscVNZbUup0vZz0f--
+thanks.
+>
+>
+> > +     l3gd20: l3gd20@0 {
+> > +             compatible =3D "st,l3gd20-gyro";
+> > +             spi-max-frequency =3D <10000000>;
+> > +             st,drdy-int-pin =3D <2>;
+> > +             interrupt-parent =3D <&gpioa>;
+> > +             interrupts =3D <1 IRQ_TYPE_EDGE_RISING>,
+> > +                             <2 IRQ_TYPE_EDGE_RISING>;
+> > +             reg =3D <0>;
+> > +             status =3D "okay";
+> > +     };
+> > +};
+> >

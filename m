@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-6.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
+	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BAF3C433E0
-	for <linux-spi@archiver.kernel.org>; Fri, 15 May 2020 10:49:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E6BC2C433DF
+	for <linux-spi@archiver.kernel.org>; Fri, 15 May 2020 10:49:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8139320758
-	for <linux-spi@archiver.kernel.org>; Fri, 15 May 2020 10:49:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CD71520758
+	for <linux-spi@archiver.kernel.org>; Fri, 15 May 2020 10:49:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728389AbgEOKtG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 15 May 2020 06:49:06 -0400
+        id S1728403AbgEOKtJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 15 May 2020 06:49:09 -0400
 Received: from mail.baikalelectronics.com ([87.245.175.226]:35448 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728129AbgEOKtD (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 15 May 2020 06:49:03 -0400
+        with ESMTP id S1728373AbgEOKtI (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 15 May 2020 06:49:08 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id B0F748000658;
-        Fri, 15 May 2020 10:49:00 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 5546980005EE;
+        Fri, 15 May 2020 10:49:04 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Q12HfA6xiRhZ; Fri, 15 May 2020 13:48:55 +0300 (MSK)
+        with ESMTP id k9IDQoajzosZ; Fri, 15 May 2020 13:49:02 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
@@ -40,13 +40,17 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Gareth Williams <gareth.williams.jx@renesas.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-mips@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+        <devicetree@vger.kernel.org>,
         Wan Ahmad Zainie <wan.ahmad.zainie.wan.mohamad@intel.com>,
         Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Jay Fang <f.fangjian@huawei.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Stephen Boyd <swboyd@chromium.org>,
         <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 09/19] spi: dw: Parameterize the DMA Rx/Tx burst length
-Date:   Fri, 15 May 2020 13:47:48 +0300
-Message-ID: <20200515104758.6934-10-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH v2 11/19] spi: dw: Initialize paddr in DW SPI MMIO private data
+Date:   Fri, 15 May 2020 13:47:50 +0300
+Message-ID: <20200515104758.6934-12-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20200515104758.6934-1-Sergey.Semin@baikalelectronics.ru>
 References: <20200508132943.9826-1-Sergey.Semin@baikalelectronics.ru>
  <20200515104758.6934-1-Sergey.Semin@baikalelectronics.ru>
@@ -59,15 +63,11 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-It isn't good to have numeric literals in the code especially if there
-are multiple of them and they are related. Moreover in current
-implementation the Tx DMA transfer activation level isn't optimal,
-since it's hardwired to be at 16-32 bytes level, while it's better
-to keep the SPI FIFO buffer as full as possible until all available
-data is submitted. So lets introduce the DMA burst level
-parametrization macros with optimal values - issue Rx transfer if at
-least 16 bytes are available in the buffer and execute Tx transaction
-if at least 16 bytes room is opened in SPI Tx FIFO.
+This field is used only for the DW SPI DMA code initialization, that's
+why there were no problems with it being uninitialized in Dw SPI MMIO
+driver. Since in a further patch we are going to introduce the DW SPI DMA
+support in the MMIO version of the driver, lets set the field with the
+physical address of the DW SPI controller registers region.
 
 Co-developed-by: Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>
 Signed-off-by: Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>
@@ -86,52 +86,35 @@ Cc: Rob Herring <robh+dt@kernel.org>
 Cc: linux-mips@vger.kernel.org
 Cc: devicetree@vger.kernel.org
 ---
- drivers/spi/spi-dw-mid.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/spi/spi-dw-mmio.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
-index ca8813a693d8..e43914dbcadf 100644
---- a/drivers/spi/spi-dw-mid.c
-+++ b/drivers/spi/spi-dw-mid.c
-@@ -20,7 +20,9 @@
+diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+index 398f7926cf92..0894b4c09496 100644
+--- a/drivers/spi/spi-dw-mmio.c
++++ b/drivers/spi/spi-dw-mmio.c
+@@ -184,6 +184,7 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
+ 	int (*init_func)(struct platform_device *pdev,
+ 			 struct dw_spi_mmio *dwsmmio);
+ 	struct dw_spi_mmio *dwsmmio;
++	struct resource *mem;
+ 	struct dw_spi *dws;
+ 	int ret;
+ 	int num_cs;
+@@ -196,10 +197,12 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
+ 	dws = &dwsmmio->dws;
  
- #define WAIT_RETRIES	5
- #define RX_BUSY		0
-+#define RX_BURST_LEVEL	16
- #define TX_BUSY		1
-+#define TX_BURST_LEVEL	16
+ 	/* Get basic io resource and map it */
+-	dws->regs = devm_platform_ioremap_resource(pdev, 0);
++	dws->regs = devm_platform_get_and_ioremap_resource(pdev, 0, &mem);
+ 	if (IS_ERR(dws->regs))
+ 		return PTR_ERR(dws->regs);
  
- static bool mid_spi_dma_chan_filter(struct dma_chan *chan, void *param)
- {
-@@ -193,7 +195,7 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_tx(struct dw_spi *dws,
- 	memset(&txconf, 0, sizeof(txconf));
- 	txconf.direction = DMA_MEM_TO_DEV;
- 	txconf.dst_addr = dws->dma_addr;
--	txconf.dst_maxburst = 16;
-+	txconf.dst_maxburst = TX_BURST_LEVEL;
- 	txconf.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
- 	txconf.dst_addr_width = convert_dma_width(dws->n_bytes);
- 	txconf.device_fc = false;
-@@ -266,7 +268,7 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_rx(struct dw_spi *dws,
- 	memset(&rxconf, 0, sizeof(rxconf));
- 	rxconf.direction = DMA_DEV_TO_MEM;
- 	rxconf.src_addr = dws->dma_addr;
--	rxconf.src_maxburst = 16;
-+	rxconf.src_maxburst = RX_BURST_LEVEL;
- 	rxconf.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
- 	rxconf.src_addr_width = convert_dma_width(dws->n_bytes);
- 	rxconf.device_fc = false;
-@@ -291,8 +293,8 @@ static int mid_spi_dma_setup(struct dw_spi *dws, struct spi_transfer *xfer)
- {
- 	u16 imr = 0, dma_ctrl = 0;
- 
--	dw_writel(dws, DW_SPI_DMARDLR, 0xf);
--	dw_writel(dws, DW_SPI_DMATDLR, 0x10);
-+	dw_writel(dws, DW_SPI_DMARDLR, RX_BURST_LEVEL - 1);
-+	dw_writel(dws, DW_SPI_DMATDLR, dws->fifo_len - TX_BURST_LEVEL);
- 
- 	if (xfer->tx_buf) {
- 		dma_ctrl |= SPI_DMA_TDMAE;
++	dws->paddr = mem->start;
++
+ 	dws->irq = platform_get_irq(pdev, 0);
+ 	if (dws->irq < 0)
+ 		return dws->irq; /* -ENXIO */
 -- 
 2.25.1
 

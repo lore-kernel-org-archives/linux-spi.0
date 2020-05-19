@@ -2,50 +2,49 @@ Return-Path: <SRS0=+CmH=7B=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D9DCC433E0
-	for <linux-spi@archiver.kernel.org>; Tue, 19 May 2020 14:27:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B6880C433E0
+	for <linux-spi@archiver.kernel.org>; Tue, 19 May 2020 14:27:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6819E20709
-	for <linux-spi@archiver.kernel.org>; Tue, 19 May 2020 14:27:18 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8D6772081A
+	for <linux-spi@archiver.kernel.org>; Tue, 19 May 2020 14:27:22 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="ZNCWrQCv"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="axRtrI0E"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728965AbgESO1S (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 19 May 2020 10:27:18 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:36756 "EHLO
+        id S1729077AbgESO1W (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 19 May 2020 10:27:22 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:36778 "EHLO
         lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728737AbgESO1R (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 19 May 2020 10:27:17 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04JEQmtp062554;
-        Tue, 19 May 2020 09:26:48 -0500
+        with ESMTP id S1727904AbgESO1V (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 19 May 2020 10:27:21 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04JER87w062605;
+        Tue, 19 May 2020 09:27:08 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1589898408;
-        bh=nld47umMctPIIViH8mIfnth8wdpODIMC9+0TGQ4md1M=;
-        h=From:To:CC:Subject:Date;
-        b=ZNCWrQCv+q6Y5YUcXLVKCwR5rC4wfjTfqnddHYZkggBuEQ2A34ONiTwxZCI70pUox
-         q9Pnf/b2GQ5oE0hRbmR0vQy2Pqb8Nw32uUunfAHXLZAScCpB6FLcrIbSiTgJlID1Uq
-         U9oZpXG4DGWVzpL68rjDFAzFKTkTGLTp2KUzbQR0=
-Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04JEQmwI068401
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 19 May 2020 09:26:48 -0500
-Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+        s=ti-com-17Q1; t=1589898428;
+        bh=vMR1J84c/X9DcMtd3o/Coldhh8IsXqCNWSRHtDe2Jrc=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=axRtrI0Es3jffANTnWxCagE7R4F7VmK1VHf4mMdy5YRMfiIfh61rHOGPei+iVZ9Ms
+         Of6wdCPNHaVWteMk5T/aqGxkj4au0k4x+2bspqwlgwS35gEUJUDTWkrqbh0UqiEbTM
+         ogaBslqLsSF2q58D25vPfj7X/hAtbQLtiKhPoKgU=
+Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04JER8oU039008;
+        Tue, 19 May 2020 09:27:08 -0500
+Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 19
- May 2020 09:26:48 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ May 2020 09:27:07 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 19 May 2020 09:26:47 -0500
+ Frontend Transport; Tue, 19 May 2020 09:27:08 -0500
 Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04JEQgjI008313;
-        Tue, 19 May 2020 09:26:43 -0500
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04JEQgjM008313;
+        Tue, 19 May 2020 09:27:03 -0500
 From:   Pratyush Yadav <p.yadav@ti.com>
 To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
@@ -63,10 +62,12 @@ To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
 CC:     Pratyush Yadav <p.yadav@ti.com>, Sekhar Nori <nsekhar@ti.com>,
         Boris Brezillon <boris.brezillon@collabora.com>,
         Mason Yang <masonccyang@mxic.com.tw>
-Subject: [PATCH v5 00/19] mtd: spi-nor: add xSPI Octal DTR support
-Date:   Tue, 19 May 2020 19:56:22 +0530
-Message-ID: <20200519142642.24131-1-p.yadav@ti.com>
+Subject: [PATCH v5 04/19] spi: spi-mem: allow specifying a command's extension
+Date:   Tue, 19 May 2020 19:56:26 +0530
+Message-ID: <20200519142642.24131-5-p.yadav@ti.com>
 X-Mailer: git-send-email 2.25.0
+In-Reply-To: <20200519142642.24131-1-p.yadav@ti.com>
+References: <20200519142642.24131-1-p.yadav@ti.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -76,166 +77,46 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi,
+In xSPI mode, flashes expect 2-byte opcodes. The second byte is called
+the "command extension". There can be 3 types of extensions in xSPI:
+repeat, invert, and hex. When the extension type is "repeat", the same
+opcode is sent twice. When it is "invert", the second byte is the
+inverse of the opcode. When it is "hex" an additional opcode byte based
+is sent with the command whose value can be anything.
 
-This series adds support for octal DTR flashes in the spi-nor framework,
-and then adds hooks for the Cypress Semper and Mircom Xcella flashes to
-allow running them in octal DTR mode. This series assumes that the flash
-is handed to the kernel in Legacy SPI mode.
+So, make opcode a 16-bit value and add a 'nbytes', similar to how
+multiple address widths are handled.
 
-Tested on TI J721e EVM with 1-bit ECC on the Cypress flash.
+Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+---
+ include/linux/spi/spi-mem.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Changes in v5:
-- Do not enable stateful X-X-X modes if the reset line is broken.
-
-- Instead of setting SNOR_READ_HWCAPS_8_8_8_DTR from Profile 1.0 table
-  parsing, do it in spi_nor_info_init_params() instead based on the
-  SPI_NOR_OCTAL_DTR_READ flag instead.
-
-- Set SNOR_HWCAPS_PP_8_8_8_DTR in s28hs post_sfdp hook since this
-  capability is no longer set in Profile 1.0 parsing.
-
-- Instead of just checking for spi_nor_get_protocol_width() in
-  spi_nor_octal_dtr_enable(), make sure the protocol is
-  SNOR_PROTO_8_8_8_DTR since get_protocol_width() only cares about data
-  width.
-
-- Drop flag SPI_NOR_SOFT_RESET. Instead, discover soft reset capability
-  via BFPT.
-
-- Do not make an invalid Quad Enable BFPT field a fatal error. Silently
-  ignore it by assuming no quad enable bit is present.
-
-- Set dummy cycles for Cypress Semper flash to 24 instead of 20. This
-  allows for 200MHz operation in 8D mode compared to the 166MHz with 20.
-
-- Rename spi_nor_cypress_octal_enable() to
-  spi_nor_cypress_octal_dtr_enable().
-
-- Update spi-mtk-nor.c to reject DTR ops since it doesn't call
-  spi_mem_default_supports_op().
-
-Changes in v4:
-- Refactor the series to use the new spi-nor framework with the
-  manufacturer-specific bits separated from the core.
-
-- Add support for Micron MT35XU512ABA.
-
-- Use cmd.nbytes as the criteria of whether the data phase exists or not
-  instead of cmd.buf.in || cmd.buf.out in spi_nor_spimem_setup_op().
-
-- Update Read FSR to use the same dummy cycles and address width as Read
-  SR.
-
-- Fix BFPT parsing stopping too early for JESD216 rev B flashes.
-
-- Use 2 byte reads for Read SR and FSR commands in DTR mode.
-
-Changes in v3:
-- Drop the DT properties "spi-rx-dtr" and "spi-tx-dtr". Instead, if
-  later a need is felt to disable DTR in case someone has a board with
-  Octal DTR capable flash but does not support DTR transactions for some
-  reason, a property like "spi-no-dtr" can be added.
-
-- Remove mode bits SPI_RX_DTR and SPI_TX_DTR.
-
-- Remove the Cadence Quadspi controller patch to un-block this series. I
-  will submit it as a separate patch.
-
-- Rebase on latest 'master' and fix merge conflicts.
-
-- Update read and write dirmap templates to use DTR.
-
-- Rename 'is_dtr' to 'dtr'.
-
-- Make 'dtr' a bitfield.
-
-- Reject DTR ops in spi_mem_default_supports_op().
-
-- Update atmel-quadspi to reject DTR ops. All other controller drivers
-  call spi_mem_default_supports_op() so they will automatically reject
-  DTR ops.
-
-- Add support for both enabling and disabling DTR modes.
-
-- Perform a Software Reset on flashes that support it when shutting
-  down.
-
-- Disable Octal DTR mode on suspend, and re-enable it on resume.
-
-- Drop enum 'spi_mem_cmd_ext' and make command opcode u16 instead.
-  Update spi-nor to use the 2-byte command instead of the command
-  extension. Since we still need a "extension type", mode that enum to
-  spi-nor and name it 'spi_nor_cmd_ext'.
-
-- Default variable address width to 3 to fix SMPT parsing.
-
-- Drop non-volatile change to uniform sector mode and rely on parsing
-  SMPT.
-
-Changes in v2:
-- Add DT properties "spi-rx-dtr" and "spi-tx-dtr" to allow expressing
-  DTR capabilities.
-
-- Set the mode bits SPI_RX_DTR and SPI_TX_DTR when we discover the DT
-  properties "spi-rx-dtr" and spi-tx-dtr".
-
-- spi_nor_cypress_octal_enable() was updating nor->params.read[] with
-  the intention of setting the correct number of dummy cycles. But this
-  function is called _after_ selecting the read so setting
-  nor->params.read[] will have no effect. So, update nor->read_dummy
-  directly.
-
-- Fix spi_nor_spimem_check_readop() and spi_nor_spimem_check_pp()
-  passing nor->read_proto and nor->write_proto to
-  spi_nor_spimem_setup_op() instead of read->proto and pp->proto
-  respectively.
-
-- Move the call to cqspi_setup_opcode_ext() inside cqspi_enable_dtr().
-  This avoids repeating the 'if (f_pdata->is_dtr)
-  cqspi_setup_opcode_ext()...` snippet multiple times.
-
-- Call the default 'supports_op()' from cqspi_supports_mem_op(). This
-  makes sure the buswidth requirements are also enforced along with the
-  DTR requirements.
-
-- Drop the 'is_dtr' argument from spi_check_dtr_req(). We only call it
-  when a phase is DTR so it is redundant.
-
-Pratyush Yadav (19):
-  spi: spi-mem: allow specifying whether an op is DTR or not
-  spi: atmel-quadspi: reject DTR ops
-  spi: spi-mtk-nor: reject DTR ops
-  spi: spi-mem: allow specifying a command's extension
-  mtd: spi-nor: add support for DTR protocol
-  mtd: spi-nor: sfdp: default to addr_width of 3 for configurable widths
-  mtd: spi-nor: sfdp: prepare BFPT parsing for JESD216 rev D
-  mtd: spi-nor: sfdp: get command opcode extension type from BFPT
-  mtd: spi-nor: sfdp: parse xSPI Profile 1.0 table
-  mtd: spi-nor: core: use dummy cycle and address width info from SFDP
-  mtd: spi-nor: core: do 2 byte reads for SR and FSR in DTR mode
-  mtd: spi-nor: core: enable octal DTR mode when possible
-  mtd: spi-nor: sfdp: do not make invalid quad enable fatal
-  mtd: spi-nor: sfdp: detect Soft Reset sequence support from BFPT
-  mtd: spi-nor: core: perform a Soft Reset on shutdown
-  mtd: spi-nor: core: disable Octal DTR mode on suspend.
-  mtd: spi-nor: core: expose spi_nor_default_setup() in core.h
-  mtd: spi-nor: spansion: add support for Cypress Semper flash
-  mtd: spi-nor: micron-st: allow using MT35XU512ABA in Octal DTR mode
-
- drivers/mtd/spi-nor/core.c      | 446 +++++++++++++++++++++++++++-----
- drivers/mtd/spi-nor/core.h      |  22 ++
- drivers/mtd/spi-nor/micron-st.c | 112 +++++++-
- drivers/mtd/spi-nor/sfdp.c      | 117 ++++++++-
- drivers/mtd/spi-nor/sfdp.h      |  13 +-
- drivers/mtd/spi-nor/spansion.c  | 167 ++++++++++++
- drivers/spi/atmel-quadspi.c     |   4 +
- drivers/spi/spi-mem.c           |   3 +
- drivers/spi/spi-mtk-nor.c       |   4 +
- include/linux/mtd/spi-nor.h     |  53 +++-
- include/linux/spi/spi-mem.h     |  13 +-
- 11 files changed, 862 insertions(+), 92 deletions(-)
-
---
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index e3dcb956bf61..731bb64c6ba6 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -69,6 +69,8 @@ enum spi_mem_data_dir {
+ 
+ /**
+  * struct spi_mem_op - describes a SPI memory operation
++ * @cmd.nbytes: number of opcode bytes (only 1 or 2 are valid). The opcode is
++ *		sent MSB-first.
+  * @cmd.buswidth: number of IO lines used to transmit the command
+  * @cmd.opcode: operation opcode
+  * @cmd.dtr: whether the command opcode should be sent in DTR mode or not
+@@ -94,9 +96,10 @@ enum spi_mem_data_dir {
+  */
+ struct spi_mem_op {
+ 	struct {
++		u8 nbytes;
+ 		u8 buswidth;
+ 		u8 dtr : 1;
+-		u8 opcode;
++		u16 opcode;
+ 	} cmd;
+ 
+ 	struct {
+-- 
 2.26.2
 

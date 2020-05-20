@@ -7,45 +7,45 @@ X-Spam-Status: No, score=-9.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
 	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 19D65C433DF
-	for <linux-spi@archiver.kernel.org>; Wed, 20 May 2020 16:32:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 65A9EC433E1
+	for <linux-spi@archiver.kernel.org>; Wed, 20 May 2020 16:32:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DF6B52072C
-	for <linux-spi@archiver.kernel.org>; Wed, 20 May 2020 16:32:04 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 43443207D8
+	for <linux-spi@archiver.kernel.org>; Wed, 20 May 2020 16:32:11 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="vFrK46mx"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="PyC5Lwmt"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727020AbgETQcA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 20 May 2020 12:32:00 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:53094 "EHLO
+        id S1727041AbgETQcF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 20 May 2020 12:32:05 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:53170 "EHLO
         lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726436AbgETQbe (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 20 May 2020 12:31:34 -0400
+        with ESMTP id S1726436AbgETQcD (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 20 May 2020 12:32:03 -0400
 Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04KGVEHj007484;
-        Wed, 20 May 2020 11:31:14 -0500
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04KGVo8b007703;
+        Wed, 20 May 2020 11:31:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1589992274;
-        bh=8wsmxHh8Fj6nnuOv4RqixX/76ikZXmO9s3dBnceWxdw=;
+        s=ti-com-17Q1; t=1589992310;
+        bh=UGm3yi7Ejr5LlC2C9cUmKBQpIeGi0qN02ez2pkmDV68=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=vFrK46mxAezQewj6YyFjAMer66ljWdv60G5IjfkYyC7coRCRTHjwWTpKryHN1npAG
-         oDTeZyY9Uu8mBdr4eOh0coLdSC+mYqsyhmVe8gv795JrRCcJAN9tbqeRakWR3pEnxJ
-         rfUYjiKyPl/6p7iCWz7rb2lo4O6KjY51uk25wESw=
-Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04KGVEQT045416
+        b=PyC5LwmtS/6yWJlBaH8MPD7Jwka12DSfu106KgpQsYt+SZpQraESf1a9AN7MkhEwQ
+         dtHgwmJZgvr+OfpJtbU8Geav6BkKBuoGu1JJu4pQN6RFVGupksTDc3DlQe2MbbszUu
+         eVA9RUISRzb3jOF+BftDlWzCTEYIPImPu32T4mYY=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04KGVnXf045871
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 20 May 2020 11:31:14 -0500
-Received: from DFLE110.ent.ti.com (10.64.6.31) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+        Wed, 20 May 2020 11:31:49 -0500
+Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 20
- May 2020 11:31:14 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE110.ent.ti.com
- (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
+ May 2020 11:31:49 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Wed, 20 May 2020 11:31:14 -0500
+ Frontend Transport; Wed, 20 May 2020 11:31:49 -0500
 Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04KGUsxS001551;
-        Wed, 20 May 2020 11:31:10 -0500
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04KGUsxZ001551;
+        Wed, 20 May 2020 11:31:45 -0500
 From:   Pratyush Yadav <p.yadav@ti.com>
 To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
@@ -63,9 +63,9 @@ To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
 CC:     Pratyush Yadav <p.yadav@ti.com>, Sekhar Nori <nsekhar@ti.com>,
         Boris Brezillon <boris.brezillon@collabora.com>,
         Mason Yang <masonccyang@mxic.com.tw>
-Subject: [PATCH v6 03/19] spi: spi-mtk-nor: reject DTR ops
-Date:   Wed, 20 May 2020 22:00:37 +0530
-Message-ID: <20200520163053.24357-4-p.yadav@ti.com>
+Subject: [PATCH v6 10/19] mtd: spi-nor: core: use dummy cycle and address width info from SFDP
+Date:   Wed, 20 May 2020 22:00:44 +0530
+Message-ID: <20200520163053.24357-11-p.yadav@ti.com>
 X-Mailer: git-send-email 2.25.0
 In-Reply-To: <20200520163053.24357-1-p.yadav@ti.com>
 References: <20200520163053.24357-1-p.yadav@ti.com>
@@ -78,31 +78,74 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Double Transfer Rate (DTR) ops are added in spi-mem. But this controller
-doesn't support DTR transactions. Since we don't use the default
-supports_op(), which rejects all DTR ops, do that explicitly in our
-supports_op().
+The xSPI Profile 1.0 table specifies how many dummy cycles and address
+bytes are needed for the Read Status Register command in octal DTR mode.
+Use that information to send the correct Read SR command.
 
 Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
 ---
- drivers/spi/spi-mtk-nor.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/mtd/spi-nor/core.c | 25 +++++++++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-mtk-nor.c b/drivers/spi/spi-mtk-nor.c
-index 7bc302b50396..7015dccedf00 100644
---- a/drivers/spi/spi-mtk-nor.c
-+++ b/drivers/spi/spi-mtk-nor.c
-@@ -211,6 +211,10 @@ static bool mtk_nor_supports_op(struct spi_mem *mem,
- 	if (op->cmd.buswidth != 1)
- 		return false;
+diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+index 642e3c07acf9..2ad248140b6c 100644
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -357,6 +357,8 @@ int spi_nor_write_disable(struct spi_nor *nor)
+ static int spi_nor_read_sr(struct spi_nor *nor, u8 *sr)
+ {
+ 	int ret;
++	u8 addr_bytes = nor->params->rdsr_addr_nbytes;
++	u8 dummy = nor->params->rdsr_dummy;
  
-+	/* DTR ops not supported. */
-+	if (op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr)
-+		return false;
+ 	if (nor->spimem) {
+ 		struct spi_mem_op op =
+@@ -365,10 +367,21 @@ static int spi_nor_read_sr(struct spi_nor *nor, u8 *sr)
+ 				   SPI_MEM_OP_NO_DUMMY,
+ 				   SPI_MEM_OP_DATA_IN(1, sr, 1));
+ 
++		if (spi_nor_protocol_is_dtr(nor->reg_proto)) {
++			op.addr.nbytes = addr_bytes;
++			op.addr.val = 0;
++			op.dummy.nbytes = dummy;
++		}
 +
- 	if ((op->addr.nbytes == 3) || (op->addr.nbytes == 4)) {
- 		if ((op->data.dir == SPI_MEM_DATA_IN) && mtk_nor_match_read(op))
- 			return true;
++		spi_nor_spimem_setup_op(nor, &op, nor->reg_proto);
++
+ 		ret = spi_mem_exec_op(nor->spimem, &op);
+ 	} else {
+-		ret = nor->controller_ops->read_reg(nor, SPINOR_OP_RDSR,
+-						    sr, 1);
++		if (spi_nor_protocol_is_dtr(nor->reg_proto))
++			ret = -ENOTSUPP;
++		else
++			ret = nor->controller_ops->read_reg(nor, SPINOR_OP_RDSR,
++							    sr, 1);
+ 	}
+ 
+ 	if (ret)
+@@ -388,6 +401,8 @@ static int spi_nor_read_sr(struct spi_nor *nor, u8 *sr)
+ static int spi_nor_read_fsr(struct spi_nor *nor, u8 *fsr)
+ {
+ 	int ret;
++	u8 addr_bytes = nor->params->rdsr_addr_nbytes;
++	u8 dummy = nor->params->rdsr_dummy;
+ 
+ 	if (nor->spimem) {
+ 		struct spi_mem_op op =
+@@ -396,6 +411,12 @@ static int spi_nor_read_fsr(struct spi_nor *nor, u8 *fsr)
+ 				   SPI_MEM_OP_NO_DUMMY,
+ 				   SPI_MEM_OP_DATA_IN(1, fsr, 1));
+ 
++		if (spi_nor_protocol_is_dtr(nor->reg_proto)) {
++			op.addr.nbytes = addr_bytes;
++			op.addr.val = 0;
++			op.dummy.nbytes = dummy;
++		}
++
+ 		spi_nor_spimem_setup_op(nor, &op, nor->reg_proto);
+ 
+ 		ret = spi_mem_exec_op(nor->spimem, &op);
 -- 
 2.26.2
 

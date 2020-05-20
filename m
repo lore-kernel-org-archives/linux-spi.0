@@ -2,107 +2,158 @@ Return-Path: <SRS0=UFBu=7C=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 24625C433DF
-	for <linux-spi@archiver.kernel.org>; Wed, 20 May 2020 14:38:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E9E21C433E0
+	for <linux-spi@archiver.kernel.org>; Wed, 20 May 2020 16:31:32 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id EE82D207C4
-	for <linux-spi@archiver.kernel.org>; Wed, 20 May 2020 14:38:27 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id AE98120709
+	for <linux-spi@archiver.kernel.org>; Wed, 20 May 2020 16:31:32 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=cogentembedded-com.20150623.gappssmtp.com header.i=@cogentembedded-com.20150623.gappssmtp.com header.b="ZsaZMuyU"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="f7tJ8E1q"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727006AbgETOi1 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 20 May 2020 10:38:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57620 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726891AbgETOi1 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 20 May 2020 10:38:27 -0400
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0E2AC061A0F
-        for <linux-spi@vger.kernel.org>; Wed, 20 May 2020 07:38:26 -0700 (PDT)
-Received: by mail-lf1-x141.google.com with SMTP id h188so2455533lfd.7
-        for <linux-spi@vger.kernel.org>; Wed, 20 May 2020 07:38:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=znHUMaP0WqalUm3z5ilzUoUiYdwHWCOzV+xNGyMse2E=;
-        b=ZsaZMuyUG/c63T71KQnutZMRMecTwOQ9e+xZo1mwtMXh/HnEKFNpg6iTh0kD/x2p5P
-         R+bkxFYJyI7Rb+p865Qe8h6ykpOUJMNvSyu0U3V/pLTMtebveBAZzBJLA2YlswiT/HiW
-         3JEGWZi825qVMDTxy3uqUD51ogVTMWXV4IvuxYVsspGIrM68xA5o+KYz3ArvMqW0Ejp+
-         Q+fj6ENz3L28xOqXgMxs5JyrVfE4PGh2nI/xLwkHNxbruBYJxETKiI00SYx4eAZZL5CG
-         pwLHe19EutHqmeSHTOSnis/KoZgVnrqJ7j07FAeJdcUIsXQEcjZbolyR1Bkbb0uQhsn9
-         RMQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=znHUMaP0WqalUm3z5ilzUoUiYdwHWCOzV+xNGyMse2E=;
-        b=TQWfZ1O+rK791vpszvFybnjZL0Pc2XuppIgoJSSqMAGw5E910toODX1Ixv25KjQThA
-         wSPv6e6JyMVNVPjEg+15/Icr6YKdnC+WGTQscaIzFiy12oPN/grLkpvgACbNRTKRZOBm
-         gxOd9bwzfMaX0hY5V7IErVJFAXPxdfXKrw0nsCdNIUUD4jclG5jb1L8GGIfDX7rfKY8o
-         FxmRa0humOnQt2Yogzw5S5wr4r4TfjD1gcnBc0WJHVrS51k+5lXFJi5d5FexxiSK26rR
-         d9Bu3dAAd4k+2vlF9t5utqA1RbUFzrD3kQ/YRD4zjpDdYVNctNb9aLc9h+eY6nrWuk6m
-         3ctQ==
-X-Gm-Message-State: AOAM5307LVVhIBJYLRORKgLXoICoA5BGuFfevC73yZM/VkPKTUl8Vku3
-        JV3nyT3K5YYyPzUoUi+MvQufGQ==
-X-Google-Smtp-Source: ABdhPJycRSmEi00KXgljA417fS6M4KKf8K3xhBn/6ZZOQ6UlRRZvGO2YKvURO4P1Mi9nL2IPvfdrUg==
-X-Received: by 2002:ac2:414c:: with SMTP id c12mr2685185lfi.47.1589985505282;
-        Wed, 20 May 2020 07:38:25 -0700 (PDT)
-Received: from ?IPv6:2a00:1fa0:4e2:ae96:6d06:66d1:d6f1:88dc? ([2a00:1fa0:4e2:ae96:6d06:66d1:d6f1:88dc])
-        by smtp.gmail.com with ESMTPSA id s8sm1116394lfc.83.2020.05.20.07.38.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 May 2020 07:38:22 -0700 (PDT)
-Subject: Re: [PATCH v2 1/2] dt-bindings: memory: document Renesas RPC-IF
- bindings
-To:     Rob Herring <robh@kernel.org>
-Cc:     devicetree@vger.kernel.org, Mason Yang <masonccyang@mxic.com.tw>,
-        linux-spi@vger.kernel.org, Chris Brandt <chris.brandt@renesas.com>,
-        linux-mtd@lists.infradead.org
-References: <812e6e58-d13f-3f44-5f55-22266b690c57@cogentembedded.com>
- <116683d1-d402-4d7f-3357-1c8cde807076@cogentembedded.com>
- <20200501212547.GB15294@bogus>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <5359d5a2-5d28-058e-ce37-bc91e1aa7988@cogentembedded.com>
-Date:   Wed, 20 May 2020 17:38:12 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+        id S1726720AbgETQbc (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 20 May 2020 12:31:32 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:53066 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726436AbgETQbc (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 20 May 2020 12:31:32 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04KGV5u1007294;
+        Wed, 20 May 2020 11:31:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1589992265;
+        bh=QVVBkRYpNpHNnM3DtoOcxGwPAsP60fEAqbUuQ94mGJM=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=f7tJ8E1q8q/Gxja5lb8tbtkhvWW2LyBgg9/YTFFd7U3lJO3kJkkZW9DbdTl/4PNBh
+         bCZdgxeAXGtP+LtCMyMKVEHUXUO3ppv0y73glXfNxzJ9j0ZrKZwFkx0Ux3BDyKdDap
+         N1i3Nk922c6j2JUhYFuz0Gntkxw68maue+aeiv+Q=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04KGV4Ta044873
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 20 May 2020 11:31:05 -0500
+Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Wed, 20
+ May 2020 11:31:04 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Wed, 20 May 2020 11:31:04 -0500
+Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04KGUsxQ001551;
+        Wed, 20 May 2020 11:30:59 -0500
+From:   Pratyush Yadav <p.yadav@ti.com>
+To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Mark Brown <broonie@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>
+CC:     Pratyush Yadav <p.yadav@ti.com>, Sekhar Nori <nsekhar@ti.com>,
+        Boris Brezillon <boris.brezillon@collabora.com>,
+        Mason Yang <masonccyang@mxic.com.tw>
+Subject: [PATCH v6 01/19] spi: spi-mem: allow specifying whether an op is DTR or not
+Date:   Wed, 20 May 2020 22:00:35 +0530
+Message-ID: <20200520163053.24357-2-p.yadav@ti.com>
+X-Mailer: git-send-email 2.25.0
+In-Reply-To: <20200520163053.24357-1-p.yadav@ti.com>
+References: <20200520163053.24357-1-p.yadav@ti.com>
 MIME-Version: 1.0
-In-Reply-To: <20200501212547.GB15294@bogus>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 02.05.2020 0:25, Rob Herring wrote:
+Each phase is given a separate 'dtr' field so mixed protocols like
+4S-4D-4D can be supported.
 
->> Renesas Reduced Pin Count Interface (RPC-IF) allows a SPI flash or
->> HyperFlash connected to the SoC to be accessed via the external address
->> space read mode or the manual mode.
->>
->> Document the device tree bindings for the Renesas RPC-IF found in the R-Car
->> gen3 SoCs.
->>
->> Based on the original patch by Mason Yang <masonccyang@mxic.com.tw>.
->>
->> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
->>
->> ---
->> Changes in version 2:
->> - rewrote the bindings in YAML.
->>
->>   Documentation/devicetree/bindings/memory-controllers/renesas,rpc-if.yaml |   88 ++++++++++
-> 
-> Not where we normally put SPI flash controllers...
+Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+---
+ drivers/spi/spi-mem.c       | 3 +++
+ include/linux/spi/spi-mem.h | 8 ++++++++
+ 2 files changed, 11 insertions(+)
 
-    RPC-IF is not exactly SPI flash controller, it's bimodal.
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index 9a86cc27fcc0..93e255287ab9 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -156,6 +156,9 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
+ 				   op->data.dir == SPI_MEM_DATA_OUT))
+ 		return false;
+ 
++	if (op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr)
++		return false;
++
+ 	return true;
+ }
+ EXPORT_SYMBOL_GPL(spi_mem_default_supports_op);
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index af9ff2f0f1b2..e3dcb956bf61 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -71,9 +71,11 @@ enum spi_mem_data_dir {
+  * struct spi_mem_op - describes a SPI memory operation
+  * @cmd.buswidth: number of IO lines used to transmit the command
+  * @cmd.opcode: operation opcode
++ * @cmd.dtr: whether the command opcode should be sent in DTR mode or not
+  * @addr.nbytes: number of address bytes to send. Can be zero if the operation
+  *		 does not need to send an address
+  * @addr.buswidth: number of IO lines used to transmit the address cycles
++ * @addr.dtr: whether the address should be sent in DTR mode or not
+  * @addr.val: address value. This value is always sent MSB first on the bus.
+  *	      Note that only @addr.nbytes are taken into account in this
+  *	      address value, so users should make sure the value fits in the
+@@ -81,7 +83,9 @@ enum spi_mem_data_dir {
+  * @dummy.nbytes: number of dummy bytes to send after an opcode or address. Can
+  *		  be zero if the operation does not require dummy bytes
+  * @dummy.buswidth: number of IO lanes used to transmit the dummy bytes
++ * @dummy.dtr: whether the dummy bytes should be sent in DTR mode or not
+  * @data.buswidth: number of IO lanes used to send/receive the data
++ * @data.dtr: whether the data should be sent in DTR mode or not
+  * @data.dir: direction of the transfer
+  * @data.nbytes: number of data bytes to send/receive. Can be zero if the
+  *		 operation does not involve transferring data
+@@ -91,22 +95,26 @@ enum spi_mem_data_dir {
+ struct spi_mem_op {
+ 	struct {
+ 		u8 buswidth;
++		u8 dtr : 1;
+ 		u8 opcode;
+ 	} cmd;
+ 
+ 	struct {
+ 		u8 nbytes;
+ 		u8 buswidth;
++		u8 dtr : 1;
+ 		u64 val;
+ 	} addr;
+ 
+ 	struct {
+ 		u8 nbytes;
+ 		u8 buswidth;
++		u8 dtr : 1;
+ 	} dummy;
+ 
+ 	struct {
+ 		u8 buswidth;
++		u8 dtr : 1;
+ 		enum spi_mem_data_dir dir;
+ 		unsigned int nbytes;
+ 		union {
+-- 
+2.26.2
 
-MBR, Sergei

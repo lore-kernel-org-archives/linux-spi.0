@@ -6,32 +6,32 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
 	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7228DC433E0
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F2F1C433DF
 	for <linux-spi@archiver.kernel.org>; Thu, 21 May 2020 11:24:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5CD3320849
+	by mail.kernel.org (Postfix) with ESMTP id 49C4320814
 	for <linux-spi@archiver.kernel.org>; Thu, 21 May 2020 11:24:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728414AbgEULYU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1729040AbgEULYU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Thu, 21 May 2020 07:24:20 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:47468 "EHLO huawei.com"
+Received: from szxga07-in.huawei.com ([45.249.212.35]:47490 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728887AbgEULYU (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 21 May 2020 07:24:20 -0400
+        id S1728414AbgEULYT (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 21 May 2020 07:24:19 -0400
 Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id F079B301C4E315FE73B4;
-        Thu, 21 May 2020 19:24:17 +0800 (CST)
+        by Forcepoint Email with ESMTP id 09BDBD8DE7A7168C8D15;
+        Thu, 21 May 2020 19:24:18 +0800 (CST)
 Received: from localhost.localdomain (10.67.165.24) by
  DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
- 14.3.487.0; Thu, 21 May 2020 19:24:07 +0800
+ 14.3.487.0; Thu, 21 May 2020 19:24:08 +0800
 From:   Yicong Yang <yangyicong@hisilicon.com>
 To:     <broonie@kernel.org>, <tudor.ambarus@microchip.com>,
         <linux-spi@vger.kernel.org>, <linux-mtd@lists.infradead.org>
 CC:     <john.garry@huawei.com>, <miquel.raynal@bootlin.com>,
         <richard@nod.at>, <vigneshr@ti.com>
-Subject: [RFC PATCH 1/3] spi: spi-mem: add optional prepare/unprepare methods in spi_controller_mem_ops
-Date:   Thu, 21 May 2020 19:23:49 +0800
-Message-ID: <1590060231-23242-2-git-send-email-yangyicong@hisilicon.com>
+Subject: [RFC PATCH 3/3] spi: hisi-sfc-v3xx: Add prepare/unprepare methods to avoid race condition
+Date:   Thu, 21 May 2020 19:23:51 +0800
+Message-ID: <1590060231-23242-4-git-send-email-yangyicong@hisilicon.com>
 X-Mailer: git-send-email 2.8.1
 In-Reply-To: <1590060231-23242-1-git-send-email-yangyicong@hisilicon.com>
 References: <1590060231-23242-1-git-send-email-yangyicong@hisilicon.com>
@@ -44,87 +44,96 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Some prepare/unprepare works may be necessary before/after a set of
-operations of the spimem device. For example, before/after spi-nor
-flash's read/write/erase/lock/unlock.
+The controller can be shared with the firmware, which may cause race
+problems. As most read/write/erase/lock/unlock of spi-nor flash are
+composed of a set of operations, while the firmware may use the controller
+and start its own operation in the middle of the process started by the
+kernel driver, which may lead to the kernel driver's function broken.
 
-Add optional prepare/unprepare methods in spi_controller_mem_ops to allow
-the controller to do specific works after/before the operations. The upper
-user can use spi_mem_{prepare, unprepare}() to call the methods of the
-controller.
+Bit[20] in HISI_SFC_V3XX_CMD_CFG register plays a role of a lock, to
+protect the controller from firmware access, which means the firmware
+cannot reach the controller if the driver set the bit. Add prepare/
+unprepare methods for the controller, we'll hold the lock in prepare
+method and release it in unprepare method, which will solve the race
+issue.
 
 Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
 ---
- drivers/spi/spi-mem.c       | 20 ++++++++++++++++++++
- include/linux/spi/spi-mem.h | 11 +++++++++++
- 2 files changed, 31 insertions(+)
+ drivers/spi/spi-hisi-sfc-v3xx.c | 41 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 40 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index adaa0c4..f09cef1 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -220,6 +220,26 @@ bool spi_mem_supports_op(struct spi_mem *mem, const struct spi_mem_op *op)
- }
- EXPORT_SYMBOL_GPL(spi_mem_supports_op);
+diff --git a/drivers/spi/spi-hisi-sfc-v3xx.c b/drivers/spi/spi-hisi-sfc-v3xx.c
+index e3b5725..13c161c 100644
+--- a/drivers/spi/spi-hisi-sfc-v3xx.c
++++ b/drivers/spi/spi-hisi-sfc-v3xx.c
+@@ -18,6 +18,7 @@
+ #define HISI_SFC_V3XX_VERSION (0x1f8)
  
-+int spi_mem_prepare(struct spi_mem *mem)
+ #define HISI_SFC_V3XX_CMD_CFG (0x300)
++#define HISI_SFC_V3XX_CMD_CFG_LOCK BIT(20)
+ #define HISI_SFC_V3XX_CMD_CFG_DUAL_IN_DUAL_OUT (1 << 17)
+ #define HISI_SFC_V3XX_CMD_CFG_DUAL_IO (2 << 17)
+ #define HISI_SFC_V3XX_CMD_CFG_FULL_DIO (3 << 17)
+@@ -41,6 +42,34 @@ struct hisi_sfc_v3xx_host {
+ 	int max_cmd_dword;
+ };
+ 
++int hisi_sfc_v3xx_op_prepare(struct spi_mem *mem)
 +{
-+	struct spi_controller *ctlr = mem->spi->controller;
++	struct spi_device *spi = mem->spi;
++	struct hisi_sfc_v3xx_host *host;
++	u32 reg = HISI_SFC_V3XX_CMD_CFG_LOCK;
 +
-+	if (ctlr->mem_ops && ctlr->mem_ops->prepare)
-+		return ctlr->mem_ops->prepare(mem);
++	host = spi_controller_get_devdata(spi->master);
++
++	writel(reg, host->regbase + HISI_SFC_V3XX_CMD_CFG);
++
++	reg = readl(host->regbase + HISI_SFC_V3XX_CMD_CFG);
++	if (!(reg & HISI_SFC_V3XX_CMD_CFG_LOCK))
++		return -EIO;
 +
 +	return 0;
 +}
-+EXPORT_SYMBOL_GPL(spi_mem_prepare);
 +
-+void spi_mem_unprepare(struct spi_mem *mem)
++void hisi_sfc_v3xx_op_unprepare(struct spi_mem *mem)
 +{
-+	struct spi_controller *ctlr = mem->spi->controller;
++	struct spi_device *spi = mem->spi;
++	struct hisi_sfc_v3xx_host *host;
 +
-+	if (ctlr->mem_ops && ctlr->mem_ops->unprepare)
-+		ctlr->mem_ops->unprepare(mem);
++	host = spi_controller_get_devdata(spi->master);
++
++	/* Release the lock and clear the command register. */
++	writel(0, host->regbase + HISI_SFC_V3XX_CMD_CFG);
 +}
-+EXPORT_SYMBOL_GPL(spi_mem_unprepare);
 +
- static int spi_mem_access_start(struct spi_mem *mem)
- {
- 	struct spi_controller *ctlr = mem->spi->controller;
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index af9ff2f..e40b5c3 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -215,6 +215,12 @@ static inline void *spi_mem_get_drvdata(struct spi_mem *mem)
-  *		    limitations)
-  * @supports_op: check if an operation is supported by the controller
-  * @exec_op: execute a SPI memory operation
-+ * @prepare: do some prepare works before a set of operations. for example,
-+ *	     read/write/erase/lock/unlock operations of spi-nor flash. This
-+ *	     method is optional.
-+ * @unprepare: do some post works after a set of operations. for example,
-+ *	       read/write/erase/lock/unlock operations of spi-nor flash. This
-+ *	       method is optional.
-  * @get_name: get a custom name for the SPI mem device from the controller.
-  *	      This might be needed if the controller driver has been ported
-  *	      to use the SPI mem layer and a custom name is used to keep
-@@ -253,6 +259,8 @@ struct spi_controller_mem_ops {
- 	int (*adjust_op_size)(struct spi_mem *mem, struct spi_mem_op *op);
- 	bool (*supports_op)(struct spi_mem *mem,
- 			    const struct spi_mem_op *op);
-+	int (*prepare)(struct spi_mem *mem);
-+	void (*unprepare)(struct spi_mem *mem);
- 	int (*exec_op)(struct spi_mem *mem,
- 		       const struct spi_mem_op *op);
- 	const char *(*get_name)(struct spi_mem *mem);
-@@ -329,6 +337,9 @@ int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op);
- bool spi_mem_supports_op(struct spi_mem *mem,
- 			 const struct spi_mem_op *op);
+ #define HISI_SFC_V3XX_WAIT_TIMEOUT_US		1000000
+ #define HISI_SFC_V3XX_WAIT_POLL_INTERVAL_US	10
  
-+int spi_mem_prepare(struct spi_mem *mem);
-+void spi_mem_unprepare(struct spi_mem *mem);
+@@ -163,7 +192,15 @@ static int hisi_sfc_v3xx_generic_exec_op(struct hisi_sfc_v3xx_host *host,
+ 					 u8 chip_select)
+ {
+ 	int ret, len = op->data.nbytes;
+-	u32 config = 0;
++	u32 config;
 +
- int spi_mem_exec_op(struct spi_mem *mem,
- 		    const struct spi_mem_op *op);
++	/*
++	 * The lock bit is in the command register. Clear the command
++	 * field with lock bit held if it has been set in
++	 * .prepare().
++	 */
++	config = readl(host->regbase + HISI_SFC_V3XX_CMD_CFG);
++	config &= HISI_SFC_V3XX_CMD_CFG_LOCK;
+ 
+ 	if (op->addr.nbytes)
+ 		config |= HISI_SFC_V3XX_CMD_CFG_ADDR_EN_MSK;
+@@ -248,6 +285,8 @@ static int hisi_sfc_v3xx_exec_op(struct spi_mem *mem,
+ 
+ static const struct spi_controller_mem_ops hisi_sfc_v3xx_mem_ops = {
+ 	.adjust_op_size = hisi_sfc_v3xx_adjust_op_size,
++	.prepare	= hisi_sfc_v3xx_op_prepare,
++	.unprepare	= hisi_sfc_v3xx_op_unprepare,
+ 	.exec_op = hisi_sfc_v3xx_exec_op,
+ };
  
 -- 
 2.8.1

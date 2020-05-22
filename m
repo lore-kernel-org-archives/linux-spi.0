@@ -5,46 +5,46 @@ X-Spam-Level:
 X-Spam-Status: No, score=-9.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 073BAC433E0
-	for <linux-spi@archiver.kernel.org>; Fri, 22 May 2020 10:14:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4895AC433E1
+	for <linux-spi@archiver.kernel.org>; Fri, 22 May 2020 10:14:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D323C2065C
-	for <linux-spi@archiver.kernel.org>; Fri, 22 May 2020 10:14:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2801B2065C
+	for <linux-spi@archiver.kernel.org>; Fri, 22 May 2020 10:14:56 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="ImacqQJI"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="GPGHaS81"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729582AbgEVKOf (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 22 May 2020 06:14:35 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:34418 "EHLO
+        id S1729755AbgEVKOy (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 22 May 2020 06:14:54 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:34454 "EHLO
         lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729578AbgEVKOc (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 22 May 2020 06:14:32 -0400
+        with ESMTP id S1729767AbgEVKOx (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 22 May 2020 06:14:53 -0400
 Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04MAEK0R013908;
-        Fri, 22 May 2020 05:14:20 -0500
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04MAEf82013956;
+        Fri, 22 May 2020 05:14:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1590142460;
-        bh=vZHWXLCtyhdJG9oIb95lQ7NP/FmYNPGx8pS+OBRUJx0=;
+        s=ti-com-17Q1; t=1590142481;
+        bh=GBF2MWapCKmZFTAre7roOt4HKKaEU6l6dFGpC8mxpeo=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=ImacqQJIcU53gTKLLMzF4oq6EYuqls8Rr1AKW0IHJomq5GbTJhb01CHobGwz8jYYY
-         Pho5HXG1Ouvu7aXq9BFNseI5+TgeTpBCOl+dCeF1XuRn9uOwkrKZEdboNMo1nPss7z
-         VmkaZHqRiHhMKTXjQCq8xBq3VFQTUVIUUV1jEKg0=
-Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04MAEK8I049952;
-        Fri, 22 May 2020 05:14:20 -0500
-Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+        b=GPGHaS81UJ+6ie8vAri5x2t9vAYVaLidPMHrnYbPzZW0oOp5WcyCnO7JRPUAqF3S6
+         Um7/DOXbPm2b3lwZTDthSt/tVWlWghQjrVvl9U8OscCu0ImK8W2Wu5nGVHtc2lZqx7
+         qkXPkNUH2O7g+7fB13vf3SMhJIFIWcPhqEm8ZXVU=
+Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04MAEfSx050333;
+        Fri, 22 May 2020 05:14:41 -0500
+Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 22
- May 2020 05:14:20 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ May 2020 05:14:40 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 22 May 2020 05:14:19 -0500
+ Frontend Transport; Fri, 22 May 2020 05:14:40 -0500
 Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04MAD1aF041179;
-        Fri, 22 May 2020 05:14:15 -0500
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04MAD1aJ041179;
+        Fri, 22 May 2020 05:14:36 -0500
 From:   Pratyush Yadav <p.yadav@ti.com>
 To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
@@ -62,9 +62,9 @@ To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
 CC:     Pratyush Yadav <p.yadav@ti.com>, Sekhar Nori <nsekhar@ti.com>,
         Boris Brezillon <boris.brezillon@collabora.com>,
         Mason Yang <masonccyang@mxic.com.tw>
-Subject: [PATCH v7 14/20] mtd: spi-nor: sfdp: do not make invalid quad enable fatal
-Date:   Fri, 22 May 2020 15:42:55 +0530
-Message-ID: <20200522101301.26909-15-p.yadav@ti.com>
+Subject: [PATCH v7 18/20] mtd: spi-nor: core: expose spi_nor_default_setup() in core.h
+Date:   Fri, 22 May 2020 15:42:59 +0530
+Message-ID: <20200522101301.26909-19-p.yadav@ti.com>
 X-Mailer: git-send-email 2.25.0
 In-Reply-To: <20200522101301.26909-1-p.yadav@ti.com>
 References: <20200522101301.26909-1-p.yadav@ti.com>
@@ -77,46 +77,48 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The Micron MT35XU512ABA flash does not support the quad enable bit. But
-instead of programming the Quad Enable Require field to 000b ("Device
-does not have a QE bit"), it is programmed to 111b ("Reserved").
-
-While this is technically incorrect, it is not reason enough to abort
-BFPT parsing. Instead, continue BFPT parsing assuming there is no quad
-enable bit present.
+Flashes might want to add a custom setup hook to configure the flash in
+the proper mode for operation. But after that, they would still want to
+run the default setup hook because it selects the read, program, and
+erase operations. Since there is little point in repeating all that
+code, expose the spi_nor_default_setup() in core.h to
+manufacturer-specific files.
 
 Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
 ---
- drivers/mtd/spi-nor/sfdp.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/mtd/spi-nor/core.c | 4 ++--
+ drivers/mtd/spi-nor/core.h | 3 +++
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/sfdp.c b/drivers/mtd/spi-nor/sfdp.c
-index 052cabb52df9..9fd3d8d9a127 100644
---- a/drivers/mtd/spi-nor/sfdp.c
-+++ b/drivers/mtd/spi-nor/sfdp.c
-@@ -576,10 +576,6 @@ static int spi_nor_parse_bfpt(struct spi_nor *nor,
+diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+index 63ab588299f4..30d9149fd17b 100644
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -2790,8 +2790,8 @@ static int spi_nor_select_erase(struct spi_nor *nor)
+ 	return 0;
+ }
  
- 	/* Quad Enable Requirements. */
- 	switch (bfpt.dwords[BFPT_DWORD(15)] & BFPT_DWORD15_QER_MASK) {
--	case BFPT_DWORD15_QER_NONE:
--		params->quad_enable = NULL;
--		break;
--
- 	case BFPT_DWORD15_QER_SR2_BIT1_BUGGY:
- 		/*
- 		 * Writing only one byte to the Status Register has the
-@@ -616,8 +612,10 @@ static int spi_nor_parse_bfpt(struct spi_nor *nor,
- 		params->quad_enable = spi_nor_sr2_bit1_quad_enable;
- 		break;
+-static int spi_nor_default_setup(struct spi_nor *nor,
+-				 const struct spi_nor_hwcaps *hwcaps)
++int spi_nor_default_setup(struct spi_nor *nor,
++			  const struct spi_nor_hwcaps *hwcaps)
+ {
+ 	struct spi_nor_flash_parameter *params = nor->params;
+ 	u32 ignored_mask, shared_mask;
+diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
+index 79ce952c0539..d37a9b1d111f 100644
+--- a/drivers/mtd/spi-nor/core.h
++++ b/drivers/mtd/spi-nor/core.h
+@@ -452,6 +452,9 @@ int spi_nor_post_bfpt_fixups(struct spi_nor *nor,
+ 			     const struct sfdp_bfpt *bfpt,
+ 			     struct spi_nor_flash_parameter *params);
  
-+	case BFPT_DWORD15_QER_NONE:
- 	default:
--		return -EINVAL;
-+		params->quad_enable = NULL;
-+		break;
- 	}
- 
- 	/* Stop here if JESD216 rev B. */
++int spi_nor_default_setup(struct spi_nor *nor,
++			  const struct spi_nor_hwcaps *hwcaps);
++
+ static struct spi_nor __maybe_unused *mtd_to_spi_nor(struct mtd_info *mtd)
+ {
+ 	return mtd->priv;
 -- 
 2.26.2
 

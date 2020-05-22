@@ -7,45 +7,45 @@ X-Spam-Status: No, score=-9.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E2CDAC433E2
-	for <linux-spi@archiver.kernel.org>; Fri, 22 May 2020 22:41:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 194B0C433DF
+	for <linux-spi@archiver.kernel.org>; Fri, 22 May 2020 22:41:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BF311206B6
-	for <linux-spi@archiver.kernel.org>; Fri, 22 May 2020 22:41:24 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id EB405207F7
+	for <linux-spi@archiver.kernel.org>; Fri, 22 May 2020 22:41:30 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="iF0dRiq1"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="vwSNKYaB"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731253AbgEVWlY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 22 May 2020 18:41:24 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:35480 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731251AbgEVWlX (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 22 May 2020 18:41:23 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04MMfA7j072377;
-        Fri, 22 May 2020 17:41:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1590187270;
-        bh=yw3uCae+isK3AHGXPUAgu6JyO09SGQwwFtzMuvBbEew=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=iF0dRiq1a5kNgTN7Pw/EoTG97PuXfes6ACvzWKUNHgOdUDQ6/FNg1SBRRUAA9hQls
-         IWYEihxuaHmKgm5eOCf1Rl4fcWxEBdsIvMEE0AJI30pu3mzNkCbCtYbMAmMvvRfGnI
-         WNnkTCh/sCuz0CaTcM4yJfcZpt6mImj+ExmQJtg4=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04MMfAsd079136
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 22 May 2020 17:41:10 -0500
-Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 22
- May 2020 17:41:09 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 22 May 2020 17:41:09 -0500
-Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04MMeh5b044559;
+        id S1731280AbgEVWla (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 22 May 2020 18:41:30 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:55446 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731272AbgEVWl2 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 22 May 2020 18:41:28 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04MMf55k086262;
         Fri, 22 May 2020 17:41:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1590187265;
+        bh=d4a8/B8RJ1QRHlItn/FpHiKY2BYYAQOc8eQivs7iF4g=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=vwSNKYaBtUg7B86bUD/uCiZFEDEKvmh2ZQAvdGddu6veITNb3xaJjLwMhCfbksdzP
+         PB9qB+HIDx8UG/NBL+tYVdzfyK+p+YtlGIaBbTumooIElJTIoxImpdy8RCRknH3vz5
+         npJ0hMleLABl2COcG1QAAAm2L9gygWhjgzXCs86k=
+Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04MMf4Jk106202
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 22 May 2020 17:41:04 -0500
+Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 22
+ May 2020 17:41:04 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Fri, 22 May 2020 17:41:04 -0500
+Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04MMeh5a044559;
+        Fri, 22 May 2020 17:40:59 -0500
 From:   Pratyush Yadav <p.yadav@ti.com>
 To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
@@ -64,9 +64,9 @@ To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
 CC:     Pratyush Yadav <p.yadav@ti.com>, Sekhar Nori <nsekhar@ti.com>,
         Boris Brezillon <boris.brezillon@collabora.com>,
         Mason Yang <masonccyang@mxic.com.tw>
-Subject: [PATCH v8 04/19] spi: spi-mtk-nor: reject DTR ops
-Date:   Sat, 23 May 2020 04:10:27 +0530
-Message-ID: <20200522224042.29970-5-p.yadav@ti.com>
+Subject: [PATCH v8 03/19] spi: atmel-quadspi: reject DTR ops
+Date:   Sat, 23 May 2020 04:10:26 +0530
+Message-ID: <20200522224042.29970-4-p.yadav@ti.com>
 X-Mailer: git-send-email 2.25.0
 In-Reply-To: <20200522224042.29970-1-p.yadav@ti.com>
 References: <20200522224042.29970-1-p.yadav@ti.com>
@@ -86,15 +86,15 @@ supports_op().
 
 Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
 ---
- drivers/spi/spi-mtk-nor.c | 6 ++++++
+ drivers/spi/atmel-quadspi.c | 6 ++++++
  1 file changed, 6 insertions(+)
 
-diff --git a/drivers/spi/spi-mtk-nor.c b/drivers/spi/spi-mtk-nor.c
-index d5f393871619..b08d8e9a8ee9 100644
---- a/drivers/spi/spi-mtk-nor.c
-+++ b/drivers/spi/spi-mtk-nor.c
-@@ -211,6 +211,12 @@ static bool mtk_nor_supports_op(struct spi_mem *mem,
- 	if (op->cmd.buswidth != 1)
+diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+index cb44d1e169aa..a898755fb41e 100644
+--- a/drivers/spi/atmel-quadspi.c
++++ b/drivers/spi/atmel-quadspi.c
+@@ -285,6 +285,12 @@ static bool atmel_qspi_supports_op(struct spi_mem *mem,
+ 		op->dummy.nbytes == 0)
  		return false;
  
 +	/* DTR ops not supported. */
@@ -103,9 +103,9 @@ index d5f393871619..b08d8e9a8ee9 100644
 +	if (op->cmd.nbytes != 1)
 +		return false;
 +
- 	if ((op->addr.nbytes == 3) || (op->addr.nbytes == 4)) {
- 		if ((op->data.dir == SPI_MEM_DATA_IN) && mtk_nor_match_read(op))
- 			return true;
+ 	return true;
+ }
+ 
 -- 
 2.26.2
 

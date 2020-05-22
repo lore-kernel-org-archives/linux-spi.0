@@ -2,108 +2,72 @@ Return-Path: <SRS0=RqMj=7E=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D587C433E0
-	for <linux-spi@archiver.kernel.org>; Fri, 22 May 2020 10:15:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 206D2C433DF
+	for <linux-spi@archiver.kernel.org>; Fri, 22 May 2020 10:20:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5697A206BE
-	for <linux-spi@archiver.kernel.org>; Fri, 22 May 2020 10:15:27 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="tz2M4HKB"
+	by mail.kernel.org (Postfix) with ESMTP id D22BF20723
+	for <linux-spi@archiver.kernel.org>; Fri, 22 May 2020 10:20:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1590142820;
+	bh=gNwERGYJk5xqVKpKLgWmBy9SJ/bj2nY8RWZ0z/PV72g=;
+	h=Subject:From:Date:To:List-ID:From;
+	b=F9t+Dv3YW43JYKZXHfcm9jXzwUuW+2ZSkLhb55Cs2S4bVWuJpPI+GQhfRdlLRks5l
+	 0wBb7Mq7WmWhSPj0x1yrNV6Lk9c8nX1AHEO537tPY+yN1ujIXCbBYzjGvv+sy1pR1S
+	 mTQiDIUUpouKDOdfzaWuSslFCdjfoxj1yJgEJEV4=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728918AbgEVKOL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 22 May 2020 06:14:11 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:44904 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728396AbgEVKOK (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 22 May 2020 06:14:10 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04MADiSQ014817;
-        Fri, 22 May 2020 05:13:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1590142424;
-        bh=d4a8/B8RJ1QRHlItn/FpHiKY2BYYAQOc8eQivs7iF4g=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=tz2M4HKBqa1cmIR2OOA9qZBJ+Pz0pgfr/qgkDnhNhY1F+KVZWVsLT+csBZIoy9awN
-         Rsy+vHhzqpZLxix72m0E3g6Bj5gFheIzGYUNn4kDT84iUvK/uvTxNWcZWAUXamORCk
-         d8CBcD3TZB8L+mZoZPiq/07nH+qz++O0N/+wty+0=
-Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04MADiZb048447;
-        Fri, 22 May 2020 05:13:44 -0500
-Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 22
- May 2020 05:13:22 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 22 May 2020 05:13:22 -0500
-Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04MAD1a4041179;
-        Fri, 22 May 2020 05:13:18 -0500
-From:   Pratyush Yadav <p.yadav@ti.com>
-To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Mark Brown <broonie@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>
-CC:     Pratyush Yadav <p.yadav@ti.com>, Sekhar Nori <nsekhar@ti.com>,
-        Boris Brezillon <boris.brezillon@collabora.com>,
-        Mason Yang <masonccyang@mxic.com.tw>
-Subject: [PATCH v7 03/20] spi: atmel-quadspi: reject DTR ops
-Date:   Fri, 22 May 2020 15:42:44 +0530
-Message-ID: <20200522101301.26909-4-p.yadav@ti.com>
-X-Mailer: git-send-email 2.25.0
-In-Reply-To: <20200522101301.26909-1-p.yadav@ti.com>
-References: <20200522101301.26909-1-p.yadav@ti.com>
+        id S1728281AbgEVKUT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 22 May 2020 06:20:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38174 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728371AbgEVKUT (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 22 May 2020 06:20:19 -0400
+Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1590142818;
+        bh=gNwERGYJk5xqVKpKLgWmBy9SJ/bj2nY8RWZ0z/PV72g=;
+        h=Subject:From:Date:To:From;
+        b=Kn19EAmKQFUZVOjj250xg319465GjpJXIBnZySH+9OyJaqo15lPxZ0fDbFuzcmhDs
+         Fj/49iCsra+RzkkoUZmZbNL+leh1tXHeZk/rVFWrnGeJDGM5kv9tN9XuCRXtlruECu
+         lvCyJqAnjT2TqtKYrQ33FJ78BDxMAnXpTK7G5X9A=
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+linux-spi@kernel.org
+Message-Id: <159014281868.30303.10619442208222678338.git-patchwork-housekeeping@kernel.org>
+Date:   Fri, 22 May 2020 10:20:18 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Double Transfer Rate (DTR) ops are added in spi-mem. But this controller
-doesn't support DTR transactions. Since we don't use the default
-supports_op(), which rejects all DTR ops, do that explicitly in our
-supports_op().
+Latest series: [v7] mtd: spi-nor: add xSPI Octal DTR support (2020-05-22T10:12:43)
+  Superseding: [v6] mtd: spi-nor: add xSPI Octal DTR support (2020-05-20T16:30:35):
+    [v6,01/19] spi: spi-mem: allow specifying whether an op is DTR or not
+    [v6,02/19] spi: atmel-quadspi: reject DTR ops
+    [v6,03/19] spi: spi-mtk-nor: reject DTR ops
+    [v6,04/19] spi: spi-mem: allow specifying a command's extension
+    [v6,05/19] mtd: spi-nor: add support for DTR protocol
+    [v6,06/19] mtd: spi-nor: sfdp: default to addr_width of 3 for configurable widths
+    [v6,07/19] mtd: spi-nor: sfdp: prepare BFPT parsing for JESD216 rev D
+    [v6,08/19] mtd: spi-nor: sfdp: get command opcode extension type from BFPT
+    [v6,09/19] mtd: spi-nor: sfdp: parse xSPI Profile 1.0 table
+    [v6,10/19] mtd: spi-nor: core: use dummy cycle and address width info from SFDP
+    [v6,11/19] mtd: spi-nor: core: do 2 byte reads for SR and FSR in DTR mode
+    [v6,12/19] mtd: spi-nor: core: enable octal DTR mode when possible
+    [v6,13/19] mtd: spi-nor: sfdp: do not make invalid quad enable fatal
+    [v6,14/19] mtd: spi-nor: sfdp: detect Soft Reset sequence support from BFPT
+    [v6,15/19] mtd: spi-nor: core: perform a Soft Reset on shutdown
+    [v6,16/19] mtd: spi-nor: core: disable Octal DTR mode on suspend.
+    [v6,17/19] mtd: spi-nor: core: expose spi_nor_default_setup() in core.h
+    [v6,18/19] mtd: spi-nor: spansion: add support for Cypress Semper flash
+    [v6,19/19] mtd: spi-nor: micron-st: allow using MT35XU512ABA in Octal DTR mode
 
-Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
----
- drivers/spi/atmel-quadspi.c | 6 ++++++
- 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index cb44d1e169aa..a898755fb41e 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -285,6 +285,12 @@ static bool atmel_qspi_supports_op(struct spi_mem *mem,
- 		op->dummy.nbytes == 0)
- 		return false;
- 
-+	/* DTR ops not supported. */
-+	if (op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr)
-+		return false;
-+	if (op->cmd.nbytes != 1)
-+		return false;
-+
- 	return true;
- }
- 
 -- 
-2.26.2
-
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/pwbot

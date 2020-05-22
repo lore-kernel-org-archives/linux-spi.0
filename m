@@ -7,45 +7,45 @@ X-Spam-Status: No, score=-9.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
 	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 00F6CC433E0
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3758CC433E2
 	for <linux-spi@archiver.kernel.org>; Fri, 22 May 2020 10:14:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D167C2067B
-	for <linux-spi@archiver.kernel.org>; Fri, 22 May 2020 10:14:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 15CE92067B
+	for <linux-spi@archiver.kernel.org>; Fri, 22 May 2020 10:14:21 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="zDvFXyRI"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Kg3GLivt"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729114AbgEVKOT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 22 May 2020 06:14:19 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:59020 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728861AbgEVKOS (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 22 May 2020 06:14:18 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04MAE4cp009116;
-        Fri, 22 May 2020 05:14:04 -0500
+        id S1729164AbgEVKOU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 22 May 2020 06:14:20 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:44910 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728917AbgEVKOM (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 22 May 2020 06:14:12 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04MADiMt014813;
+        Fri, 22 May 2020 05:13:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1590142444;
-        bh=UGm3yi7Ejr5LlC2C9cUmKBQpIeGi0qN02ez2pkmDV68=;
+        s=ti-com-17Q1; t=1590142424;
+        bh=qVEI4YqSpinXJJzMIo4+Ch+rlZfak9t3wtHZTvSLa/Y=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=zDvFXyRIgwqyuweFUUj06HWp/335EM2w7nSbL+U0wEnN4s1LixmHgFtGbGdMIaL3J
-         Xtl9ckXu0s9Nn1BVsCcWbofGp85hdQIbG9WQm5rWpIvkJTxsVT4nbtjOwF/3MxTmBo
-         kF3XmJ7hE/xsKfO+vFfD66SiROqeWDOegje2yt2s=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04MAE4ie033622
+        b=Kg3GLivtzyCRgQ1n1j0nEhrFK7TjXt+udOJqITQefTZDvPF9dFkyMJ8o2lhgHU7hZ
+         06cjT2gwI0po38FzMcH++qViQTMSKul0BBw5PP08+5MGhlkK2ExUPSzmtF/AYOppp9
+         S6+jSmds9BPCyUnPqAf01z/ReeexGQ3fcHlvDLyM=
+Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04MADiuS083678
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 22 May 2020 05:14:04 -0500
-Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+        Fri, 22 May 2020 05:13:44 -0500
+Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 22
- May 2020 05:14:04 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ May 2020 05:13:43 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Fri, 22 May 2020 05:14:04 -0500
+ Frontend Transport; Fri, 22 May 2020 05:13:43 -0500
 Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04MAD1aC041179;
-        Fri, 22 May 2020 05:13:59 -0500
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04MAD1a8041179;
+        Fri, 22 May 2020 05:13:39 -0500
 From:   Pratyush Yadav <p.yadav@ti.com>
 To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
@@ -63,9 +63,9 @@ To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
 CC:     Pratyush Yadav <p.yadav@ti.com>, Sekhar Nori <nsekhar@ti.com>,
         Boris Brezillon <boris.brezillon@collabora.com>,
         Mason Yang <masonccyang@mxic.com.tw>
-Subject: [PATCH v7 11/20] mtd: spi-nor: core: use dummy cycle and address width info from SFDP
-Date:   Fri, 22 May 2020 15:42:52 +0530
-Message-ID: <20200522101301.26909-12-p.yadav@ti.com>
+Subject: [PATCH v7 07/20] mtd: spi-nor: sfdp: default to addr_width of 3 for configurable widths
+Date:   Fri, 22 May 2020 15:42:48 +0530
+Message-ID: <20200522101301.26909-8-p.yadav@ti.com>
 X-Mailer: git-send-email 2.25.0
 In-Reply-To: <20200522101301.26909-1-p.yadav@ti.com>
 References: <20200522101301.26909-1-p.yadav@ti.com>
@@ -78,74 +78,34 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The xSPI Profile 1.0 table specifies how many dummy cycles and address
-bytes are needed for the Read Status Register command in octal DTR mode.
-Use that information to send the correct Read SR command.
+JESD216D.01 says that when the address width can be 3 or 4, it defaults
+to 3 and enters 4-byte mode when given the appropriate command. So, when
+we see a configurable width, default to 3 and let flash that default to
+4 change it in a post-bfpt fixup.
+
+This fixes SMPT parsing for flashes with configurable address width. If
+the SMPT descriptor advertises variable address width, we use
+nor->addr_width as the address width. But since it was not set to any
+value from the SFDP table, the read command uses an address width of 0,
+resulting in an incorrect read being issued.
 
 Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
 ---
- drivers/mtd/spi-nor/core.c | 25 +++++++++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
+ drivers/mtd/spi-nor/sfdp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
-index 642e3c07acf9..2ad248140b6c 100644
---- a/drivers/mtd/spi-nor/core.c
-+++ b/drivers/mtd/spi-nor/core.c
-@@ -357,6 +357,8 @@ int spi_nor_write_disable(struct spi_nor *nor)
- static int spi_nor_read_sr(struct spi_nor *nor, u8 *sr)
- {
- 	int ret;
-+	u8 addr_bytes = nor->params->rdsr_addr_nbytes;
-+	u8 dummy = nor->params->rdsr_dummy;
+diff --git a/drivers/mtd/spi-nor/sfdp.c b/drivers/mtd/spi-nor/sfdp.c
+index f917631c8110..5cecc4ba2141 100644
+--- a/drivers/mtd/spi-nor/sfdp.c
++++ b/drivers/mtd/spi-nor/sfdp.c
+@@ -460,6 +460,7 @@ static int spi_nor_parse_bfpt(struct spi_nor *nor,
+ 	/* Number of address bytes. */
+ 	switch (bfpt.dwords[BFPT_DWORD(1)] & BFPT_DWORD1_ADDRESS_BYTES_MASK) {
+ 	case BFPT_DWORD1_ADDRESS_BYTES_3_ONLY:
++	case BFPT_DWORD1_ADDRESS_BYTES_3_OR_4:
+ 		nor->addr_width = 3;
+ 		break;
  
- 	if (nor->spimem) {
- 		struct spi_mem_op op =
-@@ -365,10 +367,21 @@ static int spi_nor_read_sr(struct spi_nor *nor, u8 *sr)
- 				   SPI_MEM_OP_NO_DUMMY,
- 				   SPI_MEM_OP_DATA_IN(1, sr, 1));
- 
-+		if (spi_nor_protocol_is_dtr(nor->reg_proto)) {
-+			op.addr.nbytes = addr_bytes;
-+			op.addr.val = 0;
-+			op.dummy.nbytes = dummy;
-+		}
-+
-+		spi_nor_spimem_setup_op(nor, &op, nor->reg_proto);
-+
- 		ret = spi_mem_exec_op(nor->spimem, &op);
- 	} else {
--		ret = nor->controller_ops->read_reg(nor, SPINOR_OP_RDSR,
--						    sr, 1);
-+		if (spi_nor_protocol_is_dtr(nor->reg_proto))
-+			ret = -ENOTSUPP;
-+		else
-+			ret = nor->controller_ops->read_reg(nor, SPINOR_OP_RDSR,
-+							    sr, 1);
- 	}
- 
- 	if (ret)
-@@ -388,6 +401,8 @@ static int spi_nor_read_sr(struct spi_nor *nor, u8 *sr)
- static int spi_nor_read_fsr(struct spi_nor *nor, u8 *fsr)
- {
- 	int ret;
-+	u8 addr_bytes = nor->params->rdsr_addr_nbytes;
-+	u8 dummy = nor->params->rdsr_dummy;
- 
- 	if (nor->spimem) {
- 		struct spi_mem_op op =
-@@ -396,6 +411,12 @@ static int spi_nor_read_fsr(struct spi_nor *nor, u8 *fsr)
- 				   SPI_MEM_OP_NO_DUMMY,
- 				   SPI_MEM_OP_DATA_IN(1, fsr, 1));
- 
-+		if (spi_nor_protocol_is_dtr(nor->reg_proto)) {
-+			op.addr.nbytes = addr_bytes;
-+			op.addr.val = 0;
-+			op.dummy.nbytes = dummy;
-+		}
-+
- 		spi_nor_spimem_setup_op(nor, &op, nor->reg_proto);
- 
- 		ret = spi_mem_exec_op(nor->spimem, &op);
 -- 
 2.26.2
 

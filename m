@@ -2,70 +2,159 @@ Return-Path: <SRS0=1rUC=7H=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D9A2CC433E0
-	for <linux-spi@archiver.kernel.org>; Mon, 25 May 2020 04:00:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49041C433E1
+	for <linux-spi@archiver.kernel.org>; Mon, 25 May 2020 09:16:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A97C5207DA
-	for <linux-spi@archiver.kernel.org>; Mon, 25 May 2020 04:00:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1590379218;
-	bh=LxfIbbg1MoCqbVFU7t9oGAlVbxqW68r/xkjTODgmteA=;
-	h=Subject:From:Date:To:List-ID:From;
-	b=KmL0VXo9f2CesIprWawLoNT1Oijynjh9cGJAOg8kwRLcd+0jDurDzA2DmwfMnwyOT
-	 SqPKEhfr3/ZNav+anRhhEUj84QCPJnseJ7J8fVPJI/IDmy8V0WxVDKWT/HDDC3mmZq
-	 iBgq4+86m3xNu7Rht9yMK/XPyc2X3GjRlsm+IClA=
+	by mail.kernel.org (Postfix) with ESMTP id 28E2A2073B
+	for <linux-spi@archiver.kernel.org>; Mon, 25 May 2020 09:16:24 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Mires9iT"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725372AbgEYEAS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 25 May 2020 00:00:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34214 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725306AbgEYEAS (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 25 May 2020 00:00:18 -0400
-Content-Type: text/plain; charset="utf-8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590379217;
-        bh=LxfIbbg1MoCqbVFU7t9oGAlVbxqW68r/xkjTODgmteA=;
-        h=Subject:From:Date:To:From;
-        b=E3zXnmmAroyhTHNGUeZTF8io5BVeh9KE95eXBoWu/VYkothzI9tnhuRggXQWQ0GFU
-         yLclefNn8kf/VJU3J2QU0MrjK+ZXGzqO3yumeqgJFFGFyQAIQ6OOyl8OzQGWh1dZuO
-         8A3cJXzzNTh+ueLRfMMdQAy5Vi8CacI6J6SVKZe8=
+        id S2389282AbgEYJQX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 25 May 2020 05:16:23 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:53028 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389251AbgEYJQX (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 25 May 2020 05:16:23 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04P9FvYP076695;
+        Mon, 25 May 2020 04:15:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1590398157;
+        bh=QVVBkRYpNpHNnM3DtoOcxGwPAsP60fEAqbUuQ94mGJM=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=Mires9iTV1NukuxtOCluQKxPpDBJrIR/7QJApoR7/FXOtebhOVipYdRtUWZFOn+Zv
+         UdIeVluKb7X5dssb5HpYd1fhZW23bnO69yXwri0P5xNNj2sOHchBwPmRnjHMRWKxX2
+         hc3dxTOUd3kPA4O6rl2osak71ydFRaX27J3usEDo=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04P9Fvts012847
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 25 May 2020 04:15:57 -0500
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 25
+ May 2020 04:15:56 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Mon, 25 May 2020 04:15:56 -0500
+Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04P9FjA1034800;
+        Mon, 25 May 2020 04:15:51 -0500
+From:   Pratyush Yadav <p.yadav@ti.com>
+To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Mark Brown <broonie@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>
+CC:     Pratyush Yadav <p.yadav@ti.com>, Sekhar Nori <nsekhar@ti.com>,
+        Boris Brezillon <boris.brezillon@collabora.com>,
+        Mason Yang <masonccyang@mxic.com.tw>
+Subject: [PATCH v9 01/19] spi: spi-mem: allow specifying whether an op is DTR or not
+Date:   Mon, 25 May 2020 14:45:26 +0530
+Message-ID: <20200525091544.17270-2-p.yadav@ti.com>
+X-Mailer: git-send-email 2.25.0
+In-Reply-To: <20200525091544.17270-1-p.yadav@ti.com>
+References: <20200525091544.17270-1-p.yadav@ti.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+linux-spi@kernel.org
-Message-Id: <159037921767.11023.7430012641237446191.git-patchwork-housekeeping@kernel.org>
-Date:   Mon, 25 May 2020 04:00:17 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v5] Enable ili9341 and l3gd20 on stm32f429-disco (2020-05-25T03:45:42)
-  Superseding: [v4] Enable ili9341 and l3gd20 on stm32f429-disco (2020-05-18T11:09:17):
-    [v4,1/8] ARM: dts: stm32: Add dma config for spi5
-    [v4,2/8] ARM: dts: stm32: enable l3gd20 on stm32429-disco board
-    [v4,3/8] spi: stm32: Add 'SPI_SIMPLEX_RX', 'SPI_3WIRE_RX' support for stm32f4
-    [v4,4/8] ARM: dts: stm32: Add pin map for ltdc on stm32f429-disco board
-    [v4,5/8] dt-bindings: display: panel: Add ilitek ili9341 panel bindings
-    [v4,6/8] ARM: dts: stm32: enable ltdc binding with ili9341 on stm32429-disco board
-    [v4,7/8] clk: stm32: Fix stm32f429's ltdc driver hang in set clock rate.
-    [v4,8/8] drm/panel: Add ilitek ili9341 panel driver
-  Superseding: [v5] Enable ili9341 and l3gd20 on stm32f429-disco (2020-05-25T03:40:54):
-    [v5,1/8] ARM: dts: stm32: Add dma config for spi5
-    [v5,2/8] ARM: dts: stm32: Add pin map for ltdc & spi5 on stm32f429-disco board
-    [v5,3/8] ARM: dts: stm32: enable ltdc binding with ili9341, gyro l3gd20 on stm32429-disco board
-    [v5,4/8] dt-bindings: display: panel: Add ilitek ili9341 panel bindings
-    [v5,5/8] clk: stm32: Fix stm32f429's ltdc driver hang in set clock rate, fix duplicated ltdc clock register to 'clk_core' case ltdc's clock turn off by clk_disable_unused()
-    [v5,6/8] drm/panel: Add ilitek ili9341 panel driver
-    [v5,7/8] spi: stm32: Add 'SPI_SIMPLEX_RX', 'SPI_3WIRE_RX' support for stm32f4
-    [v5,8/8] spi: flags 'SPI_CONTROLLER_MUST_RX' and 'SPI_CONTROLLER_MUST_TX' can't be coexit with 'SPI_3WIRE' mode
+Each phase is given a separate 'dtr' field so mixed protocols like
+4S-4D-4D can be supported.
 
+Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+---
+ drivers/spi/spi-mem.c       | 3 +++
+ include/linux/spi/spi-mem.h | 8 ++++++++
+ 2 files changed, 11 insertions(+)
 
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index 9a86cc27fcc0..93e255287ab9 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -156,6 +156,9 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
+ 				   op->data.dir == SPI_MEM_DATA_OUT))
+ 		return false;
+ 
++	if (op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr)
++		return false;
++
+ 	return true;
+ }
+ EXPORT_SYMBOL_GPL(spi_mem_default_supports_op);
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index af9ff2f0f1b2..e3dcb956bf61 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -71,9 +71,11 @@ enum spi_mem_data_dir {
+  * struct spi_mem_op - describes a SPI memory operation
+  * @cmd.buswidth: number of IO lines used to transmit the command
+  * @cmd.opcode: operation opcode
++ * @cmd.dtr: whether the command opcode should be sent in DTR mode or not
+  * @addr.nbytes: number of address bytes to send. Can be zero if the operation
+  *		 does not need to send an address
+  * @addr.buswidth: number of IO lines used to transmit the address cycles
++ * @addr.dtr: whether the address should be sent in DTR mode or not
+  * @addr.val: address value. This value is always sent MSB first on the bus.
+  *	      Note that only @addr.nbytes are taken into account in this
+  *	      address value, so users should make sure the value fits in the
+@@ -81,7 +83,9 @@ enum spi_mem_data_dir {
+  * @dummy.nbytes: number of dummy bytes to send after an opcode or address. Can
+  *		  be zero if the operation does not require dummy bytes
+  * @dummy.buswidth: number of IO lanes used to transmit the dummy bytes
++ * @dummy.dtr: whether the dummy bytes should be sent in DTR mode or not
+  * @data.buswidth: number of IO lanes used to send/receive the data
++ * @data.dtr: whether the data should be sent in DTR mode or not
+  * @data.dir: direction of the transfer
+  * @data.nbytes: number of data bytes to send/receive. Can be zero if the
+  *		 operation does not involve transferring data
+@@ -91,22 +95,26 @@ enum spi_mem_data_dir {
+ struct spi_mem_op {
+ 	struct {
+ 		u8 buswidth;
++		u8 dtr : 1;
+ 		u8 opcode;
+ 	} cmd;
+ 
+ 	struct {
+ 		u8 nbytes;
+ 		u8 buswidth;
++		u8 dtr : 1;
+ 		u64 val;
+ 	} addr;
+ 
+ 	struct {
+ 		u8 nbytes;
+ 		u8 buswidth;
++		u8 dtr : 1;
+ 	} dummy;
+ 
+ 	struct {
+ 		u8 buswidth;
++		u8 dtr : 1;
+ 		enum spi_mem_data_dir dir;
+ 		unsigned int nbytes;
+ 		union {
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/pwbot
+2.26.2
+

@@ -8,55 +8,55 @@ X-Spam-Status: No, score=-9.6 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 46B96C433E3
-	for <linux-spi@archiver.kernel.org>; Mon, 25 May 2020 03:46:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E9D17C433DF
+	for <linux-spi@archiver.kernel.org>; Mon, 25 May 2020 03:46:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1F9C12088E
-	for <linux-spi@archiver.kernel.org>; Mon, 25 May 2020 03:46:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C767D20825
+	for <linux-spi@archiver.kernel.org>; Mon, 25 May 2020 03:46:11 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oOnEvJIc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iz2EkdIG"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388809AbgEYDqF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 24 May 2020 23:46:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58366 "EHLO
+        id S2388864AbgEYDqK (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 24 May 2020 23:46:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388730AbgEYDqD (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 24 May 2020 23:46:03 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2569BC061A0E;
-        Sun, 24 May 2020 20:46:03 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id q8so8287284pfu.5;
-        Sun, 24 May 2020 20:46:03 -0700 (PDT)
+        with ESMTP id S2388823AbgEYDqJ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 24 May 2020 23:46:09 -0400
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91429C061A0E;
+        Sun, 24 May 2020 20:46:09 -0700 (PDT)
+Received: by mail-pj1-x1044.google.com with SMTP id cx22so8012777pjb.1;
+        Sun, 24 May 2020 20:46:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=TecVBwOuGZ/BbCjVyBAZuzQGGC9DlsbNm1sr3li0idE=;
-        b=oOnEvJIc5RIC+XycPQbNKIOqu3rZrB9GkscAVQFQ0bIPFUXhXArjacXi2Bv9R8irzo
-         xJ4obbevslcs+GawkyTJuMZcaQxb8t70SgchuEOmzRv9VmCoagv+xoE3hH8+uxrGu+u7
-         Tr/nTMpuhzI8FeOPEYF4CiVdLMO4Yo+CU/rEyl2ZyF/zXXNC8cydBxXGjcTypHEmgeax
-         OY8v4Xebai1cj4X0S4d58nwAtcOIGFv4+K0Qo3tuY/twGNB5zfVMY5LFwteks12B1qoP
-         WJ2FZXvTm78wjDBDexzekBDJehJ6XUiQNlj1HScpmMzEEio3Xpd63nu3vsmTHMjSstN4
-         gkgg==
+        bh=JHR9IFaRgCyJGWikuHqyC0B14pMQIGmyd5Kpq3MNpmQ=;
+        b=iz2EkdIG3/RqK9gUgyu2o4iN9HPdnIvCoCCpRwW1qd5e35SloeuFv6L7XUj7ZqqeJ6
+         LbwKTi9GRKHJAmDxNPDCYbEVK+Cv7kWHyh8u5lMY0tI51s9VfTd18qBXSS92X6tsnmRL
+         Ppxpi6MgO7teWvlPFFCP63GE0Q/Dczn6Nx+7aLgPTZbMf0kIDhuBySchsNpEPFczpMh2
+         sKLt8SAA+J4iPs0wJvkisXGwQsHT9bjt3lVkkwiM1j9yd1hodeT/KTmC1AUXCwWM8xNQ
+         XOL1owO12FeMDYfvUdazAEO3Ui07kMiVFywcUOFm2ywnReuW/5bz/8VWNVqY9FJRI/lM
+         3nxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=TecVBwOuGZ/BbCjVyBAZuzQGGC9DlsbNm1sr3li0idE=;
-        b=e5EQCYJxKWV7reWZb0ezMTVLhW4RH9e2Ll1rHSSHvtIlybhLJqLWd/00A8JLc1Jc8Z
-         7jm373Hm/KZyZuPUsgfdc9gi1iacmb3UPNkV8ICrfBXY8m1unaEY6bFJDJaz7/MniyuM
-         pA1sxF5EhDrB+/b6nBzawC7Z/U+SLVDI03COn47puDyeSZA0Rq1upHLooK8h8FoSfCzO
-         Ec7AnBliW7qfh7CDu1qL+F6tANXJxVsnxrq+Lh4QqNftqZkMhvnTouJBU3npgNBwIJQP
-         QOIQxhRonakAQMn2w6Yi8Eki1inheqDSdZorFXKEpxPlFdXFx0mcTjoZq3xK9B3Xa27Z
-         rqnQ==
-X-Gm-Message-State: AOAM533XlAjRvgRV/69lwFXLeb9aHjWX32lA1tiK/KzMbLZv2csZCZwm
-        9ETWniQ8XrfNCgUlkmsOhSM=
-X-Google-Smtp-Source: ABdhPJzcQZcr90XePIuYsKAB+iyE3OReyvFJzMWSlexKfctfg9uLTc3FLbdM/Zb/mh6AWJtg+8RtAA==
-X-Received: by 2002:a62:e305:: with SMTP id g5mr15607365pfh.144.1590378362742;
-        Sun, 24 May 2020 20:46:02 -0700 (PDT)
+        bh=JHR9IFaRgCyJGWikuHqyC0B14pMQIGmyd5Kpq3MNpmQ=;
+        b=ZtD7LjuPdUjOiG0XdwwRlQAla19vS6qWxyRY7eDyxgPmlGmCzWOjsuE17LU8kxCEh1
+         F0Ti78GlWdHnFBWF4nDPDwhUwlFJjnPzP3Kh9K1NFW8RQ2p4w2MTfOMtcQaepY8ml+uX
+         tmmOLOJ/3ddPtALA7NEGrWkEfIWGHqZvgI8IAY+OwLL+b/8H6t518X1YQ0+tmtrcoQFh
+         Kikb7WT6H70KBHwkqNCSKyYOQCGwcyc9bPXol3J0YhK22YX8YlO8BalvKezPRw36po3Y
+         H6O4IxZAF/D+M4GyVoUy87pEGhMPD9gdKJ9QRJ2Pc3NEgZZHZKscZ2PkRERkm6D3SWL2
+         q/rQ==
+X-Gm-Message-State: AOAM530JdYsVOpelhT5Uu6/cWNKQCYXisH0pcaTS/oz5/1/0Tmx034lz
+        WyCkJ/ArrYCuaCixts2H0vo=
+X-Google-Smtp-Source: ABdhPJzJrYHR/plluRNQNEeUqmbEYzI4Fk9f2Ze1yZ1DdZkWDcFo8tEe3yRHg3Z/d/BuOqTZ+HFmaA==
+X-Received: by 2002:a17:90a:c385:: with SMTP id h5mr18680382pjt.147.1590378369159;
+        Sun, 24 May 2020 20:46:09 -0700 (PDT)
 Received: from fmin-OptiPlex-7060.nreal.work ([103.206.191.44])
-        by smtp.gmail.com with ESMTPSA id i98sm12152831pje.37.2020.05.24.20.45.59
+        by smtp.gmail.com with ESMTPSA id i98sm12152831pje.37.2020.05.24.20.46.06
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 24 May 2020 20:46:02 -0700 (PDT)
+        Sun, 24 May 2020 20:46:08 -0700 (PDT)
 From:   dillon.minfei@gmail.com
 To:     linus.walleij@linaro.org, broonie@kernel.org
 Cc:     devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
@@ -64,9 +64,9 @@ Cc:     devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-stm32@st-md-mailman.stormreply.com,
         dri-devel@lists.freedesktop.org, linux-clk@vger.kernel.org,
         dillon min <dillon.minfei@gmail.com>
-Subject: [PATCH v5 3/8] ARM: dts: stm32: enable ltdc binding with ili9341, gyro l3gd20 on stm32429-disco board
-Date:   Mon, 25 May 2020 11:45:43 +0800
-Message-Id: <1590378348-8115-4-git-send-email-dillon.minfei@gmail.com>
+Subject: [PATCH v5 5/8] clk: stm32: Fix stm32f429's ltdc driver hang in set clock rate, fix duplicated ltdc clock register to 'clk_core' case ltdc's clock turn off by clk_disable_unused()
+Date:   Mon, 25 May 2020 11:45:45 +0800
+Message-Id: <1590378348-8115-6-git-send-email-dillon.minfei@gmail.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1590378348-8115-1-git-send-email-dillon.minfei@gmail.com>
 References: <1590378348-8115-1-git-send-email-dillon.minfei@gmail.com>
@@ -77,76 +77,59 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 From: dillon min <dillon.minfei@gmail.com>
 
-Enable the ltdc & ili9341, gyro l3gd20 on stm32429-disco board.
+ltdc set clock rate crashed
+   'post_div_data[]''s pll_num is PLL_I2S, PLL_SAI (number is 1,2). but,
+    as pll_num is offset of 'clks[]' input to clk_register_pll_div(), which
+    is FCLK, CLK_LSI, defined in 'include/dt-bindings/clock/stm32fx-clock.h'
+    so, this is a null object at the register time.
+    then, in ltdc's clock is_enabled(), enable(), will call to_clk_gate().
+    will return a null object, cause kernel crashed.
+    need change pll_num to PLL_VCO_I2S, PLL_VCO_SAI for 'post_div_data[]'
+
+ duplicated ltdc clock
+   'stm32f429_gates[]' has a member 'ltdc' register to 'clk_core', but no
+    upper driver use it, ltdc driver use the lcd-tft defined in
+   'stm32f429_aux_clk[]'. after system startup, as stm32f429_gates[]'s ltdc
+    enable_count is zero, so turn off by clk_disable_unused()
+
+Changes since V3:
+1 drop last wrong changes about 'CLK_IGNORE_UNUSED' patch
+2 fix PLL_SAI mismatch with PLL_VCO_SAI
 
 Signed-off-by: dillon min <dillon.minfei@gmail.com>
 ---
- arch/arm/boot/dts/stm32f429-disco.dts | 48 +++++++++++++++++++++++++++++++++++
- 1 file changed, 48 insertions(+)
+ drivers/clk/clk-stm32f4.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/stm32f429-disco.dts b/arch/arm/boot/dts/stm32f429-disco.dts
-index 30c0f67..365d16f 100644
---- a/arch/arm/boot/dts/stm32f429-disco.dts
-+++ b/arch/arm/boot/dts/stm32f429-disco.dts
-@@ -49,6 +49,8 @@
- #include "stm32f429.dtsi"
- #include "stm32f429-pinctrl.dtsi"
- #include <dt-bindings/input/input.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+#include <dt-bindings/gpio/gpio.h>
- 
- / {
- 	model = "STMicroelectronics STM32F429i-DISCO board";
-@@ -127,3 +129,49 @@
- 	pinctrl-names = "default";
- 	status = "okay";
+diff --git a/drivers/clk/clk-stm32f4.c b/drivers/clk/clk-stm32f4.c
+index 18117ce..fa62e99 100644
+--- a/drivers/clk/clk-stm32f4.c
++++ b/drivers/clk/clk-stm32f4.c
+@@ -129,7 +129,6 @@ static const struct stm32f4_gate_data stm32f429_gates[] __initconst = {
+ 	{ STM32F4_RCC_APB2ENR, 20,	"spi5",		"apb2_div" },
+ 	{ STM32F4_RCC_APB2ENR, 21,	"spi6",		"apb2_div" },
+ 	{ STM32F4_RCC_APB2ENR, 22,	"sai1",		"apb2_div" },
+-	{ STM32F4_RCC_APB2ENR, 26,	"ltdc",		"apb2_div" },
  };
-+
-+&ltdc {
-+	status = "okay";
-+	pinctrl-0 = <&ltdc_pins_f429_disco>;
-+	pinctrl-names = "default";
-+
-+	port {
-+		ltdc_out_rgb: endpoint {
-+			remote-endpoint = <&panel_in_rgb>;
-+		};
-+	};
-+};
-+
-+&spi5 {
-+	status = "okay";
-+	pinctrl-0 = <&spi5_pins>;
-+	pinctrl-names = "default";
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	cs-gpios = <&gpioc 1 GPIO_ACTIVE_LOW>, <&gpioc 2 GPIO_ACTIVE_LOW>;
-+
-+	l3gd20: l3gd20@0 {
-+		compatible = "st,l3gd20-gyro";
-+		spi-max-frequency = <10000000>;
-+		st,drdy-int-pin = <2>;
-+		interrupt-parent = <&gpioa>;
-+		interrupts = <1 IRQ_TYPE_EDGE_RISING>,
-+				<2 IRQ_TYPE_EDGE_RISING>;
-+		reg = <0>;
-+		status = "okay";
-+	};
-+
-+	display: display@1{
-+		/* Connect panel-ilitek-9341 to ltdc */
-+		compatible = "st,sf-tc240t-9370-t";
-+		reg = <1>;
-+		spi-3wire;
-+		spi-max-frequency = <10000000>;
-+		dc-gpios = <&gpiod 13 0>;
-+		port {
-+			panel_in_rgb: endpoint {
-+			remote-endpoint = <&ltdc_out_rgb>;
-+			};
-+		};
-+	};
-+};
+ 
+ static const struct stm32f4_gate_data stm32f469_gates[] __initconst = {
+@@ -557,13 +556,13 @@ static const struct clk_div_table post_divr_table[] = {
+ 
+ #define MAX_POST_DIV 3
+ static const struct stm32f4_pll_post_div_data  post_div_data[MAX_POST_DIV] = {
+-	{ CLK_I2SQ_PDIV, PLL_I2S, "plli2s-q-div", "plli2s-q",
++	{ CLK_I2SQ_PDIV, PLL_VCO_I2S, "plli2s-q-div", "plli2s-q",
+ 		CLK_SET_RATE_PARENT, STM32F4_RCC_DCKCFGR, 0, 5, 0, NULL},
+ 
+-	{ CLK_SAIQ_PDIV, PLL_SAI, "pllsai-q-div", "pllsai-q",
++	{ CLK_SAIQ_PDIV, PLL_VCO_SAI, "pllsai-q-div", "pllsai-q",
+ 		CLK_SET_RATE_PARENT, STM32F4_RCC_DCKCFGR, 8, 5, 0, NULL },
+ 
+-	{ NO_IDX, PLL_SAI, "pllsai-r-div", "pllsai-r", CLK_SET_RATE_PARENT,
++	{ NO_IDX, PLL_VCO_SAI, "pllsai-r-div", "pllsai-r", CLK_SET_RATE_PARENT,
+ 		STM32F4_RCC_DCKCFGR, 16, 2, 0, post_divr_table },
+ };
+ 
 -- 
 2.7.4
 

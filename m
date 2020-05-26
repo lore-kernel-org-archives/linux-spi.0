@@ -6,67 +6,54 @@ X-Spam-Status: No, score=-6.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
 	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 26817C433DF
-	for <linux-spi@archiver.kernel.org>; Tue, 26 May 2020 16:46:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 16752C433DF
+	for <linux-spi@archiver.kernel.org>; Tue, 26 May 2020 16:46:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 031B4207FB
-	for <linux-spi@archiver.kernel.org>; Tue, 26 May 2020 16:46:04 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D67BE20873
+	for <linux-spi@archiver.kernel.org>; Tue, 26 May 2020 16:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1590511564;
-	bh=S8DXF5whCJVrLiIbJyuxDnBvjgMNZGsJRChfwI5ZWs0=;
+	s=default; t=1590511569;
+	bh=T9Ezc7a1r4TivHOwjldsbyoxjBD6NDs54wx5Hd/nAUw=;
 	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=Ej4MAZ0eNEdsz5wnN8E33aXn+w90RUp47g2pwBBIdtN1vqWbyAQ6WvB6KSJxIFh73
-	 erckq3ACqfLSiGZ1v94a/PxOk0XZVdox7WxrzEm5rrwCS09WaH3DH/uPR8IXp8s6Nr
-	 b/Qn3PWm/rLFTa4VZhebBCsG1kzzFnOnA1DtmMpc=
+	b=yaJKrJassP/ulQIPaWiVvtvWLiwwi64I55Ywm14cMXV0O7JyRC4mE0dO6XHqe1Iu7
+	 LBc9AW3/mvWYDIdt1bef1sgal7lOEU+Bq/ht26IW5LPNkpKcseWd20TWlBHpLfBmMn
+	 vz9qnBjXYwwRpbfgUeWjdmPCY9HXF8SWZj7cyavA=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388792AbgEZQqD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 26 May 2020 12:46:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60790 "EHLO mail.kernel.org"
+        id S2388794AbgEZQqJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 26 May 2020 12:46:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60892 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388339AbgEZQqD (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 26 May 2020 12:46:03 -0400
+        id S2388339AbgEZQqJ (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 26 May 2020 12:46:09 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 702E720787;
-        Tue, 26 May 2020 16:46:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7C409207D8;
+        Tue, 26 May 2020 16:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590511562;
-        bh=S8DXF5whCJVrLiIbJyuxDnBvjgMNZGsJRChfwI5ZWs0=;
+        s=default; t=1590511569;
+        bh=T9Ezc7a1r4TivHOwjldsbyoxjBD6NDs54wx5Hd/nAUw=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=JjlT5DAKDOqfsolwZ+sidtirEa1omgURXCzlAlJDb8g32UYbF700xgJKFJn5IHdYl
-         Jx4mOmdN6KgaZTg52fTOzkklbj4SCRTGs8Gw3y1utGzs1PNnAbpTXGRikRWBAqGAsP
-         zzQjtJHZp/V0tDCoz3azzkawrkCo6Cpeku1Jc5KQ=
-Date:   Tue, 26 May 2020 17:46:00 +0100
+        b=icoQ2hIogxa6UBGwFV5F6Lcz4MR1dDM/ZWl1u4SPtQsRaFSXt5aMAKLJqLc67uLYc
+         utHegEFlgjwO7vGIMkGBpBDlU4mj1A+mrfSSFObTmrMphWbdqAjCvtfD3SNZpuykRk
+         mREjprM+g/wX37zzFT5QafmEVZY9HO62nMp+7xSA=
+Date:   Tue, 26 May 2020 17:46:06 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Lukas Wunner <lukas@wunner.de>
-Cc:     Daniel Mack <daniel@zonque.org>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Tsuchiya Yuto <kitakar@gmail.com>, linux-spi@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Baruch Siach <baruch@tkos.co.il>,
-        Robert Jarzmik <robert.jarzmik@free.fr>
-In-Reply-To: <cover.1590408496.git.lukas@wunner.de>
-References: <cover.1590408496.git.lukas@wunner.de>
-Subject: Re: [PATCH 0/3] Intel SPI unbind fixes
-Message-Id: <159051156064.36444.8173070417753169615.b4-ty@kernel.org>
+To:     Dinghao Liu <dinghao.liu@zju.edu.cn>, kjlu@umn.edu
+Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20200523133859.5625-1-dinghao.liu@zju.edu.cn>
+References: <20200523133859.5625-1-dinghao.liu@zju.edu.cn>
+Subject: Re: [PATCH] spi: spi-fsl-lpspi: Fix runtime PM imbalance on error
+Message-Id: <159051156064.36444.17809778699218535545.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 25 May 2020 14:25:00 +0200, Lukas Wunner wrote:
-> Fix unbind ordering issues in the Designware and PXA2xx SPI controllers
-> built into Intel SoCs.
-> 
-> To test, you'll also need the following commit:
-> https://git.kernel.org/broonie/spi/c/84855678add8
-> 
-> This is compile-tested only, so please review and test thoroughly.
-> 
-> [...]
+On Sat, 23 May 2020 21:38:59 +0800, Dinghao Liu wrote:
+> pm_runtime_get_sync() increments the runtime PM usage counter even
+> when it returns an error code. Thus a pairing decrement is needed on
+> the error handling path to keep the counter balanced.
 
 Applied to
 
@@ -74,12 +61,8 @@ Applied to
 
 Thanks!
 
-[1/3] spi: dw: Fix controller unregister order
-      commit: ca8b19d61e3fce5d2d7790cde27a0b57bcb3f341
-[2/3] spi: pxa2xx: Fix controller unregister order
-      commit: 32e5b57232c0411e7dea96625c415510430ac079
-[3/3] spi: pxa2xx: Fix runtime PM ref imbalance on probe error
-      commit: 65e318e17358a3fd4fcb5a69d89b14016dee2f06
+[1/1] spi: spi-fsl-lpspi: Fix runtime PM imbalance on error
+      commit: 8d728808194a12186ce5af0b72c8a47b42476bc3
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

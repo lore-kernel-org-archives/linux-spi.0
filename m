@@ -2,55 +2,89 @@ Return-Path: <SRS0=TAp4=7I=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-0.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D582CC433E0
-	for <linux-spi@archiver.kernel.org>; Tue, 26 May 2020 15:20:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 69C15C433E0
+	for <linux-spi@archiver.kernel.org>; Tue, 26 May 2020 15:21:35 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AD0B22078C
-	for <linux-spi@archiver.kernel.org>; Tue, 26 May 2020 15:20:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1590506416;
-	bh=woyPG8irQcZtXgE+2L2sU5qtKBrg1udD0ZLraO6+mnE=;
-	h=Subject:From:Date:To:List-ID:From;
-	b=LrJSsaq9Ssd6WtJQN2rbGQF9RIpP8PadWbzoD7M1cH5Yi+p0ZPgFKIBTyL6QZDjwZ
-	 irI77AtEkoYNhI0g3hKMsZTahUD1voiQNOSKcu7UVc+W/htoUfLV9fpUrlgVAr+6nC
-	 GE96wu3ni2HjN9vC29FoRx+H+4bOcBYyrQwPpmZk=
+	by mail.kernel.org (Postfix) with ESMTP id 48C3A2078C
+	for <linux-spi@archiver.kernel.org>; Tue, 26 May 2020 15:21:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728799AbgEZPUQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 26 May 2020 11:20:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35332 "EHLO mail.kernel.org"
+        id S1729529AbgEZPVa (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 26 May 2020 11:21:30 -0400
+Received: from mga05.intel.com ([192.55.52.43]:12304 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727921AbgEZPUQ (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 26 May 2020 11:20:16 -0400
-Content-Type: text/plain; charset="utf-8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590506416;
-        bh=woyPG8irQcZtXgE+2L2sU5qtKBrg1udD0ZLraO6+mnE=;
-        h=Subject:From:Date:To:From;
-        b=JCxRTrxcKZSl5LUfVnm0QkOaIKd0o8zdZIctJ/nzkv3wUk2A7y/sn/4tm+5CQDA7v
-         tM/LVp+Gmy1gxfDp58gzajTZBPOkbeCkwAeqmPqqbPrUBs1ZBk0+knhDyzr+vI4YSc
-         gWrsTJ87jB9k75Q1isAzwAFEZiMvIyLIeRHLYQ50=
+        id S1729088AbgEZPV3 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 26 May 2020 11:21:29 -0400
+IronPort-SDR: ERqthTgHLwyVCvrIwc+eo/coykNYXMaoyQOy07pVzQ7762SPQV+YS8lXz+mFfA6dxsAgrfEe/D
+ LioudAX1kZnQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2020 08:21:28 -0700
+IronPort-SDR: AdWpaJ+ilaPii6iZgsCop3Hb0oTELos+7aj9aW1C+KRJUVsgY9M4ICyOGY2I1pPgVFN4tfA33z
+ +VWa6GQuWwUA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,437,1583222400"; 
+   d="scan'208";a="266486528"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga003.jf.intel.com with ESMTP; 26 May 2020 08:21:26 -0700
+Received: from andy by smile with local (Exim 4.93)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1jdbOT-0091Ce-BG; Tue, 26 May 2020 18:21:29 +0300
+Date:   Tue, 26 May 2020 18:21:29 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Dinh Nguyen <dinguyen@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        broonie@kernel.org, robh+dt@kernel.org, linux-spi@vger.kernel.org,
+        Sergey.Semin@baikalelectronics.ru, fancer.lancer@gmail.com,
+        lars.povlsen@microchip.com, Liang Jin J <liang.j.jin@ericsson.com>
+Subject: Re: [PATCHv2 1/2] spi: dw: add reset control
+Message-ID: <20200526152129.GS1634618@smile.fi.intel.com>
+References: <20200526151218.6186-1-dinguyen@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+linux-spi@kernel.org
-Message-Id: <159050641601.8841.3949491848158014858.git-patchwork-housekeeping@kernel.org>
-Date:   Tue, 26 May 2020 15:20:16 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200526151218.6186-1-dinguyen@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v1] spi: dw: add reset control (2020-05-26T15:12:17)
-  Superseding: [v1] spi: dw: add reset control (2020-05-21T17:03:59):
-    [1/2] spi: dw: add reset control
-    [2/2] dt-bindings: snps,dw-apb-ssi: add optional reset property
+On Tue, May 26, 2020 at 10:12:17AM -0500, Dinh Nguyen wrote:
+> Add mechanism to get the reset control and deassert it in order to bring
+> the IP out of reset.
 
+...
+
+>  	struct clk     *clk;
+>  	struct clk     *pclk;
+>  	void           *priv;
+> +	struct reset_control	*rstc;
+
+I think either you make it one space or you align all the rest members
+accordingly. I would rather go with former.
+
+...
+
+> +	/* find an optional reset controller */
+> +	dwsmmio->rstc = devm_reset_control_get_optional_exclusive(&pdev->dev, "spi");
+> +	if (IS_ERR(dwsmmio->rstc)) {
+
+> +		if (PTR_ERR(dwsmmio->rstc) == -EPROBE_DEFER)
+> +			return PTR_ERR(dwsmmio->rstc);
+
+If it's other type of errors when reset control, we ignore them...
+
+Why?!
+
+> +	}
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/pwbot
+With Best Regards,
+Andy Shevchenko
+
+

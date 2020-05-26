@@ -2,50 +2,50 @@ Return-Path: <SRS0=TAp4=7I=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 89432C433E0
-	for <linux-spi@archiver.kernel.org>; Tue, 26 May 2020 09:37:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 832FCC433E0
+	for <linux-spi@archiver.kernel.org>; Tue, 26 May 2020 09:37:38 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6650A20885
-	for <linux-spi@archiver.kernel.org>; Tue, 26 May 2020 09:37:33 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5DDA3205CB
+	for <linux-spi@archiver.kernel.org>; Tue, 26 May 2020 09:37:38 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="nLVPrNId"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="mY6XDesB"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731691AbgEZJhd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 26 May 2020 05:37:33 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:36776 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728785AbgEZJhc (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 26 May 2020 05:37:32 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04Q9bFA8034059;
-        Tue, 26 May 2020 04:37:15 -0500
+        id S1731812AbgEZJhh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 26 May 2020 05:37:37 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:48468 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731802AbgEZJhg (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 26 May 2020 05:37:36 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 04Q9bTvC068729;
+        Tue, 26 May 2020 04:37:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1590485835;
-        bh=9aC5z2QPUSspxTgWIOcSf4RjNcIj4QMhk56xxtrcX2c=;
-        h=From:To:CC:Subject:Date;
-        b=nLVPrNIdpj0DwMapU7Wxvf2n+EVCK+A/Pkb7shPi+2vvPx+VHnu1lS0cLaQPjTcZz
-         qFdrtCeZYGQKp6dkR/busOQnblTgRQeNvH4HA4TsTdyxAK3PEBNQQsxE9K8QRplAZz
-         HCpOECDP3TZsaFYgub6+Gw3t1tmvDXFMG+lQv1bM=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04Q9bFN2099815
+        s=ti-com-17Q1; t=1590485849;
+        bh=/y4WWaA10maTxpJKiOlHRU9Z9YWAESF1eFGIjbiWFic=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=mY6XDesBpRrXK0a63EzQpTzcfvUmme7fHXo8HnXj8T5205n+bjX0N25jdu14n1bSO
+         yDbU+khKPF4zqLXnx75AOYijwUAArdKIIhJyVwNicZfy/QJ7YmtFcaw15nclzkbaN3
+         88uW8tKZPLygL0PXj20xC9+GvBfSD8YUx+aFHhUQ=
+Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 04Q9bTrf081458
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 26 May 2020 04:37:15 -0500
-Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+        Tue, 26 May 2020 04:37:29 -0500
+Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 26
- May 2020 04:37:15 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+ May 2020 04:37:28 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 26 May 2020 04:37:15 -0500
+ Frontend Transport; Tue, 26 May 2020 04:37:28 -0500
 Received: from ula0132425.ent.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04Q9b9hJ066907;
-        Tue, 26 May 2020 04:37:10 -0500
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 04Q9b9hM066907;
+        Tue, 26 May 2020 04:37:24 -0500
 From:   Vignesh Raghavendra <vigneshr@ti.com>
 To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
         Mark Brown <broonie@kernel.org>
@@ -56,10 +56,12 @@ CC:     Vignesh Raghavendra <vigneshr@ti.com>,
         <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <linux-spi@vger.kernel.org>, <simon.k.r.goldschmidt@gmail.com>,
         <dinguyen@kernel.org>, <marex@denx.de>
-Subject: [PATCH v2 0/6] mtd: spi-nor: Move cadence-qaudspi to spi-mem framework
-Date:   Tue, 26 May 2020 15:05:58 +0530
-Message-ID: <20200526093604.11846-1-vigneshr@ti.com>
+Subject: [PATCH v2 3/6] mtd: spi-nor: cadence-quadspi: Don't initialize rx_dma_complete on failure
+Date:   Tue, 26 May 2020 15:06:01 +0530
+Message-ID: <20200526093604.11846-4-vigneshr@ti.com>
 X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200526093604.11846-1-vigneshr@ti.com>
+References: <20200526093604.11846-1-vigneshr@ti.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -69,56 +71,26 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-mtd: spi-nor: Move cadence-qaudspi to spi-mem framework
+If driver fails to acquire DMA channel then don't initialize
+rx_dma_complete struct as it won't be used.
 
-This series is a subset of "[PATCH v12 0/4] spi: cadence-quadspi: Add
-support for the Cadence QSPI controller" by Ramuthevar,Vadivel MuruganX
-<vadivel.muruganx.ramuthevar@linux.intel.com> that intended to move
-cadence-quadspi driver to spi-mem framework
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+---
+ drivers/mtd/spi-nor/controllers/cadence-quadspi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Those patches were trying to accomplish too many things in a single set
-of patches and need to split into smaller patches. This is reduced
-version of above series.
-
-Changes that are intended to make migration easy are split into separate
-patches. Patches 1 to 3 drop features that cannot be supported under
-spi-mem at the moment (backward compatibility is maintained).
-Patch 4-5 are trivial cleanups. Patch 6 does the actual conversion to
-spi-mem and patch 7 moves the driver to drivers/spi folder.
-
-I have tested both INDAC mode (used by non TI platforms like Altera
-SoCFPGA) and DAC mode (used by TI platforms) on TI EVMs.
-
-Patches to move move bindings over to
-"Documentation/devicetree/bindings/spi/" directory and also conversion
-of bindig doc to YAML will be posted separately.  Support for Intel
-platform would follow that.
-
-v2:
-Rework patch 1/6 to keep "cdns,is-decoded-cs" property supported.
-
-
-Ramuthevar Vadivel Murugan (2):
-  mtd: spi-nor: Convert cadence-quadspi to use spi-mem framework
-  spi: Move cadence-quadspi driver to drivers/spi/
-
-Vignesh Raghavendra (4):
-  mtd: spi-nor: cadence-quadspi: Make driver independent of flash
-    geometry
-  mtd: spi-nor: cadence-quadspi: Provide a way to disable DAC mode
-  mtd: spi-nor: cadence-quadspi: Don't initialize rx_dma_complete on
-    failure
-  mtd: spi-nor: cadence-quadspi: Fix error path on failure to acquire
-    reset lines
-
- drivers/mtd/spi-nor/controllers/Kconfig       |  11 -
- drivers/mtd/spi-nor/controllers/Makefile      |   1 -
- drivers/spi/Kconfig                           |  11 +
- drivers/spi/Makefile                          |   1 +
- .../spi-cadence-quadspi.c}                    | 521 +++++++-----------
- 5 files changed, 206 insertions(+), 339 deletions(-)
- rename drivers/{mtd/spi-nor/controllers/cadence-quadspi.c => spi/spi-cadence-quadspi.c} (74%)
-
+diff --git a/drivers/mtd/spi-nor/controllers/cadence-quadspi.c b/drivers/mtd/spi-nor/controllers/cadence-quadspi.c
+index 8a9e17f79d8d..379e22c11c87 100644
+--- a/drivers/mtd/spi-nor/controllers/cadence-quadspi.c
++++ b/drivers/mtd/spi-nor/controllers/cadence-quadspi.c
+@@ -1180,6 +1180,7 @@ static void cqspi_request_mmap_dma(struct cqspi_st *cqspi)
+ 	if (IS_ERR(cqspi->rx_chan)) {
+ 		dev_err(&cqspi->pdev->dev, "No Rx DMA available\n");
+ 		cqspi->rx_chan = NULL;
++		return;
+ 	}
+ 	init_completion(&cqspi->rx_dma_complete);
+ }
 -- 
 2.26.2
 

@@ -2,87 +2,67 @@ Return-Path: <SRS0=r3DM=7K=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A70C0C433E0
-	for <linux-spi@archiver.kernel.org>; Thu, 28 May 2020 13:08:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BBBD8C433E1
+	for <linux-spi@archiver.kernel.org>; Thu, 28 May 2020 15:46:46 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7A0B6207F5
-	for <linux-spi@archiver.kernel.org>; Thu, 28 May 2020 13:08:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1590671309;
-	bh=12Epg9vAaXMim+O4FTOBqKFL38ARs1D/yOOcXJzWAv8=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=eKU80Vsgc6k7Zuxby5NpkkWlKfVKuSvy0+rzyeLSAobXIciqQreF8na7tA78lnGkq
-	 tyY2uOwbtL3FN8O2v4swPQgTafq6Maswv0oNxQKH7Kj33PLxgqCJs39kEvMx/YNsQ9
-	 ryCB9c9qKV/nIEeXdxSRuJV5DyR+3PMphB0HxL5Y=
+	by mail.kernel.org (Postfix) with ESMTP id A60DF207F5
+	for <linux-spi@archiver.kernel.org>; Thu, 28 May 2020 15:46:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390162AbgE1NIA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 28 May 2020 09:08:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57576 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390155AbgE1NH7 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 28 May 2020 09:07:59 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D6B2C207F5;
-        Thu, 28 May 2020 13:07:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590671278;
-        bh=12Epg9vAaXMim+O4FTOBqKFL38ARs1D/yOOcXJzWAv8=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=LpbVzDS0suyEwE5Ldj7OymOkSAWNP1+PH6eaxY4/2a9iuIXQS+NDXYV2gUEZB0xeJ
-         J8gS48kmxqpcE+VoT8xCcAWlZfbyjYgfsr/ARapFFy9s17jMPBNsbmvN4MVqmF3BTU
-         O4nojSOkLEjPwroxxysLrnHeqe6Dg5HWqebI/HXg=
-Date:   Thu, 28 May 2020 14:07:55 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     kjlu@umn.edu, Dinghao Liu <dinghao.liu@zju.edu.cn>
-Cc:     Laxman Dewangan <ldewangan@nvidia.com>, linux-spi@vger.kernel.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        linux-tegra@vger.kernel.org,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20200523122909.25247-1-dinghao.liu@zju.edu.cn>
-References: <20200523122909.25247-1-dinghao.liu@zju.edu.cn>
-Subject: Re: [PATCH] [v2] spi: tegra20-slink: Fix runtime PM imbalance on error
-Message-Id: <159067126729.55053.1525159932135385920.b4-ty@kernel.org>
+        id S2404662AbgE1Pqp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 28 May 2020 11:46:45 -0400
+Received: from lists.gateworks.com ([108.161.130.12]:57374 "EHLO
+        lists.gateworks.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404511AbgE1Pqo (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 28 May 2020 11:46:44 -0400
+Received: from 068-189-091-139.biz.spectrum.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
+        by lists.gateworks.com with esmtp (Exim 4.82)
+        (envelope-from <tharvey@gateworks.com>)
+        id 1jeKmo-0000aY-Rh; Thu, 28 May 2020 15:49:39 +0000
+From:   Tim Harvey <tharvey@gateworks.com>
+To:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        Robert Richter <rrichter@marvell.com>
+Cc:     linux-kernel@vger.kernel.org, Tim Harvey <tharvey@gateworks.com>
+Subject: [RFC PATCH] spi: spi-cavium-thunderx: flag controller as half duplex
+Date:   Thu, 28 May 2020 08:46:39 -0700
+Message-Id: <1590680799-5640-1-git-send-email-tharvey@gateworks.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sat, 23 May 2020 20:29:09 +0800, Dinghao Liu wrote:
-> pm_runtime_get_sync() increments the runtime PM usage counter even
-> when it returns an error code. Thus a pairing decrement is needed on
-> the error handling path to keep the counter balanced.
+The OcteonTX (TX1/ThunderX) SPI controller does not support full
+duplex transactions. Set the appropriate flag such that the spi
+core will return -EINVAL on such transactions requested by chip
+drivers.
 
-Applied to
+This is an RFC as I need someone from Marvell/Cavium to confirm
+if this driver is used for other silicon that does support
+full duplex transfers (in which case we will need to identify
+that we are running on the ThunderX arch before setting the flag).
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Cc: Robert Richter <rrichter@marvell.com>
+Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+---
+ drivers/spi/spi-cavium-thunderx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Thanks!
+diff --git a/drivers/spi/spi-cavium-thunderx.c b/drivers/spi/spi-cavium-thunderx.c
+index fd6b9ca..60c0d69 100644
+--- a/drivers/spi/spi-cavium-thunderx.c
++++ b/drivers/spi/spi-cavium-thunderx.c
+@@ -64,6 +64,7 @@ static int thunderx_spi_probe(struct pci_dev *pdev,
+ 		p->sys_freq = SYS_FREQ_DEFAULT;
+ 	dev_info(dev, "Set system clock to %u\n", p->sys_freq);
+ 
++	master->flags = SPI_MASTER_HALF_DUPLEX;
+ 	master->num_chipselect = 4;
+ 	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_CS_HIGH |
+ 			    SPI_LSB_FIRST | SPI_3WIRE;
+-- 
+2.7.4
 
-[1/1] spi: tegra20-slink: Fix runtime PM imbalance on error
-      commit: faedcc17ad183acfa5d74758ebc4f21aef341f11
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

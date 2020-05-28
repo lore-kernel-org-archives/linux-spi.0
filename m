@@ -7,108 +7,218 @@ X-Spam-Status: No, score=-9.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A696BC433E0
-	for <linux-spi@archiver.kernel.org>; Thu, 28 May 2020 07:59:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D141C433E1
+	for <linux-spi@archiver.kernel.org>; Thu, 28 May 2020 07:59:49 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 840662063A
-	for <linux-spi@archiver.kernel.org>; Thu, 28 May 2020 07:59:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 56F262063A
+	for <linux-spi@archiver.kernel.org>; Thu, 28 May 2020 07:59:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727063AbgE1H7s (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 28 May 2020 03:59:48 -0400
-Received: from twhmllg4.macronix.com ([122.147.135.202]:31422 "EHLO
+        id S1727066AbgE1H7t (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 28 May 2020 03:59:49 -0400
+Received: from twhmllg4.macronix.com ([122.147.135.202]:31425 "EHLO
         TWHMLLG4.macronix.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726909AbgE1H7r (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 28 May 2020 03:59:47 -0400
+        with ESMTP id S1726974AbgE1H7s (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 28 May 2020 03:59:48 -0400
 Received: from localhost.localdomain ([172.17.195.96])
-        by TWHMLLG4.macronix.com with ESMTP id 04S7wMHj030973;
-        Thu, 28 May 2020 15:58:31 +0800 (GMT-8)
+        by TWHMLLG4.macronix.com with ESMTP id 04S7wMHl030973;
+        Thu, 28 May 2020 15:58:32 +0800 (GMT-8)
         (envelope-from masonccyang@mxic.com.tw)
 From:   Mason Yang <masonccyang@mxic.com.tw>
 To:     broonie@kernel.org, tudor.ambarus@microchip.com,
         miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
         boris.brezillon@collabora.com, matthias.bgg@gmail.com
 Cc:     p.yadav@ti.com, juliensu@mxic.com.tw, linux-kernel@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org
-Subject: [PATCH v3 10/14] mtd: spi-nor: core: use dummy cycle and address width info from SFDP
-Date:   Thu, 28 May 2020 15:58:12 +0800
-Message-Id: <1590652696-8844-11-git-send-email-masonccyang@mxic.com.tw>
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+        Mason Yang <masonccyang@mxic.com.tw>
+Subject: [PATCH v3 12/14] spi: mxic: patch for octal DTR mode support
+Date:   Thu, 28 May 2020 15:58:14 +0800
+Message-Id: <1590652696-8844-13-git-send-email-masonccyang@mxic.com.tw>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1590652696-8844-1-git-send-email-masonccyang@mxic.com.tw>
 References: <1590652696-8844-1-git-send-email-masonccyang@mxic.com.tw>
-X-MAIL: TWHMLLG4.macronix.com 04S7wMHj030973
+X-MAIL: TWHMLLG4.macronix.com 04S7wMHl030973
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Pratyush Yadav <p.yadav@ti.com>
+Driver patch for octal 8D-8D-8D mode support.
 
-The xSPI Profile 1.0 table specifies how many dummy cycles and address
-bytes are needed for the Read Status Register command in octal DTR mode.
-Use that information to send the correct Read SR command.
-
-Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
 ---
- drivers/mtd/spi-nor/core.c | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ drivers/spi/spi-mxic.c | 101 +++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 69 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
-index 117d117..cbfdf544 100644
---- a/drivers/mtd/spi-nor/core.c
-+++ b/drivers/mtd/spi-nor/core.c
-@@ -435,6 +435,8 @@ int spi_nor_write_cr2(struct spi_nor *nor, u32 addr, u8 *cr2)
- static int spi_nor_read_sr(struct spi_nor *nor, u8 *sr)
- {
- 	int ret;
-+	u8 addr_bytes = nor->params->rdsr_addr_nbytes;
-+	u8 dummy = nor->params->rdsr_dummy;
+diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
+index 69491f3..c83c8c2 100644
+--- a/drivers/spi/spi-mxic.c
++++ b/drivers/spi/spi-mxic.c
+@@ -280,10 +280,58 @@ static void mxic_spi_hw_init(struct mxic_spi *mxic)
+ 	       mxic->regs + HC_CFG);
+ }
  
- 	if (nor->spimem) {
- 		struct spi_mem_op op =
-@@ -443,10 +445,19 @@ static int spi_nor_read_sr(struct spi_nor *nor, u8 *sr)
- 				   SPI_MEM_OP_NO_DUMMY,
- 				   SPI_MEM_OP_DATA_IN(1, sr, 1));
- 
-+		if (spi_nor_protocol_is_dtr(nor->reg_proto)) {
-+			op.addr.nbytes = addr_bytes;
-+			op.addr.val = 0;
-+			op.dummy.nbytes = dummy;
-+		}
++static u32 mxic_spi_mem_prep_op_cfg(const struct spi_mem_op *op)
++{
++	u32 cfg =  OP_CMD_BYTES(op->cmd.nbytes) |
++		   OP_CMD_BUSW(fls(op->cmd.buswidth) - 1) |
++		   (op->cmd.dtr ? OP_CMD_DDR : 0);
 +
- 		ret = spi_mem_exec_op(nor->spimem, &op);
- 	} else {
--		ret = nor->controller_ops->read_reg(nor, SPINOR_OP_RDSR,
--						    sr, 1);
-+		if (spi_nor_protocol_is_dtr(nor->reg_proto))
-+			ret = -ENOTSUPP;
-+		else
-+			ret = nor->controller_ops->read_reg(nor, SPINOR_OP_RDSR,
-+							    sr, 1);
- 	}
++	if (op->addr.nbytes)
++		cfg |= OP_ADDR_BYTES(op->addr.nbytes) |
++		       OP_ADDR_BUSW(fls(op->addr.buswidth) - 1) |
++		       (op->addr.dtr ? OP_ADDR_DDR : 0);
++
++	if (op->dummy.nbytes)
++		cfg |= OP_DUMMY_CYC(op->dummy.nbytes);
++
++	if (op->data.nbytes) {
++		cfg |= OP_DATA_BUSW(fls(op->data.buswidth) - 1) |
++		      (op->data.dtr ? OP_DATA_DDR : 0);
++		if (op->data.dir == SPI_MEM_DATA_IN) {
++			cfg |= OP_READ;
++			if (op->data.dtr == OP_DATA_DDR)
++				cfg |= OP_DQS_EN;
++		}
++	}
++
++	return cfg;
++}
++
++static void mxic_spi_set_hc_cfg(struct spi_device *spi, u32 flags)
++{
++	struct mxic_spi *mxic = spi_master_get_devdata(spi->master);
++	int nio = 1;
++
++	if (spi->mode & (SPI_RX_OCTAL | SPI_TX_OCTAL))
++		nio = 8;
++	else if (spi->mode & (SPI_TX_QUAD | SPI_RX_QUAD))
++		nio = 4;
++	else if (spi->mode & (SPI_TX_DUAL | SPI_RX_DUAL))
++		nio = 2;
++
++	writel(flags | HC_CFG_NIO(nio) |
++	       HC_CFG_TYPE(spi->chip_select, HC_CFG_TYPE_SPI_NOR) |
++	       HC_CFG_SLV_ACT(spi->chip_select) | HC_CFG_IDLE_SIO_LVL(1),
++	       mxic->regs + HC_CFG);
++}
++
+ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
+ 			      void *rxbuf, unsigned int len)
+ {
+ 	unsigned int pos = 0;
++	bool dtr_enabled;
++
++	dtr_enabled = (readl(mxic->regs + SS_CTRL(0)) & OP_DATA_DDR);
  
+ 	while (pos < len) {
+ 		unsigned int nbytes = len - pos;
+@@ -302,6 +350,9 @@ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
+ 		if (ret)
+ 			return ret;
+ 
++		if (dtr_enabled && len & 0x1)
++			nbytes++;
++
+ 		writel(data, mxic->regs + TXD(nbytes % 4));
+ 
+ 		if (rxbuf) {
+@@ -319,6 +370,8 @@ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
+ 
+ 			data = readl(mxic->regs + RXD);
+ 			data >>= (8 * (4 - nbytes));
++			if (dtr_enabled && len & 0x1)
++				nbytes++;
+ 			memcpy(rxbuf + pos, &data, nbytes);
+ 			WARN_ON(readl(mxic->regs + INT_STS) & INT_RX_NOT_EMPTY);
+ 		} else {
+@@ -335,8 +388,8 @@ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
+ static bool mxic_spi_mem_supports_op(struct spi_mem *mem,
+ 				     const struct spi_mem_op *op)
+ {
+-	if (op->data.buswidth > 4 || op->addr.buswidth > 4 ||
+-	    op->dummy.buswidth > 4 || op->cmd.buswidth > 4)
++	if (op->data.buswidth > 8 || op->addr.buswidth > 8 ||
++	    op->dummy.buswidth > 8 || op->cmd.buswidth > 8)
+ 		return false;
+ 
+ 	if (op->data.nbytes && op->dummy.nbytes &&
+@@ -346,6 +399,9 @@ static bool mxic_spi_mem_supports_op(struct spi_mem *mem,
+ 	if (op->addr.nbytes > 7)
+ 		return false;
+ 
++	if (op->cmd.buswidth == 8 && op->cmd.nbytes == 2)
++		return true;
++
+ 	return spi_mem_default_supports_op(mem, op);
+ }
+ 
+@@ -353,47 +409,27 @@ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
+ 				const struct spi_mem_op *op)
+ {
+ 	struct mxic_spi *mxic = spi_master_get_devdata(mem->spi->master);
+-	int nio = 1, i, ret;
+-	u32 ss_ctrl;
+-	u8 addr[8];
++	int i, ret;
++	u8 addr[8], cmd[2];
+ 
+ 	ret = mxic_spi_set_freq(mxic, mem->spi->max_speed_hz);
  	if (ret)
-@@ -466,6 +477,8 @@ static int spi_nor_read_sr(struct spi_nor *nor, u8 *sr)
- static int spi_nor_read_fsr(struct spi_nor *nor, u8 *fsr)
- {
- 	int ret;
-+	u8 addr_bytes = nor->params->rdsr_addr_nbytes;
-+	u8 dummy = nor->params->rdsr_dummy;
+ 		return ret;
  
- 	if (nor->spimem) {
- 		struct spi_mem_op op =
-@@ -474,6 +487,12 @@ static int spi_nor_read_fsr(struct spi_nor *nor, u8 *fsr)
- 				   SPI_MEM_OP_NO_DUMMY,
- 				   SPI_MEM_OP_DATA_IN(1, fsr, 1));
+-	if (mem->spi->mode & (SPI_TX_QUAD | SPI_RX_QUAD))
+-		nio = 4;
+-	else if (mem->spi->mode & (SPI_TX_DUAL | SPI_RX_DUAL))
+-		nio = 2;
++	mxic_spi_set_hc_cfg(mem->spi, HC_CFG_MAN_CS_EN);
  
-+		if (spi_nor_protocol_is_dtr(nor->reg_proto)) {
-+			op.addr.nbytes = addr_bytes;
-+			op.addr.val = 0;
-+			op.dummy.nbytes = dummy;
-+		}
+-	writel(HC_CFG_NIO(nio) |
+-	       HC_CFG_TYPE(mem->spi->chip_select, HC_CFG_TYPE_SPI_NOR) |
+-	       HC_CFG_SLV_ACT(mem->spi->chip_select) | HC_CFG_IDLE_SIO_LVL(1) |
+-	       HC_CFG_MAN_CS_EN,
+-	       mxic->regs + HC_CFG);
+ 	writel(HC_EN_BIT, mxic->regs + HC_EN);
+ 
+-	ss_ctrl = OP_CMD_BYTES(1) | OP_CMD_BUSW(fls(op->cmd.buswidth) - 1);
+-
+-	if (op->addr.nbytes)
+-		ss_ctrl |= OP_ADDR_BYTES(op->addr.nbytes) |
+-			   OP_ADDR_BUSW(fls(op->addr.buswidth) - 1);
+-
+-	if (op->dummy.nbytes)
+-		ss_ctrl |= OP_DUMMY_CYC(op->dummy.nbytes);
+-
+-	if (op->data.nbytes) {
+-		ss_ctrl |= OP_DATA_BUSW(fls(op->data.buswidth) - 1);
+-		if (op->data.dir == SPI_MEM_DATA_IN)
+-			ss_ctrl |= OP_READ;
+-	}
+-
+-	writel(ss_ctrl, mxic->regs + SS_CTRL(mem->spi->chip_select));
++	writel(mxic_spi_mem_prep_op_cfg(op),
++	       mxic->regs + SS_CTRL(mem->spi->chip_select));
+ 
+ 	writel(readl(mxic->regs + HC_CFG) | HC_CFG_MAN_CS_ASSERT,
+ 	       mxic->regs + HC_CFG);
+ 
+-	ret = mxic_spi_data_xfer(mxic, &op->cmd.opcode, NULL, 1);
++	for (i = 0; i < op->cmd.nbytes; i++)
++		cmd[i] = op->cmd.opcode >> (8 * (op->cmd.nbytes - i - 1));
 +
- 		spi_nor_spimem_setup_op(nor, &op, nor->reg_proto);
++	ret = mxic_spi_data_xfer(mxic, cmd, NULL, op->cmd.nbytes);
+ 	if (ret)
+ 		goto out;
  
- 		ret = spi_mem_exec_op(nor->spimem, &op);
+@@ -566,7 +602,8 @@ static int mxic_spi_probe(struct platform_device *pdev)
+ 	master->bits_per_word_mask = SPI_BPW_MASK(8);
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA |
+ 			SPI_RX_DUAL | SPI_TX_DUAL |
+-			SPI_RX_QUAD | SPI_TX_QUAD;
++			SPI_RX_QUAD | SPI_TX_QUAD |
++			SPI_RX_OCTAL | SPI_TX_OCTAL;
+ 
+ 	mxic_spi_hw_init(mxic);
+ 
 -- 
 1.9.1
 

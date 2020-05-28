@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-6.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 63906C433E0
-	for <linux-spi@archiver.kernel.org>; Thu, 28 May 2020 13:08:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A70C0C433E0
+	for <linux-spi@archiver.kernel.org>; Thu, 28 May 2020 13:08:29 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3A873207F5
-	for <linux-spi@archiver.kernel.org>; Thu, 28 May 2020 13:08:25 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7A0B6207F5
+	for <linux-spi@archiver.kernel.org>; Thu, 28 May 2020 13:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1590671305;
-	bh=SXJ2IGWSNitYLEi4N8F0sncc8lQY4aHX9WQaypm8Zs0=;
+	s=default; t=1590671309;
+	bh=12Epg9vAaXMim+O4FTOBqKFL38ARs1D/yOOcXJzWAv8=;
 	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=oO1u+P/tr3ci5ftrYTOChzrpQqnoC/+C4fkpjeo6qChaD3FXrWXl9LGWKGIjL7qbq
-	 qiOT2DlHDpkvSqBXdq8+OpLZYyqVmEt7j/FrLJ3VobYNc+n1mYLgLySJj4uIqMkjNr
-	 qz1ImhVpHPvE5ARR8MmFpBPHEbajtWQgmBvio3fs=
+	b=eKU80Vsgc6k7Zuxby5NpkkWlKfVKuSvy0+rzyeLSAobXIciqQreF8na7tA78lnGkq
+	 tyY2uOwbtL3FN8O2v4swPQgTafq6Maswv0oNxQKH7Kj33PLxgqCJs39kEvMx/YNsQ9
+	 ryCB9c9qKV/nIEeXdxSRuJV5DyR+3PMphB0HxL5Y=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390189AbgE1NIP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 28 May 2020 09:08:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57848 "EHLO mail.kernel.org"
+        id S2390162AbgE1NIA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 28 May 2020 09:08:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57576 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390185AbgE1NIN (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 28 May 2020 09:08:13 -0400
+        id S2390155AbgE1NH7 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 28 May 2020 09:07:59 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A2BD2206C3;
-        Thu, 28 May 2020 13:08:12 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D6B2C207F5;
+        Thu, 28 May 2020 13:07:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590671293;
-        bh=SXJ2IGWSNitYLEi4N8F0sncc8lQY4aHX9WQaypm8Zs0=;
+        s=default; t=1590671278;
+        bh=12Epg9vAaXMim+O4FTOBqKFL38ARs1D/yOOcXJzWAv8=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=x0Hf22FflnWRlvVewE0Waf4JRIUFnNitaN9jTurrk8ytPE0EUO9nVkX51F5WV35zj
-         uFIfuc59kpcs+/tUwYO482RzCS9menlpv+UMQN5y5rkas4ohpN0YZC6xjLoJFjvveN
-         +Up43CtddQuVCpwyRNhNmVHneTfQtd0EFQ5M+TwU=
-Date:   Thu, 28 May 2020 14:08:09 +0100
+        b=LpbVzDS0suyEwE5Ldj7OymOkSAWNP1+PH6eaxY4/2a9iuIXQS+NDXYV2gUEZB0xeJ
+         J8gS48kmxqpcE+VoT8xCcAWlZfbyjYgfsr/ARapFFy9s17jMPBNsbmvN4MVqmF3BTU
+         O4nojSOkLEjPwroxxysLrnHeqe6Dg5HWqebI/HXg=
+Date:   Thu, 28 May 2020 14:07:55 +0100
 From:   Mark Brown <broonie@kernel.org>
 To:     kjlu@umn.edu, Dinghao Liu <dinghao.liu@zju.edu.cn>
 Cc:     Laxman Dewangan <ldewangan@nvidia.com>, linux-spi@vger.kernel.org,
@@ -45,16 +45,16 @@ Cc:     Laxman Dewangan <ldewangan@nvidia.com>, linux-spi@vger.kernel.org,
         linux-tegra@vger.kernel.org,
         Jonathan Hunter <jonathanh@nvidia.com>,
         linux-kernel@vger.kernel.org
-In-Reply-To: <20200523125704.30300-1-dinghao.liu@zju.edu.cn>
-References: <20200523125704.30300-1-dinghao.liu@zju.edu.cn>
-Subject: Re: [PATCH] [v2] spi: tegra114: Fix runtime PM imbalance on error
-Message-Id: <159067126729.55053.17825665315937942754.b4-ty@kernel.org>
+In-Reply-To: <20200523122909.25247-1-dinghao.liu@zju.edu.cn>
+References: <20200523122909.25247-1-dinghao.liu@zju.edu.cn>
+Subject: Re: [PATCH] [v2] spi: tegra20-slink: Fix runtime PM imbalance on error
+Message-Id: <159067126729.55053.1525159932135385920.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sat, 23 May 2020 20:57:04 +0800, Dinghao Liu wrote:
+On Sat, 23 May 2020 20:29:09 +0800, Dinghao Liu wrote:
 > pm_runtime_get_sync() increments the runtime PM usage counter even
 > when it returns an error code. Thus a pairing decrement is needed on
 > the error handling path to keep the counter balanced.
@@ -65,8 +65,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: tegra114: Fix runtime PM imbalance on error
-      commit: cddc36f3fd706b1046a4d4608359c0003f72db32
+[1/1] spi: tegra20-slink: Fix runtime PM imbalance on error
+      commit: faedcc17ad183acfa5d74758ebc4f21aef341f11
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

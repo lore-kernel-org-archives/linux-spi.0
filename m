@@ -2,136 +2,123 @@ Return-Path: <SRS0=r3DM=7K=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-9.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 53321C433E0
-	for <linux-spi@archiver.kernel.org>; Thu, 28 May 2020 07:02:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80A56C433E0
+	for <linux-spi@archiver.kernel.org>; Thu, 28 May 2020 07:59:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 33EE4208E4
-	for <linux-spi@archiver.kernel.org>; Thu, 28 May 2020 07:02:15 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aigRQ1Zg"
+	by mail.kernel.org (Postfix) with ESMTP id 6A66A2063A
+	for <linux-spi@archiver.kernel.org>; Thu, 28 May 2020 07:59:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726421AbgE1HCO (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 28 May 2020 03:02:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57286 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725920AbgE1HCO (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 28 May 2020 03:02:14 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38C98C05BD1E
-        for <linux-spi@vger.kernel.org>; Thu, 28 May 2020 00:02:14 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id u5so12991431pgn.5
-        for <linux-spi@vger.kernel.org>; Thu, 28 May 2020 00:02:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:from:to:cc:references:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=2rfJt6cMB0A5H+KRJ06GfOB35inHfbKK+Lu2N3H0uLs=;
-        b=aigRQ1Zglr9P+qpkaVgFFNXz1lFYKsLiUUWLzQMf8c0jB/Mb7IhoqaLI6+5JYa7D4/
-         5dowqioADwxSRIXPDbBA2TEeBe7tsX6wTMc7xYnVgrRQCDXSAmmItUIRvuA0eZgt2eQB
-         ISdfGbjQzcFiuGYda7Nc5eTWIKuvXC5mRj0+9xlNj+fgGN5RVFyyQCf/92sfHcxMaNZi
-         oTXrdcWN0/SEEhvLPQwZJ4z2+cdaOBNmOEYIct0hnXuZisryrS6jBQvcWtZUQGjKB6MY
-         vG98XYpeADxtCxi3Zvb2wrg61kz6lTJzjYRNvJVWiLaoNB8u2gN8dpQzwZLhCzMQaaEm
-         bnRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=2rfJt6cMB0A5H+KRJ06GfOB35inHfbKK+Lu2N3H0uLs=;
-        b=XE5MkvUYabITI0fW02SkKVqtoCopN1C3Aew+ZGfLK2j7n8McU0AMgyP6D/Ro2h7lJY
-         19QIzkP2kK866XRSDm4cIi5Esag758Ed3LTsEl1HpcgP701jcjwRhdPGy/SqlipBX1Oc
-         qnzwi/0wWYmTu/svS+8mJSa2zWuZK8JpTHWhC29PiYHYv9hAdJkvClz8AlSGwQATe5lE
-         LuHr8iQplLXQPZiV6h2XapEuFF2P8cGt8D7el1aVqTbwJ/XWrtiJQdphFdR5aemvIDmK
-         Cu+mVkFUzLHTgNdpxXwarWGOpF21qdPp/bkH+GY+1uV5eMTxigbTNA/6fa53MryIoxkC
-         xMMw==
-X-Gm-Message-State: AOAM532eX7q61fvKICCLrJtiR/8O5IMZF9RMP68gik1Rp1EjrT3ByhpT
-        0rRpyWjA4zYYRMN+7kwh5JY=
-X-Google-Smtp-Source: ABdhPJz5iueeugsXc7TxiAaH19Ivz2j7wOR8L+M0mxHPEr5GcGTMAWORPlCMzXIuWnrRMB3gz+rqFA==
-X-Received: by 2002:a63:711b:: with SMTP id m27mr1546596pgc.324.1590649333534;
-        Thu, 28 May 2020 00:02:13 -0700 (PDT)
-Received: from [192.168.1.59] (i60-35-254-237.s41.a020.ap.plala.or.jp. [60.35.254.237])
-        by smtp.gmail.com with ESMTPSA id y65sm3835719pfb.76.2020.05.28.00.02.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 May 2020 00:02:12 -0700 (PDT)
-Subject: Re: [PATCH 2/3] spi: pxa2xx: Fix controller unregister order
-From:   Tsuchiya Yuto <kitakar@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Lukas Wunner <lukas@wunner.de>, Mark Brown <broonie@kernel.org>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        linux-spi@vger.kernel.org, Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>
-References: <cover.1590408496.git.lukas@wunner.de>
- <834c446b1cf3284d2660f1bee1ebe3e737cd02a9.1590408496.git.lukas@wunner.de>
- <20200525132143.GX1634618@smile.fi.intel.com>
- <20200526073913.vmgak5xsrjiyn4ae@wunner.de>
- <20200526082204.GM1634618@smile.fi.intel.com>
- <45681e81-7efd-857f-eea1-fb4767e3d946@gmail.com>
- <20200527122753.GN1634618@smile.fi.intel.com>
- <2e9365fd-9307-045a-8afe-1770f7cd7eda@gmail.com>
-Message-ID: <7e085731-a56f-07d5-3ad0-a8f7d0a93516@gmail.com>
-Date:   Thu, 28 May 2020 16:02:09 +0900
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
-MIME-Version: 1.0
-In-Reply-To: <2e9365fd-9307-045a-8afe-1770f7cd7eda@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+        id S1726911AbgE1H7V (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 28 May 2020 03:59:21 -0400
+Received: from twhmllg4.macronix.com ([122.147.135.202]:31279 "EHLO
+        TWHMLLG4.macronix.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726910AbgE1H7U (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 28 May 2020 03:59:20 -0400
+Received: from localhost.localdomain ([172.17.195.96])
+        by TWHMLLG4.macronix.com with ESMTP id 04S7wMHa030973;
+        Thu, 28 May 2020 15:58:23 +0800 (GMT-8)
+        (envelope-from masonccyang@mxic.com.tw)
+From:   Mason Yang <masonccyang@mxic.com.tw>
+To:     broonie@kernel.org, tudor.ambarus@microchip.com,
+        miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
+        boris.brezillon@collabora.com, matthias.bgg@gmail.com
+Cc:     p.yadav@ti.com, juliensu@mxic.com.tw, linux-kernel@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org
+Subject: [PATCH v3 01/14] spi: spi-mem: allow specifying whether an op is DTR or not
+Date:   Thu, 28 May 2020 15:58:03 +0800
+Message-Id: <1590652696-8844-2-git-send-email-masonccyang@mxic.com.tw>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1590652696-8844-1-git-send-email-masonccyang@mxic.com.tw>
+References: <1590652696-8844-1-git-send-email-masonccyang@mxic.com.tw>
+X-MAIL: TWHMLLG4.macronix.com 04S7wMHa030973
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+From: Pratyush Yadav <p.yadav@ti.com>
 
-Correction (obvious but just in case)
+Each phase is given a separate 'dtr' field so mixed protocols like
+4S-4D-4D can be supported.
 
-On 5/27/20 10:14 PM, Tsuchiya Yuto wrote:
->
-> On 5/27/20 9:27 PM, Andy Shevchenko wrote:
->> On Wed, May 27, 2020 at 09:09:17PM +0900, Tsuchiya Yuto wrote:
->>> [...]
->>>
->>> I also built a kernel against your branch topic/spi/reload
->>> (permalink: https://github.com/andy-shev/linux/tree/55cb78d5a752). The
->>> result is the same as only applying this series; so, to fix the NULL pointer
->>> dereference that I mentioned in bugzilla [2], only this series is required.
+Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+---
+ drivers/spi/spi-mem.c       | 3 +++
+ include/linux/spi/spi-mem.h | 8 ++++++++
+ 2 files changed, 11 insertions(+)
 
-*I also built a kernel from your branch topic/spi/reload
-
->>> Also, I want to make sure that what you tried in that branch is fixing
->>> the NULL pointer dereference on spi_pxa2xx_platform module removal when
->>> touch input crashed, not fixing the touch input crashing itself?
->>
->> Yes, my aim was to fix the SPI module reload issue. While the applied patch
->> from Lukas does a huge improvement, there are still issues with ordering (you
->> probably will never see them, though it's still possible based on the code).
->>
->> So, as far as I understood, the touch still able to come into position where
->> it's not anymore responsive. Is it correct?
->
-> Yes, the touch still able to come into non-working state after every s2idle,
-> but always can be resurrected by reloading spi_pxa2xx_platform.
-
-This is true for both this series and branch topic/spi/reload
-
-> What this series fixed is the following thing:
-> - without this series: reloading spi_pxa2xx_platform resurrects touch
->   input with causing NULL pointer dereference (system still operational
->   after this anyway)
-> - with this series: reloading spi_pxa2xx_platform resurrects touch input
->   *without* causing NULL pointer dereference
->
-> Let me know if any further info is required.
-
-*What this series (and branch topic/spi/reload) fixed is the following thing:
-
->>> [1] https://bugzilla.kernel.org/show_bug.cgi?id=206403
->>> [2] https://bugzilla.kernel.org/show_bug.cgi?id=206403#c1
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index adaa0c4..d8905e0 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -154,6 +154,9 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
+ 				   op->data.dir == SPI_MEM_DATA_OUT))
+ 		return false;
+ 
++	if (op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr)
++		return false;
++
+ 	return true;
+ }
+ EXPORT_SYMBOL_GPL(spi_mem_default_supports_op);
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index af9ff2f..e3dcb95 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -71,9 +71,11 @@ enum spi_mem_data_dir {
+  * struct spi_mem_op - describes a SPI memory operation
+  * @cmd.buswidth: number of IO lines used to transmit the command
+  * @cmd.opcode: operation opcode
++ * @cmd.dtr: whether the command opcode should be sent in DTR mode or not
+  * @addr.nbytes: number of address bytes to send. Can be zero if the operation
+  *		 does not need to send an address
+  * @addr.buswidth: number of IO lines used to transmit the address cycles
++ * @addr.dtr: whether the address should be sent in DTR mode or not
+  * @addr.val: address value. This value is always sent MSB first on the bus.
+  *	      Note that only @addr.nbytes are taken into account in this
+  *	      address value, so users should make sure the value fits in the
+@@ -81,7 +83,9 @@ enum spi_mem_data_dir {
+  * @dummy.nbytes: number of dummy bytes to send after an opcode or address. Can
+  *		  be zero if the operation does not require dummy bytes
+  * @dummy.buswidth: number of IO lanes used to transmit the dummy bytes
++ * @dummy.dtr: whether the dummy bytes should be sent in DTR mode or not
+  * @data.buswidth: number of IO lanes used to send/receive the data
++ * @data.dtr: whether the data should be sent in DTR mode or not
+  * @data.dir: direction of the transfer
+  * @data.nbytes: number of data bytes to send/receive. Can be zero if the
+  *		 operation does not involve transferring data
+@@ -91,22 +95,26 @@ enum spi_mem_data_dir {
+ struct spi_mem_op {
+ 	struct {
+ 		u8 buswidth;
++		u8 dtr : 1;
+ 		u8 opcode;
+ 	} cmd;
+ 
+ 	struct {
+ 		u8 nbytes;
+ 		u8 buswidth;
++		u8 dtr : 1;
+ 		u64 val;
+ 	} addr;
+ 
+ 	struct {
+ 		u8 nbytes;
+ 		u8 buswidth;
++		u8 dtr : 1;
+ 	} dummy;
+ 
+ 	struct {
+ 		u8 buswidth;
++		u8 dtr : 1;
+ 		enum spi_mem_data_dir dir;
+ 		unsigned int nbytes;
+ 		union {
+-- 
+1.9.1
 

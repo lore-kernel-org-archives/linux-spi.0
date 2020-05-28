@@ -7,21 +7,21 @@ X-Spam-Status: No, score=-9.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80A56C433E0
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C613C433DF
 	for <linux-spi@archiver.kernel.org>; Thu, 28 May 2020 07:59:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6A66A2063A
+	by mail.kernel.org (Postfix) with ESMTP id 7DE5A20B80
 	for <linux-spi@archiver.kernel.org>; Thu, 28 May 2020 07:59:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726911AbgE1H7V (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1726906AbgE1H7V (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Thu, 28 May 2020 03:59:21 -0400
-Received: from twhmllg4.macronix.com ([122.147.135.202]:31279 "EHLO
+Received: from twhmllg4.macronix.com ([122.147.135.202]:31281 "EHLO
         TWHMLLG4.macronix.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726910AbgE1H7U (ORCPT
+        with ESMTP id S1726911AbgE1H7U (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Thu, 28 May 2020 03:59:20 -0400
 Received: from localhost.localdomain ([172.17.195.96])
-        by TWHMLLG4.macronix.com with ESMTP id 04S7wMHa030973;
-        Thu, 28 May 2020 15:58:23 +0800 (GMT-8)
+        by TWHMLLG4.macronix.com with ESMTP id 04S7wMHd030973;
+        Thu, 28 May 2020 15:58:26 +0800 (GMT-8)
         (envelope-from masonccyang@mxic.com.tw)
 From:   Mason Yang <masonccyang@mxic.com.tw>
 To:     broonie@kernel.org, tudor.ambarus@microchip.com,
@@ -29,13 +29,13 @@ To:     broonie@kernel.org, tudor.ambarus@microchip.com,
         boris.brezillon@collabora.com, matthias.bgg@gmail.com
 Cc:     p.yadav@ti.com, juliensu@mxic.com.tw, linux-kernel@vger.kernel.org,
         linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org
-Subject: [PATCH v3 01/14] spi: spi-mem: allow specifying whether an op is DTR or not
-Date:   Thu, 28 May 2020 15:58:03 +0800
-Message-Id: <1590652696-8844-2-git-send-email-masonccyang@mxic.com.tw>
+Subject: [PATCH v3 04/14] mtd: spi-nor: sfdp: prepare BFPT parsing for JESD216 rev D
+Date:   Thu, 28 May 2020 15:58:06 +0800
+Message-Id: <1590652696-8844-5-git-send-email-masonccyang@mxic.com.tw>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1590652696-8844-1-git-send-email-masonccyang@mxic.com.tw>
 References: <1590652696-8844-1-git-send-email-masonccyang@mxic.com.tw>
-X-MAIL: TWHMLLG4.macronix.com 04S7wMHa030973
+X-MAIL: TWHMLLG4.macronix.com 04S7wMHd030973
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
@@ -43,82 +43,76 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Pratyush Yadav <p.yadav@ti.com>
 
-Each phase is given a separate 'dtr' field so mixed protocols like
-4S-4D-4D can be supported.
+JESD216 rev D makes BFPT 20 DWORDs. Update the BFPT size define to
+reflect that.
+
+The check for rev A or later compared the BFPT header length with the
+maximum BFPT length, BFPT_DWORD_MAX. Since BFPT_DWORD_MAX was 16, and so
+was the BFPT length for both rev A and B, this check worked fine. But
+now, since BFPT_DWORD_MAX is 20, it means this check will also stop BFPT
+parsing for rev A or B, since their length is 16.
+
+So, instead check for BFPT_DWORD_MAX_JESD216 to stop BFPT parsing for
+the first JESD216 version, and check for BFPT_DWORD_MAX_JESD216B for the
+next two versions.
 
 Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
 ---
- drivers/spi/spi-mem.c       | 3 +++
- include/linux/spi/spi-mem.h | 8 ++++++++
- 2 files changed, 11 insertions(+)
+ drivers/mtd/spi-nor/sfdp.c | 7 ++++++-
+ drivers/mtd/spi-nor/sfdp.h | 5 +++--
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index adaa0c4..d8905e0 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -154,6 +154,9 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
- 				   op->data.dir == SPI_MEM_DATA_OUT))
- 		return false;
+diff --git a/drivers/mtd/spi-nor/sfdp.c b/drivers/mtd/spi-nor/sfdp.c
+index f917631..c289395 100644
+--- a/drivers/mtd/spi-nor/sfdp.c
++++ b/drivers/mtd/spi-nor/sfdp.c
+@@ -548,7 +548,7 @@ static int spi_nor_parse_bfpt(struct spi_nor *nor,
+ 				  SNOR_ERASE_TYPE_MASK;
  
-+	if (op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr)
-+		return false;
+ 	/* Stop here if not JESD216 rev A or later. */
+-	if (bfpt_header->length < BFPT_DWORD_MAX)
++	if (bfpt_header->length == BFPT_DWORD_MAX_JESD216)
+ 		return spi_nor_post_bfpt_fixups(nor, bfpt_header, &bfpt,
+ 						params);
+ 
+@@ -604,6 +604,11 @@ static int spi_nor_parse_bfpt(struct spi_nor *nor,
+ 		return -EINVAL;
+ 	}
+ 
++	/* Stop here if JESD216 rev B. */
++	if (bfpt_header->length == BFPT_DWORD_MAX_JESD216B)
++		return spi_nor_post_bfpt_fixups(nor, bfpt_header, &bfpt,
++						params);
 +
- 	return true;
+ 	return spi_nor_post_bfpt_fixups(nor, bfpt_header, &bfpt, params);
  }
- EXPORT_SYMBOL_GPL(spi_mem_default_supports_op);
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index af9ff2f..e3dcb95 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -71,9 +71,11 @@ enum spi_mem_data_dir {
-  * struct spi_mem_op - describes a SPI memory operation
-  * @cmd.buswidth: number of IO lines used to transmit the command
-  * @cmd.opcode: operation opcode
-+ * @cmd.dtr: whether the command opcode should be sent in DTR mode or not
-  * @addr.nbytes: number of address bytes to send. Can be zero if the operation
-  *		 does not need to send an address
-  * @addr.buswidth: number of IO lines used to transmit the address cycles
-+ * @addr.dtr: whether the address should be sent in DTR mode or not
-  * @addr.val: address value. This value is always sent MSB first on the bus.
-  *	      Note that only @addr.nbytes are taken into account in this
-  *	      address value, so users should make sure the value fits in the
-@@ -81,7 +83,9 @@ enum spi_mem_data_dir {
-  * @dummy.nbytes: number of dummy bytes to send after an opcode or address. Can
-  *		  be zero if the operation does not require dummy bytes
-  * @dummy.buswidth: number of IO lanes used to transmit the dummy bytes
-+ * @dummy.dtr: whether the dummy bytes should be sent in DTR mode or not
-  * @data.buswidth: number of IO lanes used to send/receive the data
-+ * @data.dtr: whether the data should be sent in DTR mode or not
-  * @data.dir: direction of the transfer
-  * @data.nbytes: number of data bytes to send/receive. Can be zero if the
-  *		 operation does not involve transferring data
-@@ -91,22 +95,26 @@ enum spi_mem_data_dir {
- struct spi_mem_op {
- 	struct {
- 		u8 buswidth;
-+		u8 dtr : 1;
- 		u8 opcode;
- 	} cmd;
  
- 	struct {
- 		u8 nbytes;
- 		u8 buswidth;
-+		u8 dtr : 1;
- 		u64 val;
- 	} addr;
+diff --git a/drivers/mtd/spi-nor/sfdp.h b/drivers/mtd/spi-nor/sfdp.h
+index e0a8ded..f8198af 100644
+--- a/drivers/mtd/spi-nor/sfdp.h
++++ b/drivers/mtd/spi-nor/sfdp.h
+@@ -10,11 +10,11 @@
+ /* Basic Flash Parameter Table */
  
- 	struct {
- 		u8 nbytes;
- 		u8 buswidth;
-+		u8 dtr : 1;
- 	} dummy;
+ /*
+- * JESD216 rev B defines a Basic Flash Parameter Table of 16 DWORDs.
++ * JESD216 rev D defines a Basic Flash Parameter Table of 20 DWORDs.
+  * They are indexed from 1 but C arrays are indexed from 0.
+  */
+ #define BFPT_DWORD(i)		((i) - 1)
+-#define BFPT_DWORD_MAX		16
++#define BFPT_DWORD_MAX		20
  
- 	struct {
- 		u8 buswidth;
-+		u8 dtr : 1;
- 		enum spi_mem_data_dir dir;
- 		unsigned int nbytes;
- 		union {
+ struct sfdp_bfpt {
+ 	u32	dwords[BFPT_DWORD_MAX];
+@@ -22,6 +22,7 @@ struct sfdp_bfpt {
+ 
+ /* The first version of JESD216 defined only 9 DWORDs. */
+ #define BFPT_DWORD_MAX_JESD216			9
++#define BFPT_DWORD_MAX_JESD216B			16
+ 
+ /* 1st DWORD. */
+ #define BFPT_DWORD1_FAST_READ_1_1_2		BIT(16)
 -- 
 1.9.1
 

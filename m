@@ -1,118 +1,91 @@
-Return-Path: <SRS0=r3DM=7K=vger.kernel.org=linux-spi-owner@kernel.org>
+Return-Path: <SRS0=iNVW=7L=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
-	SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 67F88C433DF
-	for <linux-spi@archiver.kernel.org>; Thu, 28 May 2020 23:57:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 89FBAC433E1
+	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 03:59:36 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3E062206DF
-	for <linux-spi@archiver.kernel.org>; Thu, 28 May 2020 23:57:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1590710264;
-	bh=BXf/SW4dWDbBPrewfjseTUvAldHNwVnCxUzW/jYRIso=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=rmL4BceqlLH8IV82kt5WkclbQE0TJUd56OqiWb73LF3iCP4Sm54plRD46z1mA7GFb
-	 JhG4rdHBSg5JfAjSblE+aVGZ3pjFS2iLCTkISEzj5ubY/i7YebO0hTCdu05KArytRJ
-	 LI6yBsMvsIWyuZOZ/mCNryPXMVWR1M4uGHg9hogc=
+	by mail.kernel.org (Postfix) with ESMTP id 684BF20707
+	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 03:59:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437842AbgE1X5m (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 28 May 2020 19:57:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46174 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2437807AbgE1X5j (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 28 May 2020 19:57:39 -0400
-Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67D04C08C5C6;
-        Thu, 28 May 2020 16:28:13 -0700 (PDT)
-Received: by mail-io1-xd42.google.com with SMTP id p20so359268iop.11;
-        Thu, 28 May 2020 16:28:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=TyiQfJD3hL2bx61mfoIKfduMebYmrhxlynjYDT9d88c=;
-        b=fRSTGJBTMBF5GN7OzR7s8m65l6lActjAnbcMSKFaXnAo0WZUdBH99yw6nCi60ahaOj
-         KEnNay58BxuIqc5PVm4dsmu47meqO+X+lOvTFl3+3BM4x9oGFLEeapzNSjBTmTd87I9u
-         9jd88QNuNHMeajPIofkd0vutDcWjEIdqnthSZ4XegK6xUXLz+Qxb3z1big4T0nAE99SG
-         12jWitgrlhwLcErp4YPj4ibuRV+o+sL9jp+Yw3Dq06X1Bpc4L53FoJnk086FvLHhIMzi
-         EIATGHwVwgIoRuZi+kVdOrjr9XTcfezxxDvxhzzoCZjNK+wp0swvrO4zGaRovp3rG3fA
-         g1Dg==
-X-Gm-Message-State: AOAM533GHq/bJoetDC8ZxCq6JoS09QQB75RywIlxMZCRhgJBN7dkXmzW
-        L0zEhtDQBasWww6MqGZ0dg==
-X-Google-Smtp-Source: ABdhPJzwZW2EhMkkbIXtdNTMdB0TlTz41GM4zNjP0y8P8k5r4zwMXjiSzqqL6GY48s44vD79gjqgtg==
-X-Received: by 2002:a5e:970a:: with SMTP id w10mr4276081ioj.114.1590708492723;
-        Thu, 28 May 2020 16:28:12 -0700 (PDT)
-Received: from xps15 ([64.188.179.252])
-        by smtp.gmail.com with ESMTPSA id b26sm1585795ilg.84.2020.05.28.16.28.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2020 16:28:11 -0700 (PDT)
-Received: (nullmailer pid 875402 invoked by uid 1000);
-        Thu, 28 May 2020 23:28:10 -0000
-Date:   Thu, 28 May 2020 17:28:10 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Cc:     Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>,
-        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Paul Burton <paulburton@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>, linux-spi@vger.kernel.org,
-        Wan Ahmad Zainie <wan.ahmad.zainie.wan.mohamad@intel.com>,
-        linux-mips@vger.kernel.org, devicetree@vger.kernel.org,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        id S2388546AbgE2D7f (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 28 May 2020 23:59:35 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:45288 "EHLO
+        mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388507AbgE2D7e (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 28 May 2020 23:59:34 -0400
+Received: from localhost (unknown [127.0.0.1])
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 8576B80307CB;
+        Fri, 29 May 2020 03:59:31 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at baikalelectronics.ru
+Received: from mail.baikalelectronics.ru ([127.0.0.1])
+        by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 8ioC51rXFyd1; Fri, 29 May 2020 06:59:30 +0300 (MSK)
+From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
+To:     Mark Brown <broonie@kernel.org>
+CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         Serge Semin <fancer.lancer@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Gareth Williams <gareth.williams.jx@renesas.com>,
+        Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>,
+        Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>,
+        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Arnd Bergmann <arnd@arndb.de>, Feng Tang <feng.tang@intel.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>
-Subject: Re: [PATCH v4 16/16] dt-bindings: spi: Convert DW SPI binding to DT
- schema
-Message-ID: <20200528232810.GA875356@bogus>
-References: <20200522000806.7381-1-Sergey.Semin@baikalelectronics.ru>
- <20200522000806.7381-17-Sergey.Semin@baikalelectronics.ru>
+        Rob Herring <robh+dt@kernel.org>, <linux-mips@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v5 01/16] spi: dw: Set xfer effective_speed_hz
+Date:   Fri, 29 May 2020 06:58:59 +0300
+Message-ID: <20200529035915.20790-2-Sergey.Semin@baikalelectronics.ru>
+In-Reply-To: <20200529035915.20790-1-Sergey.Semin@baikalelectronics.ru>
+References: <20200529035915.20790-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200522000806.7381-17-Sergey.Semin@baikalelectronics.ru>
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, 22 May 2020 03:08:05 +0300, Serge Semin wrote:
-> Modern device tree bindings are supposed to be created as YAML-files
-> in accordance with dt-schema. This commit replaces two DW SPI legacy
-> bare text bindings with YAML file. As before the bindings file states
-> that the corresponding dts node is supposed to be compatible either
-> with generic DW APB SSI controller or with Microsemi/Amazon/Renesas/Intel
-> vendors-specific controllers, to have registers, interrupts and clocks
-> properties. Though in case of Microsemi version of the controller
-> there must be two registers resources specified. Properties like
-> clock-names, reg-io-width, cs-gpio, num-cs, DMA and slave device
-> sub-nodes are optional.
-> 
-> Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-> Cc: Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>
-> Cc: Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>
-> Cc: Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>
-> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> Cc: Paul Burton <paulburton@kernel.org>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Cc: linux-mips@vger.kernel.org
-> ---
->  .../bindings/spi/snps,dw-apb-ssi.txt          |  44 ------
->  .../bindings/spi/snps,dw-apb-ssi.yaml         | 127 ++++++++++++++++++
->  .../devicetree/bindings/spi/spi-dw.txt        |  24 ----
->  3 files changed, 127 insertions(+), 68 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
->  create mode 100644 Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
->  delete mode 100644 Documentation/devicetree/bindings/spi/spi-dw.txt
-> 
+Seeing DW APB SSI controller doesn't support setting the exactly
+requested SPI bus frequency, but only a rounded frequency determined
+by means of the odd-numbered half-worded reference clock divider,
+it would be good tune the SPI core up and initialize the current
+transfer effective_speed_hz. By doing so the core will be able to
+execute the xfer-related delays with better accuracy.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Cc: Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>
+Cc: Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>
+Cc: Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Feng Tang <feng.tang@intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: linux-mips@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+---
+ drivers/spi/spi-dw.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index 9d6904d30104..050cb2ea0812 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -352,6 +352,7 @@ static int dw_spi_transfer_one(struct spi_controller *master,
+ 		spi_set_clk(dws, chip->clk_div);
+ 	}
+ 
++	transfer->effective_speed_hz = dws->max_freq / chip->clk_div;
+ 	dws->n_bytes = DIV_ROUND_UP(transfer->bits_per_word, BITS_PER_BYTE);
+ 
+ 	cr0 = dws->update_cr0(master, spi, transfer);
+-- 
+2.26.2
+

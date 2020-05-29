@@ -2,88 +2,87 @@ Return-Path: <SRS0=iNVW=7L=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC5B1C433DF
-	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 17:19:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CDA7BC433DF
+	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 17:22:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8C7D0208B8
-	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 17:19:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A0BDD20810
+	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 17:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1590772749;
-	bh=VHVB3ZEMfoIWVXNsm9ILDnKy8ezRAfAuuDIi/779PI8=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=vVQDtmHScHc+Cc0XKTDL8K6TQHEO3UvUBXBVJKVxAijkG6920B9NGjhgEZsKyZKdC
-	 Q70x3Q8iaRnirhRq1I7EYckv7vh6WRlyxYiGRbKMC/QUTj+1QPRgNOw8PHUTguzcGO
-	 KQmtWwZRDLbwDtre9UhHwlLs3s4p5tB62PLFbPck=
+	s=default; t=1590772957;
+	bh=nhFmd1nKFRWbwVMxppSyFwFxYzfZC01icTteWmxNe9g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=WSLzANPjDX7Uokzr1KYSmGRlgM5wXKX9XkO3t1Mw/jmaaTaPMPhwzrwdTMfukalJk
+	 FHCL0t/KmZL5QPrZE5iAYbAN+WUzflQvV2Q87zI8m/tzMc3nQfhSfJtIBubNuWot3A
+	 Pharb4R55ytN4feY1zCj/y0s8fNE9K86yUp1J2nk=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727816AbgE2RTF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 29 May 2020 13:19:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38352 "EHLO mail.kernel.org"
+        id S1725865AbgE2RWg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 29 May 2020 13:22:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43884 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725839AbgE2RTF (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 29 May 2020 13:19:05 -0400
+        id S1725839AbgE2RWT (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 29 May 2020 13:22:19 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6B54B2074D;
-        Fri, 29 May 2020 17:19:04 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9CAB320810;
+        Fri, 29 May 2020 17:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590772745;
-        bh=VHVB3ZEMfoIWVXNsm9ILDnKy8ezRAfAuuDIi/779PI8=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=Hkc+ylfCfo/AEO4hHSf9XaKOsw1Py/vnQqh9Dt4ITxfxh3RF414V2yZ2GwboWfluz
-         yJMbB1s6N8dEDqhtl5leOXb2KeFu+40XaHb0OChUWFrazUb621x65p9D3dLtiTRLOZ
-         eDAezfM2xGi2p1RQ3giv0loFCOp0n26XvRe0hFqY=
-Date:   Fri, 29 May 2020 18:19:01 +0100
+        s=default; t=1590772935;
+        bh=nhFmd1nKFRWbwVMxppSyFwFxYzfZC01icTteWmxNe9g=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=M1FPpmye2xCTWYQx8DnPqeL7NY0aT2PHCw0ICZ1JF/rsgALuBbUT4tPE4l1JtK9km
+         88Jnsv3hLfnKSbz8viW+YyII3FdCgyv1z8DkYes4IVpspZzz7KBXeeQXHkToc4YRUl
+         DToKY7od8szlWNyYK0iJdBhXnmvREYp8N2y/TO90=
+Date:   Fri, 29 May 2020 18:22:12 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>
-Cc:     devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-        Sergey.Semin@baikalelectronics.ru,
-        Liang Jin J <liang.j.jin@ericsson.com>,
-        lars.povlsen@microchip.com, andriy.shevchenko@linux.intel.com,
-        fancer.lancer@gmail.com, robh+dt@kernel.org
-In-Reply-To: <20200527204110.25676-1-dinguyen@kernel.org>
-References: <20200527204110.25676-1-dinguyen@kernel.org>
-Subject: Re: [PATCHv3 1/2] spi: dw: add reset control
-Message-Id: <159077271265.17043.9965324824608502053.b4-ty@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-spi@vger.kernel.org
+Subject: Re: [PATCH v1 1/2] spi: dw: Make DMA request line assignments
+ explicit for Intel Medfield
+Message-ID: <20200529172212.GA17643@sirena.org.uk>
+References: <20200528102311.79948-1-andriy.shevchenko@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="tThc/1wpZn/ma/RB"
+Content-Disposition: inline
+In-Reply-To: <20200528102311.79948-1-andriy.shevchenko@linux.intel.com>
+X-Cookie: Ginger snap.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 27 May 2020 15:41:09 -0500, Dinh Nguyen wrote:
-> Add mechanism to get the reset control and deassert it in order to bring
-> the IP out of reset.
 
-Applied to
+--tThc/1wpZn/ma/RB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+On Thu, May 28, 2020 at 01:23:10PM +0300, Andy Shevchenko wrote:
+> The 2afccbd283ae ("spi: dw: Discard static DW DMA slave structures")
+> did a clean up of global variables, which is fine, but messed up with
+> the carefully provided information in the custom DMA slave structures.
+> There reader can find an assignment of the DMA request lines in use.
 
-Thanks!
+This doesn't apply against current code, please rebase and resend.
 
-[1/2] spi: dw: add reset control
-      commit: 7830c0ef26cb73b653c2db2f3ca7be08f44fa046
-[2/2] dt-bindings: snps,dw-apb-ssi: add optional reset property
-      commit: 2604d48702fe14fb3e97701269dd5e66b392b904
+--tThc/1wpZn/ma/RB
+Content-Type: application/pgp-signature; name="signature.asc"
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+-----BEGIN PGP SIGNATURE-----
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl7RRMMACgkQJNaLcl1U
+h9BIaQf7BngWDEhJNivsV2u8clOUjLWsNMVU2r80vgVzQ3Mu6OTsTO8lHM65+mT4
+9AEEoGM2jGnSQNYfpwwQU/Ggsayfo7IhP1IvUGR9mb06SUCIgwegphUFjme2Y6ON
+f7ryEtXkIeDhTD1VWszzDRVSGvX0+UwQvkqkj54JbadC2pR8qaxRFW+q5SHYy4m6
+0xLXgKezGKiPKYvkpyyKW61nQcd9cDt8CFePXqrGKjyXMJnJfYaky8oiu9JYvTGC
+IWBqplAHSNtYVwFZu/aEITa9arQy47lczKEtDcoZ+p4luuc04N96CyBuc1k9QPOX
+SnRredGuyl5NbsfGJ82nPcfply9MQA==
+=vAP6
+-----END PGP SIGNATURE-----
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+--tThc/1wpZn/ma/RB--

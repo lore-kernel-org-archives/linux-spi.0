@@ -6,21 +6,21 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
 	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E9D1C433E4
-	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 07:37:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D71D3C433E2
+	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 07:37:13 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3321220897
-	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 07:37:14 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BFF2D2074D
+	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 07:37:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726767AbgE2HhN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1726762AbgE2HhN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Fri, 29 May 2020 03:37:13 -0400
-Received: from twhmllg4.macronix.com ([211.75.127.132]:24795 "EHLO
+Received: from twhmllg4.macronix.com ([211.75.127.132]:24793 "EHLO
         TWHMLLG4.macronix.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726774AbgE2HhN (ORCPT
+        with ESMTP id S1726771AbgE2HhN (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 29 May 2020 03:37:13 -0400
 Received: from localhost.localdomain ([172.17.195.96])
-        by TWHMLLG4.macronix.com with ESMTP id 04T7aHpx067318;
-        Fri, 29 May 2020 15:36:20 +0800 (GMT-8)
+        by TWHMLLG4.macronix.com with ESMTP id 04T7aHpv067318;
+        Fri, 29 May 2020 15:36:18 +0800 (GMT-8)
         (envelope-from masonccyang@mxic.com.tw)
 From:   Mason Yang <masonccyang@mxic.com.tw>
 To:     broonie@kernel.org, tudor.ambarus@microchip.com,
@@ -29,210 +29,131 @@ To:     broonie@kernel.org, tudor.ambarus@microchip.com,
 Cc:     p.yadav@ti.com, juliensu@mxic.com.tw, linux-kernel@vger.kernel.org,
         linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
         Mason Yang <masonccyang@mxic.com.tw>
-Subject: [PATCH v4 3/7] mtd: spi-nor: sfdp: parse command sequences to change octal DTR mode
-Date:   Fri, 29 May 2020 15:36:11 +0800
-Message-Id: <1590737775-4798-4-git-send-email-masonccyang@mxic.com.tw>
+Subject: [PATCH v4 1/7] mtd: spi-nor: sfdp: get octal mode maximum speed from BFPT
+Date:   Fri, 29 May 2020 15:36:09 +0800
+Message-Id: <1590737775-4798-2-git-send-email-masonccyang@mxic.com.tw>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1590737775-4798-1-git-send-email-masonccyang@mxic.com.tw>
 References: <1590737775-4798-1-git-send-email-masonccyang@mxic.com.tw>
-X-MAIL: TWHMLLG4.macronix.com 04T7aHpx067318
+X-MAIL: TWHMLLG4.macronix.com 04T7aHpv067318
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-A set of simple command sequences is provided which can be executed
-directly by the host controller to enable octal DTR mode.
-
-Each command sequence is 8 per byte for single SPI mode.
+Get maximum operation speed of device in octal mode from
+BFPT 20th DWORD.
 
 Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
 ---
- drivers/mtd/spi-nor/core.h |  20 +++++++++
- drivers/mtd/spi-nor/sfdp.c | 104 +++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 124 insertions(+)
+ drivers/mtd/spi-nor/core.h |  2 ++
+ drivers/mtd/spi-nor/sfdp.c | 36 ++++++++++++++++++++++++++++++++++++
+ drivers/mtd/spi-nor/sfdp.h |  4 ++++
+ 3 files changed, 42 insertions(+)
 
 diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
-index a33f807..8de7f53 100644
+index 6f2f6b2..7a36b22 100644
 --- a/drivers/mtd/spi-nor/core.h
 +++ b/drivers/mtd/spi-nor/core.h
-@@ -183,6 +183,23 @@ struct spi_nor_locking_ops {
- };
+@@ -190,6 +190,7 @@ struct spi_nor_locking_ops {
+  *
+  * @size:		the flash memory density in bytes.
+  * @page_size:		the page size of the SPI NOR flash memory.
++ * @octal_max_speed:	maximum operation speed of device in octal mode.
+  * @hwcaps:		describes the read and page program hardware
+  *			capabilities.
+  * @reads:		read capabilities ordered by priority: the higher index
+@@ -212,6 +213,7 @@ struct spi_nor_locking_ops {
+ struct spi_nor_flash_parameter {
+ 	u64				size;
+ 	u32				page_size;
++	u16				octal_max_speed;
  
- /**
-+ * struct cmd_seq_octal_dtr - command sequences to change to octal DTR mode
-+ * Each command sequence is 8 per byte for single SPI mode.
-+ * @len:	commmand length of each command sequence.
-+ * @opcode:	command code.
-+ * @addr:	address offset to device.
-+ * @data:	data write to device.
-+ */
-+struct cmd_seq_octal_dtr {
-+	u8 len;
-+	u8 opcode;
-+	u32 addr;
-+	u8 data;
-+};
-+
-+#define CMD_SEQ_NUM	4
-+
-+/**
-  * struct spi_nor_flash_parameter - SPI NOR flash parameters and settings.
-  * Includes legacy flash parameters and settings that can be overwritten
-  * by the spi_nor_fixups hooks, or dynamically when parsing the JESD216
-@@ -205,6 +222,7 @@ struct spi_nor_locking_ops {
-  *                      higher index in the array, the higher priority.
-  * @erase_map:		the erase map parsed from the SFDP Sector Map Parameter
-  *                      Table.
-+ * @cmd_seq:		command sequence to change to octal DTR mode.
-  * @quad_enable:	enables SPI NOR quad mode.
-  * @set_4byte_addr_mode: puts the SPI NOR in 4 byte addressing mode.
-  * @convert_addr:	converts an absolute address into something the flash
-@@ -232,6 +250,8 @@ struct spi_nor_flash_parameter {
- 
- 	struct spi_nor_erase_map        erase_map;
- 
-+	struct cmd_seq_octal_dtr	cmd_seq[CMD_SEQ_NUM];
-+
- 	int (*quad_enable)(struct spi_nor *nor);
- 	int (*set_4byte_addr_mode)(struct spi_nor *nor, bool enable);
- 	u32 (*convert_addr)(struct spi_nor *nor, u32 addr);
+ 	struct spi_nor_hwcaps		hwcaps;
+ 	struct spi_nor_read_command	reads[SNOR_CMD_READ_MAX];
 diff --git a/drivers/mtd/spi-nor/sfdp.c b/drivers/mtd/spi-nor/sfdp.c
-index 27a4de4..ef19290 100644
+index f6038d3..4d13f66 100644
 --- a/drivers/mtd/spi-nor/sfdp.c
 +++ b/drivers/mtd/spi-nor/sfdp.c
-@@ -21,6 +21,7 @@
- #define SFDP_SECTOR_MAP_ID	0xff81	/* Sector Map Table */
- #define SFDP_4BAIT_ID		0xff84  /* 4-byte Address Instruction Table */
- #define SFDP_PROFILE1_ID	0xff05	/* xSPI Profile 1.0 table. */
-+#define SFDP_CMD_TO_8DTR_ID	0xff0a  /* Command Sequences to Octal DTR */
+@@ -4,6 +4,7 @@
+  * Copyright (C) 2014, Freescale Semiconductor, Inc.
+  */
  
- #define SFDP_SIGNATURE		0x50444653U
- #define SFDP_JESD216_MAJOR	1
-@@ -49,6 +50,19 @@ struct xspi_dummy_cycles {
- 	u8 shift;	/* Bit shift */
- };
++#include <linux/bitfield.h>
+ #include <linux/slab.h>
+ #include <linux/sort.h>
+ #include <linux/mtd/spi-nor.h>
+@@ -26,6 +27,12 @@
+ #define SFDP_JESD216A_MINOR	5
+ #define SFDP_JESD216B_MINOR	6
  
-+#define CMD_TO_8DTR_LEN			GENMASK(31, 24)
-+#define CMD_TO_8DTR_OPCODE		GENMASK(23, 16)
-+#define CMD_TO_8DTR_1_ADDR		GENMASK(15, 8)
-+#define CMD_TO_8DTR_1_ADDR_DATA		GENMASK(7, 0)
-+#define CMD_TO_8DTR_4_ADDR_MSB		GENMASK(15, 0)
-+#define CMD_TO_8DTR_4_ADDR_LSB		GENMASK(31, 16)
-+#define CMD_TO_8DTR_4_ADDR_DATA		GENMASK(15, 8)
-+#define CMD_TO_8DTR_SIZE_MAX		8
-+
-+struct sfdp_cmd_to_8dtr {
-+	u32	dwords[CMD_TO_8DTR_SIZE_MAX];
++/* Basic Flash Parameter Table 20th DWORD, Max operation speed of device */
++struct octal_max_speed {
++	u8 idx; /* Bits value */
++	u16 hz; /* MHz */
 +};
 +
- /* Basic Flash Parameter Table 20th DWORD, Max operation speed of device */
- struct octal_max_speed {
- 	u8 idx; /* Bits value */
-@@ -1219,6 +1233,91 @@ static int spi_nor_parse_profile1(struct spi_nor *nor,
- }
+ struct sfdp_header {
+ 	u32		signature; /* Ox50444653U <=> "SFDP" */
+ 	u8		minor;
+@@ -440,6 +447,22 @@ static int spi_nor_parse_bfpt(struct spi_nor *nor,
+ 	u32 addr;
+ 	u16 half;
+ 	u8 erase_mask;
++	static const struct octal_max_speed max_hz[] = {
++		/* Bits value, MHz */
++		{ 0x0c, 400 },
++		{ 0x0b, 333 },
++		{ 0x0a, 266 },
++		{ 0x09, 250 },
++		{ 0x08, 200 },
++		{ 0x07, 166 },
++		{ 0x06, 133 },
++		{ 0x05, 100 },
++		{ 0x04,  80 },
++		{ 0x03,  66 },
++		{ 0x02,  50 },
++		{ 0x01,  33 },
++	};
++	u8 idx;
  
- /**
-+ * spi_nor_parse_cmd_to_8dtr() - parse the command sequence to octal DTR
-+ * @nor:		pointer to a 'struct spi_nor'
-+ * @param_header:	command sequence to octal DTR parameter table header.
-+ * @params:		pointer to the 'struct spi_nor_flash_parameter' to be.
-+ *
-+ * Return: 0 on success, -errno otherwise.
-+ */
-+static int spi_nor_parse_cmd_to_8dtr(struct spi_nor *nor,
-+				     const struct sfdp_parameter_header *header,
-+				     struct spi_nor_flash_parameter *params)
-+{
-+	struct sfdp_cmd_to_8dtr cmd_seq;
-+	u32 i, j, addr;
-+	size_t len;
-+	int ret;
+ 	/* JESD216 Basic Flash Parameter Table length is at least 9 DWORDs. */
+ 	if (bfpt_header->length < BFPT_DWORD_MAX_JESD216)
+@@ -604,6 +627,19 @@ static int spi_nor_parse_bfpt(struct spi_nor *nor,
+ 		return -EINVAL;
+ 	}
+ 
++	/* Octal mode max speed */
++	idx = max(FIELD_GET(BFPT_DWORD20_OCTAL_DTR_MAX_SPEED,
++			    bfpt.dwords[BFPT_DWORD(20)]),
++		  FIELD_GET(BFPT_DWORD20_OCTAL_STR_MAX_SPEED,
++			    bfpt.dwords[BFPT_DWORD(20)]));
 +
-+	if (header->major != SFDP_JESD216_MAJOR ||
-+	    header->length < CMD_TO_8DTR_SIZE_MAX)
-+		return -EINVAL;
-+
-+	len = min_t(size_t, sizeof(cmd_seq),
-+		    header->length * sizeof(u32));
-+
-+	memset(&cmd_seq, 0, sizeof(cmd_seq));
-+
-+	addr = SFDP_PARAM_HEADER_PTP(header);
-+	ret = spi_nor_read_sfdp(nor, addr, len, &cmd_seq);
-+	if (ret)
-+		goto out;
-+
-+	/* Fix endianness of the Command Sequences to octal DTR. */
-+	le32_to_cpu_array(cmd_seq.dwords, CMD_TO_8DTR_SIZE_MAX);
-+
-+	memset(params->cmd_seq, 0, sizeof(params->cmd_seq[CMD_SEQ_NUM]));
-+
-+	for (i = 0, j = 0;
-+	     i < CMD_SEQ_NUM && j < CMD_TO_8DTR_SIZE_MAX; i++, j += 2) {
-+		params->cmd_seq[i].len = FIELD_GET(CMD_TO_8DTR_LEN,
-+						   cmd_seq.dwords[j]);
-+		if (!params->cmd_seq[i].len)
-+			break;
-+
-+		switch (params->cmd_seq[i].len) {
-+		case 1:
-+			params->cmd_seq[i].opcode =
-+				FIELD_GET(CMD_TO_8DTR_OPCODE,
-+					  cmd_seq.dwords[j]);
-+			break;
-+
-+		case 3:
-+			params->cmd_seq[i].opcode =
-+				FIELD_GET(CMD_TO_8DTR_OPCODE,
-+					  cmd_seq.dwords[j]);
-+			params->cmd_seq[i].addr =
-+				FIELD_GET(CMD_TO_8DTR_1_ADDR,
-+					  cmd_seq.dwords[j]);
-+			params->cmd_seq[i].data =
-+				FIELD_GET(CMD_TO_8DTR_1_ADDR_DATA,
-+					  cmd_seq.dwords[j]);
-+			break;
-+
-+		case 6:
-+			params->cmd_seq[i].opcode =
-+				FIELD_GET(CMD_TO_8DTR_OPCODE,
-+					  cmd_seq.dwords[j]);
-+			params->cmd_seq[i].addr =
-+				FIELD_GET(CMD_TO_8DTR_4_ADDR_MSB,
-+					  cmd_seq.dwords[j]) << 16 |
-+				FIELD_GET(CMD_TO_8DTR_4_ADDR_LSB,
-+					  cmd_seq.dwords[j + 1]);
-+			params->cmd_seq[i].data =
-+				FIELD_GET(CMD_TO_8DTR_4_ADDR_DATA,
-+					  cmd_seq.dwords[j + 1]);
-+			break;
-+
-+		default:
++	for (i = 0; i < ARRAY_SIZE(max_hz); i++) {
++		if (max_hz[i].idx == idx) {
++			params->octal_max_speed = max_hz[i].hz;
 +			break;
 +		}
 +	}
 +
-+out:
-+	return ret;
-+}
-+
-+/**
-  * spi_nor_parse_sfdp() - parse the Serial Flash Discoverable Parameters.
-  * @nor:		pointer to a 'struct spi_nor'
-  * @params:		pointer to the 'struct spi_nor_flash_parameter' to be
-@@ -1323,6 +1422,11 @@ int spi_nor_parse_sfdp(struct spi_nor *nor,
- 			err = spi_nor_parse_profile1(nor, param_header, params);
- 			break;
+ 	return spi_nor_post_bfpt_fixups(nor, bfpt_header, &bfpt, params);
+ }
  
-+		case SFDP_CMD_TO_8DTR_ID:
-+			err = spi_nor_parse_cmd_to_8dtr(nor,
-+							param_header, params);
-+			break;
+diff --git a/drivers/mtd/spi-nor/sfdp.h b/drivers/mtd/spi-nor/sfdp.h
+index e0a8ded..8ae6d9a 100644
+--- a/drivers/mtd/spi-nor/sfdp.h
++++ b/drivers/mtd/spi-nor/sfdp.h
+@@ -83,6 +83,10 @@ struct sfdp_bfpt {
+ #define BFPT_DWORD15_QER_SR2_BIT1_NO_RD		(0x4UL << 20)
+ #define BFPT_DWORD15_QER_SR2_BIT1		(0x5UL << 20) /* Spansion */
+ 
++#define BFPT_DWORD20_OCTAL_MAX_SPEED_MASK       GENMASK(31, 16)
++#define BFPT_DWORD20_OCTAL_DTR_MAX_SPEED        GENMASK(31, 28)
++#define BFPT_DWORD20_OCTAL_STR_MAX_SPEED        GENMASK(19, 16)
 +
- 		default:
- 			break;
- 		}
+ struct sfdp_parameter_header {
+ 	u8		id_lsb;
+ 	u8		minor;
 -- 
 1.9.1
 

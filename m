@@ -6,42 +6,40 @@ X-Spam-Status: No, score=-9.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
 	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5499FC433E0
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 73206C433DF
 	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 18:31:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3794920723
+	by mail.kernel.org (Postfix) with ESMTP id 5718F2077D
 	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 18:31:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726878AbgE2Sby (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1725839AbgE2Sby (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Fri, 29 May 2020 14:31:54 -0400
-Received: from mga17.intel.com ([192.55.52.151]:22855 "EHLO mga17.intel.com"
+Received: from mga18.intel.com ([134.134.136.126]:1611 "EHLO mga18.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725839AbgE2Sbx (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        id S1726866AbgE2Sbx (ORCPT <rfc822;linux-spi@vger.kernel.org>);
         Fri, 29 May 2020 14:31:53 -0400
-IronPort-SDR: IoDk/JadKMhjszpK7ldj2+OqIlt7fm1aNL3F9+a53ZYcOirEMBoDAbPCnFmrubpOGP7YN95b9o
- T0BW7mVncaRg==
+IronPort-SDR: cAzfUtib4PqkH7LvajJc7KwXvXBCQ4IiR3UenCne/kpbZo7181mwuHCwTxuV5EX6cbX0/ALPq5
+ oEN5ejMiaFlg==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2020 11:31:53 -0700
-IronPort-SDR: mEuiev5i/jQz8KlYqyT6KV/BgDXAt6MOBx+yN+qw0dv+XrDDId8vMkcX4nSF4RT9K1ZEs30FDV
- 1+aEhayg1ODA==
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2020 11:31:53 -0700
+IronPort-SDR: gOwEVkjzx6SSzWAz1bweYUGzJy2gNyLTZeTUMP7SI39p0bnLbG9lwjRsM9ppHkf9enYzKjKQv7
+ 8uIqjNJ7++Jg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.73,449,1583222400"; 
-   d="scan'208";a="376783664"
+   d="scan'208";a="256584032"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 29 May 2020 11:31:52 -0700
+  by orsmga007.jf.intel.com with ESMTP; 29 May 2020 11:31:52 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 3D72D101; Fri, 29 May 2020 21:31:51 +0300 (EEST)
+        id 2E41C125; Fri, 29 May 2020 21:31:51 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
 Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v2 2/2] spi: dw: Refactor mid_spi_dma_setup() to separate DMA and IRQ config
-Date:   Fri, 29 May 2020 21:31:50 +0300
-Message-Id: <20200529183150.44149-2-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 1/2] spi: dw: Make DMA request line assignments explicit for Intel Medfield
+Date:   Fri, 29 May 2020 21:31:49 +0300
+Message-Id: <20200529183150.44149-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200529183150.44149-1-andriy.shevchenko@linux.intel.com>
-References: <20200529183150.44149-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-spi-owner@vger.kernel.org
@@ -49,45 +47,56 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-It's better to understand what bits are set for DMA and for IRQ handling
-in mid_spi_dma_setup() if they are grouped accordingly. Thus,
-refactor mid_spi_dma_setup() to separate DMA and IRQ configuration.
+The 2afccbd283ae ("spi: dw: Discard static DW DMA slave structures")
+did a clean up of global variables, which is fine, but messed up with
+the carefully provided information in the custom DMA slave structures.
+There reader can find an assignment of the DMA request lines in use.
+
+Partially revert the above mentioned commit to restore readability
+and maintainability of the code.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
 v2: rebased against latest spi/for-next
-
- drivers/spi/spi-dw-dma.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/spi/spi-dw-dma.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/spi/spi-dw-dma.c b/drivers/spi/spi-dw-dma.c
-index 53d5257662e8..5986c520b196 100644
+index 1b96cec6d8cd..53d5257662e8 100644
 --- a/drivers/spi/spi-dw-dma.c
 +++ b/drivers/spi/spi-dw-dma.c
-@@ -375,17 +375,17 @@ static int dw_spi_dma_setup(struct dw_spi *dws, struct spi_transfer *xfer)
- 	dw_writel(dws, DW_SPI_DMARDLR, dws->rxburst - 1);
- 	dw_writel(dws, DW_SPI_DMATDLR, dws->fifo_len - dws->txburst);
+@@ -61,10 +61,8 @@ static void dw_spi_dma_maxburst_init(struct dw_spi *dws)
  
--	if (xfer->tx_buf) {
-+	if (xfer->tx_buf)
- 		dma_ctrl |= SPI_DMA_TDMAE;
--		imr |= SPI_INT_TXOI;
--	}
--	if (xfer->rx_buf) {
-+	if (xfer->rx_buf)
- 		dma_ctrl |= SPI_DMA_RDMAE;
--		imr |= SPI_INT_RXUI | SPI_INT_RXOI;
--	}
- 	dw_writel(dws, DW_SPI_DMACR, dma_ctrl);
+ static int dw_spi_dma_init_mfld(struct device *dev, struct dw_spi *dws)
+ {
+-	struct dw_dma_slave slave = {
+-		.src_id = 0,
+-		.dst_id = 0
+-	};
++	struct dw_dma_slave dma_tx = { .dst_id = 1 }, *tx = &dma_tx;
++	struct dw_dma_slave dma_rx = { .src_id = 0 }, *rx = &dma_rx;
+ 	struct pci_dev *dma_dev;
+ 	dma_cap_mask_t mask;
  
- 	/* Set the interrupt mask */
-+	if (xfer->tx_buf)
-+		imr |= SPI_INT_TXOI;
-+	if (xfer->rx_buf)
-+		imr |= SPI_INT_RXUI | SPI_INT_RXOI;
- 	spi_umask_intr(dws, imr);
+@@ -80,14 +78,14 @@ static int dw_spi_dma_init_mfld(struct device *dev, struct dw_spi *dws)
+ 	dma_cap_set(DMA_SLAVE, mask);
  
- 	reinit_completion(&dws->dma_completion);
+ 	/* 1. Init rx channel */
+-	slave.dma_dev = &dma_dev->dev;
+-	dws->rxchan = dma_request_channel(mask, dw_spi_dma_chan_filter, &slave);
++	rx->dma_dev = &dma_dev->dev;
++	dws->rxchan = dma_request_channel(mask, dw_spi_dma_chan_filter, rx);
+ 	if (!dws->rxchan)
+ 		goto err_exit;
+ 
+ 	/* 2. Init tx channel */
+-	slave.dst_id = 1;
+-	dws->txchan = dma_request_channel(mask, dw_spi_dma_chan_filter, &slave);
++	tx->dma_dev = &dma_dev->dev;
++	dws->txchan = dma_request_channel(mask, dw_spi_dma_chan_filter, tx);
+ 	if (!dws->txchan)
+ 		goto free_rxchan;
+ 
 -- 
 2.26.2
 

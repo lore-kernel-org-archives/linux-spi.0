@@ -4,43 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-6.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DBD7C433EB
-	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 13:13:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 88B0FC433E5
+	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 13:13:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3F3302100A
-	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 13:13:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 67A85206B6
+	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 13:13:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727923AbgE2NNI (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 29 May 2020 09:13:08 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:48170 "EHLO
+        id S1727080AbgE2NMY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 29 May 2020 09:12:24 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:48228 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727024AbgE2NMY (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 29 May 2020 09:12:24 -0400
+        with ESMTP id S1726988AbgE2NMW (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 29 May 2020 09:12:22 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 08AD58029EA4;
-        Fri, 29 May 2020 13:12:22 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 78A9B8029EA1;
+        Fri, 29 May 2020 13:12:19 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id nvj17jvvXrid; Fri, 29 May 2020 16:12:21 +0300 (MSK)
+        with ESMTP id q6WJzr2UPWzs; Fri, 29 May 2020 16:12:18 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         Serge Semin <fancer.lancer@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>,
         Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Arnd Bergmann <arnd@arndb.de>, Feng Tang <feng.tang@intel.com>,
-        Rob Herring <robh+dt@kernel.org>, <linux-mips@vger.kernel.org>,
+        Feng Tang <feng.tang@intel.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, <linux-mips@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-spi@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
-Subject: [PATCH v6 11/16] spi: dw: Remove DW DMA code dependency from DW_DMAC_PCI
-Date:   Fri, 29 May 2020 16:12:00 +0300
-Message-ID: <20200529131205.31838-12-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH v6 09/16] spi: dw: Add core suffix to the DW APB SSI core source file
+Date:   Fri, 29 May 2020 16:11:58 +0300
+Message-ID: <20200529131205.31838-10-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20200529131205.31838-1-Sergey.Semin@baikalelectronics.ru>
 References: <20200529131205.31838-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,43 +53,51 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Since there is a generic method available to initialize the DW SPI DMA
-interface on any DT and ACPI-based platforms, which in general can be
-designed with not only DW DMAC but with any DMA engine on board, we can
-freely remove the CONFIG_DW_DMAC_PCI config from dependency list of
-CONFIG_SPI_DW_DMA. Especially seeing that we don't use anything DW DMAC
-specific in the new driver.
+Generic DMA support is going to be part of the DW APB SSI core object.
+In order to preserve the kernel loadable module name as spi-dw.ko, let's
+add the "-core" suffix to the object with generic DW APB SSI code and
+build it into the target spi-dw.ko driver.
 
-Co-developed-by: Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>
-Signed-off-by: Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>
-Co-developed-by: Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>
-Signed-off-by: Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>
+Cc: Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>
 Cc: Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>
 Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: Arnd Bergmann <arnd@arndb.de>
 Cc: Feng Tang <feng.tang@intel.com>
 Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
 Cc: linux-mips@vger.kernel.org
 Cc: devicetree@vger.kernel.org
----
- drivers/spi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 03b061975f70..6a84f3dad35c 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -228,7 +228,7 @@ config SPI_DESIGNWARE
- 
- config SPI_DW_DMA
- 	bool "DMA support for DW SPI controller"
--	depends on SPI_DESIGNWARE && DW_DMAC_PCI
-+	depends on SPI_DESIGNWARE
- 
- config SPI_DW_PCI
- 	tristate "PCI interface driver for DW SPI core"
+---
+
+Changelog v3:
+- This is a new patch added as a result of the discussion with Andy
+  Shevchenko.
+---
+ drivers/spi/Makefile                    | 1 +
+ drivers/spi/{spi-dw.c => spi-dw-core.c} | 0
+ 2 files changed, 1 insertion(+)
+ rename drivers/spi/{spi-dw.c => spi-dw-core.c} (100%)
+
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 28f601327f8c..70ebc2a62e5f 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -36,6 +36,7 @@ obj-$(CONFIG_SPI_COLDFIRE_QSPI)		+= spi-coldfire-qspi.o
+ obj-$(CONFIG_SPI_DAVINCI)		+= spi-davinci.o
+ obj-$(CONFIG_SPI_DLN2)			+= spi-dln2.o
+ obj-$(CONFIG_SPI_DESIGNWARE)		+= spi-dw.o
++spi-dw-y				:= spi-dw-core.o
+ obj-$(CONFIG_SPI_DW_MMIO)		+= spi-dw-mmio.o
+ obj-$(CONFIG_SPI_DW_PCI)		+= spi-dw-midpci.o
+ spi-dw-midpci-objs			:= spi-dw-pci.o spi-dw-mid.o
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw-core.c
+similarity index 100%
+rename from drivers/spi/spi-dw.c
+rename to drivers/spi/spi-dw-core.c
 -- 
 2.26.2
 

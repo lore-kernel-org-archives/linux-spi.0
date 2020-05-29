@@ -6,42 +6,41 @@ X-Spam-Status: No, score=-6.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 13A09C433E0
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B1A9AC433E4
 	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 13:12:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E590D206B6
-	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 13:12:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9883F207BC
+	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 13:12:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727880AbgE2NMv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 29 May 2020 09:12:51 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:48326 "EHLO
+        id S1727109AbgE2NM2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 29 May 2020 09:12:28 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:48214 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726936AbgE2NMc (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 29 May 2020 09:12:32 -0400
+        with ESMTP id S1727069AbgE2NM1 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 29 May 2020 09:12:27 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 4F0588029EA8;
-        Fri, 29 May 2020 13:12:26 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 82D188029EA2;
+        Fri, 29 May 2020 13:12:23 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 7TnAazYQRkq8; Fri, 29 May 2020 16:12:25 +0300 (MSK)
+        with ESMTP id xx4QNDkg_5nm; Fri, 29 May 2020 16:12:22 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
-To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>
+To:     Mark Brown <broonie@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         Serge Semin <fancer.lancer@gmail.com>,
-        Rob Herring <robh@kernel.org>,
         Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>,
         Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Feng Tang <feng.tang@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Arnd Bergmann <arnd@arndb.de>, <linux-mips@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, Feng Tang <feng.tang@intel.com>,
+        Rob Herring <robh+dt@kernel.org>, <linux-mips@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-spi@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
-Subject: [PATCH v6 16/16] dt-bindings: spi: Convert DW SPI binding to DT schema
-Date:   Fri, 29 May 2020 16:12:05 +0300
-Message-ID: <20200529131205.31838-17-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH v6 13/16] spi: dw: Cleanup generic DW DMA code namings
+Date:   Fri, 29 May 2020 16:12:02 +0300
+Message-ID: <20200529131205.31838-14-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20200529131205.31838-1-Sergey.Semin@baikalelectronics.ru>
 References: <20200529131205.31838-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -53,249 +52,303 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Modern device tree bindings are supposed to be created as YAML-files
-in accordance with dt-schema. This commit replaces two DW SPI legacy
-bare text bindings with YAML file. As before the bindings file states
-that the corresponding dts node is supposed to be compatible either
-with generic DW APB SSI controller or with Microsemi/Amazon/Renesas/Intel
-vendors-specific controllers, to have registers, interrupts and clocks
-properties. Though in case of Microsemi version of the controller
-there must be two registers resources specified. Properties like
-clock-names, reg-io-width, cs-gpio, num-cs, DMA and slave device
-sub-nodes are optional.
+Since from now the former Intel MID platform layer is used as a generic
+DW SPI DMA module, let's alter the internal methods naming to be
+DMA-related instead of having the "mid_" prefix.
 
+Co-developed-by: Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>
+Signed-off-by: Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>
+Co-developed-by: Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>
+Signed-off-by: Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Cc: Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>
-Cc: Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>
 Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: Feng Tang <feng.tang@intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Feng Tang <feng.tang@intel.com>
+Cc: Rob Herring <robh+dt@kernel.org>
 Cc: linux-mips@vger.kernel.org
----
- .../bindings/spi/snps,dw-apb-ssi.txt          |  44 ------
- .../bindings/spi/snps,dw-apb-ssi.yaml         | 127 ++++++++++++++++++
- .../devicetree/bindings/spi/spi-dw.txt        |  24 ----
- 3 files changed, 127 insertions(+), 68 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
- create mode 100644 Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
- delete mode 100644 Documentation/devicetree/bindings/spi/spi-dw.txt
+Cc: devicetree@vger.kernel.org
 
-diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
-deleted file mode 100644
-index 020e3168ee41..000000000000
---- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.txt
-+++ /dev/null
-@@ -1,44 +0,0 @@
--Synopsys DesignWare AMBA 2.0 Synchronous Serial Interface.
+---
+
+Changelog v2:
+- Leave the DMA setup method suffixes to be mfld and generic.
+---
+ drivers/spi/spi-dw-dma.c | 85 ++++++++++++++++++++--------------------
+ drivers/spi/spi-dw-pci.c |  4 +-
+ drivers/spi/spi-dw.h     |  8 ++--
+ 3 files changed, 49 insertions(+), 48 deletions(-)
+
+diff --git a/drivers/spi/spi-dw-dma.c b/drivers/spi/spi-dw-dma.c
+index 7ae31682b5de..1b96cec6d8cd 100644
+--- a/drivers/spi/spi-dw-dma.c
++++ b/drivers/spi/spi-dw-dma.c
+@@ -23,7 +23,7 @@
+ #define TX_BUSY		1
+ #define TX_BURST_LEVEL	16
+ 
+-static bool mid_spi_dma_chan_filter(struct dma_chan *chan, void *param)
++static bool dw_spi_dma_chan_filter(struct dma_chan *chan, void *param)
+ {
+ 	struct dw_dma_slave *s = param;
+ 
+@@ -34,7 +34,7 @@ static bool mid_spi_dma_chan_filter(struct dma_chan *chan, void *param)
+ 	return true;
+ }
+ 
+-static void mid_spi_maxburst_init(struct dw_spi *dws)
++static void dw_spi_dma_maxburst_init(struct dw_spi *dws)
+ {
+ 	struct dma_slave_caps caps;
+ 	u32 max_burst, def_burst;
+@@ -59,7 +59,7 @@ static void mid_spi_maxburst_init(struct dw_spi *dws)
+ 	dws->txburst = min(max_burst, def_burst);
+ }
+ 
+-static int mid_spi_dma_init_mfld(struct device *dev, struct dw_spi *dws)
++static int dw_spi_dma_init_mfld(struct device *dev, struct dw_spi *dws)
+ {
+ 	struct dw_dma_slave slave = {
+ 		.src_id = 0,
+@@ -81,13 +81,13 @@ static int mid_spi_dma_init_mfld(struct device *dev, struct dw_spi *dws)
+ 
+ 	/* 1. Init rx channel */
+ 	slave.dma_dev = &dma_dev->dev;
+-	dws->rxchan = dma_request_channel(mask, mid_spi_dma_chan_filter, &slave);
++	dws->rxchan = dma_request_channel(mask, dw_spi_dma_chan_filter, &slave);
+ 	if (!dws->rxchan)
+ 		goto err_exit;
+ 
+ 	/* 2. Init tx channel */
+ 	slave.dst_id = 1;
+-	dws->txchan = dma_request_channel(mask, mid_spi_dma_chan_filter, &slave);
++	dws->txchan = dma_request_channel(mask, dw_spi_dma_chan_filter, &slave);
+ 	if (!dws->txchan)
+ 		goto free_rxchan;
+ 
+@@ -96,7 +96,7 @@ static int mid_spi_dma_init_mfld(struct device *dev, struct dw_spi *dws)
+ 
+ 	init_completion(&dws->dma_completion);
+ 
+-	mid_spi_maxburst_init(dws);
++	dw_spi_dma_maxburst_init(dws);
+ 
+ 	return 0;
+ 
+@@ -107,7 +107,7 @@ static int mid_spi_dma_init_mfld(struct device *dev, struct dw_spi *dws)
+ 	return -EBUSY;
+ }
+ 
+-static int mid_spi_dma_init_generic(struct device *dev, struct dw_spi *dws)
++static int dw_spi_dma_init_generic(struct device *dev, struct dw_spi *dws)
+ {
+ 	dws->rxchan = dma_request_slave_channel(dev, "rx");
+ 	if (!dws->rxchan)
+@@ -125,12 +125,12 @@ static int mid_spi_dma_init_generic(struct device *dev, struct dw_spi *dws)
+ 
+ 	init_completion(&dws->dma_completion);
+ 
+-	mid_spi_maxburst_init(dws);
++	dw_spi_dma_maxburst_init(dws);
+ 
+ 	return 0;
+ }
+ 
+-static void mid_spi_dma_exit(struct dw_spi *dws)
++static void dw_spi_dma_exit(struct dw_spi *dws)
+ {
+ 	if (dws->txchan) {
+ 		dmaengine_terminate_sync(dws->txchan);
+@@ -145,7 +145,7 @@ static void mid_spi_dma_exit(struct dw_spi *dws)
+ 	dw_writel(dws, DW_SPI_DMACR, 0);
+ }
+ 
+-static irqreturn_t dma_transfer(struct dw_spi *dws)
++static irqreturn_t dw_spi_dma_transfer_handler(struct dw_spi *dws)
+ {
+ 	u16 irq_status = dw_readl(dws, DW_SPI_ISR);
+ 
+@@ -161,15 +161,16 @@ static irqreturn_t dma_transfer(struct dw_spi *dws)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static bool mid_spi_can_dma(struct spi_controller *master,
+-		struct spi_device *spi, struct spi_transfer *xfer)
++static bool dw_spi_can_dma(struct spi_controller *master,
++			   struct spi_device *spi, struct spi_transfer *xfer)
+ {
+ 	struct dw_spi *dws = spi_controller_get_devdata(master);
+ 
+ 	return xfer->len > dws->fifo_len;
+ }
+ 
+-static enum dma_slave_buswidth convert_dma_width(u8 n_bytes) {
++static enum dma_slave_buswidth dw_spi_dma_convert_width(u8 n_bytes)
++{
+ 	if (n_bytes == 1)
+ 		return DMA_SLAVE_BUSWIDTH_1_BYTE;
+ 	else if (n_bytes == 2)
+@@ -244,8 +245,8 @@ static void dw_spi_dma_tx_done(void *arg)
+ 	complete(&dws->dma_completion);
+ }
+ 
+-static struct dma_async_tx_descriptor *dw_spi_dma_prepare_tx(struct dw_spi *dws,
+-		struct spi_transfer *xfer)
++static struct dma_async_tx_descriptor *
++dw_spi_dma_prepare_tx(struct dw_spi *dws, struct spi_transfer *xfer)
+ {
+ 	struct dma_slave_config txconf;
+ 	struct dma_async_tx_descriptor *txdesc;
+@@ -258,7 +259,7 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_tx(struct dw_spi *dws,
+ 	txconf.dst_addr = dws->dma_addr;
+ 	txconf.dst_maxburst = dws->txburst;
+ 	txconf.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+-	txconf.dst_addr_width = convert_dma_width(dws->n_bytes);
++	txconf.dst_addr_width = dw_spi_dma_convert_width(dws->n_bytes);
+ 	txconf.device_fc = false;
+ 
+ 	dmaengine_slave_config(dws->txchan, &txconf);
+@@ -350,7 +351,7 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_rx(struct dw_spi *dws,
+ 	rxconf.src_addr = dws->dma_addr;
+ 	rxconf.src_maxburst = dws->rxburst;
+ 	rxconf.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+-	rxconf.src_addr_width = convert_dma_width(dws->n_bytes);
++	rxconf.src_addr_width = dw_spi_dma_convert_width(dws->n_bytes);
+ 	rxconf.device_fc = false;
+ 
+ 	dmaengine_slave_config(dws->rxchan, &rxconf);
+@@ -369,7 +370,7 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_rx(struct dw_spi *dws,
+ 	return rxdesc;
+ }
+ 
+-static int mid_spi_dma_setup(struct dw_spi *dws, struct spi_transfer *xfer)
++static int dw_spi_dma_setup(struct dw_spi *dws, struct spi_transfer *xfer)
+ {
+ 	u16 imr = 0, dma_ctrl = 0;
+ 
+@@ -391,12 +392,12 @@ static int mid_spi_dma_setup(struct dw_spi *dws, struct spi_transfer *xfer)
+ 
+ 	reinit_completion(&dws->dma_completion);
+ 
+-	dws->transfer_handler = dma_transfer;
++	dws->transfer_handler = dw_spi_dma_transfer_handler;
+ 
+ 	return 0;
+ }
+ 
+-static int mid_spi_dma_transfer(struct dw_spi *dws, struct spi_transfer *xfer)
++static int dw_spi_dma_transfer(struct dw_spi *dws, struct spi_transfer *xfer)
+ {
+ 	struct dma_async_tx_descriptor *txdesc, *rxdesc;
+ 	int ret;
+@@ -436,7 +437,7 @@ static int mid_spi_dma_transfer(struct dw_spi *dws, struct spi_transfer *xfer)
+ 	return ret;
+ }
+ 
+-static void mid_spi_dma_stop(struct dw_spi *dws)
++static void dw_spi_dma_stop(struct dw_spi *dws)
+ {
+ 	if (test_bit(TX_BUSY, &dws->dma_chan_busy)) {
+ 		dmaengine_terminate_sync(dws->txchan);
+@@ -450,32 +451,32 @@ static void mid_spi_dma_stop(struct dw_spi *dws)
+ 	dw_writel(dws, DW_SPI_DMACR, 0);
+ }
+ 
+-static const struct dw_spi_dma_ops mfld_dma_ops = {
+-	.dma_init	= mid_spi_dma_init_mfld,
+-	.dma_exit	= mid_spi_dma_exit,
+-	.dma_setup	= mid_spi_dma_setup,
+-	.can_dma	= mid_spi_can_dma,
+-	.dma_transfer	= mid_spi_dma_transfer,
+-	.dma_stop	= mid_spi_dma_stop,
++static const struct dw_spi_dma_ops dw_spi_dma_mfld_ops = {
++	.dma_init	= dw_spi_dma_init_mfld,
++	.dma_exit	= dw_spi_dma_exit,
++	.dma_setup	= dw_spi_dma_setup,
++	.can_dma	= dw_spi_can_dma,
++	.dma_transfer	= dw_spi_dma_transfer,
++	.dma_stop	= dw_spi_dma_stop,
+ };
+ 
+-void dw_spi_mid_setup_dma_mfld(struct dw_spi *dws)
++void dw_spi_dma_setup_mfld(struct dw_spi *dws)
+ {
+-	dws->dma_ops = &mfld_dma_ops;
++	dws->dma_ops = &dw_spi_dma_mfld_ops;
+ }
+-EXPORT_SYMBOL_GPL(dw_spi_mid_setup_dma_mfld);
 -
--Required properties:
--- compatible : "snps,dw-apb-ssi" or "mscc,<soc>-spi", where soc is "ocelot" or
--  "jaguar2", or "amazon,alpine-dw-apb-ssi", or "snps,dwc-ssi-1.01a" or
--  "intel,keembay-ssi"
--- reg : The register base for the controller. For "mscc,<soc>-spi", a second
--  register set is required (named ICPU_CFG:SPI_MST)
--- interrupts : One interrupt, used by the controller.
--- #address-cells : <1>, as required by generic SPI binding.
--- #size-cells : <0>, also as required by generic SPI binding.
--- clocks : phandles for the clocks, see the description of clock-names below.
--   The phandle for the "ssi_clk" is required. The phandle for the "pclk" clock
--   is optional. If a single clock is specified but no clock-name, it is the
--   "ssi_clk" clock. If both clocks are listed, the "ssi_clk" must be first.
--
--Optional properties:
--- clock-names : Contains the names of the clocks:
--    "ssi_clk", for the core clock used to generate the external SPI clock.
--    "pclk", the interface clock, required for register access. If a clock domain
--     used to enable this clock then it should be named "pclk_clkdomain".
--- cs-gpios : Specifies the gpio pins to be used for chipselects.
--- num-cs : The number of chipselects. If omitted, this will default to 4.
--- reg-io-width : The I/O register width (in bytes) implemented by this
--  device.  Supported values are 2 or 4 (the default).
--- dmas : Phandle + identifiers of Tx and Rx DMA channels.
--- dma-names : Contains the names of the DMA channels. Must be "tx" and "rx".
--
--Child nodes as per the generic SPI binding.
--
--Example:
--
--	spi@fff00000 {
--		compatible = "snps,dw-apb-ssi";
--		reg = <0xfff00000 0x1000>;
--		interrupts = <0 154 4>;
--		#address-cells = <1>;
--		#size-cells = <0>;
--		clocks = <&spi_m_clk>;
--		num-cs = <2>;
--		cs-gpios = <&gpio0 13 0>,
--			   <&gpio0 14 0>;
--	};
--
-diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
-new file mode 100644
-index 000000000000..1fcab6415136
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
-@@ -0,0 +1,127 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/snps,dw-apb-ssi.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+-static const struct dw_spi_dma_ops generic_dma_ops = {
+-	.dma_init	= mid_spi_dma_init_generic,
+-	.dma_exit	= mid_spi_dma_exit,
+-	.dma_setup	= mid_spi_dma_setup,
+-	.can_dma	= mid_spi_can_dma,
+-	.dma_transfer	= mid_spi_dma_transfer,
+-	.dma_stop	= mid_spi_dma_stop,
++EXPORT_SYMBOL_GPL(dw_spi_dma_setup_mfld);
 +
-+title: Synopsys DesignWare AMBA 2.0 Synchronous Serial Interface
-+
-+maintainers:
-+  - Mark Brown <broonie@kernel.org>
-+
-+allOf:
-+  - $ref: "spi-controller.yaml#"
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - mscc,ocelot-spi
-+              - mscc,jaguar2-spi
-+    then:
-+      properties:
-+        reg:
-+          minItems: 2
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - description: Generic DW SPI Controller
-+        enum:
-+          - snps,dw-apb-ssi
-+          - snps,dwc-ssi-1.01a
-+      - description: Microsemi Ocelot/Jaguar2 SoC SPI Controller
-+        items:
-+          - enum:
-+              - mscc,ocelot-spi
-+              - mscc,jaguar2-spi
-+          - const: snps,dw-apb-ssi
-+      - description: Amazon Alpine SPI Controller
-+        const: amazon,alpine-dw-apb-ssi
-+      - description: Renesas RZ/N1 SPI Controller
-+        items:
-+          - const: renesas,rzn1-spi
-+          - const: snps,dw-apb-ssi
-+      - description: Intel Keem Bay SPI Controller
-+        const: intel,keembay-ssi
-+
-+  reg:
-+    minItems: 1
-+    items:
-+      - description: DW APB SSI controller memory mapped registers
-+      - description: SPI MST region map
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clocks:
-+    minItems: 1
-+    items:
-+      - description: SPI Controller reference clock source
-+      - description: APB interface clock source
-+
-+  clock-names:
-+    minItems: 1
-+    items:
-+      - const: ssi_clk
-+      - const: pclk
-+
-+  reg-io-width:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: I/O register width (in bytes) implemented by this device
-+    default: 4
-+    enum: [ 2, 4 ]
-+
-+  num-cs:
-+    default: 4
-+    minimum: 1
-+    maximum: 4
-+
-+  dmas:
-+    items:
-+      - description: TX DMA Channel
-+      - description: RX DMA Channel
-+
-+  dma-names:
-+    items:
-+      - const: tx
-+      - const: rx
-+
-+patternProperties:
-+  "^.*@[0-9a-f]+$":
-+    type: object
-+    properties:
-+      reg:
-+        minimum: 0
-+        maximum: 3
-+
-+      spi-rx-bus-width:
-+        const: 1
-+
-+      spi-tx-bus-width:
-+        const: 1
-+
-+unevaluatedProperties: false
-+
-+required:
-+  - compatible
-+  - reg
-+  - "#address-cells"
-+  - "#size-cells"
-+  - interrupts
-+  - clocks
-+
-+examples:
-+  - |
-+    spi@fff00000 {
-+      compatible = "snps,dw-apb-ssi";
-+      reg = <0xfff00000 0x1000>;
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+      interrupts = <0 154 4>;
-+      clocks = <&spi_m_clk>;
-+      num-cs = <2>;
-+      cs-gpios = <&gpio0 13 0>,
-+                 <&gpio0 14 0>;
-+    };
-+...
-diff --git a/Documentation/devicetree/bindings/spi/spi-dw.txt b/Documentation/devicetree/bindings/spi/spi-dw.txt
-deleted file mode 100644
-index 7b63ed601990..000000000000
---- a/Documentation/devicetree/bindings/spi/spi-dw.txt
-+++ /dev/null
-@@ -1,24 +0,0 @@
--Synopsys DesignWare SPI master
--
--Required properties:
--- compatible: should be "snps,designware-spi"
--- #address-cells: see spi-bus.txt
--- #size-cells: see spi-bus.txt
--- reg: address and length of the spi master registers
--- interrupts: should contain one interrupt
--- clocks: spi clock phandle
--- num-cs: see spi-bus.txt
--
--Optional properties:
--- cs-gpios: see spi-bus.txt
--
--Example:
--
--spi: spi@4020a000 {
--	compatible = "snps,designware-spi";
--	interrupts = <11 1>;
--	reg = <0x4020a000 0x1000>;
--	clocks = <&pclk>;
--	num-cs = <2>;
--	cs-gpios = <&banka 0 0>;
--};
++static const struct dw_spi_dma_ops dw_spi_dma_generic_ops = {
++	.dma_init	= dw_spi_dma_init_generic,
++	.dma_exit	= dw_spi_dma_exit,
++	.dma_setup	= dw_spi_dma_setup,
++	.can_dma	= dw_spi_can_dma,
++	.dma_transfer	= dw_spi_dma_transfer,
++	.dma_stop	= dw_spi_dma_stop,
+ };
+ 
+-void dw_spi_mid_setup_dma_generic(struct dw_spi *dws)
++void dw_spi_dma_setup_generic(struct dw_spi *dws)
+ {
+-	dws->dma_ops = &generic_dma_ops;
++	dws->dma_ops = &dw_spi_dma_generic_ops;
+ }
+-EXPORT_SYMBOL_GPL(dw_spi_mid_setup_dma_generic);
++EXPORT_SYMBOL_GPL(dw_spi_dma_setup_generic);
+diff --git a/drivers/spi/spi-dw-pci.c b/drivers/spi/spi-dw-pci.c
+index c13707b8493e..2ea73809ca34 100644
+--- a/drivers/spi/spi-dw-pci.c
++++ b/drivers/spi/spi-dw-pci.c
+@@ -51,7 +51,7 @@ static int spi_mid_init(struct dw_spi *dws)
+ 	/* Register hook to configure CTRLR0 */
+ 	dws->update_cr0 = dw_spi_update_cr0;
+ 
+-	dw_spi_mid_setup_dma_mfld(dws);
++	dw_spi_dma_setup_mfld(dws);
+ 
+ 	return 0;
+ }
+@@ -61,7 +61,7 @@ static int spi_generic_init(struct dw_spi *dws)
+ 	/* Register hook to configure CTRLR0 */
+ 	dws->update_cr0 = dw_spi_update_cr0;
+ 
+-	dw_spi_mid_setup_dma_generic(dws);
++	dw_spi_dma_setup_generic(dws);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 91608cf12636..0b2cd7994513 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -259,13 +259,13 @@ extern u32 dw_spi_update_cr0_v1_01a(struct spi_controller *master,
+ 
+ #ifdef CONFIG_SPI_DW_DMA
+ 
+-extern void dw_spi_mid_setup_dma_mfld(struct dw_spi *dws);
+-extern void dw_spi_mid_setup_dma_generic(struct dw_spi *dws);
++extern void dw_spi_dma_setup_mfld(struct dw_spi *dws);
++extern void dw_spi_dma_setup_generic(struct dw_spi *dws);
+ 
+ #else
+ 
+-static inline void dw_spi_mid_setup_dma_mfld(struct dw_spi *dws) {}
+-static inline void dw_spi_mid_setup_dma_generic(struct dw_spi *dws) {}
++static inline void dw_spi_dma_setup_mfld(struct dw_spi *dws) {}
++static inline void dw_spi_dma_setup_generic(struct dw_spi *dws) {}
+ 
+ #endif /* !CONFIG_SPI_DW_DMA */
+ 
 -- 
 2.26.2
 

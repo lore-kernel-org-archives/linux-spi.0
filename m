@@ -6,41 +6,39 @@ X-Spam-Status: No, score=-6.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AB414C433ED
-	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 13:13:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A8979C433E8
+	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 13:13:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 89CCE207BC
-	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 13:13:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8D6D2206B6
+	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 13:13:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727027AbgE2NMW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1727018AbgE2NMW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Fri, 29 May 2020 09:12:22 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:48126 "EHLO
+Received: from mail.baikalelectronics.com ([87.245.175.226]:48200 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726864AbgE2NMU (ORCPT
+        with ESMTP id S1726701AbgE2NMU (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 29 May 2020 09:12:20 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 1E78E803077A;
-        Fri, 29 May 2020 13:12:15 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id D72008029EA0;
+        Fri, 29 May 2020 13:12:17 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id YhZta2FXjP8y; Fri, 29 May 2020 16:12:14 +0300 (MSK)
+        with ESMTP id wrc_ijKojq8N; Fri, 29 May 2020 16:12:17 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         Serge Semin <fancer.lancer@gmail.com>,
-        Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>,
-        Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         Arnd Bergmann <arnd@arndb.de>, Feng Tang <feng.tang@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-mips@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-spi@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
-Subject: [PATCH v6 03/16] spi: dw: Locally wait for the DMA transfers completion
-Date:   Fri, 29 May 2020 16:11:52 +0300
-Message-ID: <20200529131205.31838-4-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH v6 07/16] spi: dw: Use DMA max burst to set the request thresholds
+Date:   Fri, 29 May 2020 16:11:56 +0300
+Message-ID: <20200529131205.31838-8-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20200529131205.31838-1-Sergey.Semin@baikalelectronics.ru>
 References: <20200529131205.31838-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,201 +50,132 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-In general each DMA-based SPI transfer can be split up into two stages:
-DMA data transmission/reception and SPI-bus transmission/reception. DMA
-asynchronous transactions completion can be tracked by means of the
-DMA async Tx-descriptor completion callback. But that callback being
-called indicates that the DMA transfer has been finished, it doesn't
-mean that SPI data transmission is also done. Moreover in fact it isn't
-for at least Tx-only SPI transfers. Upon DMA transfer completion some
-data is left in the Tx FIFO and being pushed out by the SPI controller.
-So in order to make sure that an SPI transfer is completely pushed to the
-SPI-bus, the driver has to wait for both DMA transaction and the SPI-bus
-transmission/reception are finished. Note if there is a way to
-asynchronously track the former event by means of the DMA async Tx
-callback, there isn't easy one for the later (IRQ-based solution won't
-work since SPI controller doesn't notify about Rx FIFO being empty).
-
-The DMA transfer completion callback isn't suitable to wait for the
-SPI controller activity finish either. The callback might (in case of DW
-DMAC it will) be called in the tasklet context. Waiting for the SPI
-controller to complete the transfer might take a considerable amount of
-time since SPI-bus might be pretty slow. In this case delaying the
-execution in the tasklet atomic context might cause significant system
-performance drop.
-
-So to speak the best option we've got to solve the problem is to
-consequently wait for both stages being finished in the locally
-implemented SPI transfer execution procedure even if it costs us of the
-local wait-function re-implementation. In this case we don't need to use
-the SPI-core transfer-wait functionality, but we'll make sure that
-all DMA and SPI-bus transactions are completely finished before the
-SPI-core transfer_one callback returns. In this commit we provide an
-implementation of the DMA-transfers completion wait functionality.
-The DW APB SSI DMA-specific SPI transfer_one function waits for both
-Tx and Rx DMA transfers being finished, and only then exits with zero
-returned signalling to the SPI core that the SPI transfer is finished.
-This implementation is fully equivalent to the currently used
-DMA-execution-SPI-core-wait algorithm. The SPI-bus transmission/reception
-wait methods will be added in the follow-up commits.
+Each channel of DMA controller may have a limited length of burst
+transaction (number of IO operations performed at ones in a single
+DMA client request). This parameter can be used to setup the most
+optimal DMA Tx/Rx data level values. In order to avoid the Tx buffer
+overrun we can set the DMA Tx level to be of FIFO depth minus the
+maximum burst transactions length. To prevent the Rx buffer underflow
+the DMA Rx level should be set to the maximum burst transactions length.
+This commit setups the DMA channels and the DW SPI DMA Tx/Rx levels
+in accordance with these rules.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Cc: Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>
-Cc: Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>
 Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Cc: Arnd Bergmann <arnd@arndb.de>
 Cc: Feng Tang <feng.tang@intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Rob Herring <robh+dt@kernel.org>
 Cc: linux-mips@vger.kernel.org
 Cc: devicetree@vger.kernel.org
+
 ---
- drivers/spi/spi-dw-mid.c | 44 ++++++++++++++++++++++++++++++++++++----
+
+Changelog v3:
+- Use min() method to calculate the optimal burst values.
+---
+ drivers/spi/spi-dw-mid.c | 37 +++++++++++++++++++++++++++++++++----
  drivers/spi/spi-dw.h     |  2 ++
- 2 files changed, 42 insertions(+), 4 deletions(-)
+ 2 files changed, 35 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
-index 7ff1acaa55f8..355b641c4483 100644
+index 189b517f77fc..1cf9e3ffe07b 100644
 --- a/drivers/spi/spi-dw-mid.c
 +++ b/drivers/spi/spi-dw-mid.c
-@@ -11,9 +11,11 @@
- #include "spi-dw.h"
+@@ -36,6 +36,31 @@ static bool mid_spi_dma_chan_filter(struct dma_chan *chan, void *param)
+ 	return true;
+ }
  
- #ifdef CONFIG_SPI_DW_MID_DMA
-+#include <linux/completion.h>
- #include <linux/dma-mapping.h>
- #include <linux/dmaengine.h>
- #include <linux/irqreturn.h>
-+#include <linux/jiffies.h>
- #include <linux/pci.h>
- #include <linux/platform_data/dma-dw.h>
++static void mid_spi_maxburst_init(struct dw_spi *dws)
++{
++	struct dma_slave_caps caps;
++	u32 max_burst, def_burst;
++	int ret;
++
++	def_burst = dws->fifo_len / 2;
++
++	ret = dma_get_slave_caps(dws->rxchan, &caps);
++	if (!ret && caps.max_burst)
++		max_burst = caps.max_burst;
++	else
++		max_burst = RX_BURST_LEVEL;
++
++	dws->rxburst = min(max_burst, def_burst);
++
++	ret = dma_get_slave_caps(dws->txchan, &caps);
++	if (!ret && caps.max_burst)
++		max_burst = caps.max_burst;
++	else
++		max_burst = TX_BURST_LEVEL;
++
++	dws->txburst = min(max_burst, def_burst);
++}
++
+ static int mid_spi_dma_init_mfld(struct device *dev, struct dw_spi *dws)
+ {
+ 	struct dw_dma_slave slave = {
+@@ -73,6 +98,8 @@ static int mid_spi_dma_init_mfld(struct device *dev, struct dw_spi *dws)
  
-@@ -66,6 +68,8 @@ static int mid_spi_dma_init_mfld(struct device *dev, struct dw_spi *dws)
- 	dws->master->dma_rx = dws->rxchan;
- 	dws->master->dma_tx = dws->txchan;
+ 	init_completion(&dws->dma_completion);
  
-+	init_completion(&dws->dma_completion);
++	mid_spi_maxburst_init(dws);
 +
  	return 0;
  
  free_rxchan:
-@@ -91,6 +95,8 @@ static int mid_spi_dma_init_generic(struct device *dev, struct dw_spi *dws)
- 	dws->master->dma_rx = dws->rxchan;
- 	dws->master->dma_tx = dws->txchan;
+@@ -100,6 +127,8 @@ static int mid_spi_dma_init_generic(struct device *dev, struct dw_spi *dws)
  
-+	init_completion(&dws->dma_completion);
+ 	init_completion(&dws->dma_completion);
+ 
++	mid_spi_maxburst_init(dws);
 +
  	return 0;
  }
  
-@@ -121,7 +127,7 @@ static irqreturn_t dma_transfer(struct dw_spi *dws)
- 
- 	dev_err(&dws->master->dev, "%s: FIFO overrun/underrun\n", __func__);
- 	dws->master->cur_msg->status = -EIO;
--	spi_finalize_current_transfer(dws->master);
-+	complete(&dws->dma_completion);
- 	return IRQ_HANDLED;
- }
- 
-@@ -142,6 +148,29 @@ static enum dma_slave_buswidth convert_dma_width(u8 n_bytes) {
- 	return DMA_SLAVE_BUSWIDTH_UNDEFINED;
- }
- 
-+static int dw_spi_dma_wait(struct dw_spi *dws, struct spi_transfer *xfer)
-+{
-+	unsigned long long ms;
-+
-+	ms = xfer->len * MSEC_PER_SEC * BITS_PER_BYTE;
-+	do_div(ms, xfer->effective_speed_hz);
-+	ms += ms + 200;
-+
-+	if (ms > UINT_MAX)
-+		ms = UINT_MAX;
-+
-+	ms = wait_for_completion_timeout(&dws->dma_completion,
-+					 msecs_to_jiffies(ms));
-+
-+	if (ms == 0) {
-+		dev_err(&dws->master->cur_msg->spi->dev,
-+			"DMA transaction timed out\n");
-+		return -ETIMEDOUT;
-+	}
-+
-+	return 0;
-+}
-+
- /*
-  * dws->dma_chan_busy is set before the dma transfer starts, callback for tx
-  * channel will clear a corresponding bit.
-@@ -155,7 +184,7 @@ static void dw_spi_dma_tx_done(void *arg)
- 		return;
- 
- 	dw_writel(dws, DW_SPI_DMACR, 0);
--	spi_finalize_current_transfer(dws->master);
-+	complete(&dws->dma_completion);
- }
- 
- static struct dma_async_tx_descriptor *dw_spi_dma_prepare_tx(struct dw_spi *dws,
-@@ -204,7 +233,7 @@ static void dw_spi_dma_rx_done(void *arg)
- 		return;
- 
- 	dw_writel(dws, DW_SPI_DMACR, 0);
--	spi_finalize_current_transfer(dws->master);
-+	complete(&dws->dma_completion);
- }
- 
- static struct dma_async_tx_descriptor *dw_spi_dma_prepare_rx(struct dw_spi *dws,
-@@ -260,6 +289,8 @@ static int mid_spi_dma_setup(struct dw_spi *dws, struct spi_transfer *xfer)
- 	/* Set the interrupt mask */
- 	spi_umask_intr(dws, imr);
- 
-+	reinit_completion(&dws->dma_completion);
-+
- 	dws->transfer_handler = dma_transfer;
- 
- 	return 0;
-@@ -268,6 +299,7 @@ static int mid_spi_dma_setup(struct dw_spi *dws, struct spi_transfer *xfer)
- static int mid_spi_dma_transfer(struct dw_spi *dws, struct spi_transfer *xfer)
+@@ -229,7 +258,7 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_tx(struct dw_spi *dws,
+ 	memset(&txconf, 0, sizeof(txconf));
+ 	txconf.direction = DMA_MEM_TO_DEV;
+ 	txconf.dst_addr = dws->dma_addr;
+-	txconf.dst_maxburst = TX_BURST_LEVEL;
++	txconf.dst_maxburst = dws->txburst;
+ 	txconf.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+ 	txconf.dst_addr_width = convert_dma_width(dws->n_bytes);
+ 	txconf.device_fc = false;
+@@ -321,7 +350,7 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_rx(struct dw_spi *dws,
+ 	memset(&rxconf, 0, sizeof(rxconf));
+ 	rxconf.direction = DMA_DEV_TO_MEM;
+ 	rxconf.src_addr = dws->dma_addr;
+-	rxconf.src_maxburst = RX_BURST_LEVEL;
++	rxconf.src_maxburst = dws->rxburst;
+ 	rxconf.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+ 	rxconf.src_addr_width = convert_dma_width(dws->n_bytes);
+ 	rxconf.device_fc = false;
+@@ -346,8 +375,8 @@ static int mid_spi_dma_setup(struct dw_spi *dws, struct spi_transfer *xfer)
  {
- 	struct dma_async_tx_descriptor *txdesc, *rxdesc;
-+	int ret;
+ 	u16 imr = 0, dma_ctrl = 0;
  
- 	/* Prepare the TX dma transfer */
- 	txdesc = dw_spi_dma_prepare_tx(dws, xfer);
-@@ -288,7 +320,11 @@ static int mid_spi_dma_transfer(struct dw_spi *dws, struct spi_transfer *xfer)
- 		dma_async_issue_pending(dws->txchan);
- 	}
+-	dw_writel(dws, DW_SPI_DMARDLR, RX_BURST_LEVEL - 1);
+-	dw_writel(dws, DW_SPI_DMATDLR, TX_BURST_LEVEL);
++	dw_writel(dws, DW_SPI_DMARDLR, dws->rxburst - 1);
++	dw_writel(dws, DW_SPI_DMATDLR, dws->fifo_len - dws->txburst);
  
--	return 1;
-+	ret = dw_spi_dma_wait(dws, xfer);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
- }
- 
- static void mid_spi_dma_stop(struct dw_spi *dws)
+ 	if (xfer->tx_buf) {
+ 		dma_ctrl |= SPI_DMA_TDMAE;
 diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 79782e93eb12..9585d0c83a6d 100644
+index 9585d0c83a6d..9247670fcdfb 100644
 --- a/drivers/spi/spi-dw.h
 +++ b/drivers/spi/spi-dw.h
-@@ -2,6 +2,7 @@
- #ifndef DW_SPI_HEADER_H
- #define DW_SPI_HEADER_H
+@@ -142,7 +142,9 @@ struct dw_spi {
  
-+#include <linux/completion.h>
- #include <linux/irqreturn.h>
- #include <linux/io.h>
- #include <linux/scatterlist.h>
-@@ -145,6 +146,7 @@ struct dw_spi {
+ 	/* DMA info */
+ 	struct dma_chan		*txchan;
++	u32			txburst;
+ 	struct dma_chan		*rxchan;
++	u32			rxburst;
  	unsigned long		dma_chan_busy;
  	dma_addr_t		dma_addr; /* phy address of the Data register */
  	const struct dw_spi_dma_ops *dma_ops;
-+	struct completion	dma_completion;
- 
- #ifdef CONFIG_DEBUG_FS
- 	struct dentry *debugfs;
 -- 
 2.26.2
 

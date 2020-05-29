@@ -2,87 +2,169 @@ Return-Path: <SRS0=iNVW=7L=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B4DE4C433DF
-	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 13:02:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 01FDCC433DF
+	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 13:12:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 93F47207BC
-	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 13:02:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1590757369;
-	bh=ARNaKA1yb6DwZcc1AOHUze81r84J7znpXdtHEL2hu1M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=d/ovcmel5ilu9ik0fD8SRyMmnmQJ/iX6RahGe80JWspPryWAWDMbGeTD8oUpfYXr0
-	 WYp/Rpex7nl+tDc9Uk7xVl0FnZ9apYPN4U9OftwUl01mDGsd4rUxQNrONxf2R2vx6h
-	 FOpMKYk15wwlzW1sKTqkxfFMu+9rI5XNtHKdbFgk=
+	by mail.kernel.org (Postfix) with ESMTP id D6B34207F5
+	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 13:12:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726827AbgE2NCq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 29 May 2020 09:02:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46622 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726467AbgE2NCp (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 29 May 2020 09:02:45 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DBBC02077D;
-        Fri, 29 May 2020 13:02:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590757365;
-        bh=ARNaKA1yb6DwZcc1AOHUze81r84J7znpXdtHEL2hu1M=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=wUQdH/bBmjvDlHFUmOvB6Sid7DD19xBcYEJP1s+aUiC6byvu1z4ZQ1HY+J+0iSnPY
-         YDH8gXxysP1y8ocbXMv23OxD/W7ebndxojTaKmK5+JtrgLkVfuUC/YOCpv6cSq4dvY
-         +hj/+PfJVGx22pNPNa6bEPgAuYgnw0O3DDn/5SIU=
-Date:   Fri, 29 May 2020 14:02:42 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Dinh Nguyen <dinguyen@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        robh+dt@kernel.org, linux-spi@vger.kernel.org,
-        Sergey.Semin@baikalelectronics.ru, fancer.lancer@gmail.com,
-        andriy.shevchenko@linux.intel.com, lars.povlsen@microchip.com
-Subject: Re: [PATCHv3 2/2] spi: dw: add optional reset property
-Message-ID: <20200529130242.GA52828@sirena.org.uk>
-References: <20200527204110.25676-1-dinguyen@kernel.org>
- <20200527204110.25676-2-dinguyen@kernel.org>
+        id S1727050AbgE2NMX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 29 May 2020 09:12:23 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:48146 "EHLO
+        mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726900AbgE2NMU (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 29 May 2020 09:12:20 -0400
+Received: from localhost (unknown [127.0.0.1])
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 9E488803078F;
+        Fri, 29 May 2020 13:12:15 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at baikalelectronics.ru
+Received: from mail.baikalelectronics.ru ([127.0.0.1])
+        by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 1nFuA_YS1qW2; Fri, 29 May 2020 16:12:15 +0300 (MSK)
+From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
+To:     Mark Brown <broonie@kernel.org>,
+        Grant Likely <grant.likely@secretlab.ca>,
+        Linus Walleij <linus.walleij@stericsson.com>,
+        Alan Cox <alan@linux.intel.com>, Vinod Koul <vkoul@kernel.org>,
+        Feng Tang <feng.tang@intel.com>
+CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>,
+        Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>,
+        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rob Herring <robh+dt@kernel.org>, <linux-mips@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v6 04/16] spi: dw: Add SPI Tx-done wait method to DMA-based transfer
+Date:   Fri, 29 May 2020 16:11:53 +0300
+Message-ID: <20200529131205.31838-5-Sergey.Semin@baikalelectronics.ru>
+In-Reply-To: <20200529131205.31838-1-Sergey.Semin@baikalelectronics.ru>
+References: <20200529131205.31838-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="CE+1k2dSO48ffgeK"
-Content-Disposition: inline
-In-Reply-To: <20200527204110.25676-2-dinguyen@kernel.org>
-X-Cookie: Use extra care when cleaning on stairs.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Since DMA transfers are performed asynchronously with actual SPI bus
+transfers, then even if DMA transactions are finished it doesn't mean
+all data is actually pushed to the SPI bus. Some data might still be
+in the controller FIFO. This is specifically true for Tx-only transfers.
+In this case if the next SPI transfer is recharged while a tail of the
+previous one is still in FIFO, we'll loose that tail data. In order to
+fix that problem let's add the wait procedure of the Tx SPI transfer
+completion after the DMA transactions are finished.
 
---CE+1k2dSO48ffgeK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Fixes: 7063c0d942a1 ("spi/dw_spi: add DMA support")
+Co-developed-by: Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>
+Signed-off-by: Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>
+Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Cc: Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>
+Cc: Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Feng Tang <feng.tang@intel.com>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: linux-mips@vger.kernel.org
+Cc: devicetree@vger.kernel.org
 
-On Wed, May 27, 2020 at 03:41:10PM -0500, Dinh Nguyen wrote:
-> Add optional reset property.
+---
 
-This doesn't apply against current code, please check and resend.
+Changelog v2:
+- Use conditional statement instead of the ternary operator in the ref
+  clock getter.
+- Move the patch to the head of the series so one could be picked up to
+  the stable kernels as a fix.
 
---CE+1k2dSO48ffgeK
-Content-Type: application/pgp-signature; name="signature.asc"
+Changelog v3:
+- Use spi_delay_exec() method to wait for the current operation completion.
 
------BEGIN PGP SIGNATURE-----
+Changelog v4:
+- Get back ndelay() method to wait for an SPI transfer completion.
+  spi_delay_exec() isn't suitable for the atomic context.
 
-iQEyBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl7RB/EACgkQJNaLcl1U
-h9CRYwf2Nalr3n2GMXgyhS8OMZTZaoN0+7yQk4fX/asqaFYHtVinVvj2mVqReiwo
-wBJ5PUtxGDLAj8XLvgbg33H1VAKOolO2/lxUvB5tSsy8OOThLB4auqXgqgUz5OTk
-x6OWGsYxX947lvjJ5VLw56qSqLxcjkR4hHLQXS4ycwYPgMe43oLgAFveoBg7fy6+
-Dt02YIeXgkfl1DOHlMii22qRoQy4FzeDEhDt0o1YYGGveSmRf6ee5SnbR9dYWpmL
-ARZdxf8b+xiigdDBVCJJf5427eFk/qrYQiAAqn5lDHccmHGE53sJwu/c530foiLw
-4o/vA82KVuVqhtfWv9ZXnnyq2UQg
-=tV+V
------END PGP SIGNATURE-----
+Changelog v5:
+- Add more detailed description of the problems the patch fixes.
+- Wait for the SPI Tx transfer finish in the mid_spi_dma_transfer() method
+  executed in the task context.
+- Use spi_delay_exec() to wait for the SPI Tx completion, since now the
+  driver does in the kernel thread context.
+- Use SPI_DELAY_UNIT_SCK spi_delay unit, since SPI xfer's are now have the
+  effective_speed_hz initialized.
+---
+ drivers/spi/spi-dw-mid.c | 34 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
---CE+1k2dSO48ffgeK--
+diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
+index 355b641c4483..846e3db91329 100644
+--- a/drivers/spi/spi-dw-mid.c
++++ b/drivers/spi/spi-dw-mid.c
+@@ -19,6 +19,7 @@
+ #include <linux/pci.h>
+ #include <linux/platform_data/dma-dw.h>
+ 
++#define WAIT_RETRIES	5
+ #define RX_BUSY		0
+ #define TX_BUSY		1
+ 
+@@ -171,6 +172,33 @@ static int dw_spi_dma_wait(struct dw_spi *dws, struct spi_transfer *xfer)
+ 	return 0;
+ }
+ 
++static inline bool dw_spi_dma_tx_busy(struct dw_spi *dws)
++{
++	return !(dw_readl(dws, DW_SPI_SR) & SR_TF_EMPT);
++}
++
++static int dw_spi_dma_wait_tx_done(struct dw_spi *dws,
++				   struct spi_transfer *xfer)
++{
++	int retry = WAIT_RETRIES;
++	struct spi_delay delay;
++	u32 nents;
++
++	nents = dw_readl(dws, DW_SPI_TXFLR);
++	delay.unit = SPI_DELAY_UNIT_SCK;
++	delay.value = nents * dws->n_bytes * BITS_PER_BYTE;
++
++	while (dw_spi_dma_tx_busy(dws) && retry--)
++		spi_delay_exec(&delay, xfer);
++
++	if (retry < 0) {
++		dev_err(&dws->master->dev, "Tx hanged up\n");
++		return -EIO;
++	}
++
++	return 0;
++}
++
+ /*
+  * dws->dma_chan_busy is set before the dma transfer starts, callback for tx
+  * channel will clear a corresponding bit.
+@@ -324,6 +352,12 @@ static int mid_spi_dma_transfer(struct dw_spi *dws, struct spi_transfer *xfer)
+ 	if (ret)
+ 		return ret;
+ 
++	if (txdesc && dws->master->cur_msg->status == -EINPROGRESS) {
++		ret = dw_spi_dma_wait_tx_done(dws, xfer);
++		if (ret)
++			return ret;
++	}
++
+ 	return 0;
+ }
+ 
+-- 
+2.26.2
+

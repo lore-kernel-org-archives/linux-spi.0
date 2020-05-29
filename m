@@ -2,102 +2,214 @@ Return-Path: <SRS0=iNVW=7L=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,URIBL_BLOCKED autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6AEC8C433E0
-	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 19:52:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 674DFC433DF
+	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 20:56:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3D2B7206F1
-	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 19:52:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1590781967;
-	bh=04z1TRbYww9g8DWS9mimfMTUFU9QOLcUlLldf657ARY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=yfszJ4zV4PtCOc/qZ4k0X7pgpxpiDargJjD3T6gyLh4dbmo2+uDGBevixdQ5ZJiTA
-	 fEGj9+S2rVhpvHift4xwd5deBeM9VI8lot1Y4Pzgn7WICSPt4wrFz17MEC1yHWd0kl
-	 5gM8rtH9ZjJD+IGM7ufAU7iBwIos6oRjgWHsA9JU=
+	by mail.kernel.org (Postfix) with ESMTP id 3516420897
+	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 20:56:04 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aWxxBonj"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726866AbgE2Twr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 29 May 2020 15:52:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39848 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726751AbgE2Twq (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 29 May 2020 15:52:46 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 924D4206F1;
-        Fri, 29 May 2020 19:52:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590781966;
-        bh=04z1TRbYww9g8DWS9mimfMTUFU9QOLcUlLldf657ARY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=C0MbN2o5P/YvRYUgOIVqe3DMQe451yNOi7rBV6roFy6nyi+mi9vzWJUGKm/bsBJBQ
-         KOOZaehMUQVmIo1B6bCKd+O1r3JgGeJ1fT+LuIXq6QHtO0+qSN7jpAta7GyGiHTAw8
-         ZSH493DLtCWZMIJ2SY2XwGi/v7AvmF5DcokWZWec=
-Date:   Fri, 29 May 2020 20:52:43 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Serge Semin <fancer.lancer@gmail.com>, linux-spi@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] spi: dw: Make DMA request line assignments
- explicit for Intel Medfield
-Message-ID: <20200529195243.GV4610@sirena.org.uk>
-References: <20200529183150.44149-1-andriy.shevchenko@linux.intel.com>
- <20200529184050.bkn72tash33zgoo4@mobilestation>
- <20200529184955.GY1634618@smile.fi.intel.com>
+        id S1727106AbgE2U4E (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 29 May 2020 16:56:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44434 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727024AbgE2U4D (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 29 May 2020 16:56:03 -0400
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0731DC03E969
+        for <linux-spi@vger.kernel.org>; Fri, 29 May 2020 13:56:02 -0700 (PDT)
+Received: by mail-ej1-x643.google.com with SMTP id a2so3355514ejb.10
+        for <linux-spi@vger.kernel.org>; Fri, 29 May 2020 13:56:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=MZ/bq7BR/UhzFt2ZIaVYJQXvpoJQ+iPR/c67chb9gFY=;
+        b=aWxxBonjGPpQG+NoZ8X6be8rLp6luybAHbRe17kn99001BUHe7fnkyDpkoeOygqUCL
+         y57pXYrYGApOCXX7pCcI92qN4GPKvfYhPRYt52Xf+Y0Z9QO5/FWUjsSOToY+3yxjIMa5
+         S0zEEZbqCMVqNS+r3ntBaVZvnUxyCPrHr0s1gY03uuFOnKg3e3rBeAC5DjRpdiF69yhL
+         XGdfiMG6RV4JVsSu7+CrmB9l7LusSrGlEcr+FybouY1i4MyDmum7H2LRTkw12r3eh+Ao
+         6WVoTftaBaArYeht6kBFL0LEwFjeK0KCTYhf+Z7yakZrRt2IlJiFZHpdEmUBy1F/V/3o
+         UMlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=MZ/bq7BR/UhzFt2ZIaVYJQXvpoJQ+iPR/c67chb9gFY=;
+        b=VBFlFqbwv/gFpieeJB1VRKJdjv/Lojx3OW+Mu2iN+TkcNaLz/PWFdYNJpvF4bHQs92
+         KTehZEOZbBriKUGc5SfCRlkPl9tpQzGRcbZij4tLlmD5QIUex7Ghs6f+sojWqgsRM0+G
+         7ZCSLpJyQesAefSejo9+1zEU8npEG5Tt2o5oyqDtSoeVQYMTcWu6G025Lz8tJcPICpfv
+         am+wVid/ApUviJeE04E1149MV4Ugl4YL27WL78uu8opCXA2k2UCIliQc3KygJi4nkENG
+         jEUlK7jOJSHxr5HDx4D8kbvB95U03xLMaCfA0d4pd1xo91nLp1HCr3GN7TqMU9b4i3nN
+         /EOw==
+X-Gm-Message-State: AOAM533Gq6cPjnEeEePrgDXkUCun0VURW/NotGgGI1+/jLobA1QVAwLu
+        ExlWp/Y78t5ab4I+6HYOZXYCeRNRITrTKy9k+/8EgyXx
+X-Google-Smtp-Source: ABdhPJzjsK7/U/zO9ksJnRFeX81y8s/QttSyBgAzfLXi1VmsA9YBV07OQ0mITD0sPCppzEtHE8k/bPEPrvzPB+7VDDM=
+X-Received: by 2002:a17:906:af84:: with SMTP id mj4mr3877843ejb.473.1590785761618;
+ Fri, 29 May 2020 13:56:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Uzkapz4/HjIvV4VZ"
-Content-Disposition: inline
-In-Reply-To: <20200529184955.GY1634618@smile.fi.intel.com>
-X-Cookie: The Killer Ducks are coming!!!
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20200529195756.184677-1-angelo.dureghello@timesys.com>
+In-Reply-To: <20200529195756.184677-1-angelo.dureghello@timesys.com>
+From:   Vladimir Oltean <olteanv@gmail.com>
+Date:   Fri, 29 May 2020 23:55:50 +0300
+Message-ID: <CA+h21hpGJ1F1w8veApdHgs2xn8Uiz8PBQi6nKB1WToEJg+1sXA@mail.gmail.com>
+Subject: Re: [PATCH] spi: spi-fsl-dspi: fix native data copy
+To:     Angelo Dureghello <angelo.dureghello@timesys.com>
+Cc:     Mark Brown <broonie@kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Hi Angelo,
 
---Uzkapz4/HjIvV4VZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Fri, 29 May 2020 at 22:53, Angelo Dureghello
+<angelo.dureghello@timesys.com> wrote:
+>
+> ColdFire is a big-endian cpu with a big-endian dspi hw module,
+> so, it uses native access, but memcpy breaks the endianness.
+>
+> So, if i understand properly, by native copy we would mean
+> be(cpu)->be(dspi) or le(cpu)->le(dspi) accesses, so my fix
+> shouldn't break anything, but i couldn't test it on LS family,
+> so every test is really appreciated.
+>
+> Signed-off-by: Angelo Dureghello <angelo.dureghello@timesys.com>
+> ---
 
-On Fri, May 29, 2020 at 09:49:55PM +0300, Andy Shevchenko wrote:
-> On Fri, May 29, 2020 at 09:40:50PM +0300, Serge Semin wrote:
+Honestly I was expecting more breakage than that on Coldfire :)
+I looked at this patch for a while before I figured out what's going on.
 
-> > > -	struct dw_dma_slave slave = {
-> > > -		.src_id = 0,
-> > > -		.dst_id = 0
-> > > -	};
+Let there be the program below:
 
-> > > +	struct dw_dma_slave dma_tx = { .dst_id = 1 }, *tx = &dma_tx;
-> > > +	struct dw_dma_slave dma_rx = { .src_id = 0 }, *rx = &dma_rx;
+#include <linux/types.h>
+#include <string.h>
+#include <stdio.h>
 
-> > You know my attitude to these changes.) But anyway what's the point in having
-> > the *tx and *rx pointers here? Without any harm to the readability you can use
-> > the structures names directly, don't you?
+struct fsl_dspi {
+    __u8 *tx;
+    int oper_word_size;
+};
 
-> I will wait for Mark to decide.
+static void dspi_native_host_to_dev_v1(struct fsl_dspi *dspi, __u32 *txdata)
+{
+    memcpy(txdata, dspi->tx, dspi->oper_word_size);
+    dspi->tx += dspi->oper_word_size;
+}
 
-Like I said before I don't particularly care either way, I've queued the
-patch to apply but really I'd rather that the people working on the
-driver could come to some sort of agreement here.
+static void dspi_native_host_to_dev_v2(struct fsl_dspi *dspi, __u32 *txdata)
+{
+    switch (dspi->oper_word_size) {
+    case 1:
+        *txdata = *(__u8 *)dspi->tx;
+        break;
+    case 2:
+        *txdata = *(__u16 *)dspi->tx;
+        break;
+    case 4:
+        *txdata = *(__u32 *)dspi->tx;
+        break;
+    }
+    dspi->tx += dspi->oper_word_size;
+}
 
---Uzkapz4/HjIvV4VZ
-Content-Type: application/pgp-signature; name="signature.asc"
+int main()
+{
+    struct fsl_dspi dspi;
+    __u8 tx_buf[] = {
+        0x00, 0x01, 0x02, 0x03,
+        0x04, 0x05, 0x06, 0x07,
+        0x08, 0x09, 0x0a, 0x0b,
+    };
+    __u32 txdata;
 
------BEGIN PGP SIGNATURE-----
+    dspi.tx = tx_buf;
+    dspi.oper_word_size = 2;
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl7RaAoACgkQJNaLcl1U
-h9C21wf+LXI28hOvMLta0LtNgNlhNns7lPXx5cyVbt2tkGasnpCLft6/AfwB+Bvn
-aGV2Y0FFVhAtU1W17ZUVl5BBhspkf+XFlPPPFRNtYVO1FeOavvAQjG2lr6L145ku
-IJPgp4IYkCdsSO02cRQzZM5ffOR4RKJHBGbW+QgdqWGJAECNrx7HOQ3Yl3OBnHMs
-vXMUR37vkwUYQ+4an9yV4X8eDVAQNOCOYeZvcm7LWtzlzcfMkI9bWYkG9SZQMSYK
-EjuRW9tBolJUd5lLxUxInU6opuhimtai7YojgG5dfBVxM55mzoekHWHf9Ax6IbzE
-AVm6zBRdq1IRjYPXYmh8fgrhbTzwLw==
-=m651
------END PGP SIGNATURE-----
+    txdata = 0xdeadbeef;
+    dspi_native_host_to_dev_v1(&dspi, &txdata);
+    printf("txdata v1: 0x%08x\n", txdata);
 
---Uzkapz4/HjIvV4VZ--
+    txdata = 0xdeadbeef;
+    dspi_native_host_to_dev_v2(&dspi, &txdata);
+    printf("txdata v2: 0x%08x\n", txdata);
+
+    return 0;
+}
+
+On little endian, it prints:
+
+txdata v1: 0xdead0100
+txdata v2: 0x00000302
+
+On big endian, it prints:
+
+txdata v1: 0x0001beef
+txdata v2: 0x00000203
+
+So yeah, in your case, 0xbeef (uninitialized data) would get sent on
+the wire. Your patch is correct.
+
+Fixes: 53fadb4d90c7 ("spi: spi-fsl-dspi: Simplify bytes_per_word gymnastics")
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+
+>  drivers/spi/spi-fsl-dspi.c | 24 ++++++++++++++++++++++--
+>  1 file changed, 22 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+> index 50e41f66a2d7..2e9f9adc5900 100644
+> --- a/drivers/spi/spi-fsl-dspi.c
+> +++ b/drivers/spi/spi-fsl-dspi.c
+> @@ -246,13 +246,33 @@ struct fsl_dspi {
+>
+>  static void dspi_native_host_to_dev(struct fsl_dspi *dspi, u32 *txdata)
+>  {
+> -       memcpy(txdata, dspi->tx, dspi->oper_word_size);
+> +       switch (dspi->oper_word_size) {
+> +       case 1:
+> +               *txdata = *(u8 *)dspi->tx;
+> +               break;
+> +       case 2:
+> +               *txdata = *(u16 *)dspi->tx;
+> +               break;
+> +       case 4:
+> +               *txdata = *(u32 *)dspi->tx;
+> +               break;
+> +       }
+>         dspi->tx += dspi->oper_word_size;
+>  }
+>
+>  static void dspi_native_dev_to_host(struct fsl_dspi *dspi, u32 rxdata)
+>  {
+> -       memcpy(dspi->rx, &rxdata, dspi->oper_word_size);
+> +       switch (dspi->oper_word_size) {
+> +       case 1:
+> +               *(u8 *)dspi->rx = rxdata;
+> +               break;
+> +       case 2:
+> +               *(u16 *)dspi->rx = rxdata;
+> +               break;
+> +       case 4:
+> +               *(u32 *)dspi->rx = rxdata;
+> +               break;
+> +       }
+>         dspi->rx += dspi->oper_word_size;
+>  }
+>
+> --
+> 2.26.2
+>
+
+Thanks,
+-Vladimir

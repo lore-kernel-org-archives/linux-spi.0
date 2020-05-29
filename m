@@ -6,41 +6,45 @@ X-Spam-Status: No, score=-6.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F29B4C433E3
-	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 04:00:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7AAE3C433E3
+	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 04:01:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D5E5620707
-	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 04:00:59 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6101220707
+	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 04:01:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389421AbgE2D7j (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 28 May 2020 23:59:39 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:45412 "EHLO
+        id S2391700AbgE2EBA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 29 May 2020 00:01:00 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:45410 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388565AbgE2D7h (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 28 May 2020 23:59:37 -0400
+        with ESMTP id S2388570AbgE2D7i (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 28 May 2020 23:59:38 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 36C9A8030839;
-        Fri, 29 May 2020 03:59:35 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id A4EC38030772;
+        Fri, 29 May 2020 03:59:34 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id USMqH9NTirNC; Fri, 29 May 2020 06:59:34 +0300 (MSK)
+        with ESMTP id QASSozuuX7L8; Fri, 29 May 2020 06:59:34 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
-To:     Mark Brown <broonie@kernel.org>
+To:     Mark Brown <broonie@kernel.org>,
+        Grant Likely <grant.likely@secretlab.ca>,
+        Linus Walleij <linus.walleij@stericsson.com>,
+        Feng Tang <feng.tang@intel.com>,
+        Alan Cox <alan@linux.intel.com>, Vinod Koul <vkoul@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         Serge Semin <fancer.lancer@gmail.com>,
         Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>,
         Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Arnd Bergmann <arnd@arndb.de>, Feng Tang <feng.tang@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-mips@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-spi@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
-Subject: [PATCH v5 06/16] spi: dw: Parameterize the DMA Rx/Tx burst length
-Date:   Fri, 29 May 2020 06:59:04 +0300
-Message-ID: <20200529035915.20790-7-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH v5 05/16] spi: dw: Add SPI Rx-done wait method to DMA-based transfer
+Date:   Fri, 29 May 2020 06:59:03 +0300
+Message-ID: <20200529035915.20790-6-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20200529035915.20790-1-Sergey.Semin@baikalelectronics.ru>
 References: <20200529035915.20790-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,19 +56,25 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-It isn't good to have numeric literals in the code especially if there
-are multiple of them and they are related. Let's replace the Tx and Rx
-burst level literals with the corresponding constants.
+Having any data left in the Rx FIFO after the DMA engine claimed it has
+finished all DMA transactions is an abnormal situation, since the DW SPI
+controller driver expects to have all the data being fetched and placed
+into the SPI Rx buffer at that moment. In case if this has happened we
+assume that DMA engine still may be doing the data fetching, thus we give
+it sometime to finish. If after a short period of time the data is still
+left in the Rx FIFO, the driver will give up waiting and return an error
+indicating that the SPI controller/DMA engine must have hung up or failed
+at some point of doing their duties.
 
+Fixes: 7063c0d942a1 ("spi/dw_spi: add DMA support")
 Co-developed-by: Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>
 Signed-off-by: Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>
-Co-developed-by: Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>
-Signed-off-by: Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>
 Cc: Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>
 Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Feng Tang <feng.tang@intel.com>
 Cc: Rob Herring <robh+dt@kernel.org>
 Cc: linux-mips@vger.kernel.org
@@ -72,56 +82,85 @@ Cc: devicetree@vger.kernel.org
 
 ---
 
-Changelog v3:
-- Discard the dws->fifo_len utilization in the Tx FIFO DMA threshold
-  setting.
+Changelog v5:
+- Create a dedicated patch which adds the Rx-done wait method.
+- Add more detailed description of the problem the patch fixes.
+- Wait for the SPI Rx transfer finish in the mid_spi_dma_transfer() method
+  executed in the task context.
+- Use spi_delay_exec() to wait for the SPI Rx completion, since now the
+  driver does in the kernel thread context.
+- Wait for a delay correlated with the APB/SSI synchronous clock rate
+  instead of using the SPI bus clock rate.
 ---
- drivers/spi/spi-dw-mid.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/spi/spi-dw-mid.c | 48 +++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 47 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
-index 4345881ebf66..93463bdba0f8 100644
+index 846e3db91329..4345881ebf66 100644
 --- a/drivers/spi/spi-dw-mid.c
 +++ b/drivers/spi/spi-dw-mid.c
-@@ -21,7 +21,9 @@
+@@ -248,6 +248,49 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_tx(struct dw_spi *dws,
+ 	return txdesc;
+ }
  
- #define WAIT_RETRIES	5
- #define RX_BUSY		0
-+#define RX_BURST_LEVEL	16
- #define TX_BUSY		1
-+#define TX_BURST_LEVEL	16
++static inline bool dw_spi_dma_rx_busy(struct dw_spi *dws)
++{
++	return !!(dw_readl(dws, DW_SPI_SR) & SR_RF_NOT_EMPT);
++}
++
++static int dw_spi_dma_wait_rx_done(struct dw_spi *dws)
++{
++	int retry = WAIT_RETRIES;
++	struct spi_delay delay;
++	unsigned long ns, us;
++	u32 nents;
++
++	/*
++	 * It's unlikely that DMA engine is still doing the data fetching, but
++	 * if it's let's give it some reasonable time. The timeout calculation
++	 * is based on the synchronous APB/SSI reference clock rate, on a
++	 * number of data entries left in the Rx FIFO, times a number of clock
++	 * periods normally needed for a single APB read/write transaction
++	 * without PREADY signal utilized (which is true for the DW APB SSI
++	 * controller).
++	 */
++	nents = dw_readl(dws, DW_SPI_RXFLR);
++	ns = NSEC_PER_SEC / dws->max_freq * 4 * nents;
++	if (ns <= NSEC_PER_USEC) {
++		delay.unit = SPI_DELAY_UNIT_NSECS;
++		delay.value = ns;
++	} else {
++		us = DIV_ROUND_UP(ns, NSEC_PER_USEC);
++		delay.unit = SPI_DELAY_UNIT_USECS;
++		delay.value = clamp_val(us, 0, USHRT_MAX);
++	}
++
++	while (dw_spi_dma_rx_busy(dws) && retry--)
++		spi_delay_exec(&delay, NULL);
++
++	if (retry < 0) {
++		dev_err(&dws->master->dev, "Rx hanged up\n");
++		return -EIO;
++	}
++
++	return 0;
++}
++
+ /*
+  * dws->dma_chan_busy is set before the dma transfer starts, callback for rx
+  * channel will clear a corresponding bit.
+@@ -358,7 +401,10 @@ static int mid_spi_dma_transfer(struct dw_spi *dws, struct spi_transfer *xfer)
+ 			return ret;
+ 	}
  
- static bool mid_spi_dma_chan_filter(struct dma_chan *chan, void *param)
- {
-@@ -227,7 +229,7 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_tx(struct dw_spi *dws,
- 	memset(&txconf, 0, sizeof(txconf));
- 	txconf.direction = DMA_MEM_TO_DEV;
- 	txconf.dst_addr = dws->dma_addr;
--	txconf.dst_maxburst = 16;
-+	txconf.dst_maxburst = TX_BURST_LEVEL;
- 	txconf.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
- 	txconf.dst_addr_width = convert_dma_width(dws->n_bytes);
- 	txconf.device_fc = false;
-@@ -319,7 +321,7 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_rx(struct dw_spi *dws,
- 	memset(&rxconf, 0, sizeof(rxconf));
- 	rxconf.direction = DMA_DEV_TO_MEM;
- 	rxconf.src_addr = dws->dma_addr;
--	rxconf.src_maxburst = 16;
-+	rxconf.src_maxburst = RX_BURST_LEVEL;
- 	rxconf.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
- 	rxconf.src_addr_width = convert_dma_width(dws->n_bytes);
- 	rxconf.device_fc = false;
-@@ -344,8 +346,8 @@ static int mid_spi_dma_setup(struct dw_spi *dws, struct spi_transfer *xfer)
- {
- 	u16 imr = 0, dma_ctrl = 0;
+-	return 0;
++	if (rxdesc && dws->master->cur_msg->status == -EINPROGRESS)
++		ret = dw_spi_dma_wait_rx_done(dws);
++
++	return ret;
+ }
  
--	dw_writel(dws, DW_SPI_DMARDLR, 0xf);
--	dw_writel(dws, DW_SPI_DMATDLR, 0x10);
-+	dw_writel(dws, DW_SPI_DMARDLR, RX_BURST_LEVEL - 1);
-+	dw_writel(dws, DW_SPI_DMATDLR, TX_BURST_LEVEL);
- 
- 	if (xfer->tx_buf) {
- 		dma_ctrl |= SPI_DMA_TDMAE;
+ static void mid_spi_dma_stop(struct dw_spi *dws)
 -- 
 2.26.2
 

@@ -7,21 +7,21 @@ X-Spam-Status: No, score=-9.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BE2DC433DF
-	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 07:37:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ACBD8C433DF
+	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 07:37:19 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 761472074D
-	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 07:37:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 960442074D
+	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 07:37:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726787AbgE2HhP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 29 May 2020 03:37:15 -0400
-Received: from twhmllg4.macronix.com ([211.75.127.132]:24803 "EHLO
+        id S1726788AbgE2HhT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 29 May 2020 03:37:19 -0400
+Received: from twhmllg4.macronix.com ([211.75.127.132]:24828 "EHLO
         TWHMLLG4.macronix.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726774AbgE2HhO (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 29 May 2020 03:37:14 -0400
+        with ESMTP id S1726774AbgE2HhT (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 29 May 2020 03:37:19 -0400
 Received: from localhost.localdomain ([172.17.195.96])
-        by TWHMLLG4.macronix.com with ESMTP id 04T7aHq0067318;
-        Fri, 29 May 2020 15:36:21 +0800 (GMT-8)
+        by TWHMLLG4.macronix.com with ESMTP id 04T7aHq2067318;
+        Fri, 29 May 2020 15:36:22 +0800 (GMT-8)
         (envelope-from masonccyang@mxic.com.tw)
 From:   Mason Yang <masonccyang@mxic.com.tw>
 To:     broonie@kernel.org, tudor.ambarus@microchip.com,
@@ -30,132 +30,192 @@ To:     broonie@kernel.org, tudor.ambarus@microchip.com,
 Cc:     p.yadav@ti.com, juliensu@mxic.com.tw, linux-kernel@vger.kernel.org,
         linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
         Mason Yang <masonccyang@mxic.com.tw>
-Subject: [PATCH v4 4/7] mtd: spi-nor: core: add configuration register 2 read & write support
-Date:   Fri, 29 May 2020 15:36:12 +0800
-Message-Id: <1590737775-4798-5-git-send-email-masonccyang@mxic.com.tw>
+Subject: [PATCH v4 6/7] spi: mxic: patch for octal DTR mode support
+Date:   Fri, 29 May 2020 15:36:14 +0800
+Message-Id: <1590737775-4798-7-git-send-email-masonccyang@mxic.com.tw>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1590737775-4798-1-git-send-email-masonccyang@mxic.com.tw>
 References: <1590737775-4798-1-git-send-email-masonccyang@mxic.com.tw>
-X-MAIL: TWHMLLG4.macronix.com 04T7aHq0067318
+X-MAIL: TWHMLLG4.macronix.com 04T7aHq2067318
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Configuration register 2 is to set the device operation condition like
-STR or DTR mode at address offset 0 and DQS mode at address offset 0x200.
-
-Each device has various address offset for it's specific operatoin
-setting.
+Driver patch for octal 8D-8D-8D mode support.
 
 Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
 ---
- drivers/mtd/spi-nor/core.c | 78 ++++++++++++++++++++++++++++++++++++++++++++++
- drivers/mtd/spi-nor/core.h |  2 ++
- 2 files changed, 80 insertions(+)
+ drivers/spi/spi-mxic.c | 98 +++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 66 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
-index 3799417..fed6236 100644
---- a/drivers/mtd/spi-nor/core.c
-+++ b/drivers/mtd/spi-nor/core.c
-@@ -269,6 +269,84 @@ int spi_nor_write_disable(struct spi_nor *nor)
+diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
+index 69491f3..a9b3817 100644
+--- a/drivers/spi/spi-mxic.c
++++ b/drivers/spi/spi-mxic.c
+@@ -280,10 +280,55 @@ static void mxic_spi_hw_init(struct mxic_spi *mxic)
+ 	       mxic->regs + HC_CFG);
  }
  
- /**
-+ * spi_nor_read_cr2() - Read the Configuration Register 2.
-+ * @nor:	pointer to 'struct spi_nor'.
-+ * @addr:	offset address to read.
-+ * @cr2:	pointer to a DMA-able buffer where the value of the
-+ *              Configuration Register 2  will be written.
-+ *
-+ * Return: 0 on success, -errno otherwise.
-+ */
-+int spi_nor_read_cr2(struct spi_nor *nor, u32 addr, u8 *cr2)
++static u32 mxic_spi_mem_prep_op_cfg(const struct spi_mem_op *op)
 +{
-+	int ret;
-+	u8 cmd = nor->params->rd_reg_cmd;
++	u32 cfg =  OP_CMD_BYTES(op->cmd.nbytes) |
++		   OP_CMD_BUSW(fls(op->cmd.buswidth) - 1) |
++		   (op->cmd.dtr ? OP_CMD_DDR : 0);
 +
-+	if (nor->spimem) {
-+		struct spi_mem_op op =
-+			SPI_MEM_OP(SPI_MEM_OP_CMD(cmd, 1),
-+				   SPI_MEM_OP_ADDR(4, addr, 1),
-+				   SPI_MEM_OP_DUMMY(4, 1),
-+				   SPI_MEM_OP_DATA_IN(1, cr2, 1));
++	if (op->addr.nbytes)
++		cfg |= OP_ADDR_BYTES(op->addr.nbytes) |
++		       OP_ADDR_BUSW(fls(op->addr.buswidth) - 1) |
++		       (op->addr.dtr ? OP_ADDR_DDR : 0);
 +
-+		spi_nor_spimem_setup_op(nor, &op, nor->reg_proto);
++	if (op->dummy.nbytes)
++		cfg |= OP_DUMMY_CYC(op->dummy.nbytes);
 +
-+		ret = spi_mem_exec_op(nor->spimem, &op);
-+	} else {
-+		if (spi_nor_protocol_is_dtr(nor->reg_proto))
-+			ret = -ENOTSUPP;
-+		else
-+			ret = nor->controller_ops->read_reg(nor, cmd, cr2, 1);
++	if (op->data.nbytes) {
++		cfg |= OP_DATA_BUSW(fls(op->data.buswidth) - 1) |
++		      (op->data.dtr ? OP_DATA_DDR : 0);
++		if (op->data.dir == SPI_MEM_DATA_IN)
++			cfg |= OP_READ;
 +	}
 +
-+	if (ret)
-+		dev_dbg(nor->dev, "error %d reading CR2\n", ret);
-+
-+	return ret;
++	return cfg;
 +}
 +
-+/**
-+ * spi_nor_write_cr2() - Write the Configuration Register 2.
-+ * @nor:	pointer to 'struct spi_nor'.
-+ * @addr:	offset address to write.
-+ * @cr2:	pointer to a DMA-able buffer where the value of the
-+ *              Configuratin Register 2 will be read.
-+ *
-+ * Return: 0 on success, -errno otherwise.
-+ */
-+int spi_nor_write_cr2(struct spi_nor *nor, u32 addr, u8 *cr2)
++static void mxic_spi_set_hc_cfg(struct spi_device *spi, u32 flags)
 +{
-+	int ret;
-+	u8 cmd = nor->params->wr_reg_cmd;
++	struct mxic_spi *mxic = spi_master_get_devdata(spi->master);
++	int nio = 1;
 +
-+	ret = spi_nor_write_enable(nor);
-+	if (ret)
-+		return ret;
++	if (spi->mode & (SPI_RX_OCTAL | SPI_TX_OCTAL))
++		nio = 8;
++	else if (spi->mode & (SPI_TX_QUAD | SPI_RX_QUAD))
++		nio = 4;
++	else if (spi->mode & (SPI_TX_DUAL | SPI_RX_DUAL))
++		nio = 2;
 +
-+	if (nor->spimem) {
-+		struct spi_mem_op op =
-+			SPI_MEM_OP(SPI_MEM_OP_CMD(cmd, 1),
-+				   SPI_MEM_OP_ADDR(4, addr, 1),
-+				   SPI_MEM_OP_NO_DUMMY,
-+				   SPI_MEM_OP_DATA_OUT(1, cr2, 1));
-+
-+		spi_nor_spimem_setup_op(nor, &op, nor->reg_proto);
-+
-+		ret = spi_mem_exec_op(nor->spimem, &op);
-+	} else {
-+		if (spi_nor_protocol_is_dtr(nor->reg_proto))
-+			ret = -ENOTSUPP;
-+		else
-+			ret = nor->controller_ops->write_reg(nor, cmd, cr2, 1);
-+	}
-+
-+	if (ret)
-+		dev_dbg(nor->dev, "error %d write CFG Reg 2\n", ret);
-+
-+	return ret;
++	writel(flags | HC_CFG_NIO(nio) |
++	       HC_CFG_TYPE(spi->chip_select, HC_CFG_TYPE_SPI_NOR) |
++	       HC_CFG_SLV_ACT(spi->chip_select) | HC_CFG_IDLE_SIO_LVL(1),
++	       mxic->regs + HC_CFG);
 +}
 +
-+/**
-  * spi_nor_read_sr() - Read the Status Register.
-  * @nor:	pointer to 'struct spi_nor'.
-  * @sr:		pointer to a DMA-able buffer where the value of the
-diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
-index 8de7f53..0eb07ca 100644
---- a/drivers/mtd/spi-nor/core.h
-+++ b/drivers/mtd/spi-nor/core.h
-@@ -434,6 +434,8 @@ struct spi_nor_manufacturer {
+ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
+ 			      void *rxbuf, unsigned int len)
+ {
+ 	unsigned int pos = 0;
++	bool dtr_enabled;
++
++	dtr_enabled = (readl(mxic->regs + SS_CTRL(0)) & OP_DATA_DDR);
  
- int spi_nor_write_enable(struct spi_nor *nor);
- int spi_nor_write_disable(struct spi_nor *nor);
-+int spi_nor_read_cr2(struct spi_nor *nor, u32 addr, u8 *cr2);
-+int spi_nor_write_cr2(struct spi_nor *nor, u32 addr, u8 *cr2);
- int spi_nor_set_4byte_addr_mode(struct spi_nor *nor, bool enable);
- int spi_nor_write_ear(struct spi_nor *nor, u8 ear);
- int spi_nor_wait_till_ready(struct spi_nor *nor);
+ 	while (pos < len) {
+ 		unsigned int nbytes = len - pos;
+@@ -302,6 +347,9 @@ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
+ 		if (ret)
+ 			return ret;
+ 
++		if (dtr_enabled && len & 0x1)
++			nbytes++;
++
+ 		writel(data, mxic->regs + TXD(nbytes % 4));
+ 
+ 		if (rxbuf) {
+@@ -319,6 +367,8 @@ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
+ 
+ 			data = readl(mxic->regs + RXD);
+ 			data >>= (8 * (4 - nbytes));
++			if (dtr_enabled && len & 0x1)
++				nbytes++;
+ 			memcpy(rxbuf + pos, &data, nbytes);
+ 			WARN_ON(readl(mxic->regs + INT_STS) & INT_RX_NOT_EMPTY);
+ 		} else {
+@@ -335,8 +385,8 @@ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
+ static bool mxic_spi_mem_supports_op(struct spi_mem *mem,
+ 				     const struct spi_mem_op *op)
+ {
+-	if (op->data.buswidth > 4 || op->addr.buswidth > 4 ||
+-	    op->dummy.buswidth > 4 || op->cmd.buswidth > 4)
++	if (op->data.buswidth > 8 || op->addr.buswidth > 8 ||
++	    op->dummy.buswidth > 8 || op->cmd.buswidth > 8)
+ 		return false;
+ 
+ 	if (op->data.nbytes && op->dummy.nbytes &&
+@@ -346,6 +396,9 @@ static bool mxic_spi_mem_supports_op(struct spi_mem *mem,
+ 	if (op->addr.nbytes > 7)
+ 		return false;
+ 
++	if (op->cmd.buswidth == 8 && op->cmd.nbytes == 2)
++		return true;
++
+ 	return spi_mem_default_supports_op(mem, op);
+ }
+ 
+@@ -353,47 +406,27 @@ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
+ 				const struct spi_mem_op *op)
+ {
+ 	struct mxic_spi *mxic = spi_master_get_devdata(mem->spi->master);
+-	int nio = 1, i, ret;
+-	u32 ss_ctrl;
+-	u8 addr[8];
++	int i, ret;
++	u8 addr[8], cmd[2];
+ 
+ 	ret = mxic_spi_set_freq(mxic, mem->spi->max_speed_hz);
+ 	if (ret)
+ 		return ret;
+ 
+-	if (mem->spi->mode & (SPI_TX_QUAD | SPI_RX_QUAD))
+-		nio = 4;
+-	else if (mem->spi->mode & (SPI_TX_DUAL | SPI_RX_DUAL))
+-		nio = 2;
++	mxic_spi_set_hc_cfg(mem->spi, HC_CFG_MAN_CS_EN);
+ 
+-	writel(HC_CFG_NIO(nio) |
+-	       HC_CFG_TYPE(mem->spi->chip_select, HC_CFG_TYPE_SPI_NOR) |
+-	       HC_CFG_SLV_ACT(mem->spi->chip_select) | HC_CFG_IDLE_SIO_LVL(1) |
+-	       HC_CFG_MAN_CS_EN,
+-	       mxic->regs + HC_CFG);
+ 	writel(HC_EN_BIT, mxic->regs + HC_EN);
+ 
+-	ss_ctrl = OP_CMD_BYTES(1) | OP_CMD_BUSW(fls(op->cmd.buswidth) - 1);
+-
+-	if (op->addr.nbytes)
+-		ss_ctrl |= OP_ADDR_BYTES(op->addr.nbytes) |
+-			   OP_ADDR_BUSW(fls(op->addr.buswidth) - 1);
+-
+-	if (op->dummy.nbytes)
+-		ss_ctrl |= OP_DUMMY_CYC(op->dummy.nbytes);
+-
+-	if (op->data.nbytes) {
+-		ss_ctrl |= OP_DATA_BUSW(fls(op->data.buswidth) - 1);
+-		if (op->data.dir == SPI_MEM_DATA_IN)
+-			ss_ctrl |= OP_READ;
+-	}
+-
+-	writel(ss_ctrl, mxic->regs + SS_CTRL(mem->spi->chip_select));
++	writel(mxic_spi_mem_prep_op_cfg(op),
++	       mxic->regs + SS_CTRL(mem->spi->chip_select));
+ 
+ 	writel(readl(mxic->regs + HC_CFG) | HC_CFG_MAN_CS_ASSERT,
+ 	       mxic->regs + HC_CFG);
+ 
+-	ret = mxic_spi_data_xfer(mxic, &op->cmd.opcode, NULL, 1);
++	for (i = 0; i < op->cmd.nbytes; i++)
++		cmd[i] = op->cmd.opcode >> (8 * (op->cmd.nbytes - i - 1));
++
++	ret = mxic_spi_data_xfer(mxic, cmd, NULL, op->cmd.nbytes);
+ 	if (ret)
+ 		goto out;
+ 
+@@ -566,7 +599,8 @@ static int mxic_spi_probe(struct platform_device *pdev)
+ 	master->bits_per_word_mask = SPI_BPW_MASK(8);
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA |
+ 			SPI_RX_DUAL | SPI_TX_DUAL |
+-			SPI_RX_QUAD | SPI_TX_QUAD;
++			SPI_RX_QUAD | SPI_TX_QUAD |
++			SPI_RX_OCTAL | SPI_TX_OCTAL;
+ 
+ 	mxic_spi_hw_init(mxic);
+ 
 -- 
 1.9.1
 

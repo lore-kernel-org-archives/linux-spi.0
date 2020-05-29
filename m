@@ -6,51 +6,67 @@ X-Spam-Status: No, score=-2.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CDA7BC433DF
-	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 17:22:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F1B7DC433E0
+	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 17:33:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A0BDD20810
-	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 17:22:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C89ED207BC
+	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 17:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1590772957;
-	bh=nhFmd1nKFRWbwVMxppSyFwFxYzfZC01icTteWmxNe9g=;
+	s=default; t=1590773613;
+	bh=R3UlKfJDQ0YkZrgOUGl3rs/KIBJQkF8/RkXJ5GgzrwA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=WSLzANPjDX7Uokzr1KYSmGRlgM5wXKX9XkO3t1Mw/jmaaTaPMPhwzrwdTMfukalJk
-	 FHCL0t/KmZL5QPrZE5iAYbAN+WUzflQvV2Q87zI8m/tzMc3nQfhSfJtIBubNuWot3A
-	 Pharb4R55ytN4feY1zCj/y0s8fNE9K86yUp1J2nk=
+	b=0RInsX5ro62Jmc7BbgftjyN8AvJFB6bDs9Faz8eXH+itX7BDqkAGFsI7N/aoGOeCO
+	 Q0dDw/nvl+35gfnpEs1gxLf8bH8L7cGnMsK/WMstzhbfxsILRr7k2T37Fa6rSxx2jJ
+	 1FJDoeZPWU9IHZcwirLo9IYYEULd+VSbCH+PSO64=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725865AbgE2RWg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 29 May 2020 13:22:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43884 "EHLO mail.kernel.org"
+        id S1727877AbgE2Rdb (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 29 May 2020 13:33:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54666 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725839AbgE2RWT (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 29 May 2020 13:22:19 -0400
+        id S1727809AbgE2Rd3 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 29 May 2020 13:33:29 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9CAB320810;
-        Fri, 29 May 2020 17:22:14 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3930D2072D;
+        Fri, 29 May 2020 17:33:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1590772935;
-        bh=nhFmd1nKFRWbwVMxppSyFwFxYzfZC01icTteWmxNe9g=;
+        s=default; t=1590773609;
+        bh=R3UlKfJDQ0YkZrgOUGl3rs/KIBJQkF8/RkXJ5GgzrwA=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=M1FPpmye2xCTWYQx8DnPqeL7NY0aT2PHCw0ICZ1JF/rsgALuBbUT4tPE4l1JtK9km
-         88Jnsv3hLfnKSbz8viW+YyII3FdCgyv1z8DkYes4IVpspZzz7KBXeeQXHkToc4YRUl
-         DToKY7od8szlWNyYK0iJdBhXnmvREYp8N2y/TO90=
-Date:   Fri, 29 May 2020 18:22:12 +0100
+        b=C8N3Gh2TBNix1CgIW235bblS8scifPnuXdlBEdd8SNvVohftIT9ziPO3JgPmafaTc
+         rV1/4pQOA7kgqqoUM+/V3QdmCOhJPsf/TS56qT1kQooDPv7wqdlG4ZIBHwxdJEzggs
+         wUKFu6qm8jD5nyWpWDdmPatB5a6jufbgEjad4Q4I=
+Date:   Fri, 29 May 2020 18:33:25 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-spi@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] spi: dw: Make DMA request line assignments
- explicit for Intel Medfield
-Message-ID: <20200529172212.GA17643@sirena.org.uk>
-References: <20200528102311.79948-1-andriy.shevchenko@linux.intel.com>
+To:     Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Cc:     Serge Semin <fancer.lancer@gmail.com>,
+        Ekaterina Skachko <Ekaterina.Skachko@baikalelectronics.ru>,
+        Feng Tang <feng.tang@intel.com>, devicetree@vger.kernel.org,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>,
+        Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
+        Alexey Kolotnikov <Alexey.Kolotnikov@baikalelectronics.ru>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Vadim Vlasov <V.Vlasov@baikalelectronics.ru>,
+        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
+        linux-mips@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Maxim Kaurkin <Maxim.Kaurkin@baikalelectronics.ru>
+Subject: Re: [PATCH v6 00/16] spi: dw: Add generic DW DMA controller support
+Message-ID: <20200529173325.GR4610@sirena.org.uk>
+References: <20200529131205.31838-1-Sergey.Semin@baikalelectronics.ru>
+ <159077271266.17043.13820488074564153429.b4-ty@kernel.org>
+ <20200529172642.hcnvyzv2ocizsvpy@mobilestation>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="tThc/1wpZn/ma/RB"
+        protocol="application/pgp-signature"; boundary="YttKMwf6abDJOSyE"
 Content-Disposition: inline
-In-Reply-To: <20200528102311.79948-1-andriy.shevchenko@linux.intel.com>
-X-Cookie: Ginger snap.
+In-Reply-To: <20200529172642.hcnvyzv2ocizsvpy@mobilestation>
+X-Cookie: The Killer Ducks are coming!!!
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
@@ -58,31 +74,35 @@ List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
 
---tThc/1wpZn/ma/RB
+--YttKMwf6abDJOSyE
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, May 28, 2020 at 01:23:10PM +0300, Andy Shevchenko wrote:
-> The 2afccbd283ae ("spi: dw: Discard static DW DMA slave structures")
-> did a clean up of global variables, which is fine, but messed up with
-> the carefully provided information in the custom DMA slave structures.
-> There reader can find an assignment of the DMA request lines in use.
+On Fri, May 29, 2020 at 08:26:42PM +0300, Serge Semin wrote:
 
-This doesn't apply against current code, please rebase and resend.
+> You must have missed the patch 16:
+> 0e8332aaf059 dt-bindings: spi: Convert DW SPI binding to DT schema
+> As you can see it has been acked by Rob. So you can also merge it into your
+> repo. Though It has to be rebased first due to the Dinh Nguyen patches
+> recently merged in. Do you want me to do the rebasing?
 
---tThc/1wpZn/ma/RB
+Please rebase.  TBH I'd not noticed Rob's review so I just left it
+waiting for that, there's such a huge backlog there it didn't occur to
+me that it might've been reviewed.
+
+--YttKMwf6abDJOSyE
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl7RRMMACgkQJNaLcl1U
-h9BIaQf7BngWDEhJNivsV2u8clOUjLWsNMVU2r80vgVzQ3Mu6OTsTO8lHM65+mT4
-9AEEoGM2jGnSQNYfpwwQU/Ggsayfo7IhP1IvUGR9mb06SUCIgwegphUFjme2Y6ON
-f7ryEtXkIeDhTD1VWszzDRVSGvX0+UwQvkqkj54JbadC2pR8qaxRFW+q5SHYy4m6
-0xLXgKezGKiPKYvkpyyKW61nQcd9cDt8CFePXqrGKjyXMJnJfYaky8oiu9JYvTGC
-IWBqplAHSNtYVwFZu/aEITa9arQy47lczKEtDcoZ+p4luuc04N96CyBuc1k9QPOX
-SnRredGuyl5NbsfGJ82nPcfply9MQA==
-=vAP6
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl7RR2QACgkQJNaLcl1U
+h9CsXQf/aA2456F8P1TeBjPSZTkkGMIoE4VH1b4PA9LR5SIljZUnVP61Ep3P51xI
+zMvytLCsWgdSrTUkDRmsLN3YgF//wMfSgwbt+D4H/clzEsAPPo/WIUtAna8Qc1Kp
+9WJPLwNCSmaZXdHPdVBTI1MDncTo4Su9Zd4H9LO/9boN1gi0oABIA0ggIaJKFYJl
+wwX1VfvLyal/DlE6FkBe66D70A6rka20MxZtGRJdWQUXbm/rx/ptoROy83fdyrVm
+A0sokgTBQYz2aMaLS0LN5frYdWzfNStlRMuDCO2Spf0OlELFVdcovfSDglTIOvUs
+XZrETjZtic6tL+Ux2NH2/mXODvcc9w==
+=z4mF
 -----END PGP SIGNATURE-----
 
---tThc/1wpZn/ma/RB--
+--YttKMwf6abDJOSyE--

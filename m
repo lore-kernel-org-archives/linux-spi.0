@@ -2,25 +2,26 @@ Return-Path: <SRS0=iNVW=7L=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 404ACC433DF
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 314D3C433E0
 	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 07:37:13 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 28338208A7
+	by mail.kernel.org (Postfix) with ESMTP id 1628020897
 	for <linux-spi@archiver.kernel.org>; Fri, 29 May 2020 07:37:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726757AbgE2HhM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1726775AbgE2HhM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Fri, 29 May 2020 03:37:12 -0400
-Received: from twhmllg4.macronix.com ([211.75.127.132]:24789 "EHLO
+Received: from twhmllg4.macronix.com ([211.75.127.132]:24787 "EHLO
         TWHMLLG4.macronix.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726762AbgE2HhM (ORCPT
+        with ESMTP id S1726757AbgE2HhM (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 29 May 2020 03:37:12 -0400
 Received: from localhost.localdomain ([172.17.195.96])
-        by TWHMLLG4.macronix.com with ESMTP id 04T7aHpu067318;
-        Fri, 29 May 2020 15:36:17 +0800 (GMT-8)
+        by TWHMLLG4.macronix.com with ESMTP id 04T7aHq1067318;
+        Fri, 29 May 2020 15:36:21 +0800 (GMT-8)
         (envelope-from masonccyang@mxic.com.tw)
 From:   Mason Yang <masonccyang@mxic.com.tw>
 To:     broonie@kernel.org, tudor.ambarus@microchip.com,
@@ -29,89 +30,120 @@ To:     broonie@kernel.org, tudor.ambarus@microchip.com,
 Cc:     p.yadav@ti.com, juliensu@mxic.com.tw, linux-kernel@vger.kernel.org,
         linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
         Mason Yang <masonccyang@mxic.com.tw>
-Subject: [PATCH v4 0/7] mtd: spi-nor: add xSPI Octal DTR support
-Date:   Fri, 29 May 2020 15:36:08 +0800
-Message-Id: <1590737775-4798-1-git-send-email-masonccyang@mxic.com.tw>
+Subject: [PATCH v4 5/7] mtd: spi-nor: core: execute command sequences to change octal DTR mode
+Date:   Fri, 29 May 2020 15:36:13 +0800
+Message-Id: <1590737775-4798-6-git-send-email-masonccyang@mxic.com.tw>
 X-Mailer: git-send-email 1.9.1
-X-MAIL: TWHMLLG4.macronix.com 04T7aHpu067318
+In-Reply-To: <1590737775-4798-1-git-send-email-masonccyang@mxic.com.tw>
+References: <1590737775-4798-1-git-send-email-masonccyang@mxic.com.tw>
+X-MAIL: TWHMLLG4.macronix.com 04T7aHq1067318
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello,
+Execute command sequences to change octal DTR mode.
 
-JESD216C has defined specification for Octal 8S-8S-8S and 8D-8D-8D.
-Based on JEDEC216C Basic Flash Parameter Table (BFPT) driver extract
-DWORD-18: command and command extension type.
-DWORD-20: Maximum operation speed of device in Octal mode.
+Signed-off-by: Mason Yang <masonccyang@mxic.com.tw>
+---
+ drivers/mtd/spi-nor/core.c | 71 ++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/mtd/spi-nor/core.h |  1 +
+ 2 files changed, 72 insertions(+)
 
-xSPI profile 1.0 table:
-DWORD-1: Read Fast command, the number of dummy cycles and address nbytes
-	 for Read Status Register command.
-DWORD-2: Read/Write volatile Register command for CFG Reg2.
-DWORD-4 and DWORD-5: dummy cycles used for various frequencies based on
-maximum speed of device from BFPT 20th DWORD.
-
-Ccommand sequences to change to octal DTR mode:
-The length of each command sequence is 8 per byte for single SPI mode and
-patching driver to parse and execute these sequences for octal DTR mode.
-
-By Vignesh's comments, this patches set is dependency on Pratyush's
-[1][2][5][7][8] and [10][12].
-
-Tested on Macronix's Zynq PicoZed board with Macronix's SPI controller
-(spi-mxic.c) driver patched on mx25uw51245g Octal flash.
-
-[1] https://patchwork.ozlabs.org/project/linux-mtd/patch/20200525091544.17270-2-p.yadav@ti.com/
-[2] https://patchwork.ozlabs.org/project/linux-mtd/patch/20200525091544.17270-3-p.yadav@ti.com/
-[5] https://patchwork.ozlabs.org/project/linux-mtd/patch/20200525091544.17270-6-p.yadav@ti.com/
-[7] https://patchwork.ozlabs.org/project/linux-mtd/patch/20200525091544.17270-8-p.yadav@ti.com/
-[8] https://patchwork.ozlabs.org/project/linux-mtd/patch/20200525091544.17270-9-p.yadav@ti.com/
-[10] https://patchwork.ozlabs.org/project/linux-mtd/patch/20200525091544.17270-11-p.yadav@ti.com/
-[12] https://patchwork.ozlabs.org/project/linux-mtd/patch/20200525091544.17270-13-p.yadav@ti.com/
-
-Summary of change log
-v4:
-Removed Pratyush's patches set part.
-
-v3:
-Add support command sequences to change octal DTR mode and based on
-part of Pratyush's patches set.
-
-v2: 
-Parse BFPT & xSPI table for Octal 8D-8D-8D mode parameters and enable Octal
-mode in spi_nor_late_init_params().
-Using Macros in spi_nor_spimem_read_data, spi_nor_spimem_write_data and
-so on by Vignesh comments.
-
-v1:
-Without parsing BFPT & xSPI profile 1.0 table and enter Octal 8D-8D-8D
-mode directly in spi_nor_fixups hooks.
-
-
-thnaks for your time and review.
-best regards,
-Mason
-
-Mason Yang (7):
-  mtd: spi-nor: sfdp: get octal mode maximum speed from BFPT
-  mtd: spi-nor: sfdp: parse xSPI Profile 1.0 table
-  mtd: spi-nor: sfdp: parse command sequences to change octal DTR mode
-  mtd: spi-nor: core: add configuration register 2 read & write support
-  mtd: spi-nor: core: execute command sequences to change octal DTR mode
-  spi: mxic: patch for octal DTR mode support
-  mtd: spi-nor: macronix: Add Octal 8D-8D-8D supports for Macronix
-    mx25uw51245g
-
- drivers/mtd/spi-nor/core.c     | 151 ++++++++++++++++++++++++-
- drivers/mtd/spi-nor/core.h     |  41 +++++++
- drivers/mtd/spi-nor/macronix.c |  55 +++++++++
- drivers/mtd/spi-nor/sfdp.c     | 246 +++++++++++++++++++++++++++++++++++++++++
- drivers/mtd/spi-nor/sfdp.h     |   4 +
- drivers/spi/spi-mxic.c         |  98 ++++++++++------
- 6 files changed, 562 insertions(+), 33 deletions(-)
-
+diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+index fed6236..c8cd0c6 100644
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -347,6 +347,77 @@ int spi_nor_write_cr2(struct spi_nor *nor, u32 addr, u8 *cr2)
+ }
+ 
+ /**
++ * spi_nor_cmd_seq_octal_dtr() - command sequences to change to octal DTR mode
++ * @nor:	pointer to 'struct spi_nor'.
++ * @enable:	enable Octal DTR.
++ *
++ * Return: 0 on success, -errno otherwise.
++ */
++int spi_nor_cmd_seq_octal_dtr(struct spi_nor *nor, bool enable)
++{
++	struct spi_nor_flash_parameter *p = nor->params;
++	struct cmd_seq_octal_dtr *cs = p->cmd_seq;
++	int i, ret;
++	struct spi_mem_op op;
++
++	if (!nor->spimem || !p->cmd_seq[0].len)
++		return -ENOTSUPP;
++
++	if (!enable)
++		return 0;
++
++	for (i = 0; i < CMD_SEQ_NUM; i++) {
++		switch (p->cmd_seq[i].len) {
++		case 1:
++			op = (struct spi_mem_op)
++				SPI_MEM_OP(SPI_MEM_OP_CMD(cs[i].opcode, 1),
++					   SPI_MEM_OP_NO_ADDR,
++					   SPI_MEM_OP_NO_DUMMY,
++					   SPI_MEM_OP_NO_DATA);
++
++			ret = spi_mem_exec_op(nor->spimem, &op);
++			if (ret)
++				return ret;
++			break;
++
++		case 3:
++			op = (struct spi_mem_op)
++				SPI_MEM_OP(SPI_MEM_OP_CMD(cs[i].opcode, 1),
++					   SPI_MEM_OP_ADDR(1, cs[i].addr, 1),
++					   SPI_MEM_OP_NO_DUMMY,
++					   SPI_MEM_OP_DATA_OUT(1,
++							       &cs[i].data, 1));
++
++			ret = spi_mem_exec_op(nor->spimem, &op);
++			if (ret)
++				return ret;
++			break;
++
++		case 6:
++			op = (struct spi_mem_op)
++				SPI_MEM_OP(SPI_MEM_OP_CMD(cs[i].opcode, 1),
++					   SPI_MEM_OP_ADDR(4, cs[i].addr, 1),
++					   SPI_MEM_OP_NO_DUMMY,
++					   SPI_MEM_OP_DATA_OUT(1,
++							       &cs[i].data, 1));
++
++			ret = spi_mem_exec_op(nor->spimem, &op);
++			if (ret)
++				return ret;
++			break;
++
++		default:
++			dev_err(nor->dev,
++				"Error %d sequences to Octal DTR\n",
++				p->cmd_seq[i].len);
++			break;
++		}
++	}
++
++	return ret;
++}
++
++/**
+  * spi_nor_read_sr() - Read the Status Register.
+  * @nor:	pointer to 'struct spi_nor'.
+  * @sr:		pointer to a DMA-able buffer where the value of the
+diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
+index 0eb07ca..e4cf20a 100644
+--- a/drivers/mtd/spi-nor/core.h
++++ b/drivers/mtd/spi-nor/core.h
+@@ -436,6 +436,7 @@ struct spi_nor_manufacturer {
+ int spi_nor_write_disable(struct spi_nor *nor);
+ int spi_nor_read_cr2(struct spi_nor *nor, u32 addr, u8 *cr2);
+ int spi_nor_write_cr2(struct spi_nor *nor, u32 addr, u8 *cr2);
++int spi_nor_cmd_seq_octal_dtr(struct spi_nor *nor, bool enable);
+ int spi_nor_set_4byte_addr_mode(struct spi_nor *nor, bool enable);
+ int spi_nor_write_ear(struct spi_nor *nor, u8 ear);
+ int spi_nor_wait_till_ready(struct spi_nor *nor);
 -- 
 1.9.1
 

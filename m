@@ -2,129 +2,66 @@ Return-Path: <SRS0=RtOV=7O=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-6.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E5BAC433DF
-	for <linux-spi@archiver.kernel.org>; Mon,  1 Jun 2020 19:18:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 88E01C433DF
+	for <linux-spi@archiver.kernel.org>; Mon,  1 Jun 2020 19:35:30 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 592CE2073B
-	for <linux-spi@archiver.kernel.org>; Mon,  1 Jun 2020 19:18:29 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=cogentembedded-com.20150623.gappssmtp.com header.i=@cogentembedded-com.20150623.gappssmtp.com header.b="iwHH84UO"
+	by mail.kernel.org (Postfix) with ESMTP id 608632065C
+	for <linux-spi@archiver.kernel.org>; Mon,  1 Jun 2020 19:35:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1591040130;
+	bh=1t1QVkm6X5w9z2THN4j4Vz9f2RfmzNv+B53krBVl5Bg=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:List-ID:From;
+	b=e+lEg7DQKlTqZttz72QQe6tVoG/p5KAqET1w7Gr2vFt3w4t2B9EEIxr0PD9aWOnYF
+	 R1WhAE6NAzVb275WfR3Hj1weIoXe1N10NU9Piakzebdsr5jHvx2CTI9TomH/KGZ8ZY
+	 Vti2xd/0Dtx6B+4eqE92Nf7R6Eku0OniTcN+aNkk=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727113AbgFATS3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 1 Jun 2020 15:18:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48872 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726751AbgFATS2 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 1 Jun 2020 15:18:28 -0400
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43931C061A0E
-        for <linux-spi@vger.kernel.org>; Mon,  1 Jun 2020 12:18:28 -0700 (PDT)
-Received: by mail-lj1-x243.google.com with SMTP id c11so9591009ljn.2
-        for <linux-spi@vger.kernel.org>; Mon, 01 Jun 2020 12:18:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:organization:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=/B/vJSdZ4H+DclQbmiiPRhS99BSxRaLniCcxhXNQdaA=;
-        b=iwHH84UOoC537MGk6E7us+S+9Zdopz5u3Mz9r49FApyoOZsxNbMpSYkDpYz+aYUmIa
-         gtYJ4Nu2LvDhSS9BFKk/dXVwM+V+xJdfWYttpRfsGqdl+mfJLbnevBNm+6jq/a3qu6CS
-         79cIP/nF1F5EzENa3hIe43wwl8d/B/SzpYMrgV+aDEoXxYeViLETePnqL6+klDaawcpX
-         9Q+NOyq2LouzXifA0UFaf9jIAdeXnxvtv9zoddLb2ACAVvgArDVoDnSfzqzGD6APHcu8
-         RWbhRoiDb2muv9dDnZFBL/MccbVhteizvEX7iahC7D4K1DHIFyVP4Ro83iNhRQPi/oNz
-         WSsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=/B/vJSdZ4H+DclQbmiiPRhS99BSxRaLniCcxhXNQdaA=;
-        b=BNPbkCyb3tYJ8RsB7iFjkuQ5fep+3wxG//+dwXkywXXfIg67ZvnyoJS+xqFMdpiKBA
-         hwqftXI5A+RcemyiY07Akw73DW5UIrPXWOJhcdFCQCSUs7MZpPEQ4bShyc2cIbGKzK/v
-         sMGJ40k7H0C3Ezy2BUccRL7UeYM6IDUyARSnoLan79fQqzeMG6bJwszxG/Znmy2LwMz2
-         dUBLfRz4TmV7NsT1n5GeYnwHmPVa5o3NFD8tSKhYkp/+unmDRE5KvMKjS1OF+92M+Jcn
-         hqAhT58u+4Gq8+oWg14FjQt/rwc6VE4zfvMSCp6E/ium6kqEungSbDSqxtzGIrREmaUv
-         T3uw==
-X-Gm-Message-State: AOAM5305TksiifEEHOVTxPLCUmJJiE6WocAjm6LaVeF0HuMPCbE65F8R
-        lQDVCKCWaLxna6lFUmFI/qHMrA==
-X-Google-Smtp-Source: ABdhPJy3cN4yLGJe+/Z+8B7cDMmCco1eIsfE3RnyFphuEUNzt9DcbvqKy/QmOpfmfS39sSO6wln/8A==
-X-Received: by 2002:a2e:970c:: with SMTP id r12mr11288156lji.145.1591039106548;
-        Mon, 01 Jun 2020 12:18:26 -0700 (PDT)
-Received: from wasted.cogentembedded.com ([2a00:1fa0:42cb:40f3:c0fd:7859:f21:5d63])
-        by smtp.gmail.com with ESMTPSA id f12sm118393lfp.8.2020.06.01.12.18.23
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 01 Jun 2020 12:18:25 -0700 (PDT)
-Subject: Re: [PATCH v2 1/2] dt-bindings: memory: document Renesas RPC-IF
- bindings
-To:     Rob Herring <robh@kernel.org>
-Cc:     devicetree@vger.kernel.org, Mason Yang <masonccyang@mxic.com.tw>,
-        linux-spi@vger.kernel.org, Chris Brandt <chris.brandt@renesas.com>,
-        linux-mtd@lists.infradead.org
-References: <812e6e58-d13f-3f44-5f55-22266b690c57@cogentembedded.com>
- <116683d1-d402-4d7f-3357-1c8cde807076@cogentembedded.com>
- <20200501212547.GB15294@bogus>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-Message-ID: <85e1ebd0-4b27-5382-c591-59d63d5b73de@cogentembedded.com>
-Date:   Mon, 1 Jun 2020 22:18:22 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.1
-MIME-Version: 1.0
-In-Reply-To: <20200501212547.GB15294@bogus>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-MW
-Content-Transfer-Encoding: 7bit
+        id S1729626AbgFATfN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 1 Jun 2020 15:35:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57996 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729600AbgFATfM (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 1 Jun 2020 15:35:12 -0400
+Subject: Re: [GIT PULL] SPI updates for v5.8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1591040111;
+        bh=1t1QVkm6X5w9z2THN4j4Vz9f2RfmzNv+B53krBVl5Bg=;
+        h=From:In-Reply-To:References:Date:To:Cc:From;
+        b=bm2dsx8/k9RQgymQz9bXes52B1Lt9P2x6TCUmJIQQp6jLRGgG2284sPc+NemKaSPs
+         GkhXIMDy4wTnlEaunFIC1pU+fR4vsCRTED6/gsqz+Kt0LnXd5JTzoL/8rJm5SFOtdp
+         AceyXbAntOX0BqEKSOJplURtm2kn03H8q576BIGg=
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20200601115456.GA45647@sirena.org.uk>
+References: <20200601115456.GA45647@sirena.org.uk>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20200601115456.GA45647@sirena.org.uk>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v5.8
+X-PR-Tracked-Commit-Id: fb02b9eb4e335f8965badd1e6ee24fdc284cb395
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: a36de5ebac2bea1d30e9ad103b4f841a2c4bb61b
+Message-Id: <159104011175.18844.10485380840144223288.pr-tracker-bot@kernel.org>
+Date:   Mon, 01 Jun 2020 19:35:11 +0000
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 05/02/2020 12:25 AM, Rob Herring wrote:
+The pull request you sent on Mon, 1 Jun 2020 12:54:56 +0100:
 
->> Renesas Reduced Pin Count Interface (RPC-IF) allows a SPI flash or
->> HyperFlash connected to the SoC to be accessed via the external address
->> space read mode or the manual mode.
->>
->> Document the device tree bindings for the Renesas RPC-IF found in the R-Car
->> gen3 SoCs.
->>
->> Based on the original patch by Mason Yang <masonccyang@mxic.com.tw>.
->>
->> Signed-off-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
->>
-[...]
->> Index: linux/Documentation/devicetree/bindings/memory-controllers/renesas,rpc-if.yaml
->> ===================================================================
->> --- /dev/null
->> +++ linux/Documentation/devicetree/bindings/memory-controllers/renesas,rpc-if.yaml
->> @@ -0,0 +1,88 @@
-[...]
->> +patternProperties:
->> +  "^.*@[0-9a-f]+$":
-> 
-> ^flash@... if you're that restrictive.
-> 
->> +    type: object
->> +    properties:
->> +      compatible:
->> +        oneOf:
->> +          - const: cfi-flash
->> +          - const: jedec,spi-nor
-> 
-> enum is better than oneOf+const.
+> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v5.8
 
-        - enum:
-          - cfi-flash
-          - jedec,spi-nor
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/a36de5ebac2bea1d30e9ad103b4f841a2c4bb61b
 
-causes the build error you encountered while trying to merge the last time.
-What was I doing wrong?
+Thank you!
 
-[...]
-
-MBR, Sergei
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker

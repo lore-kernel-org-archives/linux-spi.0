@@ -5,55 +5,55 @@ X-Spam-Level:
 X-Spam-Status: No, score=-9.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 86125C433E8
-	for <linux-spi@archiver.kernel.org>; Wed,  3 Jun 2020 23:33:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B2D89C433EA
+	for <linux-spi@archiver.kernel.org>; Wed,  3 Jun 2020 23:33:43 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5F24C207D0
-	for <linux-spi@archiver.kernel.org>; Wed,  3 Jun 2020 23:33:13 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8BCC4207D0
+	for <linux-spi@archiver.kernel.org>; Wed,  3 Jun 2020 23:33:43 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="YTEneSOL"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="VCJ2fVD0"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726541AbgFCXdM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 3 Jun 2020 19:33:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55646 "EHLO
+        id S1727012AbgFCXdl (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 3 Jun 2020 19:33:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726480AbgFCXcX (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 3 Jun 2020 19:32:23 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD4E6C0085C1
-        for <linux-spi@vger.kernel.org>; Wed,  3 Jun 2020 16:32:18 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id b201so2510208pfb.0
-        for <linux-spi@vger.kernel.org>; Wed, 03 Jun 2020 16:32:18 -0700 (PDT)
+        with ESMTP id S1726238AbgFCXcR (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 3 Jun 2020 19:32:17 -0400
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4331C08C5C0
+        for <linux-spi@vger.kernel.org>; Wed,  3 Jun 2020 16:32:15 -0700 (PDT)
+Received: by mail-pg1-x542.google.com with SMTP id r10so2654627pgv.8
+        for <linux-spi@vger.kernel.org>; Wed, 03 Jun 2020 16:32:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=3Hqe0fSnXDR9BQhToHGwDvWeXmOn6wXlTM1ZNtQBNo0=;
-        b=YTEneSOLG0G03VL7npO7bUdyovAOz/rWIhWyhFR63irmezy8TdYcAkK240HUiwVQWE
-         l1+wS3Zsf9sMrntm2h4pD25VpYQ6IwLesvsppd1RMdvcr3jcMToX3FgASNyJIcm+17M+
-         RgKR5xqROZSaXLSFW/JQA7YcOaR/t1jFVii4U=
+        bh=0cI/V2fP2M6XP0OWA+3cSpTCBqMiFhr0WbfahcOkSkY=;
+        b=VCJ2fVD0K76VRnrhhqYKoqGSd3oNzMCvSb1PkzjzEgKS3lEBs2i8o2SVDUvF/dPkga
+         xv+arE7KCC4Hh7ilymPh7gR+E8iYUVZKNocdJw2iUCCPqK5/4h3Nv2ZjF0IFcbTj05JQ
+         cxiJdjSZ+hZY3fifzFTCh10vLiNWMDPHcLw74=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=3Hqe0fSnXDR9BQhToHGwDvWeXmOn6wXlTM1ZNtQBNo0=;
-        b=cbNBL5/fu+49zFjaJWIHrwWe63WEz2kQ6LxgHjXTwIzkUTx85WWQKMCOwNXNoXWxgy
-         dU3ANez4jsNkqCTXHc6yoXCn6+4s3ViVONavBDhIKDoVEwZ4/u1tskHOYkFSFEICMPn5
-         rp3KMBANG2bELAjRnWXJCMuFJ1ZruVKtZSJx3x+K4NxL3ifFbevW3vwF08ruWKN+FQOI
-         WBcKofAzIRdTDf0+8yb3UGP/LsAS/aAj9pM2xLJh0+G5E8Pjp+KVLb4qApmIH5QqOz/+
-         BA4x16esDWTUslqa2MdiB5u7tR2IO08mismKlYOvsXzd89q3LZVu/rSidHk8ohVJ3qgB
-         hkJQ==
-X-Gm-Message-State: AOAM532P1d1E2oKVNXpH7dvzq/FoCXqC4n5pvbbMFhWdh7h2Bbfa454Z
-        yaQPlmQK2QUz+2cfqG0LkaFaZw==
-X-Google-Smtp-Source: ABdhPJyfJH3U7PUxTmeWYwI+KnsyVJ3CXtEz238mctrUyUOZNrrAJx63byFxfj5FXVnOwJj3WTFGgg==
-X-Received: by 2002:a65:41c8:: with SMTP id b8mr1632114pgq.265.1591227138290;
-        Wed, 03 Jun 2020 16:32:18 -0700 (PDT)
+        bh=0cI/V2fP2M6XP0OWA+3cSpTCBqMiFhr0WbfahcOkSkY=;
+        b=ZvV0hHtSJthyIzfPVVrqvYtnlz8P6wZ09A6EQ97OfsloBFM84G5/+5ROzOClm01WHF
+         wFZqokhS3qvaLeZcM4wpYIF6OuUkKQvFuT5RchvWAuX8g3C2hyT5+vuJFQ1GQHPxR61p
+         mEss1noKNKRHWt8Qs1JA+W1kb/Jf3CZLNOqnG4vWpGLKGxyCER9nicvViWpiP9Fdbkso
+         CD+vS9fcPYVfJMo8JEycz/w5Zy1pJa1vXizB5+lebV6hCEYx1cN8TjLI1bF+UXZNFI/+
+         fioq2BZQMMq7BtjsVY3we//Hw7uKQx+uXZdAB9kOBCqh4DEOIzb/vsQWYYmcg7gu9CJh
+         sj6g==
+X-Gm-Message-State: AOAM531aoLxYXRi3qRppPU7NB+ynVGQsmvSiHYV+ku0R0890vQUgSbKf
+        ud7mVXkhq+RPpssjnuNR45cuTA==
+X-Google-Smtp-Source: ABdhPJwP1oJJWA9CCPnffeDQAD6N9ckmvjh4MOBxgBDDG5Bisi5j6kln17qF8cvddpC2X+a/wgv1kg==
+X-Received: by 2002:a65:4488:: with SMTP id l8mr1683466pgq.327.1591227135199;
+        Wed, 03 Jun 2020 16:32:15 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id l3sm3402369pju.43.2020.06.03.16.32.14
+        by smtp.gmail.com with ESMTPSA id x25sm2353911pge.23.2020.06.03.16.32.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2020 16:32:16 -0700 (PDT)
+        Wed, 03 Jun 2020 16:32:12 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Kees Cook <keescook@chromium.org>,
@@ -67,9 +67,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         linux-wireless@vger.kernel.org, linux-ide@vger.kernel.org,
         linux-clk@vger.kernel.org, linux-spi@vger.kernel.org,
         linux-mm@kvack.org, clang-built-linux@googlegroups.com
-Subject: [PATCH 05/10] ide: Remove uninitialized_var() usage
-Date:   Wed,  3 Jun 2020 16:31:58 -0700
-Message-Id: <20200603233203.1695403-6-keescook@chromium.org>
+Subject: [PATCH 02/10] drbd: Remove uninitialized_var() usage
+Date:   Wed,  3 Jun 2020 16:31:55 -0700
+Message-Id: <20200603233203.1695403-3-keescook@chromium.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200603233203.1695403-1-keescook@chromium.org>
 References: <20200603233203.1695403-1-keescook@chromium.org>
@@ -84,12 +84,7 @@ Using uninitialized_var() is dangerous as it papers over real bugs[1]
 (or can in the future), and suppresses unrelated compiler warnings (e.g.
 "unused variable"). If the compiler thinks it is uninitialized, either
 simply initialize the variable or make compiler changes. As a precursor
-to removing[2] this[3] macro[4], just remove this variable since it was
-actually unused:
-
-drivers/ide/ide-taskfile.c:232:34: warning: unused variable 'flags' [-Wunused-variable]
-        unsigned long uninitialized_var(flags);
-                                        ^
+to removing[2] this[3] macro[4], just initialize this variable to NULL.
 
 [1] https://lore.kernel.org/lkml/20200603174714.192027-1-glider@google.com/
 [2] https://lore.kernel.org/lkml/CA+55aFw+Vbj0i=1TGqCR5vQkCzWJ0QxK6CernOU6eedsudAixw@mail.gmail.com/
@@ -98,21 +93,22 @@ drivers/ide/ide-taskfile.c:232:34: warning: unused variable 'flags' [-Wunused-va
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- drivers/ide/ide-taskfile.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/block/drbd/drbd_state.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ide/ide-taskfile.c b/drivers/ide/ide-taskfile.c
-index aab6a10435b6..a26f85ab58a9 100644
---- a/drivers/ide/ide-taskfile.c
-+++ b/drivers/ide/ide-taskfile.c
-@@ -229,7 +229,6 @@ void ide_pio_bytes(ide_drive_t *drive, struct ide_cmd *cmd,
- 	ide_hwif_t *hwif = drive->hwif;
- 	struct scatterlist *sg = hwif->sg_table;
- 	struct scatterlist *cursg = cmd->cursg;
--	unsigned long uninitialized_var(flags);
- 	struct page *page;
- 	unsigned int offset;
- 	u8 *buf;
+diff --git a/drivers/block/drbd/drbd_state.c b/drivers/block/drbd/drbd_state.c
+index eeaa3b49b264..0067d328f0b5 100644
+--- a/drivers/block/drbd/drbd_state.c
++++ b/drivers/block/drbd/drbd_state.c
+@@ -1604,7 +1604,7 @@ static void broadcast_state_change(struct drbd_state_change *state_change)
+ 	unsigned int n_device, n_connection, n_peer_device, n_peer_devices;
+ 	void (*last_func)(struct sk_buff *, unsigned int, void *,
+ 			  enum drbd_notification_type) = NULL;
+-	void *uninitialized_var(last_arg);
++	void *last_arg = NULL;
+ 
+ #define HAS_CHANGED(state) ((state)[OLD] != (state)[NEW])
+ #define FINAL_STATE_CHANGE(type) \
 -- 
 2.25.1
 

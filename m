@@ -2,123 +2,119 @@ Return-Path: <SRS0=aiBE=7Q=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-9.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 91A43C433DF
-	for <linux-spi@archiver.kernel.org>; Wed,  3 Jun 2020 20:41:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 944CAC433E0
+	for <linux-spi@archiver.kernel.org>; Wed,  3 Jun 2020 23:32:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 725302089D
-	for <linux-spi@archiver.kernel.org>; Wed,  3 Jun 2020 20:41:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1591216913;
-	bh=SwtQdzOor59+vXHd3f6F9lk8585uAp3wtylcBGqMqQc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=KBrRlgQlq3gohDEB5x/vgO3xKHzlieS/9mlFi14nU0VFUKw1lbz3UPm1eZv3/D8eL
-	 TkaRzwzUbOiE9xQQgbulKC2g52G6s+8fMWxaJTt+ZTCRUk8J2zFDCm8Xr5rlM9flvc
-	 h4sz/WQ1aaLhzhSDLBAkJI2AHszIHkOh27dBB4Rw=
+	by mail.kernel.org (Postfix) with ESMTP id 68BEB2077D
+	for <linux-spi@archiver.kernel.org>; Wed,  3 Jun 2020 23:32:25 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="TU9flWAg"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726233AbgFCUlv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 3 Jun 2020 16:41:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37318 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725922AbgFCUlu (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 3 Jun 2020 16:41:50 -0400
-Received: from localhost (p5486cfa5.dip0.t-ipconnect.de [84.134.207.165])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7FD0B2074B;
-        Wed,  3 Jun 2020 20:41:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591216909;
-        bh=SwtQdzOor59+vXHd3f6F9lk8585uAp3wtylcBGqMqQc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kO8cFCe0Q0Bfo2MKvweLEp18Up8QwwJUUfy0MLA+laQLkKmkeSp8Hs9F96LhDicLo
-         KkN0wFE4WPkjAVyTAoNUXcGBpqBt/3TVfieXaFgF8SfkixATeezzEOOwQzJE+dFslx
-         e5dDGjeVYpL9n6tZ9xCpzkQ3js43EwtVQPhDGIOM=
-Date:   Wed, 3 Jun 2020 22:41:46 +0200
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Lubomir Rintel <lkundrak@v3.sk>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mark Brown <broonie@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH 22/28] dt-bindings: i2c: Convert i2c-pxa to json-schema
-Message-ID: <20200603204146.GB1347@ninjato>
-References: <20200317093922.20785-1-lkundrak@v3.sk>
- <20200317093922.20785-23-lkundrak@v3.sk>
+        id S1726531AbgFCXcY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 3 Jun 2020 19:32:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55620 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726118AbgFCXcS (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 3 Jun 2020 19:32:18 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E094C00863A
+        for <linux-spi@vger.kernel.org>; Wed,  3 Jun 2020 16:32:18 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id ga6so258098pjb.1
+        for <linux-spi@vger.kernel.org>; Wed, 03 Jun 2020 16:32:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=vlsGh/2A3yd9dyMlCDYBd0p4l1T5Oo7IaL6NTs2MBUk=;
+        b=TU9flWAg9FMH+Npku3SFev/YYK6vvYYCp6jsnIW2uRPdSGDM2UMjhH0to/RSt2mcu+
+         +tEJTAZqQ0UV4spAC//nbMEU4YZmc6CW1cgHcGYV50zllOcjZjx+9n/jCEKcVaB/68HX
+         WckrYbpJZIVMmdggrVZUzoJLKS1NezuTTfatg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=vlsGh/2A3yd9dyMlCDYBd0p4l1T5Oo7IaL6NTs2MBUk=;
+        b=cZeLs+ECYDmHP4EB/gXb+Ab5ykFr4A3xc/BPrPSfPtp8z1LJb5Lx7X2SNFE+o7KFk0
+         N3bgAhY7OeZ/fFUfo7uol93mrpDzubdLnuDM4fn0jRVAF21EFXydyoQJBvTbSbXWiDa5
+         m+zIbQ0Y/n4RMImLKxxXcMbRUdlItY0AycJlVqa5el6DRdTXMPF126cGHrxZ8yv1BHNa
+         QfLw++5flGRjVJrNwmwmxDKEqLa9G4RnpkF3eW7Z+d0jtbXPqGzkVVWeACf5UMnIiOZz
+         NHSu9GSGu4tQSE9iI5RaYyJ8JDvEHXzPzFZvGgsnikm14YVHkHK66urZF1+izkOoufle
+         PYkg==
+X-Gm-Message-State: AOAM531pStl/vJEUkmnFPnwn2FSQ/o+4rc2gJZ9BqV80zf+04+8HLJuP
+        /OOJ13CWKGrBYJ9lHSf8AyAy/A==
+X-Google-Smtp-Source: ABdhPJyBu+lQtrGYhp3WZ7ZyvY1X8s9WoOeJvHWXF5Ulh61p00d2PYdWCaVGKn3LkWqTOEtrYGlBGw==
+X-Received: by 2002:a17:902:aa0c:: with SMTP id be12mr2119692plb.241.1591227137753;
+        Wed, 03 Jun 2020 16:32:17 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id b1sm3836817pjc.33.2020.06.03.16.32.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jun 2020 16:32:16 -0700 (PDT)
+From:   Kees Cook <keescook@chromium.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Kees Cook <keescook@chromium.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Alexander Potapenko <glider@google.com>,
+        Joe Perches <joe@perches.com>,
+        Andy Whitcroft <apw@canonical.com>, x86@kernel.org,
+        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
+        b43-dev@lists.infradead.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-mm@kvack.org, clang-built-linux@googlegroups.com
+Subject: [PATCH 06/10] clk: st: Remove uninitialized_var() usage
+Date:   Wed,  3 Jun 2020 16:31:59 -0700
+Message-Id: <20200603233203.1695403-7-keescook@chromium.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200603233203.1695403-1-keescook@chromium.org>
+References: <20200603233203.1695403-1-keescook@chromium.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="4bRzO86E/ozDv8r1"
-Content-Disposition: inline
-In-Reply-To: <20200317093922.20785-23-lkundrak@v3.sk>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Using uninitialized_var() is dangerous as it papers over real bugs[1]
+(or can in the future), and suppresses unrelated compiler warnings (e.g.
+"unused variable"). If the compiler thinks it is uninitialized, either
+simply initialize the variable or make compiler changes. As a precursor
+to removing[2] this[3] macro[4], just remove this variable since it was
+actually unused:
 
---4bRzO86E/ozDv8r1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+drivers/clk/st/clkgen-fsyn.c: In function ‘quadfs_set_rate’:
+drivers/clk/st/clkgen-fsyn.c:793:6: warning: unused variable ‘i’ [-Wunused-variable]
+  793 |  int i;
+      |      ^
 
-On Tue, Mar 17, 2020 at 10:39:16AM +0100, Lubomir Rintel wrote:
-> A conversion of the i2c-pxa binding to DT schema format using json-schema.
->=20
-> This also cleans ups some errors in the binding: The compatible string
-> description suggested that "mmp" in "mrvl,mmp-twsi" is to be substituted
-> with a processor model, which wouldn't be a right thing to do and indeed
-> nobody seems to have been doing that. There also was "Recommended
-> properties" section that included optional as well as mandatory
-> properties. Missing mandatory properties were added to the example.
->=20
-> Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+[1] https://lore.kernel.org/lkml/20200603174714.192027-1-glider@google.com/
+[2] https://lore.kernel.org/lkml/CA+55aFw+Vbj0i=1TGqCR5vQkCzWJ0QxK6CernOU6eedsudAixw@mail.gmail.com/
+[3] https://lore.kernel.org/lkml/CA+55aFwgbgqhbp1fkxvRKEpzyR5J8n1vKT1VZdz9knmPuXhOeg@mail.gmail.com/
+[4] https://lore.kernel.org/lkml/CA+55aFz2500WfbKXAx8s67wrm9=yVJu65TpLgN_ybYNv0VEOKA@mail.gmail.com/
 
-Waiting for an ack from someone with DT-YAML experience here.
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+ drivers/clk/st/clkgen-fsyn.c | 1 -
+ 1 file changed, 1 deletion(-)
 
+diff --git a/drivers/clk/st/clkgen-fsyn.c b/drivers/clk/st/clkgen-fsyn.c
+index a156bd0c6af7..f1adc858b590 100644
+--- a/drivers/clk/st/clkgen-fsyn.c
++++ b/drivers/clk/st/clkgen-fsyn.c
+@@ -790,7 +790,6 @@ static int quadfs_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	struct st_clk_quadfs_fsynth *fs = to_quadfs_fsynth(hw);
+ 	struct stm_fs params;
+ 	long hwrate;
+-	int uninitialized_var(i);
+ 
+ 	if (!rate || !parent_rate)
+ 		return -EINVAL;
+-- 
+2.25.1
 
---4bRzO86E/ozDv8r1
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl7YCwoACgkQFA3kzBSg
-KbbJvBAAhOSQEJ8IukeodYEjHMpjA4Dcx5fvpBnGvrxXQBvSIOKYdNTW/I/RitM2
-80cJ6nuKvdFbdxDZkK4QjMuBSMmhi8AgafJmuAlBmEGItG7pElyjQ90070ISZDPD
-tVY9epZq/e8RtcYayajUN8saNIdDpvGNeEdFn6t7aLa5Sww2SpfgtkIlozOp44/6
-Tf/fjBd9Ml87SWjsIwW1f6w0dQiF3ib6oqWZXE8fxH8v6LUs8M0mE2hX23NjttP5
-/w8oAV3OqgVGMn/ydUOtmuLRzBqQ8ONO3+pG6h8lYAnPuh0ZGmpaV0RxigcJDGSd
-yTAob0lzrFXKSkQ6Kl0keFn8aC9F56OknDWMf3wm8OME85QCls7fzeAwZhEclyf5
-NrSyInNZq0xj1JQjIkagcWSmLyWu+e0Er09iVm5T/6eqUm6mElu8VpOVkiIrlI9e
-4FX7Yj8D1ucGJzgiLN8lYzUUXMl78Ym+U9Il5h3fOP/FKINTq2bvBKxjpmHIxbZb
-sBIZPdGdjNSwZ5wA4Cf01Wy0ghmMuKNVkV6IDFXmLIjszXAA3ZCX+kBFyDuHWir/
-TqkYPD+GYP6n9f+xFUlit6Kf3Pv6tXxVBnyWsS0k0LyB3dGTV9dp2d6MaA3IGP5n
-m78a0tAD4l4HN1oWcH/QNOUH5YV4ZdWonkhaHbJYZiCcjtRq+lE=
-=Qlp8
------END PGP SIGNATURE-----
-
---4bRzO86E/ozDv8r1--

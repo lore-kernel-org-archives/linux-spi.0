@@ -3,121 +3,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-3.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=no autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=no
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 54DC8C433E2
-	for <linux-spi@archiver.kernel.org>; Thu,  4 Jun 2020 01:47:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B2F23C433DF
+	for <linux-spi@archiver.kernel.org>; Thu,  4 Jun 2020 02:06:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3D451207D0
-	for <linux-spi@archiver.kernel.org>; Thu,  4 Jun 2020 01:47:32 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 95B91207D0
+	for <linux-spi@archiver.kernel.org>; Thu,  4 Jun 2020 02:06:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727917AbgFDBrU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 3 Jun 2020 21:47:20 -0400
-Received: from smtprelay0142.hostedemail.com ([216.40.44.142]:36934 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726050AbgFDBrT (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 3 Jun 2020 21:47:19 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay03.hostedemail.com (Postfix) with ESMTP id C6C99837F24C;
-        Thu,  4 Jun 2020 01:47:16 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-HE-Tag: actor89_4e0069c26d93
-X-Filterd-Recvd-Size: 3931
-Received: from XPS-9350.home (unknown [47.151.136.130])
-        (Authenticated sender: joe@perches.com)
-        by omf11.hostedemail.com (Postfix) with ESMTPA;
-        Thu,  4 Jun 2020 01:47:14 +0000 (UTC)
-Message-ID: <6f921002478544217903ee4bfbe3c400e169687f.camel@perches.com>
-Subject: Re: [PATCH 08/10] checkpatch: Remove awareness of
- uninitialized_var() macro
-From:   Joe Perches <joe@perches.com>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Andy Whitcroft <apw@canonical.com>, x86@kernel.org,
-        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
-        b43-dev@lists.infradead.org, netdev@vger.kernel.org,
-        linux-wireless@vger.kernel.org, linux-ide@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-mm@kvack.org, clang-built-linux@googlegroups.com
-Date:   Wed, 03 Jun 2020 18:47:13 -0700
-In-Reply-To: <202006031838.55722640DC@keescook>
-References: <20200603233203.1695403-1-keescook@chromium.org>
-         <20200603233203.1695403-9-keescook@chromium.org>
-         <ff9087b0571e1fc499bd8a4c9fd99bfc0357f245.camel@perches.com>
-         <202006031838.55722640DC@keescook>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.2-0ubuntu1 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        id S1725992AbgFDCGE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 3 Jun 2020 22:06:04 -0400
+Received: from inva020.nxp.com ([92.121.34.13]:55880 "EHLO inva020.nxp.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725946AbgFDCGD (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 3 Jun 2020 22:06:03 -0400
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 0B9921A01A2;
+        Thu,  4 Jun 2020 04:06:02 +0200 (CEST)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com [165.114.16.14])
+        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 24A661A011F;
+        Thu,  4 Jun 2020 04:05:57 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id CEBCF40299;
+        Thu,  4 Jun 2020 10:05:50 +0800 (SGT)
+From:   Anson Huang <Anson.Huang@nxp.com>
+To:     broonie@kernel.org, robh+dt@kernel.org, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+        marex@denx.de, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Cc:     Linux-imx@nxp.com
+Subject: [PATCH V2 0/3] Convert mxs/imx spi/cspi/lpspi binding to json-schema
+Date:   Thu,  4 Jun 2020 09:55:28 +0800
+Message-Id: <1591235731-15673-1-git-send-email-Anson.Huang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 2020-06-03 at 18:40 -0700, Kees Cook wrote:
-> On Wed, Jun 03, 2020 at 05:02:29PM -0700, Joe Perches wrote:
-> > On Wed, 2020-06-03 at 16:32 -0700, Kees Cook wrote:
-> > > Using uninitialized_var() is dangerous as it papers over real bugs[1]
-> > > (or can in the future), and suppresses unrelated compiler warnings
-> > > (e.g. "unused variable"). If the compiler thinks it is uninitialized,
-> > > either simply initialize the variable or make compiler changes.
-> > > 
-> > > In preparation for removing[2] the[3] macro[4], effectively revert
-> > > commit 16b7f3c89907 ("checkpatch: avoid warning about uninitialized_var()")
-> > > and remove all remaining mentions of uninitialized_var().
-> > > 
-> > > [1] https://lore.kernel.org/lkml/20200603174714.192027-1-glider@google.com/
-> > > [2] https://lore.kernel.org/lkml/CA+55aFw+Vbj0i=1TGqCR5vQkCzWJ0QxK6CernOU6eedsudAixw@mail.gmail.com/
-> > > [3] https://lore.kernel.org/lkml/CA+55aFwgbgqhbp1fkxvRKEpzyR5J8n1vKT1VZdz9knmPuXhOeg@mail.gmail.com/
-> > > [4] https://lore.kernel.org/lkml/CA+55aFz2500WfbKXAx8s67wrm9=yVJu65TpLgN_ybYNv0VEOKA@mail.gmail.com/
-> > 
-> > nack.  see below.
-> > 
-> > I'd prefer a simple revert, but it shouldn't
-> > be done here.
-> 
-> What do you mean? (I can't understand this and "fine by me" below?)
+This patch series converts mxs/imx spi/cspi/lpspi binding to json-schema.
 
-I did write "other than that"...
+In fsl-imx-cspi.yaml, also update compatible, remove obsolete properties
+"fsl,spi-num-chipselects" and update the example based on latest DT file;
 
-I mean that the original commit fixed 2 issues,
-one with the uninitialized_var addition, and
-another with the missing void function declaration.
+In spi-fsl-lpspi.yaml, the original maintainer's email address pandy.gao@nxp.com
+is no longer valid, so I use mine.
 
-I think I found the missing void function bit because
-the uninitialized_var use looked like a function so I
-fixed both things at the same time.
+Compared to V1, this patch series adds "unevaluatedProperties: false" for
+each binding doc.
 
-If you change it, please just remove the bit that
-checks for uninitialized_var.
+Anson Huang (3):
+  dt-bindings: spi: Convert mxs spi to json-schema
+  dt-bindings: spi: Convert imx cspi to json-schema
+  dt-bindings: spi: Convert imx lpspi to json-schema
 
-Thanks, Joe
+ .../devicetree/bindings/spi/fsl-imx-cspi.txt       | 56 ------------
+ .../devicetree/bindings/spi/fsl-imx-cspi.yaml      | 99 ++++++++++++++++++++++
+ Documentation/devicetree/bindings/spi/mxs-spi.txt  | 26 ------
+ Documentation/devicetree/bindings/spi/mxs-spi.yaml | 57 +++++++++++++
+ .../devicetree/bindings/spi/spi-fsl-lpspi.txt      | 29 -------
+ .../devicetree/bindings/spi/spi-fsl-lpspi.yaml     | 62 ++++++++++++++
+ 6 files changed, 218 insertions(+), 111 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+ create mode 100644 Documentation/devicetree/bindings/spi/fsl-imx-cspi.yaml
+ delete mode 100644 Documentation/devicetree/bindings/spi/mxs-spi.txt
+ create mode 100644 Documentation/devicetree/bindings/spi/mxs-spi.yaml
+ delete mode 100644 Documentation/devicetree/bindings/spi/spi-fsl-lpspi.txt
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml
 
-> > > diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> > []
-> > > @@ -4075,7 +4074,7 @@ sub process {
-> > >  		}
-> > >  
-> > >  # check for function declarations without arguments like "int foo()"
-> > > -		if ($line =~ /(\b$Type\s*$Ident)\s*\(\s*\)/) {
-> > > +		if ($line =~ /(\b$Type\s+$Ident)\s*\(\s*\)/) {
-> > 
-> > This isn't right because $Type includes a possible trailing *
-> > where there isn't a space between $Type and $Ident
-> 
-> Ah, hm, that was changed in the mentioned commit:
-> 
-> -               if ($line =~ /(\b$Type\s+$Ident)\s*\(\s*\)/) {
-> +               if ($line =~ /(\b$Type\s*$Ident)\s*\(\s*\)/) {
-> 
-> > e.g.:	int *bar(void);
-> > 
-> > Other than that, fine by me...
-> 
-> Thanks for looking it over! I'll adjust it however you'd like. :)
-> 
+-- 
+2.7.4
 

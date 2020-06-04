@@ -2,114 +2,148 @@ Return-Path: <SRS0=yMTu=7R=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.6 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1988BC433DF
-	for <linux-spi@archiver.kernel.org>; Thu,  4 Jun 2020 03:47:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 89F04C433DF
+	for <linux-spi@archiver.kernel.org>; Thu,  4 Jun 2020 04:02:43 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E965520679
-	for <linux-spi@archiver.kernel.org>; Thu,  4 Jun 2020 03:47:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 69FB820679
+	for <linux-spi@archiver.kernel.org>; Thu,  4 Jun 2020 04:02:43 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XMh2NLBL"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="nmlYusCX"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727071AbgFDDrE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 3 Jun 2020 23:47:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38656 "EHLO
+        id S1726248AbgFDECn (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 4 Jun 2020 00:02:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727049AbgFDDrB (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 3 Jun 2020 23:47:01 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C60CC03E96D;
-        Wed,  3 Jun 2020 20:47:01 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id t7so2949930pgt.3;
-        Wed, 03 Jun 2020 20:47:01 -0700 (PDT)
+        with ESMTP id S1726252AbgFDECf (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 4 Jun 2020 00:02:35 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78888C08C5C5
+        for <linux-spi@vger.kernel.org>; Wed,  3 Jun 2020 21:02:34 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id n9so1619596plk.1
+        for <linux-spi@vger.kernel.org>; Wed, 03 Jun 2020 21:02:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=NxEaSPQeIOPRkfXUqBGWXS3DhANeE89pJJUJwsIWN6U=;
-        b=XMh2NLBLCV1jRAsM/ApPVYMn0b8sSfJSvOD39kjJ1Om9Wed9iwphuhaPW9wZ3rsBHv
-         u8UUaLG7LjbGEYX+lAyn6swrDVh9AvFtLNGkHG7klLKXrNclPthMtPF0i2sh2fLO3ys5
-         wwT90Pe51q16aPifitePxyi03f77GMxf4NvhwVuaMusm7QLwD7q0iLO+TUj49JVRlbNe
-         6cyzApJCV7abeGs6zUhOHAfrRSSPel6w+A6rfY006mPcSKCANZernfLy0CFifmBw7JAm
-         XzUF0f/amIWLBpuMk7lrwlZdWFc2dYJbjwYnxzaY/mSz2cMDGqig2Qns1uSdl28izDXv
-         BrJw==
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=dDMZ76EfQNqsSp5sb7mLI8JiO94mOeQpyrT6zdtd3HQ=;
+        b=nmlYusCXDFiVqFXgxwlUm0gg3wIorQtKPNmSn8kUxXy2o8ATDLsqSlFD0o61OtpLts
+         2zSeOvR5nnDD2//h685p30vwSekGc1q/jRAs6eegsS86q8t4Z7JAaLx7yfVY1EK9Xiau
+         DCT2MBSjsLxms0BiWDCQF4Q6VgKuWrTFT33kU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=NxEaSPQeIOPRkfXUqBGWXS3DhANeE89pJJUJwsIWN6U=;
-        b=dXmeR56coD0mjaGzIh8a+wyEXDa3+yr4fULC+UgluqkCharkuPMiDPWzgZtpOW5dVH
-         DH7Km1eCYzGZ3EG36uDtYO3kEGZCXjpTq8/trqEbE9X43sTsgSDouKxDG49ujVt7qLFD
-         H5q8qx76/gIPzhgM8RKHUJE76lF7n0bYITtNGc1/FJA4c0yIkGr0lVOSA/sFQDwgxA33
-         nb+x0Rd43QcyF/OiqbE+jAvrqdm2KCf9hdeMVdvLcKxRW4UDYD4TcpRdsihMs4FMvUah
-         4uU5uuvUKEHJh/lBzJ4zFLoiMs2EyLKtGNmefr3X2eaFktOYvC/JyEABgvNLyCnCLBDv
-         7GNg==
-X-Gm-Message-State: AOAM533X+S7JwNCXhiZire7vlDVB+YWPCIIwX2+JhqeFmlMRrAdjs3JS
-        S+AVBXOmMTI+Tu7GbIE565dymmtx
-X-Google-Smtp-Source: ABdhPJyuRIpehL8ILBEuAv8MYZ88AthlobDOSBfpKUE+4FSI+ipnlgCRqSzcWpGqCddTssyAUSN10g==
-X-Received: by 2002:a05:6a00:150c:: with SMTP id q12mr2251871pfu.270.1591242420517;
-        Wed, 03 Jun 2020 20:47:00 -0700 (PDT)
-Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id p19sm3083367pff.116.2020.06.03.20.46.58
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=dDMZ76EfQNqsSp5sb7mLI8JiO94mOeQpyrT6zdtd3HQ=;
+        b=AFAgFq5HGuMuwLoW8tiI1he3kqjuph95EhdSIr1W4MNOYYSPGxGkUhhWKtcCnMvcgP
+         fEMKkRCYrmajqe6OjcZCPUjwECoi3bilDMNqYQI3i6xPxW1U8fQgIza2Wh1YVEWmmn/l
+         9jb9Jt/p/a+41/W5V6OlFDQ60q64rcRdQ6BY+iigXt02e2I/Q/JyKTx5nmilV5TJdRqZ
+         93bNSfwGNKGFyLnvLQ2wCOGoYHveLEBD5rU3eWVw5xWqMF/PhMlOS1vrJIeu+cHD2P+T
+         KY/GFb+qr0t8FlwfS8rs2q/kEe58m2GJSEeKZ5fatLBQaTWGTxQqCLM5W7mlqlvItrV2
+         OuMw==
+X-Gm-Message-State: AOAM530w9hKAvkvQBI4uA0gvxvrZhF2oBAKQL5KZlZFwpNCnPjqBHzdo
+        UNndAbj7iN89QYvQv2GQycK0xQ==
+X-Google-Smtp-Source: ABdhPJxQ/Dd1yetZm6iahM4ViylSUD/mRnchtrTt1NIbGDNSI6TVF94FWNWMrr2lFeqPK0TXyTqNmA==
+X-Received: by 2002:a17:902:b710:: with SMTP id d16mr2968382pls.28.1591243353758;
+        Wed, 03 Jun 2020 21:02:33 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id q6sm1193902pff.163.2020.06.03.21.02.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jun 2020 20:46:59 -0700 (PDT)
-From:   Florian Fainelli <f.fainelli@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com (maintainer:BROADCOM
-        BCM281XX/BCM11XXX/BCM216XX ARM ARCHITE...),
-        linux-spi@vger.kernel.org (open list:SPI SUBSYSTEM),
-        devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
-        DEVICE TREE BINDINGS),
-        linux-rpi-kernel@lists.infradead.org (moderated list:BROADCOM
-        BCM2711/BCM2835 ARM ARCHITECTURE),
-        linux-arm-kernel@lists.infradead.org (moderated list:BROADCOM
-        BCM2711/BCM2835 ARM ARCHITECTURE),
-        Martin Sperl <kernel@martin.sperl.org>, lukas@wunner.de
-Subject: [PATCH 1/3] dt-bindings: spi: Document bcm2711 and bcm7211 SPI compatible
-Date:   Wed,  3 Jun 2020 20:46:53 -0700
-Message-Id: <20200604034655.15930-2-f.fainelli@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200604034655.15930-1-f.fainelli@gmail.com>
-References: <20200604034655.15930-1-f.fainelli@gmail.com>
+        Wed, 03 Jun 2020 21:02:32 -0700 (PDT)
+Date:   Wed, 3 Jun 2020 21:02:31 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Nathan Chancellor <natechancellor@gmail.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+        Alexander Potapenko <glider@google.com>,
+        Joe Perches <joe@perches.com>,
+        Andy Whitcroft <apw@canonical.com>, x86@kernel.org,
+        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
+        b43-dev@lists.infradead.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-mm@kvack.org, clang-built-linux@googlegroups.com
+Subject: Re: [PATCH 09/10] treewide: Remove uninitialized_var() usage
+Message-ID: <202006032048.E7B1D18A1@keescook>
+References: <20200603233203.1695403-1-keescook@chromium.org>
+ <20200603233203.1695403-10-keescook@chromium.org>
+ <20200604033315.GA1131596@ubuntu-n2-xlarge-x86>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200604033315.GA1131596@ubuntu-n2-xlarge-x86>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The BCM2711 and BCM7211 chips use the BCM2835 SPI controller, but there
-are severl instances of those in the system and they all share the same
-interrupt line. Document specific compatible strings such that the
-driver can take appropriate actions.
+On Wed, Jun 03, 2020 at 08:33:15PM -0700, Nathan Chancellor wrote:
+> On Wed, Jun 03, 2020 at 04:32:02PM -0700, Kees Cook wrote:
+> > Using uninitialized_var() is dangerous as it papers over real bugs[1]
+> > (or can in the future), and suppresses unrelated compiler warnings
+> > (e.g. "unused variable"). If the compiler thinks it is uninitialized,
+> > either simply initialize the variable or make compiler changes.
+> > 
+> > I preparation for removing[2] the[3] macro[4], remove all remaining
+> > needless uses with the following script:
+> > 
+> > git grep '\buninitialized_var\b' | cut -d: -f1 | sort -u | \
+> > 	xargs perl -pi -e \
+> > 		's/\buninitialized_var\(([^\)]+)\)/\1/g;
+> > 		 s:\s*/\* (GCC be quiet|to make compiler happy) \*/$::g;'
+> > 
+> > drivers/video/fbdev/riva/riva_hw.c was manually tweaked to avoid
+> > pathological white-space.
+> > 
+> > No outstanding warnings were found building allmodconfig with GCC 9.3.0
+> > for x86_64, i386, arm64, arm, powerpc, powerpc64le, s390x, mips, sparc64,
+> > alpha, and m68k.
+> > 
+> > [1] https://lore.kernel.org/lkml/20200603174714.192027-1-glider@google.com/
+> > [2] https://lore.kernel.org/lkml/CA+55aFw+Vbj0i=1TGqCR5vQkCzWJ0QxK6CernOU6eedsudAixw@mail.gmail.com/
+> > [3] https://lore.kernel.org/lkml/CA+55aFwgbgqhbp1fkxvRKEpzyR5J8n1vKT1VZdz9knmPuXhOeg@mail.gmail.com/
+> > [4] https://lore.kernel.org/lkml/CA+55aFz2500WfbKXAx8s67wrm9=yVJu65TpLgN_ybYNv0VEOKA@mail.gmail.com/
+> > 
+> > Signed-off-by: Kees Cook <keescook@chromium.org>
+> 
+> <snip>
+> 
+> > diff --git a/arch/powerpc/kvm/book3s_pr.c b/arch/powerpc/kvm/book3s_pr.c
+> > index a0f6813f4560..a71fa7204882 100644
+> > --- a/arch/powerpc/kvm/book3s_pr.c
+> > +++ b/arch/powerpc/kvm/book3s_pr.c
+> > @@ -1829,7 +1829,7 @@ static int kvmppc_vcpu_run_pr(struct kvm_run *kvm_run, struct kvm_vcpu *vcpu)
+> >  {
+> >  	int ret;
+> >  #ifdef CONFIG_ALTIVEC
+> > -	unsigned long uninitialized_var(vrsave);
+> > +	unsigned long vrsave;
+> >  #endif
+> 
+> This variable is actually unused:
+> 
+> ../arch/powerpc/kvm/book3s_pr.c:1832:16: warning: unused variable 'vrsave' [-Wunused-variable]
+>         unsigned long vrsave;
+>                       ^
+> 1 warning generated.
+> 
+> It has been unused since commit 99dae3bad28d ("KVM: PPC: Load/save
+> FP/VMX/VSX state directly to/from vcpu struct").
+> 
+> $ git grep vrsave 99dae3bad28d8fdd32b7bfdd5e2ec7bb2d4d019d arch/powerpc/kvm/book3s_pr.c
+> 99dae3bad28d8fdd32b7bfdd5e2ec7bb2d4d019d:arch/powerpc/kvm/book3s_pr.c:  unsigned long uninitialized_var(vrsave);
+> 
+> I would nuke the whole '#ifdef' block.
 
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
----
- Documentation/devicetree/bindings/spi/brcm,bcm2835-spi.txt | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Ah, thanks! I wonder why I don't have CONFIG_ALTIVEC in any of my ppc
+builds. Hmmm.
 
-diff --git a/Documentation/devicetree/bindings/spi/brcm,bcm2835-spi.txt b/Documentation/devicetree/bindings/spi/brcm,bcm2835-spi.txt
-index f11f295c8450..3d55dd64b1be 100644
---- a/Documentation/devicetree/bindings/spi/brcm,bcm2835-spi.txt
-+++ b/Documentation/devicetree/bindings/spi/brcm,bcm2835-spi.txt
-@@ -5,7 +5,8 @@ SPI0, and the other known as the "Universal SPI Master"; part of the
- auxiliary block. This binding applies to the SPI0 controller.
- 
- Required properties:
--- compatible: Should be "brcm,bcm2835-spi".
-+- compatible: Should be one of "brcm,bcm2835-spi" for BCM2835/2836/2837 or
-+  "brcm,bcm2711-spi" for BCM2711 or "brcm,bcm7211-spi" for BCM7211.
- - reg: Should contain register location and length.
- - interrupts: Should contain interrupt.
- - clocks: The clock feeding the SPI controller.
+-Kees
+
 -- 
-2.17.1
-
+Kees Cook

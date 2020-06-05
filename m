@@ -8,46 +8,46 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=DATE_IN_FUTURE_06_12,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E45BC433E0
-	for <linux-spi@archiver.kernel.org>; Fri,  5 Jun 2020 13:32:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6DA7CC433E1
+	for <linux-spi@archiver.kernel.org>; Fri,  5 Jun 2020 13:33:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3C464206E6
-	for <linux-spi@archiver.kernel.org>; Fri,  5 Jun 2020 13:32:43 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 45FE5207F5
+	for <linux-spi@archiver.kernel.org>; Fri,  5 Jun 2020 13:33:01 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="EvYtOi9f"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="kSE8s1sh"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727061AbgFENci (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 5 Jun 2020 09:32:38 -0400
-Received: from mail-eopbgr60046.outbound.protection.outlook.com ([40.107.6.46]:16417
-        "EHLO EUR04-DB3-obe.outbound.protection.outlook.com"
+        id S1727779AbgFENcy (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 5 Jun 2020 09:32:54 -0400
+Received: from mail-db8eur05on2042.outbound.protection.outlook.com ([40.107.20.42]:6195
+        "EHLO EUR05-DB8-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726844AbgFENcg (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 5 Jun 2020 09:32:36 -0400
+        id S1727116AbgFENcx (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 5 Jun 2020 09:32:53 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YJXDa+C3M6tkNpndcrR6Md4tzhaN1LjT7OUtN7VFO48tYYI3dhwlHqZkSmHj/plFzgPl+wm5iZ8xm5pTlOT3UbhXvTBowijqyBNx7gxr3Z2cNcHw+t11kVVHnV0RmgXjJYx2hALZeBHsv7Oqtvqzd7PHSkWJC+cfdvBWTGT8tpP3VYfCrBK5YpSjm9DGIqOL/MvZFk+tW/S12K4+4HOxw6+PbkiON0HfgT43Xn8NoJ4IM9EMW/60vH1Jup1ncb6hzTh0QW9RpL0Q3LfpM5JKJoe4b/e6vQJpO/D6P9XDo/mNt4t74mWTZTy+F+iydq3FZ7We/AxRdfpBUWEgf00lOA==
+ b=AE93dS5n6iCw4595yz1+tV6PJesjmLEA8HvBLLJ5D0NDdO/6rTvbcnNsMJ8OUpBkexAmxAM5U6AoRV7nvViqw85fBxYoPN7t1F4j4H/kvwyMPnTkHtRVweC7KSY72CV3lclDTC3oIJ3zrGXAeWm098dITu7ktjnK0YDkOW6Ec+9pDAXIwa0AzlTiApV3aRqOtbVwSejO2svNxBp3KJBQB+RTkFQPhYSdbe+iZNINFTmzO3+9VC0+xmhSZMXdKupz2z4gpLmUi/61I6QebnNmwE2N+wNZPyAi37s1fJFQaNAeII0//Gg6/BDFKPyzvPMHWG+jFlxf1rzr/nnTzPhF7A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0izcWiIsFhbVumJfO4SdrrpucrmDe3nP9In+ncyqnZw=;
- b=kJwifkXD2PK/8KJHg/kex0xnGBcsj6rAF1iQUM8sn2O6jsY9YyvEZGDXgHx5q/06JC5/tF6eQY37zKCEmXxCCWJO0pfThzwil8wZDWK2o3o6fWWaju45S8AprT1O5bU2o0AqVXjiOUF0YY2aUOkT3ah1L+0lFfK3ygcEAn5fdquAyxmb1DNl4rQLZodoThG2/L61zmUNRV4+ssbf1GzQ2EjwXlEIvhpQXN/N8ZUoqmD7+0HvlNdEQNLe49pveZg9yO5Vg1o8iohJvnO3AFpY16vYOFsqhByM66X5krqYhYqf6YFVZNC/bdl2QSY4mB7HWp/HMuRhn5ichBEpgCZWMw==
+ bh=sR1u5QVWcsTcn8Rv9kigsA1HCSXIoglRvxRKA0j3gMQ=;
+ b=WZZTu3nzBDDH+dwXan7nyHoXaASvQHPMOZk6+pbgiO/ehkivx2ZqV04tBRJN1mQ0Mo8vJxXtVjgRSstTufcHHAmXue66kU4GdzUUTw0crwmSrQR/pTwty7Tbagh2tfLG8ajaRt1luCIgealkH+uLA0AeLnk3i1hTZ99qs4966d/DkkSOE8mfi5x6p29zB8LPLu5WGRwFd/NVeremNovNI53Fb6+eozXkPytThs3hgGzcmi6APtcgChg0xoH6MZ3S9xL5NEuIcdZQF6kLtLv7FXOHKixvSC56teZWnAiCDQXaswVrrZq1rmo4oNXD9lcNFMieUXIfSUcSPvX+qFNCzw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0izcWiIsFhbVumJfO4SdrrpucrmDe3nP9In+ncyqnZw=;
- b=EvYtOi9f1LvGWWR+R9swn10/AHnpy+ReGKqOptym7Qyt2io0cKxXOeG/dvOKy8FFJtPGT1vxgSvCVOhXvv/gLCyUXUodVr3KMGz/SJaVyC7wQJ3Fzy7dVVmfqYnIAEZRggqy6QfGIzpc/p463rtIG7nJk/uRRZcISjY4Hi+Ixp4=
+ bh=sR1u5QVWcsTcn8Rv9kigsA1HCSXIoglRvxRKA0j3gMQ=;
+ b=kSE8s1shNGO+bdeVD583+GVEPg+8q3iZRJWXTqXvWZuRTsWPr+uagV1TkZ8BRSu04mrvTylZkRw0J7OvFcpV5mhJWOhGHNCnEPsLmdCElO1RsYTxKuiomufVO+2+d0Hijznqz1/B4YugqiREj90RvkpFPeEfGcYsyrfDX+w0ATM=
 Authentication-Results: arm.com; dkim=none (message not signed)
  header.d=none;arm.com; dmarc=none action=none header.from=nxp.com;
 Received: from VE1PR04MB6638.eurprd04.prod.outlook.com (2603:10a6:803:119::15)
  by VE1PR04MB6702.eurprd04.prod.outlook.com (2603:10a6:803:123::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3066.20; Fri, 5 Jun
- 2020 13:32:30 +0000
+ 2020 13:32:48 +0000
 Received: from VE1PR04MB6638.eurprd04.prod.outlook.com
  ([fe80::5cc4:23a5:ca17:da7d]) by VE1PR04MB6638.eurprd04.prod.outlook.com
  ([fe80::5cc4:23a5:ca17:da7d%6]) with mapi id 15.20.3066.019; Fri, 5 Jun 2020
- 13:32:30 +0000
+ 13:32:48 +0000
 From:   Robin Gong <yibin.gong@nxp.com>
 To:     mark.rutland@arm.com, broonie@kernel.org, robh+dt@kernel.org,
         catalin.marinas@arm.com, vkoul@kernel.org, will.deacon@arm.com,
@@ -57,9 +57,9 @@ To:     mark.rutland@arm.com, broonie@kernel.org, robh+dt@kernel.org,
 Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         kernel@pengutronix.de, linux-imx@nxp.com, dmaengine@vger.kernel.org
-Subject: [PATCH v9 01/14] Revert "ARM: dts: imx6q: Use correct SDMA script for SPI5 core"
-Date:   Sat,  6 Jun 2020 05:32:22 +0800
-Message-Id: <1591392755-19136-2-git-send-email-yibin.gong@nxp.com>
+Subject: [PATCH v9 04/14] dmaengine: imx-sdma: remove duplicated sdma_load_context
+Date:   Sat,  6 Jun 2020 05:32:25 +0800
+Message-Id: <1591392755-19136-5-git-send-email-yibin.gong@nxp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1591392755-19136-1-git-send-email-yibin.gong@nxp.com>
 References: <1591392755-19136-1-git-send-email-yibin.gong@nxp.com>
@@ -69,68 +69,68 @@ X-ClientProxiedBy: SG2PR02CA0048.apcprd02.prod.outlook.com
  (2603:10a6:803:119::15)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from robin-OptiPlex-790.ap.freescale.net (119.31.174.66) by SG2PR02CA0048.apcprd02.prod.outlook.com (2603:1096:3:18::36) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.20.3066.20 via Frontend Transport; Fri, 5 Jun 2020 13:32:25 +0000
+Received: from robin-OptiPlex-790.ap.freescale.net (119.31.174.66) by SG2PR02CA0048.apcprd02.prod.outlook.com (2603:1096:3:18::36) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.20.3066.20 via Frontend Transport; Fri, 5 Jun 2020 13:32:42 +0000
 X-Mailer: git-send-email 2.7.4
 X-Originating-IP: [119.31.174.66]
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 53c68dce-7ae0-417a-a0f5-08d80954e56d
+X-MS-Office365-Filtering-Correlation-Id: bc510279-98f5-4f1a-407f-08d80954f001
 X-MS-TrafficTypeDiagnostic: VE1PR04MB6702:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <VE1PR04MB67026FE212817760F5D5FBD989860@VE1PR04MB6702.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:660;
+X-Microsoft-Antispam-PRVS: <VE1PR04MB6702ACD50AD457A991E87B7189860@VE1PR04MB6702.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:1923;
 X-Forefront-PRVS: 0425A67DEF
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: f1y4cn+y1ipE6RQHnGnvE4zsUMd68j6uqE/rqnKmQHHetSDuKN7awNCNNaK5JTPWnx69kNgI7zTc79TfhFqrGsTlx+9XaHuaD5QNrtFHZvK+UmyE3ER1Far5we8F7mejJrJkgQi3sPagLD5Cxfq8SziJRr72GKAhuvhNA/r9O4ak4avqWGx5YOT1nQwcnsPTKrXAqEBKVqUC0uDn+gtRQtpXpcWltzrGV05pclqMWrAhzFg+LCZERkEynpBunF8Qgz78FkhPoH3woDv1avld+UgfTj+bA3l0ITau2ThlR7NOHEhf6ymKFNqaDZx3Wq3LUFpq6beBcDJUfTgEweUqJTKNQ/X/3KvYZMtQeO8G3MI/Mg4iW6fLSxCE3627sZRizkWTRcr+Siz5C3bp0UdRljhAuiaSYg6YfBXRaheI6i2IMpzkfTCerjV9L91QZc6Y73Y4TeUbMIcHEvx+5Kw0vDkDjzaynSjJGn2oZj5n1uc=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB6638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(39860400002)(346002)(376002)(396003)(136003)(366004)(6486002)(52116002)(2906002)(316002)(4326008)(6506007)(5660300002)(26005)(66946007)(2616005)(956004)(478600001)(66556008)(186003)(8676002)(16526019)(7416002)(6512007)(6666004)(36756003)(8936002)(83380400001)(86362001)(66476007)(32563001)(921003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: Hfw2QgbLAPtfMIJuttTdIR/ItmSh+r3FcjHWtqESnepLDemnD5eTf9SevRGv4jsdl4mET1bIZXbdX3W5O0MZhGz6sT8BGxO5EdBxlMjgKZb9XJBWInv7RnW3FnSYQSU/gxrbeuxnhEXyUjXkwVvKPRtVec4qheF45HF/qpU/AoEwZeyM04pXg9CHghvDD4/9Mf96cmEJIgYz0vtJmowwVTXkiPl3sdYCL5UDqtA7Jy+BrE4gbESfOqPG9l+EReC9J37AvSxgBIDvHrkIU24VCjwNDAQ2eObVmkH7o3WKFqly6mQh+eJqLAwhQOdw6wzpKlICYug2hn1Jeebmt76wPmonwBE6hQuzjlDTkR5G/9coX9CMjgHOCwip34BwJKyFiuXqWpcu0Uj5ca9FBEAbUtUwiKK7F3ix9DfkEpiVKXab76AFz5GAFNt6ZrXGzWo/pIZ1n2aRxaCM1fKT83IC7E3/VdIAu5NZ+k3uQk5DG6Y=
+X-Microsoft-Antispam-Message-Info: D4v/aYdV6kNvUAQuTCzGtMjMiN51QsIzEqEETkiuVxjdf3vIMRnPfvkZm461FPag1N64MOsip31Qha6MX97rrqMzxUSy3B3jhgRWXYbrRpcG9O8z0OZdJYYc4GaXxBG8KQEjYLMQOdCfLni1Rkuee+bDZrpLfV8ZvFYRiQkxkpTZ7kz1mbUV8ZZ0zbO30GV+gHelGln+RotnoYHtoTMvK6B0jrKS90Q+sQO5wCFjHlJQfS4bAn36EvxS/36OlMdo0Aaa6pNhREyJKBbgui5HnAfGkfi3UqTQFknhxSokxuSjAXJLzHuz6tYxTVMEJtqbziUn0HTX5vut8jqRitgTCKxRsmBREJkrGQ87iBy8Qu6yvbFz0dAkODB8/K43Ce8e
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB6638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(39860400002)(346002)(376002)(396003)(136003)(366004)(6486002)(52116002)(2906002)(316002)(4326008)(6506007)(5660300002)(26005)(66946007)(2616005)(956004)(478600001)(66556008)(186003)(8676002)(16526019)(7416002)(6512007)(6666004)(36756003)(8936002)(83380400001)(4744005)(86362001)(66476007)(921003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: r4wWjWX5YyU8hiwJdkr8lM+XTZrJvEdQJyk0gjV2Gc9GumuqpC9LKGsFmAuyhpsBCpBdSbVdB4jYaY7DMBd8p2CA6tGENSvKf+//YA8bglXkKUmsIxqv6P0RKada5o8mJghSXjw7KZFCDlVj8Xz4o46nG8MEo94YzEPCoYb9sPeoRkuZLFl4Nyw4/w+QItTdEnReTgQsdg9RUTVKFNIT/ZHAG4ZzxmUyG5SeQJg+0/YuTecl+iTp/NHos7HoQvYk2Rf4mUMdASf9rh/o60nhWxlDl8rOnxE6ROD2U2ep3HsCGEO5WNnu/0UlERpO5W81wZW8Gd6It8xUb1+oJ+mVu1O8iiT0ECfY6RtQjR1YW8S119W6ELbT6SISSfTkBUqZ4Fe2DmGpBsf6pvZA7H3Afl0G+OB1Kj0DUGwUgumS9f07BUew8wPZSA9vb/8nULEloyrNom18BpwF5dqswZpEA1LtMNOyFwQ1+t0r9WHrknE=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 53c68dce-7ae0-417a-a0f5-08d80954e56d
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2020 13:32:30.6553
+X-MS-Exchange-CrossTenant-Network-Message-Id: bc510279-98f5-4f1a-407f-08d80954f001
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2020 13:32:48.5149
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Lqq1e7vOavquFrhI45NeEsknbCwJL27zxdKO159qIVMVgjQhk0y7EQuFic4gBfBhvg8eyo7yQ51VVP/p7Dy+DQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9IW7nXsizrKyxB/6I4wu6hTCj9E5qEv3/ojP3y7FyTl7pC4qM/upAVqMiBLFTZqQmlLOzkTdgyIaaTSLKcL9fw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6702
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-  There are two ways for SDMA accessing SPBA devices: one is SDMA->AIPS
-->SPBA(masterA port), another is SDMA->SPBA(masterC port). Please refer
-to the 'Figure 58-1. i.MX 6Dual/6Quad SPBA connectivity' of i.mx6DQ
-Reference Manual. SDMA provide the corresponding app_2_mcu/mcu_2_app and
-shp_2_mcu/mcu_2_shp script for such two options. So both AIPS and SPBA
-scripts should keep the same behaviour, the issue only caught in AIPS
-script sounds not solide.
-  The issue is more likely as the ecspi errata
-ERR009165(http://www.nxp.com/docs/en/errata/IMX6DQCE.pdf):
-eCSPI: TXFIFO empty flag glitch can cause the current FIFO transfer to
-       be sent twice
-So revert commit 'df07101e1c4a' firstly.
+Since sdma_transfer_init() will do sdma_load_context before any
+sdma transfer, no need once more in sdma_config_channel().
 
 Signed-off-by: Robin Gong <yibin.gong@nxp.com>
-Acked-by: Sascha Hauer <s.hauer@pengutronix.de>
+Acked-by: Vinod Koul <vkoul@kernel.org>
 ---
- arch/arm/boot/dts/imx6q.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/imx-sdma.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx6q.dtsi b/arch/arm/boot/dts/imx6q.dtsi
-index 78a4d64..afdd9eb 100644
---- a/arch/arm/boot/dts/imx6q.dtsi
-+++ b/arch/arm/boot/dts/imx6q.dtsi
-@@ -177,7 +177,7 @@
- 					clocks = <&clks IMX6Q_CLK_ECSPI5>,
- 						 <&clks IMX6Q_CLK_ECSPI5>;
- 					clock-names = "ipg", "per";
--					dmas = <&sdma 11 8 1>, <&sdma 12 8 2>;
-+					dmas = <&sdma 11 7 1>, <&sdma 12 7 2>;
- 					dma-names = "rx", "tx";
- 					status = "disabled";
- 				};
+diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
+index b1f61eb..4440ddb 100644
+--- a/drivers/dma/imx-sdma.c
++++ b/drivers/dma/imx-sdma.c
+@@ -1137,7 +1137,6 @@ static void sdma_set_watermarklevel_for_p2p(struct sdma_channel *sdmac)
+ static int sdma_config_channel(struct dma_chan *chan)
+ {
+ 	struct sdma_channel *sdmac = to_sdma_chan(chan);
+-	int ret;
+ 
+ 	sdma_disable_channel(chan);
+ 
+@@ -1177,9 +1176,7 @@ static int sdma_config_channel(struct dma_chan *chan)
+ 		sdmac->watermark_level = 0; /* FIXME: M3_BASE_ADDRESS */
+ 	}
+ 
+-	ret = sdma_load_context(sdmac);
+-
+-	return ret;
++	return 0;
+ }
+ 
+ static int sdma_set_channel_priority(struct sdma_channel *sdmac,
 -- 
 2.7.4
 

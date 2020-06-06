@@ -2,52 +2,52 @@ Return-Path: <SRS0=WQLk=7T=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.0 required=3.0 tests=DATE_IN_FUTURE_06_12,
+X-Spam-Status: No, score=-9.8 required=3.0 tests=DATE_IN_FUTURE_06_12,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,MSGID_FROM_MTA_HEADER,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 330A8C433DF
-	for <linux-spi@archiver.kernel.org>; Sat,  6 Jun 2020 15:21:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 62022C433E1
+	for <linux-spi@archiver.kernel.org>; Sat,  6 Jun 2020 15:21:44 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0BE29207DF
-	for <linux-spi@archiver.kernel.org>; Sat,  6 Jun 2020 15:21:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3E2772081A
+	for <linux-spi@archiver.kernel.org>; Sat,  6 Jun 2020 15:21:44 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="oY8ltAia"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="dW6V/j6l"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728842AbgFFPVc (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 6 Jun 2020 11:21:32 -0400
-Received: from mail-eopbgr70048.outbound.protection.outlook.com ([40.107.7.48]:33664
-        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
+        id S1728875AbgFFPVm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 6 Jun 2020 11:21:42 -0400
+Received: from mail-eopbgr60080.outbound.protection.outlook.com ([40.107.6.80]:4772
+        "EHLO EUR04-DB3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728660AbgFFPV2 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Sat, 6 Jun 2020 11:21:28 -0400
+        id S1728863AbgFFPVk (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Sat, 6 Jun 2020 11:21:40 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TJVuBmoKVP/yntNXT7lJbvw+ek1MqkGKWRVMk5wTrgerUaXlTphXhtO1Up41F0nqNYFOrTPu+ZpO3hUtQVqYoEL2NLShobvGRzbT7Aw0zPJhGQyO/rZyijdiOiwSyhNvqUPP18xAO/dJPirQtfJa7XO6YhfM8+4xbUCf5y/V/nnCeT9OQoRsYla1YS8jOLDuzQ31QkjClKYdszYCbCF4YubOG+3GUgPutZinwGYOxiunNo8fpl5nh8Vzg2yIADFJKkgCKZ8crORALYTTGo20AC7OITlFwd+ec+IWcdIp1Ynhj/p3A2sP55I6VmAz3EBtrETlf+F7z0Rbe9muMcFeRA==
+ b=lIpCHeYel/Bav5B6+NMB/TezoMnCSvBwNQufwiWpsSK9j3IS18//6YDLH3/dK6kRqVvxBuoEE7uFzrkVeTxSaKYKAqUsCCihACKJx9EqDUfX4SFPYTIubiUBqvIp9jkBpv4fRHg/brEN6onNxsyjD5GRL1T0Po1UZUZRNgz8RozSAdcrI8uSbF6ZtHUPMgnkLp5ZJz5HDrmJI9ZFD1JSlxwH2WBioavzd2VPk3vMHUIZnxzAvLw+5Zo1J6xvBMqC35c8j+eBX2JTabgtHdpSlWPS9769Qy1dknB2l20LVwUrWj9tJCKBDlncQGJVfCowTcbNr7e8ZkqMPmnFH63LzA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j8bHalFai1IPzAYRt3Uf7FuWi//Xa5PjTOrdEZJL9qQ=;
- b=H4B2lQotgaFt3pPW0nro5t2ItE8t09cIpMixuk+KV5AURJYa6Qe5xe/ewzkoMHHU6qpHVwvWVt81WS98ow/sWtOocda/5WNCO9LIKsAsnQsC4vQU2QoX4RatqKZF5Xdl91v/G1O+LHJ/dTCEJA2A8t9WN3CMUG/uPDqPuRnkNtbpzxNKqC2ifq2H7vDLM4OgCOlLVJ1TFyD3x1Ha4vO6RuWBRtoz+Z7+LutQ/UUSfXOvoPp76sut2nvk2EL2ou+nTFX9RN01FYBzwv5XBOMEJiNMP1fFGe0WwOIIicbIBpTQV78QIUdpm2fJIMtqn0gOJc/dtkHkn6L696RB62JI0Q==
+ bh=sR1u5QVWcsTcn8Rv9kigsA1HCSXIoglRvxRKA0j3gMQ=;
+ b=Jbwp6av09/hcY1fowZH3EyHTsA74ntlpsgAhyhDAkJs9rT/YUzeYMcF7+wxXA0UVv9UjiQ2s/2ubaf8H56GDShu7XoVR96ij7A5h5ak7NE74nJ0MWPIFc/a9kEGeuRCeBGLH9pG5ohLGP+tv1Lg3hLPZSmZq+qbYsC+vge/YoHSjS2XrmF0J+b00xMrnfUVM/PKVbLOecF4F9WhFEvmlbhFsw0Adon/GYccplB0IAkPNs/JRW5tDgYPU5QYwoRnwbS4QtsD8DDlARFp2weUxPMH4mtha7vHEHhKXDheCRsJCwhVmvlkC9345XjClgIx3fXZ8MvdvQq65BYYGkBxWPA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j8bHalFai1IPzAYRt3Uf7FuWi//Xa5PjTOrdEZJL9qQ=;
- b=oY8ltAiaPaUJSWr4fF48dehsF54n4WBfK1NyeMwVJov0wfq9Zj7pmW8VcHMtjDmIDK8Vwy2aIJXture1IIolYafmZhc3rqyS18VG/bdZ8vkX1VVdwpIIGY7bLFiAf+m/2fI1WRZQbCjT8ysmPIxaRupAMp/Lpdi2gfJX5+0MzSc=
+ bh=sR1u5QVWcsTcn8Rv9kigsA1HCSXIoglRvxRKA0j3gMQ=;
+ b=dW6V/j6lVec+OZwT4b+UGLC/6WDRn1fhYNSYLw4c/gYEGeyQv+jAlCzLN+RxO2BCyhp0M2fBQJVZcbxMgs7KcXQuii3cbY6ZJhh8cqfes2cAA1FRoYkx6iyuFmUdR4Cy6uoSp1O8pz+44rcs26w7nSDiJx7iUznodSMvsMxWNHM=
 Authentication-Results: arm.com; dkim=none (message not signed)
  header.d=none;arm.com; dmarc=none action=none header.from=nxp.com;
 Received: from VE1PR04MB6638.eurprd04.prod.outlook.com (2603:10a6:803:119::15)
  by VE1PR04MB6511.eurprd04.prod.outlook.com (2603:10a6:803:11f::33) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3066.20; Sat, 6 Jun
- 2020 15:21:22 +0000
+ 2020 15:21:34 +0000
 Received: from VE1PR04MB6638.eurprd04.prod.outlook.com
  ([fe80::5cc4:23a5:ca17:da7d]) by VE1PR04MB6638.eurprd04.prod.outlook.com
  ([fe80::5cc4:23a5:ca17:da7d%6]) with mapi id 15.20.3066.019; Sat, 6 Jun 2020
- 15:21:22 +0000
+ 15:21:34 +0000
 From:   Robin Gong <yibin.gong@nxp.com>
 To:     mark.rutland@arm.com, broonie@kernel.org, robh+dt@kernel.org,
         catalin.marinas@arm.com, vkoul@kernel.org, will.deacon@arm.com,
@@ -57,9 +57,9 @@ To:     mark.rutland@arm.com, broonie@kernel.org, robh+dt@kernel.org,
 Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         kernel@pengutronix.de, linux-imx@nxp.com, dmaengine@vger.kernel.org
-Subject: [PATCH v9 RESEND 03/13] Revert "ARM: dts: imx6: Use correct SDMA script for SPI cores"
-Date:   Sun,  7 Jun 2020 07:21:07 +0800
-Message-Id: <1591485677-20533-4-git-send-email-yibin.gong@nxp.com>
+Subject: [PATCH v9 RESEND 05/13] dmaengine: imx-sdma: remove duplicated sdma_load_context
+Date:   Sun,  7 Jun 2020 07:21:09 +0800
+Message-Id: <1591485677-20533-6-git-send-email-yibin.gong@nxp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1591485677-20533-1-git-send-email-yibin.gong@nxp.com>
 References: <1591485677-20533-1-git-send-email-yibin.gong@nxp.com>
@@ -69,95 +69,68 @@ X-ClientProxiedBy: SG2PR04CA0184.apcprd04.prod.outlook.com
  (2603:10a6:803:119::15)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from robin-OptiPlex-790.ap.freescale.net (119.31.174.66) by SG2PR04CA0184.apcprd04.prod.outlook.com (2603:1096:4:14::22) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.20.3066.18 via Frontend Transport; Sat, 6 Jun 2020 15:21:17 +0000
+Received: from robin-OptiPlex-790.ap.freescale.net (119.31.174.66) by SG2PR04CA0184.apcprd04.prod.outlook.com (2603:1096:4:14::22) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.20.3066.18 via Frontend Transport; Sat, 6 Jun 2020 15:21:28 +0000
 X-Mailer: git-send-email 2.7.4
 X-Originating-IP: [119.31.174.66]
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: b0d58d60-ed4e-4849-724a-08d80a2d4542
+X-MS-Office365-Filtering-Correlation-Id: 9da97669-917d-4010-91cb-08d80a2d4c09
 X-MS-TrafficTypeDiagnostic: VE1PR04MB6511:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <VE1PR04MB651123F9FBF72F4A85956B8B89870@VE1PR04MB6511.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:660;
+X-Microsoft-Antispam-PRVS: <VE1PR04MB6511528C9344885B8B56C2A189870@VE1PR04MB6511.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:1923;
 X-Forefront-PRVS: 04267075BD
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 243wZ3SnFNOIPcitcVtRUpejdvt+dff/uBVdMOyQXE+E6tp5MmKwpuymqkxNOqeDzXKYl8sspdG84uXlPywrIdX1OPCkC7B5QYTnjC1bmFIeBpb6qJHVnyuvaDoFOoQ3/oKnsjsUKp1kYIiDsG3pdiJc1e3o3H76o56ulAjD+s9V21K4qfzn5h37r3BR0OvxNjQsotA6qHQ/SOvZiYvx8PreISFbT0lxrskrp8VIkjxFQ9RFhS4BNfiHpaogXByvO9WFrEsN/YtEPLdjc0I76AOIODc+LR1MAJUaVGAK5jpAi6LmOrfw/dptqiGaktK32iBkHTYViWNzAY3yCMHsbBGu6wGynhu9n3yz5m16wow/jc2m1dsaWEnDQNUsZyTZU6O/Wc7WVxaKfy0hpbAlOGjFAl/8ZdWiAB4wLBrFBjhSUxridAzLDzt3NZD12tUNEntCFVdHwu0sYQmCibt/HA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB6638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(396003)(136003)(366004)(346002)(39860400002)(376002)(86362001)(5660300002)(66476007)(16526019)(6506007)(66946007)(956004)(6666004)(2616005)(186003)(36756003)(2906002)(7416002)(316002)(66556008)(4326008)(478600001)(52116002)(26005)(6486002)(6512007)(8676002)(83380400001)(8936002)(921003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: IDxsi30zQsQhZRbv+oDwSDZqN3TcWiMeJxnqCPl6HJt+Lyr0nPdLKyBCCEt2SIlsw/LLFi70PkPN+mECKr40iy4MybehTp+3sX6k9MBDvOTrF4s8nAQHB/Jib8zIhbvSCa7In2+mLCrrrp7XuAChF+00LS+17QhZbw8KX5JA+R+xVlPbqOVO16ikYjHl1KkDxKYGPc5Nvzuk2Ia3iMtoV8qI/KAj7qR2/N/aQVOGUJgkcp+uK/T0zpGLryr3PHKEiaez9Hej53CkO5P+lnyY0zGRCWDBbd0VjG2+Zdn4pvvOPPX+YglLnUeIQ7rLO51NShB1CfVykuxXp40Tk4ReZGFqC5XVf7xAAfEYZveVtH7sjE59RQPOd1/HrjZDBmcQJseju/SlalkniIwC0ch7ynucqlNSShwxauEWB6skQTJg3U/EqVYVSflkPoRnpQC2aFlXvg0zWI4rVcTK5N+GkOqozOd7DH5iDQ6Zk3EpnHk=
+X-Microsoft-Antispam-Message-Info: kX+00+Ula5Iic/7vVAfLu4CEwblWSECFojplIX4E2yW/R8EvTpE8+omLO3Ph37EymBkLrA9oyYyzcAcYARJMns5keXqreCfIG3pO+N6s7rqmN3EvoPF7TDdXGErNJz/ePtrb5tdKDCtD07AQWa/H/SX3OsCLLTp0Hbfd2HRgWwfA/w8mu8291PQhJlBRHx/xXp1BuGStMdQu/FuX29KkgFJIh6k0ptqpTh0JFkYOGlbhvD3+WrvV1pGFRDwwOfu9ulAk3CWaKCEH1Q7oth9M+SlFp/VCcWIUWvVTCrYwgtz84CUCiXecKv+zCGjcHM8NZSiWejjSYEIColXo1kH0g7glgAkYsOLCr3vgKoYi03nAMYL2v5OcB+4dLP8jpYve
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB6638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(396003)(136003)(366004)(346002)(39860400002)(376002)(86362001)(5660300002)(4744005)(66476007)(16526019)(6506007)(66946007)(956004)(6666004)(2616005)(186003)(36756003)(2906002)(7416002)(316002)(66556008)(4326008)(478600001)(52116002)(26005)(6486002)(6512007)(8676002)(83380400001)(8936002)(921003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: sH9TYBzGmwAOCQmkmkshvf9dQSCmugCCSMqVbKNu/D9fi5htPFQ3HIojStVXFh8u1DTVovOHB23qkwDL2GnQ1KjvEyXj17mETVDmtmzPQqyTGDauF+vzWAKPcLkXPIfF5KWTZz6sXtZu7HpaJdwMLtc4otut2aBN1qimnT6q+clKxNJtNoeEFnNqX30L0nWZFEA5sOOqa+F6uTkPc1ck3wcrw/mqgTjZtuwHs8W5r1voycKhv/D+nQBdN0N7INZJVy2WO4Xg8UPaFjIrMmtBrquLXsJcI7+WgxENplhM+WE0t+Hn801VA3jMioqFUkeYWDPpLErYNQ4GcrKayI6k7rtibPcmY16krKtrbQp0Ii6pXE7H4L2OGOvb82FXKFHQkLRyZ+zyxDN69k95wNrfA+u0mrZvJullgKijzxRAsHoHebibZV+X0dkPgKzFbq8M4PuCoWLvEdu79aSA0q5Z9bgRuYZCsnqoKTyGlb2dDt4=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b0d58d60-ed4e-4849-724a-08d80a2d4542
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jun 2020 15:21:22.6972
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9da97669-917d-4010-91cb-08d80a2d4c09
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jun 2020 15:21:34.1644
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /EcOm8FYGgc0woMHR2LcdJ9I47E1rGy65rmezu691MhehvMTXBfBoeG+6tV40txs7MelYx9qgfD375q0GgBdWw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: bWYPc+ISwitbi1IJfTZO6yBgjXw7GPSfXvFyqlhfkyvw6OtAX0Shl922xhnvWXpur8E88uhiTdCuh/+6PskRpA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6511
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-There are two ways for SDMA accessing SPBA devices: one is SDMA->AIPS
-->SPBA(masterA port), another is SDMA->SPBA(masterC port). Please refer
-to the 'Figure 58-1. i.MX 6Dual/6Quad SPBA connectivity' of i.mx6DQ
-Reference Manual. SDMA provide the corresponding app_2_mcu/mcu_2_app and
-shp_2_mcu/mcu_2_shp script for such two options. So both AIPS and SPBA
-scripts should keep the same behaviour, the issue only caught in AIPS
-script sounds not solide.
-The issue is more likely as the ecspi errata
-ERR009165(http://www.nxp.com/docs/en/errata/IMX6DQCE.pdf):
-eCSPI: TXFIFO empty flag glitch can cause the current FIFO transfer to
-           be sent twice
-So revert commit 'dd4b487b32a3' firstly.
+Since sdma_transfer_init() will do sdma_load_context before any
+sdma transfer, no need once more in sdma_config_channel().
 
 Signed-off-by: Robin Gong <yibin.gong@nxp.com>
-Acked-by: Sascha Hauer <s.hauer@pengutronix.de>
+Acked-by: Vinod Koul <vkoul@kernel.org>
 ---
- arch/arm/boot/dts/imx6qdl.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/dma/imx-sdma.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx6qdl.dtsi b/arch/arm/boot/dts/imx6qdl.dtsi
-index 32114cf..9479a90 100644
---- a/arch/arm/boot/dts/imx6qdl.dtsi
-+++ b/arch/arm/boot/dts/imx6qdl.dtsi
-@@ -338,7 +338,7 @@
- 					clocks = <&clks IMX6QDL_CLK_ECSPI1>,
- 						 <&clks IMX6QDL_CLK_ECSPI1>;
- 					clock-names = "ipg", "per";
--					dmas = <&sdma 3 8 1>, <&sdma 4 8 2>;
-+					dmas = <&sdma 3 7 1>, <&sdma 4 7 2>;
- 					dma-names = "rx", "tx";
- 					status = "disabled";
- 				};
-@@ -352,7 +352,7 @@
- 					clocks = <&clks IMX6QDL_CLK_ECSPI2>,
- 						 <&clks IMX6QDL_CLK_ECSPI2>;
- 					clock-names = "ipg", "per";
--					dmas = <&sdma 5 8 1>, <&sdma 6 8 2>;
-+					dmas = <&sdma 5 7 1>, <&sdma 6 7 2>;
- 					dma-names = "rx", "tx";
- 					status = "disabled";
- 				};
-@@ -366,7 +366,7 @@
- 					clocks = <&clks IMX6QDL_CLK_ECSPI3>,
- 						 <&clks IMX6QDL_CLK_ECSPI3>;
- 					clock-names = "ipg", "per";
--					dmas = <&sdma 7 8 1>, <&sdma 8 8 2>;
-+					dmas = <&sdma 7 7 1>, <&sdma 8 7 2>;
- 					dma-names = "rx", "tx";
- 					status = "disabled";
- 				};
-@@ -380,7 +380,7 @@
- 					clocks = <&clks IMX6QDL_CLK_ECSPI4>,
- 						 <&clks IMX6QDL_CLK_ECSPI4>;
- 					clock-names = "ipg", "per";
--					dmas = <&sdma 9 8 1>, <&sdma 10 8 2>;
-+					dmas = <&sdma 9 7 1>, <&sdma 10 7 2>;
- 					dma-names = "rx", "tx";
- 					status = "disabled";
- 				};
+diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
+index b1f61eb..4440ddb 100644
+--- a/drivers/dma/imx-sdma.c
++++ b/drivers/dma/imx-sdma.c
+@@ -1137,7 +1137,6 @@ static void sdma_set_watermarklevel_for_p2p(struct sdma_channel *sdmac)
+ static int sdma_config_channel(struct dma_chan *chan)
+ {
+ 	struct sdma_channel *sdmac = to_sdma_chan(chan);
+-	int ret;
+ 
+ 	sdma_disable_channel(chan);
+ 
+@@ -1177,9 +1176,7 @@ static int sdma_config_channel(struct dma_chan *chan)
+ 		sdmac->watermark_level = 0; /* FIXME: M3_BASE_ADDRESS */
+ 	}
+ 
+-	ret = sdma_load_context(sdmac);
+-
+-	return ret;
++	return 0;
+ }
+ 
+ static int sdma_set_channel_priority(struct sdma_channel *sdmac,
 -- 
 2.7.4
 

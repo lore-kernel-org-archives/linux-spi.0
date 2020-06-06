@@ -2,52 +2,52 @@ Return-Path: <SRS0=WQLk=7T=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.0 required=3.0 tests=DATE_IN_FUTURE_06_12,
+X-Spam-Status: No, score=-9.8 required=3.0 tests=DATE_IN_FUTURE_06_12,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,MSGID_FROM_MTA_HEADER,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E86FFC433E0
-	for <linux-spi@archiver.kernel.org>; Sat,  6 Jun 2020 15:22:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D8C93C433E0
+	for <linux-spi@archiver.kernel.org>; Sat,  6 Jun 2020 15:22:28 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C36F9207D3
-	for <linux-spi@archiver.kernel.org>; Sat,  6 Jun 2020 15:22:18 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B857C20810
+	for <linux-spi@archiver.kernel.org>; Sat,  6 Jun 2020 15:22:28 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="dBJbSvkt"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="HIigH58n"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728931AbgFFPWN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 6 Jun 2020 11:22:13 -0400
-Received: from mail-eopbgr80053.outbound.protection.outlook.com ([40.107.8.53]:14305
+        id S1728969AbgFFPWT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 6 Jun 2020 11:22:19 -0400
+Received: from mail-eopbgr80044.outbound.protection.outlook.com ([40.107.8.44]:26597
         "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728912AbgFFPWH (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Sat, 6 Jun 2020 11:22:07 -0400
+        id S1728991AbgFFPWS (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Sat, 6 Jun 2020 11:22:18 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WDrXSNOYbKaaSgjSJjYrmefXMa64wbXVzGncIEIqZZBKsvjqOPsQcu4Gge+DDmvwQ44adUMDydlW54jaWoovKOJsr1AT787U5KB+RuFR7FBnpsPt9OJk5vwPLa7eW/ExmKbx5MwWzIW0aZEs//bqjepsAwDWIaGxzRYJUNVQEyTEBm2sldwVNbWqxP5guIAYyeo2RFMXPjils1K2P2tqjJWYGnhrLTKgUQDkkY155rvV3IqXvMMR0IIGE/n5h+wWLQvDSgP8hKYCxZEMO2lXO9BWGrsxz4vgjkgYUUB9ElXRLGGyDMMeBN9F09/VJYwZoW6OJ8I+zu07gnVmIylswA==
+ b=QekgbrYbLEdrq4muIPqoRU0zlLrNXdv4eccDuOV1dd+pRiKBK8/em2fCllKnfmaJWPzLjddT5OUEhmCgPnf7sQdePXucvxhqYAUuTAkGWudcRtky3go8VpoYZkx6ZvIuKzzz/eic4fZ4H+rBjwM0+8eRgrDQUystXOJ3cQ4heLECgjOakmD0z65AeMawMn+wx6m/tzFv/ArSZT9MRyTpZY5kaTXMs3MOdiVmvaGwxdw2AtyFChwoIagiMdcPRldsgydZJ3kmQ45X6SLYgPSi7IhJHdZBi412qxuxtm7xev38j+UfSZbnsVSHTCdAoyF7dUd0U4ParlT5Yk8aAPxMKg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E3U69uN0DL45TP1sCU2rBpvu0XorFo1Mf6dwI30ew/0=;
- b=epeRzBt4eFxeJ7ggGQGTvR+9NLz5zzQZnzStoLZlhFMDCnaG+/T2I4V9DkYEPxdIweXixfpCzVtRUz2Wo5C/tzr2gKODpsgh84h2OtNKVexQKYPVNXaWUPG1lpOFqIsW8SCqDwUyhie6ht+NFEO0uuSZ8qyBQgOvhgw3m/U+ys5cVFnzWjMrekBW7k+gGbtCbjj58rj69nvLPPGQYVj0cN9YCAnfnxM2oN9wcFuIcPO9s4kKj8nOHGtvejy+Vw0aLWYg7ee4ClKg6+6c04kCAQHT5ChApq+/AYO13FIbsvx19ofvADSOIDrv3PCeWrLJVihMGWW+lIwErdMLAQ7aAw==
+ bh=mFbDanBWSu2S5nbk4C4ogbtxHYjU/2zcsNJWbhy/sHo=;
+ b=BLS6DVB1DFH9eNZPmcXmL1WxYsobro7guoybRUU0KXar3CMvP5TfPSesiNpTgY9uLxMhE7GC2LR4cgmRnKwz7URii8bVLesFMXK4XiL9bDbt0PpIlOhRtIXm8Tmup18oovTpq6005/+n6WsKI2LzCMZnXXw9o4BbpJD5kKBm7qOQ4Ov6NO6rWBnD0bzrcdK7c/OXxmo2GnXrdLk0I+OY7wHeP9VNa1UxJcqglpLKYOncNt+XZLiggzVRubnl03AkMcySY6q9jQDEo48b1lQPqf99ZJCSHAGznRkziB/2MMUMI25ysIdKBPHjYEQ/CTJo9S6U3vF8uQiebnQcmjX3Mw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E3U69uN0DL45TP1sCU2rBpvu0XorFo1Mf6dwI30ew/0=;
- b=dBJbSvktWXO/ITTCnJdxyAjOa5FM8BVU5kcnpLVV7YmkaD5iAEqRJ9nptwoBsX9CaQMCzHvLhkMAeFm3SdbfCdU3XrQadg7pb+QGX+MozFV5jLlafTxt4m8sE/9hJqkAeLrsZnOLzVeYq0CY97hpe28ycIU28OzzFyKxdYy/Rho=
+ bh=mFbDanBWSu2S5nbk4C4ogbtxHYjU/2zcsNJWbhy/sHo=;
+ b=HIigH58nz4aw7muA9t8iK8N15uNQRpmeF1JOyjBu4EvNqI30J8yWLWTtTBRKbRPJm4c2O/iU0sDa+slJXrRSvS6UNZ1go7xkXjgbpSI91qSHs7WDuKtFERXF7/InV/TWhlJBrEsZ5RD7NkQG2wcDUewXpykQvNT5pbY4hwih5b8=
 Authentication-Results: arm.com; dkim=none (message not signed)
  header.d=none;arm.com; dmarc=none action=none header.from=nxp.com;
 Received: from VE1PR04MB6638.eurprd04.prod.outlook.com (2603:10a6:803:119::15)
  by VE1PR04MB6429.eurprd04.prod.outlook.com (2603:10a6:803:11a::29) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3066.18; Sat, 6 Jun
- 2020 15:22:02 +0000
+ 2020 15:22:14 +0000
 Received: from VE1PR04MB6638.eurprd04.prod.outlook.com
  ([fe80::5cc4:23a5:ca17:da7d]) by VE1PR04MB6638.eurprd04.prod.outlook.com
  ([fe80::5cc4:23a5:ca17:da7d%6]) with mapi id 15.20.3066.019; Sat, 6 Jun 2020
- 15:22:02 +0000
+ 15:22:14 +0000
 From:   Robin Gong <yibin.gong@nxp.com>
 To:     mark.rutland@arm.com, broonie@kernel.org, robh+dt@kernel.org,
         catalin.marinas@arm.com, vkoul@kernel.org, will.deacon@arm.com,
@@ -57,9 +57,9 @@ To:     mark.rutland@arm.com, broonie@kernel.org, robh+dt@kernel.org,
 Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         kernel@pengutronix.de, linux-imx@nxp.com, dmaengine@vger.kernel.org
-Subject: [PATCH v9 RESEND 10/13] dmaengine: imx-sdma: remove ERR009165 on i.mx6ul
-Date:   Sun,  7 Jun 2020 07:21:14 +0800
-Message-Id: <1591485677-20533-11-git-send-email-yibin.gong@nxp.com>
+Subject: [PATCH v9 RESEND 12/13] dmaengine: imx-sdma: fix ecspi1 rx dma not work on i.mx8mm
+Date:   Sun,  7 Jun 2020 07:21:16 +0800
+Message-Id: <1591485677-20533-13-git-send-email-yibin.gong@nxp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1591485677-20533-1-git-send-email-yibin.gong@nxp.com>
 References: <1591485677-20533-1-git-send-email-yibin.gong@nxp.com>
@@ -69,114 +69,92 @@ X-ClientProxiedBy: SG2PR04CA0184.apcprd04.prod.outlook.com
  (2603:10a6:803:119::15)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from robin-OptiPlex-790.ap.freescale.net (119.31.174.66) by SG2PR04CA0184.apcprd04.prod.outlook.com (2603:1096:4:14::22) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.20.3066.18 via Frontend Transport; Sat, 6 Jun 2020 15:21:57 +0000
+Received: from robin-OptiPlex-790.ap.freescale.net (119.31.174.66) by SG2PR04CA0184.apcprd04.prod.outlook.com (2603:1096:4:14::22) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.20.3066.18 via Frontend Transport; Sat, 6 Jun 2020 15:22:08 +0000
 X-Mailer: git-send-email 2.7.4
 X-Originating-IP: [119.31.174.66]
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 25c7d411-7cf0-4000-e367-08d80a2d5d32
+X-MS-Office365-Filtering-Correlation-Id: dff58dcb-e259-4682-9a53-08d80a2d6405
 X-MS-TrafficTypeDiagnostic: VE1PR04MB6429:
 X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <VE1PR04MB6429DF7730FEFE28E606254D89870@VE1PR04MB6429.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
+X-Microsoft-Antispam-PRVS: <VE1PR04MB6429DD06868822AE1866C9A189870@VE1PR04MB6429.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
 X-Forefront-PRVS: 04267075BD
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: YahhH+4rntuBx1x78aCh1GqljcFagQB6xK4JJlgIXGctHW537z5fMdJkxlPzBiMfYErlZxcGO0uRoTRLAxdkcwr7OsP6gKEgTZutOhn52AY/SO9SaBG3M4LtIgHpisBgihNeXk4b0bERInVruRkJ/HIOy7iyk9bqukdCqG/QBi25JwN2UNGYC+16n1D+SGa1NCt+7M/Mtpp5r0EfLdQcycVr1+frjvLrK12VxSiLHHU6Zozg0QoxlvqS9W1e1aOu1FnlbmOlbRBoE8nDUdNYtztQbMPm7i7S+119fFteoN6dQzXRVlcnGkabgOPDx1fqzcYvvaF81LTqY/1g4RzJbPJwuu9tizi4eyO04yMBFidWAiWCp2RAIqBt8tdsUSDEdU8BxKk1LyB/49aY4WKdcOkZvATKJ6oBtSy8to+qA08+kmvCG4ukRKWtKZe/ku3oF3ywvDrSMrs3MOY58vJRLw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB6638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(366004)(346002)(136003)(376002)(396003)(39860400002)(66946007)(52116002)(6512007)(66476007)(66556008)(6506007)(186003)(7416002)(16526019)(26005)(83380400001)(2906002)(86362001)(8936002)(956004)(8676002)(2616005)(6486002)(6666004)(316002)(4326008)(36756003)(478600001)(5660300002)(966005)(921003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: dGmDuj+Fw0YMwdwhmBtA50bV1hSgxCBI9z6D8l0mLlR40KIxy13c7JB79/oQhAn56gcvYQq3CVj5Sz1okIp5vit1p5bleTzVBc0ZqbacgrJD6A8hPhcvulkQov8PDC3r83KdAFOr6fUSGIXrAzy5G2IdXGkncFULT3YS8nl41acwaM60MBCwWTq4ElGVd79SpSfVOcPGzDbUDCQZUPTvmSb2m4vsjEMXtgXV3C/VXgtlvDGd6a5iKXwbzxtUnTRTDO3/R6WOV1pPOcMYigzOtKfZsIRP7HTeobTgji7n6SJFahBhcbgqlJk1NsMGkyo28r5pajoASy6CIqEwRC4dpp+nKnhwbjw45RHxTgcjy6odoQHadPPKFItPQdKfhkMExRp3qk7yGsciq+OxQcmUbK9cm3AtHwywQH46zWrd9kGb746zhAKhoVoZZL1pBY3mHY2xuIn3sq6/fa9Y7xL2h9yr2Xdox3Bgzgl7xOZ4rJE=
+X-Microsoft-Antispam-Message-Info: O0oqycciC1aTCVhke0xezIUwCkxM9/P0bjvSDKaDMACFJm4I0Rcko6Wsa5jNSO+vDE1Zdr4ybIvni9bgw8rLknIlDoH2Ntny8WvL2fjS7gg+BvfZRx/E5qgwF5wGXZX30zxBJlc+jR6+DDz1y+HAtyxuCi+x8zAqzsTV+ToFi5Ht/YpZphJMdsdnrfRqLD57OYn0iImvGP21PM0A1hn5r5RrFa8FMiFrOmTLhtlpLPqKwBFX4uHyakvARlxAVXFOaBoTq7KrKaFq3g2V/EPwsbguNfzIMSHew7+2tlr/Q4fyXM6bZlhTDdvSnBVYvucSrEP3VsM78LBljjSwdnoHS/4lNlPTmx/wCj5Kyp4eEExsjCxUHRax1wL4wbWXkUNJ
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB6638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(366004)(346002)(136003)(376002)(396003)(39860400002)(66946007)(52116002)(6512007)(66476007)(66556008)(6506007)(186003)(7416002)(16526019)(26005)(83380400001)(2906002)(86362001)(8936002)(956004)(8676002)(2616005)(6486002)(6666004)(316002)(4326008)(36756003)(478600001)(5660300002)(921003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: Lc7nnBtZG7YaM3Lu5WdKt5UsagLZsOT2CUpLkqR8sBCvn20iGjH/rf4pwqklgvoXN8a0qLkHzbwiTNuVhaAWyt5hUQ5wF4BNpEqvNBpf5vXz6lbXa+iI2fBg2K8rMwnBM/6StyAavdNmMvRS/xhvdKKY97ocyEZmCGFz1iTZw8i54uvYt0AV2ojburjTbfv8Slu1ldcL+LEBFUkNB82YL6ITSxrTmMM6lR36sHjVCTbayDyDJtD+O+nKekkCbAHa4TEayLGZdTMCk03FhK4rnvyh94Jjxsz+hxPXgJfaSyDCVMLCHzaIBk6RFixG4Dm6nJf4hWD67d53fvqjTOx042kQFII0PQA4hL98EVdZJyMvhpQc49L1mExl2bE3jzprm3sXuwZ5BcmI8nm8KBnvsLuQ27TIybpUuWXrvjMt5zaQxVQQ3RyYqEIwsQypvnOEw0HbpRgRDUFa+J6K6uNM7OlfWRlp6jqkRmHXMrM8QxY=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 25c7d411-7cf0-4000-e367-08d80a2d5d32
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jun 2020 15:22:02.8426
+X-MS-Exchange-CrossTenant-Network-Message-Id: dff58dcb-e259-4682-9a53-08d80a2d6405
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jun 2020 15:22:14.3308
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gqmPSMNOnFk5vKrGcy5er4A6gGB/FyheEGkKJ0Nx14+bq4QObX2ick6suGVYrY6SjtpTOv+LuS7h2pnnL8U3rg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ljn6Zw16HeX1fgLctXU078cOKMmqRHQynulStd6X11zTn5N10Xqjw4Su3xoeDQvz0guKWBjxWQ+tsPRAA/9Q7w==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6429
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-ECSPI issue fixed from i.mx6ul at hardware level, no need
-ERR009165 anymore on those chips such as i.mx8mq.
+Because the number of ecspi1 rx event on i.mx8mm is 0, the condition
+check ignore such special case without dma channel enabled, which caused
+ecspi1 rx works failed. Actually, no need to check event_id0/event_id1
+and replace checking 'event_id1' with 'DMA_DEV_TO_DEV', so that configure
+event_id1 only in case DEV_TO_DEV.
 
 Signed-off-by: Robin Gong <yibin.gong@nxp.com>
 Acked-by: Vinod Koul <vkoul@kernel.org>
 ---
- drivers/dma/imx-sdma.c | 29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+ drivers/dma/imx-sdma.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
-index db4132f..be86ae8 100644
+index be86ae8..320104f 100644
 --- a/drivers/dma/imx-sdma.c
 +++ b/drivers/dma/imx-sdma.c
-@@ -419,6 +419,13 @@ struct sdma_driver_data {
- 	int num_events;
- 	struct sdma_script_start_addrs	*script_addrs;
- 	bool check_ratio;
-+	/*
-+	 * ecspi ERR009165 fixed should be done in sdma script
-+	 * and it has been fixed in soc from i.mx6ul.
-+	 * please get more information from the below link:
-+	 * https://www.nxp.com/docs/en/errata/IMX6DQCE.pdf
-+	 */
-+	bool ecspi_fixed;
- };
- 
- struct sdma_engine {
-@@ -539,6 +546,13 @@ static struct sdma_driver_data sdma_imx6q = {
- 	.script_addrs = &sdma_script_imx6q,
- };
- 
-+static struct sdma_driver_data sdma_imx6ul = {
-+	.chnenbl0 = SDMA_CHNENBL0_IMX35,
-+	.num_events = 48,
-+	.script_addrs = &sdma_script_imx6q,
-+	.ecspi_fixed = true,
-+};
-+
- static struct sdma_script_start_addrs sdma_script_imx7d = {
- 	.ap_2_ap_addr = 644,
- 	.uart_2_mcu_addr = 819,
-@@ -587,6 +601,9 @@ static const struct platform_device_id sdma_devtypes[] = {
- 		.name = "imx7d-sdma",
- 		.driver_data = (unsigned long)&sdma_imx7d,
- 	}, {
-+		.name = "imx6ul-sdma",
-+		.driver_data = (unsigned long)&sdma_imx6ul,
-+	}, {
- 		.name = "imx8mq-sdma",
- 		.driver_data = (unsigned long)&sdma_imx8mq,
- 	}, {
-@@ -603,6 +620,7 @@ static const struct of_device_id sdma_dt_ids[] = {
- 	{ .compatible = "fsl,imx31-sdma", .data = &sdma_imx31, },
- 	{ .compatible = "fsl,imx25-sdma", .data = &sdma_imx25, },
- 	{ .compatible = "fsl,imx7d-sdma", .data = &sdma_imx7d, },
-+	{ .compatible = "fsl,imx6ul-sdma", .data = &sdma_imx6ul, },
- 	{ .compatible = "fsl,imx8mq-sdma", .data = &sdma_imx8mq, },
- 	{ /* sentinel */ }
- };
-@@ -1169,8 +1187,17 @@ static int sdma_config_channel(struct dma_chan *chan)
+@@ -1183,7 +1183,7 @@ static int sdma_config_channel(struct dma_chan *chan)
+ 	if ((sdmac->peripheral_type != IMX_DMATYPE_MEMORY) &&
+ 			(sdmac->peripheral_type != IMX_DMATYPE_DSP)) {
+ 		/* Handle multiple event channels differently */
+-		if (sdmac->event_id1) {
++		if (sdmac->direction == DMA_DEV_TO_DEV) {
  			if (sdmac->peripheral_type == IMX_DMATYPE_ASRC_SP ||
  			    sdmac->peripheral_type == IMX_DMATYPE_ASRC)
  				sdma_set_watermarklevel_for_p2p(sdmac);
--		} else
-+		} else {
-+			/*
-+			 * ERR009165 fixed from i.mx6ul, no errata need,
-+			 * set bit31 to let sdma script skip the errata.
-+			 */
-+			if (sdmac->peripheral_type == IMX_DMATYPE_CSPI &&
-+			    sdmac->direction == DMA_MEM_TO_DEV &&
-+			    sdmac->sdma->drvdata->ecspi_fixed)
-+				__set_bit(31, &sdmac->watermark_level);
- 			__set_bit(sdmac->event_id0, sdmac->event_mask);
-+		}
+@@ -1351,9 +1351,9 @@ static void sdma_free_chan_resources(struct dma_chan *chan)
  
- 		/* Address */
- 		sdmac->shp_addr = sdmac->per_address;
+ 	sdma_channel_synchronize(chan);
+ 
+-	if (sdmac->event_id0 >= 0)
+-		sdma_event_disable(sdmac, sdmac->event_id0);
+-	if (sdmac->event_id1)
++	sdma_event_disable(sdmac, sdmac->event_id0);
++
++	if (sdmac->direction == DMA_DEV_TO_DEV)
+ 		sdma_event_disable(sdmac, sdmac->event_id1);
+ 
+ 	sdmac->event_id0 = 0;
+@@ -1651,13 +1651,11 @@ static int sdma_config(struct dma_chan *chan,
+ 	memcpy(&sdmac->slave_config, dmaengine_cfg, sizeof(*dmaengine_cfg));
+ 
+ 	/* Set ENBLn earlier to make sure dma request triggered after that */
+-	if (sdmac->event_id0 >= 0) {
+-		if (sdmac->event_id0 >= sdmac->sdma->drvdata->num_events)
+-			return -EINVAL;
+-		sdma_event_enable(sdmac, sdmac->event_id0);
+-	}
++	if (sdmac->event_id0 >= sdmac->sdma->drvdata->num_events)
++		return -EINVAL;
++	sdma_event_enable(sdmac, sdmac->event_id0);
+ 
+-	if (sdmac->event_id1) {
++	if (sdmac->direction == DMA_DEV_TO_DEV) {
+ 		if (sdmac->event_id1 >= sdmac->sdma->drvdata->num_events)
+ 			return -EINVAL;
+ 		sdma_event_enable(sdmac, sdmac->event_id1);
 -- 
 2.7.4
 

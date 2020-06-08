@@ -7,46 +7,45 @@ X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A5DF6C433E0
-	for <linux-spi@archiver.kernel.org>; Tue,  9 Jun 2020 00:45:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 03A56C433DF
+	for <linux-spi@archiver.kernel.org>; Tue,  9 Jun 2020 01:00:38 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7759D2078C
-	for <linux-spi@archiver.kernel.org>; Tue,  9 Jun 2020 00:45:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C8E4C20737
+	for <linux-spi@archiver.kernel.org>; Tue,  9 Jun 2020 01:00:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1591663553;
-	bh=T+jPFC0lA+eBgkxLgd3PN4lxPcbqGMXjwaRExUrc1pA=;
+	s=default; t=1591664437;
+	bh=+2NOhQ0peQsJcxduJPSM0cvQWxmusNKkC9yPB/u6K58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=aFCk4UKXtULZuKEseaYbuEGB7yFbA9dgxU8KQ8d4mQo46UWRJL6/TywiX3Y+9k8Kh
-	 gT/YUmqZn9Tdx+KxnIUFUVMC96Cl5643o6mzICKhdDGAVQELd17JZUPU45hOZSzvpY
-	 V6fmELvnJaAYfxItJr9RPxPeFh1hYV3ReWrVNWgo=
+	b=gzTZDCWNjYLVq+nb0IhD+usm1q4FKB4D6W0zilWn2u881ucZpIpKj8HB7DOZhekqG
+	 KIMVJAHXTn+F0A0KkWP+nLlmdXkgSXjmpwbb5TjNo8OYfKqAMM0UanGD1rxip8yqFY
+	 9HSKj/BSrTBvDCakffGM17SsvEdK2ZUJSxfbv+VI=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729398AbgFIApn (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 8 Jun 2020 20:45:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58772 "EHLO mail.kernel.org"
+        id S1728454AbgFIBAd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 8 Jun 2020 21:00:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53446 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728970AbgFHXLp (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 8 Jun 2020 19:11:45 -0400
+        id S1728144AbgFHXIT (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 8 Jun 2020 19:08:19 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4458620C56;
-        Mon,  8 Jun 2020 23:11:44 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5BC23208B3;
+        Mon,  8 Jun 2020 23:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591657905;
-        bh=T+jPFC0lA+eBgkxLgd3PN4lxPcbqGMXjwaRExUrc1pA=;
+        s=default; t=1591657699;
+        bh=+2NOhQ0peQsJcxduJPSM0cvQWxmusNKkC9yPB/u6K58=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wpauXWF0xUP/EW+swiGrLj8liDsHnL+S8AW+VkjDO6s4bdx0HuNWU5Hh1wE3UH3zT
-         Wm1Jo/Z7KcgH2KrLcp2Fs23m/huH3apgLJuPORLQZ76sj8c7V7kWChy53jIbQ7h7MX
-         dnM3cgwWSf+JmyDFlzXruaJFpbkLMUdgOyU0yaSw=
+        b=zE/h0stFZvhtamSDe92/jiNDqFbmUzzmXsxUfZDbMGXamzwjeMAGXU+yWynb5eE28
+         qvZJRbDXXrBOcLcMC0kCpO27GfSBDVKYzkO2cNbpoEy1jUqOPeOAkQ5sOMk78OHzRV
+         2tfZrWKAGEtLf/7/Q1/z9RgkOyaSGXcDMUz/AYmg=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Angelo Dureghello <angelo.dureghello@timesys.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.7 257/274] spi: spi-fsl-dspi: fix native data copy
-Date:   Mon,  8 Jun 2020 19:05:50 -0400
-Message-Id: <20200608230607.3361041-257-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.7 098/274] spi: Respect DataBitLength field of SpiSerialBusV2() ACPI resource
+Date:   Mon,  8 Jun 2020 19:03:11 -0400
+Message-Id: <20200608230607.3361041-98-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200608230607.3361041-1-sashal@kernel.org>
 References: <20200608230607.3361041-1-sashal@kernel.org>
@@ -59,69 +58,38 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Angelo Dureghello <angelo.dureghello@timesys.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 263b81dc6c932c8bc550d5e7bfc178d2b3fc491e ]
+[ Upstream commit 0dadde344d965566589cd82797893d5aa06557a3 ]
 
-ColdFire is a big-endian cpu with a big-endian dspi hw module,
-so, it uses native access, but memcpy breaks the endianness.
+By unknown reason the commit 64bee4d28c9e
+  ("spi / ACPI: add ACPI enumeration support")
+missed the DataBitLength property to encounter when parse SPI slave
+device data from ACPI.
 
-So, if i understand properly, by native copy we would mean
-be(cpu)->be(dspi) or le(cpu)->le(dspi) accesses, so my fix
-shouldn't break anything, but i couldn't test it on LS family,
-so every test is really appreciated.
+Fill the gap here.
 
-Fixes: 53fadb4d90c7 ("spi: spi-fsl-dspi: Simplify bytes_per_word gymnastics")
-Signed-off-by: Angelo Dureghello <angelo.dureghello@timesys.com>
-Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://lore.kernel.org/r/20200529195756.184677-1-angelo.dureghello@timesys.com
+Fixes: 64bee4d28c9e ("spi / ACPI: add ACPI enumeration support")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20200413180406.1826-1-andriy.shevchenko@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ drivers/spi/spi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 50e41f66a2d7..2e9f9adc5900 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -246,13 +246,33 @@ struct fsl_dspi {
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index c92c89467e7e..e0e27fe06878 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2111,6 +2111,7 @@ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
+ 			}
  
- static void dspi_native_host_to_dev(struct fsl_dspi *dspi, u32 *txdata)
- {
--	memcpy(txdata, dspi->tx, dspi->oper_word_size);
-+	switch (dspi->oper_word_size) {
-+	case 1:
-+		*txdata = *(u8 *)dspi->tx;
-+		break;
-+	case 2:
-+		*txdata = *(u16 *)dspi->tx;
-+		break;
-+	case 4:
-+		*txdata = *(u32 *)dspi->tx;
-+		break;
-+	}
- 	dspi->tx += dspi->oper_word_size;
- }
+ 			lookup->max_speed_hz = sb->connection_speed;
++			lookup->bits_per_word = sb->data_bit_length;
  
- static void dspi_native_dev_to_host(struct fsl_dspi *dspi, u32 rxdata)
- {
--	memcpy(dspi->rx, &rxdata, dspi->oper_word_size);
-+	switch (dspi->oper_word_size) {
-+	case 1:
-+		*(u8 *)dspi->rx = rxdata;
-+		break;
-+	case 2:
-+		*(u16 *)dspi->rx = rxdata;
-+		break;
-+	case 4:
-+		*(u32 *)dspi->rx = rxdata;
-+		break;
-+	}
- 	dspi->rx += dspi->oper_word_size;
- }
- 
+ 			if (sb->clock_phase == ACPI_SPI_SECOND_PHASE)
+ 				lookup->mode |= SPI_CPHA;
 -- 
 2.25.1
 

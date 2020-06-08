@@ -4,76 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 49C6BC433EA
-	for <linux-spi@archiver.kernel.org>; Mon,  8 Jun 2020 09:59:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 558B4C433E0
+	for <linux-spi@archiver.kernel.org>; Mon,  8 Jun 2020 10:00:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 269EA206A4
-	for <linux-spi@archiver.kernel.org>; Mon,  8 Jun 2020 09:59:51 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 33D4F2072F
+	for <linux-spi@archiver.kernel.org>; Mon,  8 Jun 2020 10:00:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729290AbgFHJ7u (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 8 Jun 2020 05:59:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57108 "EHLO
+        id S1729172AbgFHKAy (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 8 Jun 2020 06:00:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729271AbgFHJ7p (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 8 Jun 2020 05:59:45 -0400
+        with ESMTP id S1729222AbgFHKAw (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 8 Jun 2020 06:00:52 -0400
 Received: from michel.telenet-ops.be (michel.telenet-ops.be [IPv6:2a02:1800:110:4::f00:18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41D8CC08C5C8
-        for <linux-spi@vger.kernel.org>; Mon,  8 Jun 2020 02:59:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F8DBC08C5C3
+        for <linux-spi@vger.kernel.org>; Mon,  8 Jun 2020 03:00:51 -0700 (PDT)
 Received: from ramsan ([IPv6:2a02:1810:ac12:ed60:c85f:a5bf:b1bd:702b])
         by michel.telenet-ops.be with bizsmtp
-        id oZzi2200B0R8aca06Zziom; Mon, 08 Jun 2020 11:59:42 +0200
+        id oa0q2200j0R8aca06a0q5c; Mon, 08 Jun 2020 12:00:50 +0200
 Received: from rox.of.borg ([192.168.97.57])
         by ramsan with esmtp (Exim 4.90_1)
         (envelope-from <geert@linux-m68k.org>)
-        id 1jiEZC-0007P1-Ak; Mon, 08 Jun 2020 11:59:42 +0200
+        id 1jiEaI-0007PR-HL; Mon, 08 Jun 2020 12:00:50 +0200
 Received: from geert by rox.of.borg with local (Exim 4.90_1)
         (envelope-from <geert@linux-m68k.org>)
-        id 1jiEZC-0007x6-9C; Mon, 08 Jun 2020 11:59:42 +0200
+        id 1jiEaI-0007z4-FW; Mon, 08 Jun 2020 12:00:50 +0200
 From:   Geert Uytterhoeven <geert+renesas@glider.be>
 To:     Mark Brown <broonie@kernel.org>
-Cc:     Chris Brandt <chris.brandt@renesas.com>, linux-spi@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-sh@vger.kernel.org,
+Cc:     linux-spi@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 1/8] spi: rspi: Remove useless .set_config_register() check
-Date:   Mon,  8 Jun 2020 11:59:33 +0200
-Message-Id: <20200608095940.30516-2-geert+renesas@glider.be>
+Subject: [PATCH] spi: spidev_test: Use %u to format unsigned numbers
+Date:   Mon,  8 Jun 2020 12:00:49 +0200
+Message-Id: <20200608100049.30648-1-geert+renesas@glider.be>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200608095940.30516-1-geert+renesas@glider.be>
-References: <20200608095940.30516-1-geert+renesas@glider.be>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Not implementing spi_ops.set_config_register() is a driver bug that
-would prevent the driver from working at all.
-Hence remove the run-time check.
+Consistently use %u to format unsigned numbers.
+For "bits" this doesn't matter that much, as it is "uint8_t".
+However, "speed" is "uint32_t", so in case people use "-s -1" to force
+the maximum, they would see:
+
+    max speed: -1 Hz (4294967 KHz)
+
+While at it, use "k" (kilo) instead of "K" (kelvin) in "kHz".
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- drivers/spi/spi-rspi.c | 7 -------
- 1 file changed, 7 deletions(-)
+ tools/spi/spidev_test.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 06192c9ea8132911..0e786af546c9f513 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -1247,13 +1247,6 @@ static int rspi_probe(struct platform_device *pdev)
- 			ctlr->num_chipselect = 2; /* default */
- 	}
+diff --git a/tools/spi/spidev_test.c b/tools/spi/spidev_test.c
+index eec23fa693bd5912..56ea053f72f2a276 100644
+--- a/tools/spi/spidev_test.c
++++ b/tools/spi/spidev_test.c
+@@ -461,8 +461,8 @@ int main(int argc, char *argv[])
+ 		pabort("can't get max speed hz");
  
--	/* ops parameter check */
--	if (!ops->set_config_register) {
--		dev_err(&pdev->dev, "there is no set_config_register\n");
--		ret = -ENODEV;
--		goto error1;
--	}
--
- 	rspi = spi_controller_get_devdata(ctlr);
- 	platform_set_drvdata(pdev, rspi);
- 	rspi->ops = ops;
+ 	printf("spi mode: 0x%x\n", mode);
+-	printf("bits per word: %d\n", bits);
+-	printf("max speed: %d Hz (%d KHz)\n", speed, speed/1000);
++	printf("bits per word: %u\n", bits);
++	printf("max speed: %u Hz (%u kHz)\n", speed, speed/1000);
+ 
+ 	if (input_tx)
+ 		transfer_escaped_string(fd, input_tx);
 -- 
 2.17.1
 

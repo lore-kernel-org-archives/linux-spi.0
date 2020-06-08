@@ -7,53 +7,45 @@ X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8007CC433E2
-	for <linux-spi@archiver.kernel.org>; Tue,  9 Jun 2020 00:01:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 196D9C433DF
+	for <linux-spi@archiver.kernel.org>; Tue,  9 Jun 2020 00:10:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 635402078D
-	for <linux-spi@archiver.kernel.org>; Tue,  9 Jun 2020 00:01:39 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D6FED2072F
+	for <linux-spi@archiver.kernel.org>; Tue,  9 Jun 2020 00:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1591660899;
-	bh=hX+AuUfC+65TXjmH+ynIPh/epxU7Rix/OdCLMDYXuoE=;
+	s=default; t=1591661409;
+	bh=lnEMHqocNQE7xngj2F9yaPWJK7kSQshce4kc3CvsH9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=Jxnt5ct8fGvKAeOaHge/Tgo3t6FHmjh6P+S6PqsAlNY07UawGwSVDeUKBuE8vhKy2
-	 UN+2PnvL0SBN65BSa67hAcaHNS4ijjbx20gA46qnpxAFuFbfyIW8we0JSi532VAH90
-	 p40fMrR6Fco++FfstMKwF9hQPChAIadl7on98mwI=
+	b=dM/bJOoRCY5bOE/1gZ/Ofr3fn/ytQpZIqoot213MZig3yuwtMeCrvxXTcl0Z38+PG
+	 BR4XQokgRjq1gqfdzk13GlxIWs4NIBCciVe1ILkbuKN+6OeR6uqPN01oT+isjVcxne
+	 0g/EMSOT4QjH7LZadj+Er/xg7DElxS3nF1JDt/MY=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730919AbgFHXWW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 8 Jun 2020 19:22:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46850 "EHLO mail.kernel.org"
+        id S1731074AbgFIAKH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 8 Jun 2020 20:10:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43738 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730187AbgFHXWT (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 8 Jun 2020 19:22:19 -0400
+        id S1730939AbgFHXUS (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 8 Jun 2020 19:20:18 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A8B8620814;
-        Mon,  8 Jun 2020 23:22:17 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1B5B920842;
+        Mon,  8 Jun 2020 23:20:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591658539;
-        bh=hX+AuUfC+65TXjmH+ynIPh/epxU7Rix/OdCLMDYXuoE=;
+        s=default; t=1591658418;
+        bh=lnEMHqocNQE7xngj2F9yaPWJK7kSQshce4kc3CvsH9c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FnQNqn2+9t3YZfXovdFs0zuJTKJH6dn7GRrdsPJyZMqKfGv29XivxmriNOpYEWB6w
-         cf8oKllhhBG8tqiCPN4MlqNvsAY0pPZRWwKAcq0GB+uXPwFTWfluxAm3d1OeUFjuZo
-         AULh4a0EyYfStPyctFT1oSiGUEs3OsMCU1XjHrgo=
+        b=uudcTqtrEDeacMb/vDAbCYoJ3a+j+toFFqIGZZ+INm1ciqJQATEkBKUdR6XFdvQXG
+         rUOMN8KieLodleae5pHtrCFMlyDOXp3rBa0vx6HkKto0mGliMVpSDhc79ONIXXUswr
+         btqy0aBDua/uTeXgLNkwUMN5jbJCbDDPWJmzjRu8=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-        Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>,
-        Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>,
-        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Feng Tang <feng.tang@intel.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-mips@vger.kernel.org,
-        devicetree@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 161/175] spi: dw: Return any value retrieved from the dma_transfer callback
-Date:   Mon,  8 Jun 2020 19:18:34 -0400
-Message-Id: <20200608231848.3366970-161-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 066/175] spi: Respect DataBitLength field of SpiSerialBusV2() ACPI resource
+Date:   Mon,  8 Jun 2020 19:16:59 -0400
+Message-Id: <20200608231848.3366970-66-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200608231848.3366970-1-sashal@kernel.org>
 References: <20200608231848.3366970-1-sashal@kernel.org>
@@ -66,69 +58,38 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit f0410bbf7d0fb80149e3b17d11d31f5b5197873e ]
+[ Upstream commit 0dadde344d965566589cd82797893d5aa06557a3 ]
 
-DW APB SSI DMA-part of the driver may need to perform the requested
-SPI-transfer synchronously. In that case the dma_transfer() callback
-will return 0 as a marker of the SPI transfer being finished so the
-SPI core doesn't need to wait and may proceed with the SPI message
-trasnfers pumping procedure. This will be needed to fix the problem
-when DMA transactions are finished, but there is still data left in
-the SPI Tx/Rx FIFOs being sent/received. But for now make dma_transfer
-to return 1 as the normal dw_spi_transfer_one() method.
+By unknown reason the commit 64bee4d28c9e
+  ("spi / ACPI: add ACPI enumeration support")
+missed the DataBitLength property to encounter when parse SPI slave
+device data from ACPI.
 
-Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Cc: Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>
-Cc: Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>
-Cc: Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Feng Tang <feng.tang@intel.com>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: linux-mips@vger.kernel.org
-Cc: devicetree@vger.kernel.org
-Link: https://lore.kernel.org/r/20200529131205.31838-3-Sergey.Semin@baikalelectronics.ru
+Fill the gap here.
+
+Fixes: 64bee4d28c9e ("spi / ACPI: add ACPI enumeration support")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20200413180406.1826-1-andriy.shevchenko@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-dw-mid.c | 2 +-
- drivers/spi/spi-dw.c     | 7 ++-----
- 2 files changed, 3 insertions(+), 6 deletions(-)
+ drivers/spi/spi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
-index b044d4071690..b07710c76fc9 100644
---- a/drivers/spi/spi-dw-mid.c
-+++ b/drivers/spi/spi-dw-mid.c
-@@ -266,7 +266,7 @@ static int mid_spi_dma_transfer(struct dw_spi *dws, struct spi_transfer *xfer)
- 		dma_async_issue_pending(dws->txchan);
- 	}
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index c186d3a944cd..177d31c2ea7d 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1950,6 +1950,7 @@ static int acpi_spi_add_resource(struct acpi_resource *ares, void *data)
+ 			}
  
--	return 0;
-+	return 1;
- }
+ 			lookup->max_speed_hz = sb->connection_speed;
++			lookup->bits_per_word = sb->data_bit_length;
  
- static void mid_spi_dma_stop(struct dw_spi *dws)
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 8a4438f4c954..3063ec75dca8 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -370,11 +370,8 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 
- 	spi_enable_chip(dws, 1);
- 
--	if (dws->dma_mapped) {
--		ret = dws->dma_ops->dma_transfer(dws, transfer);
--		if (ret < 0)
--			return ret;
--	}
-+	if (dws->dma_mapped)
-+		return dws->dma_ops->dma_transfer(dws, transfer);
- 
- 	if (chip->poll_mode)
- 		return poll_transfer(dws);
+ 			if (sb->clock_phase == ACPI_SPI_SECOND_PHASE)
+ 				lookup->mode |= SPI_CPHA;
 -- 
 2.25.1
 

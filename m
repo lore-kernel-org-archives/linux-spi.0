@@ -2,152 +2,110 @@ Return-Path: <SRS0=dNl4=7Y=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-9.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	UNWANTED_LANGUAGE_BODY,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2DDB1C433DF
-	for <linux-spi@archiver.kernel.org>; Thu, 11 Jun 2020 03:29:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B73FC433DF
+	for <linux-spi@archiver.kernel.org>; Thu, 11 Jun 2020 03:42:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 110FF2064C
-	for <linux-spi@archiver.kernel.org>; Thu, 11 Jun 2020 03:29:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 30B8C207F9
+	for <linux-spi@archiver.kernel.org>; Thu, 11 Jun 2020 03:42:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726507AbgFKD24 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 10 Jun 2020 23:28:56 -0400
-Received: from mga18.intel.com ([134.134.136.126]:28223 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726279AbgFKD24 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 10 Jun 2020 23:28:56 -0400
-IronPort-SDR: yAVWG6uArEIqEXLfhdj+AZBwJExnH3JVYYdCAQ+6MLhY91lMvLeM29unytQB5Rm6n9TDWfRRVX
- 6saXOFV3/bFA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2020 20:28:55 -0700
-IronPort-SDR: I3vKDi+zTPZ1IpJs8Ckbjzt0b9akZsbOPFzfT92EYJ0PtSu318RnKiOrUev50fBgtVUPF6bKgf
- UCH7R4emsgqQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,498,1583222400"; 
-   d="scan'208";a="260587353"
-Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.159.141])
-  by fmsmga008.fm.intel.com with ESMTP; 10 Jun 2020 20:28:53 -0700
-From:   Xu Yilun <yilun.xu@intel.com>
-To:     broonie@kernel.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     trix@redhat.com, yilun.xu@intel.com, hao.wu@intel.com,
-        matthew.gerlach@linux.intel.com, russell.h.weight@intel.com
-Subject: [PATCH 2/6] spi: altera: add SPI core parameters support via platform data.
-Date:   Thu, 11 Jun 2020 11:25:07 +0800
-Message-Id: <1591845911-10197-3-git-send-email-yilun.xu@intel.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1591845911-10197-1-git-send-email-yilun.xu@intel.com>
-References: <1591845911-10197-1-git-send-email-yilun.xu@intel.com>
+        id S1726326AbgFKDmd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 10 Jun 2020 23:42:33 -0400
+Received: from mail.loongson.cn ([114.242.206.163]:40210 "EHLO loongson.cn"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726482AbgFKDmd (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 10 Jun 2020 23:42:33 -0400
+Received: from linux.localdomain (unknown [113.200.148.30])
+        by mail.loongson.cn (Coremail) with SMTP id AQAAf9Dx_2kkqOFenbRAAA--.1932S3;
+        Thu, 11 Jun 2020 11:42:28 +0800 (CST)
+From:   Qing Zhang <zhangqing@loongson.cn>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Tiezhu Yang <yangtiezhu@loongson.cn>,
+        Xuefeng Li <lixuefeng@loongson.cn>
+Subject: [PATCH 2/2] spi: tools: Fix build errors
+Date:   Thu, 11 Jun 2020 11:42:27 +0800
+Message-Id: <1591846947-14252-2-git-send-email-zhangqing@loongson.cn>
+X-Mailer: git-send-email 2.1.0
+In-Reply-To: <1591846947-14252-1-git-send-email-zhangqing@loongson.cn>
+References: <1591846947-14252-1-git-send-email-zhangqing@loongson.cn>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf9Dx_2kkqOFenbRAAA--.1932S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7Ww48XFWUuFWUtFy5ZFyrZwb_yoW8urykpF
+        n3AF1xtF4YgayUG3Z3Aa1rCw15ArykCry0v3y29w18trn0y3W8JFsrKrWFqFyxCFyjva98
+        Aw17Wr1jg34jyw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUBv14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jr4l82xGYIkIc2
+        x26xkF7I0E14v26r1Y6r1xM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+        Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UM2
+        8EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr1j6rxd
+        M2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjx
+        v20xvE14v26r106r15McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1l
+        F7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkIecxEwVAFwVW8GwCF04
+        k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18
+        MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr4
+        1lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1l
+        IxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4
+        A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JU3nYwUUUUU=
+X-CM-SenderInfo: x2kd0wptlqwqxorr0wxvrqhubq/
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This patch introduced SPI core parameters in platform data, it
-allows passing these SPI core parameters via platform data.
+Fix the following build errors:
 
-Signed-off-by: Wu Hao <hao.wu@intel.com>
-Signed-off-by: Xu Yilun <yilun.xu@intel.com>
-Signed-off-by: Matthew Gerlach <matthew.gerlach@linux.intel.com>
-Signed-off-by: Russ Weight <russell.h.weight@intel.com>
+include/linux/spi 2>&1 || true
+ln -sf /home/zhangqing/spi.git2/tools/spi/../../include/uapi/linux/spi/spidev.h include/linux/spi/spidev.h
+make -f /home/zhangqing/spi.git2/tools/build/Makefile.build dir=. obj=spidev_test
+make[1]: Entering directory '/home/zhangqing/spi.git2/tools/spi'
+  CC       spidev_test.o
+spidev_test.c: In function ‘transfer’:
+spidev_test.c:131:13: error: ‘SPI_TX_OCTAL’ undeclared (first use in this function)
+  if (mode & SPI_TX_OCTAL)
+             ^
+spidev_test.c:131:13: note: each undeclared identifier is reported only once for each function it appears in
+spidev_test.c:137:13: error: ‘SPI_RX_OCTAL’ undeclared (first use in this function)
+  if (mode & SPI_RX_OCTAL)
+             ^
+spidev_test.c: In function ‘parse_opts’:
+spidev_test.c:290:12: error: ‘SPI_TX_OCTAL’ undeclared (first use in this function)
+    mode |= SPI_TX_OCTAL;
+            ^
+spidev_test.c:308:12: error: ‘SPI_RX_OCTAL’ undeclared (first use in this function)
+    mode |= SPI_RX_OCTAL;
+            ^
+  LD       spidev_test-in.o
+ld: cannot find spidev_test.o: No such file or directory
+/home/zhangqing/spi.git2/tools/build/Makefile.build:144: recipe for target 'spidev_test-in.o' failed
+make[1]: *** [spidev_test-in.o] Error 1
+make[1]: Leaving directory '/home/zhangqing/spi.git2/tools/spi'
+Makefile:39: recipe for target 'spidev_test-in.o' failed
+make: *** [spidev_test-in.o] Error 2
+
+Signed-off-by: Qing Zhang <zhangqing@loongson.cn>
 ---
- drivers/spi/spi-altera.c   | 25 ++++++++++++++++++++++---
- include/linux/spi/altera.h | 24 ++++++++++++++++++++++++
- 2 files changed, 46 insertions(+), 3 deletions(-)
- create mode 100644 include/linux/spi/altera.h
+ include/uapi/linux/spi/spidev.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-altera.c b/drivers/spi/spi-altera.c
-index d5fa0c5..e6e6708 100644
---- a/drivers/spi/spi-altera.c
-+++ b/drivers/spi/spi-altera.c
-@@ -14,6 +14,7 @@
- #include <linux/errno.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
-+#include <linux/spi/altera.h>
- #include <linux/spi/spi.h>
- #include <linux/io.h>
- #include <linux/of.h>
-@@ -40,6 +41,8 @@
- #define ALTERA_SPI_CONTROL_IE_MSK	0x100
- #define ALTERA_SPI_CONTROL_SSO_MSK	0x400
+diff --git a/include/uapi/linux/spi/spidev.h b/include/uapi/linux/spi/spidev.h
+index ee0f246..8b04c62 100644
+--- a/include/uapi/linux/spi/spidev.h
++++ b/include/uapi/linux/spi/spidev.h
+@@ -48,6 +48,8 @@
+ #define SPI_TX_QUAD		0x200
+ #define SPI_RX_DUAL		0x400
+ #define SPI_RX_QUAD		0x800
++#define	SPI_TX_OCTAL	        0x2000
++#define	SPI_RX_OCTAL            0x4000
  
-+#define ALTERA_SPI_MAX_CS		32
-+
- struct altera_spi {
- 	void __iomem *base;
- 	int irq;
-@@ -182,6 +185,7 @@ static irqreturn_t altera_spi_irq(int irq, void *dev)
+ /*---------------------------------------------------------------------------*/
  
- static int altera_spi_probe(struct platform_device *pdev)
- {
-+	struct altera_spi_platform_data *pdata = dev_get_platdata(&pdev->dev);
- 	struct altera_spi *hw;
- 	struct spi_master *master;
- 	int err = -ENODEV;
-@@ -192,9 +196,24 @@ static int altera_spi_probe(struct platform_device *pdev)
- 
- 	/* setup the master state. */
- 	master->bus_num = pdev->id;
--	master->num_chipselect = 16;
--	master->mode_bits = SPI_CS_HIGH;
--	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 16);
-+
-+	if (pdata) {
-+		if (pdata->num_chipselect > ALTERA_SPI_MAX_CS) {
-+			dev_err(&pdev->dev,
-+				"Invalid number of chipselect: %hu\n",
-+				pdata->num_chipselect);
-+			return -EINVAL;
-+		}
-+
-+		master->num_chipselect = pdata->num_chipselect;
-+		master->mode_bits = pdata->mode_bits;
-+		master->bits_per_word_mask = pdata->bits_per_word_mask;
-+	} else {
-+		master->num_chipselect = 16;
-+		master->mode_bits = SPI_CS_HIGH;
-+		master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 16);
-+	}
-+
- 	master->dev.of_node = pdev->dev.of_node;
- 	master->transfer_one = altera_spi_txrx;
- 	master->set_cs = altera_spi_set_cs;
-diff --git a/include/linux/spi/altera.h b/include/linux/spi/altera.h
-new file mode 100644
-index 0000000..344a3fc
---- /dev/null
-+++ b/include/linux/spi/altera.h
-@@ -0,0 +1,24 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Header File for Altera SPI Driver.
-+ */
-+#ifndef __LINUX_SPI_ALTERA_H
-+#define __LINUX_SPI_ALTERA_H
-+
-+#include <linux/regmap.h>
-+#include <linux/spi/spi.h>
-+#include <linux/types.h>
-+
-+/**
-+ * struct altera_spi_platform_data - Platform data of the Altera SPI driver
-+ * @mode_bits:		Mode bits of SPI master.
-+ * @num_chipselect:	Number of chipselects.
-+ * @bits_per_word_mask:	bitmask of supported bits_per_word for transfers.
-+ */
-+struct altera_spi_platform_data {
-+	u16				mode_bits;
-+	u16				num_chipselect;
-+	u32				bits_per_word_mask;
-+};
-+
-+#endif /* __LINUX_SPI_ALTERA_H */
 -- 
-2.7.4
+2.1.0
 

@@ -2,150 +2,118 @@ Return-Path: <SRS0=fHuc=73=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.6 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 11E8CC433E0
-	for <linux-spi@archiver.kernel.org>; Sun, 14 Jun 2020 10:56:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B0309C433DF
+	for <linux-spi@archiver.kernel.org>; Sun, 14 Jun 2020 11:14:32 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DE7C820739
-	for <linux-spi@archiver.kernel.org>; Sun, 14 Jun 2020 10:56:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1592132183;
-	bh=0+f7COukvRhk0sJvGOAJHgAJ8nVeYg/rGLOd/Bfrh9Y=;
-	h=From:To:Cc:Subject:Date:List-ID:From;
-	b=rtxZg5YadVCUX+OSw9hJz8cSpOYSHDM70GzUB6VuJ/yWuIXUsJ9o0rXyG5zn8v8K6
-	 KFIJ/P5clXwg6OruP/PoSFRsgPbC1u6O2KC54KN2QMmOaP8avCMH50J+4AaIBnqGqK
-	 jSbgOGPo8m/nAiM1tUJib/OuSScYxZUwnfjt8s5s=
+	by mail.kernel.org (Postfix) with ESMTP id 8F5EF20578
+	for <linux-spi@archiver.kernel.org>; Sun, 14 Jun 2020 11:14:32 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LMLleMBI"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726786AbgFNK4I (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 14 Jun 2020 06:56:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38310 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725265AbgFNK4C (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Sun, 14 Jun 2020 06:56:02 -0400
-Received: from PC-kkoz.proceq.com (unknown [213.160.61.66])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CDD0B20739;
-        Sun, 14 Jun 2020 10:55:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592132161;
-        bh=0+f7COukvRhk0sJvGOAJHgAJ8nVeYg/rGLOd/Bfrh9Y=;
-        h=From:To:Cc:Subject:Date:From;
-        b=1N2bgfp9vuZZf1cXB5D172/ioERkLuGv1fAgKgZ67CEvIViGGInqU8uo+si0bhx2X
-         9VSirgyXyKQu5Dfnoz2PZTvKdX0MmEZb79WD1tyQe3xgOaUAu4VcBkXUkuM9GSLjHa
-         IJ6vhsA9kIE23IirMz4Bd2p1xV0pEpg3B5pBk8rw=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Mark Brown <broonie@kernel.org>,
+        id S1727044AbgFNLO2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 14 Jun 2020 07:14:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41716 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726014AbgFNLO1 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 14 Jun 2020 07:14:27 -0400
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BA45C05BD43;
+        Sun, 14 Jun 2020 04:14:27 -0700 (PDT)
+Received: by mail-ed1-x544.google.com with SMTP id s28so7379023edw.11;
+        Sun, 14 Jun 2020 04:14:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ED3h3EXXfTCLRR9+3wTxrVE3ldaqz7FtCzqR4tZbLdg=;
+        b=LMLleMBIzLSrJyibtHMZuEBHOyKoKt6QUU2DRycKzCu/MgLZv+MxHRxwa6Zw4S9uDr
+         stVxzzZDeFLp4AtAsKsgc5mhMuVTdU41yqPn8yY8gsPA1GXnrIVRV2cwQq0XxoXbjwXv
+         XoJ85H0d5mt7y7f7w9CjR9ByK0BUWUYcejf199G+6fWQXurm0ZRXUlxdS5FfnucJw57d
+         6Wgkc5oOjEiw9Ez10gEFa/7s1wz4ihHyVMrYIt1Ke9q2pTNX2IX82lilxkmFjbqUvyKr
+         9V59wlfADUoTzK/9POGpoSvpSe1HEq40grKfWDDubDZAQR9OGuHoD0azViYRb3c4Y1Au
+         Ppbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ED3h3EXXfTCLRR9+3wTxrVE3ldaqz7FtCzqR4tZbLdg=;
+        b=DQUGJNzxcSyL07fT/fvW24RkXHf3BvzSWI7u4mQ6xNFpW3jnnVfAb67W46rKV9cwz+
+         kTDqIqox4IU39PNAGq71T4mxqhUtk9oI8Blk5lnvo2+qgpwHw/KI49Rlk3Q1SWeR2PLd
+         PVV5GEcUzrpbZF8jW7MyzNQwoV+bMjkLopzCM36PkfFE5tTSQN4Ian9zBzTTM7P/FhjD
+         Q3TNZqicine7Z6ZL9R76UytJY+C4X8ASZvrlwHkh5X8KKrMR4aqmhWxzrhDDSeJwGJIs
+         t4w6ToFQ0H9jzooygq9RXviU0GBck7iyN4wPJGS+Lb6TNQrGFPYtOpHtoh6YonTlrnJJ
+         h3XQ==
+X-Gm-Message-State: AOAM531U7D8m6XzTvu8y2XOi+tGgmnXntQyv9ATAx0kkYjiPYp9adz7n
+        CRHTNAPPxzfs0cEp0eiJQ6FTYktEHoTPf3zLWh0=
+X-Google-Smtp-Source: ABdhPJyPnaJ4BjcnebsrqdADJqqfslllyRBBt6esfDqbtn0UUL9VzRGCnFhRiepLeJuhAre5OrmgLlpXte2OADefVdw=
+X-Received: by 2002:aa7:dc50:: with SMTP id g16mr20191572edu.318.1592133265843;
+ Sun, 14 Jun 2020 04:14:25 -0700 (PDT)
+MIME-Version: 1.0
+References: <1592132154-20175-1-git-send-email-krzk@kernel.org> <1592132154-20175-2-git-send-email-krzk@kernel.org>
+In-Reply-To: <1592132154-20175-2-git-send-email-krzk@kernel.org>
+From:   Vladimir Oltean <olteanv@gmail.com>
+Date:   Sun, 14 Jun 2020 14:14:15 +0300
+Message-ID: <CA+h21ho_pa0H2MG-aAmUCFj37aYW4es-2V75P4KL-Zjq7qtfRQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] spi: spi-fsl-dspi: Initialize completion before
+ possible interrupt
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Mark Brown <broonie@kernel.org>,
         Vladimir Oltean <vladimir.oltean@nxp.com>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi <linux-spi@vger.kernel.org>,
+        lkml <linux-kernel@vger.kernel.org>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
         Marc Kleine-Budde <mkl@pengutronix.de>,
-        Wolfram Sang <wsa@kernel.org>
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>, stable@vger.kernel.org
-Subject: [PATCH 1/2] spi: spi-fsl-dspi: Fix external abort on interrupt in exit paths
-Date:   Sun, 14 Jun 2020 12:55:53 +0200
-Message-Id: <1592132154-20175-1-git-send-email-krzk@kernel.org>
-X-Mailer: git-send-email 2.7.4
+        Wolfram Sang <wsa@kernel.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-If interrupt comes late, during probe error path or device remove (could
-be triggered with CONFIG_DEBUG_SHIRQ), the interrupt handler
-dspi_interrupt() will access registers with the clock being disabled.  This
-leads to external abort on non-linefetch on Toradex Colibri VF50 module
-(with Vybrid VF5xx):
+On Sun, 14 Jun 2020 at 13:56, Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>
+> If interrupt fires early, the dspi_interrupt() could complete
+> (dspi->xfer_done) before its initialization happens.
+>
+> Fixes: 4f5ee75ea171 ("spi: spi-fsl-dspi: Replace interruptible wait queue with a simple completion")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> ---
 
-    $ echo 4002d000.spi > /sys/devices/platform/soc/40000000.bus/4002d000.spi/driver/unbind
+Why would an interrupt fire before spi_register_controller, therefore
+before dspi_transfer_one_message could get called?
+Is this master or slave mode?
 
-    Unhandled fault: external abort on non-linefetch (0x1008) at 0x8887f02c
-    Internal error: : 1008 [#1] ARM
-    CPU: 0 PID: 136 Comm: sh Not tainted 5.7.0-next-20200610-00009-g5c913fa0f9c5-dirty #74
-    Hardware name: Freescale Vybrid VF5xx/VF6xx (Device Tree)
-      (regmap_mmio_read32le) from [<8061885c>] (regmap_mmio_read+0x48/0x68)
-      (regmap_mmio_read) from [<8060e3b8>] (_regmap_bus_reg_read+0x24/0x28)
-      (_regmap_bus_reg_read) from [<80611c50>] (_regmap_read+0x70/0x1c0)
-      (_regmap_read) from [<80611dec>] (regmap_read+0x4c/0x6c)
-      (regmap_read) from [<80678ca0>] (dspi_interrupt+0x3c/0xa8)
-      (dspi_interrupt) from [<8017acec>] (free_irq+0x26c/0x3cc)
-      (free_irq) from [<8017dcec>] (devm_irq_release+0x1c/0x20)
-      (devm_irq_release) from [<805f98ec>] (release_nodes+0x1e4/0x298)
-      (release_nodes) from [<805f9ac8>] (devres_release_all+0x40/0x60)
-      (devres_release_all) from [<805f5134>] (device_release_driver_internal+0x108/0x1ac)
-      (device_release_driver_internal) from [<805f521c>] (device_driver_detach+0x20/0x24)
-
-The resource-managed framework should not be used for interrupt handling,
-because the resource will be released too late - after disabling clocks.
-The interrupt handler is not prepared for such case.
-
-Fixes: 349ad66c0ab0 ("spi:Add Freescale DSPI driver for Vybrid VF610 platform")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-
----
-
-This is an follow up of my other patch for I2C IMX driver [1]. Let's fix the
-issues consistently.
-
-[1] https://lore.kernel.org/lkml/1592130544-19759-2-git-send-email-krzk@kernel.org/T/#u
----
- drivers/spi/spi-fsl-dspi.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 58190c94561f..57e7a626ba00 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -1385,8 +1385,8 @@ static int dspi_probe(struct platform_device *pdev)
- 		goto poll_mode;
- 	}
- 
--	ret = devm_request_irq(&pdev->dev, dspi->irq, dspi_interrupt,
--			       IRQF_SHARED, pdev->name, dspi);
-+	ret = request_threaded_irq(dspi->irq, dspi_interrupt, NULL,
-+				   IRQF_SHARED, pdev->name, dspi);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Unable to attach DSPI interrupt\n");
- 		goto out_clk_put;
-@@ -1400,7 +1400,7 @@ static int dspi_probe(struct platform_device *pdev)
- 		ret = dspi_request_dma(dspi, res->start);
- 		if (ret < 0) {
- 			dev_err(&pdev->dev, "can't get dma channels\n");
--			goto out_clk_put;
-+			goto out_free_irq;
- 		}
- 	}
- 
-@@ -1415,11 +1415,14 @@ static int dspi_probe(struct platform_device *pdev)
- 	ret = spi_register_controller(ctlr);
- 	if (ret != 0) {
- 		dev_err(&pdev->dev, "Problem registering DSPI ctlr\n");
--		goto out_clk_put;
-+		goto out_free_irq;
- 	}
- 
- 	return ret;
- 
-+out_free_irq:
-+	if (dspi->irq > 0)
-+		free_irq(dspi->irq, dspi);
- out_clk_put:
- 	clk_disable_unprepare(dspi->clk);
- out_ctlr_put:
-@@ -1435,6 +1438,8 @@ static int dspi_remove(struct platform_device *pdev)
- 
- 	/* Disconnect from the SPI framework */
- 	dspi_release_dma(dspi);
-+	if (dspi->irq > 0)
-+		free_irq(dspi->irq, dspi);
- 	clk_disable_unprepare(dspi->clk);
- 	spi_unregister_controller(dspi->ctlr);
- 
--- 
-2.7.4
-
+>  drivers/spi/spi-fsl-dspi.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+> index 57e7a626ba00..efb63ed9fd86 100644
+> --- a/drivers/spi/spi-fsl-dspi.c
+> +++ b/drivers/spi/spi-fsl-dspi.c
+> @@ -1385,6 +1385,8 @@ static int dspi_probe(struct platform_device *pdev)
+>                 goto poll_mode;
+>         }
+>
+> +       init_completion(&dspi->xfer_done);
+> +
+>         ret = request_threaded_irq(dspi->irq, dspi_interrupt, NULL,
+>                                    IRQF_SHARED, pdev->name, dspi);
+>         if (ret < 0) {
+> @@ -1392,8 +1394,6 @@ static int dspi_probe(struct platform_device *pdev)
+>                 goto out_clk_put;
+>         }
+>
+> -       init_completion(&dspi->xfer_done);
+> -
+>  poll_mode:
+>
+>         if (dspi->devtype_data->trans_mode == DSPI_DMA_MODE) {
+> --
+> 2.7.4
+>

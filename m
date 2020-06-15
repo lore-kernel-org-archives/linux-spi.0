@@ -2,104 +2,109 @@ Return-Path: <SRS0=lX55=74=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B8411C433DF
-	for <linux-spi@archiver.kernel.org>; Mon, 15 Jun 2020 17:25:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A63D3C433E0
+	for <linux-spi@archiver.kernel.org>; Mon, 15 Jun 2020 17:30:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8E25D207DD
-	for <linux-spi@archiver.kernel.org>; Mon, 15 Jun 2020 17:25:59 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 77171207DD
+	for <linux-spi@archiver.kernel.org>; Mon, 15 Jun 2020 17:30:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1592241959;
-	bh=WDkf6lzZ6UgWs3EMY6W8Qdhefho3OZTzr9BHJ5YRgCM=;
+	s=default; t=1592242247;
+	bh=zjfjIr28wp7lz1LzhG/6HN/tE1zYdIy5YMG1lFm5t3o=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=M416XIDEo2GbxEaLy28tuLRAwaUf9tmUnLDPl1l6G74WstS+GFTr450GdThBb3TDo
-	 JzwGdZoLtliYz4gwZIkHMw6NM2J6Qpnu1cclMbHkxv0VMKIBOvgaYm2MfUarkCmbj5
-	 fl33TWyAVWu2ZZIBvBigUb/oxK0ESOhnq0vMPH/4=
+	b=yM5BlBbCcP/ZQfo9ai4Xw6DcMOQ00zyV6cYqsl6ob68sW4jJpYhPz0yQ3t71pHGqi
+	 gDAOe0DCrww5r/SyMIrBWKURiCzI9rWp2IDcSSclYYe2Z5LvArVqugQUlk/nJv6YpW
+	 ljATEP5Cuw3s1mB7cAlQF2GpsiTrjUMgdwRdxobM=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731065AbgFORZ7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 15 Jun 2020 13:25:59 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:42802 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729682AbgFORZ4 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 15 Jun 2020 13:25:56 -0400
-Received: by mail-io1-f68.google.com with SMTP id x189so9699243iof.9;
-        Mon, 15 Jun 2020 10:25:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=dS/bdtyItiFAm48ZgF1YTbFmFfDKJ+FCEj9MlB0IAp4=;
-        b=Mh0Ka0/cKEgpKLlxOSeYVWIMR6LVkaGR3s77d98ifHYMG3k2Eax8NY1OM9nctyhEJw
-         CgSnNMTtUwWe38pErH3E2fvU21HrLYHmPwn8edEJV6En26Ev/txmMvg+NvN3lNiyAyiv
-         DqZprbJCizSTxTJ/B7zMIXgyr3F9TY1BKVeLRpDCkycUbAODGkMURseBQSZO48sPBh5Z
-         ZGcQmzla5KMbNLuwFpZKDIfC/+1XhyaUiRLDZglovWDCRMkRDT4hJ/uvdAf+0eDaZZey
-         M63luWtJq55bdYxTBLfg3T2UhHNNd7s/g5+wco2O7Buy6TOMnDuHUC6MhCc4j4qNc1Xe
-         MrYQ==
-X-Gm-Message-State: AOAM533Y0eTeIdSCEqOd5Uub/6Oc86tBfF18dJDXqmcJAMrs0h6Kpf5b
-        +bZO5tJ5lkYBtAKyawWsHQ==
-X-Google-Smtp-Source: ABdhPJypddMh0DtNo4yEvMLEEWMso2FJiLJSg0Shc51QJu95Vb3Bgqf+obC4mOb9N+9IlXsrnh6G0Q==
-X-Received: by 2002:a02:6c8f:: with SMTP id w137mr23100744jab.38.1592241955783;
-        Mon, 15 Jun 2020 10:25:55 -0700 (PDT)
-Received: from xps15 ([64.188.179.251])
-        by smtp.gmail.com with ESMTPSA id 2sm8612606ila.0.2020.06.15.10.25.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2020 10:25:55 -0700 (PDT)
-Received: (nullmailer pid 1992268 invoked by uid 1000);
-        Mon, 15 Jun 2020 17:25:52 -0000
-Date:   Mon, 15 Jun 2020 11:25:52 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Lukas Wunner <lukas@wunner.de>
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        "maintainer:BROADCOM BCM281XX/BCM11XXX/BCM216XX ARM ARCHITE..." 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" 
-        <linux-rpi-kernel@lists.infradead.org>,
+        id S1730920AbgFORar (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 15 Jun 2020 13:30:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41996 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729124AbgFORaq (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 15 Jun 2020 13:30:46 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A5E67207DA;
+        Mon, 15 Jun 2020 17:30:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1592242246;
+        bh=zjfjIr28wp7lz1LzhG/6HN/tE1zYdIy5YMG1lFm5t3o=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=kbiOeSJ5hsV6hDsh+iuN2Phq6hYAF5UJ44P9QG4f+TFAQCtZ64BlSAiZYOQpulXiK
+         67EgWWNfvy/lMMgh8iWjub0lDsZ+oJADxAMCsvwN6/9PXWGWHMOCffBDH1fAQ2ccWu
+         cq3OE58P8henl7vX0sG5AOeHjm9kUWZlb5TbeQWU=
+Date:   Mon, 15 Jun 2020 18:30:43 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     Robin Murphy <robin.murphy@arm.com>, lukas@wunner.de,
         "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" 
         <linux-arm-kernel@lists.infradead.org>,
-        Martin Sperl <kernel@martin.sperl.org>
-Subject: Re: [PATCH 3/3] spi: bcm2835: Enable shared interrupt support
-Message-ID: <20200615172552.GA1978070@bogus>
-References: <20200604034655.15930-1-f.fainelli@gmail.com>
- <20200604034655.15930-4-f.fainelli@gmail.com>
- <20200604041732.7ijkvad2yadtgjid@wunner.de>
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        Scott Branden <sbranden@broadcom.com>,
+        Ray Jui <rjui@broadcom.com>, linux-kernel@vger.kernel.org,
+        "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "maintainer:BROADCOM BCM281XX/BCM11XXX/BCM216XX ARM ARCHITE..." 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" 
+        <linux-rpi-kernel@lists.infradead.org>,
+        Martin Sperl <kernel@martin.sperl.org>,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+Subject: Re: [PATCH v2] spi: bcm2835: Enable shared interrupt support
+Message-ID: <20200615173043.GB4447@sirena.org.uk>
+References: <142d48ae-2725-1368-3e11-658449662371@arm.com>
+ <20200605132037.GF5413@sirena.org.uk>
+ <2e371a32-fb52-03a2-82e4-5733d9f139cc@arm.com>
+ <06342e88-e130-ad7a-9f97-94f09156f868@arm.com>
+ <d3fe8b56-83ef-8ef0-bb05-11c7cb2419f8@gmail.com>
+ <a6f158e3-af51-01d9-331c-4bc8b6847abb@arm.com>
+ <20200608112840.GC4593@sirena.org.uk>
+ <bb9dbf11-9e33-df60-f5ae-f7fdfe8458b4@gmail.com>
+ <20200615170031.GA4447@sirena.org.uk>
+ <692bc94e-d574-e07a-d834-c0d569e87bba@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="t8N2qprAjL+0GVly"
 Content-Disposition: inline
-In-Reply-To: <20200604041732.7ijkvad2yadtgjid@wunner.de>
+In-Reply-To: <692bc94e-d574-e07a-d834-c0d569e87bba@gmail.com>
+X-Cookie: Offer may end without notice.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, Jun 04, 2020 at 06:17:32AM +0200, Lukas Wunner wrote:
-> On Wed, Jun 03, 2020 at 08:46:55PM -0700, Florian Fainelli wrote:
-> > +static const struct of_device_id bcm2835_spi_match[] = {
-> > +	{ .compatible = "brcm,bcm2835-spi", .data = &bcm2835_spi_interrupt },
-> > +	{ .compatible = "brcm,bcm2711-spi", .data = &bcm2835_spi_sh_interrupt },
-> > +	{ .compatible = "brcm,bcm7211-spi", .data = &bcm2835_spi_sh_interrupt },
-> > +	{}
-> > +};
-> > +MODULE_DEVICE_TABLE(of, bcm2835_spi_match);
-> 
-> Maybe I'm missing something but I think you either have to reverse the
-> order of the entries in this array or change patch [2/3] to drop
-> "brcm,bcm2835-spi" from the compatible string:
-> 
-> __of_match_node() iterates over the entries in the array above and
-> calls __of_device_is_compatible() for each of them, which returns
-> success if the entry matches any of the device's compatible string.
 
-The order here doesn't matter. I'm pretty sure we fixed this years ago 
-to always match to the most specific compatible.
+--t8N2qprAjL+0GVly
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Rob
+On Mon, Jun 15, 2020 at 10:04:46AM -0700, Florian Fainelli wrote:
+
+> OK, how about I send you an increment patch (would a fixup be okay?)
+> that adds __always_inline since we know from this thread that some
+> compilers may mis-optimize the function inlining?
+
+That's fine for me.
+
+--t8N2qprAjL+0GVly
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl7nsEIACgkQJNaLcl1U
+h9DSkAf+I43C4D+5MeXey+DqEhoeIq/jqtEbSPUS6Liq/5dDiTCy2KeFvsYZ5v46
+Cvvn7ou6wPLdnXrPMiMdEl38cJzJfNAv7d3ydsMBlvAGRo6+3noBPoAU9k/gWDAd
+ZE9v3hNFw65ZI4XUK0+SsSOrXGIW9405DEUkKvstmqE8VHyvlSwtAyztcjBJubAj
+M14yKL96sow3/AUJ06Tay2iZK6k6n8VgDTy+/3AmXhX9hrw3jrE2VWYJCan9lhkZ
+64cvvmhjLHeuSa3XVtVk/+qE59QwOk9fkdIOcIgWsjL21/udkyHSNJsaWLdk5dy1
+1TdbguW5djIMdY6+QrNrDDQKtVU27A==
+=gAli
+-----END PGP SIGNATURE-----
+
+--t8N2qprAjL+0GVly--

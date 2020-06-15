@@ -2,54 +2,54 @@ Return-Path: <SRS0=lX55=74=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+X-Spam-Status: No, score=-7.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 88F43C433E0
-	for <linux-spi@archiver.kernel.org>; Mon, 15 Jun 2020 04:06:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 53E7BC433DF
+	for <linux-spi@archiver.kernel.org>; Mon, 15 Jun 2020 04:06:19 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 62ABE20747
-	for <linux-spi@archiver.kernel.org>; Mon, 15 Jun 2020 04:06:17 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2C85B20747
+	for <linux-spi@archiver.kernel.org>; Mon, 15 Jun 2020 04:06:19 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="w+RKgGlS"
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="o62exfEM"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728233AbgFOEGJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1728143AbgFOEGJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Mon, 15 Jun 2020 00:06:09 -0400
-Received: from gate2.alliedtelesis.co.nz ([202.36.163.20]:50533 "EHLO
+Received: from gate2.alliedtelesis.co.nz ([202.36.163.20]:50531 "EHLO
         gate2.alliedtelesis.co.nz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728201AbgFOEGH (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 15 Jun 2020 00:06:07 -0400
+        with ESMTP id S1728163AbgFOEGG (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 15 Jun 2020 00:06:06 -0400
 Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (Client did not present a certificate)
-        by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id EDF1D891B2;
+        by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 8F437891B0;
         Mon, 15 Jun 2020 16:05:57 +1200 (NZST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
         s=mail181024; t=1592193957;
-        bh=aYu5nfgaWwoNizinGEq9qqfsv0a+/kTso+vvT11d+U8=;
+        bh=BtcDdq8igGetN/jELHWNV2M1CB6861dCLDtHKsKlFzY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=w+RKgGlSdShLQkZZbeKBgGpX4s4d7ddCTiZTugf+0vXSgzIknKngcZcY2lHlrX0t+
-         6lGXdJN7xTavUK1H8py0tS3etkNRF2c0M5H3tIAjE9/rxk1CfOYcek2B3Fr4/LODTv
-         edqfFJA+IcOebXZaRgUDKe/nG4WUdxZVpKxBV37DV46G50hXdUSb+fVsCSlz0fA+NG
-         okDamSd2VdcugN0MX42gjqoHovX9reoYFoHVydhaHJNoOA68gmlCGh5V5fh2iL9OKb
-         a2kHatZvW9YxWtEnfkdQdzlyyW5rFUZT44I4bLSHsVr3MD3HMb93YTIsiJzQ60/WiA
-         5m3kYcRl3RdYQ==
+        b=o62exfEMNl+ll+E9nfhS4jp9iwhjYH/X8Sl8S1PEIk67KvmzTx9EkewxFwWISGeBn
+         boACE7L2ZU4qwIcEdCYtrUoGQYJ3mNCv672JB9pvju+3E2AwumJ2I2DMdBwhqnus67
+         Tp1PVw0XVC6rfS07QqwA7iFqGel+RaiUW6FTBPGEk4sdocy7TsUXhzeQn3DMd0fsjB
+         sXPcw5fnoj29PVQJvv+ROgnLmIogm+fgPvoGoXmr3QE3qx+cWPfl9KRbLrJ4xFTQBE
+         /Df9VC+ejPrNBacXmgc34pOJDOBVC6LPfSePauvMD/sEGcsPDNF4uNx13+yFhUGqyr
+         cCcFXZHeArgHg==
 Received: from smtp (Not Verified[10.32.16.33]) by mmarshal3.atlnz.lc with Trustwave SEG (v7,5,8,10121)
-        id <B5ee6f3a50004>; Mon, 15 Jun 2020 16:05:57 +1200
+        id <B5ee6f3a50001>; Mon, 15 Jun 2020 16:05:57 +1200
 Received: from markto-dl.ws.atlnz.lc (markto-dl.ws.atlnz.lc [10.33.23.25])
-        by smtp (Postfix) with ESMTP id A189F13EEBA;
+        by smtp (Postfix) with ESMTP id 9AF4F13EEBA;
         Mon, 15 Jun 2020 16:05:56 +1200 (NZST)
 Received: by markto-dl.ws.atlnz.lc (Postfix, from userid 1155)
-        id 54E84341107; Mon, 15 Jun 2020 16:05:57 +1200 (NZST)
+        id 4C90F341107; Mon, 15 Jun 2020 16:05:57 +1200 (NZST)
 From:   Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
 To:     broonie@kernel.org, kdasu.kdev@gmail.com
 Cc:     linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
         Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
-Subject: [PATCH 3/5] spi: bcm-qspi: Do not split transfers into small chunks
-Date:   Mon, 15 Jun 2020 16:05:55 +1200
-Message-Id: <20200615040557.2011-4-mark.tomlinson@alliedtelesis.co.nz>
+Subject: [PATCH 1/5] spi: bcm-qspi: Add support for setting BSPI clock
+Date:   Mon, 15 Jun 2020 16:05:53 +1200
+Message-Id: <20200615040557.2011-2-mark.tomlinson@alliedtelesis.co.nz>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20200615040557.2011-1-mark.tomlinson@alliedtelesis.co.nz>
 References: <20200615040557.2011-1-mark.tomlinson@alliedtelesis.co.nz>
@@ -61,116 +61,90 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Instead of splitting transfers into smaller parts, just perform the
-operation that the higher level asked for.
+On iProc devices (unlike previous BCM SoCs) the clock rate of the SPI
+can be set. This patch adds the appropriate code for setting that.
 
 Reviewed-by: Callum Sinclair <callum.sinclair@alliedtelesis.co.nz>
 Reviewed-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
 Signed-off-by: Mark Tomlinson <mark.tomlinson@alliedtelesis.co.nz>
 ---
- drivers/spi/spi-bcm-qspi.c | 69 +++++++++++++++-----------------------
- 1 file changed, 27 insertions(+), 42 deletions(-)
+ drivers/spi/spi-bcm-qspi.c | 34 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
 diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
-index 92e04d24359f..ce30ebf27f06 100644
+index 681d09085175..8fc5b9b3757b 100644
 --- a/drivers/spi/spi-bcm-qspi.c
 +++ b/drivers/spi/spi-bcm-qspi.c
-@@ -78,8 +78,6 @@
- #define BSPI_BPP_MODE_SELECT_MASK		BIT(8)
- #define BSPI_BPP_ADDR_SELECT_MASK		BIT(16)
+@@ -117,6 +117,13 @@
 =20
--#define BSPI_READ_LENGTH			256
--
- /* MSPI register offsets */
- #define MSPI_SPCR0_LSB				0x000
- #define MSPI_SPCR0_MSB				0x004
-@@ -888,9 +886,9 @@ static int bcm_qspi_bspi_exec_mem_op(struct spi_devic=
-e *spi,
- 				     const struct spi_mem_op *op)
+ #define MSPI_MSPI_STATUS_SPIF			BIT(0)
+=20
++#define CRU_CTRL_REG				0x0
++#define QSPI_CLK_SEL_25M			0x00
++#define QSPI_CLK_SEL_50M			0x02
++#define QSPI_CLK_SEL_31M25			0x04
++#define QSPI_CLK_SEL_62M5			0x06
++#define QSPI_CLK_SEL_MASK			0x06
++
+ #define INTR_BASE_BIT_SHIFT			0x02
+ #define INTR_COUNT				0x07
+=20
+@@ -170,6 +177,7 @@ enum base_type {
+ 	MSPI,
+ 	BSPI,
+ 	CHIP_SELECT,
++	CRU_CTRL,
+ 	BASEMAX,
+ };
+=20
+@@ -625,6 +633,7 @@ static void bcm_qspi_update_parms(struct bcm_qspi *qs=
+pi,
+ static int bcm_qspi_setup(struct spi_device *spi)
  {
- 	struct bcm_qspi *qspi =3D spi_master_get_devdata(spi->master);
--	u32 addr =3D 0, len, rdlen, len_words, from =3D 0;
-+	u32 addr =3D 0, len, len_words, from =3D 0;
- 	int ret =3D 0;
--	unsigned long timeo =3D msecs_to_jiffies(100);
-+	unsigned long timeo =3D msecs_to_jiffies(1500);
- 	struct bcm_qspi_soc_intc *soc_intc =3D qspi->soc_intc;
+ 	struct bcm_qspi_parms *xp;
++	struct bcm_qspi *qspi =3D spi_master_get_devdata(spi->master);
 =20
- 	if (bcm_qspi_bspi_ver_three(qspi))
-@@ -925,47 +923,34 @@ static int bcm_qspi_bspi_exec_mem_op(struct spi_dev=
-ice *spi,
- 	 * into RAF buffer read lengths
- 	 */
- 	len =3D op->data.nbytes;
-+	reinit_completion(&qspi->bspi_done);
-+	bcm_qspi_enable_bspi(qspi);
-+	len_words =3D (len + 3) >> 2;
-+	qspi->bspi_rf_op =3D op;
-+	qspi->bspi_rf_op_status =3D 0;
- 	qspi->bspi_rf_op_idx =3D 0;
-+	qspi->bspi_rf_op_len =3D len;
-+	dev_dbg(&qspi->pdev->dev, "bspi xfr addr 0x%x len 0x%x", addr, len);
+ 	if (spi->bits_per_word > 16)
+ 		return -EINVAL;
+@@ -639,6 +648,21 @@ static int bcm_qspi_setup(struct spi_device *spi)
+ 	xp->speed_hz =3D spi->max_speed_hz;
+ 	xp->mode =3D spi->mode;
 =20
--	do {
--		if (len > BSPI_READ_LENGTH)
--			rdlen =3D BSPI_READ_LENGTH;
--		else
--			rdlen =3D len;
--
--		reinit_completion(&qspi->bspi_done);
--		bcm_qspi_enable_bspi(qspi);
--		len_words =3D (rdlen + 3) >> 2;
--		qspi->bspi_rf_op =3D op;
--		qspi->bspi_rf_op_status =3D 0;
--		qspi->bspi_rf_op_len =3D rdlen;
--		dev_dbg(&qspi->pdev->dev,
--			"bspi xfr addr 0x%x len 0x%x", addr, rdlen);
--		bcm_qspi_write(qspi, BSPI, BSPI_RAF_START_ADDR, addr);
--		bcm_qspi_write(qspi, BSPI, BSPI_RAF_NUM_WORDS, len_words);
--		bcm_qspi_write(qspi, BSPI, BSPI_RAF_WATERMARK, 0);
--		if (qspi->soc_intc) {
--			/*
--			 * clear soc MSPI and BSPI interrupts and enable
--			 * BSPI interrupts.
--			 */
--			soc_intc->bcm_qspi_int_ack(soc_intc, MSPI_BSPI_DONE);
--			soc_intc->bcm_qspi_int_set(soc_intc, BSPI_DONE, true);
--		}
--
--		/* Must flush previous writes before starting BSPI operation */
--		mb();
--		bcm_qspi_bspi_lr_start(qspi);
--		if (!wait_for_completion_timeout(&qspi->bspi_done, timeo)) {
--			dev_err(&qspi->pdev->dev, "timeout waiting for BSPI\n");
--			ret =3D -ETIMEDOUT;
--			break;
--		}
-+	bcm_qspi_write(qspi, BSPI, BSPI_RAF_START_ADDR, addr);
-+	bcm_qspi_write(qspi, BSPI, BSPI_RAF_NUM_WORDS, len_words);
-+	bcm_qspi_write(qspi, BSPI, BSPI_RAF_WATERMARK, 0);
-+	if (qspi->soc_intc) {
-+		/*
-+		 * clear soc MSPI and BSPI interrupts and enable
-+		 * BSPI interrupts.
-+		 */
-+		soc_intc->bcm_qspi_int_ack(soc_intc, MSPI_BSPI_DONE);
-+		soc_intc->bcm_qspi_int_set(soc_intc, BSPI_DONE, true);
++	if (qspi->base[CRU_CTRL]) {
++		u32 tmp =3D bcm_qspi_read(qspi, CRU_CTRL, CRU_CTRL_REG);
++
++		/* Set BSPI clock rate */
++		tmp &=3D ~QSPI_CLK_SEL_MASK;
++		if (spi->max_speed_hz >=3D 62500000)
++			tmp |=3D QSPI_CLK_SEL_62M5;
++		else if (spi->max_speed_hz >=3D 50000000)
++			tmp |=3D QSPI_CLK_SEL_50M;
++		else if (spi->max_speed_hz >=3D 31250000)
++			tmp |=3D QSPI_CLK_SEL_31M25;
++		/* default is 25MHz */
++		bcm_qspi_write(qspi, CRU_CTRL, CRU_CTRL_REG, tmp);
 +	}
++
+ 	if (spi->bits_per_word)
+ 		xp->bits_per_word =3D spi->bits_per_word;
+ 	else
+@@ -1459,6 +1483,16 @@ int bcm_qspi_probe(struct platform_device *pdev,
+ 		qspi->soc_intc =3D NULL;
+ 	}
 =20
--		/* set msg return length */
--		addr +=3D rdlen;
--		len -=3D rdlen;
--	} while (len);
-+	/* Must flush previous writes before starting BSPI operation */
-+	mb();
-+	bcm_qspi_bspi_lr_start(qspi);
-+	if (!wait_for_completion_timeout(&qspi->bspi_done, timeo)) {
-+		dev_err(&qspi->pdev->dev, "timeout waiting for BSPI\n");
-+		ret =3D -ETIMEDOUT;
++	/* iProc BSPI clock is set through CRU control */
++	res =3D platform_get_resource_byname(pdev, IORESOURCE_MEM, "cru_ctrl");
++	if (res) {
++		qspi->base[CRU_CTRL] =3D devm_ioremap_resource(dev, res);
++		if (IS_ERR(qspi->base[CRU_CTRL])) {
++			ret =3D PTR_ERR(qspi->base[CRU_CTRL]);
++			goto qspi_probe_err;
++		}
 +	}
-=20
- 	return ret;
- }
++
+ 	ret =3D clk_prepare_enable(qspi->clk);
+ 	if (ret) {
+ 		dev_err(dev, "failed to prepare clock\n");
 --=20
 2.27.0
 

@@ -2,28 +2,29 @@ Return-Path: <SRS0=xt6i=75=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DD368C433DF
-	for <linux-spi@archiver.kernel.org>; Tue, 16 Jun 2020 00:09:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 84E85C433DF
+	for <linux-spi@archiver.kernel.org>; Tue, 16 Jun 2020 00:09:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A616720739
-	for <linux-spi@archiver.kernel.org>; Tue, 16 Jun 2020 00:09:39 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6BF7220739
+	for <linux-spi@archiver.kernel.org>; Tue, 16 Jun 2020 00:09:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726286AbgFPAJj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 15 Jun 2020 20:09:39 -0400
-Received: from foss.arm.com ([217.140.110.172]:56952 "EHLO foss.arm.com"
+        id S1726540AbgFPAJp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 15 Jun 2020 20:09:45 -0400
+Received: from foss.arm.com ([217.140.110.172]:57002 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725960AbgFPAJj (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 15 Jun 2020 20:09:39 -0400
+        id S1726452AbgFPAJo (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 15 Jun 2020 20:09:44 -0400
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7F40C1FB;
-        Mon, 15 Jun 2020 17:09:38 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CD7FC1045;
+        Mon, 15 Jun 2020 17:09:43 -0700 (PDT)
 Received: from e121345-lin.cambridge.arm.com (e121345-lin.cambridge.arm.com [10.1.196.37])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E768E3F73C;
-        Mon, 15 Jun 2020 17:09:36 -0700 (PDT)
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 447363F73C;
+        Mon, 15 Jun 2020 17:09:42 -0700 (PDT)
 From:   Robin Murphy <robin.murphy@arm.com>
 To:     broonie@kernel.org, nsaenzjulienne@suse.de, f.fainelli@gmail.com,
         rjui@broadcom.com, sbranden@broadcom.com
@@ -31,10 +32,12 @@ Cc:     bcm-kernel-feedback-list@broadcom.com, linux-spi@vger.kernel.org,
         linux-rpi-kernel@lists.infradead.org,
         linux-arm-kernel@lists.infradead.org, kernel@martin.sperl.org,
         lukas@wunner.de, linux-kernel@vger.kernel.org
-Subject: [PATCH 0/3] spi: bcm2835: Interrupt-handling optimisations
-Date:   Tue, 16 Jun 2020 01:09:26 +0100
-Message-Id: <cover.1592261248.git.robin.murphy@arm.com>
+Subject: [PATCH 3/3] spi: bcm2835: Micro-optimise FIFO loops
+Date:   Tue, 16 Jun 2020 01:09:29 +0100
+Message-Id: <9242863077acf9a64e4b3720e479855b88d19e82.1592261248.git.robin.murphy@arm.com>
 X-Mailer: git-send-email 2.23.0.dirty
+In-Reply-To: <cover.1592261248.git.robin.murphy@arm.com>
+References: <cover.1592261248.git.robin.murphy@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-spi-owner@vger.kernel.org
@@ -42,43 +45,83 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi all,
+The blind and counted loops are always called with nonzero count, so
+convert them to do-while loops that lead to slightly more efficient
+code generation. With GCC 8.3 this shaves off 1-2 instructions per
+iteration in each case.
 
-Although Florian was concerned about a trivial inline check to deal with
-shared IRQs adding overhead, the reality is that it would be so small as
-to not be worth even thinking about unless the driver was already tuned
-to squeeze out every last cycle. And a brief look over the code shows
-that that clearly isn't the case.
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+---
+ drivers/spi/spi-bcm2835.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
-This is an example of some of the easy low-hanging fruit that jumps out
-just from code inspection. Based on disassembly and ARM1176 cycle
-timings, patch #2 should save the equivalent of 2-3 shared interrupt
-checks off the critical path in all cases, and patch #3 possibly up to
-about 100x more. I don't have any means to test these patches, let alone
-measure performance, so they're only backed by the principle that less
-code - and in particular fewer memory accesses - is almost always
-better.
-
-There is almost certainly a *lot* more to be had from careful use of
-relaxed I/O accessors, not doing a read-modify-write of CS at every
-reset, tweaking the loops further to avoid unnecessary writebacks to
-variables, and so on. However since I'm not invested in this personally
-I'm not going to pursue it any further; I'm throwing these patches out
-as more of a demonstration to back up my original drive-by review
-comments, so if anyone want to pick them up and run with them then
-please do so.
-
-Robin.
-
-
-Robin Murphy (3):
-  spi: bcm3835: Tidy up bcm2835_spi_reset_hw()
-  spi: bcm2835: Micro-optimise IRQ handler
-  spi: bcm2835: Micro-optimise FIFO loops
-
- drivers/spi/spi-bcm2835.c | 45 +++++++++++++++++++--------------------
- 1 file changed, 22 insertions(+), 23 deletions(-)
-
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index aec70ac8911e..e9a91adf03eb 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -245,13 +245,13 @@ static inline void bcm2835_rd_fifo_count(struct bcm2835_spi *bs, int count)
+ 
+ 	bs->rx_len -= count;
+ 
+-	while (count > 0) {
++	do {
+ 		val = bcm2835_rd(bs, BCM2835_SPI_FIFO);
+ 		len = min(count, 4);
+ 		memcpy(bs->rx_buf, &val, len);
+ 		bs->rx_buf += len;
+ 		count -= 4;
+-	}
++	} while (count > 0);
+ }
+ 
+ /**
+@@ -271,7 +271,7 @@ static inline void bcm2835_wr_fifo_count(struct bcm2835_spi *bs, int count)
+ 
+ 	bs->tx_len -= count;
+ 
+-	while (count > 0) {
++	do {
+ 		if (bs->tx_buf) {
+ 			len = min(count, 4);
+ 			memcpy(&val, bs->tx_buf, len);
+@@ -281,7 +281,7 @@ static inline void bcm2835_wr_fifo_count(struct bcm2835_spi *bs, int count)
+ 		}
+ 		bcm2835_wr(bs, BCM2835_SPI_FIFO, val);
+ 		count -= 4;
+-	}
++	} while (count > 0);
+ }
+ 
+ /**
+@@ -310,12 +310,11 @@ static inline void bcm2835_rd_fifo_blind(struct bcm2835_spi *bs, int count)
+ 	count = min(count, bs->rx_len);
+ 	bs->rx_len -= count;
+ 
+-	while (count) {
++	do {
+ 		val = bcm2835_rd(bs, BCM2835_SPI_FIFO);
+ 		if (bs->rx_buf)
+ 			*bs->rx_buf++ = val;
+-		count--;
+-	}
++	} while (--count);
+ }
+ 
+ /**
+@@ -330,11 +329,10 @@ static inline void bcm2835_wr_fifo_blind(struct bcm2835_spi *bs, int count)
+ 	count = min(count, bs->tx_len);
+ 	bs->tx_len -= count;
+ 
+-	while (count) {
++	do {
+ 		val = bs->tx_buf ? *bs->tx_buf++ : 0;
+ 		bcm2835_wr(bs, BCM2835_SPI_FIFO, val);
+-		count--;
+-	}
++	} while (--count);
+ }
+ 
+ static void bcm2835_spi_reset_hw(struct bcm2835_spi *bs)
 -- 
 2.23.0.dirty
 

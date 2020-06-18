@@ -7,53 +7,53 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
 	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 35A42C433E3
-	for <linux-spi@archiver.kernel.org>; Thu, 18 Jun 2020 15:11:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 22A9DC433E1
+	for <linux-spi@archiver.kernel.org>; Thu, 18 Jun 2020 15:11:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 102A42071A
+	by mail.kernel.org (Postfix) with ESMTP id F1E79206C3
 	for <linux-spi@archiver.kernel.org>; Thu, 18 Jun 2020 15:11:01 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="GDnU2+Ca"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="dH8VWtr5"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731410AbgFRPK5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 18 Jun 2020 11:10:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33370 "EHLO
+        id S1731421AbgFRPLB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 18 Jun 2020 11:11:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731180AbgFRPKv (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 18 Jun 2020 11:10:51 -0400
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8647AC0613F0
-        for <linux-spi@vger.kernel.org>; Thu, 18 Jun 2020 08:10:51 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id e9so3023186pgo.9
-        for <linux-spi@vger.kernel.org>; Thu, 18 Jun 2020 08:10:51 -0700 (PDT)
+        with ESMTP id S1731401AbgFRPKy (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 18 Jun 2020 11:10:54 -0400
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59B53C0613EE
+        for <linux-spi@vger.kernel.org>; Thu, 18 Jun 2020 08:10:54 -0700 (PDT)
+Received: by mail-pg1-x543.google.com with SMTP id e9so3023247pgo.9
+        for <linux-spi@vger.kernel.org>; Thu, 18 Jun 2020 08:10:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=EgswRRarbAngjEcfcdO7vzU1X69Dnu5N0WEEYS8N17E=;
-        b=GDnU2+CaEI6iO1FX18aBPuHJlLAXyHMvQn8RC61SQb2CvOFmgQWPfbcual4cPk934X
-         sA0sjnBzrS6IZu2mx3Yj26le/et18tojNvJpgNQHujueWEvey7C4obNY7U2CIl4myHAz
-         mcjeD1MBLt/CARfSmNysfkIDQLJS4fUXzJr6w=
+        bh=G4WpNdW6vNPqyWYwEyXbMN3MKHk3EbcVItClv2f3EZU=;
+        b=dH8VWtr5H0+lYfILsmT6ScmwmCOKzTfPUZe3jKBFZg9TNjr9hSU5sdTGWtB3RJncaN
+         AtYBH9KOmXVWOPwZyAGiz0tshcbNFz8/Unp+P9oWAvA3rvsm0Fy6NaPdExkJJ2QJuWSx
+         k/x6DPcz0WPccx0UG8h2uWoZjOLIK1p7jkBFY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=EgswRRarbAngjEcfcdO7vzU1X69Dnu5N0WEEYS8N17E=;
-        b=RY78I8yhAfgsW3/2xVIb54c9NWrl7XqLeitgXvB/2aW8u1PMIO6bVVPzBTaRx/fx+n
-         72IcpXKR0PiX1I95UYAkVtEm6sJ19fUKEezRt11zSWv8T2TzAML29heIU/NUmicff/Ib
-         VssoDvnvODaraCUMUwTuoIF8/0FbeTI+qYESfUdeBHa8objZUjxekAuL8MfvtYN/OOz8
-         JNT+CkI41ozCfmG5B5F/D1Vk7/fMvog/K1gT7M0tOmxZfEcIpRUudaLLFU5uAcHvHknL
-         nkbbM2OBCuKMP+8huQ1s1LTSbsdOI5y7Pcv9EkxLUfElJM3KrSV1lq2Dk4ybWMOhOhQ0
-         zKPg==
-X-Gm-Message-State: AOAM532pZLtACs2BGp7OuyoxBYBxsexdI8ogXsjFvPg/1TGkPyJbUmUs
-        10CqdYBv9HKMcv/DuSZ38xiJcw==
-X-Google-Smtp-Source: ABdhPJxWP5h6GqAJBOvQkYlENccfoLscwWKOsJ5bOnlei9cHfBy1KvAoZrC0RykDVJAKLwA2KbbfAw==
-X-Received: by 2002:a63:a558:: with SMTP id r24mr3845460pgu.70.1592493051091;
-        Thu, 18 Jun 2020 08:10:51 -0700 (PDT)
+        bh=G4WpNdW6vNPqyWYwEyXbMN3MKHk3EbcVItClv2f3EZU=;
+        b=iOJUypZZ0luwuIerfdPFyVf5wJm9x+zRXTRdCV7Ak43xlNn4Hvy+oSEzqTq8TY0UCn
+         HUxcAxp2HgT9HDb6ZcospD7Skg9Lcwc9rEbrH5UrLd/A5c8/q4bWCoi4KBpcPYe5jBSn
+         ZDL0q5Z1YfbrgtTconKbrw0GXcLZ39wkph0k+LqCBbtxdtmGRLk4ydrGFbgilUSn+DVc
+         ryaHPphNGj7v2DgXN1/Vh6qNjiQqC5moRuPrBKFjUV109Et0Mh/PaJtmnBZrW9yFpOSf
+         hHK3PgeH1SrEbztXfK1eEnQGyeIQTauVgL9lFR4ltH+nFsvqXFlvljPtYbVfl/j2NWbu
+         536Q==
+X-Gm-Message-State: AOAM5307yru+Du7mTKqhRzL1p4q7LfT2+A9BQ3exE3Naj4Q9MDRbwAif
+        1VPD0Rm8hbxFiXSiGTUEJsidnw==
+X-Google-Smtp-Source: ABdhPJytq+tfcAyMoofwFs/+vA00AkGYTDF9W8ylxgUb2Mg8XNqsOtezXIuPvb60CeLZvUVmgSKhGg==
+X-Received: by 2002:a63:1910:: with SMTP id z16mr3591357pgl.50.1592493053836;
+        Thu, 18 Jun 2020 08:10:53 -0700 (PDT)
 Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:24fa:e766:52c9:e3b2])
-        by smtp.gmail.com with ESMTPSA id b14sm3171510pft.23.2020.06.18.08.10.49
+        by smtp.gmail.com with ESMTPSA id b14sm3171510pft.23.2020.06.18.08.10.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jun 2020 08:10:50 -0700 (PDT)
+        Thu, 18 Jun 2020 08:10:53 -0700 (PDT)
 From:   Douglas Anderson <dianders@chromium.org>
 To:     Mark Brown <broonie@kernel.org>
 Cc:     swboyd@chromium.org, Alok Chauhan <alokc@codeaurora.org>,
@@ -62,9 +62,9 @@ Cc:     swboyd@chromium.org, Alok Chauhan <alokc@codeaurora.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org
-Subject: [PATCH v4 3/5] spi: spi-geni-qcom: Check for error IRQs
-Date:   Thu, 18 Jun 2020 08:06:24 -0700
-Message-Id: <20200618080459.v4.3.Id8bebdbdb4d2ed9468634343a7e6207d6cffff8a@changeid>
+Subject: [PATCH v4 5/5] spi: spi-geni-qcom: Don't keep a local state variable
+Date:   Thu, 18 Jun 2020 08:06:26 -0700
+Message-Id: <20200618080459.v4.5.Ib1e6855405fc9c99916ab7c7dee84d73a8bf3d68@changeid>
 X-Mailer: git-send-email 2.27.0.290.gba653c62da-goog
 In-Reply-To: <20200618150626.237027-1-dianders@chromium.org>
 References: <20200618150626.237027-1-dianders@chromium.org>
@@ -75,39 +75,164 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From reading the #defines it seems like we should shout if we ever see
-one of these error bits.  Let's do so.  This doesn't do anything
-functional except print a yell in the log if the error bits are seen.
+The variable "cur_mcmd" kept track of our current state (idle, xfer,
+cs, cancel).  We don't really need it, so get rid of it.  Instead:
+* Use separate condition variables for "chip select done", "cancel
+  done", and "abort done".  This is important so that if a "done"
+  comes through (perhaps some previous interrupt finally came through)
+  it can't confuse the cancel/abort function.
+* Use the "done" interrupt only for when a chip select or transfer is
+  done and we can tell the difference by looking at whether "cur_xfer"
+  is NULL.
+
+This is mostly a no-op change.  However, it is possible it could fix
+an issue where a super delayed interrupt for a cancel command could
+have confused our waiting for an abort command.
 
 Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
 ---
 
 Changes in v4: None
 Changes in v3:
-- ("spi: spi-geni-qcom: Check for error IRQs") new in v3.
+- ("spi: spi-geni-qcom: Don't keep a local state variable") new in v3.
 
 Changes in v2: None
 
- drivers/spi/spi-geni-qcom.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/spi/spi-geni-qcom.c | 55 ++++++++++++++++++-------------------
+ 1 file changed, 27 insertions(+), 28 deletions(-)
 
 diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index 7d022ccb1b6c..11f36d237c77 100644
+index 5b8ca8b93b06..0c534d151370 100644
 --- a/drivers/spi/spi-geni-qcom.c
 +++ b/drivers/spi/spi-geni-qcom.c
-@@ -506,6 +506,11 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
- 	if (!m_irq)
- 		return IRQ_NONE;
+@@ -63,13 +63,6 @@
+ #define TIMESTAMP_AFTER		BIT(3)
+ #define POST_CMD_DELAY		BIT(4)
  
-+	if (m_irq & (M_CMD_OVERRUN_EN | M_ILLEGAL_CMD_EN | M_CMD_FAILURE_EN |
-+		     M_RX_FIFO_RD_ERR_EN | M_RX_FIFO_WR_ERR_EN |
-+		     M_TX_FIFO_RD_ERR_EN | M_TX_FIFO_WR_ERR_EN))
-+		dev_warn(mas->dev, "Unexpected IRQ err status %#010x\n", m_irq);
+-enum spi_m_cmd_opcode {
+-	CMD_NONE,
+-	CMD_XFER,
+-	CMD_CS,
+-	CMD_CANCEL,
+-};
+-
+ struct spi_geni_master {
+ 	struct geni_se se;
+ 	struct device *dev;
+@@ -81,10 +74,11 @@ struct spi_geni_master {
+ 	unsigned int tx_rem_bytes;
+ 	unsigned int rx_rem_bytes;
+ 	const struct spi_transfer *cur_xfer;
+-	struct completion xfer_done;
++	struct completion cs_done;
++	struct completion cancel_done;
++	struct completion abort_done;
+ 	unsigned int oversampling;
+ 	spinlock_t lock;
+-	enum spi_m_cmd_opcode cur_mcmd;
+ 	int irq;
+ };
+ 
+@@ -126,20 +120,23 @@ static void handle_fifo_timeout(struct spi_master *spi,
+ 	struct geni_se *se = &mas->se;
+ 
+ 	spin_lock_irq(&mas->lock);
+-	reinit_completion(&mas->xfer_done);
+-	mas->cur_mcmd = CMD_CANCEL;
+-	geni_se_cancel_m_cmd(se);
++	reinit_completion(&mas->cancel_done);
+ 	writel(0, se->base + SE_GENI_TX_WATERMARK_REG);
++	mas->cur_xfer = NULL;
++	mas->tx_rem_bytes = mas->rx_rem_bytes = 0;
++	geni_se_cancel_m_cmd(se);
+ 	spin_unlock_irq(&mas->lock);
+-	time_left = wait_for_completion_timeout(&mas->xfer_done, HZ);
 +
- 	spin_lock(&mas->lock);
++	time_left = wait_for_completion_timeout(&mas->cancel_done, HZ);
+ 	if (time_left)
+ 		return;
  
- 	if ((m_irq & M_RX_FIFO_WATERMARK_EN) || (m_irq & M_RX_FIFO_LAST_EN))
+ 	spin_lock_irq(&mas->lock);
+-	reinit_completion(&mas->xfer_done);
++	reinit_completion(&mas->abort_done);
+ 	geni_se_abort_m_cmd(se);
+ 	spin_unlock_irq(&mas->lock);
+-	time_left = wait_for_completion_timeout(&mas->xfer_done, HZ);
++
++	time_left = wait_for_completion_timeout(&mas->abort_done, HZ);
+ 	if (!time_left)
+ 		dev_err(mas->dev, "Failed to cancel/abort m_cmd\n");
+ }
+@@ -156,15 +153,14 @@ static void spi_geni_set_cs(struct spi_device *slv, bool set_flag)
+ 		set_flag = !set_flag;
+ 
+ 	spin_lock_irq(&mas->lock);
+-	reinit_completion(&mas->xfer_done);
+-	mas->cur_mcmd = CMD_CS;
++	reinit_completion(&mas->cs_done);
+ 	if (set_flag)
+ 		geni_se_setup_m_cmd(se, SPI_CS_ASSERT, 0);
+ 	else
+ 		geni_se_setup_m_cmd(se, SPI_CS_DEASSERT, 0);
+ 	spin_unlock_irq(&mas->lock);
+ 
+-	time_left = wait_for_completion_timeout(&mas->xfer_done, HZ);
++	time_left = wait_for_completion_timeout(&mas->cs_done, HZ);
+ 	if (!time_left)
+ 		handle_fifo_timeout(spi, NULL);
+ 
+@@ -383,7 +379,6 @@ static void setup_fifo_xfer(struct spi_transfer *xfer,
+ 		mas->rx_rem_bytes = xfer->len;
+ 	}
+ 	writel(spi_tx_cfg, se->base + SE_SPI_TRANS_CFG);
+-	mas->cur_mcmd = CMD_XFER;
+ 
+ 	/*
+ 	 * Lock around right before we start the transfer since our
+@@ -520,11 +515,13 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
+ 		geni_spi_handle_tx(mas);
+ 
+ 	if (m_irq & M_CMD_DONE_EN) {
+-		if (mas->cur_mcmd == CMD_XFER)
++		if (mas->cur_xfer) {
+ 			spi_finalize_current_transfer(spi);
+-		else if (mas->cur_mcmd == CMD_CS)
+-			complete(&mas->xfer_done);
+-		mas->cur_mcmd = CMD_NONE;
++			mas->cur_xfer = NULL;
++		} else {
++			complete(&mas->cs_done);
++		}
++
+ 		/*
+ 		 * If this happens, then a CMD_DONE came before all the Tx
+ 		 * buffer bytes were sent out. This is unusual, log this
+@@ -546,10 +543,10 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
+ 				mas->rx_rem_bytes, mas->cur_bits_per_word);
+ 	}
+ 
+-	if ((m_irq & M_CMD_CANCEL_EN) || (m_irq & M_CMD_ABORT_EN)) {
+-		mas->cur_mcmd = CMD_NONE;
+-		complete(&mas->xfer_done);
+-	}
++	if (m_irq & M_CMD_CANCEL_EN)
++		complete(&mas->cancel_done);
++	if (m_irq & M_CMD_ABORT_EN)
++		complete(&mas->abort_done);
+ 
+ 	/*
+ 	 * It's safe or a good idea to Ack all of our our interrupts at the
+@@ -617,7 +614,9 @@ static int spi_geni_probe(struct platform_device *pdev)
+ 	spi->handle_err = handle_fifo_timeout;
+ 	spi->set_cs = spi_geni_set_cs;
+ 
+-	init_completion(&mas->xfer_done);
++	init_completion(&mas->cs_done);
++	init_completion(&mas->cancel_done);
++	init_completion(&mas->abort_done);
+ 	spin_lock_init(&mas->lock);
+ 	pm_runtime_enable(dev);
+ 
 -- 
 2.27.0.290.gba653c62da-goog
 

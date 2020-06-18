@@ -2,58 +2,81 @@ Return-Path: <SRS0=zXQu=77=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DF01C433E0
-	for <linux-spi@archiver.kernel.org>; Thu, 18 Jun 2020 15:20:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 58E17C433E1
+	for <linux-spi@archiver.kernel.org>; Thu, 18 Jun 2020 15:29:27 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3A61620734
-	for <linux-spi@archiver.kernel.org>; Thu, 18 Jun 2020 15:20:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1592493618;
-	bh=NTKLfPva2y1Qfd/pD0F0oA8h4O9JiS7Qe1vXmXwLhFU=;
-	h=Subject:From:Date:To:List-ID:From;
-	b=Sf8zHSF+4p+wPGJU6hKmNcO8AReQOscA/d9bqTpbhRl9npH2Yygb2qKdwIahkrjg7
-	 nOWJvGDEtrWUP5cDf4dvT3b1dPIm7gt8X0/FJRgwDy6wohR/4NUBIgOgGeW42jp52A
-	 sw2UqDy9j/ONqgTDGUb5XfJxeANd39ImZDhde/CA=
+	by mail.kernel.org (Postfix) with ESMTP id 3CE602075E
+	for <linux-spi@archiver.kernel.org>; Thu, 18 Jun 2020 15:29:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727841AbgFRPUS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 18 Jun 2020 11:20:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35992 "EHLO mail.kernel.org"
+        id S1731590AbgFRP3U (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 18 Jun 2020 11:29:20 -0400
+Received: from mga04.intel.com ([192.55.52.120]:21448 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727045AbgFRPUR (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 18 Jun 2020 11:20:17 -0400
-Content-Type: text/plain; charset="utf-8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592493617;
-        bh=NTKLfPva2y1Qfd/pD0F0oA8h4O9JiS7Qe1vXmXwLhFU=;
-        h=Subject:From:Date:To:From;
-        b=BHCuRORcXsvBNbM1YplPTUlHhzcrvulmYemeVMCGu54DuA/yEd7iKs+LM3QZjkLoF
-         +Og1xxVT+N+sijPjakq4UixLz71fbiQgr4JusUWM/FC9zZhdFxFfwrGZqtUb+kvtj6
-         oG9/vbTqqx3q0CyH8ZqPJmwhc8gqA72cw6A8+wnA=
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+linux-spi@kernel.org
-Message-Id: <159249361748.11477.17617425409636453575.git-patchwork-housekeeping@kernel.org>
-Date:   Thu, 18 Jun 2020 15:20:17 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+        id S1731568AbgFRP3T (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 18 Jun 2020 11:29:19 -0400
+IronPort-SDR: CuzmyOyS3Y5rgZeHmw7frbvneJr6+utML8JXsId+BcUBN4vMifGtS4SIfhDVPgPp0S9QuqRVbz
+ eAjRIURW5tcg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9656"; a="140137430"
+X-IronPort-AV: E=Sophos;i="5.75,251,1589266800"; 
+   d="scan'208";a="140137430"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2020 08:29:19 -0700
+IronPort-SDR: MB/EgPENA8SUxNDBoEdU5Zjd6gHeD8s7KkZGR5+SRpdqnz37cQGJVLZ07mnZiXfRL6IbjJTkws
+ 2+JFxk3utd6w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,251,1589266800"; 
+   d="scan'208";a="450675797"
+Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.159.141])
+  by orsmga005.jf.intel.com with ESMTP; 18 Jun 2020 08:29:16 -0700
+From:   Xu Yilun <yilun.xu@intel.com>
+To:     broonie@kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     trix@redhat.com, yilun.xu@intel.com, hao.wu@intel.com,
+        matthew.gerlach@linux.intel.com, russell.h.weight@intel.com
+Subject: [PATCH v2 6/6] spi: altera: fix size mismatch on 64 bit processors
+Date:   Thu, 18 Jun 2020 23:25:10 +0800
+Message-Id: <1592493910-30473-4-git-send-email-yilun.xu@intel.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1592493910-30473-1-git-send-email-yilun.xu@intel.com>
+References: <1592493910-30473-1-git-send-email-yilun.xu@intel.com>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v4] spi: spi-geni-qcom: Fixes / perf improvements (2020-06-18T15:06:23)
-  Superseding: [v3] spi: spi-geni-qcom: Fixes / perf improvements (2020-06-16T10:40:45):
-    [v3,1/5] spi: spi-geni-qcom: No need for irqsave variant of spinlock calls
-    [v3,2/5] spi: spi-geni-qcom: Mo' betta locking
-    [v3,3/5] spi: spi-geni-qcom: Check for error IRQs
-    [v3,4/5] spi: spi-geni-qcom: Actually use our FIFO
-    [v3,5/5] spi: spi-geni-qcom: Don't keep a local state variable
+From: Matthew Gerlach <matthew.gerlach@linux.intel.com>
 
+The spi-altera driver was originally written with a 32
+bit processor, where sizeof(unsigned long) is 4.  On a
+64 bit processor sizeof(unsigned long) is 8.  Change the structure
+member to u32 to match the actual size of the control
+register.
 
+Signed-off-by: Matthew Gerlach <matthew.gerlach@linux.intel.com>
+Signed-off-by: Xu Yilun <yilun.xu@intel.com>
+---
+ drivers/spi/spi-altera.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-altera.c b/drivers/spi/spi-altera.c
+index 4f7717f..d91c093 100644
+--- a/drivers/spi/spi-altera.c
++++ b/drivers/spi/spi-altera.c
+@@ -53,7 +53,7 @@ struct altera_spi {
+ 	int len;
+ 	int count;
+ 	int bytes_per_word;
+-	unsigned long imr;
++	u32 imr;
+ 
+ 	/* data buffers */
+ 	const unsigned char *tx;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/pwbot
+2.7.4
+

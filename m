@@ -7,53 +7,53 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A887C433E0
-	for <linux-spi@archiver.kernel.org>; Thu, 18 Jun 2020 15:10:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C524C433E2
+	for <linux-spi@archiver.kernel.org>; Thu, 18 Jun 2020 15:10:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 50CBB2071A
-	for <linux-spi@archiver.kernel.org>; Thu, 18 Jun 2020 15:10:56 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5BDFF206C3
+	for <linux-spi@archiver.kernel.org>; Thu, 18 Jun 2020 15:10:57 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="A0dJZO/E"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="HfoZ5lRO"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731405AbgFRPKy (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 18 Jun 2020 11:10:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33366 "EHLO
+        id S1728788AbgFRPK4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 18 Jun 2020 11:10:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731391AbgFRPKu (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 18 Jun 2020 11:10:50 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7462FC0613EF
-        for <linux-spi@vger.kernel.org>; Thu, 18 Jun 2020 08:10:50 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id j1so2926339pfe.4
-        for <linux-spi@vger.kernel.org>; Thu, 18 Jun 2020 08:10:50 -0700 (PDT)
+        with ESMTP id S1731396AbgFRPKw (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 18 Jun 2020 11:10:52 -0400
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE8AAC06174E
+        for <linux-spi@vger.kernel.org>; Thu, 18 Jun 2020 08:10:52 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id j1so2926408pfe.4
+        for <linux-spi@vger.kernel.org>; Thu, 18 Jun 2020 08:10:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=mqrLxsOH23jMmWDCAvD7Zv1dq0cfbx+EXnsz1QwYjMc=;
-        b=A0dJZO/ESj54vdLdSebDiEifYFwpT8y9FYfiJ68gcGnncK0ZwSwc2Fp9L8OPb4zYWK
-         bFhk9bA8NDMtJ+ia5MsjEl0ziE+CSA67JfvtFpFqCtRMDU4O4ySMjskZy7Yx1jrl8JI1
-         ua1bzHIZRI3BbrQm4RrtrYX1UuyuPolxSqg6A=
+        bh=bVe6UCUtrVR7cafEV9bt9G1zk5uDkvg9No0xHEHinP8=;
+        b=HfoZ5lRONe1F61xrxP9U4L/d9eEWRtxvGR1cJncfL/woxzmvANr4v7yU5w9uV+0w7P
+         XcjIgNgXmghUX+eAEQaMHmAjrIUFdQM2LLEcvBGYYsI1BUw4VKM5Q0VLNRn6y7Vq7/9j
+         CkxlFgDNBB8iW6/bhIasfNViYUjlV+/a8geOA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=mqrLxsOH23jMmWDCAvD7Zv1dq0cfbx+EXnsz1QwYjMc=;
-        b=AQWxKLy1LIWwSv37lNNOxcWZj8z5Xr6k7NTQex/Gq6kPzNem0Mqb/aiEyKVFwngr03
-         mqbUqwAwrtnWAV2h8CM2mL8uXoLspyz8sLN5FO5CDEK+QrMVANVH6sFUgGXhvZdKCpOR
-         D16A12o1/lA03f2HhaKDDQ+xXsCWCInhs9ich2MSezArdQOHkkQMeHt5+x1z73kJK0bx
-         DUrj0P7bUjj0R/HzsqxMNWDRml5zOTYiNGc1sBm5Whlu2sFOgyagI+iNYPvtLtT6ujhF
-         kgkJQTwGysvsTFpUc+xtMKDYu4WJbAya3upyFCWiamyFFI84YrYp7CUEddUzScxeAMVX
-         jcUg==
-X-Gm-Message-State: AOAM532397GnyZHuKOtUaHr21B1TQXpqzT6MniEhxFzAE6AgcBEokNsp
-        5USc3MqAci1qK5qZrcOGHztM1MPseZk=
-X-Google-Smtp-Source: ABdhPJxTAr3ojc6iO/37TWVVPwyClnlGU0LJ1oS7TjCQ42cOm3S3Sf7uNaBPLZG9lCJygBt9d+a58A==
-X-Received: by 2002:a63:80c8:: with SMTP id j191mr2254438pgd.38.1592493049531;
-        Thu, 18 Jun 2020 08:10:49 -0700 (PDT)
+        bh=bVe6UCUtrVR7cafEV9bt9G1zk5uDkvg9No0xHEHinP8=;
+        b=tOGwgwwXkRdUWGopM3fYu1AcUs1kvd1smMnVLT+74ouFd2J/vcec/RHmdkf6FvGrPI
+         /Koqs+vKxHRG45uTTU+CiyjNEh+7XCXUEGvWpI+rnTaudbsCY24xt9W3pN/1ZHVS2cFr
+         YHxE5CsucURgVYwlSru5ITLdVVf+pMtmglgq+mdfYPFx5RpnNcwa4G//pUNpOAguXEMU
+         eBR84euZtZ0aBTvUXWPuW8Vg08MHx0o+5m3OaEsxoqkknYTaodkheldplZobuCPAs63+
+         isSV0JZmYzUnd7HI9FQnrMeJoaWHo9PC0d1y9eTM7AfzQoWxIArMV61S70WGD2U7veBr
+         Ooww==
+X-Gm-Message-State: AOAM532RcT0ILHseqzvHUdCxo0HWFmFGH//cSImpFp6102nRoNpyjOY/
+        K+aKtkXTheS2S3hTfmm22SpTmQ==
+X-Google-Smtp-Source: ABdhPJxeb3obYpA8AnWN2pNjegngMD5qnPGIspUqIiUGT3QjemzJUaNiSOGvh5KCaQsVt6QmO1Xtyw==
+X-Received: by 2002:a62:3103:: with SMTP id x3mr3897100pfx.130.1592493052313;
+        Thu, 18 Jun 2020 08:10:52 -0700 (PDT)
 Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:24fa:e766:52c9:e3b2])
-        by smtp.gmail.com with ESMTPSA id b14sm3171510pft.23.2020.06.18.08.10.48
+        by smtp.gmail.com with ESMTPSA id b14sm3171510pft.23.2020.06.18.08.10.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jun 2020 08:10:49 -0700 (PDT)
+        Thu, 18 Jun 2020 08:10:51 -0700 (PDT)
 From:   Douglas Anderson <dianders@chromium.org>
 To:     Mark Brown <broonie@kernel.org>
 Cc:     swboyd@chromium.org, Alok Chauhan <alokc@codeaurora.org>,
@@ -64,9 +64,9 @@ Cc:     swboyd@chromium.org, Alok Chauhan <alokc@codeaurora.org>,
         Girish Mahadevan <girishm@codeaurora.org>,
         linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org
-Subject: [PATCH v4 2/5] spi: spi-geni-qcom: Mo' betta locking
-Date:   Thu, 18 Jun 2020 08:06:23 -0700
-Message-Id: <20200618080459.v4.2.I752ebdcfd5e8bf0de06d66e767b8974932b3620e@changeid>
+Subject: [PATCH v4 4/5] spi: spi-geni-qcom: Actually use our FIFO
+Date:   Thu, 18 Jun 2020 08:06:25 -0700
+Message-Id: <20200618080459.v4.4.I988281f7c6ee0ed00325559bfce7539f403da69e@changeid>
 X-Mailer: git-send-email 2.27.0.290.gba653c62da-goog
 In-Reply-To: <20200618150626.237027-1-dianders@chromium.org>
 References: <20200618150626.237027-1-dianders@chromium.org>
@@ -77,186 +77,63 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-If you added a bit of a delay (like a trace_printk) into the ISR for
-the spi-geni-qcom driver, you would suddenly start seeing some errors
-spit out.  The problem was that, though the ISR itself held a lock,
-other parts of the driver didn't always grab the lock.
+The geni hardware has a FIFO that can hold up to 64 bytes (it has 16
+entries that can hold 4 bytes each), at least on the two SoCs I tested
+(sdm845 and sc7180).  We configured our RX Watermark to 0, which
+basically meant we got an interrupt as soon as the first 4 bytes
+showed up in the FIFO.  Tracing the IRQ handler showed that we often
+only read 4 or 8 bytes per IRQ handler.
 
-One example race was this:
-  CPU0                                         CPU1
-  ----                                         ----
-  spi_geni_set_cs()
-   mas->cur_mcmd = CMD_CS;
-   geni_se_setup_m_cmd(...)
-   wait_for_completion_timeout(&xfer_done);
-                                              <INTERRUPT>
-                                               geni_spi_isr()
-                                                complete(&xfer_done);
-   <wakeup>
-   pm_runtime_put(mas->dev);
-  ... // back to SPI core
-  spi_geni_transfer_one()
-   setup_fifo_xfer()
-    mas->cur_mcmd = CMD_XFER;
-                                                mas->cur_cmd = CMD_NONE; // bad!
-                                                return IRQ_HANDLED;
+I tried setting the RX Watermark to "fifo size - 2" but that just got
+me a bunch of overrun errors reported.  Setting it to "fifo size - 3"
+seemed to work great, though.  This made me worried that we'd start
+getting overruns if we had long interrupt latency, but that doesn't
+appear to be the case and delays inserted in the IRQ handler while
+using "fifo size - 3" didn't cause any errors.  Presumably there is
+some interaction with the poorly-documented RFR (ready for receive)
+level means that "fifo size - 3" is the max.  We are the SPI master,
+so it makes sense that there would be no problems with overruns, the
+master should just stop clocking.
 
-Let's fix this.  Before we start messing with hardware, we'll grab the
-lock to make sure that the IRQ handler from some previous command has
-really finished.  We don't need to hold the lock unless we're in a
-state where more interrupts can come in, but we at least need to make
-sure the previous IRQ is done.  This lock is used exclusively to
-prevent the IRQ handler and non-IRQ from stomping on each other.  The
-SPI core handles all other mutual exclusion.
+Despite "fifo size - 3" working, I chose "fifo size / 2" (8 entries =
+32 bytes) which gives us a little extra time to get to the interrupt
+handler and should reduce dead time on the SPI wires.  With this
+setting, I often saw the IRQ handler handle 40 bytes but sometimes up
+to 56 if we had bad interrupt latency.
 
-As part of this, we change the way that the IRQ handler detects
-spurious interrupts.  Previously we checked for our state variable
-being set to IRQ_NONE, but that was done outside the spinlock.  We
-could move it into the spinlock, but instead let's just change it to
-look for the lack of any IRQ status bits being set.  This can be done
-outside the lock--the hardware certainly isn't grabbing or looking at
-the spinlock when it updates its status register.
-
-It's possible that this will fix real (but very rare) errors seen in
-the field that look like:
-  irq ...: nobody cared (try booting with the "irqpoll" option)
-
-NOTE: an alternate strategy considered here was to always make the
-complete() / spi_finalize_current_transfer() the very last thing in
-our IRQ handler.  With such a change you could consider that we could
-be "lockless".  In that case, though, we'd have to be very careful w/
-memory barriers so we made sure we didn't have any bugs with weakly
-ordered memory.  Using spinlocks makes the driver much easier to
-understand.
+Testing by running "flashrom -p ec -r" on a Chromebook saw interrupts
+from the SPI driver cut roughly in half.  Time was roughly the same.
 
 Fixes: 561de45f72bd ("spi: spi-geni-qcom: Add SPI driver support for GENI based QUP")
 Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
 ---
+Technically this is an improvement, not a fix.  ...but it should be
+such a decrease in interrupts that I've tagged it as a Fix nonetheless
+as per suggestion during review.
 
-Changes in v4:
-- Drop 'controller' in comment.
-- Use Stephen's diagram to explain the race better.
-
+Changes in v4: None
 Changes in v3:
-- Split out some lock cleanup to previous patch.
-- Don't need to read IRQ status register inside spinlock.
-- Don't check for state CMD_NONE; later patch is removing state var.
-- Don't hold the lock for all of setup_fifo_xfer().
-- Comment about why it's safe to Ack interrupts at the end.
-- Subject/desc changed since race is definitely there.
+- ("spi: spi-geni-qcom: Actually use our FIFO") new in v3.
 
-Changes in v2:
-- Detect true spurious interrupt.
-- Still return IRQ_NONE for state machine mismatch, but print warn.
+Changes in v2: None
 
- drivers/spi/spi-geni-qcom.c | 45 ++++++++++++++++++++++++++++++++++---
- 1 file changed, 42 insertions(+), 3 deletions(-)
+ drivers/spi/spi-geni-qcom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index c7d2c7e45b3f..7d022ccb1b6c 100644
+index 11f36d237c77..5b8ca8b93b06 100644
 --- a/drivers/spi/spi-geni-qcom.c
 +++ b/drivers/spi/spi-geni-qcom.c
-@@ -151,16 +151,18 @@ static void spi_geni_set_cs(struct spi_device *slv, bool set_flag)
- 	struct geni_se *se = &mas->se;
- 	unsigned long time_left;
- 
--	reinit_completion(&mas->xfer_done);
- 	pm_runtime_get_sync(mas->dev);
- 	if (!(slv->mode & SPI_CS_HIGH))
- 		set_flag = !set_flag;
- 
-+	spin_lock_irq(&mas->lock);
-+	reinit_completion(&mas->xfer_done);
- 	mas->cur_mcmd = CMD_CS;
- 	if (set_flag)
- 		geni_se_setup_m_cmd(se, SPI_CS_ASSERT, 0);
- 	else
- 		geni_se_setup_m_cmd(se, SPI_CS_DEASSERT, 0);
-+	spin_unlock_irq(&mas->lock);
- 
- 	time_left = wait_for_completion_timeout(&mas->xfer_done, HZ);
- 	if (!time_left)
-@@ -307,6 +309,21 @@ static void setup_fifo_xfer(struct spi_transfer *xfer,
- 	u32 spi_tx_cfg, len;
- 	struct geni_se *se = &mas->se;
- 
-+	/*
-+	 * Ensure that our interrupt handler isn't still running from some
-+	 * prior command before we start messing with the hardware behind
-+	 * its back.  We don't need to _keep_ the lock here since we're only
-+	 * worried about racing with out interrupt handler.  The SPI core
-+	 * already handles making sure that we're not trying to do two
-+	 * transfers at once or setting a chip select and doing a transfer
-+	 * concurrently.
-+	 *
-+	 * NOTE: we actually _can't_ hold the lock here because possibly we
-+	 * might call clk_set_rate() which needs to be able to sleep.
-+	 */
-+	spin_lock_irq(&mas->lock);
-+	spin_unlock_irq(&mas->lock);
-+
- 	spi_tx_cfg = readl(se->base + SE_SPI_TRANS_CFG);
- 	if (xfer->bits_per_word != mas->cur_bits_per_word) {
- 		spi_setup_word_len(mas, mode, xfer->bits_per_word);
-@@ -367,6 +384,12 @@ static void setup_fifo_xfer(struct spi_transfer *xfer,
- 	}
- 	writel(spi_tx_cfg, se->base + SE_SPI_TRANS_CFG);
- 	mas->cur_mcmd = CMD_XFER;
-+
-+	/*
-+	 * Lock around right before we start the transfer since our
-+	 * interrupt could come in at any time now.
-+	 */
-+	spin_lock_irq(&mas->lock);
- 	geni_se_setup_m_cmd(se, m_cmd, FRAGMENTATION);
- 
- 	/*
-@@ -376,6 +399,7 @@ static void setup_fifo_xfer(struct spi_transfer *xfer,
+@@ -285,7 +285,7 @@ static int spi_geni_init(struct spi_geni_master *mas)
+ 	 * Hardware programming guide suggests to configure
+ 	 * RX FIFO RFR level to fifo_depth-2.
  	 */
- 	if (m_cmd & SPI_TX_ONLY)
- 		writel(mas->tx_wm, se->base + SE_GENI_TX_WATERMARK_REG);
-+	spin_unlock_irq(&mas->lock);
- }
- 
- static int spi_geni_transfer_one(struct spi_master *spi,
-@@ -478,11 +502,11 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
- 	struct geni_se *se = &mas->se;
- 	u32 m_irq;
- 
--	if (mas->cur_mcmd == CMD_NONE)
-+	m_irq = readl(se->base + SE_GENI_M_IRQ_STATUS);
-+	if (!m_irq)
- 		return IRQ_NONE;
- 
- 	spin_lock(&mas->lock);
--	m_irq = readl(se->base + SE_GENI_M_IRQ_STATUS);
- 
- 	if ((m_irq & M_RX_FIFO_WATERMARK_EN) || (m_irq & M_RX_FIFO_LAST_EN))
- 		geni_spi_handle_rx(mas);
-@@ -522,8 +546,23 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
- 		complete(&mas->xfer_done);
- 	}
- 
-+	/*
-+	 * It's safe or a good idea to Ack all of our our interrupts at the
-+	 * end of the function. Specifically:
-+	 * - M_CMD_DONE_EN / M_RX_FIFO_LAST_EN: Edge triggered interrupts and
-+	 *   clearing Acks. Clearing at the end relies on nobody else having
-+	 *   started a new transfer yet or else we could be clearing _their_
-+	 *   done bit, but everyone grabs the spinlock before starting a new
-+	 *   transfer.
-+	 * - M_RX_FIFO_WATERMARK_EN / M_TX_FIFO_WATERMARK_EN: These appear
-+	 *   to be "latched level" interrupts so it's important to clear them
-+	 *   _after_ you've handled the condition and always safe to do so
-+	 *   since they'll re-assert if they're still happening.
-+	 */
- 	writel(m_irq, se->base + SE_GENI_M_IRQ_CLEAR);
-+
- 	spin_unlock(&mas->lock);
-+
- 	return IRQ_HANDLED;
- }
- 
+-	geni_se_init(se, 0x0, mas->tx_fifo_depth - 2);
++	geni_se_init(se, mas->tx_fifo_depth / 2, mas->tx_fifo_depth - 2);
+ 	/* Transmit an entire FIFO worth of data per IRQ */
+ 	mas->tx_wm = 1;
+ 	ver = geni_se_get_qup_hw_version(se);
 -- 
 2.27.0.290.gba653c62da-goog
 

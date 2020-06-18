@@ -2,162 +2,99 @@ Return-Path: <SRS0=zXQu=77=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A1D36C433E2
-	for <linux-spi@archiver.kernel.org>; Thu, 18 Jun 2020 15:11:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 863E8C433DF
+	for <linux-spi@archiver.kernel.org>; Thu, 18 Jun 2020 15:15:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 82068207DD
-	for <linux-spi@archiver.kernel.org>; Thu, 18 Jun 2020 15:11:17 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="HC73/dQn"
+	by mail.kernel.org (Postfix) with ESMTP id 622AB206F7
+	for <linux-spi@archiver.kernel.org>; Thu, 18 Jun 2020 15:15:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1592493347;
+	bh=OtEMXKIbYfiMajFJJ9GfH0wz9lo2cLUIGUNmkke2Bgw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=v3tJ1AqLAGqtegqmS9czcz/X0B7vV+ihbeTVak4DQtjQBC7/9JD38wHTKaVQ7hbQs
+	 Nb1bRH6e6RY4O/x5Z2lG55j7cYy9nM+qh2GI1p0oUnl9oPzY48ivH8J67NhcQ/Eg5t
+	 HOzRFzWEmULBOnlt5ih72ZsOBBWkU7QBCSeRV1cc=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731387AbgFRPLQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 18 Jun 2020 11:11:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33354 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731254AbgFRPKu (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 18 Jun 2020 11:10:50 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EFA3C0613ED
-        for <linux-spi@vger.kernel.org>; Thu, 18 Jun 2020 08:10:48 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id z63so2928380pfb.1
-        for <linux-spi@vger.kernel.org>; Thu, 18 Jun 2020 08:10:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=t+eo8u2tvjQcobTsfwzlNHUA5Mu/KPf2pgVwBrin5d8=;
-        b=HC73/dQnkC9Dn5aSVy4RnCYBA5ijhBmCJTKj2PsOBV/VghxkBBjfVyTFAGfWwIbAps
-         0iYX0Bw2m+c18/djLCXhIcY6yGIFs5wJ3D/NZ9LshATV8SBeATCxim6b4ZeCdAJD/bpd
-         s+HD0VcUYngCx818XJNFW6jugOMX4hlLdHHgw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=t+eo8u2tvjQcobTsfwzlNHUA5Mu/KPf2pgVwBrin5d8=;
-        b=HFFNk+6CSeFuoO6CNToUcbAUCgb4gkJTDu9qHVhDSrgNCV2m6wKIS3DA2Y1bPxykYI
-         Lt15CqybDzI1xYtTGt28O6dfe7kNAxsRuAJfhH6/Q4glpOvkNhoxwAE8SUqtHMmeEcaA
-         Pc0HNfgURlVcKqroKe3a4/CvLnBmCi4gnWaQ7iVB3QSSdsm32oU4y5KBFlmPlqnZzXgY
-         zc6atGWLAuE7+twllC7GRrMPtYsBbG1xiUrCDHOi8x6c7JtVGvWjr1p2pZgTV2hf5Hvw
-         FfBcgXORsdp6dpgNpLfTKspGH/XNFT08n+j6ZoKb862XiXiZCVCecQcjivY0aHQmm/bl
-         YFUQ==
-X-Gm-Message-State: AOAM5308EPGCYi8mtiML6DFDYW7kSWiHQIYsye/aokUoHDucSUjpSQSt
-        Cg2VY/gkTHZyrPDK1btRp7ulzQ==
-X-Google-Smtp-Source: ABdhPJwH4R+xbXw4ZAQeCHxEFnPqtmhSc85aG0KbO3UK44AAzlOvfA5p3syDpRaqGxQ1lUZzcDfIyg==
-X-Received: by 2002:a63:5d54:: with SMTP id o20mr3517250pgm.253.1592493047938;
-        Thu, 18 Jun 2020 08:10:47 -0700 (PDT)
-Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:24fa:e766:52c9:e3b2])
-        by smtp.gmail.com with ESMTPSA id b14sm3171510pft.23.2020.06.18.08.10.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jun 2020 08:10:47 -0700 (PDT)
-From:   Douglas Anderson <dianders@chromium.org>
-To:     Mark Brown <broonie@kernel.org>
+        id S1729910AbgFRPPr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 18 Jun 2020 11:15:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33068 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726879AbgFRPPn (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 18 Jun 2020 11:15:43 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8D8E6206F7;
+        Thu, 18 Jun 2020 15:15:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1592493343;
+        bh=OtEMXKIbYfiMajFJJ9GfH0wz9lo2cLUIGUNmkke2Bgw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=NffDdFvZnHR5CP/UhgpzK8VlGPWmPWdOYfrsJLPDmxJEzxn06fo1OupBF04msNFAT
+         Oo1S0Rey0WnSdOzbNnJb8YpbhXUdm81PtBwdPsgZ/WWD1loeJkJmMjyRqq9Iz7SGs7
+         2AXBQM7FDxP9tw/8d1TlRoDXsSX5Yt3AMjuY2Sq0=
+Date:   Thu, 18 Jun 2020 16:15:40 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Douglas Anderson <dianders@chromium.org>
 Cc:     swboyd@chromium.org, Alok Chauhan <alokc@codeaurora.org>,
-        skakit@codeaurora.org, Douglas Anderson <dianders@chromium.org>,
-        Andy Gross <agross@kernel.org>,
+        skakit@codeaurora.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org
-Subject: [PATCH v4 1/5] spi: spi-geni-qcom: No need for irqsave variant of spinlock calls
-Date:   Thu, 18 Jun 2020 08:06:22 -0700
-Message-Id: <20200618080459.v4.1.Ic50cccdf27d42420a63485082f8b5bf86ed1a2b6@changeid>
-X-Mailer: git-send-email 2.27.0.290.gba653c62da-goog
-In-Reply-To: <20200618150626.237027-1-dianders@chromium.org>
+Subject: Re: [PATCH v4 1/5] spi: spi-geni-qcom: No need for irqsave variant
+ of spinlock calls
+Message-ID: <20200618151540.GL5789@sirena.org.uk>
 References: <20200618150626.237027-1-dianders@chromium.org>
+ <20200618080459.v4.1.Ic50cccdf27d42420a63485082f8b5bf86ed1a2b6@changeid>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="z9sQuz+HmDh2hVO4"
+Content-Disposition: inline
+In-Reply-To: <20200618080459.v4.1.Ic50cccdf27d42420a63485082f8b5bf86ed1a2b6@changeid>
+X-Cookie: Androphobia:
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The driver locks its locks in two places.
 
-In the first usage of the lock the function doing the locking already
-has a sleeping call and thus we know we can't be called from interrupt
-context.  That means we can use the "spin_lock_irq" variant of the
-function.
+--z9sQuz+HmDh2hVO4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-In the second usage of the lock the function is the interrupt handler
-and we know interrupt handlers are called with interrupts disabled.
-That means we can use the "spin_lock" variant of the function.
+On Thu, Jun 18, 2020 at 08:06:22AM -0700, Douglas Anderson wrote:
+> The driver locks its locks in two places.
+>=20
+> In the first usage of the lock the function doing the locking already
+> has a sleeping call and thus we know we can't be called from interrupt
+> context.  That means we can use the "spin_lock_irq" variant of the
+> function.
 
-This patch is expected to be a no-op and is just a cleanup / slight
-optimization.
+Please do not submit new versions of already applied patches, please
+submit incremental updates to the existing code.  Modifying existing
+commits creates problems for other users building on top of those
+commits so it's best practice to only change pubished git commits if
+absolutely essential.
 
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
----
+--z9sQuz+HmDh2hVO4
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Changes in v4: None
-Changes in v3:
-- ("spi: spi-geni-qcom: No need for irqsave variant...") new for v3
+-----BEGIN PGP SIGNATURE-----
 
-Changes in v2: None
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl7rhRwACgkQJNaLcl1U
+h9APzgf/VJoyNmJCoE/DF9WSzCtICt9DfHIZDE3SmkAD1NVeab83t23C8ryMJGnZ
+0bBf5ZxYJkc0COQSCu3WtBUTTzttHCvrg9XbdogG9EaDhJy+D4do1LwgSKegyR5o
+Wl/UW8hDGrZ8dTRwpe5JatiEhXvCqQwfpyK3j0I7v8J9BG8aix+stZogRryb/fVa
+Dek1aYxAE9IFtKe9KREaih9FiqNiSLNU+XrI7gV3FZRvpH7LafJ7Zok4JSIf71KU
+IedwPcxmqkLacJ+MkXDZ5uEaRqfXjAVOfq8tfTduJ/+BWNV43puEjVWCttFI69F1
+rfTESrTGfoDqUQEvRy9IvxFo7hZyFQ==
+=7ipB
+-----END PGP SIGNATURE-----
 
- drivers/spi/spi-geni-qcom.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index c3972424af71..c7d2c7e45b3f 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -122,23 +122,23 @@ static void handle_fifo_timeout(struct spi_master *spi,
- 				struct spi_message *msg)
- {
- 	struct spi_geni_master *mas = spi_master_get_devdata(spi);
--	unsigned long time_left, flags;
-+	unsigned long time_left;
- 	struct geni_se *se = &mas->se;
- 
--	spin_lock_irqsave(&mas->lock, flags);
-+	spin_lock_irq(&mas->lock);
- 	reinit_completion(&mas->xfer_done);
- 	mas->cur_mcmd = CMD_CANCEL;
- 	geni_se_cancel_m_cmd(se);
- 	writel(0, se->base + SE_GENI_TX_WATERMARK_REG);
--	spin_unlock_irqrestore(&mas->lock, flags);
-+	spin_unlock_irq(&mas->lock);
- 	time_left = wait_for_completion_timeout(&mas->xfer_done, HZ);
- 	if (time_left)
- 		return;
- 
--	spin_lock_irqsave(&mas->lock, flags);
-+	spin_lock_irq(&mas->lock);
- 	reinit_completion(&mas->xfer_done);
- 	geni_se_abort_m_cmd(se);
--	spin_unlock_irqrestore(&mas->lock, flags);
-+	spin_unlock_irq(&mas->lock);
- 	time_left = wait_for_completion_timeout(&mas->xfer_done, HZ);
- 	if (!time_left)
- 		dev_err(mas->dev, "Failed to cancel/abort m_cmd\n");
-@@ -477,12 +477,11 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
- 	struct spi_geni_master *mas = spi_master_get_devdata(spi);
- 	struct geni_se *se = &mas->se;
- 	u32 m_irq;
--	unsigned long flags;
- 
- 	if (mas->cur_mcmd == CMD_NONE)
- 		return IRQ_NONE;
- 
--	spin_lock_irqsave(&mas->lock, flags);
-+	spin_lock(&mas->lock);
- 	m_irq = readl(se->base + SE_GENI_M_IRQ_STATUS);
- 
- 	if ((m_irq & M_RX_FIFO_WATERMARK_EN) || (m_irq & M_RX_FIFO_LAST_EN))
-@@ -524,7 +523,7 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
- 	}
- 
- 	writel(m_irq, se->base + SE_GENI_M_IRQ_CLEAR);
--	spin_unlock_irqrestore(&mas->lock, flags);
-+	spin_unlock(&mas->lock);
- 	return IRQ_HANDLED;
- }
- 
--- 
-2.27.0.290.gba653c62da-goog
-
+--z9sQuz+HmDh2hVO4--

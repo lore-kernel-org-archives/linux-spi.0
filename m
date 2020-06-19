@@ -7,57 +7,57 @@ X-Spam-Status: No, score=-6.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29E88C433DF
-	for <linux-spi@archiver.kernel.org>; Fri, 19 Jun 2020 13:28:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D98EC433DF
+	for <linux-spi@archiver.kernel.org>; Fri, 19 Jun 2020 13:28:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0745D2158C
-	for <linux-spi@archiver.kernel.org>; Fri, 19 Jun 2020 13:28:38 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 24774207FC
+	for <linux-spi@archiver.kernel.org>; Fri, 19 Jun 2020 13:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1592573318;
-	bh=PFkCCeYnJboxa0bSQm5EdkilSpndfFBjlZlTuD7GYZI=;
+	s=default; t=1592573321;
+	bh=Zlz05WKmcUJTYXlIz5yl2H2syQ5FgQ4vwLVGbolffuk=;
 	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=C8y5DoP2nUFt2CDzw0Z8YeLehqflVpbjbRgOWO/73meyX/dBf5hGtJjxQBoP36xxC
-	 OiGFTSe1ziDS0lFX/QZktuzSnHfNVlQ4tjYZEUKkfBinq9X34mAE5AYX5f85U7Trx/
-	 1vhHFwYv4Y8MEk2osXt0AkYxw9YHgouVpojcGldo=
+	b=NBdu2WmhkbgSKKyBHp8LhgOy1V2ua219wbwdRH1VHyWMuy/yILFHHMcmSyryufTkr
+	 93abAvoeNnYCD0coN6JQa3kwyymq/QpW0o/ALJtNM9UgH5iHn6L3P4N+Qgp3mensXs
+	 Tb2GChnAR7XZrfN1VctZACG9eEhGda97yOSESMCw=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732757AbgFSN21 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 19 Jun 2020 09:28:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46308 "EHLO mail.kernel.org"
+        id S1731806AbgFSN2i (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 19 Jun 2020 09:28:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46480 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732503AbgFSN2G (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 19 Jun 2020 09:28:06 -0400
+        id S1732847AbgFSN2Z (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 19 Jun 2020 09:28:25 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2E6F221556;
-        Fri, 19 Jun 2020 13:28:05 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C55A62166E;
+        Fri, 19 Jun 2020 13:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592573285;
-        bh=PFkCCeYnJboxa0bSQm5EdkilSpndfFBjlZlTuD7GYZI=;
+        s=default; t=1592573296;
+        bh=Zlz05WKmcUJTYXlIz5yl2H2syQ5FgQ4vwLVGbolffuk=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=o2GfRR17AIys3dzQSLK9VRQTBfHMgWdkbVioUwKPe8fXgqMOrwCrQUyoFVkNyrsXP
-         xZtDzPvlotCzDGQ+zFwARvX8jOJL7hr9xt4RzQeB4TEx7Aiyg71/e4PY271FExWA1W
-         PGKnMmmfPc7kZQ4TtGfVXJTC4qiaDmpytvuI1564=
-Date:   Fri, 19 Jun 2020 14:28:03 +0100
+        b=KPk1NJwhF3h9BXiQXEbwEs/ZhjAPrfR3osy0dtW+Jpygxkl+kyMBz6EiRUiZ3IZuT
+         KiwGpZBrx5Rp3NwBP6xwTrJJn311rfVhw0HcI/0hsnbUrh/WHeWs9w4/QFdmJFyVxW
+         fhvT+vIF6jzKSqu5k6uW6u40NbS3zLc15j75Fms4=
+Date:   Fri, 19 Jun 2020 14:28:14 +0100
 From:   Mark Brown <broonie@kernel.org>
 To:     Vignesh Raghavendra <vigneshr@ti.com>,
         Tudor Ambarus <tudor.ambarus@microchip.com>
 Cc:     dinguyen@kernel.org, Boris Brezillon <bbrezillon@kernel.org>,
+        linux-spi@vger.kernel.org,
         Ramuthevar Vadivel Murugan 
         <vadivel.muruganx.ramuthevar@linux.intel.com>,
-        linux-spi@vger.kernel.org, simon.k.r.goldschmidt@gmail.com,
-        linux-kernel@vger.kernel.org, marex@denx.de,
-        linux-mtd@lists.infradead.org
-In-Reply-To: <20200601070444.16923-1-vigneshr@ti.com>
-References: <20200601070444.16923-1-vigneshr@ti.com>
-Subject: Re: [RESEND PATCH v3 0/8] mtd: spi-nor: Move cadence-qaudspi to spi-mem framework
-Message-Id: <159257327822.5984.1131311345326865649.b4-ty@kernel.org>
+        simon.k.r.goldschmidt@gmail.com, linux-kernel@vger.kernel.org,
+        marex@denx.de, linux-mtd@lists.infradead.org
+In-Reply-To: <20200526093604.11846-1-vigneshr@ti.com>
+References: <20200526093604.11846-1-vigneshr@ti.com>
+Subject: Re: [PATCH v2 0/6] mtd: spi-nor: Move cadence-qaudspi to spi-mem framework
+Message-Id: <159257327821.5984.8587819746986520265.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 1 Jun 2020 12:34:36 +0530, Vignesh Raghavendra wrote:
+On Tue, 26 May 2020 15:05:58 +0530, Vignesh Raghavendra wrote:
 > This series is a subset of "[PATCH v12 0/4] spi: cadence-quadspi: Add
 > support for the Cadence QSPI controller" by Ramuthevar,Vadivel MuruganX
 > <vadivel.muruganx.ramuthevar@linux.intel.com> that intended to move
@@ -75,21 +75,17 @@ Applied to
 
 Thanks!
 
-[1/8] mtd: spi-nor: cadence-quadspi: Make driver independent of flash geometry
+[1/6] mtd: spi-nor: cadence-quadspi: Make driver independent of flash geometry
       commit: 834b4e8d344139ba64cda22099b2b2ef6c9a542d
-[2/8] mtd: spi-nor: cadence-quadspi: Provide a way to disable DAC mode
+[2/6] mtd: spi-nor: cadence-quadspi: Provide a way to disable DAC mode
       commit: a99705079a91e6373122bd0ca2fc129b688fc5b3
-[3/8] mtd: spi-nor: cadence-quadspi: Don't initialize rx_dma_complete on failure
+[3/6] mtd: spi-nor: cadence-quadspi: Don't initialize rx_dma_complete on failure
       commit: 48aae57f0f9f57797772bd462b4d64902b1b4ae1
-[4/8] mtd: spi-nor: cadence-quadspi: Fix error path on failure to acquire reset lines
+[4/6] mtd: spi-nor: cadence-quadspi: Fix error path on failure to acquire reset lines
       commit: c61088d1f9932940af780b674f028140eda09a94
-[5/8] mtd: spi-nor: cadence-quadspi: Handle probe deferral while requesting DMA channel
-      commit: 935da5e5100f57d843cac4781b21f1c235059aa0
-[6/8] mtd: spi-nor: cadence-quadspi: Drop redundant WREN in erase path
-      commit: 41b5ed6e677ca73cb031b7657eefb5cf27071be3
-[7/8] mtd: spi-nor: Convert cadence-quadspi to use spi-mem framework
+[5/6] mtd: spi-nor: Convert cadence-quadspi to use spi-mem framework
       commit: a314f6367787ee1d767df9a2120f17e4511144d0
-[8/8] spi: Move cadence-quadspi driver to drivers/spi/
+[6/6] spi: Move cadence-quadspi driver to drivers/spi/
       commit: 31fb632b5d43ca16713095b3a4fe17e3d7331e28
 
 All being well this means that it will be integrated into the linux-next

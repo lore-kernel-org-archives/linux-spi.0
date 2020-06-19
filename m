@@ -2,92 +2,91 @@ Return-Path: <SRS0=AQmy=AA=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B9E5AC433E0
-	for <linux-spi@archiver.kernel.org>; Fri, 19 Jun 2020 07:44:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86487C433DF
+	for <linux-spi@archiver.kernel.org>; Fri, 19 Jun 2020 09:54:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 890542073E
-	for <linux-spi@archiver.kernel.org>; Fri, 19 Jun 2020 07:44:05 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 52ED720890
+	for <linux-spi@archiver.kernel.org>; Fri, 19 Jun 2020 09:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1592552645;
-	bh=G9lBmeDxHh2VeTZymUbF1CdX0re/3uaKH5q60zlt4gY=;
-	h=From:To:Cc:Subject:Date:List-ID:From;
-	b=vijIFE1R4gAijNDD3odQq46T++DEEak0UbEpjZd3nmEDKAIzT4aXF88hBBcmD5v74
-	 XOZnp1di4FJ1PsI3EJLzUr/5QZt5FDywj4r8+d+61bMCZUO6UMWwa8BYYbpA/drAiA
-	 OP1CsR8P6LTKPa2Ssdoeq+zRRip1Es2krSldCrjU=
+	s=default; t=1592560460;
+	bh=b2se84h3l52DyW04Q6ULrra7Nh1wmtClcpg6wu/oHFo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=txg4bBQ8QCJJNHvdpFLQ6GX58mBP8OrSoJ2ZWEj5b22H26ysQpZzeCvH/BIQh0eb5
+	 Uvbr7Rpj97gwZAmhOIiCWhSWvhIAIyqFEla3DdlD8MYaLvaujPunHCQkLsw7NxE+lV
+	 k0FjJXidF3RQDxYkQdHEtiH/OJUvoDMwiNTucx4g=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731016AbgFSHoB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 19 Jun 2020 03:44:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59968 "EHLO mail.kernel.org"
+        id S1732110AbgFSJyU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 19 Jun 2020 05:54:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45576 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730955AbgFSHoA (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 19 Jun 2020 03:44:00 -0400
-Received: from localhost.localdomain (unknown [171.61.66.58])
+        id S1731048AbgFSJyS (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 19 Jun 2020 05:54:18 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F16F32073E;
-        Fri, 19 Jun 2020 07:43:56 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 76E6120776;
+        Fri, 19 Jun 2020 09:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592552640;
-        bh=G9lBmeDxHh2VeTZymUbF1CdX0re/3uaKH5q60zlt4gY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Jr0YrytKVOh9yPMdnZtTHUIndZk8WAzweXTFVG3Ktp/df/K6Mvu0eRFsBQt9uI4oO
-         966xh614vJSnAP5XdHlHE+Gw+NUQeyGhDVgvXxDbjAZvTjsquBkZoFsHI+TqfRl8IK
-         OzEjg9UwNEJmULmxV0z4XYHCNbzPOLV8YrWGRVQo=
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     linux-arm-msm@vger.kernel.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mani@kernel.org
-Subject: [PATCH] spi: spidev: fix missing octal defines
-Date:   Fri, 19 Jun 2020 13:13:45 +0530
-Message-Id: <20200619074345.4041673-1-vkoul@kernel.org>
-X-Mailer: git-send-email 2.26.2
+        s=default; t=1592560458;
+        bh=b2se84h3l52DyW04Q6ULrra7Nh1wmtClcpg6wu/oHFo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=QEsjuS4HYPXHzz8/m/2jC5cXNsBwfCYCKxumbFdkqH6xVxlDMveQvusjboG2Dj7o/
+         gs6LnYG3n3PmejAkcAV0ip6pnkylUbqSAIUIAPQ47ZdOaIg4t4KRJUlo4O0Tk9K7uE
+         HaqDsY7TvkPrFf0LDf65MeWbZhY+/+QPh+ajee8Y=
+Date:   Fri, 19 Jun 2020 10:54:15 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Stephen Boyd <swboyd@chromium.org>
+Cc:     linux-kernel@vger.kernel.org, Alok Chauhan <alokc@codeaurora.org>,
+        linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
+        Douglas Anderson <dianders@chromium.org>
+Subject: Re: [PATCH 6/5] spi: spi-geni-qcom: Simplify setup_fifo_xfer()
+Message-ID: <20200619095415.GA5396@sirena.org.uk>
+References: <20200618150626.237027-1-dianders@chromium.org>
+ <20200618233959.160032-1-swboyd@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="PNTmBPCT7hxwcZjr"
+Content-Disposition: inline
+In-Reply-To: <20200618233959.160032-1-swboyd@chromium.org>
+X-Cookie: Robot, n.:
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Commit 896fa735084e ("spi: spidev_test: Add support for Octal mode data
-transfers") adds support for octal mode but failed to update userspace
-header with octal defines causing build error for the spidev tool
 
-spidev_test.c: In function ‘transfer’:
-spidev_test.c:131:13: error: ‘SPI_TX_OCTAL’ undeclared (first use in this function); did you mean ‘SPI_TX_DUAL’?
-  if (mode & SPI_TX_OCTAL)
-...
+--PNTmBPCT7hxwcZjr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Update the header with octal values.
+On Thu, Jun 18, 2020 at 04:39:58PM -0700, Stephen Boyd wrote:
+> The definition of SPI_FULL_DUPLEX (3) is really SPI_TX_ONLY (1) ORed
+> with SPI_RX_ONLY (2). Let's drop the define and simplify the code here a
+> bit by collapsing the setting of 'm_cmd' into conditions that are the
+> same.
 
-Fixes: 896fa735084e ("spi: spidev_test: Add support for Octal mode data transfers")
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
----
- include/uapi/linux/spi/spidev.h | 2 ++
- 1 file changed, 2 insertions(+)
+Please don't add extra patches after someone else's series like this, it
+makes things harder to follow and really confuses tooling which tries to
+parse serieses off the list.  Just send a separate series.
 
-diff --git a/include/uapi/linux/spi/spidev.h b/include/uapi/linux/spi/spidev.h
-index ee0f2460bff6..f0c95f5cc719 100644
---- a/include/uapi/linux/spi/spidev.h
-+++ b/include/uapi/linux/spi/spidev.h
-@@ -48,6 +48,8 @@
- #define SPI_TX_QUAD		0x200
- #define SPI_RX_DUAL		0x400
- #define SPI_RX_QUAD		0x800
-+#define SPI_TX_OCTAL		0x2000
-+#define SPI_RX_OCTAL		0x4000
- 
- /*---------------------------------------------------------------------------*/
- 
--- 
-2.26.2
+--PNTmBPCT7hxwcZjr
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl7si0YACgkQJNaLcl1U
+h9DGNgf/dEFbdjb6kLp+Q0o2czzyuD3ZIRvlSfE/PF6C8M6Zk2av7RL+CC+X24ve
+pVOAFd8BKA4qVKaYKQMzXI+YvyH3nj9UnYAkaYhp+4e0seLzFqqibuT3oC0Zsvcu
+43/leUWUjRG1IwqAO34o6khhPYGZq86xm8vZVHZdzlag8Z+xsi2fSOG9FX90zloy
+hH+FfH/vR1otM7fsOFRcg6fKZsz/KrRtkdskQQiJcLXCHgrqsuQvrBEPUvpVR0PR
+qDDU3uqVb8TuhHeAlf5VYfjb4SjzpOFsXyhh5fukLEjtbiNcCvvJeWGM0uNuw4XM
+cRR/1HsNX7N3YmX60sd3h/SQcPJfaA==
+=NiTl
+-----END PGP SIGNATURE-----
+
+--PNTmBPCT7hxwcZjr--

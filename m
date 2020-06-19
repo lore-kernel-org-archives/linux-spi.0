@@ -6,55 +6,61 @@ X-Spam-Status: No, score=-6.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
 	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 21929C433DF
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 468BFC433E0
 	for <linux-spi@archiver.kernel.org>; Fri, 19 Jun 2020 13:28:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id EC735207FC
-	for <linux-spi@archiver.kernel.org>; Fri, 19 Jun 2020 13:28:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1E0C721556
+	for <linux-spi@archiver.kernel.org>; Fri, 19 Jun 2020 13:28:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=default; t=1592573328;
-	bh=CXCAueWu2DiyNaZhr+sNkbMx3i2rB1tDUfG/1hzhOTI=;
-	h=Date:From:To:In-Reply-To:References:Subject:List-ID:From;
-	b=bDPA2aIaurzXUhLDKu38FtafzZhYTDd7/44P8TKis6yMcXbiVP8U4Pp4kLTnMQ8wX
-	 G59MSFfp8MPEG21kDwSVFzKRPZ8Q3UbolrDw6fOh3Qf2xeHtZyzeGwuDFPfKdcYpU3
-	 sw9uSlpp7YU+hkcfE54xxwKNarBnw23NXLdmnIUI=
+	bh=YpdfNUm60XZRpLiCg2ApF7cAEYbSiiMws4GRf6hk9yo=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
+	b=xQ9fZYQULTcuqVTIjt4b/1zhla0sHVEBVBTWbaKzuUk2ikJ4+/6DgfR8eRQI3h04t
+	 2RnLcWH9NEESJHFwGgtXZdaLGUYYVpR/gl+dxdWeWQZ5qzbyoEfs+XOew6kbOGqmHG
+	 AcPGy7Ib95yDZ5D5DUWwPuP7zZKCS90vcSMxWDhU=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732849AbgFSN2r (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1732706AbgFSN2r (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Fri, 19 Jun 2020 09:28:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46482 "EHLO mail.kernel.org"
+Received: from mail.kernel.org ([198.145.29.99]:46202 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732706AbgFSN2Z (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 19 Jun 2020 09:28:25 -0400
+        id S1732259AbgFSN2A (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 19 Jun 2020 09:28:00 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D8CDE2158C;
-        Fri, 19 Jun 2020 13:28:20 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D858E20DD4;
+        Fri, 19 Jun 2020 13:27:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592573301;
-        bh=CXCAueWu2DiyNaZhr+sNkbMx3i2rB1tDUfG/1hzhOTI=;
+        s=default; t=1592573280;
+        bh=YpdfNUm60XZRpLiCg2ApF7cAEYbSiiMws4GRf6hk9yo=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=Ed3pEx8QIkGBIOa9QMTaxoaPbujhmwE/7/oMdbjG16YGKyfDFL3n5N2ywAKVEJWo8
-         KkLsbt1tIu/RvIxh9ExoiKmyJMIFqGos0gQW7slDuECS29rkxY0otoO9bxOKHK+82p
-         3Fy/qEa8+lQjgE94U/Gx1jWgzE2GrRShjiHO3KMc=
-Date:   Fri, 19 Jun 2020 14:28:19 +0100
+        b=0kDpuucr+TobRCZk9B0E75UlrpOpcER5uN+QcqLOtDsfY0WIewKqZ4YTeg4LQPPKo
+         nLG38vVbMczNBdDzJQTgvb5dpsoAR8vCDeF1sFPFCW0JOGsfSvl60D2Vqzsq7RoXp4
+         XARdoVOq+QC6e6ORhl+wwdtSuyf8ce69xVrD3aqM=
+Date:   Fri, 19 Jun 2020 14:27:58 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Tali Perry <tali.perry1@gmail.com>, linux-spi@vger.kernel.org,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20200618170144.57433-1-andriy.shevchenko@linux.intel.com>
-References: <20200618170144.57433-1-andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v1] spi: npcm-fiu: Reuse BITS_PER_BYTE definition
-Message-Id: <159257327821.5984.1946818063117231399.b4-ty@kernel.org>
+To:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Xu Yilun <yilun.xu@intel.com>
+Cc:     matthew.gerlach@linux.intel.com, hao.wu@intel.com,
+        russell.h.weight@intel.com, trix@redhat.com
+In-Reply-To: <1592531021-11412-1-git-send-email-yilun.xu@intel.com>
+References: <1592531021-11412-1-git-send-email-yilun.xu@intel.com>
+Subject: Re: [RESEND PATCH v2 0/3] add regmap & indirect access support
+Message-Id: <159257327821.5984.15184472386288306180.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 18 Jun 2020 20:01:44 +0300, Andy Shevchenko wrote:
-> No need to redefine already existing definition.
-> So, replace custom by generic one.
+On Fri, 19 Jun 2020 09:43:38 +0800, Xu Yilun wrote:
+> Updated the regmap & indirect access support for spi-altera.
+> 
+> Patch #1 is an 1:1 replacement of of readl/writel with regmap_read/write
+> Patch #2 introduced a new platform_device_id to support indirect access as
+>          a sub device.
+> Patch #3 is a minor fix.
+> 
+> [...]
 
 Applied to
 
@@ -62,8 +68,12 @@ Applied to
 
 Thanks!
 
-[1/1] spi: npcm-fiu: Reuse BITS_PER_BYTE definition
-      commit: 0ec544ceb1c1ff65fb5588c6d71bccff2713f0d9
+[1/3] spi: altera: use regmap-mmio instead of direct mmio register access
+      commit: 3c6519736eefebafdf8c82d46f64b214403b5260
+[2/3] spi: altera: support indirect access to the registers
+      commit: 3820061d38156d88443d32a9a6c701d281234746
+[3/3] spi: altera: fix size mismatch on 64 bit processors
+      commit: d9dd0fb0e197ae766f0f5e06d23f5f5e1888c511
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

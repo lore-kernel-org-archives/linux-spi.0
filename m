@@ -2,94 +2,129 @@ Return-Path: <SRS0=AQmy=AA=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PULL_REQUEST,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 468BFC433E0
-	for <linux-spi@archiver.kernel.org>; Fri, 19 Jun 2020 13:28:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F0C5C433E1
+	for <linux-spi@archiver.kernel.org>; Fri, 19 Jun 2020 15:19:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1E0C721556
-	for <linux-spi@archiver.kernel.org>; Fri, 19 Jun 2020 13:28:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1171921974
+	for <linux-spi@archiver.kernel.org>; Fri, 19 Jun 2020 15:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1592573328;
-	bh=YpdfNUm60XZRpLiCg2ApF7cAEYbSiiMws4GRf6hk9yo=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=xQ9fZYQULTcuqVTIjt4b/1zhla0sHVEBVBTWbaKzuUk2ikJ4+/6DgfR8eRQI3h04t
-	 2RnLcWH9NEESJHFwGgtXZdaLGUYYVpR/gl+dxdWeWQZ5qzbyoEfs+XOew6kbOGqmHG
-	 AcPGy7Ib95yDZ5D5DUWwPuP7zZKCS90vcSMxWDhU=
+	s=default; t=1592579945;
+	bh=UEOOXWngWN83R5j4Pi/o/Dcm/fqzKyyBB3Vt398Ofeg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=AZOk9qF1lv0gJwHsm0gJd6OzCg8YWN/KbL1xwAyLCFLDVRXEwUMWJdM3GsA7QkbAS
+	 ZGTEqBv99BY29aH4VbF9sRAih2Ip6Va83RAQzsf5tE3Lyj97Pxfr2G9jMPEhKQ5I8M
+	 EKIV+etkrnRTurMGK1KVLo+wpOQ9f/Pz2ZZnKRDw=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732706AbgFSN2r (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 19 Jun 2020 09:28:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46202 "EHLO mail.kernel.org"
+        id S2389907AbgFSPRw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 19 Jun 2020 11:17:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48472 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732259AbgFSN2A (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 19 Jun 2020 09:28:00 -0400
+        id S2392555AbgFSPRt (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 19 Jun 2020 11:17:49 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D858E20DD4;
-        Fri, 19 Jun 2020 13:27:59 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 86344218AC;
+        Fri, 19 Jun 2020 15:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592573280;
-        bh=YpdfNUm60XZRpLiCg2ApF7cAEYbSiiMws4GRf6hk9yo=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=0kDpuucr+TobRCZk9B0E75UlrpOpcER5uN+QcqLOtDsfY0WIewKqZ4YTeg4LQPPKo
-         nLG38vVbMczNBdDzJQTgvb5dpsoAR8vCDeF1sFPFCW0JOGsfSvl60D2Vqzsq7RoXp4
-         XARdoVOq+QC6e6ORhl+wwdtSuyf8ce69xVrD3aqM=
-Date:   Fri, 19 Jun 2020 14:27:58 +0100
+        s=default; t=1592579869;
+        bh=UEOOXWngWN83R5j4Pi/o/Dcm/fqzKyyBB3Vt398Ofeg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=vXN+mD5PP3w4cOHhOURB1wp6S0pItj9Lv2MtK4xP8u/KcD/DeA76FrZ4Xux1jUVHZ
+         7bs8c8lFp4lWayAEscM4naiGN3Cm1p8hOLJwYUkKANHvLXbN09AauMtq+P7o7yoBGc
+         1WPUPT+rPAVWsTNqLXp2J01bb9664fCb8LEq4G8o=
+Date:   Fri, 19 Jun 2020 16:17:46 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Xu Yilun <yilun.xu@intel.com>
-Cc:     matthew.gerlach@linux.intel.com, hao.wu@intel.com,
-        russell.h.weight@intel.com, trix@redhat.com
-In-Reply-To: <1592531021-11412-1-git-send-email-yilun.xu@intel.com>
-References: <1592531021-11412-1-git-send-email-yilun.xu@intel.com>
-Subject: Re: [RESEND PATCH v2 0/3] add regmap & indirect access support
-Message-Id: <159257327821.5984.15184472386288306180.b4-ty@kernel.org>
+To:     Tudor.Ambarus@microchip.com
+Cc:     vigneshr@ti.com, bbrezillon@kernel.org,
+        vadivel.muruganx.ramuthevar@linux.intel.com,
+        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, simon.k.r.goldschmidt@gmail.com,
+        dinguyen@kernel.org, marex@denx.de
+Subject: Re: [RESEND PATCH v3 0/8] mtd: spi-nor: Move cadence-qaudspi to
+ spi-mem framework
+Message-ID: <20200619151746.GF5396@sirena.org.uk>
+References: <20200601070444.16923-1-vigneshr@ti.com>
+ <20200619105701.GD5396@sirena.org.uk>
+ <0007c019-1ecf-1913-56a7-facffe345b1f@microchip.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="uTRFFR9qmiCqR05s"
+Content-Disposition: inline
+In-Reply-To: <0007c019-1ecf-1913-56a7-facffe345b1f@microchip.com>
+X-Cookie: Robot, n.:
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, 19 Jun 2020 09:43:38 +0800, Xu Yilun wrote:
-> Updated the regmap & indirect access support for spi-altera.
-> 
-> Patch #1 is an 1:1 replacement of of readl/writel with regmap_read/write
-> Patch #2 introduced a new platform_device_id to support indirect access as
->          a sub device.
-> Patch #3 is a minor fix.
-> 
-> [...]
 
-Applied to
+--uTRFFR9qmiCqR05s
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+On Fri, Jun 19, 2020 at 11:47:08AM +0000, Tudor.Ambarus@microchip.com wrote:
 
-Thanks!
+> Would you please provide an immutable tag on top of v5.8-rc1 so that I
+> can merge back in spi-nor/next?
 
-[1/3] spi: altera: use regmap-mmio instead of direct mmio register access
-      commit: 3c6519736eefebafdf8c82d46f64b214403b5260
-[2/3] spi: altera: support indirect access to the registers
-      commit: 3820061d38156d88443d32a9a6c701d281234746
-[3/3] spi: altera: fix size mismatch on 64 bit processors
-      commit: d9dd0fb0e197ae766f0f5e06d23f5f5e1888c511
+Here you go:
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+The following changes since commit b3a9e3b9622ae10064826dccb4f7a52bd88c7407:
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+  Linux 5.8-rc1 (2020-06-14 12:45:04 -0700)
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+are available in the Git repository at:
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/cadence-mtd-spi-move
 
-Thanks,
-Mark
+for you to fetch changes up to 31fb632b5d43ca16713095b3a4fe17e3d7331e28:
+
+  spi: Move cadence-quadspi driver to drivers/spi/ (2020-06-19 14:26:54 +0100)
+
+----------------------------------------------------------------
+mtd/spi: Move the cadence-quadspi driver to spi-mem
+
+----------------------------------------------------------------
+Ramuthevar Vadivel Murugan (2):
+      mtd: spi-nor: Convert cadence-quadspi to use spi-mem framework
+      spi: Move cadence-quadspi driver to drivers/spi/
+
+Vignesh Raghavendra (6):
+      mtd: spi-nor: cadence-quadspi: Make driver independent of flash geometry
+      mtd: spi-nor: cadence-quadspi: Provide a way to disable DAC mode
+      mtd: spi-nor: cadence-quadspi: Don't initialize rx_dma_complete on failure
+      mtd: spi-nor: cadence-quadspi: Fix error path on failure to acquire reset lines
+      mtd: spi-nor: cadence-quadspi: Handle probe deferral while requesting DMA channel
+      mtd: spi-nor: cadence-quadspi: Drop redundant WREN in erase path
+
+ drivers/mtd/spi-nor/controllers/Kconfig            |  11 -
+ drivers/mtd/spi-nor/controllers/Makefile           |   1 -
+ drivers/spi/Kconfig                                |  11 +
+ drivers/spi/Makefile                               |   1 +
+ .../spi-cadence-quadspi.c}                         | 541 ++++++++-------------
+ 5 files changed, 222 insertions(+), 343 deletions(-)
+ rename drivers/{mtd/spi-nor/controllers/cadence-quadspi.c => spi/spi-cadence-quadspi.c} (74%)
+
+--uTRFFR9qmiCqR05s
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl7s1xkACgkQJNaLcl1U
+h9CkZwf/bn/NzkeSHpXBj+R11qSg1PNvnUXgrdmG3O2NoZyp3uimOHDbJOXGe/4Z
+9V4XQpiJRI1PPz+7mEQbbKev+mGBt4mVuZ3TlTYn9w5omw33LJhBjnTdwgA/Ik3j
+uAHE2kytqegcm30R27bLC5kiNQYT8RKm8MqkgYxwrUREapBGPHJ3LASu1c9mBjns
+2FFv7w8YpjzK0cGCE8h/PGT/kPGvnkatMOs5sOXCXfCan3ZQ9F++d6hquYRAhYEG
+T1D+GSJJAYOL0pJ2/B39g7ha+EILEhh9P9pNcKw68IM9NdbDMYjE0MJrJ4oj1q4f
+JuLI56TLnG1VpcXzRvUAbHgsIkfL4w==
+=VBZQ
+-----END PGP SIGNATURE-----
+
+--uTRFFR9qmiCqR05s--

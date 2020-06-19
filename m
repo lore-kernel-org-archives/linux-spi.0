@@ -2,253 +2,151 @@ Return-Path: <SRS0=AQmy=AA=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 14C56C433DF
-	for <linux-spi@archiver.kernel.org>; Fri, 19 Jun 2020 11:32:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D97FC433E0
+	for <linux-spi@archiver.kernel.org>; Fri, 19 Jun 2020 11:47:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E4D992083B
-	for <linux-spi@archiver.kernel.org>; Fri, 19 Jun 2020 11:32:42 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5E6B120CC7
+	for <linux-spi@archiver.kernel.org>; Fri, 19 Jun 2020 11:47:16 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="0tpUJF+O"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="nagjPLfO";
+	dkim=pass (1024-bit key) header.d=microchiptechnology.onmicrosoft.com header.i=@microchiptechnology.onmicrosoft.com header.b="CI4Z7C0v"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732714AbgFSLcN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 19 Jun 2020 07:32:13 -0400
-Received: from esa1.microchip.iphmx.com ([68.232.147.91]:58666 "EHLO
+        id S1732035AbgFSLrO (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 19 Jun 2020 07:47:14 -0400
+Received: from esa1.microchip.iphmx.com ([68.232.147.91]:59958 "EHLO
         esa1.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731608AbgFSLbt (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 19 Jun 2020 07:31:49 -0400
+        with ESMTP id S1731384AbgFSLrL (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 19 Jun 2020 07:47:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1592566308; x=1624102308;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=xnsFrORwOjtogo6UJal+A+gIzNwJELeloZHLPftY5EA=;
-  b=0tpUJF+Oqk61xhXU188n8SWQlGqMKpzEEs7eypXe6Lkz4PTzI/QCTtIm
-   FLRweNYMGUEHmK5Fq6+Xy3WTIfnuKxAQX2D1VB6DELUjjEvObsZ5K9kEX
-   fGUvOtrx3i6H4UmrM0cEuYkYPUnqd6vdsNiklRmm8BxoLfCQtGmJO9XjB
-   U/qFKhYD/Hg1cdYNIR5ILN4TS7frofHWKzCk4EfcFpnRWFeIPYF3MpLnf
-   T/wGnaKNlED5A+orFj11MqPr10Xmphv4GTNvcKsI2WjFMoAHI0SeIVkNP
-   a1uaBQncQr6bMj5wXxj2Ya8sSJgVof7fgj1LioGF9YgNt1VR8S6vX9R6L
+  t=1592567230; x=1624103230;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=FdXIsNa4by8yUsM1/IoyyWruXeZ88glA39KvNKhaFns=;
+  b=nagjPLfO5khsWEYU0sAMtSo6CjY8LzmjdnCXAWya2JNDsiSPcIPMesxP
+   X4on+KN50GL9rfEZ8JyaV8cI49/RdwYJNYFwWuWtXZZoJlNFNBUFWvSMY
+   TKlLryeeWk/j0h+AWB0GTJLD++NQQ4DCS4UWTKfn1oDJW783M2wr4DsSG
+   u/aCRuIp4PwkWJNmT6yGVlLnCEfLzbt2CD4XwqyEaiuPmQPmV/r81oh8a
+   oKDyhPMNxUQbkMHNdva2f+xh2s9n+gUUiUmDMRdlsHxDZsXSdPGIncx7i
+   lPlVvqDQUsLiXC9f554kuRyksSt0HNIopVFEN7/V0k0PoUb7jpzgfJqij
    A==;
-IronPort-SDR: jnSH7JQJRMUKjkOVpFNL6yCg2p1STeTL6ynffCgAqQrrmOzlUdOtnw2b5nrgcfHa3oEj3n89T4
- NB35CxhfSdupHaw/zLPfVHm6BjVl64jpieBsCT9LjstwjUpkkozlIXGkHfARkMISr7UlVJLPj8
- 1miu95dar4uAb45MDe5U6ZtQWgxuJT9FiDhnfL5uPjHJOPWes6WVXDLRhb2jOfFJ+28nVdk6kb
- dXHeX05pBDj3eVuyB9FIR7dJWu+wfKI1lLv4b+1qbMzj9Khm3sZzwGNbIg81mPCNAYCEjiFjKs
- iwg=
+IronPort-SDR: W3ixBXmNdCcrP5dsHkH1tUedMpxay8uQNZxiihezzVHJTLktNMvYzLQXv0Jh9yP8Xgind5MdYI
+ JbLCocyofDxmLpr2YWwTTbK5RpTgst7WQie3S2/5inSlLAXeK3I/U6AywUy6OfEFXcT4aS6r3E
+ W83SntmXef34QD4aiUbGMo8u3MMtIqWk96ClSrMc+76BGvpNmyzUWlS4CNWh6tFfF5m8+eaBdk
+ DgV2G0m3WKQM14r3k1G+3p0d2fN1kWRhzJJoH3MRUmHxo5vbW0ectvmx87okirNa+UBjfo6You
+ GNw=
 X-IronPort-AV: E=Sophos;i="5.75,255,1589266800"; 
-   d="scan'208";a="84298540"
+   d="scan'208";a="84300035"
 Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 19 Jun 2020 04:31:40 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 19 Jun 2020 04:47:10 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1979.3; Fri, 19 Jun 2020 04:31:33 -0700
-Received: from soft-dev15.microsemi.net (10.10.115.15) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.1979.3 via Frontend Transport; Fri, 19 Jun 2020 04:31:30 -0700
-From:   Lars Povlsen <lars.povlsen@microchip.com>
-List-Id: <soc.lore.kernel.org>
-To:     Mark Brown <broonie@kernel.org>, SoC Team <soc@kernel.org>
-CC:     Lars Povlsen <lars.povlsen@microchip.com>,
-        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
-        <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Subject: [PATCH v2 3/6] spi: dw: Add Microchip Sparx5 support
-Date:   Fri, 19 Jun 2020 13:31:18 +0200
-Message-ID: <20200619113121.9984-4-lars.povlsen@microchip.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20200619113121.9984-1-lars.povlsen@microchip.com>
-References: <20200619113121.9984-1-lars.povlsen@microchip.com>
+ 15.1.1979.3; Fri, 19 Jun 2020 04:47:03 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (10.10.215.89) by
+ email.microchip.com (10.10.87.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3
+ via Frontend Transport; Fri, 19 Jun 2020 04:47:10 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lZHUTpobFOdU4PPe1GAPJXUMLGQYW+in92BV/RAlEG4f42yinDE2ZNZHus48JGEgjXfbBRiN8preoiq07+lFXOfR1Ebchiy0fA3zpAIdaBsWzvgAHLzSE1FmNSU6rjiw4XR7tsMMfYRa3LjVgxIJtPtYD1DRkC9e7Y8AsbI4PuJBikUdo1YRndlpCYguBskLIL5TTMjYbyj/YBEjx0cqkocbuFaEcEHorMAsH+mjLMsI3w2Dk93XFNM/XU/qmUbM1aumoKfg2H2QRN3MTOpBrA/QvwovAvRjWLu1c839xwUufsB6IaZsLPKJ+8TfraOdFJP8dkKbrBSoL/TpNyyHHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FdXIsNa4by8yUsM1/IoyyWruXeZ88glA39KvNKhaFns=;
+ b=iYxvffAmHUtP5NKDcqse+3YXC4qc05SqYzROXK+AhiXRI9APZLFKj5RNKPIcpN4/i15fieeJTQrEzRq6u0Z9E6Xsm3uhqj8G2Qz66ippw+4IevES1Ur44EOw9dDY2dNyz0jV+FRnZLMSfK4EjrU/Evu3tEKTHsJs5sYMclmBk8C4RxhwY8nvZ0UkoHewGRD7Jr0YRB7sCRVsF6Qn+Iv44REATUErUfFapUwsR05+nyleon4ZN2i+KO/7wkb/XHF7svyDOCoVaspA3rpvy8epexGk3zVWxqInq17/1k9OmLKyu52uuC194N2tnd/iUGrch1q7tzrDd85Tj2fjmBcRyQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=microchiptechnology.onmicrosoft.com;
+ s=selector2-microchiptechnology-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FdXIsNa4by8yUsM1/IoyyWruXeZ88glA39KvNKhaFns=;
+ b=CI4Z7C0vVr3EMRosn+FXQhkuQ9gH/uF80h5yK4TxvfGCbSBxPC2Zp4GoDHvo8Bh2keWiloM73DzSxZxOMKu6VlVq1TDoDjZ1Kt+BrhUXSBDFw+EXQkYOkUL9OTBETAGebnUsXq4jN33DHh33ZWznFpMuESNqcJ57qwhqPQ6Jjl8=
+Received: from BYAPR11MB2856.namprd11.prod.outlook.com (2603:10b6:a02:bd::11)
+ by BYAPR11MB2966.namprd11.prod.outlook.com (2603:10b6:a03:84::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3088.24; Fri, 19 Jun
+ 2020 11:47:08 +0000
+Received: from BYAPR11MB2856.namprd11.prod.outlook.com
+ ([fe80::f1d5:60ca:d163:c1b3]) by BYAPR11MB2856.namprd11.prod.outlook.com
+ ([fe80::f1d5:60ca:d163:c1b3%3]) with mapi id 15.20.3109.021; Fri, 19 Jun 2020
+ 11:47:08 +0000
+From:   <Tudor.Ambarus@microchip.com>
+To:     <broonie@kernel.org>, <vigneshr@ti.com>
+CC:     <bbrezillon@kernel.org>,
+        <vadivel.muruganx.ramuthevar@linux.intel.com>,
+        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <simon.k.r.goldschmidt@gmail.com>,
+        <dinguyen@kernel.org>, <marex@denx.de>
+Subject: Re: [RESEND PATCH v3 0/8] mtd: spi-nor: Move cadence-qaudspi to
+ spi-mem framework
+Thread-Topic: [RESEND PATCH v3 0/8] mtd: spi-nor: Move cadence-qaudspi to
+ spi-mem framework
+Thread-Index: AQHWRi9bRsHSVVCOu0SkX6Y85WgKZw==
+Date:   Fri, 19 Jun 2020 11:47:08 +0000
+Message-ID: <0007c019-1ecf-1913-56a7-facffe345b1f@microchip.com>
+References: <20200601070444.16923-1-vigneshr@ti.com>
+ <20200619105701.GD5396@sirena.org.uk>
+In-Reply-To: <20200619105701.GD5396@sirena.org.uk>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
+authentication-results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=microchip.com;
+x-originating-ip: [86.120.239.116]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: d1fe5b9e-8f6b-404f-b05e-08d814467f30
+x-ms-traffictypediagnostic: BYAPR11MB2966:
+x-microsoft-antispam-prvs: <BYAPR11MB296615DC7DFC4717C69256F7F0980@BYAPR11MB2966.namprd11.prod.outlook.com>
+x-bypassexternaltag: True
+x-ms-oob-tlc-oobclassifiers: OLM:7691;
+x-forefront-prvs: 0439571D1D
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: FQBlWl1gOkZd9AY7kfPYmfuhTg9k3RE8H6MD4RJYxRQQh+5AKMUuSvlozvCf/0W9ON/RNmjCv4zAnJ6K1yQa8VUNTq0uIaEMKGq6DAT0LURYgvuDVB4bYALarNc4CsVRGqfkunUkmgjGtr9F3Qa5OyJZt8mw3+3YTD/crL8DHblnDuG4ZvsB0QZcLyk6WS+wplsCvutIXK0t+CPBRhSoMZhDaL+OelgRqFh8vZmD7EsLLu2gx14VW2EPUbqNJlzua6i/lw4kbfsCvky2eYOIT6QvVokgqPXwplSbYwyj0Y647sXLDO3FmAePQJCb4Tpj4GiJa77e7mSfJn/ZtYIShNAZ+zG5nK/tjfLC/bruFxF1vzsUePPPPp76nYSiVH3H
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB2856.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(136003)(39860400002)(376002)(346002)(396003)(366004)(6512007)(6486002)(36756003)(4744005)(478600001)(64756008)(4326008)(66556008)(66476007)(5660300002)(71200400001)(86362001)(110136005)(66946007)(91956017)(66446008)(54906003)(76116006)(31686004)(31696002)(316002)(26005)(53546011)(8936002)(8676002)(7416002)(6506007)(2616005)(2906002)(186003)(43740500002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: rx3QrdgKrEc9NVClEyKAtOSV8Yn6iPB7IET30u6vxGgLbJ+dan+Mv4GMNtVXZINK/RXmCs+TH8vZxZZv/E1E7ZXfcjehSom4cYglCppWO6d1C6AqspDgcxbJaI55Dky7765XIejAczXyp7JlqzCT9n17CFZ9YJY6Xkyug8y7HnNvA3lgAYwoqeCHygKdYYJ2qblhR+FVkfvPJO2nmAb1yMuVwJaq23jcJJVL1D/BKrfPqh/gBbysLoWSHOyF48jcNDOO1CV3EWltTLN/S2nFbUg+o71PFMVm9g8u5sEEd0uInJ2LWsROlvDTzyk5CULYvnu/b7+Z+GdTSU67RFRrhaBWTFlgu1mM9KkP4ghtvgra4vVAmNgSYIc5cYVg2h07SHKEKCDWFQwoUrcK4C0tFwhtAzpb7ewvJmmlb/rNK7BLWqUDnq/mfR6AdAC6SPYiUp7qAipMa41yp29JNvRq/M44FEzbLMmbv3NlRBIn0LI=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="Windows-1252"
+Content-ID: <3023B7461FBE2F4D88F6002791B3FD9E@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+X-MS-Exchange-CrossTenant-Network-Message-Id: d1fe5b9e-8f6b-404f-b05e-08d814467f30
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Jun 2020 11:47:08.5839
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: BNwM3+9mQA+goGeqlCYuz0mwCvrYbjOycti8EXl3/Ujuy9Z33rCwgKParMgjpT+/Cv5QZ0mX//MzyDSrnj8afHtzuAzmbWJPfL9ZvSAnNlo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR11MB2966
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This adds SPI support for the Sparx5 SoC, which is using the MMIO
-Designware SPI controller.
+On 6/19/20 1:57 PM, Mark Brown wrote:
+>> This series is a subset of "[PATCH v12 0/4] spi: cadence-quadspi: Add
+>> support for the Cadence QSPI controller" by Ramuthevar,Vadivel MuruganX
+>> <vadivel.muruganx.ramuthevar@linux.intel.com> that intended to move
+>> cadence-quadspi driver to spi-mem framework
+> Are people OK with me applying this to the SPI tree?
 
-The Sparx5 differs from the Ocelot version in these areas:
+There's a small conflict on 8/8 when applying on top of v5.8-rc1. With
+that addressed:
 
- * The Sparx5 SPI controller has 2 different SPI bus interfaces on the
-   same controller (don't ask...). As each SPI slave is physically
-   located on a particular bus, they must be configured
-   accordingly. The microchip,spi-interface2 property is used for
-   this. Switching between busses also requires specific
-   handling/timing.
+Acked-by: Tudor Ambarus <tudor.ambarus@microchip.com>
 
- * The CS override is controlled by a new set of registers for
-   this purpose.
+Would you please provide an immutable tag on top of v5.8-rc1 so that I
+can merge back in spi-nor/next?
 
- * The Sparx5 SPI controller has the RX sample delay register, and it
-   must be configured for the (SPI NAND) device on SPI2.
-
-Signed-off-by: Lars Povlsen <lars.povlsen@microchip.com>
----
- drivers/spi/spi-dw-mmio.c | 113 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 112 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index 403403deae664..78241d93289f5 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -20,6 +20,7 @@
- #include <linux/property.h>
- #include <linux/regmap.h>
- #include <linux/reset.h>
-+#include <linux/bitfield.h>
- 
- #include "spi-dw.h"
- 
-@@ -41,6 +42,12 @@ struct dw_spi_mmio {
- #define MSCC_IF_SI_OWNER_SIBM			1
- #define MSCC_IF_SI_OWNER_SIMC			2
- 
-+#define SPARX5_CPU_SYSTEM_CTRL_GENERAL_CTRL	0x88
-+#define SPARX5_IF_SI_OWNER			GENMASK(7, 6)
-+#define SPARX5_IF_SI2_OWNER			GENMASK(5, 4)
-+#define SPARX5_FORCE_ENA			0xa4
-+#define SPARX5_FORCE_VAL			0xa8
-+
- #define MSCC_SPI_MST_SW_MODE			0x14
- #define MSCC_SPI_MST_SW_MODE_SW_PIN_CTRL_MODE	BIT(13)
- #define MSCC_SPI_MST_SW_MODE_SW_SPI_CS(x)	(x << 5)
-@@ -54,7 +61,8 @@ struct dw_spi_mmio {
- 
- struct dw_spi_mscc {
- 	struct regmap       *syscon;
--	void __iomem        *spi_mst;
-+	void __iomem        *spi_mst; /* Not sparx5 */
-+	u32		    if2mask;  /* sparx5 only */
- };
- 
- /*
-@@ -134,6 +142,108 @@ static int dw_spi_mscc_jaguar2_init(struct platform_device *pdev,
- 				JAGUAR2_IF_SI_OWNER_OFFSET);
- }
- 
-+/*
-+ * Set the owner of the SPI interface
-+ */
-+static void dw_spi_sparx5_set_owner(struct regmap *syscon,
-+				    u8 owner, u8 owner2)
-+{
-+	u32 val, msk;
-+
-+	val = FIELD_PREP(SPARX5_IF_SI_OWNER, owner) |
-+		FIELD_PREP(SPARX5_IF_SI2_OWNER, owner2);
-+	msk = SPARX5_IF_SI_OWNER | SPARX5_IF_SI2_OWNER;
-+	regmap_update_bits(syscon,
-+			   SPARX5_CPU_SYSTEM_CTRL_GENERAL_CTRL,
-+			   msk, val);
-+}
-+
-+static void dw_spi_sparx5_set_cs_owner(struct dw_spi_mmio *dwsmmio,
-+				       u8 cs, u8 owner)
-+{
-+	struct dw_spi_mscc *dwsmscc = dwsmmio->priv;
-+	u8 other = (owner == MSCC_IF_SI_OWNER_SIBM ?
-+		    MSCC_IF_SI_OWNER_SIMC : MSCC_IF_SI_OWNER_SIBM);
-+	if (dwsmscc->if2mask & BIT(cs))
-+		/* SPI2 */
-+		dw_spi_sparx5_set_owner(dwsmscc->syscon, other, owner);
-+	else
-+		/* SPI1 */
-+		dw_spi_sparx5_set_owner(dwsmscc->syscon, owner, other);
-+}
-+
-+/*
-+ * The Designware SPI controller (referred to as master in the
-+ * documentation) automatically deasserts chip select when the tx fifo
-+ * is empty. The chip selects then needs to be driven by a CS override
-+ * register. enable is an active low signal.
-+ */
-+static void dw_spi_sparx5_set_cs(struct spi_device *spi, bool nEnable)
-+{
-+	struct dw_spi *dws = spi_master_get_devdata(spi->master);
-+	struct dw_spi_mmio *dwsmmio = container_of(dws, struct dw_spi_mmio, dws);
-+	struct dw_spi_mscc *dwsmscc = dwsmmio->priv;
-+	u8 cs = spi->chip_select;
-+
-+	if (!nEnable)
-+		dw_spi_sparx5_set_cs_owner(dwsmmio, cs,
-+					   MSCC_IF_SI_OWNER_SIMC);
-+
-+	if (!nEnable) {
-+		/* Ensure CS toggles, so start off all disabled */
-+		regmap_write(dwsmscc->syscon, SPARX5_FORCE_VAL, ~0);
-+		/* CS override drive enable */
-+		regmap_write(dwsmscc->syscon, SPARX5_FORCE_ENA, 1);
-+		/* Allow settle */
-+		udelay(1);
-+		/* Now set CSx enabled */
-+		regmap_write(dwsmscc->syscon, SPARX5_FORCE_VAL, ~BIT(cs));
-+	} else {
-+		/* CS value */
-+		regmap_write(dwsmscc->syscon, SPARX5_FORCE_VAL, ~0);
-+		/* CS override drive disable */
-+		regmap_write(dwsmscc->syscon, SPARX5_FORCE_ENA, 0);
-+	}
-+
-+	dw_spi_set_cs(spi, nEnable);
-+}
-+
-+static int dw_spi_mscc_sparx5_init(struct platform_device *pdev,
-+				   struct dw_spi_mmio *dwsmmio)
-+{
-+	const char *syscon_name = "microchip,sparx5-cpu-syscon";
-+	struct dw_spi_mscc *dwsmscc;
-+	struct device_node *nc;
-+
-+	dwsmscc = devm_kzalloc(&pdev->dev, sizeof(*dwsmscc), GFP_KERNEL);
-+	if (!dwsmscc)
-+		return -ENOMEM;
-+
-+	dwsmscc->syscon =
-+		syscon_regmap_lookup_by_compatible(syscon_name);
-+	if (IS_ERR(dwsmscc->syscon)) {
-+		dev_err(&pdev->dev, "No syscon map %s\n", syscon_name);
-+		return PTR_ERR(dwsmscc->syscon);
-+	}
-+
-+	/* SPI2 mapping bitmask */
-+	for_each_available_child_of_node(pdev->dev.of_node, nc) {
-+		u32 cs;
-+
-+		if (of_property_read_u32(nc, "reg", &cs) == 0 &&
-+		    of_property_read_bool(nc, "microchip,spi-interface2"))
-+			dwsmscc->if2mask |= BIT(cs);
-+	}
-+
-+	dwsmmio->dws.set_cs = dw_spi_sparx5_set_cs;
-+	dwsmmio->priv = dwsmscc;
-+
-+	/* Register hook to configure CTRLR0 */
-+	dwsmmio->dws.update_cr0 = dw_spi_update_cr0;
-+
-+	return 0;
-+}
-+
- static int dw_spi_alpine_init(struct platform_device *pdev,
- 			      struct dw_spi_mmio *dwsmmio)
- {
-@@ -297,6 +407,7 @@ static const struct of_device_id dw_spi_mmio_of_match[] = {
- 	{ .compatible = "renesas,rzn1-spi", .data = dw_spi_dw_apb_init},
- 	{ .compatible = "snps,dwc-ssi-1.01a", .data = dw_spi_dwc_ssi_init},
- 	{ .compatible = "intel,keembay-ssi", .data = dw_spi_keembay_init},
-+	{ .compatible = "microchip,sparx5-spi", dw_spi_mscc_sparx5_init},
- 	{ /* end of table */}
- };
- MODULE_DEVICE_TABLE(of, dw_spi_mmio_of_match);
--- 
-2.27.0
-
+Cheers,
+ta

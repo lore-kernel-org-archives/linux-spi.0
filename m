@@ -2,62 +2,61 @@ Return-Path: <SRS0=n0rM=AB=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+X-Spam-Status: No, score=-9.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 22039C433E1
-	for <linux-spi@archiver.kernel.org>; Sat, 20 Jun 2020 03:31:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 68B75C433E1
+	for <linux-spi@archiver.kernel.org>; Sat, 20 Jun 2020 03:31:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0074F23159
-	for <linux-spi@archiver.kernel.org>; Sat, 20 Jun 2020 03:31:12 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 401902332F
+	for <linux-spi@archiver.kernel.org>; Sat, 20 Jun 2020 03:31:20 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="nLZb9q5M"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="MihGMYKd"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733153AbgFTDbL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 19 Jun 2020 23:31:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58212 "EHLO
+        id S1733226AbgFTDbS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 19 Jun 2020 23:31:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733056AbgFTDa7 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 19 Jun 2020 23:30:59 -0400
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 388EEC0619EF
-        for <linux-spi@vger.kernel.org>; Fri, 19 Jun 2020 20:30:25 -0700 (PDT)
-Received: by mail-pj1-x1041.google.com with SMTP id k2so4994570pjs.2
-        for <linux-spi@vger.kernel.org>; Fri, 19 Jun 2020 20:30:25 -0700 (PDT)
+        with ESMTP id S1733139AbgFTDbL (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 19 Jun 2020 23:31:11 -0400
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D2EBC0617B9
+        for <linux-spi@vger.kernel.org>; Fri, 19 Jun 2020 20:30:28 -0700 (PDT)
+Received: by mail-pg1-x542.google.com with SMTP id p3so2703876pgh.3
+        for <linux-spi@vger.kernel.org>; Fri, 19 Jun 2020 20:30:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=TsJU39le/9mzUUvkg/vEQ1ejtljvEC7MElEcoRxU/hs=;
-        b=nLZb9q5MNXSO30mRLC8p+Z6tp7SeKI4c8mbyilFhnvlC39t+V3j0iQJ4vfU5EbJ/Ge
-         yJs0yUXWykR2+lKlShzU2CG/atXeM++8u60h/nbziIo1McpvPT8URV5HcgXBrobq0ydJ
-         LtCik9CXYKbYzZN1wG1+1XbNp5/sueNlWfLSk=
+        bh=dfh/vw+ddjlYh9CDRFRkQhWgDe6VpIaXph6iMJk9GA8=;
+        b=MihGMYKdZDiLuZtFYTQG9hHMsTVzmuQ3DJp1RxmrKSOaCHLlYqx3RB7EzdxAAEd4dy
+         xUDLp5ekbRUHQEBzv61Wp4NXwSE99zyWUIbQoIUuKzEORyW2v8VjeUMh5o4KgUgFAoK+
+         QK/RDmLsOZKbaJ59vz56xsAOtVZ6x+uY8ER9c=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=TsJU39le/9mzUUvkg/vEQ1ejtljvEC7MElEcoRxU/hs=;
-        b=a7r4nLeo6Gkk3voq9XxRZsDl87SuX6itvQI4C+zhj6Y0FXFxKG4x4MpUfqF++SiOFF
-         twD2LJPc/Z82sotZ5JzrTxTGmM7nQ2burL920LjWlwDn5OTV4axbgXRoBRtteBN0/Fg/
-         fUFFw+IYE0znYvVyn/v5OswEplrcvXZnEeJcBcgBRCx5WUhnY1r05UWww+BWtgIoEgSl
-         y2ON9SfSKI3zVtVpiMBKTFCC1gVSMcekChRV6pYEFs9C9nfpmZOP0ANkOl/aIVzDoEdD
-         mN4x5mA6uK3L3m7wjCvybTySww0abju/Pf2Iy8raG2qLIlWT15LMo0YYdWXJvFmZYYGI
-         q41w==
-X-Gm-Message-State: AOAM533owQbDvoDmahR1t82ZmBQqgkFqxe0AQQpEDP+++zM2HeZ9pZxr
-        5JHrZXX4QFJGixGucVo3pJ8xLA==
-X-Google-Smtp-Source: ABdhPJx/5DcfB27JAL/c3SFwGw95qhIKfr9dnkeTlJXy/0XzMHLMuVPklbRvet5f9iLDNbeJ3PiIXQ==
-X-Received: by 2002:a17:902:8f83:: with SMTP id z3mr10333002plo.203.1592623824777;
-        Fri, 19 Jun 2020 20:30:24 -0700 (PDT)
+        bh=dfh/vw+ddjlYh9CDRFRkQhWgDe6VpIaXph6iMJk9GA8=;
+        b=YKxzxS/svyAwNNhRkIfmbbVhZE6YuPushedF0EPzcEzIF/PvvbFW2KJFP361ti8mej
+         9fNggxQNHY9Fh1hg0mVNlQeuoc8Xjh6wbS57sDOfrKqvyH+d5CyV+OjLGa5tUK4A79xC
+         Avpe/+3yqfnmrdyfNqn+6Gl7ILI+rhoEjI8ml/MR1soNNUSlSeYG+h9Y4Xgu0OM/nZKS
+         i/owtIxQ/AzO59Z0nf7MsE26pJWqWDDSy3uSusOM4w6YV9L+4BC8b22QL0dmBjiXJagY
+         uy+kHFn38mpXaHCUGbu11xSwGrZdOXvca/c2qCdiDLBYQFS7O0NUhT88moLvV6XNZsRl
+         DrTg==
+X-Gm-Message-State: AOAM5316021NRj/xyk90fk5W5N08sfmgyGrTxMuKIl58SGBDmukwqT7N
+        UgMDykEheDOr0NWj4s8j84/DlA==
+X-Google-Smtp-Source: ABdhPJx0aCYAbShJE+YVxO7qvT0bOjdhl9ynwJyizMCTWOBsedHyy3Q5JrRb42SiCaY2nko2swgfTw==
+X-Received: by 2002:aa7:9569:: with SMTP id x9mr10876864pfq.308.1592623827680;
+        Fri, 19 Jun 2020 20:30:27 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id ev20sm6238855pjb.8.2020.06.19.20.30.19
+        by smtp.gmail.com with ESMTPSA id i63sm6601330pje.34.2020.06.19.20.30.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2020 20:30:20 -0700 (PDT)
+        Fri, 19 Jun 2020 20:30:26 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Kees Cook <keescook@chromium.org>,
-        Nathan Chancellor <natechancellor@gmail.com>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
         Alexander Potapenko <glider@google.com>,
@@ -69,9 +68,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         linux-ide@vger.kernel.org, linux-clk@vger.kernel.org,
         linux-spi@vger.kernel.org, linux-mm@kvack.org,
         clang-built-linux@googlegroups.com
-Subject: [PATCH v2 10/16] KVM: PPC: Book3S PR: Remove uninitialized_var() usage
-Date:   Fri, 19 Jun 2020 20:30:01 -0700
-Message-Id: <20200620033007.1444705-11-keescook@chromium.org>
+Subject: [PATCH v2 14/16] checkpatch: Remove awareness of uninitialized_var() macro
+Date:   Fri, 19 Jun 2020 20:30:04 -0700
+Message-Id: <20200620033007.1444705-14-keescook@chromium.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200620033007.1444705-1-keescook@chromium.org>
 References: <20200620033007.1444705-1-keescook@chromium.org>
@@ -83,42 +82,68 @@ List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
 Using uninitialized_var() is dangerous as it papers over real bugs[1]
-(or can in the future), and suppresses unrelated compiler warnings (e.g.
-"unused variable"). If the compiler thinks it is uninitialized, either
-simply initialize the variable or make compiler changes. As a precursor
-to removing[2] this[3] macro[4], just remove this variable since it was
-actually unused:
+(or can in the future), and suppresses unrelated compiler warnings
+(e.g. "unused variable"). If the compiler thinks it is uninitialized,
+either simply initialize the variable or make compiler changes.
 
-arch/powerpc/kvm/book3s_pr.c:1832:16: warning: unused variable 'vrsave' [-Wunused-variable]
-        unsigned long vrsave;
-                      ^
+In preparation for removing[2] the[3] macro[4], partially revert
+commit 16b7f3c89907 ("checkpatch: avoid warning about uninitialized_var()")
+and remove all remaining mentions of uninitialized_var().
 
 [1] https://lore.kernel.org/lkml/20200603174714.192027-1-glider@google.com/
 [2] https://lore.kernel.org/lkml/CA+55aFw+Vbj0i=1TGqCR5vQkCzWJ0QxK6CernOU6eedsudAixw@mail.gmail.com/
 [3] https://lore.kernel.org/lkml/CA+55aFwgbgqhbp1fkxvRKEpzyR5J8n1vKT1VZdz9knmPuXhOeg@mail.gmail.com/
 [4] https://lore.kernel.org/lkml/CA+55aFz2500WfbKXAx8s67wrm9=yVJu65TpLgN_ybYNv0VEOKA@mail.gmail.com/
 
-Suggested-by: Nathan Chancellor <natechancellor@gmail.com>
-Fixes: f05ed4d56e9c ("KVM: PPC: Split out code from book3s.c into book3s_pr.c")
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- arch/powerpc/kvm/book3s_pr.c | 3 ---
- 1 file changed, 3 deletions(-)
+ scripts/checkpatch.pl | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_pr.c b/arch/powerpc/kvm/book3s_pr.c
-index ef54f917bdaf..ed12dfbf9bb5 100644
---- a/arch/powerpc/kvm/book3s_pr.c
-+++ b/arch/powerpc/kvm/book3s_pr.c
-@@ -1828,9 +1828,6 @@ static int kvmppc_vcpu_run_pr(struct kvm_vcpu *vcpu)
- {
- 	struct kvm_run *run = vcpu->run;
- 	int ret;
--#ifdef CONFIG_ALTIVEC
--	unsigned long uninitialized_var(vrsave);
--#endif
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 4c820607540b..60b737e222fe 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -840,7 +840,6 @@ our $FuncArg = qr{$Typecast{0,1}($LvalOrFunc|$Constant|$String)};
+ our $declaration_macros = qr{(?x:
+ 	(?:$Storage\s+)?(?:[A-Z_][A-Z0-9]*_){0,2}(?:DEFINE|DECLARE)(?:_[A-Z0-9]+){1,6}\s*\(|
+ 	(?:$Storage\s+)?[HLP]?LIST_HEAD\s*\(|
+-	(?:$Storage\s+)?${Type}\s+uninitialized_var\s*\(|
+ 	(?:SKCIPHER_REQUEST|SHASH_DESC|AHASH_REQUEST)_ON_STACK\s*\(
+ )};
  
- 	/* Check if we can run the vcpu at all */
- 	if (!vcpu->arch.sane) {
+@@ -6330,8 +6329,7 @@ sub process {
+ 			if (defined $cond) {
+ 				substr($s, 0, length($cond), '');
+ 			}
+-			if ($s =~ /^\s*;/ &&
+-			    $function_name ne 'uninitialized_var')
++			if ($s =~ /^\s*;/)
+ 			{
+ 				WARN("AVOID_EXTERNS",
+ 				     "externs should be avoided in .c files\n" .  $herecurr);
+@@ -6350,17 +6348,13 @@ sub process {
+ 		}
+ 
+ # check for function declarations that have arguments without identifier names
+-# while avoiding uninitialized_var(x)
+ 		if (defined $stat &&
+-		    $stat =~ /^.\s*(?:extern\s+)?$Type\s*(?:($Ident)|\(\s*\*\s*$Ident\s*\))\s*\(\s*([^{]+)\s*\)\s*;/s &&
+-		    (!defined($1) ||
+-		     (defined($1) && $1 ne "uninitialized_var")) &&
+-		     $2 ne "void") {
+-			my $args = trim($2);
++		    $stat =~ /^.\s*(?:extern\s+)?$Type\s*(?:$Ident|\(\s*\*\s*$Ident\s*\))\s*\(\s*([^{]+)\s*\)\s*;/s &&
++		    $1 ne "void") {
++			my $args = trim($1);
+ 			while ($args =~ m/\s*($Type\s*(?:$Ident|\(\s*\*\s*$Ident?\s*\)\s*$balanced_parens)?)/g) {
+ 				my $arg = trim($1);
+-				if ($arg =~ /^$Type$/ &&
+-					$arg !~ /enum\s+$Ident$/) {
++				if ($arg =~ /^$Type$/ && $arg !~ /enum\s+$Ident$/) {
+ 					WARN("FUNCTION_ARGUMENTS",
+ 					     "function definition argument '$arg' should also have an identifier name\n" . $herecurr);
+ 				}
 -- 
 2.25.1
 

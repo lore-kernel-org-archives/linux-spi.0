@@ -2,130 +2,105 @@ Return-Path: <SRS0=uPEC=AD=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PULL_REQUEST,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DB1B7C433DF
-	for <linux-spi@archiver.kernel.org>; Mon, 22 Jun 2020 11:25:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 87BD1C433DF
+	for <linux-spi@archiver.kernel.org>; Mon, 22 Jun 2020 11:42:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B377A20716
-	for <linux-spi@archiver.kernel.org>; Mon, 22 Jun 2020 11:25:00 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YYNlxB3U"
+	by mail.kernel.org (Postfix) with ESMTP id 62B8F206BE
+	for <linux-spi@archiver.kernel.org>; Mon, 22 Jun 2020 11:42:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1592826136;
+	bh=8fqOVcicxmcsJvAkvo8xOU6VB/fRqIArRtjKreJVJt8=;
+	h=From:To:Cc:Subject:Date:List-ID:From;
+	b=pbYS+ZGQSYgfuseG8UIqFBvYYpHsmi76pq4MF03B5o1PzZMPTAZ/DawQDBjUOzDOE
+	 SXPlcxgV3rBKOVCVsIw1aQjy/13tCx6xE5RKeLde7Tnk2N92p1XHuPXxfK8YK3SJBU
+	 SVJxmdlF/suuSPxUbe50muhkTLPpiAP1tBrHebDI=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729069AbgFVLVw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 22 Jun 2020 07:21:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55660 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728664AbgFVLRj (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 22 Jun 2020 07:17:39 -0400
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4C91C061794;
-        Mon, 22 Jun 2020 04:17:38 -0700 (PDT)
-Received: by mail-ej1-x644.google.com with SMTP id k11so17594466ejr.9;
-        Mon, 22 Jun 2020 04:17:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=TZiwZIrCsEEo6wwyPFdJPE4K71P6aGthJLmX8PuGg2U=;
-        b=YYNlxB3Uju5mOajQTpUA4vt4nTLtkKo0voPP61L+DegsW9AcPKRSvzXweV6r3OZKDS
-         ZPR1tKH6zK2JInKbEmi3gMXOO2R9tmGL45IRX/tOT3pq1pY2tJ/Le0qZvcNfCN5MYYvJ
-         jKdm1rJOiDRG5Hn9FUMmuUO+qJa2cqya3dr2ZQl9bLMTTjEf1kLlwmTnxNUsevwQG4E7
-         mAeXziqLLgNBJrhvQ8Xiib4UU08aWyCVVSnivJm3Vsx4F0zno9jlet3oNyIGO8LSE76j
-         kloffnQrKGSfYFYuXzWcf/MD5XbQB48LfbBYX9sPz5LnuvDng0JgzQj9IDZKbTY7NMaJ
-         mE3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TZiwZIrCsEEo6wwyPFdJPE4K71P6aGthJLmX8PuGg2U=;
-        b=oWWVURlv1qg1usXADoVJPbCYw8ZTwk6JnmTsywjIKLuvjWcq7hnHYGnX4kx80kNNwp
-         Qf3PmFO5pqGzPEdkmpMtDPwOKbUMYW83uH42kZ4aZypHHowvK88qNRjhgpaRh9x4xqx/
-         aaloy1bO0LJ1b93el/lKtEaPWw4QPa82SNNnwMJM1YEQqPlqqNZhQvh+Ua2N/gmm2Aw6
-         0hz9fUGXzm4NiKHKkShPB2urQfZijJNzzknSQobzz9lIhgudwGNr3hYXJMpyq97aGNxd
-         13WnIPPG03pSgIeK/6o0ZFmYK0cQ9E7Sw3PO3xSxnkDmaHGrHYX/iEHgtdnlyWiCVX4/
-         YSsg==
-X-Gm-Message-State: AOAM533rFf936+madbWBOAz1urbJ9pj5AACRsspLm6R0wg2hT8yrFfsq
-        8ZEBjvs5XOCwzNZUgZzCUSKO56tyQ+y6T2voUjo=
-X-Google-Smtp-Source: ABdhPJyP1teXpZMQJBSy6XRfAPiUcGdFA51dFuisvct6xWquwQV7kcR13vg76tHLi5aN+VwYBucVCdFLkuJU6CUrNpU=
-X-Received: by 2002:a17:906:2e50:: with SMTP id r16mr14796322eji.305.1592824657403;
- Mon, 22 Jun 2020 04:17:37 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200622110543.5035-1-krzk@kernel.org>
-In-Reply-To: <20200622110543.5035-1-krzk@kernel.org>
-From:   Vladimir Oltean <olteanv@gmail.com>
-Date:   Mon, 22 Jun 2020 14:17:26 +0300
-Message-ID: <CA+h21hqQLaghmEYso9ZMeJHQuiDMgi5UN9-06je84_0n9iripA@mail.gmail.com>
-Subject: Re: [PATCH v4 1/4] spi: spi-fsl-dspi: Fix lockup if device is removed
- during SPI transfer
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Mark Brown <broonie@kernel.org>, Peng Ma <peng.ma@nxp.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Wolfram Sang <wsa@kernel.org>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        id S1727806AbgFVLmQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 22 Jun 2020 07:42:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50298 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727065AbgFVLmP (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 22 Jun 2020 07:42:15 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C75A9206BE;
+        Mon, 22 Jun 2020 11:42:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1592826135;
+        bh=8fqOVcicxmcsJvAkvo8xOU6VB/fRqIArRtjKreJVJt8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=n++EEbiGQ1kIbhxmbAd5JCnUreKtIchnL613eQJPNSnR3LhQxD20BXaXr976+WJ5q
+         VF63QoIVsQDek9XJ8o2+GrJhLn6vc/J8vuG28pPXLZpQ/Z00NhTODV47b9wppTw43g
+         r7RuGpRKPR9SsPMnAyTZyL8SUUsonyisnlj2olDM=
+From:   broonie@kernel.org
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] SPI fixes for v5.8-rc2
+Date:   Mon, 22 Jun 2020 12:41:19 +0100
+Message-Id: <20200622114214.C75A9206BE@mail.kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 22 Jun 2020 at 14:06, Krzysztof Kozlowski <krzk@kernel.org> wrote:
->
-> During device removal, the driver should unregister the SPI controller
-> and stop the hardware.  Otherwise the dspi_transfer_one_message() could
-> wait on completion infinitely.
->
-> Additionally, calling spi_unregister_controller() first in device
-> removal reverse-matches the probe function, where SPI controller is
-> registered at the end.
->
-> Fixes: 05209f457069 ("spi: fsl-dspi: add missing clk_disable_unprepare() in dspi_remove()")
-> Cc: <stable@vger.kernel.org>
-> Reported-by: Vladimir Oltean <olteanv@gmail.com>
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
->
-> ---
+The following changes since commit 263b81dc6c932c8bc550d5e7bfc178d2b3fc491e:
 
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+  spi: spi-fsl-dspi: fix native data copy (2020-05-29 23:43:15 +0100)
 
->
-> Changes since v3:
-> 1. New patch.
-> ---
->  drivers/spi/spi-fsl-dspi.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-> index 58190c94561f..ec0fd0d366eb 100644
-> --- a/drivers/spi/spi-fsl-dspi.c
-> +++ b/drivers/spi/spi-fsl-dspi.c
-> @@ -1434,9 +1434,18 @@ static int dspi_remove(struct platform_device *pdev)
->         struct fsl_dspi *dspi = spi_controller_get_devdata(ctlr);
->
->         /* Disconnect from the SPI framework */
-> +       spi_unregister_controller(dspi->ctlr);
-> +
-> +       /* Disable RX and TX */
-> +       regmap_update_bits(dspi->regmap, SPI_MCR,
-> +                          SPI_MCR_DIS_TXF | SPI_MCR_DIS_RXF,
-> +                          SPI_MCR_DIS_TXF | SPI_MCR_DIS_RXF);
-> +
-> +       /* Stop Running */
-> +       regmap_update_bits(dspi->regmap, SPI_MCR, SPI_MCR_HALT, SPI_MCR_HALT);
-> +
->         dspi_release_dma(dspi);
->         clk_disable_unprepare(dspi->clk);
-> -       spi_unregister_controller(dspi->ctlr);
->
->         return 0;
->  }
-> --
-> 2.17.1
->
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v5.8-rc2
+
+for you to fetch changes up to 06096cc6c5a84ced929634b0d79376b94c65a4bd:
+
+  spi: spidev: fix a potential use-after-free in spidev_release() (2020-06-18 17:47:00 +0100)
+
+----------------------------------------------------------------
+spi: Fixes for v5.8
+
+Quite a lot of fixes here for no single reason.  There's a collection of
+the usual sort of device specific fixes and also a bunch of people have
+been working on spidev and the userspace test program spidev_test so
+they've got an unusually large collection of small fixes.
+
+----------------------------------------------------------------
+Alexander Stein (1):
+      spi: dt-bindings: amlogic, meson-gx-spicc: Fix schema for meson-g12a
+
+Geert Uytterhoeven (3):
+      spi: spidev_test: Use %u to format unsigned numbers
+      spi: rspi: Use requested instead of maximum bit rate
+      spi: uapi: spidev: Use TABs for alignment
+
+Krzysztof Kozlowski (1):
+      spi: spi-fsl-dspi: Free DMA memory with matching function
+
+Lingling Xu (1):
+      spi: sprd: switch the sequence of setting WDG_LOAD_LOW and _HIGH
+
+Patrice Chotard (1):
+      spi: stm32-qspi: Fix error path in case of -EPROBE_DEFER
+
+Qing Zhang (2):
+      spi: tools: Make default_tx/rx and input_tx static
+      spi: tools: Add macro definitions to fix build errors
+
+Zhenzhong Duan (2):
+      spi: spidev: fix a race between spidev_release and spidev_remove
+      spi: spidev: fix a potential use-after-free in spidev_release()
+
+ .../bindings/spi/amlogic,meson-gx-spicc.yaml       | 26 +++++++-----
+ drivers/spi/spi-fsl-dspi.c                         |  8 ++--
+ drivers/spi/spi-rspi.c                             | 28 +++++++++----
+ drivers/spi/spi-sprd-adi.c                         |  2 +-
+ drivers/spi/spi-stm32-qspi.c                       | 46 ++++++++++++----------
+ drivers/spi/spidev.c                               | 24 +++++------
+ include/uapi/linux/spi/spidev.h                    |  4 ++
+ tools/spi/spidev_test.c                            | 10 ++---
+ 8 files changed, 90 insertions(+), 58 deletions(-)

@@ -6,62 +6,63 @@ X-Spam-Status: No, score=-6.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
 	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 15613C433E0
-	for <linux-spi@archiver.kernel.org>; Mon, 22 Jun 2020 14:59:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7BB93C433DF
+	for <linux-spi@archiver.kernel.org>; Mon, 22 Jun 2020 14:59:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D490620708
-	for <linux-spi@archiver.kernel.org>; Mon, 22 Jun 2020 14:59:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4EC3F20708
+	for <linux-spi@archiver.kernel.org>; Mon, 22 Jun 2020 14:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1592837988;
-	bh=omX85vo/MUb3fVCU5fZbatl+q0rGgAnWht2MRheY7WY=;
+	s=default; t=1592837991;
+	bh=Rx2z5NK4KKWGugSx/gn2fQ0uqFJxseGFeORbKEalUZo=;
 	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=lDQQKUbxzSDU+/dKNTwbpxeMiXuVv5XynmFd/cow4/msNA2rvjbs8j09Px93YKSSE
-	 IZKnCoc1Zg8PGMRCAB3VYYGdKte+X+UAY6RqqGL1D/d/FcnYSGrYpyP+WhTUK6SP+Q
-	 h/vmIooCkvofLtLmEGXsoqUHurjCTjoEOKwFGz/4=
+	b=dHm8Ho6Wc2FfNkYSwXcovmgNT1bFT/IHUHtZC1GQZk/Qm1POzNe+VTjq/oqnodrhk
+	 Cb9a+7PY54njrc5KVzG+a+8d7ru5fsCT8Gm8T6NiVdfSSkCAQ0THPiGINTGiGAjRTz
+	 uwkgybrdWrnRWx7rkx7FgXDzAzcG+5y5sAiydQVU=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729072AbgFVO7p (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 22 Jun 2020 10:59:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51346 "EHLO mail.kernel.org"
+        id S1729233AbgFVO7u (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 22 Jun 2020 10:59:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51422 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728824AbgFVO7p (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 22 Jun 2020 10:59:45 -0400
+        id S1728431AbgFVO7u (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 22 Jun 2020 10:59:50 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9B08A20708;
-        Mon, 22 Jun 2020 14:59:44 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 94D8120708;
+        Mon, 22 Jun 2020 14:59:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592837985;
-        bh=omX85vo/MUb3fVCU5fZbatl+q0rGgAnWht2MRheY7WY=;
+        s=default; t=1592837990;
+        bh=Rx2z5NK4KKWGugSx/gn2fQ0uqFJxseGFeORbKEalUZo=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=HW/qIQW2aCc7KWWu1VOJjtYZbEW8t77d/oYyniNwqDxclRl6Ssg4odqksOL4lkbBm
-         tbsWBsGAqgAlegUUnsWE/GWyqTfmKLt1UGU0nFUB35Lg73dlHeHBb/Lv6C6Z0DmeRq
-         3HET/xbKKhmSaLLuNHq5StAzp5BHwtOF4DGjijAk=
-Date:   Mon, 22 Jun 2020 15:59:42 +0100
+        b=TJu5TXG41tQCWC7LsG9K03BGGRlZnAOiUz/UGAsvM81TRTQjg9Kl63hvGSB/laIvR
+         O6CCqAku+1RJ5kOzAZ6+hSdp5NMiEY23Z6hbX2nTHfgMh1awDc2a65OlRZXZtNWgdo
+         1cw6XA2eqZu3ElebDbYR7ADimZGC9/rpdWQ3o50w=
+Date:   Mon, 22 Jun 2020 15:59:47 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Stephen Boyd <swboyd@chromium.org>
-Cc:     Douglas Anderson <dianders@chromium.org>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+To:     Douglas Anderson <dianders@chromium.org>
+Cc:     swboyd@chromium.org, Girish Mahadevan <girishm@codeaurora.org>,
+        linux-kernel@vger.kernel.org, skakit@codeaurora.org,
+        linux-spi@vger.kernel.org, Dilip Kota <dkota@codeaurora.org>,
         Alok Chauhan <alokc@codeaurora.org>,
-        linux-arm-msm@vger.kernel.org
-In-Reply-To: <20200620022233.64716-1-swboyd@chromium.org>
-References: <20200620022233.64716-1-swboyd@chromium.org>
-Subject: Re: [PATCH v1 0/2] Some small spi geni cleanups
-Message-Id: <159283798285.27744.2994917540889451941.b4-ty@kernel.org>
+        linux-arm-msm@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>
+In-Reply-To: <20200618150626.237027-1-dianders@chromium.org>
+References: <20200618150626.237027-1-dianders@chromium.org>
+Subject: Re: [PATCH v4 0/5] spi: spi-geni-qcom: Fixes / perf improvements
+Message-Id: <159283798284.27744.9640256219140180318.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, 19 Jun 2020 19:22:31 -0700, Stephen Boyd wrote:
-> To follow onto Doug's latest spi geni series[1] this simplifies and
-> reduces the code a little more.
+On Thu, 18 Jun 2020 08:06:21 -0700, Douglas Anderson wrote:
+> This patch series is a new version of the previous patch posted:
+>   [PATCH v2] spi: spi-geni-qcom: Speculative fix of "nobody cared" about interrupt
+>   https://lore.kernel.org/r/20200317133653.v2.1.I752ebdcfd5e8bf0de06d66e767b8974932b3620e@changeid
 > 
-> [1] https://lore.kernel.org/r/20200618150626.237027-1-dianders@chromium.org
-> 
-> Stephen Boyd (2):
->   spi: spi-geni-qcom: Simplify setup_fifo_xfer()
->   spi: spi-geni-qcom: Don't set {tx,rx}_rem_bytes unnecessarily
+> At this point I've done enough tracing to know that there was a real
+> race in the old code (not just weakly ordered memory problems) and
+> that should be fixed with the locking patches.
 > 
 > [...]
 

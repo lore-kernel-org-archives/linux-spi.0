@@ -2,60 +2,127 @@ Return-Path: <SRS0=6LXN=AE=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
 	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F453C433DF
-	for <linux-spi@archiver.kernel.org>; Tue, 23 Jun 2020 11:20:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 368C7C433DF
+	for <linux-spi@archiver.kernel.org>; Tue, 23 Jun 2020 13:53:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1BE1020724
-	for <linux-spi@archiver.kernel.org>; Tue, 23 Jun 2020 11:20:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1592911219;
-	bh=JdEuzOoBQSy0ATgysr8+rqhSBqYK/E54N9+5zET2IsA=;
-	h=Subject:From:Date:To:List-ID:From;
-	b=it8dXQnIUkVqTCeAYqlZLzfEvlaEEeDto8c4LBmNjuRDa4i6Ccec2DUC/TU55+wCL
-	 4vDIEq0NlLIu2+9WtsOdr8YUTS2KzalMMa5jsqWZnLDBoVSQPjAnKm0q8ZauD5Olce
-	 4bhLXJDQQjHRSynC8C1hSRok52olsT5RehILPGiM=
+	by mail.kernel.org (Postfix) with ESMTP id 11A0D20720
+	for <linux-spi@archiver.kernel.org>; Tue, 23 Jun 2020 13:53:33 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="SMdXrCDF"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732293AbgFWLUS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 23 Jun 2020 07:20:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33084 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732191AbgFWLUS (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 23 Jun 2020 07:20:18 -0400
-Content-Type: text/plain; charset="utf-8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592911218;
-        bh=JdEuzOoBQSy0ATgysr8+rqhSBqYK/E54N9+5zET2IsA=;
-        h=Subject:From:Date:To:From;
-        b=aVw4xVvzyr4hIZB8MwR+HZzxjZpwMR5uZwm77EpXb/AusHpk8lucRyVf+ktUrmyXl
-         RQMp3Upiigcz55wm/nZt/b8ZMHRbngp2ToHTJ1xksLMpJeQQoIeIzH3hCqpnqif1hB
-         iekQ/Is6LP+yscSg0mUX14fB5FkSslau95zzM2Oo=
+        id S1732774AbgFWNxa (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 23 Jun 2020 09:53:30 -0400
+Received: from esa3.microchip.iphmx.com ([68.232.153.233]:65017 "EHLO
+        esa3.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732766AbgFWNx2 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 23 Jun 2020 09:53:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1592920408; x=1624456408;
+  h=references:from:to:cc:subject:in-reply-to:date:
+   message-id:mime-version;
+  bh=Wh8tlTmkeLmBURIATHl2HVTtETUBHTovyprw1YhBJSM=;
+  b=SMdXrCDFMmZVp3bb5Z5x1QczWxPpCryOKnOjKQ8sYF7MsyMG7KbwChWv
+   fGwf91boFgwKYuCSdQ6gkCMtHl64dyE4fX8orILhPyJcQoWNEPOHAlWUd
+   UN6Aq7y6bHK4WHqFDP6OxvkUaxFle4ozNain3uQDP0YKFMinJSnZO73z6
+   qz6t5z+ouvx3sYh9le45gPu36BlDJxUrpNXS528YO7mi6Hp/GyTc5lwY1
+   F8lJ8V/NBlb3l6QZoyINtU9sYNR19j9bdLbXX1M3ldxnolflFRzLZGBOK
+   rYd1rtTLtYA5qccP2P4QkFnE1SPH722LgaFipBZr8xp64rBkOfAIeszI/
+   Q==;
+IronPort-SDR: Hq1PluohMkhb19j9nTJJm20AtFbnzLD8gz48m6b5MdsUHRS/VsQMz2/eU3gp6WRbjRTlmIfWG8
+ l6EztbvEEyQl/q8Ey00w82H6iIaiWVNRlYxzfBM9pUqWzG10mmNVZ9Zmgoxw1laDhW/EVCY4sG
+ xon+qyF5ghrjG4FBnQacQicEChjGOxXMTVEgCzjmqgSvvq/wj8sC46ntVkOi1E/U7E3kKmTp7V
+ vD1D7Gu8nKx9rsP8pX6Bq+117suOEQUaHH99ahxigiBndUKVkvrR2Knn+tjGzYvnr5gODwDXH7
+ b5w=
+X-IronPort-AV: E=Sophos;i="5.75,271,1589266800"; 
+   d="scan'208";a="81216978"
+Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 23 Jun 2020 06:53:26 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
+ chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1979.3; Tue, 23 Jun 2020 06:53:14 -0700
+Received: from soft-dev15.microsemi.net.microchip.com (10.10.115.15) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3
+ via Frontend Transport; Tue, 23 Jun 2020 06:53:12 -0700
+References: <20200619113121.9984-1-lars.povlsen@microchip.com> <20200619113121.9984-4-lars.povlsen@microchip.com> <20200619121107.GE5396@sirena.org.uk> <87imfjxtrq.fsf@soft-dev15.microsemi.net> <20200622121706.GF4560@sirena.org.uk>
+From:   Lars Povlsen <lars.povlsen@microchip.com>
+To:     Mark Brown <broonie@kernel.org>
+CC:     Lars Povlsen <lars.povlsen@microchip.com>,
+        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
+        <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Subject: Re: [PATCH v2 3/6] spi: dw: Add Microchip Sparx5 support
+In-Reply-To: <20200622121706.GF4560@sirena.org.uk>
+Date:   Tue, 23 Jun 2020 15:53:22 +0200
+Message-ID: <878sgddh2l.fsf@soft-dev15.microsemi.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+linux-spi@kernel.org
-Message-Id: <159291121821.16548.16574241212048039575.git-patchwork-housekeeping@kernel.org>
-Date:   Tue, 23 Jun 2020 11:20:18 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v8] Add interconnect support to QSPI and QUP drivers (2020-06-23T10:38:50)
-  Superseding: [v7] Add interconnect support to QSPI and QUP drivers (2020-06-09T05:56:28):
-    [V7,RESEND,1/7] soc: qcom: geni: Support for ICC voting
-    [V7,RESEND,2/7] soc: qcom-geni-se: Add interconnect support to fix earlycon crash
-    [V7,RESEND,3/7] i2c: i2c-qcom-geni: Add interconnect support
-    [V7,RESEND,4/7] spi: spi-geni-qcom: Add interconnect support
-    [V7,RESEND,5/7] tty: serial: qcom_geni_serial: Add interconnect support
-    [V7,RESEND,6/7] spi: spi-qcom-qspi: Add interconnect support
-    [V7,RESEND,7/7] arm64: dts: sc7180: Add interconnect for QUP and QSPI
+
+Mark Brown writes:
+
+On Mon, Jun 22, 2020 at 12:46:33PM +0200, Lars Povlsen wrote:
+>> On Fri, Jun 19, 2020 at 01:31:18PM +0200, Lars Povlsen wrote:
+>
+>> >> +	if (!nEnable) {
+>> >> +		/* Ensure CS toggles, so start off all disabled */
+>> >> +		regmap_write(dwsmscc->syscon, SPARX5_FORCE_VAL, ~0);
+>> >> +		/* CS override drive enable */
+>> >> +		regmap_write(dwsmscc->syscon, SPARX5_FORCE_ENA, 1);
+>
+>> >This should just be setting the value to whatever the core asked for it
+>> >to be set to, the driver adding extra toggles is likely to disrupt
+>> >things.
+>
+>> I will have a look at this again. But it was added for a reason. The
+>> issue is that we have two different busses in front of the controller,
+>> so we might need more settle time when switching interface.
+>
+>If there's a mux that needs to be handled specially that mux should be
+>described in DT on the relevant boards, there shouldn't just be
+>something hard coded in the controller driver.
+
+I have been able to change this into a straight setting - no
+toggling. Just needed a settle delay.
+
+I looked at the spi-mux driver, but that is more for muxing the CS's, as
+I understand - not the actual bus segment. I could use it, but it would
+require encoding the bus segment into the CS (double the normal
+range). Also, selecting the bus interface is tightly coupled to the
+controller - its not an externally constructed board mux.
+
+I feel the current implementation is more to the point, and easily
+understandable. It just adds the "microchip,spi-interface2" DT property.
+
+It might be that a better way exists using the spi-mux framework, and if
+you have some ideas for that I'd be all ears.
+
+>
+>BTW please do not CC subsystem patches to soc@kernel.org unless there's
+>a specific reason to do so - there's no need for it, these patches won't
+>get merged via there unless something is going wrong.  Generally the
+>subsystem maintainers take patches for a given subsystem.
+
+Ok, duly noted.
+
+Thank you for the comments.
+
+---Lars
 
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/pwbot
+Lars Povlsen,
+Microchip

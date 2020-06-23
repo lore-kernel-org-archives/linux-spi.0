@@ -7,45 +7,45 @@ X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
 	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3098EC433E0
-	for <linux-spi@archiver.kernel.org>; Tue, 23 Jun 2020 18:31:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3EC96C433E0
+	for <linux-spi@archiver.kernel.org>; Tue, 23 Jun 2020 18:31:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0FEC820829
-	for <linux-spi@archiver.kernel.org>; Tue, 23 Jun 2020 18:31:43 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1FA1C20826
+	for <linux-spi@archiver.kernel.org>; Tue, 23 Jun 2020 18:31:47 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="E9kKIYtA"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="vuaOQFvr"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733219AbgFWSbN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 23 Jun 2020 14:31:13 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:37174 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387435AbgFWSbM (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 23 Jun 2020 14:31:12 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 05NIUvNV060322;
-        Tue, 23 Jun 2020 13:30:57 -0500
+        id S2387456AbgFWSbm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 23 Jun 2020 14:31:42 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:48008 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387444AbgFWSbc (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 23 Jun 2020 14:31:32 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 05NIVMYi046890;
+        Tue, 23 Jun 2020 13:31:22 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1592937057;
-        bh=nXArtM6MFH13a5YEFYfd8/AUdTrmkkAxpoemUK7l0ys=;
+        s=ti-com-17Q1; t=1592937082;
+        bh=7zoKU0rfV7iweXMJVrs2iz1kaUSHfZ5nuTw0smUw7rA=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=E9kKIYtAbFTUR2xr9ut9ha4Qn5Tz01ev/Yfo3KenvN5dQdzEFFWO6vjqQrEbobbLR
-         Lltw8kcWDVFEK/H4vq+REZQWUK8rEwD2CZxuT6hD02c+aRQO1KaN2AyJweXwHD3Bbg
-         TYBH4FkWeSFIfes1CovtqwBVYKq/lm6Am6kFBskw=
-Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 05NIUvI0038505
+        b=vuaOQFvrokjxAQ2vM7bUXZLseVuhEgaubqdSXFlyg9eEzEiHFlKTMdPqux+p5i6qf
+         3Cee8GjmI37Bdrl36PyngzL0WAJYkvz2dDiTz/E/+26Pyr+Ylk9TYrQNjY055t+WYa
+         LPSRZSgOxONptzz4h2iiaT1vaHqs+XgGZlqWKy5I=
+Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 05NIVMm0050056
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 23 Jun 2020 13:30:57 -0500
-Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
+        Tue, 23 Jun 2020 13:31:22 -0500
+Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 23
- Jun 2020 13:30:57 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ Jun 2020 13:31:22 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE110.ent.ti.com
+ (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 23 Jun 2020 13:30:57 -0500
+ Frontend Transport; Tue, 23 Jun 2020 13:31:22 -0500
 Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 05NIUVJI000942;
-        Tue, 23 Jun 2020 13:30:52 -0500
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 05NIUVJN000942;
+        Tue, 23 Jun 2020 13:31:17 -0500
 From:   Pratyush Yadav <p.yadav@ti.com>
 To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
@@ -63,9 +63,9 @@ To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
         <linux-mediatek@lists.infradead.org>
 CC:     Pratyush Yadav <p.yadav@ti.com>, Sekhar Nori <nsekhar@ti.com>,
         Boris Brezillon <boris.brezillon@collabora.com>
-Subject: [PATCH v10 04/17] spi: spi-mtk-nor: reject DTR ops
-Date:   Wed, 24 Jun 2020 00:00:17 +0530
-Message-ID: <20200623183030.26591-5-p.yadav@ti.com>
+Subject: [PATCH v10 09/17] mtd: spi-nor: core: do 2 byte reads for SR and FSR in DTR mode
+Date:   Wed, 24 Jun 2020 00:00:22 +0530
+Message-ID: <20200623183030.26591-10-p.yadav@ti.com>
 X-Mailer: git-send-email 2.25.0
 In-Reply-To: <20200623183030.26591-1-p.yadav@ti.com>
 References: <20200623183030.26591-1-p.yadav@ti.com>
@@ -78,33 +78,62 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Double Transfer Rate (DTR) ops are added in spi-mem. But this controller
-doesn't support DTR transactions. Since we don't use the default
-supports_op(), which rejects all DTR ops, do that explicitly in our
-supports_op().
+Some controllers, like the cadence qspi controller, have trouble reading
+only 1 byte in DTR mode. So, do 2 byte reads for SR and FSR commands in
+DTR mode, and then discard the second byte.
 
 Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
 ---
- drivers/spi/spi-mtk-nor.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/mtd/spi-nor/core.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-mtk-nor.c b/drivers/spi/spi-mtk-nor.c
-index d5f393871619..b08d8e9a8ee9 100644
---- a/drivers/spi/spi-mtk-nor.c
-+++ b/drivers/spi/spi-mtk-nor.c
-@@ -211,6 +211,12 @@ static bool mtk_nor_supports_op(struct spi_mem *mem,
- 	if (op->cmd.buswidth != 1)
- 		return false;
+diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+index f2748f1d9957..5f7e4a5c33bc 100644
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -350,7 +350,7 @@ int spi_nor_write_disable(struct spi_nor *nor)
+  * spi_nor_read_sr() - Read the Status Register.
+  * @nor:	pointer to 'struct spi_nor'.
+  * @sr:		pointer to a DMA-able buffer where the value of the
+- *              Status Register will be written.
++ *              Status Register will be written. Should be at least 2 bytes.
+  *
+  * Return: 0 on success, -errno otherwise.
+  */
+@@ -371,6 +371,11 @@ static int spi_nor_read_sr(struct spi_nor *nor, u8 *sr)
+ 			op.addr.nbytes = addr_bytes;
+ 			op.addr.val = 0;
+ 			op.dummy.nbytes = dummy;
++			/*
++			 * We don't want to read only one byte in DTR mode. So,
++			 * read 2 and then discard the second byte.
++			 */
++			op.data.nbytes = 2;
+ 		}
  
-+	/* DTR ops not supported. */
-+	if (op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr)
-+		return false;
-+	if (op->cmd.nbytes != 1)
-+		return false;
-+
- 	if ((op->addr.nbytes == 3) || (op->addr.nbytes == 4)) {
- 		if ((op->data.dir == SPI_MEM_DATA_IN) && mtk_nor_match_read(op))
- 			return true;
+ 		spi_nor_spimem_setup_op(nor, &op, nor->reg_proto);
+@@ -394,7 +399,8 @@ static int spi_nor_read_sr(struct spi_nor *nor, u8 *sr)
+  * spi_nor_read_fsr() - Read the Flag Status Register.
+  * @nor:	pointer to 'struct spi_nor'
+  * @fsr:	pointer to a DMA-able buffer where the value of the
+- *              Flag Status Register will be written.
++ *              Flag Status Register will be written. Should be at least 2
++ *              bytes.
+  *
+  * Return: 0 on success, -errno otherwise.
+  */
+@@ -415,6 +421,11 @@ static int spi_nor_read_fsr(struct spi_nor *nor, u8 *fsr)
+ 			op.addr.nbytes = addr_bytes;
+ 			op.addr.val = 0;
+ 			op.dummy.nbytes = dummy;
++			/*
++			 * We don't want to read only one byte in DTR mode. So,
++			 * read 2 and then discard the second byte.
++			 */
++			op.data.nbytes = 2;
+ 		}
+ 
+ 		spi_nor_spimem_setup_op(nor, &op, nor->reg_proto);
 -- 
 2.27.0
 

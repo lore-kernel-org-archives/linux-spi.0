@@ -4,46 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D77ECC433E3
-	for <linux-spi@archiver.kernel.org>; Tue, 23 Jun 2020 10:40:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 25DB6C433DF
+	for <linux-spi@archiver.kernel.org>; Tue, 23 Jun 2020 10:40:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A8E3C20774
-	for <linux-spi@archiver.kernel.org>; Tue, 23 Jun 2020 10:40:02 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F181D20774
+	for <linux-spi@archiver.kernel.org>; Tue, 23 Jun 2020 10:40:09 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=mg.codeaurora.org header.i=@mg.codeaurora.org header.b="PMz+y4t2"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=mg.codeaurora.org header.i=@mg.codeaurora.org header.b="EIOzX111"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732253AbgFWKkB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 23 Jun 2020 06:40:01 -0400
-Received: from mail29.static.mailgun.info ([104.130.122.29]:27427 "EHLO
+        id S1732399AbgFWKkI (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 23 Jun 2020 06:40:08 -0400
+Received: from mail29.static.mailgun.info ([104.130.122.29]:40337 "EHLO
         mail29.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1732336AbgFWKkA (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 23 Jun 2020 06:40:00 -0400
+        by vger.kernel.org with ESMTP id S1732182AbgFWKkG (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 23 Jun 2020 06:40:06 -0400
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1592908799; h=References: In-Reply-To: Message-Id: Date:
+ s=smtp; t=1592908806; h=References: In-Reply-To: Message-Id: Date:
  Subject: Cc: To: From: Sender;
- bh=cMVA6XKobPYb2P5V4WDTE0sZ8KLU5FgijDwu8Cxplgs=; b=PMz+y4t2nSqGpW1gwIZpPi+lIsjvrYuQFixEUfxoK6k+86dcxDNZJrY1++A4WI2lRsaISZuO
- qQCNxotN4bJ2IbLeOSS+qYtGT+unUfC5BoQ0j8jsXbsn0JFc3SkkUzOmoy02eqGkN4+2dsGW
- +9IH9RTBebCQKZIFPRITG8j8E/Q=
+ bh=093s4Q6UjWhPg1FWwScxBkXycVQAoBfvgHbEZmyGg3U=; b=EIOzX111B9rl+HdfGFzbkvieK8LBC5/Xtdg6XqQ2G4b71yyVsaOp61O55/NTUmjxiTdHkLHf
+ i/yDWUHbW3qZqcFXjHGa/5E2oQGwJ0fR08wVkT2+aeh+1jJLSohz7V9dXYaLKnGTyn2YcUPv
+ 168yP2KeHdK6IKYhoePNSTI0Dzc=
 X-Mailgun-Sending-Ip: 104.130.122.29
 X-Mailgun-Sid: WyIzNzdmZSIsICJsaW51eC1zcGlAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
 Received: from smtp.codeaurora.org
  (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n15.prod.us-east-1.postgun.com with SMTP id
- 5ef1dbe2356bcc26ab454ce8 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 23 Jun 2020 10:39:30
+ smtp-out-n08.prod.us-east-1.postgun.com with SMTP id
+ 5ef1dbfb0206ad41d1270138 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 23 Jun 2020 10:39:55
  GMT
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id DD56EC433CB; Tue, 23 Jun 2020 10:39:29 +0000 (UTC)
+        id DFCDBC433AD; Tue, 23 Jun 2020 10:39:53 +0000 (UTC)
 Received: from akashast-linux.qualcomm.com (blr-c-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.19.19])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
         (Authenticated sender: akashast)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8A84EC43395;
-        Tue, 23 Jun 2020 10:39:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8A84EC43395
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B2F99C433C8;
+        Tue, 23 Jun 2020 10:39:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B2F99C433C8
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=akashast@codeaurora.org
 From:   Akash Asthana <akashast@codeaurora.org>
@@ -56,9 +56,9 @@ Cc:     linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
         dianders@chromium.org, evgreen@codeaurora.org,
         linux-kernel@vger.kernel.org,
         Akash Asthana <akashast@codeaurora.org>
-Subject: [PATCH V8 3/8] i2c: i2c-qcom-geni: Add interconnect support
-Date:   Tue, 23 Jun 2020 16:08:52 +0530
-Message-Id: <1592908737-7068-4-git-send-email-akashast@codeaurora.org>
+Subject: [PATCH V8 7/8] spi: spi-qcom-qspi: Add interconnect support
+Date:   Tue, 23 Jun 2020 16:08:56 +0530
+Message-Id: <1592908737-7068-8-git-send-email-akashast@codeaurora.org>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1592908737-7068-1-git-send-email-akashast@codeaurora.org>
 References: <1592908737-7068-1-git-send-email-akashast@codeaurora.org>
@@ -67,103 +67,161 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Get the interconnect paths for I2C based Serial Engine device
-and vote according to the bus speed of the driver.
+Get the interconnect paths for QSPI device and vote according to the
+current bus speed of the driver.
 
 Signed-off-by: Akash Asthana <akashast@codeaurora.org>
 Reviewed-by: Matthias Kaehlcke <mka@chromium.org>
-Acked-by: Wolfram Sang <wsa@kernel.org>
 ---
 Changes in V2:
- - As per Bjorn's comment, removed se == NULL check from geni_i2c_icc_get
- - As per Bjorn's comment, removed code to set se->icc_path* to NULL in failure
  - As per Bjorn's comment, introduced and using devm_of_icc_get API for getting
    path handle
  - As per Matthias comment, added error handling for icc_set_bw call
 
 Changes in V3:
- - As per Matthias comment, use common library APIs defined in geni-se
-   driver for ICC functionality.
+ - No Change.
 
 Changes in V4:
- - Move peak_bw guess as twice of avg_bw if nothing mentioned explicitly
-   to ICC core.
+ - As per Mark's comment move peak_bw guess as twice of avg_bw if
+   nothing mentioned explicitly to ICC core.
 
 Changes in V5:
- - Use icc_enable/disable in power on/off call.
+ - Add icc_enable/disable to power on/off call.
+ - Save some non-zero avg/peak value to ICC core by calling geni_icc_set_bw
+   from probe so that when resume/icc_enable is called NOC are running at
+   some non-zero value.
 
 Changes in V6:
- - No changes
+ - As per Matthias's comment made print statement consistent across driver
 
 Changes in V7:
  - As per Matthias's comment removed usage of peak_bw variable because we don't
    have explicit peak requirement, we were voting peak = avg and this can be
    tracked using single variable for avg bw.
+ - As per Matthias's comment improved print log.
+
+Changes in Resend V7:
+ - As per Matthias comment removed "unsigned int avg_bw_cpu" from
+   struct qcom_qspi as we are using that variable only once.
 
 Changes in V8:
- - No change.
+ - No change
 
- drivers/i2c/busses/i2c-qcom-geni.c | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+ drivers/spi/spi-qcom-qspi.c | 56 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 55 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c-qcom-geni.c
-index 18d1e4f..32b2a99 100644
---- a/drivers/i2c/busses/i2c-qcom-geni.c
-+++ b/drivers/i2c/busses/i2c-qcom-geni.c
-@@ -557,6 +557,22 @@ static int geni_i2c_probe(struct platform_device *pdev)
- 	gi2c->adap.dev.of_node = dev->of_node;
- 	strlcpy(gi2c->adap.name, "Geni-I2C", sizeof(gi2c->adap.name));
+diff --git a/drivers/spi/spi-qcom-qspi.c b/drivers/spi/spi-qcom-qspi.c
+index 3c4f83b..b5b4cf6 100644
+--- a/drivers/spi/spi-qcom-qspi.c
++++ b/drivers/spi/spi-qcom-qspi.c
+@@ -2,6 +2,7 @@
+ // Copyright (c) 2017-2018, The Linux foundation. All rights reserved.
  
-+	ret = geni_icc_get(&gi2c->se, "qup-memory");
-+	if (ret)
-+		return ret;
-+	/*
-+	 * Set the bus quota for core and cpu to a reasonable value for
-+	 * register access.
-+	 * Set quota for DDR based on bus speed.
-+	 */
-+	gi2c->se.icc_paths[GENI_TO_CORE].avg_bw = GENI_DEFAULT_BW;
-+	gi2c->se.icc_paths[CPU_TO_GENI].avg_bw = GENI_DEFAULT_BW;
-+	gi2c->se.icc_paths[GENI_TO_DDR].avg_bw = Bps_to_icc(gi2c->clk_freq_out);
-+
-+	ret = geni_icc_set_bw(&gi2c->se);
-+	if (ret)
-+		return ret;
-+
- 	ret = geni_se_resources_on(&gi2c->se);
- 	if (ret) {
- 		dev_err(dev, "Error turning on resources %d\n", ret);
-@@ -579,6 +595,10 @@ static int geni_i2c_probe(struct platform_device *pdev)
+ #include <linux/clk.h>
++#include <linux/interconnect.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+ #include <linux/module.h>
+@@ -139,7 +140,8 @@ struct qcom_qspi {
+ 	struct device *dev;
+ 	struct clk_bulk_data *clks;
+ 	struct qspi_xfer xfer;
+-	/* Lock to protect xfer and IRQ accessed registers */
++	struct icc_path *icc_path_cpu_to_qspi;
++	/* Lock to protect data accessed by IRQs */
+ 	spinlock_t lock;
+ };
+ 
+@@ -229,6 +231,7 @@ static int qcom_qspi_transfer_one(struct spi_master *master,
+ 	int ret;
+ 	unsigned long speed_hz;
+ 	unsigned long flags;
++	unsigned int avg_bw_cpu;
+ 
+ 	speed_hz = slv->max_speed_hz;
+ 	if (xfer->speed_hz)
+@@ -241,6 +244,18 @@ static int qcom_qspi_transfer_one(struct spi_master *master,
  		return ret;
  	}
  
-+	ret = geni_icc_disable(&gi2c->se);
-+	if (ret)
++	/*
++	 * Set BW quota for CPU as driver supports FIFO mode only.
++	 * We don't have explicit peak requirement so keep it equal to avg_bw.
++	 */
++	avg_bw_cpu = Bps_to_icc(speed_hz);
++	ret = icc_set_bw(ctrl->icc_path_cpu_to_qspi, avg_bw_cpu, avg_bw_cpu);
++	if (ret) {
++		dev_err(ctrl->dev, "%s: ICC BW voting failed for cpu: %d\n",
++			__func__, ret);
 +		return ret;
++	}
 +
- 	dev_dbg(dev, "i2c fifo/se-dma mode. fifo depth:%d\n", tx_depth);
+ 	spin_lock_irqsave(&ctrl->lock, flags);
  
- 	gi2c->suspended = 1;
-@@ -623,7 +643,7 @@ static int __maybe_unused geni_i2c_runtime_suspend(struct device *dev)
- 		gi2c->suspended = 1;
- 	}
+ 	/* We are half duplex, so either rx or tx will be set */
+@@ -458,6 +473,29 @@ static int qcom_qspi_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto exit_probe_master_put;
  
--	return 0;
-+	return geni_icc_disable(&gi2c->se);
++	ctrl->icc_path_cpu_to_qspi = devm_of_icc_get(dev, "qspi-config");
++	if (IS_ERR(ctrl->icc_path_cpu_to_qspi)) {
++		ret = PTR_ERR(ctrl->icc_path_cpu_to_qspi);
++		if (ret != -EPROBE_DEFER)
++			dev_err(dev, "Failed to get cpu path: %d\n", ret);
++		goto exit_probe_master_put;
++	}
++	/* Set BW vote for register access */
++	ret = icc_set_bw(ctrl->icc_path_cpu_to_qspi, Bps_to_icc(1000),
++				Bps_to_icc(1000));
++	if (ret) {
++		dev_err(ctrl->dev, "%s: ICC BW voting failed for cpu: %d\n",
++				__func__, ret);
++		goto exit_probe_master_put;
++	}
++
++	ret = icc_disable(ctrl->icc_path_cpu_to_qspi);
++	if (ret) {
++		dev_err(ctrl->dev, "%s: ICC disable failed for cpu: %d\n",
++				__func__, ret);
++		goto exit_probe_master_put;
++	}
++
+ 	ret = platform_get_irq(pdev, 0);
+ 	if (ret < 0)
+ 		goto exit_probe_master_put;
+@@ -511,9 +549,17 @@ static int __maybe_unused qcom_qspi_runtime_suspend(struct device *dev)
+ {
+ 	struct spi_master *master = dev_get_drvdata(dev);
+ 	struct qcom_qspi *ctrl = spi_master_get_devdata(master);
++	int ret;
+ 
+ 	clk_bulk_disable_unprepare(QSPI_NUM_CLKS, ctrl->clks);
+ 
++	ret = icc_disable(ctrl->icc_path_cpu_to_qspi);
++	if (ret) {
++		dev_err_ratelimited(ctrl->dev, "%s: ICC disable failed for cpu: %d\n",
++			__func__, ret);
++		return ret;
++	}
++
+ 	return 0;
  }
  
- static int __maybe_unused geni_i2c_runtime_resume(struct device *dev)
-@@ -631,6 +651,10 @@ static int __maybe_unused geni_i2c_runtime_resume(struct device *dev)
- 	int ret;
- 	struct geni_i2c_dev *gi2c = dev_get_drvdata(dev);
- 
-+	ret = geni_icc_enable(&gi2c->se);
-+	if (ret)
-+		return ret;
+@@ -521,6 +567,14 @@ static int __maybe_unused qcom_qspi_runtime_resume(struct device *dev)
+ {
+ 	struct spi_master *master = dev_get_drvdata(dev);
+ 	struct qcom_qspi *ctrl = spi_master_get_devdata(master);
++	int ret;
 +
- 	ret = geni_se_resources_on(&gi2c->se);
- 	if (ret)
- 		return ret;
++	ret = icc_enable(ctrl->icc_path_cpu_to_qspi);
++	if (ret) {
++		dev_err_ratelimited(ctrl->dev, "%s: ICC enable failed for cpu: %d\n",
++			__func__, ret);
++		return ret;
++	}
+ 
+ 	return clk_bulk_prepare_enable(QSPI_NUM_CLKS, ctrl->clks);
+ }
 -- 
 The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,\na Linux Foundation Collaborative Project
 

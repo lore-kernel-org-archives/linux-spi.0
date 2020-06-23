@@ -5,47 +5,46 @@ X-Spam-Level:
 X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 399C4C433E0
-	for <linux-spi@archiver.kernel.org>; Tue, 23 Jun 2020 18:31:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BAD24C433E0
+	for <linux-spi@archiver.kernel.org>; Tue, 23 Jun 2020 18:31:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 140A420809
-	for <linux-spi@archiver.kernel.org>; Tue, 23 Jun 2020 18:31:12 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 960D12081A
+	for <linux-spi@archiver.kernel.org>; Tue, 23 Jun 2020 18:31:23 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="xqIexq7b"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="R7fJLnhH"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387421AbgFWSbL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 23 Jun 2020 14:31:11 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:37168 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387412AbgFWSbJ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 23 Jun 2020 14:31:09 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 05NIUlQX060282;
-        Tue, 23 Jun 2020 13:30:47 -0500
+        id S2387585AbgFWSbT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 23 Jun 2020 14:31:19 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:47952 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387578AbgFWSbR (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 23 Jun 2020 14:31:17 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 05NIV7hE046789;
+        Tue, 23 Jun 2020 13:31:07 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1592937047;
-        bh=+PbWPkr19xJ6LGYiPwbSA3CjRdwN7PCbK+H+7b69nms=;
+        s=ti-com-17Q1; t=1592937067;
+        bh=GqkBcyXjBXiod4RrFOhbO6koYzCT9k/GbaT798jYrzI=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=xqIexq7bzzkIs7T1kHYdv2EVf6AFLUhOetJ1C3hU3QmnLEFs9JgiyNYlprZt/AkVB
-         bDb3AMVRZ6NUbV0Lo/hTd5KQNUTyMEyOTsabTqfhP9zAkKxpB2KBBZYZ3PZFDKEgTH
-         WiDWkznv7flHQk40TXifhrue37zzJ/ZDre+pyErU=
+        b=R7fJLnhHf4wXiawXdsEhYG5Ayc1iO856DnElB8vXocrKK/8jAzoCuY3unfUqw2Ygh
+         gJP34jK+ESEsInPOuzZLygGE5zcC+CU5wXSTMTKCN+l1IciWs+1mwdGOZXO/8hDje7
+         gRife8olqP9YDlGdMuG7eWWZf4fhzURdAkfPz9/U=
 Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 05NIUlEw035866
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 23 Jun 2020 13:30:47 -0500
-Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE114.ent.ti.com
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 05NIV7xx042197;
+        Tue, 23 Jun 2020 13:31:07 -0500
+Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE114.ent.ti.com
  (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 23
- Jun 2020 13:30:47 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE110.ent.ti.com
- (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
+ Jun 2020 13:31:07 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 23 Jun 2020 13:30:46 -0500
+ Frontend Transport; Tue, 23 Jun 2020 13:31:07 -0500
 Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 05NIUVJG000942;
-        Tue, 23 Jun 2020 13:30:42 -0500
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 05NIUVJK000942;
+        Tue, 23 Jun 2020 13:31:02 -0500
 From:   Pratyush Yadav <p.yadav@ti.com>
 To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
@@ -63,9 +62,9 @@ To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
         <linux-mediatek@lists.infradead.org>
 CC:     Pratyush Yadav <p.yadav@ti.com>, Sekhar Nori <nsekhar@ti.com>,
         Boris Brezillon <boris.brezillon@collabora.com>
-Subject: [PATCH v10 02/17] spi: spi-mem: allow specifying a command's extension
-Date:   Wed, 24 Jun 2020 00:00:15 +0530
-Message-ID: <20200623183030.26591-3-p.yadav@ti.com>
+Subject: [PATCH v10 06/17] mtd: spi-nor: sfdp: get command opcode extension type from BFPT
+Date:   Wed, 24 Jun 2020 00:00:19 +0530
+Message-ID: <20200623183030.26591-7-p.yadav@ti.com>
 X-Mailer: git-send-email 2.25.0
 In-Reply-To: <20200623183030.26591-1-p.yadav@ti.com>
 References: <20200623183030.26591-1-p.yadav@ti.com>
@@ -78,197 +77,63 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-In xSPI mode, flashes expect 2-byte opcodes. The second byte is called
-the "command extension". There can be 3 types of extensions in xSPI:
-repeat, invert, and hex. When the extension type is "repeat", the same
-opcode is sent twice. When it is "invert", the second byte is the
-inverse of the opcode. When it is "hex" an additional opcode byte based
-is sent with the command whose value can be anything.
-
-So, make opcode a 16-bit value and add a 'nbytes', similar to how
-multiple address widths are handled.
-
-Some places use sizeof(op->cmd.opcode). Replace them with op->cmd.nbytes
-
-The spi-mxic and spi-zynq-qspi drivers directly use op->cmd.opcode as a
-buffer. Now that opcode is a 2-byte field, this can result in different
-behaviour depending on if the machine is little endian or big endian.
-Extract the opcode in a local 1-byte variable and use that as the buffer
-instead. Both these drivers would reject multi-byte opcodes in their
-supports_op() hook anyway, so we only need to worry about single-byte
-opcodes for now.
-
-The above two changes are put in this commit to keep the series
-bisectable.
+Some devices in DTR mode expect an extra command byte called the
+extension. The extension can either be same as the opcode, bitwise
+inverse of the opcode, or another additional byte forming a 16-byte
+opcode. Get the extension type from the BFPT. For now, only flashes with
+"repeat" and "inverse" extensions are supported.
 
 Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
 ---
- drivers/spi/spi-mem.c       | 13 +++++++------
- drivers/spi/spi-mtk-nor.c   |  4 ++--
- drivers/spi/spi-mxic.c      |  3 ++-
- drivers/spi/spi-zynq-qspi.c | 11 ++++++-----
- include/linux/spi/spi-mem.h |  6 +++++-
- 5 files changed, 22 insertions(+), 15 deletions(-)
+ drivers/mtd/spi-nor/sfdp.c | 17 +++++++++++++++++
+ drivers/mtd/spi-nor/sfdp.h |  6 ++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index 93e255287ab9..ef53290b7d24 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -159,6 +159,9 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
- 	if (op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr)
- 		return false;
- 
-+	if (op->cmd.nbytes != 1)
-+		return false;
+diff --git a/drivers/mtd/spi-nor/sfdp.c b/drivers/mtd/spi-nor/sfdp.c
+index cb6e93a3560a..3f709de5ea67 100644
+--- a/drivers/mtd/spi-nor/sfdp.c
++++ b/drivers/mtd/spi-nor/sfdp.c
+@@ -605,6 +605,23 @@ static int spi_nor_parse_bfpt(struct spi_nor *nor,
+ 	if (bfpt_header->length == BFPT_DWORD_MAX_JESD216B)
+ 		return spi_nor_post_bfpt_fixups(nor, bfpt_header, &bfpt,
+ 						params);
++	/* 8D-8D-8D command extension. */
++	switch (bfpt.dwords[BFPT_DWORD(18)] & BFPT_DWORD18_CMD_EXT_MASK) {
++	case BFPT_DWORD18_CMD_EXT_REP:
++		nor->cmd_ext_type = SPI_NOR_EXT_REPEAT;
++		break;
 +
- 	return true;
++	case BFPT_DWORD18_CMD_EXT_INV:
++		nor->cmd_ext_type = SPI_NOR_EXT_INVERT;
++		break;
++
++	case BFPT_DWORD18_CMD_EXT_RES:
++		return -EINVAL;
++
++	case BFPT_DWORD18_CMD_EXT_16B:
++		dev_err(nor->dev, "16-bit opcodes not supported\n");
++		return -ENOTSUPP;
++	}
+ 
+ 	return spi_nor_post_bfpt_fixups(nor, bfpt_header, &bfpt, params);
  }
- EXPORT_SYMBOL_GPL(spi_mem_default_supports_op);
-@@ -173,7 +176,7 @@ static bool spi_mem_buswidth_is_valid(u8 buswidth)
+diff --git a/drivers/mtd/spi-nor/sfdp.h b/drivers/mtd/spi-nor/sfdp.h
+index 7f9846b3a1ad..6d7243067252 100644
+--- a/drivers/mtd/spi-nor/sfdp.h
++++ b/drivers/mtd/spi-nor/sfdp.h
+@@ -90,6 +90,12 @@ struct sfdp_bfpt {
+ #define BFPT_DWORD15_QER_SR2_BIT1_NO_RD		(0x4UL << 20)
+ #define BFPT_DWORD15_QER_SR2_BIT1		(0x5UL << 20) /* Spansion */
  
- static int spi_mem_check_op(const struct spi_mem_op *op)
- {
--	if (!op->cmd.buswidth)
-+	if (!op->cmd.buswidth || !op->cmd.nbytes)
- 		return -EINVAL;
- 
- 	if ((op->addr.nbytes && !op->addr.buswidth) ||
-@@ -309,8 +312,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 			return ret;
- 	}
- 
--	tmpbufsize = sizeof(op->cmd.opcode) + op->addr.nbytes +
--		     op->dummy.nbytes;
-+	tmpbufsize = op->cmd.nbytes + op->addr.nbytes + op->dummy.nbytes;
- 
- 	/*
- 	 * Allocate a buffer to transmit the CMD, ADDR cycles with kmalloc() so
-@@ -325,7 +327,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 
- 	tmpbuf[0] = op->cmd.opcode;
- 	xfers[xferpos].tx_buf = tmpbuf;
--	xfers[xferpos].len = sizeof(op->cmd.opcode);
-+	xfers[xferpos].len = op->cmd.nbytes;
- 	xfers[xferpos].tx_nbits = op->cmd.buswidth;
- 	spi_message_add_tail(&xfers[xferpos], &msg);
- 	xferpos++;
-@@ -427,8 +429,7 @@ int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
- 		return ctlr->mem_ops->adjust_op_size(mem, op);
- 
- 	if (!ctlr->mem_ops || !ctlr->mem_ops->exec_op) {
--		len = sizeof(op->cmd.opcode) + op->addr.nbytes +
--		      op->dummy.nbytes;
-+		len = op->cmd.nbytes + op->addr.nbytes + op->dummy.nbytes;
- 
- 		if (len > spi_max_transfer_size(mem->spi))
- 			return -EINVAL;
-diff --git a/drivers/spi/spi-mtk-nor.c b/drivers/spi/spi-mtk-nor.c
-index 7bc302b50396..d5f393871619 100644
---- a/drivers/spi/spi-mtk-nor.c
-+++ b/drivers/spi/spi-mtk-nor.c
-@@ -195,7 +195,7 @@ static int mtk_nor_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
- 		}
- 	}
- 
--	len = MTK_NOR_PRG_MAX_SIZE - sizeof(op->cmd.opcode) - op->addr.nbytes -
-+	len = MTK_NOR_PRG_MAX_SIZE - op->cmd.nbytes - op->addr.nbytes -
- 	      op->dummy.nbytes;
- 	if (op->data.nbytes > len)
- 		op->data.nbytes = len;
-@@ -219,7 +219,7 @@ static bool mtk_nor_supports_op(struct spi_mem *mem,
- 			       (op->dummy.buswidth == 0) &&
- 			       (op->data.buswidth == 1);
- 	}
--	len = sizeof(op->cmd.opcode) + op->addr.nbytes + op->dummy.nbytes;
-+	len = op->cmd.nbytes + op->addr.nbytes + op->dummy.nbytes;
- 	if ((len > MTK_NOR_PRG_MAX_SIZE) ||
- 	    ((op->data.nbytes) && (len == MTK_NOR_PRG_MAX_SIZE)))
- 		return false;
-diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
-index 69491f3a515d..8c630acb0110 100644
---- a/drivers/spi/spi-mxic.c
-+++ b/drivers/spi/spi-mxic.c
-@@ -356,6 +356,7 @@ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
- 	int nio = 1, i, ret;
- 	u32 ss_ctrl;
- 	u8 addr[8];
-+	u8 opcode = op->cmd.opcode;
- 
- 	ret = mxic_spi_set_freq(mxic, mem->spi->max_speed_hz);
- 	if (ret)
-@@ -393,7 +394,7 @@ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
- 	writel(readl(mxic->regs + HC_CFG) | HC_CFG_MAN_CS_ASSERT,
- 	       mxic->regs + HC_CFG);
- 
--	ret = mxic_spi_data_xfer(mxic, &op->cmd.opcode, NULL, 1);
-+	ret = mxic_spi_data_xfer(mxic, &opcode, NULL, 1);
- 	if (ret)
- 		goto out;
- 
-diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index 17641157354d..bbf3d90561f5 100644
---- a/drivers/spi/spi-zynq-qspi.c
-+++ b/drivers/spi/spi-zynq-qspi.c
-@@ -527,20 +527,21 @@ static int zynq_qspi_exec_mem_op(struct spi_mem *mem,
- 	struct zynq_qspi *xqspi = spi_controller_get_devdata(mem->spi->master);
- 	int err = 0, i;
- 	u8 *tmpbuf;
-+	u8 opcode = op->cmd.opcode;
- 
- 	dev_dbg(xqspi->dev, "cmd:%#x mode:%d.%d.%d.%d\n",
--		op->cmd.opcode, op->cmd.buswidth, op->addr.buswidth,
-+		opcode, op->cmd.buswidth, op->addr.buswidth,
- 		op->dummy.buswidth, op->data.buswidth);
- 
- 	zynq_qspi_chipselect(mem->spi, true);
- 	zynq_qspi_config_op(xqspi, mem->spi);
- 
--	if (op->cmd.opcode) {
-+	if (op->cmd.nbytes) {
- 		reinit_completion(&xqspi->data_completion);
--		xqspi->txbuf = (u8 *)&op->cmd.opcode;
-+		xqspi->txbuf = &opcode;
- 		xqspi->rxbuf = NULL;
--		xqspi->tx_bytes = sizeof(op->cmd.opcode);
--		xqspi->rx_bytes = sizeof(op->cmd.opcode);
-+		xqspi->tx_bytes = op->cmd.nbytes;
-+		xqspi->rx_bytes = op->cmd.nbytes;
- 		zynq_qspi_write_op(xqspi, ZYNQ_QSPI_FIFO_DEPTH, true);
- 		zynq_qspi_write(xqspi, ZYNQ_QSPI_IEN_OFFSET,
- 				ZYNQ_QSPI_IXR_RXTX_MASK);
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index e3dcb956bf61..159463cc659c 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -17,6 +17,7 @@
- 	{							\
- 		.buswidth = __buswidth,				\
- 		.opcode = __opcode,				\
-+		.nbytes = 1,					\
- 	}
- 
- #define SPI_MEM_OP_ADDR(__nbytes, __val, __buswidth)		\
-@@ -69,6 +70,8 @@ enum spi_mem_data_dir {
- 
- /**
-  * struct spi_mem_op - describes a SPI memory operation
-+ * @cmd.nbytes: number of opcode bytes (only 1 or 2 are valid). The opcode is
-+ *		sent MSB-first.
-  * @cmd.buswidth: number of IO lines used to transmit the command
-  * @cmd.opcode: operation opcode
-  * @cmd.dtr: whether the command opcode should be sent in DTR mode or not
-@@ -94,9 +97,10 @@ enum spi_mem_data_dir {
-  */
- struct spi_mem_op {
- 	struct {
-+		u8 nbytes;
- 		u8 buswidth;
- 		u8 dtr : 1;
--		u8 opcode;
-+		u16 opcode;
- 	} cmd;
- 
- 	struct {
++#define BFPT_DWORD18_CMD_EXT_MASK		GENMASK(30, 29)
++#define BFPT_DWORD18_CMD_EXT_REP		(0x0UL << 29) /* Repeat */
++#define BFPT_DWORD18_CMD_EXT_INV		(0x1UL << 29) /* Invert */
++#define BFPT_DWORD18_CMD_EXT_RES		(0x2UL << 29) /* Reserved */
++#define BFPT_DWORD18_CMD_EXT_16B		(0x3UL << 29) /* 16-bit opcode */
++
+ struct sfdp_parameter_header {
+ 	u8		id_lsb;
+ 	u8		minor;
 -- 
 2.27.0
 

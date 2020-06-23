@@ -2,158 +2,72 @@ Return-Path: <SRS0=6LXN=AE=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-1.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 67E43C433DF
-	for <linux-spi@archiver.kernel.org>; Tue, 23 Jun 2020 18:32:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D4A72C433DF
+	for <linux-spi@archiver.kernel.org>; Tue, 23 Jun 2020 18:40:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4B7E820826
-	for <linux-spi@archiver.kernel.org>; Tue, 23 Jun 2020 18:32:20 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="o+1vOeEE"
+	by mail.kernel.org (Postfix) with ESMTP id A9F7C207D0
+	for <linux-spi@archiver.kernel.org>; Tue, 23 Jun 2020 18:40:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1592937622;
+	bh=jY+F3hHgkItoUhJBCyJc7b3uxptE3jF1A4FmnVCt48Y=;
+	h=Subject:From:Date:To:List-ID:From;
+	b=i1TacEUd/DjFlpBOkmmV4ZiQMOE6Sddm26wjZhh8/XlVo6CJ7/xgx2xXKtDjoNXR2
+	 wv5HX4i0NYBCW6KbwiEUIWT0HRO8cM08jK5f+/K8hDDAM+V5NZaiD8tNPKa8QTRuY6
+	 fpgpt2kZumLCjJfSu6HjT8W61tRoOoUQTOjNhJI4=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733075AbgFWSbG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 23 Jun 2020 14:31:06 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:47916 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732988AbgFWSbG (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 23 Jun 2020 14:31:06 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 05NIUg1g046667;
-        Tue, 23 Jun 2020 13:30:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1592937042;
-        bh=iMtUHt0rAjRLMe+mvdnL0nxuMBYvHggaoNeE2bSkaA4=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=o+1vOeEEHTaja6oPk8R+/KJpjOFeWOkYn3WgVtG1znQRaPxTexDhiprIqgiX5kn8b
-         BBGEKDzi6sA5fUHTPmE+ZpSkkNZxEO22NEV8JrcICnU6+jp5g5NpmCyytatEhTbC3F
-         hzuq8Rn3qZzg915ATI2JGE02VwOgq/aoynDpnHZg=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 05NIUgk6038330
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 23 Jun 2020 13:30:42 -0500
-Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 23
- Jun 2020 13:30:41 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 23 Jun 2020 13:30:41 -0500
-Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 05NIUVJF000942;
-        Tue, 23 Jun 2020 13:30:37 -0500
-From:   Pratyush Yadav <p.yadav@ti.com>
-To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Mark Brown <broonie@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>
-CC:     Pratyush Yadav <p.yadav@ti.com>, Sekhar Nori <nsekhar@ti.com>,
-        Boris Brezillon <boris.brezillon@collabora.com>
-Subject: [PATCH v10 01/17] spi: spi-mem: allow specifying whether an op is DTR or not
-Date:   Wed, 24 Jun 2020 00:00:14 +0530
-Message-ID: <20200623183030.26591-2-p.yadav@ti.com>
-X-Mailer: git-send-email 2.25.0
-In-Reply-To: <20200623183030.26591-1-p.yadav@ti.com>
-References: <20200623183030.26591-1-p.yadav@ti.com>
+        id S1733242AbgFWSkW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 23 Jun 2020 14:40:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35018 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1733193AbgFWSkV (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 23 Jun 2020 14:40:21 -0400
+Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1592937621;
+        bh=jY+F3hHgkItoUhJBCyJc7b3uxptE3jF1A4FmnVCt48Y=;
+        h=Subject:From:Date:To:From;
+        b=2fPrjvbhkc5nHqZ3kPT9LDHpvx9sa+4COlpISvezJmBNen82eGbgqdpcdYx6/XwLL
+         B3m9b8jMFLB+DIZK6DIRPge3HUNVaedU9rXedh6rD9PpbBx3f6yG8Q/Qbq85Dwyr1b
+         sucJO70179/zyWpB3bjU9Gt85Xn1kIwgWXM9xeeI=
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+linux-spi@kernel.org
+Message-Id: <159293762160.8733.9084361964941071506.git-patchwork-housekeeping@kernel.org>
+Date:   Tue, 23 Jun 2020 18:40:21 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Each phase is given a separate 'dtr' field so mixed protocols like
-4S-4D-4D can be supported.
+Latest series: [v10] mtd: spi-nor: add xSPI Octal DTR support (2020-06-23T18:30:13)
+  Superseding: [v9] mtd: spi-nor: add xSPI Octal DTR support (2020-05-25T09:15:26):
+    [v9,01/19] spi: spi-mem: allow specifying whether an op is DTR or not
+    [v9,02/19] spi: spi-mem: allow specifying a command's extension
+    [v9,03/19] spi: atmel-quadspi: reject DTR ops
+    [v9,04/19] spi: spi-mtk-nor: reject DTR ops
+    [v9,05/19] mtd: spi-nor: add support for DTR protocol
+    [v9,06/19] mtd: spi-nor: sfdp: default to addr_width of 3 for configurable widths
+    [v9,07/19] mtd: spi-nor: sfdp: prepare BFPT parsing for JESD216 rev D
+    [v9,08/19] mtd: spi-nor: sfdp: get command opcode extension type from BFPT
+    [v9,09/19] mtd: spi-nor: sfdp: parse xSPI Profile 1.0 table
+    [v9,10/19] mtd: spi-nor: core: use dummy cycle and address width info from SFDP
+    [v9,11/19] mtd: spi-nor: core: do 2 byte reads for SR and FSR in DTR mode
+    [v9,12/19] mtd: spi-nor: core: enable octal DTR mode when possible
+    [v9,13/19] mtd: spi-nor: sfdp: do not make invalid quad enable fatal
+    [v9,14/19] mtd: spi-nor: sfdp: detect Soft Reset sequence support from BFPT
+    [v9,15/19] mtd: spi-nor: core: perform a Soft Reset on shutdown
+    [v9,16/19] mtd: spi-nor: core: disable Octal DTR mode on suspend.
+    [v9,17/19] mtd: spi-nor: core: expose spi_nor_default_setup() in core.h
+    [v9,18/19] mtd: spi-nor: spansion: add support for Cypress Semper flash
+    [v9,19/19] mtd: spi-nor: micron-st: allow using MT35XU512ABA in Octal DTR mode
 
-Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
----
- drivers/spi/spi-mem.c       | 3 +++
- include/linux/spi/spi-mem.h | 8 ++++++++
- 2 files changed, 11 insertions(+)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index 9a86cc27fcc0..93e255287ab9 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -156,6 +156,9 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
- 				   op->data.dir == SPI_MEM_DATA_OUT))
- 		return false;
- 
-+	if (op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr)
-+		return false;
-+
- 	return true;
- }
- EXPORT_SYMBOL_GPL(spi_mem_default_supports_op);
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index af9ff2f0f1b2..e3dcb956bf61 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -71,9 +71,11 @@ enum spi_mem_data_dir {
-  * struct spi_mem_op - describes a SPI memory operation
-  * @cmd.buswidth: number of IO lines used to transmit the command
-  * @cmd.opcode: operation opcode
-+ * @cmd.dtr: whether the command opcode should be sent in DTR mode or not
-  * @addr.nbytes: number of address bytes to send. Can be zero if the operation
-  *		 does not need to send an address
-  * @addr.buswidth: number of IO lines used to transmit the address cycles
-+ * @addr.dtr: whether the address should be sent in DTR mode or not
-  * @addr.val: address value. This value is always sent MSB first on the bus.
-  *	      Note that only @addr.nbytes are taken into account in this
-  *	      address value, so users should make sure the value fits in the
-@@ -81,7 +83,9 @@ enum spi_mem_data_dir {
-  * @dummy.nbytes: number of dummy bytes to send after an opcode or address. Can
-  *		  be zero if the operation does not require dummy bytes
-  * @dummy.buswidth: number of IO lanes used to transmit the dummy bytes
-+ * @dummy.dtr: whether the dummy bytes should be sent in DTR mode or not
-  * @data.buswidth: number of IO lanes used to send/receive the data
-+ * @data.dtr: whether the data should be sent in DTR mode or not
-  * @data.dir: direction of the transfer
-  * @data.nbytes: number of data bytes to send/receive. Can be zero if the
-  *		 operation does not involve transferring data
-@@ -91,22 +95,26 @@ enum spi_mem_data_dir {
- struct spi_mem_op {
- 	struct {
- 		u8 buswidth;
-+		u8 dtr : 1;
- 		u8 opcode;
- 	} cmd;
- 
- 	struct {
- 		u8 nbytes;
- 		u8 buswidth;
-+		u8 dtr : 1;
- 		u64 val;
- 	} addr;
- 
- 	struct {
- 		u8 nbytes;
- 		u8 buswidth;
-+		u8 dtr : 1;
- 	} dummy;
- 
- 	struct {
- 		u8 buswidth;
-+		u8 dtr : 1;
- 		enum spi_mem_data_dir dir;
- 		unsigned int nbytes;
- 		union {
 -- 
-2.27.0
-
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/pwbot

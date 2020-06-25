@@ -2,80 +2,148 @@ Return-Path: <SRS0=xzyO=AG=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 13770C433E0
-	for <linux-spi@archiver.kernel.org>; Thu, 25 Jun 2020 22:08:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 08E93C433DF
+	for <linux-spi@archiver.kernel.org>; Thu, 25 Jun 2020 22:58:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DD56A20781
-	for <linux-spi@archiver.kernel.org>; Thu, 25 Jun 2020 22:08:18 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DDA9D20707
+	for <linux-spi@archiver.kernel.org>; Thu, 25 Jun 2020 22:58:08 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oSfs64PK"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391341AbgFYWIS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 25 Jun 2020 18:08:18 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:57230 "EHLO
-        mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391337AbgFYWIS (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 25 Jun 2020 18:08:18 -0400
-Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 1A37F8040A7B;
-        Thu, 25 Jun 2020 22:08:10 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at baikalelectronics.ru
-Received: from mail.baikalelectronics.ru ([127.0.0.1])
-        by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id iQhhX2D5d7Tk; Fri, 26 Jun 2020 01:08:09 +0300 (MSK)
-Date:   Fri, 26 Jun 2020 01:08:08 +0300
-From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC:     Serge Semin <fancer.lancer@gmail.com>,
-        Mark Brown <broonie@kernel.org>, <linux-spi@vger.kernel.org>
-Subject: [RFC] spi: dw: Test the last revision of the DMA module
-Message-ID: <20200625220808.hac4egxalgn3pcqk@mobilestation>
+        id S1728675AbgFYW6I (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 25 Jun 2020 18:58:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41056 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728347AbgFYW6H (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 25 Jun 2020 18:58:07 -0400
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CE4FC08C5DB
+        for <linux-spi@vger.kernel.org>; Thu, 25 Jun 2020 15:58:07 -0700 (PDT)
+Received: by mail-lj1-x241.google.com with SMTP id h19so8291184ljg.13
+        for <linux-spi@vger.kernel.org>; Thu, 25 Jun 2020 15:58:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=sQgdyk3y6zB0hASByJVzzEmARHNFTqPRb6Kf1xIGKh0=;
+        b=oSfs64PKV38JXFXyuunReN5Z6kVfanjPQbqNiy926u6l8uP8SvoJ6QA1DQLHxjix2Y
+         S3IXOYafJgGmvwLB1jbGL7oXyQZMpgGye1p03NHK02AMCX+MltYL/6746tIQNi+rMala
+         7zsZ5l9kSGKASL4LWwBu3CZbWjZt4WCTmSznFIGBSCbBDhPb8EUIDxG8s8B6a+TWNrf6
+         04EYLlyZWINjRId7DtwXo9XBcVJcVHTJ6oAWSoAowFPoIyX71kIRGtazxNgPp2FFQBZJ
+         SXI3lU0TPTwLtGWDvoZgLdHB5QLV5iZv8XG/8WlWpkRpZ50JSNkzMEzQZs5Z30zekbpC
+         pvww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=sQgdyk3y6zB0hASByJVzzEmARHNFTqPRb6Kf1xIGKh0=;
+        b=KybAmefhPpqerI5Kd7hBeGGpQgRBf1y1Lvfpihi2Dq5LOblUaTjtZe89eiI6TlHPg9
+         o4C6ie8q75eA84iHAVmRprNWaXZeISCiOSwQRK1AzroblQsPqYMPo38TvkvhsvshdQCY
+         +cRz5BH1nwb7xSkmi6jddn8qTYHFdAvXh4PprJA3y8QqKvn2kyF/gC5EiSd3+v4um8Rz
+         u2v3tbSpSzL4inWqzSTcu9m0AtTkdp9BMs2ySVUycNowveVA/tslXn32RsyjGwLvset6
+         MhWkyv2oLTQZyBbF4T1ddLsnriY0+/zpFG1pnFTcuzvJ6HMh8uyP6Gs7ySNmhFiuOtjb
+         6d0g==
+X-Gm-Message-State: AOAM5311YzzmIlXYhHGuNxuKfOCyWdAQN4jtUZxpHJl55SU0y0m7OcFb
+        nnfhCzIUlHSbsGOD1DUzF2GNigxxvNY=
+X-Google-Smtp-Source: ABdhPJxQEE90iIe3k36mti5OJlS3Nce21aY87tifTY53+oTxvmRYPwzxpFTry/L6gGVL5y7u1X6lFA==
+X-Received: by 2002:a2e:94d0:: with SMTP id r16mr16807227ljh.351.1593125885668;
+        Thu, 25 Jun 2020 15:58:05 -0700 (PDT)
+Received: from genomnajs.lan (c-d63ee155.152980-0-69706f6e6c79.bbcust.telenor.se. [85.225.62.214])
+        by smtp.gmail.com with ESMTPSA id d9sm126976ljc.117.2020.06.25.15.58.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Jun 2020 15:58:05 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Tomer Maimon <tmaimon77@gmail.com>
+Subject: [PATCH] spi: npcm-pspi: Convert to use GPIO descriptors
+Date:   Fri, 26 Jun 2020 00:57:59 +0200
+Message-Id: <20200625225759.273911-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
+Content-Transfer-Encoding: 8bit
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello Andy.
-  
-Have you tested the recent revision of the DW APB SSI driver with DMA
-enabled? I am particularly concerned about the next fix in the driver:
+The Nuvoton PSPI driver already uses the core to handle GPIO
+chip selects but is using the old GPIO number method and
+retrieveing the GPIOs in the probe() call.
 
-> --- a/drivers/spi/spi-dw-dma.c
-> +++ b/drivers/spi/spi-dw-dma.c
-> @@ -346,8 +375,8 @@ static int dw_spi_dma_setup(struct dw_spi *dws, struct spi_transfer *xfer)
->  {
->       u16 imr = 0, dma_ctrl = 0;
->  
-> -     dw_writel(dws, DW_SPI_DMARDLR, RX_BURST_LEVEL - 1);
-> -     dw_writel(dws, DW_SPI_DMATDLR, TX_BURST_LEVEL);
-> +     dw_writel(dws, DW_SPI_DMARDLR, dws->rxburst - 1);
-> +     dw_writel(dws, DW_SPI_DMATDLR, dws->fifo_len - dws->txburst);
->  
->       if (xfer->tx_buf) {
->               dma_ctrl |= SPI_DMA_TDMAE;
+Switch it over to using GPIO descriptors saving a bunch of
+code and modernizing it.
 
-Generally speaking it must work (even DW APB SSI/DMA databook suggests to have
-such DMATDLR setting), but in our case of a relatively slow DMA engine (it's
-clocked with just twice higher frequency with respect to the max SPI bus
-speed) sometimes SPI Rx FIFO gets overflown when SPI bus is configured to work
-with maximum speed (there are multiple reasons why this happens, but generally
-speaking all of them matter only due to the relatively slow DMA engine). The
-problem is fixed by reducing a value written into the DMATDLR register.
+Compile tested med ARMv7 multiplatform config augmented
+with the Nuvoton arch and this driver.
 
-I am wondering whether you've tested the last revision of the driver and it
-worked for your version of the DW APB SSI + DW DMAC IPs. AFAIU DMA engine on
-your devices is faster than on ours and has LLPs supported. So if you haven't
-noticed any problem in the recent driver, then I'll send a fixup for our version
-of the DW APB SSI block only (I'll have to introduce a new compatible string).
-Otherwise I could get back a setting of dws->txburst into the DW_SPI_DMATDLR
-register, which isn't that optimal as the current DMATDLR setting
-of (fifo_len - txburst), but at least will make things working for all DMAs.
+Cc: Tomer Maimon <tmaimon77@gmail.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ drivers/spi/spi-npcm-pspi.c | 28 +---------------------------
+ 1 file changed, 1 insertion(+), 27 deletions(-)
 
--Sergey
+diff --git a/drivers/spi/spi-npcm-pspi.c b/drivers/spi/spi-npcm-pspi.c
+index 87cd0233c60b..56d10c4511db 100644
+--- a/drivers/spi/spi-npcm-pspi.c
++++ b/drivers/spi/spi-npcm-pspi.c
+@@ -10,8 +10,6 @@
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+ #include <linux/spi/spi.h>
+-#include <linux/gpio.h>
+-#include <linux/of_gpio.h>
+ #include <linux/reset.h>
+ 
+ #include <asm/unaligned.h>
+@@ -344,16 +342,9 @@ static int npcm_pspi_probe(struct platform_device *pdev)
+ 	struct npcm_pspi *priv;
+ 	struct spi_master *master;
+ 	unsigned long clk_hz;
+-	struct device_node *np = pdev->dev.of_node;
+-	int num_cs, i;
+-	int csgpio;
+ 	int irq;
+ 	int ret;
+ 
+-	num_cs = of_gpio_named_count(np, "cs-gpios");
+-	if (num_cs < 0)
+-		return num_cs;
+-
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*priv));
+ 	if (!master)
+ 		return -ENOMEM;
+@@ -418,24 +409,7 @@ static int npcm_pspi_probe(struct platform_device *pdev)
+ 		npcm_pspi_prepare_transfer_hardware;
+ 	master->unprepare_transfer_hardware =
+ 		npcm_pspi_unprepare_transfer_hardware;
+-	master->num_chipselect = num_cs;
+-
+-	for (i = 0; i < num_cs; i++) {
+-		csgpio = of_get_named_gpio(np, "cs-gpios", i);
+-		if (csgpio < 0) {
+-			dev_err(&pdev->dev, "failed to get csgpio#%u\n", i);
+-			goto out_disable_clk;
+-		}
+-		dev_dbg(&pdev->dev, "csgpio#%u = %d\n", i, csgpio);
+-		ret = devm_gpio_request_one(&pdev->dev, csgpio,
+-					    GPIOF_OUT_INIT_HIGH, DRIVER_NAME);
+-		if (ret < 0) {
+-			dev_err(&pdev->dev,
+-				"failed to configure csgpio#%u %d\n"
+-				, i, csgpio);
+-			goto out_disable_clk;
+-		}
+-	}
++	master->use_gpio_descriptors = true;
+ 
+ 	/* set to default clock rate */
+ 	npcm_pspi_set_baudrate(priv, NPCM_PSPI_DEFAULT_CLK);
+-- 
+2.25.4
+

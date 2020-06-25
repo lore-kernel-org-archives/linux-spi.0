@@ -2,131 +2,166 @@ Return-Path: <SRS0=xzyO=AG=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 842D6C433E0
-	for <linux-spi@archiver.kernel.org>; Thu, 25 Jun 2020 22:58:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D573CC433E0
+	for <linux-spi@archiver.kernel.org>; Thu, 25 Jun 2020 23:13:03 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5CA37207BB
-	for <linux-spi@archiver.kernel.org>; Thu, 25 Jun 2020 22:58:45 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B358C20768
+	for <linux-spi@archiver.kernel.org>; Thu, 25 Jun 2020 23:13:03 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QQvjNJc4"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IBKFFdB1"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404706AbgFYW6p (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 25 Jun 2020 18:58:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41148 "EHLO
+        id S2403984AbgFYXNC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 25 Jun 2020 19:13:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728347AbgFYW6o (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 25 Jun 2020 18:58:44 -0400
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 633E9C08C5C1
-        for <linux-spi@vger.kernel.org>; Thu, 25 Jun 2020 15:56:10 -0700 (PDT)
-Received: by mail-pj1-x1035.google.com with SMTP id h22so4066409pjf.1
-        for <linux-spi@vger.kernel.org>; Thu, 25 Jun 2020 15:56:10 -0700 (PDT)
+        with ESMTP id S2407700AbgFYXNB (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 25 Jun 2020 19:13:01 -0400
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1965EC08C5C1
+        for <linux-spi@vger.kernel.org>; Thu, 25 Jun 2020 16:13:01 -0700 (PDT)
+Received: by mail-lf1-x142.google.com with SMTP id t9so4133628lfl.5
+        for <linux-spi@vger.kernel.org>; Thu, 25 Jun 2020 16:13:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=f6DzB0kF8qy0+gSJmnXLymV2MPI92g2VgejgpjaBktM=;
-        b=QQvjNJc4LDkUyQEj3k/zhQITbgGaIESunQW+DqNuSU30V+QbyiVFl9c/68DF7M/6yM
-         dviOzIvO+uNyKM+DSUG3VTcKmdnzQeSWs7rkyYoMa92ZBOf5vTa6iweanR5/6PTPf1g0
-         3dYV3iSOM6EMgis4RjAY21na0PkbjitVnidTdLZt/xVo3ftrKv6i85RbsHFeunk7Viay
-         /ewWVYl0s3G6b8YHqjSV0fh94qI32fYJH1nvDSqZcNLSKK9BwP+sgvnwoRR/x0gyQSNM
-         gnXI36W3enB03KacNBKNMDmpcpbPAj9ia6TVoFgbRvFVIO7RsL04+xqStegD+mQHSu7e
-         fjKA==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8l/4qnt5t8nkFw+DlUPZ4RXWogUlkAdw7ImexBI0ikI=;
+        b=IBKFFdB1A9rgQj5qLECj4YGrtznXMmNs1xQ2l57LiWgCW4He0mUH6+oAF4jP0OgRKV
+         cLd0AVGMJd/i3FpiNY5jSKTS3E2qteXfPN5/cPGWC+TDVr1oghCZYYs2H++3H9EIB3Kq
+         Hjb1vSJJdXZAq7J5AW/lzSj1ZGKodpdGM0TTWxRuQLk2NoSu9oxd6JQxbpXipfxOX0a0
+         FmX8am3sTO0/hRFzJ3pT0ipywWTEwihaC+HONP55IwfQU3bkwXoR48hbcpojn4XWbCSI
+         rR3w/KWgs7OZC0maM13ReKfc4bZQNe/R7B+QNs7ioUzNritb3PqCi3NexYQQkHH57qJE
+         0vkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=f6DzB0kF8qy0+gSJmnXLymV2MPI92g2VgejgpjaBktM=;
-        b=ApQXt+41s8a/KMN/38GslV5PtTNphLV42GnIkETGC1JEPRU2Dt+cz8LP7xJwJ+6Od9
-         mY3x8bekQ/dZlL8xVInbaVerxXcBJEGjjIUaEn0zO3a3qlwZuk+kqRxhKbL4Bz8m1eme
-         hVIai+kBWYTKQDERhJSnXWcMu+horK5HuWHTlycMa5CMMyyFyDkuwrMEtQUHNQPDSXVO
-         ODx+0AIo4nJe4Zo2Hz2zu4nU5i/byuBrTAJWerXVqpvM6oS37pp/YVMesdOCLLIDUKMB
-         +8wgj8tkL5VKv3Bgg5r4oX+wCIPlG8q906tmz8wG3MPNQfyQJM83jOPvNkIBD+Mr3paZ
-         SQ2w==
-X-Gm-Message-State: AOAM533DJ04c4tG7KST4dzzppIoTv0bY9nOFOR+l51zeGS6UDB2aNvtf
-        PGYzTNp4selmKmrsZuBhPBgUuuU6hlU5fAIWjdisz3H5nak=
-X-Google-Smtp-Source: ABdhPJwkIJ60G5G5apHcvaG9KpUzam3abN6MZ9YDagoUHxh9hSG3jXPS5ISFQjJOBsS5YpWnLmoXYC82m+Q6VtoJCrw=
-X-Received: by 2002:a17:90a:220f:: with SMTP id c15mr265867pje.129.1593125769735;
- Thu, 25 Jun 2020 15:56:09 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8l/4qnt5t8nkFw+DlUPZ4RXWogUlkAdw7ImexBI0ikI=;
+        b=QJSrinumSt86RGMGHfL1rSrSs9sELAZwGA9VIgLABlmS5yf75Hke3tIQISKH3QPbUW
+         Jfbn293g71qzoDgL4r5bjt9iR+/dQQMfv9kUHkAiBYmbWDKqTfhi7SqnPa3Jis3cRmRo
+         rZtZwsM/9/51hD3GvY4g4X3cH/hjdr4pVPbWPEiXRZjRaeR4nJIb3Yzfvl8Vgi+EenOM
+         GO4fRNEGNSXcPejfUiqwOlhGMWkwKq+LNaiBN/loCBicaolwgqUabK7UrKPc/+onWeAJ
+         KI6pJ/p3k6vodNhPDr2ZpKBtEiEI5dzTo+QHZ1ryC3rnF4Nx6sTb3OE3Ho6gTXyVQUOX
+         Ldvg==
+X-Gm-Message-State: AOAM533AWRM5XdJFPzudLuFsXuy5zdZVc1aDtcMuC7UR1iicyHtUtQaA
+        wuyACl5OnefxYB7amjcozSaMww==
+X-Google-Smtp-Source: ABdhPJyykQEs4yJ6jWyHPkP7TG+MV83/orei/U2wDZYisD57NjpghSYESBu06Z40mYZ2fxF9GXAL4A==
+X-Received: by 2002:a19:14e:: with SMTP id 75mr208475lfb.7.1593126779559;
+        Thu, 25 Jun 2020 16:12:59 -0700 (PDT)
+Received: from genomnajs.lan (c-d63ee155.152980-0-69706f6e6c79.bbcust.telenor.se. [85.225.62.214])
+        by smtp.gmail.com with ESMTPSA id m15sm1973156ljp.45.2020.06.25.16.12.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Jun 2020 16:12:59 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        David Lechner <david@lechnology.com>,
+        Tony Lindgren <tony@atomide.com>
+Subject: [PATCH] spi: omap2-mcspi: Convert to use GPIO descriptors
+Date:   Fri, 26 Jun 2020 01:12:57 +0200
+Message-Id: <20200625231257.280615-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-References: <20200625220808.hac4egxalgn3pcqk@mobilestation>
-In-Reply-To: <20200625220808.hac4egxalgn3pcqk@mobilestation>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 26 Jun 2020 01:55:53 +0300
-Message-ID: <CAHp75VfF3GhjNEgHaQWn+LqbVZVOn3_mORSompexxxRnmiAFcg@mail.gmail.com>
-Subject: Re: [RFC] spi: dw: Test the last revision of the DMA module
-To:     Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, Jun 26, 2020 at 1:08 AM Serge Semin
-<Sergey.Semin@baikalelectronics.ru> wrote:
+The OMAP2 MCSPI has some kind of half-baked GPIO CS support:
+it includes code like this:
 
-> Have you tested the recent revision of the DW APB SSI driver with DMA
-> enabled? I am particularly concerned about the next fix in the driver:
+  if (gpio_is_valid(spi->cs_gpio)) {
+        ret = gpio_request(spi->cs_gpio, dev_name(&spi->dev));
+	(...)
 
-Yes.
+But it doesn't parse the "cs-gpios" attribute in the device
+tree to count the number of GPIOs or pick out the GPIO numbers
+and put these in the SPI master's .cs_gpios property.
 
-> > +     dw_writel(dws, DW_SPI_DMATDLR, dws->fifo_len - dws->txburst);
+We complete the implementation of supporting CS GPIOs
+from the device tree and switch it over to use the SPI core
+for this.
 
-Yes, this line is problematic.
-However we have experiencing another issue with Tx underrun, that's
-why below has not been shared.
+Cc: Vignesh Raghavendra <vigneshr@ti.com>
+Cc: David Lechner <david@lechnology.com>
+Cc: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ drivers/spi/spi-omap2-mcspi.c | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
-> Generally speaking it must work (even DW APB SSI/DMA databook suggests to have
-> such DMATDLR setting), but in our case of a relatively slow DMA engine (it's
-> clocked with just twice higher frequency with respect to the max SPI bus
-> speed) sometimes SPI Rx FIFO gets overflown when SPI bus is configured to work
-> with maximum speed (there are multiple reasons why this happens, but generally
-> speaking all of them matter only due to the relatively slow DMA engine). The
-> problem is fixed by reducing a value written into the DMATDLR register.
->
-> I am wondering whether you've tested the last revision of the driver and it
-> worked for your version of the DW APB SSI + DW DMAC IPs. AFAIU DMA engine on
-> your devices is faster than on ours and has LLPs supported. So if you haven't
-> noticed any problem in the recent driver, then I'll send a fixup for our version
-> of the DW APB SSI block only (I'll have to introduce a new compatible string).
-> Otherwise I could get back a setting of dws->txburst into the DW_SPI_DMATDLR
-> register, which isn't that optimal as the current DMATDLR setting
-> of (fifo_len - txburst), but at least will make things working for all DMAs.
-
-That's what I have locally.
-
-commit 43d9abb2711f5096e969adcf1a2fb6456fa6e275 (HEAD -> topic/ehl-dma)
-Author: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Date:   Tue Jun 2 15:53:03 2020 +0300
-
-    DEBUG SPI dw (burst fix?)
-
-    Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
-diff --git a/drivers/spi/spi-dw-dma.c b/drivers/spi/spi-dw-dma.c
-index 5986c520b196..79342528b1f4 100644
---- a/drivers/spi/spi-dw-dma.c
-+++ b/drivers/spi/spi-dw-dma.c
-@@ -373,7 +373,7 @@ static int dw_spi_dma_setup(struct dw_spi *dws,
-struct spi_transfer *xfer)
-        u16 imr = 0, dma_ctrl = 0;
-
-        dw_writel(dws, DW_SPI_DMARDLR, dws->rxburst - 1);
--       dw_writel(dws, DW_SPI_DMATDLR, dws->fifo_len - dws->txburst);
-+       dw_writel(dws, DW_SPI_DMATDLR, dws->txburst);
-
-
-
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index e9e256718ef4..1c9478e6e5d9 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -27,7 +27,6 @@
+ #include <linux/iopoll.h>
+ 
+ #include <linux/spi/spi.h>
+-#include <linux/gpio.h>
+ 
+ #include <linux/platform_data/spi-omap2-mcspi.h>
+ 
+@@ -1043,16 +1042,6 @@ static int omap2_mcspi_setup(struct spi_device *spi)
+ 		spi->controller_state = cs;
+ 		/* Link this to context save list */
+ 		list_add_tail(&cs->node, &ctx->cs);
+-
+-		if (gpio_is_valid(spi->cs_gpio)) {
+-			ret = gpio_request(spi->cs_gpio, dev_name(&spi->dev));
+-			if (ret) {
+-				dev_err(&spi->dev, "failed to request gpio\n");
+-				return ret;
+-			}
+-			gpio_direction_output(spi->cs_gpio,
+-					 !(spi->mode & SPI_CS_HIGH));
+-		}
+ 	}
+ 
+ 	ret = pm_runtime_get_sync(mcspi->dev);
+@@ -1080,9 +1069,6 @@ static void omap2_mcspi_cleanup(struct spi_device *spi)
+ 
+ 		kfree(cs);
+ 	}
+-
+-	if (gpio_is_valid(spi->cs_gpio))
+-		gpio_free(spi->cs_gpio);
+ }
+ 
+ static irqreturn_t omap2_mcspi_irq_handler(int irq, void *data)
+@@ -1152,7 +1138,7 @@ static int omap2_mcspi_transfer_one(struct spi_master *master,
+ 
+ 	omap2_mcspi_set_enable(spi, 0);
+ 
+-	if (gpio_is_valid(spi->cs_gpio))
++	if (spi->cs_gpiod)
+ 		omap2_mcspi_set_cs(spi, spi->mode & SPI_CS_HIGH);
+ 
+ 	if (par_override ||
+@@ -1241,7 +1227,7 @@ static int omap2_mcspi_transfer_one(struct spi_master *master,
+ 
+ 	omap2_mcspi_set_enable(spi, 0);
+ 
+-	if (gpio_is_valid(spi->cs_gpio))
++	if (spi->cs_gpiod)
+ 		omap2_mcspi_set_cs(spi, !(spi->mode & SPI_CS_HIGH));
+ 
+ 	if (mcspi->fifo_depth > 0 && t)
+@@ -1431,6 +1417,7 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 	master->dev.of_node = node;
+ 	master->max_speed_hz = OMAP2_MCSPI_MAX_FREQ;
+ 	master->min_speed_hz = OMAP2_MCSPI_MAX_FREQ >> 15;
++	master->use_gpio_descriptors = true;
+ 
+ 	platform_set_drvdata(pdev, master);
+ 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.25.4
+

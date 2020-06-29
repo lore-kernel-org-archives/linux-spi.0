@@ -2,90 +2,92 @@ Return-Path: <SRS0=FAtT=AK=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B658C433E2
-	for <linux-spi@archiver.kernel.org>; Mon, 29 Jun 2020 19:38:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B4FBC433E2
+	for <linux-spi@archiver.kernel.org>; Mon, 29 Jun 2020 21:31:28 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 38E8B206A1
-	for <linux-spi@archiver.kernel.org>; Mon, 29 Jun 2020 19:38:59 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 414AC2073E
+	for <linux-spi@archiver.kernel.org>; Mon, 29 Jun 2020 21:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1593459539;
-	bh=FXu6VEQFvtj85e0o8jHQt37JSlx7+YvMjmWkyrl0mFk=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=M3kL0uVYPBm1ypZXM3l3HRXK9x0qH2ImJ2SFZDf9WpZ98ubik4K5V6mNC0+tGi9NX
-	 OKdMeOawLO5Vn9kuukmDkHhAbP2Feuw/WuX4SDrKAgo47gTlLe7bmFZn3ZtUfFLhnl
-	 RDg+U6Fy2VvOU+m6oLfAzxXmnvRuMDR0/H0QhBlg=
+	s=default; t=1593466288;
+	bh=QifnuQ3OqevnySCb9bfo+3KcLPSxAMMMZIagAZ6227s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=bS3Z4O8RzF8r6Qq5dDC4EDLIy3gOZK2mJ6zc7m4VhMw+VU5uKp7CgCV8IQ/Tb6+sw
+	 arFPvfjCfiFhq0f5+MTQBy+btb/+RRCV0vniDhH7CwOjLXrPiKi9wrSIEEMklYLH8C
+	 UjbMsxoIoOcBxlC3X+ge6LO3rldGGSPuPgjtWJRg=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730745AbgF2Tit (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 29 Jun 2020 15:38:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46528 "EHLO mail.kernel.org"
+        id S2391131AbgF2VbK (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 29 Jun 2020 17:31:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60608 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726923AbgF2Tir (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 29 Jun 2020 15:38:47 -0400
+        id S1728814AbgF2SlR (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 29 Jun 2020 14:41:17 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C6A4020809;
-        Mon, 29 Jun 2020 19:38:46 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A881B23CD3;
+        Mon, 29 Jun 2020 11:53:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593459527;
-        bh=FXu6VEQFvtj85e0o8jHQt37JSlx7+YvMjmWkyrl0mFk=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=TY+A8ovGITEVcPug2AEt6kltCXPhyD/nEzn8sFhEihZmvz+3ogw3nSuIvYmoeQnjT
-         FwXJQOTVA6D/crVNSbaqMsqOAHaGXkKH2AgMS4gMRS52xJhaF+jEkOgLGE6m6zw/Xq
-         Ib7uNCCXTaFWtZgCRacVByNB+aGJVJLauuk8fCwM=
-Date:   Mon, 29 Jun 2020 20:38:45 +0100
+        s=default; t=1593431599;
+        bh=QifnuQ3OqevnySCb9bfo+3KcLPSxAMMMZIagAZ6227s=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=e0aWtAUPAo87GHfZKyQbhiRqWa3TOxxpCGs+PthoYpE3SRwz9IL9vDqQ0KlAdyPtP
+         n4ZFnebis5MOWojN2HFXlCLy1nXDZPuw/hP353dnE/d0Vo0OSHmufFYbQ0YJ6uT7E/
+         vhLIv/zXwk8VMLcqD1NnztBgdw/i1JRu28SeW2RE=
+Date:   Mon, 29 Jun 2020 12:53:17 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Linus Walleij <linus.walleij@linaro.org>, linux-spi@vger.kernel.org
-Cc:     David Lechner <david@lechnology.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-In-Reply-To: <20200625231257.280615-1-linus.walleij@linaro.org>
-References: <20200625231257.280615-1-linus.walleij@linaro.org>
-Subject: Re: [PATCH] spi: omap2-mcspi: Convert to use GPIO descriptors
-Message-Id: <159345952500.3556.5402410471594940721.b4-ty@kernel.org>
+To:     Douglas Anderson <dianders@chromium.org>
+Cc:     linux-arm-msm@vger.kernel.org, swboyd@chromium.org,
+        Dilip Kota <dkota@codeaurora.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Andy Gross <agross@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+Subject: Re: [PATCH] spi: spi-geni-qcom: Don't set the cs if it was already
+ right
+Message-ID: <20200629115316.GB5499@sirena.org.uk>
+References: <20200626151946.1.I06134fd669bf91fd387dc6ecfe21d44c202bd412@changeid>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="XOIedfhf+7KOe/yw"
+Content-Disposition: inline
+In-Reply-To: <20200626151946.1.I06134fd669bf91fd387dc6ecfe21d44c202bd412@changeid>
+X-Cookie: Real programs don't eat cache.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, 26 Jun 2020 01:12:57 +0200, Linus Walleij wrote:
-> The OMAP2 MCSPI has some kind of half-baked GPIO CS support:
-> it includes code like this:
-> 
->   if (gpio_is_valid(spi->cs_gpio)) {
->         ret = gpio_request(spi->cs_gpio, dev_name(&spi->dev));
-> 	(...)
-> 
-> [...]
 
-Applied to
+--XOIedfhf+7KOe/yw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+On Fri, Jun 26, 2020 at 03:19:50PM -0700, Douglas Anderson wrote:
+> Setting the chip select on the Qualcomm geni SPI controller isn't
+> exactly cheap.  Let's cache the current setting and avoid setting the
+> chip select if it's already right.
 
-Thanks!
+Seems like it'd be worth pushing this up to the core - if we're
+constantly setting the same CS value then perhaps we ought to just stop
+doing that?
 
-[1/1] spi: omap2-mcspi: Convert to use GPIO descriptors
-      commit: f27b1dc6412547fac256957e22d6889fb56a5470
+--XOIedfhf+7KOe/yw
+Content-Type: application/pgp-signature; name="signature.asc"
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+-----BEGIN PGP SIGNATURE-----
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl751iwACgkQJNaLcl1U
+h9AU/wf/bpfHFtT9ACyBIK96npjnnQz/vQ3t3lRL7uqyIfHIA/19K26V0j6Dbvwd
+aBYPo5xPqYDwqUHbobABbdZ5O1N6trSA8IO0I9+9MvV9vH0velLuDQIcsGEkVv8p
+8U+JrjDe2kjr7hRrqlYJvvFpbeT81Rcii6tN8cqz/Ek+eaRl7+ZOwOvanyYnzC8Y
+P5GZaxID2aTSx31RjkXiTsVzivPbZdRpQ8bE2MqhnGgyOsBVSpqOqYxLy6laSITN
+DCEwaCo+0FK+B9Fwy1/CjR4DAprkpm4tC1C3yw9Lyw1JVA9asTU4f8cG5MmiEDTT
+4XADNhyWNp+53XX+tudxCtkO84nsfQ==
+=Hcvu
+-----END PGP SIGNATURE-----
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+--XOIedfhf+7KOe/yw--

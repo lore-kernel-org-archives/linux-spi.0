@@ -7,48 +7,48 @@ X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6052EC433DF
-	for <linux-spi@archiver.kernel.org>; Thu,  2 Jul 2020 01:28:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80DC6C433E0
+	for <linux-spi@archiver.kernel.org>; Thu,  2 Jul 2020 01:29:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 35AB1206BE
-	for <linux-spi@archiver.kernel.org>; Thu,  2 Jul 2020 01:28:51 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 54D8E20748
+	for <linux-spi@archiver.kernel.org>; Thu,  2 Jul 2020 01:29:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1593653331;
-	bh=0QmjNHIxQwQS03YAMYCOr/QYcQjnpNugdb16DA+i87M=;
+	s=default; t=1593653380;
+	bh=lY5i/G1xFnqXCzRAHXjROM97QoklifLMJB3E/TZuJmw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=tmOnnfgM621PJtvvSo9tSAIgQry9aTKqpwUmfUO/WlvqvkMdbvUKIsDNjnxLsX7b0
-	 +P+3AGkRIcQLlzIyTgLRA92Oh3WUBXdOnsKjMY/g3bFsX6tm2Rbf+fox09ff3tNg8B
-	 ZVmNJHJr8dfYnXQgOupZaTYWjq9stfDAj5dEIMXo=
+	b=OGS/4cDBmY4o+i7jkVMwjvuz2TQ/Iy2RKi/BimKWKT7d/zaittVoUfKowDNTGdjN0
+	 UKc/WmlRJrCa/1hZNAheRMILbpBwAoweSlyLJvrwPtGTHfPMlJz05UBnpkv6r95bzg
+	 O/aTqRr99ndPNxV1CDIqpDTHgBoG7etkNuHJs9ow=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728552AbgGBB2q (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 1 Jul 2020 21:28:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59538 "EHLO mail.kernel.org"
+        id S1728070AbgGBB33 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 1 Jul 2020 21:29:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59124 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729519AbgGBB1e (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 1 Jul 2020 21:27:34 -0400
+        id S1729428AbgGBB1S (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 1 Jul 2020 21:27:18 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3002720874;
-        Thu,  2 Jul 2020 01:27:33 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0255721473;
+        Thu,  2 Jul 2020 01:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1593653253;
-        bh=0QmjNHIxQwQS03YAMYCOr/QYcQjnpNugdb16DA+i87M=;
+        s=default; t=1593653237;
+        bh=lY5i/G1xFnqXCzRAHXjROM97QoklifLMJB3E/TZuJmw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d14deOmsjkMMmbLfZXhL/241bZN1xbuKGCClCS705+QnTC8y95IYdsXm2Tzmhev8M
-         ctuGMm2Q4aWXCRcY8QoLitOW2OLZ6l7NFYQ907FO98+FwFXgcNpMaxCRGPu/BTodXs
-         XPxn5/EDKOFxZc0xoDVYCDssSfcWFJI+tw5fwGXI=
+        b=MPeoSEqGGt232TiWTXVWssCvtllVLh2UEsAK5+XtIvnDAsTtbLtRnilZAz1TaNwyH
+         6mTsOxqCXjAaZPYHVfkkb56CZfhtAXGpbGmCZusyuAS2feuxnBfgw6lhA42fh1/oIm
+         xoFcNjr2Zkdy8fUzeJ/RBVyhnsvLLxYqsm4Gbvrs=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Zhenzhong Duan <zhenzhong.duan@gmail.com>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 3/7] spi: spidev: fix a race between spidev_release and spidev_remove
-Date:   Wed,  1 Jul 2020 21:27:25 -0400
-Message-Id: <20200702012729.2702141-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 04/13] spi: spidev: fix a race between spidev_release and spidev_remove
+Date:   Wed,  1 Jul 2020 21:27:03 -0400
+Message-Id: <20200702012712.2701986-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200702012729.2702141-1-sashal@kernel.org>
-References: <20200702012729.2702141-1-sashal@kernel.org>
+In-Reply-To: <20200702012712.2701986-1-sashal@kernel.org>
+References: <20200702012712.2701986-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -93,10 +93,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 3709088d4d244..80beb8406f200 100644
+index a685c6114a8d5..67ad7e46da42d 100644
 --- a/drivers/spi/spidev.c
 +++ b/drivers/spi/spidev.c
-@@ -769,13 +769,13 @@ static int spidev_remove(struct spi_device *spi)
+@@ -809,13 +809,13 @@ static int spidev_remove(struct spi_device *spi)
  {
  	struct spidev_data	*spidev = spi_get_drvdata(spi);
  

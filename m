@@ -7,52 +7,51 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EAD88C433E0
-	for <linux-spi@archiver.kernel.org>; Thu,  2 Jul 2020 10:15:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D578C433E1
+	for <linux-spi@archiver.kernel.org>; Thu,  2 Jul 2020 10:15:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C9DAE20874
-	for <linux-spi@archiver.kernel.org>; Thu,  2 Jul 2020 10:15:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A6B5320723
+	for <linux-spi@archiver.kernel.org>; Thu,  2 Jul 2020 10:15:32 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="eibkzKtQ"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="FJA2kGe6"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728101AbgGBKOy (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 2 Jul 2020 06:14:54 -0400
-Received: from esa1.microchip.iphmx.com ([68.232.147.91]:55429 "EHLO
-        esa1.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728404AbgGBKOl (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 2 Jul 2020 06:14:41 -0400
+        id S1728376AbgGBKOT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 2 Jul 2020 06:14:19 -0400
+Received: from esa4.microchip.iphmx.com ([68.232.154.123]:29106 "EHLO
+        esa4.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727847AbgGBKOP (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 2 Jul 2020 06:14:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1593684881; x=1625220881;
+  t=1593684854; x=1625220854;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=p8ti72N/kPmTe//KJjZaDbS1jxKg9TXG3r5s9TRcE6E=;
-  b=eibkzKtQYY/B3FBSX4vWv0yieY1wikVNhjjUQ503v9cfL0LxZ4nX+zKh
-   mMoC22O+eqp+i+JecvFcPdBxF8nmUEBxNqKDmnJkCPzMQ0SPicdIRyWdq
-   RO6C2+mM7tlTwQhxmjQjN1WXzheQ6g0biEfqPS07RuezNChy0AGTv9mk3
-   BptWyFhXcb3HDJIKXPoko1VKk7iHYsZS4VSRdYfsyvte7CJB9Xb3MmbJV
-   3Fv63I5guiQTmVzyjFW91GjtSornzkZx3/pQvs4gM6OGveZM9zmbRGjdh
-   yAD0BF9CVY7Rk7ce6qkyeR6P03/BESC/kbMecFAAUNkN1TPbrkDRvs/iQ
-   w==;
-IronPort-SDR: FCIeI9nI6414nJ7ksSRxJS2d4awbwnDfmW5mcNChBuvks4bbmqF2IsOPpo6eXjXRwdRRxjSmaR
- KAoH4M0zfg3ll5n7w3zPaD7UkhezRadn/zdwKLcZrkUF9WPBU7R8GAeXu42Eq7B4uTJjQ16/F1
- IMXoeQNi7vqXj69PGAHVeMMibjwiw2sBBJ6bYWEs4+lfWVUjszomyASpWoSXACRi3nlu/a8zkb
- 2lGs0UoRbWk8LIZ3cxRuzrKyo7uFG3+VJmiA5YeeVRQc9x16EJAbrRqaoPyF4auOXyJwg2/RpM
- 2zY=
+  bh=b2ugvk1PicikjR6ydZwpp/7jv6no2O2VLW8Gbo1OcRQ=;
+  b=FJA2kGe6JCBWAgP2DFkF6eYLRFDXmE/9NFizK7iXYRK2ijlfuTHl57XK
+   Kw1tCoHMmhn34PwXKaNkbIL6qJ9kUWQL5GguPJNo7/k+qQ8u+BhPUlQ3k
+   xvKaaR2MLS3F0dXvNvjxHpGf2+d7+fOEzwayFtGT93LNDObq6kwtTHngf
+   QaBZe1IjV1MbWhWxhYQhNw3ldheFy/9na2jZNMD9FHIcbll/W36bWur6M
+   XbjnQFpoWbPYd4EVJIuvJmLjVeMuwM0WFzZjSy2JyNf/PDQTOl+sNgEsJ
+   1M5XMUSgQtMGNv4l6FB6XkEPHrinQXHQZyIE7c6zEQ8a8HS9qMrD6ammU
+   A==;
+IronPort-SDR: d2V5dIa7z2Erui3Yniq+zNX2vG7Ee3Arao2iGg1o7kqaXM7+Rhqa5rg72q8msIOcNC+DwFx8Nr
+ d46HN7alaVlUnIesuS5kVPYK1ddn2qHu7IA1curO4QyuENWhcDUJRfYgOOunHAgjL3x5SPpVr/
+ 0kzsIWQS8Bvh59gv+NFbNCBWS7BAkhykB9PWJi9wiOa08ykG0g13F2l3GM+uKQsbxCOzlo+Hoq
+ ccuv9EI5GkLERvzKvYIfchT564MGV/Xj9y4uG2Dohisy/vGOKpksAkFqLfW+rMpyzA+P7GZ0sA
+ axg=
 X-IronPort-AV: E=Sophos;i="5.75,304,1589266800"; 
-   d="scan'208";a="85979780"
+   d="scan'208";a="78545355"
 Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 02 Jul 2020 03:14:40 -0700
+  by esa4.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 02 Jul 2020 03:14:14 -0700
 Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1979.3; Thu, 2 Jul 2020 03:14:40 -0700
+ 15.1.1979.3; Thu, 2 Jul 2020 03:14:13 -0700
 Received: from soft-dev15.microsemi.net (10.10.115.15) by
  chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.1979.3 via Frontend Transport; Thu, 2 Jul 2020 03:14:17 -0700
+ 15.1.1979.3 via Frontend Transport; Thu, 2 Jul 2020 03:13:51 -0700
 From:   Lars Povlsen <lars.povlsen@microchip.com>
-To:     Mark Brown <broonie@kernel.org>, Peter Rosin <peda@axentia.se>,
-        "Rob Herring" <robh+dt@kernel.org>
+To:     Mark Brown <broonie@kernel.org>, Peter Rosin <peda@axentia.se>
 CC:     Lars Povlsen <lars.povlsen@microchip.com>,
         Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
         <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
@@ -60,9 +59,9 @@ CC:     Lars Povlsen <lars.povlsen@microchip.com>,
         <linux-arm-kernel@lists.infradead.org>,
         Serge Semin <fancer.lancer@gmail.com>,
         Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Subject: [PATCH v3 6/8] dt-bindings: microchip,sparx5-spi-mux: Add Sparx5 SPI mux driver bindings
-Date:   Thu, 2 Jul 2020 12:13:29 +0200
-Message-ID: <20200702101331.26375-7-lars.povlsen@microchip.com>
+Subject: [PATCH v3 2/8] arm64: dts: sparx5: Add SPI controller and SPI mux
+Date:   Thu, 2 Jul 2020 12:13:25 +0200
+Message-ID: <20200702101331.26375-3-lars.povlsen@microchip.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20200702101331.26375-1-lars.povlsen@microchip.com>
 References: <20200702101331.26375-1-lars.povlsen@microchip.com>
@@ -74,92 +73,56 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The Microchip Sparx5 SPI controller has two bus segments, and use this
-mux to control the bus interface mapping for any chip selects. This
-decribes the bindings used to configure the mux driver.
+This adds a SPI controller to the Microchip Sparx5 SoC, as well as the
+SPI bus interface mux, which may optionally be needed for selecting
+between alternate SPI bus segments (SPI/SPI2).
 
 Signed-off-by: Lars Povlsen <lars.povlsen@microchip.com>
 ---
- .../mux/microchip,sparx5-spi-mux.yaml         | 71 +++++++++++++++++++
- 1 file changed, 71 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/mux/microchip,sparx5-spi-mux.yaml
+ arch/arm64/boot/dts/microchip/sparx5.dtsi | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/mux/microchip,sparx5-spi-mux.yaml b/Documentation/devicetree/bindings/mux/microchip,sparx5-spi-mux.yaml
-new file mode 100644
-index 0000000000000..b0ce3b15a69e5
---- /dev/null
-+++ b/Documentation/devicetree/bindings/mux/microchip,sparx5-spi-mux.yaml
-@@ -0,0 +1,71 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/mux/microchip,sparx5-spi-mux.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/arch/arm64/boot/dts/microchip/sparx5.dtsi b/arch/arm64/boot/dts/microchip/sparx5.dtsi
+index 7e811e24f0e99..2831935a489e1 100644
+--- a/arch/arm64/boot/dts/microchip/sparx5.dtsi
++++ b/arch/arm64/boot/dts/microchip/sparx5.dtsi
+@@ -14,6 +14,8 @@ / {
+ 	#size-cells = <1>;
+ 
+ 	aliases {
++		mux = &mux;
++		spi0 = &spi0;
+ 		serial0 = &uart0;
+ 		serial1 = &uart1;
+ 	};
+@@ -155,6 +157,27 @@ uart1: serial@600102000 {
+ 			status = "disabled";
+ 		};
+ 
++		mux: mux-controller {
++			compatible = "microchip,sparx5-spi-mux";
++			#address-cells = <1>;
++			#size-cells = <0>;
++			#mux-control-cells = <0>;
++		};
 +
-+title: Microchip Sparx5 SPI mux
++		spi0: spi@600104000 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			compatible = "microchip,sparx5-spi";
++			reg = <0x6 0x00104000 0x40>;
++			num-cs = <16>;
++			reg-io-width = <4>;
++			reg-shift = <2>;
++			clocks = <&ahb_clk>;
++			interrupts = <GIC_SPI 13 IRQ_TYPE_LEVEL_HIGH>;
++			mux-controls = <&mux>;
++			status = "disabled";
++		};
 +
-+maintainers:
-+  - Lars Povlsen <lars.povlsen@microchip.com>
-+
-+description: |
-+  The Microchip Sparx5 SPI controller has two bus segments. In order
-+  to switch between the appropriate bus for any given SPI slave
-+  (defined by a chip select), this mux driver is used. The device tree
-+  node for the mux will define the bus mapping for any chip
-+  selects. The default bus mapping for any chip select is "0", such
-+  that only non-default mappings need to be explicitly defined.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - microchip,sparx5-spi-mux
-+
-+  '#address-cells':
-+    const: 1
-+
-+  '#size-cells':
-+    const: 0
-+
-+  '#mux-control-cells':
-+    const: 0
-+
-+required:
-+  - compatible
-+
-+additionalProperties: false
-+
-+patternProperties:
-+  "^mux@[0-9a-f]$":
-+    type: object
-+
-+    properties:
-+      reg:
-+        description:
-+          Chip select to define bus mapping for.
-+        minimum: 0
-+        maximum: 15
-+
-+      microchip,bus-interface:
-+        description:
-+          The bus interface to use for this chip select.
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+        enum: [0, 1]
-+
-+    required:
-+      - reg
-+      - microchip,bus-interface
-+
-+examples:
-+  - |
-+    mux: mux-controller {
-+      compatible = "microchip,sparx5-spi-mux";
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+      #mux-control-cells = <0>;
-+      mux@e {
-+        reg = <14>;
-+        microchip,bus-interface = <1>;
-+      };
-+    };
---
+ 		timer1: timer@600105000 {
+ 			compatible = "snps,dw-apb-timer";
+ 			reg = <0x6 0x00105000 0x1000>;
+-- 
 2.27.0
+

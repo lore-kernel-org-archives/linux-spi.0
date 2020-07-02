@@ -3,143 +3,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-10.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+	DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E22AC433DF
-	for <linux-spi@archiver.kernel.org>; Thu,  2 Jul 2020 00:45:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 439E3C433E0
+	for <linux-spi@archiver.kernel.org>; Thu,  2 Jul 2020 01:25:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1F99C207F5
-	for <linux-spi@archiver.kernel.org>; Thu,  2 Jul 2020 00:45:53 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="AKIHQJeQ"
+	by mail.kernel.org (Postfix) with ESMTP id 19BA8212CC
+	for <linux-spi@archiver.kernel.org>; Thu,  2 Jul 2020 01:25:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1593653147;
+	bh=zha5AFkQwOw2NWVbIqUcQjMdKsdTzxCfzu5JmQFV0GA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=S6WE/a5Ci/w25o167pD/KdYDBxKyNM6H/pVQ6zruUamqwyAGk8Ga+P503JoHGmdAX
+	 iHUDSEf+Q4QKeM8I0eICX7kOjlQdrKcUI748Y67xdYWxmk28V2CUQy081TGqSDEYvn
+	 zEuW1kmsG0gguMPCQ3wUtjcBrDR9X8MYg7HwP9RI=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728003AbgGBApw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 1 Jul 2020 20:45:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33368 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727996AbgGBApe (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 1 Jul 2020 20:45:34 -0400
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35311C08C5C1
-        for <linux-spi@vger.kernel.org>; Wed,  1 Jul 2020 17:45:34 -0700 (PDT)
-Received: by mail-pj1-x1043.google.com with SMTP id gc9so5172408pjb.2
-        for <linux-spi@vger.kernel.org>; Wed, 01 Jul 2020 17:45:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=jkGcjxRkJ6dCPuaybiPstZAyKU85uMADDKqqgUxYero=;
-        b=AKIHQJeQnAOPNI2gGQrvqd9S3Y7bK1oz1xUxjXASgco2p5Jnkbd+JOewpSZ4lCXVg4
-         onxJ3xvwbcwmLysRT7TDcyysWiMh4Ozitkz6tPoOlIS40R2T00KA+cqLdghcXBdL8FnW
-         jveDSJpqRdDLw9TAHu5CGsM5eclZzjtUsdpOU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=jkGcjxRkJ6dCPuaybiPstZAyKU85uMADDKqqgUxYero=;
-        b=gwQWHCJxA0jEZULyA3yNYhUTKlqNpOoj9/Tgyjzhsueykg27hEeVQhlrSQQ/neIC31
-         SUT0pgRG6AjWY/XlEYalduYsjKP9nC3smJ25CLtDjFpfUhnpTh8Je/u4LyAZ5GjvGL7b
-         XqzEFr6ZOiuEpQrUssG+pjuu3hnRQKdC2vXWiIgVkb0DYWckwcVVV2N8V634ytXpUnnN
-         hlxu4XNt5wPLj/z7X+LMt6VP1s5JMFwiv5ZUN1jmV9XlNvcI94v1yJf8V201KMQvMFRZ
-         GAEsxysJRGEVKADNkQgNibChqI29l4WpMd022PZC/aTkBIpienbJ8pWy04/qpv5t8A4c
-         zdFQ==
-X-Gm-Message-State: AOAM532x0XcO4+CbsgwIj54Y47LgttdTcCSLG442vy9iNaxRYobIeTMf
-        /jWabQAh6pND0jrxlAFPONjMng==
-X-Google-Smtp-Source: ABdhPJxlhWIfAqHpE6aUGK+1UfUbqkZMAkfT4oF9/Vd/2Zzi+2KGX6ovV/CJ4W2f0mhqUZMvNbVxlA==
-X-Received: by 2002:a17:902:b216:: with SMTP id t22mr23734470plr.181.1593650733748;
-        Wed, 01 Jul 2020 17:45:33 -0700 (PDT)
-Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:42b0:34ff:fe3d:58e6])
-        by smtp.gmail.com with ESMTPSA id w4sm6966212pfd.39.2020.07.01.17.45.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jul 2020 17:45:33 -0700 (PDT)
-From:   Douglas Anderson <dianders@chromium.org>
-To:     Mark Brown <broonie@kernel.org>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     akashast@codeaurora.org, linux-arm-msm@vger.kernel.org,
-        mkshah@codeaurora.org, swboyd@chromium.org,
-        georgi.djakov@linaro.org, ctheegal@codeaurora.org,
-        mka@chromium.org, Douglas Anderson <dianders@chromium.org>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-Subject: [PATCH 1/3] spi: spi-geni-qcom: Avoid clock setting if not needed
-Date:   Wed,  1 Jul 2020 17:45:07 -0700
-Message-Id: <20200701174506.1.Icfdcee14649fc0a6c38e87477b28523d4e60bab3@changeid>
-X-Mailer: git-send-email 2.27.0.383.g050319c2ae-goog
-In-Reply-To: <20200702004509.2333554-1-dianders@chromium.org>
-References: <20200702004509.2333554-1-dianders@chromium.org>
+        id S1728905AbgGBBZq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 1 Jul 2020 21:25:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56802 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728894AbgGBBZp (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 1 Jul 2020 21:25:45 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0D3B920748;
+        Thu,  2 Jul 2020 01:25:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1593653144;
+        bh=zha5AFkQwOw2NWVbIqUcQjMdKsdTzxCfzu5JmQFV0GA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=WZTrLIT0bbCNm3VrfDhNnEZN8wQV6Rk/QI+lzlAdNP5qG/qT+Q9JecB+OwPFaTbLf
+         sjE1Iw+Igq1rgNtfuCSzYQWxP4AWzZ3b/JDk3Mb1YTkreEA0bVcDPejJOrwJKQBUTM
+         5EgwdRDGog1C2QD0YJjz65eiA6wrn/XhIZEcV7+c=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Zhenzhong Duan <zhenzhong.duan@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 16/40] spi: spidev: fix a potential use-after-free in spidev_release()
+Date:   Wed,  1 Jul 2020 21:23:37 -0400
+Message-Id: <20200702012402.2701121-16-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200702012402.2701121-1-sashal@kernel.org>
+References: <20200702012402.2701121-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Every SPI transfer could have a different clock rate.  The
-spi-geni-qcom controller code to deal with this was never very well
-optimized and has always had a lot of code plus some calls into the
-clk framework which, at the very least, would grab a mutex.  However,
-until recently, the overhead wasn't _too_ much.  That changed with
-commit 0e3b8a81f5df ("spi: spi-geni-qcom: Add interconnect support")
-we're now calling geni_icc_set_bw(), which leads to a bunch of math
-plus:
-  geni_icc_set_bw()
-    icc_set_bw()
-      apply_constraints()
-        qcom_icc_set()
-          qcom_icc_bcm_voter_commit()
-            rpmh_invalidate()
-            rpmh_write_batch()
-...and those rpmh commands can be a bit beefy if you call them too
-often.
+From: Zhenzhong Duan <zhenzhong.duan@gmail.com>
 
-We already know what speed we were running at before, so if we see
-that nothing has changed let's avoid the whole pile of code.
+[ Upstream commit 06096cc6c5a84ced929634b0d79376b94c65a4bd ]
 
-On my hardware, this made spi_geni_prepare_message() drop down from
-~145 us down to ~14 us.
+If an spi device is unbounded from the driver before the release
+process, there will be an NULL pointer reference when it's
+referenced in spi_slave_abort().
 
-NOTE: Potentially it might also make sense to add some code into the
-interconnect framework to avoid executing so much code when bandwidth
-isn't changing, but even if we did that we still want to short circuit
-here to save the extra math / clock calls.
+Fix it by checking it's already freed before reference.
 
-Fixes: 0e3b8a81f5df ("spi: spi-geni-qcom: Add interconnect support")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@gmail.com>
+Link: https://lore.kernel.org/r/20200618032125.4650-2-zhenzhong.duan@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ drivers/spi/spidev.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
- drivers/spi/spi-geni-qcom.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index e01c782ef7d0..bb4cdda2dec8 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -201,6 +201,9 @@ static int geni_spi_set_clock_and_bw(struct spi_geni_master *mas,
- 	struct geni_se *se = &mas->se;
- 	int ret;
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 88d0976215fac..ac6bf1fbbfe68 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -605,15 +605,20 @@ static int spidev_open(struct inode *inode, struct file *filp)
+ static int spidev_release(struct inode *inode, struct file *filp)
+ {
+ 	struct spidev_data	*spidev;
++	int			dofree;
  
-+	if (clk_hz == mas->cur_speed_hz)
-+		return 0;
+ 	mutex_lock(&device_list_lock);
+ 	spidev = filp->private_data;
+ 	filp->private_data = NULL;
+ 
++	spin_lock_irq(&spidev->spi_lock);
++	/* ... after we unbound from the underlying device? */
++	dofree = (spidev->spi == NULL);
++	spin_unlock_irq(&spidev->spi_lock);
 +
- 	ret = get_spi_clk_cfg(clk_hz, mas, &idx, &div);
- 	if (ret) {
- 		dev_err(mas->dev, "Err setting clk to %lu: %d\n", clk_hz, ret);
-@@ -339,11 +342,9 @@ static void setup_fifo_xfer(struct spi_transfer *xfer,
+ 	/* last close? */
+ 	spidev->users--;
+ 	if (!spidev->users) {
+-		int		dofree;
+ 
+ 		kfree(spidev->tx_buffer);
+ 		spidev->tx_buffer = NULL;
+@@ -621,19 +626,14 @@ static int spidev_release(struct inode *inode, struct file *filp)
+ 		kfree(spidev->rx_buffer);
+ 		spidev->rx_buffer = NULL;
+ 
+-		spin_lock_irq(&spidev->spi_lock);
+-		if (spidev->spi)
+-			spidev->speed_hz = spidev->spi->max_speed_hz;
+-
+-		/* ... after we unbound from the underlying device? */
+-		dofree = (spidev->spi == NULL);
+-		spin_unlock_irq(&spidev->spi_lock);
+-
+ 		if (dofree)
+ 			kfree(spidev);
++		else
++			spidev->speed_hz = spidev->spi->max_speed_hz;
  	}
+ #ifdef CONFIG_SPI_SLAVE
+-	spi_slave_abort(spidev->spi);
++	if (!dofree)
++		spi_slave_abort(spidev->spi);
+ #endif
+ 	mutex_unlock(&device_list_lock);
  
- 	/* Speed and bits per word can be overridden per transfer */
--	if (xfer->speed_hz != mas->cur_speed_hz) {
--		ret = geni_spi_set_clock_and_bw(mas, xfer->speed_hz);
--		if (ret)
--			return;
--	}
-+	ret = geni_spi_set_clock_and_bw(mas, xfer->speed_hz);
-+	if (ret)
-+		return;
- 
- 	mas->tx_rem_bytes = 0;
- 	mas->rx_rem_bytes = 0;
 -- 
-2.27.0.383.g050319c2ae-goog
+2.25.1
 

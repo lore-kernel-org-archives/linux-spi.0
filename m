@@ -2,40 +2,38 @@ Return-Path: <SRS0=fYXv=AR=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=no
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CD67CC433DF
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B7305C433E0
 	for <linux-spi@archiver.kernel.org>; Mon,  6 Jul 2020 07:18:08 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id ADEE320EDD
+	by mail.kernel.org (Postfix) with ESMTP id 998A520C56
 	for <linux-spi@archiver.kernel.org>; Mon,  6 Jul 2020 07:18:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728079AbgGFHSI (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1728466AbgGFHSI (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Mon, 6 Jul 2020 03:18:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45692 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728110AbgGFHSI (ORCPT
+        with ESMTP id S1728079AbgGFHSI (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Jul 2020 03:18:08 -0400
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8721C08C5DF
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4EDAC061794
         for <linux-spi@vger.kernel.org>; Mon,  6 Jul 2020 00:18:07 -0700 (PDT)
 Received: from heimdall.vpn.pengutronix.de ([2001:67c:670:205:1d::14] helo=blackshift.org)
         by metis.ext.pengutronix.de with esmtp (Exim 4.92)
         (envelope-from <mkl@pengutronix.de>)
-        id 1jsLO7-0004BC-Lb; Mon, 06 Jul 2020 09:18:03 +0200
+        id 1jsLO6-0004BC-SJ; Mon, 06 Jul 2020 09:18:02 +0200
 From:   Marc Kleine-Budde <mkl@pengutronix.de>
 To:     Mark Brown <broonie@kernel.org>
 Cc:     Maxime Ripard <mripard@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
         linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        kernel@pengutronix.de, Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 2/9] spi: spi-sun6i: sun6i_spi_transfer_one(): report effectivly used speed_hz of transfer
-Date:   Mon,  6 Jul 2020 09:17:54 +0200
-Message-Id: <20200706071801.558394-3-mkl@pengutronix.de>
+        kernel@pengutronix.de
+Subject: [PATCH 0/9] spi: spi-sun6i: One fix and some improvements
+Date:   Mon,  6 Jul 2020 09:17:52 +0200
+Message-Id: <20200706071801.558394-1-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20200706071801.558394-1-mkl@pengutronix.de>
-References: <20200706071801.558394-1-mkl@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2001:67c:670:205:1d::14
@@ -47,35 +45,18 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This patch implementes the reporting of the effectivly used speed_hz for the
-transfer by setting tfr->effective_speed_hz.
+Hello,
 
-See the following patch, which adds this feature to the SPI core for more
-information:
+this series first fixes the calculation of the clock rate. The driver will
+round up to the nearest clock rate instead of rounding down. Resulting in SPI
+devices accessed with a too high SPI clock.
 
-    5d7e2b5ed585 spi: core: allow reporting the effectivly used speed_hz for a transfer
+The remaining patches improve the performance of the driver. The changes range
+from micro-optimizations like reducing MMIO writes to the controller to
+reducing the number of needed interrupts in some use cases.
 
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/spi/spi-sun6i.c | 2 ++
- 1 file changed, 2 insertions(+)
+regards,
+Marc
 
-diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
-index fa11cc0e809b..64b4d8077010 100644
---- a/drivers/spi/spi-sun6i.c
-+++ b/drivers/spi/spi-sun6i.c
-@@ -291,9 +291,11 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
- 	div_cdr2 = DIV_ROUND_UP(div_cdr1, 2);
- 	if (div_cdr2 <= (SUN6I_CLK_CTL_CDR2_MASK + 1)) {
- 		reg = SUN6I_CLK_CTL_CDR2(div_cdr2 - 1) | SUN6I_CLK_CTL_DRS;
-+		tfr->effective_speed_hz = mclk_rate / (2 * div_cdr2);
- 	} else {
- 		div = min(SUN6I_CLK_CTL_CDR1_MASK, order_base_2(div_cdr1));
- 		reg = SUN6I_CLK_CTL_CDR1(div);
-+		tfr->effective_speed_hz = mclk_rate / (1 << div);
- 	}
- 
- 	sun6i_spi_write(sspi, SUN6I_CLK_CTL_REG, reg);
--- 
-2.27.0
+
 

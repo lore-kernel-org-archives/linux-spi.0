@@ -6,33 +6,33 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 085ACC433E0
-	for <linux-spi@archiver.kernel.org>; Mon,  6 Jul 2020 14:34:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F75BC433DF
+	for <linux-spi@archiver.kernel.org>; Mon,  6 Jul 2020 14:34:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E75992070B
-	for <linux-spi@archiver.kernel.org>; Mon,  6 Jul 2020 14:34:51 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6E2BB2070B
+	for <linux-spi@archiver.kernel.org>; Mon,  6 Jul 2020 14:34:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729354AbgGFOev (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 6 Jul 2020 10:34:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56702 "EHLO
+        id S1729352AbgGFOex (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 6 Jul 2020 10:34:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729352AbgGFOev (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Jul 2020 10:34:51 -0400
+        with ESMTP id S1729358AbgGFOew (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Jul 2020 10:34:52 -0400
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58BCBC061755
-        for <linux-spi@vger.kernel.org>; Mon,  6 Jul 2020 07:34:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEE22C061755
+        for <linux-spi@vger.kernel.org>; Mon,  6 Jul 2020 07:34:52 -0700 (PDT)
 Received: from heimdall.vpn.pengutronix.de ([2001:67c:670:205:1d::14] helo=blackshift.org)
         by metis.ext.pengutronix.de with esmtp (Exim 4.92)
         (envelope-from <mkl@pengutronix.de>)
-        id 1jsSCl-0005DP-2E; Mon, 06 Jul 2020 16:34:47 +0200
+        id 1jsSCl-0005DP-Sp; Mon, 06 Jul 2020 16:34:47 +0200
 From:   Marc Kleine-Budde <mkl@pengutronix.de>
 To:     Mark Brown <broonie@kernel.org>
 Cc:     Maxime Ripard <mripard@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
         linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         kernel@pengutronix.de, Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH v2 03/10] spi: spi-sun6i: sun6i_spi_transfer_one(): remove useless goto
-Date:   Mon,  6 Jul 2020 16:34:36 +0200
-Message-Id: <20200706143443.9855-4-mkl@pengutronix.de>
+Subject: [PATCH v2 05/10] spi: spi-sun6i: sun6i_spi_get_tx_fifo_count: Convert manual shift+mask to FIELD_GET()
+Date:   Mon,  6 Jul 2020 16:34:38 +0200
+Message-Id: <20200706143443.9855-6-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20200706143443.9855-1-mkl@pengutronix.de>
 References: <20200706143443.9855-1-mkl@pengutronix.de>
@@ -47,30 +47,47 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This patch removes an useless goto at the end of
-sun6i_spi_transfer_one().
+This patch converts the manual shift+mask in sun6i_spi_get_tx_fifo_count() to
+make use of FIELD_GET()
 
-Acked-by: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/spi/spi-sun6i.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/spi/spi-sun6i.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
-index 64b4d8077010..955be8921c45 100644
+index 882492774986..40365761f25d 100644
 --- a/drivers/spi/spi-sun6i.c
 +++ b/drivers/spi/spi-sun6i.c
-@@ -335,10 +335,8 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
- 			 dev_name(&spi->dev), tfr->len, tfr->speed_hz,
- 			 jiffies_to_msecs(end - start), tx_time);
- 		ret = -ETIMEDOUT;
--		goto out;
- 	}
+@@ -7,6 +7,7 @@
+  * Maxime Ripard <maxime.ripard@free-electrons.com>
+  */
  
--out:
- 	sun6i_spi_write(sspi, SUN6I_INT_CTL_REG, 0);
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/device.h>
+@@ -60,8 +61,7 @@
+ #define SUN6I_FIFO_STA_REG		0x1c
+ #define SUN6I_FIFO_STA_RF_CNT_MASK		0x7f
+ #define SUN6I_FIFO_STA_RF_CNT_BITS		0
+-#define SUN6I_FIFO_STA_TF_CNT_MASK		0x7f
+-#define SUN6I_FIFO_STA_TF_CNT_BITS		16
++#define SUN6I_FIFO_STA_TF_CNT_MASK		GENMASK(23, 16)
  
- 	return ret;
+ #define SUN6I_CLK_CTL_REG		0x24
+ #define SUN6I_CLK_CTL_CDR2_MASK			0xff
+@@ -110,9 +110,7 @@ static inline u32 sun6i_spi_get_tx_fifo_count(struct sun6i_spi *sspi)
+ {
+ 	u32 reg = sun6i_spi_read(sspi, SUN6I_FIFO_STA_REG);
+ 
+-	reg >>= SUN6I_FIFO_STA_TF_CNT_BITS;
+-
+-	return reg & SUN6I_FIFO_STA_TF_CNT_MASK;
++	return FIELD_GET(SUN6I_FIFO_STA_TF_CNT_MASK, reg);
+ }
+ 
+ static inline void sun6i_spi_enable_interrupt(struct sun6i_spi *sspi, u32 mask)
 -- 
 2.27.0
 

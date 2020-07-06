@@ -2,38 +2,40 @@ Return-Path: <SRS0=fYXv=AR=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 33559C433E0
-	for <linux-spi@archiver.kernel.org>; Mon,  6 Jul 2020 14:34:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 96250C433DF
+	for <linux-spi@archiver.kernel.org>; Mon,  6 Jul 2020 14:34:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 18FB82088E
-	for <linux-spi@archiver.kernel.org>; Mon,  6 Jul 2020 14:34:50 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 74C2E20773
+	for <linux-spi@archiver.kernel.org>; Mon,  6 Jul 2020 14:34:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729351AbgGFOet (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 6 Jul 2020 10:34:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56692 "EHLO
+        id S1729259AbgGFOev (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 6 Jul 2020 10:34:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729259AbgGFOet (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Jul 2020 10:34:49 -0400
+        with ESMTP id S1729352AbgGFOev (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Jul 2020 10:34:51 -0400
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49C22C061755
-        for <linux-spi@vger.kernel.org>; Mon,  6 Jul 2020 07:34:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7030C061794
+        for <linux-spi@vger.kernel.org>; Mon,  6 Jul 2020 07:34:50 -0700 (PDT)
 Received: from heimdall.vpn.pengutronix.de ([2001:67c:670:205:1d::14] helo=blackshift.org)
         by metis.ext.pengutronix.de with esmtp (Exim 4.92)
         (envelope-from <mkl@pengutronix.de>)
-        id 1jsSCj-0005DP-Rn; Mon, 06 Jul 2020 16:34:45 +0200
+        id 1jsSCk-0005DP-LT; Mon, 06 Jul 2020 16:34:46 +0200
 From:   Marc Kleine-Budde <mkl@pengutronix.de>
 To:     Mark Brown <broonie@kernel.org>
 Cc:     Maxime Ripard <mripard@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
         linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        kernel@pengutronix.de
-Subject: [PATCH v2 00/10] spi: spi-sun6i: One fix and some improvements
-Date:   Mon,  6 Jul 2020 16:34:33 +0200
-Message-Id: <20200706143443.9855-1-mkl@pengutronix.de>
+        kernel@pengutronix.de, Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH v2 02/10] spi: spi-sun6i: sun6i_spi_transfer_one(): report effectivly used speed_hz of transfer
+Date:   Mon,  6 Jul 2020 16:34:35 +0200
+Message-Id: <20200706143443.9855-3-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20200706143443.9855-1-mkl@pengutronix.de>
+References: <20200706143443.9855-1-mkl@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2001:67c:670:205:1d::14
@@ -45,27 +47,36 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello,
+This patch implementes the reporting of the effectivly used speed_hz for the
+transfer by setting tfr->effective_speed_hz.
 
-this series first fixes the calculation of the clock rate. The driver will
-round up to the nearest clock rate instead of rounding down. Resulting in SPI
-devices accessed with a too high SPI clock.
+See the following patch, which adds this feature to the SPI core for more
+information:
 
-The remaining patches improve the performance of the driver. The changes range
-from micro-optimizations like reducing MMIO writes to the controller to
-reducing the number of needed interrupts in some use cases.
+    5d7e2b5ed585 spi: core: allow reporting the effectivly used speed_hz for a transfer
 
-regards,
-Marc
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/spi/spi-sun6i.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-changes since v1:
-- added Maxime Ripard's to the existing patches
-- 06/10: (was 05/10 in v1)
-  "spi: spi-sun6i: sun6i_spi_drain_fifo(): introduce sun6i_spi_get_rx_fifo_count() and make use of it"
-  use FIELD_GET instead of open coding it
-  (tnx: Maxime Ripard)
-- 05/10: "spi: spi-sun6i: sun6i_spi_get_tx_fifo_count: Convert manual shift+mask to FIELD_GET()"
-  new patch
-
-
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index fa11cc0e809b..64b4d8077010 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -291,9 +291,11 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 	div_cdr2 = DIV_ROUND_UP(div_cdr1, 2);
+ 	if (div_cdr2 <= (SUN6I_CLK_CTL_CDR2_MASK + 1)) {
+ 		reg = SUN6I_CLK_CTL_CDR2(div_cdr2 - 1) | SUN6I_CLK_CTL_DRS;
++		tfr->effective_speed_hz = mclk_rate / (2 * div_cdr2);
+ 	} else {
+ 		div = min(SUN6I_CLK_CTL_CDR1_MASK, order_base_2(div_cdr1));
+ 		reg = SUN6I_CLK_CTL_CDR1(div);
++		tfr->effective_speed_hz = mclk_rate / (1 << div);
+ 	}
+ 
+ 	sun6i_spi_write(sspi, SUN6I_CLK_CTL_REG, reg);
+-- 
+2.27.0
 

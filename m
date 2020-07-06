@@ -2,38 +2,40 @@ Return-Path: <SRS0=fYXv=AR=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B7305C433E0
-	for <linux-spi@archiver.kernel.org>; Mon,  6 Jul 2020 07:18:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4115EC433E2
+	for <linux-spi@archiver.kernel.org>; Mon,  6 Jul 2020 07:18:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 998A520C56
-	for <linux-spi@archiver.kernel.org>; Mon,  6 Jul 2020 07:18:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2AB9320C09
+	for <linux-spi@archiver.kernel.org>; Mon,  6 Jul 2020 07:18:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728466AbgGFHSI (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 6 Jul 2020 03:18:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45690 "EHLO
+        id S1728652AbgGFHSJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 6 Jul 2020 03:18:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728079AbgGFHSI (ORCPT
+        with ESMTP id S1728192AbgGFHSI (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Mon, 6 Jul 2020 03:18:08 -0400
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4EDAC061794
-        for <linux-spi@vger.kernel.org>; Mon,  6 Jul 2020 00:18:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89933C061794
+        for <linux-spi@vger.kernel.org>; Mon,  6 Jul 2020 00:18:08 -0700 (PDT)
 Received: from heimdall.vpn.pengutronix.de ([2001:67c:670:205:1d::14] helo=blackshift.org)
         by metis.ext.pengutronix.de with esmtp (Exim 4.92)
         (envelope-from <mkl@pengutronix.de>)
-        id 1jsLO6-0004BC-SJ; Mon, 06 Jul 2020 09:18:02 +0200
+        id 1jsLO8-0004BC-28; Mon, 06 Jul 2020 09:18:04 +0200
 From:   Marc Kleine-Budde <mkl@pengutronix.de>
 To:     Mark Brown <broonie@kernel.org>
 Cc:     Maxime Ripard <mripard@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
         linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        kernel@pengutronix.de
-Subject: [PATCH 0/9] spi: spi-sun6i: One fix and some improvements
-Date:   Mon,  6 Jul 2020 09:17:52 +0200
-Message-Id: <20200706071801.558394-1-mkl@pengutronix.de>
+        kernel@pengutronix.de, Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 3/9] spi: spi-sun6i: sun6i_spi_transfer_one(): remove useless goto
+Date:   Mon,  6 Jul 2020 09:17:55 +0200
+Message-Id: <20200706071801.558394-4-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20200706071801.558394-1-mkl@pengutronix.de>
+References: <20200706071801.558394-1-mkl@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2001:67c:670:205:1d::14
@@ -45,18 +47,29 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello,
+This patch removes an useless goto at the end of
+sun6i_spi_transfer_one().
 
-this series first fixes the calculation of the clock rate. The driver will
-round up to the nearest clock rate instead of rounding down. Resulting in SPI
-devices accessed with a too high SPI clock.
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/spi/spi-sun6i.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-The remaining patches improve the performance of the driver. The changes range
-from micro-optimizations like reducing MMIO writes to the controller to
-reducing the number of needed interrupts in some use cases.
-
-regards,
-Marc
-
-
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index 64b4d8077010..955be8921c45 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -335,10 +335,8 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 			 dev_name(&spi->dev), tfr->len, tfr->speed_hz,
+ 			 jiffies_to_msecs(end - start), tx_time);
+ 		ret = -ETIMEDOUT;
+-		goto out;
+ 	}
+ 
+-out:
+ 	sun6i_spi_write(sspi, SUN6I_INT_CTL_REG, 0);
+ 
+ 	return ret;
+-- 
+2.27.0
 

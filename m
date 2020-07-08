@@ -6,39 +6,39 @@ X-Spam-Status: No, score=-6.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 04687C433DF
-	for <linux-spi@archiver.kernel.org>; Wed,  8 Jul 2020 13:43:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AD20DC433DF
+	for <linux-spi@archiver.kernel.org>; Wed,  8 Jul 2020 13:44:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D6913206E9
-	for <linux-spi@archiver.kernel.org>; Wed,  8 Jul 2020 13:43:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 929EF206E9
+	for <linux-spi@archiver.kernel.org>; Wed,  8 Jul 2020 13:44:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729679AbgGHNnJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 8 Jul 2020 09:43:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43096 "EHLO
+        id S1729450AbgGHNoH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 8 Jul 2020 09:44:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729450AbgGHNnJ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 8 Jul 2020 09:43:09 -0400
-X-Greylist: delayed 582 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 08 Jul 2020 06:43:09 PDT
-Received: from mailout3.hostsharing.net (mailout3.hostsharing.net [IPv6:2a01:4f8:150:2161:1:b009:f236:0])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53F47C061A0B
-        for <linux-spi@vger.kernel.org>; Wed,  8 Jul 2020 06:43:09 -0700 (PDT)
+        with ESMTP id S1729411AbgGHNoH (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 8 Jul 2020 09:44:07 -0400
+X-Greylist: delayed 366 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 08 Jul 2020 06:44:06 PDT
+Received: from mailout1.hostsharing.net (mailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5fcc:0])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDD4AC061A0B
+        for <linux-spi@vger.kernel.org>; Wed,  8 Jul 2020 06:44:06 -0700 (PDT)
 Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (Client CN "*.hostsharing.net", Issuer "COMODO RSA Domain Validation Secure Server CA" (not verified))
-        by mailout3.hostsharing.net (Postfix) with ESMTPS id 34935101E69A5;
-        Wed,  8 Jul 2020 15:33:23 +0200 (CEST)
-Received: from localhost (unknown [87.130.102.138])
+        by mailout1.hostsharing.net (Postfix) with ESMTPS id 14E1010190FA4;
+        Wed,  8 Jul 2020 15:37:57 +0200 (CEST)
+Received: from localhost (pd95be530.dip0.t-ipconnect.de [217.91.229.48])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
         (No client certificate requested)
-        by h08.hostsharing.net (Postfix) with ESMTPSA id C340F6106EC8;
-        Wed,  8 Jul 2020 15:33:22 +0200 (CEST)
-X-Mailbox-Line: From de88a23a6fe0ef70f7cfd13c8aea9ab51b4edab6 Mon Sep 17 00:00:00 2001
-Message-Id: <de88a23a6fe0ef70f7cfd13c8aea9ab51b4edab6.1594214103.git.lukas@wunner.de>
+        by h08.hostsharing.net (Postfix) with ESMTPSA id B1E906106EC8;
+        Wed,  8 Jul 2020 15:37:56 +0200 (CEST)
+X-Mailbox-Line: From f2d349b5ba67b5ca70cb19577725167642eb69c5 Mon Sep 17 00:00:00 2001
+Message-Id: <f2d349b5ba67b5ca70cb19577725167642eb69c5.1594214103.git.lukas@wunner.de>
 In-Reply-To: <cover.1594214103.git.lukas@wunner.de>
 References: <cover.1594214103.git.lukas@wunner.de>
 From:   Lukas Wunner <lukas@wunner.de>
-Date:   Wed, 8 Jul 2020 15:27:01 +0200
-Subject: [PATCH 1/3] driver core: Avoid binding drivers to dead devices
+Date:   Wed, 8 Jul 2020 15:27:03 +0200
+Subject: [PATCH 3/3] driver core: Avoid adding children below a dead parent
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
         Dan Williams <dan.j.williams@intel.com>,
@@ -52,53 +52,98 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Commit 3451a495ef24 ("driver core: Establish order of operations for
-device_add and device_del via bitflag") sought to prevent asynchronous
-driver binding to a device which is being removed.  It added a
-per-device "dead" flag which is checked in the following code paths:
+If CONFIG_OF_DYNAMIC or CONFIG_ACPI is enabled, SPI devices may be added
+below a controller at runtime by a DeviceTree overlay or DSDT patch.
+But there are no precautions to prevent adding a device below a
+controller that's being removed.
 
-* asynchronous binding in __driver_attach_async_helper()
-*  synchronous binding in device_driver_attach()
-* asynchronous binding in __device_attach_async_helper()
+This seems like something that should be guarded against in the driver
+core because it's not specific to SPI:  Adding a child below a parent
+that's going away seems like a bad idea regardless of the bus type.
 
-It did *not* check the flag upon:
+Take advantage of kill_device() which was added by commit 00289cd87676
+("drivers/base: Introduce kill_device()"), call it upon removal of an
+SPI controller and teach the driver core to refuse device addition below
+a killed parent.  To make this race-free, device_add() needs to take the
+parent's dead_sem before checking its "dead" flag and until the child
+device has been added to the parent's klist_children.
 
-*  synchronous binding in __device_attach()
-
-However __device_attach() may also be called asynchronously from:
-
-deferred_probe_work_func()
-  bus_probe_device()
-    device_initial_probe()
-      __device_attach()
-
-So if the commit's intention was to check the "dead" flag in all
-asynchronous code paths, then a check is also necessary in
-__device_attach().  Add the missing check.
-
-Fixes: 3451a495ef24 ("driver core: Establish order of operations for device_add and device_del via bitflag")
 Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org # v5.1+
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
 Cc: Alexander Duyck <alexander.h.duyck@linux.intel.com>
 ---
- drivers/base/dd.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/base/core.c | 18 ++++++++++++++++--
+ drivers/spi/spi.c   |  3 +++
+ 2 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/base/dd.c b/drivers/base/dd.c
-index 9a1d940342ac4..31c668651e824 100644
---- a/drivers/base/dd.c
-+++ b/drivers/base/dd.c
-@@ -848,7 +848,9 @@ static int __device_attach(struct device *dev, bool allow_async)
- 	int ret = 0;
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 057da42b1a660..1d4e39696f996 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -2597,6 +2597,14 @@ int device_add(struct device *dev)
+ 	pr_debug("device: '%s': %s\n", dev_name(dev), __func__);
  
- 	device_lock(dev);
--	if (dev->driver) {
-+	if (dev->p->dead) {
-+		goto out_unlock;
-+	} else if (dev->driver) {
- 		if (device_is_bound(dev)) {
- 			ret = 1;
- 			goto out_unlock;
+ 	parent = get_device(dev->parent);
++	if (parent) {
++		down_read(&parent->p->dead_sem);
++		if (parent->p->dead) {
++			error = -ENODEV;
++			goto parent_error;
++		}
++	}
++
+ 	kobj = get_device_parent(dev, parent);
+ 	if (IS_ERR(kobj)) {
+ 		error = PTR_ERR(kobj);
+@@ -2679,9 +2687,11 @@ int device_add(struct device *dev)
+ 	}
+ 
+ 	bus_probe_device(dev);
+-	if (parent)
++	if (parent) {
+ 		klist_add_tail(&dev->p->knode_parent,
+ 			       &parent->p->klist_children);
++		up_read(&parent->p->dead_sem);
++	}
+ 
+ 	if (dev->class) {
+ 		mutex_lock(&dev->class->p->mutex);
+@@ -2722,6 +2732,8 @@ int device_add(struct device *dev)
+  Error:
+ 	cleanup_glue_dir(dev, glue_dir);
+ parent_error:
++	if (parent)
++		up_read(&parent->p->dead_sem);
+ 	put_device(parent);
+ name_error:
+ 	kfree(dev->p);
+@@ -2785,7 +2797,9 @@ EXPORT_SYMBOL_GPL(put_device);
+  * kill_device - declare device dead
+  * @dev: device in question
+  *
+- * Declare @dev dead to prevent it from binding to a driver.
++ * Declare @dev dead to prevent it from binding to a driver and
++ * to prevent addition of children.
++ *
+  * Return true if it was killed or false if it was already dead.
+  */
+ bool kill_device(struct device *dev)
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 8158e281f3540..005eca4bae089 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2764,6 +2764,9 @@ void spi_unregister_controller(struct spi_controller *ctlr)
+ 	struct spi_controller *found;
+ 	int id = ctlr->bus_num;
+ 
++	/* Prevent addition of new children, then remove existing ones */
++	if (IS_ENABLED(CONFIG_OF_DYNAMIC) || IS_ENABLED(CONFIG_ACPI))
++		kill_device(&ctlr->dev);
+ 	device_for_each_child(&ctlr->dev, NULL, __unregister);
+ 
+ 	/* First make sure that this controller was ever added */
 -- 
 2.27.0
 

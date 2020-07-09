@@ -2,95 +2,89 @@ Return-Path: <SRS0=rD+8=AU=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-4.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
+	SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7AD68C433DF
-	for <linux-spi@archiver.kernel.org>; Thu,  9 Jul 2020 22:01:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 62A25C433DF
+	for <linux-spi@archiver.kernel.org>; Thu,  9 Jul 2020 23:26:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4919B20672
-	for <linux-spi@archiver.kernel.org>; Thu,  9 Jul 2020 22:01:11 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2F9FD20578
+	for <linux-spi@archiver.kernel.org>; Thu,  9 Jul 2020 23:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1594332071;
-	bh=5465ewyg8MdvQtK6kDkNf3vR6jyKNYnfzaqI7TcJus0=;
-	h=Date:From:To:In-Reply-To:References:Subject:List-ID:From;
-	b=qg3KWzgD6zVDtSQIHTkW5N4QWxxXlZ0peyHUy3u+zUvh7QkynudmlHTDsVx2bOxgP
-	 8vsKyODIRLizvInTVCm4BLAl+eXBjU9ZOUyBTffxAE4CkBnMzS+/djmFLDa5cB59bf
-	 CI0NPs5xfGqEQBnR2fFyOqa2YfjbkKxTdnBoKi/s=
+	s=default; t=1594337197;
+	bh=u0E4LONPQnc+wTjO/xBIuKk+op7079Pyjo+9EDfXtpI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=aCB6V8qjWU+DaE8VsMuT26H4tg5lQzPTyVim4nHsr1Elf3LPD/8NisBFtXoNMfGV4
+	 jqNrHMtDEesioEddLJ3Sm9kzsWqUL03f9tJKN8GNy9J/ynVTt2TitOa8LL9UsHioHw
+	 kGbXzSzYBKJfS5h5i4H2y67IsCC8CTvYbqlWY6OA=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727024AbgGIWBK (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 9 Jul 2020 18:01:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44724 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726213AbgGIWBK (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 9 Jul 2020 18:01:10 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9C08A20720;
-        Thu,  9 Jul 2020 22:01:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1594332070;
-        bh=5465ewyg8MdvQtK6kDkNf3vR6jyKNYnfzaqI7TcJus0=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=xO8luKZhOq9teQnCJytYCt+xVlwCKKoErVl9+n5hrXinAiS6rw/rHfQPGdJRBy3VO
-         kxYqKZQEAZd3byucZCx/SbIyRjeLrMwDV8fd5ohLFcxwFr+8zcz2xfhD8Tr+eMGjea
-         goOddP84IZZ4p012xFPfWXk0XblS/HCvjvP98Nd4=
-Date:   Thu, 09 Jul 2020 23:01:04 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     robh+dt@kernel.org, linux-spi@vger.kernel.org,
-        "Alexander A. Klimov" <grandmaster@al2klimov.de>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20200708194400.22213-1-grandmaster@al2klimov.de>
-References: <20200708194400.22213-1-grandmaster@al2klimov.de>
-Subject: Re: [PATCH] SPI SUBSYSTEM: Replace HTTP links with HTTPS ones
-Message-Id: <159433204447.479.16639997538518023197.b4-ty@kernel.org>
+        id S1726323AbgGIX0g (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 9 Jul 2020 19:26:36 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:42477 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726222AbgGIX0g (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Jul 2020 19:26:36 -0400
+Received: by mail-io1-f67.google.com with SMTP id c16so4137579ioi.9;
+        Thu, 09 Jul 2020 16:26:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=9qBBiKVAEwV0csR2KHgZP1aEu5doNildOz5brRqIvOE=;
+        b=pNS97OGHYffRnd+8s0+166MAwja6y2NdBJGratPyN6wWNoPmRbBiqb/trUV4BwYFZ0
+         1nFvQX4bEd+B7ohi+cxX0GIJy5OWk2xYmizVTM6BcZ45HJMD62CYL8lUCWVILbxpEgaj
+         8S16uS1c29Jep9IvbmYMiUm13hobtZ21C7yYNdZ/SZy4gneVrCqUMoFbRP3w3TizJd+V
+         rBLbarQ+KGlTMMgPkNgwEX/t4etG2ljzKQtICN4Mk8s5G0Xcbuj4MQhcurfwr/V0TGvj
+         pPWlbbvtqJPfKo5JEk6jy/fu8AeRDfw7YC4WOIwoyl+WKat9expb1CwXsf8UMTWWzs1R
+         BT3A==
+X-Gm-Message-State: AOAM533DIU5KT7UKXrlAMRrmBjtXTBLM/KPwvXVPrC7jqmlJy1BrHtmB
+        uPVLWRy6GIddEBpQCxAwtg==
+X-Google-Smtp-Source: ABdhPJxZ84RtZ9dBJ7PT0YLFvMCuODq/mOXFzn2IHZs4voJJrnOFgJuUsKcK23DdSq/g4j1nI/GzwQ==
+X-Received: by 2002:a05:6638:14c5:: with SMTP id l5mr73891024jak.134.1594337195695;
+        Thu, 09 Jul 2020 16:26:35 -0700 (PDT)
+Received: from xps15 ([64.188.179.254])
+        by smtp.gmail.com with ESMTPSA id u15sm2853758iog.18.2020.07.09.16.26.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2020 16:26:35 -0700 (PDT)
+Received: (nullmailer pid 1095549 invoked by uid 1000);
+        Thu, 09 Jul 2020 23:26:33 -0000
+Date:   Thu, 9 Jul 2020 17:26:33 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Anson Huang <Anson.Huang@nxp.com>
+Cc:     shawnguo@kernel.org, marex@denx.de, broonie@kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, robh+dt@kernel.org,
+        festevam@gmail.com, Linux-imx@nxp.com, s.hauer@pengutronix.de,
+        linux-spi@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH V3 2/3] dt-bindings: spi: Convert imx cspi to json-schema
+Message-ID: <20200709232633.GA1095495@bogus>
+References: <1592281575-32708-1-git-send-email-Anson.Huang@nxp.com>
+ <1592281575-32708-3-git-send-email-Anson.Huang@nxp.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1592281575-32708-3-git-send-email-Anson.Huang@nxp.com>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 8 Jul 2020 21:44:00 +0200, Alexander A. Klimov wrote:
-> Rationale:
-> Reduces attack surface on kernel devs opening the links for MITM
-> as HTTPS traffic is much harder to manipulate.
+On Tue, 16 Jun 2020 12:26:14 +0800, Anson Huang wrote:
+> Convert the i.MX CSPI binding to DT schema format using json-schema,
+> update compatible, remove obsolete properties "fsl,spi-num-chipselects"
+> and update the example based on latest DT file.
 > 
-> Deterministic algorithm:
-> For each file:
->   If not .svg:
->     For each line:
->       If doesn't contain `\bxmlns\b`:
->         For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
-> 	  If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
->             If both the HTTP and HTTPS versions
->             return 200 OK and serve the same content:
->               Replace HTTP with HTTPS.
+> Signed-off-by: Anson Huang <Anson.Huang@nxp.com>
+> ---
+> Changes since V2:
+> 	- remove redundant "maxItems" in "clocks" and "clock-names".
+> ---
+>  .../devicetree/bindings/spi/fsl-imx-cspi.txt       | 56 -------------
+>  .../devicetree/bindings/spi/fsl-imx-cspi.yaml      | 97 ++++++++++++++++++++++
+>  2 files changed, 97 insertions(+), 56 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+>  create mode 100644 Documentation/devicetree/bindings/spi/fsl-imx-cspi.yaml
+> 
 
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
-
-Thanks!
-
-[1/1] SPI SUBSYSTEM: Replace HTTP links with HTTPS ones
-      commit: 3ea4eac3e29f8a63646ddc1bdf90f2efce7d082c
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Reviewed-by: Rob Herring <robh@kernel.org>

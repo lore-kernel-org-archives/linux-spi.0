@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-6.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 565D0C433DF
-	for <linux-spi@archiver.kernel.org>; Thu,  9 Jul 2020 22:01:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66628C433E0
+	for <linux-spi@archiver.kernel.org>; Thu,  9 Jul 2020 22:01:06 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2A1AC2076A
-	for <linux-spi@archiver.kernel.org>; Thu,  9 Jul 2020 22:01:01 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3BB6E20774
+	for <linux-spi@archiver.kernel.org>; Thu,  9 Jul 2020 22:01:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1594332061;
-	bh=msWKTE4BCZLc4U8L8+qfw1QtifkqgBy8zjRli3eD2ew=;
+	s=default; t=1594332066;
+	bh=qGD80egtZFoMZA4mqqCxfqJGdccsub1sxXgdZJ/oxAI=;
 	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=ho73KbwThG7vlOnZYigKIrOFveVU2watn1+3d8M/zPxPak3kf7NAfrBFF3BHsS7p4
-	 37CqRjAlzjqAeLHGHd9DXmu2e2BQt5b+jfSNI3wqaUoWM1OiBnE0ZIGj7tVfn/ps2V
-	 eZ/FkiOgZJUNFKLCb5P1ItsFxAepfDN7JdmQUQ9o=
+	b=cpsflmSgUcktBA0loAkDIzm61ghnHf9YgHEDQ0/FQ/WUBslPu0hbvYjSSGbFdSyUL
+	 vaTtoG0jvzB6sF+XVEEOTJvsSHrhYtt4QxIJha62Tpit0Yx5KayGRyT5UF0JwDrawf
+	 AKgiTwkFqkT9V15rCSHRDKnca0n2cFRh1YO4Suf4=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726932AbgGIWBA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 9 Jul 2020 18:01:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44506 "EHLO mail.kernel.org"
+        id S1726964AbgGIWBF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 9 Jul 2020 18:01:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44608 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726213AbgGIWBA (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 9 Jul 2020 18:01:00 -0400
+        id S1726213AbgGIWBF (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 9 Jul 2020 18:01:05 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8069F20672;
-        Thu,  9 Jul 2020 22:00:59 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7477D20672;
+        Thu,  9 Jul 2020 22:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1594332060;
-        bh=msWKTE4BCZLc4U8L8+qfw1QtifkqgBy8zjRli3eD2ew=;
+        s=default; t=1594332065;
+        bh=qGD80egtZFoMZA4mqqCxfqJGdccsub1sxXgdZJ/oxAI=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=syuGpFMQ8lkvg+TYPNjreEjKnslsdX0KJ9eSpVKsqW/oJCygfjvLKf3d4XZJqTlb0
-         vWu1fTgSt2PuGhIZDxL4G0MKpqYIKT6u2fyNS+seFX/E25Xjgr+gg2xII2R4H2BqjY
-         QpVNZjSOcJ6J5lHGzJX40IqbDvkKPoa8rEAFxtVY=
-Date:   Thu, 09 Jul 2020 23:00:54 +0100
+        b=pb4bGji5iciLzjQCBs8dZ+8RF2x9sDoV4tQUe8e6j468R+x6CvcHXeJM8o5LEhTw/
+         B4sSp+udV7Q9lcQmU+jf4CJ2/EGa3HzdKB9MQxKGRyNPqcuJF8rBp1lBSIUGWujfQX
+         75BRpln9Nm4tLA9vmpueSxpLHi026SBzHmZN7Tqc=
+Date:   Thu, 09 Jul 2020 23:00:59 +0100
 From:   Mark Brown <broonie@kernel.org>
 To:     linux-spi@vger.kernel.org,
         Marek Szyprowski <m.szyprowski@samsung.com>,
@@ -46,27 +46,20 @@ Cc:     Zhang Qiang <qiang.zhang@windriver.com>,
         linux-samsung-soc@vger.kernel.org,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Petr Mladek <pmladek@suse.com>
-In-Reply-To: <20200708070900.30380-1-m.szyprowski@samsung.com>
-References: <CGME20200708070913eucas1p221ca64347d0ca03709eeee86decfd1af@eucas1p2.samsung.com> <20200708070900.30380-1-m.szyprowski@samsung.com>
-Subject: Re: [PATCH] spi: use kthread_create_worker() helper
-Message-Id: <159433204447.479.16222670499567811271.b4-ty@kernel.org>
+In-Reply-To: <20200709065007.26896-1-m.szyprowski@samsung.com>
+References: <CGME20200709065016eucas1p22ef816e6a2a6e47c008cabc5e06d6716@eucas1p2.samsung.com> <20200709065007.26896-1-m.szyprowski@samsung.com>
+Subject: Re: [PATCH v3] spi: use kthread_create_worker() helper
+Message-Id: <159433204447.479.9183431834773506860.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 8 Jul 2020 09:09:00 +0200, Marek Szyprowski wrote:
-> Since commit 4977caef05aa ("kthread: work could not be queued when worker
-> being destroyed") there is a warning when kworker is used without the
-> internal 'task' entry properly initialized. Fix this by using
-> a kthread_create_worker() helper instead of open-coding a kworker
-> initialization.
-> 
-> This fixes a following warning during SPI controller probe, observed on
-> the Samsung Exynos 5420-based Peach-Pit Chromebook with recent linux-next
-> kernel:
-> 
-> [...]
+On Thu, 9 Jul 2020 08:50:07 +0200, Marek Szyprowski wrote:
+> Use kthread_create_worker() helper to simplify the code. It uses
+> the kthread worker API the right way. It will eventually allow
+> to remove the FIXME in kthread_worker_fn() and add more consistency
+> checks in the future.
 
 Applied to
 

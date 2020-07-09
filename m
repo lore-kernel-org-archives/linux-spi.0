@@ -2,59 +2,89 @@ Return-Path: <SRS0=rD+8=AU=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0BD18C433DF
-	for <linux-spi@archiver.kernel.org>; Thu,  9 Jul 2020 15:00:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B8CAC433DF
+	for <linux-spi@archiver.kernel.org>; Thu,  9 Jul 2020 22:00:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DDBD320663
-	for <linux-spi@archiver.kernel.org>; Thu,  9 Jul 2020 15:00:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0F20520672
+	for <linux-spi@archiver.kernel.org>; Thu,  9 Jul 2020 22:00:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1594306820;
-	bh=w6vF5o45btek5BabCxCPGw68qHvD2b/lXsAHVNYchYA=;
-	h=Subject:From:Date:To:List-ID:From;
-	b=RGs8bwAfEruG0sEiZS36OI2QTK7iVLZMhiEZkLY+MXUd48+rSyD4TgKlqx4PHeKLD
-	 O18u9+9IslMGheAoxWBaAitMpeVPcM3qbTLZmbVfY/Da6TtlyrxhXkXUX5nDFbmStT
-	 xg90eZ9BiB94g7j2Uj5+YdBY0Pof7sgU5MiCrcqI=
+	s=default; t=1594332054;
+	bh=KagsJECioR/VwbPqLfS0a+cLYi6dXsf1AAcz3lZeIZ0=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
+	b=EVo15E1jhV74OCB9nEfEdW83/5Ygh+WIh88mx8z/0M0LxEAUpIccbfiA6k7h2FcNu
+	 2vEtnQ0J/pfRhHSHJ0N8sBEso5rHijPAONAOWg5vPwWibVZhu5vm78LYFFHUVVgnor
+	 Q/wKsHwqH/b24Esprw1ntWxfx2+k+US3hKN9qr2w=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726715AbgGIPAU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 9 Jul 2020 11:00:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56142 "EHLO mail.kernel.org"
+        id S1726852AbgGIWAu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 9 Jul 2020 18:00:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44342 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726371AbgGIPAU (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 9 Jul 2020 11:00:20 -0400
-Content-Type: text/plain; charset="utf-8"
+        id S1726213AbgGIWAu (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 9 Jul 2020 18:00:50 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 95C2420720;
+        Thu,  9 Jul 2020 22:00:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1594306820;
-        bh=w6vF5o45btek5BabCxCPGw68qHvD2b/lXsAHVNYchYA=;
-        h=Subject:From:Date:To:From;
-        b=O86g//YMNOhKk/nRfl08OtVPn8eDGLMwoY/WIQhynaNil59AwVtRTPdIA6zhUiEYV
-         fgkOaHEVl4iegG3kODUkFG48vR8eSOkSIAp7ZijbmTUadF2AUfOzyYniWniHR612yz
-         l3cnAAs8y2bVQ9oG9v785gFNRugsjutJoUQNPY0A=
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+linux-spi@kernel.org
-Message-Id: <159430682026.15207.6097074180965313553.git-patchwork-housekeeping@kernel.org>
-Date:   Thu, 09 Jul 2020 15:00:20 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+        s=default; t=1594332050;
+        bh=KagsJECioR/VwbPqLfS0a+cLYi6dXsf1AAcz3lZeIZ0=;
+        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+        b=VqZuVJj54UWguShKNtaG4m2UfCx4iUYJt2mCY9o48xbnxunNc0dKtAxbPv0gTTNSh
+         uS7P/Bnja/bk//W2WAHIGfKUA1kEHrD/kqsFGwoPPGc9Rf40W5JgPdzj5JqQatMb1D
+         dOujyK4HKnDvEKOTlhAzapLOFhj+ahOA/d5pBIhU=
+Date:   Thu, 09 Jul 2020 23:00:44 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     linux-spi@vger.kernel.org,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        linux-kernel@vger.kernel.org
+Cc:     Zhang Qiang <qiang.zhang@windriver.com>,
+        linux-samsung-soc@vger.kernel.org,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Petr Mladek <pmladek@suse.com>
+In-Reply-To: <20200708123349.6797-1-m.szyprowski@samsung.com>
+References: <CGME20200708123401eucas1p1ec8fe745bb362c56f03798172a18324e@eucas1p1.samsung.com> <20200708123349.6797-1-m.szyprowski@samsung.com>
+Subject: Re: [PATCH v2] spi: use kthread_create_worker() helper
+Message-Id: <159433204447.479.6720731252136894316.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v2] spi: spi-qcom-qspi: Avoid some per-transfer overhead (2020-07-09T14:51:44)
-  Superseding: [v1] spi: spi-qcom-qspi: Avoid some per-transfer overhead (2020-07-07T20:16:39):
-    [1/2] spi: spi-qcom-qspi: Avoid clock setting if not needed
-    [2/2] spi: spi-qcom-qspi: Set an autosuspend delay of 250 ms
+On Wed, 8 Jul 2020 14:33:49 +0200, Marek Szyprowski wrote:
+> Use kthread_create_worker() helper to simplify the code. It uses
+> the kthread worker API the right way. It will eventually allow
+> to remove the FIXME in kthread_worker_fn() and add more consistency
+> checks in the future.
 
-Latest series: [v2] spi: spi-geni-qcom: Set the clock properly at runtime resume (2020-07-09T14:40:49)
-  Superseding: [v1] spi: spi-geni-qcom: Set the clock properly at runtime resume (2020-07-08T23:39:39):
-    spi: spi-geni-qcom: Set the clock properly at runtime resume
+Applied to
 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/pwbot
+Thanks!
+
+[1/1] spi: use kthread_create_worker() helper
+      commit: 60a883d119ab9ef63f830c85bbd2f0e2e2314f4f
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

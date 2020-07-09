@@ -2,29 +2,29 @@ Return-Path: <SRS0=rD+8=AU=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E681C433E0
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D24AEC433DF
 	for <linux-spi@archiver.kernel.org>; Thu,  9 Jul 2020 07:41:30 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6B33E2070E
+	by mail.kernel.org (Postfix) with ESMTP id B4BF52070E
 	for <linux-spi@archiver.kernel.org>; Thu,  9 Jul 2020 07:41:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726318AbgGIHl3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 9 Jul 2020 03:41:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40000 "EHLO
+        id S1726267AbgGIHla (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 9 Jul 2020 03:41:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726267AbgGIHl2 (ORCPT
+        with ESMTP id S1726006AbgGIHl2 (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Thu, 9 Jul 2020 03:41:28 -0400
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A751C061A0B
-        for <linux-spi@vger.kernel.org>; Thu,  9 Jul 2020 00:41:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86DC7C08C5DC
+        for <linux-spi@vger.kernel.org>; Thu,  9 Jul 2020 00:41:28 -0700 (PDT)
 Received: from heimdall.vpn.pengutronix.de ([2001:67c:670:205:1d::14] helo=blackshift.org)
         by metis.ext.pengutronix.de with esmtp (Exim 4.92)
         (envelope-from <mkl@pengutronix.de>)
-        id 1jtRBL-0000FM-AX; Thu, 09 Jul 2020 09:41:23 +0200
+        id 1jtRBM-0000FM-IF; Thu, 09 Jul 2020 09:41:24 +0200
 From:   Marc Kleine-Budde <mkl@pengutronix.de>
 To:     Mark Brown <broonie@kernel.org>
 Cc:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
@@ -33,12 +33,17 @@ Cc:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
         Scott Branden <sbranden@broadcom.com>,
         bcm-kernel-feedback-list@broadcom.com, linux-spi@vger.kernel.org,
         linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de
-Subject: [PATCH 0/2] spi: bcm2835/bcm2835aux: support effective_speed_hz
-Date:   Thu,  9 Jul 2020 09:41:18 +0200
-Message-Id: <20200709074120.110069-1-mkl@pengutronix.de>
+        linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de,
+        Martin Sperl <kernel@martin.sperl.org>,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 2/2] spi: bcm2835aux: support effective_speed_hz
+Date:   Thu,  9 Jul 2020 09:41:20 +0200
+Message-Id: <20200709074120.110069-3-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20200709074120.110069-1-mkl@pengutronix.de>
+References: <20200709074120.110069-1-mkl@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2001:67c:670:205:1d::14
 X-SA-Exim-Mail-From: mkl@pengutronix.de
@@ -49,17 +54,49 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello,
+From: Martin Sperl <kernel@martin.sperl.org>
 
-I've picked up and forward ported Martin Sperl's patches which add support for
-effective_speed_hz to the SPI controllers found on all raspberry pi models.
+Setting spi_transfer->effective_speed_hz in transfer_one so that
+it can get used in cs_change_delay configured with delay as a muliple
+of SPI clock cycles.
 
-See the following patch, which adds this feature to the SPI core, for more
-information:
+Signed-off-by: Martin Sperl <kernel@martin.sperl.org>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/spi/spi-bcm2835aux.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-    5d7e2b5ed585 spi: core: allow reporting the effectivly used speed_hz for a transfer
-
-regards,
-Marc
-
+diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+index c331efd6e86b..2f717812c766 100644
+--- a/drivers/spi/spi-bcm2835aux.c
++++ b/drivers/spi/spi-bcm2835aux.c
+@@ -345,7 +345,7 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
+ 				       struct spi_transfer *tfr)
+ {
+ 	struct bcm2835aux_spi *bs = spi_master_get_devdata(master);
+-	unsigned long spi_hz, clk_hz, speed, spi_used_hz;
++	unsigned long spi_hz, clk_hz, speed;
+ 	unsigned long hz_per_byte, byte_limit;
+ 
+ 	/* calculate the registers to handle
+@@ -374,7 +374,7 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
+ 	/* set the new speed */
+ 	bs->cntl[0] |= speed << BCM2835_AUX_SPI_CNTL0_SPEED_SHIFT;
+ 
+-	spi_used_hz = clk_hz / (2 * (speed + 1));
++	tfr->effective_speed_hz = clk_hz / (2 * (speed + 1));
+ 
+ 	/* set transmit buffers and length */
+ 	bs->tx_buf = tfr->tx_buf;
+@@ -391,7 +391,7 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
+ 	 * 30 µs per 300,000 Hz of bus clock.
+ 	 */
+ 	hz_per_byte = polling_limit_us ? (9 * 1000000) / polling_limit_us : 0;
+-	byte_limit = hz_per_byte ? spi_used_hz / hz_per_byte : 1;
++	byte_limit = hz_per_byte ? tfr->effective_speed_hz / hz_per_byte : 1;
+ 
+ 	/* run in polling mode for short transfers */
+ 	if (tfr->len < byte_limit)
+-- 
+2.27.0
 

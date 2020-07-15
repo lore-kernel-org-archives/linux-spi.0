@@ -7,121 +7,116 @@ X-Spam-Status: No, score=-13.1 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 61721C433E0
-	for <linux-spi@archiver.kernel.org>; Wed, 15 Jul 2020 15:07:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 214FAC4345E
+	for <linux-spi@archiver.kernel.org>; Wed, 15 Jul 2020 15:07:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3FC632071B
-	for <linux-spi@archiver.kernel.org>; Wed, 15 Jul 2020 15:07:28 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 016BF2065D
+	for <linux-spi@archiver.kernel.org>; Wed, 15 Jul 2020 15:07:31 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EzXgoWXV"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ic4mFINw"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727903AbgGOPGv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 15 Jul 2020 11:06:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57198 "EHLO
+        id S1727926AbgGOPHa (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 15 Jul 2020 11:07:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727991AbgGOPGv (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 15 Jul 2020 11:06:51 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5AC9C061755
-        for <linux-spi@vger.kernel.org>; Wed, 15 Jul 2020 08:06:50 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id f18so3132237wrs.0
-        for <linux-spi@vger.kernel.org>; Wed, 15 Jul 2020 08:06:50 -0700 (PDT)
+        with ESMTP id S1727913AbgGOPGn (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 15 Jul 2020 11:06:43 -0400
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77242C061755
+        for <linux-spi@vger.kernel.org>; Wed, 15 Jul 2020 08:06:43 -0700 (PDT)
+Received: by mail-wm1-x341.google.com with SMTP id f18so6164889wml.3
+        for <linux-spi@vger.kernel.org>; Wed, 15 Jul 2020 08:06:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=TZd/W0TpHswu0SuYSG0OcLxLAj8b5WuGZfRv6Lvmmao=;
-        b=EzXgoWXVHcblT299CWnFjUwu/qW4z3MCPe2EO1ynFgOADXo0wZ1hvqbPWrfz+tOefw
-         VGGaZd5/muef9MzYyk6NIpaostukgfsY74ELsVkuN6ZdvEB4Q+J3btO58zC484dxcoC7
-         jdl2m8vMVMOlhrc0xvsq55kzBXJ5aF9Ckq4TuG+MIDJ1ZJj6LFV9hfXvWgNz1PXIwh49
-         MUqAgaDi/6eYeqRV8KEZqdndWwgVFN1ZaurPwYdAdUUE+bXE3Muc8Q15gmfSdAC/ponK
-         qbDU08/zyrkSq5o8cqOTCtjTrlhrRS3BvWbyXMb9T00Bv3omHZ4gOBBlEwEJwx5mkh5h
-         kQ/Q==
+        bh=Neuk7hlxyMHOEJZl+c3Ce+fuWuJ+zLYxzzvecm8U2ZQ=;
+        b=ic4mFINwL49QSVPf3k9/rgWYim5/9jEoZkN3gqetr4K9fAHlJVyJ3XypL6SuWfRqDz
+         +S7WszcHEof6BWrZKfFj9g/YLF71Qcm1yt4zHcQPPYgdqTAQxCrOZh51+TZvW0YQ8Ck0
+         aLn5KjCQKZ3Gd/aFzV5L2DQfyiqU8ujb9Iv4xSapyMw6tqW4tt5JwZPpcrPnOA8PiwaE
+         0yOlSql13qvWzpkdNz/tyd6HeetzNbv+eay/5/xjytCtAkIYMyDbb9Uefd2mAG3NGm2+
+         EaVE9UW+LkFfgx1Zg5Rp6RueZCf8/5881/TkICwUazyXDTk14I4cs6dLDvr0xHFNjtcl
+         EisA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=TZd/W0TpHswu0SuYSG0OcLxLAj8b5WuGZfRv6Lvmmao=;
-        b=aaXbYKD2wd92wFt2TWJAAV18aWBKDpuYeSuMvOooa3klGP0wV5XhEFuUBdCqZar9V4
-         qNhyoDl0+mxBUfYtSQRdAHECyZ+u1FD+bNbyt2s/AVTHJmVIUqq02PipNZlyzP00vwjb
-         YAimxOU0Gz/RfqulsZbQGBnOKDgXwCkDBoBk1KX6LAnZyr34BtYpLmU4uFgO9CQLleKw
-         PB8hEItMYZO8+rNj39YWIQP34It9L1LZGrx+1FzUp5qgWTwXCSOPcmvKCa46Z5ReCNPB
-         7X+qWsOiQxrviwCeCJTgRoy67aUQmF2B+a6Ke+1uz/+GiTW07se1/8e8EzLJciyliqhO
-         lJqw==
-X-Gm-Message-State: AOAM533noU5rznT3FFyAhFkq/jZKNQFQpyS6SL1jSy18WKBithC5Ku9g
-        pc5tr+rebqJozXQDQlBc6/IZLvBrOyQ=
-X-Google-Smtp-Source: ABdhPJxCpSAQqlbFgoqFALYbH3qfi5+G5rnYppQXXaOhBDyF/njkKYqkmrszZU89byQS4aLL9AvwtA==
-X-Received: by 2002:a5d:4a42:: with SMTP id v2mr11024451wrs.33.1594825609431;
-        Wed, 15 Jul 2020 08:06:49 -0700 (PDT)
+        bh=Neuk7hlxyMHOEJZl+c3Ce+fuWuJ+zLYxzzvecm8U2ZQ=;
+        b=IHcMfRLZxX220lK7y9zLD+RHzkGSYdVNcaPPZbecFHYDOek74z66ticUpnsPSAFGOV
+         JhNndawedBqA5JBB1ULfM8KmC7yXVOX3G+SV+K5fssHIv2BrrfPzDqyNnpfHuufF4ELE
+         aY9d0jT8b0Wl6yx2LlhCt/M8kqfQLXG+tkHHsO1P+xYllyl5uDN4baHl31Ld9IM7F7zq
+         2w8UF73ha30cj7AgKur5FbdkBJUASPJrJAPC7TcMtUYEdNGqPstpBh3GC+Q4YkuHyymS
+         C6cSp093CrZnRzMk7drx/DxVA6ykLXuzOVCJNS8MvZ8J5EtcWwok3WROSBUGD7z15pBz
+         /x3w==
+X-Gm-Message-State: AOAM530/0cFtuCaSXjraNutWjmWJsxVq+jTwoUgm5jz18WoOEClwQAQe
+        AQPnPVJliJUsjEdiV2QdjIiTpQ==
+X-Google-Smtp-Source: ABdhPJyhQwehdC5E5vWdp2tq0inGEyTI0AsEuhIDReVDRKACyOC/THNq1DETNswb/m5QQ3kSVY3afQ==
+X-Received: by 2002:a1c:7315:: with SMTP id d21mr8770056wmb.108.1594825602210;
+        Wed, 15 Jul 2020 08:06:42 -0700 (PDT)
 Received: from localhost.localdomain ([2.31.163.61])
-        by smtp.gmail.com with ESMTPSA id w2sm3906140wrs.77.2020.07.15.08.06.48
+        by smtp.gmail.com with ESMTPSA id w2sm3906140wrs.77.2020.07.15.08.06.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2020 08:06:48 -0700 (PDT)
+        Wed, 15 Jul 2020 08:06:41 -0700 (PDT)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     broonie@kernel.org
 Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, Lee Jones <lee.jones@linaro.org>
-Subject: [PATCH 11/14] spi: spi-topcliff-pch: Add missing descriptions to 'struct pch_spi_data'
-Date:   Wed, 15 Jul 2020 16:06:29 +0100
-Message-Id: <20200715150632.409077-12-lee.jones@linaro.org>
+        linux-spi@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        linux-amlogic@lists.infradead.org
+Subject: [PATCH 06/14] spi: spi-meson-spicc: Remove set but never used variable 'data' from meson_spicc_reset_fifo()
+Date:   Wed, 15 Jul 2020 16:06:24 +0100
+Message-Id: <20200715150632.409077-7-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200715150632.409077-1-lee.jones@linaro.org>
 References: <20200715150632.409077-1-lee.jones@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Looks like it hasn't ever been checked.
+
 Fixes the following W=1 kernel build warning(s):
 
- drivers/spi/spi-topcliff-pch.c:184: warning: Function parameter or member 'io_base_addr' not described in 'pch_spi_data'
- drivers/spi/spi-topcliff-pch.c:184: warning: Function parameter or member 'pkt_tx_buff' not described in 'pch_spi_data'
- drivers/spi/spi-topcliff-pch.c:184: warning: Function parameter or member 'pkt_rx_buff' not described in 'pch_spi_data'
- drivers/spi/spi-topcliff-pch.c:184: warning: Function parameter or member 'dma' not described in 'pch_spi_data'
- drivers/spi/spi-topcliff-pch.c:184: warning: Function parameter or member 'use_dma' not described in 'pch_spi_data'
- drivers/spi/spi-topcliff-pch.c:184: warning: Function parameter or member 'save_total_len' not described in 'pch_spi_data'
+ drivers/spi/spi-meson-spicc.c: In function ‘meson_spicc_reset_fifo’:
+ drivers/spi/spi-meson-spicc.c:365:6: warning: variable ‘data’ set but not used [-Wunused-but-set-variable]
+ 365 | u32 data;
+ | ^~~~
 
+Cc: Kevin Hilman <khilman@baylibre.com>
+Cc: Neil Armstrong <narmstrong@baylibre.com>
+Cc: linux-amlogic@lists.infradead.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/spi/spi-topcliff-pch.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/spi/spi-meson-spicc.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index d7ea6af74743e..baadd380cb297 100644
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -122,6 +122,7 @@ struct pch_spi_dma_ctrl {
- /**
-  * struct pch_spi_data - Holds the SPI channel specific details
-  * @io_remap_addr:		The remapped PCI base address
-+ * @io_base_addr:		Base address
-  * @master:			Pointer to the SPI master structure
-  * @work:			Reference to work queue handler
-  * @wait:			Wait queue for waking up upon receiving an
-@@ -138,8 +139,8 @@ struct pch_spi_dma_ctrl {
-  *				transfer
-  * @rx_index:			Receive data count; for bookkeeping during
-  *				transfer
-- * @tx_buff:			Buffer for data to be transmitted
-- * @rx_index:			Buffer for Received data
-+ * @pkt_tx_buff:		Buffer for data to be transmitted
-+ * @pkt_rx_buff:		Buffer for received data
-  * @n_curnt_chip:		The chip number that this SPI driver currently
-  *				operates on
-  * @current_chip:		Reference to the current chip that this SPI
-@@ -151,7 +152,10 @@ struct pch_spi_dma_ctrl {
-  * @board_dat:			Reference to the SPI device data structure
-  * @plat_dev:			platform_device structure
-  * @ch:				SPI channel number
-+ * @dma:			Local DMA information
-+ * @use_dma:			True if DMA is to be used
-  * @irq_reg_sts:		Status of IRQ registration
-+ * @save_total_len:		Save length while data is being transferred
-  */
- struct pch_spi_data {
- 	void __iomem *io_remap_addr;
+diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
+index 77f7d0e0e46ad..ecba6b4a5d85d 100644
+--- a/drivers/spi/spi-meson-spicc.c
++++ b/drivers/spi/spi-meson-spicc.c
+@@ -362,8 +362,6 @@ static void meson_spicc_setup_xfer(struct meson_spicc_device *spicc,
+ 
+ static void meson_spicc_reset_fifo(struct meson_spicc_device *spicc)
+ {
+-	u32 data;
+-
+ 	if (spicc->data->has_oen)
+ 		writel_bits_relaxed(SPICC_ENH_MAIN_CLK_AO,
+ 				    SPICC_ENH_MAIN_CLK_AO,
+@@ -373,7 +371,7 @@ static void meson_spicc_reset_fifo(struct meson_spicc_device *spicc)
+ 			    spicc->base + SPICC_TESTREG);
+ 
+ 	while (meson_spicc_rxready(spicc))
+-		data = readl_relaxed(spicc->base + SPICC_RXDATA);
++		readl_relaxed(spicc->base + SPICC_RXDATA);
+ 
+ 	if (spicc->data->has_oen)
+ 		writel_bits_relaxed(SPICC_ENH_MAIN_CLK_AO, 0,
 -- 
 2.25.1
 

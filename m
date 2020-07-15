@@ -7,64 +7,65 @@ X-Spam-Status: No, score=-13.1 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 342E4C433E4
-	for <linux-spi@archiver.kernel.org>; Wed, 15 Jul 2020 15:06:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F07AFC433EA
+	for <linux-spi@archiver.kernel.org>; Wed, 15 Jul 2020 15:06:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 13FC720672
-	for <linux-spi@archiver.kernel.org>; Wed, 15 Jul 2020 15:06:41 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CE8CE20658
+	for <linux-spi@archiver.kernel.org>; Wed, 15 Jul 2020 15:06:50 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GJNtHxOO"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rtO/R+gF"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726479AbgGOPGk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 15 Jul 2020 11:06:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57124 "EHLO
+        id S1727981AbgGOPGu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 15 Jul 2020 11:06:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725811AbgGOPGi (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 15 Jul 2020 11:06:38 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5E54C061755
-        for <linux-spi@vger.kernel.org>; Wed, 15 Jul 2020 08:06:37 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id c80so5943197wme.0
-        for <linux-spi@vger.kernel.org>; Wed, 15 Jul 2020 08:06:37 -0700 (PDT)
+        with ESMTP id S1727943AbgGOPGq (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 15 Jul 2020 11:06:46 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FAECC08C5DF
+        for <linux-spi@vger.kernel.org>; Wed, 15 Jul 2020 08:06:46 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id o11so3069197wrv.9
+        for <linux-spi@vger.kernel.org>; Wed, 15 Jul 2020 08:06:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=KGFwubHFzcLZa75OH2QfePfgNHp1yNFJ+5dMrYJqOBc=;
-        b=GJNtHxOOPRZtWeTHohDWQFHqjfvGxwnNJdz6voIjChor1Ex7zIh4RYKL7WWFAzR67l
-         f7K6Mns+x6QufGhR0YGwcwSB6Ksx1+20gB3D0ECOxU5kJQGoqjY8exCJTAt8dQkkp3es
-         KBfkVws4SnYAGHAmAiNEENKUgAG1i+aKYJjtbRNcMGdddULPquE6SyXgXnJMWKLw3ESF
-         qAiZll4KqluNRYd8wNJwHDavMEF6i/6Yw2Ywx+6HqNXeMzoIymgEW3MHNV0mpfIhR9qG
-         qCXTeImq1wgSxS2sBsd/telggQixF4aMfmSfSnxUZK5dN1xRAf/sqplOCqD1E6kuaGjW
-         hUyQ==
+        bh=bjh7OhojJcRmD5KkKwacJpyMf8L6Fg+f9kXKvvMc3JQ=;
+        b=rtO/R+gF9zsxdsObRHLZjii928eu9P6U4fV47qT04PDZqfN1Aq+9wmYpIrjcPldh7T
+         yP1DLy0eimKSKjz+BYeWPwFsrz3w33TZgBqvD+zngaL580tLU7cwgnteXFXEa2cVb63a
+         C3hCJVfmWgf8lgOF6706sYiBVu2V51RlGIqpapFdC5++3X0ambcY9JvZQCYe85kYOmw7
+         bSpz8d0j/QI47062tJVsowpUDTU7eNVnWs3lPdNm2HUsKNOkvlscGCVf3IgWF57B7ma/
+         SicBianzkJtzdwiwzI2qiNr5ecy2Jif9S6uDJm1um/jUNYgDmdZ52yFNt5ixduLTT+cK
+         f0qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=KGFwubHFzcLZa75OH2QfePfgNHp1yNFJ+5dMrYJqOBc=;
-        b=drTfjdtvxp2OL0TS1prvAHXiSlBnCwdBUPHgHErSoCU7ZIeAPkoT3d3M+RvfWwA0kt
-         H7bIm0EnR12rqIBvRWU3D0h8DQv3SireHhxHCjM1O00/UBoRVxYycWh9U516yluPqz8b
-         uB/ZFxYzaLGZEhmJUo+HFR6i5EMEyOiIRlp4OzDnDr00bETk0Pav7pAbKLzCkIUZbXJI
-         U77P6/o9/bqXAsxFItWDPVph9MpCQhdK69HhaXt0MY7i2RIQ7w0Z+Opq3b8/DRX6PEtM
-         T1admMe/VPSpwJQdm4Rb6i8kxY8j35s8yDTZsyBZvEg+aPDLdC6+n2MP4gxW/vBybbVh
-         NNtw==
-X-Gm-Message-State: AOAM532PprERUYEXUWYIqZHEpJ8MXxvNtSrgGvcaMjrtS2+xM6E00ouv
-        alnmL6OKC8u/GFYpsJhBlmWsJQ==
-X-Google-Smtp-Source: ABdhPJxcPdfqVlAgwpuDa0tcwDk1FMUSmp8ir4ZG/rOkWM0vMSIRi4JhoDhnJtEr1vPL8BvGTLjNhw==
-X-Received: by 2002:a1c:e285:: with SMTP id z127mr9115336wmg.162.1594825596325;
-        Wed, 15 Jul 2020 08:06:36 -0700 (PDT)
+        bh=bjh7OhojJcRmD5KkKwacJpyMf8L6Fg+f9kXKvvMc3JQ=;
+        b=OhmZB/aBsisf3goLGcA7959VMKkQKPfZ6p8MllvEYUUHG1qwo6190A7qnadgOtvYqS
+         DnNh6CxPOZx2i0QWgqlmwBE6G6ZPw4dlTpqI+ERgHW7E6e1jYxhki6fxsc53tZKP1fva
+         fFGfuoDdIjv0AjxcfXpxugihuJ6KG3p2MGrt+9fS9NAtyJxD42bdpYZOE4SnvoS+pmdr
+         C2M65Tex/YBu2a6aVA7VJTkyWSAg3z3TZcwgipwQ+g7Mfs06iIzzjqa8wMTPkLxUZMde
+         jZc+/6O803hivBEz7ctH6ti72e+jX4e4+gQnb9vemQ9E4CGjrku3Kupx9f8LlReK0ZPb
+         zigA==
+X-Gm-Message-State: AOAM531Rwq4T6JmC2+NwEBHOCmNMi9u3fB37nxMWg5OJ/uLcmjst/PQF
+        Hj69oiWp1UcRnytTK5R/k62Tzg==
+X-Google-Smtp-Source: ABdhPJz/qORqv4SB3JCQPZLx2YoBeuFRtlxnr/5oEScOZOZu+WtAdMW0hpudATx8mM94Ld2/ZEFr8w==
+X-Received: by 2002:adf:fa10:: with SMTP id m16mr7456479wrr.134.1594825605304;
+        Wed, 15 Jul 2020 08:06:45 -0700 (PDT)
 Received: from localhost.localdomain ([2.31.163.61])
-        by smtp.gmail.com with ESMTPSA id w2sm3906140wrs.77.2020.07.15.08.06.35
+        by smtp.gmail.com with ESMTPSA id w2sm3906140wrs.77.2020.07.15.08.06.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2020 08:06:35 -0700 (PDT)
+        Wed, 15 Jul 2020 08:06:44 -0700 (PDT)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     broonie@kernel.org
 Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
-        Martin Sperl <kernel@martin.sperl.org>
-Subject: [PATCH 01/14] spi: spi-loopback-test: Fix formatting issues in function header blocks
-Date:   Wed, 15 Jul 2020 16:06:19 +0100
-Message-Id: <20200715150632.409077-2-lee.jones@linaro.org>
+        Linus Walleij <linus.walleij@linaro.org>,
+        Sachin Verma <sachin.verma@st.com>
+Subject: [PATCH 08/14] spi: spi-pl022: Provide missing struct attribute/function param docs
+Date:   Wed, 15 Jul 2020 16:06:26 +0100
+Message-Id: <20200715150632.409077-9-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200715150632.409077-1-lee.jones@linaro.org>
 References: <20200715150632.409077-1-lee.jones@linaro.org>
@@ -75,60 +76,90 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Kerneldoc function parameter descriptions must be in '@.*: ' format.
+Also demote non-worthy kerneldoc headers to standard comment blocks.
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/spi/spi-loopback-test.c:897: warning: Function parameter or member 'spi' not described in 'spi_test_execute_msg'
- drivers/spi/spi-loopback-test.c:897: warning: Function parameter or member 'test' not described in 'spi_test_execute_msg'
- drivers/spi/spi-loopback-test.c:897: warning: Function parameter or member 'tx' not described in 'spi_test_execute_msg'
- drivers/spi/spi-loopback-test.c:897: warning: Function parameter or member 'rx' not described in 'spi_test_execute_msg'
- drivers/spi/spi-loopback-test.c:970: warning: Function parameter or member 'spi' not described in 'spi_test_run_test'
- drivers/spi/spi-loopback-test.c:970: warning: Function parameter or member 'test' not described in 'spi_test_run_test'
- drivers/spi/spi-loopback-test.c:970: warning: Function parameter or member 'tx' not described in 'spi_test_run_test'
- drivers/spi/spi-loopback-test.c:970: warning: Function parameter or member 'rx' not described in 'spi_test_run_test'
+ drivers/spi/spi-pl022.c:304: warning: cannot understand function prototype: 'enum ssp_writing '
+ drivers/spi/spi-pl022.c:330: warning: Function parameter or member 'loopback' not described in 'vendor_data'
+ drivers/spi/spi-pl022.c:398: warning: Function parameter or member 'rx_lev_trig' not described in 'pl022'
+ drivers/spi/spi-pl022.c:398: warning: Function parameter or member 'tx_lev_trig' not described in 'pl022'
+ drivers/spi/spi-pl022.c:398: warning: Function parameter or member 'dma_running' not described in 'pl022'
+ drivers/spi/spi-pl022.c:670: warning: Function parameter or member 'pl022' not described in 'readwriter'
+ drivers/spi/spi-pl022.c:1250: warning: Function parameter or member 'irq' not described in 'pl022_interrupt_handler'
+ drivers/spi/spi-pl022.c:1250: warning: Function parameter or member 'dev_id' not described in 'pl022_interrupt_handler'
+ drivers/spi/spi-pl022.c:1343: warning: Function parameter or member 'pl022' not described in 'set_up_next_transfer'
+ drivers/spi/spi-pl022.c:1343: warning: Function parameter or member 'transfer' not described in 'set_up_next_transfer'
 
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Martin Sperl <kernel@martin.sperl.org>
-Cc: linux-spi@vger.kernel.org
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: Sachin Verma <sachin.verma@st.com>
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/spi/spi-loopback-test.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/spi/spi-pl022.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index b6d79cd156fb5..9522d1b5786d5 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -885,10 +885,10 @@ static int spi_test_run_iter(struct spi_device *spi,
- /**
-  * spi_test_execute_msg - default implementation to run a test
-  *
-- * spi: @spi_device on which to run the @spi_message
-- * test: the test to execute, which already contains @msg
-- * tx:   the tx buffer allocated for the test sequence
-- * rx:   the rx buffer allocated for the test sequence
-+ * @spi: @spi_device on which to run the @spi_message
-+ * @test: the test to execute, which already contains @msg
-+ * @tx:   the tx buffer allocated for the test sequence
-+ * @rx:   the rx buffer allocated for the test sequence
-  *
-  * Returns: error code of spi_sync as well as basic error checking
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 66028ebbc336d..d1776fea287e5 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -298,7 +298,7 @@ enum ssp_reading {
+ 	READING_U32
+ };
+ 
+-/**
++/*
+  * The type of writing going on on this chip
   */
-@@ -957,10 +957,10 @@ EXPORT_SYMBOL_GPL(spi_test_execute_msg);
-  *                     including all the relevant iterations on:
-  *                     length and buffer alignment
+ enum ssp_writing {
+@@ -317,6 +317,7 @@ enum ssp_writing {
+  * @extended_cr: 32 bit wide control register 0 with extra
+  * features and extra features in CR1 as found in the ST variants
+  * @pl023: supports a subset of the ST extensions called "PL023"
++ * @loopback: supports loopback mode
+  * @internal_cs_ctrl: supports chip select control register
+  */
+ struct vendor_data {
+@@ -353,11 +354,14 @@ struct vendor_data {
+  * @read: the type of read currently going on
+  * @write: the type of write currently going on
+  * @exp_fifo_level: expected FIFO level
++ * @rx_lev_trig: receive FIFO watermark level which triggers IRQ
++ * @tx_lev_trig: transmit FIFO watermark level which triggers IRQ
+  * @dma_rx_channel: optional channel for RX DMA
+  * @dma_tx_channel: optional channel for TX DMA
+  * @sgt_rx: scattertable for the RX transfer
+  * @sgt_tx: scattertable for the TX transfer
+  * @dummypage: a dummy page used for driving data on the bus with DMA
++ * @dma_running: indicates whether DMA is in operation
+  * @cur_cs: current chip select (gpio)
+  * @chipselects: list of chipselects (gpios)
+  */
+@@ -662,7 +666,7 @@ static void load_ssp_default_config(struct pl022 *pl022)
+ 	writew(CLEAR_ALL_INTERRUPTS, SSP_ICR(pl022->virtbase));
+ }
+ 
+-/**
++/*
+  * This will write to TX and read from RX according to the parameters
+  * set in pl022.
+  */
+@@ -1237,6 +1241,8 @@ static inline void pl022_dma_remove(struct pl022 *pl022)
+ 
+ /**
+  * pl022_interrupt_handler - Interrupt handler for SSP controller
++ * @irq: IRQ number
++ * @dev_id: Local device data
   *
-- * spi:  the spi_device to send the messages to
-- * test: the test which we need to execute
-- * tx:   the tx buffer allocated for the test sequence
-- * rx:   the rx buffer allocated for the test sequence
-+ * @spi:  the spi_device to send the messages to
-+ * @test: the test which we need to execute
-+ * @tx:   the tx buffer allocated for the test sequence
-+ * @rx:   the rx buffer allocated for the test sequence
-  *
-  * Returns: status code of spi_sync or other failures
+  * This function handles interrupts generated for an interrupt based transfer.
+  * If a receive overrun (ROR) interrupt is there then we disable SSP, flag the
+@@ -1334,7 +1340,7 @@ static irqreturn_t pl022_interrupt_handler(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
+ 
+-/**
++/*
+  * This sets up the pointers to memory for the next message to
+  * send out on the SPI bus.
   */
 -- 
 2.25.1

@@ -7,25 +7,25 @@ X-Spam-Status: No, score=-13.0 required=3.0 tests=BAYES_00,
 	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A526C4167B
-	for <linux-spi@archiver.kernel.org>; Wed, 15 Jul 2020 11:11:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E26C2C35263
+	for <linux-spi@archiver.kernel.org>; Wed, 15 Jul 2020 11:11:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2068220658
-	for <linux-spi@archiver.kernel.org>; Wed, 15 Jul 2020 11:11:36 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BEA6420720
+	for <linux-spi@archiver.kernel.org>; Wed, 15 Jul 2020 11:11:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731743AbgGOLLA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 15 Jul 2020 07:11:00 -0400
-Received: from relmlor2.renesas.com ([210.160.252.172]:60961 "EHLO
-        relmlie6.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729930AbgGOLK6 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 15 Jul 2020 07:10:58 -0400
+        id S1731691AbgGOLKm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 15 Jul 2020 07:10:42 -0400
+Received: from relmlor1.renesas.com ([210.160.252.171]:7929 "EHLO
+        relmlie5.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729652AbgGOLKl (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 15 Jul 2020 07:10:41 -0400
 X-IronPort-AV: E=Sophos;i="5.75,355,1589209200"; 
-   d="scan'208";a="51982022"
+   d="scan'208";a="52194205"
 Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie6.idc.renesas.com with ESMTP; 15 Jul 2020 20:10:56 +0900
+  by relmlie5.idc.renesas.com with ESMTP; 15 Jul 2020 20:10:38 +0900
 Received: from localhost.localdomain (unknown [10.226.36.204])
-        by relmlir5.idc.renesas.com (Postfix) with ESMTP id B2ABE4006CDA;
-        Wed, 15 Jul 2020 20:10:50 +0900 (JST)
+        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 371F24006CDA;
+        Wed, 15 Jul 2020 20:10:33 +0900 (JST)
 From:   Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 To:     Geert Uytterhoeven <geert+renesas@glider.be>,
         Wolfram Sang <wsa+renesas@sang-engineering.com>,
@@ -51,9 +51,9 @@ Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
         linux-watchdog@vger.kernel.org,
         Prabhakar <prabhakar.csengg@gmail.com>,
         Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH 17/20] arm64: dts: renesas: r8a774e1: Add RWDT node
-Date:   Wed, 15 Jul 2020 12:09:07 +0100
-Message-Id: <1594811350-14066-18-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: [PATCH 14/20] dt-bindings: spi: renesas,sh-msiof: Add r8a774e1 support
+Date:   Wed, 15 Jul 2020 12:09:04 +0100
+Message-Id: <1594811350-14066-15-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1594811350-14066-1-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
 References: <1594811350-14066-1-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
@@ -62,36 +62,26 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add a device node for the Watchdog Timer (RWDT) controller on the Renesas
-RZ/G2H (r8a774e1) SoC.
+Document RZ/G2H (R8A774E1) SoC bindings.
 
 Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 Reviewed-by: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>
 ---
- arch/arm64/boot/dts/renesas/r8a774e1.dtsi | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/renesas/r8a774e1.dtsi b/arch/arm64/boot/dts/renesas/r8a774e1.dtsi
-index 03e5982b8456..b2fa1a60470c 100644
---- a/arch/arm64/boot/dts/renesas/r8a774e1.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r8a774e1.dtsi
-@@ -290,10 +290,14 @@
- 		ranges;
- 
- 		rwdt: watchdog@e6020000 {
-+			compatible = "renesas,r8a774e1-wdt",
-+				     "renesas,rcar-gen3-wdt";
- 			reg = <0 0xe6020000 0 0x0c>;
-+			interrupts = <GIC_SPI 140 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&cpg CPG_MOD 402>;
-+			power-domains = <&sysc R8A774E1_PD_ALWAYS_ON>;
-+			resets = <&cpg 402>;
- 			status = "disabled";
--
--			/* placeholder */
- 		};
- 
- 		gpio0: gpio@e6050000 {
+diff --git a/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml b/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
+index ef27a789c08f..9f7b118adcaf 100644
+--- a/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
++++ b/Documentation/devicetree/bindings/spi/renesas,sh-msiof.yaml
+@@ -38,6 +38,7 @@ properties:
+               - renesas,msiof-r8a774a1      # RZ/G2M
+               - renesas,msiof-r8a774b1      # RZ/G2N
+               - renesas,msiof-r8a774c0      # RZ/G2E
++              - renesas,msiof-r8a774e1      # RZ/G2H
+               - renesas,msiof-r8a7795       # R-Car H3
+               - renesas,msiof-r8a7796       # R-Car M3-W
+               - renesas,msiof-r8a77965      # R-Car M3-N
 -- 
 2.17.1
 

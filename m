@@ -7,25 +7,25 @@ X-Spam-Status: No, score=-13.0 required=3.0 tests=BAYES_00,
 	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 16376C35269
-	for <linux-spi@archiver.kernel.org>; Wed, 15 Jul 2020 11:12:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 42E8EC433FE
+	for <linux-spi@archiver.kernel.org>; Wed, 15 Jul 2020 11:12:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 005EC20658
-	for <linux-spi@archiver.kernel.org>; Wed, 15 Jul 2020 11:11:59 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2DE8C20658
+	for <linux-spi@archiver.kernel.org>; Wed, 15 Jul 2020 11:12:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731627AbgGOLKU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 15 Jul 2020 07:10:20 -0400
-Received: from relmlor2.renesas.com ([210.160.252.172]:14909 "EHLO
+        id S1731496AbgGOLJn (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 15 Jul 2020 07:09:43 -0400
+Received: from relmlor2.renesas.com ([210.160.252.172]:14131 "EHLO
         relmlie6.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1731618AbgGOLKR (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 15 Jul 2020 07:10:17 -0400
+        by vger.kernel.org with ESMTP id S1731489AbgGOLJm (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 15 Jul 2020 07:09:42 -0400
 X-IronPort-AV: E=Sophos;i="5.75,355,1589209200"; 
-   d="scan'208";a="51981942"
+   d="scan'208";a="51981869"
 Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie6.idc.renesas.com with ESMTP; 15 Jul 2020 20:10:15 +0900
+  by relmlie6.idc.renesas.com with ESMTP; 15 Jul 2020 20:09:40 +0900
 Received: from localhost.localdomain (unknown [10.226.36.204])
-        by relmlir5.idc.renesas.com (Postfix) with ESMTP id D61D34006DF5;
-        Wed, 15 Jul 2020 20:10:09 +0900 (JST)
+        by relmlir5.idc.renesas.com (Postfix) with ESMTP id D1DCB4006DF5;
+        Wed, 15 Jul 2020 20:09:34 +0900 (JST)
 From:   Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 To:     Geert Uytterhoeven <geert+renesas@glider.be>,
         Wolfram Sang <wsa+renesas@sang-engineering.com>,
@@ -51,9 +51,9 @@ Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
         linux-watchdog@vger.kernel.org,
         Prabhakar <prabhakar.csengg@gmail.com>,
         Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH 10/20] arm64: dts: renesas: r8a774e1: Add SDHI nodes
-Date:   Wed, 15 Jul 2020 12:09:00 +0100
-Message-Id: <1594811350-14066-11-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: [PATCH 04/20] arm64: dts: renesas: r8a774e1: Add RZ/G2H thermal support
+Date:   Wed, 15 Jul 2020 12:08:54 +0100
+Message-Id: <1594811350-14066-5-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1594811350-14066-1-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
 References: <1594811350-14066-1-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
@@ -62,72 +62,117 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add SDHI[0-2] device nodes to R8A774E1 SoC.
+From: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>
 
+Add thermal support for R8A774E1 (RZ/G2H) SoC.
+
+Based on the work done for r8a774a1 SoC.
+
+Signed-off-by: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>
 Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>
 ---
- arch/arm64/boot/dts/renesas/r8a774e1.dtsi | 32 ++++++++++++++++++++---
- 1 file changed, 29 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/renesas/r8a774e1.dtsi | 81 +++++++++++++++++++++++
+ 1 file changed, 81 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/renesas/r8a774e1.dtsi b/arch/arm64/boot/dts/renesas/r8a774e1.dtsi
-index 6ed97187106a..7650152b695b 100644
+index 588de69734ef..885b2b03fffc 100644
 --- a/arch/arm64/boot/dts/renesas/r8a774e1.dtsi
 +++ b/arch/arm64/boot/dts/renesas/r8a774e1.dtsi
-@@ -1219,17 +1219,42 @@
+@@ -442,6 +442,20 @@
+ 			#power-domain-cells = <1>;
  		};
  
- 		sdhi0: sd@ee100000 {
-+			compatible = "renesas,sdhi-r8a774e1",
-+				     "renesas,rcar-gen3-sdhi";
- 			reg = <0 0xee100000 0 0x2000>;
-+			interrupts = <GIC_SPI 165 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&cpg CPG_MOD 314>;
-+			max-frequency = <200000000>;
++		tsc: thermal@e6198000 {
++			compatible = "renesas,r8a774e1-thermal";
++			reg = <0 0xe6198000 0 0x100>,
++			      <0 0xe61a0000 0 0x100>,
++			      <0 0xe61a8000 0 0x100>;
++			interrupts = <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 69 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&cpg CPG_MOD 522>;
 +			power-domains = <&sysc R8A774E1_PD_ALWAYS_ON>;
-+			resets = <&cpg 314>;
-+			iommus = <&ipmmu_ds1 32>;
- 			status = "disabled";
++			resets = <&cpg 522>;
++			#thermal-sensor-cells = <1>;
 +		};
- 
--			/* placeholder */
-+		sdhi1: sd@ee120000 {
-+			compatible = "renesas,sdhi-r8a774e1",
-+				     "renesas,rcar-gen3-sdhi";
-+			reg = <0 0xee120000 0 0x2000>;
-+			interrupts = <GIC_SPI 166 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&cpg CPG_MOD 313>;
-+			max-frequency = <200000000>;
-+			power-domains = <&sysc R8A774E1_PD_ALWAYS_ON>;
-+			resets = <&cpg 313>;
-+			iommus = <&ipmmu_ds1 33>;
-+			status = "disabled";
++
+ 		intc_ex: interrupt-controller@e61c0000 {
+ 			compatible = "renesas,intc-ex-r8a774b1", "renesas,irqc";
+ 			#interrupt-cells = <2>;
+@@ -1003,6 +1017,73 @@
  		};
+ 	};
  
- 		sdhi2: sd@ee140000 {
-+			compatible = "renesas,sdhi-r8a774e1",
-+				     "renesas,rcar-gen3-sdhi";
- 			reg = <0 0xee140000 0 0x2000>;
-+			interrupts = <GIC_SPI 167 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&cpg CPG_MOD 312>;
-+			max-frequency = <200000000>;
-+			power-domains = <&sysc R8A774E1_PD_ALWAYS_ON>;
-+			resets = <&cpg 312>;
-+			iommus = <&ipmmu_ds1 34>;
- 			status = "disabled";
--
--			/* placeholder */
- 		};
- 
- 		sdhi3: sd@ee160000 {
-@@ -1241,6 +1266,7 @@
- 			max-frequency = <200000000>;
- 			power-domains = <&sysc R8A774E1_PD_ALWAYS_ON>;
- 			resets = <&cpg 311>;
-+			iommus = <&ipmmu_ds1 35>;
- 			status = "disabled";
- 		};
- 
++	thermal-zones {
++		sensor_thermal1: sensor-thermal1 {
++			polling-delay-passive = <250>;
++			polling-delay = <1000>;
++			thermal-sensors = <&tsc 0>;
++			sustainable-power = <6313>;
++
++			trips {
++				sensor1_crit: sensor1-crit {
++					temperature = <120000>;
++					hysteresis = <1000>;
++					type = "critical";
++				};
++			};
++		};
++
++		sensor_thermal2: sensor-thermal2 {
++			polling-delay-passive = <250>;
++			polling-delay = <1000>;
++			thermal-sensors = <&tsc 1>;
++			sustainable-power = <6313>;
++
++			trips {
++				sensor2_crit: sensor2-crit {
++					temperature = <120000>;
++					hysteresis = <1000>;
++					type = "critical";
++				};
++			};
++		};
++
++		sensor_thermal3: sensor-thermal3 {
++			polling-delay-passive = <250>;
++			polling-delay = <1000>;
++			thermal-sensors = <&tsc 2>;
++			sustainable-power = <6313>;
++
++			trips {
++				target: trip-point1 {
++					temperature = <100000>;
++					hysteresis = <1000>;
++					type = "passive";
++				};
++
++				sensor3_crit: sensor3-crit {
++					temperature = <120000>;
++					hysteresis = <1000>;
++					type = "critical";
++				};
++			};
++
++			cooling-maps {
++				map0 {
++					trip = <&target>;
++					cooling-device = <&a57_0 0 2>;
++					contribution = <1024>;
++				};
++
++				map1 {
++					trip = <&target>;
++					cooling-device = <&a53_0 0 2>;
++					contribution = <1024>;
++				};
++			};
++		};
++	};
++
+ 	timer {
+ 		compatible = "arm,armv8-timer";
+ 		interrupts-extended = <&gic GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_LOW)>,
 -- 
 2.17.1
 

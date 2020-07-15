@@ -2,71 +2,49 @@ Return-Path: <SRS0=sEtw=A2=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.1 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BAC4BC433E7
-	for <linux-spi@archiver.kernel.org>; Wed, 15 Jul 2020 15:07:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D72EC433E0
+	for <linux-spi@archiver.kernel.org>; Wed, 15 Jul 2020 16:36:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 910322065D
-	for <linux-spi@archiver.kernel.org>; Wed, 15 Jul 2020 15:07:40 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="o9rdZT8H"
+	by mail.kernel.org (Postfix) with ESMTP id 1FB6B20658
+	for <linux-spi@archiver.kernel.org>; Wed, 15 Jul 2020 16:36:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1594830984;
+	bh=vjax7ahxGdBn5nIvkGKgpkksllV5Z+xmIO6XyITIsos=;
+	h=From:To:Cc:Subject:Date:List-ID:From;
+	b=QMX+UkC+iSSBnQJHE1ikRXof4ukvEwwhQxlaSkgtVShnBmuaC2fU7M3l7tZdTeE9e
+	 qJdAXJTbtm+AltoKS7XJObiptqpeCXordu05lfmYyxfFbyjQE4qT31kAd97VI3uHm2
+	 virEdmRuWYqkvdWh/Q8eClWzdOl6oOS65lbFu+G4=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728212AbgGOPHe (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 15 Jul 2020 11:07:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57132 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727819AbgGOPGj (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 15 Jul 2020 11:06:39 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6EF1C061755
-        for <linux-spi@vger.kernel.org>; Wed, 15 Jul 2020 08:06:38 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id a6so3660546wmm.0
-        for <linux-spi@vger.kernel.org>; Wed, 15 Jul 2020 08:06:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=+k3VcTxp8QDyMoYM0yDw+EEU9DorBAQ7cdSI3O9/bb8=;
-        b=o9rdZT8Hx4ZSY0QyT7IkQ4ORw3I2KhdkBi8D9WD0aKlkOqwzLlsY+8wGm3MgZELZEZ
-         eoxZGyF0WYg3vLxEQtGzR1mPRhYBeowAwZG5Q1ohDhRTF6B7aI/kDZ5zE1rHynHqdjwD
-         Y54oXUrHFNGOjkRgk4fKPU/YwFrCG6KHOLta5pTY2GQOAgYV/hWW7p7fvAIj9huteoSQ
-         oR5UJ1GnrJrbbh6QbH915oTx/e/2TW3Tlgbng7XupxpuplJjwr3xz7gWkoAfFDYwk3yU
-         T/n29AgXpPcokXXb+lnNSy//o0npV250DhZ5HWTzVSajBjsCeZ+1+gxceNq9A5EviKhl
-         XrIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=+k3VcTxp8QDyMoYM0yDw+EEU9DorBAQ7cdSI3O9/bb8=;
-        b=nyH/xzSqdNNyYVD/7zh1JXXlGlyW/+GN/gGXt3uLnUCjWdXa/a/ghMMRjkdCUfCE7L
-         qKoMpR+bHwp32p1XBy2lsiu0nHPn3e6huENg/lhy8Bf6aOxcAF7I2/8/p4evoB2EP4WP
-         vrGgs4Ewc1HH0LOEawBc2MWq7KO+H+zFVAQ5C1hsLNy+rBpbGnutzG2zaI2QcoSDfNUp
-         XY7kp3btkLZiihXDpg6lBPkuB17BU4OrgviBheSuxgjcqFD+ZIre8QhXtIvlzfLxPsid
-         OQsCcL4o003zsDFQmqd0qLs//q8vrk9iQMXr5e8gJMlzHwk39tvlpbtdpTTf++i+LvER
-         3oZw==
-X-Gm-Message-State: AOAM530hvSAk3uNpp54tk2rAIQ4SSqE785u+JcEnBSMz6YjoXbM35g7j
-        9AT98jnJPQMSbuVidjyctApI7Q==
-X-Google-Smtp-Source: ABdhPJx9OHW5pgfjAQYGs6oy+4+393KILVPwhdW2gMjyprB70ILbgU/eATaVe2aWskjv61M55Cm5OA==
-X-Received: by 2002:a1c:7916:: with SMTP id l22mr9762032wme.91.1594825597387;
-        Wed, 15 Jul 2020 08:06:37 -0700 (PDT)
-Received: from localhost.localdomain ([2.31.163.61])
-        by smtp.gmail.com with ESMTPSA id w2sm3906140wrs.77.2020.07.15.08.06.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2020 08:06:36 -0700 (PDT)
-From:   Lee Jones <lee.jones@linaro.org>
-To:     broonie@kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, Lee Jones <lee.jones@linaro.org>
-Subject: [PATCH 02/14] spi: spi-bitbang: Demote obvious misuse of kerneldoc to standard comment blocks
-Date:   Wed, 15 Jul 2020 16:06:20 +0100
-Message-Id: <20200715150632.409077-3-lee.jones@linaro.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200715150632.409077-1-lee.jones@linaro.org>
-References: <20200715150632.409077-1-lee.jones@linaro.org>
+        id S1725832AbgGOQgX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 15 Jul 2020 12:36:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40532 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725792AbgGOQgX (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 15 Jul 2020 12:36:23 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 90D5520658;
+        Wed, 15 Jul 2020 16:36:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1594830983;
+        bh=vjax7ahxGdBn5nIvkGKgpkksllV5Z+xmIO6XyITIsos=;
+        h=From:To:Cc:Subject:Date:From;
+        b=2LossVdHtiGoxo44PEjzW81MKEHkkAfmO6bZK8okq5KqUvNOhZEQOw+JkbK5Jj/km
+         CKpL/iRcFhMQjXJgX358Th/yRRmkE0YKqsgwNcFJuveCIsnAQ6G160Luw9lt8fivLO
+         V54APDx5VYGlO6jS4UUBNnIxF/YJeWfpJmO54gIs=
+From:   Mark Brown <broonie@kernel.org>
+To:     linux-spi@vger.kernel.org
+Cc:     Mark Brown <broonie@kernel.org>
+Subject: [PATCH] spi: Only defer to thread for cleanup when needed
+Date:   Wed, 15 Jul 2020 17:36:10 +0100
+Message-Id: <20200715163610.9475-1-broonie@kernel.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-spi-owner@vger.kernel.org
@@ -74,50 +52,73 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-No attempt has been made to document any of the demoted functions here.
+Currently we always defer idling of controllers to the SPI thread, the goal
+being to ensure that we're doing teardown that's not suitable for atomic
+context in an appropriate context and to try to batch up more expensive
+teardown operations when the system is under higher load, allowing more
+work to be started before the SPI thread is scheduled. However when the
+controller does not require any substantial work to idle there is no need
+to do this, we can instead save the context switch and immediately mark
+the controller as idle. This is particularly useful for systems where there
+is frequent but not constant activity.
 
-Fixes the following W=1 kernel build warning(s):
-
- drivers/spi/spi-bitbang.c:181: warning: Function parameter or member 'spi' not described in 'spi_bitbang_setup'
- drivers/spi/spi-bitbang.c:215: warning: Function parameter or member 'spi' not described in 'spi_bitbang_cleanup'
- drivers/spi/spi-bitbang.c:434: warning: Function parameter or member 'bitbang' not described in 'spi_bitbang_stop'
-
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-bitbang.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi.c | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-bitbang.c b/drivers/spi/spi-bitbang.c
-index 68491a8bf7b5b..1a7352abd8786 100644
---- a/drivers/spi/spi-bitbang.c
-+++ b/drivers/spi/spi-bitbang.c
-@@ -174,7 +174,7 @@ int spi_bitbang_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 19a03a8d6199..6626587e77b4 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1336,6 +1336,14 @@ void spi_finalize_current_transfer(struct spi_controller *ctlr)
  }
- EXPORT_SYMBOL_GPL(spi_bitbang_setup_transfer);
+ EXPORT_SYMBOL_GPL(spi_finalize_current_transfer);
  
--/**
-+/*
-  * spi_bitbang_setup - default setup for per-word I/O loops
-  */
- int spi_bitbang_setup(struct spi_device *spi)
-@@ -208,7 +208,7 @@ int spi_bitbang_setup(struct spi_device *spi)
- }
- EXPORT_SYMBOL_GPL(spi_bitbang_setup);
++static void spi_idle_runtime_pm(struct spi_controller *ctlr)
++{
++	if (ctlr->auto_runtime_pm) {
++		pm_runtime_mark_last_busy(ctlr->dev.parent);
++		pm_runtime_put_autosuspend(ctlr->dev.parent);
++	}
++}
++
+ /**
+  * __spi_pump_messages - function which processes spi message queue
+  * @ctlr: controller to process queue for
+@@ -1380,10 +1388,17 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
+ 			return;
+ 		}
  
--/**
-+/*
-  * spi_bitbang_cleanup - default cleanup for per-word I/O loops
-  */
- void spi_bitbang_cleanup(struct spi_device *spi)
-@@ -427,7 +427,7 @@ int spi_bitbang_start(struct spi_bitbang *bitbang)
- }
- EXPORT_SYMBOL_GPL(spi_bitbang_start);
+-		/* Only do teardown in the thread */
++		/* Defer any non-atomic teardown to the thread */
+ 		if (!in_kthread) {
+-			kthread_queue_work(ctlr->kworker,
+-					   &ctlr->pump_messages);
++			if (!ctlr->dummy_rx && !ctlr->dummy_tx &&
++			    !ctlr->unprepare_transfer_hardware) {
++				spi_idle_runtime_pm(ctlr);
++				ctlr->busy = false;
++				trace_spi_controller_idle(ctlr);
++			} else {
++				kthread_queue_work(ctlr->kworker,
++						   &ctlr->pump_messages);
++			}
+ 			spin_unlock_irqrestore(&ctlr->queue_lock, flags);
+ 			return;
+ 		}
+@@ -1400,10 +1415,7 @@ static void __spi_pump_messages(struct spi_controller *ctlr, bool in_kthread)
+ 		    ctlr->unprepare_transfer_hardware(ctlr))
+ 			dev_err(&ctlr->dev,
+ 				"failed to unprepare transfer hardware\n");
+-		if (ctlr->auto_runtime_pm) {
+-			pm_runtime_mark_last_busy(ctlr->dev.parent);
+-			pm_runtime_put_autosuspend(ctlr->dev.parent);
+-		}
++		spi_idle_runtime_pm(ctlr);
+ 		trace_spi_controller_idle(ctlr);
  
--/**
-+/*
-  * spi_bitbang_stop - stops the task providing spi communication
-  */
- void spi_bitbang_stop(struct spi_bitbang *bitbang)
+ 		spin_lock_irqsave(&ctlr->queue_lock, flags);
 -- 
-2.25.1
+2.20.1
 

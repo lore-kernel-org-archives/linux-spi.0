@@ -2,85 +2,54 @@ Return-Path: <SRS0=zsPE=A4=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.0 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-4.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E6E39C433E2
-	for <linux-spi@archiver.kernel.org>; Fri, 17 Jul 2020 21:57:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 88709C433E1
+	for <linux-spi@archiver.kernel.org>; Fri, 17 Jul 2020 22:00:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C13E920775
-	for <linux-spi@archiver.kernel.org>; Fri, 17 Jul 2020 21:57:00 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 657182070E
+	for <linux-spi@archiver.kernel.org>; Fri, 17 Jul 2020 22:00:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1595023221;
+	bh=wqxZoJ03ajhLa5Kg4TfK1HfFOUr3/rR0nWoY+jB1HF8=;
+	h=Subject:From:Date:To:List-ID:From;
+	b=P1FDENv/ginr5VK0qSrb43aVK116ZbrSnciYjfCF2/h6tHdGqZyuifJ+rrVN4H7fI
+	 2180pfhe0w3rogLpkMevMLXCsB3R7G8GFoxkdSd7WJwPQFc4IOOi334c5RIw2bnoFY
+	 s9I3qqdvtMOmKHqdhOJBE8FsJxJiit3WaeZ1+JI8=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727062AbgGQV5A (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 17 Jul 2020 17:57:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56858 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726885AbgGQV5A (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 17 Jul 2020 17:57:00 -0400
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [IPv6:2001:67c:2050::465:103])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A120C0619D2
-        for <linux-spi@vger.kernel.org>; Fri, 17 Jul 2020 14:57:00 -0700 (PDT)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:105:465:1:2:0])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
-        (No client certificate requested)
-        by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4B7lMZ5MbbzKmgV;
-        Fri, 17 Jul 2020 23:56:58 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
-        by gerste.heinlein-support.de (gerste.heinlein-support.de [91.198.250.173]) (amavisd-new, port 10030)
-        with ESMTP id y2wVL9lcNOlI; Fri, 17 Jul 2020 23:56:55 +0200 (CEST)
-From:   Hauke Mehrtens <hauke@hauke-m.de>
-To:     broonie@kernel.org
-Cc:     axboe@kernel.dk, linux-spi@vger.kernel.org,
-        Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH v2] spi: lantiq-ssc: Fix warning by using WQ_MEM_RECLAIM
-Date:   Fri, 17 Jul 2020 23:56:48 +0200
-Message-Id: <20200717215648.20522-1-hauke@hauke-m.de>
+        id S1727771AbgGQWAV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 17 Jul 2020 18:00:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50900 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726793AbgGQWAU (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 17 Jul 2020 18:00:20 -0400
+Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1595023220;
+        bh=wqxZoJ03ajhLa5Kg4TfK1HfFOUr3/rR0nWoY+jB1HF8=;
+        h=Subject:From:Date:To:From;
+        b=HGUb0EBRHRKhyLgAz1Nrc+rMsZfHLkoJkNP2YM/QrQeIE/rypJMTpTmqZpWpJuu3R
+         CT7/tL65mCTafxmUZYuEFk99qIuyMdMrYzd9U5vSZ1PRxRUfWpY/VqmIz8mERXz/Ba
+         jqafQ5j6BdK3f9D1F9B2myrgxKMK7m8WC8hPMH9k=
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MBO-SPAM-Probability: 0
-X-Rspamd-Score: -5.69 / 15.00 / 15.00
-X-Rspamd-Queue-Id: DABC21780
-X-Rspamd-UID: a56273
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+linux-spi@kernel.org
+Message-Id: <159502322070.27877.7149479150263128497.git-patchwork-housekeeping@kernel.org>
+Date:   Fri, 17 Jul 2020 22:00:20 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The lantiq-ssc driver uses internally an own workqueue to wait till the
-data is not only written out of the FIFO but really written to the wire.
-This workqueue is flushed while the SPI subsystem is working in some
-other system workqueue.
+Latest series: [v2] spi: lantiq-ssc: Fix warning by using WQ_MEM_RECLAIM (2020-07-17T21:56:48)
+  Superseding: [v1] spi: lantiq-ssc: Fix warning by using WQ_MEM_RECLAIM (2020-07-14T23:02:34):
+    spi: lantiq-ssc: Fix warning by using WQ_MEM_RECLAIM
 
-The system workqueue is marked as WQ_MEM_RECLAIM, but the workqueue in
-the lantiq-ssc driver does not use WQ_MEM_RECLAIM for now. Add this flag
-too to prevent this warning.
 
-This fixes the following warning:
-[    2.975956] WARNING: CPU: 1 PID: 17 at kernel/workqueue.c:2614 check_flush_dependency+0x168/0x184
-[    2.984752] workqueue: WQ_MEM_RECLAIM kblockd:blk_mq_run_work_fn is flushing !WQ_MEM_RECLAIM 1e100800.spi:0x0
-
-Fixes: 891b7c5fbf61 ("mtd_blkdevs: convert to blk-mq")
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
----
- drivers/spi/spi-lantiq-ssc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-lantiq-ssc.c b/drivers/spi/spi-lantiq-ssc.c
-index 1fd7ee53d451..a12a5d0cfebf 100644
---- a/drivers/spi/spi-lantiq-ssc.c
-+++ b/drivers/spi/spi-lantiq-ssc.c
-@@ -899,7 +899,7 @@ static int lantiq_ssc_probe(struct platform_device *pdev)
- 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(2, 8) |
- 				     SPI_BPW_MASK(16) | SPI_BPW_MASK(32);
- 
--	spi->wq = alloc_ordered_workqueue(dev_name(dev), 0);
-+	spi->wq = alloc_ordered_workqueue(dev_name(dev), WQ_MEM_RECLAIM);
- 	if (!spi->wq) {
- 		err = -ENOMEM;
- 		goto err_clk_put;
 -- 
-2.20.1
-
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/pwbot

@@ -2,67 +2,95 @@ Return-Path: <SRS0=zsPE=A4=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.0 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8FB88C433DF
-	for <linux-spi@archiver.kernel.org>; Fri, 17 Jul 2020 14:00:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 30F19C433DF
+	for <linux-spi@archiver.kernel.org>; Fri, 17 Jul 2020 14:02:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 69E4620717
-	for <linux-spi@archiver.kernel.org>; Fri, 17 Jul 2020 14:00:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1594994422;
-	bh=VKrDuU5UJ5xX4ghmhBpTW8ypAHD+vilvRq/yLisiMEE=;
-	h=Subject:From:Date:To:List-ID:From;
-	b=RqJ/wWEf4zHkAe9eKwvSlxfGDommabVn4IuzQ1RFb4KJ3zrtbM0G07EbvOLx9bbw8
-	 eg9mZXU8aRPJA2lxHjNxSMRX+KeKGpsBiJ3sMQAeXDr8DBiyXd15gypLgR93E6pXRH
-	 1hlH9XfbUjLUVaGFToYcCDznwO495akRYN95dYtY=
+	by mail.kernel.org (Postfix) with ESMTP id 1818B207EA
+	for <linux-spi@archiver.kernel.org>; Fri, 17 Jul 2020 14:02:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727045AbgGQOAW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 17 Jul 2020 10:00:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48270 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727019AbgGQOAV (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 17 Jul 2020 10:00:21 -0400
-Content-Type: text/plain; charset="utf-8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1594994421;
-        bh=VKrDuU5UJ5xX4ghmhBpTW8ypAHD+vilvRq/yLisiMEE=;
-        h=Subject:From:Date:To:From;
-        b=UN3i9R8fjEl5otQPHhb7DQIHo2HJbkyhynCUYfvYeAsdABTvEDCtePznkFMCkQz3Q
-         OJ3XizKkhDc+iy5VOdhj0WVFIQpsxuocmhzrdVZfRWujZ1UpN6lAk6NFG5ZOy1OMS1
-         a7UIY5iehzirv+hooHBBj5PoZy3Q5/w99uYEst2o=
+        id S1726386AbgGQOCV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 17 Jul 2020 10:02:21 -0400
+Received: from relay8-d.mail.gandi.net ([217.70.183.201]:50907 "EHLO
+        relay8-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726210AbgGQOCV (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 17 Jul 2020 10:02:21 -0400
+X-Originating-IP: 90.65.108.121
+Received: from localhost (lfbn-lyo-1-1676-121.w90-65.abo.wanadoo.fr [90.65.108.121])
+        (Authenticated sender: alexandre.belloni@bootlin.com)
+        by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id C50FF1BF20D;
+        Fri, 17 Jul 2020 14:02:18 +0000 (UTC)
+Date:   Fri, 17 Jul 2020 16:02:18 +0200
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     broonie@kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Radu Pirea <radu_nicolae.pirea@upb.ro>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>
+Subject: Re: [PATCH v2 12/14] spi: spi-at91-usart: Remove unused OF table
+ 'struct of_device_id'
+Message-ID: <20200717140218.GR3428@piout.net>
+References: <20200717135424.2442271-1-lee.jones@linaro.org>
+ <20200717135424.2442271-13-lee.jones@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+linux-spi@kernel.org
-Message-Id: <159499442163.17337.8559210407530338066.git-patchwork-housekeeping@kernel.org>
-Date:   Fri, 17 Jul 2020 14:00:21 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+In-Reply-To: <20200717135424.2442271-13-lee.jones@linaro.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v2] Rid W=1 warnings in SPI (2020-07-17T13:54:11)
-  Superseding: [v1] Rid W=1 warnings in SPI (2020-07-15T15:06:18):
-    [01/14] spi: spi-loopback-test: Fix formatting issues in function header blocks
-    [02/14] spi: spi-bitbang: Demote obvious misuse of kerneldoc to standard comment blocks
-    [03/14] spi: spi-davinci: Fix a few kerneldoc misspellings and API slippages
-    [04/14] spi: spi-ep93xx: Fix API slippage
-    [05/14] spi: spi-meson-spifc: Fix misdocumenting of 'dev' in 'struct meson_spifc'
-    [06/14] spi: spi-meson-spicc: Remove set but never used variable 'data' from meson_spicc_reset_fifo()
-    [07/14] spi: spi-s3c64xx: Add missing entries for structs 's3c64xx_spi_dma_data' and 's3c64xx_spi_dma_data'
-    [08/14] spi: spi-pl022: Provide missing struct attribute/function param docs
-    [09/14] spi: spi-zynq-qspi: Add description for 2 missing attributes/parameters
-    [10/14] spi: spi-zynqmp-gqspi: Correct a couple of misspellings in kerneldoc
-    [11/14] spi: spi-topcliff-pch: Add missing descriptions to 'struct pch_spi_data'
-    [12/14] spi: spi-at91-usart: Make use of the defined 'struct of_device_id'
-    [13/14] spi: spi-pxa2xx: Do not define 'struct acpi_device_id' when
-    [14/14] spi: spi-amd: Do not define 'struct acpi_device_id' when
+On 17/07/2020 14:54:22+0100, Lee Jones wrote:
+> The only way this driver can be probed by MFD via its parent device.
+> 
+> No other reference to 'microchip,at91sam9g45-usart-spi' exists in the kernel.
+> 
+> Fixes the following W=1 kernel build warning(s):
+> 
+>  drivers/spi/spi-at91-usart.c:684:34: warning: ‘at91_usart_spi_dt_ids’ defined but not used [-Wunused-const-variable=]
+>  684 | static const struct of_device_id at91_usart_spi_dt_ids[] = {
+>  | ^~~~~~~~~~~~~~~~~~~~~
+> 
+> Cc: Radu Pirea <radu_nicolae.pirea@upb.ro>
+> Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
+> Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
+> Suggested-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> Signed-off-by: Lee Jones <lee.jones@linaro.org>
+Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
+> ---
+>  drivers/spi/spi-at91-usart.c | 7 -------
+>  1 file changed, 7 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-at91-usart.c b/drivers/spi/spi-at91-usart.c
+> index 88033422a42ae..8c8352625d232 100644
+> --- a/drivers/spi/spi-at91-usart.c
+> +++ b/drivers/spi/spi-at91-usart.c
+> @@ -681,13 +681,6 @@ static const struct dev_pm_ops at91_usart_spi_pm_ops = {
+>  			   at91_usart_spi_runtime_resume, NULL)
+>  };
+>  
+> -static const struct of_device_id at91_usart_spi_dt_ids[] = {
+> -	{ .compatible = "microchip,at91sam9g45-usart-spi"},
+> -	{ /* sentinel */}
+> -};
+> -
+> -MODULE_DEVICE_TABLE(of, at91_usart_spi_dt_ids);
+> -
+>  static struct platform_driver at91_usart_spi_driver = {
+>  	.driver = {
+>  		.name = "at91_usart_spi",
+> -- 
+> 2.25.1
+> 
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/pwbot
+Alexandre Belloni, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com

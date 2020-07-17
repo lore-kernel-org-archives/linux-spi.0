@@ -7,34 +7,34 @@ X-Spam-Status: No, score=-13.0 required=3.0 tests=BAYES_00,
 	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EDE96C433E7
-	for <linux-spi@archiver.kernel.org>; Fri, 17 Jul 2020 06:30:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 201F4C433ED
+	for <linux-spi@archiver.kernel.org>; Fri, 17 Jul 2020 06:30:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D8E5921775
-	for <linux-spi@archiver.kernel.org>; Fri, 17 Jul 2020 06:30:49 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0A94521744
+	for <linux-spi@archiver.kernel.org>; Fri, 17 Jul 2020 06:30:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727046AbgGQGap (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 17 Jul 2020 02:30:45 -0400
-Received: from mga17.intel.com ([192.55.52.151]:14777 "EHLO mga17.intel.com"
+        id S1727002AbgGQGam (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 17 Jul 2020 02:30:42 -0400
+Received: from mga04.intel.com ([192.55.52.120]:63570 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726949AbgGQGao (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 17 Jul 2020 02:30:44 -0400
-IronPort-SDR: NtQocaUb8ZTzaxmIBHmzryjmGNOv822ocx87tlAc4QYaAT2W2NtxlukfNH7zoh76QelLbU6yWD
- rXYT/iIf03pg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9684"; a="129628429"
+        id S1726949AbgGQGal (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 17 Jul 2020 02:30:41 -0400
+IronPort-SDR: 1QfXiISSRZzCKSHWET5WG4v7GsfipTNMpwmcMvA1101pAdU1BcizNWVh4gf8yV8rORmBUSQO28
+ Y6JjnFAlIDpQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9684"; a="147053465"
 X-IronPort-AV: E=Sophos;i="5.75,362,1589266800"; 
-   d="scan'208";a="129628429"
+   d="scan'208";a="147053465"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2020 23:30:44 -0700
-IronPort-SDR: wsBwZc/2namRn+PPDuqc4THcPhz1vdIhKRRfQ7j1dzVpMK1p1n9wiUJ2XxxFHy3Io/X6eyqHLB
- PaTsyjreFr1w==
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2020 23:30:40 -0700
+IronPort-SDR: 2lzccdjrqJwl3+HpghMgQuC4H2TQbd386kji92kmKJGHxn393xCdulBriksNZDFa+67tG82MD5
+ sRwusNrmXojA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.75,362,1589266800"; 
-   d="scan'208";a="317262869"
+   d="scan'208";a="318679974"
 Received: from sgsxdev004.isng.intel.com (HELO localhost) ([10.226.88.13])
-  by orsmga008.jf.intel.com with ESMTP; 16 Jul 2020 23:30:41 -0700
+  by fmsmga002.fm.intel.com with ESMTP; 16 Jul 2020 23:30:37 -0700
 From:   Dilip Kota <eswara.kota@linux.intel.com>
 To:     broonie@kernel.org, robh@kernel.org, linux-spi@vger.kernel.org,
         devicetree@vger.kernel.org
@@ -42,9 +42,9 @@ Cc:     linux-kernel@vger.kernel.org, daniel.schwierzeck@gmail.com,
         hauke@hauke-m.de, andriy.shevchenko@intel.com,
         cheol.yong.kim@intel.com, chuanhua.lei@linux.intel.com,
         qi-ming.wu@intel.com, Dilip Kota <eswara.kota@linux.intel.com>
-Subject: [PATCH v2 5/8] spi: lantiq: Add fifo size bit mask in SoC specific data structure
-Date:   Fri, 17 Jul 2020 14:27:54 +0800
-Message-Id: <a0889abf17a9fbc7077f10be0f0342b7ebdf9361.1594957019.git.eswara.kota@linux.intel.com>
+Subject: [PATCH v2 4/8] spi: lantiq: Add support to acknowledge interrupt
+Date:   Fri, 17 Jul 2020 14:27:53 +0800
+Message-Id: <608923b484d9ef239b44bb545c0b79b27030a6ae.1594957019.git.eswara.kota@linux.intel.com>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <efb650b0faa49a00788c4e0ca8ef7196bdba851d.1594957019.git.eswara.kota@linux.intel.com>
 References: <efb650b0faa49a00788c4e0ca8ef7196bdba851d.1594957019.git.eswara.kota@linux.intel.com>
@@ -55,104 +55,77 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On newer chipsets, SPI controller has fifos of larger size.
-So add the fifo size bit mask entry in SoC specific data structure.
+On newer chipsets interrupt need to be acknowledged as they use
+different interrupt controller which does not acknowledge the
+interrupts automatically.
 
 Signed-off-by: Dilip Kota <eswara.kota@linux.intel.com>
 ---
- drivers/spi/spi-lantiq-ssc.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ drivers/spi/spi-lantiq-ssc.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
 diff --git a/drivers/spi/spi-lantiq-ssc.c b/drivers/spi/spi-lantiq-ssc.c
-index cbe019f995999..a0d1f82d309f9 100644
+index 98e1c5d807597..cbe019f995999 100644
 --- a/drivers/spi/spi-lantiq-ssc.c
 +++ b/drivers/spi/spi-lantiq-ssc.c
-@@ -59,9 +59,7 @@
- #define LTQ_SPI_CLC_DISR	BIT(0)	/* Disable request bit */
- 
- #define LTQ_SPI_ID_TXFS_S	24	/* Implemented TX FIFO size */
--#define LTQ_SPI_ID_TXFS_M	(0x3F << LTQ_SPI_ID_TXFS_S)
- #define LTQ_SPI_ID_RXFS_S	16	/* Implemented RX FIFO size */
--#define LTQ_SPI_ID_RXFS_M	(0x3F << LTQ_SPI_ID_RXFS_S)
- #define LTQ_SPI_ID_MOD_S	8	/* Module ID */
- #define LTQ_SPI_ID_MOD_M	(0xff << LTQ_SPI_ID_MOD_S)
- #define LTQ_SPI_ID_CFG_S	5	/* DMA interface support */
-@@ -124,19 +122,15 @@
- 					 LTQ_SPI_WHBSTATE_CLRTUE)
- 
- #define LTQ_SPI_RXFCON_RXFITL_S	8	/* FIFO interrupt trigger level */
--#define LTQ_SPI_RXFCON_RXFITL_M	(0x3F << LTQ_SPI_RXFCON_RXFITL_S)
- #define LTQ_SPI_RXFCON_RXFLU	BIT(1)	/* FIFO flush */
- #define LTQ_SPI_RXFCON_RXFEN	BIT(0)	/* FIFO enable */
- 
- #define LTQ_SPI_TXFCON_TXFITL_S	8	/* FIFO interrupt trigger level */
--#define LTQ_SPI_TXFCON_TXFITL_M	(0x3F << LTQ_SPI_TXFCON_TXFITL_S)
- #define LTQ_SPI_TXFCON_TXFLU	BIT(1)	/* FIFO flush */
- #define LTQ_SPI_TXFCON_TXFEN	BIT(0)	/* FIFO enable */
- 
- #define LTQ_SPI_FSTAT_RXFFL_S	0
--#define LTQ_SPI_FSTAT_RXFFL_M	(0x3f << LTQ_SPI_FSTAT_RXFFL_S)
- #define LTQ_SPI_FSTAT_TXFFL_S	8
--#define LTQ_SPI_FSTAT_TXFFL_M	(0x3f << LTQ_SPI_FSTAT_TXFFL_S)
- 
- #define LTQ_SPI_GPOCON_ISCSBN_S	8
- #define LTQ_SPI_GPOCON_INVOUTN_S	0
-@@ -162,6 +156,7 @@ struct lantiq_ssc_hwcfg {
+@@ -161,6 +161,7 @@ struct lantiq_ssc_hwcfg {
+ 	unsigned int	irnen_t;
  	unsigned int	irncr;
  	unsigned int	irnicr;
- 	bool		irq_ack;
-+	u32		fifo_size_mask;
++	bool		irq_ack;
  };
  
  struct lantiq_ssc_spi {
-@@ -211,16 +206,18 @@ static void lantiq_ssc_maskl(const struct lantiq_ssc_spi *spi, u32 clr,
- 
- static unsigned int tx_fifo_level(const struct lantiq_ssc_spi *spi)
+@@ -623,9 +624,14 @@ static void rx_request(struct lantiq_ssc_spi *spi)
+ static irqreturn_t lantiq_ssc_xmit_interrupt(int irq, void *data)
  {
+ 	struct lantiq_ssc_spi *spi = data;
 +	const struct lantiq_ssc_hwcfg *hwcfg = spi->hwcfg;
- 	u32 fstat = lantiq_ssc_readl(spi, LTQ_SPI_FSTAT);
++	u32 val = lantiq_ssc_readl(spi, hwcfg->irncr);
+ 	unsigned long flags;
  
--	return (fstat & LTQ_SPI_FSTAT_TXFFL_M) >> LTQ_SPI_FSTAT_TXFFL_S;
-+	return (fstat >> LTQ_SPI_FSTAT_TXFFL_S) & hwcfg->fifo_size_mask;
- }
- 
- static unsigned int rx_fifo_level(const struct lantiq_ssc_spi *spi)
+ 	spin_lock_irqsave(&spi->lock, flags);
++	if (hwcfg->irq_ack)
++		lantiq_ssc_writel(spi, val, hwcfg->irncr);
++
+ 	if (spi->tx) {
+ 		if (spi->rx && spi->rx_todo)
+ 			rx_fifo_read_full_duplex(spi);
+@@ -660,13 +666,18 @@ static irqreturn_t lantiq_ssc_xmit_interrupt(int irq, void *data)
+ static irqreturn_t lantiq_ssc_err_interrupt(int irq, void *data)
  {
+ 	struct lantiq_ssc_spi *spi = data;
 +	const struct lantiq_ssc_hwcfg *hwcfg = spi->hwcfg;
- 	u32 fstat = lantiq_ssc_readl(spi, LTQ_SPI_FSTAT);
+ 	u32 stat = lantiq_ssc_readl(spi, LTQ_SPI_STAT);
++	u32 val = lantiq_ssc_readl(spi, hwcfg->irncr);
+ 	unsigned long flags;
  
--	return fstat & LTQ_SPI_FSTAT_RXFFL_M;
-+	return (fstat >> LTQ_SPI_FSTAT_RXFFL_S) & hwcfg->fifo_size_mask;
- }
+ 	if (!(stat & LTQ_SPI_STAT_ERRORS))
+ 		return IRQ_NONE;
  
- static unsigned int tx_fifo_free(const struct lantiq_ssc_spi *spi)
-@@ -808,6 +805,7 @@ static const struct lantiq_ssc_hwcfg lantiq_ssc_xway = {
+ 	spin_lock_irqsave(&spi->lock, flags);
++	if (hwcfg->irq_ack)
++		lantiq_ssc_writel(spi, val, hwcfg->irncr);
++
+ 	if (stat & LTQ_SPI_STAT_RUE)
+ 		dev_err(spi->dev, "receive underflow error\n");
+ 	if (stat & LTQ_SPI_STAT_TUE)
+@@ -797,6 +808,7 @@ static const struct lantiq_ssc_hwcfg lantiq_ssc_xway = {
  	.irnen_t	= LTQ_SPI_IRNEN_T_XWAY,
  	.irnicr		= 0xF8,
  	.irncr		= 0xFC,
-+	.fifo_size_mask	= GENMASK(5, 0),
- 	.irq_ack	= false,
++	.irq_ack	= false,
  };
  
-@@ -816,6 +814,7 @@ static const struct lantiq_ssc_hwcfg lantiq_ssc_xrx = {
+ static const struct lantiq_ssc_hwcfg lantiq_ssc_xrx = {
+@@ -804,6 +816,7 @@ static const struct lantiq_ssc_hwcfg lantiq_ssc_xrx = {
  	.irnen_t	= LTQ_SPI_IRNEN_T_XRX,
  	.irnicr		= 0xF8,
  	.irncr		= 0xFC,
-+	.fifo_size_mask	= GENMASK(5, 0),
- 	.irq_ack	= false,
++	.irq_ack	= false,
  };
  
-@@ -941,8 +940,8 @@ static int lantiq_ssc_probe(struct platform_device *pdev)
- 	INIT_WORK(&spi->work, lantiq_ssc_bussy_work);
- 
- 	id = lantiq_ssc_readl(spi, LTQ_SPI_ID);
--	spi->tx_fifo_size = (id & LTQ_SPI_ID_TXFS_M) >> LTQ_SPI_ID_TXFS_S;
--	spi->rx_fifo_size = (id & LTQ_SPI_ID_RXFS_M) >> LTQ_SPI_ID_RXFS_S;
-+	spi->tx_fifo_size = (id >> LTQ_SPI_ID_TXFS_S) & hwcfg->fifo_size_mask;
-+	spi->rx_fifo_size = (id >> LTQ_SPI_ID_RXFS_S) & hwcfg->fifo_size_mask;
- 	supports_dma = (id & LTQ_SPI_ID_CFG_M) >> LTQ_SPI_ID_CFG_S;
- 	revision = id & LTQ_SPI_ID_REV_M;
- 
+ static const struct of_device_id lantiq_ssc_match[] = {
 -- 
 2.11.0
 

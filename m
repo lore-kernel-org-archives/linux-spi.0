@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-13.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 021C9C3F2DB
-	for <linux-spi@archiver.kernel.org>; Mon, 20 Jul 2020 21:42:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 30998C4742A
+	for <linux-spi@archiver.kernel.org>; Mon, 20 Jul 2020 21:44:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id CDA61206E9
-	for <linux-spi@archiver.kernel.org>; Mon, 20 Jul 2020 21:42:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0A3DA206E9
+	for <linux-spi@archiver.kernel.org>; Mon, 20 Jul 2020 21:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1595281341;
-	bh=5UrXs5K40IkwuyX6XDwLrEXO6fTXoOdDk5vlpHZthbg=;
+	s=default; t=1595281442;
+	bh=UTI4JbY9snt80IwD2G44S5ZsfU8SHhCvOdHambn10Kg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=ptAbZiRYq9c8UcrlqbdhdFioOsFJillPutXw8GXb4cohOHsL2NID3Bomzf1nMjqeo
-	 PQzN7Mtkoi12AKvzBdEwe1n6F6EDtZEG3wjZ60D1qtsh33vXRdAWSo9j/9K7CV9Ndk
-	 IhE75L88e0dLeIRLg+vCrHA6Cf9UMOjGSoaiO/Jc=
+	b=LFY4KpIpVEhJQlPZeMdKWwF4vOhmoXz3kAmR1lQL24E4Rk/HQwb8R4WE4KyB5FsrU
+	 UTi7Zw6C3EhluZxk2NebiXN6jDDtTtK4zTYohrfSXnHneJs+8vaFOEXEp9jGwk0mcG
+	 2k2i1tFbrDasEaIuqUpsctxGpR7TQ7hwrMW1FJTI=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728317AbgGTVjC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 20 Jul 2020 17:39:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58018 "EHLO mail.kernel.org"
+        id S1728087AbgGTViT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 20 Jul 2020 17:38:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56758 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728308AbgGTVjB (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 20 Jul 2020 17:39:01 -0400
+        id S1728077AbgGTViS (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 20 Jul 2020 17:38:18 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7609322CAF;
-        Mon, 20 Jul 2020 21:38:59 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 13D01207FC;
+        Mon, 20 Jul 2020 21:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595281140;
-        bh=5UrXs5K40IkwuyX6XDwLrEXO6fTXoOdDk5vlpHZthbg=;
+        s=default; t=1595281097;
+        bh=UTI4JbY9snt80IwD2G44S5ZsfU8SHhCvOdHambn10Kg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d+qqjX2+2B8nr9SL3tj+uWAfmi3EyqylZIzGlvIRwV8EF8N0wE6fHGJ0jhxgL4rOE
-         GH5A7TtbmbDV7F3oCSn1caDZWbb09LpuNyAznY2C6Uu6uCT6SB+0ITVRMoRmNuoAc8
-         DF1hYXWX3MKv1ny5ZLZBnICCpiG4ZLv+4P3JELYY=
+        b=iuACcuGUyLvRWcjkkj4VbzqKovUFODZFiqPb0Fef/WLNd765INOThKPY8/o+5jaGn
+         v4yMKIZqus3PmCCixGTMkuTplQnmkGo53iGB8zQYS1+cKekPGRxKQDzyFp5DNxtcFL
+         gjxbK0p/Wj977whaS7hU9WuwxrIaT6W2j+y6+ktQ=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     "leilk.liu" <leilk.liu@mediatek.com>,
@@ -45,12 +45,12 @@ Cc:     "leilk.liu" <leilk.liu@mediatek.com>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 4.19 07/19] spi: mediatek: use correct SPI_CFG2_REG MACRO
-Date:   Mon, 20 Jul 2020 17:38:38 -0400
-Message-Id: <20200720213851.407715-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 08/34] spi: mediatek: use correct SPI_CFG2_REG MACRO
+Date:   Mon, 20 Jul 2020 17:37:41 -0400
+Message-Id: <20200720213807.407380-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200720213851.407715-1-sashal@kernel.org>
-References: <20200720213851.407715-1-sashal@kernel.org>
+In-Reply-To: <20200720213807.407380-1-sashal@kernel.org>
+References: <20200720213807.407380-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -75,10 +75,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 8 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 0c2867deb36fc..da28c52c9da19 100644
+index 6888a4dcff6de..8acf24f7c5d40 100644
 --- a/drivers/spi/spi-mt65xx.c
 +++ b/drivers/spi/spi-mt65xx.c
-@@ -41,7 +41,6 @@
+@@ -36,7 +36,6 @@
  #define SPI_CFG0_SCK_LOW_OFFSET           8
  #define SPI_CFG0_CS_HOLD_OFFSET           16
  #define SPI_CFG0_CS_SETUP_OFFSET          24
@@ -86,7 +86,7 @@ index 0c2867deb36fc..da28c52c9da19 100644
  #define SPI_ADJUST_CFG0_CS_HOLD_OFFSET    0
  #define SPI_ADJUST_CFG0_CS_SETUP_OFFSET   16
  
-@@ -53,6 +52,8 @@
+@@ -48,6 +47,8 @@
  #define SPI_CFG1_CS_IDLE_MASK             0xff
  #define SPI_CFG1_PACKET_LOOP_MASK         0xff00
  #define SPI_CFG1_PACKET_LENGTH_MASK       0x3ff0000
@@ -95,7 +95,7 @@ index 0c2867deb36fc..da28c52c9da19 100644
  
  #define SPI_CMD_ACT                  BIT(0)
  #define SPI_CMD_RESUME               BIT(1)
-@@ -259,7 +260,7 @@ static void mtk_spi_set_cs(struct spi_device *spi, bool enable)
+@@ -279,7 +280,7 @@ static void mtk_spi_set_cs(struct spi_device *spi, bool enable)
  static void mtk_spi_prepare_transfer(struct spi_master *master,
  				     struct spi_transfer *xfer)
  {
@@ -104,7 +104,7 @@ index 0c2867deb36fc..da28c52c9da19 100644
  	struct mtk_spi *mdata = spi_master_get_devdata(master);
  
  	spi_clk_hz = clk_get_rate(mdata->spi_clk);
-@@ -272,18 +273,18 @@ static void mtk_spi_prepare_transfer(struct spi_master *master,
+@@ -292,18 +293,18 @@ static void mtk_spi_prepare_transfer(struct spi_master *master,
  	cs_time = sck_time * 2;
  
  	if (mdata->dev_comp->enhance_timing) {

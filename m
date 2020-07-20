@@ -2,164 +2,113 @@ Return-Path: <SRS0=D5D4=A7=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.0 required=3.0 tests=BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DE0A4C433E0
-	for <linux-spi@archiver.kernel.org>; Mon, 20 Jul 2020 10:51:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 633ABC433E8
+	for <linux-spi@archiver.kernel.org>; Mon, 20 Jul 2020 11:12:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C4AC322BF3
-	for <linux-spi@archiver.kernel.org>; Mon, 20 Jul 2020 10:51:56 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4408E22CAF
+	for <linux-spi@archiver.kernel.org>; Mon, 20 Jul 2020 11:12:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1595243544;
+	bh=n9S8ZCTFwN+XQeSvliK+KZZx2fPzQrox7EfddEagYjM=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
+	b=H5gwGrNuNBhQOnQ+XgjUAaPH8DlwTz7kRS/k5BpSvXUuX4m3xcJ0apBDfCG8XE3t0
+	 k1ivpe+m6+OT1+DwtBtZ2B4JRCCW4uNWIV15EmGxdD9Imjk6q9JNkzsUl+5PZUiEN9
+	 O4B/8sCjv9ns+pt9/t7uJYki4mBYIYABwGb2WeTM=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728348AbgGTKv4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 20 Jul 2020 06:51:56 -0400
-Received: from mga01.intel.com ([192.55.52.88]:58387 "EHLO mga01.intel.com"
+        id S1727790AbgGTLMU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 20 Jul 2020 07:12:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52234 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728273AbgGTKv4 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 20 Jul 2020 06:51:56 -0400
-IronPort-SDR: c8asirTTtQNL9ATHToit3YEB8TuSWK2bKTRMxi8Igf6c7Wjeg3yeDLTTsL39eybPaxtkcxSmwH
- kG/gl27aUrZw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9687"; a="168018623"
-X-IronPort-AV: E=Sophos;i="5.75,374,1589266800"; 
-   d="scan'208";a="168018623"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2020 03:51:56 -0700
-IronPort-SDR: yWvLB816gbs2y2UuzTblZ+s52FJse74tmtF0K6dpQmkQLbSIRTUZLREdN64h1T3vi/2fWlVQcV
- vydBNbItlpyw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,374,1589266800"; 
-   d="scan'208";a="301234634"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga002.jf.intel.com with ESMTP; 20 Jul 2020 03:51:54 -0700
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andy.shevchenko@gmail.com>)
-        id 1jxTOl-002rnX-9a; Mon, 20 Jul 2020 13:51:55 +0300
-Date:   Mon, 20 Jul 2020 13:51:55 +0300
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-To:     Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Cc:     Mark Brown <broonie@kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>
-Subject: Re: [RFC] spi: dw: Test the last revision of the DMA module
-Message-ID: <20200720105155.GT3703480@smile.fi.intel.com>
-References: <20200625220808.hac4egxalgn3pcqk@mobilestation>
- <CAHp75VfF3GhjNEgHaQWn+LqbVZVOn3_mORSompexxxRnmiAFcg@mail.gmail.com>
- <20200626132921.tygww3k6b74gq6pl@mobilestation>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200626132921.tygww3k6b74gq6pl@mobilestation>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+        id S1727094AbgGTLMT (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 20 Jul 2020 07:12:19 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2C39022B4E;
+        Mon, 20 Jul 2020 11:12:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1595243538;
+        bh=n9S8ZCTFwN+XQeSvliK+KZZx2fPzQrox7EfddEagYjM=;
+        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+        b=0m9N5OtMxRZq0ex3ccdAOvtL8qaZ3Nh3A8ERGstG7kS5Ln+wm0u2wujqdoc2O5Dj5
+         MsDhPTsp3I/y6RNAJzsnifuWVkG/PXE8aZrxYeP+T9yhc5cHG/C64O9yy5V8jyL/3K
+         iSMuyG/DYm9SvSnIuyztKWdHWRWDjugUy2BU7yWU=
+Date:   Mon, 20 Jul 2020 12:12:06 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20200715150632.409077-1-lee.jones@linaro.org>
+References: <20200715150632.409077-1-lee.jones@linaro.org>
+Subject: Re: [PATCH 00/14] Rid W=1 warnings in SPI
+Message-Id: <159524352070.8289.2607852365954662448.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, Jun 26, 2020 at 04:29:21PM +0300, Serge Semin wrote:
-> On Fri, Jun 26, 2020 at 01:55:53AM +0300, Andy Shevchenko wrote:
-> > On Fri, Jun 26, 2020 at 1:08 AM Serge Semin
-> > <Sergey.Semin@baikalelectronics.ru> wrote:
-> > 
-> > > Have you tested the recent revision of the DW APB SSI driver with DMA
-> > > enabled? I am particularly concerned about the next fix in the driver:
-> > 
-> > Yes.
-> > 
-> > > > +     dw_writel(dws, DW_SPI_DMATDLR, dws->fifo_len - dws->txburst);
-> > 
-> > Yes, this line is problematic.
-> > However we have experiencing another issue with Tx underrun, that's
-> > why below has not been shared.
+On Wed, 15 Jul 2020 16:06:18 +0100, Lee Jones wrote:
+> This set is part of a larger effort attempting to clean-up W=1
+> kernel builds, which are currently overwhelmingly riddled with
+> niggly little warnings.
 > 
-> Hm, are you sure you meant ?Tx? underrun? DW APB SSI doesn't provide a status
-> bit of such an error. I don't even know how it might be possible, except a point
-> when SPI Tx FIFO just gets empty. If you meant SPI <Rx> FIFO underrun, then
-> it might be due to an invalid Rx DMA channel configuration: something with
-> BLOCK-length + DST_TR_WITDH + BURST-length setting. Though I am not sure it
-> could be connected with any of my recent patches for DW APB SSI or DW DMAC.
-
-Tx overrun or Rx over-/underrun, wording above is not correct from my side. But
-unfortunately I don't remember which one I have got.
-
-> > > Generally speaking it must work (even DW APB SSI/DMA databook suggests to have
-> > > such DMATDLR setting), but in our case of a relatively slow DMA engine (it's
-> > > clocked with just twice higher frequency with respect to the max SPI bus
-> > > speed) sometimes SPI Rx FIFO gets overflown when SPI bus is configured to work
-> > > with maximum speed (there are multiple reasons why this happens, but generally
-> > > speaking all of them matter only due to the relatively slow DMA engine). The
-> > > problem is fixed by reducing a value written into the DMATDLR register.
-> > >
-> > > I am wondering whether you've tested the last revision of the driver and it
-> > > worked for your version of the DW APB SSI + DW DMAC IPs. AFAIU DMA engine on
-> > > your devices is faster than on ours and has LLPs supported. So if you haven't
-> > > noticed any problem in the recent driver, then I'll send a fixup for our version
-> > > of the DW APB SSI block only (I'll have to introduce a new compatible string).
-> > > Otherwise I could get back a setting of dws->txburst into the DW_SPI_DMATDLR
-> > > register, which isn't that optimal as the current DMATDLR setting
-> > > of (fifo_len - txburst), but at least will make things working for all DMAs.
-> > 
+> After these patches are applied, the build system no longer
+> complains about any W=0 nor W=1 level warnings in drivers/spi.
 > 
-> > That's what I have locally.
-> > 
-> > commit 43d9abb2711f5096e969adcf1a2fb6456fa6e275 (HEAD -> topic/ehl-dma)
-> > Author: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Date:   Tue Jun 2 15:53:03 2020 +0300
-> > 
-> >     DEBUG SPI dw (burst fix?)
-> > 
-> >     Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > 
-> > diff --git a/drivers/spi/spi-dw-dma.c b/drivers/spi/spi-dw-dma.c
-> > index 5986c520b196..79342528b1f4 100644
-> > --- a/drivers/spi/spi-dw-dma.c
-> > +++ b/drivers/spi/spi-dw-dma.c
-> > @@ -373,7 +373,7 @@ static int dw_spi_dma_setup(struct dw_spi *dws,
-> > struct spi_transfer *xfer)
-> >         u16 imr = 0, dma_ctrl = 0;
-> > 
-> >         dw_writel(dws, DW_SPI_DMARDLR, dws->rxburst - 1);
-> > -       dw_writel(dws, DW_SPI_DMATDLR, dws->fifo_len - dws->txburst);
-> > +       dw_writel(dws, DW_SPI_DMATDLR, dws->txburst);
-> 
-> Yep, that will solve the problem. Though in my case of setting something
-> like: 
-> > -       dw_writel(dws, DW_SPI_DMATDLR, dws->fifo_len - dws->txburst);
-> > +       dw_writel(dws, DW_SPI_DMATDLR, dws->fifo_len / 2 - dws->txburst);
-> 
-> also worked. By doing so we artificially specify a Tx FIFO depth limitation,
-> which implicitly slows the "SPI Tx <-> Tx DMA channel" down, so occasionally,
-> if SPI Tx is fast enough while Tx DMA channel isn't, the SPI Tx FIFO might
-> even get emptied, but at least it will give enough time for the
-> "SPI Rx <-> Rx DMA channel" pair to fetch the incoming SPI traffic on time and
-> place the data into the memory (I suppose a text like this should be in a
-> comment above the line with the DMATDLR register setting). In my case I've
-> noticed this problem only when I executed several background user-space processes
-> intensively working with memory (like memory testbenches or just
-> "dd if=/dev/mem ..." like one-liner). My theory is that the background processes
-> implicitly slowed the Rx DMA channel down in a way so occasionally the internal
-> DMA FIFO's got full, due to which the Rx DMA channel couldn't handle the SPI Rx
-> handshaking interface requests on time to fetch data from the SPI Rx FIFO, so
-> the SPI Rx FIFO gets overflown. That chain of unfortunate problems is most likely to
-> happen in case if SPI-bus is fast enough. Obviously if I decrease the SPI bus
-> frequency, then no overflow will happen.
-> 
-> In case of our hardware setting DMATDLR with a Tx-burst length isn't enough to
-> completely prevent the SPI Rx FIFO overflow error. We also have to send SG list
-> entries one-by-one in order to solve the problem with DMA Tx LLP reloaded faster
-> than the DMA Rx LLP (remember the noLLP problem we've discussed in the DW DMA
-> mailing list?).
-> 
-> Anyway sorry for the inconvenience my patch caused. I'll send a fixup patch
-> soon, which will get back the DW_SPI_DMATDLR setting with just "dws->txburst"
+> [...]
 
-Any news about a fix?
+Applied to
 
--- 
-With Best Regards,
-Andy Shevchenko
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
+Thanks!
 
+[01/13] spi: spi-loopback-test: Fix formatting issues in function header blocks
+        commit: 055fe5f499b6783a3eac4978c9012ff08934f37c
+[02/13] spi: spi-bitbang: Demote obvious misuse of kerneldoc to standard comment blocks
+        commit: c13b5044ab0a484dfe4a8a1d946f3da6abb8d245
+[03/13] spi: spi-davinci: Fix a few kerneldoc misspellings and API slippages
+        commit: f6305d2706a7f1427d237044c470057508836590
+[04/13] spi: spi-ep93xx: Fix API slippage
+        commit: dfa51f6db34608d7829a5ef6add11557e548969a
+[05/13] spi: spi-meson-spifc: Fix misdocumenting of 'dev' in 'struct meson_spifc'
+        commit: 78a7f0c0a170ddef39822b8ec2b6311f0f27ea9b
+[06/13] spi: spi-meson-spicc: Remove set but never used variable 'data' from meson_spicc_reset_fifo()
+        commit: d9b883aeaeb05d196244383ebe1bc52e39697948
+[07/13] spi: spi-s3c64xx: Add missing entries for structs 's3c64xx_spi_dma_data' and 's3c64xx_spi_dma_data'
+        commit: 6b8d1e4739f41fcfb5d9adfd91b0ddfd1487c7e5
+[08/13] spi: spi-pl022: Provide missing struct attribute/function param docs
+        commit: c7cd1dfbd8bbd4a61a39773537db541e247a7ab0
+[09/13] spi: spi-zynq-qspi: Add description for 2 missing attributes/parameters
+        commit: e867feecda9bbbf854a5e6d8c5d765e31ebc545b
+[10/13] spi: spi-zynqmp-gqspi: Correct a couple of misspellings in kerneldoc
+        commit: 4b42b0b498124e4d38eaccbbb6b79e2a0ad1e047
+[11/13] spi: spi-topcliff-pch: Add missing descriptions to 'struct pch_spi_data'
+        commit: decf5326944bc6c32c9256f3992adfb7283cb0f3
+[12/13] spi: spi-pxa2xx: Do not define 'struct acpi_device_id' when !CONFIG_ACPI
+        commit: 9b2d611929afefee78037c92919d633aae35636a
+[13/13] spi: spi-amd: Do not define 'struct acpi_device_id' when !CONFIG_ACPI
+        commit: 85ed0f63c0e362afc51e541a8216a58094c36f6b
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

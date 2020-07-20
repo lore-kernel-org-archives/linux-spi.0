@@ -6,58 +6,82 @@ X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
 	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C5B73C433EB
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 47F0CC433EA
 	for <linux-spi@archiver.kernel.org>; Mon, 20 Jul 2020 11:12:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A2CA520773
+	by mail.kernel.org (Postfix) with ESMTP id 27C6720773
 	for <linux-spi@archiver.kernel.org>; Mon, 20 Jul 2020 11:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=default; t=1595243545;
-	bh=9Z11NjrdHxD4ZMDsaTBFbl5whcyGl2ry/jTN0Nd2wO0=;
+	bh=9Yy+1VjcfL5aQqBqsh+BDfHhT28teG125L+0sNy5ehc=;
 	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=dL6ln200PcVMzcmPoFhzayhCn4sw8zyNlrmIeBoZM+h40d5X5m9f5H6MpbzYw0yKl
-	 w45c1/+afryGSD4cquusgPDt9x+H5kpJrJ8a//5waBwhEoaMSzzTMNF7v1rmuBQXAb
-	 53RuvZ2dukdQCNh58m1HGACgWxqkd+c8oqSF8s8A=
+	b=DosBdGfgsPUNr1xAAI4bfwkUkW/sCaTQo1jm+BrVN6gLcSN1GIVTv1mXXbCLpMIWY
+	 gK9YJhyyAioTABJAxoUvbo4l2KPSZBpC+oDYvxpzvrKgKYFFnI/mopsbmm2YcWc2cu
+	 D8Hmmq7o8Hjf8Ri2X9Gy455bY0b4pL1RktjGH4k0=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728497AbgGTLMZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 20 Jul 2020 07:12:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52342 "EHLO mail.kernel.org"
+        id S1728008AbgGTLMO (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 20 Jul 2020 07:12:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52084 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728494AbgGTLMY (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 20 Jul 2020 07:12:24 -0400
+        id S1727094AbgGTLMN (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 20 Jul 2020 07:12:13 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3B43122B4E;
-        Mon, 20 Jul 2020 11:12:23 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 689E92073A;
+        Mon, 20 Jul 2020 11:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595243543;
-        bh=9Z11NjrdHxD4ZMDsaTBFbl5whcyGl2ry/jTN0Nd2wO0=;
+        s=default; t=1595243533;
+        bh=9Yy+1VjcfL5aQqBqsh+BDfHhT28teG125L+0sNy5ehc=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=agO4L6N/Y9r2RdoE23pTf1tXzJOz/WCZvUWn8VeZi/c4wXORrWfJczR3uablzHAUA
-         qSA84Tb5vjuw+6fzx1HQHYvNaNkX3kLruvzgijpW3TFBWHMeZUeixZtrLpvnnmC7J0
-         HEX0N05SY7Af9MebcYEW1suyQ3i9nAj1XG/yefMM=
-Date:   Mon, 20 Jul 2020 12:12:11 +0100
+        b=hAnDisAU5CkKAmHpE/TlDXaSa61cF0JA6RYkNQwVsbS2KHEPnHbsA064m/XFR1u/T
+         z//PW9qlfb6Lwl2oAr78zQ6ONpyQ79rnqVCxfhGpQ0WbjKfNRt5Zp9J68zrYhDPdF8
+         wriqqXI+iRwPMIMpW2FBryFhRaNOpStEuiSEMfmY=
+Date:   Mon, 20 Jul 2020 12:12:00 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20200717135424.2442271-1-lee.jones@linaro.org>
-References: <20200717135424.2442271-1-lee.jones@linaro.org>
-Subject: Re: [PATCH v2 00/14] Rid W=1 warnings in SPI
-Message-Id: <159524352070.8289.18199395609391654734.b4-ty@kernel.org>
+To:     Jakub Kicinski <kuba@kernel.org>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Niklas <niklas.soderlund@ragnatech.se>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Cc:     devicetree@vger.kernel.org,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-i2c@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-spi@vger.kernel.org, Prabhakar <prabhakar.csengg@gmail.com>,
+        netdev@vger.kernel.org, linux-can@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Amit Kucheria <amit.kucheria@verdurent.com>
+In-Reply-To: <1594811350-14066-1-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
+References: <1594811350-14066-1-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: Re: [PATCH 00/20] Add support for [H]SCIF/TMU/CMT/THS/SDHI/MSIOF/CAN[FD]/I2C/IIC/RWDT on R8A774E1
+Message-Id: <159524352070.8289.9628744508547399473.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, 17 Jul 2020 14:54:10 +0100, Lee Jones wrote:
-> This set is part of a larger effort attempting to clean-up W=1
-> kernel builds, which are currently overwhelmingly riddled with
-> niggly little warnings.
-> 
-> After these patches are applied, the build system no longer
-> complains about any W=0 nor W=1 level warnings in drivers/spi.
+On Wed, 15 Jul 2020 12:08:50 +0100, Lad Prabhakar wrote:
+> This patch series enables support for following on RZ/G2H SoC,
+> * CPU OPP
+> * THS
+> * CMT/TMU
+> * I2C/IIC
+> * MSIOF
+> * RWDT
+> * SDHI
+> * SCIF/HSCIF
+> * CAN/CANFD
 > 
 > [...]
 
@@ -67,34 +91,8 @@ Applied to
 
 Thanks!
 
-[01/14] spi: spi-loopback-test: Fix formatting issues in function header blocks
-        commit: 055fe5f499b6783a3eac4978c9012ff08934f37c
-[02/14] spi: spi-bitbang: Demote obvious misuse of kerneldoc to standard comment blocks
-        commit: c13b5044ab0a484dfe4a8a1d946f3da6abb8d245
-[03/14] spi: spi-davinci: Fix a few kerneldoc misspellings and API slippages
-        commit: f6305d2706a7f1427d237044c470057508836590
-[04/14] spi: spi-ep93xx: Fix API slippage
-        commit: dfa51f6db34608d7829a5ef6add11557e548969a
-[05/14] spi: spi-meson-spifc: Fix misdocumenting of 'dev' in 'struct meson_spifc'
-        commit: 78a7f0c0a170ddef39822b8ec2b6311f0f27ea9b
-[06/14] spi: spi-meson-spicc: Remove set but never used variable 'data' from meson_spicc_reset_fifo()
-        commit: d9b883aeaeb05d196244383ebe1bc52e39697948
-[07/14] spi: spi-s3c64xx: Add missing entries for structs 's3c64xx_spi_dma_data' and 's3c64xx_spi_dma_data'
-        commit: 6b8d1e4739f41fcfb5d9adfd91b0ddfd1487c7e5
-[08/14] spi: spi-pl022: Provide missing struct attribute/function param docs
-        commit: c7cd1dfbd8bbd4a61a39773537db541e247a7ab0
-[09/14] spi: spi-zynq-qspi: Add description for 2 missing attributes/parameters
-        commit: e867feecda9bbbf854a5e6d8c5d765e31ebc545b
-[10/14] spi: spi-zynqmp-gqspi: Correct a couple of misspellings in kerneldoc
-        commit: 4b42b0b498124e4d38eaccbbb6b79e2a0ad1e047
-[11/14] spi: spi-topcliff-pch: Add missing descriptions to 'struct pch_spi_data'
-        commit: decf5326944bc6c32c9256f3992adfb7283cb0f3
-[12/14] spi: spi-at91-usart: Remove unused OF table 'struct of_device_id'
-        commit: c894c265a43ecba365f5a061cf44f739fa639f9d
-[13/14] spi: spi-pxa2xx: Do not define 'struct acpi_device_id' when !CONFIG_ACPI
-        commit: 9b2d611929afefee78037c92919d633aae35636a
-[14/14] spi: spi-amd: Do not define 'struct acpi_device_id' when !CONFIG_ACPI
-        commit: 85ed0f63c0e362afc51e541a8216a58094c36f6b
+[1/1] spi: renesas,sh-msiof: Add r8a774e1 support
+      commit: b4f7f5f5470588e45e5d004f1dc4887af20f18c0
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

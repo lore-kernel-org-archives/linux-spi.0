@@ -7,96 +7,96 @@ X-Spam-Status: No, score=-7.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 037D2C433E6
-	for <linux-spi@archiver.kernel.org>; Tue, 21 Jul 2020 02:44:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BAD7C433E0
+	for <linux-spi@archiver.kernel.org>; Tue, 21 Jul 2020 02:44:38 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D7DAE207DD
-	for <linux-spi@archiver.kernel.org>; Tue, 21 Jul 2020 02:44:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6CD68207DD
+	for <linux-spi@archiver.kernel.org>; Tue, 21 Jul 2020 02:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1595299455;
-	bh=ji8kJmI0QuEdXTUO5uw/maZUbaiD0o068HD7owC8Gvw=;
+	s=default; t=1595299478;
+	bh=P0je4c8i1GwcgYLM5fJVrKjXIAumMqBShvvLSm1X1WU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=xfsdyZTB3i0yMi9iNNscYvOP7SUxn1Tk12L3H2yUM1Qo3BJ52C+wRdbg7ROyOSXkQ
-	 VF6QJfeOSpGkU/YUBYaISuiEvtXDUO7CMIAEBdx1wx06qXDoXix/eRcjES0PlGMLnZ
-	 UcaCT15I3av8vKCz59KpCQB6ov1uB22uaays9tG4=
+	b=b86eiNWnUUw9XOf4t6yHqNpol1BZnISSlWdg6k3sEsp2VvGjsEkIW3kWnYyaTnMCM
+	 UA0VsxgwpmaKmRQ2QLBl0E0YHWM0kNUG3Jb262nCIraSP8Ci3Svu9zOD1lxgiYLCP+
+	 9ppXBEZPaQbOjCleTp7//WrblPcm7WFty0543ovQ=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728512AbgGUCoL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 20 Jul 2020 22:44:11 -0400
-Received: from mail-il1-f195.google.com ([209.85.166.195]:39653 "EHLO
-        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725862AbgGUCoK (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 20 Jul 2020 22:44:10 -0400
-Received: by mail-il1-f195.google.com with SMTP id k6so15132682ili.6;
-        Mon, 20 Jul 2020 19:44:09 -0700 (PDT)
+        id S1728551AbgGUCod (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 20 Jul 2020 22:44:33 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:41148 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725862AbgGUCoc (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 20 Jul 2020 22:44:32 -0400
+Received: by mail-io1-f65.google.com with SMTP id p205so19785560iod.8;
+        Mon, 20 Jul 2020 19:44:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=yYPmnd+SjKU1YCRkUXZXwvqzmgl3B+n3upmC6X8T2QQ=;
-        b=LBitO/vNYbbeflSEv8mvgvMX63UhjxF43UUQfh4T0RC6py4RxZZLuFQNGG/pPD8gHa
-         wVw+m+4qhhgmiAVNmvtXb8apOpkS07sepIKAXIyvJV05nFVWxLHqCrfWnUbZLjhUVfuP
-         b0sBfXO2xv+8t3bVh+5kD/+TO+eWs2s/U2IaFhg9722EtzVmngIUlv/Q2Y6Nat/oPwZS
-         HyIX0uvDFqNXYimxq//XmbyutSBrzXe1poDpVUNBTCbU0p0jLE/TkUM+Z1XM4Ri1qYbi
-         PDpJhvj9skydnUg1E3BbzV4/AwJmsD1BxJMegAWWfbT0WXz6jDgQX30Xm76hKzvLlpr2
-         +BDA==
-X-Gm-Message-State: AOAM53198PXO0prUJ1x2ntAa4nF0kI9jDbZKXsNJlQDy8v7Fe1CND+pu
-        qdAt76evEXmLHQPz3Dw5SQ==
-X-Google-Smtp-Source: ABdhPJwgDdwirEHxzZ01CrlLaV9MRJUwpXK9CrErS5iyCmm9bmSo7iTNiNXqf1p2Ybtsn39WCdI5Rg==
-X-Received: by 2002:a92:cacf:: with SMTP id m15mr25092442ilq.34.1595299449331;
-        Mon, 20 Jul 2020 19:44:09 -0700 (PDT)
+        bh=uu4ySp6wQswYUN09uhNhXA6ISKHmvyUgPMvA+Jw19J8=;
+        b=iXQL32Sin6T0Xwj7yeNovgTFDf5ynpFus9OCmBsnLODwPCQrONCGF0n3QGhi/qiH0S
+         q17xvf6uIHqQ7a8tPKpiYychr6EtZ37LtDJT3FbtGVOtT+/izuw1gZ6GGzegB/ppqY/g
+         UYiGdyvvvFK/gBpWDZvXUFb6WhKlw+qlq+ehObOBb2xW5kWodEJLsuNff7N5OXU0eKVk
+         +YpBPcwGHlEVpYCi2F0zsVDxbhQR8cBK7kdVEm2+LL+GBJ3DTCvTs5AEB5Z/Frrw3vO/
+         v/NAoxfdBs0Nqb61J5InQkE8DJO1kbJXel6gbUHE1Tw5J+8eJK/F+kDH1gJLnYHJoUTj
+         amTQ==
+X-Gm-Message-State: AOAM530UTOOAFsiw6lHY9VPhHffykupR4n8wfki+UaTcmRSvya5a9CiI
+        OJ9779Lb+YK1WdxSNBjZnA==
+X-Google-Smtp-Source: ABdhPJxyYEo1LE7MHZcXEB8IcCuSASeNEW+mjtXixCFsA2P5QaMGVUpEFpU+OT+zQhQZO0CSHbIeWg==
+X-Received: by 2002:a02:cb92:: with SMTP id u18mr29647110jap.143.1595299471668;
+        Mon, 20 Jul 2020 19:44:31 -0700 (PDT)
 Received: from xps15 ([64.188.179.252])
-        by smtp.gmail.com with ESMTPSA id p84sm10227862ill.64.2020.07.20.19.44.06
+        by smtp.gmail.com with ESMTPSA id m5sm9812187ilg.18.2020.07.20.19.44.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2020 19:44:08 -0700 (PDT)
-Received: (nullmailer pid 3435958 invoked by uid 1000);
-        Tue, 21 Jul 2020 02:44:04 -0000
-Date:   Mon, 20 Jul 2020 20:44:04 -0600
+        Mon, 20 Jul 2020 19:44:31 -0700 (PDT)
+Received: (nullmailer pid 3436595 invoked by uid 1000);
+        Tue, 21 Jul 2020 02:44:28 -0000
+Date:   Mon, 20 Jul 2020 20:44:28 -0600
 From:   Rob Herring <robh@kernel.org>
 To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        Prabhakar <prabhakar.csengg@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-kernel@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
+Cc:     linux-spi@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
         Niklas <niklas.soderlund@ragnatech.se>,
-        Mark Brown <broonie@kernel.org>,
         Wolfgang Grandegger <wg@grandegger.com>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Zhang Rui <rui.zhang@intel.com>, linux-spi@vger.kernel.org,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        linux-i2c@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        linux-watchdog@vger.kernel.org, linux-can@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-pm@vger.kernel.org,
-        Magnus Damm <magnus.damm@gmail.com>,
+        linux-watchdog@vger.kernel.org,
         Wim Van Sebroeck <wim@linux-watchdog.org>,
+        linux-can@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-pm@vger.kernel.org, linux-i2c@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        linux-renesas-soc@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, devicetree@vger.kernel.org,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Marc Kleine-Budde <mkl@pengutronix.de>, netdev@vger.kernel.org,
+        Prabhakar <prabhakar.csengg@gmail.com>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
         Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: Re: [PATCH 11/20] dt-bindings: i2c: renesas,i2c: Document r8a774e1
+Subject: Re: [PATCH 12/20] dt-bindings: i2c: renesas,iic: Document r8a774e1
  support
-Message-ID: <20200721024404.GA3435911@bogus>
+Message-ID: <20200721024428.GA3436541@bogus>
 References: <1594811350-14066-1-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
- <1594811350-14066-12-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <1594811350-14066-13-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1594811350-14066-12-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
+In-Reply-To: <1594811350-14066-13-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 15 Jul 2020 12:09:01 +0100, Lad Prabhakar wrote:
-> Document i2c controller for RZ/G2H (R8A774E1) SoC, which is compatible
+On Wed, 15 Jul 2020 12:09:02 +0100, Lad Prabhakar wrote:
+> Document IIC controller for RZ/G2H (R8A774E1) SoC, which is compatible
 > with R-Car Gen3 SoC family.
 > 
 > Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 > Reviewed-by: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>
 > ---
->  Documentation/devicetree/bindings/i2c/renesas,i2c.txt | 1 +
+>  Documentation/devicetree/bindings/i2c/renesas,iic.txt | 1 +
 >  1 file changed, 1 insertion(+)
 > 
 

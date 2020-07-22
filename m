@@ -6,59 +6,55 @@ X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
 	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9CB41C43457
-	for <linux-spi@archiver.kernel.org>; Wed, 22 Jul 2020 13:45:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8057BC433EB
+	for <linux-spi@archiver.kernel.org>; Wed, 22 Jul 2020 13:45:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6B47D20684
-	for <linux-spi@archiver.kernel.org>; Wed, 22 Jul 2020 13:45:26 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 519332064C
+	for <linux-spi@archiver.kernel.org>; Wed, 22 Jul 2020 13:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1595425526;
-	bh=o1jYZWn/sCrcloS83rhA9Xi9FUtFoKkQvr/MsgkeLvQ=;
+	s=default; t=1595425541;
+	bh=DJzLYVwtNuppflcaHLmw9mFMgYCtcykftb7fRjlWlm0=;
 	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=ORM5DZo8JCLRQcuPdPpJsLkg5bTUIjKh2ATY4t3bKFEImJe5okQmy+/HQg9L8ZvVI
-	 FDdyJ0IxHE9hOKaTxzJLy7SWB3wZzIX98j32u180fUSaYz668G89NsMA+1UoLaKoXB
-	 LvIT4TaoqZdi+tE2Um2zLOe180JRohdfCuohetqk=
+	b=WSFDlMof839c8RDCHusXS7l7PSktqqBKAV3GeTTyhIgjCk/IBY37bG+RvHfgiCfxl
+	 uK9Mk4caOyvcM8Oz2NZ1DV2v/n45/PAcI21aXzfqmUGp+z8aWRY4U7j8nde6LW3E2r
+	 5Zf3tp0rW9P/fe18gEu43+lCnSuod+XsXQmWcY7I=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732602AbgGVNp0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 22 Jul 2020 09:45:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33352 "EHLO mail.kernel.org"
+        id S1732134AbgGVNpl (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 22 Jul 2020 09:45:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33638 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726973AbgGVNpZ (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 22 Jul 2020 09:45:25 -0400
+        id S1732623AbgGVNpk (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 22 Jul 2020 09:45:40 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D0DB62065D;
-        Wed, 22 Jul 2020 13:45:24 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E91872065D;
+        Wed, 22 Jul 2020 13:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595425525;
-        bh=o1jYZWn/sCrcloS83rhA9Xi9FUtFoKkQvr/MsgkeLvQ=;
+        s=default; t=1595425540;
+        bh=DJzLYVwtNuppflcaHLmw9mFMgYCtcykftb7fRjlWlm0=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=YBYISbNtR3BPGk7DB4ghYIdUURz/gnTg3ZsGhlxk+C6N/KX/Iq+HIq7B+lrQs2/hD
-         TJvWIT5UiSV4ppEYwLcOMNkRfOmxWodyn2Avw+2E8bhnIY4iRl6kcMZn490iOXXMJJ
-         L6ebl0uRQ01KsH6l+NJQ+6YI/R+5/rP6CMQUuR/w=
-Date:   Wed, 22 Jul 2020 14:45:12 +0100
+        b=SzjFT3hkeqbjgRgrIoxvB1PLfyh40sXaslD8w7Wsl0SfYZ8d2whl0pn+8N0n6RXKw
+         HS17B7cOSGgLykrAVrncY+N7r8AC3lADkVv0nA83exSMF1ypPwInBEgIuukWLf5hdF
+         T1QAmC89EQ6180SPISoVgUrLGZHohiuGJcrpAKSI=
+Date:   Wed, 22 Jul 2020 14:45:27 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     linux-spi@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>
-Cc:     linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20200714072226.26071-1-linus.walleij@linaro.org>
-References: <20200714072226.26071-1-linus.walleij@linaro.org>
-Subject: Re: [PATCH] spi: ppc4xx: Convert to use GPIO descriptors
-Message-Id: <159542550175.19884.1291452700922629224.b4-ty@kernel.org>
+To:     linux-spi@vger.kernel.org, Shreyas Joshi <shreyas.joshi@biamp.com>,
+        shreyasjoshi15@gmail.com
+Cc:     linux-kernel@vger.kernel.org
+In-Reply-To: <20200710211655.1564-1-shreyas.joshi@biamp.com>
+References: <20200710045140.458-1-shreyas.joshi@biamp.com> <20200710211655.1564-1-shreyas.joshi@biamp.com>
+Subject: Re: [PATCH] spi: spi-cadence: add support for chip select high
+Message-Id: <159542550175.19884.12018594280597810727.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, 14 Jul 2020 09:22:26 +0200, Linus Walleij wrote:
-> This converts the PPC4xx SPI driver to use GPIO descriptors.
-> 
-> The driver is already just picking some GPIOs from the device
-> tree so the conversion is pretty straight forward. However
-> this driver is looking form a pure "gpios" property rather
-> than the standard binding "cs-gpios" so we need to add a new
-> exception to the gpiolib OF parser to allow this for this
-> driver's compatibles.
+On Sat, 11 Jul 2020 07:16:55 +1000, Shreyas Joshi wrote:
+> The spi cadence driver should support spi-cs-high in mode bits
+> so that the peripherals that needs the chip select to be high active can
+> use it. Add the SPI-CS-HIGH flag in the supported mode bits.
 
 Applied to
 
@@ -66,8 +62,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: ppc4xx: Convert to use GPIO descriptors
-      commit: 4726773292bfdb2917a0b4d369ddccd5e2f30991
+[1/1] spi: spi-cadence: add support for chip select high
+      commit: ce8e60fe4f517b3b2b1deb44cf364a9080521567
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

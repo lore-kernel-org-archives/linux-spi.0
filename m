@@ -6,58 +6,68 @@ X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
 	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B4F7C43445
-	for <linux-spi@archiver.kernel.org>; Wed, 22 Jul 2020 13:45:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D3402C433DF
+	for <linux-spi@archiver.kernel.org>; Wed, 22 Jul 2020 13:45:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1FBC82065D
-	for <linux-spi@archiver.kernel.org>; Wed, 22 Jul 2020 13:45:22 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A30F120717
+	for <linux-spi@archiver.kernel.org>; Wed, 22 Jul 2020 13:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1595425522;
-	bh=bhU2SrpxL6HK/PGcmY+z+DbNbJ/eMlUdGESTC5DRoYs=;
+	s=default; t=1595425531;
+	bh=JT1T0xY9ITfKv2BNX8GybRgJ1VpXvJMEJdQe/DKkLVY=;
 	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=gNrvAhHUxPP5Ha2btNW4wHa7dONQDeK5ZnX3Da2BfCCq78WMrqFbq8X+vhnzaikKd
-	 KifcW0IxJrNpR6/SCMo0CWaysYt3yOOZt1Xt6b1FcN5MOvtRnxD6+LizWPuj4IOz0M
-	 p1OHGiJGwEi0//edR3xpjk/D1ZafTdPPTcy65D7s=
+	b=FkuOU1WSKGoJPfi8l7EEGjP5ETCX8nrbmUUzUiI0KUqyMfPExpheJG8QKxiApXphe
+	 334s8MRnFxw04ytgpBuR+veEpDxqGBdxdh+ZPSYDoPpL3MGjuBOzwWsHn9756UvOck
+	 12Qzk3CTpl4V0mvA+h/M5hUWtI6wTr1GkodV0J20=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732427AbgGVNpV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 22 Jul 2020 09:45:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33242 "EHLO mail.kernel.org"
+        id S1732603AbgGVNpb (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 22 Jul 2020 09:45:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33438 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726973AbgGVNpU (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 22 Jul 2020 09:45:20 -0400
+        id S1726973AbgGVNpb (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 22 Jul 2020 09:45:31 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BBDBA2064C;
-        Wed, 22 Jul 2020 13:45:19 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id F2A412065D;
+        Wed, 22 Jul 2020 13:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595425520;
-        bh=bhU2SrpxL6HK/PGcmY+z+DbNbJ/eMlUdGESTC5DRoYs=;
+        s=default; t=1595425530;
+        bh=JT1T0xY9ITfKv2BNX8GybRgJ1VpXvJMEJdQe/DKkLVY=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=XqxGkFwjP4lDM6IyHBP02oBHIiEOzqliPZDN7yWLCZXeYg0ifhJa6kBA/f32DgLlI
-         5nhB36jBo54jbTyLC0j21o0EsPGmSclCU84rluHtps2CVnNirULxctzCvkTEyDjKBS
-         fojUfgiTnN7FbAE9NQJSJBc931uqTGSEjfTNsxbw=
-Date:   Wed, 22 Jul 2020 14:45:07 +0100
+        b=rgcY+8l4mr07iC6EemjNyt2U6mRg1dE2tsG1wxssacRUyXef0FqrahoMqxApqXM/S
+         NGchfdEbswOuqtUQTsNAuQQdYXQvli5hUA5U8e9yzG34Cuj4U/d3uoSw+CXEy68TbW
+         ky6gtVnXNIG2qwWyuXbTx6mtqE/yBPwD7iTupEeY=
+Date:   Wed, 22 Jul 2020 14:45:17 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Leilk Liu <leilk.liu@mediatek.com>
-Cc:     devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-mediatek@lists.infradead.org,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20200721122436.31544-1-leilk.liu@mediatek.com>
-References: <20200721122436.31544-1-leilk.liu@mediatek.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: spi: update bindings for MT8192 SoC
-Message-Id: <159542550175.19884.9018022901634412745.b4-ty@kernel.org>
+To:     Bjorn Helgaas <helgaas@kernel.org>,
+        Vaibhav Gupta <vaibhavgupta40@gmail.com>,
+        Bjorn Helgaas <bjorn@helgaas.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Vaibhav Gupta <vaibhav.varodek@gmail.com>
+Cc:     linux-kernel-mentees@lists.linuxfoundation.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20200720155714.714114-1-vaibhavgupta40@gmail.com>
+References: <20200720155714.714114-1-vaibhavgupta40@gmail.com>
+Subject: Re: [PATCH v1] spi: spi-topcliff-pch: use generic power management
+Message-Id: <159542550175.19884.5724047291778558359.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, 21 Jul 2020 20:24:35 +0800, Leilk Liu wrote:
-> Add a DT binding documentation for the MT8192 soc.
+On Mon, 20 Jul 2020 21:27:15 +0530, Vaibhav Gupta wrote:
+> Drivers using legacy PM have to manage PCI states and device's PM states
+> themselves. They also need to take care of configuration registers.
+> 
+> With improved and powerful support of generic PM, PCI Core takes care of
+> above mentioned, device-independent, jobs.
+> 
+> This driver makes use of PCI helper functions like
+> pci_save/restore_state(), pci_enable/disable_device(), pci_enable_wake()
+> and pci_set_power_state() to do required operations. In generic mode, they
+> are no longer needed.
+> 
+> [...]
 
 Applied to
 
@@ -65,10 +75,8 @@ Applied to
 
 Thanks!
 
-[1/2] spi: update bindings for MT8192 SoC
-      commit: 30962fe33ab5ed4bbd78c12f4b9e25a85c3e8d0b
-[2/2] spi: mediatek: add spi support for mt8192 IC
-      commit: 8cf125c403f4e0c7c7b78f34bbf9d7a7c55c1ff8
+[1/1] spi: spi-topcliff-pch: use generic power management
+      commit: f185bcc779808df5d31bc332b79b5f1455ee910b
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

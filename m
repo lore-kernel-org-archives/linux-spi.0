@@ -2,26 +2,26 @@ Return-Path: <SRS0=qRKA=BC=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.2 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-13.0 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AE1C2C433DF
-	for <linux-spi@archiver.kernel.org>; Thu, 23 Jul 2020 00:44:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 45F68C433E5
+	for <linux-spi@archiver.kernel.org>; Thu, 23 Jul 2020 00:44:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8EED5207BB
-	for <linux-spi@archiver.kernel.org>; Thu, 23 Jul 2020 00:44:07 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 260802080D
+	for <linux-spi@archiver.kernel.org>; Thu, 23 Jul 2020 00:44:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733155AbgGWAoG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 22 Jul 2020 20:44:06 -0400
-Received: from lucky1.263xmail.com ([211.157.147.133]:58912 "EHLO
+        id S1733267AbgGWAoI (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 22 Jul 2020 20:44:08 -0400
+Received: from lucky1.263xmail.com ([211.157.147.133]:58982 "EHLO
         lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733114AbgGWAoG (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 22 Jul 2020 20:44:06 -0400
+        with ESMTP id S1733150AbgGWAoI (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 22 Jul 2020 20:44:08 -0400
 Received: from localhost (unknown [192.168.167.209])
-        by lucky1.263xmail.com (Postfix) with ESMTP id E51F1C5AAA;
-        Thu, 23 Jul 2020 08:44:00 +0800 (CST)
+        by lucky1.263xmail.com (Postfix) with ESMTP id 43ADDC571D;
+        Thu, 23 Jul 2020 08:44:02 +0800 (CST)
 X-MAIL-GRAY: 0
 X-MAIL-DELIVERY: 1
 X-ADDR-CHECKED4: 1
@@ -29,9 +29,9 @@ X-ANTISPAM-LEVEL: 2
 X-ABS-CHECKED: 0
 Received: from localhost.localdomain (unknown [58.22.7.114])
         by smtp.263.net (postfix) whith ESMTP id P17009T140099499042560S1595465038112439_;
-        Thu, 23 Jul 2020 08:44:00 +0800 (CST)
+        Thu, 23 Jul 2020 08:44:01 +0800 (CST)
 X-IP-DOMAINF: 1
-X-UNIQUE-TAG: <d567e484d5829e8b7763c2b74edd15a5>
+X-UNIQUE-TAG: <f73ad779b029db30ddd48caac0ab4cfc>
 X-RL-SENDER: jon.lin@rock-chips.com
 X-SENDER: jon.lin@rock-chips.com
 X-LOGIN-NAME: jon.lin@rock-chips.com
@@ -46,69 +46,78 @@ Cc:     heiko@sntech.de, linux-spi@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
         kernel@esmil.dk, Jon Lin <jon.lin@rock-chips.com>
-Subject: [PATCH v3 1/3] spi: rockchip: Config spi rx dma burst size depend on xfer length
-Date:   Thu, 23 Jul 2020 08:43:54 +0800
-Message-Id: <20200723004356.6390-1-jon.lin@rock-chips.com>
+Subject: [PATCH v3 2/3] spi: rockchip: Support 64-location deep FIFOs
+Date:   Thu, 23 Jul 2020 08:43:55 +0800
+Message-Id: <20200723004356.6390-2-jon.lin@rock-chips.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200723004356.6390-1-jon.lin@rock-chips.com>
+References: <20200723004356.6390-1-jon.lin@rock-chips.com>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The burst length can be adjusted according to the transmission
-length to improve the transmission rate
+The FIFO depth of SPI V2 is 64 instead of 32, add support for it.
 
 Signed-off-by: Jon Lin <jon.lin@rock-chips.com>
 Reviewed-by: Emil Renner Berthing <kernel@esmil.dk>
 Tested-by: Emil Renner Berthing <kernel@esmil.dk>
 ---
- drivers/spi/spi-rockchip.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ drivers/spi/spi-rockchip.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 9b8a5e1233c0..63593a5b87fa 100644
+index 63593a5b87fa..a451dacab5cf 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -384,6 +384,19 @@ static void rockchip_spi_dma_txcb(void *data)
- 	spi_finalize_current_transfer(ctlr);
+@@ -39,8 +39,9 @@
+ #define ROCKCHIP_SPI_RISR			0x0034
+ #define ROCKCHIP_SPI_ICR			0x0038
+ #define ROCKCHIP_SPI_DMACR			0x003c
+-#define ROCKCHIP_SPI_DMATDLR		0x0040
+-#define ROCKCHIP_SPI_DMARDLR		0x0044
++#define ROCKCHIP_SPI_DMATDLR			0x0040
++#define ROCKCHIP_SPI_DMARDLR			0x0044
++#define ROCKCHIP_SPI_VERSION			0x0048
+ #define ROCKCHIP_SPI_TXDR			0x0400
+ #define ROCKCHIP_SPI_RXDR			0x0800
+ 
+@@ -156,6 +157,8 @@
+ #define ROCKCHIP_SPI_MAX_TRANLEN		0xffff
+ 
+ #define ROCKCHIP_SPI_MAX_CS_NUM			2
++#define ROCKCHIP_SPI_VER2_TYPE1			0x05EC0002
++#define ROCKCHIP_SPI_VER2_TYPE2			0x00110002
+ 
+ struct rockchip_spi {
+ 	struct device *dev;
+@@ -206,17 +209,17 @@ static inline void wait_for_idle(struct rockchip_spi *rs)
+ 
+ static u32 get_fifo_len(struct rockchip_spi *rs)
+ {
+-	u32 fifo;
++	u32 ver;
+ 
+-	for (fifo = 2; fifo < 32; fifo++) {
+-		writel_relaxed(fifo, rs->regs + ROCKCHIP_SPI_TXFTLR);
+-		if (fifo != readl_relaxed(rs->regs + ROCKCHIP_SPI_TXFTLR))
+-			break;
+-	}
+-
+-	writel_relaxed(0, rs->regs + ROCKCHIP_SPI_TXFTLR);
++	ver = readl_relaxed(rs->regs + ROCKCHIP_SPI_VERSION);
+ 
+-	return (fifo == 31) ? 0 : fifo;
++	switch (ver) {
++	case ROCKCHIP_SPI_VER2_TYPE1:
++	case ROCKCHIP_SPI_VER2_TYPE2:
++		return 64;
++	default:
++		return 32;
++	}
  }
  
-+static u32 rockchip_spi_calc_burst_size(u32 data_len)
-+{
-+	u32 i;
-+
-+	/* burst size: 1, 2, 4, 8 */
-+	for (i = 1; i < 8; i <<= 1) {
-+		if (data_len & i)
-+			break;
-+	}
-+
-+	return i;
-+}
-+
- static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
- 		struct spi_controller *ctlr, struct spi_transfer *xfer)
- {
-@@ -397,7 +410,8 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
- 			.direction = DMA_DEV_TO_MEM,
- 			.src_addr = rs->dma_addr_rx,
- 			.src_addr_width = rs->n_bytes,
--			.src_maxburst = 1,
-+			.src_maxburst = rockchip_spi_calc_burst_size(xfer->len /
-+								     rs->n_bytes),
- 		};
- 
- 		dmaengine_slave_config(ctlr->dma_rx, &rxconf);
-@@ -525,7 +539,8 @@ static void rockchip_spi_config(struct rockchip_spi *rs,
- 		writel_relaxed(rs->fifo_len / 2 - 1, rs->regs + ROCKCHIP_SPI_RXFTLR);
- 
- 	writel_relaxed(rs->fifo_len / 2, rs->regs + ROCKCHIP_SPI_DMATDLR);
--	writel_relaxed(0, rs->regs + ROCKCHIP_SPI_DMARDLR);
-+	writel_relaxed(rockchip_spi_calc_burst_size(xfer->len / rs->n_bytes) - 1,
-+		       rs->regs + ROCKCHIP_SPI_DMARDLR);
- 	writel_relaxed(dmacr, rs->regs + ROCKCHIP_SPI_DMACR);
- 
- 	/* the hardware only supports an even clock divisor, so
+ static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
 -- 
 2.17.1
 

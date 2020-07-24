@@ -2,132 +2,132 @@ Return-Path: <SRS0=7jt5=BD=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BFEB5C433DF
-	for <linux-spi@archiver.kernel.org>; Fri, 24 Jul 2020 10:52:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DC8DC433DF
+	for <linux-spi@archiver.kernel.org>; Fri, 24 Jul 2020 11:14:19 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9FE732073E
-	for <linux-spi@archiver.kernel.org>; Fri, 24 Jul 2020 10:52:11 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 67DD12067D
+	for <linux-spi@archiver.kernel.org>; Fri, 24 Jul 2020 11:14:19 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="II5Iwnr4"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="U4Z/mlhQ"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726689AbgGXKwH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 24 Jul 2020 06:52:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41260 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726483AbgGXKwH (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 24 Jul 2020 06:52:07 -0400
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DDA9C0619D3;
-        Fri, 24 Jul 2020 03:52:06 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id d1so4239484plr.8;
-        Fri, 24 Jul 2020 03:52:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=7f5a4rInq/BtPtGpwaCTr+PuPIYpCg1fDihs8uppVIo=;
-        b=II5Iwnr42FE3kJ4/53jooEX/7C2SypD7NhJwWPQOTQ94teQ3uJfjfo4A0wijzqrwGJ
-         f6KIgaAIMJLTuyibmpxUlz+SOKINfzcWLugzuXQWSkbVPVIcHp7oz1f2Hao0jen547kj
-         w6XStvT2KWFSwmhMVSh2Ks1Agkb4QF0WyMFNsORoHiPgRUVEBGIceqHjCpYYadjnWN0/
-         vgSd15vOxAJusmRG9oLBONO6GHIvU5Yc2dsHPdaIWOgSsfrJO4lUNbUqPTbuZbzj9b1b
-         NWEMHerEOhn2AJtRUvLg3HI60Citf4bahsPQgfaXhHsm/7BqZSrNyD0pS0td4o9L0Y2A
-         T2QA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=7f5a4rInq/BtPtGpwaCTr+PuPIYpCg1fDihs8uppVIo=;
-        b=k+UwWzy3hNKJCoOIHKwjB7drk1qHMPnvt4oapGDHWW2L2GAVNQv50XtX7nebdNGCzO
-         57Q+LFUIq4QgTf6hCndQPiushrlc6MFBOxvKysJICEsaieFYX9fHf983a47qAOH1ppTb
-         TphloIFy/SrUrEbQRnYF0W64+0YptJc9+4ai2PGzsbvIIG5kClFL8FaLM1VDgkVkFvVc
-         VuMRUiLMvwKnqQaS6kW6bybV+ARw9vFG5iWrTW08f2K/3GR776cidL0J5huJkHw5JtAq
-         DH93xVUsuWkS+bRedN/m1Rud851ymMFWX2A/ZqLAlASL63FhN6gP+OeuHgetNuQWIlIE
-         J9yw==
-X-Gm-Message-State: AOAM531skX8oV42ZFufwz1Bq9vtJZOzcXRuna7nOo4pBWpv0tUtc6OL3
-        ppgAhkxNbxpHMsRA5kOHB3W67Cj2N4A5uV0dwIY=
-X-Google-Smtp-Source: ABdhPJz8LrBxYW2OqSs/hx2X9HhDzRwSse6TRUnaNtTwquxh6eX4lrWDsN0j3dbu6m2pOgOcdMEJ/ghZRx3+aNuXMeM=
-X-Received: by 2002:a17:902:b098:: with SMTP id p24mr7899509plr.18.1595587925982;
- Fri, 24 Jul 2020 03:52:05 -0700 (PDT)
+        id S1726618AbgGXLOT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 24 Jul 2020 07:14:19 -0400
+Received: from esa3.microchip.iphmx.com ([68.232.153.233]:23441 "EHLO
+        esa3.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726553AbgGXLOS (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 24 Jul 2020 07:14:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1595589258; x=1627125258;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=MSrS4SgPtucxam/i2osqyW0WomORtGwBLnc6F0rn0ms=;
+  b=U4Z/mlhQnTwkLIR7unBeUTu/Na1uOVcJJ7Ev+1NnRuUsMF2rxDl503KQ
+   cClUrel+FKyMJfxZATNqmiJAhZZ8djmYa+xhlyAe/m5yeNLaw3g34xOuR
+   Rz6wG5PvOPIR0GbZNprkU53+X2zRd75iLxFh686agsgszTGUXj8qJIsz7
+   pIrIsBwfwAhcleu08jwGuGg5ayoBKm9hHfay2NIc7unmz9m5tWkik73Ie
+   HfWe21p4Q7zI8x5urxqMH3vFldhMpRQ5Vrc7/uYc2jpot2xH5SrMRho0H
+   qYSum5TNDyroV6kwjB4y+oPGWXydBl0OJaMvJGLuvLkxWnZCc2ifbdMOF
+   w==;
+IronPort-SDR: jG1OkJTaODSRQIiJ7KNJRpIPabU+a8Vl54DQuV86wndtUUn3nOJjrMJRxbDf3qn2wpMV9TkyNM
+ fnBjVjEK8p8w97YVQYnaUvntqNis2x9I5f0YgtYDVkV85kyoT0i4giwWt5AiIg5RPNotiB7E64
+ OV02y/7XPEW1tmd6ccZzldOkCXo2SOx7kRtHc8iIaj7QY2Scsc69Dsx8lKoyxKqFZlNkpHEXOZ
+ 3OIhW12jqMoe89e2z9NaS95IXCHL9fbs7/qn0XN8TpoaIaWTg9cFq+Rmlb/CrKwD33P7ay0wHS
+ FJw=
+X-IronPort-AV: E=Sophos;i="5.75,390,1589266800"; 
+   d="scan'208";a="85239319"
+Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 24 Jul 2020 04:14:17 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1979.3; Fri, 24 Jul 2020 04:14:18 -0700
+Received: from soft-dev15.microsemi.net (10.10.115.15) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
+ 15.1.1979.3 via Frontend Transport; Fri, 24 Jul 2020 04:13:35 -0700
+From:   Lars Povlsen <lars.povlsen@microchip.com>
+To:     Mark Brown <broonie@kernel.org>, Peter Rosin <peda@axentia.se>
+CC:     Lars Povlsen <lars.povlsen@microchip.com>,
+        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
+        <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH v4 0/6] spi: Adding support for Microchip Sparx5 SoC
+Date:   Fri, 24 Jul 2020 13:13:58 +0200
+Message-ID: <20200724111404.13293-1-lars.povlsen@microchip.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-References: <20200720155714.714114-1-vaibhavgupta40@gmail.com>
-In-Reply-To: <20200720155714.714114-1-vaibhavgupta40@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 24 Jul 2020 13:51:49 +0300
-Message-ID: <CAHp75Vdh-ssrmGgTc=gE9dWLhWDAw7_QHJKFeWKHpO-JqBdsEA@mail.gmail.com>
-Subject: Re: [PATCH v1] spi: spi-topcliff-pch: use generic power management
-To:     Vaibhav Gupta <vaibhavgupta40@gmail.com>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Bjorn Helgaas <bjorn@helgaas.com>,
-        Vaibhav Gupta <vaibhav.varodek@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        Shuah Khan <skhan@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, Jul 20, 2020 at 7:31 PM Vaibhav Gupta <vaibhavgupta40@gmail.com> wrote:
->
-> Drivers using legacy PM have to manage PCI states and device's PM states
-> themselves. They also need to take care of configuration registers.
->
-> With improved and powerful support of generic PM, PCI Core takes care of
-> above mentioned, device-independent, jobs.
->
-> This driver makes use of PCI helper functions like
-> pci_save/restore_state(), pci_enable/disable_device(), pci_enable_wake()
-> and pci_set_power_state() to do required operations. In generic mode, they
-> are no longer needed.
->
-> Change function parameter in both .suspend() and .resume() to
-> "struct device*" type. Use dev_get_drvdata() to get drv data.
+This is an add-on series to the main SoC Sparx5 series
+(Message-ID: <20200615133242.24911-1-lars.povlsen@microchip.com>
 
-> Compile-tested only.
+The series add support for the Sparx5 SoC SPI controller in the
+spi-dw-mmio.c spi driver.
 
-Yeah...
+v4 changes:
+- Changed snps,rx-sample-delay-ns to snps,rx-sample-delay-ns
+  suggested by Rob Herring (rockchip also has this property).
+- Added support for controller-level rx-sample-delay-ns value as
+  well as per SPI slave value (rockchip has controller-level property).
+- Dropped internal mux in favor of suggested spi-mux to
+  control bus inteface selection.
 
-...
+v3 changes:
+- Added mux support for controlling SPI bus interface. This is new mux
+  driver, bindings and added to sparx5 base DT.
+- Removed "microchip,spi-interface2" property in favour of
+  "mux-controls" property in SPI controller (sparx5 only).
+- Changed dw_spi_sparx5_set_cs() to use the mux control instead of
+  directly acessing "mux" register. Associated code/defines moved to mux
+  driver.
+- Changed dw_spi_sparx5_set_cs() to match other similar functions in
+  signature and avoid explicit CS toggling.
+- Spun off duplicated NAND device DT chunks into separate DT file.
 
-> +static int __maybe_unused pch_spi_suspend(struct device *dev)
->  {
-> +       struct pch_pd_dev_save *pd_dev_save = dev_get_drvdata(dev);
->
-> +       dev_dbg(dev, "%s ENTRY\n", __func__);
->
->         pd_dev_save->board_dat->suspend_sts = true;
->
-> +       return 0;
->  }
->
-> +static int __maybe_unused pch_spi_resume(struct device *dev)
->  {
-> +       struct pch_pd_dev_save *pd_dev_save = dev_get_drvdata(dev);
->
-> +       dev_dbg(dev, "%s ENTRY\n", __func__);
->
+v2 changes:
+- Moved all RX sample delay into spi-dw-core.c, using
+  the "snps,rx-sample-delay-ns" device property.
+- Integrated Sparx5 support directly in spi-dw-mmio.c
+- Changed SPI2 configuration to per-slave "microchip,spi-interface2"
+  property.
+- Added bindings to existing snps,dw-apb-ssi.yaml file
+- Dropped patches for polled mode and SPI memory operations.
 
-> +       device_wakeup_disable(dev);
+Lars Povlsen (6):
+  spi: dw: Add support for RX sample delay register
+  spi: dw: Add Microchip Sparx5 support
+  arm64: dts: sparx5: Add SPI controller and associated mmio-mux
+  dt-bindings: snps,dw-apb-ssi: Add sparx5 support, plus
+    rx-sample-delay-ns property
+  arm64: dts: sparx5: Add spi-nor support
+  arm64: dts: sparx5: Add spi-nand devices
 
-Here I left a result. Care to explain (and perhaps send a follow up
-fix) where is the counterpart to this call?
-
-> +       /* set suspend status to false */
-> +       pd_dev_save->board_dat->suspend_sts = false;
-
-> +       return 0;
->  }
-
+ .../bindings/spi/snps,dw-apb-ssi.yaml         | 21 ++++++
+ arch/arm64/boot/dts/microchip/sparx5.dtsi     | 47 ++++++++++++-
+ .../arm64/boot/dts/microchip/sparx5_nand.dtsi | 31 ++++++++
+ .../boot/dts/microchip/sparx5_pcb125.dts      | 30 ++++++++
+ .../boot/dts/microchip/sparx5_pcb134.dts      |  1 +
+ .../dts/microchip/sparx5_pcb134_board.dtsi    | 16 +++++
+ .../boot/dts/microchip/sparx5_pcb135.dts      |  1 +
+ .../dts/microchip/sparx5_pcb135_board.dtsi    | 16 +++++
+ drivers/spi/spi-dw-core.c                     | 26 +++++++
+ drivers/spi/spi-dw-mmio.c                     | 70 ++++++++++++++++++-
+ drivers/spi/spi-dw.h                          |  3 +
+ 11 files changed, 260 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/microchip/sparx5_nand.dtsi
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.27.0
+

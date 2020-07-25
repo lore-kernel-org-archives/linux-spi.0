@@ -2,92 +2,54 @@ Return-Path: <SRS0=Qh6i=BE=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-4.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BB98C433E4
-	for <linux-spi@archiver.kernel.org>; Sat, 25 Jul 2020 05:03:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C097C433DF
+	for <linux-spi@archiver.kernel.org>; Sat, 25 Jul 2020 05:20:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7848D2065F
-	for <linux-spi@archiver.kernel.org>; Sat, 25 Jul 2020 05:03:06 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="M3TVbWRu"
+	by mail.kernel.org (Postfix) with ESMTP id 2C85C2070E
+	for <linux-spi@archiver.kernel.org>; Sat, 25 Jul 2020 05:20:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1595654420;
+	bh=30dRUZ6oSzi5sJo6kJChYAz9oIvr6OLCaiG4hVaZXHk=;
+	h=Subject:From:Date:To:List-ID:From;
+	b=W36oB+lqpMvTnepxQgBqqvd+0T+A+HtemluE3ZW1OhnR31zLZf97k9eOdzPaal2yA
+	 ounPU2PRfJ6EwNR0QNGsHfnk4qoTIl4Ihs6JgZtqt92eG7fGmD1KxI1gjpa0In12Xd
+	 abU/KsCX6iaKIk+3fhS46P7V5NMDJVT/nPt8VmJI=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726783AbgGYFDG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 25 Jul 2020 01:03:06 -0400
-Received: from mail-40134.protonmail.ch ([185.70.40.134]:25454 "EHLO
-        mail-40134.protonmail.ch" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725941AbgGYFDF (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 25 Jul 2020 01:03:05 -0400
-Date:   Sat, 25 Jul 2020 05:02:57 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail; t=1595653382;
-        bh=cZEUnqWvcfeQjd0qbFRicNbcxrZw3RQsQq3i1JQ+XK4=;
-        h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
-        b=M3TVbWRuWnMTR0T8b+HCIoTPMSZfUMpSmb52y4OxxO8LujtKa/uyiKm8bh0qfogBp
-         FNTQNa2xU8DzaNEEHPN2jHPuHSb4vj2kiR5WjQzrw+pal1dLWGSYpwliK38xoFxrKQ
-         2jXP3GcXTcTn74Cia1W4xNYD9uiO+U7rfMUmArcA=
-To:     broonie@kernel.org
-From:   Colton Lewis <colton.w.lewis@protonmail.com>
-Cc:     linux-spi@vger.kernel.org,
-        Colton Lewis <colton.w.lewis@protonmail.com>
-Reply-To: Colton Lewis <colton.w.lewis@protonmail.com>
-Subject: [PATCH v2] spi: correct kernel-doc inconsistency
-Message-ID: <20200725050242.279548-1-colton.w.lewis@protonmail.com>
-In-Reply-To: <20200720143655.GA5949@sirena.org.uk>
-References: <20200719195630.148075-1-colton.w.lewis@protonmail.com> <20200720143655.GA5949@sirena.org.uk>
+        id S1725941AbgGYFUT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 25 Jul 2020 01:20:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53746 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725874AbgGYFUT (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Sat, 25 Jul 2020 01:20:19 -0400
+Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1595654419;
+        bh=30dRUZ6oSzi5sJo6kJChYAz9oIvr6OLCaiG4hVaZXHk=;
+        h=Subject:From:Date:To:From;
+        b=0tkAFN/z2i3MGVrZFAsyALSB1nFF3hVoyhTvI4c9xoo7X4BAY1EihAjhd/rVSgzcg
+         4z7cOsNIkZUcrs20+XtUMIHnkE3oFPd/74axJy78rS5XCXGTT/axDD7VyFoNqxgLqn
+         iisAjs8RdwPYvj42V0UYx9MaHS/gachLgQjd6kxU=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+linux-spi@kernel.org
+Message-Id: <159565441930.8907.15969357003844825985.git-patchwork-housekeeping@kernel.org>
+Date:   Sat, 25 Jul 2020 05:20:19 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Silence documentation build warnings by correcting kernel-doc comment
-for spi_transfer struct.
-
-Signed-off-by: Colton Lewis <colton.w.lewis@protonmail.com>
----
- include/linux/spi/spi.h | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
-
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index f8b721fcd5c6..99380c0825db 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -329,6 +329,7 @@ static inline void spi_unregister_driver(struct spi_dri=
-ver *sdrv)
-  *=09every chipselect is connected to a slave.
-  * @dma_alignment: SPI controller constraint on DMA buffers alignment.
-  * @mode_bits: flags understood by this controller driver
-+ * @buswidth_override_bits: flags to override for this controller driver
-  * @bits_per_word_mask: A mask indicating which values of bits_per_word ar=
-e
-  *=09supported by the driver. Bit n indicates that a bits_per_word n+1 is
-  *=09supported. If set, the SPI core will reject any transfer with an
-@@ -846,12 +847,7 @@ extern void spi_res_release(struct spi_controller *ctl=
-r,
-  *=09processed the word, i.e. the "pre" timestamp should be taken before
-  *=09transmitting the "pre" word, and the "post" timestamp after receiving
-  *=09transmit confirmation from the controller for the "post" word.
-- * @timestamped_pre: Set by the SPI controller driver to denote it has act=
-ed
-- *=09upon the @ptp_sts request. Not set when the SPI core has taken care o=
-f
-- *=09the task. SPI device drivers are free to print a warning if this come=
-s
-- *=09back unset and they need the better resolution.
-- * @timestamped_post: See above. The reason why both exist is that these
-- *=09booleans are also used to keep state in the core SPI logic.
-+ * @timestamped: true if the transfer has been timestamped
-  * @error: Error status logged by spi controller driver.
-  *
-  * SPI transfers always write the same number of bytes as they read.
---=20
-2.26.2
+Latest series: [v2] spi: correct kernel-doc inconsistency (2020-07-25T05:02:57)
+  Superseding: [v1] spi: correct kernel-doc inconsistency (2020-07-19T19:56:40):
+    spi: correct kernel-doc inconsistency
 
 
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/pwbot

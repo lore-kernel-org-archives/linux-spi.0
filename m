@@ -2,84 +2,61 @@ Return-Path: <SRS0=+j3L=BG=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-4.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BE679C433E8
-	for <linux-spi@archiver.kernel.org>; Mon, 27 Jul 2020 13:57:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A7EA4C433E1
+	for <linux-spi@archiver.kernel.org>; Mon, 27 Jul 2020 14:00:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8DD1620825
-	for <linux-spi@archiver.kernel.org>; Mon, 27 Jul 2020 13:57:26 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8214C207FC
+	for <linux-spi@archiver.kernel.org>; Mon, 27 Jul 2020 14:00:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1595858246;
-	bh=Ds3makuOPDIExLgnbfW/yVHZhFV8wpApbDHJ28L6frk=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=DQguzxIdkfuzfeDE46/lw5t8mYiQaHymvwFHKcbfVrMTk3SHp3X2W/04+pXDIQUB8
-	 53qX1UBWUf0iVPJqAOh1C+Ud2vkYucTdDDUYwyi9zTHILp8wMRi19umH12cPvQmWtv
-	 Aoo4ltVquVCja03Sof+egT2wlvQqpaGUEeJVj0p8=
+	s=default; t=1595858417;
+	bh=4WKLbSaVJsV1poEomaq8Rg+P7xIEwcDFB7wQhk+6i00=;
+	h=Subject:From:Date:To:List-ID:From;
+	b=OzF94X9Bem35v8hqbWfc9KP+JFsAuyNQl7PqQpdpqQvJr0BH1Q6lNjQyF28/BxBcg
+	 tEPfzFRHrqS4rGQDVMP1drr3HadUfexS6FHfZ5WDDJRXQjCWusvdv/yiOXx/L6ze8w
+	 shHsM1rSyUQ08NRTAv+ShInS14GN5inlpSH8Wo6A=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728907AbgG0N50 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 27 Jul 2020 09:57:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47302 "EHLO mail.kernel.org"
+        id S1726738AbgG0OAR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 27 Jul 2020 10:00:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50058 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726744AbgG0N5Z (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 27 Jul 2020 09:57:25 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E4F6F2070B;
-        Mon, 27 Jul 2020 13:57:24 +0000 (UTC)
+        id S1726620AbgG0OAR (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 27 Jul 2020 10:00:17 -0400
+Content-Type: text/plain; charset="utf-8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595858245;
-        bh=Ds3makuOPDIExLgnbfW/yVHZhFV8wpApbDHJ28L6frk=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=zdyQetnFeoKFYw1KanW41myJQWy7nkJqbX+NiyLY0bdpeTMFDAZ5/DCyG9GwxCg9P
-         9VUhVFKuUE0wpaG76u7keC+6wS+mcW1NOI/Km/sK21/C+fg1a6lHPRv1dLZrvs6ObB
-         9+tEvWTj5a8bv/wAdUES9lMGqJ+eQFjIth5EkhOA=
-Date:   Mon, 27 Jul 2020 14:57:08 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     festevam@gmail.com, shawnguo@kernel.org,
-        Clark Wang <xiaoning.wang@nxp.com>, s.hauer@pengutronix.de,
-        kernel@pengutronix.de
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-imx@nxp.com
-In-Reply-To: <20200727063354.17031-1-xiaoning.wang@nxp.com>
-References: <20200727063354.17031-1-xiaoning.wang@nxp.com>
-Subject: Re: [PATCH] spi: imx: enable runtime pm support
-Message-Id: <159585821343.22560.13240672066683447553.b4-ty@kernel.org>
+        s=default; t=1595858416;
+        bh=4WKLbSaVJsV1poEomaq8Rg+P7xIEwcDFB7wQhk+6i00=;
+        h=Subject:From:Date:To:From;
+        b=FVHEb/v6Cq8kqmGD5ubCjsqHt0Ag6gqDGn2+ZZgRQqW2cvtmm/BqLoZPA5kqsTzVA
+         g6CaAYgvwq3vFkE58BfButtTFuFf4bpTUFrtgliLMhguMVUgOd586jwnSNdgpCz89N
+         BbrbEHEIS5bQVpdRlFu1QCSqUrEoEGYNoN9u6EOo=
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From:   patchwork-bot+linux-spi@kernel.org
+Message-Id: <159585841674.15036.15703477020189411644.git-patchwork-summary@kernel.org>
+Date:   Mon, 27 Jul 2020 14:00:16 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 27 Jul 2020 14:33:54 +0800, Clark Wang wrote:
-> Enable runtime pm support for spi-imx driver.
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (refs/heads/for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Patch: MAINTAINERS: Change Maintainer for some at91 drivers
+  Submitter: Nicolas Ferre <nicolas.ferre@microchip.com>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=311909
+  Link: <20200702134224.3750-1-nicolas.ferre@microchip.com>
 
-Thanks!
+Total patches: 1
 
-[1/1] spi: imx: enable runtime pm support
-      commit: 525c9e5a32bd7951eae3f06d9d077fea51718a6c
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/pwbot

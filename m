@@ -2,61 +2,94 @@ Return-Path: <SRS0=+j3L=BG=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-4.0 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A7EA4C433E1
-	for <linux-spi@archiver.kernel.org>; Mon, 27 Jul 2020 14:00:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 29425C433E5
+	for <linux-spi@archiver.kernel.org>; Mon, 27 Jul 2020 14:17:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8214C207FC
-	for <linux-spi@archiver.kernel.org>; Mon, 27 Jul 2020 14:00:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1595858417;
-	bh=4WKLbSaVJsV1poEomaq8Rg+P7xIEwcDFB7wQhk+6i00=;
-	h=Subject:From:Date:To:List-ID:From;
-	b=OzF94X9Bem35v8hqbWfc9KP+JFsAuyNQl7PqQpdpqQvJr0BH1Q6lNjQyF28/BxBcg
-	 tEPfzFRHrqS4rGQDVMP1drr3HadUfexS6FHfZ5WDDJRXQjCWusvdv/yiOXx/L6ze8w
-	 shHsM1rSyUQ08NRTAv+ShInS14GN5inlpSH8Wo6A=
+	by mail.kernel.org (Postfix) with ESMTP id 05BFE21883
+	for <linux-spi@archiver.kernel.org>; Mon, 27 Jul 2020 14:17:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726738AbgG0OAR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 27 Jul 2020 10:00:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50058 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726620AbgG0OAR (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 27 Jul 2020 10:00:17 -0400
-Content-Type: text/plain; charset="utf-8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595858416;
-        bh=4WKLbSaVJsV1poEomaq8Rg+P7xIEwcDFB7wQhk+6i00=;
-        h=Subject:From:Date:To:From;
-        b=FVHEb/v6Cq8kqmGD5ubCjsqHt0Ag6gqDGn2+ZZgRQqW2cvtmm/BqLoZPA5kqsTzVA
-         g6CaAYgvwq3vFkE58BfButtTFuFf4bpTUFrtgliLMhguMVUgOd586jwnSNdgpCz89N
-         BbrbEHEIS5bQVpdRlFu1QCSqUrEoEGYNoN9u6EOo=
+        id S1731023AbgG0ORS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 27 Jul 2020 10:17:18 -0400
+Received: from smtprelay0005.hostedemail.com ([216.40.44.5]:50792 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1731012AbgG0ORR (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 27 Jul 2020 10:17:17 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay08.hostedemail.com (Postfix) with ESMTP id A86F2182CF670;
+        Mon, 27 Jul 2020 14:17:13 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-HE-Tag: park62_3b1655626f61
+X-Filterd-Recvd-Size: 2448
+Received: from XPS-9350.home (unknown [47.151.133.149])
+        (Authenticated sender: joe@perches.com)
+        by omf13.hostedemail.com (Postfix) with ESMTPA;
+        Mon, 27 Jul 2020 14:17:11 +0000 (UTC)
+Message-ID: <a594ffa8112a9696260d8a01fa7941b125cf6226.camel@perches.com>
+Subject: Re: [PATCH v2] spi: spi-topcliff-pch: drop call to wakeup-disable
+From:   Joe Perches <joe@perches.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Vaibhav Gupta <vaibhavgupta40@gmail.com>
+Cc:     Bjorn Helgaas <helgaas@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Bjorn Helgaas <bjorn@helgaas.com>,
+        Vaibhav Gupta <vaibhav.varodek@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        Shuah Khan <skhan@linuxfoundation.org>
+Date:   Mon, 27 Jul 2020 07:17:10 -0700
+In-Reply-To: <CAHp75Vfuw1rAYxy41hVKNaqZQg4W-_Y=6St-X0yb5O4zN6qCfw@mail.gmail.com>
+References: <CAHp75Vdo22ofbCktupFYbfYy6PQ609fsk5B6u2b3FpfKxs8OQg@mail.gmail.com>
+         <20200727131742.82289-1-vaibhavgupta40@gmail.com>
+         <CAHp75VfmKvAy6bSk70g3c2qJcUzzo0AUhzxR6dFja+ZppGMLRg@mail.gmail.com>
+         <20200727134646.GA114726@gmail.com>
+         <CAHp75Vfuw1rAYxy41hVKNaqZQg4W-_Y=6St-X0yb5O4zN6qCfw@mail.gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.36.3-0ubuntu1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From:   patchwork-bot+linux-spi@kernel.org
-Message-Id: <159585841674.15036.15703477020189411644.git-patchwork-summary@kernel.org>
-Date:   Mon, 27 Jul 2020 14:00:16 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Transfer-Encoding: 7bit
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello:
+On Mon, 2020-07-27 at 17:08 +0300, Andy Shevchenko wrote:
+> Joe, can we amend checkpatch to at least shout about simple typos in
+> the tag area?
+> See below for the context.
+> 
+> On Mon, Jul 27, 2020 at 4:48 PM Vaibhav Gupta <vaibhavgupta40@gmail.com> wrote:
+> > On Mon, Jul 27, 2020 at 04:38:40PM +0300, Andy Shevchenko wrote:
+> > > On Mon, Jul 27, 2020 at 4:21 PM Vaibhav Gupta <vaibhavgupta40@gmail.com> wrote:
+> 
+> ...
+> 
+> > > > Fix: f185bcc77980("spi: spi-topcliff-pch: use generic power management")
+> > > 
+> > > Fixes: and missed space.
+> 
+> (1)
+> 
+> > > > Reported by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > > 
+> > > Missed dash.
+> > > Does checkpatch complain?
+> > No, I got this message:
+> > "* .patch has no obvious style problems and is ready for submission"
+> 
+> (2)
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (refs/heads/for-next):
+Not reasonably so far as I can tell, no.
 
-Patch: MAINTAINERS: Change Maintainer for some at91 drivers
-  Submitter: Nicolas Ferre <nicolas.ferre@microchip.com>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=311909
-  Link: <20200702134224.3750-1-nicolas.ferre@microchip.com>
+The test for a signature uses -by:
 
-Total patches: 1
+Fix: starting a line seems a reasonable thing
+that someone might want to have in a commit
+message.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/pwbot
+

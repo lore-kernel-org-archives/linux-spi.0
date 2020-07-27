@@ -2,111 +2,120 @@ Return-Path: <SRS0=+j3L=BG=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.9 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	MSGID_FROM_MTA_HEADER,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.9 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,MSGID_FROM_MTA_HEADER,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 986C9C433E8
-	for <linux-spi@archiver.kernel.org>; Mon, 27 Jul 2020 03:14:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E7CAEC433EA
+	for <linux-spi@archiver.kernel.org>; Mon, 27 Jul 2020 03:14:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 739A0207BB
-	for <linux-spi@archiver.kernel.org>; Mon, 27 Jul 2020 03:14:49 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C139320759
+	for <linux-spi@archiver.kernel.org>; Mon, 27 Jul 2020 03:14:53 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="k/jSNizI"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="NBXz5jGb"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727863AbgG0DOq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 26 Jul 2020 23:14:46 -0400
+        id S1727941AbgG0DOx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 26 Jul 2020 23:14:53 -0400
 Received: from mail-eopbgr70041.outbound.protection.outlook.com ([40.107.7.41]:43635
         "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726072AbgG0DOp (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Sun, 26 Jul 2020 23:14:45 -0400
+        id S1726072AbgG0DOw (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Sun, 26 Jul 2020 23:14:52 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eHo53T9Ik+D89SaJjN2pnZk1UgYhtGCsazOlWU6klr4v0WkZ42bptztjAWK6DYLroEvnCU+QzoE2saVsMHilR+fsLufwWOnNwv9V0ctoT/seaY6TGK/Pt+IGVgIVxtnlnr0/V0n28xI14JM9ox8ByXpAD+gl1xc9TaffYp2ajIHEMS9YcFlMQw2uU7JqA0LK+ObKKBZaoEGfcti1LEwx5tWRUVoyIO6fA/lpOAqQ+DjpxAmYKyzVpZSHavrUjJMl7etIzzlVltz6wT94L5Y4KGpGnXRiu5bpZp1f+XLfjckOH6mKOxCMhYRUZpR5+ODU0AuGsTAN+2C61ZlzuPoJ9A==
+ b=aw/w4FKQ0ovYLukdG0gPx5xNG6NETJY6aUkXlWvuLfKxERDVnYG1Hp1nEFUP9NmxsoZnq63k6TEcdL5lp/BhvXvnA18+DSMsaD5iezko2m6I8DvMt692HaxcUMn7R+QkgWsbXIyqgVwZXRxbAa1kY+hEAXK1msQ1gSN56M9mP1Sn9OKi89fT0uAHaMgq9e7NwZJODuomZft3/YBfy0X/8ULwwdeAokMvQwHIf6DYXLCiLbe8v2UljRBk8xogtSEGk/bi9wGs6zRWQLlAxNf2h3w02dxuK1L0EuCvPhQBvl3Pe2WG2T909DKRciusc7cI2yAea6pZpm49lPY2MlEkEQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QIe4ssTzfTwIOIXqvptDE67LkPa6FGL9/GRqd+MUxmg=;
- b=ZZt3rZ19zbVNm5dyMnGtPNZg0eDw4qJHWVCc2FuS7YLyWLBRiT28hVqGyg827zP0p4VDGs1SUOdfYj+19a1o3INjo2zNHV2aFhJNw2OzdPLaHG2P9WzjsRhObL9UAYTmSNnLDnLYt2I2H/0azwW7BQp3WxG9O2ZCFS9rxgiIB1CByNYdQ0JAQ/uacX/tDQfNEbwR8mtdn8tqm4LLXRMA8m5oUwx8Xes+Zp/O1fOOwMnKIvnpV0WN85NQk3np8irVVWU4bqGbtxti4v78SuVHuwzC2LAuQcwvk577PDrB1BE6mH/g07Hz/NtUepgOs9/pu2xFjgMXE/m032oiXBEcUA==
+ bh=/k2oQw4zSfzwy2xqEy601N0NRvEoH3B5ZCa2ah0KW18=;
+ b=K4j1XGPmegovB4+CHH2uvq6f/QPz3xdoAWz0oCbgYnxMziLNNUySgMNw5KDStq48mxETSgeobpdJp2giHJitKNyVFDVIPgZkENtJ3hyaY/8+K7BDPpAlQg+QLIXvwdPJJTZoH1O59WrIgIoBwUDb39thJx9OdO8/GycwPir1cnclgmtaiOFruOH6NWLoG4kPUEtdi/B+ME/BKqyx7LxaFRT6aqEyNKqGo66sIDSulMhXjHu1knPheGxajlnPr0NWhkBQZQ++ez0pIfaVWQX6eWCLZRuN8Ym71DHEQlN4sZGT3iP1lj2YQiO1ux/BOJDW6eqLjw2Mh2/xPuq8CPQKmA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QIe4ssTzfTwIOIXqvptDE67LkPa6FGL9/GRqd+MUxmg=;
- b=k/jSNizIg7JY6r7VODJtwLrVT9u081nsFs5kjCOwRMVQZctt7F64J7i9PQJkTwsL8gWzoFtzetWtRzDEhVfUW/OSPowQUhlXketsc+qbUAI67eoySEsq2jAEw+j/z2KoKdaDun6CcGJ2oXisthwFqUnKrjhVNFoNk5sD5UlAQJo=
+ bh=/k2oQw4zSfzwy2xqEy601N0NRvEoH3B5ZCa2ah0KW18=;
+ b=NBXz5jGbOxxDhDLoOXlrTV9qNnQKt1klWxUhNBa9Q9Cwaj9fwhsIuN7/KGAPeqQSpI5KMek9Shj42snW4fH84Ej0lmRakaswLlgQPRVihVbzQrGgdPz54svBhUPsF5FxpPKo+8+hZsq8eRz7bjdUtiWvpXZqd4DKX2O73f0wRAI=
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=nxp.com;
 Received: from AM6PR04MB5623.eurprd04.prod.outlook.com (2603:10a6:20b:a9::13)
  by AM6PR0402MB3880.eurprd04.prod.outlook.com (2603:10a6:209:1b::27) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3216.31; Mon, 27 Jul
- 2020 03:14:42 +0000
+ 2020 03:14:45 +0000
 Received: from AM6PR04MB5623.eurprd04.prod.outlook.com
  ([fe80::ccb9:b047:d156:2694]) by AM6PR04MB5623.eurprd04.prod.outlook.com
  ([fe80::ccb9:b047:d156:2694%5]) with mapi id 15.20.3216.033; Mon, 27 Jul 2020
- 03:14:42 +0000
+ 03:14:45 +0000
 From:   Clark Wang <xiaoning.wang@nxp.com>
 To:     broonie@kernel.org
 Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH V2 0/4] Some bug fix for lpspi
-Date:   Mon, 27 Jul 2020 11:14:45 +0800
-Message-Id: <20200727031448.31661-1-xiaoning.wang@nxp.com>
+Subject: [PATCH V2 2/4] spi: lpspi: remove unused fsl_lpspi->chipselect
+Date:   Mon, 27 Jul 2020 11:14:47 +0800
+Message-Id: <20200727031448.31661-3-xiaoning.wang@nxp.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200727031448.31661-1-xiaoning.wang@nxp.com>
+References: <20200727031448.31661-1-xiaoning.wang@nxp.com>
 Content-Type: text/plain
 X-ClientProxiedBy: SG2P153CA0007.APCP153.PROD.OUTLOOK.COM (2603:1096::17) To
  AM6PR04MB5623.eurprd04.prod.outlook.com (2603:10a6:20b:a9::13)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (119.31.174.71) by SG2P153CA0007.APCP153.PROD.OUTLOOK.COM (2603:1096::17) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3261.1 via Frontend Transport; Mon, 27 Jul 2020 03:14:40 +0000
+Received: from localhost.localdomain (119.31.174.71) by SG2P153CA0007.APCP153.PROD.OUTLOOK.COM (2603:1096::17) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3261.1 via Frontend Transport; Mon, 27 Jul 2020 03:14:44 +0000
 X-Mailer: git-send-email 2.17.1
 X-Originating-IP: [119.31.174.71]
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: c691892a-16ee-4f20-7611-08d831db341c
+X-MS-Office365-Filtering-Correlation-Id: a90975a2-47ae-4372-a2c3-08d831db365a
 X-MS-TrafficTypeDiagnostic: AM6PR0402MB3880:
-X-Microsoft-Antispam-PRVS: <AM6PR0402MB38809FD6F49A7AB38E8C2DBCF3720@AM6PR0402MB3880.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4125;
+X-Microsoft-Antispam-PRVS: <AM6PR0402MB3880AFEF740DFD1F9A8EE65EF3720@AM6PR0402MB3880.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3968;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: k7TrkXEYRnR6Gg68KcU5EmWE/BHt9tMYX2nsjcU0P2eHQIKb5Mf1PQVFDxrqnwnBkPMHA/2yp1vlJeP+6cE7r/soVkmcoXW+WNz2+6krYky1Puh18gXwL409ynu3yUEdLiw9dlJ27b6J+4u68FOWdOS+0wIulaQBHmRKGfyyYsB00DmZr99fD9r/jVadO1kXNpLlTnBIzSIby1TBix1LoaeGUnmiAx3iWRzW5tFHsmFaL0tzY1ytBddW/Ll24NyIRuH9mUXLpbppYGLhGksOUF/lc2aS+LUdtvmHnKBc+y8V6TbwMvjV3imhhpEjy86RQ9l/u+NQwPiTb1BBPDmnUaCJPJitGslxAbfoQNz8hsZeH5MKu5rkj5sDoMBxXvZL
+X-Microsoft-Antispam-Message-Info: uXY1GW3en2lvH2FK0OvXSOn4dik1iaCoGAQlA4YtdaDxS+5W1SLAdnjkVImlQc2IpOKRqbPN23zpvk1jlY0GnwFTHKb/sI/g8Ec2hBYtoLfj0HSpMUX80ijN6+saSZP8Ca8JgPJZ2MW27NW1A50Cu59MWozZyY1XZJ/x2Y3oOKUuzgRZNu8/Xsx9BDX2p7pbA70Cr6XJLHVl6wGw1+vd9wAMDMt01l3TqQOMSuDSWIjDZIZAd50vZHdiQgloGrR576TrKDQctYict0mQdFFAH6FAY2NVmEChWQzOSzKZl4nTTFB6e9Gb2FRrWzWtFmKZHDIL9zLOxCxWQIa4PB3oEVPHucQrlymqKiFXtn5vCxZxNSiXWReQ3lrqQ+lQQyl1
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB5623.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(39860400002)(396003)(136003)(376002)(346002)(366004)(66556008)(66946007)(66476007)(5660300002)(956004)(2616005)(6916009)(8676002)(478600001)(6512007)(36756003)(316002)(4326008)(6486002)(4744005)(1076003)(26005)(16526019)(52116002)(6506007)(186003)(83380400001)(86362001)(69590400007)(8936002)(2906002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: EurasmsOgwTl4xFUlVDyWRqh8uJOe9KIQmj485qDW+chgmpLHUMhsL18g5sod/jPPMS71M2GV7Pk4T7WvAc4ovRuPd79NU1YZ6z5E49jMlfOHpfFqDqjE2b/ZcWlwOn/pDlWJYL1iE9iY3Nafu0znjrLQA9PIZlLbAXDMcJ9jlWf9BmeZnKUY2F6eA7ly01tYxMPwaULdUbaOzlXgviTMU57YTyCiiWLPWxQ7jIHR/FQ+saKwETWtYZOnbMOsSoCL+xQ+b3DZpBE02yXVp0imzuAKl/lWwxDJLwX3o8zSDPLQ50cVNzU3GVl9XTwzMi175pgKd5LXGvo/s03UptLIJjm838/uc1CepJslLg4w9v8pdSjjUZJrq8mJh3Ns5E1n7ZyV0V/Gt1xVpoZ+7I2VrImfoTuyX5JW1QZJQ4t7jfekzxTiBmPhfc057RwfeY+TogeQSPjvYZUWyfXFfSV3j+l0Cwf22egy6qHVWImci0=
+X-MS-Exchange-AntiSpam-MessageData: zAYlmTC7Te2CRWypZTqWxERFhUbZUkXSJJBYiWaCEJ6BUPqDmX+wOTVf/FHaq8cCQZD/CHt9piYc7KGicJVtlihKsxHptlXf6uwbX8DpvbPNBDxbrL6Bidvg47XCClg/z2d3iQg6oMIPcShx9aP8cx8cQStpVPitLOALImidU0+0xKMapChcGCmOWbrk05r3GacJnNMBwAQH6fFQkR1uV3dM4438IqJ+TgyNEU5lIE5ZZ4jylJz4jHAlTHRdk3wg7daHAlSa5E+ELt4+jHHYL9Ngo56KyqHeNckIV6c9e+9lIdG3kujVOIABEIXTrwGzdUUkM4FPycv3mzbtiTigmzoFMQljvb6FCISYCFjoTeQdnEZz3ZbdhhG9DtoPo+CfWq/qTkQlm5q6zHE9B6zQUKdb1jIwaIRTZOHEy+MAT7LttKEXc02e4aVfFGsJ7i/xu2s5STGhB9bHFEHyBH0qdu1zNepVW23Ue5k07iC53yY=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c691892a-16ee-4f20-7611-08d831db341c
+X-MS-Exchange-CrossTenant-Network-Message-Id: a90975a2-47ae-4372-a2c3-08d831db365a
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB5623.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2020 03:14:41.9052
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2020 03:14:45.5322
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OovDPyOGd4cBuX2hAFYJna9Pu7GtiROKR+4DRomUB2DnwjHdurX2YHLXfx5FYR2MfRahxcoX6iO2oFTono1Ntg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: vTnhgGu3l0FhY08/Qoe+auRw+RjbI5e/ppuKqxYt43ypOtvEzKFnCbh7hm1iv1Plh/ZX3Zo5JGXetXDnkKqEww==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR0402MB3880
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi,
+The cs-gpio is initailized by spi_get_gpio_descs() now. Remove the
+chipselect.
 
-This patchset mainly fixes some recently discovered problems about CS for
-LPSPI module on i.MX8DXLEVK.
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+---
+Changes:
+V2:
+ - New patch added in the v2 patchset.
+---
+ drivers/spi/spi-fsl-lpspi.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-Add the dt-bindings description for the new property.
-
-Clark Wang (4):
-  spi: lpspi: Fix kernel warning dump when probe fail after calling
-    spi_register
-  spi: lpspi: remove unused fsl_lpspi->chipselect
-  spi: lpspi: fix using CS discontinuously on i.MX8DXLEVK
-  dt-bindings: lpspi: New property in document DT bindings for LPSPI
-
- .../bindings/spi/spi-fsl-lpspi.yaml           |  7 ++++++
- drivers/spi/spi-fsl-lpspi.c                   | 25 +++++++++++--------
- 2 files changed, 21 insertions(+), 11 deletions(-)
-
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index b0a1bb62f10a..1e426884ac37 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -119,8 +119,6 @@ struct fsl_lpspi_data {
+ 	bool usedma;
+ 	struct completion dma_rx_completion;
+ 	struct completion dma_tx_completion;
+-
+-	int chipselect[];
+ };
+ 
+ static const struct of_device_id fsl_lpspi_dt_ids[] = {
 -- 
 2.17.1
 

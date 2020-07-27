@@ -6,53 +6,60 @@ X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
 	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 891CEC433FB
-	for <linux-spi@archiver.kernel.org>; Mon, 27 Jul 2020 13:57:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 99259C433DF
+	for <linux-spi@archiver.kernel.org>; Mon, 27 Jul 2020 13:57:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6900C2070B
-	for <linux-spi@archiver.kernel.org>; Mon, 27 Jul 2020 13:57:12 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 67CE22070B
+	for <linux-spi@archiver.kernel.org>; Mon, 27 Jul 2020 13:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1595858232;
-	bh=801YCg5Y2Y26M201PENQ7hgJs7fduBKQjxO6+Sz7+JY=;
+	s=default; t=1595858241;
+	bh=Egeq+a8oWDr1xtB1xbFHglsSZ6j1GXnIOgGl3YfP39c=;
 	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=UaQQkOzCLCwAAe4KHJKvgFDIOrdwalnX06Z90n6YR7ILUc6tRNlXHXVhdKZBKPeaL
-	 +UljdUCMx1xX1vWRtFl4+3L+aSvtOwEwbpeeF7jmVQmHkBgjCjioEYHOvtEYbr2T+s
-	 5NAjPI/E7m3XApVdxOOm8Kuv9fJEpnJegBdzVNmM=
+	b=uJ9+YKmhBiqqaAxuxAJwndv94g6zgOEMbThDixppbUawgMYjsTZPG/CRJ8qvJPYqi
+	 nSjfKOpJFGgHXmJb9KJnV8otCP9QIOQBvk+F2gkwHgSCqlWI6sKNmDr3mC6ohAgLNI
+	 un5KYkzXDk1tC+Br1Ou/B291xI1YzyOffknXLNWI=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727038AbgG0N5L (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 27 Jul 2020 09:57:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47008 "EHLO mail.kernel.org"
+        id S1728266AbgG0N5V (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 27 Jul 2020 09:57:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47192 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728873AbgG0N5K (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 27 Jul 2020 09:57:10 -0400
+        id S1726744AbgG0N5U (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 27 Jul 2020 09:57:20 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 010CD2070A;
-        Mon, 27 Jul 2020 13:57:09 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id ED1172070A;
+        Mon, 27 Jul 2020 13:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1595858230;
-        bh=801YCg5Y2Y26M201PENQ7hgJs7fduBKQjxO6+Sz7+JY=;
+        s=default; t=1595858240;
+        bh=Egeq+a8oWDr1xtB1xbFHglsSZ6j1GXnIOgGl3YfP39c=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=SGeS0YfCR7+mMcTuYhMJIsImof8BWpf6MYL0XCGO3jf5X2zyp0QDOPri8alZeVcx5
-         6Wf23TcrjK7uRLMctXEZ/Sb03IsEcoEQLIodxiYEKPNrmp3qpTuspaO5T6H6vwleRR
-         cPRsFmw6aoFz4gd6A0sR8Ti0kBCRPRdhn58T36X0=
-Date:   Mon, 27 Jul 2020 14:56:53 +0100
+        b=QJCj4FlhVyGBn71gPApMPrk9ALQq2zR3lQwvdtcITRWzDgFvw8Ee6+fxmp3zzej1i
+         cd9WgMNsMCUVx45aAqG7OgEDWFqhv5r8PG22q3uOqOXksz8j/4jP6edNRQl4x3IRH7
+         1E3qFQDxdiLPFrLPuOHhqZE+5jj+JZEDWw+xAlwY=
+Date:   Mon, 27 Jul 2020 14:57:03 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Colton Lewis <colton.w.lewis@protonmail.com>
-Cc:     linux-spi@vger.kernel.org
-In-Reply-To: <20200725050242.279548-1-colton.w.lewis@protonmail.com>
-References: <20200719195630.148075-1-colton.w.lewis@protonmail.com> <20200720143655.GA5949@sirena.org.uk> <20200725050242.279548-1-colton.w.lewis@protonmail.com>
-Subject: Re: [PATCH v2] spi: correct kernel-doc inconsistency
-Message-Id: <159585821343.22560.16007476069938782361.b4-ty@kernel.org>
+To:     Maxime Ripard <mripard@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+        Jonathan Liu <net147@gmail.com>
+Cc:     Olliver Schinagl <oliver@schinagl.nl>,
+        linux-arm-kernel@lists.infradead.org,
+        Alexandru Gagniuc <mr.nuke.me@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-sunxi@googlegroups.com
+In-Reply-To: <20200727072328.510798-1-net147@gmail.com>
+References: <20200727072328.510798-1-net147@gmail.com>
+Subject: Re: [PATCH] spi: sun4i: update max transfer size reported
+Message-Id: <159585821344.22560.5654112245536281167.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sat, 25 Jul 2020 05:02:57 +0000, Colton Lewis wrote:
-> Silence documentation build warnings by correcting kernel-doc comment
-> for spi_transfer struct.
+On Mon, 27 Jul 2020 17:23:28 +1000, Jonathan Liu wrote:
+> The spi-sun4i driver already has the ability to do large transfers.
+> However, the max transfer size reported is still fifo depth - 1.
+> 
+> Update the max transfer size reported to the max value possible.
 
 Applied to
 
@@ -60,8 +67,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: correct kernel-doc inconsistency
-      commit: cfd97f94d036bf36122fa19d075c5741347aa178
+[1/1] spi: sun4i: update max transfer size reported
+      commit: 241b888791ee2fa47b97b3b9dc0e857d241db18d
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

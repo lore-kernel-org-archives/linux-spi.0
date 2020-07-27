@@ -7,52 +7,52 @@ X-Spam-Status: No, score=-12.9 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	MAILING_LIST_MULTI,MSGID_FROM_MTA_HEADER,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
 	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 47A4FC433E3
-	for <linux-spi@archiver.kernel.org>; Mon, 27 Jul 2020 03:14:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AED8CC433F1
+	for <linux-spi@archiver.kernel.org>; Mon, 27 Jul 2020 03:14:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1C2D720759
-	for <linux-spi@archiver.kernel.org>; Mon, 27 Jul 2020 03:14:50 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8B13A20773
+	for <linux-spi@archiver.kernel.org>; Mon, 27 Jul 2020 03:14:57 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="nwnoORyD"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="OQzZzteG"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727916AbgG0DOt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 26 Jul 2020 23:14:49 -0400
+        id S1726072AbgG0DO5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 26 Jul 2020 23:14:57 -0400
 Received: from mail-eopbgr70041.outbound.protection.outlook.com ([40.107.7.41]:43635
         "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727833AbgG0DOs (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Sun, 26 Jul 2020 23:14:48 -0400
+        id S1727948AbgG0DO4 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Sun, 26 Jul 2020 23:14:56 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=F3JEhuhX+Z1T2fP8apSM564qk4SXuM3WLG1mBaG4gnMWiH0CwTy1ThAAPxOCQ5nog5cQ4ruI+3HQIfbbQeFzs66UshCn+s/pk/gYEFGj3fiOfmzNSxtv92t+MM0yMNBqSuC98tGbW1C4fYTSHcjudyEQ5LKupewlZ3+04NpeKtg7EE70zHWWkw4qF8jrAGGV4ThXyvaCRj6rN7WOukRSJ9KnnnyL6jayKls5a5oKTcjZaVQEF/EYXGLP3VMv3hfR2aO3unXQiXIgUkW3iOTkCXrId/gZCyFLnfJRGWafnA68B3luf8Yc7ctTl2wO/SHpLwD8tKG71egjkybdk8Yvcw==
+ b=mVn1c6v7LcI2VBPPxD0UiwXC2lXr9geyQe5CMjSyAhHOOLbmt66usTajLsLeJkc0wTmTOHdk+0XMijZuQgtGNsKSdz1x5cM9JTLCQqKqh62ZSN0etm0TYcKAn+/wW834oqk/HKhjLJrG6m038Z4TVdJ9U1nbT2D7miGCJg0AeV4lhDkhSJ26hNR/+ZC3yNmOJ8b6McG3DrPgd7tQ0e7NEhpQjb7tSmqZecRxKnvhMk6h4gHpydRvRgh/V8SLHtN2RvEGjG1D4R/tTd3VoUrCDlKU6kNzABBTfR4PImo4roPg29dDA8f0sSE4onzf3Z3WCEo/FiKOpEOfvtdculH7mw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hDAKbdfVKxySHHaqd4L9V4vtTgkQfc3Xl0wM7Ab36Mk=;
- b=Yo41JLqafK1ig/SrpABbJ4gqFLx/J6prCH8MlHxwWk+YvX2LbTUcu68EyvfNcs7ipHfWU1emQcI76Y9vdyJU1LX7FJzkgO9Hgdc4H/CsXIeN9QV6Z5uIPPx+4iT3xZb39iATiwxsYM0XYlSZ6OdYHsCxeQOpHfGf2n74uAqu2sF37TW5bBMvtsAXeZCAxOMGYKqa/0vWjJfpVbbCgsQOalOylyFjsw5FPl2wc3HlErWCVgKW9SFthPKIOmxSvPFj9DZUNFhCjxEALyIOEpf0M/tPMQ5St0js+iMfRBvAXktV7MT4iGFCIqnFNBrayNbRQNG8qvq8Vxj9lvsTeOi+UA==
+ bh=tj0TRMtSQB2Bp0ICWC9g6Z5E8D7AFW3bml9bGFF3Rn4=;
+ b=ENKvz0nDUrHbBbrbqp0LaV77GTjBttbrf2kq4rPr5e2CaJndZynkc0dZ07lLZl2OXD5S/YMsvR+Bq26TK4V5lCYlnOOj46vQAiTGDHgWUuQ/aN268T5emoYO709MsIpmZ3d0/BCGIa794hIqLMNLO7Lpt94wnDUJBTXDJE04uHXpQDcXA2rvzEODBkHfX598gDdVp9hZkSToM799QVzR/eoQf3IW8BdL527yB9D/iktEaU0F5QXD30y596ZOLKKtJxaW4jlcHFWcAIJZzYAHEMvGhp/d+c5qIDShRebpE1S2xRBUNp5/DsB3xqLuwRDdJPspdMfsDK7McPsPSZX0tA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hDAKbdfVKxySHHaqd4L9V4vtTgkQfc3Xl0wM7Ab36Mk=;
- b=nwnoORyDheCP0yDloenJuvuGXKk7sllUDA2cud34R4XTHUMp42BCahfqd/JnKspQ+G7CQUsNM0qrW7d5zgeNofeE7+NiiTUMGWOAyboIeb9uqm1hvBsC9eBt81ZJlJUdpFKw2poqp+Iep0X3Z2KS7ePCt/0t6w1qhS+wZ07RNcU=
+ bh=tj0TRMtSQB2Bp0ICWC9g6Z5E8D7AFW3bml9bGFF3Rn4=;
+ b=OQzZzteG3m/ZCkt/wHLw5Oao+bnEP6F/ShNmR1ruzlyvGbI6TReUjE/FD0MtBd2Ure7a+79uJa982jaGAUA65uAJJkIOvQyYpWRPHaxCpT5cZPLE6j3H8/HbmqvPtCCtZLzy56GYl8yJOTvAQTMV1WaaqqVtWo0uRIHqzQPO0TY=
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=nxp.com;
 Received: from AM6PR04MB5623.eurprd04.prod.outlook.com (2603:10a6:20b:a9::13)
  by AM6PR0402MB3880.eurprd04.prod.outlook.com (2603:10a6:209:1b::27) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3216.31; Mon, 27 Jul
- 2020 03:14:43 +0000
+ 2020 03:14:47 +0000
 Received: from AM6PR04MB5623.eurprd04.prod.outlook.com
  ([fe80::ccb9:b047:d156:2694]) by AM6PR04MB5623.eurprd04.prod.outlook.com
  ([fe80::ccb9:b047:d156:2694%5]) with mapi id 15.20.3216.033; Mon, 27 Jul 2020
- 03:14:43 +0000
+ 03:14:47 +0000
 From:   Clark Wang <xiaoning.wang@nxp.com>
 To:     broonie@kernel.org
 Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH V2 1/4] spi: lpspi: Fix kernel warning dump when probe fail after calling spi_register
-Date:   Mon, 27 Jul 2020 11:14:46 +0800
-Message-Id: <20200727031448.31661-2-xiaoning.wang@nxp.com>
+Subject: [PATCH V2 3/4] spi: lpspi: fix using CS discontinuously on i.MX8DXLEVK
+Date:   Mon, 27 Jul 2020 11:14:48 +0800
+Message-Id: <20200727031448.31661-4-xiaoning.wang@nxp.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200727031448.31661-1-xiaoning.wang@nxp.com>
 References: <20200727031448.31661-1-xiaoning.wang@nxp.com>
@@ -61,130 +61,94 @@ X-ClientProxiedBy: SG2P153CA0007.APCP153.PROD.OUTLOOK.COM (2603:1096::17) To
  AM6PR04MB5623.eurprd04.prod.outlook.com (2603:10a6:20b:a9::13)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (119.31.174.71) by SG2P153CA0007.APCP153.PROD.OUTLOOK.COM (2603:1096::17) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3261.1 via Frontend Transport; Mon, 27 Jul 2020 03:14:42 +0000
+Received: from localhost.localdomain (119.31.174.71) by SG2P153CA0007.APCP153.PROD.OUTLOOK.COM (2603:1096::17) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3261.1 via Frontend Transport; Mon, 27 Jul 2020 03:14:45 +0000
 X-Mailer: git-send-email 2.17.1
 X-Originating-IP: [119.31.174.71]
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 72e29980-ca22-4ce3-bc4c-08d831db355a
+X-MS-Office365-Filtering-Correlation-Id: 404da010-10c6-499e-4b4b-08d831db376d
 X-MS-TrafficTypeDiagnostic: AM6PR0402MB3880:
-X-Microsoft-Antispam-PRVS: <AM6PR0402MB388031CA1BFBB209A61CDE2DF3720@AM6PR0402MB3880.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2512;
+X-Microsoft-Antispam-PRVS: <AM6PR0402MB3880B548E8D333EE984C0988F3720@AM6PR0402MB3880.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4502;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: KrtQMYbWKT3Q19b9JufvOLcsLWaWJ47hrDNXK5u/b3r+GWWCxEBz2DS/aO3d42yUPzlpCAk/AYfGcFSslmPN091LoLnDUDBhdJaaD/TbDv7KNDkDhGZCgOTXN42mknSRNFGoWHxjkdVo1k1fo6rzpf3OM6NMyUzynN327a7A0sC856wGqIM9YT3kb3fgB9eyEpniZ9nzGzbq+/MZLlZT5lJD50wMWcUUgo5oCLPxbKUOu90E+bum06rxFTwby7v1pv02i36V9aWYr4+yMLtC7pCR4G+aqTZDTWFpp3G/3JRFBb23RuObNjdBaWm+UpNCzUoq+2hmrgr+ybO8iF+ybtwRL69S0wLlEpuSxjkNj2i0100rGpOqcHrFdLeCqSPM
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB5623.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(39860400002)(396003)(136003)(376002)(346002)(366004)(66556008)(66946007)(66476007)(5660300002)(956004)(2616005)(6916009)(8676002)(45080400002)(478600001)(6512007)(36756003)(316002)(4326008)(6486002)(1076003)(26005)(16526019)(52116002)(6506007)(186003)(83380400001)(86362001)(69590400007)(8936002)(2906002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: URFBQSQg34en/6pLhh1qRSnlZR23N9B3pAGCXZUTmkaTlXNJk60r4Yx4VE+8wNo7jTF04ZHeVJzrqpIfUKA/USzIB5j4i0et8Xy2iktPZQfi3GEDk9f2nintGlxpVbPzXiXvHx0kQx+YtA4YvzzEa3DrJE52i80D0TgEJCmfSU9qpbESKhQ1ce3ge4BcgoNpyiBPZyu9zR/KSzpYtyqGMJ/Wcfk4iuE2ietQQldk99zG0fBhzqDasq9WvNbGwoayy+2fbzs40mVJMxkkOEdcel69sNG9buDTNIBNDMf1cPNA8uuC3cMWwtOWl8bmLz/LUY8jshnM8cIZVYVpunM6tRu862wUWMU8mtAOVKdm1h7ieDX/hw0wWokxIKLrh3G3XT1f0+pH9ZRWsasNcV523AjIrM8J5FOf6OIMGsXJO2a3m9WGsj4/vDnPCQenA8Hs0aZ/bbCAQUu4iHx/2H6WfY0aOnb18Nvz+hW5gQ/iIWw=
+X-Microsoft-Antispam-Message-Info: Jnu0pRRPXWi8bymedJtEEKsCe3KP8SjDJ4KVU+73F21MolorB3UJGwoVUnmj1fqFKWeq4LhKltVkeTr109qnixkPnB/ZeP1B/zHGRE8Vrdsh2zZ5QKKx2LAU0bXpQUO5RUc5lW0WMMXpFBs88NPyKtY/z/li1UNMHYufNE7sRgEhyVwxZ65+lpHsBmfbiIZlwe8yBRL71GfZo5H9vkZrNJUUPlNlEDdGff3Gz0c0bX/ZXILebKiT5rhiACXwnDjdkbIULEWWNXtjr2Yp11NiZnwhXMAgrGTpOesIR/WwarvGrKDOdu+TOw8TGQAYiKkKriDBzbpHv7wpbw9ACL7bBalj+whWJNQQeFL+pamoF7LxaCllxFGj5sKgXq9LFepE
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB5623.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(39860400002)(396003)(136003)(376002)(346002)(366004)(66556008)(66946007)(66476007)(5660300002)(956004)(2616005)(6916009)(8676002)(478600001)(6512007)(36756003)(316002)(4326008)(6486002)(1076003)(26005)(16526019)(52116002)(6506007)(186003)(83380400001)(86362001)(69590400007)(8936002)(2906002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: cryyVuwYjgVBEJsU1geM+hL5eT6tauPGn6MreL0cSGr184cQNMqImCrE8z66Xcs0xQLvYS0/trR++iRWF1TtP8+aLuDhU58Gviqyben2/xhZFmcNEExLW/rSG3ep176scdZS52NybLIQwSmSGA5NWi1w3K8vvBoRTvNWIU3DVfZJuZd5qMjvGyqjyF1uSd27kI8PzF2T5ldKr65nlFaNd7KyW4QwA+r57HPk9zxHls+BJbn41JQl8QkCmcKwOAB40M96LuRI4TycChvSdD6vMlLeSqIMesCtbRBAPrMNzNqHoCj9bN1P002+8FG1lhuXqRwQKo+wOSsIS4Gk1TUMQYPqz8YWXiEp/TALC10AWbtpsA1UFS949s5jQ3Ki1oagwx9TLiXYFDgnXpEPnrOu5zBgysDTYT4YBl8COzbdOca1IOp7vEewsFwSvMozJtrly7kLalm/vWUsH3IklvTYfD1jRsZWLmCYh3Y7P4DeSlc=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 72e29980-ca22-4ce3-bc4c-08d831db355a
+X-MS-Exchange-CrossTenant-Network-Message-Id: 404da010-10c6-499e-4b4b-08d831db376d
 X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB5623.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2020 03:14:43.7471
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2020 03:14:47.2662
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qpRBM19ihcch9kxlV3W7Jseecm9sHZ6m5Wt7XkKnFHd3FjvszMXM03gBkILBBsI2L82AsC7OPT9m6BMgjT1WfA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: Q+k1e3iYbbt53dGzk0x5wLr1EJuM6QKfFOZlJYw63YwL1z3KEHiamqAZwoOhS7wGMf2SrnY05rWwxthze1g+TA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR0402MB3880
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Calling devm_spi_register_controller() too early will cause problem.
-When probe failed occurs after calling devm_spi_register_controller(),
-the call of spi_controller_put() will trigger the following warning dump.
-
-[    2.092138] ------------[ cut here ]------------
-[    2.096876] kernfs: can not remove 'uevent', no directory
-[    2.102440] WARNING: CPU: 0 PID: 181 at fs/kernfs/dir.c:1503 kernfs_remove_by_name_ns+0xa0/0xb0
-[    2.111142] Modules linked in:
-[    2.114207] CPU: 0 PID: 181 Comm: kworker/0:7 Not tainted 5.4.24-05024-g775c6e8a738c-dirty #1314
-[    2.122991] Hardware name: Freescale i.MX8DXL EVK (DT)
-[    2.128141] Workqueue: events deferred_probe_work_func
-[    2.133281] pstate: 60000005 (nZCv daif -PAN -UAO)
-[    2.138076] pc : kernfs_remove_by_name_ns+0xa0/0xb0
-[    2.142958] lr : kernfs_remove_by_name_ns+0xa0/0xb0
-[    2.147837] sp : ffff8000122bba70
-[    2.151145] x29: ffff8000122bba70 x28: ffff8000119d6000
-[    2.156462] x27: 0000000000000000 x26: ffff800011edbce8
-[    2.161779] x25: 0000000000000000 x24: ffff00003ae4f700
-[    2.167096] x23: ffff000010184c10 x22: ffff00003a3d6200
-[    2.172412] x21: ffff800011a464a8 x20: ffff000010126a68
-[    2.177729] x19: ffff00003ae5c800 x18: 000000000000000e
-[    2.183046] x17: 0000000000000001 x16: 0000000000000019
-[    2.188362] x15: 0000000000000004 x14: 000000000000004c
-[    2.193679] x13: 0000000000000000 x12: 0000000000000001
-[    2.198996] x11: 0000000000000000 x10: 00000000000009c0
-[    2.204313] x9 : ffff8000122bb7a0 x8 : ffff00003a3d6c20
-[    2.209630] x7 : ffff00003a3d6380 x6 : 0000000000000001
-[    2.214946] x5 : 0000000000000001 x4 : ffff00003a05eb18
-[    2.220263] x3 : 0000000000000005 x2 : ffff8000119f1c48
-[    2.225580] x1 : 2bcbda323bf5a800 x0 : 0000000000000000
-[    2.230898] Call trace:
-[    2.233345]  kernfs_remove_by_name_ns+0xa0/0xb0
-[    2.237879]  sysfs_remove_file_ns+0x14/0x20
-[    2.242065]  device_del+0x12c/0x348
-[    2.245555]  device_unregister+0x14/0x30
-[    2.249492]  spi_unregister_controller+0xac/0x120
-[    2.254201]  devm_spi_unregister+0x10/0x18
-[    2.258304]  release_nodes+0x1a8/0x220
-[    2.262055]  devres_release_all+0x34/0x58
-[    2.266069]  really_probe+0x1b8/0x318
-[    2.269733]  driver_probe_device+0x54/0xe8
-[    2.273833]  __device_attach_driver+0x80/0xb8
-[    2.278194]  bus_for_each_drv+0x74/0xc0
-[    2.282034]  __device_attach+0xdc/0x138
-[    2.285876]  device_initial_probe+0x10/0x18
-[    2.290063]  bus_probe_device+0x90/0x98
-[    2.293901]  deferred_probe_work_func+0x64/0x98
-[    2.298442]  process_one_work+0x198/0x320
-[    2.302451]  worker_thread+0x1f0/0x420
-[    2.306208]  kthread+0xf0/0x120
-[    2.309352]  ret_from_fork+0x10/0x18
-[    2.312927] ---[ end trace 58abcdfae01bd3c7 ]---
-
-So put this function at the end of the probe sequence.
+SPI common code does not support using CS discontinuously for now.
+However, i.MX8DXL-EVK only uses CS1 without CS0. Therefore, add a flag
+is_only_cs1 to set the correct TCR[PCS].
 
 Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
 ---
 Changes:
 V2:
- - redo the patch base on the new code.
+ - No changes.
 ---
- drivers/spi/spi-fsl-lpspi.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/spi/spi-fsl-lpspi.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index a4a42e85e132..b0a1bb62f10a 100644
+index 1e426884ac37..85a5c952389a 100644
 --- a/drivers/spi/spi-fsl-lpspi.c
 +++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -850,12 +850,6 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	if (!fsl_lpspi->is_slave)
- 		controller->use_gpio_descriptors = true;
+@@ -98,6 +98,7 @@ struct fsl_lpspi_data {
+ 	struct clk *clk_ipg;
+ 	struct clk *clk_per;
+ 	bool is_slave;
++	bool is_only_cs1;
+ 	bool is_first_byte;
  
--	ret = devm_spi_register_controller(&pdev->dev, controller);
--	if (ret < 0) {
--		dev_err(&pdev->dev, "spi_register_controller error.\n");
--		goto out_controller_put;
--	}
+ 	void *rx_buf;
+@@ -257,10 +258,9 @@ static void fsl_lpspi_set_cmd(struct fsl_lpspi_data *fsl_lpspi)
+ 
+ 	temp |= fsl_lpspi->config.bpw - 1;
+ 	temp |= (fsl_lpspi->config.mode & 0x3) << 30;
++	temp |= (fsl_lpspi->config.chip_select & 0x3) << 24;
+ 	if (!fsl_lpspi->is_slave) {
+ 		temp |= fsl_lpspi->config.prescale << 27;
+-		temp |= (fsl_lpspi->config.chip_select & 0x3) << 24;
 -
- 	init_completion(&fsl_lpspi->xfer_done);
+ 		/*
+ 		 * Set TCR_CONT will keep SS asserted after current transfer.
+ 		 * For the first transfer, clear TCR_CONTC to assert SS.
+@@ -421,7 +421,10 @@ static int fsl_lpspi_setup_transfer(struct spi_controller *controller,
+ 	fsl_lpspi->config.mode = spi->mode;
+ 	fsl_lpspi->config.bpw = t->bits_per_word;
+ 	fsl_lpspi->config.speed_hz = t->speed_hz;
+-	fsl_lpspi->config.chip_select = spi->chip_select;
++	if (fsl_lpspi->is_only_cs1)
++		fsl_lpspi->config.chip_select = 1;
++	else
++		fsl_lpspi->config.chip_select = spi->chip_select;
  
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-@@ -913,6 +907,12 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	if (ret < 0)
- 		dev_err(&pdev->dev, "dma setup error %d, use pio\n", ret);
+ 	if (!fsl_lpspi->config.speed_hz)
+ 		fsl_lpspi->config.speed_hz = spi->max_speed_hz;
+@@ -835,6 +838,8 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 	fsl_lpspi = spi_controller_get_devdata(controller);
+ 	fsl_lpspi->dev = &pdev->dev;
+ 	fsl_lpspi->is_slave = is_slave;
++	fsl_lpspi->is_only_cs1 = of_property_read_bool((&pdev->dev)->of_node,
++						"fsl,spi-only-use-cs1-sel");
  
-+	ret = devm_spi_register_controller(&pdev->dev, controller);
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "spi_register_controller error.\n");
-+		goto out_pm_get;
-+	}
-+
- 	pm_runtime_mark_last_busy(fsl_lpspi->dev);
- 	pm_runtime_put_autosuspend(fsl_lpspi->dev);
- 
+ 	controller->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32);
+ 	controller->transfer_one = fsl_lpspi_transfer_one;
 -- 
 2.17.1
 

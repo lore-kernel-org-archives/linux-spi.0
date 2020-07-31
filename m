@@ -2,91 +2,127 @@ Return-Path: <SRS0=ZwSQ=BK=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.0 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A1F5EC433E0
-	for <linux-spi@archiver.kernel.org>; Fri, 31 Jul 2020 06:45:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 499DBC433E0
+	for <linux-spi@archiver.kernel.org>; Fri, 31 Jul 2020 08:00:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 74C602250E
-	for <linux-spi@archiver.kernel.org>; Fri, 31 Jul 2020 06:45:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1596177921;
-	bh=1YXpe3U3o4uaI2bdopIW3kDgpC0UgdKI39pipMD2SOE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=h9Q2wJH8bhlKuR5nKO4budEvk2o4/lWDS5PXHz7vhOPF+5D+vzw3K4R1Ghh079Cpx
-	 LzRS7mr9rclbiwUOMtE0XutlBsR24juGkBwzAE0JxXypPUGfYfYeLwAQ59YpjNC9dt
-	 OJNkZt328Z1s/DJ+p82De1eZntnFHyNM8X4xf/xo=
+	by mail.kernel.org (Postfix) with ESMTP id 29000207F5
+	for <linux-spi@archiver.kernel.org>; Fri, 31 Jul 2020 08:00:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731458AbgGaGpT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 31 Jul 2020 02:45:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55822 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731400AbgGaGpS (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 31 Jul 2020 02:45:18 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 47F3C20829;
-        Fri, 31 Jul 2020 06:45:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596177917;
-        bh=1YXpe3U3o4uaI2bdopIW3kDgpC0UgdKI39pipMD2SOE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=E8u4Ypz5WsgTFM/sdmSvhPdx18F5Ncfwx6utunjwqEs65LQWv47Ol8sOCLpc+42ZP
-         2IBnWysBTugUJ+Vn5iuruZw6gGmdwAwaLggMGiqNHjE6YcehlgF52LSA5HdllByvWD
-         7LyissnM2TLiBRCtGP6Xxbmfeh15g4lGZ4gNDetA=
-Date:   Fri, 31 Jul 2020 08:45:05 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Lukas Wunner <lukas@wunner.de>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Pantelis Antoniou <pantelis.antoniou@konsulko.com>,
-        Alexander Duyck <alexander.h.duyck@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-Subject: Re: [PATCH 2/3] driver core: Use rwsem for kill_device()
- serialization
-Message-ID: <20200731064505.GH1508201@kroah.com>
-References: <cover.1594214103.git.lukas@wunner.de>
- <bf185285172a7b127424ac22fa42811eb2081cd4.1594214103.git.lukas@wunner.de>
- <20200730065326.GA3950394@kroah.com>
- <20200730095610.orkum2n6snb42uzs@wunner.de>
+        id S1726985AbgGaIAB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 31 Jul 2020 04:00:01 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:59670 "EHLO
+        mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731523AbgGaIAB (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 31 Jul 2020 04:00:01 -0400
+Received: from localhost (unknown [127.0.0.1])
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 6D11E8030802;
+        Fri, 31 Jul 2020 07:59:58 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at baikalelectronics.ru
+Received: from mail.baikalelectronics.ru ([127.0.0.1])
+        by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id GpEVWY4Cvpdq; Fri, 31 Jul 2020 10:59:57 +0300 (MSK)
+From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
+To:     Mark Brown <broonie@kernel.org>
+CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
+        Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>,
+        Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>,
+        Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Feng Tang <feng.tang@intel.com>, Vinod Koul <vkoul@kernel.org>,
+        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH 1/8] spi: dw-dma: Set DMA Level registers on init
+Date:   Fri, 31 Jul 2020 10:59:46 +0300
+Message-ID: <20200731075953.14416-2-Sergey.Semin@baikalelectronics.ru>
+In-Reply-To: <20200731075953.14416-1-Sergey.Semin@baikalelectronics.ru>
+References: <20200731075953.14416-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200730095610.orkum2n6snb42uzs@wunner.de>
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, Jul 30, 2020 at 11:56:10AM +0200, Lukas Wunner wrote:
-> On Thu, Jul 30, 2020 at 08:53:26AM +0200, Greg Kroah-Hartman wrote:
-> > On Wed, Jul 08, 2020 at 03:27:02PM +0200, Lukas Wunner wrote:
-> > > kill_device() is currently serialized with driver probing by way of the
-> > > device_lock().  We're about to serialize it with device_add() as well
-> > > to prevent addition of children below a device which is going away.
-> > 
-> > Why?  Who does this?  Shouldn't the bus that is trying to do this know
-> > this is happening?
-> 
-> AFAICS, at least spi and i2c are affected.
-> 
-> I first thought that pci is affected as well but it seems the global
-> pci_lock_rescan_remove() performs the required serialization.
-> 
-> I've yet to take a closer look at acpi and usb.  Any bus which
-> creates a device hierarchy with dynamic addition & removal needs
-> to make sure no new children are added after removal of the parent
-> has begun.
-> 
-> 
-> > So, why are you pushing this down into the driver core, can't this be
-> > done in whatever crazy bus wants to do this, like is done here?
-> 
-> I guess it can.  Let me try to perform the locking at the bus level then.
+Indeed the registers content doesn't get cleared when the SPI controller
+is disabled and enabled. Max burst lengths aren't changed since the Rx and
+Tx DMA channels are requested on init stage and are kept acquired until
+the device is removed. Obviously SPI controller FIFO depth can't be
+changed. Due to all of that we can safely move the DMA Transmit and
+Receive data level registers initialization to the SPI controller DMA init
+stage (when the SPI controller is being probed) instead of doing it for
+each SPI transfer when dma_setup is called. This shall speed the DMA-based
+SPI transfer initialization up a bit, particularly if the APB bus is
+relatively slow.
 
-I thought the bus code itself had this type of serialization already...
+Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+---
+ drivers/spi/spi-dw-dma.c | 29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
+
+diff --git a/drivers/spi/spi-dw-dma.c b/drivers/spi/spi-dw-dma.c
+index bb390ff67d1d..440679fa0764 100644
+--- a/drivers/spi/spi-dw-dma.c
++++ b/drivers/spi/spi-dw-dma.c
+@@ -49,6 +49,7 @@ static void dw_spi_dma_maxburst_init(struct dw_spi *dws)
+ 		max_burst = RX_BURST_LEVEL;
+ 
+ 	dws->rxburst = min(max_burst, def_burst);
++	dw_writel(dws, DW_SPI_DMARDLR, dws->rxburst - 1);
+ 
+ 	ret = dma_get_slave_caps(dws->txchan, &caps);
+ 	if (!ret && caps.max_burst)
+@@ -56,7 +57,20 @@ static void dw_spi_dma_maxburst_init(struct dw_spi *dws)
+ 	else
+ 		max_burst = TX_BURST_LEVEL;
+ 
++	/*
++	 * Having a Rx DMA channel serviced with higher priority than a Tx DMA
++	 * channel might not be enough to provide a well balanced DMA-based
++	 * SPI transfer interface. There might still be moments when the Tx DMA
++	 * channel is occasionally handled faster than the Rx DMA channel.
++	 * That in its turn will eventually cause the SPI Rx FIFO overflow if
++	 * SPI bus speed is high enough to fill the SPI Rx FIFO in before it's
++	 * cleared by the Rx DMA channel. In order to fix the problem the Tx
++	 * DMA activity is intentionally slowed down by limiting the SPI Tx
++	 * FIFO depth with a value twice bigger than the Tx burst length
++	 * calculated earlier by the dw_spi_dma_maxburst_init() method.
++	 */
+ 	dws->txburst = min(max_burst, def_burst);
++	dw_writel(dws, DW_SPI_DMATDLR, dws->txburst);
+ }
+ 
+ static int dw_spi_dma_init_mfld(struct device *dev, struct dw_spi *dws)
+@@ -372,21 +386,6 @@ static int dw_spi_dma_setup(struct dw_spi *dws, struct spi_transfer *xfer)
+ {
+ 	u16 imr = 0, dma_ctrl = 0;
+ 
+-	/*
+-	 * Having a Rx DMA channel serviced with higher priority than a Tx DMA
+-	 * channel might not be enough to provide a well balanced DMA-based
+-	 * SPI transfer interface. There might still be moments when the Tx DMA
+-	 * channel is occasionally handled faster than the Rx DMA channel.
+-	 * That in its turn will eventually cause the SPI Rx FIFO overflow if
+-	 * SPI bus speed is high enough to fill the SPI Rx FIFO in before it's
+-	 * cleared by the Rx DMA channel. In order to fix the problem the Tx
+-	 * DMA activity is intentionally slowed down by limiting the SPI Tx
+-	 * FIFO depth with a value twice bigger than the Tx burst length
+-	 * calculated earlier by the dw_spi_dma_maxburst_init() method.
+-	 */
+-	dw_writel(dws, DW_SPI_DMARDLR, dws->rxburst - 1);
+-	dw_writel(dws, DW_SPI_DMATDLR, dws->txburst);
+-
+ 	if (xfer->tx_buf)
+ 		dma_ctrl |= SPI_DMA_TDMAE;
+ 	if (xfer->rx_buf)
+-- 
+2.27.0
+

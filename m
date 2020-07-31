@@ -7,25 +7,25 @@ X-Spam-Status: No, score=-10.0 required=3.0 tests=BAYES_00,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DA5F1C433E0
-	for <linux-spi@archiver.kernel.org>; Fri, 31 Jul 2020 08:00:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B4F3C433E0
+	for <linux-spi@archiver.kernel.org>; Fri, 31 Jul 2020 08:00:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C4BDD207F5
-	for <linux-spi@archiver.kernel.org>; Fri, 31 Jul 2020 08:00:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 225A020829
+	for <linux-spi@archiver.kernel.org>; Fri, 31 Jul 2020 08:00:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731588AbgGaIAE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 31 Jul 2020 04:00:04 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:59692 "EHLO
+        id S1731873AbgGaIAW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 31 Jul 2020 04:00:22 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:59748 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731529AbgGaIAC (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 31 Jul 2020 04:00:02 -0400
+        with ESMTP id S1731523AbgGaIAE (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 31 Jul 2020 04:00:04 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 1A8A780045E4;
-        Fri, 31 Jul 2020 07:59:59 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 07D3A8040A69;
+        Fri, 31 Jul 2020 08:00:01 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id BND_oGN_6XL2; Fri, 31 Jul 2020 10:59:58 +0300 (MSK)
+        with ESMTP id 4aeNiTJ4Y1iU; Fri, 31 Jul 2020 11:00:00 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
@@ -39,9 +39,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Feng Tang <feng.tang@intel.com>, Vinod Koul <vkoul@kernel.org>,
         <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 2/8] spi: dw-dma: Fail DMA-based transfer if no Tx-buffer specified
-Date:   Fri, 31 Jul 2020 10:59:47 +0300
-Message-ID: <20200731075953.14416-3-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH 5/8] spi: dw-dma: Detach DMA transfer into a dedicated method
+Date:   Fri, 31 Jul 2020 10:59:50 +0300
+Message-ID: <20200731075953.14416-6-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20200731075953.14416-1-Sergey.Semin@baikalelectronics.ru>
 References: <20200731075953.14416-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -53,90 +53,48 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Since commit 46164fde6b78 ("spi: dw: Fix Rx-only DMA transfers") if DMA
-interface is enabled, then Tx-buffer must be available in each SPI
-transfer. It's required since in order to activate the incoming data
-reception either DMA or CPU must be pushing data out to the SPI bus.
-But the DW APB SSI DMA driver code is still left in state as if Tx-buffer
-might be optional, which is no longer true. Let's fix it so an error would
-be returned if no Tx-buffer detected and DMA Tx would be always
-enabled.
+In order to add an alternative method of DMA-based SPI transfer first we
+need to detach the currently available one from the common code. Here we
+move the normal DMA-based SPI transfer execution functionality into a
+dedicated method. It will be utilized if either the DMA engine supports
+an unlimited number SG entries or Tx-only SPI transfer is requested. But
+currently just use it for any SPI transfer.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 ---
- drivers/spi/spi-dw-dma.c | 27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
+ drivers/spi/spi-dw-dma.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-dw-dma.c b/drivers/spi/spi-dw-dma.c
-index 440679fa0764..ec721af61663 100644
+index 366978086781..32ef7913a73d 100644
 --- a/drivers/spi/spi-dw-dma.c
 +++ b/drivers/spi/spi-dw-dma.c
-@@ -263,9 +263,6 @@ dw_spi_dma_prepare_tx(struct dw_spi *dws, struct spi_transfer *xfer)
- 	struct dma_slave_config txconf;
- 	struct dma_async_tx_descriptor *txdesc;
+@@ -434,7 +434,8 @@ static int dw_spi_dma_setup(struct dw_spi *dws, struct spi_transfer *xfer)
+ 	return 0;
+ }
  
--	if (!xfer->tx_buf)
--		return NULL;
--
- 	memset(&txconf, 0, sizeof(txconf));
- 	txconf.direction = DMA_MEM_TO_DEV;
- 	txconf.dst_addr = dws->dma_addr;
-@@ -384,17 +381,19 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_rx(struct dw_spi *dws,
- 
- static int dw_spi_dma_setup(struct dw_spi *dws, struct spi_transfer *xfer)
+-static int dw_spi_dma_transfer(struct dw_spi *dws, struct spi_transfer *xfer)
++static int dw_spi_dma_transfer_all(struct dw_spi *dws,
++				   struct spi_transfer *xfer)
  {
--	u16 imr = 0, dma_ctrl = 0;
-+	u16 imr, dma_ctrl;
+ 	int ret;
  
--	if (xfer->tx_buf)
--		dma_ctrl |= SPI_DMA_TDMAE;
-+	if (!xfer->tx_buf)
-+		return -EINVAL;
+@@ -455,7 +456,14 @@ static int dw_spi_dma_transfer(struct dw_spi *dws, struct spi_transfer *xfer)
+ 
+ 	dma_async_issue_pending(dws->txchan);
+ 
+-	ret = dw_spi_dma_wait(dws, xfer);
++	return dw_spi_dma_wait(dws, xfer);
++}
 +
-+	/* Set the DMA handshaking interface */
-+	dma_ctrl = SPI_DMA_TDMAE;
- 	if (xfer->rx_buf)
- 		dma_ctrl |= SPI_DMA_RDMAE;
- 	dw_writel(dws, DW_SPI_DMACR, dma_ctrl);
- 
- 	/* Set the interrupt mask */
--	if (xfer->tx_buf)
--		imr |= SPI_INT_TXOI;
-+	imr = SPI_INT_TXOI;
- 	if (xfer->rx_buf)
- 		imr |= SPI_INT_RXUI | SPI_INT_RXOI;
- 	spi_umask_intr(dws, imr);
-@@ -413,6 +412,8 @@ static int dw_spi_dma_transfer(struct dw_spi *dws, struct spi_transfer *xfer)
- 
- 	/* Prepare the TX dma transfer */
- 	txdesc = dw_spi_dma_prepare_tx(dws, xfer);
-+	if (!txdesc)
-+		return -EINVAL;
- 
- 	/* Prepare the RX dma transfer */
- 	rxdesc = dw_spi_dma_prepare_rx(dws, xfer);
-@@ -424,17 +425,15 @@ static int dw_spi_dma_transfer(struct dw_spi *dws, struct spi_transfer *xfer)
- 		dma_async_issue_pending(dws->rxchan);
- 	}
- 
--	if (txdesc) {
--		set_bit(TX_BUSY, &dws->dma_chan_busy);
--		dmaengine_submit(txdesc);
--		dma_async_issue_pending(dws->txchan);
--	}
-+	set_bit(TX_BUSY, &dws->dma_chan_busy);
-+	dmaengine_submit(txdesc);
-+	dma_async_issue_pending(dws->txchan);
- 
- 	ret = dw_spi_dma_wait(dws, xfer);
++static int dw_spi_dma_transfer(struct dw_spi *dws, struct spi_transfer *xfer)
++{
++	int ret;
++
++	ret = dw_spi_dma_transfer_all(dws, xfer);
  	if (ret)
  		return ret;
  
--	if (txdesc && dws->master->cur_msg->status == -EINPROGRESS) {
-+	if (dws->master->cur_msg->status == -EINPROGRESS) {
- 		ret = dw_spi_dma_wait_tx_done(dws, xfer);
- 		if (ret)
- 			return ret;
 -- 
 2.27.0
 

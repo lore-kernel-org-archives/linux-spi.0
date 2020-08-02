@@ -1,112 +1,67 @@
-Return-Path: <SRS0=ZwSQ=BK=vger.kernel.org=linux-spi-owner@kernel.org>
+Return-Path: <SRS0=YGK9=BM=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-13.0 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DD4E6C433E0
-	for <linux-spi@archiver.kernel.org>; Fri, 31 Jul 2020 17:38:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 68026C433E0
+	for <linux-spi@archiver.kernel.org>; Sun,  2 Aug 2020 17:50:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BE41C2083B
-	for <linux-spi@archiver.kernel.org>; Fri, 31 Jul 2020 17:38:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1596217118;
-	bh=ThVcK9Hvk7m9SF2um16GNyMOPFFlXYWERxYa9S07VUg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:List-ID:From;
-	b=upEFUM8mKiDXTXWHpXd67sklCvEdvIC9C0JiV9z3FpZB+5zFVEe+exw5rc2xg38A9
-	 QKCqIIfE+jhm7m8et+L2eZ2pPhm1gnyIPGWo/GpOtDwYMpdn9yvuLeD8F9zM1kPKl/
-	 wBU7ZelKeJLTb8o53Lf/mSKzTFJBDTf2F0jja8PA=
+	by mail.kernel.org (Postfix) with ESMTP id 4E8BC20738
+	for <linux-spi@archiver.kernel.org>; Sun,  2 Aug 2020 17:50:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387568AbgGaRii (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 31 Jul 2020 13:38:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56078 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1733236AbgGaRih (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 31 Jul 2020 13:38:37 -0400
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6FF432083B;
-        Fri, 31 Jul 2020 17:38:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596217117;
-        bh=ThVcK9Hvk7m9SF2um16GNyMOPFFlXYWERxYa9S07VUg=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=IhnygZYjOuB4e8fBhH11m1q+TmFS2ZWUv8vOBc4uVHIHAvi287Ay/CKLxsFFcZ8gn
-         dN5LsV3Wzf16tQXmdLDJd7zpNyKEAD8wM/eVEu+bR3aRt/bVCDuV24pG/ouu5z0HXJ
-         1hj8WiNwwWEOaqsAtIwELhY+t/dAMR+YN88Sgf9k=
-Received: by mail-oi1-f171.google.com with SMTP id s144so17455720oie.3;
-        Fri, 31 Jul 2020 10:38:37 -0700 (PDT)
-X-Gm-Message-State: AOAM533Q6Ur7PZvk3Mh0FVY3gnU/959dBVzSrEIIr/XGaxZm0HUvQQ6Q
-        nrTHFxA/YAJktbzLTlWeAyubd84nLAZk9xF9WA==
-X-Google-Smtp-Source: ABdhPJyGE9R4ouWUf/7eAFYfwi5aW8aeIQseFytCl+rC5dI2vrcQrsvoB5m3JRF0dMRdAmvJ49Y6r7hnrSEVwQmilqY=
-X-Received: by 2002:aca:190c:: with SMTP id l12mr3850529oii.147.1596217116807;
- Fri, 31 Jul 2020 10:38:36 -0700 (PDT)
+        id S1727050AbgHBRuR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 2 Aug 2020 13:50:17 -0400
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:16795 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726846AbgHBRuR (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 2 Aug 2020 13:50:17 -0400
+Received: from localhost.localdomain ([93.22.148.198])
+        by mwinf5d37 with ME
+        id AhqE2300J4H42jh03hqFTg; Sun, 02 Aug 2020 19:50:15 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 02 Aug 2020 19:50:15 +0200
+X-ME-IP: 93.22.148.198
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     broonie@kernel.org
+Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] spi: a3700: Remove a useless memset
+Date:   Sun,  2 Aug 2020 19:50:07 +0200
+Message-Id: <20200802175007.703995-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20200727031513.31774-1-xiaoning.wang@nxp.com>
-In-Reply-To: <20200727031513.31774-1-xiaoning.wang@nxp.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Fri, 31 Jul 2020 11:38:25 -0600
-X-Gmail-Original-Message-ID: <CAL_Jsq+M0bjH6KnrT4ob6YF7VZxUtgUeAJOE84Omp4PNH2hSZQ@mail.gmail.com>
-Message-ID: <CAL_Jsq+M0bjH6KnrT4ob6YF7VZxUtgUeAJOE84Omp4PNH2hSZQ@mail.gmail.com>
-Subject: Re: [PATCH V2 4/4] dt-bindings: lpspi: New property in document DT
- bindings for LPSPI
-To:     Clark Wang <xiaoning.wang@nxp.com>
-Cc:     Mark Brown <broonie@kernel.org>, Anson Huang <Anson.Huang@nxp.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        devicetree@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sun, Jul 26, 2020 at 9:15 PM Clark Wang <xiaoning.wang@nxp.com> wrote:
->
-> Add "fsl,spi-only-use-cs1-sel" to fit i.MX8DXL-EVK.
-> Spi common code does not support use of CS signals discontinuously.
-> It only uses CS1 without using CS0. So, add this property to re-config
-> chipselect value.
->
-> Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-> ---
-> Changes:
-> V2:
->  - New patch added in the v2 patchset.
-> ---
->  Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml
-> index 143b94a1883a..22882e769e26 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml
-> +++ b/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml
-> @@ -34,6 +34,12 @@ properties:
->        - const: per
->        - const: ipg
->
-> +  fsl,spi-only-use-cs1-sel:
-> +    description:
-> +      spi common code does not support use of CS signals discontinuously.
-> +      i.MX8DXL-EVK board only uses CS1 without using CS0. Therefore, add
-> +      this property to re-config the chipselect value in the LPSPI driver.
+Memory allocated by 'spi_alloc_master()' is already zeroed.
+Remove a redundant memset.
 
-This breaks linux-next and you didn't test with 'make dt_binding_check':
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/spi/spi-armada-3700.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-/builds/robherring/linux-dt-bindings/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml:
-properties:fsl,spi-only-use-cs1-sel: {'description': 'spi common code
-does not support use of CS signals discontinuously. i.MX8DXL-EVK board
-only uses CS1 without using CS0. Therefore, add this property to
-re-config the chipselect value in the LPSPI driver.'} is not valid
-under any of the given schemas (Possible causes of the failure):
- /builds/robherring/linux-dt-bindings/Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml:
-properties:fsl,spi-only-use-cs1-sel: 'not' is a required property
+diff --git a/drivers/spi/spi-armada-3700.c b/drivers/spi/spi-armada-3700.c
+index fcde419e480c..46feafe4e201 100644
+--- a/drivers/spi/spi-armada-3700.c
++++ b/drivers/spi/spi-armada-3700.c
+@@ -848,7 +848,6 @@ static int a3700_spi_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, master);
+ 
+ 	spi = spi_master_get_devdata(master);
+-	memset(spi, 0, sizeof(struct a3700_spi));
+ 
+ 	spi->master = master;
+ 
+-- 
+2.25.1
 
-The problem is you need a type definition for a vendor specific
-property. In this case 'type: boolean'.
-
-Rob

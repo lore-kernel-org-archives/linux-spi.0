@@ -2,80 +2,67 @@ Return-Path: <SRS0=2bL3=BO=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.0 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1CAB3C433E0
-	for <linux-spi@archiver.kernel.org>; Tue,  4 Aug 2020 15:15:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B0F9CC433E1
+	for <linux-spi@archiver.kernel.org>; Tue,  4 Aug 2020 18:54:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 010C9208A9
-	for <linux-spi@archiver.kernel.org>; Tue,  4 Aug 2020 15:15:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1596554101;
-	bh=vQi2H9LP7kTLlb1Ttty0RJJoaFPlzswXaBwsiFtTXe4=;
-	h=From:To:Subject:Date:List-ID:From;
-	b=hJyG7smEdx2/OqTJQFdECS7t3cGsDR6U8agY0j4cG1ZzSPcbHOk+KKG5ssxjKQ4su
-	 VWtRDd5Cy07Q9iTFfclm7qRVLOzM4IM6GmgabSZXEyaHRfBtLyXSdw64iI0z3zy078
-	 jm9JJT0hSu7z8VObjgmmuCtD87LjvGNHXw7KryXk=
+	by mail.kernel.org (Postfix) with ESMTP id 9D2DD21744
+	for <linux-spi@archiver.kernel.org>; Tue,  4 Aug 2020 18:54:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729537AbgHDPOt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 4 Aug 2020 11:14:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45376 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729524AbgHDPOG (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 4 Aug 2020 11:14:06 -0400
-Received: from kozik-lap.mshome.net (unknown [194.230.155.117])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9CFF922CB2;
-        Tue,  4 Aug 2020 15:14:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596554046;
-        bh=vQi2H9LP7kTLlb1Ttty0RJJoaFPlzswXaBwsiFtTXe4=;
-        h=From:To:Subject:Date:From;
-        b=VCKLUkXuCWX1csaPwqRUq/N4G0j85112Yi2vmfRlF5ZkPn9LlQ3bDR3ToihpaylfG
-         qxbC7KQgWMajSqVMrEqAxWgOQSNc/ZpHPkcnMakP3J9NMQeUgrR1tn0+FWXMdB0kMo
-         0i8VKVGOCjLznotzxW1pv+ug1zdW2UVmc7E45Ngw=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>,
+        id S1726847AbgHDSyR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 4 Aug 2020 14:54:17 -0400
+Received: from 7.mo68.mail-out.ovh.net ([46.105.63.230]:46320 "EHLO
+        7.mo68.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726350AbgHDSyR (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 4 Aug 2020 14:54:17 -0400
+X-Greylist: delayed 5682 seconds by postgrey-1.27 at vger.kernel.org; Tue, 04 Aug 2020 14:54:17 EDT
+Received: from player774.ha.ovh.net (unknown [10.110.171.125])
+        by mo68.mail-out.ovh.net (Postfix) with ESMTP id 96E06171C5C
+        for <linux-spi@vger.kernel.org>; Tue,  4 Aug 2020 19:09:30 +0200 (CEST)
+Received: from etezian.org (213-243-141-64.bb.dnainternet.fi [213.243.141.64])
+        (Authenticated sender: andi@etezian.org)
+        by player774.ha.ovh.net (Postfix) with ESMTPSA id 253FA151129F2;
+        Tue,  4 Aug 2020 17:09:21 +0000 (UTC)
+Authentication-Results: garm.ovh; auth=pass (GARM-103G005bf6e1e8c-ecdf-4e2c-a38c-4357f76d3ada,
+                    174E2A681E1E8355CD79DB1D1551BCD4D872E018) smtp.auth=andi@etezian.org
+Date:   Tue, 4 Aug 2020 20:09:20 +0300
+From:   Andi Shyti <andi@etezian.org>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Kukjin Kim <kgene@kernel.org>, Andi Shyti <andi@etezian.org>,
+        Mark Brown <broonie@kernel.org>,
         linux-arm-kernel@lists.infradead.org,
         linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH] spi: s3c24xx: correct kerneldoc comment
-Date:   Tue,  4 Aug 2020 17:13:56 +0200
-Message-Id: <20200804151356.28057-1-krzk@kernel.org>
-X-Mailer: git-send-email 2.17.1
+Subject: Re: [PATCH] spi: s3c24xx: correct kerneldoc comment
+Message-ID: <20200804170920.GC73082@jack.zhora.eu>
+References: <20200804151356.28057-1-krzk@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200804151356.28057-1-krzk@kernel.org>
+X-Ovh-Tracer-Id: 10829468256800653977
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduiedrjeeigdduudduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvffukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeetnhguihcuufhhhihtihcuoegrnhguihesvghtvgiiihgrnhdrohhrgheqnecuggftrfgrthhtvghrnheptdfgudduhfefueeujeefieehtdeftefggeevhefgueellefhudetgeeikeduieefnecukfhppedtrddtrddtrddtpddvudefrddvgeefrddugedurdeigeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejjeegrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheprghnughisegvthgviihirghnrdhorhhgpdhrtghpthhtoheplhhinhhugidqshhpihesvhhgvghrrdhkvghrnhgvlhdrohhrgh
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Correct the kerneldoc for structure to fix W=1 compile warning:
+Hi Krzysztof,
 
-    drivers/spi/spi-s3c24xx.c:36: warning: cannot understand function prototype: 'struct s3c24xx_spi_devstate '
+On Tue, Aug 04, 2020 at 05:13:56PM +0200, Krzysztof Kozlowski wrote:
+> Correct the kerneldoc for structure to fix W=1 compile warning:
+> 
+>     drivers/spi/spi-s3c24xx.c:36: warning: cannot understand function prototype: 'struct s3c24xx_spi_devstate '
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
----
- drivers/spi/spi-s3c24xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+thanks,
 
-diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
-index 2cb3b611c294..7742170fca91 100644
---- a/drivers/spi/spi-s3c24xx.c
-+++ b/drivers/spi/spi-s3c24xx.c
-@@ -28,7 +28,7 @@
- #include "spi-s3c24xx-fiq.h"
- 
- /**
-- * s3c24xx_spi_devstate - per device data
-+ * struct s3c24xx_spi_devstate - per device data
-  * @hz: Last frequency calculated for @sppre field.
-  * @mode: Last mode setting for the @spcon field.
-  * @spcon: Value to write to the SPCON register.
--- 
-2.17.1
+Acked-by: Andi Shyti <andi@etezian.org>
 
+Andi

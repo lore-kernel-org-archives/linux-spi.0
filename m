@@ -2,66 +2,80 @@ Return-Path: <SRS0=2bL3=BO=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 785CBC433E0
-	for <linux-spi@archiver.kernel.org>; Tue,  4 Aug 2020 07:20:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1CAB3C433E0
+	for <linux-spi@archiver.kernel.org>; Tue,  4 Aug 2020 15:15:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7B81D22C9F
-	for <linux-spi@archiver.kernel.org>; Tue,  4 Aug 2020 07:20:05 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 010C9208A9
+	for <linux-spi@archiver.kernel.org>; Tue,  4 Aug 2020 15:15:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1596525605;
-	bh=7o+GGNvYDggfVKcvkcydQ3oRMVae6I6vRgnD5cwx+us=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=Y2i85uCDyXd8D+SFM6cSKj+1fsBIoClSBMF+3AlszqAusu7jvhGh1s8m1H0ynCq92
-	 5zTvjq0kUIOKfOnW4O33lQ0udcJJ2uGCins/vHG1ha8PWEYBhLAbb6nZSXptkLCJ4C
-	 PA6PA+eN4Ch+kZZS+JzGi4GnhUXZriWpeif9rjDk=
+	s=default; t=1596554101;
+	bh=vQi2H9LP7kTLlb1Ttty0RJJoaFPlzswXaBwsiFtTXe4=;
+	h=From:To:Subject:Date:List-ID:From;
+	b=hJyG7smEdx2/OqTJQFdECS7t3cGsDR6U8agY0j4cG1ZzSPcbHOk+KKG5ssxjKQ4su
+	 VWtRDd5Cy07Q9iTFfclm7qRVLOzM4IM6GmgabSZXEyaHRfBtLyXSdw64iI0z3zy078
+	 jm9JJT0hSu7z8VObjgmmuCtD87LjvGNHXw7KryXk=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728835AbgHDHUF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 4 Aug 2020 03:20:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44174 "EHLO mail.kernel.org"
+        id S1729537AbgHDPOt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 4 Aug 2020 11:14:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45376 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728654AbgHDHUE (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 4 Aug 2020 03:20:04 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1729524AbgHDPOG (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 4 Aug 2020 11:14:06 -0400
+Received: from kozik-lap.mshome.net (unknown [194.230.155.117])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0E2822076C;
-        Tue,  4 Aug 2020 07:20:03 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9CFF922CB2;
+        Tue,  4 Aug 2020 15:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596525604;
-        bh=7o+GGNvYDggfVKcvkcydQ3oRMVae6I6vRgnD5cwx+us=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=bKDvxR57uNwAMGXCyOCIcDA/gFDq7HoYaGpeThcisvT1vWFtMt4qHogJBwWgIQtnc
-         QTLc74NNKzy7TR50E7sjibZuvF6MCzOmwm/Lf58+CYDWfIuufQZbytglAENI5P28R4
-         GLUxw/UrBpLzEWXlxvttcvch64GF20xZ3Lau9bsA=
-Date:   Tue, 4 Aug 2020 09:19:45 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Christian Eggers <ceggers@arri.de>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] eeprom: at25: allow page sizes greater than 16 bit
-Message-ID: <20200804071945.GB1416416@kroah.com>
-References: <20200727111218.26926-1-ceggers@arri.de>
- <9183924.TykLrII94J@n95hx1g2>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9183924.TykLrII94J@n95hx1g2>
+        s=default; t=1596554046;
+        bh=vQi2H9LP7kTLlb1Ttty0RJJoaFPlzswXaBwsiFtTXe4=;
+        h=From:To:Subject:Date:From;
+        b=VCKLUkXuCWX1csaPwqRUq/N4G0j85112Yi2vmfRlF5ZkPn9LlQ3bDR3ToihpaylfG
+         qxbC7KQgWMajSqVMrEqAxWgOQSNc/ZpHPkcnMakP3J9NMQeUgrR1tn0+FWXMdB0kMo
+         0i8VKVGOCjLznotzxW1pv+ug1zdW2UVmc7E45Ngw=
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] spi: s3c24xx: correct kerneldoc comment
+Date:   Tue,  4 Aug 2020 17:13:56 +0200
+Message-Id: <20200804151356.28057-1-krzk@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, Aug 04, 2020 at 08:40:52AM +0200, Christian Eggers wrote:
-> Ping?
+Correct the kerneldoc for structure to fix W=1 compile warning:
 
-It's the middle of the merge window now, I can't take any patches for
-the next 2 weeks, sorry.  It is in my queue, and will be looked at after
-5.9-rc1 is out.
+    drivers/spi/spi-s3c24xx.c:36: warning: cannot understand function prototype: 'struct s3c24xx_spi_devstate '
 
-thanks,
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+---
+ drivers/spi/spi-s3c24xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-greg k-h
+diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
+index 2cb3b611c294..7742170fca91 100644
+--- a/drivers/spi/spi-s3c24xx.c
++++ b/drivers/spi/spi-s3c24xx.c
+@@ -28,7 +28,7 @@
+ #include "spi-s3c24xx-fiq.h"
+ 
+ /**
+- * s3c24xx_spi_devstate - per device data
++ * struct s3c24xx_spi_devstate - per device data
+  * @hz: Last frequency calculated for @sppre field.
+  * @mode: Last mode setting for the @spcon field.
+  * @spcon: Value to write to the SPCON register.
+-- 
+2.17.1
+

@@ -1,110 +1,149 @@
-Return-Path: <SRS0=2bL3=BO=vger.kernel.org=linux-spi-owner@kernel.org>
+Return-Path: <SRS0=JCci=BP=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.1 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D0D5BC433E0
-	for <linux-spi@archiver.kernel.org>; Tue,  4 Aug 2020 21:15:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6354BC433E1
+	for <linux-spi@archiver.kernel.org>; Wed,  5 Aug 2020 07:04:45 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AC97822B42
-	for <linux-spi@archiver.kernel.org>; Tue,  4 Aug 2020 21:15:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1596575706;
-	bh=tbCDeBlFPTN3tR2opupaPgmE296pCaRtjKYPZNrKFxY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=OLTVJMGeYrir6u3RIDl+zJ8Y9jE2Amd/5CTGnA5kY39NC+ByeaYmJkd2MUlC3zhC0
-	 NSM8wDnX9U49oYpUNo6B4nBlY3qGpdJ8h6QrtQZdDO3/df4QTA1qSd+klKBQVjff+B
-	 zO+c8RAPT+0CGDam7LO0JWxY00ZNfQn8wUB9vqc4=
+	by mail.kernel.org (Postfix) with ESMTP id 43AC922CA0
+	for <linux-spi@archiver.kernel.org>; Wed,  5 Aug 2020 07:04:45 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=st.com header.i=@st.com header.b="V9FM4HLJ"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726571AbgHDVPG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 4 Aug 2020 17:15:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51282 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726282AbgHDVPF (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 4 Aug 2020 17:15:05 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A6DE22075A;
-        Tue,  4 Aug 2020 21:15:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596575705;
-        bh=tbCDeBlFPTN3tR2opupaPgmE296pCaRtjKYPZNrKFxY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=tk4CLVIc/F98FWYpkvEKaxb5qTlpa1/kmW4bFZjBWySL4/Oa1FKan5BnJJQzCcAcs
-         zHQOD+s0GZHqjPvCktBrqyPWsfcQLFOOsbS1T0MpI8rN0E50bkY8iPqC0ZImcK9wtv
-         wQhIHqAnwKP6Nj4rVEA0gq2oQkjOAzleJhyGyJWY=
-Date:   Tue, 4 Aug 2020 22:14:43 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
-        Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>,
-        Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>,
-        Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Feng Tang <feng.tang@intel.com>, Vinod Koul <vkoul@kernel.org>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/8] spi: dw-dma: Add max SG entries burst capability
- support
-Message-ID: <20200804211443.GE5249@sirena.org.uk>
-References: <20200731075953.14416-1-Sergey.Semin@baikalelectronics.ru>
- <20200731092612.GK3703480@smile.fi.intel.com>
- <20200731125954.jeeqmccnknqllwxh@mobilestation>
+        id S1728397AbgHEHEo (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 5 Aug 2020 03:04:44 -0400
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:54444 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728337AbgHEHEg (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 5 Aug 2020 03:04:36 -0400
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 07573Ndi002348;
+        Wed, 5 Aug 2020 09:04:22 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-type; s=STMicroelectronics;
+ bh=wzaNlmJcYjuEGmXk71gxcc9RooPjAaosEVx5bG46On8=;
+ b=V9FM4HLJUpuBD0vM8bjj3TBWFe6juXnJOc7Lj0iNyG/BjLqPkTVWs+nCsBhFfjHRgGI6
+ q5XU9Zyq7y/7jQNssLBWc4ESoWHJYnHK/mW1uRaWSPWndC4Vh39ehyW2ETtdJx5aSc9z
+ RhJVHGxrPi56DryV2cI+694jUwfKYm7u2kT6qR0ZxGHiDp3kMTlWwUBL6Dv3G13d4DuV
+ Xt+gXthpI2unxXlySQlM6vvWoQnom4eFbEWPaWBL7KEJbBb4Oz3n5N3SKVXc3Ek5fC7s
+ zjDfiSxAdgyViUXsvEpRy/AmONHQvURmaLZWBrED0MmlZ6qiQAJ9xXYSY+HZCO4I1CHO hw== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 32n6knf7e8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 05 Aug 2020 09:04:22 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 2EA2F100034;
+        Wed,  5 Aug 2020 09:04:20 +0200 (CEST)
+Received: from Webmail-eu.st.com (sfhdag3node2.st.com [10.75.127.8])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 21A242A4D8E;
+        Wed,  5 Aug 2020 09:04:20 +0200 (CEST)
+Received: from localhost (10.75.127.48) by SFHDAG3NODE2.st.com (10.75.127.8)
+ with Microsoft SMTP Server (TLS) id 15.0.1473.3; Wed, 5 Aug 2020 09:04:19
+ +0200
+From:   Alain Volmat <alain.volmat@st.com>
+To:     <broonie@kernel.org>, <amelie.delaunay@st.com>
+CC:     <mcoquelin.stm32@gmail.com>, <alexandre.torgue@st.com>,
+        <linux-spi@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <fabrice.gasnier@st.com>,
+        <alain.volmat@st.com>
+Subject: [PATCH 16/18] spi: stm32: always perform registers configuration prior to transfer
+Date:   Wed, 5 Aug 2020 09:02:11 +0200
+Message-ID: <1596610933-32599-17-git-send-email-alain.volmat@st.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1596610933-32599-1-git-send-email-alain.volmat@st.com>
+References: <1596610933-32599-1-git-send-email-alain.volmat@st.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="G6nVm6DDWH/FONJq"
-Content-Disposition: inline
-In-Reply-To: <20200731125954.jeeqmccnknqllwxh@mobilestation>
-X-Cookie: Every solution breeds new problems.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
+X-Originating-IP: [10.75.127.48]
+X-ClientProxiedBy: SFHDAG8NODE1.st.com (10.75.127.22) To SFHDAG3NODE2.st.com
+ (10.75.127.8)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-08-05_04:2020-08-03,2020-08-05 signatures=0
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+SPI registers content may have been lost upon suspend/resume sequence.
+So, always compute and apply the necessary configuration in
+stm32_spi_transfer_one_setup routine.
 
---G6nVm6DDWH/FONJq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Alain Volmat <alain.volmat@st.com>
+---
+ drivers/spi/spi-stm32.c | 42 +++++++++++++++++-------------------------
+ 1 file changed, 17 insertions(+), 25 deletions(-)
 
-On Fri, Jul 31, 2020 at 03:59:54PM +0300, Serge Semin wrote:
-> On Fri, Jul 31, 2020 at 12:26:12PM +0300, Andy Shevchenko wrote:
-> > On Fri, Jul 31, 2020 at 10:59:45AM +0300, Serge Semin wrote:
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index 2665d8d7f318..177f82700de0 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -1579,41 +1579,33 @@ static int stm32_spi_transfer_one_setup(struct stm32_spi *spi,
+ 	unsigned long flags;
+ 	unsigned int comm_type;
+ 	int nb_words, ret = 0;
++	int mbr;
+ 
+ 	spin_lock_irqsave(&spi->lock, flags);
+ 
+ 	spi->cur_xferlen = transfer->len;
+ 
+-	if (spi->cur_bpw != transfer->bits_per_word) {
+-		spi->cur_bpw = transfer->bits_per_word;
+-		spi->cfg->set_bpw(spi);
+-	}
+-
+-	if (spi->cur_speed != transfer->speed_hz) {
+-		int mbr;
+-
+-		/* Update spi->cur_speed with real clock speed */
+-		mbr = stm32_spi_prepare_mbr(spi, transfer->speed_hz,
+-					    spi->cfg->baud_rate_div_min,
+-					    spi->cfg->baud_rate_div_max);
+-		if (mbr < 0) {
+-			ret = mbr;
+-			goto out;
+-		}
++	spi->cur_bpw = transfer->bits_per_word;
++	spi->cfg->set_bpw(spi);
+ 
+-		transfer->speed_hz = spi->cur_speed;
+-		stm32_spi_set_mbr(spi, mbr);
++	/* Update spi->cur_speed with real clock speed */
++	mbr = stm32_spi_prepare_mbr(spi, transfer->speed_hz,
++				    spi->cfg->baud_rate_div_min,
++				    spi->cfg->baud_rate_div_max);
++	if (mbr < 0) {
++		ret = mbr;
++		goto out;
+ 	}
+ 
+-	comm_type = stm32_spi_communication_type(spi_dev, transfer);
+-	if (spi->cur_comm != comm_type) {
+-		ret = spi->cfg->set_mode(spi, comm_type);
++	transfer->speed_hz = spi->cur_speed;
++	stm32_spi_set_mbr(spi, mbr);
+ 
+-		if (ret < 0)
+-			goto out;
++	comm_type = stm32_spi_communication_type(spi_dev, transfer);
++	ret = spi->cfg->set_mode(spi, comm_type);
++	if (ret < 0)
++		goto out;
+ 
+-		spi->cur_comm = comm_type;
+-	}
++	spi->cur_comm = comm_type;
+ 
+ 	if (spi->cfg->set_data_idleness)
+ 		spi->cfg->set_data_idleness(spi, transfer->len);
+-- 
+2.7.4
 
-> > > Note since the DMA-engine subsystem in kernel 5.8-rcX doesn't have the
-> > > max_sg_burst capability supported, this series is intended to be applied
-> > > only after the "next"-branch of the DMA-engine repository is merged into
-> > > the mainline repo. Alternatively the series could be merged in through the
-> > > DMA-engine repo.
-
-> > This needs to be thought through...
-
-> There is nothing to think about: either Mark completes review/accepts the series
-> and Vinod agrees to merge it in through the DMA-engine repo, or we'll have to
-> wait until the next merge window is closed and then merge the series in
-> traditionally through the SPI repo.
-
-Well, the merge window is open now so this won't get applied till -rc1
-anyway.
-
---G6nVm6DDWH/FONJq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl8pz8IACgkQJNaLcl1U
-h9AYKgf9HNtd2FGIEieYPkuzAQcSJQLGew4KZucymrWjbuTvb5SMMej/oB9leesx
-GfKcCECfT73+aZrNC8QQHPkjRvmX7ciK5qtHuNMQ8H+ewnXF/vPsonvirE4RuskD
-bhAXbs2ZZxU6eOvigw4+hDleEJ+xtsuyk3D7PggkrtQ+3S0hBlhfuXJVN8SnVrzf
-Z33AHm+uHWCOTKODQiZdY/LsVYgeFbU11rMrujdc0UbXKa616aLa/PMTqGHGOIJV
-tVu6hT5jGnKxABexOzXGeKqQKExVCIKg94MLUpcj75pcTnm6plesfAaCDxO18Ufo
-/G6U4/JDVcfZjfiwn/MzeE8YPoWfMA==
-=JKrs
------END PGP SIGNATURE-----
-
---G6nVm6DDWH/FONJq--

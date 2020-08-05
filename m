@@ -2,87 +2,109 @@ Return-Path: <SRS0=JCci=BP=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E1BCAC433DF
-	for <linux-spi@archiver.kernel.org>; Wed,  5 Aug 2020 20:11:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4967FC433DF
+	for <linux-spi@archiver.kernel.org>; Wed,  5 Aug 2020 20:15:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AEA2822B42
-	for <linux-spi@archiver.kernel.org>; Wed,  5 Aug 2020 20:11:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 289B322CF7
+	for <linux-spi@archiver.kernel.org>; Wed,  5 Aug 2020 20:15:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1596658317;
-	bh=qLO2o0mSxwMb9NIevBlzz6FtAr3nJ1YFHl9EQ14dEfk=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=uwgfvLq4sbbSjHCaUQ7Wi4lYwY98dhDvcuTIqpe/tvZ8aLQHlrOWWK6v6TQTndXPC
-	 NJp3qm4aonKSzkr0CKxo8xnbjYlzM3IL7fGWOMmgV3hTqeYDDc7h+fL96pNBE6D9e5
-	 RX9w3ZrooRnAkcsjcexF5lqaHQEWDB2gt1pEicTM=
+	s=default; t=1596658518;
+	bh=x3ZHXxquKDbAiA2NrYdhb8ekIS3wwnWPgFDvfXsCgjQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=W+qqmNi/yQxkAOtg32oHl8JLK67B/kUPd5V0Ri5BIWMcblASggbsE48mzu7k+EKJt
+	 TKoObFsQwFDEdy9PV/Qh8buHQqrD9wLTFLLyw5AaZC+55IXuKFKL9oOkyDBgAf5FTy
+	 2On/vJasLe9OmZfl1pp+JZVW5s3BrJ695/euHQ8E=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727008AbgHEULj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 5 Aug 2020 16:11:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49474 "EHLO mail.kernel.org"
+        id S1728544AbgHEUPR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 5 Aug 2020 16:15:17 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48136 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727006AbgHEQ1m (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 5 Aug 2020 12:27:42 -0400
+        id S1726489AbgHEQUR (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 5 Aug 2020 12:20:17 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 029A72311F;
-        Wed,  5 Aug 2020 15:55:41 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 616D7207FC;
+        Wed,  5 Aug 2020 10:51:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596642942;
-        bh=qLO2o0mSxwMb9NIevBlzz6FtAr3nJ1YFHl9EQ14dEfk=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=1+HKfGAolToUv+Ni+OR9LVDesgAhGSjLcKeUX1k8GZsyM5zBJXiuKR7yXqfwLIMTi
-         7/ZTxgyDcDBXPUkCvOkWpAJEdiIlQwsJb7yBQ0q/uFOA/Fyq8tuHqXrqdgXMR4NQ+t
-         KypJKPv8fTULKS1OojELAnTGF+2jHMt75kb7GcRs=
-Date:   Wed, 05 Aug 2020 16:55:19 +0100
+        s=default; t=1596624686;
+        bh=x3ZHXxquKDbAiA2NrYdhb8ekIS3wwnWPgFDvfXsCgjQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Tz9/O3MwNWVUjnDemRDBvIBHLVnCwzcZU9KwGVAfLwJL9klqT5BXqz1Xdd8jPqNwM
+         JihxqNRzl/tuH3X1xIDDy5h7jYfjdribFzyTkod95UguTpz2DDZsDpOs0iFqDPn3aZ
+         SwLoSRPWz174jubsykqQiQ8naeWwRJ0IJ1ilLquY=
+Date:   Wed, 5 Aug 2020 11:51:04 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Tobias Schramm <t.schramm@manjaro.org>
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20200804195136.1485392-1-t.schramm@manjaro.org>
-References: <20200804195136.1485392-1-t.schramm@manjaro.org>
-Subject: Re: [PATCH] spi: stm32: clear only asserted irq flags on interrupt
-Message-Id: <159664291990.49398.7013081287878568700.b4-ty@kernel.org>
+To:     Alain Volmat <alain.volmat@st.com>
+Cc:     amelie.delaunay@st.com, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@st.com, linux-spi@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        fabrice.gasnier@st.com
+Subject: Re: [PATCH 03/18] spi: stm32h7: remove unused mode fault MODF event
+ handling
+Message-ID: <20200805105104.GC5556@sirena.org.uk>
+References: <1596610933-32599-1-git-send-email-alain.volmat@st.com>
+ <1596610933-32599-4-git-send-email-alain.volmat@st.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="4jXrM3lyYWu4nBt5"
+Content-Disposition: inline
+In-Reply-To: <1596610933-32599-4-git-send-email-alain.volmat@st.com>
+X-Cookie: Fast, cheap, good: pick two.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, 4 Aug 2020 21:51:36 +0200, Tobias Schramm wrote:
-> Previously the stm32h7 interrupt thread cleared all non-masked interrupts.
-> If an interrupt was to occur during the handling of another interrupt its
-> flag would be unset, resulting in a lost interrupt.
-> This patches fixes the issue by clearing only the currently set interrupt
-> flags.
 
-Applied to
+--4jXrM3lyYWu4nBt5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+On Wed, Aug 05, 2020 at 09:01:58AM +0200, Alain Volmat wrote:
+> From: Antonio Borneo <antonio.borneo@st.com>
 
-Thanks!
+> Accordingly to STM32H7 document RM0433, "mode fault" MODF is
+> a special mode to handle a spi bus with multiple masters, in
+> which each master has to "detect" if another master enables
+> its CS to take control of the bus. Once this is detected,
+> all other masters has to temporarily switch to "slave" mode.
 
-[1/1] spi: stm32: clear only asserted irq flags on interrupt
-      commit: ae1ba50f1e706dfd7ce402ac52c1f1f10becad68
+> Such multi-master mode is not supported in Linux and this
+> driver properly disables the mode by setting the bits
+> SPI_CR1_SSI and SPI_CFG2_SSM, thus forcing a master only
+> operating mode.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+> In this condition, we will never receive an interrupt due to
+> MODF event and we do not need to handle it.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> Remove all the unused code around handling MODF events.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+What does having this cost us?  Hopefully it's not doing much but if
+something goes wrong with the hardware and this does get flagged up for
+some reason it'd be good to know about it.  It doesn't seem to be having
+a big impact on the code or anything.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+--4jXrM3lyYWu4nBt5
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thanks,
-Mark
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl8qjxcACgkQJNaLcl1U
+h9C+kAf8CK9hJ/6Jc4BQ05hn0nAaypIJAYNq1bv8lExUjoH1m3AeiTfTBbh8Aq25
+W/1u3hhb83akhry/0vcVC2vSF5UGKInNhyeb6FRRoqUaiBD2krRo55ZDgmYeD7Ta
+F34U8K3C4QbYMpQeKO5ceuZZOadkfjxKrgX4h+ZkFwGXaUn8tIGN9MDZLKyQ85md
+ecRl77X3Wt9kX9OxEml6f5UFJvbaVA//arSxikBmyBnFDAe4udEu9PVXHtdJ1pNy
+jvw6E20aw6tBoteFTfL1iv36f8kImbVrjGWJjgHEUu2ujyEgQgJfg9xrU3wWIykr
+OlTao50KMlI4sHvYI2leN01XzXGJdA==
+=gL3F
+-----END PGP SIGNATURE-----
+
+--4jXrM3lyYWu4nBt5--

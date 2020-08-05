@@ -4,40 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-5.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DD48C433E0
-	for <linux-spi@archiver.kernel.org>; Wed,  5 Aug 2020 17:43:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7CD68C433DF
+	for <linux-spi@archiver.kernel.org>; Wed,  5 Aug 2020 19:21:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 52544207FC
-	for <linux-spi@archiver.kernel.org>; Wed,  5 Aug 2020 17:43:33 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 39D52206D4
+	for <linux-spi@archiver.kernel.org>; Wed,  5 Aug 2020 19:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1596649413;
-	bh=E48uURU/e4C3y5TjlfnNrUSBQnpVCadc+z+Vd9h/kdU=;
+	s=default; t=1596655311;
+	bh=itzMvNq8nfgP8VKXOJXPOoZfq8+Pd5YP4oo6JUWZy/Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=p0wKyKPhZk9D/N/gKBAH/QJsDPqbqcRUjlSZ1ukti9Rp0OSsfYZzg/Y36sR3RJYnz
-	 YqyxriQrj7zYVOKCPBTRWcANoCDabx0XGHl9Uv4w4MDQzg1n4nBMGug49sJ+k4rkB4
-	 n6Lov/Pvmq4/yM/7eOmTLnnQbLCJNFdiPZeX/Dnk=
+	b=Zit22wJDoPcHxCKitQ160+H65j1DA4ZJCzHLy6nYBHeYu0OYyst1e8u90zF6TjHwp
+	 jHtI7UMYcc6NXRv7hDB3kc12m0q/PZSxRWMr9nQvQZesfPL3eQI1HUaKq11y6SAl6y
+	 v3RHa9+J7y+sLuK77z7IVxUARX9HFtgYBjX9C6Zk=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728978AbgHERl7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 5 Aug 2020 13:41:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42146 "EHLO mail.kernel.org"
+        id S1728380AbgHETVX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 5 Aug 2020 15:21:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43132 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728900AbgHERkV (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 5 Aug 2020 13:40:21 -0400
+        id S1728977AbgHERl7 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 5 Aug 2020 13:41:59 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1020622CAE;
-        Wed,  5 Aug 2020 11:01:47 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E99452173E;
+        Wed,  5 Aug 2020 10:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596625308;
-        bh=E48uURU/e4C3y5TjlfnNrUSBQnpVCadc+z+Vd9h/kdU=;
+        s=default; t=1596624860;
+        bh=itzMvNq8nfgP8VKXOJXPOoZfq8+Pd5YP4oo6JUWZy/Q=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=vjiEPe14+OtcSgTUe6IvKe9v7YtFnMHcqLyu1+yzJV2lHJlinrgdZttz+o/8wF2Pn
-         kjWCfnTxkN2Yt08lbE1MOKOyiYlxVVYDwGj7fNWqJoh2bRTgpr9ZnCA1QsL5FJRKXD
-         2Qe0hIMyvTa1JtLSs+tAhtngoaoynx1LzvqEakcg=
-Date:   Wed, 5 Aug 2020 12:01:25 +0100
+        b=daILxyCwv0M7mQeyhNXxvi03DAUtga5jJtqn9dQXwRgrXBcNva8DPZDusD/aFamB8
+         Au9mHe9ABAS9MqqceMBsO7YPBu1LumIOWL9uh+TWE/OO/RKyxryVA4IqaKwGaUH9uK
+         2Cbco3etFIjw9O/v4cujAsyuMP3cTEND8YVamfgM=
+Date:   Wed, 5 Aug 2020 11:53:57 +0100
 From:   Mark Brown <broonie@kernel.org>
 To:     Alain Volmat <alain.volmat@st.com>
 Cc:     amelie.delaunay@st.com, mcoquelin.stm32@gmail.com,
@@ -45,15 +46,15 @@ Cc:     amelie.delaunay@st.com, mcoquelin.stm32@gmail.com,
         linux-stm32@st-md-mailman.stormreply.com,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         fabrice.gasnier@st.com
-Subject: Re: [PATCH 12/18] spi: stm32: move spi disable out of irq handler
-Message-ID: <20200805110125.GG5556@sirena.org.uk>
+Subject: Re: [PATCH 09/18] spi: stm32h7: fix race condition at end of transfer
+Message-ID: <20200805105357.GD5556@sirena.org.uk>
 References: <1596610933-32599-1-git-send-email-alain.volmat@st.com>
- <1596610933-32599-13-git-send-email-alain.volmat@st.com>
+ <1596610933-32599-10-git-send-email-alain.volmat@st.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="KR/qxknboQ7+Tpez"
+        protocol="application/pgp-signature"; boundary="3Gf/FFewwPeBMqCJ"
 Content-Disposition: inline
-In-Reply-To: <1596610933-32599-13-git-send-email-alain.volmat@st.com>
+In-Reply-To: <1596610933-32599-10-git-send-email-alain.volmat@st.com>
 X-Cookie: Fast, cheap, good: pick two.
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-spi-owner@vger.kernel.org
@@ -62,40 +63,39 @@ List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
 
---KR/qxknboQ7+Tpez
+--3Gf/FFewwPeBMqCJ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 05, 2020 at 09:02:07AM +0200, Alain Volmat wrote:
+On Wed, Aug 05, 2020 at 09:02:04AM +0200, Alain Volmat wrote:
 > From: Antonio Borneo <antonio.borneo@st.com>
 >=20
-> The spi disable could potentially require some time to finish.
-> It has to be executed at the end of a transfer, but there is
-> no reason to call it in the irq handler.
+> The caller of stm32_spi_transfer_one(), spi_transfer_one_message(),
+> is waiting for us to call spi_finalize_current_transfer() and will
+> eventually schedule a new transfer, if available.
+> We should guarantee that the spi controller is really available
+> before calling spi_finalize_current_transfer().
 >=20
-> Simplify the irq handler by moving out the spi disable. The
-> synchronization through xfer_completion is used to defer the
-> execution of spi disable.
+> Move the call to spi_finalize_current_transfer() _after_ the call
+> to stm32_spi_disable().
 
-Should this be an unprepare_transfer_hardware() operation?  That would
-allow the framework to take care of scheduling this in an appropriate
-context with the added advantage of not needing to do it when there's
-another message scheduled immediately.
+This seems like a bug fix and should therefore be at the start of the
+series so it can be sent to mainline without the new development work.
 
---KR/qxknboQ7+Tpez
+--3Gf/FFewwPeBMqCJ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl8qkYUACgkQJNaLcl1U
-h9Amcwf/Z9jbsoaJGZe0lTnEB+ZN1x7Xo629kRG1It/WXDUx01vXa/0BIFFomSB8
-5z4skhqGXkfncS+6lCZzBW1dJjVMTxJTXztD4zCbb45cYbGA+rjWIn2JPMvHLLxO
-swSm5Poy0PDGddU6aVh9PrZgMJXe6z5+hogGuIfxuPIdDi0gudqZ6mxH1N7emcQh
-52kzLDjvPtfeYESQYhtaCyD/MDbrAvSPC/946BHXzIcDWpWeHJIsdNUQCghTUHHg
-D3dpBhZhYrJfaE8Iv81hlGdlEbzrRDsmdJLi918xEECHBPWEoKItosC0DRKFVo2q
-/gSifjQBt0a6jA65RbRP4i8WXRUTNA==
-=6vOj
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl8qj8UACgkQJNaLcl1U
+h9BPMwf/SVAa/tykTrFSDmtKpWBCSoTEQyhwBfjKuq+rQf3+01Akz63PIPooThf4
+4hcsMCzyVNfFiNhOCvCyeK5ccZ3iJ6ZX+CBzIp82qadb35VN1MNxMVwHPy2kshTW
+8S+oKpDXRIFEiuKmDTBW22swtHCy8m01Ng4gQXvQPBhdjIpff4sl/kAMBxPRUFBS
+TjkRi39WPFNwmRWRBrAxa99mmyOt0+83zOs0jjLRRJADsfoIaDdkISbFGJ517Wh1
+10XUqNK0kNJC8hqj6rK7jgkgQeMW3vAQaimhlJzFbnjVOgtiW74zF03RPmxM1w6V
+R+0IRfA+AzMkXP1gTek7e+vjuBraaQ==
+=4szv
 -----END PGP SIGNATURE-----
 
---KR/qxknboQ7+Tpez--
+--3Gf/FFewwPeBMqCJ--

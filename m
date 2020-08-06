@@ -1,110 +1,50 @@
-Return-Path: <SRS0=JCci=BP=vger.kernel.org=linux-spi-owner@kernel.org>
+Return-Path: <SRS0=xrmB=BQ=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=0.1 required=3.0 tests=BAYES_50,DKIM_ADSP_CUSTOM_MED,
+	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,FREEMAIL_REPLYTO_END_DIGIT,
+	HEADER_FROM_DIFFERENT_DOMAINS,LOTS_OF_MONEY,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4967FC433DF
-	for <linux-spi@archiver.kernel.org>; Wed,  5 Aug 2020 20:15:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 295E3C3F698
+	for <linux-spi@archiver.kernel.org>; Thu,  6 Aug 2020 11:04:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 289B322CF7
-	for <linux-spi@archiver.kernel.org>; Wed,  5 Aug 2020 20:15:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1596658518;
-	bh=x3ZHXxquKDbAiA2NrYdhb8ekIS3wwnWPgFDvfXsCgjQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=W+qqmNi/yQxkAOtg32oHl8JLK67B/kUPd5V0Ri5BIWMcblASggbsE48mzu7k+EKJt
-	 TKoObFsQwFDEdy9PV/Qh8buHQqrD9wLTFLLyw5AaZC+55IXuKFKL9oOkyDBgAf5FTy
-	 2On/vJasLe9OmZfl1pp+JZVW5s3BrJ695/euHQ8E=
+	by mail.kernel.org (Postfix) with ESMTP id 2429C204FD
+	for <linux-spi@archiver.kernel.org>; Thu,  6 Aug 2020 11:04:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728544AbgHEUPR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 5 Aug 2020 16:15:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48136 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726489AbgHEQUR (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 5 Aug 2020 12:20:17 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 616D7207FC;
-        Wed,  5 Aug 2020 10:51:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596624686;
-        bh=x3ZHXxquKDbAiA2NrYdhb8ekIS3wwnWPgFDvfXsCgjQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Tz9/O3MwNWVUjnDemRDBvIBHLVnCwzcZU9KwGVAfLwJL9klqT5BXqz1Xdd8jPqNwM
-         JihxqNRzl/tuH3X1xIDDy5h7jYfjdribFzyTkod95UguTpz2DDZsDpOs0iFqDPn3aZ
-         SwLoSRPWz174jubsykqQiQ8naeWwRJ0IJ1ilLquY=
-Date:   Wed, 5 Aug 2020 11:51:04 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Alain Volmat <alain.volmat@st.com>
-Cc:     amelie.delaunay@st.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@st.com, linux-spi@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        fabrice.gasnier@st.com
-Subject: Re: [PATCH 03/18] spi: stm32h7: remove unused mode fault MODF event
- handling
-Message-ID: <20200805105104.GC5556@sirena.org.uk>
-References: <1596610933-32599-1-git-send-email-alain.volmat@st.com>
- <1596610933-32599-4-git-send-email-alain.volmat@st.com>
+        id S1728411AbgHFGvY convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 6 Aug 2020 02:51:24 -0400
+Received: from [125.140.134.231] ([125.140.134.231]:62579 "EHLO
+        WIN-DAONO245HJF" rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728381AbgHFGvX (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 6 Aug 2020 02:51:23 -0400
+Received: from [185.191.231.247] ([185.191.231.247]) by WIN-DAONO245HJF with Microsoft SMTPSVC(8.5.9600.16384);
+         Thu, 6 Aug 2020 15:51:14 +0900
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="4jXrM3lyYWu4nBt5"
-Content-Disposition: inline
-In-Reply-To: <1596610933-32599-4-git-send-email-alain.volmat@st.com>
-X-Cookie: Fast, cheap, good: pick two.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: INVESTMENT
+To:     linux-spi@vger.kernel.org
+From:   campbellclark016@gmail.com
+Date:   Wed, 05 Aug 2020 23:51:19 -0700
+Reply-To: campbell.clark24@yahoo.com
+Message-ID: <WIN-DAONO245HJFk3j500aab5b5@WIN-DAONO245HJF>
+X-OriginalArrivalTime: 06 Aug 2020 06:51:14.0595 (UTC) FILETIME=[FA46E730:01D66BBD]
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
 
---4jXrM3lyYWu4nBt5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Good day,
 
-On Wed, Aug 05, 2020 at 09:01:58AM +0200, Alain Volmat wrote:
-> From: Antonio Borneo <antonio.borneo@st.com>
+ You were recommended by a mutual associate. I write you regarding an investment of bearer bonds I made on behalf of a client. The investment was made in 2009 and has been under my management. The said investor is deceased. The window is now available to assign these bonds to any name or company of my choice. I have all the necessary information to achieve this within 10 banking days. The total value of the bond is 100 million pounds sterling, in a million pound denominations. If you can handle this, do contact me at your earliest convenience via my email campbell.clark24@yahoo.com So we can discuss the finer details
 
-> Accordingly to STM32H7 document RM0433, "mode fault" MODF is
-> a special mode to handle a spi bus with multiple masters, in
-> which each master has to "detect" if another master enables
-> its CS to take control of the bus. Once this is detected,
-> all other masters has to temporarily switch to "slave" mode.
 
-> Such multi-master mode is not supported in Linux and this
-> driver properly disables the mode by setting the bits
-> SPI_CR1_SSI and SPI_CFG2_SSM, thus forcing a master only
-> operating mode.
+Thank you
 
-> In this condition, we will never receive an interrupt due to
-> MODF event and we do not need to handle it.
 
-> Remove all the unused code around handling MODF events.
-
-What does having this cost us?  Hopefully it's not doing much but if
-something goes wrong with the hardware and this does get flagged up for
-some reason it'd be good to know about it.  It doesn't seem to be having
-a big impact on the code or anything.
-
---4jXrM3lyYWu4nBt5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl8qjxcACgkQJNaLcl1U
-h9C+kAf8CK9hJ/6Jc4BQ05hn0nAaypIJAYNq1bv8lExUjoH1m3AeiTfTBbh8Aq25
-W/1u3hhb83akhry/0vcVC2vSF5UGKInNhyeb6FRRoqUaiBD2krRo55ZDgmYeD7Ta
-F34U8K3C4QbYMpQeKO5ceuZZOadkfjxKrgX4h+ZkFwGXaUn8tIGN9MDZLKyQ85md
-ecRl77X3Wt9kX9OxEml6f5UFJvbaVA//arSxikBmyBnFDAe4udEu9PVXHtdJ1pNy
-jvw6E20aw6tBoteFTfL1iv36f8kImbVrjGWJjgHEUu2ujyEgQgJfg9xrU3wWIykr
-OlTao50KMlI4sHvYI2leN01XzXGJdA==
-=gL3F
------END PGP SIGNATURE-----
-
---4jXrM3lyYWu4nBt5--
+Mr Campbell Clark

@@ -7,60 +7,49 @@ X-Spam-Status: No, score=-13.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E79EC433E1
-	for <linux-spi@archiver.kernel.org>; Thu,  6 Aug 2020 18:39:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2222CC433E5
+	for <linux-spi@archiver.kernel.org>; Thu,  6 Aug 2020 18:41:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BBED022C9F
-	for <linux-spi@archiver.kernel.org>; Thu,  6 Aug 2020 18:39:58 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 695A6221E2
+	for <linux-spi@archiver.kernel.org>; Thu,  6 Aug 2020 18:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1596739198;
-	bh=e1oSXjKRZ1/t6yaGmxeMpFJIIqxQuITtDtfD3fTgYtQ=;
+	s=default; t=1596739299;
+	bh=0MX3E7Ne/rPTcgcCD1XqjJDdOiBT4MRY8ces7kKdkI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=wVG5A3qx9CltLbaQBvD+6TMzMXgNVTnTUE8emxmuwecvpfr6sbjoY+ZIKQFuBs2Dp
-	 2ZhruzSEaQbYoga5sqF0N/s6THn9YofRborQw6+7V9NReEbxggawfG21uYaGF+3QRT
-	 XdBceHDdNs8aqGejf0CH3643vIVeyvvfFHIJqFbM=
+	b=uh0pEhoAQfntiz9NSfCW7Dr5/vcMg/GhLSDGVcVFIB0/sweYA/kFYDHPzyh7epfNf
+	 3ql321iiWKTP+KtPmzoFXRN92+sSZpHErXsxZal+d9kDw3O0FF4Zol81KBGZGTyOTU
+	 9rkYlRrMZGPs+emtvzgSVp/5aW9G3wymV1zaPWzc=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729925AbgHFSjt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 6 Aug 2020 14:39:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51152 "EHLO mail.kernel.org"
+        id S1729545AbgHFSli (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 6 Aug 2020 14:41:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54062 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728597AbgHFS34 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 6 Aug 2020 14:29:56 -0400
+        id S1728326AbgHFS3u (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 6 Aug 2020 14:29:50 -0400
 Received: from localhost.localdomain (unknown [194.230.155.117])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7B4C522D70;
-        Thu,  6 Aug 2020 18:22:48 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3DB5D22E01;
+        Thu,  6 Aug 2020 18:23:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596738173;
-        bh=e1oSXjKRZ1/t6yaGmxeMpFJIIqxQuITtDtfD3fTgYtQ=;
+        s=default; t=1596738239;
+        bh=0MX3E7Ne/rPTcgcCD1XqjJDdOiBT4MRY8ces7kKdkI0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RnJk8Nw20oovJGOtix16awmixT2stIdDZnn5cCpdsfoPL1ZDrAouFmfTXazZkBryt
-         U6+/C4sQrMYB7/RhwqVpMgQSY+Lnf776wVev3iQBKSSjccZfpKA0QCfvg58nAuJV/9
-         XLhS2JgfS/EMeK/1j1FFEu/fmUc6n1ay5mUcjoIg=
+        b=Fpd7yEIes202ZGrwsi7XioG0nprsSaGhvANyXicNmF1IjIGUhWmE9/7lvAIMALBiK
+         UzCilFjlVt/VkB23Su1aGrP5eF+NC20P24Jgxn8ZBHgS+WWTblxxxZzbJVt0dH1P3e
+         DdO2vM6jvaB47RBJfmB1NZYiu8fsK4bL7CWPXc3A=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Arnd Bergmann <arnd@arndb.de>,
         Krzysztof Kozlowski <krzk@kernel.org>,
         Russell King <linux@armlinux.org.uk>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Lee Jones <lee.jones@linaro.org>,
+        Kukjin Kim <kgene@kernel.org>, Andi Shyti <andi@etezian.org>,
         Mark Brown <broonie@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Sangbeom Kim <sbkim73@samsung.com>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        linux-arm-kernel@lists.infradead.org, linux-mmc@vger.kernel.org,
-        linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-serial@vger.kernel.org, alsa-devel@alsa-project.org
-Subject: [PATCH v2 18/41] ARM: s5pv210: don't imply CONFIG_PLAT_SAMSUNG
-Date:   Thu,  6 Aug 2020 20:20:35 +0200
-Message-Id: <20200806182059.2431-18-krzk@kernel.org>
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org
+Subject: [PATCH v2 31/41] ARM: s3c24xx: spi: avoid hardcoding fiq number in driver
+Date:   Thu,  6 Aug 2020 20:20:48 +0200
+Message-Id: <20200806182059.2431-31-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200806181932.2253-1-krzk@kernel.org>
 References: <20200806181932.2253-1-krzk@kernel.org>
@@ -71,146 +60,130 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-The plat-samsung directory and mach-s5pv210 can be build
-completely independently, so split the two Kconfig symbols
-CONFIG_PLAT_SAMSUNG and CONFIG_ARCH_S5PV210.
+The IRQ_EINT0 constant is a platform detail that is
+defined in mach/irqs.h and not visible to drivers once
+that header is made private.
+
+Since the same calculation already happens in s3c24xx_set_fiq,
+just return the value from there.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
-Acked-by: Thierry Reding <thierry.reding@gmail.com>
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- arch/arm/Kconfig.debug        | 6 +++---
- arch/arm/Makefile             | 1 -
- arch/arm/plat-samsung/Kconfig | 2 +-
- drivers/mmc/host/Kconfig      | 2 +-
- drivers/pwm/Kconfig           | 2 +-
- drivers/spi/Kconfig           | 2 +-
- drivers/tty/serial/Kconfig    | 2 +-
- sound/soc/samsung/Kconfig     | 2 +-
- 8 files changed, 9 insertions(+), 10 deletions(-)
+ arch/arm/mach-s3c24xx/irq-s3c24xx.c | 12 +++++++++---
+ drivers/spi/spi-s3c24xx.c           | 18 ++----------------
+ include/linux/spi/s3c24xx.h         |  2 +-
+ 3 files changed, 12 insertions(+), 20 deletions(-)
 
-diff --git a/arch/arm/Kconfig.debug b/arch/arm/Kconfig.debug
-index 153a9a35dd20..b4b41f9d246b 100644
---- a/arch/arm/Kconfig.debug
-+++ b/arch/arm/Kconfig.debug
-@@ -1005,7 +1005,7 @@ choice
- 		  via SCIFA4 on Renesas SH-Mobile AG5 (SH73A0).
+diff --git a/arch/arm/mach-s3c24xx/irq-s3c24xx.c b/arch/arm/mach-s3c24xx/irq-s3c24xx.c
+index b0e879ee14c1..3965347cacf0 100644
+--- a/arch/arm/mach-s3c24xx/irq-s3c24xx.c
++++ b/arch/arm/mach-s3c24xx/irq-s3c24xx.c
+@@ -376,14 +376,17 @@ asmlinkage void __exception_irq_entry s3c24xx_handle_irq(struct pt_regs *regs)
+ /**
+  * s3c24xx_set_fiq - set the FIQ routing
+  * @irq: IRQ number to route to FIQ on processor.
++ * @ack_ptr: pointer to a location for storing the bit mask
+  * @on: Whether to route @irq to the FIQ, or to remove the FIQ routing.
+  *
+  * Change the state of the IRQ to FIQ routing depending on @irq and @on. If
+  * @on is true, the @irq is checked to see if it can be routed and the
+  * interrupt controller updated to route the IRQ. If @on is false, the FIQ
+  * routing is cleared, regardless of which @irq is specified.
++ *
++ * returns the mask value for the register.
+  */
+-int s3c24xx_set_fiq(unsigned int irq, bool on)
++int s3c24xx_set_fiq(unsigned int irq, u32 *ack_ptr, bool on)
+ {
+ 	u32 intmod;
+ 	unsigned offs;
+@@ -391,15 +394,18 @@ int s3c24xx_set_fiq(unsigned int irq, bool on)
+ 	if (on) {
+ 		offs = irq - FIQ_START;
+ 		if (offs > 31)
+-			return -EINVAL;
++			return 0;
  
- 	config DEBUG_S3C_UART0
--		depends on PLAT_SAMSUNG || ARCH_EXYNOS
-+		depends on PLAT_SAMSUNG || ARCH_S5PV210 || ARCH_EXYNOS
- 		select DEBUG_EXYNOS_UART if ARCH_EXYNOS
- 		select DEBUG_S3C24XX_UART if ARCH_S3C24XX
- 		select DEBUG_S3C64XX_UART if ARCH_S3C64XX
-@@ -1017,7 +1017,7 @@ choice
- 		  by the boot-loader before use.
+ 		intmod = 1 << offs;
+ 	} else {
+ 		intmod = 0;
+ 	}
  
- 	config DEBUG_S3C_UART1
--		depends on PLAT_SAMSUNG || ARCH_EXYNOS
-+		depends on PLAT_SAMSUNG || ARCH_S5PV210 || ARCH_EXYNOS
- 		select DEBUG_EXYNOS_UART if ARCH_EXYNOS
- 		select DEBUG_S3C24XX_UART if ARCH_S3C24XX
- 		select DEBUG_S3C64XX_UART if ARCH_S3C64XX
-@@ -1029,7 +1029,7 @@ choice
- 		  by the boot-loader before use.
++	if (ack_ptr)
++		*ack_ptr = intmod;
+ 	writel_relaxed(intmod, S3C2410_INTMOD);
+-	return 0;
++
++	return intmod;
+ }
  
- 	config DEBUG_S3C_UART2
--		depends on PLAT_SAMSUNG || ARCH_EXYNOS
-+		depends on PLAT_SAMSUNG || ARCH_S5PV210 || ARCH_EXYNOS
- 		select DEBUG_EXYNOS_UART if ARCH_EXYNOS
- 		select DEBUG_S3C24XX_UART if ARCH_S3C24XX
- 		select DEBUG_S3C64XX_UART if ARCH_S3C64XX
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 826613a20b7d..3997cec8848e 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -234,7 +234,6 @@ machine-$(CONFIG_PLAT_SPEAR)		+= spear
- # by CONFIG_* macro name.
- plat-$(CONFIG_ARCH_OMAP)	+= omap
- plat-$(CONFIG_ARCH_S3C64XX)	+= samsung
--plat-$(CONFIG_ARCH_S5PV210)	+= samsung
- plat-$(CONFIG_PLAT_ORION)	+= orion
- plat-$(CONFIG_PLAT_PXA)		+= pxa
- plat-$(CONFIG_PLAT_S3C24XX)	+= samsung
-diff --git a/arch/arm/plat-samsung/Kconfig b/arch/arm/plat-samsung/Kconfig
-index a7cb0db1d5cc..13b39684b582 100644
---- a/arch/arm/plat-samsung/Kconfig
-+++ b/arch/arm/plat-samsung/Kconfig
-@@ -4,7 +4,7 @@
+ EXPORT_SYMBOL_GPL(s3c24xx_set_fiq);
+diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
+index e7a4732590db..d6f51695ca5b 100644
+--- a/drivers/spi/spi-s3c24xx.c
++++ b/drivers/spi/spi-s3c24xx.c
+@@ -229,17 +229,6 @@ struct spi_fiq_code {
+ 	u8	data[];
+ };
  
- config PLAT_SAMSUNG
- 	bool
--	depends on PLAT_S3C24XX || ARCH_S3C64XX || ARCH_S5PV210
-+	depends on PLAT_S3C24XX || ARCH_S3C64XX
- 	default y
- 	select GENERIC_IRQ_CHIP
- 	select NO_IOPORT_MAP
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index ddce8e62280c..9f387daa764a 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -289,7 +289,7 @@ config MMC_SDHCI_TEGRA
+-/**
+- * ack_bit - turn IRQ into IRQ acknowledgement bit
+- * @irq: The interrupt number
+- *
+- * Returns the bit to write to the interrupt acknowledge register.
+- */
+-static inline u32 ack_bit(unsigned int irq)
+-{
+-	return 1 << (irq - IRQ_EINT0);
+-}
+-
+ /**
+  * s3c24xx_spi_tryfiq - attempt to claim and setup FIQ for transfer
+  * @hw: The hardware state.
+@@ -256,6 +245,7 @@ static void s3c24xx_spi_tryfiq(struct s3c24xx_spi *hw)
+ 	struct pt_regs regs;
+ 	enum spi_fiq_mode mode;
+ 	struct spi_fiq_code *code;
++	u32 *ack_ptr = NULL;
+ 	int ret;
  
- config MMC_SDHCI_S3C
- 	tristate "SDHCI support on Samsung S3C SoC"
--	depends on MMC_SDHCI && (PLAT_SAMSUNG || ARCH_EXYNOS)
-+	depends on MMC_SDHCI && (PLAT_SAMSUNG || ARCH_S5PV210 || ARCH_EXYNOS)
- 	help
- 	  This selects the Secure Digital Host Controller Interface (SDHCI)
- 	  often referrered to as the HSMMC block in some of the Samsung S3C
-diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
-index 7dbcf6973d33..9448e4ca8c73 100644
---- a/drivers/pwm/Kconfig
-+++ b/drivers/pwm/Kconfig
-@@ -410,7 +410,7 @@ config PWM_ROCKCHIP
+ 	if (!hw->fiq_claimed) {
+@@ -282,8 +272,6 @@ static void s3c24xx_spi_tryfiq(struct s3c24xx_spi *hw)
+ 	set_fiq_regs(&regs);
  
- config PWM_SAMSUNG
- 	tristate "Samsung PWM support"
--	depends on PLAT_SAMSUNG || ARCH_EXYNOS || COMPILE_TEST
-+	depends on PLAT_SAMSUNG || ARCH_S5PV210 || ARCH_EXYNOS || COMPILE_TEST
- 	help
- 	  Generic PWM framework driver for Samsung.
+ 	if (hw->fiq_mode != mode) {
+-		u32 *ack_ptr;
+-
+ 		hw->fiq_mode = mode;
  
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index c3008e423f59..85619ab64156 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -680,7 +680,7 @@ config SPI_S3C24XX_FIQ
+ 		switch (mode) {
+@@ -303,12 +291,10 @@ static void s3c24xx_spi_tryfiq(struct s3c24xx_spi *hw)
+ 		BUG_ON(!code);
  
- config SPI_S3C64XX
- 	tristate "Samsung S3C64XX series type SPI"
--	depends on (PLAT_SAMSUNG || ARCH_EXYNOS || COMPILE_TEST)
-+	depends on (PLAT_SAMSUNG || ARCH_S5PV210 || ARCH_EXYNOS || COMPILE_TEST)
- 	help
- 	  SPI driver for Samsung S3C64XX and newer SoCs.
+ 		ack_ptr = (u32 *)&code->data[code->ack_offset];
+-		*ack_ptr = ack_bit(hw->irq);
+-
+ 		set_fiq_handler(&code->data, code->length);
+ 	}
  
-diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
-index 8a0352eb337c..10de494e808a 100644
---- a/drivers/tty/serial/Kconfig
-+++ b/drivers/tty/serial/Kconfig
-@@ -235,7 +235,7 @@ config SERIAL_CLPS711X_CONSOLE
+-	s3c24xx_set_fiq(hw->irq, true);
++	s3c24xx_set_fiq(hw->irq, ack_ptr, true);
  
- config SERIAL_SAMSUNG
- 	tristate "Samsung SoC serial support"
--	depends on PLAT_SAMSUNG || ARCH_EXYNOS || COMPILE_TEST
-+	depends on PLAT_SAMSUNG || ARCH_S5PV210 || ARCH_EXYNOS || COMPILE_TEST
- 	select SERIAL_CORE
- 	help
- 	  Support for the on-chip UARTs on the Samsung S3C24XX series CPUs,
-diff --git a/sound/soc/samsung/Kconfig b/sound/soc/samsung/Kconfig
-index 1431be4ed054..a2221ebb1b6a 100644
---- a/sound/soc/samsung/Kconfig
-+++ b/sound/soc/samsung/Kconfig
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- menuconfig SND_SOC_SAMSUNG
- 	tristate "ASoC support for Samsung"
--	depends on PLAT_SAMSUNG || ARCH_EXYNOS || COMPILE_TEST
-+	depends on PLAT_SAMSUNG || ARCH_S5PV210 || ARCH_EXYNOS || COMPILE_TEST
- 	depends on COMMON_CLK
- 	select SND_SOC_GENERIC_DMAENGINE_PCM
- 	help
+ 	hw->fiq_mode = mode;
+ 	hw->fiq_inuse = 1;
+diff --git a/include/linux/spi/s3c24xx.h b/include/linux/spi/s3c24xx.h
+index c91d10b82f08..440a71593162 100644
+--- a/include/linux/spi/s3c24xx.h
++++ b/include/linux/spi/s3c24xx.h
+@@ -20,6 +20,6 @@ struct s3c2410_spi_info {
+ 	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
+ };
+ 
+-extern int s3c24xx_set_fiq(unsigned int irq, bool on);
++extern int s3c24xx_set_fiq(unsigned int irq, u32 *ack_ptr, bool on);
+ 
+ #endif /* __LINUX_SPI_S3C24XX_H */
 -- 
 2.17.1
 

@@ -2,48 +2,49 @@ Return-Path: <SRS0=RA5P=BR=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.1 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-10.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	UNWANTED_LANGUAGE_BODY,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 79AA6C433DF
-	for <linux-spi@archiver.kernel.org>; Fri,  7 Aug 2020 13:23:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E57EFC433DF
+	for <linux-spi@archiver.kernel.org>; Fri,  7 Aug 2020 13:23:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4E3792224D
-	for <linux-spi@archiver.kernel.org>; Fri,  7 Aug 2020 13:23:45 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C47BB2224D
+	for <linux-spi@archiver.kernel.org>; Fri,  7 Aug 2020 13:23:51 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=st.com header.i=@st.com header.b="bj6kEv0u"
+	dkim=pass (2048-bit key) header.d=st.com header.i=@st.com header.b="nOkBad9E"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726045AbgHGNXo (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 7 Aug 2020 09:23:44 -0400
-Received: from mx07-00178001.pphosted.com ([185.132.182.106]:18184 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725893AbgHGNXo (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 7 Aug 2020 09:23:44 -0400
-Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 077DMvQA021119;
-        Fri, 7 Aug 2020 15:23:32 +0200
+        id S1726130AbgHGNXt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 7 Aug 2020 09:23:49 -0400
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:9036 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726015AbgHGNXq (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 7 Aug 2020 09:23:46 -0400
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 077DMlKn021979;
+        Fri, 7 Aug 2020 15:23:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-type; s=STMicroelectronics;
- bh=SPT9WADoExgaJ4XpWadwU5AdWgKn68epVmssRyHTVdM=;
- b=bj6kEv0uTv0xAuVIsxAh6MxZVK6pHirs6IDx98pqVUREGVBXZnar0KCcFPYXH2Yyj0D6
- LFusuuyUefxf3YKMPYiWFo8mKcMbIJDx54ZWW7Oz/ChXLVJs8rp109DVAE0J9Lx0iMMk
- /f2i7rScCN6n5wEZfH3wreQG1yFsYOJfJQ4nYeo8d2dz9jzH9vn4V89wjrfbq14+qYSg
- MycD9S1YBTvugXVqGcLUULzRUIy5RDcu5OCNq8qcB5gINe8uejQZJW9ZfaDoNz/7WY5m
- /bIPBklwZtdAIFReQFAHdwxqS8z8gVmQ62CtsOqjNQh17NY74ExalaXTt9nij49EYpjt bw== 
+ bh=mE1wqTxELRNPQTfYyhL4N0dM8TmqK0GssCG2esZg2As=;
+ b=nOkBad9EIPgQ072yeVaO8IE2Wx2kICo9Cehm76ZFBoGpGUVRUaZ2dADQBGevJicdTfqk
+ oVyipLx7VA/XyNbo4DnRkKVzwu+MJaJbIKdyKRPTt+JP3qPE/CEzkLXI/NBiNevfj44F
+ nD/HFTSfjF0DorqfaBkd6LYxsa4kCgB9/6Sv+vYhU3x1HDUnJZQXu3PD+PZZqmdtoLf4
+ Q+jWqvkSCpD1JcQ6onobClffx1NiDRuX5hJPHXXcLbTh8unp3cqUYEK9HKohZgVfzzlA
+ XgPYJ5qHHS7h9mJ/ZAzyNoXtuF9D3qpRP1ZAVErA4M1oAPrnis+gUb8Nj22kUq7foudM 4g== 
 Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 32n6sbhy7u-1
+        by mx07-00178001.pphosted.com with ESMTP id 32n6j02e9q-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 07 Aug 2020 15:23:32 +0200
+        Fri, 07 Aug 2020 15:23:31 +0200
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id CEAD2100039;
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 63932100038;
         Fri,  7 Aug 2020 15:23:31 +0200 (CEST)
 Received: from Webmail-eu.st.com (sfhdag3node2.st.com [10.75.127.8])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id C3D132B8A02;
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 592BC2B8A02;
         Fri,  7 Aug 2020 15:23:31 +0200 (CEST)
-Received: from localhost (10.75.127.49) by SFHDAG3NODE2.st.com (10.75.127.8)
+Received: from localhost (10.75.127.50) by SFHDAG3NODE2.st.com (10.75.127.8)
  with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 7 Aug 2020 15:23:31
  +0200
 From:   Alain Volmat <alain.volmat@st.com>
@@ -54,15 +55,15 @@ CC:     <mcoquelin.stm32@gmail.com>, <alexandre.torgue@st.com>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>, <fabrice.gasnier@st.com>,
         <alain.volmat@st.com>
-Subject: [PATCH 5/5] spi: stm32: always perform registers configuration prior to transfer
-Date:   Fri, 7 Aug 2020 15:21:25 +0200
-Message-ID: <1596806485-3810-6-git-send-email-alain.volmat@st.com>
+Subject: [PATCH 4/5] spi: stm32: fixes suspend/resume management
+Date:   Fri, 7 Aug 2020 15:21:24 +0200
+Message-ID: <1596806485-3810-5-git-send-email-alain.volmat@st.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1596806485-3810-1-git-send-email-alain.volmat@st.com>
 References: <1596806485-3810-1-git-send-email-alain.volmat@st.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.75.127.49]
+X-Originating-IP: [10.75.127.50]
 X-ClientProxiedBy: SFHDAG7NODE2.st.com (10.75.127.20) To SFHDAG3NODE2.st.com
  (10.75.127.8)
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
@@ -72,78 +73,86 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-SPI registers content may have been lost upon suspend/resume sequence.
-So, always compute and apply the necessary configuration in
-stm32_spi_transfer_one_setup routine.
+From: Amelie Delaunay <amelie.delaunay@st.com>
 
+This patch adds pinctrl power management, and reconfigure spi controller
+in case of resume.
+
+Fixes: 038ac869c9d2 ("spi: stm32: add runtime PM support")
+
+Signed-off-by: Amelie Delaunay <amelie.delaunay@st.com>
 Signed-off-by: Alain Volmat <alain.volmat@st.com>
 ---
- drivers/spi/spi-stm32.c | 42 +++++++++++++++++-------------------------
- 1 file changed, 17 insertions(+), 25 deletions(-)
+ drivers/spi/spi-stm32.c | 27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index e196dbc5c432..7968d23347b6 100644
+index bdd4e70c3f10..e196dbc5c432 100644
 --- a/drivers/spi/spi-stm32.c
 +++ b/drivers/spi/spi-stm32.c
-@@ -1594,41 +1594,33 @@ static int stm32_spi_transfer_one_setup(struct stm32_spi *spi,
- 	unsigned long flags;
- 	unsigned int comm_type;
- 	int nb_words, ret = 0;
-+	int mbr;
+@@ -13,6 +13,7 @@
+ #include <linux/iopoll.h>
+ #include <linux/module.h>
+ #include <linux/of_platform.h>
++#include <linux/pinctrl/consumer.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/reset.h>
+ #include <linux/spi/spi.h>
+@@ -2004,6 +2005,8 @@ static int stm32_spi_remove(struct platform_device *pdev)
  
- 	spin_lock_irqsave(&spi->lock, flags);
+ 	pm_runtime_disable(&pdev->dev);
  
- 	spi->cur_xferlen = transfer->len;
++	pinctrl_pm_select_sleep_state(&pdev->dev);
++
+ 	return 0;
+ }
  
--	if (spi->cur_bpw != transfer->bits_per_word) {
--		spi->cur_bpw = transfer->bits_per_word;
--		spi->cfg->set_bpw(spi);
--	}
--
--	if (spi->cur_speed != transfer->speed_hz) {
--		int mbr;
--
--		/* Update spi->cur_speed with real clock speed */
--		mbr = stm32_spi_prepare_mbr(spi, transfer->speed_hz,
--					    spi->cfg->baud_rate_div_min,
--					    spi->cfg->baud_rate_div_max);
--		if (mbr < 0) {
--			ret = mbr;
--			goto out;
--		}
-+	spi->cur_bpw = transfer->bits_per_word;
-+	spi->cfg->set_bpw(spi);
+@@ -2015,13 +2018,18 @@ static int stm32_spi_runtime_suspend(struct device *dev)
  
--		transfer->speed_hz = spi->cur_speed;
--		stm32_spi_set_mbr(spi, mbr);
-+	/* Update spi->cur_speed with real clock speed */
-+	mbr = stm32_spi_prepare_mbr(spi, transfer->speed_hz,
-+				    spi->cfg->baud_rate_div_min,
-+				    spi->cfg->baud_rate_div_max);
-+	if (mbr < 0) {
-+		ret = mbr;
-+		goto out;
- 	}
+ 	clk_disable_unprepare(spi->clk);
  
--	comm_type = stm32_spi_communication_type(spi_dev, transfer);
--	if (spi->cur_comm != comm_type) {
--		ret = spi->cfg->set_mode(spi, comm_type);
-+	transfer->speed_hz = spi->cur_speed;
-+	stm32_spi_set_mbr(spi, mbr);
+-	return 0;
++	return pinctrl_pm_select_sleep_state(dev);
+ }
  
--		if (ret < 0)
--			goto out;
-+	comm_type = stm32_spi_communication_type(spi_dev, transfer);
-+	ret = spi->cfg->set_mode(spi, comm_type);
-+	if (ret < 0)
-+		goto out;
+ static int stm32_spi_runtime_resume(struct device *dev)
+ {
+ 	struct spi_master *master = dev_get_drvdata(dev);
+ 	struct stm32_spi *spi = spi_master_get_devdata(master);
++	int ret;
++
++	ret = pinctrl_pm_select_default_state(dev);
++	if (ret)
++		return ret;
  
--		spi->cur_comm = comm_type;
--	}
-+	spi->cur_comm = comm_type;
+ 	return clk_prepare_enable(spi->clk);
+ }
+@@ -2051,10 +2059,23 @@ static int stm32_spi_resume(struct device *dev)
+ 		return ret;
  
- 	if (spi->cfg->set_data_idleness)
- 		spi->cfg->set_data_idleness(spi, transfer->len);
+ 	ret = spi_master_resume(master);
+-	if (ret)
++	if (ret) {
+ 		clk_disable_unprepare(spi->clk);
++		return ret;
++	}
+ 
+-	return ret;
++	ret = pm_runtime_get_sync(dev);
++	if (ret) {
++		dev_err(dev, "Unable to power device:%d\n", ret);
++		return ret;
++	}
++
++	spi->cfg->config(spi);
++
++	pm_runtime_mark_last_busy(dev);
++	pm_runtime_put_autosuspend(dev);
++
++	return 0;
+ }
+ #endif
+ 
 -- 
 2.7.4
 

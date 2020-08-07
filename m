@@ -2,87 +2,91 @@ Return-Path: <SRS0=RA5P=BR=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.1 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-5.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A3CBEC433E5
-	for <linux-spi@archiver.kernel.org>; Fri,  7 Aug 2020 13:25:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CDB4BC433DF
+	for <linux-spi@archiver.kernel.org>; Fri,  7 Aug 2020 13:27:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 846FB2224D
-	for <linux-spi@archiver.kernel.org>; Fri,  7 Aug 2020 13:25:41 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=st.com header.i=@st.com header.b="p3E5YYlz"
+	by mail.kernel.org (Postfix) with ESMTP id A0BEF2224D
+	for <linux-spi@archiver.kernel.org>; Fri,  7 Aug 2020 13:27:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1596806871;
+	bh=cauRTF3cdR/PFgrsmHkzjr279ml8ZN/267S96A1D070=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=i0Mofo26cp2T7DQFmZmzFQpXdtR/n0+HJLnfpDBYgFBfDVcFhUMa9TAQtNIjrTAq0
+	 bk/utj3XsZiP2sXENvr9Q74GmzvclnaAlFaDBj2l2BYbZvy3T4Mc10OOoAyTA5XLjR
+	 cWM7gc+1VnnbkVmx09Q7kXKrMewH1lE1ucKA/fOY=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726094AbgHGNXp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 7 Aug 2020 09:23:45 -0400
-Received: from mx07-00178001.pphosted.com ([185.132.182.106]:60208 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725936AbgHGNXo (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 7 Aug 2020 09:23:44 -0400
-Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 077DMvQ9021119;
-        Fri, 7 Aug 2020 15:23:30 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-type; s=STMicroelectronics;
- bh=b6BXTsl2mjCqg+/gyeLA7aW/o4J+gxG3ahn6UuubIzY=;
- b=p3E5YYlzIOFmZmLNQMzd5Nj1xWH3haLk4gwkJJkYrMlxtr/AISWQfW/fslX4+Bfh4A0G
- ZlGX0YkizMgpPd8WiLxqTxceIdJJxObjlqEIRPvSW2tEDcYuyiqO9Omyvty/1GmTgd3I
- W59hdTeEPNXqBPuf8smgKXqLoQGgwzlYKQ8IaUgYYXsDYTyx4b5zWCjS3JfJ+XVOdJUX
- RZ78a4ljDql3uMwHOD/n8CyD0qnN6i8TV6KxCaHl7G4pIt5ZfOZiaW3rRikdfYdMH0mA
- lXuYO8Ld5PxueBosoOafYO2rwk+ek08657F0wf9+gncNN/BNTH7yE1uAEDhnmiI8I1KO SA== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 32n6sbhy7p-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 07 Aug 2020 15:23:30 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id A4EA210002A;
-        Fri,  7 Aug 2020 15:23:29 +0200 (CEST)
-Received: from Webmail-eu.st.com (sfhdag3node2.st.com [10.75.127.8])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 967D92B8A02;
-        Fri,  7 Aug 2020 15:23:29 +0200 (CEST)
-Received: from localhost (10.75.127.50) by SFHDAG3NODE2.st.com (10.75.127.8)
- with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 7 Aug 2020 15:23:29
- +0200
-From:   Alain Volmat <alain.volmat@st.com>
-To:     <broonie@kernel.org>, <amelie.delaunay@st.com>
-CC:     <mcoquelin.stm32@gmail.com>, <alexandre.torgue@st.com>,
-        <linux-spi@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <fabrice.gasnier@st.com>,
-        <alain.volmat@st.com>
-Subject: [PATCH 0/5] spi: stm32: various driver fixes
-Date:   Fri, 7 Aug 2020 15:21:20 +0200
-Message-ID: <1596806485-3810-1-git-send-email-alain.volmat@st.com>
-X-Mailer: git-send-email 2.7.4
+        id S1725872AbgHGN1u (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 7 Aug 2020 09:27:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50598 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726015AbgHGN1r (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 7 Aug 2020 09:27:47 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 771D12086A;
+        Fri,  7 Aug 2020 13:27:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1596806867;
+        bh=cauRTF3cdR/PFgrsmHkzjr279ml8ZN/267S96A1D070=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=aBXsGfYbdXLESB4THwag+WPAVnL5mwYabZopJFRadh5IwTbV4OJ5YuQUZpprZ3CC6
+         bp5X4FM9FzAK5ruMBje7aHEMQRi4UGr1Zwrdl/k+wEInPd2Z6/7BUoIJLBqrLxbuZb
+         S3wmrfHiLijtUeSy2UjsqgR4FyGcBNUjf5tSXAVA=
+Date:   Fri, 7 Aug 2020 14:27:22 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Alain Volmat <alain.volmat@st.com>
+Cc:     amelie.delaunay@st.com, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@st.com, linux-spi@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        fabrice.gasnier@st.com
+Subject: Re: [PATCH 2/5] spi: stm32: fix fifo threshold level in case of
+ short transfer
+Message-ID: <20200807132722.GJ5435@sirena.org.uk>
+References: <1596806485-3810-1-git-send-email-alain.volmat@st.com>
+ <1596806485-3810-3-git-send-email-alain.volmat@st.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.50]
-X-ClientProxiedBy: SFHDAG8NODE3.st.com (10.75.127.24) To SFHDAG3NODE2.st.com
- (10.75.127.8)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-08-07_09:2020-08-06,2020-08-07 signatures=0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="AXxEqdD4tcVTjWte"
+Content-Disposition: inline
+In-Reply-To: <1596806485-3810-3-git-send-email-alain.volmat@st.com>
+X-Cookie: Disposable, use only once.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This serie is a reduced version of the serie
-[spi: stm32: various driver enhancements] previously sent.
 
-Alain Volmat (1):
-  spi: stm32: always perform registers configuration prior to transfer
+--AXxEqdD4tcVTjWte
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Amelie Delaunay (3):
-  spi: stm32: fix fifo threshold level in case of short transfer
-  spi: stm32: fix stm32_spi_prepare_mbr in case of odd clk_rate
-  spi: stm32: fixes suspend/resume management
+On Fri, Aug 07, 2020 at 03:21:22PM +0200, Alain Volmat wrote:
 
-Antonio Borneo (1):
-  spi: stm32h7: fix race condition at end of transfer
+> +	/* data_packet should not exceed transfer length */
+> +	packet = (half_fifo > xfer_len) ? xfer_len : half_fifo;
 
- drivers/spi/spi-stm32.c | 95 ++++++++++++++++++++++++++++++-------------------
- 1 file changed, 58 insertions(+), 37 deletions(-)
+Please write normal conditional statements to improve legibility.
 
+--AXxEqdD4tcVTjWte
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl8tVrkACgkQJNaLcl1U
+h9AKZQf/a+Ru7h5ixAXVScXCOGiC+r341yYUTHK9LElaCpXw4iTXlGHMRiJkJOsr
+adMT9NNEs2Ka5PQ7wiKIw558VLZ5WbCQ2paWcKN4vElYOhulMCRn3X7Lcs6VYzW1
+scWxT07YTt15Tvxi7uBpRedIgOYUO/1sey+1skdwaqQbQYykoV/XUvRYehzyeZ7G
+tFJMFskTaBJ8T2I910IItEFasKttZUrLa1X3xtn97WiM2wnX+YCu+BDPwsKv5x0V
+63H0dHkTGwEnNiByRU4O3rL8Bx0XnopWzYJlfSY+ayH0QYmh5raD0Fgn/86cW4e4
+BVP46YZ6w0ZmTKL/prjveFSWY6zLyQ==
+=v0uW
+-----END PGP SIGNATURE-----
+
+--AXxEqdD4tcVTjWte--

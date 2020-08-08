@@ -7,49 +7,48 @@ X-Spam-Status: No, score=-13.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3078EC433E0
-	for <linux-spi@archiver.kernel.org>; Sat,  8 Aug 2020 23:49:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A0A3CC433DF
+	for <linux-spi@archiver.kernel.org>; Sat,  8 Aug 2020 23:50:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 033A020672
-	for <linux-spi@archiver.kernel.org>; Sat,  8 Aug 2020 23:49:35 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7ED0F20672
+	for <linux-spi@archiver.kernel.org>; Sat,  8 Aug 2020 23:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1596930575;
-	bh=IPrxSe+zlkAV1YF+9agKI2SRHHcxYLSZAX0ZjcL2ix0=;
+	s=default; t=1596930604;
+	bh=vbTAb44KZTHCUUR1fLwfmZ7ptgPtMwcHogXlu5gZoe0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=AvMM8vvMiLGuh/xUQwH1wmm57edW6KOwqWxn8ujAsDV+SfYtoBRdCfbMHvcNiyLp2
-	 BV2AzGVmJ2WKhXvN9FoTG64Om4PIYxOO8MMVO1XrAl8LaEPOcXfHLNe3qMUcf1SF8A
-	 8gi47AUJ+rP6b4Ro8Jt2s1x6Ij1hVQy3eYy0u9GU=
+	b=pm/LHfCVflAETSNgmGhVL+xdIRgR8bQyN0KyJK8JDzelPWjR2ZiFi6NuHA6RH5Hju
+	 L9OXLpP7EblWcZYeR88kxbeVB/F7xiWYZSLLbH1Uz7vQIzQPZNx1hcIFEIYpPyNv9E
+	 hSm5Jck8OR/RwQYBkRfUTtfqS4wm3NDd6pyBKGvY=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727773AbgHHXg7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 8 Aug 2020 19:36:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49792 "EHLO mail.kernel.org"
+        id S1727019AbgHHXgr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 8 Aug 2020 19:36:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49490 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726338AbgHHXg6 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Sat, 8 Aug 2020 19:36:58 -0400
+        id S1727012AbgHHXgq (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Sat, 8 Aug 2020 19:36:46 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 27C352075D;
-        Sat,  8 Aug 2020 23:36:57 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 39C0F207FB;
+        Sat,  8 Aug 2020 23:36:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596929818;
-        bh=IPrxSe+zlkAV1YF+9agKI2SRHHcxYLSZAX0ZjcL2ix0=;
+        s=default; t=1596929805;
+        bh=vbTAb44KZTHCUUR1fLwfmZ7ptgPtMwcHogXlu5gZoe0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r0d+dF/iXCQBxzARNgvJ3NyolD/MDjAURNcLwz3xpsBTzGp4LEHeN/55fFTlUjGT7
-         EDjXVdmeMTG3ReGwDfNVftxHYbV9RrLqPv5GLyqVfc4NUby1l5S1g5GP5i1Nt60FbB
-         ilai6dTakfHCUaDaFkXeQ4K/+84Qauv2QKxIYYZ8=
+        b=fqiUcET2QadCRQZmW3gj9AU15qUVwEnU21rfJF/SfEAt3Dg3CZ8+REML40nHh1OSM
+         TOP8zEB//3OItnf0MBatwad77Rxx/vSY/JAnQBkSmPKbZPEAT3JzvBiG/RAkMkgfBP
+         1Uds2rBYINq8j4hMZtIyY61j6O9ciFEph7oC5mMo=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Jon Lin <jon.lin@rock-chips.com>,
-        Emil Renner Berthing <kernel@esmil.dk>,
-        Heiko Stuebner <heiko@sntech.de>,
+Cc:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
+        Feng Tang <feng.tang@intel.com>,
         Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.8 52/72] spi: rockchip: Fix error in SPI slave pio read
-Date:   Sat,  8 Aug 2020 19:35:21 -0400
-Message-Id: <20200808233542.3617339-52-sashal@kernel.org>
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.8 42/72] spi: dw-dma: Fix Tx DMA channel working too fast
+Date:   Sat,  8 Aug 2020 19:35:11 -0400
+Message-Id: <20200808233542.3617339-42-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200808233542.3617339-1-sashal@kernel.org>
 References: <20200808233542.3617339-1-sashal@kernel.org>
@@ -62,37 +61,64 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Jon Lin <jon.lin@rock-chips.com>
+From: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 
-[ Upstream commit 4294e4accf8d695ea5605f6b189008b692e3e82c ]
+[ Upstream commit affe93dd5b35bb0e7b0aa0505ae432dd0ac72c3f ]
 
-The RXFLR is possible larger than rx_left in Rockchip SPI, fix it.
+It turns out having a Rx DMA channel serviced with higher priority than
+a Tx DMA channel is not enough to provide a well balanced DMA-based SPI
+transfer interface. There might still be moments when the Tx DMA channel
+is occasionally handled faster than the Rx DMA channel. That in its turn
+will eventually cause the SPI Rx FIFO overflow if SPI bus speed is high
+enough to fill the SPI Rx FIFO in before it's cleared by the Rx DMA
+channel. That's why having the DMA-based SPI Tx interface too optimized
+is the errors prone, so the commit 0b2b66514fc9 ("spi: dw: Use DMA max
+burst to set the request thresholds") though being perfectly normal from
+the standard functionality point of view implicitly introduced the problem
+described above. In order to fix that the Tx DMA activity is intentionally
+slowed down by limiting the SPI Tx FIFO depth with a value twice bigger
+than the Tx burst length calculated earlier by the
+dw_spi_dma_maxburst_init() method.
 
-Fixes: 01b59ce5dac8 ("spi: rockchip: use irq rather than polling")
-Signed-off-by: Jon Lin <jon.lin@rock-chips.com>
-Tested-by: Emil Renner Berthing <kernel@esmil.dk>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Reviewed-by: Emil Renner Berthing <kernel@esmil.dk>
-Link: https://lore.kernel.org/r/20200723004356.6390-3-jon.lin@rock-chips.com
+Fixes: 0b2b66514fc9 ("spi: dw: Use DMA max burst to set the request thresholds")
+Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>
+Cc: Feng Tang <feng.tang@intel.com>
+Link: https://lore.kernel.org/r/20200721203951.2159-1-Sergey.Semin@baikalelectronics.ru
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-rockchip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-dw-dma.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 9b8a5e1233c06..4776aa815c3fa 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -288,7 +288,7 @@ static void rockchip_spi_pio_writer(struct rockchip_spi *rs)
- static void rockchip_spi_pio_reader(struct rockchip_spi *rs)
+diff --git a/drivers/spi/spi-dw-dma.c b/drivers/spi/spi-dw-dma.c
+index 5986c520b1965..bb390ff67d1d8 100644
+--- a/drivers/spi/spi-dw-dma.c
++++ b/drivers/spi/spi-dw-dma.c
+@@ -372,8 +372,20 @@ static int dw_spi_dma_setup(struct dw_spi *dws, struct spi_transfer *xfer)
  {
- 	u32 words = readl_relaxed(rs->regs + ROCKCHIP_SPI_RXFLR);
--	u32 rx_left = rs->rx_left - words;
-+	u32 rx_left = (rs->rx_left > words) ? rs->rx_left - words : 0;
+ 	u16 imr = 0, dma_ctrl = 0;
  
- 	/* the hardware doesn't allow us to change fifo threshold
- 	 * level while spi is enabled, so instead make sure to leave
++	/*
++	 * Having a Rx DMA channel serviced with higher priority than a Tx DMA
++	 * channel might not be enough to provide a well balanced DMA-based
++	 * SPI transfer interface. There might still be moments when the Tx DMA
++	 * channel is occasionally handled faster than the Rx DMA channel.
++	 * That in its turn will eventually cause the SPI Rx FIFO overflow if
++	 * SPI bus speed is high enough to fill the SPI Rx FIFO in before it's
++	 * cleared by the Rx DMA channel. In order to fix the problem the Tx
++	 * DMA activity is intentionally slowed down by limiting the SPI Tx
++	 * FIFO depth with a value twice bigger than the Tx burst length
++	 * calculated earlier by the dw_spi_dma_maxburst_init() method.
++	 */
+ 	dw_writel(dws, DW_SPI_DMARDLR, dws->rxburst - 1);
+-	dw_writel(dws, DW_SPI_DMATDLR, dws->fifo_len - dws->txburst);
++	dw_writel(dws, DW_SPI_DMATDLR, dws->txburst);
+ 
+ 	if (xfer->tx_buf)
+ 		dma_ctrl |= SPI_DMA_TDMAE;
 -- 
 2.25.1
 

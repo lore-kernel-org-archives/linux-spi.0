@@ -2,48 +2,49 @@ Return-Path: <SRS0=gSGs=BU=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.1 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-13.1 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ECD43C433DF
-	for <linux-spi@archiver.kernel.org>; Mon, 10 Aug 2020 07:13:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 48BDEC433E1
+	for <linux-spi@archiver.kernel.org>; Mon, 10 Aug 2020 07:13:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C0F412075D
-	for <linux-spi@archiver.kernel.org>; Mon, 10 Aug 2020 07:13:04 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 22C8E20734
+	for <linux-spi@archiver.kernel.org>; Mon, 10 Aug 2020 07:13:10 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=st.com header.i=@st.com header.b="031LNKZb"
+	dkim=pass (2048-bit key) header.d=st.com header.i=@st.com header.b="CNAHBb92"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725846AbgHJHNE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 10 Aug 2020 03:13:04 -0400
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:55338 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725857AbgHJHND (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 10 Aug 2020 03:13:03 -0400
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 07A7CHet019964;
-        Mon, 10 Aug 2020 09:12:53 +0200
+        id S1725911AbgHJHNI (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 10 Aug 2020 03:13:08 -0400
+Received: from mx07-00178001.pphosted.com ([185.132.182.106]:23220 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726303AbgHJHNF (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 10 Aug 2020 03:13:05 -0400
+Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 07A71xIP026941;
+        Mon, 10 Aug 2020 09:12:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-type; s=STMicroelectronics;
- bh=qm/UhnNoPRT6rrgGe5Cf7nTn4YU+1HJV6FfP2NxbMts=;
- b=031LNKZbZuOC7Rqtj+h9X4VhHt+2x0thwmZ1AhD3vP7liVxIkYsip6EfU6UTmmbzDqg4
- Nhi1Sgb78sohJbpjSyX4n9HLgqPv4VRzDM9vSqa3LxvAWMuuVIyd1Syypy9BQTThhRgq
- +ghlmRcEj7Ms9Sry1XvwkxuPhaBT+cJHZVi7rZWLvAqnwG05ZhdWRV1WaHA4g4CB2Rys
- /C19ydAsoET/Ok8tp+EsW0aibLIXsLVqxEUDLn/nqSvLJThWVilvAsnVTCyxummGL0QF
- Zbf4vptjO3bU2YsURKetmNANZqetltUZ5G3dEtAPWossKUx15T7Op/GanDi71UNdmMF+ Cw== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-type; s=STMicroelectronics;
+ bh=8q+d1ArUkG5jm0pSam8JI1Vha8Yw/HRnOaY9ga0COi8=;
+ b=CNAHBb92M3DW9sVlvf91k6LIIWc8SlTJnGcA8X6/UeGkEXyUjc+JTI0lM3zm7iKlLAm3
+ Ay5Y/2MODmMYOMd9654BiTyBEpd15xa6HDom2Du//9l9Ep/639ImiQFhk/3vb//jGvsa
+ uedLVYRguR0VUAB/ee5cYEkU1VcxjR0uTOHVRh4vZZukz6HlxHt5vXmkXwzuT0GQAIuL
+ xCLYpjIjo1cTYiS4XHsPUwPLq5XWRJDE23NnAL68aBHtOJPaSt1gCVsjWKaw0uYqF92F
+ uM9Z+xZJb0RONWv39vPvDkvqUJga1mplPAgqqB9Py7XbJFkyGhErtxuAM4dljo+YacWS Vg== 
 Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 32sma16n88-1
+        by mx07-00178001.pphosted.com with ESMTP id 32smf968j3-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 10 Aug 2020 09:12:53 +0200
+        Mon, 10 Aug 2020 09:12:52 +0200
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 5BD0E100034;
-        Mon, 10 Aug 2020 09:12:50 +0200 (CEST)
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 3E812100038;
+        Mon, 10 Aug 2020 09:12:51 +0200 (CEST)
 Received: from Webmail-eu.st.com (sfhdag3node2.st.com [10.75.127.8])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 4C72C2AD9EA;
-        Mon, 10 Aug 2020 09:12:50 +0200 (CEST)
-Received: from localhost (10.75.127.45) by SFHDAG3NODE2.st.com (10.75.127.8)
- with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 10 Aug 2020 09:12:49
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 2D19B2AD9EC;
+        Mon, 10 Aug 2020 09:12:51 +0200 (CEST)
+Received: from localhost (10.75.127.46) by SFHDAG3NODE2.st.com (10.75.127.8)
+ with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 10 Aug 2020 09:12:50
  +0200
 From:   Alain Volmat <alain.volmat@st.com>
 To:     <broonie@kernel.org>, <amelie.delaunay@st.com>
@@ -53,39 +54,112 @@ CC:     <mcoquelin.stm32@gmail.com>, <alexandre.torgue@st.com>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>, <fabrice.gasnier@st.com>,
         <alain.volmat@st.com>
-Subject: [PATCH v2 0/5] spi: stm32: various driver fixes
-Date:   Mon, 10 Aug 2020 09:12:33 +0200
-Message-ID: <1597043558-29668-1-git-send-email-alain.volmat@st.com>
+Subject: [PATCH v2 2/5] spi: stm32: fix fifo threshold level in case of short transfer
+Date:   Mon, 10 Aug 2020 09:12:35 +0200
+Message-ID: <1597043558-29668-3-git-send-email-alain.volmat@st.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1597043558-29668-1-git-send-email-alain.volmat@st.com>
+References: <1597043558-29668-1-git-send-email-alain.volmat@st.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.75.127.45]
-X-ClientProxiedBy: SFHDAG3NODE1.st.com (10.75.127.7) To SFHDAG3NODE2.st.com
+X-Originating-IP: [10.75.127.46]
+X-ClientProxiedBy: SFHDAG1NODE3.st.com (10.75.127.3) To SFHDAG3NODE2.st.com
  (10.75.127.8)
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-08-10_03:2020-08-06,2020-08-10 signatures=0
+ definitions=2020-08-10_02:2020-08-06,2020-08-10 signatures=0
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This serie is a reduced version of the serie
-[spi: stm32: various driver enhancements] previously sent.
+From: Amelie Delaunay <amelie.delaunay@st.com>
 
-Alain Volmat (1):
-  spi: stm32: always perform registers configuration prior to transfer
+When transfer is shorter than half of the fifo, set the data packet size
+up to transfer size instead of up to half of the fifo.
+Check also that threshold is set at least to 1 data frame.
 
-Amelie Delaunay (3):
-  spi: stm32: fix fifo threshold level in case of short transfer
-  spi: stm32: fix stm32_spi_prepare_mbr in case of odd clk_rate
-  spi: stm32: fixes suspend/resume management
+Signed-off-by: Amelie Delaunay <amelie.delaunay@st.com>
+Signed-off-by: Alain Volmat <alain.volmat@st.com>
+---
+v2: fix conditional statement
 
-Antonio Borneo (1):
-  spi: stm32h7: fix race condition at end of transfer
+ drivers/spi/spi-stm32.c | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
- drivers/spi/spi-stm32.c | 98 ++++++++++++++++++++++++++++++-------------------
- 1 file changed, 61 insertions(+), 37 deletions(-)
-
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index 814a3ec3b8ad..e5450233f3f8 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -467,20 +467,27 @@ static int stm32_spi_prepare_mbr(struct stm32_spi *spi, u32 speed_hz,
+ /**
+  * stm32h7_spi_prepare_fthlv - Determine FIFO threshold level
+  * @spi: pointer to the spi controller data structure
++ * @xfer_len: length of the message to be transferred
+  */
+-static u32 stm32h7_spi_prepare_fthlv(struct stm32_spi *spi)
++static u32 stm32h7_spi_prepare_fthlv(struct stm32_spi *spi, u32 xfer_len)
+ {
+-	u32 fthlv, half_fifo;
++	u32 fthlv, half_fifo, packet;
+ 
+ 	/* data packet should not exceed 1/2 of fifo space */
+ 	half_fifo = (spi->fifo_size / 2);
+ 
++	/* data_packet should not exceed transfer length */
++	if (half_fifo > xfer_len)
++		packet = xfer_len;
++	else
++		packet = half_fifo;
++
+ 	if (spi->cur_bpw <= 8)
+-		fthlv = half_fifo;
++		fthlv = packet;
+ 	else if (spi->cur_bpw <= 16)
+-		fthlv = half_fifo / 2;
++		fthlv = packet / 2;
+ 	else
+-		fthlv = half_fifo / 4;
++		fthlv = packet / 4;
+ 
+ 	/* align packet size with data registers access */
+ 	if (spi->cur_bpw > 8)
+@@ -488,6 +495,9 @@ static u32 stm32h7_spi_prepare_fthlv(struct stm32_spi *spi)
+ 	else
+ 		fthlv -= (fthlv % 4); /* multiple of 4 */
+ 
++	if (!fthlv)
++		fthlv = 1;
++
+ 	return fthlv;
+ }
+ 
+@@ -1393,7 +1403,7 @@ static void stm32h7_spi_set_bpw(struct stm32_spi *spi)
+ 	cfg1_setb |= (bpw << STM32H7_SPI_CFG1_DSIZE_SHIFT) &
+ 		     STM32H7_SPI_CFG1_DSIZE;
+ 
+-	spi->cur_fthlv = stm32h7_spi_prepare_fthlv(spi);
++	spi->cur_fthlv = stm32h7_spi_prepare_fthlv(spi, spi->cur_xferlen);
+ 	fthlv = spi->cur_fthlv - 1;
+ 
+ 	cfg1_clrb |= STM32H7_SPI_CFG1_FTHLV;
+@@ -1588,6 +1598,8 @@ static int stm32_spi_transfer_one_setup(struct stm32_spi *spi,
+ 
+ 	spin_lock_irqsave(&spi->lock, flags);
+ 
++	spi->cur_xferlen = transfer->len;
++
+ 	if (spi->cur_bpw != transfer->bits_per_word) {
+ 		spi->cur_bpw = transfer->bits_per_word;
+ 		spi->cfg->set_bpw(spi);
+@@ -1635,8 +1647,6 @@ static int stm32_spi_transfer_one_setup(struct stm32_spi *spi,
+ 			goto out;
+ 	}
+ 
+-	spi->cur_xferlen = transfer->len;
+-
+ 	dev_dbg(spi->dev, "transfer communication mode set to %d\n",
+ 		spi->cur_comm);
+ 	dev_dbg(spi->dev,
 -- 
-v2: fix conditional statement within [spi: stm32: fix fifo threshold level in case of short transfer]
+2.7.4
 

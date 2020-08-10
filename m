@@ -4,64 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1CDB6C433E1
-	for <linux-spi@archiver.kernel.org>; Mon, 10 Aug 2020 18:58:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 45169C433E0
+	for <linux-spi@archiver.kernel.org>; Mon, 10 Aug 2020 18:58:43 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id EB09D2080C
-	for <linux-spi@archiver.kernel.org>; Mon, 10 Aug 2020 18:58:38 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 049922080C
+	for <linux-spi@archiver.kernel.org>; Mon, 10 Aug 2020 18:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1597085919;
-	bh=hQXDCWWlQ1DnxMOL5VXJ+bAuZfFOfBLepB41/sfErNQ=;
+	s=default; t=1597085923;
+	bh=24U7VqkQ+pHnnq6Bw4WtCe+NRWb+V7m3I56c0o8d7bk=;
 	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=O2/J5GObi1U7Tvuim3gkcGbH+geG5y3p7NCtHUKMsz4fR9GUUvmnXA+IEcN9gyO87
-	 Fc8mpi+X/GBznPb6QWR9BeSgWuv63O6Wn3/4ruPY9Ejuk7K+7Dmd7xBah56el2/dbB
-	 vyfFl3KT6qnPpvPaycH8dGA/ZA6GsliIo+QEtDZQ=
+	b=ZeETX2pMSP90+0GYa650Mlctyi5aahwbD9NYDOTsbLzssyY9SHH6YofTSB21eo7nc
+	 VlJ5KF3v9B0d/D3GHyxFkp1QJDfOq/JojvoVBW/s/VFNoqB+DxRnB3w8FUuxf9FUxJ
+	 7DLJxwk8EF57bZkb4iZctwl1RyscGpy7cYhiD9r8=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728284AbgHJS6f (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 10 Aug 2020 14:58:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54122 "EHLO mail.kernel.org"
+        id S1728281AbgHJS6m (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 10 Aug 2020 14:58:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54282 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728071AbgHJS6f (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 10 Aug 2020 14:58:35 -0400
+        id S1728071AbgHJS6m (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 10 Aug 2020 14:58:42 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 379432080C;
-        Mon, 10 Aug 2020 18:58:33 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6604120774;
+        Mon, 10 Aug 2020 18:58:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597085915;
-        bh=hQXDCWWlQ1DnxMOL5VXJ+bAuZfFOfBLepB41/sfErNQ=;
+        s=default; t=1597085921;
+        bh=24U7VqkQ+pHnnq6Bw4WtCe+NRWb+V7m3I56c0o8d7bk=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=GWHXBAfhN9c4Xi+C3+oD1nMDSSew8bsntbkOwjZ/+ag8zD35AOfHxPWwsXUnZThvS
-         jrvuEk6mLKnUDO9vBgApfdOFqu0wSQ1elF60FWOGMS4CTu4Wjq+WNP31wilciH/D1z
-         N/LQKrlYdnltRo/tPLdHWEfmOtASnr6iEagbFTrQ=
-Date:   Mon, 10 Aug 2020 19:58:08 +0100
+        b=JYLRru3ojJbQ8xF0AaEov1jm87ZY8B6yICkfUwSLpMIaBVeLpqeW45krSd4yeLP2c
+         aOWU34+15Ag1eWjRzxAC31bKtHTRV0COAN6Odi65SYJchR5IGKWpmkUJMu5MP3L6II
+         xZK9cklpg0S7MtGbNFtoSnUjOox4/MGEY2lIDAVs=
+Date:   Mon, 10 Aug 2020 19:58:15 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Clark Wang <xiaoning.wang@nxp.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
-        Anson Huang <Anson.Huang@nxp.com>, devicetree@vger.kernel.org,
-        linux-spi@vger.kernel.org
-In-Reply-To: <20200807121057.14204-1-geert+renesas@glider.be>
-References: <20200807121057.14204-1-geert+renesas@glider.be>
-Subject: Re: [PATCH] dt-bindings: lpspi: Add missing boolean type for fsl,spi-only-use-cs1-sel
-Message-Id: <159708588098.21609.11539908447717402760.b4-ty@kernel.org>
+To:     Alain Volmat <alain.volmat@st.com>, amelie.delaunay@st.com
+Cc:     linux-kernel@vger.kernel.org, fabrice.gasnier@st.com,
+        alexandre.torgue@st.com, mcoquelin.stm32@gmail.com,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+In-Reply-To: <1597043558-29668-1-git-send-email-alain.volmat@st.com>
+References: <1597043558-29668-1-git-send-email-alain.volmat@st.com>
+Subject: Re: [PATCH v2 0/5] spi: stm32: various driver fixes
+Message-Id: <159708588098.21609.2579059133743645332.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, 7 Aug 2020 14:10:57 +0200, Geert Uytterhoeven wrote:
-> When running "make dt_binding_check" (even if restricted to an unrelated
-> binding document using DT_SCHEMA_FILES=...):
+On Mon, 10 Aug 2020 09:12:33 +0200, Alain Volmat wrote:
+> This serie is a reduced version of the serie
+> [spi: stm32: various driver enhancements] previously sent.
 > 
->     Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml: ignoring, error in schema: properties: fsl,spi-only-use-cs1-sel
->     warning: no schema found in file: Documentation/devicetree/bindings/spi/spi-fsl-lpspi.yaml
+> Alain Volmat (1):
+>   spi: stm32: always perform registers configuration prior to transfer
 > 
-> Fix this by adding a proper type definition for the vendor-specific
-> fsl,spi-only-use-cs1-sel property.
+> Amelie Delaunay (3):
+>   spi: stm32: fix fifo threshold level in case of short transfer
+>   spi: stm32: fix stm32_spi_prepare_mbr in case of odd clk_rate
+>   spi: stm32: fixes suspend/resume management
+> 
+> [...]
 
 Applied to
 
@@ -69,8 +73,16 @@ Applied to
 
 Thanks!
 
-[1/1] dt-bindings: lpspi: Add missing boolean type for fsl,spi-only-use-cs1-sel
-      commit: 0454357faaf8eea07af4f01a9e7afde175377b41
+[1/5] spi: stm32h7: fix race condition at end of transfer
+      commit: 135dd873d3c76d812ae64c668adef3f2c59ed27f
+[2/5] spi: stm32: fix fifo threshold level in case of short transfer
+      commit: 3373e9004acc0603242622b4378c64bc01d21b5f
+[3/5] spi: stm32: fix stm32_spi_prepare_mbr in case of odd clk_rate
+      commit: 9cc61973bf9385b19ff5dda4a2a7e265fcba85e4
+[4/5] spi: stm32: fixes suspend/resume management
+      commit: db96bf976a4fc65439be0b4524c0d41427d98814
+[5/5] spi: stm32: always perform registers configuration prior to transfer
+      commit: 60ccb3515fc61a0124c70aa37317f75b67560024
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

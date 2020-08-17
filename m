@@ -1,132 +1,133 @@
-Return-Path: <SRS0=Cbqt=B2=vger.kernel.org=linux-spi-owner@kernel.org>
+Return-Path: <SRS0=pcuZ=B3=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
+X-Spam-Status: No, score=-9.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3EA8DC433DF
-	for <linux-spi@archiver.kernel.org>; Sun, 16 Aug 2020 21:09:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 83ACBC433E1
+	for <linux-spi@archiver.kernel.org>; Mon, 17 Aug 2020 05:45:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 14ACA2078D
-	for <linux-spi@archiver.kernel.org>; Sun, 16 Aug 2020 21:09:33 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5D65E22B43
+	for <linux-spi@archiver.kernel.org>; Mon, 17 Aug 2020 05:45:34 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="uU1tMVL6"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=skidata.com header.i=@skidata.com header.b="TiQa2LaC"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728306AbgHPVJc (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 16 Aug 2020 17:09:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33558 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726425AbgHPVJb (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 16 Aug 2020 17:09:31 -0400
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [IPv6:2001:df5:b000:5::4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23854C061385
-        for <linux-spi@vger.kernel.org>; Sun, 16 Aug 2020 14:09:30 -0700 (PDT)
-Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 34440891B0;
-        Mon, 17 Aug 2020 09:09:23 +1200 (NZST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-        s=mail181024; t=1597612163;
-        bh=mFh2MNlRiVsvA4vpdlLMxIHHKZs332vJXnDrU4WRgPc=;
-        h=From:To:CC:Subject:Date:References:In-Reply-To;
-        b=uU1tMVL6vPeJYj6afY9bVlD3f2R4n+4Yqx3qDuItye/YUjJQGETnIFcl1K15VPDtC
-         pKPfYysQ8aRp5uXUBn1uFMynpiNHbIqJX32DTy9iCyqzxnXCcopqHsW9xAhqTrequ+
-         iCK9G/IAvK08NZHGw7VfxXntDSAzCQyW+E7pgNetdW3n72+vYTkY6nEnj/8Tfxj0sk
-         tYlX3ucjHInpTEYszujFbGqqUOng7TxgKzK2lK6nIJPNRVqW0O5rh7UiXOzILiP+71
-         T5TlrX9SZtD2VBr/b0hQ6KGuAKVLjEvRFshfrMICWYBh967vqdDEm3teRajJoYb7Pf
-         Ae6A28TwX4Xew==
-Received: from svr-chch-ex1.atlnz.lc (Not Verified[10.32.16.77]) by mmarshal3.atlnz.lc with Trustwave SEG (v7,5,8,10121)
-        id <B5f39a0810001>; Mon, 17 Aug 2020 09:09:21 +1200
-Received: from svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8)
- by svr-chch-ex1.atlnz.lc (2001:df5:b000:bc8:409d:36f5:8899:92e8) with
- Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 17 Aug 2020 09:09:22 +1200
-Received: from svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8]) by
- svr-chch-ex1.atlnz.lc ([fe80::409d:36f5:8899:92e8%12]) with mapi id
- 15.00.1497.006; Mon, 17 Aug 2020 09:09:22 +1200
-From:   Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-To:     Heiner Kallweit <hkallweit1@gmail.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
-        "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
-        "paulus@samba.org" <paulus@samba.org>,
-        "tiago.brusamarello@datacom.ind.br" 
-        <tiago.brusamarello@datacom.ind.br>
-CC:     "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: fsl_espi errors on v5.7.15
-Thread-Topic: fsl_espi errors on v5.7.15
-Thread-Index: AQHWceVnik7XsBYbp0S+yHVGh1hdQak2WMaAgAQdSwA=
-Date:   Sun, 16 Aug 2020 21:09:22 +0000
-Message-ID: <3c72eec1-41ba-7389-eceb-3de80065555a@alliedtelesis.co.nz>
-References: <3f48e5fb-33c9-8046-0f80-236eed163c16@alliedtelesis.co.nz>
- <c43a23bd-33ec-4ef2-2ca5-730342248db3@gmail.com>
-In-Reply-To: <c43a23bd-33ec-4ef2-2ca5-730342248db3@gmail.com>
-Accept-Language: en-NZ, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.32.1.11]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C94EA88EC8E86544A72DF85805F89839@atlnz.lc>
-Content-Transfer-Encoding: base64
+        id S1726366AbgHQFpd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 17 Aug 2020 01:45:33 -0400
+Received: from mail2.skidata.com ([91.230.2.91]:36143 "EHLO mail2.skidata.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726308AbgHQFpd (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 17 Aug 2020 01:45:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=skidata.com; i=@skidata.com; q=dns/txt; s=selector1;
+  t=1597643132; x=1629179132;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=iq6E0tROTvyWLYPqPO1Jep0gNCBrkGzldGCPeMg+7YQ=;
+  b=TiQa2LaC6eg/8+EgVhdWz+/BS136xFBuZa7mM9clCoGr+VaF0NJ81RC6
+   l1YY4PERPYIct8aW7qt60fHqYW77KzNLZCkr1RONk1befRqCcXmOQhqst
+   rynS6YSA7V4SIMCbyTPi5Hc+Xg+aYA5QZ5Kmv+BvmckHPo2p0j17CMwNo
+   ESf+24whxtcLrLALVFu7c3P//l2A0VY5gLtcwZqiGBulWLJIOIu3cZq1k
+   LqRRe2KXSgIWwzRZ22Itv976yeYXlp9DnpHVhCY199+vBibkeyI6SYacT
+   A4tOFYCCu5SMRN35loVB7RnW23pqNHCFtc/ee+JDyr9dTO3yB7EjntMqI
+   g==;
+IronPort-SDR: rZkcM47agA66V7rz7feaMdOluzUqk0bpZwPNFBS4nRIuINpiwtoyuu5PvhKvd7GxTCNDYB6kXY
+ q+8aPl4488YU/sH1xOfKWdB3CMlyy7Wmb9WhpewAqI8mDDklAMKIou3zPjCur2Svcz1ng1Oj8Z
+ Zy7WxGnwP3YJWucu6wpo6YHFvYGa5JHGgsVwTkK/rDs/Q9q8+zXUyPiuiSF72FTDQ+I8JVsk45
+ na+58Ifn3fOwiZaehwKqTEjAYKrWjacs9o1T8V1VGA9ce2sOYhvzzUx0Gd/5S3O54kP7NGQAU7
+ SbE=
+X-IronPort-AV: E=Sophos;i="5.76,322,1592863200"; 
+   d="scan'208";a="2642498"
+Date:   Mon, 17 Aug 2020 07:38:20 +0200
+From:   Richard Leitner <richard.leitner@skidata.com>
+To:     Robin Gong <yibin.gong@nxp.com>
+CC:     <mark.rutland@arm.com>, <broonie@kernel.org>, <robh+dt@kernel.org>,
+        <catalin.marinas@arm.com>, <vkoul@kernel.org>,
+        <will.deacon@arm.com>, <shawnguo@kernel.org>, <festevam@gmail.com>,
+        <s.hauer@pengutronix.de>, <martin.fuzzey@flowbird.group>,
+        <u.kleine-koenig@pengutronix.de>, <dan.j.williams@intel.com>,
+        <matthias.schiffer@ew.tq-group.com>, <frieder.schrempf@kontron.de>,
+        <r.schwebel@pengutronix.de>, <linux-spi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <kernel@pengutronix.de>,
+        <dmaengine@vger.kernel.org>, <linux-imx@nxp.com>
+Subject: Re: [PATCH v12 04/12] dmaengine: imx-sdma: remove duplicated
+ sdma_load_context
+Message-ID: <20200817053820.GB551027@pcleri>
+References: <1597161231-32303-1-git-send-email-yibin.gong@nxp.com>
+ <1597161231-32303-5-git-send-email-yibin.gong@nxp.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1597161231-32303-5-git-send-email-yibin.gong@nxp.com>
+X-Originating-IP: [192.168.111.252]
+X-ClientProxiedBy: sdex6srv.skidata.net (192.168.111.84) To
+ sdex5srv.skidata.net (192.168.111.83)
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-DQpPbiAxNC8wOC8yMCA2OjE5IHBtLCBIZWluZXIgS2FsbHdlaXQgd3JvdGU6DQo+IE9uIDE0LjA4
-LjIwMjAgMDQ6NDgsIENocmlzIFBhY2toYW0gd3JvdGU6DQo+PiBIaSwNCj4+DQo+PiBJJ20gc2Vl
-aW5nIGEgcHJvYmxlbSB3aXRoIGFjY2Vzc2luZyBzcGktbm9yIGFmdGVyIHVwZ3JhZGluZyBhIFQy
-MDgxDQo+PiBiYXNlZCBzeXN0ZW0gdG8gbGludXggdjUuNy4xNQ0KPj4NCj4+IEZvciB0aGlzIGJv
-YXJkIHUtYm9vdCBhbmQgdGhlIHUtYm9vdCBlbnZpcm9ubWVudCBsaXZlIG9uIHNwaS1ub3IuDQo+
-Pg0KPj4gV2hlbiBJIHVzZSBmd19zZXRlbnYgZnJvbSB1c2Vyc3BhY2UgSSBnZXQgdGhlIGZvbGxv
-d2luZyBrZXJuZWwgbG9ncw0KPj4NCj4+ICMgZndfc2V0ZW52IGZvbz0xDQo+PiBmc2xfZXNwaSBm
-ZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQhDQo+PiBm
-c2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBz
-ZXQhDQo+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RP
-TiBpc24ndCBzZXQhDQo+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1
-dCBTUElFX0RPTiBpc24ndCBzZXQhDQo+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2Zl
-ciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQhDQo+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3Bp
-OiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQhDQo+PiBmc2xfZXNwaSBmZmUx
-MTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQhDQo+PiBmc2xf
-ZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQh
-DQo+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBp
-c24ndCBzZXQhDQo+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBT
-UElFX0RPTiBpc24ndCBzZXQhDQo+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBk
-b25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQhDQo+PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBU
-cmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQhDQo+PiBmc2xfZXNwaSBmZmUxMTAw
-MDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQhDQo+PiBmc2xfZXNw
-aSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCBTUElFX0RPTiBpc24ndCBzZXQhDQo+
-PiBmc2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBUcmFuc2ZlciBkb25lIGJ1dCByeC90eCBmaWZvJ3Mg
-YXJlbid0IGVtcHR5IQ0KPj4gZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogU1BJRV9SWENOVCA9IDEs
-IFNQSUVfVFhDTlQgPSAzMg0KPj4gZnNsX2VzcGkgZmZlMTEwMDAwLnNwaTogVHJhbnNmZXIgZG9u
-ZSBidXQgcngvdHggZmlmbydzIGFyZW4ndCBlbXB0eSENCj4+IGZzbF9lc3BpIGZmZTExMDAwMC5z
-cGk6IFNQSUVfUlhDTlQgPSAxLCBTUElFX1RYQ05UID0gMzINCj4+IGZzbF9lc3BpIGZmZTExMDAw
-MC5zcGk6IFRyYW5zZmVyIGRvbmUgYnV0IHJ4L3R4IGZpZm8ncyBhcmVuJ3QgZW1wdHkhDQo+PiBm
-c2xfZXNwaSBmZmUxMTAwMDAuc3BpOiBTUElFX1JYQ05UID0gMSwgU1BJRV9UWENOVCA9IDMyDQo+
-PiAuLi4NCj4+DQo+IFRoaXMgZXJyb3IgcmVwb3J0aW5nIGRvZXNuJ3QgZXhpc3QgeWV0IGluIDQu
-NC4gU28geW91IG1heSBoYXZlIGFuIGlzc3VlDQo+IHVuZGVyIDQuNCB0b28sIGl0J3MganVzdCBu
-b3QgcmVwb3J0ZWQuDQo+IERpZCB5b3UgdmVyaWZ5IHRoYXQgdW5kZXIgNC40IGZ3X3NldGVudiBh
-Y3R1YWxseSBoYXMgYW4gZWZmZWN0Pw0KSnVzdCBkb3VibGUgY2hlY2tlZCBhbmQgeWVzIHVuZGVy
-IDQuNCB0aGUgc2V0dGluZyBkb2VzIGdldCBzYXZlZC4NCj4+IElmIEkgcnVuIGZ3X3ByaW50ZW52
-IChiZWZvcmUgZ2V0dGluZyBpdCBpbnRvIGEgYmFkIHN0YXRlKSBpdCBpcyBhYmxlIHRvDQo+PiBk
-aXNwbGF5IHRoZSBjb250ZW50IG9mIHRoZSBib2FyZHMgdS1ib290IGVudmlyb25tZW50Lg0KPj4N
-Cj4gVGhpcyBtaWdodCBpbmRpY2F0ZSBhbiBpc3N1ZSB3aXRoIHNwaSBiZWluZyBsb2NrZWQuIEkn
-dmUgc2VlbiByZWxhdGVkDQo+IHF1ZXN0aW9ucywganVzdCB1c2UgdGhlIHNlYXJjaCBlbmdpbmUg
-b2YgeW91ciBjaG9pY2UgYW5kIGNoZWNrIGZvcg0KPiBmd19zZXRlbnYgYW5kIGxvY2tlZC4NCkkn
-bSBydW5uaW5nIGEgdmVyc2lvbiBvZiBmd19zZXRlbnYgd2hpY2ggaW5jbHVkZXMgDQpodHRwczov
-L2dpdGxhYi5kZW54LmRlL3UtYm9vdC91LWJvb3QvLS9jb21taXQvZGI4MjAxNTkgc28gaXQgc2hv
-dWxkbid0IA0KYmUgbG9ja2luZyB0aGluZ3MgdW5uZWNlc3NhcmlseS4NCj4+IElmIGJlZW4gdW5z
-dWNjZXNzZnVsIGluIHByb2R1Y2luZyBhIHNldHVwIGZvciBiaXNlY3RpbmcgdGhlIGlzc3VlLiBJ
-IGRvDQo+PiBrbm93IHRoZSBpc3N1ZSBkb2Vzbid0IG9jY3VyIG9uIHRoZSBvbGQgNC40LnggYmFz
-ZWQga2VybmVsIGJ1dCB0aGF0J3MNCj4+IHByb2JhYmx5IG5vdCBtdWNoIGhlbHAuDQo+Pg0KPj4g
-QW55IHBvaW50ZXJzIG9uIHdoYXQgdGhlIGlzc3VlIChhbmQvb3Igc29sdXRpb24pIG1pZ2h0IGJl
-Lg0KPj4NCj4+IFRoYW5rcywNCj4+IENocmlzDQo+Pg0KPiBIZWluZXI=
+On Tue, Aug 11, 2020 at 11:53:43PM +0800, Robin Gong wrote:
+> Since sdma_transfer_init() will do sdma_load_context before any
+> sdma transfer, no need once more in sdma_config_channel().
+> 
+> Signed-off-by: Robin Gong <yibin.gong@nxp.com>
+> Acked-by: Vinod Koul <vkoul@kernel.org>
+
+Hi Robin,
+thanks for the pointer to this patch.
+
+As you suggested I've tested the two patches on my custom i.MX6DL
+board. Therefore please feel free to add:
+
+Tested-by: Richard Leitner <richard.leitner@skidata.com>
+
+regards;rl
+
+> ---
+>  drivers/dma/imx-sdma.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+> 
+> diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
+> index d305b80..5411e01e 100644
+> --- a/drivers/dma/imx-sdma.c
+> +++ b/drivers/dma/imx-sdma.c
+> @@ -1137,7 +1137,6 @@ static void sdma_set_watermarklevel_for_p2p(struct sdma_channel *sdmac)
+>  static int sdma_config_channel(struct dma_chan *chan)
+>  {
+>  	struct sdma_channel *sdmac = to_sdma_chan(chan);
+> -	int ret;
+>  
+>  	sdma_disable_channel(chan);
+>  
+> @@ -1177,9 +1176,7 @@ static int sdma_config_channel(struct dma_chan *chan)
+>  		sdmac->watermark_level = 0; /* FIXME: M3_BASE_ADDRESS */
+>  	}
+>  
+> -	ret = sdma_load_context(sdmac);
+> -
+> -	return ret;
+> +	return 0;
+>  }
+>  
+>  static int sdma_set_channel_priority(struct sdma_channel *sdmac,
+> -- 
+> 2.7.4
+> 
+> 
+
+-- 
+Richard Leitner
+Hardware R&D / Senior Embedded Linux Engineer
+
+SKIDATA | Driving Your Digital Future
+
+SKIDATA GmbH
+Untersbergstraße 40 | 5083 Grödig/Salzburg | Austria
+[t] +43-6246-888-4245 | [m] +43-664-88616370
+[w] www.skidata.com

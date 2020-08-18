@@ -6,53 +6,56 @@ X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
 	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 13193C433DF
-	for <linux-spi@archiver.kernel.org>; Tue, 18 Aug 2020 16:59:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E82CEC433DF
+	for <linux-spi@archiver.kernel.org>; Tue, 18 Aug 2020 16:59:46 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DCBB920786
-	for <linux-spi@archiver.kernel.org>; Tue, 18 Aug 2020 16:59:38 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BC78820786
+	for <linux-spi@archiver.kernel.org>; Tue, 18 Aug 2020 16:59:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1597769978;
-	bh=Y0JyT1VBXWla9wUbnH2/QclnosDNqZICZilelSmjd8M=;
+	s=default; t=1597769986;
+	bh=7fq14wHHhu6xjH2/CvQck4ytpZ8RfuTFyeu3QT9h5VM=;
 	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=TKLJCM7GO/W3XmrXclAFu3EoZLmUxeybVDg/zvGRttHk+TpcddjSWicMtkcASenMQ
-	 79+H+Y75mN1xUefzSNua+5UtLHU0T8mcFUI3QYZCtxiNK9o/hMIxOjIF34Gjn1EufG
-	 HMKJ6RKL5c8QtUytvlzpxihgbOz8Vt2gi7LFuTfs=
+	b=sgOh+ctEj8J3NxWhLbxYqzLcLuB+urOqBnq9YBSDS/gjfBEo9V04HO8ktOBhNvXx3
+	 kzZKDhLXjWB2b7JDvDI1lTt8DMNUvPKd2vnWv2YG8nDTwqe9WN98hl98HI3khmqVFm
+	 Rggo9CDUPMSrDqHtudX1vsuKLc5k3wk+9ZBNowX0=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728489AbgHRQ7g (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 18 Aug 2020 12:59:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41752 "EHLO mail.kernel.org"
+        id S1728508AbgHRQ7q (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 18 Aug 2020 12:59:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41338 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728594AbgHRQ6M (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 18 Aug 2020 12:58:12 -0400
+        id S1728570AbgHRQ5q (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 18 Aug 2020 12:57:46 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 14FB020825;
-        Tue, 18 Aug 2020 16:58:00 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E8C9920786;
+        Tue, 18 Aug 2020 16:57:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597769881;
-        bh=Y0JyT1VBXWla9wUbnH2/QclnosDNqZICZilelSmjd8M=;
+        s=default; t=1597769866;
+        bh=7fq14wHHhu6xjH2/CvQck4ytpZ8RfuTFyeu3QT9h5VM=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=wZcymM8MsArDbP4k76safGV4LS+DoI2LzG5+sN7l48vmcBkLUk3dsLAJxuRovfkdH
-         0R6LIvQPti4WQOjC1mM3W74TDeR4OlrX0FkPdBqWiZvxEt9Z/+csJ9iDY0eI3+QCSK
-         Ziarl9BA5k1GrRltlMCZ1BWzbO8km6i3KhG8XYuE=
-Date:   Tue, 18 Aug 2020 17:57:30 +0100
+        b=xdL+ErVeh97osumX07BL5rOURsDixw8aS0CW2OSyv2Eb6pvusumyVstwHcuz5k0lN
+         UMufnOa1atT5r9DyPTR+anmN9X/ghzHDdfOFdIbTNzYuZSbOhoT6iQN/nJLqrQX5pY
+         g8s3acy4rLf95nsd+TV2uw/gktO3Qm8zrse4LvLo=
+Date:   Tue, 18 Aug 2020 17:57:15 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Fabio Estevam <festevam@gmail.com>
-Cc:     xiaoning.wang@nxp.com, linux-spi@vger.kernel.org
-In-Reply-To: <20200817235812.19518-1-festevam@gmail.com>
-References: <20200817235812.19518-1-festevam@gmail.com>
-Subject: Re: [PATCH] spi: lpspi: Remove CONFIG_PM_SLEEP ifdefery
-Message-Id: <159776983047.56565.9470268746172574515.b4-ty@kernel.org>
+To:     Angelo Dureghello <angelo.dureghello@timesys.com>
+Cc:     linux-spi@vger.kernel.org
+In-Reply-To: <20200816094635.1830006-1-angelo.dureghello@timesys.com>
+References: <20200816094635.1830006-1-angelo.dureghello@timesys.com>
+Subject: Re: [PATCH] spi: spi-fsl-dspi: set ColdFire to DMA mode
+Message-Id: <159776983047.56565.2211910399770285522.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 17 Aug 2020 20:58:12 -0300, Fabio Estevam wrote:
-> Use __maybe_unused for the suspend()/resume() hooks and get rid of
-> the CONFIG_PM_SLEEP ifdefery to improve the code.
+On Sun, 16 Aug 2020 11:46:35 +0200, Angelo Dureghello wrote:
+> Set DMA transfer mode for ColdFire.
+> 
+> After recent fixes to fsl edma engine, this mode can be used
+> also for ColdFire, and from some raw mtd r/w tests it definitely
+> improves the transfer rate, so keeping it selected.
 
 Applied to
 
@@ -60,8 +63,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: lpspi: Remove CONFIG_PM_SLEEP ifdefery
-      commit: c3158a891bcc4c79523804e0d09a195fb1f815b4
+[1/1] spi: spi-fsl-dspi: set ColdFire to DMA mode
+      commit: b09058bbf5f083e2670186a02f5be05baf1190d7
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

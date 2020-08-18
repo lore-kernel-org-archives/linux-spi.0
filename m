@@ -2,85 +2,100 @@ Return-Path: <SRS0=VMtJ=B4=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PULL_REQUEST,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E82CEC433DF
-	for <linux-spi@archiver.kernel.org>; Tue, 18 Aug 2020 16:59:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 21A63C433DF
+	for <linux-spi@archiver.kernel.org>; Tue, 18 Aug 2020 18:33:29 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BC78820786
-	for <linux-spi@archiver.kernel.org>; Tue, 18 Aug 2020 16:59:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E9A0F2075E
+	for <linux-spi@archiver.kernel.org>; Tue, 18 Aug 2020 18:33:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1597769986;
-	bh=7fq14wHHhu6xjH2/CvQck4ytpZ8RfuTFyeu3QT9h5VM=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=sgOh+ctEj8J3NxWhLbxYqzLcLuB+urOqBnq9YBSDS/gjfBEo9V04HO8ktOBhNvXx3
-	 kzZKDhLXjWB2b7JDvDI1lTt8DMNUvPKd2vnWv2YG8nDTwqe9WN98hl98HI3khmqVFm
-	 Rggo9CDUPMSrDqHtudX1vsuKLc5k3wk+9ZBNowX0=
+	s=default; t=1597775609;
+	bh=WzDKOEV/3ks4Vq2RN+XSt37lu7nxqBdwZ04dCcUGLBg=;
+	h=From:To:Cc:Subject:Date:List-ID:From;
+	b=OeiN+Fn4ADne1v0Kj98qSLjeTCms5M3OHIUp7o8Y/LsPqzKStYfi63maUGE3c6xin
+	 h/ZVWwz1ioThT+HZ6fev2Ko4ID1ghY0qeSboY6wCIU9Q8bzXBRV1qNp1v/CQErrUYh
+	 iUz0VKnsPEkDLmvR6qs2K5CqDYJAn2FIP6UHcHic=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728508AbgHRQ7q (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 18 Aug 2020 12:59:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41338 "EHLO mail.kernel.org"
+        id S1726640AbgHRSd2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 18 Aug 2020 14:33:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59026 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728570AbgHRQ5q (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 18 Aug 2020 12:57:46 -0400
+        id S1726435AbgHRSd2 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 18 Aug 2020 14:33:28 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E8C9920786;
-        Tue, 18 Aug 2020 16:57:45 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 30A0E2075E;
+        Tue, 18 Aug 2020 18:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597769866;
-        bh=7fq14wHHhu6xjH2/CvQck4ytpZ8RfuTFyeu3QT9h5VM=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=xdL+ErVeh97osumX07BL5rOURsDixw8aS0CW2OSyv2Eb6pvusumyVstwHcuz5k0lN
-         UMufnOa1atT5r9DyPTR+anmN9X/ghzHDdfOFdIbTNzYuZSbOhoT6iQN/nJLqrQX5pY
-         g8s3acy4rLf95nsd+TV2uw/gktO3Qm8zrse4LvLo=
-Date:   Tue, 18 Aug 2020 17:57:15 +0100
+        s=default; t=1597775607;
+        bh=WzDKOEV/3ks4Vq2RN+XSt37lu7nxqBdwZ04dCcUGLBg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=fb9EWL9YOJItYrJqb/2kU4UIycl2aJUAdHj+iNBltATniz7K7UJMgEZ4Li5ydb7FV
+         yeLXOUeUWot9aEbsnKqjPzKPEhMYWdFXr+DDMBCydJpMrgUcDGe+/k2jqonXH4hj8X
+         mTOGx82tEqESa8N93diDsrriQwtd88ZgxqF8Lfew=
 From:   Mark Brown <broonie@kernel.org>
-To:     Angelo Dureghello <angelo.dureghello@timesys.com>
-Cc:     linux-spi@vger.kernel.org
-In-Reply-To: <20200816094635.1830006-1-angelo.dureghello@timesys.com>
-References: <20200816094635.1830006-1-angelo.dureghello@timesys.com>
-Subject: Re: [PATCH] spi: spi-fsl-dspi: set ColdFire to DMA mode
-Message-Id: <159776983047.56565.2211910399770285522.b4-ty@kernel.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] SPI fixes for v5.9-rc1
+Date:   Tue, 18 Aug 2020 19:32:51 +0100
+Message-Id: <20200818183327.30A0E2075E@mail.kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sun, 16 Aug 2020 11:46:35 +0200, Angelo Dureghello wrote:
-> Set DMA transfer mode for ColdFire.
-> 
-> After recent fixes to fsl edma engine, this mode can be used
-> also for ColdFire, and from some raw mtd r/w tests it definitely
-> improves the transfer rate, so keeping it selected.
+The following changes since commit 1d5cd4e7773c834db011f6f0989b1882adbf13c9:
 
-Applied to
+  Merge series "Some bug fix for lpspi" from Clark Wang <xiaoning.wang@nxp.com>: (2020-07-29 14:51:14 +0100)
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+are available in the Git repository at:
 
-Thanks!
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v5.9-rc1
 
-[1/1] spi: spi-fsl-dspi: set ColdFire to DMA mode
-      commit: b09058bbf5f083e2670186a02f5be05baf1190d7
+for you to fetch changes up to 8cb61d65b1c8d5bc5b37ebab498ca2f78d264ddb:
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+  Merge series "spi: stm32: various driver fixes" from Alain Volmat <alain.volmat@st.com>: (2020-08-10 19:55:35 +0100)
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+----------------------------------------------------------------
+spi: Fixes for v5.9
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+A bunch of fixes that came in for SPI during the merge window, a bunch
+from ST and others for their controller, one from Lukas for a race
+between device addition and controller unregistration and one from fix
+from Geert for the DT bindings which unbreaks validation.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+----------------------------------------------------------------
+Alain Volmat (1):
+      spi: stm32: always perform registers configuration prior to transfer
 
-Thanks,
-Mark
+Amelie Delaunay (3):
+      spi: stm32: fix fifo threshold level in case of short transfer
+      spi: stm32: fix stm32_spi_prepare_mbr in case of odd clk_rate
+      spi: stm32: fixes suspend/resume management
+
+Antonio Borneo (1):
+      spi: stm32h7: fix race condition at end of transfer
+
+Geert Uytterhoeven (1):
+      dt-bindings: lpspi: Add missing boolean type for fsl,spi-only-use-cs1-sel
+
+Lukas Wunner (1):
+      spi: Prevent adding devices below an unregistering controller
+
+Mark Brown (1):
+      Merge series "spi: stm32: various driver fixes" from Alain Volmat <alain.volmat@st.com>:
+
+Tobias Schramm (1):
+      spi: stm32: clear only asserted irq flags on interrupt
+
+ .../devicetree/bindings/spi/spi-fsl-lpspi.yaml     |   1 +
+ drivers/spi/Kconfig                                |   3 +
+ drivers/spi/spi-stm32.c                            | 100 +++++++++++++--------
+ drivers/spi/spi.c                                  |  21 ++++-
+ 4 files changed, 86 insertions(+), 39 deletions(-)

@@ -2,200 +2,188 @@ Return-Path: <SRS0=w6ou=B5=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A7A1C433E3
-	for <linux-spi@archiver.kernel.org>; Wed, 19 Aug 2020 13:23:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0302EC433DF
+	for <linux-spi@archiver.kernel.org>; Wed, 19 Aug 2020 13:26:06 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 41FD0208DB
-	for <linux-spi@archiver.kernel.org>; Wed, 19 Aug 2020 13:23:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C71DE205CB
+	for <linux-spi@archiver.kernel.org>; Wed, 19 Aug 2020 13:26:05 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20150623.gappssmtp.com header.i=@kernel-dk.20150623.gappssmtp.com header.b="aq3Djs+J"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="tTH+T/ty"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728156AbgHSNXS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 19 Aug 2020 09:23:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39316 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728561AbgHSNSv (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Aug 2020 09:18:51 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F147FC06134E
-        for <linux-spi@vger.kernel.org>; Wed, 19 Aug 2020 06:17:26 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id 128so11390633pgd.5
-        for <linux-spi@vger.kernel.org>; Wed, 19 Aug 2020 06:17:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=jVlnd4GIq1avq9wCVX6yvVGrSg3V4B5anM3I74fUF2c=;
-        b=aq3Djs+JYVFJOgH8pCYQM/bCFdYvnEX3r7XcOPyLDVvHQpULWghKapBRR7Mrnjk+lL
-         ZI936ShOp4TWkrvbMHBKCEvkIKqzyiyTin6m81a9jqdlrP2+OEDYJcHB58jIeNBDbd8m
-         9LbaNp3X/lBLFmvrut25w3ySdH9n0CHAUyDtUTBXXzVjGYQHigaJt+6Xuk9JIUYNhp/p
-         FgUt/Jog4wUzADpawAKv0o63MNRr6Ve3N2jd4wS1pAFyLst7H23CtCfU8iM/CPRbUYHd
-         itGN5mv4ExGtnYKFutLBYvVPG9eTW7mTEeiT/7xAmimuqFCHO0Ra40o4kXsfEZ2Savv/
-         bwyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=jVlnd4GIq1avq9wCVX6yvVGrSg3V4B5anM3I74fUF2c=;
-        b=OyGibTn1Quh8w+qLvb73b1CnB6ZvRXZCqiArP4nsDdPvs4mwkNqcVuAkYmNFTlf99H
-         dsGPj6KFYRmM6rJcCO/iTKHGVYwK8bMAMh8tU4X/dvMU+5V658lPeSoCJG0PmOhS878l
-         V8KgZRK2DZJxtEdlvn1SkmI44IBMoVEPUEClFpjlRVhWYjWRyLWLW8YEzrmE+vMXAFUG
-         /GCqvUOrpMMYGkVDxXay5vuuxTAo6VCyxqSK1XQ5x2DmXAe96Z2Hj/rapb+ljIAvLQqD
-         J6ryW9fzSwDamCXnFRZI+CU5tEOIz0gNhMYJC69wC40uFqPC735gppmzMpcYx0oYFxDC
-         SMsw==
-X-Gm-Message-State: AOAM533OmUJNZTpxQQaY/WmGwJTKjrniW8ueMHoeJm9l1UpV5v3KiKKf
-        v03GR6k6SQL1v1fZyZ9HCcKCKQ==
-X-Google-Smtp-Source: ABdhPJxi299Hddd0S85ysgsMNI/X0B8d1WB7DsNIxo+ERAydDALt/5xQKxlJ2AQYnw532AABOTNI4Q==
-X-Received: by 2002:a62:5214:: with SMTP id g20mr19509095pfb.168.1597843045329;
-        Wed, 19 Aug 2020 06:17:25 -0700 (PDT)
-Received: from [192.168.1.182] ([66.219.217.173])
-        by smtp.gmail.com with ESMTPSA id 193sm28368540pfu.169.2020.08.19.06.17.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Aug 2020 06:17:24 -0700 (PDT)
-Subject: Re: [PATCH] block: convert tasklets to use new tasklet_setup() API
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Kees Cook <keescook@chromium.org>, ulf.hansson@linaro.org,
-        linux-atm-general@lists.sourceforge.net, manohar.vanga@gmail.com,
-        airlied@linux.ie, Allen Pais <allen.lkml@gmail.com>,
-        linux-hyperv@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, anton.ivanov@cambridgegreys.com,
-        devel@driverdev.osuosl.org, linux-s390@vger.kernel.org,
-        linux1394-devel@lists.sourceforge.net, maximlevitsky@gmail.com,
-        richard@nod.at, deller@gmx.de, jassisinghbrar@gmail.com,
-        3chas3@gmail.com, intel-gfx@lists.freedesktop.org, kuba@kernel.org,
-        mporter@kernel.crashing.org, jdike@addtoit.com, oakad@yahoo.com,
-        s.hauer@pengutronix.de, linux-input@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-block@vger.kernel.org,
-        broonie@kernel.org, openipmi-developer@lists.sourceforge.net,
-        mitch@sfgoth.com, linux-arm-kernel@lists.infradead.org,
-        linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
-        martyn@welchs.me.uk, dmitry.torokhov@gmail.com,
-        linux-mmc@vger.kernel.org, sre@kernel.org,
-        linux-spi@vger.kernel.org, alex.bou9@gmail.com,
-        Allen Pais <allen.cryptic@gmail.com>,
-        stefanr@s5r6.in-berlin.de, daniel@ffwll.ch,
-        linux-ntb@googlegroups.com,
-        Romain Perier <romain.perier@gmail.com>, shawnguo@kernel.org,
-        davem@davemloft.net
-References: <20200817091617.28119-1-allen.cryptic@gmail.com>
- <20200817091617.28119-2-allen.cryptic@gmail.com>
- <b5508ca4-0641-7265-2939-5f03cbfab2e2@kernel.dk>
- <202008171228.29E6B3BB@keescook>
- <161b75f1-4e88-dcdf-42e8-b22504d7525c@kernel.dk>
- <202008171246.80287CDCA@keescook>
- <df645c06-c30b-eafa-4d23-826b84f2ff48@kernel.dk>
- <1597780833.3978.3.camel@HansenPartnership.com>
- <f3312928-430c-25f3-7112-76f2754df080@kernel.dk>
- <20200819131158.GA2591006@kroah.com>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <4f5a225d-460f-978f-e3cf-3f505140a515@kernel.dk>
-Date:   Wed, 19 Aug 2020 07:17:19 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1728360AbgHSN0C (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 19 Aug 2020 09:26:02 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:55597 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727773AbgHSNZn (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Aug 2020 09:25:43 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200819132540euoutp02752cf7bc7b07638004f90ab6963436ba~srjwO-Cku1715017150euoutp02o;
+        Wed, 19 Aug 2020 13:25:40 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200819132540euoutp02752cf7bc7b07638004f90ab6963436ba~srjwO-Cku1715017150euoutp02o
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1597843540;
+        bh=6tQ7r9/JkINLNVxiBMcZz+jcczP33Mvp9fg6Z1MmgAM=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=tTH+T/tyBuBmMyMMxltTcyYqMVTVRTQOr3SsZplN7TWGgcNckjsZral+WA+qAiNAv
+         yhAm63wrZ/SmKvktlI7QmMwQfixfCLB/UcrxBdtefxY774AFUCx454oI1fxgvgPsoL
+         JkbHmzJCDWZjdPl7YzVv6rtoM1rhls48GHsX4EVs=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20200819132540eucas1p2440d360295d145b7c150bd8ff1fd0971~srjwBcmF51632416324eucas1p2U;
+        Wed, 19 Aug 2020 13:25:40 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id 9B.EC.06318.4582D3F5; Wed, 19
+        Aug 2020 14:25:40 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20200819132540eucas1p1897948a4f4008ab4946120dd4fa5c192~srjvomnA61524415244eucas1p1-;
+        Wed, 19 Aug 2020 13:25:40 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20200819132540eusmtrp17afec651cfd46becb0badc1b75068aec~srjvn5lWl1886018860eusmtrp1_;
+        Wed, 19 Aug 2020 13:25:40 +0000 (GMT)
+X-AuditID: cbfec7f5-371ff700000018ae-20-5f3d2854de07
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id AC.EB.06017.4582D3F5; Wed, 19
+        Aug 2020 14:25:40 +0100 (BST)
+Received: from localhost (unknown [106.120.51.46]) by eusmtip1.samsung.com
+        (KnoxPortal) with ESMTPA id
+        20200819132539eusmtip168e62beb0b0436f8b38785ab10e25e99~srjvchHgF3073530735eusmtip1B;
+        Wed, 19 Aug 2020 13:25:39 +0000 (GMT)
+From:   Lukasz Stelmach <l.stelmach@samsung.com>
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Kukjin Kim <kgene@kernel.org>, Andi Shyti <andi@etezian.org>,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        m.szyprowski@samsung.com, b.zolnierkie@samsung.com
+Subject: Re: [PATCH 5/8] spi: spi-s3c64xx: Fix doc comment for struct
+ s3c64xx_spi_driver_data
+Date:   Wed, 19 Aug 2020 15:25:26 +0200
+In-Reply-To: <20200819123732.GA18122@kozik-lap> (Krzysztof Kozlowski's
+        message of "Wed, 19 Aug 2020 14:37:32 +0200")
+Message-ID: <dleftjlfia22ex.fsf%l.stelmach@samsung.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20200819131158.GA2591006@kroah.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="=-=-="; micalg="pgp-sha256";
+        protocol="application/pgp-signature"
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrEKsWRmVeSWpSXmKPExsWy7djP87ohGrbxBr2HZC0W/3jOZLFxxnpW
+        i6kPn7BZ9D9+zWxx/vwGdotNj6+xWlzeNYfNYsb5fUwWjR9vslusPXKX3YHL4/qST8wem1Z1
+        snlsXlLv0bdlFaPH501yAaxRXDYpqTmZZalF+nYJXBm7735gLVguWrFx7Uf2BsZHgl2MnBwS
+        AiYSN5+cZe5i5OIQEljBKLFizV4o5wujxJ2DR1khnM+MEmee/2WHaZk67S8jRGI5o8Skt3+h
+        Wp4zStzYeATI4eBgE9CTWLs2AqRBREBT4vrf72CTmAWWM0ksvd3ICJIQFoiXePX0C5jNIqAq
+        0XrvIRuIzSlQJjHh5VOwbbwC5hIHD31jAbFFBSwltry4DxUXlDg58wlYnFkgV2Lm+TdgF0kI
+        3GOX6Nh2hBHiVBeJ352dULawxKvjW6BekJE4PbmHBeRQCYF6icmTzCB6exglts35wQJRYy1x
+        59wvNgjbUeLTtnesEPV8EjfeCkLs5ZOYtG06M0SYV6KjTQiiWkViXf8eqClSEr2vVkBd4CGx
+        4HUfGySsmhglPqy9wj6BUWEWkndmIXlnFtBYZmDYrd+lDxHWlli28DUzhG0rsW7de5YFjKyr
+        GMVTS4tz01OLjfNSy/WKE3OLS/PS9ZLzczcxAlPX6X/Hv+5g3Pcn6RCjAAejEg9vgJJtvBBr
+        YllxZe4hRhWgSY82rL7AKMWSl5+XqiTC63T2dJwQb0piZVVqUX58UWlOavEhRmkOFiVxXuNF
+        L2OFBNITS1KzU1MLUotgskwcnFINjN2Tu865Sbo5P+tfde6F5pxfBz9877yxyYahrnvqpx/r
+        v/1acUCuIIt1kVJR9PID5+dpBZ5VrG32Dd4R49b6Wmmd9IXczrmzegxkCgPnti/4fv/+Hes9
+        H7lzDLye35i05Z9IsebU3S/WNS7cPuWYpWjK1ywr1WvV6XsmfH/wZ4+sw7OvDLrLbpxRYinO
+        SDTUYi4qTgQApxElDmUDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrOIsWRmVeSWpSXmKPExsVy+t/xu7ohGrbxBrNvMlss/vGcyWLjjPWs
+        FlMfPmGz6H/8mtni/PkN7BabHl9jtbi8aw6bxYzz+5gsGj/eZLdYe+QuuwOXx/Uln5g9Nq3q
+        ZPPYvKTeo2/LKkaPz5vkAlij9GyK8ktLUhUy8otLbJWiDS2M9AwtLfSMTCz1DI3NY62MTJX0
+        7WxSUnMyy1KL9O0S9DJ23/3AWrBctGLj2o/sDYyPBLsYOTkkBEwkpk77y9jFyMUhJLCUUeLN
+        rpUsXYwcQAkpiZVz0yFqhCX+XOtig6h5yihx9PQtVpAaNgE9ibVrI0BqRAQ0Ja7//c4KYjML
+        zGeS+P3LA8QWFoiVeLdjLjNIuRBQ+ezZ7CBhFgFVidZ7D9lAbE6BMokvZ5eBtfIKmEscPPSN
+        BcQWFbCU2PLiPjtEXFDi5MwnLBDjsyW+rn7OPIFRYBaS1CwkqVlA25iBLlq/Sx8irC2xbOFr
+        ZgjbVmLduvcsCxhZVzGKpJYW56bnFhvpFSfmFpfmpesl5+duYgRG3LZjP7fsYOx6F3yIUYCD
+        UYmHN0DJNl6INbGsuDL3EKMK0JhHG1ZfYJRiycvPS1US4XU6ezpOiDclsbIqtSg/vqg0J7X4
+        EKMp0J8TmaVEk/OBSSKvJN7Q1NDcwtLQ3Njc2MxCSZy3Q+BgjJBAemJJanZqakFqEUwfEwen
+        VAMju2Wv91Sefc1Jl9U/v9IPy8nYl7om52FJTZZc4/Jbh+vn1Nxw+336j+WOI92ZYrWLtioH
+        BQu/t9rTMZ3n6e4fKxo3cS+e+6d64cw0ttU+Z11WGgg81jjMnFWnUaIUNEuVo6lh/xzPp+ym
+        Ld/Ckp2iD65Jf7zqiaPYLT5PE+uFzkLzdiy1aluuxFKckWioxVxUnAgAtulwxNoCAAA=
+X-CMS-MailID: 20200819132540eucas1p1897948a4f4008ab4946120dd4fa5c192
+X-Msg-Generator: CA
+X-RootMTR: 20200819132540eucas1p1897948a4f4008ab4946120dd4fa5c192
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20200819132540eucas1p1897948a4f4008ab4946120dd4fa5c192
+References: <20200819123732.GA18122@kozik-lap>
+        <CGME20200819132540eucas1p1897948a4f4008ab4946120dd4fa5c192@eucas1p1.samsung.com>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 8/19/20 6:11 AM, Greg KH wrote:
-> On Wed, Aug 19, 2020 at 07:00:53AM -0600, Jens Axboe wrote:
->> On 8/18/20 1:00 PM, James Bottomley wrote:
->>> On Mon, 2020-08-17 at 13:02 -0700, Jens Axboe wrote:
->>>> On 8/17/20 12:48 PM, Kees Cook wrote:
->>>>> On Mon, Aug 17, 2020 at 12:44:34PM -0700, Jens Axboe wrote:
->>>>>> On 8/17/20 12:29 PM, Kees Cook wrote:
->>>>>>> On Mon, Aug 17, 2020 at 06:56:47AM -0700, Jens Axboe wrote:
->>>>>>>> On 8/17/20 2:15 AM, Allen Pais wrote:
->>>>>>>>> From: Allen Pais <allen.lkml@gmail.com>
->>>>>>>>>
->>>>>>>>> In preparation for unconditionally passing the
->>>>>>>>> struct tasklet_struct pointer to all tasklet
->>>>>>>>> callbacks, switch to using the new tasklet_setup()
->>>>>>>>> and from_tasklet() to pass the tasklet pointer explicitly.
->>>>>>>>
->>>>>>>> Who came up with the idea to add a macro 'from_tasklet' that
->>>>>>>> is just container_of? container_of in the code would be
->>>>>>>> _much_ more readable, and not leave anyone guessing wtf
->>>>>>>> from_tasklet is doing.
->>>>>>>>
->>>>>>>> I'd fix that up now before everything else goes in...
->>>>>>>
->>>>>>> As I mentioned in the other thread, I think this makes things
->>>>>>> much more readable. It's the same thing that the timer_struct
->>>>>>> conversion did (added a container_of wrapper) to avoid the
->>>>>>> ever-repeating use of typeof(), long lines, etc.
->>>>>>
->>>>>> But then it should use a generic name, instead of each sub-system 
->>>>>> using some random name that makes people look up exactly what it
->>>>>> does. I'm not huge fan of the container_of() redundancy, but
->>>>>> adding private variants of this doesn't seem like the best way
->>>>>> forward. Let's have a generic helper that does this, and use it
->>>>>> everywhere.
->>>>>
->>>>> I'm open to suggestions, but as things stand, these kinds of
->>>>> treewide
->>>>
->>>> On naming? Implementation is just as it stands, from_tasklet() is
->>>> totally generic which is why I objected to it. from_member()? Not
->>>> great with naming... But I can see this going further and then we'll
->>>> suddenly have tons of these. It's not good for readability.
->>>
->>> Since both threads seem to have petered out, let me suggest in
->>> kernel.h:
->>>
->>> #define cast_out(ptr, container, member) \
->>> 	container_of(ptr, typeof(*container), member)
->>>
->>> It does what you want, the argument order is the same as container_of
->>> with the only difference being you name the containing structure
->>> instead of having to specify its type.
->>
->> Not to incessantly bike shed on the naming, but I don't like cast_out,
->> it's not very descriptive. And it has connotations of getting rid of
->> something, which isn't really true.
-> 
-> I agree, if we want to bike shed, I don't like this color either.
-> 
->> FWIW, I like the from_ part of the original naming, as it has some clues
->> as to what is being done here. Why not just from_container()? That
->> should immediately tell people what it does without having to look up
->> the implementation, even before this becomes a part of the accepted
->> coding norm.
-> 
-> Why are people hating on the well-known and used container_of()?
-> 
-> If you really hate to type the type and want a new macro, what about
-> 'container_from()'?  (noun/verb is nicer to sort symbols by...)
-> 
-> But really, why is this even needed?
+--=-=-=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-container_from() or from_container(), either works just fine for me
-in terms of naming.
+It was <2020-08-19 =C5=9Bro 14:37>, when Krzysztof Kozlowski wrote:
+> On Wed, Aug 19, 2020 at 02:32:05PM +0200, =C5=81ukasz Stelmach wrote:
+>> Signed-off-by: =C5=81ukasz Stelmach <l.stelmach@samsung.com>
+>
+> Hi,
+>
+> Missing commit msg - fix what exactly?
+>
+> You need to rebase your patch as most of these were already fixed by Lee
+> Jones.
+>
+> However he did not remove the @rx_dmach and tx entries...
 
-I think people are hating on it because it makes for _really_ long
-lines, and it's arguably cleaner/simpler to just pass in the pointer
-type instead. Then you end up with lines like this:
+I will.
 
-	struct request_queue *q =                                               
-		container_of(work, struct request_queue, requeue_work.work);  
+>> ---
+>>  drivers/spi/spi-s3c64xx.c | 10 ++++++----
+>>  1 file changed, 6 insertions(+), 4 deletions(-)
+>>=20
+>> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+>> index 6fe896f2be18..505789f91fdf 100644
+>> --- a/drivers/spi/spi-s3c64xx.c
+>> +++ b/drivers/spi/spi-s3c64xx.c
+>> @@ -155,19 +155,21 @@ struct s3c64xx_spi_port_config {
+>>   * @clk: Pointer to the spi clock.
+>>   * @src_clk: Pointer to the clock used to generate SPI signals.
+>>   * @ioclk: Pointer to the i/o clock between master and slave
+>> + * @pdev: Pointer to the SPI controller platform device
+>>   * @master: Pointer to the SPI Protocol master.
+>>   * @cntrlr_info: Platform specific data for the controller this driver =
+manages.
+>>   * @lock: Controller specific lock.
+>>   * @state: Set of FLAGS to indicate status.
+>> - * @rx_dmach: Controller's DMA channel for Rx.
+>> - * @tx_dmach: Controller's DMA channel for Tx.
+>> + * @rx_dma: Controller's DMA channel for Rx.
+>> + * @tx_dma: Controller's DMA channel for Tx.
+>>   * @sfr_start: BUS address of SPI controller regs.
+>>   * @regs: Pointer to ioremap'ed controller registers.
+>> - * @irq: interrupt
+>>   * @xfer_completion: To indicate completion of xfer task.
+>>   * @cur_mode: Stores the active configuration of the controller.
+>>   * @cur_bpw: Stores the active bits per word settings.
+>>   * @cur_speed: Stores the active xfer clock speed.
+>> + * @port_conf: Pointer to the SPI port configuration
+>> + * @port_id: SPI port ID number
+>>   */
+>
+>
 
-But I'm not the one that started this addition of from_tasklet(), my
-objection was adding a private macro for something that should be
-generic functionality. Hence I think we either need to provide that, or
-tell the from_tasklet() folks that they should just use container_of().
+=2D-=20
+=C5=81ukasz Stelmach
+Samsung R&D Institute Poland
+Samsung Electronics
 
--- 
-Jens Axboe
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEXpuyqjq9kGEVr9UQsK4enJilgBAFAl89KEYACgkQsK4enJil
+gBCMYAf/WVzyjutSHX4y+lBqAPOCf3w6v28WJExKEK4DB0CjgMjPm4zkANXSFHCj
+BXXT3V+Px64aJrHpOuzkjm36dTbGPaR6rDplKTvTuqH/EOMvA2JCs4Xy7bx24j/i
+BQUHjDU34UVKvSkalOH3g1o9IGzMfqUNfTwstsvGinxKjFLgapCG+jZtKR48qVw9
+xszonutcmWbCTPCOOJbc7zp2d0CttobJWln+DfjB5C9PcRpFIrAWDnT8AD88btze
+PKlRohh79xJHHxjZlZZ2ArdZuZNZSMvLeW7IznPj02C/n6GGZ3DT5RfVd9HzpdPy
+bY4cIZjqmDMw+mv42kv9AdZnJy6GNQ==
+=WUY2
+-----END PGP SIGNATURE-----
+--=-=-=--

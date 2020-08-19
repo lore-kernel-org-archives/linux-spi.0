@@ -2,44 +2,44 @@ Return-Path: <SRS0=w6ou=B5=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.9 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DB630C433DF
-	for <linux-spi@archiver.kernel.org>; Wed, 19 Aug 2020 13:07:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D017C433E1
+	for <linux-spi@archiver.kernel.org>; Wed, 19 Aug 2020 13:07:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B8A8A207BB
-	for <linux-spi@archiver.kernel.org>; Wed, 19 Aug 2020 13:07:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0517B207BB
+	for <linux-spi@archiver.kernel.org>; Wed, 19 Aug 2020 13:07:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728382AbgHSNHU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1728090AbgHSNHU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Wed, 19 Aug 2020 09:07:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36288 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728583AbgHSM7t (ORCPT
+        with ESMTP id S1728445AbgHSM7t (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Aug 2020 08:59:49 -0400
-Received: from andre.telenet-ops.be (andre.telenet-ops.be [IPv6:2a02:1800:120:4::f00:15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A72F1C06134E
-        for <linux-spi@vger.kernel.org>; Wed, 19 Aug 2020 05:59:15 -0700 (PDT)
+Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [IPv6:2a02:1800:120:4::f00:13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53F4EC06134B
+        for <linux-spi@vger.kernel.org>; Wed, 19 Aug 2020 05:59:13 -0700 (PDT)
 Received: from ramsan ([84.195.186.194])
-        by andre.telenet-ops.be with bizsmtp
-        id HQz62300D4C55Sk01Qz62a; Wed, 19 Aug 2020 14:59:06 +0200
+        by baptiste.telenet-ops.be with bizsmtp
+        id HQz62300D4C55Sk01Qz6y7; Wed, 19 Aug 2020 14:59:06 +0200
 Received: from rox.of.borg ([192.168.97.57])
         by ramsan with esmtp (Exim 4.90_1)
         (envelope-from <geert@linux-m68k.org>)
-        id 1k8NgI-0002bt-3x; Wed, 19 Aug 2020 14:59:06 +0200
+        id 1k8NgI-0002bd-03; Wed, 19 Aug 2020 14:59:06 +0200
 Received: from geert by rox.of.borg with local (Exim 4.90_1)
         (envelope-from <geert@linux-m68k.org>)
-        id 1k8NgI-0005Sp-2z; Wed, 19 Aug 2020 14:59:06 +0200
+        id 1k8NgH-0005Sa-VJ; Wed, 19 Aug 2020 14:59:05 +0200
 From:   Geert Uytterhoeven <geert+renesas@glider.be>
 To:     Mark Brown <broonie@kernel.org>
 Cc:     Chris Brandt <chris.brandt@renesas.com>, linux-spi@vger.kernel.org,
         linux-renesas-soc@vger.kernel.org, linux-sh@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v2 6/7] spi: rspi: Fill in spi_transfer.effective_speed_hz
-Date:   Wed, 19 Aug 2020 14:59:03 +0200
-Message-Id: <20200819125904.20938-7-geert+renesas@glider.be>
+Subject: [PATCH v2 1/7] spi: rspi: Remove useless .set_config_register() check
+Date:   Wed, 19 Aug 2020 14:58:58 +0200
+Message-Id: <20200819125904.20938-2-geert+renesas@glider.be>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200819125904.20938-1-geert+renesas@glider.be>
 References: <20200819125904.20938-1-geert+renesas@glider.be>
@@ -48,62 +48,36 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Fill in the effective bit rate used for transfers, so the SPI core can
-calculate instead of estimate delays.
+Not implementing spi_ops.set_config_register() is a driver bug that
+would prevent the driver from working at all.
+Hence remove the run-time check.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
 v2:
   - No changes.
 
- drivers/spi/spi-rspi.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/spi/spi-rspi.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
 diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 38c0cd7febabf114..2b5334e22ae421b5 100644
+index cbc2387d450cd4c2..1b635d6b7881f5b9 100644
 --- a/drivers/spi/spi-rspi.c
 +++ b/drivers/spi/spi-rspi.c
-@@ -262,6 +262,7 @@ static void rspi_set_rate(struct rspi_data *rspi)
- 
- 	rspi_write8(rspi, clamp(spbr, 0, 255), RSPI_SPBR);
- 	rspi->spcmd |= SPCMD_BRDV(brdv);
-+	rspi->speed_hz = DIV_ROUND_UP(clksrc, (2U << brdv) * (spbr + 1));
- }
- 
- /*
-@@ -344,6 +345,7 @@ static int qspi_set_config_register(struct rspi_data *rspi, int access_size)
- 	clksrc = clk_get_rate(rspi->clk);
- 	if (rspi->speed_hz >= clksrc) {
- 		spbr = 0;
-+		rspi->speed_hz = clksrc;
- 	} else {
- 		spbr = DIV_ROUND_UP(clksrc, 2 * rspi->speed_hz);
- 		while (spbr > 255 && brdv < 3) {
-@@ -351,6 +353,7 @@ static int qspi_set_config_register(struct rspi_data *rspi, int access_size)
- 			spbr = DIV_ROUND_UP(spbr, 2);
- 		}
- 		spbr = clamp(spbr, 0, 255);
-+		rspi->speed_hz = DIV_ROUND_UP(clksrc, (2U << brdv) * spbr);
+@@ -1261,13 +1261,6 @@ static int rspi_probe(struct platform_device *pdev)
+ 			ctlr->num_chipselect = 2; /* default */
  	}
- 	rspi_write8(rspi, spbr, RSPI_SPBR);
- 	rspi->spcmd |= SPCMD_BRDV(brdv);
-@@ -698,6 +701,8 @@ static int rspi_common_transfer(struct rspi_data *rspi,
- {
- 	int ret;
  
-+	xfer->effective_speed_hz = rspi->speed_hz;
-+
- 	ret = rspi_dma_check_then_transfer(rspi, xfer);
- 	if (ret != -EAGAIN)
- 		return ret;
-@@ -853,6 +858,7 @@ static int qspi_transfer_one(struct spi_controller *ctlr,
- {
- 	struct rspi_data *rspi = spi_controller_get_devdata(ctlr);
- 
-+	xfer->effective_speed_hz = rspi->speed_hz;
- 	if (spi->mode & SPI_LOOP) {
- 		return qspi_transfer_out_in(rspi, xfer);
- 	} else if (xfer->tx_nbits > SPI_NBITS_SINGLE) {
+-	/* ops parameter check */
+-	if (!ops->set_config_register) {
+-		dev_err(&pdev->dev, "there is no set_config_register\n");
+-		ret = -ENODEV;
+-		goto error1;
+-	}
+-
+ 	rspi = spi_controller_get_devdata(ctlr);
+ 	platform_set_drvdata(pdev, rspi);
+ 	rspi->ops = ops;
 -- 
 2.17.1
 

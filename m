@@ -2,114 +2,61 @@ Return-Path: <SRS0=w6ou=B5=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D0EEC433DF
-	for <linux-spi@archiver.kernel.org>; Wed, 19 Aug 2020 13:19:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E6B45C433E1
+	for <linux-spi@archiver.kernel.org>; Wed, 19 Aug 2020 13:21:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 08E23206FA
-	for <linux-spi@archiver.kernel.org>; Wed, 19 Aug 2020 13:19:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C033A206FA
+	for <linux-spi@archiver.kernel.org>; Wed, 19 Aug 2020 13:21:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1597843193;
-	bh=7df/TUJeBHIe2mB9oBXeBkh+EQRwdiNjiD4KxxgBqo4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=ATkC7xL5BTBEhuaZ1mFQy1TjY1O2fSInFpKr/e5oqN+pQZdZreQuNwB1bck20awjd
-	 xdiGWcSH6xm4NQ/Y4j1kKXSaqLb8PpLjmI7InryA1fOvh4MaQOZQtVNccYBkRH14Dy
-	 pedPAwmFLfSTNCeXa5AK+MZavJcRFF+jiPkjmx5g=
+	s=default; t=1597843314;
+	bh=NOaZzwfwL2S4+MGer2LKS20kh67l8Lh2b2GLa2kgxOE=;
+	h=Subject:From:Date:To:List-ID:From;
+	b=UxAlZuRBTZIBkfVLzsQkTceC+WdU+WaSCBC/n4kdYh9J8n5e08/1NQ7xpSjIu82xX
+	 LvLmVbKb0ILh1zT0AzkNEvby8FWG6Y5hYg+vn3JpoC/WUeqSEtLLsrekxwV9Z/Z4Y4
+	 HP5kFtY2toHSkapn9kwRczhZ92oauZWO0NJoc2so=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728246AbgHSNTP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 19 Aug 2020 09:19:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60006 "EHLO mail.kernel.org"
+        id S1728356AbgHSNVx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 19 Aug 2020 09:21:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34236 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728156AbgHSNRZ (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 19 Aug 2020 09:17:25 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6982620738;
-        Wed, 19 Aug 2020 13:17:06 +0000 (UTC)
+        id S1728406AbgHSNUR (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 19 Aug 2020 09:20:17 -0400
+Content-Type: text/plain; charset="utf-8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597843026;
-        bh=7df/TUJeBHIe2mB9oBXeBkh+EQRwdiNjiD4KxxgBqo4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=PiFLbqLVGPsc5ZLdPoBXadBWxwCXIuCXj+DLmeuRmAJbi0i4prTzbnKTFqxjvo2Jc
-         SOnV3SDpiYOhITUy1MUOizr4HKdYczHnqgaTeenFPoT6m3Qw1xrctuSouGv9UH4QNz
-         dQo8rz9ZIpHFAzXMOqElmv/oBQX2bSYCmqIKn5/o=
-Date:   Wed, 19 Aug 2020 14:16:35 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Lukasz Stelmach <l.stelmach@samsung.com>,
-        Kukjin Kim <kgene@kernel.org>, Andi Shyti <andi@etezian.org>,
-        linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        m.szyprowski@samsung.com, b.zolnierkie@samsung.com
-Subject: Re: [PATCH 1/8] spi: spi-s3c64xx: swap s3c64xx_spi_set_cs() and
- s3c64xx_enable_datapath()
-Message-ID: <20200819131635.GD5441@sirena.org.uk>
-References: <20200819123834.GB18122@kozik-lap>
- <CGME20200819125150eucas1p1965fab59b6e75cf54cac262161c5695b@eucas1p1.samsung.com>
- <dleftjtuwy23zk.fsf%l.stelmach@samsung.com>
- <20200819125822.GA18970@kozik-lap>
+        s=default; t=1597843217;
+        bh=NOaZzwfwL2S4+MGer2LKS20kh67l8Lh2b2GLa2kgxOE=;
+        h=Subject:From:Date:To:From;
+        b=e3Z7Zn5vWa7anDAJCI4rtVNAvtVawPt3obmNl40C9EabfbShDUzhDx9OI5KYFV4HQ
+         cg4EL5Uao7ANnRP24vNZ61i+ANCoa9R1j7yRlaVDAbjO2YF4g6h4RZexoRrojHLyaU
+         8yrn/TcfUiCpE0g5tkHB+yKjTrY02ka0TW5Y1zak=
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="W5WqUoFLvi1M7tJE"
-Content-Disposition: inline
-In-Reply-To: <20200819125822.GA18970@kozik-lap>
-X-Cookie: I wish you were a Scotch on the rocks.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+linux-spi@kernel.org
+Message-Id: <159784321735.4613.12688607643735375068.git-patchwork-housekeeping@kernel.org>
+Date:   Wed, 19 Aug 2020 13:20:17 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Latest series: [v2] spi: rspi: Bit rate improvements (2020-08-19T12:59:04)
+  Superseding: [v1] spi: rspi: Bit rate improvements (2020-06-08T09:59:40):
+    [1/8] spi: rspi: Remove useless .set_config_register() check
+    [2/8] spi: rspi: Use requested instead of maximum bit rate
+    [3/8] spi: rspi: Clean up Bit Rate Division Setting handling
+    [4/8] spi: rspi: Increase bit rate accuracy on RZ/A
+    [5/8] spi: rspi: Increase bit rate range for RSPI on SH
+    [6/8] spi: rspi: Increase bit rate range for QSPI
+    [7/8] spi: rspi: Fill in spi_transfer.effective_speed_hz
+    [8/8] spi: rspi: Fill in controller speed limits
 
---W5WqUoFLvi1M7tJE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Wed, Aug 19, 2020 at 02:58:22PM +0200, Krzysztof Kozlowski wrote:
-> On Wed, Aug 19, 2020 at 02:51:27PM +0200, Lukasz Stelmach wrote:
-
-> > Honestly, I don't know and I couldn't find out why. It makes stuff
-> > work. There has been a commit like this before
-
-> >     0f5a751ace25 spi/s3c64xx: Enable GPIO /CS prior to starting hardware
-
-> > Apparently, it was lost in
-
-> >     0732a9d2a155 spi/s3c64xx: Use core message handling
-
-> Then describe at least this... maybe Mark knows why he brough back old
-> code after refactoring?
-
-I'm not sure what's being referred to as being lost in the second commit
-TBH.  The first commit is simple code motion rather than a correctness
-thing, and more related to the handling of GPIO controlled chip selects
-according to the description (which people should be using with that
-controller anyway where possible IIRC, the native chip select has too
-many assumptions about what it's doing).  I don't know that I ever
-actually used a system that used the native chip select as the actual
-chip select.  Perhaps some quirk was introduced where the chip select
-signal does something?
-
-The commit is also lacking a description of what the issues that are
-being fixed are.
-
---W5WqUoFLvi1M7tJE
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl89JjIACgkQJNaLcl1U
-h9BNQwf8DubxsPLcMMxLcGFtVMDtvgwTAWvvC87/lyUd+XdYf3m9RPcpkI5Opjgx
-PWrzGQRqtWRJoGOSciM6ePbqWIHFg2Ip/JyLZj82ppSXtc37TtIdg9aY0EQLgT95
-iOUYZ97paaOoy7tZ1hM7aNqZT9ZhF/ChEJsv6Astxq2U9V6gVl3/CGXfhJ473RR9
-g1BzoJuSS2rTx4/mTepuKb4nw4paoWW6wClhHMUuwLfscRkys22Xuze0DW+xRCGw
-r8AF4Athe1vxECWZAsX1zkgEgo9BfBVx6A6WB1PqVVEgbewcFZbEF4Ih7sIYcnI9
-GM1ikUdE2Z1PkJR/gkZ6yEDnhs2X/A==
-=IS2d
------END PGP SIGNATURE-----
-
---W5WqUoFLvi1M7tJE--
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/pwbot

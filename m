@@ -2,138 +2,159 @@ Return-Path: <SRS0=w6ou=B5=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6CE5DC433DF
-	for <linux-spi@archiver.kernel.org>; Wed, 19 Aug 2020 13:07:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1DC37C433E3
+	for <linux-spi@archiver.kernel.org>; Wed, 19 Aug 2020 13:13:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 56C3320825
-	for <linux-spi@archiver.kernel.org>; Wed, 19 Aug 2020 13:07:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id EA8C32076E
+	for <linux-spi@archiver.kernel.org>; Wed, 19 Aug 2020 13:13:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1597842819;
+	bh=vxq1i+5+rO8RGMcDRwl1Kl6llTi6GXYX5kfyPA4jblo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=Aqln0gNkyKJm/yQ+dJL0E/UYhj45ayWL/vRx+ePKW83fZSIMFEPYTEudwbw3XRh3p
+	 KXkPtnul1oKWbUZhJSyfEJ1r78UpLH+jqcXsHnzpKdI2TDVFKIaX13LkH0HAwGGrLF
+	 v2PPKanxWZX6y/Xa5YvUVaSGK2HtDxPFE0L96kaU=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728552AbgHSNHb (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 19 Aug 2020 09:07:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37560 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728544AbgHSNHa (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Aug 2020 09:07:30 -0400
-X-Greylist: delayed 478 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 19 Aug 2020 06:07:30 PDT
-Received: from newton.telenet-ops.be (newton.telenet-ops.be [IPv6:2a02:1800:120:4::f00:d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EB37C061383
-        for <linux-spi@vger.kernel.org>; Wed, 19 Aug 2020 06:07:30 -0700 (PDT)
-Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [IPv6:2a02:1800:120:4::f00:13])
-        by newton.telenet-ops.be (Postfix) with ESMTPS id 4BWnsk529BzMqvZ2
-        for <linux-spi@vger.kernel.org>; Wed, 19 Aug 2020 14:59:06 +0200 (CEST)
-Received: from ramsan ([84.195.186.194])
-        by baptiste.telenet-ops.be with bizsmtp
-        id HQz62300E4C55Sk01Qz6y8; Wed, 19 Aug 2020 14:59:06 +0200
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan with esmtp (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1k8NgI-0002bk-2C; Wed, 19 Aug 2020 14:59:06 +0200
-Received: from geert by rox.of.borg with local (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1k8NgI-0005Sj-1N; Wed, 19 Aug 2020 14:59:06 +0200
-From:   Geert Uytterhoeven <geert+renesas@glider.be>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Chris Brandt <chris.brandt@renesas.com>, linux-spi@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-sh@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v2 4/7] spi: rspi: Increase bit rate range for RSPI on SH
-Date:   Wed, 19 Aug 2020 14:59:01 +0200
-Message-Id: <20200819125904.20938-5-geert+renesas@glider.be>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200819125904.20938-1-geert+renesas@glider.be>
-References: <20200819125904.20938-1-geert+renesas@glider.be>
+        id S1728252AbgHSNLn (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 19 Aug 2020 09:11:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56402 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728149AbgHSNLh (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 19 Aug 2020 09:11:37 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6BC432065F;
+        Wed, 19 Aug 2020 13:11:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1597842695;
+        bh=vxq1i+5+rO8RGMcDRwl1Kl6llTi6GXYX5kfyPA4jblo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=skOvnyoi/s8DCceKzmupkt1jYOaWtFdAAqlQ/MFXOrVpqmMQl+hsMEEjs4HBhOLQu
+         0c0ztyi4uXIKad6aYvYHUv3AbWF2jtioPUcwcQoAVMj74KG+/FMhByNjrec9UmAV0D
+         o/Yb0Ae9Hr3NDLzjtRMcTZ4PqnDnfMAucqQAMsmk=
+Date:   Wed, 19 Aug 2020 15:11:58 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Kees Cook <keescook@chromium.org>, ulf.hansson@linaro.org,
+        linux-atm-general@lists.sourceforge.net, manohar.vanga@gmail.com,
+        airlied@linux.ie, Allen Pais <allen.lkml@gmail.com>,
+        linux-hyperv@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, anton.ivanov@cambridgegreys.com,
+        devel@driverdev.osuosl.org, linux-s390@vger.kernel.org,
+        linux1394-devel@lists.sourceforge.net, maximlevitsky@gmail.com,
+        richard@nod.at, deller@gmx.de, jassisinghbrar@gmail.com,
+        3chas3@gmail.com, intel-gfx@lists.freedesktop.org, kuba@kernel.org,
+        mporter@kernel.crashing.org, jdike@addtoit.com, oakad@yahoo.com,
+        s.hauer@pengutronix.de, linux-input@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-block@vger.kernel.org,
+        broonie@kernel.org, openipmi-developer@lists.sourceforge.net,
+        mitch@sfgoth.com, linux-arm-kernel@lists.infradead.org,
+        linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
+        martyn@welchs.me.uk, dmitry.torokhov@gmail.com,
+        linux-mmc@vger.kernel.org, sre@kernel.org,
+        linux-spi@vger.kernel.org, alex.bou9@gmail.com,
+        Allen Pais <allen.cryptic@gmail.com>,
+        stefanr@s5r6.in-berlin.de, daniel@ffwll.ch,
+        linux-ntb@googlegroups.com,
+        Romain Perier <romain.perier@gmail.com>, shawnguo@kernel.org,
+        davem@davemloft.net
+Subject: Re: [PATCH] block: convert tasklets to use new tasklet_setup() API
+Message-ID: <20200819131158.GA2591006@kroah.com>
+References: <20200817091617.28119-1-allen.cryptic@gmail.com>
+ <20200817091617.28119-2-allen.cryptic@gmail.com>
+ <b5508ca4-0641-7265-2939-5f03cbfab2e2@kernel.dk>
+ <202008171228.29E6B3BB@keescook>
+ <161b75f1-4e88-dcdf-42e8-b22504d7525c@kernel.dk>
+ <202008171246.80287CDCA@keescook>
+ <df645c06-c30b-eafa-4d23-826b84f2ff48@kernel.dk>
+ <1597780833.3978.3.camel@HansenPartnership.com>
+ <f3312928-430c-25f3-7112-76f2754df080@kernel.dk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f3312928-430c-25f3-7112-76f2754df080@kernel.dk>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Increase bit rate range for RSPI on legacy SH by making use of the Bit
-Rate Frequency Division Setting field in Command Registers, just like is
-already done on RZ/A.  This decreases the lower limit by a factor of 8.
+On Wed, Aug 19, 2020 at 07:00:53AM -0600, Jens Axboe wrote:
+> On 8/18/20 1:00 PM, James Bottomley wrote:
+> > On Mon, 2020-08-17 at 13:02 -0700, Jens Axboe wrote:
+> >> On 8/17/20 12:48 PM, Kees Cook wrote:
+> >>> On Mon, Aug 17, 2020 at 12:44:34PM -0700, Jens Axboe wrote:
+> >>>> On 8/17/20 12:29 PM, Kees Cook wrote:
+> >>>>> On Mon, Aug 17, 2020 at 06:56:47AM -0700, Jens Axboe wrote:
+> >>>>>> On 8/17/20 2:15 AM, Allen Pais wrote:
+> >>>>>>> From: Allen Pais <allen.lkml@gmail.com>
+> >>>>>>>
+> >>>>>>> In preparation for unconditionally passing the
+> >>>>>>> struct tasklet_struct pointer to all tasklet
+> >>>>>>> callbacks, switch to using the new tasklet_setup()
+> >>>>>>> and from_tasklet() to pass the tasklet pointer explicitly.
+> >>>>>>
+> >>>>>> Who came up with the idea to add a macro 'from_tasklet' that
+> >>>>>> is just container_of? container_of in the code would be
+> >>>>>> _much_ more readable, and not leave anyone guessing wtf
+> >>>>>> from_tasklet is doing.
+> >>>>>>
+> >>>>>> I'd fix that up now before everything else goes in...
+> >>>>>
+> >>>>> As I mentioned in the other thread, I think this makes things
+> >>>>> much more readable. It's the same thing that the timer_struct
+> >>>>> conversion did (added a container_of wrapper) to avoid the
+> >>>>> ever-repeating use of typeof(), long lines, etc.
+> >>>>
+> >>>> But then it should use a generic name, instead of each sub-system 
+> >>>> using some random name that makes people look up exactly what it
+> >>>> does. I'm not huge fan of the container_of() redundancy, but
+> >>>> adding private variants of this doesn't seem like the best way
+> >>>> forward. Let's have a generic helper that does this, and use it
+> >>>> everywhere.
+> >>>
+> >>> I'm open to suggestions, but as things stand, these kinds of
+> >>> treewide
+> >>
+> >> On naming? Implementation is just as it stands, from_tasklet() is
+> >> totally generic which is why I objected to it. from_member()? Not
+> >> great with naming... But I can see this going further and then we'll
+> >> suddenly have tons of these. It's not good for readability.
+> > 
+> > Since both threads seem to have petered out, let me suggest in
+> > kernel.h:
+> > 
+> > #define cast_out(ptr, container, member) \
+> > 	container_of(ptr, typeof(*container), member)
+> > 
+> > It does what you want, the argument order is the same as container_of
+> > with the only difference being you name the containing structure
+> > instead of having to specify its type.
+> 
+> Not to incessantly bike shed on the naming, but I don't like cast_out,
+> it's not very descriptive. And it has connotations of getting rid of
+> something, which isn't really true.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
-Untested due to lack of hardware, but the formulas in the datasheets for
-SH7753, RZ/A1H, and RZ/A2M are the same.
+I agree, if we want to bike shed, I don't like this color either.
 
-v2:
-  - No changes.
+> FWIW, I like the from_ part of the original naming, as it has some clues
+> as to what is being done here. Why not just from_container()? That
+> should immediately tell people what it does without having to look up
+> the implementation, even before this becomes a part of the accepted
+> coding norm.
 
----
- drivers/spi/spi-rspi.c | 35 ++++++++++++++++++-----------------
- 1 file changed, 18 insertions(+), 17 deletions(-)
+Why are people hating on the well-known and used container_of()?
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index ad4ac867170b101a..ea3f2680d3c13e02 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -248,19 +248,32 @@ struct spi_ops {
- 	u8 num_hw_ss;
- };
- 
-+static void rspi_set_rate(struct rspi_data *rspi)
-+{
-+	unsigned long clksrc;
-+	int brdv = 0, spbr;
-+
-+	clksrc = clk_get_rate(rspi->clk);
-+	spbr = DIV_ROUND_UP(clksrc, 2 * rspi->speed_hz) - 1;
-+	while (spbr > 255 && brdv < 3) {
-+		brdv++;
-+		spbr = DIV_ROUND_UP(spbr + 1, 2) - 1;
-+	}
-+
-+	rspi_write8(rspi, clamp(spbr, 0, 255), RSPI_SPBR);
-+	rspi->spcmd |= SPCMD_BRDV(brdv);
-+}
-+
- /*
-  * functions for RSPI on legacy SH
-  */
- static int rspi_set_config_register(struct rspi_data *rspi, int access_size)
- {
--	int spbr;
--
- 	/* Sets output mode, MOSI signal, and (optionally) loopback */
- 	rspi_write8(rspi, rspi->sppcr, RSPI_SPPCR);
- 
- 	/* Sets transfer bit rate */
--	spbr = DIV_ROUND_UP(clk_get_rate(rspi->clk), 2 * rspi->speed_hz) - 1;
--	rspi_write8(rspi, clamp(spbr, 0, 255), RSPI_SPBR);
-+	rspi_set_rate(rspi);
- 
- 	/* Disable dummy transmission, set 16-bit word access, 1 frame */
- 	rspi_write8(rspi, 0, RSPI_SPDCR);
-@@ -290,23 +303,11 @@ static int rspi_set_config_register(struct rspi_data *rspi, int access_size)
-  */
- static int rspi_rz_set_config_register(struct rspi_data *rspi, int access_size)
- {
--	int spbr;
--	int brdv = 0;
--	unsigned long clksrc;
--
- 	/* Sets output mode, MOSI signal, and (optionally) loopback */
- 	rspi_write8(rspi, rspi->sppcr, RSPI_SPPCR);
- 
--	clksrc = clk_get_rate(rspi->clk);
--	spbr = DIV_ROUND_UP(clksrc, 2 * rspi->speed_hz) - 1;
--	while (spbr > 255 && brdv < 3) {
--		brdv++;
--		spbr = DIV_ROUND_UP(spbr + 1, 2) - 1;
--	}
--
- 	/* Sets transfer bit rate */
--	rspi_write8(rspi, clamp(spbr, 0, 255), RSPI_SPBR);
--	rspi->spcmd |= SPCMD_BRDV(brdv);
-+	rspi_set_rate(rspi);
- 
- 	/* Disable dummy transmission, set byte access */
- 	rspi_write8(rspi, SPDCR_SPLBYTE, RSPI_SPDCR);
--- 
-2.17.1
+If you really hate to type the type and want a new macro, what about
+'container_from()'?  (noun/verb is nicer to sort symbols by...)
 
+But really, why is this even needed?
+
+thanks,
+
+greg k-h

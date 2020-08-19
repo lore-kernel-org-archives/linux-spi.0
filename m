@@ -2,96 +2,121 @@ Return-Path: <SRS0=w6ou=B5=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C17CC433DF
-	for <linux-spi@archiver.kernel.org>; Wed, 19 Aug 2020 12:58:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86A9AC433DF
+	for <linux-spi@archiver.kernel.org>; Wed, 19 Aug 2020 13:00:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id F13E62067C
-	for <linux-spi@archiver.kernel.org>; Wed, 19 Aug 2020 12:58:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1597841934;
-	bh=0ictuFio4aGXSr1duSyYNqNbH17wIKoOjNRv15hcrRQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=v6F8+ToX0OyBnKhFN77niq/jiAFKsbxEKjztyQ0SWdTo1lunVNlSR/tkzVBMSxN4v
-	 aXIWqUQghEr2rsmMFak0Ik3Y8/RxXHgiFhot8hk4pgT4UIgkEXNoFW2rPLvlQgXedv
-	 EVNVoRiBcbayIaInBgSAyy3CxWokZpH+yPViMm1s=
+	by mail.kernel.org (Postfix) with ESMTP id 6A9E1206FA
+	for <linux-spi@archiver.kernel.org>; Wed, 19 Aug 2020 13:00:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728324AbgHSM6s convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 19 Aug 2020 08:58:48 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:44023 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728552AbgHSM61 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Aug 2020 08:58:27 -0400
-Received: by mail-ed1-f66.google.com with SMTP id cq28so18020738edb.10;
-        Wed, 19 Aug 2020 05:58:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=1Xb4tRhzXMgviiFDW9tSyZ3jTP9/igIVkJbqhE4GypA=;
-        b=dtshGwXEbpxgMeINCY1LtPjQoXmZ/bZ7FebkSxgrElYIVZ9HROylvctwdqMfVcxjgC
-         5blmdu/3GfFtuQXH/qT08O0r7iz/PWpfDKIUpqSTiV+oY+DBi9wqkMXOPj9cE7qhd22q
-         m83Jy2g3a+EU+SRYN8Ft6YlsWdusXy8f+u4GTTyZBhHVjO3iDe0+BUXWi/iWn/MDwn5l
-         /YAjYLxOslVLrdFedFMGVfNVuHxwtUh5Mqm5NPozPHRaPPZ4ixqbARuMkDWZYRtfQist
-         Ir2pBu9kVmGv485DIT8ksk4L2Du5WxhIotxDdKvWd/DDYWTlkLM2MELkou0AXl8v5lWS
-         neOQ==
-X-Gm-Message-State: AOAM530+QTYBqy5Vd0iEGsMt331lsdgOnzdTF6+WekL3KwRL/rjg/Tdk
-        KvK1vJ79X3vKgU4Mv45drEY=
-X-Google-Smtp-Source: ABdhPJzxSIaLmSEemtvUBFevKiXnCNyh4UrasOEDD1hKpBzGvzdvLodJ5Gf6MGt4muGYXcLpyurIZA==
-X-Received: by 2002:aa7:db44:: with SMTP id n4mr24609587edt.158.1597841905658;
-        Wed, 19 Aug 2020 05:58:25 -0700 (PDT)
-Received: from kozik-lap ([194.230.155.216])
-        by smtp.googlemail.com with ESMTPSA id bc10sm17987290edb.5.2020.08.19.05.58.24
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 19 Aug 2020 05:58:24 -0700 (PDT)
-Date:   Wed, 19 Aug 2020 14:58:22 +0200
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Lukasz Stelmach <l.stelmach@samsung.com>
-Cc:     Kukjin Kim <kgene@kernel.org>, Andi Shyti <andi@etezian.org>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        m.szyprowski@samsung.com, b.zolnierkie@samsung.com
-Subject: Re: [PATCH 1/8] spi: spi-s3c64xx: swap s3c64xx_spi_set_cs() and
- s3c64xx_enable_datapath()
-Message-ID: <20200819125822.GA18970@kozik-lap>
-References: <20200819123834.GB18122@kozik-lap>
- <CGME20200819125150eucas1p1965fab59b6e75cf54cac262161c5695b@eucas1p1.samsung.com>
- <dleftjtuwy23zk.fsf%l.stelmach@samsung.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8BIT
-In-Reply-To: <dleftjtuwy23zk.fsf%l.stelmach@samsung.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+        id S1728554AbgHSM7v (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 19 Aug 2020 08:59:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36210 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728579AbgHSM7a (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 19 Aug 2020 08:59:30 -0400
+Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [IPv6:2a02:1800:120:4::f00:13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 706DFC061344
+        for <linux-spi@vger.kernel.org>; Wed, 19 Aug 2020 05:59:12 -0700 (PDT)
+Received: from ramsan ([84.195.186.194])
+        by baptiste.telenet-ops.be with bizsmtp
+        id HQz62300G4C55Sk01Qz6yB; Wed, 19 Aug 2020 14:59:06 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan with esmtp (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1k8NgI-0002bw-4s; Wed, 19 Aug 2020 14:59:06 +0200
+Received: from geert by rox.of.borg with local (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1k8NgI-0005Ss-3u; Wed, 19 Aug 2020 14:59:06 +0200
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Chris Brandt <chris.brandt@renesas.com>, linux-spi@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org, linux-sh@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH v2 7/7] spi: rspi: Fill in controller speed limits
+Date:   Wed, 19 Aug 2020 14:59:04 +0200
+Message-Id: <20200819125904.20938-8-geert+renesas@glider.be>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200819125904.20938-1-geert+renesas@glider.be>
+References: <20200819125904.20938-1-geert+renesas@glider.be>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, Aug 19, 2020 at 02:51:27PM +0200, Lukasz Stelmach wrote:
-> It was <2020-08-19 śro 14:38>, when Krzysztof Kozlowski wrote:
-> > On Wed, Aug 19, 2020 at 02:32:01PM +0200, Łukasz Stelmach wrote:
-> >> Fix issues with DMA transfers bigger than 512 on Exynos3250.
-> >
-> > Fix, but how? With proper explanation this should go to CC-stable.
-> 
-> Honestly, I don't know and I couldn't find out why. It makes stuff
-> work. There has been a commit like this before
-> 
->     0f5a751ace25 spi/s3c64xx: Enable GPIO /CS prior to starting hardware
-> 
-> Apparently, it was lost in
-> 
->     0732a9d2a155 spi/s3c64xx: Use core message handling
+Fill in the controller speed limits, so the SPI core can use them for
+validating SPI transfers, and adjusting them where needed.
 
-Then describe at least this... maybe Mark knows why he brough back old
-code after refactoring?
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+v2:
+  - No changes.
 
-Best regards,
-Krzysztof
+ drivers/spi/spi-rspi.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index 2b5334e22ae421b5..e39fd38f5180efb3 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -243,6 +243,8 @@ struct spi_ops {
+ 	int (*transfer_one)(struct spi_controller *ctlr,
+ 			    struct spi_device *spi, struct spi_transfer *xfer);
+ 	u16 extra_mode_bits;
++	u16 min_div;
++	u16 max_div;
+ 	u16 flags;
+ 	u16 fifo_size;
+ 	u8 num_hw_ss;
+@@ -1181,6 +1183,8 @@ static int rspi_remove(struct platform_device *pdev)
+ static const struct spi_ops rspi_ops = {
+ 	.set_config_register =	rspi_set_config_register,
+ 	.transfer_one =		rspi_transfer_one,
++	.min_div =		2,
++	.max_div =		4096,
+ 	.flags =		SPI_CONTROLLER_MUST_TX,
+ 	.fifo_size =		8,
+ 	.num_hw_ss =		2,
+@@ -1189,6 +1193,8 @@ static const struct spi_ops rspi_ops = {
+ static const struct spi_ops rspi_rz_ops = {
+ 	.set_config_register =	rspi_rz_set_config_register,
+ 	.transfer_one =		rspi_rz_transfer_one,
++	.min_div =		2,
++	.max_div =		4096,
+ 	.flags =		SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_MUST_TX,
+ 	.fifo_size =		8,	/* 8 for TX, 32 for RX */
+ 	.num_hw_ss =		1,
+@@ -1199,6 +1205,8 @@ static const struct spi_ops qspi_ops = {
+ 	.transfer_one =		qspi_transfer_one,
+ 	.extra_mode_bits =	SPI_TX_DUAL | SPI_TX_QUAD |
+ 				SPI_RX_DUAL | SPI_RX_QUAD,
++	.min_div =		1,
++	.max_div =		4080,
+ 	.flags =		SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_MUST_TX,
+ 	.fifo_size =		32,
+ 	.num_hw_ss =		1,
+@@ -1260,6 +1268,7 @@ static int rspi_probe(struct platform_device *pdev)
+ 	int ret;
+ 	const struct rspi_plat_data *rspi_pd;
+ 	const struct spi_ops *ops;
++	unsigned long clksrc;
+ 
+ 	ctlr = spi_alloc_master(&pdev->dev, sizeof(struct rspi_data));
+ 	if (ctlr == NULL)
+@@ -1312,6 +1321,9 @@ static int rspi_probe(struct platform_device *pdev)
+ 	ctlr->unprepare_message = rspi_unprepare_message;
+ 	ctlr->mode_bits = SPI_CPHA | SPI_CPOL | SPI_CS_HIGH | SPI_LSB_FIRST |
+ 			  SPI_LOOP | ops->extra_mode_bits;
++	clksrc = clk_get_rate(rspi->clk);
++	ctlr->min_speed_hz = DIV_ROUND_UP(clksrc, ops->max_div);
++	ctlr->max_speed_hz = DIV_ROUND_UP(clksrc, ops->min_div);
+ 	ctlr->flags = ops->flags;
+ 	ctlr->dev.of_node = pdev->dev.of_node;
+ 	ctlr->use_gpio_descriptors = true;
+-- 
+2.17.1
+

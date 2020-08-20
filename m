@@ -2,102 +2,114 @@ Return-Path: <SRS0=42wJ=B6=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E57E0C433E1
-	for <linux-spi@archiver.kernel.org>; Thu, 20 Aug 2020 17:04:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B390C433DF
+	for <linux-spi@archiver.kernel.org>; Thu, 20 Aug 2020 17:04:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C2848208C7
-	for <linux-spi@archiver.kernel.org>; Thu, 20 Aug 2020 17:04:01 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 33592208A9
+	for <linux-spi@archiver.kernel.org>; Thu, 20 Aug 2020 17:04:09 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="i6SWEOhw"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rg7IyGpL"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730195AbgHTRC5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 20 Aug 2020 13:02:57 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:55168 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729767AbgHTRCj (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 20 Aug 2020 13:02:39 -0400
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 07KGrmx5016745;
-        Thu, 20 Aug 2020 13:02:33 -0400
+        id S1729785AbgHTRDz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 20 Aug 2020 13:03:55 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:18086 "EHLO
+        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728549AbgHTRDC (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 20 Aug 2020 13:03:02 -0400
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 07KH2u77148439;
+        Thu, 20 Aug 2020 13:02:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=49g9O54YdjuDR0h4JE4h4tBrQTnCIZqBJ7/F6tsyfP0=;
- b=i6SWEOhwX0WQv1puW29SBFlNgevG122h7ZrtcEpklXtUzBBGp1Io3Bvv3MS1QSUUTuBv
- To/v0K3B2MHZ1IwYfumnIFdVQgpWepja56HynY1imlRr3zDZC+mOhR96FRo1F6mCsd93
- y9we+/XHAxKTk2Ecw/xtftN2x9z5xo7SWVgm9U/diFkePjsJnXaOJR9z41BFw0orAEvG
- cy+nKT3KXe/hQmHnyxOwtx6QKgC7gNp5oubi5ZQAr7RFlXlp6UMIv+yoS0xfhJw05G02
- 8NtfhRjDecktyqDtrFje74E8JtSRAkH7T7m2CYBs5BEB3VnC5nYhft3Lq0xKnpmTzIJg jQ== 
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3311yeqgre-1
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=QLypQFjUTvvvtCxKgcqL+KzCyCI4lsRC1pRhw9KMExU=;
+ b=rg7IyGpL2Nj3K7NMuINvqNiY68enyP1bnJeHmIXcdGBbrvRNyRSmzjgjeNq9EQdsNpBT
+ BEQDyraUVv8rO+hFSdqLhRK1B/aORoya/Aa/DsP9FjlwMaF9P9TUZ0w5ErnoTcHWn4V1
+ oVbJKH4EeVhb2x+PSEa4fdPrGRYxZC6DfTkpxJQObEZCMyZfgT/ZCJrvVD8uOBXhKYAt
+ KsT9ySpbAVwVsQWAS6IUseezHCQ+S7gx4WpYWoxV00PJsK77OqtRPpSryC/FsN02WWj0
+ R/yi7EYapuYOZVREgIi5UoiKZv7WnDymoswmj5yFam2ETWE5WbuBrjGDYXniTM04r6O/ vw== 
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3314mwv9ur-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 20 Aug 2020 13:02:33 -0400
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
-        by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07KH0K1t001566;
-        Thu, 20 Aug 2020 17:02:30 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com [9.57.198.25])
-        by ppma03wdc.us.ibm.com with ESMTP id 3304cedu8h-1
+        Thu, 20 Aug 2020 13:02:55 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+        by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07KH0m7A005412;
+        Thu, 20 Aug 2020 17:02:33 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com [9.57.198.26])
+        by ppma01wdc.us.ibm.com with ESMTP id 3304tkwpyf-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 20 Aug 2020 17:02:30 +0000
+        Thu, 20 Aug 2020 17:02:33 +0000
 Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com [9.57.199.110])
-        by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 07KH2UeH28967174
+        by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 07KH2WxD13632254
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 20 Aug 2020 17:02:30 GMT
+        Thu, 20 Aug 2020 17:02:32 GMT
 Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 56034AE067;
-        Thu, 20 Aug 2020 17:02:30 +0000 (GMT)
+        by IMSVA (Postfix) with ESMTP id 9BAC8AE05C;
+        Thu, 20 Aug 2020 17:02:32 +0000 (GMT)
 Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 66032AE062;
-        Thu, 20 Aug 2020 17:02:29 +0000 (GMT)
+        by IMSVA (Postfix) with ESMTP id A8D49AE05F;
+        Thu, 20 Aug 2020 17:02:31 +0000 (GMT)
 Received: from SHADE6A.ibmuc.com (unknown [9.163.70.74])
         by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
-        Thu, 20 Aug 2020 17:02:29 +0000 (GMT)
+        Thu, 20 Aug 2020 17:02:31 +0000 (GMT)
 From:   Eddie James <eajames@linux.ibm.com>
 To:     linux-spi@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
         eajames@linux.ibm.com, joel@jms.id.au, bradleyb@fuzziesquirrel.com,
         broonie@kernel.org, robh+dt@kernel.org, arnd@arndb.de
-Subject: [PATCH 0/7] spi: Fix FSI-attached controller and AT25 drivers
-Date:   Thu, 20 Aug 2020 12:02:21 -0500
-Message-Id: <20200820170228.42053-1-eajames@linux.ibm.com>
+Subject: [PATCH 2/7] spi: fsi: Fix clock running too fast
+Date:   Thu, 20 Aug 2020 12:02:23 -0500
+Message-Id: <20200820170228.42053-3-eajames@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200820170228.42053-1-eajames@linux.ibm.com>
+References: <20200820170228.42053-1-eajames@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
  definitions=2020-08-20_03:2020-08-19,2020-08-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
- lowpriorityscore=0 mlxlogscore=373 clxscore=1011 suspectscore=1
- adultscore=0 spamscore=0 priorityscore=1501 impostorscore=0 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008200135
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ priorityscore=1501 adultscore=0 impostorscore=0 phishscore=0 bulkscore=0
+ malwarescore=0 mlxscore=0 suspectscore=1 mlxlogscore=999 clxscore=1015
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008200137
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This series implements a number of fixes for the FSI-attached SPI controller
-driver and the AT25 eeprom driver.
+From: Brad Bishop <bradleyb@fuzziesquirrel.com>
 
-Brad Bishop (4):
-  spi: fsi: Handle 9 to 15 byte transfers lengths
-  spi: fsi: Fix clock running too fast
-  spi: fsi: Fix use of the bneq+ sequencer instruction
-  eeprom: at25: Split reads into chunks and cap write size
+Use a clock divider tuned to a 200MHz FSI clock.  Use of the previous
+divider at 200MHz results in corrupt data from endpoint devices. Ideally
+the clock divider would be calculated from the FSI clock, but that
+would require some significant work on the FSI driver.
 
-Eddie James (3):
-  dt-bindings: fsi: fsi2spi: Document new restricted property
-  spi: fsi: Implement restricted size for certain controllers
-  spi: fsi: Check mux status before transfers
+Signed-off-by: Brad Bishop <bradleyb@fuzziesquirrel.com>
+Signed-off-by: Eddie James <eajames@linux.ibm.com>
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+---
+ drivers/spi/spi-fsi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- .../devicetree/bindings/fsi/ibm,fsi2spi.yaml  |  10 ++
- drivers/misc/eeprom/at25.c                    |  94 +++++++-----
- drivers/spi/spi-fsi.c                         | 139 ++++++++++++++----
- 3 files changed, 172 insertions(+), 71 deletions(-)
-
+diff --git a/drivers/spi/spi-fsi.c b/drivers/spi/spi-fsi.c
+index 8f64af0140e0..559d0ff981f3 100644
+--- a/drivers/spi/spi-fsi.c
++++ b/drivers/spi/spi-fsi.c
+@@ -350,7 +350,7 @@ static int fsi_spi_transfer_init(struct fsi_spi *ctx)
+ 	u64 status = 0ULL;
+ 	u64 wanted_clock_cfg = SPI_FSI_CLOCK_CFG_ECC_DISABLE |
+ 		SPI_FSI_CLOCK_CFG_SCK_NO_DEL |
+-		FIELD_PREP(SPI_FSI_CLOCK_CFG_SCK_DIV, 4);
++		FIELD_PREP(SPI_FSI_CLOCK_CFG_SCK_DIV, 19);
+ 
+ 	end = jiffies + msecs_to_jiffies(SPI_FSI_INIT_TIMEOUT_MS);
+ 	do {
 -- 
 2.26.2
 

@@ -4,56 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A7595C433DF
-	for <linux-spi@archiver.kernel.org>; Thu, 20 Aug 2020 21:49:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9FE79C433E1
+	for <linux-spi@archiver.kernel.org>; Thu, 20 Aug 2020 21:49:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 87C9B21775
-	for <linux-spi@archiver.kernel.org>; Thu, 20 Aug 2020 21:49:01 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7783D221E2
+	for <linux-spi@archiver.kernel.org>; Thu, 20 Aug 2020 21:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1597960141;
-	bh=AH1kpXXk3IR45xkFIyr0JzpEiDAPHJrtMYQecq9vuQE=;
+	s=default; t=1597960147;
+	bh=ReZwAAZm3UOKz42MdCB4u+6ks2mEXqu90QQhuiu2Gc8=;
 	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=T+SoSYCwGhndzrpPw89fBN0CDwIs2rwRtgX6blMo6PFbDemYNNJHDdZAEkud5pI/0
-	 JXEKTdfbMy3Pir82FAEMKzl3R1fGgs5S+Ie3hhTcKfahaqCC7v/2wgZ/OMhbuX3lRT
-	 La0XGU/lCCHxLjiuer6tXxNlV47sNa9aNXkWXHI4=
+	b=DCUVilDb4CqJEHV4DMk/0zbTpt02aspI/PqyxA5c3BHB+PYBy7Dj+6fOVkzaU2NvO
+	 hL9LSpHAupSwLmzxFyLr4IyfEeGv3lMh6YgSmRdH+tcnIvdczs7th57V0KskG9Cuva
+	 bcREYuSRrQLiM+2tc8+ypZeucSHuQKdzOOutHqAQ=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727786AbgHTVtB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 20 Aug 2020 17:49:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43954 "EHLO mail.kernel.org"
+        id S1728029AbgHTVtG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 20 Aug 2020 17:49:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44020 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726987AbgHTVtB (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 20 Aug 2020 17:49:01 -0400
+        id S1726852AbgHTVtF (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 20 Aug 2020 17:49:05 -0400
 Received: from localhost (cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net [82.37.168.47])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3AA2021734;
-        Thu, 20 Aug 2020 21:49:00 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C8FC921734;
+        Thu, 20 Aug 2020 21:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1597960140;
-        bh=AH1kpXXk3IR45xkFIyr0JzpEiDAPHJrtMYQecq9vuQE=;
+        s=default; t=1597960145;
+        bh=ReZwAAZm3UOKz42MdCB4u+6ks2mEXqu90QQhuiu2Gc8=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=L3lQNHTjZCesSSuZluNQKjjIGQZ18h2VF5N5UEOhipHYoCCubUweKGLb+4vqmne9o
-         60Z1Ud9ITca2LurQEEeYE1wpNrcBhURKlKRiLcl9li9UlFoE8eMxEaPDc+QDBH6ncj
-         bt1iPZencgb1CMN71gI+4g0Cn7i5XZ8wCHQ+GRdo=
-Date:   Thu, 20 Aug 2020 22:48:27 +0100
+        b=zH+ygSPbibxF8P17B7l0NpvdtpBXDc8s59z9eKsIh/tRh8wwbeljySYeqYi4aAunc
+         Mv5Hz27gSlcNma4B2gvRi2wSWcmuFpUFLT8cx3IvWF0rA1AxPIa+UpkDZgU+SN/jNg
+         j2ZgIxoGtLz0plWcriOkmDX9Jc67/+c05aLhP/7Q=
+Date:   Thu, 20 Aug 2020 22:48:32 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Fabio Estevam <festevam@gmail.com>
-Cc:     linux-spi@vger.kernel.org
-In-Reply-To: <20200819123330.22880-1-festevam@gmail.com>
-References: <20200819123330.22880-1-festevam@gmail.com>
-Subject: Re: [PATCH v2] spi: imx: Remove unneeded probe message
-Message-Id: <159796010777.44514.368618244956650857.b4-ty@kernel.org>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     Chris Brandt <chris.brandt@renesas.com>,
+        linux-renesas-soc@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-spi@vger.kernel.org
+In-Reply-To: <20200819125904.20938-1-geert+renesas@glider.be>
+References: <20200819125904.20938-1-geert+renesas@glider.be>
+Subject: Re: [PATCH v2 0/7] spi: rspi: Bit rate improvements
+Message-Id: <159796010778.44514.12060590763849397055.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 19 Aug 2020 09:33:30 -0300, Fabio Estevam wrote:
-> There is no point in printing a plain "probed" message on successful probe.
+On Wed, 19 Aug 2020 14:58:57 +0200, Geert Uytterhoeven wrote:
+> 	Hi Mark,
 > 
-> Just remove it and make the kernel log a bit less noisy.
+> This patch series contains several improvements for the Renesas SPI/QSPI
+> driver related to bit rate configuration.
+> 
+> Changes compared to v1
+> (https://lore.kernel.org/r/20200608095940.30516-1-geert+renesas@glider.be):
+>   - Drop accepted patch.
+> 
+> [...]
 
 Applied to
 
@@ -61,8 +70,20 @@ Applied to
 
 Thanks!
 
-[1/1] spi: imx: Remove unneeded probe message
-      commit: c76964e810a55c30cc407760d7cd79b5df53ecc6
+[1/7] spi: rspi: Remove useless .set_config_register() check
+      commit: 7ffe363bb2a25f0760127657f88243647f49bd5c
+[2/7] spi: rspi: Clean up Bit Rate Division Setting handling
+      commit: 8dd71698607f822c3675c366a8a79bc82f7621f8
+[3/7] spi: rspi: Increase bit rate accuracy on RZ/A
+      commit: feace90233a8cd44a18902216657279c3932d471
+[4/7] spi: rspi: Increase bit rate range for RSPI on SH
+      commit: 4e71d926abbe9ec23415f2ec8685a7bc26c1ceed
+[5/7] spi: rspi: Increase bit rate range for QSPI
+      commit: 6a195f24f3e88b9242268da79547fe4a61f30910
+[6/7] spi: rspi: Fill in spi_transfer.effective_speed_hz
+      commit: cb588254140802dbef0b29e4d0a1212cbe5e61e3
+[7/7] spi: rspi: Fill in controller speed limits
+      commit: c31979747b7090e8d255caecf5bb314436dd90ef
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

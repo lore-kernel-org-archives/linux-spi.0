@@ -2,104 +2,148 @@ Return-Path: <SRS0=I8nA=CC=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,NICE_REPLY_A,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7178FC433E1
-	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 11:25:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DBC30C433DF
+	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 11:45:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4C3D72078A
-	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 11:25:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1598268345;
-	bh=7GIaKetwytFVVmGuqF6J4EWX1T8qm6Wcdr0mF9j04Kk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=0L7Czv+MxIrcSqL01pwalKTMNePWGidIlpzCYuUGhz2Yco/oYPkMpx2WlYGe4tumh
-	 j0Wj0x29zZz1gkfyT7H6xIoF5K6dTCfxTJPkDl6NPpqso/w1r+ODuEZExdKosnefuD
-	 Pqk+6iXjZId6rPG5QAGUZ9v+aGKiiKTpHZEqwEcg=
+	by mail.kernel.org (Postfix) with ESMTP id ADCB6206BE
+	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 11:45:22 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="KhgJl73n"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726075AbgHXLZk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 24 Aug 2020 07:25:40 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35558 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725921AbgHXLZj (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 24 Aug 2020 07:25:39 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 159412074D;
-        Mon, 24 Aug 2020 11:25:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598268339;
-        bh=7GIaKetwytFVVmGuqF6J4EWX1T8qm6Wcdr0mF9j04Kk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=uOZuujobGhwvWq01HJ+H0LzcafLeyO6owoL6H/+IFI8PIwGNOnIBXJEYDWjQqvW7k
-         5stVhA1JHelmI3dKgmIkXPpvpdqCeNQ8SHdzFBUEE7s0ZF0jfGiFVRYj/pFtMbQjYA
-         OzozzQ4bKX8ySmmFfQ33dcD4xQ+vj+tmzDjiGWn0=
-Date:   Mon, 24 Aug 2020 12:25:05 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Vladimir Oltean <olteanv@gmail.com>
-Cc:     Kuldip Dwivedi <kuldip.dwivedi@puresoftware.com>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Qiang Zhao <qiang.zhao@nxp.com>,
-        Pankaj Bansal <pankaj.bansal@nxp.com>,
-        Varun Sethi <V.Sethi@nxp.com>,
-        Tanveer Alam <tanveer.alam@puresoftware.com>
-Subject: Re: [PATCH] spi: spi-fsl-dspi: Add ACPI support
-Message-ID: <20200824112505.GD4676@sirena.org.uk>
-References: <20200821131029.11440-1-kuldip.dwivedi@puresoftware.com>
- <20200821140718.GH4870@sirena.org.uk>
- <c810740d75f64e308fd362e6c6a5f437@mail.gmail.com>
- <20200822152118.rlwbcgfk4abjldtg@skbuf>
+        id S1726727AbgHXLpV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 24 Aug 2020 07:45:21 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:59842 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726611AbgHXLpT (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 24 Aug 2020 07:45:19 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 07OBj8To046466;
+        Mon, 24 Aug 2020 06:45:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1598269508;
+        bh=ylz2yEP7MNmFHxlW15UvscwqbJnFF/9ciAx038v5df0=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=KhgJl73nvKfP0FUEZHVllgKaMVUa28jQXsIQhjiSMskfHwuFbIUjBdELvE0/chWKv
+         0GvfctxAIt8BuiaykVbNakghsJIdpFvQb7EcE+bQHHKg/CxCeR0CMbDiA6pmjH2My3
+         3qa+i3KMBqk8p+m6q+i/0j5XbLgiwradbP4HAYPA=
+Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id 07OBj8mn126368;
+        Mon, 24 Aug 2020 06:45:08 -0500
+Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Mon, 24
+ Aug 2020 06:45:07 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Mon, 24 Aug 2020 06:45:08 -0500
+Received: from [10.250.235.166] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 07OBj4ck089288;
+        Mon, 24 Aug 2020 06:45:04 -0500
+Subject: Re: [RESEND PATCH v3 5/8] mtd: spi-nor: cadence-quadspi: Handle probe
+ deferral while requesting DMA channel
+To:     Jan Kiszka <jan.kiszka@web.de>,
+        Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Mark Brown <broonie@kernel.org>
+CC:     Boris Brezillon <bbrezillon@kernel.org>,
+        Ramuthevar Vadivel Murugan 
+        <vadivel.muruganx.ramuthevar@linux.intel.com>,
+        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>, <simon.k.r.goldschmidt@gmail.com>,
+        <dinguyen@kernel.org>, <marex@denx.de>
+References: <20200601070444.16923-1-vigneshr@ti.com>
+ <20200601070444.16923-6-vigneshr@ti.com>
+ <6c8d9bff-3a67-0e6c-d4d1-36b7ed5007b9@web.de>
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+Message-ID: <8cebd31a-2366-4584-b1d1-faa30c18ed6a@ti.com>
+Date:   Mon, 24 Aug 2020 17:15:03 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="DiL7RhKs8rK9YGuF"
-Content-Disposition: inline
-In-Reply-To: <20200822152118.rlwbcgfk4abjldtg@skbuf>
-X-Cookie: Weekend, where are you?
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <6c8d9bff-3a67-0e6c-d4d1-36b7ed5007b9@web.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
 
---DiL7RhKs8rK9YGuF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Sat, Aug 22, 2020 at 06:21:18PM +0300, Vladimir Oltean wrote:
-> On Sat, Aug 22, 2020 at 07:37:25PM +0530, Kuldip Dwivedi wrote:
+On 8/22/20 11:35 PM, Jan Kiszka wrote:
+> On 01.06.20 09:04, Vignesh Raghavendra wrote:
+>> dma_request_chan_by_mask() can throw EPROBE_DEFER if DMA provider
+>> is not yet probed. Currently driver just falls back to using PIO mode
+>> (which is less efficient) in this case. Instead return probe deferral
+>> error as is so that driver will be re probed once DMA provider is
+>> available.
+>>
+>> Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+>> Reviewed-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+>> ---
+[...]
+>>
+>>  static const struct spi_nor_controller_ops cqspi_controller_ops = {
+>> @@ -1269,8 +1274,11 @@ static int cqspi_setup_flash(struct cqspi_st *cqspi, struct device_node *np)
+>>  			dev_dbg(nor->dev, "using direct mode for %s\n",
+>>  				mtd->name);
+>>
+>> -			if (!cqspi->rx_chan)
+>> -				cqspi_request_mmap_dma(cqspi);
+>> +			if (!cqspi->rx_chan) {
+>> +				ret = cqspi_request_mmap_dma(cqspi);
+>> +				if (ret == -EPROBE_DEFER)
+>> +					goto err;
+>> +			}
+>>  		}
+>>  	}
+>>
+>>
+> 
+> This seem to break reading the SPI flash on our IOT2050 [1] (didn't test
+> the eval board yet).
+> 
+> Without that commit, read happens via PIO, and that works. With the
+> commit, the pattern
+> 
+> with open("out.bin", "wb") as out:
+>     pos = 0
+>     while pos < 2:
+>         with open("/dev/mtd0", "rb") as mtd:
+>            mtd.seek(pos * 0x10000)
+>            out.write(mtd.read(0x10000))
+>         pos += 1
+> 
+> gives the wrong result for the second block while
 
-> > > The whole point with the device property API is that it works with
-> > > both DT and ACPI without needing separate parsing, though in this
-> > > case I'm wondering why we'd need to specify this in an ACPI system
-> > > at all?
+Interesting... Could you please explain wrong result? Is the data move
+around or completely garbage?
 
-> > Understood. Will take care in v2 PATCH
+Does this fail even on AM654 EVM? Could you share full script for me to
+test locally?
 
-> IMO there is zero reason for the existence of the "spi-num-chipselects"
-> property even for DT. We should deprecate it (start ignoring it in
-> existing device tree deployments) and populate struct
-> fsl_dspi_devtype_data with that info based on SoC compatible string.
+What is the flash on the board?
 
-Yes, it's a legacy from bad board file conversions and shouldn't be used
-at all.
-
---DiL7RhKs8rK9YGuF
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl9Do5AACgkQJNaLcl1U
-h9A8PQf/cEQl3VktlE6c6lvsovpm3nRjF6qrRNor+1Py6I3IJ+oNYlQjbyPbSY1f
-s8SEca4akE5en6X7+xDjSSVVML1D3ztxlmfQLYk2qb+k3YZEYxIAIrN7O0/4dFAn
-3kat8f7Zzmh8m1fCvX+z48aJ1cqUhi0pYknPO7yndjrBBM4Y6M8yjlctThXc7vLA
-rd+iOr4geg9teG4z8N60LBeMpHUJetUJEC3S7ZN22TiecSaQbKeppjsmbKfroQp3
-52wGck6h7k6mQXtSicZg2OdEyyNMjy6dKx1qxkbUL0aHr10Boao+iX865bDqrAGU
-NVsNfIiTRLTYJ/6mcnBDmK+gWqNe+g==
-=KhPu
------END PGP SIGNATURE-----
-
---DiL7RhKs8rK9YGuF--
+> 
+> with open("out2.bin", "wb") as out:
+>     with open("/dev/mtd0", "rb") as mtd:
+>         out.write(mtd.read(0x20000))
+> 
+> (or "mtd_debug read") is fine.
+> 
+> What could be the reason? Our DTBs and k3-am654-base-board.dtb had some
+> deviations /wrt the ospi node, but aligning ours to the base board made
+> no difference.
+> 
+> Jan
+> 
+> [1] https://github.com/siemens/linux/commits/jan/iot2050
+> 

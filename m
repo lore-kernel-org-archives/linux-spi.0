@@ -7,47 +7,48 @@ X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 23E12C433DF
-	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 17:06:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 004FFC433E4
+	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 17:06:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 010F72074D
-	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 17:06:04 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C71C2206F0
+	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 17:06:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1598288764;
-	bh=HN0Isawz2NHgv2bRUqMMnRrlv95OYOY7kAoBjuMpvrc=;
+	s=default; t=1598288783;
+	bh=K3yWvFf9iGlYV6TEXI/TRyddrzkpJ+p9pjKQXDWZ5CM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=jKEQ6HoFghMtJXkBMqVxXg3K2YSpXKMeZy+UwFLCiJ5EU2rjgFlQbix4TTzizhg45
-	 S1Mah2FlG2oYklpB5K05WnXHcMGc8vBfPT2ZTvJuINvMAWO7+8oejbH/ST8p/kcg8R
-	 VjkzTeMBlBNn5kDoftxyLglvUszluEMBwWttR7fA=
+	b=Tox8/EJwH2lIa2dz2fa3Ol0zsVH7GDW6ddanxsRXYYnMorDe3Xlf+vN4SD1cQUMpB
+	 YpZIFWfy2gse36ACL5ycrG8dQbDDA1FG1Nkx4iLcuXf/y0Mgsxara207cnh+N1jB2a
+	 tfB62937kyJGbMFY+SoIaDyxHhJcqhWRJkC+6Oc0=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726645AbgHXRFl (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 24 Aug 2020 13:05:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40324 "EHLO mail.kernel.org"
+        id S1726983AbgHXRGH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 24 Aug 2020 13:06:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41068 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728454AbgHXQic (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 24 Aug 2020 12:38:32 -0400
+        id S1728446AbgHXQia (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 24 Aug 2020 12:38:30 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3CC1D22C9F;
-        Mon, 24 Aug 2020 16:38:08 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id ED1C022DFB;
+        Mon, 24 Aug 2020 16:38:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598287089;
-        bh=HN0Isawz2NHgv2bRUqMMnRrlv95OYOY7kAoBjuMpvrc=;
+        s=default; t=1598287084;
+        bh=K3yWvFf9iGlYV6TEXI/TRyddrzkpJ+p9pjKQXDWZ5CM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NLMP+F5IxWtiTJkVCOOoLPQNAt327QpHY3Xtf+ihePgZXhUXmaRPGHJOjt1PcF4WL
-         bK1VmJ5486ZrIZgGaH9Uc57No/V90GtJoiK9tjJK6PDf6IQDsgHWvEDBSsJTawjN+3
-         BWMrxKOrWx06SFAFM+t+ZoIY1bIQBs00877EKEjw=
+        b=V5LyVqdYuf2p73Xle5JkwH4FB5kbYnyNEb6vx2hTMHkECmW+rw23M9L/HNqjAhGg3
+         OQ81XnU78N1pxPnJjI8o4AstRMTrrKbIRQLBEyh3gpw4MzS1bB2qDl8ApjoIG+F7JZ
+         uhTuiSZMJ4qE5RG8hX+r6HHHoBH0DHib9wZi921c=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Alain Volmat <alain.volmat@st.com>,
+Cc:     Antonio Borneo <antonio.borneo@st.com>,
+        Alain Volmat <alain.volmat@st.com>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org,
         linux-stm32@st-md-mailman.stormreply.com,
         linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.4 13/38] spi: stm32: always perform registers configuration prior to transfer
-Date:   Mon, 24 Aug 2020 12:37:25 -0400
-Message-Id: <20200824163751.606577-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 10/38] spi: stm32h7: fix race condition at end of transfer
+Date:   Mon, 24 Aug 2020 12:37:22 -0400
+Message-Id: <20200824163751.606577-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200824163751.606577-1-sashal@kernel.org>
 References: <20200824163751.606577-1-sashal@kernel.org>
@@ -60,85 +61,42 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Alain Volmat <alain.volmat@st.com>
+From: Antonio Borneo <antonio.borneo@st.com>
 
-[ Upstream commit 60ccb3515fc61a0124c70aa37317f75b67560024 ]
+[ Upstream commit 135dd873d3c76d812ae64c668adef3f2c59ed27f ]
 
-SPI registers content may have been lost upon suspend/resume sequence.
-So, always compute and apply the necessary configuration in
-stm32_spi_transfer_one_setup routine.
+The caller of stm32_spi_transfer_one(), spi_transfer_one_message(),
+is waiting for us to call spi_finalize_current_transfer() and will
+eventually schedule a new transfer, if available.
+We should guarantee that the spi controller is really available
+before calling spi_finalize_current_transfer().
 
+Move the call to spi_finalize_current_transfer() _after_ the call
+to stm32_spi_disable().
+
+Signed-off-by: Antonio Borneo <antonio.borneo@st.com>
 Signed-off-by: Alain Volmat <alain.volmat@st.com>
-Link: https://lore.kernel.org/r/1597043558-29668-6-git-send-email-alain.volmat@st.com
+Link: https://lore.kernel.org/r/1597043558-29668-2-git-send-email-alain.volmat@st.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-stm32.c | 42 +++++++++++++++++------------------------
- 1 file changed, 17 insertions(+), 25 deletions(-)
+ drivers/spi/spi-stm32.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index 54fc14e08cee9..b0a8e36ac49db 100644
+index db4c1584327c1..cb54471456145 100644
 --- a/drivers/spi/spi-stm32.c
 +++ b/drivers/spi/spi-stm32.c
-@@ -1589,41 +1589,33 @@ static int stm32_spi_transfer_one_setup(struct stm32_spi *spi,
- 	unsigned long flags;
- 	unsigned int comm_type;
- 	int nb_words, ret = 0;
-+	int mbr;
+@@ -966,8 +966,8 @@ static irqreturn_t stm32h7_spi_irq_thread(int irq, void *dev_id)
+ 	spin_unlock_irqrestore(&spi->lock, flags);
  
- 	spin_lock_irqsave(&spi->lock, flags);
- 
- 	spi->cur_xferlen = transfer->len;
- 
--	if (spi->cur_bpw != transfer->bits_per_word) {
--		spi->cur_bpw = transfer->bits_per_word;
--		spi->cfg->set_bpw(spi);
--	}
--
--	if (spi->cur_speed != transfer->speed_hz) {
--		int mbr;
--
--		/* Update spi->cur_speed with real clock speed */
--		mbr = stm32_spi_prepare_mbr(spi, transfer->speed_hz,
--					    spi->cfg->baud_rate_div_min,
--					    spi->cfg->baud_rate_div_max);
--		if (mbr < 0) {
--			ret = mbr;
--			goto out;
--		}
-+	spi->cur_bpw = transfer->bits_per_word;
-+	spi->cfg->set_bpw(spi);
- 
--		transfer->speed_hz = spi->cur_speed;
--		stm32_spi_set_mbr(spi, mbr);
-+	/* Update spi->cur_speed with real clock speed */
-+	mbr = stm32_spi_prepare_mbr(spi, transfer->speed_hz,
-+				    spi->cfg->baud_rate_div_min,
-+				    spi->cfg->baud_rate_div_max);
-+	if (mbr < 0) {
-+		ret = mbr;
-+		goto out;
+ 	if (end) {
+-		spi_finalize_current_transfer(master);
+ 		stm32h7_spi_disable(spi);
++		spi_finalize_current_transfer(master);
  	}
  
--	comm_type = stm32_spi_communication_type(spi_dev, transfer);
--	if (spi->cur_comm != comm_type) {
--		ret = spi->cfg->set_mode(spi, comm_type);
-+	transfer->speed_hz = spi->cur_speed;
-+	stm32_spi_set_mbr(spi, mbr);
- 
--		if (ret < 0)
--			goto out;
-+	comm_type = stm32_spi_communication_type(spi_dev, transfer);
-+	ret = spi->cfg->set_mode(spi, comm_type);
-+	if (ret < 0)
-+		goto out;
- 
--		spi->cur_comm = comm_type;
--	}
-+	spi->cur_comm = comm_type;
- 
- 	if (spi->cfg->set_data_idleness)
- 		spi->cfg->set_data_idleness(spi, transfer->len);
+ 	return IRQ_HANDLED;
 -- 
 2.25.1
 

@@ -7,37 +7,37 @@ X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 91597C433E1
-	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 17:14:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A25A0C433E1
+	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 17:14:29 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 73EF7206F0
-	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 17:14:26 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7D49B206F0
+	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 17:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1598289266;
-	bh=nQK7sQ9PIi9e6YS6uT4vUUKm2HZlpHTD8PtUGW7LvZ0=;
+	s=default; t=1598289269;
+	bh=K27kQBAWZFKx0uoItNdD1+fZoRF6rbvLPYW/EqB8wnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=lokesuRleVzR3AWHKjfkKinExF6ZuxASdHAGzKbhcp65In9WH/z0Zmu0XbtbqpemP
-	 iDXz6AeBDRhhYQIoi6w4GDYPx4ut8mtXZ+ojptDCY20/2zgMytS0eGwhLj+6+XC4Pf
-	 kJmi4wZrJpUhBZR5btKINPE9NLMNg/l89QQLFqmg=
+	b=SH+VlKsUgTUnWqBxypFCxJYHGZ+pUxP2Q8cWoeyXCfL6KEtDtm7J50lU7ziNS5oyM
+	 vxGYlx8D6buGpY0WIQkAJ9i3veq7iwuUuPfNY/1W4D91JjZ9IUzYQv2kGmJAaQRE2J
+	 IbwU2AJNVj5j19giimahD5uKzehwHommcVoH/coA=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727927AbgHXROC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 24 Aug 2020 13:14:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40220 "EHLO mail.kernel.org"
+        id S1726529AbgHXROB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 24 Aug 2020 13:14:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40164 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728374AbgHXQhV (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        id S1728373AbgHXQhV (ORCPT <rfc822;linux-spi@vger.kernel.org>);
         Mon, 24 Aug 2020 12:37:21 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C848722EBE;
-        Mon, 24 Aug 2020 16:36:52 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 515DC22E02;
+        Mon, 24 Aug 2020 16:36:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598287013;
-        bh=nQK7sQ9PIi9e6YS6uT4vUUKm2HZlpHTD8PtUGW7LvZ0=;
+        s=default; t=1598287012;
+        bh=K27kQBAWZFKx0uoItNdD1+fZoRF6rbvLPYW/EqB8wnQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oboDI4LvtLBnN5p8adnaARTIyQuPvAZyMXWlFxfKn0vj1t34quo23BOeQ1607jXMl
-         PU8k9HsWkcMsG1D/IGL+66pHvuhRNwTkbKOYRLtko6gDBCPz/rR576FjAdwameQTX9
-         hnlae2EwhZy71A3e1Ol0PXs6ZKPJ0ovnqKiXzYsM=
+        b=kN0+aBSBiPZTVldJDag0WenSw+58aXOBX4eWuoUa6qqpA/vcO6/jyzv48m5wHGtti
+         0rtaBAAntZHKMQPlgv3AkhZRdz2ucbzLHWtY+jHhxZ2TzB1HcERi/Txt8gCx6Chk4E
+         EazpTPqGzX+mZ24kIGcIC3hXMncXphRqBr4x56f8=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Amelie Delaunay <amelie.delaunay@st.com>,
@@ -46,9 +46,9 @@ Cc:     Amelie Delaunay <amelie.delaunay@st.com>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org,
         linux-stm32@st-md-mailman.stormreply.com,
         linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.7 14/54] spi: stm32: fix stm32_spi_prepare_mbr in case of odd clk_rate
-Date:   Mon, 24 Aug 2020 12:35:53 -0400
-Message-Id: <20200824163634.606093-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.7 13/54] spi: stm32: fix fifo threshold level in case of short transfer
+Date:   Mon, 24 Aug 2020 12:35:52 -0400
+Message-Id: <20200824163634.606093-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200824163634.606093-1-sashal@kernel.org>
 References: <20200824163634.606093-1-sashal@kernel.org>
@@ -63,34 +63,95 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Amelie Delaunay <amelie.delaunay@st.com>
 
-[ Upstream commit 9cc61973bf9385b19ff5dda4a2a7e265fcba85e4 ]
+[ Upstream commit 3373e9004acc0603242622b4378c64bc01d21b5f ]
 
-Fix spi->clk_rate when it is odd to the nearest lowest even value because
-minimum SPI divider is 2.
+When transfer is shorter than half of the fifo, set the data packet size
+up to transfer size instead of up to half of the fifo.
+Check also that threshold is set at least to 1 data frame.
 
 Signed-off-by: Amelie Delaunay <amelie.delaunay@st.com>
 Signed-off-by: Alain Volmat <alain.volmat@st.com>
-Link: https://lore.kernel.org/r/1597043558-29668-4-git-send-email-alain.volmat@st.com
+Link: https://lore.kernel.org/r/1597043558-29668-3-git-send-email-alain.volmat@st.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-stm32.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-stm32.c | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index faaff58cf415e..08492284369dd 100644
+index 04ee21defbc0b..faaff58cf415e 100644
 --- a/drivers/spi/spi-stm32.c
 +++ b/drivers/spi/spi-stm32.c
-@@ -441,7 +441,8 @@ static int stm32_spi_prepare_mbr(struct stm32_spi *spi, u32 speed_hz,
+@@ -467,20 +467,27 @@ static int stm32_spi_prepare_mbr(struct stm32_spi *spi, u32 speed_hz,
+ /**
+  * stm32h7_spi_prepare_fthlv - Determine FIFO threshold level
+  * @spi: pointer to the spi controller data structure
++ * @xfer_len: length of the message to be transferred
+  */
+-static u32 stm32h7_spi_prepare_fthlv(struct stm32_spi *spi)
++static u32 stm32h7_spi_prepare_fthlv(struct stm32_spi *spi, u32 xfer_len)
  {
- 	u32 div, mbrdiv;
+-	u32 fthlv, half_fifo;
++	u32 fthlv, half_fifo, packet;
  
--	div = DIV_ROUND_UP(spi->clk_rate, speed_hz);
-+	/* Ensure spi->clk_rate is even */
-+	div = DIV_ROUND_UP(spi->clk_rate & ~0x1, speed_hz);
+ 	/* data packet should not exceed 1/2 of fifo space */
+ 	half_fifo = (spi->fifo_size / 2);
  
- 	/*
- 	 * SPI framework set xfer->speed_hz to master->max_speed_hz if
++	/* data_packet should not exceed transfer length */
++	if (half_fifo > xfer_len)
++		packet = xfer_len;
++	else
++		packet = half_fifo;
++
+ 	if (spi->cur_bpw <= 8)
+-		fthlv = half_fifo;
++		fthlv = packet;
+ 	else if (spi->cur_bpw <= 16)
+-		fthlv = half_fifo / 2;
++		fthlv = packet / 2;
+ 	else
+-		fthlv = half_fifo / 4;
++		fthlv = packet / 4;
+ 
+ 	/* align packet size with data registers access */
+ 	if (spi->cur_bpw > 8)
+@@ -488,6 +495,9 @@ static u32 stm32h7_spi_prepare_fthlv(struct stm32_spi *spi)
+ 	else
+ 		fthlv -= (fthlv % 4); /* multiple of 4 */
+ 
++	if (!fthlv)
++		fthlv = 1;
++
+ 	return fthlv;
+ }
+ 
+@@ -1389,7 +1399,7 @@ static void stm32h7_spi_set_bpw(struct stm32_spi *spi)
+ 	cfg1_setb |= (bpw << STM32H7_SPI_CFG1_DSIZE_SHIFT) &
+ 		     STM32H7_SPI_CFG1_DSIZE;
+ 
+-	spi->cur_fthlv = stm32h7_spi_prepare_fthlv(spi);
++	spi->cur_fthlv = stm32h7_spi_prepare_fthlv(spi, spi->cur_xferlen);
+ 	fthlv = spi->cur_fthlv - 1;
+ 
+ 	cfg1_clrb |= STM32H7_SPI_CFG1_FTHLV;
+@@ -1578,6 +1588,8 @@ static int stm32_spi_transfer_one_setup(struct stm32_spi *spi,
+ 
+ 	spin_lock_irqsave(&spi->lock, flags);
+ 
++	spi->cur_xferlen = transfer->len;
++
+ 	if (spi->cur_bpw != transfer->bits_per_word) {
+ 		spi->cur_bpw = transfer->bits_per_word;
+ 		spi->cfg->set_bpw(spi);
+@@ -1625,8 +1637,6 @@ static int stm32_spi_transfer_one_setup(struct stm32_spi *spi,
+ 			goto out;
+ 	}
+ 
+-	spi->cur_xferlen = transfer->len;
+-
+ 	dev_dbg(spi->dev, "transfer communication mode set to %d\n",
+ 		spi->cur_comm);
+ 	dev_dbg(spi->dev,
 -- 
 2.25.1
 

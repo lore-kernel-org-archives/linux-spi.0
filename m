@@ -7,37 +7,37 @@ X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 221A7C433DF
-	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 16:35:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1872AC433DF
+	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 16:45:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id EE21022CB1
-	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 16:35:29 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E928220838
+	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 16:45:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1598286930;
-	bh=E2udv7PcDmcZvpjkc35TWF0LROGr5O+RSyJib5/Zdbg=;
+	s=default; t=1598287553;
+	bh=w0y1C0oyg+LShJP6HIIzLK62tT/UFB/tHWbU7VLh+7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=z31albkZg4PXCo0runS3htPtsH4RK2W0plwuxGBMUMbtodlIdzIc6YtDQhp8rwJ/f
-	 Uws9MTn0WwDIQO8dNqJyAa4yfIpAseuzZyKCejMsNrGksPLuRFKOVwXTgl+7B/cnyQ
-	 wzAEZzOPlw9ieaQ7xFdo3fa2OXMvn6SCbm+23t6I=
+	b=tOcQnWC6yefelx0Aoz3OcnF/V4SOmV3aRy7YlnUX2n7nB9+yNypPUBDmG0ImIsxBa
+	 o7lE/yC1cMbvby/T/XI3IiBmsfL+z6pVX3EkgB4t0dUKqdtvlLNxFgmUZhK/rm8RFL
+	 82FaqSgzwAwo8iRQ/417Jj+ZL5pTB4RIli6mLjfU=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728244AbgHXQfZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 24 Aug 2020 12:35:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39334 "EHLO mail.kernel.org"
+        id S1728821AbgHXQpv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 24 Aug 2020 12:45:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47122 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728219AbgHXQfY (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 24 Aug 2020 12:35:24 -0400
+        id S1728585AbgHXQjW (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 24 Aug 2020 12:39:22 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 726EE214F1;
-        Mon, 24 Aug 2020 16:35:23 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2EFD222BED;
+        Mon, 24 Aug 2020 16:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598286924;
-        bh=E2udv7PcDmcZvpjkc35TWF0LROGr5O+RSyJib5/Zdbg=;
+        s=default; t=1598287162;
+        bh=w0y1C0oyg+LShJP6HIIzLK62tT/UFB/tHWbU7VLh+7s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rHdbSKqI2Wluax4+1DiZaC2GGXXhNjrW5tIiF7A1TyRYDEuHoxQxexobRP7EYttG/
-         6GJh1sEeiyeIjbSBqZ4w/sprao8BVDj35E73FmTXrYZWJ+jzkNOT98+QhGoiZrkcbk
-         fqQm60CzZSFhGl/4L47DZIpIw7PR6zVPSRGfGc9Q=
+        b=UjI1RlISmMegfIYCZEH0k7K0FEE7YPxSryUtfxijDfFBuEl36VLTY32s0+aNJn/k/
+         4lD75siUvug4k8CMqS75uIx9UwQQschgELsXXNGqBZ8IPB+I8e9Sb7X9RJtZnmO47J
+         lnat3/542XI9+PZLPz6CIvwdmbt/c2l921J7B08Q=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Amelie Delaunay <amelie.delaunay@st.com>,
@@ -46,12 +46,12 @@ Cc:     Amelie Delaunay <amelie.delaunay@st.com>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org,
         linux-stm32@st-md-mailman.stormreply.com,
         linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.8 15/63] spi: stm32: fix stm32_spi_prepare_mbr in case of odd clk_rate
-Date:   Mon, 24 Aug 2020 12:34:15 -0400
-Message-Id: <20200824163504.605538-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 05/11] spi: stm32: fix stm32_spi_prepare_mbr in case of odd clk_rate
+Date:   Mon, 24 Aug 2020 12:39:08 -0400
+Message-Id: <20200824163914.607152-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200824163504.605538-1-sashal@kernel.org>
-References: <20200824163504.605538-1-sashal@kernel.org>
+In-Reply-To: <20200824163914.607152-1-sashal@kernel.org>
+References: <20200824163914.607152-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -78,10 +78,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index e5450233f3f8b..571dea72bf7e6 100644
+index ba9743fa2326d..179749f354c33 100644
 --- a/drivers/spi/spi-stm32.c
 +++ b/drivers/spi/spi-stm32.c
-@@ -441,7 +441,8 @@ static int stm32_spi_prepare_mbr(struct stm32_spi *spi, u32 speed_hz,
+@@ -254,7 +254,8 @@ static int stm32_spi_prepare_mbr(struct stm32_spi *spi, u32 speed_hz)
  {
  	u32 div, mbrdiv;
  

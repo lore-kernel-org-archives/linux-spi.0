@@ -7,51 +7,48 @@ X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 004FFC433E4
-	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 17:06:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7EF9EC433E3
+	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 17:08:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C71C2206F0
-	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 17:06:23 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 569B8206F0
+	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 17:08:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1598288783;
-	bh=K3yWvFf9iGlYV6TEXI/TRyddrzkpJ+p9pjKQXDWZ5CM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=Tox8/EJwH2lIa2dz2fa3Ol0zsVH7GDW6ddanxsRXYYnMorDe3Xlf+vN4SD1cQUMpB
-	 YpZIFWfy2gse36ACL5ycrG8dQbDDA1FG1Nkx4iLcuXf/y0Mgsxara207cnh+N1jB2a
-	 tfB62937kyJGbMFY+SoIaDyxHhJcqhWRJkC+6Oc0=
+	s=default; t=1598288892;
+	bh=TNTJMht98D/avL71tpnv2u61lqx7nxSbAoCOPVIXz+A=;
+	h=From:To:Cc:Subject:Date:List-ID:From;
+	b=KQFvmmaE+EzpI452sK+rwRK8zDi/aaOeZKKw5yZB7/VdAAipDhpbiOEIZgrtQKDA3
+	 4ZY2HQJBmsg1pWpOeWXgVhgfzp6XvhdQEwGWPNXLJN3MPR2SxQYSPPJaxM8iVlalxZ
+	 RgY4gne9L9IsdbgzNxOidLzYPuBLB1bMTmaf3jak=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726983AbgHXRGH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 24 Aug 2020 13:06:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41068 "EHLO mail.kernel.org"
+        id S1726786AbgHXRHj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 24 Aug 2020 13:07:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41062 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728446AbgHXQia (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 24 Aug 2020 12:38:30 -0400
+        id S1727881AbgHXQiZ (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 24 Aug 2020 12:38:25 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id ED1C022DFB;
-        Mon, 24 Aug 2020 16:38:03 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 22A9022D00;
+        Mon, 24 Aug 2020 16:37:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598287084;
-        bh=K3yWvFf9iGlYV6TEXI/TRyddrzkpJ+p9pjKQXDWZ5CM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V5LyVqdYuf2p73Xle5JkwH4FB5kbYnyNEb6vx2hTMHkECmW+rw23M9L/HNqjAhGg3
-         OQ81XnU78N1pxPnJjI8o4AstRMTrrKbIRQLBEyh3gpw4MzS1bB2qDl8ApjoIG+F7JZ
-         uhTuiSZMJ4qE5RG8hX+r6HHHoBH0DHib9wZi921c=
+        s=default; t=1598287073;
+        bh=TNTJMht98D/avL71tpnv2u61lqx7nxSbAoCOPVIXz+A=;
+        h=From:To:Cc:Subject:Date:From;
+        b=pE5jAYFWsDCFsitckQBaosjtOXaPXhx9iphqwri8rcD2TVUZ0M/sNcde9dELmTqyG
+         AUr9Mpfk9Phgxz7Qr+u4gt377ZJAdgDMrgjzQzb8RzpC/fNmXgroH6bUqVKWdl0CO6
+         vG9xuEo+44+z48kFSqv3GAm9Z6BLM5DvloHRFs6A=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Antonio Borneo <antonio.borneo@st.com>,
-        Alain Volmat <alain.volmat@st.com>,
+Cc:     Tobias Schramm <t.schramm@manjaro.org>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org,
         linux-stm32@st-md-mailman.stormreply.com,
         linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.4 10/38] spi: stm32h7: fix race condition at end of transfer
-Date:   Mon, 24 Aug 2020 12:37:22 -0400
-Message-Id: <20200824163751.606577-10-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 01/38] spi: stm32: clear only asserted irq flags on interrupt
+Date:   Mon, 24 Aug 2020 12:37:13 -0400
+Message-Id: <20200824163751.606577-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200824163751.606577-1-sashal@kernel.org>
-References: <20200824163751.606577-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -61,22 +58,18 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Antonio Borneo <antonio.borneo@st.com>
+From: Tobias Schramm <t.schramm@manjaro.org>
 
-[ Upstream commit 135dd873d3c76d812ae64c668adef3f2c59ed27f ]
+[ Upstream commit ae1ba50f1e706dfd7ce402ac52c1f1f10becad68 ]
 
-The caller of stm32_spi_transfer_one(), spi_transfer_one_message(),
-is waiting for us to call spi_finalize_current_transfer() and will
-eventually schedule a new transfer, if available.
-We should guarantee that the spi controller is really available
-before calling spi_finalize_current_transfer().
+Previously the stm32h7 interrupt thread cleared all non-masked interrupts.
+If an interrupt was to occur during the handling of another interrupt its
+flag would be unset, resulting in a lost interrupt.
+This patches fixes the issue by clearing only the currently set interrupt
+flags.
 
-Move the call to spi_finalize_current_transfer() _after_ the call
-to stm32_spi_disable().
-
-Signed-off-by: Antonio Borneo <antonio.borneo@st.com>
-Signed-off-by: Alain Volmat <alain.volmat@st.com>
-Link: https://lore.kernel.org/r/1597043558-29668-2-git-send-email-alain.volmat@st.com
+Signed-off-by: Tobias Schramm <t.schramm@manjaro.org>
+Link: https://lore.kernel.org/r/20200804195136.1485392-1-t.schramm@manjaro.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
@@ -84,19 +77,18 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index db4c1584327c1..cb54471456145 100644
+index b222ce8d083ef..db4c1584327c1 100644
 --- a/drivers/spi/spi-stm32.c
 +++ b/drivers/spi/spi-stm32.c
-@@ -966,8 +966,8 @@ static irqreturn_t stm32h7_spi_irq_thread(int irq, void *dev_id)
+@@ -961,7 +961,7 @@ static irqreturn_t stm32h7_spi_irq_thread(int irq, void *dev_id)
+ 		if (!spi->cur_usedma && (spi->rx_buf && (spi->rx_len > 0)))
+ 			stm32h7_spi_read_rxfifo(spi, false);
+ 
+-	writel_relaxed(mask, spi->base + STM32H7_SPI_IFCR);
++	writel_relaxed(sr & mask, spi->base + STM32H7_SPI_IFCR);
+ 
  	spin_unlock_irqrestore(&spi->lock, flags);
  
- 	if (end) {
--		spi_finalize_current_transfer(master);
- 		stm32h7_spi_disable(spi);
-+		spi_finalize_current_transfer(master);
- 	}
- 
- 	return IRQ_HANDLED;
 -- 
 2.25.1
 

@@ -6,55 +6,54 @@ X-Spam-Status: No, score=-10.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
 	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CC6CEC433E3
-	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 13:33:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7455AC433E1
+	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 13:33:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AC71D2063A
-	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 13:33:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5324E2063A
+	for <linux-spi@archiver.kernel.org>; Mon, 24 Aug 2020 13:33:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1598276035;
-	bh=rbqXQJGmHZXen0FPJYIQEZ+d/rRSjBw4X5GiaHWayBI=;
+	s=default; t=1598276037;
+	bh=OkM1CgobEPEgoXlFv1ir40pY8SmpwF/0RPyzxTAy2fY=;
 	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=PiS1e3nSKtdMWEuwGn/+sfw5A/Jbqj4Ds6GxCh5b1hYkqd3FJJekX1qdeFDZNwRjE
-	 2808MCl5BOmWP2Kacq3JnCfGNnkit4Lf5twzGa7lcstk2Grni71y/UmGYqfrOvzMyd
-	 zZLcEeaL/kTVEIEoxlHiIvTp1sYdPmm273b/xmEE=
+	b=uICzVoPIfwbU3Vz64HHizqWoaFpRVIvxPWFDoTcIp6J/7qjAMkkeBoQ9/FWCAJOgZ
+	 gkp95sCE1llPmgoPiA8RH6mUr2Tzj4K3XElgwvTM7H5+KrJnNkrFAcxjJnDL085M+K
+	 MlvRu4H6AzM2qMwtbZ0O3H8pPD8cO6EHUXybCn8Q=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726483AbgHXNdv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 24 Aug 2020 09:33:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58574 "EHLO mail.kernel.org"
+        id S1726784AbgHXNdx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 24 Aug 2020 09:33:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58916 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727781AbgHXNci (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        id S1727769AbgHXNci (ORCPT <rfc822;linux-spi@vger.kernel.org>);
         Mon, 24 Aug 2020 09:32:38 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C3151207CD;
-        Mon, 24 Aug 2020 13:32:37 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id AA123206B5;
+        Mon, 24 Aug 2020 13:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598275958;
-        bh=rbqXQJGmHZXen0FPJYIQEZ+d/rRSjBw4X5GiaHWayBI=;
+        s=default; t=1598275953;
+        bh=OkM1CgobEPEgoXlFv1ir40pY8SmpwF/0RPyzxTAy2fY=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=Z7PF7QeBSX1TxnlAcCetcFjQLQcBSXqt3dXnI8fV/cAIKdGlDR6kreZQnHugIyXgq
-         oPBS4pAqwfYYKT7hnGiMG/48cBiCpVHRFuS738g8DStk2XgRxjWaUbWXXmQLMWKaf0
-         N5smIXS15CzR4+khDL2Dx7WS2G7+l12pVCToJ3V0=
-Date:   Mon, 24 Aug 2020 14:32:03 +0100
+        b=zzU2yVPEyJ3hJVbI9BbeilshR37bgjIEFj9+eNsYOGjWshVoXHQmHwv1gCbJBm5Os
+         ZLzeIO6t0XFExymqIbR4M2DgMyFaHU0l7YF5WR3/AHviUHiq7GmHJ+P26PWuhNw/AC
+         WJHZU//vCnVxmkc+Fp7XATPcNLsL0dsIn8fkPlu8=
+Date:   Mon, 24 Aug 2020 14:31:58 +0100
 From:   Mark Brown <broonie@kernel.org>
 To:     Vladimir Oltean <olteanv@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, angelo.dureghello@timesys.com,
-        linux-spi@vger.kernel.org
-In-Reply-To: <20200823212657.2400075-1-olteanv@gmail.com>
-References: <20200823212657.2400075-1-olteanv@gmail.com>
-Subject: Re: [PATCH] spi: spi-fsl-dspi: delete EOQ transfer mode
-Message-Id: <159827591891.48232.1958676153438917876.b4-ty@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+In-Reply-To: <20200821213753.3143632-1-olteanv@gmail.com>
+References: <20200821213753.3143632-1-olteanv@gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: add myself as maintainer for spi-fsl-dspi driver
+Message-Id: <159827591891.48232.12411148869647579934.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 24 Aug 2020 00:26:57 +0300, Vladimir Oltean wrote:
-> After the only user of the limited EOQ mode has now been converted to
-> DMA as of commit b09058bbf5f0 ("spi: spi-fsl-dspi: set ColdFire to DMA
-> mode"), we can finally delete this code.
+On Sat, 22 Aug 2020 00:37:53 +0300, Vladimir Oltean wrote:
+> Since I've introduced a fairly large diff to this driver since tag v5.4,
+> I would like to avoid breakage for my use cases by getting a chance to
+> be copied on newly submitted patches.
 
 Applied to
 
@@ -62,8 +61,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: spi-fsl-dspi: delete EOQ transfer mode
-      commit: 20c05a05506361a6c355e9944d5616f5ed1e01c8
+[1/1] MAINTAINERS: add myself as maintainer for spi-fsl-dspi driver
+      commit: 3cb5fcf1f3a5dfb7bc0305bb15971db04a0e51d4
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

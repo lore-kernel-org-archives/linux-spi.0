@@ -6,55 +6,59 @@ X-Spam-Status: No, score=-10.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
 	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E3E1C433DF
-	for <linux-spi@archiver.kernel.org>; Wed, 26 Aug 2020 19:17:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D29F8C433DF
+	for <linux-spi@archiver.kernel.org>; Wed, 26 Aug 2020 19:17:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6D1482078B
-	for <linux-spi@archiver.kernel.org>; Wed, 26 Aug 2020 19:17:51 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9F554207F7
+	for <linux-spi@archiver.kernel.org>; Wed, 26 Aug 2020 19:17:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1598469471;
-	bh=Mr6SlxCsan6zJF8gAY31r3tPoWTaIKbSwG/RSWwG1tc=;
-	h=Date:From:To:In-Reply-To:References:Subject:List-ID:From;
-	b=BNv/WMcrPSu15u9oLRws5bNsFABCJQeX3ARw1MiCOTy+ZOAuboQgDeNiDMqaK1p7o
-	 XJEEcDHXEhCU/evTwlU1trOEhr3injp0/OAQRxWrC1XurcRq7RgDV09xvX75xHiivQ
-	 iAud2iWUzNEW1JOo9h5p7ld861R01+GbtfGCfOeQ=
+	s=default; t=1598469474;
+	bh=Msg94sVnxgYZ5tSLUPVzIC5igpCZ5D0lrYqNmAZsJcA=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
+	b=0kUCg6ZtyRkZW9kkzMkxNXQfxVcayTU9JVgTg0RDj4IYY6ss7qmsxs1TAPM8W667z
+	 9rfOg5iCc1drmEBeuXe+NFzRwSTZ6Zo6L834y7U/jrwIVSxqTHme9nt/xp7SxfMiiJ
+	 4SR+kALEcM3GSoh5HMddro2RYeu15hTNDIWmcyfs=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726838AbgHZTRt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 26 Aug 2020 15:17:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40762 "EHLO mail.kernel.org"
+        id S1727815AbgHZTRx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 26 Aug 2020 15:17:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40832 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727815AbgHZTRq (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 26 Aug 2020 15:17:46 -0400
+        id S1726825AbgHZTRv (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 26 Aug 2020 15:17:51 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C17952078A;
-        Wed, 26 Aug 2020 19:17:45 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id CF3A92078A;
+        Wed, 26 Aug 2020 19:17:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598469466;
-        bh=Mr6SlxCsan6zJF8gAY31r3tPoWTaIKbSwG/RSWwG1tc=;
+        s=default; t=1598469471;
+        bh=Msg94sVnxgYZ5tSLUPVzIC5igpCZ5D0lrYqNmAZsJcA=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=ZXjfSpll3EjVEGigVNW1fzW/O3ujde3tObpVRQckX4E1LAVDYlqGf+xHgEy87/pJf
-         /roeTQMOveovh8Xy9X1RO0MY0vnCF5rktlA0YZ0WGrPIEQRH1qDYdyfBQOF+eO69kU
-         CsK3G4vIeJ0gV9q2/x0gV9NeuRjkWpKtmMJ6qlXE=
-Date:   Wed, 26 Aug 2020 20:17:09 +0100
+        b=GI9cwYFg4+VacryxRyhDAMm+YB4HnfU4u0sj3WwZygN1bT12wVmIPZF3GE95KfUPu
+         5UcT0iiN4WvcHMq43eFULl07EScoxqm4OxutgKo92rgfKxcMt6cpQIi/e2wh2i8E4/
+         G1XMmMgMCyATAfz8Ub5IxTSuD0zaUzrTdhJa6EaM=
+Date:   Wed, 26 Aug 2020 20:17:14 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-spi@vger.kernel.org
-In-Reply-To: <20200826151455.55970-1-andriy.shevchenko@linux.intel.com>
-References: <20200826151455.55970-1-andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v1 1/3] spi: pxa2xx: Update header block in pxa2xx_ssp.h
-Message-Id: <159846942993.39994.13582935724402815273.b4-ty@kernel.org>
+To:     devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        linux-spi@vger.kernel.org, Ikjoon Jang <ikjn@chromium.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-kernel@vger.kernel.org
+Cc:     Chuanhong Guo <gch981213@gmail.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Bayi Cheng <bayi.cheng@mediatek.com>,
+        linux-mediatek@lists.infradead.org
+In-Reply-To: <20200826085450.508556-1-ikjn@chromium.org>
+References: <20200820052827.2642164-1-ikjn@chromium.org> <20200826085450.508556-1-ikjn@chromium.org>
+Subject: Re: [PATCH v2] dt-bindings: spi: Convert spi-mtk-nor to json-schema
+Message-Id: <159846942993.39994.12565318588814253714.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 26 Aug 2020 18:14:53 +0300, Andy Shevchenko wrote:
-> We have direct users of some headers that are missed and
-> have header included when forward declarations are enough.
-> 
-> Update header block in pxa2xx_ssp.h to align with actual usage.
+On Wed, 26 Aug 2020 16:54:50 +0800, Ikjoon Jang wrote:
+> Convert Mediatek ARM SOC's serial NOR flash controller binding
+> to json-schema format.
 
 Applied to
 
@@ -62,12 +66,8 @@ Applied to
 
 Thanks!
 
-[1/3] spi: pxa2xx: Update header block in pxa2xx_ssp.h
-      commit: e7aaf8748897d88fd1d17bfa461df84cf233d5a9
-[2/3] spi: pxa2xx: Switch to use BIT() and GENMASK() in pxa2xx_ssp.h
-      commit: 410f4cf79f64b1831e207b89f3c7ab08e36aa646
-[3/3] spi: pxa2xx: Drop useless comment in the pxa2xx_ssp.h
-      commit: 3a2fd4011a1ecec361498301a27d79d5fef255de
+[1/1] dt-bindings: spi: Convert spi-mtk-nor to json-schema
+      commit: 043ebcf3204ca1a0ce0d03cb7dc6e0d63d2cf512
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

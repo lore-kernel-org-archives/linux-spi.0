@@ -2,61 +2,62 @@ Return-Path: <SRS0=Goeh=CF=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 97FA3C433E1
-	for <linux-spi@archiver.kernel.org>; Thu, 27 Aug 2020 18:18:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 40AC2C433DF
+	for <linux-spi@archiver.kernel.org>; Thu, 27 Aug 2020 18:18:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 74D7D22B4D
-	for <linux-spi@archiver.kernel.org>; Thu, 27 Aug 2020 18:18:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 18A0A2177B
+	for <linux-spi@archiver.kernel.org>; Thu, 27 Aug 2020 18:18:57 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="go1nmKtW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TvVNg0zL"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726291AbgH0SSs (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 27 Aug 2020 14:18:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37588 "EHLO
+        id S1727833AbgH0SS4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 27 Aug 2020 14:18:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726243AbgH0SSr (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 27 Aug 2020 14:18:47 -0400
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9330BC061264;
-        Thu, 27 Aug 2020 11:18:47 -0700 (PDT)
-Received: by mail-pj1-x1044.google.com with SMTP id ls14so3015609pjb.3;
-        Thu, 27 Aug 2020 11:18:47 -0700 (PDT)
+        with ESMTP id S1726938AbgH0SSy (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 27 Aug 2020 14:18:54 -0400
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D839C061264;
+        Thu, 27 Aug 2020 11:18:54 -0700 (PDT)
+Received: by mail-pf1-x442.google.com with SMTP id y206so4129919pfb.10;
+        Thu, 27 Aug 2020 11:18:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=MzplqZpUWJg+UmQwey/x6RphVUW+awblL5IuecDIzI0=;
-        b=go1nmKtWWgGZ3kW2g9FiK3bZiCSoxdxSKqHKlJ+S+OD3MdLhVL0wGrM3Qa5gWyh1Ey
-         VsTZYbOSuqZg8uCCNj6+VghI0dKjk8Zs1uvqxy5xGwaLFxxoQdtIjTb4Ba52Ku4WUc7O
-         sXazylyJuNC3ToATqO3lppxB3aRw54iWAH5iJY0VwJ7+GBJlrJ9/JjZtJiSwC0TSroqq
-         vvrIpgMrn6DwNSfK29GFCsZI+RLZjXKk6Kk2DrZ8wm3/H10nctFbvffAxv1ayVIypYoo
-         d9OSDTAOW6YbnqQN+ceVLEbUK6OTlDvN/hQVSNzpSo9fwO9OySS6fOOLE9KOS7i35aMC
-         y5Dw==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=qWEGjrPVeQY7q74ALv9YEvs+7dg18MaH1fONO0hwUXo=;
+        b=TvVNg0zLEaMe/if7bHVLqge2Wq5YSHCcoXWdEI7NaQNxXsrF5bxaxu4FCs/CTTaypv
+         7NNo87iPUdgYUvV0m6KxvCslkLZCRmZVNRN77P1eQvnIl5XmRDEXwCQus4O58iqOHU1w
+         A3tpPuT86C9ReSMobznRt8KLSxWVHZZWJP2+lkDqbiITm0ML7ldqC1RjKZZTJI/2bLjz
+         VRNLg5mEW7i7946zyRwvfdQV+5k+eGOUIV87w0RCJODLdxE8gjspNW9BbWFyIiD6qzyI
+         RfGCISl+TF1WkKdLP6xmepnMDhdCseM6pEf6tlhqNskSFe89wmjpP82M3XjDW/o77/KO
+         R7KQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=MzplqZpUWJg+UmQwey/x6RphVUW+awblL5IuecDIzI0=;
-        b=OBQmcrDAgurTsnfD68fvVgd2GtZsr4b08hHI+eemThO9CqFimQaruZTPdvjFSgiB6p
-         zWmPj/MabFly8V/sYuYoLkyaaV41htWVILklCkmvZA2FZDZsLkXouUJ09kCmHj6/imJK
-         gERHVa3IE83LpPm7aBdzVYbMaD8iaFVza4JPZGO1K1nvGDKeNS8w9Dta8CsNH0x+/XT+
-         wzzKxmM4xxW4SYIb1zudkWpcYkz/A4uVBvAompkspAQFMRlVMldub+XeNaDoOtx0miPk
-         Ra/4cYuNhrWwvKc6HSrEBaLtX7/t95lS8s6R2Eb8FjOxO540xTxqphNcD8VQPVxQwVsO
-         aGsg==
-X-Gm-Message-State: AOAM530CVpQ1W4EgAw9QSYUL+ObWPD35Btp5nHzG73M2l261V/uwHoTJ
-        v4O9aesiiFCpA/1DRsM8WdI=
-X-Google-Smtp-Source: ABdhPJyNWwuvPIA9EDQkvsagVGkqnrgia8Y47+2tHmT2iIFXNFMuVBFIAJnLnw6rcvsASOFE0hcTlA==
-X-Received: by 2002:a17:90b:30c6:: with SMTP id hi6mr111707pjb.172.1598552326889;
-        Thu, 27 Aug 2020 11:18:46 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=qWEGjrPVeQY7q74ALv9YEvs+7dg18MaH1fONO0hwUXo=;
+        b=ebwFe8M3UmCegyTghaJMsXw02Asbj+zd/RIXdFywKnWbAKVGrzAiCGHk0YPZfhbmZ+
+         P3j/Cvo9lyVkMYJMnP/KEw5JpZ6cCcprsKmpv/q9l+pIIOW5YYljJw7P5KfxBdxzHG/I
+         XUBJCoboNhbgxrOuSZIg3TjtaMAYaOsseIEWvY+qEtJuljiSbovDxT0H64YauDETM87x
+         453LPkV653xoGmU/UhZtiCoXmBpxG0wK+MDvveRRH8FyjuR10Hvj14za385fQPvi1+F0
+         Fn6AVgXxx1NykLapP6+8DH5Os8rQDcejR2gKO/GuhQVBSpaFUB7tGTaS/LhsRvNoYC/l
+         t/mQ==
+X-Gm-Message-State: AOAM533Gjwf0cMiTuh6NQAdap29ot9n/VfsuuUuOma2BKwGjRrv3kg0k
+        ejgEFaHUxTUnsJWVtftbBIg=
+X-Google-Smtp-Source: ABdhPJzx3hkAE/P+tGjBhOPy9WW8+9VI2y0iNI9hLyVjFfHn8On9W36EQudYnNUXxbLvn4hv4ya4mA==
+X-Received: by 2002:a63:4c11:: with SMTP id z17mr15248438pga.152.1598552333632;
+        Thu, 27 Aug 2020 11:18:53 -0700 (PDT)
 Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id q18sm3580179pfn.106.2020.08.27.11.18.45
+        by smtp.gmail.com with ESMTPSA id q18sm3580179pfn.106.2020.08.27.11.18.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Aug 2020 11:18:46 -0700 (PDT)
+        Thu, 27 Aug 2020 11:18:53 -0700 (PDT)
 From:   Florian Fainelli <f.fainelli@gmail.com>
 To:     linux-arm-kernel@lists.infradead.org
 Cc:     Florian Fainelli <f.fainelli@gmail.com>,
@@ -72,10 +73,12 @@ Cc:     Florian Fainelli <f.fainelli@gmail.com>,
         linux-spi@vger.kernel.org (open list:SPI SUBSYSTEM),
         devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
         DEVICE TREE BINDINGS), linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH 0/5] qspi binding and DTS fixes
-Date:   Thu, 27 Aug 2020 11:18:37 -0700
-Message-Id: <20200827181842.1000451-1-f.fainelli@gmail.com>
+Subject: [PATCH 4/5] ARM: dts: BCM5301X: Fixed QSPI compatible string
+Date:   Thu, 27 Aug 2020 11:18:41 -0700
+Message-Id: <20200827181842.1000451-5-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200827181842.1000451-1-f.fainelli@gmail.com>
+References: <20200827181842.1000451-1-f.fainelli@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-spi-owner@vger.kernel.org
@@ -83,30 +86,28 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi all,
+The string was incorrectly defined before from least to most
+specific, swap the compatible strings accordingly.
 
-This patch series fixes incorrectly defined compatible strings for the
-Broadcom QSPI controller which resulted in the strings not being
-ordered from most to least compatible.
+Fixes: 1c8f40650723 ("ARM: dts: BCM5301X: convert to iProc QSPI")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+---
+ arch/arm/boot/dts/bcm5301x.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-We will need to apply some changes to the spi-bcm-qspi.c driver in
-the future to assume no revision register exist, and these patches
-are a preliminary step towards that goal.
-
-Florian Fainelli (5):
-  dt-bindings: spi: Fix spi-bcm-qspi compatible ordering
-  ARM: dts: bcm: HR2: Fixed QSPI compatible string
-  ARM: dts: NSP: Fixed QSPI compatible string
-  ARM: dts: BCM5301X: Fixed QSPI compatible string
-  arm64: dts: ns2: Fixed QSPI compatible string
-
- .../bindings/spi/brcm,spi-bcm-qspi.txt           | 16 ++++++++--------
- arch/arm/boot/dts/bcm-hr2.dtsi                   |  2 +-
- arch/arm/boot/dts/bcm-nsp.dtsi                   |  2 +-
- arch/arm/boot/dts/bcm5301x.dtsi                  |  2 +-
- arch/arm64/boot/dts/broadcom/northstar2/ns2.dtsi |  2 +-
- 5 files changed, 12 insertions(+), 12 deletions(-)
-
+diff --git a/arch/arm/boot/dts/bcm5301x.dtsi b/arch/arm/boot/dts/bcm5301x.dtsi
+index 2d9b4dd05830..0016720ce530 100644
+--- a/arch/arm/boot/dts/bcm5301x.dtsi
++++ b/arch/arm/boot/dts/bcm5301x.dtsi
+@@ -488,7 +488,7 @@ nand: nand@18028000 {
+ 	};
+ 
+ 	spi@18029200 {
+-		compatible = "brcm,spi-bcm-qspi", "brcm,spi-nsp-qspi";
++		compatible = "brcm,spi-nsp-qspi", "brcm,spi-bcm-qspi";
+ 		reg = <0x18029200 0x184>,
+ 		      <0x18029000 0x124>,
+ 		      <0x1811b408 0x004>,
 -- 
 2.25.1
 

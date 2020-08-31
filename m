@@ -2,65 +2,136 @@ Return-Path: <SRS0=StxT=CJ=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 00BE5C433E6
-	for <linux-spi@archiver.kernel.org>; Mon, 31 Aug 2020 08:00:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6CA67C433E2
+	for <linux-spi@archiver.kernel.org>; Mon, 31 Aug 2020 11:21:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D2BF6206F0
-	for <linux-spi@archiver.kernel.org>; Mon, 31 Aug 2020 08:00:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1598860817;
-	bh=O89w2UkhByBwKqG3Qu8K/D158kv8jD3DxHmMiUKgzLQ=;
-	h=Subject:From:Date:To:List-ID:From;
-	b=VjNeTmgINmCCNEkk6YGqk7MzVwLkBEyza9pTG7Yr82feklTlUlrFMdAw8MPMRqbBv
-	 kkCp4ImcZl8X8ZMjWDsJVTM7rcmEPWAON0J/E6US7g1e3FR3n5si/oHp1Ej/jz/QyJ
-	 0rrDZRc8mX696XA8PWlE/T4bPb8g49nFu9Y5/lHE=
+	by mail.kernel.org (Postfix) with ESMTP id 489A22073A
+	for <linux-spi@archiver.kernel.org>; Mon, 31 Aug 2020 11:21:54 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FNd/akIM"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727979AbgHaIAQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 31 Aug 2020 04:00:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33718 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727065AbgHaIAQ (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 31 Aug 2020 04:00:16 -0400
-Content-Type: text/plain; charset="utf-8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598860816;
-        bh=O89w2UkhByBwKqG3Qu8K/D158kv8jD3DxHmMiUKgzLQ=;
-        h=Subject:From:Date:To:From;
-        b=Yb+wgLPQtnaWbMU+kgYmjU8Hs09eMObo1BOvJ5Q7JseagPjppYapt0gdgHPeplvNl
-         z+5ifpEiT0jcAijn5ltYZoms33J6/6Xa66VP13iZzT5q1b9a5hiplS0GdMpNn20r4K
-         m+ndrnpU0j/W7lKNdDJ9/TVgihpJ3m0zUTOhAfHA=
+        id S1726654AbgHaLVi (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 31 Aug 2020 07:21:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43620 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726144AbgHaLR6 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 31 Aug 2020 07:17:58 -0400
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 986DDC06123F
+        for <linux-spi@vger.kernel.org>; Mon, 31 Aug 2020 04:09:42 -0700 (PDT)
+Received: by mail-pg1-x542.google.com with SMTP id v15so415789pgh.6
+        for <linux-spi@vger.kernel.org>; Mon, 31 Aug 2020 04:09:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=E02AUVeFQVT/Yby1TXwpBy6LjVsB+G1ulzMrGLTQLsU=;
+        b=FNd/akIMkL3eaopJcpGVw841qNXHifVpshOPHlo/uuzzMC1uIxR4rpF1cuEx20MJW8
+         zRU3b7IXYtOiWUHE2usegI5lqkz29pQSEe7lc2Zn6kFtFUMZkTsgPTu53uMWFebd0coM
+         iLMT0oFYlNnVymD+VsZPkcbeOQMjtAIsBp7DxOf1eo/wPc9H61/kybyugntRfQEZbv8D
+         gwC6Tj3nw1Cui3GshhMMxUmIqh6mQUDR4d6WK83d4fAnnl0g+V9RF79Hz/YfHby4mlw7
+         mR3PyKcjWV5VnHdjRO8FhwNUz77opdus4HEGeEpTBOw/d8C3bmxPjA6qWJWpAFad6iz7
+         g8gw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=E02AUVeFQVT/Yby1TXwpBy6LjVsB+G1ulzMrGLTQLsU=;
+        b=ajEuJ0BbqgDuS1rQy5r/ms67Y+y8xcteER1r0GeUAZ5Ncb2/pQtQLGv3KkWZmM90/Y
+         nS+6CkOBF8Jd8dsNIN6L+0oetP278Crh56q078pOp1T9n5UN4gbc2YYA+kkMMTTQpT+l
+         XCXYfGQim6vN/7ddTDxbgiS66MFLF3gd6Z8E2iolTHxlS1gtQdqaDFm5IeRR1uT5Pkgq
+         Ch8dDEIPeiERQZh54BBCKoonSQh0nb6E3Y3a54PXheL2HykvDoeQqDdp5Sj4NvhPJHu3
+         zCcBMBb8b9yU9r6/2tQHllzn7wzrbKhsns5GKPUHERsanfzhaJWyJ9ccEan29/xx11tv
+         OJKw==
+X-Gm-Message-State: AOAM531WnxRtIl9uXuMeataauxAwdWUyierAEzYV+gbt/gIrSs+BzDhy
+        Z5/Lg/ZoCVxl9Db9GLkcYbLmTQ==
+X-Google-Smtp-Source: ABdhPJzSBT56cUJvUmQ1jeDl1RjMGJiu46b0HYsbuCGKuS2QrgmD92t81oKVAXJFmHCb4EhXLUuNfg==
+X-Received: by 2002:aa7:9207:: with SMTP id 7mr819876pfo.156.1598872182053;
+        Mon, 31 Aug 2020 04:09:42 -0700 (PDT)
+Received: from localhost ([122.167.135.199])
+        by smtp.gmail.com with ESMTPSA id u16sm7495367pfn.134.2020.08.31.04.09.40
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 31 Aug 2020 04:09:41 -0700 (PDT)
+Date:   Mon, 31 Aug 2020 16:39:39 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     rnayak@codeaurora.org, Adrian Hunter <adrian.hunter@intel.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Fabio Estevam <festevam@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Qiang Yu <yuq825@gmail.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Rob Clark <robdclark@gmail.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Sean Paul <sean@poorly.run>, Shawn Guo <shawnguo@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     linux-pm@vger.kernel.org,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        lima@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-spi@vger.kernel.org
+Subject: Re: [PATCH V2 0/8] opp: Unconditionally call
+ dev_pm_opp_of_remove_table()
+Message-ID: <20200831110939.qnyugmhajkg36gzw@vireshk-i7>
+References: <cover.1598594714.git.viresh.kumar@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+linux-spi@kernel.org
-Message-Id: <159886081602.32203.16628700977022440030.git-patchwork-housekeeping@kernel.org>
-Date:   Mon, 31 Aug 2020 08:00:16 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1598594714.git.viresh.kumar@linaro.org>
+User-Agent: NeoMutt/20180716-391-311a52
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v13] add ecspi ERR009165 for i.mx6/7 soc family (2020-08-31T16:03:13)
-  Superseding: [v12] add ecspi ERR009165 for i.mx6/7 soc family (2020-08-11T15:53:39):
-    [v12,01/12] Revert "ARM: dts: imx6q: Use correct SDMA script for SPI5 core"
-    [v12,02/12] Revert "ARM: dts: imx6: Use correct SDMA script for SPI cores"
-    [v12,03/12] Revert "dmaengine: imx-sdma: refine to load context only once"
-    [v12,04/12] dmaengine: imx-sdma: remove duplicated sdma_load_context
-    [v12,05/12] dmaengine: dma: imx-sdma: add fw_loaded and is_ram_script
-    [v12,06/12] dmaengine: imx-sdma: add mcu_2_ecspi script
-    [v12,07/12] spi: imx: fix ERR009165
-    [v12,08/12] spi: imx: remove ERR009165 workaround on i.mx6ul
-    [v12,09/12] spi: imx: add new i.mx6ul compatible name in binding doc
-    [v12,10/12] dmaengine: imx-sdma: remove ERR009165 on i.mx6ul
-    [v12,11/12] dma: imx-sdma: add i.mx6ul compatible name
-    [v12,12/12] dmaengine: imx-sdma: add uart rom script
+On 28-08-20, 11:37, Viresh Kumar wrote:
+> Hello,
+> 
+> This cleans up some of the user code around calls to
+> dev_pm_opp_of_remove_table().
+> 
+> All the patches can be picked by respective maintainers directly except
+> for the last patch, which needs the previous two to get merged first.
+> 
+> These are based for 5.9-rc1.
+ 
+> Viresh Kumar (8):
+>   cpufreq: imx6q: Unconditionally call dev_pm_opp_of_remove_table()
+>   drm/lima: Unconditionally call dev_pm_opp_of_remove_table()
+>   drm/msm: Unconditionally call dev_pm_opp_of_remove_table()
+>   mmc: sdhci-msm: Unconditionally call dev_pm_opp_of_remove_table()
+>   spi: spi-geni-qcom: Unconditionally call dev_pm_opp_of_remove_table()
+>   spi: spi-qcom-qspi: Unconditionally call dev_pm_opp_of_remove_table()
+>   tty: serial: qcom_geni_serial: Unconditionally call
+>     dev_pm_opp_of_remove_table()
+>   qcom-geni-se: remove has_opp_table
 
+During testing by some of the Linaro folks on linux-next, we found out
+that there was a bug in the OPP core (which makes the kernel crash in
+some corner cases with these patches) for which I have sent a fix
+today which should be part of 5.9-rc4:
+
+https://lore.kernel.org/lkml/922ff0759a16299e24cacfc981ac07914d8f1826.1598865786.git.viresh.kumar@linaro.org/
+
+Please apply the patches over rc4 only once it comes out (I will
+confirm by that time once the patch gets merged). Else you guys can
+provide your Ack and I can take the patches through OPP tree.
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/pwbot
+viresh

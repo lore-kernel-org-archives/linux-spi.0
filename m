@@ -2,108 +2,179 @@ Return-Path: <SRS0=4Pr+=CK=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B151C433E7
-	for <linux-spi@archiver.kernel.org>; Tue,  1 Sep 2020 16:45:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BFD4DC433E7
+	for <linux-spi@archiver.kernel.org>; Tue,  1 Sep 2020 17:00:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 483C120767
-	for <linux-spi@archiver.kernel.org>; Tue,  1 Sep 2020 16:45:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1598978741;
-	bh=c4WH/PmFagCnAWTlKVBg6RiP8BT5Mny0HhSQHue4V+4=;
-	h=From:To:Cc:Subject:Date:List-ID:From;
-	b=na1SgXp1WkPWIfbjH2w8qaOjZLMvIZmnYdUd8CiCAwPhl40oIyPoy9PMvqoAVMEOx
-	 4ogcdugcaDHrg0CfUw0h00hWDOFx96XFUetqw3S+fYDS8MXDLz2Naz0zbSrfnBkdsp
-	 i7RTyl/PKDHkIWP9b41lYdT9oKBmmtdBf5helAog=
+	by mail.kernel.org (Postfix) with ESMTP id 9F66C206FA
+	for <linux-spi@archiver.kernel.org>; Tue,  1 Sep 2020 17:00:10 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="h7lTFbsa"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730693AbgIAQpY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 1 Sep 2020 12:45:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54400 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727019AbgIAP11 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 1 Sep 2020 11:27:27 -0400
-Received: from kozik-lap.mshome.net (unknown [194.230.155.106])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A68082078B;
-        Tue,  1 Sep 2020 15:27:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598974046;
-        bh=c4WH/PmFagCnAWTlKVBg6RiP8BT5Mny0HhSQHue4V+4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=dBf7pbKTxqSrRfmZPKIKVWm9Cz+lUwtaXkAMTDqXPBydndINMBfIDiJZ7C8ZULAZg
-         nSHIr9NGcPio9oQG/8r2FzIWU6WMPm25e9fgO7vD6sOYRx8Kh0D522XY9dPLfXKPeu
-         tIWTjHmR7GZfL6PmK36bMso5sJoq3DwbHWnAYCgQ=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Mark Brown <broonie@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Masahisa Kojima <masahisa.kojima@linaro.org>,
-        Jassi Brar <jaswinder.singh@linaro.org>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-tegra@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>, stable@vger.kernel.org
-Subject: [PATCH 01/11] spi: sprd: Release DMA channel also on probe deferral
-Date:   Tue,  1 Sep 2020 17:27:03 +0200
-Message-Id: <20200901152713.18629-1-krzk@kernel.org>
-X-Mailer: git-send-email 2.17.1
+        id S1731237AbgIARAI (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 1 Sep 2020 13:00:08 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:45565 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729424AbgIAPVT (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 1 Sep 2020 11:21:19 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200901152115euoutp013978768f795f6ae087f483281d264ee8~wshX1Wn4x3113231132euoutp01g;
+        Tue,  1 Sep 2020 15:21:15 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200901152115euoutp013978768f795f6ae087f483281d264ee8~wshX1Wn4x3113231132euoutp01g
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1598973675;
+        bh=Q5RTAvvE+mf9wYOvGwtzpynQxa3cXwKnGkdtlVikqx4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=h7lTFbsa3n8D1RYmfr/jsY1kLnG3TK+duL0k91XXRxCJTx0j4yLxkfgJzsM94CY3a
+         nMdNiyPyCUL4/3ddiFvJeGk5pT5gcRmXIUX8LnWWSnLOT5asQBPKPgWf0UrQ6FtdC7
+         hUUS+x03l0vBQL3TRd+L8GCUpjJUFATPogtJk4r8=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20200901152114eucas1p18c5ecd50ee6b1d8dc8dc193120b8c57f~wshXnJ8E40569105691eucas1p1D;
+        Tue,  1 Sep 2020 15:21:14 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id 30.60.06456.AE66E4F5; Tue,  1
+        Sep 2020 16:21:14 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20200901152113eucas1p2977046b7a5b4c5a519f88870d658698a~wshWyNyiW2291622916eucas1p2N;
+        Tue,  1 Sep 2020 15:21:13 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20200901152113eusmtrp2c92bb02c92c39e28f78c646b6cea3164~wshWxWyYM2116721167eusmtrp2O;
+        Tue,  1 Sep 2020 15:21:13 +0000 (GMT)
+X-AuditID: cbfec7f2-7efff70000001938-ca-5f4e66eabc1f
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id BA.B2.06314.9E66E4F5; Tue,  1
+        Sep 2020 16:21:13 +0100 (BST)
+Received: from localhost (unknown [106.120.51.46]) by eusmtip1.samsung.com
+        (KnoxPortal) with ESMTPA id
+        20200901152113eusmtip1ff22840f6dd886ce88667c7c645a5744~wshWneNLw3098830988eusmtip1r;
+        Tue,  1 Sep 2020 15:21:13 +0000 (GMT)
+From:   Lukasz Stelmach <l.stelmach@samsung.com>
+To:     Sylwester Nawrocki <snawrocki@kernel.org>
+Cc:     Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        m.szyprowski@samsung.com, b.zolnierkie@samsung.com
+Subject: Re: [PATCH v2 6/9] spi: spi-s3c64xx: Check return values
+Date:   Tue, 01 Sep 2020 17:21:01 +0200
+In-Reply-To: <e7db038c-b8e6-8ddc-edc7-8b69c2019d04@kernel.org> (Sylwester
+        Nawrocki's message of "Tue, 25 Aug 2020 21:06:10 +0200")
+Message-ID: <dleftjd035tteq.fsf%l.stelmach@samsung.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="=-=-="; micalg="pgp-sha256";
+        protocol="application/pgp-signature"
+X-Brightmail-Tracker: H4sIAAAAAAAAA01SfUzMcRjf936/e+m49r0r8yxmdosNK8L4GZosnKFlXmZMOfq5mu5q9+uQ
+        mfKS0hVJprdxvdF6u5x26obRoqVxCRHyVil3KnWVkuHuvmz993mez+fzfJ7nu6+IkrXxfURR
+        mjhWq1FGywVi2vxo3OpnOxgSvqio148pGuvhMTezjXzm8qcuAXOh004xVmu1kDF1tvGZ55Z8
+        AZNtvcdjTg62C5nKhg4hk9z9lVozRfGqeIhSmMrOCRS3ihMU52vKkMJhmhXK3y1eFcFGRx1m
+        tQsD94kjC87cR7EG6dGslDF+InrvmYo8RICXwuP2JtqFZbgUwYfBwFQkduJhBONvDAJSOBA8
+        M5zi/Xe8bDXyCHEDQVvBK4oUPQgyLRZhKhKJBNgfKit3uQze2A8G7ya5NRR+yoNrp19QLsIL
+        B0H+8IQ7m8Zz4PlHI3KJPPAZBCVZA3wXIcHLoV//xR09Da+Amt4PQtKXQlNOl9tMYTXkWL+5
+        zYD7hDDeYkBk12C4ah+lCPYCW2ONkOCZ8KfuGs+1KeAEuJS5jHjTEJjzx2iiWQnvnv4UEBwE
+        jjujNNF7wus+Kcn1hEzzFYq0JZByVkbUvlB14c6/KT6QbitFRKKAt307yFtdRFB9LwVloNm5
+        k67JnXRNrtNC4XlgtCwk7QVwvcBOEbwaqqoGaAPil6HprI5Tq1guQMMe8eeUak6nUfkfiFGb
+        kPOHNf9uHKpFI6376xEWIflUSXZ4SLiMrzzMxavrka9z0ufq8hbkQ2tiNKzcW7L2SXOYTBKh
+        jD/GamPCtbpolqtHM0S0fLpkSeHXvTKsUsaxh1g2ltX+Z3kiD59ElNhlDn6wsc5eisI+d18K
+        UvUPN295kWVK89t++lfvd1mLI2P/8TXly6UlRn3e0oY5+t9DhXM3J4eKk39IdUvyRkI0zIQj
+        iVvgi7cGNnWqgzekJbQN7Jnf0Z9eZttYURKZMNzafmLd4sadyfr1M2q35WfY7uoWdXuZouJ2
+        l99+WLGpSE5zkcqA+ZSWU/4F7+FqDmkDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrLIsWRmVeSWpSXmKPExsVy+t/xu7ov0/ziDZ7/MLdY/OM5k8XGGetZ
+        LaY+fMJm0f/4NbPF+fMb2C02Pb7GanF51xw2ixnn9zFZNH68yW6x9shddov2py+ZHbg9ri/5
+        xOyxaVUnm8fmJfUefVtWMXp83iQXwBqlZ1OUX1qSqpCRX1xiqxRtaGGkZ2hpoWdkYqlnaGwe
+        a2VkqqRvZ5OSmpNZllqkb5egl7Gw5QBjwQLBiikdP1gbGO/xdTFyckgImEhcvbSeCcQWEljK
+        KLHye30XIwdQXEpi5dx0iBJhiT/XutggSp4ySpzpSQApYRPQk1i7NgIkLCKgK/FxbytzFyMX
+        B7PAcSaJuQe+go0UFnCUmPPlNwtEr61E48apzCA2i4CqxOUH6xlBGjgFWhgllk55zwqS4BUw
+        l3jX/QysWVTAUmLLi/vsEHFBiZMzn4ANYhbIlvi6+jnzBEaBWUhSs5CkZgHdxyygKbF+lz5E
+        WFti2cLXzBC2rcS6de9ZFjCyrmIUSS0tzk3PLTbUK07MLS7NS9dLzs/dxAiMvm3Hfm7ewXhp
+        Y/AhRgEORiUe3hnxfvFCrIllxZW5hxhVgMY82rD6AqMUS15+XqqSCK/T2dNxQrwpiZVVqUX5
+        8UWlOanFhxhNgR6dyCwlmpwPTBh5JfGGpobmFpaG5sbmxmYWSuK8HQIHY4QE0hNLUrNTUwtS
+        i2D6mDg4pRoY7eT+nmDomu0xUW3fVdujjAvsZ+6bJt8z//28BUzTRPlO6pvGXIqbsfl36q9/
+        Xy9u+FhdI5P8/GHtz59xT/X4jVLP87m/VJJ6u3zjoUvp9x99cJl/6UeZTsGDJ8vnHLV1+/JQ
+        dkOU+VGPt9JGxxZZn+EKSr9yMfPe6v36E3pPLnXU8kmftbXW5LMSS3FGoqEWc1FxIgBYmSz+
+        4AIAAA==
+X-CMS-MailID: 20200901152113eucas1p2977046b7a5b4c5a519f88870d658698a
+X-Msg-Generator: CA
+X-RootMTR: 20200901152113eucas1p2977046b7a5b4c5a519f88870d658698a
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20200901152113eucas1p2977046b7a5b4c5a519f88870d658698a
+References: <e7db038c-b8e6-8ddc-edc7-8b69c2019d04@kernel.org>
+        <CGME20200901152113eucas1p2977046b7a5b4c5a519f88870d658698a@eucas1p2.samsung.com>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-If dma_request_chan() for TX channel fails with EPROBE_DEFER, the RX
-channel would not be released and on next re-probe it would be requested
-second time.
+--=-=-=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: 386119bc7be9 ("spi: sprd: spi: sprd: Add DMA mode support")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
----
- drivers/spi/spi-sprd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+It was <2020-08-25 wto 21:06>, when Sylwester Nawrocki wrote:
+> On 8/21/20 18:13, =C5=81ukasz Stelmach wrote:
+>> Check return values in prepare_dma() and s3c64xx_spi_config() and
+>> propagate errors upwards.
+>>
+>> Signed-off-by: =C5=81ukasz Stelmach<l.stelmach@samsung.com>
+>> ---
+>>   drivers/spi/spi-s3c64xx.c | 47 ++++++++++++++++++++++++++++++++-------
+>>   1 file changed, 39 insertions(+), 8 deletions(-)
+>
+>> @@ -298,12 +299,24 @@ static void prepare_dma(struct s3c64xx_spi_dma_dat=
+a *dma,
+>>     	desc =3D dmaengine_prep_slave_sg(dma->ch, sgt->sgl, sgt->nents,
+>>   				       dma->direction, DMA_PREP_INTERRUPT);
+>> +	if (!desc) {
+>> +		dev_err(&sdd->pdev->dev, "unable to prepare %s scatterlist",
+>> +			dma->direction =3D=3D DMA_DEV_TO_MEM ? "rx" : "tx");
+>> +		return -ENOMEM;
+>> +	}
+>>     	desc->callback =3D s3c64xx_spi_dmacb;
+>>   	desc->callback_param =3D dma;
+>>     	dma->cookie =3D dmaengine_submit(desc);
+>> +	ret =3D dma_submit_error(dma->cookie);
+>> +	if (ret) {
+>> +		dev_err(&sdd->pdev->dev, "DMA submission failed");
+>> +		return -EIO;
+>
+> Just return the error value from dma_submit_error() here?
+>
 
-diff --git a/drivers/spi/spi-sprd.c b/drivers/spi/spi-sprd.c
-index 6678f1cbc566..0443fec3a6ab 100644
---- a/drivers/spi/spi-sprd.c
-+++ b/drivers/spi/spi-sprd.c
-@@ -563,11 +563,11 @@ static int sprd_spi_dma_request(struct sprd_spi *ss)
- 
- 	ss->dma.dma_chan[SPRD_SPI_TX]  = dma_request_chan(ss->dev, "tx_chn");
- 	if (IS_ERR_OR_NULL(ss->dma.dma_chan[SPRD_SPI_TX])) {
-+		dma_release_channel(ss->dma.dma_chan[SPRD_SPI_RX]);
- 		if (PTR_ERR(ss->dma.dma_chan[SPRD_SPI_TX]) == -EPROBE_DEFER)
- 			return PTR_ERR(ss->dma.dma_chan[SPRD_SPI_TX]);
- 
- 		dev_err(ss->dev, "request TX DMA channel failed!\n");
--		dma_release_channel(ss->dma.dma_chan[SPRD_SPI_RX]);
- 		return PTR_ERR(ss->dma.dma_chan[SPRD_SPI_TX]);
- 	}
- 
--- 
-2.17.1
+=2D-8<---------------cut here---------------start------------->8---
+static inline int dma_submit_error(dma_cookie_t cookie)
+{
+        return cookie < 0 ? cookie : 0;
 
+}
+=2D-8<---------------cut here---------------end--------------->8---
+
+Not quite meaningful IMHO, is it?
+
+=2D-=20
+=C5=81ukasz Stelmach
+Samsung R&D Institute Poland
+Samsung Electronics
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEXpuyqjq9kGEVr9UQsK4enJilgBAFAl9OZt0ACgkQsK4enJil
+gBBW8Qf/SHVF+tB9t6usYT5EgtkPO669b1lFpJh8qR35ZKbYw00N79FcmShNENt+
+u11jWtkEVXv/6CvV84DdmPiGv8Dv/bmMq+OWSTOCyECEMSVAYmlw2vQ9I7azK7nt
+FxJo7uj4E0Y3EX3bkYDOK9WU6nZZwkAzDEXCo8RdMk4vn76NL/ExSloPpIngDDvG
+CI/58CKI6KewlcGIaZ5yOvDngFnHFD83iNiNC050kee2x6yETRlgxteR3Be1hR80
+DYrnXDQt+lKM5C3eIUpmYpn4MVnEZRfhmNxIJDLW7tzYCgCozOC/3FEI6zCS3etc
+NNv/mOvOBaKknxX1chnwkITt5ZiCVQ==
+=N7L3
+-----END PGP SIGNATURE-----
+--=-=-=--

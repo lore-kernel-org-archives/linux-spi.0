@@ -7,37 +7,37 @@ X-Spam-Status: No, score=-13.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B723C433E2
-	for <linux-spi@archiver.kernel.org>; Tue,  1 Sep 2020 16:44:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B151C433E7
+	for <linux-spi@archiver.kernel.org>; Tue,  1 Sep 2020 16:45:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2655C207D3
-	for <linux-spi@archiver.kernel.org>; Tue,  1 Sep 2020 16:44:10 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 483C120767
+	for <linux-spi@archiver.kernel.org>; Tue,  1 Sep 2020 16:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1598978650;
-	bh=jo5js8lscFdRLSI/iL/0MdnOq2JeNN+Y1xQFxh7q//s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=xwkR2A5CTN0WHB7zLvYqEYDkX7uWLGMNA96TD/7CL3MRW2EhE6xJ9ha6UEel3/i/M
-	 +kHERFZk4HvhucUX27zprv2qYJWk8ojHT3Auw8VnK0MxiaPZfKBEK+zWi7lGwJ9VUy
-	 gIMfpM3Lx8btO/3fzikEkdVrzhQ3FgIdEA82DRMc=
+	s=default; t=1598978741;
+	bh=c4WH/PmFagCnAWTlKVBg6RiP8BT5Mny0HhSQHue4V+4=;
+	h=From:To:Cc:Subject:Date:List-ID:From;
+	b=na1SgXp1WkPWIfbjH2w8qaOjZLMvIZmnYdUd8CiCAwPhl40oIyPoy9PMvqoAVMEOx
+	 4ogcdugcaDHrg0CfUw0h00hWDOFx96XFUetqw3S+fYDS8MXDLz2Naz0zbSrfnBkdsp
+	 i7RTyl/PKDHkIWP9b41lYdT9oKBmmtdBf5helAog=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730462AbgIAQoC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 1 Sep 2020 12:44:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55064 "EHLO mail.kernel.org"
+        id S1730693AbgIAQpY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 1 Sep 2020 12:45:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54400 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730258AbgIAP1n (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 1 Sep 2020 11:27:43 -0400
+        id S1727019AbgIAP11 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 1 Sep 2020 11:27:27 -0400
 Received: from kozik-lap.mshome.net (unknown [194.230.155.106])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BB5A9207D3;
-        Tue,  1 Sep 2020 15:27:35 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A68082078B;
+        Tue,  1 Sep 2020 15:27:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598974062;
-        bh=jo5js8lscFdRLSI/iL/0MdnOq2JeNN+Y1xQFxh7q//s=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g7ARaH/6gOwD0Qobni24k3l1FK1h9lohBOSSiMWp1zDmY29GS2uEBiXYEB8w/mMRy
-         dWIESHQOUL9Sm/eKOoGkTa5jVu/U50ba2pw7lGsX32GR0ma0KXpP+2Yj3eJwSGKyCl
-         2Gir9We9wSMfaBjfLz7kXjkoSL+SRHr5UgQe8JiY=
+        s=default; t=1598974046;
+        bh=c4WH/PmFagCnAWTlKVBg6RiP8BT5Mny0HhSQHue4V+4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=dBf7pbKTxqSrRfmZPKIKVWm9Cz+lUwtaXkAMTDqXPBydndINMBfIDiJZ7C8ZULAZg
+         nSHIr9NGcPio9oQG/8r2FzIWU6WMPm25e9fgO7vD6sOYRx8Kh0D522XY9dPLfXKPeu
+         tIWTjHmR7GZfL6PmK36bMso5sJoq3DwbHWnAYCgQ=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
         Mark Brown <broonie@kernel.org>,
@@ -66,40 +66,42 @@ To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
         linux-arm-msm@vger.kernel.org,
         linux-stm32@st-md-mailman.stormreply.com,
         linux-tegra@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH 03/11] spi: atmel: Simplify with dev_err_probe()
-Date:   Tue,  1 Sep 2020 17:27:05 +0200
-Message-Id: <20200901152713.18629-3-krzk@kernel.org>
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>, stable@vger.kernel.org
+Subject: [PATCH 01/11] spi: sprd: Release DMA channel also on probe deferral
+Date:   Tue,  1 Sep 2020 17:27:03 +0200
+Message-Id: <20200901152713.18629-1-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200901152713.18629-1-krzk@kernel.org>
-References: <20200901152713.18629-1-krzk@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Common pattern of handling deferred probe can be simplified with
-dev_err_probe().  Less code and the error value gets printed.
+If dma_request_chan() for TX channel fails with EPROBE_DEFER, the RX
+channel would not be released and on next re-probe it would be requested
+second time.
 
+Fixes: 386119bc7be9 ("spi: sprd: spi: sprd: Add DMA mode support")
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- drivers/spi/spi-atmel.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/spi/spi-sprd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 2cfe6253a784..7c68d5cdbdc6 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -513,9 +513,8 @@ static int atmel_spi_configure_dma(struct spi_master *master,
+diff --git a/drivers/spi/spi-sprd.c b/drivers/spi/spi-sprd.c
+index 6678f1cbc566..0443fec3a6ab 100644
+--- a/drivers/spi/spi-sprd.c
++++ b/drivers/spi/spi-sprd.c
+@@ -563,11 +563,11 @@ static int sprd_spi_dma_request(struct sprd_spi *ss)
  
- 	master->dma_tx = dma_request_chan(dev, "tx");
- 	if (IS_ERR(master->dma_tx)) {
--		err = PTR_ERR(master->dma_tx);
--		if (err != -EPROBE_DEFER)
--			dev_err(dev, "No TX DMA channel, DMA is disabled\n");
-+		err = dev_err_probe(dev, PTR_ERR(master->dma_tx),
-+				    "No TX DMA channel, DMA is disabled\n");
- 		goto error_clear;
+ 	ss->dma.dma_chan[SPRD_SPI_TX]  = dma_request_chan(ss->dev, "tx_chn");
+ 	if (IS_ERR_OR_NULL(ss->dma.dma_chan[SPRD_SPI_TX])) {
++		dma_release_channel(ss->dma.dma_chan[SPRD_SPI_RX]);
+ 		if (PTR_ERR(ss->dma.dma_chan[SPRD_SPI_TX]) == -EPROBE_DEFER)
+ 			return PTR_ERR(ss->dma.dma_chan[SPRD_SPI_TX]);
+ 
+ 		dev_err(ss->dev, "request TX DMA channel failed!\n");
+-		dma_release_channel(ss->dma.dma_chan[SPRD_SPI_RX]);
+ 		return PTR_ERR(ss->dma.dma_chan[SPRD_SPI_TX]);
  	}
  
 -- 

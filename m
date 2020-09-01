@@ -2,66 +2,44 @@ Return-Path: <SRS0=4Pr+=CK=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable
+X-Spam-Status: No, score=-13.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E44EC433E7
-	for <linux-spi@archiver.kernel.org>; Tue,  1 Sep 2020 16:09:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CDA8DC433E6
+	for <linux-spi@archiver.kernel.org>; Tue,  1 Sep 2020 16:38:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id EE3AE204EC
-	for <linux-spi@archiver.kernel.org>; Tue,  1 Sep 2020 16:09:00 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gGijq2cv"
+	by mail.kernel.org (Postfix) with ESMTP id A105E20767
+	for <linux-spi@archiver.kernel.org>; Tue,  1 Sep 2020 16:38:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1598978320;
+	bh=/XJaGl06CsjTQv2yh1KyHC+7ktek0ZuAsx836iRegvw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=n12wztacfe4qf+fE0wDITGqkd1VKotY3FE0cqoxDETG9+H7YIlxDiPEsuPSRTQC44
+	 XqFCUb1FoQwYMbbBI5f3LgeojrVYOoh665F5nwGVTiltvgzBXNcHPhAEEuOE5K9P0h
+	 4tNKiDIev6eRegX8pYMGfprG5gkqbrRu/fZGnjig=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731559AbgIAQI4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 1 Sep 2020 12:08:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60180 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729790AbgIAQIu (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 1 Sep 2020 12:08:50 -0400
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com [IPv6:2607:f8b0:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB476C061244;
-        Tue,  1 Sep 2020 09:08:48 -0700 (PDT)
-Received: by mail-pl1-x641.google.com with SMTP id k13so743871plk.13;
-        Tue, 01 Sep 2020 09:08:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=XCC1MeRo0BRoasyj+5VGbw00gjoW3R7USmRQ2Ubh6Bk=;
-        b=gGijq2cvjjnFqOBtVFVOUecKydlvZdUDmdEShkPQtQDERDF4peXrJgChqPs84f9ckP
-         b9dFKbatiQXXJdwfBqjlgmu2mdiy6xjOhtUqfe0G/V909ePxhCpK9gRe5baQbfZehm7W
-         zWVz+4iD1vAJFTJh9wRVk6cSj8CpV5DUfj4HOSOZl3tCOZN/4hdQVnjor8LnrINRnw6x
-         TVVTz1PQ4v6wLqrpKv66juerPGmzJKRbdWniVq+0xnmFe3KXd9X3SA51YaCvc+0b4PAx
-         9XqDu2Bg+nZ/EGO3CsDwVmCW9HcbyX07tAn62Vbkq6VX4JguDhyqh4E8aziGpxBusjyN
-         xTxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=XCC1MeRo0BRoasyj+5VGbw00gjoW3R7USmRQ2Ubh6Bk=;
-        b=Df2nzwe+1BRnFVVmM3RVPPKa//CTXqDAKP0FZ1/PK5Go15Y1BcEKwJ7W6FxU1U92CF
-         vdKnrjUbFflF1PdWPr2VnnFbpLmvu9xJLkD2omFI3SZr84XODZvH4onuXudKnzivBFGR
-         ZycAA2ait93F4wkCCtq4T1WJmCIn606BqLKM0oFmUSY3ZFwx6Q1+2OB/wFCiwHgKNOwU
-         i368DMgJw4T1SrhlTvCYr/C7vpbGfoJZ0NEt6LLoxVLsxpt3zmKosHB7wY4ZHG/VoJqN
-         7CEA7vIDayzBnPDbOeb+qb42n8RzKLjhy/8Eyn025hdaR1ortkKsfOK4yrkyhpxTF1YP
-         UJTw==
-X-Gm-Message-State: AOAM530jWnYYQdQ7ueSWXrao4gBVsxVCykcm7ZrQedKN01KgoLNrKXvf
-        wPgwqcakCPgS9RMe1K4qP8dheCzVih4=
-X-Google-Smtp-Source: ABdhPJzMJlB1p6o9YUqwWsudQKNUJlMRUAuSiBfxFfepp8AQHGZU1/+/y1JGrTe2lZw+V7k8QgJFng==
-X-Received: by 2002:a17:90b:4a07:: with SMTP id kk7mr2316459pjb.125.1598976527418;
-        Tue, 01 Sep 2020 09:08:47 -0700 (PDT)
-Received: from [192.168.1.3] (ip68-111-84-250.oc.oc.cox.net. [68.111.84.250])
-        by smtp.gmail.com with ESMTPSA id d15sm2497723pfr.143.2020.09.01.09.08.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Sep 2020 09:08:46 -0700 (PDT)
-Subject: Re: [PATCH 04/11] spi: bcm2835: Simplify with dev_err_probe()
-To:     Krzysztof Kozlowski <krzk@kernel.org>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
+        id S1730467AbgIAQig (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 1 Sep 2020 12:38:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57276 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730401AbgIAP2p (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 1 Sep 2020 11:28:45 -0400
+Received: from kozik-lap.mshome.net (unknown [194.230.155.106])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 16CD620FC3;
+        Tue,  1 Sep 2020 15:28:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1598974125;
+        bh=/XJaGl06CsjTQv2yh1KyHC+7ktek0ZuAsx836iRegvw=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=n2mdRPDrNq2pVxukr4c3iPl+YkyyHJaWmRW5Jvz8KNAR0gjpv3Svn6cs3odcRB3wg
+         aRgXXOz0vV5ybQhyPw+p1EPa2Mq2mUsHfU3DKmGbzsjwiSC4oNC4xZ4tUsD30dQyNo
+         IIgfBbfOVuEEqmw46QROFHdgplBU7IGDhhHrHy7I=
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
         Mark Brown <broonie@kernel.org>,
         Nicolas Ferre <nicolas.ferre@microchip.com>,
         Alexandre Belloni <alexandre.belloni@bootlin.com>,
@@ -88,31 +66,47 @@ To:     Krzysztof Kozlowski <krzk@kernel.org>,
         linux-arm-msm@vger.kernel.org,
         linux-stm32@st-md-mailman.stormreply.com,
         linux-tegra@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH 11/11] spi: tegra20: Simplify with dev_err_probe()
+Date:   Tue,  1 Sep 2020 17:27:13 +0200
+Message-Id: <20200901152713.18629-11-krzk@kernel.org>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200901152713.18629-1-krzk@kernel.org>
 References: <20200901152713.18629-1-krzk@kernel.org>
- <20200901152713.18629-4-krzk@kernel.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <2fefe978-c91c-7c87-e342-32287c674a8f@gmail.com>
-Date:   Tue, 1 Sep 2020 09:08:43 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.1.1
-MIME-Version: 1.0
-In-Reply-To: <20200901152713.18629-4-krzk@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Common pattern of handling deferred probe can be simplified with
+dev_err_probe().  Less code and the error value gets printed.
 
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+---
+ drivers/spi/spi-tegra20-slink.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-On 9/1/2020 8:27 AM, Krzysztof Kozlowski wrote:
-> Common pattern of handling deferred probe can be simplified with
-> dev_err_probe().  Less code and the error value gets printed.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index a07b72e9c344..a0810765d4e5 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -600,13 +600,9 @@ static int tegra_slink_init_dma_param(struct tegra_slink_data *tspi,
+ 	struct dma_slave_config dma_sconfig;
+ 
+ 	dma_chan = dma_request_chan(tspi->dev, dma_to_memory ? "rx" : "tx");
+-	if (IS_ERR(dma_chan)) {
+-		ret = PTR_ERR(dma_chan);
+-		if (ret != -EPROBE_DEFER)
+-			dev_err(tspi->dev,
+-				"Dma channel is not available: %d\n", ret);
+-		return ret;
+-	}
++	if (IS_ERR(dma_chan))
++		return dev_err_probe(tspi->dev, PTR_ERR(dma_chan),
++				     "Dma channel is not available\n");
+ 
+ 	dma_buf = dma_alloc_coherent(tspi->dev, tspi->dma_buf_size,
+ 				&dma_phys, GFP_KERNEL);
 -- 
-Florian
+2.17.1
+

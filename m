@@ -2,117 +2,127 @@ Return-Path: <SRS0=4dx/=CN=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.1 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EC502C43461
-	for <linux-spi@archiver.kernel.org>; Fri,  4 Sep 2020 00:28:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E1270C433E2
+	for <linux-spi@archiver.kernel.org>; Fri,  4 Sep 2020 12:36:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B58F420758
-	for <linux-spi@archiver.kernel.org>; Fri,  4 Sep 2020 00:28:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A17572078E
+	for <linux-spi@archiver.kernel.org>; Fri,  4 Sep 2020 12:36:00 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="a6JRNAd7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OCAldAMt"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728037AbgIDA2U (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 3 Sep 2020 20:28:20 -0400
-Received: from gate2.alliedtelesis.co.nz ([202.36.163.20]:42472 "EHLO
-        gate2.alliedtelesis.co.nz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726397AbgIDA2T (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 3 Sep 2020 20:28:19 -0400
-Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client did not present a certificate)
-        by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 677E8806B5;
-        Fri,  4 Sep 2020 12:28:16 +1200 (NZST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-        s=mail181024; t=1599179296;
-        bh=PeKvL5ah8tfQA9K2g0Ur26fGWX24dwpS7/gFm9K63hM=;
-        h=From:To:Cc:Subject:Date;
-        b=a6JRNAd7aob5eI2XZzkOFb5ZZ02HGxer81YI0ujs2yAULCbfguWR7cQ+CrLJSrC+J
-         VaVPBSsq46CnCoonOoIOCxz0vxfLGsIV49E5dVeBrVX9szyJ+6/dwUhc6FaBaCDlkE
-         BeEANfSYURAT+Q+XP1BcK8aFzg0WbS50GX26IpVG8U0/u90OPDKBQ8p5rR0PtaFS3z
-         z+yYp7LizkapHRnsXR3zqNx5YcRYE0qkqhlpD83pi9bs0w3rsu93n9aQ9d9nxPs7Lb
-         SRjslvAP5I0BA/5Vrj0P0YBgOMPbTO9YvOxnoSxeiTC43ROu9pKIqsw16zMU9KWRXe
-         a7h3Pf3onz31w==
-Received: from smtp (Not Verified[10.32.16.33]) by mmarshal3.atlnz.lc with Trustwave SEG (v7,5,8,10121)
-        id <B5f518a1e0000>; Fri, 04 Sep 2020 12:28:14 +1200
-Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.20])
-        by smtp (Postfix) with ESMTP id EB27A13EEBA;
-        Fri,  4 Sep 2020 12:28:15 +1200 (NZST)
-Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
-        id 2ABBB280060; Fri,  4 Sep 2020 12:28:16 +1200 (NZST)
-From:   Chris Packham <chris.packham@alliedtelesis.co.nz>
-To:     broonie@kernel.org, npiggin@gmail.com, hkallweit1@gmail.com
-Cc:     linux-spi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>,
-        stable@vger.kernel.org
-Subject: [PATCH] spi: fsl-espi: Only process interrupts for expected events
-Date:   Fri,  4 Sep 2020 12:28:12 +1200
-Message-Id: <20200904002812.7300-1-chris.packham@alliedtelesis.co.nz>
-X-Mailer: git-send-email 2.28.0
+        id S1730163AbgIDMf6 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 4 Sep 2020 08:35:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42682 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728588AbgIDMfw (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 4 Sep 2020 08:35:52 -0400
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3A53C061244;
+        Fri,  4 Sep 2020 05:35:51 -0700 (PDT)
+Received: by mail-lj1-x242.google.com with SMTP id e11so7770088ljn.6;
+        Fri, 04 Sep 2020 05:35:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=2zQq8tzm/HGpBwn2FA7z9vkYgOXhNDcv626gb3rtLwE=;
+        b=OCAldAMtHThOn6cxAkixmpOBbuF2X9s0hjde9Tm4VZ8jXAn4fc0CU0V0E2RC+MrSAx
+         PO/MBl0Fpj5m+Uv48bukVSPpyDZLREPp60yL4Bdz/b3V8pk8ntBt8vaMTm0pjJBYwK/Z
+         UY/n5drsmrgJ0teKn37TtYK4pSx/12iIAouBDcUugUICHq+YnSypY5ZOjKhD/S2hx564
+         ec80VlZN82cwFwYMUtcMo5QEXlHQgyQl6Vzj16KR6Zp2BGi4QHBbYfa5TGxRRbtLIDeJ
+         FKnlUqvV7+3cGblIac9jD5IeEEQz5yAj+vgMcxASDWMt/hGxKm17iRbqg3llT7K3wOuH
+         oq8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=2zQq8tzm/HGpBwn2FA7z9vkYgOXhNDcv626gb3rtLwE=;
+        b=jIcLkPZdi2Hkp5WsXE6OSMk9U5F8JXphxQ9r4NHK3YZvR14c7trQAIsn2cBy89ZUjJ
+         aHvHE1DzwVXf+eslfzXhuJqExdH0rsHQLDAuroxrDlVNOBM7KOLUG+XPm7NACg/xKgfV
+         +74UWd2+xpAFl3MyaC2XwbqvqpbYYN/pmdbLC+Z8R+dSvQSYji5Ebirug8GL1oKJdGyK
+         c9afYB7cLNobZLWuCM49Ei+Zx/s9AlM9qu2HqD2rzo+ROuXcNCJDEUcZeNW7j7ugVZnL
+         Q/0A+ocxgP0ZvSE7DRuT489bZusp//Pc3fuwGODXWgezezh+eFWmASaUKVTJOi6Bqryl
+         takg==
+X-Gm-Message-State: AOAM531q4YjUDHpAv5dPjr46HYc8ZmnG/p5Zq1F1Of+3OISpH790DhEc
+        X++F6GSJOG/Rth0fMKRys6T2aKepjXwIhQsL9Eo=
+X-Google-Smtp-Source: ABdhPJxij5kxwBOGgOGBLbBCNP/8Ao8v4wC249amU4OSMif6DmD1Mc+OWkrBWzi2bo09EbcDzXxuYJCUqFtAuBhX19U=
+X-Received: by 2002:a2e:390a:: with SMTP id g10mr3459414lja.218.1599222949595;
+ Fri, 04 Sep 2020 05:35:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-x-atlnz-ls: pat
+References: <20200903144028.20416-1-matthias.schiffer@ew.tq-group.com>
+In-Reply-To: <20200903144028.20416-1-matthias.schiffer@ew.tq-group.com>
+From:   Fabio Estevam <festevam@gmail.com>
+Date:   Fri, 4 Sep 2020 09:35:38 -0300
+Message-ID: <CAOMZO5DGHoG_8X+fbrGCHR4g=sGdEaF7bYrHbC_2T=aUnfTs8g@mail.gmail.com>
+Subject: Re: [PATCH] spi-imx: remove num-cs support, set num_chipselect to 4
+To:     Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Cc:     Mark Brown <broonie@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The SPIE register contains counts for the TX FIFO so any time the irq
-handler was invoked we would attempt to process the RX/TX fifos. Use the
-SPIM value to mask the events so that we only process interrupts that
-were expected.
+Hi Matthias,
 
-This was a latent issue exposed by commit 3282a3da25bd ("powerpc/64:
-Implement soft interrupt replay in C").
+On Thu, Sep 3, 2020 at 11:40 AM Matthias Schiffer
+<matthias.schiffer@ew.tq-group.com> wrote:
+>
+> The num-cs property is not considered useful, and no in-tree Device
+> Trees define it for spi-imx.
+>
+> The default value to be used when no cs-gpios are defined is set to 4 to
+> give access to all native CS pins of modern i.MX SoCs (i.MX6 and newer).
+>
+> In older SoCs, the number of CS pins varies (for example the i.MX27 has 3
+> CS pins on CSPI1 and CSPI2, and only a single CS on CSPI3). Attempting
+> to use the nonexisting CS pin would be an easy to notice DT
+> misconfiguration; making the driver catch this doesn't seem worthwhile.
+>
+> Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+> ---
+>  drivers/spi/spi-imx.c | 13 +------------
+>  1 file changed, 1 insertion(+), 12 deletions(-)
+>
+> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+> index 197f60632072..aece8482739b 100644
+> --- a/drivers/spi/spi-imx.c
+> +++ b/drivers/spi/spi-imx.c
+> @@ -1581,7 +1581,6 @@ static int spi_imx_probe(struct platform_device *pdev)
+>         const struct spi_imx_devtype_data *devtype_data = of_id ? of_id->data :
+>                 (struct spi_imx_devtype_data *)pdev->id_entry->driver_data;
+>         bool slave_mode;
+> -       u32 val;
+>
+>         slave_mode = devtype_data->has_slavemode &&
+>                         of_property_read_bool(np, "spi-slave");
+> @@ -1605,6 +1604,7 @@ static int spi_imx_probe(struct platform_device *pdev)
+>         master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
+>         master->bus_num = np ? -1 : pdev->id;
+>         master->use_gpio_descriptors = true;
+> +       master->num_chipselect = 4;
 
-Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Cc: stable@vger.kernel.org
----
+On an imx6q-sabresd, which only has one SPI chip-select via GPIO, this
+makes the SPI core to understand that it has 4 chip selects.
 
-Notes:
-    I've tested this on a T2080RDB and a custom board using the T2081 SoC=
-. With
-    this change I don't see any spurious instances of the "Transfer done =
-but
-    SPIE_DON isn't set!" or "Transfer done but rx/tx fifo's aren't empty!=
-" messages
-    and the updates to spi flash are successful.
-   =20
-    I think this should go into the stable trees that contain 3282a3da25b=
-d but I
-    haven't added a Fixes: tag because I think 3282a3da25bd exposed the i=
-ssue as
-    opposed to causing it.
+From spi_get_gpio_descs() in drivers/spi/spi.c:
 
- drivers/spi/spi-fsl-espi.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ctlr->num_chipselect = max_t(int, nb, ctlr->num_chipselect);
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 7e7c92cafdbb..cb120b68c0e2 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -574,13 +574,14 @@ static void fsl_espi_cpu_irq(struct fsl_espi *espi,=
- u32 events)
- static irqreturn_t fsl_espi_irq(s32 irq, void *context_data)
- {
- 	struct fsl_espi *espi =3D context_data;
--	u32 events;
-+	u32 events, mask;
-=20
- 	spin_lock(&espi->lock);
-=20
- 	/* Get interrupt events(tx/rx) */
- 	events =3D fsl_espi_read_reg(espi, ESPI_SPIE);
--	if (!events) {
-+	mask =3D fsl_espi_read_reg(espi, ESPI_SPIM);
-+	if (!(events & mask)) {
- 		spin_unlock(&espi->lock);
- 		return IRQ_NONE;
- 	}
---=20
-2.28.0
+It is 4 now after your patch, it was 3 after 8cdcd8aeee28 ("spi:
+imx/fsl-lpspi: Convert to GPIO descriptors") and 1 before such commit.
 
+Couldn't we just remove master->num_chipselect from the spi-imx.c driver?

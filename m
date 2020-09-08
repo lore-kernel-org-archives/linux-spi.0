@@ -2,117 +2,123 @@ Return-Path: <SRS0=Lsrg=CR=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.9 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E4B8C2BC11
-	for <linux-spi@archiver.kernel.org>; Tue,  8 Sep 2020 19:59:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 845C9C433E2
+	for <linux-spi@archiver.kernel.org>; Tue,  8 Sep 2020 20:05:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1FA0120658
-	for <linux-spi@archiver.kernel.org>; Tue,  8 Sep 2020 19:59:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1599595140;
-	bh=pUEfMpq/UYZC7azZMZ5kSA/t1DHYIvIV/tbSmdkMHt8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=oSMO0HzF50zLFTmQLtHyYWa3u6NLJDhyJtzTF+siscI/hVZn4HcDHSF2I4eJmY+Ws
-	 g3ez6ZJ1EMl2AAO3Box/MnzfDb7bDDxVJtMAOiozxYj4qpGWtlKL1hbx3Fc2RZ91us
-	 lTIo+QuiVGi6p6Wsx17GE4bTbMqGn6z9nWTKGBHs=
+	by mail.kernel.org (Postfix) with ESMTP id 2BFDC20768
+	for <linux-spi@archiver.kernel.org>; Tue,  8 Sep 2020 20:05:21 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=axis.com header.i=@axis.com header.b="F3BTmHD2"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732458AbgIHT65 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 8 Sep 2020 15:58:57 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58864 "EHLO mail.kernel.org"
+        id S1732626AbgIHUFP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 8 Sep 2020 16:05:15 -0400
+Received: from smtp1.axis.com ([195.60.68.17]:2534 "EHLO smtp1.axis.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730431AbgIHPfj (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 8 Sep 2020 11:35:39 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F172723BE5;
-        Tue,  8 Sep 2020 13:23:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599571408;
-        bh=pUEfMpq/UYZC7azZMZ5kSA/t1DHYIvIV/tbSmdkMHt8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=F0S8l6qu0IET3EzvZa3BeHFC0eAm7E2aMFtOGtSg4MVL1uz8Bf2WvkYY7OEOJOI+g
-         zeE2vL5jNPiS75krNhH/BAAmujRDEfwUzgv3ohTAR5HKdwMAWJxGwat9vAFf1wxe4X
-         hSjqMSsMuTCoX1v0XkWWt2kLar5QEeFnSbqv1oqs=
-Date:   Tue, 8 Sep 2020 14:22:44 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang7@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Masahisa Kojima <masahisa.kojima@linaro.org>,
-        Jassi Brar <jaswinder.singh@linaro.org>,
-        Laxman Dewangan <ldewangan@nvidia.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-tegra@vger.kernel.org
-Subject: Re: [PATCH 02/11] spi: sprd: Simplify with dev_err_probe()
-Message-ID: <20200908132244.GA48155@sirena.org.uk>
-References: <20200901152713.18629-1-krzk@kernel.org>
- <20200901152713.18629-2-krzk@kernel.org>
+        id S1730358AbgIHPV6 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 8 Sep 2020 11:21:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=axis.com; l=2150; q=dns/txt; s=axis-central1;
+  t=1599578517; x=1631114517;
+  h=from:to:cc:subject:date:message-id:mime-version;
+  bh=z/BDmdjM/v/uKUwksEvqIKwATDtNWqz2DB9Hmgj+6lI=;
+  b=F3BTmHD2mdT1WXEEkZzcolZFLjgsQXzaSuLh4FlbUkup09URqOAyjxIM
+   0Z5/6EMQXkyCElO+6MaCXerbMtNA18eaA3eAkuaJ5+bYMgGRqBPfUI1+9
+   dN6fTuuF4VGoHxvLp87OsYph85uYtSRUU9gTU5dv7S/m36HRmOHpq2oAT
+   O5/myKJrtj0OfyboqMn+rYuSdP2/GICy67R5OTnQxx6YpTatz2/WiHuxN
+   Q7pXXIJqkewfgMgAZ0WVal1dJkWdrJJpqM1zM/iPb5clembn+NUIwRwDZ
+   qESCKgab+T2rp9ozw/WCtNK+lY2S0O9YjW/wZ3lHiscrGzM0CH7BQ1Wm5
+   w==;
+IronPort-SDR: IT/QAfd20aFr8qbGpXRLXsMAMov3y2s6L0C9ldlUP4Tnl1I39sXcoRkW18Qb3nDnfGfJJGHaCd
+ dybcBRCanCsSt2hiO2LNwPmGjh73qe8oSan+yt9KWXKp5hjG2NKltMVEPLXpo0dVchg9Kp3JuT
+ 6sMIujYbtmZNpKHiFICNYoDGu0pTTlE4bpH+kpA1WOoSnoAN9xs4bKb4NMDjcLKmwc1c9zrHRt
+ FkQrmKl/XUBZUmZkl8uXUn4uUXPRoNpW6/nHDCOVBAPJ+dW+UVyS5b8Ec9xFkBtRIwGhAedAHr
+ sQ0=
+X-IronPort-AV: E=Sophos;i="5.76,406,1592863200"; 
+   d="scan'208";a="12672457"
+From:   Gustav Wiklander <gustav.wiklander@axis.com>
+To:     <broonie@kernel.org>
+CC:     <linux-spi@vger.kernel.org>, <kernel@axis.com>,
+        Gustav Wiklander <gustavwi@axis.com>
+Subject: [PATCH v3] spi: Fix memory leak on splited transfers
+Date:   Tue, 8 Sep 2020 17:11:29 +0200
+Message-ID: <20200908151129.15915-1-gustav.wiklander@axis.com>
+X-Mailer: git-send-email 2.11.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="uAKRQypu60I7Lcqm"
-Content-Disposition: inline
-In-Reply-To: <20200901152713.18629-2-krzk@kernel.org>
-X-Cookie: Remember the... the... uhh.....
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+From: Gustav Wiklander <gustavwi@axis.com>
 
---uAKRQypu60I7Lcqm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+In the prepare_message callback the bus driver has the
+opportunity to split a transfer into smaller chunks.
+spi_map_msg is done after prepare_message.
 
-On Tue, Sep 01, 2020 at 05:27:04PM +0200, Krzysztof Kozlowski wrote:
-> Common pattern of handling deferred probe can be simplified with
-> dev_err_probe().  Less code and the error value gets printed.
+Function spi_res_release releases the splited transfers
+in the message. Therefore spi_res_release should be called
+after spi_map_msg.
 
-This doesn't apply against current code, please check and resend.
+The previous try at this was commit c9ba7a16d0f1
+which released the splited transfers after
+spi_finalize_current_message had been called.
+This introduced a race since the message struct could be
+out of scope because the spi_sync call got completed.
 
-Applying: spi: sprd: Simplify with dev_err_probe()
-Using index info to reconstruct a base tree...
-M	drivers/spi/spi-sprd-adi.c
-Falling back to patching base and 3-way merge...
-Auto-merging drivers/spi/spi-sprd-adi.c
-CONFLICT (content): Merge conflict in drivers/spi/spi-sprd-adi.c
+Fixes this leak on spi bus driver spi-bcm2835.c when transfer
+size is greater than 65532:
 
---uAKRQypu60I7Lcqm
-Content-Type: application/pgp-signature; name="signature.asc"
+Kmemleak:
+sg_alloc_table+0x28/0xc8
+spi_map_buf+0xa4/0x300
+__spi_pump_messages+0x370/0x748
+__spi_sync+0x1d4/0x270
+spi_sync+0x34/0x58
+spi_test_execute_msg+0x60/0x340 [spi_loopback_test]
+spi_test_run_iter+0x548/0x578 [spi_loopback_test]
+spi_test_run_test+0x94/0x140 [spi_loopback_test]
+spi_test_run_tests+0x150/0x180 [spi_loopback_test]
+spi_loopback_test_probe+0x50/0xd0 [spi_loopback_test]
+spi_drv_probe+0x84/0xe0
 
------BEGIN PGP SIGNATURE-----
+Signed-off-by: Gustav Wiklander <gustavwi@axis.com>
+---
+ drivers/spi/spi.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl9XhaMACgkQJNaLcl1U
-h9BD+Qf/aECmurEbZzuMemn3QkE80q0VxXmiRjrG37cSIuZiDfm3np+BN4O6qef4
-jaozUFazSi1o8PpDSZtZmUuUhXIxs1TnlfIiET/a770NsLAy1CiCZcV7oIY2KWQ8
-5h51M2zOavV16MTiPa3BpaNJig5ZCrrltr+cVzP8GZ8ZlQRQJxS63yHkWPEvJ6jP
-N7nQ1JidLKkucxQveOxuFd8fUEajsGwJboKYBcFWL10Ga6A5aZOwNb8/fsjiu8sx
-KgGKvEZgoTfhhfGX5kg6s7ZWdCRLyyaSekjAXtY6ECQL6j4RHwGcx5sHqRUKR0pS
-TnET69OatkEPU5lbOiMrQS1KC+ycBw==
-=hY0h
------END PGP SIGNATURE-----
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index dc12af018350..0cab239d8e7f 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1327,8 +1327,6 @@ static int spi_transfer_one_message(struct spi_controller *ctlr,
+ 	if (msg->status && ctlr->handle_err)
+ 		ctlr->handle_err(ctlr, msg);
+ 
+-	spi_res_release(ctlr, msg);
+-
+ 	spi_finalize_current_message(ctlr);
+ 
+ 	return ret;
+@@ -1725,6 +1723,13 @@ void spi_finalize_current_message(struct spi_controller *ctlr)
+ 
+ 	spi_unmap_msg(ctlr, mesg);
+ 
++	/* In the prepare_messages callback the spi bus has the opportunity to
++	 * split a transfer to smaller chunks.
++	 * Release splited transfers here since spi_map_msg is done on the
++	 * splited transfers.
++	 */
++	spi_res_release(ctlr, mesg);
++
+ 	if (ctlr->cur_msg_prepared && ctlr->unprepare_message) {
+ 		ret = ctlr->unprepare_message(ctlr, mesg);
+ 		if (ret) {
+-- 
+2.11.0
 
---uAKRQypu60I7Lcqm--

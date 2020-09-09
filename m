@@ -2,115 +2,120 @@ Return-Path: <SRS0=yiGS=CS=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D527BC433E2
-	for <linux-spi@archiver.kernel.org>; Wed,  9 Sep 2020 17:12:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D6B51C43461
+	for <linux-spi@archiver.kernel.org>; Wed,  9 Sep 2020 17:14:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8782D206E6
-	for <linux-spi@archiver.kernel.org>; Wed,  9 Sep 2020 17:12:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 952A32166E
+	for <linux-spi@archiver.kernel.org>; Wed,  9 Sep 2020 17:14:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1599671529;
-	bh=TODrVcs9lgVCPiXcAEfLvUZlnsS84ktzJrcnCMX1MKg=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=XJQH6+1BVG82HirLdpcZXpphDBhxd30y/fOrQY/NeTBYZa42FpuQvkMGrig427O7m
-	 9A57qMQokeRHn23YZvckjv48qlMPsYKmSveIUab9NBBUgS3M07VfJNAMwsRDDsO6V/
-	 XWaYYbbrUgvAMTtTFksauxoUupluCzznUp/ppAIA=
+	s=default; t=1599671645;
+	bh=G6V5+rrjseSZbwoAOOIF/H9RV9qG8won/T+LJdUIn9o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=tqmm/583zbGFlDhDnbYqBI+YYVzNAqwYaXQf5YKU/GmwgqoVfQJMmJgZQEafwVUVL
+	 s+EAD41tvvpTxhhGRng4Hc1B4Oed+3e/GaqcwTNA7GZI7sfbwRtgBrZXfzTVQP0rsJ
+	 VEBD7q4b0LdVDGu6pV0vZJ/v07T2xZRGwFAtdAHM=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731128AbgIIRMD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 9 Sep 2020 13:12:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57484 "EHLO mail.kernel.org"
+        id S1730271AbgIIRNy (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 9 Sep 2020 13:13:54 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58678 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728663AbgIIPcj (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 9 Sep 2020 11:32:39 -0400
+        id S1726293AbgIIPcL (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 9 Sep 2020 11:32:11 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7681822240;
-        Wed,  9 Sep 2020 15:29:36 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id DBEA2206F4;
+        Wed,  9 Sep 2020 14:32:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599665377;
-        bh=TODrVcs9lgVCPiXcAEfLvUZlnsS84ktzJrcnCMX1MKg=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=FY4sgLDDXx1wg27+Ljvut8xHybpkWQIHYtUAsv96blD6Wh6IeNsMO5lKZ4mATR23F
-         G2JVLlILS5NoIvW+hUvsFBsE0SCBbOD4sJNMPWwIiH4P5TcKH/x0yYb7nfTfqm+lH0
-         ZCd5YGHXme1dc0s7OslYkmkiil92Mu448CHiBotA=
-Date:   Wed, 09 Sep 2020 16:28:51 +0100
+        s=default; t=1599661972;
+        bh=G6V5+rrjseSZbwoAOOIF/H9RV9qG8won/T+LJdUIn9o=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=qcC8aUhafORqR4CPAJGT2pHQZbY/gh3kGAru56tbTM2VqzChgPJvPdcBCQggcf0MB
+         qfV56qHpfCJvXbTgxVYOQNoTSW9RD4QRQv4L/gel8Dc1mgjUe0Wy3ZQZiFbNXuf+nR
+         /9xMTu9pV6RNk8x6Sapyzzt2xXiOBf3bINuOG0M0=
+Date:   Wed, 9 Sep 2020 15:32:06 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Fabio Estevam <festevam@gmail.com>, rnayak@codeaurora.org,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        David Airlie <airlied@linux.ie>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Daniel Vetter <daniel@ffwll.ch>, Qiang Yu <yuq825@gmail.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Andy Gross <agross@kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        NXP Linux Team <linux-imx@nxp.com>
-Cc:     linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Douglas Anderson <dianders@chromium.org>,
-        linux-arm-kernel@lists.infradead.org, linux-pm@vger.kernel.org,
-        freedreno@lists.freedesktop.org,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
-        lima@lists.freedesktop.org, Nishanth Menon <nm@ti.com>,
-        linux-mmc@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <cover.1598594714.git.viresh.kumar@linaro.org>
-References: <cover.1598594714.git.viresh.kumar@linaro.org>
-Subject: Re: [PATCH V2 0/8] opp: Unconditionally call dev_pm_opp_of_remove_table()
-Message-Id: <159966533166.54485.703021491015822828.b4-ty@kernel.org>
+To:     Kuldip Dwivedi <kuldip.dwivedi@puresoftware.com>
+Cc:     Ashish Kumar <ashish.kumar@nxp.com>,
+        Yogesh Gaur <yogeshgaur.83@gmail.com>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Varun Sethi <V.Sethi@nxp.com>,
+        Arokia Samy <arokia.samy@nxp.com>
+Subject: Re: [PATCH v1] spi: spi-nxp-fspi: Add ACPI support
+Message-ID: <20200909143206.GD4926@sirena.org.uk>
+References: <20200908060227.299-1-kuldip.dwivedi@puresoftware.com>
+ <20200909120148.GC4926@sirena.org.uk>
+ <af06cac916ebcdf6f526baa9cba98494@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="5gxpn/Q6ypwruk0T"
+Content-Disposition: inline
+In-Reply-To: <af06cac916ebcdf6f526baa9cba98494@mail.gmail.com>
+X-Cookie: MIT:
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, 28 Aug 2020 11:37:45 +0530, Viresh Kumar wrote:
-> This cleans up some of the user code around calls to
-> dev_pm_opp_of_remove_table().
-> 
-> All the patches can be picked by respective maintainers directly except
-> for the last patch, which needs the previous two to get merged first.
-> 
-> These are based for 5.9-rc1.
-> 
-> [...]
 
-Applied to
+--5gxpn/Q6ypwruk0T
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+On Wed, Sep 09, 2020 at 06:29:10PM +0530, Kuldip Dwivedi wrote:
 
-Thanks!
+> > | Does NXP know about this ID assignment from their namespace?  ACPI IDs
+> > | should be namespaced by whoever's assigning the ID to avoid
+> collisions.
 
-[1/2] spi: spi-geni-qcom: Unconditionally call dev_pm_opp_of_remove_table()
-      commit: 7d568edff5cb7968cc5f29e85da15f941b8070b8
-[2/2] spi: spi-qcom-qspi: Unconditionally call dev_pm_opp_of_remove_table()
-      commit: 062cf7fc927d2546b58ed128383e5c52f26a00a5
+> Yes, NXP is aware.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Can anyone from NXP confirm this?
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+> > Please don't ignore review comments, people are generally making them
+> for a
+> > reason and are likely to have the same concerns if issues remain
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+> This is new Patch for different IP (FSPI)  and scenario is different from
+> DSPI driver.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+If a generic issue like this exists with one patch you should expect
+that exactly the same issue is going to come up with other very similar
+patches and therefore ensure they are addressed so people don't feel
+like you are ignoring them.
 
-Thanks,
-Mark
+> > >  	/* Reset the module */
+> > > +	fspi_writel(f, FSPI_MCR0_SWRST, (base + FSPI_MCR0));
+> > > +
+
+> > Why are you adding this reset?  How is it connected to adding ACPI
+> support - it
+> > looks like it should be a separate patch.
+
+> I observed a kernel panic in setting up the driver, and this fixed the
+> issue.
+
+At the very least this would need to be called out in the changelog but
+like I say it should really be a separate patch.
+
+--5gxpn/Q6ypwruk0T
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl9Y52UACgkQJNaLcl1U
+h9AqTAf/fWMxxf95EG2ZsGPtdYfSRjeCSCgERIcQz+KwEjHrU9qHLBQ0mNsCX69a
+VNnVGwT3bW9Ts1AJ8bTW7HrqW6pCFakpiY3tZBV6kkHj+MoljcgRt6I1vjlAjRWW
+8jJd4iFQru98oFktipTbFSQgnPMT2Y/y1q0Wc2DuclzFse2kDsdEmuAAzzqJwzZ3
+M2tO1phNIbeCDBiR9dtHYuxuO+uOYBt0ujftKDawUxSCQAwJ2UmOLUE6vsChOHmF
+vSHuBRQBgkWDg5g093DoIpdT1OUteuDY7ujd+tcsZEqa+RpIn8lLF5yLcxCe2N0c
+7EqZ/Jyvb8qTcEnHKi1GGtx2mK31KQ==
+=l0lP
+-----END PGP SIGNATURE-----
+
+--5gxpn/Q6ypwruk0T--

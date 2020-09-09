@@ -2,84 +2,140 @@ Return-Path: <SRS0=yiGS=CS=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B90EAC433E2
-	for <linux-spi@archiver.kernel.org>; Wed,  9 Sep 2020 17:14:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F502C433E2
+	for <linux-spi@archiver.kernel.org>; Wed,  9 Sep 2020 17:17:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7BAA0206E6
-	for <linux-spi@archiver.kernel.org>; Wed,  9 Sep 2020 17:14:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1599671683;
-	bh=gxE3ui3erFuhnG/K5IRsWZHm67oJxM7qIJtlKXllmyw=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=yxiekfBkg2zhnogy89Oe7nkU2xyWwal1zx2/0GErtWzOBBF5aNT+qtbevELTM4KGr
-	 T+ZXaLlTgHk6Q4TQYBTQvIAVGdZZnAFpEtPHFYbDaEa3uMZbVhEz+OtmowbHLxl9n+
-	 U0PHOVTbUbBiQuRGNgXOtxf3bKiXidP1Q2ZdDwpA=
+	by mail.kernel.org (Postfix) with ESMTP id 1B8F421919
+	for <linux-spi@archiver.kernel.org>; Wed,  9 Sep 2020 17:17:20 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=xilinx.onmicrosoft.com header.i=@xilinx.onmicrosoft.com header.b="Er4vt2Rn"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730255AbgIIROl (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 9 Sep 2020 13:14:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57674 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729691AbgIIPaY (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 9 Sep 2020 11:30:24 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 911CF22272;
-        Wed,  9 Sep 2020 15:29:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599665382;
-        bh=gxE3ui3erFuhnG/K5IRsWZHm67oJxM7qIJtlKXllmyw=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=kcCBlV0XuQD8mjBr3DvzJsF7H3c7OtiJzELIApI0adlVfq/JjCoMh9MMUTbPRra/3
-         I0TEf6713FHQfMk3T590z8223M3f3QPg3FLwARtKV7k9J3VfEQq9fSKJn7LJdOzvga
-         cShT+IOK/Jdam9TkmBnYrKgER6J6BU71LLxrnhe0=
-Date:   Wed, 09 Sep 2020 16:28:56 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Jay Fang <f.fangjian@huawei.com>, linux-spi@vger.kernel.org
-Cc:     huangdaode@huawei.com, linuxarm@huawei.com
-In-Reply-To: <1599631704-53232-1-git-send-email-f.fangjian@huawei.com>
-References: <1599631704-53232-1-git-send-email-f.fangjian@huawei.com>
-Subject: Re: [PATCH] spi: spidev: Remove redundant initialization of variable status
-Message-Id: <159966533166.54485.5655144984479859087.b4-ty@kernel.org>
+        id S1730928AbgIIRQH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 9 Sep 2020 13:16:07 -0400
+Received: from mail-dm6nam12on2055.outbound.protection.outlook.com ([40.107.243.55]:6240
+        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1730104AbgIIP2W (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 9 Sep 2020 11:28:22 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZtyXAIt6OyybJkr9nfs4+eCO6Byk3WkxuebvMvjmi2LVzv4baRQSNs7GRG0u54r5T6EFe+ot7rmzbGUV33XkTpoi00MHqn2M7tJz1Znfn3zDUI9cBQQwz6yVOzbegd+ZfjhRX6z5p/LDuOb3SpYfx2ooYcr0W3w+1oKvluA4BNiqQ2cBRtiFfM1vTBm2QnhxkZNAYyIEBDtsP9KqsOx7besePh0Z3qSKfWdRUADptkIE81TH5PA9A9wdv8GjEN2L5TYT8gY+iiaO98F9wFvIOSJyOws9w2b1XoMdedYjdbSkvDjOQx+aoMCIpiFmMo6nlYlb072UbUWSmDKHh0YdvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0LIqqRRZFHpqrPav0tzguRT+BK+vaosDlAzX5ow/r+o=;
+ b=MTuK4+97/z8/FAkrErJOJNnzI5F/wgNQLSVfoGJuSnjoKgKBKzQhSPKGLjZ5PTlv/HIeC+9p5HBGT0n/wltOFHSkZfaaY+NHhwX+XkbA/ODiS0pLGtW/cQIiIrmMntn9BvN/4oA8trRs+wLjsBAUENs1CewNLm2M67VB5vqpqBrPAwQpkNeLpGpQqwd64eP3pIVvEbPVvwELxqeXd/8Ldex4x/iEtapvhCik+3KmT9PmwaklRBRHyCGIRSpd3io7r2SHV8p5gjgHk0GpJE3vXm1OezlBoSfHtTKxBL7bfL0b1JX/TycvlCa3bjt0ibm+RenlWx1MZ4D1+yv4MFg7hA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 149.199.60.83) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=xilinx.com;
+ dmarc=bestguesspass action=none header.from=xilinx.com; dkim=none (message
+ not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0LIqqRRZFHpqrPav0tzguRT+BK+vaosDlAzX5ow/r+o=;
+ b=Er4vt2RnPnKUahUHfLtTh30XkRad6E2ojhq5MxOEznOYr2jeJCNuY3j8Q8JYhU5s9JAopkobluboUqmIcVpTHYwNdVwdzfZg1uYTMVZbLMSHjnXE87B4GfhpB4dqTQT3ki1nPwNIMYzDX1PTR9/ySm/5DchbphY2E1m/fAnNKzQ=
+Received: from MN2PR19CA0058.namprd19.prod.outlook.com (2603:10b6:208:19b::35)
+ by BL0PR02MB6516.namprd02.prod.outlook.com (2603:10b6:208:1ca::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3370.16; Wed, 9 Sep
+ 2020 15:27:17 +0000
+Received: from BL2NAM02FT046.eop-nam02.prod.protection.outlook.com
+ (2603:10b6:208:19b:cafe::fc) by MN2PR19CA0058.outlook.office365.com
+ (2603:10b6:208:19b::35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3370.16 via Frontend
+ Transport; Wed, 9 Sep 2020 15:27:17 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 149.199.60.83)
+ smtp.mailfrom=xilinx.com; vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=bestguesspass action=none
+ header.from=xilinx.com;
+Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
+ 149.199.60.83 as permitted sender) receiver=protection.outlook.com;
+ client-ip=149.199.60.83; helo=xsj-pvapsmtpgw01;
+Received: from xsj-pvapsmtpgw01 (149.199.60.83) by
+ BL2NAM02FT046.mail.protection.outlook.com (10.152.76.118) with Microsoft SMTP
+ Server id 15.20.3348.17 via Frontend Transport; Wed, 9 Sep 2020 15:27:16
+ +0000
+Received: from [149.199.38.66] (port=45015 helo=smtp.xilinx.com)
+        by xsj-pvapsmtpgw01 with esmtp (Exim 4.90)
+        (envelope-from <amit.kumar-mahapatra@xilinx.com>)
+        id 1kG1zv-00055w-KW; Wed, 09 Sep 2020 08:26:59 -0700
+Received: from [127.0.0.1] (helo=localhost)
+        by smtp.xilinx.com with smtp (Exim 4.63)
+        (envelope-from <amit.kumar-mahapatra@xilinx.com>)
+        id 1kG20B-00068i-Fh; Wed, 09 Sep 2020 08:27:15 -0700
+Received: from xsj-pvapsmtp01 (maildrop.xilinx.com [149.199.38.66])
+        by xsj-smtp-dlp1.xlnx.xilinx.com (8.13.8/8.13.1) with ESMTP id 089FRDVE024327;
+        Wed, 9 Sep 2020 08:27:13 -0700
+Received: from [10.140.6.25] (helo=xhdnagasure40.xilinx.com)
+        by xsj-pvapsmtp01 with esmtp (Exim 4.63)
+        (envelope-from <amit.kumar-mahapatra@xilinx.com>)
+        id 1kG208-00068K-Ll; Wed, 09 Sep 2020 08:27:13 -0700
+From:   Amit Kumar Mahapatra <amit.kumar-mahapatra@xilinx.com>
+To:     broonie@kernel.org
+Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        michal.simek@xilinx.com, sgoud@xilinx.com, nagasure@xilinx.com,
+        Amit Kumar Mahapatra <amit.kumar-mahapatra@xilinx.com>
+Subject: [PATCH 0/3]spi: spi-zynqmp-gqspi: Update driver to use spi-mem framework
+Date:   Wed,  9 Sep 2020 09:27:05 -0600
+Message-Id: <20200909152708.2767-1-amit.kumar-mahapatra@xilinx.com>
+X-Mailer: git-send-email 2.17.1
+X-RCIS-Action: ALLOW
+X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
+X-TM-AS-User-Approved-Sender: Yes;Yes
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-PublicTrafficType: Email
+MIME-Version: 1.0
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: 5fe18689-7f25-4e37-8921-08d854d4d5c1
+X-MS-TrafficTypeDiagnostic: BL0PR02MB6516:
+X-Microsoft-Antispam-PRVS: <BL0PR02MB6516A644B9AD6F44A10CD5B8BA260@BL0PR02MB6516.namprd02.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-Oob-TLC-OOBClassifiers: OLM:5236;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: UzL4jyiSb5TPjIEx52DBVuO2zxFtoLuDwAxCq8HFfTI4T2yuguxJapYAFczc9G9lxJsfORFpT5WruZ1kRkeGBCWhmpa5gk2PTxMNbZoCFURHZa5mdzm2yOtYD2DylfCBWDQ/LDs9UML4UDzBCYr8wYeXpv+HZTHxq4Nt92lsk6SUvfZOKnh3hkux+MJRZZUAfIo82QoCF2u+YGy+UV6hG5AijM9LjEK0O3qrzh8C49C+PvwHlBgnFJUE10iQ+dG+dnA3vtJq8Eq6p40K0+ZxG5/vcW0+KR25sfW7IIWYwPlzPIFauPVUuQcwrLgRayJYnzSXeApr7vST7y+H4fppTiJk5YwBS3/XNSgWG7hBe7jdKM8H+OXr2lkSfZJU3/nBfotwCrbCOiBfCCD/WTBvnw==
+X-Forefront-Antispam-Report: CIP:149.199.60.83;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:xsj-pvapsmtpgw01;PTR:unknown-60-83.xilinx.com;CAT:NONE;SFS:(396003)(39860400002)(376002)(346002)(136003)(46966005)(426003)(70206006)(70586007)(47076004)(9786002)(82740400003)(316002)(8936002)(6666004)(107886003)(5660300002)(2616005)(2906002)(36756003)(6916009)(26005)(1076003)(15650500001)(8676002)(186003)(336012)(82310400003)(4744005)(4326008)(356005)(81166007)(478600001)(83380400001)(7696005);DIR:OUT;SFP:1101;
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2020 15:27:16.8735
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5fe18689-7f25-4e37-8921-08d854d4d5c1
+X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.60.83];Helo=[xsj-pvapsmtpgw01]
+X-MS-Exchange-CrossTenant-AuthSource: BL2NAM02FT046.eop-nam02.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR02MB6516
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 9 Sep 2020 14:08:24 +0800, Jay Fang wrote:
-> In spidev_read() and spidev_write(), the variable status is being
-> initialized with a value that is never read and it is being updated
-> later with a new value. The initialization is redundant and can be
-> removed.
+This patch series:
+ - Fixes kernel-doc warnings in ZynqMP qspi controller driver file.
+ - Updates the ZynqMP qspi controller driver to use spi-mem framework.
+ - Fixes incorrect indentation in ZynqMP qspi controller driver file.
+---
+Tested: flashcp and mtd_utils
+Branch: for-next
+---
+Amit Kumar Mahapatra (3):
+  spi: spi-zynqmp-gqspi: Fix kernel-doc warnings
+  spi: spi-zynqmp-gqspi: Update driver to use spi-mem framework
+  spi: spi-zynqmp-gqspi: Fix incorrect indentation
 
-Applied to
+ drivers/spi/spi-zynqmp-gqspi.c | 720 +++++++++++++++++++--------------
+ 1 file changed, 407 insertions(+), 313 deletions(-)
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+--
+2.17.1
 
-Thanks!
-
-[1/1] spi: spidev: Remove redundant initialization of variable status
-      commit: 4ebf8816e35d63db723d95f8e49d8455be926c36
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+This email and any attachments are intended for the sole use of the named r=
+ecipient(s) and contain(s) confidential information that may be proprietary=
+, privileged or copyrighted under applicable law. If you are not the intend=
+ed recipient, do not read, copy, or forward this email message or any attac=
+hments. Delete this email message and any attachments immediately.

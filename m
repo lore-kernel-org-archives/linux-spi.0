@@ -2,120 +2,90 @@ Return-Path: <SRS0=yiGS=CS=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D6B51C43461
-	for <linux-spi@archiver.kernel.org>; Wed,  9 Sep 2020 17:14:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AE69BC43461
+	for <linux-spi@archiver.kernel.org>; Wed,  9 Sep 2020 17:14:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 952A32166E
-	for <linux-spi@archiver.kernel.org>; Wed,  9 Sep 2020 17:14:05 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5CD6C206E6
+	for <linux-spi@archiver.kernel.org>; Wed,  9 Sep 2020 17:14:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1599671645;
-	bh=G6V5+rrjseSZbwoAOOIF/H9RV9qG8won/T+LJdUIn9o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=tqmm/583zbGFlDhDnbYqBI+YYVzNAqwYaXQf5YKU/GmwgqoVfQJMmJgZQEafwVUVL
-	 s+EAD41tvvpTxhhGRng4Hc1B4Oed+3e/GaqcwTNA7GZI7sfbwRtgBrZXfzTVQP0rsJ
-	 VEBD7q4b0LdVDGu6pV0vZJ/v07T2xZRGwFAtdAHM=
+	s=default; t=1599671681;
+	bh=bTPV+b2F+O8mZl5m+rEc7R2fRR7xn414cUCQRo2lkWE=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
+	b=T45xxJq/Jrxqj3uPTYE3AxQ7LIp0c/PdmYfidRPIsJJiemb/caqsvRsaLHlKGPC4z
+	 9CwDB/JBv5nLjmswsRxKaNd3Gczppzeg95QDlzVLGT1kZ0rfQuhFR9TBoBMPcx8FnB
+	 DxGcLL8pTxJz2FMogjdGtj4REV8FlNmyOo3FYEeA=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730271AbgIIRNy (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 9 Sep 2020 13:13:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58678 "EHLO mail.kernel.org"
+        id S1730240AbgIIROJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 9 Sep 2020 13:14:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:57950 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726293AbgIIPcL (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 9 Sep 2020 11:32:11 -0400
+        id S1730245AbgIIPa1 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 9 Sep 2020 11:30:27 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DBEA2206F4;
-        Wed,  9 Sep 2020 14:32:51 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9B0AD2226B;
+        Wed,  9 Sep 2020 15:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599661972;
-        bh=G6V5+rrjseSZbwoAOOIF/H9RV9qG8won/T+LJdUIn9o=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qcC8aUhafORqR4CPAJGT2pHQZbY/gh3kGAru56tbTM2VqzChgPJvPdcBCQggcf0MB
-         qfV56qHpfCJvXbTgxVYOQNoTSW9RD4QRQv4L/gel8Dc1mgjUe0Wy3ZQZiFbNXuf+nR
-         /9xMTu9pV6RNk8x6Sapyzzt2xXiOBf3bINuOG0M0=
-Date:   Wed, 9 Sep 2020 15:32:06 +0100
+        s=default; t=1599665392;
+        bh=bTPV+b2F+O8mZl5m+rEc7R2fRR7xn414cUCQRo2lkWE=;
+        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+        b=wK9pQjITmFNpABmdHgtYnpyw6pINXkxYlGY2SVqPByTN4/cRDEFU6RdTfu2994zQT
+         TkQtuxDoI1zcgLac0pDJkmpCUk4Pm2SITvCCQs7uUbLJQ+fSsEYuyF32FSKFz1G/pn
+         4uG0p8+8Xme/vb3Q/7H4pDILUke2RzGTCxZ4ECXE=
+Date:   Wed, 09 Sep 2020 16:29:06 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Kuldip Dwivedi <kuldip.dwivedi@puresoftware.com>
-Cc:     Ashish Kumar <ashish.kumar@nxp.com>,
-        Yogesh Gaur <yogeshgaur.83@gmail.com>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Varun Sethi <V.Sethi@nxp.com>,
-        Arokia Samy <arokia.samy@nxp.com>
-Subject: Re: [PATCH v1] spi: spi-nxp-fspi: Add ACPI support
-Message-ID: <20200909143206.GD4926@sirena.org.uk>
-References: <20200908060227.299-1-kuldip.dwivedi@puresoftware.com>
- <20200909120148.GC4926@sirena.org.uk>
- <af06cac916ebcdf6f526baa9cba98494@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="5gxpn/Q6ypwruk0T"
-Content-Disposition: inline
-In-Reply-To: <af06cac916ebcdf6f526baa9cba98494@mail.gmail.com>
-X-Cookie: MIT:
-User-Agent: Mutt/1.10.1 (2018-07-13)
+To:     Gustav Wiklander <gustav.wiklander@axis.com>
+Cc:     kernel@axis.com, Gustav Wiklander <gustavwi@axis.com>,
+        linux-spi@vger.kernel.org
+In-Reply-To: <20200908151129.15915-1-gustav.wiklander@axis.com>
+References: <20200908151129.15915-1-gustav.wiklander@axis.com>
+Subject: Re: [PATCH v3] spi: Fix memory leak on splited transfers
+Message-Id: <159966533166.54485.5131458985432075382.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+On Tue, 8 Sep 2020 17:11:29 +0200, Gustav Wiklander wrote:
+> In the prepare_message callback the bus driver has the
+> opportunity to split a transfer into smaller chunks.
+> spi_map_msg is done after prepare_message.
+> 
+> Function spi_res_release releases the splited transfers
+> in the message. Therefore spi_res_release should be called
+> after spi_map_msg.
+> 
+> [...]
 
---5gxpn/Q6ypwruk0T
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied to
 
-On Wed, Sep 09, 2020 at 06:29:10PM +0530, Kuldip Dwivedi wrote:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-> > | Does NXP know about this ID assignment from their namespace?  ACPI IDs
-> > | should be namespaced by whoever's assigning the ID to avoid
-> collisions.
+Thanks!
 
-> Yes, NXP is aware.
+[1/1] spi: Fix memory leak on splited transfers
+      commit: b59a7ca15464c78ea1ba3b280cfc5ac5ece11ade
 
-Can anyone from NXP confirm this?
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-> > Please don't ignore review comments, people are generally making them
-> for a
-> > reason and are likely to have the same concerns if issues remain
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> This is new Patch for different IP (FSPI)  and scenario is different from
-> DSPI driver.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-If a generic issue like this exists with one patch you should expect
-that exactly the same issue is going to come up with other very similar
-patches and therefore ensure they are addressed so people don't feel
-like you are ignoring them.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-> > >  	/* Reset the module */
-> > > +	fspi_writel(f, FSPI_MCR0_SWRST, (base + FSPI_MCR0));
-> > > +
-
-> > Why are you adding this reset?  How is it connected to adding ACPI
-> support - it
-> > looks like it should be a separate patch.
-
-> I observed a kernel panic in setting up the driver, and this fixed the
-> issue.
-
-At the very least this would need to be called out in the changelog but
-like I say it should really be a separate patch.
-
---5gxpn/Q6ypwruk0T
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl9Y52UACgkQJNaLcl1U
-h9AqTAf/fWMxxf95EG2ZsGPtdYfSRjeCSCgERIcQz+KwEjHrU9qHLBQ0mNsCX69a
-VNnVGwT3bW9Ts1AJ8bTW7HrqW6pCFakpiY3tZBV6kkHj+MoljcgRt6I1vjlAjRWW
-8jJd4iFQru98oFktipTbFSQgnPMT2Y/y1q0Wc2DuclzFse2kDsdEmuAAzzqJwzZ3
-M2tO1phNIbeCDBiR9dtHYuxuO+uOYBt0ujftKDawUxSCQAwJ2UmOLUE6vsChOHmF
-vSHuBRQBgkWDg5g093DoIpdT1OUteuDY7ujd+tcsZEqa+RpIn8lLF5yLcxCe2N0c
-7EqZ/Jyvb8qTcEnHKi1GGtx2mK31KQ==
-=l0lP
------END PGP SIGNATURE-----
-
---5gxpn/Q6ypwruk0T--
+Thanks,
+Mark

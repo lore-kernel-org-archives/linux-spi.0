@@ -2,95 +2,102 @@ Return-Path: <SRS0=JLJD=CT=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0D70AC2D0E1
-	for <linux-spi@archiver.kernel.org>; Thu, 10 Sep 2020 18:41:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75E34C43461
+	for <linux-spi@archiver.kernel.org>; Thu, 10 Sep 2020 19:41:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BA3AB221E2
-	for <linux-spi@archiver.kernel.org>; Thu, 10 Sep 2020 18:41:38 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2AE8221D81
+	for <linux-spi@archiver.kernel.org>; Thu, 10 Sep 2020 19:41:42 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RfNPYQ0I"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="SfjaHdsV"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726794AbgIJSlg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 10 Sep 2020 14:41:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35542 "EHLO
+        id S1731324AbgIJPf2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 10 Sep 2020 11:35:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726534AbgIJSSa (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 10 Sep 2020 14:18:30 -0400
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6754BC0613ED;
-        Thu, 10 Sep 2020 11:18:21 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id 67so4655701pgd.12;
-        Thu, 10 Sep 2020 11:18:21 -0700 (PDT)
+        with ESMTP id S1731309AbgIJPdt (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 10 Sep 2020 11:33:49 -0400
+Received: from mail-oi1-x262.google.com (mail-oi1-x262.google.com [IPv6:2607:f8b0:4864:20::262])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 186A8C06136F
+        for <linux-spi@vger.kernel.org>; Thu, 10 Sep 2020 08:26:19 -0700 (PDT)
+Received: by mail-oi1-x262.google.com with SMTP id x14so6280010oic.9
+        for <linux-spi@vger.kernel.org>; Thu, 10 Sep 2020 08:26:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=gG+fuMGEqnPLk7Bo+tjlREXOWrP6LnZTNp4lY+I/XBQ=;
-        b=RfNPYQ0IMWGuVftlfbq63KXkfZ4nENjXeVCkHwxybJksNYRjTqa45Kd4xB4cDmp1mH
-         ekdt75q52/StE9ky15srFtmEfHWQjfQp0oH8PtY5qQuvMdGaNqXVSv3LMTyg90Wpeijj
-         3dG9t/v0u+s7ew+jlHXh91XhEJNgaUpOmhjmXUsmycqF3u3hW7ptqn6LzKv7uBxuOQa+
-         9mKFhZJHsCQrNXUeZxY+QZrbFsZLxN8jpmaV4EukWX5RvP8xj3Wi7Z/uUhVwZUIc0lQk
-         gtyYvJf7H+vWVPoksIr7R6qPVcbd08Zusk2I4HEGzS5OiKsAdeykYVbwG4j/IDZjDIxM
-         bPbQ==
+        d=broadcom.com; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=Pf2v6K7fWr+bHCgGUrV3kke5q6+ZGtBMsavuxBjru5M=;
+        b=SfjaHdsV2lxdGQvWKc7EZuSFskirebpOlxOzXblt3pwchrHV6C4K5BhXP0Gyhrblhy
+         6Ox39WJo6pbiXDZEsDnFEqqe1G5RvOK4XY+7AeKH55DNxvUUYoTPEzZ0fQNbH9n6nX1J
+         7wtyz9RrLUfN1MJ3ldJ7dUzPrBnOA4tGN2klg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=gG+fuMGEqnPLk7Bo+tjlREXOWrP6LnZTNp4lY+I/XBQ=;
-        b=AYivvxeoT0uXQKZy9gy31+s0ZRSI0XZIN1epi4VYcv0zmDracMWHhqtbLXB5fNa64b
-         63x56h4BvN5/o5masjJo5MdrDKA0SO/DOB6jb5w4TjFSNmBoBG8rEKWZdCBXyAri/f1q
-         t6behVQMLgg7TBw+4l/+jsI3O7s0WTi562c/RhN4ewTx8jYvg21/MIVTcFWFh57WeOZG
-         SOvrhulBNKiQQUlKivu6vhtIUWwvaXuVZfrIWICVMcZyGxXv0ZbD9nt3skZb83OTuiy+
-         Vawoto0OWHO5DMtDVdHOcFd3nOlCGuR7IL3VpELCXaySwjQHHjDGsosJYG0Sa5z/R2Tb
-         0v2A==
-X-Gm-Message-State: AOAM530QS3KIZlhctE5EDe/HkbWsls0es4iBq5iaHDk/TMXMUEzAdiVU
-        LOtpdaivxauK/4jtFg3GlZo=
-X-Google-Smtp-Source: ABdhPJwoOV6PL/qF/81ukPiLOopjSpVEVjK+cK4tEqnBpZRsa4JZlzuJfInL5Pw0iZjGOICBlgQdsw==
-X-Received: by 2002:a63:fa10:: with SMTP id y16mr5469723pgh.304.1599761900909;
-        Thu, 10 Sep 2020 11:18:20 -0700 (PDT)
-Received: from [10.230.30.107] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id v4sm2468345pjh.38.2020.09.10.11.18.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Sep 2020 11:18:20 -0700 (PDT)
-Subject: Re: [PATCH 2/4] spi: bcm-qspi: Add compatible string for BRCMSTB 7445
- SoCs
-To:     Ray Jui <ray.jui@broadcom.com>, Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Kamal Dasu <kdasu.kdev@gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=Pf2v6K7fWr+bHCgGUrV3kke5q6+ZGtBMsavuxBjru5M=;
+        b=mDzTWHdivPjOS12+tXV4MIQ7WXmsFVOckLt3XcXT2D2m/IdXq4egHmAotN7cxgMSZ8
+         39YqL7PeontOUpRe1DYYyZDJlzhQrvtyYWXACXj//UUVAPMH/airO8PB/0MtNtyP4/iE
+         VDB2rxZZa7JUutoBgQzgsuhvGTKWSA8MkxOKYHBTDMODnFxzI67GbIV7hMo47SnG6s/J
+         WfUemi2+vb3Z5NLqdFitgDZc/Buz+mhwMsU91ueX+6o2fjCW1/ypghajHEofvIiOi5H2
+         7F7Sv4vLtav7alZFTSDT1vpbFZI3+WFPUUMIvx0qL2zO2yT2wGSjsei0LunJn6cZxXSP
+         v6Rg==
+X-Gm-Message-State: AOAM533kFR/GrmpFUAoKVqGNyP8QBMKGJxfseO7oh4UUcxI7Jh7feY8V
+        WmNxi2v4dL/D1HYRlO0258vpguppYJphK5Qf1fQp7P3N9+Xf
+X-Google-Smtp-Source: ABdhPJzTjwr55nx7RvuWPGr4A0Ppz+2wny0SQ9PbuZXKywFz6zRzamwR7UTzBzOpwY39BqVvHM2+KO4l8h9d
+X-Received: by 2002:aca:5752:: with SMTP id l79mr349595oib.86.1599751578361;
+        Thu, 10 Sep 2020 08:26:18 -0700 (PDT)
+Received: from rj-aorus.ric.broadcom.com ([192.19.228.250])
+        by smtp-relay.gmail.com with ESMTPS id h4sm943004oom.19.2020.09.10.08.26.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Sep 2020 08:26:18 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+From:   Ray Jui <ray.jui@broadcom.com>
+To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Kamal Dasu <kdasu.kdev@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>
 Cc:     linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com
+        linux-kernel@vger.kernel.org,
+        bcm-kernel-feedback-list@broadcom.com,
+        Ray Jui <ray.jui@broadcom.com>
+Subject: [PATCH 3/4] spi: bcm-qspi: Fix probe regression on iProc platforms
+Date:   Thu, 10 Sep 2020 08:25:38 -0700
+Message-Id: <20200910152539.45584-3-ray.jui@broadcom.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200910152539.45584-1-ray.jui@broadcom.com>
 References: <20200910152539.45584-1-ray.jui@broadcom.com>
- <20200910152539.45584-2-ray.jui@broadcom.com>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <34f96a04-a8cd-5cd8-da25-9202c95cb15a@gmail.com>
-Date:   Thu, 10 Sep 2020 11:18:17 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Firefox/78.0 Thunderbird/78.2.1
-MIME-Version: 1.0
-In-Reply-To: <20200910152539.45584-2-ray.jui@broadcom.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+iProc chips have QSPI controller that does not have the MSPI_REV
+offset. Reading from that offset will cause a bus error. Fix it by
+having MSPI_REV query disabled in the generic compatible string.
 
+Fixes: 3a01f04d74ef ("spi: bcm-qspi: Handle lack of MSPI_REV offset")
+Link: https://lore.kernel.org/linux-arm-kernel/20200909211857.4144718-1-f.fainelli@gmail.com/T/#u
+Signed-off-by: Ray Jui <ray.jui@broadcom.com>
+---
+ drivers/spi/spi-bcm-qspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On 9/10/2020 8:25 AM, Ray Jui wrote:
-> Add compatible string for BRCMSTB 7445 SoCs and indicate it has MSPI rev
-> support.
-> 
-> Signed-off-by: Ray Jui <ray.jui@broadcom.com>
-
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
+index c5209b42b0d2..b78d47a4403c 100644
+--- a/drivers/spi/spi-bcm-qspi.c
++++ b/drivers/spi/spi-bcm-qspi.c
+@@ -1300,7 +1300,7 @@ static const struct of_device_id bcm_qspi_of_match[] = {
+ 	},
+ 	{
+ 		.compatible = "brcm,spi-bcm-qspi",
+-		.data = &bcm_qspi_rev_data,
++		.data = &bcm_qspi_no_rev_data,
+ 	},
+ 	{
+ 		.compatible = "brcm,spi-bcm7216-qspi",
 -- 
-Florian
+2.17.1
+

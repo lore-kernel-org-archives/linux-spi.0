@@ -2,54 +2,109 @@ Return-Path: <SRS0=Slv/=CU=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 318BFC43461
-	for <linux-spi@archiver.kernel.org>; Fri, 11 Sep 2020 16:48:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CEE62C433E2
+	for <linux-spi@archiver.kernel.org>; Fri, 11 Sep 2020 17:43:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DC76A221EB
-	for <linux-spi@archiver.kernel.org>; Fri, 11 Sep 2020 16:48:35 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 90F5320735
+	for <linux-spi@archiver.kernel.org>; Fri, 11 Sep 2020 17:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1599842915;
-	bh=UEtB4jsoJR0dQ5jwP0mVULkK12WZD+SmyMHFkwMhHT0=;
-	h=Subject:From:Date:To:List-ID:From;
-	b=WaprW83lMgiNEQ2cfCfvKja5CK5whtvvJp+n/9SqgKtC4nflnpJa3rObu40wRXlLc
-	 q4YHIV2spVPOoog30QmGJGd8PqQ29ipLKEHlUx4oXQWl/WW5C2qIKYQsF9+pJCCLsm
-	 niMeq9NzDIguQba3S4FF8OieVeDjpoR+i4AK48Po=
+	s=default; t=1599846233;
+	bh=yi8RSiV9h0A/J1gT7uMmEVmlVSr6q32X2u1m9UKoE30=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=AKXS1frBtQEhYsPQxYSdI5tHy1uZdhprDnqguxvVcsWuFf1ZwiqABMzp1qBE1KZwl
+	 Ecwfgp+Xc60kAfl/YGOX/7z2e4DzXO/zi4J+exEt0XLrUt81K/9fTCoNS+AoC7cU6/
+	 x5ajDTOHck1zxlHopWN/4BMnFCpD3qR81X45OpgM=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725959AbgIKQsc (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 11 Sep 2020 12:48:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49256 "EHLO mail.kernel.org"
+        id S1726097AbgIKRnt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 11 Sep 2020 13:43:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43002 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726368AbgIKPHt (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 11 Sep 2020 11:07:49 -0400
-Content-Type: text/plain; charset="utf-8"
+        id S1725926AbgIKMfZ (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 11 Sep 2020 08:35:25 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2838F221F1;
+        Fri, 11 Sep 2020 12:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599835215;
-        bh=UEtB4jsoJR0dQ5jwP0mVULkK12WZD+SmyMHFkwMhHT0=;
-        h=Subject:From:Date:To:From;
-        b=oOoratufl/gNQR5sMT7cvp45n4Syyi5P4QBw5ky7Y0cMNpPiWFUuX2bpLjA5Fjj5J
-         MDjV1fLO4NGPZywfm4i8uh4/PUWwkRG7801UuVs5SQf5XGDH9AyQGjJBkNagQy0YB4
-         o6hzEzRbtLCPEc9AdFvII1wQi3m6jKJxbWc1jpUo=
+        s=default; t=1599827714;
+        bh=yi8RSiV9h0A/J1gT7uMmEVmlVSr6q32X2u1m9UKoE30=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=QFNATJIQUxWE1UyDJGyip/IEOHsNU08z4ZV3hXbxIx+v/KbjbjEuJ4Dhr2VIT4X8x
+         ou8VhSBHigKbzKgAeoWBPW6cHm7IBiwd0fPpBkYF5CTAXwklNv3kTj6DzOQjPCUGsJ
+         6ryTD6Dj1FmhvPQhQTh/We7jqE5kjKxVRf1cmjFI=
+Date:   Fri, 11 Sep 2020 13:34:28 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Ashish Kumar <ashish.kumar@nxp.com>
+Cc:     kuldip dwivedi <kuldip.dwivedi@puresoftware.com>,
+        Yogesh Gaur <yogeshgaur.83@gmail.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Varun Sethi <V.Sethi@nxp.com>,
+        Arokia Samy <arokia.samy@nxp.com>,
+        Ard Biesheuvel <Ard.Biesheuvel@arm.com>,
+        Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
+        Paul Yang <Paul.Yang@arm.com>
+Subject: Re: [EXT] [PATCH v2] spi: spi-nxp-fspi: Add ACPI support
+Message-ID: <20200911123428.GF4895@sirena.org.uk>
+References: <20200911082806.115-1-kuldip.dwivedi@puresoftware.com>
+ <HE1PR04MB31962FC006C6EB964AC2DAE895240@HE1PR04MB3196.eurprd04.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+linux-spi@kernel.org
-Message-Id: <159983521553.21508.8749859794785791080.git-patchwork-housekeeping@kernel.org>
-Date:   Fri, 11 Sep 2020 14:40:15 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="n+lFg1Zro7sl44OB"
+Content-Disposition: inline
+In-Reply-To: <HE1PR04MB31962FC006C6EB964AC2DAE895240@HE1PR04MB3196.eurprd04.prod.outlook.com>
+X-Cookie: Only God can make random selections.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v3] spi: spi-nxp-fspi: Add ACPI support (2020-09-11T13:03:31)
-  Superseding: [v2] spi: spi-nxp-fspi: Add ACPI support (2020-09-11T08:28:06):
-    [v2] spi: spi-nxp-fspi: Add ACPI support
 
+--n+lFg1Zro7sl44OB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/pwbot
+On Fri, Sep 11, 2020 at 12:28:47PM +0000, Ashish Kumar wrote:
+> > Signed-off-by: kuldip dwivedi <kuldip.dwivedi@puresoftware.com>
+
+> Please capture version change summary.
+>=20
+> Regards
+> Ashish=20
+
+It's there:
+
+> >=20
+> > Notes:
+> >     1. Add ACPI match table, NXP members are added to confirm HID for F=
+SPI
+> >     2. Change the DT specific APIs to device property APIs
+> >            so that same API can be used in DT and ACPi mode.
+> >     3. Omit clock configuration part - in ACPI world, the firmware
+> >            is responsible for clock maintenance.
+> >     4. This patch is tested on LX2160A platform
+
+--n+lFg1Zro7sl44OB
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl9bbtMACgkQJNaLcl1U
+h9AX9Af9E8b0ZBffT3f/HP/GQeeFiFtQto/59VLFp18dYbCeMGNc0qEMnBcTCFO3
+RvkcdTOx9ikmg2sxczO17Ue5M/K55qStE5s2ikjyhFFeR7Wi1NsOak3MDJAEjpjt
+0P0Ox73nxNnJDO58pg9xi+M4h6ZvlPxk124cyVP8o4kAdl+5WVqTdKBTnNJt4NDA
+9yfP80ceBy6CjZ6qH3l3bSXKzzCmiKhWE1IOBa7utRhu1iAf5do8U0asMZCntoOe
+aet8AAy2sqBv5e0DJLC7DHUAtPx4ZisCPW7VaJ5d1R8BXx6QJb7HSItR0zjP3IqN
+ADj6u+3/Us1cV+MSsV16O3Rlc5kqRg==
+=R6Rq
+-----END PGP SIGNATURE-----
+
+--n+lFg1Zro7sl44OB--

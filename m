@@ -2,142 +2,183 @@ Return-Path: <SRS0=Slv/=CU=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.2 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0919EC43461
-	for <linux-spi@archiver.kernel.org>; Fri, 11 Sep 2020 16:35:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B7B2C433E2
+	for <linux-spi@archiver.kernel.org>; Fri, 11 Sep 2020 16:40:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B71D921D81
-	for <linux-spi@archiver.kernel.org>; Fri, 11 Sep 2020 16:35:58 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="VrtcCiIU"
+	by mail.kernel.org (Postfix) with ESMTP id 584C6221E7
+	for <linux-spi@archiver.kernel.org>; Fri, 11 Sep 2020 16:40:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726517AbgIKQeE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 11 Sep 2020 12:34:04 -0400
-Received: from mail-eopbgr70054.outbound.protection.outlook.com ([40.107.7.54]:25055
-        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725913AbgIKPPO (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 11 Sep 2020 11:15:14 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CzvSpnjuzkit21Op4J7GUXzC0V6AgcsSBt9o2tcoBTQB784ptHcZ7jN6i6/x590XZAhsqAGFMCkpvUiPUgW69/IlFSv5PI2ebWQAY2Of/0DIFwipP3zRrjvhKyhPHV38TVL+yMHfXxksGOtNQjo9461TEoAGpt2wVrLiUISFeXr2GxVa8EnNUB4yqaW2/1+nj2aSxmgY7AXS2WD+/aijb7l7RRnleOIAkJjFpHDNV4T7NA1akNkbV5QU8U4XKuL4+mkE+95HBZwuju+riqV2bRzRne2aqXbufDabNHwFvxrcwmWLpt8EPKkeTyVEzTmIUi0A4fEYCN+fhzVnlvYi8A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lxlP+vhfLdTM44b6FyYulk9IfH/AbIVK9u2cOLRrYwU=;
- b=ZFYBCM8sOzwknBLY1vTBX1VOgWE6F1dGPhjAgVxrgHfXSbAcQ9TZ3xEvaQGdf2nr9lVyiAWzFwFBbdVgRMYMfOHIxHOfTUjLxhwI+GEiVhDVAvdv3zfb2bJAOMP6gBnwxfwkzSe84MErANVKSafVgvD1SxwsfpKQFxH4JwU56Ewt421LtBQwyrZc2Avkp2Dd8NxbsywUtEw4NTOAH4H7ySbT3Ead/9lVVfAKmczF4oIelFpRO8c/BVE+3KEaNp9dH6A5SsIOtbLc/ID/AW3VPQ6q5gK4ekD516cIcpfqmBn6qAvj86hh2fDdYSkXeBdl/j9KOq4Q+Pbr1EQx01Dh7A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lxlP+vhfLdTM44b6FyYulk9IfH/AbIVK9u2cOLRrYwU=;
- b=VrtcCiIUSTkgrmyvrlul1gGUnOlcD0A2hQ/AvrEVQFPgvjFJijMkvolLsXarQboji8sl7Z5eXwwOJ9o+qQqSDtgvCIBQemF+rEZrS5kmvscSY3wUQpaYrCB7zN23Thje5RzFZlkfjQupX8VoOVkOo63RRE6vv3wT+hc6zimS6vA=
-Received: from HE1PR04MB3196.eurprd04.prod.outlook.com (2603:10a6:7:21::31) by
- HE1PR0401MB2475.eurprd04.prod.outlook.com (2603:10a6:3:82::23) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3348.15; Fri, 11 Sep 2020 13:32:59 +0000
-Received: from HE1PR04MB3196.eurprd04.prod.outlook.com
- ([fe80::d899:49cb:a131:dd62]) by HE1PR04MB3196.eurprd04.prod.outlook.com
- ([fe80::d899:49cb:a131:dd62%5]) with mapi id 15.20.3348.019; Fri, 11 Sep 2020
- 13:32:59 +0000
-From:   Ashish Kumar <ashish.kumar@nxp.com>
-To:     Mark Brown <broonie@kernel.org>
-CC:     kuldip dwivedi <kuldip.dwivedi@puresoftware.com>,
-        Yogesh Gaur <yogeshgaur.83@gmail.com>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Varun Sethi <V.Sethi@nxp.com>,
-        Arokia Samy <arokia.samy@nxp.com>,
-        Ard Biesheuvel <Ard.Biesheuvel@arm.com>,
-        Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>,
-        Paul Yang <Paul.Yang@arm.com>
-Subject: RE: [EXT] [PATCH v2] spi: spi-nxp-fspi: Add ACPI support
-Thread-Topic: [EXT] [PATCH v2] spi: spi-nxp-fspi: Add ACPI support
-Thread-Index: AQHWiBWF1RqTTjTNrkyBYYIswnJLQqljXbCAgAAB7ACAAA6KoA==
-Date:   Fri, 11 Sep 2020 13:32:58 +0000
-Message-ID: <HE1PR04MB31961146633F7FE9EFE441A795240@HE1PR04MB3196.eurprd04.prod.outlook.com>
-References: <20200911082806.115-1-kuldip.dwivedi@puresoftware.com>
- <HE1PR04MB31962FC006C6EB964AC2DAE895240@HE1PR04MB3196.eurprd04.prod.outlook.com>
- <20200911123428.GF4895@sirena.org.uk>
-In-Reply-To: <20200911123428.GF4895@sirena.org.uk>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=nxp.com;
-x-originating-ip: [182.69.197.26]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: e525e06e-5d16-400e-7421-08d856573306
-x-ms-traffictypediagnostic: HE1PR0401MB2475:
-x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <HE1PR0401MB2475A03D7C48802C52CAEDD795240@HE1PR0401MB2475.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: hG1B2kqn1X6tflJIE4SRaTGxUyWrzfYTTRF/ZKv+GSMgw+/JQFMDk7CV1XNvPlEWZgrXg2c7GLf7P5nBL4craP7Pc6dkWyCMC2iX31kaHE1B6F4saDXy9BhfJyOblhP/DP0oiYkE+lDPspQct8fCJ5XG5pZUpbq3OkjpYWymfUIAmI4UF5VyG2Mt4gDVftkB6TfP02dccoCLWOQELQ5QuUSDrVUuN1hzN4Km/jxSKJTCG3/vJDT7qbfZ/pHtmQPK8qm8rSOTA4Bxp+2aUY2AmnIIG/0MK/IMqlX99DGfHdbf9oWntEKBRB5oUMP4qOA0zZHeGULtUhHwn5TuIEk/dg==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR04MB3196.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(346002)(366004)(136003)(376002)(39860400002)(44832011)(6916009)(86362001)(478600001)(4326008)(2906002)(8676002)(8936002)(54906003)(316002)(7696005)(55016002)(6506007)(53546011)(66946007)(52536014)(186003)(9686003)(33656002)(64756008)(66476007)(83380400001)(66556008)(66446008)(26005)(71200400001)(5660300002)(76116006);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: 3qnNeBx+AwyP4KvN3umW0tZ6/q1vhM3rVqBxJxUexwJLnANion1Jpr0GEvRGWUJ2ZpFf9XFvu699WnR35k+CXCkvcCWkQDusvUdQqVOyqhgCAzZRSx8Nkq01vX1Mq1YBTyHLpl4lfIPJE9GKh75aCWAUOFkVPow0PtmE0cjUqj4b5bTaGCrR7WcnHUoG+B5zXrJ8LFnM08mBJs1Bn98L5BIZ0xLyGUwpANQ/zcsAUxWoE2Fx1UpYMX/kRvGespqychveRb1Qjy66X0Nf8/okhrTKgMDXeoA8S7/YR5V3nMEudMURXFz8Jmlk5cjxMROsYNTSUbOFQJmPG8szbacNNqvqdEnmgES1uvZHer0zewQm7XgK4G0G9+sVo//MgL2tQaJ/zJMHKMwKdABIXbC4Z7HpNujeCHjr+XgBE7OkXhqmpSKFkkf1Gn0LqLETgykNX3qFuG4ttunSK3o4zTuoU5IDVnV9emhNPy1t6PBxf0IqASATMEBYuiyv5pzsFOic5Z5qtp/CR5xs/XoVeEAbR9rsuGmOo6J/sRLIL1BT0bAQm4Hf754A7mcs9TCvt7ki/F+UxfzSgparbHJmiS5BZpgnWYDNQ58vZ+bfSFMesUZy/Ge7vbuYOMW8jxwRNAXlveP/WB+tvOpB8ouuwYfpgg==
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S1726264AbgIKQk4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 11 Sep 2020 12:40:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45340 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726461AbgIKQkg (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 11 Sep 2020 12:40:36 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AC46C061757
+        for <linux-spi@vger.kernel.org>; Fri, 11 Sep 2020 09:40:36 -0700 (PDT)
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mfe@pengutronix.de>)
+        id 1kGm62-0003P7-3X; Fri, 11 Sep 2020 18:40:22 +0200
+Received: from mfe by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <mfe@pengutronix.de>)
+        id 1kGm5y-0001wQ-An; Fri, 11 Sep 2020 18:40:18 +0200
+Date:   Fri, 11 Sep 2020 18:40:18 +0200
+From:   Marco Felsch <m.felsch@pengutronix.de>
+To:     Robin Gong <yibin.gong@nxp.com>
+Cc:     mark.rutland@arm.com, broonie@kernel.org, robh+dt@kernel.org,
+        catalin.marinas@arm.com, vkoul@kernel.org, will.deacon@arm.com,
+        shawnguo@kernel.org, festevam@gmail.com, s.hauer@pengutronix.de,
+        martin.fuzzey@flowbird.group, u.kleine-koenig@pengutronix.de,
+        dan.j.williams@intel.com, matthias.schiffer@ew.tq-group.com,
+        frieder.schrempf@kontron.de, r.schwebel@pengutronix.de,
+        Benjamin.Bara@skidata.com, Richard.Leitner@skidata.com,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-imx@nxp.com,
+        kernel@pengutronix.de, dmaengine@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v13 00/12] add ecspi ERR009165 for i.mx6/7 soc family
+Message-ID: <20200911164018.6treqdmywzjhqe3a@pengutronix.de>
+References: <1598889805-30399-1-git-send-email-yibin.gong@nxp.com>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: HE1PR04MB3196.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e525e06e-5d16-400e-7421-08d856573306
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Sep 2020 13:32:58.9570
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: mFX+C26lwp2hXgO7J7PjMMpUY4YyhtBj3v05VK6xC+7EZirKIveyRAEjZ/KTSi9+ASZrI93yuWxReVV84129FA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: HE1PR0401MB2475
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1598889805-30399-1-git-send-email-yibin.gong@nxp.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 17:59:11 up 301 days,  7:17, 296 users,  load average: 0.20, 0.15,
+ 0.05
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi Mark,
+On 20-09-01 00:03, Robin Gong wrote:
+> There is ecspi ERR009165 on i.mx6/7 soc family, which cause FIFO
+> transfer to be send twice in DMA mode. Please get more information from:
+> https://www.nxp.com/docs/en/errata/IMX6DQCE.pdf. The workaround is adding
+> new sdma ram script which works in XCH  mode as PIO inside sdma instead
+> of SMC mode, meanwhile, 'TX_THRESHOLD' should be 0. The issue should be
+> exist on all legacy i.mx6/7 soc family before i.mx6ul.
+> NXP fix this design issue from i.mx6ul, so newer chips including i.mx6ul/
+> 6ull/6sll do not need this workaroud anymore. All other i.mx6/7/8 chips
+> still need this workaroud. This patch set add new 'fsl,imx6ul-ecspi'
+> for ecspi driver and 'ecspi_fixed' in sdma driver to choose if need errata
+> or not.
+> The first two reverted patches should be the same issue, though, it
+> seems 'fixed' by changing to other shp script. Hope Sean or Sascha could
+> have the chance to test this patch set if could fix their issues.
+> Besides, enable sdma support for i.mx8mm/8mq and fix ecspi1 not work
+> on i.mx8mm because the event id is zero.
+> 
+> PS:
+>    Please get sdma firmware from below linux-firmware and copy it to your
+> local rootfs /lib/firmware/imx/sdma.
+> https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/imx/sdma
 
-> -----Original Message-----
-> From: Mark Brown <broonie@kernel.org>
-> Sent: Friday, September 11, 2020 6:04 PM
-> To: Ashish Kumar <ashish.kumar@nxp.com>
-> Cc: kuldip dwivedi <kuldip.dwivedi@puresoftware.com>; Yogesh Gaur
-> <yogeshgaur.83@gmail.com>; linux-spi@vger.kernel.org; linux-
-> kernel@vger.kernel.org; Varun Sethi <V.Sethi@nxp.com>; Arokia Samy
-> <arokia.samy@nxp.com>; Ard Biesheuvel <Ard.Biesheuvel@arm.com>;
-> Samer El-Haj-Mahmoud <Samer.El-Haj-Mahmoud@arm.com>; Paul Yang
-> <Paul.Yang@arm.com>
-> Subject: Re: [EXT] [PATCH v2] spi: spi-nxp-fspi: Add ACPI support
->=20
-> On Fri, Sep 11, 2020 at 12:28:47PM +0000, Ashish Kumar wrote:
-> > > Signed-off-by: kuldip dwivedi <kuldip.dwivedi@puresoftware.com>
->=20
-> > Please capture version change summary.
-> >
-> > Regards
-> > Ashish
->=20
-> It's there:
-It did not mentioned about removing SWRST, which was present in v1.
-v2:Notes Looked very similar to v1.
+Hi Robin,
 
-Regards
-Ashish=20
->=20
-> > >
-> > > Notes:
-> > >     1. Add ACPI match table, NXP members are added to confirm HID for
-> FSPI
-> > >     2. Change the DT specific APIs to device property APIs
-> > >            so that same API can be used in DT and ACPi mode.
-> > >     3. Omit clock configuration part - in ACPI world, the firmware
-> > >            is responsible for clock maintenance.
-> > >     4. This patch is tested on LX2160A platform
+I took your patches and did a few test on the mainline available
+fsl,imx6q-sabrelite. I used a vanilla linux version v5.9-rc1 for all my
+tests except the needed SPI-NOR patches [1]. Following are my results:
+
+Testcase 1: "Using ROM-FW"
+===
+[OK] Playing Audio (SSI)
+[OK] TX/RX bytes on a different UART (not the serial used for
+     interaction)
+[OK] Writing to the SPI-NOR
+[OK] Doing all at the same time (once for TX and once for RX on UART)
+
+Notes:
+- Your Patches adding a maybe noise message "sdma firmware not ready".
+  Maybe we should consider about that if it should be a warning or a info.
+
+- For spi-nor I did run this test:
+  dd if=/dev/urandom of=/var/tmp/test1M bs=1M count=1 && \
+  flashcp -v /var/tmp/test1M /dev/mtd2
+
+  and checked /proc/interrupts:
+  25:    2107169          0          0          0       GPC  31 Level	2008000.spi
+
+Testcase 2: "Using new FW from linux-firmware"
+===
+[OK] Playing Audio (SSI)
+[OK] TX/RX bytes on a different UART (not the serial used for
+     interaction)
+[OK] Writing to the SPI-NOR
+[OK] Doing all at the same time (once for TX and once for RX on UART)
+
+Notes:
+- For spi-nor I did run this test:
+  dd if=/dev/urandom of=/var/tmp/test1M bs=1M count=1 && \
+  flashcp -v /var/tmp/test1M /dev/mtd2
+
+  and checked /proc/interrupts:
+  25:    2107993          0          0          0       GPC  31 Level	2008000.spi
+
+  I saw no SDMA interrupts during this testcase instead I saw only spi
+  controller interrupts.
+
+- According linux-firmware you did a version bump from 3.5 to 4.5 but my
+  dmesg shows:
+  imx-sdma 20ec000.sdma: loaded firmware 3.5
+
+SPI Benchmark:
+===
+flash_erase /dev/mtd2 0 0 && \
+	dd if=/dev/urandom of=/dev/mtd2 bs=1M count=1
+
+- without firmware (ROM-FW)
+  1048576 bytes (1.0 MB, 1.0 MiB) copied, 51.9713 s, 20.2 kB/s
+
+- with firmware
+  1048576 bytes (1.0 MB, 1.0 MiB) copied, 59.4174 s, 17.6 kB/s
+
+Conclusion:
+===
+It seems that we don't have any performance boost with your patchset
+instead we are increasing the complexity and the interrupts...
+
+Pls let me know if I did something wrong during testing or if my test
+setup was wrong. Note: the /dev/mtd2 isn't mainlined yet but if you use
+barebox you only have to add:
+8<---------------------------------------------------------------------
+diff --git a/arch/arm/dts/imx6qdl-sabrelite.dtsi b/arch/arm/dts/imx6qdl-sabrelite.dtsi
+index ec3d364bde..256dd90a0f 100644
+--- a/arch/arm/dts/imx6qdl-sabrelite.dtsi
++++ b/arch/arm/dts/imx6qdl-sabrelite.dtsi
+@@ -38,6 +38,11 @@
+ 		label = "barebox-environment";
+ 		reg = <0xe0000 0x20000>;
+ 	};
++
++	parition@100000 {
++		label = "user-partition";
++		reg = <0x100000 0x100000>;
++	};
+ };
+ 
+ &ocotp {
+8<---------------------------------------------------------------------
+to the barebox device tree.
+
+[1] http://lists.infradead.org/pipermail/linux-mtd/2020-September/082099.html 
+
+Regards,
+  Marco

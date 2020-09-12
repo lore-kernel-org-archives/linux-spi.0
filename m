@@ -7,65 +7,67 @@ X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
 	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D714BC43461
-	for <linux-spi@archiver.kernel.org>; Sat, 12 Sep 2020 18:18:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B4BFAC43461
+	for <linux-spi@archiver.kernel.org>; Sat, 12 Sep 2020 21:08:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 947D02158C
-	for <linux-spi@archiver.kernel.org>; Sat, 12 Sep 2020 18:18:23 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6CBCF20732
+	for <linux-spi@archiver.kernel.org>; Sat, 12 Sep 2020 21:08:31 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="cwvhRxfb"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="H7l8JzFp"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725894AbgILSSV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 12 Sep 2020 14:18:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56018 "EHLO
+        id S1725934AbgILVIZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 12 Sep 2020 17:08:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725850AbgILSST (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 12 Sep 2020 14:18:19 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82144C061573
-        for <linux-spi@vger.kernel.org>; Sat, 12 Sep 2020 11:18:18 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id o68so9607373pfg.2
-        for <linux-spi@vger.kernel.org>; Sat, 12 Sep 2020 11:18:18 -0700 (PDT)
+        with ESMTP id S1725919AbgILVIT (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 12 Sep 2020 17:08:19 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB212C061795
+        for <linux-spi@vger.kernel.org>; Sat, 12 Sep 2020 14:08:18 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id b124so9574923pfg.13
+        for <linux-spi@vger.kernel.org>; Sat, 12 Sep 2020 14:08:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=a1GTBXxKUvJxoon/aNt1MN6fmALohNRxcmfcvMYUVuI=;
-        b=cwvhRxfbcTFj4svbdXDZ9jcAEMhYVMR7LZ4P87bq1El3TaxmfOrqur6oTokv//oGuR
-         O6lBjAZZoASK01mJbAZUMKWC8cxKClvwn+gDUrgegq07Rhz3N7cIq0hUCJNbKT3N6xVs
-         DZAooRgvRH8KK96ejVU7xL8oGc/eW70Ngbe6s=
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=nT97JuHeIYEYuVntShwpzBJaTAHIXhzgnidrheouJoQ=;
+        b=H7l8JzFpvQ98TLFd8MPo4am/gruKkYODBqBTRy+4TWWz1HuEQ64Y/vb/Of/CJoeV5g
+         /4BtxCx2BpegSKNkdkI6DUiM+tG4vNjzxEod4JGU/TQZm9bBnda8PRUS8JNgor6Yxlxw
+         zvnsl+nxifZtZRCk5kypYL8Cs0T9Xlw0LtuqI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=a1GTBXxKUvJxoon/aNt1MN6fmALohNRxcmfcvMYUVuI=;
-        b=Gkka2pgqHVPgI+zlQlYClVjXn/xMXzGZ2QlO6EhB3SSsHUwmK3eIwlWxnSeyTVTauu
-         pyzRdc0XtHdYzQbWmI4GJFFQzWm7RDuXDOOU/clhcOVQdBcPLJW9rT0AdPqnxbM7nkdR
-         6SpNugSopELzD6jJMvOwwkUTnOSjSpH48cLNcx6qCzuHtOke53T8Up1EK+kfoMxcsaET
-         ny2P/htAMl0QvLXunPEFIEH11sxIeBPHrtGmov9p9m2l7cV76aZnNbckCzruYFkDdlwT
-         YStCHFkkRNzSZ4606qdmN8G7e/ty15I3yyWnGp4JnBJz8IKAf+Nsu2EKHYe1MYHx796K
-         gSrA==
-X-Gm-Message-State: AOAM530V+35ByHv6E1iNrCw27GQyOTkw+AbgyAa7HFt2KJa63GA/GxAc
-        66VoQtHUXTP4UUt/1+trsjjjqg==
-X-Google-Smtp-Source: ABdhPJxwX4AccK3tYQzQmCHCIqpQZFNdVItS5jcKZcDzjfHI6EGkPeg1jTKnv2I6CfAhC/+Xma58Vw==
-X-Received: by 2002:aa7:80d3:: with SMTP id a19mr7177026pfn.102.1599934698016;
-        Sat, 12 Sep 2020 11:18:18 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=nT97JuHeIYEYuVntShwpzBJaTAHIXhzgnidrheouJoQ=;
+        b=WmXaMuPIbi20T8QJ/qR7SN29Bu7rm8XthZJFc8pflYFQoi8x28ClKATcxjGO2sPL7Q
+         T2XUI4MpIBomJwD4+Tg20FaE2odr9vjIKedUeZde5Hm/JXsRfjm6ySUSVkEYdzkuTzzo
+         PMC09Inyt5SF5TF7P+FIFnVqviir/V95zKhnnglBkMV4xtrbLsfyfk0J30WgP5q6oSql
+         3mArus/mh227i+mdEFBOguRGnJTp9sn2ldmGnrVZGX7bIz6srlWKnF7oPvHtDzvyaHcX
+         5mv7kIwRJ7eF/5Tmk4sRQ+Y9MpwSqugG7iOMf4I2WOTyBEY4uOMDugjalKU1yE/NNXRb
+         ahuw==
+X-Gm-Message-State: AOAM532Yxl6DbgzhnyHtLHFC3Gy4nmpDfibWJztZvH56CDZ87R05jxf/
+        hiQ+2mUd8OelqmLMpf26MvcpHg==
+X-Google-Smtp-Source: ABdhPJzxE9TcIeDb6yHHRDq49CWtiiptA89EirhaSk6k7v+xw7TfDzUfpYKHZwjkx+Pxbz/o8kG2oQ==
+X-Received: by 2002:a62:bd0d:: with SMTP id a13mr7570502pff.39.1599944898254;
+        Sat, 12 Sep 2020 14:08:18 -0700 (PDT)
 Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:42b0:34ff:fe3d:58e6])
-        by smtp.gmail.com with ESMTPSA id f6sm5858183pfq.82.2020.09.12.11.18.17
+        by smtp.gmail.com with ESMTPSA id e10sm3369020pgb.45.2020.09.12.14.08.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Sep 2020 11:18:17 -0700 (PDT)
+        Sat, 12 Sep 2020 14:08:17 -0700 (PDT)
 From:   Douglas Anderson <dianders@chromium.org>
 To:     Mark Brown <broonie@kernel.org>
-Cc:     swboyd@chromium.org, Akash Asthana <akashast@codeaurora.org>,
+Cc:     Akash Asthana <akashast@codeaurora.org>, swboyd@chromium.org,
         Douglas Anderson <dianders@chromium.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org
-Subject: [PATCH] spi: spi-geni-qcom: Don't wait to start 1st transfer if transmitting
-Date:   Sat, 12 Sep 2020 11:17:25 -0700
-Message-Id: <20200912111716.1.Ied5e843fad0d6b733a1fb8bcfb364dd2fa889eb3@changeid>
+Subject: [PATCH 2/3] spi: spi-geni-qcom: Don't program CS_TOGGLE again and again
+Date:   Sat, 12 Sep 2020 14:08:00 -0700
+Message-Id: <20200912140730.2.I33e571179986850b4ec17042e813d0b08fb1b9c1@changeid>
 X-Mailer: git-send-email 2.28.0.618.gf4bc123cb7-goog
+In-Reply-To: <20200912140730.1.Ie67fa32009b94702d56232c064f1d89065ee8836@changeid>
+References: <20200912140730.1.Ie67fa32009b94702d56232c064f1d89065ee8836@changeid>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-spi-owner@vger.kernel.org
@@ -73,218 +75,79 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-If we're sending bytes over SPI, we know the FIFO is empty at the
-start of the transfer.  There's no reason to wait for the interrupt
-telling us to start--we can just start right away.  Then if we
-transmit everything in one swell foop we don't even need to bother
-listening for TX interrupts.
+We always toggle the chip select manually in spi-geni-qcom so that we
+can properly implement the Linux API.  There's no reason to program
+this to the hardware on every transfer.  Program it once at init and
+be done with it.
 
-In a test of "flashrom -p ec -r /tmp/foo.bin" interrupts were reduced
-from ~30560 to ~29730, about a 3% savings.
-
-This patch looks bigger than it is because I moved a few functions
-rather than adding a forward declaration.  The only actual change to
-geni_spi_handle_tx() was to make it return a bool indicating if there
-is more to tx.
+This saves some part of a microsecond of overhead on each transfer.
+While not really noticeable on any real world benchmarks, we might as
+well save the time.
 
 Signed-off-by: Douglas Anderson <dianders@chromium.org>
 ---
 
- drivers/spi/spi-geni-qcom.c | 167 +++++++++++++++++++-----------------
- 1 file changed, 86 insertions(+), 81 deletions(-)
+ drivers/spi/spi-geni-qcom.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index 0dc3f4c55b0b..49c9eb870755 100644
+index 7f0bf0dec466..92d88bf85a90 100644
 --- a/drivers/spi/spi-geni-qcom.c
 +++ b/drivers/spi/spi-geni-qcom.c
-@@ -326,6 +326,88 @@ static int spi_geni_init(struct spi_geni_master *mas)
+@@ -290,6 +290,7 @@ static int spi_geni_init(struct spi_geni_master *mas)
+ {
+ 	struct geni_se *se = &mas->se;
+ 	unsigned int proto, major, minor, ver;
++	u32 spi_tx_cfg;
+ 
+ 	pm_runtime_get_sync(mas->dev);
+ 
+@@ -322,6 +323,11 @@ static int spi_geni_init(struct spi_geni_master *mas)
+ 
+ 	geni_se_select_mode(se, GENI_SE_FIFO);
+ 
++	/* We always control CS manually */
++	spi_tx_cfg = readl(se->base + SE_SPI_TRANS_CFG);
++	spi_tx_cfg &= ~CS_TOGGLE;
++	writel(spi_tx_cfg, se->base + SE_SPI_TRANS_CFG);
++
+ 	pm_runtime_put(mas->dev);
  	return 0;
  }
- 
-+static unsigned int geni_byte_per_fifo_word(struct spi_geni_master *mas)
-+{
-+	/*
-+	 * Calculate how many bytes we'll put in each FIFO word.  If the
-+	 * transfer words don't pack cleanly into a FIFO word we'll just put
-+	 * one transfer word in each FIFO word.  If they do pack we'll pack 'em.
-+	 */
-+	if (mas->fifo_width_bits % mas->cur_bits_per_word)
-+		return roundup_pow_of_two(DIV_ROUND_UP(mas->cur_bits_per_word,
-+						       BITS_PER_BYTE));
-+
-+	return mas->fifo_width_bits / BITS_PER_BYTE;
-+}
-+
-+static bool geni_spi_handle_tx(struct spi_geni_master *mas)
-+{
-+	struct geni_se *se = &mas->se;
-+	unsigned int max_bytes;
-+	const u8 *tx_buf;
-+	unsigned int bytes_per_fifo_word = geni_byte_per_fifo_word(mas);
-+	unsigned int i = 0;
-+
-+	max_bytes = (mas->tx_fifo_depth - mas->tx_wm) * bytes_per_fifo_word;
-+	if (mas->tx_rem_bytes < max_bytes)
-+		max_bytes = mas->tx_rem_bytes;
-+
-+	tx_buf = mas->cur_xfer->tx_buf + mas->cur_xfer->len - mas->tx_rem_bytes;
-+	while (i < max_bytes) {
-+		unsigned int j;
-+		unsigned int bytes_to_write;
-+		u32 fifo_word = 0;
-+		u8 *fifo_byte = (u8 *)&fifo_word;
-+
-+		bytes_to_write = min(bytes_per_fifo_word, max_bytes - i);
-+		for (j = 0; j < bytes_to_write; j++)
-+			fifo_byte[j] = tx_buf[i++];
-+		iowrite32_rep(se->base + SE_GENI_TX_FIFOn, &fifo_word, 1);
-+	}
-+	mas->tx_rem_bytes -= max_bytes;
-+	if (!mas->tx_rem_bytes) {
-+		writel(0, se->base + SE_GENI_TX_WATERMARK_REG);
-+		return false;
-+	}
-+	return true;
-+}
-+
-+static void geni_spi_handle_rx(struct spi_geni_master *mas)
-+{
-+	struct geni_se *se = &mas->se;
-+	u32 rx_fifo_status;
-+	unsigned int rx_bytes;
-+	unsigned int rx_last_byte_valid;
-+	u8 *rx_buf;
-+	unsigned int bytes_per_fifo_word = geni_byte_per_fifo_word(mas);
-+	unsigned int i = 0;
-+
-+	rx_fifo_status = readl(se->base + SE_GENI_RX_FIFO_STATUS);
-+	rx_bytes = (rx_fifo_status & RX_FIFO_WC_MSK) * bytes_per_fifo_word;
-+	if (rx_fifo_status & RX_LAST) {
-+		rx_last_byte_valid = rx_fifo_status & RX_LAST_BYTE_VALID_MSK;
-+		rx_last_byte_valid >>= RX_LAST_BYTE_VALID_SHFT;
-+		if (rx_last_byte_valid && rx_last_byte_valid < 4)
-+			rx_bytes -= bytes_per_fifo_word - rx_last_byte_valid;
-+	}
-+	if (mas->rx_rem_bytes < rx_bytes)
-+		rx_bytes = mas->rx_rem_bytes;
-+
-+	rx_buf = mas->cur_xfer->rx_buf + mas->cur_xfer->len - mas->rx_rem_bytes;
-+	while (i < rx_bytes) {
-+		u32 fifo_word = 0;
-+		u8 *fifo_byte = (u8 *)&fifo_word;
-+		unsigned int bytes_to_read;
-+		unsigned int j;
-+
-+		bytes_to_read = min(bytes_per_fifo_word, rx_bytes - i);
-+		ioread32_rep(se->base + SE_GENI_RX_FIFOn, &fifo_word, 1);
-+		for (j = 0; j < bytes_to_read; j++)
-+			rx_buf[i++] = fifo_byte[j];
-+	}
-+	mas->rx_rem_bytes -= rx_bytes;
-+}
-+
- static void setup_fifo_xfer(struct spi_transfer *xfer,
- 				struct spi_geni_master *mas,
+@@ -331,7 +337,7 @@ static void setup_fifo_xfer(struct spi_transfer *xfer,
  				u16 mode, struct spi_master *spi)
-@@ -398,8 +480,10 @@ static void setup_fifo_xfer(struct spi_transfer *xfer,
- 	 * setting up GENI SE engine, as driver starts data transfer
- 	 * for the watermark interrupt.
- 	 */
--	if (m_cmd & SPI_TX_ONLY)
--		writel(mas->tx_wm, se->base + SE_GENI_TX_WATERMARK_REG);
-+	if (m_cmd & SPI_TX_ONLY) {
-+		if (geni_spi_handle_tx(mas))
-+			writel(mas->tx_wm, se->base + SE_GENI_TX_WATERMARK_REG);
-+	}
- 	spin_unlock_irq(&mas->lock);
- }
- 
-@@ -417,85 +501,6 @@ static int spi_geni_transfer_one(struct spi_master *spi,
- 	return 1;
- }
- 
--static unsigned int geni_byte_per_fifo_word(struct spi_geni_master *mas)
--{
--	/*
--	 * Calculate how many bytes we'll put in each FIFO word.  If the
--	 * transfer words don't pack cleanly into a FIFO word we'll just put
--	 * one transfer word in each FIFO word.  If they do pack we'll pack 'em.
--	 */
--	if (mas->fifo_width_bits % mas->cur_bits_per_word)
--		return roundup_pow_of_two(DIV_ROUND_UP(mas->cur_bits_per_word,
--						       BITS_PER_BYTE));
--
--	return mas->fifo_width_bits / BITS_PER_BYTE;
--}
--
--static void geni_spi_handle_tx(struct spi_geni_master *mas)
--{
--	struct geni_se *se = &mas->se;
--	unsigned int max_bytes;
--	const u8 *tx_buf;
--	unsigned int bytes_per_fifo_word = geni_byte_per_fifo_word(mas);
--	unsigned int i = 0;
--
--	max_bytes = (mas->tx_fifo_depth - mas->tx_wm) * bytes_per_fifo_word;
--	if (mas->tx_rem_bytes < max_bytes)
--		max_bytes = mas->tx_rem_bytes;
--
--	tx_buf = mas->cur_xfer->tx_buf + mas->cur_xfer->len - mas->tx_rem_bytes;
--	while (i < max_bytes) {
--		unsigned int j;
--		unsigned int bytes_to_write;
--		u32 fifo_word = 0;
--		u8 *fifo_byte = (u8 *)&fifo_word;
--
--		bytes_to_write = min(bytes_per_fifo_word, max_bytes - i);
--		for (j = 0; j < bytes_to_write; j++)
--			fifo_byte[j] = tx_buf[i++];
--		iowrite32_rep(se->base + SE_GENI_TX_FIFOn, &fifo_word, 1);
--	}
--	mas->tx_rem_bytes -= max_bytes;
--	if (!mas->tx_rem_bytes)
--		writel(0, se->base + SE_GENI_TX_WATERMARK_REG);
--}
--
--static void geni_spi_handle_rx(struct spi_geni_master *mas)
--{
--	struct geni_se *se = &mas->se;
--	u32 rx_fifo_status;
--	unsigned int rx_bytes;
--	unsigned int rx_last_byte_valid;
--	u8 *rx_buf;
--	unsigned int bytes_per_fifo_word = geni_byte_per_fifo_word(mas);
--	unsigned int i = 0;
--
--	rx_fifo_status = readl(se->base + SE_GENI_RX_FIFO_STATUS);
--	rx_bytes = (rx_fifo_status & RX_FIFO_WC_MSK) * bytes_per_fifo_word;
--	if (rx_fifo_status & RX_LAST) {
--		rx_last_byte_valid = rx_fifo_status & RX_LAST_BYTE_VALID_MSK;
--		rx_last_byte_valid >>= RX_LAST_BYTE_VALID_SHFT;
--		if (rx_last_byte_valid && rx_last_byte_valid < 4)
--			rx_bytes -= bytes_per_fifo_word - rx_last_byte_valid;
--	}
--	if (mas->rx_rem_bytes < rx_bytes)
--		rx_bytes = mas->rx_rem_bytes;
--
--	rx_buf = mas->cur_xfer->rx_buf + mas->cur_xfer->len - mas->rx_rem_bytes;
--	while (i < rx_bytes) {
--		u32 fifo_word = 0;
--		u8 *fifo_byte = (u8 *)&fifo_word;
--		unsigned int bytes_to_read;
--		unsigned int j;
--
--		bytes_to_read = min(bytes_per_fifo_word, rx_bytes - i);
--		ioread32_rep(se->base + SE_GENI_RX_FIFOn, &fifo_word, 1);
--		for (j = 0; j < bytes_to_read; j++)
--			rx_buf[i++] = fifo_byte[j];
--	}
--	mas->rx_rem_bytes -= rx_bytes;
--}
--
- static irqreturn_t geni_spi_isr(int irq, void *data)
  {
- 	struct spi_master *spi = data;
+ 	u32 m_cmd = 0;
+-	u32 spi_tx_cfg, len;
++	u32 len;
+ 	struct geni_se *se = &mas->se;
+ 	int ret;
+ 
+@@ -350,7 +356,6 @@ static void setup_fifo_xfer(struct spi_transfer *xfer,
+ 	spin_lock_irq(&mas->lock);
+ 	spin_unlock_irq(&mas->lock);
+ 
+-	spi_tx_cfg = readl(se->base + SE_SPI_TRANS_CFG);
+ 	if (xfer->bits_per_word != mas->cur_bits_per_word) {
+ 		spi_setup_word_len(mas, mode, xfer->bits_per_word);
+ 		mas->cur_bits_per_word = xfer->bits_per_word;
+@@ -364,8 +369,6 @@ static void setup_fifo_xfer(struct spi_transfer *xfer,
+ 	mas->tx_rem_bytes = 0;
+ 	mas->rx_rem_bytes = 0;
+ 
+-	spi_tx_cfg &= ~CS_TOGGLE;
+-
+ 	if (!(mas->cur_bits_per_word % MIN_WORD_LEN))
+ 		len = xfer->len * BITS_PER_BYTE / mas->cur_bits_per_word;
+ 	else
+@@ -384,7 +387,6 @@ static void setup_fifo_xfer(struct spi_transfer *xfer,
+ 		writel(len, se->base + SE_SPI_RX_TRANS_LEN);
+ 		mas->rx_rem_bytes = xfer->len;
+ 	}
+-	writel(spi_tx_cfg, se->base + SE_SPI_TRANS_CFG);
+ 
+ 	/*
+ 	 * Lock around right before we start the transfer since our
 -- 
 2.28.0.618.gf4bc123cb7-goog
 

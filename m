@@ -2,92 +2,119 @@ Return-Path: <SRS0=909V=CX=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.1 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.9 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 53492C43461
-	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 13:11:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 329C9C433E2
+	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 14:19:35 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0989E208E4
-	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 13:11:57 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=mg.codeaurora.org header.i=@mg.codeaurora.org header.b="bEUnareF"
+	by mail.kernel.org (Postfix) with ESMTP id F31F82074B
+	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 14:19:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1600093175;
+	bh=RkDGxihzRJRoD9St/O84o4RrJ097bB39FvwlFUeYZhM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=jpRjpcLnAsF5b9jQ5wH1HYLvyEFRQnxxOnGpx7lR/j1o8o6rf4M0Vl0MRBmzZnXgy
+	 3/bhtd5s9esZB+c0Iezd6S4th+PIf6DL3gG2YXoElpAaWBIbVRiPKtAg8zHkIMl61K
+	 BoUkCa6zClcP21zKMoTyRXNCTabnjpS3yBTn+UHI=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726537AbgINNLk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 14 Sep 2020 09:11:40 -0400
-Received: from m43-7.mailgun.net ([69.72.43.7]:37601 "EHLO m43-7.mailgun.net"
+        id S1726318AbgINOSz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 14 Sep 2020 10:18:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:32804 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726734AbgINNKK (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 14 Sep 2020 09:10:10 -0400
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1600088996; h=Content-Transfer-Encoding: Content-Type:
- In-Reply-To: MIME-Version: Date: Message-ID: From: References: Cc: To:
- Subject: Sender; bh=qzjPchJ1lLROgB9pP+RCaQlLLLIEeCxtEGrdUIxmEZU=; b=bEUnareFkKMI6SuGS8L1qiZJldoGk8COMiwuvfxBT5YVQD1eWFJnWYQC8LwtPAvxzpsduuEb
- ddRhaX9WnndBgpS/mKVYENXOmqdgdDzBezPdKBNoLzmqjf4ReCPP1PHdVbpa0AEqpjEKIM3/
- vum5+NJ26TptNJzDVq0OiM//Hmk=
-X-Mailgun-Sending-Ip: 69.72.43.7
-X-Mailgun-Sid: WyIzNzdmZSIsICJsaW51eC1zcGlAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
- 5f5f6b95be06707b342ac170 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 14 Sep 2020 13:09:41
- GMT
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id D362AC433F0; Mon, 14 Sep 2020 13:09:40 +0000 (UTC)
-Received: from [192.168.43.98] (unknown [47.8.187.49])
+        id S1726698AbgINNHL (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 14 Sep 2020 09:07:11 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: akashast)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id BE9E5C433CA;
-        Mon, 14 Sep 2020 13:09:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BE9E5C433CA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=akashast@codeaurora.org
-Subject: Re: [PATCH] spi: spi-geni-qcom: Don't wait to start 1st transfer if
- transmitting
-To:     Douglas Anderson <dianders@chromium.org>,
-        Mark Brown <broonie@kernel.org>
-Cc:     swboyd@chromium.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-References: <20200912111716.1.Ied5e843fad0d6b733a1fb8bcfb364dd2fa889eb3@changeid>
-From:   Akash Asthana <akashast@codeaurora.org>
-Message-ID: <838a6074-73e6-a48b-2684-5ea2ebff443a@codeaurora.org>
-Date:   Mon, 14 Sep 2020 18:39:25 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+        by mail.kernel.org (Postfix) with ESMTPSA id 863F022210;
+        Mon, 14 Sep 2020 13:05:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1600088752;
+        bh=RkDGxihzRJRoD9St/O84o4RrJ097bB39FvwlFUeYZhM=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=A+fJxgqzuKvHrSEwJIZhZxrB6HcwOej71p2QIwODlE/Duz+D3THlbwyBqCGDjT4FN
+         /O9P04vqTDprnS9TRReawkURYtL1GPHPJ5NAkvshmRJdHjOfJ2i9pN53/tXGzJYIuq
+         WEYxGLe1UraEyl56sEY5m7uhiJ1vbB6AT+UE7xCg=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Vincent Whitchurch <vincent.whitchurch@axis.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.9 05/10] spi: spi-loopback-test: Fix out-of-bounds read
+Date:   Mon, 14 Sep 2020 09:05:40 -0400
+Message-Id: <20200914130545.1805084-5-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200914130545.1805084-1-sashal@kernel.org>
+References: <20200914130545.1805084-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20200912111716.1.Ied5e843fad0d6b733a1fb8bcfb364dd2fa889eb3@changeid>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+From: Vincent Whitchurch <vincent.whitchurch@axis.com>
 
-On 9/12/2020 11:47 PM, Douglas Anderson wrote:
-> If we're sending bytes over SPI, we know the FIFO is empty at the
-> start of the transfer.  There's no reason to wait for the interrupt
-> telling us to start--we can just start right away.  Then if we
-> transmit everything in one swell foop we don't even need to bother
-> listening for TX interrupts.
->
-> In a test of "flashrom -p ec -r /tmp/foo.bin" interrupts were reduced
-> from ~30560 to ~29730, about a 3% savings.
->
-> This patch looks bigger than it is because I moved a few functions
-> rather than adding a forward declaration.  The only actual change to
-> geni_spi_handle_tx() was to make it return a bool indicating if there
-> is more to tx.
-Reviewed-by: Akash Asthana <akashast@codeaurora.org>
-> Signed-off-by: Douglas Anderson<dianders@chromium.org>
+[ Upstream commit 837ba18dfcd4db21ad58107c65bfe89753aa56d7 ]
 
+The "tx/rx-transfer - crossing PAGE_SIZE" test always fails when
+len=131071 and rx_offset >= 5:
+
+ spi-loopback-test spi0.0: Running test tx/rx-transfer - crossing PAGE_SIZE
+ ...
+   with iteration values: len = 131071, tx_off = 0, rx_off = 3
+   with iteration values: len = 131071, tx_off = 0, rx_off = 4
+   with iteration values: len = 131071, tx_off = 0, rx_off = 5
+ loopback strangeness - rx changed outside of allowed range at: ...a4321000
+   spi_msg@ffffffd5a4157690
+     frame_length:  131071
+     actual_length: 131071
+     spi_transfer@ffffffd5a41576f8
+       len:    131071
+       tx_buf: ffffffd5a4340ffc
+
+Note that rx_offset > 3 can only occur if the SPI controller driver sets
+->dma_alignment to a higher value than 4, so most SPI controller drivers
+are not affect.
+
+The allocated Rx buffer is of size SPI_TEST_MAX_SIZE_PLUS, which is 132
+KiB (assuming 4 KiB pages).  This test uses an initial offset into the
+rx_buf of PAGE_SIZE - 4, and a len of 131071, so the range expected to
+be written in this transfer ends at (4096 - 4) + 5 + 131071 == 132 KiB,
+which is also the end of the allocated buffer.  But the code which
+verifies the content of the buffer reads a byte beyond the allocated
+buffer and spuriously fails because this out-of-bounds read doesn't
+return the expected value.
+
+Fix this by using ITERATE_LEN instead of ITERATE_MAX_LEN to avoid
+testing sizes which cause out-of-bounds reads.
+
+Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
+Link: https://lore.kernel.org/r/20200902132341.7079-1-vincent.whitchurch@axis.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi-loopback-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
+index 50e620f4e8fe2..7120083fe7610 100644
+--- a/drivers/spi/spi-loopback-test.c
++++ b/drivers/spi/spi-loopback-test.c
+@@ -74,7 +74,7 @@ static struct spi_test spi_tests[] = {
+ 	{
+ 		.description	= "tx/rx-transfer - crossing PAGE_SIZE",
+ 		.fill_option	= FILL_COUNT_8,
+-		.iterate_len    = { ITERATE_MAX_LEN },
++		.iterate_len    = { ITERATE_LEN },
+ 		.iterate_tx_align = ITERATE_ALIGN,
+ 		.iterate_rx_align = ITERATE_ALIGN,
+ 		.transfers		= {
 -- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,\na Linux Foundation Collaborative Project
+2.25.1
 

@@ -2,119 +2,82 @@ Return-Path: <SRS0=909V=CX=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.9 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.9 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1452FC433E2
-	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 14:44:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 94C21C433E2
+	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 14:53:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D3BE1205F4
-	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 14:44:11 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 54DB020715
+	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 14:53:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1600094651;
-	bh=Znj6Ys0c5jRV6GwNvsGEzPyhBwAFXhnTPfn0h1uiGBI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=VKprmbi1liHAjvUevhBP0tiYcbNnLUBs3LsJoFY3GDGorT5uRuarD7oahyGg8if5+
-	 HTEmlaSWwmsi2cdYFCK9QmEPLhrajhyRc+FLuVILvaDEoQvGW93GeU4zvvH7GT7xt8
-	 tGlqn2HAOnn8jV7EgweeHDwQVHRXwt3pf6VaY1nU=
+	s=default; t=1600095236;
+	bh=AsI0ct1p0pSdYZEWWvAVB8iDbmMRuFTNg+a6hkNRQWE=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
+	b=FsbSJKvwYm/diSOMqHI6snXADaJMqzreWcWzhhaaIwQkPwSjmEs4ho/mssgi+uUIA
+	 w8C4xZW2kx1OOxiCsEb8tC4/qJeZ9M1usHlczd/eDogeqa7J8VjQ0FcHwz2YwfBRsn
+	 NtB7rB7WJhG2MpKNZISTwMA3Sk899CJYgN8rBZ2o=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726682AbgINOoK (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 14 Sep 2020 10:44:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:32960 "EHLO mail.kernel.org"
+        id S1726702AbgINOxr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 14 Sep 2020 10:53:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53472 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726623AbgINNF3 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 14 Sep 2020 09:05:29 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1726861AbgINOxD (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 14 Sep 2020 10:53:03 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E572F2222E;
-        Mon, 14 Sep 2020 13:04:41 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 33D5020715;
+        Mon, 14 Sep 2020 14:53:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600088682;
-        bh=Znj6Ys0c5jRV6GwNvsGEzPyhBwAFXhnTPfn0h1uiGBI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iIKc23R/S0pQYrJMpIIeeBY6EIEdExg/eE+C+YdjUM8gkwTBoNnMraMILu0jWa47/
-         rAdlS24loho9VVgNfIyG9LRY182rLDc5AJTYPxGXKUbByYFCoaSO6Tgub4hKMYxXpe
-         550VbmtQSrUpVXYyV9WL6d106+UTCFoR55iOVjJM=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Vincent Whitchurch <vincent.whitchurch@axis.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 06/22] spi: spi-loopback-test: Fix out-of-bounds read
-Date:   Mon, 14 Sep 2020 09:04:18 -0400
-Message-Id: <20200914130434.1804478-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200914130434.1804478-1-sashal@kernel.org>
-References: <20200914130434.1804478-1-sashal@kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+        s=default; t=1600095181;
+        bh=AsI0ct1p0pSdYZEWWvAVB8iDbmMRuFTNg+a6hkNRQWE=;
+        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+        b=aymJRNOxMA8Qc9bmaU2kHiSy9B6DLf9D8TdPoFAVExZ1uMn+alPEu+gmVZtwqPKam
+         kVyStoINZUaUau9MjrtUe0EbNw2So4V5y+/RmJ9D6Pj4tp909hkvYUgrDUohQsXkUH
+         spYRsQH/5eDFajqfrBzijucWSk6FdNl0fAGPlWzI=
+Date:   Mon, 14 Sep 2020 15:52:13 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     linux-spi@vger.kernel.org, Barry Song <song.bao.hua@hisilicon.com>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>, linuxarm@huawei.com,
+        Andy Gross <agross@kernel.org>
+In-Reply-To: <20200910100246.32696-1-song.bao.hua@hisilicon.com>
+References: <20200910100246.32696-1-song.bao.hua@hisilicon.com>
+Subject: Re: [PATCH] spi: spi-qcom-qspi: replace spin_lock_irqsave by spin_lock in hard IRQ
+Message-Id: <160009511833.5702.994806427999782707.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Vincent Whitchurch <vincent.whitchurch@axis.com>
+On Thu, 10 Sep 2020 22:02:46 +1200, Barry Song wrote:
+> It is redundant to do irqsave and irqrestore in hardIRQ context.
 
-[ Upstream commit 837ba18dfcd4db21ad58107c65bfe89753aa56d7 ]
+Applied to
 
-The "tx/rx-transfer - crossing PAGE_SIZE" test always fails when
-len=131071 and rx_offset >= 5:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
- spi-loopback-test spi0.0: Running test tx/rx-transfer - crossing PAGE_SIZE
- ...
-   with iteration values: len = 131071, tx_off = 0, rx_off = 3
-   with iteration values: len = 131071, tx_off = 0, rx_off = 4
-   with iteration values: len = 131071, tx_off = 0, rx_off = 5
- loopback strangeness - rx changed outside of allowed range at: ...a4321000
-   spi_msg@ffffffd5a4157690
-     frame_length:  131071
-     actual_length: 131071
-     spi_transfer@ffffffd5a41576f8
-       len:    131071
-       tx_buf: ffffffd5a4340ffc
+Thanks!
 
-Note that rx_offset > 3 can only occur if the SPI controller driver sets
-->dma_alignment to a higher value than 4, so most SPI controller drivers
-are not affect.
+[1/1] spi: spi-qcom-qspi: replace spin_lock_irqsave by spin_lock in hard IRQ
+      commit: bfc430cab8234273c23885211818f704b2bd1da9
 
-The allocated Rx buffer is of size SPI_TEST_MAX_SIZE_PLUS, which is 132
-KiB (assuming 4 KiB pages).  This test uses an initial offset into the
-rx_buf of PAGE_SIZE - 4, and a len of 131071, so the range expected to
-be written in this transfer ends at (4096 - 4) + 5 + 131071 == 132 KiB,
-which is also the end of the allocated buffer.  But the code which
-verifies the content of the buffer reads a byte beyond the allocated
-buffer and spuriously fails because this out-of-bounds read doesn't
-return the expected value.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-Fix this by using ITERATE_LEN instead of ITERATE_MAX_LEN to avoid
-testing sizes which cause out-of-bounds reads.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
-Link: https://lore.kernel.org/r/20200902132341.7079-1-vincent.whitchurch@axis.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/spi/spi-loopback-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 6f18d49527673..51633b2b64371 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -90,7 +90,7 @@ static struct spi_test spi_tests[] = {
- 	{
- 		.description	= "tx/rx-transfer - crossing PAGE_SIZE",
- 		.fill_option	= FILL_COUNT_8,
--		.iterate_len    = { ITERATE_MAX_LEN },
-+		.iterate_len    = { ITERATE_LEN },
- 		.iterate_tx_align = ITERATE_ALIGN,
- 		.iterate_rx_align = ITERATE_ALIGN,
- 		.transfer_count = 1,
--- 
-2.25.1
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
+Thanks,
+Mark

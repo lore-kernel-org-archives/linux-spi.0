@@ -2,85 +2,71 @@ Return-Path: <SRS0=909V=CX=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.9 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.9 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 207D5C433E2
-	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 14:57:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 44053C2BC11
+	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 15:04:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D611420829
-	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 14:57:05 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 03CAD20732
+	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 15:04:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1600095425;
-	bh=M2DIyqZOF1aOYfADXh4hvgjSrHg+ONJQHW16u8xBjA4=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=Yua/PeJ8sCYFVwQIDlvGTjhpjZZaJDHyPvmPGjn1kXQB/WiolDoV8yymkKQZzYnRF
-	 65nRwZOYBXvsGBFquFbX2XeG8G5VcA1vaZaY8EATpkzznYyJ0vdNS5EGigtLXTB9Nt
-	 HaGYzjCXCfiJ2fc1gZUKkiHBP9emXLmf+9qbYf0k=
+	s=default; t=1600095842;
+	bh=5i0cdu7uj6m2FyMh4r0d6TsvM3tHIa7sOMxSTjjK5GU=;
+	h=Subject:From:Date:To:List-ID:From;
+	b=Z7+5z4BCRef5db2MhUuz7iEifG/xudcVjWAGbSKodu6e5u1uuk5fcq/Z6EOsaX2ww
+	 d4TVNAU1ZQIcni0KGAVcDsLhXl2W6pWB79Azem3oJHOqMa7yuy/gEanGtntnL/M20w
+	 h0ee2Y93g345s/UzMq3JiCmT/TuTplaiNXFkeLXM=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726877AbgINOxD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 14 Sep 2020 10:53:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53288 "EHLO mail.kernel.org"
+        id S1726011AbgINPD7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 14 Sep 2020 11:03:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56338 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726772AbgINOwr (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 14 Sep 2020 10:52:47 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4F28D20715;
-        Mon, 14 Sep 2020 14:52:46 +0000 (UTC)
+        id S1726297AbgINPAd (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 14 Sep 2020 11:00:33 -0400
+Content-Type: text/plain; charset="utf-8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600095166;
-        bh=M2DIyqZOF1aOYfADXh4hvgjSrHg+ONJQHW16u8xBjA4=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=0d2IhcbTsNq3ez+y+kRsDIEtX9nWSFo8nFYmvPWfwl7rZ/Dt+D9H9A/+CU3+bFfFk
-         a/zyAD4incso7WguvIDi8GCiGuKprme3/qQN79S57e2CJGeQNIBS6kicHaU3gLUdlO
-         eyd4Vg3/HIctzsK49G8UImGV9DWEPrApD0H8q9SM=
-Date:   Mon, 14 Sep 2020 15:51:58 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
-        Colin King <colin.king@canonical.com>,
-        Andy Gross <agross@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-In-Reply-To: <20200910150410.750959-1-colin.king@canonical.com>
-References: <20200910150410.750959-1-colin.king@canonical.com>
-Subject: Re: [PATCH] spi: qup: remove redundant assignment to variable ret
-Message-Id: <160009511676.5702.4493764455278443968.b4-ty@kernel.org>
+        s=default; t=1600095632;
+        bh=5i0cdu7uj6m2FyMh4r0d6TsvM3tHIa7sOMxSTjjK5GU=;
+        h=Subject:From:Date:To:From;
+        b=z5i0Z2rXEhMtOMOlen7Dr+idG2LUl7fhJRc3+TZ3LIzm/y1YoJjuFzGL2GeWTbHPt
+         rkICCFVafrmhcGaL1qH1L5himEy9v0YayXdhyDM1WQBtBImb4GE6fT/KoAECpUrw8y
+         7T2drM6K7bTlgeA4AgjUlqHxoUyBxnU4o7PMOX+A=
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From:   patchwork-bot+linux-spi@kernel.org
+Message-Id: <160009563266.1732.11267419880423428731.git-patchwork-summary@kernel.org>
+Date:   Mon, 14 Sep 2020 15:00:32 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 10 Sep 2020 16:04:10 +0100, Colin King wrote:
-> The variable ret is being initialized with a value that is
-> never read and it is being updated later with a new value. The
-> initialization is redundant and can be removed.
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (refs/heads/for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Series: qspi binding and DTS fixes
+  Submitter: Florian Fainelli <f.fainelli@gmail.com>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=339751
+  Link: <20200827181842.1000451-1-f.fainelli@gmail.com>
+    Patches: [1/5] dt-bindings: spi: Fix spi-bcm-qspi compatible ordering
+             [2/5] ARM: dts: bcm: HR2: Fixed QSPI compatible string
+             [3/5] ARM: dts: NSP: Fixed QSPI compatible string
+             [4/5] ARM: dts: BCM5301X: Fixed QSPI compatible string
+             [5/5] arm64: dts: ns2: Fixed QSPI compatible string
 
-Thanks!
+Patch: [REBASE] spi: sprd: Simplify with dev_err_probe()
+  Submitter: Krzysztof Kozlowski <krzk@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=346757
+  Link: <20200910160706.5883-1-krzk@kernel.org>
 
-[1/1] spi: qup: remove redundant assignment to variable ret
-      commit: 4a6c7d6f940107d6383291e2cb450039790b752d
+Total patches: 6
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/pwbot

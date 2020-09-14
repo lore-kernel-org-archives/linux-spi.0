@@ -6,56 +6,55 @@ X-Spam-Status: No, score=-10.9 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
 	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2627DC43461
-	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 14:55:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E202C433E2
+	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 14:56:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DE0E2206BE
-	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 14:55:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5BEEF20732
+	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 14:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1600095347;
-	bh=20if88FRBdbGtqEL7fqEJYDNeUXmQ356etNiMZV1+CE=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=RvFtMHQT2NhLyCsUEfPko6LeJr5KO4XXg/2atgY1ho+zHevwLRP8A/c4m2FxcTeqS
-	 e6IAg5hwZbsCshshDVlnc8en3DOQ7G37I096aOO4skf0ZcsSkeTbHCBUoJZkjW0Hji
-	 UYL1dy4uOyunru0h/O2h3m1j2H3muBQ20qp+oZxs=
+	s=default; t=1600095416;
+	bh=iB4uoVqwoeOFsag4iQb11btoN3adksoNl245S5+nSp4=;
+	h=Date:From:To:In-Reply-To:References:Subject:List-ID:From;
+	b=NZBAUNFgnneTnmSY0rTF84LtHH7hLNUmzrBjvFPG61u2KN4QzHqWX5Yq/Yr14cVA6
+	 vq303LNclO+tdOe+RpY42B8oYVgpilfmh1GgztYy7vREDl3Sam5JlugSQnRMgs4X6I
+	 yijNymbvxAaXHbdeExWD5yF/9zsatvbwfL44pYdg=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726744AbgINOzm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 14 Sep 2020 10:55:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53614 "EHLO mail.kernel.org"
+        id S1726525AbgINOzj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 14 Sep 2020 10:55:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53712 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726356AbgINOxM (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 14 Sep 2020 10:53:12 -0400
+        id S1726747AbgINOxV (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 14 Sep 2020 10:53:21 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1C52B20715;
-        Mon, 14 Sep 2020 14:53:10 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 12143206BE;
+        Mon, 14 Sep 2020 14:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600095191;
-        bh=20if88FRBdbGtqEL7fqEJYDNeUXmQ356etNiMZV1+CE=;
+        s=default; t=1600095201;
+        bh=iB4uoVqwoeOFsag4iQb11btoN3adksoNl245S5+nSp4=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=uCocBov4oB89i1msgky0qozFIo2EsmibalIP2pTGI/lPgGGMyi64MKwK7Nr1Covfn
-         PvDaHOqUIms7/uIO2Rt8r11q/k1pGzTc7AeuCUcxfhbSnRSOqeoL9nCQ6Xp1ehYJku
-         lzHp6XZ1KcUwubSFEWuM/zwBomMxg44gf+dSisAc=
-Date:   Mon, 14 Sep 2020 15:52:23 +0100
+        b=XRW+qN5QBxuMEaMNYLde6OBINJHVgJNCzzHrBQcAjaQn5CEh5E0D5jGkbVWRdpSid
+         3RpW1Wl8SM96BO4SF0NqOgBpCWGtFpn/m35QVyS8YpoaIHqGpVWaKUv89ayAFOH+L8
+         I/lDoFCAXpr2SAHojmhLPEjJW3jKxYtSwoYElcAo=
+Date:   Mon, 14 Sep 2020 15:52:33 +0100
 From:   Mark Brown <broonie@kernel.org>
-To:     Florian Fainelli <f.fainelli@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        Ray Jui <ray.jui@broadcom.com>
-Cc:     linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        bcm-kernel-feedback-list@broadcom.com, devicetree@vger.kernel.org
-In-Reply-To: <20200910152539.45584-1-ray.jui@broadcom.com>
-References: <20200910152539.45584-1-ray.jui@broadcom.com>
-Subject: Re: [PATCH 1/4] dt-bindings: spi: Add compatible string for brcmstb SoCs
-Message-Id: <160009511834.5702.10954218363830361529.b4-ty@kernel.org>
+To:     Krzysztof Kozlowski <krzk@kernel.org>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        linux-spi@vger.kernel.org, Orson Zhai <orsonzhai@gmail.com>,
+        linux-kernel@vger.kernel.org, Baolin Wang <baolin.wang7@gmail.com>
+In-Reply-To: <20200910160706.5883-1-krzk@kernel.org>
+References: <20200910160706.5883-1-krzk@kernel.org>
+Subject: Re: [PATCH REBASE] spi: sprd: Simplify with dev_err_probe()
+Message-Id: <160009511676.5702.17349845882121414868.b4-ty@kernel.org>
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 10 Sep 2020 08:25:36 -0700, Ray Jui wrote:
-> Add compatible string for brcmstb 7445 SoCs.
+On Thu, 10 Sep 2020 18:07:06 +0200, Krzysztof Kozlowski wrote:
+> Common pattern of handling deferred probe can be simplified with
+> dev_err_probe().  Less code and the error value gets printed.
 
 Applied to
 
@@ -63,14 +62,8 @@ Applied to
 
 Thanks!
 
-[1/4] spi: Add compatible string for brcmstb SoCs
-      commit: d9f0cf9f1176d36d3824459d5b061f4719fcbb8a
-[2/4] spi: bcm-qspi: Add compatible string for BRCMSTB 7445 SoCs
-      commit: e0eeb76b818ad93718f9640b0bdad909b453a3b8
-[3/4] spi: bcm-qspi: Fix probe regression on iProc platforms
-      commit: 9a852d44b26f8e60e2ae13df563824c0f8489135
-[4/4] spi: bcm-qspi: Clean up 7425, 7429, and 7435 settings
-      commit: 3cf5d198785a6b454e6a97246795b0043aff9ac1
+[1/1] spi: sprd: Simplify with dev_err_probe()
+      commit: 9d99e55833dddf76dd6470e7ce97201abb612c03
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

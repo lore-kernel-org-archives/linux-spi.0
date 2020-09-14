@@ -2,71 +2,131 @@ Return-Path: <SRS0=909V=CX=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.9 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.9 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 44053C2BC11
-	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 15:04:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EC84DC433E2
+	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 17:05:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 03CAD20732
-	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 15:04:01 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B75F420770
+	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 17:05:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1600095842;
-	bh=5i0cdu7uj6m2FyMh4r0d6TsvM3tHIa7sOMxSTjjK5GU=;
-	h=Subject:From:Date:To:List-ID:From;
-	b=Z7+5z4BCRef5db2MhUuz7iEifG/xudcVjWAGbSKodu6e5u1uuk5fcq/Z6EOsaX2ww
-	 d4TVNAU1ZQIcni0KGAVcDsLhXl2W6pWB79Azem3oJHOqMa7yuy/gEanGtntnL/M20w
-	 h0ee2Y93g345s/UzMq3JiCmT/TuTplaiNXFkeLXM=
+	s=default; t=1600103112;
+	bh=4wZr63C8pkIo1vI82osNj8vsoS+ubogokVn9LtJTXhw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=JgrD2gpt4hzGxALrCdemX76bniXilaiNPHRClQ043Ts5EQPpHvms/o314aVrIKDd9
+	 h6y1XsTH58Jqforp0xCL9x5abS1YeSa1doRyzbtBS/jO0ciu34LQM8wd9+LIpPR0tp
+	 adyXid0Ubi4McwnVIilvKLWryiHBJYZf2oTovdwQ=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726011AbgINPD7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 14 Sep 2020 11:03:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56338 "EHLO mail.kernel.org"
+        id S1726125AbgINREt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 14 Sep 2020 13:04:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60274 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726297AbgINPAd (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 14 Sep 2020 11:00:33 -0400
-Content-Type: text/plain; charset="utf-8"
+        id S1726520AbgINNF1 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 14 Sep 2020 09:05:27 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9353B208E4;
+        Mon, 14 Sep 2020 13:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600095632;
-        bh=5i0cdu7uj6m2FyMh4r0d6TsvM3tHIa7sOMxSTjjK5GU=;
-        h=Subject:From:Date:To:From;
-        b=z5i0Z2rXEhMtOMOlen7Dr+idG2LUl7fhJRc3+TZ3LIzm/y1YoJjuFzGL2GeWTbHPt
-         rkICCFVafrmhcGaL1qH1L5himEy9v0YayXdhyDM1WQBtBImb4GE6fT/KoAECpUrw8y
-         7T2drM6K7bTlgeA4AgjUlqHxoUyBxnU4o7PMOX+A=
+        s=default; t=1600088670;
+        bh=4wZr63C8pkIo1vI82osNj8vsoS+ubogokVn9LtJTXhw=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=egK+kg8ERBdgy1+vsiw6RK/j+tRXRdiK6bFYUJvqRD1WwSKJa+rIlzS1E/hMU+Yhp
+         YQ00s8nwokJjjuA1T1bNAUMgp9LQpZ7LHbwFRFftcIpSeGciYzn9ULfy45e9R1+Ws3
+         nq3/rt29RISu2lvCsmLoM3UZnXIaOQfxBIkDBEPk=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Gustav Wiklander <gustavwi@axis.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.8 26/29] spi: Fix memory leak on splited transfers
+Date:   Mon, 14 Sep 2020 09:03:55 -0400
+Message-Id: <20200914130358.1804194-26-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200914130358.1804194-1-sashal@kernel.org>
+References: <20200914130358.1804194-1-sashal@kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From:   patchwork-bot+linux-spi@kernel.org
-Message-Id: <160009563266.1732.11267419880423428731.git-patchwork-summary@kernel.org>
-Date:   Mon, 14 Sep 2020 15:00:32 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello:
+From: Gustav Wiklander <gustavwi@axis.com>
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (refs/heads/for-next):
+[ Upstream commit b59a7ca15464c78ea1ba3b280cfc5ac5ece11ade ]
 
-Series: qspi binding and DTS fixes
-  Submitter: Florian Fainelli <f.fainelli@gmail.com>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=339751
-  Link: <20200827181842.1000451-1-f.fainelli@gmail.com>
-    Patches: [1/5] dt-bindings: spi: Fix spi-bcm-qspi compatible ordering
-             [2/5] ARM: dts: bcm: HR2: Fixed QSPI compatible string
-             [3/5] ARM: dts: NSP: Fixed QSPI compatible string
-             [4/5] ARM: dts: BCM5301X: Fixed QSPI compatible string
-             [5/5] arm64: dts: ns2: Fixed QSPI compatible string
+In the prepare_message callback the bus driver has the
+opportunity to split a transfer into smaller chunks.
+spi_map_msg is done after prepare_message.
 
-Patch: [REBASE] spi: sprd: Simplify with dev_err_probe()
-  Submitter: Krzysztof Kozlowski <krzk@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=346757
-  Link: <20200910160706.5883-1-krzk@kernel.org>
+Function spi_res_release releases the splited transfers
+in the message. Therefore spi_res_release should be called
+after spi_map_msg.
 
-Total patches: 6
+The previous try at this was commit c9ba7a16d0f1
+which released the splited transfers after
+spi_finalize_current_message had been called.
+This introduced a race since the message struct could be
+out of scope because the spi_sync call got completed.
 
+Fixes this leak on spi bus driver spi-bcm2835.c when transfer
+size is greater than 65532:
+
+Kmemleak:
+sg_alloc_table+0x28/0xc8
+spi_map_buf+0xa4/0x300
+__spi_pump_messages+0x370/0x748
+__spi_sync+0x1d4/0x270
+spi_sync+0x34/0x58
+spi_test_execute_msg+0x60/0x340 [spi_loopback_test]
+spi_test_run_iter+0x548/0x578 [spi_loopback_test]
+spi_test_run_test+0x94/0x140 [spi_loopback_test]
+spi_test_run_tests+0x150/0x180 [spi_loopback_test]
+spi_loopback_test_probe+0x50/0xd0 [spi_loopback_test]
+spi_drv_probe+0x84/0xe0
+
+Signed-off-by: Gustav Wiklander <gustavwi@axis.com>
+Link: https://lore.kernel.org/r/20200908151129.15915-1-gustav.wiklander@axis.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 5c5a95792c0d3..65ca552654794 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1305,8 +1305,6 @@ static int spi_transfer_one_message(struct spi_controller *ctlr,
+ 	if (msg->status && ctlr->handle_err)
+ 		ctlr->handle_err(ctlr, msg);
+ 
+-	spi_res_release(ctlr, msg);
+-
+ 	spi_finalize_current_message(ctlr);
+ 
+ 	return ret;
+@@ -1694,6 +1692,13 @@ void spi_finalize_current_message(struct spi_controller *ctlr)
+ 
+ 	spi_unmap_msg(ctlr, mesg);
+ 
++	/* In the prepare_messages callback the spi bus has the opportunity to
++	 * split a transfer to smaller chunks.
++	 * Release splited transfers here since spi_map_msg is done on the
++	 * splited transfers.
++	 */
++	spi_res_release(ctlr, mesg);
++
+ 	if (ctlr->cur_msg_prepared && ctlr->unprepare_message) {
+ 		ret = ctlr->unprepare_message(ctlr, mesg);
+ 		if (ret) {
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/pwbot
+2.25.1
+

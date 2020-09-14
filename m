@@ -2,79 +2,92 @@ Return-Path: <SRS0=909V=CX=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.9 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-8.1 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7CEFEC433E2
-	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 10:45:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 53492C43461
+	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 13:11:58 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 357CE2076C
-	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 10:45:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0989E208E4
+	for <linux-spi@archiver.kernel.org>; Mon, 14 Sep 2020 13:11:57 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=dh-electronics.com header.i=@dh-electronics.com header.b="tkjqpb1o"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=mg.codeaurora.org header.i=@mg.codeaurora.org header.b="bEUnareF"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726476AbgINKk7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 14 Sep 2020 06:40:59 -0400
-Received: from mx2.securetransport.de ([188.68.39.254]:47616 "EHLO
-        mx2.securetransport.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726449AbgINKka (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 14 Sep 2020 06:40:30 -0400
-X-Greylist: delayed 384 seconds by postgrey-1.27 at vger.kernel.org; Mon, 14 Sep 2020 06:40:26 EDT
-Received: from mail.dh-electronics.com (business-24-134-97-169.pool2.vodafone-ip.de [24.134.97.169])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1726537AbgINNLk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 14 Sep 2020 09:11:40 -0400
+Received: from m43-7.mailgun.net ([69.72.43.7]:37601 "EHLO m43-7.mailgun.net"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726734AbgINNKK (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 14 Sep 2020 09:10:10 -0400
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1600088996; h=Content-Transfer-Encoding: Content-Type:
+ In-Reply-To: MIME-Version: Date: Message-ID: From: References: Cc: To:
+ Subject: Sender; bh=qzjPchJ1lLROgB9pP+RCaQlLLLIEeCxtEGrdUIxmEZU=; b=bEUnareFkKMI6SuGS8L1qiZJldoGk8COMiwuvfxBT5YVQD1eWFJnWYQC8LwtPAvxzpsduuEb
+ ddRhaX9WnndBgpS/mKVYENXOmqdgdDzBezPdKBNoLzmqjf4ReCPP1PHdVbpa0AEqpjEKIM3/
+ vum5+NJ26TptNJzDVq0OiM//Hmk=
+X-Mailgun-Sending-Ip: 69.72.43.7
+X-Mailgun-Sid: WyIzNzdmZSIsICJsaW51eC1zcGlAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org
+ (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
+ smtp-out-n05.prod.us-west-2.postgun.com with SMTP id
+ 5f5f6b95be06707b342ac170 (version=TLS1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Mon, 14 Sep 2020 13:09:41
+ GMT
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id D362AC433F0; Mon, 14 Sep 2020 13:09:40 +0000 (UTC)
+Received: from [192.168.43.98] (unknown [47.8.187.49])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mx2.securetransport.de (Postfix) with ESMTPSA id 4025B5E879;
-        Mon, 14 Sep 2020 12:33:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dh-electronics.com;
-        s=dhelectronicscom; t=1600079597;
-        bh=QqiALWQWqzk3v5Egngf7/oNah0zdhttVToTd3Q1YPvQ=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-        b=tkjqpb1o8Of4A2fKxnLJoTJGfj3Sgr2FaVttqYfn6gwrqcAPlozgl5MpScJ/8J7vb
-         +F7vh1Z/4Il6S6ICqH668xixkwxizgft4T0+gSpEITbuEROGQiU/OVmSrGh4CX1Msm
-         9Twyh5t3llDHa3qPPhy+Doy49mMQ+1TU82yDjNz+uFmAzB/ZUPXs2zaaLjUYn0kIID
-         BLbQDu3+iXvqwd+7hBQINr5Agq35uSPcJWt1VqkeB0r66OMlUsDVUomW1UhmeXDU4u
-         7usFuA7bMc7yy7Imb/9Ne2T4JGI69wb1suEW9Un+ec3f5fbFkiwzDElqHKVJclP0R0
-         O3NI5qCowHLqA==
-Received: from DHPWEX01.DH-ELECTRONICS.ORG (2001:470:76a7:2::30) by
- DHPWEX01.DH-ELECTRONICS.ORG (2001:470:76a7:2::30) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.659.4;
- Mon, 14 Sep 2020 12:33:10 +0200
-Received: from deb10-lzenz.dh-electronics.org (10.64.6.180) by
- DHPWEX01.DH-ELECTRONICS.ORG (10.64.2.30) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.659.4
- via Frontend Transport; Mon, 14 Sep 2020 12:33:10 +0200
-From:   Ludwig Zenz <lzenz@dh-electronics.com>
-To:     <alain.volmat@st.com>
-CC:     <alexandre.torgue@st.com>, <amelie.delaunay@st.com>,
-        <broonie@kernel.org>, <fabrice.gasnier@st.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <mcoquelin.stm32@gmail.com>, <marex@denx.de>
-Subject: [PATCH v2 2/5] spi: stm32: fix fifo threshold level in case of short transfer
-Date:   Mon, 14 Sep 2020 12:33:00 +0200
-Message-ID: <20200914103300.5832-1-lzenz@dh-electronics.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <1597043558-29668-3-git-send-email-alain.volmat@st.com>
-References: <1597043558-29668-3-git-send-email-alain.volmat@st.com>
+        (Authenticated sender: akashast)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id BE9E5C433CA;
+        Mon, 14 Sep 2020 13:09:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BE9E5C433CA
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=akashast@codeaurora.org
+Subject: Re: [PATCH] spi: spi-geni-qcom: Don't wait to start 1st transfer if
+ transmitting
+To:     Douglas Anderson <dianders@chromium.org>,
+        Mark Brown <broonie@kernel.org>
+Cc:     swboyd@chromium.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+References: <20200912111716.1.Ied5e843fad0d6b733a1fb8bcfb364dd2fa889eb3@changeid>
+From:   Akash Asthana <akashast@codeaurora.org>
+Message-ID: <838a6074-73e6-a48b-2684-5ea2ebff443a@codeaurora.org>
+Date:   Mon, 14 Sep 2020 18:39:25 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-X-klartext: yes
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+In-Reply-To: <20200912111716.1.Ied5e843fad0d6b733a1fb8bcfb364dd2fa889eb3@changeid>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-> When transfer is shorter than half of the fifo, set the data packet size
-> up to transfer size instead of up to half of the fifo.
-> Check also that threshold is set at least to 1 data frame.
 
-Through a git-bisect we have identified this patch as problematic. We have an application that uses a SPI protocol with telegrams of length 2 to 16 bytes. Due to this patch we have errors in the data transfer of the MOSI direction. We use SPI in PIO mode.
+On 9/12/2020 11:47 PM, Douglas Anderson wrote:
+> If we're sending bytes over SPI, we know the FIFO is empty at the
+> start of the transfer.  There's no reason to wait for the interrupt
+> telling us to start--we can just start right away.  Then if we
+> transmit everything in one swell foop we don't even need to bother
+> listening for TX interrupts.
+>
+> In a test of "flashrom -p ec -r /tmp/foo.bin" interrupts were reduced
+> from ~30560 to ~29730, about a 3% savings.
+>
+> This patch looks bigger than it is because I moved a few functions
+> rather than adding a forward declaration.  The only actual change to
+> geni_spi_handle_tx() was to make it return a bool indicating if there
+> is more to tx.
+Reviewed-by: Akash Asthana <akashast@codeaurora.org>
+> Signed-off-by: Douglas Anderson<dianders@chromium.org>
 
-Please explain what this patch should improve or what exactly is changed in the behaviour.
+-- 
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,\na Linux Foundation Collaborative Project
 
-best regards,
-Ludwig Zenz

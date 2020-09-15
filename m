@@ -1,90 +1,76 @@
-Return-Path: <SRS0=XuL+=CY=vger.kernel.org=linux-spi-owner@kernel.org>
+Return-Path: <SRS0=Dyv7=CZ=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E5215C433E2
-	for <linux-spi@archiver.kernel.org>; Tue, 15 Sep 2020 23:42:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6708DC2D0E3
+	for <linux-spi@archiver.kernel.org>; Wed, 16 Sep 2020 00:37:45 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AD9852078D
-	for <linux-spi@archiver.kernel.org>; Tue, 15 Sep 2020 23:42:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1600213359;
-	bh=gAOSKZKoFZcb8CSPjIhGpjP7jdl2VsRtqv9wSkkVAqM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=PJgy3mbsP/O6ynRhYRm+dmxySu28mJcOa/x2AWhnSCbKNdIahaYrxx+9V/5JgIzPg
-	 G1ALI9TOdwpfmXgkklkJ+fO1bitCIfvUuza7Loryx9cXvsXzuxtMR5Neqh3oS0WMdz
-	 Pg7MTRotszhQIPg8FXzFvvtpdPpbiXYUFl+LC2RM=
+	by mail.kernel.org (Postfix) with ESMTP id 32A7C20732
+	for <linux-spi@archiver.kernel.org>; Wed, 16 Sep 2020 00:37:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727396AbgIOXmc (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 15 Sep 2020 19:42:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47654 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727020AbgIOOei (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 15 Sep 2020 10:34:38 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 14387206A1;
-        Tue, 15 Sep 2020 14:08:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600178937;
-        bh=gAOSKZKoFZcb8CSPjIhGpjP7jdl2VsRtqv9wSkkVAqM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kHB4Z0m8Iw9kMOxrrsoZCMv7W6q5h6kgEdn3K3a5tBamH6jW8n/rBya39fwdUpgzM
-         xwBZdgc5T9Kis/BMTvnU206XgGJa1XBu0s7va423lb7KLL4d0L4XjduDX7/vSOyEjC
-         n3xqT4n4ukHN2PcZ0ue56RQYuF5ZerrjpAC91eq8=
-Date:   Tue, 15 Sep 2020 15:08:08 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Marc Kleine-Budde <mkl@pengutronix.de>
+        id S1727304AbgIPAhi (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 15 Sep 2020 20:37:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52194 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726566AbgIONXw (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 15 Sep 2020 09:23:52 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75C09C061A10
+        for <linux-spi@vger.kernel.org>; Tue, 15 Sep 2020 06:23:22 -0700 (PDT)
+Received: from heimdall.vpn.pengutronix.de ([2001:67c:670:205:1d::14] helo=blackshift.org)
+        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <mkl@pengutronix.de>)
+        id 1kIAvT-0007Yn-Oe; Tue, 15 Sep 2020 15:23:15 +0200
+From:   Marc Kleine-Budde <mkl@pengutronix.de>
+To:     Mark Brown <broonie@kernel.org>
 Cc:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
         Florian Fainelli <f.fainelli@gmail.com>,
         Ray Jui <rjui@broadcom.com>,
         Scott Branden <sbranden@broadcom.com>,
         bcm-kernel-feedback-list@broadcom.com, linux-spi@vger.kernel.org,
         linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de
-Subject: Re: [PATCH] spi: bcm2835: mark polling_limit_us as static
-Message-ID: <20200915140808.GA4913@sirena.org.uk>
-References: <20200915132311.1112865-1-mkl@pengutronix.de>
+        linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH] spi: bcm2835: mark polling_limit_us as static
+Date:   Tue, 15 Sep 2020 15:23:11 +0200
+Message-Id: <20200915132311.1112865-1-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="tThc/1wpZn/ma/RB"
-Content-Disposition: inline
-In-Reply-To: <20200915132311.1112865-1-mkl@pengutronix.de>
-X-Cookie: Linux is obsolete
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:205:1d::14
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 Sender: linux-spi-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+This patch marks the global variable "polling_limit_us" as static.
 
---tThc/1wpZn/ma/RB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/spi/spi-bcm2835.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On Tue, Sep 15, 2020 at 03:23:11PM +0200, Marc Kleine-Budde wrote:
-> This patch marks the global variable "polling_limit_us" as static.
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index c45d76c848c8..41986ac0fbfb 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -75,7 +75,7 @@
+ #define DRV_NAME	"spi-bcm2835"
+ 
+ /* define polling limits */
+-unsigned int polling_limit_us = 30;
++static unsigned int polling_limit_us = 30;
+ module_param(polling_limit_us, uint, 0664);
+ MODULE_PARM_DESC(polling_limit_us,
+ 		 "time in us to run a transfer in polling mode\n");
+-- 
+2.28.0
 
-Thanks but I applied a patch for this yesterday.
-
---tThc/1wpZn/ma/RB
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl9gysMACgkQJNaLcl1U
-h9CrnQf+IkqMUKRJmlqObHMXL6SUay/wRAZt08eufp6R8ICzpSm6VMN/ldtZs0y+
-+33xXpEdMdWuW/Kif8c8LN4LM4ixoR2z5DIopZJvsi5yV4AJ6S2Cox4l3D6ysdpy
-wiWu7wp4WSunZ52IbwJHwqwu9UOkZlYx376FicmsGb07TFz2TEywafF58cDraSWS
-uz5QUBve18zSExbf5EAf5WeKLVXBeg3xdsVxW/dcpt8GfPRGcFzcei1tNy7GUY9R
-Ti3r7KojfIvQKF4qV+ruPh/YA+6tN4/DeA65pYLohL0lmxqGJC3LSJAmLiM6pp4I
-MF/iKyQM/FLmJWZd3i0PIwl+YXpjnw==
-=MgLv
------END PGP SIGNATURE-----
-
---tThc/1wpZn/ma/RB--

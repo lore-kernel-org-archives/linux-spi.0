@@ -2,85 +2,66 @@ Return-Path: <SRS0=UcEP=C2=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=3.4.0
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 74CFAC433E2
-	for <linux-spi@archiver.kernel.org>; Thu, 17 Sep 2020 17:41:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A96CC43461
+	for <linux-spi@archiver.kernel.org>; Thu, 17 Sep 2020 19:02:49 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1ABB820872
-	for <linux-spi@archiver.kernel.org>; Thu, 17 Sep 2020 17:41:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E725120853
+	for <linux-spi@archiver.kernel.org>; Thu, 17 Sep 2020 19:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1600364469;
-	bh=JRzJocDVRwRz8Eu7zhneKPg+A1fbAeosEYJUkbhaBzQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=I+ZEEV8zNidS1gFm2Pn03HnTAsHAtpFVLuvifY5LtIdo0N+rZZNskSGF2TmguMd0o
-	 8H343VDZU8Yl54nKn7bMaxVUTKe86t00RSOM4yXwa/wbgK5JUCoJi5OXp3/zmTTQYU
-	 TXdMIfOezgWAV1cPcYyA10OcxexSmV84nwuWvTQ4=
+	s=default; t=1600369369;
+	bh=tODsZyJ10X/3wsBOdW9RbDI0OhinwasoFgyKOZjbgZo=;
+	h=Subject:From:Date:To:List-ID:From;
+	b=Y2Esp0XWfj6GcXt5zG1QjuLLbl+694hHzDB1oy3aDuCrHeHsNlPr6FStI9dHcqAUw
+	 wjHGSKzhbLwEVUJxPeadDtnAa3ViL1PRXNYLWoheqWlUivHvehuticvZfpkXkWhHm9
+	 AMkHqcnYalh32QooITnvd4g7G03E60BF4uwITooo=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726577AbgIQRkp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 17 Sep 2020 13:40:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41440 "EHLO mail.kernel.org"
+        id S1726430AbgIQTA2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 17 Sep 2020 15:00:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60358 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726444AbgIQRka (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 17 Sep 2020 13:40:30 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AF749221EE;
-        Thu, 17 Sep 2020 17:29:09 +0000 (UTC)
+        id S1726667AbgIQTAM (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 17 Sep 2020 15:00:12 -0400
+Content-Type: text/plain; charset="utf-8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600363750;
-        bh=JRzJocDVRwRz8Eu7zhneKPg+A1fbAeosEYJUkbhaBzQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=YFiBEHdt6If6PKA0rqcooqTP+SeSJY5c8XgyoeWyjpMLTP9ITzjeL29Okkkh4625r
-         h0+yAD2VCb3c+yjFf2lC4GWkBrBZvQfaTP3Llk87hOHngzxqDqyjR/gJOk4kDThAVn
-         8VwkILTsfxGRxDjFxGbyW1q3s8HPaB03plBy/TZI=
-Date:   Thu, 17 Sep 2020 18:28:19 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Amit Kumar Mahapatra <amit.kumar-mahapatra@xilinx.com>
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        michal.simek@xilinx.com, sgoud@xilinx.com, nagasure@xilinx.com
-Subject: Re: [PATCH 1/3] spi: spi-zynqmp-gqspi: Fix kernel-doc warnings
-Message-ID: <20200917172819.GA50407@sirena.org.uk>
-References: <20200909152708.2767-1-amit.kumar-mahapatra@xilinx.com>
- <20200909152708.2767-2-amit.kumar-mahapatra@xilinx.com>
+        s=default; t=1600369211;
+        bh=tODsZyJ10X/3wsBOdW9RbDI0OhinwasoFgyKOZjbgZo=;
+        h=Subject:From:Date:To:From;
+        b=rk/VQktxxEl2giWK6nJ+ydCqzK9XOOEjinTN7u+P4HtcCl6qUbrBF69lNC8uNBs3r
+         DXwoOWTz6/+iPxHfU7nx1zZzl5uV4zcse2uETKavh1VvOa0cYwu7IDt1smQnBecEWr
+         mccDmTh3ANOgOlEB7RZ0Fqx0m45VigogoQvH9ZY4=
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="FL5UXtIhxfXey3p5"
-Content-Disposition: inline
-In-Reply-To: <20200909152708.2767-2-amit.kumar-mahapatra@xilinx.com>
-X-Cookie: "Yo baby yo baby yo."
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From:   patchwork-bot+linux-spi@kernel.org
+Message-Id: <160036921101.10349.2310086069492752110.git-patchwork-summary@kernel.org>
+Date:   Thu, 17 Sep 2020 19:00:11 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Hello:
 
---FL5UXtIhxfXey3p5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (refs/heads/for-next):
 
-On Wed, Sep 09, 2020 at 09:27:06AM -0600, Amit Kumar Mahapatra wrote:
-> Fix kernel-doc warnings in ZynqMP qspi driver file.
+Series: spi: Fixes for FSI-attached controller
+  Submitter: Eddie James <eajames@linux.ibm.com>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=346185
+  Link: <20200909222857.28653-1-eajames@linux.ibm.com>
+    Patches: [v2,1/6] spi: fsi: Handle 9 to 15 byte transfers lengths
+             [v2,2/6] spi: fsi: Fix clock running too fast
+             [v2,3/6] spi: fsi: Fix use of the bneq+ sequencer instruction
+             [v2,4/6] dt-bindings: fsi: fsi2spi: Add compatible string for restricted version
+             [v2,5/6] spi: fsi: Implement restricted size for certain controllers
+             [v2,6/6] spi: fsi: Check mux status before transfers
 
-This doesn't apply against current code, please check and resend.
+Total patches: 6
 
---FL5UXtIhxfXey3p5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl9jnLMACgkQJNaLcl1U
-h9C4IQf/d5SDj8OiR48Iw4Rb+CIX+uNuskYXsPqB17uibjxOIvEBm3RZt8awHK4w
-JsVpSG6W3NzmPl4erAmIzg/5z2dstothRMBZWyBlL1uuIZAaCOKtipa708Q/p3K0
-WbmYKRiHwpSiA5Zer9XWkCPxvgAXzLFQf9W1Mw5v6i4ZTCR9DQLkoZ37crnFGsyw
-DdTYp63iRa21wamnFLqnIfH30kKqS4zAC4JCDHMif/re0XDHVM+uoTJtu/yCGa8r
-qJtJaluvErNoQbZLCYN32xiZIGphDFXoAwzSKJxNdAs3HgkNW0E6frqv6tVV2zoU
-r7mVJ4IKObDnw/Ig6be8t5V1tVC2hA==
-=4afI
------END PGP SIGNATURE-----
-
---FL5UXtIhxfXey3p5--
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/pwbot

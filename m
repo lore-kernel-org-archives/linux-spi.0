@@ -2,66 +2,90 @@ Return-Path: <SRS0=UcEP=C2=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A96CC43461
-	for <linux-spi@archiver.kernel.org>; Thu, 17 Sep 2020 19:02:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C37BC433E2
+	for <linux-spi@archiver.kernel.org>; Thu, 17 Sep 2020 19:02:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E725120853
-	for <linux-spi@archiver.kernel.org>; Thu, 17 Sep 2020 19:02:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 29E9420853
+	for <linux-spi@archiver.kernel.org>; Thu, 17 Sep 2020 19:02:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1600369369;
-	bh=tODsZyJ10X/3wsBOdW9RbDI0OhinwasoFgyKOZjbgZo=;
-	h=Subject:From:Date:To:List-ID:From;
-	b=Y2Esp0XWfj6GcXt5zG1QjuLLbl+694hHzDB1oy3aDuCrHeHsNlPr6FStI9dHcqAUw
-	 wjHGSKzhbLwEVUJxPeadDtnAa3ViL1PRXNYLWoheqWlUivHvehuticvZfpkXkWhHm9
-	 AMkHqcnYalh32QooITnvd4g7G03E60BF4uwITooo=
+	s=default; t=1600369371;
+	bh=5j+4R+6a1Y3ohIw1PIgcrqZxCypD7KxxGmhRmqZL/Fg=;
+	h=Date:From:To:In-Reply-To:References:Subject:List-ID:From;
+	b=2EV3VboOFpnEIra2k0H4bRNDOAMKC6DyPqO3A9k2+p7nCr9A8a+dhVh1/kF6GiAf6
+	 FxhzTrg64KfCXgR/401HOEENSRnWK+bMHzii+tRDdK00oytuu+t5HW+5psFvqN3iFn
+	 k5hwg7UBSZ/ptAf7y/brHh5e+K1fqFavOX4J5oXM=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726430AbgIQTA2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 17 Sep 2020 15:00:28 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60358 "EHLO mail.kernel.org"
+        id S1726514AbgIQS7g (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 17 Sep 2020 14:59:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60104 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726667AbgIQTAM (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 17 Sep 2020 15:00:12 -0400
-Content-Type: text/plain; charset="utf-8"
+        id S1726496AbgIQS72 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 17 Sep 2020 14:59:28 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id EFF73206A1;
+        Thu, 17 Sep 2020 18:59:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600369211;
-        bh=tODsZyJ10X/3wsBOdW9RbDI0OhinwasoFgyKOZjbgZo=;
-        h=Subject:From:Date:To:From;
-        b=rk/VQktxxEl2giWK6nJ+ydCqzK9XOOEjinTN7u+P4HtcCl6qUbrBF69lNC8uNBs3r
-         DXwoOWTz6/+iPxHfU7nx1zZzl5uV4zcse2uETKavh1VvOa0cYwu7IDt1smQnBecEWr
-         mccDmTh3ANOgOlEB7RZ0Fqx0m45VigogoQvH9ZY4=
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From:   patchwork-bot+linux-spi@kernel.org
-Message-Id: <160036921101.10349.2310086069492752110.git-patchwork-summary@kernel.org>
-Date:   Thu, 17 Sep 2020 19:00:11 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+        s=default; t=1600369168;
+        bh=5j+4R+6a1Y3ohIw1PIgcrqZxCypD7KxxGmhRmqZL/Fg=;
+        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+        b=HPB6FD/6HUNAs5vvh1Qgf3EhgdioIthOFzGxeyk/tv+uslRdvfJ4nV230EabcI8BC
+         Q8m+MW+/YNioIWG/4+TzFmtw+v3F020+110SMdS10GiXYYk1PCBWcThv6B92AaAime
+         eeabj2HzPK/LeYS8EnWg9uY3YRUx69RKfy49tB5M=
+Date:   Thu, 17 Sep 2020 19:58:38 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Ricardo Ribalda <ribalda@kernel.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20200915112936.320647-1-ribalda@kernel.org>
+References: <20200915112936.320647-1-ribalda@kernel.org>
+Subject: Re: [PATCH] spi: xilinx: Fix info message during probe
+Message-Id: <160036909795.20353.17587960090458836310.b4-ty@kernel.org>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello:
+On Tue, 15 Sep 2020 13:29:36 +0200, Ricardo Ribalda wrote:
+> The info message was showing the mapped address of the device. To avoid
+> security problems, all virtual addresses are converted to __ptrval__, so
+> the message was useless/ugly:
+> 
+> [    2.304949] xilinx_spi b0010000.spi-flash: at 0xB0010000 mapped to 0x(____ptrval____), irq=37
+> 
+> Use %pR instead:
+> 
+> [...]
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (refs/heads/for-next):
+Applied to
 
-Series: spi: Fixes for FSI-attached controller
-  Submitter: Eddie James <eajames@linux.ibm.com>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=346185
-  Link: <20200909222857.28653-1-eajames@linux.ibm.com>
-    Patches: [v2,1/6] spi: fsi: Handle 9 to 15 byte transfers lengths
-             [v2,2/6] spi: fsi: Fix clock running too fast
-             [v2,3/6] spi: fsi: Fix use of the bneq+ sequencer instruction
-             [v2,4/6] dt-bindings: fsi: fsi2spi: Add compatible string for restricted version
-             [v2,5/6] spi: fsi: Implement restricted size for certain controllers
-             [v2,6/6] spi: fsi: Check mux status before transfers
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Total patches: 6
+Thanks!
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/pwbot
+[1/1] spi: xilinx: Fix info message during probe
+      commit: 985be7ebfbf79767bc3705eee7de635edd4eba7d
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

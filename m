@@ -2,99 +2,199 @@ Return-Path: <SRS0=UMjt=C3=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D9C6C43463
-	for <linux-spi@archiver.kernel.org>; Fri, 18 Sep 2020 08:31:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 296F2C43464
+	for <linux-spi@archiver.kernel.org>; Fri, 18 Sep 2020 08:31:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 33C6E2085B
-	for <linux-spi@archiver.kernel.org>; Fri, 18 Sep 2020 08:31:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CBDAF21D43
+	for <linux-spi@archiver.kernel.org>; Fri, 18 Sep 2020 08:31:41 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="J3Jq/M3K"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="gIWNzXXI"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726478AbgIRIbb (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 18 Sep 2020 04:31:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56980 "EHLO
+        id S1726720AbgIRIbh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 18 Sep 2020 04:31:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726690AbgIRIba (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 18 Sep 2020 04:31:30 -0400
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00594C061788
-        for <linux-spi@vger.kernel.org>; Fri, 18 Sep 2020 01:31:29 -0700 (PDT)
-Received: by mail-pf1-x42c.google.com with SMTP id b124so2972161pfg.13
-        for <linux-spi@vger.kernel.org>; Fri, 18 Sep 2020 01:31:29 -0700 (PDT)
+        with ESMTP id S1726688AbgIRIbg (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 18 Sep 2020 04:31:36 -0400
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A409C061788
+        for <linux-spi@vger.kernel.org>; Fri, 18 Sep 2020 01:31:36 -0700 (PDT)
+Received: by mail-pg1-x541.google.com with SMTP id j34so3044852pgi.7
+        for <linux-spi@vger.kernel.org>; Fri, 18 Sep 2020 01:31:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=7g3/3HRNTSbPMO+XtztpkLjskFShJd05xhi/n73t2b4=;
-        b=J3Jq/M3KnJTcWXxQ/OmDCmtw9TKMVom83ObJCwfMadXSAPRuA4l/Jm2QB0eR4ojdNs
-         fPQo5XjYTFreg2ms90MvHm4DvWmPFmn67LMERc9pHP3vJ0cCl4LLTglj56jPBMAbtfpq
-         rB5yxrY/2z7aI/sV6h7qHpU7ZHO+WQxXuMtTM=
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=PtgT8oGdi7tJWYrZylWP5X+Qu5mtWrTjssOMjWBLBio=;
+        b=gIWNzXXI/65W9lRuW4rM4ZuoKImgBcadG9k1ZTZdlozcVR0w6y7VHSw5ovnfxV+y4s
+         me4YUC5KA0N/CovI2zxVtNEXpQ8aXA1C+c8tsuTUo/mPKvhbcVunwTsO8sq35KVqV2wP
+         tRlaD2cHR/DshX6cxwuMkOhzPkx4cdjcbJxpY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=7g3/3HRNTSbPMO+XtztpkLjskFShJd05xhi/n73t2b4=;
-        b=ZWEvUmkBkNd7LH3pyxoTERzBiIhNvSSUOysWSmcTnJZjNt1fKrA9EWOaqdPBwmG+XZ
-         cJIQjI/gZKyzbEj0z1XCQ6q9b9j1OArCtKCLDPDhPAVTZoqrqnZkW29ko8cE1cyGTLJt
-         yYdaIZQx3JXqUFPF+GCnMu0cuwcfW7vS2FDR8mOpxWLtg0QlWkdcba8b7g0Oew+dEyMh
-         tg+ZDouGrGB08T7OFd5tT2i+F8N1l9VhtYjF5SSNLNV/tnBYrzNn12aItjrcdH7XRYLa
-         F6FkK2CDq+MZTWtO/gg5jm5W/iIU2xdGU+D8ZYC2Op8ay9TzqFDAhkbw8NvseYosn1uT
-         7VOw==
-X-Gm-Message-State: AOAM533RX7NBKVBhnXCDOgPtLXtq1Mcjkh+qwrnBu2/1+qNijWxFYErk
-        fNNdToEljeZ44mYaCtXrvOgqKg==
-X-Google-Smtp-Source: ABdhPJyo5ajOR3Sys6kLV1edGsPyxX+u0k7ZFoM2H/iELQtDmH1lb8MEP86ne6oEPQdxsCBI364jDQ==
-X-Received: by 2002:a62:3585:0:b029:142:2501:3985 with SMTP id c127-20020a6235850000b029014225013985mr15239835pfa.74.1600417889074;
-        Fri, 18 Sep 2020 01:31:29 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=PtgT8oGdi7tJWYrZylWP5X+Qu5mtWrTjssOMjWBLBio=;
+        b=sXRcQLBlmTeU6lNrxfAOH/BrWFKU1NUdbWywBKoANADwEdVjXFpdQo8DAu5/r++Bhd
+         pFilfIjBV2JRySCWxvbRPO6X0lreFEw+p2SYn/x2AqEUsf9cCCuRhbv9IclWNDQVvcZy
+         eAq4GyREaUyRoB8KJ9JXRQMxQjHWaxrSpKx5rRNSF6hWUD4QjZ1FNFUSntWAEsOGJG+i
+         yZV38xxNUNIgusBBU/XEmKWwZbuJnhdlYidK7ZkIJHh4NfLyjXoAH70ZgCq4bnPbFgem
+         JId8kISxL0/UOhKFMY09PcLPeuKpLQeKJliC8gmXwTqQzuEf7EKbSKnXoqFtVQ3JFoGt
+         oNKQ==
+X-Gm-Message-State: AOAM530ww8x8yfY/AL31qK1xLgmLNwmKmLb1nw4nHbpYWvw3i7AKKaro
+        fKE6a2ajOG9NjTPz3n8gBgMZLg==
+X-Google-Smtp-Source: ABdhPJylLeVr7aTAeXl/TquJqTgllezEHHoyI6zJ5/+F2fB1EMgD/15lCBC8Kt+Lo/SC0WxayecFLQ==
+X-Received: by 2002:aa7:934e:0:b029:13f:d056:593 with SMTP id 14-20020aa7934e0000b029013fd0560593mr25187131pfn.15.1600417896081;
+        Fri, 18 Sep 2020 01:31:36 -0700 (PDT)
 Received: from ikjn-p920.tpe.corp.google.com ([2401:fa00:1:10:f693:9fff:fef4:a8fc])
-        by smtp.gmail.com with ESMTPSA id g206sm2193172pfb.178.2020.09.18.01.31.26
+        by smtp.gmail.com with ESMTPSA id g206sm2193172pfb.178.2020.09.18.01.31.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2020 01:31:28 -0700 (PDT)
+        Fri, 18 Sep 2020 01:31:35 -0700 (PDT)
 From:   Ikjoon Jang <ikjn@chromium.org>
 To:     Rob Herring <robh+dt@kernel.org>, Mark Brown <broonie@kernel.org>,
         devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
         linux-mtd@lists.infradead.org
 Cc:     Ikjoon Jang <ikjn@chromium.org>,
-        Bayi Cheng <bayi.cheng@mediatek.com>,
-        Chuanhong Guo <gch981213@gmail.com>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-mediatek@lists.infradead.org
-Subject: [PATCH v2 0/5] spi: spi-mtk-nor: Add mt8192 support.
-Date:   Fri, 18 Sep 2020 16:31:18 +0800
-Message-Id: <20200918083124.3921207-1-ikjn@chromium.org>
+Subject: [PATCH v2 2/5] spi: spi-mtk-nor: fix mishandled logics in checking SPI memory operation
+Date:   Fri, 18 Sep 2020 16:31:20 +0800
+Message-Id: <20200918162834.v2.2.I3de2918f09b817cc2ae6d324f1ece62779ecc7cf@changeid>
 X-Mailer: git-send-email 2.28.0.681.g6f77f65b4e-goog
+In-Reply-To: <20200918083124.3921207-1-ikjn@chromium.org>
+References: <20200918083124.3921207-1-ikjn@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This patchset adds 36bit dma address and power management
-supports for mt8192-nor.
+Fix a simple bug which can limits its transfer size,
+and add a simple helper function for code cleanups.
 
-Changes in v2:
-- Add power management support
-- Fix bugs in checking spi memory operation.
-- use dma_alloc_coherent for allocating bounce buffer
-- code cleanups
+Fixes: a59b2c7c56bf ("spi: spi-mtk-nor: support standard spi properties")
+Signed-off-by: Ikjoon Jang <ikjn@chromium.org>
 
-Ikjoon Jang (5):
-  dt-bindings: spi: add mt8192-nor compatible string
-  spi: spi-mtk-nor: fix mishandled logics in checking SPI memory
-    operation
-  spi: spi-mtk-nor: use dma_alloc_coherent() for bounce buffer
-  spi: spi-mtk-nor: support 36bit dma addressing to mediatek
-  spi: spi-mtk-nor: Add power management support
+---
 
- .../bindings/spi/mediatek,spi-mtk-nor.yaml    |   1 +
- drivers/spi/spi-mtk-nor.c                     | 242 ++++++++++++------
- 2 files changed, 170 insertions(+), 73 deletions(-)
+(no changes since v1)
 
+ drivers/spi/spi-mtk-nor.c | 62 ++++++++++++++++++++++++---------------
+ 1 file changed, 38 insertions(+), 24 deletions(-)
+
+diff --git a/drivers/spi/spi-mtk-nor.c b/drivers/spi/spi-mtk-nor.c
+index 6e6ca2b8e6c8..54b2c0fde95b 100644
+--- a/drivers/spi/spi-mtk-nor.c
++++ b/drivers/spi/spi-mtk-nor.c
+@@ -167,52 +167,63 @@ static bool mtk_nor_match_read(const struct spi_mem_op *op)
+ 	return false;
+ }
+ 
+-static int mtk_nor_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
++static bool need_bounce(void *cpu_addr, unsigned long len)
+ {
+-	size_t len;
++	return !!(((uintptr_t)cpu_addr) & MTK_NOR_DMA_ALIGN_MASK);
++}
+ 
++static int mtk_nor_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
++{
+ 	if (!op->data.nbytes)
+ 		return 0;
+ 
+ 	if ((op->addr.nbytes == 3) || (op->addr.nbytes == 4)) {
+-		if ((op->data.dir == SPI_MEM_DATA_IN) &&
+-		    mtk_nor_match_read(op)) {
++		switch (op->data.dir) {
++		case SPI_MEM_DATA_IN:
++			if (!mtk_nor_match_read(op))
++				return -EINVAL;
++			/* check if it's DMAable */
+ 			if ((op->addr.val & MTK_NOR_DMA_ALIGN_MASK) ||
+-			    (op->data.nbytes < MTK_NOR_DMA_ALIGN))
++			    (op->data.nbytes < MTK_NOR_DMA_ALIGN)) {
+ 				op->data.nbytes = 1;
+-			else if (!((ulong)(op->data.buf.in) &
+-				   MTK_NOR_DMA_ALIGN_MASK))
++			} else {
++				if (need_bounce(op->data.buf.in, op->data.nbytes) &&
++				    (op->data.nbytes > MTK_NOR_BOUNCE_BUF_SIZE))
++					op->data.nbytes = MTK_NOR_BOUNCE_BUF_SIZE;
+ 				op->data.nbytes &= ~MTK_NOR_DMA_ALIGN_MASK;
+-			else if (op->data.nbytes > MTK_NOR_BOUNCE_BUF_SIZE)
+-				op->data.nbytes = MTK_NOR_BOUNCE_BUF_SIZE;
+-			return 0;
+-		} else if (op->data.dir == SPI_MEM_DATA_OUT) {
++			}
++			break;
++		case SPI_MEM_DATA_OUT:
+ 			if (op->data.nbytes >= MTK_NOR_PP_SIZE)
+ 				op->data.nbytes = MTK_NOR_PP_SIZE;
+ 			else
+ 				op->data.nbytes = 1;
+-			return 0;
++			break;
++		default:
++			break;
+ 		}
++	} else {
++		u8 len = op->cmd.nbytes + op->addr.nbytes + op->dummy.nbytes;
++
++		if (len > MTK_NOR_PRG_MAX_SIZE)
++			return -EINVAL;
++		if (op->data.nbytes && !(MTK_NOR_PRG_MAX_SIZE - len))
++			return -EINVAL;
++		if (op->data.nbytes > (MTK_NOR_PRG_MAX_SIZE - len))
++			op->data.nbytes = MTK_NOR_PRG_MAX_SIZE - len;
+ 	}
+ 
+-	len = MTK_NOR_PRG_MAX_SIZE - op->cmd.nbytes - op->addr.nbytes -
+-	      op->dummy.nbytes;
+-	if (op->data.nbytes > len)
+-		op->data.nbytes = len;
+-
+ 	return 0;
+ }
+ 
+ static bool mtk_nor_supports_op(struct spi_mem *mem,
+ 				const struct spi_mem_op *op)
+ {
+-	size_t len;
+-
+ 	if (op->cmd.buswidth != 1)
+ 		return false;
+ 
+ 	if ((op->addr.nbytes == 3) || (op->addr.nbytes == 4)) {
+-		switch(op->data.dir) {
++		switch (op->data.dir) {
+ 		case SPI_MEM_DATA_IN:
+ 			if (!mtk_nor_match_read(op))
+ 				return false;
+@@ -226,11 +237,14 @@ static bool mtk_nor_supports_op(struct spi_mem *mem,
+ 		default:
+ 			break;
+ 		}
++	} else {
++		u8 len = op->cmd.nbytes + op->addr.nbytes + op->dummy.nbytes;
++
++		if (len > MTK_NOR_PRG_MAX_SIZE)
++			return false;
++		if (op->data.nbytes && !(MTK_NOR_PRG_MAX_SIZE - len))
++			return false;
+ 	}
+-	len = op->cmd.nbytes + op->addr.nbytes + op->dummy.nbytes;
+-	if ((len > MTK_NOR_PRG_MAX_SIZE) ||
+-	    ((op->data.nbytes) && (len == MTK_NOR_PRG_MAX_SIZE)))
+-		return false;
+ 
+ 	return spi_mem_default_supports_op(mem, op);
+ }
 -- 
 2.28.0.681.g6f77f65b4e-goog
 

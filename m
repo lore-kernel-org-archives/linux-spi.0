@@ -4,46 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7355DC43466
-	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:31:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3D29EC43465
+	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:32:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4BA82206E5
-	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:31:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 06CC4235FA
+	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:32:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726814AbgITLbT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 20 Sep 2020 07:31:19 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:53626 "EHLO
+        id S1726343AbgITLcY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 20 Sep 2020 07:32:24 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:54020 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726267AbgITL32 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:29:28 -0400
+        with ESMTP id S1726285AbgITLcX (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:32:23 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 3DBE5803202F;
-        Sun, 20 Sep 2020 11:29:25 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 4655B8030833;
+        Sun, 20 Sep 2020 11:23:30 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Tf-Ejg2CsboI; Sun, 20 Sep 2020 14:29:24 +0300 (MSK)
+        with ESMTP id 3DB0P7RBo_ww; Sun, 20 Sep 2020 14:23:29 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         Serge Semin <fancer.lancer@gmail.com>,
         Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
+        Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>,
         Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>,
         Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Lars Povlsen <lars.povlsen@microchip.com>,
-        "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
-        Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 04/30] Revert: spi: spi-dw: Add lock protect dw_spi rx/tx to prevent concurrent calls
-Date:   Sun, 20 Sep 2020 14:28:48 +0300
-Message-ID: <20200920112914.26501-5-Sergey.Semin@baikalelectronics.ru>
-In-Reply-To: <20200920112914.26501-1-Sergey.Semin@baikalelectronics.ru>
-References: <20200920112914.26501-1-Sergey.Semin@baikalelectronics.ru>
+        Feng Tang <feng.tang@intel.com>, Vinod Koul <vkoul@kernel.org>,
+        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2 07/11] spi: dw-dma: Remove DMA Tx-desc passing around
+Date:   Sun, 20 Sep 2020 14:23:18 +0300
+Message-ID: <20200920112322.24585-8-Sergey.Semin@baikalelectronics.ru>
+In-Reply-To: <20200920112322.24585-1-Sergey.Semin@baikalelectronics.ru>
+References: <20200920112322.24585-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -52,128 +52,114 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-There is no point in having the commit 19b61392c5a8 ("spi: spi-dw: Add
-lock protect dw_spi rx/tx to prevent concurrent calls") applied. The
-commit author made an assumption that the problem with the rx data
-mismatch was due to the lack of the data protection. While most likely it
-was caused by the lack of the memory barrier. So having the
-commit bfda044533b2 ("spi: dw: use "smp_mb()" to avoid sending spi data
-error") applied would be enough to fix the problem.
-
-Indeed the spin unlock operation makes sure each memory operation issued
-before the release will be completed before it's completed. In other words
-it works as an implicit one way memory barrier. So having both smp_mb()
-and the spin_unlock_irqrestore() here is just redundant. One of them would
-be enough. It's better to leave the smp_mb() since the Tx/Rx buffers
-consistency is provided by the data transfer algorithm implementation:
-first we initialize the buffers pointers, then make sure the assignments
-are visible by the other CPUs by calling the smp_mb(), only after that
-enable the interrupt, which handler uses the buffers.
+It's pointless to pass the Rx and Tx transfers DMA Tx-descriptors, since
+they are used in the Tx/Rx submit method only. Instead just return the
+submission status from these methods. This alteration will make the code
+less complex.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-
 ---
+ drivers/spi/spi-dw-dma.c | 31 ++++++++++++++-----------------
+ 1 file changed, 14 insertions(+), 17 deletions(-)
 
-Folks. I have also a doubt whether the SMP memory barrier is required there
-because the normal IO-methods like readl/writel imply a full memory barrier. So
-any memory operation performed before them are supposed to be seen by devices
-and another CPUs [1]. So most likely there could have been a problem with those
-IOs implementation on the subject platform or a spurious interrupt could
-have been raised during the data initialization. What do you think?
-Am I missing something?
-
-[1] "LINUX KERNEL MEMORY BARRIERS", Documentation/memory-barriers.txt,
-    Section "KERNEL I/O BARRIER EFFECTS"
----
- drivers/spi/spi-dw-core.c | 14 ++------------
- drivers/spi/spi-dw.h      |  1 -
- 2 files changed, 2 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 1af74362461d..18411f5b9954 100644
---- a/drivers/spi/spi-dw-core.c
-+++ b/drivers/spi/spi-dw-core.c
-@@ -142,11 +142,9 @@ static inline u32 rx_max(struct dw_spi *dws)
- 
- static void dw_writer(struct dw_spi *dws)
- {
--	u32 max;
-+	u32 max = tx_max(dws);
- 	u16 txw = 0;
- 
--	spin_lock(&dws->buf_lock);
--	max = tx_max(dws);
- 	while (max--) {
- 		/* Set the tx word if the transfer's original "tx" is not null */
- 		if (dws->tx_end - dws->len) {
-@@ -158,16 +156,13 @@ static void dw_writer(struct dw_spi *dws)
- 		dw_write_io_reg(dws, DW_SPI_DR, txw);
- 		dws->tx += dws->n_bytes;
- 	}
--	spin_unlock(&dws->buf_lock);
+diff --git a/drivers/spi/spi-dw-dma.c b/drivers/spi/spi-dw-dma.c
+index aa3900809126..9f70818acce6 100644
+--- a/drivers/spi/spi-dw-dma.c
++++ b/drivers/spi/spi-dw-dma.c
+@@ -271,8 +271,7 @@ static int dw_spi_dma_config_tx(struct dw_spi *dws)
+ 	return dmaengine_slave_config(dws->txchan, &txconf);
  }
  
- static void dw_reader(struct dw_spi *dws)
+-static struct dma_async_tx_descriptor *
+-dw_spi_dma_submit_tx(struct dw_spi *dws, struct spi_transfer *xfer)
++static int dw_spi_dma_submit_tx(struct dw_spi *dws, struct spi_transfer *xfer)
  {
--	u32 max;
-+	u32 max = rx_max(dws);
- 	u16 rxw;
+ 	struct dma_async_tx_descriptor *txdesc;
+ 	dma_cookie_t cookie;
+@@ -284,7 +283,7 @@ dw_spi_dma_submit_tx(struct dw_spi *dws, struct spi_transfer *xfer)
+ 				DMA_MEM_TO_DEV,
+ 				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 	if (!txdesc)
+-		return NULL;
++		return -ENOMEM;
  
--	spin_lock(&dws->buf_lock);
--	max = rx_max(dws);
- 	while (max--) {
- 		rxw = dw_read_io_reg(dws, DW_SPI_DR);
- 		/* Care rx only if the transfer's original "rx" is not null */
-@@ -179,7 +174,6 @@ static void dw_reader(struct dw_spi *dws)
- 		}
- 		dws->rx += dws->n_bytes;
+ 	txdesc->callback = dw_spi_dma_tx_done;
+ 	txdesc->callback_param = dws;
+@@ -293,12 +292,12 @@ dw_spi_dma_submit_tx(struct dw_spi *dws, struct spi_transfer *xfer)
+ 	ret = dma_submit_error(cookie);
+ 	if (ret) {
+ 		dmaengine_terminate_sync(dws->txchan);
+-		return NULL;
++		return ret;
  	}
--	spin_unlock(&dws->buf_lock);
+ 
+ 	set_bit(TX_BUSY, &dws->dma_chan_busy);
+ 
+-	return txdesc;
++	return 0;
  }
  
- static void int_error_stop(struct dw_spi *dws, const char *msg)
-@@ -291,21 +285,18 @@ static int dw_spi_transfer_one(struct spi_controller *master,
+ static inline bool dw_spi_dma_rx_busy(struct dw_spi *dws)
+@@ -375,8 +374,7 @@ static int dw_spi_dma_config_rx(struct dw_spi *dws)
+ 	return dmaengine_slave_config(dws->rxchan, &rxconf);
+ }
+ 
+-static struct dma_async_tx_descriptor *dw_spi_dma_submit_rx(struct dw_spi *dws,
+-		struct spi_transfer *xfer)
++static int dw_spi_dma_submit_rx(struct dw_spi *dws, struct spi_transfer *xfer)
  {
- 	struct dw_spi *dws = spi_controller_get_devdata(master);
- 	struct chip_data *chip = spi_get_ctldata(spi);
--	unsigned long flags;
- 	u8 imask = 0;
- 	u16 txlevel = 0;
- 	u32 cr0;
+ 	struct dma_async_tx_descriptor *rxdesc;
+ 	dma_cookie_t cookie;
+@@ -388,7 +386,7 @@ static struct dma_async_tx_descriptor *dw_spi_dma_submit_rx(struct dw_spi *dws,
+ 				DMA_DEV_TO_MEM,
+ 				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 	if (!rxdesc)
+-		return NULL;
++		return -ENOMEM;
+ 
+ 	rxdesc->callback = dw_spi_dma_rx_done;
+ 	rxdesc->callback_param = dws;
+@@ -397,12 +395,12 @@ static struct dma_async_tx_descriptor *dw_spi_dma_submit_rx(struct dw_spi *dws,
+ 	ret = dma_submit_error(cookie);
+ 	if (ret) {
+ 		dmaengine_terminate_sync(dws->rxchan);
+-		return NULL;
++		return ret;
+ 	}
+ 
+ 	set_bit(RX_BUSY, &dws->dma_chan_busy);
+ 
+-	return rxdesc;
++	return 0;
+ }
+ 
+ static int dw_spi_dma_setup(struct dw_spi *dws, struct spi_transfer *xfer)
+@@ -445,19 +443,18 @@ static int dw_spi_dma_setup(struct dw_spi *dws, struct spi_transfer *xfer)
+ 
+ static int dw_spi_dma_transfer(struct dw_spi *dws, struct spi_transfer *xfer)
+ {
+-	struct dma_async_tx_descriptor *txdesc, *rxdesc;
  	int ret;
  
- 	dws->dma_mapped = 0;
--	spin_lock_irqsave(&dws->buf_lock, flags);
- 	dws->n_bytes = DIV_ROUND_UP(transfer->bits_per_word, BITS_PER_BYTE);
- 	dws->tx = (void *)transfer->tx_buf;
- 	dws->tx_end = dws->tx + transfer->len;
- 	dws->rx = transfer->rx_buf;
- 	dws->rx_end = dws->rx + transfer->len;
- 	dws->len = transfer->len;
--	spin_unlock_irqrestore(&dws->buf_lock, flags);
+ 	/* Submit the DMA Tx transfer */
+-	txdesc = dw_spi_dma_submit_tx(dws, xfer);
+-	if (!txdesc)
+-		return -EINVAL;
++	ret = dw_spi_dma_submit_tx(dws, xfer);
++	if (ret)
++		return ret;
  
- 	/* Ensure dw->rx and dw->rx_end are visible */
- 	smp_mb();
-@@ -464,7 +455,6 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 	dws->master = master;
- 	dws->type = SSI_MOTO_SPI;
- 	dws->dma_addr = (dma_addr_t)(dws->paddr + DW_SPI_DR);
--	spin_lock_init(&dws->buf_lock);
+ 	/* Submit the DMA Rx transfer if required */
+ 	if (xfer->rx_buf) {
+-		rxdesc = dw_spi_dma_submit_rx(dws, xfer);
+-		if (!rxdesc)
+-			return -EINVAL;
++		ret = dw_spi_dma_submit_rx(dws, xfer);
++		if (ret)
++			return ret;
  
- 	spi_controller_set_devdata(master, dws);
- 
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 51bab30b9f85..1ab704d1ebd8 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -131,7 +131,6 @@ struct dw_spi {
- 	size_t			len;
- 	void			*tx;
- 	void			*tx_end;
--	spinlock_t		buf_lock;
- 	void			*rx;
- 	void			*rx_end;
- 	int			dma_mapped;
+ 		/* rx must be started before tx due to spi instinct */
+ 		dma_async_issue_pending(dws->rxchan);
 -- 
 2.27.0
 

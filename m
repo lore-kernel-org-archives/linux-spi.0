@@ -4,30 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 67755C4346A
-	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:30:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 545B4C43468
+	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:30:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2CA1520672
-	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:30:42 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2813F20672
+	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:30:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726723AbgITLal (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 20 Sep 2020 07:30:41 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:53932 "EHLO
+        id S1726684AbgITLa0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 20 Sep 2020 07:30:26 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:53996 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726496AbgITL3w (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:29:52 -0400
+        with ESMTP id S1726551AbgITL3z (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:29:55 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 33741800255E;
-        Sun, 20 Sep 2020 11:29:39 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 0979780060B9;
+        Sun, 20 Sep 2020 11:29:44 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id uBpfZlhmhcAO; Sun, 20 Sep 2020 14:29:38 +0300 (MSK)
+        with ESMTP id G4IjOgbZ2q5Y; Sun, 20 Sep 2020 14:29:43 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
-To:     Mark Brown <broonie@kernel.org>
+To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         Serge Semin <fancer.lancer@gmail.com>,
         Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
@@ -37,11 +37,11 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Lars Povlsen <lars.povlsen@microchip.com>,
         "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
-        Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 23/30] spi: dw: Explicitly de-assert CS on SPI transfer completion
-Date:   Sun, 20 Sep 2020 14:29:07 +0300
-Message-ID: <20200920112914.26501-24-Sergey.Semin@baikalelectronics.ru>
+        <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH 29/30] dt-bindings: spi: dw: Add Baikal-T1 SPI Controllers
+Date:   Sun, 20 Sep 2020 14:29:13 +0300
+Message-ID: <20200920112914.26501-30-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20200920112914.26501-1-Sergey.Semin@baikalelectronics.ru>
 References: <20200920112914.26501-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,32 +52,96 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-By design of the currently available native set_cs callback, the CS
-de-assertion will be done only if it's required by the corresponding
-controller capability. But in order to pre-fill the Tx FIFO buffer with
-data during the SPI memory ops execution the SER register needs to be left
-cleared before that. We'll also need a way to explicitly set and clear the
-corresponding CS bit at a certain moment of the operation. Let's alter
-the set_cs function then to also de-activate the CS, when it's required.
+These controllers are based on the DW APB SSI IP-core and embedded into
+the SoC, so two of them are equipped with IRQ, DMA, 64 words FIFOs and 4
+native CS, while another one as being utilized by the Baikal-T1 System
+Boot Controller has got a very limited resources: no IRQ, no DMA, only a
+single native chip-select and just 8 bytes Tx/Rx FIFOs available. That's
+why we have to mark the IRQ to be optional for the later interface.
 
+The SPI controller embedded into the Baikal-T1 System Boot Controller can
+be also used to directly access an external SPI flash by means of a
+dedicated FSM. The corresponding MMIO region availability is switchable by
+the embedded multiplexor, which phandle can be specified in the dts node.
+
+* We added a new example to test out the non-standard Baikal-T1 System
+Boot SPI Controller DT binding.
+
+Co-developed-by: Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>
+Signed-off-by: Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 ---
- drivers/spi/spi-dw-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../bindings/spi/snps,dw-apb-ssi.yaml         | 33 +++++++++++++++++--
+ 1 file changed, 31 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 65db4dd3ea8a..7a25ea6f4af6 100644
---- a/drivers/spi/spi-dw-core.c
-+++ b/drivers/spi/spi-dw-core.c
-@@ -100,7 +100,7 @@ void dw_spi_set_cs(struct spi_device *spi, bool enable)
- 	 */
- 	if (cs_high == enable)
- 		dw_writel(dws, DW_SPI_SER, BIT(spi->chip_select));
--	else if (dws->caps & DW_SPI_CAP_CS_OVERRIDE)
-+	else
- 		dw_writel(dws, DW_SPI_SER, 0);
- }
- EXPORT_SYMBOL_GPL(dw_spi_set_cs);
+diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+index c62cbe79f00d..d6ae35777dac 100644
+--- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
++++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+@@ -22,6 +22,21 @@ allOf:
+       properties:
+         reg:
+           minItems: 2
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - baikal,bt1-sys-ssi
++    then:
++      properties:
++        mux-controls:
++          maxItems: 1
++      required:
++        - mux-controls
++    else:
++      required:
++        - interrupts
+ 
+ properties:
+   compatible:
+@@ -44,12 +59,16 @@ properties:
+           - const: snps,dw-apb-ssi
+       - description: Intel Keem Bay SPI Controller
+         const: intel,keembay-ssi
++      - description: Baikal-T1 SPI Controller
++        const: baikal,bt1-ssi
++      - description: Baikal-T1 System Boot SPI Controller
++        const: baikal,bt1-sys-ssi
+ 
+   reg:
+     minItems: 1
+     items:
+       - description: DW APB SSI controller memory mapped registers
+-      - description: SPI MST region map
++      - description: SPI MST region map or directly mapped SPI ROM
+ 
+   interrupts:
+     maxItems: 1
+@@ -114,7 +133,6 @@ required:
+   - reg
+   - "#address-cells"
+   - "#size-cells"
+-  - interrupts
+   - clocks
+ 
+ examples:
+@@ -130,4 +148,15 @@ examples:
+       cs-gpios = <&gpio0 13 0>,
+                  <&gpio0 14 0>;
+     };
++  - |
++    spi@1f040100 {
++      compatible = "baikal,bt1-sys-ssi";
++      reg = <0x1f040100 0x900>,
++            <0x1c000000 0x1000000>;
++      #address-cells = <1>;
++      #size-cells = <0>;
++      mux-controls = <&boot_mux>;
++      clocks = <&ccu_sys>;
++      clock-names = "ssi_clk";
++    };
+ ...
 -- 
 2.27.0
 

@@ -4,27 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 37DDCC43463
-	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:30:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AC604C43466
+	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:30:13 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 07A2420EDD
-	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:30:07 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 719CA20EDD
+	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:30:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726390AbgITLaF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 20 Sep 2020 07:30:05 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:53710 "EHLO
+        id S1726643AbgITLaM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 20 Sep 2020 07:30:12 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:53960 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726472AbgITL3r (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:29:47 -0400
+        with ESMTP id S1726541AbgITL3y (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:29:54 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id C588B800254B;
-        Sun, 20 Sep 2020 11:29:32 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 9F66E80060AA;
+        Sun, 20 Sep 2020 11:29:42 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id AJ5YZNwkhzYN; Sun, 20 Sep 2020 14:29:32 +0300 (MSK)
+        with ESMTP id Z1JIMJVaVpcT; Sun, 20 Sep 2020 14:29:42 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
@@ -38,9 +39,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 14/30] spi: dw: Simplify the SPI bus speed config procedure
-Date:   Sun, 20 Sep 2020 14:28:58 +0300
-Message-ID: <20200920112914.26501-15-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH 27/30] spi: dw: Introduce max mem-ops SPI bus frequency setting
+Date:   Sun, 20 Sep 2020 14:29:11 +0300
+Message-ID: <20200920112914.26501-28-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20200920112914.26501-1-Sergey.Semin@baikalelectronics.ru>
 References: <20200920112914.26501-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -51,87 +52,59 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The code currently responsible for the SPI communication speed setting up
-is a bit messy. Most likely for some historical reason the bus frequency
-is saved in the peripheral chip private data. It's pointless now since the
-custom communication speed is a SPI-transfer-specific thing and only if
-there is no SPI transfer data specified (like during the SPI memory
-operations) it can be taken from the SPI device structure. But even in the
-later case there is no point in having the clock divider and the SPI bus
-frequency saved in the chip data, because the controller can be used for
-both SPI-transfer-based and SPI-transfer-less communications. From
-software point of view keeping the current clock divider in an SPI-device
-specific storage may give a small performance gain (to avoid sometimes a
-round-up division), but in comparison to the total SPI transfer time it
-just doesn't worth saving a few CPU cycles in comparison to the total SPI
-transfer time while having the harder to read code. The only optimization,
-which could worth preserving in the code is to avoid unnecessary DW SPI
-controller registers update if it's possible. So to speak let's simplify
-the SPI communication speed update procedure by removing the clock-related
-fields from the peripheral chip data and update the DW SPI clock divider
-only if it's really changed. The later change is reached by keeping the
-effective SPI bus speed in the internal DW SPI private data.
+In some circumstances the current implementation of the SPI memory
+operations may occasionally fail even though they are executed in the
+atomic context. This may happen if the system bus is relatively slow in
+comparison to the SPI bus frequency, or there is a concurrent access to
+it, which makes the MMIO-operations occasionally stalling before
+push-pulling data from the DW APB SPI FIFOs. These two problems we've
+discovered on the Baikal-T1 SoC. In order to fix them we have no choice
+but to set an artificial limitation on the SPI bus speed.
+
+Note currently this limitation will be only applicable for the memory
+operations, since the standard SPI core interface is implemented with an
+assumption that there is no problem with the automatic CS toggling.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 ---
- drivers/spi/spi-dw-core.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ drivers/spi/spi-dw-core.c | 4 +++-
+ drivers/spi/spi-dw.h      | 1 +
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 0b80a16d9872..92138a6ada12 100644
+index ca22f427d82d..7b901226fd38 100644
 --- a/drivers/spi/spi-dw-core.c
 +++ b/drivers/spi/spi-dw-core.c
-@@ -24,9 +24,6 @@
- struct chip_data {
- 	u8 tmode;		/* TR/TO/RO/EEPROM */
- 
--	u16 clk_div;		/* baud rate divider */
--	u32 speed_hz;		/* baud rate */
--
- 	u32 cr0;
- 	u32 rx_sample_dly;	/* RX sample delay */
- };
-@@ -256,6 +253,8 @@ static void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
- {
- 	struct chip_data *chip = spi_get_ctldata(spi);
- 	u32 cr0 = chip->cr0;
-+	u32 speed_hz;
-+	u16 clk_div;
- 
- 	cr0 |= (transfer->bits_per_word - 1);
- 
-@@ -266,15 +265,13 @@ static void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
- 
- 	dw_writel(dws, DW_SPI_CTRLR0, cr0);
- 
--	/* Handle per transfer options for bpw and speed */
--	if (transfer->speed_hz != dws->current_freq) {
--		if (transfer->speed_hz != chip->speed_hz) {
--			/* clk_div doesn't support odd number */
--			chip->clk_div = (DIV_ROUND_UP(dws->max_freq, transfer->speed_hz) + 1) & 0xfffe;
--			chip->speed_hz = transfer->speed_hz;
--		}
--		dws->current_freq = transfer->speed_hz;
--		spi_set_clk(dws, chip->clk_div);
-+	/* Note DW APB SSI clock divider doesn't support odd numbers */
-+	clk_div = (DIV_ROUND_UP(dws->max_freq, transfer->speed_hz) + 1) & 0xfffe;
-+	speed_hz = dws->max_freq / clk_div;
-+
-+	if (dws->current_freq != speed_hz) {
-+		spi_set_clk(dws, clk_div);
-+		dws->current_freq = speed_hz;
+@@ -608,7 +608,7 @@ static int dw_spi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	 * operation. Transmit-only mode is suitable for the rest of them.
+ 	 */
+ 	cfg.dfs = 8;
+-	cfg.freq = mem->spi->max_speed_hz;
++	cfg.freq = clamp(mem->spi->max_speed_hz, 0U, dws->max_mem_freq);
+ 	if (op->data.dir == SPI_MEM_DATA_IN) {
+ 		cfg.tmode = SPI_TMOD_EPROMREAD;
+ 		cfg.ndf = op->data.nbytes;
+@@ -695,6 +695,8 @@ static void dw_spi_init_mem_ops(struct dw_spi *dws)
+ 		dws->mem_ops.adjust_op_size = dw_spi_adjust_mem_op_size;
+ 		dws->mem_ops.supports_op = dw_spi_supports_mem_op;
+ 		dws->mem_ops.exec_op = dw_spi_exec_mem_op;
++		if (!dws->max_mem_freq)
++			dws->max_mem_freq = dws->max_freq;
  	}
  }
  
-@@ -302,7 +299,7 @@ static int dw_spi_transfer_one(struct spi_controller *master,
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 4b08fe34a85d..dc5781236cc6 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -148,6 +148,7 @@ struct dw_spi {
+ 	unsigned long		paddr;
+ 	int			irq;
+ 	u32			fifo_len;	/* depth of the FIFO buffer */
++	u32			max_mem_freq;	/* max mem-ops bus freq */
+ 	u32			max_freq;	/* max bus freq supported */
  
- 	dw_spi_update_config(dws, spi, transfer);
- 
--	transfer->effective_speed_hz = dws->max_freq / chip->clk_div;
-+	transfer->effective_speed_hz = dws->current_freq;
- 
- 	/* Check if current transfer is a DMA transaction */
- 	if (master->can_dma && master->can_dma(master, spi, transfer))
+ 	u32			caps;		/* DW SPI capabilities */
 -- 
 2.27.0
 

@@ -7,25 +7,25 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CEA2DC43469
-	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:32:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 742F0C43465
+	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:32:27 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A5AC321D43
-	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:32:25 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 48FEE20EDD
+	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:32:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726267AbgITLcZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 20 Sep 2020 07:32:25 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:54024 "EHLO
+        id S1726290AbgITLc0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 20 Sep 2020 07:32:26 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:54042 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726290AbgITLcX (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:32:23 -0400
+        with ESMTP id S1726338AbgITLc0 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:32:26 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 9697B8030718;
-        Sun, 20 Sep 2020 11:23:27 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id E9848803016F;
+        Sun, 20 Sep 2020 11:23:28 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id C8I5CXQTa1vV; Sun, 20 Sep 2020 14:23:27 +0300 (MSK)
+        with ESMTP id 2OLrOgJxmom1; Sun, 20 Sep 2020 14:23:28 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
@@ -39,9 +39,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Feng Tang <feng.tang@intel.com>, Vinod Koul <vkoul@kernel.org>,
         <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 03/11] spi: dw-dma: Configure the DMA channels in dma_setup
-Date:   Sun, 20 Sep 2020 14:23:14 +0300
-Message-ID: <20200920112322.24585-4-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH v2 05/11] spi: dw-dma: Move DMA transfers submission to the channels prep methods
+Date:   Sun, 20 Sep 2020 14:23:16 +0300
+Message-ID: <20200920112322.24585-6-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20200920112322.24585-1-Sergey.Semin@baikalelectronics.ru>
 References: <20200920112322.24585-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,114 +52,98 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Mainly this is a preparation patch before adding one-by-one DMA SG entries
-transmission. But logically the Tx and Rx DMA channels setup should be
-performed in the dma_setup() callback anyway. So we'll move the DMA slave
-channels src/dst burst lengths, address and address width configuration
-from the Tx/Rx channels preparation methods to the dedicated functions and
-then make sure it's called at the DMA setup stage.
+Indeed we can freely move the dmaengine_submit() method invocation and the
+Tx and Rx busy flag setting into the DMA Tx/Rx prepare methods. Since the
+Tx/Rx preparation method is now mainly used for the DMA transfers
+submission, here we suggest to rename it to have the _submit_{r,t}x suffix
+instead.
 
-Note we now make sure the return value of the dmaengine_slave_config()
-method doesn't indicate an error. It has been unnecessary in case if Dw
-DMAC is utilized as a DMA engine, since its device_config() callback
-always returns zero (though it might change in future). But since DW APB
-SSI driver now supports any DMA back-end we must make sure the DMA device
-configuration has been successful before proceeding with further setups.
+By having this alteration applied first we implement another code
+preparation before adding the one-by-one DMA SG entries transmission,
+second we now have the dma_async_tx_descriptor descriptor used locally
+only in the new DMA transfers submission methods (this will be cleaned up
+a bit later), third we make the generic transfer method more readable,
+where now the functionality of submission, execution and wait procedures
+is transparently split up instead of having a preparation, intermixed
+submission/execution and wait procedures.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 ---
- drivers/spi/spi-dw-dma.c | 42 +++++++++++++++++++++++++++++-----------
- 1 file changed, 31 insertions(+), 11 deletions(-)
+ drivers/spi/spi-dw-dma.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/spi/spi-dw-dma.c b/drivers/spi/spi-dw-dma.c
-index 1b013ac94a3f..da17897b8acb 100644
+index d2a67dee1a66..769d10ca74b4 100644
 --- a/drivers/spi/spi-dw-dma.c
 +++ b/drivers/spi/spi-dw-dma.c
-@@ -256,11 +256,9 @@ static void dw_spi_dma_tx_done(void *arg)
- 	complete(&dws->dma_completion);
+@@ -272,7 +272,7 @@ static int dw_spi_dma_config_tx(struct dw_spi *dws)
  }
  
--static struct dma_async_tx_descriptor *
+ static struct dma_async_tx_descriptor *
 -dw_spi_dma_prepare_tx(struct dw_spi *dws, struct spi_transfer *xfer)
-+static int dw_spi_dma_config_tx(struct dw_spi *dws)
++dw_spi_dma_submit_tx(struct dw_spi *dws, struct spi_transfer *xfer)
  {
- 	struct dma_slave_config txconf;
--	struct dma_async_tx_descriptor *txdesc;
+ 	struct dma_async_tx_descriptor *txdesc;
  
- 	memset(&txconf, 0, sizeof(txconf));
- 	txconf.direction = DMA_MEM_TO_DEV;
-@@ -270,7 +268,13 @@ dw_spi_dma_prepare_tx(struct dw_spi *dws, struct spi_transfer *xfer)
- 	txconf.dst_addr_width = dw_spi_dma_convert_width(dws->n_bytes);
- 	txconf.device_fc = false;
+@@ -287,6 +287,9 @@ dw_spi_dma_prepare_tx(struct dw_spi *dws, struct spi_transfer *xfer)
+ 	txdesc->callback = dw_spi_dma_tx_done;
+ 	txdesc->callback_param = dws;
  
--	dmaengine_slave_config(dws->txchan, &txconf);
-+	return dmaengine_slave_config(dws->txchan, &txconf);
-+}
++	dmaengine_submit(txdesc);
++	set_bit(TX_BUSY, &dws->dma_chan_busy);
 +
-+static struct dma_async_tx_descriptor *
-+dw_spi_dma_prepare_tx(struct dw_spi *dws, struct spi_transfer *xfer)
-+{
-+	struct dma_async_tx_descriptor *txdesc;
+ 	return txdesc;
+ }
  
- 	txdesc = dmaengine_prep_slave_sg(dws->txchan,
- 				xfer->tx_sg.sgl,
-@@ -345,14 +349,9 @@ static void dw_spi_dma_rx_done(void *arg)
- 	complete(&dws->dma_completion);
+@@ -364,7 +367,7 @@ static int dw_spi_dma_config_rx(struct dw_spi *dws)
+ 	return dmaengine_slave_config(dws->rxchan, &rxconf);
  }
  
 -static struct dma_async_tx_descriptor *dw_spi_dma_prepare_rx(struct dw_spi *dws,
--		struct spi_transfer *xfer)
-+static int dw_spi_dma_config_rx(struct dw_spi *dws)
++static struct dma_async_tx_descriptor *dw_spi_dma_submit_rx(struct dw_spi *dws,
+ 		struct spi_transfer *xfer)
  {
- 	struct dma_slave_config rxconf;
--	struct dma_async_tx_descriptor *rxdesc;
--
--	if (!xfer->rx_buf)
--		return NULL;
+ 	struct dma_async_tx_descriptor *rxdesc;
+@@ -380,6 +383,9 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_rx(struct dw_spi *dws,
+ 	rxdesc->callback = dw_spi_dma_rx_done;
+ 	rxdesc->callback_param = dws;
  
- 	memset(&rxconf, 0, sizeof(rxconf));
- 	rxconf.direction = DMA_DEV_TO_MEM;
-@@ -362,7 +361,16 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_rx(struct dw_spi *dws,
- 	rxconf.src_addr_width = dw_spi_dma_convert_width(dws->n_bytes);
- 	rxconf.device_fc = false;
- 
--	dmaengine_slave_config(dws->rxchan, &rxconf);
-+	return dmaengine_slave_config(dws->rxchan, &rxconf);
-+}
++	dmaengine_submit(rxdesc);
++	set_bit(RX_BUSY, &dws->dma_chan_busy);
 +
-+static struct dma_async_tx_descriptor *dw_spi_dma_prepare_rx(struct dw_spi *dws,
-+		struct spi_transfer *xfer)
-+{
-+	struct dma_async_tx_descriptor *rxdesc;
-+
-+	if (!xfer->rx_buf)
-+		return NULL;
+ 	return rxdesc;
+ }
  
- 	rxdesc = dmaengine_prep_slave_sg(dws->rxchan,
- 				xfer->rx_sg.sgl,
-@@ -381,10 +389,22 @@ static struct dma_async_tx_descriptor *dw_spi_dma_prepare_rx(struct dw_spi *dws,
- static int dw_spi_dma_setup(struct dw_spi *dws, struct spi_transfer *xfer)
- {
- 	u16 imr, dma_ctrl;
-+	int ret;
+@@ -426,25 +432,21 @@ static int dw_spi_dma_transfer(struct dw_spi *dws, struct spi_transfer *xfer)
+ 	struct dma_async_tx_descriptor *txdesc, *rxdesc;
+ 	int ret;
  
- 	if (!xfer->tx_buf)
+-	/* Prepare the TX dma transfer */
+-	txdesc = dw_spi_dma_prepare_tx(dws, xfer);
++	/* Submit the DMA Tx transfer */
++	txdesc = dw_spi_dma_submit_tx(dws, xfer);
+ 	if (!txdesc)
  		return -EINVAL;
  
-+	/* Setup DMA channels */
-+	ret = dw_spi_dma_config_tx(dws);
-+	if (ret)
-+		return ret;
-+
-+	if (xfer->rx_buf) {
-+		ret = dw_spi_dma_config_rx(dws);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	/* Set the DMA handshaking interface */
- 	dma_ctrl = SPI_DMA_TDMAE;
- 	if (xfer->rx_buf)
+-	/* Prepare the RX dma transfer */
++	/* Submit the DMA Rx transfer if required */
+ 	if (xfer->rx_buf) {
+-		rxdesc = dw_spi_dma_prepare_rx(dws, xfer);
++		rxdesc = dw_spi_dma_submit_rx(dws, xfer);
+ 		if (!rxdesc)
+ 			return -EINVAL;
+ 
+ 		/* rx must be started before tx due to spi instinct */
+-		set_bit(RX_BUSY, &dws->dma_chan_busy);
+-		dmaengine_submit(rxdesc);
+ 		dma_async_issue_pending(dws->rxchan);
+ 	}
+ 
+-	set_bit(TX_BUSY, &dws->dma_chan_busy);
+-	dmaengine_submit(txdesc);
+ 	dma_async_issue_pending(dws->txchan);
+ 
+ 	ret = dw_spi_dma_wait(dws, xfer);
 -- 
 2.27.0
 

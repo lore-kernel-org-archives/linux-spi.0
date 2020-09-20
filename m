@@ -4,28 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-	version=3.4.0
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 64848C43466
-	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:29:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 37DDCC43463
+	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:30:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3B66E221EC
-	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:29:43 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 07A2420EDD
+	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:30:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726513AbgITL3m (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 20 Sep 2020 07:29:42 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:53682 "EHLO
+        id S1726390AbgITLaF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 20 Sep 2020 07:30:05 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:53710 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726430AbgITL3b (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:29:31 -0400
+        with ESMTP id S1726472AbgITL3r (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:29:47 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 160EE8001644;
-        Sun, 20 Sep 2020 11:29:28 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id C588B800254B;
+        Sun, 20 Sep 2020 11:29:32 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id sa7y3orPH8Hw; Sun, 20 Sep 2020 14:29:27 +0300 (MSK)
+        with ESMTP id AJ5YZNwkhzYN; Sun, 20 Sep 2020 14:29:32 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
@@ -39,9 +38,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 08/30] spi: dw: Discard DW SSI chip type storages
-Date:   Sun, 20 Sep 2020 14:28:52 +0300
-Message-ID: <20200920112914.26501-9-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH 14/30] spi: dw: Simplify the SPI bus speed config procedure
+Date:   Sun, 20 Sep 2020 14:28:58 +0300
+Message-ID: <20200920112914.26501-15-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20200920112914.26501-1-Sergey.Semin@baikalelectronics.ru>
 References: <20200920112914.26501-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,76 +51,87 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Keeping SPI peripheral devices type is pointless since first it hasn't
-been functionally utilized by any of the client drivers/code and second it
-won't work for Microwire type at the very least. Moreover there is no
-point in setting up the type by means of the chip-data in the modern
-kernel. The peripheral devices with specific interface type need to be
-detected in order to activate the corresponding frame format. It most
-likely will require some peripheral device specific DT property or
-whatever to find out the interface protocol. So let's remove the serial
-interface type fields from the DW APB SSI controller and the SPI
-peripheral device private data.
-
-Note we'll preserve the explicit SSI_MOTO_SPI interface type setting up to
-signify the only currently supported interface protocol.
+The code currently responsible for the SPI communication speed setting up
+is a bit messy. Most likely for some historical reason the bus frequency
+is saved in the peripheral chip private data. It's pointless now since the
+custom communication speed is a SPI-transfer-specific thing and only if
+there is no SPI transfer data specified (like during the SPI memory
+operations) it can be taken from the SPI device structure. But even in the
+later case there is no point in having the clock divider and the SPI bus
+frequency saved in the chip data, because the controller can be used for
+both SPI-transfer-based and SPI-transfer-less communications. From
+software point of view keeping the current clock divider in an SPI-device
+specific storage may give a small performance gain (to avoid sometimes a
+round-up division), but in comparison to the total SPI transfer time it
+just doesn't worth saving a few CPU cycles in comparison to the total SPI
+transfer time while having the harder to read code. The only optimization,
+which could worth preserving in the code is to avoid unnecessary DW SPI
+controller registers update if it's possible. So to speak let's simplify
+the SPI communication speed update procedure by removing the clock-related
+fields from the peripheral chip data and update the DW SPI clock divider
+only if it's really changed. The later change is reached by keeping the
+effective SPI bus speed in the internal DW SPI private data.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 ---
- drivers/spi/spi-dw-core.c | 6 ++----
- drivers/spi/spi-dw.h      | 1 -
- 2 files changed, 2 insertions(+), 5 deletions(-)
+ drivers/spi/spi-dw-core.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index be94ed5bb896..dd9574f9fafc 100644
+index 0b80a16d9872..92138a6ada12 100644
 --- a/drivers/spi/spi-dw-core.c
 +++ b/drivers/spi/spi-dw-core.c
-@@ -23,7 +23,6 @@
- /* Slave spi_dev related */
+@@ -24,9 +24,6 @@
  struct chip_data {
  	u8 tmode;		/* TR/TO/RO/EEPROM */
--	u8 type;		/* SPI/SSP/MicroWire */
  
- 	u16 clk_div;		/* baud rate divider */
- 	u32 speed_hz;		/* baud rate */
-@@ -238,7 +237,7 @@ u32 dw_spi_update_cr0(struct spi_controller *master, struct spi_device *spi,
+-	u16 clk_div;		/* baud rate divider */
+-	u32 speed_hz;		/* baud rate */
+-
+ 	u32 cr0;
+ 	u32 rx_sample_dly;	/* RX sample delay */
+ };
+@@ -256,6 +253,8 @@ static void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
+ {
+ 	struct chip_data *chip = spi_get_ctldata(spi);
+ 	u32 cr0 = chip->cr0;
++	u32 speed_hz;
++	u16 clk_div;
  
- 	/* Default SPI mode is SCPOL = 0, SCPH = 0 */
- 	cr0 = (transfer->bits_per_word - 1)
--		| (chip->type << SPI_FRF_OFFSET)
-+		| (SSI_MOTO_SPI << SPI_FRF_OFFSET)
- 		| ((((spi->mode & SPI_CPOL) ? 1 : 0) << SPI_SCOL_OFFSET) |
- 		   (((spi->mode & SPI_CPHA) ? 1 : 0) << SPI_SCPH_OFFSET) |
- 		   (((spi->mode & SPI_LOOP) ? 1 : 0) << SPI_SRL_OFFSET))
-@@ -260,7 +259,7 @@ u32 dw_spi_update_cr0_v1_01a(struct spi_controller *master,
- 	cr0 = (transfer->bits_per_word - 1);
+ 	cr0 |= (transfer->bits_per_word - 1);
  
- 	/* CTRLR0[ 7: 6] Frame Format */
--	cr0 |= chip->type << DWC_SSI_CTRLR0_FRF_OFFSET;
-+	cr0 |= SSI_MOTO_SPI << DWC_SSI_CTRLR0_FRF_OFFSET;
+@@ -266,15 +265,13 @@ static void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
  
- 	/*
- 	 * SPI mode (SCPOL|SCPH)
-@@ -453,7 +452,6 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 		return -ENOMEM;
+ 	dw_writel(dws, DW_SPI_CTRLR0, cr0);
  
- 	dws->master = master;
--	dws->type = SSI_MOTO_SPI;
- 	dws->dma_addr = (dma_addr_t)(dws->paddr + DW_SPI_DR);
+-	/* Handle per transfer options for bpw and speed */
+-	if (transfer->speed_hz != dws->current_freq) {
+-		if (transfer->speed_hz != chip->speed_hz) {
+-			/* clk_div doesn't support odd number */
+-			chip->clk_div = (DIV_ROUND_UP(dws->max_freq, transfer->speed_hz) + 1) & 0xfffe;
+-			chip->speed_hz = transfer->speed_hz;
+-		}
+-		dws->current_freq = transfer->speed_hz;
+-		spi_set_clk(dws, chip->clk_div);
++	/* Note DW APB SSI clock divider doesn't support odd numbers */
++	clk_div = (DIV_ROUND_UP(dws->max_freq, transfer->speed_hz) + 1) & 0xfffe;
++	speed_hz = dws->max_freq / clk_div;
++
++	if (dws->current_freq != speed_hz) {
++		spi_set_clk(dws, clk_div);
++		dws->current_freq = speed_hz;
+ 	}
+ }
  
- 	spi_controller_set_devdata(master, dws);
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 063fa1b1352d..4420b4d29bac 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -111,7 +111,6 @@ struct dw_spi_dma_ops {
+@@ -302,7 +299,7 @@ static int dw_spi_transfer_one(struct spi_controller *master,
  
- struct dw_spi {
- 	struct spi_controller	*master;
--	enum dw_ssi_type	type;
+ 	dw_spi_update_config(dws, spi, transfer);
  
- 	void __iomem		*regs;
- 	unsigned long		paddr;
+-	transfer->effective_speed_hz = dws->max_freq / chip->clk_div;
++	transfer->effective_speed_hz = dws->current_freq;
+ 
+ 	/* Check if current transfer is a DMA transaction */
+ 	if (master->can_dma && master->can_dma(master, spi, transfer))
 -- 
 2.27.0
 

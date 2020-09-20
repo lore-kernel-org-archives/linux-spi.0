@@ -7,25 +7,25 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E843C43466
-	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:31:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C32C1C43463
+	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:31:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0E454206E5
-	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:31:13 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 955AA206E5
+	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:31:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726787AbgITLbB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1726483AbgITLbB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Sun, 20 Sep 2020 07:31:01 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:53666 "EHLO
+Received: from mail.baikalelectronics.com ([87.245.175.226]:53698 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726476AbgITL3u (ORCPT
+        with ESMTP id S1726474AbgITL3u (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:29:50 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 69250800254C;
-        Sun, 20 Sep 2020 11:29:33 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id C618A80057AA;
+        Sun, 20 Sep 2020 11:29:37 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id D75veaiFf16H; Sun, 20 Sep 2020 14:29:32 +0300 (MSK)
+        with ESMTP id 3RU1y5s3P7f4; Sun, 20 Sep 2020 14:29:37 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
@@ -39,9 +39,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 15/30] spi: dw: Update Rx sample delay in the config function
-Date:   Sun, 20 Sep 2020 14:28:59 +0300
-Message-ID: <20200920112914.26501-16-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH 21/30] spi: dw: Discard chip enabling on DMA setup error
+Date:   Sun, 20 Sep 2020 14:29:05 +0300
+Message-ID: <20200920112914.26501-22-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20200920112914.26501-1-Sergey.Semin@baikalelectronics.ru>
 References: <20200920112914.26501-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,53 +52,35 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Rx sample delay can be SPI device specific, and should be synchronously
-initialized with the rest of the communication and peripheral device
-related controller setups. So let's move the Rx-sample delay setup into
-the DW APB SSI configuration update method.
+It's pointless to enable the chip back if the DMA setup procedure fails,
+since we'll disable it on the next transfer anyway. For the same reason We
+don't do that in case of a failure detected in any other methods called
+from the transfer_one() method.
+
+While at it consider any non-zero value returned from the dma_setup
+callback to be erroneous as it's supposed to be in the kernel.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 ---
- drivers/spi/spi-dw-core.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/spi/spi-dw-core.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 92138a6ada12..f00fc4828480 100644
+index 8dbe11c1821c..65db4dd3ea8a 100644
 --- a/drivers/spi/spi-dw-core.c
 +++ b/drivers/spi/spi-dw-core.c
-@@ -273,13 +273,18 @@ static void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
- 		spi_set_clk(dws, clk_div);
- 		dws->current_freq = speed_hz;
+@@ -351,10 +351,8 @@ static int dw_spi_transfer_one(struct spi_controller *master,
+ 
+ 	if (dws->dma_mapped) {
+ 		ret = dws->dma_ops->dma_setup(dws, transfer);
+-		if (ret < 0) {
+-			spi_enable_chip(dws, 1);
++		if (ret)
+ 			return ret;
+-		}
  	}
-+
-+	/* Update RX sample delay if required */
-+	if (dws->cur_rx_sample_dly != chip->rx_sample_dly) {
-+		dw_writel(dws, DW_SPI_RX_SAMPLE_DLY, chip->rx_sample_dly);
-+		dws->cur_rx_sample_dly = chip->rx_sample_dly;
-+	}
- }
  
- static int dw_spi_transfer_one(struct spi_controller *master,
- 		struct spi_device *spi, struct spi_transfer *transfer)
- {
- 	struct dw_spi *dws = spi_controller_get_devdata(master);
--	struct chip_data *chip = spi_get_ctldata(spi);
- 	u8 imask = 0;
- 	u16 txlevel = 0;
- 	int ret;
-@@ -305,12 +310,6 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 	if (master->can_dma && master->can_dma(master, spi, transfer))
- 		dws->dma_mapped = master->cur_msg_mapped;
- 
--	/* Update RX sample delay if required */
--	if (dws->cur_rx_sample_dly != chip->rx_sample_dly) {
--		dw_writel(dws, DW_SPI_RX_SAMPLE_DLY, chip->rx_sample_dly);
--		dws->cur_rx_sample_dly = chip->rx_sample_dly;
--	}
--
- 	/* For poll mode just disable all interrupts */
- 	spi_mask_intr(dws, 0xff);
- 
+ 	spi_enable_chip(dws, 1);
 -- 
 2.27.0
 

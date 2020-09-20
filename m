@@ -4,28 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CEA02C43465
-	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:30:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 67755C4346A
+	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:30:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9EC9B20EDD
-	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:30:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2CA1520672
+	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:30:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726688AbgITLa1 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 20 Sep 2020 07:30:27 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:53930 "EHLO
+        id S1726723AbgITLal (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 20 Sep 2020 07:30:41 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:53932 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726489AbgITL3w (ORCPT
+        with ESMTP id S1726496AbgITL3w (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:29:52 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 1DF46800254A;
-        Sun, 20 Sep 2020 11:29:32 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 33741800255E;
+        Sun, 20 Sep 2020 11:29:39 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 6t2WLHDTUFsV; Sun, 20 Sep 2020 14:29:31 +0300 (MSK)
+        with ESMTP id uBpfZlhmhcAO; Sun, 20 Sep 2020 14:29:38 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
@@ -39,9 +39,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 13/30] spi: dw: Update SPI bus speed in a config function
-Date:   Sun, 20 Sep 2020 14:28:57 +0300
-Message-ID: <20200920112914.26501-14-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH 23/30] spi: dw: Explicitly de-assert CS on SPI transfer completion
+Date:   Sun, 20 Sep 2020 14:29:07 +0300
+Message-ID: <20200920112914.26501-24-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20200920112914.26501-1-Sergey.Semin@baikalelectronics.ru>
 References: <20200920112914.26501-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,76 +52,32 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The SPI bus speed update functionality will be useful in another parts of
-the driver too (like to implement the SPI memory operations and from the
-DW SPI glue layers). Let's move it to the update_cr0() method then and
-since the later is now updating not only the CTRLR0 register alter its
-prototype to have a generic function name not related to CR0.
-
-Leave the too long line with the chip->clk_div setting as is for now,
-since it's going to be changed later anyway.
+By design of the currently available native set_cs callback, the CS
+de-assertion will be done only if it's required by the corresponding
+controller capability. But in order to pre-fill the Tx FIFO buffer with
+data during the SPI memory ops execution the SER register needs to be left
+cleared before that. We'll also need a way to explicitly set and clear the
+corresponding CS bit at a certain moment of the operation. Let's alter
+the set_cs function then to also de-activate the CS, when it's required.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 ---
- drivers/spi/spi-dw-core.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ drivers/spi/spi-dw-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index a9644351d75f..0b80a16d9872 100644
+index 65db4dd3ea8a..7a25ea6f4af6 100644
 --- a/drivers/spi/spi-dw-core.c
 +++ b/drivers/spi/spi-dw-core.c
-@@ -251,8 +251,8 @@ static u32 dw_spi_get_cr0(struct dw_spi *dws, struct spi_device *spi)
- 	return cr0;
+@@ -100,7 +100,7 @@ void dw_spi_set_cs(struct spi_device *spi, bool enable)
+ 	 */
+ 	if (cs_high == enable)
+ 		dw_writel(dws, DW_SPI_SER, BIT(spi->chip_select));
+-	else if (dws->caps & DW_SPI_CAP_CS_OVERRIDE)
++	else
+ 		dw_writel(dws, DW_SPI_SER, 0);
  }
- 
--static void dw_spi_update_cr0(struct dw_spi *dws, struct spi_device *spi,
--			      struct spi_transfer *transfer)
-+static void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
-+				 struct spi_transfer *transfer)
- {
- 	struct chip_data *chip = spi_get_ctldata(spi);
- 	u32 cr0 = chip->cr0;
-@@ -265,6 +265,17 @@ static void dw_spi_update_cr0(struct dw_spi *dws, struct spi_device *spi,
- 		cr0 |= chip->tmode << DWC_SSI_CTRLR0_TMOD_OFFSET;
- 
- 	dw_writel(dws, DW_SPI_CTRLR0, cr0);
-+
-+	/* Handle per transfer options for bpw and speed */
-+	if (transfer->speed_hz != dws->current_freq) {
-+		if (transfer->speed_hz != chip->speed_hz) {
-+			/* clk_div doesn't support odd number */
-+			chip->clk_div = (DIV_ROUND_UP(dws->max_freq, transfer->speed_hz) + 1) & 0xfffe;
-+			chip->speed_hz = transfer->speed_hz;
-+		}
-+		dws->current_freq = transfer->speed_hz;
-+		spi_set_clk(dws, chip->clk_div);
-+	}
- }
- 
- static int dw_spi_transfer_one(struct spi_controller *master,
-@@ -289,21 +300,10 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 
- 	spi_enable_chip(dws, 0);
- 
--	/* Handle per transfer options for bpw and speed */
--	if (transfer->speed_hz != dws->current_freq) {
--		if (transfer->speed_hz != chip->speed_hz) {
--			/* clk_div doesn't support odd number */
--			chip->clk_div = (DIV_ROUND_UP(dws->max_freq, transfer->speed_hz) + 1) & 0xfffe;
--			chip->speed_hz = transfer->speed_hz;
--		}
--		dws->current_freq = transfer->speed_hz;
--		spi_set_clk(dws, chip->clk_div);
--	}
-+	dw_spi_update_config(dws, spi, transfer);
- 
- 	transfer->effective_speed_hz = dws->max_freq / chip->clk_div;
- 
--	dw_spi_update_cr0(dws, spi, transfer);
--
- 	/* Check if current transfer is a DMA transaction */
- 	if (master->can_dma && master->can_dma(master, spi, transfer))
- 		dws->dma_mapped = master->cur_msg_mapped;
+ EXPORT_SYMBOL_GPL(dw_spi_set_cs);
 -- 
 2.27.0
 

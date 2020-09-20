@@ -7,25 +7,25 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D989C43466
-	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:30:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 120BBC43463
+	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:30:26 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id F238A20EDD
-	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:30:24 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CECA820EDD
+	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:30:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726650AbgITLaN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1726645AbgITLaN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Sun, 20 Sep 2020 07:30:13 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:53648 "EHLO
+Received: from mail.baikalelectronics.com ([87.245.175.226]:53934 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726485AbgITL3w (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:29:52 -0400
+        with ESMTP id S1726501AbgITL3x (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:29:53 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id E37D68000853;
-        Sun, 20 Sep 2020 11:29:35 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 9071280057A8;
+        Sun, 20 Sep 2020 11:29:38 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id BDuRkofz6rz3; Sun, 20 Sep 2020 14:29:35 +0300 (MSK)
+        with ESMTP id 2f_I8YyWNmS2; Sun, 20 Sep 2020 14:29:38 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
@@ -39,9 +39,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 18/30] spi: dw: Refactor IRQ-based SPI transfer procedure
-Date:   Sun, 20 Sep 2020 14:29:02 +0300
-Message-ID: <20200920112914.26501-19-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH 22/30] spi: dw: De-assert chip-select on reset
+Date:   Sun, 20 Sep 2020 14:29:06 +0300
+Message-ID: <20200920112914.26501-23-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20200920112914.26501-1-Sergey.Semin@baikalelectronics.ru>
 References: <20200920112914.26501-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,94 +52,42 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Current IRQ-based SPI transfer execution procedure doesn't work well at
-the final stage of the execution. If all the Tx data is sent out (written
-to the Tx FIFO) but there is some data left to receive, the Tx FIFO Empty
-IRQ will constantly happen until all of the requested inbound data is
-received. Though for a short period of time, but it will make the system
-less responsive. In order to fix that let's refactor the SPI transfer
-execution procedure by taking the Rx FIFO Full IRQ into account. We'll read
-and write SPI transfer data each time the IRQ happens as before. If all
-the outbound data is sent out, we'll disable the Tx FIFO Empty IRQ. If
-there is still some data to receive, we'll adjust the Rx FIFO Threshold
-level, so the next IRQ would be raised at the moment of all incoming data
-being available in the Rx FIFO.
+SPI memory operations implementation will require to have the CS register
+cleared before executing the operation in order not to have the
+transmission automatically started prior the Tx FIFO is pre-initialized.
+Let's clear the register then on explicit controller reset to fulfil the
+requirements in case of an error or having the CS left set by a bootloader
+or another software.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 ---
- drivers/spi/spi-dw-core.c | 33 ++++++++++++++++++++++++---------
- 1 file changed, 24 insertions(+), 9 deletions(-)
+ drivers/spi/spi-dw.h | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 84c1fdfd6e52..682463b2f68b 100644
---- a/drivers/spi/spi-dw-core.c
-+++ b/drivers/spi/spi-dw-core.c
-@@ -189,17 +189,30 @@ static irqreturn_t interrupt_transfer(struct dw_spi *dws)
- 		return IRQ_HANDLED;
- 	}
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index cfc9f63acde4..eb1d46983319 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -237,15 +237,16 @@ static inline void spi_umask_intr(struct dw_spi *dws, u32 mask)
+ }
  
-+	/*
-+	 * Read data from the Rx FIFO every time we've got a chance executing
-+	 * this method. If there is nothing left to receive, terminate the
-+	 * procedure. Otherwise adjust the Rx FIFO Threshold level if it's a
-+	 * final stage of the transfer. By doing so we'll get the next IRQ
-+	 * right when the leftover incoming data is received.
-+	 */
- 	dw_reader(dws);
- 	if (!dws->rx_len) {
- 		spi_mask_intr(dws, 0xff);
- 		spi_finalize_current_transfer(dws->master);
--		return IRQ_HANDLED;
-+	} else if (dws->rx_len <= dw_readl(dws, DW_SPI_RXFTLR)) {
-+		dw_writel(dws, DW_SPI_RXFTLR, dws->rx_len - 1);
- 	}
-+
-+	/*
-+	 * Send data out if Tx FIFO Empty IRQ is received. The IRQ will be
-+	 * disabled after the data transmission is finished so not to
-+	 * have the TXE IRQ flood at the final stage of the transfer.
-+	 */
- 	if (irq_status & SPI_INT_TXEI) {
--		spi_mask_intr(dws, SPI_INT_TXEI);
- 		dw_writer(dws);
--		/* Enable TX irq always, it will be disabled when RX finished */
--		spi_umask_intr(dws, SPI_INT_TXEI);
-+		if (!dws->tx_len)
-+			spi_mask_intr(dws, SPI_INT_TXEI);
- 	}
- 
- 	return IRQ_HANDLED;
-@@ -317,10 +330,6 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 	/* For poll mode just disable all interrupts */
+ /*
+- * This disables the SPI controller, interrupts, clears the interrupts status,
+- * and re-enable the controller back. Transmit and receive FIFO buffers are
+- * cleared when the device is disabled.
++ * This disables the SPI controller, interrupts, clears the interrupts status
++ * and CS, then re-enables the controller back. Transmit and receive FIFO
++ * buffers are cleared when the device is disabled.
+  */
+ static inline void spi_reset_chip(struct dw_spi *dws)
+ {
+ 	spi_enable_chip(dws, 0);
  	spi_mask_intr(dws, 0xff);
+ 	dw_readl(dws, DW_SPI_ICR);
++	dw_writel(dws, DW_SPI_SER, 0);
+ 	spi_enable_chip(dws, 1);
+ }
  
--	/*
--	 * Interrupt mode
--	 * we only need set the TXEI IRQ, as TX/RX always happen syncronizely
--	 */
- 	if (dws->dma_mapped) {
- 		ret = dws->dma_ops->dma_setup(dws, transfer);
- 		if (ret < 0) {
-@@ -328,12 +337,18 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 			return ret;
- 		}
- 	} else {
-+		/*
-+		 * Originally Tx and Rx data lengths match. Rx FIFO Threshold level
-+		 * will be adjusted at the final stage of the IRQ-based SPI transfer
-+		 * execution so not to lose the leftover of the incoming data.
-+		 */
- 		txlevel = min_t(u16, dws->fifo_len / 2, dws->tx_len);
- 		dw_writel(dws, DW_SPI_TXFTLR, txlevel);
-+		dw_writel(dws, DW_SPI_RXFTLR, txlevel - 1);
- 
- 		/* Set the interrupt mask */
- 		imask |= SPI_INT_TXEI | SPI_INT_TXOI |
--			 SPI_INT_RXUI | SPI_INT_RXOI;
-+			 SPI_INT_RXUI | SPI_INT_RXOI | SPI_INT_RXFI;
- 		spi_umask_intr(dws, imask);
- 
- 		dws->transfer_handler = interrupt_transfer;
 -- 
 2.27.0
 

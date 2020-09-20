@@ -2,30 +2,29 @@ Return-Path: <SRS0=0Kns=C5=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
+	SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7FEC2C43465
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DB425C43468
 	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:32:29 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5A6A320EDD
+	by mail.kernel.org (Postfix) with ESMTP id B36D9216C4
 	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:32:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726389AbgITLc2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 20 Sep 2020 07:32:28 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:54052 "EHLO
+        id S1726397AbgITLc3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 20 Sep 2020 07:32:29 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:54050 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726397AbgITLc1 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:32:27 -0400
+        with ESMTP id S1726314AbgITLc2 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:32:28 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 8DD0B8030171;
-        Sun, 20 Sep 2020 11:23:29 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 8F8DF80307CB;
+        Sun, 20 Sep 2020 11:23:26 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id RpDXG3G2kXML; Sun, 20 Sep 2020 14:23:29 +0300 (MSK)
+        with ESMTP id wGiTZSOb0tRl; Sun, 20 Sep 2020 14:23:25 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
@@ -39,11 +38,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Feng Tang <feng.tang@intel.com>, Vinod Koul <vkoul@kernel.org>,
         <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 06/11] spi: dw-dma: Check DMA Tx-desc submission status
-Date:   Sun, 20 Sep 2020 14:23:17 +0300
-Message-ID: <20200920112322.24585-7-Sergey.Semin@baikalelectronics.ru>
-In-Reply-To: <20200920112322.24585-1-Sergey.Semin@baikalelectronics.ru>
-References: <20200920112322.24585-1-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH v2 00/11] spi: dw-dma: Add max SG entries burst capability support
+Date:   Sun, 20 Sep 2020 14:23:11 +0300
+Message-ID: <20200920112322.24585-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -52,75 +49,123 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-We suggest to add the dmaengine_submit() return value test for errors.  It
-has been unnecessary while the driver was expected to be utilized in pair
-with DW DMAC. But since now the driver can be used with any DMA engine, it
-might be useful to track the errors on DMA submissions so not miss them
-and get into an unpredictable driver behaviour.
+Mainly this series is about fixing a very nasty problem discovered in the
+DW APB SSI driver working in a couple with DW DMAC, which doesn't have
+multi-block capability support (a.k.a. accelerated SG list entries
+traversal/burst, or automatic LLP entries reload, etc.).
+
+DW DMA IP-core and its DMA channel on the synthesize stage can be tuned by
+setting a vast number of the model parameters, some of which are provided
+to create a more optimized/performant controller. In particular two of
+those parameters are DMAH_CHx_MULTI_BLK_EN and DMAH_CHx_HC_LLP. If at
+least one of them is set to zero (false) then the target DMA controller
+will be smaller and faster but will lack of the DMA blocks chaining
+support. In the kernel notation it means that the controller won't be able
+to automatically reload a next SG-list entry, when a current one is
+finished. Since Linux kernel DMA subsystem interface requires to have the
+SG-lists execution supported, the DW DMA engine driver is developed in a
+way so to resubmit each SG-list entry one-by-one by software means: each
+SG-list entry execution finish is tracked by the DW DMA controller
+interrupt, which handler executes a tasklet, which then re-charges a DW
+DMA channel with a next SG-list entry if one is available. Such
+implementation is a normal design and works well for the most of the DW
+DMAC client devices. But it may cause problems for devices, which send and
+receive data by means of internal FIFOs. That requires having several DMA
+channels working synchronously in order to prevent the FIFOs overflow.
+
+A bright example of such device is the DW APB SSI controller. It has Tx
+and Rx FIFOs, which first need to be filled in with data before data
+sending out or receiving in. But those FIFOs are inter-dependent because
+of the SPI nature and its shift-register design. So each sent over Tx FIFO
+byte immediately causes getting a byte from the SPI bus into the Rx FIFO.
+It makes a strategy of working with the SPI controller a bit tricky. The
+more data we push into the Tx FIFO and the faster the SPI bus is, the more
+careful we have to be in pulling data from Rx FIFO since if software or
+DMA engine misses a moment when the Rx FIFO is full, for instance, due to
+being busy with some other activity or due to being blocked if system bus
+is busy with doing something else or just due to being too slow to keep up
+with incoming data, then Rx FIFO will be overflown, which consequently
+causes data loss. Needless to say that such situation is fatal and mustn't
+be tolerated for a bus like SPI.
+
+In application to the DW APB SSI driver the problem above may happen when
+DW DMAC is synthesized with no multi-block capability support and it's
+enabled to be working with DW APB SSI for full-duplex transfers. DW APB
+SSI driver allocates two DW DMAC channels to perform Tx and Rx SPI
+transfers, initializes them, submits Tx and Rx SG-lists for execution and
+then waits until the DMA transfers are finished. The issue happens when Rx
+SG-list consists of more than one entry. Since the multi-block capability
+is unsupported the DW DMAC driver will use the software-based SG-list
+entries traverse implementation, which by design may cause
+non-deterministic latency during the Rx SG-list entries re-charge. During
+the entries re-charge procedure the DMA Tx channel will keep pushing data
+into the SPI Tx FIFO. DW APB SSI controller in its turn will keep pushing
+data out from the Tx FIFO to the SPI bus, and will immediately fill in the
+Rx FIFO. So if the latency is big enough, then we'll eventually end up
+with Rx FIFO overflow.
+
+One of the possible solution of the problem denoted above is to feed the
+DMA engine with the Tx and Rx SG-list entries one-by-one. This
+patch-series provides an implementation of that approach. First it moves
+the requested DMA channels configuration into the dma_setup() callback,
+which should have been there in the first place. Then it's better to move
+the DMA transfers submission into the DMA-preparation methods to collect
+all the setups in a single method. After that the current implementation
+of a straightforward SG-lists DMA transfer should be unpinned into a
+dedicated method dw_spi_dma_transfer_all() since we are about to introduce
+an alternative DMA-based SPI transfer approach. Since DMA-transfers finish
+is now locally detected we can simplify the driver code a bit and move the
+DMAC register cleanup to a single place in the dw_spi_dma_transfer_all()
+method. In order to re-use the DMA-{wait, submit Tx, submit Rx} methods we
+have to alter their prototypes, so they would accept SG-lists instead of
+the SPI-transfer structure. Finally we introduce a new DMA-based
+SPI-transfer method, which traverses the SG-list entries in a loop and
+synchronously submits each of then to the Tx and Rx DMA channels in a way
+so the DMA engine wouldn't need to activate the prone to errors in our
+case SG-list entries re-charge implementation. That new method is utilized
+only for the DMA controllers, which can't handle all Tx and Rx SPI
+transfer SG-lists in a single DMA transaction without software
+intervention, and for the full-duplex SPI-transfers.
+
+Link: https://lore.kernel.org/linux-spi/20200731075953.14416-1-Sergey.Semin@baikalelectronics.ru
+Changelog v2:
+- Replace negative conditional statements with the positive ones in the
+  dw_spi_dma_submit_{tx,rx}() methods.
+- Terminate the prepared DMA Tx-descriptors on submission errors.
+- Split the patch "spi: dw-dma: Move DMA transfers submission to the
+  channels prep methods" up into a series of more simple commits.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Cc: Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>
+Cc: Georgy Vlasov <Georgy.Vlasov@baikalelectronics.ru>
+Cc: Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>
+Cc: Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>
+Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Feng Tang <feng.tang@intel.com>
+Cc: Vinod Koul <vkoul@kernel.org>
+Cc: linux-spi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 
----
+Serge Semin (11):
+  spi: dw-dma: Set DMA Level registers on init
+  spi: dw-dma: Fail DMA-based transfer if no Tx-buffer specified
+  spi: dw-dma: Configure the DMA channels in dma_setup
+  spi: dw-dma: Check rx_buf availability in the xfer method
+  spi: dw-dma: Move DMA transfers submission to the channels prep
+    methods
+  spi: dw-dma: Check DMA Tx-desc submission status
+  spi: dw-dma: Remove DMA Tx-desc passing around
+  spi: dw-dma: Detach DMA transfer into a dedicated method
+  spi: dw-dma: Move DMAC register cleanup to DMA transfer method
+  spi: dw-dma: Pass exact data to the DMA submit and wait methods
+  spi: dw-dma: Add one-by-one SG list entries transfer
 
-Changelog v2:
-- Replace negative conditional statements with the positive ones.
-- Terminate the prepared descriptors on submission errors.
----
- drivers/spi/spi-dw-dma.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ drivers/spi/spi-dw-dma.c | 316 ++++++++++++++++++++++++++++++---------
+ drivers/spi/spi-dw.h     |   1 +
+ 2 files changed, 245 insertions(+), 72 deletions(-)
 
-diff --git a/drivers/spi/spi-dw-dma.c b/drivers/spi/spi-dw-dma.c
-index 769d10ca74b4..aa3900809126 100644
---- a/drivers/spi/spi-dw-dma.c
-+++ b/drivers/spi/spi-dw-dma.c
-@@ -275,6 +275,8 @@ static struct dma_async_tx_descriptor *
- dw_spi_dma_submit_tx(struct dw_spi *dws, struct spi_transfer *xfer)
- {
- 	struct dma_async_tx_descriptor *txdesc;
-+	dma_cookie_t cookie;
-+	int ret;
- 
- 	txdesc = dmaengine_prep_slave_sg(dws->txchan,
- 				xfer->tx_sg.sgl,
-@@ -287,7 +289,13 @@ dw_spi_dma_submit_tx(struct dw_spi *dws, struct spi_transfer *xfer)
- 	txdesc->callback = dw_spi_dma_tx_done;
- 	txdesc->callback_param = dws;
- 
--	dmaengine_submit(txdesc);
-+	cookie = dmaengine_submit(txdesc);
-+	ret = dma_submit_error(cookie);
-+	if (ret) {
-+		dmaengine_terminate_sync(dws->txchan);
-+		return NULL;
-+	}
-+
- 	set_bit(TX_BUSY, &dws->dma_chan_busy);
- 
- 	return txdesc;
-@@ -371,6 +379,8 @@ static struct dma_async_tx_descriptor *dw_spi_dma_submit_rx(struct dw_spi *dws,
- 		struct spi_transfer *xfer)
- {
- 	struct dma_async_tx_descriptor *rxdesc;
-+	dma_cookie_t cookie;
-+	int ret;
- 
- 	rxdesc = dmaengine_prep_slave_sg(dws->rxchan,
- 				xfer->rx_sg.sgl,
-@@ -383,7 +393,13 @@ static struct dma_async_tx_descriptor *dw_spi_dma_submit_rx(struct dw_spi *dws,
- 	rxdesc->callback = dw_spi_dma_rx_done;
- 	rxdesc->callback_param = dws;
- 
--	dmaengine_submit(rxdesc);
-+	cookie = dmaengine_submit(rxdesc);
-+	ret = dma_submit_error(cookie);
-+	if (ret) {
-+		dmaengine_terminate_sync(dws->rxchan);
-+		return NULL;
-+	}
-+
- 	set_bit(RX_BUSY, &dws->dma_chan_busy);
- 
- 	return rxdesc;
 -- 
 2.27.0
 

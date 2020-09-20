@@ -7,25 +7,25 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BF561C43466
-	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:31:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E14CBC43469
+	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:31:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 946A9206E5
-	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:31:17 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B6364206E5
+	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:31:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726515AbgITL3m (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1726508AbgITL3m (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Sun, 20 Sep 2020 07:29:42 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:53690 "EHLO
+Received: from mail.baikalelectronics.com ([87.245.175.226]:53718 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726444AbgITL3d (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:29:33 -0400
+        with ESMTP id S1726462AbgITL3j (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:29:39 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 0261A800248D;
-        Sun, 20 Sep 2020 11:29:29 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 6F4578002549;
+        Sun, 20 Sep 2020 11:29:31 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id RV5-gS_4YUbN; Sun, 20 Sep 2020 14:29:28 +0300 (MSK)
+        with ESMTP id 2kO6ijVyJ1qQ; Sun, 20 Sep 2020 14:29:30 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
@@ -39,9 +39,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 09/30] spi: dw: Convert CS-override to DW SPI capabilities
-Date:   Sun, 20 Sep 2020 14:28:53 +0300
-Message-ID: <20200920112914.26501-10-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH 12/30] spi: dw: Detach SPI device specific CR0 config method
+Date:   Sun, 20 Sep 2020 14:28:56 +0300
+Message-ID: <20200920112914.26501-13-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20200920112914.26501-1-Sergey.Semin@baikalelectronics.ru>
 References: <20200920112914.26501-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,89 +52,106 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-There are several vendor-specific versions of the DW SPI controllers,
-each of which may have some peculiarities with respect to the original
-IP-core. Seeing it has already caused adding flags and a callback into the
-DW SPI private data, let's introduce a generic capabilities interface to
-tune the generic DW SPI controller driver up in accordance with the
-particular controller specifics. It's done by converting a simple
-Alpine-specific CS-override capability into the DW SPI controller
-capability activated by setting the DW_SPI_CAP_CS_OVERRIDE flag.
+Indeed there is no point in detecting the SPI peripheral device parameters
+and initializing the CR0 register fields each time an SPI transfer is
+executed. Instead let's define a dedicated CR0 chip-data member, which
+will be initialized in accordance with the SPI device settings at the
+moment of setting it up.
+
+By doing so we'll finally make the SPI device chip_data serving as it's
+supposed to - to preserve the SPI device specific DW SPI configuration.
+See spi-fsl-dspi.c, spi-pl022.c, spi-pxa2xx.c drivers for example of the
+way the chip data is utilized.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 ---
- drivers/spi/spi-dw-core.c | 4 ++--
- drivers/spi/spi-dw-mmio.c | 2 +-
- drivers/spi/spi-dw.h      | 7 ++++++-
- 3 files changed, 9 insertions(+), 4 deletions(-)
+ drivers/spi/spi-dw-core.c | 35 +++++++++++++++++++++++++++--------
+ 1 file changed, 27 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index dd9574f9fafc..78e5af8ed173 100644
+index c21641a485ce..a9644351d75f 100644
 --- a/drivers/spi/spi-dw-core.c
 +++ b/drivers/spi/spi-dw-core.c
-@@ -104,7 +104,7 @@ void dw_spi_set_cs(struct spi_device *spi, bool enable)
- 	 */
- 	if (cs_high == enable)
- 		dw_writel(dws, DW_SPI_SER, BIT(spi->chip_select));
--	else if (dws->cs_override)
-+	else if (dws->caps & DW_SPI_CAP_CS_OVERRIDE)
- 		dw_writel(dws, DW_SPI_SER, 0);
- }
- EXPORT_SYMBOL_GPL(dw_spi_set_cs);
-@@ -435,7 +435,7 @@ static void spi_hw_init(struct device *dev, struct dw_spi *dws)
- 	}
+@@ -27,6 +27,7 @@ struct chip_data {
+ 	u16 clk_div;		/* baud rate divider */
+ 	u32 speed_hz;		/* baud rate */
  
- 	/* enable HW fixup for explicit CS deselect for Amazon's alpine chip */
--	if (dws->cs_override)
-+	if (dws->caps & DW_SPI_CAP_CS_OVERRIDE)
- 		dw_writel(dws, DW_SPI_CS_OVERRIDE, 0xF);
- }
- 
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index 18772c0c9220..7111cb7ca23b 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -204,7 +204,7 @@ static int dw_spi_mscc_sparx5_init(struct platform_device *pdev,
- static int dw_spi_alpine_init(struct platform_device *pdev,
- 			      struct dw_spi_mmio *dwsmmio)
- {
--	dwsmmio->dws.cs_override = 1;
-+	dwsmmio->dws.caps = DW_SPI_CAP_CS_OVERRIDE;
- 
- 	/* Register hook to configure CTRLR0 */
- 	dwsmmio->dws.update_cr0 = dw_spi_update_cr0;
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 4420b4d29bac..4c748b2853a8 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -2,6 +2,7 @@
- #ifndef DW_SPI_HEADER_H
- #define DW_SPI_HEADER_H
- 
-+#include <linux/bits.h>
- #include <linux/completion.h>
- #include <linux/debugfs.h>
- #include <linux/irqreturn.h>
-@@ -98,6 +99,9 @@ enum dw_ssi_type {
- 	SSI_NS_MICROWIRE,
++	u32 cr0;
+ 	u32 rx_sample_dly;	/* RX sample delay */
  };
  
-+/* DW SPI capabilities */
-+#define DW_SPI_CAP_CS_OVERRIDE		BIT(0)
-+
- struct dw_spi;
- struct dw_spi_dma_ops {
- 	int (*dma_init)(struct device *dev, struct dw_spi *dws);
-@@ -118,7 +122,8 @@ struct dw_spi {
- 	u32			fifo_len;	/* depth of the FIFO buffer */
- 	u32			max_freq;	/* max bus freq supported */
+@@ -228,31 +229,41 @@ static irqreturn_t dw_spi_irq(int irq, void *dev_id)
+ 	return dws->transfer_handler(dws);
+ }
  
--	int			cs_override;
-+	u32			caps;		/* DW SPI capabilities */
+-static void dw_spi_update_cr0(struct dw_spi *dws, struct spi_device *spi,
+-			      struct spi_transfer *transfer)
++static u32 dw_spi_get_cr0(struct dw_spi *dws, struct spi_device *spi)
+ {
+-	struct chip_data *chip = spi_get_ctldata(spi);
+-	u32 cr0;
+-
+-	cr0 = (transfer->bits_per_word - 1);
++	u32 cr0 = 0;
+ 
+ 	if (!(dws->caps & DW_SPI_CAP_DWC_SSI)) {
+ 		cr0 |= SSI_MOTO_SPI << SPI_FRF_OFFSET;
+ 		cr0 |= ((spi->mode & SPI_CPOL) ? 1 : 0) << SPI_SCOL_OFFSET;
+ 		cr0 |= ((spi->mode & SPI_CPHA) ? 1 : 0) << SPI_SCPH_OFFSET;
+ 		cr0 |= ((spi->mode & SPI_LOOP) ? 1 : 0) << SPI_SRL_OFFSET;
+-		cr0 |= chip->tmode << SPI_TMOD_OFFSET;
+ 	} else {
+ 		cr0 |= SSI_MOTO_SPI << DWC_SSI_CTRLR0_FRF_OFFSET;
+ 		cr0 |= ((spi->mode & SPI_CPOL) ? 1 : 0) << DWC_SSI_CTRLR0_SCPOL_OFFSET;
+ 		cr0 |= ((spi->mode & SPI_CPHA) ? 1 : 0) << DWC_SSI_CTRLR0_SCPH_OFFSET;
+ 		cr0 |= ((spi->mode & SPI_LOOP) ? 1 : 0) << DWC_SSI_CTRLR0_SRL_OFFSET;
+-		cr0 |= chip->tmode << DWC_SSI_CTRLR0_TMOD_OFFSET;
+ 
+ 		if (dws->caps & DW_SPI_CAP_KEEMBAY_MST)
+ 			cr0 |= DWC_SSI_CTRLR0_KEEMBAY_MST;
+ 	}
+ 
++	return cr0;
++}
 +
- 	u32			reg_io_width;	/* DR I/O width in bytes */
- 	u16			bus_num;
- 	u16			num_cs;		/* supported slave numbers */
++static void dw_spi_update_cr0(struct dw_spi *dws, struct spi_device *spi,
++			      struct spi_transfer *transfer)
++{
++	struct chip_data *chip = spi_get_ctldata(spi);
++	u32 cr0 = chip->cr0;
++
++	cr0 |= (transfer->bits_per_word - 1);
++
++	if (!(dws->caps & DW_SPI_CAP_DWC_SSI))
++		cr0 |= chip->tmode << SPI_TMOD_OFFSET;
++	else
++		cr0 |= chip->tmode << DWC_SSI_CTRLR0_TMOD_OFFSET;
++
+ 	dw_writel(dws, DW_SPI_CTRLR0, cr0);
+ }
+ 
+@@ -350,6 +361,7 @@ static void dw_spi_handle_err(struct spi_controller *master,
+ /* This may be called twice for each spi dev */
+ static int dw_spi_setup(struct spi_device *spi)
+ {
++	struct dw_spi *dws = spi_controller_get_devdata(spi->controller);
+ 	struct chip_data *chip;
+ 
+ 	/* Only alloc on first setup */
+@@ -373,6 +385,13 @@ static int dw_spi_setup(struct spi_device *spi)
+ 							dws->max_freq);
+ 	}
+ 
++	/*
++	 * Update CR0 data each time the setup callback is invoked since
++	 * the device parameters could have been changed, for instance, by
++	 * the MMC SPI driver or something else.
++	 */
++	chip->cr0 = dw_spi_get_cr0(dws, spi);
++
+ 	chip->tmode = SPI_TMOD_TR;
+ 
+ 	return 0;
 -- 
 2.27.0
 

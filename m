@@ -7,25 +7,25 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC604C43466
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D3ED4C43465
 	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:30:13 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 719CA20EDD
+	by mail.kernel.org (Postfix) with ESMTP id 9DFBD216C4
 	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:30:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726643AbgITLaM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 20 Sep 2020 07:30:12 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:53960 "EHLO
+        id S1726472AbgITLaN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 20 Sep 2020 07:30:13 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:53938 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726541AbgITL3y (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:29:54 -0400
+        with ESMTP id S1726495AbgITL3w (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:29:52 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 9F66E80060AA;
-        Sun, 20 Sep 2020 11:29:42 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id EBCEC80060AB;
+        Sun, 20 Sep 2020 11:29:39 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Z1JIMJVaVpcT; Sun, 20 Sep 2020 14:29:42 +0300 (MSK)
+        with ESMTP id Dh3AEuqhIo0G; Sun, 20 Sep 2020 14:29:39 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
@@ -39,9 +39,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 27/30] spi: dw: Introduce max mem-ops SPI bus frequency setting
-Date:   Sun, 20 Sep 2020 14:29:11 +0300
-Message-ID: <20200920112914.26501-28-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH 24/30] spi: dw: Move num-of retries parameter to the header file
+Date:   Sun, 20 Sep 2020 14:29:08 +0300
+Message-ID: <20200920112914.26501-25-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20200920112914.26501-1-Sergey.Semin@baikalelectronics.ru>
 References: <20200920112914.26501-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,59 +52,59 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-In some circumstances the current implementation of the SPI memory
-operations may occasionally fail even though they are executed in the
-atomic context. This may happen if the system bus is relatively slow in
-comparison to the SPI bus frequency, or there is a concurrent access to
-it, which makes the MMIO-operations occasionally stalling before
-push-pulling data from the DW APB SPI FIFOs. These two problems we've
-discovered on the Baikal-T1 SoC. In order to fix them we have no choice
-but to set an artificial limitation on the SPI bus speed.
-
-Note currently this limitation will be only applicable for the memory
-operations, since the standard SPI core interface is implemented with an
-assumption that there is no problem with the automatic CS toggling.
+The parameter will be needed for another wait-done method being added in
+the framework of the SPI memory operation modification in a further
+commit.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 ---
- drivers/spi/spi-dw-core.c | 4 +++-
- drivers/spi/spi-dw.h      | 1 +
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/spi/spi-dw-dma.c | 5 ++---
+ drivers/spi/spi-dw.h     | 2 ++
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index ca22f427d82d..7b901226fd38 100644
---- a/drivers/spi/spi-dw-core.c
-+++ b/drivers/spi/spi-dw-core.c
-@@ -608,7 +608,7 @@ static int dw_spi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 	 * operation. Transmit-only mode is suitable for the rest of them.
- 	 */
- 	cfg.dfs = 8;
--	cfg.freq = mem->spi->max_speed_hz;
-+	cfg.freq = clamp(mem->spi->max_speed_hz, 0U, dws->max_mem_freq);
- 	if (op->data.dir == SPI_MEM_DATA_IN) {
- 		cfg.tmode = SPI_TMOD_EPROMREAD;
- 		cfg.ndf = op->data.nbytes;
-@@ -695,6 +695,8 @@ static void dw_spi_init_mem_ops(struct dw_spi *dws)
- 		dws->mem_ops.adjust_op_size = dw_spi_adjust_mem_op_size;
- 		dws->mem_ops.supports_op = dw_spi_supports_mem_op;
- 		dws->mem_ops.exec_op = dw_spi_exec_mem_op;
-+		if (!dws->max_mem_freq)
-+			dws->max_mem_freq = dws->max_freq;
- 	}
- }
+diff --git a/drivers/spi/spi-dw-dma.c b/drivers/spi/spi-dw-dma.c
+index bb390ff67d1d..9db119dc5554 100644
+--- a/drivers/spi/spi-dw-dma.c
++++ b/drivers/spi/spi-dw-dma.c
+@@ -17,7 +17,6 @@
  
+ #include "spi-dw.h"
+ 
+-#define WAIT_RETRIES	5
+ #define RX_BUSY		0
+ #define RX_BURST_LEVEL	16
+ #define TX_BUSY		1
+@@ -208,7 +207,7 @@ static inline bool dw_spi_dma_tx_busy(struct dw_spi *dws)
+ static int dw_spi_dma_wait_tx_done(struct dw_spi *dws,
+ 				   struct spi_transfer *xfer)
+ {
+-	int retry = WAIT_RETRIES;
++	int retry = SPI_WAIT_RETRIES;
+ 	struct spi_delay delay;
+ 	u32 nents;
+ 
+@@ -283,7 +282,7 @@ static inline bool dw_spi_dma_rx_busy(struct dw_spi *dws)
+ 
+ static int dw_spi_dma_wait_rx_done(struct dw_spi *dws)
+ {
+-	int retry = WAIT_RETRIES;
++	int retry = SPI_WAIT_RETRIES;
+ 	struct spi_delay delay;
+ 	unsigned long ns, us;
+ 	u32 nents;
 diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 4b08fe34a85d..dc5781236cc6 100644
+index eb1d46983319..946065201c9c 100644
 --- a/drivers/spi/spi-dw.h
 +++ b/drivers/spi/spi-dw.h
-@@ -148,6 +148,7 @@ struct dw_spi {
- 	unsigned long		paddr;
- 	int			irq;
- 	u32			fifo_len;	/* depth of the FIFO buffer */
-+	u32			max_mem_freq;	/* max mem-ops bus freq */
- 	u32			max_freq;	/* max bus freq supported */
+@@ -100,6 +100,8 @@
+ #define SPI_DMA_RDMAE			(1 << 0)
+ #define SPI_DMA_TDMAE			(1 << 1)
  
- 	u32			caps;		/* DW SPI capabilities */
++#define SPI_WAIT_RETRIES		5
++
+ enum dw_ssi_type {
+ 	SSI_MOTO_SPI = 0,
+ 	SSI_TI_SSP,
 -- 
 2.27.0
 

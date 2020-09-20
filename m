@@ -7,25 +7,25 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 90DEBC43465
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BF561C43466
 	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:31:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5B5B3216C4
+	by mail.kernel.org (Postfix) with ESMTP id 946A9206E5
 	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:31:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726532AbgITL3n (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 20 Sep 2020 07:29:43 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:53640 "EHLO
+        id S1726515AbgITL3m (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 20 Sep 2020 07:29:42 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:53690 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726390AbgITL33 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:29:29 -0400
+        with ESMTP id S1726444AbgITL3d (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:29:33 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id B2D418001383;
-        Sun, 20 Sep 2020 11:29:25 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 0261A800248D;
+        Sun, 20 Sep 2020 11:29:29 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id DDfvsA9FBVD7; Sun, 20 Sep 2020 14:29:25 +0300 (MSK)
+        with ESMTP id RV5-gS_4YUbN; Sun, 20 Sep 2020 14:29:28 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
@@ -39,9 +39,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 05/30] spi: dw: Clear IRQ status on DW SPI controller reset
-Date:   Sun, 20 Sep 2020 14:28:49 +0300
-Message-ID: <20200920112914.26501-6-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH 09/30] spi: dw: Convert CS-override to DW SPI capabilities
+Date:   Sun, 20 Sep 2020 14:28:53 +0300
+Message-ID: <20200920112914.26501-10-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20200920112914.26501-1-Sergey.Semin@baikalelectronics.ru>
 References: <20200920112914.26501-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,40 +52,89 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-It turns out the IRQ status isn't cleared after switching the controller
-off and getting it back on, which may cause raising false error interrupts
-if controller has been unsuccessfully used by, for instance, a bootloader
-before the driver is loaded. Let's explicitly clear the interrupts status
-in the dedicated controller reset method.
+There are several vendor-specific versions of the DW SPI controllers,
+each of which may have some peculiarities with respect to the original
+IP-core. Seeing it has already caused adding flags and a callback into the
+DW SPI private data, let's introduce a generic capabilities interface to
+tune the generic DW SPI controller driver up in accordance with the
+particular controller specifics. It's done by converting a simple
+Alpine-specific CS-override capability into the DW SPI controller
+capability activated by setting the DW_SPI_CAP_CS_OVERRIDE flag.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 ---
- drivers/spi/spi-dw.h | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/spi/spi-dw-core.c | 4 ++--
+ drivers/spi/spi-dw-mmio.c | 2 +-
+ drivers/spi/spi-dw.h      | 7 ++++++-
+ 3 files changed, 9 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
+index dd9574f9fafc..78e5af8ed173 100644
+--- a/drivers/spi/spi-dw-core.c
++++ b/drivers/spi/spi-dw-core.c
+@@ -104,7 +104,7 @@ void dw_spi_set_cs(struct spi_device *spi, bool enable)
+ 	 */
+ 	if (cs_high == enable)
+ 		dw_writel(dws, DW_SPI_SER, BIT(spi->chip_select));
+-	else if (dws->cs_override)
++	else if (dws->caps & DW_SPI_CAP_CS_OVERRIDE)
+ 		dw_writel(dws, DW_SPI_SER, 0);
+ }
+ EXPORT_SYMBOL_GPL(dw_spi_set_cs);
+@@ -435,7 +435,7 @@ static void spi_hw_init(struct device *dev, struct dw_spi *dws)
+ 	}
+ 
+ 	/* enable HW fixup for explicit CS deselect for Amazon's alpine chip */
+-	if (dws->cs_override)
++	if (dws->caps & DW_SPI_CAP_CS_OVERRIDE)
+ 		dw_writel(dws, DW_SPI_CS_OVERRIDE, 0xF);
+ }
+ 
+diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+index 18772c0c9220..7111cb7ca23b 100644
+--- a/drivers/spi/spi-dw-mmio.c
++++ b/drivers/spi/spi-dw-mmio.c
+@@ -204,7 +204,7 @@ static int dw_spi_mscc_sparx5_init(struct platform_device *pdev,
+ static int dw_spi_alpine_init(struct platform_device *pdev,
+ 			      struct dw_spi_mmio *dwsmmio)
+ {
+-	dwsmmio->dws.cs_override = 1;
++	dwsmmio->dws.caps = DW_SPI_CAP_CS_OVERRIDE;
+ 
+ 	/* Register hook to configure CTRLR0 */
+ 	dwsmmio->dws.update_cr0 = dw_spi_update_cr0;
 diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 1ab704d1ebd8..ff77f39047ce 100644
+index 4420b4d29bac..4c748b2853a8 100644
 --- a/drivers/spi/spi-dw.h
 +++ b/drivers/spi/spi-dw.h
-@@ -229,14 +229,15 @@ static inline void spi_umask_intr(struct dw_spi *dws, u32 mask)
- }
+@@ -2,6 +2,7 @@
+ #ifndef DW_SPI_HEADER_H
+ #define DW_SPI_HEADER_H
  
- /*
-- * This does disable the SPI controller, interrupts, and re-enable the
-- * controller back. Transmit and receive FIFO buffers are cleared when the
-- * device is disabled.
-+ * This disables the SPI controller, interrupts, clears the interrupts status,
-+ * and re-enable the controller back. Transmit and receive FIFO buffers are
-+ * cleared when the device is disabled.
-  */
- static inline void spi_reset_chip(struct dw_spi *dws)
- {
- 	spi_enable_chip(dws, 0);
- 	spi_mask_intr(dws, 0xff);
-+	dw_readl(dws, DW_SPI_ICR);
- 	spi_enable_chip(dws, 1);
- }
++#include <linux/bits.h>
+ #include <linux/completion.h>
+ #include <linux/debugfs.h>
+ #include <linux/irqreturn.h>
+@@ -98,6 +99,9 @@ enum dw_ssi_type {
+ 	SSI_NS_MICROWIRE,
+ };
  
++/* DW SPI capabilities */
++#define DW_SPI_CAP_CS_OVERRIDE		BIT(0)
++
+ struct dw_spi;
+ struct dw_spi_dma_ops {
+ 	int (*dma_init)(struct device *dev, struct dw_spi *dws);
+@@ -118,7 +122,8 @@ struct dw_spi {
+ 	u32			fifo_len;	/* depth of the FIFO buffer */
+ 	u32			max_freq;	/* max bus freq supported */
+ 
+-	int			cs_override;
++	u32			caps;		/* DW SPI capabilities */
++
+ 	u32			reg_io_width;	/* DR I/O width in bytes */
+ 	u16			bus_num;
+ 	u16			num_cs;		/* supported slave numbers */
 -- 
 2.27.0
 

@@ -7,25 +7,25 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F1BEC43463
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 73DBEC43465
 	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:31:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C9D6720672
-	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:30:59 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3E20D206E5
+	for <linux-spi@archiver.kernel.org>; Sun, 20 Sep 2020 11:31:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726739AbgITLam (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1726734AbgITLam (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Sun, 20 Sep 2020 07:30:42 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:53640 "EHLO
+Received: from mail.baikalelectronics.com ([87.245.175.226]:53936 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726475AbgITL3u (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:29:50 -0400
+        with ESMTP id S1726497AbgITL3v (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 20 Sep 2020 07:29:51 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 548008002562;
-        Sun, 20 Sep 2020 11:29:35 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id E0D4E80060AD;
+        Sun, 20 Sep 2020 11:29:40 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id cdPCdQANdvMQ; Sun, 20 Sep 2020 14:29:34 +0300 (MSK)
+        with ESMTP id 5CYicKQBNhzm; Sun, 20 Sep 2020 14:29:40 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
@@ -39,9 +39,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 17/30] spi: dw: Refactor data IO procedure
-Date:   Sun, 20 Sep 2020 14:29:01 +0300
-Message-ID: <20200920112914.26501-18-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH 25/30] spi: dw: Add generic DW SSI status-check method
+Date:   Sun, 20 Sep 2020 14:29:09 +0300
+Message-ID: <20200920112914.26501-26-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20200920112914.26501-1-Sergey.Semin@baikalelectronics.ru>
 References: <20200920112914.26501-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,148 +52,118 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The Tx and Rx data write/read procedure can be significantly simplified by
-using Tx/Rx transfer lengths instead of the end pointers. By having the
-Tx/Rx data leftover lengths (in the number of transfer words) we can get
-rid of all subtraction and division operations utilized here and there in
-the tx_max(), rx_max(), dw_writer() and dw_reader() methods. Such
-modification will not only give us the more optimized IO procedures, but
-will make the data IO methods much more readable than before.
+The DW SSI errors handling method can be generically implemented for all
+types of the transfers: IRQ, DMA and poll-based ones. It will be a
+function which checks the overflow/underflow error flags and resets the
+controller if any of them is set. In the framework of this commit we make
+use of the new method to detect the errors in the IRQ- and DMA-based SPI
+transfer execution procedures.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 ---
- drivers/spi/spi-dw-core.c | 37 +++++++++++++++++--------------------
- drivers/spi/spi-dw.h      |  5 ++---
- 2 files changed, 19 insertions(+), 23 deletions(-)
+ drivers/spi/spi-dw-core.c | 43 +++++++++++++++++++++++++++++++--------
+ drivers/spi/spi-dw-dma.c  | 11 ++--------
+ drivers/spi/spi-dw.h      |  1 +
+ 3 files changed, 37 insertions(+), 18 deletions(-)
 
 diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 9102685c1523..84c1fdfd6e52 100644
+index 7a25ea6f4af6..77d61ded9256 100644
 --- a/drivers/spi/spi-dw-core.c
 +++ b/drivers/spi/spi-dw-core.c
-@@ -108,9 +108,8 @@ EXPORT_SYMBOL_GPL(dw_spi_set_cs);
- /* Return the max entries we can fill into tx fifo */
- static inline u32 tx_max(struct dw_spi *dws)
+@@ -169,23 +169,48 @@ static void dw_reader(struct dw_spi *dws)
+ 	}
+ }
+ 
+-static void int_error_stop(struct dw_spi *dws, const char *msg)
++int dw_spi_check_status(struct dw_spi *dws, bool raw)
  {
--	u32 tx_left, tx_room, rxtx_gap;
-+	u32 tx_room, rxtx_gap;
+-	spi_reset_chip(dws);
++	u32 irq_status;
++	int ret = 0;
++
++	if (raw)
++		irq_status = dw_readl(dws, DW_SPI_RISR);
++	else
++		irq_status = dw_readl(dws, DW_SPI_ISR);
++
++	if (irq_status & SPI_INT_RXOI) {
++		dev_err(&dws->master->dev, "RX FIFO overflow detected\n");
++		ret = -EIO;
++	}
++
++	if (irq_status & SPI_INT_RXUI) {
++		dev_err(&dws->master->dev, "RX FIFO underflow detected\n");
++		ret = -EIO;
++	}
  
--	tx_left = (dws->tx_end - dws->tx) / dws->n_bytes;
- 	tx_room = dws->fifo_len - dw_readl(dws, DW_SPI_TXFLR);
- 
- 	/*
-@@ -121,18 +120,15 @@ static inline u32 tx_max(struct dw_spi *dws)
- 	 * shift registers. So a control from sw point of
- 	 * view is taken.
- 	 */
--	rxtx_gap =  ((dws->rx_end - dws->rx) - (dws->tx_end - dws->tx))
--			/ dws->n_bytes;
-+	rxtx_gap = dws->fifo_len - (dws->rx_len - dws->tx_len);
- 
--	return min3(tx_left, tx_room, (u32) (dws->fifo_len - rxtx_gap));
-+	return min3((u32)dws->tx_len, tx_room, rxtx_gap);
+-	dev_err(&dws->master->dev, "%s\n", msg);
+-	dws->master->cur_msg->status = -EIO;
+-	spi_finalize_current_transfer(dws->master);
++	if (irq_status & SPI_INT_TXOI) {
++		dev_err(&dws->master->dev, "TX FIFO overflow detected\n");
++		ret = -EIO;
++	}
++
++	/* Generically handle the erroneous situation */
++	if (ret) {
++		spi_reset_chip(dws);
++		if (dws->master->cur_msg)
++			dws->master->cur_msg->status = ret;
++	}
++
++	return ret;
  }
++EXPORT_SYMBOL_GPL(dw_spi_check_status);
  
- /* Return the max entries we should read out of rx fifo */
- static inline u32 rx_max(struct dw_spi *dws)
+ static irqreturn_t dw_spi_transfer_handler(struct dw_spi *dws)
  {
--	u32 rx_left = (dws->rx_end - dws->rx) / dws->n_bytes;
--
--	return min_t(u32, rx_left, dw_readl(dws, DW_SPI_RXFLR));
-+	return min_t(u32, dws->rx_len, dw_readl(dws, DW_SPI_RXFLR));
- }
+ 	u16 irq_status = dw_readl(dws, DW_SPI_ISR);
  
- static void dw_writer(struct dw_spi *dws)
-@@ -141,15 +137,16 @@ static void dw_writer(struct dw_spi *dws)
- 	u16 txw = 0;
- 
- 	while (max--) {
--		/* Set the tx word if the transfer's original "tx" is not null */
--		if (dws->tx_end - dws->len) {
-+		if (dws->tx) {
- 			if (dws->n_bytes == 1)
- 				txw = *(u8 *)(dws->tx);
- 			else
- 				txw = *(u16 *)(dws->tx);
-+
-+			dws->tx += dws->n_bytes;
- 		}
- 		dw_write_io_reg(dws, DW_SPI_DR, txw);
--		dws->tx += dws->n_bytes;
-+		--dws->tx_len;
- 	}
- }
- 
-@@ -160,14 +157,15 @@ static void dw_reader(struct dw_spi *dws)
- 
- 	while (max--) {
- 		rxw = dw_read_io_reg(dws, DW_SPI_DR);
--		/* Care rx only if the transfer's original "rx" is not null */
--		if (dws->rx_end - dws->len) {
-+		if (dws->rx) {
- 			if (dws->n_bytes == 1)
- 				*(u8 *)(dws->rx) = rxw;
- 			else
- 				*(u16 *)(dws->rx) = rxw;
-+
-+			dws->rx += dws->n_bytes;
- 		}
--		dws->rx += dws->n_bytes;
-+		--dws->rx_len;
- 	}
- }
- 
-@@ -192,7 +190,7 @@ static irqreturn_t interrupt_transfer(struct dw_spi *dws)
- 	}
- 
- 	dw_reader(dws);
--	if (dws->rx_end == dws->rx) {
-+	if (!dws->rx_len) {
- 		spi_mask_intr(dws, 0xff);
- 		spi_finalize_current_transfer(dws->master);
+-	/* Error handling */
+-	if (irq_status & (SPI_INT_TXOI | SPI_INT_RXOI | SPI_INT_RXUI)) {
+-		dw_readl(dws, DW_SPI_ICR);
+-		int_error_stop(dws, "interrupt_transfer: fifo overrun/underrun");
++	if (dw_spi_check_status(dws, false)) {
++		spi_finalize_current_transfer(dws->master);
  		return IRQ_HANDLED;
-@@ -299,12 +297,11 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 	dws->dma_mapped = 0;
- 	dws->n_bytes = DIV_ROUND_UP(transfer->bits_per_word, BITS_PER_BYTE);
- 	dws->tx = (void *)transfer->tx_buf;
--	dws->tx_end = dws->tx + transfer->len;
-+	dws->tx_len = transfer->len / dws->n_bytes;
- 	dws->rx = transfer->rx_buf;
--	dws->rx_end = dws->rx + transfer->len;
--	dws->len = transfer->len;
-+	dws->rx_len = dws->tx_len;
+ 	}
  
--	/* Ensure dw->rx and dw->rx_end are visible */
-+	/* Ensure the data above is visible for all CPUs */
- 	smp_mb();
+diff --git a/drivers/spi/spi-dw-dma.c b/drivers/spi/spi-dw-dma.c
+index 9db119dc5554..1969b09b4f5e 100644
+--- a/drivers/spi/spi-dw-dma.c
++++ b/drivers/spi/spi-dw-dma.c
+@@ -144,17 +144,10 @@ static void dw_spi_dma_exit(struct dw_spi *dws)
  
- 	spi_enable_chip(dws, 0);
-@@ -331,7 +328,7 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 			return ret;
- 		}
- 	} else {
--		txlevel = min_t(u16, dws->fifo_len / 2, dws->len / dws->n_bytes);
-+		txlevel = min_t(u16, dws->fifo_len / 2, dws->tx_len);
- 		dw_writel(dws, DW_SPI_TXFTLR, txlevel);
+ static irqreturn_t dw_spi_dma_transfer_handler(struct dw_spi *dws)
+ {
+-	u16 irq_status = dw_readl(dws, DW_SPI_ISR);
++	dw_spi_check_status(dws, false);
  
- 		/* Set the interrupt mask */
+-	if (!irq_status)
+-		return IRQ_NONE;
+-
+-	dw_readl(dws, DW_SPI_ICR);
+-	spi_reset_chip(dws);
+-
+-	dev_err(&dws->master->dev, "%s: FIFO overrun/underrun\n", __func__);
+-	dws->master->cur_msg->status = -EIO;
+ 	complete(&dws->dma_completion);
++
+ 	return IRQ_HANDLED;
+ }
+ 
 diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 2a2346438564..cfc9f63acde4 100644
+index 946065201c9c..5eb98ece2f2a 100644
 --- a/drivers/spi/spi-dw.h
 +++ b/drivers/spi/spi-dw.h
-@@ -147,11 +147,10 @@ struct dw_spi {
- 	void (*set_cs)(struct spi_device *spi, bool enable);
- 
- 	/* Current message transfer state info */
--	size_t			len;
- 	void			*tx;
--	void			*tx_end;
-+	unsigned int		tx_len;
- 	void			*rx;
--	void			*rx_end;
-+	unsigned int		rx_len;
- 	int			dma_mapped;
- 	u8			n_bytes;	/* current is a 1/2 bytes op */
- 	irqreturn_t		(*transfer_handler)(struct dw_spi *dws);
+@@ -261,6 +261,7 @@ static inline void spi_shutdown_chip(struct dw_spi *dws)
+ extern void dw_spi_set_cs(struct spi_device *spi, bool enable);
+ extern void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
+ 				 struct dw_spi_cfg *cfg);
++extern int dw_spi_check_status(struct dw_spi *dws, bool raw);
+ extern int dw_spi_add_host(struct device *dev, struct dw_spi *dws);
+ extern void dw_spi_remove_host(struct dw_spi *dws);
+ extern int dw_spi_suspend_host(struct dw_spi *dws);
 -- 
 2.27.0
 

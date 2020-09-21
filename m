@@ -2,152 +2,270 @@ Return-Path: <SRS0=mVQ7=C6=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	NICE_REPLY_A,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A57DBC43463
-	for <linux-spi@archiver.kernel.org>; Mon, 21 Sep 2020 06:09:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BD71C43464
+	for <linux-spi@archiver.kernel.org>; Mon, 21 Sep 2020 06:10:32 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3E7D72084C
-	for <linux-spi@archiver.kernel.org>; Mon, 21 Sep 2020 06:09:49 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2B676206E5
+	for <linux-spi@archiver.kernel.org>; Mon, 21 Sep 2020 06:10:32 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="rpI+nruF";
-	dkim=pass (1024-bit key) header.d=microchiptechnology.onmicrosoft.com header.i=@microchiptechnology.onmicrosoft.com header.b="t93q9MEP"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="QaZvdjqm"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726328AbgIUGJs (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 21 Sep 2020 02:09:48 -0400
-Received: from esa3.microchip.iphmx.com ([68.232.153.233]:38150 "EHLO
-        esa3.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726011AbgIUGJs (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 21 Sep 2020 02:09:48 -0400
-X-Greylist: delayed 426 seconds by postgrey-1.27 at vger.kernel.org; Mon, 21 Sep 2020 02:09:48 EDT
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1600668588; x=1632204588;
-  h=from:to:subject:date:message-id:references:in-reply-to:
-   content-id:content-transfer-encoding:mime-version;
-  bh=6lifLcLr3eWfwFYjAJuoAWwmFsDb0Bud01J1MFSeJuI=;
-  b=rpI+nruF2n/4Za6ot8pKtKeif/O26X9sZJWJ/AjWpaupjym/DQjQiCZH
-   C1gR6wAjJYPbQKkm5KZemhlwMCqN9TdzTkHX0ltNVE/8sxoIoO1rJxAgj
-   OpnvSm+JdDhfKLODY2d+oHED7CqXJUrdDWKz7RASH0OjiibLUiwd78agF
-   BkOMhbsJTIwh3Fog6qllN/WBfhrClHUaAPmcqMuHIVZ9QvyNJQ+mAHlNk
-   74rhRssIFWTA78KKG3cPlhGz5v5oNaWHMC6cnZkxxUuHJRULizl1h/G+W
-   2QiTQuI28zPKEY/GFGloqJvCAsi7tNxmdyRre7mkpByt6Xc1hFiiu9QGb
-   g==;
-IronPort-SDR: jRH+UseV5+Qe5jmqj8DiyT6Voadl6dm4nNvTTbPqM/NTbY+yFTyCcYElDwmmX1l+UH8YLosJH+
- CK2bLSYrgNnGyhoBioPylSTSepcYcSPHjWFv9VBJVd60TmMGmbWB87AXGm9ifHSSSVZo/RXfSA
- EeS0HCR31PaLO5vVPw8Z5p5bQtPqopRPZqDLo+Mv4G10mEw3PJYazfdLkGeMzGtv223uDq7VSR
- xsxLvg1w1GZ6wgNKslCb7gSPVlS8CJ47GX1slzo7T4mGQUKUDFxY48DM/AFv/DSxkJ9jQbq3Fh
- QMk=
-X-IronPort-AV: E=Sophos;i="5.77,285,1596524400"; 
-   d="scan'208";a="92545737"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 20 Sep 2020 23:02:39 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1979.3; Sun, 20 Sep 2020 23:02:37 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (10.10.215.89) by
- email.microchip.com (10.10.87.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3
- via Frontend Transport; Sun, 20 Sep 2020 23:02:37 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=E1Z6Dh0WB+1i3JsM+Y6JjyI2p1Vd6SHWv394858bNyn4kcjqBfR8I3HXfx7jVlB3UgxP5QPpI48Yxbm2CTuYYdNg8B+p0/nCkQfWLa/lS+fewSj9MeHK5IJ59XidUGWo2K4iih0xozOvDSa6ie9EyQpToY/g/wT3IO701JdYcJTLPCCoR44q10mZo5Z0Gj+X7mitscYXXkmFms4JuT/IBK59YDt78SOF1Z7iaR+5JAUR3KSCCKIonzw9YydTyfy+bCWq1+VtPTD4c8L7pDy/eO7nMUl7mGJ0/W4YLFJnTmLtU/vHgyu5gN+w/zqnuyyOzFnBRugEWRJ2zXaKApurNA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6lifLcLr3eWfwFYjAJuoAWwmFsDb0Bud01J1MFSeJuI=;
- b=GV5F6tmSk2o8bUX1eyyM+18RYVOP81INC/X10XOrp70QRNLb9Ubs1AQ99+Z5+f++b33JTG4bMEsEsGugkd+gzf4x5b8yuE5uoXo0uFKJnC0rkGGkh0JHZzddjPMDC46G1PjA7JmO4LFhpWInBUA4kg3LTWn0s4WfnI1X6F4GgKodWNr3On8hZ/ZddQjtxeSUyMZyKGNvqBIXGX72JGKH+qSpre66JRNpSRGZ0JBuckOj9VbCI8MfvZQTOBG3Y0FXX87FzqnBIEtgOOqNqi3Mw+cXPrHgS6Mti5vYKdGNFmNDRC4NPhpzsW9K9S0D8hwh6d5xwA2FJ0g9Z8XEVvmrPg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microchip.com; dmarc=pass action=none
- header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+        id S1726341AbgIUGKb (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 21 Sep 2020 02:10:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48718 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726011AbgIUGKb (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 21 Sep 2020 02:10:31 -0400
+Received: from mail-vk1-xa44.google.com (mail-vk1-xa44.google.com [IPv6:2607:f8b0:4864:20::a44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55F66C061755
+        for <linux-spi@vger.kernel.org>; Sun, 20 Sep 2020 23:10:31 -0700 (PDT)
+Received: by mail-vk1-xa44.google.com with SMTP id q124so3060673vkb.8
+        for <linux-spi@vger.kernel.org>; Sun, 20 Sep 2020 23:10:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microchiptechnology.onmicrosoft.com;
- s=selector2-microchiptechnology-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6lifLcLr3eWfwFYjAJuoAWwmFsDb0Bud01J1MFSeJuI=;
- b=t93q9MEP1i2HzZGk0trBfNf1Bk9RbdjVuQ3MLs3Q+i1GsYH3hgvMwDx7fxXDCftDmkK4rnT5fO6kymxCN+IoppGqkzEdd5y/iBYVxLhKYnYPR4SU7+ye3if6FwkuCJYRUwSNYQAyy/ysoPHRCF5/R9vLHNdMCuFQDG3F1CzRg9E=
-Received: from DM5PR11MB1914.namprd11.prod.outlook.com (2603:10b6:3:112::12)
- by DM6PR11MB3404.namprd11.prod.outlook.com (2603:10b6:5:59::29) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3391.11; Mon, 21 Sep
- 2020 06:02:36 +0000
-Received: from DM5PR11MB1914.namprd11.prod.outlook.com
- ([fe80::a8e8:d0bc:8b3c:d385]) by DM5PR11MB1914.namprd11.prod.outlook.com
- ([fe80::a8e8:d0bc:8b3c:d385%11]) with mapi id 15.20.3391.024; Mon, 21 Sep
- 2020 06:02:36 +0000
-From:   <Tudor.Ambarus@microchip.com>
-To:     <Thomas.Kopp@microchip.com>, <linux-spi@vger.kernel.org>
-Subject: Re: [PATCH] spi: atmel: Exposing effective spi speed
-Thread-Topic: [PATCH] spi: atmel: Exposing effective spi speed
-Thread-Index: AQHWj9zNkov9L5Se/kelVpfvsappFQ==
-Date:   Mon, 21 Sep 2020 06:02:36 +0000
-Message-ID: <fe705481-ef9e-4dfb-fa86-b138a8cbf4c9@microchip.com>
-References: <20200918103737.400-1-thomas.kopp@microchip.com>
-In-Reply-To: <20200918103737.400-1-thomas.kopp@microchip.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-authentication-results: microchip.com; dkim=none (message not signed)
- header.d=none;microchip.com; dmarc=none action=none
- header.from=microchip.com;
-x-originating-ip: [82.77.80.152]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: a60c983f-b722-41c8-2006-08d85df3f08c
-x-ms-traffictypediagnostic: DM6PR11MB3404:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DM6PR11MB3404874D048CFE5703B5E6B9F03A0@DM6PR11MB3404.namprd11.prod.outlook.com>
-x-bypassexternaltag: True
-x-ms-oob-tlc-oobclassifiers: OLM:758;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 4fO6kJg0UwrEQPP1LqiZ04qqva8AMsGs984QxS39taCIBLIw5O/QAyOP5xfegNzdfdVgDU1YgbG6bS5E9Z1Ul3BdHXL1NZQyOy03sD2lb/Jv78aHlYTxYRrkFollhcipVHsYG6qtIAP0049CjbRxoWZZch9rfvaZ2Xrdc2gnG/9YKerr80m6PzW0bBV5K/vtzD0n9NC2ypP5u6rQMSeaafF7W0YfdtNvIDfa83y1D4CWIXpl7L3xJeIO6695WJ1utSq3T/RPa8Cx+oAxsnS/ZBX88iB1sW+AqDacQdh2NuOYjg/IMZMeb4+tcYUUyS4pZofZBGTWuuRudCkq3L9WCvJcEPZYSpmPGmug4Y7EUmcTuHOCeO0WTnRwC/XrmYmI
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR11MB1914.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(136003)(376002)(346002)(39860400002)(366004)(396003)(64756008)(6506007)(66946007)(110136005)(66446008)(66476007)(26005)(66556008)(71200400001)(31686004)(53546011)(478600001)(6486002)(2616005)(36756003)(186003)(86362001)(31696002)(316002)(76116006)(2906002)(91956017)(5660300002)(6512007)(8936002)(8676002)(43740500002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: mTNODRwiX5Z7ysk5+aLbMaj13emrdixx0ND8RqyFQConTNiRMPy5XecB7cjGW2jDKob6RqtNcnLIw6wzMlxUQ6rkrNj8MTyDktA/LQBxrpVP2zbtRHHK9cKixzUdas4sQ4bThvh2ihRLUnpuxopKM0ELp1skTFYX1Yf+0j/n1V1thkHyvzJ8mRtj0qI5x+2xCuak1bzuvn7KK1KJBj9rJwsII6Uh2GVB0bf+L3YO5C8nFgkNNCKWGoX6RcRsF2f3RWBbN+BtuWymfQzye3uGtXWK+6M8HYt77pJWHL2M2ReC0yWFj2eYyt9a3A8FYHXP5tCPGmT0eQdK9sHRw7RgT+kfBZPZF9PVxBX+ATc5h+ciCTKVxn85gmblHj3iHtpb2HEwf5HlKGpRLo93IXpbEayYE+/GxlnKH5olraINwYbQp7DhOuurkbNyHcMd9ZgXAaoAUQoP4sthdqV+Cqmt3SJJ9zMUHGLSEb+izBP0z1uF4ZqoJC0ohb2bMVreujO6Wy/+dIc282nUIeplqRle73GOBpKdOBxdPtxlPij5pboopRHizvdkSfbp+kNJ3CXdJ2HgJf8Ppm/ToEAEIhHgl2EC8H74x0uBvuiuEPQIGw2hKAIRxS2Z0N4pnjhTx1jOHC7innYkv/XqZAP3yz+9mg==
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <4C2E84FD54709C4E8A06F3ED52B3881F@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=hi2rPF/VTt+7YBV2OIek85mNirM/1FNuwC783UZ79gY=;
+        b=QaZvdjqmE01vsDCJpv/L3PIhQD9pFvCOGUpf8KQBf3AdasjOy8neTN7t/wRbvEYv1E
+         O1FVTx4IAh2rEkqCtye+7TzvIRzyjesUj2gTs4+Ewbb5W8ANnrCwLRpt5GYWxlXO4ElQ
+         JwwGdQdUvIdzbc2Tp2ibQkb6BgEX3QMwJUSt0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=hi2rPF/VTt+7YBV2OIek85mNirM/1FNuwC783UZ79gY=;
+        b=K/qh5CaTWy//eTQP8Wg5M++Dy0qTske0yf6OunfYHL+Ss/3pD1j22H+oEb9n6l0lA/
+         9DtnttpxpEUEHm28kIit3LYDukgGOW1nzJPYm7wPnNKWfWA4pR+Nq66/mSB4mH2mYrq/
+         7++tL5uLbXSZcHuMWkXRaqhII94XOYzlewAepnB5G1W2tw56aaifIVzIdu0+H/oQibhx
+         B5mj5TYmS28YDbG9YNHu6ZhZJAg7RB4Av3BeejBUO8eHo09J0cmsOLyI7afokt32o5uy
+         SFwod12WjoxAdbFLewIR1VefR1OWoApiUYMUMUwr47Ci6KKSKXU/yI3GsfZFY60vQBpM
+         lkvQ==
+X-Gm-Message-State: AOAM533CLqPAysPow+PVWKYBEcR+F5lw/uwuBY+d5jF7tZDtTFGp7g4O
+        qEUicK0jN/GB8f6wiebocCyB1dyxbvZwaKgHTnezmA==
+X-Google-Smtp-Source: ABdhPJwS1vT6jl1+U7TJLvBVogQi38c1rNUQm4Kcmwy0nzE27iFQkCgHBkdfG6By1N4TLFUCpb7VEZDUgpxahYlWQZM=
+X-Received: by 2002:a1f:1c17:: with SMTP id c23mr17961911vkc.0.1600668630316;
+ Sun, 20 Sep 2020 23:10:30 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM5PR11MB1914.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a60c983f-b722-41c8-2006-08d85df3f08c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Sep 2020 06:02:36.4567
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Xqccu2R+CtPBWBQtF2cY0ghlqob8/zBmAVAvCSpKDKKDIyGr8rXGELCgg+ohFrDqlGaYLnq41FBb7B76s9cIslUlHR1A4E2vtcV8EL6cMws=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB3404
+References: <20200918083124.3921207-1-ikjn@chromium.org> <20200918162834.v2.2.I3de2918f09b817cc2ae6d324f1ece62779ecc7cf@changeid>
+ <CAJsYDV+Um3aEsgW-829BsZSaiVCp3O2LkrTmgCthhFv4fuEnLg@mail.gmail.com>
+In-Reply-To: <CAJsYDV+Um3aEsgW-829BsZSaiVCp3O2LkrTmgCthhFv4fuEnLg@mail.gmail.com>
+From:   Ikjoon Jang <ikjn@chromium.org>
+Date:   Mon, 21 Sep 2020 14:10:19 +0800
+Message-ID: <CAATdQgB5UAFbxW6J2no7=Jyn2ddaHXceAxedGaaAxa++gGNDkg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/5] spi: spi-mtk-nor: fix mishandled logics in
+ checking SPI memory operation
+To:     Chuanhong Guo <gch981213@gmail.com>
+Cc:     Rob Herring <robh+dt@kernel.org>, Mark Brown <broonie@kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, linux-spi@vger.kernel.org,
+        linux-mtd@lists.infradead.org,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-arm-kernel@lists.infradead.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-SGksIFRob21hcywNCg0KT24gOS8xOC8yMCAxOjM3IFBNLCBUaG9tYXMgS29wcCB3cm90ZToNCj4g
-VGhpcyBwYXRjaCBpbXBsZW1lbnRzIHRoZSByZXBvcnRpbmcgb2YgdGhlIGVmZmVjdGl2ZWx5IHVz
-ZWQgc3BlZWRfaHogZm9yIHRoZQ0KPiB0cmFuc2ZlciBieSBzZXR0aW5nIHhmZXItPmVmZmVjdGl2
-ZV9zcGVlZF9oei4NCj4gDQo+IFNlZSB0aGUgZm9sbG93aW5nIHBhdGNoLCB3aGljaCBhZGRzIHRo
-aXMgZmVhdHVyZSB0byB0aGUgU1BJIGNvcmUgZm9yIG1vcmUNCj4gaW5mb3JtYXRpb246DQo+IA0K
-PiAgICAgNWQ3ZTJiNWVkNTg1IHNwaTogY29yZTogYWxsb3cgcmVwb3J0aW5nIHRoZSBlZmZlY3Rp
-dmx5IHVzZWQgc3BlZWRfaHogZm9yIGEgdHJhbnNmZXINCg0Kcy9lZmZlY3Rpdmx5L2VmZmVjdGl2
-ZWx5DQoNCi4vc2NyaXB0cy9jaGVja3BhdGNoLnBsIC0tc3RyaWN0IHJhaXNlcyBhbiBlcnJvciBo
-ZXJlLCB0aGUgY29tbWl0IHNob3VsZCBiZQ0KcmVmZXJyZWQgYXMgY29tbWl0IDVkN2UyYjVlZDU4
-NSAoInNwaTogY29yZTogYWxsb3cgcmVwb3J0aW5nIHRoZSBlZmZlY3Rpdmx5IHVzZWQgc3BlZWRf
-aHogZm9yIGEgdHJhbnNmZXIiKQ0KDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBUaG9tYXMgS29wcCA8
-dGhvbWFzLmtvcHBAbWljcm9jaGlwLmNvbT4NCj4gLS0tDQo+ICBkcml2ZXJzL3NwaS9zcGktYXRt
-ZWwuYyB8IDEgKw0KPiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspDQo+IA0KPiBkaWZm
-IC0tZ2l0IGEvZHJpdmVycy9zcGkvc3BpLWF0bWVsLmMgYi9kcml2ZXJzL3NwaS9zcGktYXRtZWwu
-Yw0KPiBpbmRleCAyY2ZlNjI1M2E3ODQuLjg2ODU3Yzg0MDhiMSAxMDA2NDQNCj4gLS0tIGEvZHJp
-dmVycy9zcGkvc3BpLWF0bWVsLmMNCj4gKysrIGIvZHJpdmVycy9zcGkvc3BpLWF0bWVsLmMNCj4g
-QEAgLTg1OSw2ICs4NTksNyBAQCBzdGF0aWMgaW50IGF0bWVsX3NwaV9zZXRfeGZlcl9zcGVlZChz
-dHJ1Y3QgYXRtZWxfc3BpICphcywNCj4gIAljc3IgPSBzcGlfcmVhZGwoYXMsIENTUjAgKyA0ICog
-Y2hpcF9zZWxlY3QpOw0KPiAgCWNzciA9IFNQSV9CRklOUyhTQ0JSLCBzY2JyLCBjc3IpOw0KPiAg
-CXNwaV93cml0ZWwoYXMsIENTUjAgKyA0ICogY2hpcF9zZWxlY3QsIGNzcik7DQo+ICsJeGZlci0+
-ZWZmZWN0aXZlX3NwZWVkX2h6ID0gYnVzX2h6L3NjYnI7DQoNCnNwYWNlcyBwcmVmZXJyZWQgYXJv
-dW5kIHRoYXQgJy8nDQoNCndpdGggdGhlc2UgYWRkcmVzc2VkIG9uZSBjYW4gYWRkOg0KUmV2aWV3
-ZWQtYnk6IFR1ZG9yIEFtYmFydXMgPHR1ZG9yLmFtYmFydXNAbWljcm9jaGlwLmNvbT4NCg0KQ2hl
-ZXJzLA0KdGENCg==
+On Fri, Sep 18, 2020 at 9:09 PM Chuanhong Guo <gch981213@gmail.com> wrote:
+>
+> Hi!
+>
+> On Fri, Sep 18, 2020 at 4:34 PM Ikjoon Jang <ikjn@chromium.org> wrote:
+> >
+> > Fix a simple bug which can limits its transfer size,
+> > and add a simple helper function for code cleanups.
+> >
+> > Fixes: a59b2c7c56bf ("spi: spi-mtk-nor: support standard spi properties")
+> > Signed-off-by: Ikjoon Jang <ikjn@chromium.org>
+> >
+> > ---
+> >
+> > (no changes since v1)
+> >
+> >  drivers/spi/spi-mtk-nor.c | 62 ++++++++++++++++++++++++---------------
+> >  1 file changed, 38 insertions(+), 24 deletions(-)
+> >
+> > diff --git a/drivers/spi/spi-mtk-nor.c b/drivers/spi/spi-mtk-nor.c
+> > index 6e6ca2b8e6c8..54b2c0fde95b 100644
+> > --- a/drivers/spi/spi-mtk-nor.c
+> > +++ b/drivers/spi/spi-mtk-nor.c
+> > @@ -167,52 +167,63 @@ static bool mtk_nor_match_read(const struct spi_mem_op *op)
+> >         return false;
+> >  }
+> >
+> > -static int mtk_nor_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
+> > +static bool need_bounce(void *cpu_addr, unsigned long len)
+> >  {
+> > -       size_t len;
+> > +       return !!(((uintptr_t)cpu_addr) & MTK_NOR_DMA_ALIGN_MASK);
+> > +}
+>
+> parameter 'len' isn't used in this function.
+
+ACK.
+
+>
+> >
+> > +static int mtk_nor_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
+> > +{
+> >         if (!op->data.nbytes)
+> >                 return 0;
+> >
+> >         if ((op->addr.nbytes == 3) || (op->addr.nbytes == 4)) {
+> > -               if ((op->data.dir == SPI_MEM_DATA_IN) &&
+> > -                   mtk_nor_match_read(op)) {
+>
+> I think replacing a if/else if with a two-case switch is more
+> of a personal code preference rather than code cleanup.
+> I'd prefer only adding need_bounce to replace alignment
+> check using a separated commit and leave other stuff
+> untouched because:
+> 1. This "cleanup" made unintended logic changes (see below)
+> 2. The "cleanup" itself actually becomes the major part of
+>     this patch, while the actual fix mentioned in commit
+>     message is the minor part.
+> 3. A fix commit should contain the fix itself. It shouldn't
+>     mix with these code changes.
+
+Got it, v3 will only include the fix itself.
+
+>
+> > +               switch (op->data.dir) {
+> > +               case SPI_MEM_DATA_IN:
+> > +                       if (!mtk_nor_match_read(op))
+> > +                               return -EINVAL;
+>
+> You are changing the code logic here.
+> mtk_nor_match_read checks if the operation can be executed
+> using controller PIO/DMA reading. Even if it's not supported,
+> we can still use PRG mode to execute the operation.
+> One example of such an operation is SPI NOR SFDP reading.
+> Your change breaks that which then breaks 1_2_2 and 1_4_4
+> reading capability because spi-nor driver parses these op formats
+> from SFDP table.
+
+As you already noticed it, this is a bug from the last patch I made
+and v2 isn't fixing this problem. This should be restored & fixed in v3.
+And will not include other changes in a same patch.
+
+>
+> > +                       /* check if it's DMAable */
+> >                         if ((op->addr.val & MTK_NOR_DMA_ALIGN_MASK) ||
+> > -                           (op->data.nbytes < MTK_NOR_DMA_ALIGN))
+> > +                           (op->data.nbytes < MTK_NOR_DMA_ALIGN)) {
+> >                                 op->data.nbytes = 1;
+> > -                       else if (!((ulong)(op->data.buf.in) &
+> > -                                  MTK_NOR_DMA_ALIGN_MASK))
+> > +                       } else {
+> > +                               if (need_bounce(op->data.buf.in, op->data.nbytes) &&
+> > +                                   (op->data.nbytes > MTK_NOR_BOUNCE_BUF_SIZE))
+> > +                                       op->data.nbytes = MTK_NOR_BOUNCE_BUF_SIZE;
+> >                                 op->data.nbytes &= ~MTK_NOR_DMA_ALIGN_MASK;
+> > -                       else if (op->data.nbytes > MTK_NOR_BOUNCE_BUF_SIZE)
+> > -                               op->data.nbytes = MTK_NOR_BOUNCE_BUF_SIZE;
+>
+> data length alignment is intentionally done only for DMA reading
+> without the bounce buffer.
+> My intention here:
+> If we use the bounce buffer, we can read more data than needed to.
+> Say we want 25 bytes of data, reading 32 bytes using DMA and
+> bounce buffer should be faster than reading 16 bytes with DMA
+> and another 9 bytes with PIO, because for every single byte of PIO
+> reading, adjust_op_size and exec_op is called once, we
+> program controller with new cmd/address, and controller need
+> to send extra cmd/address to flash.
+> I noticed that you removed this part of logic from DMA reading
+> execution in 3/5 as well. Please revert the logic change here
+> add in DMA reading function (see later comment in 3/5).
+
+In v2, I wasn't sure whether this behavior is sane (read more than requested)
+Now I think this is okay, I've missed the fact that flash address is
+also aligned together.
+I'll just keep the previous logics with padding in v3.
+
+Thanks!
+
+>
+> > -                       return 0;
+> > -               } else if (op->data.dir == SPI_MEM_DATA_OUT) {
+> > +                       }
+> > +                       break;
+> > +               case SPI_MEM_DATA_OUT:
+> >                         if (op->data.nbytes >= MTK_NOR_PP_SIZE)
+> >                                 op->data.nbytes = MTK_NOR_PP_SIZE;
+> >                         else
+> >                                 op->data.nbytes = 1;
+> > -                       return 0;
+> > +                       break;
+> > +               default:
+> > +                       break;
+> >                 }
+> > +       } else {
+> > +               u8 len = op->cmd.nbytes + op->addr.nbytes + op->dummy.nbytes;
+> > +
+> > +               if (len > MTK_NOR_PRG_MAX_SIZE)
+> > +                       return -EINVAL;
+> > +               if (op->data.nbytes && !(MTK_NOR_PRG_MAX_SIZE - len))
+> > +                       return -EINVAL;
+> > +               if (op->data.nbytes > (MTK_NOR_PRG_MAX_SIZE - len))
+> > +                       op->data.nbytes = MTK_NOR_PRG_MAX_SIZE - len;
+> >         }
+> >
+> > -       len = MTK_NOR_PRG_MAX_SIZE - op->cmd.nbytes - op->addr.nbytes -
+> > -             op->dummy.nbytes;
+> > -       if (op->data.nbytes > len)
+> > -               op->data.nbytes = len;
+> > -
+> >         return 0;
+> >  }
+> >
+> >  static bool mtk_nor_supports_op(struct spi_mem *mem,
+> >                                 const struct spi_mem_op *op)
+> >  {
+> > -       size_t len;
+> > -
+> >         if (op->cmd.buswidth != 1)
+> >                 return false;
+> >
+> >         if ((op->addr.nbytes == 3) || (op->addr.nbytes == 4)) {
+> > -               switch(op->data.dir) {
+> > +               switch (op->data.dir) {
+> >                 case SPI_MEM_DATA_IN:
+> >                         if (!mtk_nor_match_read(op))
+> >                                 return false;
+> > @@ -226,11 +237,14 @@ static bool mtk_nor_supports_op(struct spi_mem *mem,
+> >                 default:
+> >                         break;
+> >                 }
+> > +       } else {
+> > +               u8 len = op->cmd.nbytes + op->addr.nbytes + op->dummy.nbytes;
+> > +
+> > +               if (len > MTK_NOR_PRG_MAX_SIZE)
+> > +                       return false;
+> > +               if (op->data.nbytes && !(MTK_NOR_PRG_MAX_SIZE - len))
+> > +                       return false;
+> >         }
+> > -       len = op->cmd.nbytes + op->addr.nbytes + op->dummy.nbytes;
+> > -       if ((len > MTK_NOR_PRG_MAX_SIZE) ||
+> > -           ((op->data.nbytes) && (len == MTK_NOR_PRG_MAX_SIZE)))
+> > -               return false;
+> >
+> >         return spi_mem_default_supports_op(mem, op);
+> >  }
+> > --
+> > 2.28.0.681.g6f77f65b4e-goog
+> >
+>
+>
+> --
+> Regards,
+> Chuanhong Guo

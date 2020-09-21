@@ -2,139 +2,312 @@ Return-Path: <SRS0=mVQ7=C6=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-11.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4CA8CC43464
-	for <linux-spi@archiver.kernel.org>; Mon, 21 Sep 2020 06:11:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EE515C43465
+	for <linux-spi@archiver.kernel.org>; Mon, 21 Sep 2020 06:52:30 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id F352A206E5
-	for <linux-spi@archiver.kernel.org>; Mon, 21 Sep 2020 06:11:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A363F207C3
+	for <linux-spi@archiver.kernel.org>; Mon, 21 Sep 2020 06:52:30 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="piCxtuQG";
-	dkim=pass (1024-bit key) header.d=microchiptechnology.onmicrosoft.com header.i=@microchiptechnology.onmicrosoft.com header.b="MeZihs+C"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="dDsnw+80"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726328AbgIUGLG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 21 Sep 2020 02:11:06 -0400
-Received: from esa4.microchip.iphmx.com ([68.232.154.123]:47491 "EHLO
-        esa4.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726297AbgIUGLG (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 21 Sep 2020 02:11:06 -0400
-X-Greylist: delayed 427 seconds by postgrey-1.27 at vger.kernel.org; Mon, 21 Sep 2020 02:11:05 EDT
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1600668665; x=1632204665;
-  h=from:to:subject:date:message-id:references:in-reply-to:
-   content-id:content-transfer-encoding:mime-version;
-  bh=vPEH6gdeQcU9kCy3mU/n/5I3V9TR5H2I13T9qiChYGg=;
-  b=piCxtuQGd91pS3UmoJTHGxJpElDNltz5UPr3kpu/Za7q+7cw9R9zMeRK
-   D8Kf5ZzPHJfVeQfo++lo5o9WkkkSXEirf2/oD4mPd9ARcHZ+onkcSghUt
-   VLmHEEjO+QefnlOaoBFlV2Lqft3WZYgndLBM3bJSGDHBrwcW7Xs2AsSgb
-   KhgztECkZmNEkuevyqRpURE29HKNgfQfLIYRBOA7T+ZCCBVcFxIbdxqfK
-   UjCWjINchWT7aH3kG7rIwmonC0TNQGc6oHUgubFyR10b2AcVV2ypJC5dG
-   H8ab9pDxrNf/X9nk88oMcW3dS87HBF1a19MuXbOdAdj2w3cLNRk3RFPvy
-   Q==;
-IronPort-SDR: luwJExvwOtLByKQ1uWsG+OYC6WwGsi4AyBWIs45SQno28MONgW33iYYleF0uFl+dDnlybkNqeg
- 06cVJTxIbBe2ejBIN01K00Y8eIPq4q70epwbNJDj6HHipUqauZCYJ5lrIWwe3Gfqe2qGsPbqbG
- ETVKzvZZ36TMQ9r7aLEhXY3mosxxN/36OjTq0inaO0Ney/XeY1X05xxtMsjhcoe2oSzFERcEVv
- 99DQXJ56gcsmuI5ER4xfoEz/Amgd0th5CbzSgBZRQxpkwaHBQ0bO3Oy7vb/uDKswz2Layy4QTE
- TMU=
-X-IronPort-AV: E=Sophos;i="5.77,285,1596524400"; 
-   d="scan'208";a="87544907"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 20 Sep 2020 23:03:58 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
- chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1979.3; Sun, 20 Sep 2020 23:03:57 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (10.10.215.89) by
- email.microchip.com (10.10.87.72) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1979.3 via Frontend
- Transport; Sun, 20 Sep 2020 23:03:57 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bT0x4nJZ6eZmSGFO00Lw1SeotCrhfwNRFK8S1rXl7gFrP/y6AbfQbjL/BLK1KxuT6nToSOpjt9GEYteE0gvd8/t0V8L+TYRwKYDL2mtIK9RQseJnc3Z82QJPp/5oHB0JmlN+h3QhxkLkRzEeTzg71Ws9qBfZzeZoFWcmHDIqz7mg7Waqawl8LFP9kUVL5/j3M1TU7RTLLnW1si/dhrNTq8hmUymO4zRmV3I8lQWk/kitpKUD8InUwKQIIUoRFOr2ebrk3AjHAxq8tfLURNBdb8DKaJvBPl66A5jDityDDXE1eQdslw0gqbgJ3lFOEKA/DtqzFdzlROGnVgyAdJsIcg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vPEH6gdeQcU9kCy3mU/n/5I3V9TR5H2I13T9qiChYGg=;
- b=WJ7eG3cv0YcgrLEFAj/E3aWFUpWpwqOjuIbEiDYDzghDFn1uAy9Wt13xrkWo1eRVmwCtEtwKRrTk2sGXPYPfuZlMKFf5wxUDiYxGnCO9Yl9brT54x1drf1UkdaX2Y7aeUWcrvayw5tVZy2yG2tbQtzQsgtEjYrnJ9XwnfZ8zf4AvAlRgGxcCmumbz+nTFwMbFxG5T9YZct58IKoAJS0UpIsGTe6TWdiCYsCGkgq39jC7YIXVBnb6O4Q8+VxZCGQkY7ZQFktpU+exsdEgqMc7sJI2iD9M8Rf4tv6DF7xLG3mHhUZkGPAOxYvrsKGb2Le8CabR13feEG0SYUfEAQRKrQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microchip.com; dmarc=pass action=none
- header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+        id S1726413AbgIUGw2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 21 Sep 2020 02:52:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55120 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726375AbgIUGw2 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 21 Sep 2020 02:52:28 -0400
+Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com [IPv6:2607:f8b0:4864:20::e42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDACBC0613CF
+        for <linux-spi@vger.kernel.org>; Sun, 20 Sep 2020 23:52:27 -0700 (PDT)
+Received: by mail-vs1-xe42.google.com with SMTP id y194so7473510vsc.4
+        for <linux-spi@vger.kernel.org>; Sun, 20 Sep 2020 23:52:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microchiptechnology.onmicrosoft.com;
- s=selector2-microchiptechnology-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vPEH6gdeQcU9kCy3mU/n/5I3V9TR5H2I13T9qiChYGg=;
- b=MeZihs+CKq0rhgVhkFeNb56gOYKnGSmV2fGz9iJ+U3mUmEEvMuAsoetyIVvka+MRDzF1kQL8s3rSCBKTHJrnwxQxodPC2MGOH0h3QlsyWeuq6wmoQFqlEXvz7nrB3BHVg4pNn8RO52ypLdUd/nOC23IUpuhNdEf8R3xKVjPInSE=
-Received: from DM5PR11MB1914.namprd11.prod.outlook.com (2603:10b6:3:112::12)
- by DM6PR11MB3404.namprd11.prod.outlook.com (2603:10b6:5:59::29) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3391.11; Mon, 21 Sep
- 2020 06:03:56 +0000
-Received: from DM5PR11MB1914.namprd11.prod.outlook.com
- ([fe80::a8e8:d0bc:8b3c:d385]) by DM5PR11MB1914.namprd11.prod.outlook.com
- ([fe80::a8e8:d0bc:8b3c:d385%11]) with mapi id 15.20.3391.024; Mon, 21 Sep
- 2020 06:03:56 +0000
-From:   <Tudor.Ambarus@microchip.com>
-To:     <Thomas.Kopp@microchip.com>, <linux-spi@vger.kernel.org>
-Subject: Re: [PATCH] spi: atmel: Exposing effective spi speed
-Thread-Topic: [PATCH] spi: atmel: Exposing effective spi speed
-Thread-Index: AQHWj9zNkov9L5Se/kelVpfvsappFalymj+A
-Date:   Mon, 21 Sep 2020 06:03:56 +0000
-Message-ID: <a0e687e1-0da1-d049-9c22-75c46fe197a3@microchip.com>
-References: <20200918103737.400-1-thomas.kopp@microchip.com>
- <fe705481-ef9e-4dfb-fa86-b138a8cbf4c9@microchip.com>
-In-Reply-To: <fe705481-ef9e-4dfb-fa86-b138a8cbf4c9@microchip.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-authentication-results: microchip.com; dkim=none (message not signed)
- header.d=none;microchip.com; dmarc=none action=none
- header.from=microchip.com;
-x-originating-ip: [82.77.80.152]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 913b9165-aa86-4613-d407-08d85df42023
-x-ms-traffictypediagnostic: DM6PR11MB3404:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <DM6PR11MB3404DE675C9EC05CABA61559F03A0@DM6PR11MB3404.namprd11.prod.outlook.com>
-x-bypassexternaltag: True
-x-ms-oob-tlc-oobclassifiers: OLM:3276;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: Tq/szoAAq11j5L/Sn9jA3730DtT8pAcQ5NsvRGtyhsbdSJTWLgrKLWkhwM0N9k06XhkyreCto0ZBtr6ahaGxSYP4Icp8tLoStJ7WllQMpD95upYdtVCK9AV1vjGLvDh8dEGPq/x7lcel9EVs5Tqc6Kd8p0x5ymehRGneNnCAfOcw4aIw+GWXY0i730+uCFaTkavLA7lDro0om6fc1DwmOcTHtpsdA9xW9WxSdmuSOv+u0Fd4TLh3TS9tLc//R+tObkg4/JeRqo7jU/npmo0F/uXszyzPA1h+j4iaXyGRS3kHEFX6X3zmb1wKcMR6F/pcf3JBds8Tf35yUKe1rZ/HoblOMe7lQUYdlHTKm/0I3wQxHNepmGDcAC72rSVgwjJA
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR11MB1914.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(136003)(376002)(346002)(39860400002)(366004)(396003)(64756008)(6506007)(66946007)(110136005)(66446008)(66476007)(26005)(66556008)(71200400001)(31686004)(53546011)(478600001)(6486002)(2616005)(36756003)(4744005)(186003)(86362001)(31696002)(316002)(76116006)(2906002)(91956017)(5660300002)(6512007)(8936002)(8676002)(43740500002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: Ahfqy/3OEK0vFhDaaWwHsUmnoHDVG4Ght3jcz0Gl1232TRhzlFkYrwPMrkvXTStL2Ps1pyUeYwY1stTbSxFYSoVMItEMrF6WRYZK8vaTwC4+Vwv8trsvyGy5ORjp/m2Ek2TTEwsEiRJBdt5NFlcDXAnPToqtV2Vvs9bJphiOCbFOa4vOw6TBX5S6HcO+51FpBpCYOMtypjnUDcO63CEMq2O4nQUzNwKDSxD/TtAjSABYF0KdrdIOZAr/so31dxgPBrrVAfTr1j4F131XYEbnVpuQkBcQHnlCrDr7xd7ff9qgYQUFnaTbrrR5lAcznWShb7S7Sjdc8rn9V4mV54ZrVCsPD5pbUnfT7BJYNPkOIOcuI4VqBAOyKticAdqZClKWmqEmCP0ZSQX9dZWqEuVFrIibT8QHT9jeUMxPirKU58UFTJoTSZmU3IDkppUwgGc/dKpi6Qa0lUWfL513najDtnvaPBk8fQ2k9SrGU+DScQNvCOplE/8Z2Yg5/9z5//qRGJS6OPWUjGURtxgWw0Q8M4kyVQOT8ZDg7S28FWziNrU/f/XEaY+/AyVkOPtC1mJamXcgq78yLqY4o1NemPKigdWLpf9XCzwnFD/ijQtIIDd4A2h+EI0tGzAqU0f08XCVpA2W0NxoqeTIvKWgDkmV6w==
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <6CF333CF10343E46A06F1E9B6FB3373F@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=AeLRUtPe9HVlfuGxkbMZRtBXYqd2i71LyWN09E0jksA=;
+        b=dDsnw+8075HinxoW83Bd0AAOX1rlDwkTptMNLXl2BgJeKaCtne8RTPqBpTGbxCY7V2
+         pVsIfL3bg6W0301JBde9EatxJQMTyjuTFg6J9VAMX4qdwGM+/7OxbIDENt5YrdHjj6vs
+         AlGBB0xjmRzr3DjcTGUyvIjHaWPG26kbF9F9A=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=AeLRUtPe9HVlfuGxkbMZRtBXYqd2i71LyWN09E0jksA=;
+        b=Sh7qOEXK74WXqR7jMTmG3YTXMdKx9hDhBGR2F6wpo2773BIetqBCK/NlTrEx5jKEbO
+         X7+WY7RxvSpubzhrJLkEDJPLkASXPgmzQKkVApu3RXATNF7yRPLvnhqoCDZELwmSbE4p
+         Y0eaCXc/SoIEbXvvw4hCnAo2r+wmq/05aUI/3QxYmiSxhXg6qIfISlaW47mBNUEd0xy0
+         DjLYuhpgMwtWnPA88Wv4lOUp1pj1KCDZPVyFlpg/whrs/XzDxucO0dlI89nIlkKQAkg/
+         RFfDG017MG8BbSXG8ghm1e5ifu51A0EbSeY/UrCHazKVOhQjEClsr3SqpNQkX13RoZfH
+         WyeA==
+X-Gm-Message-State: AOAM531he7N5MSpgAXggYwyNzayvM5GSaPipNElFsJEHHaAwdamOwp6L
+        34TvqUkk5wcHXFJnUFLoHL+4ETq1neit0SHC1ttHcg==
+X-Google-Smtp-Source: ABdhPJwxJRS724WS0GpV4n1bZY+O9oUk+Jiyi+xUNpksXVtmiBEB3r94MIx7bx5rCSZDanbF+xKAxTL5tgYZDvhDtJs=
+X-Received: by 2002:a67:8097:: with SMTP id b145mr16948393vsd.40.1600671146934;
+ Sun, 20 Sep 2020 23:52:26 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM5PR11MB1914.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 913b9165-aa86-4613-d407-08d85df42023
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Sep 2020 06:03:56.3598
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: V8ECL0OrR3tRPSqP50mohInYJd1LZXU/aKuQlQHJQYSKlTA7GAtK2JoYiaWfsSxqOS5b2JZZrzxwyX0Cp2DcvLGqUr7MSw9PUZp9zgOtTyw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB3404
+References: <20200918083124.3921207-1-ikjn@chromium.org> <20200918162834.v2.3.I06cb65401ab5ad63ea30c4788d26633928d80f38@changeid>
+ <CAJsYDVLy_ef25Jb+7QFTUZx0-dcif1RKBGJ8TzQx5t7e2dDLMQ@mail.gmail.com>
+In-Reply-To: <CAJsYDVLy_ef25Jb+7QFTUZx0-dcif1RKBGJ8TzQx5t7e2dDLMQ@mail.gmail.com>
+From:   Ikjoon Jang <ikjn@chromium.org>
+Date:   Mon, 21 Sep 2020 14:52:16 +0800
+Message-ID: <CAATdQgBk=-Xa0mUg_vdj1s5ei+VUtQYAnc3xrhT9EJiOZzfqEA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/5] spi: spi-mtk-nor: use dma_alloc_coherent() for
+ bounce buffer
+To:     Chuanhong Guo <gch981213@gmail.com>
+Cc:     Rob Herring <robh+dt@kernel.org>, Mark Brown <broonie@kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>, linux-spi@vger.kernel.org,
+        linux-mtd@lists.infradead.org,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-arm-kernel@lists.infradead.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-T24gOS8yMS8yMCA5OjAyIEFNLCBUdWRvciBBbWJhcnVzIC0gTTE4MDY0IHdyb3RlOg0KPiBIaSwg
-VGhvbWFzLA0KPiANCj4gT24gOS8xOC8yMCAxOjM3IFBNLCBUaG9tYXMgS29wcCB3cm90ZToNCj4+
-IFRoaXMgcGF0Y2ggaW1wbGVtZW50cyB0aGUgcmVwb3J0aW5nIG9mIHRoZSBlZmZlY3RpdmVseSB1
-c2VkIHNwZWVkX2h6IGZvciB0aGUNCj4+IHRyYW5zZmVyIGJ5IHNldHRpbmcgeGZlci0+ZWZmZWN0
-aXZlX3NwZWVkX2h6Lg0KPj4NCj4+IFNlZSB0aGUgZm9sbG93aW5nIHBhdGNoLCB3aGljaCBhZGRz
-IHRoaXMgZmVhdHVyZSB0byB0aGUgU1BJIGNvcmUgZm9yIG1vcmUNCj4+IGluZm9ybWF0aW9uOg0K
-Pj4NCj4+ICAgICA1ZDdlMmI1ZWQ1ODUgc3BpOiBjb3JlOiBhbGxvdyByZXBvcnRpbmcgdGhlIGVm
-ZmVjdGl2bHkgdXNlZCBzcGVlZF9oeiBmb3IgYSB0cmFuc2Zlcg0KPiANCj4gcy9lZmZlY3Rpdmx5
-L2VmZmVjdGl2ZWx5DQoNCm9vcHMsIHBsZWFzZSBpZ25vcmUgdGhpcywgZG9uJ3QgY2hhbmdlIHRo
-ZSBjb21taXQgc3ViamVjdC4NCg==
+On Fri, Sep 18, 2020 at 9:25 PM Chuanhong Guo <gch981213@gmail.com> wrote:
+>
+> Hi!
+>
+> On Fri, Sep 18, 2020 at 4:35 PM Ikjoon Jang <ikjn@chromium.org> wrote:
+> >
+> > Use dma_alloc_coherent() for bounce buffer instead of kmalloc.
+>
+> The commit message should explain why such a change is
+> needed. (i.e. why using dma_alloc_coherent here is better
+> than kmalloc.) And if there's no benefit for this change I'd prefer
+> leaving it untouched.
+> I remembered reading somewhere that stream DMA api is
+> prefered over dma_alloc_coherent for this kind of single-direction
+> DMA operation.
+>
+
+I will add more description on why I changed it to dma_alloc_coherent():
+- to explictly support devices like mt8173-nor which only supports
+32bit addressing for dma.
+
+And it also reminded me an another problem, (I won't address this
+issue for now in v3):
+as this device is using dma range as [start, end) format
+where 'end' can be zero in that corner case of {start = 0xffff_f000; end = 0; }
+
+> >
+> > Signed-off-by: Ikjoon Jang <ikjn@chromium.org>
+> >
+> > ---
+> >
+> > (no changes since v1)
+> >
+> >  drivers/spi/spi-mtk-nor.c | 60 +++++++++++++++++++++++----------------
+> >  1 file changed, 35 insertions(+), 25 deletions(-)
+> >
+> > diff --git a/drivers/spi/spi-mtk-nor.c b/drivers/spi/spi-mtk-nor.c
+> > index 54b2c0fde95b..e14798a6e7d0 100644
+> > --- a/drivers/spi/spi-mtk-nor.c
+> > +++ b/drivers/spi/spi-mtk-nor.c
+> > @@ -96,6 +96,7 @@ struct mtk_nor {
+> >         struct device *dev;
+> >         void __iomem *base;
+> >         u8 *buffer;
+> > +       dma_addr_t buffer_dma;
+> >         struct clk *spi_clk;
+> >         struct clk *ctlr_clk;
+> >         unsigned int spi_freq;
+> > @@ -275,19 +276,16 @@ static void mtk_nor_setup_bus(struct mtk_nor *sp, const struct spi_mem_op *op)
+> >         mtk_nor_rmw(sp, MTK_NOR_REG_BUSCFG, reg, MTK_NOR_BUS_MODE_MASK);
+> >  }
+> >
+> > -static int mtk_nor_read_dma(struct mtk_nor *sp, u32 from, unsigned int length,
+> > -                           u8 *buffer)
+> > +static int read_dma(struct mtk_nor *sp, u32 from, unsigned int length,
+>
+> This name is a bit confusing considering there's a mtk_nor_read_dma
+> below.
+> As this function now only executes dma readings and wait it to finish,
+> what about mtk_nor_dma_exec instead?
+
+yeah, good idea.
+
+>
+> > +                   dma_addr_t dma_addr)
+> >  {
+> >         int ret = 0;
+> >         ulong delay;
+> >         u32 reg;
+> > -       dma_addr_t dma_addr;
+> >
+> > -       dma_addr = dma_map_single(sp->dev, buffer, length, DMA_FROM_DEVICE);
+> > -       if (dma_mapping_error(sp->dev, dma_addr)) {
+> > -               dev_err(sp->dev, "failed to map dma buffer.\n");
+> > +       if (WARN_ON((length & MTK_NOR_DMA_ALIGN_MASK) ||
+> > +                   (dma_addr & MTK_NOR_DMA_ALIGN_MASK)))
+>
+> These alignment is guaranteed by callers of this function if all
+> my comments below are addressed. This check isn't needed.
+
+ACK.
+
+>
+> >                 return -EINVAL;
+> > -       }
+> >
+> >         writel(from, sp->base + MTK_NOR_REG_DMA_FADR);
+> >         writel(dma_addr, sp->base + MTK_NOR_REG_DMA_DADR);
+> > @@ -312,30 +310,39 @@ static int mtk_nor_read_dma(struct mtk_nor *sp, u32 from, unsigned int length,
+> >                                          (delay + 1) * 100);
+> >         }
+> >
+> > -       dma_unmap_single(sp->dev, dma_addr, length, DMA_FROM_DEVICE);
+> >         if (ret < 0)
+> >                 dev_err(sp->dev, "dma read timeout.\n");
+> >
+> >         return ret;
+> >  }
+> >
+> > -static int mtk_nor_read_bounce(struct mtk_nor *sp, u32 from,
+> > -                              unsigned int length, u8 *buffer)
+> > +static int mtk_nor_read_dma(struct mtk_nor *sp, u32 from,
+> > +                           unsigned int length, u8 *buffer)
+> >  {
+> > -       unsigned int rdlen;
+> >         int ret;
+> > +       dma_addr_t dma_addr;
+> > +       bool bounce = need_bounce(buffer, length);
+> >
+> > -       if (length & MTK_NOR_DMA_ALIGN_MASK)
+> > -               rdlen = (length + MTK_NOR_DMA_ALIGN) & ~MTK_NOR_DMA_ALIGN_MASK;
+>
+> The intention of this rdlen alignment is explained in 2/5.
+> Please make sure this rdlen alignment logic is present
+> only for PIO reading.
+
+okay, I'll use padding again in v3.
+
+>
+> > -       else
+> > -               rdlen = length;
+> > +       if (!bounce) {
+> > +               dma_addr = dma_map_single(sp->dev, buffer, length,
+> > +                                         DMA_FROM_DEVICE);
+> > +               if (dma_mapping_error(sp->dev, dma_addr)) {
+> > +                       dev_err(sp->dev, "failed to map dma buffer.\n");
+> > +                       return -EINVAL;
+> > +               }
+> > +       } else {
+> > +               dma_addr = sp->buffer_dma;
+> > +       }
+> >
+> > -       ret = mtk_nor_read_dma(sp, from, rdlen, sp->buffer);
+> > -       if (ret)
+> > -               return ret;
+> > +       ret = read_dma(sp, from, length, dma_addr);
+> >
+> > -       memcpy(buffer, sp->buffer, length);
+> > -       return 0;
+> > +       if (!bounce)
+> > +               dma_unmap_single(sp->dev, dma_addr, length,
+> > +                                DMA_FROM_DEVICE);
+> > +       else
+> > +               memcpy(buffer, sp->buffer, length);
+> > +
+> > +       return ret;
+> >  }
+>
+> I think a separated read_dma and read_bounce function will be
+> cleaner than this if-else implementation:
+> read_dma:
+> 1. call dma_map_single to get physical address
+> 2. call read_dma to execute operation
+> 3. call dma_unmap_single
+>
+> read_bounce:
+> 1. align reading length
+> 2. call read_dma
+> 3. call memcpy
+
+ACK
+
+>
+> >
+> >  static int mtk_nor_read_pio(struct mtk_nor *sp, const struct spi_mem_op *op)
+> > @@ -439,11 +446,6 @@ static int mtk_nor_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+> >                 if (op->data.nbytes == 1) {
+> >                         mtk_nor_set_addr(sp, op);
+> >                         return mtk_nor_read_pio(sp, op);
+> > -               } else if (((ulong)(op->data.buf.in) &
+> > -                           MTK_NOR_DMA_ALIGN_MASK)) {
+> > -                       return mtk_nor_read_bounce(sp, op->addr.val,
+> > -                                                  op->data.nbytes,
+> > -                                                  op->data.buf.in);
+> >                 } else {
+> >                         return mtk_nor_read_dma(sp, op->addr.val,
+> >                                                 op->data.nbytes,
+> > @@ -654,6 +656,10 @@ static int mtk_nor_probe(struct platform_device *pdev)
+> >         sp->dev = &pdev->dev;
+> >         sp->spi_clk = spi_clk;
+> >         sp->ctlr_clk = ctlr_clk;
+>
+> There is extra memory allocation code for sp->buffer in mtk_nor_probe.
+> If you intend to replace this with dma_alloc_coherent you should
+> drop those devm_kmalloc code as well.
+>
+> > +       sp->buffer = dma_alloc_coherent(&pdev->dev, MTK_NOR_BOUNCE_BUF_SIZE,
+> > +                                       &sp->buffer_dma, GFP_KERNEL);
+>
+> There's a devm variant: dmam_alloc_coherent(dev, size, dma_handle, gfp)
+
+ACK
+
+>
+> > +       if (!sp->buffer)
+> > +               return -ENOMEM;
+>
+> This spi-nor controller requires all addresses to be 16-byte aligned.
+> Although it should be guaranteed by a usually way larger page
+> alignment address from dma_alloc_coherent I'd prefer an explicit
+> check for address alignment here rather than letting it probe
+> successfully and fail for every dma_read with bounce buffer.
+>
+
+Yep, I'll restore the padding.
+
+>
+> >
+> >         irq = platform_get_irq_optional(pdev, 0);
+> >         if (irq < 0) {
+> > @@ -674,6 +680,8 @@ static int mtk_nor_probe(struct platform_device *pdev)
+> >         ret = mtk_nor_init(sp);
+> >         if (ret < 0) {
+> >                 kfree(ctlr);
+> > +               dma_free_coherent(&pdev->dev, MTK_NOR_BOUNCE_BUF_SIZE,
+> > +                                 sp->buffer, sp->buffer_dma);
+> >                 return ret;
+> >         }
+> >
+> > @@ -692,6 +700,8 @@ static int mtk_nor_remove(struct platform_device *pdev)
+> >
+> >         mtk_nor_disable_clk(sp);
+> >
+> > +       dma_free_coherent(&pdev->dev, MTK_NOR_BOUNCE_BUF_SIZE,
+> > +                         sp->buffer, sp->buffer_dma);
+> >         return 0;
+> >  }
+> >
+> > --
+> > 2.28.0.681.g6f77f65b4e-goog
+> >
+>
+>
+> --
+> Regards,
+> Chuanhong Guo

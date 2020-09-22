@@ -4,32 +4,32 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BFFA4C4727E
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E297DC4727D
 	for <linux-spi@archiver.kernel.org>; Tue, 22 Sep 2020 09:32:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7AFE5221F0
+	by mail.kernel.org (Postfix) with ESMTP id A244D239D4
 	for <linux-spi@archiver.kernel.org>; Tue, 22 Sep 2020 09:32:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726595AbgIVJcd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1726594AbgIVJcd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Tue, 22 Sep 2020 05:32:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48418 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726594AbgIVJcd (ORCPT
+        with ESMTP id S1726581AbgIVJcd (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Tue, 22 Sep 2020 05:32:33 -0400
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9C49C0613CF
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1A7FC061755
         for <linux-spi@vger.kernel.org>; Tue, 22 Sep 2020 02:32:32 -0700 (PDT)
 Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <sha@pengutronix.de>)
-        id 1kKef0-0004VH-Vf; Tue, 22 Sep 2020 11:32:30 +0200
+        id 1kKef0-0004VF-Vc; Tue, 22 Sep 2020 11:32:30 +0200
 Received: from sha by dude.hi.pengutronix.de with local (Exim 4.92)
         (envelope-from <sha@pengutronix.de>)
-        id 1kKef0-0000WT-4f; Tue, 22 Sep 2020 11:32:30 +0200
+        id 1kKef0-0000WN-3Y; Tue, 22 Sep 2020 11:32:30 +0200
 From:   Sascha Hauer <s.hauer@pengutronix.de>
 To:     linux-spi@vger.kernel.org
 Cc:     Mark Brown <broonie@kernel.org>,
@@ -38,9 +38,9 @@ Cc:     Mark Brown <broonie@kernel.org>,
         Vladimir Oltean <olteanv@gmail.com>,
         Daniel Mack <daniel@zonque.org>, kernel@pengutronix.de,
         Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH 6/6] spi: rpc-if: Use devm_spi_register_controller()
-Date:   Tue, 22 Sep 2020 11:32:28 +0200
-Message-Id: <20200922093228.24917-7-s.hauer@pengutronix.de>
+Subject: [PATCH 4/6] spi: dw: Use devm_spi_register_controller()
+Date:   Tue, 22 Sep 2020 11:32:26 +0200
+Message-Id: <20200922093228.24917-5-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200922093228.24917-1-s.hauer@pengutronix.de>
 References: <20200922093228.24917-1-s.hauer@pengutronix.de>
@@ -56,36 +56,37 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 Calling spi_unregister_controller() during driver remove results in
 freeing the SPI controller and the associated driver data. Using it
-later in rpcif_spi_remove() is a use-after-free bug. Register the
+later in dw_spi_remove_host() is a use-after-free bug. Register the
 controller with devm_spi_register_controller() instead which makes
 calling spi_unregister_controller() unnecessary.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/spi/spi-rpc-if.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/spi/spi-dw-core.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-rpc-if.c b/drivers/spi/spi-rpc-if.c
-index ed3e548227f4..2140bb249796 100644
---- a/drivers/spi/spi-rpc-if.c
-+++ b/drivers/spi/spi-rpc-if.c
-@@ -156,7 +156,7 @@ static int rpcif_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
+index 323c66c5db50..caeece6681b3 100644
+--- a/drivers/spi/spi-dw-core.c
++++ b/drivers/spi/spi-dw-core.c
+@@ -485,7 +485,7 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+ 		}
+ 	}
  
- 	rpcif_hw_init(rpc, false);
+-	ret = spi_register_controller(master);
++	ret = devm_spi_register_controller(dev, master);
+ 	if (ret) {
+ 		dev_err(&master->dev, "problem registering spi master\n");
+ 		goto err_dma_exit;
+@@ -509,8 +509,6 @@ void dw_spi_remove_host(struct dw_spi *dws)
+ {
+ 	dw_spi_debugfs_remove(dws);
  
--	error = spi_register_controller(ctlr);
-+	error = devm_spi_register_controller(&pdev->dev, ctlr);
- 	if (error) {
- 		dev_err(&pdev->dev, "spi_register_controller failed\n");
- 		goto err_put_ctlr;
-@@ -175,7 +175,6 @@ static int rpcif_spi_remove(struct platform_device *pdev)
- 	struct spi_controller *ctlr = platform_get_drvdata(pdev);
- 	struct rpcif *rpc = spi_controller_get_devdata(ctlr);
+-	spi_unregister_controller(dws->master);
+-
+ 	if (dws->dma_ops && dws->dma_ops->dma_exit)
+ 		dws->dma_ops->dma_exit(dws);
  
--	spi_unregister_controller(ctlr);
- 	rpcif_disable_rpm(rpc);
- 
- 	return 0;
 -- 
 2.28.0
 

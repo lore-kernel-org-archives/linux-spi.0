@@ -2,86 +2,90 @@ Return-Path: <SRS0=+Fl2=C7=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6609BC4727D
-	for <linux-spi@archiver.kernel.org>; Tue, 22 Sep 2020 00:07:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BFFA4C4727E
+	for <linux-spi@archiver.kernel.org>; Tue, 22 Sep 2020 09:32:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 33FA723A75
-	for <linux-spi@archiver.kernel.org>; Tue, 22 Sep 2020 00:07:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1600733238;
-	bh=jTcLwk2meC5XIRV3w91joYvcB3r3fu8MLecHbdXctwM=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=HwElr0dQwswMkBBX0Qx2EUr827wi/VFdKsK7hQuC7RW3BW7a7waMOYpurVsj6VFj8
-	 1KIOXfwWvyyRa+rQ3Al7wTrfg2sBNdUbJSPp4lLm9CiHXpCjBXvkYSJ1153mzk7pvS
-	 B6L7vxVvmyYKdwbUkGF3l6vxRzBqYnM4EgFX+B0g=
+	by mail.kernel.org (Postfix) with ESMTP id 7AFE5221F0
+	for <linux-spi@archiver.kernel.org>; Tue, 22 Sep 2020 09:32:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729018AbgIVAHR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 21 Sep 2020 20:07:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41106 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728988AbgIVAHQ (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 21 Sep 2020 20:07:16 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2C0A3207C4;
-        Tue, 22 Sep 2020 00:07:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600733235;
-        bh=jTcLwk2meC5XIRV3w91joYvcB3r3fu8MLecHbdXctwM=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=EhjjpEYWVdPCF5KrCkF1W7Jduw/uUEdmwjlmXRMHe5Lp1S5FeSr7UFBOwx4UUe0GH
-         qFqAnIC9cbcOe26gofFAxwsvprIJOtfn9SrShbMwiilcuupscjY84Y04poZSIVtaa/
-         6FUlybf9xygrcM7rs/CJP+tU4/KE078ffrG7gYJ0=
-Date:   Tue, 22 Sep 2020 01:06:23 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Tali Perry <tali.perry1@gmail.com>, Nancy Yuen <yuenn@google.com>,
-        Qinglang Miao <miaoqinglang@huawei.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Patrick Venture <venture@google.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Avi Fishman <avifishman70@gmail.com>
-Cc:     openbmc@lists.ozlabs.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20200921131106.93228-1-miaoqinglang@huawei.com>
-References: <20200921131106.93228-1-miaoqinglang@huawei.com>
-Subject: Re: [PATCH -next] spi: npcm-fiu: simplify the return expression of npcm_fiu_probe()
-Message-Id: <160073317818.6418.1783401283377039582.b4-ty@kernel.org>
+        id S1726595AbgIVJcd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 22 Sep 2020 05:32:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48418 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726594AbgIVJcd (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 22 Sep 2020 05:32:33 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9C49C0613CF
+        for <linux-spi@vger.kernel.org>; Tue, 22 Sep 2020 02:32:32 -0700 (PDT)
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1kKef0-0004VH-Vf; Tue, 22 Sep 2020 11:32:30 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1kKef0-0000WT-4f; Tue, 22 Sep 2020 11:32:30 +0200
+From:   Sascha Hauer <s.hauer@pengutronix.de>
+To:     linux-spi@vger.kernel.org
+Cc:     Mark Brown <broonie@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        Daniel Mack <daniel@zonque.org>, kernel@pengutronix.de,
+        Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH 6/6] spi: rpc-if: Use devm_spi_register_controller()
+Date:   Tue, 22 Sep 2020 11:32:28 +0200
+Message-Id: <20200922093228.24917-7-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20200922093228.24917-1-s.hauer@pengutronix.de>
+References: <20200922093228.24917-1-s.hauer@pengutronix.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 21 Sep 2020 21:11:06 +0800, Qinglang Miao wrote:
-> Simplify the return expression.
+Calling spi_unregister_controller() during driver remove results in
+freeing the SPI controller and the associated driver data. Using it
+later in rpcif_spi_remove() is a use-after-free bug. Register the
+controller with devm_spi_register_controller() instead which makes
+calling spi_unregister_controller() unnecessary.
 
-Applied to
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/spi/spi-rpc-if.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+diff --git a/drivers/spi/spi-rpc-if.c b/drivers/spi/spi-rpc-if.c
+index ed3e548227f4..2140bb249796 100644
+--- a/drivers/spi/spi-rpc-if.c
++++ b/drivers/spi/spi-rpc-if.c
+@@ -156,7 +156,7 @@ static int rpcif_spi_probe(struct platform_device *pdev)
+ 
+ 	rpcif_hw_init(rpc, false);
+ 
+-	error = spi_register_controller(ctlr);
++	error = devm_spi_register_controller(&pdev->dev, ctlr);
+ 	if (error) {
+ 		dev_err(&pdev->dev, "spi_register_controller failed\n");
+ 		goto err_put_ctlr;
+@@ -175,7 +175,6 @@ static int rpcif_spi_remove(struct platform_device *pdev)
+ 	struct spi_controller *ctlr = platform_get_drvdata(pdev);
+ 	struct rpcif *rpc = spi_controller_get_devdata(ctlr);
+ 
+-	spi_unregister_controller(ctlr);
+ 	rpcif_disable_rpm(rpc);
+ 
+ 	return 0;
+-- 
+2.28.0
 
-Thanks!
-
-[1/1] spi: npcm-fiu: simplify the return expression of npcm_fiu_probe()
-      commit: 4c3a14fbc05a09fc369fb68a86cdbf6f441a29f2
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

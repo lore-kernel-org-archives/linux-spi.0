@@ -2,91 +2,109 @@ Return-Path: <SRS0=+Fl2=C7=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F3FEC2D0E2
-	for <linux-spi@archiver.kernel.org>; Tue, 22 Sep 2020 09:33:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 648B6C2D0E2
+	for <linux-spi@archiver.kernel.org>; Tue, 22 Sep 2020 09:39:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 15AE020BED
-	for <linux-spi@archiver.kernel.org>; Tue, 22 Sep 2020 09:33:05 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1C3F320C09
+	for <linux-spi@archiver.kernel.org>; Tue, 22 Sep 2020 09:39:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726545AbgIVJdE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 22 Sep 2020 05:33:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48512 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726424AbgIVJdE (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 22 Sep 2020 05:33:04 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 831F5C061755
-        for <linux-spi@vger.kernel.org>; Tue, 22 Sep 2020 02:33:04 -0700 (PDT)
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1kKef0-0004VG-Vg; Tue, 22 Sep 2020 11:32:30 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1kKef0-0000WQ-43; Tue, 22 Sep 2020 11:32:30 +0200
-From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     linux-spi@vger.kernel.org
+        id S1726466AbgIVJju (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 22 Sep 2020 05:39:50 -0400
+Received: from mx2.suse.de ([195.135.220.15]:49794 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726353AbgIVJju (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 22 Sep 2020 05:39:50 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id A4A4EAC4F;
+        Tue, 22 Sep 2020 09:40:25 +0000 (UTC)
+Message-ID: <270b94fd1e546d0c17a735c1f55500e58522da04.camel@suse.de>
+Subject: Re: [PATCH 3/6] spi: bcm2835: Use devm_spi_register_controller()
+From:   Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+To:     Sascha Hauer <s.hauer@pengutronix.de>, linux-spi@vger.kernel.org
 Cc:     Mark Brown <broonie@kernel.org>,
         Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
         Vladimir Oltean <olteanv@gmail.com>,
-        Daniel Mack <daniel@zonque.org>, kernel@pengutronix.de,
-        Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH 5/6] spi: pxa2xx: Use devm_spi_register_controller()
-Date:   Tue, 22 Sep 2020 11:32:27 +0200
-Message-Id: <20200922093228.24917-6-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200922093228.24917-1-s.hauer@pengutronix.de>
+        Daniel Mack <daniel@zonque.org>, kernel@pengutronix.de
+Date:   Tue, 22 Sep 2020 11:39:47 +0200
+In-Reply-To: <20200922093228.24917-4-s.hauer@pengutronix.de>
 References: <20200922093228.24917-1-s.hauer@pengutronix.de>
+         <20200922093228.24917-4-s.hauer@pengutronix.de>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+        protocol="application/pgp-signature"; boundary="=-VCD8u1R2vOIg7SzxG860"
+User-Agent: Evolution 3.36.5 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Calling spi_unregister_controller() during driver remove results in
-freeing the SPI controller and the associated driver data. Using it
-later in pxa2xx_spi_remove() is a use-after-free bug. Register the
-controller with devm_spi_register_controller() instead which makes
-calling spi_unregister_controller() unnecessary.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/spi/spi-pxa2xx.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+--=-VCD8u1R2vOIg7SzxG860
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 814268405ab0..858b9b925024 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1892,7 +1892,7 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 
- 	/* Register with the SPI framework */
- 	platform_set_drvdata(pdev, drv_data);
--	status = spi_register_controller(controller);
-+	status = devm_spi_register_controller(&pdev->dev, controller);
- 	if (status != 0) {
- 		dev_err(&pdev->dev, "problem registering spi controller\n");
- 		goto out_error_pm_runtime_enabled;
-@@ -1923,8 +1923,6 @@ static int pxa2xx_spi_remove(struct platform_device *pdev)
- 
- 	pm_runtime_get_sync(&pdev->dev);
- 
--	spi_unregister_controller(drv_data->controller);
--
- 	/* Disable the SSP at the peripheral and SOC level */
- 	pxa2xx_spi_write(drv_data, SSCR0, 0);
- 	clk_disable_unprepare(ssp->clk);
--- 
-2.28.0
+On Tue, 2020-09-22 at 11:32 +0200, Sascha Hauer wrote:
+> Calling spi_unregister_controller() during driver remove results in
+> freeing the SPI controller and the associated driver data. Using it
+> later in bcm2835_spi_remove() is a use-after-free bug. Register the
+> controller with devm_spi_register_controller() instead which makes
+> calling spi_unregister_controller() unnecessary.
+>=20
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+
+Reviewed-by: Nicolas Saenz Julienne <nsaenzjulienne@suse.de>
+
+>  drivers/spi/spi-bcm2835.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+> index c45d76c848c8..d22103f7beeb 100644
+> --- a/drivers/spi/spi-bcm2835.c
+> +++ b/drivers/spi/spi-bcm2835.c
+> @@ -1350,7 +1350,7 @@ static int bcm2835_spi_probe(struct platform_device=
+ *pdev)
+>  		goto out_dma_release;
+>  	}
+> =20
+> -	err =3D spi_register_controller(ctlr);
+> +	err =3D devm_spi_register_controller(&pdev->dev, ctlr);
+>  	if (err) {
+>  		dev_err(&pdev->dev, "could not register SPI controller: %d\n",
+>  			err);
+> @@ -1377,8 +1377,6 @@ static int bcm2835_spi_remove(struct platform_devic=
+e *pdev)
+> =20
+>  	bcm2835_debugfs_remove(bs);
+> =20
+> -	spi_unregister_controller(ctlr);
+> -
+>  	bcm2835_dma_release(ctlr, bs);
+> =20
+>  	/* Clear FIFOs, and disable the HW block */
+
+
+--=-VCD8u1R2vOIg7SzxG860
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEErOkkGDHCg2EbPcGjlfZmHno8x/4FAl9pxmMACgkQlfZmHno8
+x/7ETAf/V5cUTCMr9wzC5TDwoJIDecjF/sQL70N8kiiyMHd/hiFyHuWmrQfgYvug
+SO/NT1MtwdMJDFCedUca3k1TQlqsPkH/WyYnevDDSNATMCWQjWp7I3KLYLErX4aE
+2wig/Gy6PIYQP/NOCUVwPL+Uh8L4mjkuibJnwButTaQJG2Pm8oZv+Ah4t1t8MYhm
++qS75iZ04uVMqhTyvdEY9IyBi0C33LGnvIiGpyE/pM3GxI0K7TkTrg65k0zViXkE
+7koTX0QCt0+qybxOo9xsvI554eRVJtwFSINwc/FHR/gBkj1AeP/qmX8xc1/SC7fq
+nxrcJvAiz8fbhtkD5s36kBO8+FShgA==
+=yebQ
+-----END PGP SIGNATURE-----
+
+--=-VCD8u1R2vOIg7SzxG860--
 

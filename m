@@ -5,67 +5,67 @@ X-Spam-Level:
 X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 54235C4727D
-	for <linux-spi@archiver.kernel.org>; Thu, 24 Sep 2020 07:11:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 03C6FC4346E
+	for <linux-spi@archiver.kernel.org>; Thu, 24 Sep 2020 07:11:44 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0C4A4206C9
-	for <linux-spi@archiver.kernel.org>; Thu, 24 Sep 2020 07:11:33 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A7FFB2396E
+	for <linux-spi@archiver.kernel.org>; Thu, 24 Sep 2020 07:11:43 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=monstr-eu.20150623.gappssmtp.com header.i=@monstr-eu.20150623.gappssmtp.com header.b="hrdgbXAb"
+	dkim=pass (2048-bit key) header.d=monstr-eu.20150623.gappssmtp.com header.i=@monstr-eu.20150623.gappssmtp.com header.b="VvV8gFrL"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727146AbgIXHLb (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 24 Sep 2020 03:11:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46524 "EHLO
+        id S1727123AbgIXHLh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 24 Sep 2020 03:11:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727126AbgIXHL2 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 24 Sep 2020 03:11:28 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D38B8C0613D5
-        for <linux-spi@vger.kernel.org>; Thu, 24 Sep 2020 00:11:27 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id c18so2527666wrm.9
-        for <linux-spi@vger.kernel.org>; Thu, 24 Sep 2020 00:11:27 -0700 (PDT)
+        with ESMTP id S1727133AbgIXHLb (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 24 Sep 2020 03:11:31 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D345C0613D3
+        for <linux-spi@vger.kernel.org>; Thu, 24 Sep 2020 00:11:31 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id a17so2556890wrn.6
+        for <linux-spi@vger.kernel.org>; Thu, 24 Sep 2020 00:11:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=monstr-eu.20150623.gappssmtp.com; s=20150623;
         h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=FpHhGb46CyVbDBWjnhy1CeIzsuoq/d3dnPpjc6AO4uU=;
-        b=hrdgbXAboLISP+VljySuk/ub/83ZeVnaaf0RPZVmp3OaX+RJMlAWWHdcCyRpjHtmhV
-         ZW6q/wn9hyT6orEro4StwtqrAclxV2RxU4eI+lDxnXNtn5l6AQUNFfu2rWg3Hwvmw+1D
-         wvWkqu2bztkOP9y3Ue7jAhxNDXI6EsUEgmWLq5Yu8Thr7eoVxQcOrUY56MD6UvtwL8JA
-         JeqhWfVZdSVbC6I8cClnpqUghH8aYytb1gjv5J2fzGFwA/5Ky0dfnVKz37bNUVHZSbbp
-         xoNmM5djrBBdiNpxvRisH0huge5IIj0HLH/m2+WzNYnbtQ80fgqTVxNuKukGP7GPH3Kj
-         DyfQ==
+        bh=E4u6onsjNQAkiyKVPFStn7UMSA1vGrvkOxMgEEn1VI8=;
+        b=VvV8gFrLifCsCoj+X0Wi0ZEDDpxi+3XlTGnBd8ZM9d82iDEu/KWjUUP2XbmxZ8VywW
+         JLSwa3ddcLlVBP1MwmoYQbvlLwGLLYgbRNhpoh7oLu/oeOXUvblT9LfvSVYLP0j8F1O4
+         /AlE6z4kG30aKIFyhKnAE+AOwJbsvEpbI+FZ/uxcHjh58JATQEJffmRI+z6S1pL/EvAK
+         jpMjc43ozw2Q0593PcSS/fjV5QsbIZayDoq7YHWbzfMvPJfbAwbFTWhQn0RlnZbYfW8/
+         ohT3WomFdG588TtdQZI+LxK1pBLepQu/n4X+Tyo/vd9Iy2coWC6Ac4KKRZL6n1v3eRuQ
+         YYTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
          :in-reply-to:references:mime-version:content-transfer-encoding;
-        bh=FpHhGb46CyVbDBWjnhy1CeIzsuoq/d3dnPpjc6AO4uU=;
-        b=aqjQfm1cM7izWdYRFx/4tCl+xqZq6RHOdp8VOgihEdWBdG+P9DdpUz35Kogph7gX+v
-         08R6ca41xtiY3sj/saerQrhIB6RpKVi/sxbN42LvcBiCRqTjQvFGVP2xxvjmSpS2s0VY
-         nMyZTDCRhESui1NTRz5gNz+aJnBbqSIa+NjJ6r8iGYP68Fqsaot959CtPbwTi7a8Z6HA
-         CJzl2CqnbQHYZiS6QK67v4T6fQf/H0w8F8n3AJ4t22JAUzxO+en2UWyM16nzgwOHLalu
-         hUxUcbt0E1GJ0UGXg+e1PEargLR2VQ1suNRtCgbFC0Q4hT0mM2p+Ah4jT84NVBI+lJsA
-         WL2A==
-X-Gm-Message-State: AOAM533uMAsHJ42L/UcFdVXiSWDptWvqNzd9dJfDswUwwcmFn45jvbLj
-        4csEoAVnfLqXrLosrxI+/WdlE+n/dVR0aAxn
-X-Google-Smtp-Source: ABdhPJxz41Q0Xd1LKHN7W2jvaXPJG8HNVXHPRV9xfT+Z658sSpCY5fZ78BGYVRDC4KvjqaRtOgeRcg==
-X-Received: by 2002:a5d:444b:: with SMTP id x11mr3382755wrr.402.1600931486496;
-        Thu, 24 Sep 2020 00:11:26 -0700 (PDT)
+        bh=E4u6onsjNQAkiyKVPFStn7UMSA1vGrvkOxMgEEn1VI8=;
+        b=tsBHULAFLGYvg//miP5o0fKhOl+lXR0E5G4egYwBacY4sdCd6F4fVoDooDznWO4sqU
+         nTeCPAlPSbQCy7kVhoAxNtbjQmgQmVzlfjajR0CKH9MFpIE39ZJXuJpxZchty2uqGNsx
+         /utc6QBRC7FLqjx9K22KTSJg09PxHOG/yq+dr/50XfN2ZlUUmJJBZu8cLgXLj2Ft7xEh
+         IBHr1ipWh2vYERj03KJEhSyvXnUqih7pnKrqI5MD3ayI+1poNr6fIVm1NtrI0Vp2c88T
+         JmVlSQBskMvN3uQMBKv62BqoNI5b22uJqzKDKLq4JQ+TFuCU8x+mTuC0WYXPzGcL5yWG
+         9i9A==
+X-Gm-Message-State: AOAM533NMUCs7Z19gyrt5UOyhS/qVItFltLEXXbYbx+0Tzxmj5dYa+F8
+        m/ZfC98nYXDgN6NU/woqCj0PnQ==
+X-Google-Smtp-Source: ABdhPJx1lB2GSaJXhR5AfoItpRpCWhYYEu68XMGAO+MpVTExlkmJSxL8aHckdqMdQycv6vQHUWEjGw==
+X-Received: by 2002:adf:cd0e:: with SMTP id w14mr3788781wrm.0.1600931489909;
+        Thu, 24 Sep 2020 00:11:29 -0700 (PDT)
 Received: from localhost (nat-35.starnet.cz. [178.255.168.35])
-        by smtp.gmail.com with ESMTPSA id l4sm2563279wrc.14.2020.09.24.00.11.25
+        by smtp.gmail.com with ESMTPSA id i15sm2457469wrb.91.2020.09.24.00.11.29
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 24 Sep 2020 00:11:25 -0700 (PDT)
+        Thu, 24 Sep 2020 00:11:29 -0700 (PDT)
 Sender: Michal Simek <monstr@monstr.eu>
 From:   Michal Simek <michal.simek@xilinx.com>
 To:     broonie@kernel.org
 Cc:     amit.kumar-mahapatra@xilinx.com, linux-kernel@vger.kernel.org,
         monstr@monstr.eu, michal.simek@xilinx.com, git@xilinx.com,
         linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: [RESEND v2 PATCH 1/3] spi: spi-zynqmp-gqspi: Fix kernel-doc warnings
-Date:   Thu, 24 Sep 2020 09:11:17 +0200
-Message-Id: <ba5920c57eee06fafa6f9d1df9859e69819ac301.1600931476.git.michal.simek@xilinx.com>
+Subject: [RESEND v2 PATCH 3/3] spi: spi-zynqmp-gqspi: Fix incorrect indentation
+Date:   Thu, 24 Sep 2020 09:11:19 +0200
+Message-Id: <2b246b6f0925c8a2a767a4240e8738ffeefd62be.1600931476.git.michal.simek@xilinx.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <cover.1600931476.git.michal.simek@xilinx.com>
 References: <cover.1600931476.git.michal.simek@xilinx.com>
@@ -77,220 +77,154 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Amit Kumar Mahapatra <amit.kumar-mahapatra@xilinx.com>
 
-Fix kernel-doc warnings in ZynqMP qspi driver file.
+Fixed incorrect indentation in ZynqMP qspi controller driver.
 
+Addresses-checkpatch: "Alignment should match open parenthesis"
 Signed-off-by: Amit Kumar Mahapatra <amit.kumar-mahapatra@xilinx.com>
 Signed-off-by: Michal Simek <michal.simek@xilinx.com>
 ---
 
- drivers/spi/spi-zynqmp-gqspi.c | 45 +++++++++++++++++-----------------
- 1 file changed, 23 insertions(+), 22 deletions(-)
+ drivers/spi/spi-zynqmp-gqspi.c | 46 +++++++++++++++++-----------------
+ 1 file changed, 23 insertions(+), 23 deletions(-)
 
 diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index e17a20125255..b479b9c3d1e6 100644
+index 7f57923f76ea..c8fa6ee18ae7 100644
 --- a/drivers/spi/spi-zynqmp-gqspi.c
 +++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -173,9 +173,10 @@ struct zynqmp_qspi {
- };
+@@ -326,8 +326,8 @@ static void zynqmp_qspi_init_hw(struct zynqmp_qspi *xqspi)
+ 				 GQSPI_SELECT_FLASH_BUS_LOWER);
+ 	/* Initialize DMA */
+ 	zynqmp_gqspi_write(xqspi,
+-			GQSPI_QSPIDMA_DST_CTRL_OFST,
+-			GQSPI_QSPIDMA_DST_CTRL_RESET_VAL);
++			   GQSPI_QSPIDMA_DST_CTRL_OFST,
++			   GQSPI_QSPIDMA_DST_CTRL_RESET_VAL);
  
- /**
-- * zynqmp_gqspi_read:	For GQSPI controller read operation
-+ * zynqmp_gqspi_read - For GQSPI controller read operation
-  * @xqspi:	Pointer to the zynqmp_qspi structure
-  * @offset:	Offset from where to read
-+ * Return:      Value at the offset
-  */
- static u32 zynqmp_gqspi_read(struct zynqmp_qspi *xqspi, u32 offset)
- {
-@@ -183,7 +184,7 @@ static u32 zynqmp_gqspi_read(struct zynqmp_qspi *xqspi, u32 offset)
+ 	/* Enable the GQSPI */
+ 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, GQSPI_EN_MASK);
+@@ -374,8 +374,8 @@ static void zynqmp_qspi_chipselect(struct spi_device *qspi, bool is_high)
+ 
+ 	/* Manually start the generic FIFO command */
+ 	zynqmp_gqspi_write(xqspi, GQSPI_CONFIG_OFST,
+-			zynqmp_gqspi_read(xqspi, GQSPI_CONFIG_OFST) |
+-			GQSPI_CFG_START_GEN_FIFO_MASK);
++			   zynqmp_gqspi_read(xqspi, GQSPI_CONFIG_OFST) |
++			   GQSPI_CFG_START_GEN_FIFO_MASK);
+ 
+ 	timeout = jiffies + msecs_to_jiffies(1000);
+ 
+@@ -384,10 +384,9 @@ static void zynqmp_qspi_chipselect(struct spi_device *qspi, bool is_high)
+ 		statusreg = zynqmp_gqspi_read(xqspi, GQSPI_ISR_OFST);
+ 
+ 		if ((statusreg & GQSPI_ISR_GENFIFOEMPTY_MASK) &&
+-			(statusreg & GQSPI_ISR_TXEMPTY_MASK))
++		    (statusreg & GQSPI_ISR_TXEMPTY_MASK))
+ 			break;
+-		else
+-			cpu_relax();
++		cpu_relax();
+ 	} while (!time_after_eq(jiffies, timeout));
+ 
+ 	if (time_after_eq(jiffies, timeout))
+@@ -549,7 +548,7 @@ static void zynqmp_qspi_readrxfifo(struct zynqmp_qspi *xqspi, u32 size)
+ 
+ 	while ((count < size) && (xqspi->bytes_to_receive > 0)) {
+ 		if (xqspi->bytes_to_receive >= 4) {
+-			(*(u32 *) xqspi->rxbuf) =
++			(*(u32 *)xqspi->rxbuf) =
+ 			zynqmp_gqspi_read(xqspi, GQSPI_RXD_OFST);
+ 			xqspi->rxbuf += 4;
+ 			xqspi->bytes_to_receive -= 4;
+@@ -645,14 +644,14 @@ static void zynqmp_process_dma_irq(struct zynqmp_qspi *xqspi)
+ 	u32 config_reg, genfifoentry;
+ 
+ 	dma_unmap_single(xqspi->dev, xqspi->dma_addr,
+-				xqspi->dma_rx_bytes, DMA_FROM_DEVICE);
++			 xqspi->dma_rx_bytes, DMA_FROM_DEVICE);
+ 	xqspi->rxbuf += xqspi->dma_rx_bytes;
+ 	xqspi->bytes_to_receive -= xqspi->dma_rx_bytes;
+ 	xqspi->dma_rx_bytes = 0;
+ 
+ 	/* Disabling the DMA interrupts */
+ 	zynqmp_gqspi_write(xqspi, GQSPI_QSPIDMA_DST_I_DIS_OFST,
+-					GQSPI_QSPIDMA_DST_I_EN_DONE_MASK);
++			   GQSPI_QSPIDMA_DST_I_EN_DONE_MASK);
+ 
+ 	if (xqspi->bytes_to_receive > 0) {
+ 		/* Switch to IO mode,for remaining bytes to receive */
+@@ -670,14 +669,15 @@ static void zynqmp_process_dma_irq(struct zynqmp_qspi *xqspi)
+ 
+ 		/* Manual start */
+ 		zynqmp_gqspi_write(xqspi, GQSPI_CONFIG_OFST,
+-			(zynqmp_gqspi_read(xqspi, GQSPI_CONFIG_OFST) |
+-			GQSPI_CFG_START_GEN_FIFO_MASK));
++				   (zynqmp_gqspi_read(xqspi,
++						      GQSPI_CONFIG_OFST) |
++				   GQSPI_CFG_START_GEN_FIFO_MASK));
+ 
+ 		/* Enable the RX interrupts for IO mode */
+ 		zynqmp_gqspi_write(xqspi, GQSPI_IER_OFST,
+-				GQSPI_IER_GENFIFOEMPTY_MASK |
+-				GQSPI_IER_RXNEMPTY_MASK |
+-				GQSPI_IER_RXEMPTY_MASK);
++				   GQSPI_IER_GENFIFOEMPTY_MASK |
++				   GQSPI_IER_RXNEMPTY_MASK |
++				   GQSPI_IER_RXEMPTY_MASK);
+ 	}
  }
  
- /**
-- * zynqmp_gqspi_write:	For GQSPI controller write operation
-+ * zynqmp_gqspi_write - For GQSPI controller write operation
-  * @xqspi:	Pointer to the zynqmp_qspi structure
-  * @offset:	Offset where to write
-  * @val:	Value to be written
-@@ -195,7 +196,7 @@ static inline void zynqmp_gqspi_write(struct zynqmp_qspi *xqspi, u32 offset,
- }
+@@ -708,7 +708,7 @@ static irqreturn_t zynqmp_qspi_irq(int irq, void *dev_id)
+ 		dma_status =
+ 			zynqmp_gqspi_read(xqspi, GQSPI_QSPIDMA_DST_I_STS_OFST);
+ 		zynqmp_gqspi_write(xqspi, GQSPI_QSPIDMA_DST_I_STS_OFST,
+-								dma_status);
++				   dma_status);
+ 	}
  
- /**
-- * zynqmp_gqspi_selectslave:	For selection of slave device
-+ * zynqmp_gqspi_selectslave - For selection of slave device
-  * @instanceptr:	Pointer to the zynqmp_qspi structure
-  * @slavecs:	For chip select
-  * @slavebus:	To check which bus is selected- upper or lower
-@@ -242,7 +243,7 @@ static void zynqmp_gqspi_selectslave(struct zynqmp_qspi *instanceptr,
- }
+ 	if (mask & GQSPI_ISR_TXNOT_FULL_MASK) {
+@@ -725,8 +725,8 @@ static irqreturn_t zynqmp_qspi_irq(int irq, void *dev_id)
+ 		ret = IRQ_HANDLED;
+ 	}
  
- /**
-- * zynqmp_qspi_init_hw:	Initialize the hardware
-+ * zynqmp_qspi_init_hw - Initialize the hardware
-  * @xqspi:	Pointer to the zynqmp_qspi structure
-  *
-  * The default settings of the QSPI controller's configurable parameters on
-@@ -330,7 +331,7 @@ static void zynqmp_qspi_init_hw(struct zynqmp_qspi *xqspi)
- }
+-	if ((xqspi->bytes_to_receive == 0) && (xqspi->bytes_to_transfer == 0)
+-			&& ((status & GQSPI_IRQ_MASK) == GQSPI_IRQ_MASK)) {
++	if (xqspi->bytes_to_receive == 0 && xqspi->bytes_to_transfer == 0 &&
++	    ((status & GQSPI_IRQ_MASK) == GQSPI_IRQ_MASK)) {
+ 		zynqmp_gqspi_write(xqspi, GQSPI_IDR_OFST, GQSPI_ISR_IDR_MASK);
+ 		complete(&xqspi->data_completion);
+ 		ret = IRQ_HANDLED;
+@@ -744,8 +744,8 @@ static void zynqmp_qspi_setuprxdma(struct zynqmp_qspi *xqspi)
+ 	dma_addr_t addr;
+ 	u64 dma_align =  (u64)(uintptr_t)xqspi->rxbuf;
  
- /**
-- * zynqmp_qspi_copy_read_data:	Copy data to RX buffer
-+ * zynqmp_qspi_copy_read_data - Copy data to RX buffer
-  * @xqspi:	Pointer to the zynqmp_qspi structure
-  * @data:	The variable where data is stored
-  * @size:	Number of bytes to be copied from data to RX buffer
-@@ -344,7 +345,7 @@ static void zynqmp_qspi_copy_read_data(struct zynqmp_qspi *xqspi,
- }
+-	if ((xqspi->bytes_to_receive < 8) ||
+-		((dma_align & GQSPI_DMA_UNALIGN) != 0x0)) {
++	if (xqspi->bytes_to_receive < 8 ||
++	    ((dma_align & GQSPI_DMA_UNALIGN) != 0x0)) {
+ 		/* Setting to IO mode */
+ 		config_reg = zynqmp_gqspi_read(xqspi, GQSPI_CONFIG_OFST);
+ 		config_reg &= ~GQSPI_CFG_MODE_EN_MASK;
+@@ -759,17 +759,17 @@ static void zynqmp_qspi_setuprxdma(struct zynqmp_qspi *xqspi)
+ 	rx_bytes = (xqspi->bytes_to_receive - rx_rem);
  
- /**
-- * zynqmp_prepare_transfer_hardware:	Prepares hardware for transfer.
-+ * zynqmp_prepare_transfer_hardware - Prepares hardware for transfer.
-  * @master:	Pointer to the spi_master structure which provides
-  *		information about the controller.
-  *
-@@ -361,7 +362,7 @@ static int zynqmp_prepare_transfer_hardware(struct spi_master *master)
- }
+ 	addr = dma_map_single(xqspi->dev, (void *)xqspi->rxbuf,
+-						rx_bytes, DMA_FROM_DEVICE);
++			      rx_bytes, DMA_FROM_DEVICE);
+ 	if (dma_mapping_error(xqspi->dev, addr))
+ 		dev_err(xqspi->dev, "ERR:rxdma:memory not mapped\n");
  
- /**
-- * zynqmp_unprepare_transfer_hardware:	Relaxes hardware after transfer
-+ * zynqmp_unprepare_transfer_hardware - Relaxes hardware after transfer
-  * @master:	Pointer to the spi_master structure which provides
-  *		information about the controller.
-  *
-@@ -378,7 +379,7 @@ static int zynqmp_unprepare_transfer_hardware(struct spi_master *master)
- }
+ 	xqspi->dma_rx_bytes = rx_bytes;
+ 	xqspi->dma_addr = addr;
+ 	zynqmp_gqspi_write(xqspi, GQSPI_QSPIDMA_DST_ADDR_OFST,
+-				(u32)(addr & 0xffffffff));
++			   (u32)(addr & 0xffffffff));
+ 	addr = ((addr >> 16) >> 16);
+ 	zynqmp_gqspi_write(xqspi, GQSPI_QSPIDMA_DST_ADDR_MSB_OFST,
+-				((u32)addr) & 0xfff);
++			   ((u32)addr) & 0xfff);
  
- /**
-- * zynqmp_qspi_chipselect:	Select or deselect the chip select line
-+ * zynqmp_qspi_chipselect - Select or deselect the chip select line
-  * @qspi:	Pointer to the spi_device structure
-  * @is_high:	Select(0) or deselect (1) the chip select line
-  */
-@@ -423,7 +424,7 @@ static void zynqmp_qspi_chipselect(struct spi_device *qspi, bool is_high)
- }
- 
- /**
-- * zynqmp_qspi_setup_transfer:	Configure QSPI controller for specified
-+ * zynqmp_qspi_setup_transfer - Configure QSPI controller for specified
-  *				transfer
-  * @qspi:	Pointer to the spi_device structure
-  * @transfer:	Pointer to the spi_transfer structure which provides
-@@ -482,7 +483,7 @@ static int zynqmp_qspi_setup_transfer(struct spi_device *qspi,
- }
- 
- /**
-- * zynqmp_qspi_setup:	Configure the QSPI controller
-+ * zynqmp_qspi_setup - Configure the QSPI controller
-  * @qspi:	Pointer to the spi_device structure
-  *
-  * Sets the operational mode of QSPI controller for the next QSPI transfer,
-@@ -498,7 +499,7 @@ static int zynqmp_qspi_setup(struct spi_device *qspi)
- }
- 
- /**
-- * zynqmp_qspi_filltxfifo:	Fills the TX FIFO as long as there is room in
-+ * zynqmp_qspi_filltxfifo - Fills the TX FIFO as long as there is room in
-  *				the FIFO or the bytes required to be
-  *				transmitted.
-  * @xqspi:	Pointer to the zynqmp_qspi structure
-@@ -524,7 +525,7 @@ static void zynqmp_qspi_filltxfifo(struct zynqmp_qspi *xqspi, int size)
- }
- 
- /**
-- * zynqmp_qspi_readrxfifo:	Fills the RX FIFO as long as there is room in
-+ * zynqmp_qspi_readrxfifo - Fills the RX FIFO as long as there is room in
-  *				the FIFO.
-  * @xqspi:	Pointer to the zynqmp_qspi structure
-  * @size:	Number of bytes to be copied from RX buffer to RX FIFO
-@@ -552,7 +553,7 @@ static void zynqmp_qspi_readrxfifo(struct zynqmp_qspi *xqspi, u32 size)
- }
- 
- /**
-- * zynqmp_process_dma_irq:	Handler for DMA done interrupt of QSPI
-+ * zynqmp_process_dma_irq - Handler for DMA done interrupt of QSPI
-  *				controller
-  * @xqspi:	zynqmp_qspi instance pointer
-  *
-@@ -600,7 +601,7 @@ static void zynqmp_process_dma_irq(struct zynqmp_qspi *xqspi)
- }
- 
- /**
-- * zynqmp_qspi_irq:	Interrupt service routine of the QSPI controller
-+ * zynqmp_qspi_irq - Interrupt service routine of the QSPI controller
-  * @irq:	IRQ number
-  * @dev_id:	Pointer to the xqspi structure
-  *
-@@ -654,7 +655,7 @@ static irqreturn_t zynqmp_qspi_irq(int irq, void *dev_id)
- }
- 
- /**
-- * zynqmp_qspi_selectspimode:	Selects SPI mode - x1 or x2 or x4.
-+ * zynqmp_qspi_selectspimode - Selects SPI mode - x1 or x2 or x4.
-  * @xqspi:	xqspi is a pointer to the GQSPI instance
-  * @spimode:	spimode - SPI or DUAL or QUAD.
-  * Return:	Mask to set desired SPI mode in GENFIFO entry.
-@@ -682,7 +683,7 @@ static inline u32 zynqmp_qspi_selectspimode(struct zynqmp_qspi *xqspi,
- }
- 
- /**
-- * zynq_qspi_setuprxdma:	This function sets up the RX DMA operation
-+ * zynq_qspi_setuprxdma - This function sets up the RX DMA operation
-  * @xqspi:	xqspi is a pointer to the GQSPI instance.
-  */
- static void zynq_qspi_setuprxdma(struct zynqmp_qspi *xqspi)
-@@ -732,7 +733,7 @@ static void zynq_qspi_setuprxdma(struct zynqmp_qspi *xqspi)
- }
- 
- /**
-- * zynqmp_qspi_txrxsetup:	This function checks the TX/RX buffers in
-+ * zynqmp_qspi_txrxsetup - This function checks the TX/RX buffers in
-  *				the transfer and sets up the GENFIFO entries,
-  *				TX FIFO as required.
-  * @xqspi:	xqspi is a pointer to the GQSPI instance.
-@@ -783,7 +784,7 @@ static void zynqmp_qspi_txrxsetup(struct zynqmp_qspi *xqspi,
- }
- 
- /**
-- * zynqmp_qspi_start_transfer:	Initiates the QSPI transfer
-+ * zynqmp_qspi_start_transfer - Initiates the QSPI transfer
-  * @master:	Pointer to the spi_master structure which provides
-  *		information about the controller.
-  * @qspi:	Pointer to the spi_device structure
-@@ -891,7 +892,7 @@ static int zynqmp_qspi_start_transfer(struct spi_master *master,
- }
- 
- /**
-- * zynqmp_qspi_suspend:	Suspend method for the QSPI driver
-+ * zynqmp_qspi_suspend - Suspend method for the QSPI driver
-  * @dev:	Address of the platform_device structure
-  *
-  * This function stops the QSPI driver queue and disables the QSPI controller
-@@ -910,7 +911,7 @@ static int __maybe_unused zynqmp_qspi_suspend(struct device *dev)
- }
- 
- /**
-- * zynqmp_qspi_resume:	Resume method for the QSPI driver
-+ * zynqmp_qspi_resume - Resume method for the QSPI driver
-  * @dev:	Address of the platform_device structure
-  *
-  * The function starts the QSPI driver queue and initializes the QSPI
-@@ -1000,7 +1001,7 @@ static const struct dev_pm_ops zynqmp_qspi_dev_pm_ops = {
- };
- 
- /**
-- * zynqmp_qspi_probe:	Probe method for the QSPI driver
-+ * zynqmp_qspi_probe - Probe method for the QSPI driver
-  * @pdev:	Pointer to the platform_device structure
-  *
-  * This function initializes the driver data structures and the hardware.
-@@ -1112,7 +1113,7 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- }
- 
- /**
-- * zynqmp_qspi_remove:	Remove method for the QSPI driver
-+ * zynqmp_qspi_remove - Remove method for the QSPI driver
-  * @pdev:	Pointer to the platform_device structure
-  *
-  * This function is called if a device is physically removed from the system or
+ 	/* Enabling the DMA mode */
+ 	config_reg = zynqmp_gqspi_read(xqspi, GQSPI_CONFIG_OFST);
 -- 
 2.28.0
 

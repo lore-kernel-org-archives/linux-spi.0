@@ -5,50 +5,50 @@ X-Spam-Level:
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 16A0CC4727E
-	for <linux-spi@archiver.kernel.org>; Tue, 29 Sep 2020 01:31:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ED69DC4727E
+	for <linux-spi@archiver.kernel.org>; Tue, 29 Sep 2020 01:31:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id CCB8221D92
-	for <linux-spi@archiver.kernel.org>; Tue, 29 Sep 2020 01:31:11 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9E37C22574
+	for <linux-spi@archiver.kernel.org>; Tue, 29 Sep 2020 01:31:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1601343071;
-	bh=i8E2TtvfhI6oB8OTuqVbslQiifotlH/tgoJgMGhWqH8=;
+	s=default; t=1601343115;
+	bh=BzMNSrDRWu5PHra6SIrk//x0rIMv7+Gij9DQf6TWKqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=LvdRiAekRGxazTB6GUPoW2d37ITk5c3JE5X3HF32VXTBSaswXcFCyT12rDpUjaVk4
-	 7algFi9lcrBudVxCmWLdnTfAK0XIWqrYkGcauenHrK7r7OI7eIfHaawTdHujw2bsEp
-	 Elc5s7LzmQFTZ+yszCDM87kst0FL0ZOGRNAh/rMo=
+	b=VGBErfYR11u5Orz+b6WX0Z5EFN8wGT8fq2hc/dYC0wBWGNM7gekUyppSld8G1CzHv
+	 Iov3FleMSUKDz9fl3ydx3S+xulywkUq5x3DM7mqTg6BQLnjkIZmRoYtIKdXEuMrcig
+	 H1dxglCTyJPF3fOunJaczev+1wvBv/ZF+dOkNcsk=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727527AbgI2BbL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 28 Sep 2020 21:31:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40176 "EHLO mail.kernel.org"
+        id S1727710AbgI2Bbt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 28 Sep 2020 21:31:49 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41240 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727494AbgI2BbD (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 28 Sep 2020 21:31:03 -0400
+        id S1727695AbgI2Bbn (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 28 Sep 2020 21:31:43 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4C26A21D46;
-        Tue, 29 Sep 2020 01:31:02 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3254322262;
+        Tue, 29 Sep 2020 01:31:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601343063;
-        bh=i8E2TtvfhI6oB8OTuqVbslQiifotlH/tgoJgMGhWqH8=;
+        s=default; t=1601343102;
+        bh=BzMNSrDRWu5PHra6SIrk//x0rIMv7+Gij9DQf6TWKqk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dvcMbKp0NZUlgrL6ojRW4t6t32IY4Cpyacgr035c7zu6SljPz5glaxFWHTFACjdDz
-         oC/WNbh6gwSZFIvvi9hwKK4Bp4Wz7LGedpJmM+ssmRuuM2Fn5nsULBqhGltfGYd0no
-         o50q5l6AhW7ipQTlapstw9RutQ+5N64lTkeARMBU=
+        b=iWjRT9e6tVPiWOg1vyLTt+s5Hicrvsp3YMS0mle+JQwvVIxF00C2oVhbzgrPwhZl7
+         tI6kcnQO6VS5mryk2IEeFhIE+kQoYlA8YD5Pz81OnhOakwzLfwpomg9OGAutKQUmvH
+         4+ZvzRmYHnlKc/1qKkgk9S+IqZwBteuRRg+i/z9g=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Sascha Hauer <s.hauer@pengutronix.de>,
+Cc:     Chris Packham <chris.packham@alliedtelesis.co.nz>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.8 28/29] spi: fsl-dspi: fix use-after-free in remove path
-Date:   Mon, 28 Sep 2020 21:30:25 -0400
-Message-Id: <20200929013027.2406344-28-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 10/11] spi: fsl-espi: Only process interrupts for expected events
+Date:   Mon, 28 Sep 2020 21:31:28 -0400
+Message-Id: <20200929013129.2406832-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200929013027.2406344-1-sashal@kernel.org>
-References: <20200929013027.2406344-1-sashal@kernel.org>
+In-Reply-To: <20200929013129.2406832-1-sashal@kernel.org>
+References: <20200929013129.2406832-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -57,65 +57,47 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Chris Packham <chris.packham@alliedtelesis.co.nz>
 
-[ Upstream commit 530b5affc675ade5db4a03f04ed7cd66806c8a1a ]
+[ Upstream commit b867eef4cf548cd9541225aadcdcee644669b9e1 ]
 
-spi_unregister_controller() not only unregisters the controller, but
-also frees the controller. This will free the driver data with it, so
-we must not access it later dspi_remove().
+The SPIE register contains counts for the TX FIFO so any time the irq
+handler was invoked we would attempt to process the RX/TX fifos. Use the
+SPIM value to mask the events so that we only process interrupts that
+were expected.
 
-Solve this by allocating the driver data separately from the SPI
-controller.
+This was a latent issue exposed by commit 3282a3da25bd ("powerpc/64:
+Implement soft interrupt replay in C").
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Link: https://lore.kernel.org/r/20200923131026.20707-1-s.hauer@pengutronix.de
+Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Link: https://lore.kernel.org/r/20200904002812.7300-1-chris.packham@alliedtelesis.co.nz
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/spi/spi-fsl-espi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 91c6affe139c9..aae9f9a7aea6c 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -1273,11 +1273,14 @@ static int dspi_probe(struct platform_device *pdev)
- 	void __iomem *base;
- 	bool big_endian;
- 
--	ctlr = spi_alloc_master(&pdev->dev, sizeof(struct fsl_dspi));
-+	dspi = devm_kzalloc(&pdev->dev, sizeof(*dspi), GFP_KERNEL);
-+	if (!dspi)
-+		return -ENOMEM;
-+
-+	ctlr = spi_alloc_master(&pdev->dev, 0);
- 	if (!ctlr)
- 		return -ENOMEM;
- 
--	dspi = spi_controller_get_devdata(ctlr);
- 	dspi->pdev = pdev;
- 	dspi->ctlr = ctlr;
- 
-@@ -1414,7 +1417,7 @@ static int dspi_probe(struct platform_device *pdev)
- 	if (dspi->devtype_data->trans_mode != DSPI_DMA_MODE)
- 		ctlr->ptp_sts_supported = true;
- 
--	platform_set_drvdata(pdev, ctlr);
-+	platform_set_drvdata(pdev, dspi);
- 
- 	ret = spi_register_controller(ctlr);
- 	if (ret != 0) {
-@@ -1437,8 +1440,7 @@ static int dspi_probe(struct platform_device *pdev)
- 
- static int dspi_remove(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+index 1e8ff6256079f..b8dd75b8518b5 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -559,13 +559,14 @@ static void fsl_espi_cpu_irq(struct fsl_espi *espi, u32 events)
+ static irqreturn_t fsl_espi_irq(s32 irq, void *context_data)
  {
--	struct spi_controller *ctlr = platform_get_drvdata(pdev);
--	struct fsl_dspi *dspi = spi_controller_get_devdata(ctlr);
-+	struct fsl_dspi *dspi = platform_get_drvdata(pdev);
+ 	struct fsl_espi *espi = context_data;
+-	u32 events;
++	u32 events, mask;
  
- 	/* Disconnect from the SPI framework */
- 	spi_unregister_controller(dspi->ctlr);
+ 	spin_lock(&espi->lock);
+ 
+ 	/* Get interrupt events(tx/rx) */
+ 	events = fsl_espi_read_reg(espi, ESPI_SPIE);
+-	if (!events) {
++	mask = fsl_espi_read_reg(espi, ESPI_SPIM);
++	if (!(events & mask)) {
+ 		spin_unlock(&espi->lock);
+ 		return IRQ_NONE;
+ 	}
 -- 
 2.25.1
 

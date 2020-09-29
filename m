@@ -7,48 +7,48 @@ X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A1C1DC2D0A8
-	for <linux-spi@archiver.kernel.org>; Tue, 29 Sep 2020 01:34:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B0A7C4727C
+	for <linux-spi@archiver.kernel.org>; Tue, 29 Sep 2020 01:35:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 690152075A
-	for <linux-spi@archiver.kernel.org>; Tue, 29 Sep 2020 01:34:56 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 42A332080A
+	for <linux-spi@archiver.kernel.org>; Tue, 29 Sep 2020 01:35:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1601343296;
-	bh=+xqO1hIRMT1BzyNoJJJ5hXgnkxkNhskRD9Xuy98+iq4=;
+	s=default; t=1601343355;
+	bh=21FkWTn97faQnwphOoikRmtJOI5pXA5VMosofT5D3sU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=pqvKE3+j5wRJb3X44ZtwVULyc7HgEGzIpUmiGOFXut0nZsmEyh9GjjbbgRHXd1MWj
-	 h3SQngRP8/4jN4yWrji7hbDFNRhxYkSLe4OXDMsXK+Y4/fi+ukxL5qkYq6UkGPDSKC
-	 4c/gWeirnnz7yEHv2X71v3DqW6SQv+QLuCi101uk=
+	b=vAtQ+eZQk0jGn46qoDlapIji7mvCvXvmstqKcgicC5YEK3AL2QaO41sA8VpwyfC4p
+	 atWxHdxqBOUz3ZtQH83Cb6G2T2x0lCtqh++iiYmXJxj9ocVsbLDqgkkwgY1Bbhqlnu
+	 kmCK7Vutwo/+YtSP1PWDJmJVKQ84EUoHJTkG9b3I=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727365AbgI2Bep (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 28 Sep 2020 21:34:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40926 "EHLO mail.kernel.org"
+        id S1727461AbgI2Ba6 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 28 Sep 2020 21:30:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40054 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727646AbgI2Bba (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 28 Sep 2020 21:31:30 -0400
+        id S1727460AbgI2Ba6 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 28 Sep 2020 21:30:58 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 20E41235F7;
-        Tue, 29 Sep 2020 01:31:25 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 89F3721D92;
+        Tue, 29 Sep 2020 01:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601343085;
-        bh=+xqO1hIRMT1BzyNoJJJ5hXgnkxkNhskRD9Xuy98+iq4=;
+        s=default; t=1601343058;
+        bh=21FkWTn97faQnwphOoikRmtJOI5pXA5VMosofT5D3sU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aTgNFJnBdlqOQB/KoHOtHZH8NmHma1Cl9GNeKRfSZZen5/wkuzxetMQ8ovYTgnj5x
-         L6UkeeyZRxjA7wqIv+MO+f4qCYgfyH+6BMqMrLYLeGtZdl/8WoUPekUSUBjZ7k4zLC
-         WUT06/hOGkaCYD/1f4yf+W8RXeB5S3e/57r5Vi0Q=
+        b=XOPpJZTGMWCRLvUGYw9hwzGersGSWVMbASEu/0f4DzKwfX2qDm5a2ORp7b5lnyALD
+         AghnddGwrkObQdcsDBXEyjAjdiMzJn4RJ9ZTIkoYn54fw5SEB/0m9rcD/0fpB22mAv
+         3j/32NSsuj0tHTO7WnTv50jfvKH0MOF+TAEcSR+8=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Chris Packham <chris.packham@alliedtelesis.co.nz>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 16/18] spi: fsl-espi: Only process interrupts for expected events
-Date:   Mon, 28 Sep 2020 21:31:02 -0400
-Message-Id: <20200929013105.2406634-16-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.8 24/29] spi: fsl-espi: Only process interrupts for expected events
+Date:   Mon, 28 Sep 2020 21:30:21 -0400
+Message-Id: <20200929013027.2406344-24-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200929013105.2406634-1-sashal@kernel.org>
-References: <20200929013105.2406634-1-sashal@kernel.org>
+In-Reply-To: <20200929013027.2406344-1-sashal@kernel.org>
+References: <20200929013027.2406344-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -78,10 +78,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index f20326714b9d5..215bf6624e7c3 100644
+index e60581283a247..6d148ab70b93e 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -555,13 +555,14 @@ static void fsl_espi_cpu_irq(struct fsl_espi *espi, u32 events)
+@@ -564,13 +564,14 @@ static void fsl_espi_cpu_irq(struct fsl_espi *espi, u32 events)
  static irqreturn_t fsl_espi_irq(s32 irq, void *context_data)
  {
  	struct fsl_espi *espi = context_data;

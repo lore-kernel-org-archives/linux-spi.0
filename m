@@ -2,102 +2,137 @@ Return-Path: <SRS0=d3ll=DG=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B0A7C4727C
-	for <linux-spi@archiver.kernel.org>; Tue, 29 Sep 2020 01:35:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 36005C4727F
+	for <linux-spi@archiver.kernel.org>; Tue, 29 Sep 2020 06:22:27 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 42A332080A
-	for <linux-spi@archiver.kernel.org>; Tue, 29 Sep 2020 01:35:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1601343355;
-	bh=21FkWTn97faQnwphOoikRmtJOI5pXA5VMosofT5D3sU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=vAtQ+eZQk0jGn46qoDlapIji7mvCvXvmstqKcgicC5YEK3AL2QaO41sA8VpwyfC4p
-	 atWxHdxqBOUz3ZtQH83Cb6G2T2x0lCtqh++iiYmXJxj9ocVsbLDqgkkwgY1Bbhqlnu
-	 kmCK7Vutwo/+YtSP1PWDJmJVKQ84EUoHJTkG9b3I=
+	by mail.kernel.org (Postfix) with ESMTP id 078C920C09
+	for <linux-spi@archiver.kernel.org>; Tue, 29 Sep 2020 06:22:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727461AbgI2Ba6 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 28 Sep 2020 21:30:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40054 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727460AbgI2Ba6 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 28 Sep 2020 21:30:58 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 89F3721D92;
-        Tue, 29 Sep 2020 01:30:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601343058;
-        bh=21FkWTn97faQnwphOoikRmtJOI5pXA5VMosofT5D3sU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XOPpJZTGMWCRLvUGYw9hwzGersGSWVMbASEu/0f4DzKwfX2qDm5a2ORp7b5lnyALD
-         AghnddGwrkObQdcsDBXEyjAjdiMzJn4RJ9ZTIkoYn54fw5SEB/0m9rcD/0fpB22mAv
-         3j/32NSsuj0tHTO7WnTv50jfvKH0MOF+TAEcSR+8=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Chris Packham <chris.packham@alliedtelesis.co.nz>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.8 24/29] spi: fsl-espi: Only process interrupts for expected events
-Date:   Mon, 28 Sep 2020 21:30:21 -0400
-Message-Id: <20200929013027.2406344-24-sashal@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200929013027.2406344-1-sashal@kernel.org>
+        id S1727315AbgI2GW0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 29 Sep 2020 02:22:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45778 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727416AbgI2GWX (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 29 Sep 2020 02:22:23 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DBA9C061755
+        for <linux-spi@vger.kernel.org>; Mon, 28 Sep 2020 23:22:23 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1kN91k-0005Qj-Js; Tue, 29 Sep 2020 08:22:16 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1kN91k-0006OL-AN; Tue, 29 Sep 2020 08:22:16 +0200
+Date:   Tue, 29 Sep 2020 08:22:16 +0200
+From:   Sascha Hauer <s.hauer@pengutronix.de>
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 5.8 28/29] spi: fsl-dspi: fix use-after-free in
+ remove path
+Message-ID: <20200929062216.GL11648@pengutronix.de>
 References: <20200929013027.2406344-1-sashal@kernel.org>
+ <20200929013027.2406344-28-sashal@kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200929013027.2406344-28-sashal@kernel.org>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-IRC:  #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 08:20:02 up 222 days, 13:50, 130 users,  load average: 0.00, 0.10,
+ 0.15
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Hi Sasha,
 
-[ Upstream commit b867eef4cf548cd9541225aadcdcee644669b9e1 ]
+On Mon, Sep 28, 2020 at 09:30:25PM -0400, Sasha Levin wrote:
+> From: Sascha Hauer <s.hauer@pengutronix.de>
+> 
+> [ Upstream commit 530b5affc675ade5db4a03f04ed7cd66806c8a1a ]
+> 
+> spi_unregister_controller() not only unregisters the controller, but
+> also frees the controller. This will free the driver data with it, so
+> we must not access it later dspi_remove().
+> 
+> Solve this by allocating the driver data separately from the SPI
+> controller.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Link: https://lore.kernel.org/r/20200923131026.20707-1-s.hauer@pengutronix.de
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/spi/spi-fsl-dspi.c | 12 +++++++-----
+>  1 file changed, 7 insertions(+), 5 deletions(-)
 
-The SPIE register contains counts for the TX FIFO so any time the irq
-handler was invoked we would attempt to process the RX/TX fifos. Use the
-SPIM value to mask the events so that we only process interrupts that
-were expected.
+This patch causes a regression and shouldn't be applied without the fix
+in https://lkml.org/lkml/2020/9/28/300.
 
-This was a latent issue exposed by commit 3282a3da25bd ("powerpc/64:
-Implement soft interrupt replay in C").
+Sascha
 
-Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Link: https://lore.kernel.org/r/20200904002812.7300-1-chris.packham@alliedtelesis.co.nz
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/spi/spi-fsl-espi.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+> index 91c6affe139c9..aae9f9a7aea6c 100644
+> --- a/drivers/spi/spi-fsl-dspi.c
+> +++ b/drivers/spi/spi-fsl-dspi.c
+> @@ -1273,11 +1273,14 @@ static int dspi_probe(struct platform_device *pdev)
+>  	void __iomem *base;
+>  	bool big_endian;
+>  
+> -	ctlr = spi_alloc_master(&pdev->dev, sizeof(struct fsl_dspi));
+> +	dspi = devm_kzalloc(&pdev->dev, sizeof(*dspi), GFP_KERNEL);
+> +	if (!dspi)
+> +		return -ENOMEM;
+> +
+> +	ctlr = spi_alloc_master(&pdev->dev, 0);
+>  	if (!ctlr)
+>  		return -ENOMEM;
+>  
+> -	dspi = spi_controller_get_devdata(ctlr);
+>  	dspi->pdev = pdev;
+>  	dspi->ctlr = ctlr;
+>  
+> @@ -1414,7 +1417,7 @@ static int dspi_probe(struct platform_device *pdev)
+>  	if (dspi->devtype_data->trans_mode != DSPI_DMA_MODE)
+>  		ctlr->ptp_sts_supported = true;
+>  
+> -	platform_set_drvdata(pdev, ctlr);
+> +	platform_set_drvdata(pdev, dspi);
+>  
+>  	ret = spi_register_controller(ctlr);
+>  	if (ret != 0) {
+> @@ -1437,8 +1440,7 @@ static int dspi_probe(struct platform_device *pdev)
+>  
+>  static int dspi_remove(struct platform_device *pdev)
+>  {
+> -	struct spi_controller *ctlr = platform_get_drvdata(pdev);
+> -	struct fsl_dspi *dspi = spi_controller_get_devdata(ctlr);
+> +	struct fsl_dspi *dspi = platform_get_drvdata(pdev);
+>  
+>  	/* Disconnect from the SPI framework */
+>  	spi_unregister_controller(dspi->ctlr);
+> -- 
+> 2.25.1
+> 
+> 
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index e60581283a247..6d148ab70b93e 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -564,13 +564,14 @@ static void fsl_espi_cpu_irq(struct fsl_espi *espi, u32 events)
- static irqreturn_t fsl_espi_irq(s32 irq, void *context_data)
- {
- 	struct fsl_espi *espi = context_data;
--	u32 events;
-+	u32 events, mask;
- 
- 	spin_lock(&espi->lock);
- 
- 	/* Get interrupt events(tx/rx) */
- 	events = fsl_espi_read_reg(espi, ESPI_SPIE);
--	if (!events) {
-+	mask = fsl_espi_read_reg(espi, ESPI_SPIM);
-+	if (!(events & mask)) {
- 		spin_unlock(&espi->lock);
- 		return IRQ_NONE;
- 	}
 -- 
-2.25.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |

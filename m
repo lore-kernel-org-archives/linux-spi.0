@@ -1,82 +1,121 @@
-Return-Path: <SRS0=BcLs=DF=vger.kernel.org=linux-spi-owner@kernel.org>
+Return-Path: <SRS0=d3ll=DG=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4EA4AC2D0A8
-	for <linux-spi@archiver.kernel.org>; Mon, 28 Sep 2020 19:36:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 16A0CC4727E
+	for <linux-spi@archiver.kernel.org>; Tue, 29 Sep 2020 01:31:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 12EE0208D5
-	for <linux-spi@archiver.kernel.org>; Mon, 28 Sep 2020 19:36:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CCB8221D92
+	for <linux-spi@archiver.kernel.org>; Tue, 29 Sep 2020 01:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1601321813;
-	bh=9RJdTfPpdguwugYvXbpDbhHA8LGsJ3B5t6OkG5gTgWY=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=IIkE1mAddjTwFVMM6MRY0/F9jgD2EY2dyNld9wOSQA1vXpxEtjSN/aJ7HSSh0CtqA
-	 9WmdA1Ko2BvoCmuCgyXBFt7p+pI/TiYudC2mMQQDMqbG9U38wUf7IigEy1+wERDVzR
-	 Nfm24Lhf7Ac9mp5RqdGDYkeQzngZSgchfycfWMKg=
+	s=default; t=1601343071;
+	bh=i8E2TtvfhI6oB8OTuqVbslQiifotlH/tgoJgMGhWqH8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=LvdRiAekRGxazTB6GUPoW2d37ITk5c3JE5X3HF32VXTBSaswXcFCyT12rDpUjaVk4
+	 7algFi9lcrBudVxCmWLdnTfAK0XIWqrYkGcauenHrK7r7OI7eIfHaawTdHujw2bsEp
+	 Elc5s7LzmQFTZ+yszCDM87kst0FL0ZOGRNAh/rMo=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726882AbgI1Tgw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 28 Sep 2020 15:36:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37072 "EHLO mail.kernel.org"
+        id S1727527AbgI2BbL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 28 Sep 2020 21:31:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40176 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726442AbgI1Tgw (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 28 Sep 2020 15:36:52 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1727494AbgI2BbD (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 28 Sep 2020 21:31:03 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7FBA620773;
-        Mon, 28 Sep 2020 19:36:51 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4C26A21D46;
+        Tue, 29 Sep 2020 01:31:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601321812;
-        bh=9RJdTfPpdguwugYvXbpDbhHA8LGsJ3B5t6OkG5gTgWY=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=nB7N8nMacIuTdt0q4gWaEvps46sh5PhMQnhxVIMDcLxUAMT6pAQsvtQuwB0D+zgkR
-         Up2JIrvaVWJRcOCnhZkJ8sEua/MovyuOsa2pF41fEaRW7VVMTgD67gRLTwXDnZw+8d
-         uOSR91GO2bsWDc9I3Q4gawMVfEfh1zVmEDE+451g=
-Date:   Mon, 28 Sep 2020 20:35:55 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     linux-spi@vger.kernel.org, Colin King <colin.king@canonical.com>,
-        John Garry <john.garry@huawei.com>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20200928123042.125359-1-colin.king@canonical.com>
-References: <20200928123042.125359-1-colin.king@canonical.com>
-Subject: Re: [PATCH][next] spi: hisi-sfc-v3xx: fix spelling mistake "occured" -> "occurred"
-Message-Id: <160132174502.55568.4062890961950897599.b4-ty@kernel.org>
+        s=default; t=1601343063;
+        bh=i8E2TtvfhI6oB8OTuqVbslQiifotlH/tgoJgMGhWqH8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=dvcMbKp0NZUlgrL6ojRW4t6t32IY4Cpyacgr035c7zu6SljPz5glaxFWHTFACjdDz
+         oC/WNbh6gwSZFIvvi9hwKK4Bp4Wz7LGedpJmM+ssmRuuM2Fn5nsULBqhGltfGYd0no
+         o50q5l6AhW7ipQTlapstw9RutQ+5N64lTkeARMBU=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Sascha Hauer <s.hauer@pengutronix.de>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.8 28/29] spi: fsl-dspi: fix use-after-free in remove path
+Date:   Mon, 28 Sep 2020 21:30:25 -0400
+Message-Id: <20200929013027.2406344-28-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200929013027.2406344-1-sashal@kernel.org>
+References: <20200929013027.2406344-1-sashal@kernel.org>
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 28 Sep 2020 13:30:42 +0100, Colin King wrote:
-> There is a spelling mistake in a dev_err message. Fix it.
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-Applied to
+[ Upstream commit 530b5affc675ade5db4a03f04ed7cd66806c8a1a ]
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+spi_unregister_controller() not only unregisters the controller, but
+also frees the controller. This will free the driver data with it, so
+we must not access it later dspi_remove().
 
-Thanks!
+Solve this by allocating the driver data separately from the SPI
+controller.
 
-[1/1] spi: hisi-sfc-v3xx: fix spelling mistake "occured" -> "occurred"
-      commit: 0e9683659c6926fd3f30345f9f58893e630379ed
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Link: https://lore.kernel.org/r/20200923131026.20707-1-s.hauer@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi-fsl-dspi.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 91c6affe139c9..aae9f9a7aea6c 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -1273,11 +1273,14 @@ static int dspi_probe(struct platform_device *pdev)
+ 	void __iomem *base;
+ 	bool big_endian;
+ 
+-	ctlr = spi_alloc_master(&pdev->dev, sizeof(struct fsl_dspi));
++	dspi = devm_kzalloc(&pdev->dev, sizeof(*dspi), GFP_KERNEL);
++	if (!dspi)
++		return -ENOMEM;
++
++	ctlr = spi_alloc_master(&pdev->dev, 0);
+ 	if (!ctlr)
+ 		return -ENOMEM;
+ 
+-	dspi = spi_controller_get_devdata(ctlr);
+ 	dspi->pdev = pdev;
+ 	dspi->ctlr = ctlr;
+ 
+@@ -1414,7 +1417,7 @@ static int dspi_probe(struct platform_device *pdev)
+ 	if (dspi->devtype_data->trans_mode != DSPI_DMA_MODE)
+ 		ctlr->ptp_sts_supported = true;
+ 
+-	platform_set_drvdata(pdev, ctlr);
++	platform_set_drvdata(pdev, dspi);
+ 
+ 	ret = spi_register_controller(ctlr);
+ 	if (ret != 0) {
+@@ -1437,8 +1440,7 @@ static int dspi_probe(struct platform_device *pdev)
+ 
+ static int dspi_remove(struct platform_device *pdev)
+ {
+-	struct spi_controller *ctlr = platform_get_drvdata(pdev);
+-	struct fsl_dspi *dspi = spi_controller_get_devdata(ctlr);
++	struct fsl_dspi *dspi = platform_get_drvdata(pdev);
+ 
+ 	/* Disconnect from the SPI framework */
+ 	spi_unregister_controller(dspi->ctlr);
+-- 
+2.25.1
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

@@ -4,28 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-10.0 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 43C53C47429
-	for <linux-spi@archiver.kernel.org>; Wed, 30 Sep 2020 18:56:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F17E3C4742C
+	for <linux-spi@archiver.kernel.org>; Wed, 30 Sep 2020 18:56:45 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1517C206DC
-	for <linux-spi@archiver.kernel.org>; Wed, 30 Sep 2020 18:56:44 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CAC70206DC
+	for <linux-spi@archiver.kernel.org>; Wed, 30 Sep 2020 18:56:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730399AbgI3S4K (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 30 Sep 2020 14:56:10 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:41806 "EHLO
+        id S1729785AbgI3S4p (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 30 Sep 2020 14:56:45 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:41840 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730278AbgI3S4E (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 30 Sep 2020 14:56:04 -0400
+        with ESMTP id S1730310AbgI3S4G (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 30 Sep 2020 14:56:06 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 49753803017E;
-        Wed, 30 Sep 2020 18:55:58 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 4BC00803202B;
+        Wed, 30 Sep 2020 18:56:00 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id qTgfpioVhnS0; Wed, 30 Sep 2020 21:55:57 +0300 (MSK)
+        with ESMTP id RZyya9zqHaUS; Wed, 30 Sep 2020 21:55:59 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
@@ -39,9 +39,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 11/21] spi: dw: Unmask IRQs after enabling the chip
-Date:   Wed, 30 Sep 2020 21:55:35 +0300
-Message-ID: <20200930185545.29959-12-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH v2 14/21] spi: dw: Explicitly de-assert CS on SPI transfer completion
+Date:   Wed, 30 Sep 2020 21:55:38 +0300
+Message-ID: <20200930185545.29959-15-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20200930185545.29959-1-Sergey.Semin@baikalelectronics.ru>
 References: <20200930185545.29959-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,40 +52,32 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-It's theoretically erroneous to enable IRQ before the chip is turned on.
-If IRQ handler gets executed before the chip is enabled, then any data
-written to the Tx FIFO will be just ignored.
-
-I say "theoretically" because we haven't noticed any problem with that,
-but let's fix it anyway just in case...
+By design of the currently available native set_cs callback, the CS
+de-assertion will be done only if it's required by the corresponding
+controller capability. But in order to pre-fill the Tx FIFO buffer with
+data during the SPI memory ops execution the SER register needs to be left
+cleared before that. We'll also need a way to explicitly set and clear the
+corresponding CS bit at a certain moment of the operation. Let's alter
+the set_cs function then to also de-activate the CS, when it's required.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 ---
- drivers/spi/spi-dw-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-dw-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index db3fec4195f7..58a7c7465c61 100644
+index fca929280aab..a6f86314567f 100644
 --- a/drivers/spi/spi-dw-core.c
 +++ b/drivers/spi/spi-dw-core.c
-@@ -376,8 +376,6 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 			spi_enable_chip(dws, 1);
- 			return ret;
- 		}
--	} else {
--		dw_spi_irq_setup(dws);
- 	}
- 
- 	spi_enable_chip(dws, 1);
-@@ -385,6 +383,8 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 	if (dws->dma_mapped)
- 		return dws->dma_ops->dma_transfer(dws, transfer);
- 
-+	dw_spi_irq_setup(dws);
-+
- 	return 1;
+@@ -100,7 +100,7 @@ void dw_spi_set_cs(struct spi_device *spi, bool enable)
+ 	 */
+ 	if (cs_high == enable)
+ 		dw_writel(dws, DW_SPI_SER, BIT(spi->chip_select));
+-	else if (dws->caps & DW_SPI_CAP_CS_OVERRIDE)
++	else
+ 		dw_writel(dws, DW_SPI_SER, 0);
  }
- 
+ EXPORT_SYMBOL_GPL(dw_spi_set_cs);
 -- 
 2.27.0
 

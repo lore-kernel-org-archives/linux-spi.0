@@ -2,126 +2,83 @@ Return-Path: <SRS0=/X/+=DH=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.0 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-4.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F06DC4727E
-	for <linux-spi@archiver.kernel.org>; Wed, 30 Sep 2020 18:57:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D6CD7C4727C
+	for <linux-spi@archiver.kernel.org>; Wed, 30 Sep 2020 18:57:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3C26220708
-	for <linux-spi@archiver.kernel.org>; Wed, 30 Sep 2020 18:57:23 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8D3FC206DC
+	for <linux-spi@archiver.kernel.org>; Wed, 30 Sep 2020 18:57:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1601492260;
+	bh=RuigJMb5MKiIsroV2IFnKh2SOc5m4VVtz0pT3P/ufY0=;
+	h=Subject:From:Date:To:List-ID:From;
+	b=yjT/mbuM6jjrQKGy6oRn9jepLH06sJf++9rQRNEuyfsyWBUv6Nv/VWahq2JJ1QHiZ
+	 qQilSzowhE2qbh0H793E2y84dGJWeisZ0VrdygbUUzuVAc6tC+bqxph6YEHyR8VXSc
+	 makg/jk9LUlbuVbPT0IZAL3X/f4rQKafglV4/Aiw=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730234AbgI3Sz6 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 30 Sep 2020 14:55:58 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:41694 "EHLO
-        mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728031AbgI3Sz4 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 30 Sep 2020 14:55:56 -0400
-Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 4DBFD803086A;
-        Wed, 30 Sep 2020 18:55:53 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at baikalelectronics.ru
-Received: from mail.baikalelectronics.ru ([127.0.0.1])
-        by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 0qoPfT5T91nw; Wed, 30 Sep 2020 21:55:52 +0300 (MSK)
-From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
-To:     Mark Brown <broonie@kernel.org>
-CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
-        Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>,
-        Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Lars Povlsen <lars.povlsen@microchip.com>,
-        "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
-        Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 04/21] spi: dw: Update SPI bus speed in a config function
-Date:   Wed, 30 Sep 2020 21:55:28 +0300
-Message-ID: <20200930185545.29959-5-Sergey.Semin@baikalelectronics.ru>
-In-Reply-To: <20200930185545.29959-1-Sergey.Semin@baikalelectronics.ru>
-References: <20200930185545.29959-1-Sergey.Semin@baikalelectronics.ru>
+        id S1726992AbgI3S5k (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 30 Sep 2020 14:57:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59720 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725771AbgI3S5k (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 30 Sep 2020 14:57:40 -0400
+Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601492259;
+        bh=RuigJMb5MKiIsroV2IFnKh2SOc5m4VVtz0pT3P/ufY0=;
+        h=Subject:From:Date:To:From;
+        b=Lc8r+/eoARtyPljC6cy9bwh1tY2IuCWXS2sXnzl7jWdWPaI7BYaWT7ppcRMZLOyxW
+         QEdgo6EEZsX+24UF3J4JObphgTQKhqpGBwg2e5o9I9OEfun/9eHR5g3wcguwivOgoh
+         Z9dWOsea3MfpgkuwN2zhDapWqgvRm1eHjCgCJ3Os=
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <160149225936.9864.7965741160127372180.git-patchwork-housekeeping@kernel.org>
+Date:   Wed, 30 Sep 2020 18:57:39 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The SPI bus speed update functionality will be useful in another parts of
-the driver too (like to implement the SPI memory operations and from the
-DW SPI glue layers). Let's move it to the update_cr0() method then and
-since the later is now updating not only the CTRLR0 register alter its
-prototype to have a generic function name not related to CR0.
+Latest series: [v2] spi: dw: Add full Baikal-T1 SPI Controllers support (2020-09-30T18:55:25)
+  Superseding: [v1] spi: dw: Add full Baikal-T1 SPI Controllers support (2020-09-20T11:28:45):
+    [01/30] spi: dw: Discard IRQ threshold macro
+    [02/30] spi: dw: Use ternary op to init set_cs callback
+    [03/30] spi: dw: Initialize n_bytes before the memory barrier
+    [04/30] Revert: spi: spi-dw: Add lock protect dw_spi rx/tx to prevent concurrent calls
+    [05/30] spi: dw: Clear IRQ status on DW SPI controller reset
+    [06/30] spi: dw: Disable all IRQs when controller is unused
+    [07/30] spi: dw: Use relaxed IO-methods to access FIFOs
+    [08/30] spi: dw: Discard DW SSI chip type storages
+    [09/30] spi: dw: Convert CS-override to DW SPI capabilities
+    [10/30] spi: dw: Add KeemBay Master capability
+    [11/30] spi: dw: Add DWC SSI capability
+    [12/30] spi: dw: Detach SPI device specific CR0 config method
+    [13/30] spi: dw: Update SPI bus speed in a config function
+    [14/30] spi: dw: Simplify the SPI bus speed config procedure
+    [15/30] spi: dw: Update Rx sample delay in the config function
+    [16/30] spi: dw: Add DW SPI controller config structure
+    [17/30] spi: dw: Refactor data IO procedure
+    [18/30] spi: dw: Refactor IRQ-based SPI transfer procedure
+    [19/30] spi: dw: Perform IRQ setup in a dedicated function
+    [20/30] spi: dw: Unmask IRQs after enabling the chip
+    [21/30] spi: dw: Discard chip enabling on DMA setup error
+    [22/30] spi: dw: De-assert chip-select on reset
+    [23/30] spi: dw: Explicitly de-assert CS on SPI transfer completion
+    [24/30] spi: dw: Move num-of retries parameter to the header file
+    [25/30] spi: dw: Add generic DW SSI status-check method
+    [26/30] spi: dw: Add memory operations support
+    [27/30] spi: dw: Introduce max mem-ops SPI bus frequency setting
+    [28/30] spi: dw: Add poll-based SPI transfers support
+    [29/30] dt-bindings: spi: dw: Add Baikal-T1 SPI Controllers
+    [30/30] spi: dw: Add Baikal-T1 SPI Controller glue driver
 
-Leave the too long line with the chip->clk_div setting as is for now,
-since it's going to be changed later anyway.
 
-Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
----
- drivers/spi/spi-dw-core.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 6b89330708bc..77dfd6681f0c 100644
---- a/drivers/spi/spi-dw-core.c
-+++ b/drivers/spi/spi-dw-core.c
-@@ -269,8 +269,8 @@ static u32 dw_spi_get_cr0(struct dw_spi *dws, struct spi_device *spi)
- 	return cr0;
- }
- 
--static void dw_spi_update_cr0(struct dw_spi *dws, struct spi_device *spi,
--			      struct spi_transfer *transfer)
-+static void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
-+				 struct spi_transfer *transfer)
- {
- 	struct chip_data *chip = spi_get_ctldata(spi);
- 	u32 cr0 = chip->cr0;
-@@ -286,6 +286,17 @@ static void dw_spi_update_cr0(struct dw_spi *dws, struct spi_device *spi,
- 		cr0 |= chip->tmode << DWC_SSI_CTRLR0_TMOD_OFFSET;
- 
- 	dw_writel(dws, DW_SPI_CTRLR0, cr0);
-+
-+	/* Handle per transfer options for bpw and speed */
-+	if (transfer->speed_hz != dws->current_freq) {
-+		if (transfer->speed_hz != chip->speed_hz) {
-+			/* clk_div doesn't support odd number */
-+			chip->clk_div = (DIV_ROUND_UP(dws->max_freq, transfer->speed_hz) + 1) & 0xfffe;
-+			chip->speed_hz = transfer->speed_hz;
-+		}
-+		dws->current_freq = transfer->speed_hz;
-+		spi_set_clk(dws, chip->clk_div);
-+	}
- }
- 
- static int dw_spi_transfer_one(struct spi_controller *master,
-@@ -310,21 +321,10 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 
- 	spi_enable_chip(dws, 0);
- 
--	/* Handle per transfer options for bpw and speed */
--	if (transfer->speed_hz != dws->current_freq) {
--		if (transfer->speed_hz != chip->speed_hz) {
--			/* clk_div doesn't support odd number */
--			chip->clk_div = (DIV_ROUND_UP(dws->max_freq, transfer->speed_hz) + 1) & 0xfffe;
--			chip->speed_hz = transfer->speed_hz;
--		}
--		dws->current_freq = transfer->speed_hz;
--		spi_set_clk(dws, chip->clk_div);
--	}
-+	dw_spi_update_config(dws, spi, transfer);
- 
- 	transfer->effective_speed_hz = dws->max_freq / chip->clk_div;
- 
--	dw_spi_update_cr0(dws, spi, transfer);
--
- 	/* Check if current transfer is a DMA transaction */
- 	if (master->can_dma && master->can_dma(master, spi, transfer))
- 		dws->dma_mapped = master->cur_msg_mapped;
 -- 
-2.27.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

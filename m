@@ -2,168 +2,144 @@ Return-Path: <SRS0=zioz=DI=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-12.9 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C2DFC4727C
-	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 11:35:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A81ABC4727E
+	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 15:22:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1C34E20838
-	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 11:35:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3DF9821D7D
+	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 15:22:53 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J8csKkj6"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="Cdutv5RU"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731931AbgJALfv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 1 Oct 2020 07:35:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59446 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731908AbgJALfv (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 1 Oct 2020 07:35:51 -0400
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EADEC0613D0;
-        Thu,  1 Oct 2020 04:35:50 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id w7so4222307pfi.4;
-        Thu, 01 Oct 2020 04:35:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=XyHiOZw6vpbNqA7DA0wYMswCxzbcImXpu3LbRG5y4FY=;
-        b=J8csKkj6C1iGRmU8Z2s9PR8mzu2M2Qs0mdc14WlwmmhCoZpYIUJzTskuONflNLvUar
-         hDHqy76EDetoeOGc2IkptlEYVt7STuIyJMvyKAb/c9U1vYLEB3kQ3C6zeNL9hNlxrQKX
-         RQybNZtdAlAJ5zzyjSQziT91ycAqz8+Xv2TyUHrezmE96wndFxS3ikyGjNWA76Wdn2Cp
-         lG7Yd0h0g/y0ggoMFqHkUakBG4sw6kaUPpe5/PS8gMEa3GUXzRzs5XnByOLD9b6veasw
-         riYk30x+vZLMFdUCRQ3GZ+vLxKWowGeso9hDPRbD4qunSpnTJ2iSTguPbkIlPfTnpO1f
-         DxkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=XyHiOZw6vpbNqA7DA0wYMswCxzbcImXpu3LbRG5y4FY=;
-        b=X1pXIJB2Z4TKEvT++9gRsYbGF+U5cdH9XI0kyTQh2K0pGUGxI/0S+PDY9K6VaYxUoU
-         xfgIYntm1QIQRJ3BMIo4bmA44HZqLBzc7dt2ge5NcsaX0FTs7Y+jS8lVSd+WmBv7eFna
-         ScWCINoJSb8L1UOvtSoFQHxf2LTfpqkCnE7HwFd0vQLnn2OPBNNjdSmwdi87/tFl7wVW
-         djB0ZWNQiUe36WsLT3syWcOii4TTA9wmzb4LDOc2sMZBa8kr7Kxf82HSlp5+ah5en5US
-         860pL7iAg7kDmJtQyI/0eX0SNx6z3y2YMoQTpm4+hXsSUgfFPsnSelOhJhhzD89m0dpk
-         v+lA==
-X-Gm-Message-State: AOAM533iWrt0Ybr/dE7sQsCSqjFM7wLtuWLU5vehe3FjsLDZOE8pNpo3
-        YYe/uoeFGCiqK0uy7fj779aRdztzr8Uuu8bZt+w=
-X-Google-Smtp-Source: ABdhPJwv2e3TtgJ7tZ1wIs2RHI55rGZpOY2rkgaPqc67H6tses5x+SjZHcN+6mlfXIXb+IG2pMfbkzT2pGwSKlPzrBE=
-X-Received: by 2002:a63:ec4c:: with SMTP id r12mr5585605pgj.74.1601552149669;
- Thu, 01 Oct 2020 04:35:49 -0700 (PDT)
+        id S1732704AbgJAPWw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 1 Oct 2020 11:22:52 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:40875 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732686AbgJAPWv (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 1 Oct 2020 11:22:51 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20201001152249euoutp01349f407c4b9f0cc0c2d8378b6cf1414b~555UMUAWe2712227122euoutp01Z
+        for <linux-spi@vger.kernel.org>; Thu,  1 Oct 2020 15:22:49 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20201001152249euoutp01349f407c4b9f0cc0c2d8378b6cf1414b~555UMUAWe2712227122euoutp01Z
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1601565769;
+        bh=GJq8Rrl/NqY+M8Jy9Il23NXnXWGEb+l5rpI2RMGL5uE=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Cdutv5RUGBIMkf0u7JITUZ0D1+mh+Z9YHnhULtczKivt+/zomYJtAy2kJBy7LU8ek
+         MTq2CfzjmaBX9qMigVoRDChl+1sSlhmnK1bg4B5OGX+olYL3peHcmsYbIIScrWHm/P
+         c4b/c0ZP7elDz/dEeR8zJr/1iLhcngBVazXbUxqE=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20201001152249eucas1p2b495c0905e73ec5122f74683f74f1acf~555T3vaaj1941819418eucas1p2F;
+        Thu,  1 Oct 2020 15:22:49 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id 2F.EC.06318.944F57F5; Thu,  1
+        Oct 2020 16:22:49 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20201001152249eucas1p1c3bbe7b2a677affe4e1a1e4d469f94c8~555TjTztC1646216462eucas1p1O;
+        Thu,  1 Oct 2020 15:22:49 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20201001152249eusmtrp16ccaa3ffc2978b39f9c17abb2b48db92~555TipH3K2671626716eusmtrp1k;
+        Thu,  1 Oct 2020 15:22:49 +0000 (GMT)
+X-AuditID: cbfec7f5-38bff700000018ae-a2-5f75f4492abb
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id D3.A5.06314.944F57F5; Thu,  1
+        Oct 2020 16:22:49 +0100 (BST)
+Received: from localhost (unknown [106.120.51.46]) by eusmtip2.samsung.com
+        (KnoxPortal) with ESMTPA id
+        20201001152248eusmtip24cdda12d8517106e67e5454a644fa5c5~555TZRzJ_0513205132eusmtip2V;
+        Thu,  1 Oct 2020 15:22:48 +0000 (GMT)
+From:   =?UTF-8?q?=C5=81ukasz=20Stelmach?= <l.stelmach@samsung.com>
+To:     Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Tomasz Figa <tomasz.figa@gmail.com>,
+        Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     m.szyprowski@samsung.com, b.zolnierkie@samsung.com,
+        =?UTF-8?q?=C5=81ukasz=20Stelmach?= <l.stelmach@samsung.com>
+Subject: [PATCH v2 RESEND 8/9] spi: spi-s3c64xx: Increase transfer timeout
+Date:   Thu,  1 Oct 2020 17:21:47 +0200
+Message-Id: <20201001152148.29747-9-l.stelmach@samsung.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20201001152148.29747-1-l.stelmach@samsung.com>
 MIME-Version: 1.0
-References: <20201001074415.349739-1-thomas.petazzoni@bootlin.com>
-In-Reply-To: <20201001074415.349739-1-thomas.petazzoni@bootlin.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 1 Oct 2020 14:35:31 +0300
-Message-ID: <CAHp75VdJBj_1j6JtA7wtbJ4Ji_s5sdjxunckv7mBHsxXE+t7Aw@mail.gmail.com>
-Subject: Re: [PATCH v2] serial: max310x: rework RX interrupt handling
-To:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        "open list:SERIAL DRIVERS" <linux-serial@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        =?UTF-8?B?SmFuIEt1bmRyw6F0?= <jan.kundrat@cesnet.cz>,
-        Mark Brown <broonie@kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Organization: Samsung R&D Institute Poland
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrFKsWRmVeSWpSXmKPExsWy7djP87qeX0rjDZ73S1os/vGcyWLjjPWs
+        FlMfPmGz6H/8mtni/PkN7BY3D61gtNj0+BqrxeVdc9gsZpzfx2TR+PEmu8XaI3fZLVbt+sPo
+        wONxfcknZo+ds+6ye2xa1cnmsXlJvUffllWMHp83yQWwRXHZpKTmZJalFunbJXBlLGtvYCz4
+        zFFx5cxMtgbGmexdjJwcEgImEs0dJ5i6GLk4hARWMEqsPbEGyvnCKPH1azMzhPOZUWLVq0Nw
+        Lf9vtkMlljNKzD21khEkISTwnFFi+moeEJtNwFGif+kJVpAiEYHtTBITP59nAUkwC5RK9Ow8
+        xAZiCwt4SXyefB6smUVAVeLD4sVMIDavgLXExfvvmSG2yUu0L98OVs8pYCNxbuJhNogaQYmT
+        M5+AzeQX0JJY03Qdar68RPPW2VC9j9glXs1ggrBdJA739LJA2MISr45vgfpGRuL05B6gOAeQ
+        XS8xeZIZyM0SAj2MEtvm/ICqt5a4c+4XG0gNs4CmxPpd+hBhR4mrN18wQbTySdx4KwhxAZ/E
+        pG3TmSHCvBIdbUIQ1SoS6/r3QA2Ukuh9tYJxAqPSLCS/zEJy/yyEXQsYmVcxiqeWFuempxYb
+        56WW6xUn5haX5qXrJefnbmIEpqjT/45/3cG470/SIUYBDkYlHt6MQ6XxQqyJZcWVuYcYJTiY
+        lUR4nc6ejhPiTUmsrEotyo8vKs1JLT7EKM3BoiTOa7zoZayQQHpiSWp2ampBahFMlomDU6qB
+        cY3uukVb++dVSISmO7x1rZo989jWP5PveHQwB31pbu1f8PJ6dqnlyt0vOyb7P7sWdfs7pzB/
+        1Qylmp5taptblbffZb3zjSuneoMPXxVLY/Aduwf7LVl8eq5HfuU4UKb4Lyn7rAdv3ea3u948
+        t+nO9WO4Ljvl7fzi0oQsDyb7aemFQZvi3+6bpMRSnJFoqMVcVJwIAPV5V8ZNAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrDIsWRmVeSWpSXmKPExsVy+t/xe7qeX0rjDVqms1ss/vGcyWLjjPWs
+        FlMfPmGz6H/8mtni/PkN7BY3D61gtNj0+BqrxeVdc9gsZpzfx2TR+PEmu8XaI3fZLVbt+sPo
+        wONxfcknZo+ds+6ye2xa1cnmsXlJvUffllWMHp83yQWwRenZFOWXlqQqZOQXl9gqRRtaGOkZ
+        WlroGZlY6hkam8daGZkq6dvZpKTmZJalFunbJehlLGtvYCz4zFFx5cxMtgbGmexdjJwcEgIm
+        Ev9vtjN3MXJxCAksZZRY+eUwaxcjB1BCSmLl3HSIGmGJP9e62CBqnjJKTFywGqyZTcBRon/p
+        CVaQhIjAfiaJSxfus4AkmAXKJS7Neg5WJCzgJfF58nlGEJtFQFXiw+LFTCA2r4C1xMX775kh
+        NshLtC/fzgZicwrYSJybeBjMFhLIldi9+ygbRL2gxMmZT1hAjmMWUJdYP08IJMwvoCWxpuk6
+        1Fp5ieats5knMArNQtIxC6FjFpKqBYzMqxhFUkuLc9Nziw31ihNzi0vz0vWS83M3MQJjctux
+        n5t3MF7aGHyIUYCDUYmHV+BAabwQa2JZcWXuIUYJDmYlEV6ns6fjhHhTEiurUovy44tKc1KL
+        DzGaAr05kVlKNDkfmC7ySuINTQ3NLSwNzY3Njc0slMR5OwQOxggJpCeWpGanphakFsH0MXFw
+        SjUwVt7ecPTlJ0mJ0hwPz5R19x43n12+7YTIf8mWE2pP/zcpxF/56LH0ibxxx+xLctL7T+/Q
+        NDz/LG197PpZnq7m270cC5u2CUWFm7imtjnffrHo49KJtqeFuredF3oX/LI96JuM8IV9+bue
+        hn1rM6ndOeVeuQXTrOSpLz49SZsxV2/hkoZnUdw7JymxFGckGmoxFxUnAgAd7q793wIAAA==
+X-CMS-MailID: 20201001152249eucas1p1c3bbe7b2a677affe4e1a1e4d469f94c8
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20201001152249eucas1p1c3bbe7b2a677affe4e1a1e4d469f94c8
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20201001152249eucas1p1c3bbe7b2a677affe4e1a1e4d469f94c8
+References: <20200821161401.11307-1-l.stelmach@samsung.com>
+        <20201001152148.29747-1-l.stelmach@samsung.com>
+        <CGME20201001152249eucas1p1c3bbe7b2a677affe4e1a1e4d469f94c8@eucas1p1.samsung.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, Oct 1, 2020 at 10:44 AM Thomas Petazzoni
-<thomas.petazzoni@bootlin.com> wrote:
->
-> Currently, the RX interrupt logic uses the RXEMPTY interrupt, with the
-> RXEMPTYINV bit set, which means we get an RX interrupt as soon as the
-> RX FIFO is non-empty.
->
-> However, with the MAX310X having a FIFO of 128 bytes, this makes very
-> poor use of the FIFO: we trigger an interrupt as soon as the RX FIFO
-> has one byte, which means a lot of interrupts, each only collecting a
-> few bytes from the FIFO, causing a significant CPU load.
->
-> Instead this commit relies on two other RX interrupt events:
->
->  - MAX310X_IRQ_RXFIFO_BIT, which triggers when the RX FIFO has reached
->    a certain threshold, which we define to be half of the FIFO
->    size. This ensure we get an interrupt before the RX FIFO fills up.
->
->  - MAX310X_LSR_RXTO_BIT, which triggers when the RX FIFO has received
->    some bytes, and then no more bytes are received for a certain
->    time. Arbitrarily, this time is defined to the time is takes to
->    receive 4 characters.
->
-> On a Microchip SAMA5D3 platform that is receiving 20 bytes every 16ms
-> over one MAX310X UART, this patch has allowed to reduce the CPU
-> consumption of the interrupt handler thread from ~25% to 6-7%.
->
+Increase timeout by 30 ms for some wiggle room and set the minimum value
+to 100 ms. This ensures a non-zero value for short transfers which
+may take less than 1 ms. The timeout value does not affect
+performance because it is used with a completion.
 
-You missed my tag :-(
+Similar formula is used in other drivers e.g. sun4i, sun6i.
 
-> Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-> ---
-> Changes since v1:
-> - Fix missing space when closing a comment
-> ---
->  drivers/tty/serial/max310x.c | 29 ++++++++++++++++++++++++-----
->  1 file changed, 24 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/tty/serial/max310x.c b/drivers/tty/serial/max310x.c
-> index 8434bd5a8ec7..21130af106bb 100644
-> --- a/drivers/tty/serial/max310x.c
-> +++ b/drivers/tty/serial/max310x.c
-> @@ -1056,9 +1056,9 @@ static int max310x_startup(struct uart_port *port)
->         max310x_port_update(port, MAX310X_MODE1_REG,
->                             MAX310X_MODE1_TRNSCVCTRL_BIT, 0);
->
-> -       /* Configure MODE2 register & Reset FIFOs*/
-> -       val = MAX310X_MODE2_RXEMPTINV_BIT | MAX310X_MODE2_FIFORST_BIT;
-> -       max310x_port_write(port, MAX310X_MODE2_REG, val);
-> +       /* Reset FIFOs */
-> +       max310x_port_write(port, MAX310X_MODE2_REG,
-> +                          MAX310X_MODE2_FIFORST_BIT);
->         max310x_port_update(port, MAX310X_MODE2_REG,
->                             MAX310X_MODE2_FIFORST_BIT, 0);
->
-> @@ -1086,8 +1086,27 @@ static int max310x_startup(struct uart_port *port)
->         /* Clear IRQ status register */
->         max310x_port_read(port, MAX310X_IRQSTS_REG);
->
-> -       /* Enable RX, TX, CTS change interrupts */
-> -       val = MAX310X_IRQ_RXEMPTY_BIT | MAX310X_IRQ_TXEMPTY_BIT;
-> +       /*
-> +        * Let's ask for an interrupt after a timeout equivalent to
-> +        * the receiving time of 4 characters after the last character
-> +        * has been received.
-> +        */
-> +       max310x_port_write(port, MAX310X_RXTO_REG, 4);
-> +
-> +       /*
-> +        * Make sure we also get RX interrupts when the RX FIFO is
-> +        * filling up quickly, so get an interrupt when half of the RX
-> +        * FIFO has been filled in.
-> +        */
-> +       max310x_port_write(port, MAX310X_FIFOTRIGLVL_REG,
-> +                          MAX310X_FIFOTRIGLVL_RX(MAX310X_FIFO_SIZE / 2));
-> +
-> +       /* Enable RX timeout interrupt in LSR */
-> +       max310x_port_write(port, MAX310X_LSR_IRQEN_REG,
-> +                          MAX310X_LSR_RXTO_BIT);
-> +
-> +       /* Enable LSR, RX FIFO trigger, CTS change interrupts */
-> +       val = MAX310X_IRQ_LSR_BIT  | MAX310X_IRQ_RXFIFO_BIT | MAX310X_IRQ_TXEMPTY_BIT;
->         max310x_port_write(port, MAX310X_IRQEN_REG, val | MAX310X_IRQ_CTS_BIT);
->
->         return 0;
-> --
-> 2.26.2
->
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+Signed-off-by: Łukasz Stelmach <l.stelmach@samsung.com>
+---
+ drivers/spi/spi-s3c64xx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 89c162efe355..ea5a22dec53d 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -473,7 +473,8 @@ static int s3c64xx_wait_for_dma(struct s3c64xx_spi_driver_data *sdd,
+ 
+ 	/* millisecs to xfer 'len' bytes @ 'cur_speed' */
+ 	ms = xfer->len * 8 * 1000 / sdd->cur_speed;
+-	ms += 10; /* some tolerance */
++	ms += 30;               /* some tolerance */
++	ms = max(ms, 100);      /* minimum timeout */
+ 
+ 	val = msecs_to_jiffies(ms) + 10;
+ 	val = wait_for_completion_timeout(&sdd->xfer_completion, val);
 -- 
-With Best Regards,
-Andy Shevchenko
+2.26.2
+

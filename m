@@ -2,193 +2,88 @@ Return-Path: <SRS0=zioz=DI=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.7 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AA95FC47429
-	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 22:30:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 04AFCC4727E
+	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 22:48:28 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7D9A420739
-	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 22:30:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C81A520754
+	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 22:48:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1601592507;
+	bh=PzxAGyWkFMs9bDUO/DayB4OFoapt5wo8XOfBXkyWiEk=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
+	b=i1VcnUxloXSw/Gng8yjE/gAlJe8bPDxIw4/AHNME8LeZ2DelHxadhWGKnWKSjRFWS
+	 /m31t6u14zEuIXW2AvxY2rqrweLZCPuLi0len5G+fWbiJumThs3QrDB3Agru16PLKa
+	 7sYnm/NuM2UY2nDKiGeDtduTmR4a0kmmmaiTGZTU=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733192AbgJAW2z (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 1 Oct 2020 18:28:55 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:48116 "EHLO
-        mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733166AbgJAW2y (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 1 Oct 2020 18:28:54 -0400
-Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id A8FAF803202A;
-        Thu,  1 Oct 2020 22:28:48 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at baikalelectronics.ru
-Received: from mail.baikalelectronics.ru ([127.0.0.1])
-        by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id AbhrmywZxkgU; Fri,  2 Oct 2020 01:28:48 +0300 (MSK)
-From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
-To:     Mark Brown <broonie@kernel.org>
-CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
-        Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>,
-        Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Lars Povlsen <lars.povlsen@microchip.com>,
-        "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
-        Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3 07/21] spi: dw: Add DW SPI controller config structure
-Date:   Fri, 2 Oct 2020 01:28:15 +0300
-Message-ID: <20201001222829.15977-8-Sergey.Semin@baikalelectronics.ru>
-In-Reply-To: <20201001222829.15977-1-Sergey.Semin@baikalelectronics.ru>
-References: <20201001222829.15977-1-Sergey.Semin@baikalelectronics.ru>
+        id S1733281AbgJAWs1 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 1 Oct 2020 18:48:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56538 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726741AbgJAWs1 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 1 Oct 2020 18:48:27 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 729DF20754;
+        Thu,  1 Oct 2020 22:48:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601592506;
+        bh=PzxAGyWkFMs9bDUO/DayB4OFoapt5wo8XOfBXkyWiEk=;
+        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+        b=FiMCbxH+j2Mnmq5jaWra0qY6BOvCdl7pgCpSCxxg/zRoleH5STTfAkU8tBHN+Mqq6
+         u2PmZcxaMlwujLfOMhr/sqqhAiZg6p9mlp9l77a5cH82lSIIwQ5MXJLe7jIF+ZrBIP
+         IWi9qwE9dvQBUvpRVRwP8SB495qcMhuS0fskXeqc=
+Date:   Thu, 01 Oct 2020 23:47:27 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     linux-spi@vger.kernel.org, Thomas Kopp <thomas.kopp@microchip.com>
+Cc:     tudor.ambarus@microchip.com
+In-Reply-To: <20200921071036.2091-1-thomas.kopp@microchip.com>
+References: <20200921071036.2091-1-thomas.kopp@microchip.com>
+Subject: Re: [PATCH v2] spi: atmel: Exposing effective spi speed
+Message-Id: <160159244787.45030.969410843987771816.b4-ty@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-DW APB SSI controller can be used by the two SPI core interfaces:
-traditional SPI transfers and SPI memory operations. The controller needs
-to be accordingly configured at runtime when the corresponding operations
-are executed. In order to do that for the both interfaces from a single
-function we introduce a new data wrapper for the transfer mode, data
-width, number of data frames (for the automatic data transfer) and the bus
-frequency. It will be used by the update_config() method to tune the DW
-APB SSI up.
+On Mon, 21 Sep 2020 09:10:36 +0200, Thomas Kopp wrote:
+> This patch implements the reporting of the effectively used speed_hz for
+> the transfer by setting xfer->effective_speed_hz.
+> 
+> See the following patch, which adds this feature to the SPI core for more
+> information:
+> commit 5d7e2b5ed585 ("spi: core: allow reporting the effectivly used speed_hz for a transfer")
 
-The update_config() method is made exported to be used not only by the DW
-SPI core driver, but by the glue layer drivers too. This will be required
-in a coming further commit.
+Applied to
 
-Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
----
- drivers/spi/spi-dw-core.c | 29 +++++++++++++++++------------
- drivers/spi/spi-dw.h      | 10 ++++++++++
- 2 files changed, 27 insertions(+), 12 deletions(-)
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 87c8f0028a23..92c26b02269b 100644
---- a/drivers/spi/spi-dw-core.c
-+++ b/drivers/spi/spi-dw-core.c
-@@ -20,10 +20,8 @@
- #include <linux/debugfs.h>
- #endif
- 
--/* Slave spi_dev related */
-+/* Slave spi_device related */
- struct chip_data {
--	u8 tmode;		/* TR/TO/RO/EEPROM */
--
- 	u32 cr0;
- 	u32 rx_sample_dly;	/* RX sample delay */
- };
-@@ -266,8 +264,8 @@ static u32 dw_spi_get_cr0(struct dw_spi *dws, struct spi_device *spi)
- 	return cr0;
- }
- 
--static void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
--				 struct spi_transfer *transfer)
-+void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
-+			  struct dw_spi_cfg *cfg)
- {
- 	struct chip_data *chip = spi_get_ctldata(spi);
- 	u32 cr0 = chip->cr0;
-@@ -275,19 +273,22 @@ static void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
- 	u16 clk_div;
- 
- 	/* CTRLR0[ 4/3: 0] Data Frame Size */
--	cr0 |= (transfer->bits_per_word - 1);
-+	cr0 |= (cfg->dfs - 1);
- 
- 	if (!(dws->caps & DW_SPI_CAP_DWC_SSI))
- 		/* CTRLR0[ 9:8] Transfer Mode */
--		cr0 |= chip->tmode << SPI_TMOD_OFFSET;
-+		cr0 |= cfg->tmode << SPI_TMOD_OFFSET;
- 	else
- 		/* CTRLR0[11:10] Transfer Mode */
--		cr0 |= chip->tmode << DWC_SSI_CTRLR0_TMOD_OFFSET;
-+		cr0 |= cfg->tmode << DWC_SSI_CTRLR0_TMOD_OFFSET;
- 
- 	dw_writel(dws, DW_SPI_CTRLR0, cr0);
- 
-+	if (cfg->tmode == SPI_TMOD_EPROMREAD || cfg->tmode == SPI_TMOD_RO)
-+		dw_writel(dws, DW_SPI_CTRLR1, cfg->ndf ? cfg->ndf - 1 : 0);
-+
- 	/* Note DW APB SSI clock divider doesn't support odd numbers */
--	clk_div = (DIV_ROUND_UP(dws->max_freq, transfer->speed_hz) + 1) & 0xfffe;
-+	clk_div = (DIV_ROUND_UP(dws->max_freq, cfg->freq) + 1) & 0xfffe;
- 	speed_hz = dws->max_freq / clk_div;
- 
- 	if (dws->current_freq != speed_hz) {
-@@ -301,11 +302,17 @@ static void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
- 		dws->cur_rx_sample_dly = chip->rx_sample_dly;
- 	}
- }
-+EXPORT_SYMBOL_GPL(dw_spi_update_config);
- 
- static int dw_spi_transfer_one(struct spi_controller *master,
- 		struct spi_device *spi, struct spi_transfer *transfer)
- {
- 	struct dw_spi *dws = spi_controller_get_devdata(master);
-+	struct dw_spi_cfg cfg = {
-+		.tmode = SPI_TMOD_TR,
-+		.dfs = transfer->bits_per_word,
-+		.freq = transfer->speed_hz,
-+	};
- 	u8 imask = 0;
- 	u16 txlevel = 0;
- 	int ret;
-@@ -323,7 +330,7 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 
- 	spi_enable_chip(dws, 0);
- 
--	dw_spi_update_config(dws, spi, transfer);
-+	dw_spi_update_config(dws, spi, &cfg);
- 
- 	transfer->effective_speed_hz = dws->current_freq;
- 
-@@ -409,8 +416,6 @@ static int dw_spi_setup(struct spi_device *spi)
- 	 */
- 	chip->cr0 = dw_spi_get_cr0(dws, spi);
- 
--	chip->tmode = SPI_TMOD_TR;
--
- 	return 0;
- }
- 
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index c02351cf2f99..2a2346438564 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -111,6 +111,14 @@ enum dw_ssi_type {
- #define DW_SPI_CAP_KEEMBAY_MST		BIT(1)
- #define DW_SPI_CAP_DWC_SSI		BIT(2)
- 
-+/* Slave spi_transfer/spi_mem_op related */
-+struct dw_spi_cfg {
-+	u8 tmode;
-+	u8 dfs;
-+	u32 ndf;
-+	u32 freq;
-+};
-+
- struct dw_spi;
- struct dw_spi_dma_ops {
- 	int (*dma_init)(struct device *dev, struct dw_spi *dws);
-@@ -249,6 +257,8 @@ static inline void spi_shutdown_chip(struct dw_spi *dws)
- }
- 
- extern void dw_spi_set_cs(struct spi_device *spi, bool enable);
-+extern void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
-+				 struct dw_spi_cfg *cfg);
- extern int dw_spi_add_host(struct device *dev, struct dw_spi *dws);
- extern void dw_spi_remove_host(struct dw_spi *dws);
- extern int dw_spi_suspend_host(struct dw_spi *dws);
--- 
-2.27.0
+Thanks!
 
+[1/1] spi: atmel: Exposing effective spi speed
+      commit: 23f370c748580643d17b5e064478b89cba3fdc78
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

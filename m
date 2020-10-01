@@ -4,28 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.7 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 77495C4741F
-	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 22:29:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E34C9C47426
+	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 22:29:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 50B002074B
-	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 22:29:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B34FF20739
+	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 22:29:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387463AbgJAW3m (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 1 Oct 2020 18:29:42 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:48270 "EHLO
+        id S2387483AbgJAW3r (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 1 Oct 2020 18:29:47 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:48230 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733264AbgJAW3F (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 1 Oct 2020 18:29:05 -0400
+        with ESMTP id S1733257AbgJAW3D (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 1 Oct 2020 18:29:03 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id B40F1803202E;
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 3EDED803017C;
         Thu,  1 Oct 2020 22:28:59 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id hgug7Is7bY9B; Fri,  2 Oct 2020 01:28:59 +0300 (MSK)
+        with ESMTP id vgFlBJkOnak7; Fri,  2 Oct 2020 01:28:58 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
@@ -39,9 +39,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3 15/21] spi: dw: Move num-of retries parameter to the header file
-Date:   Fri, 2 Oct 2020 01:28:23 +0300
-Message-ID: <20201001222829.15977-16-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH v3 13/21] spi: dw: De-assert chip-select on reset
+Date:   Fri, 2 Oct 2020 01:28:21 +0300
+Message-ID: <20201001222829.15977-14-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20201001222829.15977-1-Sergey.Semin@baikalelectronics.ru>
 References: <20201001222829.15977-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,59 +52,42 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The parameter will be needed for another wait-done method being added in
-the framework of the SPI memory operation modification in a further
-commit.
+SPI memory operations implementation will require to have the CS register
+cleared before executing the operation in order not to have the
+transmission automatically started prior the Tx FIFO is pre-initialized.
+Let's clear the register then on explicit controller reset to fulfil the
+requirements in case of an error or having the CS left set by a bootloader
+or another software.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 ---
- drivers/spi/spi-dw-dma.c | 5 ++---
- drivers/spi/spi-dw.h     | 2 ++
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/spi/spi-dw.h | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-dw-dma.c b/drivers/spi/spi-dw-dma.c
-index bb390ff67d1d..9db119dc5554 100644
---- a/drivers/spi/spi-dw-dma.c
-+++ b/drivers/spi/spi-dw-dma.c
-@@ -17,7 +17,6 @@
- 
- #include "spi-dw.h"
- 
--#define WAIT_RETRIES	5
- #define RX_BUSY		0
- #define RX_BURST_LEVEL	16
- #define TX_BUSY		1
-@@ -208,7 +207,7 @@ static inline bool dw_spi_dma_tx_busy(struct dw_spi *dws)
- static int dw_spi_dma_wait_tx_done(struct dw_spi *dws,
- 				   struct spi_transfer *xfer)
- {
--	int retry = WAIT_RETRIES;
-+	int retry = SPI_WAIT_RETRIES;
- 	struct spi_delay delay;
- 	u32 nents;
- 
-@@ -283,7 +282,7 @@ static inline bool dw_spi_dma_rx_busy(struct dw_spi *dws)
- 
- static int dw_spi_dma_wait_rx_done(struct dw_spi *dws)
- {
--	int retry = WAIT_RETRIES;
-+	int retry = SPI_WAIT_RETRIES;
- 	struct spi_delay delay;
- 	unsigned long ns, us;
- 	u32 nents;
 diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index eb1d46983319..946065201c9c 100644
+index cfc9f63acde4..eb1d46983319 100644
 --- a/drivers/spi/spi-dw.h
 +++ b/drivers/spi/spi-dw.h
-@@ -100,6 +100,8 @@
- #define SPI_DMA_RDMAE			(1 << 0)
- #define SPI_DMA_TDMAE			(1 << 1)
+@@ -237,15 +237,16 @@ static inline void spi_umask_intr(struct dw_spi *dws, u32 mask)
+ }
  
-+#define SPI_WAIT_RETRIES		5
-+
- enum dw_ssi_type {
- 	SSI_MOTO_SPI = 0,
- 	SSI_TI_SSP,
+ /*
+- * This disables the SPI controller, interrupts, clears the interrupts status,
+- * and re-enable the controller back. Transmit and receive FIFO buffers are
+- * cleared when the device is disabled.
++ * This disables the SPI controller, interrupts, clears the interrupts status
++ * and CS, then re-enables the controller back. Transmit and receive FIFO
++ * buffers are cleared when the device is disabled.
+  */
+ static inline void spi_reset_chip(struct dw_spi *dws)
+ {
+ 	spi_enable_chip(dws, 0);
+ 	spi_mask_intr(dws, 0xff);
+ 	dw_readl(dws, DW_SPI_ICR);
++	dw_writel(dws, DW_SPI_SER, 0);
+ 	spi_enable_chip(dws, 1);
+ }
+ 
 -- 
 2.27.0
 

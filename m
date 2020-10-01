@@ -7,25 +7,25 @@ X-Spam-Status: No, score=-9.7 required=3.0 tests=BAYES_00,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D0B54C4727F
-	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 22:30:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 120A4C4741F
+	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 22:30:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9BBDA20739
+	by mail.kernel.org (Postfix) with ESMTP id D44FA2074B
 	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 22:30:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733230AbgJAW25 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 1 Oct 2020 18:28:57 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:48078 "EHLO
+        id S1733224AbgJAW24 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 1 Oct 2020 18:28:56 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:48130 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733153AbgJAW2w (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 1 Oct 2020 18:28:52 -0400
+        with ESMTP id S1733168AbgJAW2z (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 1 Oct 2020 18:28:55 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id CD4F48030171;
-        Thu,  1 Oct 2020 22:28:47 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id E606C803017E;
+        Thu,  1 Oct 2020 22:28:48 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id NpKLLKgQfoTF; Fri,  2 Oct 2020 01:28:47 +0300 (MSK)
+        with ESMTP id Hzdckj9pGzWe; Fri,  2 Oct 2020 01:28:48 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
@@ -39,9 +39,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3 04/21] spi: dw: Update SPI bus speed in a config function
-Date:   Fri, 2 Oct 2020 01:28:12 +0300
-Message-ID: <20201001222829.15977-5-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH v3 08/21] spi: dw: Refactor data IO procedure
+Date:   Fri, 2 Oct 2020 01:28:16 +0300
+Message-ID: <20201001222829.15977-9-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20201001222829.15977-1-Sergey.Semin@baikalelectronics.ru>
 References: <20201001222829.15977-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,76 +52,148 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The SPI bus speed update functionality will be useful in another parts of
-the driver too (like to implement the SPI memory operations and from the
-DW SPI glue layers). Let's move it to the update_cr0() method then and
-since the later is now updating not only the CTRLR0 register alter its
-prototype to have a generic function name not related to CR0.
-
-Leave the too long line with the chip->clk_div setting as is for now,
-since it's going to be changed later anyway.
+The Tx and Rx data write/read procedure can be significantly simplified by
+using Tx/Rx transfer lengths instead of the end pointers. By having the
+Tx/Rx data leftover lengths (in the number of transfer words) we can get
+rid of all subtraction and division operations utilized here and there in
+the tx_max(), rx_max(), dw_writer() and dw_reader() methods. Such
+modification will not only give us the more optimized IO procedures, but
+will make the data IO methods much more readable than before.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 ---
- drivers/spi/spi-dw-core.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ drivers/spi/spi-dw-core.c | 37 +++++++++++++++++--------------------
+ drivers/spi/spi-dw.h      |  5 ++---
+ 2 files changed, 19 insertions(+), 23 deletions(-)
 
 diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 6b89330708bc..77dfd6681f0c 100644
+index 92c26b02269b..4baf72b121c2 100644
 --- a/drivers/spi/spi-dw-core.c
 +++ b/drivers/spi/spi-dw-core.c
-@@ -269,8 +269,8 @@ static u32 dw_spi_get_cr0(struct dw_spi *dws, struct spi_device *spi)
- 	return cr0;
- }
- 
--static void dw_spi_update_cr0(struct dw_spi *dws, struct spi_device *spi,
--			      struct spi_transfer *transfer)
-+static void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
-+				 struct spi_transfer *transfer)
+@@ -108,9 +108,8 @@ EXPORT_SYMBOL_GPL(dw_spi_set_cs);
+ /* Return the max entries we can fill into tx fifo */
+ static inline u32 tx_max(struct dw_spi *dws)
  {
- 	struct chip_data *chip = spi_get_ctldata(spi);
- 	u32 cr0 = chip->cr0;
-@@ -286,6 +286,17 @@ static void dw_spi_update_cr0(struct dw_spi *dws, struct spi_device *spi,
- 		cr0 |= chip->tmode << DWC_SSI_CTRLR0_TMOD_OFFSET;
+-	u32 tx_left, tx_room, rxtx_gap;
++	u32 tx_room, rxtx_gap;
  
- 	dw_writel(dws, DW_SPI_CTRLR0, cr0);
-+
-+	/* Handle per transfer options for bpw and speed */
-+	if (transfer->speed_hz != dws->current_freq) {
-+		if (transfer->speed_hz != chip->speed_hz) {
-+			/* clk_div doesn't support odd number */
-+			chip->clk_div = (DIV_ROUND_UP(dws->max_freq, transfer->speed_hz) + 1) & 0xfffe;
-+			chip->speed_hz = transfer->speed_hz;
-+		}
-+		dws->current_freq = transfer->speed_hz;
-+		spi_set_clk(dws, chip->clk_div);
-+	}
+-	tx_left = (dws->tx_end - dws->tx) / dws->n_bytes;
+ 	tx_room = dws->fifo_len - dw_readl(dws, DW_SPI_TXFLR);
+ 
+ 	/*
+@@ -121,18 +120,15 @@ static inline u32 tx_max(struct dw_spi *dws)
+ 	 * shift registers. So a control from sw point of
+ 	 * view is taken.
+ 	 */
+-	rxtx_gap =  ((dws->rx_end - dws->rx) - (dws->tx_end - dws->tx))
+-			/ dws->n_bytes;
++	rxtx_gap = dws->fifo_len - (dws->rx_len - dws->tx_len);
+ 
+-	return min3(tx_left, tx_room, (u32) (dws->fifo_len - rxtx_gap));
++	return min3((u32)dws->tx_len, tx_room, rxtx_gap);
  }
  
- static int dw_spi_transfer_one(struct spi_controller *master,
-@@ -310,21 +321,10 @@ static int dw_spi_transfer_one(struct spi_controller *master,
+ /* Return the max entries we should read out of rx fifo */
+ static inline u32 rx_max(struct dw_spi *dws)
+ {
+-	u32 rx_left = (dws->rx_end - dws->rx) / dws->n_bytes;
+-
+-	return min_t(u32, rx_left, dw_readl(dws, DW_SPI_RXFLR));
++	return min_t(u32, dws->rx_len, dw_readl(dws, DW_SPI_RXFLR));
+ }
+ 
+ static void dw_writer(struct dw_spi *dws)
+@@ -141,15 +137,16 @@ static void dw_writer(struct dw_spi *dws)
+ 	u16 txw = 0;
+ 
+ 	while (max--) {
+-		/* Set the tx word if the transfer's original "tx" is not null */
+-		if (dws->tx_end - dws->len) {
++		if (dws->tx) {
+ 			if (dws->n_bytes == 1)
+ 				txw = *(u8 *)(dws->tx);
+ 			else
+ 				txw = *(u16 *)(dws->tx);
++
++			dws->tx += dws->n_bytes;
+ 		}
+ 		dw_write_io_reg(dws, DW_SPI_DR, txw);
+-		dws->tx += dws->n_bytes;
++		--dws->tx_len;
+ 	}
+ }
+ 
+@@ -160,14 +157,15 @@ static void dw_reader(struct dw_spi *dws)
+ 
+ 	while (max--) {
+ 		rxw = dw_read_io_reg(dws, DW_SPI_DR);
+-		/* Care rx only if the transfer's original "rx" is not null */
+-		if (dws->rx_end - dws->len) {
++		if (dws->rx) {
+ 			if (dws->n_bytes == 1)
+ 				*(u8 *)(dws->rx) = rxw;
+ 			else
+ 				*(u16 *)(dws->rx) = rxw;
++
++			dws->rx += dws->n_bytes;
+ 		}
+-		dws->rx += dws->n_bytes;
++		--dws->rx_len;
+ 	}
+ }
+ 
+@@ -192,7 +190,7 @@ static irqreturn_t interrupt_transfer(struct dw_spi *dws)
+ 	}
+ 
+ 	dw_reader(dws);
+-	if (dws->rx_end == dws->rx) {
++	if (!dws->rx_len) {
+ 		spi_mask_intr(dws, 0xff);
+ 		spi_finalize_current_transfer(dws->master);
+ 		return IRQ_HANDLED;
+@@ -320,12 +318,11 @@ static int dw_spi_transfer_one(struct spi_controller *master,
+ 	dws->dma_mapped = 0;
+ 	dws->n_bytes = DIV_ROUND_UP(transfer->bits_per_word, BITS_PER_BYTE);
+ 	dws->tx = (void *)transfer->tx_buf;
+-	dws->tx_end = dws->tx + transfer->len;
++	dws->tx_len = transfer->len / dws->n_bytes;
+ 	dws->rx = transfer->rx_buf;
+-	dws->rx_end = dws->rx + transfer->len;
+-	dws->len = transfer->len;
++	dws->rx_len = dws->tx_len;
+ 
+-	/* Ensure dw->rx and dw->rx_end are visible */
++	/* Ensure the data above is visible for all CPUs */
+ 	smp_mb();
  
  	spi_enable_chip(dws, 0);
+@@ -352,7 +349,7 @@ static int dw_spi_transfer_one(struct spi_controller *master,
+ 			return ret;
+ 		}
+ 	} else {
+-		txlevel = min_t(u16, dws->fifo_len / 2, dws->len / dws->n_bytes);
++		txlevel = min_t(u16, dws->fifo_len / 2, dws->tx_len);
+ 		dw_writel(dws, DW_SPI_TXFTLR, txlevel);
  
--	/* Handle per transfer options for bpw and speed */
--	if (transfer->speed_hz != dws->current_freq) {
--		if (transfer->speed_hz != chip->speed_hz) {
--			/* clk_div doesn't support odd number */
--			chip->clk_div = (DIV_ROUND_UP(dws->max_freq, transfer->speed_hz) + 1) & 0xfffe;
--			chip->speed_hz = transfer->speed_hz;
--		}
--		dws->current_freq = transfer->speed_hz;
--		spi_set_clk(dws, chip->clk_div);
--	}
-+	dw_spi_update_config(dws, spi, transfer);
+ 		/* Set the interrupt mask */
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 2a2346438564..cfc9f63acde4 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -147,11 +147,10 @@ struct dw_spi {
+ 	void (*set_cs)(struct spi_device *spi, bool enable);
  
- 	transfer->effective_speed_hz = dws->max_freq / chip->clk_div;
- 
--	dw_spi_update_cr0(dws, spi, transfer);
--
- 	/* Check if current transfer is a DMA transaction */
- 	if (master->can_dma && master->can_dma(master, spi, transfer))
- 		dws->dma_mapped = master->cur_msg_mapped;
+ 	/* Current message transfer state info */
+-	size_t			len;
+ 	void			*tx;
+-	void			*tx_end;
++	unsigned int		tx_len;
+ 	void			*rx;
+-	void			*rx_end;
++	unsigned int		rx_len;
+ 	int			dma_mapped;
+ 	u8			n_bytes;	/* current is a 1/2 bytes op */
+ 	irqreturn_t		(*transfer_handler)(struct dw_spi *dws);
 -- 
 2.27.0
 

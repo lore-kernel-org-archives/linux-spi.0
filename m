@@ -4,28 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.7 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E34C9C47426
-	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 22:29:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0BA5C47427
+	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 22:29:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B34FF20739
-	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 22:29:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A02D520739
+	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 22:29:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387483AbgJAW3r (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S2387492AbgJAW3r (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Thu, 1 Oct 2020 18:29:47 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:48230 "EHLO
+Received: from mail.baikalelectronics.com ([87.245.175.226]:48060 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733257AbgJAW3D (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 1 Oct 2020 18:29:03 -0400
+        with ESMTP id S1733252AbgJAW3A (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 1 Oct 2020 18:29:00 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 3EDED803017C;
-        Thu,  1 Oct 2020 22:28:59 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id BA6FE803016F;
+        Thu,  1 Oct 2020 22:28:58 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id vgFlBJkOnak7; Fri,  2 Oct 2020 01:28:58 +0300 (MSK)
+        with ESMTP id vkZ_7K5wNWIH; Fri,  2 Oct 2020 01:28:53 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
@@ -39,9 +39,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3 13/21] spi: dw: De-assert chip-select on reset
-Date:   Fri, 2 Oct 2020 01:28:21 +0300
-Message-ID: <20201001222829.15977-14-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH v3 11/21] spi: dw: Unmask IRQs after enabling the chip
+Date:   Fri, 2 Oct 2020 01:28:19 +0300
+Message-ID: <20201001222829.15977-12-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20201001222829.15977-1-Sergey.Semin@baikalelectronics.ru>
 References: <20201001222829.15977-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,40 +52,38 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-SPI memory operations implementation will require to have the CS register
-cleared before executing the operation in order not to have the
-transmission automatically started prior the Tx FIFO is pre-initialized.
-Let's clear the register then on explicit controller reset to fulfil the
-requirements in case of an error or having the CS left set by a bootloader
-or another software.
+It's theoretically erroneous to enable IRQ before the chip is turned on.
+If IRQ handler gets executed before the chip is enabled, then any data
+written to the Tx FIFO will be just ignored.
+
+I say "theoretically" because we haven't noticed any problem with that,
+but let's fix it anyway just in case...
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 ---
- drivers/spi/spi-dw.h | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/spi/spi-dw-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index cfc9f63acde4..eb1d46983319 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -237,15 +237,16 @@ static inline void spi_umask_intr(struct dw_spi *dws, u32 mask)
- }
+diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
+index db3fec4195f7..58a7c7465c61 100644
+--- a/drivers/spi/spi-dw-core.c
++++ b/drivers/spi/spi-dw-core.c
+@@ -376,8 +376,6 @@ static int dw_spi_transfer_one(struct spi_controller *master,
+ 			spi_enable_chip(dws, 1);
+ 			return ret;
+ 		}
+-	} else {
+-		dw_spi_irq_setup(dws);
+ 	}
  
- /*
-- * This disables the SPI controller, interrupts, clears the interrupts status,
-- * and re-enable the controller back. Transmit and receive FIFO buffers are
-- * cleared when the device is disabled.
-+ * This disables the SPI controller, interrupts, clears the interrupts status
-+ * and CS, then re-enables the controller back. Transmit and receive FIFO
-+ * buffers are cleared when the device is disabled.
-  */
- static inline void spi_reset_chip(struct dw_spi *dws)
- {
- 	spi_enable_chip(dws, 0);
- 	spi_mask_intr(dws, 0xff);
- 	dw_readl(dws, DW_SPI_ICR);
-+	dw_writel(dws, DW_SPI_SER, 0);
  	spi_enable_chip(dws, 1);
+@@ -385,6 +383,8 @@ static int dw_spi_transfer_one(struct spi_controller *master,
+ 	if (dws->dma_mapped)
+ 		return dws->dma_ops->dma_transfer(dws, transfer);
+ 
++	dw_spi_irq_setup(dws);
++
+ 	return 1;
  }
  
 -- 

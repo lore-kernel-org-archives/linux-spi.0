@@ -7,25 +7,25 @@ X-Spam-Status: No, score=-9.7 required=3.0 tests=BAYES_00,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 645A3C4741F
-	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 22:30:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 25142C4741F
+	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 22:30:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2B7BE20739
-	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 22:30:00 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id EA75A20796
+	for <linux-spi@archiver.kernel.org>; Thu,  1 Oct 2020 22:30:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387487AbgJAW3r (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 1 Oct 2020 18:29:47 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:48212 "EHLO
+        id S2387476AbgJAW3q (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 1 Oct 2020 18:29:46 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:48242 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733256AbgJAW3B (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 1 Oct 2020 18:29:01 -0400
+        with ESMTP id S1733258AbgJAW3D (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 1 Oct 2020 18:29:03 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id C2FFE8030171;
-        Thu,  1 Oct 2020 22:28:58 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 43D92803086A;
+        Thu,  1 Oct 2020 22:28:59 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id dWJcxKSlgoYG; Fri,  2 Oct 2020 01:28:53 +0300 (MSK)
+        with ESMTP id Mf0Lyd3Bxl2C; Fri,  2 Oct 2020 01:28:58 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
@@ -39,9 +39,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3 12/21] spi: dw: Discard chip enabling on DMA setup error
-Date:   Fri, 2 Oct 2020 01:28:20 +0300
-Message-ID: <20201001222829.15977-13-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH v3 14/21] spi: dw: Explicitly de-assert CS on SPI transfer completion
+Date:   Fri, 2 Oct 2020 01:28:22 +0300
+Message-ID: <20201001222829.15977-15-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20201001222829.15977-1-Sergey.Semin@baikalelectronics.ru>
 References: <20201001222829.15977-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,35 +52,32 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-It's pointless to enable the chip back if the DMA setup procedure fails,
-since we'll disable it on the next transfer anyway. For the same reason We
-don't do that in case of a failure detected in any other methods called
-from the transfer_one() method.
-
-While at it consider any non-zero value returned from the dma_setup
-callback to be erroneous as it's supposed to be in the kernel.
+By design of the currently available native set_cs callback, the CS
+de-assertion will be done only if it's required by the corresponding
+controller capability. But in order to pre-fill the Tx FIFO buffer with
+data during the SPI memory ops execution the SER register needs to be left
+cleared before that. We'll also need a way to explicitly set and clear the
+corresponding CS bit at a certain moment of the operation. Let's alter
+the set_cs function then to also de-activate the CS, when it's required.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 ---
- drivers/spi/spi-dw-core.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/spi/spi-dw-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 58a7c7465c61..fca929280aab 100644
+index fca929280aab..a6f86314567f 100644
 --- a/drivers/spi/spi-dw-core.c
 +++ b/drivers/spi/spi-dw-core.c
-@@ -372,10 +372,8 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 
- 	if (dws->dma_mapped) {
- 		ret = dws->dma_ops->dma_setup(dws, transfer);
--		if (ret < 0) {
--			spi_enable_chip(dws, 1);
-+		if (ret)
- 			return ret;
--		}
- 	}
- 
- 	spi_enable_chip(dws, 1);
+@@ -100,7 +100,7 @@ void dw_spi_set_cs(struct spi_device *spi, bool enable)
+ 	 */
+ 	if (cs_high == enable)
+ 		dw_writel(dws, DW_SPI_SER, BIT(spi->chip_select));
+-	else if (dws->caps & DW_SPI_CAP_CS_OVERRIDE)
++	else
+ 		dw_writel(dws, DW_SPI_SER, 0);
+ }
+ EXPORT_SYMBOL_GPL(dw_spi_set_cs);
 -- 
 2.27.0
 

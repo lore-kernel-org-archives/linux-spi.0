@@ -2,148 +2,99 @@ Return-Path: <SRS0=HLrb=DJ=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+X-Spam-Status: No, score=-7.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 451BDC4727D
-	for <linux-spi@archiver.kernel.org>; Fri,  2 Oct 2020 12:23:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 894F6C4727D
+	for <linux-spi@archiver.kernel.org>; Fri,  2 Oct 2020 12:32:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0ABF6206DB
-	for <linux-spi@archiver.kernel.org>; Fri,  2 Oct 2020 12:23:47 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="dPO4j5o9"
+	by mail.kernel.org (Postfix) with ESMTP id 4F46C2137B
+	for <linux-spi@archiver.kernel.org>; Fri,  2 Oct 2020 12:32:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1601641921;
+	bh=DjB3lJ5elsAGKLAg+aUvxF4JFE/JZNPDkxVAMkFNT9Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=kNwvLsEPNhhGkFFJI0Ni0YPIgKGUNymnIUuRAu85/JD+vnTUts4NRB9YRFradRY+d
+	 LeD/mF9BYdsu0AOjjlhpv1ZvrtxCABNQkXf/3X7x+ZXAppdhrjccCeMRwc1Su/ZeK5
+	 wx5GrfQI0mHd3pQKmfVCfGaSFuPF6YFRgrQeo9Fk=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387875AbgJBMXa (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 2 Oct 2020 08:23:30 -0400
-Received: from mailout2.w1.samsung.com ([210.118.77.12]:54082 "EHLO
-        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387877AbgJBMWy (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 2 Oct 2020 08:22:54 -0400
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20201002122252euoutp02bfb12a3b5ad61933c321c793db59841a~6LFeoxa6V2196421964euoutp02D
-        for <linux-spi@vger.kernel.org>; Fri,  2 Oct 2020 12:22:52 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20201002122252euoutp02bfb12a3b5ad61933c321c793db59841a~6LFeoxa6V2196421964euoutp02D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1601641372;
-        bh=BzRv9HJb8VaLbApMv1Dmlo0K8h3v8k5w87oec/cJk9M=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dPO4j5o9SFiQprSJdfF58XgVs9rs/lCgUrNbO7ICqV3pmZJ0Isa98jLJ6vIwa+UmN
-         uUEkDOecMWXfWeTooRDRiyAi4YKwBMeoUPa+8P4ESGdusxuaImqqVSBNQcTXodyGFR
-         PY68KskNStTl54B1iERgXTDMKYzfJy6gE7tgw+Bc=
-Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20201002122252eucas1p169c62e7c624d05c762f87f313c14a01f~6LFeOOIb70997709977eucas1p18;
-        Fri,  2 Oct 2020 12:22:52 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges1new.samsung.com (EUCPMTA) with SMTP id B0.42.06456.B9B177F5; Fri,  2
-        Oct 2020 13:22:51 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20201002122251eucas1p26b59b6a574f78200d0c696dd1aacc140~6LFd0O4c92501625016eucas1p2F;
-        Fri,  2 Oct 2020 12:22:51 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20201002122251eusmtrp1bfc3344390f81445ef703a373e56d285~6LFdxH3iZ1383613836eusmtrp11;
-        Fri,  2 Oct 2020 12:22:51 +0000 (GMT)
-X-AuditID: cbfec7f2-809ff70000001938-90-5f771b9bc201
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id 8D.BD.06314.B9B177F5; Fri,  2
-        Oct 2020 13:22:51 +0100 (BST)
-Received: from localhost (unknown [106.120.51.46]) by eusmtip2.samsung.com
-        (KnoxPortal) with ESMTPA id
-        20201002122251eusmtip20501592c6d9078c27423915482d550d8~6LFdoAdtN1143811438eusmtip2Q;
-        Fri,  2 Oct 2020 12:22:51 +0000 (GMT)
-From:   =?UTF-8?q?=C5=81ukasz=20Stelmach?= <l.stelmach@samsung.com>
-To:     Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Tomasz Figa <tomasz.figa@gmail.com>,
+        id S2387877AbgJBMcA convert rfc822-to-8bit (ORCPT
+        <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 2 Oct 2020 08:32:00 -0400
+Received: from mail-ej1-f66.google.com ([209.85.218.66]:38847 "EHLO
+        mail-ej1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726017AbgJBMb7 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 2 Oct 2020 08:31:59 -0400
+Received: by mail-ej1-f66.google.com with SMTP id ce10so1725670ejc.5;
+        Fri, 02 Oct 2020 05:31:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=ruty7DVy+OZPgSY4H/PWNx+35iqlcL+AUfsjOvXskTs=;
+        b=bCidhWP34d7hMNiuycxC4287P50KNdhUGOpcSVSh8X3Y17my6Oqo2/kyG8WjruGyrF
+         Lm+TXvzaCphpGV1DF9R1x66vNB9h67zBPB+RB72Sr3KNTFL8KvWL5sOu2nJE79BqFB05
+         gBpW0Hm9nR7q3UQuNH0+XSq7wdjpdIVDORyZ2soCYm0dYePfFWHCUrpTOtdPit6kewjB
+         e0LwG9wUrxzlFeas9mnMOG9GKsD7JOQx9F8pbaoqrKD1gFffSfYFC98oahTvyT8bGkxh
+         msaBQ5pS8RB9RD+5goykYKZqcoPyKMv8m8HeIutN9co3STxYosnwmsOK5G5FHabXl6vC
+         OPYA==
+X-Gm-Message-State: AOAM533mqHZKRCTMcghRzpGgTAvAN9+sYGYXA0CRTVxhFL08lF+I95JX
+        s9zTmRslrvUAzoJ9paSUWLk7xH3Vd+Q=
+X-Google-Smtp-Source: ABdhPJyhM3dwv7SEyAI4chEDpCbHJ/cxuWy1xtuG8hiRd28Nc8mdupnHvxGqdM5WftW4lVi38BAeFQ==
+X-Received: by 2002:a17:906:37c6:: with SMTP id o6mr2118364ejc.404.1601641917025;
+        Fri, 02 Oct 2020 05:31:57 -0700 (PDT)
+Received: from pi3 ([194.230.155.194])
+        by smtp.googlemail.com with ESMTPSA id a22sm1039191ejt.65.2020.10.02.05.31.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Oct 2020 05:31:55 -0700 (PDT)
+Date:   Fri, 2 Oct 2020 14:31:53 +0200
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     =?utf-8?Q?=C5=81ukasz?= Stelmach <l.stelmach@samsung.com>
+Cc:     Kukjin Kim <kgene@kernel.org>, Tomasz Figa <tomasz.figa@gmail.com>,
         Andi Shyti <andi@etezian.org>, Mark Brown <broonie@kernel.org>,
         linux-spi@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc:     Marek Szyprowski <m.szyprowski@samsung.com>,
-        =?UTF-8?q?Bart=C5=82omiej=20=C5=BBo=C5=82nierkiewicz?= 
-        <b.zolnierkie@samsung.com>,
-        =?UTF-8?q?=C5=81ukasz=20Stelmach?= <l.stelmach@samsung.com>
-Subject: [PATCH v3 1/9] spi: spi-s3c64xx: swap s3c64xx_spi_set_cs() and
- s3c64xx_enable_datapath()
-Date:   Fri,  2 Oct 2020 14:22:35 +0200
-Message-Id: <20201002122243.26849-2-l.stelmach@samsung.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20201002122243.26849-1-l.stelmach@samsung.com>
-MIME-Version: 1.0
-Organization: Samsung R&D Institute Poland
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SfSzUcRzH+97v7vf73eX0c5TPsGxXRiYy0m+dWay2s7ZW81+tuPgN5bA7
-        j63mIcvDiBjpaDURs4Sj81Sqy0OXcaN5KrYa5rElh2Qodz+W/16f7/v9/jxsXxITtfFsyPDI
-        GEYRKYsQ4wKuputP3/ES2/jAEyOGU/SztWkOXV9cy6MLv0/idO7EPEbr9XUEPaqtQrR6YohH
-        f24txelifTuHTvk1StA1HeMEXd26gc6YSYfLlzBpi2qckKqrM3FpQ3mS9H5jNZIa1Icv4pcF
-        3iFMRHgco3DzCRKETfZGRE8RCWkLQ7xk9AbPQnwSKE/IKE3hZCEBKaKqECxOjCK2WEaw2rmx
-        oxgQ6Ob7OLuRwcIMnpFFVCWClUxr1jSNYKzrp0nAKV/IrfjIMwpWVBMHHhj0XGOBUZ0IGr4N
-        co0uSyoYphZGTcylHKBdM0gYWUhJ4PHqh50N7SG9ssnEfMobdGUanPVYgO7RpCl7gHKGF6nD
-        Jsa2/XdflWDGYUB9IWA4bZrHNjoLm1tdiGVLmOtuJFi2g56C7O0wuc1JUJDvxWazEWhK17is
-        RwJjfeu40YNRx6C21Y199oW3/YsYGzWHkR8W7ArmkK95uPMshIx7ItZ9FF7mvt5paAM5c1Uo
-        D4lVe45R7TlA9X/WU4RVI2smVikPZZTukUy8q1ImV8ZGhroGR8nVaPtL9Wx1LzWjlYHrWkSR
-        SGwmDNPGBop4sjhlolyLgMTEVkK/3p5rImGILPEWo4gKVMRGMEotsiW5YmuhR9nsVREVKoth
-        bjJMNKPYVTkk3yYZXVq3H/ztoOPY1wfchiCv8P5l/o1zG2NDnoUDHRfy7Tclqe80FlPZHF16
-        Y2+2ZdFzt+Hmg0U9S5IAqTnusvrYazbEx/+K7WZAXkVf/IxHh4HABKF2uOr9X8dP5+MmT+4f
-        kTglNNc5S7wPtTj6tbkMlPrXfL1zpMnn9L70J7kzOU5irjJM5u6MKZSyf7ikiz9OAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrNIsWRmVeSWpSXmKPExsVy+t/xe7qzpcvjDSaeUbBY/OM5k8XGGetZ
-        LaY+fMJm0f/4NbPF+fMb2C1uHlrBaLHp8TVWi8u75rBZzDi/j8mi8eNNdou1R+6yW6za9YfR
-        gcfj+pJPzB47Z91l99i0qpPNY/OSeo++LasYPT5vkgtgi9KzKcovLUlVyMgvLrFVija0MNIz
-        tLTQMzKx1DM0No+1MjJV0rezSUnNySxLLdK3S9DLeHI2p+Ape0XLm2usDYx72boYOTkkBEwk
-        rk7tYO1i5OIQEljKKHF95VkghwMoISWxcm46RI2wxJ9rXWD1QgJPGSVudZSD2GwCjhL9S0+A
-        9YoI7GeSuHThPguIwyxwmFHi8rp1TCBVwgKJEo+//AGzWQRUJfZtu8oOYvMKWEvM/XYY6gp5
-        ifbl28FsTgEbiZOLtkFts5Zo/TiXFaJeUOLkzCcsIMcxC6hLrJ8nBBLmF9CSWNN0nQXEZgYa
-        07x1NvMERqFZSDpmIXTMQlK1gJF5FaNIamlxbnpusaFecWJucWleul5yfu4mRmBEbjv2c/MO
-        xksbgw8xCnAwKvHwChwojRdiTSwrrsw9xCjBwawkwut09nScEG9KYmVValF+fFFpTmrxIUZT
-        oDcnMkuJJucDk0VeSbyhqaG5haWhubG5sZmFkjhvh8DBGCGB9MSS1OzU1ILUIpg+Jg5OqQZG
-        7oNNc+cb+pyfEXbe5OUKtqg0u2qlS3r3U6+xLl6yaFr4Dq/yb4dMO7e8PXfpI88Z+2Vtr/Oq
-        Q18YLllRvifxjMr3DRL3WM9NjDp529tCMerAud3yFr4/qr7MOnGzNHf/FF2vDqOzeTsmsucs
-        bTvV++tsW4wB4zSJtUKtSq5lT5yv+omsnhD2UImlOCPRUIu5qDgRAL7qImTeAgAA
-X-CMS-MailID: 20201002122251eucas1p26b59b6a574f78200d0c696dd1aacc140
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20201002122251eucas1p26b59b6a574f78200d0c696dd1aacc140
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20201002122251eucas1p26b59b6a574f78200d0c696dd1aacc140
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        =?utf-8?Q?Bart=C5=82omiej_=C5=BBo=C5=82nierkiewicz?= 
+        <b.zolnierkie@samsung.com>
+Subject: Re: [PATCH v3 7/9] spi: spi-s3c64xx: Ensure cur_speed holds actual
+ clock value
+Message-ID: <20201002123153.GA7463@pi3>
 References: <20201002122243.26849-1-l.stelmach@samsung.com>
-        <CGME20201002122251eucas1p26b59b6a574f78200d0c696dd1aacc140@eucas1p2.samsung.com>
+ <CGME20201002122255eucas1p21976a8ba0566564b79a9dd6f62cd4caf@eucas1p2.samsung.com>
+ <20201002122243.26849-8-l.stelmach@samsung.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8BIT
+In-Reply-To: <20201002122243.26849-8-l.stelmach@samsung.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Fix issues with DMA transfers bigger than 512 bytes on Exynos3250. Without
-the patches such transfers fail to complete. This solution to the problem
-is found in the vendor kernel for ARTIK5 boards based on Exynos3250.
+On Fri, Oct 02, 2020 at 02:22:41PM +0200, Łukasz Stelmach wrote:
+> Make sure the cur_speed value used in s3c64xx_enable_datapath()
+> to configure DMA channel and in s3c64xx_wait_for_*() to calculate the
+> transfer timeout is set to the actual value of (half) the clock speed.
+> 
+> Don't change non-CMU case, because no frequency calculation errors have
+> been reported.
+> 
+> Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+> Suggested-by: Tomasz Figa <tomasz.figa@gmail.com>
+> Signed-off-by: Łukasz Stelmach <l.stelmach@samsung.com>
 
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-Signed-off-by: Łukasz Stelmach <l.stelmach@samsung.com>
----
- drivers/spi/spi-s3c64xx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+For the future, tags are added in chronological order, so first is
+suggested (as someone suggested to make a patch), then your SoB (as you
+wrote it) and then my review (because you had to write a patch before I
+could review).
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 924b24441789..26c7cb79cd78 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -685,11 +685,11 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
- 		sdd->state &= ~RXBUSY;
- 		sdd->state &= ~TXBUSY;
- 
--		s3c64xx_enable_datapath(sdd, xfer, use_dma);
--
- 		/* Start the signals */
- 		s3c64xx_spi_set_cs(spi, true);
- 
-+		s3c64xx_enable_datapath(sdd, xfer, use_dma);
-+
- 		spin_unlock_irqrestore(&sdd->lock, flags);
- 
- 		if (use_dma)
--- 
-2.26.2
+All other patches here have these mixed up. No need to resend, but keep
+it in mind for the future.
+
+Best regards,
+Krzysztof
 

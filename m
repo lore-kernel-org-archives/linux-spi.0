@@ -2,68 +2,34 @@ Return-Path: <SRS0=HLrb=DJ=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.7 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 48859C4363D
-	for <linux-spi@archiver.kernel.org>; Fri,  2 Oct 2020 18:26:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3FE23C46466
+	for <linux-spi@archiver.kernel.org>; Fri,  2 Oct 2020 19:46:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id F359F20758
-	for <linux-spi@archiver.kernel.org>; Fri,  2 Oct 2020 18:26:46 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nVvcACzw"
+	by mail.kernel.org (Postfix) with ESMTP id 1021D20679
+	for <linux-spi@archiver.kernel.org>; Fri,  2 Oct 2020 19:46:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387935AbgJBS0q (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 2 Oct 2020 14:26:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35076 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725991AbgJBS0q (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 2 Oct 2020 14:26:46 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DC57C0613D0;
-        Fri,  2 Oct 2020 11:26:46 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id o20so1826758pfp.11;
-        Fri, 02 Oct 2020 11:26:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=bH3LhQl50rze/g0fOzDKdyyNl1t2DQWWqcVRhwzgFcw=;
-        b=nVvcACzwGxTCOgqLJ4m8IMODFbuvVdl2uslv/4Q2UB1IiT/uq9TWQzGBmeBOzAmXak
-         t6hjgkIkG7cp+P8fb5Evb/LEaRaaLitosQmYtjmDgdlDutB2xXnqZ/cJTsb3vWCOSR1W
-         W3vjVqMmtk5ciIETb6vuIJ6GzR+TSmy+X+LjsWvjDNkGBwV7hfvDkNduYlVkq+F+wouW
-         0esbmD7OwGfuHK8ErE0hGc+2c+ClhtKdYsIbN3B3CeXZuMGTZ6giYhMZmOUvKg1KzIVB
-         nKoE+U3D2Sm1VGVi1C7r7TlLaTrhLWbzQ2JEUqkn0L6Uf1L6zXW+E2Fw9BrWedQsNzwQ
-         yuiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=bH3LhQl50rze/g0fOzDKdyyNl1t2DQWWqcVRhwzgFcw=;
-        b=B2WocXaCb0RrJ/r7AiCeQ8r1rvOx4hG56Yi7kIghi+0/jQIhkyfElI+FXpHvX5Sw5y
-         oT6PnOdYkHRQWp4lG7sXq0Pr74Bqh4mWIfxenU4DJNyAf0aK03aGLTFhfIpiHTmjATbh
-         opmwdoMzEu3e2h6jYftlT+9fvVSEAUJ8GDq8pw6hoh2t6BPaIzwPy7XjsBE5S22OFfWv
-         YJn/zs1iC5Zxi+ylJsOWpLA7pGYLgTzfGjh2SDlYVQZMHqQG6rIfOh/ZA2UA2wqXiHcQ
-         fsVw/DZRfxJSm2tSEx+NFKfVidS5XbwzvvXDLmSWcSC33+kJQCFqkaYHLOnv/vqKq5gP
-         w7xA==
-X-Gm-Message-State: AOAM530+sBMXZwLKf/ygL6LgPyxcU8Zp6NKHxUMZXDh+ifY1q3SzvL23
-        Wdfg20gmnlaLDjLNjmIiOHaZNHmOmEx3DeOn3Lk=
-X-Google-Smtp-Source: ABdhPJzKRBCZppPvyYuC4AWkQZz7tKDWXwV5Phj+OPoIoiKc9NDzkBSAAkHsHigpvv6+lztxxdqlZUkvGyKYlxgjsjA=
-X-Received: by 2002:a63:d648:: with SMTP id d8mr3393820pgj.4.1601663205987;
- Fri, 02 Oct 2020 11:26:45 -0700 (PDT)
-MIME-Version: 1.0
-References: <20201001222829.15977-1-Sergey.Semin@baikalelectronics.ru>
- <20201002102444.GY3956970@smile.fi.intel.com> <20201002125549.GB5527@sirena.org.uk>
-In-Reply-To: <20201002125549.GB5527@sirena.org.uk>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 2 Oct 2020 21:26:27 +0300
-Message-ID: <CAHp75VdHkTwwYmnMbqXJmjP3Fps4sAgLuvCyaJuQPAiV+Owz-Q@mail.gmail.com>
-Subject: Re: [PATCH v3 00/21] spi: dw: Add full Baikal-T1 SPI Controllers support
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-        Serge Semin <fancer.lancer@gmail.com>,
+        id S1725379AbgJBTqU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 2 Oct 2020 15:46:20 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:52514 "EHLO
+        mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725300AbgJBTqQ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 2 Oct 2020 15:46:16 -0400
+Received: from localhost (unknown [127.0.0.1])
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 04C7E803017E;
+        Fri,  2 Oct 2020 19:46:12 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at baikalelectronics.ru
+Received: from mail.baikalelectronics.ru ([127.0.0.1])
+        by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id IpNgZiPZs6Ds; Fri,  2 Oct 2020 22:46:10 +0300 (MSK)
+Date:   Fri, 2 Oct 2020 22:46:09 +0300
+From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+CC:     Serge Semin <fancer.lancer@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
         Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>,
         Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
@@ -73,28 +39,94 @@ Cc:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         linux-spi <linux-spi@vger.kernel.org>,
         devicetree <devicetree@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v3 02/21] spi: dw: Add DWC SSI capability
+Message-ID: <20201002194609.4l7fifu2kkxtrszo@mobilestation>
+References: <20201001222829.15977-1-Sergey.Semin@baikalelectronics.ru>
+ <20201001222829.15977-3-Sergey.Semin@baikalelectronics.ru>
+ <20201002101929.GW3956970@smile.fi.intel.com>
+ <20201002171849.jhio6nz6r6jigrf3@mobilestation>
+ <CAHp75Vd7KS+sGT=1aZLJXzQi+L3wZ1430dj1TmE=u3PUHoDz7Q@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CAHp75Vd7KS+sGT=1aZLJXzQi+L3wZ1430dj1TmE=u3PUHoDz7Q@mail.gmail.com>
+X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, Oct 2, 2020 at 3:56 PM Mark Brown <broonie@kernel.org> wrote:
-> On Fri, Oct 02, 2020 at 01:24:44PM +0300, Andy Shevchenko wrote:
-> > On Fri, Oct 02, 2020 at 01:28:08AM +0300, Serge Semin wrote:
->
-> > > the subject. Though some of them are mere cleanups or weakly related with
-> > > the subject fixes, but we just couldn't leave the code as is at some
-> > > places since we were working with the DW APB SSI driver anyway. Here is
-> > > what we did to fix the original DW APB SSI driver, to make it less messy.
->
-> > Maybe it's time to put your name into MAINTAINERS for this driver?
->
-> Seems sensible to me - Andy, it probably makes sense to add you as well?
+On Fri, Oct 02, 2020 at 09:26:07PM +0300, Andy Shevchenko wrote:
+> On Fri, Oct 2, 2020 at 8:18 PM Serge Semin
+> <Sergey.Semin@baikalelectronics.ru> wrote:
+> >
+> > On Fri, Oct 02, 2020 at 01:19:29PM +0300, Andy Shevchenko wrote:
+> > > On Fri, Oct 02, 2020 at 01:28:10AM +0300, Serge Semin wrote:
+> > > > Currently DWC SSI core is supported by means of setting up the
+> > > > core-specific update_cr0() callback. It isn't suitable for multiple
+> > > > reasons. First of all having exported several methods doing the same thing
+> > > > but for different chips makes the code harder to maintain. Secondly the
+> > > > spi-dw-core driver exports the methods, then the spi-dw-mmio driver sets
+> > > > the private data callback with one of them so to be called by the core
+> > > > driver again. That makes the code logic too complicated. Thirdly using
+> > > > callbacks for just updating the CR0 register is problematic, since in case
+> > > > if the register needed to be updated from different parts of the code,
+> > > > we'd have to create another callback (for instance the SPI device-specific
+> > > > parameters don't need to be calculated each time the SPI transfer is
+> > > > submitted, so it's better to pre-calculate the CR0 data at the SPI-device
+> > > > setup stage).
+> > > >
+> > > > So keeping all the above in mind let's discard the update_cr0() callbacks,
+> > > > define a generic and static dw_spi_update_cr0() method and create the
+> > > > DW_SPI_CAP_DWC_SSI capability, which when enabled would activate the
+> > > > alternative CR0 register layout.
+> > > >
+> > > > While at it add the comments to the code path of the normal DW APB SSI
+> > > > controller setup to make the dw_spi_update_cr0() method looking coherent.
+> > >
+> >
+> > > What the point to increase indentation level and produce additional churn?
+> > > Can't you simply leave functions, unexport them, and call in one conditional of
+> > > whatever new function is called?
+> >
+> > I forgot to mention that in the commit log, there is another reason why it's
+> > better to create a generic dw_spi_update_cr0() instead of doing what you suggest.
+> > As it will be seen from the following up patches, the dw_spi_update_cr0() function
+> > (to be more precise it's successor, but anyway) will be used from the SPI memory
+> > ops implementation. So if-else-ing here and there isn't a good idea for
+> > maintainability. For the same reason of the maintainability it's better to have a
+> > generic method which reflects all the config peculiarities, so in case of any
+> > changes they would be not be forgotten to be introduced for both DWC SSI and DW
+> > APB SSI parts of the setup procedures. As I see it that overbeats the additional
+> > indentation level drawback.
+> 
 
-I have more than enough on my plate currently. Maybe in the future.
+> What I meant is to leave functions as is and call them under conditional
+> 
+> if ()
+>  call one
+> else
+>  call another
 
-> Does one of you want to send a patch for this?
+Yeah, I understood what you meant. What you suggest would be a better solution
+if I needed to call the dw_spi_update_cr0() method just from a single place of
+the driver (but in that case I wouldn't need to replace the callback-based
+approach with the Capabilities-based one at all). The thing is that the
+dw_spi_update_cr0() will be also called from the SPI memory exec_op() callback
+(see patch "[PATCH v3 17/21] spi: dw: Add memory operations support" and the
+method dw_spi_update_config() invocation) in the same way as it is called from
+the SPI core transfer-one callback. Following your suggestion I would have to
+implement the same "if () call one else call another" pattern there too. Copying
+it here and there would be a weak design from the maintainability point of view
+and from the coding style too. Much better is to create a generic
+dw_spi_update_cr0() (later in this patchset it will be renamed to
+dw_spi_update_config()...), which would work for both DWC SSI and DW APB SSI by
+embedding the "if (is_CAP) call one else call another" into the method itself as
+I suggested in this patch.
 
---
-With Best Regards,
-Andy Shevchenko
+-Sergey
+
+> 
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko

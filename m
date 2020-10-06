@@ -2,102 +2,57 @@ Return-Path: <SRS0=+2U+=DN=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-4.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B094C47423
-	for <linux-spi@archiver.kernel.org>; Tue,  6 Oct 2020 07:54:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D592C41604
+	for <linux-spi@archiver.kernel.org>; Tue,  6 Oct 2020 07:57:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B17D320870
-	for <linux-spi@archiver.kernel.org>; Tue,  6 Oct 2020 07:54:41 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="oes1kxMC"
+	by mail.kernel.org (Postfix) with ESMTP id BC590206F4
+	for <linux-spi@archiver.kernel.org>; Tue,  6 Oct 2020 07:57:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1601971052;
+	bh=8cBFwbtxIErkfCDXA3M1/MTvKCeHQetOktMyhbqqWtY=;
+	h=Subject:From:Date:To:List-ID:From;
+	b=lnpVq8eRvor+4U13/4/X/kKvN23A4AJCWNuBaSMVU2Cxi8XuB07cgOq4XpV2n5kwf
+	 h7BeAs6jdvow1vwmJvw7znnTWmqH8AqXywa/+CYLcvrN/FMAfrGYJPDhFdxS5OStKj
+	 lubx0RTq1IUx45KTe+1PHZOhADxssSgu+YUfpK6k=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727105AbgJFHyS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 6 Oct 2020 03:54:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59446 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727116AbgJFHyQ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 6 Oct 2020 03:54:16 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F668C0613D2
-        for <linux-spi@vger.kernel.org>; Tue,  6 Oct 2020 00:54:16 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id l126so8548530pfd.5
-        for <linux-spi@vger.kernel.org>; Tue, 06 Oct 2020 00:54:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=+Q13U487Cjn/+nOLZsCBKdKKLu22/BXGrY05ryfIEBw=;
-        b=oes1kxMCC8je1dieaMVGyJ+c2mM7MFn93B+vWCiUBkL/EvgtDX8MTmTCzeGycxtF0R
-         RCTefIVFrP/q8E+f9HXTtp8l3vv30vuiPgccF5IL+8QfE+MxJR8uvvzhcDIkBuTxFail
-         EtjmgXQ43yS5Uy0NX6L84iN9LHa14KzE6aI2c=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=+Q13U487Cjn/+nOLZsCBKdKKLu22/BXGrY05ryfIEBw=;
-        b=X2gsRmd+5l77KQs/J2aPrkUty593JRZhhpxEEoDPQwQ+5mycTGtFRcZ+xe7GN3QrZm
-         qRQARMfxzmr7U48xkgVCP8rlyrz0dOKAxdE2NOeZwfPX7NJMqkZHM4J1enY8JmhoeOrK
-         8l+8w6LW0tenXCiI3mOTTJrrGUoANr2gOTnu8xxqvXZAiSynvzW/XOp3avigQbcWDmj3
-         XkTnAnOu407clEh/xp8biMIV19TuEq+voqtpoAv148/T6evPbJ47DilY7riuHaZcOnel
-         W9GdB8CCHgJkbFuk+GP0hZIIu8cSghOsQ2mXBk00XI8t4Bnn0Wzbk9Fzy+7YM07hCjDg
-         FNDg==
-X-Gm-Message-State: AOAM533zlA4YubMAT4dCmQmtuqp0mjIi6LUjWl/BSpOzi9Uj/fTIxLlM
-        tWEqQZJ78oKEQ/A41CM/hAPr9Q==
-X-Google-Smtp-Source: ABdhPJwlzXHvhSPQRbddkUP3BLbK8GixVJDMkV84qDw7iNlY99VclXQGU9+CQZVYIPvyq9d9G0DRSQ==
-X-Received: by 2002:a62:7894:0:b029:152:279f:5dad with SMTP id t142-20020a6278940000b0290152279f5dadmr3541300pfc.67.1601970856096;
-        Tue, 06 Oct 2020 00:54:16 -0700 (PDT)
-Received: from ikjn-p920.tpe.corp.google.com ([2401:fa00:1:10:f693:9fff:fef4:a8fc])
-        by smtp.gmail.com with ESMTPSA id r6sm2545147pfq.11.2020.10.06.00.54.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Oct 2020 00:54:15 -0700 (PDT)
-From:   Ikjoon Jang <ikjn@chromium.org>
-To:     Rob Herring <robh+dt@kernel.org>, Mark Brown <broonie@kernel.org>,
-        devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-mtd@lists.infradead.org
-Cc:     Ikjoon Jang <ikjn@chromium.org>, Rob Herring <robh@kernel.org>,
-        Bayi Cheng <bayi.cheng@mediatek.com>,
-        Chuanhong Guo <gch981213@gmail.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-mediatek@lists.infradead.org
-Subject: [PATCH v5 1/4] dt-bindings: spi: add mt8192-nor compatible string
-Date:   Tue,  6 Oct 2020 15:54:02 +0800
-Message-Id: <20201006155010.v5.1.I4cd089ef1fe576535c6b6e4f1778eaab1c4441cf@changeid>
-X-Mailer: git-send-email 2.28.0.806.g8561365e88-goog
-In-Reply-To: <20201006075405.11658-1-ikjn@chromium.org>
-References: <20201006075405.11658-1-ikjn@chromium.org>
+        id S1726789AbgJFH5c (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 6 Oct 2020 03:57:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56960 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725947AbgJFH5c (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 6 Oct 2020 03:57:32 -0400
+Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601971051;
+        bh=8cBFwbtxIErkfCDXA3M1/MTvKCeHQetOktMyhbqqWtY=;
+        h=Subject:From:Date:To:From;
+        b=E7NpOt7X9TRlNdO97NnFDO7Urnvh1GvSQK2CMiAnQxsZkC98c7B6Y3p6apSbEcf69
+         EkyW4ptaUHjWtSpWxKkBMdWNsPiENKxF407u9WJYAdyKn12uoMFkhS3RrF9kHhTuNI
+         4MCmQNpm4S/ffnOmzZnFPMKnCjhY9CtsioWAwcw4=
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <160197105185.23796.4494248391269247819.git-patchwork-housekeeping@kernel.org>
+Date:   Tue, 06 Oct 2020 07:57:31 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add MT8192 spi-nor controller support.
+Latest series: [v5] spi: spi-mtk-nor: Add mt8192 support. (2020-10-06T07:54:01)
+  Superseding: [v4] spi: spi-mtk-nor: Add mt8192 support. (2020-09-29T07:37:51):
+    [v4,1/4] dt-bindings: spi: add mt8192-nor compatible string
+    [v4,2/4] spi: spi-mtk-nor: use dma_alloc_coherent() for bounce buffer
+    [v4,3/4] spi: spi-mtk-nor: support 36bit dma addressing
+    [v4,4/4] spi: spi-mtk-nor: Add power management support
 
-Signed-off-by: Ikjoon Jang <ikjn@chromium.org>
-Acked-by: Rob Herring <robh@kernel.org>
 
----
- Documentation/devicetree/bindings/spi/mediatek,spi-mtk-nor.yaml | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/Documentation/devicetree/bindings/spi/mediatek,spi-mtk-nor.yaml b/Documentation/devicetree/bindings/spi/mediatek,spi-mtk-nor.yaml
-index 42c9205ac991..55c239446a5b 100644
---- a/Documentation/devicetree/bindings/spi/mediatek,spi-mtk-nor.yaml
-+++ b/Documentation/devicetree/bindings/spi/mediatek,spi-mtk-nor.yaml
-@@ -30,6 +30,7 @@ properties:
-               - mediatek,mt7622-nor
-               - mediatek,mt7623-nor
-               - mediatek,mt7629-nor
-+              - mediatek,mt8192-nor
-           - enum:
-               - mediatek,mt8173-nor
-       - items:
 -- 
-2.28.0.806.g8561365e88-goog
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

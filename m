@@ -8,53 +8,53 @@ X-Spam-Status: No, score=-13.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 604E3C46466
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8031FC4727E
 	for <linux-spi@archiver.kernel.org>; Tue,  6 Oct 2020 07:54:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 003A720FC3
-	for <linux-spi@archiver.kernel.org>; Tue,  6 Oct 2020 07:54:33 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3858820789
+	for <linux-spi@archiver.kernel.org>; Tue,  6 Oct 2020 07:54:34 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="HSOc001O"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="LJDoSZ6l"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727307AbgJFHy3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 6 Oct 2020 03:54:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59482 "EHLO
+        id S1727244AbgJFHyU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 6 Oct 2020 03:54:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727278AbgJFHyX (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 6 Oct 2020 03:54:23 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AAB4C0613D2
-        for <linux-spi@vger.kernel.org>; Tue,  6 Oct 2020 00:54:23 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id g9so7023620pgh.8
-        for <linux-spi@vger.kernel.org>; Tue, 06 Oct 2020 00:54:23 -0700 (PDT)
+        with ESMTP id S1727210AbgJFHyT (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 6 Oct 2020 03:54:19 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1009DC061755
+        for <linux-spi@vger.kernel.org>; Tue,  6 Oct 2020 00:54:19 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id t18so818119plo.1
+        for <linux-spi@vger.kernel.org>; Tue, 06 Oct 2020 00:54:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=pwe2F6gUJFWdG9JMF5LSPTO+AiLU9oqcMF4ps8kWBqM=;
-        b=HSOc001Oe2i/fhLGKNTj8bqlOtrGfl3jWJ7rrl8V02OJCaDhyRSAtLtc8wYE6cqx6U
-         Ebx9Rnj9IXqAqb1u1MLKzNVR4zM9sYBIm/kXvpen2l+z/zXrPosfCbWeH1Eg9LdfZvSO
-         m+vb1NsMrfvwPM5oGtKxfI6eu6j+ZDm6uukfc=
+        bh=7PZOaA6QkvOCmb0gjt7JSbdjibIqk6jDh+1RNq7W07Q=;
+        b=LJDoSZ6lh85Q/wK+QdEJcL4XuQ1oVTAFuwtZS3pHBUhkKAZinRu5tg5P7LNZ9kNThR
+         qQqM1cfvNRx2WsaBFJtddM7YvnwWZmRd4O0Ye8gKGm0NhKzL6SJS8yP0d6pttPcoKvKJ
+         Pb4WelLMtoNO6k3DqXPqBDUzFt6rk3DKsDaR8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=pwe2F6gUJFWdG9JMF5LSPTO+AiLU9oqcMF4ps8kWBqM=;
-        b=I2//x16Hy8XV9CO4kuCw54IhnkDHaUICDoagpgpfWymibT3qnQuYeU4uvAjw85cpCr
-         FKwZrxeVXcWv7UvgKjG3p31qcnjfsP+qyaPwIQvApW3xjyxmb2XSdi21Fw4nor8uWy3u
-         p587F3Z8esfNiA7p5zQvJD5W5No1rRSIXozYKTtzaFNhUxDK7uH7PBu7eBXQ/fjZrN6T
-         LWh2pTILm/7kuygxPVxQ0Kh0hEYPkqh1ptK/xB3DfrZA5zzL96yUPu8W/SFNWks3v1wc
-         MQ4YR4nUgrkZ91GRTXFKgQ06rTG1ZTiptaJDzP17q/Wy7U0V6MUZXqfPjbrCkW19w9BS
-         lT7Q==
-X-Gm-Message-State: AOAM531zyYzckmEG2JJr0iRsGAcOoETioy3WKMMDaA4ffdgnOIA6/ErG
-        yPifHfzaDsvpz/1tDxk7CcSvOg==
-X-Google-Smtp-Source: ABdhPJzfvwBLhSkYtAtv6mFdOiB78Zw4ZAZSGgCAiD/xnJYtN1a4M7RUFFcNhPVpkdSVfRUQFO9WUg==
-X-Received: by 2002:aa7:81d5:0:b029:142:2501:39fa with SMTP id c21-20020aa781d50000b0290142250139famr3333605pfn.73.1601970863160;
-        Tue, 06 Oct 2020 00:54:23 -0700 (PDT)
+        bh=7PZOaA6QkvOCmb0gjt7JSbdjibIqk6jDh+1RNq7W07Q=;
+        b=t36Km8C3PYA3UEkMMbPKBEEycVWxLdiOE7lT/hSFGvYQvkt1oTgxcfr8D4EJD6RvJm
+         eVuD7fJ4SdL1xIirl8sHGMQV1UhQP8JecNWZMeHROAWSq0XSJ+4284upQADXt1GFarKB
+         CAGiCvCK+HqzSmqBDlocscWvad9Ao0Srq3LGEz0v4a6OdzgZtumK8F04Tqi6MnyBXmOo
+         pJ+b5A8NUGexb4CUPvrIz49ZUeJLaec/W0zfy50Bn4VfEBF5JKGEtqKj1diHAXT4cAzp
+         1glq3HqFfnYpbKO6Jnk3XHsoRMiydZjBO1Rl8iUzPvaQo10KgsAb9I0r456LTMN5QF7+
+         lsgQ==
+X-Gm-Message-State: AOAM533Z1v8dAoXvZAIyXmpcx7jc11EVq/gWL2rxUPKnw2CK2T/spd5E
+        AoOj1vQ5hU9i9vOmpI5aSatz6Q==
+X-Google-Smtp-Source: ABdhPJwSLcafb5kLEKsycixh+tSF8vyF9CSsGowHrGwH3O+9dE85Lde1yWD2e0mNtCAkMfwMLSBl2w==
+X-Received: by 2002:a17:902:bf4b:b029:d1:e5e7:bddd with SMTP id u11-20020a170902bf4bb02900d1e5e7bdddmr2104802pls.61.1601970858529;
+        Tue, 06 Oct 2020 00:54:18 -0700 (PDT)
 Received: from ikjn-p920.tpe.corp.google.com ([2401:fa00:1:10:f693:9fff:fef4:a8fc])
-        by smtp.gmail.com with ESMTPSA id r6sm2545147pfq.11.2020.10.06.00.54.21
+        by smtp.gmail.com with ESMTPSA id r6sm2545147pfq.11.2020.10.06.00.54.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Oct 2020 00:54:22 -0700 (PDT)
+        Tue, 06 Oct 2020 00:54:17 -0700 (PDT)
 From:   Ikjoon Jang <ikjn@chromium.org>
 To:     Rob Herring <robh+dt@kernel.org>, Mark Brown <broonie@kernel.org>,
         devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
@@ -63,9 +63,9 @@ Cc:     Ikjoon Jang <ikjn@chromium.org>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-mediatek@lists.infradead.org
-Subject: [PATCH v5 4/4] spi: spi-mtk-nor: Add power management support
-Date:   Tue,  6 Oct 2020 15:54:05 +0800
-Message-Id: <20201006155010.v5.4.I68983b582d949a91866163bab588ff3c2a0d0275@changeid>
+Subject: [PATCH v5 2/4] spi: spi-mtk-nor: use dma_alloc_coherent() for bounce buffer
+Date:   Tue,  6 Oct 2020 15:54:03 +0800
+Message-Id: <20201006155010.v5.2.I06cb65401ab5ad63ea30c4788d26633928d80f38@changeid>
 X-Mailer: git-send-email 2.28.0.806.g8561365e88-goog
 In-Reply-To: <20201006075405.11658-1-ikjn@chromium.org>
 References: <20201006075405.11658-1-ikjn@chromium.org>
@@ -75,182 +75,207 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This patch adds dev_pm_ops to mtk-nor to support suspend/resume,
-auto suspend delay is set to -1 by default.
-
-Accessing registers are only permitted after its clock is enabled
-to deal with unknown state of operating clk at probe time.
+Use dma_alloc_coherent() for bounce buffer instead of kmalloc() to
+make sure the bounce buffer to be allocated within its DMAable range.
 
 Signed-off-by: Ikjoon Jang <ikjn@chromium.org>
+
 ---
- drivers/spi/spi-mtk-nor.c | 98 ++++++++++++++++++++++++++++++---------
- 1 file changed, 76 insertions(+), 22 deletions(-)
+ drivers/spi/spi-mtk-nor.c | 94 ++++++++++++++++++++++-----------------
+ 1 file changed, 52 insertions(+), 42 deletions(-)
 
 diff --git a/drivers/spi/spi-mtk-nor.c b/drivers/spi/spi-mtk-nor.c
-index e46d5c93d742..b97f26a60cbe 100644
+index ea39736de291..c11bed28b952 100644
 --- a/drivers/spi/spi-mtk-nor.c
 +++ b/drivers/spi/spi-mtk-nor.c
-@@ -14,6 +14,7 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/of_device.h>
-+#include <linux/pm_runtime.h>
- #include <linux/spi/spi.h>
- #include <linux/spi/spi-mem.h>
- #include <linux/string.h>
-@@ -690,22 +691,15 @@ static int mtk_nor_enable_clk(struct mtk_nor *sp)
- 	return 0;
+@@ -97,6 +97,7 @@ struct mtk_nor {
+ 	struct device *dev;
+ 	void __iomem *base;
+ 	u8 *buffer;
++	dma_addr_t buffer_dma;
+ 	struct clk *spi_clk;
+ 	struct clk *ctlr_clk;
+ 	unsigned int spi_freq;
+@@ -145,6 +146,11 @@ static void mtk_nor_set_addr(struct mtk_nor *sp, const struct spi_mem_op *op)
+ 	}
  }
  
--static int mtk_nor_init(struct mtk_nor *sp)
-+static void mtk_nor_init(struct mtk_nor *sp)
++static bool need_bounce(struct mtk_nor *sp, const struct spi_mem_op *op)
++{
++	return ((uintptr_t)op->data.buf.in & MTK_NOR_DMA_ALIGN_MASK);
++}
++
+ static bool mtk_nor_match_read(const struct spi_mem_op *op)
  {
--	int ret;
+ 	int dummy = 0;
+@@ -238,6 +244,8 @@ static void mtk_nor_adj_prg_size(struct spi_mem_op *op)
+ 
+ static int mtk_nor_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
+ {
++	struct mtk_nor *sp = spi_controller_get_devdata(mem->spi->master);
++
+ 	if (!op->data.nbytes)
+ 		return 0;
+ 
+@@ -251,8 +259,7 @@ static int mtk_nor_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
+ 			if ((op->addr.val & MTK_NOR_DMA_ALIGN_MASK) ||
+ 			    (op->data.nbytes < MTK_NOR_DMA_ALIGN))
+ 				op->data.nbytes = 1;
+-			else if (!((ulong)(op->data.buf.in) &
+-				   MTK_NOR_DMA_ALIGN_MASK))
++			else if (!need_bounce(sp, op))
+ 				op->data.nbytes &= ~MTK_NOR_DMA_ALIGN_MASK;
+ 			else if (op->data.nbytes > MTK_NOR_BOUNCE_BUF_SIZE)
+ 				op->data.nbytes = MTK_NOR_BOUNCE_BUF_SIZE;
+@@ -325,19 +332,12 @@ static void mtk_nor_setup_bus(struct mtk_nor *sp, const struct spi_mem_op *op)
+ 	mtk_nor_rmw(sp, MTK_NOR_REG_BUSCFG, reg, MTK_NOR_BUS_MODE_MASK);
+ }
+ 
+-static int mtk_nor_read_dma(struct mtk_nor *sp, u32 from, unsigned int length,
+-			    u8 *buffer)
++static int mtk_nor_dma_exec(struct mtk_nor *sp, u32 from, unsigned int length,
++			    dma_addr_t dma_addr)
+ {
+ 	int ret = 0;
+ 	ulong delay;
+ 	u32 reg;
+-	dma_addr_t dma_addr;
 -
--	ret = mtk_nor_enable_clk(sp);
+-	dma_addr = dma_map_single(sp->dev, buffer, length, DMA_FROM_DEVICE);
+-	if (dma_mapping_error(sp->dev, dma_addr)) {
+-		dev_err(sp->dev, "failed to map dma buffer.\n");
+-		return -EINVAL;
+-	}
+ 
+ 	writel(from, sp->base + MTK_NOR_REG_DMA_FADR);
+ 	writel(dma_addr, sp->base + MTK_NOR_REG_DMA_DADR);
+@@ -362,30 +362,49 @@ static int mtk_nor_read_dma(struct mtk_nor *sp, u32 from, unsigned int length,
+ 					 (delay + 1) * 100);
+ 	}
+ 
+-	dma_unmap_single(sp->dev, dma_addr, length, DMA_FROM_DEVICE);
+ 	if (ret < 0)
+ 		dev_err(sp->dev, "dma read timeout.\n");
+ 
+ 	return ret;
+ }
+ 
+-static int mtk_nor_read_bounce(struct mtk_nor *sp, u32 from,
+-			       unsigned int length, u8 *buffer)
++static int mtk_nor_read_bounce(struct mtk_nor *sp, const struct spi_mem_op *op)
+ {
+ 	unsigned int rdlen;
+ 	int ret;
+ 
+-	if (length & MTK_NOR_DMA_ALIGN_MASK)
+-		rdlen = (length + MTK_NOR_DMA_ALIGN) & ~MTK_NOR_DMA_ALIGN_MASK;
++	if (op->data.nbytes & MTK_NOR_DMA_ALIGN_MASK)
++		rdlen = (op->data.nbytes + MTK_NOR_DMA_ALIGN) & ~MTK_NOR_DMA_ALIGN_MASK;
+ 	else
+-		rdlen = length;
++		rdlen = op->data.nbytes;
+ 
+-	ret = mtk_nor_read_dma(sp, from, rdlen, sp->buffer);
 -	if (ret)
 -		return ret;
--
--	sp->spi_freq = clk_get_rate(sp->spi_clk);
-+	writel(0, sp->base + MTK_NOR_REG_IRQ_EN);
-+	writel(MTK_NOR_IRQ_MASK, sp->base + MTK_NOR_REG_IRQ_STAT);
++	ret = mtk_nor_dma_exec(sp, op->addr.val, rdlen, sp->buffer_dma);
  
- 	writel(MTK_NOR_ENABLE_SF_CMD, sp->base + MTK_NOR_REG_WP);
- 	mtk_nor_rmw(sp, MTK_NOR_REG_CFG2, MTK_NOR_WR_CUSTOM_OP_EN, 0);
- 	mtk_nor_rmw(sp, MTK_NOR_REG_CFG3,
- 		    MTK_NOR_DISABLE_WREN | MTK_NOR_DISABLE_SR_POLL, 0);
--
--	return ret;
- }
- 
- static irqreturn_t mtk_nor_irq_handler(int irq, void *data)
-@@ -788,6 +782,7 @@ static int mtk_nor_probe(struct platform_device *pdev)
- 	ctlr->num_chipselect = 1;
- 	ctlr->setup = mtk_nor_setup;
- 	ctlr->transfer_one_message = mtk_nor_transfer_one_message;
-+	ctlr->auto_runtime_pm = true;
- 
- 	dev_set_drvdata(&pdev->dev, ctlr);
- 
-@@ -811,12 +806,19 @@ static int mtk_nor_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 	}
- 
-+	ret = mtk_nor_enable_clk(sp);
-+	if (ret < 0)
-+		return ret;
+-	memcpy(buffer, sp->buffer, length);
+-	return 0;
++	if (!ret)
++		memcpy(op->data.buf.in, sp->buffer, op->data.nbytes);
 +
-+	sp->spi_freq = clk_get_rate(sp->spi_clk);
++	return ret;
++}
 +
-+	mtk_nor_init(sp);
++static int mtk_nor_read_dma(struct mtk_nor *sp, const struct spi_mem_op *op)
++{
++	int ret;
++	dma_addr_t dma_addr;
 +
- 	irq = platform_get_irq_optional(pdev, 0);
++	if (need_bounce(sp, op))
++		return mtk_nor_read_bounce(sp, op);
 +
- 	if (irq < 0) {
- 		dev_warn(sp->dev, "IRQ not available.");
- 	} else {
--		writel(MTK_NOR_IRQ_MASK, base + MTK_NOR_REG_IRQ_STAT);
--		writel(0, base + MTK_NOR_REG_IRQ_EN);
- 		ret = devm_request_irq(sp->dev, irq, mtk_nor_irq_handler, 0,
- 				       pdev->name, sp);
- 		if (ret < 0) {
-@@ -827,34 +829,86 @@ static int mtk_nor_probe(struct platform_device *pdev)
- 		}
- 	}
- 
--	ret = mtk_nor_init(sp);
--	if (ret < 0) {
--		kfree(ctlr);
--		return ret;
--	}
-+	pm_runtime_set_autosuspend_delay(&pdev->dev, -1);
-+	pm_runtime_use_autosuspend(&pdev->dev);
-+	pm_runtime_set_active(&pdev->dev);
-+	pm_runtime_enable(&pdev->dev);
-+	pm_runtime_get_noresume(&pdev->dev);
++	dma_addr = dma_map_single(sp->dev, op->data.buf.in,
++				  op->data.nbytes, DMA_FROM_DEVICE);
 +
-+	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	if (ret < 0)
-+		goto err_probe;
++	if (dma_mapping_error(sp->dev, dma_addr))
++		return -EINVAL;
 +
-+	pm_runtime_mark_last_busy(&pdev->dev);
-+	pm_runtime_put_autosuspend(&pdev->dev);
- 
- 	dev_info(&pdev->dev, "spi frequency: %d Hz\n", sp->spi_freq);
- 
--	return devm_spi_register_controller(&pdev->dev, ctlr);
-+	return 0;
++	ret = mtk_nor_dma_exec(sp, op->addr.val, op->data.nbytes, dma_addr);
 +
-+err_probe:
-+	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_set_suspended(&pdev->dev);
-+	pm_runtime_dont_use_autosuspend(&pdev->dev);
-+
-+	mtk_nor_disable_clk(sp);
++	dma_unmap_single(sp->dev, dma_addr, op->data.nbytes, DMA_FROM_DEVICE);
 +
 +	return ret;
  }
  
- static int mtk_nor_remove(struct platform_device *pdev)
- {
--	struct spi_controller *ctlr;
--	struct mtk_nor *sp;
-+	struct spi_controller *ctlr = dev_get_drvdata(&pdev->dev);
-+	struct mtk_nor *sp = spi_controller_get_devdata(ctlr);
+ static int mtk_nor_read_pio(struct mtk_nor *sp, const struct spi_mem_op *op)
+@@ -566,15 +585,8 @@ static int mtk_nor_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 		if (op->data.nbytes == 1) {
+ 			mtk_nor_set_addr(sp, op);
+ 			return mtk_nor_read_pio(sp, op);
+-		} else if (((ulong)(op->data.buf.in) &
+-			    MTK_NOR_DMA_ALIGN_MASK)) {
+-			return mtk_nor_read_bounce(sp, op->addr.val,
+-						   op->data.nbytes,
+-						   op->data.buf.in);
+ 		} else {
+-			return mtk_nor_read_dma(sp, op->addr.val,
+-						op->data.nbytes,
+-						op->data.buf.in);
++			return mtk_nor_read_dma(sp, op);
+ 		}
+ 	}
  
--	ctlr = dev_get_drvdata(&pdev->dev);
--	sp = spi_controller_get_devdata(ctlr);
-+	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_set_suspended(&pdev->dev);
-+	pm_runtime_dont_use_autosuspend(&pdev->dev);
-+
-+	mtk_nor_disable_clk(sp);
-+
-+	return 0;
-+}
-+
-+static int __maybe_unused mtk_nor_runtime_suspend(struct device *dev)
-+{
-+	struct spi_controller *ctlr = dev_get_drvdata(dev);
-+	struct mtk_nor *sp = spi_controller_get_devdata(ctlr);
+@@ -729,7 +741,6 @@ static int mtk_nor_probe(struct platform_device *pdev)
+ 	struct spi_controller *ctlr;
+ 	struct mtk_nor *sp;
+ 	void __iomem *base;
+-	u8 *buffer;
+ 	struct clk *spi_clk, *ctlr_clk;
+ 	int ret, irq;
  
- 	mtk_nor_disable_clk(sp);
+@@ -745,16 +756,6 @@ static int mtk_nor_probe(struct platform_device *pdev)
+ 	if (IS_ERR(ctlr_clk))
+ 		return PTR_ERR(ctlr_clk);
  
- 	return 0;
- }
+-	buffer = devm_kmalloc(&pdev->dev,
+-			      MTK_NOR_BOUNCE_BUF_SIZE + MTK_NOR_DMA_ALIGN,
+-			      GFP_KERNEL);
+-	if (!buffer)
+-		return -ENOMEM;
+-
+-	if ((ulong)buffer & MTK_NOR_DMA_ALIGN_MASK)
+-		buffer = (u8 *)(((ulong)buffer + MTK_NOR_DMA_ALIGN) &
+-				~MTK_NOR_DMA_ALIGN_MASK);
+-
+ 	ctlr = spi_alloc_master(&pdev->dev, sizeof(*sp));
+ 	if (!ctlr) {
+ 		dev_err(&pdev->dev, "failed to allocate spi controller\n");
+@@ -774,13 +775,22 @@ static int mtk_nor_probe(struct platform_device *pdev)
  
-+static int __maybe_unused mtk_nor_runtime_resume(struct device *dev)
-+{
-+	struct spi_controller *ctlr = dev_get_drvdata(dev);
-+	struct mtk_nor *sp = spi_controller_get_devdata(ctlr);
+ 	sp = spi_controller_get_devdata(ctlr);
+ 	sp->base = base;
+-	sp->buffer = buffer;
+ 	sp->has_irq = false;
+ 	sp->wbuf_en = false;
+ 	sp->ctlr = ctlr;
+ 	sp->dev = &pdev->dev;
+ 	sp->spi_clk = spi_clk;
+ 	sp->ctlr_clk = ctlr_clk;
++	sp->buffer = dmam_alloc_coherent(&pdev->dev,
++				MTK_NOR_BOUNCE_BUF_SIZE + MTK_NOR_DMA_ALIGN,
++				&sp->buffer_dma, GFP_KERNEL);
++	if (!sp->buffer)
++		return -ENOMEM;
 +
-+	return mtk_nor_enable_clk(sp);
-+}
-+
-+static int __maybe_unused mtk_nor_suspend(struct device *dev)
-+{
-+	return pm_runtime_force_suspend(dev);
-+}
-+
-+static int __maybe_unused mtk_nor_resume(struct device *dev)
-+{
-+	return pm_runtime_force_resume(dev);
-+}
-+
-+static const struct dev_pm_ops mtk_nor_pm_ops = {
-+	SET_RUNTIME_PM_OPS(mtk_nor_runtime_suspend,
-+			   mtk_nor_runtime_resume, NULL)
-+	SET_SYSTEM_SLEEP_PM_OPS(mtk_nor_suspend, mtk_nor_resume)
-+};
-+
- static struct platform_driver mtk_nor_driver = {
- 	.driver = {
- 		.name = DRIVER_NAME,
- 		.of_match_table = mtk_nor_match,
-+		.pm = &mtk_nor_pm_ops,
- 	},
- 	.probe = mtk_nor_probe,
- 	.remove = mtk_nor_remove,
++	if ((uintptr_t)sp->buffer & MTK_NOR_DMA_ALIGN_MASK) {
++		dev_err(sp->dev, "misaligned allocation of internal buffer.\n");
++		return -ENOMEM;
++	}
+ 
+ 	irq = platform_get_irq_optional(pdev, 0);
+ 	if (irq < 0) {
 -- 
 2.28.0.806.g8561365e88-goog
 

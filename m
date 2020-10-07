@@ -7,25 +7,25 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D0CBC4727E
-	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:56:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DF1B6C433E7
+	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:56:03 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E312A206E7
-	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:56:00 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id ADCDC206E7
+	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:56:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729026AbgJGXzx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 7 Oct 2020 19:55:53 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:45740 "EHLO
+        id S1729046AbgJGX4D (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 7 Oct 2020 19:56:03 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:45796 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728630AbgJGXzf (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 7 Oct 2020 19:55:35 -0400
+        with ESMTP id S1728560AbgJGXzb (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 7 Oct 2020 19:55:31 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id D6587803017F;
-        Wed,  7 Oct 2020 23:55:27 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 4D63B800163F;
+        Wed,  7 Oct 2020 23:55:26 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id ZHtC-efnC7mB; Thu,  8 Oct 2020 02:55:27 +0300 (MSK)
+        with ESMTP id BAhrQjsZVbhc; Thu,  8 Oct 2020 02:55:25 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>,
         Serge Semin <fancer.lancer@gmail.com>
@@ -39,9 +39,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v4 16/21] spi: dw: Add generic DW SSI status-check method
-Date:   Thu, 8 Oct 2020 02:55:05 +0300
-Message-ID: <20201007235511.4935-17-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH v4 14/21] spi: dw: Explicitly de-assert CS on SPI transfer completion
+Date:   Thu, 8 Oct 2020 02:55:03 +0300
+Message-ID: <20201007235511.4935-15-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20201007235511.4935-1-Sergey.Semin@baikalelectronics.ru>
 References: <20201007235511.4935-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,118 +52,32 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The DW SSI errors handling method can be generically implemented for all
-types of the transfers: IRQ, DMA and poll-based ones. It will be a
-function which checks the overflow/underflow error flags and resets the
-controller if any of them is set. In the framework of this commit we make
-use of the new method to detect the errors in the IRQ- and DMA-based SPI
-transfer execution procedures.
+By design of the currently available native set_cs callback, the CS
+de-assertion will be done only if it's required by the corresponding
+controller capability. But in order to pre-fill the Tx FIFO buffer with
+data during the SPI memory ops execution the SER register needs to be left
+cleared before that. We'll also need a way to explicitly set and clear the
+corresponding CS bit at a certain moment of the operation. Let's alter
+the set_cs function then to also de-activate the CS, when it's required.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 ---
- drivers/spi/spi-dw-core.c | 43 +++++++++++++++++++++++++++++++--------
- drivers/spi/spi-dw-dma.c  | 11 ++--------
- drivers/spi/spi-dw.h      |  1 +
- 3 files changed, 37 insertions(+), 18 deletions(-)
+ drivers/spi/spi-dw-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 76e323db170f..8480da49a6a1 100644
+index ac87ff6d8be4..76e323db170f 100644
 --- a/drivers/spi/spi-dw-core.c
 +++ b/drivers/spi/spi-dw-core.c
-@@ -169,23 +169,48 @@ static void dw_reader(struct dw_spi *dws)
- 	}
- }
- 
--static void int_error_stop(struct dw_spi *dws, const char *msg)
-+int dw_spi_check_status(struct dw_spi *dws, bool raw)
- {
--	spi_reset_chip(dws);
-+	u32 irq_status;
-+	int ret = 0;
-+
-+	if (raw)
-+		irq_status = dw_readl(dws, DW_SPI_RISR);
+@@ -100,7 +100,7 @@ void dw_spi_set_cs(struct spi_device *spi, bool enable)
+ 	 */
+ 	if (cs_high == enable)
+ 		dw_writel(dws, DW_SPI_SER, BIT(spi->chip_select));
+-	else if (dws->caps & DW_SPI_CAP_CS_OVERRIDE)
 +	else
-+		irq_status = dw_readl(dws, DW_SPI_ISR);
-+
-+	if (irq_status & SPI_INT_RXOI) {
-+		dev_err(&dws->master->dev, "RX FIFO overflow detected\n");
-+		ret = -EIO;
-+	}
-+
-+	if (irq_status & SPI_INT_RXUI) {
-+		dev_err(&dws->master->dev, "RX FIFO underflow detected\n");
-+		ret = -EIO;
-+	}
- 
--	dev_err(&dws->master->dev, "%s\n", msg);
--	dws->master->cur_msg->status = -EIO;
--	spi_finalize_current_transfer(dws->master);
-+	if (irq_status & SPI_INT_TXOI) {
-+		dev_err(&dws->master->dev, "TX FIFO overflow detected\n");
-+		ret = -EIO;
-+	}
-+
-+	/* Generically handle the erroneous situation */
-+	if (ret) {
-+		spi_reset_chip(dws);
-+		if (dws->master->cur_msg)
-+			dws->master->cur_msg->status = ret;
-+	}
-+
-+	return ret;
+ 		dw_writel(dws, DW_SPI_SER, 0);
  }
-+EXPORT_SYMBOL_GPL(dw_spi_check_status);
- 
- static irqreturn_t dw_spi_transfer_handler(struct dw_spi *dws)
- {
- 	u16 irq_status = dw_readl(dws, DW_SPI_ISR);
- 
--	/* Error handling */
--	if (irq_status & (SPI_INT_TXOI | SPI_INT_RXOI | SPI_INT_RXUI)) {
--		dw_readl(dws, DW_SPI_ICR);
--		int_error_stop(dws, "interrupt_transfer: fifo overrun/underrun");
-+	if (dw_spi_check_status(dws, false)) {
-+		spi_finalize_current_transfer(dws->master);
- 		return IRQ_HANDLED;
- 	}
- 
-diff --git a/drivers/spi/spi-dw-dma.c b/drivers/spi/spi-dw-dma.c
-index 9db119dc5554..1969b09b4f5e 100644
---- a/drivers/spi/spi-dw-dma.c
-+++ b/drivers/spi/spi-dw-dma.c
-@@ -144,17 +144,10 @@ static void dw_spi_dma_exit(struct dw_spi *dws)
- 
- static irqreturn_t dw_spi_dma_transfer_handler(struct dw_spi *dws)
- {
--	u16 irq_status = dw_readl(dws, DW_SPI_ISR);
-+	dw_spi_check_status(dws, false);
- 
--	if (!irq_status)
--		return IRQ_NONE;
--
--	dw_readl(dws, DW_SPI_ICR);
--	spi_reset_chip(dws);
--
--	dev_err(&dws->master->dev, "%s: FIFO overrun/underrun\n", __func__);
--	dws->master->cur_msg->status = -EIO;
- 	complete(&dws->dma_completion);
-+
- 	return IRQ_HANDLED;
- }
- 
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 946065201c9c..5eb98ece2f2a 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -261,6 +261,7 @@ static inline void spi_shutdown_chip(struct dw_spi *dws)
- extern void dw_spi_set_cs(struct spi_device *spi, bool enable);
- extern void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
- 				 struct dw_spi_cfg *cfg);
-+extern int dw_spi_check_status(struct dw_spi *dws, bool raw);
- extern int dw_spi_add_host(struct device *dev, struct dw_spi *dws);
- extern void dw_spi_remove_host(struct dw_spi *dws);
- extern int dw_spi_suspend_host(struct dw_spi *dws);
+ EXPORT_SYMBOL_GPL(dw_spi_set_cs);
 -- 
 2.27.0
 

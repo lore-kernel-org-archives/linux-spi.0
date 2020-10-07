@@ -4,31 +4,32 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BBBD9C43467
-	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:56:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 33992C433E7
+	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:56:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 92363206E7
-	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:56:13 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id EA96720714
+	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:56:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728956AbgJGX4C (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 7 Oct 2020 19:56:02 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:45788 "EHLO
+        id S1727955AbgJGX4P (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 7 Oct 2020 19:56:15 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:45780 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728551AbgJGXzb (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 7 Oct 2020 19:55:31 -0400
+        with ESMTP id S1728971AbgJGXzm (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 7 Oct 2020 19:55:42 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 7960E800114E;
-        Wed,  7 Oct 2020 23:55:24 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 7C3A180023F6;
+        Wed,  7 Oct 2020 23:55:30 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id rKSKwG4lr4Ml; Thu,  8 Oct 2020 02:55:24 +0300 (MSK)
+        with ESMTP id 6299LsjrfWOj; Thu,  8 Oct 2020 02:55:29 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>,
-        Serge Semin <fancer.lancer@gmail.com>
+        Serge Semin <fancer.lancer@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>
 CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
         Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>,
@@ -37,11 +38,11 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Lars Povlsen <lars.povlsen@microchip.com>,
         "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
-        Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v4 11/21] spi: dw: Unmask IRQs after enabling the chip
-Date:   Thu, 8 Oct 2020 02:55:00 +0300
-Message-ID: <20201007235511.4935-12-Sergey.Semin@baikalelectronics.ru>
+        <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Rob Herring <robh@kernel.org>
+Subject: [PATCH v4 20/21] dt-bindings: spi: dw: Add Baikal-T1 SPI Controllers
+Date:   Thu, 8 Oct 2020 02:55:09 +0300
+Message-ID: <20201007235511.4935-21-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20201007235511.4935-1-Sergey.Semin@baikalelectronics.ru>
 References: <20201007235511.4935-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,40 +53,97 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-It's theoretically erroneous to enable IRQ before the chip is turned on.
-If IRQ handler gets executed before the chip is enabled, then any data
-written to the Tx FIFO will be just ignored.
+These controllers are based on the DW APB SSI IP-core and embedded into
+the SoC, so two of them are equipped with IRQ, DMA, 64 words FIFOs and 4
+native CS, while another one as being utilized by the Baikal-T1 System
+Boot Controller has got a very limited resources: no IRQ, no DMA, only a
+single native chip-select and just 8 bytes Tx/Rx FIFOs available. That's
+why we have to mark the IRQ to be optional for the later interface.
 
-I say "theoretically" because we haven't noticed any problem with that,
-but let's fix it anyway just in case...
+The SPI controller embedded into the Baikal-T1 System Boot Controller can
+be also used to directly access an external SPI flash by means of a
+dedicated FSM. The corresponding MMIO region availability is switchable by
+the embedded multiplexor, which phandle can be specified in the dts node.
 
+* We added a new example to test out the non-standard Baikal-T1 System
+Boot SPI Controller DT binding.
+
+Co-developed-by: Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>
+Signed-off-by: Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Reviewed-by: Rob Herring <robh@kernel.org>
 ---
- drivers/spi/spi-dw-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../bindings/spi/snps,dw-apb-ssi.yaml         | 33 +++++++++++++++++--
+ 1 file changed, 31 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index e7ffcfff6594..89e5428c8de6 100644
---- a/drivers/spi/spi-dw-core.c
-+++ b/drivers/spi/spi-dw-core.c
-@@ -376,8 +376,6 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 			spi_enable_chip(dws, 1);
- 			return ret;
- 		}
--	} else {
--		dw_spi_irq_setup(dws);
- 	}
+diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+index c62cbe79f00d..d6ae35777dac 100644
+--- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
++++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+@@ -22,6 +22,21 @@ allOf:
+       properties:
+         reg:
+           minItems: 2
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - baikal,bt1-sys-ssi
++    then:
++      properties:
++        mux-controls:
++          maxItems: 1
++      required:
++        - mux-controls
++    else:
++      required:
++        - interrupts
  
- 	spi_enable_chip(dws, 1);
-@@ -385,6 +383,8 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 	if (dws->dma_mapped)
- 		return dws->dma_ops->dma_transfer(dws, transfer);
+ properties:
+   compatible:
+@@ -44,12 +59,16 @@ properties:
+           - const: snps,dw-apb-ssi
+       - description: Intel Keem Bay SPI Controller
+         const: intel,keembay-ssi
++      - description: Baikal-T1 SPI Controller
++        const: baikal,bt1-ssi
++      - description: Baikal-T1 System Boot SPI Controller
++        const: baikal,bt1-sys-ssi
  
-+	dw_spi_irq_setup(dws);
-+
- 	return 1;
- }
+   reg:
+     minItems: 1
+     items:
+       - description: DW APB SSI controller memory mapped registers
+-      - description: SPI MST region map
++      - description: SPI MST region map or directly mapped SPI ROM
  
+   interrupts:
+     maxItems: 1
+@@ -114,7 +133,6 @@ required:
+   - reg
+   - "#address-cells"
+   - "#size-cells"
+-  - interrupts
+   - clocks
+ 
+ examples:
+@@ -130,4 +148,15 @@ examples:
+       cs-gpios = <&gpio0 13 0>,
+                  <&gpio0 14 0>;
+     };
++  - |
++    spi@1f040100 {
++      compatible = "baikal,bt1-sys-ssi";
++      reg = <0x1f040100 0x900>,
++            <0x1c000000 0x1000000>;
++      #address-cells = <1>;
++      #size-cells = <0>;
++      mux-controls = <&boot_mux>;
++      clocks = <&ccu_sys>;
++      clock-names = "ssi_clk";
++    };
+ ...
 -- 
 2.27.0
 

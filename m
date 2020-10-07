@@ -7,25 +7,25 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F793C4727E
-	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:56:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 27DCDC433E7
+	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:56:44 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id CE844206E7
-	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:56:30 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DB03A206E7
+	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:56:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728560AbgJGX4Q (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 7 Oct 2020 19:56:16 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:45790 "EHLO
+        id S1729003AbgJGX4d (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 7 Oct 2020 19:56:33 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:45760 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728969AbgJGXzl (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 7 Oct 2020 19:55:41 -0400
+        with ESMTP id S1728480AbgJGXza (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 7 Oct 2020 19:55:30 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id E588B803016F;
-        Wed,  7 Oct 2020 23:55:29 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 314F480305E2;
+        Wed,  7 Oct 2020 23:55:22 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id c9Jpki4uTo31; Thu,  8 Oct 2020 02:55:29 +0300 (MSK)
+        with ESMTP id sEVfmK9HCbR4; Thu,  8 Oct 2020 02:55:21 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>,
         Serge Semin <fancer.lancer@gmail.com>
@@ -39,9 +39,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v4 19/21] spi: dw: Add poll-based SPI transfers support
-Date:   Thu, 8 Oct 2020 02:55:08 +0300
-Message-ID: <20201007235511.4935-20-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH v4 07/21] spi: dw: Add DW SPI controller config structure
+Date:   Thu, 8 Oct 2020 02:54:56 +0300
+Message-ID: <20201007235511.4935-8-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20201007235511.4935-1-Sergey.Semin@baikalelectronics.ru>
 References: <20201007235511.4935-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,92 +52,143 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-A functionality of the poll-based transfer has been removed by
-commit 1ceb09717e98 ("spi: dw: remove cs_control and poll_mode members
-from chip_data") with a justification that "there is no user of one
-anymore". It turns out one of our DW APB SSI core is synthesized with no
-IRQ line attached and the only possible way of using it is to implement a
-poll-based SPI transfer procedure. So we have to get the removed
-functionality back, but with some alterations described below.
+DW APB SSI controller can be used by the two SPI core interfaces:
+traditional SPI transfers and SPI memory operations. The controller needs
+to be accordingly configured at runtime when the corresponding operations
+are executed. In order to do that for the both interfaces from a single
+function we introduce a new data wrapper for the transfer mode, data
+width, number of data frames (for the automatic data transfer) and the bus
+frequency. It will be used by the update_config() method to tune the DW
+APB SSI up.
 
-First of all the poll-based transfer is activated only if the DW SPI
-controller doesn't have an IRQ line attached and the Linux IRQ number is
-initialized with the IRQ_NOTCONNECTED value. Secondly the transfer
-procedure is now executed with a delay performed between writer and reader
-methods. The delay value is calculated based on the number of data words
-expected to be received on the current iteration. Finally the errors
-status is checked on each iteration.
+The update_config() method is made exported to be used not only by the DW
+SPI core driver, but by the glue layer drivers too. This will be required
+in a coming further commit.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 ---
- drivers/spi/spi-dw-core.c | 40 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 39 insertions(+), 1 deletion(-)
+ drivers/spi/spi-dw-core.c | 29 +++++++++++++++++------------
+ drivers/spi/spi-dw.h      | 10 ++++++++++
+ 2 files changed, 27 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index bcfa224e0e43..2e50cc0a9291 100644
+index 12080ea2ad84..01ab743bf177 100644
 --- a/drivers/spi/spi-dw-core.c
 +++ b/drivers/spi/spi-dw-core.c
-@@ -364,6 +364,42 @@ static void dw_spi_irq_setup(struct dw_spi *dws)
- 	dws->transfer_handler = dw_spi_transfer_handler;
+@@ -20,10 +20,8 @@
+ #include <linux/debugfs.h>
+ #endif
+ 
+-/* Slave spi_dev related */
++/* Slave spi_device related */
+ struct chip_data {
+-	u8 tmode;		/* TR/TO/RO/EEPROM */
+-
+ 	u32 cr0;
+ 	u32 rx_sample_dly;	/* RX sample delay */
+ };
+@@ -266,8 +264,8 @@ static u32 dw_spi_prepare_cr0(struct dw_spi *dws, struct spi_device *spi)
+ 	return cr0;
  }
  
-+/*
-+ * The iterative procedure of the poll-based transfer is simple: write as much
-+ * as possible to the Tx FIFO, wait until the pending to receive data is ready
-+ * to be read, read it from the Rx FIFO and check whether the performed
-+ * procedure has been successful.
-+ *
-+ * Note this method the same way as the IRQ-based transfer won't work well for
-+ * the SPI devices connected to the controller with native CS due to the
-+ * automatic CS assertion/de-assertion.
-+ */
-+static int dw_spi_poll_transfer(struct dw_spi *dws,
-+				struct spi_transfer *transfer)
-+{
-+	struct spi_delay delay;
-+	u16 nbits;
-+	int ret;
+-static void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
+-				 struct spi_transfer *transfer)
++void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
++			  struct dw_spi_cfg *cfg)
+ {
+ 	struct chip_data *chip = spi_get_ctldata(spi);
+ 	u32 cr0 = chip->cr0;
+@@ -275,19 +273,22 @@ static void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
+ 	u16 clk_div;
+ 
+ 	/* CTRLR0[ 4/3: 0] Data Frame Size */
+-	cr0 |= (transfer->bits_per_word - 1);
++	cr0 |= (cfg->dfs - 1);
+ 
+ 	if (!(dws->caps & DW_SPI_CAP_DWC_SSI))
+ 		/* CTRLR0[ 9:8] Transfer Mode */
+-		cr0 |= chip->tmode << SPI_TMOD_OFFSET;
++		cr0 |= cfg->tmode << SPI_TMOD_OFFSET;
+ 	else
+ 		/* CTRLR0[11:10] Transfer Mode */
+-		cr0 |= chip->tmode << DWC_SSI_CTRLR0_TMOD_OFFSET;
++		cr0 |= cfg->tmode << DWC_SSI_CTRLR0_TMOD_OFFSET;
+ 
+ 	dw_writel(dws, DW_SPI_CTRLR0, cr0);
+ 
++	if (cfg->tmode == SPI_TMOD_EPROMREAD || cfg->tmode == SPI_TMOD_RO)
++		dw_writel(dws, DW_SPI_CTRLR1, cfg->ndf ? cfg->ndf - 1 : 0);
 +
-+	delay.unit = SPI_DELAY_UNIT_SCK;
-+	nbits = dws->n_bytes * BITS_PER_BYTE;
-+
-+	do {
-+		dw_writer(dws);
-+
-+		delay.value = nbits * (dws->rx_len - dws->tx_len);
-+		spi_delay_exec(&delay, transfer);
-+
-+		dw_reader(dws);
-+
-+		ret = dw_spi_check_status(dws, true);
-+		if (ret)
-+			return ret;
-+	} while (dws->rx_len);
-+
-+	return 0;
-+}
-+
+ 	/* Note DW APB SSI clock divider doesn't support odd numbers */
+-	clk_div = (DIV_ROUND_UP(dws->max_freq, transfer->speed_hz) + 1) & 0xfffe;
++	clk_div = (DIV_ROUND_UP(dws->max_freq, cfg->freq) + 1) & 0xfffe;
+ 	speed_hz = dws->max_freq / clk_div;
+ 
+ 	if (dws->current_freq != speed_hz) {
+@@ -301,11 +302,17 @@ static void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
+ 		dws->cur_rx_sample_dly = chip->rx_sample_dly;
+ 	}
+ }
++EXPORT_SYMBOL_GPL(dw_spi_update_config);
+ 
  static int dw_spi_transfer_one(struct spi_controller *master,
  		struct spi_device *spi, struct spi_transfer *transfer)
  {
-@@ -408,6 +444,8 @@ static int dw_spi_transfer_one(struct spi_controller *master,
+ 	struct dw_spi *dws = spi_controller_get_devdata(master);
++	struct dw_spi_cfg cfg = {
++		.tmode = SPI_TMOD_TR,
++		.dfs = transfer->bits_per_word,
++		.freq = transfer->speed_hz,
++	};
+ 	u8 imask = 0;
+ 	u16 txlevel = 0;
+ 	int ret;
+@@ -323,7 +330,7 @@ static int dw_spi_transfer_one(struct spi_controller *master,
  
- 	if (dws->dma_mapped)
- 		return dws->dma_ops->dma_transfer(dws, transfer);
-+	else if (dws->irq == IRQ_NOTCONNECTED)
-+		return dw_spi_poll_transfer(dws, transfer);
+ 	spi_enable_chip(dws, 0);
  
- 	dw_spi_irq_setup(dws);
+-	dw_spi_update_config(dws, spi, transfer);
++	dw_spi_update_config(dws, spi, &cfg);
  
-@@ -817,7 +855,7 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+ 	transfer->effective_speed_hz = dws->current_freq;
  
- 	ret = request_irq(dws->irq, dw_spi_irq, IRQF_SHARED, dev_name(dev),
- 			  master);
--	if (ret < 0) {
-+	if (ret < 0 && ret != -ENOTCONN) {
- 		dev_err(dev, "can not get IRQ\n");
- 		goto err_free_master;
- 	}
+@@ -409,8 +416,6 @@ static int dw_spi_setup(struct spi_device *spi)
+ 	 */
+ 	chip->cr0 = dw_spi_prepare_cr0(dws, spi);
+ 
+-	chip->tmode = SPI_TMOD_TR;
+-
+ 	return 0;
+ }
+ 
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index c02351cf2f99..2a2346438564 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -111,6 +111,14 @@ enum dw_ssi_type {
+ #define DW_SPI_CAP_KEEMBAY_MST		BIT(1)
+ #define DW_SPI_CAP_DWC_SSI		BIT(2)
+ 
++/* Slave spi_transfer/spi_mem_op related */
++struct dw_spi_cfg {
++	u8 tmode;
++	u8 dfs;
++	u32 ndf;
++	u32 freq;
++};
++
+ struct dw_spi;
+ struct dw_spi_dma_ops {
+ 	int (*dma_init)(struct device *dev, struct dw_spi *dws);
+@@ -249,6 +257,8 @@ static inline void spi_shutdown_chip(struct dw_spi *dws)
+ }
+ 
+ extern void dw_spi_set_cs(struct spi_device *spi, bool enable);
++extern void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
++				 struct dw_spi_cfg *cfg);
+ extern int dw_spi_add_host(struct device *dev, struct dw_spi *dws);
+ extern void dw_spi_remove_host(struct dw_spi *dws);
+ extern int dw_spi_suspend_host(struct dw_spi *dws);
 -- 
 2.27.0
 

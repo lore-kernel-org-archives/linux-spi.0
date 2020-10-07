@@ -2,97 +2,74 @@ Return-Path: <SRS0=3KJz=DO=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-4.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7BE19C433E7
-	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:56:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6CC60C43467
+	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:57:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 48BE020714
-	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:56:58 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2519A207EA
+	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:57:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1602115054;
+	bh=H9JrjGRQUIS+IyMJI4boGfJvO4kKVWrxSkrQkk1gR3E=;
+	h=Subject:From:Date:To:List-ID:From;
+	b=cFpQIFaWKdwRO219m54d//GFwahkB7D4lCtow8RObKULgrDoR5dPUv16DhrRfeF11
+	 woK9Nu17mCEnl0XwHMZBfcos8HWLftUkR7f7KO1JlEEvncqIslH4RHsOcD1luMu8ku
+	 sv9ZhifryKzxT72a/3D1s/fShBLquuKwpwExDHsk=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728353AbgJGXzZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 7 Oct 2020 19:55:25 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:45534 "EHLO
-        mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727718AbgJGXzZ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 7 Oct 2020 19:55:25 -0400
-Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 08BCD803086A;
-        Wed,  7 Oct 2020 23:55:17 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at baikalelectronics.ru
-Received: from mail.baikalelectronics.ru ([127.0.0.1])
-        by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id em9CaKN3PKJB; Thu,  8 Oct 2020 02:55:16 +0300 (MSK)
-From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
-To:     Mark Brown <broonie@kernel.org>,
-        Serge Semin <fancer.lancer@gmail.com>
-CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
-        Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>,
-        Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Lars Povlsen <lars.povlsen@microchip.com>,
-        "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
-        Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v4 01/21] spi: dw: Use an explicit set_cs assignment
-Date:   Thu, 8 Oct 2020 02:54:50 +0300
-Message-ID: <20201007235511.4935-2-Sergey.Semin@baikalelectronics.ru>
-In-Reply-To: <20201007235511.4935-1-Sergey.Semin@baikalelectronics.ru>
-References: <20201007235511.4935-1-Sergey.Semin@baikalelectronics.ru>
+        id S1726469AbgJGX5d (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 7 Oct 2020 19:57:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44140 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726400AbgJGX5d (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 7 Oct 2020 19:57:33 -0400
+Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1602115053;
+        bh=H9JrjGRQUIS+IyMJI4boGfJvO4kKVWrxSkrQkk1gR3E=;
+        h=Subject:From:Date:To:From;
+        b=N+hTZcAqhDa+60nHmWtC+crILyitb8D9HnLQOuXcJwJcGoH8EzLMyBplx2hMycz9x
+         oxOyXs0Ts0M+HHvGT0t10OfT8XDtLZPo3Tj/f6b/I9lodvOspx2NPl4qp4Lq8Iz7Zd
+         r/OrcAPhrd/Gmy7yckIvRdq3/ZzzLG+AzMcEIfP0=
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <160211505318.20335.5726699008406953003.git-patchwork-housekeeping@kernel.org>
+Date:   Wed, 07 Oct 2020 23:57:33 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Simplify the dw_spi_add_host() method a bit by replacing the currently
-implemented default set_cs callback setting up and later having it
-overwritten by a custom function with direct if-else-based callback
-assignment.
+Latest series: [v4] spi: dw: Add full Baikal-T1 SPI Controllers support (2020-10-07T23:54:55)
+  Superseding: [v3] spi: dw: Add full Baikal-T1 SPI Controllers support (2020-10-01T22:28:09):
+    [v3,01/21] spi: dw: Use an explicit set_cs assignment
+    [v3,02/21] spi: dw: Add DWC SSI capability
+    [v3,03/21] spi: dw: Detach SPI device specific CR0 config method
+    [v3,04/21] spi: dw: Update SPI bus speed in a config function
+    [v3,05/21] spi: dw: Simplify the SPI bus speed config procedure
+    [v3,06/21] spi: dw: Update Rx sample delay in the config function
+    [v3,07/21] spi: dw: Add DW SPI controller config structure
+    [v3,08/21] spi: dw: Refactor data IO procedure
+    [v3,09/21] spi: dw: Refactor IRQ-based SPI transfer procedure
+    [v3,10/21] spi: dw: Perform IRQ setup in a dedicated function
+    [v3,11/21] spi: dw: Unmask IRQs after enabling the chip
+    [v3,12/21] spi: dw: Discard chip enabling on DMA setup error
+    [v3,13/21] spi: dw: De-assert chip-select on reset
+    [v3,14/21] spi: dw: Explicitly de-assert CS on SPI transfer completion
+    [v3,15/21] spi: dw: Move num-of retries parameter to the header file
+    [v3,16/21] spi: dw: Add generic DW SSI status-check method
+    [v3,17/21] spi: dw: Add memory operations support
+    [v3,18/21] spi: dw: Introduce max mem-ops SPI bus frequency setting
+    [v3,19/21] spi: dw: Add poll-based SPI transfers support
+    [v3,20/21] dt-bindings: spi: dw: Add Baikal-T1 SPI Controllers
+    [v3,21/21] spi: dw: Add Baikal-T1 SPI Controller glue driver
 
-Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 
----
-
-Changelog v2:
-- Replace the ternary operator with the if-else statement.
----
- drivers/spi/spi-dw-core.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index d8e92f53e2bc..3a7fdca8d335 100644
---- a/drivers/spi/spi-dw-core.c
-+++ b/drivers/spi/spi-dw-core.c
-@@ -477,7 +477,10 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 	master->num_chipselect = dws->num_cs;
- 	master->setup = dw_spi_setup;
- 	master->cleanup = dw_spi_cleanup;
--	master->set_cs = dw_spi_set_cs;
-+	if (dws->set_cs)
-+		master->set_cs = dws->set_cs;
-+	else
-+		master->set_cs = dw_spi_set_cs;
- 	master->transfer_one = dw_spi_transfer_one;
- 	master->handle_err = dw_spi_handle_err;
- 	master->max_speed_hz = dws->max_freq;
-@@ -486,9 +489,6 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 	master->flags = SPI_MASTER_GPIO_SS;
- 	master->auto_runtime_pm = true;
- 
--	if (dws->set_cs)
--		master->set_cs = dws->set_cs;
--
- 	/* Get default rx sample delay */
- 	device_property_read_u32(dev, "rx-sample-delay-ns",
- 				 &dws->def_rx_sample_dly_ns);
 -- 
-2.27.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

@@ -4,28 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 417EBC47423
-	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:55:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B9F33C4727F
+	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:55:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E86C9206E7
+	by mail.kernel.org (Postfix) with ESMTP id 7E484207EA
 	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:55:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728976AbgJGXzj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 7 Oct 2020 19:55:39 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:45878 "EHLO
+        id S1728966AbgJGXzi (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 7 Oct 2020 19:55:38 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:45778 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728951AbgJGXzg (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 7 Oct 2020 19:55:36 -0400
+        with ESMTP id S1728544AbgJGXzc (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 7 Oct 2020 19:55:32 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 478AF803086A;
-        Wed,  7 Oct 2020 23:55:29 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 0303E803202E;
+        Wed,  7 Oct 2020 23:55:24 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id g6s_lKlK-klo; Thu,  8 Oct 2020 02:55:28 +0300 (MSK)
+        with ESMTP id UfJN-bNMZrz9; Thu,  8 Oct 2020 02:55:23 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>,
         Serge Semin <fancer.lancer@gmail.com>
@@ -39,9 +39,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v4 18/21] spi: dw: Introduce max mem-ops SPI bus frequency setting
-Date:   Thu, 8 Oct 2020 02:55:07 +0300
-Message-ID: <20201007235511.4935-19-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH v4 10/21] spi: dw: Perform IRQ setup in a dedicated function
+Date:   Thu, 8 Oct 2020 02:54:59 +0300
+Message-ID: <20201007235511.4935-11-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20201007235511.4935-1-Sergey.Semin@baikalelectronics.ru>
 References: <20201007235511.4935-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,59 +52,90 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-In some circumstances the current implementation of the SPI memory
-operations may occasionally fail even though they are executed in the
-atomic context. This may happen if the system bus is relatively slow in
-comparison to the SPI bus frequency, or there is a concurrent access to
-it, which makes the MMIO-operations occasionally stalling before
-push-pulling data from the DW APB SPI FIFOs. These two problems we've
-discovered on the Baikal-T1 SoC. In order to fix them we have no choice
-but to set an artificial limitation on the SPI bus speed.
-
-Note currently this limitation will be only applicable for the memory
-operations, since the standard SPI core interface is implemented with an
-assumption that there is no problem with the automatic CS toggling.
+In order to make the transfer_one() callback method more readable and
+for unification with the DMA-based transfer, let's detach the IRQ setup
+procedure into a dedicated function. While at it rename the IRQ-based
+transfer handler function to be dw_spi-prefixe and looking more like the
+DMA-related one.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 ---
- drivers/spi/spi-dw-core.c | 4 +++-
- drivers/spi/spi-dw.h      | 1 +
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/spi/spi-dw-core.c | 41 ++++++++++++++++++++++-----------------
+ 1 file changed, 23 insertions(+), 18 deletions(-)
 
 diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 8eb3b31b376d..bcfa224e0e43 100644
+index 4a45610c85f1..e7ffcfff6594 100644
 --- a/drivers/spi/spi-dw-core.c
 +++ b/drivers/spi/spi-dw-core.c
-@@ -629,7 +629,7 @@ static int dw_spi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 	 * operation. Transmit-only mode is suitable for the rest of them.
- 	 */
- 	cfg.dfs = 8;
--	cfg.freq = mem->spi->max_speed_hz;
-+	cfg.freq = clamp(mem->spi->max_speed_hz, 0U, dws->max_mem_freq);
- 	if (op->data.dir == SPI_MEM_DATA_IN) {
- 		cfg.tmode = SPI_TMOD_EPROMREAD;
- 		cfg.ndf = op->data.nbytes;
-@@ -717,6 +717,8 @@ static void dw_spi_init_mem_ops(struct dw_spi *dws)
- 		dws->mem_ops.adjust_op_size = dw_spi_adjust_mem_op_size;
- 		dws->mem_ops.supports_op = dw_spi_supports_mem_op;
- 		dws->mem_ops.exec_op = dw_spi_exec_mem_op;
-+		if (!dws->max_mem_freq)
-+			dws->max_mem_freq = dws->max_freq;
- 	}
+@@ -178,7 +178,7 @@ static void int_error_stop(struct dw_spi *dws, const char *msg)
+ 	spi_finalize_current_transfer(dws->master);
  }
  
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 4b08fe34a85d..dc5781236cc6 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -148,6 +148,7 @@ struct dw_spi {
- 	unsigned long		paddr;
- 	int			irq;
- 	u32			fifo_len;	/* depth of the FIFO buffer */
-+	u32			max_mem_freq;	/* max mem-ops bus freq */
- 	u32			max_freq;	/* max bus freq supported */
+-static irqreturn_t interrupt_transfer(struct dw_spi *dws)
++static irqreturn_t dw_spi_transfer_handler(struct dw_spi *dws)
+ {
+ 	u16 irq_status = dw_readl(dws, DW_SPI_ISR);
  
- 	u32			caps;		/* DW SPI capabilities */
+@@ -315,6 +315,27 @@ void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
+ }
+ EXPORT_SYMBOL_GPL(dw_spi_update_config);
+ 
++static void dw_spi_irq_setup(struct dw_spi *dws)
++{
++	u16 level;
++	u8 imask;
++
++	/*
++	 * Originally Tx and Rx data lengths match. Rx FIFO Threshold level
++	 * will be adjusted at the final stage of the IRQ-based SPI transfer
++	 * execution so not to lose the leftover of the incoming data.
++	 */
++	level = min_t(u16, dws->fifo_len / 2, dws->tx_len);
++	dw_writel(dws, DW_SPI_TXFTLR, level);
++	dw_writel(dws, DW_SPI_RXFTLR, level - 1);
++
++	imask = SPI_INT_TXEI | SPI_INT_TXOI | SPI_INT_RXUI | SPI_INT_RXOI |
++		SPI_INT_RXFI;
++	spi_umask_intr(dws, imask);
++
++	dws->transfer_handler = dw_spi_transfer_handler;
++}
++
+ static int dw_spi_transfer_one(struct spi_controller *master,
+ 		struct spi_device *spi, struct spi_transfer *transfer)
+ {
+@@ -324,8 +345,6 @@ static int dw_spi_transfer_one(struct spi_controller *master,
+ 		.dfs = transfer->bits_per_word,
+ 		.freq = transfer->speed_hz,
+ 	};
+-	u8 imask = 0;
+-	u16 txlevel = 0;
+ 	int ret;
+ 
+ 	dws->dma_mapped = 0;
+@@ -358,21 +377,7 @@ static int dw_spi_transfer_one(struct spi_controller *master,
+ 			return ret;
+ 		}
+ 	} else {
+-		/*
+-		 * Originally Tx and Rx data lengths match. Rx FIFO Threshold level
+-		 * will be adjusted at the final stage of the IRQ-based SPI transfer
+-		 * execution so not to lose the leftover of the incoming data.
+-		 */
+-		txlevel = min_t(u16, dws->fifo_len / 2, dws->tx_len);
+-		dw_writel(dws, DW_SPI_TXFTLR, txlevel);
+-		dw_writel(dws, DW_SPI_RXFTLR, txlevel - 1);
+-
+-		/* Set the interrupt mask */
+-		imask |= SPI_INT_TXEI | SPI_INT_TXOI |
+-			 SPI_INT_RXUI | SPI_INT_RXOI | SPI_INT_RXFI;
+-		spi_umask_intr(dws, imask);
+-
+-		dws->transfer_handler = interrupt_transfer;
++		dw_spi_irq_setup(dws);
+ 	}
+ 
+ 	spi_enable_chip(dws, 1);
 -- 
 2.27.0
 

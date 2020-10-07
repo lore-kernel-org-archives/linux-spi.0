@@ -4,28 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8EA81C4727F
-	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:56:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F793C4727E
+	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:56:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 614AF206E7
-	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:56:18 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CE844206E7
+	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:56:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729004AbgJGX4R (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 7 Oct 2020 19:56:17 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:45762 "EHLO
+        id S1728560AbgJGX4Q (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 7 Oct 2020 19:56:16 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:45790 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728487AbgJGXzb (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 7 Oct 2020 19:55:31 -0400
+        with ESMTP id S1728969AbgJGXzl (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 7 Oct 2020 19:55:41 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id D6FE0803202C;
-        Wed,  7 Oct 2020 23:55:22 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id E588B803016F;
+        Wed,  7 Oct 2020 23:55:29 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id foGjbNl7viMh; Thu,  8 Oct 2020 02:55:22 +0300 (MSK)
+        with ESMTP id c9Jpki4uTo31; Thu,  8 Oct 2020 02:55:29 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>,
         Serge Semin <fancer.lancer@gmail.com>
@@ -39,9 +39,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v4 08/21] spi: dw: Refactor data IO procedure
-Date:   Thu, 8 Oct 2020 02:54:57 +0300
-Message-ID: <20201007235511.4935-9-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH v4 19/21] spi: dw: Add poll-based SPI transfers support
+Date:   Thu, 8 Oct 2020 02:55:08 +0300
+Message-ID: <20201007235511.4935-20-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20201007235511.4935-1-Sergey.Semin@baikalelectronics.ru>
 References: <20201007235511.4935-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,148 +52,92 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The Tx and Rx data write/read procedure can be significantly simplified by
-using Tx/Rx transfer lengths instead of the end pointers. By having the
-Tx/Rx data leftover lengths (in the number of transfer words) we can get
-rid of all subtraction and division operations utilized here and there in
-the tx_max(), rx_max(), dw_writer() and dw_reader() methods. Such
-modification will not only give us the more optimized IO procedures, but
-will make the data IO methods much more readable than before.
+A functionality of the poll-based transfer has been removed by
+commit 1ceb09717e98 ("spi: dw: remove cs_control and poll_mode members
+from chip_data") with a justification that "there is no user of one
+anymore". It turns out one of our DW APB SSI core is synthesized with no
+IRQ line attached and the only possible way of using it is to implement a
+poll-based SPI transfer procedure. So we have to get the removed
+functionality back, but with some alterations described below.
+
+First of all the poll-based transfer is activated only if the DW SPI
+controller doesn't have an IRQ line attached and the Linux IRQ number is
+initialized with the IRQ_NOTCONNECTED value. Secondly the transfer
+procedure is now executed with a delay performed between writer and reader
+methods. The delay value is calculated based on the number of data words
+expected to be received on the current iteration. Finally the errors
+status is checked on each iteration.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 ---
- drivers/spi/spi-dw-core.c | 37 +++++++++++++++++--------------------
- drivers/spi/spi-dw.h      |  5 ++---
- 2 files changed, 19 insertions(+), 23 deletions(-)
+ drivers/spi/spi-dw-core.c | 40 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 39 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 01ab743bf177..3bb8aa3cba2b 100644
+index bcfa224e0e43..2e50cc0a9291 100644
 --- a/drivers/spi/spi-dw-core.c
 +++ b/drivers/spi/spi-dw-core.c
-@@ -108,9 +108,8 @@ EXPORT_SYMBOL_GPL(dw_spi_set_cs);
- /* Return the max entries we can fill into tx fifo */
- static inline u32 tx_max(struct dw_spi *dws)
- {
--	u32 tx_left, tx_room, rxtx_gap;
-+	u32 tx_room, rxtx_gap;
- 
--	tx_left = (dws->tx_end - dws->tx) / dws->n_bytes;
- 	tx_room = dws->fifo_len - dw_readl(dws, DW_SPI_TXFLR);
- 
- 	/*
-@@ -121,18 +120,15 @@ static inline u32 tx_max(struct dw_spi *dws)
- 	 * shift registers. So a control from sw point of
- 	 * view is taken.
- 	 */
--	rxtx_gap =  ((dws->rx_end - dws->rx) - (dws->tx_end - dws->tx))
--			/ dws->n_bytes;
-+	rxtx_gap = dws->fifo_len - (dws->rx_len - dws->tx_len);
- 
--	return min3(tx_left, tx_room, (u32) (dws->fifo_len - rxtx_gap));
-+	return min3((u32)dws->tx_len, tx_room, rxtx_gap);
+@@ -364,6 +364,42 @@ static void dw_spi_irq_setup(struct dw_spi *dws)
+ 	dws->transfer_handler = dw_spi_transfer_handler;
  }
  
- /* Return the max entries we should read out of rx fifo */
- static inline u32 rx_max(struct dw_spi *dws)
- {
--	u32 rx_left = (dws->rx_end - dws->rx) / dws->n_bytes;
--
--	return min_t(u32, rx_left, dw_readl(dws, DW_SPI_RXFLR));
-+	return min_t(u32, dws->rx_len, dw_readl(dws, DW_SPI_RXFLR));
- }
- 
- static void dw_writer(struct dw_spi *dws)
-@@ -141,15 +137,16 @@ static void dw_writer(struct dw_spi *dws)
- 	u16 txw = 0;
- 
- 	while (max--) {
--		/* Set the tx word if the transfer's original "tx" is not null */
--		if (dws->tx_end - dws->len) {
-+		if (dws->tx) {
- 			if (dws->n_bytes == 1)
- 				txw = *(u8 *)(dws->tx);
- 			else
- 				txw = *(u16 *)(dws->tx);
++/*
++ * The iterative procedure of the poll-based transfer is simple: write as much
++ * as possible to the Tx FIFO, wait until the pending to receive data is ready
++ * to be read, read it from the Rx FIFO and check whether the performed
++ * procedure has been successful.
++ *
++ * Note this method the same way as the IRQ-based transfer won't work well for
++ * the SPI devices connected to the controller with native CS due to the
++ * automatic CS assertion/de-assertion.
++ */
++static int dw_spi_poll_transfer(struct dw_spi *dws,
++				struct spi_transfer *transfer)
++{
++	struct spi_delay delay;
++	u16 nbits;
++	int ret;
 +
-+			dws->tx += dws->n_bytes;
- 		}
- 		dw_write_io_reg(dws, DW_SPI_DR, txw);
--		dws->tx += dws->n_bytes;
-+		--dws->tx_len;
- 	}
- }
- 
-@@ -160,14 +157,15 @@ static void dw_reader(struct dw_spi *dws)
- 
- 	while (max--) {
- 		rxw = dw_read_io_reg(dws, DW_SPI_DR);
--		/* Care rx only if the transfer's original "rx" is not null */
--		if (dws->rx_end - dws->len) {
-+		if (dws->rx) {
- 			if (dws->n_bytes == 1)
- 				*(u8 *)(dws->rx) = rxw;
- 			else
- 				*(u16 *)(dws->rx) = rxw;
++	delay.unit = SPI_DELAY_UNIT_SCK;
++	nbits = dws->n_bytes * BITS_PER_BYTE;
 +
-+			dws->rx += dws->n_bytes;
- 		}
--		dws->rx += dws->n_bytes;
-+		--dws->rx_len;
++	do {
++		dw_writer(dws);
++
++		delay.value = nbits * (dws->rx_len - dws->tx_len);
++		spi_delay_exec(&delay, transfer);
++
++		dw_reader(dws);
++
++		ret = dw_spi_check_status(dws, true);
++		if (ret)
++			return ret;
++	} while (dws->rx_len);
++
++	return 0;
++}
++
+ static int dw_spi_transfer_one(struct spi_controller *master,
+ 		struct spi_device *spi, struct spi_transfer *transfer)
+ {
+@@ -408,6 +444,8 @@ static int dw_spi_transfer_one(struct spi_controller *master,
+ 
+ 	if (dws->dma_mapped)
+ 		return dws->dma_ops->dma_transfer(dws, transfer);
++	else if (dws->irq == IRQ_NOTCONNECTED)
++		return dw_spi_poll_transfer(dws, transfer);
+ 
+ 	dw_spi_irq_setup(dws);
+ 
+@@ -817,7 +855,7 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+ 
+ 	ret = request_irq(dws->irq, dw_spi_irq, IRQF_SHARED, dev_name(dev),
+ 			  master);
+-	if (ret < 0) {
++	if (ret < 0 && ret != -ENOTCONN) {
+ 		dev_err(dev, "can not get IRQ\n");
+ 		goto err_free_master;
  	}
- }
- 
-@@ -192,7 +190,7 @@ static irqreturn_t interrupt_transfer(struct dw_spi *dws)
- 	}
- 
- 	dw_reader(dws);
--	if (dws->rx_end == dws->rx) {
-+	if (!dws->rx_len) {
- 		spi_mask_intr(dws, 0xff);
- 		spi_finalize_current_transfer(dws->master);
- 		return IRQ_HANDLED;
-@@ -320,12 +318,11 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 	dws->dma_mapped = 0;
- 	dws->n_bytes = DIV_ROUND_UP(transfer->bits_per_word, BITS_PER_BYTE);
- 	dws->tx = (void *)transfer->tx_buf;
--	dws->tx_end = dws->tx + transfer->len;
-+	dws->tx_len = transfer->len / dws->n_bytes;
- 	dws->rx = transfer->rx_buf;
--	dws->rx_end = dws->rx + transfer->len;
--	dws->len = transfer->len;
-+	dws->rx_len = dws->tx_len;
- 
--	/* Ensure dw->rx and dw->rx_end are visible */
-+	/* Ensure the data above is visible for all CPUs */
- 	smp_mb();
- 
- 	spi_enable_chip(dws, 0);
-@@ -352,7 +349,7 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 			return ret;
- 		}
- 	} else {
--		txlevel = min_t(u16, dws->fifo_len / 2, dws->len / dws->n_bytes);
-+		txlevel = min_t(u16, dws->fifo_len / 2, dws->tx_len);
- 		dw_writel(dws, DW_SPI_TXFTLR, txlevel);
- 
- 		/* Set the interrupt mask */
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 2a2346438564..cfc9f63acde4 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -147,11 +147,10 @@ struct dw_spi {
- 	void (*set_cs)(struct spi_device *spi, bool enable);
- 
- 	/* Current message transfer state info */
--	size_t			len;
- 	void			*tx;
--	void			*tx_end;
-+	unsigned int		tx_len;
- 	void			*rx;
--	void			*rx_end;
-+	unsigned int		rx_len;
- 	int			dma_mapped;
- 	u8			n_bytes;	/* current is a 1/2 bytes op */
- 	irqreturn_t		(*transfer_handler)(struct dw_spi *dws);
 -- 
 2.27.0
 

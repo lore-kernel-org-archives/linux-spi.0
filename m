@@ -7,25 +7,25 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B312C47425
-	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:56:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5CEBBC4363D
+	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:56:44 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D961B206FC
+	by mail.kernel.org (Postfix) with ESMTP id 17EAC206FC
 	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:56:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728512AbgJGXz1 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 7 Oct 2020 19:55:27 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:45600 "EHLO
+        id S1728965AbgJGX4b (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 7 Oct 2020 19:56:31 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:45790 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728323AbgJGXz0 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 7 Oct 2020 19:55:26 -0400
+        with ESMTP id S1728557AbgJGXzb (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 7 Oct 2020 19:55:31 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id A5B71803017D;
-        Wed,  7 Oct 2020 23:55:18 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id 16A3B803202F;
+        Wed,  7 Oct 2020 23:55:25 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 7RBZ2ypvDNoT; Thu,  8 Oct 2020 02:55:18 +0300 (MSK)
+        with ESMTP id AAQD5BvU9WRQ; Thu,  8 Oct 2020 02:55:24 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>,
         Serge Semin <fancer.lancer@gmail.com>
@@ -39,9 +39,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v4 03/21] spi: dw: Detach SPI device specific CR0 config method
-Date:   Thu, 8 Oct 2020 02:54:52 +0300
-Message-ID: <20201007235511.4935-4-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH v4 12/21] spi: dw: Discard chip enabling on DMA setup error
+Date:   Thu, 8 Oct 2020 02:55:01 +0300
+Message-ID: <20201007235511.4935-13-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20201007235511.4935-1-Sergey.Semin@baikalelectronics.ru>
 References: <20201007235511.4935-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,121 +52,35 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Indeed there is no point in detecting the SPI peripheral device parameters
-and initializing the CR0 register fields each time an SPI transfer is
-executed. Instead let's define a dedicated CR0 chip-data member, which
-will be initialized in accordance with the SPI device settings at the
-moment of setting it up.
+It's pointless to enable the chip back if the DMA setup procedure fails,
+since we'll disable it on the next transfer anyway. For the same reason We
+don't do that in case of a failure detected in any other methods called
+from the transfer_one() method.
 
-By doing so we'll finally make the SPI device chip_data serving as it's
-supposed to - to preserve the SPI device specific DW SPI configuration.
-See spi-fsl-dspi.c, spi-pl022.c, spi-pxa2xx.c drivers for example of the
-way the chip data is utilized.
+While at it consider any non-zero value returned from the dma_setup
+callback to be erroneous as it's supposed to be in the kernel.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-
 ---
-
-Changelog v4:
-- Rename dw_spi_get_cr0() to dw_spi_prepare_cr0().
----
- drivers/spi/spi-dw-core.c | 43 +++++++++++++++++++++++++++------------
- 1 file changed, 30 insertions(+), 13 deletions(-)
+ drivers/spi/spi-dw-core.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index be16fdaf7ce0..f7a2d1919c09 100644
+index 89e5428c8de6..ac87ff6d8be4 100644
 --- a/drivers/spi/spi-dw-core.c
 +++ b/drivers/spi/spi-dw-core.c
-@@ -27,6 +27,7 @@ struct chip_data {
- 	u16 clk_div;		/* baud rate divider */
- 	u32 speed_hz;		/* baud rate */
+@@ -372,10 +372,8 @@ static int dw_spi_transfer_one(struct spi_controller *master,
  
-+	u32 cr0;
- 	u32 rx_sample_dly;	/* RX sample delay */
- };
- 
-@@ -228,14 +229,9 @@ static irqreturn_t dw_spi_irq(int irq, void *dev_id)
- 	return dws->transfer_handler(dws);
- }
- 
--static void dw_spi_update_cr0(struct dw_spi *dws, struct spi_device *spi,
--			      struct spi_transfer *transfer)
-+static u32 dw_spi_prepare_cr0(struct dw_spi *dws, struct spi_device *spi)
- {
--	struct chip_data *chip = spi_get_ctldata(spi);
--	u32 cr0;
--
--	/* CTRLR0[ 4/3: 0] Data Frame Size */
--	cr0 = (transfer->bits_per_word - 1);
-+	u32 cr0 = 0;
- 
- 	if (!(dws->caps & DW_SPI_CAP_DWC_SSI)) {
- 		/* CTRLR0[ 5: 4] Frame Format */
-@@ -251,9 +247,6 @@ static void dw_spi_update_cr0(struct dw_spi *dws, struct spi_device *spi,
- 
- 		/* CTRLR0[11] Shift Register Loop */
- 		cr0 |= ((spi->mode & SPI_LOOP) ? 1 : 0) << SPI_SRL_OFFSET;
--
--		/* CTRLR0[ 9:8] Transfer Mode */
--		cr0 |= chip->tmode << SPI_TMOD_OFFSET;
- 	} else {
- 		/* CTRLR0[ 7: 6] Frame Format */
- 		cr0 |= SSI_MOTO_SPI << DWC_SSI_CTRLR0_FRF_OFFSET;
-@@ -269,13 +262,29 @@ static void dw_spi_update_cr0(struct dw_spi *dws, struct spi_device *spi,
- 		/* CTRLR0[13] Shift Register Loop */
- 		cr0 |= ((spi->mode & SPI_LOOP) ? 1 : 0) << DWC_SSI_CTRLR0_SRL_OFFSET;
- 
--		/* CTRLR0[11:10] Transfer Mode */
--		cr0 |= chip->tmode << DWC_SSI_CTRLR0_TMOD_OFFSET;
--
- 		if (dws->caps & DW_SPI_CAP_KEEMBAY_MST)
- 			cr0 |= DWC_SSI_CTRLR0_KEEMBAY_MST;
+ 	if (dws->dma_mapped) {
+ 		ret = dws->dma_ops->dma_setup(dws, transfer);
+-		if (ret < 0) {
+-			spi_enable_chip(dws, 1);
++		if (ret)
+ 			return ret;
+-		}
  	}
  
-+	return cr0;
-+}
-+
-+static void dw_spi_update_cr0(struct dw_spi *dws, struct spi_device *spi,
-+			      struct spi_transfer *transfer)
-+{
-+	struct chip_data *chip = spi_get_ctldata(spi);
-+	u32 cr0 = chip->cr0;
-+
-+	/* CTRLR0[ 4/3: 0] Data Frame Size */
-+	cr0 |= (transfer->bits_per_word - 1);
-+
-+	if (!(dws->caps & DW_SPI_CAP_DWC_SSI))
-+		/* CTRLR0[ 9:8] Transfer Mode */
-+		cr0 |= chip->tmode << SPI_TMOD_OFFSET;
-+	else
-+		/* CTRLR0[11:10] Transfer Mode */
-+		cr0 |= chip->tmode << DWC_SSI_CTRLR0_TMOD_OFFSET;
-+
- 	dw_writel(dws, DW_SPI_CTRLR0, cr0);
- }
- 
-@@ -373,6 +382,7 @@ static void dw_spi_handle_err(struct spi_controller *master,
- /* This may be called twice for each spi dev */
- static int dw_spi_setup(struct spi_device *spi)
- {
-+	struct dw_spi *dws = spi_controller_get_devdata(spi->controller);
- 	struct chip_data *chip;
- 
- 	/* Only alloc on first setup */
-@@ -396,6 +406,13 @@ static int dw_spi_setup(struct spi_device *spi)
- 							dws->max_freq);
- 	}
- 
-+	/*
-+	 * Update CR0 data each time the setup callback is invoked since
-+	 * the device parameters could have been changed, for instance, by
-+	 * the MMC SPI driver or something else.
-+	 */
-+	chip->cr0 = dw_spi_prepare_cr0(dws, spi);
-+
- 	chip->tmode = SPI_TMOD_TR;
- 
- 	return 0;
+ 	spi_enable_chip(dws, 1);
 -- 
 2.27.0
 

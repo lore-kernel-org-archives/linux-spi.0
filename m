@@ -7,25 +7,25 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B9F33C4727F
-	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:55:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A8C2C433E7
+	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:55:49 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7E484207EA
-	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:55:39 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 13211206E7
+	for <linux-spi@archiver.kernel.org>; Wed,  7 Oct 2020 23:55:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728966AbgJGXzi (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 7 Oct 2020 19:55:38 -0400
-Received: from mail.baikalelectronics.com ([87.245.175.226]:45778 "EHLO
+        id S1728972AbgJGXzj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 7 Oct 2020 19:55:39 -0400
+Received: from mail.baikalelectronics.com ([87.245.175.226]:45794 "EHLO
         mail.baikalelectronics.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728544AbgJGXzc (ORCPT
+        with ESMTP id S1728561AbgJGXzc (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Wed, 7 Oct 2020 19:55:32 -0400
 Received: from localhost (unknown [127.0.0.1])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 0303E803202E;
-        Wed,  7 Oct 2020 23:55:24 +0000 (UTC)
+        by mail.baikalelectronics.ru (Postfix) with ESMTP id BBF698001383;
+        Wed,  7 Oct 2020 23:55:25 +0000 (UTC)
 X-Virus-Scanned: amavisd-new at baikalelectronics.ru
 Received: from mail.baikalelectronics.ru ([127.0.0.1])
         by localhost (mail.baikalelectronics.ru [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id UfJN-bNMZrz9; Thu,  8 Oct 2020 02:55:23 +0300 (MSK)
+        with ESMTP id 8nk12loQyQ0V; Thu,  8 Oct 2020 02:55:25 +0300 (MSK)
 From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Mark Brown <broonie@kernel.org>,
         Serge Semin <fancer.lancer@gmail.com>
@@ -39,9 +39,9 @@ CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
         "wuxu . wu" <wuxu.wu@huawei.com>, Feng Tang <feng.tang@intel.com>,
         Rob Herring <robh+dt@kernel.org>, <linux-spi@vger.kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v4 10/21] spi: dw: Perform IRQ setup in a dedicated function
-Date:   Thu, 8 Oct 2020 02:54:59 +0300
-Message-ID: <20201007235511.4935-11-Sergey.Semin@baikalelectronics.ru>
+Subject: [PATCH v4 13/21] spi: dw: De-assert chip-select on reset
+Date:   Thu, 8 Oct 2020 02:55:02 +0300
+Message-ID: <20201007235511.4935-14-Sergey.Semin@baikalelectronics.ru>
 In-Reply-To: <20201007235511.4935-1-Sergey.Semin@baikalelectronics.ru>
 References: <20201007235511.4935-1-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
@@ -52,90 +52,42 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-In order to make the transfer_one() callback method more readable and
-for unification with the DMA-based transfer, let's detach the IRQ setup
-procedure into a dedicated function. While at it rename the IRQ-based
-transfer handler function to be dw_spi-prefixe and looking more like the
-DMA-related one.
+SPI memory operations implementation will require to have the CS register
+cleared before executing the operation in order not to have the
+transmission automatically started prior the Tx FIFO is pre-initialized.
+Let's clear the register then on explicit controller reset to fulfil the
+requirements in case of an error or having the CS left set by a bootloader
+or another software.
 
 Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 ---
- drivers/spi/spi-dw-core.c | 41 ++++++++++++++++++++++-----------------
- 1 file changed, 23 insertions(+), 18 deletions(-)
+ drivers/spi/spi-dw.h | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 4a45610c85f1..e7ffcfff6594 100644
---- a/drivers/spi/spi-dw-core.c
-+++ b/drivers/spi/spi-dw-core.c
-@@ -178,7 +178,7 @@ static void int_error_stop(struct dw_spi *dws, const char *msg)
- 	spi_finalize_current_transfer(dws->master);
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index cfc9f63acde4..eb1d46983319 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -237,15 +237,16 @@ static inline void spi_umask_intr(struct dw_spi *dws, u32 mask)
  }
  
--static irqreturn_t interrupt_transfer(struct dw_spi *dws)
-+static irqreturn_t dw_spi_transfer_handler(struct dw_spi *dws)
+ /*
+- * This disables the SPI controller, interrupts, clears the interrupts status,
+- * and re-enable the controller back. Transmit and receive FIFO buffers are
+- * cleared when the device is disabled.
++ * This disables the SPI controller, interrupts, clears the interrupts status
++ * and CS, then re-enables the controller back. Transmit and receive FIFO
++ * buffers are cleared when the device is disabled.
+  */
+ static inline void spi_reset_chip(struct dw_spi *dws)
  {
- 	u16 irq_status = dw_readl(dws, DW_SPI_ISR);
- 
-@@ -315,6 +315,27 @@ void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
- }
- EXPORT_SYMBOL_GPL(dw_spi_update_config);
- 
-+static void dw_spi_irq_setup(struct dw_spi *dws)
-+{
-+	u16 level;
-+	u8 imask;
-+
-+	/*
-+	 * Originally Tx and Rx data lengths match. Rx FIFO Threshold level
-+	 * will be adjusted at the final stage of the IRQ-based SPI transfer
-+	 * execution so not to lose the leftover of the incoming data.
-+	 */
-+	level = min_t(u16, dws->fifo_len / 2, dws->tx_len);
-+	dw_writel(dws, DW_SPI_TXFTLR, level);
-+	dw_writel(dws, DW_SPI_RXFTLR, level - 1);
-+
-+	imask = SPI_INT_TXEI | SPI_INT_TXOI | SPI_INT_RXUI | SPI_INT_RXOI |
-+		SPI_INT_RXFI;
-+	spi_umask_intr(dws, imask);
-+
-+	dws->transfer_handler = dw_spi_transfer_handler;
-+}
-+
- static int dw_spi_transfer_one(struct spi_controller *master,
- 		struct spi_device *spi, struct spi_transfer *transfer)
- {
-@@ -324,8 +345,6 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 		.dfs = transfer->bits_per_word,
- 		.freq = transfer->speed_hz,
- 	};
--	u8 imask = 0;
--	u16 txlevel = 0;
- 	int ret;
- 
- 	dws->dma_mapped = 0;
-@@ -358,21 +377,7 @@ static int dw_spi_transfer_one(struct spi_controller *master,
- 			return ret;
- 		}
- 	} else {
--		/*
--		 * Originally Tx and Rx data lengths match. Rx FIFO Threshold level
--		 * will be adjusted at the final stage of the IRQ-based SPI transfer
--		 * execution so not to lose the leftover of the incoming data.
--		 */
--		txlevel = min_t(u16, dws->fifo_len / 2, dws->tx_len);
--		dw_writel(dws, DW_SPI_TXFTLR, txlevel);
--		dw_writel(dws, DW_SPI_RXFTLR, txlevel - 1);
--
--		/* Set the interrupt mask */
--		imask |= SPI_INT_TXEI | SPI_INT_TXOI |
--			 SPI_INT_RXUI | SPI_INT_RXOI | SPI_INT_RXFI;
--		spi_umask_intr(dws, imask);
--
--		dws->transfer_handler = interrupt_transfer;
-+		dw_spi_irq_setup(dws);
- 	}
- 
+ 	spi_enable_chip(dws, 0);
+ 	spi_mask_intr(dws, 0xff);
+ 	dw_readl(dws, DW_SPI_ICR);
++	dw_writel(dws, DW_SPI_SER, 0);
  	spi_enable_chip(dws, 1);
+ }
+ 
 -- 
 2.27.0
 

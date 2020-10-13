@@ -2,29 +2,28 @@ Return-Path: <SRS0=pAD9=DU=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0D576C4363A
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E730C43467
 	for <linux-spi@archiver.kernel.org>; Tue, 13 Oct 2020 16:09:43 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D6E242525A
-	for <linux-spi@archiver.kernel.org>; Tue, 13 Oct 2020 16:09:42 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2F4CA2525E
+	for <linux-spi@archiver.kernel.org>; Tue, 13 Oct 2020 16:09:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389257AbgJMQJV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 13 Oct 2020 12:09:21 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:55522 "EHLO huawei.com"
+        id S1731528AbgJMQJP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 13 Oct 2020 12:09:15 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:55502 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726482AbgJMQJU (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 13 Oct 2020 12:09:20 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 16ECC400B3AD65B61D69;
-        Wed, 14 Oct 2020 00:09:07 +0800 (CST)
+        id S1731478AbgJMQJO (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 13 Oct 2020 12:09:14 -0400
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id CAE464F4C12807697711;
+        Wed, 14 Oct 2020 00:09:06 +0800 (CST)
 Received: from thunder-town.china.huawei.com (10.174.177.134) by
  DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.487.0; Wed, 14 Oct 2020 00:08:59 +0800
+ 14.3.487.0; Wed, 14 Oct 2020 00:08:58 +0800
 From:   Zhen Lei <thunder.leizhen@huawei.com>
 To:     Rob Herring <robh+dt@kernel.org>, Pavel Machek <pavel@ucw.cz>,
         Dan Murphy <dmurphy@ti.com>,
@@ -40,12 +39,10 @@ To:     Rob Herring <robh+dt@kernel.org>, Pavel Machek <pavel@ucw.cz>,
         linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
         linux-kernel <linux-kernel@vger.kernel.org>
 CC:     Zhen Lei <thunder.leizhen@huawei.com>
-Subject: [PATCH 2/6] dt-bindings: mfd: google,cros-ec: explicitly allow additional properties
-Date:   Wed, 14 Oct 2020 00:08:41 +0800
-Message-ID: <20201013160845.1772-3-thunder.leizhen@huawei.com>
+Subject: [PATCH 0/6] fix all errors except one reported by dt_binding_check
+Date:   Wed, 14 Oct 2020 00:08:39 +0800
+Message-ID: <20201013160845.1772-1-thunder.leizhen@huawei.com>
 X-Mailer: git-send-email 2.26.0.windows.1
-In-Reply-To: <20201013160845.1772-1-thunder.leizhen@huawei.com>
-References: <20201013160845.1772-1-thunder.leizhen@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -55,30 +52,71 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-There are so many properties have not been described in this yaml file,
-and a lot of errors will be reported. Especially, some yaml files such as
-google,cros-ec-typec.yaml, extcon-usbc-cros-ec.yaml can not pass the
-self-check, because of the examples. So temporarily allow additional
-properties to keep the comprehensive dt_binding_check result clean.
+When people add multiple or common YAML files, they usually perform a full
+dt_binding_check. Unfortunately, some YAML files cannot pass the self-check.
+The errors or warning are listed below. It is necessary to eliminate them,
+so that people's time and energy are not wasted every time when execute
+comprehensive dt_binding_check.
 
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
----
- Documentation/devicetree/bindings/mfd/google,cros-ec.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This error is fixed by Patch 1:
+/root/leizhen/linux-next/Documentation/devicetree/bindings/leds/leds-lp55xx.example.dt.yaml: led-controller@33: multi-led@2:color:0:0: 9 is greater than the maximum of 8
+        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/leds/leds-lp55xx.yaml
 
-diff --git a/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml b/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
-index f49c0d5d31ad20e..e18047583a0c8fa 100644
---- a/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
-+++ b/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
-@@ -87,7 +87,7 @@ then:
-     google,cros-ec-spi-msg-delay: false
-     spi-max-frequency: false
- 
--additionalProperties: false
-+additionalProperties: true
- 
- examples:
-   # Example for I2C
+These errors are fixed by Patch 2:
+/root/leizhen/linux-next/Documentation/devicetree/bindings/chrome/google,cros-ec-typec.example.dt.yaml: ec@0: 'typec' does not match any of the regexes: 'pinctrl-[0-9]+'
+        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
+/root/leizhen/linux-next/Documentation/devicetree/bindings/extcon/extcon-usbc-cros-ec.example.dt.yaml: cros-ec@0: 'extcon0', 'extcon1' do not match any of the regexes: 'pinctrl-[0-9]+'
+        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
+/root/leizhen/linux-next/Documentation/devicetree/bindings/pwm/google,cros-ec-pwm.example.dt.yaml: cros-ec@0: 'ec-pwm' does not match any of the regexes: 'pinctrl-[0-9]+'
+        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
+/root/leizhen/linux-next/Documentation/devicetree/bindings/regulator/google,cros-ec-regulator.example.dt.yaml: ec@0: '#address-cells', '#size-cells', 'regulator@0' do not match any of the regexes: 'pinctrl-[0-9]+'
+        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
+/root/leizhen/linux-next/Documentation/devicetree/bindings/sound/google,cros-ec-codec.example.dt.yaml: cros-ec@0: '#address-cells', '#size-cells', 'ec-codec@10500000' do not match any of the regexes: 'pinctrl-[0-9]+'
+        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
+
+These errors are fixed by Patch 3 and 4:
+Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.example.dts:21.13-30.11: Warning (spi_bus_bridge): /example-0/spi: incorrect #address-cells for SPI bus
+Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.example.dts:21.13-30.11: Warning (spi_bus_bridge): /example-0/spi: incorrect #size-cells for SPI bus
+Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.example.dt.yaml: Warning (spi_bus_reg): Failed prerequisite 'spi_bus_bridge'
+
+Patch 5 and 6 fix the dtbs_check errors detected by Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml
+arch/arm/boot/dts/mmp2.dtsi:472.23-480.6: Warning (spi_bus_bridge): /soc/apb@d4000000/spi@d4037000: incorrect #address-cells for SPI bus
+  also defined at arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts:225.7-237.3
+arch/arm/boot/dts/mmp2.dtsi:472.23-480.6: Warning (spi_bus_bridge): /soc/apb@d4000000/spi@d4037000: incorrect #size-cells for SPI bus
+  also defined at arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts:225.7-237.3
+arch/arm/boot/dts/mmp2-olpc-xo-1-75.dtb: Warning (spi_bus_reg): Failed prerequisite 'spi_bus_bridge'
+arch/arm/boot/dts/mmp2.dtsi:472.23-480.6: Warning (spi_bus_bridge): /soc/apb@d4000000/spi@d4037000: incorrect #address-cells for SPI bus
+  also defined at arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts:225.7-237.3
+arch/arm/boot/dts/mmp2.dtsi:472.23-480.6: Warning (spi_bus_bridge): /soc/apb@d4000000/spi@d4037000: incorrect #size-cells for SPI bus
+  also defined at arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts:225.7-237.3
+arch/arm/boot/dts/mmp2-olpc-xo-1-75.dt.yaml: Warning (spi_bus_reg): Failed prerequisite 'spi_bus_bridge'
+/root/leizhen/linux-next/arch/arm/boot/dts/mmp2-olpc-xo-1-75.dt.yaml: slave: 'cmd-gpios' is a required property
+        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml
+/root/leizhen/linux-next/arch/arm/boot/dts/mmp2-olpc-xo-1-75.dt.yaml: slave: 'cmd-gpio' does not match any of the regexes: 'pinctrl-[0-9]+'
+        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml
+
+I have no good idea for this one, so leave it.
+Documentation/devicetree/bindings/pci/xilinx-versal-cpm.example.dts:43.62-47.30: Warning (pci_device_reg): /example-0/versal/pcie@fca10000/interrupt-controller: missing PCI reg property
+
+
+Zhen Lei (6):
+  dt-bindings: leds: choose correct color value of multi-led
+  dt-bindings: mfd: google,cros-ec: explicitly allow additional
+    properties
+  spi: dt-bindings: spi-controller: explicitly require
+    #address-cells=<0> for slave mode
+  dt-bindings: misc: explicitly add #address-cells for slave mode
+  ARM: dts: mmp2-olpc-xo-1-75: explicitly add #address-cells=<0> for
+    slave mode
+  dt-bindings: misc: correct the property name cmd-gpios to cmd-gpio
+
+ .../devicetree/bindings/leds/leds-lp55xx.yaml        |  2 +-
+ .../devicetree/bindings/mfd/google,cros-ec.yaml      |  2 +-
+ .../devicetree/bindings/misc/olpc,xo1.75-ec.yaml     |  8 +++++---
+ .../devicetree/bindings/spi/spi-controller.yaml      | 20 ++++++++++++++------
+ arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts              |  2 +-
+ 5 files changed, 22 insertions(+), 12 deletions(-)
+
 -- 
 1.8.3
 

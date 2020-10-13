@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 39118C433DF
-	for <linux-spi@archiver.kernel.org>; Tue, 13 Oct 2020 16:09:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 129F3C433E7
+	for <linux-spi@archiver.kernel.org>; Tue, 13 Oct 2020 16:09:38 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id EF5B125239
-	for <linux-spi@archiver.kernel.org>; Tue, 13 Oct 2020 16:09:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CDFA32525B
+	for <linux-spi@archiver.kernel.org>; Tue, 13 Oct 2020 16:09:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389537AbgJMQJb (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 13 Oct 2020 12:09:31 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:15281 "EHLO huawei.com"
+        id S2389419AbgJMQJW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 13 Oct 2020 12:09:22 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:55500 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1731502AbgJMQJX (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 13 Oct 2020 12:09:23 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id EE576561C3C11F7ACB8B;
-        Wed, 14 Oct 2020 00:09:11 +0800 (CST)
+        id S1731375AbgJMQJQ (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 13 Oct 2020 12:09:16 -0400
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 0F299DB26D260622FD5E;
+        Wed, 14 Oct 2020 00:09:07 +0800 (CST)
 Received: from thunder-town.china.huawei.com (10.174.177.134) by
  DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.487.0; Wed, 14 Oct 2020 00:09:02 +0800
+ 14.3.487.0; Wed, 14 Oct 2020 00:08:58 +0800
 From:   Zhen Lei <thunder.leizhen@huawei.com>
 To:     Rob Herring <robh+dt@kernel.org>, Pavel Machek <pavel@ucw.cz>,
         Dan Murphy <dmurphy@ti.com>,
@@ -40,9 +40,9 @@ To:     Rob Herring <robh+dt@kernel.org>, Pavel Machek <pavel@ucw.cz>,
         linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
         linux-kernel <linux-kernel@vger.kernel.org>
 CC:     Zhen Lei <thunder.leizhen@huawei.com>
-Subject: [PATCH 5/6] ARM: dts: mmp2-olpc-xo-1-75: explicitly add #address-cells=<0> for slave mode
-Date:   Wed, 14 Oct 2020 00:08:44 +0800
-Message-ID: <20201013160845.1772-6-thunder.leizhen@huawei.com>
+Subject: [PATCH 1/6] dt-bindings: leds: choose correct color value of multi-led
+Date:   Wed, 14 Oct 2020 00:08:40 +0800
+Message-ID: <20201013160845.1772-2-thunder.leizhen@huawei.com>
 X-Mailer: git-send-email 2.26.0.windows.1
 In-Reply-To: <20201013160845.1772-1-thunder.leizhen@huawei.com>
 References: <20201013160845.1772-1-thunder.leizhen@huawei.com>
@@ -55,28 +55,27 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Delete the old property "#address-cells" and then explicitly add it with
-zero value. The value of "#size-cells" is already zero, so keep it no
-change.
+The color value of multi-led is fixed to "const: 8 #LED_COLOR_ID_MULTI",
+which is required by leds-class-multicolor.yaml.
 
 Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
 ---
- arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts | 2 +-
+ Documentation/devicetree/bindings/leds/leds-lp55xx.yaml | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts b/arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts
-index f1a41152e9dd70d..be88b6e551d58e9 100644
---- a/arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts
-+++ b/arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts
-@@ -224,7 +224,7 @@
+diff --git a/Documentation/devicetree/bindings/leds/leds-lp55xx.yaml b/Documentation/devicetree/bindings/leds/leds-lp55xx.yaml
+index 58e974793a7976b..cd877e817ad1a1c 100644
+--- a/Documentation/devicetree/bindings/leds/leds-lp55xx.yaml
++++ b/Documentation/devicetree/bindings/leds/leds-lp55xx.yaml
+@@ -197,7 +197,7 @@ examples:
+                #address-cells = <1>;
+                #size-cells = <0>;
+                reg = <0x2>;
+-               color = <LED_COLOR_ID_RGB>;
++               color = <LED_COLOR_ID_MULTI>;
+                function = LED_FUNCTION_STANDBY;
+                linux,default-trigger = "heartbeat";
  
- &ssp3 {
- 	/delete-property/ #address-cells;
--	/delete-property/ #size-cells;
-+	#address-cells = <0>;
- 	spi-slave;
- 	status = "okay";
- 	ready-gpio = <&gpio 125 GPIO_ACTIVE_HIGH>;
 -- 
 1.8.3
 

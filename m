@@ -2,35 +2,59 @@ Return-Path: <SRS0=pAD9=DU=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,NICE_REPLY_A,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E730C43467
-	for <linux-spi@archiver.kernel.org>; Tue, 13 Oct 2020 16:09:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A8EDC433E7
+	for <linux-spi@archiver.kernel.org>; Tue, 13 Oct 2020 16:18:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2F4CA2525E
-	for <linux-spi@archiver.kernel.org>; Tue, 13 Oct 2020 16:09:43 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A83FE2527C
+	for <linux-spi@archiver.kernel.org>; Tue, 13 Oct 2020 16:18:38 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="O2PaahNr"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731528AbgJMQJP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 13 Oct 2020 12:09:15 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:55502 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1731478AbgJMQJO (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 13 Oct 2020 12:09:14 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id CAE464F4C12807697711;
-        Wed, 14 Oct 2020 00:09:06 +0800 (CST)
-Received: from thunder-town.china.huawei.com (10.174.177.134) by
- DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.487.0; Wed, 14 Oct 2020 00:08:58 +0800
-From:   Zhen Lei <thunder.leizhen@huawei.com>
-To:     Rob Herring <robh+dt@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Dan Murphy <dmurphy@ti.com>,
+        id S2389520AbgJMQSi (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 13 Oct 2020 12:18:38 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:46836 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726482AbgJMQSi (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 13 Oct 2020 12:18:38 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 09DGI0xF029301;
+        Tue, 13 Oct 2020 11:18:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1602605880;
+        bh=uB7tfsQ7VyKREysedNmTmoS1dzXtefnn5LzROwbyCc0=;
+        h=Subject:To:References:From:Date:In-Reply-To;
+        b=O2PaahNrpQ8AK6FvHL5mqgshIgpYOlE7iIzI2VtOts49fX6HiyadcNJKgaYTxmQd4
+         MeTt1l4CGMetafCt1fggchjONn5jnMViMuqV9dw9Llal1g8TeDCxUCGv1HrhqwJnw6
+         PZewCuKFKhMq9HBYJXPhwh6hAx89R9NCJvaRRpfk=
+Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 09DGI0tG001867
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 13 Oct 2020 11:18:00 -0500
+Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 13
+ Oct 2020 11:17:18 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Tue, 13 Oct 2020 11:17:18 -0500
+Received: from [10.250.67.63] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 09DGHHmf075021;
+        Tue, 13 Oct 2020 11:17:17 -0500
+Subject: Re: [PATCH 1/6] dt-bindings: leds: choose correct color value of
+ multi-led
+To:     Zhen Lei <thunder.leizhen@huawei.com>,
+        Rob Herring <robh+dt@kernel.org>, Pavel Machek <pavel@ucw.cz>,
         linux-leds <linux-leds@vger.kernel.org>,
         Lee Jones <lee.jones@linaro.org>,
         Benson Leung <bleung@chromium.org>,
-        "Enric Balletbo i Serra" <enric.balletbo@collabora.com>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
         Guenter Roeck <groeck@chromium.org>,
         Mark Brown <broonie@kernel.org>,
         linux-spi <linux-spi@vger.kernel.org>,
@@ -38,86 +62,53 @@ To:     Rob Herring <robh+dt@kernel.org>, Pavel Machek <pavel@ucw.cz>,
         devicetree <devicetree@vger.kernel.org>,
         linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
         linux-kernel <linux-kernel@vger.kernel.org>
-CC:     Zhen Lei <thunder.leizhen@huawei.com>
-Subject: [PATCH 0/6] fix all errors except one reported by dt_binding_check
-Date:   Wed, 14 Oct 2020 00:08:39 +0800
-Message-ID: <20201013160845.1772-1-thunder.leizhen@huawei.com>
-X-Mailer: git-send-email 2.26.0.windows.1
+References: <20201013160845.1772-1-thunder.leizhen@huawei.com>
+ <20201013160845.1772-2-thunder.leizhen@huawei.com>
+From:   Dan Murphy <dmurphy@ti.com>
+Message-ID: <1565f22c-7be9-e771-7def-afbb28ec07a7@ti.com>
+Date:   Tue, 13 Oct 2020 11:17:17 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.174.177.134]
-X-CFilter-Loop: Reflected
+In-Reply-To: <20201013160845.1772-2-thunder.leizhen@huawei.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-When people add multiple or common YAML files, they usually perform a full
-dt_binding_check. Unfortunately, some YAML files cannot pass the self-check.
-The errors or warning are listed below. It is necessary to eliminate them,
-so that people's time and energy are not wasted every time when execute
-comprehensive dt_binding_check.
+Zhen
 
-This error is fixed by Patch 1:
-/root/leizhen/linux-next/Documentation/devicetree/bindings/leds/leds-lp55xx.example.dt.yaml: led-controller@33: multi-led@2:color:0:0: 9 is greater than the maximum of 8
-        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/leds/leds-lp55xx.yaml
+On 10/13/20 11:08 AM, Zhen Lei wrote:
+> The color value of multi-led is fixed to "const: 8 #LED_COLOR_ID_MULTI",
+> which is required by leds-class-multicolor.yaml.
+>
+> Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+> ---
+>   Documentation/devicetree/bindings/leds/leds-lp55xx.yaml | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/Documentation/devicetree/bindings/leds/leds-lp55xx.yaml b/Documentation/devicetree/bindings/leds/leds-lp55xx.yaml
+> index 58e974793a7976b..cd877e817ad1a1c 100644
+> --- a/Documentation/devicetree/bindings/leds/leds-lp55xx.yaml
+> +++ b/Documentation/devicetree/bindings/leds/leds-lp55xx.yaml
+> @@ -197,7 +197,7 @@ examples:
+>                  #address-cells = <1>;
+>                  #size-cells = <0>;
+>                  reg = <0x2>;
+> -               color = <LED_COLOR_ID_RGB>;
+> +               color = <LED_COLOR_ID_MULTI>;
+>                  function = LED_FUNCTION_STANDBY;
+>                  linux,default-trigger = "heartbeat";
+>   
 
-These errors are fixed by Patch 2:
-/root/leizhen/linux-next/Documentation/devicetree/bindings/chrome/google,cros-ec-typec.example.dt.yaml: ec@0: 'typec' does not match any of the regexes: 'pinctrl-[0-9]+'
-        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
-/root/leizhen/linux-next/Documentation/devicetree/bindings/extcon/extcon-usbc-cros-ec.example.dt.yaml: cros-ec@0: 'extcon0', 'extcon1' do not match any of the regexes: 'pinctrl-[0-9]+'
-        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
-/root/leizhen/linux-next/Documentation/devicetree/bindings/pwm/google,cros-ec-pwm.example.dt.yaml: cros-ec@0: 'ec-pwm' does not match any of the regexes: 'pinctrl-[0-9]+'
-        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
-/root/leizhen/linux-next/Documentation/devicetree/bindings/regulator/google,cros-ec-regulator.example.dt.yaml: ec@0: '#address-cells', '#size-cells', 'regulator@0' do not match any of the regexes: 'pinctrl-[0-9]+'
-        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
-/root/leizhen/linux-next/Documentation/devicetree/bindings/sound/google,cros-ec-codec.example.dt.yaml: cros-ec@0: '#address-cells', '#size-cells', 'ec-codec@10500000' do not match any of the regexes: 'pinctrl-[0-9]+'
-        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
+This is not correct.  ID_RGB is the correct variable here.
 
-These errors are fixed by Patch 3 and 4:
-Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.example.dts:21.13-30.11: Warning (spi_bus_bridge): /example-0/spi: incorrect #address-cells for SPI bus
-Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.example.dts:21.13-30.11: Warning (spi_bus_bridge): /example-0/spi: incorrect #size-cells for SPI bus
-Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.example.dt.yaml: Warning (spi_bus_reg): Failed prerequisite 'spi_bus_bridge'
+https://git.kernel.org/pub/scm/linux/kernel/git/pavel/linux-leds.git/commit/?h=for-next&id=3d93edc77515c6f51fa9bbbe2185e2ec32bad024
 
-Patch 5 and 6 fix the dtbs_check errors detected by Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml
-arch/arm/boot/dts/mmp2.dtsi:472.23-480.6: Warning (spi_bus_bridge): /soc/apb@d4000000/spi@d4037000: incorrect #address-cells for SPI bus
-  also defined at arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts:225.7-237.3
-arch/arm/boot/dts/mmp2.dtsi:472.23-480.6: Warning (spi_bus_bridge): /soc/apb@d4000000/spi@d4037000: incorrect #size-cells for SPI bus
-  also defined at arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts:225.7-237.3
-arch/arm/boot/dts/mmp2-olpc-xo-1-75.dtb: Warning (spi_bus_reg): Failed prerequisite 'spi_bus_bridge'
-arch/arm/boot/dts/mmp2.dtsi:472.23-480.6: Warning (spi_bus_bridge): /soc/apb@d4000000/spi@d4037000: incorrect #address-cells for SPI bus
-  also defined at arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts:225.7-237.3
-arch/arm/boot/dts/mmp2.dtsi:472.23-480.6: Warning (spi_bus_bridge): /soc/apb@d4000000/spi@d4037000: incorrect #size-cells for SPI bus
-  also defined at arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts:225.7-237.3
-arch/arm/boot/dts/mmp2-olpc-xo-1-75.dt.yaml: Warning (spi_bus_reg): Failed prerequisite 'spi_bus_bridge'
-/root/leizhen/linux-next/arch/arm/boot/dts/mmp2-olpc-xo-1-75.dt.yaml: slave: 'cmd-gpios' is a required property
-        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml
-/root/leizhen/linux-next/arch/arm/boot/dts/mmp2-olpc-xo-1-75.dt.yaml: slave: 'cmd-gpio' does not match any of the regexes: 'pinctrl-[0-9]+'
-        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml
+Correct fix is to update the leds-class-multicolor.yaml
 
-I have no good idea for this one, so leave it.
-Documentation/devicetree/bindings/pci/xilinx-versal-cpm.example.dts:43.62-47.30: Warning (pci_device_reg): /example-0/versal/pcie@fca10000/interrupt-controller: missing PCI reg property
-
-
-Zhen Lei (6):
-  dt-bindings: leds: choose correct color value of multi-led
-  dt-bindings: mfd: google,cros-ec: explicitly allow additional
-    properties
-  spi: dt-bindings: spi-controller: explicitly require
-    #address-cells=<0> for slave mode
-  dt-bindings: misc: explicitly add #address-cells for slave mode
-  ARM: dts: mmp2-olpc-xo-1-75: explicitly add #address-cells=<0> for
-    slave mode
-  dt-bindings: misc: correct the property name cmd-gpios to cmd-gpio
-
- .../devicetree/bindings/leds/leds-lp55xx.yaml        |  2 +-
- .../devicetree/bindings/mfd/google,cros-ec.yaml      |  2 +-
- .../devicetree/bindings/misc/olpc,xo1.75-ec.yaml     |  8 +++++---
- .../devicetree/bindings/spi/spi-controller.yaml      | 20 ++++++++++++++------
- arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts              |  2 +-
- 5 files changed, 22 insertions(+), 12 deletions(-)
-
--- 
-1.8.3
-
+Dan
 

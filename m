@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E965C433E7
-	for <linux-spi@archiver.kernel.org>; Tue, 13 Oct 2020 16:09:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C74FFC43467
+	for <linux-spi@archiver.kernel.org>; Tue, 13 Oct 2020 16:09:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id F03E22523D
-	for <linux-spi@archiver.kernel.org>; Tue, 13 Oct 2020 16:09:19 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 880E12523E
+	for <linux-spi@archiver.kernel.org>; Tue, 13 Oct 2020 16:09:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389171AbgJMQJQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 13 Oct 2020 12:09:16 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:55504 "EHLO huawei.com"
+        id S2389378AbgJMQJV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 13 Oct 2020 12:09:21 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:15280 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1731455AbgJMQJP (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 13 Oct 2020 12:09:15 -0400
+        id S1731483AbgJMQJR (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 13 Oct 2020 12:09:17 -0400
 Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id D9044DF491D456F3C172;
-        Wed, 14 Oct 2020 00:09:06 +0800 (CST)
+        by Forcepoint Email with ESMTP id DE4C2F614FBB78638DEE;
+        Wed, 14 Oct 2020 00:09:11 +0800 (CST)
 Received: from thunder-town.china.huawei.com (10.174.177.134) by
  DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.487.0; Wed, 14 Oct 2020 00:09:00 +0800
+ 14.3.487.0; Wed, 14 Oct 2020 00:09:03 +0800
 From:   Zhen Lei <thunder.leizhen@huawei.com>
 To:     Rob Herring <robh+dt@kernel.org>, Pavel Machek <pavel@ucw.cz>,
         Dan Murphy <dmurphy@ti.com>,
@@ -40,9 +40,9 @@ To:     Rob Herring <robh+dt@kernel.org>, Pavel Machek <pavel@ucw.cz>,
         linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
         linux-kernel <linux-kernel@vger.kernel.org>
 CC:     Zhen Lei <thunder.leizhen@huawei.com>
-Subject: [PATCH 3/6] spi: dt-bindings: spi-controller: explicitly require #address-cells=<0> for slave mode
-Date:   Wed, 14 Oct 2020 00:08:42 +0800
-Message-ID: <20201013160845.1772-4-thunder.leizhen@huawei.com>
+Subject: [PATCH 6/6] dt-bindings: misc: correct the property name cmd-gpios to cmd-gpio
+Date:   Wed, 14 Oct 2020 00:08:45 +0800
+Message-ID: <20201013160845.1772-7-thunder.leizhen@huawei.com>
 X-Mailer: git-send-email 2.26.0.windows.1
 In-Reply-To: <20201013160845.1772-1-thunder.leizhen@huawei.com>
 References: <20201013160845.1772-1-thunder.leizhen@huawei.com>
@@ -55,60 +55,48 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-scripts/dtc/checks.c:
-if (get_property(node, "spi-slave"))
-	spi_addr_cells = 0;
-if (node_addr_cells(node) != spi_addr_cells)
-	FAIL(c, dti, node, "incorrect #address-cells for SPI bus");
-if (node_size_cells(node) != 0)
-	FAIL(c, dti, node, "incorrect #size-cells for SPI bus");
+The property name used in arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts is
+cmd-gpio.
 
-The above code in check_spi_bus_bridge() require that the number of address
-cells must be 0. So we should explicitly declare "#address-cells = <0>".
+arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts:235:
+cmd-gpio = <&gpio 155 GPIO_ACTIVE_HIGH>;
 
 Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
 ---
- .../devicetree/bindings/spi/spi-controller.yaml      | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-index 2b154803b181c8b..1b56d5e40f1fcde 100644
---- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
-+++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
-@@ -20,7 +20,7 @@ properties:
-     pattern: "^spi(@.*|-[0-9a-f])*$"
+diff --git a/Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml b/Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml
+index b3c45c046ba5e37..c7a06a9650db2ed 100644
+--- a/Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml
++++ b/Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml
+@@ -24,7 +24,7 @@ properties:
+   compatible:
+     const: olpc,xo1.75-ec
  
-   "#address-cells":
--    const: 1
-+    enum: [0, 1]
+-  cmd-gpios:
++  cmd-gpio:
+     description: GPIO uspecifier of the CMD pin
+     maxItems: 1
  
-   "#size-cells":
-     const: 0
-@@ -52,11 +52,19 @@ properties:
-     description:
-       The SPI controller acts as a slave, instead of a master.
+@@ -32,7 +32,7 @@ properties:
  
--oneOf:
--  - required:
--      - "#address-cells"
--  - required:
--      - spi-slave
-+allOf:
-+  - if:
-+      not:
-+        required:
-+          - spi-slave
-+    then:
-+      properties:
-+        "#address-cells":
-+          const: 1
-+    else:
-+      properties:
-+        "#address-cells":
-+          const: 0
+ required:
+   - compatible
+-  - cmd-gpios
++  - cmd-gpio
  
- patternProperties:
-   "^slave$":
+ additionalProperties: false
+ 
+@@ -49,7 +49,7 @@ examples:
+       slave {
+         compatible = "olpc,xo1.75-ec";
+         spi-cpha;
+-        cmd-gpios = <&gpio 155 GPIO_ACTIVE_HIGH>;
++        cmd-gpio = <&gpio 155 GPIO_ACTIVE_HIGH>;
+       };
+     };
+ 
 -- 
 1.8.3
 

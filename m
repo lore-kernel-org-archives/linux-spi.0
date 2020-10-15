@@ -2,119 +2,78 @@ Return-Path: <SRS0=2ph6=DW=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 511BCC433DF
-	for <linux-spi@archiver.kernel.org>; Thu, 15 Oct 2020 12:53:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B107C43457
+	for <linux-spi@archiver.kernel.org>; Thu, 15 Oct 2020 14:25:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id EC08222255
-	for <linux-spi@archiver.kernel.org>; Thu, 15 Oct 2020 12:53:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1602766424;
-	bh=GDVHgmMpfMPcT+9pmRkS7VbHuJ1m07eLYVcPINmJ95w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=u5OoYy2p/VhszTnCqNCuHlaHNwfc+kagUabjGRljuklOOQDyeAtwYYLhoou3mU1gi
-	 q9x5ZEeJ6hu2txN4UwJ5BueWcBCMniaVswclUwKpjAvNjhYP105e+EzD3Iqqx1+CzS
-	 iUQfve16V1qurl5WFkr9QmnZefdOsaFot76lRXa8=
+	by mail.kernel.org (Postfix) with ESMTP id 4E4EC22267
+	for <linux-spi@archiver.kernel.org>; Thu, 15 Oct 2020 14:25:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726309AbgJOMxn (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 15 Oct 2020 08:53:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52214 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726121AbgJOMxn (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 15 Oct 2020 08:53:43 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 13AC322251;
-        Thu, 15 Oct 2020 12:53:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602766422;
-        bh=GDVHgmMpfMPcT+9pmRkS7VbHuJ1m07eLYVcPINmJ95w=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=mmrSKLUjuN4RzHQGmhLeJ+1Ky6GCFw2PwXv9CNB87qCVqVN8B3nKB/4VHgepINurT
-         DuW7Xa/rHKGC2YPwetSLrrDlhDt+RRk0GMxNYZ7d6ATGkdNfmAUEalm3QWNS50XQOK
-         tqwH05KCnXGgR8VoY0pODWTFIUmjK7YE5BZNrr/g=
-Date:   Thu, 15 Oct 2020 13:53:35 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Lukas Wunner <lukas@wunner.de>
-Cc:     Vladimir Oltean <olteanv@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>
-Subject: Re: Use after free in bcm2835_spi_remove()
-Message-ID: <20201015125335.GB4390@sirena.org.uk>
-References: <bd6eaa71-46cc-0aca-65ff-ae716864cbe3@gmail.com>
- <20201014140912.GB24850@wunner.de>
- <20201014194035.ukduovokggu37uba@skbuf>
- <20201014202505.GF4580@sirena.org.uk>
- <20201015053829.GA2461@wunner.de>
+        id S2388133AbgJOOZr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 15 Oct 2020 10:25:47 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:59226 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2388099AbgJOOZr (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 15 Oct 2020 10:25:47 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 25B96C6838B07580676D;
+        Thu, 15 Oct 2020 22:25:44 +0800 (CST)
+Received: from code-website.localdomain (10.175.127.227) by
+ DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
+ 14.3.487.0; Thu, 15 Oct 2020 22:25:33 +0800
+From:   yangerkun <yangerkun@huawei.com>
+To:     <sashal@kernel.org>, <gregkh@linuxfoundation.org>,
+        <broonie@kernel.org>
+CC:     <linux-spi@vger.kernel.org>, <stable@vger.kernel.org>,
+        <yangerkun@huawei.com>, <yi.zhang@huawei.com>,
+        <chenwenyong2@huawei.com>
+Subject: [PATCH] spi: unbinding slave before calling spi_destroy_queue
+Date:   Thu, 15 Oct 2020 22:29:51 +0800
+Message-ID: <20201015142951.1133415-1-yangerkun@huawei.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Fba/0zbH8Xs+Fj9o"
-Content-Disposition: inline
-In-Reply-To: <20201015053829.GA2461@wunner.de>
-X-Cookie: Neutrinos have bad breadth.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.127.227]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+We make a mistake while backport 'commit 84855678add8 ("spi: Fix
+controller unregister order")'. What we should do is call __unreigster
+for each device before spi_destroy_queue. This problem exist in
+linux-4.4.y/linux-4.9.y.
 
---Fba/0zbH8Xs+Fj9o
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: yangerkun <yangerkun@huawei.com>
+---
+ drivers/spi/spi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-On Thu, Oct 15, 2020 at 07:38:29AM +0200, Lukas Wunner wrote:
-> On Wed, Oct 14, 2020 at 09:25:05PM +0100, Mark Brown wrote:
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index fe03771da5124..18031b755c376 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1957,13 +1957,13 @@ static int __unregister(struct device *dev, void *null)
+  */
+ void spi_unregister_master(struct spi_master *master)
+ {
++	device_for_each_child(&master->dev, NULL, __unregister);
++
+ 	if (master->queued) {
+ 		if (spi_destroy_queue(master))
+ 			dev_err(&master->dev, "queue remove failed\n");
+ 	}
+ 
+-	device_for_each_child(&master->dev, NULL, __unregister);
+-
+ 	mutex_lock(&board_lock);
+ 	list_del(&master->list);
+ 	mutex_unlock(&board_lock);
+-- 
+2.25.4
 
-> > Right, the proposed patch is yet another way to fix the issue - it all
-> > comes back to the fact that you shouldn't be using the driver data after
-> > unregistering if it was allocated as part of allocating the controller.
-> > This framework feature is unfortunately quite error prone.
-
-> How about holding a ref on the controller as long as the SPI driver
-> is bound to the controller's parent device?  See below for a patch,
-> compile-tested only for lack of an SPI-equipped machine.
-
-> Makes sense or dumb idea?
-
-> If this approach is deemed to be a case of "midlayer fallacy",
-> we could alternatively do this in a library function which drivers
-> opt-in to.  Or, given that the majority of drivers seems to be affected,
-> make it the default and allow drivers to opt-out.
-
-...
-
-> +	spi_controller_get(ctlr);
-> +	ret = devm_add_action(dev, __spi_controller_put, ctlr);
-> +	if (ret) {
-> +		kfree(ctlr);
-
-This feels a bit icky - we're masking a standard use after free bug that
-affects devm in general, not just this instance, and so while it will
-work it doesn't feel great.  If we did do this it'd need more comments
-and should probably be conditional on using the feature.  TBH I'm just
-thinking it's better to just remove the feature, it's clearly error
-prone and pretty redundant with devm.  I'm not sure any memory savings
-it's delivering are worth the sharp edges.
-
---Fba/0zbH8Xs+Fj9o
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl+IRk4ACgkQJNaLcl1U
-h9D8QQf/TpXeQ79oDF5WHvAUgXm2y2SdAHjJgXmtuWpLLFnFmDTpWfOK13TbPVfF
-wGKi0mOMC0TShj9mkt4Aw0HPuBd5x0rWc842Up4Q+lJSZhIvcS5Ocgg+7NhiiwuX
-du/YBUoiVfzN6L3PMRBvREBEtuMgkPHzjOBicBF9KysBHw2UtzMrP7Kq8Gqlqg8R
-TwzAW9KqH9662Cfv5BtXYWfW8drN6VJLBopyxKew7h7JF7AXm/qQI9WsXB+FREnm
-MkKzVskCrclETO6RtBYpBVmttrWEWr8efrKB+JT/TiexGF/yW66zRZAKlFRGCq6p
-BkN5CEc3XmzVnGOOEoasjUeKBP1J+g==
-=vYfE
------END PGP SIGNATURE-----
-
---Fba/0zbH8Xs+Fj9o--

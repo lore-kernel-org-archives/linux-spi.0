@@ -2,117 +2,127 @@ Return-Path: <SRS0=2ph6=DW=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E04CEC43457
-	for <linux-spi@archiver.kernel.org>; Thu, 15 Oct 2020 04:46:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1EEC4C433DF
+	for <linux-spi@archiver.kernel.org>; Thu, 15 Oct 2020 05:43:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 96CB022243
-	for <linux-spi@archiver.kernel.org>; Thu, 15 Oct 2020 04:46:42 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C45AC22248
+	for <linux-spi@archiver.kernel.org>; Thu, 15 Oct 2020 05:43:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729245AbgJOEqi (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 15 Oct 2020 00:46:38 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:15216 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726012AbgJOEqf (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 15 Oct 2020 00:46:35 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id EA2F06D32FCB579826F0;
-        Thu, 15 Oct 2020 12:46:28 +0800 (CST)
-Received: from thunder-town.china.huawei.com (10.174.177.134) by
- DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
- 14.3.487.0; Thu, 15 Oct 2020 12:46:19 +0800
-From:   Zhen Lei <thunder.leizhen@huawei.com>
-To:     Rob Herring <robh+dt@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Dan Murphy <dmurphy@ti.com>,
-        linux-leds <linux-leds@vger.kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Benson Leung <bleung@chromium.org>,
-        "Enric Balletbo i Serra" <enric.balletbo@collabora.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Mark Brown <broonie@kernel.org>,
+        id S1728572AbgJOFnu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 15 Oct 2020 01:43:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60526 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727397AbgJOFnu (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 15 Oct 2020 01:43:50 -0400
+X-Greylist: delayed 317 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 14 Oct 2020 22:43:50 PDT
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C0ECC061755
+        for <linux-spi@vger.kernel.org>; Wed, 14 Oct 2020 22:43:50 -0700 (PDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client CN "*.hostsharing.net", Issuer "COMODO RSA Domain Validation Secure Server CA" (not verified))
+        by bmailout1.hostsharing.net (Postfix) with ESMTPS id ED8363000C9B0;
+        Thu, 15 Oct 2020 07:38:29 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+        id D141C1C023C; Thu, 15 Oct 2020 07:38:29 +0200 (CEST)
+Date:   Thu, 15 Oct 2020 07:38:29 +0200
+From:   Lukas Wunner <lukas@wunner.de>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Vladimir Oltean <olteanv@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         linux-spi <linux-spi@vger.kernel.org>,
-        Lubomir Rintel <lkundrak@v3.sk>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-CC:     Zhen Lei <thunder.leizhen@huawei.com>
-Subject: [PATCH v2 0/1] fix all errors except one reported by dt_binding_check
-Date:   Thu, 15 Oct 2020 12:44:42 +0800
-Message-ID: <20201015044443.1828-1-thunder.leizhen@huawei.com>
-X-Mailer: git-send-email 2.26.0.windows.1
+        Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: Use after free in bcm2835_spi_remove()
+Message-ID: <20201015053829.GA2461@wunner.de>
+References: <bd6eaa71-46cc-0aca-65ff-ae716864cbe3@gmail.com>
+ <20201014140912.GB24850@wunner.de>
+ <20201014194035.ukduovokggu37uba@skbuf>
+ <20201014202505.GF4580@sirena.org.uk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.174.177.134]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201014202505.GF4580@sirena.org.uk>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-v1 --> v2:
-1. I'm sorry. I'm not familiar with the GPIO driver, which leads to a low-level
-   mistake. Now, I rewrite the patch 6/6 in v1. For more detail, please refer:   
-   https://lore.kernel.org/linux-arm-kernel/49b680f8-d7d7-8ea3-894c-73cbfacc5ba4@huawei.com/T/#u
+[cc += Sascha]
 
+On Wed, Oct 14, 2020 at 09:25:05PM +0100, Mark Brown wrote:
+> > On Wed, Oct 14, 2020 at 04:09:12PM +0200, Lukas Wunner wrote:
+> > > Apparently the problem is that spi_unregister_controller() drops the
+> > > last ref on the controller, causing it to be freed, and afterwards we
+> > > access the controller's private data, which is part of the same
+> > > allocation as struct spi_controller:
+> 
+> Right, the proposed patch is yet another way to fix the issue - it all
+> comes back to the fact that you shouldn't be using the driver data after
+> unregistering if it was allocated as part of allocating the controller.
+> This framework feature is unfortunately quite error prone.
 
-v1:
-When people add multiple or common YAML files, they usually perform a full
-dt_binding_check. Unfortunately, some YAML files cannot pass the self-check.
-The errors or warning are listed below. It is necessary to eliminate them,
-so that people's time and energy are not wasted every time when execute
-comprehensive dt_binding_check.
+How about holding a ref on the controller as long as the SPI driver
+is bound to the controller's parent device?  See below for a patch,
+compile-tested only for lack of an SPI-equipped machine.
 
-This error is fixed by Patch 1:
-/root/leizhen/linux-next/Documentation/devicetree/bindings/leds/leds-lp55xx.example.dt.yaml: led-controller@33: multi-led@2:color:0:0: 9 is greater than the maximum of 8
-        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/leds/leds-lp55xx.yaml
+Makes sense or dumb idea?
 
-These errors are fixed by Patch 2:
-/root/leizhen/linux-next/Documentation/devicetree/bindings/chrome/google,cros-ec-typec.example.dt.yaml: ec@0: 'typec' does not match any of the regexes: 'pinctrl-[0-9]+'
-        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
-/root/leizhen/linux-next/Documentation/devicetree/bindings/extcon/extcon-usbc-cros-ec.example.dt.yaml: cros-ec@0: 'extcon0', 'extcon1' do not match any of the regexes: 'pinctrl-[0-9]+'
-        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
-/root/leizhen/linux-next/Documentation/devicetree/bindings/pwm/google,cros-ec-pwm.example.dt.yaml: cros-ec@0: 'ec-pwm' does not match any of the regexes: 'pinctrl-[0-9]+'
-        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
-/root/leizhen/linux-next/Documentation/devicetree/bindings/regulator/google,cros-ec-regulator.example.dt.yaml: ec@0: '#address-cells', '#size-cells', 'regulator@0' do not match any of the regexes: 'pinctrl-[0-9]+'
-        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
-/root/leizhen/linux-next/Documentation/devicetree/bindings/sound/google,cros-ec-codec.example.dt.yaml: cros-ec@0: '#address-cells', '#size-cells', 'ec-codec@10500000' do not match any of the regexes: 'pinctrl-[0-9]+'
-        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/mfd/google,cros-ec.yaml
+If this approach is deemed to be a case of "midlayer fallacy",
+we could alternatively do this in a library function which drivers
+opt-in to.  Or, given that the majority of drivers seems to be affected,
+make it the default and allow drivers to opt-out.
 
-These errors are fixed by Patch 3 and 4:
-Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.example.dts:21.13-30.11: Warning (spi_bus_bridge): /example-0/spi: incorrect #address-cells for SPI bus
-Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.example.dts:21.13-30.11: Warning (spi_bus_bridge): /example-0/spi: incorrect #size-cells for SPI bus
-Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.example.dt.yaml: Warning (spi_bus_reg): Failed prerequisite 'spi_bus_bridge'
+-- >8 --
 
-Patch 5 and 6 fix the dtbs_check errors detected by Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml
-arch/arm/boot/dts/mmp2.dtsi:472.23-480.6: Warning (spi_bus_bridge): /soc/apb@d4000000/spi@d4037000: incorrect #address-cells for SPI bus
-  also defined at arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts:225.7-237.3
-arch/arm/boot/dts/mmp2.dtsi:472.23-480.6: Warning (spi_bus_bridge): /soc/apb@d4000000/spi@d4037000: incorrect #size-cells for SPI bus
-  also defined at arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts:225.7-237.3
-arch/arm/boot/dts/mmp2-olpc-xo-1-75.dtb: Warning (spi_bus_reg): Failed prerequisite 'spi_bus_bridge'
-arch/arm/boot/dts/mmp2.dtsi:472.23-480.6: Warning (spi_bus_bridge): /soc/apb@d4000000/spi@d4037000: incorrect #address-cells for SPI bus
-  also defined at arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts:225.7-237.3
-arch/arm/boot/dts/mmp2.dtsi:472.23-480.6: Warning (spi_bus_bridge): /soc/apb@d4000000/spi@d4037000: incorrect #size-cells for SPI bus
-  also defined at arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts:225.7-237.3
-arch/arm/boot/dts/mmp2-olpc-xo-1-75.dt.yaml: Warning (spi_bus_reg): Failed prerequisite 'spi_bus_bridge'
-/root/leizhen/linux-next/arch/arm/boot/dts/mmp2-olpc-xo-1-75.dt.yaml: slave: 'cmd-gpios' is a required property
-        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml
-/root/leizhen/linux-next/arch/arm/boot/dts/mmp2-olpc-xo-1-75.dt.yaml: slave: 'cmd-gpio' does not match any of the regexes: 'pinctrl-[0-9]+'
-        From schema: /root/leizhen/linux-next/Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml
-
-I have no good idea for this one, so leave it.
-Documentation/devicetree/bindings/pci/xilinx-versal-cpm.example.dts:43.62-47.30: Warning (pci_device_reg): /example-0/versal/pcie@fca10000/interrupt-controller: missing PCI reg property
-
-Zhen Lei (1):
-  dt-bindings: misc: add support for both property names cmd-gpios and
-    cmd-gpio
-
- Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
-
--- 
-1.8.3
-
-
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 0cab239..5afa275 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2399,6 +2399,11 @@ static ssize_t slave_store(struct device *dev, struct device_attribute *attr,
+ extern struct class spi_slave_class;	/* dummy */
+ #endif
+ 
++static void __spi_controller_put(void *ctlr)
++{
++	spi_controller_put(ctlr);
++}
++
+ /**
+  * __spi_alloc_controller - allocate an SPI master or slave controller
+  * @dev: the controller, possibly using the platform_bus
+@@ -2414,6 +2419,7 @@ static ssize_t slave_store(struct device *dev, struct device_attribute *attr,
+  * This call is used only by SPI controller drivers, which are the
+  * only ones directly touching chip registers.  It's how they allocate
+  * an spi_controller structure, prior to calling spi_register_controller().
++ * The structure is accessible as long as the SPI driver is bound to @dev.
+  *
+  * This must be called from context that can sleep.
+  *
+@@ -2429,6 +2435,7 @@ struct spi_controller *__spi_alloc_controller(struct device *dev,
+ {
+ 	struct spi_controller	*ctlr;
+ 	size_t ctlr_size = ALIGN(sizeof(*ctlr), dma_get_cache_alignment());
++	int ret;
+ 
+ 	if (!dev)
+ 		return NULL;
+@@ -2449,6 +2456,13 @@ struct spi_controller *__spi_alloc_controller(struct device *dev,
+ 	pm_suspend_ignore_children(&ctlr->dev, true);
+ 	spi_controller_set_devdata(ctlr, (void *)ctlr + ctlr_size);
+ 
++	spi_controller_get(ctlr);
++	ret = devm_add_action(dev, __spi_controller_put, ctlr);
++	if (ret) {
++		kfree(ctlr);
++		return NULL;
++	}
++
+ 	return ctlr;
+ }
+ EXPORT_SYMBOL_GPL(__spi_alloc_controller);

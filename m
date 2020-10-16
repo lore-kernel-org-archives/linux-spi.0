@@ -2,101 +2,141 @@ Return-Path: <SRS0=rigy=DX=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.7 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 75CF1C433E7
-	for <linux-spi@archiver.kernel.org>; Fri, 16 Oct 2020 09:32:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E1F1C433DF
+	for <linux-spi@archiver.kernel.org>; Fri, 16 Oct 2020 14:14:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 21BE2206DD
-	for <linux-spi@archiver.kernel.org>; Fri, 16 Oct 2020 09:32:41 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 16B8520848
+	for <linux-spi@archiver.kernel.org>; Fri, 16 Oct 2020 14:14:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1602857647;
+	bh=/Wy1dqxW7oC6Qye976pyOHB3NEyzVajEMIVxWnNoiWI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:List-ID:From;
+	b=V9641CDSzoyv+keuwCJhnHXp+5KaE6nQz/UHL1ma4UISF6zLrD+GJMWmtZRnR9Erj
+	 HoJ7QCXorBFax+O/oCYXHSRJzrVYvZ7E3oUt9FaUE1UczGUks7OUHVRPpP12TX1iYV
+	 3uoA7T5N126IqVqSbtXQw1KBiJP5fCN4MKbfl+A0=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405827AbgJPJck (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 16 Oct 2020 05:32:40 -0400
-Received: from mga05.intel.com ([192.55.52.43]:13863 "EHLO mga05.intel.com"
+        id S2406069AbgJPOOE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 16 Oct 2020 10:14:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52542 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2394926AbgJPJck (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 16 Oct 2020 05:32:40 -0400
-IronPort-SDR: 8TjIjk4A7P2OdlrDY5KhLQMR42qkAOjvqliQ4TlA0YDiG+fd4SC4Lflq7i9T0v6hUB0iZpeLs3
- pTABurC6Mo4Q==
-X-IronPort-AV: E=McAfee;i="6000,8403,9775"; a="251262326"
-X-IronPort-AV: E=Sophos;i="5.77,382,1596524400"; 
-   d="scan'208";a="251262326"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2020 02:32:40 -0700
-IronPort-SDR: b3IAJ/inc4Ors43S6Y/XBEMgQ4ArEtssPm3w5MiKzpq4v0R6V6QLk4Y5pZOOBIPknp+UFJYS1K
- uEiFenBq9I+Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,382,1596524400"; 
-   d="scan'208";a="346481812"
-Received: from sgsxdev004.isng.intel.com (HELO localhost) ([10.226.88.13])
-  by fmsmga004.fm.intel.com with ESMTP; 16 Oct 2020 02:31:44 -0700
-From:   "Ramuthevar,Vadivel MuruganX" 
-        <vadivel.muruganx.ramuthevar@linux.intel.com>
-To:     vigneshr@ti.com, tudor.ambarus@microchip.com, broonie@kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        robh+dt@kernel.org
-Cc:     devicetree@vger.kernel.org, miquel.raynal@bootlin.com,
-        simon.k.r.goldschmidt@gmail.com, dinguyen@kernel.org,
-        richard@nod.at, cheol.yong.kim@intel.com, qi-ming.wu@intel.com,
-        "Ramuthevar,Vadivel MuruganX" 
-        <vadivel.muruganx.ramuthevar@linux.intel.com>
-Subject: [PATCH v1 0/6] spi: cadence-quadspi: Add QSPI controller support for Intel LGM SoC
-Date:   Fri, 16 Oct 2020 17:31:32 +0800
-Message-Id: <20201016093138.28871-1-vadivel.muruganx.ramuthevar@linux.intel.com>
-X-Mailer: git-send-email 2.11.0
+        id S2395282AbgJPOOD (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 16 Oct 2020 10:14:03 -0400
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7339321527;
+        Fri, 16 Oct 2020 14:14:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1602857642;
+        bh=/Wy1dqxW7oC6Qye976pyOHB3NEyzVajEMIVxWnNoiWI=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=GvfirHosPoQlrZ9dHvK/MiR7ld0pnZ1gIqpgnPDdlppchrxHv71dL73zET/FkkRbX
+         tpqynbY8hwuhIjWFSMFkHjBO9r32xo2deIPkDs7E/9OfxpB5pjmz47kNzImHNVhmWP
+         Gky4SSBzFgYnYuDePGs3dGZiWfdwrzyOS730N2ug=
+Received: by mail-oi1-f180.google.com with SMTP id h10so2597082oie.5;
+        Fri, 16 Oct 2020 07:14:02 -0700 (PDT)
+X-Gm-Message-State: AOAM5332Zt9j9+/2e3ssCOcDCWxTZ2BFwwWZRU0xSKaHVO8SRA8RNBNQ
+        it5k5E9hTlDFu4inXIjklq1Mv4BeEcGzLm2SBg==
+X-Google-Smtp-Source: ABdhPJwvkvemmhvQLSwCQm4gpIYMftfka7WMIAmWLyZGAJSnJ52MchXcPRDmVK7L+Va3qkbuIITfwhAYwzEjNkMAFBA=
+X-Received: by 2002:aca:4c52:: with SMTP id z79mr2691947oia.147.1602857641568;
+ Fri, 16 Oct 2020 07:14:01 -0700 (PDT)
+MIME-Version: 1.0
+References: <20201013160845.1772-1-thunder.leizhen@huawei.com>
+ <20201013160845.1772-7-thunder.leizhen@huawei.com> <bda5f620-7140-51fb-fadd-6ebd3c0db935@ti.com>
+ <4f5f9b55-9fad-9318-82d4-6b258643738b@huawei.com> <20201014135019.GA1563910@bogus>
+ <49b680f8-d7d7-8ea3-894c-73cbfacc5ba4@huawei.com>
+In-Reply-To: <49b680f8-d7d7-8ea3-894c-73cbfacc5ba4@huawei.com>
+From:   Rob Herring <robh@kernel.org>
+Date:   Fri, 16 Oct 2020 09:13:49 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJKOeZybxnu+Z2ugaGwebrnbtmJ8n0st-=n3NbAf9_pyw@mail.gmail.com>
+Message-ID: <CAL_JsqJKOeZybxnu+Z2ugaGwebrnbtmJ8n0st-=n3NbAf9_pyw@mail.gmail.com>
+Subject: Re: [PATCH 6/6] dt-bindings: misc: correct the property name
+ cmd-gpios to cmd-gpio
+To:     "Leizhen (ThunderTown)" <thunder.leizhen@huawei.com>
+Cc:     Dan Murphy <dmurphy@ti.com>, Pavel Machek <pavel@ucw.cz>,
+        linux-leds <linux-leds@vger.kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Mark Brown <broonie@kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Lubomir Rintel <lkundrak@v3.sk>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add QSPI controller support for Intel LGM SoC.
+On Wed, Oct 14, 2020 at 10:23 PM Leizhen (ThunderTown)
+<thunder.leizhen@huawei.com> wrote:
+>
+>
+>
+> On 2020/10/14 21:50, Rob Herring wrote:
+> > On Wed, Oct 14, 2020 at 09:29:26AM +0800, Leizhen (ThunderTown) wrote:
+> >>
+> >>
+> >> On 2020/10/14 1:32, Dan Murphy wrote:
+> >>> Zhen
+> >>>
+> >>> On 10/13/20 11:08 AM, Zhen Lei wrote:
+> >>>> The property name used in arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts is
+> >>>> cmd-gpio.
+> >>>>
+> >>>> arch/arm/boot/dts/mmp2-olpc-xo-1-75.dts:235:
+> >>>> cmd-gpio = <&gpio 155 GPIO_ACTIVE_HIGH>;
+> >>>>
+> >>>> Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+> >>>> ---
+> >>>>   Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml | 6 +++---
+> >>>>   1 file changed, 3 insertions(+), 3 deletions(-)
+> >>>>
+> >>>> diff --git a/Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml b/Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml
+> >>>> index b3c45c046ba5e37..c7a06a9650db2ed 100644
+> >>>> --- a/Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml
+> >>>> +++ b/Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml
+> >>>> @@ -24,7 +24,7 @@ properties:
+> >>>>     compatible:
+> >>>>       const: olpc,xo1.75-ec
+> >>>>   -  cmd-gpios:
+> >>>> +  cmd-gpio:
+> >>>
+> >>> Preference is gpios not gpio. But Rob H accept or reject
+> >>
+> >> Look at the search result below. It seems that the driver have not been merged into mainline.
+> >
+> > Yes, in drivers/platform/olpc/olpc-xo175-ec.c.
+> >
+> > Your mistake is the gpiod api takes just 'cmd' as the GPIO core handles
+> > both forms.
+>
+> OK, thanks for your information. I have found that it defined by gpio_suffixes[].
+>
+> >
+> >> But the property name is really used as cmd-gpio at mmp2-olpc-xo-1-75.dts:235, I don't think
+> >> the mmp2-olpc-xo-1-75.dts can make a mistake. Otherwise, the driver will not work properly.
+> >> Meanwhile, Both names cmd-gpios and cmd-gpio seem to be in use. But I prefer cmd-gpio, after
+> >> all, only one gpio is assigned now. The motorola,cmd-gpios add "s" because it contains 3 gpio.
+> >
+> > The preference is it is always '-gpios' just like it's always
+> > 'interrupts' or 'clocks'.
+> >
+> > However, whether to change this is really up to the OLPC folks. Given
+> > the driver has always supported both forms, it should be okay to change
+> > the dts. Though there could be other users besides the kernel.
+>
+> If both "cmd-gpios" and "cmd-gpio" are supported, should we use enum to list both
+> of them in yaml? or use patternProperties?
 
-Note from Vignesh(mtd subsystem maintainer):
-This series is a subset of "[PATCH v12 0/4] spi: cadence-quadspi: Add
-support for the Cadence QSPI controller" by Ramuthevar,Vadivel MuruganX
-<vadivel.muruganx.ramuthevar@linux.intel.com> that intended to move
-cadence-quadspi driver to spi-mem framework
+No, we pick one or the other. Given Lubomir is okay with a dts change,
+we should use just 'cmd-gpios'.
 
-Those patches were trying to accomplish too many things in a single set
-of patches and need to split into smaller patches. This is reduced
-version of above series.
-
-Changes that are intended to make migration easy are split into separate
-patches. Patches 1 to 3 drop features that cannot be supported under
-spi-mem at the moment (backward compatibility is maintained).
-Patch 4-5 are trivial cleanups. Patch 6 does the actual conversion to
-spi-mem and patch 7 moves the driver to drivers/spi folder.
-
-I have tested both INDAC mode (used by non TI platforms like Altera
-SoCFPGA) and DAC mode (used by TI platforms) on TI EVMs.
-
-Patches to move move bindings over to
-"Documentation/devicetree/bindings/spi/" directory and also conversion
-of bindig doc to YAML will be posted separately.  Support for Intel
-platform would follow that.
-
-Reference:
-	https://lkml.org/lkml/2020/6/1/50
-
-Ramuthevar Vadivel Murugan (6):
-  spi: Move cadence-quadspi.txt to Documentation/devicetree/bindings/spi
-  dt-bindings: spi: Convert cadence-quadspi.txt to cadence-quadspi.yaml
-  dt-bindings: spi: Add compatible for Intel LGM SoC
-  spi: cadence-quadspi: Add QSPI support for Intel LGM SoC
-  spi: cadence-quadspi: Disable the DAC for Intel LGM SoC
-  spi: cadence-quadspi: Add multi-chipselect support for Intel LGM SoC
-
- .../devicetree/bindings/mtd/cadence-quadspi.txt    |  67 ---------
- .../devicetree/bindings/spi/cadence-quadspi.yaml   | 149 +++++++++++++++++++++
- drivers/spi/Kconfig                                |   2 +-
- drivers/spi/spi-cadence-quadspi.c                  |  29 ++++
- 4 files changed, 179 insertions(+), 68 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/mtd/cadence-quadspi.txt
- create mode 100644 Documentation/devicetree/bindings/spi/cadence-quadspi.yaml
-
--- 
-2.11.0
-
+Rob

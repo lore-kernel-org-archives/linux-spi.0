@@ -2,105 +2,74 @@ Return-Path: <SRS0=rigy=DX=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,TVD_SPACE_RATIO,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 106ECC433E7
-	for <linux-spi@archiver.kernel.org>; Fri, 16 Oct 2020 08:50:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7803CC433DF
+	for <linux-spi@archiver.kernel.org>; Fri, 16 Oct 2020 09:31:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 96FA12084C
-	for <linux-spi@archiver.kernel.org>; Fri, 16 Oct 2020 08:50:26 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JA1GNd8+"
+	by mail.kernel.org (Postfix) with ESMTP id 0A37F20848
+	for <linux-spi@archiver.kernel.org>; Fri, 16 Oct 2020 09:31:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404833AbgJPIu0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 16 Oct 2020 04:50:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58052 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404750AbgJPIuZ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 16 Oct 2020 04:50:25 -0400
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93CD6C061755;
-        Fri, 16 Oct 2020 01:50:25 -0700 (PDT)
-Received: by mail-lj1-x242.google.com with SMTP id c21so1623776ljj.0;
-        Fri, 16 Oct 2020 01:50:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=l2g0WanDfq/KDOh+/VcHyYkZcE8dM9/DlazBWuJO0Zw=;
-        b=JA1GNd8+HG69mXKrInW+0dljGSbVqvNVsQIb2Q4Wl6dfWRYeempCQLpYb9LCCx0tF/
-         M//4FdO2QES7EtI0dmhPQ5LSEOjx95yO8c8ekXQETgalMH9LDJJYMryKl7NQY+wTG5P3
-         Z3pwCjpROLpJoK87+6xDJczYQvv1oZgEbOt5G8VxPFs45ijMGsNewG+SUAGA2oWWhOEg
-         92Jl18IA1nE773vlSc40rcMiXogokilNW+h5C0A2yh2aFVlfYIbztIhTmG8aiZO7rErV
-         tpHdPSoVBgF27FnMYuUMLviVlfDXNiiunM4jihEFO01voqCV2NAZ4zeKCMGegQKSYFTL
-         fx8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=l2g0WanDfq/KDOh+/VcHyYkZcE8dM9/DlazBWuJO0Zw=;
-        b=uQLr0TtkaGB06LOnQNkX7CcRlBWW3Hvo8su3z8wRAhKbTIZs/IyPY4VmCIKDZreZG/
-         W0m0jo6GkNRENJCUDOsP8shU6hg5PE8CVbteB6xbLdgw3klWXyVfnTszTNA/0tUGYu1j
-         P7gR5aUGpqgZBT29niAkj8PFJDpj6FxiXRJOaaoY0ugdAC/XLdNxYxF+saTpF6AaeWgC
-         F/TWK3Kj0qL3YoYku0wNiwzpDmAOsX+ZDpQiMD6rQMMjuHagdSIYj2q26Mb7eetWZjOz
-         xj20b2srGAISUET7E2qXbBgOJIGjIU4lZ+KOme3VniFn9rdQNPgA8AsyEKp+u3qU7Cys
-         rqng==
-X-Gm-Message-State: AOAM533kT5Kn72rUU/CANuGwCyVy8dPo2Lt5ZEXAYT32O2P1GCHWHhVy
-        ylbgKOGI27WjZ4vaBtQ0KEU=
-X-Google-Smtp-Source: ABdhPJwdW1Qe4VdACE8m9bGNR8Vib87O4M73lJOUO9VrfM5U5CqccUuVSr6SJSEuRzCSoN2I39zj2g==
-X-Received: by 2002:a2e:b5c1:: with SMTP id g1mr1014660ljn.305.1602838224050;
-        Fri, 16 Oct 2020 01:50:24 -0700 (PDT)
-Received: from ubuntu-18.lintech.local ([80.87.144.137])
-        by smtp.gmail.com with ESMTPSA id 62sm607435lfk.47.2020.10.16.01.50.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2020 01:50:23 -0700 (PDT)
-From:   Alexander Kochetkov <al.kochet@gmail.com>
-To:     Mark Brown <broonie@kernel.org>, Heiko Stuebner <heiko@sntech.de>
-Cc:     linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Alexander Kochetkov <al.kochet@gmail.com>
-Subject: [PATCH] spi: rockchip: enable autosuspend feature
-Date:   Fri, 16 Oct 2020 11:50:14 +0300
-Message-Id: <20201016085014.31667-1-al.kochet@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        id S2405250AbgJPJbw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 16 Oct 2020 05:31:52 -0400
+Received: from mga06.intel.com ([134.134.136.31]:15833 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2405206AbgJPJbw (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 16 Oct 2020 05:31:52 -0400
+IronPort-SDR: dookdGkvuRBrVs4XDblRbC1/iUsrz6bz4+MVq8iqGG3dAoxgua/QSpRucXwqqTxlTbxyidJTUX
+ 3t0OIso1f5Hw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9775"; a="228222200"
+X-IronPort-AV: E=Sophos;i="5.77,382,1596524400"; 
+   d="scan'208";a="228222200"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2020 02:31:51 -0700
+IronPort-SDR: COuF3ZeTS5OIftby2HNIQCTbEcTYfJP+N3V010dPVm/kUFkaIf3TjnCUmjXazvct4Qe/iVJPuA
+ Kllmj84dr9Gw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,382,1596524400"; 
+   d="scan'208";a="300559769"
+Received: from sgsxdev004.isng.intel.com (HELO localhost) ([10.226.88.13])
+  by fmsmga008.fm.intel.com with ESMTP; 16 Oct 2020 02:31:48 -0700
+From:   "Ramuthevar,Vadivel MuruganX" 
+        <vadivel.muruganx.ramuthevar@linux.intel.com>
+To:     vigneshr@ti.com, tudor.ambarus@microchip.com, broonie@kernel.org,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        robh+dt@kernel.org
+Cc:     devicetree@vger.kernel.org, miquel.raynal@bootlin.com,
+        simon.k.r.goldschmidt@gmail.com, dinguyen@kernel.org,
+        richard@nod.at, cheol.yong.kim@intel.com, qi-ming.wu@intel.com,
+        Ramuthevar Vadivel Murugan 
+        <vadivel.muruganx.ramuthevar@linux.intel.com>
+Subject: [PATCH v1 1/6] spi: Move cadence-quadspi.txt to Documentation/devicetree/bindings/spi
+Date:   Fri, 16 Oct 2020 17:31:33 +0800
+Message-Id: <20201016093138.28871-2-vadivel.muruganx.ramuthevar@linux.intel.com>
+X-Mailer: git-send-email 2.11.0
+In-Reply-To: <20201016093138.28871-1-vadivel.muruganx.ramuthevar@linux.intel.com>
+References: <20201016093138.28871-1-vadivel.muruganx.ramuthevar@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-If SPI is used for periodic polling any sensor, significant delays
-sometimes appear. Switching on module clocks during resume lead to delays.
-Enabling autosuspend mode causes the controller to not suspend between
-SPI transfers and the delays disappear.
+From: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
 
-Signed-off-by: Alexander Kochetkov <al.kochet@gmail.com>
+Move the Documentation/devicetree/bindings/mtd/cadence-quadspi.txt to
+Documentation/devicetree/bindings/spi/
+
+Signed-off-by: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
 ---
- drivers/spi/spi-rockchip.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ Documentation/devicetree/bindings/{mtd => spi}/cadence-quadspi.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ rename Documentation/devicetree/bindings/{mtd => spi}/cadence-quadspi.txt (100%)
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 2cc6d9951b52..3e77b1a79bc8 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -157,6 +157,8 @@
- 
- #define ROCKCHIP_SPI_MAX_CS_NUM			2
- 
-+#define ROCKCHIP_AUTOSUSPEND_TIMEOUT		2000
-+
- struct rockchip_spi {
- 	struct device *dev;
- 
-@@ -670,6 +672,8 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 		goto err_disable_spiclk;
- 	}
- 
-+	pm_runtime_set_autosuspend_delay(&pdev->dev, ROCKCHIP_AUTOSUSPEND_TIMEOUT);
-+	pm_runtime_use_autosuspend(&pdev->dev);
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
- 
+diff --git a/Documentation/devicetree/bindings/mtd/cadence-quadspi.txt b/Documentation/devicetree/bindings/spi/cadence-quadspi.txt
+similarity index 100%
+rename from Documentation/devicetree/bindings/mtd/cadence-quadspi.txt
+rename to Documentation/devicetree/bindings/spi/cadence-quadspi.txt
 -- 
-2.17.1
+2.11.0
 

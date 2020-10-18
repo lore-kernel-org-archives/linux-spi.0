@@ -7,49 +7,49 @@ X-Spam-Status: No, score=-13.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B0DCDC433DF
-	for <linux-spi@archiver.kernel.org>; Sun, 18 Oct 2020 19:53:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 811B2C433E7
+	for <linux-spi@archiver.kernel.org>; Sun, 18 Oct 2020 20:00:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 82D7122263
-	for <linux-spi@archiver.kernel.org>; Sun, 18 Oct 2020 19:53:05 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4117F22280
+	for <linux-spi@archiver.kernel.org>; Sun, 18 Oct 2020 20:00:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1603050785;
+	s=default; t=1603051239;
 	bh=24E4I2wVgcDcC8lMsXnny7Jl2B8AmMs8vL8BoWMURYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
-	b=RqeoO6GUVMCSEK4+bDDMZTW2b0ZbvZMXnnqVaDsKnRUVRBxFvJIaco66YTA/fxiOn
-	 wUsnuSGd66UT9JTFlZpLlNeeTlpBtQfSG0g+LxOAYn0D5zMV0aK0uzaxG8FOFuCHSh
-	 Rorgjf5vV1j1wh2TnYHzMFutE+EJJ100gVmyCpcU=
+	b=NbUF8/JsiVaWAmvL9lTQV/Dv03cscRH+KILiTw/P78a5vKrnSJ/WXObLGfCYYc/Jo
+	 mIBjRkiQB8aDizCj9rh3f/36xFaATbQXzAuRTDuP2az0Y0QeYqlZQ384cO7LnkRc5X
+	 Vo/DkbX1BCvhq5HoHybXqCSMptHzJPzOt93RFmNo=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387902AbgJRTxA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 18 Oct 2020 15:53:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60828 "EHLO mail.kernel.org"
+        id S1727746AbgJRTSk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 18 Oct 2020 15:18:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56648 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729078AbgJRTUx (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Sun, 18 Oct 2020 15:20:53 -0400
+        id S1727705AbgJRTSe (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Sun, 18 Oct 2020 15:18:34 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8D77322365;
-        Sun, 18 Oct 2020 19:20:52 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 03391222D9;
+        Sun, 18 Oct 2020 19:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603048853;
+        s=default; t=1603048713;
         bh=24E4I2wVgcDcC8lMsXnny7Jl2B8AmMs8vL8BoWMURYE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NkHJ6cYWkDQG+o5ouLLaU74jeaywWgMYu1gg4aCVDcEF86FiUq0hUqj3/RvZ9vtTt
-         97Dfc4hKfoTGIgxUNOTu69sFDYjZB6iQp8vlo4ImTUTxRykuGQTRiYLjGH3j4r6Zh9
-         m1qG4RyGsnZgYGNfQG1GfEu/O1Q5diuaK5C0oQmU=
+        b=bIY/VPWveQ4VE2UZhMUW/65sSNnvXsIMIIlK9kaejN1Xo+Wrjd4FsphDsT4hJS8Tv
+         pHwOTiLFU5M2PyQ2si/gX6rSUc+Q2Gc9RQXFcr/x+JnBpS64noLC5kBIA74OmVWL4L
+         euYE3gqlCLsePcF/kbm0WlQNUd4K9p+ddJgXEzRk=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Brad Bishop <bradleyb@fuzziesquirrel.com>,
         Eddie James <eajames@linux.ibm.com>,
         Joel Stanley <joel@jms.id.au>, Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.8 021/101] spi: fsi: Fix clock running too fast
-Date:   Sun, 18 Oct 2020 15:19:06 -0400
-Message-Id: <20201018192026.4053674-21-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.9 021/111] spi: fsi: Fix clock running too fast
+Date:   Sun, 18 Oct 2020 15:16:37 -0400
+Message-Id: <20201018191807.4052726-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201018192026.4053674-1-sashal@kernel.org>
-References: <20201018192026.4053674-1-sashal@kernel.org>
+In-Reply-To: <20201018191807.4052726-1-sashal@kernel.org>
+References: <20201018191807.4052726-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore

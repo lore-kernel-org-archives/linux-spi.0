@@ -1,100 +1,97 @@
-Return-Path: <SRS0=rigy=DX=vger.kernel.org=linux-spi-owner@kernel.org>
+Return-Path: <SRS0=omUk=DZ=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-13.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 62AD2C43467
-	for <linux-spi@archiver.kernel.org>; Fri, 16 Oct 2020 16:33:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B0DCDC433DF
+	for <linux-spi@archiver.kernel.org>; Sun, 18 Oct 2020 19:53:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 139A320848
-	for <linux-spi@archiver.kernel.org>; Fri, 16 Oct 2020 16:33:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 82D7122263
+	for <linux-spi@archiver.kernel.org>; Sun, 18 Oct 2020 19:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1602866011;
-	bh=u46vp5B1uwzNW0JBMl2fGW4TXHe2IaVrLlXw6hGjEVM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
-	b=EqT51smh0oAOyKb/VCRUwSSqkITIUBbWTmPh1KdnfO+ijOuIEJy+wZYfxANNFG+lW
-	 eR8mMHdiigHdgy2Nhpbt8qi/eeUwGJQ5pVr8w3Ujcoul2dXrPyXDUtLaw2Anh40LT3
-	 9KNUTKLIXEcb6NY7mMSNoRRqjbi32hQ5fVkdo/lg=
+	s=default; t=1603050785;
+	bh=24E4I2wVgcDcC8lMsXnny7Jl2B8AmMs8vL8BoWMURYE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:List-ID:From;
+	b=RqeoO6GUVMCSEK4+bDDMZTW2b0ZbvZMXnnqVaDsKnRUVRBxFvJIaco66YTA/fxiOn
+	 wUsnuSGd66UT9JTFlZpLlNeeTlpBtQfSG0g+LxOAYn0D5zMV0aK0uzaxG8FOFuCHSh
+	 Rorgjf5vV1j1wh2TnYHzMFutE+EJJ100gVmyCpcU=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2410267AbgJPQd1 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 16 Oct 2020 12:33:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48438 "EHLO mail.kernel.org"
+        id S2387902AbgJRTxA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 18 Oct 2020 15:53:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60828 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2408718AbgJPQd1 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 16 Oct 2020 12:33:27 -0400
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1729078AbgJRTUx (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Sun, 18 Oct 2020 15:20:53 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A532320829;
-        Fri, 16 Oct 2020 16:33:26 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8D77322365;
+        Sun, 18 Oct 2020 19:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1602866007;
-        bh=u46vp5B1uwzNW0JBMl2fGW4TXHe2IaVrLlXw6hGjEVM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=EARcUo2/+3Kkn0bnoTfu6mtSthjhpEJ87uidMjq6vETgPO4BEPqjy+43uedsrET6Y
-         mTCBFcTgNlasKNJv+U/OLTts0AghFy1iDGtPAM1z32L9xMJgTnj1FD6B366AOqP6m8
-         RyWUDStatecR7gfRXHbMmm3JEVzPF9FGRyj5RAUk=
-Date:   Fri, 16 Oct 2020 17:33:18 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     "Ramuthevar,Vadivel MuruganX" 
-        <vadivel.muruganx.ramuthevar@linux.intel.com>
-Cc:     vigneshr@ti.com, tudor.ambarus@microchip.com,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        robh+dt@kernel.org, devicetree@vger.kernel.org,
-        miquel.raynal@bootlin.com, simon.k.r.goldschmidt@gmail.com,
-        dinguyen@kernel.org, richard@nod.at, cheol.yong.kim@intel.com,
-        qi-ming.wu@intel.com
-Subject: Re: [PATCH v1 4/6] spi: cadence-quadspi: Add QSPI support for Intel
- LGM SoC
-Message-ID: <20201016163318.GI5274@sirena.org.uk>
-References: <20201016093138.28871-1-vadivel.muruganx.ramuthevar@linux.intel.com>
- <20201016093138.28871-5-vadivel.muruganx.ramuthevar@linux.intel.com>
+        s=default; t=1603048853;
+        bh=24E4I2wVgcDcC8lMsXnny7Jl2B8AmMs8vL8BoWMURYE=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=NkHJ6cYWkDQG+o5ouLLaU74jeaywWgMYu1gg4aCVDcEF86FiUq0hUqj3/RvZ9vtTt
+         97Dfc4hKfoTGIgxUNOTu69sFDYjZB6iQp8vlo4ImTUTxRykuGQTRiYLjGH3j4r6Zh9
+         m1qG4RyGsnZgYGNfQG1GfEu/O1Q5diuaK5C0oQmU=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Brad Bishop <bradleyb@fuzziesquirrel.com>,
+        Eddie James <eajames@linux.ibm.com>,
+        Joel Stanley <joel@jms.id.au>, Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.8 021/101] spi: fsi: Fix clock running too fast
+Date:   Sun, 18 Oct 2020 15:19:06 -0400
+Message-Id: <20201018192026.4053674-21-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20201018192026.4053674-1-sashal@kernel.org>
+References: <20201018192026.4053674-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="lqaZmxkhekPBfBzr"
-Content-Disposition: inline
-In-Reply-To: <20201016093138.28871-5-vadivel.muruganx.ramuthevar@linux.intel.com>
-X-Cookie: Pournelle must die!
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+From: Brad Bishop <bradleyb@fuzziesquirrel.com>
 
---lqaZmxkhekPBfBzr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+[ Upstream commit 0b546bbe9474ff23e6843916ad6d567f703b2396 ]
 
-On Fri, Oct 16, 2020 at 05:31:36PM +0800, Ramuthevar,Vadivel MuruganX wrote:
+Use a clock divider tuned to a 200MHz FSI bus frequency (the maximum). Use
+of the previous divider at 200MHz results in corrupt data from endpoint
+devices. Ideally the clock divider would be calculated from the FSI clock,
+but that would require some significant work on the FSI driver. With FSI
+frequencies slower than 200MHz, the SPI clock will simply run slower, but
+safely.
 
-> +	depends on OF && (ARM || ARM64 || X86 || COMPILE_TEST)
+Signed-off-by: Brad Bishop <bradleyb@fuzziesquirrel.com>
+Signed-off-by: Eddie James <eajames@linux.ibm.com>
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+Link: https://lore.kernel.org/r/20200909222857.28653-3-eajames@linux.ibm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi-fsi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> +	{
-> +		.compatible = "intel,lgm-qspi",
-> +	},
+diff --git a/drivers/spi/spi-fsi.c b/drivers/spi/spi-fsi.c
+index 37a3e0f8e7526..6e6b3c6437288 100644
+--- a/drivers/spi/spi-fsi.c
++++ b/drivers/spi/spi-fsi.c
+@@ -350,7 +350,7 @@ static int fsi_spi_transfer_init(struct fsi_spi *ctx)
+ 	u64 status = 0ULL;
+ 	u64 wanted_clock_cfg = SPI_FSI_CLOCK_CFG_ECC_DISABLE |
+ 		SPI_FSI_CLOCK_CFG_SCK_NO_DEL |
+-		FIELD_PREP(SPI_FSI_CLOCK_CFG_SCK_DIV, 4);
++		FIELD_PREP(SPI_FSI_CLOCK_CFG_SCK_DIV, 19);
+ 
+ 	end = jiffies + msecs_to_jiffies(SPI_FSI_INIT_TIMEOUT_MS);
+ 	do {
+-- 
+2.25.1
 
-This is an x86 SoC (or SoC series) - is it really going to use DT for
-the firmware interfaces?  It's not specifically a problem, just
-surprising to see something other than ACPI.  Or is the intention to use
-PRP0001?  There's a new comaptible here which wasn't really the use case
-for PRP0001.  Like I say not really a problem, just curious.
-
---lqaZmxkhekPBfBzr
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl+Jy00ACgkQJNaLcl1U
-h9Bq8wf/eT9A/EcP5eME3WAszgCqlKMUJ8CrSp67m0XtbQP4LhkACvP3aeM0ir5A
-HYTfoTWqPB7xZdY9lAc3YavBGQLqhFStHMunKkxVQmGR1R5/Tqs0PBfhzlsg9TES
-fB2UxQzrU1bWnV5ElyCHioHkWCwgk2vBdi6PuZ2ZMDal3eX9i11sh70OlVpOm7O+
-/HQdX8CM3+OZFOsmhRtjPo17TY2808W41IW7jF+5vCMZ/V2Xty7BgLdd4q2bZOLI
-h2RFMddJDFpxOkcQJnoU8snriFMJLAcDjF0J9sgpRVj0gizAZ+geR1w48VhzNVKP
-sMsp97jcpwXvv3UWUO8cXF4gnxRvvg==
-=RVw+
------END PGP SIGNATURE-----
-
---lqaZmxkhekPBfBzr--

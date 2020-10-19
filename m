@@ -2,123 +2,58 @@ Return-Path: <SRS0=A3JY=D2=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.6 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-4.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 31731C433E7
-	for <linux-spi@archiver.kernel.org>; Mon, 19 Oct 2020 15:03:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4CB4AC433E7
+	for <linux-spi@archiver.kernel.org>; Mon, 19 Oct 2020 15:56:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BF9E422365
-	for <linux-spi@archiver.kernel.org>; Mon, 19 Oct 2020 15:03:50 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NwHarqhT"
+	by mail.kernel.org (Postfix) with ESMTP id DBAA422282
+	for <linux-spi@archiver.kernel.org>; Mon, 19 Oct 2020 15:56:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1603122968;
+	bh=3bEodLi5qYzVKpGNbbjVSRy7zgHZoy1is862tAMAqv8=;
+	h=Subject:From:Date:To:List-ID:From;
+	b=vz3fGUs5SpwuxXSf8nlcHOm8lGSdXghWkIZFG+pAZG/n72ckQFtypD4GwMJAR5upR
+	 NGpuKfVKj8eLql/UNjeioOshWUDfEpzsx44cRFopEdD01s01FGu1o3V0P9mD7rMVpC
+	 37qwgMDKpDRJp2s8pd9f5DwoA8pEt6K9AbuwLvF0=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729562AbgJSPDu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 19 Oct 2020 11:03:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46752 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729546AbgJSPDu (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 19 Oct 2020 11:03:50 -0400
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 990EEC0613CE;
-        Mon, 19 Oct 2020 08:03:49 -0700 (PDT)
-Received: by mail-lf1-x143.google.com with SMTP id c141so14595265lfg.5;
-        Mon, 19 Oct 2020 08:03:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=fPH7CQ4G9R2lqYFhSa3lSQ7unVSPvrV283E5Rfz2G+c=;
-        b=NwHarqhTQAshl//hLm4teAywrDUZ/D+WdI/zrBmozgDJPKZQTriM/AFtTPraeDP1UD
-         zp5mb7XClNpnGsOvXoA1z6mQkCr5l1LrxC4zdolqpy4TRMopmflRH0DjPIFlNno3bZ6T
-         syvNUFF3/YTkIbXTtbjNesUQ0hrYa9eT782eCjwre/Hd8u8vsTBpk9EYo44QxFWtuxZf
-         Lbxz19zFoVhamdlq37H7bEFIbtr9vX3k3eDA/K6NKXj1Ya4uBUEGiZOjfFBe/jX6bafP
-         O3U+hcTP7owCDU5UyEXA2c9fAkMoco68b/1kAsZ/u0UPYgvasvVngKzWBzvrp7gJb80g
-         0Vhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=fPH7CQ4G9R2lqYFhSa3lSQ7unVSPvrV283E5Rfz2G+c=;
-        b=BYX+q4UyBOy9MAttySUQA/Y09fNHwBHmvXSbnjDCKVGDKIQe+ByU0AfogsxsuFD19S
-         MXwTyAUXrkTfd0Mzbad3vYABybib6jwL+3q5h3ZrnFU/tXG26AXcj1PsZrfZmB33VDVp
-         62usyzMrxPSywG1gQlqjBLjGhJXnkksnJYhjenlljk+KLq+ol78x3d6M1EmDSB10IqbJ
-         C3bAchE+K7eVoMQ/G4mhti8njB6kac1qGf5eu2BOASWZLDr4hxz4rGZ+1wF77L0zUTQc
-         7EXocf0xW7EokrJT/jI5+6ykq2s063E9uILYIaaooLE9TzzqyHn0VBm78+Sx42+eoKad
-         VRZA==
-X-Gm-Message-State: AOAM533U8jc66TxgZcvE+Gq+uiODny0gSxPY3J07ixQccIVFOJaahGvY
-        9tsOWKRFaqW5+2oNRrVU9q4=
-X-Google-Smtp-Source: ABdhPJzrrhrlwnzF8epGNUQ+/Zp3xt3luXBSviL5vDbuFR3e+LzxXD3Yh8X1TF4ljD75bY2oyiSGBw==
-X-Received: by 2002:a19:c68a:: with SMTP id w132mr42433lff.106.1603119828142;
-        Mon, 19 Oct 2020 08:03:48 -0700 (PDT)
-Received: from ubuntu-18.lintech.local ([80.87.144.137])
-        by smtp.gmail.com with ESMTPSA id l9sm13343ljc.86.2020.10.19.08.03.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Oct 2020 08:03:47 -0700 (PDT)
-From:   Alexander Kochetkov <al.kochet@gmail.com>
-X-Google-Original-From: Alexander Kochetkov <akochetkov@lintech.ru>
-To:     Mark Brown <broonie@kernel.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>
-Cc:     linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Alexander Kochetkov <al.kochet@gmail.com>
-Subject: [PATCH v2] spi: spi-sun6i: enable autosuspend feature
-Date:   Mon, 19 Oct 2020 18:03:43 +0300
-Message-Id: <20201019150343.2520-1-akochetkov@lintech.ru>
-X-Mailer: git-send-email 2.17.1
+        id S1730322AbgJSP4I (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 19 Oct 2020 11:56:08 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35376 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730150AbgJSP4I (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 19 Oct 2020 11:56:08 -0400
+Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1603122967;
+        bh=3bEodLi5qYzVKpGNbbjVSRy7zgHZoy1is862tAMAqv8=;
+        h=Subject:From:Date:To:From;
+        b=KlzsC8VjaDcD9NB26xnWxwxgAJMIYtyvQipJ7HqS97CjBTDKr/uAkB5XRZctrtPhm
+         uPfQH1uafVBN//I0tRVQb86/OUSghlDQufGI6NIdnGjNzxWKsC2SmM2p4M10HkjR/Q
+         cihbShsvtCEMX2CqGt+qtNlcbsLDdl7vLrJ4AHfo=
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <160312296749.18812.7229956722538811565.git-patchwork-housekeeping@kernel.org>
+Date:   Mon, 19 Oct 2020 15:56:07 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Alexander Kochetkov <al.kochet@gmail.com>
+Latest series: [v2] spi: spi-sun6i: implement DMA-based transfer mode (2020-10-19T14:58:33)
+  Superseding: [v1] spi: spi-sun6i: implement DMA-based transfer mode (2020-10-15T15:47:40):
+    spi: spi-sun6i: implement DMA-based transfer mode
 
-If SPI is used for periodic polling any sensor, significant delays
-sometimes appear. Switching on module clocks during resume lead to delays.
-Enabling autosuspend mode causes the controller to not suspend between
-SPI transfers and the delays disappear.
-
-The commit also remove unnecessary call to pm_runtime_idle() used
-to explicit put device to suspended state. Without pm_runtime_idle() PM
-core will put device in the suspended state just after probe() returns.
-
-Signed-off-by: Alexander Kochetkov <al.kochet@gmail.com>
----
-
-Changes in v2:
-- Extend commit description with explanation about removal
-  of pm_runtime_idle()
+Latest series: [v2] spi: spi-sun6i: enable autosuspend feature (2020-10-19T15:03:43)
+  Superseding: [v1] spi: spi-sun6i: enable autosuspend feature (2020-10-16T08:38:26):
+    spi: spi-sun6i: enable autosuspend feature
 
 
- drivers/spi/spi-sun6i.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
-index 29ea1e87ce7e..86f29c3e335a 100644
---- a/drivers/spi/spi-sun6i.c
-+++ b/drivers/spi/spi-sun6i.c
-@@ -22,6 +22,8 @@
- 
- #include <linux/spi/spi.h>
- 
-+#define SUN6I_AUTOSUSPEND_TIMEOUT	2000
-+
- #define SUN6I_FIFO_DEPTH		128
- #define SUN8I_FIFO_DEPTH		64
- 
-@@ -652,9 +654,10 @@ static int sun6i_spi_probe(struct platform_device *pdev)
- 		goto err_free_dma_rx;
- 	}
- 
-+	pm_runtime_set_autosuspend_delay(&pdev->dev, SUN6I_AUTOSUSPEND_TIMEOUT);
-+	pm_runtime_use_autosuspend(&pdev->dev);
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
--	pm_runtime_idle(&pdev->dev);
- 
- 	ret = devm_spi_register_master(&pdev->dev, master);
- 	if (ret) {
 -- 
-2.17.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

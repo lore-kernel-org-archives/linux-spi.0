@@ -2,80 +2,59 @@ Return-Path: <SRS0=mmrP=D3=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-4.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EBADEC43467
-	for <linux-spi@archiver.kernel.org>; Tue, 20 Oct 2020 02:33:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7FC85C433E7
+	for <linux-spi@archiver.kernel.org>; Tue, 20 Oct 2020 02:56:13 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BD21D2242C
-	for <linux-spi@archiver.kernel.org>; Tue, 20 Oct 2020 02:33:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3EACC222E9
+	for <linux-spi@archiver.kernel.org>; Tue, 20 Oct 2020 02:56:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1603162573;
+	bh=m2tCzGxRXGL/ngiZKr4EFbpQ1PAMBG5/+T0K/PsBr4c=;
+	h=Subject:From:Date:To:List-ID:From;
+	b=E5OM+bMLU6Yw8wwyM8YMpA3mX+1fk0m/DorGpOt5vIunTW015jNlF38VuB1P6pvtc
+	 JHpHLqJG/6WkbDoqks2wZa+5p/PgfYPWtCSxwZW3GrbnIprcBPYG+nlj/0e/4/O8WF
+	 GKmnDfvqmsbL2xQRt/gCBfXaFeRgYuPPeBqXztAw=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390692AbgJTCdG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 19 Oct 2020 22:33:06 -0400
-Received: from mga12.intel.com ([192.55.52.136]:33260 "EHLO mga12.intel.com"
+        id S2390906AbgJTC4N (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 19 Oct 2020 22:56:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50468 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390691AbgJTCdF (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 19 Oct 2020 22:33:05 -0400
-IronPort-SDR: aZa7yFDzafUmN8jGybYlqYU1y15lSusxGy0gxhLt6YbNAmbUVcqHyu9ti958A5/h7GGCirORXt
- xYTUNdnKIlhQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9779"; a="146436781"
-X-IronPort-AV: E=Sophos;i="5.77,395,1596524400"; 
-   d="scan'208";a="146436781"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2020 19:33:05 -0700
-IronPort-SDR: 8TD9ASnp9+MHdwC4DMe7HM3oKE9CarGV/gjV4cyU9sY5yDFXMkqZD/TgOTPSRQ1fj+fekw/7Fa
- Q1HG9r8XIfhw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,395,1596524400"; 
-   d="scan'208";a="522216081"
-Received: from sgsxdev004.isng.intel.com (HELO localhost) ([10.226.88.13])
-  by fmsmga006.fm.intel.com with ESMTP; 19 Oct 2020 19:33:01 -0700
-From:   "Ramuthevar,Vadivel MuruganX" 
-        <vadivel.muruganx.ramuthevar@linux.intel.com>
-To:     vigneshr@ti.com, tudor.ambarus@microchip.com, broonie@kernel.org,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        robh+dt@kernel.org
-Cc:     devicetree@vger.kernel.org, miquel.raynal@bootlin.com,
-        simon.k.r.goldschmidt@gmail.com, dinguyen@kernel.org,
-        richard@nod.at, cheol.yong.kim@intel.com, qi-ming.wu@intel.com,
-        Ramuthevar Vadivel Murugan 
-        <vadivel.muruganx.ramuthevar@linux.intel.com>
-Subject: [RESENDPATCH v1 6/6] dt-bindings: spi: Add compatible for Intel LGM SoC
-Date:   Tue, 20 Oct 2020 10:32:26 +0800
-Message-Id: <20201020023226.33559-7-vadivel.muruganx.ramuthevar@linux.intel.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20201020023226.33559-1-vadivel.muruganx.ramuthevar@linux.intel.com>
-References: <20201020023226.33559-1-vadivel.muruganx.ramuthevar@linux.intel.com>
+        id S1729210AbgJTC4M (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 19 Oct 2020 22:56:12 -0400
+Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1603162571;
+        bh=m2tCzGxRXGL/ngiZKr4EFbpQ1PAMBG5/+T0K/PsBr4c=;
+        h=Subject:From:Date:To:From;
+        b=2C7IZOu3D6n5/YlX1dDZfcGQp8lHBEzBDsOdM+AYnm5ovY0nvAJkzEt8fC8ZCsoUt
+         ihZoSHlG5slgGWFN07Ps8avJ2fnLlQfVJsBWn7T1spHJw9FFN/WfdIJOAKumKx5E+7
+         zHxiE6CaxJGViZNpUhi+tiKpP1z063nUMdfprSdc=
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <160316257097.7697.604932348980443087.git-patchwork-housekeeping@kernel.org>
+Date:   Tue, 20 Oct 2020 02:56:10 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
+Latest series: [v1] spi: cadence-quadspi: Add QSPI controller support for Intel LGM SoC (2020-10-20T02:32:20)
+  Superseding: [v1] spi: cadence-quadspi: Add QSPI controller support for Intel LGM SoC (2020-10-16T09:31:33):
+    [v1,1/6] spi: Move cadence-quadspi.txt to Documentation/devicetree/bindings/spi
+    [v1,2/6] dt-bindings: spi: Convert cadence-quadspi.txt to cadence-quadspi.yaml
+    [v1,3/6] dt-bindings: spi: Add compatible for Intel LGM SoC
+    [v1,4/6] spi: cadence-quadspi: Add QSPI support for Intel LGM SoC
+    [v1,5/6] spi: cadence-quadspi: Disable the DAC for Intel LGM SoC
+    [v1,6/6] spi: cadence-quadspi: Add multi-chipselect support for Intel LGM SoC
 
-Add compatible string for Intel LGM SoC.
 
-Signed-off-by: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
----
- Documentation/devicetree/bindings/spi/cadence-quadspi.yaml | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/Documentation/devicetree/bindings/spi/cadence-quadspi.yaml b/Documentation/devicetree/bindings/spi/cadence-quadspi.yaml
-index 6ed8122a1326..8b1e01159d2d 100644
---- a/Documentation/devicetree/bindings/spi/cadence-quadspi.yaml
-+++ b/Documentation/devicetree/bindings/spi/cadence-quadspi.yaml
-@@ -18,6 +18,7 @@ properties:
-       - const: cdns,qspi-nor
-       - const: ti,k2g-qspi, cdns,qspi-nor
-       - const: ti,am654-ospi, cdns,qspi-nor
-+      - const: intel,lgm-qspi, cdns,qspi-nor
- 
-     description:
-       Should be one of the above supported compatible strings.
 -- 
-2.11.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

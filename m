@@ -2,66 +2,112 @@ Return-Path: <SRS0=QF/b=D4=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F0570C4363D
-	for <linux-spi@archiver.kernel.org>; Wed, 21 Oct 2020 02:56:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 94DCBC4363A
+	for <linux-spi@archiver.kernel.org>; Wed, 21 Oct 2020 10:45:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A20DD22242
-	for <linux-spi@archiver.kernel.org>; Wed, 21 Oct 2020 02:56:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1603248972;
-	bh=sgPhWUQ1+o+LCSV+KH56HlgHJg8NMuymfvrpEgz5JlY=;
-	h=Subject:From:Date:To:List-ID:From;
-	b=lyy11kflTt+xhV8Fwi7ynqsMUamBtmibfHaQPf+XrR8sbFAK3Suz9Rm1I4CfrMAj1
-	 n3O3Kz5jDhgBqViQHnncjAcV+R14E4cBj/w8t4LHRHYuux0ybVEItzwvIk3xlsu5iL
-	 oDKZhNL74KTyq0CGtsMgSRbTHPcy1EdpjrEFdtEA=
+	by mail.kernel.org (Postfix) with ESMTP id 292DB22249
+	for <linux-spi@archiver.kernel.org>; Wed, 21 Oct 2020 10:45:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2411467AbgJUC4M (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 20 Oct 2020 22:56:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35288 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2411434AbgJUC4L (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 20 Oct 2020 22:56:11 -0400
-Content-Type: text/plain; charset="utf-8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603248971;
-        bh=sgPhWUQ1+o+LCSV+KH56HlgHJg8NMuymfvrpEgz5JlY=;
-        h=Subject:From:Date:To:From;
-        b=LBuAVCK12RAYfeDFvTBCO5aKvVlEPKoyRiQcvRB3XS+bN2r+ZvhszfrflTelNsWB1
-         a+VkcmJ7yuh1vFUfhUIU8W+cKODU7K6FXLqXo44ai/leZReQXRqaH+kzQWzjZAfjC1
-         t11RA/pe5sEn/aYylxEX7q+qM6FbPG6F5DeIGhvQ=
+        id S2410309AbgJUKpq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 21 Oct 2020 06:45:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58826 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388699AbgJUKpq (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 21 Oct 2020 06:45:46 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 021DDC0613CE
+        for <linux-spi@vger.kernel.org>; Wed, 21 Oct 2020 03:45:45 -0700 (PDT)
+Received: from dude02.hi.pengutronix.de ([2001:67c:670:100:1d::28])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1kVBcj-000800-De; Wed, 21 Oct 2020 12:45:41 +0200
+Received: from sha by dude02.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1kVBci-0005cs-Q4; Wed, 21 Oct 2020 12:45:40 +0200
+From:   Sascha Hauer <s.hauer@pengutronix.de>
+To:     linux-spi@vger.kernel.org
+Cc:     Mark Brown <broonie@kernel.org>, kernel@pengutronix.de,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Christian Eggers <ceggers@arri.de>, stable@vger.kernel.org
+Subject: [PATCH] spi: imx: fix runtime pm support for !CONFIG_PM
+Date:   Wed, 21 Oct 2020 12:45:13 +0200
+Message-Id: <20201021104513.21560-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <160324897091.7706.137588481375203080.git-patchwork-housekeeping@kernel.org>
-Date:   Wed, 21 Oct 2020 02:56:10 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::28
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v2] spi: cadence-quadspi: Add QSPI controller support for Intel LGM SoC (2020-10-21T02:55:01)
-  Superseding: [v1] spi: cadence-quadspi: Add QSPI controller support for Intel LGM SoC (2020-10-20T02:32:20):
-    [RESENDPATCH,v1,1/6] spi: cadence-quadspi: Add QSPI support for Intel LGM SoC
-    [RESENDPATCH,v1,2/6] spi: cadence-quadspi: Disable the DAC for Intel LGM SoC
-    [RESENDPATCH,v1,3/6] spi: cadence-quadspi: Add multi-chipselect support for Intel LGM SoC
-    [RESENDPATCH,v1,4/6] spi: Move cadence-quadspi.txt to Documentation/devicetree/bindings/spi
-    [RESENDPATCH,v1,5/6] dt-bindings: spi: Convert cadence-quadspi.txt to cadence-quadspi.yaml
-    [RESENDPATCH,v1,6/6] dt-bindings: spi: Add compatible for Intel LGM SoC
-  Superseding: [v2] spi: cadence-quadspi: Add QSPI controller support for Intel LGM SoC (2020-10-21T02:36:09):
-    [v2,1/6] spi: cadence-quadspi: Disable the DAC for Intel LGM SoC
-    [v2,2/6] spi: cadence-quadspi: Add multi-chipselect support for Intel LGM SoC
-    [v2,3/6] spi: Move cadence-quadspi.txt to Documentation/devicetree/bindings/spi
-    [v2,4/6] dt-bindings: spi: Convert cadence-quadspi.txt to cadence-quadspi.yaml
-    [v2,5/6] dt-bindings: spi: Add compatible for Intel LGM SoC
-    [v2,6/6] dt-bindings: spi: Add compatible for Intel LGM SoC
+525c9e5a32bd introduced pm_runtime support for the i.MX SPI driver. With
+this pm_runtime is used to bring up the clocks initially. When CONFIG_PM
+is disabled the clocks are no longer enabled and the driver doesn't work
+anymore. Fix this by enabling the clocks in the probe function and
+telling pm_runtime that the device is active using
+pm_runtime_set_active().
 
+Fixes: 525c9e5a32bd spi: imx: enable runtime pm support
+Tested-by: Christian Eggers <ceggers@arri.de> [tested for !CONFIG_PM only]
+Cc: stable@vger.kernel.org  # 5.9.x only
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/spi/spi-imx.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 38a5f1304cec..c796e937dc6a 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1674,15 +1674,18 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 		goto out_master_put;
+ 	}
+ 
+-	pm_runtime_enable(spi_imx->dev);
++	ret = clk_prepare_enable(spi_imx->clk_per);
++	if (ret)
++		goto out_master_put;
++
++	ret = clk_prepare_enable(spi_imx->clk_ipg);
++	if (ret)
++		goto out_put_per;
++
+ 	pm_runtime_set_autosuspend_delay(spi_imx->dev, MXC_RPM_TIMEOUT);
+ 	pm_runtime_use_autosuspend(spi_imx->dev);
+-
+-	ret = pm_runtime_get_sync(spi_imx->dev);
+-	if (ret < 0) {
+-		dev_err(spi_imx->dev, "failed to enable clock\n");
+-		goto out_runtime_pm_put;
+-	}
++	pm_runtime_set_active(spi_imx->dev);
++	pm_runtime_enable(spi_imx->dev);
+ 
+ 	spi_imx->spi_clk = clk_get_rate(spi_imx->clk_per);
+ 	/*
+@@ -1719,8 +1722,12 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 
+ out_runtime_pm_put:
+ 	pm_runtime_dont_use_autosuspend(spi_imx->dev);
+-	pm_runtime_put_sync(spi_imx->dev);
++	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_disable(spi_imx->dev);
++
++	clk_disable_unprepare(spi_imx->clk_ipg);
++out_put_per:
++	clk_disable_unprepare(spi_imx->clk_per);
+ out_master_put:
+ 	spi_master_put(master);
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+2.20.1
 

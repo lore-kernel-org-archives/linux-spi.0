@@ -1,91 +1,81 @@
-Return-Path: <SRS0=72+q=D7=vger.kernel.org=linux-spi-owner@kernel.org>
+Return-Path: <SRS0=cekb=EB=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B766C388F9
-	for <linux-spi@archiver.kernel.org>; Sat, 24 Oct 2020 00:29:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CD3F4C388F9
+	for <linux-spi@archiver.kernel.org>; Mon, 26 Oct 2020 09:45:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C28E022460
-	for <linux-spi@archiver.kernel.org>; Sat, 24 Oct 2020 00:29:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1603499350;
-	bh=zfimlyBy7JEtPZjy/CuXm+eSPqDJs5sU0y4ieMN/Z3g=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=0rj4UIfJIvNpsTSkQg+VSl9eejop3XwR8wbjumRc07loL9URIFERuACy7j6losqKC
-	 34wpSAhIOd5vatK4MPHt1iZTB383DHkCQ4SAlAvod6MN1J/0BiZuTfTsKrQau2sIeO
-	 ZOYehhqQHm/ug3tw9ssYJBsslAFRJpPtF/hK+31c=
+	by mail.kernel.org (Postfix) with ESMTP id 8B7392240A
+	for <linux-spi@archiver.kernel.org>; Mon, 26 Oct 2020 09:45:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1759019AbgJXA3K (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 23 Oct 2020 20:29:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42340 "EHLO mail.kernel.org"
+        id S1768307AbgJZJpy (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 26 Oct 2020 05:45:54 -0400
+Received: from mga01.intel.com ([192.55.52.88]:4797 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1756447AbgJXA3K (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 23 Oct 2020 20:29:10 -0400
-Received: from localhost (cpc102338-sgyl38-2-0-cust404.18-2.cable.virginm.net [77.102.33.149])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5BD42223EA;
-        Sat, 24 Oct 2020 00:29:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603499349;
-        bh=zfimlyBy7JEtPZjy/CuXm+eSPqDJs5sU0y4ieMN/Z3g=;
-        h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=xcK0oNK5NCsH0KeLEAKdJqCLlymmK4uR6NPQLk26LCjwWgUzFpgg9krOau33iiuj6
-         bPIZfJ2f2GAz7bSV1liD0jhdrABbDwnuQZvmj8bhiMTDkfDn+st9NxI7Wf6/cncnlc
-         e/34mFKkNF1DTLlLWoYXwnaLFFH39AGrS4nlyByI=
-Date:   Sat, 24 Oct 2020 01:29:07 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Sascha Hauer <s.hauer@pengutronix.de>, linux-spi@vger.kernel.org
-Cc:     kernel@pengutronix.de, stable@vger.kernel.org,
-        Christian Eggers <ceggers@arri.de>
-In-Reply-To: <20201021104513.21560-1-s.hauer@pengutronix.de>
-References: <20201021104513.21560-1-s.hauer@pengutronix.de>
-Subject: Re: [PATCH] spi: imx: fix runtime pm support for !CONFIG_PM
-Message-Id: <160349934785.28519.1780967767109665800.b4-ty@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        id S1768282AbgJZJpx (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 26 Oct 2020 05:45:53 -0400
+IronPort-SDR: fmHk5fMQA5os4DbZWAIPiOIU8T2AZNymLo9fDMXnOay5xcmGn+VDI8joJALf2BZKZUzHutTEae
+ Uaa7hORBI3Gw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9785"; a="185622741"
+X-IronPort-AV: E=Sophos;i="5.77,417,1596524400"; 
+   d="scan'208";a="185622741"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2020 02:45:52 -0700
+IronPort-SDR: Xw4R43w1s0z4lg6BoZKWc3MOWpfDCCiZqels9+iA7shHhLV+ot1t3RzakqvSVDey47az00RKQi
+ q0CM2g9tMvfQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,417,1596524400"; 
+   d="scan'208";a="360934112"
+Received: from sgsxdev004.isng.intel.com (HELO localhost) ([10.226.88.13])
+  by orsmga007.jf.intel.com with ESMTP; 26 Oct 2020 02:45:48 -0700
+From:   "Ramuthevar,Vadivel MuruganX" 
+        <vadivel.muruganx.ramuthevar@linux.intel.com>
+To:     broonie@kernel.org, vigneshr@ti.com, tudor.ambarus@microchip.com,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        robh+dt@kernel.org
+Cc:     devicetree@vger.kernel.org, miquel.raynal@bootlin.com,
+        simon.k.r.goldschmidt@gmail.com, dinguyen@kernel.org,
+        richard@nod.at, cheol.yong.kim@intel.com, qi-ming.wu@intel.com,
+        Ramuthevar Vadivel Murugan 
+        <vadivel.muruganx.ramuthevar@linux.intel.com>
+Subject: [PATCH v3 6/6] dt-bindings: spi: Add compatible for Intel LGM SoC
+Date:   Mon, 26 Oct 2020 17:45:19 +0800
+Message-Id: <20201026094519.56083-7-vadivel.muruganx.ramuthevar@linux.intel.com>
+X-Mailer: git-send-email 2.11.0
+In-Reply-To: <20201026094519.56083-1-vadivel.muruganx.ramuthevar@linux.intel.com>
+References: <20201026094519.56083-1-vadivel.muruganx.ramuthevar@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 21 Oct 2020 12:45:13 +0200, Sascha Hauer wrote:
-> 525c9e5a32bd introduced pm_runtime support for the i.MX SPI driver. With
-> this pm_runtime is used to bring up the clocks initially. When CONFIG_PM
-> is disabled the clocks are no longer enabled and the driver doesn't work
-> anymore. Fix this by enabling the clocks in the probe function and
-> telling pm_runtime that the device is active using
-> pm_runtime_set_active().
+From: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
 
-Applied to
+Add compatible string for Intel LGM SoC.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Signed-off-by: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
+---
+ Documentation/devicetree/bindings/spi/cadence-quadspi.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-Thanks!
+diff --git a/Documentation/devicetree/bindings/spi/cadence-quadspi.yaml b/Documentation/devicetree/bindings/spi/cadence-quadspi.yaml
+index b1b3d3ce0cc2..2b862190b552 100644
+--- a/Documentation/devicetree/bindings/spi/cadence-quadspi.yaml
++++ b/Documentation/devicetree/bindings/spi/cadence-quadspi.yaml
+@@ -19,6 +19,7 @@ properties:
+          - const: cdns,qspi-nor
+          - const: ti,k2g-qspi, cdns,qspi-nor
+          - const: ti,am654-ospi, cdns,qspi-nor
++         - const: intel,lgm-qspi, cdns,qspi-nor
+ 
+   reg:
+     items:
+-- 
+2.11.0
 
-[1/1] spi: imx: fix runtime pm support for !CONFIG_PM
-      commit: 43b6bf406cd0319e522638f97c9086b7beebaeaa
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

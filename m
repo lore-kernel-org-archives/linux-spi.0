@@ -2,121 +2,59 @@ Return-Path: <SRS0=cekb=EB=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-4.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6170C4363A
-	for <linux-spi@archiver.kernel.org>; Mon, 26 Oct 2020 09:46:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49999C388F9
+	for <linux-spi@archiver.kernel.org>; Mon, 26 Oct 2020 09:56:59 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 819D3223EA
-	for <linux-spi@archiver.kernel.org>; Mon, 26 Oct 2020 09:46:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0336E22202
+	for <linux-spi@archiver.kernel.org>; Mon, 26 Oct 2020 09:56:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1603706219;
+	bh=eGy9X7OAL4wkzbeBoEWEG1SGeJHANMG2vppdHyxCWtQ=;
+	h=Subject:From:Date:To:List-ID:From;
+	b=Zhsxq0rziJaMTCQG/uEClktAjMfMOpNovGjQ6XKs29goFGpK12xZvDEoT/1e1vQh0
+	 G7gd0btWKDKX7DPaVmIrI8i+2A/LZgf9OLxqWUH6Vopkl9zt4Ni1aMbwDeWwQ7EYCv
+	 3d3pQ1t36q38Dgu483cpoqChAQC+g32kYS8siA5Y=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391421AbgJZJqO (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 26 Oct 2020 05:46:14 -0400
-Received: from mga03.intel.com ([134.134.136.65]:4371 "EHLO mga03.intel.com"
+        id S1735136AbgJZJ46 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 26 Oct 2020 05:56:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46742 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1737002AbgJZJpZ (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 26 Oct 2020 05:45:25 -0400
-IronPort-SDR: LRp2Pq0hdNZR9kuoAPxiHUBFlDvQR8hvTs61hbU9JhNgwMeZcfk7rfDvfn8RVbv4KbuZLEe4la
- b8y4Q/F4UGqg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9785"; a="167996119"
-X-IronPort-AV: E=Sophos;i="5.77,417,1596524400"; 
-   d="scan'208";a="167996119"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2020 02:45:24 -0700
-IronPort-SDR: +4f6t+bRId8OogIE8CiaMfzJT8Yb/TR2Y7wG2L6Ihv4svWmm5uBadc1AS61VdoS4oAw1/vIZYt
- aTck8qk/q07g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,417,1596524400"; 
-   d="scan'208";a="424042896"
-Received: from sgsxdev004.isng.intel.com (HELO localhost) ([10.226.88.13])
-  by fmsmga001.fm.intel.com with ESMTP; 26 Oct 2020 02:45:21 -0700
-From:   "Ramuthevar,Vadivel MuruganX" 
-        <vadivel.muruganx.ramuthevar@linux.intel.com>
-To:     broonie@kernel.org, vigneshr@ti.com, tudor.ambarus@microchip.com,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        robh+dt@kernel.org
-Cc:     devicetree@vger.kernel.org, miquel.raynal@bootlin.com,
-        simon.k.r.goldschmidt@gmail.com, dinguyen@kernel.org,
-        richard@nod.at, cheol.yong.kim@intel.com, qi-ming.wu@intel.com,
-        "Ramuthevar,Vadivel MuruganX" 
-        <vadivel.muruganx.ramuthevar@linux.intel.com>
-Subject: [PATCH v3 0/6] spi: cadence-quadspi: Add QSPI controller support for Intel LGM SoC
-Date:   Mon, 26 Oct 2020 17:45:13 +0800
-Message-Id: <20201026094519.56083-1-vadivel.muruganx.ramuthevar@linux.intel.com>
-X-Mailer: git-send-email 2.11.0
+        id S1768783AbgJZJ4K (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 26 Oct 2020 05:56:10 -0400
+Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1603706170;
+        bh=eGy9X7OAL4wkzbeBoEWEG1SGeJHANMG2vppdHyxCWtQ=;
+        h=Subject:From:Date:To:From;
+        b=HyImArrwbK2fXB6sRS5tyjldkIa5AoFrG05xgNqhAu2BgefhWRbx5V+7oG5pKsTiH
+         IqFL4d5G7SpzOowaJn9siIFkYTFA2RI24xVDdCjqm50IT0Vz8hzKbxw6ehe9aq5tuN
+         Z7A4VT7bZVNq+S9OfplHWiiFHzNasvp5iQy4Bjms=
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <160370617030.22691.8838875473685877977.git-patchwork-housekeeping@kernel.org>
+Date:   Mon, 26 Oct 2020 09:56:10 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add QSPI controller support for Intel LGM SoC.
+Latest series: [v3] spi: cadence-quadspi: Add QSPI controller support for Intel LGM SoC (2020-10-26T09:45:18)
+  Superseding: [v2] spi: cadence-quadspi: Add QSPI controller support for Intel LGM SoC (2020-10-21T02:55:01):
+    [v2,1/6] spi: cadence-quadspi: Add QSPI support for Intel LGM SoC
+    [v2,2/6] spi: cadence-quadspi: Disable the DAC for Intel LGM SoC
+    [v2,3/6] spi: cadence-quadspi: Add multi-chipselect support for Intel LGM SoC
+    [v2,4/6] spi: Move cadence-quadspi.txt to Documentation/devicetree/bindings/spi
+    [v2,5/6] dt-bindings: spi: Convert cadence-quadspi.txt to cadence-quadspi.yaml
+    [v2,6/6] dt-bindings: spi: Add compatible for Intel LGM SoC
 
-Note from Vignesh(mtd subsystem maintainer):
-This series is a subset of "[PATCH v12 0/4] spi: cadence-quadspi: Add
-support for the Cadence QSPI controller" by Ramuthevar,Vadivel MuruganX
-<vadivel.muruganx.ramuthevar@linux.intel.com> that intended to move
-cadence-quadspi driver to spi-mem framework
-
-Those patches were trying to accomplish too many things in a single set
-of patches and need to split into smaller patches. This is reduced
-version of above series.
-
-Changes that are intended to make migration easy are split into separate
-patches. Patches 1 to 3 drop features that cannot be supported under
-spi-mem at the moment (backward compatibility is maintained).
-Patch 4-5 are trivial cleanups. Patch 6 does the actual conversion to
-spi-mem and patch 7 moves the driver to drivers/spi folder.
-
-I have tested both INDAC mode (used by non TI platforms like Altera
-SoCFPGA) and DAC mode (used by TI platforms) on TI EVMs.
-
-Patches to move move bindings over to
-"Documentation/devicetree/bindings/spi/" directory and also conversion
-of bindig doc to YAML will be posted separately.  Support for Intel
-platform would follow that.
-
-Reference:
-        https://lkml.org/lkml/2020/6/1/50
-
----
-v3:
-  - Pratyush review comments update
-  - CQSPI_SUPPORTS_MULTI_CHIPSELECT macro used instead of cqspi->use_direct_mode
-  - disable DAC support placed in end of controller_init
-v2:
-  - Rob's review comments update for dt-bindings
-  - add 'oneOf' for compatible selection
-  - drop un-neccessary descriptions
-  - add the cdns,is-decoded-cs and cdns,rclk-en properties as schema
-  - remove 'allOf' in not required place
-  - add AdditionalProperties false
-  - add minItems/maxItems for qspi reset attributes
-
-resend-v1:
-  - As per Mark's suggestion , reorder the patch series 1-3 driver
-    support patches, series 4-6 dt-bindings patches.
-v1:
-  - initial version
-
-Ramuthevar Vadivel Murugan (6):
-  spi: cadence-quadspi: Add QSPI support for Intel LGM SoC
-  spi: cadence-quadspi: Disable the DAC for Intel LGM SoC
-  spi: cadence-quadspi: Add multi-chipselect support for Intel LGM SoC
-  spi: Move cadence-quadspi.txt to Documentation/devicetree/bindings/spi
-  dt-bindings: spi: Convert cadence-quadspi.txt to cadence-quadspi.yaml
-  dt-bindings: spi: Add compatible for Intel LGM SoC
-
- .../devicetree/bindings/mtd/cadence-quadspi.txt    |  67 ---------
- .../devicetree/bindings/spi/cadence-quadspi.yaml   | 149 +++++++++++++++++++++
- drivers/spi/Kconfig                                |   2 +-
- drivers/spi/spi-cadence-quadspi.c                  |  31 +++++
- 4 files changed, 181 insertions(+), 68 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/mtd/cadence-quadspi.txt
- create mode 100644 Documentation/devicetree/bindings/spi/cadence-quadspi.yaml
 
 -- 
-2.11.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

@@ -6,47 +6,47 @@ X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
 	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 89D1BC4363A
-	for <linux-spi@archiver.kernel.org>; Mon, 26 Oct 2020 23:47:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A49A0C4363A
+	for <linux-spi@archiver.kernel.org>; Mon, 26 Oct 2020 23:47:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4868E207BB
-	for <linux-spi@archiver.kernel.org>; Mon, 26 Oct 2020 23:47:42 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 70FF720790
+	for <linux-spi@archiver.kernel.org>; Mon, 26 Oct 2020 23:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1603756062;
-	bh=O9oOmhQqr/swTftdk1U4Yhto01YHEKLALSchC3G0wKs=;
+	s=default; t=1603756067;
+	bh=w2e6yjuf2xF9EiFramqNdbuttE84vufq0+9dKJ75HMg=;
 	h=Date:From:To:Cc:In-Reply-To:References:Subject:List-ID:From;
-	b=OrMQ9QV+WriJch1+owWYSxMdjjRD9lfjl6LyCsEbZ9UWHs1SFs5/wJUDHQaBnoGiI
-	 aEFDo/07s4/a8kk768IAl+XhOSj9GEAE8bMs11NImhr3tijDOEhlN3FPBH/IVS13L3
-	 d/wESDIB4wc+K68qoyjB6iH2iwdxIZoGSxkGxips=
+	b=Z4zA3KzAd9SUOMuigPDWZXWO7Io5PG6eAfEbYGoML/J7N+2q2cmzSFq/jX/yaOC79
+	 kSqzp+Hv6QBNx7/aWRf426mBWUIiH0WbeIkIM+IIF0qe/LCBMOQnBeea8t3aBSxSZ6
+	 FWvfvjMJe1v5Ztqzft52SM9uA12P9jcKV9isfafM=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408429AbgJZXrm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 26 Oct 2020 19:47:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44752 "EHLO mail.kernel.org"
+        id S2408478AbgJZXrr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 26 Oct 2020 19:47:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44950 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2408428AbgJZXrl (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 26 Oct 2020 19:47:41 -0400
+        id S2408453AbgJZXrq (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 26 Oct 2020 19:47:46 -0400
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0C9A220720;
-        Mon, 26 Oct 2020 23:47:40 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 02DB720720;
+        Mon, 26 Oct 2020 23:47:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603756061;
-        bh=O9oOmhQqr/swTftdk1U4Yhto01YHEKLALSchC3G0wKs=;
+        s=default; t=1603756066;
+        bh=w2e6yjuf2xF9EiFramqNdbuttE84vufq0+9dKJ75HMg=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=mcb/oCxIIA/GPtmCGUCUJkiPY5UXhCRlPvRgdBMJIM4koBExABfxdZqDMDTBZrbBs
-         pef5VhMPS6h66HzTCwKeU1io8XmVviCKRNxIuZnIyy9tPUwG9Fkknsieoz3kwPdx/T
-         jQZizyhQK83e7+1/L1rg4ksaTE++/yxagYqa/2jc=
-Date:   Mon, 26 Oct 2020 23:47:37 +0000
+        b=sK4aFfZEucZfqfvhKgcBh1SPatuRQx92FnxMTdFCp7vNcyCDGPWZedf1Qa0gGdZIx
+         fGED9/l6oqrnX9UrP0Fn00pBpvcUi8CefTFTER3jppf7WQjwLkEKlm3CrQHUuYJkpK
+         hhZFP6BrS5FMc/+CVpkuzh0rEgOXDMduu/pZ9Bms=
+Date:   Mon, 26 Oct 2020 23:47:42 +0000
 From:   Mark Brown <broonie@kernel.org>
-To:     Maxime Ripard <mripard@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+To:     Heiko Stuebner <heiko@sntech.de>,
         Alexander Kochetkov <al.kochet@gmail.com>
-Cc:     linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20201022075221.23332-1-akochetkov@lintech.ru>
-References: <20201022075221.23332-1-akochetkov@lintech.ru>
-Subject: Re: [PATCH v3] spi: spi-sun6i: implement DMA-based transfer mode
-Message-Id: <160375605709.32342.188457165098247494.b4-ty@kernel.org>
+Cc:     linux-spi@vger.kernel.org, linux-rockchip@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20201016085014.31667-1-al.kochet@gmail.com>
+References: <20201016085014.31667-1-al.kochet@gmail.com>
+Subject: Re: [PATCH] spi: rockchip: enable autosuspend feature
+Message-Id: <160375605708.32342.3052547021812852625.b4-ty@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -54,15 +54,11 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 22 Oct 2020 10:52:21 +0300, Alexander Kochetkov wrote:
-> DMA-based transfer will be enabled if data length is larger than FIFO size
-> (64 bytes for A64). This greatly reduce number of interrupts for
-> transferring data.
-> 
-> For smaller data size PIO mode will be used. In PIO mode whole buffer will
-> be loaded into FIFO.
-> 
-> [...]
+On Fri, 16 Oct 2020 11:50:14 +0300, Alexander Kochetkov wrote:
+> If SPI is used for periodic polling any sensor, significant delays
+> sometimes appear. Switching on module clocks during resume lead to delays.
+> Enabling autosuspend mode causes the controller to not suspend between
+> SPI transfers and the delays disappear.
 
 Applied to
 
@@ -70,8 +66,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: spi-sun6i: implement DMA-based transfer mode
-      commit: 345980a3a5e5e1c99fc621e2ce878fb150ad2287
+[1/1] spi: rockchip: enable autosuspend feature
+      commit: 940f3bbf3dacd6e31e482a10e64c96e69b00dded
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

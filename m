@@ -2,59 +2,84 @@ Return-Path: <SRS0=GM/z=EC=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 34EFAC4363A
-	for <linux-spi@archiver.kernel.org>; Tue, 27 Oct 2020 08:56:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DB6B7C388F9
+	for <linux-spi@archiver.kernel.org>; Tue, 27 Oct 2020 09:58:39 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id EBBCD22263
-	for <linux-spi@archiver.kernel.org>; Tue, 27 Oct 2020 08:56:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1603788970;
-	bh=d6+e9SEepoNW3YtvPtt965CTmsaiq2Uw79nHn3HLbn8=;
-	h=Subject:From:Date:To:List-ID:From;
-	b=w0ekbjms/flzOdgkWhGJFva+l3kuNON8mIuoTBIVYGOMrx675Kvv1VNINUPl2TvgC
-	 k8BQsUhPek8JG5bcSq41W1IO+/xnqQurICeKqw17xwPexxYhJQdApjV/nk9M3VzEyb
-	 DuIhcZKh1L5LcPXrri+0KY+rQ7p4IfXd8Roza6LU=
+	by mail.kernel.org (Postfix) with ESMTP id A186621D24
+	for <linux-spi@archiver.kernel.org>; Tue, 27 Oct 2020 09:58:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2509583AbgJ0I4J (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 27 Oct 2020 04:56:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55004 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2509581AbgJ0I4J (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 27 Oct 2020 04:56:09 -0400
-Content-Type: text/plain; charset="utf-8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603788968;
-        bh=d6+e9SEepoNW3YtvPtt965CTmsaiq2Uw79nHn3HLbn8=;
-        h=Subject:From:Date:To:From;
-        b=zOTnjj5Z+seyr88cI4FwTmHQ+69oJUPvuOZ12N21uZjuEgfX7mJq7aw7gzPryQELF
-         ODQ/t2Nyq1KGwxFCWhoCRnU9X02NXlZ+pDdw/0FdMuZQeRGB7oco9Nbx68H0+aV+o1
-         hLilAf2jZD+HzfyHAwhesN+KrU3A80kJGBNZarT8=
+        id S2896557AbgJ0J63 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 27 Oct 2020 05:58:29 -0400
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:40329 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2896554AbgJ0J5b (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 27 Oct 2020 05:57:31 -0400
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1kXLjK-0004UL-D8; Tue, 27 Oct 2020 10:57:26 +0100
+Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1kXLjJ-0004ry-Pr; Tue, 27 Oct 2020 10:57:25 +0100
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Mark Brown <broonie@kernel.org>
+Cc:     Oleksij Rempel <o.rempel@pengutronix.de>, kernel@pengutronix.de,
+        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-spi@vger.kernel.org, David Jander <david@protonic.nl>
+Subject: [PATCH v2 1/2] spi: introduce SPI_MODE_X_MASK macro
+Date:   Tue, 27 Oct 2020 10:57:23 +0100
+Message-Id: <20201027095724.18654-2-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20201027095724.18654-1-o.rempel@pengutronix.de>
+References: <20201027095724.18654-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <160378896802.20409.17887457025415546447.git-patchwork-housekeeping@kernel.org>
-Date:   Tue, 27 Oct 2020 08:56:08 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v4] spi: cadence-quadspi: Add QSPI controller support for Intel LGM SoC (2020-10-27T08:22:45)
-  Superseding: [v3] spi: cadence-quadspi: Add QSPI controller support for Intel LGM SoC (2020-10-26T09:45:18):
-    [v3,1/6] spi: cadence-quadspi: Add QSPI support for Intel LGM SoC
-    [v3,2/6] spi: cadence-quadspi: Disable the DAC for Intel LGM SoC
-    [v3,3/6] spi: cadence-quadspi: Add multi-chipselect support for Intel LGM SoC
-    [v3,4/6] spi: Move cadence-quadspi.txt to Documentation/devicetree/bindings/spi
-    [v3,5/6] dt-bindings: spi: Convert cadence-quadspi.txt to cadence-quadspi.yaml
-    [v3,6/6] dt-bindings: spi: Add compatible for Intel LGM SoC
+Provide a macro to filter all SPI_MODE_0,1,2,3 mode in one run.
 
+The latest SPI framework will parse the devicetree in following call
+sequence: of_register_spi_device() -> of_spi_parse_dt()
+So, driver do not need to pars the devicetree and will get prepared
+flags in the probe.
 
+On one hand it is good far most drivers. On other hand some drivers need to
+filter flags provide by SPI framework and apply know to work flags. This drivers
+may use SPI_MODE_X_MASK to filter MODE flags and set own, known flags:
+  spi->flags &= ~SPI_MODE_X_MASK;
+  spi->flags |= SPI_MODE_0;
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ include/linux/spi/spi.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 99380c0825db..8097f27702f3 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -171,6 +171,7 @@ struct spi_device {
+ #define	SPI_MODE_1	(0|SPI_CPHA)
+ #define	SPI_MODE_2	(SPI_CPOL|0)
+ #define	SPI_MODE_3	(SPI_CPOL|SPI_CPHA)
++#define	SPI_MODE_X_MASK	(SPI_CPOL|SPI_CPHA)
+ #define	SPI_CS_HIGH	0x04			/* chipselect active high? */
+ #define	SPI_LSB_FIRST	0x08			/* per-word bits-on-wire */
+ #define	SPI_3WIRE	0x10			/* SI/SO signals shared */
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+2.28.0
 

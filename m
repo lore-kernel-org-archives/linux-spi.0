@@ -2,39 +2,39 @@ Return-Path: <SRS0=GM/z=EC=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,TVD_SPACE_RATIO,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DD121C4363A
-	for <linux-spi@archiver.kernel.org>; Tue, 27 Oct 2020 08:23:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3D088C56202
+	for <linux-spi@archiver.kernel.org>; Tue, 27 Oct 2020 08:23:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A123E21D24
-	for <linux-spi@archiver.kernel.org>; Tue, 27 Oct 2020 08:23:17 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 03BFD22202
+	for <linux-spi@archiver.kernel.org>; Tue, 27 Oct 2020 08:23:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2894671AbgJ0IXQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 27 Oct 2020 04:23:16 -0400
-Received: from mga18.intel.com ([134.134.136.126]:52687 "EHLO mga18.intel.com"
+        id S2894689AbgJ0IXW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 27 Oct 2020 04:23:22 -0400
+Received: from mga01.intel.com ([192.55.52.88]:47682 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2894646AbgJ0IXQ (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 27 Oct 2020 04:23:16 -0400
-IronPort-SDR: 0G3y2ditZC2gk+iXJIVMKVSOV/NPXOdsZKqN0Xh2yBDkaAHby3CASe+GtiWf3BeTBfH3fYXoio
- Y89+SJwEa6VQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9786"; a="155823505"
+        id S2894652AbgJ0IXN (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 27 Oct 2020 04:23:13 -0400
+IronPort-SDR: 1gpT3vmYdwRnw1VT5VGmBJdljYWqBUwIN7u6ryRy2owPbuHu4LK8OEfvexblyGTQgMwj6eEDFT
+ 8RkawDB6p+NQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9786"; a="185782960"
 X-IronPort-AV: E=Sophos;i="5.77,423,1596524400"; 
-   d="scan'208";a="155823505"
+   d="scan'208";a="185782960"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2020 01:23:15 -0700
-IronPort-SDR: slmevTKKKwFjvyNipLi2JDyZQN1yfTz55q6opxQWlN3P8KIoHblcrt24I5RpEOt3MJc8OgE3e/
- SpaHuzf6ZIBw==
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2020 01:23:11 -0700
+IronPort-SDR: CdsRoOI7usXtnfxyGZOX6YNZHAnyllx1Q5X2u6JanXybJl5GtudUlSTsWdYmh0L35/q2ljvMOU
+ xDQiLUgSU80Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.77,423,1596524400"; 
-   d="scan'208";a="350201602"
+   d="scan'208";a="303686745"
 Received: from sgsxdev004.isng.intel.com (HELO localhost) ([10.226.88.13])
-  by orsmga008.jf.intel.com with ESMTP; 27 Oct 2020 01:23:12 -0700
+  by fmsmga008.fm.intel.com with ESMTP; 27 Oct 2020 01:23:03 -0700
 From:   "Ramuthevar,Vadivel MuruganX" 
         <vadivel.muruganx.ramuthevar@linux.intel.com>
 To:     broonie@kernel.org, vigneshr@ti.com, tudor.ambarus@microchip.com,
@@ -45,9 +45,9 @@ Cc:     devicetree@vger.kernel.org, miquel.raynal@bootlin.com,
         richard@nod.at, cheol.yong.kim@intel.com, qi-ming.wu@intel.com,
         Ramuthevar Vadivel Murugan 
         <vadivel.muruganx.ramuthevar@linux.intel.com>
-Subject: [PATCH v4 4/6] spi: Move cadence-quadspi.txt to Documentation/devicetree/bindings/spi
-Date:   Tue, 27 Oct 2020 16:22:49 +0800
-Message-Id: <20201027082251.30056-5-vadivel.muruganx.ramuthevar@linux.intel.com>
+Subject: [PATCH v4 2/6] spi: cadence-quadspi: Disable the DAC for Intel LGM SoC
+Date:   Tue, 27 Oct 2020 16:22:47 +0800
+Message-Id: <20201027082251.30056-3-vadivel.muruganx.ramuthevar@linux.intel.com>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20201027082251.30056-1-vadivel.muruganx.ramuthevar@linux.intel.com>
 References: <20201027082251.30056-1-vadivel.muruganx.ramuthevar@linux.intel.com>
@@ -57,20 +57,54 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
 
-Move the Documentation/devicetree/bindings/mtd/cadence-quadspi.txt to
-Documentation/devicetree/bindings/spi/
+On Intel Lightning Mountain(LGM) SoCs QSPI controller do not use
+Direct Access Controller(DAC).
+
+This patch adds a quirk to disable the Direct Access Controller
+for data transfer instead it uses indirect data transfer.
 
 Signed-off-by: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
-Acked-by: Rob Herring <robh@kernel.org>
 ---
- Documentation/devicetree/bindings/{mtd => spi}/cadence-quadspi.txt | 0
- 1 file changed, 0 insertions(+), 0 deletions(-)
- rename Documentation/devicetree/bindings/{mtd => spi}/cadence-quadspi.txt (100%)
+ drivers/spi/spi-cadence-quadspi.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/mtd/cadence-quadspi.txt b/Documentation/devicetree/bindings/spi/cadence-quadspi.txt
-similarity index 100%
-rename from Documentation/devicetree/bindings/mtd/cadence-quadspi.txt
-rename to Documentation/devicetree/bindings/spi/cadence-quadspi.txt
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index d7b10c46fa70..6d6f7c440ece 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1107,6 +1107,13 @@ static void cqspi_controller_init(struct cqspi_st *cqspi)
+ 	writel(reg, cqspi->iobase + CQSPI_REG_CONFIG);
+ 
+ 	cqspi_controller_enable(cqspi, 1);
++
++	/* Disable direct access controller */
++	if (!cqspi->use_direct_mode) {
++		reg = readl(cqspi->iobase + CQSPI_REG_CONFIG);
++		reg &= ~CQSPI_REG_CONFIG_ENB_DIR_ACC_CTRL;
++		writel(reg, cqspi->iobase + CQSPI_REG_CONFIG);
++	}
+ }
+ 
+ static int cqspi_request_mmap_dma(struct cqspi_st *cqspi)
+@@ -1388,6 +1395,10 @@ static const struct cqspi_driver_platdata am654_ospi = {
+ 	.quirks = CQSPI_NEEDS_WR_DELAY,
+ };
+ 
++static const struct cqspi_driver_platdata intel_lgm_qspi = {
++	.quirks = CQSPI_DISABLE_DAC_MODE,
++};
++
+ static const struct of_device_id cqspi_dt_ids[] = {
+ 	{
+ 		.compatible = "cdns,qspi-nor",
+@@ -1403,6 +1414,7 @@ static const struct of_device_id cqspi_dt_ids[] = {
+ 	},
+ 	{
+ 		.compatible = "intel,lgm-qspi",
++		.data = &intel_lgm_qspi,
+ 	},
+ 	{ /* end of table */ }
+ };
 -- 
 2.11.0
 

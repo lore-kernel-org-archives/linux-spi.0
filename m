@@ -2,130 +2,122 @@ Return-Path: <SRS0=0Uex=EE=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B421C2D0A3
-	for <linux-spi@archiver.kernel.org>; Thu, 29 Oct 2020 07:57:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 27A97C2D0A3
+	for <linux-spi@archiver.kernel.org>; Thu, 29 Oct 2020 08:49:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C495020782
-	for <linux-spi@archiver.kernel.org>; Thu, 29 Oct 2020 07:57:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D1E5620791
+	for <linux-spi@archiver.kernel.org>; Thu, 29 Oct 2020 08:49:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726101AbgJ2HYn (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 29 Oct 2020 03:24:43 -0400
-Received: from mga01.intel.com ([192.55.52.88]:38435 "EHLO mga01.intel.com"
+        id S1726014AbgJ2Ity (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 29 Oct 2020 04:49:54 -0400
+Received: from inva020.nxp.com ([92.121.34.13]:35214 "EHLO inva020.nxp.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726691AbgJ2HYa (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 29 Oct 2020 03:24:30 -0400
-IronPort-SDR: yy/pO3bjNC0xugZK4VtG1V+eY/DNFQgPy2Nws8dElmmLAXkSf1dWuZnY3svAXesdlsfnSjs0dr
- upVDMzAJ53Mg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9788"; a="186163408"
-X-IronPort-AV: E=Sophos;i="5.77,429,1596524400"; 
-   d="scan'208";a="186163408"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2020 23:20:20 -0700
-IronPort-SDR: beKd6omMK9893Skk8wkVWlk+DSR7GtZDBzyEYRZQqwjlW6ROLAE+AB7JENGXY6BssiHqUYJ5sa
- eE3e6wTRqPoA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.77,429,1596524400"; 
-   d="scan'208";a="536541043"
-Received: from sgsxdev004.isng.intel.com (HELO localhost) ([10.226.88.13])
-  by orsmga005.jf.intel.com with ESMTP; 28 Oct 2020 23:20:16 -0700
-From:   "Ramuthevar,Vadivel MuruganX" 
-        <vadivel.muruganx.ramuthevar@linux.intel.com>
-To:     broonie@kernel.org, vigneshr@ti.com, tudor.ambarus@microchip.com,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        robh+dt@kernel.org
-Cc:     devicetree@vger.kernel.org, miquel.raynal@bootlin.com,
-        simon.k.r.goldschmidt@gmail.com, dinguyen@kernel.org,
-        richard@nod.at, cheol.yong.kim@intel.com, qi-ming.wu@intel.com,
-        "Ramuthevar,Vadivel MuruganX" 
-        <vadivel.muruganx.ramuthevar@linux.intel.com>
-Subject: [PATCH v5 0/6] spi: cadence-quadspi: Add QSPI controller support for Intel LGM SoC
-Date:   Thu, 29 Oct 2020 14:20:08 +0800
-Message-Id: <20201029062014.27620-1-vadivel.muruganx.ramuthevar@linux.intel.com>
-X-Mailer: git-send-email 2.11.0
+        id S1725778AbgJ2Ity (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 29 Oct 2020 04:49:54 -0400
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 1F53D1A04B3;
+        Thu, 29 Oct 2020 09:49:52 +0100 (CET)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com [165.114.16.14])
+        by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id C72631A05E4;
+        Thu, 29 Oct 2020 09:49:49 +0100 (CET)
+Received: from localhost.localdomain (mega.ap.freescale.net [10.192.208.232])
+        by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 8FBA140291;
+        Thu, 29 Oct 2020 09:49:46 +0100 (CET)
+From:   Qiang Zhao <qiang.zhao@nxp.com>
+To:     olteanv@gmail.com, broonie@kernel.org
+Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Zhao Qiang <qiang.zhao@nxp.com>
+Subject: [PATCH] spi: fsl-dspi: fix NULL pointer dereference
+Date:   Thu, 29 Oct 2020 16:40:35 +0800
+Message-Id: <20201029084035.19604-1-qiang.zhao@nxp.com>
+X-Mailer: git-send-email 2.17.1
+X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add QSPI controller support for Intel LGM SoC.
+From: Zhao Qiang <qiang.zhao@nxp.com>
 
-Note from Vignesh(mtd subsystem maintainer):
-This series is a subset of "[PATCH v12 0/4] spi: cadence-quadspi: Add
-support for the Cadence QSPI controller" by Ramuthevar,Vadivel MuruganX
-<vadivel.muruganx.ramuthevar@linux.intel.com> that intended to move
-cadence-quadspi driver to spi-mem framework
+Since commit 530b5affc675 ("spi: fsl-dspi: fix use-after-free in
+remove path"), this driver causes a kernel oops:
 
-Those patches were trying to accomplish too many things in a single set
-of patches and need to split into smaller patches. This is reduced
-version of above series.
+[   64.587431] Unable to handle kernel NULL pointer dereference at
+virtual address 0000000000000020
+[..]
+[   64.756080] Call trace:
+[   64.758526]  dspi_suspend+0x30/0x78
+[   64.762012]  platform_pm_suspend+0x28/0x70
+[   64.766107]  dpm_run_callback.isra.19+0x24/0x70
+[   64.770635]  __device_suspend+0xf4/0x2f0
+[   64.774553]  dpm_suspend+0xec/0x1e0
+[   64.778036]  dpm_suspend_start+0x80/0xa0
+[   64.781957]  suspend_devices_and_enter+0x118/0x4f0
+[   64.786743]  pm_suspend+0x1e0/0x260
+[   64.790227]  state_store+0x8c/0x118
+[   64.793712]  kobj_attr_store+0x18/0x30
+[   64.797459]  sysfs_kf_write+0x40/0x58
+[   64.801118]  kernfs_fop_write+0x148/0x240
+[   64.805126]  vfs_write+0xc0/0x230
+[   64.808436]  ksys_write+0x6c/0x100
+[   64.811833]  __arm64_sys_write+0x1c/0x28
+[   64.815753]  el0_svc_common.constprop.3+0x68/0x170
+[   64.820541]  do_el0_svc+0x24/0x90
+[   64.823853]  el0_sync_handler+0x118/0x168
+[   64.827858]  el0_sync+0x158/0x180
 
-Changes that are intended to make migration easy are split into separate
-patches. Patches 1 to 3 drop features that cannot be supported under
-spi-mem at the moment (backward compatibility is maintained).
-Patch 4-5 are trivial cleanups. Patch 6 does the actual conversion to
-spi-mem and patch 7 moves the driver to drivers/spi folder.
+This is because since this commit, the drivers private data point to
+"dspi" instead of "ctlr", the codes in suspend and resume func were
+not modified correspondly.
 
-I have tested both INDAC mode (used by non TI platforms like Altera
-SoCFPGA) and DAC mode (used by TI platforms) on TI EVMs.
-
-Patches to move move bindings over to
-"Documentation/devicetree/bindings/spi/" directory and also conversion
-of bindig doc to YAML will be posted separately.  Support for Intel
-platform would follow that.
-
-Reference:
-        https://lkml.org/lkml/2020/6/1/50
-
+Fixes: 530b5affc675 ("spi: fsl-dspi: fix use-after-free in remove path")
+Signed-off-by: Zhao Qiang <qiang.zhao@nxp.com>
 ---
-v5:
-  - Rob's review comments update
-  - const with single compatible string kept
-v4:
-  - Rob's review comments update
-  - remove '|' no formatting to preserve
-  - child node attributes follows under 'properties' under '@[0-9a-f]+$'.
-v3:
-  - Pratyush review comments update
-  - CQSPI_SUPPORTS_MULTI_CHIPSELECT macro used instead of cqspi->use_direct_mode
-  - disable DAC support placed in end of controller_init
-v2:
-  - Rob's review comments update for dt-bindings
-  - add 'oneOf' for compatible selection
-  - drop un-neccessary descriptions
-  - add the cdns,is-decoded-cs and cdns,rclk-en properties as schema
-  - remove 'allOf' in not required place
-  - add AdditionalProperties false
-  - add minItems/maxItems for qspi reset attributes
+ drivers/spi/spi-fsl-dspi.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-resend-v1:
-  - As per Mark's suggestion , reorder the patch series 1-3 driver
-    support patches, series 4-6 dt-bindings patches.
-v1:
-  - initial version
-
-
-
-Ramuthevar Vadivel Murugan (6):
-  spi: cadence-quadspi: Add QSPI support for Intel LGM SoC
-  spi: cadence-quadspi: Disable the DAC for Intel LGM SoC
-  spi: cadence-quadspi: Add multi-chipselect support for Intel LGM SoC
-  spi: Move cadence-quadspi.txt to Documentation/devicetree/bindings/spi
-  dt-bindings: spi: Convert cadence-quadspi.txt to cadence-quadspi.yaml
-  dt-bindings: spi: Add compatible for Intel LGM SoC
-
- .../devicetree/bindings/mtd/cadence-quadspi.txt    |  67 ---------
- .../devicetree/bindings/spi/cadence-quadspi.yaml   | 151 +++++++++++++++++++++
- drivers/spi/Kconfig                                |   2 +-
- drivers/spi/spi-cadence-quadspi.c                  |  31 +++++
- 4 files changed, 183 insertions(+), 68 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/mtd/cadence-quadspi.txt
- create mode 100644 Documentation/devicetree/bindings/spi/cadence-quadspi.yaml
-
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 3967afa..1a08c1d 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -1080,12 +1080,11 @@ MODULE_DEVICE_TABLE(of, fsl_dspi_dt_ids);
+ #ifdef CONFIG_PM_SLEEP
+ static int dspi_suspend(struct device *dev)
+ {
+-	struct spi_controller *ctlr = dev_get_drvdata(dev);
+-	struct fsl_dspi *dspi = spi_controller_get_devdata(ctlr);
++	struct fsl_dspi *dspi = dev_get_drvdata(dev);
+ 
+ 	if (dspi->irq)
+ 		disable_irq(dspi->irq);
+-	spi_controller_suspend(ctlr);
++	spi_controller_suspend(dspi->ctlr);
+ 	clk_disable_unprepare(dspi->clk);
+ 
+ 	pinctrl_pm_select_sleep_state(dev);
+@@ -1095,8 +1094,7 @@ static int dspi_suspend(struct device *dev)
+ 
+ static int dspi_resume(struct device *dev)
+ {
+-	struct spi_controller *ctlr = dev_get_drvdata(dev);
+-	struct fsl_dspi *dspi = spi_controller_get_devdata(ctlr);
++	struct fsl_dspi *dspi = dev_get_drvdata(dev);
+ 	int ret;
+ 
+ 	pinctrl_pm_select_default_state(dev);
+@@ -1104,7 +1102,7 @@ static int dspi_resume(struct device *dev)
+ 	ret = clk_prepare_enable(dspi->clk);
+ 	if (ret)
+ 		return ret;
+-	spi_controller_resume(ctlr);
++	spi_controller_resume(dspi->ctlr);
+ 	if (dspi->irq)
+ 		enable_irq(dspi->irq);
+ 
 -- 
-2.11.0
+2.7.4
 

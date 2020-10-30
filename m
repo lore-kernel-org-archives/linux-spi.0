@@ -2,105 +2,233 @@ Return-Path: <SRS0=Z/vz=EF=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AB862C4363A
-	for <linux-spi@archiver.kernel.org>; Fri, 30 Oct 2020 14:12:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4C61C00A89
+	for <linux-spi@archiver.kernel.org>; Fri, 30 Oct 2020 15:26:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 55C55206F7
-	for <linux-spi@archiver.kernel.org>; Fri, 30 Oct 2020 14:12:14 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4335B20725
+	for <linux-spi@archiver.kernel.org>; Fri, 30 Oct 2020 15:26:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1604071613;
+	bh=WXxfslXDUzjMc3y4hbODoUp+nPEHyanfAGiiVszxyfw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=kwoGgehxIDIvv5Bwsx7NKR/4SMLj6ItYxMlyqz9MKugPBavZM4wvwbQxndGbJPxtY
+	 E1CpS42tWbShQVmt/ORNCXwUTER2uo/BP+HidcZANZ8ISTPm95euCGYAeiD7GcGJWF
+	 lunIF1/y4DRoy9WQdGe1Rz8OLULH+MCeMLylUcLw=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726718AbgJ3OMN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 30 Oct 2020 10:12:13 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:43114 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726178AbgJ3OMN (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 30 Oct 2020 10:12:13 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1kYV8U-0006ee-Tl; Fri, 30 Oct 2020 14:12:10 +0000
-To:     =?UTF-8?Q?Martin_Hundeb=c3=b8ll?= <martin@geanix.com>
-From:   Colin Ian King <colin.king@canonical.com>
-Subject: re: spi: bcm2835: fix gpio cs level inversion
-Cc:     Mark Brown <broonie@kernel.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Gregory CLEMENT <gregory.clement@bootlin.com>,
-        linux-spi@vger.kernel.org,
-        "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" 
-        <linux-rpi-kernel@lists.infradead.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Message-ID: <ad239665-e342-cdef-71c0-4eba06b76797@canonical.com>
-Date:   Fri, 30 Oct 2020 14:12:10 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.3.2
+        id S1727004AbgJ3P0x (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 30 Oct 2020 11:26:53 -0400
+Received: from mail-oi1-f193.google.com ([209.85.167.193]:32790 "EHLO
+        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726957AbgJ3P0w (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 30 Oct 2020 11:26:52 -0400
+Received: by mail-oi1-f193.google.com with SMTP id s21so7060797oij.0;
+        Fri, 30 Oct 2020 08:26:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=IWy+P3aKBbRZHPdpo7UhZCYAWAA7vOrQ687V0Kfj+d4=;
+        b=rYOOoSBkqstcMNH/nv3ldtrCItPKoNhoxaMHwoao9E5ShWq2swu3aaacaOAvYHB5tw
+         GQkjbKAdvQUmlXSiaTmUW1B1ov18/dcP91FrzYbq3zdunFw9F8tQHy7NeZHFadrt/gsR
+         9kUfuFWPp600gaglSrnr9Pyi/Bz95EvsV027Rga5vSq0Rex6lFLI2qrvPPWH5mDcvg/M
+         7bEIp4/3M32gq3UEKaI2DR9vTwIq9vIhOmzAbL8lZbapf4fZv3M844rVfCKwE/DCd3sm
+         vG/Ki0NgFX3jTGAQFSMrXajDMsxI4DclNQTigEN/k9Gmm18Z9yiVy5r4KEWYMa353KhO
+         ZRWQ==
+X-Gm-Message-State: AOAM533h997EFeBDtUVMfVSpBod5TsW7T5UjjUNOuJZkEGe+WF1nOn3v
+        Ei+YmSJ/dwBeAI9R5QAq7xfnXrnlDw==
+X-Google-Smtp-Source: ABdhPJxny1b0UA2smGz0Vnx/UGlxYxru7MMA1VE6f82QrLATUrGdH2e+mclwmwC7hlceadibHYd78Q==
+X-Received: by 2002:aca:ea42:: with SMTP id i63mr1902640oih.130.1604071119098;
+        Fri, 30 Oct 2020 08:18:39 -0700 (PDT)
+Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id h7sm1409124oop.40.2020.10.30.08.18.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Oct 2020 08:18:38 -0700 (PDT)
+Received: (nullmailer pid 3862951 invoked by uid 1000);
+        Fri, 30 Oct 2020 15:18:37 -0000
+Date:   Fri, 30 Oct 2020 10:18:37 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     "Ramuthevar,Vadivel MuruganX" 
+        <vadivel.muruganx.ramuthevar@linux.intel.com>
+Cc:     broonie@kernel.org, vigneshr@ti.com, tudor.ambarus@microchip.com,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, miquel.raynal@bootlin.com,
+        simon.k.r.goldschmidt@gmail.com, dinguyen@kernel.org,
+        richard@nod.at, cheol.yong.kim@intel.com, qi-ming.wu@intel.com
+Subject: Re: [PATCH v6 5/6] dt-bindings: spi: Convert cadence-quadspi.txt to
+ cadence-quadspi.yaml
+Message-ID: <20201030151837.GA3854035@bogus>
+References: <20201030053153.5319-1-vadivel.muruganx.ramuthevar@linux.intel.com>
+ <20201030053153.5319-6-vadivel.muruganx.ramuthevar@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201030053153.5319-6-vadivel.muruganx.ramuthevar@linux.intel.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi,
+On Fri, Oct 30, 2020 at 01:31:52PM +0800, Ramuthevar,Vadivel MuruganX wrote:
+> From: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
+> 
+> Convert the cadence-quadspi.txt documentation to cadence-quadspi.yaml
+> remove the cadence-quadspi.txt from Documentation/devicetree/bindings/spi/
+> 
+> Signed-off-by: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
+> ---
+>  .../devicetree/bindings/spi/cadence-quadspi.txt    |  67 ---------
+>  .../devicetree/bindings/spi/cadence-quadspi.yaml   | 149 +++++++++++++++++++++
+>  2 files changed, 149 insertions(+), 67 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/spi/cadence-quadspi.txt
+>  create mode 100644 Documentation/devicetree/bindings/spi/cadence-quadspi.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/cadence-quadspi.txt b/Documentation/devicetree/bindings/spi/cadence-quadspi.txt
+> deleted file mode 100644
+> index 945be7d5b236..000000000000
+> --- a/Documentation/devicetree/bindings/spi/cadence-quadspi.txt
+> +++ /dev/null
+> @@ -1,67 +0,0 @@
+> -* Cadence Quad SPI controller
+> -
+> -Required properties:
+> -- compatible : should be one of the following:
+> -	Generic default - "cdns,qspi-nor".
+> -	For TI 66AK2G SoC - "ti,k2g-qspi", "cdns,qspi-nor".
+> -	For TI AM654 SoC  - "ti,am654-ospi", "cdns,qspi-nor".
+> -- reg : Contains two entries, each of which is a tuple consisting of a
+> -	physical address and length. The first entry is the address and
+> -	length of the controller register set. The second entry is the
+> -	address and length of the QSPI Controller data area.
+> -- interrupts : Unit interrupt specifier for the controller interrupt.
+> -- clocks : phandle to the Quad SPI clock.
+> -- cdns,fifo-depth : Size of the data FIFO in words.
+> -- cdns,fifo-width : Bus width of the data FIFO in bytes.
+> -- cdns,trigger-address : 32-bit indirect AHB trigger address.
+> -
+> -Optional properties:
+> -- cdns,is-decoded-cs : Flag to indicate whether decoder is used or not.
+> -- cdns,rclk-en : Flag to indicate that QSPI return clock is used to latch
+> -  the read data rather than the QSPI clock. Make sure that QSPI return
+> -  clock is populated on the board before using this property.
+> -
+> -Optional subnodes:
+> -Subnodes of the Cadence Quad SPI controller are spi slave nodes with additional
+> -custom properties:
+> -- cdns,read-delay : Delay for read capture logic, in clock cycles
+> -- cdns,tshsl-ns : Delay in nanoseconds for the length that the master
+> -                  mode chip select outputs are de-asserted between
+> -		  transactions.
+> -- cdns,tsd2d-ns : Delay in nanoseconds between one chip select being
+> -                  de-activated and the activation of another.
+> -- cdns,tchsh-ns : Delay in nanoseconds between last bit of current
+> -                  transaction and deasserting the device chip select
+> -		  (qspi_n_ss_out).
+> -- cdns,tslch-ns : Delay in nanoseconds between setting qspi_n_ss_out low
+> -                  and first bit transfer.
+> -- resets	: Must contain an entry for each entry in reset-names.
+> -		  See ../reset/reset.txt for details.
+> -- reset-names	: Must include either "qspi" and/or "qspi-ocp".
+> -
+> -Example:
+> -
+> -	qspi: spi@ff705000 {
+> -		compatible = "cdns,qspi-nor";
+> -		#address-cells = <1>;
+> -		#size-cells = <0>;
+> -		reg = <0xff705000 0x1000>,
+> -		      <0xffa00000 0x1000>;
+> -		interrupts = <0 151 4>;
+> -		clocks = <&qspi_clk>;
+> -		cdns,is-decoded-cs;
+> -		cdns,fifo-depth = <128>;
+> -		cdns,fifo-width = <4>;
+> -		cdns,trigger-address = <0x00000000>;
+> -		resets = <&rst QSPI_RESET>, <&rst QSPI_OCP_RESET>;
+> -		reset-names = "qspi", "qspi-ocp";
+> -
+> -		flash0: n25q00@0 {
+> -			...
+> -			cdns,read-delay = <4>;
+> -			cdns,tshsl-ns = <50>;
+> -			cdns,tsd2d-ns = <50>;
+> -			cdns,tchsh-ns = <4>;
+> -			cdns,tslch-ns = <4>;
+> -		};
+> -	};
+> diff --git a/Documentation/devicetree/bindings/spi/cadence-quadspi.yaml b/Documentation/devicetree/bindings/spi/cadence-quadspi.yaml
+> new file mode 100644
+> index 000000000000..ec22b040d804
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/cadence-quadspi.yaml
+> @@ -0,0 +1,149 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/spi/cadence-quadspi.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Cadence Quad SPI controller
+> +
+> +maintainers:
+> +  - Vadivel Murugan <vadivel.muruganx.ramuthevar@intel.com>
+> +
+> +allOf:
+> +  - $ref: "spi-controller.yaml#"
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - items:
 
-Static analysis with coverity on today's linux-next has detected a
-potential issue in  bcm2835_spi_setup() in the following commit:
+You don't need 'oneOf' if there is only one entry...
 
-commit 5e31ba0c0543a04483b53151eb5b7413efece94c
-Author: Martin Hundebøll <martin@geanix.com>
-Date:   Wed Oct 14 11:02:30 2020 +0200
+So you've dropped 'cdns,qspi-nor' alone being valid. Granted, the txt 
+file was fuzzy as to whether or not that was valid. So you have to look 
+at all the dts files and see. I prefer we don't allow that and require a 
+more specific compatible, but if there's a bunch then we should allow 
+for it. The commit message should summarize what you decide.
 
-    spi: bcm2835: fix gpio cs level inversion
+> +          - enum:
+> +              - ti,k2g-qspi
+> +              - ti,am654-ospi
+> +          - const: cdns,qspi-nor
 
-The analysis is as follows:
+> +examples:
+> +  - |
+> +    qspi: spi@ff705000 {
+> +      compatible = "cadence,qspi","cdns,qpsi-nor";
 
-1191 static int bcm2835_spi_setup(struct spi_device *spi)
-1192 {
-1193        struct spi_controller *ctlr = spi->controller;
-1194        struct bcm2835_spi *bs = spi_controller_get_devdata(ctlr);
-1195        struct gpio_chip *chip;
+And you missed fixing this.
 
-1. var_decl: Declaring variable lflags without initializer.
-
-... and later on ...
-
-Uninitialized scalar variable (UNINIT)
-
-9. uninit_use_in_call: Using uninitialized value lflags when calling
-gpiochip_request_own_desc. [show details]
-
-1262        spi->cs_gpiod = gpiochip_request_own_desc(chip, 8 -
-spi->chip_select,
-1263                                                  DRV_NAME,
-1264                                                  lflags,
-1265                                                  GPIOD_OUT_LOW);
-
-
-The call to gpiochip_request_own_desc passes the uninitalized lflags
-down to  gpiod_configure_flags:
-
-int gpiod_configure_flags(struct gpio_desc *desc, const char *con_id,
-3698                unsigned long lflags, enum gpiod_flags dflags)
-3699{
-3700        int ret;
-3701
-3702        if (lflags & GPIO_ACTIVE_LOW)
-3703                set_bit(FLAG_ACTIVE_LOW, &desc->flags);
-3704
-3705        if (lflags & GPIO_OPEN_DRAIN)
-3706                set_bit(FLAG_OPEN_DRAIN, &desc->flags);
-
-so this looks like lflags needs to be initialized with something
-legitimate, probably zero?
-
-Colin
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      reg = <0xff705000 0x1000>,
+> +            <0xffa00000 0x1000>;
+> +      interrupts = <0 151 4>;
+> +      clocks = <&qspi_clk>;
+> +      cdns,fifo-depth = <128>;
+> +      cdns,fifo-width = <4>;
+> +      cdns,trigger-address = <0x00000000>;
+> +      resets = <&rst 0x1>, <&rst 0x2>;
+> +      reset-names = "qspi", "qspi-ocp";
+> +
+> +      flash@0 {
+> +              compatible = "jedec,spi-nor";
+> +              reg = <0x0>;
+> +              cdns,read-delay = <4>;
+> +              cdns,tshsl-ns = <50>;
+> +              cdns,tsd2d-ns = <50>;
+> +              cdns,tchsh-ns = <4>;
+> +              cdns,tslch-ns = <4>;
+> +     };
+> +
+> +    };
+> +
+> +...
+> -- 
+> 2.11.0
+> 

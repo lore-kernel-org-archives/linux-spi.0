@@ -2,67 +2,191 @@ Return-Path: <SRS0=2vyr=EJ=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 58E41C388F9
-	for <linux-spi@archiver.kernel.org>; Tue,  3 Nov 2020 13:59:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 59538C388F9
+	for <linux-spi@archiver.kernel.org>; Tue,  3 Nov 2020 14:01:27 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 09B8B22264
-	for <linux-spi@archiver.kernel.org>; Tue,  3 Nov 2020 13:59:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 03964206B5
+	for <linux-spi@archiver.kernel.org>; Tue,  3 Nov 2020 14:01:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1604412087;
+	bh=B+llBtSbVhi2SR6RmcQcWUmTd1h4ce/ekK2VAHkkDEw=;
+	h=Subject:To:Cc:References:From:Date:In-Reply-To:List-ID:From;
+	b=cV5kKqsLLcK7FQjT9qaUP1Q0FS5a7Q6a4wMQeel/I+X9DbR4xjWaTGSH6VpjFbHZL
+	 olFMZx6Gk1SM3mJhmbTVLTkITbj3Iwe2cf8w7LYIHtnci6UcG9VcPADdznDXQXPj3F
+	 wruB+C+HQB3k+UBYFaUtDFIcue635YDXoi45ih5U=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729298AbgKCN7g (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 3 Nov 2020 08:59:36 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:7590 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729423AbgKCN6d (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 3 Nov 2020 08:58:33 -0500
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4CQWb72WXSzLt8Y;
-        Tue,  3 Nov 2020 21:58:27 +0800 (CST)
-Received: from huawei.com (10.90.53.225) by DGGEMS407-HUB.china.huawei.com
- (10.3.19.207) with Microsoft SMTP Server id 14.3.487.0; Tue, 3 Nov 2020
- 21:58:25 +0800
-From:   Zhang Qilong <zhangqilong3@huawei.com>
-To:     <broonie@kernel.org>
-CC:     <linux-spi@vger.kernel.org>
-Subject: [PATCH] spi: spi-mem: fix reference leak in spi_mem_access_start
-Date:   Tue, 3 Nov 2020 22:09:10 +0800
-Message-ID: <20201103140910.3482-1-zhangqilong3@huawei.com>
-X-Mailer: git-send-email 2.26.0.106.g9fadedd
+        id S1727986AbgKCOBZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 3 Nov 2020 09:01:25 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35900 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729361AbgKCOBV (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 3 Nov 2020 09:01:21 -0500
+Received: from [10.0.0.28] (cpe-70-114-140-30.austin.res.rr.com [70.114.140.30])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 229E2206B5;
+        Tue,  3 Nov 2020 14:01:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604412080;
+        bh=B+llBtSbVhi2SR6RmcQcWUmTd1h4ce/ekK2VAHkkDEw=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=oexATlSlM0SS9bARyRpS02tSWN7rD+gjg5MXCh4uDWRI6+J3RYCjHoyvo9qGZwi/k
+         31Jnc6vNXnMJBRGwa/j7+T19PXFo58qMeCWO6h665LLZs3x9ONpr5S5Drm9PeZtdvz
+         VfDtdNVQV6X9GiClyZBV5mmWcPu2N+VMuVUGtHP4=
+Subject: Re: [RFC] Accessing QSPI device under mtd
+To:     Vignesh Raghavendra <vigneshr@ti.com>, linux-spi@vger.kernel.org
+Cc:     "Ramuthevar, Vadivel MuruganX" 
+        <vadivel.muruganx.ramuthevar@linux.intel.com>,
+        Tudor.Ambarus@microchip.com, Mark Brown <broonie@kernel.org>,
+        Richard Gong <richard.gong@intel.com>
+References: <7918ea88-3ede-743e-4444-587d0f625c2e@kernel.org>
+ <b881ec8a-694f-8025-1dd0-e1c979e43816@ti.com>
+ <3d216597-c7d5-be37-2008-abd0dc2ea75e@kernel.org>
+ <70ffca2c-f454-625e-5c87-4d30441763e9@ti.com>
+ <5261561d-17ad-2053-19fb-ae5301546b48@kernel.org>
+ <b1359615-a3c5-3609-76fb-ce1d35c5c1ee@ti.com>
+From:   Dinh Nguyen <dinguyen@kernel.org>
+Autocrypt: addr=dinguyen@kernel.org; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <ce2e048c-1bc0-f9c4-eb54-f66031e5d25d@kernel.org>
+Date:   Tue, 3 Nov 2020 08:01:18 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.90.53.225]
-X-CFilter-Loop: Reflected
+In-Reply-To: <b1359615-a3c5-3609-76fb-ce1d35c5c1ee@ti.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-pm_runtime_get_sync will increment pm usage counter even it
-failed. Forgetting to pm_runtime_put_noidle will result in
-reference leak in spi_mem_access_start, so we should fix it.
 
-Fixes: f86c24f479530 ("spi: spi-mem: Split spi_mem_exec_op() code")
-Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
----
- drivers/spi/spi-mem.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index ef53290b7d24..4682f49dc733 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -243,6 +243,7 @@ static int spi_mem_access_start(struct spi_mem *mem)
- 
- 		ret = pm_runtime_get_sync(ctlr->dev.parent);
- 		if (ret < 0) {
-+			pm_runtime_put_noidle(ctlr->dev.parent);
- 			dev_err(&ctlr->dev, "Failed to power device: %d\n",
- 				ret);
- 			return ret;
--- 
-2.17.1
+On 11/3/20 1:00 AM, Vignesh Raghavendra wrote:
+> 
+> 
+> On 11/2/20 8:33 AM, Dinh Nguyen wrote:
+>>
+>>
+>> On 10/31/20 12:24 AM, Vignesh Raghavendra wrote:
+>>>
+>>>
+>>> On 10/31/20 12:53 AM, Dinh Nguyen wrote:
+>>>> Hi Vignesh,
+>>>>
+>>>> I'm using the standard arm64 defconfig. Attached are 2 bootlogs, v5.8
+>>>> and v5.9. On the v5.8, I can see the QSPI devices under /dev/mtdX, and
+>>>> has this in the bootlog:
+>>>>
+>>>> [    1.073562] cadence-qspi ff8d2000.spi: mt25qu02g (262144 Kbytes)
+>>>> [    1.079865] 2 fixed-partitions partitions found on MTD device
+>>>> ff8d2000.spi.0
+>>>> [    1.086917] Creating 2 MTD partitions on "ff8d2000.spi.0":
+>>>> [    1.092401] 0x000000000000-0x000003fe0000 : "Boot and fpga data"
+>>>> [    1.103073] 0x000003fe0000-0x000010000000 : "Root Filesystem - JFFS2"
+>>>>
+>>>> In v5.9, I don't see the above output in the bootlog, and there are no
+>>>> /dev/mtdX. I did a bisect and it resulted in commit "a314f6367787ee mtd:
+>>>> spi-nor: Convert cadence-quadspi to use spi-mem framework". If I revert
+>>>> this patch, then QSPI device is under /dev/mtdX.
+>>>>
+>>>> There were no changes in the Stratix10 DTS files between v5.8 and v5.9
+>>>> that should have any affect on QSPI.
+>>>>
+>>>
+>>> I think I found the problem. Looking at
+>>> arch/arm64/boot/dts/altera/socfpga_stratix10_socdk.dts:
+>>>
+>>> 	&qspi {
+>>>         	...
+>>> 	        flash@0 {
+>>>         	        compatible = "n25q00a";
+>>> 			...
+>>> 		};
+>>> 	};
+>>>
+>>> Flash node is using non standard compatible "n25q00a". Per
+>>> Documentation/devicetree/bindings/mtd/jedec,spi-nor.txt, SPI NOR flash
+>>> node must include "jedec,spi-nor" as compatible.
+>>>
+>>> Old driver under drivers/mtd/spi-nor/ worked because, it directly called
+>>> spi_nor_scan() w/o looking at compatible string.
+>>>
+>>> Could you try adding "jedec,spi-nor" to flash node's compatible list and
+>>> see if everything works?
+>>>
+>>>
+>>
+>> Yes, that fixed it! I have a question though, if I also change it to
+>> "jedec,spi-nor" on the v5.8 kernel, prior to the spi-mem commit, I get
+>> this error:
+>>
+>> [    1.075268] cadence-qspi ff8d2000.spi: unrecognized JEDEC id bytes:
+>> d0 5d 91 08 22 00
+>> [    1.083091] cadence-qspi ff8d2000.spi: Cadence QSPI NOR probe failed -2
+>> [    1.089761] cadence-qspi: probe of ff8d2000.spi failed with error -2
+>>
+>> Do you know why that is?
+>>
+> 
+> Hmm, that should not happen.. Flash nodes "compatible" line as no effect
+> with old driver (even deleting it won't matter). Is this change on top
+> of plain v5.8 or do you have some other changes to spi-nor or controller
+> driver?
 
+Just a plain v5.8.
+
+> 
+> Only way to debug would be to see difference in controller register
+> configuration with and without "jedec,spi-nor"
+> 
+
+It works if I have both "micron,n25q00a", "jedec,spi-nor";
+
+Dinh

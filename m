@@ -7,31 +7,31 @@ X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CCC2CC5517A
-	for <linux-spi@archiver.kernel.org>; Tue,  3 Nov 2020 14:05:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F2D99C388F9
+	for <linux-spi@archiver.kernel.org>; Tue,  3 Nov 2020 14:05:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7CF8C22264
-	for <linux-spi@archiver.kernel.org>; Tue,  3 Nov 2020 14:05:02 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A788422264
+	for <linux-spi@archiver.kernel.org>; Tue,  3 Nov 2020 14:05:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729242AbgKCODH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1729362AbgKCODH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Tue, 3 Nov 2020 09:03:07 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:6740 "EHLO
-        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729378AbgKCOCt (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 3 Nov 2020 09:02:49 -0500
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4CQWh31Mrxzkdl7;
-        Tue,  3 Nov 2020 22:02:43 +0800 (CST)
-Received: from huawei.com (10.90.53.225) by DGGEMS406-HUB.china.huawei.com
- (10.3.19.206) with Microsoft SMTP Server id 14.3.487.0; Tue, 3 Nov 2020
- 22:02:42 +0800
+Received: from szxga05-in.huawei.com ([45.249.212.191]:7043 "EHLO
+        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729368AbgKCODG (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 3 Nov 2020 09:03:06 -0500
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4CQWhR008GzhZqY;
+        Tue,  3 Nov 2020 22:03:02 +0800 (CST)
+Received: from huawei.com (10.90.53.225) by DGGEMS407-HUB.china.huawei.com
+ (10.3.19.207) with Microsoft SMTP Server id 14.3.487.0; Tue, 3 Nov 2020
+ 22:03:01 +0800
 From:   Zhang Qilong <zhangqilong3@huawei.com>
 To:     <broonie@kernel.org>
 CC:     <ldewangan@nvidia.com>, <thierry.reding@gmail.com>,
         <jonathanh@nvidia.com>, <linux-spi@vger.kernel.org>
-Subject: [PATCH] spi: tegra20-sflash: fix reference leak in tegra_sflash_resume
-Date:   Tue, 3 Nov 2020 22:13:23 +0800
-Message-ID: <20201103141323.5841-1-zhangqilong3@huawei.com>
+Subject: [PATCH] spi: tegra20-slink: fix reference leak in slink ops of tegra20
+Date:   Tue, 3 Nov 2020 22:13:45 +0800
+Message-ID: <20201103141345.6188-1-zhangqilong3@huawei.com>
 X-Mailer: git-send-email 2.26.0.106.g9fadedd
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
@@ -44,19 +44,28 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 pm_runtime_get_sync will increment pm usage counter even it
 failed. Forgetting to pm_runtime_put_noidle will result in
-reference leak in tegra_sflash_resume, so we should fix it.
+reference leak in two callers(tegra_slink_setup and
+tegra_slink_resume), so we should fix it.
 
-Fixes: 8528547bcc336 ("spi: tegra: add spi driver for sflash controller")
+Fixes: dc4dc36056392 ("spi: tegra: add spi driver for SLINK controller")
 Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
 ---
- drivers/spi/spi-tegra20-sflash.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-tegra20-slink.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
-index b59015c7c8a8..cfb7de737937 100644
---- a/drivers/spi/spi-tegra20-sflash.c
-+++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -552,6 +552,7 @@ static int tegra_sflash_resume(struct device *dev)
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index a0810765d4e5..f7c832fd4003 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -751,6 +751,7 @@ static int tegra_slink_setup(struct spi_device *spi)
+ 
+ 	ret = pm_runtime_get_sync(tspi->dev);
+ 	if (ret < 0) {
++		pm_runtime_put_noidle(tspi->dev);
+ 		dev_err(tspi->dev, "pm runtime failed, e = %d\n", ret);
+ 		return ret;
+ 	}
+@@ -1188,6 +1189,7 @@ static int tegra_slink_resume(struct device *dev)
  
  	ret = pm_runtime_get_sync(dev);
  	if (ret < 0) {

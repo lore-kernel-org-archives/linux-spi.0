@@ -2,25 +2,26 @@ Return-Path: <SRS0=2vyr=EJ=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.7 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F5E2C388F7
-	for <linux-spi@archiver.kernel.org>; Tue,  3 Nov 2020 07:22:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1223CC388F2
+	for <linux-spi@archiver.kernel.org>; Tue,  3 Nov 2020 07:22:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 556D8208B6
-	for <linux-spi@archiver.kernel.org>; Tue,  3 Nov 2020 07:22:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C37D722277
+	for <linux-spi@archiver.kernel.org>; Tue,  3 Nov 2020 07:22:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727839AbgKCHWr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 3 Nov 2020 02:22:47 -0500
-Received: from twspam01.aspeedtech.com ([211.20.114.71]:29573 "EHLO
+        id S1727885AbgKCHWv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 3 Nov 2020 02:22:51 -0500
+Received: from twspam01.aspeedtech.com ([211.20.114.71]:29583 "EHLO
         twspam01.aspeedtech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727451AbgKCHWq (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 3 Nov 2020 02:22:46 -0500
+        with ESMTP id S1727872AbgKCHWt (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 3 Nov 2020 02:22:49 -0500
 Received: from mail.aspeedtech.com ([192.168.0.24])
-        by twspam01.aspeedtech.com with ESMTP id 0A37Id5x008355;
-        Tue, 3 Nov 2020 15:18:39 +0800 (GMT-8)
+        by twspam01.aspeedtech.com with ESMTP id 0A37Id61008355;
+        Tue, 3 Nov 2020 15:18:40 +0800 (GMT-8)
         (envelope-from chin-ting_kuo@aspeedtech.com)
 Received: from localhost.localdomain (192.168.10.9) by TWMBX02.aspeed.com
  (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 3 Nov
@@ -31,46 +32,98 @@ To:     <broonie@kernel.org>, <robh+dt@kernel.org>, <joel@jms.id.au>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linux-aspeed@lists.ozlabs.org>, <linux-spi@vger.kernel.org>
 CC:     <BMC-SW@aspeedtech.com>
-Subject: [v2 0/4] Porting ASPEED FMC/SPI memory controller driver
-Date:   Tue, 3 Nov 2020 15:21:58 +0800
-Message-ID: <20201103072202.24705-1-chin-ting_kuo@aspeedtech.com>
+Subject: [v2 2/4] ARM: dts: aspeed: ast2600: Update FMC/SPI controller setting for spi-aspeed.c
+Date:   Tue, 3 Nov 2020 15:22:00 +0800
+Message-ID: <20201103072202.24705-3-chin-ting_kuo@aspeedtech.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20201103072202.24705-1-chin-ting_kuo@aspeedtech.com>
+References: <20201103072202.24705-1-chin-ting_kuo@aspeedtech.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [192.168.10.9]
 X-ClientProxiedBy: TWMBX02.aspeed.com (192.168.0.24) To TWMBX02.aspeed.com
  (192.168.0.24)
 X-DNSRBL: 
-X-MAIL: twspam01.aspeedtech.com 0A37Id5x008355
+X-MAIL: twspam01.aspeedtech.com 0A37Id61008355
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This patch series aims to porting ASPEED FMC/SPI memory controller
-driver with spi-mem interface. Adjust device tree setting of SPI NOR
-flash in order to fit real AST2600 EVB and new SPI memory controller
-driver. Also, this patch has been verified on AST2600-A1 EVB.
+- Adjust the value format of "reg" property:
+  Instead of platform_get_resource(),
+  platform_get_resource_byname() function can be used
+  for more human-readable.
+- Add "num-cs" property for FMC/SPI controller:
+  Each ASPEED FMC/SPI memory controller can support more
+  than a chip select. By "num-cs" property, FMC/SPI
+  controller driver can know how many chip select related
+  registers should be initialized at the probe stage.
+  Besdies, with this property, driver can avoid accessing
+  chip select which CS number is larger than the maximum
+  one supported by the controller.
 
-v2: Fix sparse warnings reported by kernel test robot <lkp@intel.com>.
+Signed-off-by: Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
+---
+ arch/arm/boot/dts/aspeed-g6.dtsi | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-Chin-Ting Kuo (4):
-  dt-bindings: spi: Add binding file for ASPEED FMC/SPI memory
-    controller
-  ARM: dts: aspeed: ast2600: Update FMC/SPI controller setting for
-    spi-aspeed.c
-  ARM: dts: aspeed: ast2600-evb: Adjust SPI flash configuration
-  spi: aspeed: Add ASPEED FMC/SPI memory controller driver
-
- .../bindings/spi/aspeed,spi-aspeed.yaml       |  66 ++
- arch/arm/boot/dts/aspeed-ast2600-evb.dts      |  26 +-
- arch/arm/boot/dts/aspeed-g6.dtsi              |  18 +-
- drivers/spi/Kconfig                           |  10 +
- drivers/spi/Makefile                          |   1 +
- drivers/spi/spi-aspeed.c                      | 969 ++++++++++++++++++
- 6 files changed, 1080 insertions(+), 10 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/spi/aspeed,spi-aspeed.yaml
- create mode 100644 drivers/spi/spi-aspeed.c
-
+diff --git a/arch/arm/boot/dts/aspeed-g6.dtsi b/arch/arm/boot/dts/aspeed-g6.dtsi
+index b58220a49cbd..8a5c798db54e 100644
+--- a/arch/arm/boot/dts/aspeed-g6.dtsi
++++ b/arch/arm/boot/dts/aspeed-g6.dtsi
+@@ -89,14 +89,16 @@
+ 			};
+ 
+ 		fmc: spi@1e620000 {
+-			reg = < 0x1e620000 0xc4
+-				0x20000000 0x10000000 >;
++			reg = <0x1e620000 0xc4>,
++				<0x20000000 0x10000000>;
++			reg-names = "spi_ctrl_reg", "spi_mmap";
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+ 			compatible = "aspeed,ast2600-fmc";
+ 			clocks = <&syscon ASPEED_CLK_AHB>;
+ 			status = "disabled";
+ 			interrupts = <GIC_SPI 39 IRQ_TYPE_LEVEL_HIGH>;
++			num-cs = <3>;
+ 			flash@0 {
+ 				reg = < 0 >;
+ 				compatible = "jedec,spi-nor";
+@@ -118,12 +120,14 @@
+ 		};
+ 
+ 		spi1: spi@1e630000 {
+-			reg = < 0x1e630000 0xc4
+-				0x30000000 0x10000000 >;
++			reg = <0x1e630000 0xc4>,
++				<0x30000000 0x10000000>;
++			reg-names = "spi_ctrl_reg", "spi_mmap";
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+ 			compatible = "aspeed,ast2600-spi";
+ 			clocks = <&syscon ASPEED_CLK_AHB>;
++			num-cs = <2>;
+ 			status = "disabled";
+ 			flash@0 {
+ 				reg = < 0 >;
+@@ -140,12 +144,14 @@
+ 		};
+ 
+ 		spi2: spi@1e631000 {
+-			reg = < 0x1e631000 0xc4
+-				0x50000000 0x10000000 >;
++			reg = < 0x1e631000 0xc4>,
++				<0x50000000 0x10000000>;
++			reg-names = "spi_ctrl_reg", "spi_mmap";
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+ 			compatible = "aspeed,ast2600-spi";
+ 			clocks = <&syscon ASPEED_CLK_AHB>;
++			num-cs = <3>;
+ 			status = "disabled";
+ 			flash@0 {
+ 				reg = < 0 >;
 -- 
 2.17.1
 

@@ -7,21 +7,21 @@ X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,
 	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6FA36C2D0A3
-	for <linux-spi@archiver.kernel.org>; Tue,  3 Nov 2020 07:22:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B2CE1C2D0A3
+	for <linux-spi@archiver.kernel.org>; Tue,  3 Nov 2020 07:23:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 38E73208B6
-	for <linux-spi@archiver.kernel.org>; Tue,  3 Nov 2020 07:22:59 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7248F21556
+	for <linux-spi@archiver.kernel.org>; Tue,  3 Nov 2020 07:23:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727451AbgKCHWs (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 3 Nov 2020 02:22:48 -0500
-Received: from twspam01.aspeedtech.com ([211.20.114.71]:29575 "EHLO
+        id S1727893AbgKCHXB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 3 Nov 2020 02:23:01 -0500
+Received: from twspam01.aspeedtech.com ([211.20.114.71]:29594 "EHLO
         twspam01.aspeedtech.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727835AbgKCHWr (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 3 Nov 2020 02:22:47 -0500
+        with ESMTP id S1727889AbgKCHXA (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 3 Nov 2020 02:23:00 -0500
 Received: from mail.aspeedtech.com ([192.168.0.24])
-        by twspam01.aspeedtech.com with ESMTP id 0A37Id60008355;
-        Tue, 3 Nov 2020 15:18:39 +0800 (GMT-8)
+        by twspam01.aspeedtech.com with ESMTP id 0A37Id62008355;
+        Tue, 3 Nov 2020 15:18:40 +0800 (GMT-8)
         (envelope-from chin-ting_kuo@aspeedtech.com)
 Received: from localhost.localdomain (192.168.10.9) by TWMBX02.aspeed.com
  (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 3 Nov
@@ -32,9 +32,9 @@ To:     <broonie@kernel.org>, <robh+dt@kernel.org>, <joel@jms.id.au>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linux-aspeed@lists.ozlabs.org>, <linux-spi@vger.kernel.org>
 CC:     <BMC-SW@aspeedtech.com>
-Subject: [v2 1/4] dt-bindings: spi: Add binding file for ASPEED FMC/SPI memory controller
-Date:   Tue, 3 Nov 2020 15:21:59 +0800
-Message-ID: <20201103072202.24705-2-chin-ting_kuo@aspeedtech.com>
+Subject: [v2 3/4] ARM: dts: aspeed: ast2600-evb: Adjust SPI flash configuration
+Date:   Tue, 3 Nov 2020 15:22:01 +0800
+Message-ID: <20201103072202.24705-4-chin-ting_kuo@aspeedtech.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20201103072202.24705-1-chin-ting_kuo@aspeedtech.com>
 References: <20201103072202.24705-1-chin-ting_kuo@aspeedtech.com>
@@ -44,91 +44,80 @@ X-Originating-IP: [192.168.10.9]
 X-ClientProxiedBy: TWMBX02.aspeed.com (192.168.0.24) To TWMBX02.aspeed.com
  (192.168.0.24)
 X-DNSRBL: 
-X-MAIL: twspam01.aspeedtech.com 0A37Id60008355
+X-MAIL: twspam01.aspeedtech.com 0A37Id62008355
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Create binding file with YAML syntax for ASPEED FMC/SPI memory controller.
+- Enable FMC CS1 and SPI2 CS0 SPI NOR flashes since both of
+  these two flashes are mounted on AST2600 EVB by default.
+- Remove spi-max-frequency setting: 50MHz is usual SPI bus
+  frequency adopted on AST2600 EVB which has already been
+  configured in aspeed-g6.dtsi.
 
 Signed-off-by: Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
 ---
- .../bindings/spi/aspeed,spi-aspeed.yaml       | 66 +++++++++++++++++++
- 1 file changed, 66 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/aspeed,spi-aspeed.yaml
+ arch/arm/boot/dts/aspeed-ast2600-evb.dts | 26 ++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/aspeed,spi-aspeed.yaml b/Documentation/devicetree/bindings/spi/aspeed,spi-aspeed.yaml
-new file mode 100644
-index 000000000000..41b9692c7226
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/aspeed,spi-aspeed.yaml
-@@ -0,0 +1,66 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/aspeed,spi-aspeed.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/arch/arm/boot/dts/aspeed-ast2600-evb.dts b/arch/arm/boot/dts/aspeed-ast2600-evb.dts
+index 8d0f4656aa05..5a2e4612d155 100644
+--- a/arch/arm/boot/dts/aspeed-ast2600-evb.dts
++++ b/arch/arm/boot/dts/aspeed-ast2600-evb.dts
+@@ -96,12 +96,11 @@
+ 
+ &fmc {
+ 	status = "okay";
 +
-+title: SPI memory controller for ASPEED SoCs
+ 	flash@0 {
+ 		status = "okay";
+ 		m25p,fast-read;
+ 		label = "bmc";
+-		spi-max-frequency = <50000000>;
+-
+ 		partitions {
+ 			compatible = "fixed-partitions";
+ 			#address-cells = <1>;
+@@ -133,18 +132,37 @@
+ 			};
+ 		};
+ 	};
 +
-+maintainers:
-+  - Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
++	flash@1 {
++		status = "okay";
++		m25p,fast-read;
++		label = "fmc0:1";
++	};
+ };
+ 
+ &spi1 {
+ 	status = "okay";
 +
-+description: |
-+  There are three SPI memory controllers embedded in a ASPEED SoC.
-+  They are usually connected to SPI NOR flashes. Each of them has
-+  more than a chip select. They also support SPI single, dual and
-+  quad IO modes for SPI NOR flash.
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_spi1_default>;
+ 
+ 	flash@0 {
+ 		status = "okay";
+ 		m25p,fast-read;
+-		label = "pnor";
+-		spi-max-frequency = <100000000>;
++		label = "spi1:0";
++	};
++};
 +
-+allOf:
-+  - $ref: /spi/spi-controller.yaml#
++&spi2 {
++	status = "okay";
 +
-+properties:
-+  compatible:
-+    oneOf:
-+      - items:
-+          - enum:
-+              - aspeed,ast2600-fmc
-+              - aspeed,ast2600-spi
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_spi2_default>;
 +
-+  reg:
-+    items:
-+      - description: the control register location and length
-+      - description: the flash memory mapping address and length
-+
-+  clocks:
-+    description: AHB bus clock which will be converted to SPI bus clock
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - num-cs
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/clock/ast2600-clock.h>
-+    spi1: spi@1e630000 {
-+      compatible = "aspeed,ast2600-spi";
-+      reg = <0x1e630000 0xc4>, <0x30000000 0x10000000>;
-+      reg-names = "spi_ctrl_reg", "spi_mmap";
-+      clocks = <&syscon ASPEED_CLK_AHB>;
-+      num-cs = <2>;
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+      flash@0 {
-+        compatible = "jedec,spi-nor";
-+        reg = <0>;
-+        spi-max-frequency = <50000000>;
-+      };
-+      flash@1 {
-+        compatible = "jedec,spi-nor";
-+        reg = <1>;
-+        spi-max-frequency = <50000000>;
-+      };
-+    };
++	flash@0 {
++		status = "okay";
++		m25p,fast-read;
++		label = "spi2:0";
+ 	};
+ };
+ 
 -- 
 2.17.1
 

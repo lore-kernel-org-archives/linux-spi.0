@@ -2,380 +2,164 @@ Return-Path: <SRS0=cHRz=EK=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 164A9C55179
-	for <linux-spi@archiver.kernel.org>; Wed,  4 Nov 2020 15:35:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B1F1C388F7
+	for <linux-spi@archiver.kernel.org>; Wed,  4 Nov 2020 20:40:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C23A72074F
-	for <linux-spi@archiver.kernel.org>; Wed,  4 Nov 2020 15:35:51 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D56E920782
+	for <linux-spi@archiver.kernel.org>; Wed,  4 Nov 2020 20:40:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1604522408;
+	bh=VBDu1Nb9K5h2DXXxctVoMtIgdLPRTrWevse84KU65aY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:List-ID:From;
+	b=Ve8VNzU6K2Jh6zxw70LAB88wIydeASK3IFlCXYFqWeIlZWyQm6ybTFGG98oxmmSwj
+	 ZWVTOusyjMoUpYog7GRSIQ590KGVRrAVOxDK34wkc8ua6Tkrtpn0fEkTR3I7zi/81m
+	 IJGRue6tfL4Bs0UTWINkU+WbhPoRNa8MUAlbdqH8=
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730382AbgKDPfi (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 4 Nov 2020 10:35:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56100 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730162AbgKDPfh (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 4 Nov 2020 10:35:37 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24135C040203
-        for <linux-spi@vger.kernel.org>; Wed,  4 Nov 2020 07:35:36 -0800 (PST)
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1kaKos-0004O4-79; Wed, 04 Nov 2020 16:35:30 +0100
-Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1kaKor-0006cL-I2; Wed, 04 Nov 2020 16:35:29 +0100
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Mark Brown <broonie@kernel.org>
-Cc:     Oleksij Rempel <o.rempel@pengutronix.de>, kernel@pengutronix.de,
-        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-spi@vger.kernel.org, David Jander <david@protonic.nl>
-Subject: [PATCH v1 1/2] Input: ads7846: convert to full duplex
-Date:   Wed,  4 Nov 2020 16:35:27 +0100
-Message-Id: <20201104153528.25362-2-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201104153528.25362-1-o.rempel@pengutronix.de>
-References: <20201104153528.25362-1-o.rempel@pengutronix.de>
+        id S1730429AbgKDUkI (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 4 Nov 2020 15:40:08 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57714 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730224AbgKDUkI (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 4 Nov 2020 15:40:08 -0500
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 70C89204EF;
+        Wed,  4 Nov 2020 20:40:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1604522407;
+        bh=VBDu1Nb9K5h2DXXxctVoMtIgdLPRTrWevse84KU65aY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=b7eqjeWb89hca6r+DWkfPJdmVuZVh3ekAQe5S+3q1lMp7tEwLQmk63aAphqtilJ02
+         zXozlYvUxD0NZpWnVaI9A1fq+gSg7zn9Fn/QQr1hx+JsQ/Ifinvsb1DBc6jscaspNO
+         lSfJROfTYkkbwmL1110PzuTe3mF0GAQXw+wbrHys=
+Date:   Wed, 4 Nov 2020 20:39:55 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
+Cc:     robh+dt@kernel.org, joel@jms.id.au, andrew@aj.id.au, clg@kaod.org,
+        bbrezillon@kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
+        linux-spi@vger.kernel.org, BMC-SW@aspeedtech.com
+Subject: Re: [v2 4/4] spi: aspeed: Add ASPEED FMC/SPI memory controller driver
+Message-ID: <20201104203955.GA4795@sirena.org.uk>
+References: <20201103072202.24705-1-chin-ting_kuo@aspeedtech.com>
+ <20201103072202.24705-5-chin-ting_kuo@aspeedtech.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-spi@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="sdtB3X0nJg68CQEu"
+Content-Disposition: inline
+In-Reply-To: <20201103072202.24705-5-chin-ting_kuo@aspeedtech.com>
+X-Cookie: Shake well before using.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Starting with following patch, the ads7845 was partially converted to
-full duplex mode:
-3eac5c7e44f3 Input: ads7846 - extend the driver for ads7845 controller support
 
-Since it is not touchscreen controller specific, it is better to make
-this conversion consequent for complete driver. This will reduce CPU
-load and make driver more readable.
+--sdtB3X0nJg68CQEu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
- drivers/input/touchscreen/ads7846.c | 193 +++++++++-------------------
- 1 file changed, 62 insertions(+), 131 deletions(-)
+On Tue, Nov 03, 2020 at 03:22:02PM +0800, Chin-Ting Kuo wrote:
+> Add driver for ASPEED BMC FMC/SPI memory controller which
+> supports spi-mem interface.
 
-diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
-index 393ab337a9c4..e9a520c9ad69 100644
---- a/drivers/input/touchscreen/ads7846.c
-+++ b/drivers/input/touchscreen/ads7846.c
-@@ -62,19 +62,25 @@
- /* this driver doesn't aim at the peak continuous sample rate */
- #define	SAMPLE_BITS	(8 /*cmd*/ + 16 /*sample*/ + 2 /* before, after */)
- 
--struct ts_event {
--	/*
--	 * For portability, we can't read 12 bit values using SPI (which
--	 * would make the controller deliver them as native byte order u16
--	 * with msbs zeroed).  Instead, we read them as two 8-bit values,
--	 * *** WHICH NEED BYTESWAPPING *** and range adjustment.
-+struct ads7846_buf {
-+	u8 cmd;
-+	/* This union is a temporary hack. The driver does an in-place
-+	 * endianness conversion. This will be cleaned up in the next
-+	 * patch.
- 	 */
--	u16	x;
--	u16	y;
--	u16	z1, z2;
--	bool	ignore;
--	u8	x_buf[3];
--	u8	y_buf[3];
-+	union {
-+		__be16 data_be16;
-+		u16 data;
-+	};
-+} __attribute__((__packed__));
-+
-+
-+struct ts_event {
-+	bool ignore;
-+	struct ads7846_buf x;
-+	struct ads7846_buf y;
-+	struct ads7846_buf z1;
-+	struct ads7846_buf z2;
- };
- 
- /*
-@@ -83,11 +89,12 @@ struct ts_event {
-  * systems where main memory is not DMA-coherent (most non-x86 boards).
-  */
- struct ads7846_packet {
--	u8			read_x, read_y, read_z1, read_z2, pwrdown;
--	u16			dummy;		/* for the pwrdown read */
--	struct ts_event		tc;
--	/* for ads7845 with mpc5121 psc spi we use 3-byte buffers */
--	u8			read_x_cmd[3], read_y_cmd[3], pwrdown_cmd[3];
-+	struct ts_event tc;
-+	struct ads7846_buf read_x_cmd;
-+	struct ads7846_buf read_y_cmd;
-+	struct ads7846_buf read_z1_cmd;
-+	struct ads7846_buf read_z2_cmd;
-+	struct ads7846_buf pwrdown_cmd;
- };
- 
- struct ads7846 {
-@@ -694,16 +701,9 @@ static int ads7846_get_value(struct ads7846 *ts, struct spi_message *m)
- 	int value;
- 	struct spi_transfer *t =
- 		list_entry(m->transfers.prev, struct spi_transfer, transfer_list);
-+	struct ads7846_buf *buf = t->rx_buf;
- 
--	if (ts->model == 7845) {
--		value = be16_to_cpup((__be16 *)&(((char *)t->rx_buf)[1]));
--	} else {
--		/*
--		 * adjust:  on-wire is a must-ignore bit, a BE12 value, then
--		 * padding; built from two 8 bit values written msb-first.
--		 */
--		value = be16_to_cpup((__be16 *)t->rx_buf);
--	}
-+	value = be16_to_cpup(&buf->data_be16);
- 
- 	/* enforce ADC output is 12 bits width */
- 	return (value >> 3) & 0xfff;
-@@ -713,8 +713,9 @@ static void ads7846_update_value(struct spi_message *m, int val)
- {
- 	struct spi_transfer *t =
- 		list_entry(m->transfers.prev, struct spi_transfer, transfer_list);
-+	struct ads7846_buf *buf = t->rx_buf;
- 
--	*(u16 *)t->rx_buf = val;
-+	buf->data = val;
- }
- 
- static void ads7846_read_state(struct ads7846 *ts)
-@@ -782,16 +783,14 @@ static void ads7846_report_state(struct ads7846 *ts)
- 	 * from on-the-wire format as part of debouncing to get stable
- 	 * readings.
- 	 */
-+	x = packet->tc.x.data;
-+	y = packet->tc.y.data;
- 	if (ts->model == 7845) {
--		x = *(u16 *)packet->tc.x_buf;
--		y = *(u16 *)packet->tc.y_buf;
- 		z1 = 0;
- 		z2 = 0;
- 	} else {
--		x = packet->tc.x;
--		y = packet->tc.y;
--		z1 = packet->tc.z1;
--		z2 = packet->tc.z2;
-+		z1 = packet->tc.z1.data;
-+		z2 = packet->tc.z2.data;
- 	}
- 
- 	/* range filtering */
-@@ -1008,26 +1007,11 @@ static void ads7846_setup_spi_msg(struct ads7846 *ts,
- 	spi_message_init(m);
- 	m->context = ts;
- 
--	if (ts->model == 7845) {
--		packet->read_y_cmd[0] = READ_Y(vref);
--		packet->read_y_cmd[1] = 0;
--		packet->read_y_cmd[2] = 0;
--		x->tx_buf = &packet->read_y_cmd[0];
--		x->rx_buf = &packet->tc.y_buf[0];
--		x->len = 3;
--		spi_message_add_tail(x, m);
--	} else {
--		/* y- still on; turn on only y+ (and ADC) */
--		packet->read_y = READ_Y(vref);
--		x->tx_buf = &packet->read_y;
--		x->len = 1;
--		spi_message_add_tail(x, m);
--
--		x++;
--		x->rx_buf = &packet->tc.y;
--		x->len = 2;
--		spi_message_add_tail(x, m);
--	}
-+	packet->read_y_cmd.cmd = READ_Y(vref);
-+	x->tx_buf = &packet->read_y_cmd;
-+	x->rx_buf = &packet->tc.y;
-+	x->len = 3;
-+	spi_message_add_tail(x, m);
- 
- 	/*
- 	 * The first sample after switching drivers can be low quality;
-@@ -1037,15 +1021,11 @@ static void ads7846_setup_spi_msg(struct ads7846 *ts,
- 	if (pdata->settle_delay_usecs) {
- 		x->delay.value = pdata->settle_delay_usecs;
- 		x->delay.unit = SPI_DELAY_UNIT_USECS;
--
- 		x++;
--		x->tx_buf = &packet->read_y;
--		x->len = 1;
--		spi_message_add_tail(x, m);
- 
--		x++;
-+		x->tx_buf = &packet->read_y_cmd;
- 		x->rx_buf = &packet->tc.y;
--		x->len = 2;
-+		x->len = 3;
- 		spi_message_add_tail(x, m);
- 	}
- 
-@@ -1054,28 +1034,13 @@ static void ads7846_setup_spi_msg(struct ads7846 *ts,
- 	spi_message_init(m);
- 	m->context = ts;
- 
--	if (ts->model == 7845) {
--		x++;
--		packet->read_x_cmd[0] = READ_X(vref);
--		packet->read_x_cmd[1] = 0;
--		packet->read_x_cmd[2] = 0;
--		x->tx_buf = &packet->read_x_cmd[0];
--		x->rx_buf = &packet->tc.x_buf[0];
--		x->len = 3;
--		spi_message_add_tail(x, m);
--	} else {
--		/* turn y- off, x+ on, then leave in lowpower */
--		x++;
--		packet->read_x = READ_X(vref);
--		x->tx_buf = &packet->read_x;
--		x->len = 1;
--		spi_message_add_tail(x, m);
--
--		x++;
--		x->rx_buf = &packet->tc.x;
--		x->len = 2;
--		spi_message_add_tail(x, m);
--	}
-+	/* turn y- off, x+ on, then leave in lowpower */
-+	x++;
-+	packet->read_x_cmd.cmd = READ_X(vref);
-+	x->tx_buf = &packet->read_x_cmd;
-+	x->rx_buf = &packet->tc.x;
-+	x->len = 3;
-+	spi_message_add_tail(x, m);
- 
- 	/* ... maybe discard first sample ... */
- 	if (pdata->settle_delay_usecs) {
-@@ -1083,13 +1048,9 @@ static void ads7846_setup_spi_msg(struct ads7846 *ts,
- 		x->delay.unit = SPI_DELAY_UNIT_USECS;
- 
- 		x++;
--		x->tx_buf = &packet->read_x;
--		x->len = 1;
--		spi_message_add_tail(x, m);
--
--		x++;
-+		x->tx_buf = &packet->read_x_cmd;
- 		x->rx_buf = &packet->tc.x;
--		x->len = 2;
-+		x->len = 3;
- 		spi_message_add_tail(x, m);
- 	}
- 
-@@ -1101,14 +1062,10 @@ static void ads7846_setup_spi_msg(struct ads7846 *ts,
- 		m->context = ts;
- 
- 		x++;
--		packet->read_z1 = READ_Z1(vref);
--		x->tx_buf = &packet->read_z1;
--		x->len = 1;
--		spi_message_add_tail(x, m);
--
--		x++;
-+		packet->read_z1_cmd.cmd = READ_Z1(vref);
-+		x->tx_buf = &packet->read_z1_cmd;
- 		x->rx_buf = &packet->tc.z1;
--		x->len = 2;
-+		x->len = 3;
- 		spi_message_add_tail(x, m);
- 
- 		/* ... maybe discard first sample ... */
-@@ -1117,13 +1074,9 @@ static void ads7846_setup_spi_msg(struct ads7846 *ts,
- 			x->delay.unit = SPI_DELAY_UNIT_USECS;
- 
- 			x++;
--			x->tx_buf = &packet->read_z1;
--			x->len = 1;
--			spi_message_add_tail(x, m);
--
--			x++;
-+			x->tx_buf = &packet->read_z1_cmd;
- 			x->rx_buf = &packet->tc.z1;
--			x->len = 2;
-+			x->len = 3;
- 			spi_message_add_tail(x, m);
- 		}
- 
-@@ -1133,14 +1086,10 @@ static void ads7846_setup_spi_msg(struct ads7846 *ts,
- 		m->context = ts;
- 
- 		x++;
--		packet->read_z2 = READ_Z2(vref);
--		x->tx_buf = &packet->read_z2;
--		x->len = 1;
--		spi_message_add_tail(x, m);
--
--		x++;
-+		packet->read_z2_cmd.cmd = READ_Z2(vref);
-+		x->tx_buf = &packet->read_z2_cmd;
- 		x->rx_buf = &packet->tc.z2;
--		x->len = 2;
-+		x->len = 3;
- 		spi_message_add_tail(x, m);
- 
- 		/* ... maybe discard first sample ... */
-@@ -1149,13 +1098,9 @@ static void ads7846_setup_spi_msg(struct ads7846 *ts,
- 			x->delay.unit = SPI_DELAY_UNIT_USECS;
- 
- 			x++;
--			x->tx_buf = &packet->read_z2;
--			x->len = 1;
--			spi_message_add_tail(x, m);
--
--			x++;
-+			x->tx_buf = &packet->read_z2_cmd;
- 			x->rx_buf = &packet->tc.z2;
--			x->len = 2;
-+			x->len = 3;
- 			spi_message_add_tail(x, m);
- 		}
- 	}
-@@ -1166,24 +1111,10 @@ static void ads7846_setup_spi_msg(struct ads7846 *ts,
- 	spi_message_init(m);
- 	m->context = ts;
- 
--	if (ts->model == 7845) {
--		x++;
--		packet->pwrdown_cmd[0] = PWRDOWN;
--		packet->pwrdown_cmd[1] = 0;
--		packet->pwrdown_cmd[2] = 0;
--		x->tx_buf = &packet->pwrdown_cmd[0];
--		x->len = 3;
--	} else {
--		x++;
--		packet->pwrdown = PWRDOWN;
--		x->tx_buf = &packet->pwrdown;
--		x->len = 1;
--		spi_message_add_tail(x, m);
--
--		x++;
--		x->rx_buf = &packet->dummy;
--		x->len = 2;
--	}
-+	x++;
-+	packet->pwrdown_cmd.cmd = PWRDOWN;
-+	x->tx_buf = &packet->pwrdown_cmd;
-+	x->len = 3;
- 
- 	CS_CHANGE(*x);
- 	spi_message_add_tail(x, m);
--- 
-2.28.0
+This breaks the build for me with an x86 allmodconfig:
 
+/mnt/kernel/drivers/spi/spi-aspeed.c: In function 'aspeed_2600_spi_dma_checksum':
+/mnt/kernel/drivers/spi/spi-aspeed.c:195:9: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+  writel((uint32_t)ast_ctrl->chips[cs].ahb_base_phy,
+         ^
+/mnt/kernel/drivers/spi/spi-aspeed.c: In function 'aspeed_spi_decode_range_config':
+/mnt/kernel/drivers/spi/spi-aspeed.c:488:27: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+   chip[cs].ahb_base_phy = (void __iomem *)start_addr_phy;
+                           ^
+In file included from /mnt/kernel/include/linux/printk.h:409,
+                 from /mnt/kernel/include/linux/kernel.h:16,
+                 from /mnt/kernel/include/linux/clk.h:13,
+                 from /mnt/kernel/drivers/spi/spi-aspeed.c:11:
+/mnt/kernel/drivers/spi/spi-aspeed.c: In function 'aspeed_spi_exec_op':
+/mnt/kernel/drivers/spi/spi-aspeed.c:619:44: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+   ctrl_val, addr_mode_reg, addr_data_mask, (uint32_t)op_addr);
+                                            ^
+/mnt/kernel/include/linux/dynamic_debug.h:129:15: note: in definition of macro '__dynamic_func_call'
+   func(&id, ##__VA_ARGS__);  \
+               ^~~~~~~~~~~
+/mnt/kernel/include/linux/dynamic_debug.h:161:2: note: in expansion of macro '_dynamic_func_call'
+  _dynamic_func_call(fmt,__dynamic_dev_dbg,   \
+  ^~~~~~~~~~~~~~~~~~
+/mnt/kernel/include/linux/dev_printk.h:123:2: note: in expansion of macro 'dynamic_dev_dbg'
+  dynamic_dev_dbg(dev, dev_fmt(fmt), ##__VA_ARGS__)
+  ^~~~~~~~~~~~~~~
+/mnt/kernel/drivers/spi/spi-aspeed.c:618:2: note: in expansion of macro 'dev_dbg'
+  dev_dbg(dev, "ctrl: 0x%08x, addr_mode: 0x%x, mask: 0x%x, addr:0x%08x\n",
+  ^~~~~~~
+/mnt/kernel/drivers/spi/spi-aspeed.c: In function 'aspeed_spi_dirmap_read':
+/mnt/kernel/drivers/spi/spi-aspeed.c:651:25: warning: format '%x' expects argument of type 'unsigned int', but argument 6 has type 'size_t' {aka 'long unsigned int'} [-Wformat=]
+  dev_dbg(ast_ctrl->dev, "read op:0x%x, addr:0x%llx, len:0x%x\n",
+                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/mnt/kernel/include/linux/dynamic_debug.h:129:15: note: in definition of macro '__dynamic_func_call'
+   func(&id, ##__VA_ARGS__);  \
+               ^~~~~~~~~~~
+/mnt/kernel/include/linux/dynamic_debug.h:161:2: note: in expansion of macro '_dynamic_func_call'
+  _dynamic_func_call(fmt,__dynamic_dev_dbg,   \
+  ^~~~~~~~~~~~~~~~~~
+/mnt/kernel/include/linux/dev_printk.h:123:2: note: in expansion of macro 'dynamic_dev_dbg'
+  dynamic_dev_dbg(dev, dev_fmt(fmt), ##__VA_ARGS__)
+  ^~~~~~~~~~~~~~~
+/mnt/kernel/include/linux/dev_printk.h:123:23: note: in expansion of macro 'dev_fmt'
+  dynamic_dev_dbg(dev, dev_fmt(fmt), ##__VA_ARGS__)
+                       ^~~~~~~
+/mnt/kernel/drivers/spi/spi-aspeed.c:651:2: note: in expansion of macro 'dev_dbg'
+  dev_dbg(ast_ctrl->dev, "read op:0x%x, addr:0x%llx, len:0x%x\n",
+  ^~~~~~~
+/mnt/kernel/drivers/spi/spi-aspeed.c: In function 'aspeed_spi_dirmap_write':
+/mnt/kernel/drivers/spi/spi-aspeed.c:676:25: warning: format '%x' expects argument of type 'unsigned int', but argument 6 has type 'size_t' {aka 'long unsigned int'} [-Wformat=]
+  dev_dbg(ast_ctrl->dev, "write op:0x%x, addr:0x%llx, len:0x%x\n",
+                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/mnt/kernel/include/linux/dynamic_debug.h:129:15: note: in definition of macro '__dynamic_func_call'
+   func(&id, ##__VA_ARGS__);  \
+               ^~~~~~~~~~~
+/mnt/kernel/include/linux/dynamic_debug.h:161:2: note: in expansion of macro '_dynamic_func_call'
+  _dynamic_func_call(fmt,__dynamic_dev_dbg,   \
+  ^~~~~~~~~~~~~~~~~~
+/mnt/kernel/include/linux/dev_printk.h:123:2: note: in expansion of macro 'dynamic_dev_dbg'
+  dynamic_dev_dbg(dev, dev_fmt(fmt), ##__VA_ARGS__)
+  ^~~~~~~~~~~~~~~
+/mnt/kernel/include/linux/dev_printk.h:123:23: note: in expansion of macro 'dev_fmt'
+  dynamic_dev_dbg(dev, dev_fmt(fmt), ##__VA_ARGS__)
+                       ^~~~~~~
+/mnt/kernel/drivers/spi/spi-aspeed.c:676:2: note: in expansion of macro 'dev_dbg'
+  dev_dbg(ast_ctrl->dev, "write op:0x%x, addr:0x%llx, len:0x%x\n",
+  ^~~~~~~
+/mnt/kernel/drivers/spi/spi-aspeed.c: At top level:
+/mnt/kernel/drivers/spi/spi-aspeed.c:820:17: error: initialization of 'ssize_t (*)(struct spi_mem_dirmap_desc *, u64,  size_t,  void *)' {aka 'long int (*)(struct spi_mem_dirmap_desc *, long long unsigned int,  long unsigned int,  void *)'} from incompatible pointer type 'int (*)(struct spi_mem_dirmap_desc *, uint64_t,  size_t,  void *)' {aka 'int (*)(struct spi_mem_dirmap_desc *, long long unsigned int,  long unsigned int,  void *)'} [-Werror=incompatible-pointer-types]
+  .dirmap_read = aspeed_spi_dirmap_read,
+                 ^~~~~~~~~~~~~~~~~~~~~~
+/mnt/kernel/drivers/spi/spi-aspeed.c:820:17: note: (near initialization for 'aspeed_spi_mem_ops.dirmap_read')
+/mnt/kernel/drivers/spi/spi-aspeed.c:821:18: error: initialization of 'ssize_t (*)(struct spi_mem_dirmap_desc *, u64,  size_t,  const void *)' {aka 'long int (*)(struct spi_mem_dirmap_desc *, long long unsigned int,  long unsigned int,  const void *)'} from incompatible pointer type 'int (*)(struct spi_mem_dirmap_desc *, uint64_t,  size_t,  const void *)' {aka 'int (*)(struct spi_mem_dirmap_desc *, long long unsigned int,  long unsigned int,  const void *)'} [-Werror=incompatible-pointer-types]
+  .dirmap_write = aspeed_spi_dirmap_write,
+                  ^~~~~~~~~~~~~~~~~~~~~~~
+/mnt/kernel/drivers/spi/spi-aspeed.c:821:18: note: (near initialization for 'aspeed_spi_mem_ops.dirmap_write')
+cc1: some warnings being treated as errors
+
+--sdtB3X0nJg68CQEu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl+jEZsACgkQJNaLcl1U
+h9A64Af6A0oO7eHUA31lFFiQcUOMGH8KmmaRxMguzuA9TLxBmt6wSoZsNbi8Ye2w
+hWj4isvP37KIg6vQbgNdXQs3id3giOu9cfuq82vuRNsBfnwde8J1y94aHlVBog5l
+UH3A1CkuAml8SFNgyy9pL0g123BomTQt0PwaJZqGgQ0wUc7/BFcL/gtkgJ7vF04s
+Fg1kkD+4F5wqaHUCGPebKH3j9J5G5Vjs+4bFZzBxliMGOfNRPUAvGtWMn/UXuhs6
+FA2wfFpbeINSJJ7CwNKJ8RNbcYbiwA0lXDZkJCYud/7o6D16vfs0sc0akm3qOH0n
+XLaOw+WB3xLClyKArqZCQ9TMmuIbXw==
+=y195
+-----END PGP SIGNATURE-----
+
+--sdtB3X0nJg68CQEu--

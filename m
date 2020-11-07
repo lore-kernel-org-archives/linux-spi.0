@@ -7,57 +7,57 @@ X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_INVALID,
 	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A1061C6379D
-	for <linux-spi@archiver.kernel.org>; Sat,  7 Nov 2020 08:15:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E6CF8C388F7
+	for <linux-spi@archiver.kernel.org>; Sat,  7 Nov 2020 08:15:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6F0492151B
-	for <linux-spi@archiver.kernel.org>; Sat,  7 Nov 2020 08:15:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id ABA3520704
+	for <linux-spi@archiver.kernel.org>; Sat,  7 Nov 2020 08:15:15 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b="PAxIbXlY"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b="Jcw7g+e2"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728106AbgKGIPH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 7 Nov 2020 03:15:07 -0500
+        id S1728127AbgKGIPP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 7 Nov 2020 03:15:15 -0500
 Received: from esa3.hgst.iphmx.com ([216.71.153.141]:57208 "EHLO
         esa3.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727901AbgKGIPH (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 7 Nov 2020 03:15:07 -0500
+        with ESMTP id S1727896AbgKGIPP (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 7 Nov 2020 03:15:15 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1604736906; x=1636272906;
+  t=1604736914; x=1636272914;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=zcILk8R5a19vNQCqkxWfJkcgbG0n1TSxRDIFxtNIWNA=;
-  b=PAxIbXlYU+6AMTcK3tz7gzKf15sOuYRR3IURysA2NAzxwi8iux2A0TrE
-   qLAskV2b8UBFuhl8SW53bukd7i1Sw3Z6DyINZwSQnkzQVnAxgjP+UirmX
-   Xc2POTCE0Yle0fqyud9BhvDL/pbQa6YwCFfPlAH33QB/hBnVEQ8YtEDNs
-   lkkR9AF17dMRb2yZq2/D89Jy1erQoxGT+8gCurOabQfEXWdekWEZv6iEt
-   YQKVBthbMQTx+nFhg1jQTWkrpt9yDCcTt2TLLHAP8bJxuomjyIUblscuz
-   b2IV987s70BdkBGnPAlFqU6ibG07H3vHP4ZS6qIR+gyd3pzjyx2PDYXtD
+  bh=SUp3hrIaYTtH1qT6cOT38t7FswfwYA+WqgQCJBqAiMI=;
+  b=Jcw7g+e2xvveSaPJKVHxCfFdXx7g21LCawYelaZQEGuuMJ9thnZE3jc9
+   +DTB117+CP+B+NtVAglUSkQ9d9TX+fejPJnsO9o5bzYX6cRYD6Ar9z5AV
+   LsoTZgswUivcjdgDZSbZbJw96Th3LDzZuB/XjoOyhE8TQEVraTY0t3tJV
+   z+p6bAvXSiov2PeID8yJoHbwKVSEnRWSza9+AKfSjuLXg2HlbjCBkjOM9
+   hgHc2rl1ScSM6kUWXh0e1VGdCGCMUXpYviv9SVkOGbUskdyzs/daO8SJl
+   nCqrDlLwhxjqXwXN8hVg0i08uMH9WjYCYyUiOvmXg/GyYwzgzWYKJN/y1
    Q==;
-IronPort-SDR: dZzfjj5wRvCfNqWX6ibCMt4O4taMlIC0QELeRBlUd+xMBfRG7qhvfN8xCcFA4ldEzy7ts6PedU
- mKj/JrvzAwnEsvuLvmd+sjYOsrLkMcx6VTN2VK7f6qWyQr7TZu/DiQzghIAk0In9tVQz7UpKK7
- r/ZQOeGdxDzw92eh2f0Cp9W8edAsGvkgsi3GK/Jt0hOdbWVi/zU8p6CoHrOJrCz9mSjtFwVPtK
- 2wVOET0P19NTMfAhROw9zYax813tXnJhedHYluH2ucfef21wYjB1sfrSLkoae35tFeHulsrZ89
- i/U=
+IronPort-SDR: nV1JUffHd/0CNOb70lA/ZXDtZIJ4NvcYbe0U2gNnsm9BG8KoVVgcRM/PCunxhK+Fke8nBXSsZT
+ uP/O+MIvzuVzK1S+cndmcj5HDGQIoLqt3VxMxsb1Dns6JvWhf/ohEEhlY3HD14O6s3HA1UBFz5
+ L9BbCGBQU4pywHZiKfVACpauhEMVyWnuQORsRVwmJBzBDq0h27yOFLngO5nsNDryQjr0N860Kr
+ C67igXpu+LNaYQnm/RjN7Ee+6hRQxCzQ7MLWwXkFE8XQlPIbgy6ooaq+szd9fjqB/t3N8kRfE7
+ uqU=
 X-IronPort-AV: E=Sophos;i="5.77,459,1596470400"; 
-   d="scan'208";a="156564395"
+   d="scan'208";a="156564407"
 Received: from h199-255-45-15.hgst.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
-  by ob1.hgst.iphmx.com with ESMTP; 07 Nov 2020 16:15:06 +0800
-IronPort-SDR: gPzOiBEBFOJNhv0W66htWfym8n2x6KfFOog34+aXcMz8y0rD7zOCAR4QFqB74e8R/nf8/348va
- HrNBgU1UR+gAAxU/CmaMvIUmLEH3+3jlwMm3ikl+KUEuZs0HKjxCmEsuFfRtOL5vXJgJ+8qSdJ
- boYmXvV065I8bIqOJXWr5gLMhnaXawkzGmr1XxA3bqccH10VgiSHMkdY1jQUxHayhQAv3tN1FG
- sLfOU9+nwSoXMRWsf1SejZMwjFbPovLR/tVBgIQHE04KXrIwLhaseQRKHZEVy6zuuBY0uA6fwC
- ussB2vrb/XxkQ+ULFY+O6yJ2
+  by ob1.hgst.iphmx.com with ESMTP; 07 Nov 2020 16:15:14 +0800
+IronPort-SDR: 6elAszZyP8FpFDX1xg+oJE18MDif54flIfosvdl6gb2aS7zEe5oXTKo+loDT1QJUWFspKUcFYZ
+ QIJ2yr5nQW+1K6Efr42VtHkpCuZm5rTjpBc1oBQe0atd9HYye7t7O/uGPC4xNr6mIMX1Ep1sVm
+ L5qt4NwgNrYB+oNTjk2fYBMmRd59zntPGa55mF/ZgpiK0tlExxxSuJKmXxYy9YoC4xIn26Ge5r
+ ObYdYmeW/b5XHvhEDPKnepaHN7dLqfRrtlL8/EkDXb7ygDyDkMIttw9QQoo5iP6dfB5qlaeq1r
+ mLrSRj16X4HLtxhQu2GXjdLO
 Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
-  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2020 23:59:57 -0800
-IronPort-SDR: Cbz0CHg/oQAxtU90LrAjPsnG2WXoTIUog6fttVMDIX4Yubpz8DuemDT6Ijw8uRcJxJqmLNcego
- utOLxNXRhITZAG9IQQVH9IMYmXQeL+efxwZVsC5SL4dBBSmXZTk4t2IqEVgq4dU7we2Lu4VElT
- baV3iKLbnf1Cgcw8nPd2ipF6Jvym+brQgZLFNi2b5bfy9Yj2J3Ub1lpOziu+/J1uluziK6reuP
- SMks2hqoB8C5tUCunIInGW4naOcMN2dhiyBN3nGXo6cQu7pRhLa6L6oWgZ2gvRSNYkfOrn9hfr
- ey4=
+  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2020 00:00:05 -0800
+IronPort-SDR: cq//chzutH4wXylm4H8jmtnMe1aNpH0Uu4Whn6FkmWJy6febas7+Y3rO0Zc90N9BsNIrZx3kH+
+ v0gyxR4aAqacsoAftph7QwdLBEw5g7puc3sMfZIwrUqLoOxw+FCfCHSfQn1Y6ZoX5QEeuT0frw
+ OqacY0epJSaqMfB0cOwlkjduc04QBxwAUoNYVXLY1GFPqLeBMqRMMO7gLHiiaCKFC0KhcF27cg
+ 5JWPtHYiThqG/mY+GP6D55fS00eOvc5QNPI5tFFF7HbsnDjggeQvLLge1PS0lf+dd3/VF5MbSA
+ e5k=
 WDCIronportException: Internal
 Received: from hdrdzf2.ad.shared (HELO twashi.fujisawa.hgst.com) ([10.84.71.85])
-  by uls-op-cesaip01.wdc.com with ESMTP; 07 Nov 2020 00:15:04 -0800
+  by uls-op-cesaip01.wdc.com with ESMTP; 07 Nov 2020 00:15:12 -0800
 From:   Damien Le Moal <damien.lemoal@wdc.com>
 To:     Palmer Dabbelt <palmer@dabbelt.com>,
         linux-riscv@lists.infradead.org, Rob Herring <robh+dt@kernel.org>,
@@ -68,9 +68,9 @@ To:     Palmer Dabbelt <palmer@dabbelt.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         linux-gpio@vger.kernel.org, Philipp Zabel <p.zabel@pengutronix.de>
 Cc:     Sean Anderson <seanga2@gmail.com>
-Subject: [PATCH 16/32] dt-bindings: Define Kendryte K210 pin functions
-Date:   Sat,  7 Nov 2020 17:14:04 +0900
-Message-Id: <20201107081420.60325-17-damien.lemoal@wdc.com>
+Subject: [PATCH 19/32] riscv: Add Kendryte K210 SoC reset controller
+Date:   Sat,  7 Nov 2020 17:14:07 +0900
+Message-Id: <20201107081420.60325-20-damien.lemoal@wdc.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201107081420.60325-1-damien.lemoal@wdc.com>
 References: <20201107081420.60325-1-damien.lemoal@wdc.com>
@@ -80,301 +80,256 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Introduce the dt-bindings file
-include/dt-bindings/pinctrl/k210_pinctrl.h to define all possible 255
-functions that can be assigned to any of the 48 programmable pins of the
-SoC. Macros allowing a device tree to define a pinmux mapping are also
-introduced.
+Add a reset controller driver for the Kendryte K210 SoC. This driver
+relies on its syscon compatible parent node for its register mapping.
+Automatically select this driver for compilation when the SOC_KENDRYTE
+option is selected.
 
 Signed-off-by: Damien Le Moal <damien.lemoal@wdc.com>
 ---
- include/dt-bindings/pinctrl/k210-pinctrl.h | 277 +++++++++++++++++++++
- 1 file changed, 277 insertions(+)
- create mode 100644 include/dt-bindings/pinctrl/k210-pinctrl.h
+ arch/riscv/Kconfig.socs    |   3 +
+ drivers/reset/Kconfig      |   9 ++
+ drivers/reset/Makefile     |   1 +
+ drivers/reset/reset-k210.c | 186 +++++++++++++++++++++++++++++++++++++
+ 4 files changed, 199 insertions(+)
+ create mode 100644 drivers/reset/reset-k210.c
 
-diff --git a/include/dt-bindings/pinctrl/k210-pinctrl.h b/include/dt-bindings/pinctrl/k210-pinctrl.h
+diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
+index a4c851ffc6b0..4d8e66d0556a 100644
+--- a/arch/riscv/Kconfig.socs
++++ b/arch/riscv/Kconfig.socs
+@@ -31,6 +31,9 @@ config SOC_KENDRYTE
+ 	select SIFIVE_PLIC
+ 	select SOC_K210
+ 	select CLK_K210
++	select ARCH_HAS_RESET_CONTROLLER
++	select RESET_CONTROLLER
++	select RESET_K210
+ 	help
+ 	  This enables support for Kendryte K210 SoC platform hardware.
+ 
+diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
+index 07d162b179fc..c943051b5fc8 100644
+--- a/drivers/reset/Kconfig
++++ b/drivers/reset/Kconfig
+@@ -245,6 +245,15 @@ config RESET_ZYNQ
+ 	help
+ 	  This enables the reset controller driver for Xilinx Zynq SoCs.
+ 
++config RESET_K210
++	bool "Reset controller driver for Kendryte K210 SoC"
++	depends on RISCV && SOC_KENDRYTE
++	depends on OF && MFD_SYSCON
++	help
++	  Support for the Kendryte K210 RISC-V SoC reset controller. If
++          Say Y if you want to control reset signals provided by this
++	  controller.
++
+ source "drivers/reset/sti/Kconfig"
+ source "drivers/reset/hisilicon/Kconfig"
+ source "drivers/reset/tegra/Kconfig"
+diff --git a/drivers/reset/Makefile b/drivers/reset/Makefile
+index 16947610cc3b..1730a31e6871 100644
+--- a/drivers/reset/Makefile
++++ b/drivers/reset/Makefile
+@@ -33,4 +33,5 @@ obj-$(CONFIG_RESET_UNIPHIER) += reset-uniphier.o
+ obj-$(CONFIG_RESET_UNIPHIER_GLUE) += reset-uniphier-glue.o
+ obj-$(CONFIG_RESET_ZYNQ) += reset-zynq.o
+ obj-$(CONFIG_ARCH_ZYNQMP) += reset-zynqmp.o
++obj-$(CONFIG_RESET_K210) += reset-k210.o
+ 
+diff --git a/drivers/reset/reset-k210.c b/drivers/reset/reset-k210.c
 new file mode 100644
-index 000000000000..0b797a4a245e
+index 000000000000..b6401aef2923
 --- /dev/null
-+++ b/include/dt-bindings/pinctrl/k210-pinctrl.h
-@@ -0,0 +1,277 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
++++ b/drivers/reset/reset-k210.c
+@@ -0,0 +1,186 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
 +/*
-+ * Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
 + * Copyright (c) 2020 Western Digital Corporation or its affiliates.
 + */
-+#ifndef PINCTRL_K210_SYSCTL_H
-+#define PINCTRL_K210_SYSCTL_H
++#include <linux/of.h>
++#include <linux/of_device.h>
++#include <linux/platform_device.h>
++#include <linux/reset-controller.h>
++#include <linux/delay.h>
++#include <linux/mfd/syscon.h>
++#include <linux/regmap.h>
++
++#include <dt-bindings/mfd/k210-sysctl.h>
++#include <dt-bindings/reset/k210-rst.h>
++
++struct k210_rst {
++	struct regmap *map;
++	u32 offset;
++	u32 mask;
++	u32 assert_high;
++	struct reset_controller_dev rcdev;
++};
++
++static inline struct k210_rst *
++to_k210_rst(struct reset_controller_dev *rcdev)
++{
++	return container_of(rcdev, struct k210_rst, rcdev);
++}
++
++static inline int k210_rst_assert(struct reset_controller_dev *rcdev,
++				  unsigned long id)
++{
++	struct k210_rst *ksr = to_k210_rst(rcdev);
++	u32 bit = BIT(id);
++
++	if (!(bit & ksr->mask)) {
++		dev_err(rcdev->dev, "Invalid assert id %lu\n", id);
++		return -EINVAL;
++	}
++
++	dev_dbg(rcdev->dev, "assert %s %lu\n",
++		ksr->assert_high ? "high" : "low", id);
++
++	regmap_update_bits(ksr->map, ksr->offset, bit,
++			   ksr->assert_high ? bit : 0);
++
++	return 0;
++}
++
++static inline int k210_rst_deassert(struct reset_controller_dev *rcdev,
++				    unsigned long id)
++{
++	struct k210_rst *ksr = to_k210_rst(rcdev);
++	u32 bit = BIT(id);
++
++	if (!(bit & ksr->mask)) {
++		dev_err(rcdev->dev, "Invalid deassert id %lu\n", id);
++		return -EINVAL;
++	}
++
++	dev_dbg(rcdev->dev, "deassert %s %lu\n",
++		ksr->assert_high ? "high" : "low", id);
++
++	regmap_update_bits(ksr->map, ksr->offset, bit,
++			   ksr->assert_high ? 0 : bit);
++
++	return 0;
++}
++
++static int k210_rst_reset(struct reset_controller_dev *rcdev,
++			  unsigned long id)
++{
++	struct k210_rst *ksr = to_k210_rst(rcdev);
++	int ret;
++
++	dev_dbg(rcdev->dev, "reset %s %lu\n",
++		ksr->assert_high ? "high" : "low", id);
++
++	ret = k210_rst_assert(rcdev, id);
++	if (ret == 0) {
++		udelay(10);
++		ret = k210_rst_deassert(rcdev, id);
++	}
++
++	return ret;
++}
++
++static int k210_rst_status(struct reset_controller_dev *rcdev,
++			   unsigned long id)
++{
++	struct k210_rst *ksr = to_k210_rst(rcdev);
++	u32 reg, bit = BIT(id);
++	int ret;
++
++	if (!(bit & ksr->mask)) {
++		dev_err(rcdev->dev, "Invalid reset %lx\n", id);
++		return -EINVAL;
++	}
++
++	ret = regmap_read(ksr->map, ksr->offset, &reg);
++	if (ret)
++		return ret;
++
++	if (ksr->assert_high)
++		return ret & bit;
++
++	return !(ret & bit);
++}
++
++static const struct reset_control_ops k210_rst_ops = {
++	.assert		= k210_rst_assert,
++	.deassert	= k210_rst_deassert,
++	.reset		= k210_rst_reset,
++	.status		= k210_rst_status,
++};
++
++static int __init k210_rst_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct k210_rst *ksr;
++	int ret, nr_resets;
++
++	dev_info(dev, "K210 reset controller\n");
++
++	ksr = devm_kzalloc(dev, sizeof(*ksr), GFP_KERNEL);
++	if (!ksr)
++		return -ENOMEM;
++
++	ksr->map = syscon_regmap_lookup_by_phandle(dev->of_node, "regmap");
++	if (IS_ERR(ksr->map)) {
++		ksr->map = syscon_node_to_regmap(dev->parent->of_node);
++		if (IS_ERR(ksr->map)) {
++			dev_err(dev, "get register map failed\n");
++			return PTR_ERR(ksr->map);
++		}
++	}
++
++	ret = of_property_read_u32(dev->of_node, "offset", &ksr->offset);
++	ret = of_property_read_u32(dev->of_node, "assert-high",
++				   &ksr->assert_high);
++	if (ret) {
++		dev_err(dev, "unable to read 'offset' and 'assert-high'\n");
++		return -EINVAL;
++	}
++
++	ret = of_property_read_u32(dev->of_node, "mask", &ksr->mask);
++	if (ret) {
++		/* Use default mask */
++		ksr->mask = 0x27FFFFFF;
++	}
++	nr_resets = fls(ksr->mask);
++	if (!nr_resets) {
++		dev_err(dev, "Invalid mask 0x%08x\n", ksr->mask);
++		return -EINVAL;
++	}
++
++	ksr->rcdev.owner = THIS_MODULE;
++	ksr->rcdev.dev = dev;
++	ksr->rcdev.of_node = dev->of_node;
++	ksr->rcdev.nr_resets = nr_resets;
++	ksr->rcdev.ops = &k210_rst_ops;
++
++	return devm_reset_controller_register(dev, &ksr->rcdev);
++}
++
++static const struct of_device_id k210_rst_dt_ids[] = {
++	{ .compatible = "kendryte,k210-rst" },
++};
++
++static struct platform_driver k210_rst_driver = {
++	.probe	= k210_rst_probe,
++	.driver = {
++		.name		= "k210-rst",
++		.of_match_table	= k210_rst_dt_ids,
++	},
++};
 +
 +/*
-+ * Full list of FPIOA functions from
-+ * kendryte-standalone-sdk/lib/drivers/include/fpioa.h
++ * Most devices on the K210 SoC need reset as part of their initialization.
++ * So initialize this driver early as part of the post core initialization.
 + */
-+#define K210_PCF_MASK		GENMASK(7, 0)
-+#define K210_PCF_JTAG_TCLK	0   /* JTAG Test Clock */
-+#define K210_PCF_JTAG_TDI	1   /* JTAG Test Data In */
-+#define K210_PCF_JTAG_TMS	2   /* JTAG Test Mode Select */
-+#define K210_PCF_JTAG_TDO	3   /* JTAG Test Data Out */
-+#define K210_PCF_SPI0_D0	4   /* SPI0 Data 0 */
-+#define K210_PCF_SPI0_D1	5   /* SPI0 Data 1 */
-+#define K210_PCF_SPI0_D2	6   /* SPI0 Data 2 */
-+#define K210_PCF_SPI0_D3	7   /* SPI0 Data 3 */
-+#define K210_PCF_SPI0_D4	8   /* SPI0 Data 4 */
-+#define K210_PCF_SPI0_D5	9   /* SPI0 Data 5 */
-+#define K210_PCF_SPI0_D6	10  /* SPI0 Data 6 */
-+#define K210_PCF_SPI0_D7	11  /* SPI0 Data 7 */
-+#define K210_PCF_SPI0_SS0	12  /* SPI0 Chip Select 0 */
-+#define K210_PCF_SPI0_SS1	13  /* SPI0 Chip Select 1 */
-+#define K210_PCF_SPI0_SS2	14  /* SPI0 Chip Select 2 */
-+#define K210_PCF_SPI0_SS3	15  /* SPI0 Chip Select 3 */
-+#define K210_PCF_SPI0_ARB	16  /* SPI0 Arbitration */
-+#define K210_PCF_SPI0_SCLK	17  /* SPI0 Serial Clock */
-+#define K210_PCF_UARTHS_RX	18  /* UART High speed Receiver */
-+#define K210_PCF_UARTHS_TX	19  /* UART High speed Transmitter */
-+#define K210_PCF_RESV6		20  /* Reserved function */
-+#define K210_PCF_RESV7		21  /* Reserved function */
-+#define K210_PCF_CLK_SPI1	22  /* Clock SPI1 */
-+#define K210_PCF_CLK_I2C1	23  /* Clock I2C1 */
-+#define K210_PCF_GPIOHS0	24  /* GPIO High speed 0 */
-+#define K210_PCF_GPIOHS1	25  /* GPIO High speed 1 */
-+#define K210_PCF_GPIOHS2	26  /* GPIO High speed 2 */
-+#define K210_PCF_GPIOHS3	27  /* GPIO High speed 3 */
-+#define K210_PCF_GPIOHS4	28  /* GPIO High speed 4 */
-+#define K210_PCF_GPIOHS5	29  /* GPIO High speed 5 */
-+#define K210_PCF_GPIOHS6	30  /* GPIO High speed 6 */
-+#define K210_PCF_GPIOHS7	31  /* GPIO High speed 7 */
-+#define K210_PCF_GPIOHS8	32  /* GPIO High speed 8 */
-+#define K210_PCF_GPIOHS9	33  /* GPIO High speed 9 */
-+#define K210_PCF_GPIOHS10	34  /* GPIO High speed 10 */
-+#define K210_PCF_GPIOHS11	35  /* GPIO High speed 11 */
-+#define K210_PCF_GPIOHS12	36  /* GPIO High speed 12 */
-+#define K210_PCF_GPIOHS13	37  /* GPIO High speed 13 */
-+#define K210_PCF_GPIOHS14	38  /* GPIO High speed 14 */
-+#define K210_PCF_GPIOHS15	39  /* GPIO High speed 15 */
-+#define K210_PCF_GPIOHS16	40  /* GPIO High speed 16 */
-+#define K210_PCF_GPIOHS17	41  /* GPIO High speed 17 */
-+#define K210_PCF_GPIOHS18	42  /* GPIO High speed 18 */
-+#define K210_PCF_GPIOHS19	43  /* GPIO High speed 19 */
-+#define K210_PCF_GPIOHS20	44  /* GPIO High speed 20 */
-+#define K210_PCF_GPIOHS21	45  /* GPIO High speed 21 */
-+#define K210_PCF_GPIOHS22	46  /* GPIO High speed 22 */
-+#define K210_PCF_GPIOHS23	47  /* GPIO High speed 23 */
-+#define K210_PCF_GPIOHS24	48  /* GPIO High speed 24 */
-+#define K210_PCF_GPIOHS25	49  /* GPIO High speed 25 */
-+#define K210_PCF_GPIOHS26	50  /* GPIO High speed 26 */
-+#define K210_PCF_GPIOHS27	51  /* GPIO High speed 27 */
-+#define K210_PCF_GPIOHS28	52  /* GPIO High speed 28 */
-+#define K210_PCF_GPIOHS29	53  /* GPIO High speed 29 */
-+#define K210_PCF_GPIOHS30	54  /* GPIO High speed 30 */
-+#define K210_PCF_GPIOHS31	55  /* GPIO High speed 31 */
-+#define K210_PCF_GPIO0		56  /* GPIO pin 0 */
-+#define K210_PCF_GPIO1		57  /* GPIO pin 1 */
-+#define K210_PCF_GPIO2		58  /* GPIO pin 2 */
-+#define K210_PCF_GPIO3		59  /* GPIO pin 3 */
-+#define K210_PCF_GPIO4		60  /* GPIO pin 4 */
-+#define K210_PCF_GPIO5		61  /* GPIO pin 5 */
-+#define K210_PCF_GPIO6		62  /* GPIO pin 6 */
-+#define K210_PCF_GPIO7		63  /* GPIO pin 7 */
-+#define K210_PCF_UART1_RX	64  /* UART1 Receiver */
-+#define K210_PCF_UART1_TX	65  /* UART1 Transmitter */
-+#define K210_PCF_UART2_RX	66  /* UART2 Receiver */
-+#define K210_PCF_UART2_TX	67  /* UART2 Transmitter */
-+#define K210_PCF_UART3_RX	68  /* UART3 Receiver */
-+#define K210_PCF_UART3_TX	69  /* UART3 Transmitter */
-+#define K210_PCF_SPI1_D0	70  /* SPI1 Data 0 */
-+#define K210_PCF_SPI1_D1	71  /* SPI1 Data 1 */
-+#define K210_PCF_SPI1_D2	72  /* SPI1 Data 2 */
-+#define K210_PCF_SPI1_D3	73  /* SPI1 Data 3 */
-+#define K210_PCF_SPI1_D4	74  /* SPI1 Data 4 */
-+#define K210_PCF_SPI1_D5	75  /* SPI1 Data 5 */
-+#define K210_PCF_SPI1_D6	76  /* SPI1 Data 6 */
-+#define K210_PCF_SPI1_D7	77  /* SPI1 Data 7 */
-+#define K210_PCF_SPI1_SS0	78  /* SPI1 Chip Select 0 */
-+#define K210_PCF_SPI1_SS1	79  /* SPI1 Chip Select 1 */
-+#define K210_PCF_SPI1_SS2	80  /* SPI1 Chip Select 2 */
-+#define K210_PCF_SPI1_SS3	81  /* SPI1 Chip Select 3 */
-+#define K210_PCF_SPI1_ARB	82  /* SPI1 Arbitration */
-+#define K210_PCF_SPI1_SCLK	83  /* SPI1 Serial Clock */
-+#define K210_PCF_SPI2_D0	84  /* SPI2 Data 0 */
-+#define K210_PCF_SPI2_SS	85  /* SPI2 Select */
-+#define K210_PCF_SPI2_SCLK	86  /* SPI2 Serial Clock */
-+#define K210_PCF_I2S0_MCLK	87  /* I2S0 Master Clock */
-+#define K210_PCF_I2S0_SCLK	88  /* I2S0 Serial Clock(BCLK) */
-+#define K210_PCF_I2S0_WS	89  /* I2S0 Word Select(LRCLK) */
-+#define K210_PCF_I2S0_IN_D0	90  /* I2S0 Serial Data Input 0 */
-+#define K210_PCF_I2S0_IN_D1	91  /* I2S0 Serial Data Input 1 */
-+#define K210_PCF_I2S0_IN_D2	92  /* I2S0 Serial Data Input 2 */
-+#define K210_PCF_I2S0_IN_D3	93  /* I2S0 Serial Data Input 3 */
-+#define K210_PCF_I2S0_OUT_D0	94  /* I2S0 Serial Data Output 0 */
-+#define K210_PCF_I2S0_OUT_D1	95  /* I2S0 Serial Data Output 1 */
-+#define K210_PCF_I2S0_OUT_D2	96  /* I2S0 Serial Data Output 2 */
-+#define K210_PCF_I2S0_OUT_D3	97  /* I2S0 Serial Data Output 3 */
-+#define K210_PCF_I2S1_MCLK	98  /* I2S1 Master Clock */
-+#define K210_PCF_I2S1_SCLK	99  /* I2S1 Serial Clock(BCLK) */
-+#define K210_PCF_I2S1_WS	100 /* I2S1 Word Select(LRCLK) */
-+#define K210_PCF_I2S1_IN_D0	101 /* I2S1 Serial Data Input 0 */
-+#define K210_PCF_I2S1_IN_D1	102 /* I2S1 Serial Data Input 1 */
-+#define K210_PCF_I2S1_IN_D2	103 /* I2S1 Serial Data Input 2 */
-+#define K210_PCF_I2S1_IN_D3	104 /* I2S1 Serial Data Input 3 */
-+#define K210_PCF_I2S1_OUT_D0	105 /* I2S1 Serial Data Output 0 */
-+#define K210_PCF_I2S1_OUT_D1	106 /* I2S1 Serial Data Output 1 */
-+#define K210_PCF_I2S1_OUT_D2	107 /* I2S1 Serial Data Output 2 */
-+#define K210_PCF_I2S1_OUT_D3	108 /* I2S1 Serial Data Output 3 */
-+#define K210_PCF_I2S2_MCLK	109 /* I2S2 Master Clock */
-+#define K210_PCF_I2S2_SCLK	110 /* I2S2 Serial Clock(BCLK) */
-+#define K210_PCF_I2S2_WS	111 /* I2S2 Word Select(LRCLK) */
-+#define K210_PCF_I2S2_IN_D0	112 /* I2S2 Serial Data Input 0 */
-+#define K210_PCF_I2S2_IN_D1	113 /* I2S2 Serial Data Input 1 */
-+#define K210_PCF_I2S2_IN_D2	114 /* I2S2 Serial Data Input 2 */
-+#define K210_PCF_I2S2_IN_D3	115 /* I2S2 Serial Data Input 3 */
-+#define K210_PCF_I2S2_OUT_D0	116 /* I2S2 Serial Data Output 0 */
-+#define K210_PCF_I2S2_OUT_D1	117 /* I2S2 Serial Data Output 1 */
-+#define K210_PCF_I2S2_OUT_D2	118 /* I2S2 Serial Data Output 2 */
-+#define K210_PCF_I2S2_OUT_D3	119 /* I2S2 Serial Data Output 3 */
-+#define K210_PCF_RESV0		120 /* Reserved function */
-+#define K210_PCF_RESV1		121 /* Reserved function */
-+#define K210_PCF_RESV2		122 /* Reserved function */
-+#define K210_PCF_RESV3		123 /* Reserved function */
-+#define K210_PCF_RESV4		124 /* Reserved function */
-+#define K210_PCF_RESV5		125 /* Reserved function */
-+#define K210_PCF_I2C0_SCLK	126 /* I2C0 Serial Clock */
-+#define K210_PCF_I2C0_SDA	127 /* I2C0 Serial Data */
-+#define K210_PCF_I2C1_SCLK	128 /* I2C1 Serial Clock */
-+#define K210_PCF_I2C1_SDA	129 /* I2C1 Serial Data */
-+#define K210_PCF_I2C2_SCLK	130 /* I2C2 Serial Clock */
-+#define K210_PCF_I2C2_SDA	131 /* I2C2 Serial Data */
-+#define K210_PCF_DVP_XCLK	132 /* DVP System Clock */
-+#define K210_PCF_DVP_RST	133 /* DVP System Reset */
-+#define K210_PCF_DVP_PWDN	134 /* DVP Power Down Mode */
-+#define K210_PCF_DVP_VSYNC	135 /* DVP Vertical Sync */
-+#define K210_PCF_DVP_HSYNC	136 /* DVP Horizontal Sync */
-+#define K210_PCF_DVP_PCLK	137 /* Pixel Clock */
-+#define K210_PCF_DVP_D0		138 /* Data Bit 0 */
-+#define K210_PCF_DVP_D1		139 /* Data Bit 1 */
-+#define K210_PCF_DVP_D2		140 /* Data Bit 2 */
-+#define K210_PCF_DVP_D3		141 /* Data Bit 3 */
-+#define K210_PCF_DVP_D4		142 /* Data Bit 4 */
-+#define K210_PCF_DVP_D5		143 /* Data Bit 5 */
-+#define K210_PCF_DVP_D6		144 /* Data Bit 6 */
-+#define K210_PCF_DVP_D7		145 /* Data Bit 7 */
-+#define K210_PCF_SCCB_SCLK	146 /* Serial Camera Control Bus Clock */
-+#define K210_PCF_SCCB_SDA	147 /* Serial Camera Control Bus Data */
-+#define K210_PCF_UART1_CTS	148 /* UART1 Clear To Send */
-+#define K210_PCF_UART1_DSR	149 /* UART1 Data Set Ready */
-+#define K210_PCF_UART1_DCD	150 /* UART1 Data Carrier Detect */
-+#define K210_PCF_UART1_RI	151 /* UART1 Ring Indicator */
-+#define K210_PCF_UART1_SIR_IN	152 /* UART1 Serial Infrared Input */
-+#define K210_PCF_UART1_DTR	153 /* UART1 Data Terminal Ready */
-+#define K210_PCF_UART1_RTS	154 /* UART1 Request To Send */
-+#define K210_PCF_UART1_OUT2	155 /* UART1 User-designated Output 2 */
-+#define K210_PCF_UART1_OUT1	156 /* UART1 User-designated Output 1 */
-+#define K210_PCF_UART1_SIR_OUT	157 /* UART1 Serial Infrared Output */
-+#define K210_PCF_UART1_BAUD	158 /* UART1 Transmit Clock Output */
-+#define K210_PCF_UART1_RE	159 /* UART1 Receiver Output Enable */
-+#define K210_PCF_UART1_DE	160 /* UART1 Driver Output Enable */
-+#define K210_PCF_UART1_RS485_EN	161 /* UART1 RS485 Enable */
-+#define K210_PCF_UART2_CTS	162 /* UART2 Clear To Send */
-+#define K210_PCF_UART2_DSR	163 /* UART2 Data Set Ready */
-+#define K210_PCF_UART2_DCD	164 /* UART2 Data Carrier Detect */
-+#define K210_PCF_UART2_RI	165 /* UART2 Ring Indicator */
-+#define K210_PCF_UART2_SIR_IN	166 /* UART2 Serial Infrared Input */
-+#define K210_PCF_UART2_DTR	167 /* UART2 Data Terminal Ready */
-+#define K210_PCF_UART2_RTS	168 /* UART2 Request To Send */
-+#define K210_PCF_UART2_OUT2	169 /* UART2 User-designated Output 2 */
-+#define K210_PCF_UART2_OUT1	170 /* UART2 User-designated Output 1 */
-+#define K210_PCF_UART2_SIR_OUT	171 /* UART2 Serial Infrared Output */
-+#define K210_PCF_UART2_BAUD	172 /* UART2 Transmit Clock Output */
-+#define K210_PCF_UART2_RE	173 /* UART2 Receiver Output Enable */
-+#define K210_PCF_UART2_DE	174 /* UART2 Driver Output Enable */
-+#define K210_PCF_UART2_RS485_EN	175 /* UART2 RS485 Enable */
-+#define K210_PCF_UART3_CTS	176 /* UART3 Clear To Send */
-+#define K210_PCF_UART3_DSR	177 /* UART3 Data Set Ready */
-+#define K210_PCF_UART3_DCD	178 /* UART3 Data Carrier Detect */
-+#define K210_PCF_UART3_RI	179 /* UART3 Ring Indicator */
-+#define K210_PCF_UART3_SIR_IN	180 /* UART3 Serial Infrared Input */
-+#define K210_PCF_UART3_DTR	181 /* UART3 Data Terminal Ready */
-+#define K210_PCF_UART3_RTS	182 /* UART3 Request To Send */
-+#define K210_PCF_UART3_OUT2	183 /* UART3 User-designated Output 2 */
-+#define K210_PCF_UART3_OUT1	184 /* UART3 User-designated Output 1 */
-+#define K210_PCF_UART3_SIR_OUT	185 /* UART3 Serial Infrared Output */
-+#define K210_PCF_UART3_BAUD	186 /* UART3 Transmit Clock Output */
-+#define K210_PCF_UART3_RE	187 /* UART3 Receiver Output Enable */
-+#define K210_PCF_UART3_DE	188 /* UART3 Driver Output Enable */
-+#define K210_PCF_UART3_RS485_EN	189 /* UART3 RS485 Enable */
-+#define K210_PCF_TIMER0_TOGGLE1	190 /* TIMER0 Toggle Output 1 */
-+#define K210_PCF_TIMER0_TOGGLE2	191 /* TIMER0 Toggle Output 2 */
-+#define K210_PCF_TIMER0_TOGGLE3	192 /* TIMER0 Toggle Output 3 */
-+#define K210_PCF_TIMER0_TOGGLE4	193 /* TIMER0 Toggle Output 4 */
-+#define K210_PCF_TIMER1_TOGGLE1	194 /* TIMER1 Toggle Output 1 */
-+#define K210_PCF_TIMER1_TOGGLE2	195 /* TIMER1 Toggle Output 2 */
-+#define K210_PCF_TIMER1_TOGGLE3	196 /* TIMER1 Toggle Output 3 */
-+#define K210_PCF_TIMER1_TOGGLE4	197 /* TIMER1 Toggle Output 4 */
-+#define K210_PCF_TIMER2_TOGGLE1	198 /* TIMER2 Toggle Output 1 */
-+#define K210_PCF_TIMER2_TOGGLE2	199 /* TIMER2 Toggle Output 2 */
-+#define K210_PCF_TIMER2_TOGGLE3	200 /* TIMER2 Toggle Output 3 */
-+#define K210_PCF_TIMER2_TOGGLE4	201 /* TIMER2 Toggle Output 4 */
-+#define K210_PCF_CLK_SPI2	202 /* Clock SPI2 */
-+#define K210_PCF_CLK_I2C2	203 /* Clock I2C2 */
-+#define K210_PCF_INTERNAL0	204 /* Internal function signal 0 */
-+#define K210_PCF_INTERNAL1	205 /* Internal function signal 1 */
-+#define K210_PCF_INTERNAL2	206 /* Internal function signal 2 */
-+#define K210_PCF_INTERNAL3	207 /* Internal function signal 3 */
-+#define K210_PCF_INTERNAL4	208 /* Internal function signal 4 */
-+#define K210_PCF_INTERNAL5	209 /* Internal function signal 5 */
-+#define K210_PCF_INTERNAL6	210 /* Internal function signal 6 */
-+#define K210_PCF_INTERNAL7	211 /* Internal function signal 7 */
-+#define K210_PCF_INTERNAL8	212 /* Internal function signal 8 */
-+#define K210_PCF_INTERNAL9	213 /* Internal function signal 9 */
-+#define K210_PCF_INTERNAL10	214 /* Internal function signal 10 */
-+#define K210_PCF_INTERNAL11	215 /* Internal function signal 11 */
-+#define K210_PCF_INTERNAL12	216 /* Internal function signal 12 */
-+#define K210_PCF_INTERNAL13	217 /* Internal function signal 13 */
-+#define K210_PCF_INTERNAL14	218 /* Internal function signal 14 */
-+#define K210_PCF_INTERNAL15	219 /* Internal function signal 15 */
-+#define K210_PCF_INTERNAL16	220 /* Internal function signal 16 */
-+#define K210_PCF_INTERNAL17	221 /* Internal function signal 17 */
-+#define K210_PCF_CONSTANT	222 /* Constant function */
-+#define K210_PCF_INTERNAL18	223 /* Internal function signal 18 */
-+#define K210_PCF_DEBUG0		224 /* Debug function 0 */
-+#define K210_PCF_DEBUG1		225 /* Debug function 1 */
-+#define K210_PCF_DEBUG2		226 /* Debug function 2 */
-+#define K210_PCF_DEBUG3		227 /* Debug function 3 */
-+#define K210_PCF_DEBUG4		228 /* Debug function 4 */
-+#define K210_PCF_DEBUG5		229 /* Debug function 5 */
-+#define K210_PCF_DEBUG6		230 /* Debug function 6 */
-+#define K210_PCF_DEBUG7		231 /* Debug function 7 */
-+#define K210_PCF_DEBUG8		232 /* Debug function 8 */
-+#define K210_PCF_DEBUG9		233 /* Debug function 9 */
-+#define K210_PCF_DEBUG10	234 /* Debug function 10 */
-+#define K210_PCF_DEBUG11	235 /* Debug function 11 */
-+#define K210_PCF_DEBUG12	236 /* Debug function 12 */
-+#define K210_PCF_DEBUG13	237 /* Debug function 13 */
-+#define K210_PCF_DEBUG14	238 /* Debug function 14 */
-+#define K210_PCF_DEBUG15	239 /* Debug function 15 */
-+#define K210_PCF_DEBUG16	240 /* Debug function 16 */
-+#define K210_PCF_DEBUG17	241 /* Debug function 17 */
-+#define K210_PCF_DEBUG18	242 /* Debug function 18 */
-+#define K210_PCF_DEBUG19	243 /* Debug function 19 */
-+#define K210_PCF_DEBUG20	244 /* Debug function 20 */
-+#define K210_PCF_DEBUG21	245 /* Debug function 21 */
-+#define K210_PCF_DEBUG22	246 /* Debug function 22 */
-+#define K210_PCF_DEBUG23	247 /* Debug function 23 */
-+#define K210_PCF_DEBUG24	248 /* Debug function 24 */
-+#define K210_PCF_DEBUG25	249 /* Debug function 25 */
-+#define K210_PCF_DEBUG26	250 /* Debug function 26 */
-+#define K210_PCF_DEBUG27	251 /* Debug function 27 */
-+#define K210_PCF_DEBUG28	252 /* Debug function 28 */
-+#define K210_PCF_DEBUG29	253 /* Debug function 29 */
-+#define K210_PCF_DEBUG30	254 /* Debug function 30 */
-+#define K210_PCF_DEBUG31	255 /* Debug function 31 */
-+
-+#define K210_FPIOA(pin, func)		(((pin) << 16) | (func))
-+#define K210_FPIOA_DO(pin, func)	(((pin) << 16) | (1 << 8) | (func))
-+
-+#define K210_PC_POWER_3V3	0
-+#define K210_PC_POWER_1V8	1
-+
-+#endif /* PINCTRL_K210_SYSCTL_H */
++static int __init k210_rst_init(void)
++{
++	return platform_driver_register(&k210_rst_driver);
++}
++postcore_initcall(k210_rst_init);
 -- 
 2.28.0
 

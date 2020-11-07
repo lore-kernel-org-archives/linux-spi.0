@@ -2,62 +2,62 @@ Return-Path: <SRS0=gKIG=EN=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_INVALID,
+X-Spam-Status: No, score=-9.7 required=3.0 tests=BAYES_00,DKIM_INVALID,
 	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D6197C6369E
-	for <linux-spi@archiver.kernel.org>; Sat,  7 Nov 2020 08:15:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B8ABCC55179
+	for <linux-spi@archiver.kernel.org>; Sat,  7 Nov 2020 08:15:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AB71320872
-	for <linux-spi@archiver.kernel.org>; Sat,  7 Nov 2020 08:15:05 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8BA8420B1F
+	for <linux-spi@archiver.kernel.org>; Sat,  7 Nov 2020 08:15:10 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b="AbphSkPw"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b="Nk9na0o/"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728099AbgKGIPF (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 7 Nov 2020 03:15:05 -0500
+        id S1728111AbgKGIPK (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 7 Nov 2020 03:15:10 -0500
 Received: from esa3.hgst.iphmx.com ([216.71.153.141]:57208 "EHLO
         esa3.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727989AbgKGIPF (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sat, 7 Nov 2020 03:15:05 -0500
+        with ESMTP id S1727860AbgKGIPK (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sat, 7 Nov 2020 03:15:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1604736904; x=1636272904;
+  t=1604736909; x=1636272909;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=OwEcAaLGKLikEV3IIKilCFTJ3PqrOw5/ZYDF2ZHGjzw=;
-  b=AbphSkPw9aK9Mg28zlPcfgh1sqA43m7F4yPLqd/nRt2F1xCVTj2BLugq
-   cuoTd65bLtSF3eyDm4E65s13bmlg884kh8598pHuFvFqzicubuLcGFLuS
-   sFbQldRHKj6qUD8T3Od2g2OY0SA3wm8g4FxG+W43COJFI1pDCOQZYSTYK
-   RtQuFAA4yD9Wi6stxKQLyf1PpmLJM3YystImmFe71DUKeucZp6cZHSkY1
-   hd0NfIpzjPfZvtoA+1zM5oK/aUwrAurFhEgBqEuL+zet+yLibEuTdC/IV
-   ziqrxETrTJppuRaxohpOJqh7wk1IZeTzJg/hOJ1qstCOL5/t62i+hd7gP
-   A==;
-IronPort-SDR: YiI4xf/iOl0OwFvRlXm4J5U+urLwgHhzwtG1XV+n6dvw8MnkzZmzVJxnDBhPuLRXVAXaqXgxfZ
- An4asaQ19XvLa8AwWiwSw6Ww/hGxfwxKRf6wYKOycD8TUj3bP5PY60mz9XoWC/iHIEz0kH7eG7
- Lq7laChix6YpS0c4yDMFEjmc+t1nhlwyYQ8DYKdybdXdSffil8uMfBP1EOSzG6Wk2OkE51kvdg
- jyBVS+Ml/S6ZNgRMNajrhypwmLgZK4c4184ZkJ4a4CIoBkRchkLju2amu0tqwdw186yHOXOFWm
- FKM=
+  bh=i3cWoJkR7yUZQNOde09o7Nwh6wMCqp2Qd3Q1TOs0x7M=;
+  b=Nk9na0o/VIwbQ7dtDUh/XNdYPogWEBZt1AHAMfnpi8q1J2NpvmV9mtDZ
+   s64mkDxxRfoA1RFd7NmGP4X1I0jSLd4CDhvEYusd488BBLey7i3oN5POb
+   F37V3z5Mzxv/L+8Xgmvsxei4hRAYVCu/yBTugVP/tMmzK7fj88pbDpY82
+   DtNvFbJDYxP/nLL0uHBKP3KNv4WCswmccy4c0KLp+qHKIAaCJ2B9jCV83
+   e4qJr03gzaeMJc+cV80YZY2cU8eOCS8xF8eC/NNoW6oLyZIn+5gYRrwbm
+   DS9BM1zqkaJlB4IXLLoTxlQRiLdprOMP4qcnJAyb8pAE7T/yStk3cO8RP
+   g==;
+IronPort-SDR: ALkElSPBg2N34XY4foVIuu6KyaY57HfPSMgPA+WCRURxyUiQJQWrbelhXXY/YWU+Pd1Wha1KH2
+ EeWZgHfQNxM0zqjnTluISggKUWcoMkSY8A3B7l3rxsJKhMPBHX3T53VCx2mccJN9//dJ6jQsf0
+ Hz+JyyKU/vduyjEpImr8PMoag8ohyprNKSxBm5F+wp1wTbEebzlLnFS1l7hQxvs5Y/ZgdOTjcl
+ ng2GDwGNn5CNdyEfSwoxvKD/MrGzxeVapDW6xdraan3O0IMBvRzo6DSry6xRb/JUXnS6nVvYBP
+ MrQ=
 X-IronPort-AV: E=Sophos;i="5.77,459,1596470400"; 
-   d="scan'208";a="156564392"
+   d="scan'208";a="156564397"
 Received: from h199-255-45-15.hgst.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
-  by ob1.hgst.iphmx.com with ESMTP; 07 Nov 2020 16:15:03 +0800
-IronPort-SDR: taG2sS+61Tfoy1/9YQZ8YdW2Q8g/1PpSM7cqVhzq6hH1/Owv1AaX5onQ1uyecI5GiLfO6OGd5R
- QvMSoV0rWxvEEzvwwleCpiE8IgtaXKmgkSEBzK9RvrEdFSfeNEiD8AvNh/z/udsejhsgQSysim
- Bv5RxCfPfhnEVwqzDIBjtF+Ktk+Kr/tq/wfmZRN8lebUisWXtXwJO6KNFOrD1A7Ag8EwAl4Hjr
- dZftZvsmD++0aD3It9s5Wco89SV/cFxaHYrPY1dZqvWnZE3GifitCdXcH1lQADOws88Bs/0LVw
- XF1YTt0qRqJ8JOoGBqLN287+
+  by ob1.hgst.iphmx.com with ESMTP; 07 Nov 2020 16:15:08 +0800
+IronPort-SDR: FH39SVUv08nLOxG1dKsM1eZwvx+s7dUed2GaNI+j3z+CrkbP+umQKleuOipfyeAnV+L6BrfkEU
+ e6ZlVhamcu6sGe2f+3ww2ltMgR1FaoD0PR08dAEJuNoN5U71j/stxB6SPo8wjtQgYAri25d/zb
+ IwiCvpGGwZoNtfXk6VSXMCJUr2PesQcOW7298QRWWvb4uShZFjS/hjmlLcoi84Nvq0SMJGsnxb
+ zqzHsZ8GWit5y/+XP4jOYIZC7jg5PnQGtBmdRep79HuXoaLFIBVuXK21Z7vnNoaWU1Tfkz3j2z
+ aeYGU8wA73xsnA12/noA5V3E
 Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
-  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2020 23:59:54 -0800
-IronPort-SDR: dNzPwHeL0Y0HsdiO5RbgCWw5NbkvUs09f6HACXWVf3uJo62lGJ18zW3AULbXxjvfEzay/Fqiwj
- Ti4+Ok/5odPXKfyMVNpuPjkqrE0h6iYvNW/XFzgzAudOb9azkDYhuoVU3gNaBud4vKouOyh8Ao
- DrOaW4Ehk2wpJWepXLnw/skilL/a32bxsfTF7tGMtyNhq8nCh3Qzod393PXKbPzMdCRs0lBJgv
- W2WN0Mnas1krFdeveG2FIWFXpUGtHlF+BOmSXXiadqXLPo9q7LUQyxDO+5rdR2G7O8VmOwiavJ
- lQ0=
+  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2020 00:00:00 -0800
+IronPort-SDR: y1qTH6RGguGSyluxLK/fBd4YoKIYIBAHDBFAdJDQnfLjUxogD/HMVQV51PGP4PWDtiHU7L5lXh
+ Ks0iRlB+NUDic6UsOlYiPQeN7Sa7eXGftVRNUnS53IRichEDB5BqeldCwo72sfTn2QQDblZvWX
+ RisdudAF1jcncJw0uUSGiwjWt+bVWimOOgsvFBdNd4+YimsR0TBA//fGYaan2doQ2vHP1rTsfh
+ oQrdxVYyDy+UDB00awl1jR/S0/pdo6CeH33MIgTe/wg/bW5ZNjUhktJ78wfuahcIGR5Ym1N2ub
+ JZA=
 WDCIronportException: Internal
 Received: from hdrdzf2.ad.shared (HELO twashi.fujisawa.hgst.com) ([10.84.71.85])
-  by uls-op-cesaip01.wdc.com with ESMTP; 07 Nov 2020 00:15:02 -0800
+  by uls-op-cesaip01.wdc.com with ESMTP; 07 Nov 2020 00:15:07 -0800
 From:   Damien Le Moal <damien.lemoal@wdc.com>
 To:     Palmer Dabbelt <palmer@dabbelt.com>,
         linux-riscv@lists.infradead.org, Rob Herring <robh+dt@kernel.org>,
@@ -68,9 +68,9 @@ To:     Palmer Dabbelt <palmer@dabbelt.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         linux-gpio@vger.kernel.org, Philipp Zabel <p.zabel@pengutronix.de>
 Cc:     Sean Anderson <seanga2@gmail.com>
-Subject: [PATCH 15/32] dt-bindings: Define Kendryte K210 sysctl registers
-Date:   Sat,  7 Nov 2020 17:14:03 +0900
-Message-Id: <20201107081420.60325-16-damien.lemoal@wdc.com>
+Subject: [PATCH 17/32] dt-bindings: Define Kendryte K210 reset signals
+Date:   Sat,  7 Nov 2020 17:14:05 +0900
+Message-Id: <20201107081420.60325-18-damien.lemoal@wdc.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201107081420.60325-1-damien.lemoal@wdc.com>
 References: <20201107081420.60325-1-damien.lemoal@wdc.com>
@@ -80,62 +80,64 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Introduce the dt-bindings file include/dt-bindings/mfd/k210_sysctl.h to
-define the offset of all registers of the K210 system controller.
+Introduce the dt-bindings file include/dt-bindings/reset/k210_sysctl.h
+to define IDs for all 30 reset signals available on the Kendryte K210
+RISC-V SoC.
 
 Signed-off-by: Damien Le Moal <damien.lemoal@wdc.com>
 ---
- include/dt-bindings/mfd/k210-sysctl.h | 41 +++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
- create mode 100644 include/dt-bindings/mfd/k210-sysctl.h
+ include/dt-bindings/reset/k210-rst.h | 42 ++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+ create mode 100644 include/dt-bindings/reset/k210-rst.h
 
-diff --git a/include/dt-bindings/mfd/k210-sysctl.h b/include/dt-bindings/mfd/k210-sysctl.h
+diff --git a/include/dt-bindings/reset/k210-rst.h b/include/dt-bindings/reset/k210-rst.h
 new file mode 100644
-index 000000000000..5cc386d3c9ca
+index 000000000000..883c1aed50e8
 --- /dev/null
-+++ b/include/dt-bindings/mfd/k210-sysctl.h
-@@ -0,0 +1,41 @@
++++ b/include/dt-bindings/reset/k210-rst.h
+@@ -0,0 +1,42 @@
 +/* SPDX-License-Identifier: GPL-2.0+ */
 +/*
-+ * Copyright (C) 2020 Sean Anderson <seanga2@gmail.com>
++ * Copyright (C) 2019 Sean Anderson <seanga2@gmail.com>
 + * Copyright (c) 2020 Western Digital Corporation or its affiliates.
 + */
-+#ifndef MFD_K210_SYSCTL_H
-+#define MFD_K210_SYSCTL_H
++#ifndef RESET_K210_SYSCTL_H
++#define RESET_K210_SYSCTL_H
 +
 +/*
-+ * Kendryte K210 SoC system controller registers offsets.
++ * Kendryte K210 SoC system controller K210_SYSCTL_SOFT_RESET register bits.
 + * Taken from Kendryte SDK (kendryte-standalone-sdk).
 + */
-+#define K210_SYSCTL_GIT_ID	0x00 /* Git short commit id */
-+#define K210_SYSCTL_UART_BAUD	0x04 /* Default UARTHS baud rate */
-+#define K210_SYSCTL_PLL0	0x08 /* PLL0 controller */
-+#define K210_SYSCTL_PLL1	0x0C /* PLL1 controller */
-+#define K210_SYSCTL_PLL2	0x10 /* PLL2 controller */
-+#define K210_SYSCTL_PLL_LOCK	0x18 /* PLL lock tester */
-+#define K210_SYSCTL_ROM_ERROR	0x1C /* AXI ROM detector */
-+#define K210_SYSCTL_SEL0	0x20 /* Clock select controller 0 */
-+#define K210_SYSCTL_SEL1	0x24 /* Clock select controller 1 */
-+#define K210_SYSCTL_EN_CENT	0x28 /* Central clock enable */
-+#define K210_SYSCTL_EN_PERI	0x2C /* Peripheral clock enable */
-+#define K210_SYSCTL_SOFT_RESET	0x30 /* Soft reset ctrl */
-+#define K210_SYSCTL_PERI_RESET	0x34 /* Peripheral reset controller */
-+#define K210_SYSCTL_THR0	0x38 /* Clock threshold controller 0 */
-+#define K210_SYSCTL_THR1	0x3C /* Clock threshold controller 1 */
-+#define K210_SYSCTL_THR2	0x40 /* Clock threshold controller 2 */
-+#define K210_SYSCTL_THR3	0x44 /* Clock threshold controller 3 */
-+#define K210_SYSCTL_THR4	0x48 /* Clock threshold controller 4 */
-+#define K210_SYSCTL_THR5	0x4C /* Clock threshold controller 5 */
-+#define K210_SYSCTL_THR6	0x50 /* Clock threshold controller 6 */
-+#define K210_SYSCTL_MISC	0x54 /* Miscellaneous controller */
-+#define K210_SYSCTL_PERI	0x58 /* Peripheral controller */
-+#define K210_SYSCTL_SPI_SLEEP	0x5C /* SPI sleep controller */
-+#define K210_SYSCTL_RESET_STAT	0x60 /* Reset source status */
-+#define K210_SYSCTL_DMA_SEL0	0x64 /* DMA handshake selector 0 */
-+#define K210_SYSCTL_DMA_SEL1	0x68 /* DMA handshake selector 1 */
-+#define K210_SYSCTL_POWER_SEL	0x6C /* IO Power Mode Select controller */
++#define K210_RST_ROM	0
++#define K210_RST_DMA	1
++#define K210_RST_AI	2
++#define K210_RST_DVP	3
++#define K210_RST_FFT	4
++#define K210_RST_GPIO	5
++#define K210_RST_SPI0	6
++#define K210_RST_SPI1	7
++#define K210_RST_SPI2	8
++#define K210_RST_SPI3	9
++#define K210_RST_I2S0	10
++#define K210_RST_I2S1	11
++#define K210_RST_I2S2	12
++#define K210_RST_I2C0	13
++#define K210_RST_I2C1	14
++#define K210_RST_I2C2	15
++#define K210_RST_UART1	16
++#define K210_RST_UART2	17
++#define K210_RST_UART3	18
++#define K210_RST_AES	19
++#define K210_RST_FPIOA	20
++#define K210_RST_TIMER0	21
++#define K210_RST_TIMER1	22
++#define K210_RST_TIMER2	23
++#define K210_RST_WDT0	24
++#define K210_RST_WDT1	25
++#define K210_RST_SHA	26
++#define K210_RST_RTC	29
 +
-+#endif /* MFD_K210_SYSCTL_H */
++#endif /* RESET_K210_SYSCTL_H */
 -- 
 2.28.0
 

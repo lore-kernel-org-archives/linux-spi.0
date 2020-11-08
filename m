@@ -6,130 +6,80 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
 	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BA159C388F9
-	for <linux-spi@archiver.kernel.org>; Sun,  8 Nov 2020 22:49:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D05A3C388F9
+	for <linux-spi@archiver.kernel.org>; Sun,  8 Nov 2020 22:49:36 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 884B7206DB
-	for <linux-spi@archiver.kernel.org>; Sun,  8 Nov 2020 22:49:17 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id AA9F020702
+	for <linux-spi@archiver.kernel.org>; Sun,  8 Nov 2020 22:49:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728969AbgKHWtR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 8 Nov 2020 17:49:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58344 "EHLO
+        id S1728933AbgKHWtg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 8 Nov 2020 17:49:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728962AbgKHWtP (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 8 Nov 2020 17:49:15 -0500
-X-Greylist: delayed 446 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 08 Nov 2020 14:49:15 PST
-Received: from mailout3.hostsharing.net (mailout3.hostsharing.net [IPv6:2a01:4f8:150:2161:1:b009:f236:0])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 672FFC0613CF
-        for <linux-spi@vger.kernel.org>; Sun,  8 Nov 2020 14:49:15 -0800 (PST)
+        with ESMTP id S1728802AbgKHWtg (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 8 Nov 2020 17:49:36 -0500
+X-Greylist: delayed 365 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 08 Nov 2020 14:49:36 PST
+Received: from mailout2.hostsharing.net (mailout2.hostsharing.net [IPv6:2a01:37:3000::53df:4ee9:0])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19F73C0613CF
+        for <linux-spi@vger.kernel.org>; Sun,  8 Nov 2020 14:49:36 -0800 (PST)
 Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (Client CN "*.hostsharing.net", Issuer "COMODO RSA Domain Validation Secure Server CA" (not verified))
-        by mailout3.hostsharing.net (Postfix) with ESMTPS id 5B8E9101E6AB3;
-        Sun,  8 Nov 2020 23:42:17 +0100 (CET)
+        by mailout2.hostsharing.net (Postfix) with ESMTPS id B8E5F1031E7E4;
+        Sun,  8 Nov 2020 23:43:54 +0100 (CET)
 Received: from localhost (unknown [89.246.108.87])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by h08.hostsharing.net (Postfix) with ESMTPSA id 1F350603DAD2;
-        Sun,  8 Nov 2020 23:42:17 +0100 (CET)
-X-Mailbox-Line: From 232281df1ab91d8f0f553a62d5f97fc264ace4da Mon Sep 17 00:00:00 2001
-Message-Id: <232281df1ab91d8f0f553a62d5f97fc264ace4da.1604874488.git.lukas@wunner.de>
+        by h08.hostsharing.net (Postfix) with ESMTPSA id 73406603DAD2;
+        Sun,  8 Nov 2020 23:43:54 +0100 (CET)
+X-Mailbox-Line: From fbe8768c30dc829e2d77eabe7be062ca22f84024 Mon Sep 17 00:00:00 2001
+Message-Id: <fbe8768c30dc829e2d77eabe7be062ca22f84024.1604874488.git.lukas@wunner.de>
 In-Reply-To: <dd060534490eca5e946eb9165916542b01a9358d.1604874488.git.lukas@wunner.de>
 References: <dd060534490eca5e946eb9165916542b01a9358d.1604874488.git.lukas@wunner.de>
 From:   Lukas Wunner <lukas@wunner.de>
 Date:   Sun, 8 Nov 2020 23:41:00 +0100
-Subject: [PATCH] spi: synquacer: Disable clock in probe error path
+Subject: [PATCH] spi: st-ssc4: Fix unbalanced pm_runtime_disable() in probe
+ error path
 To:     Mark Brown <broonie@kernel.org>
-Cc:     linux-spi@vger.kernel.org,
-        Masahisa Kojima <masahisa.kojima@linaro.org>,
-        Jassi Brar <jaswinder.singh@linaro.org>
+Cc:     linux-spi@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-If the calls to platform_get_irq() or devm_request_irq() fail on probe
-of the SynQuacer SPI driver, the clock "sspi->clk" is erroneously not
-unprepared and disabled.
+If the calls to devm_platform_ioremap_resource(), irq_of_parse_and_map()
+or devm_request_irq() fail on probe of the ST SSC4 SPI driver, the
+runtime PM disable depth is incremented even though it was not
+decremented before.  Fix it.
 
-If the clock rate "master->max_speed_hz" cannot be determined, the same
-happens and in addition the spi_master struct is not freed.
-
-Fix it.
-
-Fixes: b0823ee35cf9 ("spi: Add spi driver for Socionext SynQuacer platform")
+Fixes: cd050abeba2a ("spi: st-ssc4: add missed pm_runtime_disable")
 Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Cc: <stable@vger.kernel.org> # v5.3+
-Cc: Masahisa Kojima <masahisa.kojima@linaro.org>
+Cc: <stable@vger.kernel.org> # v5.5+
+Cc: Chuhong Yuan <hslester96@gmail.com>
 ---
- drivers/spi/spi-synquacer.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/spi/spi-st-ssc4.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-synquacer.c b/drivers/spi/spi-synquacer.c
-index 42e82dbe3d41..8cdca6ab8098 100644
---- a/drivers/spi/spi-synquacer.c
-+++ b/drivers/spi/spi-synquacer.c
-@@ -657,7 +657,8 @@ static int synquacer_spi_probe(struct platform_device *pdev)
- 
- 	if (!master->max_speed_hz) {
- 		dev_err(&pdev->dev, "missing clock source\n");
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto disable_clk;
- 	}
- 	master->min_speed_hz = master->max_speed_hz / 254;
- 
-@@ -670,7 +671,7 @@ static int synquacer_spi_probe(struct platform_device *pdev)
- 	rx_irq = platform_get_irq(pdev, 0);
- 	if (rx_irq <= 0) {
- 		ret = rx_irq;
--		goto put_spi;
-+		goto disable_clk;
- 	}
- 	snprintf(sspi->rx_irq_name, SYNQUACER_HSSPI_IRQ_NAME_MAX, "%s-rx",
- 		 dev_name(&pdev->dev));
-@@ -678,13 +679,13 @@ static int synquacer_spi_probe(struct platform_device *pdev)
- 				0, sspi->rx_irq_name, sspi);
+diff --git a/drivers/spi/spi-st-ssc4.c b/drivers/spi/spi-st-ssc4.c
+index 77d26d64541a..6c44dda9ee8c 100644
+--- a/drivers/spi/spi-st-ssc4.c
++++ b/drivers/spi/spi-st-ssc4.c
+@@ -375,13 +375,14 @@ static int spi_st_probe(struct platform_device *pdev)
+ 	ret = devm_spi_register_master(&pdev->dev, master);
  	if (ret) {
- 		dev_err(&pdev->dev, "request rx_irq failed (%d)\n", ret);
--		goto put_spi;
-+		goto disable_clk;
+ 		dev_err(&pdev->dev, "Failed to register master\n");
+-		goto clk_disable;
++		goto rpm_disable;
  	}
  
- 	tx_irq = platform_get_irq(pdev, 1);
- 	if (tx_irq <= 0) {
- 		ret = tx_irq;
--		goto put_spi;
-+		goto disable_clk;
- 	}
- 	snprintf(sspi->tx_irq_name, SYNQUACER_HSSPI_IRQ_NAME_MAX, "%s-tx",
- 		 dev_name(&pdev->dev));
-@@ -692,7 +693,7 @@ static int synquacer_spi_probe(struct platform_device *pdev)
- 				0, sspi->tx_irq_name, sspi);
- 	if (ret) {
- 		dev_err(&pdev->dev, "request tx_irq failed (%d)\n", ret);
--		goto put_spi;
-+		goto disable_clk;
- 	}
+ 	return 0;
  
- 	master->dev.of_node = np;
-@@ -710,7 +711,7 @@ static int synquacer_spi_probe(struct platform_device *pdev)
- 
- 	ret = synquacer_spi_enable(master);
- 	if (ret)
--		goto fail_enable;
-+		goto disable_clk;
- 
- 	pm_runtime_set_active(sspi->dev);
- 	pm_runtime_enable(sspi->dev);
-@@ -723,7 +724,7 @@ static int synquacer_spi_probe(struct platform_device *pdev)
- 
- disable_pm:
- 	pm_runtime_disable(sspi->dev);
--fail_enable:
-+disable_clk:
- 	clk_disable_unprepare(sspi->clk);
- put_spi:
+-clk_disable:
++rpm_disable:
+ 	pm_runtime_disable(&pdev->dev);
++clk_disable:
+ 	clk_disable_unprepare(spi_st->clk);
+ put_master:
  	spi_master_put(master);
 -- 
 2.28.0

@@ -6,80 +6,67 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
 	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D05A3C388F9
-	for <linux-spi@archiver.kernel.org>; Sun,  8 Nov 2020 22:49:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E8DEC5517A
+	for <linux-spi@archiver.kernel.org>; Sun,  8 Nov 2020 22:49:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AA9F020702
+	by mail.kernel.org (Postfix) with ESMTP id F2A75206F4
 	for <linux-spi@archiver.kernel.org>; Sun,  8 Nov 2020 22:49:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728933AbgKHWtg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1728802AbgKHWtg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Sun, 8 Nov 2020 17:49:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58396 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728802AbgKHWtg (ORCPT
+Received: from mailout2.hostsharing.net ([83.223.78.233]:59501 "EHLO
+        mailout2.hostsharing.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728016AbgKHWtg (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Sun, 8 Nov 2020 17:49:36 -0500
-X-Greylist: delayed 365 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 08 Nov 2020 14:49:36 PST
-Received: from mailout2.hostsharing.net (mailout2.hostsharing.net [IPv6:2a01:37:3000::53df:4ee9:0])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19F73C0613CF
-        for <linux-spi@vger.kernel.org>; Sun,  8 Nov 2020 14:49:36 -0800 (PST)
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+X-Greylist: delayed 363 seconds by postgrey-1.27 at vger.kernel.org; Sun, 08 Nov 2020 17:49:35 EST
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (Client CN "*.hostsharing.net", Issuer "COMODO RSA Domain Validation Secure Server CA" (not verified))
-        by mailout2.hostsharing.net (Postfix) with ESMTPS id B8E5F1031E7E4;
-        Sun,  8 Nov 2020 23:43:54 +0100 (CET)
+        by mailout2.hostsharing.net (Postfix) with ESMTPS id 6957610315740;
+        Sun,  8 Nov 2020 23:43:29 +0100 (CET)
 Received: from localhost (unknown [89.246.108.87])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by h08.hostsharing.net (Postfix) with ESMTPSA id 73406603DAD2;
-        Sun,  8 Nov 2020 23:43:54 +0100 (CET)
-X-Mailbox-Line: From fbe8768c30dc829e2d77eabe7be062ca22f84024 Mon Sep 17 00:00:00 2001
-Message-Id: <fbe8768c30dc829e2d77eabe7be062ca22f84024.1604874488.git.lukas@wunner.de>
+        by h08.hostsharing.net (Postfix) with ESMTPSA id 108A3603DAD2;
+        Sun,  8 Nov 2020 23:43:29 +0100 (CET)
+X-Mailbox-Line: From 9624250e3a7aa61274b38219a62375bac1def637 Mon Sep 17 00:00:00 2001
+Message-Id: <9624250e3a7aa61274b38219a62375bac1def637.1604874488.git.lukas@wunner.de>
 In-Reply-To: <dd060534490eca5e946eb9165916542b01a9358d.1604874488.git.lukas@wunner.de>
 References: <dd060534490eca5e946eb9165916542b01a9358d.1604874488.git.lukas@wunner.de>
 From:   Lukas Wunner <lukas@wunner.de>
 Date:   Sun, 8 Nov 2020 23:41:00 +0100
-Subject: [PATCH] spi: st-ssc4: Fix unbalanced pm_runtime_disable() in probe
- error path
+Subject: [PATCH] spi: pic32: Don't leak DMA channels in probe error path
 To:     Mark Brown <broonie@kernel.org>
-Cc:     linux-spi@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>
+Cc:     linux-spi@vger.kernel.org,
+        "Purna Chandra Mandal" <purna.mandal@microchip.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-If the calls to devm_platform_ioremap_resource(), irq_of_parse_and_map()
-or devm_request_irq() fail on probe of the ST SSC4 SPI driver, the
-runtime PM disable depth is incremented even though it was not
-decremented before.  Fix it.
+If the calls to devm_request_irq() or devm_spi_register_master() fail
+on probe of the PIC32 SPI driver, the DMA channels requested by
+pic32_spi_dma_prep() are erroneously not released.  Plug the leak.
 
-Fixes: cd050abeba2a ("spi: st-ssc4: add missed pm_runtime_disable")
+Fixes: 1bcb9f8ceb67 ("spi: spi-pic32: Add PIC32 SPI master driver")
 Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Cc: <stable@vger.kernel.org> # v5.5+
-Cc: Chuhong Yuan <hslester96@gmail.com>
+Cc: <stable@vger.kernel.org> # v4.7+
+Cc: Purna Chandra Mandal <purna.mandal@microchip.com>
 ---
- drivers/spi/spi-st-ssc4.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi-pic32.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-st-ssc4.c b/drivers/spi/spi-st-ssc4.c
-index 77d26d64541a..6c44dda9ee8c 100644
---- a/drivers/spi/spi-st-ssc4.c
-+++ b/drivers/spi/spi-st-ssc4.c
-@@ -375,13 +375,14 @@ static int spi_st_probe(struct platform_device *pdev)
- 	ret = devm_spi_register_master(&pdev->dev, master);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Failed to register master\n");
--		goto clk_disable;
-+		goto rpm_disable;
- 	}
- 
+diff --git a/drivers/spi/spi-pic32.c b/drivers/spi/spi-pic32.c
+index 156961b4ca86..104bde153efd 100644
+--- a/drivers/spi/spi-pic32.c
++++ b/drivers/spi/spi-pic32.c
+@@ -839,6 +839,7 @@ static int pic32_spi_probe(struct platform_device *pdev)
  	return 0;
  
--clk_disable:
-+rpm_disable:
- 	pm_runtime_disable(&pdev->dev);
-+clk_disable:
- 	clk_disable_unprepare(spi_st->clk);
- put_master:
+ err_bailout:
++	pic32_spi_dma_unprep(pic32s);
+ 	clk_disable_unprepare(pic32s->clk);
+ err_master:
  	spi_master_put(master);
 -- 
 2.28.0

@@ -6,74 +6,78 @@ X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
 	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0EE25C388F9
-	for <linux-spi@archiver.kernel.org>; Sun,  8 Nov 2020 22:43:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CA837C5517A
+	for <linux-spi@archiver.kernel.org>; Sun,  8 Nov 2020 22:49:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id CA767206DB
-	for <linux-spi@archiver.kernel.org>; Sun,  8 Nov 2020 22:43:04 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9F546206ED
+	for <linux-spi@archiver.kernel.org>; Sun,  8 Nov 2020 22:49:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728191AbgKHWnD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 8 Nov 2020 17:43:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57384 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728104AbgKHWnD (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 8 Nov 2020 17:43:03 -0500
-X-Greylist: delayed 116 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 08 Nov 2020 14:43:03 PST
-Received: from mailout1.hostsharing.net (mailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5fcc:0])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F117C0613CF
-        for <linux-spi@vger.kernel.org>; Sun,  8 Nov 2020 14:43:03 -0800 (PST)
+        id S1728962AbgKHWtR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 8 Nov 2020 17:49:17 -0500
+Received: from mailout3.hostsharing.net ([176.9.242.54]:37643 "EHLO
+        mailout3.hostsharing.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728016AbgKHWtP (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 8 Nov 2020 17:49:15 -0500
+X-Greylist: delayed 446 seconds by postgrey-1.27 at vger.kernel.org; Sun, 08 Nov 2020 17:49:15 EST
 Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (Client CN "*.hostsharing.net", Issuer "COMODO RSA Domain Validation Secure Server CA" (not verified))
-        by mailout1.hostsharing.net (Postfix) with ESMTPS id 513B5103D9C67;
-        Sun,  8 Nov 2020 23:43:01 +0100 (CET)
+        by mailout3.hostsharing.net (Postfix) with ESMTPS id C05C1101E6A9D;
+        Sun,  8 Nov 2020 23:41:46 +0100 (CET)
 Received: from localhost (unknown [89.246.108.87])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by h08.hostsharing.net (Postfix) with ESMTPSA id C0009603DAD2;
-        Sun,  8 Nov 2020 23:43:01 +0100 (CET)
-X-Mailbox-Line: From 8f8dc2815aa97b2378528f08f923bf81e19611f0 Mon Sep 17 00:00:00 2001
-Message-Id: <8f8dc2815aa97b2378528f08f923bf81e19611f0.1604874488.git.lukas@wunner.de>
+        by h08.hostsharing.net (Postfix) with ESMTPSA id 86759603DAD2;
+        Sun,  8 Nov 2020 23:41:46 +0100 (CET)
+X-Mailbox-Line: From ab3c0b18bd820501a12c85e440006e09ec0e275f Mon Sep 17 00:00:00 2001
+Message-Id: <ab3c0b18bd820501a12c85e440006e09ec0e275f.1604874488.git.lukas@wunner.de>
 In-Reply-To: <dd060534490eca5e946eb9165916542b01a9358d.1604874488.git.lukas@wunner.de>
 References: <dd060534490eca5e946eb9165916542b01a9358d.1604874488.git.lukas@wunner.de>
 From:   Lukas Wunner <lukas@wunner.de>
 Date:   Sun, 8 Nov 2020 23:41:00 +0100
-Subject: [PATCH] spi: atmel-quadspi: Disable clock in probe error path
+Subject: [PATCH] spi: lpspi: Fix use-after-free on unbind
 To:     Mark Brown <broonie@kernel.org>
-Cc:     linux-spi@vger.kernel.org,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Boris Brezillon <boris.brezillon@collabora.com>
+Cc:     linux-spi@vger.kernel.org, Han Xu <han.xu@nxp.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-If the call to of_device_get_match_data() fails on probe of the Atmel
-QuadSPI driver, the clock "aq->pclk" is erroneously not unprepared and
-disabled.  Fix it.
+Normally the last reference on an spi_controller is released by
+spi_unregister_controller().  In the case of the i.MX lpspi driver,
+the spi_controller is registered with devm_spi_register_controller(),
+so spi_unregister_controller() is invoked automatically after the driver
+has unbound.
 
-Fixes: 2e5c88887358 ("spi: atmel-quadspi: add support for sam9x60 qspi controller")
+However the driver already releases the last reference in
+fsl_lpspi_remove() through a gratuitous call to spi_master_put(),
+causing a use-after-free when spi_unregister_controller() is
+subsequently invoked by the devres framework.
+
+Fix by dropping the superfluous spi_master_put().
+
+Fixes: 944c01a889d9 ("spi: lpspi: enable runtime pm for lpspi")
 Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Cc: <stable@vger.kernel.org> # v5.1+
-Cc: Tudor Ambarus <tudor.ambarus@microchip.com>
-Cc: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: <stable@vger.kernel.org> # v5.2+
+Cc: Han Xu <han.xu@nxp.com>
 ---
- drivers/spi/atmel-quadspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-fsl-lpspi.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index 8c009c175f2c..b44521d4a245 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -594,7 +594,7 @@ static int atmel_qspi_probe(struct platform_device *pdev)
- 	if (!aq->caps) {
- 		dev_err(&pdev->dev, "Could not retrieve QSPI caps\n");
- 		err = -EINVAL;
--		goto exit;
-+		goto disable_pclk;
- 	}
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 986b9793fd3c..a2886ee44e4c 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -938,9 +938,6 @@ static int fsl_lpspi_remove(struct platform_device *pdev)
+ 				spi_controller_get_devdata(controller);
  
- 	if (aq->caps->has_qspick) {
+ 	pm_runtime_disable(fsl_lpspi->dev);
+-
+-	spi_master_put(controller);
+-
+ 	return 0;
+ }
+ 
 -- 
 2.28.0
 

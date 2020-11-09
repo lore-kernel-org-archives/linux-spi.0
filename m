@@ -1,78 +1,236 @@
-Return-Path: <SRS0=13QO=EO=vger.kernel.org=linux-spi-owner@kernel.org>
+Return-Path: <SRS0=Zwo0=EP=vger.kernel.org=linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.2 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SIGNED_OFF_BY,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C16CC5517A
-	for <linux-spi@archiver.kernel.org>; Sun,  8 Nov 2020 22:49:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 73047C388F9
+	for <linux-spi@archiver.kernel.org>; Mon,  9 Nov 2020 01:40:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1CFBE206DB
-	for <linux-spi@archiver.kernel.org>; Sun,  8 Nov 2020 22:49:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2CF46206B6
+	for <linux-spi@archiver.kernel.org>; Mon,  9 Nov 2020 01:40:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727929AbgKHWtv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 8 Nov 2020 17:49:51 -0500
-Received: from mailout1.hostsharing.net ([83.223.95.204]:35611 "EHLO
-        mailout1.hostsharing.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727910AbgKHWtv (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 8 Nov 2020 17:49:51 -0500
-X-Greylist: delayed 521 seconds by postgrey-1.27 at vger.kernel.org; Sun, 08 Nov 2020 17:49:50 EST
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client CN "*.hostsharing.net", Issuer "COMODO RSA Domain Validation Secure Server CA" (not verified))
-        by mailout1.hostsharing.net (Postfix) with ESMTPS id 9D536103D9C62;
-        Sun,  8 Nov 2020 23:41:04 +0100 (CET)
-Received: from localhost (unknown [89.246.108.87])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by h08.hostsharing.net (Postfix) with ESMTPSA id 0BE2E603DAD2;
-        Sun,  8 Nov 2020 23:41:05 +0100 (CET)
-X-Mailbox-Line: From dd060534490eca5e946eb9165916542b01a9358d Mon Sep 17 00:00:00 2001
-Message-Id: <dd060534490eca5e946eb9165916542b01a9358d.1604874488.git.lukas@wunner.de>
-From:   Lukas Wunner <lukas@wunner.de>
-Date:   Sun, 8 Nov 2020 23:41:00 +0100
-Subject: [PATCH] spi: davinci: Fix use-after-free on unbind
-To:     Mark Brown <broonie@kernel.org>
-Cc:     linux-spi@vger.kernel.org, Peter Ujfalusi <peter.ujfalusi@ti.com>
+        id S1728104AbgKIBkl (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 8 Nov 2020 20:40:41 -0500
+Received: from mga18.intel.com ([134.134.136.126]:26073 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727979AbgKIBkl (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Sun, 8 Nov 2020 20:40:41 -0500
+IronPort-SDR: D9dTG/gpyJAlNIAjIWX2TnKx+OAa3MwX7AnAAIFZw40wCTBHtUd5aCA75Z4GpEKy40XFSTqrds
+ A0L+pmIXYWCQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9799"; a="157519694"
+X-IronPort-AV: E=Sophos;i="5.77,462,1596524400"; 
+   d="scan'208";a="157519694"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2020 17:40:31 -0800
+IronPort-SDR: w4kBB/Cy2HUj3Ucylsl5yHveZn1qBifX3xAdENEmiJ08FAPuIgMSwWtrULpkzFFj37P+X2CXMt
+ xdw+F8QT8CnA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,462,1596524400"; 
+   d="scan'208";a="364870037"
+Received: from linux.intel.com ([10.54.29.200])
+  by FMSMGA003.fm.intel.com with ESMTP; 08 Nov 2020 17:40:29 -0800
+Received: from [10.213.33.64] (vramuthx-MOBL1.gar.corp.intel.com [10.213.33.64])
+        by linux.intel.com (Postfix) with ESMTP id 73D0D580870;
+        Sun,  8 Nov 2020 17:40:26 -0800 (PST)
+Reply-To: vadivel.muruganx.ramuthevar@linux.intel.com
+Subject: Re: [PATCH v6 5/6] dt-bindings: spi: Convert cadence-quadspi.txt to
+ cadence-quadspi.yaml
+To:     Rob Herring <robh@kernel.org>
+Cc:     broonie@kernel.org, vigneshr@ti.com, tudor.ambarus@microchip.com,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, miquel.raynal@bootlin.com,
+        simon.k.r.goldschmidt@gmail.com, dinguyen@kernel.org,
+        richard@nod.at, cheol.yong.kim@intel.com, qi-ming.wu@intel.com
+References: <20201030053153.5319-1-vadivel.muruganx.ramuthevar@linux.intel.com>
+ <20201030053153.5319-6-vadivel.muruganx.ramuthevar@linux.intel.com>
+ <20201030151837.GA3854035@bogus>
+ <a49505e9-500a-1c88-b5b5-1f6ea5e94c86@linux.intel.com>
+ <20201104220241.GA4192737@bogus>
+From:   "Ramuthevar, Vadivel MuruganX" 
+        <vadivel.muruganx.ramuthevar@linux.intel.com>
+Message-ID: <617f70de-634a-253d-1b52-06f45ceca96a@linux.intel.com>
+Date:   Mon, 9 Nov 2020 09:40:25 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.1
+MIME-Version: 1.0
+In-Reply-To: <20201104220241.GA4192737@bogus>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-davinci_spi_remove() accesses the driver's private data after it's been
-freed with spi_master_put().
+Hi Rob,
 
-Fix by moving the spi_master_put() to the end of the function.
+On 5/11/2020 6:02 am, Rob Herring wrote:
+> On Mon, Nov 02, 2020 at 01:59:41PM +0800, Ramuthevar, Vadivel MuruganX wrote:
+>> Hi Rob,
+>>
+>> Thank you for the review comments...
+>>
+>> On 30/10/2020 11:18 pm, Rob Herring wrote:
+>>> On Fri, Oct 30, 2020 at 01:31:52PM +0800, Ramuthevar,Vadivel MuruganX wrote:
+>>>> From: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
+>>>>
+>>>> Convert the cadence-quadspi.txt documentation to cadence-quadspi.yaml
+>>>> remove the cadence-quadspi.txt from Documentation/devicetree/bindings/spi/
+>>>>
+>>>> Signed-off-by: Ramuthevar Vadivel Murugan <vadivel.muruganx.ramuthevar@linux.intel.com>
+>>>> ---
+>>>>    .../devicetree/bindings/spi/cadence-quadspi.txt    |  67 ---------
+>>>>    .../devicetree/bindings/spi/cadence-quadspi.yaml   | 149 +++++++++++++++++++++
+>>>>    2 files changed, 149 insertions(+), 67 deletions(-)
+>>>>    delete mode 100644 Documentation/devicetree/bindings/spi/cadence-quadspi.txt
+>>>>    create mode 100644 Documentation/devicetree/bindings/spi/cadence-quadspi.yaml
+>>>>
+>>>> diff --git a/Documentation/devicetree/bindings/spi/cadence-quadspi.txt b/Documentation/devicetree/bindings/spi/cadence-quadspi.txt
+>>>> deleted file mode 100644
+>>>> index 945be7d5b236..000000000000
+>>>> --- a/Documentation/devicetree/bindings/spi/cadence-quadspi.txt
+>>>> +++ /dev/null
+>>>> @@ -1,67 +0,0 @@
+>>>> -* Cadence Quad SPI controller
+>>>> -
+>>>> -Required properties:
+>>>> -- compatible : should be one of the following:
+>>>> -	Generic default - "cdns,qspi-nor".
+>>>> -	For TI 66AK2G SoC - "ti,k2g-qspi", "cdns,qspi-nor".
+>>>> -	For TI AM654 SoC  - "ti,am654-ospi", "cdns,qspi-nor".
+>>>> -- reg : Contains two entries, each of which is a tuple consisting of a
+>>>> -	physical address and length. The first entry is the address and
+>>>> -	length of the controller register set. The second entry is the
+>>>> -	address and length of the QSPI Controller data area.
+>>>> -- interrupts : Unit interrupt specifier for the controller interrupt.
+>>>> -- clocks : phandle to the Quad SPI clock.
+>>>> -- cdns,fifo-depth : Size of the data FIFO in words.
+>>>> -- cdns,fifo-width : Bus width of the data FIFO in bytes.
+>>>> -- cdns,trigger-address : 32-bit indirect AHB trigger address.
+>>>> -
+>>>> -Optional properties:
+>>>> -- cdns,is-decoded-cs : Flag to indicate whether decoder is used or not.
+>>>> -- cdns,rclk-en : Flag to indicate that QSPI return clock is used to latch
+>>>> -  the read data rather than the QSPI clock. Make sure that QSPI return
+>>>> -  clock is populated on the board before using this property.
+>>>> -
+>>>> -Optional subnodes:
+>>>> -Subnodes of the Cadence Quad SPI controller are spi slave nodes with additional
+>>>> -custom properties:
+>>>> -- cdns,read-delay : Delay for read capture logic, in clock cycles
+>>>> -- cdns,tshsl-ns : Delay in nanoseconds for the length that the master
+>>>> -                  mode chip select outputs are de-asserted between
+>>>> -		  transactions.
+>>>> -- cdns,tsd2d-ns : Delay in nanoseconds between one chip select being
+>>>> -                  de-activated and the activation of another.
+>>>> -- cdns,tchsh-ns : Delay in nanoseconds between last bit of current
+>>>> -                  transaction and deasserting the device chip select
+>>>> -		  (qspi_n_ss_out).
+>>>> -- cdns,tslch-ns : Delay in nanoseconds between setting qspi_n_ss_out low
+>>>> -                  and first bit transfer.
+>>>> -- resets	: Must contain an entry for each entry in reset-names.
+>>>> -		  See ../reset/reset.txt for details.
+>>>> -- reset-names	: Must include either "qspi" and/or "qspi-ocp".
+>>>> -
+>>>> -Example:
+>>>> -
+>>>> -	qspi: spi@ff705000 {
+>>>> -		compatible = "cdns,qspi-nor";
+>>>> -		#address-cells = <1>;
+>>>> -		#size-cells = <0>;
+>>>> -		reg = <0xff705000 0x1000>,
+>>>> -		      <0xffa00000 0x1000>;
+>>>> -		interrupts = <0 151 4>;
+>>>> -		clocks = <&qspi_clk>;
+>>>> -		cdns,is-decoded-cs;
+>>>> -		cdns,fifo-depth = <128>;
+>>>> -		cdns,fifo-width = <4>;
+>>>> -		cdns,trigger-address = <0x00000000>;
+>>>> -		resets = <&rst QSPI_RESET>, <&rst QSPI_OCP_RESET>;
+>>>> -		reset-names = "qspi", "qspi-ocp";
+>>>> -
+>>>> -		flash0: n25q00@0 {
+>>>> -			...
+>>>> -			cdns,read-delay = <4>;
+>>>> -			cdns,tshsl-ns = <50>;
+>>>> -			cdns,tsd2d-ns = <50>;
+>>>> -			cdns,tchsh-ns = <4>;
+>>>> -			cdns,tslch-ns = <4>;
+>>>> -		};
+>>>> -	};
+>>>> diff --git a/Documentation/devicetree/bindings/spi/cadence-quadspi.yaml b/Documentation/devicetree/bindings/spi/cadence-quadspi.yaml
+>>>> new file mode 100644
+>>>> index 000000000000..ec22b040d804
+>>>> --- /dev/null
+>>>> +++ b/Documentation/devicetree/bindings/spi/cadence-quadspi.yaml
+>>>> @@ -0,0 +1,149 @@
+>>>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+>>>> +%YAML 1.2
+>>>> +---
+>>>> +$id: http://devicetree.org/schemas/spi/cadence-quadspi.yaml#
+>>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>>> +
+>>>> +title: Cadence Quad SPI controller
+>>>> +
+>>>> +maintainers:
+>>>> +  - Vadivel Murugan <vadivel.muruganx.ramuthevar@intel.com>
+>>>> +
+>>>> +allOf:
+>>>> +  - $ref: "spi-controller.yaml#"
+>>>> +
+>>>> +properties:
+>>>> +  compatible:
+>>>> +    oneOf:
+>>>> +      - items:
+>>>
+>>> You don't need 'oneOf' if there is only one entry...
+>>>
+>>> So you've dropped 'cdns,qspi-nor' alone being valid. Granted, the txt
+>>> file was fuzzy as to whether or not that was valid. So you have to look
+>>> at all the dts files and see. I prefer we don't allow that and require a
+>>> more specific compatible, but if there's a bunch then we should allow
+>>> for it. The commit message should summarize what you decide.
+>> we need bunch of compatibles as below, TI, Altera and Intel uses different
+>> compatible's so we added 'oneOf'.
+> 
+> Then you add oneOf when you need it. You don't for what you wrote,
+> but once it is correct you will as Altera uses 'cdns,qspi-nor' alone.
+Yes, yo're right , we need oneOf in the case of adding 'cadence,qspi' 
+and 'cdns,qspi-nor' two different group of items.
+> 
+>> cdns,qspi-nor can be dropped instead I can add cadence,qspi ,because this
+>> driver suuports qspi-nor and qspi-nand as well.
+> 
+> No, you can't change it because it is an ABI.
+Ok, Got it, thanks!
 
-Fixes: fe5fd2540947 ("spi: davinci: Use dma_request_chan() for requesting DMA channel")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Cc: <stable@vger.kernel.org> # v4.7+
-Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
----
- drivers/spi/spi-davinci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 818f2b22875d..7453a1dbbc06 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -1040,13 +1040,13 @@ static int davinci_spi_remove(struct platform_device *pdev)
- 	spi_bitbang_stop(&dspi->bitbang);
- 
- 	clk_disable_unprepare(dspi->clk);
--	spi_master_put(master);
- 
- 	if (dspi->dma_rx) {
- 		dma_release_channel(dspi->dma_rx);
- 		dma_release_channel(dspi->dma_tx);
- 	}
- 
-+	spi_master_put(master);
- 	return 0;
- }
- 
--- 
-2.28.0
-
+Regards
+Vadivel
+> 
+>>
+>> Sure, let me go through other documentation files for reference.
+>>
+>>>
+>>>> +          - enum:
+>>>> +              - ti,k2g-qspi
+>>>> +              - ti,am654-ospi
+>>>> +          - const: cdns,qspi-nor
+>>>
+>>>> +examples:
+>>>> +  - |
+>>>> +    qspi: spi@ff705000 {
+>>>> +      compatible = "cadence,qspi","cdns,qpsi-nor";
+>>>
+>>> And you missed fixing this.
+>> Yes, fixed by "cadence,qspi" keeping alone, need to remove cdns,qspi-nor,
+>> thanks!
+> 
+> Nope!
+> 
+> Rob
+> 

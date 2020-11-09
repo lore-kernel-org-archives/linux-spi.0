@@ -6,40 +6,43 @@ X-Spam-Status: No, score=-9.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
 	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B5FF1C2D0A3
-	for <linux-spi@archiver.kernel.org>; Mon,  9 Nov 2020 19:48:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 22740C388F7
+	for <linux-spi@archiver.kernel.org>; Mon,  9 Nov 2020 19:48:43 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6F78E2074F
-	for <linux-spi@archiver.kernel.org>; Mon,  9 Nov 2020 19:48:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C1B33206E3
+	for <linux-spi@archiver.kernel.org>; Mon,  9 Nov 2020 19:48:42 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=kernel.org header.i=@kernel.org header.b="CcYgJ+Pb"
+	dkim=pass (1024-bit key) header.d=kernel.org header.i=@kernel.org header.b="nKsTocGj"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730017AbgKITsh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 9 Nov 2020 14:48:37 -0500
-Received: from mail.kernel.org ([198.145.29.99]:43596 "EHLO mail.kernel.org"
+        id S1730072AbgKITsm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 9 Nov 2020 14:48:42 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43636 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729899AbgKITsh (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 9 Nov 2020 14:48:37 -0500
+        id S1729899AbgKITsm (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 9 Nov 2020 14:48:42 -0500
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 157B2206E3;
-        Mon,  9 Nov 2020 19:48:35 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 53B8E206D8;
+        Mon,  9 Nov 2020 19:48:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604951316;
-        bh=e6AtaRbKq0BHW2zVKVpEgVu0o9ZE80SKGtkiHFRIGnE=;
+        s=default; t=1604951321;
+        bh=aly6Zly1UrqXEKfpiByGQzxM4mo/jvzIOFWLA1/Ew4I=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=CcYgJ+PbQ69GE/1BA++mzs/k0wfI424RSpMFYpowVkrp62Lp+ddSPWJx2KLhu+c1H
-         6qXRaRTHbhkpa03tWJ2++JxBV4Z5+EDuK7YvPL2742GNyl6oYBHrUmnBAazemfOZjs
-         dSbaeQks/F2JuvO5qMUVK8XEP7eSZ+HgXWwLBk60=
-Date:   Mon, 09 Nov 2020 19:48:22 +0000
+        b=nKsTocGjqTHSpGsf2C61HtKBtUmF/GiumhE93Das9w+ng/puucYaRw5UUm2lmDBqR
+         5JLLh9UnLBAhDi55FxY79Y32HMQHNDW0RSWTd27eXHYXAbjL07kU+usSB+j4TrosWa
+         tjVlAygAGT3WEQqtHJjRcG5CqaPvpUtWuDmOPZeQ=
+Date:   Mon, 09 Nov 2020 19:48:28 +0000
 From:   Mark Brown <broonie@kernel.org>
-To:     Zhang Qilong <zhangqilong3@huawei.com>
-Cc:     linux-spi@vger.kernel.org
-In-Reply-To: <20201103140947.3815-1-zhangqilong3@huawei.com>
-References: <20201103140947.3815-1-zhangqilong3@huawei.com>
-Subject: Re: [PATCH] spi: spi-ti-qspi: fix reference leak in ti_qspi_setup
-Message-Id: <160495129749.49337.6906868883042164608.b4-ty@kernel.org>
+To:     Qinglang Miao <miaoqinglang@huawei.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        bcm-kernel-feedback-list@broadcom.com
+Cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-spi@vger.kernel.org
+In-Reply-To: <20201103074911.195530-1-miaoqinglang@huawei.com>
+References: <20201103074911.195530-1-miaoqinglang@huawei.com>
+Subject: Re: [PATCH v2] spi: bcm63xx-hsspi: fix missing clk_disable_unprepare() on error in bcm63xx_hsspi_resume
+Message-Id: <160495129749.49337.12919860085282006110.b4-ty@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -47,10 +50,10 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, 3 Nov 2020 22:09:47 +0800, Zhang Qilong wrote:
-> pm_runtime_get_sync will increment pm usage counter even it
-> failed. Forgetting to pm_runtime_put_noidle will result in
-> reference leak in ti_qspi_setup, so we should fix it.
+On Tue, 3 Nov 2020 15:49:11 +0800, Qinglang Miao wrote:
+> Fix the missing clk_disable_unprepare() before return
+> from bcm63xx_hsspi_resume in the error handling case when
+> fails to prepare and enable bs->pll_clk.
 
 Applied to
 
@@ -58,8 +61,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: spi-ti-qspi: fix reference leak in ti_qspi_setup
-      commit: 45c0cba753641e5d7c3207f04241bd0e7a021698
+[1/1] spi: bcm63xx-hsspi: fix missing clk_disable_unprepare() on error in bcm63xx_hsspi_resume
+      commit: 9bb9ef2b3e5d9d012876e7e2d7757eb30e865bee
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

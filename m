@@ -2,246 +2,380 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SIGNED_OFF_BY,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BBFFBC388F7
-	for <linux-spi@archiver.kernel.org>; Tue, 10 Nov 2020 07:06:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BB340C56202
+	for <linux-spi@archiver.kernel.org>; Tue, 10 Nov 2020 08:50:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 51A4B2068D
-	for <linux-spi@archiver.kernel.org>; Tue, 10 Nov 2020 07:06:10 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="XNbxyW3h"
+	by mail.kernel.org (Postfix) with ESMTP id 6D6A420731
+	for <linux-spi@archiver.kernel.org>; Tue, 10 Nov 2020 08:50:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729795AbgKJHGJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 10 Nov 2020 02:06:09 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:41824 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726213AbgKJHGI (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 10 Nov 2020 02:06:08 -0500
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0AA762Pa030851;
-        Tue, 10 Nov 2020 01:06:02 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1604991962;
-        bh=Y+jIwZ+P6LPRaDoCZvUogM6zFzDU7raBl10FQtpTEiY=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=XNbxyW3hIFwZEJP3dxOE9eLQlN9NMdNaf2BRXjX/dUwN2tBIfGueW7IQbwVdYMVFN
-         fpehY7k/xLZSVvEyFOaorpQ8McjTa68BDufwshGIwrOE5ugjcKMZKy0uaTAH1EJ17o
-         TAQuha6EHHtTBbsOOCOdDko2uT2dyv/B/CdWHAHU=
-Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0AA761fX126589
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 10 Nov 2020 01:06:01 -0600
-Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 10
- Nov 2020 01:06:01 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 10 Nov 2020 01:06:01 -0600
-Received: from [10.250.233.179] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0AA75x1D002923;
-        Tue, 10 Nov 2020 01:06:00 -0600
-Subject: Re: Linux SPI Slave fails to respond under high load on BeagleBone
- Black
-To:     Glenn Schmottlach <gschmottlach@gmail.com>,
-        <linux-spi@vger.kernel.org>
-CC:     <broonie@kernel.org>
-References: <CAMS2kBHyempbPTT5dnJ8Vb+FMop4-BjyKa4A=tB+U-cS4h7aDw@mail.gmail.com>
-From:   Vignesh Raghavendra <vigneshr@ti.com>
-Message-ID: <1ef36838-81f1-5b64-bcf5-69c1bb1ff082@ti.com>
-Date:   Tue, 10 Nov 2020 12:35:59 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1729301AbgKJIux (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 10 Nov 2020 03:50:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36070 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731705AbgKJIuv (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 10 Nov 2020 03:50:51 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C200FC0613CF
+        for <linux-spi@vger.kernel.org>; Tue, 10 Nov 2020 00:50:50 -0800 (PST)
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1kcPMT-0004bo-Bm; Tue, 10 Nov 2020 09:50:45 +0100
+Received: from ore by dude.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1kcPMS-0004G0-5A; Tue, 10 Nov 2020 09:50:44 +0100
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Mark Brown <broonie@kernel.org>
+Cc:     Oleksij Rempel <o.rempel@pengutronix.de>, kernel@pengutronix.de,
+        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-spi@vger.kernel.org, David Jander <david@protonic.nl>
+Subject: [PATCH v2 1/2] Input: ads7846: convert to full duplex
+Date:   Tue, 10 Nov 2020 09:50:40 +0100
+Message-Id: <20201110085041.16303-2-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20201110085041.16303-1-o.rempel@pengutronix.de>
+References: <20201110085041.16303-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <CAMS2kBHyempbPTT5dnJ8Vb+FMop4-BjyKa4A=tB+U-cS4h7aDw@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi,
+Starting with following patch, the ads7845 was partially converted to
+full duplex mode:
+3eac5c7e44f3 Input: ads7846 - extend the driver for ads7845 controller support
 
-On 11/7/20 1:41 AM, Glenn Schmottlach wrote:
-> I have encountered a problem utilizing the Linux SPI slave capability
-> between two BeagleBone Blacks (BBBs) where one is SPI master and the
-> other is configured as the SPI slave. The two devices are directly
-> wired together with short leads (2-3 inches long).
-> 
-> Both boards are using the same linux-ti-staging kernel:
-> 
-> Linux beaglebone 5.4.74-g227e67c99f #1 PREEMPT Fri Nov 6 14:47:05 UTC
-> 2020 armv7l armv7l armv7l GNU/Linux
-> 
-> I believe the real issue exists in the McSPI driver
-> (spi-omap2-mcspi.c) and its implementation of SPI slave support. Let
-> me explain what I am seeing.
-> 
-> One the SPI master I run the following command:
-> 
-> spi-pipe -d /dev/spidev0.0 -s 1000000 -b 32 -n -1 < /dev/random | hexdump -vC
-> 
-> On the BBB configured as the SPI slave I run the same:
-> 
-> spi-pipe -d /dev/spidev0.0 -s 1000000 -b 32 -n -1 < /dev/random | hexdump -vC
-> 
-> I would expect 32 bytes of random data to be passed back and forth
-> between the two devices continuously. Please note, I do *not* expect
-> the SPI master to receive consecutive 32 byte blocks of purely random
-> data since there will be a "gap" in time when the SPI slave sends a 32
-> byte chunk/message and reloads the driver with the next chunk to send.
-> So the expectation is that the SPI slave will clock out 32 chunks of
-> random data followed by some zeros while the SPI master continues to
-> clock data and the next chunk is loaded on the SPI slave.
-> 
+Since it is not touchscreen controller specific, it is better to make
+this conversion consequent for complete driver. This will reduce CPU
+load and make driver more readable.
 
-This would mean Slave TX FIFO underflows. I am not sure if McSPI IP is
-robust enough to handle this case. TRM isn't particularly clear.
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/input/touchscreen/ads7846.c | 193 +++++++++-------------------
+ 1 file changed, 62 insertions(+), 131 deletions(-)
 
-
-> This does work briefly (2-3 transfers) until the SPI slave stops
-> clocking out random data and seems to get stuck waiting for the clock
-> (and receive data) from the SPI master. I can run the same experiment
-> using single invocations of the transfers indefinitely,
-> 
-> E.g. On each device running the same command...
-> 
-> spi-pipe -d /dev/spidev0.0 -s 1000000 -b 32 -n 1 < /dev/random | hexdump -vC
-> 
-> Where "-n 1" says to send one chunk then exit the program. The problem
-> occurs when I allow both to run indefinitely. I have verified with a
-> logic analyzer that the SPI master is properly clocking out the random
-> data with clocks and chip selects toggling. I do not believe this is
-> an issue with the SPI master.
-> 
-> I modified the 'spi-pipe' program so that it will *only* transmit data
-> (e.g. set the rx_buf for the SPI transfer structure is set to NULL) in
-> the ioctl(fd, SPI_IOC_MESSAGE(1), &transfer) call. When configured, I
-> would expect the spi-pipe program would block until I invoked spi-pipe
-> on the SPI master since it provides the chip select and clocks for the
-> bi-directional data flow. Unfortunately, the spi-pipe program on the
-> slave device immediately returns. I instrumented the kernel driver and
-> see the following sequence:
-> 
-> spi-pipe -d /dev/spidev0.0 -s 1000000 -b 32 -n 1 -i 2 < /dev/random
-> [  593.951328] omap2_mcspi_setup_transfer(931): enter
-> [  593.956168] omap2_mcspi_setup_transfer(1012): exit
-> [  593.965574] omap2_mcspi_transfer_one(1186): enter
-> [  593.972971] omap2_mcspi_setup_transfer(931): enter
-> [  593.979186] omap2_mcspi_setup_transfer(1012): exit
-> [  593.984008] omap2_mcspi_txrx_dma(620): enter
-> [  593.989569] omap2_mcspi_tx_dma(420): enter
-> [  593.993709] omap2_mcspi_set_dma_req(204): enter
-> [  594.000076] omap2_mcspi_set_dma_req(220): exit
-> [  594.000103] omap2_mcspi_tx_callback(405): enter
-> [  594.009181] omap2_mcspi_set_dma_req(204): enter
-> [  594.013727] omap2_mcspi_set_dma_req(220): exit
-> [  594.018208] omap2_mcspi_tx_callback(410): exit
-> [  594.026941] omap2_mcspi_tx_dma(443): exit
-> [  594.032559] omap2_mcspi_txrx_dma(667): start wait for dma tx completion
-> [  594.040999] mcspi_wait_for_completion(371): enter
-> [  594.045742] omap2_mcspi_set_dma_req(204): enter
-> [  594.052341] omap2_mcspi_set_dma_req(220): exit
-> [  594.056814] omap2_mcspi_setup_transfer(931): enter
-> [  594.063635] omap2_mcspi_setup_transfer(1012): exit
-> [  594.069399] omap2_mcspi_transfer_one(1299): exit
-> [  594.074665] omap2_mcspi_setup_transfer(931): enter
-> [  594.080932] omap2_mcspi_setup_transfer(1012): exit
-> 
-
-This is expected as McSPI has FIFO of 64 bytes and 32 bytes would easily
-fit into it and DMA transfer would be complete but bytes would still be
-in FIFO and not actually sent out.
-
-You would see that this thread would block if you choose a transfer size
-of say 128 bytes as there isn't enough room in FIFO.
-
-> It's clear that the driver (or ioctl() call) isn't blocking but seems
-> to just queue up the data and exits. I believe this might be a symptom
-> of a larger problem with the SPI slave implementation. Below is the
-> sequence I see from the SPI slave when both sides (master/slave) are
-> run indefinitely and the SPI slave stops responding.
-> 
-> [ 2383.618465] omap2_mcspi_rx_dma(541): start wait for RX completion
-> [ 2383.625394] mcspi_wait_for_completion(371): enter
-> [ 2396.370655] omap2_mcspi_irq_handler(1141): irqstat = 0x30001
-> [ 2396.376506] omap2_mcspi_rx_callback(391): enter
-> [ 2396.381069] omap2_mcspi_set_dma_req(204): enter
-> [ 2396.385678] omap2_mcspi_set_dma_req(220): exit
-> [ 2396.390160] omap2_mcspi_rx_callback(396): exit
-> [ 2396.403603] omap2_mcspi_set_dma_req(204): enter
-> [ 2396.408194] omap2_mcspi_set_dma_req(220): exit
-> [ 2396.412670] omap2_mcspi_txrx_dma(667): start wait for dma tx completion
-> [ 2396.424886] mcspi_wait_for_completion(371): enter
-> [ 2396.429628] omap2_mcspi_set_dma_req(204): enter
-> [ 2396.435543] omap2_mcspi_set_dma_req(220): exit
-> [ 2396.440015] omap2_mcspi_setup_transfer(931): enter
-> [ 2396.446107] omap2_mcspi_setup_transfer(1012): exit
-> [ 2396.450925] omap2_mcspi_transfer_one(1299): exit
-> [ 2396.457608] omap2_mcspi_transfer_one(1186): enter
-> 00000000  52 aa d3 90 95 23 c0 aa  8f 49 e3 0b 86 a1 95 de  |R....#...I......|
-> 00000010  85 3f 32 b4 c9 fd 57 c7  31 7d ea c6 05 bd cd 18  |.?2...W.1}......|
-> [ 2396.468439] omap2_mcspi_setup_transfer(931): enter
-> [ 2396.478826] omap2_mcspi_setup_transfer(1012): exit
-> [ 2396.486384] omap2_mcspi_txrx_dma(620): enter
-> [ 2396.490687] omap2_mcspi_irq_handler(1141): irqstat = 0x3000F
-> [ 2396.497536] omap2_mcspi_tx_dma(420): enter
-> [ 2396.501679] omap2_mcspi_set_dma_req(204): enter
-> [ 2396.507560] omap2_mcspi_set_dma_req(220): exit
-> [ 2396.512029] omap2_mcspi_tx_dma(443): exit
-> [ 2396.517290] omap2_mcspi_rx_dma(464): enter
-> [ 2396.521432] omap2_mcspi_set_dma_req(204): enter
-> [ 2396.527294] omap2_mcspi_set_dma_req(220): exit
-> [ 2396.527322] omap2_mcspi_rx_callback(391): enter
-> [ 2396.536380] omap2_mcspi_set_dma_req(204): enter
-> [ 2396.540933] omap2_mcspi_set_dma_req(220): exit
-> [ 2396.545405] omap2_mcspi_rx_callback(396): exit
-> [ 2396.552488] omap2_mcspi_rx_dma(541): start wait for RX completion
-> [ 2396.559512] mcspi_wait_for_completion(371): enter
-> [ 2396.565084] omap2_mcspi_set_dma_req(204): enter
-> [ 2396.569639] omap2_mcspi_set_dma_req(220): exit
-> [ 2396.575395] omap2_mcspi_txrx_dma(667): start wait for dma tx completion
-> [ 2396.582045] mcspi_wait_for_completion(371): enter
-> 
-
-At this point it looks TX DMA on slave side is still in progress and
-probably is waiting for data from slave FIFO to be sent out to master.
-
-Could you trace how much of data is left in TX FIFO using MCSPI_CHSTAT_0
-and MCSPI_XFERLEVEL registers?
-
-One possible reason may be that driver sets up  MCSPI_XFERLEVEL WCNT and
-enables channel before setting up TX DMA. So if there a master that is
-continuously requesting data, then there is a possibility that WCNT goes
-down to 0 (due to shifting of 0s) before DMA had chance to put actual
-the data into the FIFO.
-
-Does it help if you move the programming of WCNT field to
-omap2_mcspi_tx_dma()?
-
-> At this point spi-pipe on the slave no longer responds to the master
-> device and I have to ctrl-c to exit it.
-> 
-> I am hoping someone can explain what is going on or confirm that there
-> is indeed a bug in the slave implementation of spi-omap2-mcspi.c. I
-> hope someone might be able to suggest a fix for this issue that I
-> could try out. I am open to testing any suggestions.
-> 
-
-Main intention of adding SPI slave support was to support limited
-usecase where master and slave exchange very small known messages of
-predetermined length such as to support at sparse interval (such as dead
-man's switch). So tests like above would probably need more work to
-McSPI driver and maybe to the core as well.
-
-Regards
-Vignesh
-
+diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
+index 393ab337a9c4..e9a520c9ad69 100644
+--- a/drivers/input/touchscreen/ads7846.c
++++ b/drivers/input/touchscreen/ads7846.c
+@@ -62,19 +62,25 @@
+ /* this driver doesn't aim at the peak continuous sample rate */
+ #define	SAMPLE_BITS	(8 /*cmd*/ + 16 /*sample*/ + 2 /* before, after */)
+ 
+-struct ts_event {
+-	/*
+-	 * For portability, we can't read 12 bit values using SPI (which
+-	 * would make the controller deliver them as native byte order u16
+-	 * with msbs zeroed).  Instead, we read them as two 8-bit values,
+-	 * *** WHICH NEED BYTESWAPPING *** and range adjustment.
++struct ads7846_buf {
++	u8 cmd;
++	/* This union is a temporary hack. The driver does an in-place
++	 * endianness conversion. This will be cleaned up in the next
++	 * patch.
+ 	 */
+-	u16	x;
+-	u16	y;
+-	u16	z1, z2;
+-	bool	ignore;
+-	u8	x_buf[3];
+-	u8	y_buf[3];
++	union {
++		__be16 data_be16;
++		u16 data;
++	};
++} __attribute__((__packed__));
++
++
++struct ts_event {
++	bool ignore;
++	struct ads7846_buf x;
++	struct ads7846_buf y;
++	struct ads7846_buf z1;
++	struct ads7846_buf z2;
+ };
+ 
+ /*
+@@ -83,11 +89,12 @@ struct ts_event {
+  * systems where main memory is not DMA-coherent (most non-x86 boards).
+  */
+ struct ads7846_packet {
+-	u8			read_x, read_y, read_z1, read_z2, pwrdown;
+-	u16			dummy;		/* for the pwrdown read */
+-	struct ts_event		tc;
+-	/* for ads7845 with mpc5121 psc spi we use 3-byte buffers */
+-	u8			read_x_cmd[3], read_y_cmd[3], pwrdown_cmd[3];
++	struct ts_event tc;
++	struct ads7846_buf read_x_cmd;
++	struct ads7846_buf read_y_cmd;
++	struct ads7846_buf read_z1_cmd;
++	struct ads7846_buf read_z2_cmd;
++	struct ads7846_buf pwrdown_cmd;
+ };
+ 
+ struct ads7846 {
+@@ -694,16 +701,9 @@ static int ads7846_get_value(struct ads7846 *ts, struct spi_message *m)
+ 	int value;
+ 	struct spi_transfer *t =
+ 		list_entry(m->transfers.prev, struct spi_transfer, transfer_list);
++	struct ads7846_buf *buf = t->rx_buf;
+ 
+-	if (ts->model == 7845) {
+-		value = be16_to_cpup((__be16 *)&(((char *)t->rx_buf)[1]));
+-	} else {
+-		/*
+-		 * adjust:  on-wire is a must-ignore bit, a BE12 value, then
+-		 * padding; built from two 8 bit values written msb-first.
+-		 */
+-		value = be16_to_cpup((__be16 *)t->rx_buf);
+-	}
++	value = be16_to_cpup(&buf->data_be16);
+ 
+ 	/* enforce ADC output is 12 bits width */
+ 	return (value >> 3) & 0xfff;
+@@ -713,8 +713,9 @@ static void ads7846_update_value(struct spi_message *m, int val)
+ {
+ 	struct spi_transfer *t =
+ 		list_entry(m->transfers.prev, struct spi_transfer, transfer_list);
++	struct ads7846_buf *buf = t->rx_buf;
+ 
+-	*(u16 *)t->rx_buf = val;
++	buf->data = val;
+ }
+ 
+ static void ads7846_read_state(struct ads7846 *ts)
+@@ -782,16 +783,14 @@ static void ads7846_report_state(struct ads7846 *ts)
+ 	 * from on-the-wire format as part of debouncing to get stable
+ 	 * readings.
+ 	 */
++	x = packet->tc.x.data;
++	y = packet->tc.y.data;
+ 	if (ts->model == 7845) {
+-		x = *(u16 *)packet->tc.x_buf;
+-		y = *(u16 *)packet->tc.y_buf;
+ 		z1 = 0;
+ 		z2 = 0;
+ 	} else {
+-		x = packet->tc.x;
+-		y = packet->tc.y;
+-		z1 = packet->tc.z1;
+-		z2 = packet->tc.z2;
++		z1 = packet->tc.z1.data;
++		z2 = packet->tc.z2.data;
+ 	}
+ 
+ 	/* range filtering */
+@@ -1008,26 +1007,11 @@ static void ads7846_setup_spi_msg(struct ads7846 *ts,
+ 	spi_message_init(m);
+ 	m->context = ts;
+ 
+-	if (ts->model == 7845) {
+-		packet->read_y_cmd[0] = READ_Y(vref);
+-		packet->read_y_cmd[1] = 0;
+-		packet->read_y_cmd[2] = 0;
+-		x->tx_buf = &packet->read_y_cmd[0];
+-		x->rx_buf = &packet->tc.y_buf[0];
+-		x->len = 3;
+-		spi_message_add_tail(x, m);
+-	} else {
+-		/* y- still on; turn on only y+ (and ADC) */
+-		packet->read_y = READ_Y(vref);
+-		x->tx_buf = &packet->read_y;
+-		x->len = 1;
+-		spi_message_add_tail(x, m);
+-
+-		x++;
+-		x->rx_buf = &packet->tc.y;
+-		x->len = 2;
+-		spi_message_add_tail(x, m);
+-	}
++	packet->read_y_cmd.cmd = READ_Y(vref);
++	x->tx_buf = &packet->read_y_cmd;
++	x->rx_buf = &packet->tc.y;
++	x->len = 3;
++	spi_message_add_tail(x, m);
+ 
+ 	/*
+ 	 * The first sample after switching drivers can be low quality;
+@@ -1037,15 +1021,11 @@ static void ads7846_setup_spi_msg(struct ads7846 *ts,
+ 	if (pdata->settle_delay_usecs) {
+ 		x->delay.value = pdata->settle_delay_usecs;
+ 		x->delay.unit = SPI_DELAY_UNIT_USECS;
+-
+ 		x++;
+-		x->tx_buf = &packet->read_y;
+-		x->len = 1;
+-		spi_message_add_tail(x, m);
+ 
+-		x++;
++		x->tx_buf = &packet->read_y_cmd;
+ 		x->rx_buf = &packet->tc.y;
+-		x->len = 2;
++		x->len = 3;
+ 		spi_message_add_tail(x, m);
+ 	}
+ 
+@@ -1054,28 +1034,13 @@ static void ads7846_setup_spi_msg(struct ads7846 *ts,
+ 	spi_message_init(m);
+ 	m->context = ts;
+ 
+-	if (ts->model == 7845) {
+-		x++;
+-		packet->read_x_cmd[0] = READ_X(vref);
+-		packet->read_x_cmd[1] = 0;
+-		packet->read_x_cmd[2] = 0;
+-		x->tx_buf = &packet->read_x_cmd[0];
+-		x->rx_buf = &packet->tc.x_buf[0];
+-		x->len = 3;
+-		spi_message_add_tail(x, m);
+-	} else {
+-		/* turn y- off, x+ on, then leave in lowpower */
+-		x++;
+-		packet->read_x = READ_X(vref);
+-		x->tx_buf = &packet->read_x;
+-		x->len = 1;
+-		spi_message_add_tail(x, m);
+-
+-		x++;
+-		x->rx_buf = &packet->tc.x;
+-		x->len = 2;
+-		spi_message_add_tail(x, m);
+-	}
++	/* turn y- off, x+ on, then leave in lowpower */
++	x++;
++	packet->read_x_cmd.cmd = READ_X(vref);
++	x->tx_buf = &packet->read_x_cmd;
++	x->rx_buf = &packet->tc.x;
++	x->len = 3;
++	spi_message_add_tail(x, m);
+ 
+ 	/* ... maybe discard first sample ... */
+ 	if (pdata->settle_delay_usecs) {
+@@ -1083,13 +1048,9 @@ static void ads7846_setup_spi_msg(struct ads7846 *ts,
+ 		x->delay.unit = SPI_DELAY_UNIT_USECS;
+ 
+ 		x++;
+-		x->tx_buf = &packet->read_x;
+-		x->len = 1;
+-		spi_message_add_tail(x, m);
+-
+-		x++;
++		x->tx_buf = &packet->read_x_cmd;
+ 		x->rx_buf = &packet->tc.x;
+-		x->len = 2;
++		x->len = 3;
+ 		spi_message_add_tail(x, m);
+ 	}
+ 
+@@ -1101,14 +1062,10 @@ static void ads7846_setup_spi_msg(struct ads7846 *ts,
+ 		m->context = ts;
+ 
+ 		x++;
+-		packet->read_z1 = READ_Z1(vref);
+-		x->tx_buf = &packet->read_z1;
+-		x->len = 1;
+-		spi_message_add_tail(x, m);
+-
+-		x++;
++		packet->read_z1_cmd.cmd = READ_Z1(vref);
++		x->tx_buf = &packet->read_z1_cmd;
+ 		x->rx_buf = &packet->tc.z1;
+-		x->len = 2;
++		x->len = 3;
+ 		spi_message_add_tail(x, m);
+ 
+ 		/* ... maybe discard first sample ... */
+@@ -1117,13 +1074,9 @@ static void ads7846_setup_spi_msg(struct ads7846 *ts,
+ 			x->delay.unit = SPI_DELAY_UNIT_USECS;
+ 
+ 			x++;
+-			x->tx_buf = &packet->read_z1;
+-			x->len = 1;
+-			spi_message_add_tail(x, m);
+-
+-			x++;
++			x->tx_buf = &packet->read_z1_cmd;
+ 			x->rx_buf = &packet->tc.z1;
+-			x->len = 2;
++			x->len = 3;
+ 			spi_message_add_tail(x, m);
+ 		}
+ 
+@@ -1133,14 +1086,10 @@ static void ads7846_setup_spi_msg(struct ads7846 *ts,
+ 		m->context = ts;
+ 
+ 		x++;
+-		packet->read_z2 = READ_Z2(vref);
+-		x->tx_buf = &packet->read_z2;
+-		x->len = 1;
+-		spi_message_add_tail(x, m);
+-
+-		x++;
++		packet->read_z2_cmd.cmd = READ_Z2(vref);
++		x->tx_buf = &packet->read_z2_cmd;
+ 		x->rx_buf = &packet->tc.z2;
+-		x->len = 2;
++		x->len = 3;
+ 		spi_message_add_tail(x, m);
+ 
+ 		/* ... maybe discard first sample ... */
+@@ -1149,13 +1098,9 @@ static void ads7846_setup_spi_msg(struct ads7846 *ts,
+ 			x->delay.unit = SPI_DELAY_UNIT_USECS;
+ 
+ 			x++;
+-			x->tx_buf = &packet->read_z2;
+-			x->len = 1;
+-			spi_message_add_tail(x, m);
+-
+-			x++;
++			x->tx_buf = &packet->read_z2_cmd;
+ 			x->rx_buf = &packet->tc.z2;
+-			x->len = 2;
++			x->len = 3;
+ 			spi_message_add_tail(x, m);
+ 		}
+ 	}
+@@ -1166,24 +1111,10 @@ static void ads7846_setup_spi_msg(struct ads7846 *ts,
+ 	spi_message_init(m);
+ 	m->context = ts;
+ 
+-	if (ts->model == 7845) {
+-		x++;
+-		packet->pwrdown_cmd[0] = PWRDOWN;
+-		packet->pwrdown_cmd[1] = 0;
+-		packet->pwrdown_cmd[2] = 0;
+-		x->tx_buf = &packet->pwrdown_cmd[0];
+-		x->len = 3;
+-	} else {
+-		x++;
+-		packet->pwrdown = PWRDOWN;
+-		x->tx_buf = &packet->pwrdown;
+-		x->len = 1;
+-		spi_message_add_tail(x, m);
+-
+-		x++;
+-		x->rx_buf = &packet->dummy;
+-		x->len = 2;
+-	}
++	x++;
++	packet->pwrdown_cmd.cmd = PWRDOWN;
++	x->tx_buf = &packet->pwrdown_cmd;
++	x->len = 3;
+ 
+ 	CS_CHANGE(*x);
+ 	spi_message_add_tail(x, m);
+-- 
+2.28.0
 

@@ -2,98 +2,51 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FACAC56201
-	for <linux-spi@archiver.kernel.org>; Thu, 19 Nov 2020 16:16:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 67A14C56201
+	for <linux-spi@archiver.kernel.org>; Thu, 19 Nov 2020 16:56:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 043DB246F0
-	for <linux-spi@archiver.kernel.org>; Thu, 19 Nov 2020 16:16:36 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0D2DD24199
+	for <linux-spi@archiver.kernel.org>; Thu, 19 Nov 2020 16:56:55 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (1024-bit key) header.d=kernel.org header.i=@kernel.org header.b="dsMLRQx3"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728256AbgKSQQP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 19 Nov 2020 11:16:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52258 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727741AbgKSQQP (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 19 Nov 2020 11:16:15 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F800C0617A7
-        for <linux-spi@vger.kernel.org>; Thu, 19 Nov 2020 08:16:14 -0800 (PST)
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1kfmbU-0004Lm-0h; Thu, 19 Nov 2020 17:16:12 +0100
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1kfmbT-0003pA-ND; Thu, 19 Nov 2020 17:16:11 +0100
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel@pengutronix.de,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v2 3/3] spi: Warn when a driver's remove callback returns an error
-Date:   Thu, 19 Nov 2020 17:16:04 +0100
-Message-Id: <20201119161604.2633521-3-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201119161604.2633521-1-u.kleine-koenig@pengutronix.de>
-References: <20201119161604.2633521-1-u.kleine-koenig@pengutronix.de>
+        id S1728880AbgKSQ4f (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 19 Nov 2020 11:56:35 -0500
+Received: from mail.kernel.org ([198.145.29.99]:60646 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728870AbgKSQ4f (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 19 Nov 2020 11:56:35 -0500
+Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1605804995;
+        bh=xYWxRJp713rBAICvLHgTVWPn6ubmV/AS9B+HT63Ihwc=;
+        h=Subject:From:Date:To:From;
+        b=dsMLRQx3eRAnLmj6TBgtcORhyJThGJdW+pATXXq6kfmiV5MIh3N6uPe6TO6OLfJ1f
+         K/5X5OGE3XlzuEjG5Eh5XyCHPEj85WoI/HAv+KXOrEhq4MFhOtrB2jMqyrSfpSr5EC
+         zC1+WzwtSE/us53pwInwRHr5N+oc2PctYrZ4LOuc=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-spi@vger.kernel.org
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <160580499488.9652.4755480284215343874.git-patchwork-housekeeping@kernel.org>
+Date:   Thu, 19 Nov 2020 16:56:34 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The driver core ignores the return value of struct device_driver::remove
-(because in general there is nothing that can be done about that). So
-add a warning when an spi driver returns an error.
+Latest series: [v2] spi: fix resource leak for drivers without .remove callback (2020-11-19T16:16:02)
+  Superseding: [v1] spi: fix resource leak for drivers without .remove callback (2020-11-19T15:20:57):
+    [1/3] spi: fix resource leak for drivers without .remove callback
+    [2/3] spi: Use bus_type functions for probe, remove and shutdown
+    [3/3] spi: Warn when a driver's remove callback returns an error
 
-This simplifies the quest to make struct device_driver::remove return void.
-A consequent change would be to make struct spi_driver::remove return void,
-but I'm keeping this quest for later (or someone else).
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/spi/spi.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index e8c0a000ee19..6b7c19bf7715 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -408,13 +408,20 @@ static int spi_probe(struct device *dev)
- static int spi_remove(struct device *dev)
- {
- 	const struct spi_driver		*sdrv = to_spi_driver(dev->driver);
--	int ret = 0;
- 
--	if (sdrv->remove)
-+	if (sdrv->remove) {
-+		int ret;
-+
- 		ret = sdrv->remove(to_spi_device(dev));
-+		if (ret)
-+			dev_warn(dev,
-+				 "Failed to unbind driver (%pe), ignoring\n",
-+				 ERR_PTR(ret));
-+	}
-+
- 	dev_pm_domain_detach(dev, true);
- 
--	return ret;
-+	return 0;
- }
- 
- static void spi_shutdown(struct device *dev)
 -- 
-2.28.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

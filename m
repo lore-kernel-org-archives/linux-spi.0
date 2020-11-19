@@ -2,129 +2,111 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.5 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 99727C388F9
-	for <linux-spi@archiver.kernel.org>; Thu, 19 Nov 2020 12:03:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BC746C2D0E4
+	for <linux-spi@archiver.kernel.org>; Thu, 19 Nov 2020 12:37:30 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3B24B20709
-	for <linux-spi@archiver.kernel.org>; Thu, 19 Nov 2020 12:03:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 498C7246E0
+	for <linux-spi@archiver.kernel.org>; Thu, 19 Nov 2020 12:37:29 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=permerror (0-bit key) header.d=wdc.com header.i=@wdc.com header.b="OG9OwEbF"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="LaqX9r7f"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725877AbgKSMDA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 19 Nov 2020 07:03:00 -0500
-Received: from esa2.hgst.iphmx.com ([68.232.143.124]:54227 "EHLO
-        esa2.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726495AbgKSMDA (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 19 Nov 2020 07:03:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1605788066; x=1637324066;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=wf/FejK7z/uXHb5mg4MRAl9M/wAxMVeO8inZ9o+YmVY=;
-  b=OG9OwEbFSpG5ychOL/p3o3ITZDA2zhE8TBTJNX+hiQXHznYZWaK7L5f4
-   qRzwBY6ycxdjyxkYOV2gdIe+07hTjPhlonRYIgjEa8wevFxaHd04mqioo
-   6QHNV3GR0vL/Hy4oH//cfRQ4jm7qmJiY3ccafLhMBsQOQKSwMoeHZ9D8q
-   aZX77BxKEF44LXBrAOgI/Zye/Dl4/2h1NMfpYhmfPkZqgC4zCyvOAUWT8
-   LE852WP6lQbtSQkcMxUIAL8PwNyPpjbpTnnTYxujMVE2sWHQpPJYvdThz
-   dRQuXnK0uAY6ZeOM/eKx0DHrJvHcptbwy7Xg4TogDEf5Rjyd3RKVvikUH
-   A==;
-IronPort-SDR: N1tdo7cl+Csp5PBfq94U/uTYD6IpgqMoxDXuzbD5o2Zlv0w2ALzY+6PGPbyl6kSCaohethr9PU
- fR+vz8Ewe/NleH/HcjApSRIt77lxAYZBi0EQNPA/MWbHxvvvPU6m40a7/zShzveKd82H4ZmlTR
- SUxSwR79YRARXR3OExx5xqhNxkYUTVHqJMXLyTC5mdKlB/CyfZoseLtiKIzzOSJAkDRHFd3hP7
- 1vf6Y81j8YMhjc0w6k+EF1DJguJMP0t+DF/aPVb/psb/pzy8RgJSNQWGZYWPb2pI7wurNUyDic
- BvM=
-X-IronPort-AV: E=Sophos;i="5.77,490,1596470400"; 
-   d="scan'208";a="256574393"
-Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 19 Nov 2020 20:14:26 +0800
-IronPort-SDR: Dnao9rPBKzXZ7Up6pFchtEMYdKpECWtURLOP4rCrZyJH8WsJNTkJ7EudL/8WrqiLv3h1AROixk
- RmZQiSdmigFaoNmW9BadrqshV4UEMMh/gudMXkqDot6rnbqEzOY3D5sV8ul04nWcJYgEr+xQmQ
- FgSHSt1hv4PxPABrKWPjwNDWwTD8xg1GfaS8gS8VbyXObpyvf+Jby/vE4FOZqaG9VfRvMqdxbq
- +uss2JQnWB74LMyh2I/pnwayNkE+zBfywSkVSed838zWu8lcnTeyaNCsI9yXmEtW0QHLljHsyy
- xAxh2CUDVZ5U6dXwrtoTmVw2
-Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2020 03:48:50 -0800
-IronPort-SDR: zHCA1ONG6vlEoq0lAABzvdDNqSfm49/xsrGsNDv7ydyxpA18pc49ucJDWTdQvIBiiAoYBXdV17
- d7bzRn25uklSCOxP+UJ/gabd4zPoC4OnnG+xrA7PEIordKorNWly5RdNug5JRuDQJGCdICWXu0
- RSGFKzyYQgpYBOWbIuqlHsLGKFbNc28D8Vzs9y8M1sNiEygw2Ak4DZ/xAwZG8LRRJsz+9Re4nY
- JckWw3FnoowHWMuZKB2aAMiEBR41QJFBTlWVQsDzZTRIDitVT8zgkueGpcZdl2cPC3qqHndIiB
- VcE=
-WDCIronportException: Internal
-Received: from jfklab-fym3sg2.ad.shared (HELO twashi.fujisawa.hgst.com) ([10.84.71.107])
-  by uls-op-cesaip02.wdc.com with ESMTP; 19 Nov 2020 04:02:59 -0800
-From:   Damien Le Moal <damien.lemoal@wdc.com>
-To:     Serge Semin <fancer.lancer@gmail.com>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
-Cc:     Sean Anderson <seanga2@gmail.com>
-Subject: [PATCH 2/3] spi: dw: Add support for the Canaan K210 SoC SPI
-Date:   Thu, 19 Nov 2020 21:02:52 +0900
-Message-Id: <20201119120253.390883-3-damien.lemoal@wdc.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201119120253.390883-1-damien.lemoal@wdc.com>
-References: <20201119120253.390883-1-damien.lemoal@wdc.com>
+        id S1727210AbgKSMhG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 19 Nov 2020 07:37:06 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:36410 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727014AbgKSMhG (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 19 Nov 2020 07:37:06 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0AJCavTG056603;
+        Thu, 19 Nov 2020 06:36:57 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1605789417;
+        bh=36qW6Hdzvc8q4QaaKaYXTa+cp2qx83QVdrm6XFKQ1mk=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=LaqX9r7fkasp1lEJ6ulnGxx7lDd582brlyX9MZKjsoQM0lnciWRMkP/1PI9cNq7qK
+         rjRy9CzWSErxPIc3H9CLuL8VGISPZ5hP27fjT+y53qH1XfY0eCnwXohcEO4zF8Qs9c
+         n9L4S3Qf/2zCgmikOSMyTu7xeQ8yetn/0oGdCcAc=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0AJCauKE064137
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 19 Nov 2020 06:36:56 -0600
+Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 19
+ Nov 2020 06:36:56 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Thu, 19 Nov 2020 06:36:56 -0600
+Received: from [10.250.233.179] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0AJCarAt001987;
+        Thu, 19 Nov 2020 06:36:54 -0600
+Subject: Re: [PATCH v8 0/6] spi: cadence-quadspi: Add QSPI controller support
+ for Intel LGM SoC
+To:     "Ramuthevar,Vadivel MuruganX" 
+        <vadivel.muruganx.ramuthevar@linux.intel.com>,
+        <broonie@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-spi@vger.kernel.org>
+CC:     <linux-mtd@lists.infradead.org>, <p.yadav@ti.com>,
+        <cheol.yong.kim@intel.com>, <qi-ming.wu@intel.com>
+References: <20201119055551.26493-1-vadivel.muruganx.ramuthevar@linux.intel.com>
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+Message-ID: <98b7b367-0bf3-e745-1dd2-302f76bab0b7@ti.com>
+Date:   Thu, 19 Nov 2020 18:06:53 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20201119055551.26493-1-vadivel.muruganx.ramuthevar@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The Canaan Kendryte K210 RISC-V SoC includes a DW apb_ssi v4 controller
-which is documented to have a 32 words deep TX and RX FIFO. The FIFO
-length detection in spi_hw_init() correctly detects this value.
-However, when the controller RX FIFO is filled up to 32 entries
-(RXFLR = 32), an RX FIFO overrun error occurs. This likely due to a
-hardware bug which can be avoided by force setting the fifo_len field of
-struct dw_spi to 31.
 
-Define the dw_spi_canaan_k210_init() function to force set fifo_len to
-31 when the device node compatible string is "canaan,k210-spi".
 
-Signed-off-by: Damien Le Moal <damien.lemoal@wdc.com>
----
- drivers/spi/spi-dw-mmio.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+On 11/19/20 11:25 AM, Ramuthevar,Vadivel MuruganX wrote:
+> Add QSPI controller support for Intel LGM SoC.
+> 
+> Note from Vignesh(mtd subsystem maintainer):
+> This series is a subset of "[PATCH v12 0/4] spi: cadence-quadspi: Add
+> support for the Cadence QSPI controller" by Ramuthevar,Vadivel MuruganX
+> <vadivel.muruganx.ramuthevar@linux.intel.com> that intended to move
+> cadence-quadspi driver to spi-mem framework
+> 
+> Those patches were trying to accomplish too many things in a single set
+> of patches and need to split into smaller patches. This is reduced
+> version of above series.
+> 
+> Changes that are intended to make migration easy are split into separate
+> patches. Patches 1 to 3 drop features that cannot be supported under
+> spi-mem at the moment (backward compatibility is maintained).
+> Patch 4-5 are trivial cleanups. Patch 6 does the actual conversion to
+> spi-mem and patch 7 moves the driver to drivers/spi folder.
+> 
+> I have tested both INDAC mode (used by non TI platforms like Altera
+> SoCFPGA) and DAC mode (used by TI platforms) on TI EVMs.
+> 
+> Patches to move move bindings over to
+> "Documentation/devicetree/bindings/spi/" directory and also conversion
+> of bindig doc to YAML will be posted separately.  Support for Intel
+> platform would follow that.
+> 
+> Reference:
+>         https://lkml.org/lkml/2020/6/1/50
+> 
+> ---
+> v8:
+>   - As Mark suggested to add the dt-bindings documentation patches
+>     end of the series , so dropped.  
 
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index d0cc5bf4fa4e..17c06039a74d 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -222,6 +222,21 @@ static int dw_spi_keembay_init(struct platform_device *pdev,
- 	return 0;
- }
- 
-+static int dw_spi_canaan_k210_init(struct platform_device *pdev,
-+				   struct dw_spi_mmio *dwsmmio)
-+{
-+	/*
-+	 * The Canaan Kendryte K210 SoC DW apb_ssi v4 spi controller is
-+	 * documented to have a 32 word deep TX and RX FIFO, which
-+	 * spi_hw_init() detects. However, when the RX FIFO is filled up to
-+	 * 32 entries (RXFLR = 32), an RX FIFO overrun error occurs. Avoid this
-+	 * problem by force setting fifo_len to 31.
-+	 */
-+	dwsmmio->dws.fifo_len = 31;
-+
-+	return 0;
-+}
-+
- static int dw_spi_mmio_probe(struct platform_device *pdev)
- {
- 	int (*init_func)(struct platform_device *pdev,
-@@ -335,6 +350,7 @@ static const struct of_device_id dw_spi_mmio_of_match[] = {
- 	{ .compatible = "snps,dwc-ssi-1.01a", .data = dw_spi_dwc_ssi_init},
- 	{ .compatible = "intel,keembay-ssi", .data = dw_spi_keembay_init},
- 	{ .compatible = "microchip,sparx5-spi", dw_spi_mscc_sparx5_init},
-+	{ .compatible = "canaan,k210-spi", dw_spi_canaan_k210_init},
- 	{ /* end of table */}
- };
- MODULE_DEVICE_TABLE(of, dw_spi_mmio_of_match);
--- 
-2.28.0
-
+Suggestion was to drop patches converting legacy binding doc to YAML schema.
+You still need to include a patch documenting new compatible
+"intel,lgm-qspi" in the existing (legacy) binding doc.

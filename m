@@ -7,61 +7,84 @@ X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E5D6C2D0E4
-	for <linux-spi@archiver.kernel.org>; Mon, 23 Nov 2020 07:02:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F22DBC56202
+	for <linux-spi@archiver.kernel.org>; Mon, 23 Nov 2020 09:19:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 58B3220773
-	for <linux-spi@archiver.kernel.org>; Mon, 23 Nov 2020 07:02:38 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id AABDC20756
+	for <linux-spi@archiver.kernel.org>; Mon, 23 Nov 2020 09:19:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727983AbgKWHCi (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 23 Nov 2020 02:02:38 -0500
-Received: from szxga06-in.huawei.com ([45.249.212.32]:7965 "EHLO
-        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727352AbgKWHCh (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 23 Nov 2020 02:02:37 -0500
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4CfdPn3tPkzhgHy;
-        Mon, 23 Nov 2020 15:02:21 +0800 (CST)
-Received: from localhost.localdomain (10.69.192.56) by
- DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
- 14.3.487.0; Mon, 23 Nov 2020 15:02:32 +0800
-From:   Tian Tao <tiantao6@hisilicon.com>
-To:     <fancer.lancer@gmail.com>, <broonie@kernel.org>,
-        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH] spi: dw: fixed missing resource_size
-Date:   Mon, 23 Nov 2020 15:02:55 +0800
-Message-ID: <1606114975-31362-1-git-send-email-tiantao6@hisilicon.com>
-X-Mailer: git-send-email 2.7.4
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.69.192.56]
-X-CFilter-Loop: Reflected
+        id S1727030AbgKWJTZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 23 Nov 2020 04:19:25 -0500
+Received: from mail.loongson.cn ([114.242.206.163]:34758 "EHLO loongson.cn"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725287AbgKWJTZ (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 23 Nov 2020 04:19:25 -0500
+Received: from linux.localdomain (unknown [113.200.148.30])
+        by mail.loongson.cn (Coremail) with SMTP id AQAAf9DxD9OMfrtfB3wVAA--.43428S3;
+        Mon, 23 Nov 2020 17:19:10 +0800 (CST)
+From:   Qing Zhang <zhangqing@loongson.cn>
+To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc:     linux-spi@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        devicetree@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH 2/3] MIPS: Loongson64: DTS: Add SPI support to LS3A
+Date:   Mon, 23 Nov 2020 17:19:07 +0800
+Message-Id: <1606123148-315-2-git-send-email-zhangqing@loongson.cn>
+X-Mailer: git-send-email 2.1.0
+In-Reply-To: <1606123148-315-1-git-send-email-zhangqing@loongson.cn>
+References: <1606123148-315-1-git-send-email-zhangqing@loongson.cn>
+X-CM-TRANSID: AQAAf9DxD9OMfrtfB3wVAA--.43428S3
+X-Coremail-Antispam: 1UD129KBjvdXoW7XF43KFW5XrWrXr1fCrW8Crg_yoW3XFg_t3
+        W2kF4kGFWfJF47J3y8Zw1UJry7u34ru3Z8CF1DWr4jgasavrsxJFWUAa9rJ3ZrurWjvFnY
+        gw4rWF18Ars2kjkaLaAFLSUrUUUU1b8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUIcSsGvfJTRUUUbkAYjsxI4VW3JwAYFVCjjxCrM7AC8VAFwI0_Xr0_Wr1l1xkIjI8I
+        6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l82xGYIkIc2x26280x7
+        IE14v26r18M28IrcIa0xkI8VCY1x0267AKxVW8JVW5JwA2ocxC64kIII0Yj41l84x0c7CE
+        w4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6x
+        kF7I0E14v26F4j6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY
+        1x0267AKxVW0oVCq3wAaw2AFwI0_Jrv_JF1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4
+        xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v2
+        6r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x0262
+        8vn2kIc2xKxwCY02Avz4vE14v_GFWl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
+        Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1V
+        AY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAI
+        cVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42
+        IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIev
+        Ja73UjIFyTuYvjxUaw0eDUUUU
+X-CM-SenderInfo: x2kd0wptlqwqxorr0wxvrqhubq/
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-fixed the coccicheck:
-drivers/spi/spi-dw-bt1.c:220:27-30: ERROR: Missing
-resource_size with mem.
+The LS3A SPI module is now supported, enable it.
 
-Signed-off-by: Tian Tao <tiantao6@hisilicon.com>
+Signed-off-by: Qing Zhang <zhangqing@loongson.cn>
 ---
- drivers/spi/spi-dw-bt1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/boot/dts/loongson/loongson64c-package.dtsi | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/spi/spi-dw-bt1.c b/drivers/spi/spi-dw-bt1.c
-index f382dfad..da4f4d8 100644
---- a/drivers/spi/spi-dw-bt1.c
-+++ b/drivers/spi/spi-dw-bt1.c
-@@ -217,7 +217,7 @@ static int dw_spi_bt1_sys_init(struct platform_device *pdev,
- 	if (mem) {
- 		dwsbt1->map = devm_ioremap_resource(&pdev->dev, mem);
- 		if (!IS_ERR(dwsbt1->map)) {
--			dwsbt1->map_len = (mem->end - mem->start + 1);
-+			dwsbt1->map_len = resource_size(mem);
- 			dws->mem_ops.dirmap_create = dw_spi_bt1_dirmap_create;
- 			dws->mem_ops.dirmap_read = dw_spi_bt1_dirmap_read;
- 		} else {
+diff --git a/arch/mips/boot/dts/loongson/loongson64c-package.dtsi b/arch/mips/boot/dts/loongson/loongson64c-package.dtsi
+index 5bb876a..2025c5a 100644
+--- a/arch/mips/boot/dts/loongson/loongson64c-package.dtsi
++++ b/arch/mips/boot/dts/loongson/loongson64c-package.dtsi
+@@ -60,5 +60,12 @@
+ 			interrupt-parent = <&liointc>;
+ 			no-loopback-test;
+ 		};
++
++                spi: spi@1fe00220 {
++                        compatible = "loongson,loongson-spi";
++                        reg=<0 0x1fe00220 0x11>;
++                        #address-cells = <1>;
++                        #size-cells = <0>;
++               };
+ 	};
+ };
 -- 
-2.7.4
+2.1.0
 

@@ -2,44 +2,46 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EE67BC63798
-	for <linux-spi@archiver.kernel.org>; Wed, 25 Nov 2020 13:59:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D84CC5519F
+	for <linux-spi@archiver.kernel.org>; Wed, 25 Nov 2020 13:59:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 948232067C
-	for <linux-spi@archiver.kernel.org>; Wed, 25 Nov 2020 13:59:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 221222067C
+	for <linux-spi@archiver.kernel.org>; Wed, 25 Nov 2020 13:59:07 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=kernel.org header.i=@kernel.org header.b="qnuaQW+u"
+	dkim=pass (1024-bit key) header.d=kernel.org header.i=@kernel.org header.b="aQ6aa79R"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726992AbgKYN6u (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 25 Nov 2020 08:58:50 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34624 "EHLO mail.kernel.org"
+        id S1729762AbgKYN64 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 25 Nov 2020 08:58:56 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34718 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725985AbgKYN6u (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 25 Nov 2020 08:58:50 -0500
+        id S1725985AbgKYN6z (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 25 Nov 2020 08:58:55 -0500
 Received: from localhost (cpc102334-sgyl38-2-0-cust884.18-2.cable.virginm.net [92.233.91.117])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A6E6E206E5;
-        Wed, 25 Nov 2020 13:58:49 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A4243206F9;
+        Wed, 25 Nov 2020 13:58:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606312730;
-        bh=kMWPLddZeJ+iT1zpRIFZnAm9AkHKhLeUv8iaxlk9Cvg=;
+        s=default; t=1606312735;
+        bh=o7d9fgU6mXGwYGbLFIRYfmgfnb1HDJ7zjumgwpqARWY=;
         h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-        b=qnuaQW+uX8hpgq3lWYBTfGUCVPq6+QAYukHRnsbhQgYtuYRE8XDyaQlwFuv8nQVHY
-         gwi1g8J1snDO2660Hu917IR+c504zKPIi5HRmMyEkLd0iTVj8xH74iA3bRMlm1oSt/
-         FAkg85eHOZFWpUuIXABOl1wGhs6Q2Nt/GPuknPbo=
-Date:   Wed, 25 Nov 2020 13:58:25 +0000
+        b=aQ6aa79R8DU5b7+nisqI1fjMhRLxU0cT2zvnWXEnMs6Omaq1SeGuiZ/lt6L0LUM9Z
+         dhRKwvyj/K37RZkarmhvHFa+PeFLZJXyiJeJfiOro1W+P6ZJAQTQOCbMvJAfPhlimn
+         R8pdUWCXWhdFJ3eURsdXRVo6haUvVR1T22fbCYfI=
+Date:   Wed, 25 Nov 2020 13:58:30 +0000
 From:   Mark Brown <broonie@kernel.org>
-To:     fancer.lancer@gmail.com, Tian Tao <tiantao6@hisilicon.com>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <1606114975-31362-1-git-send-email-tiantao6@hisilicon.com>
-References: <1606114975-31362-1-git-send-email-tiantao6@hisilicon.com>
-Subject: Re: [PATCH] spi: dw: fixed missing resource_size
-Message-Id: <160631270510.29611.2327233732036915740.b4-ty@kernel.org>
+To:     Serge Semin <fancer.lancer@gmail.com>,
+        Lars Povlsen <lars.povlsen@microchip.com>,
+        linux-spi@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org
+In-Reply-To: <20201120213414.339701-1-lars.povlsen@microchip.com>
+References: <20201120213414.339701-1-lars.povlsen@microchip.com>
+Subject: Re: [PATCH] spi: dw: Fix spi registration for controllers overriding CS
+Message-Id: <160631270511.29611.7697782706321282080.b4-ty@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -47,10 +49,16 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 23 Nov 2020 15:02:55 +0800, Tian Tao wrote:
-> fixed the coccicheck:
-> drivers/spi/spi-dw-bt1.c:220:27-30: ERROR: Missing
-> resource_size with mem.
+On Fri, 20 Nov 2020 22:34:14 +0100, Lars Povlsen wrote:
+> When SPI DW memory ops support was introduced, there was a check for
+> excluding controllers which supplied their own CS function. Even so,
+> the mem_ops pointer is *always* presented to the SPI core.
+> 
+> This causes the SPI core sanity check in spi_controller_check_ops() to
+> refuse registration, since a mem_ops pointer is being supplied without
+> an exec_op member function.
+> 
+> [...]
 
 Applied to
 
@@ -58,8 +66,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: dw: fixed missing resource_size
-      commit: 459ea85049b01708e364c34deac24b00909c73ed
+[1/1] spi: dw: Fix spi registration for controllers overriding CS
+      commit: 0abdb0fba07322ce960d32a92a64847b3009b2e2
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

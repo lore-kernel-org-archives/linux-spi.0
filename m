@@ -2,103 +2,124 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E47BC56201
-	for <linux-spi@archiver.kernel.org>; Thu, 26 Nov 2020 02:01:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5743CC64E7A
+	for <linux-spi@archiver.kernel.org>; Thu, 26 Nov 2020 02:01:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id ED58B206B7
-	for <linux-spi@archiver.kernel.org>; Thu, 26 Nov 2020 02:01:07 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F3562206B7
+	for <linux-spi@archiver.kernel.org>; Thu, 26 Nov 2020 02:01:08 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b="mYvhpocW"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b="MNTjtYrQ"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732069AbgKZCAw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 25 Nov 2020 21:00:52 -0500
-Received: from esa3.hgst.iphmx.com ([216.71.153.141]:17440 "EHLO
+        id S1732332AbgKZCAz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 25 Nov 2020 21:00:55 -0500
+Received: from esa3.hgst.iphmx.com ([216.71.153.141]:17443 "EHLO
         esa3.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730060AbgKZCAw (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 25 Nov 2020 21:00:52 -0500
+        with ESMTP id S1732204AbgKZCAz (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 25 Nov 2020 21:00:55 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1606356051; x=1637892051;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=w7YOEIhMI8v6tTPl07pNEdytAyVq1hpIKUHf0meZHhM=;
-  b=mYvhpocWqf/4qtGwInC5FZvEuxWaxV1Ix7eTo/ZzALIJZgzTpPGPjvhy
-   7Fc36TnoXy2DdEZ00N8OZfOQgNOeNoswHJWD/WTEFAZxoKmnIdpMXXxbu
-   hHbzeEMn0xdT63d3i3kk6ITaOzu2UAgIpIFJllwAPTn4wu9mdtkB5v30o
-   8uLlcx286HxQbxM4z2jPBCCPifZLD+LYp1Yta+YJfAn68uH0f+i77WoOW
-   md3063pNQoRSIBXt684EpvQhmX05EEi3MrAYbIfH9Lmsd+l5tRC5p2kj+
-   EQbbg7L6kX5g5bReAkFGKhZIjKBmPjpJZM2AN/6XRaP0QTNEKS+DeecfF
-   w==;
-IronPort-SDR: t5kYSW6cPUw2E9ia5RbBCXs+he914Bqrvkg/kS3+Q0297rrMHtigj4uR+KpXz/blN7/3H3e1V0
- J3gVCZJQT7Lf9lJfT2q6g56OYwWmJoVNzBw21dTYFHAiUYFW+KmbfJ7O1SJ9N6zcNVdLF2NnG8
- EeOnLMyROOvcjawyi/v93Bl5I6gksW2ytinmMs19RO8htQwGr5sXxgqj0pjcGiING+CCLLbwHx
- Tf/JgPumH20L+CGIO+ropf1rS1bAreQzbPXyfMgfHYu5tuGuf7UL8jWUvnu7G3PTcweULjjKzw
- Qy8=
+  t=1606356054; x=1637892054;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=FUFns0ZQm6ox08bIyStAPeZebNJokqWZzdgTWJBkH6w=;
+  b=MNTjtYrQMv6CoTSRAdldsDrcxPUKD0NSXUCRTC3bI3iGCUZODfVFjAHq
+   DtCf7ko5DA5AHScYIV54J/AsDw1Ser4NnfdtE4nV1NBP8gGmZczvU1eIi
+   vruFKKyCt7U1+liccrmwWoqiCNCV562HqSizyqBevYQCJmIW1Y4XlfZzQ
+   K8XGP6U5wYw7g1c1akTNT/a3N1HuZQSIewOp1rjdzyu46MWmRdeQdMER8
+   /sKYagqpRH0fylpHn2DXrUEuzPDI06Auv2cTqxAG8JQTP7VI77dgtAs93
+   754cF/yLuRIvQ6hJAxPBFGn3zuegViqE7DgHH2sUcKTFQvwIR2C82VljX
+   g==;
+IronPort-SDR: 8FXI9w4CFsGrQIj5n5kCUpXp3IfVW+gQT4ntieL3LNEMBnoHm5EhIUEIs5u8mM8P7goTpEVNKb
+ UMHHNc5ggOFqe+MqnvCidxc6ULMRwOBaJAQaFelGohLhMHzAQlfcbets1/9PNZYNpH5iskn194
+ NYHL20n8kWsH9ibAM3u0jf30Rm9bBqcbfgnrV1bf/GngmV9sdO+KmfnhiFFVExLHF8VttqUdVC
+ BOwKxB6VOqNsy6EiQBL0JEjAhVdcGbZlLuMDdXggIUbb/PTeFTjYMuEu1aRXusdlYkBBJ3MIxh
+ Kd8=
 X-IronPort-AV: E=Sophos;i="5.78,370,1599494400"; 
-   d="scan'208";a="157980294"
+   d="scan'208";a="157980297"
 Received: from uls-op-cesaip01.wdc.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 26 Nov 2020 10:00:51 +0800
-IronPort-SDR: N/frh/D5Ab3oTITuhLI9JJgkYGjqfeVLBdrBFGKE5IfrNIj99JlWm2jNgNVpda1F20GkHFltQz
- 052l23R/ujAMDnaMioYkAvtsVRQ9sN654=
+  by ob1.hgst.iphmx.com with ESMTP; 26 Nov 2020 10:00:54 +0800
+IronPort-SDR: 5fC1pKNJ8aDkN7dSNqj3YOuMhd9TTqhcx74Lq655xjfeIT0n60wJ8UqzLwFBjpUhovouDT+I3z
+ l9gjEP6Ym7RhJpIInd7W2fSklJSW8eDHU=
 Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2020 17:46:34 -0800
-IronPort-SDR: DuKwAXsKXXIP0xpxYo0xQE7Th1Zk+L/Kbyq0zxOpz/Y1TawYkcKej9+ej4eFYKcBJy+yhX/mJF
- LbMwo54Rftzw==
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2020 17:46:37 -0800
+IronPort-SDR: ODSIuWrDP3/zSNT8TTLI8jX6JpHpYCuofm/0eEltZoDJNQeBhFGiRl3DA+4pVaSV/L6BJE4D2m
+ 1ByJpF1LEPrg==
 WDCIronportException: Internal
 Received: from 57m2vf2.ad.shared (HELO twashi.fujisawa.hgst.com) ([10.84.71.135])
-  by uls-op-cesaip01.wdc.com with ESMTP; 25 Nov 2020 18:00:50 -0800
+  by uls-op-cesaip01.wdc.com with ESMTP; 25 Nov 2020 18:00:53 -0800
 From:   Damien Le Moal <damien.lemoal@wdc.com>
 To:     Serge Semin <fancer.lancer@gmail.com>,
         Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
         Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
 Cc:     Sean Anderson <seanga2@gmail.com>
-Subject: [PATCH v2 0/3] DW apb_ssi V4 support for Kendryte K210 RISC-V SoC
-Date:   Thu, 26 Nov 2020 11:00:46 +0900
-Message-Id: <20201126020049.35712-1-damien.lemoal@wdc.com>
+Subject: [PATCH v2 2/3] spi: dw: Add support for the Canaan K210 SoC SPI
+Date:   Thu, 26 Nov 2020 11:00:48 +0900
+Message-Id: <20201126020049.35712-3-damien.lemoal@wdc.com>
 X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20201126020049.35712-1-damien.lemoal@wdc.com>
+References: <20201126020049.35712-1-damien.lemoal@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The Canaan Kendryte K210 RISC-V SoC includes a DesignWare apb_ssi V4
-SPI controller implemented with a maximum data frame size of 32-bits
-(SSI_MAX_XFER_SIZE=32 synthesis parameter).
+The Canaan Kendryte K210 RISC-V SoC includes a DW apb_ssi v4 controller
+which is documented to have a 32 words deep TX and RX FIFO. The FIFO
+length detection in spi_hw_init() correctly detects this value.
+However, when the controller RX FIFO is filled up to 32 entries
+(RXFLR = 32), an RX FIFO overrun error occurs. This likely due to a
+hardware bug which can be avoided by force setting the fifo_len field of
+struct dw_spi to 31.
 
-This series of patches adds support for this SoC by implementing support
-for the 32-bits xfer size configuration. This is done in patch 1.
+Define the dw_spi_canaan_k210_init() function to force set fifo_len to
+31 when the device node compatible string is "canaan,k210-spi".
 
-Patch 2 introduces a workaround for a HW bug on this SoC which triggers
-RX FIFO overrun errors when the RX FIFO fills up to its maximum detected
-depth of 32. The patch manually reduces the fifo depth to 31.
+Signed-off-by: Damien Le Moal <damien.lemoal@wdc.com>
+Acked-by: Serge Semin <fancer.lancer@gmail.com>
+---
+ drivers/spi/spi-dw-mmio.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-Patch 3 documents the new compatible string "canaan,k210-spi" used to
-identify this SoC.
-
-Changes from v1:
-* Fixed patch 1 as suggested by Serge: change capability flag name to
-  DW_SPI_CAP_DFS32 and fixed the capability detection to use the regular
-  position of the dfs filed rather than the new position with DFS32.
-  Also enable DW_SPI_CAP_DFS32 for SPI slaves.
-* Added Serge's Acked-by tag to patch 2 and 3.
-
-Damien Le Moal (3):
-  spi: dw: Add support for 32-bits max xfer size
-  spi: dw: Add support for the Canaan K210 SoC SPI
-  dt-bindings: spi: dw-apb-ssi: Add Canaan K210 SPI controller
-
- .../bindings/spi/snps,dw-apb-ssi.yaml         |  2 +
- drivers/spi/spi-dw-core.c                     | 44 ++++++++++++++++---
- drivers/spi/spi-dw-mmio.c                     | 16 +++++++
- drivers/spi/spi-dw.h                          |  5 +++
- 4 files changed, 60 insertions(+), 7 deletions(-)
-
+diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+index d0cc5bf4fa4e..17c06039a74d 100644
+--- a/drivers/spi/spi-dw-mmio.c
++++ b/drivers/spi/spi-dw-mmio.c
+@@ -222,6 +222,21 @@ static int dw_spi_keembay_init(struct platform_device *pdev,
+ 	return 0;
+ }
+ 
++static int dw_spi_canaan_k210_init(struct platform_device *pdev,
++				   struct dw_spi_mmio *dwsmmio)
++{
++	/*
++	 * The Canaan Kendryte K210 SoC DW apb_ssi v4 spi controller is
++	 * documented to have a 32 word deep TX and RX FIFO, which
++	 * spi_hw_init() detects. However, when the RX FIFO is filled up to
++	 * 32 entries (RXFLR = 32), an RX FIFO overrun error occurs. Avoid this
++	 * problem by force setting fifo_len to 31.
++	 */
++	dwsmmio->dws.fifo_len = 31;
++
++	return 0;
++}
++
+ static int dw_spi_mmio_probe(struct platform_device *pdev)
+ {
+ 	int (*init_func)(struct platform_device *pdev,
+@@ -335,6 +350,7 @@ static const struct of_device_id dw_spi_mmio_of_match[] = {
+ 	{ .compatible = "snps,dwc-ssi-1.01a", .data = dw_spi_dwc_ssi_init},
+ 	{ .compatible = "intel,keembay-ssi", .data = dw_spi_keembay_init},
+ 	{ .compatible = "microchip,sparx5-spi", dw_spi_mscc_sparx5_init},
++	{ .compatible = "canaan,k210-spi", dw_spi_canaan_k210_init},
+ 	{ /* end of table */}
+ };
+ MODULE_DEVICE_TABLE(of, dw_spi_mmio_of_match);
 -- 
 2.28.0
 

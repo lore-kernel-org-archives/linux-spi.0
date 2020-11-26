@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
 	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E3148C63798
-	for <linux-spi@archiver.kernel.org>; Thu, 26 Nov 2020 02:01:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C9021C64E7B
+	for <linux-spi@archiver.kernel.org>; Thu, 26 Nov 2020 02:01:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 74CFB206B7
-	for <linux-spi@archiver.kernel.org>; Thu, 26 Nov 2020 02:01:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 76A1F20B1F
+	for <linux-spi@archiver.kernel.org>; Thu, 26 Nov 2020 02:01:09 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b="fGyRhPT9"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b="CZhWAP4W"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732292AbgKZCAz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 25 Nov 2020 21:00:55 -0500
-Received: from esa3.hgst.iphmx.com ([216.71.153.141]:17440 "EHLO
+        id S1732361AbgKZCA4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 25 Nov 2020 21:00:56 -0500
+Received: from esa3.hgst.iphmx.com ([216.71.153.141]:17444 "EHLO
         esa3.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730060AbgKZCAy (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 25 Nov 2020 21:00:54 -0500
+        with ESMTP id S1732204AbgKZCA4 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 25 Nov 2020 21:00:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1606356053; x=1637892053;
+  t=1606356056; x=1637892056;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=1pckFZ688v263y5IgA3KAvJLkpwAwKYxGDqKgEvfEzM=;
-  b=fGyRhPT9cwJgzIr4OcvdoKr4AY0WGvGGR4QskNdD85Zt2zYxjb2VCuVd
-   +Vy1VEbUEIsb0IE4nO2leYmHMr52ynf3ZWEjXGEMry9a9wrZe4IwdVVVq
-   sBnUgfYe1RUa8TIe6/6QYi7RETgPlWZIPqkbInExrDCGexp+4zJ8kO92f
-   kLDmex469gutBZ7imhsk3fPvyEFey7kAgzWrw3yvXbgPD2mfvg+4pNX9o
-   WEQYtuXBtAJdAgAcZxudLcHZXvxWYh1+LCrlRQDHBz3Es4F9GMI9ugH/6
-   jIoEuDgxYEat3ylqWR9UkP95XfsuqvPHgSChMICYu1Bhyeg55U6YE6P0J
-   g==;
-IronPort-SDR: KLG3gOYJ4jOQ9oN2DuUYTBNRTd11yaK0fxP4sUvqO2uTKdquszeUie9sWFxjOxMkR31KbP2KbO
- 9EdR+TgOWF/1hYIQupcEsZLJSb+dpsdWS37iZcnUaWRJ/Qbq9N/uzDz+1ssSPrkGfUIKPGnzXT
- EByB64+ldWxpW/JPBiihYoTBJFc0Pxz2DAoV+/HIxKgJ7XvEZEsEr3n8ecfsGKRdLRaqixXLz9
- /ZUXgRn1whmEx8Vbr5MNQXIq/nHBdZhStP3AS9u5icZuH6MjQnp0NWwg8RAEYZVeBmwx+sbo3J
- R7g=
+  bh=0I4QzQzOsChmNRmAhZHgMo7j8PJFacdYYrWcPxv0oYw=;
+  b=CZhWAP4WvClIvV9MpKWmDikx3ADIGC/CAZ+lI0SnWg4jy9r3gxnEMVOC
+   6/F5mWM6LaC3ZXFtCwQh0vqqwSjpyTSNnfeUEhwXqYskAJmTOI+1/iUwf
+   lpsKYuGm4MqsoYQpzwBxIx8ADrXYbVbmKAgC1MgkDtnAr+1OWsq9LfPxl
+   TY3WBZFagyOKpYr/3Li2ipngEX2cBsiLjBT6VM/kvBswU0i9sIODsCMO2
+   KrR7L8P+WgLH63QdsoaLh4kQyRZSnut4xqhGEb2Mul8NFU8qNzxW3beUk
+   /8zo/PWjndQENFe5IACh1uFYRvkKLZJQ5OPt/UFJiEpL+5x7Q/4S662rI
+   Q==;
+IronPort-SDR: Zra4TB4kwAFiKQlyGZc+geNHXxSuKzAYu16lg3PkuelNkn9FRgEQPNk53JyNufxId34fpbAxOb
+ fYpk/mObZKbCW2dtnXIUDaF0SZwElzqWWfisZOGk6xSze+yqfPFsdfzfcBS6tMGVM677fIqvvp
+ fm3EzQxyE/azET2kGfTVS48vnMU1C0PQ5zN04s6Rwtf+U0eArj1QyOSQ4PGC8vGE0HRiKfSZjp
+ IbEGrMb744/Ctv92Tu2X4dPpem1+c8wl7d6CjRF/rVtmwfIuzfD4DJOdQAex9Lg043v8sGMLR6
+ leI=
 X-IronPort-AV: E=Sophos;i="5.78,370,1599494400"; 
-   d="scan'208";a="157980295"
+   d="scan'208";a="157980299"
 Received: from uls-op-cesaip01.wdc.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 26 Nov 2020 10:00:53 +0800
-IronPort-SDR: GgBX61nyp+fEIRTSRvos8ioJrkUO03Y8uctWUI0iypYxw//f+PhSzzL8r+yQAJ0yRs6p3wFT6/
- l05grSnBha6JtfHlSePp4KoI3nocwpmuk=
+  by ob1.hgst.iphmx.com with ESMTP; 26 Nov 2020 10:00:56 +0800
+IronPort-SDR: OMmfMDzjI3YdsFqNclBF89Bou6vz7qzwRU44QXqEa8aIjFcdHHCfOuGYhhjfSyLHJiwAk0NNhk
+ SbkedJuDnXF4gwl2CIr/06dHeYP/deztY=
 Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2020 17:46:35 -0800
-IronPort-SDR: xnwFgkekrHXi2hgiV7kXkkzoSlYIFxhSMUS9IxJuEUUWAB+B9QJpUW15e5PWVq/HAEBy1J+/5o
- 6sGQ6RqGkDdQ==
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2020 17:46:38 -0800
+IronPort-SDR: uIFwRCk56/LGewbvwstkHBqzPw0LzYf83eyP7hN9je3HYh96QHD7O3TUqcDZFuyyXNG2jg0mf+
+ y/AOy5nPUnwA==
 WDCIronportException: Internal
 Received: from 57m2vf2.ad.shared (HELO twashi.fujisawa.hgst.com) ([10.84.71.135])
-  by uls-op-cesaip01.wdc.com with ESMTP; 25 Nov 2020 18:00:51 -0800
+  by uls-op-cesaip01.wdc.com with ESMTP; 25 Nov 2020 18:00:54 -0800
 From:   Damien Le Moal <damien.lemoal@wdc.com>
 To:     Serge Semin <fancer.lancer@gmail.com>,
         Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
         Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org
 Cc:     Sean Anderson <seanga2@gmail.com>
-Subject: [PATCH v2 1/3] spi: dw: Add support for 32-bits max xfer size
-Date:   Thu, 26 Nov 2020 11:00:47 +0900
-Message-Id: <20201126020049.35712-2-damien.lemoal@wdc.com>
+Subject: [PATCH v2 3/3] dt-bindings: spi: dw-apb-ssi: Add Canaan K210 SPI controller
+Date:   Thu, 26 Nov 2020 11:00:49 +0900
+Message-Id: <20201126020049.35712-4-damien.lemoal@wdc.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201126020049.35712-1-damien.lemoal@wdc.com>
 References: <20201126020049.35712-1-damien.lemoal@wdc.com>
@@ -69,178 +69,29 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The Synopsis DesignWare DW_apb_ssi specifications version 3.23 onward
-define a 32-bits maximum transfer size synthesis parameter
-(SSI_MAX_XFER_SIZE=32) in addition to the legacy 16-bits configuration
-(SSI_MAX_XFER_SIZE=16) for SPI controllers. When SSI_MAX_XFER_SIZE=32,
-the layout of the ctrlr0 register changes, moving the data frame format
-field from bits [3..0] to bits [16..20], and the RX/TX FIFO word size
-can be up to 32-bits.
+Update the snps,dw-apb-ssi.yaml document to include the compatibility
+string "canaan,k210-spi" compatible string for the Canaan Kendryte K210
+RISC-V SoC DW apb_ssi V4 SPI controller.
 
-To support this new format, introduce the DW SPI capability flag
-DW_SPI_CAP_DFS32 to indicate that a controller is configured with
-SSI_MAX_XFER_SIZE=32. Since SSI_MAX_XFER_SIZE is a controller synthesis
-parameter not accessible through a register, the detection of this
-parameter value is done in spi_hw_init() by writing and reading the
-ctrlr0 register and testing the value of bits [3..0]. These bits are
-ignored (unchanged) for SSI_MAX_XFER_SIZE=16, allowing the detection.
-If a DFS32 capable SPI controller is detected, the new field dfs_offset
-in struct dw_spi is set to SPI_DFS32_OFFSET (16).
-
-dw_spi_update_config() is modified to set the data frame size field at
-the correct position is the CTRLR0 register, as indicated by the
-dfs_offset field of the dw_spi structure.
-
-The DW_SPI_CAP_DFS32 flag is also unconditionally set for SPI slave
-controllers, e.g. controllers that have the DW_SPI_CAP_DWC_SSI
-capability flag set. However, for these ssi controllers, the dfs_offset
-field is set to 0 as before (as per specifications).
-
-Finally, for any controller with the DW_SPI_CAP_DFS32 capability flag
-set, dw_spi_add_host() extends the value of bits_per_word_mask from
-16-bits to 32-bits. dw_reader() and dw_writer() are also modified to
-handle 32-bits iTX/RX FIFO words.
-
-Suggested-by: Sean Anderson <seanga2@gmail.com>
 Signed-off-by: Damien Le Moal <damien.lemoal@wdc.com>
+Acked-by: Serge Semin <fancer.lancer@gmail.com>
 ---
- drivers/spi/spi-dw-core.c | 44 ++++++++++++++++++++++++++++++++-------
- drivers/spi/spi-dw.h      |  5 +++++
- 2 files changed, 42 insertions(+), 7 deletions(-)
+ Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 0b2236ade412..54166fcb2e5b 100644
---- a/drivers/spi/spi-dw-core.c
-+++ b/drivers/spi/spi-dw-core.c
-@@ -137,14 +137,16 @@ static inline u32 rx_max(struct dw_spi *dws)
- static void dw_writer(struct dw_spi *dws)
- {
- 	u32 max = tx_max(dws);
--	u16 txw = 0;
-+	u32 txw = 0;
+diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+index 99ed9b416e94..4825157cd92e 100644
+--- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
++++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
+@@ -65,6 +65,8 @@ properties:
+         const: baikal,bt1-ssi
+       - description: Baikal-T1 System Boot SPI Controller
+         const: baikal,bt1-sys-ssi
++      - description: Canaan Kendryte K210 SoS SPI Controller
++        const: canaan,k210-spi
  
- 	while (max--) {
- 		if (dws->tx) {
- 			if (dws->n_bytes == 1)
- 				txw = *(u8 *)(dws->tx);
--			else
-+			else if (dws->n_bytes == 2)
- 				txw = *(u16 *)(dws->tx);
-+			else
-+				txw = *(u32 *)(dws->tx);
- 
- 			dws->tx += dws->n_bytes;
- 		}
-@@ -156,15 +158,17 @@ static void dw_writer(struct dw_spi *dws)
- static void dw_reader(struct dw_spi *dws)
- {
- 	u32 max = rx_max(dws);
--	u16 rxw;
-+	u32 rxw;
- 
- 	while (max--) {
- 		rxw = dw_read_io_reg(dws, DW_SPI_DR);
- 		if (dws->rx) {
- 			if (dws->n_bytes == 1)
- 				*(u8 *)(dws->rx) = rxw;
--			else
-+			else if (dws->n_bytes == 2)
- 				*(u16 *)(dws->rx) = rxw;
-+			else
-+				*(u32 *)(dws->rx) = rxw;
- 
- 			dws->rx += dws->n_bytes;
- 		}
-@@ -311,8 +315,8 @@ void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
- 	u32 speed_hz;
- 	u16 clk_div;
- 
--	/* CTRLR0[ 4/3: 0] Data Frame Size */
--	cr0 |= (cfg->dfs - 1);
-+	/* CTRLR0[ 4/3: 0] or CTRLR0[ 20: 16] Data Frame Size */
-+	cr0 |= (cfg->dfs - 1) << dws->dfs_offset;
- 
- 	if (!(dws->caps & DW_SPI_CAP_DWC_SSI))
- 		/* CTRLR0[ 9:8] Transfer Mode */
-@@ -828,6 +832,29 @@ static void spi_hw_init(struct device *dev, struct dw_spi *dws)
- 		dev_dbg(dev, "Detected FIFO size: %u bytes\n", dws->fifo_len);
- 	}
- 
-+	if (!(dws->caps & DW_SPI_CAP_DWC_SSI)) {
-+		u32 cr0, tmp = dw_readl(dws, DW_SPI_CTRLR0);
-+
-+		/*
-+		 * Detect APB SSI CTRLR0 DFS offset by looking at the data
-+		 * frame size field: for 32-bits data frame size, bits [3..0]
-+		 * (SPI_DFS_MASK) are ignored.
-+		 */
-+		spi_enable_chip(dws, 0);
-+		dw_writel(dws, DW_SPI_CTRLR0, 0xffffffff);
-+		cr0 = dw_readl(dws, DW_SPI_CTRLR0);
-+		dw_writel(dws, DW_SPI_CTRLR0, tmp);
-+		spi_enable_chip(dws, 1);
-+
-+		if (!(cr0 & SPI_DFS_MASK)) {
-+			dws->caps |= DW_SPI_CAP_DFS32;
-+			dws->dfs_offset = SPI_DFS32_OFFSET;
-+			dev_dbg(dev, "Detected 32-bits max data frame size\n");
-+		}
-+	} else {
-+		dws->caps |= DW_SPI_CAP_DFS32;
-+	}
-+
- 	/* enable HW fixup for explicit CS deselect for Amazon's alpine chip */
- 	if (dws->caps & DW_SPI_CAP_CS_OVERRIDE)
- 		dw_writel(dws, DW_SPI_CS_OVERRIDE, 0xF);
-@@ -864,7 +891,10 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 
- 	master->use_gpio_descriptors = true;
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP;
--	master->bits_per_word_mask =  SPI_BPW_RANGE_MASK(4, 16);
-+	if (dws->caps & DW_SPI_CAP_DFS32)
-+		master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
-+	else
-+		master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 16);
- 	master->bus_num = dws->bus_num;
- 	master->num_chipselect = dws->num_cs;
- 	master->setup = dw_spi_setup;
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index faf40cb66498..b665e040862c 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -9,6 +9,7 @@
- #include <linux/io.h>
- #include <linux/scatterlist.h>
- #include <linux/spi/spi-mem.h>
-+#include <linux/bitfield.h>
- 
- /* Register offsets */
- #define DW_SPI_CTRLR0			0x00
-@@ -41,6 +42,8 @@
- 
- /* Bit fields in CTRLR0 */
- #define SPI_DFS_OFFSET			0
-+#define SPI_DFS_MASK			GENMASK(3, 0)
-+#define SPI_DFS32_OFFSET		16
- 
- #define SPI_FRF_OFFSET			4
- #define SPI_FRF_SPI			0x0
-@@ -121,6 +124,7 @@ enum dw_ssi_type {
- #define DW_SPI_CAP_CS_OVERRIDE		BIT(0)
- #define DW_SPI_CAP_KEEMBAY_MST		BIT(1)
- #define DW_SPI_CAP_DWC_SSI		BIT(2)
-+#define DW_SPI_CAP_DFS32		BIT(3)
- 
- /* Slave spi_transfer/spi_mem_op related */
- struct dw_spi_cfg {
-@@ -148,6 +152,7 @@ struct dw_spi {
- 	unsigned long		paddr;
- 	int			irq;
- 	u32			fifo_len;	/* depth of the FIFO buffer */
-+	unsigned int		dfs_offset;     /* CTRLR0 DFS field offset */
- 	u32			max_mem_freq;	/* max mem-ops bus freq */
- 	u32			max_freq;	/* max bus freq supported */
- 
+   reg:
+     minItems: 1
 -- 
 2.28.0
 

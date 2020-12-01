@@ -2,64 +2,155 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-20.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 96607C64E7B
-	for <linux-spi@archiver.kernel.org>; Tue,  1 Dec 2020 17:50:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C9D88C64E7B
+	for <linux-spi@archiver.kernel.org>; Tue,  1 Dec 2020 21:14:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 38E7021D46
-	for <linux-spi@archiver.kernel.org>; Tue,  1 Dec 2020 17:50:38 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5DA0A20705
+	for <linux-spi@archiver.kernel.org>; Tue,  1 Dec 2020 21:14:01 +0000 (UTC)
+Authentication-Results: mail.kernel.org;
+	dkim=pass (2048-bit key) header.d=nvidia.com header.i=@nvidia.com header.b="hMBI1jnA"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726685AbgLARub (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 1 Dec 2020 12:50:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49188 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726532AbgLARub (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 1 Dec 2020 12:50:31 -0500
-Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0904AC0613D4
-        for <linux-spi@vger.kernel.org>; Tue,  1 Dec 2020 09:49:51 -0800 (PST)
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (Client CN "*.hostsharing.net", Issuer "COMODO RSA Domain Validation Secure Server CA" (not verified))
-        by bmailout1.hostsharing.net (Postfix) with ESMTPS id 3497B30006262;
-        Tue,  1 Dec 2020 18:49:13 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-        id 7E673184F70; Tue,  1 Dec 2020 18:49:08 +0100 (CET)
-Date:   Tue, 1 Dec 2020 18:49:08 +0100
-From:   Lukas Wunner <lukas@wunner.de>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     linux-spi@vger.kernel.org, Tomer Maimon <tmaimon77@gmail.com>
-Subject: Re: [PATCH for-5.10] spi: npcm-fiu: Don't leak SPI master in probe
- error path
-Message-ID: <20201201174908.GA5827@wunner.de>
-References: <73adc6ba84a4f968f2e1499a776e5c928fbdde56.1605512876.git.lukas@wunner.de>
- <a420c23a363a3bc9aa684c6e790c32a8af106d17.1605512876.git.lukas@wunner.de>
- <160683107676.35139.5898255579541696458.b4-ty@kernel.org>
- <20201201143027.GA23044@wunner.de>
- <20201201171726.GN5239@sirena.org.uk>
+        id S2388367AbgLAVNc (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 1 Dec 2020 16:13:32 -0500
+Received: from hqnvemgate24.nvidia.com ([216.228.121.143]:14567 "EHLO
+        hqnvemgate24.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387962AbgLAVNb (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 1 Dec 2020 16:13:31 -0500
+Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate24.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
+        id <B5fc6b1d30000>; Tue, 01 Dec 2020 13:12:51 -0800
+Received: from HQMAIL105.nvidia.com (172.20.187.12) by HQMAIL111.nvidia.com
+ (172.20.187.18) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 1 Dec
+ 2020 21:12:50 +0000
+Received: from skomatineni-linux.nvidia.com (10.124.1.5) by mail.nvidia.com
+ (172.20.187.12) with Microsoft SMTP Server id 15.0.1473.3 via Frontend
+ Transport; Tue, 1 Dec 2020 21:12:49 +0000
+From:   Sowjanya Komatineni <skomatineni@nvidia.com>
+To:     <thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
+        <broonie@kernel.org>, <robh+dt@kernel.org>
+CC:     <skomatineni@nvidia.com>, <linux-spi@vger.kernel.org>,
+        <linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+Subject: [PATCH v1 2/7] dt-bindings: spi: Add Tegra QSPI device tree binding
+Date:   Tue, 1 Dec 2020 13:12:43 -0800
+Message-ID: <1606857168-5839-3-git-send-email-skomatineni@nvidia.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1606857168-5839-1-git-send-email-skomatineni@nvidia.com>
+References: <1606857168-5839-1-git-send-email-skomatineni@nvidia.com>
+X-NVConfidentiality: public
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201201171726.GN5239@sirena.org.uk>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1606857171; bh=/2F5ZwMdeddcrSo5XG0HyncQt1PgABPAL/P/aQrE10E=;
+        h=From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
+         References:X-NVConfidentiality:MIME-Version:Content-Type;
+        b=hMBI1jnAc4qs4XlY2pd8rflTZHDcF2/4KbVlLXRGP+NnbTJjIj5ZTFHJj3/zOQG5D
+         WJEtRmwxM5pWNCO7igI643SO0GsP1k7jXbCRnOnl0avTECnUxWkdotY6L5d3KGCHQW
+         7ZfnAzzdOTCbgriUQv1c0FB1DlIBrUDXcbOLP6DGBpOzdm2zeW44yjawHpV4igU2zA
+         8/Ab8sjJBS2gLuQpb1UPJdwdvkHnnLzjl9wWYYRMuwmF7oixsZCa+E8P08q7Ac/Tfw
+         xt+XWjkRPRlOjC912NhZTNKaF91GUj1M2XHqvFdaCn3zX4PpDZ6LwCoOrXrL6NoM6P
+         jO3Rk/Nd32R1w==
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, Dec 01, 2020 at 05:17:26PM +0000, Mark Brown wrote:
-> BTW it would be really helpful if you could resend this
-> stuff in some more normal fashion (either independently or as a numbered
-> thread), it's really breaking my workflow.
+This patch adds YAML based device tree binding document for Tegra
+QSPI driver.
 
-Will do, sorry for the inconvenience.
+Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
+---
+ .../devicetree/bindings/spi/nvidia,tegra-qspi.yaml | 77 ++++++++++++++++++++++
+ 1 file changed, 77 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/nvidia,tegra-qspi.yaml
 
-I think I'll base the resent patches on for-5.11, Linus would probably
-not be happy to receive such a large quantity of commits this late in the
-cycle.  (Shout if you disagree.)
+diff --git a/Documentation/devicetree/bindings/spi/nvidia,tegra-qspi.yaml b/Documentation/devicetree/bindings/spi/nvidia,tegra-qspi.yaml
+new file mode 100644
+index 0000000..038a085
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/nvidia,tegra-qspi.yaml
+@@ -0,0 +1,77 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/nvidia,tegra-qspi.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Tegra Quad SPI Controller
++
++maintainers:
++  - Thierry Reding <thierry.reding@gmail.com>
++  - Jonathan Hunter <jonathanh@nvidia.com>
++
++properties:
++  compatible:
++    enum:
++      - nvidia,tegra210-qspi
++      - nvidia,tegra186-qspi
++      - nvidia,tegra194-qspi
++
++  reg:
++    items:
++      - description: QSPI registers
++
++  interrupts:
++    maxItems: 1
++
++  clock-names:
++    items:
++      - const: qspi
++
++  clocks:
++    maxItems: 1
++
++  reset-names:
++    minItems: 1
++    items:
++      - const: qspi
++
++  resets:
++    maxItems: 1
++
++  dmas:
++    maxItems: 2
++
++  dma-names:
++    items:
++      - const: rx
++      - const: tx
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clock-names
++  - clocks
++  - reset-names
++  - resets
++
++additionalProperties: true
++
++examples:
++  - |
++    #include <dt-bindings/clock/tegra210-car.h>
++    #include <dt-bindings/reset/tegra210-car.h>
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++
++    spi@70410000 {
++            compatible = "nvidia,tegra210-qspi";
++            reg = <0x70410000 0x1000>;
++            interrupts = <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>;
++            clocks = <&tegra_car TEGRA210_CLK_QSPI>;
++            clock-names = "qspi";
++            resets = <&tegra_car 211>;
++            reset-names = "qspi";
++            dmas = <&apbdma 5>, <&apbdma 5>;
++            dma-names = "rx", "tx";
++    };
+-- 
+2.7.4
 
-Thanks,
-
-Lukas

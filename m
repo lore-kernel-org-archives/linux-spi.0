@@ -2,83 +2,110 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ECB64C83016
-	for <linux-spi@archiver.kernel.org>; Tue,  1 Dec 2020 14:00:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B62FC64E7B
+	for <linux-spi@archiver.kernel.org>; Tue,  1 Dec 2020 14:05:13 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A49A9206A5
-	for <linux-spi@archiver.kernel.org>; Tue,  1 Dec 2020 14:00:30 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B82BF20857
+	for <linux-spi@archiver.kernel.org>; Tue,  1 Dec 2020 14:05:12 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=kernel.org header.i=@kernel.org header.b="CHhvei+m"
+	dkim=pass (1024-bit key) header.d=walle.cc header.i=@walle.cc header.b="vhNuVUhQ"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403887AbgLAOAM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 1 Dec 2020 09:00:12 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46240 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2403876AbgLAOAL (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 1 Dec 2020 09:00:11 -0500
-Received: from localhost (cpc102334-sgyl38-2-0-cust884.18-2.cable.virginm.net [92.233.91.117])
+        id S2388431AbgLAOFM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 1 Dec 2020 09:05:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42252 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388154AbgLAOFL (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 1 Dec 2020 09:05:11 -0500
+Received: from ssl.serverraum.org (ssl.serverraum.org [IPv6:2a01:4f8:151:8464::1:2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D0C1C0617A6;
+        Tue,  1 Dec 2020 06:04:31 -0800 (PST)
+Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D7407208FE;
-        Tue,  1 Dec 2020 13:59:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606831171;
-        bh=Rn/Kl40yNcBnOCyq294nMqi1Xg+6oVIOdLhl43RGVVg=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=CHhvei+mcRvoUbGW/Fmp59pwQISUgsxfqrGqIgApT48MHbz9uPAyn+G/krgbBw1tz
-         Cm0kbONV9mhh2+8wmEP+lHgqf2FbpNtsZpT9YrsmdmHcRGRfLToxThkmTXujnLLlh4
-         ZndI+hsCH+PMJJ+LqkyoCrWbBYNguAVvrfz76aFo=
-From:   Mark Brown <broonie@kernel.org>
-To:     Lukas Wunner <lukas@wunner.de>
-Cc:     linux-spi@vger.kernel.org, Tomer Maimon <tmaimon77@gmail.com>
-In-Reply-To: <a420c23a363a3bc9aa684c6e790c32a8af106d17.1605512876.git.lukas@wunner.de>
-References: <73adc6ba84a4f968f2e1499a776e5c928fbdde56.1605512876.git.lukas@wunner.de> <a420c23a363a3bc9aa684c6e790c32a8af106d17.1605512876.git.lukas@wunner.de>
-Subject: Re: [PATCH for-5.10] spi: npcm-fiu: Don't leak SPI master in probe error path
-Message-Id: <160683107676.35139.5898255579541696458.b4-ty@kernel.org>
-Date:   Tue, 01 Dec 2020 13:57:56 +0000
+        by ssl.serverraum.org (Postfix) with ESMTPSA id DD61922FAD;
+        Tue,  1 Dec 2020 15:04:27 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
+        t=1606831468;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=LgcoC/q7pyVkhvpyWhlU5Ne9ks4PahNRgu8btRatkvU=;
+        b=vhNuVUhQMRWHcrhJL1c/FP27Jc9RIFUipGXA9bN/oNhXtF8MUpxKyJWjyZZLuKP/guYVZV
+        haLXNuHV/E46uR3wbwfez76Bp2QXCJnLdEiAjtwIfHcyoe68AgPHEEa+/Xf5pYxCeL3C0T
+        dekf0bmKFc5vyb/4UvklIc0JAQp9B3w=
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Tue, 01 Dec 2020 15:04:27 +0100
+From:   Michael Walle <michael@walle.cc>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Vladimir Oltean <olteanv@gmail.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH v3] spi: fsl-dspi: fix NULL pointer dereference
+In-Reply-To: <160683107674.35139.13937083243515034859.b4-ty@kernel.org>
+References: <20200928085500.28254-1-michael@walle.cc>
+ <160683107674.35139.13937083243515034859.b4-ty@kernel.org>
+User-Agent: Roundcube Webmail/1.4.9
+Message-ID: <c1dd024150ed624a6b42562573851f84@walle.cc>
+X-Sender: michael@walle.cc
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 16 Nov 2020 09:23:10 +0100, Lukas Wunner wrote:
-> If the calls to of_match_device(), of_alias_get_id(),
-> devm_ioremap_resource(), devm_regmap_init_mmio() or devm_clk_get()
-> fail on probe of the NPCM FIU SPI driver, the spi_controller struct is
-> erroneously not freed.
+Hi Mark,
+
+Am 2020-12-01 14:57, schrieb Mark Brown:
+> On Mon, 28 Sep 2020 10:55:00 +0200, Michael Walle wrote:
+>> Since commit 530b5affc675 ("spi: fsl-dspi: fix use-after-free in 
+>> remove
+>> path") this driver causes a kernel oops:
+>> 
+>> [    1.891065] Unable to handle kernel NULL pointer dereference at 
+>> virtual address 0000000000000080
+>> [..]
+>> [    2.056973] Call trace:
+>> [    2.059425]  dspi_setup+0xc8/0x2e0
+>> [    2.062837]  spi_setup+0xcc/0x248
+>> [    2.066160]  spi_add_device+0xb4/0x198
+>> [    2.069918]  of_register_spi_device+0x250/0x370
+>> [    2.074462]  spi_register_controller+0x4f4/0x770
+>> [    2.079094]  dspi_probe+0x5bc/0x7b0
+>> [    2.082594]  platform_drv_probe+0x5c/0xb0
+>> [    2.086615]  really_probe+0xec/0x3c0
+>> [    2.090200]  driver_probe_device+0x60/0xc0
+>> [    2.094308]  device_driver_attach+0x7c/0x88
+>> [    2.098503]  __driver_attach+0x60/0xe8
+>> [    2.102263]  bus_for_each_dev+0x7c/0xd0
+>> [    2.106109]  driver_attach+0x2c/0x38
+>> [    2.109692]  bus_add_driver+0x194/0x1f8
+>> [    2.113538]  driver_register+0x6c/0x128
+>> [    2.117385]  __platform_driver_register+0x50/0x60
+>> [    2.122105]  fsl_dspi_driver_init+0x24/0x30
+>> [    2.126302]  do_one_initcall+0x54/0x2d0
+>> [    2.130149]  kernel_init_freeable+0x1ec/0x258
+>> [    2.134520]  kernel_init+0x1c/0x120
+>> [    2.138018]  ret_from_fork+0x10/0x34
+>> [    2.141606] Code: 97e0b11d aa0003f3 b4000680 f94006e0 (f9404000)
+>> [    2.147723] ---[ end trace 26cf63e6cbba33a8 ]---
+>> 
+>> [...]
 > 
-> Fix by switching over to the new devm_spi_alloc_master() helper.
+> Applied to
+> 
+>    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git 
+> for-next
 
-Applied to
+Is that correct? Some time ago you've already applied that to your spi 
+tree:
+https://lore.kernel.org/linux-spi/160132174502.55568.11234605078950751454.b4-ty@kernel.org/
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/1] spi: npcm-fiu: Don't leak SPI master in probe error path
-      (no commit info)
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+-michael

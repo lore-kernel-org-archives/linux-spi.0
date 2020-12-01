@@ -4,47 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-	version=3.4.0
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 64E49C83012
-	for <linux-spi@archiver.kernel.org>; Tue,  1 Dec 2020 13:59:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 273B4C83016
+	for <linux-spi@archiver.kernel.org>; Tue,  1 Dec 2020 13:59:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 13503208DB
+	by mail.kernel.org (Postfix) with ESMTP id C69E620C56
 	for <linux-spi@archiver.kernel.org>; Tue,  1 Dec 2020 13:59:52 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=pass (1024-bit key) header.d=kernel.org header.i=@kernel.org header.b="QzEl5S6g"
+	dkim=pass (1024-bit key) header.d=kernel.org header.i=@kernel.org header.b="rYrN8Ju1"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391521AbgLAN73 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 1 Dec 2020 08:59:29 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45646 "EHLO mail.kernel.org"
+        id S2387416AbgLAN7c (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 1 Dec 2020 08:59:32 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45702 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391444AbgLAN71 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 1 Dec 2020 08:59:27 -0500
+        id S1727132AbgLAN7c (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 1 Dec 2020 08:59:32 -0500
 Received: from localhost (cpc102334-sgyl38-2-0-cust884.18-2.cable.virginm.net [92.233.91.117])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 15A60208FE;
-        Tue,  1 Dec 2020 13:58:45 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0F7D2208DB;
+        Tue,  1 Dec 2020 13:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606831126;
-        bh=vFGMacmga0jPQFovA/dgAN/hI21uqG0vo1aBfUhTb1A=;
+        s=default; t=1606831131;
+        bh=ZF9xwEX02wFAkXjf4yY9/SPdkc3Y3tnZlXjjV9aCBZ4=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=QzEl5S6gYwWHuQih0xzJY77Fxks6iqnwUrTZOSTd3xL47g0X5+1vPweLp8U6mQA0S
-         ckha8CYVPuTphRNJ3aV5uwEkqYsWupHqtCEyOTMFCucVCkiXumh6Z8pSOKy4JOixzR
-         434ryf9DzX7Ck/E6Lc86Y7BhTzrZm3akooTiLy5Y=
+        b=rYrN8Ju17M1ogr3cZuE6eyz32fAxq8Ym/lwKyJ0LpAWNCEzFI0WdHlRWAGFsSRL9G
+         PxzvHq3MEVxs0AClDKGbG/2Suwt9LidBEcdBiW5EFSLmAfBw8ooeTQhq/16uKHxfAS
+         P64RhPKMMcf5v59Xgf/VfxCBIopNPXfb8po5FPGs=
 From:   Mark Brown <broonie@kernel.org>
-To:     bbrezillon@kernel.org,
-        Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
-        robh+dt@kernel.org, joel@jms.id.au, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, clg@kaod.org,
-        linux-kernel@vger.kernel.org, andrew@aj.id.au,
-        linux-aspeed@lists.ozlabs.org
-Cc:     BMC-SW@aspeedtech.com
-In-Reply-To: <20201105120331.9853-1-chin-ting_kuo@aspeedtech.com>
-References: <20201105120331.9853-1-chin-ting_kuo@aspeedtech.com>
-Subject: Re: [v3 0/4] Porting ASPEED FMC/SPI memory controller driver
-Message-Id: <160683107675.35139.15332656159104751022.b4-ty@kernel.org>
+To:     Maxim Kochetkov <fido_max@inbox.ru>
+Cc:     olteanv@gmail.com, linux-spi@vger.kernel.org
+In-Reply-To: <20201201085916.63543-1-fido_max@inbox.ru>
+References: <20201201085916.63543-1-fido_max@inbox.ru>
+Subject: Re: [PATCH] spi: spi-fsl-dspi: Use max_native_cs instead of num_chipselect to set SPI_MCR
+Message-Id: <160683107678.35139.1439064414776102118.b4-ty@kernel.org>
 Date:   Tue, 01 Dec 2020 13:57:56 +0000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -53,16 +47,10 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 5 Nov 2020 20:03:27 +0800, Chin-Ting Kuo wrote:
-> This patch series aims to porting ASPEED FMC/SPI memory controller
-> driver with spi-mem interface. Adjust device tree setting of SPI NOR
-> flash in order to fit real AST2600 EVB and new SPI memory controller
-> driver. Also, this patch has been verified on AST2600-A1 EVB.
-> 
-> v2: Fix sparse warnings reported by kernel test robot <lkp@intel.com>.
-> v3: Fix build warnings with x86 allmodconfig.
-> 
-> [...]
+On Tue, 1 Dec 2020 11:59:16 +0300, Maxim Kochetkov wrote:
+> If cs-gpios property is used in devicetree then ctlr->num_chipselect value
+> may be changed by spi_get_gpio_descs().
+> So use ctlr->max_native_cs instead of ctlr->num_chipselect to set SPI_MCR
 
 Applied to
 
@@ -70,9 +58,7 @@ Applied to
 
 Thanks!
 
-[1/2] dt-bindings: spi: Add binding file for ASPEED FMC/SPI memory controller
-      (no commit info)
-[2/2] spi: aspeed: Add ASPEED FMC/SPI memory controller driver
+[1/1] spi: spi-fsl-dspi: Use max_native_cs instead of num_chipselect to set SPI_MCR
       (no commit info)
 
 All being well this means that it will be integrated into the linux-next

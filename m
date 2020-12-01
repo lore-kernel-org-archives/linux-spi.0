@@ -2,109 +2,92 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.5 required=3.0 tests=BAYES_00,DKIM_INVALID,
-	DKIM_SIGNED,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 09E5CC64E7B
-	for <linux-spi@archiver.kernel.org>; Tue,  1 Dec 2020 09:29:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 71185C83012
+	for <linux-spi@archiver.kernel.org>; Tue,  1 Dec 2020 13:59:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7158B20809
-	for <linux-spi@archiver.kernel.org>; Tue,  1 Dec 2020 09:29:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0AF59221EB
+	for <linux-spi@archiver.kernel.org>; Tue,  1 Dec 2020 13:59:22 +0000 (UTC)
 Authentication-Results: mail.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=inbox.ru header.i=@inbox.ru header.b="e6/r0khy";
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=inbox.ru header.i=@inbox.ru header.b="FhN40HmO"
+	dkim=pass (1024-bit key) header.d=kernel.org header.i=@kernel.org header.b="nzwkBVpd"
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388284AbgLAJAW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 1 Dec 2020 04:00:22 -0500
-Received: from fallback9.mail.ru ([94.100.178.49]:50160 "EHLO
-        fallback9.mail.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387583AbgLAJAR (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 1 Dec 2020 04:00:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=inbox.ru; s=mail3;
-        h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:Cc:To:From; bh=mOHwP8mDEN496y+qMdN1CmEAokVfvM967Hi3u6YkgA0=;
-        b=e6/r0khyFanhn9c9SFEGCgIMVUuMZzfunV+qMvBEVG3U8eBLrlhBDWi2GYjGJXYoXR2hIJo6ZCbQwuS4jeTvOoqV7dc/upOjI1/My2VtU/gY9j/LBhRU96PVBXw7VTZiXFtz4GJiUKTz1MnaGowXaDcel/zrUdFrdiIVne1mVGQ=;
-Received: from [10.161.64.56] (port=47656 helo=smtp48.i.mail.ru)
-        by fallback9.m.smailru.net with esmtp (envelope-from <fido_max@inbox.ru>)
-        id 1kk1VQ-0003t3-Ph; Tue, 01 Dec 2020 11:59:29 +0300
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=inbox.ru; s=mail3;
-        h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:Cc:To:From:From:Subject:Content-Type:Content-Transfer-Encoding:To:Cc; bh=mOHwP8mDEN496y+qMdN1CmEAokVfvM967Hi3u6YkgA0=;
-        b=FhN40HmOh5Db0uKcRbhvPKrvIrh0/yfIrqeS8SS6O40sEAK7id/wHKFG3PTsNierB8dKb3xUiKpyQRKBGAGDfiwVDFdUPVcl7x04+1AuEruaFDTDXYV9Eq1OGCRqlOw3cbWS8iwLc6NlsiSTq8nnBa6o40yv3J0lSFz5uIbszWk=;
-Received: by smtp48.i.mail.ru with esmtpa (envelope-from <fido_max@inbox.ru>)
-        id 1kk1Ue-0007w5-Vh; Tue, 01 Dec 2020 11:58:41 +0300
-From:   Maxim Kochetkov <fido_max@inbox.ru>
-Cc:     olteanv@gmail.com, broonie@kernel.org, linux-spi@vger.kernel.org,
-        Maxim Kochetkov <fido_max@inbox.ru>
-Subject: [PATCH] spi: spi-fsl-dspi: Use max_native_cs instead of num_chipselect to set SPI_MCR
-Date:   Tue,  1 Dec 2020 11:59:16 +0300
-Message-Id: <20201201085916.63543-1-fido_max@inbox.ru>
-X-Mailer: git-send-email 2.29.2
+        id S2403833AbgLAN7M (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 1 Dec 2020 08:59:12 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45434 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2403830AbgLAN7M (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 1 Dec 2020 08:59:12 -0500
+Received: from localhost (cpc102334-sgyl38-2-0-cust884.18-2.cable.virginm.net [92.233.91.117])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B2C5320857;
+        Tue,  1 Dec 2020 13:58:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1606831111;
+        bh=uuLVuAwWndIPh1yXRRgrK75QT+gkgwVLBePw+1DkCQo=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=nzwkBVpdKqE0P13BWmVS32itD/hRfeMf1oaufpACZnq5EJYeeIZ41SL//Li5UVDgq
+         DkGjSZfSZbDcHdNvGobGsUmOMfqoOPsvXQn7kHjdXjHQF1hQ/ejF9zKI4Z4fLldMgw
+         a0yFWJIMnFLdSEe9pQudveJKJPQ/uX4QwnJIn8X0=
+From:   Mark Brown <broonie@kernel.org>
+To:     bbrezillon@kernel.org,
+        Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
+        robh+dt@kernel.org, joel@jms.id.au, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, clg@kaod.org, andrew@aj.id.au,
+        linux-kernel@vger.kernel.org, linux-aspeed@lists.ozlabs.org
+Cc:     BMC-SW@aspeedtech.com
+In-Reply-To: <20201103072202.24705-1-chin-ting_kuo@aspeedtech.com>
+References: <20201103072202.24705-1-chin-ting_kuo@aspeedtech.com>
+Subject: Re: [v2 0/4] Porting ASPEED FMC/SPI memory controller driver
+Message-Id: <160683107674.35139.14509237313835347013.b4-ty@kernel.org>
+Date:   Tue, 01 Dec 2020 13:57:56 +0000
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-7564579A: 646B95376F6C166E
-X-77F55803: 4F1203BC0FB41BD999A8EEC2DADA0D0797AD2D10E554DBA5DC3780CE20DFC442182A05F538085040AA6DD583C0B95DAA04527C24570969F6789D88356C1E5ADC50D93E26D35E16E6
-X-7FA49CB5: FF5795518A3D127A4AD6D5ED66289B5278DA827A17800CE7444CB0504BAF4550EA1F7E6F0F101C67BD4B6F7A4D31EC0BCC500DACC3FED6E28638F802B75D45FF8AA50765F7900637F757A79C3007ACA28638F802B75D45FF5571747095F342E8C7A0BC55FA0FE5FC1081F07902ABD6662E3CC574A7F6851800FAF81361C93BF3389733CBF5DBD5E913377AFFFEAFD269176DF2183F8FC7C0D9442B0B5983000E8941B15DA834481FCF19DD082D7633A0E7DDDDC251EA7DABA471835C12D1D977725E5C173C3A84C362968DCAA3E4B45B117882F4460429728AD0CFFFB425014E1D3B0F1236BFD7A076E601842F6C81A19E625A9149C048EEC24E1E72F37C03A08F49F126DDB898E8D8FC6C240DEA76429449624AB7ADAF37B2D370F7B14D4BC40A6AB1C7CE11FEE38BCE4D8A51BE8AA52D242C3BD2E3F4C6C4224003CC836476EA7A3FFF5B025636A7F4EDE966BC389F9E8FC8737B5C224959DF8EA86ED09BA9089D37D7C0E48F6CCF19DD082D7633A0E7DDDDC251EA7DABAAAE862A0553A39223F8577A6DFFEA7C4BBCEF8A9559A4AE43847C11F186F3C5E7DDDDC251EA7DABCC89B49CDF41148FA8EF81845B15A4842623479134186CDE6BA297DBC24807EABDAD6C7F3747799A
-X-C1DE0DAB: C20DE7B7AB408E4181F030C43753B8186998911F362727C414F749A5E30D975C28BBABB5229571E6EF74A1823529AD0029D8CF22D477A43F9C2B6934AE262D3EE7EAB7254005DCED1C8AEA1E975C27AC1E0A4E2319210D9B64D260DF9561598F01A9E91200F654B017A45118377F5F9E8E8E86DC7131B365E7726E8460B7C23C
-X-C8649E89: 4E36BF7865823D7055A7F0CF078B5EC4AAAB09126F554BCC1203D900E3B9BFE53472620AE43634FF4E91738084C0C912821CA1539D479BB80229699A8CD24C53
-X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu530nj6fImhcD4MUrOEAnl0W826KZ9Q+tr5ycPtXkTV4k65bRjmOUUP8cvGozZ33TWg5HZplvhhXbhDGzqmQDTd6OAevLeAnq3Ra9uf7zvY2zzsIhlcp/Y7m53TZgf2aB4JOg4gkr2biojEErOympIxBGoRD9DxSS2ag==
-X-Mailru-Sender: 11C2EC085EDE56FA9C10FA2967F5AB24BF5D5B81C021092754A14D2DE0A73AC1E4690EE79E431205EE9242D420CFEBFD3DDE9B364B0DF2891A624F84B2C74EDA4239CF2AF0A6D4F80DA7A0AF5A3A8387
-X-Mras: Ok
-X-7564579A: 646B95376F6C166E
-X-77F55803: 6242723A09DB00B4C75C13076030B660F9FE9BAB5EC06FB6ED73D965A7736443049FFFDB7839CE9E4A81DFF69BA5960E6FECD32004481BBBE05320A4BD5085EEE23CF2B4AC28CCE6
-X-7FA49CB5: 0D63561A33F958A5F7A8B7616BF2311175515F54C4E0926FAFE25585DE82FD248941B15DA834481FA18204E546F3947C2FFDA4F57982C5F4F6B57BC7E64490618DEB871D839B7333395957E7521B51C2545D4CF71C94A83E9FA2833FD35BB23D27C277FBC8AE2E8B10EF0855632E33EDA471835C12D1D977C4224003CC8364761C440EF66BDDEF71D81D268191BDAD3DC09775C1D3CA48CF86712D2D5FBAF151BA3038C0950A5D36C8A9BA7A39EFB7668729DE7A884B61D135872C767BF85DA29E625A9149C048EE1B544F03EFBC4D576B0B6A749F1976AF4AD6D5ED66289B524E70A05D1297E1BB35872C767BF85DA227C277FBC8AE2E8B15B11194B854C5ED75ECD9A6C639B01B4E70A05D1297E1BBC6867C52282FAC85D9B7C4F32B44FF57285124B2A10EEC6C00306258E7E6ABB4E4A6367B16DE6309
-X-C1DE0DAB: C20DE7B7AB408E4181F030C43753B8186998911F362727C414F749A5E30D975C28BBABB5229571E68F260CCA1BAA842BBB594F1CDC9C1A6A9C2B6934AE262D3EE7EAB7254005DCED1C8AEA1E975C27AC699F904B3F4130E343918A1A30D5E7FCCB5012B2E24CD356
-X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu530nj6fImhcD4MUrOEAnl0W826KZ9Q+tr5ycPtXkTV4k65bRjmOUUP8cvGozZ33TWg5HZplvhhXbhDGzqmQDTd6OAevLeAnq3Ra9uf7zvY2zzsIhlcp/Y7m53TZgf2aB4JOg4gkr2biojEErOympIxBEWaXJqwHTSGQ==
-X-Mailru-MI: 800
-X-Mailru-Sender: A5480F10D64C90057D89EA641BAE1DDB11F3C174E2952AD4233A5CB9A1E5AA695E6C08345E6558FEC099ADC76E806A99D50E20E2BC48EF5A30D242760C51EA9CEAB4BC95F72C04283CDA0F3B3F5B9367
-X-Mras: Ok
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-If cs-gpios property is used in devicetree then ctlr->num_chipselect value
-may be changed by spi_get_gpio_descs().
-So use ctlr->max_native_cs instead of ctlr->num_chipselect to set SPI_MCR
+On Tue, 3 Nov 2020 15:21:58 +0800, Chin-Ting Kuo wrote:
+> This patch series aims to porting ASPEED FMC/SPI memory controller
+> driver with spi-mem interface. Adjust device tree setting of SPI NOR
+> flash in order to fit real AST2600 EVB and new SPI memory controller
+> driver. Also, this patch has been verified on AST2600-A1 EVB.
+> 
+> v2: Fix sparse warnings reported by kernel test robot <lkp@intel.com>.
+> 
+> [...]
 
-Fixes: 4fcc7c2292de (spi: spi-fsl-dspi: Don't access reserved fields in SPI_MCR)
-Signed-off-by: Maxim Kochetkov <fido_max@inbox.ru>
----
- drivers/spi/spi-fsl-dspi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Applied to
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 1a08c1d584ab..028736687488 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -1165,7 +1165,7 @@ static int dspi_init(struct fsl_dspi *dspi)
- 	unsigned int mcr;
- 
- 	/* Set idle states for all chip select signals to high */
--	mcr = SPI_MCR_PCSIS(GENMASK(dspi->ctlr->num_chipselect - 1, 0));
-+	mcr = SPI_MCR_PCSIS(GENMASK(dspi->ctlr->max_native_cs - 1, 0));
- 
- 	if (dspi->devtype_data->trans_mode == DSPI_XSPI_MODE)
- 		mcr |= SPI_MCR_XSPI;
-@@ -1250,7 +1250,7 @@ static int dspi_probe(struct platform_device *pdev)
- 
- 	pdata = dev_get_platdata(&pdev->dev);
- 	if (pdata) {
--		ctlr->num_chipselect = pdata->cs_num;
-+		ctlr->num_chipselect = ctlr->max_native_cs = pdata->cs_num;
- 		ctlr->bus_num = pdata->bus_num;
- 
- 		/* Only Coldfire uses platform data */
-@@ -1263,7 +1263,7 @@ static int dspi_probe(struct platform_device *pdev)
- 			dev_err(&pdev->dev, "can't get spi-num-chipselects\n");
- 			goto out_ctlr_put;
- 		}
--		ctlr->num_chipselect = cs_num;
-+		ctlr->num_chipselect = ctlr->max_native_cs = cs_num;
- 
- 		of_property_read_u32(np, "bus-num", &bus_num);
- 		ctlr->bus_num = bus_num;
--- 
-2.29.2
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
+Thanks!
+
+[1/2] dt-bindings: spi: Add binding file for ASPEED FMC/SPI memory controller
+      (no commit info)
+[2/2] spi: aspeed: Add ASPEED FMC/SPI memory controller driver
+      (no commit info)
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

@@ -2,112 +2,128 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C7C2C433FE
-	for <linux-spi@archiver.kernel.org>; Thu,  3 Dec 2020 16:58:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DF00C4361B
+	for <linux-spi@archiver.kernel.org>; Thu,  3 Dec 2020 20:07:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A07EC207AE
-	for <linux-spi@archiver.kernel.org>; Thu,  3 Dec 2020 16:58:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 079EB20769
+	for <linux-spi@archiver.kernel.org>; Thu,  3 Dec 2020 20:07:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726031AbgLCQ6e (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 3 Dec 2020 11:58:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35012 "EHLO
+        id S1727075AbgLCUHG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 3 Dec 2020 15:07:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726026AbgLCQ6e (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 3 Dec 2020 11:58:34 -0500
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E937C061A4F;
-        Thu,  3 Dec 2020 08:57:48 -0800 (PST)
-Received: by mail-pf1-x42e.google.com with SMTP id q10so1695007pfn.0;
-        Thu, 03 Dec 2020 08:57:48 -0800 (PST)
+        with ESMTP id S1726116AbgLCUHF (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 3 Dec 2020 15:07:05 -0500
+Received: from mail-ua1-x941.google.com (mail-ua1-x941.google.com [IPv6:2607:f8b0:4864:20::941])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FB7EC061A51
+        for <linux-spi@vger.kernel.org>; Thu,  3 Dec 2020 12:06:25 -0800 (PST)
+Received: by mail-ua1-x941.google.com with SMTP id g3so1094542uae.7
+        for <linux-spi@vger.kernel.org>; Thu, 03 Dec 2020 12:06:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=4RN4lDKcBCUJRe+wn8srvtMYKGE3DNBe+LKKp0gOoAk=;
-        b=Gz81ipfafeXXxDWwoD7NhXxSdejww5z0emFjuapn3aVcTUxw37OKDZNqULpzdD4dj7
-         q765lFPvNtmR9Omi4KGwZtJaD5KFYD2LrRMpDzdquFg92DhrxOqRcPgy9Dsdu1UrogBL
-         frULSkTqRr2TmDWUV5FRAyRh4gmniAQ1o87y89moD3159GNcbT03JWVSs4cg8TT3B/18
-         UdlOeGA9YKp1JPUe6/WQhZRtKsbK4FS880B9PkRP0xRhfPLo64RqQ2UUyJW95EkuqMJq
-         mb5JQ1L9NhVqVjdo338dcmDxyl11FYRPCj/n5ipSlH6Xvi4M1pPqX3lu8zhpqohJMWGx
-         jQVw==
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=WwWDqEC8lyXk+mn1FQGbjXgjK1A6t7ai7KM73ZqCvxQ=;
+        b=JZlzLv/7eUN9ngMAPHflR850vYNlUh906JW7nXe5twIRxisHFKPZJttlH5jNpvEvhb
+         yKG/KJaF+YlnxZhqOAHdfTcGPlsMWZ+gnBWwmeafntjEpWxINf2/us1f1y63BGbuPoGE
+         B4o/tnChgNBLLw7eeBdBwGq1VGAqi9VDdQcTQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=4RN4lDKcBCUJRe+wn8srvtMYKGE3DNBe+LKKp0gOoAk=;
-        b=LfScWR1D/BXik/cN/0Qfq4fqZ74tQTHPlWdU6MNY9so27n634FIZWlcLtmQbMqXARP
-         W386WbbFcFnARF++iAp1JuNpRLUqkR73hQckKCKuinfriiW8Ti2GI/2eNdsR/kfW581D
-         PX/CohJRMnoNb66hrVQorIE/WXIBsOML6D6NBD+Nm63KvKVEWDdQqHsfnTABf++uN/6l
-         gC4R1XcuEnPZNfzE6XjpkX8MG0O236Ys2mRBFdIcGjGwtL19r/qx7tNrsDiZI9BIBB37
-         aIK9xcTIlzHoPBWZ4NowBqVZyA7oOeuwntfHmyz86hmnHV9g0zWPw2PJsGoj/aQIaoIg
-         +Pag==
-X-Gm-Message-State: AOAM5307XlUusNd6px5nkkZCZJnLoCkuW7dI+A0HkofPv09xGf77z6dT
-        yF1mEYAc1LkEAH+tssDK09ki6pnF8s4TPCDaFbk=
-X-Google-Smtp-Source: ABdhPJxYBKiOnIUXc4yQq5LsA65+zeEz4hHqZwFMki3dZm6SenHWuj43KDbJsAkO3zmjp+VLnL2xyEfLZo7ZCAbtFJA=
-X-Received: by 2002:a63:a0b:: with SMTP id 11mr3807266pgk.21.1607014667655;
- Thu, 03 Dec 2020 08:57:47 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WwWDqEC8lyXk+mn1FQGbjXgjK1A6t7ai7KM73ZqCvxQ=;
+        b=dBpao5+2lMH8Sg+LyymY4Meyp4pM4ITtuEgsPBj3lNPl1ULtSeh9Jt2Vux5VrvZnGf
+         0OWW64Inzgmtgl9GIGmyqblm7XTWjEnu3WN//E4AbFDCuW9jxXyKyKmorpvKAyaMSu/o
+         mXJG8TY//9AF9/hYzPhTAnGQ8k/tZcxVDwRoZCCcQ3iW8WUVS4DL7aTGVaR9HRpQ+rLt
+         9CjcQyaYUZanixGh8CGJPR2vR+sq5xA8G6No8xcoMCvwVRzitJmqpgEbb69CA69FG4sI
+         VPZsySz0bNW7mcL5r8fQHz7eNF6lAmsnucWno5X1oYnTg3x92VhXPF+mRVN91pumlPdC
+         wQpg==
+X-Gm-Message-State: AOAM532STuUooaQIFyH6+/y9+uAXRiVMmBhIluCkn39Rj5vjPfNdC5dD
+        WBgk72iz6KEFhueAdNpZoGfKmeKYybHCVQ==
+X-Google-Smtp-Source: ABdhPJzXA07Zux+p5Jdj0El2xDpLfXi/cqkqfS3o6MVKKjKQXvTmMd+/+LYWXcX4JXiOZbDH/aRsPQ==
+X-Received: by 2002:a9f:3208:: with SMTP id x8mr705608uad.1.1607025984220;
+        Thu, 03 Dec 2020 12:06:24 -0800 (PST)
+Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com. [209.85.217.49])
+        by smtp.gmail.com with ESMTPSA id j8sm28621vsn.33.2020.12.03.12.06.23
+        for <linux-spi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Dec 2020 12:06:23 -0800 (PST)
+Received: by mail-vs1-f49.google.com with SMTP id v8so1982836vso.2
+        for <linux-spi@vger.kernel.org>; Thu, 03 Dec 2020 12:06:23 -0800 (PST)
+X-Received: by 2002:a67:4242:: with SMTP id p63mr1071347vsa.34.1607025982604;
+ Thu, 03 Dec 2020 12:06:22 -0800 (PST)
 MIME-Version: 1.0
-From:   =?UTF-8?B?0JzQsNC60YHQuNC8INCa0LjRgdC10LvRkdCy?= 
-        <bigunclemax@gmail.com>
-Date:   Thu, 3 Dec 2020 19:57:36 +0300
-Message-ID: <CALHCpMiWdSYxzKK5dXb7AGQ1ncsXmD853g9Aq0zd5YjE5cno8w@mail.gmail.com>
-Subject: 
-To:     Vladimir Oltean <olteanv@gmail.com>,
-        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        =?UTF-8?B?0JzQsNC60YHQuNC8INCa0LjRgdC10LvRkdCy?= 
-        <bigunclemax@gmail.com>, Maxim Kochetkov <fido_max@inbox.ru>
+References: <20201202214935.1114381-1-swboyd@chromium.org> <CAHNYxRwMD4XahHXWW9z7b=VCOEsdPe5Df4CohNwmBy_ijWJ62g@mail.gmail.com>
+ <160695172591.2717324.17788035024164242534@swboyd.mtv.corp.google.com> <160695644776.2717324.633265815704005177@swboyd.mtv.corp.google.com>
+In-Reply-To: <160695644776.2717324.633265815704005177@swboyd.mtv.corp.google.com>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Thu, 3 Dec 2020 12:06:10 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=WDYdfURHWf8qGOSwT+7Y5i=9FMgRn5hYZA-oTfR6KoFQ@mail.gmail.com>
+Message-ID: <CAD=FV=WDYdfURHWf8qGOSwT+7Y5i=9FMgRn5hYZA-oTfR6KoFQ@mail.gmail.com>
+Subject: Re: [PATCH] spi: spi-geni-qcom: Use the new method of gpio CS control
+To:     Stephen Boyd <swboyd@chromium.org>
+Cc:     Alexandru M Stan <amstan@chromium.org>,
+        Mark Brown <broonie@kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Akash Asthana <akashast@codeaurora.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From 772007b92eda50186c2e420b5bd895d4e4006ae8 Mon Sep 17 00:00:00 2001
-From: Maxim Kiselev <bigunclemax@gmail.com>
-Date: Thu, 3 Dec 2020 18:56:12 +0300
-Subject: [PATCH] spi: spi-fsl-dspi: Add GPIO chip select support
+Hi,
 
-This patch allows use of GPIO for the chip select.
-Because dSPI controller can't send transactions without hardware chip
-selects, so first unused native CS will be set in SPI_PUSHR_CMD_PCS
+On Wed, Dec 2, 2020 at 4:47 PM Stephen Boyd <swboyd@chromium.org> wrote:
+>
+> Quoting Stephen Boyd (2020-12-02 15:28:45)
+> > Quoting Alexandru M Stan (2020-12-02 14:18:20)
+> > > Unfortunately this patch makes my cros-ec (the main EC that used to
+> > > work even before my debugging) also fail to probe:
+> > > [    0.839533] cros-ec-spi spi6.0: EC failed to respond in time
+> > > [    1.040453] cros-ec-spi spi6.0: EC failed to respond in time
+> > > [    1.040852] cros-ec-spi spi6.0: Cannot identify the EC: error -110
+> > > [    1.040855] cros-ec-spi spi6.0: cannot register EC, fallback to spidev
+> > > [    1.040942] cros-ec-spi: probe of spi6.0 failed with error -110
+> > >
+> > > I wasn't closely looking at this part closely when I was using my
+> > > other spi port with spidev, so this is why I haven't noticed it
+> > > before.
+> > > Doug suggests this might be a polarity issue. More scoping to be had.
+> > >
+> >
+> > Ah I see. It looks like the cs-gpios polarity is wrong for the DTS on
+> > sc7180. That's a patch that Doug has sent in for the qcom tree, commit
+> > 37dd4b777942 ("arm64: dts: qcom: sc7180: Provide pinconf for SPI to use
+> > GPIO for CS") and it is pending for the next release (v5.11). Doug says
+> > he will send in a fix for the DTS side, but this patch is still "good"
+> > as far as I can tell. It moves us to use gpio descriptors and also finds
+> > bugs like this in the DTS file that we would have missed otherwise
+> > because the legacy mode doesn't look at the polarity flags in DT.
+>
+> And that is wrong. With even more investigation and Doug's eagle eyes it
+> seems that the cros-ec driver is overriding the spi::mode to clear out
+> the SPI_CS_HIGH bit that the spi core sets in there when using the gpio
+> descriptors. I'll send a patch for cros-ec-spi shortly.
 
-Signed-off-by: Maxim Kiselev <bigunclemax@gmail.com>
----
- drivers/spi/spi-fsl-dspi.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+So do we need any coordinating here, are we OK w/ trogdor devices
+being broken for a short period of time?
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 028736687488..d5fba34de740 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -913,9 +913,14 @@ static int dspi_transfer_one_message(struct
-spi_controller *ctlr,
-         dspi->cur_transfer = transfer;
-         dspi->cur_msg = message;
-         dspi->cur_chip = spi_get_ctldata(spi);
-+
-+        if (spi->cs_gpiod)
-+            gpiod_set_value(spi->cs_gpiod, 1);
-+
-         /* Prepare command word for CMD FIFO */
-         dspi->tx_cmd = SPI_PUSHR_CMD_CTAS(0) |
--                   SPI_PUSHR_CMD_PCS(spi->chip_select);
-+                   SPI_PUSHR_CMD_PCS(spi->cs_gpiod ?
-+                         ctlr->unused_native_cs : spi->chip_select);
-         if (list_is_last(&dspi->cur_transfer->transfer_list,
-                  &dspi->cur_msg->transfers)) {
-             /* Leave PCS activated after last transfer when
-@@ -1240,6 +1245,7 @@ static int dspi_probe(struct platform_device *pdev)
-     dspi->pdev = pdev;
-     dspi->ctlr = ctlr;
+I think the device tree changes switching to use GPIO for chip select
+is already queued in linux-next.  That means if we land this patch
+before the fix to cros_ec [1] then we'll end up in a broken state.
+Would we be able to do some quick landing to get the cros-ec fix into
+v5.10 and then target the SPI patch for 5.11?
 
-+    ctlr->use_gpio_descriptors = true;
-     ctlr->setup = dspi_setup;
-     ctlr->transfer_one_message = dspi_transfer_one_message;
-     ctlr->dev.of_node = pdev->dev.of_node;
--- 
-2.27.0
+-Doug
+
+[1] https://lore.kernel.org/r/20201203011649.1405292-2-swboyd@chromium.org/

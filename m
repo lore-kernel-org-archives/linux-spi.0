@@ -3,31 +3,32 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
 X-Spam-Status: No, score=-9.0 required=3.0 tests=BAYES_00,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CC9B7C4361B
-	for <linux-spi@archiver.kernel.org>; Mon,  7 Dec 2020 17:23:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 37C00C0018C
+	for <linux-spi@archiver.kernel.org>; Mon,  7 Dec 2020 17:23:12 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 85BFA23731
+	by mail.kernel.org (Postfix) with ESMTP id 000322389A
 	for <linux-spi@archiver.kernel.org>; Mon,  7 Dec 2020 17:23:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726182AbgLGRW4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 7 Dec 2020 12:22:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38548 "EHLO mail.kernel.org"
+        id S1726989AbgLGRXG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 7 Dec 2020 12:23:06 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38660 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725781AbgLGRW4 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 7 Dec 2020 12:22:56 -0500
+        id S1726866AbgLGRXG (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 7 Dec 2020 12:23:06 -0500
 From:   Mark Brown <broonie@kernel.org>
 Authentication-Results: mail.kernel.org; dkim=permerror (bad message/signature format)
-To:     Ramil Zaripov <Ramil.Zaripov@baikalelectronics.ru>,
-        Zhang Changzhong <zhangchangzhong@huawei.com>,
-        Serge Semin <fancer.lancer@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-In-Reply-To: <1607071357-33378-1-git-send-email-zhangchangzhong@huawei.com>
-References: <1607071357-33378-1-git-send-email-zhangchangzhong@huawei.com>
-Subject: Re: [PATCH] spi: dw: Fix error return code in dw_spi_bt1_probe()
-Message-Id: <160736172965.53398.17276094803307700525.b4-ty@kernel.org>
+To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
+        linux-spi@vger.kernel.org
+Cc:     ludovic.desroches@microchip.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        alexandre.belloni@bootlin.com, bugalski.piotr@gmail.com
+In-Reply-To: <20201207135959.154124-1-tudor.ambarus@microchip.com>
+References: <20201207135959.154124-1-tudor.ambarus@microchip.com>
+Subject: Re: [PATCH 0/4] spi: atmel-quadspi: Fix AHB memory accesses
+Message-Id: <160736172966.53398.17804745115147014736.b4-ty@kernel.org>
 Date:   Mon, 07 Dec 2020 17:22:09 +0000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,9 +37,15 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, 4 Dec 2020 16:42:37 +0800, Zhang Changzhong wrote:
-> Fix to return a negative error code from the error handling
-> case instead of 0, as done elsewhere in this function.
+On Mon, 7 Dec 2020 15:59:55 +0200, Tudor Ambarus wrote:
+> Starting with the move of the atmel-quadspi driver under SPI,
+> the following error could be seen when mounting a 16MByte ubifs:
+> UBIFS error (ubi0:0 pid 1893): check_lpt_type.constprop.6: invalid type (15) in LPT node type
+> 
+> 1/4 fixes AHB accesses. The rest of the patches are small optimizations.
+> Tested on both sama5d2 and sam9x60.
+> 
+> [...]
 
 Applied to
 
@@ -46,8 +53,14 @@ Applied to
 
 Thanks!
 
-[1/1] spi: dw: Fix error return code in dw_spi_bt1_probe()
-      commit: e748edd9841306908b4e02dddd0afd1aa1f8b973
+[1/4] spi: atmel-quadspi: Fix AHB memory accesses
+      commit: cac8c821059639b015586abf61623c62cc549a13
+[2/4] spi: atmel-quadspi: Drop superfluous set of QSPI_IFR_APBTFRTYP_READ
+      commit: a6ff3a784ff9975dc77676827a2f448203511d19
+[3/4] spi: atmel-quadspi: Write QSPI_IAR only when needed
+      commit: d00364b6a60475cd75fd07e847ad6f955952638b
+[4/4] spi: atmel-quadspi: Move common code outside of if else
+      commit: c066efb07d1e8b801ea9d0727119958c9904e63d
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

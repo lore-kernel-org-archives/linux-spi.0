@@ -2,53 +2,70 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.2 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 85881C193FE
-	for <linux-spi@archiver.kernel.org>; Tue,  8 Dec 2020 05:57:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 34E41C4361B
+	for <linux-spi@archiver.kernel.org>; Tue,  8 Dec 2020 07:45:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 343B923A57
-	for <linux-spi@archiver.kernel.org>; Tue,  8 Dec 2020 05:57:45 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E66F423A40
+	for <linux-spi@archiver.kernel.org>; Tue,  8 Dec 2020 07:45:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726931AbgLHF5l (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 8 Dec 2020 00:57:41 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41022 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726928AbgLHF5l (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 8 Dec 2020 00:57:41 -0500
-Content-Type: text/plain; charset="utf-8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1607407020;
-        bh=hQRF+IR8Rd1e14gl/xFRFZvITYh2zy5CWxQkSGQud9E=;
-        h=Subject:From:Date:To:From;
-        b=f9Ezg+RryUwwnzPSgpUfu+VEN0/zUqR1Jp+YQc2DBDI43b3ZkW57chLEw7VJQz08I
-         SLIS0qZcujUki2QanB5waq4zZAAW75ArYXeEqHWq7lmjLjnMLguVPyv/68i8jdhyEP
-         9OWHBOOW66RObnLv42SdE+4aupjkdhNlG3OI2t2UfpXAUxmKfqmFfDSLbCUJM3yUb9
-         d1eawAfm7uZYbBzBmfcm10RHz66I8X1noJ3b6ghM8Ij4XzsntIoZryc3HtMNbt39zK
-         r3FM1n+y2gxxltl+7i2iTHtp05T31g91OUxtwjdqXoN3HiXrbPOGBbNpdBuVbBzl4w
-         L/5eYj5ARvwyg==
+        id S1726340AbgLHHpH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 8 Dec 2020 02:45:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59656 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726007AbgLHHpH (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 8 Dec 2020 02:45:07 -0500
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0207FC061749;
+        Mon,  7 Dec 2020 23:44:26 -0800 (PST)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client CN "*.hostsharing.net", Issuer "COMODO RSA Domain Validation Secure Server CA" (not verified))
+        by bmailout1.hostsharing.net (Postfix) with ESMTPS id 8015930006267;
+        Tue,  8 Dec 2020 08:43:48 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+        id 8B064ACE3; Tue,  8 Dec 2020 08:44:24 +0100 (CET)
+Date:   Tue, 8 Dec 2020 08:44:24 +0100
+From:   Lukas Wunner <lukas@wunner.de>
+To:     Sowjanya Komatineni <skomatineni@nvidia.com>
+Cc:     thierry.reding@gmail.com, jonathanh@nvidia.com, broonie@kernel.org,
+        linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 3/7] spi: qspi-tegra: Add support for Tegra210 QSPI
+ controller
+Message-ID: <20201208074424.GB29998@wunner.de>
+References: <1606857168-5839-1-git-send-email-skomatineni@nvidia.com>
+ <1606857168-5839-4-git-send-email-skomatineni@nvidia.com>
+ <20201206181612.GA26286@wunner.de>
+ <8ce3fa3a-88d7-e981-731a-9bce85047892@nvidia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <160740702051.30198.1136555467411404719.git-patchwork-housekeeping@kernel.org>
-Date:   Tue, 08 Dec 2020 05:57:00 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8ce3fa3a-88d7-e981-731a-9bce85047892@nvidia.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v2] arch: riscv: add board and SoC DT file support (2020-12-08T04:55:32)
-  Superseding: [v1] arch: riscv: add board and SoC DT file support (2020-12-02T08:03:52):
-    [1/4] dt-bindings: riscv: Update DT binding docs to support SiFive FU740 SoC
-    [2/4] riscv: dts: add initial support for the SiFive FU740-C000 SoC
-    [3/4] dt-bindings: riscv: Update YAML doc to support SiFive HiFive Unmatched board
-    [4/4] riscv: dts: add initial board data for the SiFive HiFive Unmatched
+On Mon, Dec 07, 2020 at 04:14:53PM -0800, Sowjanya Komatineni wrote:
+> On 12/6/20 10:16 AM, Lukas Wunner wrote:
+> > However, be sure to use the devm variant to *allocate* the SPI controller,
+> > i.e. use devm_spi_alloc_master() instead of spi_alloc_master().
+> 
+> Thanks Lukas. I see devm_spi_alloc_master() in 5.4 but not from 5.5
 
+devm_spi_alloc_master() was introduced in v5.10-rc5 with commit
+5e844cc37a5c and then backported to 5.9-stable and 5.4-stable.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Patches are pending to also backport it to 4.19-stable, 4.14-stable,
+4.9-stable and 4.4-stable.
 
+If your development branch is based on v5.5, just cherry-pick
+5e844cc37a5c and you should be good to go.
+
+Thanks,
+
+Lukas

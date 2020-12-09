@@ -2,61 +2,113 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F9DAC433FE
-	for <linux-spi@archiver.kernel.org>; Wed,  9 Dec 2020 15:21:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 56621C4361B
+	for <linux-spi@archiver.kernel.org>; Wed,  9 Dec 2020 16:42:30 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6B31D23AA8
-	for <linux-spi@archiver.kernel.org>; Wed,  9 Dec 2020 15:21:34 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1329723C42
+	for <linux-spi@archiver.kernel.org>; Wed,  9 Dec 2020 16:42:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728441AbgLIPVT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 9 Dec 2020 10:21:19 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38024 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726195AbgLIPVS (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 9 Dec 2020 10:21:18 -0500
-Content-Type: text/plain; charset="utf-8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1607527238;
-        bh=oP1/ghIggIcdAgTMo8gKtiiliLAPXkTFve4MepiTTmU=;
-        h=Subject:From:Date:To:From;
-        b=qdB7UTxxs1XiqlPdkLB2PfOzdgzWx7HBcdZ3Ng1ijfeQUMUahwY40OfC93D95Nd6b
-         w5JMmKXRy1e3czw8HLk/3K1OM5OG1+AIc9AQZk2X5ugVA2OStBuopCYs4rJyrVKtMA
-         RbJCILgIHSP3dYjWdGSZqytvVjBJkoReg7tWN2txlwFUuwK/4nSnz0cXXQbtMKmbOk
-         pmiFyqIiAj/R4pSuKZhaVLE0RYNYF0wYzXmRVJ5uQYCsus2damLA2nKGmWZKboC43z
-         EhkT2pfvBEgpvAYjMkRlthTfh3ARidRz9YKSEboZyjFn5cnknRA9RgfhQuEZsvO91x
-         XfE9Dm2eXz2Ug==
+        id S1728826AbgLIQmK (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 9 Dec 2020 11:42:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56906 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730727AbgLIQmB (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 9 Dec 2020 11:42:01 -0500
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 573CBC06179C
+        for <linux-spi@vger.kernel.org>; Wed,  9 Dec 2020 08:41:21 -0800 (PST)
+Received: by mail-wr1-x441.google.com with SMTP id a12so2444958wrv.8
+        for <linux-spi@vger.kernel.org>; Wed, 09 Dec 2020 08:41:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=G7EU11PHgFsJFA5nDKbU03Fk+7GyGqDKScGIXgeNQqU=;
+        b=eG+oWcIvbvjeSujB8w9rC9FysPL6rBXwMAfVo+NMk/6Vn5Myb8MwqqPgOooFPsZ/uV
+         F3mZu/o6uqakiRyeYYzyVDrlewRY41v1pg/KMxL2jGhKoZO8r32FikNzZL9F7NnxW2xT
+         WtfBARKMIm2z1zU5M6Bvhn4czPwUeXdSJm0Xg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=G7EU11PHgFsJFA5nDKbU03Fk+7GyGqDKScGIXgeNQqU=;
+        b=V69ZWdljufbgdJPLoJq2EKORv7BSlgLvUGn/gqEGkOc7MlTTYcddyBbOCSZZQAsoB9
+         zNVT2164pWUUW+VS9el2hwMiX3LHE6rCLhqiX9lqrfkws655syIqhxCrWGPkhLqxYWdp
+         QFatwF5cWoQ0nVy1ybaZ9O0Gp6xEehlhlF+oDmzFpOzVi19Jh/B/jFZxdLf0wet8YdM1
+         ++MigK7L36+Rt1Ezee++qUAbifJIBzmf5gLxAMg3Rj48e2kCuySMKPoC0FruXfoAl0ob
+         cWslEptuEecWyEKOtGn1qNNbHw/89o2riq+YbOVWy3euoscbGF3qnEccw+TzDTAT79Y9
+         sOmA==
+X-Gm-Message-State: AOAM533snwYyThfiPkmYPwgl55SPGA5ETHkKkTSLmjs+c8ByhsOXfpK4
+        vPoCA+ZosfnmRveFMk4MRr9EkMrDQUTx3nPcdnCHFA==
+X-Google-Smtp-Source: ABdhPJxEl7OMQ/htwgbOiYGTRVp2/9MuAsCc5a1dKA3v6HasSTKSz48ecmPqg7FmN5ROLORNuwCpkQnYAmtTmfvAthU=
+X-Received: by 2002:adf:82c8:: with SMTP id 66mr3598316wrc.420.1607532079884;
+ Wed, 09 Dec 2020 08:41:19 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <160752723825.28193.5514280504355665958.git-patchwork-summary@kernel.org>
-Date:   Wed, 09 Dec 2020 15:20:38 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+References: <20201204193540.3047030-1-swboyd@chromium.org> <20201204193540.3047030-2-swboyd@chromium.org>
+In-Reply-To: <20201204193540.3047030-2-swboyd@chromium.org>
+From:   Simon Glass <sjg@chromium.org>
+Date:   Wed, 9 Dec 2020 09:41:08 -0700
+Message-ID: <CAPnjgZ1nV4FTvA9zAh046Vpki01WfVcowP8CPxrx1b3dONM-Og@mail.gmail.com>
+Subject: Re: [PATCH 1/3] platform/chrome: cros_ec_spi: Don't overwrite spi::mode
+To:     Stephen Boyd <swboyd@chromium.org>
+Cc:     Mark Brown <broonie@kernel.org>, lk <linux-kernel@vger.kernel.org>,
+        linux-spi@vger.kernel.org, Benson Leung <bleung@chromium.org>,
+        linux-arm-msm@vger.kernel.org,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Alexandru M Stan <amstan@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello:
+On Fri, 4 Dec 2020 at 12:35, Stephen Boyd <swboyd@chromium.org> wrote:
+>
+> There isn't any need to overwrite the mode here in the driver with what
+> has been detected by the firmware, such as DT or ACPI. In fact, if we
+> use the SPI CS gpio descriptor feature we will overwrite the mode with
+> SPI_MODE_0 where it already contains SPI_MODE_0 and more importantly
+> SPI_CS_HIGH. Clearing the SPI_CS_HIGH bit causes the CS line to toggle
+> when the device is probed when it shouldn't change, confusing the driver
+> and making it fail to probe. Drop the assignment and let the spi core
+> take care of it.
+>
+> Fixes: a17d94f0b6e1 ("mfd: Add ChromeOS EC SPI driver")
+> Cc: Simon Glass <sjg@chromium.org>
+> Cc: Gwendal Grignou <gwendal@chromium.org>
+> Reviewed-by: Douglas Anderson <dianders@chromium.org>
+> Tested-by: Douglas Anderson <dianders@chromium.org>
+> Acked-by: Enric Balletbo i Serra <enric.balletbo@collabora.com>
+> Cc: Alexandru M Stan <amstan@chromium.org>
+> Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+> ---
+>  drivers/platform/chrome/cros_ec_spi.c | 1 -
+>  1 file changed, 1 deletion(-)
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (refs/heads/for-next):
 
-Series: DW apb_ssi V4 support for Kendryte K210 RISC-V SoC
-  Submitter: Damien Le Moal <damien.lemoal@wdc.com>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=396943
-  Lore link: https://lore.kernel.org/r/20201206011817.11700-1-damien.lemoal@wdc.com
-    Patches: [v3,1/3] dt-bindings: spi: dw-apb-ssi: Add Canaan K210 SPI controller
-             [v3,2/3] spi: dw: Add support for 32-bits max xfer size
-             [v3,3/3] spi: dw: Add support for the Canaan K210 SoC SPI
-
-Total patches: 3
-
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Reviewed-by: Simon Glass <sjg@chromium.org>
 
 
+>
+>
+> diff --git a/drivers/platform/chrome/cros_ec_spi.c b/drivers/platform/chrome/cros_ec_spi.c
+> index dfa1f816a45f..f9df218fc2bb 100644
+> --- a/drivers/platform/chrome/cros_ec_spi.c
+> +++ b/drivers/platform/chrome/cros_ec_spi.c
+> @@ -742,7 +742,6 @@ static int cros_ec_spi_probe(struct spi_device *spi)
+>         int err;
+>
+>         spi->bits_per_word = 8;
+> -       spi->mode = SPI_MODE_0;
+>         spi->rt = true;
+>         err = spi_setup(spi);
+>         if (err < 0)
+> --
+> https://chromeos.dev
+>

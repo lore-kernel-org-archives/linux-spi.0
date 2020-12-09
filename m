@@ -2,45 +2,46 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-18.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 08C55C4361B
-	for <linux-spi@archiver.kernel.org>; Wed,  9 Dec 2020 07:59:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 33BB9C433FE
+	for <linux-spi@archiver.kernel.org>; Wed,  9 Dec 2020 08:00:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AD16123B45
-	for <linux-spi@archiver.kernel.org>; Wed,  9 Dec 2020 07:59:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C681023B84
+	for <linux-spi@archiver.kernel.org>; Wed,  9 Dec 2020 08:00:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725953AbgLIH7b (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 9 Dec 2020 02:59:31 -0500
-Received: from mx0a-0014ca01.pphosted.com ([208.84.65.235]:23364 "EHLO
+        id S1727857AbgLIH7m (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 9 Dec 2020 02:59:42 -0500
+Received: from mx0a-0014ca01.pphosted.com ([208.84.65.235]:26598 "EHLO
         mx0a-0014ca01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725942AbgLIH7a (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 9 Dec 2020 02:59:30 -0500
+        by vger.kernel.org with ESMTP id S1725942AbgLIH7e (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 9 Dec 2020 02:59:34 -0500
 Received: from pps.filterd (m0042385.ppops.net [127.0.0.1])
-        by mx0a-0014ca01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 0B97vKFX029164;
-        Tue, 8 Dec 2020 23:58:24 -0800
+        by mx0a-0014ca01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 0B97vKFW029164;
+        Tue, 8 Dec 2020 23:58:23 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type; s=proofpoint;
- bh=hAn9QRiQLlv+e4+ZcGiTwPXpxp4i+wxQWgmSNb6Sbrk=;
- b=OzO63BRsDXtkasFYw0nXlylC7rZqTxcbDHGnkm18Fv43k0jDovTY9mZUgkmIZucVez7T
- 0IRmX2AGqqKKRKmEvtbZ+KUGIpeyPoClIXlEFWaLob+9Mr9W8/s7U+GFwDsTGbfqPyYn
- PDF4yNlxY9Apys6JA0HEXv/r/kovHmbwmdGvEFDseZZBqbawguVKaken7dg3IRANzoW0
- OAnbqQ++9K96n1SoFcfbp6qFq0qNouid1N1HMlnQWHDE11CWtDxLTkAYm8gHXQbuxMMQ
- /hbxN60KCXaYoF/QA/ddrKj+YMkpy7pJjcOL3BfoDCjHZ7xwuav9ugp6/mcXq+Ow+zAv Iw== 
-Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2102.outbound.protection.outlook.com [104.47.70.102])
-        by mx0a-0014ca01.pphosted.com with ESMTP id 3587n2v16b-1
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type; s=proofpoint;
+ bh=CcKoZZC0H2BicCm8jchAVhSeJ9kntWhPsZ57IjMQfzc=;
+ b=Au2PAgvpjPEsCcxNvAgdFRHYPtkLMqUAxDsyLmhlbdPl0O++emsFjn/1lgd1xPtYoC+Z
+ EMs94/AZDabp0aXpixqkv3ZzNbrgI5gusZgGE/1YCgwm3sY+DN5ueSGvduyRtCVONFXw
+ xkR1W40cxHQEvzLqqynG9NKBIW9XVyAJdEtOPvt8jTH7JVIPhVAWNC3bRZZUWbLfJj2E
+ WMIeStDAF1WKgZFDVl7oW0L/+l545Bgkef3SJr+IYmxeaV3DagHiyZX7Fhth9xP+gQfk
+ R6m2/Yk8RCynnK7T9u9ItZXhZ3rp+FKvluGa+08KxbDOMlDbrbgJGrKoWQYhBTagNL5G MA== 
+Received: from nam04-sn1-obe.outbound.protection.outlook.com (mail-sn1nam04lp2051.outbound.protection.outlook.com [104.47.44.51])
+        by mx0a-0014ca01.pphosted.com with ESMTP id 3587n2v169-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 08 Dec 2020 23:58:24 -0800
+        Tue, 08 Dec 2020 23:58:23 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aJD72eGxNAivujY+I/Ra3LkCPgohdAFY1zHNbiguuS45q/YAHrPLMMJTZecyWbfnDlyfrHWujeqRbXzXXCTIXpHZv8oiczFwrEuiPXpg25HhfLOX0207vsONWIn9hjHkDIJjIJusKl/Ta+eaKpa3GbfZX3dzHno3hM0N3oUonDix2PbR6oWbswSsS963f2vaq54I2Rw+veN1tKrjnJQMsmTSutYVj0z9g8tdPMqEnwfv/b5SOJ/XpCbrdSfRQ+Zqzcf/HHTbh3ffW0f6v/XpFNZAMhovLMOIhi4jBCpZ9T3/0HdIlCYpGO/BAb93M5hIfY0IdmcqtNksKxnvyhIquA==
+ b=QiM7zbK+HMy7bJYWbzND4IsQpWivoaTL7zmhDL2ijWn7hkkzZjPor7oZ/dZ548Hfu02nc2wm1VisWAMkWSvkEWm+JrAiv5FHxYto+gOiLonFL3ibfAwXxpiL5v6kRY5DQUBrS/tmWmdm1VYNt/LBp8H6bXayEqh4YB04xiORfJB+JYkWODNmb7HHRexOc1gWOl/rh8NnAF+Ad4dLYkYBuiSy9UykDgyQlxKIBhNpSvtgpljvMwZqBTvnxwVotwOUbnkxGQ/DqcAYNNYK+9v5+xUndU1HBHPuuJRuoxZQDPa0m5I3MBdgpExl16bmExxOh17IIDP2Hjdqr0sRs3mjDg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hAn9QRiQLlv+e4+ZcGiTwPXpxp4i+wxQWgmSNb6Sbrk=;
- b=J+ZV9mDeafh0Th5xblwl/w6my/5q4hNuqTHc1o2iTs/HYaM5eu+2s5Qdb58a30+DNwepUyRkJZelQ3lU3LzrVxhIpyoBl+v/frAZyz2hYy9PmOufZeHCoR+fJ4fULS1hSGT6iZWDe+q2AxgMje9D4V48GKTAibphIrhy+lNiyoXKUHjH0B6f/rup54wAs/4DoFBRdpGjdk5bdsFbLU81gFMN0kCpEo9G4BC69ovdLJZsZ8fk3C26KJL2qER5r74dEScPSwHb0OnmC9jKWX3M6CYDpwh9geN6Uew9KznRWtu5lLzBRVKP+qsOKeneOjiCb9GRZ+ZP7sGkBsihy0r5Tg==
+ bh=CcKoZZC0H2BicCm8jchAVhSeJ9kntWhPsZ57IjMQfzc=;
+ b=USZQgZiu6pNmIgpAisM2obdvMUWu31YBjSgVhVCziGgiAahDldZqmw3CP/BTBkop2j5kMiIrtC3nZcrY4KTZ67aSlBiIju+9Sc+k1Gbctzkfnps8JqLnQAuGKab7BA7O+lQPMfq0wzYhPOsxl0MAlEGkLoFkle12i8sCqRImHPTIrfkeJYlEVPG0oPDdjxJVg2X6t3bLTor+QX/lWiTE6XXPoTdk3AcQ0yma/Bo36SAzDhLUqIRsT0EXBOkOyqXBgu+s/JE5wIcjjNgSf2CQ2KfqVcpHv3YrFHyvfId7YdkjxCx/3+RYzwI4eavemdqxwT69/soNoK0ZQUzztaMMrw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  158.140.1.147) smtp.rcpttodomain=bootlin.com smtp.mailfrom=cadence.com;
  dmarc=pass (p=none sp=none pct=100) action=none header.from=cadence.com;
@@ -48,18 +49,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hAn9QRiQLlv+e4+ZcGiTwPXpxp4i+wxQWgmSNb6Sbrk=;
- b=POQ1ucaN35Wls/0zeM6t45H8qAz4+ZtbjZLoQFJKIxgp5J66QBk7TxFaWSqxyzUW1DGA+ltT9RxPfNhaNnz0AH26RAHbePBGuBHTP/SOWocZ9egfh8YpTzs3OW/Fv9F/8kctNEkr/LC7d5/VZ0hFAgHKXioxhQU2lzGaEvZAHTw=
-Received: from DM6PR02CA0145.namprd02.prod.outlook.com (2603:10b6:5:332::12)
- by SN4PR0701MB3808.namprd07.prod.outlook.com (2603:10b6:803:46::16) with
+ bh=CcKoZZC0H2BicCm8jchAVhSeJ9kntWhPsZ57IjMQfzc=;
+ b=TfSo8H6+xMxyi2TMnexhCgyPA6R+KLsYx6F1CJhetCReynEquQJz7VqpR3UKTdLhTP7YL4cZub94w2Q0uyPaMS0Ts44mcBugpe60XAb5kA2bY1cs9DCWkDkp6bnYW/2OlCM18j9vuwmgma7m3KOsMVFn8tQPYXl1V4cNpG+2G3k=
+Received: from BN7PR02CA0032.namprd02.prod.outlook.com (2603:10b6:408:20::45)
+ by BL0PR07MB4081.namprd07.prod.outlook.com (2603:10b6:207:49::26) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.21; Wed, 9 Dec
- 2020 07:58:20 +0000
-Received: from DM6NAM12FT043.eop-nam12.prod.protection.outlook.com
- (2603:10b6:5:332:cafe::29) by DM6PR02CA0145.outlook.office365.com
- (2603:10b6:5:332::12) with Microsoft SMTP Server (version=TLS1_2,
+ 2020 07:58:21 +0000
+Received: from BN8NAM12FT041.eop-nam12.prod.protection.outlook.com
+ (2603:10b6:408:20:cafe::3d) by BN7PR02CA0032.outlook.office365.com
+ (2603:10b6:408:20::45) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3654.12 via Frontend
- Transport; Wed, 9 Dec 2020 07:58:20 +0000
+ Transport; Wed, 9 Dec 2020 07:58:21 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 158.140.1.147)
  smtp.mailfrom=cadence.com; bootlin.com; dkim=none (message not signed)
  header.d=none;bootlin.com; dmarc=pass action=none header.from=cadence.com;
@@ -67,11 +68,11 @@ Received-SPF: Pass (protection.outlook.com: domain of cadence.com designates
  158.140.1.147 as permitted sender) receiver=protection.outlook.com;
  client-ip=158.140.1.147; helo=sjmaillnx1.cadence.com;
 Received: from sjmaillnx1.cadence.com (158.140.1.147) by
- DM6NAM12FT043.mail.protection.outlook.com (10.13.179.162) with Microsoft SMTP
+ BN8NAM12FT041.mail.protection.outlook.com (10.13.182.172) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  15.20.3654.10 via Frontend Transport; Wed, 9 Dec 2020 07:58:20 +0000
 Received: from maileu3.global.cadence.com (maileu3.cadence.com [10.160.88.99])
-        by sjmaillnx1.cadence.com (8.14.4/8.14.4) with ESMTP id 0B97wFQ8002826
+        by sjmaillnx1.cadence.com (8.14.4/8.14.4) with ESMTP id 0B97wFQ9002826
         (version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=OK);
         Tue, 8 Dec 2020 23:58:19 -0800
 X-CrossPremisesHeadersFilteredBySendConnector: maileu3.global.cadence.com
@@ -80,49 +81,52 @@ Received: from maileu3.global.cadence.com (10.160.88.99) by
  15.0.1367.3; Wed, 9 Dec 2020 08:58:15 +0100
 Received: from vleu-orange.cadence.com (10.160.88.83) by
  maileu3.global.cadence.com (10.160.88.99) with Microsoft SMTP Server (TLS) id
- 15.0.1367.3 via Frontend Transport; Wed, 9 Dec 2020 08:58:14 +0100
+ 15.0.1367.3 via Frontend Transport; Wed, 9 Dec 2020 08:58:15 +0100
 Received: from vleu-orange.cadence.com (localhost.localdomain [127.0.0.1])
-        by vleu-orange.cadence.com (8.14.4/8.14.4) with ESMTP id 0B97wEhr024497;
-        Wed, 9 Dec 2020 08:58:14 +0100
+        by vleu-orange.cadence.com (8.14.4/8.14.4) with ESMTP id 0B97wFYg024505;
+        Wed, 9 Dec 2020 08:58:15 +0100
 Received: (from jpawar@localhost)
-        by vleu-orange.cadence.com (8.14.4/8.14.4/Submit) id 0B97wEt7024496;
-        Wed, 9 Dec 2020 08:58:14 +0100
+        by vleu-orange.cadence.com (8.14.4/8.14.4/Submit) id 0B97wFxb024504;
+        Wed, 9 Dec 2020 08:58:15 +0100
 From:   Jayshri Pawar <jpawar@cadence.com>
 To:     <linux-spi@vger.kernel.org>
 CC:     <miquel.raynal@bootlin.com>, <richard@nod.at>, <vigneshr@ti.com>,
         <linux-kernel@vger.kernel.org>, <dkangude@cadence.com>,
-        <mparab@cadence.com>, <sjakhade@cadence.com>, <jpawar@cadence.com>
-Subject: [PATCH 0/2] Driver for Cadence xSPI flash controller
-Date:   Wed, 9 Dec 2020 08:57:56 +0100
-Message-ID: <1607500678-23862-1-git-send-email-jpawar@cadence.com>
+        <mparab@cadence.com>, <sjakhade@cadence.com>, <jpawar@cadence.com>,
+        Konrad Kociolek <konrad@cadence.com>
+Subject: [PATCH 2/2] Add dt-bindings documentation for Cadence XSPI controller
+Date:   Wed, 9 Dec 2020 08:57:58 +0100
+Message-ID: <1607500678-23862-3-git-send-email-jpawar@cadence.com>
 X-Mailer: git-send-email 2.4.5
+In-Reply-To: <1607500678-23862-1-git-send-email-jpawar@cadence.com>
+References: <1607500678-23862-1-git-send-email-jpawar@cadence.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-OrganizationHeadersPreserved: maileu3.global.cadence.com
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: e5f60e01-5101-4dfb-7792-08d89c1831f6
-X-MS-TrafficTypeDiagnostic: SN4PR0701MB3808:
-X-Microsoft-Antispam-PRVS: <SN4PR0701MB3808804A43FE56C812D95CD8C1CC0@SN4PR0701MB3808.namprd07.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
+X-MS-Office365-Filtering-Correlation-Id: 19e1a3f1-b0d8-4704-0982-08d89c183259
+X-MS-TrafficTypeDiagnostic: BL0PR07MB4081:
+X-Microsoft-Antispam-PRVS: <BL0PR07MB40816F2D99DA45008B31DB85C1CC0@BL0PR07MB4081.namprd07.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ppqlCTgOthnl6Fg4ObCizRJjtAuBSR6KoGPTyWC1/LMdlt9WbuMiBfom0Z1e5BgckC0PB3dVtQDT3BYLwRHC+lPyrd7NZxWcxR339YSN2Q7jN94PGJYoJvgsqrhcNxdL7q+1WJ77GsxBEderglzvsHYVh/d6AQcCO0/m+iuwTjCKely0f4KBPvw5lp4nqToSaVokQOXgHibmdRAG18z0QFpjkwtAEIeq2mXLjR5auUPNNz0jutRgJADY2OigthXaqnvM5patrjTG4Y41pEalF9gbHFySvcEvEnzMLxEwwSX5I29gZC5CIX7eKFe27TpybPEc0OGEOrYjMMQ34gOLrPrPU/SdD9cZF1jU4MdXt8TgRHrY0ygJh+R4NakWLK755gyhBRAVe93nWd7ejFpgoU73gBYLmhQm9eefAKoktQoIJF3rXOuBFVdqm6DjoJiI+bUyWkuxX5yRB74YK5XDyQ==
-X-Forefront-Antispam-Report: CIP:158.140.1.147;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:sjmaillnx1.cadence.com;PTR:unknown.Cadence.COM;CAT:NONE;SFS:(4636009)(346002)(376002)(136003)(36092001)(46966005)(70206006)(86362001)(8676002)(508600001)(36906005)(70586007)(2906002)(54906003)(2616005)(36756003)(107886003)(34020700004)(82310400003)(26005)(4326008)(8936002)(6666004)(47076004)(7636003)(356005)(5660300002)(186003)(426003)(6916009)(336012)(42186006);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: vemRNknMEWPc79fC6FL7DKOf4a0gWAaUSSTwbgD3iM+FwH8J2j1rb1ZSID6kKHjC7yTWhNYFXnMU6evVUPg8Xn0eTMilMzq9L36QIbHo96ueeAWLn7D58gwWHtEFCJc4daiGCeeB9X7bOSLlnh8rSRIk0iOGUqaWBER3pX2rgpNO1+pJb8K3W5dcmbx3FAuO927fx/I/eoxZB+pnOwmQs5EndOWHalEMO6kRfztKd++0+VHTZuwlKFt9pCSMzS9KC7Wog/eZ8DA/nLPoW0lLc60DgNzYTDNalAB3lfGkPdr5pZu/PLUUVqf2M+WSOnle2s7jJICb2SA9OofnCObAz8EWoQjdbOIjW6/I53/YqITVbySXYcLjsgipil8EEeQ8QFVUoX9j7pJe/pO4a87d7XY9Q2Xj5jIJMSgaEil1jFfPMbN86z1YlxxQfIi6iPMBlGqC/++BKqpdQ4CpOPbMw+DYGcQklWVMpi+t+P6ZZGEaoCYM5M01PUkJyTio1UIeY6k5WdpIL7YYrR2kzIVECg==
+X-Forefront-Antispam-Report: CIP:158.140.1.147;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:sjmaillnx1.cadence.com;PTR:unknown.Cadence.COM;CAT:NONE;SFS:(4636009)(346002)(136003)(376002)(36092001)(46966005)(86362001)(82310400003)(426003)(36756003)(42186006)(83380400001)(70586007)(34020700004)(8676002)(508600001)(356005)(36906005)(70206006)(4326008)(54906003)(7636003)(2906002)(107886003)(47076004)(6666004)(336012)(26005)(2616005)(8936002)(6916009)(186003)(5660300002);DIR:OUT;SFP:1101;
 X-OriginatorOrg: cadence.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Dec 2020 07:58:20.3369
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Dec 2020 07:58:20.9480
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e5f60e01-5101-4dfb-7792-08d89c1831f6
+X-MS-Exchange-CrossTenant-Network-Message-Id: 19e1a3f1-b0d8-4704-0982-08d89c183259
 X-MS-Exchange-CrossTenant-Id: d36035c5-6ce6-4662-a3dc-e762e61ae4c9
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=d36035c5-6ce6-4662-a3dc-e762e61ae4c9;Ip=[158.140.1.147];Helo=[sjmaillnx1.cadence.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM6NAM12FT043.eop-nam12.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BN8NAM12FT041.eop-nam12.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN4PR0701MB3808
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR07MB4081
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
  definitions=2020-12-09_07:2020-12-08,2020-12-09 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_check_notspam policy=outbound_check score=0 mlxscore=0
- clxscore=1015 phishscore=0 mlxlogscore=819 priorityscore=1501
+ clxscore=1011 phishscore=0 mlxlogscore=999 priorityscore=1501
  suspectscore=1 impostorscore=0 malwarescore=0 adultscore=0 spamscore=0
  lowpriorityscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.12.0-2009150000 definitions=main-2012090056
@@ -130,34 +134,186 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Command processing
-Driver uses STIG work mode to communicate with flash memories.
-In this mode, controller sends low-level instructions to memory.
-Each instruction is 128-bit width. There is special instruction
-DataSequence which carries information about data phase.
-Driver uses Slave DMA interface to transfer data as only this
-interface can be used in STIG work mode.
+Add dt-bindings documentation for Cadence XSPI controller
+to support SPI based flash memories.
 
-PHY initialization
-The initialization of PHY module in Cadence XSPI controller
-is done by driving external pin-strap signals to controller.
-Next, driver runs PHY training to find optimal value of
-read_dqs_delay parameter. Controller checks device discovery
-status and if it's completed and with no error PHY training
-passes.
-
-Jayshri Pawar (2):
-  Add support for Cadence XSPI controller
-  Add dt-bindings documentation for Cadence XSPI controller
-
- .../devicetree/bindings/spi/cdns,xspi.yaml         | 164 ++++
- drivers/spi/Kconfig                                |  11 +
- drivers/spi/Makefile                               |   1 +
- drivers/spi/spi-cadence-xspi.c                     | 894 +++++++++++++++++++++
- 4 files changed, 1070 insertions(+)
+Signed-off-by: Jayshri Pawar <jpawar@cadence.com>
+Signed-off-by: Konrad Kociolek <konrad@cadence.com>
+---
+ .../devicetree/bindings/spi/cdns,xspi.yaml         | 164 +++++++++++++++++++++
+ 1 file changed, 164 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/spi/cdns,xspi.yaml
- create mode 100644 drivers/spi/spi-cadence-xspi.c
 
+diff --git a/Documentation/devicetree/bindings/spi/cdns,xspi.yaml b/Documentation/devicetree/bindings/spi/cdns,xspi.yaml
+new file mode 100644
+index 0000000..a7d95b5
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/cdns,xspi.yaml
+@@ -0,0 +1,164 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++# Copyright 2020 Cadence
++%YAML 1.2
++---
++$id: "http://devicetree.org/schemas/spi/cdns,xspi.yaml#"
++$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++
++title: Cadence XSPI Controller
++
++maintainers:
++  - Jayshri Pawar <jpawar@cadence.com>
++  - Konrad Kociolek <konrad@cadence.com>
++
++description: |
++  The XSPI controller allows SPI protocol communication in
++  single, dual, quad or octal wire transmission modes for
++  read/write access to slaves such as SPI-NOR flash.
++
++properties:
++  compatible:
++    const: cdns,xspi-nor-fpga
++
++  reg:
++    items:
++      - description: address and lentgh of the controller register set
++      - description: address and lentgh of the Slave DMA data port
++      - description: address and lentgh of the auxiliary registers
++
++  interrupts:
++    maxItems: 1
++
++  cdns,dqs-last-data-drop:
++    type: boolean
++    description: |
++      This parameter should be set when the Flash Device being used
++      issues data on negative edge of Flash clock and returns them with
++      DQS and the PHY is configured to sample data in DQS mode.
++      If this param is set the controller internally requests this redundant
++      data at the end of the transfer cleaning up the PHY FIFO.
++
++  cdns,phy-data-select-oe-start:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      Adjusts the starting point of the DQ pad output enable window.
++      Lower numbers pull the rising edge earlier in time and larger
++      numbers cause the rising edge to be delayed. Each bit changes
++      the output enable time by a 1/2 cycle resolution.
++
++  cdns,phy-data-select-oe-end:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      Adjusts the ending point of the DQ pad output enable window.
++      Lower numbers pull the falling edge earlier in time and larger
++      numbers cause the falling edge to be delayed. Each bit changes
++      the output enable time by a 1/2 cycle resolution.
++
++  cdns,phy-dqs-select-oe-start:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      Adjusts the starting point of the DQS pad output enable window.
++      Lower numbers pull the rising edge earlier in time and larger
++      numbers cause the rising edge to be delayed. Each bit changes
++      the output enable time by a 1/2 cycle resolution.
++
++  cdns,phy-dqs-select-oe-end:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      Adjusts the ending point of the DQS pad output enable window.
++      Lower numbers pull the falling edge earlier in time and larger
++      numbers cause the falling edge to be delayed. Each bit changes
++      the output enable time by a 1/2 cycle resolution.
++
++  cdns,phy-gate-cfg-close:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      Normally the gate is closing then all bits of dfi_cebar are high
++      or when dfi_rd_pre_post_amble and rebar_dfi are high. This parameter
++      allows to extend the closing of the DQS gate. Recommended zero.
++
++  cdns,phy-gate-cfg:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      Coarse adjust of gate open time. This value is the number of cycles
++      to delay the dfi_rddata_en signal prior to opening the gate in
++      full cycle increments. Decreasing this value pulls the gate earlier
++      in time. This field should be programmed such that the gate signal
++      lands in the valid DQS gate window.
++
++  cdns,phy-rd-del-select:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      Defines the read data delay. Holds the number of cycles to delay
++      the dfi_rddata_en signal prior to enabling the read FIFO.
++      After this delay, the read pointers begin incrementing the read FIFO.
++
++  cdns,phy-clk-wr-delay:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      Controls the clk_wr delay line which adjusts the write DQ bit
++      timing in 1/256th steps of the clock period in normal DLL
++      locked mode. In bypass mode this field directly programs
++      the number of delay elements.
++
++  cdns,phy-use-lpbk-dqs:
++    type: boolean
++    description: |
++      This parameter chooses lpbk_dqs to capture data for reads.
++      Instead memory DQS will be used.
++
++  cdns,phy-use-ext-lpbk-dqs:
++    type: boolean
++    description: |
++      This parameter chooses external lpbk_dqs for data capture
++      (lpbk_dqs connected to the lpbk_dqs_IO pad). When not used
++      mem_rebar_pad is used for data read capture.
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - cdns,phy-data-select-oe-start
++  - cdns,phy-data-select-oe-end
++  - cdns,phy-dqs-select-oe-start
++  - cdns,phy-dqs-select-oe-end
++  - cdns,phy-gate-cfg-close
++  - cdns,phy-gate-cfg
++  - cdns,phy-rd-del-select
++  - cdns,phy-clk-wr-delay
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    xspi: spi@a0010000 {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        compatible = "cdns,xspi-nor-fpga";
++        reg = <0x0 0xa0010000 0x0 0x10000>,
++              <0x0 0xb0000000 0x0 0x10000>,
++              <0x0 0xa0020000 0x0 0x10000>;
++        interrupts = <0 90 IRQ_TYPE_LEVEL_HIGH>;
++        interrupt-parent = <&gic>;
++        cdns,dqs-last-data-drop;
++        cdns,phy-data-select-oe-start = <0>;
++        cdns,phy-data-select-oe-end = <4>;
++        cdns,phy-dqs-select-oe-start = <0>;
++        cdns,phy-dqs-select-oe-end = <1>;
++        cdns,phy-gate-cfg-close = <3>;
++        cdns,phy-gate-cfg = <0>;
++        cdns,phy-rd-del-select = <5>;
++        cdns,phy-clk-wr-delay = <64>;
++        cdns,phy-use-lpbk-dqs;
++        cdns,phy-use-ext-lpbk-dqs;
++        flash@0 {
++            compatible = "spi-nor", "micron,mt35xu512";
++            spi-max-frequency = <75000000>;
++            reg = <0>;
++        };
++        flash@1 {
++            compatible = "spi-nor", "micron,mt35xu512";
++            spi-max-frequency = <75000000>;
++            reg = <1>;
++        };
++    };
 -- 
 2.7.4
 

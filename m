@@ -5,38 +5,37 @@ X-Spam-Level:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=3.4.0
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B0D76C433FE
-	for <linux-spi@archiver.kernel.org>; Fri, 11 Dec 2020 18:35:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 15714C433FE
+	for <linux-spi@archiver.kernel.org>; Fri, 11 Dec 2020 18:36:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7DDED23EF5
-	for <linux-spi@archiver.kernel.org>; Fri, 11 Dec 2020 18:35:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D421623DC2
+	for <linux-spi@archiver.kernel.org>; Fri, 11 Dec 2020 18:36:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393368AbgLKRDi (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 11 Dec 2020 12:03:38 -0500
-Received: from hqnvemgate26.nvidia.com ([216.228.121.65]:5172 "EHLO
+        id S2393414AbgLKRDj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 11 Dec 2020 12:03:39 -0500
+Received: from hqnvemgate26.nvidia.com ([216.228.121.65]:5171 "EHLO
         hqnvemgate26.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2393251AbgLKRDG (ORCPT
+        with ESMTP id S2393257AbgLKRDG (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 11 Dec 2020 12:03:06 -0500
 Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate26.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
-        id <B5fd3a5f10001>; Fri, 11 Dec 2020 09:01:37 -0800
-Received: from HQMAIL107.nvidia.com (172.20.187.13) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 11 Dec
- 2020 17:01:37 +0000
+        id <B5fd3a5f00000>; Fri, 11 Dec 2020 09:01:36 -0800
+Received: from HQMAIL107.nvidia.com (172.20.187.13) by HQMAIL111.nvidia.com
+ (172.20.187.18) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 11 Dec
+ 2020 17:01:35 +0000
 Received: from skomatineni-linux.nvidia.com (172.20.145.6) by mail.nvidia.com
  (172.20.187.13) with Microsoft SMTP Server id 15.0.1473.3 via Frontend
- Transport; Fri, 11 Dec 2020 17:01:36 +0000
+ Transport; Fri, 11 Dec 2020 17:01:35 +0000
 From:   Sowjanya Komatineni <skomatineni@nvidia.com>
 To:     <thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
         <broonie@kernel.org>, <robh+dt@kernel.org>, <lukas@wunner.de>
 CC:     <skomatineni@nvidia.com>, <linux-spi@vger.kernel.org>,
         <linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <devicetree@vger.kernel.org>
-Subject: [PATCH v2 7/9] arm64: tegra: Enable QSPI on Jetson Nano
-Date:   Fri, 11 Dec 2020 09:01:26 -0800
-Message-ID: <1607706088-1437-10-git-send-email-skomatineni@nvidia.com>
+Subject: [PATCH v2 5/9] spi: spi-mem: Allow masters to transfer dummy cycles directly by hardware
+Date:   Fri, 11 Dec 2020 09:01:24 -0800
+Message-ID: <1607706088-1437-8-git-send-email-skomatineni@nvidia.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1607706088-1437-1-git-send-email-skomatineni@nvidia.com>
 References: <1607706088-1437-1-git-send-email-skomatineni@nvidia.com>
@@ -44,66 +43,88 @@ X-NVConfidentiality: public
 MIME-Version: 1.0
 Content-Type: text/plain
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1607706097; bh=dLZyD/aBfvEKW6lFi53KiLDsTnSc0dbBTCqhpZ4bRhM=;
+        t=1607706096; bh=w3ehnwe0omM34FaObddURkJNKGQctD+ZomRiDYg+fkY=;
         h=From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
          References:X-NVConfidentiality:MIME-Version:Content-Type;
-        b=jaiKQqqp2hXwte/mXQKjmBIVqB603HsqTgBNDLg7F7j/wjuXJpBrt1gxoRNbXvqVc
-         dNtjJM0/FRhOCrTr2iCpjkiLLWtOJh/LcVEJUd70G7J+nZk9H3ZsD3O+FG+o7vDrT/
-         SDi7lH9Yhd0i9OMfiT2YFwoHDXXDYXG2JzBsGemuDnKcaH01vCJpEFPJaOFk66uKJa
-         +wjsNaQZ+Tlu6yj9SZldb7YANlcv9XK26ODMA/jJJBEP/8WInZbAsp6cz/yKQaZUPK
-         pk10fAiLPxUf91WMP1+7+wAhHUNQHESlsU1uxBtHVwCIOmVOM2BLqzYWXCDuBvx729
-         aV41Vl+SNk5Rg==
+        b=M3QtDGJ0G+ShIS2KqrK5wZz8VU8My4IP/kP7qgLkbEN9RveXHb+BLDuafNnSEfepb
+         Jl/1QcV4ALz/6ulU1WiQXFUJz49nEI4AcFnx+CMZcYhShgSI80dlbGjxnri0AB1bSs
+         Xib4karOu1aK6Y/NxIZHAvryLIkpyXPHvBWqXN0rdFPPboa6u7MxFrILOhcnzXz+Vt
+         DHRgp4UV18Pms2tOZlUAtF303lwzpdfISmpiUTh8+NhrBGtTH8Mrvg4o2WbZwbeJxG
+         1fjnN9/qTEq7LULCLS4CYb7ge6SVuNbuCJ+O2vKBJr5CHYH2f1OUaL4C6ODj+3n6FK
+         Jhz2B4tLt2nbQ==
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This patch enables QSPI on Jetson Nano.
+This patch adds a flag SPI_MASTER_USES_HW_DUMMY_CYCLES for the controllers
+that support transfer of dummy cycles by the hardware directly.
+
+For controller with this flag set, spi-mem driver will skip dummy bytes
+transfer in the spi message.
+
+Controller drivers can get the number of dummy cycles from spi_message.
 
 Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
 ---
- arch/arm64/boot/dts/nvidia/tegra210-p3450-0000.dts | 12 ++++++++++++
- arch/arm64/boot/dts/nvidia/tegra210.dtsi           |  5 +++--
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ drivers/spi/spi-mem.c   | 18 +++++++++++-------
+ include/linux/spi/spi.h |  8 ++++++++
+ 2 files changed, 19 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/nvidia/tegra210-p3450-0000.dts b/arch/arm64/boot/dts/nvidia/tegra210-p3450-0000.dts
-index 6a877de..a1b4603 100644
---- a/arch/arm64/boot/dts/nvidia/tegra210-p3450-0000.dts
-+++ b/arch/arm64/boot/dts/nvidia/tegra210-p3450-0000.dts
-@@ -638,6 +638,18 @@
- 		};
- 	};
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index f3a3f19..38a523b 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -350,13 +350,17 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	}
  
-+	spi@70410000 {
-+		status = "okay";
+ 	if (op->dummy.nbytes) {
+-		memset(tmpbuf + op->addr.nbytes + 1, 0xff, op->dummy.nbytes);
+-		xfers[xferpos].tx_buf = tmpbuf + op->addr.nbytes + 1;
+-		xfers[xferpos].len = op->dummy.nbytes;
+-		xfers[xferpos].tx_nbits = op->dummy.buswidth;
+-		spi_message_add_tail(&xfers[xferpos], &msg);
+-		xferpos++;
+-		totalxferlen += op->dummy.nbytes;
++		if (ctlr->flags & SPI_MASTER_USES_HW_DUMMY_CYCLES) {
++			msg.dummy_cycles = (op->dummy.nbytes * 8) / op->dummy.buswidth;
++		} else {
++			memset(tmpbuf + op->addr.nbytes + 1, 0xff, op->dummy.nbytes);
++			xfers[xferpos].tx_buf = tmpbuf + op->addr.nbytes + 1;
++			xfers[xferpos].len = op->dummy.nbytes;
++			xfers[xferpos].tx_nbits = op->dummy.buswidth;
++			spi_message_add_tail(&xfers[xferpos], &msg);
++			xferpos++;
++			totalxferlen += op->dummy.nbytes;
++		}
+ 	}
+ 
+ 	if (op->data.nbytes) {
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index aa09fdc..2024149 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -512,6 +512,8 @@ struct spi_controller {
+ 
+ #define SPI_MASTER_GPIO_SS		BIT(5)	/* GPIO CS must select slave */
+ 
++#define SPI_MASTER_USES_HW_DUMMY_CYCLES	BIT(6)	/* HW dummy bytes transfer */
 +
-+		flash@0 {
-+			compatible = "spi-nor";
-+			reg = <0>;
-+			spi-max-frequency = <104000000>;
-+			spi-tx-bus-width = <2>;
-+			spi-rx-bus-width = <2>;
-+		};
-+	};
+ 	/* flag indicating this is an SPI slave controller */
+ 	bool			slave;
+ 
+@@ -1022,6 +1024,12 @@ struct spi_message {
+ 	unsigned		actual_length;
+ 	int			status;
+ 
++	/*
++	 * dummy cycles in the message transfer. This is used by the controller
++	 * drivers supports transfer of dummy cycles directly by the hardware.
++	 */
++	u8			dummy_cycles;
 +
- 	clk32k_in: clock@0 {
- 		compatible = "fixed-clock";
- 		clock-frequency = <32768>;
-diff --git a/arch/arm64/boot/dts/nvidia/tegra210.dtsi b/arch/arm64/boot/dts/nvidia/tegra210.dtsi
-index 4fbf8c1..998fa81 100644
---- a/arch/arm64/boot/dts/nvidia/tegra210.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra210.dtsi
-@@ -1536,8 +1536,9 @@
- 		interrupts = <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>;
- 		#address-cells = <1>;
- 		#size-cells = <0>;
--		clocks = <&tegra_car TEGRA210_CLK_QSPI>;
--		clock-names = "qspi";
-+		clocks = <&tegra_car TEGRA210_CLK_QSPI>,
-+			 <&tegra_car TEGRA210_CLK_QSPI_PM>;
-+		clock-names = "qspi", "qspi_out";
- 		resets = <&tegra_car 211>;
- 		reset-names = "qspi";
- 		dmas = <&apbdma 5>, <&apbdma 5>;
+ 	/* for optional use by whatever driver currently owns the
+ 	 * spi_message ...  between calls to spi_async and then later
+ 	 * complete(), that's the spi_controller controller driver.
 -- 
 2.7.4
 

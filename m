@@ -6,32 +6,27 @@ X-Spam-Status: No, score=-9.0 required=3.0 tests=BAYES_00,MAILING_LIST_MULTI,
 	MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 47AB3C4361B
-	for <linux-spi@archiver.kernel.org>; Fri, 11 Dec 2020 19:31:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 85BBBC4361B
+	for <linux-spi@archiver.kernel.org>; Fri, 11 Dec 2020 19:33:35 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 08A1624058
-	for <linux-spi@archiver.kernel.org>; Fri, 11 Dec 2020 19:31:16 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3E61E24058
+	for <linux-spi@archiver.kernel.org>; Fri, 11 Dec 2020 19:33:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405729AbgLKRwt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 11 Dec 2020 12:52:49 -0500
-Received: from mail.kernel.org ([198.145.29.99]:60798 "EHLO mail.kernel.org"
+        id S2436664AbgLKRwm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 11 Dec 2020 12:52:42 -0500
+Received: from mail.kernel.org ([198.145.29.99]:60694 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2436663AbgLKRwg (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 11 Dec 2020 12:52:36 -0500
+        id S2390560AbgLKRw1 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 11 Dec 2020 12:52:27 -0500
 From:   Mark Brown <broonie@kernel.org>
 Authentication-Results: mail.kernel.org; dkim=permerror (bad message/signature format)
-To:     "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Rob Herring <robh+dt@kernel.org>, linus.walleij@linaro.org
-Cc:     thesven73@gmail.com, devicetree@vger.kernel.org,
-        linux-spi@vger.kernel.org, letux-kernel@openphoenux.org,
-        linux-kernel@vger.kernel.org,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        linux-gpio@vger.kernel.org, laurent.pinchart@ideasonboard.com,
-        andreas@kemnade.info, kernel@pyra-handheld.com, lukas@wunner.de
-In-Reply-To: <3bed61807fff6268789e7d411412fbc5cd6ffe2a.1607507863.git.hns@goldelico.com>
-References: <3bed61807fff6268789e7d411412fbc5cd6ffe2a.1607507863.git.hns@goldelico.com>
-Subject: Re: [PATCH] spi: dt-bindings: clarify CS behavior for spi-cs-high and gpio descriptors
-Message-Id: <160770909979.26609.3989372028641790318.b4-ty@kernel.org>
+To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
+        linux-spi@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org
+In-Reply-To: <20201209173514.93328-1-tudor.ambarus@microchip.com>
+References: <20201209173514.93328-1-tudor.ambarus@microchip.com>
+Subject: Re: [PATCH] spi: Limit the spi device max speed to controller's max speed
+Message-Id: <160770909978.26609.5466191880976694172.b4-ty@kernel.org>
 Date:   Fri, 11 Dec 2020 17:51:39 +0000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -40,9 +35,9 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 9 Dec 2020 10:57:44 +0100, H. Nikolaus Schaller wrote:
-> Behavior of CS signal in combination of spi-cs-high and gpio descriptors
-> is not clearly defined and documented. So clarify the documentation
+On Wed, 9 Dec 2020 19:35:14 +0200, Tudor Ambarus wrote:
+> Make sure the max_speed_hz of spi_device does not override
+> the max_speed_hz of controller.
 
 Applied to
 
@@ -50,8 +45,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: dt-bindings: clarify CS behavior for spi-cs-high and gpio descriptors
-      commit: 2fee9583198eb97b5351feda7bd825e0f778385c
+[1/1] spi: Limit the spi device max speed to controller's max speed
+      commit: 9326e4f1e5dd1a4410c429638d3c412b6fc17040
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

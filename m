@@ -5,38 +5,37 @@ X-Spam-Level:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=3.4.0
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 79DC1C433FE
-	for <linux-spi@archiver.kernel.org>; Fri, 11 Dec 2020 18:26:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 23DB2C433FE
+	for <linux-spi@archiver.kernel.org>; Fri, 11 Dec 2020 18:27:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id F0C8923DE3
-	for <linux-spi@archiver.kernel.org>; Fri, 11 Dec 2020 18:26:28 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 804B923DE3
+	for <linux-spi@archiver.kernel.org>; Fri, 11 Dec 2020 18:27:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404135AbgLKRCd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 11 Dec 2020 12:02:33 -0500
-Received: from hqnvemgate24.nvidia.com ([216.228.121.143]:2199 "EHLO
-        hqnvemgate24.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2392681AbgLKRC0 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 11 Dec 2020 12:02:26 -0500
-Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate24.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
-        id <B5fd3a5f00000>; Fri, 11 Dec 2020 09:01:36 -0800
-Received: from HQMAIL107.nvidia.com (172.20.187.13) by HQMAIL109.nvidia.com
- (172.20.187.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 11 Dec
- 2020 17:01:36 +0000
+        id S2393336AbgLKRDh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 11 Dec 2020 12:03:37 -0500
+Received: from hqnvemgate25.nvidia.com ([216.228.121.64]:3775 "EHLO
+        hqnvemgate25.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2393276AbgLKRDG (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 11 Dec 2020 12:03:06 -0500
+Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate25.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
+        id <B5fd3a5f20000>; Fri, 11 Dec 2020 09:01:38 -0800
+Received: from HQMAIL107.nvidia.com (172.20.187.13) by HQMAIL101.nvidia.com
+ (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 11 Dec
+ 2020 17:01:37 +0000
 Received: from skomatineni-linux.nvidia.com (172.20.145.6) by mail.nvidia.com
  (172.20.187.13) with Microsoft SMTP Server id 15.0.1473.3 via Frontend
- Transport; Fri, 11 Dec 2020 17:01:36 +0000
+ Transport; Fri, 11 Dec 2020 17:01:37 +0000
 From:   Sowjanya Komatineni <skomatineni@nvidia.com>
 To:     <thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
         <broonie@kernel.org>, <robh+dt@kernel.org>, <lukas@wunner.de>
 CC:     <skomatineni@nvidia.com>, <linux-spi@vger.kernel.org>,
         <linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <devicetree@vger.kernel.org>
-Subject: [PATCH v2 6/9] spi: tegra210-quad: Add support for hardware dummy cycles
-Date:   Fri, 11 Dec 2020 09:01:25 -0800
-Message-ID: <1607706088-1437-9-git-send-email-skomatineni@nvidia.com>
+Subject: [PATCH v2 8/9] arm64: tegra: Add QSPI nodes on Tegra194
+Date:   Fri, 11 Dec 2020 09:01:27 -0800
+Message-ID: <1607706088-1437-11-git-send-email-skomatineni@nvidia.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1607706088-1437-1-git-send-email-skomatineni@nvidia.com>
 References: <1607706088-1437-1-git-send-email-skomatineni@nvidia.com>
@@ -44,97 +43,63 @@ X-NVConfidentiality: public
 MIME-Version: 1.0
 Content-Type: text/plain
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1607706096; bh=UDrsTDiQs8eElO67iIY2kdbQNgxNBN6S/8FNEm5eF/U=;
+        t=1607706098; bh=R3/lpNx2FBCJJOEkaUuhQtltDaXz/t9G5rIg9EkHXfo=;
         h=From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
          References:X-NVConfidentiality:MIME-Version:Content-Type;
-        b=EVqGco5u6jN2kJlsz1g+D7jTfOt45rROyZytYB3YzeTdl7f8//XEuBk3WsPu9Revz
-         qVpmGDKP4XcCiznOR+yJtj/RvY0H07LyiTfGjAj8nBSYClJp9fWhhuJT8em5QeXyQM
-         jIY1Rsvq4aDjVxTfPQikx5jEjrNlcaSHURpz2EnBlyyDc8fZg4BV4DZ+l/v/UsppQa
-         FDzDIbl9tHd14uyMlrF0Bx5iX9qsdgCdfYbfP7u/VVYj/1JQ732nOCv/Siwq1obdrj
-         3tYUrEldRIlxUsJLSBJl9Oqzq9We6OftSpWYUr05mnm6clg6IsfrCee9tiISqkQC2o
-         XYq8hiG3NYGaQ==
+        b=DFDQJc16X2hdV1REH8A7Bw7iss9+qDJrtBW71/oqtdYldMD+6kE7njjN3wWbQJZZ+
+         tjLIlj8qBZrhoZb2nLRLBH7GH9Q2yCc2QqL8BuZnW7bIEWS8ipKerxXI4ylCTFkwJd
+         35bnP4LCc3B36CCTXc4evH3Arkf9lfcXsF7O6Kc3cFIxP7QckGnsPrpenyTuFwVebQ
+         RWmsZG8knXeLeOOPxZAi+AYJMJwBBTQ03hrTz1jpTxi4u7wEtPrRhYjuh2iNu0Afl5
+         LQLaxyhNgaShXdhAIL/SDDp0TPqVBncvg38UHZO70GcvWLOhhuMhf4tuReZIdD0h/k
+         XRQJ3orHVu2vg==
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Tegra Quad SPI controller hardware supports sending dummy cycles
-after address bytes.
+Tegra194 has 2 QSPI controllers.
 
-This patch adds this support.
+This patch adds DT node for these 2 QSPI controllers.
 
 Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
 ---
- drivers/spi/spi-tegra210-quad.c | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/nvidia/tegra194.dtsi | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-index 624f395..1d1b125 100644
---- a/drivers/spi/spi-tegra210-quad.c
-+++ b/drivers/spi/spi-tegra210-quad.c
-@@ -124,6 +124,13 @@
- #define QSPI_DMA_TIMEOUT			(msecs_to_jiffies(1000))
- #define DEFAULT_QSPI_DMA_BUF_LEN		(64 * 1024)
+diff --git a/arch/arm64/boot/dts/nvidia/tegra194.dtsi b/arch/arm64/boot/dts/nvidia/tegra194.dtsi
+index 25f36d6..63ed788 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra194.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra194.dtsi
+@@ -609,6 +609,30 @@
+ 			status = "disabled";
+ 		};
  
-+enum transfer_phase {
-+	CMD_BYTE_XFER = 0,
-+	ADDR_BYTES_XFER,
-+	DATA_BYTES_XFER,
-+	MAX_XFERS,
-+};
++		spi@3270000 {
++			compatible = "nvidia,tegra194-qspi";
++			reg = <0x3270000 0x1000>;
++			interrupts = <GIC_SPI 35 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&bpmp TEGRA194_CLK_QSPI0>,
++				 <&bpmp TEGRA194_CLK_QSPI0_PM>;
++			clock-names = "qspi", "qspi_out";
++			resets = <&bpmp TEGRA194_RESET_QSPI0>;
++			reset-names = "qspi";
++			status = "disabled";
++		};
 +
- struct tegra_qspi_client_data {
- 	int tx_clk_tap_delay;
- 	int rx_clk_tap_delay;
-@@ -857,6 +864,8 @@ static int tegra_qspi_start_transfer_one(struct spi_device *spi,
- 
- 	tqspi->command1_reg = command1;
- 
-+	tegra_qspi_writel(tqspi, QSPI_NUM_DUMMY_CYCLE(tqspi->dummy_cycles), QSPI_MISC_REG);
++		spi@3300000 {
++			compatible = "nvidia,tegra194-qspi";
++			reg = <0x3300000 0x1000>;
++			interrupts = <GIC_SPI 39 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&bpmp TEGRA194_CLK_QSPI1>,
++				 <&bpmp TEGRA194_CLK_QSPI1_PM>;
++			clock-names = "qspi", "qspi_out";
++			resets = <&bpmp TEGRA194_RESET_QSPI1>;
++			reset-names = "qspi";
++			status = "disabled";
++		};
 +
- 	ret = tegra_qspi_flush_fifos(tqspi, false);
- 	if (ret < 0)
- 		return ret;
-@@ -977,7 +986,7 @@ static int tegra_qspi_transfer_one_message(struct spi_master *master, struct spi
- 	struct spi_device *spi = msg->spi;
- 	struct spi_transfer *xfer;
- 	bool is_first_msg = true;
--	int ret;
-+	int ret, xfer_phase = 0;
- 
- 	msg->status = 0;
- 	msg->actual_length = 0;
-@@ -987,6 +996,15 @@ static int tegra_qspi_transfer_one_message(struct spi_master *master, struct spi
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
- 		u32 cmd1;
- 
-+		/*
-+		 * Program dummy clock cycles in Tegra QSPI register only
-+		 * during address transfer phase.
-+		 */
-+		if (xfer_phase == ADDR_BYTES_XFER)
-+			tqspi->dummy_cycles = msg->dummy_cycles;
-+		else
-+			tqspi->dummy_cycles = 0;
-+
- 		reinit_completion(&tqspi->xfer_completion);
- 
- 		cmd1 = tegra_qspi_setup_transfer_one(spi, xfer, is_first_msg);
-@@ -1018,6 +1036,7 @@ static int tegra_qspi_transfer_one_message(struct spi_master *master, struct spi
- 		}
- 
- 		msg->actual_length += xfer->len;
-+		xfer_phase++;
- 
- complete_xfer:
- 		if (ret < 0) {
-@@ -1203,6 +1222,7 @@ static int tegra_qspi_probe(struct platform_device *pdev)
- 	master->mode_bits = SPI_MODE_0 | SPI_MODE_3 | SPI_CS_HIGH |
- 			    SPI_TX_DUAL | SPI_RX_DUAL | SPI_TX_QUAD | SPI_RX_QUAD;
- 	master->bits_per_word_mask = SPI_BPW_MASK(32) | SPI_BPW_MASK(16) | SPI_BPW_MASK(8);
-+	master->flags = SPI_MASTER_USES_HW_DUMMY_CYCLES;
- 	master->setup = tegra_qspi_setup;
- 	master->cleanup = tegra_qspi_cleanup;
- 	master->transfer_one_message = tegra_qspi_transfer_one_message;
+ 		pwm1: pwm@3280000 {
+ 			compatible = "nvidia,tegra194-pwm",
+ 				     "nvidia,tegra186-pwm";
 -- 
 2.7.4
 

@@ -2,124 +2,53 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 45749C4361B
-	for <linux-spi@archiver.kernel.org>; Mon, 14 Dec 2020 06:00:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 14CFAC1B0D8
+	for <linux-spi@archiver.kernel.org>; Mon, 14 Dec 2020 06:58:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 085DE22B2B
-	for <linux-spi@archiver.kernel.org>; Mon, 14 Dec 2020 06:00:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BB5CD22597
+	for <linux-spi@archiver.kernel.org>; Mon, 14 Dec 2020 06:58:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390837AbgLNF74 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 14 Dec 2020 00:59:56 -0500
-Received: from mail.loongson.cn ([114.242.206.163]:43406 "EHLO loongson.cn"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2388047AbgLNF74 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 14 Dec 2020 00:59:56 -0500
-Received: from linux.localdomain (unknown [113.200.148.30])
-        by mail.loongson.cn (Coremail) with SMTP id AQAAf9Dx_38l_9ZfFUodAA--.52092S3;
-        Mon, 14 Dec 2020 13:59:02 +0800 (CST)
-From:   Qing Zhang <zhangqing@loongson.cn>
-To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc:     linux-spi@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        devicetree@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v3 2/4] spi: ls7a: Add YAML schemas
-Date:   Mon, 14 Dec 2020 13:58:52 +0800
-Message-Id: <1607925534-8312-2-git-send-email-zhangqing@loongson.cn>
-X-Mailer: git-send-email 2.1.0
-In-Reply-To: <1607925534-8312-1-git-send-email-zhangqing@loongson.cn>
-References: <1607925534-8312-1-git-send-email-zhangqing@loongson.cn>
-X-CM-TRANSID: AQAAf9Dx_38l_9ZfFUodAA--.52092S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxJF1rCr4rtF4kWw4fXFyrWFg_yoW8Xw4xpF
-        17C343ta1IgF1xCw43Ka4kC3W5XF95C3Z5JFZrtw1Ut3s8Ka90vw4akr15Z3W3JF48Ja4x
-        XFZ7Kr4rKF18JaUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUB2b7Iv0xC_Zr1lb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I2
-        0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI
-        8067AKxVWUGwA2048vs2IY020Ec7CjxVAFwI0_JFI_Gr1l8cAvFVAK0II2c7xJM28CjxkF
-        64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcV
-        CY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2
-        jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4
-        CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvj
-        eVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY02Avz4vE14v_GrWl42xK82IYc2
-        Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
-        6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
-        vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
-        42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
-        kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUIna9UUUUU
-X-CM-SenderInfo: x2kd0wptlqwqxorr0wxvrqhubq/
+        id S2438813AbgLNG5v (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 14 Dec 2020 01:57:51 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54732 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2438805AbgLNG5l (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 14 Dec 2020 01:57:41 -0500
+Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1607929019;
+        bh=E+ixzZ5GTgn5ayWdXZISjO8L2xqCBUJoRQ8yqDPEdOU=;
+        h=Subject:From:Date:To:From;
+        b=ZW+4MF5ccHRdAEzsuTxLkl4mySpunwwA5Vk116lpjhMCb8sF7dSM/smuKKu3BIsRt
+         8qicDuiOkr41pyPvuk8Rjs8suMsbAOUDC1+X25n2k1ZAYgkqH+yLdpdWxCSEfJ9Bub
+         QSK1X7e7eUs9ankpNXtR1pWVBOTd6pSQcfjY613mCpdC4VD9U39dm/QqAQNJ6qPbyX
+         rGoMnqVqIlMTj7D2Zr0CO3DozwNHVxbNFjyx1ZzPfKqcVI4dG2MEt5VvzmoG+yNahd
+         OfBLsr5u55BM/h7edhftOcuW0BZXynNu0nr/37Yiak06BhzSwGswgwTJ6U+DgAIF5R
+         2WA2AFjJyD2kg==
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <160792901885.6795.14591365977687579475.git-patchwork-housekeeping@kernel.org>
+Date:   Mon, 14 Dec 2020 06:56:58 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Switch the DT binding to a YAML schema to enable the DT validation.
+Latest series: [v3] spi: LS7A: Add Loongson LS7A SPI controller driver support (2020-12-14T05:58:51)
+  Superseding: [v2] spi: LS7A: Add Loongson LS7A SPI controller driver support (2020-12-08T07:44:25):
+    [v2,1/4] spi: LS7A: Add Loongson LS7A SPI controller driver support
+    [v2,2/4] spi: Add devicetree bindings documentation for Loongson SPI
+    [v2,3/4] MIPS: Loongson64: DTS: Add SPI support to LS7A
+    [v2,4/4] MIPS: Loongson: Enable Loongson LS7A SPI in loongson3_defconfig
 
-Signed-off-by: Qing Zhang <zhangqing@loongson.cn>
----
- .../devicetree/bindings/spi/loongson,spi-ls7a.yaml | 49 ++++++++++++++++++++++
- 1 file changed, 49 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/loongson,spi-ls7a.yaml
 
-diff --git a/Documentation/devicetree/bindings/spi/loongson,spi-ls7a.yaml b/Documentation/devicetree/bindings/spi/loongson,spi-ls7a.yaml
-new file mode 100644
-index 0000000..41691c8
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/loongson,spi-ls7a.yaml
-@@ -0,0 +1,49 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/spi-ls7a.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Loongson LS7A PCH SPI Controller
-+
-+all0f:
-+   - $ref: "spi-controller.yaml#"
-+
-+maintainers:
-+  - Qing Zhang <zhangqing@loongson.cn>
-+
-+description: |
-+  This controller can be found in Loongson-3 systems with LS7A PCH.
-+
-+properties:
-+  "#address-cells": true
-+  "#size-cells": true
-+
-+  compatible:
-+    const: loongson,ls7a-spi
-+
-+  reg:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - num-chipselects
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    spi@16,0 {
-+        compatible = "pci0014,7a0b.0",
-+                        "pci0014,7a0b",
-+                        "pciclass088000",
-+                        "pciclass0800";
-+
-+        reg = <0xb000 0x0 0x0 0x0 0x0>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        num-chipselects = <0>;
-+    };
-+
-+...
 -- 
-2.1.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

@@ -2,165 +2,198 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DAC9C2BB40
-	for <linux-spi@archiver.kernel.org>; Tue, 15 Dec 2020 00:32:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EB491C2BBCA
+	for <linux-spi@archiver.kernel.org>; Tue, 15 Dec 2020 00:34:08 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0AE6B22258
-	for <linux-spi@archiver.kernel.org>; Tue, 15 Dec 2020 00:32:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BD8C922571
+	for <linux-spi@archiver.kernel.org>; Tue, 15 Dec 2020 00:34:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726769AbgLOAcU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 14 Dec 2020 19:32:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54638 "EHLO
+        id S1728396AbgLOAdC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 14 Dec 2020 19:33:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725874AbgLOAcQ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 14 Dec 2020 19:32:16 -0500
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6412AC061793
-        for <linux-spi@vger.kernel.org>; Mon, 14 Dec 2020 16:31:36 -0800 (PST)
-Received: by mail-pf1-x441.google.com with SMTP id h186so2901249pfe.0
-        for <linux-spi@vger.kernel.org>; Mon, 14 Dec 2020 16:31:36 -0800 (PST)
+        with ESMTP id S1729109AbgLOAc7 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 14 Dec 2020 19:32:59 -0500
+Received: from mail-vs1-xe36.google.com (mail-vs1-xe36.google.com [IPv6:2607:f8b0:4864:20::e36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AAF1C061285
+        for <linux-spi@vger.kernel.org>; Mon, 14 Dec 2020 16:31:46 -0800 (PST)
+Received: by mail-vs1-xe36.google.com with SMTP id q10so10025409vsr.13
+        for <linux-spi@vger.kernel.org>; Mon, 14 Dec 2020 16:31:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=f7OsK3yyie83mFsyxOZLO7U5mEgOhtDjdGrqc4pskdY=;
-        b=JnvNAr6HasYZClYsYYu9MLeQeCjXeoPbPpVc46mqEhnAHt3uYnri6YD1gJbaIRgMdh
-         gz8XbvbAkQyyapKi24Hp1xZZaMI0FvmEbKBWXi7O/6gO2SNVQ4YIsF67pC83F0Rc4DQq
-         lZUEXHhXNi5FxihFuTrxm+EiltW5RkVv651xk=
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=84N7cJlOJxclhwtANwUaD4YuRjaGmSvqupKHW5C8pj0=;
+        b=Ucp5fnDHKfsVnjZV7TOFjrjsgoIYbj2CMPk1Qca4VuimvSCHF5Orz7pxhw8GPNWohf
+         IL5I28lX2htwPqr64wPPoWPsFXYFC86Dck5Z5ZJXrn2MEcyWUjKUMlv5ujmNLlicx9/C
+         dVA6VEnPc8xBswGXoyizOS5NQDhLtnIy/9ziI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=f7OsK3yyie83mFsyxOZLO7U5mEgOhtDjdGrqc4pskdY=;
-        b=QA54YYSsjTdUdUAAXhr0YEEe/OIYfCgqmaYhIyIUY85tjVqDTe7ebgunlIQWtiKMN0
-         GT/XtWynf7Wund3UB6EmZ3uzFX0QILAwB/sS4eI/YWRf2XoBoNcJUHqRLl6onCUwn8gN
-         KTvdcSwI9P56YD7cBCSQuzGELecdeUPNZ2I8cdwbNB3eWEWY48OEMf/LrK7OOOfQRhZU
-         ecIDfaNzGIiVko5x+mVO/dc3FpW/L7HTRS8xNPNUBpoXon1r7HDH0g0bVwba3M/F9kQt
-         s41nRfokXeFiCJHxDWp4FNaUnI9nxU0fVR1guI1a+fPlIXf0P91bWzSji9I5FQo6ze03
-         qFSg==
-X-Gm-Message-State: AOAM53174d9MTG274ZEVC2mOFNOrww/zwTW7PrlBPjUfwY1kZz4DXjcU
-        qrdZ5FJbdO3C2b0XzAOEty9jNA==
-X-Google-Smtp-Source: ABdhPJxMxgfSijCu0l6b2bbht2ujt9jAUUdhAg1vdv1oL4+PPMHAhJCCJICFQvVUud5ShcBzteE3xg==
-X-Received: by 2002:a62:8895:0:b029:19e:92ec:6886 with SMTP id l143-20020a6288950000b029019e92ec6886mr15472290pfd.12.1607992295840;
-        Mon, 14 Dec 2020 16:31:35 -0800 (PST)
-Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:42b0:34ff:fe3d:58e6])
-        by smtp.gmail.com with ESMTPSA id 77sm20412834pfx.156.2020.12.14.16.31.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Dec 2020 16:31:35 -0800 (PST)
-From:   Douglas Anderson <dianders@chromium.org>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     msavaliy@qti.qualcomm.com, akashast@codeaurora.org,
-        Stephen Boyd <swboyd@chromium.org>,
-        Roja Rani Yarubandi <rojay@codeaurora.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Alok Chauhan <alokc@codeaurora.org>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=84N7cJlOJxclhwtANwUaD4YuRjaGmSvqupKHW5C8pj0=;
+        b=BOyPFBLyXSyMkbmMpSpfQAW5kt2FWJNi4McsnacqEylHijod8Hm7uBAOHEM9ElRbzG
+         kY52umM+fkhWLzIfy2/w1nGG4/AiWJcziuJLxNHT2k5ZHEKOij3WzD1W3LO7L1cEYXhR
+         0CwPIExyqdtwyTpMZRhn5T2oIv/KpRKPbdc0B+2HT9YAsvPLCKrOubqohyVZq9A6EfM+
+         372V7V8G9NXitFJACidVvFWjFvA9BUbw+p9HA5wRUKdxBG0a0B94aBg2mVwaCBmQ2pWJ
+         WCFuxR2/DAB7DpWk4GCccBEhaKKeFSYHQkOWTWe+5uj2XCM+J0GSWifa96pzfxp1VvC3
+         /URg==
+X-Gm-Message-State: AOAM531WsKtORSFbDcqO6V2XuFyDSk8Nw2qf/7PgY62aoH8GpOzhoYQL
+        ZQVBY2q//p12jm86k2X20ZnSKVuOrcJDhw==
+X-Google-Smtp-Source: ABdhPJz2NmdnQnIbu8MFw9r+ucp3U/Cz4zcHVA3O2+dhd0pBppN8paGs792+CtntfZ8wp/3E6sicMA==
+X-Received: by 2002:a67:80d3:: with SMTP id b202mr27149326vsd.2.1607992305040;
+        Mon, 14 Dec 2020 16:31:45 -0800 (PST)
+Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com. [209.85.217.47])
+        by smtp.gmail.com with ESMTPSA id q11sm2583826vke.35.2020.12.14.16.31.43
+        for <linux-spi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Dec 2020 16:31:44 -0800 (PST)
+Received: by mail-vs1-f47.google.com with SMTP id j140so10042299vsd.4
+        for <linux-spi@vger.kernel.org>; Mon, 14 Dec 2020 16:31:43 -0800 (PST)
+X-Received: by 2002:a67:32c5:: with SMTP id y188mr24736768vsy.4.1607992303231;
+ Mon, 14 Dec 2020 16:31:43 -0800 (PST)
+MIME-Version: 1.0
+References: <20201203074459.13078-1-rojay@codeaurora.org> <CAD=FV=WuQjKC6GHy8d2nuqS-fgsUfxYrJosg3eyC9JU1FPCcjw@mail.gmail.com>
+ <160764316821.1580929.18177257779550490986@swboyd.mtv.corp.google.com>
+ <CAD=FV=WvG085orLqnvg9WUobL7iyxwgoxh-8RvOaRdi9rLeDUg@mail.gmail.com>
+ <160764785500.1580929.4255309510717807485@swboyd.mtv.corp.google.com>
+ <CAD=FV=VD78fmSRciFf38AbZG=EFPzDiT_e7QkEC08zA9iL1vTw@mail.gmail.com>
+ <160764967649.1580929.3992720095789306793@swboyd.mtv.corp.google.com>
+ <CAD=FV=Xgw+33pCycHyaMPsk64Qs+oh8e-RtJaM1yn0F27qZRVQ@mail.gmail.com>
+ <160765077856.1580929.643282739071441296@swboyd.mtv.corp.google.com>
+ <CAD=FV=WuyuF-PL2PMnLjWCyWGzOqn8beTVP3ZXWvfLdLhPh8=A@mail.gmail.com> <160773672053.1580929.15441111796129112926@swboyd.mtv.corp.google.com>
+In-Reply-To: <160773672053.1580929.15441111796129112926@swboyd.mtv.corp.google.com>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Mon, 14 Dec 2020 16:31:31 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=UJStfgAUvKc9iv7Y27OAAxWVdEsCf_HVmpc0eN9y4Gfg@mail.gmail.com>
+Message-ID: <CAD=FV=UJStfgAUvKc9iv7Y27OAAxWVdEsCf_HVmpc0eN9y4Gfg@mail.gmail.com>
+Subject: Re: [PATCH] spi: spi-geni-qcom: Fix NULL pointer access in geni_spi_isr
+To:     Stephen Boyd <swboyd@chromium.org>
+Cc:     Roja Rani Yarubandi <rojay@codeaurora.org>,
+        Mark Brown <broonie@kernel.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Girish Mahadevan <girishm@codeaurora.org>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-Subject: [PATCH 1/2] spi: spi-geni-qcom: Fix geni_spi_isr() NULL dereference in timeout case
-Date:   Mon, 14 Dec 2020 16:30:18 -0800
-Message-Id: <20201214162937.1.I99ee04f0cb823415df59bd4f550d6ff5756e43d6@changeid>
-X-Mailer: git-send-email 2.29.2.684.gfbc64c5ab5-goog
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Akash Asthana <akashast@codeaurora.org>,
+        msavaliy@qti.qualcomm.com
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-In commit 7ba9bdcb91f6 ("spi: spi-geni-qcom: Don't keep a local state
-variable") we changed handle_fifo_timeout() so that we set
-"mas->cur_xfer" to NULL to make absolutely sure that we don't mess
-with the buffers from the previous transfer in the timeout case.
+Hi,
 
-Unfortunately, this caused the IRQ handler to dereference NULL in some
-cases.  One case:
+On Fri, Dec 11, 2020 at 5:32 PM Stephen Boyd <swboyd@chromium.org> wrote:
+>
+> Quoting Doug Anderson (2020-12-10 17:51:53)
+> > Hi,
+> >
+> > On Thu, Dec 10, 2020 at 5:39 PM Stephen Boyd <swboyd@chromium.org> wrote:
+> > >
+> > > Quoting Doug Anderson (2020-12-10 17:30:17)
+> > > > On Thu, Dec 10, 2020 at 5:21 PM Stephen Boyd <swboyd@chromium.org> wrote:
+> > > > >
+> > > > > Yeah and so if it comes way later because it timed out then what's the
+> > > > > point of calling synchronize_irq() again? To make the completion
+> > > > > variable set when it won't be tested again until it is reinitialized?
+> > > >
+> > > > Presumably the idea is to try to recover to a somewhat usable state
+> > > > again?  We're not rebooting the machine so, even though this transfer
+> > > > failed, we will undoubtedly do another transfer later.  If that
+> > > > "abort" interrupt comes way later while we're setting up the next
+> > > > transfer we'll really confuse ourselves.
+> > >
+> > > The interrupt handler just sets a completion variable. What does that
+> > > confuse?
+> >
+> > The interrupt handler sees a "DONE" interrupt.  If we've made it far
+> > enough into setting up the next transfer that "cur_xfer" has been set
+> > then it might do more, no?
+>
+> I thought it saw a cancel/abort EN bit?
+>
+>         if (m_irq & M_CMD_CANCEL_EN)
+>                 complete(&mas->cancel_done);
+>         if (m_irq & M_CMD_ABORT_EN)
+>                 complete(&mas->abort_done)
+>
+> and only a DONE bit if a transfer happened.
 
- CPU0                           CPU1
- ----                           ----
-                                setup_fifo_xfer()
-                                 ...
-                                 geni_se_setup_m_cmd()
-                                 <hardware starts transfer>
- <unrelated interrupt storm>     spin_unlock_irq()
- <continued interrupt storm>    <time passes>
- <continued interrupt storm>    <transfer complets in hardware>
- <continued interrupt storm>    <hardware sets M_RX_FIFO_WATERMARK_EN>
- <continued interrupt storm>    <time passes>
- <continued interrupt storm>    handle_fifo_timeout()
- <continued interrupt storm>     spin_lock_irq()
- <continued interrupt storm>     mas->cur_xfer = NULL
- <continued interrupt storm>     geni_se_cancel_m_cmd()
- <continued interrupt storm>     spin_unlock_irq()
- <continued interrupt storm>     wait_for_completion_timeout() => timeout
- <continued interrupt storm>     spin_lock_irq()
- <continued interrupt storm>     geni_se_abort_m_cmd()
- <continued interrupt storm>     spin_unlock_irq()
- <continued interrupt storm>     wait_for_completion_timeout() => timeout
- <interrupt storm ends>
- geni_spi_isr()
-  spin_lock()
-  if (m_irq & M_RX_FIFO_WATERMARK_EN)
-   geni_spi_handle_rx()
-    mas->cur_xfer NULL derefrence
+Ah, true.  The crazy thing is that since we do abort / cancel with
+commands we get them together with "done".  That "done" could
+potentially confuse the next transfer...  In theory we could ignore
+DONE if we see ABORT / CANCEL, but I've now spent a bunch of time on
+this and I think the best thing is to just make sure we won't start
+the next transfer if any IRQs are pending.  I'll post patches...
 
-Specifically it should be noted that the RX/TX interrupts are still
-shown asserted even when a CANCEL/ABORT interrupt has asserted.
 
-Let's check for the NULL transfer in the TX and RX cases.
+> > > > I guess you could go the route of adding a synchronize_irq() at the
+> > > > start of the next transfer, but I'd rather add the overhead in the
+> > > > exceptional case (the timeout) than the normal case.  In the normal
+> > > > case we don't need to worry about random IRQs from the past transfer
+> > > > suddenly showing up.
+> > > >
+> > >
+> > > How does adding synchronize_irq() at the end guarantee that the abort is
+> > > cleared out of the hardware though? It seems to assume that the abort is
+> > > pending at the GIC when it could still be running through the hardware
+> > > and not executed yet. It seems like a synchronize_irq() for that is
+> > > wishful thinking that the irq is merely pending even though it timed
+> > > out and possibly never ran. Maybe it's stuck in a write buffer in the
+> > > CPU?
+> >
+> > I guess I'm asserting that if a full second passed (because we timed
+> > out) and after that full second no interrupts are pending then the
+> > interrupt will never come.  That seems a reasonable assumption to me.
+> > It seems hard to believe it'd be stuck in a write buffer for a full
+> > second?
+> >
+>
+> Ok, so if we don't expect an irq to come in why are we calling
+> synchronize_irq()? I'm lost.
 
-NOTE: things still could get confused if we get timeouts all the way
-through handle_fifo_timeout(), meaning that interrupts are still
-pending.  A future patch will help these corner cases.
+It turns out that synchronize_irq() doesn't do what I thought it did,
+actually.  :(  Despite __synchronize_hardirq() talking about waiting
+for "pending" interrupts, it actually passes in "IRQCHIP_STATE_ACTIVE"
+and not "IRQCHIP_STATE_PENDING".  So much for that.
 
-Fixes: 561de45f72bd ("spi: spi-geni-qcom: Add SPI driver support for GENI based QUP")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
+...but, if it did, I guess my point (which no longer matters) was:
+
+a) If you wait a second but don't wait for pending interrupts to be
+done, interrupts might still come later if the CPU servicing
+interrupts was blocked.
+
+b) If you don't wait a second but wait for pending interrupts to be
+done, interrupts might still come later because maybe the transaction
+wasn't finished first.
+
+c) If you wait a second (enough for the transaction to finish) and
+then wait for pending interrupts (to handle ISR being blocked) then
+you're good.
+
 ---
 
- drivers/spi/spi-geni-qcom.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+So I got tired of all this conjecture and decided to write some code.
+I reproduced the problem with some test code that let me call
+local_irq_disable() for a set amount of time based on sysfs.
 
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index 25810a7eef10..6f736e94e9f4 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -354,6 +354,12 @@ static bool geni_spi_handle_tx(struct spi_geni_master *mas)
- 	unsigned int bytes_per_fifo_word = geni_byte_per_fifo_word(mas);
- 	unsigned int i = 0;
- 
-+	/* Stop the watermark IRQ if nothing to send */
-+	if (mas->cur_xfer == NULL) {
-+		writel(0, se->base + SE_GENI_TX_WATERMARK_REG);
-+		return false;
-+	}
-+
- 	max_bytes = (mas->tx_fifo_depth - mas->tx_wm) * bytes_per_fifo_word;
- 	if (mas->tx_rem_bytes < max_bytes)
- 		max_bytes = mas->tx_rem_bytes;
-@@ -396,6 +402,17 @@ static void geni_spi_handle_rx(struct spi_geni_master *mas)
- 		if (rx_last_byte_valid && rx_last_byte_valid < 4)
- 			rx_bytes -= bytes_per_fifo_word - rx_last_byte_valid;
- 	}
-+
-+	/* Clear out the FIFO and bail if nowhere to put it */
-+	if (mas->cur_xfer == NULL) {
-+		unsigned int words = DIV_ROUND_UP(rx_bytes, bytes_per_fifo_word);
-+
-+		for (i = 0; i < words; i++)
-+			readl(se->base + SE_GENI_RX_FIFOn);
-+
-+		return;
-+	}
-+
- 	if (mas->rx_rem_bytes < rx_bytes)
- 		rx_bytes = mas->rx_rem_bytes;
- 
--- 
-2.29.2.684.gfbc64c5ab5-goog
+In terminal 1:
+  while true; do ectool version > /dev/null; done
 
+In terminal 2, disable interrupts on cpu0 for 2000 ms:
+  taskset -c 0 echo 2000 > /sys/module/spi_geni_qcom/parameters/doug_test
+
+Of course, I got the timeout and the NULL dereference.
+
+
+Then I could poke at all the corner cases.  Posting patches for what I
+think is the best solution...
+
+-Doug

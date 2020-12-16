@@ -8,158 +8,103 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6A4EC2BBCA
-	for <linux-spi@archiver.kernel.org>; Wed, 16 Dec 2020 22:43:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 92207C4361B
+	for <linux-spi@archiver.kernel.org>; Wed, 16 Dec 2020 22:43:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 78C222342C
-	for <linux-spi@archiver.kernel.org>; Wed, 16 Dec 2020 22:43:23 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5D1222342C
+	for <linux-spi@archiver.kernel.org>; Wed, 16 Dec 2020 22:43:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730224AbgLPWnK (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 16 Dec 2020 17:43:10 -0500
+        id S1730232AbgLPWnZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 16 Dec 2020 17:43:25 -0500
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728671AbgLPWnK (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 16 Dec 2020 17:43:10 -0500
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 542F1C06138C
-        for <linux-spi@vger.kernel.org>; Wed, 16 Dec 2020 14:42:30 -0800 (PST)
-Received: by mail-pg1-x52a.google.com with SMTP id f17so18677916pge.6
-        for <linux-spi@vger.kernel.org>; Wed, 16 Dec 2020 14:42:30 -0800 (PST)
+        with ESMTP id S1727167AbgLPWnZ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 16 Dec 2020 17:43:25 -0500
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 772AAC0611CD
+        for <linux-spi@vger.kernel.org>; Wed, 16 Dec 2020 14:42:36 -0800 (PST)
+Received: by mail-pf1-x429.google.com with SMTP id 11so17555442pfu.4
+        for <linux-spi@vger.kernel.org>; Wed, 16 Dec 2020 14:42:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=cbZxiG/JD9YQXv2sQzFlyfu39bBLP48QnsSoq2lBxGQ=;
-        b=IB9ftPWqhkJ4XfQ0uT62WOhCnW1scqBjf/Vu/VT1F2BkMYqlYsaNMwYuz85LTtBYHa
-         W//kvue5VoM869pvuCSbkQV6qMW3s2ZT7kRPssW5MJlk1Ih8KMcog/Evox8zJvC4DDus
-         FOMzbBs4C5TZnId1htBYIrrYQ70J2TGXpUPWs=
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=0Vd1QFcuFWIYhVvfHfG2jARGV8ifNdeNillFXaADRjI=;
+        b=XcQWXpjHUgixcOl67GSSIrQM4qzCd7i5k9g1qpnc16X47aSiTa+hJTCeHI7s/In4Hi
+         aXb1BbEJvbKJbYDhtvd4VbW+o2vFMQqVx+bVk34tvnWaKM/arWUO4hHP0oQJGIRQEWob
+         d7IS56reRQQwX2krJI5yM1JTr/nU47G1njeEU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=cbZxiG/JD9YQXv2sQzFlyfu39bBLP48QnsSoq2lBxGQ=;
-        b=B7uOtb43VVWcg96C4GrTa4OtJ1HlTRMmGbuSRY4GwecxWPjMTqkHurLUkoVh7uOcqk
-         Uvq+sYZJc1lWS/F0xljcdFAcSUUI+ZfQWKHQESpAKHoGQFLhLP2yzeIfIHTdI0KRz+tt
-         L0j+C0TGxlwpQ52i0CtxTwNF1JWp70p/yrYY3mIq8Zfy5FZVav/RCkgTb3V99NtWFciO
-         nb2J3aQKEa2YKc3FnyO1x6FgN6gUk55HOJ1q6ecyGQe/2ITCG/Y5hO8m36WQOk5kF/3c
-         ZlH/2BfhPEoLlyPQZTx2uZW75BtHCYC3nvj5kSanR49AB+5ZVWPxXGGpQVMWICqPjjKY
-         Av/A==
-X-Gm-Message-State: AOAM5307lVCdD5C0QyJvNfwbKMk5ELdnXHtO9O9plHZ0IKTtwkuL8Pjl
-        HuQo8N/3YTvkrZ88TsChp8YWEw==
-X-Google-Smtp-Source: ABdhPJxxOPgyfgV1lE6ycXNrKq/uEGEznucC4Jaqs5lrvh2F69meDN9DL54tbwtdzGXgbgHJdVc2XQ==
-X-Received: by 2002:a65:5687:: with SMTP id v7mr30380250pgs.249.1608158549883;
-        Wed, 16 Dec 2020 14:42:29 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=0Vd1QFcuFWIYhVvfHfG2jARGV8ifNdeNillFXaADRjI=;
+        b=I7LgjRJeVM0RfUiHbuz2DqBnHt8cDZNYxc9c1QxBZjDtxapEk1uWRYDyPg31cz3sRj
+         m4RusMTWSPBxM6c961XR1Pd9PwkAXeEaTEfwwSTJGCJTKh4FRdrrbL9COJXy09+FONc4
+         bQIvCSeLSLRRcKEYHCs2xhxgP/AirHBH4nn824gsJCWQPheLt8iiaC+dALeQUQavW1hx
+         zUN6CZP+iakRJ72PtvrgkUYUzttQw6UFMyLagTrdRXYP72QmrcbWRey1Lmyikz2ty3ME
+         US0s5D5tteowIL0/mjZBgUxO9I6pIdUaVuVliBzH8YHCb2aIjlFvzzyoi3+iH04LrqLB
+         Ic2A==
+X-Gm-Message-State: AOAM5311HIeMxm2Xk2cm7ATU7BS/P0seFlgNlom2r0LJOyb/wBfyI3y7
+        PwlWne6E+dSNfU9nv7e/Epzjfg==
+X-Google-Smtp-Source: ABdhPJzXT6pePUqTG6AWzM3OjQ/9+uqfCpIe6yZioAT9ioqcgVoAY3922oZ2qpc5QX4Z9csUYEDYqQ==
+X-Received: by 2002:a63:f12:: with SMTP id e18mr35442800pgl.101.1608158556030;
+        Wed, 16 Dec 2020 14:42:36 -0800 (PST)
 Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:42b0:34ff:fe3d:58e6])
-        by smtp.gmail.com with ESMTPSA id q26sm3561703pfl.219.2020.12.16.14.42.28
+        by smtp.gmail.com with ESMTPSA id q26sm3561703pfl.219.2020.12.16.14.42.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Dec 2020 14:42:29 -0800 (PST)
+        Wed, 16 Dec 2020 14:42:35 -0800 (PST)
 From:   Douglas Anderson <dianders@chromium.org>
 To:     Mark Brown <broonie@kernel.org>
 Cc:     msavaliy@qti.qualcomm.com, akashast@codeaurora.org,
         Stephen Boyd <swboyd@chromium.org>,
         Roja Rani Yarubandi <rojay@codeaurora.org>,
         Douglas Anderson <dianders@chromium.org>,
-        Alok Chauhan <alokc@codeaurora.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Dilip Kota <dkota@codeaurora.org>,
-        Girish Mahadevan <girishm@codeaurora.org>,
         linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-spi@vger.kernel.org
-Subject: [PATCH v2 1/4] spi: spi-geni-qcom: Fix geni_spi_isr() NULL dereference in timeout case
-Date:   Wed, 16 Dec 2020 14:41:49 -0800
-Message-Id: <20201216144114.v2.1.I99ee04f0cb823415df59bd4f550d6ff5756e43d6@changeid>
+Subject: [PATCH v2 4/4] spi: spi-geni-qcom: Print an error when we timeout setting the CS
+Date:   Wed, 16 Dec 2020 14:41:52 -0800
+Message-Id: <20201216144114.v2.4.I666b37646de9652cef438ac7c2c6c2053367fc6b@changeid>
 X-Mailer: git-send-email 2.29.2.684.gfbc64c5ab5-goog
+In-Reply-To: <20201216144114.v2.1.I99ee04f0cb823415df59bd4f550d6ff5756e43d6@changeid>
+References: <20201216144114.v2.1.I99ee04f0cb823415df59bd4f550d6ff5756e43d6@changeid>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-In commit 7ba9bdcb91f6 ("spi: spi-geni-qcom: Don't keep a local state
-variable") we changed handle_fifo_timeout() so that we set
-"mas->cur_xfer" to NULL to make absolutely sure that we don't mess
-with the buffers from the previous transfer in the timeout case.
+If we're using geni to manage the chip select line (don't do it--use a
+GPIO!) and we happen to get a timeout waiting for the chip select
+command to be completed, no errors are printed even though things
+might not be in the best shape.  Let's add a print.
 
-Unfortunately, this caused the IRQ handler to dereference NULL in some
-cases.  One case:
-
-  CPU0                           CPU1
-  ----                           ----
-                                 setup_fifo_xfer()
-                                  geni_se_setup_m_cmd()
-                                 <hardware starts transfer>
-                                 <transfer completes in hardware>
-                                 <hardware sets M_RX_FIFO_WATERMARK_EN in m_irq>
-                                 ...
-                                 handle_fifo_timeout()
-                                  spin_lock_irq(mas->lock)
-                                  mas->cur_xfer = NULL
-                                  geni_se_cancel_m_cmd()
-                                  spin_unlock_irq(mas->lock)
-
-  geni_spi_isr()
-   spin_lock(mas->lock)
-   if (m_irq & M_RX_FIFO_WATERMARK_EN)
-    geni_spi_handle_rx()
-     mas->cur_xfer NULL dereference!
-
-tl;dr: Seriously delayed interrupts for RX/TX can lead to timeout
-handling setting mas->cur_xfer to NULL.
-
-Let's check for the NULL transfer in the TX and RX cases and reset the
-watermark or clear out the fifo respectively to put the hardware back
-into a sane state.
-
-NOTE: things still could get confused if we get timeouts all the way
-through handle_fifo_timeout() and then start a new transfer because
-interrupts from the old transfer / cancel / abort could still be
-pending.  A future patch will help this corner case.
-
-Fixes: 561de45f72bd ("spi: spi-geni-qcom: Add SPI driver support for GENI based QUP")
 Signed-off-by: Douglas Anderson <dianders@chromium.org>
 ---
 
 Changes in v2:
-- (ptr == NULL) => (!ptr).
-- Addressed loop nits in geni_spi_handle_rx().
-- Commit message rewording from Stephen.
+- ("spi: spi-geni-qcom: Print an error when we timeout setting the CS") new for v2
 
- drivers/spi/spi-geni-qcom.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/spi/spi-geni-qcom.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index 25810a7eef10..bf55abbd39f1 100644
+index 0e4fa52ac017..744009875762 100644
 --- a/drivers/spi/spi-geni-qcom.c
 +++ b/drivers/spi/spi-geni-qcom.c
-@@ -354,6 +354,12 @@ static bool geni_spi_handle_tx(struct spi_geni_master *mas)
- 	unsigned int bytes_per_fifo_word = geni_byte_per_fifo_word(mas);
- 	unsigned int i = 0;
+@@ -220,8 +220,10 @@ static void spi_geni_set_cs(struct spi_device *slv, bool set_flag)
+ 	spin_unlock_irq(&mas->lock);
  
-+	/* Stop the watermark IRQ if nothing to send */
-+	if (!mas->cur_xfer) {
-+		writel(0, se->base + SE_GENI_TX_WATERMARK_REG);
-+		return false;
+ 	time_left = wait_for_completion_timeout(&mas->cs_done, HZ);
+-	if (!time_left)
++	if (!time_left) {
++		dev_warn(mas->dev, "Timeout setting chip select\n");
+ 		handle_fifo_timeout(spi, NULL);
 +	}
-+
- 	max_bytes = (mas->tx_fifo_depth - mas->tx_wm) * bytes_per_fifo_word;
- 	if (mas->tx_rem_bytes < max_bytes)
- 		max_bytes = mas->tx_rem_bytes;
-@@ -396,6 +402,14 @@ static void geni_spi_handle_rx(struct spi_geni_master *mas)
- 		if (rx_last_byte_valid && rx_last_byte_valid < 4)
- 			rx_bytes -= bytes_per_fifo_word - rx_last_byte_valid;
- 	}
-+
-+	/* Clear out the FIFO and bail if nowhere to put it */
-+	if (mas->cur_xfer == NULL) {
-+		while (i++ < DIV_ROUND_UP(rx_bytes, bytes_per_fifo_word))
-+			readl(se->base + SE_GENI_RX_FIFOn);
-+		return;
-+	}
-+
- 	if (mas->rx_rem_bytes < rx_bytes)
- 		rx_bytes = mas->rx_rem_bytes;
  
+ exit:
+ 	pm_runtime_put(mas->dev);
 -- 
 2.29.2.684.gfbc64c5ab5-goog
 

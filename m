@@ -2,150 +2,164 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no
-	autolearn_force=no version=3.4.0
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 42DA9C2BB9A
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C6A4EC2BBCA
 	for <linux-spi@archiver.kernel.org>; Wed, 16 Dec 2020 22:43:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0D4692370D
+	by mail.kernel.org (Postfix) with ESMTP id 78C222342C
 	for <linux-spi@archiver.kernel.org>; Wed, 16 Dec 2020 22:43:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727844AbgLPWnH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 16 Dec 2020 17:43:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60178 "EHLO
+        id S1730224AbgLPWnK (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 16 Dec 2020 17:43:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728671AbgLPWnG (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 16 Dec 2020 17:43:06 -0500
-Received: from mail-vk1-xa2d.google.com (mail-vk1-xa2d.google.com [IPv6:2607:f8b0:4864:20::a2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E7D5C0617A7
-        for <linux-spi@vger.kernel.org>; Wed, 16 Dec 2020 14:42:26 -0800 (PST)
-Received: by mail-vk1-xa2d.google.com with SMTP id w66so6093271vka.3
-        for <linux-spi@vger.kernel.org>; Wed, 16 Dec 2020 14:42:26 -0800 (PST)
+        with ESMTP id S1728671AbgLPWnK (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 16 Dec 2020 17:43:10 -0500
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 542F1C06138C
+        for <linux-spi@vger.kernel.org>; Wed, 16 Dec 2020 14:42:30 -0800 (PST)
+Received: by mail-pg1-x52a.google.com with SMTP id f17so18677916pge.6
+        for <linux-spi@vger.kernel.org>; Wed, 16 Dec 2020 14:42:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=l84zCJ7SbWCk38L857tmBbT/ticKRRMfqTuIr+c884Q=;
-        b=iGzFcIYneBH6SXZdRU/VFCtin4OmgOitxNyHeeqIk6b/REmu3ZMXh7Blu34vhke8vi
-         WYwv2zsr/DzBHMGugpcZGTWoxIkn5YHLglDxz5p/QAUIxevX5r0DRSCsS0cU8r49nVnz
-         rY0l9gvm5Q2rrt8K1xCKfRJTT8HmnE/NPxWpk=
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cbZxiG/JD9YQXv2sQzFlyfu39bBLP48QnsSoq2lBxGQ=;
+        b=IB9ftPWqhkJ4XfQ0uT62WOhCnW1scqBjf/Vu/VT1F2BkMYqlYsaNMwYuz85LTtBYHa
+         W//kvue5VoM869pvuCSbkQV6qMW3s2ZT7kRPssW5MJlk1Ih8KMcog/Evox8zJvC4DDus
+         FOMzbBs4C5TZnId1htBYIrrYQ70J2TGXpUPWs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=l84zCJ7SbWCk38L857tmBbT/ticKRRMfqTuIr+c884Q=;
-        b=piFO+UlfIPPJYSVU50jh2U99YgY6JuHTTFWWGF/ffMy2LT4AcNyHsdGzcoxypdGogw
-         MPGHluRByQOQ7HeyGZaVUT2eytdhajWSphiHQUGuoOaGeeRqLrHIucVBmeQHchBJiBwk
-         uyimZnCzktxPRbDPzhtxeynUoUHSZa6yT8l5ZutDGrFXv8bYyrOO36F0uIYoG1FAw6gA
-         Mkhtdy+2u8Q0iqdfcV+EkyVTaSg/N14ITZ5eM1u6pcRRXyfsPbqjHFR2Jf7/kVe8PgXO
-         sim2k259hn1VvNmbHH1lZh3BzEp7iR4WcIPXt5IQbbF7fYi8fY1SMBA93oDZywotI4O8
-         pjIw==
-X-Gm-Message-State: AOAM532rmlFS63yMqJDZhajyaizFg6aW/zDLmsjzCAE6URg6wZ4ZsHYS
-        wTozcv43QgulbyRhLcie+KJU3GLRA2uFTg==
-X-Google-Smtp-Source: ABdhPJxMTs6b50tnXFUYPDnk74DhiL7hqP0UkTeaG6+ib9sxQATV6Zj33x5Sqgdns9RsDQoDZ6UtWg==
-X-Received: by 2002:a1f:9dd3:: with SMTP id g202mr36105235vke.21.1608158541960;
-        Wed, 16 Dec 2020 14:42:21 -0800 (PST)
-Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com. [209.85.217.46])
-        by smtp.gmail.com with ESMTPSA id 84sm504586vkz.34.2020.12.16.14.42.20
-        for <linux-spi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Dec 2020 14:42:20 -0800 (PST)
-Received: by mail-vs1-f46.google.com with SMTP id s85so13888105vsc.3
-        for <linux-spi@vger.kernel.org>; Wed, 16 Dec 2020 14:42:20 -0800 (PST)
-X-Received: by 2002:a67:32c5:: with SMTP id y188mr32306099vsy.4.1608158539861;
- Wed, 16 Dec 2020 14:42:19 -0800 (PST)
-MIME-Version: 1.0
-References: <20201214162937.1.I99ee04f0cb823415df59bd4f550d6ff5756e43d6@changeid>
- <20201214162937.2.Ibade998ed587e070388b4bf58801f1107a40eb53@changeid>
- <160800104145.1580929.10562113130948868794@swboyd.mtv.corp.google.com>
- <CAD=FV=UT0+BKrUPbATGCbO1fmwwmrKbSy5c+mW-61wS1y6TtJw@mail.gmail.com>
- <160807113302.1580929.9178584426202538854@swboyd.mtv.corp.google.com>
- <CAD=FV=XSrqzDFHGpW3b_Sx+bA8u8MMGqdfMJnXkKhkWL6H952A@mail.gmail.com> <160808147515.1580929.1688687061880694586@swboyd.mtv.corp.google.com>
-In-Reply-To: <160808147515.1580929.1688687061880694586@swboyd.mtv.corp.google.com>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Wed, 16 Dec 2020 14:42:08 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=WL9ZWz-nGzP0CWWNVFuG8fnSsA8R906B10J-X6_jwMLg@mail.gmail.com>
-Message-ID: <CAD=FV=WL9ZWz-nGzP0CWWNVFuG8fnSsA8R906B10J-X6_jwMLg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] spi: spi-geni-qcom: Really ensure the previous xfer
- is done before new one
-To:     Stephen Boyd <swboyd@chromium.org>
-Cc:     Mark Brown <broonie@kernel.org>, msavaliy@qti.qualcomm.com,
-        Akash Asthana <akashast@codeaurora.org>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cbZxiG/JD9YQXv2sQzFlyfu39bBLP48QnsSoq2lBxGQ=;
+        b=B7uOtb43VVWcg96C4GrTa4OtJ1HlTRMmGbuSRY4GwecxWPjMTqkHurLUkoVh7uOcqk
+         Uvq+sYZJc1lWS/F0xljcdFAcSUUI+ZfQWKHQESpAKHoGQFLhLP2yzeIfIHTdI0KRz+tt
+         L0j+C0TGxlwpQ52i0CtxTwNF1JWp70p/yrYY3mIq8Zfy5FZVav/RCkgTb3V99NtWFciO
+         nb2J3aQKEa2YKc3FnyO1x6FgN6gUk55HOJ1q6ecyGQe/2ITCG/Y5hO8m36WQOk5kF/3c
+         ZlH/2BfhPEoLlyPQZTx2uZW75BtHCYC3nvj5kSanR49AB+5ZVWPxXGGpQVMWICqPjjKY
+         Av/A==
+X-Gm-Message-State: AOAM5307lVCdD5C0QyJvNfwbKMk5ELdnXHtO9O9plHZ0IKTtwkuL8Pjl
+        HuQo8N/3YTvkrZ88TsChp8YWEw==
+X-Google-Smtp-Source: ABdhPJxxOPgyfgV1lE6ycXNrKq/uEGEznucC4Jaqs5lrvh2F69meDN9DL54tbwtdzGXgbgHJdVc2XQ==
+X-Received: by 2002:a65:5687:: with SMTP id v7mr30380250pgs.249.1608158549883;
+        Wed, 16 Dec 2020 14:42:29 -0800 (PST)
+Received: from tictac2.mtv.corp.google.com ([2620:15c:202:1:42b0:34ff:fe3d:58e6])
+        by smtp.gmail.com with ESMTPSA id q26sm3561703pfl.219.2020.12.16.14.42.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Dec 2020 14:42:29 -0800 (PST)
+From:   Douglas Anderson <dianders@chromium.org>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     msavaliy@qti.qualcomm.com, akashast@codeaurora.org,
+        Stephen Boyd <swboyd@chromium.org>,
         Roja Rani Yarubandi <rojay@codeaurora.org>,
+        Douglas Anderson <dianders@chromium.org>,
         Alok Chauhan <alokc@codeaurora.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Dilip Kota <dkota@codeaurora.org>,
+        Girish Mahadevan <girishm@codeaurora.org>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+Subject: [PATCH v2 1/4] spi: spi-geni-qcom: Fix geni_spi_isr() NULL dereference in timeout case
+Date:   Wed, 16 Dec 2020 14:41:49 -0800
+Message-Id: <20201216144114.v2.1.I99ee04f0cb823415df59bd4f550d6ff5756e43d6@changeid>
+X-Mailer: git-send-email 2.29.2.684.gfbc64c5ab5-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi,
+In commit 7ba9bdcb91f6 ("spi: spi-geni-qcom: Don't keep a local state
+variable") we changed handle_fifo_timeout() so that we set
+"mas->cur_xfer" to NULL to make absolutely sure that we don't mess
+with the buffers from the previous transfer in the timeout case.
 
-On Tue, Dec 15, 2020 at 5:18 PM Stephen Boyd <swboyd@chromium.org> wrote:
->
-> Quoting Doug Anderson (2020-12-15 15:34:59)
-> > On Tue, Dec 15, 2020 at 2:25 PM Stephen Boyd <swboyd@chromium.org> wrote:
-> > >
-> > > Quoting Doug Anderson (2020-12-15 09:25:51)
-> > > > In general when we're starting a new transfer we assume that we can
-> > > > program the hardware willy-nilly.  If there's some chance something
-> > > > else is happening (or our interrupt could go off) then it breaks that
-> > > > whole model.
-> > >
-> > > Right. I thought this patch was making sure that the hardware wasn't in
-> > > the process of doing something else when we setup the transfer. I'm
-> > > saying that only checking the irq misses the fact that maybe the
-> > > transfer hasn't completed yet or a pending irq hasn't come in yet, but
-> > > the fifo status would tell us that the fifo is transferring something or
-> > > receiving something. If an RX can't happen, then the code should clearly
-> > > show that an RX irq isn't expected, and mask out that bit so it is
-> > > ignored or explicitly check for it and call WARN_ON() if the bit is set.
-> > >
-> > > I'm wondering why we don't check the FIFO status and the irq bits to
-> > > make sure that some previous cancelled operation isn't still pending
-> > > either in the FIFO or as an irq. While this patch will fix the scenario
-> > > where the irq is delayed but pending in the hardware it won't cover the
-> > > case that the hardware itself is wedged, for example because the
-> > > sequencer just decided to stop working entirely.
-> >
-> > It also won't catch the case where the SoC decided that all GPIOs are
-> > inverted and starts reporting highs for lows and lows for highs, nor
-> > does it handle the case where the CPU suddenly switches to Big Endian
-> > mode for no reason.  :-P
-> >
-> > ...by that, I mean I'm not trying to catch the case where the hardware
-> > itself is behaving in a totally unexpected way.  I have seen no
-> > instances where the hardware wedges nor where the sequencer stops
-> > working and until I see them happen I'm not inclined to add code for
-> > them.  Without seeing them actually happen I'm not really sure what
-> > the right way to recover would be.  We've already tried "cancel" and
-> > "abort" and then waited at least 1 second.  If you know of some sort
-> > of magic "unwedge" then we should add it into handle_fifo_timeout().
->
-> I am not aware of an "unwedge" command. Presumably the cancel/abort
-> stuff makes the FIFO state "sane" so there's nothing to see in the FIFO
-> status registers. I wonder if we should keep around some "did we cancel
-> last time?" flag and only check the isr if we canceled out and timed
-> out to boot? That would be a cheap and easy check to make sure that we
-> don't check this each transaction.
+Unfortunately, this caused the IRQ handler to dereference NULL in some
+cases.  One case:
 
-Sure.  I guess technically it would be a "did we fail to cancel last time".
+  CPU0                           CPU1
+  ----                           ----
+                                 setup_fifo_xfer()
+                                  geni_se_setup_m_cmd()
+                                 <hardware starts transfer>
+                                 <transfer completes in hardware>
+                                 <hardware sets M_RX_FIFO_WATERMARK_EN in m_irq>
+                                 ...
+                                 handle_fifo_timeout()
+                                  spin_lock_irq(mas->lock)
+                                  mas->cur_xfer = NULL
+                                  geni_se_cancel_m_cmd()
+                                  spin_unlock_irq(mas->lock)
 
+  geni_spi_isr()
+   spin_lock(mas->lock)
+   if (m_irq & M_RX_FIFO_WATERMARK_EN)
+    geni_spi_handle_rx()
+     mas->cur_xfer NULL dereference!
 
-> > However, super delayed interrupts due to software not servicing the
-> > interrupt in time is something that really happens, if rarely.  Adding
-> > code to account for that seems worth it and is easy to test...
-> >
->
-> Agreed. The function name is wrong then as the device is not "busy". So
-> maybe spi_geni_isr_pending()? That would clearly describe what's being
-> checked.
+tl;dr: Seriously delayed interrupts for RX/TX can lead to timeout
+handling setting mas->cur_xfer to NULL.
 
-I changed this to just be about the abort.  See if v2 looks better to you.
+Let's check for the NULL transfer in the TX and RX cases and reset the
+watermark or clear out the fifo respectively to put the hardware back
+into a sane state.
+
+NOTE: things still could get confused if we get timeouts all the way
+through handle_fifo_timeout() and then start a new transfer because
+interrupts from the old transfer / cancel / abort could still be
+pending.  A future patch will help this corner case.
+
+Fixes: 561de45f72bd ("spi: spi-geni-qcom: Add SPI driver support for GENI based QUP")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+---
+
+Changes in v2:
+- (ptr == NULL) => (!ptr).
+- Addressed loop nits in geni_spi_handle_rx().
+- Commit message rewording from Stephen.
+
+ drivers/spi/spi-geni-qcom.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+index 25810a7eef10..bf55abbd39f1 100644
+--- a/drivers/spi/spi-geni-qcom.c
++++ b/drivers/spi/spi-geni-qcom.c
+@@ -354,6 +354,12 @@ static bool geni_spi_handle_tx(struct spi_geni_master *mas)
+ 	unsigned int bytes_per_fifo_word = geni_byte_per_fifo_word(mas);
+ 	unsigned int i = 0;
+ 
++	/* Stop the watermark IRQ if nothing to send */
++	if (!mas->cur_xfer) {
++		writel(0, se->base + SE_GENI_TX_WATERMARK_REG);
++		return false;
++	}
++
+ 	max_bytes = (mas->tx_fifo_depth - mas->tx_wm) * bytes_per_fifo_word;
+ 	if (mas->tx_rem_bytes < max_bytes)
+ 		max_bytes = mas->tx_rem_bytes;
+@@ -396,6 +402,14 @@ static void geni_spi_handle_rx(struct spi_geni_master *mas)
+ 		if (rx_last_byte_valid && rx_last_byte_valid < 4)
+ 			rx_bytes -= bytes_per_fifo_word - rx_last_byte_valid;
+ 	}
++
++	/* Clear out the FIFO and bail if nowhere to put it */
++	if (mas->cur_xfer == NULL) {
++		while (i++ < DIV_ROUND_UP(rx_bytes, bytes_per_fifo_word))
++			readl(se->base + SE_GENI_RX_FIFOn);
++		return;
++	}
++
+ 	if (mas->rx_rem_bytes < rx_bytes)
+ 		rx_bytes = mas->rx_rem_bytes;
+ 
+-- 
+2.29.2.684.gfbc64c5ab5-goog
+

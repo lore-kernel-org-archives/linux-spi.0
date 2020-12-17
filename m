@@ -2,145 +2,91 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-18.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 34DF7C2BBCA
-	for <linux-spi@archiver.kernel.org>; Thu, 17 Dec 2020 17:11:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 08445C4361B
+	for <linux-spi@archiver.kernel.org>; Thu, 17 Dec 2020 17:26:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 051652395A
-	for <linux-spi@archiver.kernel.org>; Thu, 17 Dec 2020 17:11:22 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D17C6235DD
+	for <linux-spi@archiver.kernel.org>; Thu, 17 Dec 2020 17:26:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728778AbgLQRLH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 17 Dec 2020 12:11:07 -0500
-Received: from mx0a-0016f401.pphosted.com ([67.231.148.174]:50914 "EHLO
-        mx0b-0016f401.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728813AbgLQRLF (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Dec 2020 12:11:05 -0500
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-        by mx0a-0016f401.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 0BHH6QUB019488;
-        Thu, 17 Dec 2020 09:10:23 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type; s=pfpt0220; bh=Ik8WDD6u9JOnUG3RZkwBgUG0BY8nhaV7NDL61uv8zno=;
- b=gk6Kghd7HYnviQz9x7RTlkSa6Y+7CSv66dXR3pzd0SveOHpTv6W8muAAzQExTawbHi0A
- +N/NaZKdk89JlVVyPcJkEGSci6nbsKV2QAR7Wac4LcNiy3+Npu21WH3c414u8BWp0QX1
- EzW8MR2wr0NiXJhXsJ+mrBhhGjUadE2L/pG1vwAr7621xZROLbVmPo3NSwfRnLFi8kqG
- rqlJQIMuSbphVzdmoUJsl55EvKJl39/SJM7nni+BHR5uZKfdl6MS9XiwnvxgEBFR8MeL
- L2q40q/4sFuym7uT2kxMe+P8z/3th2idOExnaHw7FcZ4lBE+QcwXg+oEODlOK4s+es/R gw== 
-Received: from sc-exch03.marvell.com ([199.233.58.183])
-        by mx0a-0016f401.pphosted.com with ESMTP id 35g4rp17x0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Thu, 17 Dec 2020 09:10:23 -0800
-Received: from DC5-EXCH01.marvell.com (10.69.176.38) by SC-EXCH03.marvell.com
- (10.93.176.83) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 17 Dec
- 2020 09:10:22 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH01.marvell.com
- (10.69.176.38) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Thu, 17 Dec 2020 09:10:22 -0800
-Received: from vb-cavnet.porotchkin.lan (PT-LT0319.marvell.com [10.6.202.166])
-        by maili.marvell.com (Postfix) with ESMTP id E21083F7040;
-        Thu, 17 Dec 2020 09:10:19 -0800 (PST)
-From:   <kostap@marvell.com>
-To:     <linux-spi@vger.kernel.org>
-CC:     <devicetree@vger.kernel.org>, <broonie@kernel.org>,
-        <robh+dt@kernel.org>, <mw@semihalf.com>, <jaz@semihalf.com>,
-        <nadavh@marvell.com>, <bpeled@marvell.com>, <stefanc@marvell.com>,
-        Konstantin Porotchkin <kostap@marvell.com>
-Subject: [PATCH v2 2/2] spi: orion: enable support for switching CS every transferred byte
-Date:   Thu, 17 Dec 2020 19:09:32 +0200
-Message-ID: <20201217170933.10717-3-kostap@marvell.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20201217170933.10717-1-kostap@marvell.com>
+        id S1727260AbgLQR0W (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 17 Dec 2020 12:26:22 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45260 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725468AbgLQR0W (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 17 Dec 2020 12:26:22 -0500
+Date:   Thu, 17 Dec 2020 17:25:28 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1608225941;
+        bh=xLMc/g9mnU1bL3Jqs927GyUiBY/U/XC8FwWvJM2cfeY=;
+        h=From:To:Cc:Subject:References:In-Reply-To:From;
+        b=V7gSZJnreqazz2QaV4Uamd96KfGbxiZrce64Qhv7wcmLvZJXGoPfiWqOIwWAiw9LF
+         l96pib/+6/RJLwreIWaLIqVrUBXPMPG3l1F22UccX4hhM4HPVIyksR+sIr7IliajZw
+         S5GVPJeMc4WBjkoyrq2NFl6ZoCuwNck8mr+qjtYiCb5jkc5T3Y2Pb+Zocg3hG8B4Mi
+         cYHg2QqEiuRy5ZqtUbj3xmHFZxeHk5pUyVupqTMwP+hjj8gtg7Csuq6XdzrbLsnzVw
+         PuJ2Mg/yVe1JOKXKBMR1iFG046TUE6QT/ORFyewYvFLKNxsSt+kXN2HlbF4w0YLK3o
+         4TBHIBnNbiXKg==
+From:   Mark Brown <broonie@kernel.org>
+To:     kostap@marvell.com
+Cc:     linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        robh+dt@kernel.org, mw@semihalf.com, jaz@semihalf.com,
+        nadavh@marvell.com, bpeled@marvell.com, stefanc@marvell.com
+Subject: Re: [PATCH v2 1/2] spi: orion: enable clocks before spi_setup
+Message-ID: <20201217172528.GG4708@sirena.org.uk>
 References: <20201217170933.10717-1-kostap@marvell.com>
+ <20201217170933.10717-2-kostap@marvell.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
- definitions=2020-12-17_11:2020-12-15,2020-12-17 signatures=0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="kadn00tgSopKmJ1H"
+Content-Disposition: inline
+In-Reply-To: <20201217170933.10717-2-kostap@marvell.com>
+X-Cookie: I'll eat ANYTHING that's BRIGHT BLUE!!
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Marcin Wojtas <mw@semihalf.com>
 
-Some SPI devices, require toggling the CS every transferred byte.
-Enable such possibility in the spi-orion driver.
+--kadn00tgSopKmJ1H
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Note that in order to use it, in the driver of a secondary device
-attached to this controller, the SPI bus 'mode' field must be
-updated with SPI_CS_WORD flag before calling spi_setup() routine.
+On Thu, Dec 17, 2020 at 07:09:31PM +0200, kostap@marvell.com wrote:
 
-In addition to that include a work-around - some devices, such as
-certain models of SLIC (Subscriber Line Interface Card),
-may require extra delay after CS toggling, so add a minimal
-timing relaxation in relevant places.
+> +	/*
+> +	 * Make sure the clocks are enabled before
+> +	 * configuring the SPI controller.
+> +	 */
+> +	clk_prepare_enable(orion_spi->clk);
+> +	if (!IS_ERR(orion_spi->axi_clk))
+> +		clk_prepare_enable(orion_spi->axi_clk);
+> +
+>  	return orion_spi_setup_transfer(spi, NULL);
+>  }
 
-Signed-off-by: Marcin Wojtas <mw@semihalf.com>
-Signed-off-by: Konstantin Porotchkin <kostap@marvell.com>
----
- drivers/spi/spi-orion.c | 24 +++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+There's no matching disable here so we'll leak the enables every time
+setup() is called - we should unwind the enables after calling
+_setup_transfer().  It may be more sensible to just take a runtime PM
+reference rather than do the raw clock API stuff, one less call and
+means if anything else gets added to runtime PM it'll be handled.
 
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index 3bfda4225d45..0f92dd026bee 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -369,8 +369,15 @@ orion_spi_write_read_8bit(struct spi_device *spi,
- {
- 	void __iomem *tx_reg, *rx_reg, *int_reg;
- 	struct orion_spi *orion_spi;
-+	bool cs_single_byte;
-+
-+	cs_single_byte = spi->mode & SPI_CS_WORD;
- 
- 	orion_spi = spi_master_get_devdata(spi->master);
-+
-+	if (cs_single_byte)
-+		orion_spi_set_cs(spi, 0);
-+
- 	tx_reg = spi_reg(orion_spi, ORION_SPI_DATA_OUT_REG);
- 	rx_reg = spi_reg(orion_spi, ORION_SPI_DATA_IN_REG);
- 	int_reg = spi_reg(orion_spi, ORION_SPI_INT_CAUSE_REG);
-@@ -384,6 +391,11 @@ orion_spi_write_read_8bit(struct spi_device *spi,
- 		writel(0, tx_reg);
- 
- 	if (orion_spi_wait_till_ready(orion_spi) < 0) {
-+		if (cs_single_byte) {
-+			orion_spi_set_cs(spi, 1);
-+			/* Satisfy some SLIC devices requirements */
-+			udelay(4);
-+		}
- 		dev_err(&spi->dev, "TXS timed out\n");
- 		return -1;
- 	}
-@@ -391,6 +403,16 @@ orion_spi_write_read_8bit(struct spi_device *spi,
- 	if (rx_buf && *rx_buf)
- 		*(*rx_buf)++ = readl(rx_reg);
- 
-+	if (cs_single_byte) {
-+		orion_spi_set_cs(spi, 1);
-+		/*
-+		 * Some devices, such as certain models of SLIC
-+		 * (Subscriber Line Interface Card)
-+		 * may require extra delay after CS toggling.
-+		 */
-+		udelay(4);
-+	}
-+
- 	return 1;
- }
- 
-@@ -626,7 +648,7 @@ static int orion_spi_probe(struct platform_device *pdev)
- 	}
- 
- 	/* we support all 4 SPI modes and LSB first option */
--	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_LSB_FIRST;
-+	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_LSB_FIRST | SPI_CS_WORD;
- 	master->set_cs = orion_spi_set_cs;
- 	master->transfer_one = orion_spi_transfer_one;
- 	master->num_chipselect = ORION_NUM_CHIPSELECTS;
--- 
-2.17.1
+--kadn00tgSopKmJ1H
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl/blIcACgkQJNaLcl1U
+h9BkXwf7BSPq2fElEKheAbNxwx5Zm86UCtONGfv6ORWCBWThJTyhTTkrEUqsUTUn
+Ui8fawRs/0n5PJHZC3lW2FM8eftyCf8LTR6UvaU/Hv6PAENEhus3L3RgMQiRVcTp
++BBcYnGFJw/FdZh3Uf4LrMBLdaVpJ1Vi75tVUV0moqI/qLIBFLo22p+3TmlN3OVS
+PzJjhSYzAfiGtA7QuvkF5qmP1VY90PfTD2yFQIxYfbvXT/c6h+hbk0XhfFMJ1COm
+2cOgJXV905+xTWvJeQ/0kwYOtOZHy8IEXtlEHwNcE0oAiJ7N+PzQ6wYUklOEMrPE
+KNM9RBy4NpWYEdCEbsp4uEC8sgUWvA==
+=IhY9
+-----END PGP SIGNATURE-----
+
+--kadn00tgSopKmJ1H--

@@ -2,31 +2,32 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 27806C2BBCD
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ECF1FC3526E
 	for <linux-spi@archiver.kernel.org>; Thu, 17 Dec 2020 20:30:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id EE16123A34
-	for <linux-spi@archiver.kernel.org>; Thu, 17 Dec 2020 20:30:36 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CD90823A40
+	for <linux-spi@archiver.kernel.org>; Thu, 17 Dec 2020 20:30:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731522AbgLQU3i (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 17 Dec 2020 15:29:38 -0500
-Received: from hqnvemgate24.nvidia.com ([216.228.121.143]:8554 "EHLO
-        hqnvemgate24.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731497AbgLQU3h (ORCPT
+        id S1731528AbgLQU3j (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 17 Dec 2020 15:29:39 -0500
+Received: from hqnvemgate26.nvidia.com ([216.228.121.65]:19869 "EHLO
+        hqnvemgate26.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731502AbgLQU3h (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Dec 2020 15:29:37 -0500
-Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate24.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
+Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate26.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
         id <B5fdbbf880001>; Thu, 17 Dec 2020 12:28:56 -0800
-Received: from HQMAIL107.nvidia.com (172.20.187.13) by HQMAIL101.nvidia.com
- (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 17 Dec
- 2020 20:28:51 +0000
+Received: from HQMAIL107.nvidia.com (172.20.187.13) by HQMAIL105.nvidia.com
+ (172.20.187.12) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 17 Dec
+ 2020 20:28:55 +0000
 Received: from skomatineni-linux.nvidia.com (172.20.145.6) by mail.nvidia.com
  (172.20.187.13) with Microsoft SMTP Server id 15.0.1473.3 via Frontend
- Transport; Thu, 17 Dec 2020 20:28:50 +0000
+ Transport; Thu, 17 Dec 2020 20:28:55 +0000
 From:   Sowjanya Komatineni <skomatineni@nvidia.com>
 To:     <thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
         <broonie@kernel.org>, <robh+dt@kernel.org>, <lukas@wunner.de>
@@ -34,94 +35,73 @@ CC:     <skomatineni@nvidia.com>, <bbrezillon@kernel.org>,
         <p.yadav@ti.com>, <tudor.ambarus@microchip.com>,
         <linux-spi@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
-Subject: [PATCH v4 0/9] Add Tegra Quad SPI driver
-Date:   Thu, 17 Dec 2020 12:28:38 -0800
-Message-ID: <1608236927-28701-1-git-send-email-skomatineni@nvidia.com>
+Subject: [PATCH v4 5/9] spi: spi-mem: Mark dummy transfers by setting dummy_data bit
+Date:   Thu, 17 Dec 2020 12:28:43 -0800
+Message-ID: <1608236927-28701-6-git-send-email-skomatineni@nvidia.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1608236927-28701-1-git-send-email-skomatineni@nvidia.com>
+References: <1608236927-28701-1-git-send-email-skomatineni@nvidia.com>
 X-NVConfidentiality: public
 MIME-Version: 1.0
 Content-Type: text/plain
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1608236936; bh=befDSdcuvDJN3nr2CQS9a+ky9Zu8JNjG4riD267QvLw=;
-        h=From:To:CC:Subject:Date:Message-ID:X-Mailer:X-NVConfidentiality:
-         MIME-Version:Content-Type;
-        b=mx2u2dScoaTRbDCMhZ2x7gp/ov1UZyNiXZJa631UijJ4irnMlNeIdykUUcGOBmzGs
-         I3+juyjzfU92B049sGxRr7L+WZuEtK8b4JzB9k5stpDs/Y8S3zyu1qQdzwCOLVrMwx
-         hu6KXh22I9BBkHEzjoGQW/kx3AsWdSWzDGJ5McW4MA+2hfvaeQ4D34E2HiZ8gWJtiS
-         gdPwYzc83dW5SfROIXf4CK0OqyZNHp7TCk+CYu7EXAmvEI4IVQnow3PqmnON+Hz+V/
-         G3Gq80JKNjvfU5ChBclIOZ6Qr8sf/fYqBx702ibDj/+0QYxBG/1W3uOYBq50Wx46gP
-         GnR7aXKOANBxg==
+        t=1608236936; bh=6bx+wsy3UKNOmMAtBxcV/nZjihJYWCwQ1WcNk7bO2Rk=;
+        h=From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
+         References:X-NVConfidentiality:MIME-Version:Content-Type;
+        b=j25WETWPEcNmnfRW25FUg0M7YNjCw4fVT8t0fIlh+cwCnKYzmoBMce/if8y3vp1mB
+         Fx+3Z+pHJOP9PX6PQ4hlyqnBVrIE7c+32CLL3n/6GK3LbomFg1hqUa5ZI2vy5k76V1
+         l8uwwmYJ/R7g2RhOkuKoBoQr5GR1sjfAYQhBZTIwFOt7REPp+8ghlnN0XjK+azDJa8
+         FN7B/ePdECFzX3JAjomVMhkmUHyEFt9YTm+3gV4NOLpEszmtaT80xKiQI6+Vrrhjtk
+         JIwx6dZUMMHhOeaN4fXtFM1Qde0EnsnntlbDN8/vSsbUHgkzktf86ewvN0XJ3Kp2U4
+         SQ2nYTLdmXOaQ==
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This series adds Tegra210, Tegra186, and Tegra194 Quad SPI driver and
-enables Quad SPI on Jetson Nano and Jetson Xavier NX.
+This patch marks dummy transfer by setting dummy_data bit to 1.
 
-QSPI controller is available on Tegra210, Tegra186 and Tegra194.
+Controllers supporting dummy transfer by hardware use this bit field
+to skip software transfer of dummy bytes and use hardware dummy bytes
+transfer.
 
-Tegra186 and Tegra194 has additional feature of combined sequence mode
-where command, address and data can all be transferred in a single transfer.
-Combined sequence mode is useful only when using DMA mode transfer.
+Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
+---
+ drivers/spi/spi-mem.c   | 1 +
+ include/linux/spi/spi.h | 2 ++
+ 2 files changed, 3 insertions(+)
 
-This series does not have combined sequence mode feature as Tegra186/Tegra194
-GPCDMA driver is not upstreamed yet.
-
-This series includes
-- dt-binding document
-- QSPI driver for Tegra210/Tegra186/Tegra194
-- Enables QSPI on Jetson Nano and Jetson Xavier NX.
-
-Delta between patch versions:
-[v4]:	Updated dummy cycles implementation based on v3 feedback
-	- Added dummy_data bit field int spi_transfer to indicate corresponding
-	  transfer is dummy bytes transfer.
-	- Updated Tegra QSPI transfer_one_message to identify dummy transfer and
-	  to use HW supported dummy bytes transfer when dummy cycles are with in
-	  Tegra QSPI supported max HW dummy cycles otherwise fallsback to transfer
-	  dummy bytes from software.
-	- Updated dt-bindings based on v3 feedback.
-
-[v3]:	v2 has some mixed patches sent out accidentally.
-	v3 sends proper patches with fixes mentioned in v2.
-
-[v2]:	below v1 feedback
-	- Added SPI_MASTER_USES_HW_DUMMY_CYCLES flag for controllers supporting
-	  hardware dummy cycles and skips dummy bytes transfer from software for
-	  these controllers.
-	- Updated dt-binding doc with tx/rx tap delay properties.
-	- Added qspi_out clock to dt-binding doc which will be used later with
-	  ddr mode support.
-	- All other v1 feedback on some cleanup.
-
-
-Sowjanya Komatineni (9):
-  dt-bindings: clock: tegra: Add clock ID TEGRA210_CLK_QSPI_PM
-  dt-bindings: spi: Add Tegra Quad SPI device tree binding
-  MAINTAINERS: Add Tegra Quad SPI driver section
-  spi: tegra210-quad: Add support for Tegra210 QSPI controller
-  spi: spi-mem: Mark dummy transfers by setting dummy_data bit
-  spi: tegra210-quad: Add support for hardware dummy cycles transfer
-  arm64: tegra: Enable QSPI on Jetson Nano
-  arm64: tegra: Add QSPI nodes on Tegra194
-  arm64: tegra: Enable QSPI on Jetson Xavier NX
-
- .../bindings/spi/nvidia,tegra210-quad.yaml         |  117 ++
- MAINTAINERS                                        |    8 +
- .../dts/nvidia/tegra194-p3509-0000+p3668-0000.dts  |   12 +
- arch/arm64/boot/dts/nvidia/tegra194.dtsi           |   28 +
- arch/arm64/boot/dts/nvidia/tegra210-p3450-0000.dts |   12 +
- arch/arm64/boot/dts/nvidia/tegra210.dtsi           |    5 +-
- drivers/spi/Kconfig                                |    9 +
- drivers/spi/Makefile                               |    1 +
- drivers/spi/spi-mem.c                              |    1 +
- drivers/spi/spi-tegra210-quad.c                    | 1421 ++++++++++++++++++++
- include/dt-bindings/clock/tegra210-car.h           |    2 +-
- include/linux/spi/spi.h                            |    2 +
- 12 files changed, 1615 insertions(+), 3 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml
- create mode 100644 drivers/spi/spi-tegra210-quad.c
-
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index f3a3f19..c64371c 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -354,6 +354,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 		xfers[xferpos].tx_buf = tmpbuf + op->addr.nbytes + 1;
+ 		xfers[xferpos].len = op->dummy.nbytes;
+ 		xfers[xferpos].tx_nbits = op->dummy.buswidth;
++		xfers[xferpos].dummy_data = 1;
+ 		spi_message_add_tail(&xfers[xferpos], &msg);
+ 		xferpos++;
+ 		totalxferlen += op->dummy.nbytes;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index aa09fdc..708f2f5 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -827,6 +827,7 @@ extern void spi_res_release(struct spi_controller *ctlr,
+  *      transfer. If 0 the default (from @spi_device) is used.
+  * @bits_per_word: select a bits_per_word other than the device default
+  *      for this transfer. If 0 the default (from @spi_device) is used.
++ * @dummy_data: indicates transfer is dummy bytes transfer.
+  * @cs_change: affects chipselect after this transfer completes
+  * @cs_change_delay: delay between cs deassert and assert when
+  *      @cs_change is set and @spi_transfer is not the last in @spi_message
+@@ -939,6 +940,7 @@ struct spi_transfer {
+ 	struct sg_table tx_sg;
+ 	struct sg_table rx_sg;
+ 
++	unsigned	dummy_data:1;
+ 	unsigned	cs_change:1;
+ 	unsigned	tx_nbits:3;
+ 	unsigned	rx_nbits:3;
 -- 
 2.7.4
 

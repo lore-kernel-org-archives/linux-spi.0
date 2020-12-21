@@ -2,228 +2,52 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 90C38C4332E
-	for <linux-spi@archiver.kernel.org>; Mon, 21 Dec 2020 14:16:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 83374C433DB
+	for <linux-spi@archiver.kernel.org>; Mon, 21 Dec 2020 14:57:26 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 64FBD22BEF
-	for <linux-spi@archiver.kernel.org>; Mon, 21 Dec 2020 14:16:00 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 539E122B45
+	for <linux-spi@archiver.kernel.org>; Mon, 21 Dec 2020 14:57:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727146AbgLUOPn (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 21 Dec 2020 09:15:43 -0500
-Received: from mx0a-00128a01.pphosted.com ([148.163.135.77]:6656 "EHLO
-        mx0a-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726848AbgLUOPm (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 21 Dec 2020 09:15:42 -0500
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 0BLECPoE015398;
-        Mon, 21 Dec 2020 09:15:01 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com with ESMTP id 35hc8bdjdx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 21 Dec 2020 09:15:01 -0500
-Received: from SCSQMBX10.ad.analog.com (SCSQMBX10.ad.analog.com [10.77.17.5])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 0BLEExFe047585
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 21 Dec 2020 09:14:59 -0500
-Received: from SCSQMBX11.ad.analog.com (10.77.17.10) by
- SCSQMBX10.ad.analog.com (10.77.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.721.2;
- Mon, 21 Dec 2020 06:14:58 -0800
-Received: from zeus.spd.analog.com (10.66.68.11) by SCSQMBX11.ad.analog.com
- (10.77.17.10) with Microsoft SMTP Server id 15.1.1779.2 via Frontend
- Transport; Mon, 21 Dec 2020 06:14:57 -0800
-Received: from localhost.localdomain ([10.48.65.12])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 0BLEEqno030685;
-        Mon, 21 Dec 2020 09:14:54 -0500
-From:   Alexandru Ardelean <alexandru.ardelean@analog.com>
-To:     <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     <dragos.bogdan@analog.com>, <broonie@kernel.org>,
-        <robh+dt@kernel.org>, <andy.shevchenko@gmail.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Subject: [PATCH v5 2/3] spi: Add SPI_NO_TX/RX support
-Date:   Mon, 21 Dec 2020 16:19:05 +0200
-Message-ID: <20201221141906.48922-2-alexandru.ardelean@analog.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20201221141906.48922-1-alexandru.ardelean@analog.com>
-References: <20201221141906.48922-1-alexandru.ardelean@analog.com>
+        id S1726949AbgLUO50 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 21 Dec 2020 09:57:26 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59068 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726860AbgLUO5Z (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 21 Dec 2020 09:57:25 -0500
+Content-Type: text/plain; charset="utf-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1608562605;
+        bh=3Kvg7Boiq0NLOGgqHe5LnAV5p0WrJWDP7E0gg0CaFh0=;
+        h=Subject:From:Date:To:From;
+        b=gn7FkyU64n9oeKyA3WRlFYDFBsQN7YfOwe/rw7ZBt40uo5KdX11N3RrWe1V7BZxbQ
+         PTj0pqOy7d4xfkA5DU+Z6An2HHRrhvofhdnHpRgeosrEfUVYu3eGU2kbT/o5FwzoqR
+         yIYwz8dr1YB+tdQIzxlCW5GvVnGxUg2L0wWE/X3CagrjOjT02zQRTEzLro8tm5T+1f
+         uuIi6GONEoJFb5kikEfH4asHkD5cswKQtAMDWCPZ1qVPUjiDtMqnrIqZnmj8t70eQr
+         k6/CQrqygl9npZMpL07o+9GU7dw41/0lKpO5i1+Ddj1k65jtBd1M9LGIJbR+RkZi2v
+         ++jZ6wBxCqTvw==
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.343,18.0.737
- definitions=2020-12-21_08:2020-12-21,2020-12-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- priorityscore=1501 suspectscore=0 adultscore=0 mlxlogscore=999 spamscore=0
- lowpriorityscore=0 mlxscore=0 bulkscore=0 clxscore=1015 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2012210100
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <160856260506.8456.17901706727834496950.git-patchwork-housekeeping@kernel.org>
+Date:   Mon, 21 Dec 2020 14:56:45 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Dragos Bogdan <dragos.bogdan@analog.com>
+Latest series: [v5] spi: uapi: unify SPI modes into a single spi.h header (2020-12-21T14:19:04)
+  Superseding: [v4] spi: uapi: unify SPI modes into a single spi.h header (2020-12-03T14:05:29):
+    [v4,1/3] spi: uapi: unify SPI modes into a single spi.h header
+    [v4,2/3] spi: Add SPI_NO_TX/RX support
+    [v4,3/3] spi: dt-bindings: document zero value for spi-{rx,tx}-bus-width properties
 
-Transmit/receive only is a valid SPI mode. For example, the MOSI/TX line
-might be missing from an ADC while for a DAC the MISO/RX line may be
-optional. This patch adds these two new modes: SPI_NO_TX and
-SPI_NO_RX. This way, the drivers will be able to identify if any of
-these two lines is missing and to adjust the transfers accordingly.
 
-Signed-off-by: Dragos Bogdan <dragos.bogdan@analog.com>
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
----
-
-Changelog v4 -> v5:
-* https://lore.kernel.org/linux-spi/20201203140531.74470-2-alexandru.ardelean@analog.com/
-* using static_assert() vs BUILD_BUG_ON()
-* added comments for SPI_MODE_KERNEL_MASK & SPI_MODE_USER_MASK
-* using shorter form defining SPI_MODE_KERNEL_MASK & SPI_MODE_USER_MASK
-
- drivers/spi/spi.c            | 26 +++++++++++++++++++++-----
- include/linux/spi/spi.h      | 17 +++++++++++++++++
- include/uapi/linux/spi/spi.h | 10 ++++++++++
- 3 files changed, 48 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 51d7c004fbab..0b69934698c3 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1941,6 +1941,9 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
- 	/* Device DUAL/QUAD mode */
- 	if (!of_property_read_u32(nc, "spi-tx-bus-width", &value)) {
- 		switch (value) {
-+		case 0:
-+			spi->mode |= SPI_NO_TX;
-+			break;
- 		case 1:
- 			break;
- 		case 2:
-@@ -1962,6 +1965,9 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
- 
- 	if (!of_property_read_u32(nc, "spi-rx-bus-width", &value)) {
- 		switch (value) {
-+		case 0:
-+			spi->mode |= SPI_NO_RX;
-+			break;
- 		case 1:
- 			break;
- 		case 2:
-@@ -3329,12 +3335,17 @@ int spi_setup(struct spi_device *spi)
- 	unsigned	bad_bits, ugly_bits;
- 	int		status;
- 
--	/* check mode to prevent that DUAL and QUAD set at the same time
-+	/*
-+	 * check mode to prevent that any two of DUAL, QUAD and NO_MOSI/MISO
-+	 * are set at the same time
- 	 */
--	if (((spi->mode & SPI_TX_DUAL) && (spi->mode & SPI_TX_QUAD)) ||
--		((spi->mode & SPI_RX_DUAL) && (spi->mode & SPI_RX_QUAD))) {
-+	if ((hweight_long(spi->mode &
-+		(SPI_TX_DUAL | SPI_TX_QUAD | SPI_NO_TX)) > 1) ||
-+	    (hweight_long(spi->mode &
-+		(SPI_RX_DUAL | SPI_RX_QUAD | SPI_NO_RX)) > 1)) {
- 		dev_err(&spi->dev,
--		"setup: can not select dual and quad at the same time\n");
-+		"setup: can not select any two of dual, quad and no-rx/tx "
-+		"at the same time\n");
- 		return -EINVAL;
- 	}
- 	/* if it is SPI_3WIRE mode, DUAL and QUAD should be forbidden
-@@ -3348,7 +3359,8 @@ int spi_setup(struct spi_device *spi)
- 	 * SPI_CS_WORD has a fallback software implementation,
- 	 * so it is ignored here.
- 	 */
--	bad_bits = spi->mode & ~(spi->controller->mode_bits | SPI_CS_WORD);
-+	bad_bits = spi->mode & ~(spi->controller->mode_bits | SPI_CS_WORD |
-+				 SPI_NO_TX | SPI_NO_RX);
- 	/* nothing prevents from working with active-high CS in case if it
- 	 * is driven by GPIO.
- 	 */
-@@ -3610,6 +3622,8 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
- 		 * 2. check tx/rx_nbits match the mode in spi_device
- 		 */
- 		if (xfer->tx_buf) {
-+			if (spi->mode & SPI_NO_TX)
-+				return -EINVAL;
- 			if (xfer->tx_nbits != SPI_NBITS_SINGLE &&
- 				xfer->tx_nbits != SPI_NBITS_DUAL &&
- 				xfer->tx_nbits != SPI_NBITS_QUAD)
-@@ -3623,6 +3637,8 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
- 		}
- 		/* check transfer rx_nbits */
- 		if (xfer->rx_buf) {
-+			if (spi->mode & SPI_NO_RX)
-+				return -EINVAL;
- 			if (xfer->rx_nbits != SPI_NBITS_SINGLE &&
- 				xfer->rx_nbits != SPI_NBITS_DUAL &&
- 				xfer->rx_nbits != SPI_NBITS_QUAD)
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index a08c3f37e202..9bfdfaf286eb 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -6,6 +6,7 @@
- #ifndef __LINUX_SPI_H
- #define __LINUX_SPI_H
- 
-+#include <linux/bits.h>
- #include <linux/device.h>
- #include <linux/mod_devicetable.h>
- #include <linux/slab.h>
-@@ -166,6 +167,18 @@ struct spi_device {
- 	u8			chip_select;
- 	u8			bits_per_word;
- 	bool			rt;
-+#define SPI_NO_TX	BIT(31)		/* no transmit wire */
-+#define SPI_NO_RX	BIT(30)		/* no receive wire */
-+	/*
-+	 * All bits defined above should be covered by SPI_MODE_KERNEL_MASK.
-+	 * The SPI_MODE_KERNEL_MASK has the SPI_MODE_USER_MASK counterpart,
-+	 * which is defined in 'include/uapi/linux/spi/spi.h'.
-+	 * The bits defined here are from bit 31 downwards, while in
-+	 * SPI_MODE_USER_MASK are from 0 upwards.
-+	 * These bits must not overlap. A static assert check should make sure of that.
-+	 * If adding extra bits, make sure to decrease the bit index below as well.
-+	 */
-+#define SPI_MODE_KERNEL_MASK	(~(BIT(30) - 1))
- 	u32			mode;
- 	int			irq;
- 	void			*controller_state;
-@@ -189,6 +202,10 @@ struct spi_device {
- 	 */
- };
- 
-+/* Make sure that SPI_MODE_KERNEL_MASK & SPI_MODE_USER_MASK don't overlap */
-+static_assert((SPI_MODE_KERNEL_MASK & SPI_MODE_USER_MASK) == 0,
-+	      "SPI_MODE_USER_MASK & SPI_MODE_KERNEL_MASK must not overlap");
-+
- static inline struct spi_device *to_spi_device(struct device *dev)
- {
- 	return dev ? container_of(dev, struct spi_device, dev) : NULL;
-diff --git a/include/uapi/linux/spi/spi.h b/include/uapi/linux/spi/spi.h
-index 703b586f35df..236a85f08ded 100644
---- a/include/uapi/linux/spi/spi.h
-+++ b/include/uapi/linux/spi/spi.h
-@@ -28,4 +28,14 @@
- #define	SPI_RX_OCTAL		_BITUL(14)	/* receive with 8 wires */
- #define	SPI_3WIRE_HIZ		_BITUL(15)	/* high impedance turnaround */
- 
-+/*
-+ * All the bits defined above should be covered by SPI_MODE_USER_MASK.
-+ * The SPI_MODE_USER_MASK has the SPI_MODE_KERNEL_MASK counterpart in
-+ * 'include/linux/spi/spi.h'. The bits defined here are from bit 0 upwards
-+ * while in SPI_MODE_KERNEL_MASK they are from the other end downwards.
-+ * These bits must not overlap. A static assert check should make sure of that.
-+ * If adding extra bits, make sure to increase the bit index below as well.
-+ */
-+#define SPI_MODE_USER_MASK	(_BITUL(16) - 1)
-+
- #endif /* _UAPI_SPI_H */
 -- 
-2.17.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

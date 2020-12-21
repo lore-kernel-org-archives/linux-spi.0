@@ -2,92 +2,60 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 02D00C43331
-	for <linux-spi@archiver.kernel.org>; Mon, 21 Dec 2020 21:19:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A74EC433E0
+	for <linux-spi@archiver.kernel.org>; Mon, 21 Dec 2020 21:57:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C73FD22B30
-	for <linux-spi@archiver.kernel.org>; Mon, 21 Dec 2020 21:19:28 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3610122C9C
+	for <linux-spi@archiver.kernel.org>; Mon, 21 Dec 2020 21:57:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726758AbgLUVTK (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 21 Dec 2020 16:19:10 -0500
-Received: from hqnvemgate24.nvidia.com ([216.228.121.143]:4593 "EHLO
-        hqnvemgate24.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725820AbgLUVTK (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 21 Dec 2020 16:19:10 -0500
-Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate24.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
-        id <B5fe111010000>; Mon, 21 Dec 2020 13:17:53 -0800
-Received: from HQMAIL101.nvidia.com (172.20.187.10) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 21 Dec
- 2020 21:17:47 +0000
-Received: from skomatineni-linux.nvidia.com (172.20.145.6) by mail.nvidia.com
- (172.20.187.10) with Microsoft SMTP Server id 15.0.1473.3 via Frontend
- Transport; Mon, 21 Dec 2020 21:17:47 +0000
-From:   Sowjanya Komatineni <skomatineni@nvidia.com>
-To:     <thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
-        <broonie@kernel.org>, <robh+dt@kernel.org>, <lukas@wunner.de>
-CC:     <skomatineni@nvidia.com>, <bbrezillon@kernel.org>,
-        <p.yadav@ti.com>, <tudor.ambarus@microchip.com>,
-        <linux-spi@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
-Subject: [PATCH v5 9/9] arm64: tegra: Enable QSPI on Jetson Xavier NX
-Date:   Mon, 21 Dec 2020 13:17:39 -0800
-Message-ID: <1608585459-17250-10-git-send-email-skomatineni@nvidia.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1608585459-17250-1-git-send-email-skomatineni@nvidia.com>
-References: <1608585459-17250-1-git-send-email-skomatineni@nvidia.com>
-X-NVConfidentiality: public
+        id S1725783AbgLUV5V (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 21 Dec 2020 16:57:21 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34158 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725780AbgLUV5V (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 21 Dec 2020 16:57:21 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id 02BC722C9C;
+        Mon, 21 Dec 2020 21:56:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1608587801;
+        bh=TmSL6EOnf8PJqB4j5sDll0MRG+WDL33aoRF0LByNDjM=;
+        h=Subject:From:Date:To:From;
+        b=iWEk2HS7GKpiiVyJOY0vGE8cT+SydN2eX8K894Fmdbt55/7gfOVIHmPGgzrecvXuU
+         Xpd6BTAd7egb7TnxTTa1/r+Bc1Qj9p7T5S1+SE/1OurbQnizwxUX+nfWeBv/SNxLyA
+         2Yi6mLtq4L5arkLl5rEFHLz7O5GJ9UrH/TeZoyOzms2N39m75boUx49wcFRFAO2wIj
+         Dj2nZ7//ovIYC9CZsfEOgALFCHbao3729SIdlhsepkDik5Dhsy5bRoPjmD2NgZP4gK
+         ya8lYfe9xEU/xzEXk7wHJHG0pJyu6UbdSuxBrCHI1o5ccvZ0q6/Flb6x2BqbFA1VXY
+         QhGFwG4rinahg==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1608585473; bh=fYE2T8fmJsPLDmks8zJZ++XGgYTpkfOpRR13aXBCmGY=;
-        h=From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-         References:X-NVConfidentiality:MIME-Version:Content-Type;
-        b=eNuhBz9S9mFoJT2cwCzLkKczlk3QMj5TOpd4t6d1opXydUVVN3xvWTo4CsZMn7/Mc
-         eiZ+Y6Ntr6sTlkR+otNFK71oFGCNQYPCXBVCJrP1V05ghhGLFb2fQhewQlkBX9PRZ/
-         jEk65zA71Kofwj/oOD49rNT/JBnJFftqkhjKBr2YrrwKOddnS2aQiG8CpofXmI7f/0
-         uYD/6f3b1QamGyUm98K8qxuZVHmmPGediI1/PsaPIC91CG6HseYRkQB4dVjHXaeMsC
-         3dShSJIKICYtOSz9XqLTxJe78S0A1fkDknR3DM35QhcdV8jUseCThd6PE3kLlnb4zC
-         mpv9U52DtFWGw==
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <160858780083.1730.13751084748384678965.git-patchwork-housekeeping@kernel.org>
+Date:   Mon, 21 Dec 2020 21:56:40 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This patch enables QSPI on Jetson Xavier NX.
+Latest series: [v5] Add Tegra Quad SPI driver (2020-12-21T21:17:36)
+  Superseding: [v4] Add Tegra Quad SPI driver (2020-12-17T20:28:39):
+    [v4,1/9] dt-bindings: clock: tegra: Add clock ID TEGRA210_CLK_QSPI_PM
+    [v4,2/9] dt-bindings: spi: Add Tegra Quad SPI device tree binding
+    [v4,3/9] MAINTAINERS: Add Tegra Quad SPI driver section
+    [v4,4/9] spi: tegra210-quad: Add support for Tegra210 QSPI controller
+    [v4,5/9] spi: spi-mem: Mark dummy transfers by setting dummy_data bit
+    [v4,6/9] spi: tegra210-quad: Add support for hardware dummy cycles transfer
+    [v4,7/9] arm64: tegra: Enable QSPI on Jetson Nano
+    [v4,8/9] arm64: tegra: Add QSPI nodes on Tegra194
+    [v4,9/9] arm64: tegra: Enable QSPI on Jetson Xavier NX
 
-Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
----
- .../arm64/boot/dts/nvidia/tegra194-p3509-0000+p3668-0000.dts | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/nvidia/tegra194-p3509-0000+p3668-0000.dts b/arch/arm64/boot/dts/nvidia/tegra194-p3509-0000+p3668-0000.dts
-index 7f97b34..f1053e7 100644
---- a/arch/arm64/boot/dts/nvidia/tegra194-p3509-0000+p3668-0000.dts
-+++ b/arch/arm64/boot/dts/nvidia/tegra194-p3509-0000+p3668-0000.dts
-@@ -100,6 +100,18 @@
- 			phy-names = "usb2-1", "usb2-2", "usb3-2";
- 		};
- 
-+		spi@3270000 {
-+			status = "okay";
-+
-+			flash@0 {
-+				compatible = "spi-nor";
-+				reg = <0>;
-+				spi-max-frequency = <102000000>;
-+				spi-tx-bus-width = <4>;
-+				spi-rx-bus-width = <4>;
-+			};
-+		};
-+
- 		pwm@32d0000 {
- 			status = "okay";
- 		};
 -- 
-2.7.4
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

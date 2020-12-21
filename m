@@ -5,28 +5,29 @@ X-Spam-Level:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 37968C43381
-	for <linux-spi@archiver.kernel.org>; Mon, 21 Dec 2020 21:19:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 02D00C43331
+	for <linux-spi@archiver.kernel.org>; Mon, 21 Dec 2020 21:19:29 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0547022B4B
-	for <linux-spi@archiver.kernel.org>; Mon, 21 Dec 2020 21:19:27 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C73FD22B30
+	for <linux-spi@archiver.kernel.org>; Mon, 21 Dec 2020 21:19:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726710AbgLUVTH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 21 Dec 2020 16:19:07 -0500
-Received: from hqnvemgate24.nvidia.com ([216.228.121.143]:4590 "EHLO
+        id S1726758AbgLUVTK (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 21 Dec 2020 16:19:10 -0500
+Received: from hqnvemgate24.nvidia.com ([216.228.121.143]:4593 "EHLO
         hqnvemgate24.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725820AbgLUVTG (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 21 Dec 2020 16:19:06 -0500
+        with ESMTP id S1725820AbgLUVTK (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 21 Dec 2020 16:19:10 -0500
 Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate24.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
-        id <B5fe110ff0001>; Mon, 21 Dec 2020 13:17:51 -0800
-Received: from HQMAIL101.nvidia.com (172.20.187.10) by HQMAIL109.nvidia.com
- (172.20.187.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 21 Dec
- 2020 21:17:45 +0000
+        id <B5fe111010000>; Mon, 21 Dec 2020 13:17:53 -0800
+Received: from HQMAIL101.nvidia.com (172.20.187.10) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 21 Dec
+ 2020 21:17:47 +0000
 Received: from skomatineni-linux.nvidia.com (172.20.145.6) by mail.nvidia.com
  (172.20.187.10) with Microsoft SMTP Server id 15.0.1473.3 via Frontend
- Transport; Mon, 21 Dec 2020 21:17:45 +0000
+ Transport; Mon, 21 Dec 2020 21:17:47 +0000
 From:   Sowjanya Komatineni <skomatineni@nvidia.com>
 To:     <thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
         <broonie@kernel.org>, <robh+dt@kernel.org>, <lukas@wunner.de>
@@ -34,9 +35,9 @@ CC:     <skomatineni@nvidia.com>, <bbrezillon@kernel.org>,
         <p.yadav@ti.com>, <tudor.ambarus@microchip.com>,
         <linux-spi@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
-Subject: [PATCH v5 7/9] arm64: tegra: Enable QSPI on Jetson Nano
-Date:   Mon, 21 Dec 2020 13:17:37 -0800
-Message-ID: <1608585459-17250-8-git-send-email-skomatineni@nvidia.com>
+Subject: [PATCH v5 9/9] arm64: tegra: Enable QSPI on Jetson Xavier NX
+Date:   Mon, 21 Dec 2020 13:17:39 -0800
+Message-ID: <1608585459-17250-10-git-send-email-skomatineni@nvidia.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1608585459-17250-1-git-send-email-skomatineni@nvidia.com>
 References: <1608585459-17250-1-git-send-email-skomatineni@nvidia.com>
@@ -44,66 +45,49 @@ X-NVConfidentiality: public
 MIME-Version: 1.0
 Content-Type: text/plain
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1608585471; bh=dLZyD/aBfvEKW6lFi53KiLDsTnSc0dbBTCqhpZ4bRhM=;
+        t=1608585473; bh=fYE2T8fmJsPLDmks8zJZ++XGgYTpkfOpRR13aXBCmGY=;
         h=From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
          References:X-NVConfidentiality:MIME-Version:Content-Type;
-        b=hneZlWoY3OEP4zOyQTTa1yhx9fy5wNj0Bb47b6OnEV/PwEO5C4039qdY6SEURRUuG
-         hItnNtzKvwk/8JyuNQKGWVKshxfvymrVqtmhqV3DqCM5TxnkfID2KiMe1RgBaSiXFH
-         GEDwQu++18gru4cmSX7oBHs5yAAYMz4Zu3fY92KFOMjwayPgB32vM0ZrgvDfZmmnvp
-         Qa7hYYsVYxqmrknjnWDb7mNSpH2JfEG5Xu+yEw2JQbpbIL4l0Tc7S4vlheV9/PsfPX
-         jxP6W97j+sxQ0u7GH33KooqwvxvT4NU/V9DJTDQFoME7i561iBy6LPErc3Od4nmYNy
-         0rpnvFjecKBUA==
+        b=eNuhBz9S9mFoJT2cwCzLkKczlk3QMj5TOpd4t6d1opXydUVVN3xvWTo4CsZMn7/Mc
+         eiZ+Y6Ntr6sTlkR+otNFK71oFGCNQYPCXBVCJrP1V05ghhGLFb2fQhewQlkBX9PRZ/
+         jEk65zA71Kofwj/oOD49rNT/JBnJFftqkhjKBr2YrrwKOddnS2aQiG8CpofXmI7f/0
+         uYD/6f3b1QamGyUm98K8qxuZVHmmPGediI1/PsaPIC91CG6HseYRkQB4dVjHXaeMsC
+         3dShSJIKICYtOSz9XqLTxJe78S0A1fkDknR3DM35QhcdV8jUseCThd6PE3kLlnb4zC
+         mpv9U52DtFWGw==
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This patch enables QSPI on Jetson Nano.
+This patch enables QSPI on Jetson Xavier NX.
 
 Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
 ---
- arch/arm64/boot/dts/nvidia/tegra210-p3450-0000.dts | 12 ++++++++++++
- arch/arm64/boot/dts/nvidia/tegra210.dtsi           |  5 +++--
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ .../arm64/boot/dts/nvidia/tegra194-p3509-0000+p3668-0000.dts | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/nvidia/tegra210-p3450-0000.dts b/arch/arm64/boot/dts/nvidia/tegra210-p3450-0000.dts
-index 6a877de..a1b4603 100644
---- a/arch/arm64/boot/dts/nvidia/tegra210-p3450-0000.dts
-+++ b/arch/arm64/boot/dts/nvidia/tegra210-p3450-0000.dts
-@@ -638,6 +638,18 @@
+diff --git a/arch/arm64/boot/dts/nvidia/tegra194-p3509-0000+p3668-0000.dts b/arch/arm64/boot/dts/nvidia/tegra194-p3509-0000+p3668-0000.dts
+index 7f97b34..f1053e7 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra194-p3509-0000+p3668-0000.dts
++++ b/arch/arm64/boot/dts/nvidia/tegra194-p3509-0000+p3668-0000.dts
+@@ -100,6 +100,18 @@
+ 			phy-names = "usb2-1", "usb2-2", "usb3-2";
  		};
- 	};
  
-+	spi@70410000 {
-+		status = "okay";
++		spi@3270000 {
++			status = "okay";
 +
-+		flash@0 {
-+			compatible = "spi-nor";
-+			reg = <0>;
-+			spi-max-frequency = <104000000>;
-+			spi-tx-bus-width = <2>;
-+			spi-rx-bus-width = <2>;
++			flash@0 {
++				compatible = "spi-nor";
++				reg = <0>;
++				spi-max-frequency = <102000000>;
++				spi-tx-bus-width = <4>;
++				spi-rx-bus-width = <4>;
++			};
 +		};
-+	};
 +
- 	clk32k_in: clock@0 {
- 		compatible = "fixed-clock";
- 		clock-frequency = <32768>;
-diff --git a/arch/arm64/boot/dts/nvidia/tegra210.dtsi b/arch/arm64/boot/dts/nvidia/tegra210.dtsi
-index 4fbf8c1..998fa81 100644
---- a/arch/arm64/boot/dts/nvidia/tegra210.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra210.dtsi
-@@ -1536,8 +1536,9 @@
- 		interrupts = <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>;
- 		#address-cells = <1>;
- 		#size-cells = <0>;
--		clocks = <&tegra_car TEGRA210_CLK_QSPI>;
--		clock-names = "qspi";
-+		clocks = <&tegra_car TEGRA210_CLK_QSPI>,
-+			 <&tegra_car TEGRA210_CLK_QSPI_PM>;
-+		clock-names = "qspi", "qspi_out";
- 		resets = <&tegra_car 211>;
- 		reset-names = "qspi";
- 		dmas = <&apbdma 5>, <&apbdma 5>;
+ 		pwm@32d0000 {
+ 			status = "okay";
+ 		};
 -- 
 2.7.4
 

@@ -7,51 +7,51 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
 	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A8ED1C43381
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 62B4FC433E6
 	for <linux-spi@archiver.kernel.org>; Tue, 22 Dec 2020 18:46:31 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6D15A22AB9
+	by mail.kernel.org (Postfix) with ESMTP id 2741622AB9
 	for <linux-spi@archiver.kernel.org>; Tue, 22 Dec 2020 18:46:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726557AbgLVSqR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 22 Dec 2020 13:46:17 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:59260 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726039AbgLVSqR (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 22 Dec 2020 13:46:17 -0500
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0BMIie8V115152;
-        Tue, 22 Dec 2020 12:44:40 -0600
+        id S1727360AbgLVSqN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 22 Dec 2020 13:46:13 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:54422 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726557AbgLVSqN (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 22 Dec 2020 13:46:13 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0BMIiaV9015122;
+        Tue, 22 Dec 2020 12:44:36 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1608662680;
-        bh=4+hNG0HZ3CKHOOg7bbnIvHC3AH4Hy4lXYfvtHYthEak=;
+        s=ti-com-17Q1; t=1608662676;
+        bh=+5MUFx6m4aRjz+9UKgH8r17yzKrXbsPFbYTO9PLMrh0=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=IbH8vb51Wr5IMLW9wAWeXp4Wb8Qhk2fCPF/L0Cshixa1ulFzJ2z0Mj0MFSOe64yKC
-         79qNnOxW+Fc25le717MAA9lmv7g+f74g8BOR/wLQdkCHww9XpTA5k7vovZy9yHYD0h
-         87E+u8bHAYgd2/XzR7IhmDQqH8qp9PYxj5RXvclk=
+        b=PHgffoGaDBO1NCMGl9e9rmXzQ0I9MFZ0zS+nwywnkZBvDIQV/zmmDJ/191cPhOjCL
+         5/oZiyzKkmpEdVVNK2oUV8t6DtJTc+r1vBLkE24YSQn6gSrWWZjrfNTLprA1/qipvW
+         EfVw6Y4JO50CpbLTxjbMcXqJ/kyiraHVRhphLtSE=
 Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0BMIieDQ017222
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0BMIiaEb098649
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 22 Dec 2020 12:44:40 -0600
-Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE103.ent.ti.com
+        Tue, 22 Dec 2020 12:44:36 -0600
+Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE103.ent.ti.com
  (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 22
- Dec 2020 12:44:40 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ Dec 2020 12:44:36 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 22 Dec 2020 12:44:40 -0600
+ Frontend Transport; Tue, 22 Dec 2020 12:44:36 -0600
 Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0BMIiQbe003761;
-        Tue, 22 Dec 2020 12:44:38 -0600
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0BMIiQbc003761;
+        Tue, 22 Dec 2020 12:44:34 -0600
 From:   Pratyush Yadav <p.yadav@ti.com>
 To:     Mark Brown <broonie@kernel.org>,
         Vignesh Raghavendra <vigneshr@ti.com>
 CC:     Pratyush Yadav <p.yadav@ti.com>, <linux-spi@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
-Subject: [PATCH 6/7] spi: cadence-quadspi: Wait at least 500 ms for direct reads
-Date:   Wed, 23 Dec 2020 00:14:24 +0530
-Message-ID: <20201222184425.7028-7-p.yadav@ti.com>
+Subject: [PATCH 4/7] spi: cadence-quadspi: Fix dummy cycle calculation when buswidth > 1
+Date:   Wed, 23 Dec 2020 00:14:22 +0530
+Message-ID: <20201222184425.7028-5-p.yadav@ti.com>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20201222184425.7028-1-p.yadav@ti.com>
 References: <20201222184425.7028-1-p.yadav@ti.com>
@@ -63,15 +63,14 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-When performing a direct read via DMA the timeout for completion is set
-equal to the read length. This is fine for larger reads. For a small
-read like the Read Status Register command, the timeout would be 1 or 2
-milliseconds. This is not enough to cover the overhead needed in setting
-up DMA.
+SPI MEM deals with dummy bytes but the controller deals with dummy
+cycles. Multiplying bytes by 8 is correct if the dummy phase uses 1S
+mode since 1 byte will be sent in 8 cycles. But if the dummy phase uses
+4S mode then 1 byte will be sent in 2 cycles.
 
-Make sure the timeout is at least 500 ms to allow DMA ample time to
-finish. For reads larger than 500 bytes, the timeout will continue to be
-equal to the read length.
+To correctly translate dummy bytes to dummy cycles, the dummy buswidth
+also needs to be taken into account. Divide 8 by the buswidth to get the
+correct multiplier for getting the number of cycles.
 
 Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
 ---
@@ -79,18 +78,18 @@ Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 1781d4e94ebd..90040664e1b9 100644
+index 6a778014ff60..376abef43530 100644
 --- a/drivers/spi/spi-cadence-quadspi.c
 +++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -963,7 +963,7 @@ static int cqspi_direct_read_execute(struct cqspi_flash_pdata *f_pdata,
+@@ -294,7 +294,7 @@ static unsigned int cqspi_calc_dummy(const struct spi_mem_op *op)
+ {
+ 	unsigned int dummy_clk;
  
- 	dma_async_issue_pending(cqspi->rx_chan);
- 	if (!wait_for_completion_timeout(&cqspi->rx_dma_complete,
--					 msecs_to_jiffies(len))) {
-+					 msecs_to_jiffies(max(len, 500UL)))) {
- 		dmaengine_terminate_sync(cqspi->rx_chan);
- 		dev_err(dev, "DMA wait_for_completion_timeout\n");
- 		ret = -ETIMEDOUT;
+-	dummy_clk = op->dummy.nbytes * 8;
++	dummy_clk = op->dummy.nbytes * (8 / op->dummy.buswidth);
+ 
+ 	return dummy_clk;
+ }
 -- 
 2.28.0
 

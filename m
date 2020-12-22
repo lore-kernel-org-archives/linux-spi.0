@@ -2,57 +2,59 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 03A83C433DB
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D772C433E9
 	for <linux-spi@archiver.kernel.org>; Tue, 22 Dec 2020 18:45:27 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B8170229C5
-	for <linux-spi@archiver.kernel.org>; Tue, 22 Dec 2020 18:45:26 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 062BD22B2D
+	for <linux-spi@archiver.kernel.org>; Tue, 22 Dec 2020 18:45:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725913AbgLVSpL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 22 Dec 2020 13:45:11 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:54336 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725895AbgLVSpK (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 22 Dec 2020 13:45:10 -0500
+        id S1725895AbgLVSpR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 22 Dec 2020 13:45:17 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:59246 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725783AbgLVSpQ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 22 Dec 2020 13:45:16 -0500
 Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0BMIiSKE015027;
-        Tue, 22 Dec 2020 12:44:28 -0600
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0BMIiYed115127;
+        Tue, 22 Dec 2020 12:44:34 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1608662668;
-        bh=nIeu68XbENAxLALuN59XaMZObxogV3FSs/9yg4UBJ/k=;
-        h=From:To:CC:Subject:Date;
-        b=htqxS2UlVYUnb1mv27k4xXuLYX/HMhxPztNN1xyiZbTiZ62+EEOO7dMZ5w6fZcITh
-         qy9pVvt5xbYTwX0H8Df33KIaYO4fLhn+hs9C1MTPV44jMPQk311AzCvsXdJupnVyd8
-         /aofKE7+G/VAu3RO/ZVlngTZL3G0V4dCAK/kN0aw=
-Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0BMIiSCq122898
+        s=ti-com-17Q1; t=1608662674;
+        bh=weNOJvwMIdHweOu5YL8SzPFO6rkeFp0Tn3zpeGJXxW4=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=OVqsAMm54Sf68CmcjFTAKn6XwMX9RHoBduLH/FeoS4IU4ZJaLwS5EeT6dxzNwDIMu
+         lFWyU+gX/vUruqQ6JlqIdGo+N5Gft5D8/UTtC104srolA6jAJ56YiPExVWxcSraFJh
+         gMv7pO1niEKBpo7cUNy5woTF0Jsurr5mRfZ2UwJI=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0BMIiYP7122959
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 22 Dec 2020 12:44:28 -0600
-Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 22
- Dec 2020 12:44:28 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE112.ent.ti.com
+        Tue, 22 Dec 2020 12:44:34 -0600
+Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE112.ent.ti.com
  (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Tue, 22
+ Dec 2020 12:44:34 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Tue, 22 Dec 2020 12:44:28 -0600
+ Frontend Transport; Tue, 22 Dec 2020 12:44:34 -0600
 Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0BMIiQbY003761;
-        Tue, 22 Dec 2020 12:44:26 -0600
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0BMIiQbb003761;
+        Tue, 22 Dec 2020 12:44:32 -0600
 From:   Pratyush Yadav <p.yadav@ti.com>
 To:     Mark Brown <broonie@kernel.org>,
         Vignesh Raghavendra <vigneshr@ti.com>
 CC:     Pratyush Yadav <p.yadav@ti.com>, <linux-spi@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
-Subject: [PATCH 0/7] spi: cadence-quadspi: Add Octal DTR support
-Date:   Wed, 23 Dec 2020 00:14:18 +0530
-Message-ID: <20201222184425.7028-1-p.yadav@ti.com>
+Subject: [PATCH 3/7] spi: cadence-quadspi: Set dummy cycles from STIG commands
+Date:   Wed, 23 Dec 2020 00:14:21 +0530
+Message-ID: <20201222184425.7028-4-p.yadav@ti.com>
 X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20201222184425.7028-1-p.yadav@ti.com>
+References: <20201222184425.7028-1-p.yadav@ti.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -61,33 +63,89 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi,
+If a command does not have an address phase it goes via the STIG path.
+The dummy cycles are not initialized for the STIG commands. As a result,
+STIG commands with dummy cycles will not work.
 
-This series adds support for Octal DTR mode now that SPI NOR supports
-these flashes. Patches 1/7 to 4/7 and 6/7 fix some minor bugs and issues.
-Patche 5/7 lays some groundwork by implementing the supports_op() hook.
-Patch 7/7 adds the Octal DTR mode support.
+Initialize the dummy cycle field before issuing the STIG command to make
+sure it is sent correctly. Move the code to calculate dummy cycle value
+to a separate function so it is not repeated twice. DTR support will add
+some more logic here to it is worth it to extract it out in a function.
 
-While the main aim of this series is to support 8D-8D-8D mode, other
-modes like 4D-4D-4D or 2S-2S-2S should also now be supported, though
-they have not been tested.
+Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+---
+ drivers/spi/spi-cadence-quadspi.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-Tested on J721E with Micron MT35XU512ABA and on J7200 with Cypress
-S28HS512T. Tested on J721E with Micron MT25QU512A (1S-1S-4S) for
-regressions.
-
-Pratyush Yadav (7):
-  spi: cadence-quadspi: Set master max_speed_hz
-  spi: cadence-quadspi: Abort read if dummy cycles required are too many
-  spi: cadence-quadspi: Set dummy cycles from STIG commands
-  spi: cadence-quadspi: Fix dummy cycle calculation when buswidth > 1
-  spi: cadence-quadspi: Implement a simple supports_op hook
-  spi: cadence-quadspi: Wait at least 500 ms for direct reads
-  spi: cadence-quadspi: Add DTR support
-
- drivers/spi/spi-cadence-quadspi.c | 364 ++++++++++++++++++++++++++----
- 1 file changed, 325 insertions(+), 39 deletions(-)
-
---
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 5efb1f929be0..6a778014ff60 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -188,6 +188,7 @@ struct cqspi_driver_platdata {
+ #define CQSPI_REG_CMDCTRL			0x90
+ #define CQSPI_REG_CMDCTRL_EXECUTE_MASK		BIT(0)
+ #define CQSPI_REG_CMDCTRL_INPROGRESS_MASK	BIT(1)
++#define CQSPI_REG_CMDCTRL_DUMMY_LSB		7
+ #define CQSPI_REG_CMDCTRL_WR_BYTES_LSB		12
+ #define CQSPI_REG_CMDCTRL_WR_EN_LSB		15
+ #define CQSPI_REG_CMDCTRL_ADD_BYTES_LSB		16
+@@ -198,6 +199,7 @@ struct cqspi_driver_platdata {
+ #define CQSPI_REG_CMDCTRL_WR_BYTES_MASK		0x7
+ #define CQSPI_REG_CMDCTRL_ADD_BYTES_MASK	0x3
+ #define CQSPI_REG_CMDCTRL_RD_BYTES_MASK		0x7
++#define CQSPI_REG_CMDCTRL_DUMMY_MASK		0x1F
+ 
+ #define CQSPI_REG_INDIRECTWR			0x70
+ #define CQSPI_REG_INDIRECTWR_START_MASK		BIT(0)
+@@ -288,6 +290,15 @@ static unsigned int cqspi_calc_rdreg(struct cqspi_flash_pdata *f_pdata)
+ 	return rdreg;
+ }
+ 
++static unsigned int cqspi_calc_dummy(const struct spi_mem_op *op)
++{
++	unsigned int dummy_clk;
++
++	dummy_clk = op->dummy.nbytes * 8;
++
++	return dummy_clk;
++}
++
+ static int cqspi_wait_idle(struct cqspi_st *cqspi)
+ {
+ 	const unsigned int poll_idle_retry = 3;
+@@ -355,6 +366,7 @@ static int cqspi_command_read(struct cqspi_flash_pdata *f_pdata,
+ 	size_t n_rx = op->data.nbytes;
+ 	unsigned int rdreg;
+ 	unsigned int reg;
++	unsigned int dummy_clk;
+ 	size_t read_len;
+ 	int status;
+ 
+@@ -370,6 +382,14 @@ static int cqspi_command_read(struct cqspi_flash_pdata *f_pdata,
+ 	rdreg = cqspi_calc_rdreg(f_pdata);
+ 	writel(rdreg, reg_base + CQSPI_REG_RD_INSTR);
+ 
++	dummy_clk = cqspi_calc_dummy(op);
++	if (dummy_clk > CQSPI_DUMMY_CLKS_MAX)
++		return -EOPNOTSUPP;
++
++	if (dummy_clk)
++		reg |= (dummy_clk & CQSPI_REG_CMDCTRL_DUMMY_MASK)
++		     << CQSPI_REG_CMDCTRL_DUMMY_LSB;
++
+ 	reg |= (0x1 << CQSPI_REG_CMDCTRL_RD_EN_LSB);
+ 
+ 	/* 0 means 1 byte. */
+@@ -459,7 +479,8 @@ static int cqspi_read_setup(struct cqspi_flash_pdata *f_pdata,
+ 	reg |= cqspi_calc_rdreg(f_pdata);
+ 
+ 	/* Setup dummy clock cycles */
+-	dummy_clk = op->dummy.nbytes * 8;
++	dummy_clk = cqspi_calc_dummy(op);
++
+ 	if (dummy_clk > CQSPI_DUMMY_CLKS_MAX)
+ 		return -EOPNOTSUPP;
+ 
+-- 
 2.28.0
 

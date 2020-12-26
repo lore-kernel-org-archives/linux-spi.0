@@ -7,21 +7,21 @@ X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BE759C4332E
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F35E7C43331
 	for <linux-spi@archiver.kernel.org>; Sat, 26 Dec 2020 09:13:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9753D207DE
+	by mail.kernel.org (Postfix) with ESMTP id CAFE5221FB
 	for <linux-spi@archiver.kernel.org>; Sat, 26 Dec 2020 09:13:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725972AbgLZJMz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sat, 26 Dec 2020 04:12:55 -0500
-Received: from mail.loongson.cn ([114.242.206.163]:48856 "EHLO loongson.cn"
+        id S1726057AbgLZJNC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sat, 26 Dec 2020 04:13:02 -0500
+Received: from mail.loongson.cn ([114.242.206.163]:48858 "EHLO loongson.cn"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725865AbgLZJMy (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        id S1725909AbgLZJMy (ORCPT <rfc822;linux-spi@vger.kernel.org>);
         Sat, 26 Dec 2020 04:12:54 -0500
 Received: from linux.localdomain (unknown [113.200.148.30])
-        by mail.loongson.cn (Coremail) with SMTP id AQAAf9Axmclj_uZfGJQFAA--.14125S3;
-        Sat, 26 Dec 2020 17:12:04 +0800 (CST)
+        by mail.loongson.cn (Coremail) with SMTP id AQAAf9Axmclj_uZfGJQFAA--.14125S5;
+        Sat, 26 Dec 2020 17:12:05 +0800 (CST)
 From:   Qing Zhang <zhangqing@loongson.cn>
 To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         ThomasBogendoerfer <tsbogend@alpha.franken.de>
@@ -29,100 +29,70 @@ Cc:     linux-spi@vger.kernel.org, Huacai Chen <chenhc@lemote.com>,
         Jiaxun Yang <jiaxun.yang@flygoat.com>,
         devicetree@vger.kernel.org, linux-mips@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v5 2/4] spi: ls7a: Add YAML schemas
-Date:   Sat, 26 Dec 2020 17:12:01 +0800
-Message-Id: <1608973923-8328-2-git-send-email-zhangqing@loongson.cn>
+Subject: [PATCH v5 4/4] MIPS: Loongson: Enable Loongson LS7A SPI in loongson3_defconfig
+Date:   Sat, 26 Dec 2020 17:12:03 +0800
+Message-Id: <1608973923-8328-4-git-send-email-zhangqing@loongson.cn>
 X-Mailer: git-send-email 2.1.0
 In-Reply-To: <1608973923-8328-1-git-send-email-zhangqing@loongson.cn>
 References: <1608973923-8328-1-git-send-email-zhangqing@loongson.cn>
-X-CM-TRANSID: AQAAf9Axmclj_uZfGJQFAA--.14125S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxJF18CFyrJr4xGrW8KFyUWrg_yoW8XFWDpF
-        17C3sxta1IgF1xC3yfta48A3W5Xr9Yk3ZxtFZrKwnrKas8Ka90vw43Kw15Z3W7JF48JFyx
-        XFWkWr4rKF10yaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUBFb7Iv0xC_tr1lb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I2
-        0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI
-        8067AKxVWUGwA2048vs2IY020Ec7CjxVAFwI0_JFI_Gr1l8cAvFVAK0II2c7xJM28CjxkF
-        64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcV
-        CY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv
+X-CM-TRANSID: AQAAf9Axmclj_uZfGJQFAA--.14125S5
+X-Coremail-Antispam: 1UD129KBjvdXoWrKw4UJFW3tw4DJry3tF48tFb_yoWfJFg_Ga
+        y7Kw18Wr48JrW8u3yxXw4rW3yDCa4UuFn5CF17try3Xaya9rnxtFWqyrWxG3W5uasI9FW3
+        ZaykJasF9F1xtjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+        9fnUUIcSsGvfJTRUUUbS8YjsxI4VWxJwAYFVCjjxCrM7AC8VAFwI0_Wr0E3s1l1xkIjI8I
+        6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l82xGYIkIc2x26280x7
+        IE14v26r1rM28IrcIa0xkI8VCY1x0267AKxVW5JVCq3wA2ocxC64kIII0Yj41l84x0c7CE
+        w4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6x
+        kF7I0E14v26F4j6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv
         6xkF7I0E14v26F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzV
         Aqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S
         6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxkIecxEwVAFwVW8uwCF04k20xvY0x
         0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
         7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcV
         C0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF
-        04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7
-        CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jrF4_UUUUU=
+        04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7
+        CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07j0a0PUUUUU=
 X-CM-SenderInfo: x2kd0wptlqwqxorr0wxvrqhubq/
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Switch the DT binding to a YAML schema to enable the DT validation.
+This is now supported, enable for Loongson systems.
 
+Reviewed-by: Huacai Chen <chenhuacai@kernel.org>
 Signed-off-by: Qing Zhang <zhangqing@loongson.cn>
 ---
 
+v2:
+ - Modify CONFIG_SPI_LOONGSON to CONFIG_SPI_LS7A
+
+v3:
+ - No changes
+
 v4:
- - fix warnings/errors about running 'make dt_binding_check'
+ - No changes
 
 v5:
- - remove num-chipelects
+ - No changes
 
 ---
- .../devicetree/bindings/spi/loongson,spi-ls7a.yaml | 44 ++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/loongson,spi-ls7a.yaml
+ arch/mips/configs/loongson3_defconfig | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/loongson,spi-ls7a.yaml b/Documentation/devicetree/bindings/spi/loongson,spi-ls7a.yaml
-new file mode 100644
-index 0000000..b90b28b
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/loongson,spi-ls7a.yaml
-@@ -0,0 +1,44 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/loongson,spi-ls7a.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Loongson LS7A PCH SPI Controller
-+
-+maintainers:
-+  - Qing Zhang <zhangqing@loongson.cn>
-+
-+description: |
-+  This controller can be found in Loongson-3 systems with LS7A PCH.
-+
-+properties:
-+  compatible:
-+    const: loongson,ls7a-spi
-+
-+  reg:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    pci {
-+        #address-cells = <3>;
-+        #size-cells = <2>;
-+
-+        spi@16,0 {
-+            compatible = "pci0014,7a0b.0",
-+                             "pci0014,7a0b",
-+                             "pciclass088000",
-+                             "pciclass0800";
-+
-+            reg = <0xb000 0x0 0x0 0x0 0x0>;
-+        };
-+    };
-+
-+...
+diff --git a/arch/mips/configs/loongson3_defconfig b/arch/mips/configs/loongson3_defconfig
+index 38a817e..28784cb 100644
+--- a/arch/mips/configs/loongson3_defconfig
++++ b/arch/mips/configs/loongson3_defconfig
+@@ -271,6 +271,9 @@ CONFIG_HW_RANDOM=y
+ CONFIG_RAW_DRIVER=m
+ CONFIG_I2C_CHARDEV=y
+ CONFIG_I2C_PIIX4=y
++CONFIG_SPI=y
++CONFIG_SPI_MASTER=y
++CONFIG_SPI_LS7A=y
+ CONFIG_GPIO_LOONGSON=y
+ CONFIG_SENSORS_LM75=m
+ CONFIG_SENSORS_LM93=m
 -- 
 2.1.0
 

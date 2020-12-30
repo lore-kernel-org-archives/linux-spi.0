@@ -6,77 +6,86 @@ X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E0E0C433E0
-	for <linux-spi@archiver.kernel.org>; Wed, 30 Dec 2020 13:48:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 83E5BC433E0
+	for <linux-spi@archiver.kernel.org>; Wed, 30 Dec 2020 13:53:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D6F7320773
-	for <linux-spi@archiver.kernel.org>; Wed, 30 Dec 2020 13:48:01 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 422E720715
+	for <linux-spi@archiver.kernel.org>; Wed, 30 Dec 2020 13:53:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726594AbgL3Nrq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 30 Dec 2020 08:47:46 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34090 "EHLO mail.kernel.org"
+        id S1726683AbgL3NxA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 30 Dec 2020 08:53:00 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34530 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726547AbgL3Nrq (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 30 Dec 2020 08:47:46 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E726621973;
-        Wed, 30 Dec 2020 13:47:04 +0000 (UTC)
+        id S1726656AbgL3Nw7 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 30 Dec 2020 08:52:59 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A2D0920791;
+        Wed, 30 Dec 2020 13:52:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1609336025;
-        bh=GqsTBoYp5MW6yqMA10j5wvBewkFDsUP08uwEce4EKh0=;
+        s=k20201202; t=1609336339;
+        bh=A8KDxk2J7yDBfz+5AzQj8eYVlMtcX4Tp2Ks9wdanxjY=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=c9T/d3sUHCOgAlhKJGok+8OXXsapDAdZm/RybsgrWEawREIS2oj4aChwuFZ3SZ8e6
-         iclJ0H7v1+7EoOP7fHRa3PFsUFngxbesMFEVY5B4CNdYVs4OaKOzPQoB0qVQBmENj5
-         bw1ogTX5A03Nrkf6gC/rhSDbG2Yc0lPfEzPz5xfJ90yCP2uvsrNTZmyLft02lKoFY3
-         KZuF1YwKMypPgOL8vlzJZgVbnWVU3xFVQ5/cJ+3PWXkYR+AEYgIV0N8y0/gZurIc+2
-         2+4eune9fft/EYRYrViLoqYoyY+p1i6iB+gkt0tniukaV4LI32NERvyf+Bq/ayqPDo
-         peRqCEILMnd/Q==
-Date:   Wed, 30 Dec 2020 13:46:42 +0000
+        b=DOk5fuT/SZohpcmYMIoLDKexl84L1uiwodTWrcIQs8Y5iuNlHrYkt4ptFLtTtplsr
+         yprYZUWFUPVRGv0ibQw3SLBeHD9BhmDnCHXx5Ab6eo+PYFgV08zRSsCUEynvqiQddj
+         cFUbzeSSGvQ7UPpOCUwCizyGx4ccXoYNjtRRnv7hKNMS9fv74lWAJWHAKXN4qA04m5
+         hjhIq4CgTFe0okfbtqywsxYvvEPWkj1i5DQJYt7a5QRUF5S8J6OMqwhmWGGGvpwBr3
+         RNEZNHVNtxW7Sif3zjRKvWsFxYVMikE7HqJGC5KwM/LVOY/N4QnbZl/XXJwy+3nmqY
+         28P3Uu23IDUMA==
+Date:   Wed, 30 Dec 2020 13:51:56 +0000
 From:   Mark Brown <broonie@kernel.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Fabio Estevam <festevam@gmail.com>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
-        linux-spi <linux-spi@vger.kernel.org>
-Subject: Re: [PATCH v2] spi: Fix regression when the SPI controller does not
- pass max_speed_hz
-Message-ID: <20201230134642.GA8144@sirena.org.uk>
-References: <20201229040450.10052-1-festevam@gmail.com>
- <CAMuHMdW4fbp092xbspwn-S-DHUQNJqATp=3Rr02vKsMj14CB7g@mail.gmail.com>
+To:     Bert Vermeulen <bert@biot.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Birger Koblitz <mail@birger-koblitz.de>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RESEND v2 1/2] dt-bindings: spi: Realtek RTL838x/RTL839x
+ SPI controller
+Message-ID: <20201230135156.GF4428@sirena.org.uk>
+References: <20201229231904.2558916-1-bert@biot.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="9amGYk9869ThD9tj"
+        protocol="application/pgp-signature"; boundary="p8PhoBjPxaQXD0vg"
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdW4fbp092xbspwn-S-DHUQNJqATp=3Rr02vKsMj14CB7g@mail.gmail.com>
-X-Cookie: A company is known by the men it keeps.
+In-Reply-To: <20201229231904.2558916-1-bert@biot.com>
+X-Cookie: Above all things, reverence yourself.
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
 
---9amGYk9869ThD9tj
+--p8PhoBjPxaQXD0vg
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Dec 29, 2020 at 09:05:45AM +0100, Geert Uytterhoeven wrote:
+On Wed, Dec 30, 2020 at 12:19:03AM +0100, Bert Vermeulen wrote:
 
-> See also
-> https://lore.kernel.org/linux-spi/20201216092321.413262-1-tudor.ambarus@microchip.com/
+> +properties:
+> +  compatible:
+> +    const: realtek,spi
 
-Right, I already queued that version.
+It is possibled Realtek might make other SPI controllers, there should
+be some more specific name such as a compatible for each SoC that the
+controller appears in or an IP name if one is known.
 
---9amGYk9869ThD9tj
+Please submit patches using subject lines reflecting the style for the
+subsystem, this makes it easier for people to identify relevant patches.
+Look at what existing commits in the area you're changing are doing and
+make sure your subject lines visually resemble what they're doing.
+There's no need to resubmit to fix this alone.
+
+--p8PhoBjPxaQXD0vg
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl/shMEACgkQJNaLcl1U
-h9CTTgf/QOsBZ6K7VRcTTpglWENfyPOmVJAbSBuYTQ9jEsAWT2j3b5YNBMfI5Lv2
-wnM6Qdy+GuRJwXEWqvlprQHPIvDyHqoxH1jXDydxMIm7yRIuTQknktvT3SYkZxN7
-T4ZRr3B+8zuLTJfCEsnE87Om/Pw74z1k1UfOfe0CnVNv4SmUTajiaJ8dpiKhbMSE
-WCoJI5U4mwHDxWmiI1nQe0TMICUu1MdhXkCqr2kd7C80U3GeUyYT0YiosfKRjuZ0
-5NzKIFWGuj0bOGZ/xiIk1iFJ/DRg8VCeTOZUWVXRcQ41PIEfobpfKLFHo9YmI/je
-KHL6ZeNRJFjeU9yfx6dPcmSeclDAYw==
-=me8q
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl/shfsACgkQJNaLcl1U
+h9B4mwf/SDei1d9DKPMjGfTGoqYmyuzwYLFOr3ddZgUv7qoN3PvV0AIXoJNBSR4h
+Ajwh5t8bopJIo4sqplupw22PcIT7jzIejn7XgQdr9ctYPZSeaBt/3smJainNvDit
+K/in9Os6lvPa6YGLeDPYFlrZK59W2Fx2ApIYY2a8luq2Y8CLH6TzJbuYj3ps72eZ
+MtQW1Bv6VMg1F6wCUd7jgDP6ppLrIss671KSGxlCMk36UiRYNJdH2TDB3o89LhT1
+tfuC3n/kCS+DIfTb82B3nQxSKb2dijnd53a0S9/hqr2sLuYBhQm2b5ZqB+H3wmeM
+dfYORicJLznhGIZZOgpbIETvMTRKxA==
+=UBK0
 -----END PGP SIGNATURE-----
 
---9amGYk9869ThD9tj--
+--p8PhoBjPxaQXD0vg--

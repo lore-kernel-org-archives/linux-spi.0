@@ -2,145 +2,92 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CB4F1C433DB
-	for <linux-spi@archiver.kernel.org>; Wed, 30 Dec 2020 02:29:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3328BC433DB
+	for <linux-spi@archiver.kernel.org>; Wed, 30 Dec 2020 13:48:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8F419207BC
-	for <linux-spi@archiver.kernel.org>; Wed, 30 Dec 2020 02:29:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F3BC520776
+	for <linux-spi@archiver.kernel.org>; Wed, 30 Dec 2020 13:48:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726144AbgL3C3h (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 29 Dec 2020 21:29:37 -0500
-Received: from mga17.intel.com ([192.55.52.151]:58620 "EHLO mga17.intel.com"
+        id S1726656AbgL3Nrs (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 30 Dec 2020 08:47:48 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34110 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726138AbgL3C3h (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 29 Dec 2020 21:29:37 -0500
-IronPort-SDR: vnN4OPbugvugU4k0f9bPuqoKq0rMpXGAqWRnclUWT7VWPACssSIPODdvLseDgDCdkGAYUb3Pra
- Vdq2oJrrSu7w==
-X-IronPort-AV: E=McAfee;i="6000,8403,9849"; a="156347261"
-X-IronPort-AV: E=Sophos;i="5.78,459,1599548400"; 
-   d="scan'208";a="156347261"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2020 18:28:57 -0800
-IronPort-SDR: YR3+1eKVcLd2fWv//eJ/K5gk6OSNKqKPAW0bpkcKN2ZIw3u2kn0+0UBhBwbiRw8/jMupij0ZV0
- o0DijPYgEVxw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.78,459,1599548400"; 
-   d="scan'208";a="347604438"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.141])
-  by fmsmga008.fm.intel.com with ESMTP; 29 Dec 2020 18:28:55 -0800
-Date:   Wed, 30 Dec 2020 10:24:20 +0800
-From:   Xu Yilun <yilun.xu@intel.com>
-To:     Mark Brown <broonie@kernel.org>
+        id S1726547AbgL3Nrs (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 30 Dec 2020 08:47:48 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9F6A92220B;
+        Wed, 30 Dec 2020 13:47:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1609336027;
+        bh=N/CDU10elT67zssZ6FeukjU1lKJappTeG4r930mdP5w=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=i8kdOH7wwuKnstg8ZYmOFc/uSL+UHO4iuWRt0K4G6ompQcej2y4TMowRf7+IxUXSA
+         8sDYQO7p+NYthPoy7Xhy2XVWZznqgPkgygxQGHLFa2yai1H/JK+b5jT4h9TPG6w63O
+         pdFhYr2ZsVJzkmQVTm6K0JWs3tZ77OJOhO1KwKRH79M/neKcDyUSY4aTpED8j4ei/l
+         cmA1kZTBSsI6DTFTvQJb1h9WyvZYQGpbXe2KyLsk0rtTT5QxzWsKMTyjUK26CTfpxH
+         ovMY9QhtAPmW0seRF4GnR3vMDOYx9JUGVXhSs3yamlaqkCM6eLIqatHbq4mFw673Xh
+         IULe/gvcsW2oA==
+Date:   Wed, 30 Dec 2020 13:46:44 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Xu Yilun <yilun.xu@intel.com>
 Cc:     linux-spi@vger.kernel.org, trix@redhat.com, lgoncalv@redhat.com,
         hao.wu@intel.com, matthew.gerlach@linux.intel.com,
-        russell.h.weight@intel.com, linux-kernel@vger.kernel.org,
-        yilun.xu@intel.com
+        russell.h.weight@intel.com, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 2/2] spi: fix the divide by 0 error when calculating xfer
-  waiting time
-Message-ID: <20201230022420.GF14854@yilunxu-OptiPlex-7050>
+ waiting time
+Message-ID: <20201230134644.GE4428@sirena.org.uk>
 References: <1609219662-27057-1-git-send-email-yilun.xu@intel.com>
  <1609219662-27057-3-git-send-email-yilun.xu@intel.com>
  <20201229131308.GE4786@sirena.org.uk>
+ <20201230022420.GF14854@yilunxu-OptiPlex-7050>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="FEz7ebHBGB6b2e8X"
 Content-Disposition: inline
-In-Reply-To: <20201229131308.GE4786@sirena.org.uk>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+In-Reply-To: <20201230022420.GF14854@yilunxu-OptiPlex-7050>
+X-Cookie: Above all things, reverence yourself.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, Dec 29, 2020 at 01:13:08PM +0000, Mark Brown wrote:
-> On Tue, Dec 29, 2020 at 01:27:42PM +0800, Xu Yilun wrote:
-> > The xfer waiting time is the result of xfer->len / xfer->speed_hz, but
-> > when the following patch is merged,
-> > 
-> > commit 9326e4f1e5dd ("spi: Limit the spi device max speed to controller's max speed")
-> > 
-> > the xfer->speed_hz may always be clamped to 0 if the controller doesn't
-> > provide its max_speed_hz. There may be no hardware indication of the
-> > max_speed_hz so the controller driver leaves it, but exception happens
-> > when it tries to do irq mode transfer.
-> 
-> Does this still apply with current code?  There have been some fixes in
-> this area which I think should ensure that we don't turn the speed down
-> to 0 if the controller doesn't supply a limit IIRC.
 
-Yes, there is chance the speed is set to 0, some related code from 5.11-rc1
+--FEz7ebHBGB6b2e8X
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-  int spi_setup(struct spi_device *spi)
-  {
-	...
+On Wed, Dec 30, 2020 at 10:24:20AM +0800, Xu Yilun wrote:
+> On Tue, Dec 29, 2020 at 01:13:08PM +0000, Mark Brown wrote:
 
-	if (!spi->max_speed_hz ||
-	    spi->max_speed_hz > spi->controller->max_speed_hz)
-		spi->max_speed_hz = spi->controller->max_speed_hz;
+> > Does this still apply with current code?  There have been some fixes in
+> > this area which I think should ensure that we don't turn the speed down
+> > to 0 if the controller doesn't supply a limit IIRC.
 
-If the controller doesn't supply a limit, spi->max_speed_hz will always
-be clamped to 0 here, no matter what the client inputs.
+> Yes, there is chance the speed is set to 0, some related code from 5.11-rc1
 
-BTW, Could we keep the spi->max_speed_hz if no controller->max_speed_hz?
-Always clamp the spi->max_speed_hz to 0 makes no sense.
+Please check the code in the SPI tree and -next.
 
-	...
-  }
+> BTW, Could we keep the spi->max_speed_hz if no controller->max_speed_hz?
+> Always clamp the spi->max_speed_hz to 0 makes no sense.
 
-  static int __spi_validate(struct spi_device *spi, struct spi_message
-			    *message)
-  {
-	...
+Right, that's the fix.
 
-	if (!xfer->speed_hz)
-		xfer->speed_hz = spi->max_speed_hz;
+--FEz7ebHBGB6b2e8X
+Content-Type: application/pgp-signature; name="signature.asc"
 
-	if (ctlr->max_speed_hz && xfer->speed_hz > ctlr->max_speed_hz)
-		xfer->speed_hz = ctlr->max_speed_hz;
+-----BEGIN PGP SIGNATURE-----
 
-If spi->max_speed_hz & controller->max_speed_hz are 0, xfer->speed_hz is
-always 0.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl/shMMACgkQJNaLcl1U
+h9AZygf/V8eX/Z5K+rBltX2NDwpCs/PlAdwwfFA9o2VIqJuHwTx2CUdR+R5t07m4
+xj0xtFYlhBPkpCvSxBU84lW6YB5CzUuHP9KiHdPiyqaPHiL+/5JrsaNyIc0S/Hme
+3KLZA/DWuA8ErjH6A6uOuoC/jz1P3usHuqSc5kB6F13DX4P2WQjT7ga+ijaYq7+v
+2rxie9gLiZ0zMItqQnCgXffYh9+JVUnr7KybNC76uSHQ8WJPlevAGSQDeAN5OLM2
+Ns1JIJuPhxLHOQsFo69+EqIjbsI/go7cYjgODnDiB3AuyigCiixzPbKDESuZEYbu
+CR5+XqDCF1T0h9X08iPCClKNhwkjhA==
+=a5cZ
+-----END PGP SIGNATURE-----
 
-	...
-  }
-
-
-I tested it on 5.11-rc1 with spi-altera.
-
-> 
-> > This patch makes the assumption of 1khz xfer speed if the xfer->speed_hz
-> > is not assigned. This avoids the divide by 0 issue and ensures a
-> > reasonable tolerant waiting time.
-> 
-> It will cause absurdly slow transfers if the controller does actually
-> implement speed setting though, if we're going to pick a default value
-
-Maybe I didn't describe clearly, if the controller has a valid limit setting,
-the xfer->speed_hz will be set to max_speed_hz and will not fall through to
-a default value. The fix code takes function when all the checks in spi_setup &
-spi_validate fails to assign the xfer->speed_hz. 
-
-This fix only affects the waiting timeout, it will not slow down the normal
-xfer anyway.
-
-> I'd go for at least 100kHz. 
-
-If some controller is actually working at a speed lower than the default
-value, xfer will always be unexpectly early terminated.
-
-I'm not sure how slow the controllers in the world could be. If 100kHz
-is slow enough to everyone it's OK.
- 
-> 
-> >  	} else {
-> > +		speed_hz = xfer->speed_hz ? : 1000;
-> 
-> Please don't abuse the ternery operator, write normal conditional
-> statements to make things more legible.
-
-OK, I'll change it.
-
-Thanks,
-Yilun
+--FEz7ebHBGB6b2e8X--

@@ -2,91 +2,81 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-17.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ABB0AC433DB
-	for <linux-spi@archiver.kernel.org>; Mon,  4 Jan 2021 17:34:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F8A3C433DB
+	for <linux-spi@archiver.kernel.org>; Mon,  4 Jan 2021 17:42:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 742D1216C4
-	for <linux-spi@archiver.kernel.org>; Mon,  4 Jan 2021 17:34:25 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D46082068D
+	for <linux-spi@archiver.kernel.org>; Mon,  4 Jan 2021 17:42:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727040AbhADReJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 4 Jan 2021 12:34:09 -0500
-Received: from hqnvemgate25.nvidia.com ([216.228.121.64]:16128 "EHLO
-        hqnvemgate25.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726939AbhADReJ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 4 Jan 2021 12:34:09 -0500
-Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate25.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
-        id <B5ff351690000>; Mon, 04 Jan 2021 09:33:29 -0800
-Received: from [10.2.52.156] (172.20.145.6) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 4 Jan
- 2021 17:33:24 +0000
-Subject: Re: [PATCH v5 2/9] dt-bindings: spi: Add Tegra Quad SPI device tree
- binding
-To:     Rob Herring <robh@kernel.org>
-CC:     <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <robh+dt@kernel.org>, <lukas@wunner.de>, <bbrezillon@kernel.org>,
-        <p.yadav@ti.com>, <linux-tegra@vger.kernel.org>,
-        <broonie@kernel.org>, <tudor.ambarus@microchip.com>,
-        <devicetree@vger.kernel.org>, <jonathanh@nvidia.com>,
-        <thierry.reding@gmail.com>
-References: <1608585459-17250-1-git-send-email-skomatineni@nvidia.com>
- <1608585459-17250-3-git-send-email-skomatineni@nvidia.com>
- <20201231183357.GA2112085@robh.at.kernel.org>
-From:   Sowjanya Komatineni <skomatineni@nvidia.com>
-Message-ID: <4ac13c7b-dcf1-0a7d-c573-83890cba6a67@nvidia.com>
-Date:   Mon, 4 Jan 2021 09:33:22 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1727718AbhADRmT (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 4 Jan 2021 12:42:19 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36684 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727341AbhADRmS (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 4 Jan 2021 12:42:18 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id EAB73206B2;
+        Mon,  4 Jan 2021 17:41:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1609782098;
+        bh=DZlUi3P2nOehcJAFK3kCJp9endzedKfjdeaUrPBvfZw=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=DkeF9eERjOQ2YLAh4vVuWsDbOK55WIiXlgoWKLUyOudb6a1tsaI0ekUxbANMj7xCY
+         cnBZIfyHVknBKE3BLtCCUPdueBnfq8qXeKcZ9Ink3IF0xKCjKZP3LUjUTVn+Dmj3u3
+         BPnk+6JPONuNd+CmsFAorO4LUVqGs87CP5mf4XEyg9i0sAC4HMfK9X0i5zEqQ1kQg5
+         xo2cZVzWpqs+T8Oj1wTBvQwxkYmILxJxp3hLjAphF0wsccHvMbe/pn7Dk/DzbjIeXW
+         KPRvI38Zxnfgt0uO5HVgWVCRkfAP2stj4CHTJbPWw4bcc2iZYeCq7WE+bk8xOx702q
+         yoBfPi6bCywxQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     Xu Yilun <yilun.xu@intel.com>, linux-spi@vger.kernel.org
+Cc:     matthew.gerlach@linux.intel.com, lgoncalv@redhat.com,
+        russell.h.weight@intel.com, hao.wu@intel.com, trix@redhat.com,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <1609723749-3557-1-git-send-email-yilun.xu@intel.com>
+References: <1609723749-3557-1-git-send-email-yilun.xu@intel.com>
+Subject: Re: [PATCH v3] spi: fix the divide by 0 error when calculating xfer waiting time
+Message-Id: <160978207205.14552.6743738820178961736.b4-ty@kernel.org>
+Date:   Mon, 04 Jan 2021 17:41:12 +0000
 MIME-Version: 1.0
-In-Reply-To: <20201231183357.GA2112085@robh.at.kernel.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Originating-IP: [172.20.145.6]
-X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
- HQMAIL107.nvidia.com (172.20.187.13)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1609781609; bh=FflGbQbz9Rt+mAPwIs31x4CA96a3hQ7Bfw2cSc8cimI=;
-        h=Subject:To:CC:References:From:Message-ID:Date:User-Agent:
-         MIME-Version:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-         Content-Language:X-Originating-IP:X-ClientProxiedBy;
-        b=Sd4nzTZeJqYepDeRiaEpnnwJcHFyDyi70DxTMBdkAB8oEWXEOlimXwUPeC4mPyPeg
-         U9tRy7UoglIY6dxqdCJ+MxSbbtWNRibthmNSJg1+vGih8W7eD80ISNdSv5lJvNiWwT
-         zyYi6hPSxOAoEd+0xOwWYiZhTgBImw9vvPgfMgDJG2oUonOmyY5JbkV9bgJ9NhgRcQ
-         bHUemHsFCSZNfgTURFhQPluPfA83MMUwgUiNlab6HVxCvUOiO6sJAmWZpJpMmp25z3
-         z7RE6mIWxugRwpPPlciMvaKVbW7cLAbeocCqSllov8JRX/ufqAHcGdJGJfPqfUR25r
-         3ZaYVt/L00l4Q==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+On Mon, 4 Jan 2021 09:29:09 +0800, Xu Yilun wrote:
+> The xfer waiting time is the result of xfer->len / xfer->speed_hz. This
+> patch makes the assumption of 100khz xfer speed if the xfer->speed_hz is
+> not assigned and stays 0. This avoids the divide by 0 issue and ensures
+> a reasonable tolerant waiting time.
 
-On 12/31/20 10:33 AM, Rob Herring wrote:
-> On Mon, 21 Dec 2020 13:17:32 -0800, Sowjanya Komatineni wrote:
->> This patch adds YAML based device tree binding document for Tegra
->> Quad SPI driver.
->>
->> Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
->> ---
->>   .../bindings/spi/nvidia,tegra210-quad.yaml         | 117 +++++++++++++++++++++
->>   1 file changed, 117 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml
->>
->
-> Please add Acked-by/Reviewed-by tags when posting new versions. However,
-> there's no need to repost patches *only* to add the tags. The upstream
-> maintainer will do that for acks received on the version they apply.
->
-> If a tag was not added on purpose, please state why and what changed.
->
-Sorry Rob. Missed to add tag from v4 to v5.
+Applied to
 
-Regards,
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Sowjanya
+Thanks!
 
+[1/1] spi: fix the divide by 0 error when calculating xfer waiting time
+      commit: 6170d077bf92c5b3dfbe1021688d3c0404f7c9e9
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

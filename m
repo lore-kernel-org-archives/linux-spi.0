@@ -2,98 +2,91 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-17.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7DC9DC433E0
-	for <linux-spi@archiver.kernel.org>; Mon,  4 Jan 2021 15:44:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ABB0AC433DB
+	for <linux-spi@archiver.kernel.org>; Mon,  4 Jan 2021 17:34:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5394122286
-	for <linux-spi@archiver.kernel.org>; Mon,  4 Jan 2021 15:44:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 742D1216C4
+	for <linux-spi@archiver.kernel.org>; Mon,  4 Jan 2021 17:34:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727407AbhADPob (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 4 Jan 2021 10:44:31 -0500
-Received: from smtp1.axis.com ([195.60.68.17]:32608 "EHLO smtp1.axis.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727155AbhADPoa (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 4 Jan 2021 10:44:30 -0500
-X-Greylist: delayed 549 seconds by postgrey-1.27 at vger.kernel.org; Mon, 04 Jan 2021 10:44:29 EST
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1609775070;
-  x=1641311070;
-  h=from:to:cc:subject:date:message-id:mime-version;
-  bh=vwg9cdBe27K4Huj5tOlGFkeGTHhfRYJ66GYymW0FLLc=;
-  b=iLd6RpILK/a1KMeSQXE7decOnUBBfQR2vx/LTxUiPsIXg2XpKejqJmtr
-   5d8WMdIr6e09l8Nw34Opv7f++H71tS6sVZQHGRNFkimOuzKJBE7su1zqS
-   FwzjBof38bYO1gFTKuoLUsXcFpRZp69xDr0wftP8nIouq1+V0dzsRgZRV
-   rkf7Gdr6Tf+eGE4nHdftrpQYmC34GyNAP8MaOTVIvbIM8wgE6y3bY3uVE
-   R2KqZxxGFtUL33e1uMjjnxxF9lBvKIdlAyaLr9SwIY7drQqbZqID+O9c7
-   esJXJ0J4rRze/rKNfpyJXFdHjhAF/SbUekCyqT5/OKR97ITz+hYdf9eqE
-   w==;
-From:   Gustav Wiklander <gustav.wiklander@axis.com>
-To:     Mark Brown <broonie@kernel.org>
-CC:     <kernel@axis.com>, Gustav Wiklander <gustavwi@axis.com>,
-        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH] spi: spidev: Fix so the module is autoloaded when built as external
-Date:   Mon, 4 Jan 2021 16:34:35 +0100
-Message-ID: <20210104153436.20083-1-gustav.wiklander@axis.com>
-X-Mailer: git-send-email 2.11.0
+        id S1727040AbhADReJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 4 Jan 2021 12:34:09 -0500
+Received: from hqnvemgate25.nvidia.com ([216.228.121.64]:16128 "EHLO
+        hqnvemgate25.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726939AbhADReJ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 4 Jan 2021 12:34:09 -0500
+Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate25.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
+        id <B5ff351690000>; Mon, 04 Jan 2021 09:33:29 -0800
+Received: from [10.2.52.156] (172.20.145.6) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Mon, 4 Jan
+ 2021 17:33:24 +0000
+Subject: Re: [PATCH v5 2/9] dt-bindings: spi: Add Tegra Quad SPI device tree
+ binding
+To:     Rob Herring <robh@kernel.org>
+CC:     <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <robh+dt@kernel.org>, <lukas@wunner.de>, <bbrezillon@kernel.org>,
+        <p.yadav@ti.com>, <linux-tegra@vger.kernel.org>,
+        <broonie@kernel.org>, <tudor.ambarus@microchip.com>,
+        <devicetree@vger.kernel.org>, <jonathanh@nvidia.com>,
+        <thierry.reding@gmail.com>
+References: <1608585459-17250-1-git-send-email-skomatineni@nvidia.com>
+ <1608585459-17250-3-git-send-email-skomatineni@nvidia.com>
+ <20201231183357.GA2112085@robh.at.kernel.org>
+From:   Sowjanya Komatineni <skomatineni@nvidia.com>
+Message-ID: <4ac13c7b-dcf1-0a7d-c573-83890cba6a67@nvidia.com>
+Date:   Mon, 4 Jan 2021 09:33:22 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20201231183357.GA2112085@robh.at.kernel.org>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Originating-IP: [172.20.145.6]
+X-ClientProxiedBy: HQMAIL105.nvidia.com (172.20.187.12) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1609781609; bh=FflGbQbz9Rt+mAPwIs31x4CA96a3hQ7Bfw2cSc8cimI=;
+        h=Subject:To:CC:References:From:Message-ID:Date:User-Agent:
+         MIME-Version:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+         Content-Language:X-Originating-IP:X-ClientProxiedBy;
+        b=Sd4nzTZeJqYepDeRiaEpnnwJcHFyDyi70DxTMBdkAB8oEWXEOlimXwUPeC4mPyPeg
+         U9tRy7UoglIY6dxqdCJ+MxSbbtWNRibthmNSJg1+vGih8W7eD80ISNdSv5lJvNiWwT
+         zyYi6hPSxOAoEd+0xOwWYiZhTgBImw9vvPgfMgDJG2oUonOmyY5JbkV9bgJ9NhgRcQ
+         bHUemHsFCSZNfgTURFhQPluPfA83MMUwgUiNlab6HVxCvUOiO6sJAmWZpJpMmp25z3
+         z7RE6mIWxugRwpPPlciMvaKVbW7cLAbeocCqSllov8JRX/ufqAHcGdJGJfPqfUR25r
+         3ZaYVt/L00l4Q==
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Gustav Wiklander <gustavwi@axis.com>
 
-The spi framework sets the modalias for the spi device to belong in
-either the acpi device table or the SPI device table. It can never
-be in the OF table. Therefore the spidev driver should populate the
-spi device table rather than the OF table.
+On 12/31/20 10:33 AM, Rob Herring wrote:
+> On Mon, 21 Dec 2020 13:17:32 -0800, Sowjanya Komatineni wrote:
+>> This patch adds YAML based device tree binding document for Tegra
+>> Quad SPI driver.
+>>
+>> Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
+>> ---
+>>   .../bindings/spi/nvidia,tegra210-quad.yaml         | 117 +++++++++++++++++++++
+>>   1 file changed, 117 insertions(+)
+>>   create mode 100644 Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml
+>>
+>
+> Please add Acked-by/Reviewed-by tags when posting new versions. However,
+> there's no need to repost patches *only* to add the tags. The upstream
+> maintainer will do that for acks received on the version they apply.
+>
+> If a tag was not added on purpose, please state why and what changed.
+>
+Sorry Rob. Missed to add tag from v4 to v5.
 
-NOTE: platform drivers and i2c drivers support aliases in the
-      OF device table.
+Regards,
 
-Signed-off-by: Gustav Wiklander <gustavwi@axis.com>
----
- drivers/spi/spidev.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 859910ec8d9f..5cf419a046da 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -687,6 +687,19 @@ static const struct of_device_id spidev_dt_ids[] = {
- MODULE_DEVICE_TABLE(of, spidev_dt_ids);
- #endif
- 
-+static const struct spi_device_id spidev_ids[] = {
-+	{ .name = "dh2228fv" },
-+	{ .name = "ltc2488" },
-+	{ .name = "achc" },
-+	{ .name = "sx1301" },
-+	{ .name = "bk4" },
-+	{ .name = "dhcom-board" },
-+	{ .name = "m53cpld" },
-+	{ .name = "xc7a35t" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(spi, spidev_ids);
-+
- #ifdef CONFIG_ACPI
- 
- /* Dummy SPI devices not to be used in production systems */
-@@ -817,7 +830,7 @@ static struct spi_driver spidev_spi_driver = {
- 	},
- 	.probe =	spidev_probe,
- 	.remove =	spidev_remove,
--
-+	.id_table = spidev_ids,
- 	/* NOTE:  suspend/resume methods are not necessary here.
- 	 * We don't do anything except pass the requests to/from
- 	 * the underlying controller.  The refrigerator handles
--- 
-2.11.0
+Sowjanya
 

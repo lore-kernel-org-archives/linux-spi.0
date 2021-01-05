@@ -6,38 +6,56 @@ X-Spam-Status: No, score=-11.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
 	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 84DBDC43331
-	for <linux-spi@archiver.kernel.org>; Tue,  5 Jan 2021 16:09:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A5AF7C4332E
+	for <linux-spi@archiver.kernel.org>; Tue,  5 Jan 2021 16:09:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6191522CA0
-	for <linux-spi@archiver.kernel.org>; Tue,  5 Jan 2021 16:09:27 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6637D22C9F
+	for <linux-spi@archiver.kernel.org>; Tue,  5 Jan 2021 16:09:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729032AbhAEQJY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 5 Jan 2021 11:09:24 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37884 "EHLO mail.kernel.org"
+        id S1729203AbhAEQJ3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 5 Jan 2021 11:09:29 -0500
+Received: from mail.kernel.org ([198.145.29.99]:37918 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726571AbhAEQJX (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 5 Jan 2021 11:09:23 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 5532622CA0;
-        Tue,  5 Jan 2021 16:08:42 +0000 (UTC)
+        id S1726571AbhAEQJ2 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 5 Jan 2021 11:09:28 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 519B722C9F;
+        Tue,  5 Jan 2021 16:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1609862922;
-        bh=olx3sStOYZ7JD7sihmFq5o08FyuUWbQWbvXHSdgR84g=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=RR8N4lzXoFQq7oh4HIMwPgL9dpd3wRzAKRL4b3zFEjeEtTEXKEc7YaGKjLcJV/b5/
-         ZLj8W1HZLwn+/uN0JXz84mReRZpq5r581Z/+lul2bzUZzNykR8FgjIPM1dWhHYjFiu
-         iafwk8wyu/ZdBolxvtgdjzX3kxhzRXwfJMMvCOmlG4t1iEm6Mt1VpuFwvYMcaUS9n/
-         mMA0imAt3FeVet+aUeTKOob9YxnoqFtzBaTclHI924PXqaogBvE++zVxs7saWc0cRE
-         o2gCht1BB4VU28t5qjrY3lRNX1FsKtFZ6c1VIfdWywt5B8GGubez/FAsMKrjymutcY
-         IeXZgkqlYC4oQ==
+        s=k20201202; t=1609862927;
+        bh=wJQJGEVMiFp+U9i3KB68KovC4I4ZjyrsTucyHvp+mYU=;
+        h=From:To:In-Reply-To:References:Subject:Date:From;
+        b=RAq1XL/BRN8XRTSri4cXSrqvujM81ioR4+GUq1AHhXecaj7QiUWiQ88dIVugFlchl
+         PLj0Tjq2k++ZbgqOoM47jhkKnKK69EB4dWwbb4SWWCCEgHFfJaIdqiA9j1o8CIDFGb
+         VmlHy1C+y878dkjkF4kZd8pHUgF6pphBI9JLc1TNqEr7Y5H/GxrnO2q9j6hXU6/0O6
+         F/BC+FOE5W7Pq7VFBMxUdC2Yx5x5dsQz87UyJo6xH3cai7eqArOI3dLNh6M9KIfFCe
+         bMnxRc9j/jnfB58g5Lt3IlL35kE9dM38IFdhf5NXVGmzl9LHHUkqI+ApfU/oQDMsjA
+         e2FHKR5qKJKMQ==
 From:   Mark Brown <broonie@kernel.org>
-To:     linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>
-Cc:     andy.shevchenko@gmail.com, sfr@canb.auug.org.au
-In-Reply-To: <20210104085923.53705-1-alexandru.ardelean@analog.com>
-References: <20210104085923.53705-1-alexandru.ardelean@analog.com>
-Subject: Re: [PATCH] spi: stm32: update dev_dbg() print format for SPI params
-Message-Id: <160986289006.50207.8088539580258005147.b4-ty@kernel.org>
+To:     linux-rtc@vger.kernel.org, Matt Mackall <mpm@selenic.com>,
+        linux-mtd@lists.infradead.org, linux-crypto@vger.kernel.org,
+        netdev@vger.kernel.org, alsa-devel@alsa-project.org,
+        dmaengine@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Dan Williams <dan.j.williams@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-mips@vger.kernel.org, Takashi Iwai <tiwai@suse.com>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        linux-watchdog@vger.kernel.org,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Vinod Koul <vkoul@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>, linux-spi@vger.kernel.org
+In-Reply-To: <20210105140305.141401-1-tsbogend@alpha.franken.de>
+References: <20210105140305.141401-1-tsbogend@alpha.franken.de>
+Subject: Re: (subset) [PATCH 00/10] Remove support for TX49xx
+Message-Id: <160986289007.50207.17900821173530027212.b4-ty@kernel.org>
 Date:   Tue, 05 Jan 2021 16:08:10 +0000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -46,14 +64,16 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 4 Jan 2021 10:59:23 +0200, Alexandru Ardelean wrote:
-> With the introduction of the 'include/uapi/linux/spi/spi.h' header, the
-> type of the macros are enforced to 'unsigned long int' via the _BITUL()
-> macro.
+On Tue, 5 Jan 2021 15:02:45 +0100, Thomas Bogendoerfer wrote:
+> I couldn't find any buyable product other than reference boards using
+> TX49xx CPUs. And since nobody showed interest in keeping support for
+> it, it's time to remove it.
 > 
-> This causes some -Wformat warnings in the spi-stm32 driver.
-> This patch changes the printf() specifiers from '%d' to '%lu' to
-> accommodate for this change.
+> I've split up the removal into seperate parts for different maintainers.
+> So if the patch fits your needs, please take it via your tree or
+> give me an ack so I can apply them  the mips-next tree.
+> 
+> [...]
 
 Applied to
 
@@ -61,8 +81,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: stm32: update dev_dbg() print format for SPI params
-      commit: 8b835da61774d4482864bc081dfb428104842ad3
+[04/10] spi: txx9: Remove driver
+        commit: 74523a5dae0c96d6503fe72da66ee37fd23eb8f5
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

@@ -2,59 +2,60 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=no autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E69DC433E6
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A516C433E9
 	for <linux-spi@archiver.kernel.org>; Fri,  8 Jan 2021 00:00:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4917F236FB
+	by mail.kernel.org (Postfix) with ESMTP id 76352236FB
 	for <linux-spi@archiver.kernel.org>; Fri,  8 Jan 2021 00:00:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727858AbhAGX7y (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 7 Jan 2021 18:59:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32926 "EHLO
+        id S1729391AbhAHAAA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 7 Jan 2021 19:00:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727300AbhAGX7y (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 7 Jan 2021 18:59:54 -0500
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7208C0612F5
-        for <linux-spi@vger.kernel.org>; Thu,  7 Jan 2021 15:59:13 -0800 (PST)
-Received: by mail-pl1-x634.google.com with SMTP id 4so4724408plk.5
-        for <linux-spi@vger.kernel.org>; Thu, 07 Jan 2021 15:59:13 -0800 (PST)
+        with ESMTP id S1729388AbhAHAAA (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 7 Jan 2021 19:00:00 -0500
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ECBCC0612F8
+        for <linux-spi@vger.kernel.org>; Thu,  7 Jan 2021 15:59:20 -0800 (PST)
+Received: by mail-pf1-x431.google.com with SMTP id a188so5071199pfa.11
+        for <linux-spi@vger.kernel.org>; Thu, 07 Jan 2021 15:59:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:subject:date:message-id:mime-version
+        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=i+8d2HurmLuY/fjmxjePAkINENkGN3Pzqi7ebx49cCY=;
-        b=CKsRpny0W3qEoMZ3k5PEtqHfo8t69e1shu/9KLTONKOxB/S/AgzMlChZplWwWdFx/x
-         4XdDlPAGvA5eLw2CjTIqGZEJDNSErKRUnRVtcjTGM+8YLdCuMep5qLMgHWeR4+BNow/6
-         3sdWYk5liQfpx+H/9fJAIAt459EJUqN8pfNKq0ZbESYrY01ELl40pMNAhs2b8hqS7CgS
-         EkxIMoUq3ZeNlpnleTfWo0i2U+Fp2+f/bylMYjHlTvbSZA/BuzllghsZmnG2l3uiL067
-         Ma/DoY+eXp0mjwJjJxQWvLM9oD/TPRdbWJrgtKPcCbw4APKHAsb+9/IKdzUFxuTGNMbh
-         8Sww==
+        bh=gVWRVkXWEtpIQllAztl5ByGC/c1eu5QBEtUSi0NXW/E=;
+        b=i2YgCFwgtZZdzRZJD4YSySL+q2WsW9ZSAkmserIOkBQABL1Cl6Xj+Fz0WYqQEi4png
+         Y1V8zuiIrxG6y1fSAHsrqb0IJPI/bwuDcdEh60XvU8mqNiPYn78RAEemIn/DupetEaL7
+         RFTNQDuZmagTKCjD+1xmsSinxjHAUCxBRR9+0lg1yHM1JaYSPgik4JXN6ovAo59ckBJG
+         k74Mb62iLRIVxvXxCUFmRNOY8jfviVzfjqqfubRKbfYRm4vZnotTkC+qgLb0Nm8y98rd
+         QGS+5IgvGfyKq8aNtflEXaLM6nwfGWAKw9vUkRAINbOzWPelHiqpzcjKtUILw6OeUcWU
+         hovg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=i+8d2HurmLuY/fjmxjePAkINENkGN3Pzqi7ebx49cCY=;
-        b=mE6X4ytIKODTjUl4XRUCiBOb2M/V60Tb4GABgMstD1bSduMOhiX6cfV/jnemAo0IsL
-         iN6o1La1fuzTm4grTFnpoIG7O09TUn7iVktEpLOrkMoxnJ3+QR4GH2n8Uizz0ZJCBqXy
-         sld1nNe1qj2JFWPxJwqLX2vTCx+mWmPRBkk5BmSsVWgq4feGML02FpCwMgGurYssdj5Q
-         GnR5f8VkdziPrfpcaFFPabfEjmrBT9BU6+3DaaQbLBJcnlUaYVsko8E1NcONc22YpZew
-         RDssenOuJrDJfcuziexFfeLlMVIEG9mmDIgasb3rk5IbJ6J4zAvllaeksUfnKMZ4RdEA
-         5leA==
-X-Gm-Message-State: AOAM531X7SfEfVtvTCBEbhLjelmpTrcHiIMBybR+TGkLRoc9gYHqgJZR
-        HnbqWoa/eunrC+/gBWoJ0to=
-X-Google-Smtp-Source: ABdhPJzetQAFGdnSIb5NP1F1agOCW+TZUH0FGEVsGuGgipmIrUBL7jVjaqb1BMvkq2J5gt/jKOgH4Q==
-X-Received: by 2002:a17:90a:ea02:: with SMTP id w2mr872195pjy.99.1610063953408;
-        Thu, 07 Jan 2021 15:59:13 -0800 (PST)
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=gVWRVkXWEtpIQllAztl5ByGC/c1eu5QBEtUSi0NXW/E=;
+        b=S+yip80bxr08oYsLjYkLCE7tHAP++u9Xr9TmAo7bFWT+YIKe/EduZkHo/OleNoZVJh
+         iaR0FseB5q8TD9qxWXpS4Kduyb/o40u4WfkA6oE3yEbjLXpo2xy9dAr/QltB8I1A3Rci
+         6asAjzvF42uvhin9OxDG7oCYzNFWJcapxG0KEZVBF46owpIo2OVWNqd2+oDBsPx1qv+I
+         XOTjZVw78mDMIx9DEpHnraGH3ZzgxiZKexbTV01ai/y6qm30kc5UUX/mniPBmPN3HQVX
+         Xz76CBEzE9JNYSvAWGBSPhC2Z97vBVSzD5D9FyfMNQ5kRmmGeXY8hYOaK7Jjk8fx5FbS
+         dWkg==
+X-Gm-Message-State: AOAM5302/wIbn4TXWIxD3UBp37V2fU2CZ03dMgvYcItRbLxUm1ZYf2D6
+        rcMu+jet2oF0OpJLVMkppoQ=
+X-Google-Smtp-Source: ABdhPJy63j9zOI2U7M1X9Cl7DDOIvjhpbkAHlxM9fj1EcOvbRS5cAbyP56glxIhoqpxTXx1uNFvn8A==
+X-Received: by 2002:a63:c64:: with SMTP id 36mr4200685pgm.255.1610063959705;
+        Thu, 07 Jan 2021 15:59:19 -0800 (PST)
 Received: from x2.lan ([2400:4070:175b:7500::7a7])
-        by smtp.gmail.com with ESMTPSA id bf3sm6448195pjb.45.2021.01.07.15.59.10
+        by smtp.gmail.com with ESMTPSA id bf3sm6448195pjb.45.2021.01.07.15.59.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Jan 2021 15:59:12 -0800 (PST)
+        Thu, 07 Jan 2021 15:59:19 -0800 (PST)
 From:   Vincent Pelletier <plr.vincent@gmail.com>
 To:     Mark Brown <broonie@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
         linux-spi@vger.kernel.org, linux-rockchip@lists.infradead.org,
@@ -63,35 +64,39 @@ To:     Mark Brown <broonie@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
         Ray Jui <rjui@broadcom.com>,
         Scott Branden <sbranden@broadcom.com>,
         linux-rpi-kernel@lists.infradead.org
-Subject: spi: *: Call the dedicated transfer completion function.
-Date:   Thu,  7 Jan 2021 23:58:29 +0000
-Message-Id: <20210107235832.839221-1-plr.vincent@gmail.com>
+Subject: [2/3] spi: bcm2835aux: Call the dedicated transfer completion function.
+Date:   Thu,  7 Jan 2021 23:58:31 +0000
+Message-Id: <2636096a3b40febf680f9fff33944a5480561df9.1610062884.git.plr.vincent@gmail.com>
 X-Mailer: git-send-email 2.30.0
+In-Reply-To: <633c3d5c350dde4d14ce2120c32698c25b95d302.1610062884.git.plr.vincent@gmail.com>
+References: <633c3d5c350dde4d14ce2120c32698c25b95d302.1610062884.git.plr.vincent@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello,
+spi_finalize_current_transfer currently only calls "complete", so no
+functional change is expected.
 
-I started this fix on bcm2835.c and, because of its simplicity, thought
-I should check other controllers as well.
-This patch set should fix all occurrences, as of v5.11-rc2, of an SPI
-controller driver calling
-  complete(&...->xfer_completion);
-when it could call
-  spi_finalize_current_transfer(...);
-as requested in Documentation/spi/spi-summary.rst .
+Signed-off-by: Vincent Pelletier <plr.vincent@gmail.com>
+---
+ drivers/spi/spi-bcm2835aux.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-While I did build all modified files, and these should be trivial to
-check for correctness, I have not exercised all codepaths.
-I have exercised spi-bcm2835 IRQ and DMA tx, but I am still hunting
-for another issue which causes completion timeouts at spi/spi.c level
-which seem to affect spi-bcm2835 dma transfers (both before and after
-this patch set).
-
-Regards,
-Vincent Pelletier
-
+diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
+index 1a26865c42f8..75589ac6e95f 100644
+--- a/drivers/spi/spi-bcm2835aux.c
++++ b/drivers/spi/spi-bcm2835aux.c
+@@ -254,7 +254,7 @@ static irqreturn_t bcm2835aux_spi_interrupt(int irq, void *dev_id)
+ 	/* and if rx_len is 0 then disable interrupts and wake up completion */
+ 	if (!bs->rx_len) {
+ 		bcm2835aux_wr(bs, BCM2835_AUX_SPI_CNTL1, bs->cntl[1]);
+-		complete(&master->xfer_completion);
++		spi_finalize_current_transfer(master);
+ 	}
+ 
+ 	return IRQ_HANDLED;
+-- 
+2.30.0
 

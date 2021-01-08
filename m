@@ -2,81 +2,98 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-11.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1944DC433DB
-	for <linux-spi@archiver.kernel.org>; Fri,  8 Jan 2021 14:30:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E2BB8C433E6
+	for <linux-spi@archiver.kernel.org>; Fri,  8 Jan 2021 16:32:06 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D2E06235FC
-	for <linux-spi@archiver.kernel.org>; Fri,  8 Jan 2021 14:30:38 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A01F923A1E
+	for <linux-spi@archiver.kernel.org>; Fri,  8 Jan 2021 16:32:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725965AbhAHOai (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 8 Jan 2021 09:30:38 -0500
-Received: from mail-ot1-f54.google.com ([209.85.210.54]:39893 "EHLO
-        mail-ot1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725942AbhAHOai (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 8 Jan 2021 09:30:38 -0500
-Received: by mail-ot1-f54.google.com with SMTP id d8so9796406otq.6;
-        Fri, 08 Jan 2021 06:30:22 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4+8po3MCNGHszVSg7voDdKPux+Z5VkFbpMmCVTH4PIw=;
-        b=N2E64KmI3ZVYD9zR/L/dRafhmxt/woeFP1NNDqIxXZziD2nWgXvlGNONlFYuEdB+gP
-         uibxq6RlFo7JxVnEbxYBo7TRnfJbpHJarZSjVY/FxxrounKmXfaCbsFMX2Vj6k6dKsp9
-         /cfnfPA2X0ry4yk+jvwHnnPaKZHRFZabXkWwvQoWdFjo96i01SgD88Yo7jeVuivh2kqh
-         HRJRYUJ5DR5gbSx1Gt3qSzd6kMMu7IVvnQ0UzSGk+cy+6HnMjMWZvNhbkc0coRGTiGkB
-         gRbh4WhT1cT7CHYclcSilRsC8Ot1OSpkUpONdRnMEQttn6EG69e+mambVSjueFbwBI+e
-         FYiw==
-X-Gm-Message-State: AOAM530amwhiQgjiC5Qh7C67Ggm+yUwoZxpi0u1HqsjzFAbePwFeDc8S
-        N358Mxkg2tWjhHGONphzvMpsCECv2ivzRnuujwf5PwQS
-X-Google-Smtp-Source: ABdhPJwl+BqdH2H2/ssNozGMysossAqp9Zm0Bcs23QBTmbqRiqYazzPRJN3JyfLywvVHhIrmUCdcdtVXFMwgHFhqR+A=
-X-Received: by 2002:a9d:c01:: with SMTP id 1mr2731695otr.107.1610116197434;
- Fri, 08 Jan 2021 06:29:57 -0800 (PST)
+        id S1728214AbhAHQcB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 8 Jan 2021 11:32:01 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39582 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726133AbhAHQcB (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 8 Jan 2021 11:32:01 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 04F7A2399C;
+        Fri,  8 Jan 2021 16:31:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1610123480;
+        bh=beylbSLecDvPXdgnI3RfaEREbdQJFrqh/3A2GqloH0M=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=oGaWBYGXYs76zTfkP27j1OXbP5po2pIhHpOfm1ntPPchpklztEBhCnI0TgxEWj0zw
+         8XeW7OkCUqYFRkCpiey3sezqwhL8yzmlu/1NB/Y6SVn0u6yKufeYHEwQrtbujf22Jc
+         TGIikEbEfRhGRS+6RdQ0U4iSvJbKzisEIzA7OrmanBkW/3V6n+OxfOFaRC8BS2dYKA
+         6mosD8xZRUgLn55Cwet80obYeqmZlFuDnSfrOYk4JdvpXu1dEOfxvedNS6bP8Ic/yl
+         /sUQK3n+MHCLbJyr5SrY+hQ2uMIrQwN/S71fVMaIRDfB4zNZF102CcIMa2vd03+2L5
+         Y/qSreVnFfedQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     Yanteng Si <siyanteng@loongson.cn>
+Cc:     linux-spi@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Yanteng Si <siyanteng@gmail.com>,
+        Huacai Chen <chenhuacai@gmail.com>
+In-Reply-To: <20210107115704.3835282-1-siyanteng@loongson.cn>
+References: <20210107115704.3835282-1-siyanteng@loongson.cn>
+Subject: Re: [PATCH] SPI: Fix distinct pointer types warning for ARCH=MIPS
+Message-Id: <161012344968.41129.16669403915280599326.b4-ty@kernel.org>
+Date:   Fri, 08 Jan 2021 16:30:49 +0000
 MIME-Version: 1.0
-References: <20210102115412.3402059-1-aford173@gmail.com>
-In-Reply-To: <20210102115412.3402059-1-aford173@gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 8 Jan 2021 15:29:45 +0100
-Message-ID: <CAMuHMdVdzngBwzh7-HVyCOmqsf8wna3ysGbAzPo1UEDG6RL1kQ@mail.gmail.com>
-Subject: Re: [PATCH V2 1/4] dt-bindings: memory: Renesas RPC-IF: Add support
- for RZ/G2 Series
-To:     Adam Ford <aford173@gmail.com>
-Cc:     Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Adam Ford-BE <aford@beaconembedded.com>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sergei Shtylyov <sergei.shtylyov@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, linux-spi <linux-spi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sat, Jan 2, 2021 at 12:54 PM Adam Ford <aford173@gmail.com> wrote:
-> The RZ/G2 Series has the RPC-IF interface.
-> Update bindings to support: r8a774a1, r8a774b1, r8a774c0, and r8a774e1
->
-> Signed-off-by: Adam Ford <aford173@gmail.com>
+On Thu, 7 Jan 2021 19:57:04 +0800, Yanteng Si wrote:
+> Fix a new warning report by build for make ARCH=MIPS allmodconfig:
+> 
+> drivers/spi/spi-cadence-quadspi.c: In function 'cqspi_direct_read_execute':
+>  ./include/linux/minmax.h:18:28: warning: comparison of distinct pointer types lacks a cast
+>     18 |  (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
+>        |                            ^~
+>  ./include/linux/minmax.h:32:4: note: in expansion of macro '__typecheck'
+>     32 |   (__typecheck(x, y) && __no_side_effects(x, y))
+>        |    ^~~~~~~~~~~
+>  ./include/linux/minmax.h:42:24: note: in expansion of macro '__safe_cmp'
+>     42 |  __builtin_choose_expr(__safe_cmp(x, y), \
+>        |                        ^~~~~~~~~~
+>  ./include/linux/minmax.h:58:19: note: in expansion of macro '__careful_cmp'
+>     58 | #define max(x, y) __careful_cmp(x, y, >)
+>        |                   ^~~~~~~~~~~~~
+>  drivers/spi/spi-cadence-quadspi.c:1153:24: note: in expansion of macro 'max'
+>   1153 |       msecs_to_jiffies(max(len, 500UL)))) {
+>        |                        ^~~
+> 
+> [...]
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Applied to
 
-Gr{oetje,eeting}s,
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-                        Geert
+Thanks!
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+[1/1] SPI: Fix distinct pointer types warning for ARCH=MIPS
+      commit: 8728a81b8f1007426d8f341c5d2400da60f4cea2
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

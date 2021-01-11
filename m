@@ -2,96 +2,89 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 88513C433E6
-	for <linux-spi@archiver.kernel.org>; Mon, 11 Jan 2021 16:30:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 98F0AC433E0
+	for <linux-spi@archiver.kernel.org>; Mon, 11 Jan 2021 16:36:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 56D862076D
-	for <linux-spi@archiver.kernel.org>; Mon, 11 Jan 2021 16:30:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 609C9223E0
+	for <linux-spi@archiver.kernel.org>; Mon, 11 Jan 2021 16:36:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730436AbhAKQah (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 11 Jan 2021 11:30:37 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38434 "EHLO mail.kernel.org"
+        id S1728745AbhAKQgR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 11 Jan 2021 11:36:17 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42600 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725858AbhAKQah (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 11 Jan 2021 11:30:37 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2588C2250E;
-        Mon, 11 Jan 2021 16:29:55 +0000 (UTC)
+        id S1728591AbhAKQgR (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 11 Jan 2021 11:36:17 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 74E41221FE;
+        Mon, 11 Jan 2021 16:35:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610382596;
-        bh=sBz4Ipd+9rer8wbKvcY9vmCEahmCvzueI9fuZ8Fv1nc=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=X1Xsg4rLRaRWNTKPIC46HncpPCfwl1Ki30CRnshfig1WZuFflF9PACZmj9GIHAWQ+
-         pT37eu+Ur2b45NDxHCRfjbJPF8KaTcrSeShjKEUm2rEOPX8YYR+sLeS53QLtXxTk0l
-         Dgk3Wh8lw6kd+EWTI70MzMNFXTWok8wa3ceSZqNONWMnZULC7imc+fEh8nQ3Rg5rzu
-         o2ALN6M0+WL6UX8wCbL/+o+mUfjWzqZlKOe/1pb426UCOHFWvXOaAx7W5WRPZ7Fz9w
-         H5AYzm0XaXY8gBe54kj/bV3lMbdPMGtHuPah0ug5/GlwCBMM4Rt1R1uzZOIENzS7FB
-         2idqaRrG3sYiw==
+        s=k20201202; t=1610382936;
+        bh=RE1Md8cmppu1xKF0msv57vimbUhlP4+7Lx/7ygdMAPs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=cBk+zJJGnYddOl/czcVfF2W4yAH8sy1jqATOCC+tCVJkOywQ7sdsMXZVwnwYbcBdZ
+         kR/su628sjS3ApqkD1RtF0xSpksd67XwENPgHCeE6XF7cB/IAhpeUGE+H9sNqBR9oH
+         tLgiGSW/OreqsjsafiCgguIaiHPDH+LAIjnjE5HxnwzP25oGf1SQyu9CgiiACIlKc5
+         rHWXhXdBrgpRXbmEnGaNDj0Qtof1RJVWfxLWArysRtc2Z1dI2OYX6Wuvj4YF6L8YPp
+         QhAwoMEwW/EmmUF13zHi99e8R9ofvHT0iNnCZIT3p2Qft4SFkwGK3fFTi7NBqwnqL5
+         aWM53dmIa2gTg==
+Date:   Mon, 11 Jan 2021 16:35:04 +0000
 From:   Mark Brown <broonie@kernel.org>
-To:     Pratyush Yadav <p.yadav@ti.com>, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-Cc:     Vignesh Raghavendra <vigneshr@ti.com>
-In-Reply-To: <20210108181457.30291-1-p.yadav@ti.com>
-References: <20210108181457.30291-1-p.yadav@ti.com>
-Subject: Re: [PATCH] spi: cadence-quadspi: Fix build warning on 32-bit platforms
-Message-Id: <161038255868.32886.16994603160405632637.b4-ty@kernel.org>
-Date:   Mon, 11 Jan 2021 16:29:18 +0000
+To:     Vinod Koul <vkoul@kernel.org>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Wolfram Sang <wsa@kernel.org>, linux-arm-msm@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Amit Pundir <amit.pundir@linaro.org>,
+        linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/7] spi: spi-geni-qcom: Add support for GPI dma
+Message-ID: <20210111163504.GD4728@sirena.org.uk>
+References: <20210111151651.1616813-1-vkoul@kernel.org>
+ <20210111151651.1616813-5-vkoul@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="pQhZXvAqiZgbeUkD"
+Content-Disposition: inline
+In-Reply-To: <20210111151651.1616813-5-vkoul@kernel.org>
+X-Cookie: Too much is not enough.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, 8 Jan 2021 23:44:57 +0530, Pratyush Yadav wrote:
-> The kernel test robot reports the following warning.
-> 
-> drivers/spi/spi-cadence-quadspi.c:966:24: warning: comparison of distinct pointer types ('typeof (len) *' (aka 'unsigned int *') and 'typeof (500UL) *' (aka 'unsigned long *')) [-Wcompare-distinct-pointer-types]
->                                             msecs_to_jiffies(max(len, 500UL)))) {
->                                                              ^~~~~~~~~~~~~~~
->    include/linux/minmax.h:58:19: note: expanded from macro 'max'
->    #define max(x, y)       __careful_cmp(x, y, >)
->                            ^~~~~~~~~~~~~~~~~~~~~~
->    include/linux/minmax.h:42:24: note: expanded from macro '__careful_cmp'
->            __builtin_choose_expr(__safe_cmp(x, y), \
->                                  ^~~~~~~~~~~~~~~~
->    include/linux/minmax.h:32:4: note: expanded from macro '__safe_cmp'
->                    (__typecheck(x, y) && __no_side_effects(x, y))
->                     ^~~~~~~~~~~~~~~~~
->    include/linux/minmax.h:18:28: note: expanded from macro '__typecheck'
->            (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
->                       ~~~~~~~~~~~~~~ ^  ~~~~~~~~~~~~~~
->    1 warning generated.
-> 
-> [...]
 
-Applied to
+--pQhZXvAqiZgbeUkD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+On Mon, Jan 11, 2021 at 08:46:48PM +0530, Vinod Koul wrote:
 
-Thanks!
+> +static int get_xfer_mode(struct spi_master *spi)
+> +{
+> +	struct spi_geni_master *mas = spi_master_get_devdata(spi);
+> +	struct geni_se *se = &mas->se;
+> +	int mode = GENI_SE_FIFO;
 
-[1/1] spi: cadence-quadspi: Fix build warning on 32-bit platforms
-      commit: 2ef0170e90391f1adb31c449059b8efdc923707c
+Why not use the core DMA mapping support?
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+--pQhZXvAqiZgbeUkD
+Content-Type: application/pgp-signature; name="signature.asc"
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-----BEGIN PGP SIGNATURE-----
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl/8fjcACgkQJNaLcl1U
+h9Dg7wf6AiVIGMV8fdSxV/+rvHOKoT4lSj+DxPZgO4ziYL6vqk7upbg1Qm7+ipoi
+EDQ68FPLAKZky09U0ZK3AP/kMn4hAAezlBysnKqYyNGF6fTbzszOP/WZICjFcWG8
+w4ebN0qPW8o1UoC7CUDDdD0GxlFS+rugmEogvdsrhtNiOSodkhn8ibqL5QVYIzYZ
+ndVwlAAgW3+WuDNd/vV4nTT8HvKp7a0ZJeoOygXCpX70uzD1Lztd6mA/v0aWIeub
+xv5mZJb54rUmooaudUoRI14Zs2xhU4iyo+Zj/SQpDAa5uwdkRT4NxV1zWyvR1Lup
+Ro3frvVVNALn6RtdXWhw1oo3GVtJXg==
+=SIUq
+-----END PGP SIGNATURE-----
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+--pQhZXvAqiZgbeUkD--

@@ -2,212 +2,112 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 187BCC43381
-	for <linux-spi@archiver.kernel.org>; Mon, 11 Jan 2021 15:41:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BB007C433DB
+	for <linux-spi@archiver.kernel.org>; Mon, 11 Jan 2021 16:11:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DC45622CB2
-	for <linux-spi@archiver.kernel.org>; Mon, 11 Jan 2021 15:41:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 68F7722AAD
+	for <linux-spi@archiver.kernel.org>; Mon, 11 Jan 2021 16:11:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729369AbhAKPlj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 11 Jan 2021 10:41:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53056 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726459AbhAKPlj (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Jan 2021 10:41:39 -0500
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2E09C061795
-        for <linux-spi@vger.kernel.org>; Mon, 11 Jan 2021 07:40:58 -0800 (PST)
-Received: by mail-oi1-x234.google.com with SMTP id l207so20532262oib.4
-        for <linux-spi@vger.kernel.org>; Mon, 11 Jan 2021 07:40:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=2NFLJAEhP/pWZ/3KNdvaDfsdnuyk831kAKh+5k94dVg=;
-        b=S5iwiv4PKXL8ewzh/rll9Sa3j2vexkhQ/+IVuul0kcR2xH5vr2wAtbeMWCArZyEinj
-         LUl8PD7TmeENRc7BQmmCfXY6h1NmTM4ROO8+K4aE2RslM7xJJU5XK69VEbbVOtxdbOMw
-         MJ2p+S+CWndN0O39bPTXy19+vOrobbMszcPJ6XZerhoWrpMMihWrSZ6qMJFi3LhY6/RF
-         r8dBPBBdP/H3dwsnsiRx7fExy1cr7otlHSsvePHK3VbCQcGwLZWKVSG4Fy0XA9qds9xW
-         SjBK/FClUenpamX4LugF2rKGKQlgkpwQIUg5b/I4uOJYz4Ce+UlNdy0joo1W5Mx8WuQt
-         QR1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=2NFLJAEhP/pWZ/3KNdvaDfsdnuyk831kAKh+5k94dVg=;
-        b=mUT2vdAYUGbvmuJex8TSL94ZNYKvfwsN/RSWdYBcXgFjDTchaPRVdcdw+uL9hiaSlz
-         lnah7B9RxXqvw3o1ljRb25fuOSJ3bnyUnU/0znCRpAv54OXXZXlO2XzNWwRDNbTjAufz
-         iCvFrAm6vf7rBRW0qkaWhI1ZMQw/wmvgczChURSYVtsR6IRCLGsnYS2uzaokpPXLXQFW
-         vEELgN9FEvSmXFE8DxNXIsmzNq32HYWdvgTJ+kjEmPsLshAOW6mZNx5nLMx4WB7Wnkfc
-         NO74BRSxPn7vHsRDnUeK4g1Zm7O7HmQx6+XLjgT0FHg6tbrRAMftkD/amgEeGre8K8MR
-         T2Ew==
-X-Gm-Message-State: AOAM531cFZgbYXAxelZNa1i2H3bJYKQ3cxgkByNBv5RpCLP46dqPGWLk
-        g5IxLEHEBlin1U/z7GBUTfcORg==
-X-Google-Smtp-Source: ABdhPJzK7vYdXsN45YWQD0Il+kWkHfKqU7Inc4xU498GSQrcdRJIekYCAqeyYbE2EHzJ/jT10Cwp4w==
-X-Received: by 2002:aca:f594:: with SMTP id t142mr10185380oih.162.1610379658167;
-        Mon, 11 Jan 2021 07:40:58 -0800 (PST)
-Received: from builder.lan (104-57-184-186.lightspeed.austtx.sbcglobal.net. [104.57.184.186])
-        by smtp.gmail.com with ESMTPSA id o17sm22785otp.30.2021.01.11.07.40.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Jan 2021 07:40:57 -0800 (PST)
-Date:   Mon, 11 Jan 2021 09:40:55 -0600
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Vinod Koul <vkoul@kernel.org>
-Cc:     Mark Brown <broonie@kernel.org>, Wolfram Sang <wsa@kernel.org>,
-        linux-arm-msm@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Amit Pundir <amit.pundir@linaro.org>,
-        linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/7] soc: qcom: geni: Add support for gpi dma
-Message-ID: <X/xxh8ejwY6cHdC1@builder.lan>
-References: <20210111151651.1616813-1-vkoul@kernel.org>
- <20210111151651.1616813-4-vkoul@kernel.org>
+        id S1730222AbhAKQLP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 11 Jan 2021 11:11:15 -0500
+Received: from out3-smtp.messagingengine.com ([66.111.4.27]:60739 "EHLO
+        out3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730167AbhAKQLO (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 11 Jan 2021 11:11:14 -0500
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+        by mailout.nyi.internal (Postfix) with ESMTP id 554D15C01D9;
+        Mon, 11 Jan 2021 11:10:08 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Mon, 11 Jan 2021 11:10:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cerno.tech; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm1; bh=RlC15aeJIXWYzAjGk3nDpNnihQk
+        P/oJsBZcliF8B0sM=; b=hWTbPAaa1tTdz73fuuZC2bFKRqb0iSDBOJVQQnbFTBh
+        ngCrCcDjT9XycCunxx67NVwSCNKCCaxP0eIYVxjv9c3xIqlz/z2Z8EmHDrhUYhBW
+        8B32RNI0epkyDSxInns2e3/pn3cA5EkjCht1YhPm2lY54XziBZ7X5okSGv6unsWY
+        Be2BY3+XtvNwpP9IOt9Gw48lT8yBi9lgvgfVPFgh/BAV1vc+lLI98pwkdzr7y3Ve
+        aU9IBoNGF2JNbeccRYOQak/uaofngrKMY0ilDB2I5XyyHeieaf/OQA06OrMklTv+
+        Y7jlyolMQ8e7v+xpdBE4eF97hWYOSBFqBehcz3Vh/OA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=RlC15a
+        eJIXWYzAjGk3nDpNnihQkP/oJsBZcliF8B0sM=; b=nuBROngLEFLJolmx7TAtFm
+        j81oJNs1/f0Bb6+B5qBEZvHElZfuw/n5ho25DyI0RZjEr/9DL4k1lUC4i/vaQOM+
+        axK6hNc/Zzs8Y8gEr2+POj2sIDZ03mPI+cEOvKU0QQnEB45GVOHvF49dn2ivYakG
+        O7GISFqkCK1UsoExjKYbYsjzHyia0/3gs3XZXUp3dnO9VKSpj48Dq/Z7VeOUEhW3
+        6vqdAsRBE9ARLmqSbC3C6bYJum+2bc/B94Vn1JKPMdXrV+ioGscpJpEjsvE7n76l
+        3nCvHGg6IkYLgxH5F+33yhHUQ9cOyY8t4cCgIPDwJEuU9lhkdnTwrbSbCzdICmkw
+        ==
+X-ME-Sender: <xms:X3j8X6aeQZ0CCV4BZPENluYBeDjG-i7L7QtrXA03ej5WilMANfbO9Q>
+    <xme:X3j8X9bMd2ZDFZ_Q9JohRfS4MzYoeJyENYOhqm_ruW1SuLglPQRvhNqqjmfIFAvqG
+    PSYGnhirIHXkuDsCMk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedrvdehuddgkeehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvffukfhfgggtuggjsehgtderredttddvnecuhfhrohhmpeforgigihhm
+    vgcutfhiphgrrhguuceomhgrgihimhgvsegtvghrnhhordhtvggthheqnecuggftrfgrth
+    htvghrnhepleekgeehhfdutdeljefgleejffehfffgieejhffgueefhfdtveetgeehieeh
+    gedunecukfhppeeltddrkeelrdeikedrjeeinecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomhepmhgrgihimhgvsegtvghrnhhordhtvggthh
+X-ME-Proxy: <xmx:X3j8X0_TsqMmswrusgi3yG1jFxekq4fBLenLHmsBQi0tZBN67YvtHw>
+    <xmx:X3j8X8petPDhYGZVji_vCH967mQQQKcCPKp_txQW_932HAEYJAnHug>
+    <xmx:X3j8X1qccVR6-S1q2MMO1pCeYuqL-ZQJR8Q1yzYyYcfGKpaWaDN_WQ>
+    <xmx:YHj8X80ajq57vQzPCgYYdXXGyn6WtIx26s2MQ3liDyK1PUJgdPGCJQ>
+Received: from localhost (lfbn-tou-1-1502-76.w90-89.abo.wanadoo.fr [90.89.68.76])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 901AE240066;
+        Mon, 11 Jan 2021 11:10:06 -0500 (EST)
+Date:   Mon, 11 Jan 2021 17:10:04 +0100
+From:   Maxime Ripard <maxime@cerno.tech>
+To:     Ralf Schlatterbeck <rsc@runtux.com>
+Cc:     Mark Brown <broonie@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] Fix SPI Chipselect/Clock bug for sun6i
+Message-ID: <20210111161004.a6suk2vreuslyj4m@gilmour>
+References: <20201226095845.c65lhsmluddvwxsl@runtux.com>
+ <20210108085855.p255fioaax4zin4q@gilmour>
+ <20210108091815.h35ane6xe6bzhje2@runtux.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="hcyownk6ynbn2bgu"
 Content-Disposition: inline
-In-Reply-To: <20210111151651.1616813-4-vkoul@kernel.org>
+In-Reply-To: <20210108091815.h35ane6xe6bzhje2@runtux.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon 11 Jan 09:16 CST 2021, Vinod Koul wrote:
 
-> GPI DMA is one of the DMA modes supported on geni, this adds support to
-> enable that mode
-> 
-> Signed-off-by: Vinod Koul <vkoul@kernel.org>
-> ---
->  drivers/soc/qcom/qcom-geni-se.c | 39 ++++++++++++++++++++++++++++++++-
->  include/linux/qcom-geni-se.h    |  4 ++++
->  2 files changed, 42 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/soc/qcom/qcom-geni-se.c b/drivers/soc/qcom/qcom-geni-se.c
-> index a3868228ea05..db44dc32e049 100644
-> --- a/drivers/soc/qcom/qcom-geni-se.c
-> +++ b/drivers/soc/qcom/qcom-geni-se.c
-> @@ -310,6 +310,39 @@ static void geni_se_select_dma_mode(struct geni_se *se)
->  		writel_relaxed(val, se->base + SE_GENI_DMA_MODE_EN);
->  }
->  
-> +static int geni_se_select_gpi_mode(struct geni_se *se)
+--hcyownk6ynbn2bgu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This doesn't return any information and the return value isn't looked
-at, please make it void.
+On Fri, Jan 08, 2021 at 10:18:15AM +0100, Ralf Schlatterbeck wrote:
+> On Fri, Jan 08, 2021 at 09:58:55AM +0100, Maxime Ripard wrote:
+> >=20
+> > Unfortunately, without the author's Signed-off-by (and yours), we can't
+> > merge that patch.
+>=20
+> Thanks for the Reply. I've researched more and found out who the
+> probable Author of the patch is. I've tried to contact him via Email,
+> I'll follow up with correct signed-off etc when I've got permission.
 
-> +{
-> +	unsigned int geni_dma_mode = 0;
-> +	unsigned int gpi_event_en = 0;
-> +	unsigned int common_geni_m_irq_en = 0;
-> +	unsigned int common_geni_s_irq_en = 0;
+Great, thanks!
+Maxime
 
-These could certainly be given a shorter name.
+--hcyownk6ynbn2bgu
+Content-Type: application/pgp-signature; name="signature.asc"
 
-None of them needs to be initialized, first access in all cases are
-assignments.
+-----BEGIN PGP SIGNATURE-----
 
-> +
-> +	common_geni_m_irq_en = readl_relaxed(se->base + SE_GENI_M_IRQ_EN);
-> +	common_geni_s_irq_en = readl_relaxed(se->base + SE_GENI_S_IRQ_EN);
-> +	common_geni_m_irq_en &=
-> +			~(M_CMD_DONE_EN | M_TX_FIFO_WATERMARK_EN |
-> +			M_RX_FIFO_WATERMARK_EN | M_RX_FIFO_LAST_EN);
-> +	common_geni_s_irq_en &= ~S_CMD_DONE_EN;
-> +	geni_dma_mode = readl_relaxed(se->base + SE_GENI_DMA_MODE_EN);
-> +	gpi_event_en = readl_relaxed(se->base + SE_GSI_EVENT_EN);
-> +
-> +	geni_dma_mode |= GENI_DMA_MODE_EN;
-> +	gpi_event_en |= (DMA_RX_EVENT_EN | DMA_TX_EVENT_EN |
-> +				GENI_M_EVENT_EN | GENI_S_EVENT_EN);
+iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCX/x4XAAKCRDj7w1vZxhR
+xSFGAP4+pvGUN6FvXB9P4ruoXrOKdALuWMBQXrpqrQHzaepxWAEAxXBWZ9bZAIZJ
+a/FHIKPIhwGMMWhljimMjvMg5bXzwQw=
+=PURT
+-----END PGP SIGNATURE-----
 
-Please reorder these so that you do
-	readl(m)
-	mask out bits of m
-
-	readl(s)
-	mask out bits of s
-
-	...
-
-> +
-> +	writel_relaxed(0, se->base + SE_IRQ_EN);
-> +	writel_relaxed(common_geni_s_irq_en, se->base + SE_GENI_S_IRQ_EN);
-> +	writel_relaxed(common_geni_m_irq_en, se->base + SE_GENI_M_IRQ_EN);
-> +	writel_relaxed(0xFFFFFFFF, se->base + SE_GENI_M_IRQ_CLEAR);
-
-Lowercase hex digits please.
-
-> +	writel_relaxed(0xFFFFFFFF, se->base + SE_GENI_S_IRQ_CLEAR);
-> +	writel_relaxed(0xFFFFFFFF, se->base + SE_DMA_TX_IRQ_CLR);
-> +	writel_relaxed(0xFFFFFFFF, se->base + SE_DMA_RX_IRQ_CLR);
-> +	writel_relaxed(geni_dma_mode, se->base + SE_GENI_DMA_MODE_EN);
-> +	writel_relaxed(gpi_event_en, se->base + SE_GSI_EVENT_EN);
-
-Why is this driver using _relaxed accessors exclusively? Why are you
-using _relaxed versions?
-
-And wouldn't it be suitable to have a wmb() before the "dma mode enable"
-and "event enable" at least? (I.e. use writel() instead)
-
-Regards,
-Bjorn
-
-> +
-> +	return 0;
-> +}
-> +
->  /**
->   * geni_se_select_mode() - Select the serial engine transfer mode
->   * @se:		Pointer to the concerned serial engine.
-> @@ -317,7 +350,8 @@ static void geni_se_select_dma_mode(struct geni_se *se)
->   */
->  void geni_se_select_mode(struct geni_se *se, enum geni_se_xfer_mode mode)
->  {
-> -	WARN_ON(mode != GENI_SE_FIFO && mode != GENI_SE_DMA);
-> +	WARN_ON(mode != GENI_SE_FIFO && mode != GENI_SE_DMA &&
-> +		mode != GENI_GPI_DMA);
->  
->  	switch (mode) {
->  	case GENI_SE_FIFO:
-> @@ -326,6 +360,9 @@ void geni_se_select_mode(struct geni_se *se, enum geni_se_xfer_mode mode)
->  	case GENI_SE_DMA:
->  		geni_se_select_dma_mode(se);
->  		break;
-> +	case GENI_GPI_DMA:
-> +		geni_se_select_gpi_mode(se);
-> +		break;
->  	case GENI_SE_INVALID:
->  	default:
->  		break;
-> diff --git a/include/linux/qcom-geni-se.h b/include/linux/qcom-geni-se.h
-> index cb4e40908f9f..12003a6cb133 100644
-> --- a/include/linux/qcom-geni-se.h
-> +++ b/include/linux/qcom-geni-se.h
-> @@ -12,6 +12,7 @@
->  enum geni_se_xfer_mode {
->  	GENI_SE_INVALID,
->  	GENI_SE_FIFO,
-> +	GENI_GPI_DMA,
->  	GENI_SE_DMA,
->  };
->  
-> @@ -123,6 +124,9 @@ struct geni_se {
->  #define CLK_DIV_MSK			GENMASK(15, 4)
->  #define CLK_DIV_SHFT			4
->  
-> +/* GENI_IF_DISABLE_RO fields */
-> +#define FIFO_IF_DISABLE			(BIT(0))
-> +
->  /* GENI_FW_REVISION_RO fields */
->  #define FW_REV_PROTOCOL_MSK		GENMASK(15, 8)
->  #define FW_REV_PROTOCOL_SHFT		8
-> -- 
-> 2.26.2
-> 
+--hcyownk6ynbn2bgu--

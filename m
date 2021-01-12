@@ -2,116 +2,100 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-19.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 124A1C432C3
-	for <linux-spi@archiver.kernel.org>; Tue, 12 Jan 2021 13:18:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B304CC433E6
+	for <linux-spi@archiver.kernel.org>; Tue, 12 Jan 2021 15:35:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B18D522571
-	for <linux-spi@archiver.kernel.org>; Tue, 12 Jan 2021 13:18:02 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7152123132
+	for <linux-spi@archiver.kernel.org>; Tue, 12 Jan 2021 15:35:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727030AbhALNRv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 12 Jan 2021 08:17:51 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53842 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389811AbhALM5Q (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 12 Jan 2021 07:57:16 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 46AE423136;
-        Tue, 12 Jan 2021 12:56:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610456167;
-        bh=51Jmu/SJM7Ea2UJoap9WzV6FlX6Y8pOBAlT9SW9jlRw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bWOUPmYjMMJpyiKdw1yYenknBG06OGEZOmoaTquecwG8nAran33sZWs3RJdsYJx5L
-         OubpnMas8yXrV39Lj7OT6QJcUYvUKBjKcZuj7uBz+VSJO3PZl0gjsnKZevHv+CsenW
-         AwxSjchkPtEIKy3zNM0fzlh0jmNJ4g2pK7u7w2z5axhHrP7Ai6Fenl5c2zK+ytdKt9
-         hOx/B37AFS3e4DsaCzXOAfhDRg6aEQltcUvOGAh9fjmW9C8WmAD8UsqNOaExSpeVXZ
-         2yx28/4EWqqbXOKTmWqCmJm24ah+D3iFCP6mKB6DJ0phWgFGEDr2DvWLffYVkTnqtq
-         SKBEAS+Ph/j0w==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Xu Yilun <yilun.xu@intel.com>, Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 24/51] spi: altera: fix return value for altera_spi_txrx()
-Date:   Tue, 12 Jan 2021 07:55:06 -0500
-Message-Id: <20210112125534.70280-24-sashal@kernel.org>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210112125534.70280-1-sashal@kernel.org>
-References: <20210112125534.70280-1-sashal@kernel.org>
+        id S2391719AbhALPfE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 12 Jan 2021 10:35:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50960 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391716AbhALPfE (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 12 Jan 2021 10:35:04 -0500
+Received: from mail-vs1-xe2c.google.com (mail-vs1-xe2c.google.com [IPv6:2607:f8b0:4864:20::e2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7C0AC0617AA
+        for <linux-spi@vger.kernel.org>; Tue, 12 Jan 2021 07:34:13 -0800 (PST)
+Received: by mail-vs1-xe2c.google.com with SMTP id b23so1638563vsp.9
+        for <linux-spi@vger.kernel.org>; Tue, 12 Jan 2021 07:34:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=qxCZhN0HPYWVbJAFHzviClBBvfiktQzKxiUuI/WHb64=;
+        b=JwBBAAjWC19z8UsuWqxUc5kVg0wMb6EWFRHoz7kkGUngbEhRU+C6/MCHia57wDr8X9
+         Jd86Mt63DQEmW6eSaffdLzO7z7LiNnNGMHUe46zYzJcyQA6RGLKr4Kmg011Z0Emovi4/
+         at0IHPfJVaNEMbSJ/B0M5S6vGzvw1vRl459Eo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=qxCZhN0HPYWVbJAFHzviClBBvfiktQzKxiUuI/WHb64=;
+        b=COVfa4dCzUsfB06+Unr3H9OektxCj/C0fjD5OgjHrqNuHQVSVNrJX4VEx8WM19FRsJ
+         LU/jIoayWrsZtxCrxnsTgw4e0h+Ow1yvJksAZY6d/F45/2QRmSs/1EEEpn0FJwA/oWPb
+         xmiDiwXyARXeK5x3bNfNe3o8r1AiAo7BsrwGNhNT0LyYwlt0Yt6MIeBu5MuZat1NMY3x
+         Ve2mh3cyyN/Ck58CqlL3G2fWJ77ySLSkLV+l/DA3tc2tpA0SIxF7WBGBq9W7GyrI5MgN
+         6d7Jz6bp45CCa02u/hlLPQHCHLMnS4oKmlvGyU+dLgfZlzTOvB7xKbFTKA2VIul29jJq
+         K0ag==
+X-Gm-Message-State: AOAM5333Yfu8Zn3w12ORjFPXR+vSNWasapItQSk3CU1d3HYB7EST22KM
+        oIiZAOqzminEnVvHRMXAlGBE+4p5po0tiQ==
+X-Google-Smtp-Source: ABdhPJziCFnCkgzByDunalhNmYpnTlf1GCMudwDCktJzFMyXZnyYFWZ6SIBbmsNCHy4y7OlR0nK07A==
+X-Received: by 2002:a67:882:: with SMTP id 124mr1197471vsi.33.1610465652800;
+        Tue, 12 Jan 2021 07:34:12 -0800 (PST)
+Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com. [209.85.221.172])
+        by smtp.gmail.com with ESMTPSA id l20sm405257vsr.29.2021.01.12.07.34.11
+        for <linux-spi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 Jan 2021 07:34:11 -0800 (PST)
+Received: by mail-vk1-f172.google.com with SMTP id e27so699772vkn.2
+        for <linux-spi@vger.kernel.org>; Tue, 12 Jan 2021 07:34:11 -0800 (PST)
+X-Received: by 2002:ac5:cde4:: with SMTP id v4mr4651199vkn.21.1610465651285;
+ Tue, 12 Jan 2021 07:34:11 -0800 (PST)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+References: <20210112001301.687628-1-swboyd@chromium.org>
+In-Reply-To: <20210112001301.687628-1-swboyd@chromium.org>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Tue, 12 Jan 2021 07:33:59 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=WRx2+jh7P5rM5S+C2shwbJiZSJxpf_fe57D+KpB4bijw@mail.gmail.com>
+Message-ID: <CAD=FV=WRx2+jh7P5rM5S+C2shwbJiZSJxpf_fe57D+KpB4bijw@mail.gmail.com>
+Subject: Re: [PATCH v2] spi: spi-qcom-qspi: Use irq trigger flags from firmware
+To:     Stephen Boyd <swboyd@chromium.org>
+Cc:     Mark Brown <broonie@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Rajendra Nayak <rnayak@codeaurora.org>,
+        Mukesh Kumar Savaliya <msavaliy@codeaurora.org>,
+        Akash Asthana <akashast@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Xu Yilun <yilun.xu@intel.com>
+Hi,
 
-[ Upstream commit ede090f5a438e97d0586f64067bbb956e30a2a31 ]
+On Mon, Jan 11, 2021 at 4:13 PM Stephen Boyd <swboyd@chromium.org> wrote:
+>
+> We don't need to force this to be trigger high here, as the firmware
+> properly configures the irq flags already. Drop it to save a line.
+>
+> Cc: Douglas Anderson <dianders@chromium.org>
+> Cc: Rajendra Nayak <rnayak@codeaurora.org>
+> Cc: Mukesh Kumar Savaliya <msavaliy@codeaurora.org>
+> Cc: Akash Asthana <akashast@codeaurora.org>
+> Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+> ---
+>
+> Changes from v1:
+>  * Rebased onto v5.11-rc1
+>
+>  drivers/spi/spi-qcom-qspi.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 
-This patch fixes the return value for altera_spi_txrx. It should return
-1 for interrupt transfer mode, and return 0 for polling transfer mode.
-
-The altera_spi_txrx() implements the spi_controller.transfer_one
-callback. According to the spi-summary.rst, the transfer_one should
-return 0 when transfer is finished, return 1 when transfer is still in
-progress.
-
-Signed-off-by: Xu Yilun <yilun.xu@intel.com>
-Link: https://lore.kernel.org/r/1609219662-27057-2-git-send-email-yilun.xu@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/spi/spi-altera.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/spi/spi-altera.c b/drivers/spi/spi-altera.c
-index 809bfff3690ab..cbc4c28c1541c 100644
---- a/drivers/spi/spi-altera.c
-+++ b/drivers/spi/spi-altera.c
-@@ -189,24 +189,26 @@ static int altera_spi_txrx(struct spi_master *master,
- 
- 		/* send the first byte */
- 		altera_spi_tx_word(hw);
--	} else {
--		while (hw->count < hw->len) {
--			altera_spi_tx_word(hw);
- 
--			for (;;) {
--				altr_spi_readl(hw, ALTERA_SPI_STATUS, &val);
--				if (val & ALTERA_SPI_STATUS_RRDY_MSK)
--					break;
-+		return 1;
-+	}
-+
-+	while (hw->count < hw->len) {
-+		altera_spi_tx_word(hw);
- 
--				cpu_relax();
--			}
-+		for (;;) {
-+			altr_spi_readl(hw, ALTERA_SPI_STATUS, &val);
-+			if (val & ALTERA_SPI_STATUS_RRDY_MSK)
-+				break;
- 
--			altera_spi_rx_word(hw);
-+			cpu_relax();
- 		}
--		spi_finalize_current_transfer(master);
-+
-+		altera_spi_rx_word(hw);
- 	}
-+	spi_finalize_current_transfer(master);
- 
--	return t->len;
-+	return 0;
- }
- 
- static irqreturn_t altera_spi_irq(int irq, void *dev)
--- 
-2.27.0
-
+Reviewed-by: Douglas Anderson <dianders@chromium.org>

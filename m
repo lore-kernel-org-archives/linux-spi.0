@@ -2,87 +2,95 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-19.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 42DAAC433E0
-	for <linux-spi@archiver.kernel.org>; Tue, 12 Jan 2021 12:49:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E449C43332
+	for <linux-spi@archiver.kernel.org>; Tue, 12 Jan 2021 13:14:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id CD54D22B37
-	for <linux-spi@archiver.kernel.org>; Tue, 12 Jan 2021 12:49:10 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DC093206A4
+	for <linux-spi@archiver.kernel.org>; Tue, 12 Jan 2021 13:14:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731154AbhALMsz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 12 Jan 2021 07:48:55 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52216 "EHLO mail.kernel.org"
+        id S1729471AbhALNOZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 12 Jan 2021 08:14:25 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54632 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727907AbhALMsz (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 12 Jan 2021 07:48:55 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A25C422B37;
-        Tue, 12 Jan 2021 12:48:13 +0000 (UTC)
+        id S2404086AbhALM5o (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 12 Jan 2021 07:57:44 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 054432313A;
+        Tue, 12 Jan 2021 12:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610455694;
-        bh=BToyKO6I53LJkegMwyfNmTPFV988ajxYziM4AKqOwIc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=skAThuuyG7aJJm2LZP+GaFrLtZNqe5KY2vUpfYs0fpcsr0vRPQf24aEvrVJ2UJzl/
-         sJITnCgGacGbhOqpLUyVGMSpmgLso+WgTXf9P3XLzitPoifROvcyirr9362rxKBMIX
-         jsoKD75tvfoTa3J1CCd01oi6+lAxtN7VzIumla/TKNk3lQ60jf5EBxRymwqqENEpz4
-         HDQenyHCCL5x4tEMWrWsjb6UZp7GAZWXI3TvlUyr2woXUDvtqw0QznUzoac6rdo+tB
-         I7jJrw5mll1jxWc9mh+V6ilVi+f13m/6O/sax62bdbZd5yBAUh7XRxOuqmpTSYynuo
-         xsLE8sAj9WaNg==
-Date:   Tue, 12 Jan 2021 12:47:41 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Zhen Lei <thunder.leizhen@huawei.com>
-Cc:     linux-spi <linux-spi@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Pratyush Yadav <p.yadav@ti.com>
-Subject: Re: [PATCH 0/1] spi: cadence-quadspi: Fix a compilation warning for
- 64-bit platform
-Message-ID: <20210112124741.GA4646@sirena.org.uk>
-References: <20210112100637.747-1-thunder.leizhen@huawei.com>
+        s=k20201202; t=1610456172;
+        bh=byiYvvTnmGUoUR8k/HrJGd3sxguP1G+iK44YQb320ig=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=W8EiMvW3Vhho/DRULq45qK43uOrofv7veSw7jDklsFM3nK46UR4KIZywrWNUeAd+k
+         88nZUNsw93JG5kpU5qqMtdb13XP4L2WK+8KMJ4mcKVsw9RMDGsVYHhgUslk2RkSi6G
+         bOOuYdwepU6Bi7wV7BYVg6ncrlgkFQcjhYmQTKjiTOXM1r4tGMzFcr/6o8CP7I4ATc
+         UqyCG16HVUkh4mrABMUmnK/6Z5wvRzu8it89+XRmY+I/mxGNJIwo+6A7xjmf2oaNWD
+         x8gHnO9WXXE+uzlRh/DKHYjMX8NIRGMCnlhyUOO0R0cZOoO7c60hAQMuqsIG4rIDZB
+         buSS2EaDucaoA==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Xu Yilun <yilun.xu@intel.com>, Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 29/51] spi: fix the divide by 0 error when calculating xfer waiting time
+Date:   Tue, 12 Jan 2021 07:55:11 -0500
+Message-Id: <20210112125534.70280-29-sashal@kernel.org>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20210112125534.70280-1-sashal@kernel.org>
+References: <20210112125534.70280-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="azLHFNyN32YCQGCU"
-Content-Disposition: inline
-In-Reply-To: <20210112100637.747-1-thunder.leizhen@huawei.com>
-X-Cookie: Stay away from hurricanes for a while.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+From: Xu Yilun <yilun.xu@intel.com>
 
---azLHFNyN32YCQGCU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+[ Upstream commit 6170d077bf92c5b3dfbe1021688d3c0404f7c9e9 ]
 
-On Tue, Jan 12, 2021 at 06:06:36PM +0800, Zhen Lei wrote:
-> This patch is based on the latest linux-next. So the Fixes commit-id
-> maybe changed when it merged int v5.12-rc1. For details about the problem
-> analysis, see the patch description. The auxiliary information is listed =
-here.
+The xfer waiting time is the result of xfer->len / xfer->speed_hz. This
+patch makes the assumption of 100khz xfer speed if the xfer->speed_hz is
+not assigned and stays 0. This avoids the divide by 0 issue and ensures
+a reasonable tolerant waiting time.
 
-Please don't send cover letters for single patches, if there is anything
-that needs saying put it in the changelog of the patch or after the ---
-if it's administrative stuff.  This reduces mail volume and ensures that=20
-any important information is recorded in the changelog rather than being
-lost.=20
+Signed-off-by: Xu Yilun <yilun.xu@intel.com>
+Link: https://lore.kernel.org/r/1609723749-3557-1-git-send-email-yilun.xu@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---azLHFNyN32YCQGCU
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 2eaa7dbb70108..7694e1ae5b0b2 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1100,6 +1100,7 @@ static int spi_transfer_wait(struct spi_controller *ctlr,
+ {
+ 	struct spi_statistics *statm = &ctlr->statistics;
+ 	struct spi_statistics *stats = &msg->spi->statistics;
++	u32 speed_hz = xfer->speed_hz;
+ 	unsigned long long ms;
+ 
+ 	if (spi_controller_is_slave(ctlr)) {
+@@ -1108,8 +1109,11 @@ static int spi_transfer_wait(struct spi_controller *ctlr,
+ 			return -EINTR;
+ 		}
+ 	} else {
++		if (!speed_hz)
++			speed_hz = 100000;
++
+ 		ms = 8LL * 1000LL * xfer->len;
+-		do_div(ms, xfer->speed_hz);
++		do_div(ms, speed_hz);
+ 		ms += ms + 200; /* some tolerance */
+ 
+ 		if (ms > UINT_MAX)
+-- 
+2.27.0
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl/9mmwACgkQJNaLcl1U
-h9C96Af/ZisxzCk9VAYqmV67HrqaXT7axsKplWisQLjyLG/AT6ZkllXAxQ1LZjON
-NSVX0Aex/EhVHHrW5i1FLhkco1Tg6YgtgwB0KsQe7HQr2Ly5p+KoBoqyZaeInF6q
-6cT+lSemwoPcKrrBMMBpvg1c9O5xa3938EiMmXq0lFw4XqQbU6kX8HApvVaPbSNV
-q1nQ9JIjwqAA7Cq0TMKoYriYdvsz5JT2C6H+Puy7xHqXjo7px5z0SN7r85WPyvwH
-7FvLqak/pJSjNZurCWDzyINpd/ipY9CVh7QrfaVkbskPxSI4xOwvjxPf9i6CYXbL
-/E0fPrMdl535c83C6VvuauMzgFZRAQ==
-=WKIK
------END PGP SIGNATURE-----
-
---azLHFNyN32YCQGCU--

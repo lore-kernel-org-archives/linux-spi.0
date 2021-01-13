@@ -4,32 +4,32 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-11.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4EE99C43381
-	for <linux-spi@archiver.kernel.org>; Wed, 13 Jan 2021 15:30:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 04994C433E9
+	for <linux-spi@archiver.kernel.org>; Wed, 13 Jan 2021 15:30:30 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id F047523102
-	for <linux-spi@archiver.kernel.org>; Wed, 13 Jan 2021 15:30:00 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id ADB2723382
+	for <linux-spi@archiver.kernel.org>; Wed, 13 Jan 2021 15:30:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727130AbhAMP3z (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 13 Jan 2021 10:29:55 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33988 "EHLO mail.kernel.org"
+        id S1726960AbhAMPaB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 13 Jan 2021 10:30:01 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34066 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726779AbhAMP3z (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 13 Jan 2021 10:29:55 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3A50023447;
-        Wed, 13 Jan 2021 15:29:14 +0000 (UTC)
+        id S1726779AbhAMPaA (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 13 Jan 2021 10:30:00 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A6CBF23437;
+        Wed, 13 Jan 2021 15:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610551754;
-        bh=Xa/4cpk6WRT4Je2DTLHBVP565AvV4yzmpFLqBfU3h34=;
+        s=k20201202; t=1610551760;
+        bh=nGEiIrAwYDk5cc5c0NbgmPR1wJr88iE3TYoINs3MD0M=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=GYNAm7OT26Qh+b/qFrq17EV+Q6O2kFxn1h21Q8WagYhUoAcUKQ0XWpsd0TIYNsOh3
-         2Rzn//LqNOU5R8QupPjWARjmQ2Rux0qfBascrMvCwQQUytMoOHB6z9NIa3Loa+xXgG
-         M0YkHHoP2CN2qDueamDjwL6LUhRQq5zOyEtpAzFZQZkALMc/0dzOCRZkZNri5qrH/q
-         hHsMTxownUbwzPDU08z8JQjbXO8AyDZ/VurwZ70cscHqmpR9tXtDQ7gowpqENnvOoM
-         x5bGa3Nwoch0rIoalC8+PkUtVXbiEfX4B92HQLI/8scdjtiIAPy5O/TKOXUqcsZvgg
-         Dyq17ZPimKKYA==
+        b=SO9mYsO0CWGdgXgH1F3G8lkMK+h2voo/zRGmBXunTY/OYQiYa97ZTKKFjBqyXjrF7
+         0P8LgRK5NsvYMG+UXyrcCTl9mMf3V4QWHIQtjz9F3VgOm4w5tqzCBuIAutAGDr9JSA
+         LRJORWVqhwUAC7n0ITsjFF1hI5BoiCiM1WHkdUpiH6Z8yOcFApk6fOHgKQ0qc3yMHE
+         Kt+jdLSwFX3Uq6vK8FV5w3tBvP4o93KdvBJdtXfHSrfXECSdwmbQiOLrBoKWHY9gkV
+         oxZGCt9/Y2+QwL2pSadjwSB6Ic/qJoaDHmHryMYV2h0wmdWj5eoABQadaMMEgje5Xk
+         0ZBePyxXhQQfQ==
 From:   Mark Brown <broonie@kernel.org>
 To:     Stephen Boyd <swboyd@chromium.org>
 Cc:     Rajendra Nayak <rnayak@codeaurora.org>,
@@ -38,10 +38,10 @@ Cc:     Rajendra Nayak <rnayak@codeaurora.org>,
         Mukesh Kumar Savaliya <msavaliy@codeaurora.org>,
         Douglas Anderson <dianders@chromium.org>,
         Akash Asthana <akashast@codeaurora.org>
-In-Reply-To: <20201213052948.308263-1-swboyd@chromium.org>
-References: <20201213052948.308263-1-swboyd@chromium.org>
-Subject: Re: [PATCH] spi: spi-qcom-qspi: Use irq trigger flags from firmware
-Message-Id: <161055171028.21847.6863638399695430601.b4-ty@kernel.org>
+In-Reply-To: <20210112001301.687628-1-swboyd@chromium.org>
+References: <20210112001301.687628-1-swboyd@chromium.org>
+Subject: Re: [PATCH v2] spi: spi-qcom-qspi: Use irq trigger flags from firmware
+Message-Id: <161055171028.21847.10972334360743536171.b4-ty@kernel.org>
 Date:   Wed, 13 Jan 2021 15:28:30 +0000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -50,7 +50,7 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sat, 12 Dec 2020 21:29:48 -0800, Stephen Boyd wrote:
+On Mon, 11 Jan 2021 16:13:01 -0800, Stephen Boyd wrote:
 > We don't need to force this to be trigger high here, as the firmware
 > properly configures the irq flags already. Drop it to save a line.
 

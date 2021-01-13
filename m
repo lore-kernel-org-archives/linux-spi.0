@@ -6,44 +6,38 @@ X-Spam-Status: No, score=-11.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
 	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D1762C433E0
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EB6D9C433DB
 	for <linux-spi@archiver.kernel.org>; Wed, 13 Jan 2021 15:30:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 76FF923102
+	by mail.kernel.org (Postfix) with ESMTP id 9DD8E2339F
 	for <linux-spi@archiver.kernel.org>; Wed, 13 Jan 2021 15:30:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727162AbhAMP3p (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 13 Jan 2021 10:29:45 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33826 "EHLO mail.kernel.org"
+        id S1727252AbhAMP3u (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 13 Jan 2021 10:29:50 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33916 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727171AbhAMP3o (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 13 Jan 2021 10:29:44 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9F54F233EA;
-        Wed, 13 Jan 2021 15:29:03 +0000 (UTC)
+        id S1726779AbhAMP3u (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 13 Jan 2021 10:29:50 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id EF0332339F;
+        Wed, 13 Jan 2021 15:29:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610551744;
-        bh=bWsINNChrgBVID6nsVHR+SPM6eCH/SYMN0yzKSvyWLI=;
+        s=k20201202; t=1610551749;
+        bh=tigmSALSmnpPhwSMEXEk1CkqDvI2zvR/FIet9q8saxs=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=XMP2/xx8ExtxJfyOqTZWgN0c/YBvqPnFh8VaLHcBswHGtFWbgsfN9YKpB0TMerCPJ
-         yZPW+qv5gJ/qfncbHsAQF/GFt7RVJfeQcEDveTY3ijkQvRuzkNktbhUZBIN20nTlFF
-         gQi3LJbBcBuK3+6tckwmyRd2NGuLS7rqIcUE8tS1412Or/Q6oXaHbFmfn5YZA+PrUA
-         oBhZuSnErzsjj1IKDV3NJUVn9/y8Ju1SI0U6gUbaCyCCBNAzqCm/rmePtfkfF7bDQg
-         T/h0UOeT7daQN8SuwBrygx1o8UiK58yhPOZQMbSxVjA5JybE/zIG6Tg4EYZMmM6EQG
-         d9xq+l1SD+iZw==
+        b=MoKBqM/0cAcRdDNmglVs+rFdRPUNbzgcXYCqbrdI0E8S7QxdvYgDlOI+H5/EMcuwM
+         bxDx42I8DuZCQKpR34X1vfjGwAUecMfNeTynJiV/t3TZ9U+wQ5bpquctU7F9aIClX9
+         2rbjacg/OlVcf01A7TzO6TXp0E49uU3KaYvyyRfhpVcurQc6PpKzpyGstOh0K3ToYJ
+         25fczjxS9wZCXQbAlYTdHA6cE8OzAa/KFCmBPlrojktAMXvKZKz1hLoIRXk8mBETlM
+         CQuA4Iz6WKlS2qfshnANjPSgAkJRyiaA0MYKhl6ARPFryq54zanQks0Z+S7zSRa3d0
+         PGVGIkwD4Cmyw==
 From:   Mark Brown <broonie@kernel.org>
-To:     linux-spi@vger.kernel.org, Marek Vasut <marex@denx.de>
-Cc:     Amelie Delaunay <amelie.delaunay@st.com>,
-        Alain Volmat <alain.volmat@st.com>,
-        Antonio Borneo <antonio.borneo@st.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        Roman Guskov <rguskov@dh-electronics.com>
-In-Reply-To: <20210104123114.261596-1-marex@denx.de>
-References: <20210104123114.261596-1-marex@denx.de>
-Subject: Re: [PATCH] spi: stm32: Simplify stm32h7_spi_prepare_fthlv()
-Message-Id: <161055171029.21847.15772313801435250449.b4-ty@kernel.org>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     linux-renesas-soc@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-spi@vger.kernel.org
+In-Reply-To: <20210113101916.1147695-1-geert+renesas@glider.be>
+References: <20210113101916.1147695-1-geert+renesas@glider.be>
+Subject: Re: [PATCH 0/2] spi: sh-msiof: Advertize bit rate limits and actual speed
+Message-Id: <161055171029.21847.2841921385275436977.b4-ty@kernel.org>
 Date:   Wed, 13 Jan 2021 15:28:30 +0000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -52,9 +46,17 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 4 Jan 2021 13:31:14 +0100, Marek Vasut wrote:
-> Simplify stm32h7_spi_prepare_fthlv() function implementation,
-> no functional change intended.
+On Wed, 13 Jan 2021 11:19:14 +0100, Geert Uytterhoeven wrote:
+> 	Hi Mark,
+> 
+> This patch series makes the Renesas MSIOF SPI driver fill in actual
+> transfer speeds and controller limits, so the SPI core can take them
+> into account.
+> 
+> This has been tested on R-Car Gen2 and Gen3.
+> Thanks!
+> 
+> [...]
 
 Applied to
 
@@ -62,8 +64,10 @@ Applied to
 
 Thanks!
 
-[1/1] spi: stm32: Simplify stm32h7_spi_prepare_fthlv()
-      commit: 970e8eaa08195a26ba99ec0843968cbc7ad8e947
+[1/2] spi: sh-msiof: Fill in spi_transfer.effective_speed_hz
+      commit: 9a133f7b72f0b8d8896cbc7e4149c763b59168bb
+[2/2] spi: sh-msiof: Fill in controller speed limits
+      commit: 81f68479ec4ec91c0b0d7fb20db433be28e00497
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

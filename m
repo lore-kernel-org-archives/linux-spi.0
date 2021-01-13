@@ -2,89 +2,84 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D8E67C433DB
-	for <linux-spi@archiver.kernel.org>; Wed, 13 Jan 2021 12:35:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D1762C433E0
+	for <linux-spi@archiver.kernel.org>; Wed, 13 Jan 2021 15:30:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7D4C323339
-	for <linux-spi@archiver.kernel.org>; Wed, 13 Jan 2021 12:35:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 76FF923102
+	for <linux-spi@archiver.kernel.org>; Wed, 13 Jan 2021 15:30:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726244AbhAMMe7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 13 Jan 2021 07:34:59 -0500
-Received: from mail.kernel.org ([198.145.29.99]:57142 "EHLO mail.kernel.org"
+        id S1727162AbhAMP3p (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 13 Jan 2021 10:29:45 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33826 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726113AbhAMMe7 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 13 Jan 2021 07:34:59 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6D90723339;
-        Wed, 13 Jan 2021 12:34:18 +0000 (UTC)
+        id S1727171AbhAMP3o (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 13 Jan 2021 10:29:44 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9F54F233EA;
+        Wed, 13 Jan 2021 15:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610541259;
-        bh=h9vp+z5IyuvmKXzLAbhb8Rntz6LzAx339QE/OJ3/nOw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=T3rrwfotM2eUI1TK7AANu7ae8cfrIGpC/1dMQAq4jz9eY8RerRxE5bUfgvSc1hxyC
-         sSQX4XdCPnyy4ESqoi0hbMZjrpw8/uyY3A+6SxaYl2T7+RrQ6fu0jVrncMZpXL6dcH
-         d4gwa5IhWP9Ib89yfFpNL0NOS+DaDxdNoxO/yG/8HqCWDE0UNNwme1SGNBPVg0g5xF
-         MI+PJcjfeNYPecvBHJGqN7GXjz60aNTgHOilSrHmvNJFPsKfLDu8RbEiUmKRpVnlqQ
-         bfbBg+ZNRL0Va/oVHUK+PDqAOO4ybCULnREw1jo87SXViCfzEkM0NtTCjKdP+VJyhF
-         sXoBumfS6A+Fg==
-Date:   Wed, 13 Jan 2021 12:33:45 +0000
+        s=k20201202; t=1610551744;
+        bh=bWsINNChrgBVID6nsVHR+SPM6eCH/SYMN0yzKSvyWLI=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=XMP2/xx8ExtxJfyOqTZWgN0c/YBvqPnFh8VaLHcBswHGtFWbgsfN9YKpB0TMerCPJ
+         yZPW+qv5gJ/qfncbHsAQF/GFt7RVJfeQcEDveTY3ijkQvRuzkNktbhUZBIN20nTlFF
+         gQi3LJbBcBuK3+6tckwmyRd2NGuLS7rqIcUE8tS1412Or/Q6oXaHbFmfn5YZA+PrUA
+         oBhZuSnErzsjj1IKDV3NJUVn9/y8Ju1SI0U6gUbaCyCCBNAzqCm/rmePtfkfF7bDQg
+         T/h0UOeT7daQN8SuwBrygx1o8UiK58yhPOZQMbSxVjA5JybE/zIG6Tg4EYZMmM6EQG
+         d9xq+l1SD+iZw==
 From:   Mark Brown <broonie@kernel.org>
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc:     Sven Van Asbroeck <thesven73@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linuxppc-dev@ozlabs.org" <linuxppc-dev@ozlabs.org>
-Subject: Re: SPI not working on 5.10 and 5.11, bisected to 766c6b63aa04
- ("spi: fix client driver breakages when using GPIO descriptors")
-Message-ID: <20210113123345.GD4641@sirena.org.uk>
-References: <dc5d8d35-31aa-b36d-72b0-17c8a7c13061@csgroup.eu>
+To:     linux-spi@vger.kernel.org, Marek Vasut <marex@denx.de>
+Cc:     Amelie Delaunay <amelie.delaunay@st.com>,
+        Alain Volmat <alain.volmat@st.com>,
+        Antonio Borneo <antonio.borneo@st.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        Roman Guskov <rguskov@dh-electronics.com>
+In-Reply-To: <20210104123114.261596-1-marex@denx.de>
+References: <20210104123114.261596-1-marex@denx.de>
+Subject: Re: [PATCH] spi: stm32: Simplify stm32h7_spi_prepare_fthlv()
+Message-Id: <161055171029.21847.15772313801435250449.b4-ty@kernel.org>
+Date:   Wed, 13 Jan 2021 15:28:30 +0000
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="x4pBfXISqBoDm8sr"
-Content-Disposition: inline
-In-Reply-To: <dc5d8d35-31aa-b36d-72b0-17c8a7c13061@csgroup.eu>
-X-Cookie: Ignore previous fortune.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+On Mon, 4 Jan 2021 13:31:14 +0100, Marek Vasut wrote:
+> Simplify stm32h7_spi_prepare_fthlv() function implementation,
+> no functional change intended.
 
---x4pBfXISqBoDm8sr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied to
 
-On Wed, Jan 13, 2021 at 09:49:12AM +0100, Christophe Leroy wrote:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-> With commit 766c6b63aa04 ("spi: fix client driver breakages when using GPIO
-> descriptors") reverted, it is back to work:
+Thanks!
 
-...
+[1/1] spi: stm32: Simplify stm32h7_spi_prepare_fthlv()
+      commit: 970e8eaa08195a26ba99ec0843968cbc7ad8e947
 
-> What shall I do ?
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-I would guess that there's an error with the chip select polarity
-configuration on your system that just happened to work previously, I'd
-suggest fixing this in the board configuration to bring it in line with
-everything else.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---x4pBfXISqBoDm8sr
-Content-Type: application/pgp-signature; name="signature.asc"
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl/+6KgACgkQJNaLcl1U
-h9CnbQf/fAtzQXX3e/4ey7wtx8MdEcgSbGpsx3rzEpk48zhiyY1XjYqXC+64WFCB
-mZNlgLSCq5odAUTDBaOD0gn67E8AgVZi+NW0F8ibMLJQBEAa8wcEO7YhfEPcPJmv
-3Ncha3suxToG2lWeuLceU71mP8ixfoCgodzgV58iXcFqsERnIH60lIN3MpBvjXYt
-CB8YbV/g8OzUkB/rb+g/k8UvRQNO3I28DiyGnYBkYo/aM3OdGkzJnhKAc2MyH+VR
-f1no1xAcxyCL/aP0BZGMQ9hAPWVyqvisw85x7Ubv5dt7MMeqNKYQfq3Wi4bD4MRq
-NBrDQ7bCEF2WDrV2y4Z5iUWmhjWW5w==
-=zTCg
------END PGP SIGNATURE-----
-
---x4pBfXISqBoDm8sr--
+Thanks,
+Mark

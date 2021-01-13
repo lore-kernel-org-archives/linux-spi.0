@@ -2,83 +2,65 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 76702C4332E
-	for <linux-spi@archiver.kernel.org>; Wed, 13 Jan 2021 15:30:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86279C433E6
+	for <linux-spi@archiver.kernel.org>; Wed, 13 Jan 2021 15:31:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 52A2B23382
-	for <linux-spi@archiver.kernel.org>; Wed, 13 Jan 2021 15:30:30 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 57B1323383
+	for <linux-spi@archiver.kernel.org>; Wed, 13 Jan 2021 15:31:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727177AbhAMPaP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 13 Jan 2021 10:30:15 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34304 "EHLO mail.kernel.org"
+        id S1727599AbhAMPax (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 13 Jan 2021 10:30:53 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34510 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727017AbhAMPaO (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 13 Jan 2021 10:30:14 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 591AB2343F;
-        Wed, 13 Jan 2021 15:29:30 +0000 (UTC)
+        id S1725943AbhAMPaw (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 13 Jan 2021 10:30:52 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id 3F68D23102;
+        Wed, 13 Jan 2021 15:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610551774;
-        bh=B8HwA1TfxiyQY9ObkeveJFqfUY4ee1yqtB0TB+l0sQU=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=uH3S0lua4haDBe8xaIWVR/Bh/RVeGFsJnKEtdwOOwf3HDmgbQS2PDmpCuhzA9Cx9J
-         XWq5IQOyR2LRADbfU7+y8iTLTWIPd+N+qNVYVlCY0uN0Ew2b9M4kThPIZm4j0P1LFm
-         WLNJq1VnrFwPNK+v+IiwBQ+JWKIlWonNwMk62P8TQWCu/NB/Hn6/cNr+ap3stkUsCv
-         W6GQpTdnOsEIXC4IiE01AP7FhqwZYtdppsFaec24Djwp3CSjR3XR+gU9MVCcq9Hqp/
-         ZfJrs7syZFGx5QW90sm3U1LiHr965ku0o2B18hpFlpZj7sXiFyKBC7PT2Sra2zkp+S
-         KPaeF94PsD8jQ==
-From:   Mark Brown <broonie@kernel.org>
-To:     Yicong Yang <yangyicong@hisilicon.com>, linux-spi@vger.kernel.org
-Cc:     john.garry@huawei.com, prime.zeng@huawei.com
-In-Reply-To: <1610526716-14882-1-git-send-email-yangyicong@hisilicon.com>
-References: <1610526716-14882-1-git-send-email-yangyicong@hisilicon.com>
-Subject: Re: [PATCH] spi: hisi-sfc-v3xx: extend version checking compatibility
-Message-Id: <161055171029.21847.6604310912525486400.b4-ty@kernel.org>
-Date:   Wed, 13 Jan 2021 15:28:30 +0000
-MIME-Version: 1.0
+        s=k20201202; t=1610551812;
+        bh=gtKkge5HloFVkkhUEJIDV2MvGD6CXB+AQJnlJfOPvE8=;
+        h=Subject:From:Date:To:From;
+        b=Amc6+xzLKbBGl61JiE5NpOtmpFSHPlNuMkel71ANxfS6NhkckRhwPEHjOXwYs10ec
+         4xrXzlzO0xCjQ+BMJhr7Fyf2LdkHk91p2RHjBpSAGxH3ztOKHpHkkVcs9A6WuHneVf
+         ffExjZ/9nUNjuqd8Ipte8Kzx5xtf2GWN4QFrSy+4vLd7KTAsBdLngqRY7RgEc/893M
+         4ZMUvrwX6MbVKljUa5Hz6hNCkq2nQigKnHC+nWGgO8wyffVvA7k2Vmlqp9uzf/RsDd
+         mB/qgJHS18rC/Mxea6LTKjPtAXFgQiTYx51rPfyDHd9muDQMYwfhnlVfopfCTFoA+S
+         U4/K4j/2O2Ovw==
 Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <161055181211.4919.2227245752847106216.git-patchwork-summary@kernel.org>
+Date:   Wed, 13 Jan 2021 15:30:12 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 13 Jan 2021 16:31:56 +0800, Yicong Yang wrote:
-> Currently we use concrete version to determine the max_cmd_dword.
-> New entries should be added for compatible hardwares of new version
-> or on new platform, otherwise the device will use 16 dwords instead
-> of 64 even if it supports, which will degrade the performance.
-> This will decrease the compatibility and the maintainability.
-> 
-> Drop the switch-case statement of the version checking. Only version
-> less than 0x351 supports maximum 16 command dwords.
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (refs/heads/for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Series: spi: cadence-quadspi: Add QSPI controller support for Intel LGM SoC
+  Submitter: Ramuthevar,Vadivel MuruganX <vadivel.muruganx.ramuthevar@linux.intel.com>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=389857
+  Lore link: https://lore.kernel.org/r/20201124041840.31066-1-vadivel.muruganx.ramuthevar@linux.intel.com
+    Patches: [v9,1/5] spi: cadence-quadspi: Add QSPI support for Intel LGM SoC
+             [v9,2/5] spi: cadence-quadspi: Disable the DAC for Intel LGM SoC
+             [v9,3/5] spi: cadence-quadspi: Add multi-chipselect support for Intel LGM SoC
+             [v9,4/5] spi: Move cadence-quadspi.txt to Documentation/devicetree/bindings/spi
+             [v9,5/5] dt-bindings: spi: cadence-qspi: Add support for Intel lgm-qspi
 
-Thanks!
+Total patches: 5
 
-[1/1] spi: hisi-sfc-v3xx: extend version checking compatibility
-      commit: 566c6120f095be74862bed35f557f797478abade
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

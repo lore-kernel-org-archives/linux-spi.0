@@ -2,84 +2,78 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C833C4332B
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 28FC1C43381
 	for <linux-spi@archiver.kernel.org>; Wed, 13 Jan 2021 10:20:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 08C4C20789
+	by mail.kernel.org (Postfix) with ESMTP id D398222CE3
 	for <linux-spi@archiver.kernel.org>; Wed, 13 Jan 2021 10:20:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726801AbhAMKUB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1726809AbhAMKUB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Wed, 13 Jan 2021 05:20:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39768 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727037AbhAMKUB (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 13 Jan 2021 05:20:01 -0500
-Received: from andre.telenet-ops.be (andre.telenet-ops.be [IPv6:2a02:1800:120:4::f00:15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7472BC0617A2
+        with ESMTP id S1726801AbhAMKUA (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 13 Jan 2021 05:20:00 -0500
+Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [IPv6:2a02:1800:120:4::f00:13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 600DDC061794
         for <linux-spi@vger.kernel.org>; Wed, 13 Jan 2021 02:19:20 -0800 (PST)
 Received: from ramsan.of.borg ([84.195.186.194])
-        by andre.telenet-ops.be with bizsmtp
-        id GAKH2400V4C55Sk01AKHci; Wed, 13 Jan 2021 11:19:18 +0100
+        by baptiste.telenet-ops.be with bizsmtp
+        id GAKJ240064C55Sk01AKJ9p; Wed, 13 Jan 2021 11:19:18 +0100
 Received: from rox.of.borg ([192.168.97.57])
         by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <geert@linux-m68k.org>)
-        id 1kzdFF-003EHD-Jl; Wed, 13 Jan 2021 11:19:17 +0100
+        id 1kzdFF-003EHA-Ox; Wed, 13 Jan 2021 11:19:17 +0100
 Received: from geert by rox.of.borg with local (Exim 4.93)
         (envelope-from <geert@linux-m68k.org>)
-        id 1kzdFF-004oa7-5u; Wed, 13 Jan 2021 11:19:17 +0100
+        id 1kzdFF-004oa0-3y; Wed, 13 Jan 2021 11:19:17 +0100
 From:   Geert Uytterhoeven <geert+renesas@glider.be>
 To:     Mark Brown <broonie@kernel.org>
 Cc:     linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
         linux-sh@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 2/2] spi: sh-msiof: Fill in controller speed limits
-Date:   Wed, 13 Jan 2021 11:19:16 +0100
-Message-Id: <20210113101916.1147695-3-geert+renesas@glider.be>
+Subject: [PATCH 0/2] spi: sh-msiof: Advertize bit rate limits and actual speed
+Date:   Wed, 13 Jan 2021 11:19:14 +0100
+Message-Id: <20210113101916.1147695-1-geert+renesas@glider.be>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210113101916.1147695-1-geert+renesas@glider.be>
-References: <20210113101916.1147695-1-geert+renesas@glider.be>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Fill in the controller speed limits, so the SPI core can use them for
-validating SPI transfers, and adjust or reject transfers when needed.
+	Hi Mark,
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
- drivers/spi/spi-sh-msiof.c | 4 ++++
- 1 file changed, 4 insertions(+)
+This patch series makes the Renesas MSIOF SPI driver fill in actual
+transfer speeds and controller limits, so the SPI core can take them
+into account.
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 90b8aba8a4fd9f32..41ed9ff8fad0d3b3 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -1262,6 +1262,7 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 	const struct sh_msiof_chipdata *chipdata;
- 	struct sh_msiof_spi_info *info;
- 	struct sh_msiof_spi_priv *p;
-+	unsigned long clksrc;
- 	int i;
- 	int ret;
- 
-@@ -1337,6 +1338,9 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 	/* init controller code */
- 	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
- 	ctlr->mode_bits |= SPI_LSB_FIRST | SPI_3WIRE;
-+	clksrc = clk_get_rate(p->clk);
-+	ctlr->min_speed_hz = DIV_ROUND_UP(clksrc, 1024);
-+	ctlr->max_speed_hz = DIV_ROUND_UP(clksrc, 1 << p->min_div_pow);
- 	ctlr->flags = chipdata->ctlr_flags;
- 	ctlr->bus_num = pdev->id;
- 	ctlr->num_chipselect = p->info->num_chipselect;
+This has been tested on R-Car Gen2 and Gen3.
+Thanks!
+
+Geert Uytterhoeven (2):
+  spi: sh-msiof: Fill in spi_transfer.effective_speed_hz
+  spi: sh-msiof: Fill in controller speed limits
+
+ drivers/spi/spi-sh-msiof.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
 -- 
 2.25.1
 
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

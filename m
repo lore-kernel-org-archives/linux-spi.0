@@ -6,37 +6,39 @@ X-Spam-Status: No, score=-11.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
 	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EA491C433E0
-	for <linux-spi@archiver.kernel.org>; Thu, 21 Jan 2021 19:43:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2115EC433DB
+	for <linux-spi@archiver.kernel.org>; Thu, 21 Jan 2021 19:43:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A8A8F23A56
+	by mail.kernel.org (Postfix) with ESMTP id CF93523A57
 	for <linux-spi@archiver.kernel.org>; Thu, 21 Jan 2021 19:43:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726467AbhAUTnR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 21 Jan 2021 14:43:17 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47500 "EHLO mail.kernel.org"
+        id S1726672AbhAUTnU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 21 Jan 2021 14:43:20 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47546 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727334AbhAUTmo (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 21 Jan 2021 14:42:44 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id F254423A00;
-        Thu, 21 Jan 2021 19:42:00 +0000 (UTC)
+        id S1726860AbhAUTmr (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 21 Jan 2021 14:42:47 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 36DC023A56;
+        Thu, 21 Jan 2021 19:42:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611258121;
-        bh=I6c2xwFnsHq7GSqhf8pk3pLRL+0KSezCNtPWsHEboYg=;
+        s=k20201202; t=1611258126;
+        bh=rAgkYszEJz9W4BMbxLbBcrUeLlnFsko4ChyAd3HIxyo=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=rjoxXBMY0pqQXYoty8NKLZDdAHUg05gnIfOpmTtdrughYvtzRQcHtTnVlPFjaXYL/
-         NJw/KtHMkSRdgcxZTgldcrS/DECVPPNBmlGW6GDbJ0jqVARJjmp6C/45DIBY8MIV24
-         FfLRmoj99LdMEOUk96NMMUcBUDh1/pVVQyGoF3XgsxGed4aZogBarG8JcLx1s3ZFUB
-         dLITNx0/sW5ybqiMGupyRbYduRA/1NYrS0LNKrJQp66pRA+I8s6LNC/SozlP3V7ltR
-         /KGHSGpDDfP4NU2/+KyA7B2At9CQNIFENebIAp6zeWk3K6DZw9vFVTDlsZb+SHBxgO
-         2f8ePYbhR3NNg==
+        b=u1rmMPo/4QX07QvFkBlynU4YL2LzHu5B1HWmHrUeEBQEqWQwqlsHjM4RqcYZYmD66
+         uwu2SlcQt3UL/Bs8bYTStZl9/5obekZHzbiC9GH/Q4qRBNUmvQZQJRIiJn65JviVQj
+         SWQAl1mfyoBT5rQzsFqgu+gxgK4RqJyrXMiq9oFeLE3VAT/Y41kBk5wsAoac6MKVOr
+         UMwdZkIwJfD8czrjhF9SeZxbSbH1eXLCLOBtpul05MtXM2ab/XKxES1KItslcqwZb5
+         dcYHvZyOic8+zoB+wPoGjNTqwXuAkr/IVC1c5/fb3LpT1C05dbiikSF6xMGvHRutdQ
+         zDOSeEnvT67iw==
 From:   Mark Brown <broonie@kernel.org>
-To:     corentin <corentin.noel56@gmail.com>
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210121145236.26460-1-corentin.noel.external@stormshield.eu>
-References: <20210121145236.26460-1-corentin.noel.external@stormshield.eu>
-Subject: Re: [PATCH] drivers: spi: spi-au1550: Add suffix "int" to all "unsigned"
-Message-Id: <161125807797.36053.5140573069391915245.b4-ty@kernel.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Barry Song <baohua@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
+In-Reply-To: <20210120161658.3820610-1-arnd@kernel.org>
+References: <20210120161658.3820610-1-arnd@kernel.org>
+Subject: Re: [PATCH] spi: remove sirf prima/atlas driver
+Message-Id: <161125807796.36053.17088209626222757814.b4-ty@kernel.org>
 Date:   Thu, 21 Jan 2021 19:41:17 +0000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -45,9 +47,9 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 21 Jan 2021 15:52:36 +0100, corentin wrote:
-> 
-
+On Wed, 20 Jan 2021 17:14:00 +0100, Arnd Bergmann wrote:
+> The CSR SiRF prima2/atlas platforms are getting removed, so this driver
+> is no longer needed.
 
 Applied to
 
@@ -55,8 +57,8 @@ Applied to
 
 Thanks!
 
-[1/1] drivers: spi: spi-au1550: Add suffix "int" to all "unsigned"
-      commit: a783de290fc599606504b180c8f44f34cd201808
+[1/1] spi: remove sirf prima/atlas driver
+      commit: 181997b4940880b6ebc317b34dca38a17f107318
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

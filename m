@@ -2,116 +2,83 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D05DC433DB
-	for <linux-spi@archiver.kernel.org>; Wed, 20 Jan 2021 16:26:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0E3DC433DB
+	for <linux-spi@archiver.kernel.org>; Thu, 21 Jan 2021 23:23:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E72E2233EE
-	for <linux-spi@archiver.kernel.org>; Wed, 20 Jan 2021 16:26:42 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8177B2087E
+	for <linux-spi@archiver.kernel.org>; Thu, 21 Jan 2021 23:23:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403914AbhATQ0b (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 20 Jan 2021 11:26:31 -0500
-Received: from mail.kernel.org ([198.145.29.99]:44306 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732197AbhATQWR (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 20 Jan 2021 11:22:17 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E5FD7233EB
-        for <linux-spi@vger.kernel.org>; Wed, 20 Jan 2021 16:21:32 +0000 (UTC)
-Authentication-Results: mail.kernel.org;
-        dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="GL4cQ3DS"
-Envelope-to: broonie@sirena.co.uk
-Delivery-date: Wed, 20 Jan 2021 12:51:58 +0000
-Received: from mail.kernel.org ([198.145.29.99])
-        by cassiel.sirena.org.uk with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <SRS0=RSKV=GX=163.com=bianpan2016@kernel.org>)
-        id 1l2Cxo-0005UN-11
-        for broonie@sirena.co.uk; Wed, 20 Jan 2021 12:51:58 +0000
-Received: by mail.kernel.org (Postfix)
-        id 3F43C23355; Wed, 20 Jan 2021 12:51:54 +0000 (UTC)
-X-Greylist: delayed 1037 seconds by postgrey-1.34 at mail.kernel.org; Wed, 20 Jan 2021 12:51:48 UTC
-DMARC-Filter: OpenDMARC Filter v1.3.2 mail.kernel.org DBFA62333C
-Authentication-Results: mail.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: mail.kernel.org; spf=pass smtp.mailfrom=bianpan2016@163.com
-Received: by mail.kernel.org (Postfix) with SMTP id DBFA62333C
-        for <broonie@kernel.org>; Wed, 20 Jan 2021 12:51:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id; bh=QKBPJdPhe6W3ktMeVz
-        19YEpmtpvlJjr+9MD8d5vLnQc=; b=GL4cQ3DSEwXQ3/jn/OTpk3Nih5M4X1pnhP
-        H7zdG+1pJntREwK7czGn0zQ7ipNtbKhBcL/YZC17JMzRTNbqJZJz9VdquacdWcs6
-        bsyX/q5awCDYd4FFqk/2jdpDPNeQPvwW4tdg6C49mstAWpN6gOVEVkTCb5DJrw73
-        p3gAPT/Lo=
-Received: from localhost.localdomain (unknown [119.3.119.20])
-        by smtp8 (Coremail) with SMTP id DMCowADHLNoLIwhgVejfMw--.54081S4;
-        Wed, 20 Jan 2021 20:33:18 +0800 (CST)
-From:   Pan Bian <bianpan2016@163.com>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
-        Carlo Caione <carlo@caione.org>
-Cc:     linux-kernel@vger.kernel.org, Pan Bian <bianpan2016@163.com>
-Date:   Wed, 20 Jan 2021 04:33:13 -0800
-Message-Id: <20210120123313.107640-1-bianpan2016@163.com>
+        id S1726586AbhAUXXe (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 21 Jan 2021 18:23:34 -0500
+Received: from alln-iport-6.cisco.com ([173.37.142.93]:10245 "EHLO
+        alln-iport-6.cisco.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726473AbhAUXXC (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 21 Jan 2021 18:23:02 -0500
+X-Greylist: delayed 576 seconds by postgrey-1.27 at vger.kernel.org; Thu, 21 Jan 2021 18:23:00 EST
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=cisco.com; i=@cisco.com; l=678; q=dns/txt; s=iport;
+  t=1611271382; x=1612480982;
+  h=from:to:cc:subject:date:message-id;
+  bh=j380aoXZJEivOdde/Uk2ne3Qfwo96RvvIQjTxbYW+g4=;
+  b=IDEVKYvsF9RfCCmAXN61iTJGGMFsUdizZPjLWMA+Nk9qi855ru7tYbfl
+   d7XOJMnDkpEnsTN0aDsv+CaqLnAhM30M3FB/cKulXPsesBE3MThBm1mMt
+   4P2vgWfiPOWmNmCqBrUS4Gif4q6sRZlaYMczwwXWy1IWmnrS7+ddMtaba
+   A=;
+X-IPAS-Result: =?us-ascii?q?A0DFAQAGCQpgmJtdJa1iHgEBCxIMhgcBMi+yWQsBAQEPL?=
+ =?us-ascii?q?wQBAYRKgXkCJTgTAgMBAQEDAgMBAQEBBQEBAQIBBgQUAQEBAQEBAQGGQoZzK?=
+ =?us-ascii?q?YEVE4MmgwexPoIohVmDRIFDFIEkiFWFCxuBQT+EaIo3BIJFgQ6faJtagwGBH?=
+ =?us-ascii?q?Jo9DyKDGJ9XhiavcYFtIYFZMxoIGxWDJFAZDY47jlAgAzA3AgYKAQEDCYwTA?=
+ =?us-ascii?q?QE?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="5.79,365,1602547200"; 
+   d="scan'208";a="672208610"
+Received: from rcdn-core-4.cisco.com ([173.37.93.155])
+  by alln-iport-6.cisco.com with ESMTP/TLS/DHE-RSA-SEED-SHA; 21 Jan 2021 23:12:39 +0000
+Received: from zorba.cisco.com ([10.24.5.176])
+        by rcdn-core-4.cisco.com (8.15.2/8.15.2) with ESMTP id 10LNCbRM024470;
+        Thu, 21 Jan 2021 23:12:39 GMT
+From:   Daniel Walker <danielwa@cisco.com>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     xe-linux-external@cisco.com, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 2/2] spidev: Add cisco device compatible
+Date:   Thu, 21 Jan 2021 15:12:36 -0800
+Message-Id: <20210121231237.30664-2-danielwa@cisco.com>
 X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: DMCowADHLNoLIwhgVejfMw--.54081S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Kw45Jr4fJr1ftFykXry7KFg_yoW8JFyDpa
-        15WFZFkr48CFy8Gw48G39Fva4YqF1jy3s7Z3y8GwsYkF98JFnxJrn7ZFy5AayrKrykJr42
-        yrZrtr18AF18XrJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07bxv38UUUUU=
-X-Originating-IP: [119.3.119.20]
-X-CM-SenderInfo: held01tdqsiiqw6rljoofrz/xtbBUQ8gclaD9tCoEwAAsE
-X-SA-Exim-Connect-IP: 198.145.29.99
-X-SA-Exim-Mail-From: SRS0=RSKV=GX=163.com=bianpan2016@kernel.org
-Subject: [PATCH] regulator: axp20x: Fix reference cout leak
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: No (on cassiel.sirena.org.uk); Unknown failure
-X-TUID: H60/oaCO9bgn
+X-Auto-Response-Suppress: DR, OOF, AutoReply
+X-Outbound-SMTP-Client: 10.24.5.176, [10.24.5.176]
+X-Outbound-Node: rcdn-core-4.cisco.com
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Decrements the reference count of device node and its child node.
+Add compatible string for Cisco device present on the Cisco Petra
+platform.
 
-Fixes: dfe7a1b058bb ("regulator: AXP20x: Add support for regulators subsystem")
-Signed-off-by: Pan Bian <bianpan2016@163.com>
+Signed-off-by: Daniel Walker <danielwa@cisco.com>
+Cc: xe-linux-external@cisco.com
 ---
- drivers/regulator/axp20x-regulator.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/spi/spidev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/regulator/axp20x-regulator.c b/drivers/regulator/axp20x-regulator.c
-index 90cb8445f721..d260c442b788 100644
---- a/drivers/regulator/axp20x-regulator.c
-+++ b/drivers/regulator/axp20x-regulator.c
-@@ -1070,7 +1070,7 @@ static int axp20x_set_dcdc_freq(struct platform_device *pdev, u32 dcdcfreq)
- static int axp20x_regulator_parse_dt(struct platform_device *pdev)
- {
- 	struct device_node *np, *regulators;
--	int ret;
-+	int ret = 0;
- 	u32 dcdcfreq = 0;
- 
- 	np = of_node_get(pdev->dev.parent->of_node);
-@@ -1085,13 +1085,12 @@ static int axp20x_regulator_parse_dt(struct platform_device *pdev)
- 		ret = axp20x_set_dcdc_freq(pdev, dcdcfreq);
- 		if (ret < 0) {
- 			dev_err(&pdev->dev, "Error setting dcdc frequency: %d\n", ret);
--			return ret;
- 		}
--
- 		of_node_put(regulators);
- 	}
- 
--	return 0;
-+	of_node_put(np);
-+	return ret;
- }
- 
- static int axp20x_set_dcdc_workmode(struct regulator_dev *rdev, int id, u32 workmode)
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 859910ec8d9f..8cb4d923aeaa 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -682,6 +682,7 @@ static const struct of_device_id spidev_dt_ids[] = {
+ 	{ .compatible = "lwn,bk4" },
+ 	{ .compatible = "dh,dhcom-board" },
+ 	{ .compatible = "menlo,m53cpld" },
++	{ .compatible = "cisco,spi-petra" },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, spidev_dt_ids);
 -- 
 2.17.1
-
 

@@ -4,39 +4,39 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-11.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6686CC433DB
-	for <linux-spi@archiver.kernel.org>; Fri, 22 Jan 2021 14:51:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B5D56C4332E
+	for <linux-spi@archiver.kernel.org>; Fri, 22 Jan 2021 14:53:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2ABDC239EE
-	for <linux-spi@archiver.kernel.org>; Fri, 22 Jan 2021 14:51:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8F03A239EE
+	for <linux-spi@archiver.kernel.org>; Fri, 22 Jan 2021 14:53:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728948AbhAVOvj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 22 Jan 2021 09:51:39 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50966 "EHLO mail.kernel.org"
+        id S1728949AbhAVOwz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 22 Jan 2021 09:52:55 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50770 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728888AbhAVOup (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 22 Jan 2021 09:50:45 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A4DDB239EF;
-        Fri, 22 Jan 2021 14:50:04 +0000 (UTC)
+        id S1728932AbhAVOuk (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 22 Jan 2021 09:50:40 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5584F239D1;
+        Fri, 22 Jan 2021 14:49:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611327005;
-        bh=7A7B5OQ5Ao/GDDIKhsc6LXdXg8ZyvC1zrtW2QnGTv/U=;
+        s=k20201202; t=1611326999;
+        bh=LIWbCD2uGrjrfSZ9ob2z4YekJdktPLRnNNKEEy7uPxk=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=UwNiX0LfqphibQhPpnPBQ40XupO2rWF6LNnEK7QidCQqnSvmhfOovGy24UyI/ol49
-         cJ+8Eia3vSamM3XzA7fL2wd+lZiPVrKtdFb5dYvWMWjqW3MWZwNbTDAviuSPm+U1eY
-         hfwCQ7t7h79oOw5e71pXiFBMhLn0I8bPKAtcVr57e5LlCqzVyUdCWvmSSw9oLAt1U+
-         xZ3m1GJKdcuIZmjQi17fn8q0NoN4WYU8543/99JqZjZaqQ4+lWhgo5APUJ5Tyl98Ns
-         MJWO8en21cdKgk/zfEpGArFkDFk2W9d96ERwe1/plX6KqhEhx5I/0oWipAzLl7jytM
-         xEAZnXKps7UIA==
+        b=NXEdvqImj9TGCWc5YRa2oX6/NVgZYfUo4lMHg12/nyA2RLnt4vIueFV9nZtIFtkGQ
+         O7at/6PdjJP0KiQ5+1dNfHkcuMKKBayCK8GJhOFOGl/yif74NDQQ4D1/qZs5dxRRxT
+         +tlqQnj1pVs0t1PItyFFzCX/SMJsCkPlDghTSSwBU+C8FIhH3f83ew6PQ+25YMW+TM
+         SSr0ZXMsWYHf92a38sUH8HQk+xWWC5WpFTybVJCSRS6suB3wWWbsUX+/QgVhLG1bn1
+         y2HspCgh9O7eQPaAQ9+4oJSw+xas2zSYnoKufJUs1d+HL04XTOZs27B8j5liZiRxLe
+         tSHBXxPFqZiCQ==
 From:   Mark Brown <broonie@kernel.org>
 To:     corentin <corentin.noel56@gmail.com>
 Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20210122113052.40429-1-corentin.noel56@gmail.com>
-References: <20210122113052.40429-1-corentin.noel56@gmail.com>
-Subject: Re: [PATCH] drivers: spi: spi-au1550: quoted string break
-Message-Id: <161132696016.45468.11384338482499943212.b4-ty@kernel.org>
+In-Reply-To: <20210122082040.30788-1-corentin.noel.external@stormshield.eu>
+References: <20210122082040.30788-1-corentin.noel.external@stormshield.eu>
+Subject: Re: [PATCH] drivers: spi: spi-au1550: Fix various whitespace warnings
+Message-Id: <161132696017.45468.3045415103092275760.b4-ty@kernel.org>
 Date:   Fri, 22 Jan 2021 14:49:20 +0000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -45,7 +45,7 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, 22 Jan 2021 12:30:52 +0100, corentin wrote:
+On Fri, 22 Jan 2021 09:20:40 +0100, corentin wrote:
 > 
 
 
@@ -55,8 +55,8 @@ Applied to
 
 Thanks!
 
-[1/1] drivers: spi: spi-au1550: quoted string break
-      commit: 3ae04d823d293857eec7c6d435fe748f468b85a1
+[1/1] drivers: spi: spi-au1550: Fix various whitespace warnings
+      commit: 21f68c8259a8100ddee985c1536f32a19ed521df
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

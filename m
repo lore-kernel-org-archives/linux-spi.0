@@ -2,77 +2,77 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 45666C433E0
-	for <linux-spi@archiver.kernel.org>; Fri, 22 Jan 2021 13:27:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6686CC433DB
+	for <linux-spi@archiver.kernel.org>; Fri, 22 Jan 2021 14:51:46 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0A48023433
-	for <linux-spi@archiver.kernel.org>; Fri, 22 Jan 2021 13:27:44 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2ABDC239EE
+	for <linux-spi@archiver.kernel.org>; Fri, 22 Jan 2021 14:51:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727354AbhAVN1j (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 22 Jan 2021 08:27:39 -0500
-Received: from mail.kernel.org ([198.145.29.99]:53718 "EHLO mail.kernel.org"
+        id S1728948AbhAVOvj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 22 Jan 2021 09:51:39 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50966 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727439AbhAVN1g (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 22 Jan 2021 08:27:36 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id BA98923433;
-        Fri, 22 Jan 2021 13:26:55 +0000 (UTC)
+        id S1728888AbhAVOup (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 22 Jan 2021 09:50:45 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A4DDB239EF;
+        Fri, 22 Jan 2021 14:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611322016;
-        bh=hjXQm8uoGxiu0jpIfIS+/eytZP7PKz1arwZhIf9bWIc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ku0u4ERgQVPxliCOIqFC85nnpxA29kEo/CrzgZNYgLcfQHTru18aajmd62E5IeIex
-         wt6MWMyKHnDYggnHGwrkDjLK5TL7BAAzHkAbOZ32MJQyEyiKVJ5fXZWr/BRQy0LLw8
-         Frme03AQAhrBRbtqoy/yh//hXnj7w5TrTx9AdL6UsSuH+P/h9ud7AXiwLOygpB6up8
-         jw/GwH1c/8k2hFgjEgdPNii9uR3tJIycayswqC+Hido+mCBjaewAOQca5RZiWkPj/e
-         MQoZ8pML5F87LEb5ZuexDz4NKwFflq50rlP3/QR2bfpTm6n7dB6QqdpuzUoJhBrPNV
-         3XL9DoSH8egZQ==
-Date:   Fri, 22 Jan 2021 13:26:16 +0000
+        s=k20201202; t=1611327005;
+        bh=7A7B5OQ5Ao/GDDIKhsc6LXdXg8ZyvC1zrtW2QnGTv/U=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=UwNiX0LfqphibQhPpnPBQ40XupO2rWF6LNnEK7QidCQqnSvmhfOovGy24UyI/ol49
+         cJ+8Eia3vSamM3XzA7fL2wd+lZiPVrKtdFb5dYvWMWjqW3MWZwNbTDAviuSPm+U1eY
+         hfwCQ7t7h79oOw5e71pXiFBMhLn0I8bPKAtcVr57e5LlCqzVyUdCWvmSSw9oLAt1U+
+         xZ3m1GJKdcuIZmjQi17fn8q0NoN4WYU8543/99JqZjZaqQ4+lWhgo5APUJ5Tyl98Ns
+         MJWO8en21cdKgk/zfEpGArFkDFk2W9d96ERwe1/plX6KqhEhx5I/0oWipAzLl7jytM
+         xEAZnXKps7UIA==
 From:   Mark Brown <broonie@kernel.org>
-To:     Daniel Walker <danielwa@cisco.com>
-Cc:     xe-linux-external@cisco.com, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] spidev: Add cisco device compatible
-Message-ID: <20210122132616.GA6391@sirena.org.uk>
-References: <20210121231237.30664-2-danielwa@cisco.com>
+To:     corentin <corentin.noel56@gmail.com>
+Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20210122113052.40429-1-corentin.noel56@gmail.com>
+References: <20210122113052.40429-1-corentin.noel56@gmail.com>
+Subject: Re: [PATCH] drivers: spi: spi-au1550: quoted string break
+Message-Id: <161132696016.45468.11384338482499943212.b4-ty@kernel.org>
+Date:   Fri, 22 Jan 2021 14:49:20 +0000
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="UugvWAfsgieZRqgk"
-Content-Disposition: inline
-In-Reply-To: <20210121231237.30664-2-danielwa@cisco.com>
-X-Cookie: 98% lean.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+On Fri, 22 Jan 2021 12:30:52 +0100, corentin wrote:
+> 
 
---UugvWAfsgieZRqgk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Thu, Jan 21, 2021 at 03:12:36PM -0800, Daniel Walker wrote:
-> Add compatible string for Cisco device present on the Cisco Petra
-> platform.
+Applied to
 
-I'm missing patch 1 of this series, what's the story with dependencies?
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
---UugvWAfsgieZRqgk
-Content-Type: application/pgp-signature; name="signature.asc"
+Thanks!
 
------BEGIN PGP SIGNATURE-----
+[1/1] drivers: spi: spi-au1550: quoted string break
+      commit: 3ae04d823d293857eec7c6d435fe748f468b85a1
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmAK0ncACgkQJNaLcl1U
-h9AMoAf/SWETMvs5TwzdE0BaIffSd0xEsbkHnNQxMBpViE16u+H15jx4DcGFZo6n
-mfmtCo5ywobgcHaFuxKpN/nZ3gQW8oUGoHWw3xzUFVwQNVdD3vZQx8nmnUrWkYwW
-AVd9TD7bIYJVil+rQj8Y8afzV0fV5hnXlHdD67pVNZ58fMU5tgSFuagWuK2fLm6F
-Db4hZ2HfRir4QQjBgCpS3sLzHWZtc7Ol8fDKTtRcS1wTGKVlUK/Zp/P/5oM9Cs2/
-jFQoYlwYjugynxEkYwGdtlvrTqpWQnspTgDy2Op+EFU8Cah2xceLRlI+x7xwnfVL
-H0xt1AI3OwkyXCxcnV+b+QYxoC4xQA==
-=pnSl
------END PGP SIGNATURE-----
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
---UugvWAfsgieZRqgk--
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

@@ -2,105 +2,212 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-19.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D49A2C43381
-	for <linux-spi@archiver.kernel.org>; Wed, 27 Jan 2021 12:06:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9520BC433E0
+	for <linux-spi@archiver.kernel.org>; Wed, 27 Jan 2021 13:17:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8F28820786
-	for <linux-spi@archiver.kernel.org>; Wed, 27 Jan 2021 12:06:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5D410207A2
+	for <linux-spi@archiver.kernel.org>; Wed, 27 Jan 2021 13:17:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237604AbhA0MGh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 27 Jan 2021 07:06:37 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41492 "EHLO mail.kernel.org"
+        id S313398AbhAZWnU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 26 Jan 2021 17:43:20 -0500
+Received: from mail.kernel.org ([198.145.29.99]:37810 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237582AbhA0MDx (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 27 Jan 2021 07:03:53 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1227220773;
-        Wed, 27 Jan 2021 12:03:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1611748991;
-        bh=s9FyWRqQBYLlzUUdBkv3FZQxudbP70KKsuwRkeHWHEI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=M8giB4ORvL3mx55LaDcj1/tIi+BhFJb4mO4m9pyBQqvZIwgP2vqkgkDOQ4I1vn8HH
-         U8aP648RT1pUgCmU92gSCKiLyN0XGWtBCyfjACVz8RiJzgpFsPQ6OWW77wlJfo28NM
-         bwp9LYhhA6QMhnElnHGF3hN0OdPBasyFUrm9T7kg=
-Date:   Wed, 27 Jan 2021 13:03:08 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Russell King <linux@armlinux.org.uk>,
-        Matt Mackall <mpm@selenic.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Vinod Koul <vkoul@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Eric Anholt <eric@anholt.net>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Eric Auger <eric.auger@redhat.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        id S1731660AbhAZUYE (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 26 Jan 2021 15:24:04 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2F2B122241;
+        Tue, 26 Jan 2021 20:23:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1611692602;
+        bh=+EsghCNbKfoMSubSdhekrk7Lexni+2yNl926lkdHUas=;
+        h=From:To:Cc:Subject:Date:From;
+        b=qwRjUfaK417oQM28DFY8h3Ud1rcErIYR4T7Bmp0ZdAgKa8w/gXoTZIhygR/b+QPRG
+         ThnmNkLq6RievbT9icGV7yrwEj9kslvhrvzHMBIAe+3azHatZ+o54YYVY/VFvQvBG1
+         2gntQ3GiBy8pF00YTQQcx72bZ9S7TkTNnBSvI0+t+3R2q4faV0Vu9DS2TNjfCIy/sl
+         BN+RCQ+4b7QG2hM1TNlRmNed7E7oQyQNG8sJnffJFrhym128OmaPciCSTCDWH32zBb
+         eAWcDx0UiTtUizZXKQiyM8Yvcav5WB15Ojw/VbEQ8Gjnt6a25MtgXar7j9Ql1PQyCB
+         tvzORGfjCd4Jg==
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Jean Delvare <jdelvare@suse.com>,
         Guenter Roeck <linux@roeck-us.net>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, linux-kernel@vger.kernel.org,
-        kernel@pengutronix.de, Mike Leach <mike.leach@linaro.org>,
-        Leo Yan <leo.yan@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
-        linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, coresight@lists.linaro.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-i2c@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-rtc@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
-        kvm@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-watchdog@vger.kernel.org, alsa-devel@alsa-project.org
-Subject: Re: [PATCH v3 4/5] amba: Make the remove callback return void
-Message-ID: <YBFWfOmndoPckN1A@kroah.com>
-References: <20210126165835.687514-1-u.kleine-koenig@pengutronix.de>
- <20210126165835.687514-5-u.kleine-koenig@pengutronix.de>
+        Corentin Chary <corentin.chary@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc:     linux-spi@vger.kernel.org, acpi4asus-user@lists.sourceforge.net,
+        linux-hwmon@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        alsa-devel@alsa-project.org, linux-acpi@vger.kernel.org,
+        Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH] ACPI: Test for ACPI_SUCCESS rather than !ACPI_FAILURE
+Date:   Tue, 26 Jan 2021 14:23:17 -0600
+Message-Id: <20210126202317.2914080-1-helgaas@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210126165835.687514-5-u.kleine-koenig@pengutronix.de>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, Jan 26, 2021 at 05:58:34PM +0100, Uwe Kleine-König wrote:
-> All amba drivers return 0 in their remove callback. Together with the
-> driver core ignoring the return value anyhow, it doesn't make sense to
-> return a value here.
-> 
-> Change the remove prototype to return void, which makes it explicit that
-> returning an error value doesn't work as expected. This simplifies changing
-> the core remove callback to return void, too.
-> 
-> Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-> Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Acked-by: Krzysztof Kozlowski <krzk@kernel.org> # for drivers/memory
-> Acked-by: Mark Brown <broonie@kernel.org>
-> Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Acked-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The double negative makes it hard to read "if (!ACPI_FAILURE(status))".
+Replace it with "if (ACPI_SUCCESS(status))".
+
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+---
+
+This isn't really an ACPI patch, but I'm sending it to you, Rafael, since
+it seems easier to just apply these all at once.  But I'd be happy to split
+them up into individual patches if you'd rather.
+
+
+ drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c | 4 ++--
+ drivers/gpu/drm/radeon/radeon_bios.c     | 4 ++--
+ drivers/hwmon/acpi_power_meter.c         | 4 ++--
+ drivers/platform/x86/asus-laptop.c       | 6 +++---
+ drivers/spi/spi.c                        | 2 +-
+ sound/pci/hda/hda_intel.c                | 4 ++--
+ 6 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
+index 6333cada1e09..055f600eeed8 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
+@@ -291,7 +291,7 @@ static bool amdgpu_atrm_get_bios(struct amdgpu_device *adev)
+ 			continue;
+ 
+ 		status = acpi_get_handle(dhandle, "ATRM", &atrm_handle);
+-		if (!ACPI_FAILURE(status)) {
++		if (ACPI_SUCCESS(status)) {
+ 			found = true;
+ 			break;
+ 		}
+@@ -304,7 +304,7 @@ static bool amdgpu_atrm_get_bios(struct amdgpu_device *adev)
+ 				continue;
+ 
+ 			status = acpi_get_handle(dhandle, "ATRM", &atrm_handle);
+-			if (!ACPI_FAILURE(status)) {
++			if (ACPI_SUCCESS(status)) {
+ 				found = true;
+ 				break;
+ 			}
+diff --git a/drivers/gpu/drm/radeon/radeon_bios.c b/drivers/gpu/drm/radeon/radeon_bios.c
+index bb29cf02974d..43bbbfd6ade8 100644
+--- a/drivers/gpu/drm/radeon/radeon_bios.c
++++ b/drivers/gpu/drm/radeon/radeon_bios.c
+@@ -205,7 +205,7 @@ static bool radeon_atrm_get_bios(struct radeon_device *rdev)
+ 			continue;
+ 
+ 		status = acpi_get_handle(dhandle, "ATRM", &atrm_handle);
+-		if (!ACPI_FAILURE(status)) {
++		if (ACPI_SUCCESS(status)) {
+ 			found = true;
+ 			break;
+ 		}
+@@ -218,7 +218,7 @@ static bool radeon_atrm_get_bios(struct radeon_device *rdev)
+ 				continue;
+ 
+ 			status = acpi_get_handle(dhandle, "ATRM", &atrm_handle);
+-			if (!ACPI_FAILURE(status)) {
++			if (ACPI_SUCCESS(status)) {
+ 				found = true;
+ 				break;
+ 			}
+diff --git a/drivers/hwmon/acpi_power_meter.c b/drivers/hwmon/acpi_power_meter.c
+index 848718ab7312..7d3ddcba34ce 100644
+--- a/drivers/hwmon/acpi_power_meter.c
++++ b/drivers/hwmon/acpi_power_meter.c
+@@ -161,7 +161,7 @@ static ssize_t set_avg_interval(struct device *dev,
+ 	mutex_lock(&resource->lock);
+ 	status = acpi_evaluate_integer(resource->acpi_dev->handle, "_PAI",
+ 				       &args, &data);
+-	if (!ACPI_FAILURE(status))
++	if (ACPI_SUCCESS(status))
+ 		resource->avg_interval = temp;
+ 	mutex_unlock(&resource->lock);
+ 
+@@ -232,7 +232,7 @@ static ssize_t set_cap(struct device *dev, struct device_attribute *devattr,
+ 	mutex_lock(&resource->lock);
+ 	status = acpi_evaluate_integer(resource->acpi_dev->handle, "_SHL",
+ 				       &args, &data);
+-	if (!ACPI_FAILURE(status))
++	if (ACPI_SUCCESS(status))
+ 		resource->cap = temp;
+ 	mutex_unlock(&resource->lock);
+ 
+diff --git a/drivers/platform/x86/asus-laptop.c b/drivers/platform/x86/asus-laptop.c
+index 0edafe687fa9..bfea656e910c 100644
+--- a/drivers/platform/x86/asus-laptop.c
++++ b/drivers/platform/x86/asus-laptop.c
+@@ -861,7 +861,7 @@ static ssize_t infos_show(struct device *dev, struct device_attribute *attr,
+ 	 * The significance of others is yet to be found.
+ 	 */
+ 	rv = acpi_evaluate_integer(asus->handle, "SFUN", NULL, &temp);
+-	if (!ACPI_FAILURE(rv))
++	if (ACPI_SUCCESS(rv))
+ 		len += sprintf(page + len, "SFUN value         : %#x\n",
+ 			       (uint) temp);
+ 	/*
+@@ -873,7 +873,7 @@ static ssize_t infos_show(struct device *dev, struct device_attribute *attr,
+ 	 * takes several seconds to run on some systems.
+ 	 */
+ 	rv = acpi_evaluate_integer(asus->handle, "HWRS", NULL, &temp);
+-	if (!ACPI_FAILURE(rv))
++	if (ACPI_SUCCESS(rv))
+ 		len += sprintf(page + len, "HWRS value         : %#x\n",
+ 			       (uint) temp);
+ 	/*
+@@ -884,7 +884,7 @@ static ssize_t infos_show(struct device *dev, struct device_attribute *attr,
+ 	 * silently ignored.
+ 	 */
+ 	rv = acpi_evaluate_integer(asus->handle, "ASYM", NULL, &temp);
+-	if (!ACPI_FAILURE(rv))
++	if (ACPI_SUCCESS(rv))
+ 		len += sprintf(page + len, "ASYM value         : %#x\n",
+ 			       (uint) temp);
+ 	if (asus->dsdt_info) {
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 720ab34784c1..801d8b499788 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2210,7 +2210,7 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+ 		return AE_OK;
+ 
+ 	if (!lookup.max_speed_hz &&
+-	    !ACPI_FAILURE(acpi_get_parent(adev->handle, &parent_handle)) &&
++	    ACPI_SUCCESS(acpi_get_parent(adev->handle, &parent_handle)) &&
+ 	    ACPI_HANDLE(ctlr->dev.parent) == parent_handle) {
+ 		/* Apple does not use _CRS but nested devices for SPI slaves */
+ 		acpi_spi_parse_apple_properties(adev, &lookup);
+diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
+index 770ad25f1907..fe8049cd2765 100644
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -1444,7 +1444,7 @@ static bool atpx_present(void)
+ 		dhandle = ACPI_HANDLE(&pdev->dev);
+ 		if (dhandle) {
+ 			status = acpi_get_handle(dhandle, "ATPX", &atpx_handle);
+-			if (!ACPI_FAILURE(status)) {
++			if (ACPI_SUCCESS(status)) {
+ 				pci_dev_put(pdev);
+ 				return true;
+ 			}
+@@ -1454,7 +1454,7 @@ static bool atpx_present(void)
+ 		dhandle = ACPI_HANDLE(&pdev->dev);
+ 		if (dhandle) {
+ 			status = acpi_get_handle(dhandle, "ATPX", &atpx_handle);
+-			if (!ACPI_FAILURE(status)) {
++			if (ACPI_SUCCESS(status)) {
+ 				pci_dev_put(pdev);
+ 				return true;
+ 			}
+-- 
+2.25.1
+

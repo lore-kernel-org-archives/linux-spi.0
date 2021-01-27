@@ -2,86 +2,97 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 486CBC433E9
-	for <linux-spi@archiver.kernel.org>; Wed, 27 Jan 2021 17:19:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49BE5C4332B
+	for <linux-spi@archiver.kernel.org>; Wed, 27 Jan 2021 17:45:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 020D760187
-	for <linux-spi@archiver.kernel.org>; Wed, 27 Jan 2021 17:19:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1059D64D9E
+	for <linux-spi@archiver.kernel.org>; Wed, 27 Jan 2021 17:45:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229950AbhA0RTH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 27 Jan 2021 12:19:07 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40198 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235673AbhA0RR3 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 27 Jan 2021 12:17:29 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 909D860187;
-        Wed, 27 Jan 2021 17:16:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1611767779;
-        bh=tgc2UpnkFEr+6Oo2VTYkvyACd+6I6bE9ssogdiQszhw=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=jGMjbqt7jRh8sraHfE9Ul/AJPDHzlAyqHNyuRtfeqyEWthQR7DvQC2F9j7WHgIzdq
-         0zNH72dhj8ecNcizagYbKTPmKfDDjKg/LCMZKfp22IQyhhVL/tosmxf07rZ8X3W861
-         I/DZSCcdigP2cTF2h8AEWyvPnG7xOHjlCRXdw8Sio7lkkTG3xnQso79XsjgrDI2Aq6
-         ZqYRXKnfBHa7Hyf6/IdaUC3dSIbqWTRezow51OX9qoDZQBdgRXgh7B1p/UeNtw2eVH
-         2HFbWjsYkaEiSSzZZ9zZBMtLQNm3lm8xWZ7nQeMKULVL1NNtNrAHBAjq+00E7hf2Yn
-         FP3O+lV22na5Q==
-From:   Mark Brown <broonie@kernel.org>
-To:     richard@nod.at, vigneshr@ti.com, miquel.raynal@bootlin.com,
-        linux-spi@vger.kernel.org, Yicong Yang <yangyicong@hisilicon.com>,
-        tudor.ambarus@microchip.com, linux-mtd@lists.infradead.org
-Cc:     linuxarm@openeuler.org, john.garry@huawei.com,
-        prime.zeng@huawei.com
-In-Reply-To: <1611740450-47975-1-git-send-email-yangyicong@hisilicon.com>
-References: <1611740450-47975-1-git-send-email-yangyicong@hisilicon.com>
-Subject: Re: (subset) [PATCH 0/2] Add check of 4-byte when parsing SFDP 4bait table
-Message-Id: <161176773014.34911.1124682946060569750.b4-ty@kernel.org>
-Date:   Wed, 27 Jan 2021 17:15:30 +0000
+        id S1344097AbhA0RpE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 27 Jan 2021 12:45:04 -0500
+Received: from mail-ot1-f41.google.com ([209.85.210.41]:43381 "EHLO
+        mail-ot1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236425AbhA0Ro7 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 27 Jan 2021 12:44:59 -0500
+Received: by mail-ot1-f41.google.com with SMTP id v1so2489144ott.10;
+        Wed, 27 Jan 2021 09:44:44 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=iHVRlfV9EQu4gPj5dVenKguyA2U2WXu41Z7MOBH2q+k=;
+        b=LPm4Nd3P5iDXt5n/WX5rX0Qet0y5kDWLmoWOWa4cdU+SCGR4EPxkY9OZQdBnKmFhUw
+         YK7xnUBHrWykplK/+mR4h38u8jUWPIuUwvX2x88oLc7pWusPZWwb7M9OfyTZVnrb29X8
+         y/l1Vyci1kIRyFduiNT4Gma3gxUIc731uEdPwEOTHhPHqqt/hovG+z0I329Sr8ZKUJrY
+         INh0uY+30oxqw+eg3mF9VOWZohZ8kr44hRNFx51eHpntvCEq0cMrd4dmmSOSbIBbHgQ9
+         kksksED3Qms4/sQ10tJ2HFk2OamNUiJ3vYiwv/o7FgNUBCJdyv4AioAoMfUCvKCxf6wo
+         suNw==
+X-Gm-Message-State: AOAM532UMZbORRP7Nu0TUJW6tvf1zU1TmEnx9b524b0BcR4IsrEwmwxU
+        KxLHZxoSkO/zCNM8B5Bznt/WCBLCY3cqhuZ6FMs=
+X-Google-Smtp-Source: ABdhPJx3wpBSkXPSpXDG6M0ltMbmguxQMImznzdVeAu1VT6FKAr93J3QfMztoWACmNnTeM4RMvDtc7yrOgIFRwkLX6w=
+X-Received: by 2002:a05:6830:2313:: with SMTP id u19mr8675107ote.321.1611769458811;
+ Wed, 27 Jan 2021 09:44:18 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <CAJZ5v0ir4=urUviCR_4N96revWZkHVDyNNUiaJ3jjGzpX8zLVQ@mail.gmail.com>
+ <20210127160650.GA2991034@bjorn-Precision-5520>
+In-Reply-To: <20210127160650.GA2991034@bjorn-Precision-5520>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 27 Jan 2021 18:44:07 +0100
+Message-ID: <CAJZ5v0gmP2QBmMWkdVaGy+j6+FFPH6VGfRMU9ncz6m4BhBPgFA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: Test for ACPI_SUCCESS rather than !ACPI_FAILURE
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Corentin Chary <corentin.chary@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        acpi4asus-user@lists.sourceforge.net, linux-hwmon@vger.kernel.org,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        "moderated list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." 
+        <alsa-devel@alsa-project.org>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 27 Jan 2021 17:40:48 +0800, Yicong Yang wrote:
-> Add check of 4-byte address mode support when parsing SFDP 4bait. Some
-> flash will provide a 4bait table and the spi-nor core will convert the
-> address mode to 4-byte without checking whether it's actually supported
-> or not by the controller. For example, the 16M s25fs128s1 provides the
-> 4bait and will be convert to 4-byte address mode, which makes it unusable
-> on hisi-sfc-v3xx on hip08 platform.
-> 
-> [...]
+On Wed, Jan 27, 2021 at 5:06 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+>
+> On Wed, Jan 27, 2021 at 04:44:02PM +0100, Rafael J. Wysocki wrote:
+> > On Wed, Jan 27, 2021 at 4:16 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > >
+> > > On Tue, Jan 26, 2021 at 02:23:17PM -0600, Bjorn Helgaas wrote:
+> > > > From: Bjorn Helgaas <bhelgaas@google.com>
+> > > >
+> > > > The double negative makes it hard to read "if (!ACPI_FAILURE(status))".
+> > > > Replace it with "if (ACPI_SUCCESS(status))".
+> > > >
+> > > > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> > > > ---
+> > > >
+> > > > This isn't really an ACPI patch, but I'm sending it to you, Rafael, since
+> > > > it seems easier to just apply these all at once.  But I'd be happy to split
+> > > > them up into individual patches if you'd rather.
+> > >
+> > > Thanks, everybody.  Rafael, I'll just merge this via my tree to avoid
+> > > burdening you.
+> >
+> > It may conflict with some janitorial stuff I'm doing, though, so
+> > unless you've already applied it, I'd prefer to take it via the ACPI
+> > tree.
+>
+> No problem, it's all yours!
 
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
-
-Thanks!
-
-[2/2] spi: hisi-sfc-v3xx: add address mode check
-      commit: 6d2386e36440165da782dbc5c0de40f31665e108
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Applied as 5.12 material with the ACKs, thanks!

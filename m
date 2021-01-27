@@ -2,109 +2,128 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.2 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
+X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 61A23C433E0
-	for <linux-spi@archiver.kernel.org>; Wed, 27 Jan 2021 08:29:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B57F9C433E6
+	for <linux-spi@archiver.kernel.org>; Wed, 27 Jan 2021 09:46:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1637F2073C
-	for <linux-spi@archiver.kernel.org>; Wed, 27 Jan 2021 08:29:51 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6B20A20771
+	for <linux-spi@archiver.kernel.org>; Wed, 27 Jan 2021 09:46:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232278AbhA0I3p (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 27 Jan 2021 03:29:45 -0500
-Received: from mleia.com ([178.79.152.223]:33394 "EHLO mail.mleia.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232643AbhA0IZI (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 27 Jan 2021 03:25:08 -0500
-Received: from mail.mleia.com (localhost [127.0.0.1])
-        by mail.mleia.com (Postfix) with ESMTP id 9227042EB56;
-        Wed, 27 Jan 2021 08:12:58 +0000 (UTC)
-Subject: Re: [PATCH v3 4/5] amba: Make the remove callback return void
-To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
-Cc:     Russell King <linux@armlinux.org.uk>,
-        Matt Mackall <mpm@selenic.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Vinod Koul <vkoul@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Eric Anholt <eric@anholt.net>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Mark Brown <broonie@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Eric Auger <eric.auger@redhat.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, linux-kernel@vger.kernel.org,
-        kernel@pengutronix.de, Mike Leach <mike.leach@linaro.org>,
-        Leo Yan <leo.yan@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
-        linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, coresight@lists.linaro.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-i2c@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-rtc@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
-        kvm@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-watchdog@vger.kernel.org, alsa-devel@alsa-project.org
-References: <20210126165835.687514-1-u.kleine-koenig@pengutronix.de>
- <20210126165835.687514-5-u.kleine-koenig@pengutronix.de>
-From:   Vladimir Zapolskiy <vz@mleia.com>
-Message-ID: <b9bfa80b-ed5f-50f9-de50-76090007556c@mleia.com>
-Date:   Wed, 27 Jan 2021 10:12:55 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+        id S235017AbhA0JpL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 27 Jan 2021 04:45:11 -0500
+Received: from szxga06-in.huawei.com ([45.249.212.32]:11453 "EHLO
+        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235451AbhA0Jnu (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 27 Jan 2021 04:43:50 -0500
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
+        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4DQdt95jmBzjCw0;
+        Wed, 27 Jan 2021 17:42:09 +0800 (CST)
+Received: from localhost.localdomain (10.67.165.24) by
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.498.0; Wed, 27 Jan 2021 17:42:59 +0800
+From:   Yicong Yang <yangyicong@hisilicon.com>
+To:     <tudor.ambarus@microchip.com>, <broonie@kernel.org>,
+        <miquel.raynal@bootlin.com>, <richard@nod.at>, <vigneshr@ti.com>,
+        <linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>
+CC:     <john.garry@huawei.com>, <prime.zeng@huawei.com>,
+        <yangyicong@hisilicon.com>, <linuxarm@openeuler.org>
+Subject: [PATCH 2/2] spi: hisi-sfc-v3xx: add address mode check
+Date:   Wed, 27 Jan 2021 17:40:50 +0800
+Message-ID: <1611740450-47975-3-git-send-email-yangyicong@hisilicon.com>
+X-Mailer: git-send-email 2.8.1
+In-Reply-To: <1611740450-47975-1-git-send-email-yangyicong@hisilicon.com>
+References: <1611740450-47975-1-git-send-email-yangyicong@hisilicon.com>
 MIME-Version: 1.0
-In-Reply-To: <20210126165835.687514-5-u.kleine-koenig@pengutronix.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
-X-CRM114-CacheID: sfid-20210127_081258_639999_D23EB9E2 
-X-CRM114-Status: GOOD (  14.44  )
+Content-Type: text/plain
+X-Originating-IP: [10.67.165.24]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 1/26/21 6:58 PM, Uwe Kleine-König wrote:
-> All amba drivers return 0 in their remove callback. Together with the
-> driver core ignoring the return value anyhow, it doesn't make sense to
-> return a value here.
-> 
-> Change the remove prototype to return void, which makes it explicit that
-> returning an error value doesn't work as expected. This simplifies changing
-> the core remove callback to return void, too.
-> 
-> Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-> Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Acked-by: Krzysztof Kozlowski <krzk@kernel.org> # for drivers/memory
-> Acked-by: Mark Brown <broonie@kernel.org>
-> Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Acked-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+The address mode is either 3 or 4 for the controller, which is configured
+by the firmware and cannot be modified in the OS driver. Get the
+firmware configuration and add address mode check in the .supports_op()
+to block invalid operations.
 
-For drivers/memory/pl172.c:
+Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+Acked-by: John Garry <john.garry@huawei.com>
+---
+ drivers/spi/spi-hisi-sfc-v3xx.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-Acked-by: Vladimir Zapolskiy <vz@mleia.com>
+diff --git a/drivers/spi/spi-hisi-sfc-v3xx.c b/drivers/spi/spi-hisi-sfc-v3xx.c
+index 4650b48..f71b780 100644
+--- a/drivers/spi/spi-hisi-sfc-v3xx.c
++++ b/drivers/spi/spi-hisi-sfc-v3xx.c
+@@ -19,6 +19,8 @@
+ 
+ #define HISI_SFC_V3XX_VERSION (0x1f8)
+ 
++#define HISI_SFC_V3XX_GLB_CFG (0x100)
++#define HISI_SFC_V3XX_GLB_CFG_CS0_ADDR_MODE BIT(2)
+ #define HISI_SFC_V3XX_RAW_INT_STAT (0x120)
+ #define HISI_SFC_V3XX_INT_STAT (0x124)
+ #define HISI_SFC_V3XX_INT_MASK (0x128)
+@@ -75,6 +77,7 @@ struct hisi_sfc_v3xx_host {
+ 	void __iomem *regbase;
+ 	int max_cmd_dword;
+ 	struct completion *completion;
++	u8 address_mode;
+ 	int irq;
+ };
+ 
+@@ -168,10 +171,18 @@ static int hisi_sfc_v3xx_adjust_op_size(struct spi_mem *mem,
+ static bool hisi_sfc_v3xx_supports_op(struct spi_mem *mem,
+ 				      const struct spi_mem_op *op)
+ {
++	struct spi_device *spi = mem->spi;
++	struct hisi_sfc_v3xx_host *host;
++
++	host = spi_controller_get_devdata(spi->master);
++
+ 	if (op->data.buswidth > 4 || op->dummy.buswidth > 4 ||
+ 	    op->addr.buswidth > 4 || op->cmd.buswidth > 4)
+ 		return false;
+ 
++	if (op->addr.nbytes != host->address_mode && op->addr.nbytes)
++		return false;
++
+ 	return spi_mem_default_supports_op(mem, op);
+ }
+ 
+@@ -416,7 +427,7 @@ static int hisi_sfc_v3xx_probe(struct platform_device *pdev)
+ 	struct device *dev = &pdev->dev;
+ 	struct hisi_sfc_v3xx_host *host;
+ 	struct spi_controller *ctlr;
+-	u32 version;
++	u32 version, glb_config;
+ 	int ret;
+ 
+ 	ctlr = spi_alloc_master(&pdev->dev, sizeof(*host));
+@@ -463,6 +474,18 @@ static int hisi_sfc_v3xx_probe(struct platform_device *pdev)
+ 	ctlr->num_chipselect = 1;
+ 	ctlr->mem_ops = &hisi_sfc_v3xx_mem_ops;
+ 
++	/*
++	 * The address mode of the controller is either 3 or 4,
++	 * which is indicated by the address mode bit in
++	 * the global config register. The register is read only
++	 * for the OS driver.
++	 */
++	glb_config = readl(host->regbase + HISI_SFC_V3XX_GLB_CFG);
++	if (glb_config & HISI_SFC_V3XX_GLB_CFG_CS0_ADDR_MODE)
++		host->address_mode = 4;
++	else
++		host->address_mode = 3;
++
+ 	version = readl(host->regbase + HISI_SFC_V3XX_VERSION);
+ 
+ 	switch (version) {
+-- 
+2.8.1
 
---
-Best wishes,
-Vladimir

@@ -2,162 +2,244 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.2 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0BC61C433DB
-	for <linux-spi@archiver.kernel.org>; Tue, 26 Jan 2021 22:42:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2ADC8C433DB
+	for <linux-spi@archiver.kernel.org>; Wed, 27 Jan 2021 05:05:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D7E6D204EF
-	for <linux-spi@archiver.kernel.org>; Tue, 26 Jan 2021 22:42:01 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F2FE22068D
+	for <linux-spi@archiver.kernel.org>; Wed, 27 Jan 2021 05:05:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729712AbhAZWlt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 26 Jan 2021 17:41:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56872 "EHLO
+        id S229552AbhA0FE7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 27 Jan 2021 00:04:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391719AbhAZRcY (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 26 Jan 2021 12:32:24 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63F4DC06174A
-        for <linux-spi@vger.kernel.org>; Tue, 26 Jan 2021 09:31:44 -0800 (PST)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1l4RgD-00045p-EA; Tue, 26 Jan 2021 17:59:01 +0100
-Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1l4Rg3-0003hY-Ft; Tue, 26 Jan 2021 17:58:51 +0100
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Russell King <linux@armlinux.org.uk>,
-        Matt Mackall <mpm@selenic.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Vinod Koul <vkoul@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Eric Anholt <eric@anholt.net>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        with ESMTP id S232246AbhA0C5I (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 26 Jan 2021 21:57:08 -0500
+Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C724C061788;
+        Tue, 26 Jan 2021 18:17:07 -0800 (PST)
+Received: by mail-ot1-x335.google.com with SMTP id h14so269536otr.4;
+        Tue, 26 Jan 2021 18:17:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=6RQrtHgaCb4lMM8fMMEFtRSX9i0mstcMB4wNsJgI/MI=;
+        b=T6Lo6Ii/bnJxz2vRaiF2Gti0hvCGinxBzrtBlwrYo4bXEVfvVVpjiPCrFs9/pdbu2c
+         7rGnPVQR9bFaaslAIsvoLPhfZEtbU4K265AixqeJ8C+/+l3dlIT1luwdttlDeiY5d0ga
+         uIw4XRQ1cQ1jHFTeXsSFNNJvNTdEZ84Ip4V3ZIxjPopth8YVVts2rRtbftVuIZ45jS8g
+         rCV4GRV6KI8OkXEKkGLhv/DRESs4HWNySBNhNo4CY9I8+fWWAwwVweHdfJO2v62yyXUr
+         efRdqh3U7FP4+F5lkGMraytiEcrqwoG1ziFQ+aHvjd/VARCjEjZKtRAMbNRcGm5/wW+k
+         2jrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=6RQrtHgaCb4lMM8fMMEFtRSX9i0mstcMB4wNsJgI/MI=;
+        b=cu1YrXozgtBiG6clpaNRnZx8S0pcwQM8HENW9hYNJLw3GI1HOb1Jll0K4YCRmALWks
+         ut4gbOKQodSvZFIFUu9BJfGtTUQjX/gFKFS7hvPZiS045Zmgf+xI0PxEWzglGoW6dX5C
+         SZABnDiiiGWS9pEtlAKg75S/PED7+kq2DeDFreyb2Lc7DhjkkH4FRpg7ZrsxXzyxKOr1
+         45VY0kny48BP5XdU/CQ67ZQ49vbRmlD25tnF7nyt2m4r1X6cMIqPv4tJHQte3Iye+NrU
+         xaGjnShQI3/cS//BVNoRQowmsBQhM5yIF1A2VuTBTTpReUK0xRlocShbKBSdJRldgh7P
+         kL+g==
+X-Gm-Message-State: AOAM531iTGISs5RLmMF1t0DTH5UV28wLFYgbBL73cU8DpTNEF9NLMcWR
+        T9MrZeeY55uTdeL3rdOOGhA=
+X-Google-Smtp-Source: ABdhPJyifwvpQ79A0lInOexsJ2UPKtY+Jo11Y/jeVCEYoOuTRlsI5eNy2f6YDNYsG6g4Fj+ErKD5Ow==
+X-Received: by 2002:a05:6830:402f:: with SMTP id i15mr6023104ots.345.1611713826628;
+        Tue, 26 Jan 2021 18:17:06 -0800 (PST)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id s69sm173201oih.38.2021.01.26.18.17.05
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 26 Jan 2021 18:17:05 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Tue, 26 Jan 2021 18:17:04 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Corentin Chary <corentin.chary@gmail.com>,
         Mark Brown <broonie@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Eric Auger <eric.auger@redhat.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc:     linux-kernel@vger.kernel.org, kernel@pengutronix.de,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig.org@pengutronix.de>,
-        Mike Leach <mike.leach@linaro.org>,
-        Leo Yan <leo.yan@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
-        linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, coresight@lists.linaro.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-i2c@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-rtc@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
-        kvm@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-watchdog@vger.kernel.org, alsa-devel@alsa-project.org
-Subject: [PATCH v3 0/5] amba: minor fix and various cleanups
-Date:   Tue, 26 Jan 2021 17:58:30 +0100
-Message-Id: <20210126165835.687514-1-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.29.2
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, linux-spi@vger.kernel.org,
+        acpi4asus-user@lists.sourceforge.net, linux-hwmon@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org, alsa-devel@alsa-project.org,
+        linux-acpi@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH] ACPI: Test for ACPI_SUCCESS rather than !ACPI_FAILURE
+Message-ID: <20210127021704.GA44695@roeck-us.net>
+References: <20210126202317.2914080-1-helgaas@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-spi@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210126202317.2914080-1-helgaas@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Uwe Kleine-König <u.kleine-koenig.org@pengutronix.de
+On Tue, Jan 26, 2021 at 02:23:17PM -0600, Bjorn Helgaas wrote:
+> From: Bjorn Helgaas <bhelgaas@google.com>
+> 
+> The double negative makes it hard to read "if (!ACPI_FAILURE(status))".
+> Replace it with "if (ACPI_SUCCESS(status))".
+> 
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> ---
+> 
+> This isn't really an ACPI patch, but I'm sending it to you, Rafael, since
+> it seems easier to just apply these all at once.  But I'd be happy to split
+> them up into individual patches if you'd rather.
+> 
+> 
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c | 4 ++--
+>  drivers/gpu/drm/radeon/radeon_bios.c     | 4 ++--
+>  drivers/hwmon/acpi_power_meter.c         | 4 ++--
 
-Hello,
+Acked-by: Guenter Roeck <linux@roeck-us.net>
 
-Changes since v2 sent with Message-Id:
-20201124133139.3072124-1-uwe@kleine-koenig.org:
-
- - Rebase to v5.11-rc1 (which resulted in a few conflicts in
-   drivers/hwtracing).
- - Add various Acks.
- - Send to more maintainers directly (which I think is one of the
-   reasons why there are so few Acks).
-
-For my taste patch 4 needs some more acks (drivers/char/hw_random,
-drivers/dma, drivers/gpu/drm/pl111, drivers/i2c, drivers/mmc,
-drivers/vfio, drivers/watchdog and sound/arm have no maintainer feedback
-yet).
-
-My suggestion is to let this series go in via Russell King (who cares
-for amba). Once enough Acks are there I can also provide a tag for
-merging into different trees. Just tell me if you prefer this solution.
-
-Would be great if this could make it for v5.12, but I'm aware it's
-already late in the v5.11 cycle so it might have to wait for v5.13.
-
-Best regards
-Uwe
-
-Uwe Kleine-König (5):
-  amba: Fix resource leak for drivers without .remove
-  amba: reorder functions
-  vfio: platform: simplify device removal
-  amba: Make the remove callback return void
-  amba: Make use of bus_type functions
-
- drivers/amba/bus.c                            | 234 +++++++++---------
- drivers/char/hw_random/nomadik-rng.c          |   3 +-
- drivers/dma/pl330.c                           |   3 +-
- drivers/gpu/drm/pl111/pl111_drv.c             |   4 +-
- drivers/hwtracing/coresight/coresight-catu.c  |   3 +-
- .../hwtracing/coresight/coresight-cpu-debug.c |   4 +-
- .../hwtracing/coresight/coresight-cti-core.c  |   4 +-
- drivers/hwtracing/coresight/coresight-etb10.c |   4 +-
- .../coresight/coresight-etm3x-core.c          |   4 +-
- .../coresight/coresight-etm4x-core.c          |   4 +-
- .../hwtracing/coresight/coresight-funnel.c    |   4 +-
- .../coresight/coresight-replicator.c          |   4 +-
- drivers/hwtracing/coresight/coresight-stm.c   |   4 +-
- .../hwtracing/coresight/coresight-tmc-core.c  |   4 +-
- drivers/hwtracing/coresight/coresight-tpiu.c  |   4 +-
- drivers/i2c/busses/i2c-nomadik.c              |   4 +-
- drivers/input/serio/ambakmi.c                 |   3 +-
- drivers/memory/pl172.c                        |   4 +-
- drivers/memory/pl353-smc.c                    |   4 +-
- drivers/mmc/host/mmci.c                       |   4 +-
- drivers/rtc/rtc-pl030.c                       |   4 +-
- drivers/rtc/rtc-pl031.c                       |   4 +-
- drivers/spi/spi-pl022.c                       |   5 +-
- drivers/tty/serial/amba-pl010.c               |   4 +-
- drivers/tty/serial/amba-pl011.c               |   3 +-
- drivers/vfio/platform/vfio_amba.c             |  15 +-
- drivers/video/fbdev/amba-clcd.c               |   4 +-
- drivers/watchdog/sp805_wdt.c                  |   4 +-
- include/linux/amba/bus.h                      |   2 +-
- sound/arm/aaci.c                              |   4 +-
- 30 files changed, 157 insertions(+), 198 deletions(-)
-
-
-base-commit: 5c8fe583cce542aa0b84adc939ce85293de36e5e
--- 
-2.29.2
-
+>  drivers/platform/x86/asus-laptop.c       | 6 +++---
+>  drivers/spi/spi.c                        | 2 +-
+>  sound/pci/hda/hda_intel.c                | 4 ++--
+>  6 files changed, 12 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
+> index 6333cada1e09..055f600eeed8 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
+> @@ -291,7 +291,7 @@ static bool amdgpu_atrm_get_bios(struct amdgpu_device *adev)
+>  			continue;
+>  
+>  		status = acpi_get_handle(dhandle, "ATRM", &atrm_handle);
+> -		if (!ACPI_FAILURE(status)) {
+> +		if (ACPI_SUCCESS(status)) {
+>  			found = true;
+>  			break;
+>  		}
+> @@ -304,7 +304,7 @@ static bool amdgpu_atrm_get_bios(struct amdgpu_device *adev)
+>  				continue;
+>  
+>  			status = acpi_get_handle(dhandle, "ATRM", &atrm_handle);
+> -			if (!ACPI_FAILURE(status)) {
+> +			if (ACPI_SUCCESS(status)) {
+>  				found = true;
+>  				break;
+>  			}
+> diff --git a/drivers/gpu/drm/radeon/radeon_bios.c b/drivers/gpu/drm/radeon/radeon_bios.c
+> index bb29cf02974d..43bbbfd6ade8 100644
+> --- a/drivers/gpu/drm/radeon/radeon_bios.c
+> +++ b/drivers/gpu/drm/radeon/radeon_bios.c
+> @@ -205,7 +205,7 @@ static bool radeon_atrm_get_bios(struct radeon_device *rdev)
+>  			continue;
+>  
+>  		status = acpi_get_handle(dhandle, "ATRM", &atrm_handle);
+> -		if (!ACPI_FAILURE(status)) {
+> +		if (ACPI_SUCCESS(status)) {
+>  			found = true;
+>  			break;
+>  		}
+> @@ -218,7 +218,7 @@ static bool radeon_atrm_get_bios(struct radeon_device *rdev)
+>  				continue;
+>  
+>  			status = acpi_get_handle(dhandle, "ATRM", &atrm_handle);
+> -			if (!ACPI_FAILURE(status)) {
+> +			if (ACPI_SUCCESS(status)) {
+>  				found = true;
+>  				break;
+>  			}
+> diff --git a/drivers/hwmon/acpi_power_meter.c b/drivers/hwmon/acpi_power_meter.c
+> index 848718ab7312..7d3ddcba34ce 100644
+> --- a/drivers/hwmon/acpi_power_meter.c
+> +++ b/drivers/hwmon/acpi_power_meter.c
+> @@ -161,7 +161,7 @@ static ssize_t set_avg_interval(struct device *dev,
+>  	mutex_lock(&resource->lock);
+>  	status = acpi_evaluate_integer(resource->acpi_dev->handle, "_PAI",
+>  				       &args, &data);
+> -	if (!ACPI_FAILURE(status))
+> +	if (ACPI_SUCCESS(status))
+>  		resource->avg_interval = temp;
+>  	mutex_unlock(&resource->lock);
+>  
+> @@ -232,7 +232,7 @@ static ssize_t set_cap(struct device *dev, struct device_attribute *devattr,
+>  	mutex_lock(&resource->lock);
+>  	status = acpi_evaluate_integer(resource->acpi_dev->handle, "_SHL",
+>  				       &args, &data);
+> -	if (!ACPI_FAILURE(status))
+> +	if (ACPI_SUCCESS(status))
+>  		resource->cap = temp;
+>  	mutex_unlock(&resource->lock);
+>  
+> diff --git a/drivers/platform/x86/asus-laptop.c b/drivers/platform/x86/asus-laptop.c
+> index 0edafe687fa9..bfea656e910c 100644
+> --- a/drivers/platform/x86/asus-laptop.c
+> +++ b/drivers/platform/x86/asus-laptop.c
+> @@ -861,7 +861,7 @@ static ssize_t infos_show(struct device *dev, struct device_attribute *attr,
+>  	 * The significance of others is yet to be found.
+>  	 */
+>  	rv = acpi_evaluate_integer(asus->handle, "SFUN", NULL, &temp);
+> -	if (!ACPI_FAILURE(rv))
+> +	if (ACPI_SUCCESS(rv))
+>  		len += sprintf(page + len, "SFUN value         : %#x\n",
+>  			       (uint) temp);
+>  	/*
+> @@ -873,7 +873,7 @@ static ssize_t infos_show(struct device *dev, struct device_attribute *attr,
+>  	 * takes several seconds to run on some systems.
+>  	 */
+>  	rv = acpi_evaluate_integer(asus->handle, "HWRS", NULL, &temp);
+> -	if (!ACPI_FAILURE(rv))
+> +	if (ACPI_SUCCESS(rv))
+>  		len += sprintf(page + len, "HWRS value         : %#x\n",
+>  			       (uint) temp);
+>  	/*
+> @@ -884,7 +884,7 @@ static ssize_t infos_show(struct device *dev, struct device_attribute *attr,
+>  	 * silently ignored.
+>  	 */
+>  	rv = acpi_evaluate_integer(asus->handle, "ASYM", NULL, &temp);
+> -	if (!ACPI_FAILURE(rv))
+> +	if (ACPI_SUCCESS(rv))
+>  		len += sprintf(page + len, "ASYM value         : %#x\n",
+>  			       (uint) temp);
+>  	if (asus->dsdt_info) {
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 720ab34784c1..801d8b499788 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -2210,7 +2210,7 @@ static acpi_status acpi_register_spi_device(struct spi_controller *ctlr,
+>  		return AE_OK;
+>  
+>  	if (!lookup.max_speed_hz &&
+> -	    !ACPI_FAILURE(acpi_get_parent(adev->handle, &parent_handle)) &&
+> +	    ACPI_SUCCESS(acpi_get_parent(adev->handle, &parent_handle)) &&
+>  	    ACPI_HANDLE(ctlr->dev.parent) == parent_handle) {
+>  		/* Apple does not use _CRS but nested devices for SPI slaves */
+>  		acpi_spi_parse_apple_properties(adev, &lookup);
+> diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
+> index 770ad25f1907..fe8049cd2765 100644
+> --- a/sound/pci/hda/hda_intel.c
+> +++ b/sound/pci/hda/hda_intel.c
+> @@ -1444,7 +1444,7 @@ static bool atpx_present(void)
+>  		dhandle = ACPI_HANDLE(&pdev->dev);
+>  		if (dhandle) {
+>  			status = acpi_get_handle(dhandle, "ATPX", &atpx_handle);
+> -			if (!ACPI_FAILURE(status)) {
+> +			if (ACPI_SUCCESS(status)) {
+>  				pci_dev_put(pdev);
+>  				return true;
+>  			}
+> @@ -1454,7 +1454,7 @@ static bool atpx_present(void)
+>  		dhandle = ACPI_HANDLE(&pdev->dev);
+>  		if (dhandle) {
+>  			status = acpi_get_handle(dhandle, "ATPX", &atpx_handle);
+> -			if (!ACPI_FAILURE(status)) {
+> +			if (ACPI_SUCCESS(status)) {
+>  				pci_dev_put(pdev);
+>  				return true;
+>  			}
+> -- 
+> 2.25.1
+> 

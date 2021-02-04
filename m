@@ -2,161 +2,114 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-5.0 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A6A0C433E9
-	for <linux-spi@archiver.kernel.org>; Thu,  4 Feb 2021 14:17:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BFF6EC433E6
+	for <linux-spi@archiver.kernel.org>; Thu,  4 Feb 2021 16:54:43 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id F3F6864F53
-	for <linux-spi@archiver.kernel.org>; Thu,  4 Feb 2021 14:17:51 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8F8A264F44
+	for <linux-spi@archiver.kernel.org>; Thu,  4 Feb 2021 16:54:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236493AbhBDORc (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 4 Feb 2021 09:17:32 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:47280 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236673AbhBDONW (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 4 Feb 2021 09:13:22 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 114ECM6Y098588;
-        Thu, 4 Feb 2021 08:12:22 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1612447942;
-        bh=vSix/bWL9afVl8T+g4konnqAhGR2zbbqyEmN8MzpnlA=;
-        h=From:To:CC:Subject:Date;
-        b=qUXtEhkGs2mIduc2HQILwwkG9NT4af3s7swC7DGS/k3hBlCXPxC7fTV8rAoMYWeZ8
-         1J0HpHJquQXbvKO3FFEV/JnCXuv81brXkBi72Sb4njSQZcXhLsikRMzzwIjXl/qJSV
-         fVrMlClfsBtSDrxZgRHthTpAWqQrrnbpY0i3sK7k=
-Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 114ECM3v033783
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 4 Feb 2021 08:12:22 -0600
-Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 4 Feb
- 2021 08:12:21 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
- Frontend Transport; Thu, 4 Feb 2021 08:12:21 -0600
-Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 114ECJIt123632;
-        Thu, 4 Feb 2021 08:12:20 -0600
-From:   Pratyush Yadav <p.yadav@ti.com>
-To:     Mark Brown <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     Pratyush Yadav <p.yadav@ti.com>, <zhengxunli@mxic.com.tw>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 1/2] spi: spi-mem: add spi_mem_dtr_supports_op()
-Date:   Thu, 4 Feb 2021 19:42:17 +0530
-Message-ID: <20210204141218.32229-1-p.yadav@ti.com>
-X-Mailer: git-send-email 2.30.0
+        id S238233AbhBDQyb (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 4 Feb 2021 11:54:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56810 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238191AbhBDQxo (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 4 Feb 2021 11:53:44 -0500
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BD47C06178B;
+        Thu,  4 Feb 2021 08:52:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=rU7kGtAV6x4h9PYVWyoXz+PtjR1Ekd/aEUlrk7YawjA=; b=VTPukyRsHKDa6AiBC7g1A33pB
+        SwzVRoY12CgfihopuGU84sVuVRYsUfiv6b3Emwm8BDSGMl47NJ4gm0qIsiqAwyM3pSwTIf2l6vha2
+        cDzPmBjk1ljXfebW71uB6xJtMeptgxH+fOQ7FkYaFWun/B6T1rfINwGd+rlb8M/Klezy3l/ReCdrv
+        V0d4qDQKYRRMYic1iTAdlcZh5yvqjMKyuvjs8Wsy37fKFKVUMlPg8hW+P5sXiwO/tuao+vtETwe0A
+        yHWeGg7btn+Meuk+vfx/5ICUUCrM+vrThjyBDk8k7p21ma/Hklw+jYC+vHctVDNhR+i6P6uievpnI
+        PK8/XvaQg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:39164)
+        by pandora.armlinux.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1l7hrw-0006on-3V; Thu, 04 Feb 2021 16:52:36 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1l7hrk-0005Ka-VR; Thu, 04 Feb 2021 16:52:24 +0000
+Date:   Thu, 4 Feb 2021 16:52:24 +0000
+From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        linux-fbdev@vger.kernel.org, kvm@vger.kernel.org,
+        alsa-devel@alsa-project.org, dri-devel@lists.freedesktop.org,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig.org@pengutronix.de>, linux-i2c@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-input@vger.kernel.org, Mike Leach <mike.leach@linaro.org>,
+        linux-watchdog@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-crypto@vger.kernel.org,
+        kernel@pengutronix.de, Leo Yan <leo.yan@linaro.org>,
+        dmaengine@vger.kernel.org, Matt Mackall <mpm@selenic.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Vinod Koul <vkoul@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Eric Anholt <eric@anholt.net>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Eric Auger <eric.auger@redhat.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Cornelia Huck <cohuck@redhat.com>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Subject: Re: [GIT PULL] immutable branch for amba changes targeting v5.12-rc1
+Message-ID: <20210204165224.GA1463@shell.armlinux.org.uk>
+References: <20210126165835.687514-1-u.kleine-koenig@pengutronix.de>
+ <20210202135350.36nj3dmcoq3t7gcf@pengutronix.de>
+ <YBlcTXlxemmC2lgr@kroah.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YBlcTXlxemmC2lgr@kroah.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Sender: Russell King - ARM Linux admin <linux@armlinux.org.uk>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-spi_mem_default_supports_op() rejects DTR ops by default to ensure that
-the controller drivers that haven't been updated with DTR support
-continue to reject them. It also makes sure that controllers that don't
-support DTR mode at all (which is most of them at the moment) also
-reject them.
+On Tue, Feb 02, 2021 at 03:06:05PM +0100, Greg Kroah-Hartman wrote:
+> I'm glad to take this through my char/misc tree, as that's where the
+> other coresight changes flow through.  So if no one else objects, I will
+> do so...
 
-This means that controller drivers that want to support DTR mode can't
-use spi_mem_default_supports_op(). Driver authors have to roll their own
-supports_op() function and mimic the buswidth checks. See
-spi-cadence-quadspi.c for example. Or even worse, driver authors might
-skip it completely or get it wrong.
+Greg, did you end up pulling this after all? If not, Uwe produced a v2.
+I haven't merged v2 yet as I don't know what you've done.
 
-Add spi_mem_dtr_supports_op(). It provides a basic sanity check for DTR
-ops and performs the buswidth requirement check. Move the logic for
-checking buswidth in spi_mem_default_supports_op() to a separate
-function so the logic is not repeated twice.
+Thanks.
 
-Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
----
- drivers/spi/spi-mem.c       | 22 +++++++++++++++++++---
- include/linux/spi/spi-mem.h |  9 +++++++++
- 2 files changed, 28 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index c64371ce6c38..dc713b0c3c4d 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -137,8 +137,8 @@ static int spi_check_buswidth_req(struct spi_mem *mem, u8 buswidth, bool tx)
- 	return -ENOTSUPP;
- }
- 
--bool spi_mem_default_supports_op(struct spi_mem *mem,
--				 const struct spi_mem_op *op)
-+static bool spi_mem_check_buswidth(struct spi_mem *mem,
-+				   const struct spi_mem_op *op)
- {
- 	if (spi_check_buswidth_req(mem, op->cmd.buswidth, true))
- 		return false;
-@@ -156,13 +156,29 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
- 				   op->data.dir == SPI_MEM_DATA_OUT))
- 		return false;
- 
-+	return true;
-+}
-+
-+bool spi_mem_dtr_supports_op(struct spi_mem *mem,
-+			     const struct spi_mem_op *op)
-+{
-+	if (op->cmd.nbytes != 2)
-+		return false;
-+
-+	return spi_mem_check_buswidth(mem, op);
-+}
-+EXPORT_SYMBOL_GPL(spi_mem_dtr_supports_op);
-+
-+bool spi_mem_default_supports_op(struct spi_mem *mem,
-+				 const struct spi_mem_op *op)
-+{
- 	if (op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr)
- 		return false;
- 
- 	if (op->cmd.nbytes != 1)
- 		return false;
- 
--	return true;
-+	return spi_mem_check_buswidth(mem, op);
- }
- EXPORT_SYMBOL_GPL(spi_mem_default_supports_op);
- 
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index 159463cc659c..2b65c9edc34e 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -311,6 +311,9 @@ void spi_controller_dma_unmap_mem_op_data(struct spi_controller *ctlr,
- bool spi_mem_default_supports_op(struct spi_mem *mem,
- 				 const struct spi_mem_op *op);
- 
-+bool spi_mem_dtr_supports_op(struct spi_mem *mem,
-+			     const struct spi_mem_op *op);
-+
- #else
- static inline int
- spi_controller_dma_map_mem_op_data(struct spi_controller *ctlr,
-@@ -334,6 +337,12 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
- 	return false;
- }
- 
-+static inline
-+bool spi_mem_dtr_supports_op(struct spi_mem *mem,
-+			     const struct spi_mem_op *op)
-+{
-+	return false;
-+}
- #endif /* CONFIG_SPI_MEM */
- 
- int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op);
 -- 
-2.30.0
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!

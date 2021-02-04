@@ -2,69 +2,166 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 746CDC433E9
-	for <linux-spi@archiver.kernel.org>; Thu,  4 Feb 2021 11:11:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E2656C433E0
+	for <linux-spi@archiver.kernel.org>; Thu,  4 Feb 2021 14:17:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 41BBE64F78
-	for <linux-spi@archiver.kernel.org>; Thu,  4 Feb 2021 11:11:22 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A697F64E50
+	for <linux-spi@archiver.kernel.org>; Thu,  4 Feb 2021 14:17:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235647AbhBDLLP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 4 Feb 2021 06:11:15 -0500
-Received: from szxga07-in.huawei.com ([45.249.212.35]:12399 "EHLO
-        szxga07-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235641AbhBDLLN (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 4 Feb 2021 06:11:13 -0500
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
-        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4DWbQv2v9xz7gPS;
-        Thu,  4 Feb 2021 19:09:11 +0800 (CST)
-Received: from localhost.localdomain (10.67.165.24) by
- DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
- 14.3.498.0; Thu, 4 Feb 2021 19:10:19 +0800
-From:   Yicong Yang <yangyicong@hisilicon.com>
-To:     <broonie@kernel.org>, <shc_work@mail.ru>,
-        <linux-spi@vger.kernel.org>
-CC:     <yangyicong@hisilicon.com>, <prime.zeng@huawei.com>,
-        <linuxarm@openeuler.org>
-Subject: [PATCH] spi: clps711xx: remove redundant white-space
-Date:   Thu, 4 Feb 2021 19:08:06 +0800
-Message-ID: <1612436886-42839-1-git-send-email-yangyicong@hisilicon.com>
-X-Mailer: git-send-email 2.8.1
+        id S236664AbhBDOR2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 4 Feb 2021 09:17:28 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:50082 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236674AbhBDONf (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 4 Feb 2021 09:13:35 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 114ECOGL084754;
+        Thu, 4 Feb 2021 08:12:24 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1612447944;
+        bh=mcjR2G19gYaIPmqrIxviuqIGzP715O2RZTLlQKsRu2g=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=BZfd8UqOlEN51X9hFdmKfvBOIoFa9eFrthg2Ai2GqyYhzaFGCJ6+sYUCK/APuz+6k
+         jQXGz47hfoAwdDPgzHrdu6kgbt/jiVB406NUcI0emYe2L5kV57P28HkXh+Kc79/qMv
+         DfQc9MfO26momXHtKfXMH15qR4ki+3l+pszoMS+c=
+Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 114ECOtm033810
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 4 Feb 2021 08:12:24 -0600
+Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Thu, 4 Feb
+ 2021 08:12:24 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Thu, 4 Feb 2021 08:12:24 -0600
+Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 114ECJIu123632;
+        Thu, 4 Feb 2021 08:12:22 -0600
+From:   Pratyush Yadav <p.yadav@ti.com>
+To:     Mark Brown <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     Pratyush Yadav <p.yadav@ti.com>, <zhengxunli@mxic.com.tw>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 2/2] spi: cadence-quadspi: Use spi_mem_dtr_supports_op()
+Date:   Thu, 4 Feb 2021 19:42:18 +0530
+Message-ID: <20210204141218.32229-2-p.yadav@ti.com>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20210204141218.32229-1-p.yadav@ti.com>
+References: <20210204141218.32229-1-p.yadav@ti.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Originating-IP: [10.67.165.24]
-X-CFilter-Loop: Reflected
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Junhao He <hejunhao2@hisilicon.com>
+Use the newly introduced spi_mem_dtr_supports_op() to check DTR op
+support. This means the buswidth check does not need to be replicated.
+It also happens to fix a bug where STR ops with a 2-byte opcode would be
+reported as supported.
 
-Remove redundant white-space, no functional change.
-
-Signed-off-by: Junhao He <hejunhao2@hisilicon.com>
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
 ---
- drivers/spi/spi-clps711x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-clps711x.c b/drivers/spi/spi-clps711x.c
-index 5e900f2..0bef5ce 100644
---- a/drivers/spi/spi-clps711x.c
-+++ b/drivers/spi/spi-clps711x.c
-@@ -104,7 +104,7 @@ static int spi_clps711x_probe(struct platform_device *pdev)
- 	master->use_gpio_descriptors = true;
- 	master->bus_num = -1;
- 	master->mode_bits = SPI_CPHA | SPI_CS_HIGH;
--	master->bits_per_word_mask =  SPI_BPW_RANGE_MASK(1, 8);
-+	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 8);
- 	master->dev.of_node = pdev->dev.of_node;
- 	master->prepare_message = spi_clps711x_prepare_message;
- 	master->transfer_one = spi_clps711x_transfer_one;
--- 
-2.8.1
+Tested on TI's J721E with MT35XU512ABA and J7200 with S28HS512T.
+
+ drivers/spi/spi-cadence-quadspi.c | 63 ++-----------------------------
+ 1 file changed, 4 insertions(+), 59 deletions(-)
+
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index b7ecbc8c1caa..442cc7c53a47 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1219,65 +1219,11 @@ static int cqspi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	return ret;
+ }
+
+-static int cqspi_check_buswidth_req(struct spi_mem *mem, u8 buswidth, bool tx)
+-{
+-	u32 mode = mem->spi->mode;
+-
+-	switch (buswidth) {
+-	case 1:
+-		return 0;
+-
+-	case 2:
+-		if ((tx &&
+-		     (mode & (SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTAL))) ||
+-		    (!tx &&
+-		     (mode & (SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTAL))))
+-			return 0;
+-
+-		break;
+-
+-	case 4:
+-		if ((tx && (mode & (SPI_TX_QUAD | SPI_TX_OCTAL))) ||
+-		    (!tx && (mode & (SPI_RX_QUAD | SPI_RX_OCTAL))))
+-			return 0;
+-
+-		break;
+-
+-	case 8:
+-		if ((tx && (mode & SPI_TX_OCTAL)) ||
+-		    (!tx && (mode & SPI_RX_OCTAL)))
+-			return 0;
+-
+-		break;
+-
+-	default:
+-		break;
+-	}
+-
+-	return -EOPNOTSUPP;
+-}
+-
+ static bool cqspi_supports_mem_op(struct spi_mem *mem,
+ 				  const struct spi_mem_op *op)
+ {
+ 	bool all_true, all_false;
+
+-	if (cqspi_check_buswidth_req(mem, op->cmd.buswidth, true))
+-		return false;
+-
+-	if (op->addr.nbytes &&
+-	    cqspi_check_buswidth_req(mem, op->addr.buswidth, true))
+-		return false;
+-
+-	if (op->dummy.nbytes &&
+-	    cqspi_check_buswidth_req(mem, op->dummy.buswidth, true))
+-		return false;
+-
+-	if (op->data.nbytes &&
+-	    cqspi_check_buswidth_req(mem, op->data.buswidth,
+-				     op->data.dir == SPI_MEM_DATA_OUT))
+-		return false;
+-
+ 	all_true = op->cmd.dtr && op->addr.dtr && op->dummy.dtr &&
+ 		   op->data.dtr;
+ 	all_false = !op->cmd.dtr && !op->addr.dtr && !op->dummy.dtr &&
+@@ -1287,11 +1233,10 @@ static bool cqspi_supports_mem_op(struct spi_mem *mem,
+ 	if (!(all_true || all_false))
+ 		return false;
+
+-	/* DTR mode opcodes should be 2 bytes. */
+-	if (all_true && op->cmd.nbytes != 2)
+-		return false;
+-
+-	return true;
++	if (all_true)
++		return spi_mem_dtr_supports_op(mem, op);
++	else
++		return spi_mem_default_supports_op(mem, op);
+ }
+
+ static int cqspi_of_get_flash_pdata(struct platform_device *pdev,
+--
+2.30.0
 

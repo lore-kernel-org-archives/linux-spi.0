@@ -2,286 +2,172 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-17.4 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no version=3.4.0
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 20717C433E0
-	for <linux-spi@archiver.kernel.org>; Thu,  4 Feb 2021 21:35:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F79CC433E0
+	for <linux-spi@archiver.kernel.org>; Fri,  5 Feb 2021 08:05:17 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BE05864FAA
-	for <linux-spi@archiver.kernel.org>; Thu,  4 Feb 2021 21:35:33 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 02FC464F97
+	for <linux-spi@archiver.kernel.org>; Fri,  5 Feb 2021 08:05:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229866AbhBDVfc (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 4 Feb 2021 16:35:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33246 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229625AbhBDVfb (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 4 Feb 2021 16:35:31 -0500
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D1BFC061788
-        for <linux-spi@vger.kernel.org>; Thu,  4 Feb 2021 13:34:50 -0800 (PST)
-Received: by mail-lj1-x232.google.com with SMTP id l12so5253620ljc.3
-        for <linux-spi@vger.kernel.org>; Thu, 04 Feb 2021 13:34:50 -0800 (PST)
+        id S230221AbhBEIFB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 5 Feb 2021 03:05:01 -0500
+Received: from mail-eopbgr150112.outbound.protection.outlook.com ([40.107.15.112]:49879
+        "EHLO EUR01-DB5-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S230209AbhBEIE7 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 5 Feb 2021 03:04:59 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=h+9nM8P74OX6u/LE40JTeb6makBGu+8DVojmutXH8XmYf17dZbLqmhVjctn1tNQKREhWnTxklFSllDt7F4U2DXkmEmTxiy97bKSkNxslNEWs0JD6pUV9GiWSzYTWr9a449bRHy7D7NGlv1FE4SSl6LdjPFZIG1C8RpXx9EQODZMivT2kT1Eq4WUK7NeHjeEtJbVv1G7efghX2lQV9ab3Pjx3hcPBtnlBZ1Sar5v/GR5L09pWPPjMBexmw2UDuLxoEBwQC17XPQZXU9tBxTlVVUE4vAJBjGbw/p2LK6ZAI1OMT+1YyijHF2F6U8E6iVtWS5BEzxo5Mrl59OYlJgXhow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kCi7xYO/1TIErzzIAiYBLfzHcnGeDgtF7uBSacsq5YI=;
+ b=Udyq57mCrGel1SbX8lqsLUsjWVQKVY+kEEoHaWIHtr7+qrI3fOB+b39y/f8PqydOswez3mJb0KgcnudWX/yVUAgupePV9XRc9kH36iEnJr6exJ00YEuOTf9WNNGhpWnUp24z/9F0rMyY64/pDJeYG5mrkgx8Ut6niSaSdur6dvsHfp1THF2dG7MM2OfWf5MNPIw1BTyeln9hnScEbqfX2bx0YnkXVdvW58yZHpPTJ8mAR+0iwP6hKEsDk85W9R8JuwMvW3MQPuxoOJQFn/vl26Il6QtzuLg6Ut+za1EslUnA5xITK3Xb4JJofKVzuyGe3h969tWv5uuRQU3l17iNcQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=hitachi-powergrids.com; dmarc=pass action=none
+ header.from=hitachi-powergrids.com; dkim=pass
+ header.d=hitachi-powergrids.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=BCno6Ao+dwCVXfvTIIoqfVrP6GUQPTZVIPIC7Z6fmno=;
-        b=BZOz6UaayRrtBM/evJF7kodBQxJhWGPCHVI2t097sAYuulXR8u02ZfuBKw5zaXFbn9
-         PFirLtNtBcle8UsXYmPksbaJM2bfWX+9Bdk+IPTMvWmHOVRu8NwRGdUEHtfEFxiJxihO
-         B4o2FCVq/8Tb55huK2zS+6GFwpJat6/241fnu0lCxzTbuhoHBirr2Wz2/xRAFvlUT0xV
-         CVMfIBqTqQpb/AY8m9Srg1+X4AIzajKf+2Tq4WPquGirA2NF1lZ7o26SfGxVPA9r0gYF
-         nS55UBQfH9R+82EJRf8D/YHalynvu/ZyB7rvY5vKZu2dHiWck4c62yvaKg/mgIL9LUmj
-         YvOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=BCno6Ao+dwCVXfvTIIoqfVrP6GUQPTZVIPIC7Z6fmno=;
-        b=cBgFWIXP7TQYbzyyxbZI2nHdR4MmG/t8BHKtMU57YfbYy2C/nkvOrhEPFsX5N1rbM4
-         MAT36vBwvSxSzw0AlcMleg8Q1A4ti+fIYYgWGHeEDTP3vYfPDAxeh+3cG/rG6DCYzIWa
-         S9J2HbZG8ktXAn0ZYn05WRTIz09VScihRJDRVZvd/6Aydh269akHrV6u2QvU9oWbTnmc
-         l+VjFrefTgG1Qjyh1/izXUs36yhvwy9kXJkCCEilFu4sjItoEeOVHsAe07qg81e+lwVh
-         oTUNVsPU8O0Ca4cTOoOm5nh0Ui/DrLazmMQXk9v6PYwXeyXCP9kIIfrQoAnlYTCo57vU
-         +1jQ==
-X-Gm-Message-State: AOAM532CIsu51GyHg7j6DtygA0bCHnn+E/6KZ3g+WtXKKomH1or1V63n
-        4aWmyCHe5aVzjQXyyUKLRieCFw==
-X-Google-Smtp-Source: ABdhPJwKUWSgvkl+QDCXohVE2j8HxXVX0EEU8jhBEYfSjwR2RJ6yEaMjEmXlDauz9H4svNTK1hCO+A==
-X-Received: by 2002:a2e:a550:: with SMTP id e16mr770611ljn.197.1612474489012;
-        Thu, 04 Feb 2021 13:34:49 -0800 (PST)
-Received: from [192.168.1.211] ([188.162.64.67])
-        by smtp.gmail.com with ESMTPSA id h15sm747258lfc.221.2021.02.04.13.34.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Feb 2021 13:34:48 -0800 (PST)
-Subject: Re: [PATCH 4/7] spi: spi-geni-qcom: Add support for GPI dma
-To:     Vinod Koul <vkoul@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Mark Brown <broonie@kernel.org>, Wolfram Sang <wsa@kernel.org>
-Cc:     linux-arm-msm@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Amit Pundir <amit.pundir@linaro.org>,
-        linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20210111151651.1616813-1-vkoul@kernel.org>
- <20210111151651.1616813-5-vkoul@kernel.org>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Message-ID: <14dbf839-a9f9-73b6-8de3-cdb2f6353833@linaro.org>
-Date:   Fri, 5 Feb 2021 00:34:40 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.1
+ d=hitachi-powergrids.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kCi7xYO/1TIErzzIAiYBLfzHcnGeDgtF7uBSacsq5YI=;
+ b=OyZK/dUV9YNy7K95uG+ax5zoS+bjhldnJG+eAePH8BYafH9w8BUi9IHD6GFqZznbRCHpZ7/Yqb8nxMjtTvgS9jHuJOwwzrT1jwGY6NqXuAhUc4M961Zc1Dy9M9H00AmbQ7csLuELl+tXviSJMfc5Cem6XYH/LRCgOmXzYqCmE+o=
+Received: from VI1PR06MB4029.eurprd06.prod.outlook.com (2603:10a6:802:5d::10)
+ by VI1PR0602MB3247.eurprd06.prod.outlook.com (2603:10a6:802:c::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3825.23; Fri, 5 Feb
+ 2021 08:04:11 +0000
+Received: from VI1PR06MB4029.eurprd06.prod.outlook.com
+ ([fe80::5122:a590:b5fb:658e]) by VI1PR06MB4029.eurprd06.prod.outlook.com
+ ([fe80::5122:a590:b5fb:658e%4]) with mapi id 15.20.3805.025; Fri, 5 Feb 2021
+ 08:04:11 +0000
+From:   Aleksandar Gerasimovski 
+        <aleksandar.gerasimovski@hitachi-powergrids.com>
+To:     "broonie@kernel.org" <broonie@kernel.org>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+Subject: [PATCH] spi: tools: fix input string formatting
+Thread-Topic: [PATCH] spi: tools: fix input string formatting
+Thread-Index: Adb7lWXMIZfEJF6fRI2btRVdFMCGkg==
+Date:   Fri, 5 Feb 2021 08:04:10 +0000
+Message-ID: <VI1PR06MB402928E3B0E4C887104BCE22D2B29@VI1PR06MB4029.eurprd06.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-processedbytemplafy: true
+authentication-results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none
+ header.from=hitachi-powergrids.com;
+x-originating-ip: [80.75.192.110]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 21378f92-cd38-4f63-d5e1-08d8c9ac9ee0
+x-ms-traffictypediagnostic: VI1PR0602MB3247:
+x-microsoft-antispam-prvs: <VI1PR0602MB324769F307F9A085928A0A10D2B29@VI1PR0602MB3247.eurprd06.prod.outlook.com>
+x-abb-o365-outbound: ABBOUTBOUND1
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: XMHQPmXTy/kkRoD+kmGXwu3aTXk2+efNk96lTRMWOxiAnuZq15FRVy+KJEtPqQ2BMJ8+CFhhFhOuGCX40YD8cTLmM9HnPfbZngoiDYtvXsixR4ie5Rm017wF55xQ14E2i5TjK4SRLFjBF2vm3/NKiWsytMy6nJDpAVWI3RDm0DAZQkl+/oz6RfXnmQ1I8ptgCcGROh9eRdpgu8Dj+Nq/d8NhNRGJOlDuXgc5GsiGbJwvv+tte9uqf6tkxPsCbIFnP0zRXjx/LO3diJJFITRbewE8aFavJTtcUibjK5QF/yFqYtd2QYnLliQgcuS47bmQTlwclEOQmcmIEnLoMuLEQSTpOrboV5h4NFV3vPjlOXMsJLg+hJkxn85rXFlIyd02C6vw1Sxa6QeiFadvzMZ6uuLxaVPGvQ+TZ31xQFSUDqMKqurlRJRAdF4zPoJxJKIuO9tYswDwbEWhMgeFW+4biw5oFb/v1wb6wz9+KtKZVUw7wTRUZ8pjQXShoaxdL4PSt4BTDCfAueMkVUFS5ujYXg==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR06MB4029.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(39860400002)(366004)(346002)(136003)(396003)(52536014)(5660300002)(2906002)(64756008)(66556008)(66476007)(66446008)(44832011)(7696005)(26005)(66946007)(76116006)(71200400001)(8676002)(86362001)(8936002)(6506007)(33656002)(478600001)(110136005)(9686003)(55016002)(186003)(83380400001)(316002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata: =?iso-8859-1?Q?Pr3eLxApX90TfrS+TKFbuCXbHvbsG8fbHjIT0IDoXAMiz5O8sfwGyByLbI?=
+ =?iso-8859-1?Q?mu5uGJGB7iBSBrXnegye/dY2O+Yl8nQX6QyTu7nRkPLpV9ZuHsCzwbaTQU?=
+ =?iso-8859-1?Q?jfm82xxnBCPMhAWeeiNZKJ7E3StK3bS9vcDypsXScyY6mLBsUJzCuRnahi?=
+ =?iso-8859-1?Q?WsW3yTAmuCJlmDGo4Oju0VWW+WLU3YTFRsumBCZWlbWxqkxWK4SSoDNdLO?=
+ =?iso-8859-1?Q?semm3aSE8cEHRg0P1Pa95I6wTU1xjsQgKvUUFva2KZ4QNC6WHglBfI54pz?=
+ =?iso-8859-1?Q?a2apxi0MJ/oU+g7hcPZDfmgxNIxcB6YO55Uc9cEujMNRqIgbU6czlrlxhx?=
+ =?iso-8859-1?Q?jNQafqhUfX0zEwly9AvPG721p4B8gYukw7KcszKWG3tp1AYQXjeZPpoLki?=
+ =?iso-8859-1?Q?4DuTUyfFQfZWAtRnbILwe/l5G381oPlCJ6TvDAygJXei5F6IGpLS4e/SAp?=
+ =?iso-8859-1?Q?q1+EzNgHctws443xW9mgqiAxiR6a5tjM7ANsxjIiA5ronzHChevdUwG2Ye?=
+ =?iso-8859-1?Q?a8nnYgHwi1TWGIuYzY/ExZgTfDMgSpK/uVR3ZU+JvU5f2l3k19Hpei5eg4?=
+ =?iso-8859-1?Q?MccTyRg/rMxc5qJWdZRFrut7AJCgBB/8d9NyV+JmAX66nb752ay1yeYS6Z?=
+ =?iso-8859-1?Q?YS6swZ/8AdOkxqsU0fBhT/5M3Vrrj5Css+0SrpOzHSj4rtM5iuhIoexz1+?=
+ =?iso-8859-1?Q?qrMkU4aOW29jIHiUbrkFANUY0eVaW2mPv7Scu58DBW2YYUJTgi3AsfQzZ2?=
+ =?iso-8859-1?Q?wi7RRoXdqLUQAHA30OERKq1YBj5LBh+jcgcks2wH9PhBJatDF07rgHEYjw?=
+ =?iso-8859-1?Q?ZI7+SLvQ7Q6+NKjtxu0u+uHEPmJLYjzVMQGuqakMdUyvxMTJMzhbPz2W3s?=
+ =?iso-8859-1?Q?+Gk3g5h+o2bbW9R2diF1E9034jisJoxv6Kd/5sALKUPBpT8tQgJuLbkMM7?=
+ =?iso-8859-1?Q?0Iydz4kaAvdcT3McBSZBpkTvjGC9esViyrAnN2UnoOs6yb9/rVqk9sJPMF?=
+ =?iso-8859-1?Q?hgll1dnrruzYtkpIhkc8bdIAeJBl/K1wtTuP7l8kGcTnEhwcyZ7PnYuULW?=
+ =?iso-8859-1?Q?ObzMZRrAQwN8abhdwlMcpve++mQznrWdUlWi4d+VDbQBX/8IogmKtBPUyk?=
+ =?iso-8859-1?Q?8jZNolu4D7DCeAz73Ox5TbXhQh+92BEFcdUaWhYlMThIFZL5yRsABJuhZS?=
+ =?iso-8859-1?Q?hTj7mwULt47coWGt9oyZhtFrsx2ZM3CubJg3LhU59ZrXjojR66c2NZ8XOR?=
+ =?iso-8859-1?Q?2i0xPaCReofbClqRMhidZRZMzt5vr7WAIU/tVZqwPaH0LO5UUSuQynVkxx?=
+ =?iso-8859-1?Q?V11auSkpcvMR+IzOYInPWm6fpBu8s2VQqGTfrBczykUhPeponpie6RxbE1?=
+ =?iso-8859-1?Q?57hdSzYzOv?=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-In-Reply-To: <20210111151651.1616813-5-vkoul@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: hitachi-powergrids.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR06MB4029.eurprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21378f92-cd38-4f63-d5e1-08d8c9ac9ee0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Feb 2021 08:04:10.9598
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 7831e6d9-dc6c-4cd1-9ec6-1dc2b4133195
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: QjX46fBTzOdiqaQIiyGwgEtTnltJ6XvyzWuQ53LlpociDgZGHoKtketCN+U1RWkCX1T4E73mCW4LQoqnWl8N6Si1tOl4fAOR0VsSRtuvxTFX6Jqy7Fa7ye1ZRECJZp4Bs1skLeO5n4UbSO78lnEZkQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0602MB3247
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 11/01/2021 18:16, Vinod Koul wrote:
-> We can use GPI DMA for devices where it is enabled by firmware. Add
-> support for this mode
-> 
-> Signed-off-by: Vinod Koul <vkoul@kernel.org>
-> ---
->   drivers/spi/spi-geni-qcom.c | 395 +++++++++++++++++++++++++++++++++++-
->   1 file changed, 384 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-> index 512e925d5ea4..5bb0e2192734 100644
-> --- a/drivers/spi/spi-geni-qcom.c
-> +++ b/drivers/spi/spi-geni-qcom.c
+The actual unescape implementation has two bugs:
+1. quotation marks from the input string are not removed and are sent
+  to the spidev, e.g: input string: \"\\xFE\\x01\" will be sent to the
+  spidev as 0x22 0xfe 0x01 0x22
+2. there is not format check for decimal input strings
 
-[skipped]
+First bug makes spidev_test unusable when strict spi sequence is needed,
+second bug is not nice to have it in.
 
-> @@ -328,8 +609,34 @@ static int spi_geni_init(struct spi_geni_master *mas)
->   	spi_tx_cfg &= ~CS_TOGGLE;
->   	writel(spi_tx_cfg, se->base + SE_SPI_TRANS_CFG);
->   
-> +	mas->tx = dma_request_slave_channel(mas->dev, "tx");
-> +	if (IS_ERR_OR_NULL(mas->tx)) {
+This patch improves=A0unescape function and fixes above listed bugs.
 
-dma_request_slave_channel() is deprecated. Also it does not return an 
-actualy error, it always returns NULL. So the error path here is bugged.
-Judging from the rest of the driver, it might be logical to select the 
-transfer mode at the probe time, then it would be possible to skip 
-checking for DMA channels if FIFO mode is selected.
+Signed-off-by: Aleksandar Gerasimovski <aleksandar.gerasimovski@hitachi-pow=
+ergrids.com>
+---
+ tools/spi/spidev_test.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-> +		dev_err(mas->dev, "Failed to get tx DMA ch %ld", PTR_ERR(mas->tx));
-> +		ret = PTR_ERR(mas->tx);
-> +		goto out_pm;
-> +	} else {
-> +		mas->rx = dma_request_slave_channel(mas->dev, "rx");
-> +		if (IS_ERR_OR_NULL(mas->rx)) {
-> +			dev_err(mas->dev, "Failed to get rx DMA ch %ld", PTR_ERR(mas->rx));
-> +			dma_release_channel(mas->tx);
-> +			ret = PTR_ERR(mas->rx);
-> +			goto out_pm;
-> +		}
-> +
-> +		gsi_sz = sizeof(struct spi_geni_gsi) * NUM_SPI_XFER;
-> +		mas->gsi = devm_kzalloc(mas->dev, gsi_sz, GFP_KERNEL);
-> +		if (IS_ERR_OR_NULL(mas->gsi)) {
-> +			dma_release_channel(mas->tx);
-> +			dma_release_channel(mas->rx);
-> +			mas->tx = NULL;
-> +			mas->rx = NULL;
-> +			goto out_pm;
-> +		}
-> +	}
-> +
-> +out_pm:
->   	pm_runtime_put(mas->dev);
-> -	return 0;
-> +	return ret;
->   }
->   
->   static unsigned int geni_byte_per_fifo_word(struct spi_geni_master *mas)
-> @@ -420,6 +727,7 @@ static void setup_fifo_xfer(struct spi_transfer *xfer,
->   {
->   	u32 m_cmd = 0;
->   	u32 len;
-> +	u32 m_param = 0;
->   	struct geni_se *se = &mas->se;
->   	int ret;
->   
-> @@ -457,6 +765,11 @@ static void setup_fifo_xfer(struct spi_transfer *xfer,
->   		len = xfer->len / (mas->cur_bits_per_word / BITS_PER_BYTE + 1);
->   	len &= TRANS_LEN_MSK;
->   
-> +	if (!xfer->cs_change) {
-> +		if (!list_is_last(&xfer->transfer_list, &spi->cur_msg->transfers))
-> +			m_param |= FRAGMENTATION;
-> +	}
-> +
->   	mas->cur_xfer = xfer;
->   	if (xfer->tx_buf) {
->   		m_cmd |= SPI_TX_ONLY;
-> @@ -475,7 +788,7 @@ static void setup_fifo_xfer(struct spi_transfer *xfer,
->   	 * interrupt could come in at any time now.
->   	 */
->   	spin_lock_irq(&mas->lock);
-> -	geni_se_setup_m_cmd(se, m_cmd, FRAGMENTATION);
-> +	geni_se_setup_m_cmd(se, m_cmd, m_param);
->   
->   	/*
->   	 * TX_WATERMARK_REG should be set after SPI configuration and
-> @@ -494,13 +807,52 @@ static int spi_geni_transfer_one(struct spi_master *spi,
->   				struct spi_transfer *xfer)
->   {
->   	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-> +	unsigned long timeout, jiffies;
-> +	int ret = 0i, i;
->   
->   	/* Terminate and return success for 0 byte length transfer */
->   	if (!xfer->len)
-> -		return 0;
-> +		return ret;
-> +
-> +	if (mas->cur_xfer_mode == GENI_SE_FIFO) {
-> +		setup_fifo_xfer(xfer, mas, slv->mode, spi);
-> +	} else {
-> +		setup_gsi_xfer(xfer, mas, slv, spi);
-> +		if (mas->num_xfers >= NUM_SPI_XFER ||
-> +		    (list_is_last(&xfer->transfer_list, &spi->cur_msg->transfers))) {
-> +			for (i = 0 ; i < mas->num_tx_eot; i++) {
-> +				jiffies = msecs_to_jiffies(SPI_XFER_TIMEOUT_MS);
-> +				timeout = wait_for_completion_timeout(&mas->tx_cb, jiffies);
-> +				if (timeout <= 0) {
-> +					dev_err(mas->dev, "Tx[%d] timeout%lu\n", i, timeout);
-> +					ret = -ETIMEDOUT;
-> +					goto err_gsi_geni_transfer_one;
-> +				}
-> +				spi_finalize_current_transfer(spi);
-> +			}
-> +			for (i = 0 ; i < mas->num_rx_eot; i++) {
-> +				jiffies = msecs_to_jiffies(SPI_XFER_TIMEOUT_MS);
-> +				timeout = wait_for_completion_timeout(&mas->tx_cb, jiffies);
-> +				if (timeout <= 0) {
-> +					dev_err(mas->dev, "Rx[%d] timeout%lu\n", i, timeout);
-> +					ret = -ETIMEDOUT;
-> +					goto err_gsi_geni_transfer_one;
-> +				}
-> +				spi_finalize_current_transfer(spi);
-> +			}
-> +			if (mas->qn_err) {
-> +				ret = -EIO;
-> +				mas->qn_err = false;
-> +				goto err_gsi_geni_transfer_one;
-> +			}
-> +		}
-> +	}
->   
-> -	setup_fifo_xfer(xfer, mas, slv->mode, spi);
-> -	return 1;
-> +	return ret;
-> +
-> +err_gsi_geni_transfer_one:
-> +	dmaengine_terminate_all(mas->tx);
-> +	return ret;
->   }
->   
->   static irqreturn_t geni_spi_isr(int irq, void *data)
-> @@ -595,6 +947,15 @@ static int spi_geni_probe(struct platform_device *pdev)
->   	if (irq < 0)
->   		return irq;
->   
-> +	ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
-> +	if (ret) {
-> +		ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
-> +		if (ret) {
-> +			dev_err(&pdev->dev, "could not set DMA mask\n");
-> +			return ret;
-> +		}
-> +	}
-> +
->   	base = devm_platform_ioremap_resource(pdev, 0);
->   	if (IS_ERR(base))
->   		return PTR_ERR(base);
-> @@ -632,15 +993,18 @@ static int spi_geni_probe(struct platform_device *pdev)
->   	spi->num_chipselect = 4;
->   	spi->max_speed_hz = 50000000;
->   	spi->prepare_message = spi_geni_prepare_message;
-> +	spi->unprepare_message = spi_geni_unprepare_message;
->   	spi->transfer_one = spi_geni_transfer_one;
->   	spi->auto_runtime_pm = true;
->   	spi->handle_err = handle_fifo_timeout;
-> -	spi->set_cs = spi_geni_set_cs;
->   	spi->use_gpio_descriptors = true;
->   
->   	init_completion(&mas->cs_done);
->   	init_completion(&mas->cancel_done);
->   	init_completion(&mas->abort_done);
-> +	init_completion(&mas->xfer_done);
-> +	init_completion(&mas->tx_cb);
-> +	init_completion(&mas->rx_cb);
->   	spin_lock_init(&mas->lock);
->   	pm_runtime_use_autosuspend(&pdev->dev);
->   	pm_runtime_set_autosuspend_delay(&pdev->dev, 250);
-> @@ -661,6 +1025,15 @@ static int spi_geni_probe(struct platform_device *pdev)
->   	if (ret)
->   		goto spi_geni_probe_runtime_disable;
->   
-> +	/*
-> +	 * query the mode supported and set_cs for fifo mode only
-> +	 * for dma (gsi) mode, the gsi will set cs based on params passed in
-> +	 * TRE
-> +	 */
-> +	mas->cur_xfer_mode = get_xfer_mode(spi);
-> +	if (mas->cur_xfer_mode == GENI_SE_FIFO)
-> +		spi->set_cs = spi_geni_set_cs;
-> +
->   	ret = request_irq(mas->irq, geni_spi_isr, 0, dev_name(dev), spi);
->   	if (ret)
->   		goto spi_geni_probe_runtime_disable;
-> 
-
-
--- 
-With best wishes
-Dmitry
+diff --git a/tools/spi/spidev_test.c b/tools/spi/spidev_test.c
+index 83844f8..7c36677 100644
+--- a/tools/spi/spidev_test.c
++++ b/tools/spi/spidev_test.c
+@@ -89,7 +89,7 @@ static void hex_dump(const void *src, size_t length, size=
+_t line_size,
+=20
+ /*
+  *  Unescape - process hexadecimal escape character
+- *      converts shell input "\x23" -> 0x23
++ *      converts shell input "\\x23" -> 0x23
+  */
+ static int unescape(char *_dst, char *_src, size_t len)
+ {
+@@ -100,6 +100,10 @@ static int unescape(char *_dst, char *_src, size_t len=
+)
+ 	unsigned int ch;
+=20
+ 	while (*src) {
++		if (*src =3D=3D '"') {
++			src++;
++			continue;
++		}
+ 		if (*src =3D=3D '\\' && *(src+1) =3D=3D 'x') {
+ 			match =3D sscanf(src + 2, "%2x", &ch);
+ 			if (!match)
+@@ -108,6 +112,9 @@ static int unescape(char *_dst, char *_src, size_t len)
+ 			src +=3D 4;
+ 			*dst++ =3D (unsigned char)ch;
+ 		} else {
++			match =3D sscanf(src, "%2d", &ch);
++			if (!match)
++				pabort("malformed input string");
+ 			*dst++ =3D *src++;
+ 		}
+ 		ret++;
+--=20
+1.8.3.1

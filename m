@@ -7,42 +7,42 @@ X-Spam-Status: No, score=-18.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 64DF7C433E0
-	for <linux-spi@archiver.kernel.org>; Fri,  5 Feb 2021 19:07:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 29393C433DB
+	for <linux-spi@archiver.kernel.org>; Fri,  5 Feb 2021 19:08:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 27B9F64E05
-	for <linux-spi@archiver.kernel.org>; Fri,  5 Feb 2021 19:07:13 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CDD9B64E05
+	for <linux-spi@archiver.kernel.org>; Fri,  5 Feb 2021 19:08:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233328AbhBERYe (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 5 Feb 2021 12:24:34 -0500
-Received: from mx07-00178001.pphosted.com ([185.132.182.106]:47617 "EHLO
+        id S232679AbhBERZV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 5 Feb 2021 12:25:21 -0500
+Received: from mx07-00178001.pphosted.com ([185.132.182.106]:29894 "EHLO
         mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233728AbhBERSa (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 5 Feb 2021 12:18:30 -0500
+        by vger.kernel.org with ESMTP id S233726AbhBERS3 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 5 Feb 2021 12:18:29 -0500
 Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 115IpxT5022513;
-        Fri, 5 Feb 2021 19:59:49 +0100
+        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 115Iq5xm022849;
+        Fri, 5 Feb 2021 19:59:47 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-type; s=selector1;
- bh=rpRVpeMqY05scC8ONlNNaolclDZcKJC+t70jj36hAoE=;
- b=f1V0IYOOI24Pt7bgd2jRMqxC0ko9o/lBf26YJQsx8R8BYVRS1S9vZ1XNZx/q0DqCNtX3
- sRB0S5EgNWpQ3rfP+2KHcYESr74+M9aPG6E7Q++NXzL14w4G7jcZCnaPWnvM3q1LCYgb
- LtTUjWv3zJpvD5KIX25D1okxQEfbpDEdJZZqWGbm42kOMD3kkJJKnYMZm16XUlhCtdJR
- 0+RbSufwwQZoaEc4/Ea3jq9ZaAQi/xNf4QkMCp81tzD/Q0EoHVqoHo8izzDIbslP1Fmn
- vPX9eGiviPQ8nNyorhmro/T/QCJVigkGPJ+Z2/gTDWGV61IObAIgivbSyTsiGVCvQad/ 0w== 
+ bh=l4mRyO192tK5wz+06edKoCMrS6nJXWsrYPSp+UIM/7o=;
+ b=SJONXusMQrcm2wJ82A7R37W/7X0DALzp1OtE/td8hd6dem3Qcdr+3tOneyhcFcnZLNWv
+ +Gl520HIX14HrOiKfa+881UGMEqKtl4DawkWXItJnnkjrMFcUJHdBmeaQtdfmXidTF4R
+ S/lt04Q7NngEaCdgYOE/Idl4IxfseZV1Zq4HrpBJmrst2ZH++dzzj99qUspYWthNcxe9
+ rJwbhS66AHWNYiZ8KbvGODXA/HXQzWg4zSDxwj7Je5z56yFneqcAlA1BQrtgZwaDwfSF
+ Ad8IKpNCC3TyDuI7XQDjbr8/bzk2be5oq0/bXdY6wB29YuPffwFMOQyTZwYIq7qAwGx7 uQ== 
 Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 36d0fsgjqt-1
+        by mx07-00178001.pphosted.com with ESMTP id 36d0fsgjqr-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 05 Feb 2021 19:59:48 +0100
+        Fri, 05 Feb 2021 19:59:47 +0100
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 9160510002A;
-        Fri,  5 Feb 2021 19:59:48 +0100 (CET)
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 557E0100038;
+        Fri,  5 Feb 2021 19:59:47 +0100 (CET)
 Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 863282C38D3;
-        Fri,  5 Feb 2021 19:59:48 +0100 (CET)
-Received: from localhost (10.75.127.47) by SFHDAG2NODE3.st.com (10.75.127.6)
- with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 5 Feb 2021 19:59:48
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 4B8582C38D3;
+        Fri,  5 Feb 2021 19:59:47 +0100 (CET)
+Received: from localhost (10.75.127.45) by SFHDAG2NODE3.st.com (10.75.127.6)
+ with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 5 Feb 2021 19:59:47
  +0100
 From:   Alain Volmat <alain.volmat@foss.st.com>
 To:     <broonie@kernel.org>, <amelie.delaunay@foss.st.com>
@@ -52,16 +52,16 @@ CC:     <mcoquelin.stm32@gmail.com>, <alexandre.torgue@foss.st.com>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>, <fabrice.gasnier@foss.st.com>,
         <alain.volmat@foss.st.com>
-Subject: [PATCH v2 8/8] spi: stm32: make spurious and overrun interrupts visible
-Date:   Fri, 5 Feb 2021 19:59:32 +0100
-Message-ID: <1612551572-495-9-git-send-email-alain.volmat@foss.st.com>
+Subject: [PATCH v2 5/8] spi: stm32: driver uses reset controller only at init
+Date:   Fri, 5 Feb 2021 19:59:29 +0100
+Message-ID: <1612551572-495-6-git-send-email-alain.volmat@foss.st.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1612551572-495-1-git-send-email-alain.volmat@foss.st.com>
 References: <1612551572-495-1-git-send-email-alain.volmat@foss.st.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.75.127.47]
-X-ClientProxiedBy: SFHDAG1NODE1.st.com (10.75.127.1) To SFHDAG2NODE3.st.com
+X-Originating-IP: [10.75.127.45]
+X-ClientProxiedBy: SFHDAG2NODE2.st.com (10.75.127.5) To SFHDAG2NODE3.st.com
  (10.75.127.6)
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.737
  definitions=2021-02-05_10:2021-02-05,2021-02-05 signatures=0
@@ -69,53 +69,64 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-We do not expect to receive spurious interrupts so rise a warning
-if it happens.
+From: Etienne Carriere <etienne.carriere@st.com>
 
-RX overrun is an error condition that signals a corrupted RX
-stream both in dma and in irq modes. Report the error and
-abort the transfer in either cases.
+Remove reset controller device reference from the device private
+structure since it is used only at probe time and can be discarded
+once used to reset the SPI device.
 
+Signed-off-by: Etienne Carriere <etienne.carriere@st.com>
 Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
 ---
-v2: identical to v1
+v2: reordered within the serie
 
- drivers/spi/spi-stm32.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ drivers/spi/spi-stm32.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index f3a4ff60ac4b..25c076461011 100644
+index 8e4db219b95d..561234829110 100644
 --- a/drivers/spi/spi-stm32.c
 +++ b/drivers/spi/spi-stm32.c
-@@ -895,8 +895,8 @@ static irqreturn_t stm32h7_spi_irq_thread(int irq, void *dev_id)
- 		mask |= STM32H7_SPI_SR_RXP;
+@@ -263,7 +263,6 @@ struct stm32_spi_cfg {
+  * @base: virtual memory area
+  * @clk: hw kernel clock feeding the SPI clock generator
+  * @clk_rate: rate of the hw kernel clock feeding the SPI clock generator
+- * @rst: SPI controller reset line
+  * @lock: prevent I/O concurrent access
+  * @irq: SPI controller interrupt line
+  * @fifo_size: size of the embedded fifo in bytes
+@@ -289,7 +288,6 @@ struct stm32_spi {
+ 	void __iomem *base;
+ 	struct clk *clk;
+ 	u32 clk_rate;
+-	struct reset_control *rst;
+ 	spinlock_t lock; /* prevent I/O concurrent access */
+ 	int irq;
+ 	unsigned int fifo_size;
+@@ -1811,6 +1809,7 @@ static int stm32_spi_probe(struct platform_device *pdev)
+ 	struct spi_master *master;
+ 	struct stm32_spi *spi;
+ 	struct resource *res;
++	struct reset_control *rst;
+ 	int ret;
  
- 	if (!(sr & mask)) {
--		dev_dbg(spi->dev, "spurious IT (sr=0x%08x, ier=0x%08x)\n",
--			sr, ier);
-+		dev_warn(spi->dev, "spurious IT (sr=0x%08x, ier=0x%08x)\n",
-+			 sr, ier);
- 		spin_unlock_irqrestore(&spi->lock, flags);
- 		return IRQ_NONE;
- 	}
-@@ -923,15 +923,8 @@ static irqreturn_t stm32h7_spi_irq_thread(int irq, void *dev_id)
+ 	master = spi_alloc_master(&pdev->dev, sizeof(struct stm32_spi));
+@@ -1872,11 +1871,11 @@ static int stm32_spi_probe(struct platform_device *pdev)
+ 		goto err_clk_disable;
  	}
  
- 	if (sr & STM32H7_SPI_SR_OVR) {
--		dev_warn(spi->dev, "Overrun: received value discarded\n");
--		if (!spi->cur_usedma && (spi->rx_buf && (spi->rx_len > 0)))
--			stm32h7_spi_read_rxfifo(spi, false);
--		/*
--		 * If overrun is detected while using DMA, it means that
--		 * something went wrong, so stop the current transfer
--		 */
--		if (spi->cur_usedma)
--			end = true;
-+		dev_err(spi->dev, "Overrun: RX data lost\n");
-+		end = true;
+-	spi->rst = devm_reset_control_get_exclusive(&pdev->dev, NULL);
+-	if (!IS_ERR(spi->rst)) {
+-		reset_control_assert(spi->rst);
++	rst = devm_reset_control_get_exclusive(&pdev->dev, NULL);
++	if (!IS_ERR(rst)) {
++		reset_control_assert(rst);
+ 		udelay(2);
+-		reset_control_deassert(spi->rst);
++		reset_control_deassert(rst);
  	}
  
- 	if (sr & STM32H7_SPI_SR_EOT) {
+ 	if (spi->cfg->has_fifo)
 -- 
 2.17.1
 

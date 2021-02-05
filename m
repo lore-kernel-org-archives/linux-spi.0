@@ -7,41 +7,41 @@ X-Spam-Status: No, score=-18.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DCF86C433E0
-	for <linux-spi@archiver.kernel.org>; Fri,  5 Feb 2021 11:17:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1DED2C433E0
+	for <linux-spi@archiver.kernel.org>; Fri,  5 Feb 2021 11:18:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 933A864DB2
-	for <linux-spi@archiver.kernel.org>; Fri,  5 Feb 2021 11:17:18 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BAE0E64FA3
+	for <linux-spi@archiver.kernel.org>; Fri,  5 Feb 2021 11:17:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231391AbhBELQK (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 5 Feb 2021 06:16:10 -0500
-Received: from mx07-00178001.pphosted.com ([185.132.182.106]:53234 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232014AbhBELKg (ORCPT
+        id S230469AbhBELRS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 5 Feb 2021 06:17:18 -0500
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:42436 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S232019AbhBELKg (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 5 Feb 2021 06:10:36 -0500
-Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 115AojUb021324;
-        Fri, 5 Feb 2021 12:09:45 +0100
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 115ArRs6013726;
+        Fri, 5 Feb 2021 12:09:46 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-type; s=selector1;
- bh=wyl8yuJ5frfOCwIh20m4pKBEyn+06N5LlzlyoyqaHZ0=;
- b=k0cS3luNGybNkRAFuiEc3XWINhv+8uQ32It41x0HLBvsLBL/xCVjXTA+ihHTLeW/gV3A
- /Or+1m8k9KDNdAQN7lTP+cRd6O1wz6JDZYdrx3D55Idq79+/ALIGFREkjttOglukWC17
- 8cJGFk5GPfp+7GYn6DHmkQKhxfdu4FxKfqzvMQpeutA7gPDqoOlnNZXaPJqF+qgtgPPw
- FfUbtYxQOtPDeZpZT59qmw/gbHsphD3jub75WdOmNvfmhuh4rX4LMgb7YqBLHIDYTcc3
- 0oHGRGWR6USocj1aOeVinR81wXRjaiPP5XsqZ3WZK9y/FEPL9AiVqVFYh3Aj3jxSRo8c kg== 
+ bh=JzTr7fyhtt3bE6ra4uICOMNygXFUuOHyo4oCW2ywugc=;
+ b=RzQ2Er2bbbr2CG/BFQTSEmhYqPw8wGKMnK5wESuiPAGYwJD4LPdynT/J2VkZx+cedAiV
+ P7VCSv5992pAR2n/ZuUlcYxeK59ERTHyOlbMrv4lUxQwCMfiRmoL7NsJ7SLn77r8NpCV
+ fHtIDIMlm2VHqzNH0SwnV6H32Ukp00Cagq/7vnapqqO1w3U4d6iunC8gtDxWaQ1mchBF
+ zdd1jlEyxzze9IZoYJEqe2V4rZ5HZ26yZDD4KfvVFTZ2JATDKGX20f2eoG075A4ZM3Nj
+ 6DycGXmQo68MG+sBcjQ0xF5RXPAocwvjVWMCmWcNHk+KGn2ZjscupeAkxpUMk9zozy/2 lg== 
 Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 36ey7hfu2q-1
+        by mx07-00178001.pphosted.com with ESMTP id 36h1ke9huj-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 05 Feb 2021 12:09:45 +0100
+        Fri, 05 Feb 2021 12:09:46 +0100
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 46F56100034;
-        Fri,  5 Feb 2021 12:09:45 +0100 (CET)
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 18E2B100034;
+        Fri,  5 Feb 2021 12:09:46 +0100 (CET)
 Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 3B4D3229F3C;
-        Fri,  5 Feb 2021 12:09:45 +0100 (CET)
-Received: from localhost (10.75.127.49) by SFHDAG2NODE3.st.com (10.75.127.6)
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 0E0FB229F3C;
+        Fri,  5 Feb 2021 12:09:46 +0100 (CET)
+Received: from localhost (10.75.127.48) by SFHDAG2NODE3.st.com (10.75.127.6)
  with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 5 Feb 2021 12:09:45
  +0100
 From:   Alain Volmat <alain.volmat@foss.st.com>
@@ -52,16 +52,16 @@ CC:     <mcoquelin.stm32@gmail.com>, <alexandre.torgue@foss.st.com>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>, <fabrice.gasnier@foss.st.com>,
         <alain.volmat@foss.st.com>
-Subject: [PATCH 3/8] spi: stm32h7: ensure message are smaller than max size
-Date:   Fri, 5 Feb 2021 12:08:57 +0100
-Message-ID: <1612523342-10466-4-git-send-email-alain.volmat@foss.st.com>
+Subject: [PATCH 5/8] spi: stm32: defer probe for reset
+Date:   Fri, 5 Feb 2021 12:08:59 +0100
+Message-ID: <1612523342-10466-6-git-send-email-alain.volmat@foss.st.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1612523342-10466-1-git-send-email-alain.volmat@foss.st.com>
 References: <1612523342-10466-1-git-send-email-alain.volmat@foss.st.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.75.127.49]
-X-ClientProxiedBy: SFHDAG2NODE1.st.com (10.75.127.4) To SFHDAG2NODE3.st.com
+X-Originating-IP: [10.75.127.48]
+X-ClientProxiedBy: SFHDAG2NODE3.st.com (10.75.127.6) To SFHDAG2NODE3.st.com
  (10.75.127.6)
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.737
  definitions=2021-02-05_06:2021-02-05,2021-02-05 signatures=0
@@ -69,40 +69,39 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Ensure that messages given to transfer_one handler can actually be
-handled by it. For that purpose rely on the SPI framework
-spi_split_transfers_maxsize function to split messages whenever necessary.
+Defer the probe operation when a reset controller device is expected
+but have not yet been probed.
+
+This change replaces use of devm_reset_control_get_exclusive() with
+devm_reset_control_get_optional_exclusive() as reset controller is
+optional which is now explicitly stated.
 
 Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
 ---
- drivers/spi/spi-stm32.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/spi/spi-stm32.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index 8c6af3aa0dc3..417a2aa2b98d 100644
+index 22bd3d1c8d69..c40cea0640e6 100644
 --- a/drivers/spi/spi-stm32.c
 +++ b/drivers/spi/spi-stm32.c
-@@ -1013,6 +1013,20 @@ static int stm32_spi_prepare_msg(struct spi_master *master,
- 		!!(spi_dev->mode & SPI_LSB_FIRST),
- 		!!(spi_dev->mode & SPI_CS_HIGH));
+@@ -1891,8 +1891,14 @@ static int stm32_spi_probe(struct platform_device *pdev)
+ 		goto err_clk_disable;
+ 	}
  
-+	/* On STM32H7, messages should not exceed a maximum size setted
-+	 * afterward via the set_number_of_data function. In order to
-+	 * ensure that, split large messages into several messages
-+	 */
-+	if (spi->cfg->set_number_of_data) {
-+		int ret;
+-	rst = devm_reset_control_get_exclusive(&pdev->dev, NULL);
+-	if (!IS_ERR(rst)) {
++	rst = devm_reset_control_get_optional_exclusive(&pdev->dev, NULL);
++	if (rst) {
++		if (IS_ERR(rst)) {
++			ret = dev_err_probe(&pdev->dev, PTR_ERR(rst),
++					    "failed to get reset\n");
++			goto err_clk_disable;
++		}
 +
-+		ret = spi_split_transfers_maxsize(master, msg,
-+						  STM32H7_SPI_TSIZE_MAX,
-+						  GFP_KERNEL | GFP_DMA);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	spin_lock_irqsave(&spi->lock, flags);
- 
- 	/* CPOL, CPHA and LSB FIRST bits have common register */
+ 		reset_control_assert(rst);
+ 		udelay(2);
+ 		reset_control_deassert(rst);
 -- 
 2.17.1
 

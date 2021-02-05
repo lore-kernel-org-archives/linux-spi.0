@@ -2,46 +2,47 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-18.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3590CC433E0
-	for <linux-spi@archiver.kernel.org>; Fri,  5 Feb 2021 11:16:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F998C43381
+	for <linux-spi@archiver.kernel.org>; Fri,  5 Feb 2021 11:16:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5EABF64FA7
+	by mail.kernel.org (Postfix) with ESMTP id 345D264FA8
 	for <linux-spi@archiver.kernel.org>; Fri,  5 Feb 2021 11:16:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231269AbhBELP5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 5 Feb 2021 06:15:57 -0500
-Received: from mx07-00178001.pphosted.com ([185.132.182.106]:40841 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S232021AbhBELKh (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 5 Feb 2021 06:10:37 -0500
-Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 115ApxOY025610;
-        Fri, 5 Feb 2021 12:09:44 +0100
+        id S230088AbhBELPy (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 5 Feb 2021 06:15:54 -0500
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:21956 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S231837AbhBELKj (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 5 Feb 2021 06:10:39 -0500
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 115Ar06U005693;
+        Fri, 5 Feb 2021 12:09:47 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type; s=selector1;
- bh=YeuxeCKivkO4bocM+bAAWh+MLssKuYcIKxZRPYP51Pc=;
- b=D1ABM/7ZaDtBB5YphD51ZytOi+x98oEaMOSsu/TVw3A6dnunWyNxzRbXelAZ9CSx6e2/
- As+hwLf3r5JFUGmt1MYOoPPy9A65JGTQMILveQENnFe7IueqWtnZl5GZmsaSceuTKqxM
- WdDaXY7URtboPnuW3bckr+1Et6csdhee7cx2JR7Q8x7Vvj7RmE8OkgscTyQb3NIXxsws
- Z1Pq6XQZ9+n2GcYpVH92q0lF0myvU7R3HUrhg/tCzJxjc8xprcoPIhRpTWn+LzcoVJHh
- kAO8jriuOskn8pKV1NXdHDUOpEfnEHmPhPRE/VJrCSlmPmg3uOyS23hltlqPcvXBQbCc LQ== 
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type; s=selector1;
+ bh=oy9tt9LOcC+4G85rs/T6QnLkLfJnzRu6mgOs3GhCeH8=;
+ b=ByObkEBSmzwXf1AxlrVGNCue6ILIC3/MKoMCwmHSB+17u6dDlgw8Lykc8d9Bq2ia0lvq
+ RHYnxCvdkVtWw5UNrsitY6Sz4y/jRpwtcUqhye8rdXbMeHvYAnA8TdM6L/f8/542ZJKz
+ PnJHTdodBMQESCUanBobiot7Z5r+dOSeVn5GeOR1CSx7C5m2bVcxVR31nduBnAD3lmFb
+ 2b8daPSwhKi0FDIlL6XannKLmN9hOq+bT1zmcXNI8SimIkeBCGrZB7fg3O2KbLioXLHh
+ BZKlue1mX7oOZJpIVo5BWYE0M7FGrOKTRbpcxQMh6WzmDJdWjfwnUFvdllO5vtffb974 qQ== 
 Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 36d0fse9j3-1
+        by mx07-00178001.pphosted.com with ESMTP id 36d0nsf3am-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 05 Feb 2021 12:09:44 +0100
+        Fri, 05 Feb 2021 12:09:47 +0100
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 1618D10002A;
-        Fri,  5 Feb 2021 12:09:44 +0100 (CET)
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id E0556100034;
+        Fri,  5 Feb 2021 12:09:46 +0100 (CET)
 Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 04CA8229F3C;
-        Fri,  5 Feb 2021 12:09:44 +0100 (CET)
-Received: from localhost (10.75.127.51) by SFHDAG2NODE3.st.com (10.75.127.6)
- with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 5 Feb 2021 12:09:43
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id D3EAB229F3C;
+        Fri,  5 Feb 2021 12:09:46 +0100 (CET)
+Received: from localhost (10.75.127.49) by SFHDAG2NODE3.st.com (10.75.127.6)
+ with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 5 Feb 2021 12:09:46
  +0100
 From:   Alain Volmat <alain.volmat@foss.st.com>
 To:     <broonie@kernel.org>, <amelie.delaunay@foss.st.com>
@@ -51,14 +52,16 @@ CC:     <mcoquelin.stm32@gmail.com>, <alexandre.torgue@foss.st.com>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>, <fabrice.gasnier@foss.st.com>,
         <alain.volmat@foss.st.com>
-Subject: [PATCH 0/8] spi: stm32: fix and enhancements for spi-stm32
-Date:   Fri, 5 Feb 2021 12:08:54 +0100
-Message-ID: <1612523342-10466-1-git-send-email-alain.volmat@foss.st.com>
+Subject: [PATCH 7/8] spi: stm32h7: replace private SPI_1HZ_NS with NSEC_PER_SEC
+Date:   Fri, 5 Feb 2021 12:09:01 +0100
+Message-ID: <1612523342-10466-8-git-send-email-alain.volmat@foss.st.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1612523342-10466-1-git-send-email-alain.volmat@foss.st.com>
+References: <1612523342-10466-1-git-send-email-alain.volmat@foss.st.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.75.127.51]
-X-ClientProxiedBy: SFHDAG2NODE3.st.com (10.75.127.6) To SFHDAG2NODE3.st.com
+X-Originating-IP: [10.75.127.49]
+X-ClientProxiedBy: SFHDAG1NODE2.st.com (10.75.127.2) To SFHDAG2NODE3.st.com
  (10.75.127.6)
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.737
  definitions=2021-02-05_06:2021-02-05,2021-02-05 signatures=0
@@ -66,30 +69,39 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The serie provides a fix for the spi-stm32 driver, allowing to properly
-handle 0 byte transfer (and thus being able to run spi-loopback-test).
+From: Amelie Delaunay <amelie.delaunay@foss.st.com>
 
-In addition to that, important enhancements are implemented, among them,
-supporting transfer larger that what the IP can setup in one go or
-allowing to use the SPI bus without cs_gpio.
+Replace SPI_1HZ_NS private constant with NSEC_PER_SEC, which is easier
+to read and understand.
 
-Alain Volmat (5):
-  spi: stm32: properly handle 0 byte transfer
-  spi: stm32: do not mandate cs_gpio
-  spi: stm32h7: ensure message are smaller than max size
-  spi: stm32: defer probe for reset
-  spi: stm32: make spurious and overrun interrupts visible
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+---
+ drivers/spi/spi-stm32.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-Amelie Delaunay (2):
-  spi: stm32: use bitfield macros
-  spi: stm32h7: replace private SPI_1HZ_NS with NSEC_PER_SEC
-
-Etienne Carriere (1):
-  spi: stm32: driver uses reset controller only at init
-
- drivers/spi/spi-stm32.c | 116 +++++++++++++++++++---------------------
- 1 file changed, 54 insertions(+), 62 deletions(-)
-
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index cacd5b4b6823..7692e2778df5 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -162,8 +162,6 @@
+ #define SPI_3WIRE_TX		3
+ #define SPI_3WIRE_RX		4
+ 
+-#define SPI_1HZ_NS		1000000000
+-
+ /*
+  * use PIO for small transfers, avoiding DMA setup/teardown overhead for drivers
+  * without fifo buffers.
+@@ -1525,7 +1523,7 @@ static void stm32h7_spi_data_idleness(struct stm32_spi *spi, u32 len)
+ 
+ 	cfg2_clrb |= STM32H7_SPI_CFG2_MIDI;
+ 	if ((len > 1) && (spi->cur_midi > 0)) {
+-		u32 sck_period_ns = DIV_ROUND_UP(SPI_1HZ_NS, spi->cur_speed);
++		u32 sck_period_ns = DIV_ROUND_UP(NSEC_PER_SEC, spi->cur_speed);
+ 		u32 midi = min_t(u32,
+ 				 DIV_ROUND_UP(spi->cur_midi, sck_period_ns),
+ 				 FIELD_GET(STM32H7_SPI_CFG2_MIDI,
 -- 
 2.17.1
 

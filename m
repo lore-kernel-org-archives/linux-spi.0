@@ -4,86 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0ABECC433DB
-	for <linux-spi@archiver.kernel.org>; Mon, 15 Feb 2021 20:26:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 94971C433E0
+	for <linux-spi@archiver.kernel.org>; Mon, 15 Feb 2021 20:26:08 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C649064DE0
+	by mail.kernel.org (Postfix) with ESMTP id 4A7D064DE0
 	for <linux-spi@archiver.kernel.org>; Mon, 15 Feb 2021 20:26:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229713AbhBOUZw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S229703AbhBOUZw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Mon, 15 Feb 2021 15:25:52 -0500
-Received: from mga01.intel.com ([192.55.52.88]:42876 "EHLO mga01.intel.com"
+Received: from mga11.intel.com ([192.55.52.93]:43311 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229608AbhBOUZw (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 15 Feb 2021 15:25:52 -0500
-IronPort-SDR: 4jq+leocXXYeE1mUhzbFTBfq3VuxqQl8hQrJr4MrFrBhsQ798wxsvmtTMqXXauRvIuDXzPRKj4
- QJhzovO4meUw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9896"; a="201938400"
+        id S229697AbhBOUZv (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 15 Feb 2021 15:25:51 -0500
+IronPort-SDR: xgF9sfYHzz/84FV6BJ2S2fw1m68TheuzgseFJSpk8sB+jG8rxqz/prWQWH6Ff1y5UFDxTN35Nf
+ jLBXPx9PLH6A==
+X-IronPort-AV: E=McAfee;i="6000,8403,9896"; a="179250744"
 X-IronPort-AV: E=Sophos;i="5.81,181,1610438400"; 
-   d="scan'208";a="201938400"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2021 12:24:05 -0800
-IronPort-SDR: N/DJxi9ju3HnN0vg9+yV6ehvsQzRl035SkGZCZzBSDexMjdidAo0+hfrCa/51G5TUFviSzkDpK
- mXvee+MfI7Pw==
+   d="scan'208";a="179250744"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2021 12:24:06 -0800
+IronPort-SDR: Ml0NcUWidTqS14GEPavJ4dHHxhFQW6fl0Nen4JfKNLRuy4XuVkWSGqWYtqpM6ts5TVpgSD/ntJ
+ 60HghMMU4o6w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.81,181,1610438400"; 
-   d="scan'208";a="591533223"
+   d="scan'208";a="425626297"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga005.fm.intel.com with ESMTP; 15 Feb 2021 12:24:04 -0800
+  by fmsmga002.fm.intel.com with ESMTP; 15 Feb 2021 12:24:04 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 8EB0512B; Mon, 15 Feb 2021 22:24:03 +0200 (EET)
+        id A42D51F1; Mon, 15 Feb 2021 22:24:03 +0200 (EET)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
         Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
         linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     Mark Brown <broonie@kernel.org>
-Subject: [PATCH v1 1/3] parport: Introduce module_parport_driver() helper macro
-Date:   Mon, 15 Feb 2021 22:23:51 +0200
-Message-Id: <20210215202353.18515-1-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 3/3] spi: lm70llp: Switch to use module_parport_driver()
+Date:   Mon, 15 Feb 2021 22:23:53 +0200
+Message-Id: <20210215202353.18515-3-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20210215202353.18515-1-andriy.shevchenko@linux.intel.com>
+References: <20210215202353.18515-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Introduce module_parport_driver() helper macro to reduce boilerplate
-in the existing and new code.
+Switch to use module_parport_driver() to reduce boilerplate code.
+Note, device_initcall() is a default for module_init().
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- include/linux/parport.h | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/spi/spi-lm70llp.c | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
 
-diff --git a/include/linux/parport.h b/include/linux/parport.h
-index f981f794c850..af9b707d9b54 100644
---- a/include/linux/parport.h
-+++ b/include/linux/parport.h
-@@ -332,9 +332,19 @@ int __must_check __parport_register_driver(struct parport_driver *,
- 	__parport_register_driver(driver, THIS_MODULE, KBUILD_MODNAME)
+diff --git a/drivers/spi/spi-lm70llp.c b/drivers/spi/spi-lm70llp.c
+index 174dba29b1dd..f914b8d2043e 100644
+--- a/drivers/spi/spi-lm70llp.c
++++ b/drivers/spi/spi-lm70llp.c
+@@ -320,18 +320,7 @@ static struct parport_driver spi_lm70llp_drv = {
+ 	.detach =	spi_lm70llp_detach,
+ 	.devmodel =	true,
+ };
+-
+-static int __init init_spi_lm70llp(void)
+-{
+-	return parport_register_driver(&spi_lm70llp_drv);
+-}
+-module_init(init_spi_lm70llp);
+-
+-static void __exit cleanup_spi_lm70llp(void)
+-{
+-	parport_unregister_driver(&spi_lm70llp_drv);
+-}
+-module_exit(cleanup_spi_lm70llp);
++module_parport_driver(spi_lm70llp_drv);
  
- /* Unregister a high-level driver. */
--extern void parport_unregister_driver (struct parport_driver *);
- void parport_unregister_driver(struct parport_driver *);
- 
-+/**
-+ * module_parport_driver() - Helper macro for registering a modular parport driver
-+ * @__parport_driver: struct parport_driver to be used
-+ *
-+ * Helper macro for parport drivers which do not do anything special in module
-+ * init and exit. This eliminates a lot of boilerplate. Each module may only
-+ * use this macro once, and calling it replaces module_init() and module_exit().
-+ */
-+#define module_parport_driver(__parport_driver) \
-+	module_driver(__parport_driver, parport_add_driver, parport_del_driver)
-+
- /* If parport_register_driver doesn't fit your needs, perhaps
-  * parport_find_xxx does. */
- extern struct parport *parport_find_number (int);
+ MODULE_AUTHOR("Kaiwan N Billimoria <kaiwan@designergraphix.com>");
+ MODULE_DESCRIPTION(
 -- 
 2.30.0
 

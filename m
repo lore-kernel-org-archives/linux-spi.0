@@ -2,89 +2,81 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1CF1DC433DB
-	for <linux-spi@archiver.kernel.org>; Mon, 15 Feb 2021 20:27:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C111AC433E0
+	for <linux-spi@archiver.kernel.org>; Mon, 15 Feb 2021 20:45:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C31C564DEC
-	for <linux-spi@archiver.kernel.org>; Mon, 15 Feb 2021 20:27:17 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8638C64DF4
+	for <linux-spi@archiver.kernel.org>; Mon, 15 Feb 2021 20:45:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229651AbhBOU1Q (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 15 Feb 2021 15:27:16 -0500
-Received: from mga01.intel.com ([192.55.52.88]:42876 "EHLO mga01.intel.com"
+        id S229675AbhBOUpA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 15 Feb 2021 15:45:00 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54346 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229862AbhBOU1M (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 15 Feb 2021 15:27:12 -0500
-IronPort-SDR: Q0wn2qfksJLnRk12ZTudbBvEY0DNOR6Yl5otUQ5lc1vlpL8hlZDn4zBu8dMwBLwp0322brKy3u
- Y/pB3I6YVR9A==
-X-IronPort-AV: E=McAfee;i="6000,8403,9896"; a="201938401"
-X-IronPort-AV: E=Sophos;i="5.81,181,1610438400"; 
-   d="scan'208";a="201938401"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2021 12:24:06 -0800
-IronPort-SDR: iPDvkAKrC8anhouVHKVKLXY878MuMJJWUW6LfD5QkRemXJtK3fxjitakRsJ37ok+QxOjpMbByq
- AFSJ6/aqVVUA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,181,1610438400"; 
-   d="scan'208";a="591533224"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga005.fm.intel.com with ESMTP; 15 Feb 2021 12:24:04 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 99B09F2; Mon, 15 Feb 2021 22:24:03 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        id S229660AbhBOUpA (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 15 Feb 2021 15:45:00 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id F085864DF0;
+        Mon, 15 Feb 2021 20:44:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1613421859;
+        bh=BnsvQV2bdkDvPdcHnrU1YlHZ7QeSAQIz9cXX9Wf+6OU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=uswIQDVlkY/w75GG80UZj2JtwPdKb2VECCVNrPA/m+2aror+NBBM2s+V3BAbk9pfW
+         W+e861uqfGj0odvw799QiQ65mIg05UXWHc92/1crEiDrUZmraYIhaJV9l8bPqhFWjj
+         pMTQAJXx0blpwixXtg2fr7zR4vCvRiS7Uk+pJz32OMG+iZmhG3EyxwGn6f9T6zJT3c
+         NL18y/RY6jjDYYmvaCvHiZrGCV6Vmh82T0ET3xVOGx1mmI+AKv+vHa3qKNST/ftEV7
+         AQq9uO3rEGICZdfSEf5+vJgblQuh71nfFOuqBBoPtyR+rNWpqI5hzIwYBar95icX53
+         PC7pQMtYPTHJw==
+Date:   Mon, 15 Feb 2021 20:43:22 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
         Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
         linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Mark Brown <broonie@kernel.org>
-Subject: [PATCH v1 2/3] spi: butterfly: Switch to use module_parport_driver()
-Date:   Mon, 15 Feb 2021 22:23:52 +0200
-Message-Id: <20210215202353.18515-2-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210215202353.18515-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v1 2/3] spi: butterfly: Switch to use
+ module_parport_driver()
+Message-ID: <20210215204322.GA4378@sirena.org.uk>
 References: <20210215202353.18515-1-andriy.shevchenko@linux.intel.com>
+ <20210215202353.18515-2-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="envbJBWh7q8WU6mo"
+Content-Disposition: inline
+In-Reply-To: <20210215202353.18515-2-andriy.shevchenko@linux.intel.com>
+X-Cookie: Serenity through viciousness.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Switch to use module_parport_driver() to reduce boilerplate code.
-Note, device_initcall() is a default for module_init().
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/spi/spi-butterfly.c | 13 +------------
- 1 file changed, 1 insertion(+), 12 deletions(-)
+--envbJBWh7q8WU6mo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-butterfly.c b/drivers/spi/spi-butterfly.c
-index 7e71a351f3b7..cceae816cebc 100644
---- a/drivers/spi/spi-butterfly.c
-+++ b/drivers/spi/spi-butterfly.c
-@@ -317,18 +317,7 @@ static struct parport_driver butterfly_driver = {
- 	.detach =	butterfly_detach,
- 	.devmodel = true,
- };
--
--static int __init butterfly_init(void)
--{
--	return parport_register_driver(&butterfly_driver);
--}
--device_initcall(butterfly_init);
--
--static void __exit butterfly_exit(void)
--{
--	parport_unregister_driver(&butterfly_driver);
--}
--module_exit(butterfly_exit);
-+module_parport_driver(butterfly_driver);
- 
- MODULE_DESCRIPTION("Parport Adapter driver for AVR Butterfly");
- MODULE_LICENSE("GPL");
--- 
-2.30.0
+On Mon, Feb 15, 2021 at 10:23:52PM +0200, Andy Shevchenko wrote:
+> Switch to use module_parport_driver() to reduce boilerplate code.
+> Note, device_initcall() is a default for module_init().
 
+Acked-by: Mark Brown <broonie@kernel.org>
+
+--envbJBWh7q8WU6mo
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmAq3OkACgkQJNaLcl1U
+h9DOPQf9FqpvmTWWFBe/gn7sh4aD9oHcrR7VkbKN8rkDd0r+NgRPppOaOokKdyoQ
+e24StEgGbWaIgSRk+2/c9W+wmk30IfbZoNjoz/aM5My6k/NEIaFl+5Wa/72JUFqc
+vJARGCJ42SQRlX9eAug/Giq0/taClEqoXiu0KfKZfRGylFD7kCtCZjDAlXTjoTqX
+G9aGeyjIHnJDCQROQ/FxEma0ZmqtbrvNP+5I33BXpAiGP2MdMqSO3kGo9P/Mp9UM
+NKUYbC8xjS+nYYrumFjDjpCryLkVTs0fDqknrN+Ls3MfvayXRxwNxfdHtXNnl39w
+Zbs11EtkbrSAoCClTj2aJKoBI52zSQ==
+=+ZwN
+-----END PGP SIGNATURE-----
+
+--envbJBWh7q8WU6mo--

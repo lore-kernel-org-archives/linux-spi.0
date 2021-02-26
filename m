@@ -2,75 +2,85 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 46A57C433E0
-	for <linux-spi@archiver.kernel.org>; Fri, 26 Feb 2021 11:07:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 63D6CC433DB
+	for <linux-spi@archiver.kernel.org>; Fri, 26 Feb 2021 11:17:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id F1AF764EFA
-	for <linux-spi@archiver.kernel.org>; Fri, 26 Feb 2021 11:07:31 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 08C6664EED
+	for <linux-spi@archiver.kernel.org>; Fri, 26 Feb 2021 11:17:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230438AbhBZLHP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 26 Feb 2021 06:07:15 -0500
-Received: from mailgw02.mediatek.com ([210.61.82.184]:42991 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230087AbhBZLHN (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 26 Feb 2021 06:07:13 -0500
-X-UUID: fe58798b260a4997ae105309f2ae0558-20210226
-X-UUID: fe58798b260a4997ae105309f2ae0558-20210226
-Received: from mtkexhb01.mediatek.inc [(172.21.101.102)] by mailgw02.mediatek.com
-        (envelope-from <mason.zhang@mediatek.com>)
-        (Cellopoint E-mail Firewall v4.1.14 Build 0819 with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1583209110; Fri, 26 Feb 2021 19:06:28 +0800
-Received: from mtkcas07.mediatek.inc (172.21.101.84) by
- mtkmbs01n2.mediatek.inc (172.21.101.79) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Fri, 26 Feb 2021 19:06:05 +0800
-Received: from localhost.localdomain (10.15.20.246) by mtkcas07.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Fri, 26 Feb 2021 19:06:05 +0800
-From:   Mason Zhang <Mason.Zhang@mediatek.com>
-To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>
-CC:     "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <hanks.chen@mediateka.com>,
-        <wsd_upstream@mediatek.com>, Mason Zhang <Mason.Zhang@mediatek.com>
-Subject: [PATCH 2/2] dt-binding: mediatek: mt6779: update spi document
-Date:   Fri, 26 Feb 2021 19:01:10 +0800
-Message-ID: <20210226110109.30500-1-Mason.Zhang@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        id S230087AbhBZLQo (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 26 Feb 2021 06:16:44 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42692 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229556AbhBZLQm (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 26 Feb 2021 06:16:42 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id DA12A64F13;
+        Fri, 26 Feb 2021 11:16:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1614338162;
+        bh=Tq7NSjbRAdAUuZaD3N8ugNfUFezue/5tJoEZmiouilE=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=HSDB8oCeaoz1dG4ZA8Ol0WP+pHw/nmGxHXL83nYMrOu4l80vxZfAKYqMgcAo1TZiG
+         26YyUWdS99K2D8XNFoOOYjtTcjzmRfD/IIC+Y0EH/PsAEM5MM8dDYrh9h3J/tVm6BD
+         Qek6yDAQRYGEAj8qNsWq5a+T1kBeQbtxRAtEhDw232oQpvc3KaXqfn1MqY/azmfLAu
+         aCUEi3Uq+MoAeSsmLdXq3kDj+T2+tz4+PXljT4okPQZLJ0SD7RVOuAW7D+3M86IQwY
+         gXSdEpfghNjOT8oIkC5gPcLRBXhco4ZFVn3/Tw9V9p/nSjc9kVaS2GMdOQrvP1NjLd
+         tKRoJ8WcTCx2w==
+Received: by mail-ot1-f41.google.com with SMTP id f33so8699654otf.11;
+        Fri, 26 Feb 2021 03:16:01 -0800 (PST)
+X-Gm-Message-State: AOAM530wQ9RzXNMw7j5ejFu6gVx8MeAZ5OssvyVxHrO3RbNFTLl3nMZ/
+        3Co8eVszOyNbgeOT1tR8m5G6tj4GAhAZlvvTOF4=
+X-Google-Smtp-Source: ABdhPJzbTD9+oRPkTWtTivkvm9UEiJBIin+bmH7bPY6EBzrYJP+wMWV0rwR2zLORG1tj9Ocwv5TU3B9IwWvguTNSaxo=
+X-Received: by 2002:a9d:6b8b:: with SMTP id b11mr1870333otq.210.1614338160965;
+ Fri, 26 Feb 2021 03:16:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-SNTS-SMTP: 89044B18737F6A08210EDF845B0976A45BBB3832D3E72C978CC03E08F8493AE62000:8
-X-MTK:  N
+References: <20210225125541.1808719-1-arnd@kernel.org> <20210226081548.h5ls5fxihunzxjvx@ti.com>
+ <CAK8P3a3ep7DFnMYnA7q5b-P8X7nd3TAz=t82011j8=koK3T08A@mail.gmail.com> <20210226110451.ijpllyczuquerfsr@ti.com>
+In-Reply-To: <20210226110451.ijpllyczuquerfsr@ti.com>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Fri, 26 Feb 2021 12:15:44 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a0C1aSgDm10gPtcognECo0tq3oRw+DbFsy+wz383qmrJw@mail.gmail.com>
+Message-ID: <CAK8P3a0C1aSgDm10gPtcognECo0tq3oRw+DbFsy+wz383qmrJw@mail.gmail.com>
+Subject: Re: [PATCH] spi: rockchip: avoid objtool warning
+To:     Pratyush Yadav <p.yadav@ti.com>
+Cc:     Mark Brown <broonie@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Emil Renner Berthing <kernel@esmil.dk>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jon Lin <jon.lin@rock-chips.com>,
+        Chris Ruehl <chris.ruehl@gtsys.com.hk>,
+        Alexander Kochetkov <al.kochet@gmail.com>,
+        Johan Jonker <jbx6244@gmail.com>,
+        Vincent Pelletier <plr.vincent@gmail.com>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "open list:ARM/Rockchip SoC support" 
+        <linux-rockchip@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        clang-built-linux <clang-built-linux@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-this patch update spi document for MT6779 SOC.
+On Fri, Feb 26, 2021 at 12:05 PM 'Pratyush Yadav' via Clang Built
+Linux <clang-built-linux@googlegroups.com> wrote:
+> On 26/02/21 10:49AM, Arnd Bergmann wrote:
+> > On Fri, Feb 26, 2021 at 9:16 AM 'Pratyush Yadav' via Clang Built Linux <clang-built-linux@googlegroups.com> wrote:
 
-Signed-off-by: Mason Zhang <Mason.Zhang@mediatek.com>
----
- Documentation/devicetree/bindings/spi/spi-mt65xx.txt | 1 +
- 1 file changed, 1 insertion(+)
+>
+> Returning an error code from this function (along with the dev_warn() or
+> WARN_ON()) is the most sensible thing to do IMO. If the SPI layer sends
+> an invalid value then the driver should be well within its rights to
+> refuse the transaction. The function is currently void but making it
+> return int seems fairly straightforward.
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-index 9e43721fa7d6..7bae7eef26c7 100644
---- a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-@@ -13,6 +13,7 @@ Required properties:
-     - mediatek,mt8183-spi: for mt8183 platforms
-     - "mediatek,mt8192-spi", "mediatek,mt6765-spi": for mt8192 platforms
-     - "mediatek,mt8516-spi", "mediatek,mt2712-spi": for mt8516 platforms
-+    - "mediatek,mt6779-spi", "mediatek,mt6765-spi": for mt6779 platforms
- 
- - #address-cells: should be 1.
- 
--- 
-2.18.0
+Indeed, this seems like a clear -EINVAL case. I've updated my patch, will
+send after build testing.
 
+       Arnd

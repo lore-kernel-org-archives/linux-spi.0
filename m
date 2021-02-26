@@ -2,52 +2,53 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-17.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 39139C433E0
-	for <linux-spi@archiver.kernel.org>; Fri, 26 Feb 2021 09:51:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 71A09C433E0
+	for <linux-spi@archiver.kernel.org>; Fri, 26 Feb 2021 11:06:59 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DC2F764EC8
-	for <linux-spi@archiver.kernel.org>; Fri, 26 Feb 2021 09:51:11 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2007864E6C
+	for <linux-spi@archiver.kernel.org>; Fri, 26 Feb 2021 11:06:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230045AbhBZJuq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 26 Feb 2021 04:50:46 -0500
-Received: from mail.kernel.org ([198.145.29.99]:50946 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230425AbhBZJuE (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 26 Feb 2021 04:50:04 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 085B964F1B;
-        Fri, 26 Feb 2021 09:49:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614332961;
-        bh=/p6dOhcOYpFM640Kb6MMyylYPi1RlfxvVA6ObczgEhE=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=lzJT/MU0B0CfNk3Od9WEkTaz2n39hSve8tsQ3B51OG+v8C9HX0tRwf4GTLm2dCCru
-         bKsQpfIyw5c5iUwmaaAiWiVB4XUYJK7IX1xXZNMtXoYEqWP12xMsiwbl36DmbqVi/z
-         ukRr5ZUvCD65qofwYxqx3J3F5TaiqaEYExRVZii1zRWSSWkbSD6iiDRpz0UZmHi2k2
-         1qY8kNEjVoIDLeAIKeO/lOI2VWNxQy5RcjPfkj3qP1S29nD+nyPojgBrdM+plQyZi2
-         Mg/7MwP2CW7wiCAOeezJLONwGgzqHlkfoUcd84vPXgZCN0e+HTe7MGqxhd03M6Vn/V
-         GYzpBWde0OF1Q==
-Received: by mail-ot1-f53.google.com with SMTP id g8so4903974otk.4;
-        Fri, 26 Feb 2021 01:49:20 -0800 (PST)
-X-Gm-Message-State: AOAM530wm272Kr9BSnn6ouIVs6pmYXn3kd2HyX/irVK1DisKQ6Y0h7U+
-        urjBdyimjh8Wn2XIuTAvgiv7P9DVcgkH8z4/Qa4=
-X-Google-Smtp-Source: ABdhPJz6LMQBQKLqBoeQS8rjpl42H7HBCEzMgMmWlkvE+pUpzvdpGIIYlIPKZf7sKPOWCYww0kyriDgqjAijjzESmdU=
-X-Received: by 2002:a9d:4802:: with SMTP id c2mr1608747otf.305.1614332960079;
- Fri, 26 Feb 2021 01:49:20 -0800 (PST)
-MIME-Version: 1.0
-References: <20210225125541.1808719-1-arnd@kernel.org> <20210226081548.h5ls5fxihunzxjvx@ti.com>
-In-Reply-To: <20210226081548.h5ls5fxihunzxjvx@ti.com>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Fri, 26 Feb 2021 10:49:04 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a3ep7DFnMYnA7q5b-P8X7nd3TAz=t82011j8=koK3T08A@mail.gmail.com>
-Message-ID: <CAK8P3a3ep7DFnMYnA7q5b-P8X7nd3TAz=t82011j8=koK3T08A@mail.gmail.com>
-Subject: Re: [PATCH] spi: rockchip: avoid objtool warning
-To:     Pratyush Yadav <p.yadav@ti.com>
-Cc:     Mark Brown <broonie@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+        id S230210AbhBZLG5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 26 Feb 2021 06:06:57 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:45048 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230087AbhBZLG5 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 26 Feb 2021 06:06:57 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 11QB4twq079584;
+        Fri, 26 Feb 2021 05:04:55 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1614337495;
+        bh=MdgbDRHH4dg8uTJtgWTuDNWRvpN3VoqBOgFyw0Qzq/I=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=ntQy2PrRI5Qsyt2FubX0iw8ZrbOAnRqJKEKlkAbQNAEAx3Bs7KIWLeKKGmjhofOzD
+         KfHtMhQYvnbGilCIUvCkSPyFkQXrPwpYkO+jcSX7Aorjo9GJqisVynL/SdIxD9RePg
+         V9k1ZcbDrFXFwZ13klbItKptOucLmvtQTctQL3HM=
+Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 11QB4t7L097559
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 26 Feb 2021 05:04:55 -0600
+Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3; Fri, 26
+ Feb 2021 05:04:54 -0600
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1979.3 via
+ Frontend Transport; Fri, 26 Feb 2021 05:04:54 -0600
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 11QB4s96066246;
+        Fri, 26 Feb 2021 05:04:54 -0600
+Date:   Fri, 26 Feb 2021 16:34:53 +0530
+From:   Pratyush Yadav <p.yadav@ti.com>
+To:     Arnd Bergmann <arnd@kernel.org>
+CC:     Mark Brown <broonie@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
         Nathan Chancellor <nathan@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
         Emil Renner Berthing <kernel@esmil.dk>,
@@ -63,59 +64,86 @@ Cc:     Mark Brown <broonie@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
         <linux-rockchip@lists.infradead.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         clang-built-linux <clang-built-linux@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH] spi: rockchip: avoid objtool warning
+Message-ID: <20210226110451.ijpllyczuquerfsr@ti.com>
+References: <20210225125541.1808719-1-arnd@kernel.org>
+ <20210226081548.h5ls5fxihunzxjvx@ti.com>
+ <CAK8P3a3ep7DFnMYnA7q5b-P8X7nd3TAz=t82011j8=koK3T08A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a3ep7DFnMYnA7q5b-P8X7nd3TAz=t82011j8=koK3T08A@mail.gmail.com>
+User-Agent: NeoMutt/20171215
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, Feb 26, 2021 at 9:16 AM 'Pratyush Yadav' via Clang Built Linux
-<clang-built-linux@googlegroups.com> wrote:
->
-> Hi,
->
-> On 25/02/21 01:55PM, Arnd Bergmann wrote:
-> > From: Arnd Bergmann <arnd@arndb.de>
+On 26/02/21 10:49AM, Arnd Bergmann wrote:
+> On Fri, Feb 26, 2021 at 9:16 AM 'Pratyush Yadav' via Clang Built Linux
+> <clang-built-linux@googlegroups.com> wrote:
 > >
-> > Building this file with clang leads to a an unreachable code path
-> > causing a warning from objtool:
+> > Hi,
 > >
-> > drivers/spi/spi-rockchip.o: warning: objtool: rockchip_spi_transfer_one()+0x2e0: sibling call from callable instruction with modified stack frame
+> > On 25/02/21 01:55PM, Arnd Bergmann wrote:
+> > > From: Arnd Bergmann <arnd@arndb.de>
+> > >
+> > > Building this file with clang leads to a an unreachable code path
+> > > causing a warning from objtool:
+> > >
+> > > drivers/spi/spi-rockchip.o: warning: objtool: rockchip_spi_transfer_one()+0x2e0: sibling call from callable instruction with modified stack frame
+> > >
+> > > Use BUG() instead of unreachable() to avoid the undefined behavior
+> > > if it does happen.
+> > >
+> > > Fixes: 65498c6ae241 ("spi: rockchip: support 4bit words")
+> > > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> > > ---
+> > >  drivers/spi/spi-rockchip.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+> > > index 936ef54e0903..972beac1169a 100644
+> > > --- a/drivers/spi/spi-rockchip.c
+> > > +++ b/drivers/spi/spi-rockchip.c
+> > > @@ -521,7 +521,7 @@ static void rockchip_spi_config(struct rockchip_spi *rs,
+> > >                * ctlr->bits_per_word_mask, so this shouldn't
+> > >                * happen
+> > >                */
+> > > -             unreachable();
+> > > +             BUG();
 > >
-> > Use BUG() instead of unreachable() to avoid the undefined behavior
-> > if it does happen.
+> > checkpatch says:
 > >
-> > Fixes: 65498c6ae241 ("spi: rockchip: support 4bit words")
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> > ---
-> >  drivers/spi/spi-rockchip.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >   Avoid crashing the kernel - try using WARN_ON & recovery code rather
+> >   than BUG() or BUG_ON()
 > >
-> > diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-> > index 936ef54e0903..972beac1169a 100644
-> > --- a/drivers/spi/spi-rockchip.c
-> > +++ b/drivers/spi/spi-rockchip.c
-> > @@ -521,7 +521,7 @@ static void rockchip_spi_config(struct rockchip_spi *rs,
-> >                * ctlr->bits_per_word_mask, so this shouldn't
-> >                * happen
-> >                */
-> > -             unreachable();
-> > +             BUG();
->
-> checkpatch says:
->
->   Avoid crashing the kernel - try using WARN_ON & recovery code rather
->   than BUG() or BUG_ON()
->
-> Which makes sense to me. This is not something bad enough to justify
-> crashing the kernel.
+> > Which makes sense to me. This is not something bad enough to justify
+> > crashing the kernel.
+> 
+> I thought about rewriting it more thoroughly when I wrote the patch, but
+> couldn't come up with a good alternative, so I did the simplest change
+> in this direction, replacing the silent crash with a loud one.
+> 
+> Should we just dev_warn() and return instead, hoping that it won't do
+> more harm?
 
-I thought about rewriting it more thoroughly when I wrote the patch, but
-couldn't come up with a good alternative, so I did the simplest change
-in this direction, replacing the silent crash with a loud one.
+Hmm... I'm not very familiar with this device or driver so take what I 
+say with a grain of salt. On the surface level it looks like it might 
+end up doing something wrong or unexpected.
 
-Should we just dev_warn() and return instead, hoping that it won't do
-more harm?
+Returning an error code from this function (along with the dev_warn() or 
+WARN_ON()) is the most sensible thing to do IMO. If the SPI layer sends 
+an invalid value then the driver should be well within its rights to 
+refuse the transaction. The function is currently void but making it 
+return int seems fairly straightforward.
 
-The backtrace from WARN_ON() probably doesn't help here.
+> 
+> The backtrace from WARN_ON() probably doesn't help here.
+> 
+>        Arnd
 
-       Arnd
+-- 
+Regards,
+Pratyush Yadav
+Texas Instruments Inc.

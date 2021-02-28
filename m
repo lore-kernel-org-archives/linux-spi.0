@@ -2,86 +2,93 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C5FA3C433E0
-	for <linux-spi@archiver.kernel.org>; Fri, 26 Feb 2021 17:09:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7BE39C433DB
+	for <linux-spi@archiver.kernel.org>; Sun, 28 Feb 2021 23:28:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 925E764F17
-	for <linux-spi@archiver.kernel.org>; Fri, 26 Feb 2021 17:09:07 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 49F2664DCF
+	for <linux-spi@archiver.kernel.org>; Sun, 28 Feb 2021 23:28:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229849AbhBZRIw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 26 Feb 2021 12:08:52 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58556 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229795AbhBZRIv (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 26 Feb 2021 12:08:51 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 87A9C64DDA;
-        Fri, 26 Feb 2021 17:08:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614359290;
-        bh=O7HQZaD+330mzCO72LvNyaWULgPRvPutDbGS6HTDi4Q=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=t/Tq2XjC4GHqIBFAvBbQKGSctV/+GN7gQISbg3f7dNKisJWTgKA6o5yx0ysLHZskq
-         VMg16aEFaK9F0Os7j+80soT7H4PEo24Mi4dP9ds+1bRc8SR030Lz7xSFOOJPYIZbT3
-         QY853T2SI79jO+OcEDYJe/FIN5eUD8V1aBWOI1aVeFxYKej+Pj4kbH8tP1hv2LUThr
-         ic98vMloG/nvq4fu/whZz8qNS2pUEBURo5Gl4bdQmO6nsuUm1SHG+zpXmfj+7eMeV6
-         3jZYOdp++xNDFtNKJ8SCYRLWhuy/UITR6CWq8T9pWRSe6hqRq/BMNUHo3G3oSRcmp/
-         Swa10RkZAsyIQ==
-Date:   Fri, 26 Feb 2021 17:07:05 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Mason Zhang <Mason.Zhang@mediatek.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        hanks.chen@mediateka.com, wsd_upstream@mediatek.com
-Subject: Re: [PATCH 2/2] dt-binding: mediatek: mt6779: update spi document
-Message-ID: <20210226170705.GB4518@sirena.org.uk>
-References: <20210226110109.30500-1-Mason.Zhang@mediatek.com>
+        id S231364AbhB1X1y (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 28 Feb 2021 18:27:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44308 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231358AbhB1X1y (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 28 Feb 2021 18:27:54 -0500
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34BA1C06174A;
+        Sun, 28 Feb 2021 15:27:14 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id m1so12728353wml.2;
+        Sun, 28 Feb 2021 15:27:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=bAUK5Ub24hCOkuchEu83wIQAds7fALIxopORMRod5gU=;
+        b=F0LDRr25nrSx0ivF2bI9DUpj/6PQIaMEGasyY5pL/z7rpRYlXSShbDmozJ2H5zgw5d
+         OEZ7OyF56nnPR4MhkDX+6KR/3pTa/Df3E2BwNQptL1Vfh4VMc3Pqgt7TnC1Vl7KcTdgo
+         1XiZGbMVTJ05M+/3fUQC569GZ1YP01Ae34o58qSUMYRGMpJcJKJA9vXJy3D2I8LjVEE1
+         Oq9Nn+XuThfuR5i6XJuz4+F/ZMyvhLpSUkNrEdyfJsowqPYi/MWIaWRGqXVGW5utWUKF
+         xMRVJ2R9l58By57JKqao1MbzJkvMEE35Jp24CyeXKWI8tC3u9haj+WyqdHGU5Mxdk4Ef
+         zOEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=bAUK5Ub24hCOkuchEu83wIQAds7fALIxopORMRod5gU=;
+        b=ixjM2p25XkD/hUw2MPkFI+gIAGFLp2UjqclfTDY+yAEseB58EEaYmFkFaGZ5CNL2y9
+         Y8x0bPVn0ttdNONU1RrrUPYqmxGUWV2OXwZCZi3aLsujZNYbdl5UOG3SxrXQYKLEvyMn
+         YBjSfqN0WGjX26EOJkxTzpeKRLTI8Fgj1nMYzBlZQNNLa9UZs7GBe2a8WU4RS4N5868v
+         si2KQwXD2DmOukHF+RYiq/OrXa7/ypt3k4KEFiusGHDu/+fe/o3V/zEbaJt+QBpUrlDO
+         zczGNBE1S8bjvPaA2564VqBPASwaaAdybIxFZMFkGDVPBsaL7RcS/X45UhvnBHfB8IfS
+         EgkQ==
+X-Gm-Message-State: AOAM530s3xsZR55evDr1rlR9Du8wNdWpSTQdTrdvCjMrfapoDFW+SHJS
+        B2G4PLUX5A4XDwFBaDsgQHs=
+X-Google-Smtp-Source: ABdhPJzrBV411B318HbiRHYa1BG3y73Zk828lla2ezOe0EU4NYQkk1ZW7GnnqG0mxwI0lrw0AN1Tww==
+X-Received: by 2002:a05:600c:4f94:: with SMTP id n20mr12968298wmq.78.1614554832900;
+        Sun, 28 Feb 2021 15:27:12 -0800 (PST)
+Received: from debian (host-2-98-59-96.as13285.net. [2.98.59.96])
+        by smtp.gmail.com with ESMTPSA id k4sm28639058wrd.9.2021.02.28.15.27.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Feb 2021 15:27:12 -0800 (PST)
+Date:   Sun, 28 Feb 2021 23:27:10 +0000
+From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] parport: Introduce module_parport_driver() helper
+ macro
+Message-ID: <YDwmznD58ZtOwHgb@debian>
+References: <20210216110741.1286-1-andriy.shevchenko@linux.intel.com>
+ <YDkpzZ8jL7O9HJuG@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="uZ3hkaAS1mZxFaxD"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210226110109.30500-1-Mason.Zhang@mediatek.com>
-X-Cookie: Academicians care, that's who.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <YDkpzZ8jL7O9HJuG@smile.fi.intel.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Hi Andy,
 
---uZ3hkaAS1mZxFaxD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Fri, Feb 26, 2021 at 07:03:09PM +0200, Andy Shevchenko wrote:
+> On Tue, Feb 16, 2021 at 01:07:39PM +0200, Andy Shevchenko wrote:
+> > Introduce module_parport_driver() helper macro to reduce boilerplate
+> > in the existing and new code.
+> 
+> Sudip, any comments on this?
 
-On Fri, Feb 26, 2021 at 07:01:10PM +0800, Mason Zhang wrote:
-> this patch update spi document for MT6779 SOC.
+Sorry for the delay in reply.
+lgtm. I think there are few more drivers which can also use this new helper.
+Will you like to do them also?
 
-I'm missing patch 1/2 here, what's the story with dependencies?
+Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
 
-Please submit patches using subject lines reflecting the style for the
-subsystem, this makes it easier for people to identify relevant patches.
-Look at what existing commits in the area you're changing are doing and
-make sure your subject lines visually resemble what they're doing.
-There's no need to resubmit to fix this alone.
 
---uZ3hkaAS1mZxFaxD
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmA5KrkACgkQJNaLcl1U
-h9CUygf+Ol0aJAihbCGE4oreYTsWpzbY2iMN3VMLFlwwYf7pwZ4PqvUMUh+VjlSU
-kQ1lQGpmLumnZzLXu7ubr37mjzgeKZxEkOOPKr+phghVkj4I47uLh0v86bTJqc+X
-XPA0yyFZSc/qgxFe6pqUntdP+Y0lG+AP9yK1TloS+XjA9Mm/GwF3tcJU9w7XPsHv
-aoiTM1BT6fL8mS0eap09NtNSS3f8N+4F3ZHsbMgLruO8FdCwYIUrYTdLr5nku9ye
-mR/4uyMBPFOD6PjiKcQzkr0Idqk3RTG4LgHXNLkdqubZy5X+gfStD2wI8P/VvgoE
-TWm+JacwdHBtb1LfITBgCMs4scS8iQ==
-=YVpM
------END PGP SIGNATURE-----
-
---uZ3hkaAS1mZxFaxD--
+--
+Regards
+Sudip

@@ -2,80 +2,87 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B001AC433E0
-	for <linux-spi@archiver.kernel.org>; Tue,  2 Mar 2021 13:31:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C291DC433DB
+	for <linux-spi@archiver.kernel.org>; Tue,  2 Mar 2021 13:31:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5B34264F25
-	for <linux-spi@archiver.kernel.org>; Tue,  2 Mar 2021 13:31:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7CCC264F40
+	for <linux-spi@archiver.kernel.org>; Tue,  2 Mar 2021 13:31:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343759AbhCBNXb (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 2 Mar 2021 08:23:31 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33308 "EHLO mail.kernel.org"
+        id S1351057AbhCBNY4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 2 Mar 2021 08:24:56 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47224 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1346260AbhCAXkL (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 1 Mar 2021 18:40:11 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2A5C860C3E;
-        Mon,  1 Mar 2021 23:39:19 +0000 (UTC)
+        id S242462AbhCBA1G (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 1 Mar 2021 19:27:06 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id 82BA760200;
+        Mon,  1 Mar 2021 23:54:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614641959;
-        bh=lD2SkyugVzga06mWkg354UptjEsLdfh72kAzjiRP6fg=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=JOOw/tZ17ZJ2Tn9ZK+gXHBKdtD+riuvLSnYyM/8GRS18mZ2R+XcNi6bhOZG48XbOb
-         lCrSHfYFP3lxODCEWoYvaDMGSqFamKdEZF/LGPwX2zQa1VrzL5OIAHh5Cc28JYe++O
-         9KRHuf06QtnyLit5MYJ5s+xnlFLAMyCk3jG8RjKe+z0Ic7Ac4VqFJl9stuCKdJEXb0
-         z2pVvq9hFWmsNUSPQZCLwH83Y20EDIl6R/NGuf08voT8rx9AsdK0Od6FhpqOSHx++q
-         BE2Dp6NK8hCUrncR6LKME7m+rK1V/cbf4YtxJt+U77e9j4U4p9CpPOaqxl4CT5OPLf
-         BOwx4O/VvcihQ==
-From:   Mark Brown <broonie@kernel.org>
-To:     Tudor Ambarus <tudor.ambarus@microchip.com>
-Cc:     linux-kernel@vger.kernel.org, ludovic.desroches@microchip.com,
-        linux-spi@vger.kernel.org, alexandre.belloni@bootlin.com,
-        linux-arm-kernel@lists.infradead.org
-In-Reply-To: <20210218132840.131898-1-tudor.ambarus@microchip.com>
-References: <20210218132840.131898-1-tudor.ambarus@microchip.com>
-Subject: Re: [PATCH] spi: atmel: Drop unused variable
-Message-Id: <161464187230.31555.12644458080257725528.b4-ty@kernel.org>
-Date:   Mon, 01 Mar 2021 23:37:52 +0000
-MIME-Version: 1.0
+        s=k20201202; t=1614642876;
+        bh=QDGSCePDNhRSvaJVsu8HLs45JWtSz5MZLlAZPyX4wBA=;
+        h=Subject:From:Date:To:From;
+        b=HinJpyKSfFJpjLqFNeJGbB4ETJB7jCOLMplnx598XyL/6SyVlkxkOBHaujrVv0Ern
+         ysz1UifVzQVoAhJ0h0orXK7R0R11pc/UpNkUU9WfTbMHRpzzC2bXprYcwU5PJnZFQK
+         2Gbz/Ft0bKL6p/jN3O0oDc17TMhiBu++jxcdP7DLMVJC/PcFqe8HBFtm0O2lL9iFvY
+         /C7Sgynh3yrTxfVyvhQSC8PS/pIoRD7MxBSjXTfyXJYfoK5t03COv7D7x3ehkRSb14
+         ZGAMlG7bujUMh3AQ1TqTV13z5/8IQd6c/XwI0cj+SSdCvmNw0ikVYxmvMZ1dTr+Euj
+         6TNFOTZ344kFg==
 Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <161464287640.7970.16929056515501051427.git-patchwork-summary@kernel.org>
+Date:   Mon, 01 Mar 2021 23:54:36 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 18 Feb 2021 15:28:40 +0200, Tudor Ambarus wrote:
-> The DMA cap mask is no longer used since:
-> commit 7758e390699f ("spi: atmel: remove compat for non DT board when requesting dma chan")
-> Drop it now.
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (refs/heads/for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Series: [1/3] spi: mpc52xx: Avoid using get_tbl()
+  Submitter: Christophe Leroy <christophe.leroy@csgroup.eu>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=430565
+  Lore link: https://lore.kernel.org/r/99bf008e2970de7f8ed3225cda69a6d06ae1a644.1612866360.git.christophe.leroy@csgroup.eu
+    Patches: [1/3] spi: mpc52xx: Avoid using get_tbl()
+             [2/3] powerpc/time: Avoid using get_tbl()
+             [3/3] powerpc/time: Remove get_tbl()
+Patch: regulator: axp20x: Fix reference cout leak
+  Submitter: Pan Bian <bianpan2016@163.com>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=419445
+  Lore link: https://lore.kernel.org/r/20210120123313.107640-1-bianpan2016@163.com
+Patch: coresight: etm4x: Fix merge resolution for amba rework
+  Submitter: Uwe Kleine-König <uwe@kleine-koenig.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=428749
+  Lore link: https://lore.kernel.org/r/20210205130848.20009-1-uwe@kleine-koenig.org
+Patch: [GIT,PULL] immutable branch for amba changes targeting v5.12-rc1
+  Submitter: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=426429
+  Lore link: https://lore.kernel.org/r/20210202135350.36nj3dmcoq3t7gcf@pengutronix.de
+Patch: mailbox: arm_mhuv2: make remove callback return void
+  Submitter: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=426527
+  Lore link: https://lore.kernel.org/r/20210202194308.jm66vblqjwr5wo6v@pengutronix.de
+Patch: ACPI: Test for ACPI_SUCCESS rather than !ACPI_FAILURE
+  Submitter: Bjorn Helgaas <helgaas@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=422933
+  Lore link: https://lore.kernel.org/r/20210126202317.2914080-1-helgaas@kernel.org
+Patch: [v2] dt-bindings: spi: zynq: Convert Zynq QSPI binding to yaml
+  Submitter: Michal Simek <michal.simek@xilinx.com>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=431341
+  Lore link: https://lore.kernel.org/r/4ece21a7e9691ed1e775fd6b0b4046b1562e44bd.1612951821.git.michal.simek@xilinx.com
 
-Thanks!
+Total patches: 9
 
-[1/1] spi: atmel: Drop unused variable
-      commit: c5f754fd0a31d2c6f2f8d11f3db1427b5566f1e7
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

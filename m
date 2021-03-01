@@ -2,94 +2,79 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BC2FC433DB
-	for <linux-spi@archiver.kernel.org>; Mon,  1 Mar 2021 18:31:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2EDD3C433DB
+	for <linux-spi@archiver.kernel.org>; Tue,  2 Mar 2021 13:30:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E337564F2A
-	for <linux-spi@archiver.kernel.org>; Mon,  1 Mar 2021 18:31:42 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DE08D64EFC
+	for <linux-spi@archiver.kernel.org>; Tue,  2 Mar 2021 13:30:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239898AbhCASbf (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 1 Mar 2021 13:31:35 -0500
-Received: from mail.kernel.org ([198.145.29.99]:43162 "EHLO mail.kernel.org"
+        id S241367AbhCBNRD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 2 Mar 2021 08:17:03 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33106 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234847AbhCAS3G (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 1 Mar 2021 13:29:06 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 00B6B651A7;
-        Mon,  1 Mar 2021 17:12:16 +0000 (UTC)
+        id S1346232AbhCAXjr (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 1 Mar 2021 18:39:47 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 097E16024A;
+        Mon,  1 Mar 2021 23:38:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614618737;
-        bh=si2eQjMtWG04yWgbRVI1ZmXrgQt/Qz7SnMI2Vx2sclo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=TRyUOqnIYoOkLEdIZXY6n+mfmvhH+iTo7CrtOF+ZcPgwnX1jIvD1pwfrsHDCaKBDd
-         OzJ1rhzg8FQ/vdEqpe/n2x4ds1AhZvm9EXB/2XBN3Ldbeh/3u/W0r/LQs6Oe/ab2DJ
-         lwKzntubGHiOHtFnx6jxDuJIlUSZ1BjKFfkV6wpTCxFgjs07SrD9BLrLvbwcm0UULL
-         LVNtjOEINjvQcZiEzwMBv7Jr3ARAZP0IP1i1HhqayUARKPX4FKRafpfRkSktwDalDG
-         0Pcwxhl/F2zAfhel0RzcLc+ZirGdOYBtKNhP+ghxV2S4jdebTeA+fFgmSD9QV0D9Dl
-         JkShhsckrG5aQ==
-Date:   Mon, 1 Mar 2021 17:11:11 +0000
+        s=k20201202; t=1614641938;
+        bh=G/BB5DHTa84dJpLDhMzDsAYuA5hNrVLVMURNMKpd+Pk=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=sONeWh1NnT94fWQhp8bgcwDjmmWJIZy5Z7p7UXMqfA3/uARfY/hPZ8QBdVR7fRQHJ
+         x/9SEkDQrfRs47dxT9J2oHTtmr/EBzA9obkLFGdB4C9hc9vyrsh1PHjTDHnlU6NYoe
+         +aMCfitNMPNDbdNDWaDSOREGoRAMLWF6MYOoN0T1Imz9sK+vrT7t7beTeu3kqaEjAX
+         Ls1YvyeMUEwcrtfHZ/uXXqmOoHpMm4h+mGXgV5+rxu+KXWbsQv4ibhdWzvfALCToza
+         zrfjkopefUDwmto9KEZxQTspkxnzMLX74xSnveuL9aN/EXUhIr73wC7pWerCC72h+g
+         5+6WBaoDHVZ5Q==
 From:   Mark Brown <broonie@kernel.org>
-To:     Kuldeep Singh <kuldeep.singh@nxp.com>
-Cc:     "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Ashish Kumar <ashish.kumar@nxp.com>, Han Xu <han.xu@nxp.com>
-Subject: Re: [EXT] Re: [PATCH 2/3] spi: spi-nxp-fspi: Add driver support for
- imx8dxl
-Message-ID: <20210301171111.GE4628@sirena.org.uk>
-References: <20210301103230.1816168-1-kuldeep.singh@nxp.com>
- <20210301103230.1816168-3-kuldeep.singh@nxp.com>
- <20210301132539.GB4628@sirena.org.uk>
- <DB6PR0402MB2758C61D8320CD0A88DC3B38E09A9@DB6PR0402MB2758.eurprd04.prod.outlook.com>
+To:     linux-spi@vger.kernel.org,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Cc:     linux-kernel@vger.kernel.org
+In-Reply-To: <20210222023243.491432-1-alexander.sverdlin@gmail.com>
+References: <20210222023243.491432-1-alexander.sverdlin@gmail.com>
+Subject: Re: [PATCH] spi: omap2-mcspi: Activate pinctrl idle state during runtime suspend
+Message-Id: <161464187231.31555.1398673115827346364.b4-ty@kernel.org>
+Date:   Mon, 01 Mar 2021 23:37:52 +0000
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="6Vw0j8UKbyX0bfpA"
-Content-Disposition: inline
-In-Reply-To: <DB6PR0402MB2758C61D8320CD0A88DC3B38E09A9@DB6PR0402MB2758.eurprd04.prod.outlook.com>
-X-Cookie: Body by Nautilus, Brain by Mattel.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+On Mon, 22 Feb 2021 03:32:43 +0100, Alexander Sverdlin wrote:
+> Set the (optional) idle pinctrl state during runtime suspend. This is the
+> same schema used in PL022 driver and can help with HW designs sharing
+> the SPI lines for different purposes.
 
---6Vw0j8UKbyX0bfpA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied to
 
-On Mon, Mar 01, 2021 at 04:39:18PM +0000, Kuldeep Singh wrote:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-> > That's a DT binding YAML conversion patch, why would there be a
-> > dependency on it?
+Thanks!
 
-> I have converted bindings to yaml version in the patch and also added imx8dxl compatible along-with the conversion. Please see the difference in compatible entries from txt to yaml conversion[1].
-> Kindly let me know do I need to submit different patch for adding new compatible or ok to include in the conversion patch itself?
+[1/1] spi: omap2-mcspi: Activate pinctrl idle state during runtime suspend
+      commit: 9923f8e3039ed0361c2476d5d3c5195c7f766504
 
-Your YAML binding conversion should have been a standalone patch only
-doing that conversion, the new compatible should have been split out and
-gone first - each patch should only do one thing as covered in
-submitting-patches.rst.  As things stand the changelog for the
-conversion is misleading since it doesn't mention the new compatible.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-Please fix your mail client to word wrap within paragraphs at something
-substantially less than 80 columns.  Doing this makes your messages much
-easier to read and reply to.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---6Vw0j8UKbyX0bfpA
-Content-Type: application/pgp-signature; name="signature.asc"
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmA9IC4ACgkQJNaLcl1U
-h9BVzgf/fcNTSGu3TmIuLXEmc8xKQhoS/wyKHEbL3A4BQsrfb4t1xIeNIF06Juba
-05R5g6zAnzjPtXVNQ33pNJIrGJVfDWHk0wiWfp5T5pDVvk22/Whyz7+N5xa40dMN
-omTFCyCKUC1DrvzMkZssOjmAQGTlXpId0N3yUx0WOVWnvgHj9y7fRA9LCGK9Dlve
-yMKQZctAOAdh6W/hBDZvANC4qeoRQh3O4iUSoPo4ht6v7oDQoeTp+Dp32yclpdhP
-9OpqLIi0fYuX1KaDl/9eVG/buR4NJPVWxKIE4jOd165hLdzf8chjUr2OZFDNBGA4
-frXAJ2nZtoVXBFgdAP4fgfNtr6FChw==
-=WlwW
------END PGP SIGNATURE-----
-
---6Vw0j8UKbyX0bfpA--
+Thanks,
+Mark

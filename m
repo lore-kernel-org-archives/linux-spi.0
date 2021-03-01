@@ -6,49 +6,38 @@ X-Spam-Status: No, score=-11.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
 	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B1905C433DB
-	for <linux-spi@archiver.kernel.org>; Tue,  2 Mar 2021 13:30:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9888CC433DB
+	for <linux-spi@archiver.kernel.org>; Tue,  2 Mar 2021 13:30:58 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 75E8E64EFC
-	for <linux-spi@archiver.kernel.org>; Tue,  2 Mar 2021 13:30:39 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 564BE64F25
+	for <linux-spi@archiver.kernel.org>; Tue,  2 Mar 2021 13:30:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240808AbhCBNUB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 2 Mar 2021 08:20:01 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33192 "EHLO mail.kernel.org"
+        id S1351027AbhCBNVP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 2 Mar 2021 08:21:15 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33260 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1346258AbhCAXkH (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 1 Mar 2021 18:40:07 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9E55F6146B;
-        Mon,  1 Mar 2021 23:39:08 +0000 (UTC)
+        id S1346259AbhCAXkK (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 1 Mar 2021 18:40:10 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E1FC461477;
+        Mon,  1 Mar 2021 23:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614641949;
-        bh=FC5E0jgM2oYDDQU3j98r7awtXgaJzsC9gg9QAlFAKC8=;
+        s=k20201202; t=1614641954;
+        bh=zy1Fph+p8k34LVeqdrSekoYGMK8LFSgwSCDZ45BkFFA=;
         h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=ge/cQFMMzNZ8kEJ0nCBHlFyfI4rzjL2b8N5jGL5BpTA8jXuBqFqNgQQpRhhNYGwGq
-         bUnqFurDNzQFkgb0UDk4R7yex3dETJDiPrY2ftRv8nGc5Cu/H3eWZ2vVF8aNNgPWuc
-         meTwGEMNlRALGaEdKlzO7J0BCQt/irAzh/Ae0/Il1qcMmMuV9C+pege+buXLNUgar5
-         cfco/rKBuz7jM+/5FGoBRM+KDPzmWM7tb/9cXBL5LVo0ONdfrPOd79PcM9nXbrdOOe
-         wvYmeHaSjTAYQhTw3/ISwovbx+1S04PJIs/2rbS3+isWqtTmDbw/dVEuN0JWbzYjDA
-         FZ6/3JAPi7iWQ==
+        b=U8l4HGACkQngSenne+2JvwDp/eHKaEzQMS0Tt5gtIzcT+CMEAJs0aRZp56+W8IHJK
+         3C3wJjv9DSVjDrSUMC91bprLsS8FsVyfK3mQj6OlaLK6ewYraARiYoU+iT+W9TwFBS
+         WCmDK4AaV9pmhSvtrhvzGksAYufAcUwa7zQHOx6o5HycwnRMyQPB3QvTWFrNyWZqS1
+         rDwdiFz/WQynMyoXCZQ74Bw11GbXM6MGiOCOOk6yNCZXqcJqPf6jG6pEUU1GxbqDtN
+         yA6OhopX399K/9LIgO7gDheZ4VkteTR7ZE+g6AWy5xw4+R43KlBiOQeucpVMDGZS9i
+         tEkNbjA+0+pWA==
 From:   Mark Brown <broonie@kernel.org>
-To:     Nick Desaulniers <ndesaulniers@google.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Arnd Bergmann <arnd@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Emil Renner Berthing <kernel@esmil.dk>
-Cc:     linux-rockchip@lists.infradead.org,
-        Alexander Kochetkov <al.kochet@gmail.com>,
-        Jon Lin <jon.lin@rock-chips.com>,
-        Chris Ruehl <chris.ruehl@gtsys.com.hk>,
-        Johan Jonker <jbx6244@gmail.com>, linux-kernel@vger.kernel.org,
-        clang-built-linux@googlegroups.com, linux-spi@vger.kernel.org,
-        Arnd Bergmann <arnd@arndb.de>,
-        Vincent Pelletier <plr.vincent@gmail.com>,
-        linux-arm-kernel@lists.infradead.org
-In-Reply-To: <20210225125541.1808719-1-arnd@kernel.org>
-References: <20210225125541.1808719-1-arnd@kernel.org>
-Subject: Re: [PATCH] spi: rockchip: avoid objtool warning
-Message-Id: <161464187231.31555.17379793263807156995.b4-ty@kernel.org>
+To:     angkery <angkery@163.com>
+Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Junlin Yang <yangjunlin@yulong.com>
+In-Reply-To: <20210215110425.1012-1-angkery@163.com>
+References: <20210215110425.1012-1-angkery@163.com>
+Subject: Re: [PATCH] spi: cadence-quadspi: add missing of_node_put
+Message-Id: <161464187230.31555.12823199659284137891.b4-ty@kernel.org>
 Date:   Mon, 01 Mar 2021 23:37:52 +0000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -57,14 +46,11 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 25 Feb 2021 13:55:34 +0100, Arnd Bergmann wrote:
-> Building this file with clang leads to a an unreachable code path
-> causing a warning from objtool:
+On Mon, 15 Feb 2021 19:04:25 +0800, angkery wrote:
+> Fix OF node leaks by calling of_node_put in
+> for_each_available_child_of_node when the cycle returns.
 > 
-> drivers/spi/spi-rockchip.o: warning: objtool: rockchip_spi_transfer_one()+0x2e0: sibling call from callable instruction with modified stack frame
-> 
-> Use BUG() instead of unreachable() to avoid the undefined behavior
-> if it does happen.
+> Generated by: scripts/coccinelle/iterators/for_each_child.cocci
 
 Applied to
 
@@ -72,8 +58,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: rockchip: avoid objtool warning
-      commit: d86e880f7a7c5b64a650146a1353f98750863f21
+[1/1] spi: cadence-quadspi: add missing of_node_put
+      commit: 44233a5ba2511b85da3c055a0ab7c28976544e47
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

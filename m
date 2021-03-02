@@ -2,107 +2,54 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-19.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E806C433E6
-	for <linux-spi@archiver.kernel.org>; Wed,  3 Mar 2021 05:56:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1EEFBC433DB
+	for <linux-spi@archiver.kernel.org>; Wed,  3 Mar 2021 05:56:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AFB6764E6C
-	for <linux-spi@archiver.kernel.org>; Wed,  3 Mar 2021 05:56:17 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C6EC864E6C
+	for <linux-spi@archiver.kernel.org>; Wed,  3 Mar 2021 05:56:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235324AbhCCFrG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 3 Mar 2021 00:47:06 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39744 "EHLO mail.kernel.org"
+        id S237851AbhCCFrV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 3 Mar 2021 00:47:21 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40204 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1448076AbhCBNzG (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 2 Mar 2021 08:55:06 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9E9C164F86;
-        Tue,  2 Mar 2021 11:58:02 +0000 (UTC)
+        id S241889AbhCBN5P (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 2 Mar 2021 08:57:15 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id A468664EE4;
+        Tue,  2 Mar 2021 13:56:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614686283;
-        bh=JxBOvQlb1mV3WHzKwhlOFEdlY0k8MJZTgRuw+0Gkp5U=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eqf370pCtxv/9RNoR5hlUuVNvQ5FKwfEZ6AO/RAnkKgilZ2CTtaf6ijKp7EadryFI
-         RIQIJTWovgBxYfWDITQu3wC0t5+DisXN35n1duOuXERvJrMfkaz7PyLf2R6ZT1zjB1
-         Ya2nj+eQzryYbsHFby8K3hPnchkaq57jeOzk7o7iNCDFc8aXMwibYVtwM92W6us3nO
-         BE62qlUPu2l0j9pX/QwvZxcWM9jslWe0XXbc3WJcw6k8gzbGX65/oRmTAVKJ42LMdk
-         wynrv6UWU7vqvdgMaIXTJlze0V+Q8/lT9bFLstmIDgeuf++XSiZ8DzndeEzUg3swSt
-         lVoHc36bDoQHA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Alain Volmat <alain.volmat@foss.st.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.4 10/33] spi: stm32: make spurious and overrun interrupts visible
-Date:   Tue,  2 Mar 2021 06:57:26 -0500
-Message-Id: <20210302115749.62653-10-sashal@kernel.org>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210302115749.62653-1-sashal@kernel.org>
-References: <20210302115749.62653-1-sashal@kernel.org>
+        s=k20201202; t=1614693386;
+        bh=yL22Xjzx/LSZxI9GKqJZob7d0zLc7rHmryI6SX+PYJg=;
+        h=Subject:From:Date:To:From;
+        b=BEieweuIi+g9+pxPyAvk0BngfNYe3agO1GJvNZwHMJA/Z4eJmprU2w12330YasQN3
+         6jGUcKl2seZOnjZLLfI1B9JslItJRcxqv80rozlHRCWqASXTmsDsddSDzE6DratKEw
+         Gx3WUv63bibrEhNvCX5CpXCEciKIwAyOa+5IRgD1X1pYhSO58Nky1Wx0yadd0OaOTt
+         VGigxNRrIsf/XiuIfgMe7ByhKavLeecXXLdSPq2RYe5SLu9WnlnCKSZ1mISsYv5x2g
+         /VJLhsj9fIqb8SRdp8mhP0Ad9uUchdIiqt3zDnZv1X9oCjIMhc5iFTf3XVt8flYXTo
+         HNX0mvX8FvMnw==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <161469338658.11356.18168011186034104626.git-patchwork-housekeeping@kernel.org>
+Date:   Tue, 02 Mar 2021 13:56:26 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Alain Volmat <alain.volmat@foss.st.com>
+Latest series: [v2] NXP Flexspi driver patches (2021-03-02T12:49:32)
+  Superseding: [v1] NXP Flexspi driver patches (2021-03-01T10:32:27):
+    [1/3] spi: spi-nxp-fspi: Add support for IP read only
+    [2/3] spi: spi-nxp-fspi: Add driver support for imx8dxl
+    [3/3] spi: spi-nxp-fspi: Implement errata workaround for LS1028A
 
-[ Upstream commit c64e7efe46b7de21937ef4b3594d9b1fc74f07df ]
 
-We do not expect to receive spurious interrupts so rise a warning
-if it happens.
-
-RX overrun is an error condition that signals a corrupted RX
-stream both in dma and in irq modes. Report the error and
-abort the transfer in either cases.
-
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-Link: https://lore.kernel.org/r/1612551572-495-9-git-send-email-alain.volmat@foss.st.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/spi/spi-stm32.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index 77ddf23b65d6..c7546683fc80 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -924,8 +924,8 @@ static irqreturn_t stm32h7_spi_irq_thread(int irq, void *dev_id)
- 		mask |= STM32H7_SPI_SR_RXP;
- 
- 	if (!(sr & mask)) {
--		dev_dbg(spi->dev, "spurious IT (sr=0x%08x, ier=0x%08x)\n",
--			sr, ier);
-+		dev_warn(spi->dev, "spurious IT (sr=0x%08x, ier=0x%08x)\n",
-+			 sr, ier);
- 		spin_unlock_irqrestore(&spi->lock, flags);
- 		return IRQ_NONE;
- 	}
-@@ -952,15 +952,8 @@ static irqreturn_t stm32h7_spi_irq_thread(int irq, void *dev_id)
- 	}
- 
- 	if (sr & STM32H7_SPI_SR_OVR) {
--		dev_warn(spi->dev, "Overrun: received value discarded\n");
--		if (!spi->cur_usedma && (spi->rx_buf && (spi->rx_len > 0)))
--			stm32h7_spi_read_rxfifo(spi, false);
--		/*
--		 * If overrun is detected while using DMA, it means that
--		 * something went wrong, so stop the current transfer
--		 */
--		if (spi->cur_usedma)
--			end = true;
-+		dev_err(spi->dev, "Overrun: RX data lost\n");
-+		end = true;
- 	}
- 
- 	if (sr & STM32H7_SPI_SR_EOT) {
 -- 
-2.30.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

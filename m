@@ -2,54 +2,99 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1EEFBC433DB
-	for <linux-spi@archiver.kernel.org>; Wed,  3 Mar 2021 05:56:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 55403C433E6
+	for <linux-spi@archiver.kernel.org>; Wed,  3 Mar 2021 05:56:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C6EC864E6C
-	for <linux-spi@archiver.kernel.org>; Wed,  3 Mar 2021 05:56:21 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0C5C064EBD
+	for <linux-spi@archiver.kernel.org>; Wed,  3 Mar 2021 05:56:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237851AbhCCFrV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 3 Mar 2021 00:47:21 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40204 "EHLO mail.kernel.org"
+        id S237341AbhCCFrd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 3 Mar 2021 00:47:33 -0500
+Received: from mga04.intel.com ([192.55.52.120]:35710 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241889AbhCBN5P (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 2 Mar 2021 08:57:15 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPS id A468664EE4;
-        Tue,  2 Mar 2021 13:56:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614693386;
-        bh=yL22Xjzx/LSZxI9GKqJZob7d0zLc7rHmryI6SX+PYJg=;
-        h=Subject:From:Date:To:From;
-        b=BEieweuIi+g9+pxPyAvk0BngfNYe3agO1GJvNZwHMJA/Z4eJmprU2w12330YasQN3
-         6jGUcKl2seZOnjZLLfI1B9JslItJRcxqv80rozlHRCWqASXTmsDsddSDzE6DratKEw
-         Gx3WUv63bibrEhNvCX5CpXCEciKIwAyOa+5IRgD1X1pYhSO58Nky1Wx0yadd0OaOTt
-         VGigxNRrIsf/XiuIfgMe7ByhKavLeecXXLdSPq2RYe5SLu9WnlnCKSZ1mISsYv5x2g
-         /VJLhsj9fIqb8SRdp8mhP0Ad9uUchdIiqt3zDnZv1X9oCjIMhc5iFTf3XVt8flYXTo
-         HNX0mvX8FvMnw==
-Content-Type: text/plain; charset="utf-8"
+        id S1573782AbhCBPNv (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 2 Mar 2021 10:13:51 -0500
+IronPort-SDR: dx9XuLqeK0TtJoDiLJifNnIPaVDclBrDoFlaWuBB7L3eKz7a29HPFGQghJ/I37DU53x7jUUYYU
+ VhYAedcdG7nQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9911"; a="184407291"
+X-IronPort-AV: E=Sophos;i="5.81,216,1610438400"; 
+   d="scan'208";a="184407291"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2021 07:06:31 -0800
+IronPort-SDR: nCZf4m0fIcNr0lM3tYhWS5qUqhcVPJbY5hXtRObSvBZyV1EgQh4U3EudaNnCLQf3LQxJj2YovM
+ aWcs6f+N8SLw==
+X-IronPort-AV: E=Sophos;i="5.81,216,1610438400"; 
+   d="scan'208";a="399055993"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2021 07:06:29 -0800
+Received: from andy by smile with local (Exim 4.94)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1lH6bT-009PhQ-87; Tue, 02 Mar 2021 17:06:27 +0200
+Date:   Tue, 2 Mar 2021 17:06:27 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/3] parport: Introduce module_parport_driver() helper
+ macro
+Message-ID: <YD5Uc7j2MAFbFWZ3@smile.fi.intel.com>
+References: <20210216110741.1286-1-andriy.shevchenko@linux.intel.com>
+ <YDkpzZ8jL7O9HJuG@smile.fi.intel.com>
+ <YDwmznD58ZtOwHgb@debian>
+ <YDzaC2ahcHCrCI8V@smile.fi.intel.com>
+ <CADVatmP7V+pbpUC4xV+BmNzbfudPE5S0tT-6CgUKbQrC-FMrBA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <161469338658.11356.18168011186034104626.git-patchwork-housekeeping@kernel.org>
-Date:   Tue, 02 Mar 2021 13:56:26 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CADVatmP7V+pbpUC4xV+BmNzbfudPE5S0tT-6CgUKbQrC-FMrBA@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v2] NXP Flexspi driver patches (2021-03-02T12:49:32)
-  Superseding: [v1] NXP Flexspi driver patches (2021-03-01T10:32:27):
-    [1/3] spi: spi-nxp-fspi: Add support for IP read only
-    [2/3] spi: spi-nxp-fspi: Add driver support for imx8dxl
-    [3/3] spi: spi-nxp-fspi: Implement errata workaround for LS1028A
+On Tue, Mar 02, 2021 at 02:51:45PM +0000, Sudip Mukherjee wrote:
+> On Mon, Mar 1, 2021 at 12:12 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> >
+> > On Sun, Feb 28, 2021 at 11:27:10PM +0000, Sudip Mukherjee wrote:
+> > > On Fri, Feb 26, 2021 at 07:03:09PM +0200, Andy Shevchenko wrote:
+> > > > On Tue, Feb 16, 2021 at 01:07:39PM +0200, Andy Shevchenko wrote:
+> > > > > Introduce module_parport_driver() helper macro to reduce boilerplate
+> > > > > in the existing and new code.
+> > > >
+> > > > Sudip, any comments on this?
+> > >
+> > > Sorry for the delay in reply.
+> > > lgtm. I think there are few more drivers which can also use this new helper.
+> > > Will you like to do them also?
+> >
+> > Yes, that's the (slow going) plan.
+> >
+> > > Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+> >
+> > Thanks! I considered that you take it thru parport tree. Do you have something
+> > else in mind?
+> 
+> I dont have a separate parport tree (parport is not under active
+> development to have a separate tree). I send everything parport
+> related to Greg and then he adds it to his tree.
 
+MAINTAINERS doesn't show this. But good to know.
+
+> I guess in this case if Greg agrees it can go via Mark's tree as the
+> series will also have SPI related patches.
+
+Okay, if Greg wants to handle this himself, I think I have to resend (he wasn't
+in the Cc list). Otherwise Mark can also apply this if Greg is okay (but sounds
+like I have to resend anyway to let him understand what's going on here).
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+With Best Regards,
+Andy Shevchenko
+
 

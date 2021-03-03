@@ -2,92 +2,117 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F79DC432C3
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 640DAC4361B
 	for <linux-spi@archiver.kernel.org>; Thu,  4 Mar 2021 00:30:21 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4A21964EEC
+	by mail.kernel.org (Postfix) with ESMTP id 331246023B
 	for <linux-spi@archiver.kernel.org>; Thu,  4 Mar 2021 00:30:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349976AbhCDAaR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 3 Mar 2021 19:30:17 -0500
-Received: from mga11.intel.com ([192.55.52.93]:56415 "EHLO mga11.intel.com"
+        id S1380222AbhCDAaQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 3 Mar 2021 19:30:16 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47474 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1351711AbhCCKrW (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 3 Mar 2021 05:47:22 -0500
-IronPort-SDR: wzjZjHaZeWo7fNwnzKgvlyRtNLH4qPrdLxQIsoGkn55xiReaiO9HT3ws76aYkOWeAMEgbTclzJ
- w0Q5ZsNh5TBA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9911"; a="183768262"
-X-IronPort-AV: E=Sophos;i="5.81,219,1610438400"; 
-   d="scan'208";a="183768262"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2021 01:16:57 -0800
-IronPort-SDR: X7GnzVR7l94NygCRBXx3DEslwh+5xN3BNprdvyowD8nBcrufaFrfoyQQJ/nltU78wtpG5AT7ll
- 3ZpQmuan/k/Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.81,219,1610438400"; 
-   d="scan'208";a="600075825"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga005.fm.intel.com with ESMTP; 03 Mar 2021 01:16:54 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 8FBC513A; Wed,  3 Mar 2021 11:16:54 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v3 1/3] parport: Introduce module_parport_driver() helper macro
-Date:   Wed,  3 Mar 2021 11:16:40 +0200
-Message-Id: <20210303091642.23929-2-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210303091642.23929-1-andriy.shevchenko@linux.intel.com>
-References: <20210303091642.23929-1-andriy.shevchenko@linux.intel.com>
+        id S241133AbhCCKcq (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 3 Mar 2021 05:32:46 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8877464ECE;
+        Wed,  3 Mar 2021 09:12:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1614762769;
+        bh=LcFEAIV39oP6qhAFHARHbGR+Nvr/RN2ia8mLaBzIos0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=z7bLFFz9oOMQtk+cVU94y2on5R6Q6uDedD0ceE8/iNe/x8BenPPZ4SJCxbiraQLWI
+         bAC3OiRYGRfht03bQg+Fe5L3uDsNHbKAUlo3sOZxjur8xt4ppSFR4rK+YBup7Za6zU
+         oVGBTXdLWnIyxSZs/+9zmrv5s9qf882+rPRnZsGA=
+Date:   Wed, 3 Mar 2021 10:12:46 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Leilk Liu <leilk.liu@mediatek.com>
+Cc:     Mark Brown <broonie@kernel.org>,
+        Nicolas Boichat <drinkcat@chromium.org>,
+        "luhua . xu" <luhua.xu@mediatek.com>,
+        Wei Yongjun <weiyj.lk@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Pi-Hsun Shih <pihsun@chromium.org>,
+        Markus Elfring <elfring@users.sourceforge.net>,
+        Javier Martinez Canillas <javier@osg.samsung.com>,
+        Fengguang Wu <fengguang.wu@intel.com>,
+        Daniel Kurtz <djkurtz@chromium.org>,
+        Axel Lin <axel.lin@ingics.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-spi@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        fparent@baylibre.com
+Subject: Re: [PATCH] spi: mediatek: Re-license MTK SPI driver as Dual MIT/GPL
+Message-ID: <YD9TDv85D/zSV2Li@kroah.com>
+References: <20210303025636.795-1-leilk.liu@mediatek.com>
+ <YD84OKr4vNwA7vnz@kroah.com>
+ <1614762159.5898.9.camel@mhfsdcap03>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1614762159.5898.9.camel@mhfsdcap03>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Introduce module_parport_driver() helper macro to reduce boilerplate
-in the existing and new code.
+On Wed, Mar 03, 2021 at 05:02:39PM +0800, Leilk Liu wrote:
+> On Wed, 2021-03-03 at 08:18 +0100, Greg Kroah-Hartman wrote:
+> > On Wed, Mar 03, 2021 at 10:56:36AM +0800, Leilk Liu wrote:
+> > > From: "leilk.liu" <leilk.liu@mediatek.com>
+> > > 
+> > > It is wanted to use MTK spi bus driver with GPL-2.0 or MIT license.
+> > > But now it is only licensed as GPL-2.0, so re-license it as dual
+> > > MIT/GPL.
+> > > 
+> > > Signed-off-by: leilk.liu <leilk.liu@mediatek.com>
+> > 
+> > Please use your name here, not an email alias for where your name goes.
+> > 
+> OK, I'll fix it, thanks!
+> > 
+> > > ---
+> > >  drivers/spi/spi-mt65xx.c                 | 4 ++--
+> > >  include/linux/platform_data/spi-mt65xx.h | 2 +-
+> > 
+> > Given that these files have been licensed under the GPL only since 2015,
+> > all changes contributed to it have only been licensed under the GPL as
+> > well, so have you gotten approval for all of the contributors for this
+> > change?
+> > 
+> This is the reason that I sent this patch to ask for ACKs from all
+> contributors (who are all in the To mail-list) for these files.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
----
- include/linux/parport.h | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+That wasn't obvious :)
 
-diff --git a/include/linux/parport.h b/include/linux/parport.h
-index f981f794c850..1c16ffb8b908 100644
---- a/include/linux/parport.h
-+++ b/include/linux/parport.h
-@@ -332,9 +332,19 @@ int __must_check __parport_register_driver(struct parport_driver *,
- 	__parport_register_driver(driver, THIS_MODULE, KBUILD_MODNAME)
- 
- /* Unregister a high-level driver. */
--extern void parport_unregister_driver (struct parport_driver *);
- void parport_unregister_driver(struct parport_driver *);
- 
-+/**
-+ * module_parport_driver() - Helper macro for registering a modular parport driver
-+ * @__parport_driver: struct parport_driver to be used
-+ *
-+ * Helper macro for parport drivers which do not do anything special in module
-+ * init and exit. This eliminates a lot of boilerplate. Each module may only
-+ * use this macro once, and calling it replaces module_init() and module_exit().
-+ */
-+#define module_parport_driver(__parport_driver) \
-+	module_driver(__parport_driver, parport_register_driver, parport_unregister_driver)
-+
- /* If parport_register_driver doesn't fit your needs, perhaps
-  * parport_find_xxx does. */
- extern struct parport *parport_find_number (int);
--- 
-2.30.1
+But given that many of the contributors here do not actually own the
+copyrights of their contributions, how can you be sure that the real
+owners are agreeing to this?  That requires something much more "legal"
+than just an "ack" on a patch.  Please work with your corporate lawyers
+for how to do this correctly.
 
+> > Can you please get your lawyer to also sign off on this license change
+> > patch, so that we know that you have their approval for this incase
+> > there are questions about it in the future?
+> > 
+> I need to use the code in other projects that is not with GPL-2.0.
+
+What project needs this code that you can not just base it off of your
+original contribution instead?  That would not require any license
+change of the kernel files, right?  Wouldn't that be easier than trying
+to retain this license change over time as you will not be taking the
+changes here into another project as well.
+
+> Also, the license change is approved by Mediatek supervisor.
+
+Great, get them to also sign-off on the patch please, along with your
+lawyers, so that we know all is done correctly.
+
+thanks,
+
+greg k-h

@@ -2,66 +2,80 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 19170C43331
-	for <linux-spi@archiver.kernel.org>; Thu,  4 Mar 2021 00:30:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C37DBC433DB
+	for <linux-spi@archiver.kernel.org>; Thu,  4 Mar 2021 00:30:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E2D2264E62
-	for <linux-spi@archiver.kernel.org>; Thu,  4 Mar 2021 00:30:44 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9C72E64E62
+	for <linux-spi@archiver.kernel.org>; Thu,  4 Mar 2021 00:30:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377260AbhCDAan (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 3 Mar 2021 19:30:43 -0500
-Received: from mars.blocktrron.ovh ([51.254.112.43]:56730 "EHLO
-        mail.blocktrron.ovh" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345919AbhCCQRk (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 3 Mar 2021 11:17:40 -0500
-X-Greylist: delayed 478 seconds by postgrey-1.27 at vger.kernel.org; Wed, 03 Mar 2021 11:17:40 EST
-Received: from localhost.localdomain (p200300e53f0682002d543747df09623c.dip0.t-ipconnect.de [IPv6:2003:e5:3f06:8200:2d54:3747:df09:623c])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.blocktrron.ovh (Postfix) with ESMTPSA id 8EA9C23380;
-        Wed,  3 Mar 2021 17:08:50 +0100 (CET)
-From:   David Bauer <mail@david-bauer.net>
-To:     broonie@kernel.org
-Cc:     linux-spi@vger.kernel.org
-Subject: [PATCH 1/2] spi: ath79: always call chipselect function
-Date:   Wed,  3 Mar 2021 17:08:36 +0100
-Message-Id: <20210303160837.165771-1-mail@david-bauer.net>
-X-Mailer: git-send-email 2.30.1
+        id S240783AbhCDAao (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 3 Mar 2021 19:30:44 -0500
+Received: from mail.kernel.org ([198.145.29.99]:39474 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1388021AbhCCU0V (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 3 Mar 2021 15:26:21 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id AE3CB64EEF;
+        Wed,  3 Mar 2021 20:25:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1614803141;
+        bh=LpWfD3rHOMB8ouLQKR28xxNUDGgTmhb/W2lE5TK/P+Y=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=V9i/j7DGzpTHEwhTMj8BxosEZ4cA5oYZJ1VEFwssB9oBjFm/nKPQdka6ntnA8xJ02
+         CjOEUSKsPA/N92SA4Sys4VLRazprYVSRI8WK9kw5wlZC+NOtTBnJKEJytp+xL7VD6Q
+         W7z7DOM3LWGa8gMANWlZre8EmSWcKb46OCRs5BV6ZczRHcOMgxCj5QhGhPhupyzN4d
+         fKrlOGSxd1k0nPyhjizFoxCRJVHpxcunuIqFzJj2SakAPWjQO6vID7n2eWqRZSfDuu
+         KP3Lnkt1MY6uJtn12wKGNChX9qrVTNuaJ1uGL4TO5d/cd+58u4DfdaWa2iOw4Jgz1Y
+         VqU4W6O6IqprQ==
+Date:   Wed, 3 Mar 2021 20:24:32 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v3 0/3] parport: Introduce module_parport_driver() and
+ use it
+Message-ID: <20210303202432.GD5027@sirena.org.uk>
+References: <20210303091642.23929-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="2Z2K0IlrPCVsbNpk"
+Content-Disposition: inline
+In-Reply-To: <20210303091642.23929-1-andriy.shevchenko@linux.intel.com>
+X-Cookie: Results are not typical.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-spi-bitbang has to call the chipselect function on the ath79 SPI driver
-in order to communicate with the SPI slave device, as the ath79 SPI
-driver has three dedicated chipselect lines but can also be used with
-GPIOs for the CS lines.
 
-Fixes commit 4a07b8bcd503 ("spi: bitbang: Make chipselect callback optional")
+--2Z2K0IlrPCVsbNpk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Signed-off-by: David Bauer <mail@david-bauer.net>
----
- drivers/spi/spi-ath79.c | 1 +
- 1 file changed, 1 insertion(+)
+On Wed, Mar 03, 2021 at 11:16:39AM +0200, Andy Shevchenko wrote:
+> Introduce module_parport_driver() and use it.
+> Greg or Mark, since we have this series tagged, can somebody of you pick it up?
 
-diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
-index eb9a243e9526..436327fb58de 100644
---- a/drivers/spi/spi-ath79.c
-+++ b/drivers/spi/spi-ath79.c
-@@ -158,6 +158,7 @@ static int ath79_spi_probe(struct platform_device *pdev)
- 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
- 	master->setup = spi_bitbang_setup;
- 	master->cleanup = spi_bitbang_cleanup;
-+	master->flags = SPI_MASTER_GPIO_SS;
- 	if (pdata) {
- 		master->bus_num = pdata->bus_num;
- 		master->num_chipselect = pdata->num_chipselect;
--- 
-2.30.1
+Greg, are you OK with me applying this?
 
+--2Z2K0IlrPCVsbNpk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmA/8H8ACgkQJNaLcl1U
+h9B45Qf/Sqb09N87wbsEpeYUOOY8kyQrdv8nbqrSyTDFuZ3rBies2Zuw//T43SKI
+RqZmWxyBe/+BrsGEutC/uAV9zmT7HS2m7Swa6+zK8neQFCSdByKAktpnlfAcitul
+Q+k3utLpDj8mNvpz1693rRikopZGX7o9kjcn4hP5p5Ds9RoZPOhnHGFDM31gmGTy
+ky1iXC82GEi/Kf+IVdLOKr0rvHYWjyynfQBDPAZvFhtB5fCtAU39vKeiL1A3c8z/
+PfIDMuNC6of/e7IZAkDNZ6mHL52fE/35jqS6UOW1a7vToWfGY1aQ9njzQu52k5jW
+X2nRcs00YTzr+PyohhrjwhCXthFymw==
+=wg95
+-----END PGP SIGNATURE-----
+
+--2Z2K0IlrPCVsbNpk--

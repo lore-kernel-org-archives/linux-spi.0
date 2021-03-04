@@ -2,114 +2,81 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0756EC433E9
-	for <linux-spi@archiver.kernel.org>; Thu,  4 Mar 2021 13:39:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A53A7C433DB
+	for <linux-spi@archiver.kernel.org>; Thu,  4 Mar 2021 15:07:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id CA29064F48
-	for <linux-spi@archiver.kernel.org>; Thu,  4 Mar 2021 13:39:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6436A64F6B
+	for <linux-spi@archiver.kernel.org>; Thu,  4 Mar 2021 15:07:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241345AbhCDNjA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 4 Mar 2021 08:39:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51760 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241375AbhCDNiy (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 4 Mar 2021 08:38:54 -0500
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F6F0C06175F
-        for <linux-spi@vger.kernel.org>; Thu,  4 Mar 2021 05:38:14 -0800 (PST)
-Received: by mail-lf1-x136.google.com with SMTP id k9so23317891lfo.12
-        for <linux-spi@vger.kernel.org>; Thu, 04 Mar 2021 05:38:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Sy4nEQi288EJ0M7NsP9fNgE7Qbg6ZfSce++n7QC7VuE=;
-        b=HDEyZwrEB46msqvh9yZL6EIpSxJmqDcC7gwO0qmA5ppFeUZZynGA6jUe7EyfCmsk8Q
-         rcBnKK1vNt9y/wlSP7cHt9bjTpe55w38EsfRix7wkpzfpiWxwAsFdAyMlNpRS2Vvh6w3
-         fawXFbtO/97KGmx+9feW42Ya5GUueAsIb/TRpTlmNJ5s6egRp9BtUOyo0gqFaq+xdPEV
-         T1zZT8nF1Ni3+X79Dae5i7HiscmcOz6U3D2PZKXsvPFXricPI9lr/5a9b1eetyEuexsL
-         QYuoLhT95aAs2djBuEz3/JU7g7CqeaarcznXmDsFvDWyfCEJvHFKCp3bOPwouJhVFNPf
-         XRfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Sy4nEQi288EJ0M7NsP9fNgE7Qbg6ZfSce++n7QC7VuE=;
-        b=ADPHCKgro+JScgxvBd1PTJBawtf84sS/1dHOonf8/NgcSzJEwNvpqX9IBQlBBoc12T
-         pbmkHg1Xk4Y8i1Ao3jA6GesvHBBNzzruLh1pMGpIEWUF0+lFQRdQAudZTxwnG2DAPDag
-         nj/fL5msrNh1jBiBcWN5XBMduTr0OMDLFRy3sK8Vfz+A5LjRwGOrJxE1Ny+Tx1VqfqPi
-         cji+K+32L2ZC1MfCjDg5GiMGtDLe51ZycqdI83RIIgG/O4c2re1znn7bUl36INAhJEEr
-         iow9aSOl+VT9bLjKM91lLNgqDR0ODAEc5BILu/eGBsVYf0eu9qOPY9CyhcHNvoXrnLYn
-         L8lA==
-X-Gm-Message-State: AOAM530mcuvcMlx8FClI6vM5VxjxR4FRggTAHSbQriL1HBpXD6Q7CgJA
-        WFDFwlevOK98LEZxnJpLH8reV8hSjFsyU0DHTeAOCw==
-X-Google-Smtp-Source: ABdhPJzFb3M5KKDc0P6vzgQhF75tV/IB16cKzRo83AG6u77j3RQ1zLFiwZGnOCt2xN7WcZZR4msr6H1Iqkoxi26D0cs=
-X-Received: by 2002:a19:548:: with SMTP id 69mr2287824lff.465.1614865092582;
- Thu, 04 Mar 2021 05:38:12 -0800 (PST)
+        id S233410AbhCDPHA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 4 Mar 2021 10:07:00 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35708 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233343AbhCDPGz (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 4 Mar 2021 10:06:55 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 65E6564F68;
+        Thu,  4 Mar 2021 15:06:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1614870374;
+        bh=UZEqoiIUd+AChmFNV4x9e+9lJhJgHFmgQLoyhWdFl+8=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=M8mUWvn25dVXmw1Gguk6F4UX1CUKaaOOj29FZ0I/22b2Q/qMTN2QUOg+nLrY8NKOL
+         Y4Ji+3kM3bZXaWIE7fyJQBRq397Z9iRH1G7EbqHYJx2zGYIGr9Kjr9Sti0KTJovesN
+         mq4bbW6Gca7PE5kEB2RVLRMiZUOTNjY0IE1GkGQsI1aUDZLgE02BpDaEY7IEj6roFa
+         ajELaKTVTginww9uzcN6OUmRr1QvWvDMv29GBSzRO2CqtHJlRCr4rRMGYnlKPVGx8W
+         YiIoG55Pe9i0GJm7f69gaXPwEiC0DfYlRXhIviYLNxGnup+rSWR/aSYyJcbNOIJOqq
+         NvAE1xyCm6hcw==
+From:   Mark Brown <broonie@kernel.org>
+To:     Matthias Brugger <matthias.bgg@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Mason Zhang <Mason.Zhang@mediatek.com>
+Cc:     hanks.chen@mediateka.com, linux-mediatek@lists.infradead.org,
+        linux-kernel@vger.kernel.org, wsd_upstream@mediatek.com,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>
+In-Reply-To: <20210226110109.30500-1-Mason.Zhang@mediatek.com>
+References: <20210226110109.30500-1-Mason.Zhang@mediatek.com>
+Subject: Re: [PATCH 2/2] dt-binding: mediatek: mt6779: update spi document
+Message-Id: <161487030159.30767.11054945560843841398.b4-ty@kernel.org>
+Date:   Thu, 04 Mar 2021 15:05:01 +0000
 MIME-Version: 1.0
-References: <20210304034141.7062-1-brad@pensando.io> <20210304034141.7062-2-brad@pensando.io>
- <CACRpkdbQD6p7fbGtuu1c92uXfSFDCTwqjqsXHpgnD5Lg4v0Okw@mail.gmail.com> <20210304091025.ny52qjm7wbfvmjgl@mobilestation>
-In-Reply-To: <20210304091025.ny52qjm7wbfvmjgl@mobilestation>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 4 Mar 2021 14:38:01 +0100
-Message-ID: <CACRpkdZroi+_oHqipS71MAGif190y7jWU5Myf55vz=_um4w5cQ@mail.gmail.com>
-Subject: Re: [PATCH 1/8] gpio: Add Elba SoC gpio driver for spi cs control
-To:     Serge Semin <fancer.lancer@gmail.com>
-Cc:     Brad Larson <brad@pensando.io>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Mark Brown <broonie@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Olof Johansson <olof@lixom.net>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        linux-mmc <linux-mmc@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, Mar 4, 2021 at 10:10 AM Serge Semin <fancer.lancer@gmail.com> wrote:
-> On Thu, Mar 04, 2021 at 09:29:33AM +0100, Linus Walleij wrote:
+On Fri, 26 Feb 2021 19:01:10 +0800, Mason Zhang wrote:
+> this patch update spi document for MT6779 SOC.
 
-> > > + * pin:             3            2        |       1            0
-> > > + * bit:         7------6------5------4----|---3------2------1------0
-> > > + *             cs1  cs1_ovr  cs0  cs0_ovr |  cs1  cs1_ovr  cs0  cs0_ovr
-> > > + *                        ssi1            |             ssi0
-> > > + */
-> > > +#define SPICS_PIN_SHIFT(pin)   (2 * (pin))
-> > > +#define SPICS_MASK(pin)                (0x3 << SPICS_PIN_SHIFT(pin))
-> > > +#define SPICS_SET(pin, val)    ((((val) << 1) | 0x1) << SPICS_PIN_SHIFT(pin))
-> >
->
-> > So 2 bits per GPIO line in one register? (Nice doc!)
->
-> I suppose the first bit is the CS-pin-override flag. So when it's set
-> the output is directly driven by the second bit, otherwise the
-> corresponding DW APB SPI controller drives it. That's how the
-> multiplexing is implemented here.
+Applied to
 
-If these output lines are so tightly coupled to the SPI block
-and will not be used for any other GPO (general purpose output)
-I think it makes more sense to bundle the handling into the
-DW SPI driver, and activate it based on the Elba compatible
-string (if of_is_compatible(...)).
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-I am a bit cautious because it has happened in the past that
-people repurpose CS lines who were originally for SPI CS
-to all kind of other purposes, such as a power-on LED and
-in that case it needs to be a separate GPIO driver. So the
-author needs to have a good idea about what is a realistic
-use case here.
+Thanks!
 
-Yours,
-Linus Walleij
+[2/2] dt-binding: mediatek: mt6779: update spi document
+      commit: 483a27f372345a1d1a2cd0fd95da987e30ad0e01
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

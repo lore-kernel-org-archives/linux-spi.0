@@ -5,56 +5,56 @@ X-Spam-Level:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D6891C4360C
-	for <linux-spi@archiver.kernel.org>; Mon,  8 Mar 2021 14:56:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E5379C433E0
+	for <linux-spi@archiver.kernel.org>; Mon,  8 Mar 2021 14:56:43 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BED5F650E6
-	for <linux-spi@archiver.kernel.org>; Mon,  8 Mar 2021 14:56:14 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A519B6519D
+	for <linux-spi@archiver.kernel.org>; Mon,  8 Mar 2021 14:56:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231250AbhCHOzl (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 8 Mar 2021 09:55:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34452 "EHLO
+        id S229737AbhCHO4M (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 8 Mar 2021 09:56:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231283AbhCHOzf (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 8 Mar 2021 09:55:35 -0500
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49500C061760
-        for <linux-spi@vger.kernel.org>; Mon,  8 Mar 2021 06:55:35 -0800 (PST)
-Received: by mail-ed1-x52c.google.com with SMTP id m9so15136276edd.5
-        for <linux-spi@vger.kernel.org>; Mon, 08 Mar 2021 06:55:35 -0800 (PST)
+        with ESMTP id S231289AbhCHOzk (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 8 Mar 2021 09:55:40 -0500
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D07E8C06175F
+        for <linux-spi@vger.kernel.org>; Mon,  8 Mar 2021 06:55:39 -0800 (PST)
+Received: by mail-ej1-x632.google.com with SMTP id lr13so20975766ejb.8
+        for <linux-spi@vger.kernel.org>; Mon, 08 Mar 2021 06:55:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=deviqon.com; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=Io9v2GBIlHI+Tmp+Muo2ozOuxnB5JlN/m/peVkSOoQk=;
-        b=KN8oqTz03n4iXKtuJ5qi9J7eiFCSjzNROABDY6Gb/MplICzu3i5V03YptgmpTTumx9
-         qzHGrgq8fs8JGet9Odv3isiqA2BAEwaSruGVQmS9a+mZpNXFpeE4VcGYKpq2SjITIXEr
-         iZu8cMKqFXc0GNaf9S/tP3IfDJqMyEWVlwbxUYbisZoe8tFawpRpLzcdVzwhbtNF+qfh
-         oh5qVIsYJBFymQreVC72K8pfrXlBDUp9vpAjjD5DhQNe9vKsYc0LarvZp9YPPAvTNQ6k
-         bUkDxp4231M2aHh4lz1mTKmik9470JWb/d4AGTx8NT+lMZyzE4h4Q/QHCx3Q8heZ+6Wu
-         Pn4Q==
+        bh=eGIsP86uecOdbNP3RzEXdRJwjYXQN4lavob9ylpQnlo=;
+        b=ioTX0u8DVjv5rQ6PRejkBUyjoya3UCwI32URVKD5M10y+hrFGA8Q5r0DXSuHIEEDmo
+         oPPBRTnH9wDsEupl3mGZoRJ2vh718Y1GnDNeZfqyAZjEo8kIjGm2UzE1wcRvcbJyEbGy
+         7O3sc0gtRdzgOq7T8KV4H0JX8OfC3obDIE0OppS9Sl62QfCirdgYHiBLAMyX5jOeEtYW
+         Gmq3N54+nU/K5a4nMbWOxxP2e2ZVLsVOpz5qjJ4feOM/L7AOFg1WOQ9qH3rsKdyXkBEz
+         BXtkaWNtaGd0j4FAEpjUqe/rkHZpU3GheAopKvl1/Wk2au60O+NFUxs2j2gqjTQc8LH6
+         bXfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Io9v2GBIlHI+Tmp+Muo2ozOuxnB5JlN/m/peVkSOoQk=;
-        b=l5FwoVg0j6v3/HnTGLA4FUw5p7PXWmyhJntISb7kOfEhDWvEeyA1quiIdmFEWOT5rf
-         c0RJrTaxENua6X+3RxChoqvy3hUy99ova+AzIkYSo35VT/bEeY2eMrHNZ5EGoDnGQWqa
-         kM5KAHYUbPe+7PFvKOsYSKWNucvH21E1mzcOtLGHpqOcfgueXYdBTVgH+JxU5TzUVUNo
-         w0c87gFr9jetD7HCD1K8UR3E6sfJ4uy1xZsmto6br99GoxRijN1IkGAXohu5/1MuevcA
-         ekg42uP8yFcM2lmcOnUlvUsfRGWCMTIxcczMQZbNSh0BQ68uh8wY3QD2Zj3PcDZzJkH8
-         hCig==
-X-Gm-Message-State: AOAM5309YEKev0nPKOc/lmrWizgw6gdo4xik2C5Rl2zb5eakQE8zP9zA
-        BdairIELvYIuyBeXoRJM0I44Las1sE7G8lxD
-X-Google-Smtp-Source: ABdhPJzOxDsiKTJZFzssNH71mhV3dmH3qpwIBVJVNeEVFcuravA0h+m9Fy72NPjkwyy5NAtefvkZcw==
-X-Received: by 2002:a05:6402:2076:: with SMTP id bd22mr22161922edb.378.1615215333831;
-        Mon, 08 Mar 2021 06:55:33 -0800 (PST)
+        bh=eGIsP86uecOdbNP3RzEXdRJwjYXQN4lavob9ylpQnlo=;
+        b=KcIco1hiPszHT8K6/V1mBOKUx5nHOv39+arw95ipDlX/pkzIPi/J5ujOGxCHS9w/xy
+         v/sVqiKVzd/GkmlWlKVChrfUBM5PQUjE53abmlqNBxZh24zjnfqLRAxrXA1hQS0V97Zy
+         oYKg7/CYApYMGFF+HML5zXABIKPw+4eNU1VkXEZeGpS5BRAv8Sd/H57T77NCN8N7bTSi
+         NfXp6KBzSaE0XD6j2QA9VBdb9dbLq2N3X54cq6if/LdxNW5IRxX8WfVTb/2wyRU3Nxyw
+         e9jeAbwjKA3c4RcJuDkj4WU44/5Bc6oRwS5mg3lK9DkXEVY/y/9qsF+1g48oPmKemHNs
+         TuVQ==
+X-Gm-Message-State: AOAM533aVhE1834otH9kH+TRJnejzD+tLoG+Od7F7f/LmUMAF46Wb2ME
+        YLq1EJOV5HfXgaypvpvuNE9WlHAacvHUAi4W
+X-Google-Smtp-Source: ABdhPJztNbtWidlTaFpyoGea7LJcNkwK+Ksb+1J38vdVQrHaHxFzKw412LMQTMbUTaZZaFEz5HcZtA==
+X-Received: by 2002:a17:906:6558:: with SMTP id u24mr15604493ejn.185.1615215337950;
+        Mon, 08 Mar 2021 06:55:37 -0800 (PST)
 Received: from localhost.localdomain ([5.2.193.191])
-        by smtp.gmail.com with ESMTPSA id bt14sm7411234edb.92.2021.03.08.06.55.32
+        by smtp.gmail.com with ESMTPSA id bt14sm7411234edb.92.2021.03.08.06.55.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Mar 2021 06:55:33 -0800 (PST)
+        Mon, 08 Mar 2021 06:55:37 -0800 (PST)
 From:   Alexandru Ardelean <aardelean@deviqon.com>
 To:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         greybus-dev@lists.linaro.org, devel@driverdev.osuosl.org,
@@ -64,9 +64,9 @@ Cc:     broonie@kernel.org, gregkh@linuxfoundation.org, elder@kernel.org,
         f.fainelli@gmail.com, ldewangan@nvidia.com,
         thierry.reding@gmail.com, jonathanh@nvidia.com, linux@deviqon.com,
         Alexandru Ardelean <aardelean@deviqon.com>
-Subject: [PATCH 06/10] staging: greybus: spilib: use 'spi_delay_to_ns' for getting xfer delay
-Date:   Mon,  8 Mar 2021 16:54:58 +0200
-Message-Id: <20210308145502.1075689-7-aardelean@deviqon.com>
+Subject: [PATCH 09/10] spi: core: remove 'delay_usecs' field from spi_transfer
+Date:   Mon,  8 Mar 2021 16:55:01 +0200
+Message-Id: <20210308145502.1075689-10-aardelean@deviqon.com>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210308145502.1075689-1-aardelean@deviqon.com>
 References: <20210308145502.1075689-1-aardelean@deviqon.com>
@@ -76,48 +76,65 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The intent is the removal of the 'delay_usecs' field from the
-spi_transfer struct, as there is a 'delay' field that does the same
-thing.
-
-The spi_delay_to_ns() can be used to get the transfer delay. It works by
-using the 'delay_usecs' field first (if it is non-zero), and finally
-uses the 'delay' field.
-
-Since the 'delay_usecs' field is going away, this change makes use of the
-spi_delay_to_ns() function. This also means dividing the return value of
-the function by 1000, to convert it to microseconds.
-To prevent any potential faults when converting to microseconds and since
-the result of spi_delay_to_ns() is int, the delay is being computed in 32
-bits and then clamped between 0 & U16_MAX.
+The 'delay' field in the spi_transfer struct is meant to replace the
+'delay_usecs' field. However some cleanup was required to remove the
+uses of 'delay_usecs'. Now that it's been cleaned up, we can remove it
+from the kernel tree.
 
 Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
 ---
- drivers/staging/greybus/spilib.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/spi/spi.c       |  1 -
+ include/linux/spi/spi.h | 12 ------------
+ 2 files changed, 13 deletions(-)
 
-diff --git a/drivers/staging/greybus/spilib.c b/drivers/staging/greybus/spilib.c
-index 672d540d3365..30655153df6a 100644
---- a/drivers/staging/greybus/spilib.c
-+++ b/drivers/staging/greybus/spilib.c
-@@ -245,6 +245,7 @@ static struct gb_operation *gb_spi_operation_create(struct gb_spilib *spi,
- 	/* Fill in the transfers array */
- 	xfer = spi->first_xfer;
- 	while (msg->state != GB_SPI_STATE_OP_DONE) {
-+		int xfer_delay;
- 		if (xfer == spi->last_xfer)
- 			xfer_len = spi->last_xfer_size;
- 		else
-@@ -259,7 +260,9 @@ static struct gb_operation *gb_spi_operation_create(struct gb_spilib *spi,
- 
- 		gb_xfer->speed_hz = cpu_to_le32(xfer->speed_hz);
- 		gb_xfer->len = cpu_to_le32(xfer_len);
--		gb_xfer->delay_usecs = cpu_to_le16(xfer->delay_usecs);
-+		xfer_delay = spi_delay_to_ns(&xfer->delay, xfer) / 1000;
-+		xfer_delay = clamp_t(u16, xfer_delay, 0, U16_MAX);
-+		gb_xfer->delay_usecs = cpu_to_le16(xfer_delay);
- 		gb_xfer->cs_change = xfer->cs_change;
- 		gb_xfer->bits_per_word = xfer->bits_per_word;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index b08efe88ccd6..481427780162 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -3178,7 +3178,6 @@ struct spi_replaced_transfers *spi_replace_transfers(
+ 		/* clear cs_change and delay for all but the last */
+ 		if (i) {
+ 			xfer->cs_change = false;
+-			xfer->delay_usecs = 0;
+ 			xfer->delay.value = 0;
+ 		}
+ 	}
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 592897fa4f03..ea1784a43267 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -832,9 +832,6 @@ extern void spi_res_release(struct spi_controller *ctlr,
+  * @delay: delay to be introduced after this transfer before
+  *	(optionally) changing the chipselect status, then starting
+  *	the next transfer or completing this @spi_message.
+- * @delay_usecs: microseconds to delay after this transfer before
+- *	(optionally) changing the chipselect status, then starting
+- *	the next transfer or completing this @spi_message.
+  * @word_delay: inter word delay to be introduced after each word size
+  *	(set by bits_per_word) transmission.
+  * @effective_speed_hz: the effective SCK-speed that was used to
+@@ -946,7 +943,6 @@ struct spi_transfer {
+ #define	SPI_NBITS_DUAL		0x02 /* 2bits transfer */
+ #define	SPI_NBITS_QUAD		0x04 /* 4bits transfer */
+ 	u8		bits_per_word;
+-	u16		delay_usecs;
+ 	struct spi_delay	delay;
+ 	struct spi_delay	cs_change_delay;
+ 	struct spi_delay	word_delay;
+@@ -1060,14 +1056,6 @@ spi_transfer_del(struct spi_transfer *t)
+ static inline int
+ spi_transfer_delay_exec(struct spi_transfer *t)
+ {
+-	struct spi_delay d;
+-
+-	if (t->delay_usecs) {
+-		d.value = t->delay_usecs;
+-		d.unit = SPI_DELAY_UNIT_USECS;
+-		return spi_delay_exec(&d, NULL);
+-	}
+-
+ 	return spi_delay_exec(&t->delay, t);
+ }
  
 -- 
 2.29.2

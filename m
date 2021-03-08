@@ -5,56 +5,56 @@ X-Spam-Level:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 590D0C43333
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BADFDC43603
 	for <linux-spi@archiver.kernel.org>; Mon,  8 Mar 2021 14:56:14 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2227D65211
+	by mail.kernel.org (Postfix) with ESMTP id 773EE651D3
 	for <linux-spi@archiver.kernel.org>; Mon,  8 Mar 2021 14:56:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230385AbhCHOzj (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 8 Mar 2021 09:55:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34420 "EHLO
+        id S231393AbhCHOzm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 8 Mar 2021 09:55:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231209AbhCHOzb (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 8 Mar 2021 09:55:31 -0500
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44F4DC0613DA
-        for <linux-spi@vger.kernel.org>; Mon,  8 Mar 2021 06:55:31 -0800 (PST)
-Received: by mail-ej1-x630.google.com with SMTP id p7so9518575eju.6
-        for <linux-spi@vger.kernel.org>; Mon, 08 Mar 2021 06:55:31 -0800 (PST)
+        with ESMTP id S231294AbhCHOzh (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 8 Mar 2021 09:55:37 -0500
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B467AC061760
+        for <linux-spi@vger.kernel.org>; Mon,  8 Mar 2021 06:55:36 -0800 (PST)
+Received: by mail-ej1-x62a.google.com with SMTP id bm21so20929688ejb.4
+        for <linux-spi@vger.kernel.org>; Mon, 08 Mar 2021 06:55:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=deviqon.com; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=mBNx3+l+qHDe6EkshwxnUvUhVuyIuR48vB6z54Joki8=;
-        b=nTF2zXvbxcoUnMTJKJRh5lxphx5JfP3FHvUk0L/VCv3nENNwU6DC1sJEgloDXOxZzR
-         z9IijKI0al0C46RH4OsSkFLgSvK/ye8p2SA9rzL5ixNbTTIAkFEFxEZV5WZxPiI5TIZx
-         mSDXSPQMKsd4wJ5h2YlaSivmWjWh9u0lFAx0yRoY69NTm4XZ2RysV2VyecXjRkYn0jIL
-         3MbtP2sywizYzOWLDex0+U0aOiwaz2xMwM6F1fhyTfi12JIGuYGCYWm/1pvckKJAKi9z
-         EzUqPXhpOXaaa1jIaWXzRXaNYIzDrUWq7U9bgEHLBG8PZUdB2dkKaUPX17QBHHlVR4Be
-         u+SA==
+        bh=dk38R2BEd68k0sRStLee7izJxfsp+PQHJm3HaMXnM6A=;
+        b=ahfVV+tRIbM8ON7yRS/IM1epTuYYGywi+Koj8gByhh6/R1lwaQ5Pw36i8kwDwuLGiH
+         Zhe3ULECmQI4x2Sv26GgkMNikMu0NKpw9wH/+bEzk9cOyPTDEJKDaQl48hmfleXFxiY/
+         HqKi1fbZREQRxRXLrf4wLVdw9j2H0zT4YyInNGcWX1HheMd0lgaCLgW2a2l5Drgv8cGg
+         DwQ+8QSmU8dYKHDNmufkE+jrJQhYzVnFrjZ3CjYxEDkivdQcf1O2c0NidPpdwQ+5kded
+         1c8KcAXjYGVsyacm6BcVE9r1A0mYP6ZegtHntXkWZgsJCilpA7j0s0D/ER+03VaYFGxt
+         aIow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=mBNx3+l+qHDe6EkshwxnUvUhVuyIuR48vB6z54Joki8=;
-        b=WKgJv4pyfbBj53R4sQa40lIzzUloF/0ZtH9mjDBHnUXSfMfcR1AU2dITk9Yw6jCEqx
-         /+LLNq/ISp+33mqAuyy8ZHUUCjbgZhz8e3HmsDg2FNX1sHfYCAaAmx1f3/eMpXZDdAe4
-         5Hl0UhKj+5Su9ihJdVNZpHVWek6qmjwvTgFPprfnx8FVbLO2fF+58hjCpc5odQVDuZ9U
-         A8atktmFl8RXbRH1JpYluA+trOq7miVZniXd2g6J6wkQ3gdlRxvNu21DjFt1GiKzWXji
-         SaKDVsZN76pfQ2crs1FiMtCnNbt8tr1LhafLnjU7H0q/YaCkjoxpk27wPR+kwTPvmrQ8
-         DqcQ==
-X-Gm-Message-State: AOAM532TgnQl2TK4OWgcpzB9SVVygVNnbU62V0EqSHCuK3w8neCbyAHv
-        yMy2Cr9iOUGXA61tbcwUdzPQPFnA1mu3aOCgEYY=
-X-Google-Smtp-Source: ABdhPJy3dzNItArKPc94hDqlK8aS8fNX1eICojTsHibEp0xBvophfesscwVwUCVlgWvMxvrYa/+PPw==
-X-Received: by 2002:a17:906:7102:: with SMTP id x2mr15619326ejj.355.1615215329786;
-        Mon, 08 Mar 2021 06:55:29 -0800 (PST)
+        bh=dk38R2BEd68k0sRStLee7izJxfsp+PQHJm3HaMXnM6A=;
+        b=WqT6+0PjhGrI5qonrz5Z7ahOfupHjo2ZaimvXc6NczLHiMgGLwocUaMLOe8ua6M1r5
+         OIvR10CBQZv3SA8yotwYcSRP505X84XlR9NrxNb/7Rw3V7ZB3wH1htlWCLH085Jy8ROM
+         4jsb28g/vCuuSzN5RJ6r3nkJmX6BhyHdlNVu8NsPPLqC4EZO88cJd6Cv1PgbLbH+NMhQ
+         x8/dVYBho2TvFdnr0rrjygJS/9v+4OwqlGxEWjUYBG6PyF65JKexlYRXSDzwdbjtxAh/
+         UgRWZoKC112rXoLSDJPphcz2wO7YWxxviSgLKvrNRQcjrPdSptEK9kSlcfiRB+jMDuKp
+         /wYg==
+X-Gm-Message-State: AOAM533mYEnCx/a689ANIT1x2HaRtsF0mR6VMWBQNf9gV69CyIjp959A
+        iM8FT49t4Ok1bhM25RNP381Pu2j462vUSPx+
+X-Google-Smtp-Source: ABdhPJz1X+Yvv3Gf60Ux6dslZLHmcGo2s75ffNy+pTDMIK2LHvMuhKrswzHu65RuNVsJWclcjcnmIQ==
+X-Received: by 2002:a17:906:7150:: with SMTP id z16mr15048608ejj.103.1615215335290;
+        Mon, 08 Mar 2021 06:55:35 -0800 (PST)
 Received: from localhost.localdomain ([5.2.193.191])
-        by smtp.gmail.com with ESMTPSA id bt14sm7411234edb.92.2021.03.08.06.55.28
+        by smtp.gmail.com with ESMTPSA id bt14sm7411234edb.92.2021.03.08.06.55.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Mar 2021 06:55:29 -0800 (PST)
+        Mon, 08 Mar 2021 06:55:34 -0800 (PST)
 From:   Alexandru Ardelean <aardelean@deviqon.com>
 To:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         greybus-dev@lists.linaro.org, devel@driverdev.osuosl.org,
@@ -64,9 +64,9 @@ Cc:     broonie@kernel.org, gregkh@linuxfoundation.org, elder@kernel.org,
         f.fainelli@gmail.com, ldewangan@nvidia.com,
         thierry.reding@gmail.com, jonathanh@nvidia.com, linux@deviqon.com,
         Alexandru Ardelean <aardelean@deviqon.com>
-Subject: [PATCH 03/10] spi: spi-bcm-qspi: replace 'delay_usecs' with 'delay.value' check
-Date:   Mon,  8 Mar 2021 16:54:55 +0200
-Message-Id: <20210308145502.1075689-4-aardelean@deviqon.com>
+Subject: [PATCH 07/10] spi: spi-falcon: remove check for 'delay_usecs'
+Date:   Mon,  8 Mar 2021 16:54:59 +0200
+Message-Id: <20210308145502.1075689-8-aardelean@deviqon.com>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20210308145502.1075689-1-aardelean@deviqon.com>
 References: <20210308145502.1075689-1-aardelean@deviqon.com>
@@ -76,27 +76,27 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The 'delay_usecs' field is going away. The replacement for it is the
-'delay' field. So, we should check for 'delay.value' being non-zero.
+The 'delay_usecs' field is being removed from the spi_transfer struct.
+This change removes it from the SPI Falcon driver.
 
 Signed-off-by: Alexandru Ardelean <aardelean@deviqon.com>
 ---
- drivers/spi/spi-bcm-qspi.c | 2 +-
+ drivers/spi/spi-falcon.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
-index 707fe3a5d8ef..a78e56f566dd 100644
---- a/drivers/spi/spi-bcm-qspi.c
-+++ b/drivers/spi/spi-bcm-qspi.c
-@@ -671,7 +671,7 @@ static int update_qspi_trans_byte_count(struct bcm_qspi *qspi,
- 	if (qt->byte >= qt->trans->len) {
- 		/* we're at the end of the spi_transfer */
- 		/* in TX mode, need to pause for a delay or CS change */
--		if (qt->trans->delay_usecs &&
-+		if (qt->trans->delay.value &&
- 		    (flags & TRANS_STATUS_BREAK_DELAY))
- 			ret |= TRANS_STATUS_BREAK_DELAY;
- 		if (qt->trans->cs_change &&
+diff --git a/drivers/spi/spi-falcon.c b/drivers/spi/spi-falcon.c
+index d3336a63f462..a7d4dffac66b 100644
+--- a/drivers/spi/spi-falcon.c
++++ b/drivers/spi/spi-falcon.c
+@@ -377,7 +377,7 @@ static int falcon_sflash_xfer_one(struct spi_master *master,
+ 
+ 		m->actual_length += t->len;
+ 
+-		WARN_ON(t->delay_usecs || t->delay.value || t->cs_change);
++		WARN_ON(t->delay.value || t->cs_change);
+ 		spi_flags = 0;
+ 	}
+ 
 -- 
 2.29.2
 

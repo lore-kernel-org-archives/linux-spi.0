@@ -2,48 +2,49 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-19.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-16.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+	UNWANTED_LANGUAGE_BODY,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 74205C43332
-	for <linux-spi@archiver.kernel.org>; Thu, 11 Mar 2021 19:13:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8043FC433E6
+	for <linux-spi@archiver.kernel.org>; Thu, 11 Mar 2021 19:13:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3481C64F42
-	for <linux-spi@archiver.kernel.org>; Thu, 11 Mar 2021 19:13:28 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3F6D864EE9
+	for <linux-spi@archiver.kernel.org>; Thu, 11 Mar 2021 19:13:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229944AbhCKTMw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 11 Mar 2021 14:12:52 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:44262 "EHLO
+        id S229705AbhCKTNY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 11 Mar 2021 14:13:24 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:44276 "EHLO
         fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229970AbhCKTMs (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 11 Mar 2021 14:12:48 -0500
+        with ESMTP id S230198AbhCKTMx (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 11 Mar 2021 14:12:53 -0500
 Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 12BJCVCb072885;
-        Thu, 11 Mar 2021 13:12:31 -0600
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 12BJCfkl072981;
+        Thu, 11 Mar 2021 13:12:41 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1615489951;
-        bh=D5mUrZ0LNwosvF5ATru7HapQyEd98umXGOgLCaoP3sw=;
+        s=ti-com-17Q1; t=1615489961;
+        bh=OhuGeU0Ap5BT7Sl9DsCYa3Ndt+hNk93fO4NJx/FnSKQ=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=uuc5i95sn4KgiTb/lI14qNmWTK3ywbnDfpsffrVSKfIeXKzkU3D8y9QeVH9OfS0Vj
-         45Ka76C5qkhfyRgWs0H2yvHUmd9qQP4+LXNL9vRPA5CnVZvhIIaIxf7SYw52NtPQkb
-         hdeyZ0IB9CAoeSAcNYOMdL1CitHsRnkRkoH+YEGo=
-Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 12BJCVUV110439
+        b=eh4R1oMJGkaqFg1L4275raVqJ9xVf1hbgZPsbamWqIk8KgE7V1NMVLV7l4w6FInhU
+         /JIJzZLvrn54QL9PKimr5fDbtS434AM70iLss7Nebgo+S5FMFs9A3kD7NslJ4APae8
+         wecIOPirp1su8cXZ+CEQ5eEFNuIug2+eEAyj7S48=
+Received: from DFLE102.ent.ti.com (dfle102.ent.ti.com [10.64.6.23])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 12BJCf5p110575
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 11 Mar 2021 13:12:31 -0600
-Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 11 Mar 2021 13:12:41 -0600
+Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Thu, 11
- Mar 2021 13:12:31 -0600
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
+ Mar 2021 13:12:40 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Thu, 11 Mar 2021 13:12:31 -0600
+ Frontend Transport; Thu, 11 Mar 2021 13:12:40 -0600
 Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 12BJCHvT080816;
-        Thu, 11 Mar 2021 13:12:27 -0600
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 12BJCHvV080816;
+        Thu, 11 Mar 2021 13:12:36 -0600
 From:   Pratyush Yadav <p.yadav@ti.com>
 To:     Nishanth Menon <nm@ti.com>, Tero Kristo <kristo@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -57,9 +58,9 @@ To:     Nishanth Menon <nm@ti.com>, Tero Kristo <kristo@kernel.org>,
         <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>
 CC:     Pratyush Yadav <p.yadav@ti.com>, Lokesh Vutla <lokeshvutla@ti.com>
-Subject: [RFC PATCH 2/6] mtd: spi-nor: core: consolidate read op creation
-Date:   Fri, 12 Mar 2021 00:42:12 +0530
-Message-ID: <20210311191216.7363-3-p.yadav@ti.com>
+Subject: [RFC PATCH 4/6] spi: cadence-qspi: Use PHY for DAC reads if possible
+Date:   Fri, 12 Mar 2021 00:42:14 +0530
+Message-ID: <20210311191216.7363-5-p.yadav@ti.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20210311191216.7363-1-p.yadav@ti.com>
 References: <20210311191216.7363-1-p.yadav@ti.com>
@@ -71,112 +72,315 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Currently the spi_mem_op to read from the flash is used in two places:
-spi_nor_create_read_dirmap() and spi_nor_spimem_read_data(). In a later
-commit this number will increase to three. Instead of repeating the same
-code thrice, add a function that returns a template of the read op. The
-callers can then fill in the details like address, data length, data
-buffer location.
+Check if a read is eligible for PHY and if it is, enable PHY and DQS.
+
+Since PHY reads only work at an address that is 16-byte aligned and of
+size that is a multiple of 16 bytes, read the starting and ending
+unaligned portions without PHY, and only enable PHY for the middle part.
 
 Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
 ---
- drivers/mtd/spi-nor/core.c | 62 ++++++++++++++++++++------------------
- 1 file changed, 32 insertions(+), 30 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c | 203 ++++++++++++++++++++++++++----
+ 1 file changed, 182 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
-index 4a315cb1c4db..88888df009f0 100644
---- a/drivers/mtd/spi-nor/core.c
-+++ b/drivers/mtd/spi-nor/core.c
-@@ -183,6 +183,33 @@ static int spi_nor_controller_ops_erase(struct spi_nor *nor, loff_t offs)
- 	return nor->controller_ops->erase(nor, offs);
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index e2d6ea833423..e64d8e125263 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -41,19 +41,27 @@
+ 
+ struct cqspi_st;
+ 
++struct phy_setting {
++	u8		rx;
++	u8		tx;
++	u8		read_delay;
++};
++
+ struct cqspi_flash_pdata {
+-	struct cqspi_st	*cqspi;
+-	u32		clk_rate;
+-	u32		read_delay;
+-	u32		tshsl_ns;
+-	u32		tsd2d_ns;
+-	u32		tchsh_ns;
+-	u32		tslch_ns;
+-	u8		inst_width;
+-	u8		addr_width;
+-	u8		data_width;
+-	bool		dtr;
+-	u8		cs;
++	struct cqspi_st		*cqspi;
++	u32			clk_rate;
++	u32			read_delay;
++	u32			tshsl_ns;
++	u32			tsd2d_ns;
++	u32			tchsh_ns;
++	u32			tslch_ns;
++	u8			inst_width;
++	u8			addr_width;
++	u8			data_width;
++	bool			dtr;
++	u8			cs;
++	bool			use_phy;
++	struct phy_setting	phy_setting;
+ };
+ 
+ struct cqspi_st {
+@@ -108,12 +116,14 @@ struct cqspi_driver_platdata {
+ /* Register map */
+ #define CQSPI_REG_CONFIG			0x00
+ #define CQSPI_REG_CONFIG_ENABLE_MASK		BIT(0)
++#define CQSPI_REG_CONFIG_PHY_EN			BIT(3)
+ #define CQSPI_REG_CONFIG_ENB_DIR_ACC_CTRL	BIT(7)
+ #define CQSPI_REG_CONFIG_DECODE_MASK		BIT(9)
+ #define CQSPI_REG_CONFIG_CHIPSELECT_LSB		10
+ #define CQSPI_REG_CONFIG_DMA_MASK		BIT(15)
+ #define CQSPI_REG_CONFIG_BAUD_LSB		19
+ #define CQSPI_REG_CONFIG_DTR_PROTO		BIT(24)
++#define CQSPI_REG_CONFIG_PHY_PIPELINE		BIT(25)
+ #define CQSPI_REG_CONFIG_DUAL_OPCODE		BIT(30)
+ #define CQSPI_REG_CONFIG_IDLE_LSB		31
+ #define CQSPI_REG_CONFIG_CHIPSELECT_MASK	0xF
+@@ -150,6 +160,7 @@ struct cqspi_driver_platdata {
+ #define CQSPI_REG_READCAPTURE_BYPASS_LSB	0
+ #define CQSPI_REG_READCAPTURE_DELAY_LSB		1
+ #define CQSPI_REG_READCAPTURE_DELAY_MASK	0xF
++#define CQSPI_REG_READCAPTURE_DQS_LSB		8
+ 
+ #define CQSPI_REG_SIZE				0x14
+ #define CQSPI_REG_SIZE_ADDRESS_LSB		0
+@@ -999,6 +1010,7 @@ static void cqspi_config_baudrate_div(struct cqspi_st *cqspi)
+ 
+ static void cqspi_readdata_capture(struct cqspi_st *cqspi,
+ 				   const bool bypass,
++				   const bool dqs,
+ 				   const unsigned int delay)
+ {
+ 	void __iomem *reg_base = cqspi->iobase;
+@@ -1017,6 +1029,11 @@ static void cqspi_readdata_capture(struct cqspi_st *cqspi,
+ 	reg |= (delay & CQSPI_REG_READCAPTURE_DELAY_MASK)
+ 		<< CQSPI_REG_READCAPTURE_DELAY_LSB;
+ 
++	if (dqs)
++		reg |= (1 << CQSPI_REG_READCAPTURE_DQS_LSB);
++	else
++		reg &= ~(1 << CQSPI_REG_READCAPTURE_DQS_LSB);
++
+ 	writel(reg, reg_base + CQSPI_REG_READCAPTURE);
  }
  
-+/**
-+ * spi_nor_spimem_get_read_op() - return a template for the spi_mem_op used for
-+ *                                reading data from the flash via spi-mem.
-+ * @nor:        pointer to 'struct spi_nor'
-+ *
-+ * Return: A template of the 'struct spi_mem_op' for used for reading data from
-+ * the flash. The caller is expected to fill in the address, data length, and
-+ * the data buffer.
-+ */
-+static struct spi_mem_op spi_nor_spimem_get_read_op(struct spi_nor *nor)
+@@ -1035,6 +1052,64 @@ static void cqspi_controller_enable(struct cqspi_st *cqspi, bool enable)
+ 	writel(reg, reg_base + CQSPI_REG_CONFIG);
+ }
+ 
++static void cqspi_phy_enable(struct cqspi_flash_pdata *f_pdata, bool enable)
 +{
-+	struct spi_mem_op op =
-+		SPI_MEM_OP(SPI_MEM_OP_CMD(nor->read_opcode, 0),
-+			   SPI_MEM_OP_ADDR(nor->addr_width, 0, 0),
-+			   SPI_MEM_OP_DUMMY(nor->read_dummy, 0),
-+			   SPI_MEM_OP_DATA_IN(1, NULL, 0));
++	struct cqspi_st *cqspi = f_pdata->cqspi;
++	void __iomem *reg_base = cqspi->iobase;
++	u32 reg;
++	u8 dummy;
 +
-+	spi_nor_spimem_setup_op(nor, &op, nor->read_proto);
++	if (enable) {
++		cqspi_readdata_capture(cqspi, 1, true,
++				       f_pdata->phy_setting.read_delay);
 +
-+	/* convert the dummy cycles to the number of bytes */
-+	op.dummy.nbytes = (nor->read_dummy * op.dummy.buswidth) / 8;
-+	if (spi_nor_protocol_is_dtr(nor->read_proto))
-+		op.dummy.nbytes *= 2;
++		reg = readl(reg_base + CQSPI_REG_CONFIG);
++		reg |= CQSPI_REG_CONFIG_PHY_EN |
++		       CQSPI_REG_CONFIG_PHY_PIPELINE;
++		writel(reg, reg_base + CQSPI_REG_CONFIG);
 +
-+	return op;
++		/*
++		 * Reduce dummy cycle by 1. This is a requirement of PHY mode
++		 * operation for correctly reading the data.
++		 */
++		reg = readl(reg_base + CQSPI_REG_RD_INSTR);
++		dummy = (reg >> CQSPI_REG_RD_INSTR_DUMMY_LSB) &
++			CQSPI_REG_RD_INSTR_DUMMY_MASK;
++		dummy--;
++		reg &= ~(CQSPI_REG_RD_INSTR_DUMMY_MASK <<
++			 CQSPI_REG_RD_INSTR_DUMMY_LSB);
++
++		reg |= (dummy & CQSPI_REG_RD_INSTR_DUMMY_MASK)
++		       << CQSPI_REG_RD_INSTR_DUMMY_LSB;
++		writel(reg, reg_base + CQSPI_REG_RD_INSTR);
++	} else {
++		cqspi_readdata_capture(cqspi, !cqspi->rclk_en, false,
++				       f_pdata->read_delay);
++
++		reg = readl(reg_base + CQSPI_REG_CONFIG);
++		reg &= ~(CQSPI_REG_CONFIG_PHY_EN |
++			 CQSPI_REG_CONFIG_PHY_PIPELINE);
++		writel(reg, reg_base + CQSPI_REG_CONFIG);
++
++		/*
++		 * Dummy cycles were decremented when enabling PHY. Increment
++		 * dummy cycle by 1 to restore the original value.
++		 */
++		reg = readl(reg_base + CQSPI_REG_RD_INSTR);
++		dummy = (reg >> CQSPI_REG_RD_INSTR_DUMMY_LSB) &
++			CQSPI_REG_RD_INSTR_DUMMY_MASK;
++		dummy++;
++		reg &= ~(CQSPI_REG_RD_INSTR_DUMMY_MASK <<
++			 CQSPI_REG_RD_INSTR_DUMMY_LSB);
++
++		reg |= (dummy & CQSPI_REG_RD_INSTR_DUMMY_MASK)
++		       << CQSPI_REG_RD_INSTR_DUMMY_LSB;
++		writel(reg, reg_base + CQSPI_REG_RD_INSTR);
++	}
++
++	cqspi_wait_idle(cqspi);
 +}
 +
- /**
-  * spi_nor_spimem_read_data() - read data from flash's memory region via
-  *                              spi-mem
-@@ -196,21 +223,14 @@ static int spi_nor_controller_ops_erase(struct spi_nor *nor, loff_t offs)
- static ssize_t spi_nor_spimem_read_data(struct spi_nor *nor, loff_t from,
- 					size_t len, u8 *buf)
+ static void cqspi_configure(struct cqspi_flash_pdata *f_pdata,
+ 			    unsigned long sclk)
  {
--	struct spi_mem_op op =
--		SPI_MEM_OP(SPI_MEM_OP_CMD(nor->read_opcode, 0),
--			   SPI_MEM_OP_ADDR(nor->addr_width, from, 0),
--			   SPI_MEM_OP_DUMMY(nor->read_dummy, 0),
--			   SPI_MEM_OP_DATA_IN(len, buf, 0));
-+	struct spi_mem_op op = spi_nor_spimem_get_read_op(nor);
- 	bool usebouncebuf;
- 	ssize_t nbytes;
- 	int error;
+@@ -1056,7 +1131,7 @@ static void cqspi_configure(struct cqspi_flash_pdata *f_pdata,
+ 		cqspi->sclk = sclk;
+ 		cqspi_config_baudrate_div(cqspi);
+ 		cqspi_delay(f_pdata);
+-		cqspi_readdata_capture(cqspi, !cqspi->rclk_en,
++		cqspi_readdata_capture(cqspi, !cqspi->rclk_en, false,
+ 				       f_pdata->read_delay);
+ 	}
  
--	spi_nor_spimem_setup_op(nor, &op, nor->read_proto);
--
--	/* convert the dummy cycles to the number of bytes */
--	op.dummy.nbytes = (nor->read_dummy * op.dummy.buswidth) / 8;
--	if (spi_nor_protocol_is_dtr(nor->read_proto))
--		op.dummy.nbytes *= 2;
-+	op.addr.val = from;
-+	op.data.nbytes = len;
-+	op.data.buf.in = buf;
+@@ -1098,6 +1173,39 @@ static ssize_t cqspi_write(struct cqspi_flash_pdata *f_pdata,
+ 	return cqspi_indirect_write_execute(f_pdata, to, buf, len);
+ }
  
- 	usebouncebuf = spi_nor_spimem_bounce(nor, &op);
- 
-@@ -3581,28 +3601,10 @@ EXPORT_SYMBOL_GPL(spi_nor_scan);
- static int spi_nor_create_read_dirmap(struct spi_nor *nor)
++/*
++ * Check if PHY mode can be used on the given op. This is assuming it will be a
++ * DAC mode read, since PHY won't work on any other type of operation anyway.
++ */
++static bool cqspi_phy_op_eligible(const struct spi_mem_op *op)
++{
++	/* PHY is only tuned for 8D-8D-8D. */
++	if (!(op->cmd.dtr && op->addr.dtr && op->dummy.dtr && op->data.dtr))
++		return false;
++	if (op->cmd.buswidth != 8)
++		return false;
++	if (op->addr.nbytes && op->addr.buswidth != 8)
++		return false;
++	if (op->dummy.nbytes && op->dummy.buswidth != 8)
++		return false;
++	if (op->data.nbytes && op->data.buswidth != 8)
++		return false;
++
++	return true;
++}
++
++static bool cqspi_use_phy(struct cqspi_flash_pdata *f_pdata,
++			  const struct spi_mem_op *op)
++{
++	if (!f_pdata->use_phy)
++		return false;
++
++	if (op->data.nbytes < 16)
++		return false;
++
++	return cqspi_phy_op_eligible(op);
++}
++
+ static void cqspi_rx_dma_callback(void *param)
  {
- 	struct spi_mem_dirmap_info info = {
--		.op_tmpl = SPI_MEM_OP(SPI_MEM_OP_CMD(nor->read_opcode, 0),
--				      SPI_MEM_OP_ADDR(nor->addr_width, 0, 0),
--				      SPI_MEM_OP_DUMMY(nor->read_dummy, 0),
--				      SPI_MEM_OP_DATA_IN(0, NULL, 0)),
-+		.op_tmpl = spi_nor_spimem_get_read_op(nor),
- 		.offset = 0,
- 		.length = nor->mtd.size,
- 	};
--	struct spi_mem_op *op = &info.op_tmpl;
--
--	spi_nor_spimem_setup_op(nor, op, nor->read_proto);
--
--	/* convert the dummy cycles to the number of bytes */
--	op->dummy.nbytes = (nor->read_dummy * op->dummy.buswidth) / 8;
--	if (spi_nor_protocol_is_dtr(nor->read_proto))
--		op->dummy.nbytes *= 2;
--
--	/*
--	 * Since spi_nor_spimem_setup_op() only sets buswidth when the number
--	 * of data bytes is non-zero, the data buswidth won't be set here. So,
--	 * do it explicitly.
--	 */
--	op->data.buswidth = spi_nor_get_protocol_data_nbits(nor->read_proto);
+ 	struct cqspi_st *cqspi = param;
+@@ -1105,8 +1213,8 @@ static void cqspi_rx_dma_callback(void *param)
+ 	complete(&cqspi->rx_dma_complete);
+ }
  
- 	nor->dirmap.rdesc = devm_spi_mem_dirmap_create(nor->dev, nor->spimem,
- 						       &info);
+-static int cqspi_direct_read_execute(struct cqspi_flash_pdata *f_pdata,
+-				     u_char *buf, loff_t from, size_t len)
++static int cqspi_direct_read_dma(struct cqspi_flash_pdata *f_pdata,
++				 u_char *buf, loff_t from, size_t len)
+ {
+ 	struct cqspi_st *cqspi = f_pdata->cqspi;
+ 	struct device *dev = &cqspi->pdev->dev;
+@@ -1118,11 +1226,6 @@ static int cqspi_direct_read_execute(struct cqspi_flash_pdata *f_pdata,
+ 	dma_addr_t dma_dst;
+ 	struct device *ddev;
+ 
+-	if (!cqspi->rx_chan || !virt_addr_valid(buf)) {
+-		memcpy_fromio(buf, cqspi->ahb_base + from, len);
+-		return 0;
+-	}
+-
+ 	ddev = cqspi->rx_chan->device->dev;
+ 	dma_dst = dma_map_single(ddev, buf, len, DMA_FROM_DEVICE);
+ 	if (dma_mapping_error(ddev, dma_dst)) {
+@@ -1164,6 +1267,64 @@ static int cqspi_direct_read_execute(struct cqspi_flash_pdata *f_pdata,
+ 	return ret;
+ }
+ 
++static int cqspi_direct_read_execute(struct cqspi_flash_pdata *f_pdata,
++				     const struct spi_mem_op *op)
++{
++	struct cqspi_st *cqspi = f_pdata->cqspi;
++	loff_t from = op->addr.val;
++	loff_t from_aligned, to_aligned;
++	size_t len = op->data.nbytes;
++	size_t len_aligned;
++	u_char *buf = op->data.buf.in;
++	int ret;
++
++	if (!cqspi->rx_chan || !virt_addr_valid(buf)) {
++		memcpy_fromio(buf, cqspi->ahb_base + from, len);
++		return 0;
++	}
++
++	if (!cqspi_use_phy(f_pdata, op))
++		return cqspi_direct_read_dma(f_pdata, buf, from, len);
++
++	/*
++	 * PHY reads must be 16-byte aligned, and they must be a multiple of 16
++	 * bytes.
++	 */
++	from_aligned = (from + 0xF) & ~0xF;
++	to_aligned = (from + len) & ~0xF;
++	len_aligned = to_aligned - from_aligned;
++
++	/* Read the unaligned part at the start. */
++	if (from != from_aligned) {
++		ret = cqspi_direct_read_dma(f_pdata, buf, from,
++					    from_aligned - from);
++		if (ret)
++			return ret;
++		buf += from_aligned - from;
++	}
++
++	if (len_aligned) {
++		cqspi_phy_enable(f_pdata, true);
++		ret = cqspi_direct_read_dma(f_pdata, buf, from_aligned,
++					    len_aligned);
++		cqspi_phy_enable(f_pdata, false);
++		if (ret)
++			return ret;
++		buf += len_aligned;
++	}
++
++	/* Now read the remaining part, if any. */
++	if (to_aligned != (from + len)) {
++		ret = cqspi_direct_read_dma(f_pdata, buf, to_aligned,
++					    (from + len) - to_aligned);
++		if (ret)
++			return ret;
++		buf += (from + len) - to_aligned;
++	}
++
++	return 0;
++}
++
+ static ssize_t cqspi_read(struct cqspi_flash_pdata *f_pdata,
+ 			  const struct spi_mem_op *op)
+ {
+@@ -1182,7 +1343,7 @@ static ssize_t cqspi_read(struct cqspi_flash_pdata *f_pdata,
+ 		return ret;
+ 
+ 	if (cqspi->use_direct_mode && ((from + len) <= cqspi->ahb_size))
+-		return cqspi_direct_read_execute(f_pdata, buf, from, len);
++		return cqspi_direct_read_execute(f_pdata, op);
+ 
+ 	return cqspi_indirect_read_execute(f_pdata, buf, from, len);
+ }
 -- 
 2.30.0
 

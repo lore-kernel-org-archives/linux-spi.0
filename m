@@ -2,90 +2,114 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-19.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3D777C433E6
-	for <linux-spi@archiver.kernel.org>; Thu, 11 Mar 2021 16:20:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A78FC433E0
+	for <linux-spi@archiver.kernel.org>; Thu, 11 Mar 2021 19:13:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id EC28864FF6
-	for <linux-spi@archiver.kernel.org>; Thu, 11 Mar 2021 16:20:28 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 20E9164EC0
+	for <linux-spi@archiver.kernel.org>; Thu, 11 Mar 2021 19:13:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234455AbhCKQT4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 11 Mar 2021 11:19:56 -0500
-Received: from mail.kernel.org ([198.145.29.99]:52332 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234258AbhCKQTh (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 11 Mar 2021 11:19:37 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B5B3464F9C;
-        Thu, 11 Mar 2021 16:19:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1615479577;
-        bh=KggN/HW1a2vQ4SGzBJ8jnbNIsyStFoH/eHKz0JbOLp0=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=apC8y9l5v895SynA/Ffe/RDrJU1QoCvrprizy9Hn7ygInav5RW+W0QScg+S6ip4bm
-         nAoYHYNfqZ8cHNbUfDK8y3dzBeHOzf8hfOU1WC/WoxudhfaK5N/Adr0XPUpjehq5Md
-         a71Y4D2tiRiY74h/+4Psezt4fwW0gClPJ69hJ8ToqX8/2SyORXvCnSbrZh3AO9Xknd
-         iSwrBbbJD3BfqTpwLV35X+uMALe7uu6reNwRiMNShe3OMQ0iZaLhMfx8nqeYk1xb0G
-         k9IGwhSd6B9yegQpvOXdgXTNZtc8Dp+JQrZrr9O/4/Ds5zYZDjSeVHET5ArKl8oPB0
-         YTmXyLoc9rMwA==
-From:   Mark Brown <broonie@kernel.org>
-To:     Meng.Li@windriver.com, linux-kernel@vger.kernel.org
-Cc:     vadivel.muruganx.ramuthevar@linux.intel.com,
-        linux-spi@vger.kernel.org, meng.li@windriver.com, vigneshr@ti.com,
-        tudor.ambarus@microchip.com
-In-Reply-To: <20210311091220.3615-1-Meng.Li@windriver.com>
-References: <20210311091220.3615-1-Meng.Li@windriver.com>
-Subject: Re: [PATCH] drivers: spi: cadence: set cqspi to the driver_data field of struct device
-Message-Id: <161547949200.51229.6800375335632446420.b4-ty@kernel.org>
-Date:   Thu, 11 Mar 2021 16:18:12 +0000
+        id S230182AbhCKTMv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 11 Mar 2021 14:12:51 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:44252 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229921AbhCKTMq (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 11 Mar 2021 14:12:46 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 12BJCanU072953;
+        Thu, 11 Mar 2021 13:12:36 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1615489956;
+        bh=n3DRjCff2C4yzirXTzPuZEGe7eZhKiV8GXaya6kJgQM=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References;
+        b=b5kYp6YSfZpL/Ff+Z70SDQnez/A3FB8SSfTxS0cqixG2nzCWjraR+Btzj1a7B7m9V
+         WvAflg74iWVQhjGQLXFA1IhaT3XT1o8HOdWeqqCwA/mFZavToyue+bBayuh1cgbsNU
+         BfrQEdYAThM7P2qi7edmn0cztlpke12CwcNMW550=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 12BJCaog113136
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 11 Mar 2021 13:12:36 -0600
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Thu, 11
+ Mar 2021 13:12:35 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
+ Frontend Transport; Thu, 11 Mar 2021 13:12:35 -0600
+Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 12BJCHvU080816;
+        Thu, 11 Mar 2021 13:12:31 -0600
+From:   Pratyush Yadav <p.yadav@ti.com>
+To:     Nishanth Menon <nm@ti.com>, Tero Kristo <kristo@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Michael Walle <michael@walle.cc>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Mark Brown <broonie@kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>
+CC:     Pratyush Yadav <p.yadav@ti.com>, Lokesh Vutla <lokeshvutla@ti.com>
+Subject: [RFC PATCH 3/6] mtd: spi-nor: core: run calibration when initialization is done
+Date:   Fri, 12 Mar 2021 00:42:13 +0530
+Message-ID: <20210311191216.7363-4-p.yadav@ti.com>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20210311191216.7363-1-p.yadav@ti.com>
+References: <20210311191216.7363-1-p.yadav@ti.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 11 Mar 2021 17:12:20 +0800, Meng.Li@windriver.com wrote:
-> When initialize cadence qspi controller, it is need to set cqspi
-> to the driver_data field of struct device, because it will be
-> used in function cqspi_remove/suspend/resume(). Otherwise, there
-> will be a crash trace as below when invoking these finctions.
-> Call trace:
->  cqspi_suspend+0x14/0x44
->  dpm_run_callback+0x50/0x1c0
->  __device_suspend+0x114/0x514
->  ......
->  el0_svc+0x20/0x30
->  el0_sync_handler+0x1a4/0x1b0
->  el0_sync+0x174/0x180
+Once the flash is initialized tell the controller it can run
+calibration procedures if needed. This can be useful when calibration is
+needed to run at higher clock speeds.
 
-Applied to
+Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+---
+ drivers/mtd/spi-nor/core.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+index 88888df009f0..e0cbcaf1be89 100644
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -3650,6 +3650,7 @@ static int spi_nor_probe(struct spi_mem *spimem)
+ 	 * checking what's really supported using spi_mem_supports_op().
+ 	 */
+ 	const struct spi_nor_hwcaps hwcaps = { .mask = SNOR_HWCAPS_ALL };
++	struct spi_mem_op op;
+ 	char *flash_name;
+ 	int ret;
+ 
+@@ -3709,8 +3710,15 @@ static int spi_nor_probe(struct spi_mem *spimem)
+ 	if (ret)
+ 		return ret;
+ 
+-	return mtd_device_register(&nor->mtd, data ? data->parts : NULL,
+-				   data ? data->nr_parts : 0);
++	ret = mtd_device_register(&nor->mtd, data ? data->parts : NULL,
++				  data ? data->nr_parts : 0);
++	if (ret)
++		return ret;
++
++	op = spi_nor_spimem_get_read_op(nor);
++	spi_mem_do_calibration(nor->spimem, &op);
++
++	return 0;
+ }
+ 
+ static int spi_nor_remove(struct spi_mem *spimem)
+-- 
+2.30.0
 
-Thanks!
-
-[1/1] drivers: spi: cadence: set cqspi to the driver_data field of struct device
-      commit: ea94191e584b146878f0b7fd4b767500d7aae870
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

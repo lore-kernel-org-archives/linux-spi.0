@@ -2,59 +2,60 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ADEECC46461
-	for <linux-spi@archiver.kernel.org>; Thu, 11 Mar 2021 19:22:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 20304C2BA19
+	for <linux-spi@archiver.kernel.org>; Thu, 11 Mar 2021 19:22:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 26BF364F0E
-	for <linux-spi@archiver.kernel.org>; Thu, 11 Mar 2021 19:22:45 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DDCD064F11
+	for <linux-spi@archiver.kernel.org>; Thu, 11 Mar 2021 19:22:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231181AbhCKTWP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 11 Mar 2021 14:22:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38024 "EHLO
+        id S231218AbhCKTWS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 11 Mar 2021 14:22:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229774AbhCKTVi (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 11 Mar 2021 14:21:38 -0500
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFDC0C061574;
-        Thu, 11 Mar 2021 11:21:37 -0800 (PST)
-Received: by mail-lj1-x230.google.com with SMTP id z25so3607014lja.3;
-        Thu, 11 Mar 2021 11:21:37 -0800 (PST)
+        with ESMTP id S230047AbhCKTVm (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 11 Mar 2021 14:21:42 -0500
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4687C061574;
+        Thu, 11 Mar 2021 11:21:41 -0800 (PST)
+Received: by mail-lj1-x234.google.com with SMTP id f16so3612465ljm.1;
+        Thu, 11 Mar 2021 11:21:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=nr3MMopQK2U9fHQgnqesF0TFAIQZjafir6ZJocCIzyI=;
-        b=MyIkaSeXkIuqBbDFC2RZN06Z7+tiTtAyEFnuG6JcB8fVDc/Sps5Y/4lD3XbsyeO4ae
-         TVru7tnsGRkHH9T+lqIfziLi24bGn4Y8kTsTE9yDA1ltlFtHAtJpiks0QkaZ9aRplxPS
-         5gaASxaSxYV09M2FNYhkdvW8CF+zEtfZisqi7xVpZXA/1IPDNlhxHt6m05FCcOY89lyR
-         2GdG2+f4JHdOC1hDD3wwJPE/7krkXhXW5bP+CHhYBHdm3OpOYonPaVP1OLWWZ9Kwv+eU
-         27iTZCIS1IVBb33goI5qAl9/7f1WShlaTr+5bUuPY/hADp7/1yeTfOzDA3lIhMeLMcrB
-         kshg==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=ov6L/wi+7+c3LJQtnAfH1iT/wWmTs9arji1NNjI5w4w=;
+        b=Yb2xQLauQk9/iW9wuQpdmmzQth3lijiwwro7aLkL5nw59+KYnhhGwe+WIsASJe2cBr
+         of7MVf0dwHgmm84nllvZVdfbbSiTFGCdTKGpaQSwxJ+1mQNO8nd9dFIg901Ya3V8mjHa
+         V3cjPw39w//0pzFRjKGn8TBsMyNb7IVbLBg4vmO5wOyP6grDoA/orJvrEIXjZitenosh
+         65JY/acJLBixVB+TAd71beQ7dZXUBG+OVI7t28wEBifdeUjo15dx4B5AwMHn4yqGi0NZ
+         EDjwMWYGla6li8QVOIPfR3DcF8njHOcUzDeuNpgxKkY9NVrmmTtNQBAN9TEqRiUQUkIE
+         NaMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=nr3MMopQK2U9fHQgnqesF0TFAIQZjafir6ZJocCIzyI=;
-        b=SU8oCQXPSZuT7rjtLz2JzEq3yTH5DnZthgvl/KK2CbcWvCrUzxrVqM/XgZ0WkQM8xc
-         8Whk3xb+TsUHQ5B0ypA7ggtbf6fg09csUXCxlgTUE6Tvb2rG+7SZwjxxfsrfd6A9fkKq
-         vqdzH9bjMCS+FoZJPuPwsI9aOo6+XpV8hug0/U8JX3XYbMvKa0xTAuSjWH9o8vELuO+z
-         /fdLEiRyStdDusvSisJLu6b0K56RCUwR46y/nCVBSNZk74ItkbACKu8k1HgvIeI9rCg1
-         dYOaPc8CqjaaUIieYQPkVFyk6LqRZ2cj4MRQ7Zp/OirJ/M99AkJeZQRM2eQrmSD8b2fd
-         kAXA==
-X-Gm-Message-State: AOAM531iMjIci2L41j8DNaDVAOeo8UKHtywdRyRdYwcLEbgR0eVcPIcL
-        Vv0mrzTpiq8ZdyQvKILWDB0=
-X-Google-Smtp-Source: ABdhPJwV50MJdowwGjHNgx6AtXCWhwuCfX9B+Ri0kWRJuRnNED/9RtxV4BcKLyAa4veO0GRq4JAp4w==
-X-Received: by 2002:a2e:9f45:: with SMTP id v5mr215188ljk.183.1615490496374;
-        Thu, 11 Mar 2021 11:21:36 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=ov6L/wi+7+c3LJQtnAfH1iT/wWmTs9arji1NNjI5w4w=;
+        b=GRscBF8qmw4jQuBo4hGtvavWFlFNXoce0mdwfP2MrjIClxFhEeUiV+6p6/ppWtyawg
+         03sIa1MO2gyM9HTfVLzQzkOVUbVMvCOcnQVAQCel4wqz+aPyHHe1ERoSmYhyo2zKLcQe
+         IP0O7HyHzUiq3qbXw0orSShPXO+vZuYQ7AmYdOU2jXocMm7wbHaXkA5HKivNcciCWJhM
+         Q5+JdlCx4G4N6gxNWtW+2TThdRfNC+OVRiANxQTrChGq7ik9xKVCV+wq3fkwhTDOJlHG
+         rYNXAQmvrM/UvYlto7ShuwJhzCg9TFlZOq1/Nt1qXUNlCozsx6R5MiUBQGgfGALAALYq
+         wiSA==
+X-Gm-Message-State: AOAM531enb/LcFoitaBvvPWx7+151eg6cWSltYxuNwgBmx6jxyVXLe5D
+        Ff069D2gJBkuau0B5fK76W8=
+X-Google-Smtp-Source: ABdhPJz+liOGeJUMZvP/rB0AsK2HT9znbIStPC1d8LC453bn0G05ViKsvD2ssCnu0cxW5E/Wbnfj7A==
+X-Received: by 2002:a05:651c:124b:: with SMTP id h11mr213713ljh.401.1615490500164;
+        Thu, 11 Mar 2021 11:21:40 -0800 (PST)
 Received: from localhost.localdomain (109-252-193-52.dynamic.spd-mgts.ru. [109.252.193.52])
-        by smtp.gmail.com with ESMTPSA id u14sm1121153lfl.40.2021.03.11.11.21.34
+        by smtp.gmail.com with ESMTPSA id u14sm1121153lfl.40.2021.03.11.11.21.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Mar 2021 11:21:35 -0800 (PST)
+        Thu, 11 Mar 2021 11:21:39 -0800 (PST)
 From:   Dmitry Osipenko <digetx@gmail.com>
 To:     Qiang Yu <yuq825@gmail.com>, Rob Clark <robdclark@gmail.com>,
         Sean Paul <sean@poorly.run>, Rob Herring <robh@kernel.org>,
@@ -82,81 +83,105 @@ Cc:     Daniel Vetter <daniel@ffwll.ch>, dri-devel@lists.freedesktop.org,
         linux-samsung-soc@vger.kernel.org, linux-mmc@vger.kernel.org,
         linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
         linux-tegra@vger.kernel.org
-Subject: [PATCH v2 00/14] Introduce devm_pm_opp_* API
-Date:   Thu, 11 Mar 2021 22:20:51 +0300
-Message-Id: <20210311192105.14998-1-digetx@gmail.com>
+Subject: [PATCH v2 03/14] opp: Add devres wrapper for dev_pm_opp_set_supported_hw
+Date:   Thu, 11 Mar 2021 22:20:54 +0300
+Message-Id: <20210311192105.14998-4-digetx@gmail.com>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210311192105.14998-1-digetx@gmail.com>
+References: <20210311192105.14998-1-digetx@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This series adds resource-managed OPP API helpers and makes drivers
-to use them.
+From: Yangtao Li <tiny.windzz@gmail.com>
 
-Changelog:
+Add devres wrapper for dev_pm_opp_set_supported_hw() to simplify driver
+code.
 
-v2: - This is a continuation of the work that was started by Yangtao Li.
-      Apparently Yangtao doesn't have time to finish it, so I
-      (Dmitry Osipenko) picked up the effort since these patches are
-      wanted by the NVIDIA Tegra voltage-scaling series that I'm
-      working on.
+Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
+Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+---
+ drivers/opp/core.c     | 38 ++++++++++++++++++++++++++++++++++++++
+ include/linux/pm_opp.h |  8 ++++++++
+ 2 files changed, 46 insertions(+)
 
-    - Fixed the double put of OPP resources.
-
-    - Dropped all patches that are unrelated to OPP API. I also dropped
-      the Tegra memory patch since it doesn't apply now and because I plan
-      to switch all Tegra drivers soon to a common tegra-specific OPP helper
-      that will use the resource-managed OPP API anyways.
-
-    - Squashed couple patches into a single ones since there was no
-      good reason to separate them.
-
-    - Added acks that were given to a couple of v1 patches.
-
-Yangtao Li (14):
-  opp: Add devres wrapper for dev_pm_opp_set_clkname
-  opp: Add devres wrapper for dev_pm_opp_set_regulators
-  opp: Add devres wrapper for dev_pm_opp_set_supported_hw
-  opp: Add devres wrapper for dev_pm_opp_of_add_table
-  opp: Add devres wrapper for dev_pm_opp_register_notifier
-  serial: qcom_geni_serial: Convert to use resource-managed OPP API
-  spi: spi-geni-qcom: Convert to use resource-managed OPP API
-  spi: spi-qcom-qspi: Convert to use resource-managed OPP API
-  mmc: sdhci-msm: Convert to use resource-managed OPP API
-  drm/msm: Convert to use resource-managed OPP API
-  drm/lima: Convert to use resource-managed OPP API
-  drm/panfrost: Convert to use resource-managed OPP API
-  media: venus: Convert to use resource-managed OPP API
-  memory: samsung: exynos5422-dmc: Convert to use resource-managed OPP
-    API
-
- drivers/gpu/drm/lima/lima_devfreq.c           |  43 ++---
- drivers/gpu/drm/lima/lima_devfreq.h           |   2 -
- drivers/gpu/drm/msm/adreno/a5xx_gpu.c         |   2 +-
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c         |   2 +-
- drivers/gpu/drm/msm/adreno/adreno_gpu.c       |   2 +-
- drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c       |  24 ++-
- drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h       |   2 -
- drivers/gpu/drm/msm/dp/dp_ctrl.c              |  31 +---
- drivers/gpu/drm/msm/dp/dp_ctrl.h              |   1 -
- drivers/gpu/drm/msm/dp/dp_display.c           |   5 +-
- drivers/gpu/drm/msm/dsi/dsi_host.c            |  14 +-
- drivers/gpu/drm/panfrost/panfrost_devfreq.c   |  33 +---
- drivers/gpu/drm/panfrost/panfrost_devfreq.h   |   1 -
- .../media/platform/qcom/venus/pm_helpers.c    |  18 +--
- drivers/memory/samsung/exynos5422-dmc.c       |  13 +-
- drivers/mmc/host/sdhci-msm.c                  |  20 +--
- drivers/opp/core.c                            | 151 ++++++++++++++++++
- drivers/opp/of.c                              |  36 +++++
- drivers/spi/spi-geni-qcom.c                   |  17 +-
- drivers/spi/spi-qcom-qspi.c                   |  19 +--
- drivers/tty/serial/qcom_geni_serial.c         |  24 ++-
- include/linux/pm_opp.h                        |  34 ++++
- include/linux/qcom-geni-se.h                  |   2 -
- 23 files changed, 300 insertions(+), 196 deletions(-)
-
+diff --git a/drivers/opp/core.c b/drivers/opp/core.c
+index 32fa2bff847b..f9e4ebb7aad0 100644
+--- a/drivers/opp/core.c
++++ b/drivers/opp/core.c
+@@ -1857,6 +1857,44 @@ void dev_pm_opp_put_supported_hw(struct opp_table *opp_table)
+ }
+ EXPORT_SYMBOL_GPL(dev_pm_opp_put_supported_hw);
+ 
++static void devm_pm_opp_supported_hw_release(void *data)
++{
++	dev_pm_opp_put_supported_hw(data);
++}
++
++/**
++ * devm_pm_opp_set_supported_hw() - Set supported platforms
++ * @dev: Device for which supported-hw has to be set.
++ * @versions: Array of hierarchy of versions to match.
++ * @count: Number of elements in the array.
++ *
++ * This is required only for the V2 bindings, and it enables a platform to
++ * specify the hierarchy of versions it supports. OPP layer will then enable
++ * OPPs, which are available for those versions, based on its 'opp-supported-hw'
++ * property.
++ *
++ * The opp_table structure will be freed after the device is destroyed.
++ */
++struct opp_table *devm_pm_opp_set_supported_hw(struct device *dev,
++					       const u32 *versions,
++					       unsigned int count)
++{
++	struct opp_table *opp_table;
++	int err;
++
++	opp_table = dev_pm_opp_set_supported_hw(dev, versions, count);
++	if (IS_ERR(opp_table))
++		return opp_table;
++
++	err = devm_add_action_or_reset(dev, devm_pm_opp_supported_hw_release,
++				       opp_table);
++	if (err)
++		opp_table = ERR_PTR(err);
++
++	return opp_table;
++}
++EXPORT_SYMBOL_GPL(devm_pm_opp_set_supported_hw);
++
+ /**
+  * dev_pm_opp_set_prop_name() - Set prop-extn name
+  * @dev: Device for which the prop-name has to be set.
+diff --git a/include/linux/pm_opp.h b/include/linux/pm_opp.h
+index 284d23665b15..e68c3c29301e 100644
+--- a/include/linux/pm_opp.h
++++ b/include/linux/pm_opp.h
+@@ -144,6 +144,7 @@ int dev_pm_opp_unregister_notifier(struct device *dev, struct notifier_block *nb
+ 
+ struct opp_table *dev_pm_opp_set_supported_hw(struct device *dev, const u32 *versions, unsigned int count);
+ void dev_pm_opp_put_supported_hw(struct opp_table *opp_table);
++struct opp_table *devm_pm_opp_set_supported_hw(struct device *dev, const u32 *versions, unsigned int count);
+ struct opp_table *dev_pm_opp_set_prop_name(struct device *dev, const char *name);
+ void dev_pm_opp_put_prop_name(struct opp_table *opp_table);
+ struct opp_table *dev_pm_opp_set_regulators(struct device *dev, const char * const names[], unsigned int count);
+@@ -321,6 +322,13 @@ static inline struct opp_table *dev_pm_opp_set_supported_hw(struct device *dev,
+ 
+ static inline void dev_pm_opp_put_supported_hw(struct opp_table *opp_table) {}
+ 
++static inline struct opp_table *devm_pm_opp_set_supported_hw(struct device *dev,
++							     const u32 *versions,
++							     unsigned int count)
++{
++	return ERR_PTR(-EOPNOTSUPP);
++}
++
+ static inline struct opp_table *dev_pm_opp_register_set_opp_helper(struct device *dev,
+ 			int (*set_opp)(struct dev_pm_set_opp_data *data))
+ {
 -- 
 2.29.2
 

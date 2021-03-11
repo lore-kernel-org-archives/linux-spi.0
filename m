@@ -2,788 +2,161 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-19.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B8F6AC433E0
-	for <linux-spi@archiver.kernel.org>; Thu, 11 Mar 2021 19:13:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ADEECC46461
+	for <linux-spi@archiver.kernel.org>; Thu, 11 Mar 2021 19:22:46 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7E92964F14
-	for <linux-spi@archiver.kernel.org>; Thu, 11 Mar 2021 19:13:56 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 26BF364F0E
+	for <linux-spi@archiver.kernel.org>; Thu, 11 Mar 2021 19:22:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230438AbhCKTN0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 11 Mar 2021 14:13:26 -0500
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:42350 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230341AbhCKTM6 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 11 Mar 2021 14:12:58 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 12BJCjjR123950;
-        Thu, 11 Mar 2021 13:12:45 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1615489965;
-        bh=TUi2WHK3M2rDM2J87pAt68xPOpINrGhVEr8Jkhg2JPY=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=VUA1S0pZMh49E+FybBpMjIZq0wduLyW/Uxig+WKs+4CEHMcf4Ist7B0Jw81gP7u3T
-         LWhimlx5WuzQDEcB0MqTILgxo2ixiklwMRIGF3Ed9eAoAHE0kao0wpNg4RqUxkR/Mu
-         F/uaTCNd7hbFfVpmFEXqRmE4o2puFwZsGcPhBmo4=
-Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 12BJCjZA110617
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 11 Mar 2021 13:12:45 -0600
-Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Thu, 11
- Mar 2021 13:12:45 -0600
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Thu, 11 Mar 2021 13:12:45 -0600
-Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 12BJCHvW080816;
-        Thu, 11 Mar 2021 13:12:41 -0600
-From:   Pratyush Yadav <p.yadav@ti.com>
-To:     Nishanth Menon <nm@ti.com>, Tero Kristo <kristo@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Michael Walle <michael@walle.cc>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
+        id S231181AbhCKTWP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 11 Mar 2021 14:22:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38024 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229774AbhCKTVi (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 11 Mar 2021 14:21:38 -0500
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFDC0C061574;
+        Thu, 11 Mar 2021 11:21:37 -0800 (PST)
+Received: by mail-lj1-x230.google.com with SMTP id z25so3607014lja.3;
+        Thu, 11 Mar 2021 11:21:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=nr3MMopQK2U9fHQgnqesF0TFAIQZjafir6ZJocCIzyI=;
+        b=MyIkaSeXkIuqBbDFC2RZN06Z7+tiTtAyEFnuG6JcB8fVDc/Sps5Y/4lD3XbsyeO4ae
+         TVru7tnsGRkHH9T+lqIfziLi24bGn4Y8kTsTE9yDA1ltlFtHAtJpiks0QkaZ9aRplxPS
+         5gaASxaSxYV09M2FNYhkdvW8CF+zEtfZisqi7xVpZXA/1IPDNlhxHt6m05FCcOY89lyR
+         2GdG2+f4JHdOC1hDD3wwJPE/7krkXhXW5bP+CHhYBHdm3OpOYonPaVP1OLWWZ9Kwv+eU
+         27iTZCIS1IVBb33goI5qAl9/7f1WShlaTr+5bUuPY/hADp7/1yeTfOzDA3lIhMeLMcrB
+         kshg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=nr3MMopQK2U9fHQgnqesF0TFAIQZjafir6ZJocCIzyI=;
+        b=SU8oCQXPSZuT7rjtLz2JzEq3yTH5DnZthgvl/KK2CbcWvCrUzxrVqM/XgZ0WkQM8xc
+         8Whk3xb+TsUHQ5B0ypA7ggtbf6fg09csUXCxlgTUE6Tvb2rG+7SZwjxxfsrfd6A9fkKq
+         vqdzH9bjMCS+FoZJPuPwsI9aOo6+XpV8hug0/U8JX3XYbMvKa0xTAuSjWH9o8vELuO+z
+         /fdLEiRyStdDusvSisJLu6b0K56RCUwR46y/nCVBSNZk74ItkbACKu8k1HgvIeI9rCg1
+         dYOaPc8CqjaaUIieYQPkVFyk6LqRZ2cj4MRQ7Zp/OirJ/M99AkJeZQRM2eQrmSD8b2fd
+         kAXA==
+X-Gm-Message-State: AOAM531iMjIci2L41j8DNaDVAOeo8UKHtywdRyRdYwcLEbgR0eVcPIcL
+        Vv0mrzTpiq8ZdyQvKILWDB0=
+X-Google-Smtp-Source: ABdhPJwV50MJdowwGjHNgx6AtXCWhwuCfX9B+Ri0kWRJuRnNED/9RtxV4BcKLyAa4veO0GRq4JAp4w==
+X-Received: by 2002:a2e:9f45:: with SMTP id v5mr215188ljk.183.1615490496374;
+        Thu, 11 Mar 2021 11:21:36 -0800 (PST)
+Received: from localhost.localdomain (109-252-193-52.dynamic.spd-mgts.ru. [109.252.193.52])
+        by smtp.gmail.com with ESMTPSA id u14sm1121153lfl.40.2021.03.11.11.21.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Mar 2021 11:21:35 -0800 (PST)
+From:   Dmitry Osipenko <digetx@gmail.com>
+To:     Qiang Yu <yuq825@gmail.com>, Rob Clark <robdclark@gmail.com>,
+        Sean Paul <sean@poorly.run>, Rob Herring <robh@kernel.org>,
+        Tomeu Vizoso <tomeu.vizoso@collabora.com>,
+        Steven Price <steven.price@arm.com>,
+        Alyssa Rosenzweig <alyssa.rosenzweig@collabora.com>,
+        Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Lukasz Luba <lukasz.luba@arm.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Mark Brown <broonie@kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>
-CC:     Pratyush Yadav <p.yadav@ti.com>, Lokesh Vutla <lokeshvutla@ti.com>
-Subject: [RFC PATCH 5/6] spi: cadence-qspi: Tune PHY to allow running at higher frequencies
-Date:   Fri, 12 Mar 2021 00:42:15 +0530
-Message-ID: <20210311191216.7363-6-p.yadav@ti.com>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210311191216.7363-1-p.yadav@ti.com>
-References: <20210311191216.7363-1-p.yadav@ti.com>
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Yangtao Li <tiny.windzz@gmail.com>
+Cc:     Daniel Vetter <daniel@ffwll.ch>, dri-devel@lists.freedesktop.org,
+        lima@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+        linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-tegra@vger.kernel.org
+Subject: [PATCH v2 00/14] Introduce devm_pm_opp_* API
+Date:   Thu, 11 Mar 2021 22:20:51 +0300
+Message-Id: <20210311192105.14998-1-digetx@gmail.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The controller can only run at 1/8 ref clock speed without PHY. With
-PHY, it can run at the ref clock speed. So, to enable higher speed
-operations, perform the PHY tuning algorithm and determine the RX, TX,
-and read delay values for optimal performance. The details of the tuning
-algorithm can be found at [0].
+This series adds resource-managed OPP API helpers and makes drivers
+to use them.
 
-To allow this tuning to happen, pre-determined data must be programmed
-to the flash at some location. This location is then advertised via a
-nvmem cell. Without this data being available, the tuning would fail.
+Changelog:
 
-The tuning algorithm is a multi-variable search. The RX and TX delays
-need to be found, along with the read delay that would work across a
-temperature range. To do that, first the upper and lower RX values at
-which the tuning pattern is readable are looked for. This is called the
-passing region. The search is performed with Tx = 16 incrementing the
-read delay with each iteration. If the two RX values have the same read
-delay, the same search is performed with TX = 48.
+v2: - This is a continuation of the work that was started by Yangtao Li.
+      Apparently Yangtao doesn't have time to finish it, so I
+      (Dmitry Osipenko) picked up the effort since these patches are
+      wanted by the NVIDIA Tegra voltage-scaling series that I'm
+      working on.
 
-Once the RX boundaries are found, the TX boundaries are searched for in
-a similar fashion with RX set to 1/4 of the RX window (the difference
-between the highest and lowest values). And similarly, if the TX
-boundaries have the same read delay, the same search is performed with
-RX set to 3/4 of the RX window.
+    - Fixed the double put of OPP resources.
 
-There is a region around the boundary of the two passing regions. It is
-called the failing region. PHY reads will not work in this region so the
-PHY should be tuned as far from it as possible to allow for temperature
-variations. This region is found using binary search where the window is
-progressively narrowed down until it arrives at the final boundary's
-lower and upper limits.
+    - Dropped all patches that are unrelated to OPP API. I also dropped
+      the Tegra memory patch since it doesn't apply now and because I plan
+      to switch all Tegra drivers soon to a common tegra-specific OPP helper
+      that will use the resource-managed OPP API anyways.
 
-Once PHY is successfully tuned, mark it as usable to allow eligible
-operations to run at high speeds. PHY can only be used with DAC mode
-reads, and only in chunks of 16 bytes. For all other operations, PHY
-mode should be turned off.
+    - Squashed couple patches into a single ones since there was no
+      good reason to separate them.
 
-[0] https://www.ti.com/lit/pdf/spract2/
+    - Added acks that were given to a couple of v1 patches.
 
-Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
----
- drivers/spi/spi-cadence-quadspi.c | 617 ++++++++++++++++++++++++++++++
- 1 file changed, 617 insertions(+)
+Yangtao Li (14):
+  opp: Add devres wrapper for dev_pm_opp_set_clkname
+  opp: Add devres wrapper for dev_pm_opp_set_regulators
+  opp: Add devres wrapper for dev_pm_opp_set_supported_hw
+  opp: Add devres wrapper for dev_pm_opp_of_add_table
+  opp: Add devres wrapper for dev_pm_opp_register_notifier
+  serial: qcom_geni_serial: Convert to use resource-managed OPP API
+  spi: spi-geni-qcom: Convert to use resource-managed OPP API
+  spi: spi-qcom-qspi: Convert to use resource-managed OPP API
+  mmc: sdhci-msm: Convert to use resource-managed OPP API
+  drm/msm: Convert to use resource-managed OPP API
+  drm/lima: Convert to use resource-managed OPP API
+  drm/panfrost: Convert to use resource-managed OPP API
+  media: venus: Convert to use resource-managed OPP API
+  memory: samsung: exynos5422-dmc: Convert to use resource-managed OPP
+    API
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index e64d8e125263..d304148a4722 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -28,6 +28,7 @@
- #include <linux/spi/spi.h>
- #include <linux/spi/spi-mem.h>
- #include <linux/timer.h>
-+#include <linux/nvmem-consumer.h>
- 
- #define CQSPI_NAME			"cadence-qspi"
- #define CQSPI_MAX_CHIPSELECT		16
-@@ -62,6 +63,9 @@ struct cqspi_flash_pdata {
- 	u8			cs;
- 	bool			use_phy;
- 	struct phy_setting	phy_setting;
-+	struct spi_mem_op	phy_read_op;
-+	u32			phy_tx_start;
-+	u32			phy_tx_end;
- };
- 
- struct cqspi_st {
-@@ -237,6 +241,13 @@ struct cqspi_driver_platdata {
- #define CQSPI_REG_POLLING_STATUS		0xB0
- #define CQSPI_REG_POLLING_STATUS_DUMMY_LSB	16
- 
-+#define CQSPI_REG_PHY_CONFIG			0xB4
-+#define CQSPI_REG_PHY_CONFIG_RX_DEL_LSB		0
-+#define CQSPI_REG_PHY_CONFIG_RX_DEL_MASK	0x7F
-+#define CQSPI_REG_PHY_CONFIG_TX_DEL_LSB		16
-+#define CQSPI_REG_PHY_CONFIG_TX_DEL_MASK	0x7F
-+#define CQSPI_REG_PHY_CONFIG_RESYNC		BIT(31)
-+
- #define CQSPI_REG_OP_EXT_LOWER			0xE0
- #define CQSPI_REG_OP_EXT_READ_LSB		24
- #define CQSPI_REG_OP_EXT_WRITE_LSB		16
-@@ -262,6 +273,570 @@ struct cqspi_driver_platdata {
- 
- #define CQSPI_IRQ_STATUS_MASK		0x1FFFF
- 
-+#define CQSPI_PHY_INIT_RD		1
-+#define CQSPI_PHY_MAX_RD		4
-+#define CQSPI_PHY_MAX_RX		63
-+#define CQSPI_PHY_MAX_TX		63
-+#define CQSPI_PHY_LOW_RX_BOUND		15
-+#define CQSPI_PHY_HIGH_RX_BOUND		25
-+#define CQSPI_PHY_LOW_TX_BOUND		32
-+#define CQSPI_PHY_HIGH_TX_BOUND		48
-+#define CQSPI_PHY_TX_LOOKUP_LOW_BOUND	24
-+#define CQSPI_PHY_TX_LOOKUP_HIGH_BOUND	38
-+
-+#define CQSPI_PHY_DEFAULT_TEMP		45
-+#define CQSPI_PHY_MIN_TEMP		-45
-+#define CQSPI_PHY_MAX_TEMP		130
-+#define CQSPI_PHY_MID_TEMP		(CQSPI_PHY_MIN_TEMP +	\
-+					 ((CQSPI_PHY_MAX_TEMP - CQSPI_PHY_MIN_TEMP) / 2))
-+
-+static const u8 phy_tuning_pattern[] = {
-+0xFE, 0xFF, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00, 0x00, 0xFE, 0xFE, 0x01, 0x01,
-+0x01, 0x01, 0x00, 0x00, 0xFE, 0xFE, 0x01, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x00,
-+0x00, 0xFE, 0xFE, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0xFE, 0xFE, 0xFF, 0x01,
-+0x01, 0x01, 0x01, 0x01, 0xFE, 0x00, 0xFE, 0xFE, 0x01, 0x01, 0x01, 0x01, 0xFE,
-+0x00, 0xFE, 0xFE, 0x01, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFE, 0x00, 0xFE, 0xFE,
-+0xFF, 0xFF, 0xFF, 0xFF, 0xFE, 0x00, 0xFE, 0xFE, 0xFF, 0x01, 0x01, 0x01, 0x01,
-+0x01, 0x00, 0xFE, 0xFE, 0xFE, 0x01, 0x01, 0x01, 0x01, 0x00, 0xFE, 0xFE, 0xFE,
-+0x01, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0xFE, 0xFE, 0xFE, 0xFF, 0xFF, 0xFF,
-+0xFF, 0x00, 0xFE, 0xFE, 0xFE, 0xFF, 0x01, 0x01, 0x01, 0x01, 0x01, 0xFE, 0xFE,
-+0xFE, 0xFE, 0x01, 0x01, 0x01, 0x01, 0xFE, 0xFE, 0xFE, 0xFE, 0x01,
-+};
-+
-+static void cqspi_set_tx_dll(void __iomem *reg_base, u8 dll)
-+{
-+	unsigned int reg;
-+
-+	reg = readl(reg_base + CQSPI_REG_PHY_CONFIG);
-+	reg &= ~(CQSPI_REG_PHY_CONFIG_TX_DEL_MASK <<
-+		CQSPI_REG_PHY_CONFIG_TX_DEL_LSB);
-+	reg |= (dll & CQSPI_REG_PHY_CONFIG_TX_DEL_MASK) <<
-+		CQSPI_REG_PHY_CONFIG_TX_DEL_LSB;
-+	reg |= CQSPI_REG_PHY_CONFIG_RESYNC;
-+	writel(reg, reg_base + CQSPI_REG_PHY_CONFIG);
-+}
-+
-+static void cqspi_set_rx_dll(void __iomem *reg_base, u8 dll)
-+{
-+	unsigned int reg;
-+
-+	reg = readl(reg_base + CQSPI_REG_PHY_CONFIG);
-+	reg &= ~(CQSPI_REG_PHY_CONFIG_RX_DEL_MASK <<
-+		CQSPI_REG_PHY_CONFIG_RX_DEL_LSB);
-+	reg |= (dll & CQSPI_REG_PHY_CONFIG_RX_DEL_MASK) <<
-+		CQSPI_REG_PHY_CONFIG_RX_DEL_LSB;
-+	reg |= CQSPI_REG_PHY_CONFIG_RESYNC;
-+	writel(reg, reg_base + CQSPI_REG_PHY_CONFIG);
-+}
-+
-+/* TODO: Figure out how to get the temperature here. */
-+static int cqspi_get_temp(int *temp)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static void cqspi_phy_apply_setting(struct cqspi_flash_pdata *f_pdata,
-+				    struct phy_setting *phy)
-+{
-+	struct cqspi_st *cqspi = f_pdata->cqspi;
-+
-+	cqspi_set_rx_dll(cqspi->iobase, phy->rx);
-+	cqspi_set_tx_dll(cqspi->iobase, phy->tx);
-+	f_pdata->phy_setting.read_delay = phy->read_delay;
-+}
-+
-+static int cqspi_phy_check_pattern(struct cqspi_flash_pdata *f_pdata,
-+				   struct nvmem_cell *cell)
-+{
-+	u8 *read_data;
-+	size_t len;
-+	int ret;
-+
-+	read_data = nvmem_cell_read(cell, &len);
-+	if (IS_ERR(read_data))
-+		return PTR_ERR(read_data);
-+	if (len != ARRAY_SIZE(phy_tuning_pattern))
-+		return -EIO;
-+
-+	if (memcmp(read_data, phy_tuning_pattern,
-+		   ARRAY_SIZE(phy_tuning_pattern))) {
-+		ret = -EAGAIN;
-+		goto out;
-+	}
-+
-+	ret = 0;
-+
-+out:
-+	kfree(read_data);
-+	return ret;
-+}
-+
-+static int cqspi_find_rx_low(struct cqspi_flash_pdata *f_pdata,
-+			     struct nvmem_cell *cell, struct phy_setting *phy)
-+{
-+	struct device *dev = &f_pdata->cqspi->pdev->dev;
-+	int ret;
-+
-+	do {
-+		phy->rx = 0;
-+		do {
-+			cqspi_phy_apply_setting(f_pdata, phy);
-+			ret = cqspi_phy_check_pattern(f_pdata, cell);
-+			if (!ret)
-+				return 0;
-+
-+			phy->rx++;
-+		} while (phy->rx <= CQSPI_PHY_LOW_RX_BOUND);
-+
-+		phy->read_delay++;
-+	} while (phy->read_delay <= CQSPI_PHY_MAX_RD);
-+
-+	dev_dbg(dev, "Unable to find RX low\n");
-+	return -ENOENT;
-+}
-+
-+static int cqspi_find_rx_high(struct cqspi_flash_pdata *f_pdata,
-+			      struct nvmem_cell *cell, struct phy_setting *phy)
-+{
-+	struct device *dev = &f_pdata->cqspi->pdev->dev;
-+	int ret;
-+
-+	do {
-+		phy->rx = CQSPI_PHY_MAX_RX;
-+		do {
-+			cqspi_phy_apply_setting(f_pdata, phy);
-+			ret = cqspi_phy_check_pattern(f_pdata, cell);
-+			if (!ret)
-+				return 0;
-+
-+			phy->rx--;
-+		} while (phy->rx >= CQSPI_PHY_HIGH_RX_BOUND);
-+
-+		phy->read_delay++;
-+	} while (phy->read_delay <= CQSPI_PHY_MAX_RD);
-+
-+	dev_dbg(dev, "Unable to find RX high\n");
-+	return -ENOENT;
-+}
-+
-+static int cqspi_find_tx_low(struct cqspi_flash_pdata *f_pdata,
-+			     struct nvmem_cell *cell, struct phy_setting *phy)
-+{
-+	struct device *dev = &f_pdata->cqspi->pdev->dev;
-+	int ret;
-+
-+	do {
-+		phy->tx = 0;
-+		do {
-+			cqspi_phy_apply_setting(f_pdata, phy);
-+			ret = cqspi_phy_check_pattern(f_pdata, cell);
-+			if (!ret)
-+				return 0;
-+
-+			phy->tx++;
-+		} while (phy->tx <= CQSPI_PHY_LOW_TX_BOUND);
-+
-+		phy->read_delay++;
-+	} while (phy->read_delay <= CQSPI_PHY_MAX_RD);
-+
-+	dev_dbg(dev, "Unable to find TX low\n");
-+	return -ENOENT;
-+}
-+
-+static int cqspi_find_tx_high(struct cqspi_flash_pdata *f_pdata,
-+			      struct nvmem_cell *cell, struct phy_setting *phy)
-+{
-+	struct device *dev = &f_pdata->cqspi->pdev->dev;
-+	int ret;
-+
-+	do {
-+		phy->tx = CQSPI_PHY_MAX_TX;
-+		do {
-+			cqspi_phy_apply_setting(f_pdata, phy);
-+			ret = cqspi_phy_check_pattern(f_pdata, cell);
-+			if (!ret)
-+				return 0;
-+
-+			phy->tx--;
-+		} while (phy->tx >= CQSPI_PHY_HIGH_TX_BOUND);
-+
-+		phy->read_delay++;
-+	} while (phy->read_delay <= CQSPI_PHY_MAX_RD);
-+
-+	dev_dbg(dev, "Unable to find TX high\n");
-+	return -ENOENT;
-+}
-+
-+static int cqspi_phy_find_gaplow(struct cqspi_flash_pdata *f_pdata,
-+				 struct nvmem_cell *cell,
-+				 struct phy_setting *bottomleft,
-+				 struct phy_setting *topright,
-+				 struct phy_setting *gaplow)
-+{
-+	struct phy_setting left, right, mid;
-+	int ret;
-+
-+	left = *bottomleft;
-+	right = *topright;
-+
-+	mid.tx = left.tx + ((right.tx - left.tx) / 2);
-+	mid.rx = left.rx + ((right.rx - left.rx) / 2);
-+	mid.read_delay = left.read_delay;
-+
-+	do {
-+		cqspi_phy_apply_setting(f_pdata, &mid);
-+		ret = cqspi_phy_check_pattern(f_pdata, cell);
-+		if (ret) {
-+			/* The pattern was not found. Go to the lower half. */
-+			right.tx = mid.tx;
-+			right.rx = mid.rx;
-+
-+			mid.tx = left.tx + ((mid.tx - left.tx) / 2);
-+			mid.rx = left.rx + ((mid.rx - left.rx) / 2);
-+		} else {
-+			/* The pattern was found. Go to the upper half. */
-+			left.tx = mid.tx;
-+			left.rx = mid.rx;
-+
-+			mid.tx = mid.tx + ((right.tx - mid.tx) / 2);
-+			mid.rx = mid.rx + ((right.rx - mid.rx) / 2);
-+		}
-+
-+	/* Break the loop if the window has closed. */
-+	} while ((right.tx - left.tx >= 2) && (right.rx - left.rx >= 2));
-+
-+	*gaplow = mid;
-+	return 0;
-+}
-+
-+static int cqspi_phy_find_gaphigh(struct cqspi_flash_pdata *f_pdata,
-+				  struct nvmem_cell *cell,
-+				  struct phy_setting *bottomleft,
-+				  struct phy_setting *topright,
-+				  struct phy_setting *gaphigh)
-+{
-+	struct phy_setting left, right, mid;
-+	int ret;
-+
-+	left = *bottomleft;
-+	right = *topright;
-+
-+	mid.tx = left.tx + ((right.tx - left.tx) / 2);
-+	mid.rx = left.rx + ((right.rx - left.rx) / 2);
-+	mid.read_delay = right.read_delay;
-+
-+	do {
-+		cqspi_phy_apply_setting(f_pdata, &mid);
-+		ret = cqspi_phy_check_pattern(f_pdata, cell);
-+		if (ret) {
-+			/* The pattern was not found. Go to the upper half. */
-+			left.tx = mid.tx;
-+			left.rx = mid.rx;
-+
-+			mid.tx = mid.tx + ((right.tx - mid.tx) / 2);
-+			mid.rx = mid.rx + ((right.rx - mid.rx) / 2);
-+		} else {
-+			/* The pattern was found. Go to the lower half. */
-+			right.tx = mid.tx;
-+			right.rx = mid.rx;
-+
-+			mid.tx = left.tx + ((mid.tx - left.tx) / 2);
-+			mid.rx = left.rx + ((mid.rx - left.rx) / 2);
-+		}
-+
-+	/* Break the loop if the window has closed. */
-+	} while ((right.tx - left.tx >= 2) && (right.rx - left.rx >= 2));
-+
-+	*gaphigh = mid;
-+	return 0;
-+}
-+
-+static int cqspi_phy_calibrate(struct cqspi_flash_pdata *f_pdata,
-+			       struct nvmem_cell *cell)
-+{
-+	struct cqspi_st *cqspi = f_pdata->cqspi;
-+	struct device *dev = &cqspi->pdev->dev;
-+	struct phy_setting rxlow, rxhigh, txlow, txhigh, temp;
-+	struct phy_setting bottomleft, topright, searchpoint, gaplow, gaphigh;
-+	int ret, tmp;
-+
-+	f_pdata->use_phy = true;
-+
-+	/* Look for RX boundaries at lower TX range. */
-+	rxlow.tx = f_pdata->phy_tx_start;
-+
-+	do {
-+		dev_dbg(dev, "Searching for rxlow on TX = %d\n", rxlow.tx);
-+		rxlow.read_delay = CQSPI_PHY_INIT_RD;
-+		ret = cqspi_find_rx_low(f_pdata, cell, &rxlow);
-+	} while (ret && ++rxlow.tx <= CQSPI_PHY_TX_LOOKUP_LOW_BOUND);
-+
-+	if (ret)
-+		goto out;
-+	dev_dbg(dev, "rxlow: RX: %d TX: %d RD: %d\n", rxlow.rx, rxlow.tx,
-+		rxlow.read_delay);
-+
-+	rxhigh.tx = rxlow.tx;
-+	rxhigh.read_delay = rxlow.read_delay;
-+	cqspi_find_rx_high(f_pdata, cell, &rxhigh);
-+	if (ret)
-+		goto out;
-+	dev_dbg(dev, "rxhigh: RX: %d TX: %d RD: %d\n", rxhigh.rx, rxhigh.tx,
-+		rxhigh.read_delay);
-+
-+	/*
-+	 * Check a different point if rxlow and rxhigh are on the same read
-+	 * delay. This avoids mistaking the failing region for an RX boundary.
-+	 */
-+	if (rxlow.read_delay == rxhigh.read_delay) {
-+		dev_dbg(dev,
-+			"rxlow and rxhigh at the same read delay.\n");
-+
-+		/* Look for RX boundaries at upper TX range. */
-+		temp.tx = f_pdata->phy_tx_end;
-+
-+		do {
-+			dev_dbg(dev, "Searching for rxlow on TX = %d\n",
-+				temp.tx);
-+			temp.read_delay = CQSPI_PHY_INIT_RD;
-+			ret = cqspi_find_rx_low(f_pdata, cell, &temp);
-+		} while (ret && --temp.tx >= CQSPI_PHY_TX_LOOKUP_HIGH_BOUND);
-+
-+		if (ret)
-+			goto out;
-+		dev_dbg(dev, "rxlow: RX: %d TX: %d RD: %d\n", temp.rx, temp.tx,
-+			temp.read_delay);
-+
-+		if (temp.rx < rxlow.rx) {
-+			rxlow = temp;
-+			dev_dbg(dev, "Updating rxlow to the one at TX = 48\n");
-+		}
-+
-+		/* Find RX max. */
-+		ret = cqspi_find_rx_high(f_pdata, cell, &temp);
-+		if (ret)
-+			goto out;
-+		dev_dbg(dev, "rxhigh: RX: %d TX: %d RD: %d\n", temp.rx, temp.tx,
-+			temp.read_delay);
-+
-+		if (temp.rx < rxhigh.rx) {
-+			rxhigh = temp;
-+			dev_dbg(dev, "Updating rxhigh to the one at TX = 48\n");
-+		}
-+	}
-+
-+	/* Look for TX boundaries at 1/4 of RX window. */
-+	txlow.rx = rxlow.rx + ((rxhigh.rx - rxlow.rx) / 4);
-+	txhigh.rx = txlow.rx;
-+
-+	txlow.read_delay = CQSPI_PHY_INIT_RD;
-+	ret = cqspi_find_tx_low(f_pdata, cell, &txlow);
-+	if (ret)
-+		goto out;
-+	dev_dbg(dev, "txlow: RX: %d TX: %d RD: %d\n", txlow.rx, txlow.tx,
-+		txlow.read_delay);
-+
-+	txhigh.read_delay = txlow.read_delay;
-+	ret = cqspi_find_tx_high(f_pdata, cell, &txhigh);
-+	if (ret)
-+		goto out;
-+	dev_dbg(dev, "txhigh: RX: %d TX: %d RD: %d\n", txhigh.rx, txhigh.tx,
-+		txhigh.read_delay);
-+
-+	/*
-+	 * Check a different point if txlow and txhigh are on the same read
-+	 * delay. This avoids mistaking the failing region for an TX boundary.
-+	 */
-+	if (txlow.read_delay == txhigh.read_delay) {
-+		/* Look for TX boundaries at 3/4 of RX window. */
-+		temp.rx = rxlow.rx + (3 * (rxhigh.rx - rxlow.rx) / 4);
-+		temp.read_delay = CQSPI_PHY_INIT_RD;
-+		dev_dbg(dev,
-+			"txlow and txhigh at the same read delay. Searching at RX = %d\n",
-+			temp.rx);
-+
-+		ret = cqspi_find_tx_low(f_pdata, cell, &temp);
-+		if (ret)
-+			goto out;
-+		dev_dbg(dev, "txlow: RX: %d TX: %d RD: %d\n", temp.rx, temp.tx,
-+			temp.read_delay);
-+
-+		if (temp.tx < txlow.tx) {
-+			txlow = temp;
-+			dev_dbg(dev, "Updating txlow with the one at RX = %d\n",
-+				txlow.rx);
-+		}
-+
-+		ret = cqspi_find_tx_high(f_pdata, cell, &temp);
-+		if (ret)
-+			goto out;
-+		dev_dbg(dev, "txhigh: RX: %d TX: %d RD: %d\n", temp.rx, temp.tx,
-+			temp.read_delay);
-+
-+		if (temp.tx < txhigh.tx) {
-+			txhigh = temp;
-+			dev_dbg(dev, "Updating txhigh with the one at RX = %d\n",
-+				txhigh.rx);
-+		}
-+	}
-+
-+	/*
-+	 * Set bottom left and top right corners. These are theoretical
-+	 * corners. They may not actually be "good" points. But the longest
-+	 * diagonal will be between these corners.
-+	 */
-+	bottomleft.tx = txlow.tx;
-+	bottomleft.rx = rxlow.rx;
-+	if (txlow.read_delay <= rxlow.read_delay)
-+		bottomleft.read_delay = txlow.read_delay;
-+	else
-+		bottomleft.read_delay = rxlow.read_delay;
-+
-+	temp = bottomleft;
-+	temp.tx += 4;
-+	temp.rx += 4;
-+	cqspi_phy_apply_setting(f_pdata, &temp);
-+	ret = cqspi_phy_check_pattern(f_pdata, cell);
-+	if (ret) {
-+		temp.read_delay--;
-+		cqspi_phy_apply_setting(f_pdata, &temp);
-+		ret = cqspi_phy_check_pattern(f_pdata, cell);
-+	}
-+
-+	if (!ret)
-+		bottomleft.read_delay = temp.read_delay;
-+
-+	topright.tx = txhigh.tx;
-+	topright.rx = rxhigh.rx;
-+	if (txhigh.read_delay >= rxhigh.read_delay)
-+		topright.read_delay = txhigh.read_delay;
-+	else
-+		topright.read_delay = rxhigh.read_delay;
-+
-+	temp = topright;
-+	temp.tx -= 4;
-+	temp.rx -= 4;
-+	cqspi_phy_apply_setting(f_pdata, &temp);
-+	ret = cqspi_phy_check_pattern(f_pdata, cell);
-+	if (ret) {
-+		temp.read_delay++;
-+		cqspi_phy_apply_setting(f_pdata, &temp);
-+		ret = cqspi_phy_check_pattern(f_pdata, cell);
-+	}
-+
-+	if (!ret)
-+		topright.read_delay = temp.read_delay;
-+
-+	dev_dbg(dev, "topright: RX: %d TX: %d RD: %d\n", topright.rx,
-+		topright.tx, topright.read_delay);
-+	dev_dbg(dev, "bottomleft: RX: %d TX: %d RD: %d\n", bottomleft.rx,
-+		bottomleft.tx, bottomleft.read_delay);
-+
-+	ret = cqspi_phy_find_gaplow(f_pdata, cell, &bottomleft, &topright,
-+				    &gaplow);
-+	if (ret)
-+		goto out;
-+	dev_dbg(dev, "gaplow: RX: %d TX: %d RD: %d\n", gaplow.rx, gaplow.tx,
-+		gaplow.read_delay);
-+
-+	if (bottomleft.read_delay == topright.read_delay) {
-+		/*
-+		 * If there is only one passing region, it means that the "true"
-+		 * topright is too small to find, so the start of the failing
-+		 * region is a good approximation. Put the tuning point in the
-+		 * middle and adjust for temperature.
-+		 */
-+		topright = gaplow;
-+		searchpoint.read_delay = bottomleft.read_delay;
-+		searchpoint.tx = bottomleft.tx +
-+				 ((topright.tx - bottomleft.tx) / 2);
-+		searchpoint.rx = bottomleft.rx +
-+				 ((topright.rx - bottomleft.rx) / 2);
-+
-+		ret = cqspi_get_temp(&tmp);
-+		if (ret) {
-+			/*
-+			 * Assume room temperature if it couldn't be obtained
-+			 * from the thermal sensor.
-+			 *
-+			 * TODO: Change it to dev_warn once support for finding
-+			 * out the temperature is added.
-+			 */
-+			dev_dbg(dev,
-+				"Unable to get temperature. Assuming room temperature\n");
-+			tmp = CQSPI_PHY_DEFAULT_TEMP;
-+		}
-+
-+		if (tmp < CQSPI_PHY_MIN_TEMP || tmp > CQSPI_PHY_MAX_TEMP) {
-+			dev_err(dev,
-+				"Temperature outside operating range: %dC\n",
-+				tmp);
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+
-+		/* Avoid a divide-by-zero. */
-+		if (tmp == CQSPI_PHY_MID_TEMP)
-+			tmp++;
-+		dev_dbg(dev, "Temperature: %dC\n", tmp);
-+
-+		searchpoint.tx += (topright.tx - bottomleft.tx) /
-+				  (330 / (tmp - CQSPI_PHY_MID_TEMP));
-+		searchpoint.rx += (topright.rx - bottomleft.rx) /
-+				  (330 / (tmp - CQSPI_PHY_MID_TEMP));
-+	} else {
-+		/*
-+		 * If there are two passing regions, find the start and end of
-+		 * the second one.
-+		 */
-+		ret = cqspi_phy_find_gaphigh(f_pdata, cell, &bottomleft,
-+					     &topright, &gaphigh);
-+		if (ret)
-+			goto out;
-+		dev_dbg(dev, "gaphigh: RX: %d TX: %d RD: %d\n", gaphigh.rx,
-+			gaphigh.tx, gaphigh.read_delay);
-+
-+		/*
-+		 * Place the final tuning point in the corner furthest from the
-+		 * failing region but leave some margin for temperature changes.
-+		 */
-+		if ((abs(gaplow.tx - bottomleft.tx) +
-+		     abs(gaplow.rx - bottomleft.rx)) <
-+		    (abs(gaphigh.tx - topright.tx) +
-+		     abs(gaphigh.rx - topright.rx))) {
-+			searchpoint = topright;
-+			searchpoint.tx -= 16;
-+			searchpoint.rx -= (16 * (topright.rx - bottomleft.rx)) /
-+					   (topright.tx - bottomleft.tx);
-+		} else {
-+			searchpoint = bottomleft;
-+			searchpoint.tx += 16;
-+			searchpoint.rx += (16 * (topright.rx - bottomleft.rx)) /
-+					   (topright.tx - bottomleft.tx);
-+		}
-+	}
-+
-+	/* Set the final PHY settings and check if they are working. */
-+	cqspi_phy_apply_setting(f_pdata, &searchpoint);
-+	dev_dbg(dev, "Final tuning point: RX: %d TX: %d RD: %d\n",
-+		searchpoint.rx, searchpoint.tx, searchpoint.read_delay);
-+
-+	ret = cqspi_phy_check_pattern(f_pdata, cell);
-+	if (ret) {
-+		dev_err(dev,
-+			"Failed to find pattern at final calibration point\n");
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	ret = 0;
-+	f_pdata->phy_setting.read_delay = searchpoint.read_delay;
-+out:
-+	if (ret)
-+		f_pdata->use_phy = false;
-+	return ret;
-+}
-+
- static int cqspi_wait_for_bit(void __iomem *reg, const u32 mask, bool clr)
- {
- 	u32 val;
-@@ -1400,6 +1975,41 @@ static bool cqspi_supports_mem_op(struct spi_mem *mem,
- 		return spi_mem_default_supports_op(mem, op);
- }
- 
-+static void cqspi_mem_do_calibration(struct spi_mem *mem, struct spi_mem_op *op)
-+{
-+	struct cqspi_st *cqspi = spi_master_get_devdata(mem->spi->master);
-+	struct cqspi_flash_pdata *f_pdata;
-+	struct nvmem_cell *cell;
-+	struct device *dev = &cqspi->pdev->dev;
-+	int ret;
-+
-+	f_pdata = &cqspi->f_pdata[mem->spi->chip_select];
-+
-+	/* Check if the op is eligible for PHY mode operation. */
-+	if (!cqspi_phy_op_eligible(op))
-+		return;
-+
-+	cell = nvmem_cell_get(dev, "calibration");
-+	if (IS_ERR_OR_NULL(cell)) {
-+		dev_dbg(dev, "Failed to get calibration data nvmem: %ld\n",
-+			PTR_ERR(cell));
-+		return;
-+	}
-+
-+	ret = cqspi_phy_check_pattern(f_pdata, cell);
-+	if (ret) {
-+		dev_dbg(dev, "Pattern not found. Skipping calibration.\n");
-+		nvmem_cell_put(cell);
-+		return;
-+	}
-+
-+	ret = cqspi_phy_calibrate(f_pdata, cell);
-+	if (ret)
-+		dev_info(&cqspi->pdev->dev, "PHY calibration failed: %d\n", ret);
-+
-+	nvmem_cell_put(cell);
-+}
-+
- static int cqspi_of_get_flash_pdata(struct platform_device *pdev,
- 				    struct cqspi_flash_pdata *f_pdata,
- 				    struct device_node *np)
-@@ -1434,6 +2044,12 @@ static int cqspi_of_get_flash_pdata(struct platform_device *pdev,
- 		return -ENXIO;
- 	}
- 
-+	if (of_property_read_u32(np, "cdns,phy-tx-start", &f_pdata->phy_tx_start))
-+		f_pdata->phy_tx_start = 16;
-+
-+	if (of_property_read_u32(np, "cdns,phy-tx-end", &f_pdata->phy_tx_end))
-+		f_pdata->phy_tx_end = 48;
-+
- 	return 0;
- }
- 
-@@ -1534,6 +2150,7 @@ static const struct spi_controller_mem_ops cqspi_mem_ops = {
- 	.exec_op = cqspi_exec_mem_op,
- 	.get_name = cqspi_get_name,
- 	.supports_op = cqspi_supports_mem_op,
-+	.do_calibration = cqspi_mem_do_calibration,
- };
- 
- static int cqspi_setup_flash(struct cqspi_st *cqspi)
+ drivers/gpu/drm/lima/lima_devfreq.c           |  43 ++---
+ drivers/gpu/drm/lima/lima_devfreq.h           |   2 -
+ drivers/gpu/drm/msm/adreno/a5xx_gpu.c         |   2 +-
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c         |   2 +-
+ drivers/gpu/drm/msm/adreno/adreno_gpu.c       |   2 +-
+ drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c       |  24 ++-
+ drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h       |   2 -
+ drivers/gpu/drm/msm/dp/dp_ctrl.c              |  31 +---
+ drivers/gpu/drm/msm/dp/dp_ctrl.h              |   1 -
+ drivers/gpu/drm/msm/dp/dp_display.c           |   5 +-
+ drivers/gpu/drm/msm/dsi/dsi_host.c            |  14 +-
+ drivers/gpu/drm/panfrost/panfrost_devfreq.c   |  33 +---
+ drivers/gpu/drm/panfrost/panfrost_devfreq.h   |   1 -
+ .../media/platform/qcom/venus/pm_helpers.c    |  18 +--
+ drivers/memory/samsung/exynos5422-dmc.c       |  13 +-
+ drivers/mmc/host/sdhci-msm.c                  |  20 +--
+ drivers/opp/core.c                            | 151 ++++++++++++++++++
+ drivers/opp/of.c                              |  36 +++++
+ drivers/spi/spi-geni-qcom.c                   |  17 +-
+ drivers/spi/spi-qcom-qspi.c                   |  19 +--
+ drivers/tty/serial/qcom_geni_serial.c         |  24 ++-
+ include/linux/pm_opp.h                        |  34 ++++
+ include/linux/qcom-geni-se.h                  |   2 -
+ 23 files changed, 300 insertions(+), 196 deletions(-)
+
 -- 
-2.30.0
+2.29.2
 

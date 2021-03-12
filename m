@@ -2,109 +2,80 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 14003C43381
-	for <linux-spi@archiver.kernel.org>; Fri, 12 Mar 2021 20:27:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D511C433E0
+	for <linux-spi@archiver.kernel.org>; Fri, 12 Mar 2021 20:49:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id E2A5464F8F
-	for <linux-spi@archiver.kernel.org>; Fri, 12 Mar 2021 20:27:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6323B64F52
+	for <linux-spi@archiver.kernel.org>; Fri, 12 Mar 2021 20:49:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234912AbhCLU1J (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 12 Mar 2021 15:27:09 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35546 "EHLO mail.kernel.org"
+        id S235054AbhCLUs3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 12 Mar 2021 15:48:29 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38702 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234902AbhCLU0s (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 12 Mar 2021 15:26:48 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3DDC264F80;
-        Fri, 12 Mar 2021 20:26:47 +0000 (UTC)
+        id S235073AbhCLUsW (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 12 Mar 2021 15:48:22 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4904864F4F;
+        Fri, 12 Mar 2021 20:48:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1615580807;
-        bh=fClDrsALBmh9tvjCmxe91v+bcUgFM/0XI3KAbS/DwUk=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=J89ia1smuAVNw+Ham5CkN9E+TsyEee/yOZ1YGI/0kD5t+umiwvXDbOczcpWx9C0/b
-         zEk1VqFBCgGswy3Ha0ljx0v+OT1EGCWjYi0eHC4XYyI118UDACzzWSslzUMal1Me9f
-         1Dl6PGJnYInxJrJlRoG3ntlJDHOK+eanNQEVqEuwrbq6dUGfTtmma2tNaaer3536K3
-         8flkresG5nywocNPGAB2CQgypHc3puB9GLaUh6U/uKN6D3+N3CN3axgL7Sems9fio+
-         M3sjUrsObIX1LoxfDOt8qNQ+P6cqtRMvpiLEGMrsRuMT7qsMpJrarOZDJxx1/fXQNG
-         OzaN3x3YXuR2g==
+        s=k20201202; t=1615582101;
+        bh=/XMXUxTFOXG/ohVMyBKky01OWeEbHdqSnYFUhvmw1dI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=eZHB8kKRpDwoL/t7AQbJtyT3TyUcDpimLJnj9lvLP9jPDKb/3w9SCfRaVu5TCT54T
+         LP7s8Jox5Rhd1ZChZE4GRNY1shOwrghzqjXkSLuPKEXrzO/PwQiUTIAXOoR+OZuvkZ
+         J8viu++q0JjBnvhIPD1Hmql6xMTjgaTxIRWjYFyYl59zUMMa97qLfM2E8aVnTsDiUG
+         5+HmJpczd7B2bKunuct2bi94eXX0ptuc2PBAK+R2Kqh2+g/igjncGkNWrvgY6q4eNc
+         Nc5HxLcVztRiXeI4ckymSTEPCAsMekvO/IW8+nODOgwiOSo7MuyKYRgcUpgPZbPc4p
+         7Rw007YGkpvEA==
+Date:   Fri, 12 Mar 2021 20:47:08 +0000
 From:   Mark Brown <broonie@kernel.org>
-To:     linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        devel@driverdev.osuosl.org, greybus-dev@lists.linaro.org,
-        linux-tegra@vger.kernel.org,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        bcm-kernel-feedback-list@broadcom.com
-Cc:     linux@deviqon.com, elder@kernel.org, ldewangan@nvidia.com,
-        gregkh@linuxfoundation.org, jonathanh@nvidia.com,
-        vireshk@kernel.org, f.fainelli@gmail.com, johan@kernel.org,
-        thierry.reding@gmail.com
-In-Reply-To: <20210308145502.1075689-1-aardelean@deviqon.com>
-References: <20210308145502.1075689-1-aardelean@deviqon.com>
-Subject: Re: [PATCH 00/10] spi: finalize 'delay_usecs' removal/transition
-Message-Id: <161558072332.11700.3899329199367246111.b4-ty@kernel.org>
-Date:   Fri, 12 Mar 2021 20:25:23 +0000
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/4] spi: Adding support for software nodes
+Message-ID: <20210312204708.GM5348@sirena.org.uk>
+References: <20210303152814.35070-1-heikki.krogerus@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="bZ2MuwyI/0uB8yuJ"
+Content-Disposition: inline
+In-Reply-To: <20210303152814.35070-1-heikki.krogerus@linux.intel.com>
+X-Cookie: Lake Erie died for your sins.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, 8 Mar 2021 16:54:52 +0200, Alexandru Ardelean wrote:
-> A while back I started the introduction of the 'spi_delay' data type:
->   https://lore.kernel.org/linux-spi/20190926105147.7839-1-alexandru.ardelean@analog.com/
-> 
-> Users of the 'delay_usecs' were removed from drivers.
-> 
-> Now it's time to remove the 'delay_usecs' from the SPI subsystem and use
-> only the 'delay' field.
-> 
-> [...]
 
-Applied to
+--bZ2MuwyI/0uB8yuJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+On Wed, Mar 03, 2021 at 06:28:10PM +0300, Heikki Krogerus wrote:
+> Hi,
+>=20
+> The older API used to supply additional device properties for the
+> devices - so mainly the function device_add_properties() - is going to
+> be removed. The reason why the API will be removed is because it gives
 
-Thanks!
+This makes sense to me, OK to apply the PXA patches via the SPI tree?
 
-[01/10] spi: spi-axi-spi-engine: remove usage of delay_usecs
-        commit: 93c941448994a728e691f7dce9ea6475e352b09c
-[02/10] spi: bcm63xx-spi: don't check 'delay_usecs' field
-        commit: e7f2d4c6aacd0a2cded363bb14ef9b6e752798fd
-[03/10] spi: spi-bcm-qspi: replace 'delay_usecs' with 'delay.value' check
-        commit: 66a3aadec42aa001c62ae9a637398d853880a02b
-[04/10] spi: spi-sh: replace 'delay_usecs' with 'delay.value' in pr_debug
-        commit: 506d1a1b441e058e318d8d81141295ff76927367
-[05/10] spi: spi-tegra20-flash: don't check 'delay_usecs' field for spi transfer
-        commit: 7ca660f8212b2fbeb0f3133c3a6fa8805777a877
-[06/10] staging: greybus: spilib: use 'spi_delay_to_ns' for getting xfer delay
-        commit: 33a23423ca0a08b488791fc9d4ca53f4bea4e45b
-[07/10] spi: spi-falcon: remove check for 'delay_usecs'
-        commit: a886010c69718988756fd7873522caa0f26af398
-[08/10] spi: fsl-espi: remove usage of 'delay_usecs' field
-        commit: 55a47532fa4c5dc3291d796dd21cc80034b5d067
-[09/10] spi: core: remove 'delay_usecs' field from spi_transfer
-        commit: 3ab1cce553378fc0df1b1d26d7e23d03bd4dd3b6
-[10/10] spi: docs: update info about 'delay_usecs'
-        commit: 05d8a019eb057d14cdf9483318a7ee8b35a69cda
+--bZ2MuwyI/0uB8yuJ
+Content-Type: application/pgp-signature; name="signature.asc"
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+-----BEGIN PGP SIGNATURE-----
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmBL00sACgkQJNaLcl1U
+h9C2Jwf+KSe+06U3nl5gd7TKg71kSd3x6YZc07UnJK+u1jp5/bqaUHemS+Q3C5gV
+I6ZHExnAnriDxkN1/a7OkdDi8q3LoIUY3X3HTEPwMMfjqC1Dy6dqpFS0avXxRHAF
+aoiAa+JjB/sl56HQBQNYgRphnMw2lfb1nuNCcmpPLIKqnJiLU02WWQVcI2krJryT
+dpKzUCtad54slZh7QJAi4Ehgkn1JYcikHnjajRyw3o0Gx7C3zfXKigf+E7JV2qMS
+V14W3q9zre2t/wJYV9+5eqZUEx53Ri+61qwUsCIakVxILLEXbQeD6Lb0FypxNRuJ
+t36v0PSAhEUu4NvsVfzM0dl4Lu03kg==
+=gs0W
+-----END PGP SIGNATURE-----
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+--bZ2MuwyI/0uB8yuJ--

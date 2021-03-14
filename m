@@ -2,80 +2,172 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D511C433E0
-	for <linux-spi@archiver.kernel.org>; Fri, 12 Mar 2021 20:49:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 01734C41621
+	for <linux-spi@archiver.kernel.org>; Sun, 14 Mar 2021 16:35:29 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6323B64F52
-	for <linux-spi@archiver.kernel.org>; Fri, 12 Mar 2021 20:49:01 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D947E64EC8
+	for <linux-spi@archiver.kernel.org>; Sun, 14 Mar 2021 16:35:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235054AbhCLUs3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 12 Mar 2021 15:48:29 -0500
-Received: from mail.kernel.org ([198.145.29.99]:38702 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235073AbhCLUsW (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 12 Mar 2021 15:48:22 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4904864F4F;
-        Fri, 12 Mar 2021 20:48:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1615582101;
-        bh=/XMXUxTFOXG/ohVMyBKky01OWeEbHdqSnYFUhvmw1dI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=eZHB8kKRpDwoL/t7AQbJtyT3TyUcDpimLJnj9lvLP9jPDKb/3w9SCfRaVu5TCT54T
-         LP7s8Jox5Rhd1ZChZE4GRNY1shOwrghzqjXkSLuPKEXrzO/PwQiUTIAXOoR+OZuvkZ
-         J8viu++q0JjBnvhIPD1Hmql6xMTjgaTxIRWjYFyYl59zUMMa97qLfM2E8aVnTsDiUG
-         5+HmJpczd7B2bKunuct2bi94eXX0ptuc2PBAK+R2Kqh2+g/igjncGkNWrvgY6q4eNc
-         Nc5HxLcVztRiXeI4ckymSTEPCAsMekvO/IW8+nODOgwiOSo7MuyKYRgcUpgPZbPc4p
-         7Rw007YGkpvEA==
-Date:   Fri, 12 Mar 2021 20:47:08 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/4] spi: Adding support for software nodes
-Message-ID: <20210312204708.GM5348@sirena.org.uk>
-References: <20210303152814.35070-1-heikki.krogerus@linux.intel.com>
+        id S234329AbhCNQfG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 14 Mar 2021 12:35:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51916 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233985AbhCNQed (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 14 Mar 2021 12:34:33 -0400
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C58A3C061574;
+        Sun, 14 Mar 2021 09:34:32 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id g8so6742911wmd.4;
+        Sun, 14 Mar 2021 09:34:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=suQTUJT95TToQZtvwJl+RSOWWo46pQcxeekooCpqVRE=;
+        b=mWOhEWIIsc3g51/r4PPuTyVIq+fH9uyJTXCIr7ia4jxvUoOPc/NOBuXvxFpp37+sgM
+         oWFUAvtO3jAmlc+Gh7AgygkSjZ3ZdAt9RnsigCjWBcz9qXNGbojGZYMx2MLYv63ioNUr
+         kBcixmyyH2o612X49U7uUmIdbHOjwNNT+W/jZH7lULyWC6HofFScf3nELSuSnNeEgx+7
+         c1LQLMTj0bHwnoJwjMCQgRzFXPsrqvDQDaUB3bSIPpPeyhndLfRs9bM6hCnL521qtyN+
+         slSchI8ROdq4ZXLH6K5M2VnrvEwkx1s1Q0heBXBQFO3w6/7I3w89zIHK/wSRLWOCT3Cn
+         v/gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=suQTUJT95TToQZtvwJl+RSOWWo46pQcxeekooCpqVRE=;
+        b=GxYurg1YWwqgAfPcHrM+Pzj0dCKNFKBkzVFDWAoeg5ASIF0ln2lJqsIgdmvTEsaGI+
+         Nx3TmhFZv0tAlZ0YD/zNe7ESo8TRNI/Yji+IyqMuO8Oxm5vTGUqUKjAYhy5gyBxplAdQ
+         sbPJQLa0AqiUPZ/t/IBHw/wbv3svZ6Q55Uw8M/txzUo+H5m6YC7w+notBX0UQg703bFh
+         YqjRvypmBbLSfHgeUiV7HdFtVf6+B9j80CxuybcgHNUuLyJ7wuVdnRhK6zeeQiCeHoS9
+         FM7c1iSEUnjml06UTQlm4306i5KTvEITPf2agohestsdkZcHHBrS1oNsompyMYCCa2dP
+         aYKw==
+X-Gm-Message-State: AOAM530UpvV6ErfI29Y2uNgpsA6f3hZ+w3zIBI2lzetQQkZFOCKZoXBy
+        R6NCh1OaiEdggrqaeHPnOZU=
+X-Google-Smtp-Source: ABdhPJz0vqh5YDNEcDycdMN9ARg89KMLgBV4wfAIgwa+5wl5vspiGMEYEGXjVQ+So4rOyxhou3mWFw==
+X-Received: by 2002:a1c:61c5:: with SMTP id v188mr21841943wmb.20.1615739671508;
+        Sun, 14 Mar 2021 09:34:31 -0700 (PDT)
+Received: from localhost.localdomain (109-252-193-52.dynamic.spd-mgts.ru. [109.252.193.52])
+        by smtp.gmail.com with ESMTPSA id o7sm15723239wrs.16.2021.03.14.09.34.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 14 Mar 2021 09:34:31 -0700 (PDT)
+From:   Dmitry Osipenko <digetx@gmail.com>
+To:     Qiang Yu <yuq825@gmail.com>, Rob Clark <robdclark@gmail.com>,
+        Sean Paul <sean@poorly.run>, Rob Herring <robh@kernel.org>,
+        Tomeu Vizoso <tomeu.vizoso@collabora.com>,
+        Steven Price <steven.price@arm.com>,
+        Alyssa Rosenzweig <alyssa.rosenzweig@collabora.com>,
+        Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Lukasz Luba <lukasz.luba@arm.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Yangtao Li <tiny.windzz@gmail.com>
+Cc:     Daniel Vetter <daniel@ffwll.ch>, dri-devel@lists.freedesktop.org,
+        lima@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+        linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-tegra@vger.kernel.org
+Subject: [PATCH v3 01/15] opp: Add devres wrapper for dev_pm_opp_set_clkname
+Date:   Sun, 14 Mar 2021 19:33:54 +0300
+Message-Id: <20210314163408.22292-2-digetx@gmail.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210314163408.22292-1-digetx@gmail.com>
+References: <20210314163408.22292-1-digetx@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="bZ2MuwyI/0uB8yuJ"
-Content-Disposition: inline
-In-Reply-To: <20210303152814.35070-1-heikki.krogerus@linux.intel.com>
-X-Cookie: Lake Erie died for your sins.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+From: Yangtao Li <tiny.windzz@gmail.com>
 
---bZ2MuwyI/0uB8yuJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Add devres wrapper for dev_pm_opp_set_clkname() to simplify drivers code.
 
-On Wed, Mar 03, 2021 at 06:28:10PM +0300, Heikki Krogerus wrote:
-> Hi,
->=20
-> The older API used to supply additional device properties for the
-> devices - so mainly the function device_add_properties() - is going to
-> be removed. The reason why the API will be removed is because it gives
+Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
+Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+---
+ drivers/opp/core.c     | 27 +++++++++++++++++++++++++++
+ include/linux/pm_opp.h |  6 ++++++
+ 2 files changed, 33 insertions(+)
 
-This makes sense to me, OK to apply the PXA patches via the SPI tree?
+diff --git a/drivers/opp/core.c b/drivers/opp/core.c
+index 150be4c28c99..02e46508a3a2 100644
+--- a/drivers/opp/core.c
++++ b/drivers/opp/core.c
+@@ -2119,6 +2119,33 @@ void dev_pm_opp_put_clkname(struct opp_table *opp_table)
+ }
+ EXPORT_SYMBOL_GPL(dev_pm_opp_put_clkname);
+ 
++static void devm_pm_opp_clkname_release(void *data)
++{
++	dev_pm_opp_put_clkname(data);
++}
++
++/**
++ * devm_pm_opp_set_clkname() - Set clk name for the device
++ * @dev: Device for which clk name is being set.
++ * @name: Clk name.
++ *
++ * This is a resource-managed variant of dev_pm_opp_set_clkname().
++ *
++ * Return: 0 on success and errorno otherwise.
++ */
++int devm_pm_opp_set_clkname(struct device *dev, const char *name)
++{
++	struct opp_table *opp_table;
++
++	opp_table = dev_pm_opp_set_clkname(dev, name);
++	if (IS_ERR(opp_table))
++		return PTR_ERR(opp_table);
++
++	return devm_add_action_or_reset(dev, devm_pm_opp_clkname_release,
++					opp_table);
++}
++EXPORT_SYMBOL_GPL(devm_pm_opp_set_clkname);
++
+ /**
+  * dev_pm_opp_register_set_opp_helper() - Register custom set OPP helper
+  * @dev: Device for which the helper is getting registered.
+diff --git a/include/linux/pm_opp.h b/include/linux/pm_opp.h
+index c0371efa4a0f..0583d775aa5a 100644
+--- a/include/linux/pm_opp.h
++++ b/include/linux/pm_opp.h
+@@ -150,6 +150,7 @@ struct opp_table *dev_pm_opp_set_regulators(struct device *dev, const char * con
+ void dev_pm_opp_put_regulators(struct opp_table *opp_table);
+ struct opp_table *dev_pm_opp_set_clkname(struct device *dev, const char *name);
+ void dev_pm_opp_put_clkname(struct opp_table *opp_table);
++int devm_pm_opp_set_clkname(struct device *dev, const char *name);
+ struct opp_table *dev_pm_opp_register_set_opp_helper(struct device *dev, int (*set_opp)(struct dev_pm_set_opp_data *data));
+ void dev_pm_opp_unregister_set_opp_helper(struct opp_table *opp_table);
+ struct opp_table *devm_pm_opp_register_set_opp_helper(struct device *dev, int (*set_opp)(struct dev_pm_set_opp_data *data));
+@@ -355,6 +356,11 @@ static inline struct opp_table *dev_pm_opp_set_clkname(struct device *dev, const
+ 
+ static inline void dev_pm_opp_put_clkname(struct opp_table *opp_table) {}
+ 
++static inline int devm_pm_opp_set_clkname(struct device *dev, const char *name)
++{
++	return -EOPNOTSUPP;
++}
++
+ static inline struct opp_table *dev_pm_opp_attach_genpd(struct device *dev, const char **names, struct device ***virt_devs)
+ {
+ 	return ERR_PTR(-EOPNOTSUPP);
+-- 
+2.30.2
 
---bZ2MuwyI/0uB8yuJ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmBL00sACgkQJNaLcl1U
-h9C2Jwf+KSe+06U3nl5gd7TKg71kSd3x6YZc07UnJK+u1jp5/bqaUHemS+Q3C5gV
-I6ZHExnAnriDxkN1/a7OkdDi8q3LoIUY3X3HTEPwMMfjqC1Dy6dqpFS0avXxRHAF
-aoiAa+JjB/sl56HQBQNYgRphnMw2lfb1nuNCcmpPLIKqnJiLU02WWQVcI2krJryT
-dpKzUCtad54slZh7QJAi4Ehgkn1JYcikHnjajRyw3o0Gx7C3zfXKigf+E7JV2qMS
-V14W3q9zre2t/wJYV9+5eqZUEx53Ri+61qwUsCIakVxILLEXbQeD6Lb0FypxNRuJ
-t36v0PSAhEUu4NvsVfzM0dl4Lu03kg==
-=gs0W
------END PGP SIGNATURE-----
-
---bZ2MuwyI/0uB8yuJ--

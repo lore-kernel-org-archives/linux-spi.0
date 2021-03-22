@@ -7,30 +7,30 @@ X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,URIBL_BLOCKED,
 	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 61284C433E1
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C17EC433E5
 	for <linux-spi@archiver.kernel.org>; Mon, 22 Mar 2021 05:54:23 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3EF2C61966
+	by mail.kernel.org (Postfix) with ESMTP id 73FE56196D
 	for <linux-spi@archiver.kernel.org>; Mon, 22 Mar 2021 05:54:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229933AbhCVFxu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 22 Mar 2021 01:53:50 -0400
-Received: from Mailgw01.mediatek.com ([1.203.163.78]:6234 "EHLO
+        id S229913AbhCVFxw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 22 Mar 2021 01:53:52 -0400
+Received: from Mailgw01.mediatek.com ([1.203.163.78]:27751 "EHLO
         mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229866AbhCVFxP (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 22 Mar 2021 01:53:15 -0400
-X-UUID: df1682e43fff4e9fad3c293485fe2665-20210322
-X-UUID: df1682e43fff4e9fad3c293485fe2665-20210322
-Received: from mtkcas32.mediatek.inc [(172.27.4.253)] by mailgw01.mediatek.com
+        with ESMTP id S229875AbhCVFxW (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 22 Mar 2021 01:53:22 -0400
+X-UUID: 200bc7ee9ae24622be5fb6520308a8da-20210322
+X-UUID: 200bc7ee9ae24622be5fb6520308a8da-20210322
+Received: from mtkcas36.mediatek.inc [(172.27.4.253)] by mailgw01.mediatek.com
         (envelope-from <leilk.liu@mediatek.com>)
         (mailgw01.mediatek.com ESMTP with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 56765223; Mon, 22 Mar 2021 13:53:10 +0800
+        with ESMTP id 914627878; Mon, 22 Mar 2021 13:53:17 +0800
 Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- MTKMBS31N2.mediatek.inc (172.27.4.87) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Mon, 22 Mar 2021 13:53:05 +0800
+ MTKMBS31N1.mediatek.inc (172.27.4.69) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Mon, 22 Mar 2021 13:53:07 +0800
 Received: from localhost.localdomain (10.17.3.153) by mtkcas10.mediatek.inc
  (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 22 Mar 2021 13:53:04 +0800
+ Transport; Mon, 22 Mar 2021 13:53:06 +0800
 From:   Leilk Liu <leilk.liu@mediatek.com>
 To:     Mark Brown <broonie@kernel.org>
 CC:     Mark Rutland <mark.rutland@arm.com>,
@@ -39,38 +39,104 @@ CC:     Mark Rutland <mark.rutland@arm.com>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-spi@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
         <fparent@baylibre.com>, Leilk Liu <leilk.liu@mediatek.com>
-Subject: [PATCH 1/4] spi: update spi master bindings for MT8195 SoC
-Date:   Mon, 22 Mar 2021 13:52:41 +0800
-Message-ID: <20210322055244.30179-2-leilk.liu@mediatek.com>
+Subject: [PATCH 3/4] spi: mediatek: add mtk_spi_compatible support
+Date:   Mon, 22 Mar 2021 13:52:43 +0800
+Message-ID: <20210322055244.30179-4-leilk.liu@mediatek.com>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <20210322055244.30179-1-leilk.liu@mediatek.com>
 References: <20210322055244.30179-1-leilk.liu@mediatek.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-TM-SNTS-SMTP: 1AE6737A00D13FA30C1AF666ACECCA53224FDDC1BEDF3E087571B5E5460E21FF2000:8
+X-TM-SNTS-SMTP: 569023D4B5FEB7772D85FCDC49AC3136A05674D1807D11B39F8C6507BF24F9562000:8
 X-MTK:  N
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add a DT binding documentation for the MT8195 soc.
+this patch adds max_fifo_size and must_rx compat support.
 
-Signed-off-by: leilk.liu <leilk.liu@mediatek.com>
+Signed-off-by: Leilk Liu <leilk.liu@mediatek.com>
 ---
- Documentation/devicetree/bindings/spi/spi-mt65xx.txt | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-slave-mt27xx.c | 28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-index 7bae7eef26c7..4d0e4c15c4ea 100644
---- a/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-mt65xx.txt
-@@ -12,6 +12,7 @@ Required properties:
-     - mediatek,mt8173-spi: for mt8173 platforms
-     - mediatek,mt8183-spi: for mt8183 platforms
-     - "mediatek,mt8192-spi", "mediatek,mt6765-spi": for mt8192 platforms
-+    - "mediatek,mt8195-spi", "mediatek,mt6765-spi": for mt8195 platforms
-     - "mediatek,mt8516-spi", "mediatek,mt2712-spi": for mt8516 platforms
-     - "mediatek,mt6779-spi", "mediatek,mt6765-spi": for mt6779 platforms
+diff --git a/drivers/spi/spi-slave-mt27xx.c b/drivers/spi/spi-slave-mt27xx.c
+index 44edaa360405..7e6fadc88cef 100644
+--- a/drivers/spi/spi-slave-mt27xx.c
++++ b/drivers/spi/spi-slave-mt27xx.c
+@@ -10,6 +10,8 @@
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/spi/spi.h>
++#include <linux/of.h>
++
+ 
+ #define SPIS_IRQ_EN_REG		0x0
+ #define SPIS_IRQ_CLR_REG	0x4
+@@ -61,8 +63,6 @@
+ #define SPIS_DMA_ADDR_EN	BIT(1)
+ #define SPIS_SOFT_RST		BIT(0)
+ 
+-#define MTK_SPI_SLAVE_MAX_FIFO_SIZE 512U
+-
+ struct mtk_spi_slave {
+ 	struct device *dev;
+ 	void __iomem *base;
+@@ -70,10 +70,19 @@ struct mtk_spi_slave {
+ 	struct completion xfer_done;
+ 	struct spi_transfer *cur_transfer;
+ 	bool slave_aborted;
++	const struct mtk_spi_compatible *dev_comp;
+ };
+ 
++struct mtk_spi_compatible {
++	const u32 max_fifo_size;
++	bool must_rx;
++};
++static const struct mtk_spi_compatible mt2712_compat = {
++	.max_fifo_size = 512,
++};
+ static const struct of_device_id mtk_spi_slave_of_match[] = {
+-	{ .compatible = "mediatek,mt2712-spi-slave", },
++	{ .compatible = "mediatek,mt2712-spi-slave",
++	  .data = (void *)&mt2712_compat,},
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, mtk_spi_slave_of_match);
+@@ -272,7 +281,7 @@ static int mtk_spi_slave_transfer_one(struct spi_controller *ctlr,
+ 	mdata->slave_aborted = false;
+ 	mdata->cur_transfer = xfer;
+ 
+-	if (xfer->len > MTK_SPI_SLAVE_MAX_FIFO_SIZE)
++	if (xfer->len > mdata->dev_comp->max_fifo_size)
+ 		return mtk_spi_slave_dma_transfer(ctlr, spi, xfer);
+ 	else
+ 		return mtk_spi_slave_fifo_transfer(ctlr, spi, xfer);
+@@ -369,6 +378,7 @@ static int mtk_spi_slave_probe(struct platform_device *pdev)
+ 	struct spi_controller *ctlr;
+ 	struct mtk_spi_slave *mdata;
+ 	int irq, ret;
++	const struct of_device_id *of_id;
+ 
+ 	ctlr = spi_alloc_slave(&pdev->dev, sizeof(*mdata));
+ 	if (!ctlr) {
+@@ -386,7 +396,17 @@ static int mtk_spi_slave_probe(struct platform_device *pdev)
+ 	ctlr->setup = mtk_spi_slave_setup;
+ 	ctlr->slave_abort = mtk_slave_abort;
+ 
++	of_id = of_match_node(mtk_spi_slave_of_match, pdev->dev.of_node);
++	if (!of_id) {
++		dev_err(&pdev->dev, "failed to probe of_node\n");
++		ret = -EINVAL;
++		goto err_put_ctlr;
++	}
+ 	mdata = spi_controller_get_devdata(ctlr);
++	mdata->dev_comp = of_id->data;
++
++	if (mdata->dev_comp->must_rx)
++		ctlr->flags = SPI_MASTER_MUST_RX;
+ 
+ 	platform_set_drvdata(pdev, ctlr);
  
 -- 
 2.18.0

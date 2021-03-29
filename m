@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
 	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 843C0C433E2
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E204C43460
 	for <linux-spi@archiver.kernel.org>; Mon, 29 Mar 2021 02:00:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5AF2961948
+	by mail.kernel.org (Postfix) with ESMTP id 412996194B
 	for <linux-spi@archiver.kernel.org>; Mon, 29 Mar 2021 02:00:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231150AbhC2CAP (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 28 Mar 2021 22:00:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51268 "EHLO
+        id S230489AbhC2CAO (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 28 Mar 2021 22:00:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231136AbhC2CAC (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 28 Mar 2021 22:00:02 -0400
-Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0488C0613B1
-        for <linux-spi@vger.kernel.org>; Sun, 28 Mar 2021 19:00:01 -0700 (PDT)
-Received: by mail-pg1-x52b.google.com with SMTP id w10so4107396pgh.5
-        for <linux-spi@vger.kernel.org>; Sun, 28 Mar 2021 19:00:01 -0700 (PDT)
+        with ESMTP id S230504AbhC2B77 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 28 Mar 2021 21:59:59 -0400
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D170C0613BB
+        for <linux-spi@vger.kernel.org>; Sun, 28 Mar 2021 18:59:59 -0700 (PDT)
+Received: by mail-pf1-x42a.google.com with SMTP id v10so3518683pfn.5
+        for <linux-spi@vger.kernel.org>; Sun, 28 Mar 2021 18:59:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=pensando.io; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=e7eNiGvucTSfZ9YPwtIS0pxm8LPJi6oD0Avh087H1AU=;
-        b=TUKF30VWRRBveRfhTx4XCTSt/6C1xFFD2llv8DleYNKMD5oOX79pVbO1s+WVZXKbTn
-         GgMxHB7vKeTb09mxLijtXhhDfLp/Z2PXl+bPxRmLLTL5fbz6tTFBTl7PtB3RZMqKkpzz
-         KRN2Yb4W+cnlZMjOr6fJy/sJw/jTyI7ikJLUzlQrzAe6ll3YFxVoOPI9I7Ch2WYoHzrh
-         eEM7aGNGoANmY2i8AdBK6H7CWmxMvYyuvwSyVWKDgNoQ3lh22ih8RMp0ubYUBMNMo8up
-         0/IGnzXdAyAI7cpLxIm/DRBtwHj2Oid+Bl1m74Fu/nVRRGy8fQ+uDyN9zmTrf1aNL7yY
-         bHJQ==
+        bh=OWuOwB9+3ReWFmXmxu1N4MeM5oSPex95DxxWguwHB7c=;
+        b=1g+V7rG7G28kn0nod+C/BTms0s5k15JGbX05bf3pJtL5Gb544w6T3dIa9emI/tIRVx
+         W4SFnmrhWpz/0InMfjqGs4b1vDbsPKZ204XaQW+ifS6+0/Vi1mV8pTUHNhVQdTYpnyRP
+         XwSODmn9JeI74dklkAGzn8ftIkdRjA4gc0oSuy1SHadmLiyi0iBxtY18wAZdRWcIXWLe
+         ApYnfCf9vRtaWkaKIPT/hudBxKQT4wqBXPh+A52TBGMmEOsjrRZZAEdngvpMN51BTOdH
+         andilDKbofX1W4frubBk248bXEPkzMOPzKbwmzmPtosgi6z2r9Dzr4Rz9LEmJrHpjLOs
+         g3WQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=e7eNiGvucTSfZ9YPwtIS0pxm8LPJi6oD0Avh087H1AU=;
-        b=jM+9lo/BRYHtSO69jgTnOBL6lhNXe21zLRPkk4HlSuwSY1xdtA0VoW2/nU43OOKf09
-         7UGZELUkQRyFz2ZXHr043pUP7N9EWDIfQieertmOrI8e9YCdz28YskD1z8zSWYoPs8Et
-         75QKRn3uFHMvBDpVB3h5TkmRQdmQ6bZbfbO6fav4Qi33Y6BKu5FpdKttf6P8L4aZBxm2
-         xpu7NCQ9cIC/4PDksjTi6li8IRHGYr6Trwpwpf1L8awavHcFHktW+DI2DiBn17fxdGjQ
-         +GKQ8V1UfUUMiO7Odb8ZDUMs+ExZA8nPCz1KCnIToMMAdHgWJ32vFuSrxjKb7EKVfriU
-         3ATQ==
-X-Gm-Message-State: AOAM533WwBu7axwGKCVwLHQZSHR0/5uPJMd2oaO8poYaFDEDQXncfTpt
-        2M+ww8DNV0AvL353Vhr/pp50yQ==
-X-Google-Smtp-Source: ABdhPJz9qDrbHCn527IB9JHPAQJvkbN/YiK5DlwRYEaTjNNr5wbaltSygdeQhh7YIiOdzSji0D1ZDg==
-X-Received: by 2002:a63:30b:: with SMTP id 11mr22031174pgd.245.1616983201423;
-        Sun, 28 Mar 2021 19:00:01 -0700 (PDT)
+        bh=OWuOwB9+3ReWFmXmxu1N4MeM5oSPex95DxxWguwHB7c=;
+        b=XtIE1z+CjxsN4WCZSULTtT8Bb7XGhVieSbXyyD5sIAlxdWlBMzmPOsMikYwongNTw1
+         foN7YLUUyGIaCiPXQr0/ViNz2cDZcx1xjTDP2T5Yk9HHBhwA4bo1jYRK8RzLsExQjN6m
+         zh6Ob522uadPpoAjszIkz4/QmQ5lleS9C5XtwElOFVj7V4q3haNfsUSWebRU3+tLhMHd
+         M+sX/3J4fNgQdeKwf6IOLx74s0AJh3sGgJ4in5WhhQfQ24Gl3n15VQhFBo3BjGAyVhrn
+         gal8rI/54VZ5QBrp8dtIRRONFY8PXfJweRytfX+DSGJmwD4Feu/uIp1ZLpu/1orQES06
+         eKIw==
+X-Gm-Message-State: AOAM532cgxImPb9Sv/AyFNIVHUNUDnuE7tE/OoxBtMS0H31JLyHDK6g7
+        BvvBs03nzW+y3VMrQMbMIgSRmw==
+X-Google-Smtp-Source: ABdhPJyjFvSD33XX8uXpG9umGvJ3aF06Kn/mxJBHMyKHCqFkj2gAayfXdRo6pTZDiUht2NtAR56/Rw==
+X-Received: by 2002:a62:92cc:0:b029:1fa:515d:808f with SMTP id o195-20020a6292cc0000b02901fa515d808fmr22782914pfd.43.1616983198524;
+        Sun, 28 Mar 2021 18:59:58 -0700 (PDT)
 Received: from platform-dev1.pensando.io ([12.226.153.42])
-        by smtp.gmail.com with ESMTPSA id w37sm14728027pgl.13.2021.03.28.19.00.00
+        by smtp.gmail.com with ESMTPSA id w37sm14728027pgl.13.2021.03.28.18.59.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Mar 2021 19:00:01 -0700 (PDT)
+        Sun, 28 Mar 2021 18:59:58 -0700 (PDT)
 From:   Brad Larson <brad@pensando.io>
 To:     linux-arm-kernel@lists.infradead.org
 Cc:     arnd@arndb.de, linus.walleij@linaro.org, bgolaszewski@baylibre.com,
@@ -62,9 +62,9 @@ Cc:     arnd@arndb.de, linus.walleij@linaro.org, bgolaszewski@baylibre.com,
         brad@pensando.io, linux-gpio@vger.kernel.org,
         linux-spi@vger.kernel.org, linux-mmc@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 11/13] dt-bindings: gpio: Add Pensando Elba SoC support
-Date:   Sun, 28 Mar 2021 18:59:36 -0700
-Message-Id: <20210329015938.20316-12-brad@pensando.io>
+Subject: [PATCH v2 09/13] dt-bindings: mmc: Add Pensando Elba SoC binding
+Date:   Sun, 28 Mar 2021 18:59:34 -0700
+Message-Id: <20210329015938.20316-10-brad@pensando.io>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210329015938.20316-1-brad@pensando.io>
 References: <20210329015938.20316-1-brad@pensando.io>
@@ -72,71 +72,25 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The Pensando Elba SoC gpio driver provides control
-of four chip selects on two SPI busses.
+Pensando Elba ARM 64-bit SoC is integrated with this IP
 
 Signed-off-by: Brad Larson <brad@pensando.io>
 ---
- .../bindings/gpio/pensando,elba-spics.yaml    | 50 +++++++++++++++++++
- 1 file changed, 50 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/gpio/pensando,elba-spics.yaml
+ Documentation/devicetree/bindings/mmc/cdns,sdhci.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/gpio/pensando,elba-spics.yaml b/Documentation/devicetree/bindings/gpio/pensando,elba-spics.yaml
-new file mode 100644
-index 000000000000..c93b481d4ad3
---- /dev/null
-+++ b/Documentation/devicetree/bindings/gpio/pensando,elba-spics.yaml
-@@ -0,0 +1,50 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/gpio/pensando,elba-spics.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Pensando Elba SPI Chip Select Driver
-+
-+description: |
-+  The Pensando Elba SoC provides four SPI bus chip selects.
-+
-+maintainers:
-+  - Brad Larson <brad@pensando.io>
-+
-+properties:
-+  $nodename:
-+    pattern: "^spics@[0-9a-f]+$"
-+  
-+  compatible:
-+    const: pensando,elba-spics
-+
-+  reg:
-+    maxItems: 1
-+
-+  gpio-controller: true
-+
-+  "#gpio-cells":
-+    const: 2
-+
-+required:
-+  - compatible
-+  - reg
-+  - gpio-controller
-+  - "#gpio-cells"
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    soc {
-+        #address-cells = <2>;
-+        #size-cells = <2>;
-+
-+        spics: spics@307c2468 {
-+            compatible = "pensando,elba-spics";
-+            reg = <0x0 0x307c2468 0x0 0x4>;
-+            gpio-controller;
-+            #gpio-cells = <2>;
-+        };
-+    };
+diff --git a/Documentation/devicetree/bindings/mmc/cdns,sdhci.yaml b/Documentation/devicetree/bindings/mmc/cdns,sdhci.yaml
+index af7442f73881..3e8eb3254b99 100644
+--- a/Documentation/devicetree/bindings/mmc/cdns,sdhci.yaml
++++ b/Documentation/devicetree/bindings/mmc/cdns,sdhci.yaml
+@@ -18,6 +18,7 @@ properties:
+     items:
+       - enum:
+           - socionext,uniphier-sd4hc
++          - pensando,elba-emmc
+       - const: cdns,sd4hc
+ 
+   reg:
 -- 
 2.17.1
 

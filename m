@@ -7,53 +7,53 @@ X-Spam-Status: No, score=-16.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F03DC433FC
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 711DCC43381
 	for <linux-spi@archiver.kernel.org>; Mon, 29 Mar 2021 02:00:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 42EE36194B
+	by mail.kernel.org (Postfix) with ESMTP id 511946196D
 	for <linux-spi@archiver.kernel.org>; Mon, 29 Mar 2021 02:00:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230297AbhC2CAN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 28 Mar 2021 22:00:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51274 "EHLO
+        id S230306AbhC2CAL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 28 Mar 2021 22:00:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230401AbhC2B7y (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 28 Mar 2021 21:59:54 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9573C0613B5
-        for <linux-spi@vger.kernel.org>; Sun, 28 Mar 2021 18:59:54 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id j25so8891501pfe.2
-        for <linux-spi@vger.kernel.org>; Sun, 28 Mar 2021 18:59:54 -0700 (PDT)
+        with ESMTP id S230328AbhC2B7u (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 28 Mar 2021 21:59:50 -0400
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A95EC0613B3
+        for <linux-spi@vger.kernel.org>; Sun, 28 Mar 2021 18:59:50 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id f17so3658017plr.0
+        for <linux-spi@vger.kernel.org>; Sun, 28 Mar 2021 18:59:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=pensando.io; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=hFDDuuLCKMVUPK4LrKSbpDVOykG8ODUpVOe4CV5ias0=;
-        b=xKlytlsBzwGNAFwU1VhNkhjcwEyCmNQIczCp06u/q0KfQvgaZZuEhz3WOEDFHmETZ6
-         rBE/162JqmYTWIthPZTVvFwj/m1RFqtfRGP8IKYTIh1yeGtYIFYUx7vHvNUqC1SsRj9z
-         5Mw0CDoa8E4TceroBJh/bEHhN03w06O1s4cZY3mWw+oUFE2FUe7WFw9PUmKVRDXW5nJ9
-         eXwWMFVNAyrVEQoqMjzpFp+AD84fMz+MhqQwF2ODOP9JeLnhSO8jv4IAhaCVSz/XV4jE
-         SLNVg9l2ShQKdRudkdiF3xQZxu5qOFy5IDoCq2U2Ij5S22mjJZmR1PYJK0B4VgH/u5Fw
-         /Jkw==
+        bh=b/jZDT68x0JaSsnv/hQubN3XpQ9Z0D2o2MVObC/l6Fo=;
+        b=sS489wwLelB1CB5dqgyh7wsTUSVBUtBg0ud34L7zg1rSE4zuKq9rsTChXF0WjHfgYx
+         xnSOv2X282S8mYn7IZJg/6eYIGVZ9dubYVudpHyA+ZaL7YwJxZK2Ny03oqS5OBawLxpS
+         PiQeu1Dok3KDzEklhvtEC24G39YDFa+JPFHUfbXOwn7nK0CHREyzEbRdb+HQtLSyhl2J
+         rgeF2/ez0smsld+3IwHP7eNDeR2DspbavesDBIuSo/oNVx9zRy2MmwYIHoXGUMShcL7X
+         6U5NzbaKiStC3MqBZsTDf7Di3QMpfI5dEZ7w5tCF2sBPHqNF+L7A4HUUtMpqIbJBpv1g
+         t/XA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=hFDDuuLCKMVUPK4LrKSbpDVOykG8ODUpVOe4CV5ias0=;
-        b=HC9FF00ZOcgy28cx6/UmEBR52B5cpYEI4tdJ4mAtTkpfKaXW6mhpRRDIQsbeYbUTaV
-         TRTkUVUpP52IObW8+OiemEgCH2rzwR0gk+MsdRBs1zgvMA2o4te4F7BO9KWZucreL0mc
-         a5rino7g1YgsUgb2t4pNyaglXDOReTjgvmeriaonkVV1ORNWd4tcLNJcGzbz7C6v7eUA
-         402wX25N9KEE1rDA+o43gBL+s8YXmMgt68/uBmkCNzHfOTuRYfiBBjjAn2jYg2yxuOxi
-         +Wg4sirerPQ7bQ7MRnGC1yzwDA2ytBqiUuIN0TeAdfdLN+GOYV98Ks3GWpnIXD0LmCh2
-         BiQg==
-X-Gm-Message-State: AOAM5316gaxVAadPM3t9ZgOJjE31SjXDrlvKNDu+gPxEL8kbZ2cUGnyd
-        cDqvRdJ2ctM8WDBmwb/ay38r7A==
-X-Google-Smtp-Source: ABdhPJwej5FvA3qbg7diAr+YwUP02ukL5pGxFmtmHovYsBxZ5iVBfQwJDwqkiski1VTrQ0GBw0n7Hg==
-X-Received: by 2002:a62:7782:0:b029:1f5:b56f:525e with SMTP id s124-20020a6277820000b02901f5b56f525emr23413452pfc.20.1616983194208;
-        Sun, 28 Mar 2021 18:59:54 -0700 (PDT)
+        bh=b/jZDT68x0JaSsnv/hQubN3XpQ9Z0D2o2MVObC/l6Fo=;
+        b=bwY4HkhNGlgabsX5Qq+4AhHQmq67lJx9O/U+qtqpXXUYzDGBBcRxK8J/ERd9+OoVdq
+         rnoT2ttHzuHQ16AU/JhUgkTYo28ZvanPBJyffclqrXpXQuNh4r4CmT8878v5TbPwGHWW
+         f5SHje/cJbBmNKJKon8HCrr06Yn1n3O+32siBV/w7F57AfvNgeIdZ/yKPr42lz121rEA
+         MQzix6OjFAd4RzQ91wfejmGSoPQYggTjeuoyvR4hoNfgjbUan1LBVDvjUxAMuVn1KqDl
+         GAsnWHC87LFHbfhyMffMwbqd8z36xxZrpXGSI+oFrJ0iawIGSTvXAB7Op4bsr7nPx3Z+
+         IGCQ==
+X-Gm-Message-State: AOAM530teTkr2rNgq6VAsQ70+4qCH06ECv3+bD6hifvmKbZtvqaeSygh
+        bPMdcVVTVNtlcYnuRv4hsuIwLw==
+X-Google-Smtp-Source: ABdhPJwubq6Oxfs4yJpfSu8/guxn7Yx4XZkdvtnthlj4J2ZbKpHjTyY4E6/naVDgid3eo73k2k/ZTw==
+X-Received: by 2002:a17:90b:514:: with SMTP id r20mr24421108pjz.145.1616983189818;
+        Sun, 28 Mar 2021 18:59:49 -0700 (PDT)
 Received: from platform-dev1.pensando.io ([12.226.153.42])
-        by smtp.gmail.com with ESMTPSA id w37sm14728027pgl.13.2021.03.28.18.59.52
+        by smtp.gmail.com with ESMTPSA id w37sm14728027pgl.13.2021.03.28.18.59.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Mar 2021 18:59:53 -0700 (PDT)
+        Sun, 28 Mar 2021 18:59:49 -0700 (PDT)
 From:   Brad Larson <brad@pensando.io>
 To:     linux-arm-kernel@lists.infradead.org
 Cc:     arnd@arndb.de, linus.walleij@linaro.org, bgolaszewski@baylibre.com,
@@ -62,9 +62,9 @@ Cc:     arnd@arndb.de, linus.walleij@linaro.org, bgolaszewski@baylibre.com,
         brad@pensando.io, linux-gpio@vger.kernel.org,
         linux-spi@vger.kernel.org, linux-mmc@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 06/13] arm64: Add config for Pensando SoC platforms
-Date:   Sun, 28 Mar 2021 18:59:31 -0700
-Message-Id: <20210329015938.20316-7-brad@pensando.io>
+Subject: [PATCH v2 03/13] spi: dw: Add support for Pensando Elba SoC SPI
+Date:   Sun, 28 Mar 2021 18:59:28 -0700
+Message-Id: <20210329015938.20316-4-brad@pensando.io>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210329015938.20316-1-brad@pensando.io>
 References: <20210329015938.20316-1-brad@pensando.io>
@@ -72,30 +72,68 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add ARCH_PENSANDO configuration option for Pensando SoC
-based platforms.
+The Pensando Elba SoC uses a GPIO based chip select
+for two DW SPI busses with each bus having two
+chip selects.
 
 Signed-off-by: Brad Larson <brad@pensando.io>
 ---
- arch/arm64/Kconfig.platforms | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/spi/spi-dw-mmio.c | 28 +++++++++++++++++++++++++++-
+ 1 file changed, 27 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/Kconfig.platforms b/arch/arm64/Kconfig.platforms
-index cdfd5fed457f..803e7cf1df55 100644
---- a/arch/arm64/Kconfig.platforms
-+++ b/arch/arm64/Kconfig.platforms
-@@ -210,6 +210,11 @@ config ARCH_MXC
- 	  This enables support for the ARMv8 based SoCs in the
- 	  NXP i.MX family.
+diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+index 17c06039a74d..c323a5ceecb8 100644
+--- a/drivers/spi/spi-dw-mmio.c
++++ b/drivers/spi/spi-dw-mmio.c
+@@ -56,7 +56,7 @@ struct dw_spi_mscc {
+ /*
+  * The Designware SPI controller (referred to as master in the documentation)
+  * automatically deasserts chip select when the tx fifo is empty. The chip
+- * selects then needs to be either driven as GPIOs or, for the first 4 using the
++ * selects then needs to be either driven as GPIOs or, for the first 4 using
+  * the SPI boot controller registers. the final chip select is an OR gate
+  * between the Designware SPI controller and the SPI boot controller.
+  */
+@@ -237,6 +237,31 @@ static int dw_spi_canaan_k210_init(struct platform_device *pdev,
+ 	return 0;
+ }
  
-+config ARCH_PENSANDO
-+	bool "Pensando Platforms"
-+	help
-+	  This enables support for the ARMv8 based Pensando chipsets
++static void dw_spi_elba_set_cs(struct spi_device *spi, bool enable)
++{
++	struct dw_spi *dws = spi_master_get_devdata(spi->master);
 +
- config ARCH_QCOM
- 	bool "Qualcomm Platforms"
- 	select GPIOLIB
++	if (!enable) {
++		/*
++		 * Using a GPIO-based chip-select, the DW SPI
++		 * controller still needs its own CS bit selected
++		 * to start the serial engine.  On Elba the specific
++		 * CS doesn't matter to start the serial engine,
++		 * so using CS0.
++		 */
++		dw_writel(dws, DW_SPI_SER, BIT(0));
++	} else {
++		dw_writel(dws, DW_SPI_SER, 0);
++	}
++}
++
++static int dw_spi_elba_init(struct platform_device *pdev,
++			    struct dw_spi_mmio *dwsmmio)
++{
++	dwsmmio->dws.set_cs = dw_spi_elba_set_cs;
++	return 0;
++}
++
+ static int dw_spi_mmio_probe(struct platform_device *pdev)
+ {
+ 	int (*init_func)(struct platform_device *pdev,
+@@ -351,6 +376,7 @@ static const struct of_device_id dw_spi_mmio_of_match[] = {
+ 	{ .compatible = "intel,keembay-ssi", .data = dw_spi_keembay_init},
+ 	{ .compatible = "microchip,sparx5-spi", dw_spi_mscc_sparx5_init},
+ 	{ .compatible = "canaan,k210-spi", dw_spi_canaan_k210_init},
++	{ .compatible = "pensando,elba-spi", .data = dw_spi_elba_init},
+ 	{ /* end of table */}
+ };
+ MODULE_DEVICE_TABLE(of, dw_spi_mmio_of_match);
 -- 
 2.17.1
 

@@ -7,167 +7,145 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 436F7C433E1
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4CB69C433E3
 	for <linux-spi@archiver.kernel.org>; Tue, 30 Mar 2021 16:50:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 10666619B9
+	by mail.kernel.org (Postfix) with ESMTP id 21DFC619D8
 	for <linux-spi@archiver.kernel.org>; Tue, 30 Mar 2021 16:50:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232265AbhC3Qt2 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 30 Mar 2021 12:49:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47954 "EHLO
+        id S232118AbhC3Qt3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 30 Mar 2021 12:49:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232562AbhC3QtQ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 30 Mar 2021 12:49:16 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69DBBC061574
-        for <linux-spi@vger.kernel.org>; Tue, 30 Mar 2021 09:49:15 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id b4so24786698lfi.6
-        for <linux-spi@vger.kernel.org>; Tue, 30 Mar 2021 09:49:14 -0700 (PDT)
+        with ESMTP id S232543AbhC3QtT (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 30 Mar 2021 12:49:19 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30832C061574
+        for <linux-spi@vger.kernel.org>; Tue, 30 Mar 2021 09:49:19 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id n138so24818610lfa.3
+        for <linux-spi@vger.kernel.org>; Tue, 30 Mar 2021 09:49:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=DwuBPFGLSpKihZVKEG15+3y/R2q1McqdWhbHkRumoJ0=;
-        b=Vm8j58rbTFraz7ojmqwXZHv94P4XwE3m03Okzpw2JV2WFtRBqde2VYPWB28tRlPya9
-         fRTd20ByT76bFES+dlFLszeXm4rwYkpEViff/l+Gv/qFKEbDOqTPlgY04G4LoOZY6Fre
-         ZqPwKXu5CgQJrTrQJxla6XxpD0/zZOqliZgQSTSsxLwQGldgebDkducWBtLe3Gq0TN0B
-         KIsxsuxOr+GJv3UE6IiAWpjEdtCZeLxCkQVkEPCqNn+k2EtF++Hu4tC2Tq6eA2z5HR/v
-         WvBqZrgZCA7mOKIHnVENyo8B5r4p+snbE+dUomlKKQ2z3ge2hqkORIM2MP4kwB0p55eP
-         2CNg==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=mH0nCRARtN5+w9TZoOp1Qm7Svfh+hhUeE/MFDUeNtKE=;
+        b=bUuRgnlZm6jAkUUpJk08qnJq9UxPnc7IQPVHVqsd7d/3JOeNGWNnFYeHW12l90f6Rn
+         xDiLdkuL5BejI4Ym2rBJcN833LJttSJeN0hHNsvawtSP+f1+FeB3bLiONrhWAniYFnqG
+         7QL0FXdm6qizdOJNpZ72xv7N+PtNprgcLd0pQm0ucFuUJv8vZvd2tdZr/npMbd9J3kFW
+         n5PgF5NDDvIuIcCryMxbbYi8SPYHesBn9Eb31LVWqPjsEwb27Hex1qgvCN1TqBWaB58S
+         RMhqzzjA8hV52YlSMgbGc17VpM8YMqYSu2o9SwOMSIVaLmskOcifUvFCrSL2UOgRc9hj
+         PBEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=DwuBPFGLSpKihZVKEG15+3y/R2q1McqdWhbHkRumoJ0=;
-        b=ptNoioxopbtT/li5tawgAPGMri+R5KyiaYHot2b8fDTBujd5CrLQ0uqyFDhpHUeCzL
-         C7gnaRwg6CpsICY2x832JKPWL+FP5Vye9tvh+oX3ieXmz1smFM1HU1VV+wPvXbWePcHV
-         dn3bEv2UpxQUW3CHppcKmrY97aTFS6KB/j1CWfLU5OKCf6pP0Ru2wgzVq2O/NpisBV4U
-         n1pWlGEnb1uz6aTm3vledtSSzM+NG02sbU6jqz+zN2HDE1TujtFl9KG0s5TjDShJcTH1
-         PTSiJvb/QEwPSVlr6ON4viR4YdTh2fzTq7dI1jlgv4bMoaPuiW8kZ6QCyLBb3+vF0nsO
-         Xv5g==
-X-Gm-Message-State: AOAM531rz5B3EMA+Ci27hYK6TkymnSK/p6Noi1rh4L9taiu2YxWyapGQ
-        CdFbmQduZaigPi48kDU8tEMZ+c8VtNJEyRmi
-X-Google-Smtp-Source: ABdhPJypyDkkXsOTT7gCAh5qoYCqEdFsY2wzZLz49U4yg5EP1kGKpNh73I8DER+uJ80p3/TDZbwSNQ==
-X-Received: by 2002:a19:234a:: with SMTP id j71mr19798896lfj.448.1617122953538;
-        Tue, 30 Mar 2021 09:49:13 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=mH0nCRARtN5+w9TZoOp1Qm7Svfh+hhUeE/MFDUeNtKE=;
+        b=XCZBpC75p2by12dU4cI5kOMbEe7anmcYTesxTh72eSy2CEOtEZl9UNVaalo6q8OsO+
+         s/+d/SAcjkl09vlwe44ReuBrmY4yBWg49ZxaqFOov3OCZSSou8eId2ZqdgAKL2Qlfq4a
+         lZnHdhSSVG7QjLAKEC/sbiFlX0CHnezK3CE9d6470p/Liq1hqlSrDG/3x63c5YdJTF+b
+         6wP57HG1Rx7JPLuVI2but98zs9dh/GmdHrk7g3YnyYbCdewJXJe1UQLE4jVWwn2my0Hr
+         Qia5iWZCHBldl4jTRJtWFq9IhhZDXHdG4KEjhxTDzn20NzWBSL+7DmfrJORjK0Nw/984
+         6cvA==
+X-Gm-Message-State: AOAM531rUfFklZK6bGqSK9xgmxtQtPA+H1+LWynj6ICXvg3qdvB2gtOZ
+        7H5mBI1rnbNdScyRe0aq/jiNYT/k4xxmDEd4
+X-Google-Smtp-Source: ABdhPJzWbp1FlNMLgC2nwwv1yPEv2Ghm8zMc+pNsdjHoxL9151Ff3V+hWSmJoiNosOpXJ1Q2RZMnoQ==
+X-Received: by 2002:ac2:4142:: with SMTP id c2mr19717206lfi.125.1617122957748;
+        Tue, 30 Mar 2021 09:49:17 -0700 (PDT)
 Received: from localhost.localdomain (c-14cb225c.014-348-6c756e10.bbcust.telenor.se. [92.34.203.20])
-        by smtp.gmail.com with ESMTPSA id m19sm2839025ljb.10.2021.03.30.09.49.13
+        by smtp.gmail.com with ESMTPSA id m19sm2839025ljb.10.2021.03.30.09.49.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Mar 2021 09:49:13 -0700 (PDT)
+        Tue, 30 Mar 2021 09:49:17 -0700 (PDT)
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
 Cc:     Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 1/3] spi: pl022: Drop custom per-chip cs_control
-Date:   Tue, 30 Mar 2021 18:49:05 +0200
-Message-Id: <20210330164907.2346010-1-linus.walleij@linaro.org>
+Subject: [PATCH 3/3] spi: pl022: Convert to use GPIO descriptors
+Date:   Tue, 30 Mar 2021 18:49:07 +0200
+Message-Id: <20210330164907.2346010-3-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210330164907.2346010-1-linus.walleij@linaro.org>
+References: <20210330164907.2346010-1-linus.walleij@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Drop the custom cs_control() assigned through platform data,
-we have no in-tree users and the only out-of-tree use I have
-ever seen of this facility is to pull GPIO lines, which is
-something the driver can already do for us.
+This converts the PL022 driver to use GPIO descriptors
+instead of the old global GPIO numberspace. Since the
+driver handles messages on its own it needs to manage
+the GPIO descriptor directly.
 
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/spi/spi-pl022.c    | 26 ++------------------------
- include/linux/amba/pl022.h |  3 ---
- 2 files changed, 2 insertions(+), 27 deletions(-)
+ drivers/spi/spi-pl022.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index faaca7373b40..e5dd7756c2ea 100644
+index 84ffed2a3554..fda025a5ec06 100644
 --- a/drivers/spi/spi-pl022.c
 +++ b/drivers/spi/spi-pl022.c
-@@ -412,7 +412,6 @@ struct pl022 {
-  * @enable_dma: Whether to enable DMA or not
-  * @read: function ptr to be used to read when doing xfer for this chip
-  * @write: function ptr to be used to write when doing xfer for this chip
-- * @cs_control: chip select callback provided by chip
-  * @xfer_type: polling/interrupt/DMA
-  *
-  * Runtime state of the SSP controller, maintained per chip,
-@@ -427,22 +426,9 @@ struct chip_data {
- 	bool enable_dma;
- 	enum ssp_reading read;
- 	enum ssp_writing write;
--	void (*cs_control) (u32 command);
- 	int xfer_type;
+@@ -31,7 +31,6 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/scatterlist.h>
+ #include <linux/pm_runtime.h>
+-#include <linux/gpio.h>
+ #include <linux/of.h>
+ #include <linux/pinctrl/consumer.h>
+ 
+@@ -363,7 +362,7 @@ struct vendor_data {
+  * @dummypage: a dummy page used for driving data on the bus with DMA
+  * @dma_running: indicates whether DMA is in operation
+  * @cur_cs: current chip select index
+- * @cur_gpio: current chip select GPIO line
++ * @cur_gpiod: current chip select GPIO descriptor
+  */
+ struct pl022 {
+ 	struct amba_device		*adev;
+@@ -398,7 +397,7 @@ struct pl022 {
+ 	bool				dma_running;
+ #endif
+ 	int cur_cs;
+-	int cur_gpio;
++	struct gpio_desc *cur_gpiod;
  };
  
--/**
-- * null_cs_control - Dummy chip select function
-- * @command: select/delect the chip
-- *
-- * If no chip select function is provided by client this is used as dummy
-- * chip select
-- */
--static void null_cs_control(u32 command)
--{
--	pr_debug("pl022: dummy chip select control, CS=0x%x\n", command);
--}
--
  /**
-  * internal_cs_control - Control chip select signals via SSP_CSR.
-  * @pl022: SSP driver private data structure
-@@ -470,8 +456,6 @@ static void pl022_cs_control(struct pl022 *pl022, u32 command)
+@@ -454,8 +453,16 @@ static void pl022_cs_control(struct pl022 *pl022, u32 command)
+ {
+ 	if (pl022->vendor->internal_cs_ctrl)
  		internal_cs_control(pl022, command);
- 	else if (gpio_is_valid(pl022->cur_cs))
- 		gpio_set_value(pl022->cur_cs, command);
--	else
--		pl022->cur_chip->cs_control(command);
+-	else if (gpio_is_valid(pl022->cur_gpio))
+-		gpio_set_value(pl022->cur_gpio, command);
++	else if (pl022->cur_gpiod)
++		/*
++		 * This needs to be inverted since with GPIOLIB in
++		 * control, the inversion will be handled by
++		 * GPIOLIB's active low handling. The "command"
++		 * passed into this function will be SSP_CHIP_SELECT
++		 * which is enum:ed to 0, so we need the inverse
++		 * (1) to activate chip select.
++		 */
++		gpiod_set_value(pl022->cur_gpiod, !command);
  }
  
  /**
-@@ -1829,7 +1813,6 @@ static const struct pl022_config_chip pl022_default_chip_info = {
- 	.ctrl_len = SSP_BITS_8,
- 	.wait_state = SSP_MWIRE_WAIT_ZERO,
- 	.duplex = SSP_MICROWIRE_CHANNEL_FULL_DUPLEX,
--	.cs_control = null_cs_control,
- };
+@@ -1582,7 +1589,7 @@ static int pl022_transfer_one_message(struct spi_master *master,
+ 	pl022->cur_chip = spi_get_ctldata(msg->spi);
+ 	pl022->cur_cs = msg->spi->chip_select;
+ 	/* This is always available but may be set to -ENOENT */
+-	pl022->cur_gpio = msg->spi->cs_gpio;
++	pl022->cur_gpiod = msg->spi->cs_gpiod;
  
- /**
-@@ -1940,13 +1923,8 @@ static int pl022_setup(struct spi_device *spi)
+ 	restore_state(pl022);
+ 	flush(pl022);
+@@ -2135,6 +2142,7 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 	master->unprepare_transfer_hardware = pl022_unprepare_transfer_hardware;
+ 	master->rt = platform_info->rt;
+ 	master->dev.of_node = dev->of_node;
++	master->use_gpio_descriptors = true;
  
- 	/* Now set controller state based on controller data */
- 	chip->xfer_type = chip_info->com_mode;
--	if (!chip_info->cs_control) {
--		chip->cs_control = null_cs_control;
--		if (!gpio_is_valid(pl022->chipselects[spi->chip_select]))
--			dev_warn(&spi->dev,
--				 "invalid chip select\n");
--	} else
--		chip->cs_control = chip_info->cs_control;
-+	if (!gpio_is_valid(pl022->chipselects[spi->chip_select]))
-+		dev_warn(&spi->dev, "invalid chip select\n");
- 
- 	/* Check bits per word with vendor specific range */
- 	if ((bits <= 3) || (bits > pl022->vendor->max_bpw)) {
-diff --git a/include/linux/amba/pl022.h b/include/linux/amba/pl022.h
-index 131b27c97209..29274cedefde 100644
---- a/include/linux/amba/pl022.h
-+++ b/include/linux/amba/pl022.h
-@@ -265,8 +265,6 @@ struct pl022_ssp_controller {
-  * @duplex: Microwire interface: Full/Half duplex
-  * @clkdelay: on the PL023 variant, the delay in feeback clock cycles
-  * before sampling the incoming line
-- * @cs_control: function pointer to board-specific function to
-- * assert/deassert I/O port to control HW generation of devices chip-select.
-  */
- struct pl022_config_chip {
- 	enum ssp_interface iface;
-@@ -280,7 +278,6 @@ struct pl022_config_chip {
- 	enum ssp_microwire_wait_state wait_state;
- 	enum ssp_duplex duplex;
- 	enum ssp_clkdelay clkdelay;
--	void (*cs_control) (u32 control);
- };
- 
- #endif /* _SSP_PL022_H */
+ 	/*
+ 	 * Supports mode 0-3, loopback, and active low CS. Transfers are
 -- 
 2.29.2
 

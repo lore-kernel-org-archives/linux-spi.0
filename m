@@ -2,47 +2,52 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AA116C433C1
-	for <linux-spi@archiver.kernel.org>; Tue, 30 Mar 2021 18:19:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B89ACC433E5
+	for <linux-spi@archiver.kernel.org>; Tue, 30 Mar 2021 18:19:06 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 526A361999
-	for <linux-spi@archiver.kernel.org>; Tue, 30 Mar 2021 18:19:05 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6622F619CA
+	for <linux-spi@archiver.kernel.org>; Tue, 30 Mar 2021 18:19:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232800AbhC3SSd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S232665AbhC3SSd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Tue, 30 Mar 2021 14:18:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39030 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232746AbhC3SSM (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 30 Mar 2021 14:18:12 -0400
+        with ESMTP id S232791AbhC3SSZ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 30 Mar 2021 14:18:25 -0400
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 523E7C061762
-        for <linux-spi@vger.kernel.org>; Tue, 30 Mar 2021 11:18:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B67FC061574
+        for <linux-spi@vger.kernel.org>; Tue, 30 Mar 2021 11:18:25 -0700 (PDT)
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1lRIwJ-0007hz-Hs; Tue, 30 Mar 2021 20:18:07 +0200
+        id 1lRIwK-0007hs-TK; Tue, 30 Mar 2021 20:18:08 +0200
 Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1lRIwJ-0000E9-6d; Tue, 30 Mar 2021 20:18:07 +0200
+        id 1lRIwH-0000Dn-TO; Tue, 30 Mar 2021 20:18:05 +0200
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
 To:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Mark Brown <broonie@kernel.org>
+        Stephen Boyd <sboyd@kernel.org>
 Cc:     linux-clk@vger.kernel.org, kernel@pengutronix.de,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        linux-pwm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        linux-rtc@vger.kernel.org, Mark Brown <broonie@kernel.org>,
         linux-spi@vger.kernel.org
-Subject: [PATCH v4 6/6] spi: davinci: Simplify using devm_clk_get_enabled()
-Date:   Tue, 30 Mar 2021 20:17:55 +0200
-Message-Id: <20210330181755.204339-7-u.kleine-koenig@pengutronix.de>
+Subject: [PATCH v4 0/6] clk: provide new devm helpers for prepared and enabled clocks
+Date:   Tue, 30 Mar 2021 20:17:49 +0200
+Message-Id: <20210330181755.204339-1-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210330181755.204339-1-u.kleine-koenig@pengutronix.de>
-References: <20210330181755.204339-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -54,62 +59,38 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-devm_clk_get_enabled() returns the clk already (prepared and) enabled
-and the automatically called cleanup cares for disabling (and
-unpreparing). So simplify .probe() and .remove() accordingly.
+Hello,
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/spi/spi-davinci.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+this series contains new helpers for devm managed clocks. Since v3 this
+is a series that also contains four example conversions to show the
+simplification that can be achieved. It was not hard to find these
+candidates, there are drivers all over that can benefit.
 
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 7453a1dbbc06..63ee918ecdb0 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -936,14 +936,11 @@ static int davinci_spi_probe(struct platform_device *pdev)
- 
- 	dspi->bitbang.master = master;
- 
--	dspi->clk = devm_clk_get(&pdev->dev, NULL);
-+	dspi->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(dspi->clk)) {
- 		ret = -ENODEV;
- 		goto free_master;
- 	}
--	ret = clk_prepare_enable(dspi->clk);
--	if (ret)
--		goto free_master;
- 
- 	master->use_gpio_descriptors = true;
- 	master->dev.of_node = pdev->dev.of_node;
-@@ -968,7 +965,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
- 
- 	ret = davinci_spi_request_dma(dspi);
- 	if (ret == -EPROBE_DEFER) {
--		goto free_clk;
-+		goto free_master;
- 	} else if (ret) {
- 		dev_info(&pdev->dev, "DMA is not supported (%d)\n", ret);
- 		dspi->dma_rx = NULL;
-@@ -1012,8 +1009,6 @@ static int davinci_spi_probe(struct platform_device *pdev)
- 		dma_release_channel(dspi->dma_rx);
- 		dma_release_channel(dspi->dma_tx);
- 	}
--free_clk:
--	clk_disable_unprepare(dspi->clk);
- free_master:
- 	spi_master_put(master);
- err:
-@@ -1039,8 +1034,6 @@ static int davinci_spi_remove(struct platform_device *pdev)
- 
- 	spi_bitbang_stop(&dspi->bitbang);
- 
--	clk_disable_unprepare(dspi->clk);
--
- 	if (dspi->dma_rx) {
- 		dma_release_channel(dspi->dma_rx);
- 		dma_release_channel(dspi->dma_tx);
+The idea to provide these helpers is already quite old, I sent v1 back
+in October and unfortunately didn't receive any feedback from the clk
+maintainers yet on any of the patch series. It would be great if this
+series is considered obviously good enough to consider it.
+
+Best regards
+Uwe
+
+Uwe Kleine-König (6):
+  clk: generalize devm_clk_get() a bit
+  clk: Provide new devm_clk_helpers for prepared and enabled clocks
+  pwm: atmel: Simplify using devm_clk_get_prepared()
+  rtc: at91sma9: Simplify using devm_clk_get_enabled()
+  i2c: imx: Simplify using devm_clk_get_enableded()
+  spi: davinci: Simplify using devm_clk_get_enabled()
+
+ drivers/clk/clk-devres.c     | 96 ++++++++++++++++++++++++++++++------
+ drivers/i2c/busses/i2c-imx.c | 11 +----
+ drivers/pwm/pwm-atmel.c      | 15 +-----
+ drivers/rtc/rtc-at91sam9.c   | 22 ++-------
+ drivers/spi/spi-davinci.c    | 11 +----
+ include/linux/clk.h          | 87 +++++++++++++++++++++++++++++++-
+ 6 files changed, 176 insertions(+), 66 deletions(-)
+
+base-commit: a38fd8748464831584a19438cbb3082b5a2dab15
 -- 
 2.30.2
 

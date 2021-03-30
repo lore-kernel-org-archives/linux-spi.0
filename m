@@ -2,86 +2,114 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C053C433DB
-	for <linux-spi@archiver.kernel.org>; Tue, 30 Mar 2021 17:20:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AA116C433C1
+	for <linux-spi@archiver.kernel.org>; Tue, 30 Mar 2021 18:19:05 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2DB81619CD
-	for <linux-spi@archiver.kernel.org>; Tue, 30 Mar 2021 17:20:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 526A361999
+	for <linux-spi@archiver.kernel.org>; Tue, 30 Mar 2021 18:19:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231650AbhC3RUO (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 30 Mar 2021 13:20:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41328 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232404AbhC3RUF (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 30 Mar 2021 13:20:05 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9590F619CC;
-        Tue, 30 Mar 2021 17:20:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617124805;
-        bh=2/dPY9t5kX+DrpyqHP3skhadiWt2xW/f6QwafOFqAr4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=mmqqrVgXK8BKxCXrHWxgFyu080dcpyxqmuq1Ck7EzTT2Tez5F5LPx3OhU2iDGYHRS
-         b1b/X9QDBPmCs1r/QRa4ljaZARr6q6QZRsO41qr2+c8Wf+o5aWEe0Xg2XDLRI2TCpB
-         Pff6etnmOMTxdqfvMkF/jm3TUsx0w8bDiO14kCnxIXtnqHwsR/lByvbcMHU8ZDqddx
-         3nyl1SNa7eOkDl4LGIeeUpyFytJVJxNXpb6XHLYOq0Nl8eU4juFBm1MoGtpDUvJ2C9
-         vgaCKEsJop6IQEs8QYWYE2oh8EcMXDRMzR3D/YBAL6XsIUrt29y3zLSwYrDKGMrEsk
-         J2KVGG6ST60jA==
-Date:   Tue, 30 Mar 2021 18:19:53 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: ensure timely release of driver-allocated resources
-Message-ID: <20210330171953.GI4976@sirena.org.uk>
-References: <YFf2RD931nq3RudJ@google.com>
- <20210322123707.GB4681@sirena.org.uk>
- <YFjyJycuAXdTX42D@google.com>
- <20210323173606.GB5490@sirena.org.uk>
- <YFo7wkq037P2Dosz@google.com>
- <20210324213225.GD4596@sirena.org.uk>
- <YFu8y9CuG6Mouxnq@google.com>
- <20210324233935.GE4596@sirena.org.uk>
- <YFvWsA3WnMAqVLGU@google.com>
+        id S232800AbhC3SSd (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 30 Mar 2021 14:18:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39030 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232746AbhC3SSM (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 30 Mar 2021 14:18:12 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 523E7C061762
+        for <linux-spi@vger.kernel.org>; Tue, 30 Mar 2021 11:18:12 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1lRIwJ-0007hz-Hs; Tue, 30 Mar 2021 20:18:07 +0200
+Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1lRIwJ-0000E9-6d; Tue, 30 Mar 2021 20:18:07 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Mark Brown <broonie@kernel.org>
+Cc:     linux-clk@vger.kernel.org, kernel@pengutronix.de,
+        linux-spi@vger.kernel.org
+Subject: [PATCH v4 6/6] spi: davinci: Simplify using devm_clk_get_enabled()
+Date:   Tue, 30 Mar 2021 20:17:55 +0200
+Message-Id: <20210330181755.204339-7-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210330181755.204339-1-u.kleine-koenig@pengutronix.de>
+References: <20210330181755.204339-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="54ZiyWcDhi/7bWb8"
-Content-Disposition: inline
-In-Reply-To: <YFvWsA3WnMAqVLGU@google.com>
-X-Cookie: Memory fault - where am I?
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+devm_clk_get_enabled() returns the clk already (prepared and) enabled
+and the automatically called cleanup cares for disabling (and
+unpreparing). So simplify .probe() and .remove() accordingly.
 
---54ZiyWcDhi/7bWb8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/spi/spi-davinci.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-On Wed, Mar 24, 2021 at 05:17:52PM -0700, Dmitry Torokhov wrote:
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index 7453a1dbbc06..63ee918ecdb0 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -936,14 +936,11 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 
+ 	dspi->bitbang.master = master;
+ 
+-	dspi->clk = devm_clk_get(&pdev->dev, NULL);
++	dspi->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(dspi->clk)) {
+ 		ret = -ENODEV;
+ 		goto free_master;
+ 	}
+-	ret = clk_prepare_enable(dspi->clk);
+-	if (ret)
+-		goto free_master;
+ 
+ 	master->use_gpio_descriptors = true;
+ 	master->dev.of_node = pdev->dev.of_node;
+@@ -968,7 +965,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 
+ 	ret = davinci_spi_request_dma(dspi);
+ 	if (ret == -EPROBE_DEFER) {
+-		goto free_clk;
++		goto free_master;
+ 	} else if (ret) {
+ 		dev_info(&pdev->dev, "DMA is not supported (%d)\n", ret);
+ 		dspi->dma_rx = NULL;
+@@ -1012,8 +1009,6 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 		dma_release_channel(dspi->dma_rx);
+ 		dma_release_channel(dspi->dma_tx);
+ 	}
+-free_clk:
+-	clk_disable_unprepare(dspi->clk);
+ free_master:
+ 	spi_master_put(master);
+ err:
+@@ -1039,8 +1034,6 @@ static int davinci_spi_remove(struct platform_device *pdev)
+ 
+ 	spi_bitbang_stop(&dspi->bitbang);
+ 
+-	clk_disable_unprepare(dspi->clk);
+-
+ 	if (dspi->dma_rx) {
+ 		dma_release_channel(dspi->dma_rx);
+ 		dma_release_channel(dspi->dma_tx);
+-- 
+2.30.2
 
-> OK, I can look into it. In the meantime wills something like below a bit
-> easier for you to stomach? If so I'll resubmit formally.
-
-Well, it's a bit nicer for a bus level bodge so I guess, but really I'm
-more thinking we need something in the driver core for this.
-
---54ZiyWcDhi/7bWb8
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmBjXbgACgkQJNaLcl1U
-h9Bk7gf/buRs+lVX7ALKqplNAG8yg1soNU48Gbe5haaWHCBqxdM3YvLGIAiEYAY8
-qhqwoHy6psIHROgbdBZuUUx549QPqERFawXjUkjhhZstGT7yubbDNB7MJ6Gygz/L
-LeSXv2AWcoTyTctaflOb+PZAGFIt9A079/Kf0CcRgv+fN5ERCmBOEFqnHT4vwTs6
-iyi7IAif3Ak2qIt6ZNYTm0eR3LxfKOhY18MeMDH8wiWt/U2vAJ6GMW3Nai7ADtGi
-TkVsC2cTXuWu4+2Z6Rkte++4DKjPmiZLTTe5v8Tc3lA8JAScDtpR6a5kb+Qb7rYQ
-JjgXwfb0St5f7lCY+yXxUOuIfSxFxA==
-=uj9j
------END PGP SIGNATURE-----
-
---54ZiyWcDhi/7bWb8--

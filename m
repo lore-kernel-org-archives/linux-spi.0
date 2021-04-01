@@ -7,39 +7,43 @@ X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C79CC43462
-	for <linux-spi@archiver.kernel.org>; Thu,  1 Apr 2021 10:17:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 375F3C43460
+	for <linux-spi@archiver.kernel.org>; Thu,  1 Apr 2021 10:17:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 21B79610CB
-	for <linux-spi@archiver.kernel.org>; Thu,  1 Apr 2021 10:17:23 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id F004461056
+	for <linux-spi@archiver.kernel.org>; Thu,  1 Apr 2021 10:17:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233858AbhDAKQr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 1 Apr 2021 06:16:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38342 "EHLO mail.kernel.org"
+        id S233947AbhDAKRW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 1 Apr 2021 06:17:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38454 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233978AbhDAKQn (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 1 Apr 2021 06:16:43 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E5C8260FDB;
-        Thu,  1 Apr 2021 10:16:42 +0000 (UTC)
+        id S233845AbhDAKQu (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 1 Apr 2021 06:16:50 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id C05F56108B;
+        Thu,  1 Apr 2021 10:16:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617272203;
-        bh=/4JZCYKJ34Ny/VV6useJAcsGbW6iKdWswaBA799Cid8=;
+        s=k20201202; t=1617272210;
+        bh=/D8KExDdCxvtfXrh0oom2ZstMvfeYfgS+/IAEsjWZMY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=umkEuqdcVMsL1xl3v7RxGfsWELRqFtLqv0J+9n4Al2hNvyIHX9czktZeVA38tu/hC
-         aH8xI/2mGVyKgnZ5Dd+ert4ZQKNCnKZ8rOUNn1LkhQetXatcUtnPj7krqzUEIGM+yi
-         79dNk4Z/GDX5xfZkLJ4HFVskO5q+XLtWdPuuOV/iY00ddFjBEuBukPFvVVVXvn4exM
-         mvOovjYsR+c7perUJ9gM4/H93iMMAFuMUzfOJqidoojTRFOxBaFKXJ6qdHqimiv0Wl
-         a6i5xf5qg7bwd1Ut8VK//YHAQ49SRIRBwjPtH3qjs5NVk07zEocoD1OYF3w4EvM3JD
-         bAuE1G2eBffaA==
+        b=VE1T6TOZEAOinOwOXB0W5vFDj//VaRaPmJozKr+CBJ2Qxmaa84Rw9LgvnjkF31qD5
+         6wJoSREHH+XbDJ5YOVPBjyLPH5WvM3hr8HhbtdMykVbvQqcFOIzNNQJQx5avb6Amzo
+         8fyhIDsiHA9qkjicOOVLCtoGjb+UvgzdWH74kQLDG8l68yYluZXzhpDzkBCsLmCOhb
+         9Co7JgAxl4Tdp2QWbYMsurluhrqyR9hWMb6mjwb6i2RVx1Rs7zpSCIHCuY1l3JKm6D
+         tXR+MRwI5tillpcedy33kJvoqBFVBSYxbHbQQ8miNm2GhrQaMKp7jlTzJyWBJodwcr
+         j5Q9ddVxFx3Jg==
 From:   Mark Brown <broonie@kernel.org>
-To:     linux-spi@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>
-Cc:     Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/3] spi: pl022: Drop custom per-chip cs_control
-Date:   Thu,  1 Apr 2021 11:16:14 +0100
-Message-Id: <161726952255.2486.14037510874353854208.b4-ty@kernel.org>
+To:     Rob Herring <robh+dt@kernel.org>, Tero Kristo <kristo@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Nishanth Menon <nm@ti.com>, Pratyush Yadav <p.yadav@ti.com>,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org
+Cc:     Mark Brown <broonie@kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+Subject: Re: (subset) [PATCH 0/4] Convert Cadence QSPI bindings to yaml
+Date:   Thu,  1 Apr 2021 11:16:16 +0100
+Message-Id: <161726952255.2486.16196604421904035265.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210330164907.2346010-1-linus.walleij@linaro.org>
-References: <20210330164907.2346010-1-linus.walleij@linaro.org>
+In-Reply-To: <20210326130034.15231-1-p.yadav@ti.com>
+References: <20210326130034.15231-1-p.yadav@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -47,11 +51,15 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, 30 Mar 2021 18:49:05 +0200, Linus Walleij wrote:
-> Drop the custom cs_control() assigned through platform data,
-> we have no in-tree users and the only out-of-tree use I have
-> ever seen of this facility is to pull GPIO lines, which is
-> something the driver can already do for us.
+On Fri, 26 Mar 2021 18:30:30 +0530, Pratyush Yadav wrote:
+> This series picks up Ramuthevar's effort on converting the Cadence QSPI
+> bindings to yaml [0]. During the conversion process, I discovered that
+> some TI device tree files were not using the compatible correctly. Those
+> are fixed in patches 1-3.
+> 
+> [0] https://patchwork.kernel.org/project/spi-devel-general/patch/20201116031003.19062-6-vadivel.muruganx.ramuthevar@linux.intel.com/
+> 
+> [...]
 
 Applied to
 
@@ -59,12 +67,8 @@ Applied to
 
 Thanks!
 
-[1/3] spi: pl022: Drop custom per-chip cs_control
-      commit: 4179e576b56d82e5ce007b9f548efb90605e2713
-[2/3] spi: pl022: Use GPIOs looked up by the core
-      commit: 77f983a9df421fa00ca6a2f494dc79f8afca75a2
-[3/3] spi: pl022: Convert to use GPIO descriptors
-      commit: 8bb2dbf1e14d05e92a23e03bcbd1c27f7ee937f7
+[4/4] dt-bindings: spi: Convert cadence-quadspi.txt to cadence-quadspi.yaml
+      commit: e54338004c032b0bb556c7a56db8688454b6587e
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

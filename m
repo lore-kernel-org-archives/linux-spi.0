@@ -2,75 +2,97 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 857EEC433ED
-	for <linux-spi@archiver.kernel.org>; Thu,  1 Apr 2021 06:25:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66D01C43460
+	for <linux-spi@archiver.kernel.org>; Thu,  1 Apr 2021 06:29:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4B73161055
-	for <linux-spi@archiver.kernel.org>; Thu,  1 Apr 2021 06:25:04 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2E2FA61057
+	for <linux-spi@archiver.kernel.org>; Thu,  1 Apr 2021 06:29:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229459AbhDAGYc (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 1 Apr 2021 02:24:32 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:15061 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233219AbhDAGY0 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 1 Apr 2021 02:24:26 -0400
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.60])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4F9tPK1tB2zPnFj;
-        Thu,  1 Apr 2021 14:21:41 +0800 (CST)
-Received: from localhost.localdomain (10.69.192.56) by
- DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
- 14.3.498.0; Thu, 1 Apr 2021 14:24:18 +0800
-From:   Tian Tao <tiantao6@hisilicon.com>
-To:     <broonie@kernel.org>
-CC:     <linux-spi@vger.kernel.org>
-Subject: [PATCH] spi: orion: Use device_get_match_data() helper
-Date:   Thu, 1 Apr 2021 14:24:48 +0800
-Message-ID: <1617258288-1490-1-git-send-email-tiantao6@hisilicon.com>
-X-Mailer: git-send-email 2.7.4
+        id S232596AbhDAG31 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 1 Apr 2021 02:29:27 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:50188 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233024AbhDAG3P (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 1 Apr 2021 02:29:15 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 1316T3vt127344;
+        Thu, 1 Apr 2021 01:29:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1617258543;
+        bh=KgBDGJ0sBNbDZTEK8XA9+PiWEA3UFuwSnVfZ41ihSig=;
+        h=Subject:To:References:From:Date:In-Reply-To;
+        b=XJDBSvBTZwj1fFiNU1DZ0BKx/+xgT1/U1Cs+c61RuuuKXXmO6l3hrqsch+snfOU3T
+         jQRgwd7M06cBmve6HCi71eSfZrnHgWi68qq2w775LmBg0I1hCO8hLeDp6i5er32gPI
+         D+kh1gPMW7TXY3lhNPzUZm0N8FaD4cgOG8Gp9imU=
+Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 1316T2v8061277
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 1 Apr 2021 01:29:03 -0500
+Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Thu, 1 Apr
+ 2021 01:29:02 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE110.ent.ti.com
+ (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
+ Frontend Transport; Thu, 1 Apr 2021 01:29:02 -0500
+Received: from [10.250.234.120] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 1316SxlP017070;
+        Thu, 1 Apr 2021 01:29:00 -0500
+Subject: Re: [PATCH 2/4] arm64: dts: ti: k3-j7200-mcu: Fix ospi compatible
+To:     Pratyush Yadav <p.yadav@ti.com>, Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, Nishanth Menon <nm@ti.com>,
+        Tero Kristo <kristo@kernel.org>, <linux-spi@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20210326130034.15231-1-p.yadav@ti.com>
+ <20210326130034.15231-3-p.yadav@ti.com>
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+Message-ID: <9e63fa94-d313-b8f3-8cb9-3ca8fe6b4e16@ti.com>
+Date:   Thu, 1 Apr 2021 11:58:59 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.69.192.56]
-X-CFilter-Loop: Reflected
+In-Reply-To: <20210326130034.15231-3-p.yadav@ti.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Use the device_get_match_data() helper instead of open coding.
 
-Signed-off-by: Tian Tao <tiantao6@hisilicon.com>
----
- drivers/spi/spi-orion.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index 68ed7fd..d02c5c9 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -634,7 +634,6 @@ MODULE_DEVICE_TABLE(of, orion_spi_of_match_table);
- 
- static int orion_spi_probe(struct platform_device *pdev)
- {
--	const struct of_device_id *of_id;
- 	const struct orion_spi_dev *devdata;
- 	struct spi_master *master;
- 	struct orion_spi *spi;
-@@ -676,9 +675,8 @@ static int orion_spi_probe(struct platform_device *pdev)
- 	spi->master = master;
- 	spi->dev = &pdev->dev;
- 
--	of_id = of_match_device(orion_spi_of_match_table, &pdev->dev);
--	devdata = (of_id) ? of_id->data : &orion_spi_dev_data;
--	spi->devdata = devdata;
-+	devdata = device_get_match_data(&pdev->dev);
-+	spi->devdata = devdata ? devdata : &orion_spi_dev_data;
- 
- 	spi->clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(spi->clk)) {
--- 
-2.7.4
+On 3/26/21 6:30 PM, Pratyush Yadav wrote:
+> The TI specific compatible should be followed by the generic
+> "cdns,qspi-nor" compatible.
+> 
+> Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+> ---
 
+Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
+
+>  arch/arm64/boot/dts/ti/k3-j7200-mcu-wakeup.dtsi | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/boot/dts/ti/k3-j7200-mcu-wakeup.dtsi b/arch/arm64/boot/dts/ti/k3-j7200-mcu-wakeup.dtsi
+> index 5408ec815d58..2ab5a7a15bd5 100644
+> --- a/arch/arm64/boot/dts/ti/k3-j7200-mcu-wakeup.dtsi
+> +++ b/arch/arm64/boot/dts/ti/k3-j7200-mcu-wakeup.dtsi
+> @@ -271,7 +271,7 @@ hbmc: hyperbus@47034000 {
+>  		};
+>  
+>  		ospi0: spi@47040000 {
+> -			compatible = "ti,am654-ospi";
+> +			compatible = "ti,am654-ospi", "cdns,qspi-nor";
+>  			reg = <0x0 0x47040000 0x0 0x100>,
+>  			      <0x5 0x00000000 0x1 0x0000000>;
+>  			interrupts = <GIC_SPI 840 IRQ_TYPE_LEVEL_HIGH>;
+> 

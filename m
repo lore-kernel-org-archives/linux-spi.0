@@ -2,187 +2,151 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BB5CC433B4
-	for <linux-spi@archiver.kernel.org>; Wed,  7 Apr 2021 07:24:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E220C433ED
+	for <linux-spi@archiver.kernel.org>; Wed,  7 Apr 2021 09:55:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id F38DB61177
-	for <linux-spi@archiver.kernel.org>; Wed,  7 Apr 2021 07:24:49 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 52ED16139C
+	for <linux-spi@archiver.kernel.org>; Wed,  7 Apr 2021 09:55:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349427AbhDGHYz (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 7 Apr 2021 03:24:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38704 "EHLO
+        id S1346529AbhDGJ4C (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 7 Apr 2021 05:56:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238957AbhDGHYz (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 7 Apr 2021 03:24:55 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D667C061756
-        for <linux-spi@vger.kernel.org>; Wed,  7 Apr 2021 00:24:46 -0700 (PDT)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1lU2YK-00056i-DB; Wed, 07 Apr 2021 09:24:40 +0200
-Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1lU2YJ-0008B6-QN; Wed, 07 Apr 2021 09:24:39 +0200
-Date:   Wed, 7 Apr 2021 09:24:39 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Stephen Boyd <sboyd@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        linux-clk <linux-clk@vger.kernel.org>
-Subject: Re: [PATCH v4 6/6] spi: davinci: Simplify using
- devm_clk_get_enabled()
-Message-ID: <20210407072439.niicbbvdzuegkagf@pengutronix.de>
-References: <20210330181755.204339-1-u.kleine-koenig@pengutronix.de>
- <20210330181755.204339-7-u.kleine-koenig@pengutronix.de>
- <20210331120212.GB4758@sirena.org.uk>
- <20210406065727.i7wbve2ihdblq24p@pengutronix.de>
- <CAMuHMdXD3UgbLWD2pEc-Y=OstdYn0riuBaXFZvwZMQ0Xem6soA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="po3m4xovm6fxqdn6"
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdXD3UgbLWD2pEc-Y=OstdYn0riuBaXFZvwZMQ0Xem6soA@mail.gmail.com>
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-spi@vger.kernel.org
+        with ESMTP id S234496AbhDGJ4B (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 7 Apr 2021 05:56:01 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23D65C061756
+        for <linux-spi@vger.kernel.org>; Wed,  7 Apr 2021 02:55:52 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id y13so23198871ybk.20
+        for <linux-spi@vger.kernel.org>; Wed, 07 Apr 2021 02:55:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=VWa5xUA+9GCbJ9DlX5ZS/vYDVMc9Ch1YyfdrjHd7dd4=;
+        b=l4ISsIo1bCuQjUNIgt5hBLv04y2KMWkLr8ycFUvTmUS1L60UoCeg6r+xF2uXACr9G7
+         gtff5aMua90RcvRhqs0K6ZxyqBgkJLp/O8NIXvdzKp8NSYCQIAVKALwnZtmVzrnlTdqY
+         pLkcrC9RQCmCdoXht41Ltsf1XOEA8n2es//viRP+JwcHmYZdpOdQZxnRB+lJbqEv16sJ
+         9sRqNu9M7dm/gaoNQLvhZAir9oSgytTkAkS8fgzEiQaaTmb5p9nZ+KHrc60CgtvlCvxJ
+         70LmqbFCnO4S53pFGa65A3NYsvKcDw1M9Q+5E2TJN+69oHiHX1MOidauxabSv9wWmBB8
+         eyPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=VWa5xUA+9GCbJ9DlX5ZS/vYDVMc9Ch1YyfdrjHd7dd4=;
+        b=iRNPwsTQwVSBDylDED3ZJl1rc2cvaT/JRK4ixlfCIsvMkpsxnZv7zOURy+p49Ve/hi
+         0Ax2AttbBAu0s/ySbsV5zGUMqCQ2/XFxOPUpewOs19W2MLeOdChqgQzwVeTmqZl9P5Vw
+         L9tXA6vJeOPwJwz8974wlyBzKC7fuTh+XjEP7Zt7zE63GlmFrRtZYTdQyNt8Qmp5c+NI
+         KD6AXlpcazKjxRQaKXvK9YfbBrjKeqsOghdyIX0AtNWn3bWjRhDnkVlj/Z3tjzzDmJsv
+         or5YhqSYjZxEczWGLg3HzwTFpkLB5VVStVC40RFwWsFXOtn7Owjg2ZE4TDlAs9WRbhq+
+         sMjQ==
+X-Gm-Message-State: AOAM532A+QkqFA+iAtIYvI6OOuLjmFET84EY486H3YVirF/eWX/W0U8T
+        XG40GAPpJp/N4BGUmuhFnS5tvj8=
+X-Google-Smtp-Source: ABdhPJyJvh62KGCku6InpD3zbdy6kT1gK50K3AlsQwz2jwnin3/vG1dPL3EQ/d36idH/3WQsHniYwSU=
+X-Received: from wak-linux.svl.corp.google.com ([2620:15c:2c5:3:d5a1:fccd:85fb:f380])
+ (user=wak job=sendgmr) by 2002:a25:d0c7:: with SMTP id h190mr3349871ybg.428.1617789351418;
+ Wed, 07 Apr 2021 02:55:51 -0700 (PDT)
+Date:   Wed,  7 Apr 2021 02:55:27 -0700
+Message-Id: <20210407095527.2771582-1-wak@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.31.0.208.g409f899ff0-goog
+Subject: [PATCH] spi: Fix use-after-free with devm_spi_alloc_*
+From:   "William A. Kennington III" <wak@google.com>
+To:     broonie@kernel.org
+Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Joel Stanley <joel@jms.id.au>,
+        "William A. Kennington III" <wak@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+We can't rely on the contents of the devres list during
+spi_unregister_controller(), as the list is already torn down at the
+time we perform devres_find() for devm_spi_release_controller. This
+causes devices registered with devm_spi_alloc_{master,slave}() to be
+mistakenly identified as legacy, non-devm managed devices and have their
+reference counters decremented below 0.
 
---po3m4xovm6fxqdn6
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 660 at lib/refcount.c:28 refcount_warn_saturate+0x108/0x174
+[<b0396f04>] (refcount_warn_saturate) from [<b03c56a4>] (kobject_put+0x90/0x98)
+[<b03c5614>] (kobject_put) from [<b0447b4c>] (put_device+0x20/0x24)
+ r4:b6700140
+[<b0447b2c>] (put_device) from [<b07515e8>] (devm_spi_release_controller+0x3c/0x40)
+[<b07515ac>] (devm_spi_release_controller) from [<b045343c>] (release_nodes+0x84/0xc4)
+ r5:b6700180 r4:b6700100
+[<b04533b8>] (release_nodes) from [<b0454160>] (devres_release_all+0x5c/0x60)
+ r8:b1638c54 r7:b117ad94 r6:b1638c10 r5:b117ad94 r4:b163dc10
+[<b0454104>] (devres_release_all) from [<b044e41c>] (__device_release_driver+0x144/0x1ec)
+ r5:b117ad94 r4:b163dc10
+[<b044e2d8>] (__device_release_driver) from [<b044f70c>] (device_driver_detach+0x84/0xa0)
+ r9:00000000 r8:00000000 r7:b117ad94 r6:b163dc54 r5:b1638c10 r4:b163dc10
+[<b044f688>] (device_driver_detach) from [<b044d274>] (unbind_store+0xe4/0xf8)
 
-On Wed, Apr 07, 2021 at 09:00:33AM +0200, Geert Uytterhoeven wrote:
-> Hi Uwe,
->=20
-> I'm not Mark, but I'd like to share my 2=E2=82=ACc.
->=20
-> On Tue, Apr 6, 2021 at 3:43 PM Uwe Kleine-K=C3=B6nig
-> <u.kleine-koenig@pengutronix.de> wrote:
-> > On Wed, Mar 31, 2021 at 01:02:12PM +0100, Mark Brown wrote:
-> > > On Tue, Mar 30, 2021 at 08:17:55PM +0200, Uwe Kleine-K=C3=B6nig wrote:
-> > > > devm_clk_get_enabled() returns the clk already (prepared and) enabl=
-ed
-> > > > and the automatically called cleanup cares for disabling (and
-> > > > unpreparing). So simplify .probe() and .remove() accordingly.
-> > >
-> > > Acked-by: Mark Brown <broonie@kernel.org>
-> >
-> > Thanks. I wonder what you think about this series. Is it more "Well, ok,
-> > if you must, the change you did to this spi driver looks correct." or
-> > "This is a good simplification and a similar change for nearly all other
-> > spi drivers that make use of a clk is possible, too. Dear clk
-> > maintainers, please go forward and apply this useful series."?
->=20
-> While this simplifies drivers, this makes it harder to add power
-> management by controlling the clocks through Runtime PM later, as that
-> will require reverting the s/devm_clk_get/devm_clk_get_enabled/ again.
+Instead, determine the devm allocation state as a flag on the
+controller which is guaranteed to be stable during cleanup.
 
-Hmm, if you start with a driver that uses devm_clk_get_enabled() you
-have to do:
+Fixes: 5e844cc37a5c ("spi: Introduce device-managed SPI controller allocation")
+Signed-off-by: William A. Kennington III <wak@google.com>
+---
+ drivers/spi/spi.c       | 9 ++-------
+ include/linux/spi/spi.h | 3 +++
+ 2 files changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 63ee918ecdb0..07855f89290e 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -936,7 +936,7 @@ static int davinci_spi_probe(struct platform_device *pd=
-ev)
-=20
- 	dspi->bitbang.master =3D master;
-=20
--	dspi->clk =3D devm_clk_get_enabled(&pdev->dev, NULL);
-+	dspi->clk =3D devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(dspi->clk)) {
- 		ret =3D -ENODEV;
- 		goto free_master;
-
-(+ adding runtime PM of course). When you start with the previous state
-of the driver you have to do:
-
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 7453a1dbbc06..07855f89290e 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -941,9 +941,6 @@ static int davinci_spi_probe(struct platform_device *pd=
-ev)
- 		ret =3D -ENODEV;
- 		goto free_master;
- 	}
--	ret =3D clk_prepare_enable(dspi->clk);
--	if (ret)
--		goto free_master;
-=20
- 	master->use_gpio_descriptors =3D true;
- 	master->dev.of_node =3D pdev->dev.of_node;
-@@ -968,7 +965,7 @@ static int davinci_spi_probe(struct platform_device *pd=
-ev)
-=20
- 	ret =3D davinci_spi_request_dma(dspi);
- 	if (ret =3D=3D -EPROBE_DEFER) {
--		goto free_clk;
-+		goto free_master;
- 	} else if (ret) {
- 		dev_info(&pdev->dev, "DMA is not supported (%d)\n", ret);
- 		dspi->dma_rx =3D NULL;
-@@ -1012,8 +1009,6 @@ static int davinci_spi_probe(struct platform_device *=
-pdev)
- 		dma_release_channel(dspi->dma_rx);
- 		dma_release_channel(dspi->dma_tx);
- 	}
--free_clk:
--	clk_disable_unprepare(dspi->clk);
- free_master:
- 	spi_master_put(master);
- err:
-@@ -1039,8 +1034,6 @@ static int davinci_spi_remove(struct platform_device =
-*pdev)
-=20
- 	spi_bitbang_stop(&dspi->bitbang);
-=20
--	clk_disable_unprepare(dspi->clk);
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index b08efe88ccd6..904a353798b6 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2496,6 +2496,7 @@ struct spi_controller *__devm_spi_alloc_controller(struct device *dev,
+ 
+ 	ctlr = __spi_alloc_controller(dev, size, slave);
+ 	if (ctlr) {
++		ctlr->devm_allocated = true;
+ 		*ptr = ctlr;
+ 		devres_add(dev, ptr);
+ 	} else {
+@@ -2842,11 +2843,6 @@ int devm_spi_register_controller(struct device *dev,
+ }
+ EXPORT_SYMBOL_GPL(devm_spi_register_controller);
+ 
+-static int devm_spi_match_controller(struct device *dev, void *res, void *ctlr)
+-{
+-	return *(struct spi_controller **)res == ctlr;
+-}
 -
- 	if (dspi->dma_rx) {
- 		dma_release_channel(dspi->dma_rx);
- 		dma_release_channel(dspi->dma_tx);
+ static int __unregister(struct device *dev, void *null)
+ {
+ 	spi_unregister_device(to_spi_device(dev));
+@@ -2893,8 +2889,7 @@ void spi_unregister_controller(struct spi_controller *ctlr)
+ 	/* Release the last reference on the controller if its driver
+ 	 * has not yet been converted to devm_spi_alloc_master/slave().
+ 	 */
+-	if (!devres_find(ctlr->dev.parent, devm_spi_release_controller,
+-			 devm_spi_match_controller, ctlr))
++	if (!ctlr->devm_allocated)
+ 		put_device(&ctlr->dev);
+ 
+ 	/* free bus id */
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 592897fa4f03..643139b1eafe 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -510,6 +510,9 @@ struct spi_controller {
+ 
+ #define SPI_MASTER_GPIO_SS		BIT(5)	/* GPIO CS must select slave */
+ 
++	/* flag indicating this is a non-devres managed controller */
++	bool			devm_allocated;
++
+ 	/* flag indicating this is an SPI slave controller */
+ 	bool			slave;
+ 
+-- 
+2.31.0.208.g409f899ff0-goog
 
-(+ again adding runtime PM of course). Do you really think the latter is
-the easier approach? Or what am I missing?
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=C3=B6nig         =
-   |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---po3m4xovm6fxqdn6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmBtXjQACgkQwfwUeK3K
-7AkD8wf9Fi9020AeaOFzrLUuf+rXxbiQk3LyA26ozpXIKcW34B2wswDxLu/NWz+l
-NdU5rOm0oW40wAU5V2yfVg6w34N0Wt2PzWlKdWpUR3/reOxbmrxqD5baE7LyJUYN
-Z4H8pXPSl1TtqflKOC+MKF643mHLk7VyO+5QUFo7w9qfuKXV/3OWmJfTMVMeziSQ
-PHy10q1vup2gFe1w+TPmHuoj1/jPqtW7ziaNKrvKcIOPfDkYcPWP8frLorhx5/FP
-18X5bKpxDYnxaXZn5+/zXVJZdTV1lco1mMQaR2pGBl0wBPTcSGn886+KrjuLM3uv
-3Qy3jfrxldrf7skMOFiYMb1dQS6C5w==
-=DHcI
------END PGP SIGNATURE-----
-
---po3m4xovm6fxqdn6--

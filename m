@@ -2,84 +2,97 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DED4DC43461
-	for <linux-spi@archiver.kernel.org>; Wed,  7 Apr 2021 20:27:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9CEB1C433ED
+	for <linux-spi@archiver.kernel.org>; Thu,  8 Apr 2021 00:54:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B788B6100A
-	for <linux-spi@archiver.kernel.org>; Wed,  7 Apr 2021 20:27:12 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4348D61205
+	for <linux-spi@archiver.kernel.org>; Thu,  8 Apr 2021 00:54:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356143AbhDGU1W (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 7 Apr 2021 16:27:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57188 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1356306AbhDGU0z (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 7 Apr 2021 16:26:55 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 564DF611CC;
-        Wed,  7 Apr 2021 20:26:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617827205;
-        bh=aBi+ztS1JcoQHX4AoXcwLhI2piOEHtrnfEvzNlbOAyE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g2w3YlXmQEzhw8sGgU8CvwdVE9XXYLC2Umo4SQJHUTdkF4Ffc83AXYa7/o+yA38SY
-         Nhl67rL4IuJXLPdU72sIgazOtIPPYQFFVWZMUmH3BwEO+80E2ACj0bMyPvyaXhFlfT
-         wCpi3aRvwdipZQWrUsfCF1rbvO/nAvmZiKEE/Dj1Ee/7fBcDvYDe9AoQBHgouf7fXu
-         fMbRYh/f9gnOejaplgGrabJnX0yGOJ9UJ3mJRBzWLzLincHMuLZf8/R4wuS8tgo+p2
-         Cti/K/Iwu/cgSSryFIAz1sxr3BIGaM63ebbl1y6mn/u0m3JDgiFCbfHpmAvgpLa8B+
-         7OhmhT1nUOOzg==
-From:   Mark Brown <broonie@kernel.org>
-To:     Jay Fang <f.fangjian@huawei.com>, linux-spi@vger.kernel.org
-Cc:     Mark Brown <broonie@kernel.org>, huangdaode@huawei.com,
-        sfr@canb.auug.org.au, linuxarm@huawei.com
-Subject: Re: [PATCH-next] spi: hisi-kunpeng: Fix Woverflow warning on conversion
-Date:   Wed,  7 Apr 2021 21:26:19 +0100
-Message-Id: <161782716302.42932.3548818185133947415.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <1617762660-54681-1-git-send-email-f.fangjian@huawei.com>
-References: <1617762660-54681-1-git-send-email-f.fangjian@huawei.com>
+        id S229869AbhDHAzD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 7 Apr 2021 20:55:03 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:16026 "EHLO
+        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229849AbhDHAzD (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 7 Apr 2021 20:55:03 -0400
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.59])
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4FG2lm6jLWzNtnp;
+        Thu,  8 Apr 2021 08:52:04 +0800 (CST)
+Received: from localhost.localdomain (10.69.192.56) by
+ DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
+ 14.3.498.0; Thu, 8 Apr 2021 08:54:42 +0800
+From:   Tian Tao <tiantao6@hisilicon.com>
+To:     <broonie@kernel.org>
+CC:     <linux-spi@vger.kernel.org>, Tian Tao <tiantao6@hisilicon.com>,
+        "Yicong Yang" <yangyicong@hisilicon.com>
+Subject: [PATCH] spi: simplify devm_spi_register_controller
+Date:   Thu, 8 Apr 2021 08:55:07 +0800
+Message-ID: <1617843307-53853-1-git-send-email-tiantao6@hisilicon.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.69.192.56]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 7 Apr 2021 10:31:00 +0800, Jay Fang wrote:
-> Fix warning Woverflow on type conversion reported on x86_64:
-> 
->   drivers/spi/spi-hisi-kunpeng.c:361:9: warning: conversion from 'long unsigned int' to 'u32'
->   {aka 'unsigned int'} changes value from '18446744073709551600' to '4294967280' [-Woverflow]
-> 
-> The registers are 32 bit, so fix by casting to u32.
+Use devm_add_action_or_reset() instead of devres_alloc() and
+devres_add(), which works the same. This will simplify the
+code. There is no functional changes.
 
-Applied to
+Signed-off-by: Tian Tao <tiantao6@hisilicon.com>
+Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+---
+ drivers/spi/spi.c | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 2fe3c3a..b1419a3 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2793,9 +2793,9 @@ int spi_register_controller(struct spi_controller *ctlr)
+ }
+ EXPORT_SYMBOL_GPL(spi_register_controller);
+ 
+-static void devm_spi_unregister(struct device *dev, void *res)
++static void devm_spi_unregister(void *ctlr)
+ {
+-	spi_unregister_controller(*(struct spi_controller **)res);
++	spi_unregister_controller(ctlr);
+ }
+ 
+ /**
+@@ -2814,22 +2814,13 @@ static void devm_spi_unregister(struct device *dev, void *res)
+ int devm_spi_register_controller(struct device *dev,
+ 				 struct spi_controller *ctlr)
+ {
+-	struct spi_controller **ptr;
+ 	int ret;
+ 
+-	ptr = devres_alloc(devm_spi_unregister, sizeof(*ptr), GFP_KERNEL);
+-	if (!ptr)
+-		return -ENOMEM;
+-
+ 	ret = spi_register_controller(ctlr);
+-	if (!ret) {
+-		*ptr = ctlr;
+-		devres_add(dev, ptr);
+-	} else {
+-		devres_free(ptr);
+-	}
++	if (ret)
++		return ret;
+ 
+-	return ret;
++	return devm_add_action_or_reset(dev, devm_spi_unregister, ctlr);
+ }
+ EXPORT_SYMBOL_GPL(devm_spi_register_controller);
+ 
+-- 
+2.7.4
 
-Thanks!
-
-[1/1] spi: hisi-kunpeng: Fix Woverflow warning on conversion
-      commit: 9a446cf97af70ee81ba177703b67ac4955a5edcc
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

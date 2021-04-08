@@ -7,31 +7,31 @@ X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BBFB0C43462
-	for <linux-spi@archiver.kernel.org>; Thu,  8 Apr 2021 11:34:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 09EEEC43600
+	for <linux-spi@archiver.kernel.org>; Thu,  8 Apr 2021 11:34:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7352E6112F
+	by mail.kernel.org (Postfix) with ESMTP id CAB6A6113C
 	for <linux-spi@archiver.kernel.org>; Thu,  8 Apr 2021 11:34:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231240AbhDHLen (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S231310AbhDHLen (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Thu, 8 Apr 2021 07:34:43 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:16839 "EHLO
+Received: from szxga07-in.huawei.com ([45.249.212.35]:16840 "EHLO
         szxga07-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231292AbhDHLem (ORCPT
+        with ESMTP id S231289AbhDHLem (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Thu, 8 Apr 2021 07:34:42 -0400
 Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4FGJyV1tjYz7tyG;
+        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4FGJyV24V7z7tyH;
         Thu,  8 Apr 2021 19:32:18 +0800 (CST)
 Received: from localhost.localdomain (10.67.165.24) by
  DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
- 14.3.498.0; Thu, 8 Apr 2021 19:34:20 +0800
+ 14.3.498.0; Thu, 8 Apr 2021 19:34:19 +0800
 From:   Yicong Yang <yangyicong@hisilicon.com>
 To:     <broonie@kernel.org>, <linux-spi@vger.kernel.org>
 CC:     <john.garry@huawei.com>, <prime.zeng@huawei.com>,
         <yangyicong@hisilicon.com>, <linuxarm@huawei.com>
-Subject: [PATCH 2/2] spi: hisi-sfv-v3xx: drop unnecessary ACPI_PTR and related ifendif protection
-Date:   Thu, 8 Apr 2021 19:31:45 +0800
-Message-ID: <1617881505-51552-3-git-send-email-yangyicong@hisilicon.com>
+Subject: [PATCH 1/2] spi: hisi-sfc-v3xx: fix potential irq race condition
+Date:   Thu, 8 Apr 2021 19:31:44 +0800
+Message-ID: <1617881505-51552-2-git-send-email-yangyicong@hisilicon.com>
 X-Mailer: git-send-email 2.8.1
 In-Reply-To: <1617881505-51552-1-git-send-email-yangyicong@hisilicon.com>
 References: <1617881505-51552-1-git-send-email-yangyicong@hisilicon.com>
@@ -43,54 +43,28 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The ACPI_PTR() and related IS_ENABLED(CONFIG_ACPI) protection is
-redundant, so drop them.
+We mask the irq when the command completion is timeout. This won't
+stop the already running irq handler. Use sychronize_irq() after
+we mask the irq, to make sure there is no running handler.
 
 Acked-by: John Garry <john.garry@huawei.com>
 Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
 ---
- drivers/spi/spi-hisi-sfc-v3xx.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/spi/spi-hisi-sfc-v3xx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/spi/spi-hisi-sfc-v3xx.c b/drivers/spi/spi-hisi-sfc-v3xx.c
-index 0d9e103..d3a23b1 100644
+index 385eb7b..0d9e103 100644
 --- a/drivers/spi/spi-hisi-sfc-v3xx.c
 +++ b/drivers/spi/spi-hisi-sfc-v3xx.c
-@@ -5,13 +5,13 @@
- // Copyright (c) 2019 HiSilicon Technologies Co., Ltd.
- // Author: John Garry <john.garry@huawei.com>
+@@ -342,6 +342,7 @@ static int hisi_sfc_v3xx_generic_exec_op(struct hisi_sfc_v3xx_host *host,
+ 			ret = 0;
  
--#include <linux/acpi.h>
- #include <linux/bitops.h>
- #include <linux/completion.h>
- #include <linux/dmi.h>
- #include <linux/interrupt.h>
- #include <linux/iopoll.h>
- #include <linux/module.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
- #include <linux/spi/spi.h>
-@@ -508,18 +508,16 @@ static int hisi_sfc_v3xx_probe(struct platform_device *pdev)
- 	return ret;
- }
- 
--#if IS_ENABLED(CONFIG_ACPI)
- static const struct acpi_device_id hisi_sfc_v3xx_acpi_ids[] = {
- 	{"HISI0341", 0},
- 	{}
- };
- MODULE_DEVICE_TABLE(acpi, hisi_sfc_v3xx_acpi_ids);
--#endif
- 
- static struct platform_driver hisi_sfc_v3xx_spi_driver = {
- 	.driver = {
- 		.name	= "hisi-sfc-v3xx",
--		.acpi_match_table = ACPI_PTR(hisi_sfc_v3xx_acpi_ids),
-+		.acpi_match_table = hisi_sfc_v3xx_acpi_ids,
- 	},
- 	.probe	= hisi_sfc_v3xx_probe,
- };
+ 		hisi_sfc_v3xx_disable_int(host);
++		synchronize_irq(host->irq);
+ 		host->completion = NULL;
+ 	} else {
+ 		ret = hisi_sfc_v3xx_wait_cmd_idle(host);
 -- 
 2.8.1
 

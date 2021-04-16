@@ -2,237 +2,629 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MSGID_FROM_MTA_HEADER,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CFBB8C433B4
-	for <linux-spi@archiver.kernel.org>; Fri, 16 Apr 2021 00:49:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E9C7BC433ED
+	for <linux-spi@archiver.kernel.org>; Fri, 16 Apr 2021 06:23:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B635D61152
-	for <linux-spi@archiver.kernel.org>; Fri, 16 Apr 2021 00:49:02 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BCE7E610F7
+	for <linux-spi@archiver.kernel.org>; Fri, 16 Apr 2021 06:23:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237474AbhDPAtZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 15 Apr 2021 20:49:25 -0400
-Received: from mail-co1nam11on2063.outbound.protection.outlook.com ([40.107.220.63]:57440
-        "EHLO NAM11-CO1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S237446AbhDPAtY (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 15 Apr 2021 20:49:24 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gP4cNNQ3v2DvU8s1MLQBXwpttQRulWZhfkyj0fP0c5/nwcCCKaXmYFDdu4UdYGSlE9laivLJ7tSPYuT7CVYwGB+7rEpQPM3A9EI663aIoTYmNTlr6Deo5yU3KbhzYGIMWyFBQSvchvZKys4RSJdVyxlx0gvX6pGAu9LNSY7HENv2niFYsquRIQkmSO137enfWQdkt1RCRDfXEUUTZg8WZ/ZWVVb9rK70xSUt15y3QCjrJgvlFq2y0ScsboSUMGjNiKSyLepkLlhoFcyE5+F7/YFBNDuuanepyoxEGihwUBAkQYtjHIVhDYFkkQL+69HcPuz+CTqgfll/cw/L0CzGdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W/EezMl+AMRAE05C1QQmPwko1nGRNn78okU3d+kht3E=;
- b=ctAVbgNYIYVp0sCPwgmcQrTySJ3SqOW4FXj8ConkW2mZPLc3wWExPpuUH/JulG7EP1TTCk3CTC9GGXNDAMqAYdA31k7vwKtdb/2FICHoHKJ795WuSFpGdvw2IQKu0ejRIiPYiLhNhqRST3UNFEtr+iSylcCr/LWK6ah7In42HGZwvPha0yPfOD8Vp4hjNOqAC4NT69PsF827Tjr33gyhUiVdX4V7BjuIMOGsJzOa+dfbBeuJmTZ2dQI0332BTMBbV30ZDoFGgjjuRuNAqtM341q8vfUi1M8udnrv6AfoIk3EYMhD9up1UiBFiqChJTze5whsdYXmf0JH9erjCx1BHQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+        id S234010AbhDPGYB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 16 Apr 2021 02:24:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48380 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233959AbhDPGYA (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 16 Apr 2021 02:24:00 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A58A3C061574;
+        Thu, 15 Apr 2021 23:23:34 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id u4so29829168ljo.6;
+        Thu, 15 Apr 2021 23:23:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=windriversystems.onmicrosoft.com;
- s=selector2-windriversystems-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W/EezMl+AMRAE05C1QQmPwko1nGRNn78okU3d+kht3E=;
- b=oDYN11H22RCWmnhtWNFYLAGCEbUHlTGmR3I3F8qg9C1IOYTIDOxUg0jad1HuMeguDWvr+Dual/efHpbLvHBZ4Pi4x6kJfaC0cbFGC4aUBEEIppnnt8RsFacTInGRVHGHActkegx32Az77T2HO4iCXihgq1VG8IqsyT0O04ABKeo=
-Authentication-Results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=windriver.com;
-Received: from CY4PR11MB0071.namprd11.prod.outlook.com (2603:10b6:910:7a::30)
- by CY4PR11MB1256.namprd11.prod.outlook.com (2603:10b6:903:25::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4020.21; Fri, 16 Apr
- 2021 00:49:00 +0000
-Received: from CY4PR11MB0071.namprd11.prod.outlook.com
- ([fe80::f45f:e820:49f5:3725]) by CY4PR11MB0071.namprd11.prod.outlook.com
- ([fe80::f45f:e820:49f5:3725%6]) with mapi id 15.20.3999.037; Fri, 16 Apr 2021
- 00:49:00 +0000
-From:   quanyang.wang@windriver.com
-To:     Mark Brown <broonie@kernel.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Amit Kumar Mahapatra <amit.kumar-mahapatra@xilinx.com>
-Cc:     linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Quanyang Wang <quanyang.wang@windriver.com>
-Subject: [PATCH 5/5] spi: spi-zynqmp-gqspi: return -ENOMEM if dma_map_single fails
-Date:   Fri, 16 Apr 2021 08:46:52 +0800
-Message-Id: <20210416004652.2975446-6-quanyang.wang@windriver.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210416004652.2975446-1-quanyang.wang@windriver.com>
-References: <20210416004652.2975446-1-quanyang.wang@windriver.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [60.247.85.82]
-X-ClientProxiedBy: SJ0PR13CA0026.namprd13.prod.outlook.com
- (2603:10b6:a03:2c0::31) To CY4PR11MB0071.namprd11.prod.outlook.com
- (2603:10b6:910:7a::30)
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=LPQNC+/K9cDWeD81t/XChlaTfizecQyy9HzjDnHPc30=;
+        b=AfEp/Pm7///FhR/VDUKHrtlsArtHaa09LAO0mqkwUaEP0RoI4/cgP0zgQPCOT2D6ND
+         K5COYuhwsHzbbKmjAoFbnXVqLJOyALdJ7MR1rvCnIG2RfjJSgNJxgq/2cljw1E3knacU
+         FqcilSTNRn4iSYkAhFtf1Zfz2Pfj5gv/oAKrwNk4lqFxS3ksunjT1kOJw1z88jfrHkQW
+         JGGeR/vKEmqvjOGJqTHTgkyjqDpTxHfElLWAZq9U8c4+mh3iX7rhEIFmQU16kBv5z7o0
+         +BCYrrnIApROi3RK8Do8WcvAlA5vw6HuT3u4JWeENy45PpFfI+P/B4db2gilbcko8LbJ
+         GArQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=LPQNC+/K9cDWeD81t/XChlaTfizecQyy9HzjDnHPc30=;
+        b=jDtV7mJ6zOvepyTWJ1D7l3p81g2btxjmrjpOt3BlJzFKjzL4XfLVk4YXuVpieqdU09
+         fc7Sc4id+IK+TaE6Vpi56qGZuMi7xif/fJxd5phiKQQtITc098Ah4i5/vgv0Njsyt4h9
+         1b7nI6sDzMZ0rG3imxPiutte39V4amMlgvWzjYIrEBv9aKfQk9qs7UnoSnbEqhaHfffH
+         AQdp5YF6FdWr8sujbLjMReZp0YYLsJkOrIHzyhKIq4PmOQ7Q+2VRVisDA7bImqSVSpRI
+         JEQbx6UJhqubEXdPMTEDRm8t+HWoEuFAEcqE7GkT0kvA7priWHejB0WoFyHvqtdYoEg3
+         EbYw==
+X-Gm-Message-State: AOAM532Kx0Y6EkrFXB31h5b/kyFo8EwwdsrwICND4yIIzQM4Uo7xryWm
+        0px6EDFhqMk1cpx0uC55pDo=
+X-Google-Smtp-Source: ABdhPJy8GtzgYYxhG/4eNd5a8Z57U1WV/pCKElcAaTqX2WfrPRDlhvWsSDY6PMkUo56AU8XH9r8N9Q==
+X-Received: by 2002:a2e:8885:: with SMTP id k5mr1690367lji.27.1618554213048;
+        Thu, 15 Apr 2021 23:23:33 -0700 (PDT)
+Received: from localhost.lan (ip-194-187-74-233.konfederacka.maverick.com.pl. [194.187.74.233])
+        by smtp.gmail.com with ESMTPSA id f9sm891051lft.242.2021.04.15.23.23.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Apr 2021 23:23:32 -0700 (PDT)
+From:   =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>
+To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>
+Cc:     Kamal Dasu <kdasu.kdev@gmail.com>, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>
+Subject: [PATCH V2] dt-bindings: spi: brcm,spi-bcm-qspi: convert to the json-schema
+Date:   Fri, 16 Apr 2021 08:23:20 +0200
+Message-Id: <20210416062320.21414-1-zajec5@gmail.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20210415220201.16429-1-zajec5@gmail.com>
+References: <20210415220201.16429-1-zajec5@gmail.com>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from pek-qwang2-d1.wrs.com (60.247.85.82) by SJ0PR13CA0026.namprd13.prod.outlook.com (2603:10b6:a03:2c0::31) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4065.8 via Frontend Transport; Fri, 16 Apr 2021 00:48:57 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: bdcf291b-8a08-4072-d5f6-08d900716c14
-X-MS-TrafficTypeDiagnostic: CY4PR11MB1256:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <CY4PR11MB125622A5587680B1C774B99EF04C9@CY4PR11MB1256.namprd11.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Bi5Lwz+ZW5n+X6LAFjj9hsz8FBLP1ciDR3vdv0936TS8Rg88CLvyD1ls+uou6YIKqsMfTlTRtM1xPpZnukzi9R5fokp5BWRl4QzJLS3keLaFWNtEC/OaDUtOfLyhKBc3w5vxkP3UcxPwokobB8UcrWx4+QIMPyZ7l5mdlsH0yBJh7zEOm6Z4deu+2kJu/1jQwhUuBoTiVp3lnmDXcADLMObFFrTf3VU4CyM9Fe65ipr3U4rT23OylV+5B6Rspmd4TE8LsUlWI+SRTKZ5R+O2v5H8FODodsBFgHiGuwWS5O2TpQslcd/Bp1n+tBrIN61Y4PuJTpos6LmAiDjK1WAzraPxQy4eiSOCtPWvt7IVauvGYPDeo4yIxVpieag6LPs9DKdxC6wjM7m4m/uCDS9Yj7NB/KhryBBZu3lD0MqUshoqLAIGBH8MJr+m58VBfeR0bzTvGqsvcixOro2yzPkrR7hn8FyPp6O07SPPh6/op+qR2hp9aDTHE9MvDT+8uPtW9j9jhMwHqfGAarOXp9vQczn7qVwlVeIGuiwJzi5/KuaWe9LgJ2hV3baW4GjQJOtekHUMw63cgSJysZe3TD87F4zjwVBOeNeZ3jkzqYB1G16UTiDvTn5FKhfZEd/6hmhR7q5EBgGylKQP4ifaGEuOSQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY4PR11MB0071.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39840400004)(376002)(366004)(346002)(396003)(136003)(956004)(66476007)(2616005)(6666004)(66946007)(86362001)(83380400001)(4326008)(6506007)(66556008)(107886003)(5660300002)(52116002)(1076003)(6486002)(9686003)(2906002)(316002)(26005)(36756003)(8676002)(6512007)(38100700002)(110136005)(38350700002)(16526019)(478600001)(186003)(8936002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?sH5eort9NIO7eIyRFUygEWDWc82HIWBJqWX97AGQQItfqW5O8wtHbtQ2jbqP?=
- =?us-ascii?Q?fQ5ihyP1IV5enTo0cxbiO9QhId1doySpx5FChDzi8eMck2DDgz9zFF1cvSsM?=
- =?us-ascii?Q?HSFHXoMFS9vZoxIZ2wo8jPXzDv6ENNinLsDh9WgdSx2UNnV8zlP7dWKu+SqJ?=
- =?us-ascii?Q?eFTPDHQMnMcEJEpVYcZT5oeVtAVv/EwVLc7BWQ2fsgrtdQy5bXYefrxPF5FD?=
- =?us-ascii?Q?UTLqaK5QEbaD9bneXsr2MJ/ENRN69IVsgRXi6RM334Ke8xi8qwL/Ah536XyB?=
- =?us-ascii?Q?acbJ/L6xjeuiWXnY++2CLrHpBsGUzP40xs0DYKPWGCwLsKvfbBvT+K+iw/Ny?=
- =?us-ascii?Q?v7AWZ7mKKksMHs53ZuDh1HljNIIeDwOn4wR+auVW5TCBnFyye7CERrUabx7v?=
- =?us-ascii?Q?bBDb50hI98HZWb66ep+KqWUdriYhJb1k6OyYp9ntVYsiKQnSVPuIXRpKh1nP?=
- =?us-ascii?Q?JHA5DAupAKUA2nc65A/fZtmQyChxulcltRoSk/yaID0ZY+adsX3MLWb7pZuG?=
- =?us-ascii?Q?JAKDjxCenjXWdpbK5TlGIuQL3ln9vGZRZuTDkRJrEkCrJCIZJIF8rKg5wVBw?=
- =?us-ascii?Q?tMYffp4YNmvviBgwn4MFCHhR/nLqDa4oEkAvZuWVkF+rmgQFsMY2FKbSuqT/?=
- =?us-ascii?Q?FJq7P+nQdsBMIIwVju3Nwh1T3FUNe38bSt/iu/gQuwH0qW5W4OTqAKfhJMXu?=
- =?us-ascii?Q?9NwwUJQDTuFAI5IO/I77LHTdw0C2gwC6xRggVe9zJ42xmdwo9+BjmP1TAa1E?=
- =?us-ascii?Q?PuwOwFiWCQmUB3GYrvF6d5iO7dI3oLNs+RkAnERWymL1i+HXIjFMZoARhosq?=
- =?us-ascii?Q?Svu5y9dh8MMGhKl8o5RilKbRMIpNV4todH4Aqw0RANr5YJ+8M9/fA3XiajBT?=
- =?us-ascii?Q?AHGYKzrd0bSw94HtTfzVp4THYI7ztGKVE5UtGdUkYTvclMjiNI68PuYs5SYu?=
- =?us-ascii?Q?ryDdqfpinqPzzOi2Bo/FwCLdOhjnEgToHcwQdlKmusS4j18NJVh28leTvhOq?=
- =?us-ascii?Q?XdJdpoZP++3H3RVHzjaD6cOLSjZAX1XhKUQtSpg7Xnm1V7z6dUAZ6K/pCMlP?=
- =?us-ascii?Q?UPXnfkl/LXIfK/t4u4wLmlDigilwgxE6SejQhNFQNILmSLTQUWrVIX72tgSN?=
- =?us-ascii?Q?GHKsPLRrZ80Y1BZCi9rOzD7OQYpLJS/KVo2OO8YFlBoRfYUt+RrVl+7IeM3M?=
- =?us-ascii?Q?rIApggsu94LwB2TP6V9yg2wFy2hO9g0viPo9d+HGME/Pys6PvjFJKu2kagGs?=
- =?us-ascii?Q?REL+28MmKwy4134ea6DlvPsJp9V0+5ahAYG19f74wbmtAiZDPNHNW9Z6nbnZ?=
- =?us-ascii?Q?ns1ID5NBwlXV4wmlAxtIMjr2?=
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bdcf291b-8a08-4072-d5f6-08d900716c14
-X-MS-Exchange-CrossTenant-AuthSource: CY4PR11MB0071.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2021 00:48:59.9072
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jYrkqdtiav9mgpSi3fOXbuhD4QWLtnuv2symjG02Ofrt6wl5Yu9eSx6zNHqga29M9zN5gBW9xQWJsBRK30HyMmcjFYqQzaxh6fMnFMAhUfc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR11MB1256
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Quanyang Wang <quanyang.wang@windriver.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-The spi controller supports 44-bit address space on AXI in DMA mode,
-so set dma_addr_t width to 44-bit to avoid using a swiotlb mapping.
-In addition, if dma_map_single fails, it should return immediately
-instead of continuing doing the DMA operation which bases on invalid
-address.
+This helps validating DTS files.
 
-This fixes the following crash which occurs in reading a big block
-from flash:
+Changes that require mentioning:
+1. reg-names
+   "mspi_regs" and "bspi_regs" were renamed to "mspi" and "bspi" as that
+   is what's used in DTS files and in Linux driver
+2. interrupt-names
+   Names were reordered. "mspi_done" has to go first as it's always
+   required.
+3. spi-rx-bus-width
+   Property description was dropped as it's part of the
+   spi-controller.yaml
+4. Examples:
+   * flash0@0 was a duplicated node and got dropped
+   * regs and interrupts were formatted and reordered to match yaml
+   * <0x1c> was replaced with <&gic>
 
-[  123.633577] zynqmp-qspi ff0f0000.spi: swiotlb buffer is full (sz: 4194304 bytes), total 32768 (slots), used 0 (slots)
-[  123.644230] zynqmp-qspi ff0f0000.spi: ERR:rxdma:memory not mapped
-[  123.784625] Unable to handle kernel paging request at virtual address 00000000003fffc0
-[  123.792536] Mem abort info:
-[  123.795313]   ESR = 0x96000145
-[  123.798351]   EC = 0x25: DABT (current EL), IL = 32 bits
-[  123.803655]   SET = 0, FnV = 0
-[  123.806693]   EA = 0, S1PTW = 0
-[  123.809818] Data abort info:
-[  123.812683]   ISV = 0, ISS = 0x00000145
-[  123.816503]   CM = 1, WnR = 1
-[  123.819455] user pgtable: 4k pages, 48-bit VAs, pgdp=0000000805047000
-[  123.825887] [00000000003fffc0] pgd=0000000803b45003, p4d=0000000803b45003, pud=0000000000000000
-[  123.834586] Internal error: Oops: 96000145 [#1] PREEMPT SMP
+This rewritten binding validates cleanly using the  "dt_binding_check".
+Some Linux stored DTS files will require reordering regs and interrupts
+to make dtbs_check happy.
 
-Fixes: 1c26372e5aa9 ("spi: spi-zynqmp-gqspi: Update driver to use spi-mem framework")
-Signed-off-by: Quanyang Wang <quanyang.wang@windriver.com>
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
 ---
- drivers/spi/spi-zynqmp-gqspi.c | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+V2: Add Kamal as maintainer
+---
+ .../bindings/spi/brcm,spi-bcm-qspi.txt        | 245 -----------------
+ .../bindings/spi/brcm,spi-bcm-qspi.yaml       | 247 ++++++++++++++++++
+ MAINTAINERS                                   |   2 +-
+ 3 files changed, 248 insertions(+), 246 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.txt
+ create mode 100644 Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.yaml
 
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index 419bc1e6358b..328b6559bb19 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -733,7 +733,7 @@ static irqreturn_t zynqmp_qspi_irq(int irq, void *dev_id)
-  * zynqmp_qspi_setuprxdma - This function sets up the RX DMA operation
-  * @xqspi:	xqspi is a pointer to the GQSPI instance.
-  */
--static void zynqmp_qspi_setuprxdma(struct zynqmp_qspi *xqspi)
-+static int zynqmp_qspi_setuprxdma(struct zynqmp_qspi *xqspi)
- {
- 	u32 rx_bytes, rx_rem, config_reg;
- 	dma_addr_t addr;
-@@ -747,7 +747,7 @@ static void zynqmp_qspi_setuprxdma(struct zynqmp_qspi *xqspi)
- 		zynqmp_gqspi_write(xqspi, GQSPI_CONFIG_OFST, config_reg);
- 		xqspi->mode = GQSPI_MODE_IO;
- 		xqspi->dma_rx_bytes = 0;
--		return;
-+		return 0;
- 	}
- 
- 	rx_rem = xqspi->bytes_to_receive % 4;
-@@ -755,8 +755,10 @@ static void zynqmp_qspi_setuprxdma(struct zynqmp_qspi *xqspi)
- 
- 	addr = dma_map_single(xqspi->dev, (void *)xqspi->rxbuf,
- 			      rx_bytes, DMA_FROM_DEVICE);
--	if (dma_mapping_error(xqspi->dev, addr))
-+	if (dma_mapping_error(xqspi->dev, addr)) {
- 		dev_err(xqspi->dev, "ERR:rxdma:memory not mapped\n");
-+		return -ENOMEM;
-+	}
- 
- 	xqspi->dma_rx_bytes = rx_bytes;
- 	xqspi->dma_addr = addr;
-@@ -777,6 +779,8 @@ static void zynqmp_qspi_setuprxdma(struct zynqmp_qspi *xqspi)
- 
- 	/* Write the number of bytes to transfer */
- 	zynqmp_gqspi_write(xqspi, GQSPI_QSPIDMA_DST_SIZE_OFST, rx_bytes);
+diff --git a/Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.txt b/Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.txt
+deleted file mode 100644
+index d99a9cf3336b..000000000000
+--- a/Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.txt
++++ /dev/null
+@@ -1,245 +0,0 @@
+-Broadcom SPI controller
+-
+-The Broadcom SPI controller is a SPI master found on various SOCs, including
+-BRCMSTB (BCM7XXX), Cygnus, NSP and NS2. The Broadcom Master SPI hw IP consits
+-of :
+- MSPI : SPI master controller can read and write to a SPI slave device
+- BSPI : Broadcom SPI in combination with the MSPI hw IP provides acceleration
+-	for flash reads and be configured to do single, double, quad lane
+-	io with 3-byte and 4-byte addressing support.
+-
+- Supported Broadcom SoCs have one instance of MSPI+BSPI controller IP.
+- MSPI master can be used wihout BSPI. BRCMSTB SoCs have an additional instance
+- of a MSPI master without the BSPI to use with non flash slave devices that
+- use SPI protocol.
+-
+-Required properties:
+-
+-- #address-cells:
+-    Must be <1>, as required by generic SPI binding.
+-
+-- #size-cells:
+-    Must be <0>, also as required by generic SPI binding.
+-
+-- compatible:
+-    Must be one of :
+-    "brcm,spi-brcmstb-qspi", "brcm,spi-bcm-qspi" : MSPI+BSPI on BRCMSTB SoCs
+-    "brcm,spi-brcmstb-mspi", "brcm,spi-bcm-qspi" : Second Instance of MSPI
+-						   BRCMSTB  SoCs
+-    "brcm,spi-bcm7425-qspi", "brcm,spi-bcm-qspi", "brcm,spi-brcmstb-mspi" : Second Instance of MSPI
+-    			     			  			    BRCMSTB  SoCs
+-    "brcm,spi-bcm7429-qspi", "brcm,spi-bcm-qspi", "brcm,spi-brcmstb-mspi" : Second Instance of MSPI
+-    			     			  			    BRCMSTB  SoCs
+-    "brcm,spi-bcm7435-qspi", "brcm,spi-bcm-qspi", "brcm,spi-brcmstb-mspi" : Second Instance of MSPI
+-    			     			  			    BRCMSTB  SoCs
+-    "brcm,spi-bcm7445-qspi", "brcm,spi-bcm-qspi", "brcm,spi-brcmstb-mspi" : Second Instance of MSPI
+-                                                                            BRCMSTB  SoCs
+-    "brcm,spi-bcm7216-qspi", "brcm,spi-bcm-qspi", "brcm,spi-brcmstb-mspi" : Second Instance of MSPI
+-    			     			  			    BRCMSTB  SoCs
+-    "brcm,spi-bcm7278-qspi", "brcm,spi-bcm-qspi", "brcm,spi-brcmstb-mspi" : Second Instance of MSPI
+-    			     			  			    BRCMSTB  SoCs
+-    "brcm,spi-nsp-qspi", "brcm,spi-bcm-qspi"     : MSPI+BSPI on Cygnus, NSP
+-    "brcm,spi-ns2-qspi", "brcm,spi-bcm-qspi"     : NS2 SoCs
+-
+-- reg:
+-    Define the bases and ranges of the associated I/O address spaces.
+-    The required range is MSPI controller registers.
+-
+-- reg-names:
+-    First name does not matter, but must be reserved for the MSPI controller
+-    register range as mentioned in 'reg' above, and will typically contain
+-    - "bspi_regs": BSPI register range, not required with compatible
+-		   "spi-brcmstb-mspi"
+-    - "mspi_regs": MSPI register range is required for compatible strings
+-    - "intr_regs", "intr_status_reg" : Interrupt and status register for
+-      NSP, NS2, Cygnus SoC
+-
+-- interrupts
+-    The interrupts used by the MSPI and/or BSPI controller.
+-
+-- interrupt-names:
+-    Names of interrupts associated with MSPI
+-    - "mspi_halted" :
+-    - "mspi_done": Indicates that the requested SPI operation is complete.
+-    - "spi_lr_fullness_reached" : Linear read BSPI pipe full
+-    - "spi_lr_session_aborted"  : Linear read BSPI pipe aborted
+-    - "spi_lr_impatient" : Linear read BSPI requested when pipe empty
+-    - "spi_lr_session_done" : Linear read BSPI session done
+-
+-- clocks:
+-    A phandle to the reference clock for this block.
+-
+-Optional properties:
+-
+-
+-- native-endian
+-    Defined when using BE SoC and device uses BE register read/write
+-
+-Recommended optional m25p80 properties:
+-- spi-rx-bus-width: Definition as per
+-                    Documentation/devicetree/bindings/spi/spi-bus.txt
+-
+-Examples:
+-
+-BRCMSTB SoC Example:
+-
+-  SPI Master (MSPI+BSPI) for SPI-NOR access:
+-
+-    spi@f03e3400 {
+-		#address-cells = <0x1>;
+-		#size-cells = <0x0>;
+-		compatible = "brcm,spi-brcmstb-qspi", "brcm,spi-bcm-qspi";
+-		reg = <0xf03e0920 0x4 0xf03e3400 0x188 0xf03e3200 0x50>;
+-		reg-names = "cs_reg", "mspi", "bspi";
+-		interrupts = <0x6 0x5 0x4 0x3 0x2 0x1 0x0>;
+-		interrupt-parent = <0x1c>;
+-		interrupt-names = "mspi_halted",
+-				  "mspi_done",
+-				  "spi_lr_overread",
+-				  "spi_lr_session_done",
+-				  "spi_lr_impatient",
+-				  "spi_lr_session_aborted",
+-				  "spi_lr_fullness_reached";
+-
+-		clocks = <&hif_spi>;
+-		clock-names = "sw_spi";
+-
+-		m25p80@0 {
+-			#size-cells = <0x2>;
+-			#address-cells = <0x2>;
+-			compatible = "m25p80";
+-			reg = <0x0>;
+-			spi-max-frequency = <0x2625a00>;
+-			spi-cpol;
+-			spi-cpha;
+-			m25p,fast-read;
+-
+-			flash0.bolt@0 {
+-				reg = <0x0 0x0 0x0 0x100000>;
+-			};
+-
+-			flash0.macadr@100000 {
+-				reg = <0x0 0x100000 0x0 0x10000>;
+-			};
+-
+-			flash0.nvram@110000 {
+-				reg = <0x0 0x110000 0x0 0x10000>;
+-			};
+-
+-			flash0.kernel@120000 {
+-				reg = <0x0 0x120000 0x0 0x400000>;
+-			};
+-
+-			flash0.devtree@520000 {
+-				reg = <0x0 0x520000 0x0 0x10000>;
+-			};
+-
+-			flash0.splash@530000 {
+-				reg = <0x0 0x530000 0x0 0x80000>;
+-			};
+-
+-			flash0@0 {
+-				reg = <0x0 0x0 0x0 0x4000000>;
+-			};
+-		};
+-	};
+-
+-
+-    MSPI master for any SPI device :
+-
+-	spi@f0416000 {
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		clocks = <&upg_fixed>;
+-		compatible = "brcm,spi-brcmstb-mspi", "brcm,spi-bcm-qspi";
+-		reg = <0xf0416000 0x180>;
+-		reg-names = "mspi";
+-		interrupts = <0x14>;
+-		interrupt-parent = <&irq0_aon_intc>;
+-		interrupt-names = "mspi_done";
+-	};
+-
+-iProc SoC Example:
+-
+-    qspi: spi@18027200 {
+-	compatible = "brcm,spi-nsp-qspi", "brcm,spi-bcm-qspi";
+-	reg = <0x18027200 0x184>,
+-	      <0x18027000 0x124>,
+-	      <0x1811c408 0x004>,
+-	      <0x180273a0 0x01c>;
+-	reg-names = "mspi_regs", "bspi_regs", "intr_regs", "intr_status_reg";
+-	interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>,
+-		     <GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH>,
+-		     <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>,
+-		     <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>,
+-		     <GIC_SPI 76 IRQ_TYPE_LEVEL_HIGH>,
+-		     <GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>,
+-		     <GIC_SPI 78 IRQ_TYPE_LEVEL_HIGH>;
+-	interrupt-names =
+-		     "spi_lr_fullness_reached",
+-		     "spi_lr_session_aborted",
+-		     "spi_lr_impatient",
+-		     "spi_lr_session_done",
+-		     "mspi_done",
+-		     "mspi_halted";
+-	clocks = <&iprocmed>;
+-	clock-names = "iprocmed";
+-	num-cs = <2>;
+-	#address-cells = <1>;
+-	#size-cells = <0>;
+-    };
+-
+-
+- NS2 SoC Example:
+-
+-	       qspi: spi@66470200 {
+-		       compatible = "brcm,spi-ns2-qspi", "brcm,spi-bcm-qspi";
+-		       reg = <0x66470200 0x184>,
+-			     <0x66470000 0x124>,
+-			     <0x67017408 0x004>,
+-			     <0x664703a0 0x01c>;
+-		       reg-names = "mspi", "bspi", "intr_regs",
+-			"intr_status_reg";
+-		       interrupts = <GIC_SPI 419 IRQ_TYPE_LEVEL_HIGH>;
+-		       interrupt-names = "spi_l1_intr";
+-			clocks = <&iprocmed>;
+-			clock-names = "iprocmed";
+-			num-cs = <2>;
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-	       };
+-
+-
+- m25p80 node for NSP, NS2
+-
+-	 &qspi {
+-		      flash: m25p80@0 {
+-		      #address-cells = <1>;
+-		      #size-cells = <1>;
+-		      compatible = "m25p80";
+-		      reg = <0x0>;
+-		      spi-max-frequency = <12500000>;
+-		      m25p,fast-read;
+-		      spi-cpol;
+-		      spi-cpha;
+-
+-		      partition@0 {
+-				  label = "boot";
+-				  reg = <0x00000000 0x000a0000>;
+-		      };
+-
+-		      partition@a0000 {
+-				  label = "env";
+-				  reg = <0x000a0000 0x00060000>;
+-		      };
+-
+-		      partition@100000 {
+-				  label = "system";
+-				  reg = <0x00100000 0x00600000>;
+-		      };
+-
+-		      partition@700000 {
+-				  label = "rootfs";
+-				  reg = <0x00700000 0x01900000>;
+-		      };
+-	};
+diff --git a/Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.yaml b/Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.yaml
+new file mode 100644
+index 000000000000..598a3984dada
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.yaml
+@@ -0,0 +1,247 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/brcm,spi-bcm-qspi.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+	return 0;
- }
- 
- /**
-@@ -813,11 +817,17 @@ static void zynqmp_qspi_write_op(struct zynqmp_qspi *xqspi, u8 tx_nbits,
-  * @genfifoentry:	genfifoentry is pointer to the variable in which
-  *			GENFIFO	mask is returned to calling function
-  */
--static void zynqmp_qspi_read_op(struct zynqmp_qspi *xqspi, u8 rx_nbits,
-+static int zynqmp_qspi_read_op(struct zynqmp_qspi *xqspi, u8 rx_nbits,
- 				u32 genfifoentry)
- {
--	zynqmp_qspi_setuprxdma(xqspi);
-+	int ret;
++title: Broadcom SPI controller
 +
-+	ret = zynqmp_qspi_setuprxdma(xqspi);
-+	if (ret)
-+		return ret;
- 	zynqmp_qspi_fillgenfifo(xqspi, rx_nbits, genfifoentry);
++maintainers:
++  - Kamal Dasu <kdasu.kdev@gmail.com>
++  - Rafał Miłecki <rafal@milecki.pl>
 +
-+	return 0;
- }
- 
- /**
-@@ -1031,8 +1041,11 @@ static int zynqmp_qspi_exec_op(struct spi_mem *mem,
- 			xqspi->rxbuf = (u8 *)op->data.buf.in;
- 			xqspi->bytes_to_receive = op->data.nbytes;
- 			xqspi->bytes_to_transfer = 0;
--			zynqmp_qspi_read_op(xqspi, op->data.buswidth,
-+			err = zynqmp_qspi_read_op(xqspi, op->data.buswidth,
- 					    genfifoentry);
-+			if (err)
-+				goto return_err;
++description: |
++  The Broadcom SPI controller is a SPI master found on various SOCs, including
++  BRCMSTB (BCM7XXX), Cygnus, NSP and NS2. The Broadcom Master SPI hw IP consits
++  of:
++    MSPI : SPI master controller can read and write to a SPI slave device
++    BSPI : Broadcom SPI in combination with the MSPI hw IP provides acceleration
++           for flash reads and be configured to do single, double, quad lane
++           io with 3-byte and 4-byte addressing support.
 +
- 			zynqmp_gqspi_write(xqspi, GQSPI_CONFIG_OFST,
- 					   zynqmp_gqspi_read
- 					   (xqspi, GQSPI_CONFIG_OFST) |
-@@ -1159,6 +1172,7 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 		goto clk_dis_all;
- 	}
- 
-+	dma_set_mask(&pdev->dev, DMA_BIT_MASK(44));
- 	ctlr->bits_per_word_mask = SPI_BPW_MASK(8);
- 	ctlr->num_chipselect = GQSPI_DEFAULT_NUM_CS;
- 	ctlr->mem_ops = &zynqmp_qspi_mem_ops;
++  Supported Broadcom SoCs have one instance of MSPI+BSPI controller IP.
++  MSPI master can be used wihout BSPI. BRCMSTB SoCs have an additional instance
++  of a MSPI master without the BSPI to use with non flash slave devices that
++  use SPI protocol.
++
++allOf:
++  - $ref: spi-controller.yaml#
++
++properties:
++  compatible:
++    oneOf:
++      - description: Second Instance of MSPI BRCMSTB SoCs
++        items:
++          - enum:
++              - brcm,spi-bcm7425-qspi
++              - brcm,spi-bcm7429-qspi
++              - brcm,spi-bcm7435-qspi
++              - brcm,spi-bcm7445-qspi
++              - brcm,spi-bcm7216-qspi
++              - brcm,spi-bcm7278-qspi
++          - const: brcm,spi-bcm-qspi
++          - const: brcm,spi-brcmstb-mspi
++      - description: Second Instance of MSPI BRCMSTB SoCs
++        items:
++          - enum:
++              - brcm,spi-brcmstb-qspi
++              - brcm,spi-brcmstb-mspi
++              - brcm,spi-nsp-qspi
++              - brcm,spi-ns2-qspi
++          - const: brcm,spi-bcm-qspi
++
++  reg:
++    minItems: 1
++    maxItems: 5
++
++  reg-names:
++    minItems: 1
++    maxItems: 5
++    items:
++      - const: mspi
++      - const: bspi
++      - enum: [ intr_regs, intr_status_reg, cs_reg ]
++      - enum: [ intr_regs, intr_status_reg, cs_reg ]
++      - enum: [ intr_regs, intr_status_reg, cs_reg ]
++
++  interrupts:
++    minItems: 1
++    maxItems: 7
++
++  interrupt-names:
++    oneOf:
++      - minItems: 1
++        maxItems: 7
++        items:
++          - const: mspi_done
++          - const: mspi_halted
++          - const: spi_lr_fullness_reached
++          - const: spi_lr_session_aborted
++          - const: spi_lr_impatient
++          - const: spi_lr_session_done
++          - const: spi_lr_overread
++      - const: spi_l1_intr
++
++  clocks:
++    maxItems: 1
++    description: reference clock for this block
++
++  native-endian:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description: Defined when using BE SoC and device uses BE register read/write
++
++unevaluatedProperties: false
++
++required:
++  - reg
++  - reg-names
++  - interrupts
++  - interrupt-names
++
++examples:
++  - | # BRCMSTB SoC: SPI Master (MSPI+BSPI) for SPI-NOR access
++    spi@f03e3400 {
++            compatible = "brcm,spi-brcmstb-qspi", "brcm,spi-bcm-qspi";
++            reg = <0xf03e3400 0x188>, <0xf03e3200 0x50>, <0xf03e0920 0x4>;
++            reg-names = "mspi", "bspi", "cs_reg";
++            interrupts = <0x5 0x6 0x1 0x2 0x3 0x4 0x0>;
++            interrupt-parent = <&gic>;
++            interrupt-names = "mspi_done",
++                              "mspi_halted",
++                              "spi_lr_fullness_reached",
++                              "spi_lr_session_aborted",
++                              "spi_lr_impatient",
++                              "spi_lr_session_done",
++                              "spi_lr_overread";
++            clocks = <&hif_spi>;
++            clock-names = "sw_spi";
++            #address-cells = <0x1>;
++            #size-cells = <0x0>;
++
++            m25p80@0 {
++                    #size-cells = <0x2>;
++                    #address-cells = <0x2>;
++                    compatible = "m25p80";
++                    reg = <0x0>;
++                    spi-max-frequency = <0x2625a00>;
++                    spi-cpol;
++                    spi-cpha;
++                    m25p,fast-read;
++
++                    flash0.bolt@0 {
++                        reg = <0x0 0x0 0x0 0x100000>;
++                    };
++
++                    flash0.macadr@100000 {
++                        reg = <0x0 0x100000 0x0 0x10000>;
++                    };
++
++                    flash0.nvram@110000 {
++                        reg = <0x0 0x110000 0x0 0x10000>;
++                    };
++
++                    flash0.kernel@120000 {
++                        reg = <0x0 0x120000 0x0 0x400000>;
++                    };
++
++                    flash0.devtree@520000 {
++                        reg = <0x0 0x520000 0x0 0x10000>;
++                    };
++
++                    flash0.splash@530000 {
++                        reg = <0x0 0x530000 0x0 0x80000>;
++                    };
++            };
++    };
++  - | # BRCMSTB SoC: MSPI master for any SPI device
++    spi@f0416000 {
++            clocks = <&upg_fixed>;
++            compatible = "brcm,spi-brcmstb-mspi", "brcm,spi-bcm-qspi";
++            reg = <0xf0416000 0x180>;
++            reg-names = "mspi";
++            interrupts = <0x14>;
++            interrupt-parent = <&irq0_aon_intc>;
++            interrupt-names = "mspi_done";
++            #address-cells = <1>;
++            #size-cells = <0>;
++    };
++  - | # iProc SoC
++    #include <dt-bindings/interrupt-controller/irq.h>
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++
++    spi@18027200 {
++            compatible = "brcm,spi-nsp-qspi", "brcm,spi-bcm-qspi";
++            reg = <0x18027200 0x184>,
++                  <0x18027000 0x124>,
++                  <0x1811c408 0x004>,
++                  <0x180273a0 0x01c>;
++            reg-names = "mspi", "bspi", "intr_regs", "intr_status_reg";
++            interrupts = <GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>,
++                         <GIC_SPI 78 IRQ_TYPE_LEVEL_HIGH>,
++                         <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>,
++                         <GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH>,
++                         <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>,
++                         <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>,
++                         <GIC_SPI 76 IRQ_TYPE_LEVEL_HIGH>;
++            interrupt-names = "mspi_done",
++                              "mspi_halted",
++                              "spi_lr_fullness_reached",
++                              "spi_lr_session_aborted",
++                              "spi_lr_impatient",
++                              "spi_lr_session_done";
++            clocks = <&iprocmed>;
++            clock-names = "iprocmed";
++            num-cs = <2>;
++            #address-cells = <1>;
++            #size-cells = <0>;
++    };
++  - | # NS2 SoC
++    #include <dt-bindings/interrupt-controller/irq.h>
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++
++    qspi: spi@66470200 {
++            compatible = "brcm,spi-ns2-qspi", "brcm,spi-bcm-qspi";
++            reg = <0x66470200 0x184>,
++                  <0x66470000 0x124>,
++                  <0x67017408 0x004>,
++                  <0x664703a0 0x01c>;
++            reg-names = "mspi", "bspi", "intr_regs", "intr_status_reg";
++            interrupts = <GIC_SPI 419 IRQ_TYPE_LEVEL_HIGH>;
++            interrupt-names = "spi_l1_intr";
++            clocks = <&iprocmed>;
++            clock-names = "iprocmed";
++            num-cs = <2>;
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            flash: m25p80@0 {
++                    #address-cells = <1>;
++                    #size-cells = <1>;
++                    compatible = "m25p80";
++                    reg = <0x0>;
++                    spi-max-frequency = <12500000>;
++                    m25p,fast-read;
++                    spi-cpol;
++                    spi-cpha;
++
++                    partition@0 {
++                        label = "boot";
++                        reg = <0x00000000 0x000a0000>;
++                    };
++
++                    partition@a0000 {
++                        label = "env";
++                        reg = <0x000a0000 0x00060000>;
++                    };
++
++                    partition@100000 {
++                        label = "system";
++                        reg = <0x00100000 0x00600000>;
++                    };
++
++                    partition@700000 {
++                        label = "rootfs";
++                        reg = <0x00700000 0x01900000>;
++                    };
++            };
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a1c2b56f4f90..6fb31a735a0f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3696,7 +3696,7 @@ BROADCOM SPI DRIVER
+ M:	Kamal Dasu <kdasu.kdev@gmail.com>
+ M:	bcm-kernel-feedback-list@broadcom.com
+ S:	Maintained
+-F:	Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.txt
++F:	Documentation/devicetree/bindings/spi/brcm,spi-bcm-qspi.yaml
+ F:	drivers/spi/spi-bcm-qspi.*
+ F:	drivers/spi/spi-brcmstb-qspi.c
+ F:	drivers/spi/spi-iproc-qspi.c
 -- 
-2.25.1
+2.26.2
 

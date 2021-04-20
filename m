@@ -2,67 +2,161 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 487A4C433B4
-	for <linux-spi@archiver.kernel.org>; Tue, 20 Apr 2021 07:01:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 06E52C433ED
+	for <linux-spi@archiver.kernel.org>; Tue, 20 Apr 2021 07:01:34 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 12C6161220
-	for <linux-spi@archiver.kernel.org>; Tue, 20 Apr 2021 07:01:32 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C87E261073
+	for <linux-spi@archiver.kernel.org>; Tue, 20 Apr 2021 07:01:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230297AbhDTHCB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 20 Apr 2021 03:02:01 -0400
-Received: from twhmllg3.macronix.com ([122.147.135.201]:23577 "EHLO
+        id S230303AbhDTHCD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 20 Apr 2021 03:02:03 -0400
+Received: from twhmllg3.macronix.com ([122.147.135.201]:23592 "EHLO
         TWHMLLG3.macronix.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230153AbhDTHB4 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 20 Apr 2021 03:01:56 -0400
+        with ESMTP id S230291AbhDTHCC (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 20 Apr 2021 03:02:02 -0400
 Received: from TWHMLLG3.macronix.com (localhost [127.0.0.2] (may be forged))
-        by TWHMLLG3.macronix.com with ESMTP id 13K6V2oB084137
+        by TWHMLLG3.macronix.com with ESMTP id 13K6V2Wf084132
         for <linux-spi@vger.kernel.org>; Tue, 20 Apr 2021 14:31:02 +0800 (GMT-8)
         (envelope-from zhengxunli@mxic.com.tw)
 Received: from localhost.localdomain ([172.17.195.94])
-        by TWHMLLG3.macronix.com with ESMTP id 13K6UM7b083760;
-        Tue, 20 Apr 2021 14:30:22 +0800 (GMT-8)
+        by TWHMLLG3.macronix.com with ESMTP id 13K6UM7e083760;
+        Tue, 20 Apr 2021 14:30:39 +0800 (GMT-8)
         (envelope-from zhengxunli@mxic.com.tw)
 From:   Zhengxun Li <zhengxunli@mxic.com.tw>
 To:     linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org
 Cc:     tudor.ambarus@microchip.com, miquel.raynal@bootlin.com,
         broonie@kernel.org, jaimeliao@mxic.com.tw,
         Zhengxun Li <zhengxunli@mxic.com.tw>
-Subject: [PATCH v3 0/3] Add octal DTR support for Macronix flash
-Date:   Tue, 20 Apr 2021 14:29:36 +0800
-Message-Id: <1618900179-14546-1-git-send-email-zhengxunli@mxic.com.tw>
+Subject: [PATCH v3 3/3] spi: mxic: patch for octal DTR mode support
+Date:   Tue, 20 Apr 2021 14:29:39 +0800
+Message-Id: <1618900179-14546-4-git-send-email-zhengxunli@mxic.com.tw>
 X-Mailer: git-send-email 1.9.1
-X-MAIL: TWHMLLG3.macronix.com 13K6UM7b083760
+In-Reply-To: <1618900179-14546-1-git-send-email-zhengxunli@mxic.com.tw>
+References: <1618900179-14546-1-git-send-email-zhengxunli@mxic.com.tw>
+X-MAIL: TWHMLLG3.macronix.com 13K6UM7e083760
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This series adds support for Octal DTR for Macronix flashes. The
-first set of patches is add Macronix octal dtr mode support. The
-second set of patches add Macronix octaflash series support. The
-last add the Octal DTR mode support for host driver.
+Driver patch for octal DTR mode support.
 
-Changes in v3:
-- Add support for Macronix octaflash series.
+Owing to the spi_mem_default_supports_op() is not support dtr
+operation. Based on Pratyush patch "spi: spi-mem: add spi_mem_dtr
+_supports_op()" add spi_mem_dtr_supports_op() to support dtr and
+keep checking the buswidth and command bytes.
 
-Changes in v2:
-- Define with a generic name to describe the maximum dummy cycles.
-- Compare the ID directly in the loop, no longer copy and execute
-  memcmp().
-- Add spi_mem_dtr_supports_op() to support dtr operation.
+Signed-off-by: Zhengxun Li <zhengxunli@mxic.com.tw>
+---
+ drivers/spi/spi-mxic.c | 41 ++++++++++++++++++++++++++++++-----------
+ 1 file changed, 30 insertions(+), 11 deletions(-)
 
-Zhengxun Li (3):
-  mtd: spi-nor: macronix: add support for Macronix octal dtr operation
-  mtd: spi-nor: macronix: add support for Macronix octaflash series
-  spi: mxic: patch for octal DTR mode support
-
- drivers/mtd/spi-nor/macronix.c | 217 +++++++++++++++++++++++++++++++++++++++++
- drivers/spi/spi-mxic.c         |  41 +++++---
- 2 files changed, 247 insertions(+), 11 deletions(-)
-
+diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
+index 96b4182..32e757a 100644
+--- a/drivers/spi/spi-mxic.c
++++ b/drivers/spi/spi-mxic.c
+@@ -335,8 +335,10 @@ static int mxic_spi_data_xfer(struct mxic_spi *mxic, const void *txbuf,
+ static bool mxic_spi_mem_supports_op(struct spi_mem *mem,
+ 				     const struct spi_mem_op *op)
+ {
+-	if (op->data.buswidth > 4 || op->addr.buswidth > 4 ||
+-	    op->dummy.buswidth > 4 || op->cmd.buswidth > 4)
++	bool all_false;
++
++	if (op->data.buswidth > 8 || op->addr.buswidth > 8 ||
++	    op->dummy.buswidth > 8 || op->cmd.buswidth > 8)
+ 		return false;
+ 
+ 	if (op->data.nbytes && op->dummy.nbytes &&
+@@ -346,7 +348,13 @@ static bool mxic_spi_mem_supports_op(struct spi_mem *mem,
+ 	if (op->addr.nbytes > 7)
+ 		return false;
+ 
+-	return spi_mem_default_supports_op(mem, op);
++	all_false = !op->cmd.dtr && !op->addr.dtr && !op->dummy.dtr &&
++		    !op->data.dtr;
++
++	if (all_false)
++		return spi_mem_default_supports_op(mem, op);
++	else
++		return spi_mem_dtr_supports_op(mem, op);
+ }
+ 
+ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
+@@ -355,14 +363,15 @@ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
+ 	struct mxic_spi *mxic = spi_master_get_devdata(mem->spi->master);
+ 	int nio = 1, i, ret;
+ 	u32 ss_ctrl;
+-	u8 addr[8];
+-	u8 opcode = op->cmd.opcode;
++	u8 addr[8], cmd[2];
+ 
+ 	ret = mxic_spi_set_freq(mxic, mem->spi->max_speed_hz);
+ 	if (ret)
+ 		return ret;
+ 
+-	if (mem->spi->mode & (SPI_TX_QUAD | SPI_RX_QUAD))
++	if (mem->spi->mode & (SPI_TX_OCTAL | SPI_RX_OCTAL))
++		nio = 8;
++	else if (mem->spi->mode & (SPI_TX_QUAD | SPI_RX_QUAD))
+ 		nio = 4;
+ 	else if (mem->spi->mode & (SPI_TX_DUAL | SPI_RX_DUAL))
+ 		nio = 2;
+@@ -374,19 +383,25 @@ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
+ 	       mxic->regs + HC_CFG);
+ 	writel(HC_EN_BIT, mxic->regs + HC_EN);
+ 
+-	ss_ctrl = OP_CMD_BYTES(1) | OP_CMD_BUSW(fls(op->cmd.buswidth) - 1);
++	ss_ctrl = OP_CMD_BYTES(op->cmd.nbytes) |
++		  OP_CMD_BUSW(fls(op->cmd.buswidth) - 1) |
++		  (op->cmd.dtr ? OP_CMD_DDR : 0);
+ 
+ 	if (op->addr.nbytes)
+ 		ss_ctrl |= OP_ADDR_BYTES(op->addr.nbytes) |
+-			   OP_ADDR_BUSW(fls(op->addr.buswidth) - 1);
++			   OP_ADDR_BUSW(fls(op->addr.buswidth) - 1) |
++			   (op->addr.dtr ? OP_ADDR_DDR : 0);
+ 
+ 	if (op->dummy.nbytes)
+ 		ss_ctrl |= OP_DUMMY_CYC(op->dummy.nbytes);
+ 
+ 	if (op->data.nbytes) {
+-		ss_ctrl |= OP_DATA_BUSW(fls(op->data.buswidth) - 1);
++		ss_ctrl |= OP_DATA_BUSW(fls(op->data.buswidth) - 1) |
++			   (op->data.dtr ? OP_DATA_DDR : 0);
+ 		if (op->data.dir == SPI_MEM_DATA_IN)
+ 			ss_ctrl |= OP_READ;
++			if (op->data.dtr)
++				ss_ctrl |= OP_DQS_EN;
+ 	}
+ 
+ 	writel(ss_ctrl, mxic->regs + SS_CTRL(mem->spi->chip_select));
+@@ -394,7 +409,10 @@ static int mxic_spi_mem_exec_op(struct spi_mem *mem,
+ 	writel(readl(mxic->regs + HC_CFG) | HC_CFG_MAN_CS_ASSERT,
+ 	       mxic->regs + HC_CFG);
+ 
+-	ret = mxic_spi_data_xfer(mxic, &opcode, NULL, 1);
++	for (i = 0; i < op->cmd.nbytes; i++)
++		cmd[i] = op->cmd.opcode >> (8 * (op->cmd.nbytes - i - 1));
++
++	ret = mxic_spi_data_xfer(mxic, cmd, NULL, op->cmd.nbytes);
+ 	if (ret)
+ 		goto out;
+ 
+@@ -567,7 +585,8 @@ static int mxic_spi_probe(struct platform_device *pdev)
+ 	master->bits_per_word_mask = SPI_BPW_MASK(8);
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA |
+ 			SPI_RX_DUAL | SPI_TX_DUAL |
+-			SPI_RX_QUAD | SPI_TX_QUAD;
++			SPI_RX_QUAD | SPI_TX_QUAD |
++			SPI_RX_OCTAL | SPI_TX_OCTAL;
+ 
+ 	mxic_spi_hw_init(mxic);
+ 
 -- 
 1.9.1
 

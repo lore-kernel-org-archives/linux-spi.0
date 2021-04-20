@@ -2,96 +2,199 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 91284C433B4
-	for <linux-spi@archiver.kernel.org>; Mon, 19 Apr 2021 20:40:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 72D9DC433ED
+	for <linux-spi@archiver.kernel.org>; Tue, 20 Apr 2021 07:01:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 659F9613AE
-	for <linux-spi@archiver.kernel.org>; Mon, 19 Apr 2021 20:40:24 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 41F1861354
+	for <linux-spi@archiver.kernel.org>; Tue, 20 Apr 2021 07:01:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237914AbhDSUkx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 19 Apr 2021 16:40:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43676 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234058AbhDSUkv (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 19 Apr 2021 16:40:51 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72083C06174A;
-        Mon, 19 Apr 2021 13:40:21 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id r12so54996420ejr.5;
-        Mon, 19 Apr 2021 13:40:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=bw5IhZj9aI8jPgCDzrQQ4QwlvPSxNH5FozaD2GGrtoc=;
-        b=EQWjTrDQWErqauELNSlzFJqDxUggWownGF1Zl0SbYFLRZNg18oQDmQgBMaSgK3Znyh
-         N6CU2dZ3okbBgirspmicEVs1v5dZvkFsSgV+RL789MI0nrXz+Qui2sZY3+YbCpiGZJuZ
-         52RmWeitwmK1hPGuYvf/Rjw3vMnvqmoPrUrBuBw2ECcLhhFqZkvgvuRuD34hG9yYP9tg
-         /RYEx2gfvpbukpYSg11CxN6gdJcOHs4pqvW+1HxdjVS/Blapd3IlaDf3MuiDP+2QoFSS
-         uqpk6kA4tA/sx3P9T+4mA9M7Oe9S6Yv4NBroHUkGDiz2HMr56XTxWCTCt/43xLbcxbmN
-         d+BA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=bw5IhZj9aI8jPgCDzrQQ4QwlvPSxNH5FozaD2GGrtoc=;
-        b=jFUhp6kdnI8eoC0tigjZXRo+gYDZvl8vloycJqEENuWWCEz1Y6l85aF0Okxv+p9T3U
-         8ufNc0JeqarurlejRbSkbMjDRiX6nyQk2t0sE6gOFyY0RwBqROpJDlloFKL2taFNOEes
-         QBWS+W2oc2VeqATRI48UTcDJAwKZymt2roWZoy6xwkGkPdoWjYxAgSSx9/kIz0WNiEgI
-         vEndL77pHz9HOnFd2aY9m3wKo8BxXFzUUibMvv/q/t2r0UsbrH/8dcc5LtqFCkX0iR9C
-         adZZ5HG7AAc1Lgmpemrxmk4XCRVkz/m07W5p2DlMRbdbTIoOPG1aJu6cSvGRmQ+l+V4V
-         gTAw==
-X-Gm-Message-State: AOAM530EFvFvZ9EzVFxufn7oprX7gbGuffLgH893TcHhK61wWbL+yrDC
-        jGAYdOHfeJU/BHdQFUyQq1QeyGT7Q82Dt7+r
-X-Google-Smtp-Source: ABdhPJzDdIhOuuVIdayRFbBhxGTyoEn2sTN+kHETsPJbSv0KGWp6thFGiMfRAlfnQS9P47NL+BlxRA==
-X-Received: by 2002:a17:906:7795:: with SMTP id s21mr23593421ejm.309.1618864820097;
-        Mon, 19 Apr 2021 13:40:20 -0700 (PDT)
-Received: from microndev.lxd (ipbcc00c74.dynamic.kabel-deutschland.de. [188.192.12.116])
-        by smtp.gmail.com with ESMTPSA id u4sm11056706ejf.11.2021.04.19.13.40.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Apr 2021 13:40:19 -0700 (PDT)
-From:   shiva.linuxworks@gmail.com
-X-Google-Original-From: sshivamurthy@micron.com
-To:     broonie@kernel.org, linux-spi@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Shivamurthy Shastri <sshivamurthy@micron.com>
-Subject: [PATCH] spidev: Add Micron SPI NOR Authenta device compatible
-Date:   Mon, 19 Apr 2021 20:40:15 +0000
-Message-Id: <20210419204015.1769-1-sshivamurthy@micron.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S230236AbhDTHBy (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 20 Apr 2021 03:01:54 -0400
+Received: from twhmllg3.macronix.com ([122.147.135.201]:23572 "EHLO
+        TWHMLLG3.macronix.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230153AbhDTHBy (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 20 Apr 2021 03:01:54 -0400
+X-Greylist: delayed 1821 seconds by postgrey-1.27 at vger.kernel.org; Tue, 20 Apr 2021 03:01:53 EDT
+Received: from TWHMLLG3.macronix.com (localhost [127.0.0.2] (may be forged))
+        by TWHMLLG3.macronix.com with ESMTP id 13K6V1DD084126
+        for <linux-spi@vger.kernel.org>; Tue, 20 Apr 2021 14:31:01 +0800 (GMT-8)
+        (envelope-from zhengxunli@mxic.com.tw)
+Received: from localhost.localdomain ([172.17.195.94])
+        by TWHMLLG3.macronix.com with ESMTP id 13K6UM7c083760;
+        Tue, 20 Apr 2021 14:30:30 +0800 (GMT-8)
+        (envelope-from zhengxunli@mxic.com.tw)
+From:   Zhengxun Li <zhengxunli@mxic.com.tw>
+To:     linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org
+Cc:     tudor.ambarus@microchip.com, miquel.raynal@bootlin.com,
+        broonie@kernel.org, jaimeliao@mxic.com.tw,
+        Zhengxun Li <zhengxunli@mxic.com.tw>
+Subject: [PATCH v3 1/3] mtd: spi-nor: macronix: add support for Macronix octal dtr operation
+Date:   Tue, 20 Apr 2021 14:29:37 +0800
+Message-Id: <1618900179-14546-2-git-send-email-zhengxunli@mxic.com.tw>
+X-Mailer: git-send-email 1.9.1
+In-Reply-To: <1618900179-14546-1-git-send-email-zhengxunli@mxic.com.tw>
+References: <1618900179-14546-1-git-send-email-zhengxunli@mxic.com.tw>
+X-MAIL: TWHMLLG3.macronix.com 13K6UM7c083760
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Shivamurthy Shastri <sshivamurthy@micron.com>
+The ocatflash is an xSPI compliant octal DTR flash. Add support
+for using it in octal DTR mode.
 
-Add compatible string for Micron SPI NOR Authenta device.
+Enable Octal DTR mode with 20 dummy cycles to allow running at the
+maximum supported frequency of 200Mhz.
 
-Signed-off-by: Shivamurthy Shastri <sshivamurthy@micron.com>
+Try to verify the flash ID to check whether the flash memory in octal
+DTR mode is correct. When reading ID in OCTAL DTR mode, ID will appear
+in a repeated manner. ex: ID[0] = 0xc2, ID[1] = 0xc2, ID[2] = 0x94,
+ID[3] = 0x94... Rearrange the order so that the ID can pass.
+
+Signed-off-by: Zhengxun Li <zhengxunli@mxic.com.tw>
 ---
- drivers/spi/spidev.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/spi-nor/macronix.c | 117 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 117 insertions(+)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 8cb4d923aeaa..f56e0e975a46 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -683,6 +683,7 @@ static const struct of_device_id spidev_dt_ids[] = {
- 	{ .compatible = "dh,dhcom-board" },
- 	{ .compatible = "menlo,m53cpld" },
- 	{ .compatible = "cisco,spi-petra" },
-+	{ .compatible = "micron,spi-authenta" },
- 	{},
+diff --git a/drivers/mtd/spi-nor/macronix.c b/drivers/mtd/spi-nor/macronix.c
+index 42c2cf3..881eaf8 100644
+--- a/drivers/mtd/spi-nor/macronix.c
++++ b/drivers/mtd/spi-nor/macronix.c
+@@ -8,6 +8,16 @@
+ 
+ #include "core.h"
+ 
++#define SPINOR_OP_RD_CR2		0x71		/* Read configuration register 2 */
++#define SPINOR_OP_WR_CR2		0x72		/* Write configuration register 2 */
++#define SPINOR_OP_MXIC_DTR_RD		0xee		/* Fast Read opcode in DTR mode */
++#define SPINOR_REG_MXIC_CR2_MODE	0x00000000	/* For setting octal DTR mode */
++#define SPINOR_REG_MXIC_OPI_DTR_EN	0x2		/* Enable Octal DTR */
++#define SPINOR_REG_MXIC_OPI_DTR_DIS	0x1		/* Disable Octal DTR */
++#define SPINOR_REG_MXIC_CR2_DC		0x00000300	/* For setting dummy cycles */
++#define SPINOR_REG_MXIC_DC_20		0x0		/* Setting dummy cycles to 20 */
++#define MXIC_MAX_DC			20		/* Maximum value of dummy cycles */
++
+ static int
+ mx25l25635_post_bfpt_fixups(struct spi_nor *nor,
+ 			    const struct sfdp_parameter_header *bfpt_header,
+@@ -32,6 +42,113 @@
+ 	.post_bfpt = mx25l25635_post_bfpt_fixups,
  };
- MODULE_DEVICE_TABLE(of, spidev_dt_ids);
+ 
++/**
++ * spi_nor_macronix_octal_dtr_enable() - Enable octal DTR on Macronix flashes.
++ * @nor:		pointer to a 'struct spi_nor'
++ * @enable:		whether to enable or disable Octal DTR
++ *
++ * This also sets the memory access dummy cycles to 20 to allow the flash to
++ * run at up to 200MHz.
++ *
++ * Return: 0 on success, -errno otherwise.
++ */
++static int spi_nor_macronix_octal_dtr_enable(struct spi_nor *nor, bool enable)
++{
++	struct spi_mem_op op;
++	u8 *buf = nor->bouncebuf, i;
++	int ret;
++
++	if (enable) {
++		/* Use 20 dummy cycles for memory array reads. */
++		ret = spi_nor_write_enable(nor);
++		if (ret)
++			return ret;
++
++		*buf = SPINOR_REG_MXIC_DC_20;
++		op = (struct spi_mem_op)
++			SPI_MEM_OP(SPI_MEM_OP_CMD(SPINOR_OP_WR_CR2, 1),
++				   SPI_MEM_OP_ADDR(4, SPINOR_REG_MXIC_CR2_DC, 1),
++				   SPI_MEM_OP_NO_DUMMY,
++				   SPI_MEM_OP_DATA_OUT(1, buf, 1));
++
++		ret = spi_mem_exec_op(nor->spimem, &op);
++		if (ret)
++			return ret;
++
++		ret = spi_nor_wait_till_ready(nor);
++		if (ret)
++			return ret;
++
++		nor->read_dummy = MXIC_MAX_DC;
++	}
++
++	/* Set/unset the octal and DTR enable bits. */
++	ret = spi_nor_write_enable(nor);
++	if (ret)
++		return ret;
++
++	if (enable)
++		*buf = SPINOR_REG_MXIC_OPI_DTR_EN;
++	else
++		*buf = SPINOR_REG_MXIC_OPI_DTR_DIS;
++
++	op = (struct spi_mem_op)
++		SPI_MEM_OP(SPI_MEM_OP_CMD(SPINOR_OP_WR_CR2, 1),
++			   SPI_MEM_OP_ADDR(4, SPINOR_REG_MXIC_CR2_MODE, 1),
++			   SPI_MEM_OP_NO_DUMMY,
++			   SPI_MEM_OP_DATA_OUT(1, buf, 1));
++
++	if (!enable)
++		spi_nor_spimem_setup_op(nor, &op, SNOR_PROTO_8_8_8_DTR);
++
++	ret = spi_mem_exec_op(nor->spimem, &op);
++	if (ret)
++		return ret;
++
++	/* Read flash ID to make sure the switch was successful. */
++	op = (struct spi_mem_op)
++		SPI_MEM_OP(SPI_MEM_OP_CMD(SPINOR_OP_RDID, 1),
++			   SPI_MEM_OP_ADDR(enable ? 4 : 0, 0, 1),
++			   SPI_MEM_OP_DUMMY(enable ? 4 : 0, 1),
++			   SPI_MEM_OP_DATA_IN(SPI_NOR_MAX_ID_LEN, buf, 1));
++
++	if (enable)
++		spi_nor_spimem_setup_op(nor, &op, SNOR_PROTO_8_8_8_DTR);
++
++	ret = spi_mem_exec_op(nor->spimem, &op);
++	if (ret)
++		return ret;
++
++	for (i = 0; i < nor->info->id_len; i++)
++		if (buf[i * 2] != nor->info->id[i])
++			return -EINVAL;
++
++	return 0;
++}
++
++static void octaflash_default_init(struct spi_nor *nor)
++{
++	nor->params->octal_dtr_enable = spi_nor_macronix_octal_dtr_enable;
++}
++
++static void octaflash_post_sfdp_fixup(struct spi_nor *nor)
++{
++	/* Set the Fast Read settings. */
++	nor->params->hwcaps.mask |= SNOR_HWCAPS_READ_8_8_8_DTR;
++	spi_nor_set_read_settings(&nor->params->reads[SNOR_CMD_READ_8_8_8_DTR],
++				  0, MXIC_MAX_DC, SPINOR_OP_MXIC_DTR_RD,
++				  SNOR_PROTO_8_8_8_DTR);
++
++	nor->cmd_ext_type = SPI_NOR_EXT_INVERT;
++	nor->params->rdsr_dummy = 4;
++	nor->params->rdsr_addr_nbytes = 4;
++}
++
++static struct spi_nor_fixups octaflash_fixups = {
++	.default_init = octaflash_default_init,
++	.post_sfdp = octaflash_post_sfdp_fixup,
++};
++
+ static const struct flash_info macronix_parts[] = {
+ 	/* Macronix */
+ 	{ "mx25l512e",   INFO(0xc22010, 0, 64 * 1024,   1, SECT_4K) },
 -- 
-2.25.1
+1.9.1
 

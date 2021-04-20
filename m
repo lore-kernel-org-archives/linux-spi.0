@@ -2,77 +2,83 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F329C433B4
-	for <linux-spi@archiver.kernel.org>; Tue, 20 Apr 2021 14:56:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 189E6C433ED
+	for <linux-spi@archiver.kernel.org>; Tue, 20 Apr 2021 15:07:08 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1ECA6613CA
-	for <linux-spi@archiver.kernel.org>; Tue, 20 Apr 2021 14:56:45 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C4425613AE
+	for <linux-spi@archiver.kernel.org>; Tue, 20 Apr 2021 15:07:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232787AbhDTO5P (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 20 Apr 2021 10:57:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57246 "EHLO mail.kernel.org"
+        id S232768AbhDTPHi (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 20 Apr 2021 11:07:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60054 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232507AbhDTO5P (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 20 Apr 2021 10:57:15 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id DB6AE613C9;
-        Tue, 20 Apr 2021 14:56:42 +0000 (UTC)
+        id S232764AbhDTPHh (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 20 Apr 2021 11:07:37 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2A3F760FF1;
+        Tue, 20 Apr 2021 15:07:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618930603;
-        bh=OjpAHxYSjz1nKguIwOjvjwG797cyGyxRd8zj1GA8A6I=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=QSi1gD4gRZii1uwZWu3lWIdjF68NqC0N2ErMHIfJSr9B2M4LxAR1tFLqHcXAyH8XU
-         qAcZN6Kzx0V82cKA4OzsAJHwDtTcrETA5zvlGn5DS2JRyaSYrVQ3OmVUpQyAXHqgT4
-         ZnRUXmA6fO5Uzs+Ab5XFMjtlnMCN06fX9Yh3rb79UZZdCtQGgMSHV0skPci6Rn8ED+
-         hTWyuZAvL3hfWxnIpnIHO/8n5Hxw4AQFdwL4MDTL+gW1igYuXWA+/ZxFk5uETX9gSt
-         zTKNmiLDuRWcyOyYUOYXWxe9OvEmBBpdtcjvCX/GmId605oKo4wqNs4DeiHpyVOAb1
-         pt3Ol4pRbgaug==
-Date:   Tue, 20 Apr 2021 15:56:16 +0100
+        s=k20201202; t=1618931225;
+        bh=xNMcMUsfGio6rPsrbelG3fNcGLs63Q8YwKi3OLjPnPI=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=q+yY3Q0l9TIsa9rvbhDYFMT94L+nJvaK+YStTueNISG0ZYzsUOpstWhhUnS+jEb+E
+         EaXoh2q/+iNoBAFDDZ2JXTchwWORAdOc2M86DpiuoKvuuqprHl81+ClJ0y+ux64VGi
+         q6CajxjMH70EtBvTWhZnerNoclorMJdvMkGGCz+SZSJ7EalCc0bDmIRrTu4P7lvDMN
+         OqckAQeyV8m7Sv3uK2w7cCUdZkAtGJkYv49ucm8UB3U4u/gGDQvIjdHg50NeAh8gdP
+         lngyl6dv8JcINEB85wTiBeKx8QEkpCZV32lPbs+wpB2o1tjgQrUW3ikv28VS4160/H
+         b6qhsOEIOBvGg==
 From:   Mark Brown <broonie@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 2/2] spi: Avoid potential UB when counting unused
- native CSs
-Message-ID: <20210420145616.GC6073@sirena.org.uk>
-References: <20210420141004.59936-1-andriy.shevchenko@linux.intel.com>
- <20210420141004.59936-2-andriy.shevchenko@linux.intel.com>
+To:     patrice.chotard@foss.st.com,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc:     Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        christophe.kerello@foss.st.com,
+        linux-stm32@st-md-mailman.stormreply.com, linux-spi@vger.kernel.org
+Subject: Re: spi: stm32-qspi: Fix compilation warning in ARM64
+Date:   Tue, 20 Apr 2021 16:06:37 +0100
+Message-Id: <161893071088.55669.5165788447992164184.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20210420082103.1693-1-patrice.chotard@foss.st.com>
+References: <20210420082103.1693-1-patrice.chotard@foss.st.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="8X7/QrJGcKSMr1RN"
-Content-Disposition: inline
-In-Reply-To: <20210420141004.59936-2-andriy.shevchenko@linux.intel.com>
-X-Cookie: Falling rock.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+On Tue, 20 Apr 2021 10:21:03 +0200, patrice.chotard@foss.st.com wrote:
+> This fixes warnings detected when compiling in ARM64.
+> Introduced by 'commit 18674dee3cd6 ("spi: stm32-qspi: Add dirmap support")'
 
---8X7/QrJGcKSMr1RN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied to
 
-On Tue, Apr 20, 2021 at 05:10:04PM +0300, Andy Shevchenko wrote:
-> ffz(), that has been used to count unused native CSs, might produce UB
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Bit of an IA there...
+Thanks!
 
---8X7/QrJGcKSMr1RN
-Content-Type: application/pgp-signature; name="signature.asc"
+[1/1] spi: stm32-qspi: Fix compilation warning in ARM64
+      commit: 1b8a7d4282c038b3846f2485d86cb990c55c38d9
 
------BEGIN PGP SIGNATURE-----
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmB+65AACgkQJNaLcl1U
-h9AJgQf/agvyEji+YtnLOMfyI4yiAeKBCbuq7ii0u6jLgUpgJBBA0cxRzNrUWCwt
-GPZyz+mbEm8XuHjviwgCDbRIC5Hr1r2HzDzD1LLPn1UmEwVC4MBJ/uY4x9pRa5gJ
-h/mfgt9U9k8mQzVIPwRq/ZWPAAXLA9uUf05a+sPmfgafrMcnAlDx+uiDZz0mRvZd
-Qd9B5qVd2sPhbgoYNwrARx8xMho0y8JryRVg5H3XIFmDWZa2bl5Wvjb42TEBiOXm
-Y6SIXzf0cLhWVqEf3pSOYA+DIfCYNY2otIrin7AaGYofLBqCC3J1gVgkP0zCIm1a
-XItdzeRynrjho8XN/kGghM2AklaDDg==
-=CmGw
------END PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---8X7/QrJGcKSMr1RN--
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

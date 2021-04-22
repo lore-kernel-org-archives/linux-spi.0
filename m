@@ -2,81 +2,115 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AB85DC433ED
-	for <linux-spi@archiver.kernel.org>; Wed, 21 Apr 2021 19:04:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 95117C43461
+	for <linux-spi@archiver.kernel.org>; Thu, 22 Apr 2021 06:57:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 83AC661453
-	for <linux-spi@archiver.kernel.org>; Wed, 21 Apr 2021 19:04:18 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5F0C16145C
+	for <linux-spi@archiver.kernel.org>; Thu, 22 Apr 2021 06:57:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245379AbhDUTEv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 21 Apr 2021 15:04:51 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35518 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S245377AbhDUTEr (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 21 Apr 2021 15:04:47 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4348A6145F;
-        Wed, 21 Apr 2021 19:04:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619031853;
-        bh=g/8nf17kbeStmv6J0pgzqx/VDBN/9MWXjrwtGSSy01c=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fRGeF2/vjXflG5d648nIuWmTnPIF3fyMyR/HBh2+67Bk/AM+qV1QjV46fvqS0A3Uj
-         R+wyzuXVKD8G4dmH+292QY2pUo2dphKSJjzPSqip4HpRnHKfBlsJ5Ptunz45f4F+n2
-         vDv1TNXxWDurw8t52pOPNAi6qH9hz0dbNEwol2NIVHxnnTbVB20sfEFPizuWcmhaEb
-         kle6AvOesGeKX+Ts/3DrmMdRGfd/XLh8V1lNcKYlL8yEnPE0zgwOTBjpLRwN+34EIm
-         K0U58P7MYB8khtSxwDDxL9yRjoA/GNrd72LrOQAoIcrv7H81LepkKwu1IH/3OMXdBQ
-         AhncME7/ZHcQg==
-From:   Mark Brown <broonie@kernel.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        eajames@linux.ibm.com
-Cc:     Mark Brown <broonie@kernel.org>, kernel-janitors@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: fsi: add a missing of_node_put
-Date:   Wed, 21 Apr 2021 20:03:27 +0100
-Message-Id: <161903040535.13608.18069667099177914560.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <504e431b900341249d331b868d90312cf41f415a.1618947919.git.christophe.jaillet@wanadoo.fr>
-References: <504e431b900341249d331b868d90312cf41f415a.1618947919.git.christophe.jaillet@wanadoo.fr>
+        id S234916AbhDVG6O (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 22 Apr 2021 02:58:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49114 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231148AbhDVG6O (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 22 Apr 2021 02:58:14 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96FA6C06174A
+        for <linux-spi@vger.kernel.org>; Wed, 21 Apr 2021 23:57:40 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1lZTHK-0006Tf-1o; Thu, 22 Apr 2021 08:57:34 +0200
+Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1lZTHJ-0003OR-O7; Thu, 22 Apr 2021 08:57:33 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Mark Brown <broonie@kernel.org>
+Cc:     linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        kernel@pengutronix.de, linux-spi@vger.kernel.org
+Subject: [PATCH v5 6/6] spi: davinci: Simplify using devm_clk_get_enabled()
+Date:   Thu, 22 Apr 2021 08:57:26 +0200
+Message-Id: <20210422065726.1646742-7-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210422065726.1646742-1-u.kleine-koenig@pengutronix.de>
+References: <20210422065726.1646742-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, 20 Apr 2021 21:46:13 +0200, Christophe JAILLET wrote:
-> 'for_each_available_child_of_node' performs an of_node_get on each
-> iteration, so a return from the middle of the loop requires an of_node_put.
+devm_clk_get_enabled() returns the clk already (prepared and) enabled
+and the automatically called cleanup cares for disabling (and
+unpreparing). So simplify .probe() and .remove() accordingly.
 
-Applied to
+Acked-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/spi/spi-davinci.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index 7453a1dbbc06..63ee918ecdb0 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -936,14 +936,11 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 
+ 	dspi->bitbang.master = master;
+ 
+-	dspi->clk = devm_clk_get(&pdev->dev, NULL);
++	dspi->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(dspi->clk)) {
+ 		ret = -ENODEV;
+ 		goto free_master;
+ 	}
+-	ret = clk_prepare_enable(dspi->clk);
+-	if (ret)
+-		goto free_master;
+ 
+ 	master->use_gpio_descriptors = true;
+ 	master->dev.of_node = pdev->dev.of_node;
+@@ -968,7 +965,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 
+ 	ret = davinci_spi_request_dma(dspi);
+ 	if (ret == -EPROBE_DEFER) {
+-		goto free_clk;
++		goto free_master;
+ 	} else if (ret) {
+ 		dev_info(&pdev->dev, "DMA is not supported (%d)\n", ret);
+ 		dspi->dma_rx = NULL;
+@@ -1012,8 +1009,6 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 		dma_release_channel(dspi->dma_rx);
+ 		dma_release_channel(dspi->dma_tx);
+ 	}
+-free_clk:
+-	clk_disable_unprepare(dspi->clk);
+ free_master:
+ 	spi_master_put(master);
+ err:
+@@ -1039,8 +1034,6 @@ static int davinci_spi_remove(struct platform_device *pdev)
+ 
+ 	spi_bitbang_stop(&dspi->bitbang);
+ 
+-	clk_disable_unprepare(dspi->clk);
+-
+ 	if (dspi->dma_rx) {
+ 		dma_release_channel(dspi->dma_rx);
+ 		dma_release_channel(dspi->dma_tx);
+-- 
+2.30.2
 
-Thanks!
-
-[1/1] spi: fsi: add a missing of_node_put
-      commit: 24b5515aa3ac075880be776bf36553ff7f9712c7
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

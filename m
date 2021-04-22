@@ -2,249 +2,103 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=no
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 369FAC43460
-	for <linux-spi@archiver.kernel.org>; Thu, 22 Apr 2021 06:57:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 284B7C433B4
+	for <linux-spi@archiver.kernel.org>; Thu, 22 Apr 2021 07:32:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id F17AB6145B
-	for <linux-spi@archiver.kernel.org>; Thu, 22 Apr 2021 06:57:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id E59F56145F
+	for <linux-spi@archiver.kernel.org>; Thu, 22 Apr 2021 07:32:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234970AbhDVG6V (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 22 Apr 2021 02:58:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49172 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234976AbhDVG6V (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 22 Apr 2021 02:58:21 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C4B0C06138B
-        for <linux-spi@vger.kernel.org>; Wed, 21 Apr 2021 23:57:47 -0700 (PDT)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1lZTHJ-0006Tb-VK; Thu, 22 Apr 2021 08:57:33 +0200
-Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1lZTHI-0003OB-Tp; Thu, 22 Apr 2021 08:57:32 +0200
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>
-Cc:     linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        kernel@pengutronix.de,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        linux-pwm@vger.kernel.org, Alessandro Zummo <a.zummo@towertech.it>,
-        linux-rtc@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, Wolfram Sang <wsa@kernel.org>,
-        Oleksij Rempel <o.rempel@pengutronix.de>
-Subject: [PATCH v5 2/6] clk: Provide new devm_clk_helpers for prepared and enabled clocks
-Date:   Thu, 22 Apr 2021 08:57:22 +0200
-Message-Id: <20210422065726.1646742-3-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210422065726.1646742-1-u.kleine-koenig@pengutronix.de>
-References: <20210422065726.1646742-1-u.kleine-koenig@pengutronix.de>
+        id S235088AbhDVHco (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 22 Apr 2021 03:32:44 -0400
+Received: from mx07-00178001.pphosted.com ([185.132.182.106]:51035 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231262AbhDVHcn (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 22 Apr 2021 03:32:43 -0400
+Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 13M7RMLf020720;
+        Thu, 22 Apr 2021 09:31:47 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=selector1;
+ bh=wTJYNLz+GeIRx9UYWWVLcnY81+zxFAKyL59IOj+tgpk=;
+ b=LY/jstysQPl3u7xXFTEOpByLaLm1oYHRFir4cFClLkEt75V/f/T5PpCY9HTqIAdPW/c5
+ eR7X4IgRsNiaRIoroxxRmMWXfbIsEGDRp97wBeDz0Weny/nZ/ZDzyHtnPUpg4PiKmGgm
+ UbiowOdNdV8KQifSXNJD+p5P6uUq7WsHDeQxCrRv5ZRN7GMiqxqMbrswpDnd+UPgp0p8
+ 9vwcHe0d0wYTqd3dtc7fUfhj2CYc5Jdxf4xHN8P6eGqcK5hQCanarYS2u+aXoJUl5SRz
+ DQ0vh5ml/EuoR78PtkbgDo+6xdZm9hfmSwTj1yeB1h1HEvKy0eS58LaenJcLuxLT8cJL mw== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 382fften23-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 22 Apr 2021 09:31:47 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 7CDE310002A;
+        Thu, 22 Apr 2021 09:31:46 +0200 (CEST)
+Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 6B5A321F0AA;
+        Thu, 22 Apr 2021 09:31:46 +0200 (CEST)
+Received: from lmecxl0573.lme.st.com (10.75.127.48) by SFHDAG2NODE3.st.com
+ (10.75.127.6) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Thu, 22 Apr
+ 2021 09:31:45 +0200
+Subject: Re: [PATCH] spi: stm32-qspi: fix debug format string
+To:     Arnd Bergmann <arnd@kernel.org>, Mark Brown <broonie@kernel.org>
+CC:     Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Christophe Kerello <christophe.kerello@foss.st.com>,
+        Zhang Qilong <zhangqilong3@huawei.com>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <20210421140653.3964725-1-arnd@kernel.org>
+ <20210421150510.GA36785@sirena.org.uk>
+ <CAK8P3a0CWp_H-tm2QcZyH1FDXwzMgxY_9dc1Y8pA28MQKT-q=A@mail.gmail.com>
+From:   Patrice CHOTARD <patrice.chotard@foss.st.com>
+Message-ID: <b970a557-b869-c867-3825-370a36feef68@foss.st.com>
+Date:   Thu, 22 Apr 2021 09:30:16 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-spi@vger.kernel.org
+In-Reply-To: <CAK8P3a0CWp_H-tm2QcZyH1FDXwzMgxY_9dc1Y8pA28MQKT-q=A@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.75.127.48]
+X-ClientProxiedBy: SFHDAG2NODE3.st.com (10.75.127.6) To SFHDAG2NODE3.st.com
+ (10.75.127.6)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-04-22_01:2021-04-21,2021-04-21 signatures=0
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-When a driver keeps a clock prepared (or enabled) during the whole
-lifetime of the driver, these helpers allow to simplify the drivers.
+Hi Mark, Arnd
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/clk/clk-devres.c | 31 ++++++++++++++
- include/linux/clk.h      | 87 +++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 117 insertions(+), 1 deletion(-)
+Regarding this issue, how do you prefer to proceed ? 
 
-diff --git a/drivers/clk/clk-devres.c b/drivers/clk/clk-devres.c
-index 91c995815b57..b54f7f0f2a35 100644
---- a/drivers/clk/clk-devres.c
-+++ b/drivers/clk/clk-devres.c
-@@ -67,12 +67,43 @@ struct clk *devm_clk_get(struct device *dev, const char *id)
- }
- EXPORT_SYMBOL(devm_clk_get);
- 
-+struct clk *devm_clk_get_prepared(struct device *dev, const char *id)
-+{
-+	return __devm_clk_get(dev, id, clk_get, clk_prepare, clk_unprepare);
-+
-+}
-+EXPORT_SYMBOL(devm_clk_get_prepared);
-+
-+struct clk *devm_clk_get_enabled(struct device *dev, const char *id)
-+{
-+	return __devm_clk_get(dev, id, clk_get,
-+			      clk_prepare_enable, clk_disable_unprepare);
-+
-+}
-+EXPORT_SYMBOL(devm_clk_get_enabled);
-+
- struct clk *devm_clk_get_optional(struct device *dev, const char *id)
- {
- 	return __devm_clk_get(dev, id, clk_get_optional, NULL, NULL);
- }
- EXPORT_SYMBOL(devm_clk_get_optional);
- 
-+struct clk *devm_clk_get_optional_prepared(struct device *dev, const char *id)
-+{
-+	return __devm_clk_get(dev, id, clk_get_optional,
-+			      clk_prepare, clk_unprepare);
-+
-+}
-+EXPORT_SYMBOL(devm_clk_get_optional_prepared);
-+
-+struct clk *devm_clk_get_optional_enabled(struct device *dev, const char *id)
-+{
-+	return __devm_clk_get(dev, id, clk_get_optional,
-+			      clk_prepare_enable, clk_disable_unprepare);
-+
-+}
-+EXPORT_SYMBOL(devm_clk_get_optional_enabled);
-+
- struct clk_bulk_devres {
- 	struct clk_bulk_data *clks;
- 	int num_clks;
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 266e8de3cb51..b3c5da388b08 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -449,7 +449,7 @@ int __must_check devm_clk_bulk_get_all(struct device *dev,
-  * the clock producer.  (IOW, @id may be identical strings, but
-  * clk_get may return different clock producers depending on @dev.)
-  *
-- * Drivers must assume that the clock source is not enabled.
-+ * Drivers must assume that the clock source is neither prepared nor enabled.
-  *
-  * devm_clk_get should not be called from within interrupt context.
-  *
-@@ -458,6 +458,47 @@ int __must_check devm_clk_bulk_get_all(struct device *dev,
-  */
- struct clk *devm_clk_get(struct device *dev, const char *id);
- 
-+/**
-+ * devm_clk_get_prepared - devm_clk_get() + clk_prepare()
-+ * @dev: device for clock "consumer"
-+ * @id: clock consumer ID
-+ *
-+ * Returns a struct clk corresponding to the clock producer, or
-+ * valid IS_ERR() condition containing errno.  The implementation
-+ * uses @dev and @id to determine the clock consumer, and thereby
-+ * the clock producer.  (IOW, @id may be identical strings, but
-+ * clk_get may return different clock producers depending on @dev.)
-+ *
-+ * The returned clk (if valid) is prepared. Drivers must however assume that the
-+ * clock is not enabled.
-+ *
-+ * devm_clk_get_prepared should not be called from within interrupt context.
-+ *
-+ * The clock will automatically be unprepared and freed when the
-+ * device is unbound from the bus.
-+ */
-+struct clk *devm_clk_get_prepared(struct device *dev, const char *id);
-+
-+/**
-+ * devm_clk_get_enabled - devm_clk_get() + clk_prepare_enable()
-+ * @dev: device for clock "consumer"
-+ * @id: clock consumer ID
-+ *
-+ * Returns a struct clk corresponding to the clock producer, or
-+ * valid IS_ERR() condition containing errno.  The implementation
-+ * uses @dev and @id to determine the clock consumer, and thereby
-+ * the clock producer.  (IOW, @id may be identical strings, but
-+ * clk_get may return different clock producers depending on @dev.)
-+ *
-+ * The returned clk (if valid) is prepared and enabled.
-+ *
-+ * devm_clk_get_prepared should not be called from within interrupt context.
-+ *
-+ * The clock will automatically be disabled, unprepared and freed when the
-+ * device is unbound from the bus.
-+ */
-+struct clk *devm_clk_get_enabled(struct device *dev, const char *id);
-+
- /**
-  * devm_clk_get_optional - lookup and obtain a managed reference to an optional
-  *			   clock producer.
-@@ -469,6 +510,26 @@ struct clk *devm_clk_get(struct device *dev, const char *id);
-  */
- struct clk *devm_clk_get_optional(struct device *dev, const char *id);
- 
-+/**
-+ * devm_clk_get_optional_prepared - devm_clk_get_optional() + clk_prepare()
-+ * @dev: device for clock "consumer"
-+ * @id: clock consumer ID
-+ *
-+ * Behaves the same as devm_clk_get_prepared() except where there is no clock producer.
-+ * In this case, instead of returning -ENOENT, the function returns NULL.
-+ */
-+struct clk *devm_clk_get_optional_prepared(struct device *dev, const char *id);
-+
-+/**
-+ * devm_clk_get_optional_enabled - devm_clk_get_optional() + clk_prepare_enable()
-+ * @dev: device for clock "consumer"
-+ * @id: clock consumer ID
-+ *
-+ * Behaves the same as devm_clk_get_enabled() except where there is no clock producer.
-+ * In this case, instead of returning -ENOENT, the function returns NULL.
-+ */
-+struct clk *devm_clk_get_optional_enabled(struct device *dev, const char *id);
-+
- /**
-  * devm_get_clk_from_child - lookup and obtain a managed reference to a
-  *			     clock producer from child node.
-@@ -813,12 +874,36 @@ static inline struct clk *devm_clk_get(struct device *dev, const char *id)
- 	return NULL;
- }
- 
-+static inline struct clk *devm_clk_get_prepared(struct device *dev,
-+						const char *id)
-+{
-+	return NULL;
-+}
-+
-+static inline struct clk *devm_clk_get_enabled(struct device *dev,
-+					       const char *id)
-+{
-+	return NULL;
-+}
-+
- static inline struct clk *devm_clk_get_optional(struct device *dev,
- 						const char *id)
- {
- 	return NULL;
- }
- 
-+static inline struct clk *devm_clk_get_optional_prepared(struct device *dev,
-+							 const char *id)
-+{
-+	return NULL;
-+}
-+
-+static inline struct clk *devm_clk_get_optional_enabled(struct device *dev,
-+							const char *id)
-+{
-+	return NULL;
-+}
-+
- static inline int __must_check devm_clk_bulk_get(struct device *dev, int num_clks,
- 						 struct clk_bulk_data *clks)
- {
--- 
-2.30.2
+Patrice
 
+On 4/21/21 5:22 PM, Arnd Bergmann wrote:
+> On Wed, Apr 21, 2021 at 5:05 PM Mark Brown <broonie@kernel.org> wrote:
+>>
+>> On Wed, Apr 21, 2021 at 04:06:48PM +0200, Arnd Bergmann wrote:
+>>> From: Arnd Bergmann <arnd@arndb.de>
+>>>
+>>> Printing size_t needs a special %zd format modifier to avoid a
+>>> warning like:
+>>
+>> This doesn't apply against current code, please check and resend.
+> 
+> It appears that you just applied 1b8a7d4282c0 ("spi: stm32-qspi:
+> Fix compilation warning in ARM64") after today's linux-next was
+> cut.
+> 
+> I suspect Patrice's patch now causes a warning on all architectures
+> on which size_t is defined as 'unsigned int'.
+> 
+>        Arnd
+> 

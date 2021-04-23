@@ -2,109 +2,168 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BA91C433B4
-	for <linux-spi@archiver.kernel.org>; Fri, 23 Apr 2021 17:49:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 947CEC433ED
+	for <linux-spi@archiver.kernel.org>; Fri, 23 Apr 2021 18:24:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4F075611CD
-	for <linux-spi@archiver.kernel.org>; Fri, 23 Apr 2021 17:49:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4F58761450
+	for <linux-spi@archiver.kernel.org>; Fri, 23 Apr 2021 18:24:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231522AbhDWRub (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 23 Apr 2021 13:50:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41240 "EHLO mail.kernel.org"
+        id S243504AbhDWSZJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 23 Apr 2021 14:25:09 -0400
+Received: from mga12.intel.com ([192.55.52.136]:57703 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229549AbhDWRua (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 23 Apr 2021 13:50:30 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8DFEF6144E;
-        Fri, 23 Apr 2021 17:49:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619200194;
-        bh=EKqQdd3JsvHGu+wfjLmk/wXeSZjWsLUz+vRrJVYcYHE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=MEVCkxIIEj+FggSVINLpIuRBDGoTlhn4ETwvVna2cyxpw2MibiEJBmiogqqHfuEyC
-         647JM0Q2XK67xTPlPrx655ONzBn/E65Eo1jMG8f/MIFMa8tv5a1IDk5oN7c4AuquLI
-         QX+39uKRwdCQbN9+gQ0bxHb+VkyclsvwRCuEZWz5kirqHeKu3rTmCvp52YB+jxc3eC
-         /WmDQIR+W3P+sgY/EXlcKEBDgMysWyIKoAFl7aX8F7k0JdgnGseSLVQ04V9QcTQ/7Q
-         yuTD7uUiTD8qNrs1AeaRSvmPxoc1MkMLKsvTyUKoxHXQuCAIetah/deIBZCD5Ni/8g
-         Yk5jM9M+RVD4g==
-Date:   Fri, 23 Apr 2021 18:49:25 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Cezary Rojewski <cezary.rojewski@intel.com>,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+        id S243410AbhDWSZI (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 23 Apr 2021 14:25:08 -0400
+IronPort-SDR: 7CbzUCqZYETUXCvjSwhiJJA9aB6jJibSGlgKonSHIrwzbYu3v9l0E8BxN/rA1CfyiIpbssEm2i
+ 4q/LFzqA7x9g==
+X-IronPort-AV: E=McAfee;i="6200,9189,9963"; a="175599617"
+X-IronPort-AV: E=Sophos;i="5.82,246,1613462400"; 
+   d="scan'208";a="175599617"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2021 11:24:29 -0700
+IronPort-SDR: PPMozkHLAIBdUAvX8jNtyk1sKmp6UfYQODVmNI0wMvS1Jwy8I7tyuEmC7NH3Prk8/dt6LgkJLq
+ I4cgGPhwYKrg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,246,1613462400"; 
+   d="scan'208";a="392155981"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga007.fm.intel.com with ESMTP; 23 Apr 2021 11:24:27 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 12EF81C8; Fri, 23 Apr 2021 21:24:45 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        alsa-devel@alsa-project.org,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Daniel Mack <daniel@zonque.org>,
+        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org
+Cc:     Daniel Mack <daniel@zonque.org>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
-        Jie Yang <yang.jie@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
         Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Subject: Re: [PATCH v1 05/14] spi: pxa2xx: Consolidate related headers under
- include/linux/spi
-Message-ID: <20210423174924.GI5507@sirena.org.uk>
-References: <20210423163437.89306-1-andriy.shevchenko@linux.intel.com>
- <20210423163437.89306-5-andriy.shevchenko@linux.intel.com>
- <20210423165630.GH5507@sirena.org.uk>
- <YIMEIEnt4meMP6Hx@smile.fi.intel.com>
+Subject: [PATCH v2 04/14] spi: pxa2xx: Replace header inclusions by forward declarations
+Date:   Fri, 23 Apr 2021 21:24:31 +0300
+Message-Id: <20210423182441.50272-5-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210423182441.50272-1-andriy.shevchenko@linux.intel.com>
+References: <20210423182441.50272-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="8/UBlNHSEJa6utmr"
-Content-Disposition: inline
-In-Reply-To: <YIMEIEnt4meMP6Hx@smile.fi.intel.com>
-X-Cookie: This is now.  Later is later.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+When the data structure is only referred by pointer, compiler may not need
+to see the contents of the data type. Thus, we may replace header inclusions
+by respective forward declarations. Due to above add missed headers as well.
 
---8/UBlNHSEJa6utmr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/spi-pxa2xx-dma.c   |  4 ++--
+ drivers/spi/spi-pxa2xx-pci.c   |  1 +
+ drivers/spi/spi-pxa2xx.c       |  2 ++
+ drivers/spi/spi-pxa2xx.h       | 18 ++++++++++--------
+ include/linux/spi/pxa2xx_spi.h |  2 ++
+ 5 files changed, 17 insertions(+), 10 deletions(-)
 
-On Fri, Apr 23, 2021 at 08:30:08PM +0300, Andy Shevchenko wrote:
-> On Fri, Apr 23, 2021 at 05:56:30PM +0100, Mark Brown wrote:
-> > On Fri, Apr 23, 2021 at 07:34:28PM +0300, Andy Shevchenko wrote:
+diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
+index 2e4a49567146..e00dbadd39ec 100644
+--- a/drivers/spi/spi-pxa2xx-dma.c
++++ b/drivers/spi/spi-pxa2xx-dma.c
+@@ -9,11 +9,11 @@
+ #include <linux/device.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/dmaengine.h>
+-#include <linux/pxa2xx_ssp.h>
+ #include <linux/scatterlist.h>
+ #include <linux/sizes.h>
+-#include <linux/spi/spi.h>
++
+ #include <linux/spi/pxa2xx_spi.h>
++#include <linux/spi/spi.h>
+ 
+ #include "spi-pxa2xx.h"
+ 
+diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
+index f60ed4c62000..5af0a3fbc1b0 100644
+--- a/drivers/spi/spi-pxa2xx-pci.c
++++ b/drivers/spi/spi-pxa2xx-pci.c
+@@ -8,6 +8,7 @@
+ #include <linux/module.h>
+ #include <linux/pci.h>
+ #include <linux/platform_device.h>
++
+ #include <linux/spi/pxa2xx_spi.h>
+ 
+ #include <linux/dmaengine.h>
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index e9dddcbd92f1..0296cbdee848 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -9,6 +9,7 @@
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/device.h>
++#include <linux/dmaengine.h>
+ #include <linux/err.h>
+ #include <linux/errno.h>
+ #include <linux/gpio/consumer.h>
+@@ -25,6 +26,7 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/property.h>
+ #include <linux/slab.h>
++
+ #include <linux/spi/pxa2xx_spi.h>
+ #include <linux/spi/spi.h>
+ 
+diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
+index 6724d7e056ce..739e264feaa6 100644
+--- a/drivers/spi/spi-pxa2xx.h
++++ b/drivers/spi/spi-pxa2xx.h
+@@ -7,16 +7,18 @@
+ #ifndef SPI_PXA2XX_H
+ #define SPI_PXA2XX_H
+ 
+-#include <linux/atomic.h>
+-#include <linux/dmaengine.h>
+-#include <linux/errno.h>
+-#include <linux/io.h>
+ #include <linux/interrupt.h>
+-#include <linux/pxa2xx_ssp.h>
+-#include <linux/scatterlist.h>
++#include <linux/io.h>
++#include <linux/types.h>
+ #include <linux/sizes.h>
+-#include <linux/spi/spi.h>
+-#include <linux/spi/pxa2xx_spi.h>
++
++#include <linux/pxa2xx_ssp.h>
++
++struct gpio_desc;
++struct pxa2xx_spi_controller;
++struct spi_controller;
++struct spi_device;
++struct spi_transfer;
+ 
+ struct driver_data {
+ 	/* SSP Info */
+diff --git a/include/linux/spi/pxa2xx_spi.h b/include/linux/spi/pxa2xx_spi.h
+index 31f00c7f4f59..1e0e2f136319 100644
+--- a/include/linux/spi/pxa2xx_spi.h
++++ b/include/linux/spi/pxa2xx_spi.h
+@@ -5,6 +5,8 @@
+ #ifndef __linux_pxa2xx_spi_h
+ #define __linux_pxa2xx_spi_h
+ 
++#include <linux/types.h>
++
+ #include <linux/pxa2xx_ssp.h>
+ 
+ #define PXA2XX_CS_ASSERT (0x01)
+-- 
+2.30.2
 
-> > > We have two headers split between include/linux and include/linux/spi.
-> > > Consolidated them under SPI realm, i.e. in the latter folder.
-
-> > Why?  Isn't the point to maintain an abstraction between the general
-> > purpose use of the SSP IP and its application as a SPI controller?
-
-> Aren't the General Purpose of the SSP IP is an SPI controller either way?
-> What you are talking about is probably GP SPI vs. private (dedicated) SPI.
-
-SPI and any other serial protocols that happen to come up - these
-generic serial IPs also often get used for audio for example.
-
-> > I'd
-> > check the cover letter for the series but there doesn't seem to be one.
-
-> Set of cleanups here and there related to the SPI PXA2xx driver.
-> It's hard to add something else here.
-
-It doesn't need to be much more than what you just wrote.
-
---8/UBlNHSEJa6utmr
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmCDCKQACgkQJNaLcl1U
-h9AtYwf9ExEjCIqGM+Q3BnqwznDy/zJKu8//lEQgEI1UwO9mrRzH4hRPYDJlKQzb
-BBvSCChNpY6BiXRvYAL+Rou8kNRvo+XPUr/m+gFmY9hFhSK+k3zFsAlXVuyVgnVc
-/E8k7PBZsyDCK3EJsX7G6o+uVcqJI7YzQYobrGRmpWy78xkrgr9nDEELZqFSUzJj
-rmMkxWH8CLawROulDBbQVFNzip2rniOk8NnD6k4x8XH0hRSS/bTYBSEx/2vPhWuq
-d8OHhKcZgdCzvDQZroG/VkpXLd3ZOujucL+qo7UiOGXGmu1P2wA87wp+ny0b4zIL
-bLrbblN3MR5zkYi1zYi6JKbiISi2MQ==
-=VD8t
------END PGP SIGNATURE-----
-
---8/UBlNHSEJa6utmr--

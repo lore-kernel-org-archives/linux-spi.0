@@ -7,21 +7,21 @@ X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0BABAC433B4
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A674C43460
 	for <linux-spi@archiver.kernel.org>; Fri, 23 Apr 2021 08:48:06 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id CFDA6613F5
+	by mail.kernel.org (Postfix) with ESMTP id EDCB36141C
 	for <linux-spi@archiver.kernel.org>; Fri, 23 Apr 2021 08:48:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241367AbhDWIsk (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 23 Apr 2021 04:48:40 -0400
-Received: from lucky1.263xmail.com ([211.157.147.130]:36582 "EHLO
+        id S241431AbhDWIsl (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 23 Apr 2021 04:48:41 -0400
+Received: from lucky1.263xmail.com ([211.157.147.131]:55088 "EHLO
         lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230125AbhDWIsj (ORCPT
+        with ESMTP id S230100AbhDWIsj (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 23 Apr 2021 04:48:39 -0400
 Received: from localhost (unknown [192.168.167.235])
-        by lucky1.263xmail.com (Postfix) with ESMTP id 23ECCD1AB7;
-        Fri, 23 Apr 2021 16:47:59 +0800 (CST)
+        by lucky1.263xmail.com (Postfix) with ESMTP id E8029BA73D;
+        Fri, 23 Apr 2021 16:47:58 +0800 (CST)
 X-MAIL-GRAY: 0
 X-MAIL-DELIVERY: 1
 X-ADDR-CHECKED4: 1
@@ -29,9 +29,9 @@ X-ANTISPAM-LEVEL: 2
 X-ABS-CHECKED: 0
 Received: from localhost.localdomain (unknown [58.22.7.114])
         by smtp.263.net (postfix) whith ESMTP id P2750T140649173088000S1619167674948451_;
-        Fri, 23 Apr 2021 16:47:56 +0800 (CST)
+        Fri, 23 Apr 2021 16:47:57 +0800 (CST)
 X-IP-DOMAINF: 1
-X-UNIQUE-TAG: <2557a3ff5cf6116de1b31291f3f41ed3>
+X-UNIQUE-TAG: <56cbeb1033c6db74f14d199426453886>
 X-RL-SENDER: jon.lin@rock-chips.com
 X-SENDER: jon.lin@rock-chips.com
 X-LOGIN-NAME: jon.lin@rock-chips.com
@@ -46,39 +46,65 @@ Cc:     heiko@sntech.de, linux-spi@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
         kernel@esmil.dk, Jon Lin <jon.lin@rock-chips.com>
-Subject: [PATCH v1 6/8] spi: rockchip: Set rx_fifo interrupt waterline base on transfer item
-Date:   Fri, 23 Apr 2021 16:47:48 +0800
-Message-Id: <20210423084750.18533-1-jon.lin@rock-chips.com>
+Subject: [PATCH v1 8/8] spi: rockchip: Support SPI_CS_HIGH
+Date:   Fri, 23 Apr 2021 16:47:50 +0800
+Message-Id: <20210423084750.18533-3-jon.lin@rock-chips.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210423084155.17439-1-jon.lin@rock-chips.com>
+In-Reply-To: <20210423084750.18533-1-jon.lin@rock-chips.com>
 References: <20210423084155.17439-1-jon.lin@rock-chips.com>
+ <20210423084750.18533-1-jon.lin@rock-chips.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The error here is to calculate the width as 8 bits. In fact, 16 bits
-should be considered.
+1.Add standard spi-cs-high support
+2.Refer to spi-controller.yaml for details
 
 Signed-off-by: Jon Lin <jon.lin@rock-chips.com>
 ---
- drivers/spi/spi-rockchip.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-rockchip.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index cfcbfd6c1be5..c245af1692c7 100644
+index b17463e5fda6..5b52f2bc3d9a 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -547,8 +547,8 @@ static int rockchip_spi_config(struct rockchip_spi *rs,
- 	 * interrupt exactly when the fifo is full doesn't seem to work,
- 	 * so we need the strict inequality here
- 	 */
--	if (xfer->len < rs->fifo_len)
--		writel_relaxed(xfer->len - 1, rs->regs + ROCKCHIP_SPI_RXFTLR);
-+	if ((xfer->len / rs->n_bytes) < rs->fifo_len)
-+		writel_relaxed(xfer->len / rs->n_bytes - 1, rs->regs + ROCKCHIP_SPI_RXFTLR);
- 	else
- 		writel_relaxed(rs->fifo_len / 2 - 1, rs->regs + ROCKCHIP_SPI_RXFTLR);
+@@ -108,6 +108,8 @@
+ #define CR0_OPM_MASTER				0x0
+ #define CR0_OPM_SLAVE				0x1
  
++#define CR0_SOI_OFFSET				23
++
+ #define CR0_MTM_OFFSET				0x21
+ 
+ /* Bit fields in SER, 2bit */
+@@ -238,7 +240,7 @@ static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
+ {
+ 	struct spi_controller *ctlr = spi->controller;
+ 	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
+-	bool cs_asserted = !enable;
++	bool cs_asserted = spi->mode & SPI_CS_HIGH ? enable : !enable;
+ 
+ 	/* Return immediately for no-op */
+ 	if (cs_asserted == rs->cs_asserted[spi->chip_select])
+@@ -509,6 +511,8 @@ static int rockchip_spi_config(struct rockchip_spi *rs,
+ 	cr0 |= (spi->mode & 0x3U) << CR0_SCPH_OFFSET;
+ 	if (spi->mode & SPI_LSB_FIRST)
+ 		cr0 |= CR0_FBM_LSB << CR0_FBM_OFFSET;
++	if (spi->mode & SPI_CS_HIGH)
++		cr0 |= BIT(spi->chip_select) << CR0_SOI_OFFSET;
+ 
+ 	if (xfer->rx_buf && xfer->tx_buf)
+ 		cr0 |= CR0_XFM_TR << CR0_XFM_OFFSET;
+@@ -787,7 +791,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 
+ 	ctlr->auto_runtime_pm = true;
+ 	ctlr->bus_num = pdev->id;
+-	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP | SPI_LSB_FIRST;
++	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP | SPI_LSB_FIRST | SPI_CS_HIGH;
+ 	if (slave_mode) {
+ 		ctlr->mode_bits |= SPI_NO_CS;
+ 		ctlr->slave_abort = rockchip_spi_slave_abort;
 -- 
 2.17.1
 

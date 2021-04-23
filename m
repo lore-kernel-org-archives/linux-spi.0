@@ -2,136 +2,156 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F6F2C433ED
-	for <linux-spi@archiver.kernel.org>; Fri, 23 Apr 2021 16:21:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 37137C433B4
+	for <linux-spi@archiver.kernel.org>; Fri, 23 Apr 2021 16:34:43 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id F2F6A611CA
-	for <linux-spi@archiver.kernel.org>; Fri, 23 Apr 2021 16:21:24 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2B036611C1
+	for <linux-spi@archiver.kernel.org>; Fri, 23 Apr 2021 16:34:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229519AbhDWQWB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 23 Apr 2021 12:22:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44582 "EHLO mail.kernel.org"
+        id S231220AbhDWQfR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 23 Apr 2021 12:35:17 -0400
+Received: from mga01.intel.com ([192.55.52.88]:32256 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229456AbhDWQWA (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 23 Apr 2021 12:22:00 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8B27F61076;
-        Fri, 23 Apr 2021 16:21:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619194884;
-        bh=Du6lrJKXMMsCR3cPrKGmwGJJyqUjppjm0rJTM8RTBNY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=dJ+B6KFU3EgpUaiVBMfLcmSLWayGiNKRvoBe9kA+AsY6DJtOHZwxDXB+db0JX3nOq
-         x/TZqUsuUT/Wzf3OUrTJe/3vUijBLpbbpRoROsQRXjeHS040Zv4GPJGHdEjFTXasZN
-         K/tmTF+aiMeIgEXbNEanY7LY51bIT8jPYLmxEEx9UTgrar5wUeeL2tFDVPdCCfgBXO
-         kZ0PosAhYfaZ/QUF67sHJqxnULhCQiHNyHarAjqPAy5H29ZMidmJN5D9/rMMb9UW9x
-         mPx+nV9K6LUEm8VaODtcnn91IsahmEwVi+4k5V4HUwf7mdV9JY7DHgReHbWDQVls4l
-         bubgH+WXZ8Ujw==
-Date:   Fri, 23 Apr 2021 17:20:55 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Joe Burmeister <joe.burmeister@devtank.co.uk>
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com, linux-spi@vger.kernel.org,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        nsaenz@kernel.org
-Subject: Re: [PATCH] spi: bcm2835: Fix buffer overflow with CS able to go
- beyond limit.
-Message-ID: <20210423162055.GE5507@sirena.org.uk>
-References: <20210420083402.6950-1-joe.burmeister@devtank.co.uk>
- <c087ba2c-7839-02d1-a522-b104d8ffb8d2@gmail.com>
- <7c9f9376-1a80-b624-7b9e-0f6d04437c02@devtank.co.uk>
- <271ad212-a606-620e-3f0c-d6bff272be3c@gmail.com>
- <380624c4-82f3-0e6e-8cdb-8a9732636db8@devtank.co.uk>
- <20210423115724.GB5507@sirena.org.uk>
- <672e8d77-ee5c-f10f-0bd3-f8708dfc24c8@devtank.co.uk>
+        id S229931AbhDWQfR (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 23 Apr 2021 12:35:17 -0400
+IronPort-SDR: O8uOOaLI02Vmod14ocWmbKZ204sWlrTdkplstWQiO/mUpCu6G/agzE6pN6czIA9lAKX2McZP58
+ a1hRjdUv7AsQ==
+X-IronPort-AV: E=McAfee;i="6200,9189,9963"; a="216782517"
+X-IronPort-AV: E=Sophos;i="5.82,246,1613462400"; 
+   d="scan'208";a="216782517"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2021 09:34:40 -0700
+IronPort-SDR: rpZLg5udqXrZcBqnpMpeR3lPdn7JWhpIoGW874AaSlOuNI2kJHFzAcUv/Z2M6uYD21DjXJRDW0
+ d5hU2WgE3VlA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.82,246,1613462400"; 
+   d="scan'208";a="456284236"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga002.fm.intel.com with ESMTP; 23 Apr 2021 09:34:36 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 0401213C; Fri, 23 Apr 2021 19:34:53 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        Jie Yang <yang.jie@linux.intel.com>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Subject: [PATCH v1 02/14] spi: pxa2xx: Utilize MMIO and physical base from struct ssp_device
+Date:   Fri, 23 Apr 2021 19:34:25 +0300
+Message-Id: <20210423163437.89306-2-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210423163437.89306-1-andriy.shevchenko@linux.intel.com>
+References: <20210423163437.89306-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="MIdTMoZhcV1D07fI"
-Content-Disposition: inline
-In-Reply-To: <672e8d77-ee5c-f10f-0bd3-f8708dfc24c8@devtank.co.uk>
-X-Cookie: This is now.  Later is later.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+We have a duplication of MMIO and physical base addresses in
+the struct driver_data, get rid of it and reuse members from
+struct ssp_device instead.
 
---MIdTMoZhcV1D07fI
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/spi-pxa2xx-dma.c |  4 ++--
+ drivers/spi/spi-pxa2xx.c     |  4 +---
+ drivers/spi/spi-pxa2xx.h     | 14 ++++----------
+ 3 files changed, 7 insertions(+), 15 deletions(-)
 
-On Fri, Apr 23, 2021 at 03:12:11PM +0100, Joe Burmeister wrote:
-> On 23/04/2021 12:57, Mark Brown wrote:
+diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
+index 37567bc7a523..3b27f356a18f 100644
+--- a/drivers/spi/spi-pxa2xx-dma.c
++++ b/drivers/spi/spi-pxa2xx-dma.c
+@@ -94,14 +94,14 @@ pxa2xx_spi_dma_prepare_one(struct driver_data *drv_data,
+ 	cfg.direction = dir;
+ 
+ 	if (dir == DMA_MEM_TO_DEV) {
+-		cfg.dst_addr = drv_data->ssdr_physical;
++		cfg.dst_addr = drv_data->ssp->phys_base + SSDR;
+ 		cfg.dst_addr_width = width;
+ 		cfg.dst_maxburst = chip->dma_burst_size;
+ 
+ 		sgt = &xfer->tx_sg;
+ 		chan = drv_data->controller->dma_tx;
+ 	} else {
+-		cfg.src_addr = drv_data->ssdr_physical;
++		cfg.src_addr = drv_data->ssp->phys_base + SSDR;
+ 		cfg.src_addr_width = width;
+ 		cfg.src_maxburst = chip->dma_burst_size;
+ 
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 0ef22045b006..82df028c4a71 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -325,7 +325,7 @@ static void lpss_ssp_setup(struct driver_data *drv_data)
+ 	u32 value;
+ 
+ 	config = lpss_get_config(drv_data);
+-	drv_data->lpss_base = drv_data->ioaddr + config->offset;
++	drv_data->lpss_base = drv_data->ssp->mmio_base + config->offset;
+ 
+ 	/* Enable software chip select control */
+ 	value = __lpss_ssp_read_priv(drv_data, config->reg_cs_ctrl);
+@@ -1729,8 +1729,6 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 
+ 	drv_data->ssp_type = ssp->type;
+ 
+-	drv_data->ioaddr = ssp->mmio_base;
+-	drv_data->ssdr_physical = ssp->phys_base + SSDR;
+ 	if (pxa25x_ssp_comp(drv_data)) {
+ 		switch (drv_data->ssp_type) {
+ 		case QUARK_X1000_SSP:
+diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
+index 1400472bc986..ad9980ebefa6 100644
+--- a/drivers/spi/spi-pxa2xx.h
++++ b/drivers/spi/spi-pxa2xx.h
+@@ -33,10 +33,6 @@ struct driver_data {
+ 	/* PXA hookup */
+ 	struct pxa2xx_spi_controller *controller_info;
+ 
+-	/* SSP register addresses */
+-	void __iomem *ioaddr;
+-	phys_addr_t ssdr_physical;
+-
+ 	/* SSP masks*/
+ 	u32 dma_cr1;
+ 	u32 int_cr1;
+@@ -87,16 +83,14 @@ struct chip_data {
+ 	void (*cs_control)(u32 command);
+ };
+ 
+-static inline u32 pxa2xx_spi_read(const struct driver_data *drv_data,
+-				  unsigned reg)
++static inline u32 pxa2xx_spi_read(const struct driver_data *drv_data, u32 reg)
+ {
+-	return __raw_readl(drv_data->ioaddr + reg);
++	return pxa_ssp_read_reg(drv_data->ssp, reg);
+ }
+ 
+-static  inline void pxa2xx_spi_write(const struct driver_data *drv_data,
+-				     unsigned reg, u32 val)
++static inline void pxa2xx_spi_write(const struct driver_data *drv_data, u32 reg, u32 val)
+ {
+-	__raw_writel(val, drv_data->ioaddr + reg);
++	pxa_ssp_write_reg(drv_data->ssp, reg, val);
+ }
+ 
+ #define DMA_ALIGNMENT		8
+-- 
+2.30.2
 
-> > I wouldn't expect any controller to be OK with that?  Drivers can store
-> > per-client data in spi_device->controller_data which doesn't need
-> > scaling (but is also not so helpful if you need to look at clients other
-> > than the one you're currently controlling).
-
-> I can see a number which certainly wouldn't. Though I don't want to
-> assume that all don't.
-
-Yeah, some won't - some do also rely on system specific assumptions
-about what's possible but there's not really mechanisms for declaring
-that.
-
-> If we are happy just not letting the core expand num_chipselect that
-> does stop the condition on everything.
-
-> Any controller that can go higher without issue could them have their
-> num_chipselect set to what their real limit is if this enforcement
-> causes an issue.
-
-Part of the issue here is that there has been some variation in how
-num_chipselect is interpreted with regard to GPIO based chip selects
-over time.  It *should* be redundant, I'm not clear why it's in the
-generic bindings at all but that's lost to history AFAICT.
-
-> >>> Not sure I follow you, if we have the overlay before
-> >>> spi_register_controller() is called, how can the check there not
-> >>> trigger? And if we load the overlay later when the SPI controller is
-> >>> already registered, why does not spi_add_device()'s check work?
-
-> >> I think it might be a RPI thing. I think it is merging in the overlay
-> >> and giving Linux one already merged.
-
-> > If the overlay is handled by the bootloader then from the point of view
-> > of Linux there is no overlay - sounds like there's an issue in the
-> > overlay, it should be overriding something that it doesn't?
-
-> Does it matter if the final device tree was compiled like that in the
-> first place or merge into that by the bootloader?
-
-It matters in the context of a discussion of ordering between loading
-the overlay and spi_register_controller() - it's clearly not loaded
-afterwards.
-
-> Of course we could just raise BCM2835_SPI_NUM_CS to 8 or more if that is
-> preferred. Does seams like the dynamic solution is less favoured.
-
-The best thing would be to have it not have a single array of chip
-select specific data and instead store everything in the controller_data
-that's there per-device.
-
---MIdTMoZhcV1D07fI
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmCC8+YACgkQJNaLcl1U
-h9DEEAf9GQ05ZPI/yujR/34Ofd3FvuiVwve/4suxGMcw1afbBIcgShZfQjwoPCwz
-AX+qTV1PjwlCpUUlPOjfRPEfcuV5Bcw4WzG7bQkKrYyqQLSJ02LTxMVTtLuxgCHL
-vPLgBJu8ZMlFvOPXtzsYFhK5qCbemC9AAqKbQXjsGVcQR7G7rZd4TLoP1x73idr7
-UgbPlXBX0RhXi1CDLPmb3tEP0tJNbECRYDTqUk64FwHrNW9k5cGBv7p7Rcoib3dn
-eiTCBZZC4tb9IFRhqXifjJbNuWSIf40ij0TAHSnEzldLrTl8o00YsJbfDJRG2NcD
-90l+UobbZtvVX4pSU2dmVEE1/PIpZw==
-=bjuX
------END PGP SIGNATURE-----
-
---MIdTMoZhcV1D07fI--

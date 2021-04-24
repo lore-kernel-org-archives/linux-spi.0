@@ -2,127 +2,111 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.9 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A1BBC43616
-	for <linux-spi@archiver.kernel.org>; Fri, 23 Apr 2021 18:24:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A2C17C433ED
+	for <linux-spi@archiver.kernel.org>; Sat, 24 Apr 2021 00:09:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 32380613C8
-	for <linux-spi@archiver.kernel.org>; Fri, 23 Apr 2021 18:24:41 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7CFDE6141C
+	for <linux-spi@archiver.kernel.org>; Sat, 24 Apr 2021 00:09:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243598AbhDWSZR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 23 Apr 2021 14:25:17 -0400
-Received: from mga09.intel.com ([134.134.136.24]:3219 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S243694AbhDWSZP (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 23 Apr 2021 14:25:15 -0400
-IronPort-SDR: Qfgq1dUeG4bZRmOfF40/b1Mu3tKEEIld7d0aDkkcKKWEh/e2RTcd3S9ZxihiqorNKqvZQg3UUv
- 7kQG1vzEOCRg==
-X-IronPort-AV: E=McAfee;i="6200,9189,9963"; a="196224418"
-X-IronPort-AV: E=Sophos;i="5.82,246,1613462400"; 
-   d="scan'208";a="196224418"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2021 11:24:38 -0700
-IronPort-SDR: U/37f9OoSV0aKrC9Y73c4V0EvRaVfoGxDgZa1EL77k32X3qbOhdmp0U4IOhpT85ap4K4aOERW5
- 0V7kdVzh5pCg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,246,1613462400"; 
-   d="scan'208";a="424320840"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga007.jf.intel.com with ESMTP; 23 Apr 2021 11:24:30 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 676F0B46; Fri, 23 Apr 2021 21:24:45 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org
-Cc:     Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Mark Brown <broonie@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Subject: [PATCH v2 11/14] spi: pxa2xx: Extract clear_SSCR1_bits() helper
-Date:   Fri, 23 Apr 2021 21:24:38 +0300
-Message-Id: <20210423182441.50272-12-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210423182441.50272-1-andriy.shevchenko@linux.intel.com>
-References: <20210423182441.50272-1-andriy.shevchenko@linux.intel.com>
+        id S232429AbhDXAJq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 23 Apr 2021 20:09:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56766 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232101AbhDXAJp (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 23 Apr 2021 20:09:45 -0400
+Received: from mail-io1-xd2b.google.com (mail-io1-xd2b.google.com [IPv6:2607:f8b0:4864:20::d2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A436EC061574;
+        Fri, 23 Apr 2021 17:09:08 -0700 (PDT)
+Received: by mail-io1-xd2b.google.com with SMTP id b9so3010278iod.13;
+        Fri, 23 Apr 2021 17:09:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=mUIgi8gr2tgzWKj4+8JDnT/+2+iJBvHpF1dlGi1xl7U=;
+        b=eIVk3kWDGLkxI6e7AjS74LPf7mENaT1FX8HKi8JueWU4UuoHBig3oizGT1ntPq+hbt
+         tFqvOi88/997OlaQMY6hKHbHb0cP7bLW4A31KySs7OgfFqPrP7xXw3Tf7xOvwuYRO7tN
+         U8wMXMyT/rmbqquvTLIWV2Pge5r3gtI6p3XlGqMcqM2ZOvKqFNIWyPTRNYFA3jw9elb/
+         gf/6N2VDaCiDyEDSBJooEq657o73WG9pD3kV8rb3dmsK5x3luSueweF7aDA6t2mKfM4Y
+         c79p1OBa/DJdJCA0N+cTn4qi7jZkVZhOoj/bdrMrHAxn6wt7+lo8xhY/GJiJ6EsvOGfp
+         TK9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=mUIgi8gr2tgzWKj4+8JDnT/+2+iJBvHpF1dlGi1xl7U=;
+        b=sQau/zN0QlC8C2BdF/JuOZGpEEIvZ0x9mS4Nay3jhG+A4JB2OH11Ku85LaUL4FgHIE
+         qbJt8vjChaBJjrayxVh3NMiukAL28Y+vm9LvulHVLecju5VyJ/gppd/objVhc/KyKiAO
+         +ixyUNhl7THjFy1dhxKZSw1U78iI3PNOEn7cX6ODDXkJKTuYXwa9agI2Wb4+9KAeXSa0
+         WhyucSimwYYB/xGQxtJGzkL64Mz8NEvv3T3yMivUvI7/4pndvrYMscd2U6SLoqWLBM8T
+         Z1eS7u4REDgYAmInl4Dy1B5N+GwsXpCltQEPCQ0qQTiuJCyFjCRMUWyjTt/bOmMtyH4C
+         kLPw==
+X-Gm-Message-State: AOAM531R/StOsxOLPF9yj50J5wbDqTh4PPGxxkYRyxc3PkEdy9B7pwNy
+        o9QyJWC54jIc3AvzD0UQJYlRNYZvkcRXOfecens=
+X-Google-Smtp-Source: ABdhPJzpqEKzOQAznBrk9weKRq/P/QY2iIQeqtxS3bPY6W15AZaVS8+fIA29w7CgKa8lN9Gg4oFBEDPlkNfMCTJh7/8=
+X-Received: by 2002:a05:6602:22c9:: with SMTP id e9mr5125249ioe.73.1619222948139;
+ Fri, 23 Apr 2021 17:09:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210423034247.992052-1-art@khadas.com> <20210423114735.GA5507@sirena.org.uk>
+In-Reply-To: <20210423114735.GA5507@sirena.org.uk>
+From:   Art Nikpal <email2tema@gmail.com>
+Date:   Sat, 24 Apr 2021 08:08:57 +0800
+Message-ID: <CAKaHn9LC19cduyrwxkDRAdM5pjgSPBCdZUjsEMgGqS7yVQS1-g@mail.gmail.com>
+Subject: Re: [PATCH] SPI: meson-spifc add missed calls to remove function
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Neil Armstrong <narmstrong@baylibre.com>,
+        Kevin Hilman <khilman@baylibre.com>, jbrunet@baylibre.com,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        dri-devel@lists.freedesktop.org, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Christian Hewitt <christianshewitt@gmail.com>,
+        Artem Lapkin <art@khadas.com>, nick@khadas.com,
+        Gouwa Wang <gouwa@khadas.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-There are few places that repeat the logic of "clear some bits in SSCR1".
-Extract clear_SSCR1_bits() helper to deduplicate that.
+> I would expect the driver to unregister the controller at the start of
+> the remove function, suspend doesn't really make sense here
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/spi/spi-pxa2xx-dma.c | 4 +---
- drivers/spi/spi-pxa2xx.c     | 7 ++-----
- drivers/spi/spi-pxa2xx.h     | 5 +++++
- 3 files changed, 8 insertions(+), 8 deletions(-)
+It's strange - But without spi_master_suspend i have randomly stucks
+when i try unload this module - as was written before
+i was test it (load/unload module in loop) and for me suspend make sense here
 
-diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
-index 5ca01ad7f460..e581027e99f9 100644
---- a/drivers/spi/spi-pxa2xx-dma.c
-+++ b/drivers/spi/spi-pxa2xx-dma.c
-@@ -41,9 +41,7 @@ static void pxa2xx_spi_dma_transfer_complete(struct driver_data *drv_data,
- 		}
- 
- 		/* Clear status & disable interrupts */
--		pxa2xx_spi_write(drv_data, SSCR1,
--				 pxa2xx_spi_read(drv_data, SSCR1)
--				 & ~drv_data->dma_cr1);
-+		clear_SSCR1_bits(drv_data, drv_data->dma_cr1);
- 		write_SSSR_CS(drv_data, drv_data->clear_sr);
- 		if (!pxa25x_ssp_comp(drv_data))
- 			pxa2xx_spi_write(drv_data, SSTO, 0);
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 4b3237f14ead..58178ba704dc 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -733,8 +733,7 @@ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
- static void handle_bad_msg(struct driver_data *drv_data)
- {
- 	pxa2xx_spi_off(drv_data);
--	pxa2xx_spi_write(drv_data, SSCR1,
--			 pxa2xx_spi_read(drv_data, SSCR1) & ~drv_data->int_cr1);
-+	clear_SSCR1_bits(drv_data, drv_data->int_cr1);
- 	if (!pxa25x_ssp_comp(drv_data))
- 		pxa2xx_spi_write(drv_data, SSTO, 0);
- 	write_SSSR_CS(drv_data, drv_data->clear_sr);
-@@ -1161,9 +1160,7 @@ static void pxa2xx_spi_handle_err(struct spi_controller *controller,
- 	pxa2xx_spi_off(drv_data);
- 	/* Clear and disable interrupts and service requests */
- 	write_SSSR_CS(drv_data, drv_data->clear_sr);
--	pxa2xx_spi_write(drv_data, SSCR1,
--			 pxa2xx_spi_read(drv_data, SSCR1)
--			 & ~(drv_data->int_cr1 | drv_data->dma_cr1));
-+	clear_SSCR1_bits(drv_data, drv_data->int_cr1 | drv_data->dma_cr1);
- 	if (!pxa25x_ssp_comp(drv_data))
- 		pxa2xx_spi_write(drv_data, SSTO, 0);
- 
-diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
-index 739e264feaa6..ed63f7165cd8 100644
---- a/drivers/spi/spi-pxa2xx.h
-+++ b/drivers/spi/spi-pxa2xx.h
-@@ -105,6 +105,11 @@ static inline int pxa25x_ssp_comp(struct driver_data *drv_data)
- 	}
- }
- 
-+static inline void clear_SSCR1_bits(const struct driver_data *drv_data, u32 bits)
-+{
-+	pxa2xx_spi_write(drv_data, SSCR1, pxa2xx_spi_read(drv_data, SSCR1) & ~bits);
-+}
-+
- static inline void write_SSSR_CS(struct driver_data *drv_data, u32 val)
- {
- 	if (drv_data->ssp_type == CE4100_SSP ||
--- 
-2.30.2
+If anybody has another solution - or real problem not here - please
+help to find the right way!
 
+PS: i have another way for solve this problem (may be it can help us
+fix problem in kernel)
+
+# before unload module need
+echo -n spi0.0 > /sys/bus/spi/drivers/spi-nor/unbind
+# after unbind driver we can unload module without problem
+rmmod spi_meson_spifc # can stuck without unbind driver before ...
+
+
+On Fri, Apr 23, 2021 at 7:48 PM Mark Brown <broonie@kernel.org> wrote:
+>
+> On Fri, Apr 23, 2021 at 11:42:47AM +0800, Artem Lapkin wrote:
+> > Problem: rmmod meson_gx_mmc - not stable without spi_master_suspend call
+> > and we can get stuck when try unload this module
+>
+> > +++ b/drivers/spi/spi-meson-spifc.c
+> > @@ -359,6 +359,7 @@ static int meson_spifc_remove(struct platform_device *pdev)
+> >       struct spi_master *master = platform_get_drvdata(pdev);
+> >       struct meson_spifc *spifc = spi_master_get_devdata(master);
+> >
+> > +     spi_master_suspend(master);
+> >       pm_runtime_get_sync(&pdev->dev);
+> >       clk_disable_unprepare(spifc->clk);
+> >       pm_runtime_disable(&pdev->dev);
+>
+> I would expect the driver to unregister the controller at the start of
+> the remove function, suspend doesn't really make sense here.

@@ -7,41 +7,41 @@ X-Spam-Status: No, score=-19.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 481E2C43461
-	for <linux-spi@archiver.kernel.org>; Sun,  2 May 2021 14:03:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 03855C43611
+	for <linux-spi@archiver.kernel.org>; Sun,  2 May 2021 14:03:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 180D3613B0
-	for <linux-spi@archiver.kernel.org>; Sun,  2 May 2021 14:03:42 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D71F1613BB
+	for <linux-spi@archiver.kernel.org>; Sun,  2 May 2021 14:03:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232294AbhEBOEb (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 2 May 2021 10:04:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49176 "EHLO mail.kernel.org"
+        id S232461AbhEBOEo (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 2 May 2021 10:04:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49802 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231958AbhEBOEa (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Sun, 2 May 2021 10:04:30 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 94C3D613B0;
-        Sun,  2 May 2021 14:03:20 +0000 (UTC)
+        id S232431AbhEBOEm (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Sun, 2 May 2021 10:04:42 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5FBF4613AC;
+        Sun,  2 May 2021 14:03:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619964201;
-        bh=pgd1252rTW4FmboBZqeKmdDft2iOwqQhjAW9jP4Q6SE=;
+        s=k20201202; t=1619964231;
+        bh=t6uuShaQBFm1A+tFPwZuHJ2zxR2QAMsD2HA7eO5/v58=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H2sEnYv4R+73ZrHGzCKIH9FjaHL7IAax1doA1RL0MQoVSBcSRSl0Tn/Gp+3sHXYfM
-         +zDN9CI/KZIDpWGLeGtnRXWFK++vZDUAOvKBQINDw6nrQtNKY8UWAEcoCEnnf+8U5I
-         2IQ1a2eBIrmBSdpyJlJ04i44hNKyISxkdpzzov7xFunodhKQqw3TGx9B6VvYbgO5SW
-         O7aBn0SlWw18PaxBCNWvFpSC1oXsi6PTOoqca59ead/Zmh4+270sU7PzyeI1fV1JrV
-         0cPh/IZixtkMGwgB3voDP8Rj35l4HmRD+sqL9p4DkX6qXfWPe6CIvmC2DL0nSas+Nd
-         aj5l4ofh1aCAw==
+        b=VxuxGc61WHBwPJj59rwn173EZNOtXVuo4auTtUjB0+YKELr/CsnkI82CUx8Q7raJd
+         UHy41zfW5QrEYJtGflVYZDFNgOcn6ArNI8/cJbsKL636pbArfzCNOkmD9BMwiHs2E5
+         l/dNOPX7zg3QEjfgTa6OJZsZEQQh8AObKudmQUClKLvo61aWr3dWk9jJ2CTDxW0lL2
+         a/PHUPn9ADmIm7zR0eqK0P16erkyJs4grZ1eTrQ/b/ZHEzHeaEl3zGDIOh29b56K0y
+         ZYEzitj1bwWn6YWcluHatsRMvFh9/YQTbRieAwx/RTrlf/5lJVoUyUb+mXzqwVOA+S
+         Mzgl2SjGNR3jg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     David Bauer <mail@david-bauer.net>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.12 03/79] spi: ath79: always call chipselect function
-Date:   Sun,  2 May 2021 10:02:00 -0400
-Message-Id: <20210502140316.2718705-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.11 04/70] spi: ath79: remove spi-master setup and cleanup assignment
+Date:   Sun,  2 May 2021 10:02:38 -0400
+Message-Id: <20210502140344.2719040-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210502140316.2718705-1-sashal@kernel.org>
-References: <20210502140316.2718705-1-sashal@kernel.org>
+In-Reply-To: <20210502140344.2719040-1-sashal@kernel.org>
+References: <20210502140344.2719040-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -52,35 +52,37 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 From: David Bauer <mail@david-bauer.net>
 
-[ Upstream commit 19e2132174583beb90c1bd3e9c842bc6d5c944d1 ]
+[ Upstream commit ffb597b2bd3cd78b9bfb68f536743cd46dbb2cc4 ]
 
-spi-bitbang has to call the chipselect function on the ath79 SPI driver
-in order to communicate with the SPI slave device, as the ath79 SPI
-driver has three dedicated chipselect lines but can also be used with
-GPIOs for the CS lines.
+This removes the assignment of setup and cleanup functions for the ath79
+target. Assigning the setup-method will lead to 'setup_transfer' not
+being assigned in spi_bitbang_init. Because of this, performing any
+TX/RX operation will lead to a kernel oops.
 
-Fixes commit 4a07b8bcd503 ("spi: bitbang: Make chipselect callback optional")
+Also drop the redundant cleanup assignment, as it's also assigned in
+spi_bitbang_init.
 
 Signed-off-by: David Bauer <mail@david-bauer.net>
-Link: https://lore.kernel.org/r/20210303160837.165771-1-mail@david-bauer.net
+Link: https://lore.kernel.org/r/20210303160837.165771-2-mail@david-bauer.net
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-ath79.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-ath79.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
-index eb9a243e9526..436327fb58de 100644
+index 436327fb58de..98ace748cd98 100644
 --- a/drivers/spi/spi-ath79.c
 +++ b/drivers/spi/spi-ath79.c
-@@ -158,6 +158,7 @@ static int ath79_spi_probe(struct platform_device *pdev)
+@@ -156,8 +156,6 @@ static int ath79_spi_probe(struct platform_device *pdev)
+ 
+ 	master->use_gpio_descriptors = true;
  	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
- 	master->setup = spi_bitbang_setup;
- 	master->cleanup = spi_bitbang_cleanup;
-+	master->flags = SPI_MASTER_GPIO_SS;
+-	master->setup = spi_bitbang_setup;
+-	master->cleanup = spi_bitbang_cleanup;
+ 	master->flags = SPI_MASTER_GPIO_SS;
  	if (pdata) {
  		master->bus_num = pdata->bus_num;
- 		master->num_chipselect = pdata->num_chipselect;
 -- 
 2.30.2
 

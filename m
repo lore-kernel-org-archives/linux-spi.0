@@ -7,41 +7,41 @@ X-Spam-Status: No, score=-19.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A1688C433ED
-	for <linux-spi@archiver.kernel.org>; Sun,  2 May 2021 14:04:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0593BC433ED
+	for <linux-spi@archiver.kernel.org>; Sun,  2 May 2021 14:04:30 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 84DEB613C5
-	for <linux-spi@archiver.kernel.org>; Sun,  2 May 2021 14:04:00 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DC8AF613B0
+	for <linux-spi@archiver.kernel.org>; Sun,  2 May 2021 14:04:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232234AbhEBOEb (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 2 May 2021 10:04:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49206 "EHLO mail.kernel.org"
+        id S232575AbhEBOFU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 2 May 2021 10:05:20 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50426 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231941AbhEBOEa (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Sun, 2 May 2021 10:04:30 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A0EB8613AA;
-        Sun,  2 May 2021 14:03:21 +0000 (UTC)
+        id S232577AbhEBOFJ (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Sun, 2 May 2021 10:05:09 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id D26EF613AF;
+        Sun,  2 May 2021 14:04:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619964202;
+        s=k20201202; t=1619964256;
         bh=t6uuShaQBFm1A+tFPwZuHJ2zxR2QAMsD2HA7eO5/v58=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U38x4b2BUkK07/TjOEjKS02mKvBwmTYEE4Poef2ajB5LyTW4kk3DCwtIX6fyHxwr5
-         1gwz9cGaVamf7GlM4KQKi6Ch5Y/NkoL/L6mA5IoTirp+nbZwuZmYbtU1fI9ySr4r0f
-         DgxRiC8cOC/O1FvcTL6jHXt1bJEb/byMS3NS2kxndcwZm9jrUlmiUkRH95LxuwrJOs
-         R0AmRkdrfVYNQe5B2WWhJEUOL3Z+g0qxTJ+ISl06dsVj+Domsr2XPiSp4TfKoeh1JM
-         pmElqy0YkbvDlhRapn2cHngw42ycfqfLlJPZz4ECGrJP6XdwmBWKBPvtyx9z7N76Au
-         TcZqxBZxeWtyw==
+        b=p8Z0uCabMp5Y+EMeehRaaJypX0wLK10wb6hAszwDAJjQSn+PhpuOazUbeH4hoP5ns
+         mc9wdjxvX15xgrgCnY649iFQBRYQJAqvnqHtI9ki95GENEdm+KlpK5rgYUKogJIuF9
+         Pg230OxjEbYY76yusn4Doa0rI3RKMHydY8kGe+9f2k8GcPEGxgG2ynsymqrTDpVnFl
+         6hM5joXuiUagPewM0xSqkAgDKyHaeW8ZLgR4SFPBLOlxQBVJhuUOqTCEHOPs2iN566
+         339UoZoB+7drRFpbZ0wg5W3txOBB0gMQgrASz/3V0xuLnG8plj9cLrtHFXrX1birEC
+         k6SQp06Id5EXA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     David Bauer <mail@david-bauer.net>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.12 04/79] spi: ath79: remove spi-master setup and cleanup assignment
-Date:   Sun,  2 May 2021 10:02:01 -0400
-Message-Id: <20210502140316.2718705-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 04/66] spi: ath79: remove spi-master setup and cleanup assignment
+Date:   Sun,  2 May 2021 10:03:09 -0400
+Message-Id: <20210502140411.2719301-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210502140316.2718705-1-sashal@kernel.org>
-References: <20210502140316.2718705-1-sashal@kernel.org>
+In-Reply-To: <20210502140411.2719301-1-sashal@kernel.org>
+References: <20210502140411.2719301-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore

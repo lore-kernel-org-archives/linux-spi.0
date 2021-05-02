@@ -7,41 +7,41 @@ X-Spam-Status: No, score=-19.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 34BA5C4360C
-	for <linux-spi@archiver.kernel.org>; Sun,  2 May 2021 14:04:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A3CBEC43461
+	for <linux-spi@archiver.kernel.org>; Sun,  2 May 2021 14:05:00 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1193B613C4
-	for <linux-spi@archiver.kernel.org>; Sun,  2 May 2021 14:04:33 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 89759613CB
+	for <linux-spi@archiver.kernel.org>; Sun,  2 May 2021 14:05:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232792AbhEBOFU (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 2 May 2021 10:05:20 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50118 "EHLO mail.kernel.org"
+        id S233086AbhEBOFu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 2 May 2021 10:05:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51048 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232665AbhEBOFJ (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Sun, 2 May 2021 10:05:09 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B440F613B0;
-        Sun,  2 May 2021 14:04:14 +0000 (UTC)
+        id S232743AbhEBOFa (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Sun, 2 May 2021 10:05:30 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0340F613B0;
+        Sun,  2 May 2021 14:04:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619964255;
+        s=k20201202; t=1619964278;
         bh=pgd1252rTW4FmboBZqeKmdDft2iOwqQhjAW9jP4Q6SE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hcTMLHuI2LzjN8MpKeDu+5L1o9NQP/DuiQ83t9O7UKgMQYsMYp7PYv0J1ZAUNIUwe
-         dntsXBqWADj/TmS6GRP/s+58ZFDyd5yOc4aTfWN90aRFoqkjXnOKtAK0gMlet9yLF7
-         YyFJwpC4VYjwxtLh10QQRnDfWDHKrsM9/45YjaaZ6kF7FvR2tFYtapH0zPefvMB6pZ
-         jIWb6hEQOl6hKf4EmTkxq+mm7mlAVDnOJTsvWONAvKh87MuQ2jrVPcheJ5eEaDMddx
-         FPemn1VNBJw0JeILDBC4udBwEL6I70E1kvcbuQ4Z1KY9mEa0B7zfThFvPYBKCxDWb0
-         HF4zhfl5e8oNQ==
+        b=MfWOtX9kpmcSIP86wLdlzZUTrXjI2WF6mfyNoh8zRIjRZLAIn2AFKFNLv5Efq+LmI
+         onWEjLEm47pc4ZLoPpRk6zQEVafcvyVZD6hmFBur3rvXldeXuNY0zpA6KNEK87CIXn
+         TpPJqBwXShwPUh61vBkJGgG8nRATDtcbK2/ptZj5FIyo5UK4NzmSaZ0HNRzDqm2mud
+         N4rXGVI3PHETEFU+MunJP3NAc1ekA809rRtzVUtThRMHppAghDcb3/8n3Gy5Bz9VnZ
+         mdFlkJ7IRxwltJX+wjRLIxr6xGiXO2IRxg9f/5DBeFGSRgq8fTcWo1NF5ewPSe2xlI
+         6VdkrlRhIboBA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     David Bauer <mail@david-bauer.net>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 03/66] spi: ath79: always call chipselect function
-Date:   Sun,  2 May 2021 10:03:08 -0400
-Message-Id: <20210502140411.2719301-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 03/34] spi: ath79: always call chipselect function
+Date:   Sun,  2 May 2021 10:04:03 -0400
+Message-Id: <20210502140434.2719553-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210502140411.2719301-1-sashal@kernel.org>
-References: <20210502140411.2719301-1-sashal@kernel.org>
+In-Reply-To: <20210502140434.2719553-1-sashal@kernel.org>
+References: <20210502140434.2719553-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore

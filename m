@@ -7,43 +7,43 @@ X-Spam-Status: No, score=-19.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E1CD7C433ED
-	for <linux-spi@archiver.kernel.org>; Thu,  6 May 2021 19:18:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7AC9DC43462
+	for <linux-spi@archiver.kernel.org>; Thu,  6 May 2021 19:18:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B8F40613CE
-	for <linux-spi@archiver.kernel.org>; Thu,  6 May 2021 19:18:54 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6200C61107
+	for <linux-spi@archiver.kernel.org>; Thu,  6 May 2021 19:18:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235138AbhEFTTv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 6 May 2021 15:19:51 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:47034 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235105AbhEFTTt (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Thu, 6 May 2021 15:19:49 -0400
+        id S235273AbhEFTTy (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 6 May 2021 15:19:54 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:54858 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235203AbhEFTTx (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 6 May 2021 15:19:53 -0400
 Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 146JIbn9095390;
-        Thu, 6 May 2021 14:18:37 -0500
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 146JIl7Q080697;
+        Thu, 6 May 2021 14:18:47 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1620328717;
-        bh=TFnKVuKDTO2GGB/wxF7cdWs6/1Bvz3DWxZTs5bMoFIY=;
+        s=ti-com-17Q1; t=1620328727;
+        bh=51TzeSbN2W/QrtF8UKtVaKXzI9nWsasCyemZNbc06W8=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=hOLWIynym8Jyu3M2Yf8x/UcU049qO5osg/1u9l1iAz3g9I63Mv3t7Vu0JhlmsO9yG
-         QpoyNbmuIsT6OrvEjDZrF+kBlgv/HN5R4KG2xWnvL3PH58z7RvFw61ny/wyUkc+Zzx
-         VK1+Rjqp7uyobsjfcfL1+jlfF2vzlY0ihR6mMk6Q=
-Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 146JIbPm097453
+        b=DsIYSc4ZgQFbLd6jCAtwVLWOundP5ZBYXW6hBKZugGo0/4aFPwpeaUdFy+KQ64RHM
+         oIpkQE+2bmyLTPaz5qsHSMY2xvGuat/oAR10/FzlNVA/OJEqVvgTueFWk4GUeH9ON+
+         WCeFYTpiEuSv08D9m6EulMfjP5K0aVfZWvbaSOCg=
+Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 146JIlPe097520
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 6 May 2021 14:18:37 -0500
-Received: from DFLE104.ent.ti.com (10.64.6.25) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+        Thu, 6 May 2021 14:18:47 -0500
+Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Thu, 6 May
- 2021 14:18:37 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
+ 2021 14:18:46 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Thu, 6 May 2021 14:18:37 -0500
+ Frontend Transport; Thu, 6 May 2021 14:18:47 -0500
 Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 146JIUND026052;
-        Thu, 6 May 2021 14:18:34 -0500
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 146JIUNG026052;
+        Thu, 6 May 2021 14:18:44 -0500
 From:   Pratyush Yadav <p.yadav@ti.com>
 To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
         Michael Walle <michael@walle.cc>,
@@ -54,9 +54,9 @@ To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
         <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <linux-spi@vger.kernel.org>
 CC:     Pratyush Yadav <p.yadav@ti.com>
-Subject: [PATCH 1/6] mtd: spi-nor: core: use 2 data bytes for template ops
-Date:   Fri, 7 May 2021 00:48:24 +0530
-Message-ID: <20210506191829.8271-2-p.yadav@ti.com>
+Subject: [PATCH 4/6] spi: spi-mem: reject partial cycle transfers in 8D-8D-8D mode
+Date:   Fri, 7 May 2021 00:48:27 +0530
+Message-ID: <20210506191829.8271-5-p.yadav@ti.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20210506191829.8271-1-p.yadav@ti.com>
 References: <20210506191829.8271-1-p.yadav@ti.com>
@@ -68,47 +68,43 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The template ops used in spi_nor_spimem_check_pp() and
-spi_nor_spimem_check_readop() currently set the data phase to 1 byte
-long. This is problematic for 8D-8D-8D protocol where odd length data
-phase is invalid since one cycle transfers 2 bytes and odd number of
-bytes would mean half a cycle is left over. This could result in a
-controller rejecting the op as "not supported" even though it actually
-supports the protocol.
-
-Change the data length to 2 bytes in these templates. One might argue
-that this should only be done for 8D-8D-8D operations but when talking
-about these templates, there is no functional difference between one and
-two bytes, even in STR modes.
+In 8D-8D-8D mode two bytes are transferred per cycle. So an odd number
+of bytes cannot be transferred because it would leave a residual half
+cycle at the end. Consider such a transfer invalid and reject it.
 
 Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+
 ---
+This patch should go through the SPI tree but I have included it in this
+series because if it goes in before patches 1-3, Micron MT35XU and
+Cypress S28HS flashes will stop working correctly.
 
- drivers/mtd/spi-nor/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-mem.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
-index bd2c7717eb10..5cc206b8bbf3 100644
---- a/drivers/mtd/spi-nor/core.c
-+++ b/drivers/mtd/spi-nor/core.c
-@@ -2143,7 +2143,7 @@ static int spi_nor_spimem_check_readop(struct spi_nor *nor,
- 	struct spi_mem_op op = SPI_MEM_OP(SPI_MEM_OP_CMD(read->opcode, 0),
- 					  SPI_MEM_OP_ADDR(3, 0, 0),
- 					  SPI_MEM_OP_DUMMY(1, 0),
--					  SPI_MEM_OP_DATA_IN(1, NULL, 0));
-+					  SPI_MEM_OP_DATA_IN(2, NULL, 0));
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index 1513553e4080..ab9eefbaa1d9 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -162,7 +162,17 @@ static bool spi_mem_check_buswidth(struct spi_mem *mem,
+ bool spi_mem_dtr_supports_op(struct spi_mem *mem,
+ 			     const struct spi_mem_op *op)
+ {
+-	if (op->cmd.nbytes != 2)
++	if (op->cmd.buswidth == 8 && op->cmd.nbytes % 2)
++		return false;
++
++	if (op->addr.nbytes && op->addr.buswidth == 8 && op->addr.nbytes % 2)
++		return false;
++
++	if (op->dummy.nbytes && op->dummy.buswidth == 8 && op->dummy.nbytes % 2)
++		return false;
++
++	if (op->data.dir != SPI_MEM_NO_DATA &&
++	    op->dummy.buswidth == 8 && op->data.nbytes % 2)
+ 		return false;
  
- 	spi_nor_spimem_setup_op(nor, &op, read->proto);
- 
-@@ -2169,7 +2169,7 @@ static int spi_nor_spimem_check_pp(struct spi_nor *nor,
- 	struct spi_mem_op op = SPI_MEM_OP(SPI_MEM_OP_CMD(pp->opcode, 0),
- 					  SPI_MEM_OP_ADDR(3, 0, 0),
- 					  SPI_MEM_OP_NO_DUMMY,
--					  SPI_MEM_OP_DATA_OUT(1, NULL, 0));
-+					  SPI_MEM_OP_DATA_OUT(2, NULL, 0));
- 
- 	spi_nor_spimem_setup_op(nor, &op, pp->proto);
- 
+ 	return spi_mem_check_buswidth(mem, op);
 -- 
 2.30.0
 

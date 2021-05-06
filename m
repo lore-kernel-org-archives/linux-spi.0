@@ -2,105 +2,57 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 51DEDC43460
-	for <linux-spi@archiver.kernel.org>; Wed,  5 May 2021 18:04:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D904C433ED
+	for <linux-spi@archiver.kernel.org>; Thu,  6 May 2021 03:00:28 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 321326139A
-	for <linux-spi@archiver.kernel.org>; Wed,  5 May 2021 18:04:18 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id EEFFF613BA
+	for <linux-spi@archiver.kernel.org>; Thu,  6 May 2021 03:00:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235522AbhEESFN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 5 May 2021 14:05:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56982 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235690AbhEESEF (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 5 May 2021 14:04:05 -0400
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D9D2C05BD00;
-        Wed,  5 May 2021 10:53:31 -0700 (PDT)
-Received: by mail-pf1-x435.google.com with SMTP id k19so2569395pfu.5;
-        Wed, 05 May 2021 10:53:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=mDKg4mIUMZnE/JrC7X2e+MMaJ9CLRzlBqkqPHaqh1LM=;
-        b=Qo07t3RpkYdK03HWPIe1I9P33+dljf12eNDzCuI2GWRL0veBA54NVwyH0iapY//I+l
-         kmz74snJiSPv2nDcO+XEsfY2z6I1sSjKi+A8pob8VNgedtJHSwX7ZXCV6ywTOx4wbreH
-         GQy0Bz4tegVs5mrxDmww9wxwpmHDNg/0yzd4NtexH2u/xSv9v+c7UO+Xd1H7MWP60PjJ
-         fZ30LmFKDgauh3wNmTsTDh6G6JvR4JcLt4qL8o0AfIEpiQFBtSYNi86ww74R+qltMoDr
-         mky9VSotYeQeq4kt8BChHvTDPGnXnvv/n+Po6Kwb52S6tnLYDQbiw9i+/dKogQXrPHQl
-         nmgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=mDKg4mIUMZnE/JrC7X2e+MMaJ9CLRzlBqkqPHaqh1LM=;
-        b=nHxOm0+V1nCewEYZmtXm9Y+pBkQN5zDjs8cIQ1ywc6rdwKBHo/RB/6zctWensLHWbC
-         VQ2KyaG+c2ZoWwiXP9U3apEW7wLl2gekSscQmubYglUFVHc/UbC5Yk6zlylKwlStQBkw
-         fRemZ+d+Y4uwtmR7AvEGSTB1Z1oiQtTQvpAdzZJFTmE0jxOk8QX9gtJxBmgpaPFUQo/M
-         KAsNEmAfF973q14gcxJ9yVCOVbBVSThAAh60dIgFOkgbiB6Fy6JodfIOmpa8AP7KtT/U
-         FBcjZGNTdBBK33opi5Xa9CyFZ2L2Lq+LPAaoVAgKLFp3YQEe3ZAq7CFSc8MNPIDIj/dG
-         aB+w==
-X-Gm-Message-State: AOAM531a0wEJvCCQh8ftrABTL7nUrEripq2BlnJrlTnLPKA2p7XWJv2I
-        nt9Zt1pPivNcKKkLOF/FrVdsdc/5yai+zGEVY2/Gx9osUuA=
-X-Google-Smtp-Source: ABdhPJx6hBieKqvSvFkRilID+i2xYAXr3nVhf/5Pn/Xth4HCHb+XtnN2WS1AMaIkE5G0V4Tqdc+XRrD1Xze3e1c1wbM=
-X-Received: by 2002:aa7:8e85:0:b029:28f:2620:957e with SMTP id
- a5-20020aa78e850000b029028f2620957emr23865pfr.40.1620237210545; Wed, 05 May
- 2021 10:53:30 -0700 (PDT)
+        id S229465AbhEFDBY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 5 May 2021 23:01:24 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:17133 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231473AbhEFDBY (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 5 May 2021 23:01:24 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.59])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FbJC93v2xzmfff;
+        Thu,  6 May 2021 10:57:09 +0800 (CST)
+Received: from localhost.localdomain (10.69.192.56) by
+ DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
+ 14.3.498.0; Thu, 6 May 2021 11:00:16 +0800
+From:   Jay Fang <f.fangjian@huawei.com>
+To:     <broonie@kernel.org>, <linus.walleij@linaro.org>
+CC:     <linux-spi@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
+        <linuxarm@huawei.com>, <huangdaode@huawei.com>,
+        <tangzihao1@hisilicon.com>
+Subject: [PATCH 0/2] spi: Correct CS GPIOs polarity when using GPIO descriptors
+Date:   Thu, 6 May 2021 11:00:15 +0800
+Message-ID: <1620270017-52643-1-git-send-email-f.fangjian@huawei.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-References: <20210505164734.175546-1-saravanak@google.com>
-In-Reply-To: <20210505164734.175546-1-saravanak@google.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 5 May 2021 20:53:14 +0300
-Message-ID: <CAHp75VeDzOZ_j30v=rgec2d9f6pPXHXE8BqJN1ARoYkfGL=d6g@mail.gmail.com>
-Subject: Re: [PATCH v2] spi: Don't have controller clean up spi device before
- driver unbind
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Mark Brown <broonie@kernel.org>, Lukas Wunner <lukas@wunner.de>,
-        Android Kernel Team <kernel-team@android.com>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Originating-IP: [10.69.192.56]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, May 5, 2021 at 8:26 PM Saravana Kannan <saravanak@google.com> wrote:
->
-> When a spi device is unregistered and triggers a driver unbind, the
-> driver might need to access the spi device. So, don't have the
-> controller clean up the spi device before the driver is unbound. Clean
-> up the spi device after the driver is unbound.
->
-> Fixes: c7299fea6769 ("spi: Fix spi device unregister flow")
-> Reported-by: Lukas Wunner <lukas@wunner.de>
+This series introduces a generic implementation to solve the conflict
+between the 'cs-gpios' flags and the optional SPI slaves flags. So we
+don't need to add two similar quirks separately for DT and ACPI.
 
-And
-Suggested-by: Lukas ...
+Jay Fang (2):
+  spi: Correct CS GPIOs polarity when using GPIO descriptors
+  Revert "gpio: of: Handle SPI chipselect legacy bindings"
 
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
-
-...
-
-> Can you test this one your end to make sure you don't have issues
-> anymore?
-
-Do you need a test on my setup?
-
-...
-
-> +       device_del(&spi->dev);
-> +       spi_cleanup(spi);
-> +       put_device(&spi->dev);
-
-This block deserves a comment in the code.
+ drivers/gpio/gpiolib-of.c | 51 ++---------------------------------------------
+ drivers/spi/spi.c         | 22 ++++++++++++++++++--
+ 2 files changed, 22 insertions(+), 51 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.7.4
+

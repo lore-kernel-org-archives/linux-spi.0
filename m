@@ -2,110 +2,63 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.9 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 17DE6C433B4
-	for <linux-spi@archiver.kernel.org>; Fri,  7 May 2021 13:56:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CECABC43460
+	for <linux-spi@archiver.kernel.org>; Fri,  7 May 2021 14:51:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id CDAFB60C40
-	for <linux-spi@archiver.kernel.org>; Fri,  7 May 2021 13:56:49 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 84A9A61019
+	for <linux-spi@archiver.kernel.org>; Fri,  7 May 2021 14:51:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237322AbhEGN5s (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 7 May 2021 09:57:48 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:52500 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237319AbhEGN5r (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 7 May 2021 09:57:47 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 147DuZQ5113652;
-        Fri, 7 May 2021 08:56:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1620395795;
-        bh=f37/TL3HEr+S3ewgNxXgMI9KuXAOPNHmxT2K4OR6Jvc=;
-        h=Date:From:To:CC:Subject:References:In-Reply-To;
-        b=aSU23RdLK0xVAhC/u1TH99n/i5e+FjWLxGBJWUYXqnW8rjh4h9AO0evYzGhTckf6E
-         9kfnrXwCvBYYKjCI4csXMnHO9fjH2h/VjU/9qOpbsAuUJyKiq6Sia0yN9iEosw6Thu
-         TJEbaOOyMVcF6a6S64gKhT9XbuHu4u24e6t3OY0E=
-Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 147DuZBJ051614
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 7 May 2021 08:56:35 -0500
-Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Fri, 7 May
- 2021 08:56:34 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE101.ent.ti.com
- (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Fri, 7 May 2021 08:56:34 -0500
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 147DuYSA102637;
-        Fri, 7 May 2021 08:56:34 -0500
-Date:   Fri, 7 May 2021 19:26:33 +0530
-From:   Pratyush Yadav <p.yadav@ti.com>
+        id S237684AbhEGOwc (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 7 May 2021 10:52:32 -0400
+Received: from out30-43.freemail.mail.aliyun.com ([115.124.30.43]:33345 "EHLO
+        out30-43.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S234601AbhEGOwc (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 7 May 2021 10:52:32 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R881e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04420;MF=zhangliguang@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0UY3o8Jd_1620399079;
+Received: from localhost(mailfrom:zhangliguang@linux.alibaba.com fp:SMTPD_---0UY3o8Jd_1620399079)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Fri, 07 May 2021 22:51:30 +0800
+From:   Liguang Zhang <zhangliguang@linux.alibaba.com>
 To:     Mark Brown <broonie@kernel.org>
-CC:     Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Michael Walle <michael@walle.cc>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>
-Subject: Re: [PATCH 4/6] spi: spi-mem: reject partial cycle transfers in
- 8D-8D-8D mode
-Message-ID: <20210507135631.maue7gorfzsv4qpk@ti.com>
-References: <20210506191829.8271-1-p.yadav@ti.com>
- <20210506191829.8271-5-p.yadav@ti.com>
- <20210507125533.GA6383@sirena.org.uk>
+Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Liguang Zhang <zhangliguang@linux.alibaba.com>
+Subject: [PATCH] spi: set right CS polarity depend on gpiolib
+Date:   Fri,  7 May 2021 22:51:17 +0800
+Message-Id: <20210507145117.43221-1-zhangliguang@linux.alibaba.com>
+X-Mailer: git-send-email 2.19.1.6.gb485710b
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20210507125533.GA6383@sirena.org.uk>
-User-Agent: NeoMutt/20171215
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 07/05/21 01:55PM, Mark Brown wrote:
-> On Fri, May 07, 2021 at 12:48:27AM +0530, Pratyush Yadav wrote:
-> > In 8D-8D-8D mode two bytes are transferred per cycle. So an odd number
-> > of bytes cannot be transferred because it would leave a residual half
-> > cycle at the end. Consider such a transfer invalid and reject it.
-> > 
-> > Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
-> > 
-> > ---
-> > This patch should go through the SPI tree but I have included it in this
-> > series because if it goes in before patches 1-3, Micron MT35XU and
-> > Cypress S28HS flashes will stop working correctly.
-> 
-> It seems like this should probably even go in as a fix even if nothing
-> is broken with mainline right now, it's the sort of thing some out of
-> tree patch could easily trigger.  Unless anyone objects I'll do that.
+After a kernel upgrade from 4.19 to 5.10, we found that tpm flow control
+always causes TIMEOUT which caused by wrong CS polarity setting depend
+on gpiolib.
 
-If it does get backported to stable branches, patches 1-3 would have to 
-go in _before_ this one. Otherwise it will break the two 8D-8D-8D 
-flashes: Micron MT35XU512ABA and Cypress S28HS512T. Without patch 1 
-8D-8D-8D mode will not be selected correctly on these two flashes. The 
-supports_op() will reject it because of 1 data byte. This is a 
-relatively safe patch for backporting to a stable branch.
+Signed-off-by: Liguang Zhang <zhangliguang@linux.alibaba.com>
+---
+ drivers/spi/spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Patches 2 and 3 are a slightly different matter. They add an extra 
-register write. But most controllers I've come across don't support 
-1-byte writes in 8D mode. It is likely that they are sending 
-bogus/undefined values in the second byte and deasserting CS only after 
-the cycle is done. So they should _in theory_ change undefined behaviour 
-to defined behaviour.
-
-Still, they introduce an extra register write. I'm not sure how 
-risk-tolerant you want to be for stable backports. I will leave the 
-judgement to you or Tudor or Vignesh.
-
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index ba425b9c7700..9ee2b92b4506 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -816,7 +816,7 @@ static void spi_set_cs(struct spi_device *spi, bool enable, bool force)
+ 		if (!(spi->mode & SPI_NO_CS)) {
+ 			if (spi->cs_gpiod)
+ 				/* polarity handled by gpiolib */
+-				gpiod_set_value_cansleep(spi->cs_gpiod, activate);
++				gpiod_set_value_cansleep(spi->cs_gpiod, !enable);
+ 			else
+ 				/*
+ 				 * invert the enable line, as active low is
 -- 
-Regards,
-Pratyush Yadav
-Texas Instruments Inc.
+2.19.1.6.gb485710b
+

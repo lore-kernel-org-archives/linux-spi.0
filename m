@@ -2,193 +2,99 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.7 required=3.0 tests=BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-19.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B74CC433B4
-	for <linux-spi@archiver.kernel.org>; Fri,  7 May 2021 21:53:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B0B5FC43460
+	for <linux-spi@archiver.kernel.org>; Fri,  7 May 2021 22:13:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 22569610FC
-	for <linux-spi@archiver.kernel.org>; Fri,  7 May 2021 21:53:23 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 855826140E
+	for <linux-spi@archiver.kernel.org>; Fri,  7 May 2021 22:13:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229724AbhEGVyW convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 7 May 2021 17:54:22 -0400
-Received: from mx0b-00082601.pphosted.com ([67.231.153.30]:13280 "EHLO
-        mx0b-00082601.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229470AbhEGVyV (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 7 May 2021 17:54:21 -0400
-Received: from pps.filterd (m0109332.ppops.net [127.0.0.1])
-        by mx0a-00082601.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 147LiFFC023024
-        for <linux-spi@vger.kernel.org>; Fri, 7 May 2021 14:53:20 -0700
-Received: from maileast.thefacebook.com ([163.114.130.16])
-        by mx0a-00082601.pphosted.com with ESMTP id 38cspgdph4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-        for <linux-spi@vger.kernel.org>; Fri, 07 May 2021 14:53:20 -0700
-Received: from intmgw001.37.frc1.facebook.com (2620:10d:c0a8:1b::d) by
- mail.thefacebook.com (2620:10d:c0a8:82::d) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Fri, 7 May 2021 14:53:19 -0700
-Received: by devvm2494.atn0.facebook.com (Postfix, from userid 172786)
-        id 1A22EAFF26E0; Fri,  7 May 2021 14:53:19 -0700 (PDT)
-From:   Jonathan Lemon <jonathan.lemon@gmail.com>
-To:     <ribalda@kernel.org>, <broonie@kernel.org>
-CC:     <linux-spi@vger.kernel.org>, <kernel-team@fb.com>
-Subject: [PATCH] spi: xilinx: Inhibit transmitter while filling TX FIFO
-Date:   Fri, 7 May 2021 14:53:19 -0700
-Message-ID: <20210507215319.3882138-1-jonathan.lemon@gmail.com>
-X-Mailer: git-send-email 2.30.2
+        id S230033AbhEGWOy (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 7 May 2021 18:14:54 -0400
+Received: from mail-ot1-f54.google.com ([209.85.210.54]:46775 "EHLO
+        mail-ot1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229849AbhEGWOx (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 7 May 2021 18:14:53 -0400
+Received: by mail-ot1-f54.google.com with SMTP id d3-20020a9d29030000b029027e8019067fso9165497otb.13;
+        Fri, 07 May 2021 15:13:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=p+JwTxvkP5L75f+W39v35nFwuY+Fa/AUNZlHVWen03w=;
+        b=N68CyN/lfLgasqijHDypNjWxffDvjq+8WvB2ZE4Lk8mc1LVgfIo7b4oMnolPESUiXV
+         CUHtvAf17ZQKVUthL+7+LWO5497AmXSU64hI2LkEt0dF2kikkB4bm5wpkeB+f0g2nW1t
+         eNR9SPMRVfnu/1Mt0Dci+yY1eyxC/kNL54lad++dktmn6Ssh5GfpBNiW+CdZsUVbZYLi
+         rDAMyBIbUb5ib5QzaLHxTPnje5VEbk2wVcp8vOF5e7aluscYD+xczUR4UDnhhXhAHu4c
+         kru0FXK8ZZRzY214/K0qNsI1BlOzvMX/IuiqILSK8IAVrwLiB6tEPqNOEEQxn8o88wmJ
+         28cg==
+X-Gm-Message-State: AOAM532nKNvvybvJ8pHSTNbTd6nsRreUGGqW4x7/FlmPMDxf426Up/E2
+        iiQhPft7Ot27jnos0txtzw==
+X-Google-Smtp-Source: ABdhPJwJXZ/u8YQCpF44jVtSE26QxC86aijJjzgs3C1XhultyjIZL4g2ByHBMktyIbqIrQNvlNWZmw==
+X-Received: by 2002:a9d:5382:: with SMTP id w2mr9900695otg.153.1620425632197;
+        Fri, 07 May 2021 15:13:52 -0700 (PDT)
+Received: from robh.at.kernel.org (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id n98sm1453330ota.24.2021.05.07.15.13.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 May 2021 15:13:51 -0700 (PDT)
+Received: (nullmailer pid 2990988 invoked by uid 1000);
+        Fri, 07 May 2021 22:13:50 -0000
+Date:   Fri, 7 May 2021 17:13:50 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>
+Cc:     linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
+        Gareth Williams <gareth.williams.jx@renesas.com>
+Subject: Re: [PATCH] dt-bindings: spi: dw-apb-ssi: Integrate Renesas RZ/N1
+ SPI controller
+Message-ID: <20210507221350.GA2990934@robh.at.kernel.org>
+References: <aef15aa119ed02487ded4691141678bc1040c3b4.1620301936.git.geert+renesas@glider.be>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-X-FB-Internal: Safe
-Content-Type: text/plain
-X-Proofpoint-GUID: lCDySqmjLiSJh8aEqKRUHlQsPGOp-7Ur
-X-Proofpoint-ORIG-GUID: lCDySqmjLiSJh8aEqKRUHlQsPGOp-7Ur
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
- definitions=2021-05-07_10:2021-05-06,2021-05-07 signatures=0
-X-Proofpoint-Spam-Details: rule=fb_default_notspam policy=fb_default score=0 priorityscore=1501
- lowpriorityscore=0 spamscore=0 suspectscore=0 mlxlogscore=333 mlxscore=0
- clxscore=1034 impostorscore=0 adultscore=0 malwarescore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2105070142
-X-FB-Internal: deliver
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aef15aa119ed02487ded4691141678bc1040c3b4.1620301936.git.geert+renesas@glider.be>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Contrary to the comment in xilinx_spi_txrx_bufs(), the transmitter
-was not disabled on entry.  On my particular board, when sending a PP
-sequence, the first address byte was clocked out 3 times, writing data
-into the wrong location, and generally locking up the chip.
+On Thu, 06 May 2021 13:52:59 +0200, Geert Uytterhoeven wrote:
+> Originally, the Renesas RZ/N1 SPI Controller DT bindings were not
+> integrated in the main DT bindings for the Synopsys DesignWare
+> Synchronous Serial Interface, but in its own file, as the RZ/N1
+> controller has additional registers for software CS control and DMA.
+> 
+> As so far DMA is not supported on RZ/N1, and json-schema can handle any
+> possible differences fine, integrate the RZ/N1 compatible values in the
+> main DT bindings for the Synopsys DW SSI.
+> 
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ---
+> There are no upstream users of this binding, but it validates the
+> following (modified) example taken from the RZ/N1 BSP[1] fine:
+> 
+>     spi0: spi@50005000 {
+> 	    compatible = "renesas,r9a06g032-spi", "renesas,rzn1-spi";
+> 	    reg = <0x50005000 0x400>;
+> 	    interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
+> 	    clock-names = "ssi_clk", "pclk";
+> 	    clocks = <&sysctrl R9A06G032_CLK_SPI0>, <&sysctrl R9A06G032_HCLK_SPI0>;
+> 	    #address-cells = <1>;
+> 	    #size-cells = <0>;
+> 	    spi-max-frequency = <12500000>;
+> 	    num-cs = <4>;
+>     };
+> 
+> [1] https://github.com/renesas-rz/rzn1_linux/blob/rzn1-stable-v4.19/arch/arm/boot/dts/rzn1.dtsi
+> ---
+>  .../devicetree/bindings/spi/renesas,rzn1-spi.txt      | 11 -----------
+>  .../devicetree/bindings/spi/snps,dw-apb-ssi.yaml      |  6 ++++++
+>  2 files changed, 6 insertions(+), 11 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/spi/renesas,rzn1-spi.txt
+> 
 
-Fix this by inhibiting the transmitter at initialization time, and
-then enabling/disabling it appropriately.
-
-With this patch, I can successfully read/erase/program the flash.
-
-Signed-off-by: Jonathan Lemon <jonathan.lemon@gmail.com>
----
- drivers/spi/spi-xilinx.c | 54 +++++++++++++++++++++++++++++++---------
- 1 file changed, 42 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index 523edfdf5dcd..10eccfb09e20 100644
---- a/drivers/spi/spi-xilinx.c
-+++ b/drivers/spi/spi-xilinx.c
-@@ -179,8 +179,8 @@ static void xspi_init_hw(struct xilinx_spi *xspi)
- 	/* Disable the transmitter, enable Manual Slave Select Assertion,
- 	 * put SPI controller into master mode, and enable it */
- 	xspi->write_fn(XSPI_CR_MANUAL_SSELECT |	XSPI_CR_MASTER_MODE |
--		XSPI_CR_ENABLE | XSPI_CR_TXFIFO_RESET |	XSPI_CR_RXFIFO_RESET,
--		regs_base + XSPI_CR_OFFSET);
-+		XSPI_CR_ENABLE | XSPI_CR_TXFIFO_RESET |	XSPI_CR_RXFIFO_RESET |
-+		XSPI_CR_TRANS_INHIBIT, regs_base + XSPI_CR_OFFSET);
- }
- 
- static void xilinx_spi_chipselect(struct spi_device *spi, int is_on)
-@@ -235,14 +235,46 @@ static int xilinx_spi_setup_transfer(struct spi_device *spi,
- 	return 0;
- }
- 
-+static void
-+xilinx_spi_inhibit_master(struct xilinx_spi *xspi, bool inhibit)
-+{
-+	u16 cr;
-+
-+	cr = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET);
-+	if (inhibit)
-+		cr |= XSPI_CR_TRANS_INHIBIT;
-+	else
-+		cr &= ~XSPI_CR_TRANS_INHIBIT;
-+	xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
-+}
-+
-+static void
-+xilinx_spi_enable_transfer(struct xilinx_spi *xspi)
-+{
-+	xilinx_spi_inhibit_master(xspi, false);
-+}
-+
-+static void
-+xilinx_spi_disable_transfer(struct xilinx_spi *xspi)
-+{
-+	xilinx_spi_inhibit_master(xspi, true);
-+}
-+
-+static bool
-+xilinx_spi_is_transfer_disabled(struct xilinx_spi *xspi)
-+{
-+	u16 cr = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET);
-+	return !!(cr & XSPI_CR_TRANS_INHIBIT);
-+}
-+
- static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- {
- 	struct xilinx_spi *xspi = spi_master_get_devdata(spi->master);
- 	int remaining_words;	/* the number of words left to transfer */
- 	bool use_irq = false;
--	u16 cr = 0;
- 
- 	/* We get here with transmitter inhibited */
-+	WARN_ON_ONCE(!xilinx_spi_is_transfer_disabled(xspi));
- 
- 	xspi->tx_ptr = t->tx_buf;
- 	xspi->rx_ptr = t->rx_buf;
-@@ -252,14 +284,13 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- 		u32 isr;
- 		use_irq = true;
- 		/* Inhibit irq to avoid spurious irqs on tx_empty*/
--		cr = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET);
--		xspi->write_fn(cr | XSPI_CR_TRANS_INHIBIT,
--			       xspi->regs + XSPI_CR_OFFSET);
-+
- 		/* ACK old irqs (if any) */
- 		isr = xspi->read_fn(xspi->regs + XIPIF_V123B_IISR_OFFSET);
- 		if (isr)
- 			xspi->write_fn(isr,
- 				       xspi->regs + XIPIF_V123B_IISR_OFFSET);
-+
- 		/* Enable the global IPIF interrupt */
- 		xspi->write_fn(XIPIF_V123B_GINTR_ENABLE,
- 				xspi->regs + XIPIF_V123B_DGIER_OFFSET);
-@@ -280,9 +311,9 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- 		/* Start the transfer by not inhibiting the transmitter any
- 		 * longer
- 		 */
-+		xilinx_spi_enable_transfer(xspi);
- 
- 		if (use_irq) {
--			xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
- 			wait_for_completion(&xspi->done);
- 			/* A transmit has just completed. Process received data
- 			 * and check for more data to transmit. Always inhibit
-@@ -290,8 +321,7 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- 			 * register/FIFO, or make sure it is stopped if we're
- 			 * done.
- 			 */
--			xspi->write_fn(cr | XSPI_CR_TRANS_INHIBIT,
--				       xspi->regs + XSPI_CR_OFFSET);
-+			xilinx_spi_disable_transfer(xspi);
- 			sr = XSPI_SR_TX_EMPTY_MASK;
- 		} else
- 			sr = xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
-@@ -325,10 +355,10 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- 		remaining_words -= n_words;
- 	}
- 
--	if (use_irq) {
-+	if (use_irq)
- 		xspi->write_fn(0, xspi->regs + XIPIF_V123B_DGIER_OFFSET);
--		xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
--	}
-+
-+	xilinx_spi_disable_transfer(xspi);
- 
- 	return t->len;
- }
--- 
-2.27.0
-
+Reviewed-by: Rob Herring <robh@kernel.org>

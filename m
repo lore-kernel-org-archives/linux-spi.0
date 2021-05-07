@@ -2,96 +2,235 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EC22FC433B4
-	for <linux-spi@archiver.kernel.org>; Fri,  7 May 2021 12:56:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DF0C5C433B4
+	for <linux-spi@archiver.kernel.org>; Fri,  7 May 2021 13:18:26 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B39A56143F
-	for <linux-spi@archiver.kernel.org>; Fri,  7 May 2021 12:56:12 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A05946143F
+	for <linux-spi@archiver.kernel.org>; Fri,  7 May 2021 13:18:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235202AbhEGM5L (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 7 May 2021 08:57:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39800 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234398AbhEGM5L (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 7 May 2021 08:57:11 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8E43D6145D;
-        Fri,  7 May 2021 12:56:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620392171;
-        bh=y32fV8IFsyNahCaWCck8Bgsb71MrZYwbNZlgtBX60W8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=FIdbOw5mDlCaJq1WudfCM96/pMNiqnxJI0g3Y7ecuhXwxekGLGwhhPFiETS7smMia
-         oAYKfCnDnK2zLIqSMWwoAl2nAmvC2iHkVwmbEBf8NQeWNNtKnPEQKQ8fuPiiQc0NsK
-         NchlyUHjMTDhy3Ujt+ANC/3tMnpv98l1BkU2wSAdXowwjhSH1+KPBkR2zyMQ7FyJ0R
-         RzPUgqtW8DMteVCpZb/lX1Jxj1B8p4fvA5zIXoyd0uOkRi9RLp50KzQQIKD43UY1LG
-         AlE/2ODqzBT/3aTDKjkGXyRcWBjaIIhj83Acik+3IJBv9LhLIGeNbroSdhNSPipNUn
-         DEIKilL/ZyyGA==
-Date:   Fri, 7 May 2021 13:55:33 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Pratyush Yadav <p.yadav@ti.com>
-Cc:     Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Michael Walle <michael@walle.cc>,
+        id S235916AbhEGNTZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 7 May 2021 09:19:25 -0400
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:57564 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S229886AbhEGNTY (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 7 May 2021 09:19:24 -0400
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 147DD5M5030751;
+        Fri, 7 May 2021 15:18:14 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type; s=selector1;
+ bh=J1kgdyPnZVAZmjhvFTZCtchyF+JveNeIja4j9TKTgUA=;
+ b=d4eBMXrSo4PX1jE1BFuLEjKJSC3NWM6Fw5K6AqdeORQzy9t3GBlCK04m5yURQhycz8vZ
+ IfYvU+I4RBc/lgSRF3Hx4TRCJ/76p66K3Qus0s5XGpPg6fVJ/E3OHGBaOjHPF3jalkjz
+ PhTfoG3QonBp1DaO80QHaSqAZz2EmjxLDDJDGCAoDkeRNmUbWiUrOqop31sdzaMlEeHs
+ h2uheWvFWnbDpBCMRvzQ6IGVkrIfCJESnhFMHqyKObwWPjQKSHhl0DPtZ7bnBo55pohR
+ R6SOvUEzvDDgql0ae2H2GWzMfBAsYDM3m4WYoz4dGOcANuMlXbeTGg+zXySjabYv4i6i cw== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 38csqbv68q-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 07 May 2021 15:18:14 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id BD440100034;
+        Fri,  7 May 2021 15:18:13 +0200 (CEST)
+Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id A5C68221F79;
+        Fri,  7 May 2021 15:18:13 +0200 (CEST)
+Received: from localhost (10.75.127.48) by SFHDAG2NODE3.st.com (10.75.127.6)
+ with Microsoft SMTP Server (TLS) id 15.0.1497.2; Fri, 7 May 2021 15:18:13
+ +0200
+From:   <patrice.chotard@foss.st.com>
+To:     Mark Brown <broonie@kernel.org>,
         Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
         Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org
-Subject: Re: [PATCH 4/6] spi: spi-mem: reject partial cycle transfers in
- 8D-8D-8D mode
-Message-ID: <20210507125533.GA6383@sirena.org.uk>
-References: <20210506191829.8271-1-p.yadav@ti.com>
- <20210506191829.8271-5-p.yadav@ti.com>
+        Boris Brezillon <boris.brezillon@collabora.com>,
+        <linux-mtd@lists.infradead.org>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        <linux-spi@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+CC:     <patrice.chotard@foss.st.com>, <christophe.kerello@foss.st.com>
+Subject: [PATCH v2 1/3] spi: spi-mem: add automatic poll status functions
+Date:   Fri, 7 May 2021 15:17:54 +0200
+Message-ID: <20210507131756.17028-2-patrice.chotard@foss.st.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20210507131756.17028-1-patrice.chotard@foss.st.com>
+References: <20210507131756.17028-1-patrice.chotard@foss.st.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="x+6KMIRAuhnl3hBn"
-Content-Disposition: inline
-In-Reply-To: <20210506191829.8271-5-p.yadav@ti.com>
-X-Cookie: Postage will be paid by addressee.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
+X-Originating-IP: [10.75.127.48]
+X-ClientProxiedBy: SFHDAG2NODE1.st.com (10.75.127.4) To SFHDAG2NODE3.st.com
+ (10.75.127.6)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-05-07_04:2021-05-06,2021-05-07 signatures=0
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+From: Patrice Chotard <patrice.chotard@foss.st.com>
 
---x+6KMIRAuhnl3hBn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+With STM32 QSPI, it is possible to poll the status register of the device.
+This could be done to offload the CPU during an operation (erase or
+program a SPI NAND for example).
 
-On Fri, May 07, 2021 at 12:48:27AM +0530, Pratyush Yadav wrote:
-> In 8D-8D-8D mode two bytes are transferred per cycle. So an odd number
-> of bytes cannot be transferred because it would leave a residual half
-> cycle at the end. Consider such a transfer invalid and reject it.
->=20
-> Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
->=20
-> ---
-> This patch should go through the SPI tree but I have included it in this
-> series because if it goes in before patches 1-3, Micron MT35XU and
-> Cypress S28HS flashes will stop working correctly.
+spi_mem_poll_status API has been added to handle this feature.
+This new function take care of the offload/non-offload cases.
 
-It seems like this should probably even go in as a fix even if nothing
-is broken with mainline right now, it's the sort of thing some out of
-tree patch could easily trigger.  Unless anyone objects I'll do that.
+For the non-offload case, use read_poll_timeout() to poll the status in
+order to release CPU during this phase.
 
---x+6KMIRAuhnl3hBn
-Content-Type: application/pgp-signature; name="signature.asc"
+Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
+Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
+---
+Changes in v2:
+  - Indicates the spi_mem_poll_status() timeout unit
+  - Use 2-byte wide status register
+  - Add spi_mem_supports_op() call in spi_mem_poll_status()
+  - Add completion management in spi_mem_poll_status()
+  - Add offload/non-offload case mangement in spi_mem_poll_status()
+  - Optimize the non-offload case by using read_poll_timeout()
 
------BEGIN PGP SIGNATURE-----
+ drivers/spi/spi-mem.c       | 71 +++++++++++++++++++++++++++++++++++++
+ include/linux/spi/spi-mem.h | 10 ++++++
+ 2 files changed, 81 insertions(+)
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmCVOMQACgkQJNaLcl1U
-h9C9uQf9F7iIYJsr5r7vlcQFtN6JRxQBAT7SQrYpZGKtFrmxVr0ct5rCpwPxCDm6
-TihuJQd9vVim/gn+GfjZvLLrbgf+QpDE8dR8l3kcUFqDBbG2LpxNBkAKvrDhc0O6
-jX89AjpNdoI772ZaEFXSyexyN8jOLn3dZoWX+G+fVGaIpbbYDDn+T3CC1TPPs3hG
-05o0WvEsUF/Sdl4O2GoqV7EeLIoa7ViZuhzGyzMFTGMyPvjte3ZK6lne164UZGax
-lSnLoTCki6lRxiqhwsfuCRsH9VA3U9rZvAR0Slly7EkmDhkgQDgR4AkKZwK7wB9X
-fTQrLj2BgqbZWIkih68wRH9AxHo6ig==
-=YstS
------END PGP SIGNATURE-----
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index 1513553e4080..3f29c604df7d 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -6,6 +6,7 @@
+  * Author: Boris Brezillon <boris.brezillon@bootlin.com>
+  */
+ #include <linux/dmaengine.h>
++#include <linux/iopoll.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi-mem.h>
+@@ -743,6 +744,75 @@ static inline struct spi_mem_driver *to_spi_mem_drv(struct device_driver *drv)
+ 	return container_of(drv, struct spi_mem_driver, spidrv.driver);
+ }
+ 
++/**
++ * spi_mem_finalize_op - report completion of spi_mem_op
++ * @ctlr: the controller reporting completion
++ *
++ * Called by SPI drivers using the spi-mem spi_mem_poll_status()
++ * implementation to notify it that the current spi_mem_op has
++ * finished.
++ */
++void spi_mem_finalize_op(struct spi_controller *ctlr)
++{
++	complete(&ctlr->xfer_completion);
++}
++EXPORT_SYMBOL_GPL(spi_mem_finalize_op);
++
++/**
++ * spi_mem_poll_status() - Poll memory device status
++ * @mem: SPI memory device
++ * @op: the memory operation to execute
++ * @mask: status bitmask to ckeck
++ * @match: (status & mask) expected value
++ * @timeout_ms: timeout in milliseconds
++ *
++ * This function send a polling status request to the controller driver
++ *
++ * Return: 0 in case of success, -ETIMEDOUT in case of error,
++ *         -EOPNOTSUPP if not supported.
++ */
++int spi_mem_poll_status(struct spi_mem *mem,
++			const struct spi_mem_op *op,
++			u16 mask, u16 match, u16 timeout_ms)
++{
++	struct spi_controller *ctlr = mem->spi->controller;
++	unsigned long ms;
++	int ret = -EOPNOTSUPP;
++	int exec_op_ret;
++	u16 *status;
++
++	if (!spi_mem_supports_op(mem, op))
++		return ret;
++
++	if (ctlr->mem_ops && ctlr->mem_ops->poll_status) {
++		ret = spi_mem_access_start(mem);
++		if (ret)
++			return ret;
++
++		reinit_completion(&ctlr->xfer_completion);
++
++		ret = ctlr->mem_ops->poll_status(mem, op, mask, match,
++						 timeout_ms);
++
++		ms = wait_for_completion_timeout(&ctlr->xfer_completion,
++						 msecs_to_jiffies(timeout_ms));
++
++		spi_mem_access_end(mem);
++		if (!ms)
++			return -ETIMEDOUT;
++	} else {
++		status = (u16 *)op->data.buf.in;
++		ret = read_poll_timeout(spi_mem_exec_op, exec_op_ret,
++					((*status) & mask) == match, 20,
++					timeout_ms * 1000, false, mem, op);
++		if (exec_op_ret)
++			return exec_op_ret;
++	}
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(spi_mem_poll_status);
++
+ static int spi_mem_probe(struct spi_device *spi)
+ {
+ 	struct spi_mem_driver *memdrv = to_spi_mem_drv(spi->dev.driver);
+@@ -763,6 +833,7 @@ static int spi_mem_probe(struct spi_device *spi)
+ 	if (IS_ERR_OR_NULL(mem->name))
+ 		return PTR_ERR_OR_ZERO(mem->name);
+ 
++	init_completion(&ctlr->xfer_completion);
+ 	spi_set_drvdata(spi, mem);
+ 
+ 	return memdrv->probe(mem);
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index 2b65c9edc34e..0fbf5d0a3d31 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -250,6 +250,7 @@ static inline void *spi_mem_get_drvdata(struct spi_mem *mem)
+  *		  the currently mapped area), and the caller of
+  *		  spi_mem_dirmap_write() is responsible for calling it again in
+  *		  this case.
++ * @poll_status: poll memory device status
+  *
+  * This interface should be implemented by SPI controllers providing an
+  * high-level interface to execute SPI memory operation, which is usually the
+@@ -274,6 +275,9 @@ struct spi_controller_mem_ops {
+ 			       u64 offs, size_t len, void *buf);
+ 	ssize_t (*dirmap_write)(struct spi_mem_dirmap_desc *desc,
+ 				u64 offs, size_t len, const void *buf);
++	int (*poll_status)(struct spi_mem *mem,
++			   const struct spi_mem_op *op,
++			   u16 mask, u16 match, unsigned long timeout);
+ };
+ 
+ /**
+@@ -369,6 +373,12 @@ devm_spi_mem_dirmap_create(struct device *dev, struct spi_mem *mem,
+ void devm_spi_mem_dirmap_destroy(struct device *dev,
+ 				 struct spi_mem_dirmap_desc *desc);
+ 
++void spi_mem_finalize_op(struct spi_controller *ctlr);
++
++int spi_mem_poll_status(struct spi_mem *mem,
++			const struct spi_mem_op *op,
++			u16 mask, u16 match, u16 timeout);
++
+ int spi_mem_driver_register_with_owner(struct spi_mem_driver *drv,
+ 				       struct module *owner);
+ 
+-- 
+2.17.1
 
---x+6KMIRAuhnl3hBn--

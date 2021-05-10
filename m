@@ -2,39 +2,39 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 51209C43461
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A296C43600
 	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:31:41 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1F9646100A
+	by mail.kernel.org (Postfix) with ESMTP id 6B9CF6100A
 	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:31:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232366AbhEJNc1 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 10 May 2021 09:32:27 -0400
-Received: from mga06.intel.com ([134.134.136.31]:32734 "EHLO mga06.intel.com"
+        id S233966AbhEJNcg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 10 May 2021 09:32:36 -0400
+Received: from mga01.intel.com ([192.55.52.88]:14643 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239835AbhEJMme (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 10 May 2021 08:42:34 -0400
-IronPort-SDR: 45PDmcemr2eyjbyLZijPawK2OaUmpB8sNG9ixGfl/cJ4ieDK+nUMCkszV9jgR6i/33ZmKu+Sr6
- KgxVvuL+d0MA==
-X-IronPort-AV: E=McAfee;i="6200,9189,9979"; a="260448255"
-X-IronPort-AV: E=Sophos;i="5.82,286,1613462400"; 
-   d="scan'208";a="260448255"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2021 05:41:19 -0700
-IronPort-SDR: h95c03LnyjhF35XWAmszvclXci7XINUy4g0BVV+RzhYcbtawsg/8m8rESXvy5xDMt7ZdJ3lMyy
- 3dGlZCsDRRxw==
+        id S239863AbhEJMmh (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 10 May 2021 08:42:37 -0400
+IronPort-SDR: 3AgIgchsF4l87/n0a8G+GL4qDypZRh9bcgUOy1VtdQ1yUlrGIqIBvTJRYbss6LWucj86LlctYY
+ PBtnFYES5NNA==
+X-IronPort-AV: E=McAfee;i="6200,9189,9979"; a="220130238"
+X-IronPort-AV: E=Sophos;i="5.82,287,1613462400"; 
+   d="scan'208";a="220130238"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2021 05:41:24 -0700
+IronPort-SDR: k96x0w/6iJcHK4jc3IfdWDRaVBSgVDOc2v1wMLmgRwvpleZHRvcxjbK4W0i052cWV7T70MzHuB
+ LaITi/jTN75g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.82,287,1613462400"; 
-   d="scan'208";a="429898265"
+   d="scan'208";a="624267516"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga007.jf.intel.com with ESMTP; 10 May 2021 05:41:16 -0700
+  by fmsmga005.fm.intel.com with ESMTP; 10 May 2021 05:41:20 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 4161EBA; Mon, 10 May 2021 15:41:37 +0300 (EEST)
+        id A05A4543; Mon, 10 May 2021 15:41:37 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
@@ -45,9 +45,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         Mark Brown <broonie@kernel.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Subject: [PATCH v3 01/14] spi: pxa2xx: Use one point of return when ->probe() fails
-Date:   Mon, 10 May 2021 15:41:21 +0300
-Message-Id: <20210510124134.24638-2-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 07/14] spi: pxa2xx: Introduce int_stop_and_reset() helper
+Date:   Mon, 10 May 2021 15:41:27 +0300
+Message-Id: <20210510124134.24638-8-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210510124134.24638-1-andriy.shevchenko@linux.intel.com>
 References: <20210510124134.24638-1-andriy.shevchenko@linux.intel.com>
@@ -57,29 +57,69 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-When we can't allocate SPI controller, jump to the error path rather than
-return locally.
+Currently we have three times the same few lines repeated in the code.
+Deduplicate them by newly introduced int_stop_and_reset() helper.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/spi/spi-pxa2xx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 5e59ba075bc7..2f5618883ac3 100644
+index 1d4c7f4217ed..5572eec68381 100644
 --- a/drivers/spi/spi-pxa2xx.c
 +++ b/drivers/spi/spi-pxa2xx.c
-@@ -1705,8 +1705,8 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+@@ -620,13 +620,20 @@ static void reset_sccr1(struct driver_data *drv_data)
+ 	pxa2xx_spi_write(drv_data, SSCR1, sccr1_reg);
+ }
  
- 	if (!controller) {
- 		dev_err(&pdev->dev, "cannot alloc spi_controller\n");
--		pxa_ssp_free(ssp);
--		return -ENOMEM;
-+		status = -ENOMEM;
-+		goto out_error_controller_alloc;
- 	}
- 	drv_data = spi_controller_get_devdata(controller);
- 	drv_data->controller = controller;
+-static void int_error_stop(struct driver_data *drv_data, const char *msg)
++static void int_stop_and_reset(struct driver_data *drv_data)
+ {
+-	/* Stop and reset SSP */
++	/* Clear and disable interrupts */
+ 	write_SSSR_CS(drv_data, drv_data->clear_sr);
+ 	reset_sccr1(drv_data);
+-	if (!pxa25x_ssp_comp(drv_data))
+-		pxa2xx_spi_write(drv_data, SSTO, 0);
++	if (pxa25x_ssp_comp(drv_data))
++		return;
++
++	pxa2xx_spi_write(drv_data, SSTO, 0);
++}
++
++static void int_error_stop(struct driver_data *drv_data, const char *msg)
++{
++	int_stop_and_reset(drv_data);
+ 	pxa2xx_spi_flush(drv_data);
+ 	pxa2xx_spi_off(drv_data);
+ 
+@@ -638,11 +645,7 @@ static void int_error_stop(struct driver_data *drv_data, const char *msg)
+ 
+ static void int_transfer_complete(struct driver_data *drv_data)
+ {
+-	/* Clear and disable interrupts */
+-	write_SSSR_CS(drv_data, drv_data->clear_sr);
+-	reset_sccr1(drv_data);
+-	if (!pxa25x_ssp_comp(drv_data))
+-		pxa2xx_spi_write(drv_data, SSTO, 0);
++	int_stop_and_reset(drv_data);
+ 
+ 	spi_finalize_current_transfer(drv_data->controller);
+ }
+@@ -1151,11 +1154,7 @@ static int pxa2xx_spi_slave_abort(struct spi_controller *controller)
+ {
+ 	struct driver_data *drv_data = spi_controller_get_devdata(controller);
+ 
+-	/* Stop and reset SSP */
+-	write_SSSR_CS(drv_data, drv_data->clear_sr);
+-	reset_sccr1(drv_data);
+-	if (!pxa25x_ssp_comp(drv_data))
+-		pxa2xx_spi_write(drv_data, SSTO, 0);
++	int_stop_and_reset(drv_data);
+ 	pxa2xx_spi_flush(drv_data);
+ 	pxa2xx_spi_off(drv_data);
+ 
 -- 
 2.30.2
 

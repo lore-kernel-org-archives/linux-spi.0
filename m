@@ -2,104 +2,129 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0DC45C433ED
-	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 14:16:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EACC6C433B4
+	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 14:27:26 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DF72E611BF
-	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 14:16:04 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C5EC5611CE
+	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 14:27:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233818AbhEJORC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 10 May 2021 10:17:02 -0400
-Received: from mga02.intel.com ([134.134.136.20]:10138 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232053AbhEJOMu (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 10 May 2021 10:12:50 -0400
-IronPort-SDR: +u92cO7pzw8ynL9XLMYZmrzHMwHMYdpTM5+5pCqcLJvVdZNWs/UQXnKXt9283Qf7aJHzr+BYQq
- CIV00EQ3xdSA==
-X-IronPort-AV: E=McAfee;i="6200,9189,9980"; a="186339099"
-X-IronPort-AV: E=Sophos;i="5.82,287,1613462400"; 
-   d="scan'208";a="186339099"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2021 07:10:14 -0700
-IronPort-SDR: KdH8su/4ZReo1i+QeV41PtXxu8f9iw/aS1LKiy9zYCDJvmMlKAFvO2X5wdH2TpvZes/DOKszOT
- IDrl1Sc0inuA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,287,1613462400"; 
-   d="scan'208";a="536427303"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 10 May 2021 07:10:11 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id A50C6142; Mon, 10 May 2021 17:10:31 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Liguang Zhang <zhangliguang@linux.alibaba.com>,
-        Jay Fang <f.fangjian@huawei.com>,
-        Sven Van Asbroeck <thesven73@gmail.com>,
-        Xin Hao <xhao@linux.alibaba.com>
-Subject: [PATCH v1 1/1] spi: Assume GPIO CS active high in ACPI case
-Date:   Mon, 10 May 2021 17:10:22 +0300
-Message-Id: <20210510141022.56499-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
+        id S239052AbhEJO2T (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 10 May 2021 10:28:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33976 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238846AbhEJOZb (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 10 May 2021 10:25:31 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CD6FC03542C
+        for <linux-spi@vger.kernel.org>; Mon, 10 May 2021 06:56:57 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id h4so16717212wrt.12
+        for <linux-spi@vger.kernel.org>; Mon, 10 May 2021 06:56:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=TWo92JHOv4O45kTnQfU6qBeMuZJCJHKM/IhhgIAxDHg=;
+        b=H4jK7Z+Ls8Plr1xrYBWwE8RtHdjCdSX7DjkvzmsBSoupae2ZsU+80qOmZCHttLf5Xy
+         HhwXnU4ozUwSEcRLpLTJqk8IWKWNqEcSb6Aw6x1uhuWudO/V2AgY6qks+KByJJ0p9+nI
+         AlYcYbK00msaxElNG9IzAB2JwtDf6GASyRlQN+fK0BTT6RKDDC7kNpyYrQcwKFAr0rJq
+         u0CxMb1+rwvTt2liuCVcejxPXcT+/OKkfb57/PTxcZfovXLzCz75RcNQveFvu5JtnQv6
+         DsEkdAWrhKe8AjlXUnO+PCtlz7OUJWOnh+xldqp+sJMJKYk7eRmAbCfMNsAPx5WOsQqT
+         0LlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=TWo92JHOv4O45kTnQfU6qBeMuZJCJHKM/IhhgIAxDHg=;
+        b=qihVwHbKwA4gaWtEZGlGmdpifJjMpZaHHxBiwsjWEWYOvJCcXmEMa8wd+JASd1jpi5
+         IvJ0UJasc6hl3jkZivAohqEOBDoAaYR4NdSccoB8D3HRt/gNcTC2sT7bsY2D98cgbftq
+         ItDk2kddl6YVboSZa6xA4kG1L53ye7gtH+c5qUJSwxbxRd8wccbUWVrshp81YuFjivIX
+         o5bSa3V4BJqYBnzrTGBDXceEKz7QFlku9kBWqLSudtk5Dapqpx06of0PyJIsBTsFsmIq
+         k96oE1apQKYjqplRmx75C3zFSur22ND+GjaMlqugJGnqL76bjVr/0YlL1Dmsx5wsb/mU
+         wVXQ==
+X-Gm-Message-State: AOAM5318epsH6dJ9LJdSQ4JSjnIK83ciGRZQonUj7yPrZq4A2f+S4XZs
+        f1TIdgLbX+/QpdBBehUPeAae2vWSZcf7JmZC7Q0=
+X-Google-Smtp-Source: ABdhPJyYCqHdxy08ObdSqLb8vtS/7EnoH4Ef6tyaSr4EurWQIqvRI5RX1WuB+Jw6yWDUvfzT2lvkLfofldpMCaFZPXI=
+X-Received: by 2002:a05:6000:108b:: with SMTP id y11mr31050241wrw.166.1620655015837;
+ Mon, 10 May 2021 06:56:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <YJP6QIl+jnjKPlRo@smile.fi.intel.com> <83ab9b6c-8fb2-b053-ecb3-04230ca34e48@linux.alibaba.com>
+ <CAHp75Vev1D5+QWyGCm+HgpdAyT4Uq_OAp7dCemVf9Cdvoay=Og@mail.gmail.com>
+ <6bd8f178-51a2-3f45-8a16-80fdd4a3ed8e@linux.alibaba.com> <CAHp75Vfh+jqNLLbwWDe8pi1dQafnNFHak1Hk=5Cw3J+kJX9r3Q@mail.gmail.com>
+ <CACRpkdZeKGP6Z8h3GaQ0=EA8mx+yRqzwZaQ5vDJrB4GiYLa26w@mail.gmail.com>
+ <CAGngYiW=RTkHoSndJDr0mMUgLFfuB18g=AwKTvi8d2-tdBrroQ@mail.gmail.com>
+ <CAHp75VfD5kEnjvvRWUJwpmFaWksnnTf_ewBNDsxz3W3kQMUv+w@mail.gmail.com>
+ <CAGngYiVNE1FjsJZeHL5afpWeqf7pRhHqUcKkChML3KQ=6cj=Bw@mail.gmail.com> <YJkaqV4JalpS09bs@smile.fi.intel.com>
+In-Reply-To: <YJkaqV4JalpS09bs@smile.fi.intel.com>
+From:   Sven Van Asbroeck <thesven73@gmail.com>
+Date:   Mon, 10 May 2021 09:56:43 -0400
+Message-ID: <CAGngYiW=YP2xuxhiQFxmWD68nd9wKJJ_j+mWswGGT=m+44p3hw@mail.gmail.com>
+Subject: Re: [PATCH v1] spi: fix client driver can't register success when use
+ GPIO as CS
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "xhao@linux.alibaba.com" <xhao@linux.alibaba.com>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Currently GPIO CS handling, when descriptors are in use, doesn't
-take into consideration that in ACPI case the default polarity
-is active high and can't be altered. Instead we have to use the
-per-chip definition provided by SPISerialBus() resource.
+Hi Andy,
 
-Fixes: 766c6b63aa04 ("spi: fix client driver breakages when using GPIO descriptors")
-Cc: Liguang Zhang <zhangliguang@linux.alibaba.com>
-Cc: Jay Fang <f.fangjian@huawei.com>
-Cc: Sven Van Asbroeck <thesven73@gmail.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Tested-by: Xin Hao <xhao@linux.alibaba.com>
----
- drivers/spi/spi.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+On Mon, May 10, 2021 at 7:36 AM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+> >
+> >       device node     | cs-gpio       | CS pin state active | Note
+> >       ================+===============+=====================+=====
+> >       spi-cs-high     | -             | H                   |
+> >       -               | -             | L                   |
+> >       spi-cs-high     | ACTIVE_HIGH   | H                   |
+> >       -               | ACTIVE_HIGH   | L                   | 1
+> >       spi-cs-high     | ACTIVE_LOW    | H                   | 2
+> >       -               | ACTIVE_LOW    | L                   |
+> >
+> >
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/spi/spi-controller.yaml?h=v5.12#n54
+>
+> This table is incompatible with ACPI. So we can't unify them until each of them
+> will play by the same rules. Can't say it won't happen, but it's far from that.
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 956dce3aafca..f56e0212ee97 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -820,12 +820,23 @@ static void spi_set_cs(struct spi_device *spi, bool enable, bool force)
- 
- 	if (spi->cs_gpiod || gpio_is_valid(spi->cs_gpio)) {
- 		if (!(spi->mode & SPI_NO_CS)) {
-+			/*
-+			 * Historically ACPI has no means of the GPIO polarity and thus
-+			 * the SPISerialBus() resource defines it on the per-chip basis.
-+			 * In order to avoid a chain of negations, the GPIO polarity is
-+			 * considered being Active High. Even for the cases when _DSD()
-+			 * is involved (in the updated versions of ACPI) the GPIO CS
-+			 * polarity must be defined Active High to avoid ambiguity.
-+			 * That's why we use enable, that takes SPI_CS_HIGH into account.
-+			 */
-+			bool value = has_acpi_companion(&spi->dev) ? !enable : activate;
-+
- 			if (spi->cs_gpiod)
--				/* polarity handled by gpiolib */
--				gpiod_set_value_cansleep(spi->cs_gpiod, activate);
-+				/* Polarity handled by GPIO library */
-+				gpiod_set_value_cansleep(spi->cs_gpiod, value);
- 			else
- 				/*
--				 * invert the enable line, as active low is
-+				 * Invert the enable line, as active low is
- 				 * default for SPI.
- 				 */
- 				gpio_set_value_cansleep(spi->cs_gpio, !enable);
--- 
-2.30.2
+Linus Wallej has added some gpiod OF quirks that checks if the gpio is
+used as a chip-select, and if so forces the gpiod polarity to
+implement the inversion:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpio/gpiolib-of.c?h=v5.13-rc1#n175
 
+If as suggested above, we disable that OF quirk and use the polarity
+flag from the SPI mode flags instead, and ignore the built-in gpiod
+polarity, the OF table boils down to:
+
+device node    |  CS pin active state
+=====================================
+-              |  L
+spi-cs-high    |  H
+
+which is exactly the same as the ACPI case:
+SPI mode flag  |  CS pin active state
+=====================================
+-              | L
+SPI_CS_HIGH    | H
+
+Your github commit says:
+> in ACPI case the default polarity
+> is active high and can't be altered
+
+So if ACPI gpiods are always active-high then unification can happen
+here, correct?
+
+But if I have misunderstood the ACPI case, and ACPI gpiod chip-selects
+can have any polarity, then I agree that unification cannot happen.
+Like I said earlier, I live mostly in OF-land, so my apologies if I
+have not fully grasped the ACPI case.
+
+Sven

@@ -2,147 +2,70 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 82130C43470
-	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 06:58:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 54409C433B4
+	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 08:21:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5D1AF6143B
-	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 06:58:36 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 14B636101B
+	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 08:21:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230030AbhEJG7k (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 10 May 2021 02:59:40 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:2611 "EHLO
-        szxga06-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230076AbhEJG7j (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 10 May 2021 02:59:39 -0400
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4FdsKK5BQKzmVDg;
-        Mon, 10 May 2021 14:56:21 +0800 (CST)
-Received: from localhost.localdomain (10.69.192.56) by
- DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
- 14.3.498.0; Mon, 10 May 2021 14:58:24 +0800
-From:   Jay Fang <f.fangjian@huawei.com>
-To:     <broonie@kernel.org>
-CC:     <linux-spi@vger.kernel.org>, <linuxarm@huawei.com>,
-        <huangdaode@huawei.com>
-Subject: [PATCH 3/4] spi: delete repeated words in comments
-Date:   Mon, 10 May 2021 14:58:22 +0800
-Message-ID: <1620629903-15493-4-git-send-email-f.fangjian@huawei.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1620629903-15493-1-git-send-email-f.fangjian@huawei.com>
-References: <1620629903-15493-1-git-send-email-f.fangjian@huawei.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.69.192.56]
-X-CFilter-Loop: Reflected
+        id S230059AbhEJIWx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 10 May 2021 04:22:53 -0400
+Received: from twhmllg3.macronix.com ([211.75.127.131]:26834 "EHLO
+        TWHMLLG3.macronix.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230106AbhEJIWx (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 10 May 2021 04:22:53 -0400
+Received: from localhost.localdomain ([172.17.195.94])
+        by TWHMLLG3.macronix.com with ESMTP id 14A8Ldmm031761;
+        Mon, 10 May 2021 16:21:39 +0800 (GMT-8)
+        (envelope-from zhengxunli@mxic.com.tw)
+From:   Zhengxun Li <zhengxunli@mxic.com.tw>
+To:     linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org
+Cc:     tudor.ambarus@microchip.com, p.yadav@ti.com,
+        miquel.raynal@bootlin.com, broonie@kernel.org,
+        jaimeliao@mxic.com.tw, Zhengxun Li <zhengxunli@mxic.com.tw>
+Subject: [PATCH v4 0/2] Add octal DTR support for Macronix flash
+Date:   Mon, 10 May 2021 16:20:34 +0800
+Message-Id: <1620634836-13181-1-git-send-email-zhengxunli@mxic.com.tw>
+X-Mailer: git-send-email 1.9.1
+X-MAIL: TWHMLLG3.macronix.com 14A8Ldmm031761
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Drop repeated words in spi-bcm2835aux.c
-{are}
+This series adds support for Octal DTR for Macronix flashes. The
+first set of patches is add Macronix octal dtr mode support and
+Macronix octaflash series support. The second add the Octal DTR
+mode support for host driver.
 
-Drop repeated words in spi-dw-mmio.c
-{the}
+Changes in v4:
+- merge patch 2(support octaflash Id) to patch 1(support octal dtr)
+- add switching back to default mode(1-1-1) support if octal dtr is
+  disabled
+- delete the duplicate code settings initialized by the Profile 1.0
+  table. (such as cmd_ext_type, rdsr_dummy, rdsr_addr_nbytes, etc.)
+- add a description about stacked die
 
-Drop repeated words in spi-geni-qcom.c
-{our}
+Changes in v3:
+- Add support for Macronix octaflash series.
 
-Drop repeated words in spi-pl022.c
-{on}
+Changes in v2:
+- Define with a generic name to describe the maximum dummy cycles.
+- Compare the ID directly in the loop, no longer copy and execute
+  memcmp().
+- Add spi_mem_dtr_supports_op() to support dtr operation.
 
-Drop repeated words in spi-ppc4xx.c
-{the}
+Zhengxun Li (2):
+  mtd: spi-nor: macronix: add support for Macronix octaflash
+  spi: mxic: patch for octal DTR mode support
 
-Signed-off-by: Jay Fang <f.fangjian@huawei.com>
----
- drivers/spi/spi-bcm2835aux.c | 2 +-
- drivers/spi/spi-dw-mmio.c    | 2 +-
- drivers/spi/spi-geni-qcom.c  | 4 ++--
- drivers/spi/spi-pl022.c      | 4 ++--
- drivers/spi/spi-ppc4xx.c     | 2 +-
- 5 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/mtd/spi-nor/macronix.c | 172 +++++++++++++++++++++++++++++++++++++++++
+ drivers/spi/spi-mxic.c         |  41 +++++++---
+ 2 files changed, 202 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm2835aux.c b/drivers/spi/spi-bcm2835aux.c
-index 75589ac..37eab10 100644
---- a/drivers/spi/spi-bcm2835aux.c
-+++ b/drivers/spi/spi-bcm2835aux.c
-@@ -384,7 +384,7 @@ static int bcm2835aux_spi_transfer_one(struct spi_master *master,
- 	bs->pending = 0;
- 
- 	/* Calculate the estimated time in us the transfer runs.  Note that
--	 * there are are 2 idle clocks cycles after each chunk getting
-+	 * there are 2 idle clocks cycles after each chunk getting
- 	 * transferred - in our case the chunk size is 3 bytes, so we
- 	 * approximate this by 9 cycles/byte.  This is used to find the number
- 	 * of Hz per byte per polling limit.  E.g., we can transfer 1 byte in
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index 17c0603..3379720 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -56,7 +56,7 @@ struct dw_spi_mscc {
- /*
-  * The Designware SPI controller (referred to as master in the documentation)
-  * automatically deasserts chip select when the tx fifo is empty. The chip
-- * selects then needs to be either driven as GPIOs or, for the first 4 using the
-+ * selects then needs to be either driven as GPIOs or, for the first 4 using
-  * the SPI boot controller registers. the final chip select is an OR gate
-  * between the Designware SPI controller and the SPI boot controller.
-  */
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index 3d0d8dd..b3861fb 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -639,8 +639,8 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
- 		complete(&mas->abort_done);
- 
- 	/*
--	 * It's safe or a good idea to Ack all of our our interrupts at the
--	 * end of the function. Specifically:
-+	 * It's safe or a good idea to Ack all of our interrupts at the end
-+	 * of the function. Specifically:
- 	 * - M_CMD_DONE_EN / M_RX_FIFO_LAST_EN: Edge triggered interrupts and
- 	 *   clearing Acks. Clearing at the end relies on nobody else having
- 	 *   started a new transfer yet or else we could be clearing _their_
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 0c9e3f2..feebda6 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -288,7 +288,7 @@
- #define SPI_POLLING_TIMEOUT 1000
- 
- /*
-- * The type of reading going on on this chip
-+ * The type of reading going on this chip
-  */
- enum ssp_reading {
- 	READING_NULL,
-@@ -298,7 +298,7 @@ enum ssp_reading {
- };
- 
- /*
-- * The type of writing going on on this chip
-+ * The type of writing going on this chip
-  */
- enum ssp_writing {
- 	WRITING_NULL,
-diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
-index 9e39745..76874a7 100644
---- a/drivers/spi/spi-ppc4xx.c
-+++ b/drivers/spi/spi-ppc4xx.c
-@@ -326,7 +326,7 @@ static void spi_ppc4xx_enable(struct ppc4xx_spi *hw)
- {
- 	/*
- 	 * On all 4xx PPC's the SPI bus is shared/multiplexed with
--	 * the 2nd I2C bus. We need to enable the the SPI bus before
-+	 * the 2nd I2C bus. We need to enable the SPI bus before
- 	 * using it.
- 	 */
- 
 -- 
-2.7.4
+1.9.1
 

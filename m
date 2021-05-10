@@ -2,39 +2,39 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 93630C43462
-	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:31:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3791BC43603
+	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:31:03 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6999761288
+	by mail.kernel.org (Postfix) with ESMTP id 01A0C61288
 	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:31:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231642AbhEJNcE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S234678AbhEJNcE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Mon, 10 May 2021 09:32:04 -0400
-Received: from mga11.intel.com ([192.55.52.93]:40943 "EHLO mga11.intel.com"
+Received: from mga12.intel.com ([192.55.52.136]:5890 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239859AbhEJMme (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        id S239855AbhEJMme (ORCPT <rfc822;linux-spi@vger.kernel.org>);
         Mon, 10 May 2021 08:42:34 -0400
-IronPort-SDR: /Knf42rxs6dedtsD9DOzJWwKo59rlcQMrBCiECHTRMh4fGBD0gZB/+NUCeaCzt1s32RyJ2VwGU
- SLpdTLUG65pw==
-X-IronPort-AV: E=McAfee;i="6200,9189,9979"; a="196090078"
+IronPort-SDR: z24fSeGqboTCgD1CM7ec4CgOaFuEjPzBzLUOE2WJKrplqVO5MeW9spjUoYvd8izRdUYewBrnM4
+ U1AvrvklTFmQ==
+X-IronPort-AV: E=McAfee;i="6200,9189,9979"; a="178772958"
 X-IronPort-AV: E=Sophos;i="5.82,287,1613462400"; 
-   d="scan'208";a="196090078"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2021 05:41:23 -0700
-IronPort-SDR: Phfeuo6XYiUizxOp3MkKZ0WCHLSS+7svpwaRHf+CR8L8RfBK8thLQd21dGZqfq3wZXtSODCEsf
- R6Sl/SGsTuYQ==
+   d="scan'208";a="178772958"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2021 05:41:23 -0700
+IronPort-SDR: qxtEAUyUL8Rq2EkFNaJFKm1ws9a0ghx+MIVDB7HyOtsZQfq8UXDaBAjWk7k2jEp7vHTmqUv9k5
+ ejsakoIDQOnA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.82,287,1613462400"; 
-   d="scan'208";a="609085438"
+   d="scan'208";a="433796216"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga005.jf.intel.com with ESMTP; 10 May 2021 05:41:20 -0700
+  by fmsmga008.fm.intel.com with ESMTP; 10 May 2021 05:41:20 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 947FE501; Mon, 10 May 2021 15:41:37 +0300 (EEST)
+        id 857BD202; Mon, 10 May 2021 15:41:37 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
@@ -45,9 +45,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         Mark Brown <broonie@kernel.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Subject: [PATCH v3 06/14] spi: pxa2xx: Group Intel Quark specific definitions
-Date:   Mon, 10 May 2021 15:41:26 +0300
-Message-Id: <20210510124134.24638-7-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 05/14] spi: pxa2xx: Unify ifdeffery used in the headers
+Date:   Mon, 10 May 2021 15:41:25 +0300
+Message-Id: <20210510124134.24638-6-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210510124134.24638-1-andriy.shevchenko@linux.intel.com>
 References: <20210510124134.24638-1-andriy.shevchenko@linux.intel.com>
@@ -57,36 +57,58 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-DDS_RATE is Intel Quark specific definition. Move it to the rest
-Intel Quark related.
+The two headers have quite different ifdeffery to prevent multiple inclusion.
+Unify them with the pattern that in particular reflects their location.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- include/linux/pxa2xx_ssp.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/pxa2xx_ssp.h     | 6 +++---
+ include/linux/spi/pxa2xx_spi.h | 7 ++++---
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
 diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
-index 14b049840faf..1b6c1a0922bd 100644
+index 7f73b26ed22e..14b049840faf 100644
 --- a/include/linux/pxa2xx_ssp.h
 +++ b/include/linux/pxa2xx_ssp.h
-@@ -38,7 +38,6 @@ struct device_node;
- #define SSDR		(0x10)  /* SSP Data Write/Data Read Register */
+@@ -11,8 +11,8 @@
+  *       PXA3xx     SSP1, SSP2, SSP3, SSP4
+  */
  
- #define SSTO		(0x28)  /* SSP Time Out Register */
--#define DDS_RATE	(0x28)  /* SSP DDS Clock Rate Register (Intel Quark) */
- #define SSPSP		(0x2C)  /* SSP Programmable Serial Protocol */
- #define SSTSA		(0x30)  /* SSP Tx Timeslot Active */
- #define SSRSA		(0x34)  /* SSP Rx Timeslot Active */
-@@ -105,6 +104,9 @@ struct device_node;
- #define CE4100_SSCR1_RFT	GENMASK(11, 10)	/* Receive FIFO Threshold (mask) */
- #define CE4100_SSCR1_RxTresh(x) (((x) - 1) << 10)	/* level [1..4] */
+-#ifndef __LINUX_SSP_H
+-#define __LINUX_SSP_H
++#ifndef __LINUX_PXA2XX_SSP_H
++#define __LINUX_PXA2XX_SSP_H
  
-+/* Intel Quark X1000 */
-+#define DDS_RATE		0x28		 /* SSP DDS Clock Rate Register */
+ #include <linux/bits.h>
+ #include <linux/compiler_types.h>
+@@ -270,4 +270,4 @@ static inline struct ssp_device *pxa_ssp_request_of(const struct device_node *n,
+ static inline void pxa_ssp_free(struct ssp_device *ssp) {}
+ #endif
+ 
+-#endif
++#endif	/* __LINUX_PXA2XX_SSP_H */
+diff --git a/include/linux/spi/pxa2xx_spi.h b/include/linux/spi/pxa2xx_spi.h
+index 1e0e2f136319..12ef04d0896d 100644
+--- a/include/linux/spi/pxa2xx_spi.h
++++ b/include/linux/spi/pxa2xx_spi.h
+@@ -2,8 +2,8 @@
+ /*
+  * Copyright (C) 2005 Stephen Street / StreetFire Sound Labs
+  */
+-#ifndef __linux_pxa2xx_spi_h
+-#define __linux_pxa2xx_spi_h
++#ifndef __LINUX_SPI_PXA2XX_SPI_H
++#define __LINUX_SPI_PXA2XX_SPI_H
+ 
+ #include <linux/types.h>
+ 
+@@ -51,4 +51,5 @@ struct pxa2xx_spi_chip {
+ extern void pxa2xx_set_spi_info(unsigned id, struct pxa2xx_spi_controller *info);
+ 
+ #endif
+-#endif
 +
- /* QUARK_X1000 SSCR0 bit definition */
- #define QUARK_X1000_SSCR0_DSS		GENMASK(4, 0)	/* Data Size Select (mask) */
- #define QUARK_X1000_SSCR0_DataSize(x)	((x) - 1)	/* Data Size Select [4..32] */
++#endif	/* __LINUX_SPI_PXA2XX_SPI_H */
 -- 
 2.30.2
 

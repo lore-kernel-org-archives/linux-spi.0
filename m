@@ -2,85 +2,87 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 109D2C433ED
-	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:33:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D16C8C433ED
+	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 14:01:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D700F613EE
-	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:33:01 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id AF0B361075
+	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 14:01:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234662AbhEJNd4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 10 May 2021 09:33:56 -0400
-Received: from mga06.intel.com ([134.134.136.31]:34987 "EHLO mga06.intel.com"
+        id S230093AbhEJOCN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 10 May 2021 10:02:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:32972 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1352113AbhEJNN6 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 10 May 2021 09:13:58 -0400
-IronPort-SDR: GwiuOdu5HVi32vlQhEkq8BQG5zy4sxi+14mIyb8ckxATMM1fBgNz4nChjzuIGarAwvGzCU3qFB
- GVUUKfjrPWFA==
-X-IronPort-AV: E=McAfee;i="6200,9189,9980"; a="260455814"
-X-IronPort-AV: E=Sophos;i="5.82,286,1613462400"; 
-   d="scan'208";a="260455814"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2021 06:12:29 -0700
-IronPort-SDR: SEBoGOsd7HXGOK7sM3x2GPA4qSj8lyD5tn9LcErORMjswRKOZx6rTJNkTWPONTmR8JmYPkViGo
- u8daIbcG3TWQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,287,1613462400"; 
-   d="scan'208";a="470793122"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga001.jf.intel.com with ESMTP; 10 May 2021 06:12:12 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 2A2AA202; Mon, 10 May 2021 16:12:28 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Mark Brown <broonie@kernel.org>, openbmc@lists.ozlabs.org,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Cc:     Avi Fishman <avifishman70@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Patrick Venture <venture@google.com>,
-        Nancy Yuen <yuenn@google.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 6/7] spi: ppc4xx: Use SPI_MODE_X_MASK
-Date:   Mon, 10 May 2021 16:12:16 +0300
-Message-Id: <20210510131217.49357-6-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210510131217.49357-1-andriy.shevchenko@linux.intel.com>
-References: <20210510131217.49357-1-andriy.shevchenko@linux.intel.com>
+        id S243988AbhEJN64 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 10 May 2021 09:58:56 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3A4BA610A7;
+        Mon, 10 May 2021 13:57:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1620655068;
+        bh=pwPZlCAZTi6VxknfHc55oXvTvxE0RLtzRQtnKA2Tjm4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ApwvqKKljUpNmini5cWhy1lDstlG7JinBAUQYQIMMYPr8CX/b7gE2L6s+MVzxrNhB
+         mgJsSfpb5OKotYLsEP5tWpOL4mV4Uo9Kurpv8q1ALoL4bxQy6CGRbWMPXV03S3XGnY
+         JdaR45+yotvIyTzURz21odTuSZfZCLaKsU0wMeqBt9IO/Pghl7EpR2uCczKngsiiRU
+         oD3tjg4UWLMVZFx/zIWtRhCsjxrgeZ3yLx9RYc8Vj8FQw/wSZ9zuY7dMys1VgKlcPE
+         IcPHviTEKu8Ca1iZRuwwbmO2AeeUud0tdJuFtnQoe23QZtMIngbbCxbxADvLQkgHas
+         uhbVvoJANin1Q==
+Date:   Mon, 10 May 2021 14:57:09 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
+        Takashi Iwai <tiwai@suse.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Daniel Mack <daniel@zonque.org>
+Subject: Re: [PATCH v2 07/14] spi: pxa2xx: Introduce int_stop_and_reset()
+ helper
+Message-ID: <20210510135709.GA4496@sirena.org.uk>
+References: <20210423182441.50272-1-andriy.shevchenko@linux.intel.com>
+ <20210423182441.50272-8-andriy.shevchenko@linux.intel.com>
+ <20210510120953.GA15173@sirena.org.uk>
+ <YJkpYDfoUg04UEMy@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="yrj/dFKFPuw6o+aM"
+Content-Disposition: inline
+In-Reply-To: <YJkpYDfoUg04UEMy@smile.fi.intel.com>
+X-Cookie: Beam me up, Scotty!
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Use SPI_MODE_X_MASK instead of open coded variant.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/spi/spi-ppc4xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--yrj/dFKFPuw6o+aM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
-index d8ee363fb714..cb6aaad73f63 100644
---- a/drivers/spi/spi-ppc4xx.c
-+++ b/drivers/spi/spi-ppc4xx.c
-@@ -235,7 +235,7 @@ static int spi_ppc4xx_setup(struct spi_device *spi)
- 	 */
- 	cs->mode = SPI_PPC4XX_MODE_SPE;
- 
--	switch (spi->mode & (SPI_CPHA | SPI_CPOL)) {
-+	switch (spi->mode & SPI_MODE_X_MASK) {
- 	case SPI_MODE_0:
- 		cs->mode |= SPI_CLK_MODE0;
- 		break;
--- 
-2.30.2
+On Mon, May 10, 2021 at 03:38:56PM +0300, Andy Shevchenko wrote:
 
+> Okay, I will resend against spi/for-5.14, but I don't see the issue here.
+
+It'll have been against 5.14.
+
+--yrj/dFKFPuw6o+aM
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmCZO7QACgkQJNaLcl1U
+h9DqqAf+OSmnLzwMA7xOTPi2A4I1nkk6BXNdzfJLX/E8tCcWdsfKtXOdq40yRxtC
+dBhP6lY0aiBaxY7xUHROvFWrotpBlp/ZXJJu9d9ScTq2Rmx+rCjT+OeTxtbOjbfq
+Ft/WEE992xJ4I7qFRwoP0OEc+OyQ8gxapXT8iL1r73rSJNL0E55QqLLJZ1cwNC7+
+1GeHJugSj6aWh0Th42NuDn1GlvKRGcyG5xDeRK40v91KIJzdb4vYJsLGcBlq0f0h
+nxjYKj3h4fLBRq1XDH/KhX2X2i7ayy61vhWKuonBIto0ojZ37B32hqLZUagz2wLP
+eZmTTlhwJZM1Meiq+A7r4phoQc5P3A==
+=ZN6h
+-----END PGP SIGNATURE-----
+
+--yrj/dFKFPuw6o+aM--

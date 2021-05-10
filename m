@@ -2,86 +2,116 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 19013C433B4
-	for <linux-spi@archiver.kernel.org>; Sun,  9 May 2021 19:26:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 63B79C43461
+	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 06:17:48 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DEB0A6135C
-	for <linux-spi@archiver.kernel.org>; Sun,  9 May 2021 19:26:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2D69761432
+	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 06:17:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229693AbhEIT1j (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 9 May 2021 15:27:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37826 "EHLO
+        id S230031AbhEJGSv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 10 May 2021 02:18:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229666AbhEIT1j (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 9 May 2021 15:27:39 -0400
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6D0AC061573;
-        Sun,  9 May 2021 12:26:35 -0700 (PDT)
-Received: by mail-wm1-x32a.google.com with SMTP id l24-20020a7bc4580000b029014ac3b80020so9948206wmi.1;
-        Sun, 09 May 2021 12:26:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=r2dEu4hvQezgg+nEKJ+VJ/vBdC0xX4twJSBrlDmPz9g=;
-        b=G/KL0GMi8jlxQvskJcAJpLMVgkkRInd/fz5i0z+p0mE+1pAMVNLchRxBNJuFtvEGqT
-         S0/auBsfA+rb1D9KysOl+9o26ITBn10gu4jWCgHHGf7bNY4eKrKJWa6qp5Z8V2y5JMcc
-         aGeu02f85d2ON87lBYZAhzKaWxKKeYn8N69nhGT+UFbqKJVmC/n3fM6Sl4rG2tkPU0EB
-         nKMlYqqcwXUBGCvAI+4G99gOG4Fxax23KM/y6hyGYYjxavfix+2b6RTDd9W040MGi4TB
-         DoE4YQqcO/Puqq7BSRpgqAmauieoEDpH6yw8PjGTecyMIORdKKhKyhWESufyet8gbpLh
-         Ifqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=r2dEu4hvQezgg+nEKJ+VJ/vBdC0xX4twJSBrlDmPz9g=;
-        b=O7jkqrqlfywBDpU2Xb+aZvoq4H4mZNUJLJY+x5evXNdDh7fAAM0F2HzfT0cmCh3oHl
-         jGFw8bfc7ZXbTDfpWL7iDLCt9RlEZ4tNSjiXP4d/U+FqHeOLyKzSZpbXVd0uAUUCiXZv
-         VUgmC2ZQV9t1Ix8atclPJah3Ojkr5stTQcot7HycKvDbM04QAbQaG+SWDvRsQ+5BuSwQ
-         kJp6MjHx/LQMVIJpUsUKqbBz2vxVHE6ZVOIww3wj6LfsdUMrAmQFSaAw5GjVKyiKrDUP
-         qM+9B8Liuei0BhfgWRd9QJnWDaEiNg6NUbjcbOHO79pUQuVw+UZD4v1Mo7DMZgsDDjWn
-         vsWw==
-X-Gm-Message-State: AOAM533gOClG0p9UJs388Ox8gb2yiv7jpAmnpmR5+LTTJpEdo4r/6sxw
-        G/UvBwgH3QjefT/Tkpp2854=
-X-Google-Smtp-Source: ABdhPJy4dAUOVwJ7oBJqhKNx2n2E67kQzpf67S5Qs3BntkX8sTKk+BrfWnF00uYW3mHw28j0dG6zNA==
-X-Received: by 2002:a1c:4c07:: with SMTP id z7mr22592916wmf.96.1620588394388;
-        Sun, 09 May 2021 12:26:34 -0700 (PDT)
-Received: from skbuf ([86.127.41.210])
-        by smtp.gmail.com with ESMTPSA id d15sm19175233wrw.71.2021.05.09.12.26.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 May 2021 12:26:33 -0700 (PDT)
-Date:   Sun, 9 May 2021 22:26:32 +0300
-From:   Vladimir Oltean <olteanv@gmail.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     broonie@kernel.org, maitysanchayan@gmail.com,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] spi: spi-fsl-dspi: Fix a resource leak in an error
- handling path
-Message-ID: <20210509192632.2nzgwckpai34hgnr@skbuf>
-References: <d51caaac747277a1099ba8dea07acd85435b857e.1620587472.git.christophe.jaillet@wanadoo.fr>
+        with ESMTP id S229998AbhEJGSo (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 10 May 2021 02:18:44 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 256E2C061760
+        for <linux-spi@vger.kernel.org>; Sun,  9 May 2021 23:17:40 -0700 (PDT)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1lfzEV-0007ZF-1Z; Mon, 10 May 2021 08:17:35 +0200
+Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1lfzEU-0004aE-MQ; Mon, 10 May 2021 08:17:34 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Mark Brown <broonie@kernel.org>
+Cc:     linux-clk@vger.kernel.org, kernel@pengutronix.de,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-spi@vger.kernel.org
+Subject: [PATCH v6 RESEND 6/6] spi: davinci: Simplify using devm_clk_get_enabled()
+Date:   Mon, 10 May 2021 08:17:24 +0200
+Message-Id: <20210510061724.940447-7-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210510061724.940447-1-u.kleine-koenig@pengutronix.de>
+References: <20210510061724.940447-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d51caaac747277a1099ba8dea07acd85435b857e.1620587472.git.christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sun, May 09, 2021 at 09:12:27PM +0200, Christophe JAILLET wrote:
-> 'dspi_request_dma()' should be undone by a 'dspi_release_dma()' call in the
-> error handling path of the probe function, as already done in the remove
-> function
-> 
-> Fixes: 90ba37033cb9 ("spi: spi-fsl-dspi: Add DMA support for Vybrid")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
+devm_clk_get_enabled() returns the clk already (prepared and) enabled
+and the automatically called cleanup cares for disabling (and
+unpreparing). So simplify .probe() and .remove() accordingly.
 
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Acked-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/spi/spi-davinci.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-Thanks!
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index 7453a1dbbc06..63ee918ecdb0 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -936,14 +936,11 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 
+ 	dspi->bitbang.master = master;
+ 
+-	dspi->clk = devm_clk_get(&pdev->dev, NULL);
++	dspi->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(dspi->clk)) {
+ 		ret = -ENODEV;
+ 		goto free_master;
+ 	}
+-	ret = clk_prepare_enable(dspi->clk);
+-	if (ret)
+-		goto free_master;
+ 
+ 	master->use_gpio_descriptors = true;
+ 	master->dev.of_node = pdev->dev.of_node;
+@@ -968,7 +965,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 
+ 	ret = davinci_spi_request_dma(dspi);
+ 	if (ret == -EPROBE_DEFER) {
+-		goto free_clk;
++		goto free_master;
+ 	} else if (ret) {
+ 		dev_info(&pdev->dev, "DMA is not supported (%d)\n", ret);
+ 		dspi->dma_rx = NULL;
+@@ -1012,8 +1009,6 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 		dma_release_channel(dspi->dma_rx);
+ 		dma_release_channel(dspi->dma_tx);
+ 	}
+-free_clk:
+-	clk_disable_unprepare(dspi->clk);
+ free_master:
+ 	spi_master_put(master);
+ err:
+@@ -1039,8 +1034,6 @@ static int davinci_spi_remove(struct platform_device *pdev)
+ 
+ 	spi_bitbang_stop(&dspi->bitbang);
+ 
+-	clk_disable_unprepare(dspi->clk);
+-
+ 	if (dspi->dma_rx) {
+ 		dma_release_channel(dspi->dma_rx);
+ 		dma_release_channel(dspi->dma_tx);
+-- 
+2.30.2
+

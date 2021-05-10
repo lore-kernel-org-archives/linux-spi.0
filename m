@@ -2,80 +2,91 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E385EC433B4
-	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:30:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 93630C43462
+	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:31:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id B25DD61288
-	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:30:59 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6999761288
+	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:31:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232025AbhEJNcD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 10 May 2021 09:32:03 -0400
-Received: from mga18.intel.com ([134.134.136.126]:62648 "EHLO mga18.intel.com"
+        id S231642AbhEJNcE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 10 May 2021 09:32:04 -0400
+Received: from mga11.intel.com ([192.55.52.93]:40943 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1348133AbhEJMkQ (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 10 May 2021 08:40:16 -0400
-IronPort-SDR: /F+7haN7w14ep2tcd6GrwJ4ObO1r0XvmEHJuEQAt/Lm6cPAwEdvcvnPsdsodpdr5MERlIlWhYR
- JwvLzMI3BvLA==
-X-IronPort-AV: E=McAfee;i="6200,9189,9979"; a="186630435"
+        id S239859AbhEJMme (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 10 May 2021 08:42:34 -0400
+IronPort-SDR: /Knf42rxs6dedtsD9DOzJWwKo59rlcQMrBCiECHTRMh4fGBD0gZB/+NUCeaCzt1s32RyJ2VwGU
+ SLpdTLUG65pw==
+X-IronPort-AV: E=McAfee;i="6200,9189,9979"; a="196090078"
 X-IronPort-AV: E=Sophos;i="5.82,287,1613462400"; 
-   d="scan'208";a="186630435"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2021 05:39:11 -0700
-IronPort-SDR: qr+vKfhFFOxuAriRn/h1VWiMb0tXm1Qu5IZa5twkTj1uqIaFfwLl8EDw5CS3NBEwX2Poquub4Y
- Pgla+J4ZgJjA==
+   d="scan'208";a="196090078"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2021 05:41:23 -0700
+IronPort-SDR: Phfeuo6XYiUizxOp3MkKZ0WCHLSS+7svpwaRHf+CR8L8RfBK8thLQd21dGZqfq3wZXtSODCEsf
+ R6Sl/SGsTuYQ==
+X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.82,287,1613462400"; 
-   d="scan'208";a="470782756"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2021 05:39:00 -0700
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1lg5BY-00BAPk-PH; Mon, 10 May 2021 15:38:56 +0300
-Date:   Mon, 10 May 2021 15:38:56 +0300
+   d="scan'208";a="609085438"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga005.jf.intel.com with ESMTP; 10 May 2021 05:41:20 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 947FE501; Mon, 10 May 2021 15:41:37 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
-        Takashi Iwai <tiwai@suse.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org
+Cc:     Daniel Mack <daniel@zonque.org>,
         Haojian Zhuang <haojian.zhuang@gmail.com>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
-        Daniel Mack <daniel@zonque.org>
-Subject: Re: [PATCH v2 07/14] spi: pxa2xx: Introduce int_stop_and_reset()
- helper
-Message-ID: <YJkpYDfoUg04UEMy@smile.fi.intel.com>
-References: <20210423182441.50272-1-andriy.shevchenko@linux.intel.com>
- <20210423182441.50272-8-andriy.shevchenko@linux.intel.com>
- <20210510120953.GA15173@sirena.org.uk>
+        Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Subject: [PATCH v3 06/14] spi: pxa2xx: Group Intel Quark specific definitions
+Date:   Mon, 10 May 2021 15:41:26 +0300
+Message-Id: <20210510124134.24638-7-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210510124134.24638-1-andriy.shevchenko@linux.intel.com>
+References: <20210510124134.24638-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210510120953.GA15173@sirena.org.uk>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, May 10, 2021 at 01:09:53PM +0100, Mark Brown wrote:
-> On Fri, Apr 23, 2021 at 09:24:34PM +0300, Andy Shevchenko wrote:
-> > Currently we have three times the same few lines repeated in the code.
-> > Deduplicate them by newly introduced int_stop_and_reset() helper.
-> 
-> This doesn't apply against current code, please check and resend.
+DDS_RATE is Intel Quark specific definition. Move it to the rest
+Intel Quark related.
 
-Hmm...
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ include/linux/pxa2xx_ssp.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Can you, please, point out, what branch should I use?
-It seems good against v5.13-rc1 and spi/for-5.14.
-
-Okay, I will resend against spi/for-5.14, but I don't see the issue here.
-
-
+diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
+index 14b049840faf..1b6c1a0922bd 100644
+--- a/include/linux/pxa2xx_ssp.h
++++ b/include/linux/pxa2xx_ssp.h
+@@ -38,7 +38,6 @@ struct device_node;
+ #define SSDR		(0x10)  /* SSP Data Write/Data Read Register */
+ 
+ #define SSTO		(0x28)  /* SSP Time Out Register */
+-#define DDS_RATE	(0x28)  /* SSP DDS Clock Rate Register (Intel Quark) */
+ #define SSPSP		(0x2C)  /* SSP Programmable Serial Protocol */
+ #define SSTSA		(0x30)  /* SSP Tx Timeslot Active */
+ #define SSRSA		(0x34)  /* SSP Rx Timeslot Active */
+@@ -105,6 +104,9 @@ struct device_node;
+ #define CE4100_SSCR1_RFT	GENMASK(11, 10)	/* Receive FIFO Threshold (mask) */
+ #define CE4100_SSCR1_RxTresh(x) (((x) - 1) << 10)	/* level [1..4] */
+ 
++/* Intel Quark X1000 */
++#define DDS_RATE		0x28		 /* SSP DDS Clock Rate Register */
++
+ /* QUARK_X1000 SSCR0 bit definition */
+ #define QUARK_X1000_SSCR0_DSS		GENMASK(4, 0)	/* Data Size Select (mask) */
+ #define QUARK_X1000_SSCR0_DataSize(x)	((x) - 1)	/* Data Size Select [4..32] */
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.30.2
 

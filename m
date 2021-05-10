@@ -7,158 +7,80 @@ X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B93B5C433ED
-	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:32:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 397E1C433B4
+	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:32:49 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8F7AD613EE
-	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:32:45 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 11F4561433
+	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:32:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237448AbhEJNdo (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 10 May 2021 09:33:44 -0400
-Received: from mga07.intel.com ([134.134.136.100]:33803 "EHLO mga07.intel.com"
+        id S237875AbhEJNdq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 10 May 2021 09:33:46 -0400
+Received: from mga06.intel.com ([134.134.136.31]:34990 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1352056AbhEJNNy (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        id S1352061AbhEJNNy (ORCPT <rfc822;linux-spi@vger.kernel.org>);
         Mon, 10 May 2021 09:13:54 -0400
-IronPort-SDR: rlniRiIoyfB4uaifsHZFo0vM/58h3+8f3PowU0MYlks/rVjcf+YFFpX5JQtt0cilC7LzVC6r9T
- Q4wJONLNs5hA==
-X-IronPort-AV: E=McAfee;i="6200,9189,9980"; a="263122578"
+IronPort-SDR: W3qn28fC68RPwrIqUeWAVAkY3EyBRW2VyvwgknhumLaXFEjo2rjVWP2VBayPLymh6GrPD/TV5l
+ pr5LomO31giA==
+X-IronPort-AV: E=McAfee;i="6200,9189,9980"; a="260455803"
 X-IronPort-AV: E=Sophos;i="5.82,286,1613462400"; 
-   d="scan'208";a="263122578"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2021 06:11:14 -0700
-IronPort-SDR: TYUGSpAYirdA6DAbx+o4/wISui+roA3VIJWoWqK6Jenkjck9dXiyzNFFHIbWVyH54q/qKaDfis
- XQl5dObFAJFg==
+   d="scan'208";a="260455803"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2021 06:12:25 -0700
+IronPort-SDR: sIr9jWrurMg6PCum7v4YEo45Ps8OCp/+M2IwXM+YdUseDNtgvfm3TEpVvP4KqrsfGQ0m5TpSfQ
+ WGXaXftYpy7g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.82,287,1613462400"; 
-   d="scan'208";a="468122274"
+   d="scan'208";a="470793108"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga002.fm.intel.com with ESMTP; 10 May 2021 06:11:11 -0700
+  by orsmga001.jf.intel.com with ESMTP; 10 May 2021 06:12:08 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 7FA86D7; Mon, 10 May 2021 16:11:31 +0300 (EEST)
+        id 05E33142; Mon, 10 May 2021 16:12:27 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 1/1] spi: Convert to use predefined time multipliers
-Date:   Mon, 10 May 2021 16:11:20 +0300
-Message-Id: <20210510131120.49253-1-andriy.shevchenko@linux.intel.com>
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Mark Brown <broonie@kernel.org>, openbmc@lists.ozlabs.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Cc:     Avi Fishman <avifishman70@gmail.com>,
+        Tomer Maimon <tmaimon77@gmail.com>,
+        Tali Perry <tali.perry1@gmail.com>,
+        Patrick Venture <venture@google.com>,
+        Nancy Yuen <yuenn@google.com>,
+        Benjamin Fair <benjaminfair@google.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 3/7] spi: npcm-pspi: Use SPI_MODE_X_MASK
+Date:   Mon, 10 May 2021 16:12:13 +0300
+Message-Id: <20210510131217.49357-3-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210510131217.49357-1-andriy.shevchenko@linux.intel.com>
+References: <20210510131217.49357-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-We have a lot of hard coded values in nanoseconds or other units.
-Use predefined constants to make it more clear.
-
-While at it, add or amend comments in the corresponding functions.
+Use SPI_MODE_X_MASK instead of open coded variant.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/spi/spi.c | 41 ++++++++++++++++++++++++++++-------------
- 1 file changed, 28 insertions(+), 13 deletions(-)
+ drivers/spi/spi-npcm-pspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index f9885c096563..407420977a73 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1118,10 +1118,20 @@ static int spi_transfer_wait(struct spi_controller *ctlr,
- 		if (!speed_hz)
- 			speed_hz = 100000;
+diff --git a/drivers/spi/spi-npcm-pspi.c b/drivers/spi/spi-npcm-pspi.c
+index 56d10c4511db..1668a347e003 100644
+--- a/drivers/spi/spi-npcm-pspi.c
++++ b/drivers/spi/spi-npcm-pspi.c
+@@ -105,7 +105,7 @@ static void npcm_pspi_set_mode(struct spi_device *spi)
+ 	u16 regtemp;
+ 	u16 mode_val;
  
--		ms = 8LL * 1000LL * xfer->len;
-+		/*
-+		 * For each byte we wait for 8 cycles of the SPI clock.
-+		 * Since speed is defined in Hz and we want milliseconds,
-+		 * use respective multiplier, but before the division,
-+		 * otherwise we may get 0 for short transfers.
-+		 */
-+		ms = 8LL * MSEC_PER_SEC * xfer->len;
- 		do_div(ms, speed_hz);
--		ms += ms + 200; /* some tolerance */
- 
-+		/*
-+		 * Increase it twice and add 200 ms tolerance, use
-+		 * predefined maximum in case of overflow.
-+		 */
-+		ms += ms + 200;
- 		if (ms > UINT_MAX)
- 			ms = UINT_MAX;
- 
-@@ -1144,10 +1154,10 @@ static void _spi_transfer_delay_ns(u32 ns)
- {
- 	if (!ns)
- 		return;
--	if (ns <= 1000) {
-+	if (ns <= NSEC_PER_USEC) {
- 		ndelay(ns);
- 	} else {
--		u32 us = DIV_ROUND_UP(ns, 1000);
-+		u32 us = DIV_ROUND_UP(ns, NSEC_PER_USEC);
- 
- 		if (us <= 10)
- 			udelay(us);
-@@ -1167,21 +1177,25 @@ int spi_delay_to_ns(struct spi_delay *_delay, struct spi_transfer *xfer)
- 
- 	switch (unit) {
- 	case SPI_DELAY_UNIT_USECS:
--		delay *= 1000;
-+		delay *= NSEC_PER_USEC;
+-	switch (spi->mode & (SPI_CPOL | SPI_CPHA)) {
++	switch (spi->mode & SPI_MODE_X_MASK) {
+ 	case SPI_MODE_0:
+ 		mode_val = 0;
  		break;
--	case SPI_DELAY_UNIT_NSECS: /* nothing to do here */
-+	case SPI_DELAY_UNIT_NSECS:
-+		/* Nothing to do here */
- 		break;
- 	case SPI_DELAY_UNIT_SCK:
- 		/* clock cycles need to be obtained from spi_transfer */
- 		if (!xfer)
- 			return -EINVAL;
--		/* if there is no effective speed know, then approximate
--		 * by underestimating with half the requested hz
-+		/*
-+		 * If there is unknown effective speed, approximate it
-+		 * by underestimating with half of the requested hz.
- 		 */
- 		hz = xfer->effective_speed_hz ?: xfer->speed_hz / 2;
- 		if (!hz)
- 			return -EINVAL;
--		delay *= DIV_ROUND_UP(1000000000, hz);
-+
-+		/* Convert delay to nanoseconds */
-+		delay *= DIV_ROUND_UP(NSEC_PER_SEC, hz);
- 		break;
- 	default:
- 		return -EINVAL;
-@@ -1213,6 +1227,7 @@ EXPORT_SYMBOL_GPL(spi_delay_exec);
- static void _spi_transfer_cs_change_delay(struct spi_message *msg,
- 					  struct spi_transfer *xfer)
- {
-+	u32 default_delay_ns = 10 * NSEC_PER_USEC;
- 	u32 delay = xfer->cs_change_delay.value;
- 	u32 unit = xfer->cs_change_delay.unit;
- 	int ret;
-@@ -1220,16 +1235,16 @@ static void _spi_transfer_cs_change_delay(struct spi_message *msg,
- 	/* return early on "fast" mode - for everything but USECS */
- 	if (!delay) {
- 		if (unit == SPI_DELAY_UNIT_USECS)
--			_spi_transfer_delay_ns(10000);
-+			_spi_transfer_delay_ns(default_delay_ns);
- 		return;
- 	}
- 
- 	ret = spi_delay_exec(&xfer->cs_change_delay, xfer);
- 	if (ret) {
- 		dev_err_once(&msg->spi->dev,
--			     "Use of unsupported delay unit %i, using default of 10us\n",
--			     unit);
--		_spi_transfer_delay_ns(10000);
-+			     "Use of unsupported delay unit %i, using default of %luus\n",
-+			     unit, default_delay_ns / NSEC_PER_USEC);
-+		_spi_transfer_delay_ns(default_delay_ns);
- 	}
- }
- 
 -- 
 2.30.2
 

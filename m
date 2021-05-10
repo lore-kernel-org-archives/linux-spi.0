@@ -7,42 +7,53 @@ X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BFCBC43461
-	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 17:41:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 90912C433B4
+	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 17:42:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id F103560249
-	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 17:41:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 63CB660249
+	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 17:42:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230081AbhEJRnC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 10 May 2021 13:43:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50840 "EHLO
+        id S232217AbhEJRnN (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 10 May 2021 13:43:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231631AbhEJRnC (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 10 May 2021 13:43:02 -0400
+        with ESMTP id S232911AbhEJRnI (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 10 May 2021 13:43:08 -0400
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E241C06175F
-        for <linux-spi@vger.kernel.org>; Mon, 10 May 2021 10:41:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1C0EC0613ED
+        for <linux-spi@vger.kernel.org>; Mon, 10 May 2021 10:42:02 -0700 (PDT)
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1lg9ug-0005Hb-SV; Mon, 10 May 2021 19:41:50 +0200
+        id 1lg9ug-0005HI-Fy; Mon, 10 May 2021 19:41:50 +0200
 Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1lg9ug-0006ai-G4; Mon, 10 May 2021 19:41:50 +0200
+        id 1lg9uf-0006aT-0Z; Mon, 10 May 2021 19:41:49 +0200
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
 To:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Mark Brown <broonie@kernel.org>
+        Stephen Boyd <sboyd@kernel.org>
 Cc:     linux-clk@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
         Alexandru Ardelean <aardelean@deviqon.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        kernel@pengutronix.de, linux-spi@vger.kernel.org
-Subject: [PATCH v7 6/6] spi: davinci: Simplify using devm_clk_get_enabled()
-Date:   Mon, 10 May 2021 19:41:42 +0200
-Message-Id: <20210510174142.986250-7-u.kleine-koenig@pengutronix.de>
+        kernel@pengutronix.de,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Ludovic Desroches <ludovic.desroches@microchip.com>,
+        linux-pwm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        linux-rtc@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        linux-spi@vger.kernel.org, Wolfram Sang <wsa@kernel.org>,
+        Oleksij Rempel <o.rempel@pengutronix.de>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v7 1/6] clk: generalize devm_clk_get() a bit
+Date:   Mon, 10 May 2021 19:41:37 +0200
+Message-Id: <20210510174142.986250-2-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210510174142.986250-1-u.kleine-koenig@pengutronix.de>
 References: <20210510174142.986250-1-u.kleine-koenig@pengutronix.de>
@@ -57,63 +68,111 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-devm_clk_get_enabled() returns the clk already (prepared and) enabled
-and the automatically called cleanup cares for disabling (and
-unpreparing). So simplify .probe() and .remove() accordingly.
+Allow to add an exit hook to devm managed clocks. Also use
+clk_get_optional() in devm_clk_get_optional instead of open coding it.
+The generalisation will be used in the next commit to add some more
+devm_clk helpers.
 
-Acked-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/spi/spi-davinci.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ drivers/clk/clk-devres.c | 67 ++++++++++++++++++++++++++++++----------
+ 1 file changed, 50 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index e114e6fe5ea5..66884d068db5 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -931,14 +931,11 @@ static int davinci_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/clk/clk-devres.c b/drivers/clk/clk-devres.c
+index be160764911b..91c995815b57 100644
+--- a/drivers/clk/clk-devres.c
++++ b/drivers/clk/clk-devres.c
+@@ -4,39 +4,72 @@
+ #include <linux/export.h>
+ #include <linux/gfp.h>
  
- 	dspi->bitbang.master = master;
++struct devm_clk_state {
++	struct clk *clk;
++	void (*exit)(struct clk *clk);
++};
++
+ static void devm_clk_release(struct device *dev, void *res)
+ {
+-	clk_put(*(struct clk **)res);
++	struct devm_clk_state *state = *(struct devm_clk_state **)res;
++
++	if (state->exit)
++		state->exit(state->clk);
++
++	clk_put(state->clk);
+ }
  
--	dspi->clk = devm_clk_get(&pdev->dev, NULL);
-+	dspi->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(dspi->clk)) {
- 		ret = -ENODEV;
- 		goto free_master;
+-struct clk *devm_clk_get(struct device *dev, const char *id)
++static struct clk *__devm_clk_get(struct device *dev, const char *id,
++				  struct clk *(*get)(struct device *dev, const char *id),
++				  int (*init)(struct clk *clk),
++				  void (*exit)(struct clk *clk))
+ {
+-	struct clk **ptr, *clk;
++	struct devm_clk_state *state;
++	struct clk *clk;
++	int ret;
+ 
+-	ptr = devres_alloc(devm_clk_release, sizeof(*ptr), GFP_KERNEL);
+-	if (!ptr)
++	state = devres_alloc(devm_clk_release, sizeof(*state), GFP_KERNEL);
++	if (!state)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	clk = clk_get(dev, id);
+-	if (!IS_ERR(clk)) {
+-		*ptr = clk;
+-		devres_add(dev, ptr);
+-	} else {
+-		devres_free(ptr);
++	clk = get(dev, id);
++	if (IS_ERR(clk)) {
++		ret = PTR_ERR(clk);
++		goto err_clk_get;
  	}
--	ret = clk_prepare_enable(dspi->clk);
--	if (ret)
--		goto free_master;
  
- 	master->use_gpio_descriptors = true;
- 	master->dev.of_node = pdev->dev.of_node;
-@@ -963,7 +960,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
++	if (init) {
++		ret = init(clk);
++		if (ret)
++			goto err_clk_init;
++	}
++
++	state->clk = clk;
++	state->exit = exit;
++
++	devres_add(dev, state);
++
+ 	return clk;
++
++err_clk_init:
++
++	clk_put(clk);
++err_clk_get:
++
++	devres_free(state);
++	return ERR_PTR(ret);
+ }
+-EXPORT_SYMBOL(devm_clk_get);
  
- 	ret = davinci_spi_request_dma(dspi);
- 	if (ret == -EPROBE_DEFER) {
--		goto free_clk;
-+		goto free_master;
- 	} else if (ret) {
- 		dev_info(&pdev->dev, "DMA is not supported (%d)\n", ret);
- 		dspi->dma_rx = NULL;
-@@ -1007,8 +1004,6 @@ static int davinci_spi_probe(struct platform_device *pdev)
- 		dma_release_channel(dspi->dma_rx);
- 		dma_release_channel(dspi->dma_tx);
- 	}
--free_clk:
--	clk_disable_unprepare(dspi->clk);
- free_master:
- 	spi_master_put(master);
- err:
-@@ -1034,8 +1029,6 @@ static int davinci_spi_remove(struct platform_device *pdev)
+-struct clk *devm_clk_get_optional(struct device *dev, const char *id)
++struct clk *devm_clk_get(struct device *dev, const char *id)
+ {
+-	struct clk *clk = devm_clk_get(dev, id);
++	return __devm_clk_get(dev, id, clk_get, NULL, NULL);
  
- 	spi_bitbang_stop(&dspi->bitbang);
+-	if (clk == ERR_PTR(-ENOENT))
+-		return NULL;
++}
++EXPORT_SYMBOL(devm_clk_get);
  
--	clk_disable_unprepare(dspi->clk);
--
- 	if (dspi->dma_rx) {
- 		dma_release_channel(dspi->dma_rx);
- 		dma_release_channel(dspi->dma_tx);
+-	return clk;
++struct clk *devm_clk_get_optional(struct device *dev, const char *id)
++{
++	return __devm_clk_get(dev, id, clk_get_optional, NULL, NULL);
+ }
+ EXPORT_SYMBOL(devm_clk_get_optional);
+ 
 -- 
 2.30.2
 

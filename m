@@ -2,39 +2,39 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D86CC433ED
-	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:31:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E511C433ED
+	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:31:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3C7DB6128B
-	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:31:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7FE3F6100A
+	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:31:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237013AbhEJNck (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 10 May 2021 09:32:40 -0400
-Received: from mga17.intel.com ([192.55.52.151]:1594 "EHLO mga17.intel.com"
+        id S232502AbhEJNcx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 10 May 2021 09:32:53 -0400
+Received: from mga12.intel.com ([192.55.52.136]:6012 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239939AbhEJMml (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 10 May 2021 08:42:41 -0400
-IronPort-SDR: H7duiiXlBKM3D1sPNM1+leZOFvkruyadoB+XMefYMRIF3SAAsxNCs9WUax3qfDS/uHtHFBJJdi
- RGKNxPLBwPbg==
-X-IronPort-AV: E=McAfee;i="6200,9189,9979"; a="179448228"
+        id S241283AbhEJMnx (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 10 May 2021 08:43:53 -0400
+IronPort-SDR: 12ptyY1v576/OwtBDNqubrd/4hgeQbkGxb4sUIVeqoaSQLWZpr2AtMD9eS9WqLW9L2Nuig6Gp/
+ yZEUecpkuh4A==
+X-IronPort-AV: E=McAfee;i="6200,9189,9979"; a="178772963"
 X-IronPort-AV: E=Sophos;i="5.82,287,1613462400"; 
-   d="scan'208";a="179448228"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2021 05:41:33 -0700
-IronPort-SDR: ZcVxuHri2dD4ciwWI4oWdRZ7p/+LckV0YaOYmYBVU3dzIZcxj8jwlpQ+rXJPkEaSd4kltz9+vn
- CRqglLRb94rg==
+   d="scan'208";a="178772963"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2021 05:41:23 -0700
+IronPort-SDR: /0znRu/24/xeY2QBPXGnNX/s6dguWsZNBkIj5ieunZsf3hzEpwal5+519Yrqx1JM44z/BpUaed
+ rZG1q5K+unyg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.82,287,1613462400"; 
-   d="scan'208";a="470783524"
+   d="scan'208";a="433796222"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga001.jf.intel.com with ESMTP; 10 May 2021 05:41:21 -0700
+  by fmsmga008.fm.intel.com with ESMTP; 10 May 2021 05:41:20 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 01B99836; Mon, 10 May 2021 15:41:37 +0300 (EEST)
+        id D0F7A588; Mon, 10 May 2021 15:41:37 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
@@ -45,9 +45,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         Mark Brown <broonie@kernel.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Subject: [PATCH v3 14/14] spi: pxa2xx: Introduce special type for Merrifield SPIs
-Date:   Mon, 10 May 2021 15:41:34 +0300
-Message-Id: <20210510124134.24638-15-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 11/14] spi: pxa2xx: Extract clear_SSCR1_bits() helper
+Date:   Mon, 10 May 2021 15:41:31 +0300
+Message-Id: <20210510124134.24638-12-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210510124134.24638-1-andriy.shevchenko@linux.intel.com>
 References: <20210510124134.24638-1-andriy.shevchenko@linux.intel.com>
@@ -57,130 +57,72 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Intel Merrifield SPI is actually more closer to PXA3xx. It has extended FIFO
-(32 bytes) and additional registers to get or set FIFO thresholds.
-
-Introduce new type for Intel Merrifield SPI host controllers and handle bigger
-FIFO size.
+There are few places that repeat the logic of "clear some bits in SSCR1".
+Extract clear_SSCR1_bits() helper to deduplicate that.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/spi/spi-pxa2xx-pci.c |  2 +-
- drivers/spi/spi-pxa2xx.c     | 32 +++++++++++++++++++++++++++++---
- include/linux/pxa2xx_ssp.h   | 16 ++++++++++++++++
- 3 files changed, 46 insertions(+), 4 deletions(-)
+ drivers/spi/spi-pxa2xx-dma.c | 4 +---
+ drivers/spi/spi-pxa2xx.c     | 7 ++-----
+ drivers/spi/spi-pxa2xx.h     | 5 +++++
+ 3 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index a259be12d326..dce9ade9a4df 100644
---- a/drivers/spi/spi-pxa2xx-pci.c
-+++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -179,7 +179,7 @@ static struct pxa_spi_info spi_info_configs[] = {
- 		.rx_param = &bsw2_rx_param,
- 	},
- 	[PORT_MRFLD] = {
--		.type = PXA27x_SSP,
-+		.type = MRFLD_SSP,
- 		.max_clk_rate = 25000000,
- 		.setup = mrfld_spi_setup,
- 	},
+diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
+index 5ca01ad7f460..e581027e99f9 100644
+--- a/drivers/spi/spi-pxa2xx-dma.c
++++ b/drivers/spi/spi-pxa2xx-dma.c
+@@ -41,9 +41,7 @@ static void pxa2xx_spi_dma_transfer_complete(struct driver_data *drv_data,
+ 		}
+ 
+ 		/* Clear status & disable interrupts */
+-		pxa2xx_spi_write(drv_data, SSCR1,
+-				 pxa2xx_spi_read(drv_data, SSCR1)
+-				 & ~drv_data->dma_cr1);
++		clear_SSCR1_bits(drv_data, drv_data->dma_cr1);
+ 		write_SSSR_CS(drv_data, drv_data->clear_sr);
+ 		if (!pxa25x_ssp_comp(drv_data))
+ 			pxa2xx_spi_write(drv_data, SSTO, 0);
 diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index af3f01de8f5b..5985b39e2dd6 100644
+index 54eaa048651f..3a4ad16614f7 100644
 --- a/drivers/spi/spi-pxa2xx.c
 +++ b/drivers/spi/spi-pxa2xx.c
-@@ -200,6 +200,11 @@ static bool is_mmp2_ssp(const struct driver_data *drv_data)
- 	return drv_data->ssp_type == MMP2_SSP;
+@@ -733,8 +733,7 @@ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
+ static void handle_bad_msg(struct driver_data *drv_data)
+ {
+ 	pxa2xx_spi_off(drv_data);
+-	pxa2xx_spi_write(drv_data, SSCR1,
+-			 pxa2xx_spi_read(drv_data, SSCR1) & ~drv_data->int_cr1);
++	clear_SSCR1_bits(drv_data, drv_data->int_cr1);
+ 	if (!pxa25x_ssp_comp(drv_data))
+ 		pxa2xx_spi_write(drv_data, SSTO, 0);
+ 	write_SSSR_CS(drv_data, drv_data->clear_sr);
+@@ -1161,9 +1160,7 @@ static void pxa2xx_spi_handle_err(struct spi_controller *controller,
+ 	pxa2xx_spi_off(drv_data);
+ 	/* Clear and disable interrupts and service requests */
+ 	write_SSSR_CS(drv_data, drv_data->clear_sr);
+-	pxa2xx_spi_write(drv_data, SSCR1,
+-			 pxa2xx_spi_read(drv_data, SSCR1)
+-			 & ~(drv_data->int_cr1 | drv_data->dma_cr1));
++	clear_SSCR1_bits(drv_data, drv_data->int_cr1 | drv_data->dma_cr1);
+ 	if (!pxa25x_ssp_comp(drv_data))
+ 		pxa2xx_spi_write(drv_data, SSTO, 0);
+ 
+diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
+index 739e264feaa6..ed63f7165cd8 100644
+--- a/drivers/spi/spi-pxa2xx.h
++++ b/drivers/spi/spi-pxa2xx.h
+@@ -105,6 +105,11 @@ static inline int pxa25x_ssp_comp(struct driver_data *drv_data)
+ 	}
  }
  
-+static bool is_mrfld_ssp(const struct driver_data *drv_data)
++static inline void clear_SSCR1_bits(const struct driver_data *drv_data, u32 bits)
 +{
-+	return drv_data->ssp_type == MRFLD_SSP;
++	pxa2xx_spi_write(drv_data, SSCR1, pxa2xx_spi_read(drv_data, SSCR1) & ~bits);
 +}
 +
- static void pxa2xx_spi_update(const struct driver_data *drv_data, u32 reg, u32 mask, u32 value)
+ static inline void write_SSSR_CS(struct driver_data *drv_data, u32 val)
  {
- 	if ((pxa2xx_spi_read(drv_data, reg) & mask) != value)
-@@ -1087,6 +1092,15 @@ static int pxa2xx_spi_transfer_one(struct spi_controller *controller,
- 		pxa2xx_spi_update(drv_data, SSITF, GENMASK(15, 0), chip->lpss_tx_threshold);
- 	}
- 
-+	if (is_mrfld_ssp(drv_data)) {
-+		u32 thresh = 0;
-+
-+		thresh |= SFIFOTT_RxThresh(chip->lpss_rx_threshold);
-+		thresh |= SFIFOTT_TxThresh(chip->lpss_tx_threshold);
-+
-+		pxa2xx_spi_update(drv_data, SFIFOTT, 0xffffffff, thresh);
-+	}
-+
- 	if (is_quark_x1000_ssp(drv_data))
- 		pxa2xx_spi_update(drv_data, DDS_RATE, GENMASK(23, 0), chip->dds_rate);
- 
-@@ -1253,6 +1267,11 @@ static int setup(struct spi_device *spi)
- 		tx_hi_thres = 0;
- 		rx_thres = RX_THRESH_QUARK_X1000_DFLT;
- 		break;
-+	case MRFLD_SSP:
-+		tx_thres = TX_THRESH_MRFLD_DFLT;
-+		tx_hi_thres = 0;
-+		rx_thres = RX_THRESH_MRFLD_DFLT;
-+		break;
- 	case CE4100_SSP:
- 		tx_thres = TX_THRESH_CE4100_DFLT;
- 		tx_hi_thres = 0;
-@@ -1328,9 +1347,16 @@ static int setup(struct spi_device *spi)
- 		chip->cr1 |= SSCR1_SPH;
- 	}
- 
--	chip->lpss_rx_threshold = SSIRF_RxThresh(rx_thres);
--	chip->lpss_tx_threshold = SSITF_TxLoThresh(tx_thres)
--				| SSITF_TxHiThresh(tx_hi_thres);
-+	if (is_lpss_ssp(drv_data)) {
-+		chip->lpss_rx_threshold = SSIRF_RxThresh(rx_thres);
-+		chip->lpss_tx_threshold = SSITF_TxLoThresh(tx_thres) |
-+					  SSITF_TxHiThresh(tx_hi_thres);
-+	}
-+
-+	if (is_mrfld_ssp(drv_data)) {
-+		chip->lpss_rx_threshold = rx_thres;
-+		chip->lpss_tx_threshold = tx_thres;
-+	}
- 
- 	/* set dma burst and threshold outside of chip_info path so that if
- 	 * chip_info goes away after setting chip->enable_dma, the
-diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
-index fdfbe17e15f4..2b21bc1f3c73 100644
---- a/include/linux/pxa2xx_ssp.h
-+++ b/include/linux/pxa2xx_ssp.h
-@@ -183,6 +183,21 @@ struct device_node;
- #define SSACD_ACPS(x)		((x) << 4)	/* Audio clock PLL select */
- #define SSACD_SCDX8		BIT(7)		/* SYSCLK division ratio select */
- 
-+/* Intel Merrifield SSP */
-+#define SFIFOL			0x68		/* FIFO level */
-+#define SFIFOTT			0x6c		/* FIFO trigger threshold */
-+
-+#define RX_THRESH_MRFLD_DFLT	16
-+#define TX_THRESH_MRFLD_DFLT	16
-+
-+#define SFIFOL_TFL_MASK		GENMASK(15, 0)	/* Transmit FIFO Level mask */
-+#define SFIFOL_RFL_MASK		GENMASK(31, 16)	/* Receive FIFO Level mask */
-+
-+#define SFIFOTT_TFT		GENMASK(15, 0)	/* Transmit FIFO Threshold (mask) */
-+#define SFIFOTT_TxThresh(x)	(((x) - 1) << 0)	/* TX FIFO trigger threshold / level */
-+#define SFIFOTT_RFT		GENMASK(31, 16)	/* Receive FIFO Threshold (mask) */
-+#define SFIFOTT_RxThresh(x)	(((x) - 1) << 16)	/* RX FIFO trigger threshold / level */
-+
- /* LPSS SSP */
- #define SSITF			0x44		/* TX FIFO trigger level */
- #define SSITF_TxHiThresh(x)	(((x) - 1) << 0)
-@@ -205,6 +220,7 @@ enum pxa_ssp_type {
- 	MMP2_SSP,
- 	PXA910_SSP,
- 	CE4100_SSP,
-+	MRFLD_SSP,
- 	QUARK_X1000_SSP,
- 	LPSS_LPT_SSP, /* Keep LPSS types sorted with lpss_platforms[] */
- 	LPSS_BYT_SSP,
+ 	if (drv_data->ssp_type == CE4100_SSP ||
 -- 
 2.30.2
 

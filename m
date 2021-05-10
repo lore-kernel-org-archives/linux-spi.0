@@ -7,77 +7,80 @@ X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D784C433B4
-	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:32:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 109D2C433ED
+	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:33:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4F9BA613E1
-	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:32:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D700F613EE
+	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 13:33:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238429AbhEJNdx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 10 May 2021 09:33:53 -0400
-Received: from mga06.intel.com ([134.134.136.31]:34989 "EHLO mga06.intel.com"
+        id S234662AbhEJNd4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 10 May 2021 09:33:56 -0400
+Received: from mga06.intel.com ([134.134.136.31]:34987 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1352120AbhEJNN6 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        id S1352113AbhEJNN6 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
         Mon, 10 May 2021 09:13:58 -0400
-IronPort-SDR: HtnkK7LbJBGzf63nhO/iCFDRdoCAO/BXDBKECdWXdByop90yIthV3kf3xRciFFOgIoMIcVLs/H
- oK8ah2VbcQqQ==
-X-IronPort-AV: E=McAfee;i="6200,9189,9980"; a="260455820"
+IronPort-SDR: GwiuOdu5HVi32vlQhEkq8BQG5zy4sxi+14mIyb8ckxATMM1fBgNz4nChjzuIGarAwvGzCU3qFB
+ GVUUKfjrPWFA==
+X-IronPort-AV: E=McAfee;i="6200,9189,9980"; a="260455814"
 X-IronPort-AV: E=Sophos;i="5.82,286,1613462400"; 
-   d="scan'208";a="260455820"
+   d="scan'208";a="260455814"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2021 06:12:32 -0700
-IronPort-SDR: hRB4ZCKBdaL3C9TD93BXQ9WFVkZiNyvKATq+mH5eXyyeB6ULOaC/NOHhBr8/sm214wWgrYJc7k
- sFDzJ6oFDM/A==
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2021 06:12:29 -0700
+IronPort-SDR: SEBoGOsd7HXGOK7sM3x2GPA4qSj8lyD5tn9LcErORMjswRKOZx6rTJNkTWPONTmR8JmYPkViGo
+ u8daIbcG3TWQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.82,287,1613462400"; 
-   d="scan'208";a="470793157"
+   d="scan'208";a="470793122"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga001.jf.intel.com with ESMTP; 10 May 2021 06:12:27 -0700
+  by orsmga001.jf.intel.com with ESMTP; 10 May 2021 06:12:12 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 0B813D7; Mon, 10 May 2021 16:12:46 +0300 (EEST)
+        id 2A2AA202; Mon, 10 May 2021 16:12:28 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 1/1] spi: Switch to signed types for *_native_cs SPI controller fields
-Date:   Mon, 10 May 2021 16:12:42 +0300
-Message-Id: <20210510131242.49455-1-andriy.shevchenko@linux.intel.com>
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Mark Brown <broonie@kernel.org>, openbmc@lists.ozlabs.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Cc:     Avi Fishman <avifishman70@gmail.com>,
+        Tomer Maimon <tmaimon77@gmail.com>,
+        Tali Perry <tali.perry1@gmail.com>,
+        Patrick Venture <venture@google.com>,
+        Nancy Yuen <yuenn@google.com>,
+        Benjamin Fair <benjaminfair@google.com>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 6/7] spi: ppc4xx: Use SPI_MODE_X_MASK
+Date:   Mon, 10 May 2021 16:12:16 +0300
+Message-Id: <20210510131217.49357-6-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210510131217.49357-1-andriy.shevchenko@linux.intel.com>
+References: <20210510131217.49357-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-While fixing undefined behaviour the commit f60d7270c8a3 ("spi: Avoid
-undefined behaviour when counting unused native CSs") missed the case
-when all CSs are GPIOs and thus unused_native_cs will be evaluated to
--1 in unsigned representation. This will falsely trigger a condition
-in the spi_get_gpio_descs().
+Use SPI_MODE_X_MASK instead of open coded variant.
 
-Switch to signed types for *_native_cs SPI controller fields to fix above.
-
-Fixes: f60d7270c8a3 ("spi: Avoid undefined behaviour when counting unused native CSs")
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- include/linux/spi/spi.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-ppc4xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 360a3bc767ca..74239d65c7fd 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -644,8 +644,8 @@ struct spi_controller {
- 	int			*cs_gpios;
- 	struct gpio_desc	**cs_gpiods;
- 	bool			use_gpio_descriptors;
--	u8			unused_native_cs;
--	u8			max_native_cs;
-+	s8			unused_native_cs;
-+	s8			max_native_cs;
+diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
+index d8ee363fb714..cb6aaad73f63 100644
+--- a/drivers/spi/spi-ppc4xx.c
++++ b/drivers/spi/spi-ppc4xx.c
+@@ -235,7 +235,7 @@ static int spi_ppc4xx_setup(struct spi_device *spi)
+ 	 */
+ 	cs->mode = SPI_PPC4XX_MODE_SPE;
  
- 	/* statistics */
- 	struct spi_statistics	statistics;
+-	switch (spi->mode & (SPI_CPHA | SPI_CPOL)) {
++	switch (spi->mode & SPI_MODE_X_MASK) {
+ 	case SPI_MODE_0:
+ 		cs->mode |= SPI_CLK_MODE0;
+ 		break;
 -- 
 2.30.2
 

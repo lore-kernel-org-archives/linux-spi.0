@@ -2,111 +2,71 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BE9E7C43461
-	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 23:36:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D4285C433ED
+	for <linux-spi@archiver.kernel.org>; Tue, 11 May 2021 06:51:53 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8826860E09
-	for <linux-spi@archiver.kernel.org>; Mon, 10 May 2021 23:36:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B6EE6610F7
+	for <linux-spi@archiver.kernel.org>; Tue, 11 May 2021 06:51:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229958AbhEJXhm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 10 May 2021 19:37:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46042 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229950AbhEJXhl (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 10 May 2021 19:37:41 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27C0AC061574;
-        Mon, 10 May 2021 16:36:36 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id j3-20020a05600c4843b02901484662c4ebso225153wmo.0;
-        Mon, 10 May 2021 16:36:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zmVdPodNBh1H0rgnm38deCST/rryCbgx8LeA4HoogHE=;
-        b=OmEfPyyaDh4DIPO6uK6xsdL9GtjAOtrJ/GpN5iKASc9uZCTctM1o3nV61Ghc3y2Y8P
-         6eMxsqnmgGDvrtIr7/+Utj8tqI3CsCzrypJ2S4EJPqkUqx3XIkjCidOi4T5wPSaT3wsb
-         JAeEvRhpzNqwzeVq0/C1MVpFITx+6njQ3yyUl8lmfHyYxIZ8Ju6Gny8L+KA7+q9tEPbN
-         j9P4FaGCR73OPvI/7MEpGXhKU1vsmso9cT/byA85nGYo7KrP/bvEphveoBDjndl+fr/p
-         p66FVTYULXT2TVeFA852LMMez76LDJWJ1q/fSOidS9ydU9Q38H0+JGJLQnUzUEZxA6uG
-         Ee4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zmVdPodNBh1H0rgnm38deCST/rryCbgx8LeA4HoogHE=;
-        b=U27VnFXYpwMS3Q4cA11T5u/K+Zzn8I0ccM2Q49quygX0UxDkvpBfrDhQ5h97+tOlwI
-         ycnHgNoJJANLPe3KpJKkBq+txYsFx8QsXLgPoPMEhSS/hRXaCni0momvbsm+RwPx0eZv
-         JGg2vjjmxl1vRrlDzqYQRYCm+0dTyVTuB1lXqTc77Brz6KbvD8jgY59Pk3SUABgihr8W
-         qVduoDgJgIkobQ/41JqnULKPVMK269iJxpGtd7AjqakQYNMLn4A5qZKAAp3OorS2lStv
-         1obD401nEOdcFSJUtqutKXPbjjEvc0cOIJ8p5xEwZdhyIxWzVLlXVXMZFbzsjGUownQl
-         D2Hg==
-X-Gm-Message-State: AOAM533sJ285NNp4eBDCWx0AWWOpoHOg8QJVBhtjhSkujwWiikO4R+j2
-        6FDL5JtEIueQzrsNoEMT3c7zQcGkMTsmSfye5Lo=
-X-Google-Smtp-Source: ABdhPJxcfvT5O1SvgyRKQ5d9F4Q6wTLFlPL1V3xFX1EcUFhWi8EaeHTBvV39WmTMxefb46AZaG2YlVlm3eYnd9Vin+M=
-X-Received: by 2002:a05:600c:4f8b:: with SMTP id n11mr28560834wmq.11.1620689794697;
- Mon, 10 May 2021 16:36:34 -0700 (PDT)
+        id S230144AbhEKGw6 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 11 May 2021 02:52:58 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:2693 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229456AbhEKGw6 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 11 May 2021 02:52:58 -0400
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.59])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FfT6Z6j0rz1BKfg;
+        Tue, 11 May 2021 14:49:10 +0800 (CST)
+Received: from linux-lmwb.huawei.com (10.175.103.112) by
+ DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
+ 14.3.498.0; Tue, 11 May 2021 14:51:39 +0800
+From:   Zou Wei <zou_wei@huawei.com>
+To:     <broonie@kernel.org>
+CC:     <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Zou Wei <zou_wei@huawei.com>
+Subject: [PATCH -next] spi: altera: Remove redundant dev_err call in dfl_spi_altera_probe()
+Date:   Tue, 11 May 2021 15:08:42 +0800
+Message-ID: <1620716922-108572-1-git-send-email-zou_wei@huawei.com>
+X-Mailer: git-send-email 2.6.2
 MIME-Version: 1.0
-References: <20210510141022.56499-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20210510141022.56499-1-andriy.shevchenko@linux.intel.com>
-From:   Sven Van Asbroeck <thesven73@gmail.com>
-Date:   Mon, 10 May 2021 19:36:21 -0400
-Message-ID: <CAGngYiVHq=TxVL5gs19EXHSobCmQ7Pw0v9Oe4XceLRboj8u+3A@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] spi: Assume GPIO CS active high in ACPI case
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Mark Brown <broonie@kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Liguang Zhang <zhangliguang@linux.alibaba.com>,
-        Jay Fang <f.fangjian@huawei.com>,
-        Xin Hao <xhao@linux.alibaba.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Originating-IP: [10.175.103.112]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi Andy, see below.
+There is a error message within devm_ioremap_resource
+already, so remove the dev_err call to avoid redundant
+error message.
 
-On Mon, May 10, 2021 at 10:10 AM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
->         if (spi->cs_gpiod || gpio_is_valid(spi->cs_gpio)) {
->                 if (!(spi->mode & SPI_NO_CS)) {
-> +                       /*
-> +                        * Historically ACPI has no means of the GPIO polarity and thus
-> +                        * the SPISerialBus() resource defines it on the per-chip basis.
-> +                        * In order to avoid a chain of negations, the GPIO polarity is
-> +                        * considered being Active High. Even for the cases when _DSD()
-> +                        * is involved (in the updated versions of ACPI) the GPIO CS
-> +                        * polarity must be defined Active High to avoid ambiguity.
-> +                        * That's why we use enable, that takes SPI_CS_HIGH into account.
-> +                        */
-> +                       bool value = has_acpi_companion(&spi->dev) ? !enable : activate;
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Zou Wei <zou_wei@huawei.com>
+---
+ drivers/spi/spi-altera-dfl.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-There are three booleans involved now: "value", "enable" and
-"activate". It might be quite hard for someone reading this code
-later, to work out what's going on? I've got to admit that my previous
-choice of "enable1" was also not perfect, to say the least...
+diff --git a/drivers/spi/spi-altera-dfl.c b/drivers/spi/spi-altera-dfl.c
+index 3e32e4f..39a3e1a 100644
+--- a/drivers/spi/spi-altera-dfl.c
++++ b/drivers/spi/spi-altera-dfl.c
+@@ -148,10 +148,8 @@ static int dfl_spi_altera_probe(struct dfl_device *dfl_dev)
+ 
+ 	base = devm_ioremap_resource(dev, &dfl_dev->mmio_res);
+ 
+-	if (IS_ERR(base)) {
+-		dev_err(dev, "%s get mem resource fail!\n", __func__);
++	if (IS_ERR(base))
+ 		return PTR_ERR(base);
+-	}
+ 
+ 	config_spi_master(base, master);
+ 	dev_dbg(dev, "%s cs %u bpm 0x%x mode 0x%x\n", __func__,
+-- 
+2.6.2
 
-AFAIK there are two basic concepts in this function:
-- enable: indicates chip-select enabled or disabled (independent of
-gpio polarity)
-- level : indicates the required level of the chip-select gpio
-
-So maybe we can simplify like this?
-
-static void spi_set_cs(struct spi_device *spi, bool enable, bool force)
-{
-        bool level = (spi->mode & SPI_CS_HIGH) ? enable : !enable;
-
-        if cs_gpio              => use level  : gpio_set_value_cansleep(level)
-        else if cs_gpiod(acpi)  => use level  : gpiod_set_value_cansleep(level)
-        else if cs_gpiod(_)     => use enable :
-gpiod_set_value_cansleep(enable);
-}

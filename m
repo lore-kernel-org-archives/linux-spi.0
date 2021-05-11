@@ -2,38 +2,39 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7AD03C433ED
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BC61AC433B4
 	for <linux-spi@archiver.kernel.org>; Tue, 11 May 2021 14:26:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4689761396
+	by mail.kernel.org (Postfix) with ESMTP id 7B2CF611BE
 	for <linux-spi@archiver.kernel.org>; Tue, 11 May 2021 14:26:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231696AbhEKO2C (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S231817AbhEKO2C (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Tue, 11 May 2021 10:28:02 -0400
-Received: from mga18.intel.com ([134.134.136.126]:45472 "EHLO mga18.intel.com"
+Received: from mga04.intel.com ([192.55.52.120]:45418 "EHLO mga04.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231305AbhEKO2C (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        id S231558AbhEKO2C (ORCPT <rfc822;linux-spi@vger.kernel.org>);
         Tue, 11 May 2021 10:28:02 -0400
-IronPort-SDR: hlje2w2MOfuUlsrIaihSbJT9iRc5NAQsFB0vt/p0HhjhZN9pdBF+qlMwclwBk+G8lAZycdLTIT
- uF4bF05ZOQYg==
-X-IronPort-AV: E=McAfee;i="6200,9189,9981"; a="186894771"
+IronPort-SDR: KhwzS/mibEInt2s73w8E0tOV/kTccCAm4h+1+I7azPDPF7uMjbSu5HZuFJ1966VMgUneMGZe6K
+ mJy8Lw365dig==
+X-IronPort-AV: E=McAfee;i="6200,9189,9981"; a="197474042"
 X-IronPort-AV: E=Sophos;i="5.82,290,1613462400"; 
-   d="scan'208";a="186894771"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2021 07:26:55 -0700
-IronPort-SDR: XW+NcED4qTFOB/IBnZCqXZFhli+dJOuN8su+/RFqCtkejCR5hm1hClhEoUgdqAxlwDoc7zo1pL
- fYu4uDAa/8tw==
+   d="scan'208";a="197474042"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2021 07:26:55 -0700
+IronPort-SDR: VtRMk9mb/eLdHUBpstMBpeTTdy6MWP3kHaZZM10wqx52X4yB4fdQYKAP3dXyReOzKpidIzsYJa
+ 8OZVrXI8XJjw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.82,290,1613462400"; 
-   d="scan'208";a="392319995"
+   d="scan'208";a="609507425"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga006.jf.intel.com with ESMTP; 11 May 2021 07:26:52 -0700
+  by orsmga005.jf.intel.com with ESMTP; 11 May 2021 07:26:52 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id D3A06249; Tue, 11 May 2021 17:27:12 +0300 (EEST)
+        id E9A08338; Tue, 11 May 2021 17:27:12 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Mark Brown <broonie@kernel.org>,
@@ -44,47 +45,79 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Subject: [PATCH v4 0/8] spi: pxa2xx: Set of cleanups (part 1+)
-Date:   Tue, 11 May 2021 17:27:03 +0300
-Message-Id: <20210511142711.23244-1-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v4 2/8] spi: pxa2xx: Reuse int_error_stop() in pxa2xx_spi_slave_abort()
+Date:   Tue, 11 May 2021 17:27:05 +0300
+Message-Id: <20210511142711.23244-3-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210511142711.23244-1-andriy.shevchenko@linux.intel.com>
+References: <20210511142711.23244-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Set of cleanups here and there related to the SPI PXA2xx driver.
-On top of them, adding the special type for Intel Merrifield.
+It appears that pxa2xx_spi_slave_abort()almost  repeats the functionality
+of the int_error_stop(). Reuse int_error_stop() in pxa2xx_spi_slave_abort().
 
-In v4:
-- dropped applied patches
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/spi-pxa2xx.c | 17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
 
-In v3:
-- rebased on top of v5.13-rc1 and/or spi/for-5,14
-
-In v2:
-- cover letter (Mark)
-- drop moving the header in patch 5 (Mark)
-
-Andy Shevchenko (8):
-  spi: pxa2xx: Introduce int_stop_and_reset() helper
-  spi: pxa2xx: Reuse int_error_stop() in pxa2xx_spi_slave_abort()
-  spi: pxa2xx: Use pxa_ssp_enable()/pxa_ssp_disable() in the driver
-  spi: pxa2xx: Extract pxa2xx_spi_update() helper
-  spi: pxa2xx: Extract clear_SSCR1_bits() helper
-  spi: pxa2xx: Extract read_SSSR_bits() helper
-  spi: pxa2xx: Constify struct driver_data parameter
-  spi: pxa2xx: Introduce special type for Merrifield SPIs
-
- drivers/spi/spi-pxa2xx-dma.c |  17 +---
- drivers/spi/spi-pxa2xx-pci.c |   2 +-
- drivers/spi/spi-pxa2xx.c     | 171 ++++++++++++++++++-----------------
- drivers/spi/spi-pxa2xx.h     |  16 +++-
- include/linux/pxa2xx_ssp.h   |  32 +++++++
- sound/soc/pxa/pxa-ssp.c      |  16 ----
- 6 files changed, 140 insertions(+), 114 deletions(-)
-
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 5572eec68381..087c84e605b9 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -631,7 +631,7 @@ static void int_stop_and_reset(struct driver_data *drv_data)
+ 	pxa2xx_spi_write(drv_data, SSTO, 0);
+ }
+ 
+-static void int_error_stop(struct driver_data *drv_data, const char *msg)
++static void int_error_stop(struct driver_data *drv_data, const char *msg, int err)
+ {
+ 	int_stop_and_reset(drv_data);
+ 	pxa2xx_spi_flush(drv_data);
+@@ -639,7 +639,7 @@ static void int_error_stop(struct driver_data *drv_data, const char *msg)
+ 
+ 	dev_err(drv_data->ssp->dev, "%s\n", msg);
+ 
+-	drv_data->controller->cur_msg->status = -EIO;
++	drv_data->controller->cur_msg->status = err;
+ 	spi_finalize_current_transfer(drv_data->controller);
+ }
+ 
+@@ -658,12 +658,12 @@ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
+ 	u32 irq_status = pxa2xx_spi_read(drv_data, SSSR) & irq_mask;
+ 
+ 	if (irq_status & SSSR_ROR) {
+-		int_error_stop(drv_data, "interrupt_transfer: fifo overrun");
++		int_error_stop(drv_data, "interrupt_transfer: fifo overrun", -EIO);
+ 		return IRQ_HANDLED;
+ 	}
+ 
+ 	if (irq_status & SSSR_TUR) {
+-		int_error_stop(drv_data, "interrupt_transfer: fifo underrun");
++		int_error_stop(drv_data, "interrupt_transfer: fifo underrun", -EIO);
+ 		return IRQ_HANDLED;
+ 	}
+ 
+@@ -1154,14 +1154,7 @@ static int pxa2xx_spi_slave_abort(struct spi_controller *controller)
+ {
+ 	struct driver_data *drv_data = spi_controller_get_devdata(controller);
+ 
+-	int_stop_and_reset(drv_data);
+-	pxa2xx_spi_flush(drv_data);
+-	pxa2xx_spi_off(drv_data);
+-
+-	dev_dbg(drv_data->ssp->dev, "transfer aborted\n");
+-
+-	drv_data->controller->cur_msg->status = -EINTR;
+-	spi_finalize_current_transfer(drv_data->controller);
++	int_error_stop(drv_data, "transfer aborted", -EINTR);
+ 
+ 	return 0;
+ }
 -- 
 2.30.2
 

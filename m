@@ -2,127 +2,105 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,
-	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 460EAC433B4
-	for <linux-spi@archiver.kernel.org>; Tue, 11 May 2021 14:17:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2AF71C43460
+	for <linux-spi@archiver.kernel.org>; Tue, 11 May 2021 14:24:08 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1803D61155
-	for <linux-spi@archiver.kernel.org>; Tue, 11 May 2021 14:17:56 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0402761376
+	for <linux-spi@archiver.kernel.org>; Tue, 11 May 2021 14:24:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231857AbhEKOTB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 11 May 2021 10:19:01 -0400
-Received: from mga12.intel.com ([192.55.52.136]:39655 "EHLO mga12.intel.com"
+        id S231842AbhEKOZM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 11 May 2021 10:25:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60660 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231874AbhEKOS6 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 11 May 2021 10:18:58 -0400
-IronPort-SDR: VBW2aSppZNLuaiXwd0aCJfvTSzpRhLkeKNgYG7BB5kjJjWFqSVr+rUxjy3VLy4BhrdYAqJKI7x
- iPBpoo4kWB2w==
-X-IronPort-AV: E=McAfee;i="6200,9189,9981"; a="179045752"
-X-IronPort-AV: E=Sophos;i="5.82,290,1613462400"; 
-   d="scan'208";a="179045752"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2021 07:17:10 -0700
-IronPort-SDR: sMTBIb3UrfRSQTkkHtDsfXe51LMmb48wvkl4bfyOyhDfveDi3YwAl1tAqrPJBG1QCBQk31LH4U
- YBeBMQaF6GGg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.82,290,1613462400"; 
-   d="scan'208";a="621829411"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga006.fm.intel.com with ESMTP; 11 May 2021 07:17:06 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 75D003F6; Tue, 11 May 2021 17:17:27 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org
-Cc:     Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
+        id S231797AbhEKOZK (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 11 May 2021 10:25:10 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id F1E196191D;
+        Tue, 11 May 2021 14:24:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1620743043;
+        bh=wJ+4cBBj7zHK6XS8zc7+fNwV8ORjVAMlWIuJ5Iuzs8o=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=mragve0FOBm1OVcs9ENSktykBXpTAlvDdbY6U6NYXsL4GRjFXu/8qzKrerur8//8v
+         //lUW+7b6CzoMSfZ3UtBghu6ZHq2tRYyjq7uY/uhGh4l6QbnKy5eAe/PJkdhoO5hHe
+         LgttsgFY2Nyso/RvJUs2oSgI4YOS2uPkS477/K9r1UwoK2R9VxwU8ovbJjeAdAnA+F
+         cPFqPA66I0uf/Y9izmGbWyvYZNNN/mU6vHh9P4tco+aZBSOn8rBFmEn+6ocX6JikH0
+         zKx+aFAc/FiG/AXOsmci4gnArTYyeVPYR8458InI8s35fqJfIKwircEu3f770mNoOb
+         fWejAlhMINwRw==
+Date:   Tue, 11 May 2021 15:23:23 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        ALSA Development Mailing List <alsa-devel@alsa-project.org>,
+        Daniel Mack <daniel@zonque.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Subject: [PATCH v3 4/8] spi: pxa2xx: Extract clear_SSCR1_bits() helper
-Date:   Tue, 11 May 2021 17:17:21 +0300
-Message-Id: <20210511141725.32097-5-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210511141725.32097-1-andriy.shevchenko@linux.intel.com>
-References: <20210511141725.32097-1-andriy.shevchenko@linux.intel.com>
+        Takashi Iwai <tiwai@suse.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>
+Subject: Re: [PATCH v2 00/14] spi: pxa2xx: Set of cleanups
+Message-ID: <20210511142323.GJ4496@sirena.org.uk>
+References: <20210423182441.50272-1-andriy.shevchenko@linux.intel.com>
+ <162072071980.33404.13031284441613044277.b4-ty@kernel.org>
+ <CAHp75Vck5izDB4mTRV5hTaknpx5Bm+OA4rNLVznQxVaEwigBZg@mail.gmail.com>
+ <20210511134706.GI4496@sirena.org.uk>
+ <CAHp75VdPHYEq+Xn5yQ+TyQn5uerc+afcVaHj22OmVzsBW2jcaQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="5me2qT3T17SWzdxI"
+Content-Disposition: inline
+In-Reply-To: <CAHp75VdPHYEq+Xn5yQ+TyQn5uerc+afcVaHj22OmVzsBW2jcaQ@mail.gmail.com>
+X-Cookie: Beam me up, Scotty!
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-There are few places that repeat the logic of "clear some bits in SSCR1".
-Extract clear_SSCR1_bits() helper to deduplicate that.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/spi/spi-pxa2xx-dma.c | 4 +---
- drivers/spi/spi-pxa2xx.c     | 7 ++-----
- drivers/spi/spi-pxa2xx.h     | 5 +++++
- 3 files changed, 8 insertions(+), 8 deletions(-)
+--5me2qT3T17SWzdxI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
-index 5ca01ad7f460..e581027e99f9 100644
---- a/drivers/spi/spi-pxa2xx-dma.c
-+++ b/drivers/spi/spi-pxa2xx-dma.c
-@@ -41,9 +41,7 @@ static void pxa2xx_spi_dma_transfer_complete(struct driver_data *drv_data,
- 		}
- 
- 		/* Clear status & disable interrupts */
--		pxa2xx_spi_write(drv_data, SSCR1,
--				 pxa2xx_spi_read(drv_data, SSCR1)
--				 & ~drv_data->dma_cr1);
-+		clear_SSCR1_bits(drv_data, drv_data->dma_cr1);
- 		write_SSSR_CS(drv_data, drv_data->clear_sr);
- 		if (!pxa25x_ssp_comp(drv_data))
- 			pxa2xx_spi_write(drv_data, SSTO, 0);
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 54eaa048651f..3a4ad16614f7 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -733,8 +733,7 @@ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
- static void handle_bad_msg(struct driver_data *drv_data)
- {
- 	pxa2xx_spi_off(drv_data);
--	pxa2xx_spi_write(drv_data, SSCR1,
--			 pxa2xx_spi_read(drv_data, SSCR1) & ~drv_data->int_cr1);
-+	clear_SSCR1_bits(drv_data, drv_data->int_cr1);
- 	if (!pxa25x_ssp_comp(drv_data))
- 		pxa2xx_spi_write(drv_data, SSTO, 0);
- 	write_SSSR_CS(drv_data, drv_data->clear_sr);
-@@ -1161,9 +1160,7 @@ static void pxa2xx_spi_handle_err(struct spi_controller *controller,
- 	pxa2xx_spi_off(drv_data);
- 	/* Clear and disable interrupts and service requests */
- 	write_SSSR_CS(drv_data, drv_data->clear_sr);
--	pxa2xx_spi_write(drv_data, SSCR1,
--			 pxa2xx_spi_read(drv_data, SSCR1)
--			 & ~(drv_data->int_cr1 | drv_data->dma_cr1));
-+	clear_SSCR1_bits(drv_data, drv_data->int_cr1 | drv_data->dma_cr1);
- 	if (!pxa25x_ssp_comp(drv_data))
- 		pxa2xx_spi_write(drv_data, SSTO, 0);
- 
-diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
-index 739e264feaa6..ed63f7165cd8 100644
---- a/drivers/spi/spi-pxa2xx.h
-+++ b/drivers/spi/spi-pxa2xx.h
-@@ -105,6 +105,11 @@ static inline int pxa25x_ssp_comp(struct driver_data *drv_data)
- 	}
- }
- 
-+static inline void clear_SSCR1_bits(const struct driver_data *drv_data, u32 bits)
-+{
-+	pxa2xx_spi_write(drv_data, SSCR1, pxa2xx_spi_read(drv_data, SSCR1) & ~bits);
-+}
-+
- static inline void write_SSSR_CS(struct driver_data *drv_data, u32 val)
- {
- 	if (drv_data->ssp_type == CE4100_SSP ||
--- 
-2.30.2
+On Tue, May 11, 2021 at 04:52:40PM +0300, Andy Shevchenko wrote:
+> On Tue, May 11, 2021 at 4:47 PM Mark Brown <broonie@kernel.org> wrote:
+> > On Tue, May 11, 2021 at 03:28:18PM +0300, Andy Shevchenko wrote:
+> > > On Tue, May 11, 2021 at 11:27 AM Mark Brown <broonie@kernel.org> wrote:
 
+> > > The above patches are effectively missed.
+> > > Anything to fix in your scripts / my patches?
+
+> > Like I said, patch 7 didn't apply so you should check and resend.
+
+> I didn't get it. I have effectively rebased the entire series and resend as v2.
+
+No, you resent it again as v3.  This was me applying the bits of v2 that
+would actually apply.
+
+> I can speculate that your scripts have a bug since they might try v1
+> as well (as far as I can see they usually send a confirmation of
+> application for all versions of the series in question).
+
+They end up sending confirmations for every version of the series I've
+tried to queue unless I go and explicitly delete the older versions.
+
+--5me2qT3T17SWzdxI
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmCak1oACgkQJNaLcl1U
+h9BuxQf+OegOJM0y6NfKvrOgJTzp2GmTk4h80iy95DznuLEjuM5uqMUHLkySbAsF
+ACndImPyX0HcJr1YWqWDnBjsp/f24gcAeWXyUYvFNUEtAyk+dBD5cagzHrRXX5ZU
+WQOXqJtpO6ergLfANl22xwENmHcKyWlGVzcw3WWZjp1s1+fkp/T+p1pjC84+3IBb
+v1PqVn0ozqU5ndAUVlpTWFWJ7codivp6LMPawIszqpXY5QL0j6cZlnxdLj6RJzjb
+u6aZ7HlN+GIDDqfv9x/FrnLC1m0DtFw3SGKGJ/grF1iF9k25fMzP1YPu/vQokKUv
+yqdh5VXfN8s2EVGn6IXTk1aqrKUWqw==
+=SINU
+-----END PGP SIGNATURE-----
+
+--5me2qT3T17SWzdxI--

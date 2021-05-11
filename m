@@ -2,39 +2,39 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNWANTED_LANGUAGE_BODY,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 91703C433B4
-	for <linux-spi@archiver.kernel.org>; Tue, 11 May 2021 14:17:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 460EAC433B4
+	for <linux-spi@archiver.kernel.org>; Tue, 11 May 2021 14:17:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6EF36613BF
-	for <linux-spi@archiver.kernel.org>; Tue, 11 May 2021 14:17:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1803D61155
+	for <linux-spi@archiver.kernel.org>; Tue, 11 May 2021 14:17:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231861AbhEKOS6 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 11 May 2021 10:18:58 -0400
+        id S231857AbhEKOTB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 11 May 2021 10:19:01 -0400
 Received: from mga12.intel.com ([192.55.52.136]:39655 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231865AbhEKOS4 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 11 May 2021 10:18:56 -0400
-IronPort-SDR: xQYZR05sT0X3pP7/7Zx6BRgYjn6PbMOtieB5luTp7hYxlD2q+5DcIKrRHB3JtF5YakoBRSjjeM
- TZM4nJro9Dyw==
-X-IronPort-AV: E=McAfee;i="6200,9189,9981"; a="179045750"
+        id S231874AbhEKOS6 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 11 May 2021 10:18:58 -0400
+IronPort-SDR: VBW2aSppZNLuaiXwd0aCJfvTSzpRhLkeKNgYG7BB5kjJjWFqSVr+rUxjy3VLy4BhrdYAqJKI7x
+ iPBpoo4kWB2w==
+X-IronPort-AV: E=McAfee;i="6200,9189,9981"; a="179045752"
 X-IronPort-AV: E=Sophos;i="5.82,290,1613462400"; 
-   d="scan'208";a="179045750"
+   d="scan'208";a="179045752"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
   by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2021 07:17:10 -0700
-IronPort-SDR: uvFXafhaw0WRoH46aZGCCdW7NGMorzpXPP/JV+4TespEr+mPtDjyYC2T100SoCLEh6nEn6bE02
- o1IairPYtxKA==
+IronPort-SDR: sMTBIb3UrfRSQTkkHtDsfXe51LMmb48wvkl4bfyOyhDfveDi3YwAl1tAqrPJBG1QCBQk31LH4U
+ YBeBMQaF6GGg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.82,290,1613462400"; 
-   d="scan'208";a="621829408"
+   d="scan'208";a="621829411"
 Received: from black.fi.intel.com ([10.237.72.28])
   by fmsmga006.fm.intel.com with ESMTP; 11 May 2021 07:17:06 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 6413C338; Tue, 11 May 2021 17:17:27 +0300 (EEST)
+        id 75D003F6; Tue, 11 May 2021 17:17:27 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Mark Brown <broonie@kernel.org>,
@@ -45,9 +45,9 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Subject: [PATCH v3 2/8] spi: pxa2xx: Use pxa_ssp_enable()/pxa_ssp_disable() in the driver
-Date:   Tue, 11 May 2021 17:17:19 +0300
-Message-Id: <20210511141725.32097-3-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 4/8] spi: pxa2xx: Extract clear_SSCR1_bits() helper
+Date:   Tue, 11 May 2021 17:17:21 +0300
+Message-Id: <20210511141725.32097-5-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210511141725.32097-1-andriy.shevchenko@linux.intel.com>
 References: <20210511141725.32097-1-andriy.shevchenko@linux.intel.com>
@@ -57,182 +57,72 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-There are few places that repeat the logic of pxa_ssp_enable() and
-pxa_ssp_disable(). Use them instead of open coded variants.
+There are few places that repeat the logic of "clear some bits in SSCR1".
+Extract clear_SSCR1_bits() helper to deduplicate that.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/spi/spi-pxa2xx-dma.c |  4 +---
- drivers/spi/spi-pxa2xx.c     | 36 ++++++++++++++++++------------------
- include/linux/pxa2xx_ssp.h   | 16 ++++++++++++++++
- sound/soc/pxa/pxa-ssp.c      | 16 ----------------
- 4 files changed, 35 insertions(+), 37 deletions(-)
+ drivers/spi/spi-pxa2xx-dma.c | 4 +---
+ drivers/spi/spi-pxa2xx.c     | 7 ++-----
+ drivers/spi/spi-pxa2xx.h     | 5 +++++
+ 3 files changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
-index e00dbadd39ec..5ca01ad7f460 100644
+index 5ca01ad7f460..e581027e99f9 100644
 --- a/drivers/spi/spi-pxa2xx-dma.c
 +++ b/drivers/spi/spi-pxa2xx-dma.c
-@@ -50,9 +50,7 @@ static void pxa2xx_spi_dma_transfer_complete(struct driver_data *drv_data,
- 
- 		if (error) {
- 			/* In case we got an error we disable the SSP now */
--			pxa2xx_spi_write(drv_data, SSCR0,
--					 pxa2xx_spi_read(drv_data, SSCR0)
--					 & ~SSCR0_SSE);
-+			pxa_ssp_disable(drv_data->ssp);
- 			msg->status = -EIO;
+@@ -41,9 +41,7 @@ static void pxa2xx_spi_dma_transfer_complete(struct driver_data *drv_data,
  		}
  
+ 		/* Clear status & disable interrupts */
+-		pxa2xx_spi_write(drv_data, SSCR1,
+-				 pxa2xx_spi_read(drv_data, SSCR1)
+-				 & ~drv_data->dma_cr1);
++		clear_SSCR1_bits(drv_data, drv_data->dma_cr1);
+ 		write_SSSR_CS(drv_data, drv_data->clear_sr);
+ 		if (!pxa25x_ssp_comp(drv_data))
+ 			pxa2xx_spi_write(drv_data, SSTO, 0);
 diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 087c84e605b9..a27f51f5db65 100644
+index 54eaa048651f..3a4ad16614f7 100644
 --- a/drivers/spi/spi-pxa2xx.c
 +++ b/drivers/spi/spi-pxa2xx.c
-@@ -286,13 +286,11 @@ static u32 pxa2xx_configure_sscr0(const struct driver_data *drv_data,
- 	case QUARK_X1000_SSP:
- 		return clk_div
- 			| QUARK_X1000_SSCR0_Motorola
--			| QUARK_X1000_SSCR0_DataSize(bits > 32 ? 8 : bits)
--			| SSCR0_SSE;
-+			| QUARK_X1000_SSCR0_DataSize(bits > 32 ? 8 : bits);
- 	default:
- 		return clk_div
- 			| SSCR0_Motorola
- 			| SSCR0_DataSize(bits > 16 ? bits - 16 : bits)
--			| SSCR0_SSE
- 			| (bits > 16 ? SSCR0_EDSS : 0);
- 	}
- }
-@@ -498,8 +496,7 @@ static void pxa2xx_spi_off(struct driver_data *drv_data)
- 	if (is_mmp2_ssp(drv_data))
- 		return;
- 
--	pxa2xx_spi_write(drv_data, SSCR0,
--			 pxa2xx_spi_read(drv_data, SSCR0) & ~SSCR0_SSE);
-+	pxa_ssp_disable(drv_data->ssp);
- }
- 
- static int null_writer(struct driver_data *drv_data)
-@@ -1098,25 +1095,26 @@ static int pxa2xx_spi_transfer_one(struct spi_controller *controller,
- 	    (pxa2xx_spi_read(drv_data, DDS_RATE) != chip->dds_rate))
- 		pxa2xx_spi_write(drv_data, DDS_RATE, chip->dds_rate);
- 
-+	/* Stop the SSP */
-+	if (!is_mmp2_ssp(drv_data))
-+		pxa_ssp_disable(drv_data->ssp);
-+
-+	if (!pxa25x_ssp_comp(drv_data))
-+		pxa2xx_spi_write(drv_data, SSTO, chip->timeout);
-+
- 	/* see if we need to reload the config registers */
- 	if ((pxa2xx_spi_read(drv_data, SSCR0) != cr0)
- 	    || (pxa2xx_spi_read(drv_data, SSCR1) & change_mask)
- 	    != (cr1 & change_mask)) {
--		/* stop the SSP, and update the other bits */
--		if (!is_mmp2_ssp(drv_data))
--			pxa2xx_spi_write(drv_data, SSCR0, cr0 & ~SSCR0_SSE);
--		if (!pxa25x_ssp_comp(drv_data))
--			pxa2xx_spi_write(drv_data, SSTO, chip->timeout);
- 		/* first set CR1 without interrupt and service enables */
- 		pxa2xx_spi_write(drv_data, SSCR1, cr1 & change_mask);
--		/* restart the SSP */
-+		/* Update the other bits */
- 		pxa2xx_spi_write(drv_data, SSCR0, cr0);
--
--	} else {
--		if (!pxa25x_ssp_comp(drv_data))
--			pxa2xx_spi_write(drv_data, SSTO, chip->timeout);
- 	}
- 
-+	/* Restart the SSP */
-+	pxa_ssp_enable(drv_data->ssp);
-+
- 	if (is_mmp2_ssp(drv_data)) {
- 		u8 tx_level = (pxa2xx_spi_read(drv_data, SSSR)
- 					& SSSR_TFL_MASK) >> 8;
-@@ -1786,8 +1784,9 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
- 		controller->min_speed_hz =
- 			DIV_ROUND_UP(controller->max_speed_hz, 512);
- 
-+	pxa_ssp_disable(ssp);
-+
- 	/* Load default SSP configuration */
--	pxa2xx_spi_write(drv_data, SSCR0, 0);
- 	switch (drv_data->ssp_type) {
- 	case QUARK_X1000_SSP:
- 		tmp = QUARK_X1000_SSCR1_RxTresh(RX_THRESH_QUARK_X1000_DFLT) |
-@@ -1928,7 +1927,7 @@ static int pxa2xx_spi_remove(struct platform_device *pdev)
- 	spi_unregister_controller(drv_data->controller);
- 
- 	/* Disable the SSP at the peripheral and SOC level */
--	pxa2xx_spi_write(drv_data, SSCR0, 0);
-+	pxa_ssp_disable(ssp);
- 	clk_disable_unprepare(ssp->clk);
- 
- 	/* Release DMA */
-@@ -1957,7 +1956,8 @@ static int pxa2xx_spi_suspend(struct device *dev)
- 	status = spi_controller_suspend(drv_data->controller);
- 	if (status != 0)
- 		return status;
--	pxa2xx_spi_write(drv_data, SSCR0, 0);
-+
-+	pxa_ssp_disable(ssp);
- 
- 	if (!pm_runtime_suspended(dev))
- 		clk_disable_unprepare(ssp->clk);
-diff --git a/include/linux/pxa2xx_ssp.h b/include/linux/pxa2xx_ssp.h
-index 1b6c1a0922bd..fdfbe17e15f4 100644
---- a/include/linux/pxa2xx_ssp.h
-+++ b/include/linux/pxa2xx_ssp.h
-@@ -254,6 +254,22 @@ static inline u32 pxa_ssp_read_reg(struct ssp_device *dev, u32 reg)
- 	return __raw_readl(dev->mmio_base + reg);
- }
- 
-+static inline void pxa_ssp_enable(struct ssp_device *ssp)
-+{
-+	u32 sscr0;
-+
-+	sscr0 = pxa_ssp_read_reg(ssp, SSCR0) | SSCR0_SSE;
-+	pxa_ssp_write_reg(ssp, SSCR0, sscr0);
-+}
-+
-+static inline void pxa_ssp_disable(struct ssp_device *ssp)
-+{
-+	u32 sscr0;
-+
-+	sscr0 = pxa_ssp_read_reg(ssp, SSCR0) & ~SSCR0_SSE;
-+	pxa_ssp_write_reg(ssp, SSCR0, sscr0);
-+}
-+
- #if IS_ENABLED(CONFIG_PXA_SSP)
- struct ssp_device *pxa_ssp_request(int port, const char *label);
- void pxa_ssp_free(struct ssp_device *);
-diff --git a/sound/soc/pxa/pxa-ssp.c b/sound/soc/pxa/pxa-ssp.c
-index b941adcbb8f9..939e7e28486a 100644
---- a/sound/soc/pxa/pxa-ssp.c
-+++ b/sound/soc/pxa/pxa-ssp.c
-@@ -61,22 +61,6 @@ static void dump_registers(struct ssp_device *ssp)
- 		 pxa_ssp_read_reg(ssp, SSACD));
- }
- 
--static void pxa_ssp_enable(struct ssp_device *ssp)
--{
--	uint32_t sscr0;
--
--	sscr0 = __raw_readl(ssp->mmio_base + SSCR0) | SSCR0_SSE;
--	__raw_writel(sscr0, ssp->mmio_base + SSCR0);
--}
--
--static void pxa_ssp_disable(struct ssp_device *ssp)
--{
--	uint32_t sscr0;
--
--	sscr0 = __raw_readl(ssp->mmio_base + SSCR0) & ~SSCR0_SSE;
--	__raw_writel(sscr0, ssp->mmio_base + SSCR0);
--}
--
- static void pxa_ssp_set_dma_params(struct ssp_device *ssp, int width4,
- 			int out, struct snd_dmaengine_dai_dma_data *dma)
+@@ -733,8 +733,7 @@ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
+ static void handle_bad_msg(struct driver_data *drv_data)
  {
+ 	pxa2xx_spi_off(drv_data);
+-	pxa2xx_spi_write(drv_data, SSCR1,
+-			 pxa2xx_spi_read(drv_data, SSCR1) & ~drv_data->int_cr1);
++	clear_SSCR1_bits(drv_data, drv_data->int_cr1);
+ 	if (!pxa25x_ssp_comp(drv_data))
+ 		pxa2xx_spi_write(drv_data, SSTO, 0);
+ 	write_SSSR_CS(drv_data, drv_data->clear_sr);
+@@ -1161,9 +1160,7 @@ static void pxa2xx_spi_handle_err(struct spi_controller *controller,
+ 	pxa2xx_spi_off(drv_data);
+ 	/* Clear and disable interrupts and service requests */
+ 	write_SSSR_CS(drv_data, drv_data->clear_sr);
+-	pxa2xx_spi_write(drv_data, SSCR1,
+-			 pxa2xx_spi_read(drv_data, SSCR1)
+-			 & ~(drv_data->int_cr1 | drv_data->dma_cr1));
++	clear_SSCR1_bits(drv_data, drv_data->int_cr1 | drv_data->dma_cr1);
+ 	if (!pxa25x_ssp_comp(drv_data))
+ 		pxa2xx_spi_write(drv_data, SSTO, 0);
+ 
+diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
+index 739e264feaa6..ed63f7165cd8 100644
+--- a/drivers/spi/spi-pxa2xx.h
++++ b/drivers/spi/spi-pxa2xx.h
+@@ -105,6 +105,11 @@ static inline int pxa25x_ssp_comp(struct driver_data *drv_data)
+ 	}
+ }
+ 
++static inline void clear_SSCR1_bits(const struct driver_data *drv_data, u32 bits)
++{
++	pxa2xx_spi_write(drv_data, SSCR1, pxa2xx_spi_read(drv_data, SSCR1) & ~bits);
++}
++
+ static inline void write_SSSR_CS(struct driver_data *drv_data, u32 val)
+ {
+ 	if (drv_data->ssp_type == CE4100_SSP ||
 -- 
 2.30.2
 

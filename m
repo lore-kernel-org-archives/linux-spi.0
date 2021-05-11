@@ -2,38 +2,39 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 57521C433B4
-	for <linux-spi@archiver.kernel.org>; Tue, 11 May 2021 14:17:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E3DA5C433ED
+	for <linux-spi@archiver.kernel.org>; Tue, 11 May 2021 14:17:47 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 26B62611BE
-	for <linux-spi@archiver.kernel.org>; Tue, 11 May 2021 14:17:43 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BDA9861155
+	for <linux-spi@archiver.kernel.org>; Tue, 11 May 2021 14:17:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231748AbhEKOSr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 11 May 2021 10:18:47 -0400
+        id S231883AbhEKOSx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 11 May 2021 10:18:53 -0400
 Received: from mga05.intel.com ([192.55.52.43]:26618 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231864AbhEKOSk (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 11 May 2021 10:18:40 -0400
-IronPort-SDR: SbP5atqwA4LBQcTG4p1mK+/qKETFcMmS7Cv3q+dgnQWnmzCCXAdVw2HjrG75XmRADEL0aAeqNm
- dkSspI9r/zkw==
-X-IronPort-AV: E=McAfee;i="6200,9189,9981"; a="284942941"
+        id S231857AbhEKOSo (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 11 May 2021 10:18:44 -0400
+IronPort-SDR: jmA9C+LOCtHum1XJMp9NvJwsqE0Yvlf2X0EQKgu86nfgudExLe3b7SFqYYJvYrZNcVQZA3LKU1
+ nUii6VYd1g1Q==
+X-IronPort-AV: E=McAfee;i="6200,9189,9981"; a="284942940"
 X-IronPort-AV: E=Sophos;i="5.82,290,1613462400"; 
-   d="scan'208";a="284942941"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2021 07:17:10 -0700
-IronPort-SDR: kEyNBkIFqeMJtec6hWX8jf1qFI1k0McLtuBKIm6ufMJrwmXAZZoBeZtrSRtJYyznwMutc6EVwg
- L0Ix+Bme+KXw==
+   d="scan'208";a="284942940"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2021 07:17:09 -0700
+IronPort-SDR: rltezOshwPEL1HjTshwq+B93Ge7Bess4eDVheq5rUKGaIAbuOgua2MiQt2glJdWstG+h6yjB87
+ djWCiM2n+g6Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.82,290,1613462400"; 
-   d="scan'208";a="455031948"
+   d="scan'208";a="399331159"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga004.fm.intel.com with ESMTP; 11 May 2021 07:17:06 -0700
+  by fmsmga007.fm.intel.com with ESMTP; 11 May 2021 07:17:06 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 5071514B; Tue, 11 May 2021 17:17:27 +0300 (EEST)
+        id 6D00A3C0; Tue, 11 May 2021 17:17:27 +0300 (EEST)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Mark Brown <broonie@kernel.org>,
@@ -44,49 +45,87 @@ Cc:     Daniel Mack <daniel@zonque.org>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Subject: [PATCH v3 0/8] spi: pxa2xx: Set of cleanups
-Date:   Tue, 11 May 2021 17:17:17 +0300
-Message-Id: <20210511141725.32097-1-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 3/8] spi: pxa2xx: Extract pxa2xx_spi_update() helper
+Date:   Tue, 11 May 2021 17:17:20 +0300
+Message-Id: <20210511141725.32097-4-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210511141725.32097-1-andriy.shevchenko@linux.intel.com>
+References: <20210511141725.32097-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Set of cleanups here and there related to the SPI PXA2xx driver.
-On top of them, adding the special type for Intel Merrifield.
+There are few places that repeat the logic of "update if changed".
+Extract pxa2xx_spi_update() helper to deduplicate that.
 
-In v4:
-- dropped applied patches
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/spi-pxa2xx.c | 33 ++++++++++++++-------------------
+ 1 file changed, 14 insertions(+), 19 deletions(-)
 
-In v3:
-- rebased on top of v5.13-rc1 and/or spi/for-5,14
-
-In v2:
-- cover letter (Mark)
-- drop moving the header in patch 5 (Mark)
-
-
-Andy Shevchenko (8):
-  spi: pxa2xx: Reuse int_error_stop() in pxa2xx_spi_slave_abort()
-  spi: pxa2xx: Use pxa_ssp_enable()/pxa_ssp_disable() in the driver
-  spi: pxa2xx: Extract pxa2xx_spi_update() helper
-  spi: pxa2xx: Extract clear_SSCR1_bits() helper
-  spi: pxa2xx: Extract read_SSSR_bits() helper
-  spi: pxa2xx: Constify struct driver_data parameter
-  spi: pxa2xx: Introduce special type for Merrifield SPIs
-  spi: Convert to use predefined time multipliers
-
- drivers/spi/spi-pxa2xx-dma.c |  17 ++--
- drivers/spi/spi-pxa2xx-pci.c |   2 +-
- drivers/spi/spi-pxa2xx.c     | 147 ++++++++++++++++++-----------------
- drivers/spi/spi-pxa2xx.h     |  16 +++-
- drivers/spi/spi.c            |  41 ++++++----
- include/linux/pxa2xx_ssp.h   |  32 ++++++++
- sound/soc/pxa/pxa-ssp.c      |  16 ----
- 7 files changed, 156 insertions(+), 115 deletions(-)
-
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index a27f51f5db65..54eaa048651f 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -200,6 +200,12 @@ static bool is_mmp2_ssp(const struct driver_data *drv_data)
+ 	return drv_data->ssp_type == MMP2_SSP;
+ }
+ 
++static void pxa2xx_spi_update(const struct driver_data *drv_data, u32 reg, u32 mask, u32 value)
++{
++	if ((pxa2xx_spi_read(drv_data, reg) & mask) != value)
++		pxa2xx_spi_write(drv_data, reg, value & mask);
++}
++
+ static u32 pxa2xx_spi_get_ssrc1_change_mask(const struct driver_data *drv_data)
+ {
+ 	switch (drv_data->ssp_type) {
+@@ -1081,19 +1087,12 @@ static int pxa2xx_spi_transfer_one(struct spi_controller *controller,
+ 			dma_mapped ? "DMA" : "PIO");
+ 
+ 	if (is_lpss_ssp(drv_data)) {
+-		if ((pxa2xx_spi_read(drv_data, SSIRF) & 0xff)
+-		    != chip->lpss_rx_threshold)
+-			pxa2xx_spi_write(drv_data, SSIRF,
+-					 chip->lpss_rx_threshold);
+-		if ((pxa2xx_spi_read(drv_data, SSITF) & 0xffff)
+-		    != chip->lpss_tx_threshold)
+-			pxa2xx_spi_write(drv_data, SSITF,
+-					 chip->lpss_tx_threshold);
++		pxa2xx_spi_update(drv_data, SSIRF, GENMASK(7, 0), chip->lpss_rx_threshold);
++		pxa2xx_spi_update(drv_data, SSITF, GENMASK(15, 0), chip->lpss_tx_threshold);
+ 	}
+ 
+-	if (is_quark_x1000_ssp(drv_data) &&
+-	    (pxa2xx_spi_read(drv_data, DDS_RATE) != chip->dds_rate))
+-		pxa2xx_spi_write(drv_data, DDS_RATE, chip->dds_rate);
++	if (is_quark_x1000_ssp(drv_data))
++		pxa2xx_spi_update(drv_data, DDS_RATE, GENMASK(23, 0), chip->dds_rate);
+ 
+ 	/* Stop the SSP */
+ 	if (!is_mmp2_ssp(drv_data))
+@@ -1102,15 +1101,11 @@ static int pxa2xx_spi_transfer_one(struct spi_controller *controller,
+ 	if (!pxa25x_ssp_comp(drv_data))
+ 		pxa2xx_spi_write(drv_data, SSTO, chip->timeout);
+ 
++	/* first set CR1 without interrupt and service enables */
++	pxa2xx_spi_update(drv_data, SSCR1, change_mask, cr1);
++
+ 	/* see if we need to reload the config registers */
+-	if ((pxa2xx_spi_read(drv_data, SSCR0) != cr0)
+-	    || (pxa2xx_spi_read(drv_data, SSCR1) & change_mask)
+-	    != (cr1 & change_mask)) {
+-		/* first set CR1 without interrupt and service enables */
+-		pxa2xx_spi_write(drv_data, SSCR1, cr1 & change_mask);
+-		/* Update the other bits */
+-		pxa2xx_spi_write(drv_data, SSCR0, cr0);
+-	}
++	pxa2xx_spi_update(drv_data, SSCR0, GENMASK(31, 0), cr0);
+ 
+ 	/* Restart the SSP */
+ 	pxa_ssp_enable(drv_data->ssp);
 -- 
 2.30.2
 

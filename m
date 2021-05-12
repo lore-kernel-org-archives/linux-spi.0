@@ -2,100 +2,86 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-17.2 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7740AC43617
-	for <linux-spi@archiver.kernel.org>; Wed, 12 May 2021 15:29:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C622C43616
+	for <linux-spi@archiver.kernel.org>; Wed, 12 May 2021 17:57:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 3D6DF61457
-	for <linux-spi@archiver.kernel.org>; Wed, 12 May 2021 15:29:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5505C61413
+	for <linux-spi@archiver.kernel.org>; Wed, 12 May 2021 17:57:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233278AbhELPaw (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 12 May 2021 11:30:52 -0400
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:11946 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S235024AbhELP0Y (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 12 May 2021 11:26:24 -0400
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 14CFNHAn015842;
-        Wed, 12 May 2021 17:25:00 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=selector1;
- bh=wJLJQ5SzNztbYrcDqSHgy2c5s42y5qxKpGMFMYg/TAc=;
- b=Jf+ZLjmYTrNYe2RuYPfvLJ0ntYho5lGTyFYjvJYq0rVJgdzfvM0qiJr+I9DBx+Y7oRuH
- vYGT3zzmu5HSRZ8T2ntD+ovw0XRr9zEX++Y1O8izeynEWSsQoHA8ktOf2sk7MlIiH9r1
- 6CcB/ZCy2Jjml/IggDovjJN/wF9PRxR8WzYbsbKx45MGPZLOkEEgOUfeEAuFeZi2MPOE
- emyN5KPsYUdBc9BhhGs00Tm79NBQbydRfT9uQ/yiR0LUJPK6SG9L1P/V7LLy7RBlHYZk
- 6eKwF8+Nofe6HR5VKAJsn6XC/E5ZB2M/3y7OrbgOzOjFia0HFB0k2Gf8U3IgvW6bnTT2 xA== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 38gcfahwb6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 12 May 2021 17:25:00 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 05040100034;
-        Wed, 12 May 2021 17:25:00 +0200 (CEST)
-Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id E778122B9DB;
-        Wed, 12 May 2021 17:24:59 +0200 (CEST)
-Received: from lmecxl0995.lme.st.com (10.75.127.47) by SFHDAG2NODE3.st.com
- (10.75.127.6) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 12 May
- 2021 17:24:59 +0200
-Subject: Re: [PATCH] MAINTAINERS: Add Alain Volmat as STM32 SPI maintainer
-To:     Alain Volmat <alain.volmat@foss.st.com>, <broonie@kernel.org>
-CC:     <mcoquelin.stm32@gmail.com>, <alexandre.torgue@foss.st.com>,
-        <linux-spi@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <fabrice.gasnier@foss.st.com>
-References: <1620796842-23546-1-git-send-email-alain.volmat@foss.st.com>
-From:   Amelie DELAUNAY <amelie.delaunay@foss.st.com>
-Message-ID: <6a553a54-ca1f-8fb5-1a50-e29a858798bf@foss.st.com>
-Date:   Wed, 12 May 2021 17:24:58 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S240598AbhELR4p (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 12 May 2021 13:56:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43484 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232303AbhELRGj (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 12 May 2021 13:06:39 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6EFE361376;
+        Wed, 12 May 2021 17:05:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1620839130;
+        bh=mKbciF1oaTiE7EO3ynmwEg+52gdbwWhxk/wAmHieKJA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=shgyKFUeEKlCckdhQFe4VyMRXLV0GIkwhb0YYlYlwP4JgrKH/3rpL8YkAuRwiwyKJ
+         aIkOuSa66g491QtKiSNmGHTXFufzu4lQqZS93ykWC15loN8wjrO1IN5P5ODE62gYoW
+         KIA3q5vwdRFegYGXwBPsR4vtl25xb5khUalnGMUWjmM7z1jQHRO2TOgJN52OEEl1kK
+         H2DsMH27HH6mn4L9YBIvYL++9g+YB2219wSDZXvE4qBwnsUwi6NyBSnwQnTdhu1k3B
+         Fm86le+eRaCaNbpU0FtHt9FqBy2ifrKS+rMrfQcwlga1DiWL0PVG31rtU2d1JWIPtT
+         vGVKglHcvGxIQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Mark Brown <broonie@kernel.org>,
+        Liguang Zhang <zhangliguang@linux.alibaba.com>,
+        Jay Fang <f.fangjian@huawei.com>,
+        Xin Hao <xhao@linux.alibaba.com>,
+        Sven Van Asbroeck <thesven73@gmail.com>
+Subject: Re: [PATCH v2 1/1] spi: Assume GPIO CS active high in ACPI case
+Date:   Wed, 12 May 2021 18:04:38 +0100
+Message-Id: <162083907220.45027.2264909866666593515.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20210511140912.30757-1-andriy.shevchenko@linux.intel.com>
+References: <20210511140912.30757-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <1620796842-23546-1-git-send-email-alain.volmat@foss.st.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.75.127.47]
-X-ClientProxiedBy: SFHDAG3NODE3.st.com (10.75.127.9) To SFHDAG2NODE3.st.com
- (10.75.127.6)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
- definitions=2021-05-12_07:2021-05-12,2021-05-12 signatures=0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 5/12/21 7:20 AM, Alain Volmat wrote:
-> Add Alain Volmat as STM32 SPI maintainer.
-> 
-> Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-> ---
->   MAINTAINERS | 6 ++++++
->   1 file changed, 6 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index de412b9813eb..3d98375ea6f0 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16981,6 +16981,12 @@ L:	linux-i2c@vger.kernel.org
->   S:	Maintained
->   F:	drivers/i2c/busses/i2c-stm32*
->   
-> +ST STM32 SPI DRIVER
-> +M:	Alain Volmat <alain.volmat@foss.st.com>
-> +L:	linux-spi@vger.kernel.org
-> +S:	Maintained
-> +F:	drivers/spi/spi-stm32.c
-> +
->   ST VL53L0X ToF RANGER(I2C) IIO DRIVER
->   M:	Song Qiang <songqiang1304521@gmail.com>
->   L:	linux-iio@vger.kernel.org
-> 
+On Tue, 11 May 2021 17:09:12 +0300, Andy Shevchenko wrote:
+> Currently GPIO CS handling, when descriptors are in use, doesn't
+> take into consideration that in ACPI case the default polarity
+> is Active High and can't be altered. Instead we have to use the
+> per-chip definition provided by SPISerialBus() resource.
 
-Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Applied to
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+
+Thanks!
+
+[1/1] spi: Assume GPIO CS active high in ACPI case
+      commit: 6b69546912a57ff8c31061f98e56383cc0beffd3
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

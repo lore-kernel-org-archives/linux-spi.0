@@ -7,44 +7,42 @@ X-Spam-Status: No, score=-14.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C622C43616
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C242C43617
 	for <linux-spi@archiver.kernel.org>; Wed, 12 May 2021 17:57:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5505C61413
+	by mail.kernel.org (Postfix) with ESMTP id 4330B61418
 	for <linux-spi@archiver.kernel.org>; Wed, 12 May 2021 17:57:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240598AbhELR4p (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 12 May 2021 13:56:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43484 "EHLO mail.kernel.org"
+        id S235635AbhELR4o (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 12 May 2021 13:56:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43424 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232303AbhELRGj (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 12 May 2021 13:06:39 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6EFE361376;
-        Wed, 12 May 2021 17:05:29 +0000 (UTC)
+        id S245247AbhELRGh (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 12 May 2021 13:06:37 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 74FAC61221;
+        Wed, 12 May 2021 17:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620839130;
-        bh=mKbciF1oaTiE7EO3ynmwEg+52gdbwWhxk/wAmHieKJA=;
+        s=k20201202; t=1620839127;
+        bh=pl6QFYggyKEgGFGWijuQGA710WYGSQjCjRLG1PY4TRM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=shgyKFUeEKlCckdhQFe4VyMRXLV0GIkwhb0YYlYlwP4JgrKH/3rpL8YkAuRwiwyKJ
-         aIkOuSa66g491QtKiSNmGHTXFufzu4lQqZS93ykWC15loN8wjrO1IN5P5ODE62gYoW
-         KIA3q5vwdRFegYGXwBPsR4vtl25xb5khUalnGMUWjmM7z1jQHRO2TOgJN52OEEl1kK
-         H2DsMH27HH6mn4L9YBIvYL++9g+YB2219wSDZXvE4qBwnsUwi6NyBSnwQnTdhu1k3B
-         Fm86le+eRaCaNbpU0FtHt9FqBy2ifrKS+rMrfQcwlga1DiWL0PVG31rtU2d1JWIPtT
-         vGVKglHcvGxIQ==
+        b=NElbabHXinPOID74WkxsGWND1UrbiJqkIDn4aWAfT1auriZPVGNcLxD6QMivw0Wa1
+         v60O8d8cr6V7TXFHJAJwuRrGLrDlKoLxMV6v1OtJfLY66pNAnRfbVRveahtakz1hgx
+         9sWU1zIl5a8jt+E91oXn0oWS3i/8JpVr6SKBofH1o6pXzisaaEMxmPuAoYWISRW3RC
+         2hCOUcZ+AJxyAnrN3n0vZcnJ8nC1CRYVcez784SPCk7CKb5hu5PV5ADvEeL2qxNRd6
+         Co2L6QquJB16IsZL+WLsD+2Ia2nvR/L2E8wFxLXNlZU/97c14x/eJ0d1tUL/TEjV8X
+         zqmhIC71vsWxA==
 From:   Mark Brown <broonie@kernel.org>
-To:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Mark Brown <broonie@kernel.org>,
-        Liguang Zhang <zhangliguang@linux.alibaba.com>,
-        Jay Fang <f.fangjian@huawei.com>,
-        Xin Hao <xhao@linux.alibaba.com>,
-        Sven Van Asbroeck <thesven73@gmail.com>
-Subject: Re: [PATCH v2 1/1] spi: Assume GPIO CS active high in ACPI case
-Date:   Wed, 12 May 2021 18:04:38 +0100
-Message-Id: <162083907220.45027.2264909866666593515.b4-ty@kernel.org>
+To:     Chunyan Zhang <zhang.lyra@gmail.com>
+Cc:     Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+        Chunyan Zhang <chunyan.zhang@unisoc.com>,
+        Baolin Wang <baolin.wang7@gmail.com>,
+        linux-spi@vger.kernel.org, Orson Zhai <orsonzhai@gmail.com>
+Subject: Re: [PATCH] spi: sprd: Add missing MODULE_DEVICE_TABLE
+Date:   Wed, 12 May 2021 18:04:37 +0100
+Message-Id: <162083907219.45027.14385100050123362588.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210511140912.30757-1-andriy.shevchenko@linux.intel.com>
-References: <20210511140912.30757-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20210512093534.243040-1-zhang.lyra@gmail.com>
+References: <20210512093534.243040-1-zhang.lyra@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -52,11 +50,11 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Tue, 11 May 2021 17:09:12 +0300, Andy Shevchenko wrote:
-> Currently GPIO CS handling, when descriptors are in use, doesn't
-> take into consideration that in ACPI case the default polarity
-> is Active High and can't be altered. Instead we have to use the
-> per-chip definition provided by SPISerialBus() resource.
+On Wed, 12 May 2021 17:35:34 +0800, Chunyan Zhang wrote:
+> MODULE_DEVICE_TABLE is used to extract the device information out of the
+> driver and builds a table when being compiled. If using this macro,
+> kernel can find the driver if available when the device is plugged in,
+> and then loads that driver and initializes the device.
 
 Applied to
 
@@ -64,8 +62,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: Assume GPIO CS active high in ACPI case
-      commit: 6b69546912a57ff8c31061f98e56383cc0beffd3
+[1/1] spi: sprd: Add missing MODULE_DEVICE_TABLE
+      commit: 7907cad7d07e0055789ec0c534452f19dfe1fc80
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

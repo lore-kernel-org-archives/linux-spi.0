@@ -2,46 +2,47 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C43D2C433ED
-	for <linux-spi@archiver.kernel.org>; Tue, 18 May 2021 13:43:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2692FC43461
+	for <linux-spi@archiver.kernel.org>; Tue, 18 May 2021 13:43:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A66A86105A
-	for <linux-spi@archiver.kernel.org>; Tue, 18 May 2021 13:43:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0A92761074
+	for <linux-spi@archiver.kernel.org>; Tue, 18 May 2021 13:43:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233319AbhERNpJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 18 May 2021 09:45:09 -0400
-Received: from mx07-00178001.pphosted.com ([185.132.182.106]:47553 "EHLO
+        id S233370AbhERNpK (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 18 May 2021 09:45:10 -0400
+Received: from mx07-00178001.pphosted.com ([185.132.182.106]:58130 "EHLO
         mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231230AbhERNpF (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 18 May 2021 09:45:05 -0400
-Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 14IDX56q023702;
-        Tue, 18 May 2021 15:43:35 +0200
+        by vger.kernel.org with ESMTP id S232806AbhERNpG (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 18 May 2021 09:45:06 -0400
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 14IDVs6D032044;
+        Tue, 18 May 2021 15:43:36 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type; s=selector1;
- bh=ClUM44THHlL1BycyMOmRsN86GSk4mDnz+xXOf8XGX8s=;
- b=TgMdYdTRkPqqRW4B2K8CKt6ybV8q+0Huq+i9A+RJIz544JJ72F7Ng8gVVbQwKR17AIIS
- Cd3xo+ZgdBXxM8NYneGLheRqpcndSWvtAjjpI8RS0CCF8+Y3NzP9V0HU8NevpU+dSJ+K
- qjKpLggiSh4y4Jv87bu2l+5pksxiRAnY4jaf7Clb0LfCuc3R13Rrw6+MQ2H4Anoy8J0b
- el94qfjAj62MuGTzS1hjkdoMlbdKYWHUHkJRhHkXBZ9kJTgAMjkAzMkUOH5DT306JFnt
- 7KQ/nrxn2kyrWSR6Cjspn4QUPo+U1PZ0Vu6rLLpPWm6Sk75fheAVpJlR0sfa707Nyy4X Sw== 
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type; s=selector1;
+ bh=QTm61m8uz4pOmK3NZoHfZ4HyFmOCc0S7R8oD/Tz+mR0=;
+ b=R0QLtP/rtYDlzV7b7lFB+EFdLQk7IJ4wG6xTmBpiCzLB+CNSjtJLd8mEYfFYOG/NSGwg
+ 69LMyd36D1Q8LxI88iWu3t1bNItUMndCvwNNci/ZudiArH97FFr+D4yJO5sgOAHYfI44
+ GlvcDrss3Ttv9Wn1XV4cn96BfasFTyOSd0Txxafo1uu9Jpl9Rn/bCGb+XbCA2H+HrVUT
+ n8We65/6x//4EXmOWfkBsLgwgR9TLy6kJS2oB1ux1FWUL9I+ryRkh2bR8TBIBbXgTgWu
+ vRGNAh89qTnfxl7ezoS/i5nNzTCgiZNGeWJw+X+UAYQ3IJFgwgQy96gKmF6/gUrGP1rA jQ== 
 Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 38maunsgw3-1
+        by mx07-00178001.pphosted.com with ESMTP id 38m4673mpr-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 18 May 2021 15:43:34 +0200
+        Tue, 18 May 2021 15:43:36 +0200
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 3260610002A;
-        Tue, 18 May 2021 15:43:34 +0200 (CEST)
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 8F8D510002A;
+        Tue, 18 May 2021 15:43:35 +0200 (CEST)
 Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 1BCB4227D8B;
-        Tue, 18 May 2021 15:43:34 +0200 (CEST)
-Received: from localhost (10.75.127.50) by SFHDAG2NODE3.st.com (10.75.127.6)
- with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 18 May 2021 15:43:33
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 7ED2E227D8B;
+        Tue, 18 May 2021 15:43:35 +0200 (CEST)
+Received: from localhost (10.75.127.49) by SFHDAG2NODE3.st.com (10.75.127.6)
+ with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 18 May 2021 15:43:34
  +0200
 From:   <patrice.chotard@foss.st.com>
 To:     Mark Brown <broonie@kernel.org>,
@@ -55,14 +56,16 @@ To:     Mark Brown <broonie@kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>
 CC:     <patrice.chotard@foss.st.com>, <christophe.kerello@foss.st.com>
-Subject: [PATCH v4 0/3] MTD: spinand: Add spi_mem_poll_status() support 
-Date:   Tue, 18 May 2021 15:43:29 +0200
-Message-ID: <20210518134332.17826-1-patrice.chotard@foss.st.com>
+Subject: [PATCH v4 2/3] mtd: spinand: use the spi-mem poll status APIs
+Date:   Tue, 18 May 2021 15:43:31 +0200
+Message-ID: <20210518134332.17826-3-patrice.chotard@foss.st.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20210518134332.17826-1-patrice.chotard@foss.st.com>
+References: <20210518134332.17826-1-patrice.chotard@foss.st.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.75.127.50]
-X-ClientProxiedBy: SFHDAG2NODE3.st.com (10.75.127.6) To SFHDAG2NODE3.st.com
+X-Originating-IP: [10.75.127.49]
+X-ClientProxiedBy: SFHDAG1NODE2.st.com (10.75.127.2) To SFHDAG2NODE3.st.com
  (10.75.127.6)
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
  definitions=2021-05-18_04:2021-05-18,2021-05-18 signatures=0
@@ -72,57 +75,153 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Patrice Chotard <patrice.chotard@foss.st.com>
 
-This series adds support for the spi_mem_poll_status() spinand
-interface.
-Some QSPI controllers allows to poll automatically memory 
-status during operations (erase, read or write). This allows to 
-offload the CPU for this task.
-STM32 QSPI is supporting this feature, driver update are also
-part of this series.
+Make use of spi-mem poll status APIs to let advanced controllers
+optimize wait operations.
+This should also fix the high CPU usage for system that don't have
+a dedicated STATUS poll block logic.
 
+Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
+Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
+---
 Changes in v4:
-  - Remove init_completion() from spi_mem_probe() added in v2.
-  - Add missing static for spi_mem_read_status().
-  - Check if operation in spi_mem_poll_status() is a READ.
-  - Update patch 2 commit message.
+  - Update commit message.
   - Add comment which explains how delays has been calculated.
   - Rename SPINAND_STATUS_TIMEOUT_MS to SPINAND_WAITRDY_TIMEOUT_MS.
 
-Chnages in v3:
-  - Add spi_mem_read_status() which allows to read 8 or 16 bits status.
-  - Add initial_delay_us and polling_delay_us parameters to spi_mem_poll_status().
-    and also to poll_status() callback.
-  - Move spi_mem_supports_op() in SW-based polling case.
-  - Add delay before invoquing read_poll_timeout().
-  - Remove the reinit/wait_for_completion() added in v2.
-  - Add initial_delay_us and polling_delay_us parameters to spinand_wait().
+Changes in v3:
+  - Add initial_delay_us and polling_delay_us parameters to spinand_wait()
   - Add SPINAND_READ/WRITE/ERASE/RESET_INITIAL_DELAY_US and
     SPINAND_READ/WRITE/ERASE/RESET_POLL_DELAY_US defines.
-  - Remove spi_mem_finalize_op() API added in v2.
 
 Changes in v2:
-  - Indicates the spi_mem_poll_status() timeout unit
-  - Use 2-byte wide status register
-  - Add spi_mem_supports_op() call in spi_mem_poll_status()
-  - Add completion management in spi_mem_poll_status()
-  - Add offload/non-offload case management in spi_mem_poll_status()
-  - Optimize the non-offload case by using read_poll_timeout()
-  - mask and match stm32_qspi_poll_status()'s parameters are 2-byte wide
-  - Make usage of new spi_mem_finalize_op() API in
-    stm32_qspi_wait_poll_status()
+  - non-offload case is now managed by spi_mem_poll_status()
 
-Patrice Chotard (3):
-  spi: spi-mem: add automatic poll status functions
-  mtd: spinand: use the spi-mem poll status APIs
-  spi: stm32-qspi: add automatic poll status feature
+ drivers/mtd/nand/spi/core.c | 45 ++++++++++++++++++++++++++-----------
+ include/linux/mtd/spinand.h | 22 ++++++++++++++++++
+ 2 files changed, 54 insertions(+), 13 deletions(-)
 
- drivers/mtd/nand/spi/core.c  | 45 +++++++++++++------
- drivers/spi/spi-mem.c        | 85 ++++++++++++++++++++++++++++++++++++
- drivers/spi/spi-stm32-qspi.c | 83 +++++++++++++++++++++++++++++++----
- include/linux/mtd/spinand.h  | 22 ++++++++++
- include/linux/spi/spi-mem.h  | 14 ++++++
- 5 files changed, 228 insertions(+), 21 deletions(-)
-
+diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
+index 17f63f95f4a2..3131fae0c715 100644
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
+@@ -473,20 +473,26 @@ static int spinand_erase_op(struct spinand_device *spinand,
+ 	return spi_mem_exec_op(spinand->spimem, &op);
+ }
+ 
+-static int spinand_wait(struct spinand_device *spinand, u8 *s)
++static int spinand_wait(struct spinand_device *spinand,
++			unsigned long initial_delay_us,
++			unsigned long poll_delay_us,
++			u8 *s)
+ {
+-	unsigned long timeo =  jiffies + msecs_to_jiffies(400);
++	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(REG_STATUS,
++						      spinand->scratchbuf);
+ 	u8 status;
+ 	int ret;
+ 
+-	do {
+-		ret = spinand_read_status(spinand, &status);
+-		if (ret)
+-			return ret;
++	ret = spi_mem_poll_status(spinand->spimem, &op, STATUS_BUSY, 0,
++				  initial_delay_us,
++				  poll_delay_us,
++				  SPINAND_WAITRDY_TIMEOUT_MS);
++	if (ret)
++		return ret;
+ 
+-		if (!(status & STATUS_BUSY))
+-			goto out;
+-	} while (time_before(jiffies, timeo));
++	status = *spinand->scratchbuf;
++	if (!(status & STATUS_BUSY))
++		goto out;
+ 
+ 	/*
+ 	 * Extra read, just in case the STATUS_READY bit has changed
+@@ -526,7 +532,10 @@ static int spinand_reset_op(struct spinand_device *spinand)
+ 	if (ret)
+ 		return ret;
+ 
+-	return spinand_wait(spinand, NULL);
++	return spinand_wait(spinand,
++			    SPINAND_RESET_INITIAL_DELAY_US,
++			    SPINAND_RESET_POLL_DELAY_US,
++			    NULL);
+ }
+ 
+ static int spinand_lock_block(struct spinand_device *spinand, u8 lock)
+@@ -549,7 +558,10 @@ static int spinand_read_page(struct spinand_device *spinand,
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = spinand_wait(spinand, &status);
++	ret = spinand_wait(spinand,
++			   SPINAND_READ_INITIAL_DELAY_US,
++			   SPINAND_READ_POLL_DELAY_US,
++			   &status);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -585,7 +597,10 @@ static int spinand_write_page(struct spinand_device *spinand,
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = spinand_wait(spinand, &status);
++	ret = spinand_wait(spinand,
++			   SPINAND_WRITE_INITIAL_DELAY_US,
++			   SPINAND_WRITE_POLL_DELAY_US,
++			   &status);
+ 	if (!ret && (status & STATUS_PROG_FAILED))
+ 		return -EIO;
+ 
+@@ -768,7 +783,11 @@ static int spinand_erase(struct nand_device *nand, const struct nand_pos *pos)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = spinand_wait(spinand, &status);
++	ret = spinand_wait(spinand,
++			   SPINAND_ERASE_INITIAL_DELAY_US,
++			   SPINAND_ERASE_POLL_DELAY_US,
++			   &status);
++
+ 	if (!ret && (status & STATUS_ERASE_FAILED))
+ 		ret = -EIO;
+ 
+diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
+index 6bb92f26833e..6988956b8492 100644
+--- a/include/linux/mtd/spinand.h
++++ b/include/linux/mtd/spinand.h
+@@ -170,6 +170,28 @@ struct spinand_op;
+ struct spinand_device;
+ 
+ #define SPINAND_MAX_ID_LEN	4
++/*
++ * For erase, write and read operation, we got the following timings :
++ * tBERS (erase) 1ms to 4ms
++ * tPROG 300us to 400us
++ * tREAD 25us to 100us
++ * In order to minimize latency, the min value is divided by 4 for the
++ * initial delay, and dividing by 20 for the poll delay.
++ * For reset, 5us/10us/500us if the device is respectively
++ * reading/programming/erasing when the RESET occurs. Since we always
++ * issue a RESET when the device is IDLE, 5us is selected for both initial
++ * and poll delay.
++ */
++#define SPINAND_READ_INITIAL_DELAY_US	6
++#define SPINAND_READ_POLL_DELAY_US	5
++#define SPINAND_RESET_INITIAL_DELAY_US	5
++#define SPINAND_RESET_POLL_DELAY_US	5
++#define SPINAND_WRITE_INITIAL_DELAY_US	75
++#define SPINAND_WRITE_POLL_DELAY_US	15
++#define SPINAND_ERASE_INITIAL_DELAY_US	250
++#define SPINAND_ERASE_POLL_DELAY_US	50
++
++#define SPINAND_WAITRDY_TIMEOUT_MS	400
+ 
+ /**
+  * struct spinand_id - SPI NAND id structure
 -- 
 2.17.1
 

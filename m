@@ -2,273 +2,82 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C8BCC43461
-	for <linux-spi@archiver.kernel.org>; Tue, 18 May 2021 16:28:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 76C2EC433B4
+	for <linux-spi@archiver.kernel.org>; Tue, 18 May 2021 16:32:20 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 62828610E9
-	for <linux-spi@archiver.kernel.org>; Tue, 18 May 2021 16:28:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 59359611CE
+	for <linux-spi@archiver.kernel.org>; Tue, 18 May 2021 16:32:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350689AbhERQ3h (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 18 May 2021 12:29:37 -0400
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:8610 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1350643AbhERQ33 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 18 May 2021 12:29:29 -0400
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 14IGLm4w023140;
-        Tue, 18 May 2021 18:27:57 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type; s=selector1;
- bh=0bHg0ARHkdCFC1flU57WX7u1lRnnB5XX9tbgb0TFL7c=;
- b=sZfuDR4Fs030jFiaYA2JrwUeEipTWD3UJpYSC53fZ0KCudE8DwBCWYW0Qvw63QR/LHEP
- zbWID4KUHLMePbWr1DyorEVWls3ujhyVjTAhWJXl5WTDL0QBdFw71v79fBeja17XEMOG
- 0MR/CggrUSlMynJjm159OLie2SK3sv7mNEbd6kaWbY39I3SP6ey7cOs0ZiKWtn2EwTi9
- mhnFsO2PIlyOfxCnWfGLr7H1GghiXGvwLmncvoaeeRH9/6PnFwkpfg/vE8cllgesSL/N
- 7a4KL47DD0s7bqUpUq0AyK9yIc3aI1vXZhWgL9oP4kYBPwgUW/mZbMvyDv3K+Umo9miv +A== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 38mekkrvjg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 18 May 2021 18:27:57 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 293FC100034;
-        Tue, 18 May 2021 18:27:57 +0200 (CEST)
-Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 1C34E23FE73;
-        Tue, 18 May 2021 18:27:57 +0200 (CEST)
-Received: from localhost (10.75.127.49) by SFHDAG2NODE3.st.com (10.75.127.6)
- with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 18 May 2021 18:27:56
- +0200
-From:   <patrice.chotard@foss.st.com>
-To:     Mark Brown <broonie@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Boris Brezillon <boris.brezillon@collabora.com>,
-        <linux-mtd@lists.infradead.org>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        <linux-spi@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     <patrice.chotard@foss.st.com>, <christophe.kerello@foss.st.com>
-Subject: [PATCH v5 1/3] spi: spi-mem: add automatic poll status functions
-Date:   Tue, 18 May 2021 18:27:52 +0200
-Message-ID: <20210518162754.15940-2-patrice.chotard@foss.st.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210518162754.15940-1-patrice.chotard@foss.st.com>
-References: <20210518162754.15940-1-patrice.chotard@foss.st.com>
+        id S1345582AbhERQdh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 18 May 2021 12:33:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35652 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237685AbhERQdg (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 18 May 2021 12:33:36 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1F485611AD;
+        Tue, 18 May 2021 16:32:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1621355538;
+        bh=u/ifQStYJysHcF59SInItHEF8Wxyg3nxlW2CG82zMp8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=DEDhKcf3e997sxUsUKQQUP64kru3kfut0zj6klKiXRgXBmbqZxYQtcXCc18XQt3+E
+         tN3i2ixBdXR9K2xfD3bEbkPkMPXLSl8ZZhONpsVisQK3Elu8g7T/svIijJpPbrxrPZ
+         aIJjrCUQMj35EoI50N1wYEUXhKJI98v/8fyrfYayZrGpBi3bVzQeTnYt4wIZRzQkw9
+         aFn9g/h9osQMcRBQPuL1eNWPn6T4DPspm+0MwsKd2P5Jkwk6l14vE8FZ/JnbhDOSYZ
+         yg9qQgZ5Zkz+bftGNjGxJr961anAHwzWSrYPFRN57QjDO28IQN0s7SPII9tiV7oOgh
+         ODGlDhpXLDeYQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     Michael Walle <michael@walle.cc>, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org
+Cc:     Mark Brown <broonie@kernel.org>,
+        Chris Packham <chris.packham@alliedtelesis.co.nz>,
+        Rob Herring <robh+dt@kernel.org>, Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH] dt-bindings: spi: spi-mux: rename flash node
+Date:   Tue, 18 May 2021 17:31:25 +0100
+Message-Id: <162135545749.38023.9744391307325226905.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20210517153946.9502-1-michael@walle.cc>
+References: <20210517153946.9502-1-michael@walle.cc>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.49]
-X-ClientProxiedBy: SFHDAG3NODE2.st.com (10.75.127.8) To SFHDAG2NODE3.st.com
- (10.75.127.6)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
- definitions=2021-05-18_08:2021-05-18,2021-05-18 signatures=0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Patrice Chotard <patrice.chotard@foss.st.com>
+On Mon, 17 May 2021 17:39:46 +0200, Michael Walle wrote:
+> The recent conversion of the common MTD properties to YAML now mandates
+> a particular node name for SPI flash devices.
 
-With STM32 QSPI, it is possible to poll the status register of the device.
-This could be done to offload the CPU during an operation (erase or
-program a SPI NAND for example).
+Applied to
 
-spi_mem_poll_status API has been added to handle this feature.
-This new function take care of the offload/non-offload cases.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-For the non-offload case, use read_poll_timeout() to poll the status in
-order to release CPU during this phase.
-For example, previously, when erasing large area, in non-offload case,
-CPU load can reach ~50%, now it decrease to ~35%.
+Thanks!
 
-Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
-Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
----
-Changes in v5:
-  - Update spi_mem_read_status() description.
-  - Update poll_status() description API by indicating that data buffer is
-    filled with last status value.
-  - Update timeout parameter by timeout_ms in spi_mem_poll_status() prototype.
-  - Remove parenthesys arount -EINVAL in spi_mem_poll_status().
-  - Add Boris Reviewed-by.
+[1/1] dt-bindings: spi: spi-mux: rename flash node
+      commit: 0b07154f066ab2c087c342b372be5771145bdc60
 
-Changes in v4:
-  - Remove init_completion() from spi_mem_probe() added in v2.
-  - Add missing static for spi_mem_read_status().
-  - Check if operation in spi_mem_poll_status() is a READ.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-Changes in v3:
-  - Add spi_mem_read_status() which allows to read 8 or 16 bits status.
-  - Add initial_delay_us and polling_delay_us parameters to spi_mem_poll_status()
-    and also to poll_status() callback.
-  - Move spi_mem_supports_op() in SW-based polling case.
-  - Add delay before invoking read_poll_timeout().
-  - Remove the reinit/wait_for_completion() added in v2.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Changes in v2:
-  - Indicates the spi_mem_poll_status() timeout unit
-  - Use 2-byte wide status register
-  - Add spi_mem_supports_op() call in spi_mem_poll_status()
-  - Add completion management in spi_mem_poll_status()
-  - Add offload/non-offload case management in spi_mem_poll_status()
-  - Optimize the non-offload case by using read_poll_timeout()
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
- drivers/spi/spi-mem.c       | 86 +++++++++++++++++++++++++++++++++++++
- include/linux/spi/spi-mem.h | 16 +++++++
- 2 files changed, 102 insertions(+)
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index 1513553e4080..177b3e21febf 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -6,6 +6,7 @@
-  * Author: Boris Brezillon <boris.brezillon@bootlin.com>
-  */
- #include <linux/dmaengine.h>
-+#include <linux/iopoll.h>
- #include <linux/pm_runtime.h>
- #include <linux/spi/spi.h>
- #include <linux/spi/spi-mem.h>
-@@ -743,6 +744,91 @@ static inline struct spi_mem_driver *to_spi_mem_drv(struct device_driver *drv)
- 	return container_of(drv, struct spi_mem_driver, spidrv.driver);
- }
- 
-+static int spi_mem_read_status(struct spi_mem *mem,
-+			       const struct spi_mem_op *op,
-+			       u16 *status)
-+{
-+	const u8 *bytes = (u8 *)op->data.buf.in;
-+	int ret;
-+
-+	ret = spi_mem_exec_op(mem, op);
-+	if (ret)
-+		return ret;
-+
-+	if (op->data.nbytes > 1)
-+		*status = ((u16)bytes[0] << 8) | bytes[1];
-+	else
-+		*status = bytes[0];
-+
-+	return 0;
-+}
-+
-+/**
-+ * spi_mem_poll_status() - Poll memory device status
-+ * @mem: SPI memory device
-+ * @op: the memory operation to execute
-+ * @mask: status bitmask to ckeck
-+ * @match: (status & mask) expected value
-+ * @initial_delay_us: delay in us before starting to poll
-+ * @polling_delay_us: time to sleep between reads in us
-+ * @timeout_ms: timeout in milliseconds
-+ *
-+ * This function polls a status register and returns when
-+ * (status & mask) == match or when the timeout has expired.
-+ *
-+ * Return: 0 in case of success, -ETIMEDOUT in case of error,
-+ *         -EOPNOTSUPP if not supported.
-+ */
-+int spi_mem_poll_status(struct spi_mem *mem,
-+			const struct spi_mem_op *op,
-+			u16 mask, u16 match,
-+			unsigned long initial_delay_us,
-+			unsigned long polling_delay_us,
-+			u16 timeout_ms)
-+{
-+	struct spi_controller *ctlr = mem->spi->controller;
-+	int ret = -EOPNOTSUPP;
-+	int read_status_ret;
-+	u16 status;
-+
-+	if (op->data.nbytes < 1 || op->data.nbytes > 2 ||
-+	    op->data.dir != SPI_MEM_DATA_IN)
-+		return -EINVAL;
-+
-+	if (ctlr->mem_ops && ctlr->mem_ops->poll_status) {
-+		ret = spi_mem_access_start(mem);
-+		if (ret)
-+			return ret;
-+
-+		ret = ctlr->mem_ops->poll_status(mem, op, mask, match,
-+						 initial_delay_us, polling_delay_us,
-+						 timeout_ms);
-+
-+		spi_mem_access_end(mem);
-+	}
-+
-+	if (ret == -EOPNOTSUPP) {
-+		if (!spi_mem_supports_op(mem, op))
-+			return ret;
-+
-+		if (initial_delay_us < 10)
-+			udelay(initial_delay_us);
-+		else
-+			usleep_range((initial_delay_us >> 2) + 1,
-+				     initial_delay_us);
-+
-+		ret = read_poll_timeout(spi_mem_read_status, read_status_ret,
-+					(read_status_ret || ((status) & mask) == match),
-+					polling_delay_us, timeout_ms * 1000, false, mem,
-+					op, &status);
-+		if (read_status_ret)
-+			return read_status_ret;
-+	}
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(spi_mem_poll_status);
-+
- static int spi_mem_probe(struct spi_device *spi)
- {
- 	struct spi_mem_driver *memdrv = to_spi_mem_drv(spi->dev.driver);
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index 2b65c9edc34e..85e2ff7b840d 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -250,6 +250,9 @@ static inline void *spi_mem_get_drvdata(struct spi_mem *mem)
-  *		  the currently mapped area), and the caller of
-  *		  spi_mem_dirmap_write() is responsible for calling it again in
-  *		  this case.
-+ * @poll_status: poll memory device status until (status & mask) == match or
-+ *               when the timeout has expired. It fills the data buffer with
-+ *               the last status value.
-  *
-  * This interface should be implemented by SPI controllers providing an
-  * high-level interface to execute SPI memory operation, which is usually the
-@@ -274,6 +277,12 @@ struct spi_controller_mem_ops {
- 			       u64 offs, size_t len, void *buf);
- 	ssize_t (*dirmap_write)(struct spi_mem_dirmap_desc *desc,
- 				u64 offs, size_t len, const void *buf);
-+	int (*poll_status)(struct spi_mem *mem,
-+			   const struct spi_mem_op *op,
-+			   u16 mask, u16 match,
-+			   unsigned long initial_delay_us,
-+			   unsigned long polling_rate_us,
-+			   unsigned long timeout_ms);
- };
- 
- /**
-@@ -369,6 +378,13 @@ devm_spi_mem_dirmap_create(struct device *dev, struct spi_mem *mem,
- void devm_spi_mem_dirmap_destroy(struct device *dev,
- 				 struct spi_mem_dirmap_desc *desc);
- 
-+int spi_mem_poll_status(struct spi_mem *mem,
-+			const struct spi_mem_op *op,
-+			u16 mask, u16 match,
-+			unsigned long initial_delay_us,
-+			unsigned long polling_delay_us,
-+			u16 timeout_ms);
-+
- int spi_mem_driver_register_with_owner(struct spi_mem_driver *drv,
- 				       struct module *owner);
- 
--- 
-2.17.1
-
+Thanks,
+Mark

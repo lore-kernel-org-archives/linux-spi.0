@@ -7,23 +7,23 @@ X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 036BFC433B4
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 89914C433ED
 	for <linux-spi@archiver.kernel.org>; Tue, 18 May 2021 01:39:43 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D0E39613B4
-	for <linux-spi@archiver.kernel.org>; Tue, 18 May 2021 01:39:42 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 630CB613B4
+	for <linux-spi@archiver.kernel.org>; Tue, 18 May 2021 01:39:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345945AbhERBk7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S1345952AbhERBk7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Mon, 17 May 2021 21:40:59 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3721 "EHLO
+Received: from szxga04-in.huawei.com ([45.249.212.190]:3720 "EHLO
         szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240039AbhERBk7 (ORCPT
+        with ESMTP id S236042AbhERBk7 (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Mon, 17 May 2021 21:40:59 -0400
-Received: from dggems703-chm.china.huawei.com (unknown [172.30.72.59])
-        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Fkds36BB7z16Ppl;
+Received: from dggems702-chm.china.huawei.com (unknown [172.30.72.58])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Fkds342G1z16Phf;
         Tue, 18 May 2021 09:36:55 +0800 (CST)
 Received: from dggpeml500005.china.huawei.com (7.185.36.59) by
- dggems703-chm.china.huawei.com (10.3.19.180) with Microsoft SMTP Server
+ dggems702-chm.china.huawei.com (10.3.19.179) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.1.2176.2; Tue, 18 May 2021 09:39:40 +0800
 Received: from localhost.localdomain (10.69.192.56) by
@@ -34,9 +34,9 @@ From:   Zhiqi Song <songzhiqi1@huawei.com>
 To:     <broonie@kernel.org>
 CC:     <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <linuxarm@huawei.com>, Zhiqi Song <songzhiqi1@huawei.com>
-Subject: [PATCH 4/7] spi: mpc52xx-psc: add parenthesis for sizeof
-Date:   Tue, 18 May 2021 09:38:19 +0800
-Message-ID: <1621301902-64158-5-git-send-email-songzhiqi1@huawei.com>
+Subject: [PATCH 2/7] spi: mpc512x-psc: add parenthesis for sizeof
+Date:   Tue, 18 May 2021 09:38:17 +0800
+Message-ID: <1621301902-64158-3-git-send-email-songzhiqi1@huawei.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1621301902-64158-1-git-send-email-songzhiqi1@huawei.com>
 References: <1621301902-64158-1-git-send-email-songzhiqi1@huawei.com>
@@ -58,14 +58,14 @@ and add parenthesis.
 
 Signed-off-by: Zhiqi Song <songzhiqi1@huawei.com>
 ---
- drivers/spi/spi-mpc52xx-psc.c | 4 ++--
+ drivers/spi/spi-mpc512x-psc.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-mpc52xx-psc.c b/drivers/spi/spi-mpc52xx-psc.c
-index 17935e7..21ef5d4 100644
---- a/drivers/spi/spi-mpc52xx-psc.c
-+++ b/drivers/spi/spi-mpc52xx-psc.c
-@@ -265,7 +265,7 @@ static int mpc52xx_psc_spi_setup(struct spi_device *spi)
+diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
+index ea1b079..78a9bca 100644
+--- a/drivers/spi/spi-mpc512x-psc.c
++++ b/drivers/spi/spi-mpc512x-psc.c
+@@ -369,7 +369,7 @@ static int mpc512x_psc_spi_setup(struct spi_device *spi)
  		return -EINVAL;
  
  	if (!cs) {
@@ -73,10 +73,10 @@ index 17935e7..21ef5d4 100644
 +		cs = kzalloc(sizeof(*cs), GFP_KERNEL);
  		if (!cs)
  			return -ENOMEM;
- 		spi->controller_state = cs;
-@@ -365,7 +365,7 @@ static int mpc52xx_psc_spi_do_probe(struct device *dev, u32 regaddr,
- 	struct spi_master *master;
- 	int ret;
+ 
+@@ -491,7 +491,7 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
+ 	void *tempp;
+ 	struct clk *clk;
  
 -	master = spi_alloc_master(dev, sizeof *mps);
 +	master = spi_alloc_master(dev, sizeof(*mps));

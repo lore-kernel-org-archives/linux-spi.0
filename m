@@ -7,37 +7,36 @@ X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 34591C43462
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C4FA0C43603
 	for <linux-spi@archiver.kernel.org>; Tue, 18 May 2021 01:39:45 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 17935613BB
+	by mail.kernel.org (Postfix) with ESMTP id AAE94613BB
 	for <linux-spi@archiver.kernel.org>; Tue, 18 May 2021 01:39:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345971AbhERBlB (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 17 May 2021 21:41:01 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:3000 "EHLO
-        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345939AbhERBk7 (ORCPT
+        id S1345979AbhERBlC (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 17 May 2021 21:41:02 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:2955 "EHLO
+        szxga07-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1345944AbhERBk7 (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Mon, 17 May 2021 21:40:59 -0400
-Received: from dggems701-chm.china.huawei.com (unknown [172.30.72.60])
-        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4FkdrC4FwPzQnlB;
-        Tue, 18 May 2021 09:36:11 +0800 (CST)
+Received: from dggems706-chm.china.huawei.com (unknown [172.30.72.59])
+        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4Fkds34Wg1zCsdY;
+        Tue, 18 May 2021 09:36:55 +0800 (CST)
 Received: from dggpeml500005.china.huawei.com (7.185.36.59) by
- dggems701-chm.china.huawei.com (10.3.19.178) with Microsoft SMTP Server
+ dggems706-chm.china.huawei.com (10.3.19.183) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.1.2176.2; Tue, 18 May 2021 09:39:40 +0800
 Received: from localhost.localdomain (10.69.192.56) by
  dggpeml500005.china.huawei.com (7.185.36.59) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Tue, 18 May 2021 09:39:39 +0800
+ 15.1.2176.2; Tue, 18 May 2021 09:39:40 +0800
 From:   Zhiqi Song <songzhiqi1@huawei.com>
 To:     <broonie@kernel.org>
 CC:     <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linuxarm@huawei.com>, Zhiqi Song <songzhiqi1@huawei.com>,
-        "Kaiwan N Billimoria" <kaiwan@designergraphix.com>
-Subject: [PATCH 1/7] spi: lm70llp: add parenthesis for sizeof
-Date:   Tue, 18 May 2021 09:38:16 +0800
-Message-ID: <1621301902-64158-2-git-send-email-songzhiqi1@huawei.com>
+        <linuxarm@huawei.com>, Zhiqi Song <songzhiqi1@huawei.com>
+Subject: [PATCH 6/7] spi: omap-uwire: add parenthesis for sizeof
+Date:   Tue, 18 May 2021 09:38:21 +0800
+Message-ID: <1621301902-64158-7-git-send-email-songzhiqi1@huawei.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1621301902-64158-1-git-send-email-songzhiqi1@huawei.com>
 References: <1621301902-64158-1-git-send-email-songzhiqi1@huawei.com>
@@ -57,25 +56,24 @@ Fix missing parenthesis of sizeof reported by checkpatch.pl:
 The kernel coding style suggests thinking of sizeof as a function
 and add parenthesis.
 
-Cc: Kaiwan N Billimoria <kaiwan@designergraphix.com>
 Signed-off-by: Zhiqi Song <songzhiqi1@huawei.com>
 ---
- drivers/spi/spi-lm70llp.c | 2 +-
+ drivers/spi/spi-omap-uwire.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-lm70llp.c b/drivers/spi/spi-lm70llp.c
-index f914b8d..ead0507 100644
---- a/drivers/spi/spi-lm70llp.c
-+++ b/drivers/spi/spi-lm70llp.c
-@@ -202,7 +202,7 @@ static void spi_lm70llp_attach(struct parport *p)
- 	 * the lm70 driver could verify it, reading the manf ID.
- 	 */
+diff --git a/drivers/spi/spi-omap-uwire.c b/drivers/spi/spi-omap-uwire.c
+index ceb479f..c975e86 100644
+--- a/drivers/spi/spi-omap-uwire.c
++++ b/drivers/spi/spi-omap-uwire.c
+@@ -453,7 +453,7 @@ static int uwire_probe(struct platform_device *pdev)
+ 	struct uwire_spi	*uwire;
+ 	int			status;
  
--	master = spi_alloc_master(p->physport->dev, sizeof *pp);
-+	master = spi_alloc_master(p->physport->dev, sizeof(*pp));
- 	if (!master) {
- 		status = -ENOMEM;
- 		goto out_fail;
+-	master = spi_alloc_master(&pdev->dev, sizeof *uwire);
++	master = spi_alloc_master(&pdev->dev, sizeof(*uwire));
+ 	if (!master)
+ 		return -ENODEV;
+ 
 -- 
 2.7.4
 

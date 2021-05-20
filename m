@@ -2,93 +2,102 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.9 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-15.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 571F4C433B4
-	for <linux-spi@archiver.kernel.org>; Wed, 19 May 2021 19:19:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D55EC43618
+	for <linux-spi@archiver.kernel.org>; Thu, 20 May 2021 10:08:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 35FAB6108D
-	for <linux-spi@archiver.kernel.org>; Wed, 19 May 2021 19:19:23 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8662B61950
+	for <linux-spi@archiver.kernel.org>; Thu, 20 May 2021 10:08:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229956AbhESTUm (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 19 May 2021 15:20:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52810 "EHLO mail.kernel.org"
+        id S232202AbhETKKJ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 20 May 2021 06:10:09 -0400
+Received: from tux.runtux.com ([176.9.82.136]:43702 "EHLO tux.runtux.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229535AbhESTUm (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 19 May 2021 15:20:42 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 5CC79610E9;
-        Wed, 19 May 2021 19:19:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1621451961;
-        bh=CxcjeXZphMX8ikSAW2LO8uJN2ihmCuUCEEwRVbN9D64=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=rSd5m9KJyLTnId6P36+q7OP6uzbpi1F5D6EjClmCZnsqr8IO1MPqHe6OIIuMT4KGT
-         KpPRqvNevSsYV1A/VFjEbTG9aBAu4AylNczwHnCAHhA/k4JnCp7So1ZmFCXohu1lvU
-         XlHrJjrcjUpc3+2mhqHYkOUYmeMp5diczczM+DBI+QETaguAEYOEKbwvDXc/B4xaB4
-         7Lgvww82oDmgsrLZSLWdAwznDoGFvZKODayku9Sa6lAjHcIHgRlTKm6y71fV3fENQr
-         nbCW4brWMJRvJGz0vUwTWhYYvI3udKVUio3bOjzYPGXS43xQKRkEle0LyWPN6j4P+f
-         9sErHwMiDcYow==
-Date:   Wed, 19 May 2021 20:18:36 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     patrice.chotard@foss.st.com
-Cc:     Miquel Raynal <miquel.raynal@bootlin.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Boris Brezillon <boris.brezillon@collabora.com>,
-        linux-mtd@lists.infradead.org,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        linux-spi@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        christophe.kerello@foss.st.com
-Subject: Re: [PATCH v5 0/3] MTD: spinand: Add spi_mem_poll_status() support
-Message-ID: <20210519191836.GH4224@sirena.org.uk>
-References: <20210518162754.15940-1-patrice.chotard@foss.st.com>
+        id S234987AbhETKI2 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 20 May 2021 06:08:28 -0400
+X-Greylist: delayed 384 seconds by postgrey-1.27 at vger.kernel.org; Thu, 20 May 2021 06:08:27 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by tux.runtux.com (Postfix) with ESMTP id 90D2F6F0C7;
+        Thu, 20 May 2021 12:06:58 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at tux.runtux.com
+Received: from tux.runtux.com ([127.0.0.1])
+        by localhost (tux2.runtux.com [127.0.0.1]) (amavisd-new, port 10026)
+        with LMTP id SlQcJyNvDttS; Thu, 20 May 2021 12:06:57 +0200 (CEST)
+Received: from bee.priv.zoo (62-99-217-90.static.upcbusiness.at [62.99.217.90])
+        (Authenticated sender: postmaster@runtux.com)
+        by tux.runtux.com (Postfix) with ESMTPSA id 099B66EFFE;
+        Thu, 20 May 2021 12:06:57 +0200 (CEST)
+Received: by bee.priv.zoo (Postfix, from userid 1002)
+        id 8D429471; Thu, 20 May 2021 12:06:56 +0200 (CEST)
+Date:   Thu, 20 May 2021 12:06:56 +0200
+From:   Ralf Schlatterbeck <rsc@runtux.com>
+To:     Mark Brown <broonie@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+        Mirko Vogt <mirko-dev|linux@nanl.de>
+Subject: [PATCH 1/1] spi-sun6i: Fix chipselect/clock bug
+Message-ID: <20210520100656.rgkdexdvrddt3upy@runtux.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="h3LYUU6HlUDSAOzy"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210518162754.15940-1-patrice.chotard@foss.st.com>
-X-Cookie: There's no time like the pleasant.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-ray:  beware
+User-Agent: NeoMutt/20180716
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+The current sun6i SPI implementation initializes the transfer too early,
+resulting in SCK going high before the transfer. When using an additional
+(gpio) chipselect with sun6i, the chipselect is asserted at a time when
+clock is high, making the SPI transfer fail.
 
---h3LYUU6HlUDSAOzy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This is due to SUN6I_GBL_CTL_BUS_ENABLE being written into
+SUN6I_GBL_CTL_REG at an early stage. Moving that to the transfer
+function, hence, right before the transfer starts, mitigates that
+problem.
 
-On Tue, May 18, 2021 at 06:27:51PM +0200, patrice.chotard@foss.st.com wrote:
-> From: Patrice Chotard <patrice.chotard@foss.st.com>
->=20
-> This series adds support for the spi_mem_poll_status() spinand
-> interface.
-> Some QSPI controllers allows to poll automatically memory=20
-> status during operations (erase, read or write). This allows to=20
-> offload the CPU for this task.
-> STM32 QSPI is supporting this feature, driver update are also
-> part of this series.
+Signed-off-by: Ralf Schlatterbeck <rsc@runtux.com>
+Signed-off-by: Mirko Vogt <mirko-dev|linux@nanl.de>
+---
+For oscilloscope screenshots with/without the patch, see my blog post
+https://blog.runtux.com/posts/2019/04/18/
+or the discussion in the armbian forum at
+https://forum.armbian.com/topic/4330-spi-gpio-chip-select-support/
+(my logo there is a penguin).
 
-The SPI bits look good to me - should we merge via MTD or SPI?
+ drivers/spi/spi-sun6i.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---h3LYUU6HlUDSAOzy
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmClZIsACgkQJNaLcl1U
-h9DUugf+L02+HoVRB3gbN5ZpyjjoHmHs9up8UEcNStI4z5NEGfSDlLbFbODRNFlP
-E3sFR+ORhCM9vziPNYxXzkt6iqlVMmxNDyKntLntzno7g3v37ycpdpo1EVfRqCst
-Zgi7FauC4EhvCQcWdh4MZZJw27U8T/zhoGNK8X8J6+eZkz/TWfTPZETa7C/p31pB
-F3+Z8Nfd6EFKMJ++dJLmjgDpQPkcUV8xdiQIqKAAQFp8GTWNk5bKk3rZvA35VNcm
-ERAEJyYhESA4iIBzVQMTdsZp1mPZUW2zOWTMgYuqsha766iYTz1DcM3tCwtPs/4I
-1F+iui8vnadvaJxuv0ckWb+cZpfCGA==
-=WZaQ
------END PGP SIGNATURE-----
-
---h3LYUU6HlUDSAOzy--
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index cc8401980125..2db075c87f51 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -379,6 +379,10 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 	}
+ 
+ 	sun6i_spi_write(sspi, SUN6I_CLK_CTL_REG, reg);
++	/* Finally enable the bus - doing so before might raise SCK to HIGH */
++	sun6i_spi_write(sspi, SUN6I_GBL_CTL_REG,
++			sun6i_spi_read(sspi, SUN6I_GBL_CTL_REG)
++			| SUN6I_GBL_CTL_BUS_ENABLE);
+ 
+ 	/* Setup the transfer now... */
+ 	if (sspi->tx_buf)
+@@ -504,7 +508,7 @@ static int sun6i_spi_runtime_resume(struct device *dev)
+ 	}
+ 
+ 	sun6i_spi_write(sspi, SUN6I_GBL_CTL_REG,
+-			SUN6I_GBL_CTL_BUS_ENABLE | SUN6I_GBL_CTL_MASTER | SUN6I_GBL_CTL_TP);
++			SUN6I_GBL_CTL_MASTER | SUN6I_GBL_CTL_TP);
+ 
+ 	return 0;
+ 
+-- 
+2.20.1

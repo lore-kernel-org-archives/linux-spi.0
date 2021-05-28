@@ -5,28 +5,28 @@ X-Spam-Level:
 X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EE5C2C47091
-	for <linux-spi@archiver.kernel.org>; Fri, 28 May 2021 11:36:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B0ABC47087
+	for <linux-spi@archiver.kernel.org>; Fri, 28 May 2021 11:36:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D6BCD6124B
-	for <linux-spi@archiver.kernel.org>; Fri, 28 May 2021 11:36:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6149F6124B
+	for <linux-spi@archiver.kernel.org>; Fri, 28 May 2021 11:36:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235098AbhE1Li3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S235257AbhE1Li3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Fri, 28 May 2021 07:38:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50898 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234430AbhE1Li0 (ORCPT
+        with ESMTP id S234651AbhE1Li0 (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Fri, 28 May 2021 07:38:26 -0400
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25FBDC061761;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B933C061763;
         Fri, 28 May 2021 04:36:51 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: sre)
-        with ESMTPSA id 042DB1F44198
+        with ESMTPSA id E41AE1F44194
 Received: by jupiter.universe (Postfix, from userid 1000)
-        id 8C1154800E2; Fri, 28 May 2021 13:36:47 +0200 (CEST)
+        id 84CE24800E0; Fri, 28 May 2021 13:36:47 +0200 (CEST)
 From:   Sebastian Reichel <sebastian.reichel@collabora.com>
 To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>
 Cc:     Arnd Bergmann <arnd@arndb.de>,
@@ -37,9 +37,9 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
         devicetree@vger.kernel.org, kernel@collabora.com,
         Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCHv3 4/5] ARM: dts: imx53-ppd: Fix ACHC entry
-Date:   Fri, 28 May 2021 13:33:46 +0200
-Message-Id: <20210528113346.37137-5-sebastian.reichel@collabora.com>
+Subject: [PATCHv3 2/5] spi: dt-bindings: support devices with multiple chipselects
+Date:   Fri, 28 May 2021 13:33:44 +0200
+Message-Id: <20210528113346.37137-3-sebastian.reichel@collabora.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210528113346.37137-1-sebastian.reichel@collabora.com>
 References: <20210528113346.37137-1-sebastian.reichel@collabora.com>
@@ -49,58 +49,35 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-PPD has only one ACHC device, which effectively is a Kinetis
-microcontroller. It has one SPI interface used for normal
-communication. Additionally it's possible to flash the device
-firmware using NXP's EzPort protocol by correctly driving a
-second chip select pin and the device reset pin.
+Add binding support for devices, that have more than one
+chip select. A typical example are SPI connected microcontroller,
+that can also be programmed over SPI like NXP Kinetis or
+chips with a configuration and a data chip select, such as
+Microchip's MRF89XA transceiver.
 
 Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 ---
- arch/arm/boot/dts/imx53-ppd.dts | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ Documentation/devicetree/bindings/spi/spi-controller.yaml | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx53-ppd.dts b/arch/arm/boot/dts/imx53-ppd.dts
-index be040b6a02fa..1f3ee60fb102 100644
---- a/arch/arm/boot/dts/imx53-ppd.dts
-+++ b/arch/arm/boot/dts/imx53-ppd.dts
-@@ -70,6 +70,12 @@ cko2_11M: sgtl-clock-cko2 {
- 		clock-frequency = <11289600>;
- 	};
+diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+index 0477396e4945..faef4f6f55b8 100644
+--- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+@@ -114,8 +114,11 @@ patternProperties:
+           Compatible of the SPI device.
  
-+	achc_24M: achc-clock {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <24000000>;
-+	};
-+
- 	sgtlsound: sound {
- 		compatible = "fsl,imx53-cpuvo-sgtl5000",
- 			     "fsl,imx-audio-sgtl5000";
-@@ -314,16 +320,13 @@ &gpio4 11 GPIO_ACTIVE_LOW
- 		    &gpio4 12 GPIO_ACTIVE_LOW>;
- 	status = "okay";
+       reg:
+-        minimum: 0
+-        maximum: 256
++        minItems: 1
++        maxItems: 256
++        items:
++          minimum: 0
++          maximum: 256
+         description:
+           Chip select used by the device.
  
--	spidev0: spi@0 {
--		compatible = "ge,achc";
--		reg = <0>;
--		spi-max-frequency = <1000000>;
--	};
--
--	spidev1: spi@1 {
--		compatible = "ge,achc";
--		reg = <1>;
--		spi-max-frequency = <1000000>;
-+	spidev0: spi@1 {
-+		compatible = "ge,achc", "nxp,kinetis-k20";
-+		reg = <1>, <0>;
-+		vdd-supply = <&reg_3v3>;
-+		vdda-supply = <&reg_3v3>;
-+		clocks = <&achc_24M>;
-+		reset-gpios = <&gpio3 6 GPIO_ACTIVE_LOW>;
- 	};
- 
- 	gpioxra0: gpio@2 {
 -- 
 2.30.2
 

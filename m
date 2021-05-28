@@ -2,323 +2,274 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
-	version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A3B2DC4708C
-	for <linux-spi@archiver.kernel.org>; Fri, 28 May 2021 09:31:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C4B5C4708C
+	for <linux-spi@archiver.kernel.org>; Fri, 28 May 2021 11:36:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 7B1BD6127A
-	for <linux-spi@archiver.kernel.org>; Fri, 28 May 2021 09:31:23 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 130726135F
+	for <linux-spi@archiver.kernel.org>; Fri, 28 May 2021 11:36:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230127AbhE1Jc5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 28 May 2021 05:32:57 -0400
-Received: from mga18.intel.com ([134.134.136.126]:20698 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229911AbhE1Jc4 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 28 May 2021 05:32:56 -0400
-IronPort-SDR: JGlcc+RvQZVKLhjtPIk+egBH8q3lLaCyGfnum86sV7SYbHHjabZN1ErgIYnw4R8Oy6twQtkJiO
- Jv8FUy18e1ww==
-X-IronPort-AV: E=McAfee;i="6200,9189,9997"; a="190296803"
-X-IronPort-AV: E=Sophos;i="5.83,229,1616482800"; 
-   d="scan'208";a="190296803"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2021 02:31:16 -0700
-IronPort-SDR: tdnkjhk/KUq9bENATSZoyQI/S1aBfAiQ/R823HdtG6f2aPCMUS9UaNWR7bUKQynCN6A05jjAp+
- vyubqzSKEoWA==
-X-IronPort-AV: E=Sophos;i="5.83,229,1616482800"; 
-   d="scan'208";a="480980607"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2021 02:31:12 -0700
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1lmYph-00FHNI-S6; Fri, 28 May 2021 12:31:09 +0300
-Date:   Fri, 28 May 2021 12:31:09 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Lukas Wunner <lukas@wunner.de>
-Cc:     Mark Brown <broonie@kernel.org>,
-        Saravana Kannan <saravanak@google.com>,
-        kernel-team@android.com, linux-spi@vger.kernel.org,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Subject: Re: [PATCH for-5.13] spi: Cleanup on failure of initial setup
-Message-ID: <YLC4XWxfmjgizyvz@smile.fi.intel.com>
-References: <f76a0599469f265b69c371538794101fa37b5536.1622149321.git.lukas@wunner.de>
+        id S234752AbhE1Li1 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 28 May 2021 07:38:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50894 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231564AbhE1Li0 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 28 May 2021 07:38:26 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F13FC06174A;
+        Fri, 28 May 2021 04:36:51 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: sre)
+        with ESMTPSA id E8E2C1F44195
+Received: by jupiter.universe (Postfix, from userid 1000)
+        id 811984800DF; Fri, 28 May 2021 13:36:47 +0200 (CEST)
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, Ian Ray <ian.ray@ge.com>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, kernel@collabora.com,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCHv3 1/5] spi: add ancillary device support
+Date:   Fri, 28 May 2021 13:33:43 +0200
+Message-Id: <20210528113346.37137-2-sebastian.reichel@collabora.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210528113346.37137-1-sebastian.reichel@collabora.com>
+References: <20210528113346.37137-1-sebastian.reichel@collabora.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f76a0599469f265b69c371538794101fa37b5536.1622149321.git.lukas@wunner.de>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, May 27, 2021 at 11:10:56PM +0200, Lukas Wunner wrote:
-> Commit c7299fea6769 ("spi: Fix spi device unregister flow") changed the
-> SPI core's behavior if the ->setup() hook returns an error upon adding
-> an spi_device:  Before, the ->cleanup() hook was invoked to free any
-> allocations that were made by ->setup().  With the commit, that's no
-> longer the case, so the ->setup() hook is expected to free the
-> allocations itself.
-> 
-> I've identified 5 drivers which depend on the old behavior and am fixing
-> them up hereinafter: spi-bitbang.c spi-fsl-spi.c spi-omap-uwire.c
-> spi-omap2-mcspi.c spi-pxa2xx.c
-> 
-> Importantly, ->setup() is not only invoked on spi_device *addition*:
-> It may subsequently be called to *change* SPI parameters.  If changing
-> these SPI parameters fails, freeing memory allocations would be wrong.
-> That should only be done if the spi_device is finally destroyed.
-> I am therefore using a bool "initial_setup" in 4 of the affected drivers
-> to differentiate between the invocation on *adding* the spi_device and
-> any subsequent invocations: spi-bitbang.c spi-fsl-spi.c spi-omap-uwire.c
-> spi-omap2-mcspi.c
-> 
-> In spi-pxa2xx.c, it seems the ->setup() hook can only fail on spi_device
-> addition, not any subsequent calls.  It therefore doesn't need the bool.
-> 
-> It's worth noting that 5 other drivers already perform a cleanup if the
-> ->setup() hook fails.  Before c7299fea6769, they caused a double-free
-> if ->setup() failed on spi_device addition.  Since the commit, they're
-> fine.  These drivers are: spi-mpc512x-psc.c spi-pl022.c spi-s3c64xx.c
-> spi-st-ssc4.c spi-tegra114.c
-> 
-> (spi-pxa2xx.c also already performs a cleanup, but only in one of
-> several error paths.)
+Introduce support for ancillary devices, similar to existing
+implementation for I2C. This is useful for devices having
+multiple chip-selects, for example some microcontrollers
+provide a normal SPI interface and a flashing SPI interface.
 
-Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com> # pxa2xx
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+---
+ drivers/spi/spi.c       | 139 +++++++++++++++++++++++++++++++---------
+ include/linux/spi/spi.h |   2 +
+ 2 files changed, 109 insertions(+), 32 deletions(-)
 
-I'm not sure how this can be applied now without reconsidering what is in
-for-5.14.
-
-> Fixes: c7299fea6769 ("spi: Fix spi device unregister flow")
-> Signed-off-by: Lukas Wunner <lukas@wunner.de>
-> Cc: Saravana Kannan <saravanak@google.com>
-> ---
-> Compile-tested only!  Please review and test.
->  drivers/spi/spi-bitbang.c     | 18 ++++++++++++++----
->  drivers/spi/spi-fsl-spi.c     |  4 ++++
->  drivers/spi/spi-omap-uwire.c  |  9 ++++++++-
->  drivers/spi/spi-omap2-mcspi.c | 33 ++++++++++++++++++++-------------
->  drivers/spi/spi-pxa2xx.c      |  9 ++++++++-
->  5 files changed, 54 insertions(+), 19 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-bitbang.c b/drivers/spi/spi-bitbang.c
-> index 6a6af85aebfd..27d0087f8688 100644
-> --- a/drivers/spi/spi-bitbang.c
-> +++ b/drivers/spi/spi-bitbang.c
-> @@ -184,6 +184,8 @@ int spi_bitbang_setup(struct spi_device *spi)
->  {
->  	struct spi_bitbang_cs	*cs = spi->controller_state;
->  	struct spi_bitbang	*bitbang;
-> +	bool			initial_setup = false;
-> +	int			retval;
->  
->  	bitbang = spi_master_get_devdata(spi->master);
->  
-> @@ -192,22 +194,30 @@ int spi_bitbang_setup(struct spi_device *spi)
->  		if (!cs)
->  			return -ENOMEM;
->  		spi->controller_state = cs;
-> +		initial_setup = true;
->  	}
->  
->  	/* per-word shift register access, in hardware or bitbanging */
->  	cs->txrx_word = bitbang->txrx_word[spi->mode & (SPI_CPOL|SPI_CPHA)];
-> -	if (!cs->txrx_word)
-> -		return -EINVAL;
-> +	if (!cs->txrx_word) {
-> +		retval = -EINVAL;
-> +		goto err_free;
-> +	}
->  
->  	if (bitbang->setup_transfer) {
-> -		int retval = bitbang->setup_transfer(spi, NULL);
-> +		retval = bitbang->setup_transfer(spi, NULL);
->  		if (retval < 0)
-> -			return retval;
-> +			goto err_free;
->  	}
->  
->  	dev_dbg(&spi->dev, "%s, %u nsec/bit\n", __func__, 2 * cs->nsecs);
->  
->  	return 0;
-> +
-> +err_free:
-> +	if (initial_setup)
-> +		kfree(cs);
-> +	return retval;
->  }
->  EXPORT_SYMBOL_GPL(spi_bitbang_setup);
->  
-> diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-> index d0e5aa18b7ba..bdf94cc7be1a 100644
-> --- a/drivers/spi/spi-fsl-spi.c
-> +++ b/drivers/spi/spi-fsl-spi.c
-> @@ -440,6 +440,7 @@ static int fsl_spi_setup(struct spi_device *spi)
->  {
->  	struct mpc8xxx_spi *mpc8xxx_spi;
->  	struct fsl_spi_reg __iomem *reg_base;
-> +	bool initial_setup = false;
->  	int retval;
->  	u32 hw_mode;
->  	struct spi_mpc8xxx_cs *cs = spi_get_ctldata(spi);
-> @@ -452,6 +453,7 @@ static int fsl_spi_setup(struct spi_device *spi)
->  		if (!cs)
->  			return -ENOMEM;
->  		spi_set_ctldata(spi, cs);
-> +		initial_setup = true;
->  	}
->  	mpc8xxx_spi = spi_master_get_devdata(spi->master);
->  
-> @@ -475,6 +477,8 @@ static int fsl_spi_setup(struct spi_device *spi)
->  	retval = fsl_spi_setup_transfer(spi, NULL);
->  	if (retval < 0) {
->  		cs->hw_mode = hw_mode; /* Restore settings */
-> +		if (initial_setup)
-> +			kfree(cs);
->  		return retval;
->  	}
->  
-> diff --git a/drivers/spi/spi-omap-uwire.c b/drivers/spi/spi-omap-uwire.c
-> index 71402f71ddd8..df28c6664aba 100644
-> --- a/drivers/spi/spi-omap-uwire.c
-> +++ b/drivers/spi/spi-omap-uwire.c
-> @@ -424,15 +424,22 @@ static int uwire_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
->  static int uwire_setup(struct spi_device *spi)
->  {
->  	struct uwire_state *ust = spi->controller_state;
-> +	bool initial_setup = false;
-> +	int status;
->  
->  	if (ust == NULL) {
->  		ust = kzalloc(sizeof(*ust), GFP_KERNEL);
->  		if (ust == NULL)
->  			return -ENOMEM;
->  		spi->controller_state = ust;
-> +		initial_setup = true;
->  	}
->  
-> -	return uwire_setup_transfer(spi, NULL);
-> +	status = uwire_setup_transfer(spi, NULL);
-> +	if (status && initial_setup)
-> +		kfree(ust);
-> +
-> +	return status;
->  }
->  
->  static void uwire_cleanup(struct spi_device *spi)
-> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-> index 999c22736416..ede7f05e5ced 100644
-> --- a/drivers/spi/spi-omap2-mcspi.c
-> +++ b/drivers/spi/spi-omap2-mcspi.c
-> @@ -1032,8 +1032,22 @@ static void omap2_mcspi_release_dma(struct spi_master *master)
->  	}
->  }
->  
-> +static void omap2_mcspi_cleanup(struct spi_device *spi)
-> +{
-> +	struct omap2_mcspi_cs	*cs;
-> +
-> +	if (spi->controller_state) {
-> +		/* Unlink controller state from context save list */
-> +		cs = spi->controller_state;
-> +		list_del(&cs->node);
-> +
-> +		kfree(cs);
-> +	}
-> +}
-> +
->  static int omap2_mcspi_setup(struct spi_device *spi)
->  {
-> +	bool			initial_setup = false;
->  	int			ret;
->  	struct omap2_mcspi	*mcspi = spi_master_get_devdata(spi->master);
->  	struct omap2_mcspi_regs	*ctx = &mcspi->ctx;
-> @@ -1051,35 +1065,28 @@ static int omap2_mcspi_setup(struct spi_device *spi)
->  		spi->controller_state = cs;
->  		/* Link this to context save list */
->  		list_add_tail(&cs->node, &ctx->cs);
-> +		initial_setup = true;
->  	}
->  
->  	ret = pm_runtime_get_sync(mcspi->dev);
->  	if (ret < 0) {
->  		pm_runtime_put_noidle(mcspi->dev);
-> +		if (initial_setup)
-> +			omap2_mcspi_cleanup(spi);
->  
->  		return ret;
->  	}
->  
->  	ret = omap2_mcspi_setup_transfer(spi, NULL);
-> +	if (ret && initial_setup)
-> +		omap2_mcspi_cleanup(spi);
-> +
->  	pm_runtime_mark_last_busy(mcspi->dev);
->  	pm_runtime_put_autosuspend(mcspi->dev);
->  
->  	return ret;
->  }
->  
-> -static void omap2_mcspi_cleanup(struct spi_device *spi)
-> -{
-> -	struct omap2_mcspi_cs	*cs;
-> -
-> -	if (spi->controller_state) {
-> -		/* Unlink controller state from context save list */
-> -		cs = spi->controller_state;
-> -		list_del(&cs->node);
-> -
-> -		kfree(cs);
-> -	}
-> -}
-> -
->  static irqreturn_t omap2_mcspi_irq_handler(int irq, void *data)
->  {
->  	struct omap2_mcspi *mcspi = data;
-> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-> index 5e59ba075bc7..8ee0cc071777 100644
-> --- a/drivers/spi/spi-pxa2xx.c
-> +++ b/drivers/spi/spi-pxa2xx.c
-> @@ -1254,6 +1254,8 @@ static int setup_cs(struct spi_device *spi, struct chip_data *chip,
->  		chip->gpio_cs_inverted = spi->mode & SPI_CS_HIGH;
->  
->  		err = gpiod_direction_output(gpiod, !chip->gpio_cs_inverted);
-> +		if (err)
-> +			gpiod_put(chip->gpiod_cs);
->  	}
->  
->  	return err;
-> @@ -1267,6 +1269,7 @@ static int setup(struct spi_device *spi)
->  	struct driver_data *drv_data =
->  		spi_controller_get_devdata(spi->controller);
->  	uint tx_thres, tx_hi_thres, rx_thres;
-> +	int err;
->  
->  	switch (drv_data->ssp_type) {
->  	case QUARK_X1000_SSP:
-> @@ -1413,7 +1416,11 @@ static int setup(struct spi_device *spi)
->  	if (drv_data->ssp_type == CE4100_SSP)
->  		return 0;
->  
-> -	return setup_cs(spi, chip, chip_info);
-> +	err = setup_cs(spi, chip, chip_info);
-> +	if (err)
-> +		kfree(chip);
-> +
-> +	return err;
->  }
->  
->  static void cleanup(struct spi_device *spi)
-> -- 
-> 2.31.1
-> 
-
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index ba425b9c7700..7fdf224262b1 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -558,49 +558,23 @@ static int spi_dev_check(struct device *dev, void *data)
+ 	return 0;
+ }
+ 
+-/**
+- * spi_add_device - Add spi_device allocated with spi_alloc_device
+- * @spi: spi_device to register
+- *
+- * Companion function to spi_alloc_device.  Devices allocated with
+- * spi_alloc_device can be added onto the spi bus with this function.
+- *
+- * Return: 0 on success; negative errno on failure
+- */
+-int spi_add_device(struct spi_device *spi)
++static int __spi_add_device(struct spi_device *spi)
+ {
+ 	struct spi_controller *ctlr = spi->controller;
+ 	struct device *dev = ctlr->dev.parent;
+ 	int status;
+ 
+-	/* Chipselects are numbered 0..max; validate. */
+-	if (spi->chip_select >= ctlr->num_chipselect) {
+-		dev_err(dev, "cs%d >= max %d\n", spi->chip_select,
+-			ctlr->num_chipselect);
+-		return -EINVAL;
+-	}
+-
+-	/* Set the bus ID string */
+-	spi_dev_set_name(spi);
+-
+-	/* We need to make sure there's no other device with this
+-	 * chipselect **BEFORE** we call setup(), else we'll trash
+-	 * its configuration.  Lock against concurrent add() calls.
+-	 */
+-	mutex_lock(&spi_add_lock);
+-
+ 	status = bus_for_each_dev(&spi_bus_type, NULL, spi, spi_dev_check);
+ 	if (status) {
+ 		dev_err(dev, "chipselect %d already in use\n",
+ 				spi->chip_select);
+-		goto done;
++		return status;
+ 	}
+ 
+ 	/* Controller may unregister concurrently */
+ 	if (IS_ENABLED(CONFIG_SPI_DYNAMIC) &&
+ 	    !device_is_registered(&ctlr->dev)) {
+-		status = -ENODEV;
+-		goto done;
++		return -ENODEV;
+ 	}
+ 
+ 	/* Descriptors take precedence */
+@@ -617,7 +591,7 @@ int spi_add_device(struct spi_device *spi)
+ 	if (status < 0) {
+ 		dev_err(dev, "can't setup %s, status %d\n",
+ 				dev_name(&spi->dev), status);
+-		goto done;
++		return status;
+ 	}
+ 
+ 	/* Device may be bound to an active driver when this returns */
+@@ -628,12 +602,64 @@ int spi_add_device(struct spi_device *spi)
+ 	else
+ 		dev_dbg(dev, "registered child %s\n", dev_name(&spi->dev));
+ 
+-done:
++	return status;
++}
++
++/**
++ * spi_add_device - Add spi_device allocated with spi_alloc_device
++ * @spi: spi_device to register
++ *
++ * Companion function to spi_alloc_device.  Devices allocated with
++ * spi_alloc_device can be added onto the spi bus with this function.
++ *
++ * Return: 0 on success; negative errno on failure
++ */
++int spi_add_device(struct spi_device *spi)
++{
++	struct spi_controller *ctlr = spi->controller;
++	struct device *dev = ctlr->dev.parent;
++	int status;
++
++	/* Chipselects are numbered 0..max; validate. */
++	if (spi->chip_select >= ctlr->num_chipselect) {
++		dev_err(dev, "cs%d >= max %d\n", spi->chip_select,
++			ctlr->num_chipselect);
++		return -EINVAL;
++	}
++
++	/* Set the bus ID string */
++	spi_dev_set_name(spi);
++
++	/* We need to make sure there's no other device with this
++	 * chipselect **BEFORE** we call setup(), else we'll trash
++	 * its configuration.  Lock against concurrent add() calls.
++	 */
++	mutex_lock(&spi_add_lock);
++	status = __spi_add_device(spi);
+ 	mutex_unlock(&spi_add_lock);
+ 	return status;
+ }
+ EXPORT_SYMBOL_GPL(spi_add_device);
+ 
++static int spi_add_device_locked(struct spi_device *spi)
++{
++	struct spi_controller *ctlr = spi->controller;
++	struct device *dev = ctlr->dev.parent;
++
++	/* Chipselects are numbered 0..max; validate. */
++	if (spi->chip_select >= ctlr->num_chipselect) {
++		dev_err(dev, "cs%d >= max %d\n", spi->chip_select,
++			ctlr->num_chipselect);
++		return -EINVAL;
++	}
++
++	/* Set the bus ID string */
++	spi_dev_set_name(spi);
++
++	WARN_ON(!mutex_is_locked(&spi_add_lock));
++	return __spi_add_device(spi);
++}
++
+ /**
+  * spi_new_device - instantiate one new SPI device
+  * @ctlr: Controller to which device is connected
+@@ -1993,7 +2019,7 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+ 	}
+ 
+ 	/* Device address */
+-	rc = of_property_read_u32(nc, "reg", &value);
++	rc = of_property_read_u32_index(nc, "reg", 0, &value);
+ 	if (rc) {
+ 		dev_err(&ctlr->dev, "%pOF has no valid 'reg' property (%d)\n",
+ 			nc, rc);
+@@ -2084,6 +2110,55 @@ static void of_register_spi_devices(struct spi_controller *ctlr)
+ static void of_register_spi_devices(struct spi_controller *ctlr) { }
+ #endif
+ 
++/**
++ * spi_new_ancillary_device() - Register ancillary SPI device
++ * @spi:         Pointer to the main SPI device registering the ancillary device
++ * @chip_select: Chip Select of the ancillary device
++ *
++ * Register an ancillary SPI device; for example some chips have a chip-select
++ * for normal device usage and another one for setup/firmware upload.
++ *
++ * This may only be called from main SPI device's probe routine.
++ *
++ * Return: 0 on success; negative errno on failure
++ */
++struct spi_device *spi_new_ancillary_device(struct spi_device *spi,
++					     u8 chip_select)
++{
++	struct spi_device *ancillary;
++	int rc = 0;
++
++	/* Alloc an spi_device */
++	ancillary = spi_alloc_device(spi->controller);
++	if (!ancillary) {
++		rc = -ENOMEM;
++		goto err_out;
++	}
++
++	strlcpy(ancillary->modalias, "dummy", sizeof(ancillary->modalias));
++
++	/* Use provided chip-select for ancillary device */
++	ancillary->chip_select = chip_select;
++
++	/* Take over SPI mode/speed from SPI main device */
++	ancillary->max_speed_hz = spi->max_speed_hz;
++	ancillary->mode = ancillary->mode;
++
++	/* Register the new device */
++	rc = spi_add_device_locked(ancillary);
++	if (rc) {
++		dev_err(&spi->dev, "failed to register ancillary device\n");
++		goto err_out;
++	}
++
++	return ancillary;
++
++err_out:
++	spi_dev_put(ancillary);
++	return ERR_PTR(rc);
++}
++EXPORT_SYMBOL_GPL(spi_new_ancillary_device);
++
+ #ifdef CONFIG_ACPI
+ struct acpi_spi_lookup {
+ 	struct spi_controller 	*ctlr;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 360a3bc767ca..1949230ccd3a 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -299,6 +299,8 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+ 		driver_unregister(&sdrv->driver);
+ }
+ 
++extern struct spi_device *spi_new_ancillary_device(struct spi_device *spi, u8 chip_select);
++
+ /* use a define to avoid include chaining to get THIS_MODULE */
+ #define spi_register_driver(driver) \
+ 	__spi_register_driver(THIS_MODULE, driver)
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.30.2
 

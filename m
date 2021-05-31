@@ -7,43 +7,43 @@ X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
 	URIBL_BLOCKED,USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7ABEC47082
-	for <linux-spi@archiver.kernel.org>; Mon, 31 May 2021 18:18:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3FA98C47082
+	for <linux-spi@archiver.kernel.org>; Mon, 31 May 2021 18:18:38 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BB8C76124B
-	for <linux-spi@archiver.kernel.org>; Mon, 31 May 2021 18:18:35 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1DFF3600EF
+	for <linux-spi@archiver.kernel.org>; Mon, 31 May 2021 18:18:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232062AbhEaSUI (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 31 May 2021 14:20:08 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:59200 "EHLO
+        id S232258AbhEaSUO (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 31 May 2021 14:20:14 -0400
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:59218 "EHLO
         fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230351AbhEaSUE (ORCPT
+        with ESMTP id S231594AbhEaSUE (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Mon, 31 May 2021 14:20:04 -0400
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 14VII83s078813;
-        Mon, 31 May 2021 13:18:08 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 14VIII42078853;
+        Mon, 31 May 2021 13:18:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1622485088;
-        bh=moH2ZY+xmI5k70xNoKzxtoVfAjiFgQzTAD/mpB3NYvw=;
+        s=ti-com-17Q1; t=1622485098;
+        bh=Lbvml4LO8u8mq4+Jsg0QJUcjZqcDZe28EeBi6UXRwK4=;
         h=From:To:Subject:Date:In-Reply-To:References;
-        b=PfRJmqmAUyqOuPK2Jt1RKEtjynUr3xOi3nROnR0HbgKbfM9XICfYv8yQ8gvV76PYi
-         +3i8bj0pCJD9hoGwGoQVr+6tKhAPqWKWiL6yPeMibtRqmJQNvMwpxaYvY8SJPq+gCt
-         QNr1PkLmA6sXlOnfdukvcFAmBe9oJ2gnEz4/EMI8=
-Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 14VII8Yo027498
+        b=T0eSUP4XQdt2We3MYdi4iGZvCClwsiw2TA0njJIv6Y3Qr59rxz4tcuHAAV0BARN1l
+         57lb8w7sZgpuW+/lTC1VzH0kHH/6zHXNPMMJtt0tCs4O+N4YI6smkhcpuzF/a78aAC
+         94k5kJGfgkakrzF9kYXnF0XYER7WzPyf4aeFxi/U=
+Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 14VIIIc9028535
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 31 May 2021 13:18:08 -0500
-Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+        Mon, 31 May 2021 13:18:18 -0500
+Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Mon, 31
- May 2021 13:18:08 -0500
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ May 2021 13:18:17 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Mon, 31 May 2021 13:18:08 -0500
+ Frontend Transport; Mon, 31 May 2021 13:18:17 -0500
 Received: from pratyush-OptiPlex-790.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 14VIHwdH118543;
-        Mon, 31 May 2021 13:18:05 -0500
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 14VIHwdK118543;
+        Mon, 31 May 2021 13:18:15 -0500
 From:   Pratyush Yadav <p.yadav@ti.com>
 To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
         Michael Walle <michael@walle.cc>,
@@ -54,9 +54,9 @@ To:     Tudor Ambarus <tudor.ambarus@microchip.com>,
         Mark Brown <broonie@kernel.org>,
         <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <linux-spi@vger.kernel.org>
-Subject: [PATCH v2 2/6] mtd: spi-nor: spansion: write 2 bytes when disabling Octal DTR mode
-Date:   Mon, 31 May 2021 23:47:53 +0530
-Message-ID: <20210531181757.19458-3-p.yadav@ti.com>
+Subject: [PATCH v2 5/6] mtd: spi-nor: core: avoid odd length/address reads on 8D-8D-8D mode
+Date:   Mon, 31 May 2021 23:47:56 +0530
+Message-ID: <20210531181757.19458-6-p.yadav@ti.com>
 X-Mailer: git-send-email 2.30.0
 In-Reply-To: <20210531181757.19458-1-p.yadav@ti.com>
 References: <20210531181757.19458-1-p.yadav@ti.com>
@@ -68,55 +68,131 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-The Octal DTR configuration is stored in the CFR5V register. This
-register is 1 byte wide. But 1 byte long transactions are not allowed in
-8D-8D-8D mode. Since the next byte address does not contain any
-register, it is safe to write any value to it. Write a 0 to it.
+On Octal DTR capable flashes like Micron Xcella reads cannot start or
+end at an odd address in Octal DTR mode. Extra bytes need to be read at
+the start or end to make sure both the start address and length remain
+even.
+
+To avoid allocating too much extra memory, thereby putting unnecessary
+memory pressure on the system, the temporary buffer containing the extra
+padding bytes is capped at PAGE_SIZE bytes. The rest of the 2-byte
+aligned part should be read directly in the main buffer.
 
 Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+Reviewed-by: Michael Walle <michael@walle.cc>
+
 ---
 
-(no changes since v1)
+Changes in v2:
+- Replace semicolon in subject with colon.
+- Add a comment that ret < 0 after adjusting for extra bytes is not
+  possible, and add a WARN_ON() on the condition to make sure it gets
+  spotted quickly when some change triggers this bug.
+- Add Michael's R-by.
 
- drivers/mtd/spi-nor/spansion.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/mtd/spi-nor/core.c | 82 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 81 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/spi-nor/spansion.c b/drivers/mtd/spi-nor/spansion.c
-index ee82dcd75310..e6bf5c9eee6a 100644
---- a/drivers/mtd/spi-nor/spansion.c
-+++ b/drivers/mtd/spi-nor/spansion.c
-@@ -65,10 +65,18 @@ static int spi_nor_cypress_octal_dtr_enable(struct spi_nor *nor, bool enable)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+index d521ca577884..a696af6a1b71 100644
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -1904,6 +1904,83 @@ static const struct flash_info *spi_nor_read_id(struct spi_nor *nor)
+ 	return ERR_PTR(-ENODEV);
+ }
  
--	if (enable)
--		*buf = SPINOR_REG_CYPRESS_CFR5V_OCT_DTR_EN;
--	else
--		*buf = SPINOR_REG_CYPRESS_CFR5V_OCT_DTR_DS;
-+	if (enable) {
-+		buf[0] = SPINOR_REG_CYPRESS_CFR5V_OCT_DTR_EN;
-+	} else {
-+		/*
-+		 * The register is 1-byte wide, but 1-byte transactions are not
-+		 * allowed in 8D-8D-8D mode. Since there is no register at the
-+		 * next location, just initialize the value to 0 and let the
-+		 * transaction go on.
-+		 */
-+		buf[0] = SPINOR_REG_CYPRESS_CFR5V_OCT_DTR_DS;
-+		buf[1] = 0;
++/*
++ * On Octal DTR capable flashes like Micron Xcella reads cannot start or
++ * end at an odd address in Octal DTR mode. Extra bytes need to be read
++ * at the start or end to make sure both the start address and length
++ * remain even.
++ */
++static int spi_nor_octal_dtr_read(struct spi_nor *nor, loff_t from, size_t len,
++				  u_char *buf)
++{
++	u_char *tmp_buf;
++	size_t tmp_len;
++	loff_t start, end;
++	int ret, bytes_read;
++
++	if (IS_ALIGNED(from, 2) && IS_ALIGNED(len, 2))
++		return spi_nor_read_data(nor, from, len, buf);
++	else if (IS_ALIGNED(from, 2) && len > PAGE_SIZE)
++		return spi_nor_read_data(nor, from, round_down(len, PAGE_SIZE),
++					 buf);
++
++	tmp_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
++	if (!tmp_buf)
++		return -ENOMEM;
++
++	start = round_down(from, 2);
++	end = round_up(from + len, 2);
++
++	/*
++	 * Avoid allocating too much memory. The requested read length might be
++	 * quite large. Allocating a buffer just as large (slightly bigger, in
++	 * fact) would put unnecessary memory pressure on the system.
++	 *
++	 * For example if the read is from 3 to 1M, then this will read from 2
++	 * to 4098. The reads from 4098 to 1M will then not need a temporary
++	 * buffer so they can proceed as normal.
++	 */
++	tmp_len = min_t(size_t, end - start, PAGE_SIZE);
++
++	ret = spi_nor_read_data(nor, start, tmp_len, tmp_buf);
++	if (ret == 0) {
++		ret = -EIO;
++		goto out;
 +	}
++	if (ret < 0)
++		goto out;
++
++	/*
++	 * More bytes are read than actually requested, but that number can't be
++	 * reported to the calling function or it will confuse its calculations.
++	 * Calculate how many of the _requested_ bytes were read.
++	 */
++	bytes_read = ret;
++
++	if (from != start)
++		ret -= from - start;
++
++	/*
++	 * Only account for extra bytes at the end if they were actually read.
++	 * For example, if the total length was truncated because of temporary
++	 * buffer size limit then the adjustment for the extra bytes at the end
++	 * is not needed.
++	 */
++	if (start + bytes_read == end)
++		ret -= end - (from + len);
++
++	/* Should not be possible. */
++	if (WARN_ON(ret < 0)) {
++		ret = -EIO;
++		goto out;
++	}
++
++	memcpy(buf, tmp_buf + (from - start), ret);
++out:
++	kfree(tmp_buf);
++	return ret;
++}
++
+ static int spi_nor_read(struct mtd_info *mtd, loff_t from, size_t len,
+ 			size_t *retlen, u_char *buf)
+ {
+@@ -1921,7 +1998,10 @@ static int spi_nor_read(struct mtd_info *mtd, loff_t from, size_t len,
  
- 	op = (struct spi_mem_op)
- 		SPI_MEM_OP(SPI_MEM_OP_CMD(SPINOR_OP_WR_ANY_REG, 1),
-@@ -76,7 +84,7 @@ static int spi_nor_cypress_octal_dtr_enable(struct spi_nor *nor, bool enable)
- 					   SPINOR_REG_CYPRESS_CFR5V,
- 					   1),
- 			   SPI_MEM_OP_NO_DUMMY,
--			   SPI_MEM_OP_DATA_OUT(1, buf, 1));
-+			   SPI_MEM_OP_DATA_OUT(enable ? 1 : 2, buf, 1));
+ 		addr = spi_nor_convert_addr(nor, addr);
  
- 	if (!enable)
- 		spi_nor_spimem_setup_op(nor, &op, SNOR_PROTO_8_8_8_DTR);
+-		ret = spi_nor_read_data(nor, addr, len, buf);
++		if (nor->read_proto == SNOR_PROTO_8_8_8_DTR)
++			ret = spi_nor_octal_dtr_read(nor, addr, len, buf);
++		else
++			ret = spi_nor_read_data(nor, addr, len, buf);
+ 		if (ret == 0) {
+ 			/* We shouldn't see 0-length reads */
+ 			ret = -EIO;
 -- 
 2.30.0
 

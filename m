@@ -7,43 +7,41 @@ X-Spam-Status: No, score=-14.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 31724C47083
-	for <linux-spi@archiver.kernel.org>; Wed,  2 Jun 2021 16:17:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2866CC4708F
+	for <linux-spi@archiver.kernel.org>; Wed,  2 Jun 2021 16:17:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 16DE56161E
-	for <linux-spi@archiver.kernel.org>; Wed,  2 Jun 2021 16:17:08 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 0DF7161940
+	for <linux-spi@archiver.kernel.org>; Wed,  2 Jun 2021 16:17:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229767AbhFBQSu (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 2 Jun 2021 12:18:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54202 "EHLO mail.kernel.org"
+        id S229702AbhFBQSx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 2 Jun 2021 12:18:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54306 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229702AbhFBQSt (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 2 Jun 2021 12:18:49 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E288761940;
-        Wed,  2 Jun 2021 16:17:05 +0000 (UTC)
+        id S229541AbhFBQSw (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 2 Jun 2021 12:18:52 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 08EBD6161E;
+        Wed,  2 Jun 2021 16:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1622650626;
-        bh=2bWCvQYKGRBcjdYh34l3GP8PzgVh5PoOZaMAl2vhUqc=;
+        s=k20201202; t=1622650629;
+        bh=hLVsttSHNzEi+OOUFgJXz3mHAnM8a7joO298eDLG5UA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qVsG0SqlOWY7fjt2SDOOnZq28x10KqTjHQ93n9zfE0nlmWOdO51t8faxfz6NK0As2
-         ePs53DcnBMSRIFP9pCrHfJgrJEjkr98GtWiiPKhdkJKJyEAADit3Td3VDvKxP/ptMl
-         m/rcEGrGva92Vm/0zaSVSVA7TfgKg8ZJGQEP306laX5bcSQlmL/g9/ssaSsl2Z43QP
-         BdncqV63F8i+mHtQYSw5H3ZhSdOJye26bfaHPzyd3JXEwIiqqc8SNfwSadTey3Un3j
-         EHtwTRHRzgDHMgQbEBDfB25nRMgz8i9lkzJz7+JhBj5uj9kn4uZ0asm+FIAwpfrUie
-         BcCZExB4QQy5g==
+        b=eUVxPwi1tF0horYJ42jJh0jiJ3xFSuryfZ7HojfdnUDEOIsFrJzfxiHadD+ebRVp0
+         VkTsoWU/CpIurBq+SXKpYr5/ogm+z8mWn2fji6eyV/Z7pCfA/ojoEvNvtgKAWE2lem
+         4mahlmqwYVSlOZ8F0vOQV2G41T81NYkrVHMT4kbUJt9cvgzF7Iuc2h8xL4BwGaKd/x
+         wjxKB6UkdF1ROwIDysf2iS7XuwhAhWbALhnFz43OdQEpu903iuH5HFtTTcjAZb6pBE
+         hcz/arvZR8RWk4NfPFSNTU9XJc3t7T7La0OfLgfDcZTgCZapZN6KbIiDa85Fmg3NPR
+         RTtthDsHFjLbA==
 From:   Mark Brown <broonie@kernel.org>
-To:     Lukas Wunner <lukas@wunner.de>
-Cc:     Mark Brown <broonie@kernel.org>,
-        Joe Burmeister <joe.burmeister@devtank.co.uk>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Phil Elwell <phil@raspberrypi.com>, linux-spi@vger.kernel.org,
-        Nicolas Saenz Julienne <nsaenz@kernel.org>
-Subject: Re: [PATCH v2 for-5.14] spi: bcm2835: Allow arbitrary number of slaves
-Date:   Wed,  2 Jun 2021 17:16:46 +0100
-Message-Id: <162265058629.22666.7423439187883024357.b4-ty@kernel.org>
+To:     linux-kernel@vger.kernel.org, zpershuai <zpershuai@gmail.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Cc:     Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: spi-zynq-qspi: Fix some wrong goto jumps & missing error code
+Date:   Wed,  2 Jun 2021 17:16:47 +0100
+Message-Id: <162265058628.22666.9665445837542581247.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <a847c01f09400801e74e0630bf5a0197591554da.1622150204.git.lukas@wunner.de>
-References: <a847c01f09400801e74e0630bf5a0197591554da.1622150204.git.lukas@wunner.de>
+In-Reply-To: <1622110857-21812-1-git-send-email-zpershuai@gmail.com>
+References: <1622110857-21812-1-git-send-email-zpershuai@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -51,16 +49,12 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Thu, 27 May 2021 23:32:00 +0200, Lukas Wunner wrote:
-> Since commit 571e31fa60b3 ("spi: bcm2835: Cache CS register value for
-> ->prepare_message()"), the number of slaves has been limited by a
-> compile-time constant.  This was necessitated by statically-sized
-> arrays in the driver private data which contain per-slave register
-> values.
+On Thu, 27 May 2021 18:20:57 +0800, zpershuai wrote:
+> In zynq_qspi_probe function, when enable the device clock is done,
+> the return of all the functions should goto the clk_dis_all label.
 > 
-> As suggested by Mark, move those register values to a per-slave
-> controller_state which is allocated on ->setup and freed on ->cleanup.
-> The limitation on the number of slaves is thus lifted.
+> If num_cs is not right then this should return a negative error
+> code but currently it returns success.
 
 Applied to
 
@@ -68,8 +62,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: bcm2835: Allow arbitrary number of slaves
-      commit: ec679bda639fe84b78d473526ae27c74dea383fb
+[1/1] spi: spi-zynq-qspi: Fix some wrong goto jumps & missing error code
+      commit: f131767eefc47de2f8afb7950cdea78397997d66
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

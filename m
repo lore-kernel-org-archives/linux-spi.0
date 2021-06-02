@@ -2,379 +2,148 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-19.9 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0438FC47083
-	for <linux-spi@archiver.kernel.org>; Wed,  2 Jun 2021 08:13:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C83F9C47083
+	for <linux-spi@archiver.kernel.org>; Wed,  2 Jun 2021 09:50:15 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D8EB1613C1
-	for <linux-spi@archiver.kernel.org>; Wed,  2 Jun 2021 08:13:42 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A9A776101B
+	for <linux-spi@archiver.kernel.org>; Wed,  2 Jun 2021 09:50:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229583AbhFBIPY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 2 Jun 2021 04:15:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37996 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230322AbhFBIPY (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 2 Jun 2021 04:15:24 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84214C061574
-        for <linux-spi@vger.kernel.org>; Wed,  2 Jun 2021 01:13:40 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id cb9so1888446edb.1
-        for <linux-spi@vger.kernel.org>; Wed, 02 Jun 2021 01:13:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=NJbT+GVKPDC4PquS19Koqf34xY1ShZswCtWqXlvF5ws=;
-        b=FJ4S6lEv42dREYzwtmI94/ouOhhuyRNxb5qgbT7WVkv/j9M4koMgLa9ivOAI6FHvDv
-         e0j8TA4aaG/BJgH/8lHNFu48lx7CIe5BxNSkP2xD9MHUxXz1K8VIJ91wY1fmY7Nl+XZZ
-         VvK5WUkrMFTyESgz+xbBH0T/MEXVA8CZoT8LdbVL6L1MQ8cm50s4MzIh8CYe43uQNT2b
-         aXbER3CrZgyNAPZH5WYU2X2BteaY1XUv8pLCGqHMYjsfTmU3Y9ANd0S5oZurGAk8SWii
-         S32Bpo27hRrVTGjtrFsD+gY7MG06LSQrSsoB71WIYxHMCnIJG7tdLxwtZPT0duyLkIH3
-         ACBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=NJbT+GVKPDC4PquS19Koqf34xY1ShZswCtWqXlvF5ws=;
-        b=sw0UgW6pM7jcjjFumCP8/nncGBwbaN3S0as17C4Q3UfTd0fvrJctJl6+O/Sl0Kf6tn
-         QtWcSnx2BttzlLO6PMA518y52lTSIUqwbvYrCY2lF4gUSbjPyYQjlPF3l2TLMOnlL4ks
-         pbXjIsTaPQJH6bGr2wwjeyC3DrXyfGXwjN1jdBHlvt4Y4oCcDEjaO9kssK97/Y55mu9N
-         to1+tbsGDW73XR9GbWxi9TadOIzUm8e85YDig87PnxreAvzUAOx17E+FCUnVsQ/cORpO
-         seWysRBxvTYhLq8nqJrCRf5FUdGmWqyo/2st06v3JvV9KOgVx2dbjTwsKV95suHK0i4J
-         t2NQ==
-X-Gm-Message-State: AOAM532ZLRcvW9elRRJ9TyyVodDyZVkhRfnQxypXUCqMiRgCtdnTfbTH
-        /2u6OZ8i7ZNFad2AvVx5LxM=
-X-Google-Smtp-Source: ABdhPJy5xk0aLKjTYluCHx4dDaGDpQjPObA6yY50zwQB8WC/JgFsBGbh1p7edajF0Dw4MkNd5974qA==
-X-Received: by 2002:aa7:cc9a:: with SMTP id p26mr37011443edt.74.1622621619120;
-        Wed, 02 Jun 2021 01:13:39 -0700 (PDT)
-Received: from [192.168.2.2] (81-204-249-205.fixed.kpn.net. [81.204.249.205])
-        by smtp.gmail.com with ESMTPSA id m12sm823812edc.40.2021.06.02.01.13.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Jun 2021 01:13:38 -0700 (PDT)
-Subject: Re: [PATCH v3 1/4] dt-bindings: rockchip-sfc: Bindings for Rockchip
- serial flash controller
-To:     Chris Morgan <macroalpha82@gmail.com>, linux-spi@vger.kernel.org
-Cc:     broonie@kernel.org, robh+dt@kernel.org, heiko@sntech.de,
-        hjc@rock-chips.com, yifeng.zhao@rock-chips.com,
-        sugar.zhang@rock-chips.com, linux-rockchip@lists.infradead.org,
-        linux-mtd@lists.infradead.org, p.yadav@ti.com,
-        Chris Morgan <macromorgan@hotmail.com>
-References: <20210601201021.4406-1-macroalpha82@gmail.com>
- <20210601201021.4406-2-macroalpha82@gmail.com>
-From:   Johan Jonker <jbx6244@gmail.com>
-Message-ID: <e609752d-ac37-cbfe-2f53-e23c3bb1b4d8@gmail.com>
-Date:   Wed, 2 Jun 2021 10:13:35 +0200
-User-Agent: Mozilla/5.0 (X11; Linux i686; rv:78.0) Gecko/20100101
- Thunderbird/78.10.0
+        id S230116AbhFBJv5 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 2 Jun 2021 05:51:57 -0400
+Received: from mx07-00178001.pphosted.com ([185.132.182.106]:41119 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229878AbhFBJv4 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 2 Jun 2021 05:51:56 -0400
+Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 1529n522004242;
+        Wed, 2 Jun 2021 11:49:57 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type; s=selector1;
+ bh=4MpjjPepkAf6oswplCRTLXvRI7dGZbjRiu8c2yrCFoo=;
+ b=6OMaEyYdQGUVqMMvoySbAoiSw5GOCbJlRz3K01Ihz5pvTAK/3Gm1w3uCJZm7d84qV9NW
+ RrsdOZCqLrMye1kLvnXuQZ+E8PjkXPohAKifMgD9WykSrHP5K7j50M8oHA7VsknQewny
+ WqrFWbHuknFy1FEOlb/j4lJ358qHejQ81OVs6HGf0C1teDVA7UuBAQvJIP0zd65K4UGJ
+ c9xS+5eiTz/RYG3C2YG4Q/H7PlCAQNgBaZzxoeoni8Fji6qYRWtlmGP1mT/uzFsPor8S
+ yprbZszaxK5mUsWtlaa1l3S2NAwh3ZhhAd+j6vPWIBq9seH9RSNducWs+ZbKs8QMkNIm Yw== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 38x3gxmkpy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 02 Jun 2021 11:49:57 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id CC584100039;
+        Wed,  2 Jun 2021 11:49:56 +0200 (CEST)
+Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id BEF02216ED7;
+        Wed,  2 Jun 2021 11:49:56 +0200 (CEST)
+Received: from localhost (10.75.127.49) by SFHDAG2NODE3.st.com (10.75.127.6)
+ with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 2 Jun 2021 11:49:56
+ +0200
+From:   <patrice.chotard@foss.st.com>
+To:     Mark Brown <broonie@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Boris Brezillon <boris.brezillon@collabora.com>,
+        <linux-mtd@lists.infradead.org>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        <linux-spi@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, Pratyush Yadav <p.yadav@ti.com>
+CC:     <patrice.chotard@foss.st.com>, <christophe.kerello@foss.st.com>
+Subject: [PATCH v5 3/3] mtd: spinand: add SPI-NAND MTD resume handler
+Date:   Wed, 2 Jun 2021 11:49:13 +0200
+Message-ID: <20210602094913.26472-4-patrice.chotard@foss.st.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20210602094913.26472-1-patrice.chotard@foss.st.com>
+References: <20210602094913.26472-1-patrice.chotard@foss.st.com>
 MIME-Version: 1.0
-In-Reply-To: <20210601201021.4406-2-macroalpha82@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Originating-IP: [10.75.127.49]
+X-ClientProxiedBy: SFHDAG3NODE2.st.com (10.75.127.8) To SFHDAG2NODE3.st.com
+ (10.75.127.6)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-06-02_05:2021-06-02,2021-06-02 signatures=0
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi Chris,
+From: Patrice Chotard <patrice.chotard@foss.st.com>
+
+After power up, all SPI NAND's blocks are locked. Only read operations
+are allowed, write and erase operations are forbidden.
+The SPI NAND framework unlocks all the blocks during its initialization.
+
+During a standby low power, the memory is powered down, losing its
+configuration.
+During the resume, the QSPI driver state is restored but the SPI NAND
+framework does not reconfigured the memory.
+
+This patch adds SPI-NAND MTD PM handlers for resume ops.
+SPI NAND resume op re-initializes SPI NAND flash to its probed state.
+
+Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
+Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
+---
+Changes in v5: 
+  - Remove spinand_read_cfg() from spinand_mtd_resume() as it is now called in 
+    spinand_init_flash()
+
+Changes in v4:
+  - Call spinand_init_flash() helper in spinand_mtd_resume()
+
+Changes in v3:
+  - Add spinand_read_cfg() call to repopulate cache
+
+Changes in v2:
+  - Add helper spinand_block_unlock().
+  - Add spinand_ecc_enable() call.
+  - Remove some dev_err().
+  - Fix commit's title and message.
+
+ drivers/mtd/nand/spi/core.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
+index 12dfa75eec28..13fd2f74b4f1 100644
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
+@@ -1124,6 +1124,22 @@ static int spinand_init_flash(struct spinand_device *spinand)
+ 	return ret;
+ }
+ 
++static void spinand_mtd_resume(struct mtd_info *mtd)
++{
++	struct spinand_device *spinand = mtd_to_spinand(mtd);
++	int ret;
++
++	ret = spinand_reset_op(spinand);
++	if (ret)
++		return;
++
++	ret = spinand_init_flash(spinand);
++	if (ret)
++		return;
++
++	spinand_ecc_enable(spinand, false);
++}
++
+ static int spinand_init(struct spinand_device *spinand)
+ {
+ 	struct device *dev = &spinand->spimem->spi->dev;
+@@ -1194,6 +1210,7 @@ static int spinand_init(struct spinand_device *spinand)
+ 	mtd->_block_isreserved = spinand_mtd_block_isreserved;
+ 	mtd->_erase = spinand_mtd_erase;
+ 	mtd->_max_bad_blocks = nanddev_mtd_max_bad_blocks;
++	mtd->_resume = spinand_mtd_resume;
+ 
+ 	if (nand->ecc.engine) {
+ 		ret = mtd_ooblayout_count_freebytes(mtd);
+-- 
+2.17.1
 
-Some comments. Have a look if it's useful.
-
-===
-About the title:
-
-dt-bindings: spi: add Rockchip Serial Flash Controller
-
-Include a driver group name.
-Start with a verb.
-No need to mention "bindings" twice.
-
-===
-
-In order to get this patch reviewed by rob+dt you must include:
-devicetree@vger.kernel.org
-
-Check your review status here:
-https://patchwork.ozlabs.org/project/devicetree-bindings/list/
-
-Get the other lists and maintainers with:
-./scripts/get_maintainer.pl --noroles --norolestats --nogit-fallback
---nogit <patch1> <patch2>
-
-===
-
-Check document with:
-
-make ARCH=arm dt_binding_check
-DT_SCHEMA_FILES=Documentation/devicetree/bindings/spi/rockchip-sfc.yaml
-
-make ARCH=arm dtbs_check
-DT_SCHEMA_FILES=Documentation/devicetree/bindings/spi/rockchip-sfc.yaml
-
-make ARCH=arm64 dtbs_check
-DT_SCHEMA_FILES=Documentation/devicetree/bindings/spi/rockchip-sfc.yaml
-
-Remove any errors before submitting.
-
-===
-
-In this serie you are introducing 4 new compatible strings, then also
-add 4 entries to dtsi files for the completeness.
-Could you give us a complete package?
-
-rockchip,px30-sfc
-rockchip,rk3036-sfc
-rockchip,rk3308-sfc
-rockchip,rv1108-sfc
-
-ARM: dts: rockchip: add sfc node for rv1108
-Copy node from manufacturer tree in rv1108.dtsi
-
-ARM: dts: rockchip: add sfc node for rk3036
-https://github.com/rockchip-linux/kernel/commit/57bfc68e70cb58bd4786a6baff6315f252a19088
-
-arm64: dts: rockchip: add sfc node for PX30
-
-arm64: dts: rockchip: add sfc node for rk3308
-https://github.com/rockchip-linux/kernel/commit/036e7e07a41c264a076c70ebf20cfeca031799a0
-
-Fix there commit message and clock names.
-
-===
-
-Johan
-
-On 6/1/21 10:10 PM, Chris Morgan wrote:
-> From: Chris Morgan <macromorgan@hotmail.com>
-> 
-> Add bindings for the Rockchip serial flash controller. New device
-> specific parameter of rockchip,sfc-no-dma included in documentation.
-> 
-> Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-> ---
->  .../devicetree/bindings/spi/rockchip,sfc.yaml | 87 +++++++++++++++++++
->  1 file changed, 87 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/rockchip,sfc.yaml
-> 
-
-> diff --git a/Documentation/devicetree/bindings/spi/rockchip,sfc.yaml b/Documentation/devicetree/bindings/spi/rockchip,sfc.yaml
-> new file mode 100644
-> index 000000000000..d5f8edd621ae
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/rockchip,sfc.yaml
-> @@ -0,0 +1,87 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/spi/rockchip,sfc.yaml#
-
-rockchip-sfc.yaml
-
-The comma is only used between <manufacturer>,<SoC name>-<function> I think.
-Ask a maintainer for exact name.
-
-
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Rockchip Serial Flash Controller (SFC)
-> +
-> +maintainers:
-
-> +  - Heiko Stuebner <heiko@sntech.de>
-> +  - Chris Morgan <macromorgan@hotmail.com>
-
-sort
-no hotmail because it screws the message-ID
-
-> +
-> +allOf:
-> +  - $ref: spi-controller.yaml#
-> +
-> +properties:
-> +  compatible:
-
-> +    oneOf:
-
-This format is wrong. Use fall back strings.
-
-> +      - const: rockchip,px30-sfc
-
-> +      - const: rockchip,rk1806-sfc
-> +      - const: rockchip,rk1808-sfc
-> +      - const: rockchip,rk312x-sfc
-
-remove
-I would advice against introducing compatible strings for boards that we
-don't have support for in mainline. Limit to things that we know what
-they look like.
-
-> +      - const: rockchip,rk3308-sfc
-> +      - const: rockchip,rv1108-sfc
-> +      - items:
-> +          - const: rockchip,rk3036-sfc
-
-    oneOf:
-      - const: rockchip,rk3036-sfc
-      - items:
-          - enum:
-              - rockchip,px30-sfc
-              - rockchip,rk3308-sfc
-              - rockchip,rv1108-sfc
-          - const: rockchip,rk3036-sfc
-
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    items:
-
-> +      - description: Bus Clock
-> +      - description: Module Clock
-
-swap
-
-> +
-> +  clock-names:
-> +    items:
-
-> +      - const: ahb
-> +      - const: sfc
-
-swap
-You must keep them in the same order as in your example and in the dtsi
-files (both mainline as manufacturer tree).
-
-Maybe use this:
-
-      - const: clk
-      - const: hclk
-
-
-#define HCLK_SFC		257
-#define SCLK_SFC		58
-
-	COMPOSITE(SCLK_SFC, "clk_sfc", mux_gpll_cpll_p, 0,
-			PX30_CLKSEL_CON(22), 7, 1, MFLAGS, 0, 7, DFLAGS,
-			PX30_CLKGATE_CON(6), 7, GFLAGS),
-
-	GATE(HCLK_SFC, "hclk_sfc", "hclk_mmc_nand", 0, PX30_CLKGATE_CON(6), 11,
-GFLAGS),
-
-===
-
-From clk-rk3036.c:
-
-	COMPOSITE(SCLK_SFC, "sclk_sfc", mux_pll_src_apll_dpll_gpll_usb480m_p, 0,
-			RK2928_CLKSEL_CON(16), 0, 2, MFLAGS, 2, 5, DFLAGS,
-			RK2928_CLKGATE_CON(10), 5, GFLAGS),
-
-
-	GATE(0, "hclk_sfc", "hclk_peri", CLK_IGNORE_UNUSED,
-RK2928_CLKGATE_CON(3), 14, GFLAGS),
-
-The HCLK_SFC is missing and ignored in rk3036-cru.h and clk-rk3036.c
-Maybe this needs a fix?
-
-#define HCLK_SFC		454
-
-See:
-clk: rockchip: rk3036: export the sfc clocks
-https://github.com/rockchip-linux/kernel/commit/8373cf713ddd32037dc86462cac2d2d3cc859a99
-
-Maybe add more patches to your serie? ;)
-
-===
-
-> +
-> +  power-domains:
-> +    maxItems: 1
-> +
-> +  rockchip,sfc-no-dma:
-
-> +    vendor,bool-property:
-
-remove
-See example vendor,bool-property at:
-Documentation/devicetree/bindings/example-schema.yaml
-
-> +      descrption: Boolean value for disabling DMA
-
-description:
-
-> +      type: boolean
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - clocks
-> +  - clock-names
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/px30-cru.h>
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-
-    #include <dt-bindings/power/px30-power.h>
-
-> +
-> +    sfc: spi@ff3a0000 {
-> +        compatible = "rockchip,px30-sfc","rockchip,rk3036-sfc";
-> +        reg = <0x0 0xff3a0000 0x0 0x4000>;
-> +        interrupts = <GIC_SPI 56 IRQ_TYPE_LEVEL_HIGH>;
-> +        clocks = <&cru SCLK_SFC>, <&cru HCLK_SFC>;
-> +        clock-names = "sfc", "ahb";
-> +        pinctrl-0 = <&sfc_clk &sfc_cs &sfc_bus2>;
-> +        pinctrl-names = "default";
-
-> +        power-domains = <&power PX30_PD_MMC_NAND>;
-
-Add include for PX30_PD_MMC_NAND.
-
-Check your example with scripts before you submit!
-
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-
-> +        flash@0 {
-
-This controller handles only serial flash for now.
-So limit that with patternProperties.
-Also users can't add more then 4 subnodes.
-That's where these documents are for, so add!
-
-
-> +            compatible = "jedec,spi-nor";
-
-> +            reg = <0>;
-
-            spi-max-frequency = <108000000>;
-
-> +            spi-rx-bus-width = <2>;
-> +            spi-tx-bus-width = <2>;
-
-The sort order is:
-compatible
-reg
-interrupts
-the rest in alphabetical order
-(no status in YAML examples)
-
-
-> +        };
-> +    };
-> +
-> +...
-> 

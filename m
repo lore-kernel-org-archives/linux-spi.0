@@ -2,140 +2,100 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-17.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 23A75C07E94
-	for <linux-spi@archiver.kernel.org>; Fri,  4 Jun 2021 15:12:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8ABC5C07E94
+	for <linux-spi@archiver.kernel.org>; Fri,  4 Jun 2021 15:27:07 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 088E161028
-	for <linux-spi@archiver.kernel.org>; Fri,  4 Jun 2021 15:12:32 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7669F61402
+	for <linux-spi@archiver.kernel.org>; Fri,  4 Jun 2021 15:27:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229864AbhFDPOR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 4 Jun 2021 11:14:17 -0400
-Received: from mail-ot1-f53.google.com ([209.85.210.53]:33424 "EHLO
-        mail-ot1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229822AbhFDPOR (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 4 Jun 2021 11:14:17 -0400
-Received: by mail-ot1-f53.google.com with SMTP id q9-20020a9d66490000b02903c741e5b703so8270058otm.0
-        for <linux-spi@vger.kernel.org>; Fri, 04 Jun 2021 08:12:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=tcOkC5VLrGMggQW0/cK3a0vHPS7zEtQley9DVLkd3MU=;
-        b=tvkLMHgqP6xKcgtHLGO4Mu75FFkXNjILRvACWIjzgLONqGdeuo7cA/TsiB4UPuwbqm
-         8JGu2ufe7LWehmOl97tg3+CF2ZvuivHT11JDJI8iUkzEDU+9bIvh3/qlnnQ8RLX/Epqo
-         JBDJVl2FF/e3qbfiBbvZ9nWdVXa33ndPM/zZGSLm2UoGjESIATz/DvfA3fyrWUrHAM1N
-         l3LK9pfmcxmmbpCfqSXi9jmACNeB0/TKbcgQ6LbUSVMvNKbq/d2INlfpF7Q4fwgA7lGX
-         qwMbzdYp+aI70DyduM4yjP6is4vJ6M+TkQL5SqX8CChH65aDOMGpeRxQ8rch0py/Kedx
-         mykg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=tcOkC5VLrGMggQW0/cK3a0vHPS7zEtQley9DVLkd3MU=;
-        b=Q2mCnIG7XWop4g5C4EqtVNmLY+BhlS1ZP9C2B7lt0Uu7taja9JOlE4YRyW8ZSahacK
-         rosoxXPxEvI4eL+/niX/u/vFyK0M7P2tRzXS4nD/xrzEXI4kQEhp4cq/mYTqUCbUcwh0
-         3DFGkRMC22zFrcyUXkpYWikmSl51xZgdx6yYqDVT7hIEfc8m/cRdthXoE09XLCmH0kPt
-         EBKBhBPIr7zbGjFd1EWxqKxADJxT6kM1SQESmpsabjaOHp1fDKeiYBV5NRHrw4Me3TF1
-         S2n35G9AV2w/TabsBfekmb2aK28fGLiwiTjNXTvI3jmLIeN5ea9nqpHSavuzmqllWdcD
-         BmAA==
-X-Gm-Message-State: AOAM531sOqo0lbb3jNygEL7RYA1/LCaYotpPJcS9o67mXhwVU9nZLc6p
-        zW9ikSIHiZIk1hTakRtZhDUfzutrxxg=
-X-Google-Smtp-Source: ABdhPJw+iIVWLirlLWj1ASIfVhTk3Cc37un01nAD0o0oR5HSWHeYrriYIKRgczNXkt8ODOJppQxqXg==
-X-Received: by 2002:a05:6830:11d7:: with SMTP id v23mr3971951otq.44.1622819476922;
-        Fri, 04 Jun 2021 08:11:16 -0700 (PDT)
-Received: from wintermute.localdomain (cpe-76-183-134-35.tx.res.rr.com. [76.183.134.35])
-        by smtp.gmail.com with ESMTPSA id k16sm523440otp.19.2021.06.04.08.11.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Jun 2021 08:11:16 -0700 (PDT)
-From:   Chris Morgan <macroalpha82@gmail.com>
-To:     linux-spi@vger.kernel.org
-Cc:     jon.lin@rock-chips.com, broonie@kernel.org, robh+dt@kernel.org,
-        heiko@sntech.de, jbx6244@gmail.com, hjc@rock-chips.com,
-        yifeng.zhao@rock-chips.com, sugar.zhang@rock-chips.com,
-        linux-rockchip@lists.infradead.org, linux-mtd@lists.infradead.org,
-        p.yadav@ti.com, Chris Morgan <macromorgan@hotmail.com>
-Subject: [RFC v4 7/8] arm64: dts: rockchip: Add SFC to RK3308
-Date:   Fri,  4 Jun 2021 10:10:54 -0500
-Message-Id: <20210604151055.28636-8-macroalpha82@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210604151055.28636-1-macroalpha82@gmail.com>
-References: <20210604151055.28636-1-macroalpha82@gmail.com>
+        id S230341AbhFDP2w (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 4 Jun 2021 11:28:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60402 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229864AbhFDP2w (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 4 Jun 2021 11:28:52 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74E65C061766;
+        Fri,  4 Jun 2021 08:27:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+        Subject:Sender:Reply-To:Content-ID:Content-Description;
+        bh=zEOGLELAotxFe8keo94CwRJObWeO1jWMUHLzFzUPC9M=; b=HMC8aAzvTE/km1vWl6Zjsq0InJ
+        jjLCXFaub81w1mHxlV8xDcIyCKZ3fWHxxoi4AGBzWyoFCZC7jtfwCxmqD+YS+vQahLDUjlozxZAo4
+        6hg6Pd1Xz33i5ItCw1MNd/ea13C3lAjx+B84J/cU6z+5VjbCZoAjKQK9FkwWp/yoQxoZGzypWBltX
+        lLX5GZopgODrLSciIRA00zYep2ww9jzuz7dHOrm4bDdDO1Q8TYvMhP7s/vJrpX2RB+VJJrlIM8K/D
+        SJ+PZLjGv3E5yW5xqP00GPqaN316Yo/yobY7dojtFhAW1zUA496lBsYTYUMAswFFGpixVwn/OFgW/
+        wE5UAdpw==;
+Received: from [2601:1c0:6280:3f0::ce7d]
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1lpBix-00E9tx-Lo; Fri, 04 Jun 2021 15:27:03 +0000
+Subject: Re: [PATCH] spi: stm32-qspi: Fix W=1 build warning
+To:     patrice.chotard@foss.st.com, Mark Brown <broonie@kernel.org>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc:     linux-spi@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        christophe.kerello@foss.st.com
+References: <20210604075009.25914-1-patrice.chotard@foss.st.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <49902b8a-c16a-423a-d528-3d35cac402bc@infradead.org>
+Date:   Fri, 4 Jun 2021 08:27:01 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210604075009.25914-1-patrice.chotard@foss.st.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Chris Morgan <macromorgan@hotmail.com>
+On 6/4/21 12:50 AM, patrice.chotard@foss.st.com wrote:
+> From: Patrice Chotard <patrice.chotard@foss.st.com>
+> 
+> Fix the following compilation warning using W=1 build:
+> arm-linux-gnueabi-ld: drivers/spi/spi-stm32-qspi.o: in function `stm32_qspi_poll_status':
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
 
-Add a devicetree entry for the Rockchip SFC for the RK3308 SOC.
+This is a build error, not a warning. The complete message is:
 
-Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
----
- arch/arm64/boot/dts/rockchip/rk3308.dtsi | 37 ++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+ld: drivers/spi/spi-stm32-qspi.o: in function `stm32_qspi_poll_status':
+spi-stm32-qspi.c:(.text+0x661): undefined reference to `spi_mem_supports_op'
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3308.dtsi b/arch/arm64/boot/dts/rockchip/rk3308.dtsi
-index 0c5fa9801e6f..2d922b1d51d5 100644
---- a/arch/arm64/boot/dts/rockchip/rk3308.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3308.dtsi
-@@ -637,6 +637,17 @@ nfc: nand-controller@ff4b0000 {
- 		status = "disabled";
- 	};
- 
-+	sfc: spi@ff4c0000 {
-+		compatible = "rockchip,rk3308-sfc", "rockchip,rk3036-sfc";
-+		reg = <0x0 0xff4c0000 0x0 0x4000>;
-+		interrupts = <GIC_SPI 82 IRQ_TYPE_LEVEL_HIGH>;
-+		clocks = <&cru HCLK_SFC>, <&cru SCLK_SFC>;
-+		clock-names = "ahb", "sfc";
-+		pinctrl-0 = <&sfc_clk &sfc_cs0 &sfc_bus4>;
-+		pinctrl-names = "default";
-+		status = "disabled";
-+	};
-+
- 	cru: clock-controller@ff500000 {
- 		compatible = "rockchip,rk3308-cru";
- 		reg = <0x0 0xff500000 0x0 0x1000>;
-@@ -910,6 +921,32 @@ flash_bus8: flash-bus8 {
- 			};
- 		};
- 
-+		serial_flash {
-+			sfc_bus4: sfc-bus4 {
-+				rockchip,pins =
-+					<3 RK_PA0 3 &pcfg_pull_none>,
-+					<3 RK_PA1 3 &pcfg_pull_none>,
-+					<3 RK_PA2 3 &pcfg_pull_none>,
-+					<3 RK_PA3 3 &pcfg_pull_none>;
-+			};
-+
-+			sfc_bus2: sfc-bus2 {
-+				rockchip,pins =
-+					<3 RK_PA0 3 &pcfg_pull_none>,
-+					<3 RK_PA1 3 &pcfg_pull_none>;
-+			};
-+
-+			sfc_cs0: sfc-cs0 {
-+				rockchip,pins =
-+					<3 RK_PA4 3 &pcfg_pull_none>;
-+			};
-+
-+			sfc_clk: sfc-clk {
-+				rockchip,pins =
-+					<3 RK_PA5 3 &pcfg_pull_none>;
-+			};
-+		};
-+
- 		gmac {
- 			rmii_pins: rmii-pins {
- 				rockchip,pins =
+
+Acked-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
+
+
+thanks.
+
+> ---
+>  drivers/spi/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> index f4481fe48bf0..e71a4c514f7b 100644
+> --- a/drivers/spi/Kconfig
+> +++ b/drivers/spi/Kconfig
+> @@ -806,6 +806,7 @@ config SPI_STM32_QSPI
+>  	tristate "STMicroelectronics STM32 QUAD SPI controller"
+>  	depends on ARCH_STM32 || COMPILE_TEST
+>  	depends on OF
+> +	depends on SPI_MEM
+>  	help
+>  	  This enables support for the Quad SPI controller in master mode.
+>  	  This driver does not support generic SPI. The implementation only
+> 
+
+
 -- 
-2.25.1
+~Randy
 

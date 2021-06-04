@@ -8,54 +8,51 @@ X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A489C47083
-	for <linux-spi@archiver.kernel.org>; Fri,  4 Jun 2021 15:11:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CAC44C07E94
+	for <linux-spi@archiver.kernel.org>; Fri,  4 Jun 2021 15:12:13 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1945960200
-	for <linux-spi@archiver.kernel.org>; Fri,  4 Jun 2021 15:11:33 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id AD10D61028
+	for <linux-spi@archiver.kernel.org>; Fri,  4 Jun 2021 15:12:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230087AbhFDPNS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 4 Jun 2021 11:13:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56990 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230085AbhFDPNS (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 4 Jun 2021 11:13:18 -0400
-Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50258C061768
-        for <linux-spi@vger.kernel.org>; Fri,  4 Jun 2021 08:11:19 -0700 (PDT)
-Received: by mail-ot1-x32e.google.com with SMTP id c31-20020a056830349fb02903a5bfa6138bso9380209otu.7
-        for <linux-spi@vger.kernel.org>; Fri, 04 Jun 2021 08:11:19 -0700 (PDT)
+        id S229778AbhFDPN7 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 4 Jun 2021 11:13:59 -0400
+Received: from mail-ot1-f51.google.com ([209.85.210.51]:37611 "EHLO
+        mail-ot1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229692AbhFDPN7 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 4 Jun 2021 11:13:59 -0400
+Received: by mail-ot1-f51.google.com with SMTP id v19-20020a0568301413b0290304f00e3d88so9370650otp.4
+        for <linux-spi@vger.kernel.org>; Fri, 04 Jun 2021 08:12:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=Axi/Uev8x89LTj+S3KWC83OqhvyPd7zI+O6x+3a1ANs=;
-        b=pXsgNeUzYIDLxE0VMZw/i2wgMFqIy9Z19Bqkdv899couZg+c72RfXzqwdSu3omFeoI
-         PQrb79SFQRfagJqIqflH6LZJYfRbAZnqmHFwEromxlDVGVyyFeAR1o1Yk4lUakABVBv0
-         gQqLnams5pAE/4prNBFGV2/bWvBoUqLMEzzBQVUP5OD6qxJQV46hguaE6FH3Jw6jpx6A
-         zeK6ByWppWhxVI1GuDFvfblpNb8SR1HfQKLJzH56TgKvNIRd1SLD3UNHlkVBdn6Bjobx
-         msfvnSbtcBinshoBhZkbG2R/H0GzPLWOELSqQUPnicD7/ZMcCSuwFtwu++1RfzAFeqhi
-         8ZJw==
+        bh=rmERDzA/ERlMENTHiwmD7XH/Ew0+jugDLfjVr8CV6Vc=;
+        b=CRxqr94ZqH9d671tSQn0MTM+grqoReU2f9urbwT/W+ArDZyttNEfzit+tqZjXQqT6O
+         jb+HYb7pTJA3x07ewTDMBvaCFQC62kVFscprjJjmy/JY0MJGh8fbPnU1y5BS7ITFIgJp
+         N+EQGDuFLCBGvwyoMYbOQ8zC2djV3hwAT+/C8HDZE3WEX4ACdUm59TvwroAQ4IPscJiE
+         KsbBoj0Eh+LSlFxhOcFOsBseVAVPhXi8HGCv87eTrVFnks/D/alvg8EhgsGBwHr51LU7
+         1D3jzJ5dMETcEZnWPIZUpyJUgCo6Op3+0iM9bsJoO6emCV2DYxGVlBWaFdSaSK6h5Jd0
+         Lddw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Axi/Uev8x89LTj+S3KWC83OqhvyPd7zI+O6x+3a1ANs=;
-        b=ujNA/zy6HWa50c70642Cp9RfwIY01fGZI4465wVKUI9sWlVJjyP8dywgj6MXhcTk9w
-         /3hzgXYSPXfcN8ZhJO/GHAm5OF9raVRT5WXN4E/R0fhmcpmQ+bsKQLwcjpzhCHU0FyvL
-         mAlXVCpYPqm9chLWe/uOmqwrOYXdY5OwtUGcX9AZWe9JVP2hKNv9bgmJFNm5MBO9pL51
-         Suvi/+MnaEroQY0pJ3VEnz+ZKNdOEEqgL/qgVwX225QI6479GO/oIwzaSl5dsPs4WZEX
-         mkJrhkNg3IU/t9ZQjn8jEj8jT9AnJHAjR8VjeiN19XK/tO+vXS4voZ/IBzAoSJEzxRIS
-         QssA==
-X-Gm-Message-State: AOAM530Orx7vd0p5LMdfd96YQdnmSyDw6/e5BXyLvgl0Aj9zkFuMhqHJ
-        U3fKJ8JoZBxb9Cb55TVEnkp7j74gNXo=
-X-Google-Smtp-Source: ABdhPJzus7QkWZolLTF8j8qgAivcqHh94rvtf71D3K1YLdVBaoV9tqY4DxxrBRCgR0aHJ8qJP/vqKQ==
-X-Received: by 2002:a9d:355:: with SMTP id 79mr4301635otv.101.1622819478023;
-        Fri, 04 Jun 2021 08:11:18 -0700 (PDT)
+        bh=rmERDzA/ERlMENTHiwmD7XH/Ew0+jugDLfjVr8CV6Vc=;
+        b=dlOYKu+q43ZEJRJ1YL5LS6Ch0AoVS/bb0UjH7br8PkrxLzfZbinlHnjAfhoP7MGin1
+         qvi4kss5iwOCSXd57wDCaYS/wMylE9ULMQ6wSPDfcCDHtm41WqoQh73TfEUACRn7a1Yw
+         XcFqFcftqQeJSlJ+FD4rVyGBCa++eVbIm+KaRmwbLGMwHJ8kfgV3r7EL+5ejhMyAD6z6
+         uhwrPfUl7NdBqLxrrLlWY+39qsApvZSUXgis49BcQaqLg9y9RIT4iZQDqU5BK9jXKzI+
+         u4UTblw/lZXvdhYy4m+FO2U8zzPhSfFMIqb9KpdIDQGyGnXHba52nb6qLZTeXRB8N2/a
+         Ue6Q==
+X-Gm-Message-State: AOAM533cesCeyxQcXo4sglGQUzOSFBjh5v5/j9WYjf42kSZakvhe/wPF
+        JZs8dTozJqEwePd0mVwMwgUaD8e4bRM=
+X-Google-Smtp-Source: ABdhPJxPipvsTaYVm4HD/RnZJ1adBvAEiC+ZGAajw9Jb6T1P7/BYagDEAJ1ajdqby7URhDqtlTbOBg==
+X-Received: by 2002:a9d:608b:: with SMTP id m11mr609120otj.146.1622819472219;
+        Fri, 04 Jun 2021 08:11:12 -0700 (PDT)
 Received: from wintermute.localdomain (cpe-76-183-134-35.tx.res.rr.com. [76.183.134.35])
-        by smtp.gmail.com with ESMTPSA id k16sm523440otp.19.2021.06.04.08.11.16
+        by smtp.gmail.com with ESMTPSA id k16sm523440otp.19.2021.06.04.08.11.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Jun 2021 08:11:17 -0700 (PDT)
+        Fri, 04 Jun 2021 08:11:11 -0700 (PDT)
 From:   Chris Morgan <macroalpha82@gmail.com>
 To:     linux-spi@vger.kernel.org
 Cc:     jon.lin@rock-chips.com, broonie@kernel.org, robh+dt@kernel.org,
@@ -63,9 +60,9 @@ Cc:     jon.lin@rock-chips.com, broonie@kernel.org, robh+dt@kernel.org,
         yifeng.zhao@rock-chips.com, sugar.zhang@rock-chips.com,
         linux-rockchip@lists.infradead.org, linux-mtd@lists.infradead.org,
         p.yadav@ti.com, Chris Morgan <macromorgan@hotmail.com>
-Subject: [RFC v4 8/8] arm64: dts: rockchip: Enable SFC for Odroid Go Advance
-Date:   Fri,  4 Jun 2021 10:10:55 -0500
-Message-Id: <20210604151055.28636-9-macroalpha82@gmail.com>
+Subject: [RFC v4 3/8] arm64: dts: rockchip: Add SFC to PX30
+Date:   Fri,  4 Jun 2021 10:10:50 -0500
+Message-Id: <20210604151055.28636-4-macroalpha82@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210604151055.28636-1-macroalpha82@gmail.com>
 References: <20210604151055.28636-1-macroalpha82@gmail.com>
@@ -77,43 +74,69 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Chris Morgan <macromorgan@hotmail.com>
 
-This enables the Rockchip Serial Flash Controller for the Odroid Go
-Advance. Note that while the attached SPI NOR flash and the controller
-both support quad read mode, only 2 of the required 4 pins are present.
-The rx and tx bus width is set to 2 for this reason.
+Add a devicetree entry for the Rockchip SFC for the PX30 SOC.
 
 Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
 ---
- .../boot/dts/rockchip/rk3326-odroid-go2.dts      | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/arm64/boot/dts/rockchip/px30.dtsi | 38 ++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts b/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts
-index 49c97f76df77..f78e11dd8447 100644
---- a/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts
-@@ -484,6 +484,22 @@ &sdmmc {
- 	status = "okay";
- };
+diff --git a/arch/arm64/boot/dts/rockchip/px30.dtsi b/arch/arm64/boot/dts/rockchip/px30.dtsi
+index 09baa8a167ce..cc7aced2dde9 100644
+--- a/arch/arm64/boot/dts/rockchip/px30.dtsi
++++ b/arch/arm64/boot/dts/rockchip/px30.dtsi
+@@ -966,6 +966,18 @@ emmc: mmc@ff390000 {
+ 		status = "disabled";
+ 	};
  
-+&sfc {
-+	pinctrl-0 = <&sfc_clk &sfc_cs0 &sfc_bus2>;
-+	pinctrl-names = "default";
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	status = "okay";
-+
-+	flash@0 {
-+		compatible = "jedec,spi-nor";
-+		reg = <0>;
-+		spi-max-frequency = <108000000>;
-+		spi-rx-bus-width = <2>;
-+		spi-tx-bus-width = <2>;
++	sfc: spi@ff3a0000 {
++		compatible = "rockchip,px30-sfc","rockchip,rk3036-sfc";
++		reg = <0x0 0xff3a0000 0x0 0x4000>;
++		interrupts = <GIC_SPI 56 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&cru HCLK_SFC>, <&cru SCLK_SFC>;
++		clock-names = "ahb", "sfc";
++		pinctrl-0 = <&sfc_clk &sfc_cs0 &sfc_bus4>;
++		pinctrl-names = "default";
++		power-domains = <&power PX30_PD_MMC_NAND>;
++		status = "disabled";
 +	};
-+};
 +
- &tsadc {
- 	status = "okay";
- };
+ 	nfc: nand-controller@ff3b0000 {
+ 		compatible = "rockchip,px30-nfc";
+ 		reg = <0x0 0xff3b0000 0x0 0x4000>;
+@@ -1967,6 +1979,32 @@ flash_bus8: flash-bus8 {
+ 			};
+ 		};
+ 
++		serial_flash {
++			sfc_bus4: sfc-bus4 {
++				rockchip,pins =
++					<1 RK_PA0 3 &pcfg_pull_none>,
++					<1 RK_PA1 3 &pcfg_pull_none>,
++					<1 RK_PA2 3 &pcfg_pull_none>,
++					<1 RK_PA3 3 &pcfg_pull_none>;
++			};
++
++			sfc_bus2: sfc-bus2 {
++				rockchip,pins =
++					<1 RK_PA0 3 &pcfg_pull_none>,
++					<1 RK_PA1 3 &pcfg_pull_none>;
++			};
++
++			sfc_cs0: sfc-cs0 {
++				rockchip,pins =
++					<1 RK_PA4 3 &pcfg_pull_none>;
++			};
++
++			sfc_clk: sfc-clk {
++				rockchip,pins =
++					<1 RK_PB1 3 &pcfg_pull_none>;
++			};
++		};
++
+ 		lcdc {
+ 			lcdc_rgb_dclk_pin: lcdc-rgb-dclk-pin {
+ 				rockchip,pins =
 -- 
 2.25.1
 

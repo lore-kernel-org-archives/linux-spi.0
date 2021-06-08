@@ -2,110 +2,139 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2F0AC47094
-	for <linux-spi@archiver.kernel.org>; Mon,  7 Jun 2021 20:25:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9093C47095
+	for <linux-spi@archiver.kernel.org>; Tue,  8 Jun 2021 02:27:35 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 912EE60FE9
-	for <linux-spi@archiver.kernel.org>; Mon,  7 Jun 2021 20:25:00 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id C6BE961185
+	for <linux-spi@archiver.kernel.org>; Tue,  8 Jun 2021 02:27:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230502AbhFGU0v (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 7 Jun 2021 16:26:51 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:40098 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230422AbhFGU0v (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Jun 2021 16:26:51 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 157KOtqb003693;
-        Mon, 7 Jun 2021 15:24:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1623097495;
-        bh=soaO8j6FeW+HBW6qIKwrpmt+kh6ODk1iTx9WHdjq7J0=;
-        h=Date:From:To:CC:Subject:References:In-Reply-To;
-        b=anyt0Jvfd4rh5v8/d3gqR51gobNXklYkl/fiGPoq69zsNpgbYny/riM/DByfHEPAY
-         Qc8qpCM44B1A+Kl0/pdWzn2TezAeIevBSOBNOOU6qwq0gjuSot3k7uIIE06vnuzTfV
-         MiLyx+6I+qd+AHRM14yk8Qfkvy5X5aRpUL7+Ogsg=
-Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 157KOt7r037883
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 7 Jun 2021 15:24:55 -0500
-Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Mon, 7 Jun
- 2021 15:24:54 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Mon, 7 Jun 2021 15:24:54 -0500
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 157KOsZK127941;
-        Mon, 7 Jun 2021 15:24:54 -0500
-Date:   Mon, 7 Jun 2021 15:24:54 -0500
-From:   Nishanth Menon <nm@ti.com>
-To:     Aswath Govindraju <a-govindraju@ti.com>
-CC:     Lokesh Vutla <lokeshvutla@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Grygorii Strashko <grygorii.strashko@ti.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Tero Kristo <kristo@kernel.org>, <linux-spi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-omap@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH 3/5] arm64: dts: ti: am65: align ti,pindir-d0-out-d1-in
- property with dt-shema
-Message-ID: <20210607202454.7rhc7ufiphgrhqqx@rejoice>
-References: <20210602123416.20378-1-a-govindraju@ti.com>
- <20210602123416.20378-4-a-govindraju@ti.com>
- <20210607134047.isfuedgjxpubpcb5@ungloved>
- <9e27bd14-e16a-4177-bba8-d5d0e5638f04@ti.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <9e27bd14-e16a-4177-bba8-d5d0e5638f04@ti.com>
-User-Agent: NeoMutt/20171215
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+        id S231197AbhFHC31 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 7 Jun 2021 22:29:27 -0400
+Received: from lucky1.263xmail.com ([211.157.147.132]:60136 "EHLO
+        lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230520AbhFHC30 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 7 Jun 2021 22:29:26 -0400
+Received: from localhost (unknown [192.168.167.235])
+        by lucky1.263xmail.com (Postfix) with ESMTP id D4DF7F4B1B;
+        Tue,  8 Jun 2021 10:26:57 +0800 (CST)
+X-MAIL-GRAY: 0
+X-MAIL-DELIVERY: 1
+X-ADDR-CHECKED4: 1
+X-ANTISPAM-LEVEL: 2
+X-ABS-CHECKED: 0
+Received: from localhost.localdomain (unknown [58.22.7.114])
+        by smtp.263.net (postfix) whith ESMTP id P31748T140095290545920S1623119206974105_;
+        Tue, 08 Jun 2021 10:26:55 +0800 (CST)
+X-IP-DOMAINF: 1
+X-UNIQUE-TAG: <dd4a2cd6961df4e90ca9b904b05c5cf6>
+X-RL-SENDER: jon.lin@rock-chips.com
+X-SENDER: jon.lin@rock-chips.com
+X-LOGIN-NAME: jon.lin@rock-chips.com
+X-FST-TO: linux-spi@vger.kernel.org
+X-RCPT-COUNT: 17
+X-SENDER-IP: 58.22.7.114
+X-ATTACHMENT-NUM: 0
+X-System-Flag: 0
+From:   Jon Lin <jon.lin@rock-chips.com>
+To:     linux-spi@vger.kernel.org
+Cc:     jon.lin@rock-chips.com, broonie@kernel.org, robh+dt@kernel.org,
+        heiko@sntech.de, jbx6244@gmail.com, hjc@rock-chips.com,
+        yifeng.zhao@rock-chips.com, sugar.zhang@rock-chips.com,
+        linux-rockchip@lists.infradead.org, linux-mtd@lists.infradead.org,
+        p.yadav@ti.com, macroalpha82@gmail.com, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Chris Morgan <macromorgan@hotmail.com>
+Subject: [PATCH v6 3/8] arm64: dts: rockchip: Add SFC to PX30
+Date:   Tue,  8 Jun 2021 10:26:39 +0800
+Message-Id: <20210608022644.21074-4-jon.lin@rock-chips.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20210608022644.21074-1-jon.lin@rock-chips.com>
+References: <20210608022644.21074-1-jon.lin@rock-chips.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 19:18-20210607, Aswath Govindraju wrote:
-> Hi Nishanth,
-> 
-> On 07/06/21 7:10 pm, Nishanth Menon wrote:
-> > On 18:04-20210602, Aswath Govindraju wrote:
-> >> ti,pindir-d0-out-d1-in property is expected to be of type boolean.
-> >> Therefore, fix the property accordingly.
-> >>
-> >> Signed-off-by: Aswath Govindraju <a-govindraju@ti.com>
-> > No need for Fixes?
-> > 
-> 
-> Functionality wise this is not a bug as the driver only checks for the
-> presence of the property. This is the reason why I did not include fixes.
-> 
+From: Chris Morgan <macromorgan@hotmail.com>
 
-Argument was based on device tree is considered independent of what or
-what not a driver does.
+Add a devicetree entry for the Rockchip SFC for the PX30 SOC.
 
-> > Also please split up the patches per maintainer so that we are'nt
-> > confused on who should pick what etc..
-> > 
-> 
-> okay. Will be aware of this from next time.
-> 
+Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+Signed-off-by: Jon Lin <jon.lin@rock-chips.com>
+---
 
-Actually, I have dropped this off my list. I am assuming you'd want the
-bindings to be merged after the dts cleanup is done.
+Changes in v6: None
+Changes in v5: None
+Changes in v4: None
+Changes in v3: None
+Changes in v2: None
+Changes in v1: None
 
+ arch/arm64/boot/dts/rockchip/px30.dtsi | 38 ++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/rockchip/px30.dtsi b/arch/arm64/boot/dts/rockchip/px30.dtsi
+index 09baa8a167ce..99a46259e428 100644
+--- a/arch/arm64/boot/dts/rockchip/px30.dtsi
++++ b/arch/arm64/boot/dts/rockchip/px30.dtsi
+@@ -966,6 +966,18 @@
+ 		status = "disabled";
+ 	};
+ 
++	sfc: spi@ff3a0000 {
++		compatible = "rockchip,px30-sfc","rockchip,rk3036-sfc";
++		reg = <0x0 0xff3a0000 0x0 0x4000>;
++		interrupts = <GIC_SPI 56 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&cru HCLK_SFC>, <&cru SCLK_SFC>;
++		clock-names = "hclk_sfc", "clk_sfc";
++		pinctrl-0 = <&sfc_clk &sfc_cs0 &sfc_bus4>;
++		pinctrl-names = "default";
++		power-domains = <&power PX30_PD_MMC_NAND>;
++		status = "disabled";
++	};
++
+ 	nfc: nand-controller@ff3b0000 {
+ 		compatible = "rockchip,px30-nfc";
+ 		reg = <0x0 0xff3b0000 0x0 0x4000>;
+@@ -1967,6 +1979,32 @@
+ 			};
+ 		};
+ 
++		serial_flash {
++			sfc_bus4: sfc-bus4 {
++				rockchip,pins =
++					<1 RK_PA0 3 &pcfg_pull_none>,
++					<1 RK_PA1 3 &pcfg_pull_none>,
++					<1 RK_PA2 3 &pcfg_pull_none>,
++					<1 RK_PA3 3 &pcfg_pull_none>;
++			};
++
++			sfc_bus2: sfc-bus2 {
++				rockchip,pins =
++					<1 RK_PA0 3 &pcfg_pull_none>,
++					<1 RK_PA1 3 &pcfg_pull_none>;
++			};
++
++			sfc_cs0: sfc-cs0 {
++				rockchip,pins =
++					<1 RK_PA4 3 &pcfg_pull_none>;
++			};
++
++			sfc_clk: sfc-clk {
++				rockchip,pins =
++					<1 RK_PB1 3 &pcfg_pull_none>;
++			};
++		};
++
+ 		lcdc {
+ 			lcdc_rgb_dclk_pin: lcdc-rgb-dclk-pin {
+ 				rockchip,pins =
 -- 
-Regards,
-Nishanth Menon
-Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+2.17.1
+
+
+

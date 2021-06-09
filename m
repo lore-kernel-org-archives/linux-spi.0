@@ -7,23 +7,26 @@ X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT
 	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1AEDAC48BE5
-	for <linux-spi@archiver.kernel.org>; Wed,  9 Jun 2021 15:12:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6DCBBC49361
+	for <linux-spi@archiver.kernel.org>; Wed,  9 Jun 2021 15:12:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 01C91611CC
-	for <linux-spi@archiver.kernel.org>; Wed,  9 Jun 2021 15:12:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 581846128A
+	for <linux-spi@archiver.kernel.org>; Wed,  9 Jun 2021 15:12:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238835AbhFIPOq (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 9 Jun 2021 11:14:46 -0400
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:42580 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229935AbhFIPOp (ORCPT
+        id S238950AbhFIPOr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 9 Jun 2021 11:14:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48540 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233374AbhFIPOp (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Wed, 9 Jun 2021 11:14:45 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01203C06175F;
+        Wed,  9 Jun 2021 08:12:51 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: sre)
-        with ESMTPSA id 450A11F4367A
+        with ESMTPSA id 432D81F43673
 Received: by jupiter.universe (Postfix, from userid 1000)
-        id C51504800DD; Wed,  9 Jun 2021 17:12:46 +0200 (CEST)
+        id C0A704800DC; Wed,  9 Jun 2021 17:12:46 +0200 (CEST)
 From:   Sebastian Reichel <sebastian.reichel@collabora.com>
 To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>
 Cc:     Arnd Bergmann <arnd@arndb.de>,
@@ -34,9 +37,9 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
         devicetree@vger.kernel.org, kernel@collabora.com,
         Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCHv4 4/6] ARM: dts: imx53-ppd: Fix ACHC entry
-Date:   Wed,  9 Jun 2021 17:12:33 +0200
-Message-Id: <20210609151235.48964-5-sebastian.reichel@collabora.com>
+Subject: [PATCHv4 3/6] dt-bindings: misc: ge-achc: Convert to DT schema format
+Date:   Wed,  9 Jun 2021 17:12:32 +0200
+Message-Id: <20210609151235.48964-4-sebastian.reichel@collabora.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210609151235.48964-1-sebastian.reichel@collabora.com>
 References: <20210609151235.48964-1-sebastian.reichel@collabora.com>
@@ -46,58 +49,127 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-PPD has only one ACHC device, which effectively is a Kinetis
-microcontroller. It has one SPI interface used for normal
-communication. Additionally it's possible to flash the device
-firmware using NXP's EzPort protocol by correctly driving a
-second chip select pin and the device reset pin.
+Convert the binding to DT schema format. Also update the binding
+to fix shortcomings
+
+ * Add "nxp,kinetis-k20" fallback compatible
+ * add programming SPI interface and reset GPIO
+ * add main clock
+ * add voltage supplies
+ * drop spi-max-frequency from required properties,
+   driver will setup max. frequency
 
 Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 ---
- arch/arm/boot/dts/imx53-ppd.dts | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ .../devicetree/bindings/misc/ge-achc.txt      | 26 --------
+ .../devicetree/bindings/misc/ge-achc.yaml     | 65 +++++++++++++++++++
+ 2 files changed, 65 insertions(+), 26 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/misc/ge-achc.txt
+ create mode 100644 Documentation/devicetree/bindings/misc/ge-achc.yaml
 
-diff --git a/arch/arm/boot/dts/imx53-ppd.dts b/arch/arm/boot/dts/imx53-ppd.dts
-index be040b6a02fa..1f3ee60fb102 100644
---- a/arch/arm/boot/dts/imx53-ppd.dts
-+++ b/arch/arm/boot/dts/imx53-ppd.dts
-@@ -70,6 +70,12 @@ cko2_11M: sgtl-clock-cko2 {
- 		clock-frequency = <11289600>;
- 	};
- 
-+	achc_24M: achc-clock {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <24000000>;
-+	};
-+
- 	sgtlsound: sound {
- 		compatible = "fsl,imx53-cpuvo-sgtl5000",
- 			     "fsl,imx-audio-sgtl5000";
-@@ -314,16 +320,13 @@ &gpio4 11 GPIO_ACTIVE_LOW
- 		    &gpio4 12 GPIO_ACTIVE_LOW>;
- 	status = "okay";
- 
--	spidev0: spi@0 {
--		compatible = "ge,achc";
--		reg = <0>;
--		spi-max-frequency = <1000000>;
--	};
+diff --git a/Documentation/devicetree/bindings/misc/ge-achc.txt b/Documentation/devicetree/bindings/misc/ge-achc.txt
+deleted file mode 100644
+index 77df94d7a32f..000000000000
+--- a/Documentation/devicetree/bindings/misc/ge-achc.txt
++++ /dev/null
+@@ -1,26 +0,0 @@
+-* GE Healthcare USB Management Controller
 -
--	spidev1: spi@1 {
--		compatible = "ge,achc";
--		reg = <1>;
--		spi-max-frequency = <1000000>;
-+	spidev0: spi@1 {
-+		compatible = "ge,achc", "nxp,kinetis-k20";
-+		reg = <1>, <0>;
-+		vdd-supply = <&reg_3v3>;
-+		vdda-supply = <&reg_3v3>;
-+		clocks = <&achc_24M>;
-+		reset-gpios = <&gpio3 6 GPIO_ACTIVE_LOW>;
- 	};
- 
- 	gpioxra0: gpio@2 {
+-A device which handles data aquisition from compatible USB based peripherals.
+-SPI is used for device management.
+-
+-Note: This device does not expose the peripherals as USB devices.
+-
+-Required properties:
+-
+-- compatible : Should be "ge,achc"
+-
+-Required SPI properties:
+-
+-- reg : Should be address of the device chip select within
+-  the controller.
+-
+-- spi-max-frequency : Maximum SPI clocking speed of device in Hz, should be
+-  1MHz for the GE ACHC.
+-
+-Example:
+-
+-spidev0: spi@0 {
+-	compatible = "ge,achc";
+-	reg = <0>;
+-	spi-max-frequency = <1000000>;
+-};
+diff --git a/Documentation/devicetree/bindings/misc/ge-achc.yaml b/Documentation/devicetree/bindings/misc/ge-achc.yaml
+new file mode 100644
+index 000000000000..ff07aa62ed57
+--- /dev/null
++++ b/Documentation/devicetree/bindings/misc/ge-achc.yaml
+@@ -0,0 +1,65 @@
++# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
++# Copyright (C) 2021 GE Inc.
++# Copyright (C) 2021 Collabora Ltd.
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/misc/ge-achc.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: GE Healthcare USB Management Controller
++
++description: |
++  A device which handles data acquisition from compatible USB based peripherals.
++  SPI is used for device management.
++
++  Note: This device does not expose the peripherals as USB devices.
++
++maintainers:
++  - Sebastian Reichel <sre@kernel.org>
++
++properties:
++  compatible:
++    items:
++      - const: ge,achc
++      - const: nxp,kinetis-k20
++
++  clocks:
++    maxItems: 1
++
++  vdd-supply:
++    description: Digital power supply regulator on VDD pin
++
++  vdda-supply:
++    description: Analog power supply regulator on VDDA pin
++
++  reg:
++    items:
++      - description: Control interface
++      - description: Firmware programming interface
++
++  reset-gpios:
++    description: GPIO used for hardware reset.
++    maxItems: 1
++
++required:
++  - compatible
++  - clocks
++  - reg
++  - reset-gpios
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        spi@1 {
++            compatible = "ge,achc", "nxp,kinetis-k20";
++            reg = <1>, <0>;
++            clocks = <&achc_24M>;
++            reset-gpios = <&gpio3 6 GPIO_ACTIVE_LOW>;
++        };
++    };
 -- 
 2.30.2
 

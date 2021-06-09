@@ -2,31 +2,31 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=unavailable
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6DCBBC49361
-	for <linux-spi@archiver.kernel.org>; Wed,  9 Jun 2021 15:12:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 151EAC48BCD
+	for <linux-spi@archiver.kernel.org>; Wed,  9 Jun 2021 15:12:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 581846128A
+	by mail.kernel.org (Postfix) with ESMTP id EDAA3613CA
 	for <linux-spi@archiver.kernel.org>; Wed,  9 Jun 2021 15:12:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238950AbhFIPOr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S238954AbhFIPOr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Wed, 9 Jun 2021 11:14:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48540 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233374AbhFIPOp (ORCPT
+        with ESMTP id S233424AbhFIPOp (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Wed, 9 Jun 2021 11:14:45 -0400
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01203C06175F;
-        Wed,  9 Jun 2021 08:12:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFBDDC061574;
+        Wed,  9 Jun 2021 08:12:50 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: sre)
-        with ESMTPSA id 432D81F43673
+        with ESMTPSA id 391E11F43662
 Received: by jupiter.universe (Postfix, from userid 1000)
-        id C0A704800DC; Wed,  9 Jun 2021 17:12:46 +0200 (CEST)
+        id B70274800C6; Wed,  9 Jun 2021 17:12:46 +0200 (CEST)
 From:   Sebastian Reichel <sebastian.reichel@collabora.com>
 To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>
 Cc:     Arnd Bergmann <arnd@arndb.de>,
@@ -37,139 +37,88 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
         devicetree@vger.kernel.org, kernel@collabora.com,
         Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCHv4 3/6] dt-bindings: misc: ge-achc: Convert to DT schema format
-Date:   Wed,  9 Jun 2021 17:12:32 +0200
-Message-Id: <20210609151235.48964-4-sebastian.reichel@collabora.com>
+Subject: [PATCHv4 0/6] GE Healthcare PPD firmware upgrade driver for ACHC
+Date:   Wed,  9 Jun 2021 17:12:29 +0200
+Message-Id: <20210609151235.48964-1-sebastian.reichel@collabora.com>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210609151235.48964-1-sebastian.reichel@collabora.com>
-References: <20210609151235.48964-1-sebastian.reichel@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Convert the binding to DT schema format. Also update the binding
-to fix shortcomings
+Hi,
 
- * Add "nxp,kinetis-k20" fallback compatible
- * add programming SPI interface and reset GPIO
- * add main clock
- * add voltage supplies
- * drop spi-max-frequency from required properties,
-   driver will setup max. frequency
+The PPD has a secondary processor (NXP Kinetis K20), which can be
+programmed from the main system. It is connected to the main processor
+by having it's EzPort interface connected to the SPI bus. Currently
+both (normal and EzPort) interfaces are simply exposed to userspace.
+This does not work for the EzPort, since EzPort usage requires a device
+reset. The proper solution is to do the flashing from kernel space
+with properly timed toggling of EzPort chip-select and reset line. In
+PATCHv2 it was suggested, that this should happen via an SPI ancillary
+device, so this is how it has been implemented now.
 
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
----
- .../devicetree/bindings/misc/ge-achc.txt      | 26 --------
- .../devicetree/bindings/misc/ge-achc.yaml     | 65 +++++++++++++++++++
- 2 files changed, 65 insertions(+), 26 deletions(-)
+Changes since PATCHv3:
+ * https://lore.kernel.org/lkml/20210528113346.37137-1-sebastian.reichel@collabora.com/
+ * Add Rob's Acked-by to 2nd patch
+ * use GPL-2-only instead of GPL-2+
+ * use %zu for printing a size_t
+ * use driver's .dev_groups to register sysfs group
+ * Add sysfs property documentation
+ * split EzPort and ACHC drivers into separate patches
+ * drop minItems/maxItems from achc binding, which seems to fix the problems
+   reported by dt_binding_check. The information of two items being required
+   is implied by the explicit item list.
+ * drop spidev functionality for the main SPI interface. The current firmware
+   communicates via UART and adding spidev support is complex. If future firmware
+   releases start using it, spidev support for the main interface can be added
+   later.
+
+Changes since PATCHv2:
+ * https://lore.kernel.org/lkml/20180327135259.30890-1-sebastian.reichel@collabora.co.uk/
+ * add SPI core support for ancillary devices
+ * modify ACHC binding to make use of ancillary device
+ * rewrite driver to use ancillary device
+ * rebased to 5.13-rc1
+
+Changes since PATCHv1:
+ * https://lore.kernel.org/lkml/20180320172201.2065-1-sebastian.reichel@collabora.co.uk/
+ * split DT binding update into its own patch
+ * add sysfs attribute documentation
+ * fix problem reported by kbuild test robot
+
+-- Sebastian
+
+Sebastian Reichel (6):
+  spi: add ancillary device support
+  spi: dt-bindings: support devices with multiple chipselects
+  dt-bindings: misc: ge-achc: Convert to DT schema format
+  ARM: dts: imx53-ppd: Fix ACHC entry
+  misc: nxp-ezport: introduce EzPort support
+  misc: gehc-achc: new driver
+
+ .../ABI/testing/sysfs-driver-ge-achc          |   9 +
+ .../devicetree/bindings/misc/ge-achc.txt      |  26 -
+ .../devicetree/bindings/misc/ge-achc.yaml     |  65 +++
+ .../bindings/spi/spi-controller.yaml          |   7 +-
+ arch/arm/boot/dts/imx53-ppd.dts               |  23 +-
+ drivers/misc/Kconfig                          |  15 +
+ drivers/misc/Makefile                         |   2 +
+ drivers/misc/gehc-achc.c                      | 136 +++++
+ drivers/misc/nxp-ezport.c                     | 476 ++++++++++++++++++
+ drivers/spi/spi.c                             | 139 +++--
+ drivers/spi/spidev.c                          |   1 -
+ include/linux/platform_data/nxp-ezport.h      |   9 +
+ include/linux/spi/spi.h                       |   2 +
+ 13 files changed, 839 insertions(+), 71 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-driver-ge-achc
  delete mode 100644 Documentation/devicetree/bindings/misc/ge-achc.txt
  create mode 100644 Documentation/devicetree/bindings/misc/ge-achc.yaml
+ create mode 100644 drivers/misc/gehc-achc.c
+ create mode 100644 drivers/misc/nxp-ezport.c
+ create mode 100644 include/linux/platform_data/nxp-ezport.h
 
-diff --git a/Documentation/devicetree/bindings/misc/ge-achc.txt b/Documentation/devicetree/bindings/misc/ge-achc.txt
-deleted file mode 100644
-index 77df94d7a32f..000000000000
---- a/Documentation/devicetree/bindings/misc/ge-achc.txt
-+++ /dev/null
-@@ -1,26 +0,0 @@
--* GE Healthcare USB Management Controller
--
--A device which handles data aquisition from compatible USB based peripherals.
--SPI is used for device management.
--
--Note: This device does not expose the peripherals as USB devices.
--
--Required properties:
--
--- compatible : Should be "ge,achc"
--
--Required SPI properties:
--
--- reg : Should be address of the device chip select within
--  the controller.
--
--- spi-max-frequency : Maximum SPI clocking speed of device in Hz, should be
--  1MHz for the GE ACHC.
--
--Example:
--
--spidev0: spi@0 {
--	compatible = "ge,achc";
--	reg = <0>;
--	spi-max-frequency = <1000000>;
--};
-diff --git a/Documentation/devicetree/bindings/misc/ge-achc.yaml b/Documentation/devicetree/bindings/misc/ge-achc.yaml
-new file mode 100644
-index 000000000000..ff07aa62ed57
---- /dev/null
-+++ b/Documentation/devicetree/bindings/misc/ge-achc.yaml
-@@ -0,0 +1,65 @@
-+# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
-+# Copyright (C) 2021 GE Inc.
-+# Copyright (C) 2021 Collabora Ltd.
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/misc/ge-achc.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: GE Healthcare USB Management Controller
-+
-+description: |
-+  A device which handles data acquisition from compatible USB based peripherals.
-+  SPI is used for device management.
-+
-+  Note: This device does not expose the peripherals as USB devices.
-+
-+maintainers:
-+  - Sebastian Reichel <sre@kernel.org>
-+
-+properties:
-+  compatible:
-+    items:
-+      - const: ge,achc
-+      - const: nxp,kinetis-k20
-+
-+  clocks:
-+    maxItems: 1
-+
-+  vdd-supply:
-+    description: Digital power supply regulator on VDD pin
-+
-+  vdda-supply:
-+    description: Analog power supply regulator on VDDA pin
-+
-+  reg:
-+    items:
-+      - description: Control interface
-+      - description: Firmware programming interface
-+
-+  reset-gpios:
-+    description: GPIO used for hardware reset.
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - clocks
-+  - reg
-+  - reset-gpios
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        spi@1 {
-+            compatible = "ge,achc", "nxp,kinetis-k20";
-+            reg = <1>, <0>;
-+            clocks = <&achc_24M>;
-+            reset-gpios = <&gpio3 6 GPIO_ACTIVE_LOW>;
-+        };
-+    };
 -- 
 2.30.2
 

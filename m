@@ -7,30 +7,30 @@ X-Spam-Status: No, score=-14.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E95AC48BE6
-	for <linux-spi@archiver.kernel.org>; Mon, 14 Jun 2021 19:54:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 33B3CC48BE8
+	for <linux-spi@archiver.kernel.org>; Mon, 14 Jun 2021 19:54:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 56DB0611CA
-	for <linux-spi@archiver.kernel.org>; Mon, 14 Jun 2021 19:54:23 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 130D3611EE
+	for <linux-spi@archiver.kernel.org>; Mon, 14 Jun 2021 19:54:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234356AbhFNT4Z (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 14 Jun 2021 15:56:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52426 "EHLO mail.kernel.org"
+        id S234594AbhFNT40 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 14 Jun 2021 15:56:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52446 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234187AbhFNT4V (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 14 Jun 2021 15:56:21 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2886C61246;
-        Mon, 14 Jun 2021 19:54:17 +0000 (UTC)
+        id S233884AbhFNT4Y (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 14 Jun 2021 15:56:24 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E94BE61166;
+        Mon, 14 Jun 2021 19:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623700458;
-        bh=lXE4ojg3vZj00rQa1Ur3m9EtSTs5cJ9y0Aq2+yVMsFQ=;
+        s=k20201202; t=1623700461;
+        bh=9H59Xz02Kl+iv21yoouobtliOku9p+EcM8ROFyfhWTc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BGr52i6SQTs4RQitog0bgHqDGHFM6c915vC6lqKr6Tu2zBYG4P5SvTYu2oEOqLH/n
-         Q6g2gl6jHIUzHS1jIp9RzkEYENknJX6no2Ahduz6n4CO7yjJdeY5NL/3mVlRblQWpg
-         nQa66e7nEvZ+kuKWvnYKJfxXme1xaFWwUBLE2p7nZ0LrhsM52y8HAmOrBQ6OXDhZk6
-         CTKUCyDIlwOqdA1iA8qPcl3ts4hXOogMEpWHE97cxuMx9iU8YTaJa3rSFqxKsTImZi
-         31I9QnzKIsY7HwRnFLZIdR/kZaZ+OxFmIB4KvYeJnCnAWNh4NH2tq7qCWK1WpmyRdf
-         pE4kVqd1vH6gg==
+        b=ehs1koXhYhnQJhJJvR8usrB0j9ZwqwOc5uAZo9Mub/OJw/4PHL81MgxHaC259emy6
+         JBxLmqjtsgBKEcHvUX7ND1/ZAxCsBqZyKWyGSR7u/3e6+G6UnZRYqe5SnmvXI54gDG
+         iUWPEb8u7jCPokEeD7nnqSyOfIx5N1ouawX3GPJ7zBSu8BKARk6J55rlvFSr40tVnc
+         vaLuLUnOPQPDnKF4SX3CHx3cxG8pfX/iPR2nWTA66FayfFCjNI+KFclffsJ9yx4hLD
+         i3tJx44lwpIL2VKANf+tB3Cbj+bQnzpJetKFB0KilYPnBWSHB1EXwe2qIAsVqzBsMU
+         Tc8nbAv62GZoQ==
 From:   Mark Brown <broonie@kernel.org>
 To:     Jerome Brunet <jbrunet@baylibre.com>,
         linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
@@ -41,12 +41,12 @@ To:     Jerome Brunet <jbrunet@baylibre.com>,
         zpershuai <zpershuai@gmail.com>,
         linux-arm-kernel@lists.infradead.org
 Cc:     Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 2/2] spi: meson-spicc: fix a wrong goto jump for avoiding memory leak.
-Date:   Mon, 14 Jun 2021 20:53:31 +0100
-Message-Id: <162370043178.40904.8100844708897155437.b4-ty@kernel.org>
+Subject: Re: [PATCH v2 1/2] spi: meson-spicc: fix memory leak in meson_spicc_probe
+Date:   Mon, 14 Jun 2021 20:53:32 +0100
+Message-Id: <162370043178.40904.2317762864895103950.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <1623562172-22056-1-git-send-email-zpershuai@gmail.com>
-References: <1623562172-22056-1-git-send-email-zpershuai@gmail.com>
+In-Reply-To: <1623562156-21995-1-git-send-email-zpershuai@gmail.com>
+References: <1623562156-21995-1-git-send-email-zpershuai@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -54,9 +54,9 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Sun, 13 Jun 2021 13:29:32 +0800, zpershuai wrote:
-> In meson_spifc_probe function, when enable the device pclk clock is
-> error, it should use clk_disable_unprepare to release the core clock.
+On Sun, 13 Jun 2021 13:29:16 +0800, zpershuai wrote:
+> when meson_spicc_clk_init returns failed, it should goto the
+> out_clk label.
 
 Applied to
 
@@ -64,8 +64,8 @@ Applied to
 
 Thanks!
 
-[2/2] spi: meson-spicc: fix a wrong goto jump for avoiding memory leak.
-      commit: 95730d5eb73170a6d225a9998c478be273598634
+[1/2] spi: meson-spicc: fix memory leak in meson_spicc_probe
+      commit: b2d501c13470409ee7613855b17e5e5ec4111e1c
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

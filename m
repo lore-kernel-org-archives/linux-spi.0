@@ -2,105 +2,108 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.2 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 690C2C48BE6
-	for <linux-spi@archiver.kernel.org>; Mon, 14 Jun 2021 13:09:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C9A04C2B9F4
+	for <linux-spi@archiver.kernel.org>; Mon, 14 Jun 2021 14:45:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 44B0B6124B
-	for <linux-spi@archiver.kernel.org>; Mon, 14 Jun 2021 13:09:20 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id ADD026124B
+	for <linux-spi@archiver.kernel.org>; Mon, 14 Jun 2021 14:45:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233218AbhFNNLV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 14 Jun 2021 09:11:21 -0400
-Received: from mail-wr1-f51.google.com ([209.85.221.51]:35556 "EHLO
-        mail-wr1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233451AbhFNNLP (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 14 Jun 2021 09:11:15 -0400
-Received: by mail-wr1-f51.google.com with SMTP id m18so14494252wrv.2
-        for <linux-spi@vger.kernel.org>; Mon, 14 Jun 2021 06:09:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:references:from:organization:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=hStNeExndAJKlr2+D1oBe+je+9Di+B0AKJsmhmeHTHQ=;
-        b=zIfPjNFCiHxfObTFs8ltCt7sZ9oD7I2SfVX1afkSlrtXayb9culO2R5WYKq/e+R9/+
-         gZJ08pzrH9I/bNRndmH6uhaFMZhakSpKCZWtdV/RsA8AntfFXpi6mykw6LyjOMI1R2lL
-         OiCPiyg6YL0rjkobE198CFEKdvLW/3mvr/n7CGkrPAAQg3Ox+m6qk1YjRBq0g+yVESPH
-         PiqvzF8Ws8MVwVNhz46e+j0MRL31iAAP7wtdT0U42M3EXjkkB7ZGHiUROoxO/adSSOVQ
-         EPdAymMh0bgA3s0q/5Gj7eqf/kby/SrINUTUwWE7hs4avz+4JTko1aGxDExjjf+lwLuo
-         Bwsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=hStNeExndAJKlr2+D1oBe+je+9Di+B0AKJsmhmeHTHQ=;
-        b=eD/dQ9TuGrLdc1qxy5NpotM+Wx97dOJmWBzQlvWfRa5KY/b3R1MhTIqqjfvBkjzWkR
-         QwgVBHLbdbhPeP0KkN4zoKUjiG0BGN5RW4AXEv6fhqkr+zHV6eYIYfmupigc71HxfTHR
-         8hKyA7d7SVLdpdh2VLSJwvy44QxwB/57Nv/FIEhGqLbY2VlT2l4yz88kTNAPQ7y28MjS
-         2ixddsvTJlfaTfFdrDwHMREBMFb23QyB1CKXog7oAiD7vQrwjY4zhQc2oGesjguwJx7H
-         ERAN5Q1UhVakIOH6ZsCwFycIC67mt2x91xRrehQtDbUpSXTZj0b7c2KTgowwovV56DLr
-         rEkA==
-X-Gm-Message-State: AOAM532l5lkIBh8saq11Yi+s4z2y8/tWJsf19kFsR001Au/WNSwYLRv1
-        huLqTfGXBtSvpwE3RSnHng0B7A==
-X-Google-Smtp-Source: ABdhPJzhrbsLUQYWmMLMpZ5iObfaCDIXTZ3flWw2olgqdOuaNg4kbgxCwgzzFk8AtkZqvNIeEdQSAg==
-X-Received: by 2002:a05:6000:1847:: with SMTP id c7mr18646898wri.368.1623676092087;
-        Mon, 14 Jun 2021 06:08:12 -0700 (PDT)
-Received: from ?IPv6:2a01:e0a:90c:e290:f0d4:3c02:f06a:77bb? ([2a01:e0a:90c:e290:f0d4:3c02:f06a:77bb])
-        by smtp.gmail.com with ESMTPSA id r7sm25083457wma.9.2021.06.14.06.08.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Jun 2021 06:08:11 -0700 (PDT)
-Subject: Re: [PATCH v2 1/2] spi: meson-spicc: fix memory leak in
- meson_spicc_probe
-To:     zpershuai <zpershuai@gmail.com>, Mark Brown <broonie@kernel.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        id S232805AbhFNOrS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 14 Jun 2021 10:47:18 -0400
+Received: from tux.runtux.com ([176.9.82.136]:41456 "EHLO tux.runtux.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232798AbhFNOrR (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 14 Jun 2021 10:47:17 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by tux.runtux.com (Postfix) with ESMTP id 774556F033;
+        Mon, 14 Jun 2021 16:45:11 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at tux.runtux.com
+Received: from tux.runtux.com ([127.0.0.1])
+        by localhost (tux2.runtux.com [127.0.0.1]) (amavisd-new, port 10026)
+        with LMTP id YZTLetKhIJS7; Mon, 14 Jun 2021 16:45:10 +0200 (CEST)
+Received: from bee.priv.zoo (62-99-217-90.static.upcbusiness.at [62.99.217.90])
+        (Authenticated sender: postmaster@runtux.com)
+        by tux.runtux.com (Postfix) with ESMTPSA id 1454A6EF74;
+        Mon, 14 Jun 2021 16:45:07 +0200 (CEST)
+Received: by bee.priv.zoo (Postfix, from userid 1002)
+        id 7B97346E; Mon, 14 Jun 2021 16:45:07 +0200 (CEST)
+Date:   Mon, 14 Jun 2021 16:45:07 +0200
+From:   Ralf Schlatterbeck <rsc@runtux.com>
+To:     Mark Brown <broonie@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
         linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <1623562156-21995-1-git-send-email-zpershuai@gmail.com>
-From:   Neil Armstrong <narmstrong@baylibre.com>
-Organization: Baylibre
-Message-ID: <8317e3b1-120a-eb55-95bc-7cb3cd1777c5@baylibre.com>
-Date:   Mon, 14 Jun 2021 15:08:09 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+        linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+        Mirko Vogt <mirko-dev|linux@nanl.de>
+Subject: [PATCH v2 1/1] spi: spi-sun6i: Fix chipselect/clock bug
+Message-ID: <20210614144507.y3udezjfbko7eavv@runtux.com>
 MIME-Version: 1.0
-In-Reply-To: <1623562156-21995-1-git-send-email-zpershuai@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-ray:  beware
+User-Agent: NeoMutt/20180716
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi,
+From: Mirko Vogt <mirko-dev|linux@nanl.de>
 
-On 13/06/2021 07:29, zpershuai wrote:
-> when meson_spicc_clk_init returns failed, it should goto the
-> out_clk label.
-> 
-> Signed-off-by: zpershuai <zpershuai@gmail.com>
-> ---
->  drivers/spi/spi-meson-spicc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
-> index ecba6b4..d675334 100644
-> --- a/drivers/spi/spi-meson-spicc.c
-> +++ b/drivers/spi/spi-meson-spicc.c
-> @@ -752,7 +752,7 @@ static int meson_spicc_probe(struct platform_device *pdev)
->  	ret = meson_spicc_clk_init(spicc);
->  	if (ret) {
->  		dev_err(&pdev->dev, "clock registration failed\n");
-> -		goto out_master;
-> +		goto out_clk;
->  	}
->  
->  	ret = devm_spi_register_master(&pdev->dev, master);
-> 
+The current sun6i SPI implementation initializes the transfer too early,
+resulting in SCK going high before the transfer. When using an additional
+(gpio) chipselect with sun6i, the chipselect is asserted at a time when
+clock is high, making the SPI transfer fail.
 
-Reviewed-by: Neil Armstrong <narmstrong@baylibre.com>
+This is due to SUN6I_GBL_CTL_BUS_ENABLE being written into
+SUN6I_GBL_CTL_REG at an early stage. Moving that to the transfer
+function, hence, right before the transfer starts, mitigates that
+problem.
+
+Fixes: 3558fe900e8af (spi: sunxi: Add Allwinner A31 SPI controller driver)
+Signed-off-by: Mirko Vogt <mirko-dev|linux@nanl.de>
+Signed-off-by: Ralf Schlatterbeck <rsc@runtux.com>
+---
+For oscilloscope screenshots with/without the patch, see my blog post
+https://blog.runtux.com/posts/2019/04/18/
+or the discussion in the armbian forum at
+https://forum.armbian.com/topic/4330-spi-gpio-chip-select-support/
+(my logo there is a penguin).
+As far as we can tell the driver never worked with gpio chipselects.
+History:
+Updated patch with suggested readability-improvements by Andre Przywara
+
+ drivers/spi/spi-sun6i.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index cc8401980125..23ad052528db 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -379,6 +379,10 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 	}
+ 
+ 	sun6i_spi_write(sspi, SUN6I_CLK_CTL_REG, reg);
++	/* Finally enable the bus - doing so before might raise SCK to HIGH */
++	reg = sun6i_spi_read(sspi, SUN6I_GBL_CTL_REG);
++	reg |= SUN6I_GBL_CTL_BUS_ENABLE;
++	sun6i_spi_write(sspi, SUN6I_GBL_CTL_REG, reg);
+ 
+ 	/* Setup the transfer now... */
+ 	if (sspi->tx_buf)
+@@ -504,7 +508,7 @@ static int sun6i_spi_runtime_resume(struct device *dev)
+ 	}
+ 
+ 	sun6i_spi_write(sspi, SUN6I_GBL_CTL_REG,
+-			SUN6I_GBL_CTL_BUS_ENABLE | SUN6I_GBL_CTL_MASTER | SUN6I_GBL_CTL_TP);
++			SUN6I_GBL_CTL_MASTER | SUN6I_GBL_CTL_TP);
+ 
+ 	return 0;
+ 
+-- 
+2.20.1
+

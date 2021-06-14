@@ -2,100 +2,121 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EB5E1C2B9F4
-	for <linux-spi@archiver.kernel.org>; Mon, 14 Jun 2021 10:41:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BFCE6C2B9F4
+	for <linux-spi@archiver.kernel.org>; Mon, 14 Jun 2021 13:08:56 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D037461607
-	for <linux-spi@archiver.kernel.org>; Mon, 14 Jun 2021 10:41:33 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id A53996124B
+	for <linux-spi@archiver.kernel.org>; Mon, 14 Jun 2021 13:08:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232997AbhFNKnY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 14 Jun 2021 06:43:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46962 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233077AbhFNKlX (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 14 Jun 2021 06:41:23 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E061061426;
-        Mon, 14 Jun 2021 10:35:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623666905;
-        bh=IujGyGFkUh6c095wpaUHFnrO0iE38+6f/5PehxIR33I=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=O3Hfj5KIOzRs7RfSvIXqZ4p5SPswqlDHwwGhTBQLZLdUUbskwUkncAJ4YgSAnXvz7
-         H1I0ZDylPWbKJLGG9wDhF3oJEdgj7bgNuZAemWnpduBSUFYTSt7Dnyb6nsaBQ19LnA
-         9hvOFNEatx122zL3A6h6eLs9duGyEI8yqMtpylDRWYNQbMOGcSYtYzf6L/0FhYYh1Q
-         iOMZ3qcZvcjONMEBB9qEHIPDw6dEMb/fDCNvl7rLaKfWIn/wFmuuT3XoXntsRMnQns
-         AleFF3hoOtQfQ+4TQUmlDKcoUwcIk5gN6G00A9YBSvZjGv5RVtaV9ehoLtg9mrqxjk
-         oYEyMbTs3YASA==
-Date:   Mon, 14 Jun 2021 11:34:46 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Nikita Shubin <nikita.shubin@maquefel.me>,
-        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/7] spi: spi-ep93xx: Prepare clock before using it
-Message-ID: <20210614103446.GC5646@sirena.org.uk>
-References: <20210613233041.128961-1-alexander.sverdlin@gmail.com>
- <20210613233041.128961-3-alexander.sverdlin@gmail.com>
+        id S233428AbhFNNK6 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 14 Jun 2021 09:10:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38406 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233403AbhFNNK6 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 14 Jun 2021 09:10:58 -0400
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A30ACC061574
+        for <linux-spi@vger.kernel.org>; Mon, 14 Jun 2021 06:08:50 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id u5-20020a7bc0450000b02901480e40338bso9321460wmc.1
+        for <linux-spi@vger.kernel.org>; Mon, 14 Jun 2021 06:08:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:from:organization:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=R81uREkUogO+0I18Z26XftVz6AP1SWmqajE8u/Zgwak=;
+        b=ZDzj1DcTYJDDnMMrH9pPIe9zXsQZgj4quciaM6vTD+poAcJu9VFol+t4P61zd3Gvwa
+         S/PoI8z72mftg8JnNBgWJfjW6htEKBAy73V/rd7u3SoZpa6bXl+C6CoMmZLk8R5DaTSW
+         1FX1CynwJKuNxWVrgKuDMuwS+2wCfoc8GuQEkhqcvZ/52O2EKT2bmYHjEhFXymRBHbzb
+         RywDDxyTizGHPB6DDVhLRyaxraMfQiRbx103UDeJRWqLTQ1mX1yxdwhGBVDf1YzJm2mW
+         PEtDq4BZMAbQckPrkG3FHnzRLx5B9ghbxaXkp0SOfKLlyIqddKzs9BWPTawJkz006Z5F
+         FFrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:from:organization
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=R81uREkUogO+0I18Z26XftVz6AP1SWmqajE8u/Zgwak=;
+        b=CZAt7ZiLUzAKKvdsu/SUU3SABlmeMjXFFz+F8ISAE4gLy9dreRoqIBOpQLq5Hmm90a
+         U79oyShAW6Lxo7acrPcwiz55/B411sQMgkHw3V1ROO4YPrWtwNy3d+5VVjdpVBsuA8+H
+         J2lPynv+HBPvKH6BDpExBf+X3t7HBcB69OcA5cx9ZnwXafUKhhfNGe4+sWpyTcWxcGXf
+         CGXzL89RYt6BkemVH1oCqUuweEQArPWh12SOcnKiPZ4wKC1PmmDjpD5cvdvvXOxJTWH6
+         fLWWPnwovQepfWvKSwwJpSxgAAd3R0Z4UDISd98jB3sJminGng8/dkuBuqBusxFXfuLx
+         oNDg==
+X-Gm-Message-State: AOAM5318LrTn5ck+4e4wFx2z5I8fBNrsRTgeHj07vMxc8VJf0m4Q2KAs
+        hVOp46kpFpZf/ATwV8bYIfRqBA==
+X-Google-Smtp-Source: ABdhPJzvOJIpH5I9fsn1C5b8nZomvpQk/22c28tDkwiaE/NCXB8ERgCGdtQ8w2UsbrpGkGyabOiuOQ==
+X-Received: by 2002:a7b:c5cd:: with SMTP id n13mr16341336wmk.97.1623676129021;
+        Mon, 14 Jun 2021 06:08:49 -0700 (PDT)
+Received: from ?IPv6:2a01:e0a:90c:e290:f0d4:3c02:f06a:77bb? ([2a01:e0a:90c:e290:f0d4:3c02:f06a:77bb])
+        by smtp.gmail.com with ESMTPSA id h18sm8957878wrs.64.2021.06.14.06.08.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Jun 2021 06:08:48 -0700 (PDT)
+Subject: Re: [PATCH v2 2/2] spi: meson-spicc: fix a wrong goto jump for
+ avoiding memory leak.
+To:     zpershuai <zpershuai@gmail.com>, Mark Brown <broonie@kernel.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <1623562172-22056-1-git-send-email-zpershuai@gmail.com>
+From:   Neil Armstrong <narmstrong@baylibre.com>
+Organization: Baylibre
+Message-ID: <b3ea2ad6-6341-df56-9d09-e3e832f8f316@baylibre.com>
+Date:   Mon, 14 Jun 2021 15:08:46 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="Y5rl02BVI9TCfPar"
-Content-Disposition: inline
-In-Reply-To: <20210613233041.128961-3-alexander.sverdlin@gmail.com>
-X-Cookie: Some restrictions may apply.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <1623562172-22056-1-git-send-email-zpershuai@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Hi,
 
---Y5rl02BVI9TCfPar
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 13/06/2021 07:29, zpershuai wrote:
+> In meson_spifc_probe function, when enable the device pclk clock is
+> error, it should use clk_disable_unprepare to release the core clock.
+> 
+> Signed-off-by: zpershuai <zpershuai@gmail.com>
+> ---
+>  drivers/spi/spi-meson-spicc.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
+> index d675334..b2c4621 100644
+> --- a/drivers/spi/spi-meson-spicc.c
+> +++ b/drivers/spi/spi-meson-spicc.c
+> @@ -725,7 +725,7 @@ static int meson_spicc_probe(struct platform_device *pdev)
+>  	ret = clk_prepare_enable(spicc->pclk);
+>  	if (ret) {
+>  		dev_err(&pdev->dev, "pclk clock enable failed\n");
+> -		goto out_master;
+> +		goto out_core_clk;
+>  	}
+>  
+>  	device_reset_optional(&pdev->dev);
+> @@ -764,9 +764,11 @@ static int meson_spicc_probe(struct platform_device *pdev)
+>  	return 0;
+>  
+>  out_clk:
+> -	clk_disable_unprepare(spicc->core);
+>  	clk_disable_unprepare(spicc->pclk);
+>  
+> +out_core_clk:
+> +	clk_disable_unprepare(spicc->core);
+> +
+>  out_master:
+>  	spi_master_put(master);
+>  
+> 
 
-On Mon, Jun 14, 2021 at 01:30:36AM +0200, Alexander Sverdlin wrote:
-> Use clk_prepare_enable()/clk_disable_unprepare() in preparation for switch
-> to Common Clock Framework, otherwise the following is visible:
->=20
-> WARNING: CPU: 0 PID: 1 at drivers/clk/clk.c:1011 clk_core_enable+0x9c/0xbc
-> Enabling unprepared ep93xx-spi.0
-> CPU: 0 PID: 1 Comm: swapper Tainted: G        W         5.13.0-rc5-... #1
-> Hardware name: Cirrus Logic EDB9302 Evaluation Board
-> [<c000d5b0>] (unwind_backtrace) from [<c000c590>] (show_stack+0x10/0x18)
-> [<c000c590>] (show_stack) from [<c03a5f38>] (dump_stack+0x20/0x2c)
-> [<c03a5f38>] (dump_stack) from [<c03a2098>] (__warn+0x98/0xc0)
-> [<c03a2098>] (__warn) from [<c03a2150>] (warn_slowpath_fmt+0x90/0xc0)
-> [<c03a2150>] (warn_slowpath_fmt) from [<c01d8358>] (clk_core_enable+0x9c/=
-0xbc)
-> [<c01d8358>] (clk_core_enable) from [<c01d8698>] (clk_core_enable_lock+0x=
-18/0x30)
-> [<c01d8698>] (clk_core_enable_lock) from [<c023eeb4>] (ep93xx_spi_prepare=
-_hardware+0x10/0x30)
-
-Please think hard before including complete backtraces in upstream
-reports, they are very large and contain almost no useful information
-relative to their size so often obscure the relevant content in your
-message. If part of the backtrace is usefully illustrative (it often is
-for search engines if nothing else) then it's usually better to pull out
-the relevant sections.
-
---Y5rl02BVI9TCfPar
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmDHMMUACgkQJNaLcl1U
-h9DaVgf/WRx61EZX++GV5SmP8RyZsQsu8RLHH/fRsJLP77/QncSMK6AjFAx3Arjm
-TKayaB2d06wkAPDXaXVPGu/ltYZRDcHo+vdBwG586kQgdzfagMSq/y4f4Q8V9r8w
-NuVoVRvxjXAOPUUxsLJqhtlczeheW4fCIGRmbQyBnryipf/NgCRU0MSoAsTk5O8C
-ILihHzbynhk3CZ9OZt8awIAIeq+/FesV7W+RcosHFeKNIPzWgTgrDcdelR/E4f06
-7qbqZ3G4EXNyggvdusfKVTGINSOBKa5qk5HPuJu0766LiJi6o7wqA4Ay3bstjGmV
-+PONN4/TXKsZEPDoc1644OZ6JeP82Q==
-=IFes
------END PGP SIGNATURE-----
-
---Y5rl02BVI9TCfPar--
+Reviewed-by: Neil Armstrong <narmstrong@baylibre.com>

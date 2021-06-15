@@ -2,75 +2,108 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-17.2 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_SANE_2 autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 048E7C2B9F4
-	for <linux-spi@archiver.kernel.org>; Tue, 15 Jun 2021 02:27:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FB3AC49361
+	for <linux-spi@archiver.kernel.org>; Tue, 15 Jun 2021 02:43:26 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D7E39613F5
-	for <linux-spi@archiver.kernel.org>; Tue, 15 Jun 2021 02:27:54 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2FCB1613C2
+	for <linux-spi@archiver.kernel.org>; Tue, 15 Jun 2021 02:43:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230195AbhFOC35 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 14 Jun 2021 22:29:57 -0400
-Received: from mailgw01.mediatek.com ([210.61.82.183]:44245 "EHLO
-        mailgw01.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S230017AbhFOC34 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 14 Jun 2021 22:29:56 -0400
-X-UUID: 1a1dd5c6154e4b4d9f47f18dae7ae266-20210615
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:MIME-Version:Content-Type:Date:CC:To:From:Subject:Message-ID; bh=HgQEMPAQwFVw316F5Bb8QONY/lmsE8nLMBDtacQX7JI=;
-        b=t3LvgieWBiOCwyg6dSv+mDsiKdf3OzAtFRQhDIgA06QHvTwrwjODC8+0XU4Caf1YqPyQkJgI4BvzQf8zOiEVVe6CJsmU1ipIuD+CefYkbNfLqGJzsBzTqwDlMxjko9L2ivHs3VYUBvs4o9PvgavCYhdcswbuWScXKY8gwAe3nHE=;
-X-UUID: 1a1dd5c6154e4b4d9f47f18dae7ae266-20210615
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
-        (envelope-from <mason.zhang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 405860223; Tue, 15 Jun 2021 09:51:21 +0800
-Received: from mtkcas10.mediatek.inc (172.21.101.39) by
- mtkmbs08n1.mediatek.inc (172.21.101.55) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 15 Jun 2021 09:51:12 +0800
-Received: from [10.15.20.246] (10.15.20.246) by mtkcas10.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 15 Jun 2021 09:51:11 +0800
-Message-ID: <1623721012.24597.3.camel@mbjsdccf07>
-Subject: [PATCH 2/2] dt-binding: mediatek: mt6779: update spi document
-From:   Mason Zhang <mason.zhang@mediatek.com>
-To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>
-CC:     <devicetree@vger.kernel.org>,
-        Mason Zhang <Mason.Zhang@mediatek.com>,
-        <wsd_upstream@mediatek.com>, <hanks.chen@mediatek.com>,
-        <linux-kernel@vger.kernel.org>,
-        "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-arm-kernel@lists.infradead.org>
-Date:   Tue, 15 Jun 2021 09:36:52 +0800
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4-0ubuntu2 
+        id S229976AbhFOCpZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 14 Jun 2021 22:45:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48052 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229965AbhFOCpX (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 14 Jun 2021 22:45:23 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83D78C061574;
+        Mon, 14 Jun 2021 19:43:18 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id x24so18761569lfr.10;
+        Mon, 14 Jun 2021 19:43:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=7xvsLbXf65mdyb3qLUmqZwn3t2ST568AmCGF279evdw=;
+        b=mPte5ivMY13f4aHDh4e9CUXMO6E4zLQKcMuVaSfSD8gJ1LV2QGHNXsgvlYt6x4zJe9
+         ZbdVWvL71MVSwlEqrAczZWJ8UIbLR8s3G4Pk6JEKyOQLgW3iLhmzCkfhlYNfT8fh+M4c
+         tgsuT3GzuUwaVlVM05zw6KYVUYN7g8B+ga7LaWV+fjMPky8fgPtRyjd0Vx52mzwcHUfN
+         i0p0uP29sNA0EjVQ49ZYemjN0D9TKrbKVI9FfTOlyhvo1tGh7EBuv0YIJlikw3IX6F6X
+         CYKritPkVEMP8OaanyeoaNFMli9ICXEM4TnXRvth/mIlIjXbYtJfwt96ca32cbBAdrF8
+         TuOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7xvsLbXf65mdyb3qLUmqZwn3t2ST568AmCGF279evdw=;
+        b=En3Mh6IAbzcDfwKNAB1jiGL3gA4h9Spdszi3WNwfkoWN/EwAYxnbBqzRzmIYnFR+vQ
+         /s7bWl8qayG8rEwDWid9cZh63PEP7wLcP7AxTa1VYo31TIXzvrhExtxkruDddVzs4i2p
+         4Hymv6vd9AFajw9wWDn7CBFhbujk5l4Zjk97kZazZRpBL9l7FXpTZ7BFVNsePV+Yi1A0
+         lAcQcpt9AOQdPW3Bxl81leWa5TapKlU6YsFeSgT2gs7cMLXm60zEjud0pqgsaAm7BreR
+         zzjYVKiI9weHzhtcCWZuBOdoqZTagzLhJEn4drRMfa4mnvI+LKDwa36bq02v3EoUuwRy
+         8Ltg==
+X-Gm-Message-State: AOAM532i9YBC2v0svS3TXVYQJ2b7WyHnFkExqR9zWJr01V4kvs3oIKq6
+        RF0A1zk2SzqqoueJ9o0LoxUnzHVmUUAs0md3h/EmoCV5GBaOSQ==
+X-Google-Smtp-Source: ABdhPJxyKlOZpgSD8mTvCMHfxQgeU7FRe81qS8OkPHT5YyuLuoBqn1hSl1lR0cDDsmOfJI+GcTA0YKZ7+laCcXh5+Sk=
+X-Received: by 2002:a2e:97d1:: with SMTP id m17mr11254855ljj.490.1623723167236;
+ Mon, 14 Jun 2021 19:12:47 -0700 (PDT)
 MIME-Version: 1.0
-X-MTK:  N
-Content-Transfer-Encoding: base64
+References: <1617809456-17693-1-git-send-email-yibin.gong@nxp.com>
+In-Reply-To: <1617809456-17693-1-git-send-email-yibin.gong@nxp.com>
+From:   Fabio Estevam <festevam@gmail.com>
+Date:   Mon, 14 Jun 2021 23:12:36 -0300
+Message-ID: <CAOMZO5CVyaOXNxwv9hKV3RB9Q4kzW4VchEeBj1=b9PvHkskcow@mail.gmail.com>
+Subject: Re: [PATCH v14 00/12] add ecspi ERR009165 for i.mx6/7 soc family
+To:     Robin Gong <yibin.gong@nxp.com>
+Cc:     Vinod <vkoul@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Martin Fuzzey <martin.fuzzey@flowbird.group>,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+        Schrempf Frieder <frieder.schrempf@kontron.de>,
+        Marco Felsch <m.felsch@pengutronix.de>,
+        Clark Wang <xiaoning.wang@nxp.com>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        dmaengine@vger.kernel.org, NXP Linux Team <linux-imx@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-DQp0aGlzIHBhdGNoIHVwZGF0ZSBzcGkgZG9jdW1lbnQgZm9yIE1UNjc3OSBTT0MuDQoNClNpZ25l
-ZC1vZmYtYnk6IE1hc29uIFpoYW5nIDxNYXNvbi5aaGFuZ0BtZWRpYXRlay5jb20+DQotLS0NCiBE
-b2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3Mvc3BpL3NwaS1tdDY1eHgudHh0IHwgMSAr
-DQogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspDQoNCmRpZmYgLS1naXQgYS9Eb2N1bWVu
-dGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3Mvc3BpL3NwaS1tdDY1eHgudHh0IGIvRG9jdW1lbnRh
-dGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL3NwaS9zcGktbXQ2NXh4LnR4dA0KaW5kZXggOWU0Mzcy
-MWZhN2Q2Li43YmFlN2VlZjI2YzcgMTAwNjQ0DQotLS0gYS9Eb2N1bWVudGF0aW9uL2RldmljZXRy
-ZWUvYmluZGluZ3Mvc3BpL3NwaS1tdDY1eHgudHh0DQorKysgYi9Eb2N1bWVudGF0aW9uL2Rldmlj
-ZXRyZWUvYmluZGluZ3Mvc3BpL3NwaS1tdDY1eHgudHh0DQpAQCAtMTMsNiArMTMsNyBAQCBSZXF1
-aXJlZCBwcm9wZXJ0aWVzOg0KICAgICAtIG1lZGlhdGVrLG10ODE4My1zcGk6IGZvciBtdDgxODMg
-cGxhdGZvcm1zDQogICAgIC0gIm1lZGlhdGVrLG10ODE5Mi1zcGkiLCAibWVkaWF0ZWssbXQ2NzY1
-LXNwaSI6IGZvciBtdDgxOTIgcGxhdGZvcm1zDQogICAgIC0gIm1lZGlhdGVrLG10ODUxNi1zcGki
-LCAibWVkaWF0ZWssbXQyNzEyLXNwaSI6IGZvciBtdDg1MTYgcGxhdGZvcm1zDQorICAgIC0gIm1l
-ZGlhdGVrLG10Njc3OS1zcGkiLCAibWVkaWF0ZWssbXQ2NzY1LXNwaSI6IGZvciBtdDY3NzkgcGxh
-dGZvcm1zDQogDQogLSAjYWRkcmVzcy1jZWxsczogc2hvdWxkIGJlIDEuDQogDQoNCg0KSGkgTWFy
-ayAmJiBNYXR0aGlhczoNCg0KCUkgaGF2ZSBmaXhlZCBjb21taXQgbWVzc2FnZSwgdGhhbmtzfg0K
-DQpUaGFua3MNCk1hc29uDQo=
+Hi Robin,
 
+On Wed, Apr 7, 2021 at 4:15 AM Robin Gong <yibin.gong@nxp.com> wrote:
+>
+> There is ecspi ERR009165 on i.mx6/7 soc family, which cause FIFO
+> transfer to be send twice in DMA mode. Please get more information from:
+> https://www.nxp.com/docs/en/errata/IMX6DQCE.pdf. The workaround is adding
+> new sdma ram script which works in XCH  mode as PIO inside sdma instead
+> of SMC mode, meanwhile, 'TX_THRESHOLD' should be 0. The issue should be
+
+Could you please confirm whether the sdma-imx7d.bin firmware available at
+https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/log/imx/sdma/sdma-imx7d.bin
+
+contains the "new sdma ram script which works in XCH  mode as PIO
+inside sdma instead
+of SMC mode" fix?
+
+Thanks,
+
+Fabio Estevam

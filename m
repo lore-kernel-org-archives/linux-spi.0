@@ -2,46 +2,48 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-19.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-19.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7182AC49EA6
-	for <linux-spi@archiver.kernel.org>; Tue, 15 Jun 2021 15:49:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 335CFC49EA4
+	for <linux-spi@archiver.kernel.org>; Tue, 15 Jun 2021 15:50:55 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5C5D361628
-	for <linux-spi@archiver.kernel.org>; Tue, 15 Jun 2021 15:49:46 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 16513614A7
+	for <linux-spi@archiver.kernel.org>; Tue, 15 Jun 2021 15:50:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232103AbhFOPvt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 15 Jun 2021 11:51:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45708 "EHLO mail.kernel.org"
+        id S232493AbhFOPw6 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 15 Jun 2021 11:52:58 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45776 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232105AbhFOPv0 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 15 Jun 2021 11:51:26 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 922F16148E;
-        Tue, 15 Jun 2021 15:49:21 +0000 (UTC)
+        id S232144AbhFOPv6 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 15 Jun 2021 11:51:58 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id F2AD661929;
+        Tue, 15 Jun 2021 15:49:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623772162;
-        bh=R2z5GIrmCya7sg7LqFVvlexetXRp+JisOWiVMnKGpXU=;
+        s=k20201202; t=1623772193;
+        bh=9QCDooSLI5lGrufx4gMOLz7/kIWNX/cvUYTiHDEsmU4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R37UBIH/NmonYakUCO1inhDcL6FUTs6hQGt2XHXzpE85VHUaDEaL9mwAF8Q1qaq6J
-         C6kEpeOZ2U1gi/zmw3whDY7YZvuelfEBO53RPE+0/cDrKf+fSC4uci/ZuZxoXiyShp
-         qO3VF0b7b45Y2LROivcRpgJ7yhgIBU5R6adxksFnsMTJMkwFYOHAcOSQTAVYPav9dt
-         vtRdyiGQOhPf4q2URlUETOeXULJYQCxf3Stqt+tyAWCl8x1X8mntfzUFvUeokf/Nl3
-         TS1MwnqxegMveENF8+Lo8oCWSkPKF41ZC+j6XlW/AKWJuFTWhnRCov/KaPAMY+GxUF
-         pUsprxIX8gfHg==
+        b=tjefwNPz50wq0/gvxSMPLiMc0baOWvWMpQGBp4upTH4PldrUL4Ts/Qnmqd9dsxm+x
+         zodUfxb/iCyB+uMdwMyg5sW58s5oQCh4PJ0YRx8toVIS3cwQY0szkOqnrDUw7Ol7I8
+         SDPpB4D1LV3m28yzXszcmOAdnE+rLN8LH6IZGbYEySoeVxgj2xbnrUtg+/4zEUjNFV
+         X8cWiouuWdzHfaRqfIDODKMpGkrhBJSUOo6dwh0AM5wE+57M4XMdQT2Y8djArCRcKd
+         DxGqhx0W1+y0Ul1+mr5PD6rKY6zBKF+39454Y5fAVBmCJDx/0k1BbQLUcYT6zKlfqL
+         7PD3B0DXVEOYA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     zpershuai <zpershuai@gmail.com>, Mark Brown <broonie@kernel.org>,
+Cc:     Patrice Chotard <patrice.chotard@foss.st.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
         linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.10 11/30] spi: spi-zynq-qspi: Fix some wrong goto jumps & missing error code
-Date:   Tue, 15 Jun 2021 11:48:48 -0400
-Message-Id: <20210615154908.62388-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 04/15] spi: stm32-qspi: Always wait BUSY bit to be cleared in stm32_qspi_wait_cmd()
+Date:   Tue, 15 Jun 2021 11:49:36 -0400
+Message-Id: <20210615154948.62711-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210615154908.62388-1-sashal@kernel.org>
-References: <20210615154908.62388-1-sashal@kernel.org>
+In-Reply-To: <20210615154948.62711-1-sashal@kernel.org>
+References: <20210615154948.62711-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -50,56 +52,49 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: zpershuai <zpershuai@gmail.com>
+From: Patrice Chotard <patrice.chotard@foss.st.com>
 
-[ Upstream commit f131767eefc47de2f8afb7950cdea78397997d66 ]
+[ Upstream commit d38fa9a155b2829b7e2cfcf8a4171b6dd3672808 ]
 
-In zynq_qspi_probe function, when enable the device clock is done,
-the return of all the functions should goto the clk_dis_all label.
+In U-boot side, an issue has been encountered when QSPI source clock is
+running at low frequency (24 MHz for example), waiting for TCF bit to be
+set didn't ensure that all data has been send out the FIFO, we should also
+wait that BUSY bit is cleared.
 
-If num_cs is not right then this should return a negative error
-code but currently it returns success.
+To prevent similar issue in kernel driver, we implement similar behavior
+by always waiting BUSY bit to be cleared.
 
-Signed-off-by: zpershuai <zpershuai@gmail.com>
-Link: https://lore.kernel.org/r/1622110857-21812-1-git-send-email-zpershuai@gmail.com
+Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
+Link: https://lore.kernel.org/r/20210603073421.8441-1-patrice.chotard@foss.st.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-zynq-qspi.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/spi/spi-stm32-qspi.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index 5d8a5ee62fa2..79863c889e18 100644
---- a/drivers/spi/spi-zynq-qspi.c
-+++ b/drivers/spi/spi-zynq-qspi.c
-@@ -679,14 +679,14 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 	xqspi->irq = platform_get_irq(pdev, 0);
- 	if (xqspi->irq <= 0) {
- 		ret = -ENXIO;
--		goto remove_master;
-+		goto clk_dis_all;
- 	}
- 	ret = devm_request_irq(&pdev->dev, xqspi->irq, zynq_qspi_irq,
- 			       0, pdev->name, xqspi);
- 	if (ret != 0) {
- 		ret = -ENXIO;
- 		dev_err(&pdev->dev, "request_irq failed\n");
--		goto remove_master;
-+		goto clk_dis_all;
- 	}
+diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
+index 4e726929bb4f..ea77d915216a 100644
+--- a/drivers/spi/spi-stm32-qspi.c
++++ b/drivers/spi/spi-stm32-qspi.c
+@@ -291,7 +291,7 @@ static int stm32_qspi_wait_cmd(struct stm32_qspi *qspi,
+ 	int err = 0;
  
- 	ret = of_property_read_u32(np, "num-cs",
-@@ -694,8 +694,9 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 	if (ret < 0) {
- 		ctlr->num_chipselect = 1;
- 	} else if (num_cs > ZYNQ_QSPI_MAX_NUM_CS) {
-+		ret = -EINVAL;
- 		dev_err(&pdev->dev, "only 2 chip selects are available\n");
--		goto remove_master;
-+		goto clk_dis_all;
- 	} else {
- 		ctlr->num_chipselect = num_cs;
- 	}
+ 	if (!op->data.nbytes)
+-		return stm32_qspi_wait_nobusy(qspi);
++		goto wait_nobusy;
+ 
+ 	if (readl_relaxed(qspi->io_base + QSPI_SR) & SR_TCF)
+ 		goto out;
+@@ -312,6 +312,9 @@ static int stm32_qspi_wait_cmd(struct stm32_qspi *qspi,
+ out:
+ 	/* clear flags */
+ 	writel_relaxed(FCR_CTCF | FCR_CTEF, qspi->io_base + QSPI_FCR);
++wait_nobusy:
++	if (!err)
++		err = stm32_qspi_wait_nobusy(qspi);
+ 
+ 	return err;
+ }
 -- 
 2.30.2
 

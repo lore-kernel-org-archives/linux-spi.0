@@ -2,119 +2,191 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	MAILING_LIST_MULTI,SPF_HELO_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C252C48BE5
-	for <linux-spi@archiver.kernel.org>; Thu, 17 Jun 2021 06:21:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D68FC49EA3
+	for <linux-spi@archiver.kernel.org>; Thu, 17 Jun 2021 09:15:04 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DCB8660FEA
-	for <linux-spi@archiver.kernel.org>; Thu, 17 Jun 2021 06:21:00 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 780F46128C
+	for <linux-spi@archiver.kernel.org>; Thu, 17 Jun 2021 09:15:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229683AbhFQGXH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 17 Jun 2021 02:23:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51524 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229515AbhFQGXG (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 17 Jun 2021 02:23:06 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A9D6B60FEA;
-        Thu, 17 Jun 2021 06:20:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623910859;
-        bh=57dsMicloxNOk1lyxm1iyNvezjRmT/zehpa8a/omzhY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=dFt2djALGgzeWAZu+Dk2zJpX39bUyQPeCqO6YtdyHU7HLGuVBvBJzacgi/liSnitV
-         O61ASU5ehkEC0aHKQjkcPLXw7EROtY140dw5GGXNAUAusxNX3jp0rjYmxX7dnNz6MO
-         op8hoyy0aWGypOGFUsvVav8cO1NS8lbH1N1UsMWk/lEdnRgXGijCCIxUyGURAC1l4I
-         Er5E9qY1Hf/4cXbDTlXdgPk6jEJln700T5ys6wL0nzIXvciKyobgL3BZK4rKfKiMJu
-         qQ+B89er/JIrUg/rcTudzgtQCbC1IClZpuPsXz5h7K56AQl7caMOP4336TQ1lrDRpo
-         vS3c3xVpY/3XA==
-Date:   Thu, 17 Jun 2021 11:50:55 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Wolfram Sang <wsa@kernel.org>, linux-arm-msm@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Amit Pundir <amit.pundir@linaro.org>,
-        linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/7] spi: spi-geni-qcom: Add support for GPI dma
-Message-ID: <YMrpx7uK2pM4AwYh@vkoul-mobl>
-References: <20210111151651.1616813-1-vkoul@kernel.org>
- <20210111151651.1616813-5-vkoul@kernel.org>
- <20210111163504.GD4728@sirena.org.uk>
- <YMm7ZWXnJyb8QT1u@vkoul-mobl>
- <20210616113505.GB6418@sirena.org.uk>
- <YMnoXKAvL0461GRR@vkoul-mobl>
+        id S231524AbhFQJRK (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 17 Jun 2021 05:17:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49666 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231390AbhFQJRJ (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 17 Jun 2021 05:17:09 -0400
+Received: from mail-vs1-xe2d.google.com (mail-vs1-xe2d.google.com [IPv6:2607:f8b0:4864:20::e2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F8A2C061574
+        for <linux-spi@vger.kernel.org>; Thu, 17 Jun 2021 02:15:02 -0700 (PDT)
+Received: by mail-vs1-xe2d.google.com with SMTP id f21so2610266vsl.4
+        for <linux-spi@vger.kernel.org>; Thu, 17 Jun 2021 02:15:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=NiiU6fiVLbE4syulfvGQUEnbQNZvmtFPXY1KRGZ4VKs=;
+        b=tspUddDmWP1nXGb8dYzDapkXukDhtaQZ8yVoZQOykE4MszNmnQ2Jc7pAu3v7qBcemT
+         UyLs98rU9nEy8e3wRIJkxsl8g3L8Eb/AvQODxlfCIA8Y+SqSVtbG2msAYvDIZFEizfbY
+         20UD8As6h7+oRqO/LBfp1JKzos5qS4bIZn22juJCAEEZOMhbhqM1f/S6KCbcFkkK35Tr
+         P7laFgsJQmqhNYip+ALRHKPPvbOtIHBYtRpZR/hgm9hpO06Ne5Y1MzvmGVRytTLSpocX
+         +CLKqhQk6OUYMP0R+b/JJQ4/QkH+6e5JGgp8Hm8OfSHuZ6CIo4hVwTpj+jWWd51a3cq+
+         7N8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=NiiU6fiVLbE4syulfvGQUEnbQNZvmtFPXY1KRGZ4VKs=;
+        b=qnk1RdXEMRe9NHDPr0Svn2mIFpgXVNXM6izrs9FMgn/0Qb8QJ7yGvvRc6Obp9iU2qX
+         bzTaNxKCgHdBccXRg+a6u6Zc0QpzlJjkA0r5WfEAedJ8OEL+K10oDVqssyI36Q1sPd0t
+         8E3ujXcvmD4kIpJaVMI2MwB8tY9XDR/RTvpOQ0Nkd5aOnqBfxyyXmmzwYamq0ES2WVVV
+         I2J7qYmrD2e0FvzABZW6FU1SeYO+OpuSaUd1N7PU8ruVg5vlZUI0NX89H3DhS9u9+9aB
+         0D4YTmkAq+v5Sf1tYng89cUogPoFhSrQpc5fU49r9CFzjzaU9ioh4aZBgFaEg5Fn/TK4
+         ysXQ==
+X-Gm-Message-State: AOAM533ICMJirEzrgfk2s2Ae5QnKZNE0tLd8+3ypWaxVATz0B8x5HlNG
+        qCZvf3TxQz8FzHDgGvnbX53kZVz1E8PH7BijP9FyJg==
+X-Google-Smtp-Source: ABdhPJyDDRUn2syWiuy8XigFtL3iDYKz59Ub/6ekAvgFfmAY9tRuxX/nulbHrrDC8J99+RHvCUQeMQ9XnjKDaURJSR4=
+X-Received: by 2002:a05:6102:2159:: with SMTP id h25mr3349328vsg.19.1623921301368;
+ Thu, 17 Jun 2021 02:15:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YMnoXKAvL0461GRR@vkoul-mobl>
+References: <20210615191543.1043414-1-robh@kernel.org>
+In-Reply-To: <20210615191543.1043414-1-robh@kernel.org>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 17 Jun 2021 11:14:25 +0200
+Message-ID: <CAPDyKFrY4UOO5CbZ8Bj7AH2+3Wo1PRpUv+Zs96tub=MzGuGrrQ@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: Drop redundant minItems/maxItems
+To:     Rob Herring <robh@kernel.org>
+Cc:     DTML <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-ide@vger.kernel.org, linux-clk <linux-clk@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-crypto@vger.kernel.org,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        dmaengine@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, alsa-devel@alsa-project.org,
+        "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>, Joerg
+        Roedel <joro@8bytes.org>," <iommu@lists.linux-foundation.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>, linux-can@vger.kernel.org,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        linux-phy@lists.infradead.org,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-pwm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-spi@vger.kernel.org, Linux PM <linux-pm@vger.kernel.org>,
+        Linux USB List <linux-usb@vger.kernel.org>,
+        linux-watchdog@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, Vinod Koul <vkoul@kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Kamal Dasu <kdasu.kdev@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Lee Jones <lee.jones@linaro.org>,
+        Ohad Ben-Cohen <ohad@wizery.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Brown <broonie@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On 16-06-21, 17:32, Vinod Koul wrote:
-> On 16-06-21, 12:35, Mark Brown wrote:
-> > On Wed, Jun 16, 2021 at 02:20:45PM +0530, Vinod Koul wrote:
-> > > But in this case, that wont work. We have a parent qup device which is
-> > > the parent for both spi and dma device and needs to be used for
-> > > dma-mapping! 
-> > 
-> > > If we allow drivers to set dma mapping device and use that, then I can
-> > > reuse the core. Let me know if that is agreeable to you and I can hack
-> > > this up. Maybe add a new member in spi_controller which is filled by
-> > > drivers in can_dma() callback?
-> > 
-> > Possibly, I'd need to see the code.
-> 
-> Ok, let me do a prototype and share ...
+On Tue, 15 Jun 2021 at 21:15, Rob Herring <robh@kernel.org> wrote:
+>
+> If a property has an 'items' list, then a 'minItems' or 'maxItems' with t=
+he
+> same size as the list is redundant and can be dropped. Note that is DT
+> schema specific behavior and not standard json-schema behavior. The tooli=
+ng
+> will fixup the final schema adding any unspecified minItems/maxItems.
+>
+> This condition is partially checked with the meta-schema already, but
+> only if both 'minItems' and 'maxItems' are equal to the 'items' length.
+> An improved meta-schema is pending.
+>
+> Cc: Jens Axboe <axboe@kernel.dk>
+> Cc: Stephen Boyd <sboyd@kernel.org>
+> Cc: Herbert Xu <herbert@gondor.apana.org.au>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: David Airlie <airlied@linux.ie>
+> Cc: Daniel Vetter <daniel@ffwll.ch>
+> Cc: Vinod Koul <vkoul@kernel.org>
+> Cc: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+> Cc: Kamal Dasu <kdasu.kdev@gmail.com>
+> Cc: Jonathan Cameron <jic23@kernel.org>
+> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Marc Zyngier <maz@kernel.org>
+> Cc: Joerg Roedel <joro@8bytes.org>
+> Cc: Jassi Brar <jassisinghbrar@gmail.com>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Cc: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+> Cc: Ulf Hansson <ulf.hansson@linaro.org>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Wolfgang Grandegger <wg@grandegger.com>
+> Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+> Cc: Andrew Lunn <andrew@lunn.ch>
+> Cc: Vivien Didelot <vivien.didelot@gmail.com>
+> Cc: Vladimir Oltean <olteanv@gmail.com>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Kishon Vijay Abraham I <kishon@ti.com>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: "Uwe Kleine-K=C3=B6nig" <u.kleine-koenig@pengutronix.de>
+> Cc: Lee Jones <lee.jones@linaro.org>
+> Cc: Ohad Ben-Cohen <ohad@wizery.com>
+> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+> Cc: Philipp Zabel <p.zabel@pengutronix.de>
+> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> Cc: Albert Ou <aou@eecs.berkeley.edu>
+> Cc: Alessandro Zummo <a.zummo@towertech.it>
+> Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Zhang Rui <rui.zhang@intel.com>
+> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+> Cc: Wim Van Sebroeck <wim@linux-watchdog.org>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Signed-off-by: Rob Herring <robh@kernel.org>
 
-So setting the dma_map_dev in the can_dma() callback does not work as we
-would need device before we invoke can_dma(), so modified this to be set
-earlier by driver (in driver probe, set the dma_map_dev) and use in
-__spi_map_msg().
+Acked-by: Ulf Hansson <ulf.hansson@linaro.org> # for MMC
 
-With this it works for me & I was able to get rid of driver mapping code
+[...]
 
--- >8 --
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index e353b7a9e54e..315f7e7545f7 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -961,11 +961,15 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
- 
- 	if (ctlr->dma_tx)
- 		tx_dev = ctlr->dma_tx->device->dev;
-+	else if (ctlr->dma_map_dev)
-+		tx_dev = ctlr->dma_map_dev;
- 	else
- 		tx_dev = ctlr->dev.parent;
- 
- 	if (ctlr->dma_rx)
- 		rx_dev = ctlr->dma_rx->device->dev;
-+	else if (ctlr->dma_map_dev)
-+		rx_dev = ctlr->dma_map_dev;
- 	else
- 		rx_dev = ctlr->dev.parent;
- 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 74239d65c7fd..4d3f116f5723 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -586,6 +586,7 @@ struct spi_controller {
- 	bool			(*can_dma)(struct spi_controller *ctlr,
- 					   struct spi_device *spi,
- 					   struct spi_transfer *xfer);
-+	struct device *dma_map_dev;
- 
- 	/*
- 	 * These hooks are for drivers that want to use the generic
-
--- 
-~Vinod
+Kind regards
+Uffe

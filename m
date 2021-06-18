@@ -2,147 +2,88 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-17.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D0B7EC49EA3
-	for <linux-spi@archiver.kernel.org>; Fri, 18 Jun 2021 08:32:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CAF35C48BDF
+	for <linux-spi@archiver.kernel.org>; Fri, 18 Jun 2021 16:58:57 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id AAD9261396
-	for <linux-spi@archiver.kernel.org>; Fri, 18 Jun 2021 08:32:50 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id AB89461248
+	for <linux-spi@archiver.kernel.org>; Fri, 18 Jun 2021 16:58:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233862AbhFRIe4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 18 Jun 2021 04:34:56 -0400
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:10130 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S233809AbhFRIew (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 18 Jun 2021 04:34:52 -0400
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 15I8Cjxt029418;
-        Fri, 18 Jun 2021 10:32:39 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=selector1;
- bh=tobkvdP0XEB3rizTcrRI77boeUhPqCNPjzbxlCZFFxA=;
- b=X5X8I/QkX33NRBreeXhB2ivJwbQuY5nuHgNW56Uf80eHr1kpxFzJX/wxy30SZc3yHrRO
- gxoRyWbYCAvnGgSb8aL8RUYEo+Lnc2jiUKv9J3aqrgQvmbAepjonsNVPl4jb5fZwrxQS
- WRaNuhHVAs8RVOMDVNmyvf3h5FnSW9OUwOn94pr5kQC/EUAJ0ZiFwOfJLOLLnrCAYFUs
- BZIaGP163AH9zXouCLD1bZlXEQSjs+vGTyV3+iVAhFNuSFJte2f9xJJLgimn2EW1nPti
- xLNiTJugAuzBGR39U+LRrbT90wL6HdH/11sqQflFkResdNC8fu2/znIYJiJtvorF2b9Q Kw== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 3984bm6b7h-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 18 Jun 2021 10:32:39 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 668DE10002A;
-        Fri, 18 Jun 2021 10:32:38 +0200 (CEST)
-Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id F05B921B501;
-        Fri, 18 Jun 2021 10:32:37 +0200 (CEST)
-Received: from lmecxl0889.lme.st.com (10.75.127.50) by SFHDAG2NODE3.st.com
- (10.75.127.6) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Fri, 18 Jun
- 2021 10:32:35 +0200
-Subject: Re: [PATCH] dt-bindings: Drop redundant minItems/maxItems
-To:     Rob Herring <robh@kernel.org>, <devicetree@vger.kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <linux-ide@vger.kernel.org>,
-        <linux-clk@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-crypto@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <dmaengine@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>, <alsa-devel@alsa-project.org>,
-        <iommu@lists.linux-foundation.org>, <linux-media@vger.kernel.org>,
-        <linux-mmc@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-can@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <linux-phy@lists.infradead.org>, <linux-gpio@vger.kernel.org>,
-        <linux-pwm@vger.kernel.org>, <linux-remoteproc@vger.kernel.org>,
-        <linux-riscv@lists.infradead.org>, <linux-rtc@vger.kernel.org>,
-        <linux-serial@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>, <linux-usb@vger.kernel.org>,
-        <linux-watchdog@vger.kernel.org>, Jens Axboe <axboe@kernel.dk>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, Vinod Koul <vkoul@kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Kamal Dasu <kdasu.kdev@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <maz@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Wolfgang Grandegger <wg@grandegger.com>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        Lee Jones <lee.jones@linaro.org>,
-        Ohad Ben-Cohen <ohad@wizery.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mark Brown <broonie@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Guenter Roeck <linux@roeck-us.net>
-References: <20210615191543.1043414-1-robh@kernel.org>
-From:   Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
-Message-ID: <e61633b9-48d1-81bf-9ab2-59a7b64987f3@foss.st.com>
-Date:   Fri, 18 Jun 2021 10:32:35 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+        id S231144AbhFRRBG (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 18 Jun 2021 13:01:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51060 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230335AbhFRRBG (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 18 Jun 2021 13:01:06 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33906C061574
+        for <linux-spi@vger.kernel.org>; Fri, 18 Jun 2021 09:58:56 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id c7so8611392edn.6
+        for <linux-spi@vger.kernel.org>; Fri, 18 Jun 2021 09:58:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=Z9mbh4A1VzZ/Kc0VyfgtzFFvfJf67o5osf3IxrdP4Ac=;
+        b=DZqFAtruSOP1EmWhZ9WKmB6oeyVbbhY/5aMM58iLr5GfJoLdGoS44wUxqV0neFE+j8
+         +EGYH2j3Qu9SuKgHiKX6K5589j45+oSguE1XIG1Vi/ZJRfmfGGl3Tq5dL9Tkzab6/UF7
+         Z2ysj1si2bJ+hC5qU4vyRO/L8TlK+rV+ejEdqyFGLn50wbu7dY5A44L6BlTRpJfWxtIC
+         mDV7GmSqw+I7y+dDNb3HOtUpjEHBy4SypRTbzHD30mX9XW4zFgL4zrc2Vdp/eiL9zHuz
+         fjvVo+TcguGsokK+si0eAXSfcv5+KtCez+wjyPkBQ0J4JWwOPPW57QZO41IFchRmyu8I
+         1rSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=Z9mbh4A1VzZ/Kc0VyfgtzFFvfJf67o5osf3IxrdP4Ac=;
+        b=ZLvqQPTgiHs7ZDbABUEf4KHpug65tBqwVD0p10WxtCUlnZkWXhwG3LX5+6PJGu13O1
+         Q+H5B7AtPFuy+2+Yfn/xbmoj2Xlb9Y411MpE9Xc9p6kjDPUdSJ/tP9TRqXVho40DBBt7
+         qf2xIVAwdranzDqDBzlJ/Ms2NtYhGh0UKY+XiDzjAoYTraT8WI8x5jqnKfThQbzxwM7d
+         cPgQ376A48YlZeEdHdaa13h6cD8OUM0YaRQ6/Bsru7vHe6giuCZQNfQ348hpSdK2Y2Jh
+         elG86Go6/yJsHucgLYXA52FQy2VUTlW4PZwKsUqux7N6Uabi4YDoYm6qa1aACk2GMxWI
+         yVrA==
+X-Gm-Message-State: AOAM5309nQSp18T28MgGK41UIw5S4lqo4jP+TAUnPitdjbodDe0f3cez
+        Wh/y5YnKybHRs/h/E5b82DhqwsZPVwF7TOvmMzFttfPLQTHtFw==
+X-Google-Smtp-Source: ABdhPJzobLUNP7LjfbO3DqUXR1hBi1ybnmS4ldVU0NMEo7rCcKn+NmChmxCG41RivNgfMTnoDlP/u/hF/UfwjryLj5w=
+X-Received: by 2002:aa7:c0da:: with SMTP id j26mr6162229edp.38.1624035534388;
+ Fri, 18 Jun 2021 09:58:54 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210615191543.1043414-1-robh@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.75.127.50]
-X-ClientProxiedBy: SFHDAG2NODE3.st.com (10.75.127.6) To SFHDAG2NODE3.st.com
- (10.75.127.6)
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
- definitions=2021-06-17_17:2021-06-15,2021-06-17 signatures=0
+From:   Adam Ford <aford173@gmail.com>
+Date:   Fri, 18 Jun 2021 11:58:43 -0500
+Message-ID: <CAHCN7xJ_Cidr5EiBXNi11St9vLFmm=s=K6jdHGJrvCzeQQpqyQ@mail.gmail.com>
+Subject: ECSPI Slave on i.M8M Mini with DMA
+To:     linux-spi <linux-spi@vger.kernel.org>,
+        NXP Linux Team <linux-imx@nxp.com>
+Cc:     Charles Stevens <charles.stevens@logicpd.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello ROb,
+To the NXP team,
 
-On 6/15/21 9:15 PM, Rob Herring wrote:
-> If a property has an 'items' list, then a 'minItems' or 'maxItems' with the
-> same size as the list is redundant and can be dropped. Note that is DT
-> schema specific behavior and not standard json-schema behavior. The tooling
-> will fixup the final schema adding any unspecified minItems/maxItems.
-> 
-> This condition is partially checked with the meta-schema already, but
-> only if both 'minItems' and 'maxItems' are equal to the 'items' length.
-> An improved meta-schema is pending.
-> 
-[...]
->  .../devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml     | 2 --
-[...]
->  .../devicetree/bindings/mailbox/st,stm32-ipcc.yaml          | 2 --
-[...]
->  .../devicetree/bindings/remoteproc/st,stm32-rproc.yaml      | 2 --
-[...]
->  Documentation/devicetree/bindings/sound/st,stm32-sai.yaml   | 3 ---
-Reviewed-by: Arnaud Pouliquen <arnaud.pouliquen@st.com>
+I noticed the spi-imx driver has a function called spi_imx_can_dma()
+which returns false if the SPI is configured as a slave, so the dma
+cannot be used in slave mode.
 
-Thanks,
-Arnaud
+Section 10.1.2.7 "DMA" of the The 8MM Ref manual, Rev 3, shows there
+are a few conditions that can trigger the DMA.  Of them, two are
+RXFIFO data request and RXFIFO full.  The block diagram in that
+section shows it can retrieve data with DMA
+
+However, in section 10.1.4 "Applications" of the same document, it
+shows the optional DMA configurations are only in the SPI master
+configuration and not the SPI slave configuration.
+
+The ECSPIx_DMAREG documentation (section 10.1.5.6) states "The ECSPI
+sends out DMA requests when the appropriate FIFO conditions are
+matched." Unfortunately it doesn't explicitly state whether that's
+only for master or available in either master or slave mode.
+
+Can someone tell me if DMA is available when SPI is configured as a slave?
+
+thank you,
+
+adam

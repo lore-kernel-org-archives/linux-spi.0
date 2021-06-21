@@ -2,99 +2,262 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.2 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 28E21C48BC2
-	for <linux-spi@archiver.kernel.org>; Mon, 21 Jun 2021 15:31:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4343BC4743C
+	for <linux-spi@archiver.kernel.org>; Mon, 21 Jun 2021 17:56:10 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 130C061151
-	for <linux-spi@archiver.kernel.org>; Mon, 21 Jun 2021 15:31:48 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 28D8561361
+	for <linux-spi@archiver.kernel.org>; Mon, 21 Jun 2021 17:56:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230288AbhFUPeA (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 21 Jun 2021 11:34:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44810 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230274AbhFUPd7 (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 21 Jun 2021 11:33:59 -0400
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E1CCC06175F;
-        Mon, 21 Jun 2021 08:31:44 -0700 (PDT)
-Received: by mail-wr1-x42a.google.com with SMTP id j1so2949534wrn.9;
-        Mon, 21 Jun 2021 08:31:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=5Avdk1cUnyC3+7ojOpNcEOTf+b0zh4pnCSxeUUKvMgU=;
-        b=pb7zUMh4jKMQrXlWGF+7NuVNDCPEG6tfXli5PjjwPOJ6HZl6kEKtEt31V353GSH8N9
-         azwWA9imwKfh5CyHXlWxxZBRs0P0k3+3BnlbFbjrBWqaFJJ0CclGEblfvKg+SDGE8oRf
-         y94s2Ixn2moENrpLEj/jHRig8K260Bft0Q34xERqDtL4hFYOj0GujA/2FIfC+jFoTI1x
-         WF3KUpkLkdCgn5OGezzuRkZ0oFfywS1Bggv9Ux0hseaBKLSZZ9MAdNzkWmfYrrdEwtBf
-         QCcojUWBn1A567DX5L7JjLnC1o81ffrGqH2MG8blB7i7fWalU/5Kd1jgpybsAnlJLRmY
-         ByiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=5Avdk1cUnyC3+7ojOpNcEOTf+b0zh4pnCSxeUUKvMgU=;
-        b=AHTfrnGkFznHpK678pFXwXS634JU1YUkR1o8QUhIdL1hjDfYXi5O8jmfM2AnJSxyAV
-         WjB0qAyMJVJlZRorzgkkRJIYkGI0g33V/m9xQe7bI5RW1pQeGlosncAJ/eixldBUSait
-         wrrM80fOyDk3z0JdXB2OCre/GGo2lGKIuFoGHY7zHGeNNQrBpZH9f399+EwuZOvl8r3E
-         J9neGgRTjO5u2Gxs3pCgz0lBGLaYcMb48TxhaSXMl0n7ttoBV7YcV9evGuFCI7rSLyTU
-         zK9fg6MZfkBv/My3cqC+KlKr0vCNCEKPeo61RSMqUwwelPhTjapVkd0vJbPmP2dqTOy2
-         4tew==
-X-Gm-Message-State: AOAM533BPvk+I5FfALI2DpzYuljqxTWrQd0sjBrjEVcjdR54TvFZ+Gow
-        ByP7HDaKWpmm8MFQHhxRItM=
-X-Google-Smtp-Source: ABdhPJwsdPv8YPaJiJ+psK8OYI/7K0cxWXu8s9IqZypjDJJHlYTbHy6awnRQ23P4LyPYJmXCXSph3A==
-X-Received: by 2002:a5d:5401:: with SMTP id g1mr29225427wrv.373.1624289503156;
-        Mon, 21 Jun 2021 08:31:43 -0700 (PDT)
-Received: from ziggy.stardust (81.172.61.185.dyn.user.ono.com. [81.172.61.185])
-        by smtp.gmail.com with ESMTPSA id k13sm4506181wrp.73.2021.06.21.08.31.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Jun 2021 08:31:42 -0700 (PDT)
-Subject: Re: [PATCH 2/2] dt-binding: mediatek: mt6779: update spi document
-To:     Mark Brown <broonie@kernel.org>,
-        Mason Zhang <mason.zhang@mediatek.com>
-Cc:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        wsd_upstream@mediatek.com, hanks.chen@mediatek.com,
-        linux-kernel@vger.kernel.org,
-        "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-        linux-mediatek@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org
-References: <1623721803.24597.9.camel@mbjsdccf07>
- <20210615111426.GC5149@sirena.org.uk>
-From:   Matthias Brugger <matthias.bgg@gmail.com>
-Message-ID: <732a8061-e8be-5c8a-ea75-6da87947db02@gmail.com>
-Date:   Mon, 21 Jun 2021 17:31:41 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.2
+        id S232051AbhFUR6W (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 21 Jun 2021 13:58:22 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:51016 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232996AbhFUR4S (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 21 Jun 2021 13:56:18 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: sre)
+        with ESMTPSA id B63DE1F4267B
+Received: by jupiter.universe (Postfix, from userid 1000)
+        id 0982F4800C7; Mon, 21 Jun 2021 19:54:00 +0200 (CEST)
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, Ian Ray <ian.ray@ge.com>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, kernel@collabora.com,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCHv5 1/5] spi: add ancillary device support
+Date:   Mon, 21 Jun 2021 19:53:55 +0200
+Message-Id: <20210621175359.126729-2-sebastian.reichel@collabora.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210621175359.126729-1-sebastian.reichel@collabora.com>
+References: <20210621175359.126729-1-sebastian.reichel@collabora.com>
 MIME-Version: 1.0
-In-Reply-To: <20210615111426.GC5149@sirena.org.uk>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+Introduce support for ancillary devices, similar to existing
+implementation for I2C. This is useful for devices having
+multiple chip-selects, for example some microcontrollers
+provide a normal SPI interface and a flashing SPI interface.
 
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+---
+ drivers/spi/spi.c       | 137 +++++++++++++++++++++++++++++++---------
+ include/linux/spi/spi.h |   2 +
+ 2 files changed, 108 insertions(+), 31 deletions(-)
 
-On 15/06/2021 13:14, Mark Brown wrote:
-> On Tue, Jun 15, 2021 at 09:50:03AM +0800, Mason Zhang wrote:
->>
->> this patch update spi document for MT6779 SOC.
-> 
-> I don't have either patch 1 or a cover letter, what's the story with
-> dependencies here?
-> 
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 16b377581d16..b1b6031961b7 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -564,49 +564,23 @@ static void spi_cleanup(struct spi_device *spi)
+ 		spi->controller->cleanup(spi);
+ }
+ 
+-/**
+- * spi_add_device - Add spi_device allocated with spi_alloc_device
+- * @spi: spi_device to register
+- *
+- * Companion function to spi_alloc_device.  Devices allocated with
+- * spi_alloc_device can be added onto the spi bus with this function.
+- *
+- * Return: 0 on success; negative errno on failure
+- */
+-int spi_add_device(struct spi_device *spi)
++static int __spi_add_device(struct spi_device *spi)
+ {
+ 	struct spi_controller *ctlr = spi->controller;
+ 	struct device *dev = ctlr->dev.parent;
+ 	int status;
+ 
+-	/* Chipselects are numbered 0..max; validate. */
+-	if (spi->chip_select >= ctlr->num_chipselect) {
+-		dev_err(dev, "cs%d >= max %d\n", spi->chip_select,
+-			ctlr->num_chipselect);
+-		return -EINVAL;
+-	}
+-
+-	/* Set the bus ID string */
+-	spi_dev_set_name(spi);
+-
+-	/* We need to make sure there's no other device with this
+-	 * chipselect **BEFORE** we call setup(), else we'll trash
+-	 * its configuration.  Lock against concurrent add() calls.
+-	 */
+-	mutex_lock(&spi_add_lock);
+-
+ 	status = bus_for_each_dev(&spi_bus_type, NULL, spi, spi_dev_check);
+ 	if (status) {
+ 		dev_err(dev, "chipselect %d already in use\n",
+ 				spi->chip_select);
+-		goto done;
++		return status;
+ 	}
+ 
+ 	/* Controller may unregister concurrently */
+ 	if (IS_ENABLED(CONFIG_SPI_DYNAMIC) &&
+ 	    !device_is_registered(&ctlr->dev)) {
+-		status = -ENODEV;
+-		goto done;
++		return -ENODEV;
+ 	}
+ 
+ 	/* Descriptors take precedence */
+@@ -623,7 +597,7 @@ int spi_add_device(struct spi_device *spi)
+ 	if (status < 0) {
+ 		dev_err(dev, "can't setup %s, status %d\n",
+ 				dev_name(&spi->dev), status);
+-		goto done;
++		return status;
+ 	}
+ 
+ 	/* Device may be bound to an active driver when this returns */
+@@ -636,12 +610,64 @@ int spi_add_device(struct spi_device *spi)
+ 		dev_dbg(dev, "registered child %s\n", dev_name(&spi->dev));
+ 	}
+ 
+-done:
++	return status;
++}
++
++/**
++ * spi_add_device - Add spi_device allocated with spi_alloc_device
++ * @spi: spi_device to register
++ *
++ * Companion function to spi_alloc_device.  Devices allocated with
++ * spi_alloc_device can be added onto the spi bus with this function.
++ *
++ * Return: 0 on success; negative errno on failure
++ */
++int spi_add_device(struct spi_device *spi)
++{
++	struct spi_controller *ctlr = spi->controller;
++	struct device *dev = ctlr->dev.parent;
++	int status;
++
++	/* Chipselects are numbered 0..max; validate. */
++	if (spi->chip_select >= ctlr->num_chipselect) {
++		dev_err(dev, "cs%d >= max %d\n", spi->chip_select,
++			ctlr->num_chipselect);
++		return -EINVAL;
++	}
++
++	/* Set the bus ID string */
++	spi_dev_set_name(spi);
++
++	/* We need to make sure there's no other device with this
++	 * chipselect **BEFORE** we call setup(), else we'll trash
++	 * its configuration.  Lock against concurrent add() calls.
++	 */
++	mutex_lock(&spi_add_lock);
++	status = __spi_add_device(spi);
+ 	mutex_unlock(&spi_add_lock);
+ 	return status;
+ }
+ EXPORT_SYMBOL_GPL(spi_add_device);
+ 
++static int spi_add_device_locked(struct spi_device *spi)
++{
++	struct spi_controller *ctlr = spi->controller;
++	struct device *dev = ctlr->dev.parent;
++
++	/* Chipselects are numbered 0..max; validate. */
++	if (spi->chip_select >= ctlr->num_chipselect) {
++		dev_err(dev, "cs%d >= max %d\n", spi->chip_select,
++			ctlr->num_chipselect);
++		return -EINVAL;
++	}
++
++	/* Set the bus ID string */
++	spi_dev_set_name(spi);
++
++	WARN_ON(!mutex_is_locked(&spi_add_lock));
++	return __spi_add_device(spi);
++}
++
+ /**
+  * spi_new_device - instantiate one new SPI device
+  * @ctlr: Controller to which device is connected
+@@ -2126,6 +2152,55 @@ static void of_register_spi_devices(struct spi_controller *ctlr)
+ static void of_register_spi_devices(struct spi_controller *ctlr) { }
+ #endif
+ 
++/**
++ * spi_new_ancillary_device() - Register ancillary SPI device
++ * @spi:         Pointer to the main SPI device registering the ancillary device
++ * @chip_select: Chip Select of the ancillary device
++ *
++ * Register an ancillary SPI device; for example some chips have a chip-select
++ * for normal device usage and another one for setup/firmware upload.
++ *
++ * This may only be called from main SPI device's probe routine.
++ *
++ * Return: 0 on success; negative errno on failure
++ */
++struct spi_device *spi_new_ancillary_device(struct spi_device *spi,
++					     u8 chip_select)
++{
++	struct spi_device *ancillary;
++	int rc = 0;
++
++	/* Alloc an spi_device */
++	ancillary = spi_alloc_device(spi->controller);
++	if (!ancillary) {
++		rc = -ENOMEM;
++		goto err_out;
++	}
++
++	strlcpy(ancillary->modalias, "dummy", sizeof(ancillary->modalias));
++
++	/* Use provided chip-select for ancillary device */
++	ancillary->chip_select = chip_select;
++
++	/* Take over SPI mode/speed from SPI main device */
++	ancillary->max_speed_hz = spi->max_speed_hz;
++	ancillary->mode = ancillary->mode;
++
++	/* Register the new device */
++	rc = spi_add_device_locked(ancillary);
++	if (rc) {
++		dev_err(&spi->dev, "failed to register ancillary device\n");
++		goto err_out;
++	}
++
++	return ancillary;
++
++err_out:
++	spi_dev_put(ancillary);
++	return ERR_PTR(rc);
++}
++EXPORT_SYMBOL_GPL(spi_new_ancillary_device);
++
+ #ifdef CONFIG_ACPI
+ struct acpi_spi_lookup {
+ 	struct spi_controller 	*ctlr;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index f924160e995f..3ada36175e5f 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -299,6 +299,8 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+ 		driver_unregister(&sdrv->driver);
+ }
+ 
++extern struct spi_device *spi_new_ancillary_device(struct spi_device *spi, u8 chip_select);
++
+ /* use a define to avoid include chaining to get THIS_MODULE */
+ #define spi_register_driver(driver) \
+ 	__spi_register_driver(THIS_MODULE, driver)
+-- 
+2.30.2
 
-No dependency. The dt-bindings was just send a second patch in the series. First
-one can be found here:
-https://patchwork.kernel.org/project/linux-mediatek/patch/20210613055458.6073-1-mason.zhang@mediatek.com/
-
-Regards,
-Matthias

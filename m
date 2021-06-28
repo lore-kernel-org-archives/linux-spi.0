@@ -2,207 +2,74 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 49A48C48BC2
-	for <linux-spi@archiver.kernel.org>; Fri, 25 Jun 2021 19:26:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 44984C48BC2
+	for <linux-spi@archiver.kernel.org>; Mon, 28 Jun 2021 00:40:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 25DBB6193F
-	for <linux-spi@archiver.kernel.org>; Fri, 25 Jun 2021 19:26:52 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2B19D61998
+	for <linux-spi@archiver.kernel.org>; Mon, 28 Jun 2021 00:40:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229826AbhFYT3L (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 25 Jun 2021 15:29:11 -0400
-Received: from mail-pg1-f181.google.com ([209.85.215.181]:42635 "EHLO
-        mail-pg1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229531AbhFYT3L (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 25 Jun 2021 15:29:11 -0400
-Received: by mail-pg1-f181.google.com with SMTP id d12so8770845pgd.9;
-        Fri, 25 Jun 2021 12:26:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=h1GdoT+CpTe+GaIuEBpH8gMshMEuLSCbkgQ3nh1A9HQ=;
-        b=jjzJSgpcpLZRT2zsaBKgw8AOLGnmAKDA1G/SyEEPDcwxbAM8NUjjtSnmGMoO/9cqFs
-         7lnGBeXKN8xPAQVgj/zrcZ7XldqU3hmRbEp8gUQ9T+EPmwsjraNEHjRAzeu69b3KfxNl
-         hpQcjyIEKDO0NFI4+DSc9iCk0hkqpoqyWz+GFSJaVytZAbslrFzDPAJED7fCfKDOlAjJ
-         HDaHGmZbwk626LMccW0xiIxb7nTp/CS9678K8rlmaQWMwlBrah7qEq+6lIlg0x7vu7pM
-         YsgavzRcCIcyqga+Qzge8qh1hsyMPKd+Ep1qibUz231lqSR5uYtyaRCrpyiAalGSI0qw
-         trhQ==
-X-Gm-Message-State: AOAM533gZvITPeDkOkmmjczH9k/+pYmwaziwog2O0wD+GR14gtku4nFW
-        FD9vAKaPMSUf+FXYWeAbJSo=
-X-Google-Smtp-Source: ABdhPJwTEEzENLi2KqgrCM7qoAwDS8vgHBE3F82EOEjnj7s+DoBBdlOy15DkQ0bU5Jj9FxbxmBMcAw==
-X-Received: by 2002:a63:e958:: with SMTP id q24mr10982182pgj.438.1624649210126;
-        Fri, 25 Jun 2021 12:26:50 -0700 (PDT)
-Received: from localhost ([2601:647:5b00:1161:a4cc:eef9:fbc0:2781])
-        by smtp.gmail.com with ESMTPSA id a15sm6507385pff.128.2021.06.25.12.26.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Jun 2021 12:26:49 -0700 (PDT)
-Date:   Fri, 25 Jun 2021 12:26:48 -0700
-From:   Moritz Fischer <mdf@kernel.org>
-To:     Martin =?iso-8859-1?Q?Hundeb=F8ll?= <martin@geanix.com>
-Cc:     Wu Hao <hao.wu@intel.com>, Tom Rix <trix@redhat.com>,
-        Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Lee Jones <lee.jones@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        Martin =?iso-8859-1?Q?Hundeb=F8ll?= <mhu@silicom.dk>,
-        linux-fpga@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-spi@vger.kernel.org
-Subject: Re: [PATCH v2 2/5] fpga: dfl: expose feature revision from struct
- dfl_device
-Message-ID: <YNYt+Dl43zhkjIhI@epycbox.lan>
-References: <20210625074213.654274-1-martin@geanix.com>
- <20210625074213.654274-3-martin@geanix.com>
+        id S231849AbhF1Amt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 27 Jun 2021 20:42:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50238 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231737AbhF1Ams (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Sun, 27 Jun 2021 20:42:48 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 784F1C061574;
+        Sun, 27 Jun 2021 17:40:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=8hAFSlHFWdnPhlaMXpF6GcfhzBmf4yRkDGhXefLS0Ro=; b=dYLeBaC62HAnbE9R08Nq9sSl9o
+        eVqDvzPqf+3rMtsYMm+1RHdsaovcd9bPvvujD9dFoLXsS7cUbEwpWpc9MXDZClJhLq3nEGmsG5MUZ
+        9zqXLhPxlsmhnqe3X3RoA+K64tSHwU0OkWdUZImeOSqSBl1dmNDkiJk+Ba3IfjEjsffez4RiLFQe3
+        96ugUUYxaqOAhT0Ob6z7VZ4qgVkXzSCEfLzbTRdlRjrdZ3v87gMM8O5D8zjeI9Ypv7LivAVmYN9k+
+        f9RHukdArjlNoBTW6zUvgUnfDNF1qE6ryyV9rpJEjn7buoi5jCRZ/W0LaFdbqw18+sdrOPyazdbC7
+        hwaPOtUQ==;
+Received: from [2601:1c0:6280:3f0::aefb] (helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1lxfK3-006MXp-TQ; Mon, 28 Jun 2021 00:40:24 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        "William A . Kennington III" <wak@google.com>,
+        Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+Subject: [PATCH] spi: <linux/spi/spi.h>: add missing struct kernel-doc entry
+Date:   Sun, 27 Jun 2021 17:40:23 -0700
+Message-Id: <20210628004023.7371-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20210625074213.654274-3-martin@geanix.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Fri, Jun 25, 2021 at 09:42:10AM +0200, Martin Hundebøll wrote:
-> From: Martin Hundebøll <mhu@silicom.dk>
-> 
-> Drivers can make use of the feature field from the DFL header, but
-> shouldn't know about the header structure. To avoid exposing such info,
-> and to reduce the number of reads from the io-mem, the revision is added
-> to struct dfl_device.
-> 
-> Signed-off-by: Martin Hundebøll <mhu@silicom.dk>
-> ---
-> 
-> Changes since v1:
->  * This patch replaces the previous patch 2 and exposes the feature
->    revision through struct dfl_device instead of a helper reading from
->    io-mem
-> 
->  drivers/fpga/dfl.c  | 27 +++++++++++++++++----------
->  drivers/fpga/dfl.h  |  1 +
->  include/linux/dfl.h |  1 +
->  3 files changed, 19 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/fpga/dfl.c b/drivers/fpga/dfl.c
-> index 511b20ff35a3..9381c579d1cd 100644
-> --- a/drivers/fpga/dfl.c
-> +++ b/drivers/fpga/dfl.c
-> @@ -381,6 +381,7 @@ dfl_dev_add(struct dfl_feature_platform_data *pdata,
->  
->  	ddev->type = feature_dev_id_type(pdev);
->  	ddev->feature_id = feature->id;
-> +	ddev->revision = feature->revision;
->  	ddev->cdev = pdata->dfl_cdev;
->  
->  	/* add mmio resource */
-> @@ -717,6 +718,7 @@ struct build_feature_devs_info {
->   */
->  struct dfl_feature_info {
->  	u16 fid;
-> +	u8 rev;
->  	struct resource mmio_res;
->  	void __iomem *ioaddr;
->  	struct list_head node;
-> @@ -796,6 +798,7 @@ static int build_info_commit_dev(struct build_feature_devs_info *binfo)
->  		/* save resource information for each feature */
->  		feature->dev = fdev;
->  		feature->id = finfo->fid;
-> +		feature->revision = finfo->rev;
->  
->  		/*
->  		 * the FIU header feature has some fundamental functions (sriov
-> @@ -910,19 +913,17 @@ static void build_info_free(struct build_feature_devs_info *binfo)
->  	devm_kfree(binfo->dev, binfo);
->  }
->  
-> -static inline u32 feature_size(void __iomem *start)
-> +static inline u32 feature_size(u64 value)
->  {
-> -	u64 v = readq(start + DFH);
-> -	u32 ofst = FIELD_GET(DFH_NEXT_HDR_OFST, v);
-> +	u32 ofst = FIELD_GET(DFH_NEXT_HDR_OFST, value);
->  	/* workaround for private features with invalid size, use 4K instead */
->  	return ofst ? ofst : 4096;
->  }
->  
-> -static u16 feature_id(void __iomem *start)
-> +static u16 feature_id(u64 value)
->  {
-> -	u64 v = readq(start + DFH);
-> -	u16 id = FIELD_GET(DFH_ID, v);
-> -	u8 type = FIELD_GET(DFH_TYPE, v);
-> +	u16 id = FIELD_GET(DFH_ID, value);
-> +	u8 type = FIELD_GET(DFH_TYPE, value);
->  
->  	if (type == DFH_TYPE_FIU)
->  		return FEATURE_ID_FIU_HEADER;
-> @@ -1021,10 +1022,15 @@ create_feature_instance(struct build_feature_devs_info *binfo,
->  	unsigned int irq_base, nr_irqs;
->  	struct dfl_feature_info *finfo;
->  	int ret;
-> +	u8 rev;
-> +	u64 v;
-> +
-> +	v = readq(binfo->ioaddr + ofst);
-> +	rev = FIELD_GET(DFH_REVISION, v);
->  
->  	/* read feature size and id if inputs are invalid */
-> -	size = size ? size : feature_size(binfo->ioaddr + ofst);
-> -	fid = fid ? fid : feature_id(binfo->ioaddr + ofst);
-> +	size = size ? size : feature_size(v);
-> +	fid = fid ? fid : feature_id(v);
->  
->  	if (binfo->len - ofst < size)
->  		return -EINVAL;
-> @@ -1038,6 +1044,7 @@ create_feature_instance(struct build_feature_devs_info *binfo,
->  		return -ENOMEM;
->  
->  	finfo->fid = fid;
-> +	finfo->rev = rev;
->  	finfo->mmio_res.start = binfo->start + ofst;
->  	finfo->mmio_res.end = finfo->mmio_res.start + size - 1;
->  	finfo->mmio_res.flags = IORESOURCE_MEM;
-> @@ -1166,7 +1173,7 @@ static int parse_feature_private(struct build_feature_devs_info *binfo,
->  {
->  	if (!is_feature_dev_detected(binfo)) {
->  		dev_err(binfo->dev, "the private feature 0x%x does not belong to any AFU.\n",
-> -			feature_id(binfo->ioaddr + ofst));
-> +			feature_id(readq(binfo->ioaddr + ofst)));
->  		return -EINVAL;
->  	}
->  
-> diff --git a/drivers/fpga/dfl.h b/drivers/fpga/dfl.h
-> index 2b82c96ba56c..422157cfd742 100644
-> --- a/drivers/fpga/dfl.h
-> +++ b/drivers/fpga/dfl.h
-> @@ -243,6 +243,7 @@ struct dfl_feature_irq_ctx {
->  struct dfl_feature {
->  	struct platform_device *dev;
->  	u16 id;
-> +	u8 revision;
->  	int resource_index;
->  	void __iomem *ioaddr;
->  	struct dfl_feature_irq_ctx *irq_ctx;
-> diff --git a/include/linux/dfl.h b/include/linux/dfl.h
-> index 6cc10982351a..431636a0dc78 100644
-> --- a/include/linux/dfl.h
-> +++ b/include/linux/dfl.h
-> @@ -38,6 +38,7 @@ struct dfl_device {
->  	int id;
->  	u16 type;
->  	u16 feature_id;
-> +	u8 revision;
->  	struct resource mmio_res;
->  	int *irqs;
->  	unsigned int num_irqs;
-> -- 
-> 2.31.0
-> 
-Looks good to me, any concerns from Intel folks?
+Fix kernel-doc warning in spi.h:
 
-- Moritz
+../include/linux/spi/spi.h:673: warning: Function parameter or member 'devm_allocated' not described in 'spi_controller'
+
+Fixes: 794aaf01444d ("spi: Fix use-after-free with devm_spi_alloc_*")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: William A. Kennington III <wak@google.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org
+---
+ include/linux/spi/spi.h |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- linux-next-20210625.orig/include/linux/spi/spi.h
++++ linux-next-20210625/include/linux/spi/spi.h
+@@ -339,6 +339,7 @@ extern struct spi_device *spi_new_ancill
+  * @max_speed_hz: Highest supported transfer speed
+  * @flags: other constraints relevant to this driver
+  * @slave: indicates that this is an SPI slave controller
++ * @devm_allocated: flag indicating this is a non-devres managed controller
+  * @max_transfer_size: function that returns the max transfer size for
+  *	a &spi_device; may be %NULL, so the default %SIZE_MAX will be used.
+  * @max_message_size: function that returns the max message size for

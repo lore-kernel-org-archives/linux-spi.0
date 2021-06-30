@@ -7,21 +7,21 @@ X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E4A15C11F6B
-	for <linux-spi@archiver.kernel.org>; Wed, 30 Jun 2021 13:48:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A3FFCC11F6F
+	for <linux-spi@archiver.kernel.org>; Wed, 30 Jun 2021 13:48:25 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id CC6AE61494
-	for <linux-spi@archiver.kernel.org>; Wed, 30 Jun 2021 13:48:23 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8E09E61624
+	for <linux-spi@archiver.kernel.org>; Wed, 30 Jun 2021 13:48:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235360AbhF3Nuv (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 30 Jun 2021 09:50:51 -0400
-Received: from lucky1.263xmail.com ([211.157.147.130]:43114 "EHLO
+        id S235755AbhF3Nux (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 30 Jun 2021 09:50:53 -0400
+Received: from lucky1.263xmail.com ([211.157.147.132]:33880 "EHLO
         lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235400AbhF3NuU (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Wed, 30 Jun 2021 09:50:20 -0400
+        with ESMTP id S235736AbhF3NuX (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 30 Jun 2021 09:50:23 -0400
 Received: from localhost (unknown [192.168.167.16])
-        by lucky1.263xmail.com (Postfix) with ESMTP id CD461D5CE7;
-        Wed, 30 Jun 2021 21:47:47 +0800 (CST)
+        by lucky1.263xmail.com (Postfix) with ESMTP id ED057FAD2B;
+        Wed, 30 Jun 2021 21:47:50 +0800 (CST)
 X-MAIL-GRAY: 0
 X-MAIL-DELIVERY: 1
 X-ADDR-CHECKED4: 1
@@ -29,9 +29,9 @@ X-SKE-CHECKED: 1
 X-ANTISPAM-LEVEL: 2
 Received: from localhost.localdomain (unknown [58.22.7.114])
         by smtp.263.net (postfix) whith ESMTP id P12363T139710655624960S1625060866985686_;
-        Wed, 30 Jun 2021 21:47:48 +0800 (CST)
+        Wed, 30 Jun 2021 21:47:51 +0800 (CST)
 X-IP-DOMAINF: 1
-X-UNIQUE-TAG: <df29b39a843015d3edb4889d309cad07>
+X-UNIQUE-TAG: <461f7e2e14f2fa9f1548399b5cb28276>
 X-RL-SENDER: jon.lin@rock-chips.com
 X-SENDER: jon.lin@rock-chips.com
 X-LOGIN-NAME: jon.lin@rock-chips.com
@@ -50,28 +50,27 @@ Cc:     jon.lin@rock-chips.com, broonie@kernel.org, robh+dt@kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         mturquette@baylibre.com, sboyd@kernel.org,
         linux-clk@vger.kernel.org, Chris Morgan <macromorgan@hotmail.com>
-Subject: [PATCH v10 05/10] clk: rockchip:  add dt-binding for hclk_sfc on rk3036
-Date:   Wed, 30 Jun 2021 21:47:40 +0800
-Message-Id: <20210630134745.7561-1-jon.lin@rock-chips.com>
+Subject: [PATCH v10 07/10] arm: dts: rockchip: Add SFC to RK3036
+Date:   Wed, 30 Jun 2021 21:47:42 +0800
+Message-Id: <20210630134745.7561-3-jon.lin@rock-chips.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210630134702.7346-1-jon.lin@rock-chips.com>
+In-Reply-To: <20210630134745.7561-1-jon.lin@rock-chips.com>
 References: <20210630134702.7346-1-jon.lin@rock-chips.com>
+ <20210630134745.7561-1-jon.lin@rock-chips.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Chris Morgan <macromorgan@hotmail.com>
 
-Add dt-binding for hclk_sfc on rk3036
+Add a devicetree entry for the Rockchip SFC for the RK3036 SOC.
 
 Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
 Signed-off-by: Jon Lin <jon.lin@rock-chips.com>
 ---
 
 Changes in v10: None
-Changes in v9:
-- Separate FDT binding docs and includes from rk3036 sfc_hclk patch
-
+Changes in v9: None
 Changes in v8: None
 Changes in v7: None
 Changes in v6: None
@@ -81,21 +80,69 @@ Changes in v3: None
 Changes in v2: None
 Changes in v1: None
 
- include/dt-bindings/clock/rk3036-cru.h | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boot/dts/rk3036.dtsi | 42 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
-diff --git a/include/dt-bindings/clock/rk3036-cru.h b/include/dt-bindings/clock/rk3036-cru.h
-index 35a5a01f9697..a96a9870ad59 100644
---- a/include/dt-bindings/clock/rk3036-cru.h
-+++ b/include/dt-bindings/clock/rk3036-cru.h
-@@ -81,6 +81,7 @@
- #define HCLK_OTG0		449
- #define HCLK_OTG1		450
- #define HCLK_NANDC		453
-+#define HCLK_SFC		454
- #define HCLK_SDMMC		456
- #define HCLK_SDIO		457
- #define HCLK_EMMC		459
+diff --git a/arch/arm/boot/dts/rk3036.dtsi b/arch/arm/boot/dts/rk3036.dtsi
+index e24230d50a78..06e37be81393 100644
+--- a/arch/arm/boot/dts/rk3036.dtsi
++++ b/arch/arm/boot/dts/rk3036.dtsi
+@@ -206,6 +206,17 @@
+ 		status = "disabled";
+ 	};
+ 
++	sfc: spi@10208000 {
++		compatible = "rockchip,sfc";
++		reg = <0x10208000 0x4000>;
++		interrupts = <GIC_SPI 9 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&cru SCLK_SFC>, <&cru HCLK_SFC>;
++		clock-names = "clk_sfc", "hclk_sfc";
++		pinctrl-0 = <&sfc_clk &sfc_cs0 &sfc_bus4>;
++		pinctrl-names = "default";
++		status = "disabled";
++	};
++
+ 	sdmmc: mmc@10214000 {
+ 		compatible = "rockchip,rk3036-dw-mshc", "rockchip,rk3288-dw-mshc";
+ 		reg = <0x10214000 0x4000>;
+@@ -684,6 +695,37 @@
+ 			};
+ 		};
+ 
++		sfc {
++			sfc_bus4: sfc-bus4 {
++				rockchip,pins =
++					<1 RK_PD0 3 &pcfg_pull_none>,
++					<1 RK_PD1 3 &pcfg_pull_none>,
++					<1 RK_PD2 3 &pcfg_pull_none>,
++					<1 RK_PD3 3 &pcfg_pull_none>;
++			};
++
++			sfc_bus2: sfc-bus2 {
++				rockchip,pins =
++					<1 RK_PD0 3 &pcfg_pull_none>,
++					<1 RK_PD1 3 &pcfg_pull_none>;
++			};
++
++			sfc_cs0: sfc-cs0 {
++				rockchip,pins =
++					<2 RK_PA2 3 &pcfg_pull_none>;
++			};
++
++			sfc_cs1: sfc-cs1 {
++				rockchip,pins =
++					<2 RK_PA3 3 &pcfg_pull_none>;
++			};
++
++			sfc_clk: sfc-clk {
++				rockchip,pins =
++					<2 RK_PA4 3 &pcfg_pull_none>;
++			};
++		};
++
+ 		emac {
+ 			emac_xfer: emac-xfer {
+ 				rockchip,pins = <2 RK_PB2 1 &pcfg_pull_default>, /* crs_dvalid */
 -- 
 2.17.1
 

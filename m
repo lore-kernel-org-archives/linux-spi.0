@@ -7,42 +7,42 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 39FB7C11F6B
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E0AE3C11F6C
 	for <linux-spi@archiver.kernel.org>; Wed, 30 Jun 2021 08:47:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 1FA6C61360
+	by mail.kernel.org (Postfix) with ESMTP id C14E961CD4
 	for <linux-spi@archiver.kernel.org>; Wed, 30 Jun 2021 08:47:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233717AbhF3IuR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 30 Jun 2021 04:50:17 -0400
-Received: from mx08-00178001.pphosted.com ([91.207.212.93]:15054 "EHLO
+        id S233746AbhF3IuS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 30 Jun 2021 04:50:18 -0400
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:15050 "EHLO
         mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S233552AbhF3IuQ (ORCPT
+        by vger.kernel.org with ESMTP id S233587AbhF3IuQ (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Wed, 30 Jun 2021 04:50:16 -0400
 Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 15U8kf04002319;
-        Wed, 30 Jun 2021 10:47:35 +0200
+        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 15U8kfXr002382;
+        Wed, 30 Jun 2021 10:47:37 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-type; s=selector1;
- bh=99okJ5yuem2cjSaKRsrNqXJFQUip9rbqc1E2aILDyKI=;
- b=ebhjce18YNYircBFXtfyyMhiofzINBtARiUzf6mN2QmW1pFxXKeyz0sOjXRlozyMwL34
- ZuZUGkni9/Rjv6vf2aVFyWBT2kIy+SXh/mSXABq2I7TE1ep/HEeogXWDcc8V/D83a2ox
- vxAZzcJDe5npOacMGMPirrBTbUOcfFCoPC4n2aZEn3IOjCTMhJMpJ9F2vn8zPv3TXK7i
- MFCPuwqueosKxtWdxEHd9AbVYwe4wFdKDcDtelNKAfDISKQHLL5WGla8r3m3azj6PRQ0
- wPfOUzgmmxEnnxnoaWX6qrP37CZfa4zcYRmScUjUmbVRLICoxsxCVKRvtCwY5+vfRFb+ zw== 
+ bh=qU0WX1c5atYHnfCgyCLb4HvKRNUahZQXZ2p9BujTCwY=;
+ b=T85F01A80W8zz2zKgLT/BdPJ54l5Y8I9Lbiy9FYCZH0JPt4i5in+i24HRGEhgj6NXVlS
+ 5dcanCcIQrfuCn1VI2ij+/JscEXKjoRcxy2ZFCCO+xUJ/Tq3roaWlJ3oIK0Ff+PIObVx
+ xL+QWD0Xqjx57HyxaY4VMQWrpBIvPs8nM40ThWlRQWXSsHDtukELoO2YaEdIF50h4Cim
+ dJe8yiBtbEBNVjPdSJN2imXT2fD93+YdzYzGq91MbvkdMejAuEjHDu/GSlz3MMjjeDdr
+ qrnIoYEJjHJNMBrGkNVzZv9An8fYG/uwWtmWToXh42oj+d7I3ihoTtdDfdOn/d43wMtr RQ== 
 Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 39ghqhu60m-1
+        by mx07-00178001.pphosted.com with ESMTP id 39ghqhu61c-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 30 Jun 2021 10:47:35 +0200
+        Wed, 30 Jun 2021 10:47:37 +0200
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 7CEED100034;
-        Wed, 30 Jun 2021 10:47:34 +0200 (CEST)
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 7C9FF10002A;
+        Wed, 30 Jun 2021 10:47:36 +0200 (CEST)
 Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 6F7EA21BF5F;
-        Wed, 30 Jun 2021 10:47:34 +0200 (CEST)
-Received: from localhost (10.75.127.47) by SFHDAG2NODE3.st.com (10.75.127.6)
- with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 30 Jun 2021 10:47:34
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 7048F21BF5F;
+        Wed, 30 Jun 2021 10:47:36 +0200 (CEST)
+Received: from localhost (10.75.127.45) by SFHDAG2NODE3.st.com (10.75.127.6)
+ with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 30 Jun 2021 10:47:36
  +0200
 From:   Alain Volmat <alain.volmat@foss.st.com>
 To:     <broonie@kernel.org>, <amelie.delaunay@foss.st.com>
@@ -52,16 +52,16 @@ CC:     <mcoquelin.stm32@gmail.com>, <alexandre.torgue@foss.st.com>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>, <fabrice.gasnier@foss.st.com>,
         <alain.volmat@foss.st.com>
-Subject: [PATCH 1/6] spi: stm32: fixes pm_runtime calls in probe/remove
-Date:   Wed, 30 Jun 2021 10:45:18 +0200
-Message-ID: <1625042723-661-2-git-send-email-alain.volmat@foss.st.com>
+Subject: [PATCH 6/6] spi: stm32: finalize message either on dma callback or EOT
+Date:   Wed, 30 Jun 2021 10:45:23 +0200
+Message-ID: <1625042723-661-7-git-send-email-alain.volmat@foss.st.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1625042723-661-1-git-send-email-alain.volmat@foss.st.com>
 References: <1625042723-661-1-git-send-email-alain.volmat@foss.st.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.75.127.47]
-X-ClientProxiedBy: SFHDAG1NODE3.st.com (10.75.127.3) To SFHDAG2NODE3.st.com
+X-Originating-IP: [10.75.127.45]
+X-ClientProxiedBy: SFHDAG1NODE1.st.com (10.75.127.1) To SFHDAG2NODE3.st.com
  (10.75.127.6)
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
  definitions=2021-06-30_02:2021-06-29,2021-06-30 signatures=0
@@ -69,93 +69,122 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-the pm_runtime is not fully configured (delay not setted).
-Add pm_runtime calls in probe/probe error path and remove
-in order to be consistent in all places in ordering and
-ensure that pm_runtime is disabled prior to resources used
-by the SPI controller.
+Depending on the usage, it is necessary to perform the finalize
+message operation either upon receiving the EOT interruption,
+eiher upon receiving the DMA callback. Indeed, when relying
+on DMA, even if the SPI EOT IT has been received, it is
+necessary to wait for the end of the DMA RX transaction before
+accessing to the data.
 
-This patch also fixes the 2 following warnings on driver remove:
-WARNING: CPU: 0 PID: 743 at drivers/clk/clk.c:594 clk_core_disable_lock+0x18/0x24
-WARNING: CPU: 0 PID: 743 at drivers/clk/clk.c:476 clk_unprepare+0x24/0x2c
-
-Fixes: 038ac869c9d2 ("spi: stm32: add runtime PM support")
-
-Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
 Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
 ---
- drivers/spi/spi-stm32.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ drivers/spi/spi-stm32.c | 57 +++++++++++++++--------------------------
+ 1 file changed, 20 insertions(+), 37 deletions(-)
 
 diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index 8ffcffbb8157..fe35c5cfb820 100644
+index 535f4bebc010..14ca7ea04e47 100644
 --- a/drivers/spi/spi-stm32.c
 +++ b/drivers/spi/spi-stm32.c
-@@ -162,6 +162,8 @@
- #define SPI_3WIRE_TX		3
- #define SPI_3WIRE_RX		4
- 
-+#define STM32_SPI_AUTOSUSPEND_DELAY		1	/* 1 ms */
-+
- /*
-  * use PIO for small transfers, avoiding DMA setup/teardown overhead for drivers
-  * without fifo buffers.
-@@ -1924,7 +1926,11 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 	if (spi->dma_tx || spi->dma_rx)
- 		master->can_dma = stm32_spi_can_dma;
- 
-+	pm_runtime_set_autosuspend_delay(&pdev->dev,
-+					 STM32_SPI_AUTOSUSPEND_DELAY);
-+	pm_runtime_use_autosuspend(&pdev->dev);
- 	pm_runtime_set_active(&pdev->dev);
-+	pm_runtime_get_noresume(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
- 
- 	ret = spi_register_master(master);
-@@ -1934,12 +1940,18 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 		goto err_pm_disable;
+@@ -911,7 +911,10 @@ static irqreturn_t stm32h7_spi_irq_thread(int irq, void *dev_id)
+ 	if (sr & STM32H7_SPI_SR_EOT) {
+ 		if (!spi->cur_usedma && (spi->rx_buf && (spi->rx_len > 0)))
+ 			stm32h7_spi_read_rxfifo(spi);
+-		end = true;
++		if (!spi->cur_usedma ||
++		    (spi->cur_usedma && (spi->cur_comm == SPI_SIMPLEX_TX ||
++		     spi->cur_comm == SPI_3WIRE_TX)))
++			end = true;
  	}
  
-+	pm_runtime_mark_last_busy(&pdev->dev);
-+	pm_runtime_put_autosuspend(&pdev->dev);
+ 	if (sr & STM32H7_SPI_SR_TXP)
+@@ -1019,42 +1022,17 @@ static void stm32f4_spi_dma_tx_cb(void *data)
+ }
+ 
+ /**
+- * stm32f4_spi_dma_rx_cb - dma callback
++ * stm32_spi_dma_rx_cb - dma callback
+  * @data: pointer to the spi controller data structure
+  *
+  * DMA callback is called when the transfer is complete for DMA RX channel.
+  */
+-static void stm32f4_spi_dma_rx_cb(void *data)
++static void stm32_spi_dma_rx_cb(void *data)
+ {
+ 	struct stm32_spi *spi = data;
+ 
+ 	spi_finalize_current_transfer(spi->master);
+-	stm32f4_spi_disable(spi);
+-}
+-
+-/**
+- * stm32h7_spi_dma_cb - dma callback
+- * @data: pointer to the spi controller data structure
+- *
+- * DMA callback is called when the transfer is complete or when an error
+- * occurs. If the transfer is complete, EOT flag is raised.
+- */
+-static void stm32h7_spi_dma_cb(void *data)
+-{
+-	struct stm32_spi *spi = data;
+-	unsigned long flags;
+-	u32 sr;
+-
+-	spin_lock_irqsave(&spi->lock, flags);
+-
+-	sr = readl_relaxed(spi->base + STM32H7_SPI_SR);
+-
+-	spin_unlock_irqrestore(&spi->lock, flags);
+-
+-	if (!(sr & STM32H7_SPI_SR_EOT))
+-		dev_warn(spi->dev, "DMA error (sr=0x%08x)\n", sr);
+-
+-	/* Now wait for EOT, or SUSP or OVR in case of error */
++	spi->cfg->disable(spi);
+ }
+ 
+ /**
+@@ -1220,11 +1198,13 @@ static void stm32f4_spi_transfer_one_dma_start(struct stm32_spi *spi)
+  */
+ static void stm32h7_spi_transfer_one_dma_start(struct stm32_spi *spi)
+ {
+-	/* Enable the interrupts relative to the end of transfer */
+-	stm32_spi_set_bits(spi, STM32H7_SPI_IER, STM32H7_SPI_IER_EOTIE |
+-						 STM32H7_SPI_IER_TXTFIE |
+-						 STM32H7_SPI_IER_OVRIE |
+-						 STM32H7_SPI_IER_MODFIE);
++	uint32_t ier = STM32H7_SPI_IER_OVRIE | STM32H7_SPI_IER_MODFIE;
 +
- 	dev_info(&pdev->dev, "driver initialized\n");
- 
- 	return 0;
- 
- err_pm_disable:
- 	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_put_noidle(&pdev->dev);
-+	pm_runtime_set_suspended(&pdev->dev);
-+	pm_runtime_dont_use_autosuspend(&pdev->dev);
- err_dma_release:
- 	if (spi->dma_tx)
- 		dma_release_channel(spi->dma_tx);
-@@ -1956,9 +1968,16 @@ static int stm32_spi_remove(struct platform_device *pdev)
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct stm32_spi *spi = spi_master_get_devdata(master);
- 
-+	pm_runtime_get_sync(&pdev->dev);
++	/* Enable the interrupts */
++	if (spi->cur_comm == SPI_SIMPLEX_TX || spi->cur_comm == SPI_3WIRE_TX)
++		ier |= STM32H7_SPI_IER_EOTIE | STM32H7_SPI_IER_TXTFIE;
 +
- 	spi_unregister_master(master);
- 	spi->cfg->disable(spi);
++	stm32_spi_set_bits(spi, STM32H7_SPI_IER, ier);
  
-+	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_put_noidle(&pdev->dev);
-+	pm_runtime_set_suspended(&pdev->dev);
-+	pm_runtime_dont_use_autosuspend(&pdev->dev);
-+
- 	if (master->dma_tx)
- 		dma_release_channel(master->dma_tx);
- 	if (master->dma_rx)
-@@ -1966,7 +1985,6 @@ static int stm32_spi_remove(struct platform_device *pdev)
+ 	stm32_spi_enable(spi);
  
- 	clk_disable_unprepare(spi->clk);
- 
--	pm_runtime_disable(&pdev->dev);
- 
- 	pinctrl_pm_select_sleep_state(&pdev->dev);
- 
+@@ -1736,7 +1716,7 @@ static const struct stm32_spi_cfg stm32f4_spi_cfg = {
+ 	.set_mode = stm32f4_spi_set_mode,
+ 	.transfer_one_dma_start = stm32f4_spi_transfer_one_dma_start,
+ 	.dma_tx_cb = stm32f4_spi_dma_tx_cb,
+-	.dma_rx_cb = stm32f4_spi_dma_rx_cb,
++	.dma_rx_cb = stm32_spi_dma_rx_cb,
+ 	.transfer_one_irq = stm32f4_spi_transfer_one_irq,
+ 	.irq_handler_event = stm32f4_spi_irq_event,
+ 	.irq_handler_thread = stm32f4_spi_irq_thread,
+@@ -1756,8 +1736,11 @@ static const struct stm32_spi_cfg stm32h7_spi_cfg = {
+ 	.set_data_idleness = stm32h7_spi_data_idleness,
+ 	.set_number_of_data = stm32h7_spi_number_of_data,
+ 	.transfer_one_dma_start = stm32h7_spi_transfer_one_dma_start,
+-	.dma_rx_cb = stm32h7_spi_dma_cb,
+-	.dma_tx_cb = stm32h7_spi_dma_cb,
++	.dma_rx_cb = stm32_spi_dma_rx_cb,
++	/*
++	 * dma_tx_cb is not necessary since in case of TX, dma is followed by
++	 * SPI access hence handling is performed within the SPI interrupt
++	 */
+ 	.transfer_one_irq = stm32h7_spi_transfer_one_irq,
+ 	.irq_handler_thread = stm32h7_spi_irq_thread,
+ 	.baud_rate_div_min = STM32H7_SPI_MBR_DIV_MIN,
 -- 
 2.25.1
 

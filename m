@@ -7,42 +7,42 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B904AC11F6A
-	for <linux-spi@archiver.kernel.org>; Wed, 30 Jun 2021 08:47:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 820A6C11F65
+	for <linux-spi@archiver.kernel.org>; Wed, 30 Jun 2021 08:47:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 8D73961CD4
-	for <linux-spi@archiver.kernel.org>; Wed, 30 Jun 2021 08:47:49 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 6769861CD4
+	for <linux-spi@archiver.kernel.org>; Wed, 30 Jun 2021 08:47:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233675AbhF3IuR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 30 Jun 2021 04:50:17 -0400
-Received: from mx07-00178001.pphosted.com ([185.132.182.106]:48235 "EHLO
+        id S233740AbhF3IuS (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 30 Jun 2021 04:50:18 -0400
+Received: from mx07-00178001.pphosted.com ([185.132.182.106]:52512 "EHLO
         mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233516AbhF3IuQ (ORCPT
+        by vger.kernel.org with ESMTP id S233536AbhF3IuQ (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Wed, 30 Jun 2021 04:50:16 -0400
-Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 15U8kps5001022;
-        Wed, 30 Jun 2021 10:47:35 +0200
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 15U8gUjj025221;
+        Wed, 30 Jun 2021 10:47:36 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-type; s=selector1;
- bh=wvHutvszO60NpsmtRJ9LbKZBrctdcsmxFVI5e4fzTWs=;
- b=tV118DikJuN7rlkwVDqV5Q4wNlP7tyQmJZziribC3i+cCUboPy9xufXFj3xXjpWiwn+h
- +89MD2iHGlosXkIbwotSKSfkGDv/vfAkQH3p+YJQHQiHJWsO/QARUj/hYJ18avRXXXYQ
- uVeGN+g/G5HDqwjsumUMOiqHVtQFHUmLTXYPQD7vpcOBVSkBkUdSZsVNII7C322YlEVG
- IovQ+tUMi8cimx/u/kW5Fg2WYsmnF0/LqdbxYHhfZbJy2fmX+H9wiXYY9/w/jl+tM/WW
- FN30uI8ZCewRHyK7OGyio1BBW2m7XZpc8I0OX3ekTkmq98kKURdLdj6npS0am06bckIT 2w== 
+ bh=JFihWyCt2PJ0euphUNgFoY2OzTe2RhTz2i7OqbL8v4o=;
+ b=4iWaT0L8tb2JsDDB+/86YeGv3LABRj2YAFzMqS7INI9joBEjcInubld8UUPvswPq75cV
+ MYhbyMs8fgjsJkaOR/aqPaO/mWNVsie1R9kZ+dDHQukhUmcBfTyCIlbPysjeLvwZyWEt
+ /MKgGGWK7hryow6DrPLkkggwlybl/fvGOGyid2GP0aUjBIpWRW5ytDqeRFmsTFOdWIZ8
+ 4/UDqNhw7M8caGklMdSWpiZ0dFAao/yAX5qG/ohOBmog5xJJMdpf21Gbr7wDXtcumCQ8
+ T+esGonBfGofjPXQ0Q1EGG8OmmEPYP/4YXeFlnYb3z3rFrZFlxM98Di/UanvfsizCxvv Ng== 
 Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 39gn1186a6-1
+        by mx07-00178001.pphosted.com with ESMTP id 39g4kpw8dk-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 30 Jun 2021 10:47:35 +0200
+        Wed, 30 Jun 2021 10:47:36 +0200
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id DDEC1100038;
-        Wed, 30 Jun 2021 10:47:34 +0200 (CEST)
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id A9BDE100034;
+        Wed, 30 Jun 2021 10:47:35 +0200 (CEST)
 Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id D0BF021BF5F;
-        Wed, 30 Jun 2021 10:47:34 +0200 (CEST)
-Received: from localhost (10.75.127.44) by SFHDAG2NODE3.st.com (10.75.127.6)
- with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 30 Jun 2021 10:47:34
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 9CBBF21BF5F;
+        Wed, 30 Jun 2021 10:47:35 +0200 (CEST)
+Received: from localhost (10.75.127.46) by SFHDAG2NODE3.st.com (10.75.127.6)
+ with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 30 Jun 2021 10:47:35
  +0200
 From:   Alain Volmat <alain.volmat@foss.st.com>
 To:     <broonie@kernel.org>, <amelie.delaunay@foss.st.com>
@@ -52,16 +52,16 @@ CC:     <mcoquelin.stm32@gmail.com>, <alexandre.torgue@foss.st.com>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>, <fabrice.gasnier@foss.st.com>,
         <alain.volmat@foss.st.com>
-Subject: [PATCH 2/6] spi: stm32h7: fix full duplex irq handler handling
-Date:   Wed, 30 Jun 2021 10:45:19 +0200
-Message-ID: <1625042723-661-3-git-send-email-alain.volmat@foss.st.com>
+Subject: [PATCH 4/6] spi: stm32h7: rework rx fifo read function
+Date:   Wed, 30 Jun 2021 10:45:21 +0200
+Message-ID: <1625042723-661-5-git-send-email-alain.volmat@foss.st.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1625042723-661-1-git-send-email-alain.volmat@foss.st.com>
 References: <1625042723-661-1-git-send-email-alain.volmat@foss.st.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.75.127.44]
-X-ClientProxiedBy: SFHDAG2NODE2.st.com (10.75.127.5) To SFHDAG2NODE3.st.com
+X-Originating-IP: [10.75.127.46]
+X-ClientProxiedBy: SFHDAG1NODE1.st.com (10.75.127.1) To SFHDAG2NODE3.st.com
  (10.75.127.6)
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
  definitions=2021-06-30_02:2021-06-29,2021-06-30 signatures=0
@@ -69,48 +69,118 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-In case of Full-Duplex mode, DXP flag is set when RXP and TXP flags are
-set. But to avoid 2 different handlings, just add TXP and RXP flag in
-the mask instead of DXP, and then keep the initial handling of TXP and
-RXP events.
-Also rephrase comment about EOTIE which is one of the interrupt enable
-bits. It is not triggered by any event.
+From: Amelie Delaunay <amelie.delaunay@foss.st.com>
+
+Remove flush parameter and check RXWNE or RXPLVL when end of transfer
+flag is set.
 
 Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
 Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
 ---
- drivers/spi/spi-stm32.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/spi/spi-stm32.c | 30 +++++++++++++-----------------
+ 1 file changed, 13 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index fe35c5cfb820..4dbd5cbe0c11 100644
+index d37bfead4d8c..c2144e3c57eb 100644
 --- a/drivers/spi/spi-stm32.c
 +++ b/drivers/spi/spi-stm32.c
-@@ -886,15 +886,18 @@ static irqreturn_t stm32h7_spi_irq_thread(int irq, void *dev_id)
- 	ier = readl_relaxed(spi->base + STM32H7_SPI_IER);
+@@ -570,29 +570,30 @@ static void stm32f4_spi_read_rx(struct stm32_spi *spi)
+ /**
+  * stm32h7_spi_read_rxfifo - Read bytes in Receive Data Register
+  * @spi: pointer to the spi controller data structure
+- * @flush: boolean indicating that FIFO should be flushed
+  *
+  * Write in rx_buf depends on remaining bytes to avoid to write beyond
+  * rx_buf end.
+  */
+-static void stm32h7_spi_read_rxfifo(struct stm32_spi *spi, bool flush)
++static void stm32h7_spi_read_rxfifo(struct stm32_spi *spi)
+ {
+ 	u32 sr = readl_relaxed(spi->base + STM32H7_SPI_SR);
+ 	u32 rxplvl = FIELD_GET(STM32H7_SPI_SR_RXPLVL, sr);
  
- 	mask = ier;
--	/* EOTIE is triggered on EOT, SUSP and TXC events. */
-+	/*
-+	 * EOTIE enables irq from EOT, SUSP and TXC events. We need to set
-+	 * SUSP to acknowledge it later. TXC is automatically cleared
-+	 */
-+
- 	mask |= STM32H7_SPI_SR_SUSP;
- 	/*
--	 * When TXTF is set, DXPIE and TXPIE are cleared. So in case of
--	 * Full-Duplex, need to poll RXP event to know if there are remaining
--	 * data, before disabling SPI.
-+	 * DXPIE is set in Full-Duplex, one IT will be raised if TXP and RXP
-+	 * are set. So in case of Full-Duplex, need to poll TXP and RXP event.
- 	 */
--	if (spi->rx_buf && !spi->cur_usedma)
--		mask |= STM32H7_SPI_SR_RXP;
-+	if ((spi->cur_comm == SPI_FULL_DUPLEX) && !spi->cur_usedma)
-+		mask |= STM32H7_SPI_SR_TXP | STM32H7_SPI_SR_RXP;
+ 	while ((spi->rx_len > 0) &&
+ 	       ((sr & STM32H7_SPI_SR_RXP) ||
+-		(flush && ((sr & STM32H7_SPI_SR_RXWNE) || (rxplvl > 0))))) {
++		((sr & STM32H7_SPI_SR_EOT) &&
++		 ((sr & STM32H7_SPI_SR_RXWNE) || (rxplvl > 0))))) {
+ 		u32 offs = spi->cur_xferlen - spi->rx_len;
  
- 	if (!(sr & mask)) {
- 		dev_warn(spi->dev, "spurious IT (sr=0x%08x, ier=0x%08x)\n",
+ 		if ((spi->rx_len >= sizeof(u32)) ||
+-		    (flush && (sr & STM32H7_SPI_SR_RXWNE))) {
++		    (sr & STM32H7_SPI_SR_RXWNE)) {
+ 			u32 *rx_buf32 = (u32 *)(spi->rx_buf + offs);
+ 
+ 			*rx_buf32 = readl_relaxed(spi->base + STM32H7_SPI_RXDR);
+ 			spi->rx_len -= sizeof(u32);
+ 		} else if ((spi->rx_len >= sizeof(u16)) ||
+-			   (flush && (rxplvl >= 2 || spi->cur_bpw > 8))) {
++			   (!(sr & STM32H7_SPI_SR_RXWNE) &&
++			    (rxplvl >= 2 || spi->cur_bpw > 8))) {
+ 			u16 *rx_buf16 = (u16 *)(spi->rx_buf + offs);
+ 
+ 			*rx_buf16 = readw_relaxed(spi->base + STM32H7_SPI_RXDR);
+@@ -608,8 +609,8 @@ static void stm32h7_spi_read_rxfifo(struct stm32_spi *spi, bool flush)
+ 		rxplvl = FIELD_GET(STM32H7_SPI_SR_RXPLVL, sr);
+ 	}
+ 
+-	dev_dbg(spi->dev, "%s%s: %d bytes left\n", __func__,
+-		flush ? "(flush)" : "", spi->rx_len);
++	dev_dbg(spi->dev, "%s: %d bytes left (sr=%08x)\n",
++		__func__, spi->rx_len, sr);
+ }
+ 
+ /**
+@@ -677,12 +678,7 @@ static void stm32f4_spi_disable(struct stm32_spi *spi)
+  * @spi: pointer to the spi controller data structure
+  *
+  * RX-Fifo is flushed when SPI controller is disabled. To prevent any data
+- * loss, use stm32h7_spi_read_rxfifo(flush) to read the remaining bytes in
+- * RX-Fifo.
+- * Normally, if TSIZE has been configured, we should relax the hardware at the
+- * reception of the EOT interrupt. But in case of error, EOT will not be
+- * raised. So the subsystem unprepare_message call allows us to properly
+- * complete the transfer from an hardware point of view.
++ * loss, use stm32_spi_read_rxfifo to read the remaining bytes in RX-Fifo.
+  */
+ static void stm32h7_spi_disable(struct stm32_spi *spi)
+ {
+@@ -717,7 +713,7 @@ static void stm32h7_spi_disable(struct stm32_spi *spi)
+ 	}
+ 
+ 	if (!spi->cur_usedma && spi->rx_buf && (spi->rx_len > 0))
+-		stm32h7_spi_read_rxfifo(spi, true);
++		stm32h7_spi_read_rxfifo(spi);
+ 
+ 	if (spi->cur_usedma && spi->dma_tx)
+ 		dmaengine_terminate_all(spi->dma_tx);
+@@ -913,7 +909,7 @@ static irqreturn_t stm32h7_spi_irq_thread(int irq, void *dev_id)
+ 		if (__ratelimit(&rs))
+ 			dev_dbg_ratelimited(spi->dev, "Communication suspended\n");
+ 		if (!spi->cur_usedma && (spi->rx_buf && (spi->rx_len > 0)))
+-			stm32h7_spi_read_rxfifo(spi, false);
++			stm32h7_spi_read_rxfifo(spi);
+ 		/*
+ 		 * If communication is suspended while using DMA, it means
+ 		 * that something went wrong, so stop the current transfer
+@@ -934,7 +930,7 @@ static irqreturn_t stm32h7_spi_irq_thread(int irq, void *dev_id)
+ 
+ 	if (sr & STM32H7_SPI_SR_EOT) {
+ 		if (!spi->cur_usedma && (spi->rx_buf && (spi->rx_len > 0)))
+-			stm32h7_spi_read_rxfifo(spi, true);
++			stm32h7_spi_read_rxfifo(spi);
+ 		end = true;
+ 	}
+ 
+@@ -944,7 +940,7 @@ static irqreturn_t stm32h7_spi_irq_thread(int irq, void *dev_id)
+ 
+ 	if (sr & STM32H7_SPI_SR_RXP)
+ 		if (!spi->cur_usedma && (spi->rx_buf && (spi->rx_len > 0)))
+-			stm32h7_spi_read_rxfifo(spi, false);
++			stm32h7_spi_read_rxfifo(spi);
+ 
+ 	writel_relaxed(sr & mask, spi->base + STM32H7_SPI_IFCR);
+ 
 -- 
 2.25.1
 

@@ -2,46 +2,47 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 909C2C11F68
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B904AC11F6A
 	for <linux-spi@archiver.kernel.org>; Wed, 30 Jun 2021 08:47:49 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6CD7861D0B
+	by mail.kernel.org (Postfix) with ESMTP id 8D73961CD4
 	for <linux-spi@archiver.kernel.org>; Wed, 30 Jun 2021 08:47:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233291AbhF3IuQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 30 Jun 2021 04:50:16 -0400
-Received: from mx07-00178001.pphosted.com ([185.132.182.106]:52508 "EHLO
+        id S233675AbhF3IuR (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 30 Jun 2021 04:50:17 -0400
+Received: from mx07-00178001.pphosted.com ([185.132.182.106]:48235 "EHLO
         mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S233340AbhF3IuQ (ORCPT
+        by vger.kernel.org with ESMTP id S233516AbhF3IuQ (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Wed, 30 Jun 2021 04:50:16 -0400
-Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 15U8gUoB025184;
-        Wed, 30 Jun 2021 10:47:34 +0200
+Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 15U8kps5001022;
+        Wed, 30 Jun 2021 10:47:35 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type; s=selector1;
- bh=bL8xKnLTQr4Dm3mlBr9VNEz3wY9YCWdGlOgjJUGqZ4U=;
- b=W6aU4Q8eiczWLr7aNgE8s7mfttpcHXCVzln0aw57jsA4mX4+bW2BdjnInbp3kF57rEgn
- feyspFSPcI9v3ZM8F1lpFVZ4XL12GqQ9SjaLFXujRg3sfGAn6paRUaAMwVFEJx/ukraM
- qj64DL3J/Wil+idzW9+kuq/2IUDkkXJ+7zMO/dktIWZhbWIxmK7o16LpZzrQMTSqVRAu
- xLcEH+zmClOEr9Gz3P/gLJ17BMVighJENYAIDxpZqss8nDAITvHaAAjS+WFqXX7HQpJN
- WWhjbfSRXeIusa0VhIX/ZFNfZ7C78N5tOvWuir+4JvVHQPSNPI46D+/JP9gXsSQNa26h Lw== 
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type; s=selector1;
+ bh=wvHutvszO60NpsmtRJ9LbKZBrctdcsmxFVI5e4fzTWs=;
+ b=tV118DikJuN7rlkwVDqV5Q4wNlP7tyQmJZziribC3i+cCUboPy9xufXFj3xXjpWiwn+h
+ +89MD2iHGlosXkIbwotSKSfkGDv/vfAkQH3p+YJQHQiHJWsO/QARUj/hYJ18avRXXXYQ
+ uVeGN+g/G5HDqwjsumUMOiqHVtQFHUmLTXYPQD7vpcOBVSkBkUdSZsVNII7C322YlEVG
+ IovQ+tUMi8cimx/u/kW5Fg2WYsmnF0/LqdbxYHhfZbJy2fmX+H9wiXYY9/w/jl+tM/WW
+ FN30uI8ZCewRHyK7OGyio1BBW2m7XZpc8I0OX3ekTkmq98kKURdLdj6npS0am06bckIT 2w== 
 Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 39g4kpw8dd-1
+        by mx07-00178001.pphosted.com with ESMTP id 39gn1186a6-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 30 Jun 2021 10:47:34 +0200
+        Wed, 30 Jun 2021 10:47:35 +0200
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 0ABCA10002A;
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id DDEC1100038;
         Wed, 30 Jun 2021 10:47:34 +0200 (CEST)
 Received: from Webmail-eu.st.com (sfhdag2node3.st.com [10.75.127.6])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id EFBAA21BF5F;
-        Wed, 30 Jun 2021 10:47:33 +0200 (CEST)
-Received: from localhost (10.75.127.47) by SFHDAG2NODE3.st.com (10.75.127.6)
- with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 30 Jun 2021 10:47:33
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id D0BF021BF5F;
+        Wed, 30 Jun 2021 10:47:34 +0200 (CEST)
+Received: from localhost (10.75.127.44) by SFHDAG2NODE3.st.com (10.75.127.6)
+ with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 30 Jun 2021 10:47:34
  +0200
 From:   Alain Volmat <alain.volmat@foss.st.com>
 To:     <broonie@kernel.org>, <amelie.delaunay@foss.st.com>
@@ -51,14 +52,16 @@ CC:     <mcoquelin.stm32@gmail.com>, <alexandre.torgue@foss.st.com>,
         <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>, <fabrice.gasnier@foss.st.com>,
         <alain.volmat@foss.st.com>
-Subject: [PATCH 0/6] spi: stm32: various fixes & cleanup
-Date:   Wed, 30 Jun 2021 10:45:17 +0200
-Message-ID: <1625042723-661-1-git-send-email-alain.volmat@foss.st.com>
+Subject: [PATCH 2/6] spi: stm32h7: fix full duplex irq handler handling
+Date:   Wed, 30 Jun 2021 10:45:19 +0200
+Message-ID: <1625042723-661-3-git-send-email-alain.volmat@foss.st.com>
 X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1625042723-661-1-git-send-email-alain.volmat@foss.st.com>
+References: <1625042723-661-1-git-send-email-alain.volmat@foss.st.com>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Originating-IP: [10.75.127.47]
-X-ClientProxiedBy: SFHDAG1NODE1.st.com (10.75.127.1) To SFHDAG2NODE3.st.com
+X-Originating-IP: [10.75.127.44]
+X-ClientProxiedBy: SFHDAG2NODE2.st.com (10.75.127.5) To SFHDAG2NODE3.st.com
  (10.75.127.6)
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
  definitions=2021-06-30_02:2021-06-29,2021-06-30 signatures=0
@@ -66,24 +69,48 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This series contains fixes & cleanup mainly regarding fifo
-and the way end of transfer triggered, when used with or
-without DMA.
-An additional patch cleans up the pm_runtime calls.
+In case of Full-Duplex mode, DXP flag is set when RXP and TXP flags are
+set. But to avoid 2 different handlings, just add TXP and RXP flag in
+the mask instead of DXP, and then keep the initial handling of TXP and
+RXP events.
+Also rephrase comment about EOTIE which is one of the interrupt enable
+bits. It is not triggered by any event.
 
-Alain Volmat (5):
-  spi: stm32: fixes pm_runtime calls in probe/remove
-  spi: stm32h7: fix full duplex irq handler handling
-  Revert "spi: stm32: properly handle 0 byte transfer"
-  spi: stm32h7: don't wait for EOT and flush fifo on disable
-  spi: stm32: finalize message either on dma callback or EOT
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+---
+ drivers/spi/spi-stm32.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-Amelie Delaunay (1):
-  spi: stm32h7: rework rx fifo read function
-
- drivers/spi/spi-stm32.c | 146 +++++++++++++++++-----------------------
- 1 file changed, 61 insertions(+), 85 deletions(-)
-
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index fe35c5cfb820..4dbd5cbe0c11 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -886,15 +886,18 @@ static irqreturn_t stm32h7_spi_irq_thread(int irq, void *dev_id)
+ 	ier = readl_relaxed(spi->base + STM32H7_SPI_IER);
+ 
+ 	mask = ier;
+-	/* EOTIE is triggered on EOT, SUSP and TXC events. */
++	/*
++	 * EOTIE enables irq from EOT, SUSP and TXC events. We need to set
++	 * SUSP to acknowledge it later. TXC is automatically cleared
++	 */
++
+ 	mask |= STM32H7_SPI_SR_SUSP;
+ 	/*
+-	 * When TXTF is set, DXPIE and TXPIE are cleared. So in case of
+-	 * Full-Duplex, need to poll RXP event to know if there are remaining
+-	 * data, before disabling SPI.
++	 * DXPIE is set in Full-Duplex, one IT will be raised if TXP and RXP
++	 * are set. So in case of Full-Duplex, need to poll TXP and RXP event.
+ 	 */
+-	if (spi->rx_buf && !spi->cur_usedma)
+-		mask |= STM32H7_SPI_SR_RXP;
++	if ((spi->cur_comm == SPI_FULL_DUPLEX) && !spi->cur_usedma)
++		mask |= STM32H7_SPI_SR_TXP | STM32H7_SPI_SR_RXP;
+ 
+ 	if (!(sr & mask)) {
+ 		dev_warn(spi->dev, "spurious IT (sr=0x%08x, ier=0x%08x)\n",
 -- 
 2.25.1
 

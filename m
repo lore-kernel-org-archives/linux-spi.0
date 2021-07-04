@@ -7,40 +7,44 @@ X-Spam-Status: No, score=-20.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6EC97C07E95
-	for <linux-spi@archiver.kernel.org>; Sun,  4 Jul 2021 23:15:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A3DA6C07E9D
+	for <linux-spi@archiver.kernel.org>; Sun,  4 Jul 2021 23:15:35 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4162160234
-	for <linux-spi@archiver.kernel.org>; Sun,  4 Jul 2021 23:15:37 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9092760234
+	for <linux-spi@archiver.kernel.org>; Sun,  4 Jul 2021 23:15:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231785AbhGDXSL (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 4 Jul 2021 19:18:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56944 "EHLO mail.kernel.org"
+        id S232448AbhGDXSH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 4 Jul 2021 19:18:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47420 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233461AbhGDXO1 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Sun, 4 Jul 2021 19:14:27 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 05A2A61997;
-        Sun,  4 Jul 2021 23:09:49 +0000 (UTC)
+        id S229956AbhGDXNR (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Sun, 4 Jul 2021 19:13:17 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4DE1461973;
+        Sun,  4 Jul 2021 23:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625440190;
-        bh=lEsf+MMZK+3GJndDa9D1xTAMOcuSfzQ+aaQ+k6xq4QU=;
+        s=k20201202; t=1625440150;
+        bh=FWdpgeLZjTV3yUDS9DmJf5529C3/nxBDlPw9YGo3gao=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NPVJck0NfeeTo3nHagrp+tj1UQ2+/Z+oglrwcCBYkaA1Yf+KN5KtRBGlS5ToC0zUg
-         9eMIGqeMmxvUSBqI1agn8Gc0oiWz88vgfAEYHuSnZmOHpBsWE2GbdBkX+YDzwHvIFH
-         fE7a/nuc+FUvmId05g32XgcUa1ZwyOo6lB0UL8jZxiL1mfGakAnunaWWC7X+Kbgod8
-         WDlRtpEdIpA5LU4cSo+4YMdb0X36xFLIVdfTxeDb8vAPExsK0aRasgsm1cRpntyZiM
-         ozL9gC/0BPC6mVSjwi8mdaW9ZeipWZSny6KmlHOKLqmEhDVkv2j6pT6AQPGwOWNw9X
-         eKVVK1Jy9vibQ==
+        b=W7zNWvIxumvZ08vQaMrHxATGEh0ww9QpXfzs3wuYGJlJfFTHDmwS3y4LHOAKCX93V
+         CmeEHkjVmdPywBDQe96dOdobWLQp0cnaQYwMSssVvVCaxIITuBAlcyAcEzO8rFKCvA
+         kgp2V6aJ7N8q+QTPFK7+a8VHhvXeh3eYYst5gg+UAzDi1pcWh/VY+e3Y27MouWpLTu
+         OdprazkyvO7Xn4C5DuIApBFoVw4qO3zy3/9QY1M4u8DyFe0wVQ/7gOX8XywEJ8tU9k
+         7n08StqAITnQQwrGm2sjsuhLj+aTSsVTVxlU8RCLr6lH1kph71ytBzdBPeGsFIHZ78
+         e5EqSwyBmOkrw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Jay Fang <f.fangjian@huawei.com>, Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 09/50] spi: spi-loopback-test: Fix 'tx_buf' might be 'rx_buf'
-Date:   Sun,  4 Jul 2021 19:08:57 -0400
-Message-Id: <20210704230938.1490742-9-sashal@kernel.org>
+Cc:     zpershuai <zpershuai@gmail.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.10 49/70] spi: meson-spicc: fix memory leak in meson_spicc_probe
+Date:   Sun,  4 Jul 2021 19:07:42 -0400
+Message-Id: <20210704230804.1490078-49-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210704230938.1490742-1-sashal@kernel.org>
-References: <20210704230938.1490742-1-sashal@kernel.org>
+In-Reply-To: <20210704230804.1490078-1-sashal@kernel.org>
+References: <20210704230804.1490078-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -49,33 +53,35 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Jay Fang <f.fangjian@huawei.com>
+From: zpershuai <zpershuai@gmail.com>
 
-[ Upstream commit 9e37a3ab0627011fb63875e9a93094b6fc8ddf48 ]
+[ Upstream commit b2d501c13470409ee7613855b17e5e5ec4111e1c ]
 
-In function 'spi_test_run_iter': Value 'tx_buf' might be 'rx_buf'.
+when meson_spicc_clk_init returns failed, it should goto the
+out_clk label.
 
-Signed-off-by: Jay Fang <f.fangjian@huawei.com>
-Link: https://lore.kernel.org/r/1620629903-15493-5-git-send-email-f.fangjian@huawei.com
+Signed-off-by: zpershuai <zpershuai@gmail.com>
+Reviewed-by: Neil Armstrong <narmstrong@baylibre.com>
+Link: https://lore.kernel.org/r/1623562156-21995-1-git-send-email-zpershuai@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-loopback-test.c | 2 +-
+ drivers/spi/spi-meson-spicc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 51633b2b6437..69a9df2cbbcf 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -868,7 +868,7 @@ static int spi_test_run_iter(struct spi_device *spi,
- 		test.transfers[i].len = len;
- 		if (test.transfers[i].tx_buf)
- 			test.transfers[i].tx_buf += tx_off;
--		if (test.transfers[i].tx_buf)
-+		if (test.transfers[i].rx_buf)
- 			test.transfers[i].rx_buf += rx_off;
+diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
+index 51aef2c6e966..b2c4621db34d 100644
+--- a/drivers/spi/spi-meson-spicc.c
++++ b/drivers/spi/spi-meson-spicc.c
+@@ -752,7 +752,7 @@ static int meson_spicc_probe(struct platform_device *pdev)
+ 	ret = meson_spicc_clk_init(spicc);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "clock registration failed\n");
+-		goto out_master;
++		goto out_clk;
  	}
  
+ 	ret = devm_spi_register_master(&pdev->dev, master);
 -- 
 2.30.2
 

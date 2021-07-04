@@ -7,39 +7,40 @@ X-Spam-Status: No, score=-20.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F815C07E9A
-	for <linux-spi@archiver.kernel.org>; Sun,  4 Jul 2021 23:15:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 41148C47E4B
+	for <linux-spi@archiver.kernel.org>; Sun,  4 Jul 2021 23:15:42 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0FC8A60234
-	for <linux-spi@archiver.kernel.org>; Sun,  4 Jul 2021 23:15:40 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 245F460234
+	for <linux-spi@archiver.kernel.org>; Sun,  4 Jul 2021 23:15:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233207AbhGDXSO (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 4 Jul 2021 19:18:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50590 "EHLO mail.kernel.org"
+        id S233273AbhGDXSQ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 4 Jul 2021 19:18:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50794 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233971AbhGDXOt (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Sun, 4 Jul 2021 19:14:49 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D51A16194D;
-        Sun,  4 Jul 2021 23:10:44 +0000 (UTC)
+        id S233992AbhGDXOu (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Sun, 4 Jul 2021 19:14:50 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9F37A613E5;
+        Sun,  4 Jul 2021 23:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625440245;
-        bh=pLUBppy2NntjW6LxoqFLLJMRfIOI3xab7b4GNtAQPlw=;
-        h=From:To:Cc:Subject:Date:From;
-        b=NajRSLTCPQvQ/E8cQ/zZ8uH0voQ7MACqrlPaSO0Do414O+Jx/u3TM1CVAQwyDRNWF
-         GPpd2jYTDj4hVXgS+Q3PcbZH6XaqlTOEL3fQC5kPzuH2m4allHR0Ey9IUzDpaVARvU
-         hZvDwHkZzmSLrvRra+U7qEyUKgmlZuBEhIfVSNWaFj4EGtcgWfLnp69QV+JADowYPt
-         n8X4qH49QFQmSSi4rntMUBIKhwLwh+TWRaky/N6D//pLLMow9r3uJlAESD2ugK/Lhh
-         Zk/YYYJejKoolnMQeFy2gkXXXDa1R7s51V8uwrSqo3hZYG0RuVH3D09SfbZsuQGI5D
-         WxNlrGfz7G0RQ==
+        s=k20201202; t=1625440251;
+        bh=laX2QUMgM33K5uDB4opxgdizQO9drAjH4BCEMzCb5LA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Zq+CjwtKtDS4DCuKEjqqnU2KPl+3GynppTft49ll0HFiNsLTLGIXJIgTUsewsHLqF
+         rYRz6KcC67RmvU0QqKf0rrzQ488f25Wx9/TtaUL67aOoyxOqoG67Zt+1kKwTkbw3u6
+         333cMuy0N44tFS+bKlGP7S48m3kSQBdmwtR8aGD9LmQSwbvFwlYotNVKrY7Ga+nLLA
+         zA7oFj+0VwL4pJTiVSyi2eM/cVuAB3pgTkYn9YjLhcqkt1mtYn1QJqmmErkbViP0TT
+         r547DU/Ud4mQKIefVDWK2+lrC08ohMHQNpiRkyza95lKKwXqfuwKBFutZ8niLQjeMU
+         iYhEQ7odk43Ng==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Mark Brown <broonie@kernel.org>,
+Cc:     Jay Fang <f.fangjian@huawei.com>, Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 01/31] spi: Make of_register_spi_device also set the fwnode
-Date:   Sun,  4 Jul 2021 19:10:13 -0400
-Message-Id: <20210704231043.1491209-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 06/31] spi: spi-topcliff-pch: Fix potential double free in pch_spi_process_messages()
+Date:   Sun,  4 Jul 2021 19:10:18 -0400
+Message-Id: <20210704231043.1491209-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210704231043.1491209-1-sashal@kernel.org>
+References: <20210704231043.1491209-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -48,60 +49,39 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Jay Fang <f.fangjian@huawei.com>
 
-[ Upstream commit 0e793ba77c18382f08e440260fe72bc6fce2a3cb ]
+[ Upstream commit 026a1dc1af52742c5897e64a3431445371a71871 ]
 
-Currently, the SPI core doesn't set the struct device fwnode pointer
-when it creates a new SPI device. This means when the device is
-registered the fwnode is NULL and the check in device_add which sets
-the fwnode->dev pointer is skipped. This wasn't previously an issue,
-however these two patches:
+pch_spi_set_tx() frees data->pkt_tx_buff on failure of kzalloc() for
+data->pkt_rx_buff, but its caller, pch_spi_process_messages(), will
+free data->pkt_tx_buff again. Set data->pkt_tx_buff to NULL after
+kfree() to avoid double free.
 
-commit 4731210c09f5 ("gpiolib: Bind gpio_device to a driver to enable
-fw_devlink=on by default")
-commit ced2af419528 ("gpiolib: Don't probe gpio_device if it's not the
-primary device")
-
-Added some code to the GPIO core which relies on using that
-fwnode->dev pointer to determine if a driver is bound to the fwnode
-and if not bind a stub GPIO driver. This means the GPIO providers
-behind SPI will get both the expected driver and this stub driver
-causing the stub driver to fail if it attempts to request any pin
-configuration. For example on my system:
-
-madera-pinctrl madera-pinctrl: pin gpio5 already requested by madera-pinctrl; cannot claim for gpiochip3
-madera-pinctrl madera-pinctrl: pin-4 (gpiochip3) status -22
-madera-pinctrl madera-pinctrl: could not request pin 4 (gpio5) from group aif1  on device madera-pinctrl
-gpio_stub_drv gpiochip3: Error applying setting, reverse things back
-gpio_stub_drv: probe of gpiochip3 failed with error -22
-
-The firmware node on the device created by the GPIO framework is set
-through the of_node pointer hence things generally actually work,
-however that fwnode->dev is never set, as the check was skipped at
-device_add time. This fix appears to match how the I2C subsystem
-handles the same situation.
-
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20210421101402.8468-1-ckeepax@opensource.cirrus.com
+Signed-off-by: Jay Fang <f.fangjian@huawei.com>
+Link: https://lore.kernel.org/r/1620284888-65215-1-git-send-email-f.fangjian@huawei.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-topcliff-pch.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index bbe33016d371..49f592e433a8 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1678,6 +1678,7 @@ of_register_spi_device(struct spi_controller *ctlr, struct device_node *nc)
- 	/* Store a pointer to the node in the device structure */
- 	of_node_get(nc);
- 	spi->dev.of_node = nc;
-+	spi->dev.fwnode = of_fwnode_handle(nc);
+diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
+index 8a5966963834..ef19e050612c 100644
+--- a/drivers/spi/spi-topcliff-pch.c
++++ b/drivers/spi/spi-topcliff-pch.c
+@@ -584,8 +584,10 @@ static void pch_spi_set_tx(struct pch_spi_data *data, int *bpw)
+ 	data->pkt_tx_buff = kzalloc(size, GFP_KERNEL);
+ 	if (data->pkt_tx_buff != NULL) {
+ 		data->pkt_rx_buff = kzalloc(size, GFP_KERNEL);
+-		if (!data->pkt_rx_buff)
++		if (!data->pkt_rx_buff) {
+ 			kfree(data->pkt_tx_buff);
++			data->pkt_tx_buff = NULL;
++		}
+ 	}
  
- 	/* Register the new device */
- 	rc = spi_add_device(spi);
+ 	if (!data->pkt_rx_buff) {
 -- 
 2.30.2
 

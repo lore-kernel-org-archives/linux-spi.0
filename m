@@ -5,39 +5,43 @@ X-Spam-Level:
 X-Spam-Status: No, score=-20.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8AB9AC11F6D
-	for <linux-spi@archiver.kernel.org>; Sun,  4 Jul 2021 23:04:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EB21CC07E96
+	for <linux-spi@archiver.kernel.org>; Sun,  4 Jul 2021 23:05:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 56D8061283
-	for <linux-spi@archiver.kernel.org>; Sun,  4 Jul 2021 23:04:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D0204611ED
+	for <linux-spi@archiver.kernel.org>; Sun,  4 Jul 2021 23:05:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230119AbhGDXHW (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 4 Jul 2021 19:07:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45464 "EHLO mail.kernel.org"
+        id S231292AbhGDXIZ (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Sun, 4 Jul 2021 19:08:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46604 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230101AbhGDXHU (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Sun, 4 Jul 2021 19:07:20 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 5A782611ED;
-        Sun,  4 Jul 2021 23:04:44 +0000 (UTC)
+        id S231166AbhGDXIO (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Sun, 4 Jul 2021 19:08:14 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2B13861405;
+        Sun,  4 Jul 2021 23:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625439885;
-        bh=56Oq7wqAYVvLyK3t7Eltf5zrlTCVibdj8RYSjRLBd5I=;
+        s=k20201202; t=1625439938;
+        bh=FWdpgeLZjTV3yUDS9DmJf5529C3/nxBDlPw9YGo3gao=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kffJuk60K0QwQuH+H4dOtfKAl02Kuad3yxJxdyHaKpWBmeiFyijQgW0PT+TSwleMM
-         PNocowqUtpdaTGj2q6JouuhZR+w4z+I0oev+E/zShXmYa4G4qCWlkbmIaN2jkteCCu
-         MhswX37akox10imrIOn5V9knm0rSCommJiN2qBEuxmw2LKF/oEGgRiZrPmZSP+9bkC
-         LJlvmAD6ChvlCl17KO9F3S3mFSigH0ruUV1eATRYrHkpKORk2FtphxBeMS7EsGK42p
-         55dtRrO1ahKp8ouJ1BZFtGSvJ9xiguq3XvAoyMpK3FB32BrqKhW5Riytg7RhZuhFDW
-         VFp47FSu3KLbA==
+        b=HptehRZCMDsw8jzg8pFZqrJ+Uikd0ZLHeTDbIG+4MJwvRpUEpTrzi+MIwDYnOk9kC
+         jvASibpsjVvCGmngLNghZiRXBDaDjGBur76F46ZSg1GaThdSDq/u5iXdq1NNA70TAN
+         KZB5J77BnnI/dXIIWn9hymUz9RONnjF18uRrRnt0F0+PFMGjeZSgqTvbLHeN6/viEd
+         BgDkqRsuKcRasbmjoS6NdLta1PQYGoiUha3WjeFv3uQeq4Eu+x128lkBp/2M3xMWNu
+         1ABviwADjV98akDN8gpYK2XTZFfF1raV8EEYjund1Y/5ZJkrgt+7ecUwFO7M5Yca0h
+         yhMljqN12wJQQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Tian Tao <tiantao6@hisilicon.com>, Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.13 18/85] spi: omap-100k: Fix the length judgment problem
-Date:   Sun,  4 Jul 2021 19:03:13 -0400
-Message-Id: <20210704230420.1488358-18-sashal@kernel.org>
+Cc:     zpershuai <zpershuai@gmail.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.13 56/85] spi: meson-spicc: fix memory leak in meson_spicc_probe
+Date:   Sun,  4 Jul 2021 19:03:51 -0400
+Message-Id: <20210704230420.1488358-56-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20210704230420.1488358-1-sashal@kernel.org>
 References: <20210704230420.1488358-1-sashal@kernel.org>
@@ -49,34 +53,35 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-From: Tian Tao <tiantao6@hisilicon.com>
+From: zpershuai <zpershuai@gmail.com>
 
-[ Upstream commit e7a1a3abea373e41ba7dfe0fbc93cb79b6a3a529 ]
+[ Upstream commit b2d501c13470409ee7613855b17e5e5ec4111e1c ]
 
-word_len should be checked in the omap1_spi100k_setup_transfer
-function to see if it exceeds 32.
+when meson_spicc_clk_init returns failed, it should goto the
+out_clk label.
 
-Signed-off-by: Tian Tao <tiantao6@hisilicon.com>
-Link: https://lore.kernel.org/r/1619695248-39045-1-git-send-email-tiantao6@hisilicon.com
+Signed-off-by: zpershuai <zpershuai@gmail.com>
+Reviewed-by: Neil Armstrong <narmstrong@baylibre.com>
+Link: https://lore.kernel.org/r/1623562156-21995-1-git-send-email-zpershuai@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-omap-100k.c | 2 +-
+ drivers/spi/spi-meson-spicc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-omap-100k.c b/drivers/spi/spi-omap-100k.c
-index 7062f2902253..f104470605b3 100644
---- a/drivers/spi/spi-omap-100k.c
-+++ b/drivers/spi/spi-omap-100k.c
-@@ -241,7 +241,7 @@ static int omap1_spi100k_setup_transfer(struct spi_device *spi,
- 	else
- 		word_len = spi->bits_per_word;
+diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
+index 51aef2c6e966..b2c4621db34d 100644
+--- a/drivers/spi/spi-meson-spicc.c
++++ b/drivers/spi/spi-meson-spicc.c
+@@ -752,7 +752,7 @@ static int meson_spicc_probe(struct platform_device *pdev)
+ 	ret = meson_spicc_clk_init(spicc);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "clock registration failed\n");
+-		goto out_master;
++		goto out_clk;
+ 	}
  
--	if (spi->bits_per_word > 32)
-+	if (word_len > 32)
- 		return -EINVAL;
- 	cs->word_len = word_len;
- 
+ 	ret = devm_spi_register_master(&pdev->dev, master);
 -- 
 2.30.2
 

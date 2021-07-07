@@ -2,57 +2,145 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F275C07E95
-	for <linux-spi@archiver.kernel.org>; Wed,  7 Jul 2021 08:56:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F2F47C07E95
+	for <linux-spi@archiver.kernel.org>; Wed,  7 Jul 2021 09:00:43 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0774661C84
-	for <linux-spi@archiver.kernel.org>; Wed,  7 Jul 2021 08:56:50 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id CEEAB61C9D
+	for <linux-spi@archiver.kernel.org>; Wed,  7 Jul 2021 09:00:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230446AbhGGI7a (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 7 Jul 2021 04:59:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44388 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230145AbhGGI7a (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 7 Jul 2021 04:59:30 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 501FA61C84;
-        Wed,  7 Jul 2021 08:56:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625648210;
-        bh=VQynKqdD/cumkfdeDxI5c7VyIxtyza5DAWlmX2BgB4c=;
-        h=Subject:From:Date:To:From;
-        b=Xmu8ykPir8FW0TNj1ESzXvdayUjhMd34gAN6dlyKfvasngTB+SldyXIBUZlNL5HRB
-         N0P+IPG2PzhTfw25UllxzAhC0ojdYwMZPg2FgRRZ3hUjQGYIn7dxuqXD6EPhZfQEaN
-         E0s0zlPDysDER5PFQCL1qzqtoMwZNttyevkxZVpsTmPeQGUNqcWQTTiIo0qmhlONgV
-         91//z/Orl8XOrsmnQBW52N6sHhMkR/2YBkk8OgfPotKD9/B0s86u2aJNFa8o7Nodtc
-         ISFzfqHQ0tRAQtoVmOu2otb7aI6w6ZzmAHmgxkVldmQZLA7lOMmssOUYiaKeVuuinB
-         OG3VBXOTymUfA==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <162564821028.8692.5395729243636891102.git-patchwork-housekeeping@kernel.org>
-Date:   Wed, 07 Jul 2021 08:56:50 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+        id S231218AbhGGJDX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 7 Jul 2021 05:03:23 -0400
+Received: from lucky1.263xmail.com ([211.157.147.134]:44696 "EHLO
+        lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231163AbhGGJDW (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Wed, 7 Jul 2021 05:03:22 -0400
+Received: from localhost (unknown [192.168.167.16])
+        by lucky1.263xmail.com (Postfix) with ESMTP id 81696CF108;
+        Wed,  7 Jul 2021 17:00:38 +0800 (CST)
+X-MAIL-GRAY: 0
+X-MAIL-DELIVERY: 1
+X-ADDR-CHECKED4: 1
+X-SKE-CHECKED: 1
+X-ANTISPAM-LEVEL: 2
+Received: from localhost.localdomain (unknown [58.22.7.114])
+        by smtp.263.net (postfix) whith ESMTP id P12363T139710634645248S1625648429145477_;
+        Wed, 07 Jul 2021 17:00:36 +0800 (CST)
+X-IP-DOMAINF: 1
+X-UNIQUE-TAG: <424240f1a1861d822a67a8b0f4269bef>
+X-RL-SENDER: jon.lin@rock-chips.com
+X-SENDER: jon.lin@rock-chips.com
+X-LOGIN-NAME: jon.lin@rock-chips.com
+X-FST-TO: linux-spi@vger.kernel.org
+X-RCPT-COUNT: 20
+X-SENDER-IP: 58.22.7.114
+X-ATTACHMENT-NUM: 0
+X-System-Flag: 0
+From:   Jon Lin <jon.lin@rock-chips.com>
+To:     linux-spi@vger.kernel.org
+Cc:     jon.lin@rock-chips.com, broonie@kernel.org, robh+dt@kernel.org,
+        heiko@sntech.de, jbx6244@gmail.com, hjc@rock-chips.com,
+        yifeng.zhao@rock-chips.com, sugar.zhang@rock-chips.com,
+        linux-rockchip@lists.infradead.org, linux-mtd@lists.infradead.org,
+        p.yadav@ti.com, macroalpha82@gmail.com, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        mturquette@baylibre.com, sboyd@kernel.org,
+        linux-clk@vger.kernel.org, Chris Morgan <macromorgan@hotmail.com>
+Subject: [PATCH v11 03/10] arm64: dts: rockchip: Add SFC to PX30
+Date:   Wed,  7 Jul 2021 17:00:20 +0800
+Message-Id: <20210707090027.32608-4-jon.lin@rock-chips.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20210707090027.32608-1-jon.lin@rock-chips.com>
+References: <20210707090027.32608-1-jon.lin@rock-chips.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v2] spi: stm32: various fixes & cleanup (2021-07-07T08:27:01)
-  Superseding: [v1] spi: stm32: various fixes & cleanup (2021-06-30T08:45:20):
-    [1/6] spi: stm32: fixes pm_runtime calls in probe/remove
-    [2/6] spi: stm32h7: fix full duplex irq handler handling
-    [3/6] Revert "spi: stm32: properly handle 0 byte transfer"
-    [4/6] spi: stm32h7: rework rx fifo read function
-    [5/6] spi: stm32h7: don't wait for EOT and flush fifo on disable
-    [6/6] spi: stm32: finalize message either on dma callback or EOT
+From: Chris Morgan <macromorgan@hotmail.com>
 
+Add a devicetree entry for the Rockchip SFC for the PX30 SOC.
 
+Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+Signed-off-by: Jon Lin <jon.lin@rock-chips.com>
+---
+
+Changes in v11: None
+Changes in v10: None
+Changes in v9: None
+Changes in v8: None
+Changes in v7: None
+Changes in v6: None
+Changes in v5: None
+Changes in v4: None
+Changes in v3: None
+Changes in v2: None
+Changes in v1: None
+
+ arch/arm64/boot/dts/rockchip/px30.dtsi | 38 ++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/rockchip/px30.dtsi b/arch/arm64/boot/dts/rockchip/px30.dtsi
+index 09baa8a167ce..d854f2577067 100644
+--- a/arch/arm64/boot/dts/rockchip/px30.dtsi
++++ b/arch/arm64/boot/dts/rockchip/px30.dtsi
+@@ -966,6 +966,18 @@
+ 		status = "disabled";
+ 	};
+ 
++	sfc: spi@ff3a0000 {
++		compatible = "rockchip,sfc";
++		reg = <0x0 0xff3a0000 0x0 0x4000>;
++		interrupts = <GIC_SPI 56 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&cru SCLK_SFC>, <&cru HCLK_SFC>;
++		clock-names = "clk_sfc", "hclk_sfc";
++		pinctrl-0 = <&sfc_clk &sfc_cs0 &sfc_bus4>;
++		pinctrl-names = "default";
++		power-domains = <&power PX30_PD_MMC_NAND>;
++		status = "disabled";
++	};
++
+ 	nfc: nand-controller@ff3b0000 {
+ 		compatible = "rockchip,px30-nfc";
+ 		reg = <0x0 0xff3b0000 0x0 0x4000>;
+@@ -1967,6 +1979,32 @@
+ 			};
+ 		};
+ 
++		sfc {
++			sfc_bus4: sfc-bus4 {
++				rockchip,pins =
++					<1 RK_PA0 3 &pcfg_pull_none>,
++					<1 RK_PA1 3 &pcfg_pull_none>,
++					<1 RK_PA2 3 &pcfg_pull_none>,
++					<1 RK_PA3 3 &pcfg_pull_none>;
++			};
++
++			sfc_bus2: sfc-bus2 {
++				rockchip,pins =
++					<1 RK_PA0 3 &pcfg_pull_none>,
++					<1 RK_PA1 3 &pcfg_pull_none>;
++			};
++
++			sfc_cs0: sfc-cs0 {
++				rockchip,pins =
++					<1 RK_PA4 3 &pcfg_pull_none>;
++			};
++
++			sfc_clk: sfc-clk {
++				rockchip,pins =
++					<1 RK_PB1 3 &pcfg_pull_none>;
++			};
++		};
++
+ 		lcdc {
+ 			lcdc_rgb_dclk_pin: lcdc-rgb-dclk-pin {
+ 				rockchip,pins =
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+2.17.1
+
+
 

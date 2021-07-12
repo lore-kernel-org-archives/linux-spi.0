@@ -2,31 +2,31 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=unavailable
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8215DC11F68
-	for <linux-spi@archiver.kernel.org>; Mon, 12 Jul 2021 15:02:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 081E1C11F6B
+	for <linux-spi@archiver.kernel.org>; Mon, 12 Jul 2021 15:02:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 6C12961167
+	by mail.kernel.org (Postfix) with ESMTP id DFE2761288
 	for <linux-spi@archiver.kernel.org>; Mon, 12 Jul 2021 15:02:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235318AbhGLPFh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        id S235326AbhGLPFh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
         Mon, 12 Jul 2021 11:05:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35840 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232254AbhGLPFg (ORCPT
+        with ESMTP id S235313AbhGLPFg (ORCPT
         <rfc822;linux-spi@vger.kernel.org>); Mon, 12 Jul 2021 11:05:36 -0400
 Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33ED5C0613E5;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E248C0613E8;
         Mon, 12 Jul 2021 08:02:48 -0700 (PDT)
 Received: from [127.0.0.1] (localhost [127.0.0.1])
         (Authenticated sender: sre)
-        with ESMTPSA id 77B9A1F425BC
+        with ESMTPSA id 6FA151F425BB
 Received: by jupiter.universe (Postfix, from userid 1000)
-        id 404164800C6; Mon, 12 Jul 2021 17:02:44 +0200 (CEST)
+        id 46AD44800C8; Mon, 12 Jul 2021 17:02:44 +0200 (CEST)
 From:   Sebastian Reichel <sebastian.reichel@collabora.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
@@ -36,100 +36,70 @@ Cc:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
         devicetree@vger.kernel.org, kernel@collabora.com,
         Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCHv6 0/3] GE Healthcare PPD firmware upgrade driver for ACHC
-Date:   Mon, 12 Jul 2021 17:02:39 +0200
-Message-Id: <20210712150242.146545-1-sebastian.reichel@collabora.com>
+Subject: [PATCHv6 2/3] ARM: dts: imx53-ppd: Fix ACHC entry
+Date:   Mon, 12 Jul 2021 17:02:41 +0200
+Message-Id: <20210712150242.146545-3-sebastian.reichel@collabora.com>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210712150242.146545-1-sebastian.reichel@collabora.com>
+References: <20210712150242.146545-1-sebastian.reichel@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hi,
+PPD has only one ACHC device, which effectively is a Kinetis
+microcontroller. It has one SPI interface used for normal
+communication. Additionally it's possible to flash the device
+firmware using NXP's EzPort protocol by correctly driving a
+second chip select pin and the device reset pin.
 
-The PPD has a secondary processor (NXP Kinetis K20), which can be
-programmed from the main system. It is connected to the main processor
-by having it's EzPort interface connected to the SPI bus. Currently
-both (normal and EzPort) interfaces are simply exposed to userspace.
-This does not work for the EzPort, since EzPort usage requires a device
-reset. The proper solution is to do the flashing from kernel space
-with properly timed toggling of EzPort chip-select and reset line. In
-PATCHv2 it was suggested, that this should happen via an SPI ancillary
-device, so this is how it has been implemented now. The SPI core
-changes have been applied in PATCHv5 and are part of v5.14-rc1.
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+---
+ arch/arm/boot/dts/imx53-ppd.dts | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-Changes since PATCHv5:
- * https://lore.kernel.org/lkml/20210621175359.126729-1-sebastian.reichel@collabora.com/
- * Rebased to v5.14-rc1
- * Fixed compilation as module
- * Dropped no longer needed module.h include from ezport code
-
-Changes since PATCHv4:
- * https://lore.kernel.org/lkml/20210609151235.48964-1-sebastian.reichel@collabora.com/
- * Add Rob's Acked-by to ge-achc binding update
- * Don't use of_property_read_u32_index() in of_spi_parse_dt()
- * Don't build separate module for EzPort code
- * Use GPL2-only for the header
- * ACHC_MAX_FREQ -> ACHC_MAX_FREQ_HZ
- * Only accept '1' for the sysfs files, not any data
- * Update sysfs file documentation
- * Rebased to spi-next tree (b8f9dce0f4eb)
-
-Changes since PATCHv3:
- * https://lore.kernel.org/lkml/20210528113346.37137-1-sebastian.reichel@collabora.com/
- * Add Rob's Acked-by to 2nd patch
- * use GPL-2-only instead of GPL-2+
- * use %zu for printing a size_t
- * use driver's .dev_groups to register sysfs group
- * Add sysfs property documentation
- * split EzPort and ACHC drivers into separate patches
- * drop minItems/maxItems from achc binding, which seems to fix the problems
-   reported by dt_binding_check. The information of two items being required
-   is implied by the explicit item list.
- * drop spidev functionality for the main SPI interface. The current firmware
-   communicates via UART and adding spidev support is complex. If future firmware
-   releases start using it, spidev support for the main interface can be added
-   later.
-
-Changes since PATCHv2:
- * https://lore.kernel.org/lkml/20180327135259.30890-1-sebastian.reichel@collabora.co.uk/
- * add SPI core support for ancillary devices
- * modify ACHC binding to make use of ancillary device
- * rewrite driver to use ancillary device
- * rebased to 5.13-rc1
-
-Changes since PATCHv1:
- * https://lore.kernel.org/lkml/20180320172201.2065-1-sebastian.reichel@collabora.co.uk/
- * split DT binding update into its own patch
- * add sysfs attribute documentation
- * fix problem reported by kbuild test robot
-
--- Sebastian
-
-Sebastian Reichel (3):
-  dt-bindings: misc: ge-achc: Convert to DT schema format
-  ARM: dts: imx53-ppd: Fix ACHC entry
-  misc: gehc-achc: new driver
-
- .../ABI/testing/sysfs-driver-ge-achc          |  14 +
- .../devicetree/bindings/misc/ge-achc.txt      |  26 -
- .../devicetree/bindings/misc/ge-achc.yaml     |  65 +++
- arch/arm/boot/dts/imx53-ppd.dts               |  23 +-
- drivers/misc/Kconfig                          |  11 +
- drivers/misc/Makefile                         |   2 +
- drivers/misc/gehc-achc.c                      | 136 +++++
- drivers/misc/nxp-ezport.c                     | 468 ++++++++++++++++++
- drivers/misc/nxp-ezport.h                     |   9 +
- drivers/spi/spidev.c                          |   1 -
- 10 files changed, 718 insertions(+), 37 deletions(-)
- create mode 100644 Documentation/ABI/testing/sysfs-driver-ge-achc
- delete mode 100644 Documentation/devicetree/bindings/misc/ge-achc.txt
- create mode 100644 Documentation/devicetree/bindings/misc/ge-achc.yaml
- create mode 100644 drivers/misc/gehc-achc.c
- create mode 100644 drivers/misc/nxp-ezport.c
- create mode 100644 drivers/misc/nxp-ezport.h
-
+diff --git a/arch/arm/boot/dts/imx53-ppd.dts b/arch/arm/boot/dts/imx53-ppd.dts
+index 5a5fa6190a52..37d0cffea99c 100644
+--- a/arch/arm/boot/dts/imx53-ppd.dts
++++ b/arch/arm/boot/dts/imx53-ppd.dts
+@@ -70,6 +70,12 @@ cko2_11M: sgtl-clock-cko2 {
+ 		clock-frequency = <11289600>;
+ 	};
+ 
++	achc_24M: achc-clock {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <24000000>;
++	};
++
+ 	sgtlsound: sound {
+ 		compatible = "fsl,imx53-cpuvo-sgtl5000",
+ 			     "fsl,imx-audio-sgtl5000";
+@@ -314,16 +320,13 @@ &gpio4 11 GPIO_ACTIVE_LOW
+ 		    &gpio4 12 GPIO_ACTIVE_LOW>;
+ 	status = "okay";
+ 
+-	spidev0: spi@0 {
+-		compatible = "ge,achc";
+-		reg = <0>;
+-		spi-max-frequency = <1000000>;
+-	};
+-
+-	spidev1: spi@1 {
+-		compatible = "ge,achc";
+-		reg = <1>;
+-		spi-max-frequency = <1000000>;
++	spidev0: spi@1 {
++		compatible = "ge,achc", "nxp,kinetis-k20";
++		reg = <1>, <0>;
++		vdd-supply = <&reg_3v3>;
++		vdda-supply = <&reg_3v3>;
++		clocks = <&achc_24M>;
++		reset-gpios = <&gpio3 6 GPIO_ACTIVE_LOW>;
+ 	};
+ 
+ 	gpioxra0: gpio@2 {
 -- 
 2.30.2
 

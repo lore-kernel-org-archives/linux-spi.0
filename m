@@ -7,45 +7,47 @@ X-Spam-Status: No, score=-14.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 27BC7C07E9C
-	for <linux-spi@archiver.kernel.org>; Mon, 12 Jul 2021 10:46:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 426BBC11F66
+	for <linux-spi@archiver.kernel.org>; Mon, 12 Jul 2021 10:47:03 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 0340C61130
-	for <linux-spi@archiver.kernel.org>; Mon, 12 Jul 2021 10:46:55 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 22C0B610CD
+	for <linux-spi@archiver.kernel.org>; Mon, 12 Jul 2021 10:47:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234088AbhGLKtl (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 12 Jul 2021 06:49:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34746 "EHLO mail.kernel.org"
+        id S234153AbhGLKts (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 12 Jul 2021 06:49:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34806 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234047AbhGLKti (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Mon, 12 Jul 2021 06:49:38 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id F400C610FA;
-        Mon, 12 Jul 2021 10:46:49 +0000 (UTC)
+        id S234055AbhGLKtn (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Mon, 12 Jul 2021 06:49:43 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 32F7661106;
+        Mon, 12 Jul 2021 10:46:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1626086810;
-        bh=5gadTNE2SjLldmP0GxQKzQmCe9E+I0kzV7crHNIpCOk=;
+        s=k20201202; t=1626086815;
+        bh=s+olitVcChZMJGcS+kpqQWJ7gxyw/XxMyh2v/cXCmg8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hkPxDfq42yEWwO9crtsgAMIv3EkIenFUxkPQS3oAB+kD0YH5RGVzqnDa0FlXeuUsj
-         9wSb7JdYjT+XEMCu0sNTmPX3ayVLJ3bb6aGXbcviinA0ANGlEVMoTRCX37RXse6+YL
-         uJ3utMTfKb81BXy8EbkH9tSFj6ib699spWC5hEDcsmUGAN9Jfq8XYhLQQVZxyjBeiT
-         LmTlpsLX99Sr/A4zMrxpsr5x2JAQazLiOupcXGBqRRszkCiMpTb3beoaSvp6TWM1+T
-         1VsAxUwbw/vEnEMh2m2s5Akp4e6HflasmUBM1gp7pQ0zET3JGn46mlY1TrHKmRbZ2g
-         bzM1ubTC1TyxA==
+        b=eMH9edpbkpi1nI/fSamz9TwXwBOsZIGevcHb0hhOp2eVJeNptfX151q00O/PDAZJt
+         p2wthnmzwnE9cbIwTRXzn9++jj+Kc5iH+Esv9LSkGghHqkv+0CmOqbt14+C8+0a7Ak
+         5OJE/q+iZ5L8UNSn3fvzh31PG3LspVdTNtRKCb/U+SnQMsmHmeky6CCWZoW1tBIO2+
+         wN5PgdBuFKIsevEaaheaZWNeyDV/EENeg4ShTLhGbiYR5yLoJF7+Xve1GwpacbNvkJ
+         8kf0quxY0wLuQRmickbowGeMY1whS0QnQWbPzkfFaIA7cMqIBbHSnu+ps5zZwhurC8
+         6vBGrIAqTNasQ==
 From:   Mark Brown <broonie@kernel.org>
-To:     amelie.delaunay@foss.st.com,
-        Alain Volmat <alain.volmat@foss.st.com>
+To:     Frank Wunderlich <linux@fw-web.de>
 Cc:     Mark Brown <broonie@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        alexandre.torgue@foss.st.com, mcoquelin.stm32@gmail.com,
-        fabrice.gasnier@foss.st.com
-Subject: Re: (subset) [PATCH v2 0/7] spi: stm32: various fixes & cleanup
-Date:   Mon, 12 Jul 2021 11:45:39 +0100
-Message-Id: <162608669456.4543.12090183716809322116.b4-ty@kernel.org>
+        linux-arm-kernel@lists.infradead.org,
+        Leilk Liu <leilk.liu@mediatek.com>,
+        linux-kernel@vger.kernel.org,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Peter Hess <peter.hess@ph-home.de>,
+        linux-mediatek@lists.infradead.org,
+        Frank Wunderlich <frank-w@public-files.de>,
+        linux-spi@vger.kernel.org
+Subject: Re: [PATCH] spi: mediatek: fix fifo rx mode
+Date:   Mon, 12 Jul 2021 11:45:41 +0100
+Message-Id: <162608669457.4543.2374973099687363958.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <1625646426-5826-1-git-send-email-alain.volmat@foss.st.com>
-References: <1625646426-5826-1-git-send-email-alain.volmat@foss.st.com>
+In-Reply-To: <20210706121609.680534-1-linux@fw-web.de>
+References: <20210706121609.680534-1-linux@fw-web.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -53,17 +55,12 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 7 Jul 2021 10:26:59 +0200, Alain Volmat wrote:
-> This series contains fixes & cleanup mainly regarding fifo
-> and the way end of transfer triggered, when used with or
-> without DMA.
-> An additional patch cleans up the pm_runtime calls and another
-> one enables the autosuspend.
+On Tue, 6 Jul 2021 14:16:09 +0200, Frank Wunderlich wrote:
+> In FIFO mode were two problems:
+> - RX mode was never handled and
+> - in this case the tx_buf pointer was NULL and caused an exception
 > 
-> v2: - split pm_runtime fix patch into two
->     - correct revert commit subject line
-> 
-> [...]
+> fix this by handling RX mode in mtk_spi_fifo_transfer
 
 Applied to
 
@@ -71,18 +68,8 @@ Applied to
 
 Thanks!
 
-[2/7] spi: stm32: enable pm_runtime autosuspend
-      commit: 9d5354145104cf392568a948c5ce2cb97f373fd7
-[3/7] spi: stm32h7: fix full duplex irq handler handling
-      (no commit info)
-[4/7] spi: stm32: Revert "properly handle 0 byte transfer"
-      commit: 70526e0b7601792bf546044fff92c368112f1d3f
-[5/7] spi: stm32h7: rework rx fifo read function
-      commit: d87a5d64b5037cfedd7eb47d785b5c159ace8d9b
-[6/7] spi: stm32h7: don't wait for EOT and flush fifo on disable
-      commit: dc6620c31326bc50fa22fd8900a9f995d0a04bc1
-[7/7] spi: stm32: finalize message either on dma callback or EOT
-      commit: 7ceb0b8a3ceddc36ae4ef1cba6c25a0e28ed65fc
+[1/1] spi: mediatek: fix fifo rx mode
+      commit: 3a70dd2d050331ee4cf5ad9d5c0a32d83ead9a43
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

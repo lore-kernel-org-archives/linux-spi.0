@@ -2,104 +2,109 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-19.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	URIBL_BLOCKED,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 081E1C11F6B
-	for <linux-spi@archiver.kernel.org>; Mon, 12 Jul 2021 15:02:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0A6AAC11F66
+	for <linux-spi@archiver.kernel.org>; Mon, 12 Jul 2021 15:50:43 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id DFE2761288
-	for <linux-spi@archiver.kernel.org>; Mon, 12 Jul 2021 15:02:50 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DFF7961222
+	for <linux-spi@archiver.kernel.org>; Mon, 12 Jul 2021 15:50:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235326AbhGLPFh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 12 Jul 2021 11:05:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35848 "EHLO
+        id S235567AbhGLPxa (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 12 Jul 2021 11:53:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235313AbhGLPFg (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 12 Jul 2021 11:05:36 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E248C0613E8;
-        Mon, 12 Jul 2021 08:02:48 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: sre)
-        with ESMTPSA id 6FA151F425BB
-Received: by jupiter.universe (Postfix, from userid 1000)
-        id 46AD44800C8; Mon, 12 Jul 2021 17:02:44 +0200 (CEST)
-From:   Sebastian Reichel <sebastian.reichel@collabora.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, Ian Ray <ian.ray@ge.com>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, kernel@collabora.com,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCHv6 2/3] ARM: dts: imx53-ppd: Fix ACHC entry
-Date:   Mon, 12 Jul 2021 17:02:41 +0200
-Message-Id: <20210712150242.146545-3-sebastian.reichel@collabora.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210712150242.146545-1-sebastian.reichel@collabora.com>
-References: <20210712150242.146545-1-sebastian.reichel@collabora.com>
+        with ESMTP id S234360AbhGLPx3 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 12 Jul 2021 11:53:29 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBB45C0613DD
+        for <linux-spi@vger.kernel.org>; Mon, 12 Jul 2021 08:50:39 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id a14so9426738pls.4
+        for <linux-spi@vger.kernel.org>; Mon, 12 Jul 2021 08:50:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XITR/kwZy//PlpcIAsFK/jAVgSCAdwr/J1KWtmSxoRU=;
+        b=NmIpqyWgbVpP8SrdaAQTFC7pf8nGBDa5ujmPMZwL+IEvLMUQO1XdnMqnvc4rZQ4WIc
+         8bcGM0vtpHFoMVNbpewcP2u55iRVmD5fLe41pbi9xLXa/Wa+UrtLyt7u81QuFJm+t3IQ
+         fpLm7+zrNSlwsTi1+lUxSuSDNuvfNM+VJMFz0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XITR/kwZy//PlpcIAsFK/jAVgSCAdwr/J1KWtmSxoRU=;
+        b=U4+Z7dIUEp36Di/VNXwiElw2QqpOxcrDZxfDQntxhaAWZ1qPFKcFsPK7QdZOSiNMh5
+         3WSd5j+QmFIfOpWxfrQSiz39ElzcQGtrycU/C0J+AbR3PGZtyVYCRBYzwQf7BrGTmyZo
+         aV7eS7NPVE8PlUARqsH3uv4ZNAEYAakKf74gID6RdU3cmk/mp1kG9D9OIUv/+eErmd5y
+         QS/L8rXqkU7t8kvZYCjW3kewEyF85jULcWnldbkM09P1NWxnQLQoKO3awLejwjI041LR
+         ozKA+qjZz1NtsG5gHaPFAFuVzNFU+8b9lt+6y9aTJdlgpAQ/36hIECHiT5D5Z27FzNXj
+         9ajg==
+X-Gm-Message-State: AOAM5313D2IzXeTMF8bSux/Toj0z6+qvxEXW+ITxM0SsGIgQsfS7X5wk
+        xMxHd5x9Psf8I2pSajAE2PKhKA==
+X-Google-Smtp-Source: ABdhPJwqh/PO/r75ZVxPjCtHmUaaMELknvcWs207dTZChUH9u3XbcJZFzJ1thLq5Qqg7tTzacp+TNw==
+X-Received: by 2002:a17:902:a9c7:b029:12b:349:b318 with SMTP id b7-20020a170902a9c7b029012b0349b318mr7287990plr.13.1626105039398;
+        Mon, 12 Jul 2021 08:50:39 -0700 (PDT)
+Received: from tictac2.mtv.corp.google.com ([2620:15c:202:201:da04:fb7:6001:b6d1])
+        by smtp.gmail.com with ESMTPSA id n33sm17772436pgm.55.2021.07.12.08.50.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jul 2021 08:50:38 -0700 (PDT)
+From:   Douglas Anderson <dianders@chromium.org>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     akashast@codeaurora.org, vkoul@kernel.org, swboyd@chromium.org,
+        Douglas Anderson <dianders@chromium.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org
+Subject: [PATCH] spi: spi-geni-qcom: Remove confusing comment about setting the watermark
+Date:   Mon, 12 Jul 2021 08:50:17 -0700
+Message-Id: <20210712085010.1.Ie3bb9f9d30d6475bb75251d32635194c1c72b9ee@changeid>
+X-Mailer: git-send-email 2.32.0.93.g670b81a890-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-PPD has only one ACHC device, which effectively is a Kinetis
-microcontroller. It has one SPI interface used for normal
-communication. Additionally it's possible to flash the device
-firmware using NXP's EzPort protocol by correctly driving a
-second chip select pin and the device reset pin.
+The comment in setup_fifo_xfer() about setting the watermark wasn't
+quite proper grammar and also stopped making sense around commit
+6d66507d9b55 ("spi: spi-geni-qcom: Don't wait to start 1st transfer if
+transmitting"). After that commit we actually start the transfer
+_before_ the watermark interrupt comes.
 
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+I don't think the comment really has any value anymore. We've already
+got a comment when we grab the spinlock saying that our interrupt can
+come any time as a result of the things in the locked section. Let's
+just remove it.
+
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
 ---
- arch/arm/boot/dts/imx53-ppd.dts | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx53-ppd.dts b/arch/arm/boot/dts/imx53-ppd.dts
-index 5a5fa6190a52..37d0cffea99c 100644
---- a/arch/arm/boot/dts/imx53-ppd.dts
-+++ b/arch/arm/boot/dts/imx53-ppd.dts
-@@ -70,6 +70,12 @@ cko2_11M: sgtl-clock-cko2 {
- 		clock-frequency = <11289600>;
- 	};
- 
-+	achc_24M: achc-clock {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <24000000>;
-+	};
-+
- 	sgtlsound: sound {
- 		compatible = "fsl,imx53-cpuvo-sgtl5000",
- 			     "fsl,imx-audio-sgtl5000";
-@@ -314,16 +320,13 @@ &gpio4 11 GPIO_ACTIVE_LOW
- 		    &gpio4 12 GPIO_ACTIVE_LOW>;
- 	status = "okay";
- 
--	spidev0: spi@0 {
--		compatible = "ge,achc";
--		reg = <0>;
--		spi-max-frequency = <1000000>;
--	};
+ drivers/spi/spi-geni-qcom.c | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+index b3861fb88711..2f51421e2a71 100644
+--- a/drivers/spi/spi-geni-qcom.c
++++ b/drivers/spi/spi-geni-qcom.c
+@@ -549,12 +549,6 @@ static void setup_fifo_xfer(struct spi_transfer *xfer,
+ 	 */
+ 	spin_lock_irq(&mas->lock);
+ 	geni_se_setup_m_cmd(se, m_cmd, FRAGMENTATION);
 -
--	spidev1: spi@1 {
--		compatible = "ge,achc";
--		reg = <1>;
--		spi-max-frequency = <1000000>;
-+	spidev0: spi@1 {
-+		compatible = "ge,achc", "nxp,kinetis-k20";
-+		reg = <1>, <0>;
-+		vdd-supply = <&reg_3v3>;
-+		vdda-supply = <&reg_3v3>;
-+		clocks = <&achc_24M>;
-+		reset-gpios = <&gpio3 6 GPIO_ACTIVE_LOW>;
- 	};
- 
- 	gpioxra0: gpio@2 {
+-	/*
+-	 * TX_WATERMARK_REG should be set after SPI configuration and
+-	 * setting up GENI SE engine, as driver starts data transfer
+-	 * for the watermark interrupt.
+-	 */
+ 	if (m_cmd & SPI_TX_ONLY) {
+ 		if (geni_spi_handle_tx(mas))
+ 			writel(mas->tx_wm, se->base + SE_GENI_TX_WATERMARK_REG);
 -- 
-2.30.2
+2.32.0.93.g670b81a890-goog
 

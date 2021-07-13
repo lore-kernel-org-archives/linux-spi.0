@@ -7,43 +7,43 @@ X-Spam-Status: No, score=-19.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A915C11F67
-	for <linux-spi@archiver.kernel.org>; Tue, 13 Jul 2021 13:06:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A7F1AC07E95
+	for <linux-spi@archiver.kernel.org>; Tue, 13 Jul 2021 13:06:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 2D2D1610CB
-	for <linux-spi@archiver.kernel.org>; Tue, 13 Jul 2021 13:06:15 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 925BA611C0
+	for <linux-spi@archiver.kernel.org>; Tue, 13 Jul 2021 13:06:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236552AbhGMNJD (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 13 Jul 2021 09:09:03 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:43680 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236222AbhGMNJC (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 13 Jul 2021 09:09:02 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 16DD5sT0010356;
-        Tue, 13 Jul 2021 08:05:54 -0500
+        id S236548AbhGMNJI (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 13 Jul 2021 09:09:08 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:51974 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236591AbhGMNJG (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 13 Jul 2021 09:09:06 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 16DD644V073299;
+        Tue, 13 Jul 2021 08:06:04 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1626181554;
-        bh=bvwRGkTgaRouJsbI7TnwpzPPO9mZ++9PZ3NrR5V4NMM=;
+        s=ti-com-17Q1; t=1626181564;
+        bh=1k4ivvZ3xXy03Q4E8raaV+ou93EXAdzBGlKPdFnNSkw=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=X3pj8Evrk4NbnJBOPXFVmUuKbr61oAOtGUoHjMj7xgT5g6wDcmwR8lzFcBWPPHGC+
-         Q9zGcvTLe2xxKsTC929ftJbrKrk8lF8hvpYybHucl0G2Z64lF1Q6oPQGaSBm51tk2h
-         UxEN6N22OevJeF4FVKJFE2/Fifde8K/JQKr/0V+A=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 16DD5sNr085828
+        b=LPhI6E8Vkm3LJSfa8HpdGxV+WiA5bLMh5wjpMvwxCQlJQhiktKNs8vSrtb43yASIt
+         WlB0tUxQkdppes4njA6l6ddvjPkRFIutoourP5oYct4T2BcQiM9WnvjIC/sYVUEv4N
+         /koF7j5K1EdEFM676rWq2g2o1Hnm74eLIXQoQfck=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 16DD64cl091370
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 13 Jul 2021 08:05:54 -0500
-Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+        Tue, 13 Jul 2021 08:06:04 -0500
+Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Tue, 13
- Jul 2021 08:05:54 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE107.ent.ti.com
- (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ Jul 2021 08:06:04 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Tue, 13 Jul 2021 08:05:54 -0500
+ Frontend Transport; Tue, 13 Jul 2021 08:06:04 -0500
 Received: from LT5CD112GSQZ.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 16DD5daC109825;
-        Tue, 13 Jul 2021 08:05:50 -0500
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 16DD5daE109825;
+        Tue, 13 Jul 2021 08:05:59 -0500
 From:   Apurva Nandan <a-nandan@ti.com>
 To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Richard Weinberger <richard@nod.at>,
@@ -54,9 +54,9 @@ To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <linux-spi@vger.kernel.org>
 CC:     Apurva Nandan <a-nandan@ti.com>, Pratyush Yadav <p.yadav@ti.com>
-Subject: [PATCH 02/13] mtd: spinand: Add enum spinand_proto to indicate current SPI IO mode
-Date:   Tue, 13 Jul 2021 13:05:27 +0000
-Message-ID: <20210713130538.646-3-a-nandan@ti.com>
+Subject: [PATCH 04/13] mtd: spinand: Fix odd byte addr and data phase in read/write reg op and write VCR op for Octal DTR mode
+Date:   Tue, 13 Jul 2021 13:05:29 +0000
+Message-ID: <20210713130538.646-5-a-nandan@ti.com>
 X-Mailer: git-send-email 2.31.1.windows.1
 In-Reply-To: <20210713130538.646-1-a-nandan@ti.com>
 References: <20210713130538.646-1-a-nandan@ti.com>
@@ -68,99 +68,86 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Unlike Dual and Quad SPI modes flashes, Octal DTR SPI NAND flashes
-require all instructions to be made in 8D-8D-8D protocol when the
-flash is in Octal DTR mode. Hence, storing the current SPI IO mode
-becomes necessary for correctly generating non-array access operations.
+In Octal DTR SPI mode, 2 bytes of data gets transmitted over one clock
+cycle, and half-cycle instruction phases aren't supported yet. So,
+every DTR spi_mem_op needs to have even nbytes in all phases for
+non-erratic behaviour from the SPI controller.
 
-Store the current SPI IO mode in the spinand struct using a reg_proto
-enum. This would act as a flag, denoting that the core should use
-the given SPI protocol for non-page access operations.
+The odd length cmd and dummy phases get handled by spimem_setup_op()
+but the odd length address and data phases need to be handled according
+to the use case. For example in Octal DTR mode, read register operation
+has one byte long address and data phase. So it needs to extend it
+by adding a suitable extra byte in addr and reading 2 bytes of data,
+discarding the second byte.
 
-Also provide basic macros for extracting buswidth and dtr mode
-information from the spinand_proto enum.
+Handle address and data phases for Octal DTR mode in read/write
+register and write volatile configuration register operations
+by adding a suitable extra byte in the address and data phase.
+
+Create spimem_setup_reg_op() helper function to ease setting up
+read/write register operations in other functions, e.g. wait().
 
 Signed-off-by: Apurva Nandan <a-nandan@ti.com>
 ---
- drivers/mtd/nand/spi/core.c |  2 ++
- include/linux/mtd/spinand.h | 30 ++++++++++++++++++++++++++++++
- 2 files changed, 32 insertions(+)
+ drivers/mtd/nand/spi/core.c | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-index 446ba8d43fbc..a4f25649e293 100644
+index 2e59faecc8f5..a5334ad34f96 100644
 --- a/drivers/mtd/nand/spi/core.c
 +++ b/drivers/mtd/nand/spi/core.c
-@@ -1153,6 +1153,7 @@ static void spinand_mtd_resume(struct mtd_info *mtd)
- 	struct spinand_device *spinand = mtd_to_spinand(mtd);
+@@ -65,12 +65,27 @@ static void spinand_setup_op(const struct spinand_device *spinand,
+ 	}
+ }
+ 
++static void spinand_setup_reg_op(const struct spinand_device *spinand,
++				 struct spi_mem_op *op)
++{
++	if (spinand->reg_proto == SPINAND_OCTAL_DTR) {
++		/*
++		 * Assigning same first and second byte will result in constant
++		 * bits on ths SPI bus between positive and negative clock edges
++		 */
++		op->addr.val = (op->addr.val << 8) | op->addr.val;
++		op->addr.nbytes = 2;
++		op->data.nbytes = 2;
++	}
++	spinand_setup_op(spinand, op);
++}
++
+ static int spinand_read_reg_op(struct spinand_device *spinand, u8 reg, u8 *val)
+ {
+-	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(reg,
+-						      spinand->scratchbuf);
++	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(reg, spinand->scratchbuf);
  	int ret;
  
-+	spinand->reg_proto = SPINAND_SINGLE_STR;
- 	ret = spinand_reset_op(spinand);
++	spinand_setup_reg_op(spinand, &op);
+ 	ret = spi_mem_exec_op(spinand->spimem, &op);
  	if (ret)
- 		return;
-@@ -1179,6 +1180,7 @@ static int spinand_init(struct spinand_device *spinand)
- 	if (!spinand->scratchbuf)
- 		return -ENOMEM;
+ 		return ret;
+@@ -81,10 +96,10 @@ static int spinand_read_reg_op(struct spinand_device *spinand, u8 reg, u8 *val)
  
-+	spinand->reg_proto = SPINAND_SINGLE_STR;
- 	ret = spinand_detect(spinand);
- 	if (ret)
- 		goto err_free_bufs;
-diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
-index 6988956b8492..f6093cd98d7b 100644
---- a/include/linux/mtd/spinand.h
-+++ b/include/linux/mtd/spinand.h
-@@ -140,6 +140,31 @@
- 		   SPI_MEM_OP_NO_DUMMY,					\
- 		   SPI_MEM_OP_DATA_OUT(len, buf, 4))
+ static int spinand_write_reg_op(struct spinand_device *spinand, u8 reg, u8 val)
+ {
+-	struct spi_mem_op op = SPINAND_SET_FEATURE_OP(reg,
+-						      spinand->scratchbuf);
++	struct spi_mem_op op = SPINAND_SET_FEATURE_OP(reg, spinand->scratchbuf);
  
-+#define SPINAND_PROTO_BUSWIDTH_MASK	GENMASK(6, 0)
-+#define SPINAND_PROTO_DTR_BIT		BIT(7)
-+
-+#define SPINAND_PROTO_STR(__buswidth)	\
-+	((u8)(((__buswidth) - 1) & SPINAND_PROTO_BUSWIDTH_MASK))
-+#define SPINAND_PROTO_DTR(__buswidth)	\
-+	(SPINAND_PROTO_DTR_BIT | SPINAND_PROTO_STR(__buswidth))
-+
-+#define SPINAND_PROTO_BUSWIDTH(__proto)	\
-+	((u8)(((__proto) & SPINAND_PROTO_BUSWIDTH_MASK) + 1))
-+#define SPINAND_PROTO_IS_DTR(__proto)	(!!((__proto) & SPINAND_PROTO_DTR_BIT))
-+
-+/**
-+ * enum spinand_proto - List allowable SPI protocol variants for read reg,
-+ *			write reg, blk erase, write enable/disable, page read
-+ *			and program exec operations.
-+ */
-+enum spinand_proto {
-+	SPINAND_SINGLE_STR = SPINAND_PROTO_STR(1),
-+	SPINAND_DUAL_STR = SPINAND_PROTO_STR(2),
-+	SPINAND_QUAD_STR = SPINAND_PROTO_STR(4),
-+	SPINAND_OCTAL_STR = SPINAND_PROTO_STR(8),
-+	SPINAND_OCTAL_DTR = SPINAND_PROTO_DTR(8),
-+};
-+
- /**
-  * Standard SPI NAND flash commands
-  */
-@@ -407,6 +432,9 @@ struct spinand_dirmap {
-  *		   this die. Only required if your chip exposes several dies
-  * @cur_target: currently selected target/die
-  * @eccinfo: on-die ECC information
-+ * @reg_proto: select a variant of SPI IO protocol (single, quad, octal or
-+ *	       octal DTR) for read_reg/write_reg/erase operations. Update on
-+ *	       successful transition into a different SPI IO protocol.
-  * @cfg_cache: config register cache. One entry per die
-  * @databuf: bounce buffer for data
-  * @oobbuf: bounce buffer for OOB data
-@@ -438,6 +466,8 @@ struct spinand_device {
+-	*spinand->scratchbuf = val;
++	spinand_setup_reg_op(spinand, &op);
++	memset(spinand->scratchbuf, val, op.data.nbytes);
+ 	return spi_mem_exec_op(spinand->spimem, &op);
+ }
  
- 	struct spinand_ecc_info eccinfo;
+@@ -547,6 +562,7 @@ static int spinand_wait(struct spinand_device *spinand,
+ 	u8 status;
+ 	int ret;
  
-+	enum spinand_proto reg_proto;
-+
- 	u8 *cfg_cache;
- 	u8 *databuf;
- 	u8 *oobbuf;
++	spinand_setup_reg_op(spinand, &op);
+ 	ret = spi_mem_poll_status(spinand->spimem, &op, STATUS_BUSY, 0,
+ 				  initial_delay_us,
+ 				  poll_delay_us,
 -- 
 2.17.1
 

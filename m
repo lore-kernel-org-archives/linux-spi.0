@@ -2,175 +2,54 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E558C07E96
-	for <linux-spi@archiver.kernel.org>; Tue, 13 Jul 2021 16:36:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BE5CC07E95
+	for <linux-spi@archiver.kernel.org>; Tue, 13 Jul 2021 16:56:40 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 07FA5600CD
-	for <linux-spi@archiver.kernel.org>; Tue, 13 Jul 2021 16:36:50 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 842F6610C7
+	for <linux-spi@archiver.kernel.org>; Tue, 13 Jul 2021 16:56:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233298AbhGMQjh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 13 Jul 2021 12:39:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45078 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231266AbhGMQjZ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 13 Jul 2021 12:39:25 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32C8DC05BD14;
-        Tue, 13 Jul 2021 09:35:37 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: sre)
-        with ESMTPSA id 1DD151F41E16
-Received: by jupiter.universe (Postfix, from userid 1000)
-        id 435DD4800C7; Tue, 13 Jul 2021 18:35:32 +0200 (CEST)
-From:   Sebastian Reichel <sebastian.reichel@collabora.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, Ian Ray <ian.ray@ge.com>,
-        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, kernel@collabora.com,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCHv7 1/3] dt-bindings: misc: ge-achc: Convert to DT schema format
-Date:   Tue, 13 Jul 2021 18:35:26 +0200
-Message-Id: <20210713163528.119185-2-sebastian.reichel@collabora.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210713163528.119185-1-sebastian.reichel@collabora.com>
-References: <20210713163528.119185-1-sebastian.reichel@collabora.com>
+        id S229449AbhGMQ7a (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 13 Jul 2021 12:59:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45844 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229987AbhGMQ73 (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 13 Jul 2021 12:59:29 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id B9C08610C7;
+        Tue, 13 Jul 2021 16:56:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1626195399;
+        bh=HXpAfjOvD7TuecJtN8LbQvg11mxTjpvQ6xSfl9F1kLg=;
+        h=Subject:From:Date:To:From;
+        b=ImWD0bLRcgDoIBMCDf3bDuhVyOSG44kGIoPFFAIPOIY7YH4in4ZtRmi3goCF++VXU
+         y7IMUP2al2JEtiBT+Wor7utQQHKRfSTdD9ONSAOI+w7HCKqXe80fWwfuyoPPvkkiMw
+         +hfkJpvvylXtSh9mnyvIkQThdl45lY/pTlss2xjxqd5SDPkCzQKCMUJLA1TacQLknU
+         FvAvItb4Od38s7uC06V7Z5rPhpdvjD7LGH/GmmycOUQqD05FcWECISn1PotWXKPQhf
+         MlPQ2XEnUktP64kaPUmOnrVIa5EFMDV1kJbPCjFhYuZqnTFXE7sufvUp0xRK5LCBI4
+         tij75C3gR2SkQ==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <162619539970.10480.13615738174180999968.git-patchwork-housekeeping@kernel.org>
+Date:   Tue, 13 Jul 2021 16:56:39 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Convert the binding to DT schema format. Also update the binding
-to fix shortcomings
+Latest series: [v1] GE Healthcare PPD firmware upgrade driver for ACHC (2021-07-13T16:35:28)
+  Superseding: [v1] GE Healthcare PPD firmware upgrade driver for ACHC (2021-07-12T15:02:40):
+    [PATCHv6,1/3] dt-bindings: misc: ge-achc: Convert to DT schema format
+    [PATCHv6,2/3] ARM: dts: imx53-ppd: Fix ACHC entry
+    [PATCHv6,3/3] misc: gehc-achc: new driver
 
- * Add "nxp,kinetis-k20" fallback compatible
- * add programming SPI interface and reset GPIO
- * add main clock
- * add voltage supplies
- * drop spi-max-frequency from required properties,
-   driver will setup max. frequency
 
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
----
- .../devicetree/bindings/misc/ge-achc.txt      | 26 --------
- .../devicetree/bindings/misc/ge-achc.yaml     | 65 +++++++++++++++++++
- 2 files changed, 65 insertions(+), 26 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/misc/ge-achc.txt
- create mode 100644 Documentation/devicetree/bindings/misc/ge-achc.yaml
-
-diff --git a/Documentation/devicetree/bindings/misc/ge-achc.txt b/Documentation/devicetree/bindings/misc/ge-achc.txt
-deleted file mode 100644
-index 77df94d7a32f..000000000000
---- a/Documentation/devicetree/bindings/misc/ge-achc.txt
-+++ /dev/null
-@@ -1,26 +0,0 @@
--* GE Healthcare USB Management Controller
--
--A device which handles data aquisition from compatible USB based peripherals.
--SPI is used for device management.
--
--Note: This device does not expose the peripherals as USB devices.
--
--Required properties:
--
--- compatible : Should be "ge,achc"
--
--Required SPI properties:
--
--- reg : Should be address of the device chip select within
--  the controller.
--
--- spi-max-frequency : Maximum SPI clocking speed of device in Hz, should be
--  1MHz for the GE ACHC.
--
--Example:
--
--spidev0: spi@0 {
--	compatible = "ge,achc";
--	reg = <0>;
--	spi-max-frequency = <1000000>;
--};
-diff --git a/Documentation/devicetree/bindings/misc/ge-achc.yaml b/Documentation/devicetree/bindings/misc/ge-achc.yaml
-new file mode 100644
-index 000000000000..ff07aa62ed57
---- /dev/null
-+++ b/Documentation/devicetree/bindings/misc/ge-achc.yaml
-@@ -0,0 +1,65 @@
-+# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
-+# Copyright (C) 2021 GE Inc.
-+# Copyright (C) 2021 Collabora Ltd.
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/misc/ge-achc.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: GE Healthcare USB Management Controller
-+
-+description: |
-+  A device which handles data acquisition from compatible USB based peripherals.
-+  SPI is used for device management.
-+
-+  Note: This device does not expose the peripherals as USB devices.
-+
-+maintainers:
-+  - Sebastian Reichel <sre@kernel.org>
-+
-+properties:
-+  compatible:
-+    items:
-+      - const: ge,achc
-+      - const: nxp,kinetis-k20
-+
-+  clocks:
-+    maxItems: 1
-+
-+  vdd-supply:
-+    description: Digital power supply regulator on VDD pin
-+
-+  vdda-supply:
-+    description: Analog power supply regulator on VDDA pin
-+
-+  reg:
-+    items:
-+      - description: Control interface
-+      - description: Firmware programming interface
-+
-+  reset-gpios:
-+    description: GPIO used for hardware reset.
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - clocks
-+  - reg
-+  - reset-gpios
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        spi@1 {
-+            compatible = "ge,achc", "nxp,kinetis-k20";
-+            reg = <1>, <0>;
-+            clocks = <&achc_24M>;
-+            reset-gpios = <&gpio3 6 GPIO_ACTIVE_LOW>;
-+        };
-+    };
 -- 
-2.30.2
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

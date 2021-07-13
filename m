@@ -2,140 +2,123 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-	autolearn_force=no version=3.4.0
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B1FE8C07E95
-	for <linux-spi@archiver.kernel.org>; Tue, 13 Jul 2021 09:30:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E9FD1C11F67
+	for <linux-spi@archiver.kernel.org>; Tue, 13 Jul 2021 09:54:22 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9E7A260720
-	for <linux-spi@archiver.kernel.org>; Tue, 13 Jul 2021 09:30:23 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D202561178
+	for <linux-spi@archiver.kernel.org>; Tue, 13 Jul 2021 09:54:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235304AbhGMJdM (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 13 Jul 2021 05:33:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60308 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235293AbhGMJdJ (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 13 Jul 2021 05:33:09 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 888F8C0613EE
-        for <linux-spi@vger.kernel.org>; Tue, 13 Jul 2021 02:30:19 -0700 (PDT)
-Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=[IPv6:::1])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <l.stach@pengutronix.de>)
-        id 1m3Ejr-0000rp-Gk; Tue, 13 Jul 2021 11:30:03 +0200
-Message-ID: <695d47eb5dad9292d8f87e69ad1bccaa2e132a66.camel@pengutronix.de>
-Subject: Re: [PATCH v14 08/12] spi: imx: remove ERR009165 workaround on
- i.mx6ul
-From:   Lucas Stach <l.stach@pengutronix.de>
-To:     Robin Gong <yibin.gong@nxp.com>,
-        "vkoul@kernel.org" <vkoul@kernel.org>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "broonie@kernel.org" <broonie@kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "will.deacon@arm.com" <will.deacon@arm.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "festevam@gmail.com" <festevam@gmail.com>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-        "martin.fuzzey@flowbird.group" <martin.fuzzey@flowbird.group>,
-        "u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
-        "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
-        "matthias.schiffer@ew.tq-group.com" 
-        <matthias.schiffer@ew.tq-group.com>,
-        "frieder.schrempf@kontron.de" <frieder.schrempf@kontron.de>,
-        "m.felsch@pengutronix.de" <m.felsch@pengutronix.de>,
-        Clark Wang <xiaoning.wang@nxp.com>
-Cc:     "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>
-Date:   Tue, 13 Jul 2021 11:30:01 +0200
-In-Reply-To: <VE1PR04MB66889D0BC546DE2580BF614089149@VE1PR04MB6688.eurprd04.prod.outlook.com>
-References: <1617809456-17693-1-git-send-email-yibin.gong@nxp.com>
-         <1617809456-17693-9-git-send-email-yibin.gong@nxp.com>
-         <dfa12f89f112966197518aa8df25cb47d69b30f7.camel@pengutronix.de>
-         <VE1PR04MB668852203A2920C6C9E9E3CF89159@VE1PR04MB6688.eurprd04.prod.outlook.com>
-         <7ca4554c58908618705768e01239409d19f83d17.camel@pengutronix.de>
-         <VE1PR04MB66889D0BC546DE2580BF614089149@VE1PR04MB6688.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.1 (3.40.1-1.fc34) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
-X-SA-Exim-Mail-From: l.stach@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-spi@vger.kernel.org
+        id S235473AbhGMJ5L (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 13 Jul 2021 05:57:11 -0400
+Received: from lucky1.263xmail.com ([211.157.147.130]:35958 "EHLO
+        lucky1.263xmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235453AbhGMJ5H (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 13 Jul 2021 05:57:07 -0400
+Received: from localhost (unknown [192.168.167.13])
+        by lucky1.263xmail.com (Postfix) with ESMTP id 06134D5BD9;
+        Tue, 13 Jul 2021 17:54:09 +0800 (CST)
+X-MAIL-GRAY: 0
+X-MAIL-DELIVERY: 1
+X-ADDR-CHECKED4: 1
+X-SKE-CHECKED: 1
+X-ANTISPAM-LEVEL: 2
+Received: from localhost.localdomain (unknown [58.22.7.114])
+        by smtp.263.net (postfix) whith ESMTP id P30158T139873832912640S1626170037329023_;
+        Tue, 13 Jul 2021 17:53:59 +0800 (CST)
+X-IP-DOMAINF: 1
+X-UNIQUE-TAG: <f4edf0553fb64da733e924475bc5017d>
+X-RL-SENDER: jon.lin@rock-chips.com
+X-SENDER: jon.lin@rock-chips.com
+X-LOGIN-NAME: jon.lin@rock-chips.com
+X-FST-TO: linux-spi@vger.kernel.org
+X-RCPT-COUNT: 20
+X-SENDER-IP: 58.22.7.114
+X-ATTACHMENT-NUM: 0
+X-System-Flag: 0
+From:   Jon Lin <jon.lin@rock-chips.com>
+To:     linux-spi@vger.kernel.org
+Cc:     jon.lin@rock-chips.com, broonie@kernel.org, robh+dt@kernel.org,
+        heiko@sntech.de, jbx6244@gmail.com, hjc@rock-chips.com,
+        yifeng.zhao@rock-chips.com, sugar.zhang@rock-chips.com,
+        linux-rockchip@lists.infradead.org, linux-mtd@lists.infradead.org,
+        p.yadav@ti.com, macroalpha82@gmail.com, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        mturquette@baylibre.com, sboyd@kernel.org,
+        linux-clk@vger.kernel.org, Chris Morgan <macromorgan@hotmail.com>
+Subject: [PATCH v12 10/10] arm64: dts: rockchip: Enable SFC for Odroid Go Advance
+Date:   Tue, 13 Jul 2021 17:53:55 +0800
+Message-Id: <20210713095355.3249-1-jon.lin@rock-chips.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20210713094718.1709-1-jon.lin@rock-chips.com>
+References: <20210713094718.1709-1-jon.lin@rock-chips.com>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Am Dienstag, dem 13.07.2021 um 09:12 +0000 schrieb Robin Gong:
-> On 12/07/21 17:31 Lucas Stach <l.stach@pengutronix.de> wrote: 
-> > Am Montag, dem 12.07.2021 um 03:48 +0000 schrieb Robin Gong:
-> > > On 09/07/21 17:42 Lucas Stach <l.stach@pengutronix.de> wrote:
-> > > > Am Mittwoch, dem 07.04.2021 um 23:30 +0800 schrieb Robin Gong:
-> > > > > ERR009165 fixed on i.mx6ul/6ull/6sll. All other i.mx6/7 and
-> > > > > i.mx8m/8mm still need this errata. Please refer to nxp official
-> > > > > errata document from
-> > > > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fww
-> > > > w.n
-> > xp.com%2F&amp;data=04%7C01%7Cyibin.gong%40nxp.com%7C48156bc93d
-> > > > 
-> > c84ac26e9d08d942bdc0ac%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%
-> > > > 
-> > 7C1%7C637614205017900475%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4
-> > > > 
-> > wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&a
-> > > > 
-> > mp;sdata=keYQubzt1jWrKhaxXr40RL41vzFuIn7x1Sasa3p%2F9Xo%3D&amp;res
-> > > > erved=0 .
-> > > > > 
-> > > > > For removing workaround on those chips. Add new i.mx6ul type.
-> > > > > 
-> > > > > Signed-off-by: Robin Gong <yibin.gong@nxp.com>
-> > > > > Acked-by: Mark Brown <broonie@kernel.org>
-> > > > > ---
-> > > > >  drivers/spi/spi-imx.c | 47
-> > > > > +++++++++++++++++++++++++++++++++++++++++++----
-> > > > >  1 file changed, 43 insertions(+), 4 deletions(-)
-> > > > > 
-> > > > > diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c index
-> > > > > cf235b9..d18ee25 100644
-> > > > > --- a/drivers/spi/spi-imx.c
-> > > > > +++ b/drivers/spi/spi-imx.c
-> > > > > @@ -59,6 +59,7 @@ enum spi_imx_devtype {
-> > > > >  	IMX35_CSPI,	/* CSPI on all i.mx except above */
-> > > > >  	IMX51_ECSPI,	/* ECSPI on i.mx51 */
-> > > > >  	IMX53_ECSPI,	/* ECSPI on i.mx53 and later */
-> > > > > +	IMX6UL_ECSPI,	/* ERR009165 fix from i.mx6ul */
-> > > > 
-> > > > This patch could be a lot smaller if you didn't introduce a new
-> > > > devtype. You could just use the IMX51_ECSPI in
-> > > > imx6ul_ecspi_devtype_data, as all you care about as a relevant
-> > > > difference is the tx_glitch_fixed property, which isn't tied to the devtype.
-> > > I knew tx_glitch_fixed was enough but I still prefer to add new
-> > > 'IMX6UL_ECSPI' because we can clearly choose the right IP which has
-> > > fix the issue while legacy IMX51 if it's not fixed by dts.
-> > > 
-> > Sorry, I don't follow this reasoning. You are not using the new IMX6UL_ECSPI
-> > devtype in any way in this patch, other than a single location, where you just
-> > handle it the same as the IMX51_ECSPI devtype.
-> Okay, will reuse IMX51_ECSPI as devtype, but will still keep "fsl,imx6ul-ecspi".
-> 
-That's exactly what I meant: have a "fsl,imx6ul-ecspi" compatible with
-it's own imx6ul_ecspi_devtype_data, but reuse the IMX51_ECSPI devtype.
+From: Chris Morgan <macromorgan@hotmail.com>
 
-Glad we are on the same page now.
+This enables the Rockchip Serial Flash Controller for the Odroid Go
+Advance. Note that while the attached SPI NOR flash and the controller
+both support quad read mode, only 2 of the required 4 pins are present.
+The rx bus width is set to 2 for this reason, and tx bus width is set
+to 1 for compatibility reasons.
 
-Regards,
-Lucas
+Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+Signed-off-by: Jon Lin <jon.lin@rock-chips.com>
+---
+
+Changes in v12: None
+Changes in v11:
+- The tx is set to 1 for Odroid Go Advance device
+
+Changes in v10: None
+Changes in v9: None
+Changes in v8: None
+Changes in v7: None
+Changes in v6: None
+Changes in v5: None
+Changes in v4: None
+Changes in v3: None
+Changes in v2: None
+Changes in v1: None
+
+ .../boot/dts/rockchip/rk3326-odroid-go2.dts      | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts b/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts
+index 49c97f76df77..4410a6ef5ada 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts
+@@ -484,6 +484,22 @@
+ 	status = "okay";
+ };
+ 
++&sfc {
++	pinctrl-0 = <&sfc_clk &sfc_cs0 &sfc_bus2>;
++	pinctrl-names = "default";
++	#address-cells = <1>;
++	#size-cells = <0>;
++	status = "okay";
++
++	flash@0 {
++		compatible = "jedec,spi-nor";
++		reg = <0>;
++		spi-max-frequency = <108000000>;
++		spi-rx-bus-width = <2>;
++		spi-tx-bus-width = <1>;
++	};
++};
++
+ &tsadc {
+ 	status = "okay";
+ };
+-- 
+2.17.1
+
 
 

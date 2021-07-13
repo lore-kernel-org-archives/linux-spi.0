@@ -2,125 +2,108 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-19.5 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.0 required=3.0 tests=BAYES_00,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 873A8C07E95
-	for <linux-spi@archiver.kernel.org>; Tue, 13 Jul 2021 13:08:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 97FB3C07E95
+	for <linux-spi@archiver.kernel.org>; Tue, 13 Jul 2021 14:03:18 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 62E1461073
-	for <linux-spi@archiver.kernel.org>; Tue, 13 Jul 2021 13:08:02 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 7355861279
+	for <linux-spi@archiver.kernel.org>; Tue, 13 Jul 2021 14:03:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236603AbhGMNKt (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 13 Jul 2021 09:10:49 -0400
-Received: from fllv0015.ext.ti.com ([198.47.19.141]:44012 "EHLO
-        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236636AbhGMNJK (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 13 Jul 2021 09:09:10 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 16DD692Y010440;
-        Tue, 13 Jul 2021 08:06:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1626181569;
-        bh=8RzEa7awEZEDwwWTSJhzA++iT0OALTq3Az0pHKaR+oQ=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=zFoa0+nq67e3TIX/C15TP3zL+MQ8BoFcTrsYQK+PRI3UGonWq6yJWgZHgnBOV+ceW
-         +E639dxn8aqXzJ8c9N9dmrWOF1UZThaI1p4/ixNpGFaVM7imX7CCkexRXME7OXuiBv
-         93B505jPBijDmQC4khE6GLe2RVyO9G64DshBmk1E=
-Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 16DD69SY004591
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 13 Jul 2021 08:06:09 -0500
-Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Tue, 13
- Jul 2021 08:06:09 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
- Frontend Transport; Tue, 13 Jul 2021 08:06:09 -0500
-Received: from LT5CD112GSQZ.dhcp.ti.com (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id 16DD5daF109825;
-        Tue, 13 Jul 2021 08:06:04 -0500
-From:   Apurva Nandan <a-nandan@ti.com>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Mark Brown <broonie@kernel.org>,
-        Patrice Chotard <patrice.chotard@foss.st.com>,
-        Boris Brezillon <boris.brezillon@collabora.com>,
-        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <linux-spi@vger.kernel.org>
-CC:     Apurva Nandan <a-nandan@ti.com>, Pratyush Yadav <p.yadav@ti.com>
-Subject: [PATCH 05/13] mtd: spinand: Add adjust_op() in manufacturer_ops to modify the ops for manufacturer specific changes
-Date:   Tue, 13 Jul 2021 13:05:30 +0000
-Message-ID: <20210713130538.646-6-a-nandan@ti.com>
-X-Mailer: git-send-email 2.31.1.windows.1
-In-Reply-To: <20210713130538.646-1-a-nandan@ti.com>
-References: <20210713130538.646-1-a-nandan@ti.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+        id S236727AbhGMOGH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 13 Jul 2021 10:06:07 -0400
+Received: from mail-il1-f171.google.com ([209.85.166.171]:34471 "EHLO
+        mail-il1-f171.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236765AbhGMOGH (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Tue, 13 Jul 2021 10:06:07 -0400
+Received: by mail-il1-f171.google.com with SMTP id e13so23300087ilc.1;
+        Tue, 13 Jul 2021 07:03:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=sTck8MT1tcfpVCvL1kgsklddyUpTEtuVs7S3TVtOJY0=;
+        b=SrDZNtvdgMPFw4Jye5GTBSnSBJawROP0DtP0nBwdtUEi0EglYqRLwyOU2EMVHQPmgG
+         Tyl66RQAC6p7RubgAAvf5X4opK6ajIGRoeI1RaJ59nMSPjmgcoxMdVkeEAnPIubqfGSj
+         fgEhck5wDsUoB9M+m9A9uCqb5QC8eTnIDvzD6tuAQqkRJpGMf2MJ7gEO/m5XdfK28q1V
+         axRpdgtfC44xu0VrOpYLuQh05P2QMPlgshZ6dklY1DaUicZNbX/A0UxLTkTXbwBjwQMn
+         G1pbVvAYRclKOUh6qV/27Qy5JoFo9Zbh7JJWGtHoIilIueAhWNqqwxpWoMkYgi5TuWuh
+         HCLQ==
+X-Gm-Message-State: AOAM532ZQJgNMniMtvKOuXRFNlJv4vsWUHgpXrLaKOMQvLjlJFzGeDAU
+        6PtTnfYQrxG8ZkbAdDNZvA==
+X-Google-Smtp-Source: ABdhPJzrE0TMePTKV6hzrsV09nnwJnBTynrp9bH4nZNdyfgGXyIW71KBdOIQERmDZOb82by5hSyJTA==
+X-Received: by 2002:a92:d10:: with SMTP id 16mr3000342iln.189.1626184997191;
+        Tue, 13 Jul 2021 07:03:17 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id f3sm719146iob.30.2021.07.13.07.03.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Jul 2021 07:03:16 -0700 (PDT)
+Received: (nullmailer pid 129710 invoked by uid 1000);
+        Tue, 13 Jul 2021 14:03:13 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Sebastian Reichel <sebastian.reichel@collabora.com>
+Cc:     Sascha Hauer <kernel@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
+        kernel@collabora.com, linux-kernel@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ian Ray <ian.ray@ge.com>, Rob Herring <robh+dt@kernel.org>,
+        linux-spi@vger.kernel.org, Fabio Estevam <festevam@gmail.com>,
+        Mark Brown <broonie@kernel.org>
+In-Reply-To: <20210712150242.146545-2-sebastian.reichel@collabora.com>
+References: <20210712150242.146545-1-sebastian.reichel@collabora.com> <20210712150242.146545-2-sebastian.reichel@collabora.com>
+Subject: Re: [PATCHv6 1/3] dt-bindings: misc: ge-achc: Convert to DT schema format
+Date:   Tue, 13 Jul 2021 08:03:13 -0600
+Message-Id: <1626184993.653258.129709.nullmailer@robh.at.kernel.org>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Manufacturers might use a variation of standard SPI NAND flash
-instructions, e.g. Winbond W35N01JW changes the dummy cycle length for
-read register commands when in Octal DTR mode.
+On Mon, 12 Jul 2021 17:02:40 +0200, Sebastian Reichel wrote:
+> Convert the binding to DT schema format. Also update the binding
+> to fix shortcomings
+> 
+>  * Add "nxp,kinetis-k20" fallback compatible
+>  * add programming SPI interface and reset GPIO
+>  * add main clock
+>  * add voltage supplies
+>  * drop spi-max-frequency from required properties,
+>    driver will setup max. frequency
+> 
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+> ---
+>  .../devicetree/bindings/misc/ge-achc.txt      | 26 --------
+>  .../devicetree/bindings/misc/ge-achc.yaml     | 65 +++++++++++++++++++
+>  2 files changed, 65 insertions(+), 26 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/misc/ge-achc.txt
+>  create mode 100644 Documentation/devicetree/bindings/misc/ge-achc.yaml
+> 
 
-Add new function in manufacturer_ops: adjust_op(), which can be called
-to correct the spi_mem op for any alteration in the instruction made by
-the manufacturers. And hence, this function can also be used for
-incorporating variations of SPI instructions in Octal DTR mode.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-Datasheet: https://www.winbond.com/export/sites/winbond/datasheet/W35N01JW_Datasheet_Brief.pdf
+yamllint warnings/errors:
 
-Signed-off-by: Apurva Nandan <a-nandan@ti.com>
----
- drivers/mtd/nand/spi/core.c | 3 +++
- include/linux/mtd/spinand.h | 4 ++++
- 2 files changed, 7 insertions(+)
+dtschema/dtc warnings/errors:
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/misc/ge-achc.example.dt.yaml: spi: spi@1:reg: [[1], [0]] is too long
+	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/spi/spi-controller.yaml
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/misc/ge-achc.example.dt.yaml: spi: spi@1:reg: Additional items are not allowed ([0] was unexpected)
+	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/spi/spi-controller.yaml
+\ndoc reference errors (make refcheckdocs):
 
-diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-index a5334ad34f96..1e619b6d777f 100644
---- a/drivers/mtd/nand/spi/core.c
-+++ b/drivers/mtd/nand/spi/core.c
-@@ -63,6 +63,9 @@ static void spinand_setup_op(const struct spinand_device *spinand,
- 		op->data.buswidth = op_buswidth;
- 		op->data.dtr = op_is_dtr;
- 	}
-+
-+	if (spinand->manufacturer->ops->adjust_op)
-+		spinand->manufacturer->ops->adjust_op(op, spinand->reg_proto);
- }
- 
- static void spinand_setup_reg_op(const struct spinand_device *spinand,
-diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
-index f6093cd98d7b..ebb19b2cec84 100644
---- a/include/linux/mtd/spinand.h
-+++ b/include/linux/mtd/spinand.h
-@@ -257,6 +257,8 @@ struct spinand_devid {
- /**
-  * struct manufacurer_ops - SPI NAND manufacturer specific operations
-  * @init: initialize a SPI NAND device
-+ * @adjust_op: modify the ops for any variation in their cmd, address, dummy or
-+ *	       data phase by the manufacturer
-  * @cleanup: cleanup a SPI NAND device
-  *
-  * Each SPI NAND manufacturer driver should implement this interface so that
-@@ -264,6 +266,8 @@ struct spinand_devid {
-  */
- struct spinand_manufacturer_ops {
- 	int (*init)(struct spinand_device *spinand);
-+	void (*adjust_op)(struct spi_mem_op *op,
-+			  const enum spinand_proto reg_proto);
- 	void (*cleanup)(struct spinand_device *spinand);
- };
- 
--- 
-2.17.1
+See https://patchwork.ozlabs.org/patch/1504037
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
 

@@ -2,195 +2,167 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	DATE_IN_FUTURE_06_12,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MSGID_FROM_MTA_HEADER,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-2.4 required=3.0 tests=BAYES_00,
+	CHARSET_FARAWAY_HEADER,DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B6515C07E96
-	for <linux-spi@archiver.kernel.org>; Wed, 14 Jul 2021 02:05:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 764E3C07E95
+	for <linux-spi@archiver.kernel.org>; Wed, 14 Jul 2021 02:10:54 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A0098613A9
-	for <linux-spi@archiver.kernel.org>; Wed, 14 Jul 2021 02:05:53 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 5ED6661380
+	for <linux-spi@archiver.kernel.org>; Wed, 14 Jul 2021 02:10:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237536AbhGNCIn (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 13 Jul 2021 22:08:43 -0400
-Received: from mail-eopbgr60054.outbound.protection.outlook.com ([40.107.6.54]:64190
-        "EHLO EUR04-DB3-obe.outbound.protection.outlook.com"
+        id S237435AbhGNCNo (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 13 Jul 2021 22:13:44 -0400
+Received: from mail-eopbgr1410040.outbound.protection.outlook.com ([40.107.141.40]:38432
+        "EHLO JPN01-OS2-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S237317AbhGNCIm (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 13 Jul 2021 22:08:42 -0400
+        id S237428AbhGNCNo (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 13 Jul 2021 22:13:44 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=di1p67DxNIgNxv5Bx3wHS2VESHUicbhC9njb72ZTHG1HP6XlTRMRgWKqILluPLdg4Idieq0Pc9yqZkLwoEEidBApEPZLLtaC0FhBjeiwMXGRtX7fWVFJgeBpczv0/SIKoMsJjZn+U0036gQNiv9XaqZriOuNDKdYbin9gE4+Wa6SLUNNuNi3Xs7fDnV1nAg+4j0N/Ry/mU90K//OPZYLU0SmgO8qMfStcqOQ0Hun1XnGxz43ROhiFi8SFgb1tCYFoDntKq9+IXAt6UyWCRE2ZtmwaF0bdISeHWsTSqfqXk8K+W3IahXBO+V2S8/8CnBElIdoQI1JdK8KZXQ915walw==
+ b=GXAgmMh4tSX/HmwEx4rpLL8fXrK33oZkbDAsyz+/XjVCeRvCtAqFBYo0zxyG6/hLPFto+zOAaByA+jtCDgg4dug8qYflkVjsZl57YvQgQoHTFLsGS6bJ5NDJVjCkMvj2Cr9I2LYCercJAoMAY2oT/rnzMWWFUUozyEr3c9S8dYCtlU2UHC5pjh3JVSQPE/exv/C6588Y4WMYCa69SeHSwWBbb8S6h5QSFWst9d6C5cfw1J4azJywldLm1/SGtJXuSs5UeCA1VuLhIvpBpq8pY9YRbcu+9k8HB0kd4dZ1aHkvUwJmiQsHz40CAQLIjYgstnjVJmXXNXc51aBoCEIRLg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Tijq09AUBuAAT+hQVwjjuto6CEluVVVcs2l0lwoJQPs=;
- b=f3gXlNQi2hB1JfedqUa/FF6067JmkidK83RBSob6X7qJBs/FTxBPc8wkeBzT8Jy/l14jwXrL4ONkd+qtHz5S4C7tv/EvV4k4/fJnok78R4ANa5rxavt2BJoV/CzFi9Oa0X833hbv0eXYCzbwjDIkX9CbSmRh50fKttJYX9MI1BQtKpBJPV7Tu6SRVJt3u0eX8sgSxvCOCAem5jdMRxs5oU0oZb712/c8PiXh9VUaPVOAHu1kXU6+o5zUHXIWOfcswZuLbmaYb7vaqLb8Px59dx1xSKbZLHNS7UFygiyCKgPSJfSZCPsIC4You3ZeI1bgqI7RhtbzwZJR5kPe+YbD1g==
+ bh=gHu5684tbo3QljJKA3WRY6reqYQr9g0KWWzb1BtjPkQ=;
+ b=l4C9lIWt/6LgN64s8bf4A5Zmh1oCIXg8Zzrt2hkgvzjlrkP2siLVscxd8Q6QR/5xeDkIvNHMcYty7zE7mgdEaHhZlTf3Q3jEHJemKjOMkypANUE7z8+1Su8kZ/7cYP+qWHgh1DqjIlfJBsZNfLyiAilX2MtA9brSrKx0YNLa0tFVbxR/wCWVrtriXuVhsoexxaWFxEUxFgy0qHr8aOi/3WqbgPVvcT4N+LTnhY0VN9ySE5QGA5F/QrWFPiyhT4g/MkBtRitsvDA0g12MrZ8HTx69tLVvAL7wirmNCn5/XXOcSYQWHVWWZj19zUCeY0Z0Uc/o17bgWWrIfT+SXT0zAg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ smtp.mailfrom=nskint.co.jp; dmarc=pass action=none header.from=nskint.co.jp;
+ dkim=pass header.d=nskint.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=nskint.onmicrosoft.com; s=selector1-nskint-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Tijq09AUBuAAT+hQVwjjuto6CEluVVVcs2l0lwoJQPs=;
- b=BHxpO9hqQme2SyA52iaWJYhb7QoaI2Q9esNh0MCe/vjkGG6S4wBSR8MyX2nON7nQXoSn8bvCl6KGqL7L/X1tXyKSZAjidP8g7YLLMBHKPN5LNuOuzp8XrVhZ17WMHWdJ4loSYdefqNjQbw0lVMOG61eouMKfPFCCtoUHr340FBU=
-Authentication-Results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=nxp.com;
-Received: from VE1PR04MB6688.eurprd04.prod.outlook.com (2603:10a6:803:127::25)
- by VI1PR04MB5773.eurprd04.prod.outlook.com (2603:10a6:803:e6::16) with
+ bh=gHu5684tbo3QljJKA3WRY6reqYQr9g0KWWzb1BtjPkQ=;
+ b=fLxEVofP6iyuT3d4K9Lgbur50D2ZamxGIhScwc1JQfeKyOgnj3Gvhm9peGRIMuE60rlvzPojhIE9X0nIG575Rdz5e96Kse6A8FqNubiJAGdm8yNkcJNM+PgH3y+ez9yyXtn0+uvua9GAKBJyVlHJpzj8xBqGkBawxhpccTkiw1M=
+Received: from OSZPR01MB7004.jpnprd01.prod.outlook.com (2603:1096:604:13c::9)
+ by OSAPR01MB2868.jpnprd01.prod.outlook.com (2603:1096:604:1::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.22; Wed, 14 Jul
- 2021 02:05:50 +0000
-Received: from VE1PR04MB6688.eurprd04.prod.outlook.com
- ([fe80::a978:6f38:2bce:9076]) by VE1PR04MB6688.eurprd04.prod.outlook.com
- ([fe80::a978:6f38:2bce:9076%5]) with mapi id 15.20.4331.021; Wed, 14 Jul 2021
- 02:05:49 +0000
-From:   Robin Gong <yibin.gong@nxp.com>
-To:     vkoul@kernel.org, mark.rutland@arm.com, broonie@kernel.org,
-        robh+dt@kernel.org, catalin.marinas@arm.com, will.deacon@arm.com,
-        shawnguo@kernel.org, festevam@gmail.com, s.hauer@pengutronix.de,
-        martin.fuzzey@flowbird.group, u.kleine-koenig@pengutronix.de,
-        dan.j.williams@intel.com, matthias.schiffer@ew.tq-group.com,
-        frieder.schrempf@kontron.de, m.felsch@pengutronix.de,
-        l.stach@pengutronix.de, xiaoning.wang@nxp.com
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-imx@nxp.com,
-        kernel@pengutronix.de, dmaengine@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v16 12/12] dmaengine: imx-sdma: add terminated list for freed descriptor in worker
-Date:   Wed, 14 Jul 2021 18:20:52 +0800
-Message-Id: <1626258052-22198-13-git-send-email-yibin.gong@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1626258052-22198-1-git-send-email-yibin.gong@nxp.com>
-References: <1626258052-22198-1-git-send-email-yibin.gong@nxp.com>
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR02CA0016.apcprd02.prod.outlook.com
- (2603:1096:3:17::28) To VE1PR04MB6688.eurprd04.prod.outlook.com
- (2603:10a6:803:127::25)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.23; Wed, 14 Jul
+ 2021 02:10:51 +0000
+Received: from OSZPR01MB7004.jpnprd01.prod.outlook.com
+ ([fe80::94dd:c412:338:709e]) by OSZPR01MB7004.jpnprd01.prod.outlook.com
+ ([fe80::94dd:c412:338:709e%5]) with mapi id 15.20.4308.027; Wed, 14 Jul 2021
+ 02:10:51 +0000
+From:   =?iso-2022-jp?B?GyRCQ1NFRBsoQiAbJEI1QU40GyhC?= <ikeda@nskint.co.jp>
+To:     Mark Brown <broonie@kernel.org>
+CC:     =?iso-2022-jp?B?GyRCQ1NFRBsoQiAbJEI1QU40GyhC?= <ikeda@nskint.co.jp>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+        =?iso-2022-jp?B?GyRCP2VDKxsoQiAbJEIybU01GyhC?= 
+        <m.mizutani@nskint.co.jp>,
+        =?iso-2022-jp?B?GyRCXFQ+PhsoQiAbJEI4JhsoQg==?= 
+        <k.kurematsu@nskint.co.jp>
+Subject: Re: [PATCH] spi: spi-cadence-quadspi: Fix division by zero warning
+Thread-Topic: [PATCH] spi: spi-cadence-quadspi: Fix division by zero warning
+Thread-Index: AQHXd7fwKzEQWTvWzEqH2Qm18vEKNatA1OMAgADmmQA=
+Date:   Wed, 14 Jul 2021 02:10:51 +0000
+Message-ID: <3b9745c1-ec32-793f-41c2-98c9f60057cc@nskint.co.jp>
+References: <1406d756-1edb-6294-116b-91c7a9d29b71@nskint.co.jp>
+ <20210713122528.GB4098@sirena.org.uk>
+In-Reply-To: <20210713122528.GB4098@sirena.org.uk>
+Accept-Language: ja-JP, en-US
+Content-Language: ja-JP
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
+authentication-results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=nskint.co.jp;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 55bfe9d1-0934-4341-def5-08d9466c9ac8
+x-ms-traffictypediagnostic: OSAPR01MB2868:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <OSAPR01MB286831E104AC3C7ED58BFF038B139@OSAPR01MB2868.jpnprd01.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: pgG9hTh6gDGm8c6xJM+cA2OENjwOH1g1rohGOYBMQ2qzZvlgQEATxWzC28/Ut3A1EQ3QrA60BnNrmDfrWHbhFnuQB+Kk52mvb9t8pOE4V6cQjB3ebyDhf/PByiy/YELbvcjmv6uRUCO7DAQxUcNu0ICZ7in6YjKdcjp6tTXw6X9lsXRiJmIx2cZjY1p2auXP4vKRL22K5mh0JghGps2txL4LK0C77SFbdAtqRk8tpg/eZCpJ4+KXYOufldr4fzwsaRtqQjzNkvV4ewv4EI12OMDuvRzReQBt1m0RkZB0LGUDQWysr1NIfnX40ewYJpTN4iEghJZVBHIYLpX5pj3H5Ch06q/Uf5jnAtrotgWIWo1NVlizYcL1N5SIp+6KM1UoQVE6G8fw7an+W46KSMZLQKgiM/vo4kvcdyNeIdCav6bKgcKrtW24SNyDfIOdb3WLghp2RfALPauH7/zH14q0a+mSr8b6K3iH9M6zA81SLo+8XFg/2rx01l6E6U3mhfnoPcc+i7JxJ2Utx23hCd8Q1YrcgRLcT6SkA73NWUSzJPGBAbyt1H1MOBvBTgHaYvpVGxA8EIb/gQj6PKI5g4ZLytK9JihTkji8gjbxuoC0yxUIpu+Wd307uVPXMD5WRmjwLYsO1nUC8/ryuewCdeiCrFOWhfHqjcjgF7Kk5cxGbgqygHvn0i55WbJ2FAPHStyqbU0mfUNn/ftOiuoloDMEjE65ZjBn74X5FPyxPWg+pDFZzP4xTyH47f2PBzACW1M+iEMYo/obgolLlIp44NS0Ifw92eJc8+rJ9DZm3W2batE=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OSZPR01MB7004.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(396003)(376002)(136003)(346002)(366004)(39830400003)(31696002)(2616005)(76116006)(107886003)(8936002)(66946007)(2906002)(83380400001)(66476007)(316002)(66556008)(66446008)(186003)(64756008)(8676002)(31686004)(26005)(36756003)(478600001)(38100700002)(122000001)(6512007)(6916009)(6506007)(53546011)(4326008)(5660300002)(85182001)(86362001)(54906003)(6486002)(71200400001)(21314003)(38070700004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-2022-jp?B?dUdpV3pWU0N2S3doSFZ3WDJuNVFNTVF5TWEwczA1bkZvZFJvaytpbEtU?=
+ =?iso-2022-jp?B?Vlp0UmxDVGNXb0hwYWxaSVNxMlliN3BKbG1FeGRCQ0taVitvUEtxdWFV?=
+ =?iso-2022-jp?B?QnVDdW81NC9paThTM2FxQ3A0SWwwQ3pSeVMwejJ0UmI3N0xtaElqblVw?=
+ =?iso-2022-jp?B?SDYxSVZLRFh6bi9ud0xQeFFxcGpFaWdDNG11ckIvd3EwUjRSdU1XY3dN?=
+ =?iso-2022-jp?B?NnN6NnljVHh2c041U3ZIZ3hYQXd6WTNOS29iMzlUdW1hTHBBSHpyemVT?=
+ =?iso-2022-jp?B?bHVLVTBSVzdOSlVCOTJWY0dqZHdIQkhRQ2dHbVpOOVBIOFdrMUlFb0Nn?=
+ =?iso-2022-jp?B?ZDhuMStRTG1JVk9HcktwQVpHRHBMRHBWUklSbW5nWnJnZTV3amUzdW1Q?=
+ =?iso-2022-jp?B?dU9RVjFraGlEeTFpUStYc2lPaEQzY2o2cFFwZnlFM0liTzcyMHo1OGFI?=
+ =?iso-2022-jp?B?ekwwVkNMR0llQVFodVR1SlBoSnlYZUM2MWZIaVE2dkVkeXBIaEpDalNh?=
+ =?iso-2022-jp?B?dlNoaDVzWDdMbG5BMzBiYjIzUktIdUtqb2o2SHpVU1Mxd0pDMzUyM043?=
+ =?iso-2022-jp?B?bEFNOWlvZ2x5K3RCM1hmdmdxVFVSdnBvcUhEYTFPSHNqei9xcktoYW9U?=
+ =?iso-2022-jp?B?a2tlS0NVMXprS0Y2RnhOYVJYdTlocVZHbFd6TkI1M2Z5VnFXcUkxdVkv?=
+ =?iso-2022-jp?B?SjU1ZFRtYjlHSHBuMzJjdGd2WjF4bWNyUTczbFZlWmlvR0lmdTFXUThU?=
+ =?iso-2022-jp?B?blg5RGVQYWVIUXl2RE00RnNNN05Rb2VxYnd5Y2xuSVhWVlV4MUk2QXVL?=
+ =?iso-2022-jp?B?cjNxRVRFelBOaXdRZ01iMW85RG5IS29kSjZuUWFhM0FXaU5QcFJmQ3Zw?=
+ =?iso-2022-jp?B?WS9kN3R6ay9PZXNUYjBQcE0xL2FiS3Z1YnpBQ2h1MTEwRkdDdU45d1pj?=
+ =?iso-2022-jp?B?MkNwalNzVFQ0OG55SCtLWHk3MmdWRHFXSC82eFo1TWsrSnhmU1FRSW5J?=
+ =?iso-2022-jp?B?K0M4T0NPZ0psSmJUQi81NTJyZlRlbko0MExGWG5qZTJ6VHBudXVnU2dY?=
+ =?iso-2022-jp?B?ZTVMMjRuaTdUQnVZTEI5NGlSdzNpNjRzblA2cWxzQW41M1ZYREM5eSt6?=
+ =?iso-2022-jp?B?MWxoaWVlT1ZXMmdqb3lGZWFOa1AxSXF2b1lyMlh5QlNwdy9WWmJhRXA2?=
+ =?iso-2022-jp?B?TS9BL1oyZ2wwMUorY01FVmpTSXdBa0s4S29uVTVrUXFWQWtOeTdXNGN0?=
+ =?iso-2022-jp?B?TlJQUDVXNFN0VXhsZUZMV0dVREp0Z0t0RkZPMkcxcks1OWJ1dUZnMm4r?=
+ =?iso-2022-jp?B?ZkR0NFVnWUpJazhGb1VISEx2OCs3eVV4RG4wcE1hSk0za1cyNGdQdFFF?=
+ =?iso-2022-jp?B?d0V6YVdYK3l1dmNzSWlxMGlsa2J6bEZ1Y2UvZHk2RlZPWGZPbDdrZUg0?=
+ =?iso-2022-jp?B?NzBBbHZjVFlJTGVvNUJxTmhiVUJKZUtQM0YzWFdpSDVYZDdzdjFGajJ3?=
+ =?iso-2022-jp?B?dW1RSGQ4eXN5Um1USkZZdFZsZG5CZGFoQVVVSk8wWmhudWZ2M3pNSnd5?=
+ =?iso-2022-jp?B?T1oyRkg2REw0bldoeGQ5cjFxSFNUR2VFNjlxUC9jZ1JBSUlCYmZWTkNw?=
+ =?iso-2022-jp?B?aWRndW82ekM5VzBUejU3aGVHOStIZFlFVHBkcExhdTV4bmY3MUQ2M3Z0?=
+ =?iso-2022-jp?B?TlZhSURua0NjMWpkQ2Y4RE9ON3g4a0pQS2JYazVkUWJGY2JONWZaS2o5?=
+ =?iso-2022-jp?B?VXZIeENLN3hSV1B0cFYwWkw3RTVvU0pib1YvbHpoaThSZTRlN2prdGoz?=
+ =?iso-2022-jp?B?QXk4Q1dzK2xXNEdrR24wNktMenZLSW02MzFRVWR6ZzlsZzJmRElRVlVR?=
+ =?iso-2022-jp?B?N2oranBRRXlhNHVtUGk5SHIwSUN5T2htUXAyaW03YXNYU3NmT0ZkQjd2?=
+Content-Type: text/plain; charset="iso-2022-jp"
+Content-ID: <4831677C6594BA4C8BD4893DB488749F@jpnprd01.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from robin-OptiPlex-790.ap.freescale.net (119.31.174.66) by SG2PR02CA0016.apcprd02.prod.outlook.com (2603:1096:3:17::28) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.20.4331.21 via Frontend Transport; Wed, 14 Jul 2021 02:05:43 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 9403ecbc-56b2-4029-d957-08d9466be6c3
-X-MS-TrafficTypeDiagnostic: VI1PR04MB5773:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <VI1PR04MB5773E01104F66AD4F0AE1FB989139@VI1PR04MB5773.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4502;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: TTXjcM+JTcP4JQv2QFyBy2Fs2E2H53ypzvR4zFnEB2Bo97n+3Qk6WfNIqN37fKW9lRC91S0TD08H0k9MWDCDEWdWKPRbpgPgoegTVqlJMCJrvDtpRuyIKXM6e/ITjfgP0PfFVUt8A7sf+hfyJv0EJwKPcTwzkek8yXoNu04wCh6s1crNa7+RY6m1HwLaN147/CYQcw6YNlI3ksoJ+BqgK0882NATEt+kQAL1M92LCMMEuMWi+//NbCgZ4cgRomGLQ294dj29TvmzZ52dlAuj48Unq4/JN5TiE3p9pLi/rqQz39WX7n4V9XujsnsvAN69BYcyJU3IIBJgJbmMjUyeoM37eofrFz4yfqn/m0PUG3eaZx2W9Osgy+QmeGoW/uwkFntS3e3obubiMqjB76lvZOfq7W5iw+cDwrLzk99qkeknhFC4wCV8qag4+Wunqo+Vz/VZ/2fi3IWAVxtWX+EuHzjuUkx7J1QCg24RoQ4iGujrYw4PEI0s0NACYUDuTP+0sqZTNlbuerzM3mMgV/lbcDaUrSuqotn7KinybMkwbmbQ3f6vobpZ0dfkwkdM8qhgJRuTmtgwmy/G1U7dSGK+d7A1w7vB2/jOy5jfKZ0djT0taBXgMSpRlXb5Yjw3pBiClKcM5zO7geU7hhorHKiwVeVu5JZYB7ZY7HRIlnFjHMmD4xnd1zx+XW3lXXZHEK4SE8lDYilgYhhBI+FGrVygh05xNnTarSmpGscRQmDuW5L3mJJJe0Z3Lh1Zzlq53uyXcRPxEpbxfMLJ1BJXiQ24xiILfo4tnlCX+UyRsvT0z6iQKtTiHc/25Tbf5+NsJre3
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB6688.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(376002)(39860400002)(366004)(396003)(346002)(7416002)(2906002)(316002)(6636002)(921005)(6666004)(83380400001)(38100700002)(186003)(6506007)(52116002)(26005)(4326008)(8676002)(478600001)(66556008)(2616005)(956004)(66476007)(36756003)(86362001)(66946007)(8936002)(5660300002)(38350700002)(966005)(6512007)(6486002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?1CZlzsHGrsr+SHpfj7b67mNBMDj4K/Em1qxKZDjOyiOQkJUlPpFwUXyJCRBx?=
- =?us-ascii?Q?YIvVxH74HXb1BGWobM91ITxA3FI2GT34+kJEnewHm+O5/D9Q078Oa6tJJ8VN?=
- =?us-ascii?Q?RL/AljR6+Cr1sl35Bdu3naZpTsBKPC2ervikY+L2Rv7WirQL18aC4KWimE11?=
- =?us-ascii?Q?kYJmvXOELb8Nb4ZHNV0ZuuyF/FDL3YazaojGjQz/XeNPP400MGjVcyU/GmMt?=
- =?us-ascii?Q?iEiMbPyohPJsb6hMK+y7W3VM0ZW9yOmuKfb/js/qZI8AAoBOUMwEbyMyEJS4?=
- =?us-ascii?Q?XP5ayF4bj+Ju/xpdHYxK1tIhoKOnxT4ICh4IFY+zmXBeydvDP/J+XDIrPEik?=
- =?us-ascii?Q?VAcc5nnim2AyA9D49YIXrGtARclQgFU3U/Dsn7eQsfPoCk5wd2XsAAQPt6ie?=
- =?us-ascii?Q?OqfakK7eau9CrSBNg+ww1N9RnI4H4eg00bECYs+G3NPZeHRtPqAbPMuUXhgp?=
- =?us-ascii?Q?FdbBMpaPQdo19Q9YR/X0mxwlHAgKDDdbehgu4kCceHvTFdfm9d2JLXrmcUlJ?=
- =?us-ascii?Q?YxP3WR4PA0L7H+rWXrUNrTSC79HKJdwZ+3zWsBn1tAFlSt8QMOZwazy8TPSs?=
- =?us-ascii?Q?OrxP1tEWnTSJRfKsqhXTJFwaXz1Vbi6AC6k937kroNSgtbMpyAVZlmmHFvYy?=
- =?us-ascii?Q?lDefHxSBqyqeVHCjk5Q+dU64zatFjpMw+Ljr1yxwOF1JKB24l6lu1V5+y3D9?=
- =?us-ascii?Q?rzMzs2FHzmdQDr46H8+scaG1DdWijNGnvGcHlXocmrf4k5eahBP16qFBy++Q?=
- =?us-ascii?Q?WtVciaFPW87RpzczW4WfH5AoHQOb4kBa47rBZH4+gLJh8U3X++IWivdLqv0W?=
- =?us-ascii?Q?j2hGY+Syeho4cg3BWK1gu+4uN7BKghjeH+2tuY8ndvvzaMzIximyru2CDRxd?=
- =?us-ascii?Q?zxx5Smkr80icCDW8wqWAti9owCt/YhqHRXS9yRMn0VvN0TrrmCU+AxvnOI86?=
- =?us-ascii?Q?i74Xh+IjptgI0PLV748+8mEUl5+DqKoEkd03C308+lpQ3SZdfz9Z5hCK5sFV?=
- =?us-ascii?Q?jXj5a+3k1dpu6f7tHTdI0c//gR+lzk29EeBqCP93zDeOxbXxkbVfiT2dFX77?=
- =?us-ascii?Q?SPTcFCP0CZCgk1LKIaqe32AnsuB2AQwfWqO3JXVbTPcAUHC408hpPLLS9PLF?=
- =?us-ascii?Q?bGPw47j80Sf7lDJFvRYjOUgZl0BBHg0yW0eJp+bN1CQmIg7g2cF9DeUa1uLN?=
- =?us-ascii?Q?iu8QClshdAttqWaL8CQJq8jzwhQFHKWWxPmdvTgihQ9gmO+GxA8E3wUFx8B4?=
- =?us-ascii?Q?9CLAxmL5Ww/eGKqq/hUXGd/wx7Br4hRIBTc7qGsQPVV6W8HzAhoxUeMSs7pv?=
- =?us-ascii?Q?10v/oAwFhyesP9JU8NOQ/sBX?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9403ecbc-56b2-4029-d957-08d9466be6c3
-X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB6688.eurprd04.prod.outlook.com
+X-OriginatorOrg: nskint.co.jp
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2021 02:05:49.8874
+X-MS-Exchange-CrossTenant-AuthSource: OSZPR01MB7004.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 55bfe9d1-0934-4341-def5-08d9466c9ac8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jul 2021 02:10:51.5937
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Xb3wuVoqQwC+ckXSJaEoyNxS6LuHYgy7KCay1rk9b5b6di/41AitUpAMKYtcIbX8GTaZDXsNWLX8zk/iPFVvUA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB5773
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 727455a2-9822-4451-819f-f03e059d1a55
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: fP4O9EO3oZ/QLvaKvT35C2NoROqjPGePg+ZitjnT4RrthmEFehBLJWscF5TF1yKUIwY5G/Jh+3K9WpAgWlXHHA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSAPR01MB2868
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add terminated list for keeping descriptor so that it could be freed in
-worker without any potential involving next descriptor raised up before
-this descriptor freed, because vchan_get_all_descriptors get all
-descriptors including the last terminated descriptor and the next
-descriptor, hence, the next descriptor maybe freed unexpectly when it's
-done in worker without this patch.
-https://www.spinics.net/lists/dmaengine/msg23367.html
+On 2021/07/13 21:25, Mark Brown wrote:
+> On Tue, Jul 13, 2021 at 07:23:12AM +0000, Yoshitaka Ikeda wrote:
+>> Fix below division by zero warning:
+>> - Added an if statement because buswidth can be zero, resulting in divis=
+ion by zero.
+>> - The modified code was based on another driver (atmel-quadspi).
+>>
+>> [    0.795337] Division by zero in kernel.
+>> [    0.797878] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 5.12.0-xxx-xxxx=
++ #1
+>> [    0.803782] Hardware name: Altera SOCFPGA
+>> [    0.806481] Backtrace:
+>> [    0.807628] [<807fd2b0>] (dump_backtrace) from [<807fd554>] (show_sta=
+ck+0x20/0x24)
+>=20
+> Please think hard before including complete backtraces in upstream
+> reports, they are very large and contain almost no useful information
+> relative to their size so often obscure the relevant content in your
+> message. If part of the backtrace is usefully illustrative (it often is
+> for search engines if nothing else) then it's usually better to pull out
+> the relevant sections.
 
-Signed-off-by: Robin Gong <yibin.gong@nxp.com>
-Reported-by: Richard Leitner <richard.leitner@skidata.com>
-Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
----
- drivers/dma/imx-sdma.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+Thanks for the reply.
 
-diff --git a/drivers/dma/imx-sdma.c b/drivers/dma/imx-sdma.c
-index 9ec1edf..cacc725 100644
---- a/drivers/dma/imx-sdma.c
-+++ b/drivers/dma/imx-sdma.c
-@@ -439,6 +439,7 @@ struct sdma_channel {
- 	enum dma_status			status;
- 	struct imx_dma_data		data;
- 	struct work_struct		terminate_worker;
-+	struct list_head                terminated;
- 	bool				is_ram_script;
- };
- 
-@@ -1107,9 +1108,6 @@ static void sdma_channel_terminate_work(struct work_struct *work)
- {
- 	struct sdma_channel *sdmac = container_of(work, struct sdma_channel,
- 						  terminate_worker);
--	unsigned long flags;
--	LIST_HEAD(head);
--
- 	/*
- 	 * According to NXP R&D team a delay of one BD SDMA cost time
- 	 * (maximum is 1ms) should be added after disable of the channel
-@@ -1118,10 +1116,7 @@ static void sdma_channel_terminate_work(struct work_struct *work)
- 	 */
- 	usleep_range(1000, 2000);
- 
--	spin_lock_irqsave(&sdmac->vc.lock, flags);
--	vchan_get_all_descriptors(&sdmac->vc, &head);
--	spin_unlock_irqrestore(&sdmac->vc.lock, flags);
--	vchan_dma_desc_free_list(&sdmac->vc, &head);
-+	vchan_dma_desc_free_list(&sdmac->vc, &sdmac->terminated);
- }
- 
- static int sdma_terminate_all(struct dma_chan *chan)
-@@ -1135,6 +1130,13 @@ static int sdma_terminate_all(struct dma_chan *chan)
- 
- 	if (sdmac->desc) {
- 		vchan_terminate_vdesc(&sdmac->desc->vd);
-+		/*
-+		 * move out current descriptor into terminated list so that
-+		 * it could be free in sdma_channel_terminate_work alone
-+		 * later without potential involving next descriptor raised
-+		 * up before the last descriptor terminated.
-+		 */
-+		vchan_get_all_descriptors(&sdmac->vc, &sdmac->terminated);
- 		sdmac->desc = NULL;
- 		schedule_work(&sdmac->terminate_worker);
- 	}
-@@ -2130,6 +2132,7 @@ static int sdma_probe(struct platform_device *pdev)
- 
- 		sdmac->channel = i;
- 		sdmac->vc.desc_free = sdma_desc_free;
-+		INIT_LIST_HEAD(&sdmac->terminated);
- 		INIT_WORK(&sdmac->terminate_worker,
- 				sdma_channel_terminate_work);
- 		/*
--- 
-2.7.4
+Indeed, I too think that the tracing part should be limited to the useful r=
+ange.
+I would like to modify the tracing part as follows and repost it.
+Do you think I should narrow it down further or do you think it is too narr=
+ow? Or unnecessary?
 
+[    0.795337] Division by zero in kernel.
+  :
+[    0.834051] [<807fd40c>] (__div0) from [<804e1acc>] (Ldiv0+0x8/0x10)
+[    0.839097] [<805f0710>] (cqspi_exec_mem_op) from [<805edb4c>] (spi_mem_=
+exec_op+0x3b0/0x3f8)

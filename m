@@ -2,52 +2,139 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-8.0 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=no
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DC027C07E96
-	for <linux-spi@archiver.kernel.org>; Thu, 15 Jul 2021 16:56:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AD4E6C636C9
+	for <linux-spi@archiver.kernel.org>; Thu, 15 Jul 2021 18:36:33 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id C49576128D
-	for <linux-spi@archiver.kernel.org>; Thu, 15 Jul 2021 16:56:38 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 90AA6613CA
+	for <linux-spi@archiver.kernel.org>; Thu, 15 Jul 2021 18:36:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230268AbhGOQ7b (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 15 Jul 2021 12:59:31 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49218 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229553AbhGOQ7b (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 15 Jul 2021 12:59:31 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 184AE613EB;
-        Thu, 15 Jul 2021 16:56:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1626368198;
-        bh=5ij3ir22ruZbsESJNNPKbLskGS0aSb3MrxsOeIo1JWo=;
-        h=Subject:From:Date:To:From;
-        b=piiahMscsY1tl/PVOkD5FvmwUVSy2mCbTl8DnKHggO527in7TQi52EYrsEWeHXGz3
-         FtVA2yNWQa6MiL8nT35VsEILx0Ss7iRs38EW2vmForviQrin8R9/qtHOhgZQUplLas
-         gpeezBMszu7d0DHcC5+o772WPd7WbKut7sKPumohe4QQdh1+ZFOoz+SjaAq1Yxeat1
-         MRXE663ruVvu3pCGOhHyeVRek3v0DR9AlAzMClT5KRUg9ZRojM7+MqLNFTI0R8NAj1
-         iwIOWb9qTQ1zYz63zgTEEzA37YTGoKDcl7rekZ8RriBvlQOJ9naRTsHsUO16G9HWnu
-         EeiJkSGVGmGOA==
-Content-Type: text/plain; charset="utf-8"
+        id S229506AbhGOSj0 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 15 Jul 2021 14:39:26 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:49468 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229600AbhGOSj0 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Thu, 15 Jul 2021 14:39:26 -0400
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 16FIaVsJ015674;
+        Thu, 15 Jul 2021 13:36:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1626374191;
+        bh=WlRz9fBX24Was6x0T1p3ro/jH/U2eTIShEnKruwRElE=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=uLWenkjDIqKnKTH1/TN6/yg3Cn9LIKDuAtF7j09/TNcF0HutkHy3zgcR9utdtNtm0
+         sThs1Mmq4VocoqYF8yCYg47EKTwvAo3m3eOiIxLgiM+shczyp6lJAj9RY2b5NN+arr
+         rVCfobXL3f8jhuOqk66kZiTS4y9Klx0DqTsRs2O0=
+Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 16FIaVBn090211
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 15 Jul 2021 13:36:31 -0500
+Received: from DLEE114.ent.ti.com (157.170.170.25) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2; Thu, 15
+ Jul 2021 13:36:30 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2176.2 via
+ Frontend Transport; Thu, 15 Jul 2021 13:36:30 -0500
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 16FIaTmD014416;
+        Thu, 15 Jul 2021 13:36:30 -0500
+Date:   Fri, 16 Jul 2021 00:06:29 +0530
+From:   Pratyush Yadav <p.yadav@ti.com>
+To:     Mark Brown <broonie@kernel.org>
+CC:     Apurva Nandan <a-nandan@ti.com>, <linux-spi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+Subject: Re: [PATCH 1/2] spi: cadence-quadspi: Disable Auto-HW polling
+Message-ID: <20210715183627.qtibbtrbsq7wsx42@ti.com>
+References: <20210713125743.1540-1-a-nandan@ti.com>
+ <20210713125743.1540-2-a-nandan@ti.com>
+ <20210713182550.GG4098@sirena.org.uk>
+ <f1947183-81d2-3519-d25f-71d93f59e434@ti.com>
+ <20210714162805.GE4719@sirena.org.uk>
+ <dfa38823-b63f-1807-6141-682930de2f3a@ti.com>
+ <1cebc261-e0aa-572a-8083-1e3ec0d09195@ti.com>
+ <20210715164142.GB27092@sirena.org.uk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <162636819797.9816.15792144254497261518.git-patchwork-housekeeping@kernel.org>
-Date:   Thu, 15 Jul 2021 16:56:37 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20210715164142.GB27092@sirena.org.uk>
+User-Agent: NeoMutt/20171215
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Latest series: [v3] spi: spi-cadence-quadspi: Fix division by zero warning (2021-07-15T16:21:32)
-  Superseding: [v2] spi: spi-cadence-quadspi: Fix division by zero warning (2021-07-15T00:46:30):
-    [v2] spi: spi-cadence-quadspi: Fix division by zero warning
+On 15/07/21 05:41PM, Mark Brown wrote:
+> On Thu, Jul 15, 2021 at 09:57:51PM +0530, Apurva Nandan wrote:
+> 
+> > Now, whether the poll instruction should have an address phase or not
+> > depends on the connected flash chip, which the controller wouldn't be
+> > aware of as it only takes in a spimem op from the flash cores for execution.
+> 
+> ...
+> 
+> > More to this, not just address phase but any kind of variation in the
+> > read register operation would result in polling failure.
+> 
+> That seems like something that should be fixed since it means that no
+> controller will be able to support a feature like this - it needs to get
+> enough information passed to it to allow it to poll correctly.
 
+Right.
+
+> 
+> > Any SPI operation that is going underneath the visibility of flash core
+> > can can problems. I agree offloading the status polling process to
+> > controller HW is beneficial but on the other hand it restricts the flash
+> > on having a fixed type of polling operation. This would reduce the
+> > number of flash devices it will support (out of the box).
+> > What should be the right way out for this situation?
+> 
+> One idea would be to have something that takes both the operation itself
+> and the operation that's used to poll for status (with expected result),
+> the controller can then check the poll operation and either tell the
+> core it's not supported or go ahead and do the polling.  Or simpler just
+> a separate poll operation which is fully specified enough.
+
+We do have the new spi_mem_poll_status() API that does this somewhat. 
+But this is not very useful for this controller since it you can't issue 
+the auto polling on demand. It only happens when you perform a write.
+
+One option is:
+
+  spi_mem_exec_op_with_poll(mem, op, poll_op, mask, match, timeout);
+
+But then the problem is how to tell the caller whether the poll actually 
+happened or not. The other option I see is:
+
+  ret = spi_mem_set_autopoll_op(mem, poll_op, mask, match, ...);
+  spi_mem_exec_op(mem, op);
+
+  if (ret == -EOPNOTSUPP)
+	poll_status();
+
+When spi_mem_set_autopoll_op() is called, the controller driver can 
+check if it can autopoll with this op. It can configure its autopoll 
+feature based on this, and can provide feedback to the caller about 
+whether they will then have to poll themselves, or it has already been 
+done for them.
+
+I like the latter option more.
+
+I think the question we need to answer first is whether doing all this 
+is worth the hassle. Are there enough controllers with this auto polling 
+feature to make it worth the bother?
+
+> 
+> Not actually looked at the code to see how tasteful that is though...
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Regards,
+Pratyush Yadav
+Texas Instruments Inc.

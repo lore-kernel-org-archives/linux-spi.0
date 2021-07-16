@@ -2,35 +2,35 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CB3E7C07E95
-	for <linux-spi@archiver.kernel.org>; Fri, 16 Jul 2021 13:54:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8877EC6377B
+	for <linux-spi@archiver.kernel.org>; Fri, 16 Jul 2021 13:55:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id BA941613D3
-	for <linux-spi@archiver.kernel.org>; Fri, 16 Jul 2021 13:54:58 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 649F2613FB
+	for <linux-spi@archiver.kernel.org>; Fri, 16 Jul 2021 13:55:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239767AbhGPN5w (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 16 Jul 2021 09:57:52 -0400
-Received: from first.geanix.com ([116.203.34.67]:35038 "EHLO first.geanix.com"
+        id S240131AbhGPN54 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 16 Jul 2021 09:57:56 -0400
+Received: from first.geanix.com ([116.203.34.67]:35082 "EHLO first.geanix.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232088AbhGPN5w (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 16 Jul 2021 09:57:52 -0400
+        id S240023AbhGPN5y (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 16 Jul 2021 09:57:54 -0400
 Received: from zen.. (unknown [185.17.218.86])
-        by first.geanix.com (Postfix) with ESMTPSA id 982994C7135;
-        Fri, 16 Jul 2021 13:54:54 +0000 (UTC)
+        by first.geanix.com (Postfix) with ESMTPSA id 707404C7C4C;
+        Fri, 16 Jul 2021 13:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1626443694; bh=Em7PjSoXenIt5zoQnSrFagVO2cjkXgWtRzWVFLohT04=;
-        h=From:To:Cc:Subject:Date;
-        b=cxjcHJVTVzaI3TWfDG2Xdvr4hYzCnl82pIjxLw+PYsRY0ZZaNWNXnSTBDXBaNC2YL
-         /F1lhd0fCp6Az5Z2BvvpbUsQo4grxWy4BCqMibs5aKP0D2RWYJGAI+d5Aa5v0B6TdA
-         +Jj9NyBACG1sv2q2LAW25io1jg4MZz8kEiKaExXuIwi9g/LO3h8JyILqMhWX0hOsxO
-         DevSsNp/0cWBmEvzfhPSmx8UBSHz5OrikgkShqsJYIRMZg/GYiPQ1dG5g0Zvkjjy7X
-         cE7lhyheq9TH/Zzr3H10cmS3hrFPtOZOSCR/GgFEGcx7Xzz9V/z3EhLJyN3N6/bhQ8
-         lFLQppRTK6NqQ==
+        t=1626443697; bh=i/+X3gP3HwH8rkbJsejt4h75hhaGndC3LlZu0F+wpag=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=dEP5kVmeUMyhv+rctPytzJjNe74nGodGETOOdW0v2U0l3Z+fwH4AzbrBdg014g6CI
+         4KLT17pOsGBrZEDSC6eGSIobuF3/fRESFMMP2CG2IHwgUFMXrWuqfJwkCrZAPuz+fL
+         ze4GNxWWPDqJR6mibu8MbuEalMZemVun7RZPI1eacKBFg7kZTEy071tRHFoLiWlaEq
+         hiFqJsafRUhi042WRh4HFl7WlLm+mDdc6T9Y7T1WRilG1bwwSEPd+Z1jzz3wu/GX9M
+         tuuNi7S7oH8qPeqtBnJecaHoihJn8/Tg456RkVXqIzKapNi55NrfFN2LmtD/lqBS5Y
+         TSW88krJm3E7Q==
 From:   =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>
 To:     Wu Hao <hao.wu@intel.com>, Tom Rix <trix@redhat.com>,
         Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
@@ -40,10 +40,12 @@ To:     Wu Hao <hao.wu@intel.com>, Tom Rix <trix@redhat.com>,
 Cc:     =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <mhu@silicom.dk>,
         linux-fpga@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-hwmon@vger.kernel.org, linux-spi@vger.kernel.org
-Subject: [PATCH v5 0/3] fpga/spi/hwmon: Initial support for Silicom N5010 PAC
-Date:   Fri, 16 Jul 2021 15:54:38 +0200
-Message-Id: <20210716135441.3235863-1-martin@geanix.com>
+Subject: [PATCH v5 2/3] spi: spi-altera-dfl: support n5010 feature revision
+Date:   Fri, 16 Jul 2021 15:54:40 +0200
+Message-Id: <20210716135441.3235863-3-martin@geanix.com>
 X-Mailer: git-send-email 2.31.0
+In-Reply-To: <20210716135441.3235863-1-martin@geanix.com>
+References: <20210716135441.3235863-1-martin@geanix.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -53,53 +55,78 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 From: Martin Hundebøll <mhu@silicom.dk>
 
-This is an initial set of patches for the Silciom N5010 programmable
-accelerated card adding support for reading out sensors.
+The Max10 BMC on the Silicom n5010 PAC is slightly different than the
+existing BMCs, so use a dedicated feature revision detect it.
 
-Based on v5.14-rc1
+Signed-off-by: Martin Hundebøll <mhu@silicom.dk>
+Reviewed-by: Moritz Fischer <mdf@kernel.org>
+---
 
 Changes since v4:
- * Removed the mfd patch that has been applied by Lee
- * Renamed 'rev' to 'revision' in patch 1/3 as per Tom's suggestion
- * Moved spi board_info structure in patch 2/3 from global/static scope
+ * Moved spi board_info structure from global/static scope
    to function/stack scope
 
 Changes since v3:
- * Added Hao's Acked-by to patch 1/4
- * Added Matthew's Acked-by to patch 1/4
- * Changed "BMC's" to "BMCs" in patch 2/4
- * Added Moritz' Reviewed-by to patch 2/4
- * Added Matthew's Reviewed-by to patch 3/4
- * Added Lee's Acked-for-MFD-by to patch 3/4
+ * Changed "BMC's" to "BMCs"
+ * Added Moritz' Reviewed-by
 
 Changes since v2:
- * Removed patch 1/5 from v2 already in fpga/for-next
- * Reworded commit message in patch 1/4 as per Hao's suggestion
- * Added Yilun's Reviewed-by to patch 3/4 and 4/4
- * Added Moritz' Acked-by to patch 3/4
- * Added Moritz' Reviewed-by to patch 4/4
- * Added Guenter's Reviewed-by to patch 4/4
+ * None
 
 Changes since v1:
- * Commit message in patch 1 is updated with card description
- * Added Hao's Acked-by to patch 1
- * Patch 2 is replaced with a new patch to carry feature revision info
-   in struct dfl_device
- * Patch 3 is updated to use feature revision from struct dfl_device
- * Patch 4 from v0 is split into separate patches for hwmon and mfd
+ * use feature revision from struct dfl_device instead of reading it
+   from io-mem
 
-Martin Hundebøll (3):
-  fpga: dfl: expose feature revision from struct dfl_device
-  spi: spi-altera-dfl: support n5010 feature revision
-  hwmon: intel-m10-bmc-hwmon: add n5010 sensors
+ drivers/spi/spi-altera-dfl.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
- drivers/fpga/dfl.c                  |  27 ++++---
- drivers/fpga/dfl.h                  |   1 +
- drivers/hwmon/intel-m10-bmc-hwmon.c | 116 ++++++++++++++++++++++++++++
- drivers/spi/spi-altera-dfl.c        |  21 ++---
- include/linux/dfl.h                 |   1 +
- 5 files changed, 147 insertions(+), 19 deletions(-)
-
+diff --git a/drivers/spi/spi-altera-dfl.c b/drivers/spi/spi-altera-dfl.c
+index 39a3e1a032e0..44fc9ee13fc7 100644
+--- a/drivers/spi/spi-altera-dfl.c
++++ b/drivers/spi/spi-altera-dfl.c
+@@ -104,13 +104,6 @@ static const struct regmap_config indirect_regbus_cfg = {
+ 	.reg_read = indirect_bus_reg_read,
+ };
+ 
+-static struct spi_board_info m10_bmc_info = {
+-	.modalias = "m10-d5005",
+-	.max_speed_hz = 12500000,
+-	.bus_num = 0,
+-	.chip_select = 0,
+-};
+-
+ static void config_spi_master(void __iomem *base, struct spi_master *master)
+ {
+ 	u64 v;
+@@ -130,6 +123,7 @@ static void config_spi_master(void __iomem *base, struct spi_master *master)
+ 
+ static int dfl_spi_altera_probe(struct dfl_device *dfl_dev)
+ {
++	struct spi_board_info board_info = { 0 };
+ 	struct device *dev = &dfl_dev->dev;
+ 	struct spi_master *master;
+ 	struct altera_spi *hw;
+@@ -170,9 +164,18 @@ static int dfl_spi_altera_probe(struct dfl_device *dfl_dev)
+ 		goto exit;
+ 	}
+ 
+-	if (!spi_new_device(master,  &m10_bmc_info)) {
++	if (dfl_dev->revision == FME_FEATURE_REV_MAX10_SPI_N5010)
++		strscpy(board_info.modalias, "m10-n5010", SPI_NAME_SIZE);
++	else
++		strscpy(board_info.modalias, "m10-d5005", SPI_NAME_SIZE);
++
++	board_info.max_speed_hz = 12500000;
++	board_info.bus_num = 0;
++	board_info.chip_select = 0;
++
++	if (!spi_new_device(master, &board_info)) {
+ 		dev_err(dev, "%s failed to create SPI device: %s\n",
+-			__func__, m10_bmc_info.modalias);
++			__func__, board_info.modalias);
+ 	}
+ 
+ 	return 0;
 -- 
 2.31.0
 

@@ -2,97 +2,71 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BFD50C12002
-	for <linux-spi@archiver.kernel.org>; Wed, 21 Jul 2021 12:14:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A840BC12002
+	for <linux-spi@archiver.kernel.org>; Wed, 21 Jul 2021 12:15:44 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 915156120C
-	for <linux-spi@archiver.kernel.org>; Wed, 21 Jul 2021 12:14:58 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 791D26120E
+	for <linux-spi@archiver.kernel.org>; Wed, 21 Jul 2021 12:15:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232079AbhGULeV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Wed, 21 Jul 2021 07:34:21 -0400
-Received: from mga05.intel.com ([192.55.52.43]:58922 "EHLO mga05.intel.com"
+        id S232684AbhGULfE (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Wed, 21 Jul 2021 07:35:04 -0400
+Received: from mga17.intel.com ([192.55.52.151]:43837 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231680AbhGULeU (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Wed, 21 Jul 2021 07:34:20 -0400
-X-IronPort-AV: E=McAfee;i="6200,9189,10051"; a="296983574"
+        id S231680AbhGULfE (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Wed, 21 Jul 2021 07:35:04 -0400
+X-IronPort-AV: E=McAfee;i="6200,9189,10051"; a="191699401"
 X-IronPort-AV: E=Sophos;i="5.84,258,1620716400"; 
-   d="scan'208";a="296983574"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2021 05:14:57 -0700
-X-ExtLoop1: 1
+   d="scan'208";a="191699401"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2021 05:15:40 -0700
 X-IronPort-AV: E=Sophos;i="5.84,258,1620716400"; 
-   d="scan'208";a="576673333"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 21 Jul 2021 05:14:55 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 197EE103; Wed, 21 Jul 2021 15:15:22 +0300 (EEST)
+   d="scan'208";a="564724111"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2021 05:15:39 -0700
+Received: from andy by smile with local (Exim 4.94.2)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1m6B8P-00Gd8J-Cb; Wed, 21 Jul 2021 15:15:33 +0300
+Date:   Wed, 21 Jul 2021 15:15:33 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Mark Brown <broonie@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Subject: [PATCH v1 1/1] spi: pxa2xx: Adapt reset_sccr1() to the case when no message available
-Date:   Wed, 21 Jul 2021 15:15:20 +0300
-Message-Id: <20210721121520.62605-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     linux-spi@vger.kernel.org
+Subject: Re: [bug report] spi: pxa2xx: Reuse int_stop_and_reset() in couple
+ of places
+Message-ID: <YPgP5TuvwBh0r5CS@smile.fi.intel.com>
+References: <20210721113246.GA24694@kili>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210721113246.GA24694@kili>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-In some cases reset_sccr1() can be called when no message available.
-This means that there is no associated chip to receive that message
-and hence no threshold needs to be set. Adapt the function to such
-cases.
+On Wed, Jul 21, 2021 at 04:32:46AM -0700, Dan Carpenter wrote:
+> Hello Andy Shevchenko,
+> 
+> The patch 3bbdc083262d: "spi: pxa2xx: Reuse int_stop_and_reset() in
+> couple of places" from Jul 19, 2021, leads to the following static
+> checker warning:
+> 
+> 	drivers/spi/spi-pxa2xx.c:774 ssp_int()
+> 	error: we previously assumed 'drv_data->controller->cur_msg' could be null (see line 773)
 
-Fixes: 3bbdc083262d ("spi: pxa2xx: Reuse int_stop_and_reset() in couple of places")
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/spi/spi-pxa2xx.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+>     773 	if (!drv_data->controller->cur_msg) {
+> --> 774 		handle_bad_msg(drv_data);
+>                         ^^^^^^^^^^^^^^^^^^^^^^^^
+> We can't reset with a NULL drv_data->controller->cur_msg.
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 793cb80f92c7..2b4d633dd9df 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -594,8 +594,15 @@ static int u32_reader(struct driver_data *drv_data)
- 
- static void reset_sccr1(struct driver_data *drv_data)
- {
--	struct chip_data *chip = spi_get_ctldata(drv_data->controller->cur_msg->spi);
--	u32 mask = drv_data->int_cr1 | drv_data->dma_cr1;
-+	u32 mask = drv_data->int_cr1 | drv_data->dma_cr1, threshold;
-+	struct chip_data *chip;
-+
-+	if (drv_data->controller->cur_msg) {
-+		chip = spi_get_ctldata(drv_data->controller->cur_msg->spi);
-+		threshold = chip->threshold;
-+	} else {
-+		threshold = 0;
-+	}
- 
- 	switch (drv_data->ssp_type) {
- 	case QUARK_X1000_SSP:
-@@ -609,7 +616,7 @@ static void reset_sccr1(struct driver_data *drv_data)
- 		break;
- 	}
- 
--	pxa2xx_spi_update(drv_data, SSCR1, mask, chip->threshold);
-+	pxa2xx_spi_update(drv_data, SSCR1, mask, threshold);
- }
- 
- static void int_stop_and_reset(struct driver_data *drv_data)
+We can if we handle this inside reset_sccr1() properly.
+Thanks for the report and patch on its way!
+
 -- 
-2.30.2
+With Best Regards,
+Andy Shevchenko
+
 

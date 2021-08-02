@@ -2,93 +2,118 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-11.4 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-9.2 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0A46AC4320A
-	for <linux-spi@archiver.kernel.org>; Mon,  2 Aug 2021 03:40:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 070ABC432BE
+	for <linux-spi@archiver.kernel.org>; Mon,  2 Aug 2021 07:40:50 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D824660F6E
-	for <linux-spi@archiver.kernel.org>; Mon,  2 Aug 2021 03:40:39 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id DCEDC60F5A
+	for <linux-spi@archiver.kernel.org>; Mon,  2 Aug 2021 07:40:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231425AbhHBDkr (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Sun, 1 Aug 2021 23:40:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33598 "EHLO
+        id S232600AbhHBHk6 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 2 Aug 2021 03:40:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231962AbhHBDkq (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Sun, 1 Aug 2021 23:40:46 -0400
-Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FCDEC0613D5
-        for <linux-spi@vger.kernel.org>; Sun,  1 Aug 2021 20:40:37 -0700 (PDT)
-Received: by mail-io1-xd36.google.com with SMTP id l18so18746441ioh.11
-        for <linux-spi@vger.kernel.org>; Sun, 01 Aug 2021 20:40:37 -0700 (PDT)
+        with ESMTP id S232458AbhHBHk5 (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 2 Aug 2021 03:40:57 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 089BCC06175F;
+        Mon,  2 Aug 2021 00:40:47 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id u20so22795834ljo.0;
+        Mon, 02 Aug 2021 00:40:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Xr7X3INp68/aHb+fLfHEXT7brOPsJnQpWqh+BxS2toY=;
-        b=LiuyPDjOiqxtQJsSBVLxKaDvy1dlayZ3PKlzxW9wtrimEOAXzoDfElSfvrSXHhPTkz
-         hYJObO8siTOJ4u0JjoUfq0HR0pJvLUhQK2UyghUCg8sLfzZTF+FZRQ8eSVvZ6ZoWmxhB
-         zyeBD5scfDVbWAiJ89ygyqR2eRNcbf1DRaLJs=
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Rx5q39Xw1a0JHH/JpOAv2dOieHFpmxEhCjzvGdgwxac=;
+        b=O+AFu5KVOfglY6BISS0tHH7b0Xzrm+nN0tWvnQzROevDBptoTAvP/bfQ3ML7CgB3FP
+         JXLxCKfbsURoiyfyg5E957Diq3HlUsYKoUOrMobARGJfZ0cdmwj8UgRWV4g7Pyco+WOw
+         7+x9Va79c14LJiNX7YvRiTNzx6WCiqe+kiN32G3DJIyG3+eKM8gFabYHCxLqUUpJm1WM
+         AwayYKfaZD43bCHculSQ98usthauNdeqd6qtrYV/vSdITHS0oeLf4d1+aHZOAxeYx6sO
+         N/guu698a+Q7nW3iPMEgrvc/rU1RoNfM1uSyZ2jItSI9JyxndvZw1qgedRcX9cVqKE4i
+         5uOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Xr7X3INp68/aHb+fLfHEXT7brOPsJnQpWqh+BxS2toY=;
-        b=BE4kgbJ2IPxun19CEDZhro/CSAwznN37rzC7EKlhwimGk3aM92FvXniBKWy7K4J3La
-         8Jf/k/wASz38DpZf+SQS0Y/EOfO4HFgU9ezlBWq5Q5GtCpqLFd9XSwCJWH1Mhje1CrI6
-         Z1JsCgdSn9L5z0s3OUlG3FKRekfbel+bzLQbdPJ9ABt7a9k1cMczlbM5TlC1BzSzx7kU
-         Hl54hF0aCi22ZOc1IzrTPi3EAn/lfGUUwDh5IfAe/9edSsSBW0NcMH0W2481Z8wxlRUR
-         +yAMO5T6810KcEtl9UheiNLfWruvdTYwE7cK949UOhETCFca8RAnnle2Dh4yHCtvqVhz
-         GMdg==
-X-Gm-Message-State: AOAM533GkCAv06mCfHLGQG3KHCFWALSBXPF6SwD2elldyUJkyESq5gma
-        fu+8H8o10p7Pe8Eo3VQx/DkpvYUDahsFt94Ds82ooQ==
-X-Google-Smtp-Source: ABdhPJwItvPct0QYddbjn/ZBRIlrhozZ9+0sIdd0TxqCVOowtY1O3c/Tt8Q3jSQWg6Ujnb4bjYO9KHe4YuO8OMslZZw=
-X-Received: by 2002:a02:aa8b:: with SMTP id u11mr12823631jai.43.1627875636594;
- Sun, 01 Aug 2021 20:40:36 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Rx5q39Xw1a0JHH/JpOAv2dOieHFpmxEhCjzvGdgwxac=;
+        b=dtu7sDhSsDrPTm+SEVRWq+OA5cU3a3ru653GLAjOfw4yvX0E9vrn5AyQnhvJC15K1m
+         ukaBXaxMQ3hscEw69U2BacDJ6c/TcbT22Uqy423MrB6hty53lfu/oVrF6+xmUVYnrHPC
+         pmc6MzJGshzt3Yj21vNciOkHRuWlRuMdKW/7cg5ViFsvB1wswGvGWtXOAmSvV6r1q0Jc
+         1//cp8XKu8kwkjHdVUpnIz1MdUWNml/7Uyj78zJh0JHhxz1E8WSD7l1m4vNuMFsLfHhg
+         OtMrraRekt4KfmHnDLAoTUBDcIhmrmVElV8VX/aw9LYCCWPQ+ycYO9fc+TpuLShK69ic
+         FnBg==
+X-Gm-Message-State: AOAM530WOJyHk72TYEarCT+BqM5v5s94L/KN5xvNw3U3P0acPIDIGLcj
+        R4ADP9niIvH3+a8Nm6eQnhG3kgidCwU=
+X-Google-Smtp-Source: ABdhPJwfOETjLE0hCokBQk+uH4O4MCFf15UDoXoQn73CRKGh6piOwZIRGA/ufgvwUUzzhcq2Iielog==
+X-Received: by 2002:a2e:a417:: with SMTP id p23mr10158364ljn.23.1627890045395;
+        Mon, 02 Aug 2021 00:40:45 -0700 (PDT)
+Received: from [192.168.1.49] ([109.197.204.123])
+        by smtp.gmail.com with ESMTPSA id b23sm883533lff.65.2021.08.02.00.40.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Aug 2021 00:40:44 -0700 (PDT)
+Subject: Re: [PATCH v2 2/8] spi: spi-ep93xx: Prepare clock before using it
+To:     Mark Brown <broonie@kernel.org>,
+        Nikita Shubin <nikita.shubin@maquefel.me>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+References: <20210726115058.23729-1-nikita.shubin@maquefel.me>
+ <20210726140001.24820-1-nikita.shubin@maquefel.me>
+ <20210726140001.24820-3-nikita.shubin@maquefel.me>
+ <20210726165105.GI4670@sirena.org.uk>
+From:   Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Message-ID: <37e15955-771f-56a8-cf8e-4342c3c2c3a3@gmail.com>
+Date:   Mon, 2 Aug 2021 09:36:19 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 MIME-Version: 1.0
-References: <20210802030023.1748777-1-linux@roeck-us.net> <YQdmCaySpW4Dpz0t@google.com>
-In-Reply-To: <YQdmCaySpW4Dpz0t@google.com>
-From:   Hsin-Yi Wang <hsinyi@chromium.org>
-Date:   Mon, 2 Aug 2021 11:40:10 +0800
-Message-ID: <CAJMQK-jxYAUjT4g08Ctt0=NTdFoKMnHBqE9-Kgj94ymc8XOrCw@mail.gmail.com>
-Subject: Re: [PATCH] spi: mediatek: Fix fifo transfer
-To:     Tzung-Bi Shih <tzungbi@google.com>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Mark Brown <broonie@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-spi@vger.kernel.org,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        Peter Hess <peter.hess@ph-home.de>,
-        Frank Wunderlich <frank-w@public-files.de>,
-        Hsin-Yi Wang <hsinyi@google.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210726165105.GI4670@sirena.org.uk>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, Aug 2, 2021 at 11:27 AM Tzung-Bi Shih <tzungbi@google.com> wrote:
->
-> On Sun, Aug 01, 2021 at 08:00:23PM -0700, Guenter Roeck wrote:
-> > Fixes: 3a70dd2d0503 ("spi: mediatek: fix fifo rx mode")
-> > Cc: Peter Hess <peter.hess@ph-home.de>
-> > Cc: Frank Wunderlich <frank-w@public-files.de>
-> > Cc: Tzung-Bi Shih <tzungbi@google.com>
-> > Cc: Hsin-Yi Wang <hsinyi@google.com>
-> > Signed-off-by: Guenter Roeck <linux@roeck-us.net>
->
-> Tested-by: Tzung-Bi Shih <tzungbi@google.com>
-Tested-by: Hsin-Yi Wang <hsinyi@google.com>
+Hello Mark,
 
-tested on a mt8183 device.
->
-> _______________________________________________
-> Linux-mediatek mailing list
-> Linux-mediatek@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-mediatek
+On 26/07/2021 18:51, Mark Brown wrote:
+> On Mon, Jul 26, 2021 at 04:59:50PM +0300, Nikita Shubin wrote:
+>> From: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+>>
+>> Use clk_prepare_enable()/clk_disable_unprepare() in preparation for switch
+>> to Common Clock Framework, otherwise the following is visible:
+> Acked-by: Mark Brown <broonie@kernel.org>
+
+It looks like we didn't manage to bring the whole series as one lot to any
+maintainer and two patches were applied to two different trees.
+Could you please take this one to your tree as well?
+
+>> WARNING: CPU: 0 PID: 1 at drivers/clk/clk.c:1011 clk_core_enable+0x9c/0xbc
+>> Enabling unprepared ep93xx-spi.0
+>> ...
+>> Hardware name: Cirrus Logic EDB9302 Evaluation Board
+>> ...
+>> clk_core_enable
+>> clk_core_enable_lock
+>> ep93xx_spi_prepare_hardware
+> Please think hard before including complete backtraces in upstream
+> reports, they are very large and contain almost no useful information
+> relative to their size so often obscure the relevant content in your
+> message. If part of the backtrace is usefully illustrative (it often is
+> for search engines if nothing else) then it's usually better to pull out
+> the relevant sections.
+
+Yes, I noted your comment first time and this was already stripped version
+of the backtrace, but please feel free to strip it even harder if you
+take the patch.
+
+Thank you for the review,
+--
+Alex.

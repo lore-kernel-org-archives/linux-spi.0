@@ -2,133 +2,101 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-16.7 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,URIBL_BLOCKED,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6EB38C432BE
-	for <linux-spi@archiver.kernel.org>; Mon,  2 Aug 2021 17:13:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 42B8DC4338F
+	for <linux-spi@archiver.kernel.org>; Mon,  2 Aug 2021 17:23:16 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 5151D61100
-	for <linux-spi@archiver.kernel.org>; Mon,  2 Aug 2021 17:13:47 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1FF8960FC2
+	for <linux-spi@archiver.kernel.org>; Mon,  2 Aug 2021 17:23:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229744AbhHBRN4 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 2 Aug 2021 13:13:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34230 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229593AbhHBRNz (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 2 Aug 2021 13:13:55 -0400
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35962C06175F;
-        Mon,  2 Aug 2021 10:13:46 -0700 (PDT)
-Received: by mail-pj1-x102b.google.com with SMTP id m10-20020a17090a34cab0290176b52c60ddso918153pjf.4;
-        Mon, 02 Aug 2021 10:13:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=DsrhQp/km3AN3/nCdXzxLh4fYNOYR+90bwDH6yArIzw=;
-        b=LLoLo79j5gKbVjYyumPfqd8k2EvfByskVN/mylgwfFPReilrjWca0h5TBvIfJCDdfl
-         2zIGt7WZV35tZMJt/IAZdVyiR52+3ZBNfH5xiHgVnvEMuFvLJz1iIogrnR1Ivwq2TjSE
-         qyLItKXQ3zNFIOA+sMmEqqyFRn5BFQMwBDZ2ygWI0gNlLanC77pCxeZPVjbMFggnWZvx
-         +0OjCKyFGmd8NSyV4tHRb/LcYH4M+AmwBz6dJ2uFuH8dU5t+oi+Fx2KZk+nmDTDldBTc
-         pF42/DPbjvs7QJw7qOO2FdoPYSKy8E4p1BQld6tr9Jt4Mj3q0Wh77HlK+2w8IxSYIhx7
-         Rt+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=DsrhQp/km3AN3/nCdXzxLh4fYNOYR+90bwDH6yArIzw=;
-        b=fivqjxIZt8QoS/+tRVHuUVdjLNdEZdRrsLvE4zlqT/faWYQTNwAFf3pOwDc7/G2Pb5
-         NgYYQFuppzRXpTf99Lf6f+RGhFX9D1HqW5ag/yDjqOC41STw+x5ewFAa2bd1Gs6vs2+G
-         Qvvj4d5d4o7ImkMdhHR7f5OTwdYKRxi29hQY52+lIBFqqZIRM14WgCXvCGSJ0ed7u1wo
-         SeK8gJP7zy3gq4aixN13Nn3mx09DUM6ijGiJBEjOwJ8DVCnUQcaxPnVvpbvYEkt+EuXO
-         dey9djw2MYgzcqbQ9l5jjLIHCjtlnBmv4rHgJxJdfJ+SbCTbYHPGLr9T2Mcx1rDyn/bt
-         UIXA==
-X-Gm-Message-State: AOAM531KUWVzI8v1UrW6hotoQP6S2L2WRDPNrWc6duBK8OFKBKCspP5O
-        MKPG+BSa1mE6BsuFAY6B/iOQv3n0DEGUGlnubVU=
-X-Google-Smtp-Source: ABdhPJweUosf0ntXfg8F9h9vRNrNHxM5yHY1ehTtGvwGd7VLgJy3fO+s26kJwFxctl4nX18uDgzE3HlPXdBmU9REuUE=
-X-Received: by 2002:a63:5a5b:: with SMTP id k27mr2335806pgm.74.1627924425668;
- Mon, 02 Aug 2021 10:13:45 -0700 (PDT)
-MIME-Version: 1.0
-References: <YPlfcbkxiBmB+vw1@kunai> <CAHp75VfC=s12Unw3+Cn0ag71mM5i90=Jbwj4nYwB5cPKiUTRSA@mail.gmail.com>
- <20210723091331.wl33wtcvvnejuhau@pengutronix.de> <06e799be-b7c0-5b93-8586-678a449d2239@microchip.com>
- <20210728202547.7uvfwflpruku7yps@pengutronix.de> <20210728204033.GF22278@shell.armlinux.org.uk>
- <162771727997.714452.2303764341103276867@swboyd.mtv.corp.google.com>
- <20210731120004.i3affxw7upl5y4c5@pengutronix.de> <20210802094810.GJ22278@shell.armlinux.org.uk>
- <20210802152755.ibisunvibmwhiyry@pengutronix.de> <20210802163824.GK22278@shell.armlinux.org.uk>
-In-Reply-To: <20210802163824.GK22278@shell.armlinux.org.uk>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 2 Aug 2021 20:13:05 +0300
-Message-ID: <CAHp75VcpA0vOwN8gBj2iikXW2dw+KCgZEM=QJ5Jx6UWqww=iCw@mail.gmail.com>
-Subject: Re: About clk maintainership [Was: Re: [PULL] Add variants of
- devm_clk_get for prepared and enabled clocks enabled clocks]
-To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        linux-clk <linux-clk@vger.kernel.org>,
-        "open list:REAL TIME CLOCK (RTC) SUBSYSTEM" 
-        <linux-rtc@vger.kernel.org>,
-        Ludovic Desroches <Ludovic.Desroches@microchip.com>,
-        Oleksij Rempel <o.rempel@pengutronix.de>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        linux-pwm@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Mark Brown <broonie@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-spi <linux-spi@vger.kernel.org>,
-        Wolfram Sang <wsa@kernel.org>,
+        id S230143AbhHBRXY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 2 Aug 2021 13:23:24 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:35204 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229607AbhHBRXY (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 2 Aug 2021 13:23:24 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: sre)
+        with ESMTPSA id 213D01F42BC1
+Received: by jupiter.universe (Postfix, from userid 1000)
+        id E69AE4800C6; Mon,  2 Aug 2021 19:23:10 +0200 (CEST)
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Mark Brown <broonie@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, Shawn Guo <shawnguo@kernel.org>,
         Sascha Hauer <kernel@pengutronix.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Claudiu Beznea <Claudiu.Beznea@microchip.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Fabio Estevam <festevam@gmail.com>, Ian Ray <ian.ray@ge.com>,
+        linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, kernel@collabora.com,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCHv8 2/3] ARM: dts: imx53-ppd: Fix ACHC entry
+Date:   Mon,  2 Aug 2021 19:23:08 +0200
+Message-Id: <20210802172309.164365-3-sebastian.reichel@collabora.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210802172309.164365-1-sebastian.reichel@collabora.com>
+References: <20210802172309.164365-1-sebastian.reichel@collabora.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Mon, Aug 2, 2021 at 7:38 PM Russell King (Oracle)
-<linux@armlinux.org.uk> wrote:
-> On Mon, Aug 02, 2021 at 05:27:55PM +0200, Uwe Kleine-K=C3=B6nig wrote:
-> > Hello Russell,
-> > On Mon, Aug 02, 2021 at 10:48:10AM +0100, Russell King (Oracle) wrote:
+PPD has only one ACHC device, which effectively is a Kinetis
+microcontroller. It has one SPI interface used for normal
+communication. Additionally it's possible to flash the device
+firmware using NXP's EzPort protocol by correctly driving a
+second chip select pin and the device reset pin.
 
-...
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+---
+ arch/arm/boot/dts/imx53-ppd.dts | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-> > > There have been several different approaches to wrapping things up,
-> > > but here's a question: should we make it easier to do the lazy thing
-> > > (get+enable) or should we make it easier to be power efficient?
-> > > Shouldn't we be encouraging people to write power efficient drivers?
-> >
-> > Yeah, sounds compelling, but I wonder if that's of practical importance=
-.
-> > How many driver authors do you expect to lure into making a better
-> > driver just because devm_clk_get_prepared() doesn't exist? In contrast:
-> > How many drivers become simpler with devm_clk_get_prepared() and so
-> > it becomes easier to maintain them and easier to spot bugs?
-> > In the absence of devm_clk_get_prepared(), is it better that several
-> > frameworks (or drivers) open code it?
->
-> It probably depends on where you stand on power management and power
-> efficiency issues. Personally, I would like to see more effort put
-> into drivers to make them more power efficient, and I believe in the
-> coming years, power efficiency is going to become a big issue.
+diff --git a/arch/arm/boot/dts/imx53-ppd.dts b/arch/arm/boot/dts/imx53-ppd.dts
+index 5a5fa6190a52..37d0cffea99c 100644
+--- a/arch/arm/boot/dts/imx53-ppd.dts
++++ b/arch/arm/boot/dts/imx53-ppd.dts
+@@ -70,6 +70,12 @@ cko2_11M: sgtl-clock-cko2 {
+ 		clock-frequency = <11289600>;
+ 	};
+ 
++	achc_24M: achc-clock {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <24000000>;
++	};
++
+ 	sgtlsound: sound {
+ 		compatible = "fsl,imx53-cpuvo-sgtl5000",
+ 			     "fsl,imx-audio-sgtl5000";
+@@ -314,16 +320,13 @@ &gpio4 11 GPIO_ACTIVE_LOW
+ 		    &gpio4 12 GPIO_ACTIVE_LOW>;
+ 	status = "okay";
+ 
+-	spidev0: spi@0 {
+-		compatible = "ge,achc";
+-		reg = <0>;
+-		spi-max-frequency = <1000000>;
+-	};
+-
+-	spidev1: spi@1 {
+-		compatible = "ge,achc";
+-		reg = <1>;
+-		spi-max-frequency = <1000000>;
++	spidev0: spi@1 {
++		compatible = "ge,achc", "nxp,kinetis-k20";
++		reg = <1>, <0>;
++		vdd-supply = <&reg_3v3>;
++		vdda-supply = <&reg_3v3>;
++		clocks = <&achc_24M>;
++		reset-gpios = <&gpio3 6 GPIO_ACTIVE_LOW>;
+ 	};
+ 
+ 	gpioxra0: gpio@2 {
+-- 
+2.30.2
 
-While in the ideal world I 100% agree with the approach, IRL we have
-to deal with constantly degrading quality of the code and instead of
-thinking about power management and efficiency the absence of APIs
-such as discussed provokes not only creating the power management
-inefficient code, but also memory leaks here and there.
-
---=20
-With Best Regards,
-Andy Shevchenko

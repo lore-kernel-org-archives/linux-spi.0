@@ -2,83 +2,54 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT
-	autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-6.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BB6A1C4338F
-	for <linux-spi@archiver.kernel.org>; Tue,  3 Aug 2021 10:41:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B0431C4338F
+	for <linux-spi@archiver.kernel.org>; Tue,  3 Aug 2021 10:56:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 9EB9860F93
-	for <linux-spi@archiver.kernel.org>; Tue,  3 Aug 2021 10:41:57 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 9A15160FC2
+	for <linux-spi@archiver.kernel.org>; Tue,  3 Aug 2021 10:56:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235385AbhHCKmH (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 3 Aug 2021 06:42:07 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:48266 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S234821AbhHCKmH (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 3 Aug 2021 06:42:07 -0400
-X-UUID: 490216562dc440adba389e0940a5870a-20210803
-X-UUID: 490216562dc440adba389e0940a5870a-20210803
-Received: from mtkcas07.mediatek.inc [(172.21.101.84)] by mailgw02.mediatek.com
-        (envelope-from <mason.zhang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 121606926; Tue, 03 Aug 2021 18:41:54 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 3 Aug 2021 18:41:53 +0800
-Received: from localhost.localdomain (10.15.20.246) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 3 Aug 2021 18:41:52 +0800
-From:   Mason Zhang <Mason.Zhang@mediatek.com>
-To:     Mark Brown <broonie@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>
-CC:     Laxman Dewangan <ldewangan@nvidia.com>,
-        <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>, <wsd_upstream@mediatek.com>,
-        Mason Zhang <Mason.Zhang@mediatek.com>
-Subject: [PATCH v2 4/4] spi: tegra114: Fix set_cs_timing param
-Date:   Tue, 3 Aug 2021 18:25:18 +0800
-Message-ID: <20210803102517.20944-1-Mason.Zhang@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        id S235463AbhHCK5B (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 3 Aug 2021 06:57:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44732 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S235204AbhHCK5B (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 3 Aug 2021 06:57:01 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id BADA861029;
+        Tue,  3 Aug 2021 10:56:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1627988210;
+        bh=1AmrHVzrvJkzqw+V2IoaTym4cbGV1ukXZStbCmVv4Ok=;
+        h=Subject:From:Date:To:From;
+        b=pDGMwpHQ89YcIyZYTvjMsR3NZK17EmiJNvdYYb6/e9LFj4gqflDRbs5OipwLjBz5y
+         Gsxt81CDrM1QlSk3T/wS/nU9kUNMeV/IgP88yYstp0mMN2n1dbyPtVkBHjJO3iUx7U
+         eTlOrkow0bGK4ExJ3mBiU2xEf8qAGqO8XnpJFzSJKa3R8cn0hmQOhXNY1BdLRdjYxz
+         4l6dU9Kdx+tBm7IyoIESmVuM64jbP2YsapeWHq/B9Grq3pJDjRdYejtA7thmp4+AHl
+         XXlOtquaeNced3fUr+MUChxyA90k7dSuJrqDZ6Eb3vSbVfmJEiUvX+yA/4HWCTN7+B
+         SPeAxiDA5WU2Q==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <162798821073.6133.6866260520229343519.git-patchwork-housekeeping@kernel.org>
+Date:   Tue, 03 Aug 2021 10:56:50 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-This patch fixed set_cs_timing param, because cs timing delay has
-been moved to spi_device.
+Latest series: [v2] *** spi cs_timing restructure *** (2021-08-03T10:22:29)
+  Superseding: [v1] *** spi cs_timing restructure *** (2021-07-19T09:15:26):
+    [1/3] spi: move cs spi_delay to spi_device
+    [2/3] spi: modify set_cs_timing parameter
+    [3/3] spi: mediatek: modify set_cs_timing callback
 
-Signed-off-by: Mason Zhang <Mason.Zhang@mediatek.com>
----
- drivers/spi/spi-tegra114.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index 5131141bbf0d..e9de1d958bbd 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -717,12 +717,12 @@ static void tegra_spi_deinit_dma_param(struct tegra_spi_data *tspi,
- 	dma_release_channel(dma_chan);
- }
- 
--static int tegra_spi_set_hw_cs_timing(struct spi_device *spi,
--				      struct spi_delay *setup,
--				      struct spi_delay *hold,
--				      struct spi_delay *inactive)
-+static int tegra_spi_set_hw_cs_timing(struct spi_device *spi)
- {
- 	struct tegra_spi_data *tspi = spi_master_get_devdata(spi->master);
-+	struct spi_delay *setup = &spi->cs_setup;
-+	struct spi_delay *hold = &spi->cs_hold;
-+	struct spi_delay *inactive = &spi->cs_inactive;
- 	u8 setup_dly, hold_dly, inactive_dly;
- 	u32 setup_hold;
- 	u32 spi_cs_timing;
 -- 
-2.18.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

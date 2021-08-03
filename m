@@ -2,68 +2,94 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_SANE_2 autolearn=no
+X-Spam-Status: No, score=-18.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EBE7FC4338F
-	for <linux-spi@archiver.kernel.org>; Tue,  3 Aug 2021 11:09:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 057EFC4338F
+	for <linux-spi@archiver.kernel.org>; Tue,  3 Aug 2021 14:11:01 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id CCA006105A
-	for <linux-spi@archiver.kernel.org>; Tue,  3 Aug 2021 11:09:22 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id D175960F02
+	for <linux-spi@archiver.kernel.org>; Tue,  3 Aug 2021 14:11:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235289AbhHCLJc (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 3 Aug 2021 07:09:32 -0400
-Received: from mailgw02.mediatek.com ([210.61.82.184]:50960 "EHLO
-        mailgw02.mediatek.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S234156AbhHCLJc (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Tue, 3 Aug 2021 07:09:32 -0400
-X-UUID: 3c6a25b1029e4b4aa70ff42139fa2d9d-20210803
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Transfer-Encoding:MIME-Version:Content-Type:References:In-Reply-To:Date:CC:To:From:Subject:Message-ID; bh=Od2MpSzeMLHI3T1P4xyf0dSDDK91tD2ThNe34CdzcnA=;
-        b=jyA4hJK21e5yEMZ0ze3OF6owXdCH0LuOLSAY7NPZPhWxc+IYPlif/MYOi0bxrXLrJqbj1a5st6TF9BwVln6iQwPGu3vYTd3Xs/wLph68Yh3qwBthHMep5Y92mL44QOXl/zDLLs2cASOV4Ja36fWTEsHjupUrS0IZ/CmZzE0NExI=;
-X-UUID: 3c6a25b1029e4b4aa70ff42139fa2d9d-20210803
-Received: from mtkcas06.mediatek.inc [(172.21.101.30)] by mailgw02.mediatek.com
-        (envelope-from <mason.zhang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 985537256; Tue, 03 Aug 2021 19:09:19 +0800
-Received: from MTKCAS06.mediatek.inc (172.21.101.30) by
- mtkmbs06n1.mediatek.inc (172.21.101.129) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Tue, 3 Aug 2021 19:09:18 +0800
-Received: from [10.15.20.246] (10.15.20.246) by MTKCAS06.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Tue, 3 Aug 2021 19:09:17 +0800
-Message-ID: <1627987970.27248.4.camel@mbjsdccf07>
-Subject: Re: [PATCH 2/3] spi: modify set_cs_timing parameter
-From:   Mason Zhang <mason.zhang@mediatek.com>
-To:     Mark Brown <broonie@kernel.org>
-CC:     Matthias Brugger <matthias.bgg@gmail.com>,
-        <linux-spi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <leilk.liu@mediatek.com>,
-        <wsd_upstream@mediatek.com>
-Date:   Tue, 3 Aug 2021 18:52:50 +0800
-In-Reply-To: <1627960488.7721.2.camel@mbjsdccf07>
-References: <20210719091642.24633-1-mason.zhang@mediatek.com>
-         <20210802201614.GA39900@sirena.org.uk> <1627960488.7721.2.camel@mbjsdccf07>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4-0ubuntu2 
+        id S236473AbhHCOLK (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 3 Aug 2021 10:11:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46846 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S236432AbhHCOLK (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 3 Aug 2021 10:11:10 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E558460560;
+        Tue,  3 Aug 2021 14:10:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1627999859;
+        bh=N0ZTtrHdIHPT96G9nBYkGdXTL8PsI1Gk6OP7BRI/XWU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=g+8I7RyNPSsLNAcXZ0c7bkXcr6kChyBewrKHP4n4Yvbi+42JeojCborCIczYftJB/
+         GKveQlwLIL9FhKlaZEotV+MhPEM8x5WUNZiHV+EgZx5fiwkxyBtFV0ntj5/4u8Nt1H
+         tD2jdm2C9kaYGgBrczMmXVoLDXMgoIXSrE9gBkxpLnVNgY+xOm959iOvVLkRbN4DbW
+         Z+aAU1iteh/iQzWVUtwGNZaSSsw3PQ3s+5T0YQjxyKyFnH3tgA/3mhA96byevPBy+9
+         Fs4bQXWcPeDiByrKpB5ZY4c1OTxZ/TU6nTOvZD3x2Vrhx+4YdDB54GdrCsjqJQ3VbX
+         +3n4ivjhRNj7g==
+Date:   Tue, 3 Aug 2021 15:10:45 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Mason Zhang <Mason.Zhang@mediatek.com>
+Cc:     Matthias Brugger <matthias.bgg@gmail.com>,
+        Laxman Dewangan <ldewangan@nvidia.com>,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, wsd_upstream@mediatek.com
+Subject: Re: [PATCH v2 4/4] spi: tegra114: Fix set_cs_timing param
+Message-ID: <20210803141045.GN4668@sirena.org.uk>
+References: <20210803102517.20944-1-Mason.Zhang@mediatek.com>
 MIME-Version: 1.0
-X-MTK:  N
-Content-Transfer-Encoding: base64
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="Rzq/nSLlHy1djmXS"
+Content-Disposition: inline
+In-Reply-To: <20210803102517.20944-1-Mason.Zhang@mediatek.com>
+X-Cookie: There's only one everything.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-T24gVHVlLCAyMDIxLTA4LTAzIGF0IDExOjE0ICswODAwLCBNYXNvbiBaaGFuZyB3cm90ZToNCj4g
-RGVhciBNYXJrOg0KPiANCj4gCUkgaGF2ZSBmaXhlZCB0aGlzIGJ1aWxkIGVyciBpbiB0aGlzIHBh
-dGNoOg0KPiANCj4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGludXgtc3BpLzIwMjEwODAzMDIx
-MzI4LjI4MjkxLTEtTWFzb24uWmhhbmdAbWVkaWF0ZWsuY29tL1QvI3UNCj4gDQo+IA0KPiBUaGFu
-a3MNCj4gTWFzb24NCg0KRGVhciBNYXJrOg0KDQoJSSBoYXZlIHN1Ym1pdCB0aGlzIGNoYW5nZSBz
-ZXBhcmF0ZWx5LCBidXQgc3RpbGwgaGF2ZSBidWlsZCBlcnIsIHNvIEkNCmhhdmUgdXBkYXRlZCB0
-aGUgcGF0Y2ggdjIgYXMgYmVsb3c6DQoNCmh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xpbnV4LXNw
-aS8yMDIxMDgwMzEwMjIyOC4yNTM1LTEtTWFzb24uWmhhbmdAbWVkaWF0ZWsuY29tL1QvI3UNCg0K
-VGhhbmtzDQpNYXNvbg0K
 
+--Rzq/nSLlHy1djmXS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Aug 03, 2021 at 06:25:18PM +0800, Mason Zhang wrote:
+> This patch fixed set_cs_timing param, because cs timing delay has
+> been moved to spi_device.
+>=20
+> Signed-off-by: Mason Zhang <Mason.Zhang@mediatek.com>
+> ---
+>  drivers/spi/spi-tegra114.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+
+Each individual patch in the series needs to be buildable by itself, if
+an earlier commit in the series causes things to fail to build then that
+commit needs to be improved so that this doesn't happen.  This supports
+things like bisection.
+
+Please also look into how you're sending serieses, these patches aren't
+threaded together as normal and there's a weird "***" in the subject of
+the first patch.
+
+--Rzq/nSLlHy1djmXS
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmEJTmQACgkQJNaLcl1U
+h9D67Qf9EAF3egsc5vOgwsyJ04565RzPgzYINu8phKCoAsP7U3wUTep3WbMcGLOx
+lFEMzwwxeT8grDvDqx3wjXvh4hb2SnSlO/6hA2UOEUuqe7K3aB+UvmIxUIdoDdZb
+mJSklejnK4Zfb0SDTf8NVYpEvvFDO92LcOvAeDVshuHGfKIbsFE3gCVXlsKmC4id
+0ztnP4SFtrwQDKgRf1cUvjJwWpUoKwdctGdzlrwz00OvCJkU+U8VMSss/tZkJUpN
++bhfZp2R0aYi3579ReTPj9RfH0PLTNg1c2oVTVCUD7DRPtmrFvUMj0roggpKtlgp
+pn72WZmvyXwLgG0g+n0SbtErGbDITw==
+=M79B
+-----END PGP SIGNATURE-----
+
+--Rzq/nSLlHy1djmXS--

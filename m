@@ -2,91 +2,89 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-13.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_1 autolearn=ham
+X-Spam-Status: No, score=-21.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_PATCH,INCLUDES_PULL_REQUEST,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS autolearn=ham
 	autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78AB7C4338F
-	for <linux-spi@archiver.kernel.org>; Fri,  6 Aug 2021 12:40:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E0B66C4338F
+	for <linux-spi@archiver.kernel.org>; Fri,  6 Aug 2021 14:55:52 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 4E75D61165
-	for <linux-spi@archiver.kernel.org>; Fri,  6 Aug 2021 12:40:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id B68766105A
+	for <linux-spi@archiver.kernel.org>; Fri,  6 Aug 2021 14:55:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343709AbhHFMkV (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 6 Aug 2021 08:40:21 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54860 "EHLO mail.kernel.org"
+        id S232302AbhHFO4H (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 6 Aug 2021 10:56:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33800 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S243783AbhHFMkU (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 6 Aug 2021 08:40:20 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 641B161158;
-        Fri,  6 Aug 2021 12:40:04 +0000 (UTC)
+        id S232178AbhHFO4H (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 6 Aug 2021 10:56:07 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 243236105A;
+        Fri,  6 Aug 2021 14:55:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1628253604;
-        bh=j6/zqyqykfTitJrzHg8qsQd96giVc/fOyETPbHK6xW0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=r8NoQvg0GR60dYDI/2IFc3dXD/4NC3aulhC3wAaBk10x1pVUFZy6M/hXO9jiV3KsX
-         B25wTjxYrgyspl+BNsWu0HVrvL8G9RljuotyYzzvGoe6qPKR6CGgupoX5DuxMxDk+s
-         b6yDn02sPlpwLH7zAlChJenGR6ZJB5b7ibIlNKY6liOzmRsCR2geuleJGiL8fBQiYd
-         mPivcppAbxbFyn3puVr7ZbmnpGT1XxP/dZ47prdtZqzD9vmVeseMHPZj1lSY1vFS89
-         hyDxLllkNQ+agqBOJqeZmYjK+YVex6yaWRo9btY0EPaep/qbql7Rhl5/beIFKyBgmc
-         lud3L75OMEdtA==
-Date:   Fri, 6 Aug 2021 13:39:48 +0100
+        s=k20201202; t=1628261751;
+        bh=S+TZfXj0n4NYdVUzQNuVBdQ9fbkUOCu9yibxXu4Rgi4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=dP+VngRhOPcMJKKLByh1YHKiBkOAqAziDkkcxHHt+Z637NNzSsuZ7jsrywgKv8Yn4
+         9/RvQ3KAxJRWM8/+q+LaqLMNjZTDlqEsTmjqgcvklUnbxIw65kCJ5PFoD6cMv+iA/A
+         trv76fcgMZC/4KG+Q5h34t3NIl9lhpBgIkSTtpSXT6KQBrzhHQipIAhWcgPlK6IZh4
+         Md21gSphO9L2uCa81/fR6P+czu1Md5DNd7Y41Pe2lk83xLFzBatue/S+AHohnkUsFI
+         wKj4+IHJW6wqEEslKtR/fL8eLZbYybZGn4RaI9L+jkdVo1ujUwBnhxYiCtu2AJTPsA
+         gQlmMXbKB8FRw==
 From:   Mark Brown <broonie@kernel.org>
-To:     Zhengxun Li <zhengxunli@mxic.com.tw>
-Cc:     linux-spi@vger.kernel.org
-Subject: Re: [PATCH v6] spi: mxic: patch for octal DTR mode support
-Message-ID: <20210806123948.GZ26252@sirena.org.uk>
-References: <1628054827-458-1-git-send-email-zhengxunli@mxic.com.tw>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="sF6X0tUrUrSWNIfp"
-Content-Disposition: inline
-In-Reply-To: <1628054827-458-1-git-send-email-zhengxunli@mxic.com.tw>
-X-Cookie: MOUNT TAPE U1439 ON B3, NO RING
-User-Agent: Mutt/1.10.1 (2018-07-13)
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] SPI fixes for v5.14-rc4
+Date:   Fri, 06 Aug 2021 15:55:19 +0100
+Message-Id: <20210806145551.243236105A@mail.kernel.org>
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+The following changes since commit c45c1e82bba130db4f19d9dbc1deefcf4ea994ed:
 
---sF6X0tUrUrSWNIfp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+  spi: spi-bcm2835: Fix deadlock (2021-07-20 13:34:05 +0100)
 
-On Wed, Aug 04, 2021 at 01:27:07PM +0800, Zhengxun Li wrote:
-> Driver patch for octal DTR mode support.
->=20
-> Owing to the spi_mem_default_supports_op() is not support dtr
-> operation. Based on commit <539cf68cd51b> (spi: spi-mem: add
-> spi_mem_dtr_supports_op()) add spi_mem_dtr_supports_op()
-> to support dtr and keep checking the buswidth and command bytes.
->=20
-> Changes in v6:
-> - Rebase on top of spi-next and modify comments.
-> - Separate from the "Add octal DTR support for Macronix flash" series
->=20
-> Signed-off-by: Zhengxun Li <zhengxunli@mxic.com.tw>
-> Acked-by: Mark Brown <broonie@kernel.org>
-> ---
+are available in the Git repository at:
 
-As covered in submitting-patches.rst inter-version changelogs go after
-the --- so they don't end up making noise in git.
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v5.14-rc4
 
---sF6X0tUrUrSWNIfp
-Content-Type: application/pgp-signature; name="signature.asc"
+for you to fetch changes up to 0395be967b067d99494113d78470574e86a02ed4:
 
------BEGIN PGP SIGNATURE-----
+  spi: cadence-quadspi: Fix check condition for DTR ops (2021-08-05 20:18:10 +0100)
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmENLZMACgkQJNaLcl1U
-h9AjjQf+M/Opts4bWCI08Tv3p4EBsyq4bPjpAtwHw3Tokq6EV1TR0xsp8SDNoaNw
-qNjJAa3hK+Y1Y1pEumhTDEy31n8r3N2Y5euh836RxZBvGcV3NbVLAX6iMingKBJD
-IQbMnMYW6n4mn00+Jy9iWEB9iBfobrbEi4fsmaN5ZTbZyUs2f4kZiciSWIJzazcD
-AM7r+FPNGpdZ365kA1KWZoLWII3IEUnIE3+/FrA6J/eZKMZal5tznDPySbe8NuYN
-Jb4GAXTi2bTziex7d4GCNz4/3Y4zkfMOSc/oy7ywqCyDPKg1U+EWT4Vk/T7epVg9
-ja6X+5t9ekzkbAPSh5Ko6x/O6jHr+g==
-=0Q/o
------END PGP SIGNATURE-----
+----------------------------------------------------------------
+spi: Fixes for v5.14
 
---sF6X0tUrUrSWNIfp--
+A small collection of fixes for SPI, small mostly driver specific things
+plus a fix for module autoloading which hadn't been working properly for
+DT systems.
+
+----------------------------------------------------------------
+Andreas Schwab (1):
+      spi: update modalias_show after of_device_uevent_modalias support
+
+Apurva Nandan (1):
+      spi: cadence-quadspi: Fix check condition for DTR ops
+
+Dongliang Mu (1):
+      spi: meson-spicc: fix memory leak in meson_spicc_remove
+
+Guenter Roeck (1):
+      spi: mediatek: Fix fifo transfer
+
+Marek Vasut (2):
+      spi: imx: mx51-ecspi: Fix low-speed CONFIGREG delay calculation
+      spi: imx: mx51-ecspi: Fix CONFIGREG delay comment
+
+Uwe Kleine-König (1):
+      spi: spi-mux: Add module info needed for autoloading
+
+ drivers/spi/spi-cadence-quadspi.c | 21 ++++++++++++++++++---
+ drivers/spi/spi-imx.c             | 18 ++++++++++++++++--
+ drivers/spi/spi-meson-spicc.c     |  2 ++
+ drivers/spi/spi-mt65xx.c          | 19 +++++--------------
+ drivers/spi/spi-mux.c             |  8 ++++++++
+ drivers/spi/spi.c                 |  4 ++++
+ 6 files changed, 53 insertions(+), 19 deletions(-)

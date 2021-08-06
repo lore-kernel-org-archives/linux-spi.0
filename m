@@ -5,28 +5,25 @@ X-Spam-Level:
 X-Spam-Status: No, score=-15.2 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_SANE_2
-	autolearn=unavailable autolearn_force=no version=3.4.0
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 38E4DC4338F
-	for <linux-spi@archiver.kernel.org>; Fri,  6 Aug 2021 19:09:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 46A5AC4338F
+	for <linux-spi@archiver.kernel.org>; Fri,  6 Aug 2021 19:12:37 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 15B6060FE7
-	for <linux-spi@archiver.kernel.org>; Fri,  6 Aug 2021 19:09:33 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 2554C61159
+	for <linux-spi@archiver.kernel.org>; Fri,  6 Aug 2021 19:12:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243746AbhHFTJs convert rfc822-to-8bit (ORCPT
+        id S234477AbhHFTMw convert rfc822-to-8bit (ORCPT
         <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 6 Aug 2021 15:09:48 -0400
-Received: from mslow1.mail.gandi.net ([217.70.178.240]:47083 "EHLO
-        mslow1.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231887AbhHFTJs (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Fri, 6 Aug 2021 15:09:48 -0400
-Received: from relay6-d.mail.gandi.net (unknown [217.70.183.198])
-        by mslow1.mail.gandi.net (Postfix) with ESMTP id 43F5DCB227
-        for <linux-spi@vger.kernel.org>; Fri,  6 Aug 2021 19:05:26 +0000 (UTC)
+        Fri, 6 Aug 2021 15:12:52 -0400
+Received: from relay5-d.mail.gandi.net ([217.70.183.197]:54441 "EHLO
+        relay5-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231887AbhHFTMw (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Fri, 6 Aug 2021 15:12:52 -0400
 Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id AFE49C0003;
-        Fri,  6 Aug 2021 19:05:01 +0000 (UTC)
-Date:   Fri, 6 Aug 2021 21:05:00 +0200
+        by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id BA6AF1C0005;
+        Fri,  6 Aug 2021 19:12:32 +0000 (UTC)
+Date:   Fri, 6 Aug 2021 21:12:31 +0200
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Apurva Nandan <a-nandan@ti.com>
 Cc:     Richard Weinberger <richard@nod.at>,
@@ -36,12 +33,12 @@ Cc:     Richard Weinberger <richard@nod.at>,
         Boris Brezillon <boris.brezillon@collabora.com>,
         <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <linux-spi@vger.kernel.org>, Pratyush Yadav <p.yadav@ti.com>
-Subject: Re: [PATCH 09/13] mtd: spinand: Add support for write volatile
- configuration register op
-Message-ID: <20210806210500.3ead1600@xps13>
-In-Reply-To: <20210713130538.646-10-a-nandan@ti.com>
+Subject: Re: [PATCH 12/13] mtd: spinand: Perform Power-on-Reset when
+ runtime_pm suspend is issued
+Message-ID: <20210806211231.5c569939@xps13>
+In-Reply-To: <20210713130538.646-13-a-nandan@ti.com>
 References: <20210713130538.646-1-a-nandan@ti.com>
-        <20210713130538.646-10-a-nandan@ti.com>
+        <20210713130538.646-13-a-nandan@ti.com>
 Organization: Bootlin
 X-Mailer: Claws Mail 3.17.7 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
@@ -53,109 +50,67 @@ X-Mailing-List: linux-spi@vger.kernel.org
 
 Hi Apurva,
 
-Apurva Nandan <a-nandan@ti.com> wrote on Tue, 13 Jul 2021 13:05:34
+Apurva Nandan <a-nandan@ti.com> wrote on Tue, 13 Jul 2021 13:05:37
 +0000:
 
-> Volatile configuration register are a different set of configuration
-> registers, i.e. they differ from the status registers. A different
-> SPI instruction is required to write to these registers. Any changes
-> to the Volatile Configuration Register get transferred directly to
-> the Internal Configuration Register and instantly reflect on the
-> device operation.
-> 
-> In Winbond W35N01JW, these volatile configuration register must be
-> configured in order to switch to Octal DTR SPI mode.
-> 
-> Add support for writing to volatile configuration registers using a
-> new WRITE_VCR_OP template.
-> 
-> Datasheet: https://www.winbond.com/export/sites/winbond/datasheet/W35N01JW_Datasheet_Brief.pdf
+> A soft reset using FFh command doesn't erase the flash's configuration
+> and doesn't reset the SPI IO mode also. This can result in the flash
+> being in a different SPI IO mode, e.g. Octal DTR, when resuming from
+> sleep. This would render the flash in an unusable state.
+
+              could put the falsh in?
+
+> Perform a Power-on-Reset (PoR), if available in the flash, when
+> suspending the device by runtime_pm. This would set the flash to clean
+
+I think runtime_pm is something else.
+
+> state for reinitialization during resume and would also ensure that it
+> is in standard SPI IO mode (1S-1S-1S) before the resume begins.
+
+Please add a comment about this to explain why we don't do this reset
+at resume time.
+
 > 
 > Signed-off-by: Apurva Nandan <a-nandan@ti.com>
 > ---
->  drivers/mtd/nand/spi/core.c    |  2 +-
->  drivers/mtd/nand/spi/winbond.c | 28 ++++++++++++++++++++++++++++
->  include/linux/mtd/spinand.h    |  1 +
->  3 files changed, 30 insertions(+), 1 deletion(-)
+>  drivers/mtd/nand/spi/core.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
 > 
 > diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-> index 8711e887b795..f577e72da2c4 100644
+> index 608f4eb85b0a..6fb3aa6af540 100644
 > --- a/drivers/mtd/nand/spi/core.c
 > +++ b/drivers/mtd/nand/spi/core.c
-> @@ -442,7 +442,7 @@ static void spinand_ondie_ecc_save_status(struct nand_device *nand, u8 status)
->  		engine_conf->status = status;
+> @@ -1329,6 +1329,21 @@ static void spinand_mtd_resume(struct mtd_info *mtd)
+>  	spinand_ecc_enable(spinand, false);
 >  }
 >  
-> -static int spinand_write_enable_op(struct spinand_device *spinand)
-> +int spinand_write_enable_op(struct spinand_device *spinand)
->  {
->  	struct spi_mem_op op = SPINAND_WR_EN_DIS_OP(true);
->  
-> diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
-> index 76684428354e..a7052a9ca171 100644
-> --- a/drivers/mtd/nand/spi/winbond.c
-> +++ b/drivers/mtd/nand/spi/winbond.c
-> @@ -7,6 +7,7 @@
->   *	Boris Brezillon <boris.brezillon@bootlin.com>
->   */
->  
-> +#include <linux/delay.h>
->  #include <linux/device.h>
->  #include <linux/kernel.h>
->  #include <linux/mtd/spinand.h>
-> @@ -114,6 +115,33 @@ static int winbond_spinand_init(struct spinand_device *spinand)
->  	return 0;
->  }
->  
-> +static int winbond_write_vcr_op(struct spinand_device *spinand, u8 reg, u8 val)
-
-Maybe a comment to tell people what vcr is?
-
+> +static int spinand_mtd_suspend(struct mtd_info *mtd)
 > +{
+> +	struct spinand_device *spinand = mtd_to_spinand(mtd);
 > +	int ret;
-> +	struct spi_mem_op op = SPI_MEM_OP(SPI_MEM_OP_CMD(0x81, 1),
-> +					  SPI_MEM_OP_ADDR(3, reg, 1),
-> +					  SPI_MEM_OP_NO_DUMMY,
-> +					  SPI_MEM_OP_DATA_OUT(1, spinand->scratchbuf, 1));
 > +
-> +	*spinand->scratchbuf = val;
+> +	if (!(spinand->flags & SPINAND_HAS_POR_CMD_BIT))
+> +		return 0;
 > +
-> +	ret = spinand_write_enable_op(spinand);
+> +	ret = spinand_power_on_rst_op(spinand);
 > +	if (ret)
-> +		return ret;
+> +		dev_err(&spinand->spimem->spi->dev, "suspend() failed\n");
 > +
-> +	ret = spi_mem_exec_op(spinand->spimem, &op);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/*
-> +	 * Write VCR operation doesn't set the busy bit in SR, so can't perform
-> +	 * a status poll. Minimum time of 50ns is needed to complete the write.
-> +	 * So, give thrice the minimum required delay.
-
-Isn't there an official maximum time?
-
-> +	 */
-> +	ndelay(150);
-> +	return 0;
+> +	return ret;
 > +}
 > +
->  static const struct spinand_manufacturer_ops winbond_spinand_manuf_ops = {
->  	.init = winbond_spinand_init,
->  };
-> diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
-> index daa2ac5c3110..21a4e5adcd59 100644
-> --- a/include/linux/mtd/spinand.h
-> +++ b/include/linux/mtd/spinand.h
-> @@ -560,5 +560,6 @@ int spinand_match_and_init(struct spinand_device *spinand,
+>  static int spinand_init(struct spinand_device *spinand)
+>  {
+>  	struct device *dev = &spinand->spimem->spi->dev;
+> @@ -1401,6 +1416,7 @@ static int spinand_init(struct spinand_device *spinand)
+>  	mtd->_erase = spinand_mtd_erase;
+>  	mtd->_max_bad_blocks = nanddev_mtd_max_bad_blocks;
+>  	mtd->_resume = spinand_mtd_resume;
+> +	mtd->_suspend = spinand_mtd_suspend;
 >  
->  int spinand_upd_cfg(struct spinand_device *spinand, u8 mask, u8 val);
->  int spinand_select_target(struct spinand_device *spinand, unsigned int target);
-> +int spinand_write_enable_op(struct spinand_device *spinand);
->  
->  #endif /* __LINUX_MTD_SPINAND_H */
-
-
+>  	if (nand->ecc.engine) {
+>  		ret = mtd_ooblayout_count_freebytes(mtd);
 
 
 Thanks,

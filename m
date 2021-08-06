@@ -2,93 +2,87 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CA09C4338F
-	for <linux-spi@archiver.kernel.org>; Fri,  6 Aug 2021 00:48:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 57F40C4320A
+	for <linux-spi@archiver.kernel.org>; Fri,  6 Aug 2021 00:48:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id D5CB560F14
-	for <linux-spi@archiver.kernel.org>; Fri,  6 Aug 2021 00:48:09 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 3F3A160F14
+	for <linux-spi@archiver.kernel.org>; Fri,  6 Aug 2021 00:48:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241578AbhHFAsX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 5 Aug 2021 20:48:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50894 "EHLO mail.kernel.org"
+        id S241624AbhHFAsY (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 5 Aug 2021 20:48:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50916 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229735AbhHFAsW (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 5 Aug 2021 20:48:22 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 58E4F61179;
-        Fri,  6 Aug 2021 00:48:07 +0000 (UTC)
+        id S241599AbhHFAsX (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 5 Aug 2021 20:48:23 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6C4C161184;
+        Fri,  6 Aug 2021 00:48:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1628210887;
-        bh=EQVYbPRoxJQ4RDDnm9QlLivnidLNRB1ZkU1u4/jsb40=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=uVRLF7TmG9WBy7/D1W7ZK6BhAarkTioUDyPc2Fg0Vf3OY+k/JxHfd0XBkRYQId1el
-         gn/Y2xiar/5/FvluK/+7C1Tc1l+yPxHnei2CWCIp0gLKf29ca9j/0A7bzu5D93i9HM
-         VEsGVT1+b2XUdQEhfLye6ANb+3njgeRe8RSbNii/tpq5TqUvrTL4XBQEr0zr/s/xU+
-         l4xGBJmksCVaDeil1jrNL6paz6nxDiRhoHHRbii3355dZhcHKRtm6OvuAB1etisJHm
-         xsxd0t8+rH5iP7hN+RnET/yb2dtBMc9CJ5Bp53G5gdqvA9CUKHwWCvXxMYuvgVUilH
-         xlQpTXIPYGQsQ==
-Date:   Fri, 6 Aug 2021 01:47:51 +0100
+        s=k20201202; t=1628210888;
+        bh=/Wcd2srYPSDUl5HpYt6OXTGS7UsqdD4heAncjf2sQHA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=EYWYnQjiHswMtMbcRCrLUed30AdR29HhaT3S56IHvCbtBbPgLKdjDplbfbxd2SVjU
+         HyyjZp5r/1clHnDy8MBwZc3KhMubmuO9PLQvkmnLjj9pnr4cQvN2TKxONMQ2TIhw1e
+         WWgJGXE3uZSt4X4RaZD9Kk5Pcz0sywq6Sm/t9hwAQG2G6EDlVBVyslIYk41H0cSgs8
+         qwe6NQcl6aCZv1sHRaWjRcWT0+OnEta2QCB6nE67vTwvl3OlHjQPwgIAuRj90IghZI
+         j6pJEKEhEEz36i0iaU44WlbUKg0nLiyaPvygJND/yQXiEzIjCqUUlDHafId++9WTaB
+         /MG4IDZ5jc6mw==
 From:   Mark Brown <broonie@kernel.org>
-To:     "quanyang.wang" <quanyang.wang@windriver.com>
-Cc:     Michal Simek <michal.simek@xilinx.com>,
-        Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>,
-        Amit Kumar Mahapatra <amit.kumar-mahapatra@xilinx.com>,
-        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: spi-zynq-qspi: use wait_for_completion_timeout to
- make zynq_qspi_exec_mem_op not interruptible
-Message-ID: <20210806004751.GU26252@sirena.org.uk>
-References: <20210730031753.1317917-1-quanyang.wang@windriver.com>
- <e639bfc1-ce6f-c5d3-6412-70d03706127d@windriver.com>
+To:     linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+        Apurva Nandan <a-nandan@ti.com>
+Cc:     Mark Brown <broonie@kernel.org>, Pratyush Yadav <p.yadav@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+Subject: Re: (subset) [PATCH v2 0/2] spi: cadence-quadspi: Fix DTR op checks and timeout in SPI NAND write operations
+Date:   Fri,  6 Aug 2021 01:47:43 +0100
+Message-Id: <162821082763.19049.14055996178326163404.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20210716232504.182-1-a-nandan@ti.com>
+References: <20210716232504.182-1-a-nandan@ti.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="msgLTjjeumHWYklJ"
-Content-Disposition: inline
-In-Reply-To: <e639bfc1-ce6f-c5d3-6412-70d03706127d@windriver.com>
-X-Cookie: MOUNT TAPE U1439 ON B3, NO RING
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+On Fri, 16 Jul 2021 23:25:01 +0000, Apurva Nandan wrote:
+> This series proposes fixes for cadence-quadspi controller for the
+> following issues with SPI NAND flashes:
+> 
+> - Due to auto-HW polling without address phase, the cadence-quadspi
+>   controller timeouts when performing any write operation on SPI NAND
+>   flash.
+> 
+> [...]
 
---msgLTjjeumHWYklJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied to
 
-On Fri, Aug 06, 2021 at 08:41:41AM +0800, quanyang.wang wrote:
-> ping.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Please don't send content free pings and please allow a reasonable time
-for review.  People get busy, go on holiday, attend conferences and so=20
-on so unless there is some reason for urgency (like critical bug fixes)
-please allow at least a couple of weeks for review.  If there have been
-review comments then people may be waiting for those to be addressed.
+Thanks!
 
-Sending content free pings adds to the mail volume (if they are seen at
-all) which is often the problem and since they can't be reviewed
-directly if something has gone wrong you'll have to resend the patches
-anyway, so sending again is generally a better approach though there are
-some other maintainers who like them - if in doubt look at how patches
-for the subsystem are normally handled.
+[2/2] spi: cadence-quadspi: Fix check condition for DTR ops
+      commit: 0395be967b067d99494113d78470574e86a02ed4
 
---msgLTjjeumHWYklJ
-Content-Type: application/pgp-signature; name="signature.asc"
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
------BEGIN PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmEMhrcACgkQJNaLcl1U
-h9BAkQf/XzqzDaswEkmzzfYPCGH2UHyvags44BukN9JEi3TbVUfxPl0fiGJPX3Kw
-60fLwAkhvh1q9aXtDwkb4CdUod2mXFQDIpONil6EZrTlx8TQ2WFJ/VrAnNNXAQ3I
-KiJNUlF7SIogdvLfMbAgN9F7HusIjSCL394xe2QfgvpisXSJGwRcjgXHqKFY8cEI
-33m/2bVvGqThj0YS8F87/lSFbEmnnvZE1/tcc7kS0l1y/aiZ5pKwCo570GdYSdhr
-HmPXGBSKKKCDg3VxKc2BH4zMZbbkwtR9DpvrNvr5gKFqUw/nkocgvQppu2QsJbA7
-VDcEWDEkn2ebe5v24TZFr/WNAueh8w==
-=CSVE
------END PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---msgLTjjeumHWYklJ--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

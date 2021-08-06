@@ -2,89 +2,62 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-14.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=3.4.0
+X-Spam-Status: No, score=-6.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 55C16C4320A
-	for <linux-spi@archiver.kernel.org>; Fri,  6 Aug 2021 00:48:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A7073C4338F
+	for <linux-spi@archiver.kernel.org>; Fri,  6 Aug 2021 00:50:11 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 30DFA61186
-	for <linux-spi@archiver.kernel.org>; Fri,  6 Aug 2021 00:48:22 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 8553561184
+	for <linux-spi@archiver.kernel.org>; Fri,  6 Aug 2021 00:50:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242541AbhHFAsg (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Thu, 5 Aug 2021 20:48:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51206 "EHLO mail.kernel.org"
+        id S236704AbhHFAuX (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Thu, 5 Aug 2021 20:50:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52164 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242622AbhHFAse (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Thu, 5 Aug 2021 20:48:34 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A89EF60F14;
-        Fri,  6 Aug 2021 00:48:18 +0000 (UTC)
+        id S232902AbhHFAuW (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Thu, 5 Aug 2021 20:50:22 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id F405160F14;
+        Fri,  6 Aug 2021 00:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1628210899;
-        bh=TwXuMV875p6zjhqmaCTkfv94OzqOszN/pY3u1piXC/g=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W/ioGjgHMJOan4ghUNw+kqGWFNB1604iPhjPrZBQBW41RtWix85SKHVl0RTJpALMk
-         /5fz4xkKdJ4Z+JCNAFpQLP88dC9zpME/uoxHYohQ3XNqZ02Yo1ol39fOze0aMW/xgP
-         OnBjYHpnEclzjGNozDnJseEhtSwD35UfrAJy7CjjWvHHIF/3mlddwNohceG7SHfnpC
-         9hWzptLHYpPaJTmhjEjw9VjIIEc2pXYcCKR6zdjZmaxuaEqaY4abivxQqsMgxkRhmC
-         Q+oCCxUOd3hBRgnn1phR72zVwsb9ZDqTXD34RgnmbF/comVaEd/qLcP/Tn7R//8SzP
-         x+F0oSFmvBxQA==
-From:   Mark Brown <broonie@kernel.org>
-To:     Matthias Brugger <matthias.bgg@gmail.com>,
-        Mason Zhang <Mason.Zhang@mediatek.com>
-Cc:     Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-        wsd_upstream@mediatek.com, linux-arm-kernel@lists.infradead.org,
-        linux-spi@vger.kernel.org, Laxman Dewangan <ldewangan@nvidia.com>,
-        linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH v3 1/2] spi: move cs spi_delay to spi_device
-Date:   Fri,  6 Aug 2021 01:47:47 +0100
-Message-Id: <162821082762.19049.10460753888752180575.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210804133716.32040-1-Mason.Zhang@mediatek.com>
-References: <20210804133716.32040-1-Mason.Zhang@mediatek.com>
-MIME-Version: 1.0
+        s=k20201202; t=1628211008;
+        bh=kW82xdiAd0AB5VYV8pTqYsL3xMHt4TAs6OR5+eXOiLc=;
+        h=Subject:From:Date:To:From;
+        b=M4WCfOgquOJegzCQXLGG1bJNGjVZxApid1ikWAkq4wX/62RS9sZFAVHw61OeMJ9f9
+         BfJwh/jKztuaAlZ+AfxxHNERBWXmkByRjTKJp2fId84H/+24Z7uhOi1S4XXoSbdRD6
+         AcAITUMVQzSl4Sx+sLqF3/6FZO1fhBk/6XWO+oaql1l/wuk6UG0eImg5GYDg27ujTk
+         phyVZySXHZvxXNAjSFl3nVwntC/Uv2+CbOs5z10PpjB1/BCghqvIsYug2shX6Fgk3L
+         Q74WOJIpjWj9KE+88SLh1hSl7BbrO++RnAO+LWZHLilK1KhKHxTzrNvskIR6ewfcNe
+         3Ygn8nzYISRgw==
 Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From:   patchwork-bot+spi-devel-general@kernel.org
+Message-Id: <162821100785.31818.3373519278582576441.git-patchwork-summary@kernel.org>
+Date:   Fri, 06 Aug 2021 00:50:07 +0000
+To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-On Wed, 4 Aug 2021 21:37:17 +0800, Mason Zhang wrote:
-> As we know, spi core layer has removed spi_set_cs_timing() API.
-> So this patch moved spi_delay for cs_timing from spi_controller
-> to spi_device, because cs timing should be set by spi_device but
-> not controller.
-> 
-> 
-> 
-> [...]
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (refs/heads/for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Series: spi cs_timing restructure
+  Submitter: Mason Zhang <Mason.Zhang@mediatek.com>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=526311
+  Lore link: https://lore.kernel.org/r/20210804133630.18519-1-Mason.Zhang@mediatek.com
+    Patches: [v3,1/2] spi: move cs spi_delay to spi_device
+             [v3,2/2] spi: modify set_cs_timing parameter
 
-Thanks!
+Total patches: 2
 
-[1/2] spi: move cs spi_delay to spi_device
-      commit: 8c33ebfeeb597ea953df93f84ea25482d29c664f
+--
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark

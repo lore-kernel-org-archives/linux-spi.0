@@ -2,85 +2,100 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-8.2 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-19.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A8FE2C4338F
-	for <linux-spi@archiver.kernel.org>; Tue, 10 Aug 2021 12:21:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DAAAAC4338F
+	for <linux-spi@archiver.kernel.org>; Tue, 10 Aug 2021 14:15:13 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 86D4160F55
-	for <linux-spi@archiver.kernel.org>; Tue, 10 Aug 2021 12:21:24 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id BEE646101E
+	for <linux-spi@archiver.kernel.org>; Tue, 10 Aug 2021 14:15:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231678AbhHJMVp (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Tue, 10 Aug 2021 08:21:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35782 "EHLO mail.kernel.org"
+        id S242210AbhHJOPe (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Tue, 10 Aug 2021 10:15:34 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50742 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229764AbhHJMVp (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Tue, 10 Aug 2021 08:21:45 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id EAD096023F;
-        Tue, 10 Aug 2021 12:21:22 +0000 (UTC)
+        id S242197AbhHJOPc (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Tue, 10 Aug 2021 10:15:32 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A3D7660FC4;
+        Tue, 10 Aug 2021 14:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1628598083;
-        bh=1hsadZeitXB5CUW3Q6gu9kYoCo9loKWmN9H4lu/tj3k=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=oenuHDYn9Q/7zZPKhqtn+sZPEPlrIqFnpCVEIaUbt+ZGg8cMJSHdxtzsAtreqTppA
-         PC71E3OWU4SeoeO0t9XvhsyXkd/hUcP/pgBbTUKk2Nlh0KKVRIDIN5SoakXupw75eG
-         NaIS9IvW6aQrvAZE/95RQNhuj+oK3/KW4zmuGMQrH2H7D+ttWzX3utVcK8Z4ze2IWt
-         tx7DJYuzngg7JcVPg9zl81O+D1VriSU0RkEnnnfJ1LmvIkd8nj6VNiCMGCUhN+sZKn
-         C+SODvaEY05e52n9AUSMGzPJ44fsGpIKJFxsWqC3AMiQP+7Q18CQN8NZC5NkK8OYW3
-         PGgcE1N2dWHxw==
-Date:   Tue, 10 Aug 2021 13:21:04 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Zhengxun Li <zhengxunli@mxic.com.tw>
-Cc:     linux-spi@vger.kernel.org
-Subject: Re: [PATCH v8] spi: mxic: patch for octal DTR mode support
-Message-ID: <20210810122104.GB4704@sirena.org.uk>
-References: <1628584186-9266-1-git-send-email-zhengxunli@mxic.com.tw>
+        s=k20201202; t=1628604910;
+        bh=jsXSwu3e2W5/Bbh8Ni7wMfk8kDl0v6oLmGXB/izskHc=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=N45eox4MhbKinL18XmaWDlgKOLHpqPLw/M4mRrZ3NK2w1OSOotnH6tP062j1XijRs
+         HmmeimtqP1+FHrCiH2Y/YmK8Nggb4yfrQ69/rG4zHd7klaEt6uMMp7SkoKKiTOQRkb
+         TN8nWaPsIdqiBkkp/nuC6k0KfHFPZIvR5wGKx/wEDuQ5HT3A2vZFiXz9Kq38Usnhi2
+         ZRKGlddzk4aaywg8HVAi2UNeSSwTzhWvBUgTeuKxgPZ0YAg8+eAcHWUDSJl9nCh4lo
+         9q4+NFpByZSu4q7yrzIBKz9a6qee4J3yO0dBL5Ybud1WFNQjiS6yxLqrZ6YGnThjaa
+         on4vo0q6LsZUA==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, linux-spi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.13 03/24] spi: spi-mux: Add module info needed for autoloading
+Date:   Tue, 10 Aug 2021 10:14:44 -0400
+Message-Id: <20210810141505.3117318-3-sashal@kernel.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210810141505.3117318-1-sashal@kernel.org>
+References: <20210810141505.3117318-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="jq0ap7NbKX2Kqbes"
-Content-Disposition: inline
-In-Reply-To: <1628584186-9266-1-git-send-email-zhengxunli@mxic.com.tw>
-X-Cookie: Who is John Galt?
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
---jq0ap7NbKX2Kqbes
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+[ Upstream commit 1d5ccab95f06675a269f4cb223a1e3f6d1ebef42 ]
 
-On Tue, Aug 10, 2021 at 04:29:46PM +0800, Zhengxun Li wrote:
-> Driver patch for octal DTR mode support.
->=20
-> Owing to the spi_mem_default_supports_op() is not support dtr
-> operation. Based on commit <539cf68cd51b> (spi: spi-mem: add
-> spi_mem_dtr_supports_op()) add spi_mem_dtr_supports_op()
-> to support dtr and keep checking the buswidth and command bytes.
+With the spi device table udev can autoload the spi-mux module in
+the presence of an spi-mux device.
 
-Please do not submit new versions of already applied patches, please
-submit incremental updates to the existing code.  Modifying existing
-commits creates problems for other users building on top of those
-commits so it's best practice to only change pubished git commits if
-absolutely essential.
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20210721095321.2165453-1-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi-mux.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---jq0ap7NbKX2Kqbes
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/drivers/spi/spi-mux.c b/drivers/spi/spi-mux.c
+index 37dfc6e82804..9708b7827ff7 100644
+--- a/drivers/spi/spi-mux.c
++++ b/drivers/spi/spi-mux.c
+@@ -167,10 +167,17 @@ static int spi_mux_probe(struct spi_device *spi)
+ 	return ret;
+ }
+ 
++static const struct spi_device_id spi_mux_id[] = {
++	{ "spi-mux" },
++	{ }
++};
++MODULE_DEVICE_TABLE(spi, spi_mux_id);
++
+ static const struct of_device_id spi_mux_of_match[] = {
+ 	{ .compatible = "spi-mux" },
+ 	{ }
+ };
++MODULE_DEVICE_TABLE(of, spi_mux_of_match);
+ 
+ static struct spi_driver spi_mux_driver = {
+ 	.probe  = spi_mux_probe,
+@@ -178,6 +185,7 @@ static struct spi_driver spi_mux_driver = {
+ 		.name   = "spi-mux",
+ 		.of_match_table = spi_mux_of_match,
+ 	},
++	.id_table = spi_mux_id,
+ };
+ 
+ module_spi_driver(spi_mux_driver);
+-- 
+2.30.2
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmESbzAACgkQJNaLcl1U
-h9BoqQf/WiQHKK+Gskgt3bHhPJDlRl5BfajCrjP5PM/bKYSPy6YQ2kfS/Cte+gr4
-5sS9DYt/jDZgg5IH77AquwHduoJJeDP3DwpmepW/HHhyR4I8y8zY5os1FAIgwekf
-xpj48kCQ6X0dvnCBabtw7XWLcXTEUpRJEJooMUKIPq3cvf8xx8pjSw3mmR+2FMk7
-P3nrpb/qe1EpmTcmIPqfPzqULT0ubtdVuGbQiHl0dl71VWPJyuSEBxddruLbZndi
-goyR9ji5TOzZk63MeP3MTVHLcPhZucAxv/vDDe/TwEk2lXMjZrL8VP2/JzGU/u9T
-e4Bw3bY4x/9aUVcp6NA9OFl+OKsDDQ==
-=1vMU
------END PGP SIGNATURE-----
-
---jq0ap7NbKX2Kqbes--

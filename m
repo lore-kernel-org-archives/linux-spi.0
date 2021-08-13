@@ -2,64 +2,90 @@ Return-Path: <linux-spi-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
+X-Spam-Status: No, score=-14.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CB115C4338F
-	for <linux-spi@archiver.kernel.org>; Fri, 13 Aug 2021 17:13:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 34E98C4338F
+	for <linux-spi@archiver.kernel.org>; Fri, 13 Aug 2021 17:26:24 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id A9E8260240
-	for <linux-spi@archiver.kernel.org>; Fri, 13 Aug 2021 17:13:44 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1792960F57
+	for <linux-spi@archiver.kernel.org>; Fri, 13 Aug 2021 17:26:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230163AbhHMRMO (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Fri, 13 Aug 2021 13:12:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35126 "EHLO mail.kernel.org"
+        id S229597AbhHMR0u (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Fri, 13 Aug 2021 13:26:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39072 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229661AbhHMRKf (ORCPT <rfc822;linux-spi@vger.kernel.org>);
-        Fri, 13 Aug 2021 13:10:35 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 1ED146113E;
-        Fri, 13 Aug 2021 17:10:08 +0000 (UTC)
+        id S229554AbhHMR0u (ORCPT <rfc822;linux-spi@vger.kernel.org>);
+        Fri, 13 Aug 2021 13:26:50 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id BC23960F51;
+        Fri, 13 Aug 2021 17:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1628874608;
-        bh=Su3VvbH7BEpHtys8VhNhq3KKoxGAdsUMpGTgo3V2DTM=;
-        h=Subject:From:Date:To:From;
-        b=TlCLk9HKMdl6hhiqUqKEhY9T3MN5K9xQIfjdJhl2inYeBedp7f3eBZgzwJWCYS/CR
-         B2ZKAmiT91SebhzGQPXu8SJJ+u1+dWAcSBe0L11UJwY2Q5PIDbc2Rn1m26PpDe3yL5
-         c9g8Y7xND7OOipWiBlJ4vWrgvBr39xrGEl6pBMqRUgevhcleHxJty3mQJcX5Lp5QEL
-         Obfw4iBSc92DpcOIbhgQUqgVXybnDqpsHZWcJ4B6cSGzo9K4f6x41vvFd5bHTOSnZw
-         haZye/T1OHdONQz72gmi+FxIV0BL33E77OPnv3c5ByCAlfN1uHsZ6iuEh4ClPeeRzr
-         WbGnfmmYL2PwQ==
-Content-Type: text/plain; charset="utf-8"
+        s=k20201202; t=1628875583;
+        bh=FNN6mBHCMTkjdP5X3toqTBdl9AYPY2/K4P7dwNzC9lM=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=S1SZcZa9g/vpfP3Oj3TIjsMwgcPtZwRykBae8Aunjeb3buYgOtU3z60mgCwCK7V92
+         0pP99io+iU6A057I4G5HedJtpxx8ofLp6x+qVVk0tCwEDB1EB+71KtCZmk2N74wTcw
+         VuHL5xkpuvSzrwb0jd+m6Hi2MBVzFfZEoSCx7r5OdAGLzyvY00GWp2SsFzkTiveDGH
+         LjKrqXDAd6XPOzjywduCdlvQnoVQM2WnBEhI39YrY3ZWBlakW4eVfSTSN4sE54y1Qs
+         a4HPgIVm+/HW6l02YTrUa9hr8wV1PkHTKOLjsoUEI4x1000SP6fRBjqSz5gm8ICSKE
+         Pj7apYXyNIguw==
+From:   Mark Brown <broonie@kernel.org>
+To:     linux-spi@vger.kernel.org,
+        Yang Yingliang <yangyingliang@huawei.com>,
+        linux-kernel@vger.kernel.org
+Cc:     Mark Brown <broonie@kernel.org>, zhengxunli@mxic.com.tw
+Subject: Re: [PATCH -next] spi: mxic: add missing braces
+Date:   Fri, 13 Aug 2021 18:25:59 +0100
+Message-Id: <162887483202.19992.2868965211824266055.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20210810142405.2221540-1-yangyingliang@huawei.com>
+References: <20210810142405.2221540-1-yangyingliang@huawei.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From:   patchwork-bot+spi-devel-general@kernel.org
-Message-Id: <162887460797.31780.12244579969800613552.git-patchwork-summary@kernel.org>
-Date:   Fri, 13 Aug 2021 17:10:07 +0000
-To:     linux-spi@vger.kernel.org, broonie@kernel.org
 Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Hello:
+On Tue, 10 Aug 2021 22:24:05 +0800, Yang Yingliang wrote:
+> Fix the following waring:
+> 
+> drivers/spi/spi-mxic.c: In function ‘mxic_spi_mem_exec_op’:
+> drivers/spi/spi-mxic.c:401:3: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+>    if (op->data.dir == SPI_MEM_DATA_IN)
+>    ^~
+> drivers/spi/spi-mxic.c:403:4: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+>     if (op->data.dtr)
+>     ^~
+> 
+> [...]
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (refs/heads/for-next):
+Applied to
 
-Patch: [-next] spi: mxic: add missing braces
-  Submitter: Yang Yingliang <yangyingliang@huawei.com>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=529241
-  Lore link: https://lore.kernel.org/r/20210810142405.2221540-1-yangyingliang@huawei.com
-Patch: spi: mxic: Fix missing { } around an if code block
-  Submitter: Colin King <colin.king@canonical.com>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=531099
-  Lore link: https://lore.kernel.org/r/20210813104259.17612-1-colin.king@canonical.com
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Total patches: 2
+Thanks!
 
---
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+[1/1] spi: mxic: add missing braces
+      commit: aca196842a9729a198af57c417725c3ac9ca05db
 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

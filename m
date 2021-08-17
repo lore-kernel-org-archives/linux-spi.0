@@ -8,54 +8,54 @@ X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C90E6C19F40
-	for <linux-spi@archiver.kernel.org>; Tue, 17 Aug 2021 01:33:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C463C25AE8
+	for <linux-spi@archiver.kernel.org>; Tue, 17 Aug 2021 01:33:09 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id ABE3F60241
-	for <linux-spi@archiver.kernel.org>; Tue, 17 Aug 2021 01:33:06 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 1682260F39
+	for <linux-spi@archiver.kernel.org>; Tue, 17 Aug 2021 01:33:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239257AbhHQBdh (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 16 Aug 2021 21:33:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47996 "EHLO
+        id S236611AbhHQBdi (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 16 Aug 2021 21:33:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236634AbhHQBau (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 16 Aug 2021 21:30:50 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B2A3C0613C1;
-        Mon, 16 Aug 2021 18:30:17 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id i9so17435377lfg.10;
-        Mon, 16 Aug 2021 18:30:17 -0700 (PDT)
+        with ESMTP id S236332AbhHQBaw (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 16 Aug 2021 21:30:52 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCEB4C061796;
+        Mon, 16 Aug 2021 18:30:19 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id z2so38241408lft.1;
+        Mon, 16 Aug 2021 18:30:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=UPjoO7213ncEQO3had/PKOowLO8AvF8+e1hZH6AGNkg=;
-        b=afXQTrhk1k1C/vh26JvfNmlZszhr6uun1TZF4/jqNovH/TpoAn+pkABdGZYH1o23ZF
-         QiLhxlcxpbGHNMdRG6+NrhIfnOjSkqg84i7jeuesiBMHp8l/6II/0oJ2BQQuBgExDr6Z
-         AzquDpGevLYrYFzYcALbqQcW0FIb5Sbkt/tgEwshtaEtTq0VQg/sqRViZq//NpGkwa87
-         6mb7+8fuLZygA/4yBXZNPunbGUdcLDkhVAaUaNSqCk8ZTZGtyVELJMe/t+HG2x7S2C0J
-         wx3kKdVdPGgckoMQOf5Ehg8qEJ0dijrDGxhbKdhXtv0zPzEaLsLG6e79WQnP/qSSlmm0
-         8HGw==
+        bh=CcRnY1DLuJt9ZsvyfOIF9CYRHtNI8d662hV37U11KJE=;
+        b=lYt6iTLaR/zCDeZ5g+bnwcLhDFpU5KCH8N3AKNUjtPNXXYJiMrixsTZW01uHG5tPYs
+         B3PxldDzPNWH8zFhsNVfNCKDMrF//T0jOGgNgrqZe8QJ2pxy14jzRX2dxnWl2FAf6kc6
+         kPB4zaMdHZH12hWcLPmVeMRdnKgGOtL5XN7ACt+VFUrhC0aL+4ANm2ygDuc71z7E+HzF
+         k+mII8X0LLSR+hUJmWxrkPgZwzNKhsTUe8t+xjbwuToZ6LiMox8Yc3doK27MBAIXET7G
+         913WH9Lp6KmbjAQD7djRc3CHJ2GkRZY1V61FGFjAwh/3QgvPrt4BcYnWEbQv9dFMhWzB
+         Utnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=UPjoO7213ncEQO3had/PKOowLO8AvF8+e1hZH6AGNkg=;
-        b=ekPnPpioRzoR6GRg61dm30vNNQVShRc6ps8asNfzrxCrSwVFDzD/qL3wuIIirho0dT
-         oNiPBqi3tB4q/Tv8EyLvSmbAihzXsiroWLp9njMFJjp4GqZD8SL0isBJh3a06w2d/rAe
-         4yVme21e4KxDlhJmaBl6dfmgxirDkaHMA4lNroNgq7G122OeoT8afywGFfHV8L/2wjTs
-         4Y+myURIZ5mZJwnn+jq71KFbXnLufllt8c9QXdYyeZh+roah6k1RnWKWtVzrH3R0KHv3
-         AQWXDY6OX/NLl0grOiXfKcwZJiU5F3iDIYKxMNYffOPPMU/tj3zumPOMpCy0f2VtnkuK
-         MY2A==
-X-Gm-Message-State: AOAM530LEj2GjuCxkj1n+BqzxP63//2z4fVy+O6jQCGSVOYKY7ASaUqi
-        xM1NeQKWkv2/lBwoj5lhskQ=
-X-Google-Smtp-Source: ABdhPJzo9zkvVO8HLn0YI7esTDIJQaYPt1Tf+SYrjtzJl58XEoAB+Cak+dDOjeUmcJGASHQQ2DghAw==
-X-Received: by 2002:a19:4958:: with SMTP id l24mr499818lfj.48.1629163815838;
-        Mon, 16 Aug 2021 18:30:15 -0700 (PDT)
+        bh=CcRnY1DLuJt9ZsvyfOIF9CYRHtNI8d662hV37U11KJE=;
+        b=TMftNuMdH9WizEEICtnpoDIRSMEFsDFL3o9U4VVK2sY8dsixqqQVwQKg1mmXsGVoDN
+         c9uf7+TiLdKk1MLppHsl+HjrYL4Ofw21pOrspw+9PwumQq4e/2Ya5gqvW2Y1W6sZXiVt
+         3fPdX/e6w+NCA9OIvKv8u0mtMKBxtoiu2O4G3cy2JCnLQ+Lx24Tc9KagseqkPW9PoKPw
+         RtcrMGhIw6FSapZGcioePX1LFKJdSvdk50VAhBSE8R7EMGOcttJ4MsaBQdV6AgkJCsal
+         O31nEJcamyl7JYrYcIonFnR2Vv9ZNW3MCCGahkF2DArQpngEms5d9aB5IWxfZIAx/Pwb
+         1aHA==
+X-Gm-Message-State: AOAM532AWnSwrE6dghbDaHSRqi5GR6ze4e5piPufXfBM9Nj0HFEigvEo
+        ARv56HnFLZMhaqGtY+1vVUY=
+X-Google-Smtp-Source: ABdhPJx15JK8DDBVJpumHydukez0bOqPcfh/T/Jfb3vP7gvUGDjWwqzFqBrRhCgaaKE3QufDb3sFeg==
+X-Received: by 2002:a05:6512:21d1:: with SMTP id d17mr521486lft.588.1629163818297;
+        Mon, 16 Aug 2021 18:30:18 -0700 (PDT)
 Received: from localhost.localdomain (46-138-85-91.dynamic.spd-mgts.ru. [46.138.85.91])
-        by smtp.gmail.com with ESMTPSA id g30sm46607lfj.298.2021.08.16.18.30.14
+        by smtp.gmail.com with ESMTPSA id g30sm46607lfj.298.2021.08.16.18.30.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Aug 2021 18:30:15 -0700 (PDT)
+        Mon, 16 Aug 2021 18:30:17 -0700 (PDT)
 From:   Dmitry Osipenko <digetx@gmail.com>
 To:     Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
@@ -84,9 +84,9 @@ Cc:     linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
         linux-mmc@vger.kernel.org, linux-media@vger.kernel.org,
         dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
         linux-clk@vger.kernel.org
-Subject: [PATCH v8 12/34] drm/tegra: dc: Support OPP and SoC core voltage scaling
-Date:   Tue, 17 Aug 2021 04:27:32 +0300
-Message-Id: <20210817012754.8710-13-digetx@gmail.com>
+Subject: [PATCH v8 14/34] drm/tegra: gr2d: Support power management
+Date:   Tue, 17 Aug 2021 04:27:34 +0300
+Message-Id: <20210817012754.8710-15-digetx@gmail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210817012754.8710-1-digetx@gmail.com>
 References: <20210817012754.8710-1-digetx@gmail.com>
@@ -96,9 +96,7 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add OPP and SoC core voltage scaling support to the display controller
-driver. This is required for enabling system-wide DVFS on pre-Tegra186
-SoCs.
+Add power management to the GR2D driver.
 
 Tested-by: Peter Geis <pgwipeout@gmail.com> # Ouya T30
 Tested-by: Paul Fertser <fercerpav@gmail.com> # PAZ00 T20
@@ -106,146 +104,241 @@ Tested-by: Nicolas Chauvet <kwizart@gmail.com> # PAZ00 T20 and TK1 T124
 Tested-by: Matt Merhar <mattmerhar@protonmail.com> # Ouya T30
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- drivers/gpu/drm/tegra/dc.c | 74 ++++++++++++++++++++++++++++++++++++++
- drivers/gpu/drm/tegra/dc.h |  2 ++
- 2 files changed, 76 insertions(+)
+ drivers/gpu/drm/tegra/gr2d.c | 154 +++++++++++++++++++++++++++++++++--
+ 1 file changed, 146 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/tegra/dc.c b/drivers/gpu/drm/tegra/dc.c
-index 16c7aabb94d3..435dd8139c6e 100644
---- a/drivers/gpu/drm/tegra/dc.c
-+++ b/drivers/gpu/drm/tegra/dc.c
-@@ -11,9 +11,12 @@
- #include <linux/interconnect.h>
+diff --git a/drivers/gpu/drm/tegra/gr2d.c b/drivers/gpu/drm/tegra/gr2d.c
+index de288cba3905..4ad8709933a9 100644
+--- a/drivers/gpu/drm/tegra/gr2d.c
++++ b/drivers/gpu/drm/tegra/gr2d.c
+@@ -7,11 +7,22 @@
+ #include <linux/iommu.h>
  #include <linux/module.h>
  #include <linux/of_device.h>
-+#include <linux/pm_domain.h>
 +#include <linux/pm_opp.h>
- #include <linux/pm_runtime.h>
- #include <linux/reset.h>
- 
++#include <linux/pm_runtime.h>
++#include <linux/reset.h>
++
 +#include <soc/tegra/common.h>
- #include <soc/tegra/pmc.h>
  
- #include <drm/drm_atomic.h>
-@@ -1762,6 +1765,47 @@ int tegra_dc_state_setup_clock(struct tegra_dc *dc,
- 	return 0;
- }
+ #include "drm.h"
+ #include "gem.h"
+ #include "gr2d.h"
  
-+static void tegra_dc_update_voltage_state(struct tegra_dc *dc,
-+					  struct tegra_dc_state *state)
++enum {
++	RST_GR2D_MC,
++	RST_GR2D,
++	RST_GR2D_MAX,
++};
++
+ struct gr2d_soc {
+ 	unsigned int version;
+ };
+@@ -21,6 +32,9 @@ struct gr2d {
+ 	struct host1x_channel *channel;
+ 	struct clk *clk;
+ 
++	struct reset_control_bulk_data resets[RST_GR2D_MAX];
++	unsigned int nresets;
++
+ 	const struct gr2d_soc *soc;
+ 
+ 	DECLARE_BITMAP(addr_regs, GR2D_NUM_REGS);
+@@ -190,6 +204,27 @@ static const u32 gr2d_addr_regs[] = {
+ 	GR2D_VA_BASE_ADDR_SB,
+ };
+ 
++static int gr2d_get_resets(struct device *dev, struct gr2d *gr2d)
 +{
-+	unsigned long rate, pstate;
-+	struct dev_pm_opp *opp;
 +	int err;
 +
-+	if (!dc->has_opp_table)
-+		return;
++	gr2d->resets[RST_GR2D_MC].id = "mc";
++	gr2d->resets[RST_GR2D].id = "2d";
++	gr2d->nresets = RST_GR2D_MAX;
 +
-+	/* calculate actual pixel clock rate which depends on internal divider */
-+	rate = DIV_ROUND_UP(clk_get_rate(dc->clk) * 2, state->div + 2);
-+
-+	/* find suitable OPP for the rate */
-+	opp = dev_pm_opp_find_freq_ceil(dc->dev, &rate);
-+
-+	if (opp == ERR_PTR(-ERANGE))
-+		opp = dev_pm_opp_find_freq_floor(dc->dev, &rate);
-+
-+	if (IS_ERR(opp)) {
-+		dev_err(dc->dev, "failed to find OPP for %luHz: %pe\n",
-+			rate, opp);
-+		return;
-+	}
-+
-+	pstate = dev_pm_opp_get_required_pstate(opp, 0);
-+	dev_pm_opp_put(opp);
-+
-+	/*
-+	 * The minimum core voltage depends on the pixel clock rate (which
-+	 * depends on internal clock divider of the CRTC) and not on the
-+	 * rate of the display controller clock. This is why we're not using
-+	 * dev_pm_opp_set_rate() API and instead controlling the power domain
-+	 * directly.
-+	 */
-+	err = dev_pm_genpd_set_performance_state(dc->dev, pstate);
-+	if (err)
-+		dev_err(dc->dev, "failed to set power domain state to %lu: %d\n",
-+			pstate, err);
-+}
-+
- static void tegra_dc_commit_state(struct tegra_dc *dc,
- 				  struct tegra_dc_state *state)
- {
-@@ -1801,6 +1845,8 @@ static void tegra_dc_commit_state(struct tegra_dc *dc,
- 		value = SHIFT_CLK_DIVIDER(state->div) | PIXEL_CLK_DIVIDER_PCD1;
- 		tegra_dc_writel(dc, value, DC_DISP_DISP_CLOCK_CONTROL);
- 	}
-+
-+	tegra_dc_update_voltage_state(dc, state);
- }
- 
- static void tegra_dc_stop(struct tegra_dc *dc)
-@@ -1994,6 +2040,13 @@ static void tegra_crtc_atomic_disable(struct drm_crtc *crtc,
- 	err = host1x_client_suspend(&dc->client);
- 	if (err < 0)
- 		dev_err(dc->dev, "failed to suspend: %d\n", err);
-+
-+	if (dc->has_opp_table) {
-+		err = dev_pm_genpd_set_performance_state(dc->dev, 0);
-+		if (err)
-+			dev_err(dc->dev,
-+				"failed to clear power domain state: %d\n", err);
-+	}
- }
- 
- static void tegra_crtc_atomic_enable(struct drm_crtc *crtc,
-@@ -2976,6 +3029,23 @@ static int tegra_dc_couple(struct tegra_dc *dc)
- 	return 0;
- }
- 
-+static int tegra_dc_init_opp_table(struct tegra_dc *dc)
-+{
-+	struct tegra_core_opp_params opp_params = {};
-+	int err;
-+
-+	err = devm_tegra_core_dev_init_opp_table(dc->dev, &opp_params);
-+	if (err && err != -ENODEV)
++	err = devm_reset_control_bulk_get_optional_exclusive_released(
++				dev, gr2d->nresets, gr2d->resets);
++	if (err) {
++		dev_err(dev, "failed to get reset: %d\n", err);
 +		return err;
++	}
 +
-+	if (err)
-+		dc->has_opp_table = false;
-+	else
-+		dc->has_opp_table = true;
++	if (WARN_ON(!gr2d->resets[RST_GR2D].rstc))
++		return -ENOENT;
 +
 +	return 0;
 +}
 +
- static int tegra_dc_probe(struct platform_device *pdev)
+ static int gr2d_probe(struct platform_device *pdev)
  {
- 	u64 dma_mask = dma_get_mask(pdev->dev.parent);
-@@ -3041,6 +3111,10 @@ static int tegra_dc_probe(struct platform_device *pdev)
- 		tegra_powergate_power_off(dc->powergate);
+ 	struct device *dev = &pdev->dev;
+@@ -202,6 +237,8 @@ static int gr2d_probe(struct platform_device *pdev)
+ 	if (!gr2d)
+ 		return -ENOMEM;
+ 
++	platform_set_drvdata(pdev, gr2d);
++
+ 	gr2d->soc = of_device_get_match_data(dev);
+ 
+ 	syncpts = devm_kzalloc(dev, sizeof(*syncpts), GFP_KERNEL);
+@@ -214,11 +251,13 @@ static int gr2d_probe(struct platform_device *pdev)
+ 		return PTR_ERR(gr2d->clk);
  	}
  
-+	err = tegra_dc_init_opp_table(dc);
-+	if (err < 0)
+-	err = clk_prepare_enable(gr2d->clk);
+-	if (err) {
+-		dev_err(dev, "cannot turn on clock\n");
++	err = devm_tegra_core_dev_init_opp_table_simple(dev);
++	if (err)
 +		return err;
 +
- 	dc->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(dc->regs))
- 		return PTR_ERR(dc->regs);
-diff --git a/drivers/gpu/drm/tegra/dc.h b/drivers/gpu/drm/tegra/dc.h
-index f0cb691852a1..26ad1e448c44 100644
---- a/drivers/gpu/drm/tegra/dc.h
-+++ b/drivers/gpu/drm/tegra/dc.h
-@@ -106,6 +106,8 @@ struct tegra_dc {
- 	struct drm_info_list *debugfs_files;
++	err = gr2d_get_resets(dev, gr2d);
++	if (err)
+ 		return err;
+-	}
  
- 	const struct tegra_dc_soc_info *soc;
+ 	INIT_LIST_HEAD(&gr2d->client.base.list);
+ 	gr2d->client.base.ops = &gr2d_client_ops;
+@@ -231,20 +270,27 @@ static int gr2d_probe(struct platform_device *pdev)
+ 	gr2d->client.version = gr2d->soc->version;
+ 	gr2d->client.ops = &gr2d_ops;
+ 
++	pm_runtime_enable(dev);
++	pm_runtime_use_autosuspend(dev);
++	pm_runtime_set_autosuspend_delay(dev, 200);
 +
-+	bool has_opp_table;
- };
+ 	err = host1x_client_register(&gr2d->client.base);
+ 	if (err < 0) {
+ 		dev_err(dev, "failed to register host1x client: %d\n", err);
+-		clk_disable_unprepare(gr2d->clk);
+-		return err;
++		goto disable_rpm;
+ 	}
  
- static inline struct tegra_dc *
+ 	/* initialize address register map */
+ 	for (i = 0; i < ARRAY_SIZE(gr2d_addr_regs); i++)
+ 		set_bit(gr2d_addr_regs[i], gr2d->addr_regs);
+ 
+-	platform_set_drvdata(pdev, gr2d);
+-
+ 	return 0;
++
++disable_rpm:
++	pm_runtime_dont_use_autosuspend(dev);
++	pm_runtime_disable(dev);
++
++	return err;
+ }
+ 
+ static int gr2d_remove(struct platform_device *pdev)
+@@ -259,15 +305,107 @@ static int gr2d_remove(struct platform_device *pdev)
+ 		return err;
+ 	}
+ 
++	pm_runtime_dont_use_autosuspend(&pdev->dev);
++	pm_runtime_disable(&pdev->dev);
++
++	return 0;
++}
++
++static int __maybe_unused gr2d_runtime_suspend(struct device *dev)
++{
++	struct gr2d *gr2d = dev_get_drvdata(dev);
++	int err;
++
++	host1x_channel_stop(gr2d->channel);
++	reset_control_bulk_release(gr2d->nresets, gr2d->resets);
++
++	/*
++	 * GR2D module shouldn't be reset while hardware is idling, otherwise
++	 * host1x's cmdproc will stuck on trying to access any G2 register
++	 * after reset. GR2D module could be either hot-reset or reset after
++	 * power-gating of the HEG partition. Hence we will put in reset only
++	 * the memory client part of the module, the HEG GENPD will take care
++	 * of resetting GR2D module across power-gating.
++	 *
++	 * On Tegra20 there is no HEG partition, but it's okay to have
++	 * undetermined h/w state since userspace is expected to reprogram
++	 * the state on each job submission anyways.
++	 */
++	err = reset_control_acquire(gr2d->resets[RST_GR2D_MC].rstc);
++	if (err) {
++		dev_err(dev, "failed to acquire MC reset: %d\n", err);
++		goto acquire_reset;
++	}
++
++	err = reset_control_assert(gr2d->resets[RST_GR2D_MC].rstc);
++	reset_control_release(gr2d->resets[RST_GR2D_MC].rstc);
++	if (err) {
++		dev_err(dev, "failed to assert MC reset: %d\n", err);
++		goto acquire_reset;
++	}
++
+ 	clk_disable_unprepare(gr2d->clk);
+ 
+ 	return 0;
++
++acquire_reset:
++	reset_control_bulk_acquire(gr2d->nresets, gr2d->resets);
++	reset_control_bulk_deassert(gr2d->nresets, gr2d->resets);
++
++	return err;
+ }
+ 
++static int __maybe_unused gr2d_runtime_resume(struct device *dev)
++{
++	struct gr2d *gr2d = dev_get_drvdata(dev);
++	int err;
++
++	err = reset_control_bulk_acquire(gr2d->nresets, gr2d->resets);
++	if (err) {
++		dev_err(dev, "failed to acquire reset: %d\n", err);
++		return err;
++	}
++
++	err = dev_pm_opp_sync(dev);
++	if (err) {
++		dev_err(dev, "failed to sync OPP: %d\n", err);
++		goto release_reset;
++	}
++
++	err = clk_prepare_enable(gr2d->clk);
++	if (err) {
++		dev_err(dev, "failed to enable clock: %d\n", err);
++		goto release_reset;
++	}
++
++	/* this is a reset array which deasserts both 2D MC and 2D itself */
++	err = reset_control_bulk_deassert(gr2d->nresets, gr2d->resets);
++	if (err) {
++		dev_err(dev, "failed to deassert reset: %d\n", err);
++		goto disable_clk;
++	}
++
++	return 0;
++
++disable_clk:
++	clk_disable_unprepare(gr2d->clk);
++release_reset:
++	reset_control_bulk_release(gr2d->nresets, gr2d->resets);
++
++	return err;
++}
++
++static const struct dev_pm_ops tegra_gr2d_pm = {
++	SET_RUNTIME_PM_OPS(gr2d_runtime_suspend, gr2d_runtime_resume, NULL)
++	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
++				pm_runtime_force_resume)
++};
++
+ struct platform_driver tegra_gr2d_driver = {
+ 	.driver = {
+ 		.name = "tegra-gr2d",
+ 		.of_match_table = gr2d_match,
++		.pm = &tegra_gr2d_pm,
+ 	},
+ 	.probe = gr2d_probe,
+ 	.remove = gr2d_remove,
 -- 
 2.32.0
 

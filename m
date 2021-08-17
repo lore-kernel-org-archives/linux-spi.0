@@ -5,57 +5,57 @@ X-Spam-Level:
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 73AB5C43214
-	for <linux-spi@archiver.kernel.org>; Tue, 17 Aug 2021 01:30:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 51573C25AE7
+	for <linux-spi@archiver.kernel.org>; Tue, 17 Aug 2021 01:31:02 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 58F3960F5C
-	for <linux-spi@archiver.kernel.org>; Tue, 17 Aug 2021 01:30:26 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 333E460241
+	for <linux-spi@archiver.kernel.org>; Tue, 17 Aug 2021 01:31:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236679AbhHQBav (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 16 Aug 2021 21:30:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47968 "EHLO
+        id S238472AbhHQBb3 (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 16 Aug 2021 21:31:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236490AbhHQBar (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 16 Aug 2021 21:30:47 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54733C0613C1;
-        Mon, 16 Aug 2021 18:30:15 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id x27so38184502lfu.5;
-        Mon, 16 Aug 2021 18:30:15 -0700 (PDT)
+        with ESMTP id S237226AbhHQBbE (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 16 Aug 2021 21:31:04 -0400
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A672BC061764;
+        Mon, 16 Aug 2021 18:30:31 -0700 (PDT)
+Received: by mail-lj1-x235.google.com with SMTP id y7so30269158ljp.3;
+        Mon, 16 Aug 2021 18:30:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=yDP03amDwCEY6IiivIbDG+60+C+xV/Pv6sR1LEywSYo=;
-        b=gphWv3FSo4qRIr1+4cndtzGHAzH8uRp+6O2Jh/43ADFQ2pMlS0Zsrs64oMYobqkS1+
-         b+r1h2TK1Crc9j6X+uN6vCFja8kkAditXl7nED2zfthme0nAVoLLOVblgLJT5JpVCj+R
-         LfR3EOcOZfOce670ecAaUWKoQT2BaRWlSGfqtNf9gkptV64SWk8Yy2LhjWaPNS4B/2yg
-         ZH9n6SVsQ7h3ArNvDfuvdoWMQFNpXwFKw9JH3cLFSFGg1bwXydGhSafUNRFrJguIIS+g
-         hCdIcrxq+8nkeUjCdcCINJHyWfD/w5VpOJW5k8PzB+MFD+1UOWPCYR9812fnRTSW/ori
-         Susw==
+        bh=fTCou3UurEHV7YLdOGz19ZZUGkyul1DSrpGiIEhL7OQ=;
+        b=oZOWmSQ6Yi/kpa5FA17tchIXai6cZ6FYXfi5VUcDWhbSwAt1HSWn008MgM/aiICsg8
+         zHM1PvsZHwO2A3BGEfjuiklVFkD7GHeU6PGa/lQRRBon8BE3ugSrQd82YHE3DZgJEzVf
+         AqC7Kas9Ry7PlGhUKUxjswrs2FoHfOCkiB3lgxkPFblOe9m6Ww+4c+RF6E0fHmRtyKtA
+         +LkOFOQGIKphhmvQ5rwUGitl/Z8mtfKwiV8NnTSzBUVP6inaNczYN81VEktoGAtsNKH+
+         zlBj9IkOQgExUC/AYQtAPz6whT8Hpvd8Mmw6aTrIIGSmnFvVfJJCKiYtfPZZP7aM1e0i
+         y5AA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=yDP03amDwCEY6IiivIbDG+60+C+xV/Pv6sR1LEywSYo=;
-        b=MewCQ33LchjueQMaUzzWGh2s6VbKyzUsanCNfkgm6IhqjSf9sfqL7+pl92SBN7Tn6m
-         0ZjQZPb+EnHy0jEOpAiE2PnupU3nmPGzRDd79Y0UVirE88V4f9Zaz0NRel6DQfFVhuV7
-         FUOSmyYTbLCsONKAx2WvKtiXzij0LN2Huegi6AT2SvLARyzKu3pHPQlCGxTMrUHZtfVo
-         35vfpCgGr+yRHw5rvyFBe94xAgDVeV+P0dNacw2PoFNh7tWJb6rcz1K4Iy8sQH1Sp9vE
-         ehmu8SmFM0wVep99ji2nQO6SM3V6VzpDQWdHy0tZ0BzPUmgbb4QhaOvUExrmH6Aui4xz
-         jCgg==
-X-Gm-Message-State: AOAM5335U+eBfyZgZjJ6eNKEXe7SLC0BenTGLKsYfyWR4s3pq+VwUo63
-        qhOywzYlaDvuxvlektnWvA0=
-X-Google-Smtp-Source: ABdhPJzjQdDYehMh8DidNPOdRzuxuexyxo18C/Mv3HZHO/OdC52KIqt+4g3AhPBU7HeUyOcC1z48Rw==
-X-Received: by 2002:a05:6512:39d1:: with SMTP id k17mr506834lfu.464.1629163813455;
-        Mon, 16 Aug 2021 18:30:13 -0700 (PDT)
+        bh=fTCou3UurEHV7YLdOGz19ZZUGkyul1DSrpGiIEhL7OQ=;
+        b=jrMTOSrY5iuUSkOzs8amJnEEbpJw190ANyxueR4GLJDzlDYRcvBWYQ4nfjJ1nejBo7
+         znZONQBbn8x1RK/m9BTyRe2G+Gp5YTSEVLamCYg+BsZx3XVBUQ5jMyHjECnEiR2kOfl8
+         zta6tPwTjBq/QnzmgEpV6/MT8I44mNEHodLzbWnASQe8PQ09noPdGuof7co5tRqzKgyt
+         YDNblGcTugVpeYUAlvLNERHLFNOUv411IJoyf47p9CPPwxBfGzbCQKOXhUvv9XI0tsju
+         LVZeGX7rNokALlrX0VQkQXLTk9E9GJmZJ3xr418qbP8eQSfu+pXQPHrjnRii5NJxHBJF
+         5TxQ==
+X-Gm-Message-State: AOAM5321nE34p27cPNOjRzNLU7fyBo4irOIHxFpBCq5lVkeEAYbzyGXJ
+        +wVL34qHNF/FcGwpTDLTUOQ=
+X-Google-Smtp-Source: ABdhPJwmXv43Hy5YpglFUbKUv/JYz+Oo4m0Sl5Pv0TPgaWv+ts8g0lRrsP7oeNzONedoSB1l81a35Q==
+X-Received: by 2002:a05:651c:160f:: with SMTP id f15mr859411ljq.43.1629163830104;
+        Mon, 16 Aug 2021 18:30:30 -0700 (PDT)
 Received: from localhost.localdomain (46-138-85-91.dynamic.spd-mgts.ru. [46.138.85.91])
-        by smtp.gmail.com with ESMTPSA id g30sm46607lfj.298.2021.08.16.18.30.12
+        by smtp.gmail.com with ESMTPSA id g30sm46607lfj.298.2021.08.16.18.30.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Aug 2021 18:30:13 -0700 (PDT)
+        Mon, 16 Aug 2021 18:30:29 -0700 (PDT)
 From:   Dmitry Osipenko <digetx@gmail.com>
 To:     Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
@@ -84,9 +84,9 @@ Cc:     linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
         linux-mmc@vger.kernel.org, linux-media@vger.kernel.org,
         dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
         linux-clk@vger.kernel.org
-Subject: [PATCH v8 10/34] gpu: host1x: Add host1x_channel_stop()
-Date:   Tue, 17 Aug 2021 04:27:30 +0300
-Message-Id: <20210817012754.8710-11-digetx@gmail.com>
+Subject: [PATCH v8 24/34] media: dt: bindings: tegra-vde: Document OPP and power domain
+Date:   Tue, 17 Aug 2021 04:27:44 +0300
+Message-Id: <20210817012754.8710-25-digetx@gmail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210817012754.8710-1-digetx@gmail.com>
 References: <20210817012754.8710-1-digetx@gmail.com>
@@ -96,52 +96,42 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Add host1x_channel_stop() which waits till channel becomes idle and then
-stops the channel hardware. This is needed for supporting suspend/resume
-by host1x drivers since the hardware state is lost after power-gating,
-thus the channel needs to be stopped before client enters into suspend.
+Document new OPP table and power domain properties of the video decoder
+hardware.
 
-Tested-by: Peter Geis <pgwipeout@gmail.com> # Ouya T30
-Tested-by: Paul Fertser <fercerpav@gmail.com> # PAZ00 T20
-Tested-by: Nicolas Chauvet <kwizart@gmail.com> # PAZ00 T20 and TK1 T124
-Tested-by: Matt Merhar <mattmerhar@protonmail.com> # Ouya T30
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- drivers/gpu/host1x/channel.c | 8 ++++++++
- include/linux/host1x.h       | 1 +
- 2 files changed, 9 insertions(+)
+ .../devicetree/bindings/media/nvidia,tegra-vde.yaml  | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/gpu/host1x/channel.c b/drivers/gpu/host1x/channel.c
-index 4cd212bb570d..2a9a3a8d5931 100644
---- a/drivers/gpu/host1x/channel.c
-+++ b/drivers/gpu/host1x/channel.c
-@@ -75,6 +75,14 @@ struct host1x_channel *host1x_channel_get_index(struct host1x *host,
- 	return ch;
- }
+diff --git a/Documentation/devicetree/bindings/media/nvidia,tegra-vde.yaml b/Documentation/devicetree/bindings/media/nvidia,tegra-vde.yaml
+index 3b6c1f031e04..0b7d4d815707 100644
+--- a/Documentation/devicetree/bindings/media/nvidia,tegra-vde.yaml
++++ b/Documentation/devicetree/bindings/media/nvidia,tegra-vde.yaml
+@@ -68,6 +68,16 @@ properties:
+     description:
+       Phandle of the SRAM MMIO node.
  
-+void host1x_channel_stop(struct host1x_channel *channel)
-+{
-+	struct host1x *host = dev_get_drvdata(channel->dev->parent);
++  operating-points-v2:
++    description:
++      Should contain freqs and voltages and opp-supported-hw property,
++      which is a bitfield indicating SoC speedo or process ID mask.
 +
-+	host1x_hw_cdma_stop(host, &channel->cdma);
-+}
-+EXPORT_SYMBOL(host1x_channel_stop);
++  power-domains:
++    maxItems: 1
++    description:
++      Phandle to the SoC core power domain.
 +
- static void release_channel(struct kref *kref)
- {
- 	struct host1x_channel *channel =
-diff --git a/include/linux/host1x.h b/include/linux/host1x.h
-index 7bccf589aba7..66473b5be0af 100644
---- a/include/linux/host1x.h
-+++ b/include/linux/host1x.h
-@@ -181,6 +181,7 @@ struct host1x_job;
- 
- struct host1x_channel *host1x_channel_request(struct host1x_client *client);
- struct host1x_channel *host1x_channel_get(struct host1x_channel *channel);
-+void host1x_channel_stop(struct host1x_channel *channel);
- void host1x_channel_put(struct host1x_channel *channel);
- int host1x_job_submit(struct host1x_job *job);
- 
+ required:
+   - compatible
+   - reg
+@@ -104,4 +114,6 @@ examples:
+       reset-names = "vde", "mc";
+       resets = <&rst 61>, <&mem 13>;
+       iommus = <&mem 15>;
++      operating-points-v2 = <&dvfs_opp_table>;
++      power-domains = <&domain>;
+     };
 -- 
 2.32.0
 

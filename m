@@ -5,57 +5,57 @@ X-Spam-Level:
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_AGENT_GIT
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
 	autolearn=unavailable autolearn_force=no version=3.4.0
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A947AC25AE8
-	for <linux-spi@archiver.kernel.org>; Tue, 17 Aug 2021 01:32:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 55BA3C4320E
+	for <linux-spi@archiver.kernel.org>; Tue, 17 Aug 2021 01:32:51 +0000 (UTC)
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.kernel.org (Postfix) with ESMTP id 90BD260EAF
-	for <linux-spi@archiver.kernel.org>; Tue, 17 Aug 2021 01:32:24 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTP id 4250D60241
+	for <linux-spi@archiver.kernel.org>; Tue, 17 Aug 2021 01:32:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239121AbhHQBcx (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
-        Mon, 16 Aug 2021 21:32:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48042 "EHLO
+        id S236741AbhHQBay (ORCPT <rfc822;linux-spi@archiver.kernel.org>);
+        Mon, 16 Aug 2021 21:30:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233389AbhHQBbD (ORCPT
-        <rfc822;linux-spi@vger.kernel.org>); Mon, 16 Aug 2021 21:31:03 -0400
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8803EC0617AD;
-        Mon, 16 Aug 2021 18:30:30 -0700 (PDT)
-Received: by mail-lj1-x233.google.com with SMTP id f2so8518168ljn.1;
-        Mon, 16 Aug 2021 18:30:30 -0700 (PDT)
+        with ESMTP id S236309AbhHQBaq (ORCPT
+        <rfc822;linux-spi@vger.kernel.org>); Mon, 16 Aug 2021 21:30:46 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3773C0617AE;
+        Mon, 16 Aug 2021 18:30:12 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id g13so38106852lfj.12;
+        Mon, 16 Aug 2021 18:30:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=TFXwxY3TugXoPVIGGZ3aRpVCp34SIBOqU4EyNfHhzs8=;
-        b=Ud7GO1VVuVcjx/4hnJlaBg6hn2WfhB+1JQncjj9NZj7zjBXNRTlx92eycBXUir6v1h
-         1E3D0lyqbooQlenOh7apffRjMRZRuenJzK5+Z+EWYA9hw1Xj1IWAix9WZpZrMJWkO4uC
-         0Wni5oxdO0K3ZSWy3UE1zuyQf7u2BLaY1Op8oUnWF/hywiiOvDAS6zPoQ7wLCWN45MF6
-         e5+FwiBgOEA3DuWiMVYBq+9vHIsT/TtFISYetFHxFey0RTj8bPytSZ6BaIr7MnOEBXk5
-         5HbqkCayswncNwNOPNWC86rXSI3274NuVFVhxGbxxHk2lGA0729zJ3kYgKR7VqCUI9tS
-         ViLA==
+        bh=+TXI1PsD2CP95PVSZQdBoUU6aVsve75rwezr3hbKqQc=;
+        b=ctE/gnNctwQ78bIwB8gkQtQ4rMJljulmz2YnS7E3wGldETznUW6j3Ou4Z5KWvHfBMj
+         q0RBAXpPH4bqaZI8wZlyaqho96SEjh7zD1Ofo1hNZE1rHPyelmg2wCLllSyJon15IVGV
+         vWWfpZmUyMA/D/HgqWJHpk8hWFM5h6/DJUkAcvCjzYUCLr7pH++ps9GgE+5stqlL3iCn
+         rUSkOxDP8oqLNMHsvwUQdkQ5F3DHIl893dm3oWgqUFIOe1a5fA2ZUOXJYUkS31JFywbU
+         ZkzE2+subwHYO7oX3w+hl4aG+ebw2VNbA/Smii6cdUwy7w8zwaZ3hD2rT0IoRpnEASFC
+         CcQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=TFXwxY3TugXoPVIGGZ3aRpVCp34SIBOqU4EyNfHhzs8=;
-        b=Ea9x6+svSeIkg6Pen+kJK/zb+UnvufA6RmEaNbpztXOxexZUqwzUXm1PVtWQ8DTM3y
-         B6YCto7kX/mW/YcG7irjtFbCOvyWc3BNiWPcDNiZmu31xchGUMAkdppB2NRDRsdmwkM2
-         Y+GC5PekVV8BNix7AUOZwpWGY3cuvUWocolSPBZbOIb+KbHHc2OZsofj1TZpBsp6jr+H
-         IQ+HlIGkVlaAO87jECbhwyeZsyERnd6b/YWs7iZBJJJmOSCfm/laQSRulrC7yCuoEX3p
-         PGwchnqnmOHoyX9In71xv+io7z9QOZJlV8IsoO+Ccs/aVvzOGTycdbgx7gDNS6h8YWHx
-         xGCg==
-X-Gm-Message-State: AOAM530gB29Ou5vFAJdwhA0vWt+oCeIC/cbCTdhRbeWdMDJsmXGDMb05
-        K4R2ByMjxKEqaQAx4wdWiPE=
-X-Google-Smtp-Source: ABdhPJzFKlEk8pezvTyL9H7NZ9EsIG3ID1+KRIT1aw31Yr0gUTPr1kMEp+2ef/l9rSm0DiRH/QIppg==
-X-Received: by 2002:a2e:4612:: with SMTP id t18mr872435lja.346.1629163828927;
-        Mon, 16 Aug 2021 18:30:28 -0700 (PDT)
+        bh=+TXI1PsD2CP95PVSZQdBoUU6aVsve75rwezr3hbKqQc=;
+        b=HyWPpoA7Lwgg0Vxd0Mt6IgDPiSWKttxTu0Zq2blCtupFX/fsgGgHpqMhzA4GlDO9du
+         EhV6I87keHrJchYylzk1IVGPmgCowKZIcK14YK1PfAYaKiYYXvZm/PHEDz7JZTO4IXrN
+         6wOFfltQLDw3JM16yTqP+QAr75nSOPCTnr8CT4hsJ3vsPzkIgKLayoVLTpfh7BI9+zAG
+         s8PcbCKMFrDHLqeGIxoFCSmCGe3Srykj2MM+QLRH3vx4e7iuh3XYujyTMTdc9vbCicge
+         JkK5C4WNQtzTsnXgbTmJtupxfc1f957u0oYWg0XBl3JgCaMdrxXGyrhV8tRQIX4v83Do
+         rIJw==
+X-Gm-Message-State: AOAM531L8O2cVIuQ++zyZzTqqnmTGmRtCR3KDR2hTjoOY+BECfakvyAc
+        PBtmMHWEL5y26k6DYv0DQH0=
+X-Google-Smtp-Source: ABdhPJzuZ2KMRBi3eQc/FWRQo/+rgKKj4s5rWZFGxcvpLMIWcBLFu2OqgDwQXznaAWLcokuOhOhN+w==
+X-Received: by 2002:a05:6512:2625:: with SMTP id bt37mr486235lfb.255.1629163811065;
+        Mon, 16 Aug 2021 18:30:11 -0700 (PDT)
 Received: from localhost.localdomain (46-138-85-91.dynamic.spd-mgts.ru. [46.138.85.91])
-        by smtp.gmail.com with ESMTPSA id g30sm46607lfj.298.2021.08.16.18.30.27
+        by smtp.gmail.com with ESMTPSA id g30sm46607lfj.298.2021.08.16.18.30.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Aug 2021 18:30:28 -0700 (PDT)
+        Mon, 16 Aug 2021 18:30:10 -0700 (PDT)
 From:   Dmitry Osipenko <digetx@gmail.com>
 To:     Thierry Reding <thierry.reding@gmail.com>,
         Jonathan Hunter <jonathanh@nvidia.com>,
@@ -84,9 +84,9 @@ Cc:     linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
         linux-mmc@vger.kernel.org, linux-media@vger.kernel.org,
         dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
         linux-clk@vger.kernel.org
-Subject: [PATCH v8 23/34] media: dt: bindings: tegra-vde: Convert to schema
-Date:   Tue, 17 Aug 2021 04:27:43 +0300
-Message-Id: <20210817012754.8710-24-digetx@gmail.com>
+Subject: [PATCH v8 08/34] dt-bindings: host1x: Document OPP and power domain properties
+Date:   Tue, 17 Aug 2021 04:27:28 +0300
+Message-Id: <20210817012754.8710-9-digetx@gmail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210817012754.8710-1-digetx@gmail.com>
 References: <20210817012754.8710-1-digetx@gmail.com>
@@ -96,199 +96,222 @@ Precedence: bulk
 List-ID: <linux-spi.vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 
-Convert NVIDIA Tegra video decoder binding to schema.
+Document new DVFS OPP table and power domain properties of the Host1x bus
+and devices sitting on the bus.
 
+Reviewed-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
 ---
- .../bindings/media/nvidia,tegra-vde.txt       |  64 -----------
- .../bindings/media/nvidia,tegra-vde.yaml      | 107 ++++++++++++++++++
- 2 files changed, 107 insertions(+), 64 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/media/nvidia,tegra-vde.txt
- create mode 100644 Documentation/devicetree/bindings/media/nvidia,tegra-vde.yaml
+ .../display/tegra/nvidia,tegra20-host1x.txt   | 49 +++++++++++++++++++
+ 1 file changed, 49 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/media/nvidia,tegra-vde.txt b/Documentation/devicetree/bindings/media/nvidia,tegra-vde.txt
-deleted file mode 100644
-index 602169b8aa19..000000000000
---- a/Documentation/devicetree/bindings/media/nvidia,tegra-vde.txt
-+++ /dev/null
-@@ -1,64 +0,0 @@
--NVIDIA Tegra Video Decoder Engine
--
--Required properties:
--- compatible : Must contain one of the following values:
--   - "nvidia,tegra20-vde"
--   - "nvidia,tegra30-vde"
--   - "nvidia,tegra114-vde"
--   - "nvidia,tegra124-vde"
--   - "nvidia,tegra132-vde"
--- reg : Must contain an entry for each entry in reg-names.
--- reg-names : Must include the following entries:
--  - sxe
--  - bsev
--  - mbe
--  - ppe
--  - mce
--  - tfe
--  - ppb
--  - vdma
--  - frameid
--- iram : Must contain phandle to the mmio-sram device node that represents
--         IRAM region used by VDE.
--- interrupts : Must contain an entry for each entry in interrupt-names.
--- interrupt-names : Must include the following entries:
--  - sync-token
--  - bsev
--  - sxe
--- clocks : Must include the following entries:
--  - vde
--- resets : Must contain an entry for each entry in reset-names.
--- reset-names : Should include the following entries:
--  - vde
--
--Optional properties:
--- resets : Must contain an entry for each entry in reset-names.
--- reset-names : Must include the following entries:
--  - mc
--- iommus: Must contain phandle to the IOMMU device node.
--
--Example:
--
--video-codec@6001a000 {
--	compatible = "nvidia,tegra20-vde";
--	reg = <0x6001a000 0x1000 /* Syntax Engine */
--	       0x6001b000 0x1000 /* Video Bitstream Engine */
--	       0x6001c000  0x100 /* Macroblock Engine */
--	       0x6001c200  0x100 /* Post-processing Engine */
--	       0x6001c400  0x100 /* Motion Compensation Engine */
--	       0x6001c600  0x100 /* Transform Engine */
--	       0x6001c800  0x100 /* Pixel prediction block */
--	       0x6001ca00  0x100 /* Video DMA */
--	       0x6001d800  0x300 /* Video frame controls */>;
--	reg-names = "sxe", "bsev", "mbe", "ppe", "mce",
--		    "tfe", "ppb", "vdma", "frameid";
--	iram = <&vde_pool>; /* IRAM region */
--	interrupts = <GIC_SPI  9 IRQ_TYPE_LEVEL_HIGH>, /* Sync token interrupt */
--		     <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>, /* BSE-V interrupt */
--		     <GIC_SPI 12 IRQ_TYPE_LEVEL_HIGH>; /* SXE interrupt */
--	interrupt-names = "sync-token", "bsev", "sxe";
--	clocks = <&tegra_car TEGRA20_CLK_VDE>;
--	reset-names = "vde", "mc";
--	resets = <&tegra_car 61>, <&mc TEGRA20_MC_RESET_VDE>;
--	iommus = <&mc TEGRA_SWGROUP_VDE>;
--};
-diff --git a/Documentation/devicetree/bindings/media/nvidia,tegra-vde.yaml b/Documentation/devicetree/bindings/media/nvidia,tegra-vde.yaml
-new file mode 100644
-index 000000000000..3b6c1f031e04
---- /dev/null
-+++ b/Documentation/devicetree/bindings/media/nvidia,tegra-vde.yaml
-@@ -0,0 +1,107 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/media/nvidia,tegra-vde.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-host1x.txt b/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-host1x.txt
+index 8a6d3e1ee306..62861a8fb5c6 100644
+--- a/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-host1x.txt
++++ b/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-host1x.txt
+@@ -20,6 +20,18 @@ Required properties:
+ - reset-names: Must include the following entries:
+   - host1x
+ 
++Optional properties:
++- operating-points-v2: See ../bindings/opp/opp.txt for details.
++  - power-domains: Phandle to HEG or core power domain.
 +
-+title: NVIDIA Tegra Video Decoder Engine
++For each opp entry in 'operating-points-v2' table of host1x and its modules:
++- opp-supported-hw: One bitfield indicating:
++	On Tegra20: SoC process ID mask
++	On Tegra30+: SoC speedo ID mask
 +
-+maintainers:
-+  - Dmitry Osipenko <digetx@gmail.com>
-+  - Jon Hunter <jonathanh@nvidia.com>
-+  - Thierry Reding <thierry.reding@gmail.com>
++	A bitwise AND is performed against the value and if any bit
++	matches, the OPP gets enabled.
 +
-+properties:
-+  compatible:
-+    oneOf:
-+      - items:
-+          - enum:
-+              - nvidia,tegra132-vde
-+              - nvidia,tegra124-vde
-+              - nvidia,tegra114-vde
-+              - nvidia,tegra30-vde
-+          - enum:
-+              - nvidia,tegra20-vde
-+      - items:
-+          - const: nvidia,tegra20-vde
+ Each host1x client module having to perform DMA through the Memory Controller
+ should have the interconnect endpoints set to the Memory Client and External
+ Memory respectively.
+@@ -45,6 +57,8 @@ of the following host1x client modules:
+   - interconnect-names: Must include name of the interconnect path for each
+     interconnect entry. Consult TRM documentation for information about
+     available memory clients, see MEMORY CONTROLLER section.
++  - operating-points-v2: See ../bindings/opp/opp.txt for details.
++  - power-domains: Phandle to MPE power domain.
+ 
+ - vi: video input
+ 
+@@ -128,6 +142,8 @@ of the following host1x client modules:
+   - interconnect-names: Must include name of the interconnect path for each
+     interconnect entry. Consult TRM documentation for information about
+     available memory clients, see MEMORY CONTROLLER section.
++  - operating-points-v2: See ../bindings/opp/opp.txt for details.
++  - power-domains: Phandle to VENC power domain.
+ 
+ - epp: encoder pre-processor
+ 
+@@ -147,6 +163,8 @@ of the following host1x client modules:
+   - interconnect-names: Must include name of the interconnect path for each
+     interconnect entry. Consult TRM documentation for information about
+     available memory clients, see MEMORY CONTROLLER section.
++  - operating-points-v2: See ../bindings/opp/opp.txt for details.
++  - power-domains: Phandle to HEG or core power domain.
+ 
+ - isp: image signal processor
+ 
+@@ -166,6 +184,7 @@ of the following host1x client modules:
+   - interconnect-names: Must include name of the interconnect path for each
+     interconnect entry. Consult TRM documentation for information about
+     available memory clients, see MEMORY CONTROLLER section.
++  - power-domains: Phandle to VENC or core power domain.
+ 
+ - gr2d: 2D graphics engine
+ 
+@@ -185,6 +204,8 @@ of the following host1x client modules:
+   - interconnect-names: Must include name of the interconnect path for each
+     interconnect entry. Consult TRM documentation for information about
+     available memory clients, see MEMORY CONTROLLER section.
++  - operating-points-v2: See ../bindings/opp/opp.txt for details.
++  - power-domains: Phandle to HEG or core power domain.
+ 
+ - gr3d: 3D graphics engine
+ 
+@@ -209,6 +230,8 @@ of the following host1x client modules:
+   - interconnect-names: Must include name of the interconnect path for each
+     interconnect entry. Consult TRM documentation for information about
+     available memory clients, see MEMORY CONTROLLER section.
++  - operating-points-v2: See ../bindings/opp/opp.txt for details.
++  - power-domains: Phandles to 3D or core power domain.
+ 
+ - dc: display controller
+ 
+@@ -241,6 +264,8 @@ of the following host1x client modules:
+   - interconnect-names: Must include name of the interconnect path for each
+     interconnect entry. Consult TRM documentation for information about
+     available memory clients, see MEMORY CONTROLLER section.
++  - operating-points-v2: See ../bindings/opp/opp.txt for details.
++  - power-domains: Phandle to core power domain.
+ 
+ - hdmi: High Definition Multimedia Interface
+ 
+@@ -267,6 +292,7 @@ of the following host1x client modules:
+   - nvidia,hpd-gpio: specifies a GPIO used for hotplug detection
+   - nvidia,edid: supplies a binary EDID blob
+   - nvidia,panel: phandle of a display panel
++  - operating-points-v2: See ../bindings/opp/opp.txt for details.
+ 
+ - tvo: TV encoder output
+ 
+@@ -277,6 +303,10 @@ of the following host1x client modules:
+   - clocks: Must contain one entry, for the module clock.
+     See ../clocks/clock-bindings.txt for details.
+ 
++  Optional properties:
++  - operating-points-v2: See ../bindings/opp/opp.txt for details.
++  - power-domains: Phandle to core power domain.
 +
-+  reg:
-+    maxItems: 9
-+
-+  reg-names:
-+    items:
-+      - const: sxe
-+      - const: bsev
-+      - const: mbe
-+      - const: ppe
-+      - const: mce
-+      - const: tfe
-+      - const: ppb
-+      - const: vdma
-+      - const: frameid
-+
-+  clocks:
-+    maxItems: 1
-+
-+  resets:
-+    maxItems: 2
-+
-+  reset-names:
-+    items:
-+      - const: vde
-+      - const: mc
-+
-+  interrupts:
-+    maxItems: 3
-+
-+  interrupt-names:
-+    items:
-+      - const: sync-token
-+      - const: bsev
-+      - const: sxe
-+
-+  iommus:
-+    maxItems: 1
-+
-+  iram:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description:
-+      Phandle of the SRAM MMIO node.
-+
-+required:
-+  - compatible
-+  - reg
-+  - reg-names
-+  - clocks
-+  - resets
-+  - reset-names
-+  - interrupts
-+  - interrupt-names
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    video-codec@6001a000 {
-+      compatible = "nvidia,tegra20-vde";
-+      reg = <0x6001a000 0x1000>, /* Syntax Engine */
-+            <0x6001b000 0x1000>, /* Video Bitstream Engine */
-+            <0x6001c000  0x100>, /* Macroblock Engine */
-+            <0x6001c200  0x100>, /* Post-processing Engine */
-+            <0x6001c400  0x100>, /* Motion Compensation Engine */
-+            <0x6001c600  0x100>, /* Transform Engine */
-+            <0x6001c800  0x100>, /* Pixel prediction block */
-+            <0x6001ca00  0x100>, /* Video DMA */
-+            <0x6001d800  0x300>; /* Video frame controls */
-+      reg-names = "sxe", "bsev", "mbe", "ppe", "mce",
-+                  "tfe", "ppb", "vdma", "frameid";
-+      iram = <&iram>; /* IRAM MMIO region */
-+      interrupts = <0  9 4>, /* Sync token */
-+                   <0 10 4>, /* BSE-V */
-+                   <0 12 4>; /* SXE */
-+      interrupt-names = "sync-token", "bsev", "sxe";
-+      clocks = <&clk 61>;
-+      reset-names = "vde", "mc";
-+      resets = <&rst 61>, <&mem 13>;
-+      iommus = <&mem 15>;
-+    };
+ - dsi: display serial interface
+ 
+   Required properties:
+@@ -305,6 +335,7 @@ of the following host1x client modules:
+   - nvidia,panel: phandle of a display panel
+   - nvidia,ganged-mode: contains a phandle to a second DSI controller to gang
+     up with in order to support up to 8 data lanes
++  - operating-points-v2: See ../bindings/opp/opp.txt for details.
+ 
+ - sor: serial output resource
+ 
+@@ -408,6 +439,8 @@ Example:
+ 		clocks = <&tegra_car TEGRA20_CLK_HOST1X>;
+ 		resets = <&tegra_car 28>;
+ 		reset-names = "host1x";
++		operating-points-v2 = <&dvfs_opp_table>;
++		power-domains = <&domain>;
+ 
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+@@ -421,6 +454,8 @@ Example:
+ 			clocks = <&tegra_car TEGRA20_CLK_MPE>;
+ 			resets = <&tegra_car 60>;
+ 			reset-names = "mpe";
++			operating-points-v2 = <&dvfs_opp_table>;
++			power-domains = <&domain>;
+ 		};
+ 
+ 		vi@54080000 {
+@@ -429,6 +464,7 @@ Example:
+ 			interrupts = <GIC_SPI 69 IRQ_TYPE_LEVEL_HIGH>;
+ 			assigned-clocks = <&tegra_car TEGRA210_CLK_VI>;
+ 			assigned-clock-parents = <&tegra_car TEGRA210_CLK_PLL_C4_OUT0>;
++			operating-points-v2 = <&dvfs_opp_table>;
+ 
+ 			clocks = <&tegra_car TEGRA210_CLK_VI>;
+ 			power-domains = <&pd_venc>;
+@@ -510,6 +546,8 @@ Example:
+ 			clocks = <&tegra_car TEGRA20_CLK_EPP>;
+ 			resets = <&tegra_car 19>;
+ 			reset-names = "epp";
++			operating-points-v2 = <&dvfs_opp_table>;
++			power-domains = <&domain>;
+ 		};
+ 
+ 		isp {
+@@ -528,6 +566,8 @@ Example:
+ 			clocks = <&tegra_car TEGRA20_CLK_GR2D>;
+ 			resets = <&tegra_car 21>;
+ 			reset-names = "2d";
++			operating-points-v2 = <&dvfs_opp_table>;
++			power-domains = <&domain>;
+ 		};
+ 
+ 		gr3d {
+@@ -536,6 +576,8 @@ Example:
+ 			clocks = <&tegra_car TEGRA20_CLK_GR3D>;
+ 			resets = <&tegra_car 24>;
+ 			reset-names = "3d";
++			operating-points-v2 = <&dvfs_opp_table>;
++			power-domains = <&domain>;
+ 		};
+ 
+ 		dc@54200000 {
+@@ -547,6 +589,8 @@ Example:
+ 			clock-names = "dc", "parent";
+ 			resets = <&tegra_car 27>;
+ 			reset-names = "dc";
++			operating-points-v2 = <&dvfs_opp_table>;
++			power-domains = <&domain>;
+ 
+ 			interconnects = <&mc TEGRA20_MC_DISPLAY0A &emc>,
+ 					<&mc TEGRA20_MC_DISPLAY0B &emc>,
+@@ -571,6 +615,8 @@ Example:
+ 			clock-names = "dc", "parent";
+ 			resets = <&tegra_car 26>;
+ 			reset-names = "dc";
++			operating-points-v2 = <&dvfs_opp_table>;
++			power-domains = <&domain>;
+ 
+ 			interconnects = <&mc TEGRA20_MC_DISPLAY0AB &emc>,
+ 					<&mc TEGRA20_MC_DISPLAY0BB &emc>,
+@@ -596,6 +642,7 @@ Example:
+ 			resets = <&tegra_car 51>;
+ 			reset-names = "hdmi";
+ 			status = "disabled";
++			operating-points-v2 = <&dvfs_opp_table>;
+ 		};
+ 
+ 		tvo {
+@@ -604,6 +651,7 @@ Example:
+ 			interrupts = <0 76 0x04>;
+ 			clocks = <&tegra_car TEGRA20_CLK_TVO>;
+ 			status = "disabled";
++			operating-points-v2 = <&dvfs_opp_table>;
+ 		};
+ 
+ 		dsi {
+@@ -615,6 +663,7 @@ Example:
+ 			resets = <&tegra_car 48>;
+ 			reset-names = "dsi";
+ 			status = "disabled";
++			operating-points-v2 = <&dvfs_opp_table>;
+ 		};
+ 	};
+ 
 -- 
 2.32.0
 
